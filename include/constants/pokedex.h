@@ -82,6 +82,7 @@ enum DexOrder
     DEX_GEODUDE,
     DEX_GRAVELER,
     DEX_GOLEM,
+    //por aquí
     DEX_PONYTA,
     DEX_RAPIDASH,
     DEX_MAGNEMITE,
@@ -416,8 +417,8 @@ enum DexOrder
     DEX_OSHAWOTT,
     DEX_DEWOTT,
     DEX_SAMUROTT,
-    DEX_DRILBUR,
-    DEX_EXCADRILL,
+    DEX_DRILBUR, //eliminar
+    DEX_EXCADRILL, //eliminar
     DEX_DARUMAKA,
     DEX_DARMANITAN,
     DEX_DARUMAKA_GALAR,

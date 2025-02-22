@@ -2144,17 +2144,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 5,
     },
 
-    [ABILITY_PROTOSYNTHESIS] =
-    {
-        .name = _("Protosynthesis"),
-        .description = COMPOUND_STRING("Sun boosts best stat."),
-        .aiRating = 7,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .failsOnImposter = TRUE,
-    },
-
     [ABILITY_QUARK_DRIVE] =
     {
         .name = _("Quark Drive"),
@@ -2298,50 +2287,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Keen Eye and Scrappy."),
         .aiRating = 8,
         .breakable = TRUE,
-    },
-
-    [ABILITY_EMBODY_ASPECT_TEAL_MASK] =
-    {
-        .name = _("Embody Aspect"),
-        .description = COMPOUND_STRING("Raises Speed."),
-        .aiRating = 6,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .failsOnImposter = TRUE,
-    },
-
-    [ABILITY_EMBODY_ASPECT_HEARTHFLAME_MASK] =
-    {
-        .name = _("Embody Aspect"),
-        .description = COMPOUND_STRING("Raises Attack."),
-        .aiRating = 6,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .failsOnImposter = TRUE,
-    },
-
-    [ABILITY_EMBODY_ASPECT_WELLSPRING_MASK] =
-    {
-        .name = _("Embody Aspect"),
-        .description = COMPOUND_STRING("Raises Sp. Def."),
-        .aiRating = 6,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .failsOnImposter = TRUE,
-    },
-
-    [ABILITY_EMBODY_ASPECT_CORNERSTONE_MASK] =
-    {
-        .name = _("Embody Aspect"),
-        .description = COMPOUND_STRING("Raises Defense."),
-        .aiRating = 6,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .failsOnImposter = TRUE,
     },
 
     [ABILITY_TOXIC_CHAIN] =
@@ -2817,10 +2762,17 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 8,
     },
 
+    [ABILITY_TERRESTRE] =
+    {
+        .name = _("Terrestre"),
+        .description = COMPOUND_STRING("Tierra +25%."),
+        .aiRating = 8,
+    },
+
     [ABILITY_GUARDIAN] =
     {
         .name = _("Guardián"),
-        .description = COMPOUND_STRING("Resiste sin./fant."),
+        .description = COMPOUND_STRING("Resiste siniestro/fantasma."),
         .aiRating = 7,
         .breakable = TRUE,
     },
