@@ -3400,8 +3400,8 @@ static void BufferLeftColumnStats(void)
     DynamicPlaceholderTextUtil_Reset();
     BufferStat(currentHPString, 0, sMonSummaryScreen->summary.currentHP, 0, 3);
     BufferStat(maxHPString, 0, sMonSummaryScreen->summary.maxHP, 1, 3);
-    BufferStat(attackString, STAT_ATK, sMonSummaryScreen->summary.atk, 2, 7);
-    BufferStat(defenseString, STAT_DEF, sMonSummaryScreen->summary.def, 3, 7);
+    BufferStat(attackString, ESTADISTICA_ATAQUE, sMonSummaryScreen->summary.atk, 2, 7);
+    BufferStat(defenseString, ESTADISTICA_DEFENSA, sMonSummaryScreen->summary.def, 3, 7);
     DynamicPlaceholderTextUtil_ExpandPlaceholders(gStringVar4, sStatsLeftColumnLayout);
 
     Free(currentHPString);
@@ -3418,9 +3418,9 @@ static void PrintLeftColumnStats(void)
 static void BufferRightColumnStats(void)
 {
     DynamicPlaceholderTextUtil_Reset();
-    BufferStat(gStringVar1, STAT_SPATK, sMonSummaryScreen->summary.spatk, 0, 3);
-    BufferStat(gStringVar2, STAT_SPDEF, sMonSummaryScreen->summary.spdef, 1, 3);
-    BufferStat(gStringVar3, STAT_SPEED, sMonSummaryScreen->summary.speed, 2, 3);
+    BufferStat(gStringVar1, ESTADISTICA_ATAQUE_ESPECIAL, sMonSummaryScreen->summary.spatk, 0, 3);
+    BufferStat(gStringVar2, ESTADISTICA_DEFENSA_ESPECIAL, sMonSummaryScreen->summary.spdef, 1, 3);
+    BufferStat(gStringVar3, ESTADISTICA_VELOCIDAD, sMonSummaryScreen->summary.speed, 2, 3);
     DynamicPlaceholderTextUtil_ExpandPlaceholders(gStringVar4, sStatsRightColumnLayout);
 }
 

@@ -94,7 +94,7 @@ const struct NatureInfo gNaturesInfo[NUMERO_NATURALEZAS] =
     [NATURALEZA_OFENSIVA] =
     {
         .name = COMPOUND_STRING("Ofensiva"),
-        .statUp = STAT_ATK,
+        .statUp = ESTADISTICA_ATAQUE,
         .backAnim = 1,
         .pokeBlockAnim = {ANIM_HARDY, AFFINE_NONE},
         .natureGirlMessage = BattleFrontier_Lounge5_Text_NatureGirlHardy,
@@ -105,7 +105,7 @@ const struct NatureInfo gNaturesInfo[NUMERO_NATURALEZAS] =
     [NATURALEZA_DEFENSIVA] =
     {
         .name = COMPOUND_STRING("Defensiva"),
-        .statUp = STAT_DEF,
+        .statUp = ESTADISTICA_DEFENSA,
         .backAnim = 2,
         .pokeBlockAnim = {ANIM_LONELY, AFFINE_NONE},
         .natureGirlMessage = BattleFrontier_Lounge5_Text_NatureGirlLonely,
@@ -116,7 +116,7 @@ const struct NatureInfo gNaturesInfo[NUMERO_NATURALEZAS] =
     [NATURALEZA_OFENSIVA_ESPECIAL] =
     {
         .name = COMPOUND_STRING("Ofensiva esp."),
-        .statUp = STAT_SPATK,
+        .statUp = ESTADISTICA_ATAQUE_ESPECIAL,
         .backAnim = 1,
         .pokeBlockAnim = {ANIM_BRAVE, AFFINE_TURN_UP},
         .natureGirlMessage = BattleFrontier_Lounge5_Text_NatureGirlBrave,
@@ -127,7 +127,7 @@ const struct NatureInfo gNaturesInfo[NUMERO_NATURALEZAS] =
     [NATURALEZA_DEFENSIVA_ESPECIAL] =
     {
         .name = COMPOUND_STRING("Defensiva esp."),
-        .statUp = STAT_SPDEF,
+        .statUp = ESTADISTICA_DEFENSA_ESPECIAL,
         .backAnim = 2,
         .pokeBlockAnim = {ANIM_ADAMANT, AFFINE_NONE},
         .natureGirlMessage = BattleFrontier_Lounge5_Text_NatureGirlAdamant,
@@ -138,7 +138,7 @@ const struct NatureInfo gNaturesInfo[NUMERO_NATURALEZAS] =
     [NATURALEZA_RAPIDA] =
     {
         .name = COMPOUND_STRING("Rápida"),
-        .statUp = STAT_SPEED,
+        .statUp = ESTADISTICA_VELOCIDAD,
         .backAnim = 0,
         .pokeBlockAnim = {ANIM_NAUGHTY, AFFINE_NONE},
         .natureGirlMessage = BattleFrontier_Lounge5_Text_NatureGirlNaughty,
@@ -175,21 +175,21 @@ const u8 gPPUpGetMask[MAX_MON_MOVES]   = {PP_UP_SHIFTS(3)};
 const u8 gPPUpClearMask[MAX_MON_MOVES] = {PP_UP_SHIFTS_INV(3)};
 const u8 gPPUpAddValues[MAX_MON_MOVES] = {PP_UP_SHIFTS(1)};
 
-const u8 gStatStageRatios[MAX_STAT_STAGE + 1][2] =
+const u16 gMultiplicadoresEstadisticas[NUMERO_CAMBIOS_ESTADISTICAS] =
 {
-    {10.00, 25.00}, // -6, MIN_STAT_STAGE
-    {10.00, 22.50}, // -5
-    {10.00, 20.00}, // -4
-    {10.00, 17.50}, // -3
-    {10.00, 15.00}, // -2
-    {10.00, 12.50}, // -1
-    {10.00, 10.00}, //  0, DEFAULT_STAT_STAGE
-    {12.50, 10.00}, // +1
-    {15.00, 10.00}, // +2
-    {17.50, 10.00}, // +3
-    {20.00, 10.00}, // +4
-    {22.50, 10.00}, // +5
-    {25.00, 10.00}, // +6, MAX_STAT_STAGE
+    [ESTADÍSTICA_MENOS_6]   = 64,   //  25%
+    [ESTADÍSTICA_MENOS_5]   = 96,   //  37,5%
+    [ESTADÍSTICA_MENOS_4]   = 128,  //  50%
+    [ESTADÍSTICA_MENOS_3]   = 160,  //  62,5%
+    [ESTADÍSTICA_MENOS_2]   = 192,  //  75%
+    [ESTADÍSTICA_MENOS_1]   = 224,  //  87,5%
+    [ESTADÍSTICA_NEUTRA]    = 256,  //  100%
+    [ESTADÍSTICA_MAS_1]     = 320,  //  125%
+    [ESTADÍSTICA_MAS_2]     = 384,  //  150%
+    [ESTADÍSTICA_MAS_3]     = 448,  //  175%
+    [ESTADÍSTICA_MAS_4]     = 512,  //  200%
+    [ESTADÍSTICA_MAS_5]     = 576,  //  225%
+    [ESTADÍSTICA_MAS_6]     = 640   //  250%
 };
 
 const struct SpriteTemplate gBattlerSpriteTemplates[MAX_BATTLERS_COUNT] =
@@ -340,7 +340,7 @@ static const u8 sGetMonDataEVConstants[] =
 // For stat-raising items
 static const u8 sStatsToRaise[] =
 {
-    STAT_ATK, STAT_ATK, STAT_DEF, STAT_SPEED, STAT_SPATK, STAT_SPDEF, STAT_ACC
+    ESTADISTICA_ATAQUE, ESTADISTICA_ATAQUE, ESTADISTICA_DEFENSA, ESTADISTICA_VELOCIDAD, ESTADISTICA_ATAQUE_ESPECIAL, ESTADISTICA_DEFENSA_ESPECIAL, ESTADISTICA_PRECISION
 };
 
 // 3 modifiers each for how much to change friendship for different ranges
@@ -618,12 +618,12 @@ void CreateMonWithIVsPersonality(struct Pokemon *mon, u16 species, u8 level, u32
 void CreateMonWithIVsOTID(struct Pokemon *mon, u16 species, u8 level, u8 *ivs, u32 otId)
 {
     CreateMon(mon, species, level, 0, FALSE, 0, OT_ID_PRESET, otId);
-    SetMonData(mon, MON_DATA_HP_IV, &ivs[STAT_HP]);
-    SetMonData(mon, MON_DATA_ATK_IV, &ivs[STAT_ATK]);
-    SetMonData(mon, MON_DATA_DEF_IV, &ivs[STAT_DEF]);
-    SetMonData(mon, MON_DATA_SPEED_IV, &ivs[STAT_SPEED]);
-    SetMonData(mon, MON_DATA_SPATK_IV, &ivs[STAT_SPATK]);
-    SetMonData(mon, MON_DATA_SPDEF_IV, &ivs[STAT_SPDEF]);
+    SetMonData(mon, MON_DATA_HP_IV, &ivs[ESTADISTICA_PS]);
+    SetMonData(mon, MON_DATA_ATK_IV, &ivs[ESTADISTICA_ATAQUE]);
+    SetMonData(mon, MON_DATA_DEF_IV, &ivs[ESTADISTICA_DEFENSA]);
+    SetMonData(mon, MON_DATA_SPEED_IV, &ivs[ESTADISTICA_VELOCIDAD]);
+    SetMonData(mon, MON_DATA_SPATK_IV, &ivs[ESTADISTICA_ATAQUE_ESPECIAL]);
+    SetMonData(mon, MON_DATA_SPDEF_IV, &ivs[ESTADISTICA_DEFENSA_ESPECIAL]);
     CalculateMonStats(mon);
 }
 
@@ -638,7 +638,7 @@ void CreateMonWithEVSpread(struct Pokemon *mon, u16 species, u8 level, u8 fixedI
 
     evsBits = evSpread;
 
-    for (i = 0; i < NUM_STATS; i++)
+    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
     {
         if (evsBits & 1)
             statCount++;
@@ -649,7 +649,7 @@ void CreateMonWithEVSpread(struct Pokemon *mon, u16 species, u8 level, u8 fixedI
 
     evsBits = 1;
 
-    for (i = 0; i < NUM_STATS; i++)
+    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
     {
         if (evSpread & evsBits)
             SetMonData(mon, MON_DATA_HP_EV + i, &evAmount);
@@ -766,7 +766,7 @@ void CreateMonWithEVSpreadNatureOTID(struct Pokemon *mon, u16 species, u8 level,
 
     CreateMon(mon, species, level, fixedIV, TRUE, i, OT_ID_PRESET, otId);
     evsBits = evSpread;
-    for (i = 0; i < NUM_STATS; i++)
+    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
     {
         if (evsBits & 1)
             statCount++;
@@ -775,7 +775,7 @@ void CreateMonWithEVSpreadNatureOTID(struct Pokemon *mon, u16 species, u8 level,
 
     evAmount = MAX_TOTAL_EVS / statCount;
     evsBits = 1;
-    for (i = 0; i < NUM_STATS; i++)
+    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
     {
         if (evSpread & evsBits)
             SetMonData(mon, MON_DATA_HP_EV + i, &evAmount);
@@ -883,8 +883,6 @@ void CreateEnemyEventMon(void)
     u8 baseStat = gSpeciesInfo[species].base;                   \
     s32 n = (((2 * baseStat + iv + ev / 4) * level) / 100) + 5; \
     n = ModifyStatByNature(nature, n, statIndex);               \
-    if (B_FRIENDSHIP_BOOST == TRUE)                             \
-        n = n + ((n * 10 * friendship) / (MAX_FRIENDSHIP * 100));\
     SetMonData(mon, field, &n);                                 \
 }
 
@@ -927,11 +925,11 @@ void CalculateMonStats(struct Pokemon *mon)
 
     SetMonData(mon, MON_DATA_MAX_HP, &newMaxHP);
 
-    CALC_STAT(baseAttack, attackIV, attackEV, STAT_ATK, MON_DATA_ATK)
-    CALC_STAT(baseDefense, defenseIV, defenseEV, STAT_DEF, MON_DATA_DEF)
-    CALC_STAT(baseSpeed, speedIV, speedEV, STAT_SPEED, MON_DATA_SPEED)
-    CALC_STAT(baseSpAttack, spAttackIV, spAttackEV, STAT_SPATK, MON_DATA_SPATK)
-    CALC_STAT(baseSpDefense, spDefenseIV, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF)
+    CALC_STAT(baseAttack, attackIV, attackEV, ESTADISTICA_ATAQUE, MON_DATA_ATK)
+    CALC_STAT(baseDefense, defenseIV, defenseEV, ESTADISTICA_DEFENSA, MON_DATA_DEF)
+    CALC_STAT(baseSpeed, speedIV, speedEV, ESTADISTICA_VELOCIDAD, MON_DATA_SPEED)
+    CALC_STAT(baseSpAttack, spAttackIV, spAttackEV, ESTADISTICA_ATAQUE_ESPECIAL, MON_DATA_SPATK)
+    CALC_STAT(baseSpDefense, spDefenseIV, spDefenseEV, ESTADISTICA_DEFENSA_ESPECIAL, MON_DATA_SPDEF)
 
     // Since a pokemon's maxHP data could either not have
     // been initialized at this point or this pokemon is
@@ -2063,7 +2061,7 @@ void CreateSecretBaseEnemyParty(struct SecretBase *secretBaseRecord)
 
             SetMonData(&gEnemyParty[i], MON_DATA_HELD_ITEM, &gBattleResources->secretBase->party.heldItems[i]);
 
-            for (j = 0; j < NUM_STATS; j++)
+            for (j = 0; j < NUMERO_ESTADISTICAS; j++)
                 SetMonData(&gEnemyParty[i], MON_DATA_HP_EV + j, &gBattleResources->secretBase->party.EVs[i]);
 
             for (j = 0; j < MAX_MON_MOVES; j++)
@@ -2225,8 +2223,8 @@ void PokemonToBattleMon(struct Pokemon *src, struct BattlePokemon *dst)
     StringCopy_Nickname(dst->nickname, nickname);
     GetMonData(src, MON_DATA_OT_NAME, dst->otName);
 
-    for (i = 0; i < NUM_BATTLE_STATS; i++)
-        dst->statStages[i] = DEFAULT_STAT_STAGE;
+    for (i = 0; i < NUMERO_ESTADISTICAS_BATALLA; i++)
+        dst->statStages[i] = ESTADISTICA_NEUTRA;
 
     dst->status2 = 0;
 }
@@ -2873,22 +2871,22 @@ u8 *UseStatIncreaseItem(u16 itemId)
     switch (itemEffect[1])
     {
         case ITEM1_X_ATTACK:
-            BufferStatRoseMessage(STAT_ATK);
+            BufferStatRoseMessage(ESTADISTICA_ATAQUE);
             break;
         case ITEM1_X_DEFENSE:
-            BufferStatRoseMessage(STAT_DEF);
+            BufferStatRoseMessage(ESTADISTICA_DEFENSA);
             break;
         case ITEM1_X_SPEED:
-            BufferStatRoseMessage(STAT_SPEED);
+            BufferStatRoseMessage(ESTADISTICA_VELOCIDAD);
             break;
         case ITEM1_X_SPATK:
-            BufferStatRoseMessage(STAT_SPATK);
+            BufferStatRoseMessage(ESTADISTICA_ATAQUE_ESPECIAL);
             break;
         case ITEM1_X_SPDEF:
-            BufferStatRoseMessage(STAT_SPDEF);
+            BufferStatRoseMessage(ESTADISTICA_DEFENSA_ESPECIAL);
             break;
         case ITEM1_X_ACCURACY:
-            BufferStatRoseMessage(STAT_ACC);
+            BufferStatRoseMessage(ESTADISTICA_PRECISION);
             break;
     }
 
@@ -3138,10 +3136,7 @@ u8 GetTrainerEncounterMusicId(u16 trainerOpponentId)
 
 u16 ModifyStatByNature(u8 nature, u16 stat, u8 statIndex)
 {
-    // Don't modify HP, Accuracy, or Evasion by nature
-    if (statIndex <= STAT_HP || statIndex > NUM_NATURE_STATS)
-        return stat;
-    else if (statIndex == gNaturesInfo[nature].statUp)
+    if (statIndex == gNaturesInfo[nature].statUp)
         return stat * 110 / 100;
     else
         return stat;
@@ -3214,7 +3209,7 @@ void AdjustFriendship(struct Pokemon *mon, u8 event)
 
 void MonGainEVs(struct Pokemon *mon, u16 defeatedSpecies)
 {
-    u8 evs[NUM_STATS];
+    u8 evs[NUMERO_ESTADISTICAS];
     u16 evIncrease = 0;
     u16 totalEVs = 0;
     u16 heldItem;
@@ -3229,13 +3224,13 @@ void MonGainEVs(struct Pokemon *mon, u16 defeatedSpecies)
     stat = ItemId_GetSecondaryId(heldItem);
     bonus = ItemId_GetHoldEffectParam(heldItem);
 
-    for (i = 0; i < NUM_STATS; i++)
+    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
     {
         evs[i] = GetMonData(mon, MON_DATA_HP_EV + i, 0);
         totalEVs += evs[i];
     }
 
-    for (i = 0; i < NUM_STATS; i++)
+    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
     {
         if (totalEVs >= MAX_TOTAL_EVS)
             break;
@@ -3247,38 +3242,38 @@ void MonGainEVs(struct Pokemon *mon, u16 defeatedSpecies)
 
         switch (i)
         {
-        case STAT_HP:
-            if (holdEffect == HOLD_EFFECT_POWER_ITEM && stat == STAT_HP)
+        case ESTADISTICA_PS:
+            if (holdEffect == HOLD_EFFECT_POWER_ITEM && stat == ESTADISTICA_PS)
                 evIncrease = (gSpeciesInfo[defeatedSpecies].evYield_HP + bonus) * multiplier;
             else
                 evIncrease = gSpeciesInfo[defeatedSpecies].evYield_HP * multiplier;
             break;
-        case STAT_ATK:
-            if (holdEffect == HOLD_EFFECT_POWER_ITEM && stat == STAT_ATK)
+        case ESTADISTICA_ATAQUE:
+            if (holdEffect == HOLD_EFFECT_POWER_ITEM && stat == ESTADISTICA_ATAQUE)
                 evIncrease = (gSpeciesInfo[defeatedSpecies].evYield_Attack + bonus) * multiplier;
             else
                 evIncrease = gSpeciesInfo[defeatedSpecies].evYield_Attack * multiplier;
             break;
-        case STAT_DEF:
-            if (holdEffect == HOLD_EFFECT_POWER_ITEM && stat == STAT_DEF)
+        case ESTADISTICA_DEFENSA:
+            if (holdEffect == HOLD_EFFECT_POWER_ITEM && stat == ESTADISTICA_DEFENSA)
                 evIncrease = (gSpeciesInfo[defeatedSpecies].evYield_Defense + bonus) * multiplier;
             else
                 evIncrease = gSpeciesInfo[defeatedSpecies].evYield_Defense * multiplier;
             break;
-        case STAT_SPEED:
-            if (holdEffect == HOLD_EFFECT_POWER_ITEM && stat == STAT_SPEED)
+        case ESTADISTICA_VELOCIDAD:
+            if (holdEffect == HOLD_EFFECT_POWER_ITEM && stat == ESTADISTICA_VELOCIDAD)
                 evIncrease = (gSpeciesInfo[defeatedSpecies].evYield_Speed + bonus) * multiplier;
             else
                 evIncrease = gSpeciesInfo[defeatedSpecies].evYield_Speed * multiplier;
             break;
-        case STAT_SPATK:
-            if (holdEffect == HOLD_EFFECT_POWER_ITEM && stat == STAT_SPATK)
+        case ESTADISTICA_ATAQUE_ESPECIAL:
+            if (holdEffect == HOLD_EFFECT_POWER_ITEM && stat == ESTADISTICA_ATAQUE_ESPECIAL)
                 evIncrease = (gSpeciesInfo[defeatedSpecies].evYield_SpAttack + bonus) * multiplier;
             else
                 evIncrease = gSpeciesInfo[defeatedSpecies].evYield_SpAttack * multiplier;
             break;
-        case STAT_SPDEF:
-            if (holdEffect == HOLD_EFFECT_POWER_ITEM && stat == STAT_SPDEF)
+        case ESTADISTICA_DEFENSA_ESPECIAL:
+            if (holdEffect == HOLD_EFFECT_POWER_ITEM && stat == ESTADISTICA_DEFENSA_ESPECIAL)
                 evIncrease = (gSpeciesInfo[defeatedSpecies].evYield_SpDefense + bonus) * multiplier;
             else
                 evIncrease = gSpeciesInfo[defeatedSpecies].evYield_SpDefense * multiplier;
@@ -3309,7 +3304,7 @@ u16 GetMonEVCount(struct Pokemon *mon)
     int i;
     u16 count = 0;
 
-    for (i = 0; i < NUM_STATS; i++)
+    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
         count += GetMonData(mon, MON_DATA_HP_EV + i, 0);
 
     return count;

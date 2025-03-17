@@ -12,7 +12,7 @@
 do {                                      \
     fprintf(stderr, format, __VA_ARGS__); \
     exit(1);                              \
-} while (0)
+} while(0)
 
 #define UNUSED
 
@@ -22,7 +22,7 @@ do {                                      \
 do {                                        \
     fprintf(stderr, format, ##__VA_ARGS__); \
     exit(1);                                \
-} while (0)
+} while(0)
 
 #define UNUSED __attribute__((__unused__))
 

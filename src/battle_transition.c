@@ -1803,7 +1803,7 @@ static bool8 ClockwiseWipe_Right(struct Task *task)
 
     InitBlackWipe(sTransitionData->data, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, DISPLAY_WIDTH, sTransitionData->tWipeEndY, 1, 1);
 
-    while (1)
+    while(1)
     {
         start = DISPLAY_WIDTH / 2, end = sTransitionData->tWipeCurrX + 1;
         if (sTransitionData->tWipeEndY >= DISPLAY_HEIGHT / 2)
@@ -1860,7 +1860,7 @@ static bool8 ClockwiseWipe_Left(struct Task *task)
 
     InitBlackWipe(sTransitionData->data, DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, 0, sTransitionData->tWipeEndY, 1, 1);
 
-    while (1)
+    while(1)
     {
         end = (gScanlineEffectRegBuffers[0][sTransitionData->tWipeCurrY]) & 0xFF;
         start = sTransitionData->tWipeCurrX;

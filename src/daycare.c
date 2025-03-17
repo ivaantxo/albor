@@ -479,16 +479,16 @@ void TriggerPendingDaycareEgg(void)
 static void RemoveIVIndexFromList(u8 *ivs, u8 selectedIv)
 {
     s32 i, j;
-    u8 temp[NUM_STATS];
+    u8 temp[NUMERO_ESTADISTICAS];
 
     ivs[selectedIv] = 0xFF;
-    for (i = 0; i < NUM_STATS; i++)
+    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
     {
         temp[i] = ivs[i];
     }
 
     j = 0;
-    for (i = 0; i < NUM_STATS; i++)
+    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
     {
         if (temp[i] != 0xFF)
             ivs[j++] = temp[i];
@@ -501,13 +501,13 @@ static void InheritIVs(struct Pokemon *egg, struct DayCare *daycare)
     u16 fatherItem = GetBoxMonData(&daycare->mons[1].mon, MON_DATA_HELD_ITEM);
     u8 i, start;
     u8 selectedIvs[5];
-    u8 availableIVs[NUM_STATS];
+    u8 availableIVs[NUMERO_ESTADISTICAS];
     u8 whichParents[5];
     u8 iv;
     u8 howManyIVs = 5;
 
     // Initialize a list of IV indices.
-    for (i = 0; i < NUM_STATS; i++)
+    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
     {
         availableIVs[i] = i;
     }
@@ -547,10 +547,10 @@ static void InheritIVs(struct Pokemon *egg, struct DayCare *daycare)
         // be repeated. Amusingly, FRLG and RS also got this wrong. They remove selectedIvs[i], which
         // is not an index! This means that it can sometimes remove the wrong stat.
         #ifndef BUGFIX
-        selectedIvs[i] = availableIVs[Random() % (NUM_STATS - i)];
+        selectedIvs[i] = availableIVs[Random() % (NUMERO_ESTADISTICAS - i)];
         RemoveIVIndexFromList(availableIVs, i);
         #else
-        u8 index = Random() % (NUM_STATS - i);
+        u8 index = Random() % (NUMERO_ESTADISTICAS - i);
         selectedIvs[i] = availableIVs[index];
         RemoveIVIndexFromList(availableIVs, index);
         #endif

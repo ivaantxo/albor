@@ -88,7 +88,7 @@ bool8 RunScriptCommand(struct ScriptContext *ctx)
         ctx->mode = SCRIPT_MODE_BYTECODE;
         // fallthrough
     case SCRIPT_MODE_BYTECODE:
-        while (1)
+        while(1)
         {
             u8 cmdCode;
             ScrCmdFunc *func;
@@ -101,7 +101,7 @@ bool8 RunScriptCommand(struct ScriptContext *ctx)
 
             if (ctx->scriptPtr == gNullScriptPtr)
             {
-                while (1)
+                while(1)
                     asm("svc 2"); // HALT
             }
 
@@ -284,7 +284,7 @@ u8 *MapHeaderGetScriptTable(u8 tag)
     if (!mapScripts)
         return NULL;
 
-    while (1)
+    while(1)
     {
         if (!*mapScripts)
             return NULL;
@@ -311,7 +311,7 @@ u8 *MapHeaderCheckScriptTable(u8 tag)
     if (!ptr)
         return NULL;
 
-    while (1)
+    while(1)
     {
         u16 varIndex1;
         u16 varIndex2;

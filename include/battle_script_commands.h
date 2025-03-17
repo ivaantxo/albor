@@ -10,12 +10,6 @@
 // Arguments for 'xStart, yStart, xEnd, yEnd' in HandleBattleWindow
 #define YESNOBOX_X_Y 24, 8, 29, 13
 
-struct StatFractions
-{
-    u8 dividend;
-    u8 divisor;
-};
-
 struct PickupItem
 {
     u16 itemId;
@@ -60,6 +54,5 @@ void SaveBattlerTarget(u32 battler);
 void SaveBattlerAttacker(u32 battler);
 
 extern void (* const gBattleScriptingCommandsTable[])(void);
-extern const struct StatFractions gAccuracyStageRatios[];
 
 #endif // GUARD_BATTLE_SCRIPT_COMMANDS_H

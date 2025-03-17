@@ -728,7 +728,7 @@ s32 StringCompareWithoutExtCtrlCodes(const u8 *str1, const u8 *str2)
 {
     s32 retVal = 0;
 
-    while (1)
+    while(1)
     {
         str1 = SkipExtCtrlCode(str1);
         str2 = SkipExtCtrlCode(str2);

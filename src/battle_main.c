@@ -1409,8 +1409,8 @@ void SwitchInClearSetData(u32 battler)
     ClearIllusionMon(battler);
     if (gMovesInfo[gCurrentMove].effect != EFFECT_BATON_PASS)
     {
-        for (i = 0; i < NUM_BATTLE_STATS; i++)
-            gBattleMons[battler].statStages[i] = DEFAULT_STAT_STAGE;
+        for (i = 0; i < NUMERO_ESTADISTICAS_BATALLA; i++)
+            gBattleMons[battler].statStages[i] = ESTADISTICA_NEUTRA;
         for (i = 0; i < gBattlersCount; i++)
         {
             if ((gBattleMons[i].status2 & STATUS2_ESCAPE_PREVENTION) && gDisableStructs[i].battlerPreventingEscape == battler)
@@ -1546,8 +1546,8 @@ const u8* FaintClearSetData(u32 battler)
     const u8 *result = NULL;
     u8 battlerSide = GetBattlerSide(battler);
 
-    for (i = 0; i < NUM_BATTLE_STATS; i++)
-        gBattleMons[battler].statStages[i] = DEFAULT_STAT_STAGE;
+    for (i = 0; i < NUMERO_ESTADISTICAS_BATALLA; i++)
+        gBattleMons[battler].statStages[i] = ESTADISTICA_NEUTRA;
 
     gBattleMons[battler].status2 = 0;
     gStatuses3[battler] &= STATUS3_GASTRO_ACID; // Edge case: Keep Gastro Acid if pokemon's ability can have effect after fainting, for example Innards Out.
@@ -1748,8 +1748,8 @@ static void DoBattleIntro(void)
             gBattleMons[battler].ability = GetAbilityBySpecies(gBattleMons[battler].species, gBattleMons[battler].abilityNum);
             gBattleStruct->hpOnSwitchout[GetBattlerSide(battler)] = gBattleMons[battler].hp;
             gBattleMons[battler].status2 = 0;
-            for (i = 0; i < NUM_BATTLE_STATS; i++)
-                gBattleMons[battler].statStages[i] = DEFAULT_STAT_STAGE;
+            for (i = 0; i < NUMERO_ESTADISTICAS_BATALLA; i++)
+                gBattleMons[battler].statStages[i] = ESTADISTICA_NEUTRA;
 
             // Draw sprite.
             switch (GetBattlerPosition(battler))
@@ -1840,7 +1840,7 @@ static void DoBattleIntro(void)
     case BATTLE_INTRO_STATE_INTRO_TEXT:
         if (!IsBattlerMarkedForControllerExec(GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)))
         {
-            PrepareStringBattle(STRINGID_INTROMSG, GetBattlerAtPosition(B_POSITION_PLAYER_LEFT));
+            PrepareStringBattle(TEXTO_BATALLA_INTRO, GetBattlerAtPosition(B_POSITION_PLAYER_LEFT));
             gBattleStruct->introState++;
         }
         break;
@@ -1853,8 +1853,8 @@ static void DoBattleIntro(void)
                 gBattleStruct->introState = BATTLE_INTRO_STATE_WAIT_FOR_WILD_BATTLE_TEXT;
         }
         break;
-    case BATTLE_INTRO_STATE_TRAINER_SEND_OUT_TEXT:
-        PrepareStringBattle(STRINGID_INTROSENDOUT, GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT));
+    case INTRO_BATALLA_ESTADO_ENTRENADOR_TEXTO_ENVIAR_POKEMON:
+        PrepareStringBattle(TEXTO_BATALLA_ENVIAR_POKEMON, GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT));
         gBattleStruct->introState++;
         break;
     case BATTLE_INTRO_STATE_WAIT_FOR_TRAINER_SEND_OUT_TEXT:
@@ -1871,9 +1871,9 @@ static void DoBattleIntro(void)
         if (!IsBattlerMarkedForControllerExec(GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)))
             gBattleStruct->introState++;
         break;
-    case BATTLE_INTRO_STATE_PRINT_PLAYER_SEND_OUT_TEXT:
+    case INTRO_BATALLA_ESTADO_JUGADOR_TEXTO_ENVIAR_POKEMON:
         battler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
-        PrepareStringBattle(STRINGID_INTROSENDOUT, battler);
+        PrepareStringBattle(TEXTO_BATALLA_ENVIAR_POKEMON, battler);
         BtlController_EmitIntroTrainerBallThrow(battler, BUFFER_A);
         MarkBattlerForControllerExec(battler);
         gBattleStruct->introState++;
@@ -2688,12 +2688,11 @@ u32 GetBattlerTotalSpeedStatArgs(u32 battler, u32 ability, u32 holdEffect)
 {
     u32 speed = gBattleMons[battler].speed;
 
-    // weather abilities
     if (WEATHER_HAS_EFFECT)
     {
-        if (ability == ABILITY_SWIFT_SWIM       && holdEffect != HOLD_EFFECT_UTILITY_UMBRELLA && gBattleWeather & B_WEATHER_RAIN)
+        if (ability == ABILITY_SWIFT_SWIM       && gBattleWeather & B_WEATHER_RAIN)
             speed = (speed * 150) / 100;
-        else if (ability == ABILITY_CHLOROPHYLL && holdEffect != HOLD_EFFECT_UTILITY_UMBRELLA && gBattleWeather & B_WEATHER_SUN)
+        else if (ability == ABILITY_CHLOROPHYLL && gBattleWeather & B_WEATHER_SUN)
             speed = (speed * 150) / 100;
         else if (ability == ABILITY_SAND_RUSH   && gBattleWeather & B_WEATHER_SANDSTORM)
             speed = (speed * 150) / 100;
@@ -2701,38 +2700,25 @@ u32 GetBattlerTotalSpeedStatArgs(u32 battler, u32 ability, u32 holdEffect)
             speed = (speed * 150) / 100;
     }
 
-    // other abilities
     if (ability == ABILITY_QUICK_FEET && gBattleMons[battler].status1 & STATUS1_ANY)
         speed = (speed * 150) / 100;
-    else if (ability == ABILITY_SURGE_SURFER && gFieldStatuses & STATUS_FIELD_ELECTRIC_TERRAIN)
-        speed *= 2;
     else if (ability == ABILITY_SLOW_START && gDisableStructs[battler].slowStartTimer != 0)
         speed /= 2;
 
-    // stat stages
-    speed *= gStatStageRatios[gBattleMons[battler].statStages[STAT_SPEED]][0];
-    speed /= gStatStageRatios[gBattleMons[battler].statStages[STAT_SPEED]][1];
+    speed = (speed * gMultiplicadoresEstadisticas[gBattleMons[battler].statStages[ESTADISTICA_VELOCIDAD]]) >> 8;
 
-    // item effects
     if (holdEffect == HOLD_EFFECT_MACHO_BRACE || holdEffect == HOLD_EFFECT_POWER_ITEM)
-        speed /= 2;
-    else if (holdEffect == HOLD_EFFECT_IRON_BALL)
         speed /= 2;
     else if (holdEffect == HOLD_EFFECT_CHOICE_SCARF)
         speed = (speed * 150) / 100;
 
-    // various effects
     if (gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_TAILWIND)
         speed *= 2;
     if (gBattleResources->flags->flags[battler] & RESOURCE_FLAG_UNBURDEN)
         speed *= 2;
 
-    // paralysis drop
     if (gBattleMons[battler].status1 & STATUS1_PARALYSIS && ability != ABILITY_QUICK_FEET)
-        speed /= B_PARALYSIS_SPEED >= GEN_7 ? 2 : 4;
-
-    if (gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_SWAMP)
-        speed /= 4;
+        speed /= 2;
 
     return speed;
 }
@@ -3356,7 +3342,7 @@ static void HandleEndTurn_FinishBattle(void)
             gBattleStruct->changedSpecies[B_SIDE_OPPONENT][i] = SPECIES_NONE;
 
             // Recalculate the stats of every party member before the end
-            if (!changedForm && B_RECALCULATE_STATS >= GEN_5)
+            if (!changedForm)
                 CalculateMonStats(&gPlayerParty[i]);
         }
         // Clear battle mon species to avoid a bug on the next battle that causes

@@ -3480,22 +3480,22 @@ static void DebugAction_Give_Pokemon_SelectIVs(u8 taskId)
         StringCopyPadded(gStringVar3, gStringVar3, CHAR_SPACE, 15);
         switch (gTasks[taskId].tIterator)
         {
-        case STAT_HP:
+        case ESTADISTICA_PS:
             StringExpandPlaceholders(gStringVar4, sDebugText_IV_HP);
             break;
-        case STAT_ATK:
+        case ESTADISTICA_ATAQUE:
             StringExpandPlaceholders(gStringVar4, sDebugText_IV_Attack);
             break;
-        case STAT_DEF:
+        case ESTADISTICA_DEFENSA:
             StringExpandPlaceholders(gStringVar4, sDebugText_IV_Defense);
             break;
-        case STAT_SPEED:
+        case ESTADISTICA_VELOCIDAD:
             StringExpandPlaceholders(gStringVar4, sDebugText_IV_Speed);
             break;
-        case STAT_SPATK:
+        case ESTADISTICA_ATAQUE_ESPECIAL:
             StringExpandPlaceholders(gStringVar4, sDebugText_IV_SpAttack);
             break;
-        case STAT_SPDEF:
+        case ESTADISTICA_DEFENSA_ESPECIAL:
             StringExpandPlaceholders(gStringVar4, sDebugText_IV_SpDefense);
             break;
         }
@@ -3507,28 +3507,28 @@ static void DebugAction_Give_Pokemon_SelectIVs(u8 taskId)
     {
         switch (gTasks[taskId].tIterator)
         {
-        case STAT_HP:
+        case ESTADISTICA_PS:
             sDebugMonData->mon_iv_hp = gTasks[taskId].tInput;
             break;
-        case STAT_ATK:
+        case ESTADISTICA_ATAQUE:
             sDebugMonData->mon_iv_atk = gTasks[taskId].tInput;
             break;
-        case STAT_DEF:
+        case ESTADISTICA_DEFENSA:
             sDebugMonData->mon_iv_def = gTasks[taskId].tInput;
             break;
-        case STAT_SPEED:
+        case ESTADISTICA_VELOCIDAD:
             sDebugMonData->mon_iv_speed = gTasks[taskId].tInput;
             break;
-        case STAT_SPATK:
+        case ESTADISTICA_ATAQUE_ESPECIAL:
             sDebugMonData->mon_iv_satk = gTasks[taskId].tInput;
             break;
-        case STAT_SPDEF:
+        case ESTADISTICA_DEFENSA_ESPECIAL:
             sDebugMonData->mon_iv_sdef = gTasks[taskId].tInput;
             break;
         }
 
         //Check if all IVs set
-        if (gTasks[taskId].tIterator != NUM_STATS - 1)
+        if (gTasks[taskId].tIterator != NUMERO_ESTADISTICAS - 1)
         {
             gTasks[taskId].tIterator++;
             gTasks[taskId].tInput = 0;
@@ -3539,22 +3539,22 @@ static void DebugAction_Give_Pokemon_SelectIVs(u8 taskId)
             StringCopyPadded(gStringVar3, gStringVar3, CHAR_SPACE, 15);
             switch (gTasks[taskId].tIterator)
             {
-            case STAT_HP:
+            case ESTADISTICA_PS:
                 StringExpandPlaceholders(gStringVar4, sDebugText_IV_HP);
                 break;
-            case STAT_ATK:
+            case ESTADISTICA_ATAQUE:
                 StringExpandPlaceholders(gStringVar4, sDebugText_IV_Attack);
                 break;
-            case STAT_DEF:
+            case ESTADISTICA_DEFENSA:
                 StringExpandPlaceholders(gStringVar4, sDebugText_IV_Defense);
                 break;
-            case STAT_SPEED:
+            case ESTADISTICA_VELOCIDAD:
                 StringExpandPlaceholders(gStringVar4, sDebugText_IV_Speed);
                 break;
-            case STAT_SPATK:
+            case ESTADISTICA_ATAQUE_ESPECIAL:
                 StringExpandPlaceholders(gStringVar4, sDebugText_IV_SpAttack);
                 break;
-            case STAT_SPDEF:
+            case ESTADISTICA_DEFENSA_ESPECIAL:
                 StringExpandPlaceholders(gStringVar4, sDebugText_IV_SpDefense);
                 break;
             }
@@ -3630,22 +3630,22 @@ static void DebugAction_Give_Pokemon_SelectEVs(u8 taskId)
         StringCopyPadded(gStringVar3, gStringVar3, CHAR_SPACE, 15);
         switch (gTasks[taskId].tIterator)
         {
-        case STAT_HP:
+        case ESTADISTICA_PS:
             StringExpandPlaceholders(gStringVar4, sDebugText_EV_HP);
             break;
-        case STAT_ATK:
+        case ESTADISTICA_ATAQUE:
             StringExpandPlaceholders(gStringVar4, sDebugText_EV_Attack);
             break;
-        case STAT_DEF:
+        case ESTADISTICA_DEFENSA:
             StringExpandPlaceholders(gStringVar4, sDebugText_EV_Defense);
             break;
-        case STAT_SPEED:
+        case ESTADISTICA_VELOCIDAD:
             StringExpandPlaceholders(gStringVar4, sDebugText_EV_Speed);
             break;
-        case STAT_SPATK:
+        case ESTADISTICA_ATAQUE_ESPECIAL:
             StringExpandPlaceholders(gStringVar4, sDebugText_EV_SpAttack);
             break;
-        case STAT_SPDEF:
+        case ESTADISTICA_DEFENSA_ESPECIAL:
             StringExpandPlaceholders(gStringVar4, sDebugText_EV_SpDefense);
             break;
         }
@@ -3657,28 +3657,28 @@ static void DebugAction_Give_Pokemon_SelectEVs(u8 taskId)
     {
         switch (gTasks[taskId].tIterator)
         {
-        case STAT_HP:
+        case ESTADISTICA_PS:
             sDebugMonData->mon_ev_hp = gTasks[taskId].tInput;
             break;
-        case STAT_ATK:
+        case ESTADISTICA_ATAQUE:
             sDebugMonData->mon_ev_atk = gTasks[taskId].tInput;
             break;
-        case STAT_DEF:
+        case ESTADISTICA_DEFENSA:
             sDebugMonData->mon_ev_def = gTasks[taskId].tInput;
             break;
-        case STAT_SPEED:
+        case ESTADISTICA_VELOCIDAD:
             sDebugMonData->mon_ev_speed = gTasks[taskId].tInput;
             break;
-        case STAT_SPATK:
+        case ESTADISTICA_ATAQUE_ESPECIAL:
             sDebugMonData->mon_ev_satk = gTasks[taskId].tInput;
             break;
-        case STAT_SPDEF:
+        case ESTADISTICA_DEFENSA_ESPECIAL:
             sDebugMonData->mon_ev_sdef = gTasks[taskId].tInput;
             break;
         }
 
         //Check if all EVs set
-        if (gTasks[taskId].tIterator != NUM_STATS - 1)
+        if (gTasks[taskId].tIterator != NUMERO_ESTADISTICAS - 1)
         {
             gTasks[taskId].tIterator++;
             gTasks[taskId].tInput = 0;
@@ -3689,22 +3689,22 @@ static void DebugAction_Give_Pokemon_SelectEVs(u8 taskId)
             StringCopyPadded(gStringVar3, gStringVar3, CHAR_SPACE, 15);
             switch (gTasks[taskId].tIterator)
             {
-            case STAT_HP:
+            case ESTADISTICA_PS:
                 StringExpandPlaceholders(gStringVar4, sDebugText_EV_HP);
                 break;
-            case STAT_ATK:
+            case ESTADISTICA_ATAQUE:
                 StringExpandPlaceholders(gStringVar4, sDebugText_EV_Attack);
                 break;
-            case STAT_DEF:
+            case ESTADISTICA_DEFENSA:
                 StringExpandPlaceholders(gStringVar4, sDebugText_EV_Defense);
                 break;
-            case STAT_SPEED:
+            case ESTADISTICA_VELOCIDAD:
                 StringExpandPlaceholders(gStringVar4, sDebugText_EV_Speed);
                 break;
-            case STAT_SPATK:
+            case ESTADISTICA_ATAQUE_ESPECIAL:
                 StringExpandPlaceholders(gStringVar4, sDebugText_EV_SpAttack);
                 break;
-            case STAT_SPDEF:
+            case ESTADISTICA_DEFENSA_ESPECIAL:
                 StringExpandPlaceholders(gStringVar4, sDebugText_EV_SpDefense);
                 break;
             }
@@ -3920,7 +3920,7 @@ static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId) //https://githu
     SetMonData(&mon, MON_DATA_IS_SHINY, &isShiny);
 
     //IVs
-    for (i = 0; i < NUM_STATS; i++)
+    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
     {
         iv_val = IVs[i];
         if (iv_val != 32 && iv_val != 0xFF)
@@ -3928,7 +3928,7 @@ static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId) //https://githu
     }
 
     //EVs
-    for (i = 0; i < NUM_STATS; i++)
+    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
     {
         ev_val = EVs[i];
         if (ev_val)

@@ -612,7 +612,7 @@ static bool8 LoadPokeblockFeedScene(void)
 
 void PreparePokeblockFeedScene(void)
 {
-    while (1)
+    while(1)
     {
         if (LoadPokeblockFeedScene() == TRUE)
             break;
@@ -1073,7 +1073,7 @@ static void CalculateMonAnimMovement(void)
     s16 x = pokeblockFeed->monX - pokeblockFeed->monInitX;
     s16 y = pokeblockFeed->monY - pokeblockFeed->monInitY;
 
-    while (1)
+    while(1)
     {
         u16 amplitude;
         u16 time;

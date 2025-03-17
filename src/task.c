@@ -56,7 +56,7 @@ static void InsertTask(u8 newTaskId)
         return;
     }
 
-    while (1)
+    while(1)
     {
         if (gTasks[newTaskId].priority < gTasks[taskId].priority)
         {

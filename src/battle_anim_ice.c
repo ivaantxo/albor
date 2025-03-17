@@ -690,7 +690,7 @@ static void AnimSwirlingSnowball(struct Sprite *sprite)
     sprite->data[1] ^= 1;
     sprite->data[2] ^= 1;
 
-    while (1)
+    while(1)
     {
         sprite->data[0] = 1;
         AnimFastTranslateLinear(sprite);
@@ -813,7 +813,7 @@ void AnimMoveParticleBeyondTarget(struct Sprite *sprite)
     sprite->data[1] ^= 1;
     sprite->data[2] ^= 1;
 
-    while (1)
+    while(1)
     {
         sprite->data[0] = 1;
         AnimFastTranslateLinear(sprite);

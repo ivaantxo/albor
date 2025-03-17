@@ -310,7 +310,6 @@ extern struct ContestResources *gContestResources;
 extern struct ContestWinner gCurContestWinner;
 extern u8 gCurContestWinnerIsForArtist;
 extern u8 gCurContestWinnerSaveIdx;
-extern rng_value_t gContestRngValue;
 
 // contest.c
 void LoadContestBgAfterMoveAnim(void);

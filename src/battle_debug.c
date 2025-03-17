@@ -118,11 +118,11 @@ enum
 
 enum
 {
-    LIST_STAT_HP_CURRENT,
-    LIST_STAT_HP_MAX,
+    LIST_ESTADISTICA_PS_CURRENT,
+    LIST_ESTADISTICA_PS_MAX,
     LIST_STAT_ATTACK,
-    LIST_STAT_DEFENSE,
-    LIST_STAT_SPEED,
+    LIST_ESTADISTICA_DEFENSAENSE,
+    LIST_ESTADISTICA_VELOCIDAD,
     LIST_STAT_SP_ATK,
     LIST_STAT_SP_DEF,
 };
@@ -502,11 +502,11 @@ static const struct ListMenuItem sMainListItems[] =
 
 static const struct ListMenuItem sStatsListItems[] =
 {
-    {gText_PS, LIST_STAT_HP_CURRENT},
-    {gText_MaxPS, LIST_STAT_HP_MAX},
+    {gText_PS, LIST_ESTADISTICA_PS_CURRENT},
+    {gText_MaxPS, LIST_ESTADISTICA_PS_MAX},
     {gText_Ataque, LIST_STAT_ATTACK},
-    {gText_Defensa, LIST_STAT_DEFENSE},
-    {gText_Velocidad, LIST_STAT_SPEED},
+    {gText_Defensa, LIST_ESTADISTICA_DEFENSAENSE},
+    {gText_Velocidad, LIST_ESTADISTICA_VELOCIDAD},
     {gText_AtEsp, LIST_STAT_SP_ATK},
     {gText_DefEsp, LIST_STAT_SP_DEF},
 };
@@ -1653,19 +1653,19 @@ static void PrintSecondaryEntries(struct BattleDebugMenu *data)
         }
         break;
     case LIST_ITEM_STAT_STAGES:
-        for (i = 0; i < NUM_BATTLE_STATS - 1; i++)
+        for (i = 0; i < NUMERO_ESTADISTICAS_BATALLA - 1; i++)
         {
-            u8 *txtPtr = StringCopy(text, gStatNamesTable[STAT_ATK + i]);
+            u8 *txtPtr = StringCopy(text, gStatNamesTable[ESTADISTICA_ATAQUE + i]);
             txtPtr[0] = CHAR_SPACE;
-            if (gBattleMons[data->battlerId].statStages[STAT_ATK + i] >= DEFAULT_STAT_STAGE)
+            if (gBattleMons[data->battlerId].statStages[ESTADISTICA_ATAQUE + i] >= ESTADISTICA_NEUTRA)
             {
                 txtPtr[1] = CHAR_PLUS;
-                txtPtr[2] = CHAR_0 + (gBattleMons[data->battlerId].statStages[STAT_ATK + i] - DEFAULT_STAT_STAGE);
+                txtPtr[2] = CHAR_0 + (gBattleMons[data->battlerId].statStages[ESTADISTICA_ATAQUE + i] - ESTADISTICA_NEUTRA);
             }
             else
             {
                 txtPtr[1] = CHAR_HYPHEN;
-                txtPtr[2] = CHAR_6 - (gBattleMons[data->battlerId].statStages[STAT_ATK + i]);
+                txtPtr[2] = CHAR_6 - (gBattleMons[data->battlerId].statStages[ESTADISTICA_ATAQUE + i]);
             }
             txtPtr[3] = EOS;
 
@@ -1740,7 +1740,7 @@ static void UpdateBattlerValue(struct BattleDebugMenu *data)
         ((u16 *)(data->modifyArrows.modifiedValPtr))[3] = data->modifyArrows.currValue;
         break;
     case VAL_ALL_STAT_STAGES:
-        for (i = 0; i < NUM_BATTLE_STATS; i++)
+        for (i = 0; i < NUMERO_ESTADISTICAS_BATALLA; i++)
             gBattleMons[data->battlerId].statStages[i] = data->modifyArrows.currValue;
         break;
     case VAL_U32:
@@ -2054,14 +2054,14 @@ static void SetUpModifyArrows(struct BattleDebugMenu *data)
         data->modifyArrows.maxValue = 9999;
         data->modifyArrows.maxDigits = 4;
         data->modifyArrows.typeOfVal = VAL_U16;
-        if (data->currentSecondaryListItemId == LIST_STAT_HP_CURRENT)
+        if (data->currentSecondaryListItemId == LIST_ESTADISTICA_PS_CURRENT)
         {
             data->modifyArrows.modifiedValPtr = &gBattleMons[data->battlerId].hp;
             data->modifyArrows.currValue = gBattleMons[data->battlerId].hp;
             data->modifyArrows.minValue = 1;
             data->modifyArrows.maxValue = gBattleMons[data->battlerId].maxHP;
         }
-        else if (data->currentSecondaryListItemId == LIST_STAT_HP_MAX)
+        else if (data->currentSecondaryListItemId == LIST_ESTADISTICA_PS_MAX)
         {
             data->modifyArrows.modifiedValPtr = &gBattleMons[data->battlerId].maxHP;
             data->modifyArrows.minValue = gBattleMons[data->battlerId].hp;
@@ -2077,17 +2077,17 @@ static void SetUpModifyArrows(struct BattleDebugMenu *data)
         data->modifyArrows.minValue = 0;
         data->modifyArrows.maxValue = 12;
         data->modifyArrows.maxDigits = 2;
-        if (data->currentSecondaryListItemId == NUM_BATTLE_STATS - 1) // Change all stats
+        if (data->currentSecondaryListItemId == NUMERO_ESTADISTICAS_BATALLA - 1) // Change all stats
         {
-            data->modifyArrows.modifiedValPtr = &gBattleMons[data->battlerId].statStages[STAT_ATK];
-            data->modifyArrows.currValue = gBattleMons[data->battlerId].statStages[STAT_ATK];
+            data->modifyArrows.modifiedValPtr = &gBattleMons[data->battlerId].statStages[ESTADISTICA_ATAQUE];
+            data->modifyArrows.currValue = gBattleMons[data->battlerId].statStages[ESTADISTICA_ATAQUE];
             data->modifyArrows.typeOfVal = VAL_ALL_STAT_STAGES;
         }
         else
         {
-            data->modifyArrows.modifiedValPtr = &gBattleMons[data->battlerId].statStages[data->currentSecondaryListItemId + STAT_ATK];
+            data->modifyArrows.modifiedValPtr = &gBattleMons[data->battlerId].statStages[data->currentSecondaryListItemId + ESTADISTICA_ATAQUE];
             data->modifyArrows.typeOfVal = VAL_U8;
-            data->modifyArrows.currValue = gBattleMons[data->battlerId].statStages[data->currentSecondaryListItemId + STAT_ATK];
+            data->modifyArrows.currValue = gBattleMons[data->battlerId].statStages[data->currentSecondaryListItemId + ESTADISTICA_ATAQUE];
         }
         break;
     case LIST_ITEM_VARIOUS:

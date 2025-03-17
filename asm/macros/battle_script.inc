@@ -99,7 +99,7 @@
 	.macro setadditionaleffects
 	1:
 	.byte 21
-	jumpifhalfword CMP_EQUAL, sMOVE_EFFECT, MOVE_EFFECT_CONTINUE, 1b
+	jumpifhalfword COMPARACION_IGUAL, sMOVE_EFFECT, MOVE_EFFECT_CONTINUE, 1b
 	.endm
 
 	.macro seteffectprimary moveEffect=0
@@ -559,9 +559,9 @@
 	.byte 91
 	.endm
 
-	.macro updatebattlermoves battler:req
+	.macro callnative func:req
 	.byte 92
-	.byte \battler
+	.4byte \func
 	.endm
 
 	.macro swapattackerwithtarget
@@ -1300,11 +1300,6 @@
 	.macro tryworryseed failInstr:req
 	.byte 243
 	.4byte \failInstr
-	.endm
-
-	.macro callnative func:req
-	.byte 244
-	.4byte \func
 	.endm
 
 	.macro savetarget
@@ -2279,15 +2274,15 @@
 	.endm
 
 	.macro jumpifmove move:req, jumpInstr:req
-	jumpifhalfword CMP_EQUAL, gCurrentMove, \move, \jumpInstr
+	jumpifhalfword COMPARACION_IGUAL, gCurrentMove, \move, \jumpInstr
 	.endm
 
 	.macro jumpifnotmove move:req, jumpInstr:req
-	jumpifhalfword CMP_NOT_EQUAL, gCurrentMove, \move, \jumpInstr
+	jumpifhalfword COMPARACION_DESIGUAL, gCurrentMove, \move, \jumpInstr
 	.endm
 
 	.macro jumpifnotchosenmove move:req, jumpInstr:req
-	jumpifhalfword CMP_NOT_EQUAL, gChosenMove, \move, \jumpInstr
+	jumpifhalfword COMPARACION_DESIGUAL, gChosenMove, \move, \jumpInstr
 	.endm
 
 	.macro jumpifstatus3 battler:req, flags:req, jumpInstr:req
@@ -2299,20 +2294,20 @@
 	.endm
 
 	.macro jumpifmovehadnoeffect jumpInstr:req
-	jumpifbyte CMP_COMMON_BITS, gMoveResultFlags, MOVE_RESULT_NO_EFFECT, \jumpInstr
+	jumpifbyte COMPARACION_BITS_COMUNES, gMoveResultFlags, MOVE_RESULT_NO_EFFECT, \jumpInstr
 	.endm
 
 	.macro jumpifside battler:req, side:req, equalJumpInstr:req
 	getbattlerside \battler
-	jumpifbyte CMP_EQUAL, gBattleCommunication, \side, \equalJumpInstr
+	jumpifbyte COMPARACION_IGUAL, gBattleCommunication, \side, \equalJumpInstr
 	.endm
 
 	.macro jumpifbattletype flags:req, jumpInstr:req
-	jumpifword CMP_COMMON_BITS, gBattleTypeFlags, \flags, \jumpInstr
+	jumpifword COMPARACION_BITS_COMUNES, gBattleTypeFlags, \flags, \jumpInstr
 	.endm
 
 	.macro jumpifnotbattletype flags:req, jumpInstr:req
-	jumpifword CMP_NO_COMMON_BITS, gBattleTypeFlags, \flags, \jumpInstr
+	jumpifword COMPARACION_BITS_DISTINTOS, gBattleTypeFlags, \flags, \jumpInstr
 	.endm
 
 	.macro dmg_1_8_targethp
@@ -2339,7 +2334,7 @@
 	.endm
 
 	.macro setallytonexttarget jumpInstr:req
-	jumpifbyte CMP_GREATER_THAN, gBattlerTarget, 0x1, 1f
+	jumpifbyte COMPARACION_MAYOR, gBattlerTarget, 0x1, 1f
 	addbyte gBattlerTarget, 0x2
 	goto \jumpInstr
 	1:
@@ -2348,7 +2343,7 @@
 	.endm
 
 	.macro setallytonextattacker jumpInstr:req
-	jumpifbyte CMP_GREATER_THAN, gBattlerAttacker, 0x1, 1f
+	jumpifbyte COMPARACION_MAYOR, gBattlerAttacker, 0x1, 1f
 	addbyte gBattlerAttacker, 0x2
 	goto \jumpInstr
 	1:
@@ -2424,7 +2419,7 @@
 	@ Will jump to script pointer if the specified battler has or has not fainted.
 	.macro jumpiffainted battler:req, value:req, ptr:req
 	getbattlerfainted \battler
-	jumpifbyte CMP_EQUAL, gBattleCommunication, \value, \ptr
+	jumpifbyte COMPARACION_IGUAL, gBattleCommunication, \value, \ptr
 	.endm
 
 	.macro flushtextbox

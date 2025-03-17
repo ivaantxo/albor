@@ -322,7 +322,7 @@ u8 ContestAI_GetActionToUse(void)
         eContestAI.nextMoveIndex = 0;
     }
 
-    while (1)
+    while(1)
     {
         // Randomly choose a move index. If it's the move
         // with the highest (or tied highest) score, return

@@ -471,19 +471,6 @@ BattleFrontier_BattleTowerMultiBattleRoom_Text_5thOpponentSetNext:
 	.string "The 5th set of opponents is next.\n"
 	.string "Do your best!$"
 
-@ Unused
-BattleFrontier_BattleTowerMultiBattleRoom_Text_6thOpponentSetNext:
-	.string "The 6th set of opponents is next.\n"
-	.string "Do your best!$"
-
-@ Unused
-BattleFrontier_BattleTowerMultiBattleRoom_Text_7thOpponentSetNext:
-	.string "The 7th set of opponents is next.\n"
-	.string "Do your best!$"
-
-gText_LinkStandby3::
-	.string "Link standby…$"
-
 gText_YourPartnerHasRetired::
 	.string "Your partner has retired.\p"
 	.string "Your BATTLE ROOM challenge\n"

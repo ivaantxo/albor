@@ -1,13 +1,3 @@
-	@ Does nothing.
-	.macro nop
-	.byte 0x00
-	.endm
-
-	@ Does nothing.
-	.macro nop1
-	.byte 0x01
-	.endm
-
 	@ Terminates script execution.
 	.macro end
 	.byte 0x02

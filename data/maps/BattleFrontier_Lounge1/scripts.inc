@@ -47,12 +47,12 @@ BattleFrontier_Lounge1_EventScript_ShowEggToBreeder::
 
 @ Comment on the highest IV stat
 BattleFrontier_Lounge1_EventScript_HighestIVStat::
-	goto_if_eq VAR_0x8006, STAT_HP, BattleFrontier_Lounge1_EventScript_HighestIVHP
-	goto_if_eq VAR_0x8006, STAT_ATK, BattleFrontier_Lounge1_EventScript_HighestIVAtk
-	goto_if_eq VAR_0x8006, STAT_DEF, BattleFrontier_Lounge1_EventScript_HighestIVDef
-	goto_if_eq VAR_0x8006, STAT_SPEED, BattleFrontier_Lounge1_EventScript_HighestIVSpeed
-	goto_if_eq VAR_0x8006, STAT_SPATK, BattleFrontier_Lounge1_EventScript_HighestIVSpAtk
-	goto_if_eq VAR_0x8006, STAT_SPDEF, BattleFrontier_Lounge1_EventScript_HighestIVSpDef
+	goto_if_eq VAR_0x8006, ESTADISTICA_PS, BattleFrontier_Lounge1_EventScript_HighestIVHP
+	goto_if_eq VAR_0x8006, ESTADISTICA_ATAQUE, BattleFrontier_Lounge1_EventScript_HighestIVAtk
+	goto_if_eq VAR_0x8006, ESTADISTICA_DEFENSA, BattleFrontier_Lounge1_EventScript_HighestIVDef
+	goto_if_eq VAR_0x8006, ESTADISTICA_VELOCIDAD, BattleFrontier_Lounge1_EventScript_HighestIVSpeed
+	goto_if_eq VAR_0x8006, ESTADISTICA_ATAQUE_ESPECIAL, BattleFrontier_Lounge1_EventScript_HighestIVSpAtk
+	goto_if_eq VAR_0x8006, ESTADISTICA_DEFENSA_ESPECIAL, BattleFrontier_Lounge1_EventScript_HighestIVSpDef
 	end
 
 @ Comment on the highest IV value

@@ -56,26 +56,26 @@ typedef s32 (*AiScoreFunc)(u32, u32, u32, s32);
     do \
     { \
         AI_THINKING_STRUCT->score[movesetIndex] = val; \
-    } while (0) \
+    } while(0) \
 
 #define ADJUST_SCORE(val) \
     do \
     { \
         score += val; \
-    } while (0) \
+    } while(0) \
 
 #define ADJUST_AND_RETURN_SCORE(val) \
     do \
     { \
         score += val; \
         return score; \
-    } while (0) \
+    } while(0) \
 
 #define ADJUST_SCORE_PTR(val) \
     do \
     { \
         (*score) += val; \
-    } while (0) \
+    } while(0) \
 
 #define RETURN_SCORE_PLUS(val)      \
 {                                   \

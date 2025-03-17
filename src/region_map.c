@@ -1302,7 +1302,7 @@ static void GetPositionOfCursorWithinMapSec(void)
         y = sRegionMap->zoomedCursorPosY;
     }
     posWithinMapSec = 0;
-    while (1)
+    while(1)
     {
         if (x <= MAPCURSOR_X_MIN)
         {

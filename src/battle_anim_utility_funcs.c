@@ -1067,17 +1067,10 @@ void AnimTask_SetAnimAttackerAndTargetForEffectAtk(u8 taskId)
 
 void AnimTask_SetAttackerInvisibleWaitForSignal(u8 taskId)
 {
-    if (IsContest())
-    {
-        DestroyAnimVisualTask(taskId);
-    }
-    else
-    {
-        gTasks[taskId].data[0] = gBattleSpritesDataPtr->battlerData[gBattleAnimAttacker].invisible;
-        gBattleSpritesDataPtr->battlerData[gBattleAnimAttacker].invisible = TRUE;
-        gTasks[taskId].func = AnimTask_WaitAndRestoreVisibility;
-        gAnimVisualTaskCount--;
-    }
+    gTasks[taskId].data[0] = gBattleSpritesDataPtr->battlerData[gBattleAnimAttacker].invisible;
+    gBattleSpritesDataPtr->battlerData[gBattleAnimAttacker].invisible = TRUE;
+    gTasks[taskId].func = AnimTask_WaitAndRestoreVisibility;
+    gAnimVisualTaskCount--;
 }
 
 static void AnimTask_WaitAndRestoreVisibility(u8 taskId)
@@ -1089,9 +1082,9 @@ static void AnimTask_WaitAndRestoreVisibility(u8 taskId)
     }
 }
 
-void AnimTask_IsDoubleBattle(u8 taskId)
+void AnimTask_EsContraEntrenador(u8 taskId)
 {
-    gBattleAnimArgs[7] = (IsDoubleBattle() && !IsContest());
+    gBattleAnimArgs[7] = (IsDoubleBattle());
     DestroyAnimVisualTask(taskId);
 }
 

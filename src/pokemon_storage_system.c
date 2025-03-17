@@ -2457,7 +2457,7 @@ static void Task_ReleaseMon(u8 taskId)
         RunCanReleaseMon();
         if (!TryHideReleaseMon())
         {
-            while (1)
+            while(1)
             {
                 s8 canRelease = RunCanReleaseMon();
                 if (canRelease == TRUE)
@@ -3319,7 +3319,7 @@ static void CreateDisplayMonSprite(void)
         sStorage->displayMonSprite = &gSprites[spriteId];
         sStorage->displayMonPalOffset = OBJ_PLTT_ID(palSlot);
         sStorage->displayMonTilePtr = (void *) OBJ_VRAM0 + tileStart * TILE_SIZE_4BPP;
-    } while (0);
+    } while(0);
 
     if (sStorage->displayMonSprite == NULL)
     {
@@ -5995,7 +5995,7 @@ static u8 HandleInput_InBox(void)
 
         retVal = INPUT_NONE;
 
-    } while (0);
+    } while(0);
 
     if (retVal)
         SetCursorPosition(cursorArea, cursorPosition);
@@ -6105,7 +6105,7 @@ static u8 HandleInput_InParty(void)
             cursorPosition = 0;
         }
 
-    } while (0);
+    } while(0);
 
     if (retVal != INPUT_NONE)
     {
@@ -6158,7 +6158,7 @@ static u8 HandleInput_OnBox(void)
 
         retVal = INPUT_NONE;
 
-    } while (0);
+    } while(0);
 
     if (retVal != INPUT_NONE)
     {
@@ -6208,7 +6208,7 @@ static u8 HandleInput_OnButtons(void)
             return INPUT_PRESSED_B;
 
         retVal = INPUT_NONE;
-    } while (0);
+    } while(0);
 
     if (retVal != INPUT_NONE)
         SetCursorPosition(cursorArea, cursorPosition);
@@ -6577,7 +6577,7 @@ static s16 HandleMenuInput(void)
             PlaySE(SE_SELECT);
             Menu_MoveCursor(1);
         }
-    } while (0);
+    } while(0);
 
     if (input != MENU_NOTHING_CHOSEN)
         RemoveMenu();

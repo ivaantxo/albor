@@ -312,7 +312,7 @@ static void CreateHatchedMon(struct Pokemon *egg, struct Pokemon *temp)
     u32 personality;
     u8 i, friendship, ball;
     u16 moves[MAX_MON_MOVES];
-    u32 ivs[NUM_STATS];
+    u32 ivs[NUMERO_ESTADISTICAS];
 
     species = GetMonData(egg, MON_DATA_SPECIES);
 
@@ -321,7 +321,7 @@ static void CreateHatchedMon(struct Pokemon *egg, struct Pokemon *temp)
 
     personality = GetMonData(egg, MON_DATA_PERSONALITY);
 
-    for (i = 0; i < NUM_STATS; i++)
+    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
         ivs[i] = GetMonData(egg, MON_DATA_HP_IV + i);
 
     ball = GetMonData(egg, MON_DATA_POKEBALL);
@@ -331,7 +331,7 @@ static void CreateHatchedMon(struct Pokemon *egg, struct Pokemon *temp)
     for (i = 0; i < MAX_MON_MOVES; i++)
         SetMonData(temp, MON_DATA_MOVE1 + i,  &moves[i]);
 
-    for (i = 0; i < NUM_STATS; i++)
+    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
         SetMonData(temp, MON_DATA_HP_IV + i,  &ivs[i]);
 
     friendship = 120;

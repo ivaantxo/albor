@@ -417,7 +417,7 @@ struct BattleCallbacksStack
 
 struct StatsArray
 {
-    u16 stats[NUM_STATS];
+    u16 stats[NUMERO_ESTADISTICAS];
 };
 
 struct BattleResources
@@ -466,14 +466,6 @@ struct BattleResults
     u8 catchAttempts[POKEBALL_COUNT];     // 0x36
 };
 
-struct LinkBattlerHeader
-{
-    u8 versionSignatureLo;
-    u8 versionSignatureHi;
-    u8 vsScreenHealthFlagsLo;
-    u8 vsScreenHealthFlagsHi;
-};
-
 struct Illusion
 {
     u8 on;
@@ -517,7 +509,7 @@ struct LostItem
     u16 stolen:1;
 };
 
-enum BattleIntroStates
+enum IntroBatallaEstados
 {
     BATTLE_INTRO_STATE_GET_MON_DATA,
     BATTLE_INTRO_STATE_LOOP_BATTLER_DATA,
@@ -528,11 +520,11 @@ enum BattleIntroStates
     BATTLE_INTRO_STATE_WAIT_FOR_PARTY_SUMMARY,
     BATTLE_INTRO_STATE_INTRO_TEXT,
     BATTLE_INTRO_STATE_WAIT_FOR_INTRO_TEXT,
-    BATTLE_INTRO_STATE_TRAINER_SEND_OUT_TEXT,
+    INTRO_BATALLA_ESTADO_ENTRENADOR_TEXTO_ENVIAR_POKEMON,
     BATTLE_INTRO_STATE_WAIT_FOR_TRAINER_SEND_OUT_TEXT,
     BATTLE_INTRO_STATE_TRAINER_SEND_OUT_ANIM,
     BATTLE_INTRO_STATE_WAIT_FOR_WILD_BATTLE_TEXT,
-    BATTLE_INTRO_STATE_PRINT_PLAYER_SEND_OUT_TEXT,
+    INTRO_BATALLA_ESTADO_JUGADOR_TEXTO_ENVIAR_POKEMON,
     BATTLE_INTRO_STATE_WAIT_FOR_PLAYER_SEND_OUT_TEXT,
     BATTLE_INTRO_STATE_SET_DEX_AND_BATTLE_VARS
 };
@@ -648,7 +640,7 @@ struct BattleStruct
     const u8 *trainerSlideMsg;
     enum BattleIntroStates introState:8;
     u8 ateBerry[2]; // array id determined by side, each party pokemon as bit
-    u8 stolenStats[NUM_BATTLE_STATS]; // hp byte is used for which stats to raise, other inform about by how many stages
+    u8 stolenStats[NUMERO_ESTADISTICAS_BATALLA]; // hp byte is used for which stats to raise, other inform about by how many stages
     u8 lastMoveFailed; // as bits for each battler, for the sake of Stomping Tantrum
     u8 lastMoveTarget[MAX_BATTLERS_COUNT]; // The last target on which each mon used a move, for the sake of Instruct
     u16 tracedAbility[MAX_BATTLERS_COUNT];
@@ -921,7 +913,7 @@ struct MonSpritesGfx
 struct QueuedStatBoost
 {
     u8 stats;   // bitfield for each battle stat that is set if the stat changes
-    s8 statChanges[NUM_BATTLE_STATS - 1];    // highest bit being set decreases the stat
+    s8 statChanges[NUMERO_ESTADISTICAS_BATALLA - 1];    // highest bit being set decreases the stat
 }; /* size = 8 */
 
 // All battle variables are declared in battle_main.c
@@ -1065,7 +1057,7 @@ static inline struct Pokemon *GetBattlerParty(u32 battler)
     return GetSideParty(GetBattlerSide(battler));
 }
 
-static inline bool32 IsDoubleBattle(void)
+static inline bool32 EsContraEntrenador(void)
 {
     return gBattleTypeFlags & TIPO_BATALLA_ENTRENADOR;
 }

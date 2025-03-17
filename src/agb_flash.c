@@ -32,7 +32,7 @@ do {                             \
     vu16 i;                      \
     for (i = 20000; i != 0; i--) \
         ;                        \
-} while (0)
+} while(0)
 
 u16 ReadFlashId(void)
 {

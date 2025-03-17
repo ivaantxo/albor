@@ -1654,7 +1654,6 @@ extern const u8 BattlePyramid_Text_SevenTrainersRemaining6[];
 extern const u8 gText_YourPartysFull[];
 
 // battle main
-extern const u8 gText_LinkStandby3[];
 extern const u8 BattleFrontier_BattleTowerBattleRoom_Text_RecordCouldntBeSaved[];
 extern const u8 gText_Poison[];
 extern const u8 gText_Sleep[];

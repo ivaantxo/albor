@@ -298,10 +298,10 @@ void SetZEffect(void)
     switch (effect)
     {
     case Z_EFFECT_RESET_STATS:
-        for (i = 0; i < NUM_BATTLE_STATS - 1; i++)
+        for (i = 0; i < NUMERO_ESTADISTICAS_BATALLA - 1; i++)
         {
-            if (gBattleMons[gBattlerAttacker].statStages[i] < DEFAULT_STAT_STAGE)
-                gBattleMons[gBattlerAttacker].statStages[i] = DEFAULT_STAT_STAGE;
+            if (gBattleMons[gBattlerAttacker].statStages[i] < ESTADISTICA_NEUTRA)
+                gBattleMons[gBattlerAttacker].statStages[i] = ESTADISTICA_NEUTRA;
         }
         gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_Z_RESET_STATS;
         BattleScriptPush(gBattlescriptCurrInstr + Z_EFFECT_BS_LENGTH);
@@ -310,7 +310,7 @@ void SetZEffect(void)
     case Z_EFFECT_ALL_STATS_UP_1:
     {
         bool32 canBoost = FALSE;
-        for (i = STAT_ATK; i < NUM_STATS; i++) // Doesn't increase Acc or Evsn
+        for (i = ESTADISTICA_ATAQUE; i < NUMERO_ESTADISTICAS; i++) // Doesn't increase Acc or Evsn
         {
             if (STAT_STAGE(gBattlerAttacker, i) < 12)
             {

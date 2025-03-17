@@ -751,7 +751,7 @@ static bool32 AI_IsMoveEffectInPlus(u32 battlerAtk, u32 battlerDef, u32 move, s3
             return TRUE;
         break;
     case EFFECT_FELL_STINGER:
-        if (BattlerStatCanRise(battlerAtk, abilityAtk, STAT_ATK))
+        if (BattlerStatCanRise(battlerAtk, abilityAtk, ESTADISTICA_ATAQUE))
             return TRUE;
         break;
     }
@@ -766,36 +766,36 @@ static bool32 AI_IsMoveEffectInPlus(u32 battlerAtk, u32 battlerDef, u32 move, s3
             {
                 case MOVE_EFFECT_ATK_PLUS_1:
                 case MOVE_EFFECT_ATK_PLUS_2:
-                    if (BattlerStatCanRise(battlerAtk, abilityAtk, STAT_ATK))
+                    if (BattlerStatCanRise(battlerAtk, abilityAtk, ESTADISTICA_ATAQUE))
                         return TRUE;
                     break;
                 case MOVE_EFFECT_DEF_PLUS_1:
                 case MOVE_EFFECT_DEF_PLUS_2:
-                    if (BattlerStatCanRise(battlerAtk, abilityAtk, STAT_DEF))
+                    if (BattlerStatCanRise(battlerAtk, abilityAtk, ESTADISTICA_DEFENSA))
                         return TRUE;
                     break;
                 case MOVE_EFFECT_SPD_PLUS_1:
                 case MOVE_EFFECT_SPD_PLUS_2:
-                    if (BattlerStatCanRise(battlerAtk, abilityAtk, STAT_SPEED))
+                    if (BattlerStatCanRise(battlerAtk, abilityAtk, ESTADISTICA_VELOCIDAD))
                         return TRUE;
                     break;
                 case MOVE_EFFECT_SP_ATK_PLUS_1:
                 case MOVE_EFFECT_SP_ATK_PLUS_2:
-                    if (BattlerStatCanRise(battlerAtk, abilityAtk, STAT_SPATK))
+                    if (BattlerStatCanRise(battlerAtk, abilityAtk, ESTADISTICA_ATAQUE_ESPECIAL))
                         return TRUE;
                     break;
                 case MOVE_EFFECT_EVS_PLUS_1:
                 case MOVE_EFFECT_EVS_PLUS_2:
-                    if (BattlerStatCanRise(battlerAtk, abilityAtk, STAT_EVASION))
+                    if (BattlerStatCanRise(battlerAtk, abilityAtk, ESTADISTICA_EVASION))
                         return TRUE;
                     break;
                 case MOVE_EFFECT_ACC_PLUS_1:
                 case MOVE_EFFECT_ACC_PLUS_2:
-                    if (BattlerStatCanRise(battlerAtk, abilityAtk, STAT_ACC))
+                    if (BattlerStatCanRise(battlerAtk, abilityAtk, ESTADISTICA_PRECISION))
                         return TRUE;
                     break;
                 case MOVE_EFFECT_ALL_STATS_UP:
-                    for (i = STAT_ATK; i <= NUM_STATS; i++)
+                    for (i = ESTADISTICA_ATAQUE; i <= NUMERO_ESTADISTICAS; i++)
                     {
                         if (BattlerStatCanRise(battlerAtk, abilityAtk, i))
                             return TRUE;
@@ -839,7 +839,7 @@ static bool32 AI_IsMoveEffectInPlus(u32 battlerAtk, u32 battlerDef, u32 move, s3
                 case MOVE_EFFECT_SP_DEF_MINUS_1:
                 case MOVE_EFFECT_ACC_MINUS_1:
                 case MOVE_EFFECT_EVS_MINUS_1:
-                    if (ShouldLowerStat(battlerDef, abilityDef, STAT_ATK + (gMovesInfo[move].additionalEffects[i].moveEffect - MOVE_EFFECT_ATK_MINUS_1)) && noOfHitsToKo != 1)
+                    if (ShouldLowerStat(battlerDef, abilityDef, ESTADISTICA_ATAQUE + (gMovesInfo[move].additionalEffects[i].moveEffect - MOVE_EFFECT_ATK_MINUS_1)) && noOfHitsToKo != 1)
                         return TRUE;
                     break;
                 case MOVE_EFFECT_ATK_MINUS_2:
@@ -849,7 +849,7 @@ static bool32 AI_IsMoveEffectInPlus(u32 battlerAtk, u32 battlerDef, u32 move, s3
                 case MOVE_EFFECT_SP_DEF_MINUS_2:
                 case MOVE_EFFECT_ACC_MINUS_2:
                 case MOVE_EFFECT_EVS_MINUS_2:
-                    if (ShouldLowerStat(battlerDef, abilityDef, STAT_ATK + (gMovesInfo[move].additionalEffects[i].moveEffect - MOVE_EFFECT_ATK_MINUS_2)) && noOfHitsToKo != 1)
+                    if (ShouldLowerStat(battlerDef, abilityDef, ESTADISTICA_ATAQUE + (gMovesInfo[move].additionalEffects[i].moveEffect - MOVE_EFFECT_ATK_MINUS_2)) && noOfHitsToKo != 1)
                         return TRUE;
                     break;
             }
@@ -1693,7 +1693,7 @@ void ProtectChecks(u32 battlerAtk, u32 battlerDef, u32 move, u32 predictedMove, 
 // stat stages
 bool32 ShouldLowerStat(u32 battler, u32 battlerAbility, u32 stat)
 {
-    if (gBattleMons[battler].statStages[stat] > MIN_STAT_STAGE && battlerAbility != ABILITY_CONTRARY)
+    if (gBattleMons[battler].statStages[stat] > ESTADISTICA_MENOS_6 && battlerAbility != ABILITY_CONTRARY)
     {
         if (AI_DATA->holdEffects[battler] == HOLD_EFFECT_CLEAR_AMULET
          || battlerAbility == ABILITY_CLEAR_BODY
@@ -1703,16 +1703,16 @@ bool32 ShouldLowerStat(u32 battler, u32 battlerAbility, u32 stat)
 
         switch (stat)
         {
-            case STAT_ATK:
+            case ESTADISTICA_ATAQUE:
                 return !(battlerAbility == ABILITY_HYPER_CUTTER);
-            case STAT_DEF:
+            case ESTADISTICA_DEFENSA:
                 return !(battlerAbility == ABILITY_BIG_PECKS);
-            case STAT_SPEED:
+            case ESTADISTICA_VELOCIDAD:
                 // If AI is faster and doesn't have any mons left, lowering speed doesn't give any
                 return !(AI_IsFaster(sBattler_AI, battler, AI_THINKING_STRUCT->moveConsidered)
                     && CountUsablePartyMons(sBattler_AI) == 0
                     && !HasMoveEffect(sBattler_AI, EFFECT_ELECTRO_BALL));
-            case STAT_ACC:
+            case ESTADISTICA_PRECISION:
                 return !(battlerAbility == ABILITY_KEEN_EYE);
         }
         return TRUE;
@@ -1723,8 +1723,8 @@ bool32 ShouldLowerStat(u32 battler, u32 battlerAbility, u32 stat)
 
 bool32 BattlerStatCanRise(u32 battler, u32 battlerAbility, u32 stat)
 {
-    if ((gBattleMons[battler].statStages[stat] < MAX_STAT_STAGE && battlerAbility != ABILITY_CONTRARY)
-      || (battlerAbility == ABILITY_CONTRARY && gBattleMons[battler].statStages[stat] > MIN_STAT_STAGE))
+    if ((gBattleMons[battler].statStages[stat] < ESTADISTICA_MAS_6 && battlerAbility != ABILITY_CONTRARY)
+      || (battlerAbility == ABILITY_CONTRARY && gBattleMons[battler].statStages[stat] > ESTADISTICA_MENOS_6))
         return TRUE;
     return FALSE;
 }
@@ -1732,9 +1732,9 @@ bool32 BattlerStatCanRise(u32 battler, u32 battlerAbility, u32 stat)
 bool32 AreBattlersStatsMaxed(u32 battlerId)
 {
     u32 i;
-    for (i = STAT_ATK; i < NUM_BATTLE_STATS; i++)
+    for (i = ESTADISTICA_ATAQUE; i < NUMERO_ESTADISTICAS_BATALLA; i++)
     {
-        if (gBattleMons[battlerId].statStages[i] < MAX_STAT_STAGE)
+        if (gBattleMons[battlerId].statStages[i] < ESTADISTICA_MAS_6)
             return FALSE;
     }
     return TRUE;
@@ -1744,9 +1744,9 @@ bool32 AnyStatIsRaised(u32 battlerId)
 {
     u32 i;
 
-    for (i = STAT_ATK; i < NUM_BATTLE_STATS; i++)
+    for (i = ESTADISTICA_ATAQUE; i < NUMERO_ESTADISTICAS_BATALLA; i++)
     {
-        if (gBattleMons[battlerId].statStages[i] > DEFAULT_STAT_STAGE)
+        if (gBattleMons[battlerId].statStages[i] > ESTADISTICA_NEUTRA)
             return TRUE;
     }
     return FALSE;
@@ -1756,9 +1756,9 @@ u32 CountPositiveStatStages(u32 battlerId)
 {
     u32 count = 0;
     u32 i;
-    for (i = STAT_ATK; i < NUM_BATTLE_STATS; i++)
+    for (i = ESTADISTICA_ATAQUE; i < NUMERO_ESTADISTICAS_BATALLA; i++)
     {
-        if (gBattleMons[battlerId].statStages[i] > DEFAULT_STAT_STAGE)
+        if (gBattleMons[battlerId].statStages[i] > ESTADISTICA_NEUTRA)
             count++;
     }
     return count;
@@ -1768,9 +1768,9 @@ u32 CountNegativeStatStages(u32 battlerId)
 {
     u32 count = 0;
     u32 i;
-    for (i = STAT_ATK; i < NUM_BATTLE_STATS; i++)
+    for (i = ESTADISTICA_ATAQUE; i < NUMERO_ESTADISTICAS_BATALLA; i++)
     {
-        if (gBattleMons[battlerId].statStages[i] < DEFAULT_STAT_STAGE)
+        if (gBattleMons[battlerId].statStages[i] < ESTADISTICA_NEUTRA)
             count++;
     }
     return count;
@@ -1783,7 +1783,7 @@ bool32 ShouldLowerAttack(u32 battlerAtk, u32 battlerDef, u32 defAbility)
             && CanAIFaintTarget(battlerAtk, battlerDef, 0))
         return FALSE; // Don't bother lowering stats if can kill enemy.
 
-    if (gBattleMons[battlerDef].statStages[STAT_ATK] > 4
+    if (gBattleMons[battlerDef].statStages[ESTADISTICA_ATAQUE] > 4
       && HasMoveWithCategory(battlerDef, CATEGORIA_FISICA)
       && defAbility != ABILITY_CONTRARY
       && defAbility != ABILITY_CLEAR_BODY
@@ -1802,7 +1802,7 @@ bool32 ShouldLowerDefense(u32 battlerAtk, u32 battlerDef, u32 defAbility)
             && CanAIFaintTarget(battlerAtk, battlerDef, 0))
         return FALSE; // Don't bother lowering stats if can kill enemy.
 
-    if (gBattleMons[battlerDef].statStages[STAT_DEF] > 4
+    if (gBattleMons[battlerDef].statStages[ESTADISTICA_DEFENSA] > 4
       && HasMoveWithCategory(battlerAtk, CATEGORIA_FISICA)
       && defAbility != ABILITY_CONTRARY
       && defAbility != ABILITY_CLEAR_BODY
@@ -1833,7 +1833,7 @@ bool32 ShouldLowerSpAtk(u32 battlerAtk, u32 battlerDef, u32 defAbility)
             && CanAIFaintTarget(battlerAtk, battlerDef, 0))
         return FALSE; // Don't bother lowering stats if can kill enemy.
 
-    if (gBattleMons[battlerDef].statStages[STAT_SPATK] > 4
+    if (gBattleMons[battlerDef].statStages[ESTADISTICA_ATAQUE_ESPECIAL] > 4
       && HasMoveWithCategory(battlerDef, CATEGORIA_ESPECIAL)
       && defAbility != ABILITY_CONTRARY
       && defAbility != ABILITY_CLEAR_BODY
@@ -1851,7 +1851,7 @@ bool32 ShouldLowerSpDef(u32 battlerAtk, u32 battlerDef, u32 defAbility)
             && CanAIFaintTarget(battlerAtk, battlerDef, 0))
         return FALSE; // Don't bother lowering stats if can kill enemy.
 
-    if (gBattleMons[battlerDef].statStages[STAT_SPDEF] > 4
+    if (gBattleMons[battlerDef].statStages[ESTADISTICA_DEFENSA_ESPECIAL] > 4
       && HasMoveWithCategory(battlerAtk, CATEGORIA_ESPECIAL)
       && defAbility != ABILITY_CONTRARY
       && defAbility != ABILITY_CLEAR_BODY
@@ -1887,7 +1887,7 @@ bool32 ShouldLowerEvasion(u32 battlerAtk, u32 battlerDef, u32 defAbility)
             && CanAIFaintTarget(battlerAtk, battlerDef, 0))
         return FALSE; // Don't bother lowering stats if can kill enemy.
 
-    if (gBattleMons[battlerDef].statStages[STAT_EVASION] > DEFAULT_STAT_STAGE
+    if (gBattleMons[battlerDef].statStages[ESTADISTICA_EVASION] > ESTADISTICA_NEUTRA
       && defAbility != ABILITY_CONTRARY
       && defAbility != ABILITY_CLEAR_BODY
       && defAbility != ABILITY_FULL_METAL_BODY
@@ -2584,21 +2584,21 @@ static bool32 AnyUsefulStatIsRaised(u32 battler)
 {
     u32 statId;
 
-    for (statId = STAT_ATK; statId < NUM_BATTLE_STATS; statId++)
+    for (statId = ESTADISTICA_ATAQUE; statId < NUMERO_ESTADISTICAS_BATALLA; statId++)
     {
-        if (gBattleMons[battler].statStages[statId] > DEFAULT_STAT_STAGE)
+        if (gBattleMons[battler].statStages[statId] > ESTADISTICA_NEUTRA)
         {
             switch (statId)
             {
-            case STAT_ATK:
+            case ESTADISTICA_ATAQUE:
                 if (HasMoveWithCategory(battler, CATEGORIA_FISICA))
                     return TRUE;
                 break;
-            case STAT_SPATK:
+            case ESTADISTICA_ATAQUE_ESPECIAL:
                 if (HasMoveWithCategory(battler, CATEGORIA_ESPECIAL))
                     return TRUE;
                 break;
-            case STAT_SPEED:
+            case ESTADISTICA_VELOCIDAD:
                 return TRUE;
             }
         }
@@ -2661,7 +2661,7 @@ static bool32 PartyBattlerShouldAvoidHazards(u32 currBattler, u32 switchBattler)
 
 enum AIPivot ShouldPivot(u32 battlerAtk, u32 battlerDef, u32 defAbility, u32 move, u32 moveIndex)
 {
-    bool32 hasStatBoost = AnyUsefulStatIsRaised(battlerAtk) || gBattleMons[battlerDef].statStages[STAT_EVASION] >= 9; //Significant boost in evasion for any class
+    bool32 hasStatBoost = AnyUsefulStatIsRaised(battlerAtk) || gBattleMons[battlerDef].statStages[ESTADISTICA_EVASION] >= 9; //Significant boost in evasion for any class
     u32 battlerToSwitch;
 
     battlerToSwitch = gBattleStruct->AI_monToSwitchIntoId[battlerAtk];
@@ -3621,7 +3621,7 @@ static u32 IncreaseStatUpScoreInternal(u32 battlerAtk, u32 battlerDef, u32 statI
         return NO_INCREASE;
 
     // Don't increase stat if AI is at +4
-    if (gBattleMons[battlerAtk].statStages[statId] >= MAX_STAT_STAGE - 2)
+    if (gBattleMons[battlerAtk].statStages[statId] >= ESTADISTICA_MAS_6 - 2)
         return NO_INCREASE;
 
     // Don't increase stat if AI has less then 70% HP and number of hits isn't known
@@ -3699,7 +3699,7 @@ static u32 IncreaseStatUpScoreInternal(u32 battlerAtk, u32 battlerDef, u32 statI
         }
         break;
     case STAT_CHANGE_ACC:
-        if (gBattleMons[battlerAtk].statStages[STAT_ACC] <= 3) // Increase only if necessary
+        if (gBattleMons[battlerAtk].statStages[ESTADISTICA_PRECISION] <= 3) // Increase only if necessary
             tempScore += DECENT_EFFECT;
         break;
     case STAT_CHANGE_EVASION:
@@ -3887,22 +3887,22 @@ bool32 AI_ShouldCopyStatChanges(u32 battlerAtk, u32 battlerDef)
 {
     u8 i;
     // Want to copy positive stat changes
-    for (i = STAT_ATK; i < NUM_BATTLE_STATS; i++)
+    for (i = ESTADISTICA_ATAQUE; i < NUMERO_ESTADISTICAS_BATALLA; i++)
     {
         if (gBattleMons[battlerDef].statStages[i] > gBattleMons[battlerAtk].statStages[i])
         {
             switch (i)
             {
-            case STAT_ATK:
+            case ESTADISTICA_ATAQUE:
                 return (HasMoveWithCategory(battlerAtk, CATEGORIA_FISICA));
-            case STAT_SPATK:
+            case ESTADISTICA_ATAQUE_ESPECIAL:
                 return (HasMoveWithCategory(battlerAtk, CATEGORIA_ESPECIAL));
-            case STAT_ACC:
-            case STAT_EVASION:
-            case STAT_SPEED:
+            case ESTADISTICA_PRECISION:
+            case ESTADISTICA_EVASION:
+            case ESTADISTICA_VELOCIDAD:
                 return TRUE;
-            case STAT_DEF:
-            case STAT_SPDEF:
+            case ESTADISTICA_DEFENSA:
+            case ESTADISTICA_DEFENSA_ESPECIAL:
                 return (AI_THINKING_STRUCT->aiFlags[battlerAtk] & AI_FLAG_STALL);
             }
         }
@@ -3952,7 +3952,7 @@ bool32 AI_ShouldSpicyExtract(u32 battlerAtk, u32 battlerAtkPartner, u32 move, st
     else
         partnerAbility = aiData->abilities[battlerAtkPartner];
 
-    if (gBattleMons[battlerAtkPartner].statStages[STAT_ATK] == MAX_STAT_STAGE
+    if (gBattleMons[battlerAtkPartner].statStages[ESTADISTICA_ATAQUE] == ESTADISTICA_MAS_6
      || partnerAbility == ABILITY_CONTRARY
      || partnerAbility == ABILITY_GOOD_AS_GOLD
      || HasMoveEffect(BATTLE_OPPOSITE(battlerAtk), EFFECT_FOUL_PLAY)

@@ -329,10 +329,6 @@ EWRAM_DATA struct ContestWinner gCurContestWinner = {0};
 EWRAM_DATA bool8 gCurContestWinnerIsForArtist = 0;
 EWRAM_DATA u8 gCurContestWinnerSaveIdx = 0;
 
-// IWRAM common vars.
-COMMON_DATA rng_value_t gContestRngValue = {0};
-
-extern const u8 gText_LinkStandby4[];
 extern const u8 gText_BDot[];
 extern const u8 gText_CDot[];
 extern void (*const gContestEffectFuncs[])(void);
@@ -2499,7 +2495,6 @@ static void Task_EndAppeals(u8 taskId)
         gContestMonAppealPointTotals[i] = eContestantStatus[i].pointTotal;
     CalculateFinalScores();
     ContestClearGeneralTextWindow();
-    gContestRngValue = gRngValue;
     StringExpandPlaceholders(gStringVar4, gText_AllOutOfAppealTime);
     Contest_StartTextPrinter(gStringVar4, TRUE);
     gTasks[taskId].data[2] = 0;
@@ -3964,7 +3959,7 @@ void SortContestants(bool8 useRanking)
         {
             u8 j = eContestantStatus[i].ranking;
 
-            while (1)
+            while(1)
             {
                 u8 *ptr = &scratch[j];
                 if (*ptr == CONTESTANT_NONE)

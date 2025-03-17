@@ -76,13 +76,15 @@
 #define NO_ACC_CALC_CHECK_LOCK_ON 0xFFFF
 #define ACC_CURR_MOVE 0
 
-// compare operands
-#define CMP_EQUAL               0
-#define CMP_NOT_EQUAL           1
-#define CMP_GREATER_THAN        2
-#define CMP_LESS_THAN           3
-#define CMP_COMMON_BITS         4
-#define CMP_NO_COMMON_BITS      5
+enum Comparaciones
+{
+    COMPARACION_IGUAL,
+    COMPARACION_DESIGUAL,
+    COMPARACION_MAYOR,
+    COMPARACION_MENOR,
+    COMPARACION_BITS_COMUNES,
+    COMPARACION_BITS_DISTINTOS,
+};
 
 // Cmd_various
 #define VARIOUS_CANCEL_MULTI_TURN_MOVES              0

@@ -514,7 +514,7 @@ static bool32 ShouldSwitchIfBadlyStatused(u32 battler)
                 switchMon = FALSE;
 
             // Check if Active Pokemon evasion boosted and might be able to dodge until awake
-            if (gBattleMons[battler].statStages[STAT_EVASION] > (DEFAULT_STAT_STAGE + 3)
+            if (gBattleMons[battler].statStages[ESTADISTICA_EVASION] > (ESTADISTICA_NEUTRA + 3)
                 && AI_DATA->abilities[opposingBattler] != ABILITY_UNAWARE
                 && AI_DATA->abilities[opposingBattler] != ABILITY_KEEN_EYE
                 && AI_DATA->abilities[opposingBattler] != ABILITY_MINDS_EYE
@@ -662,10 +662,10 @@ static bool32 AreStatsRaised(u32 battler)
     u8 buffedStatsValue = 0;
     s32 i;
 
-    for (i = 0; i < NUM_BATTLE_STATS; i++)
+    for (i = 0; i < NUMERO_ESTADISTICAS_BATALLA; i++)
     {
-        if (gBattleMons[battler].statStages[i] > DEFAULT_STAT_STAGE)
-            buffedStatsValue += gBattleMons[battler].statStages[i] - DEFAULT_STAT_STAGE;
+        if (gBattleMons[battler].statStages[i] > ESTADISTICA_NEUTRA)
+            buffedStatsValue += gBattleMons[battler].statStages[i] - ESTADISTICA_NEUTRA;
     }
 
     return (buffedStatsValue > 3);
@@ -859,8 +859,8 @@ static bool32 ShouldSwitchIfBadChoiceLock(u32 battler)
 // AI should switch if it's become setup fodder and has something better to switch to
 static bool32 ShouldSwitchIfAttackingStatsLowered(u32 battler)
 {
-    s8 attackingStage = gBattleMons[battler].statStages[STAT_ATK];
-    s8 spAttackingStage = gBattleMons[battler].statStages[STAT_SPATK];
+    s8 attackingStage = gBattleMons[battler].statStages[ESTADISTICA_ATAQUE];
+    s8 spAttackingStage = gBattleMons[battler].statStages[ESTADISTICA_ATAQUE_ESPECIAL];
 
     // Only use this if AI_FLAG_SMART_SWITCHING is set for the trainer
     if (!(AI_THINKING_STRUCT->aiFlags[battler] & AI_FLAG_SMART_SWITCHING))
@@ -870,16 +870,16 @@ static bool32 ShouldSwitchIfAttackingStatsLowered(u32 battler)
     if (gBattleMons[battler].attack > gBattleMons[battler].spAttack)
     {
         // Don't switch if attack isn't below -1
-        if (attackingStage > DEFAULT_STAT_STAGE - 2)
+        if (attackingStage > ESTADISTICA_NEUTRA - 2)
             return FALSE;
         // 50% chance if attack at -2 and have a good candidate mon
-        else if (attackingStage == DEFAULT_STAT_STAGE - 2)
+        else if (attackingStage == ESTADISTICA_NEUTRA - 2)
         {
             if (AI_DATA->mostSuitableMonId[battler] != PARTY_SIZE && RandomPercentage(RNG_AI_SWITCH_STATS_LOWERED, 50))
                 return SetSwitchinAndSwitch(battler, PARTY_SIZE);
         }
         // If at -3 or worse, switch out regardless
-        else if (attackingStage < DEFAULT_STAT_STAGE - 2)
+        else if (attackingStage < ESTADISTICA_NEUTRA - 2)
             return SetSwitchinAndSwitch(battler, PARTY_SIZE);
     }
 
@@ -887,16 +887,16 @@ static bool32 ShouldSwitchIfAttackingStatsLowered(u32 battler)
     else
     {
         // Don't switch if attack isn't below -1
-        if (spAttackingStage > DEFAULT_STAT_STAGE - 2)
+        if (spAttackingStage > ESTADISTICA_NEUTRA - 2)
             return FALSE;
         // 50% chance if attack at -2 and have a good candidate mon
-        else if (spAttackingStage == DEFAULT_STAT_STAGE - 2)
+        else if (spAttackingStage == ESTADISTICA_NEUTRA - 2)
         {
             if (AI_DATA->mostSuitableMonId[battler] != PARTY_SIZE && RandomPercentage(RNG_AI_SWITCH_STATS_LOWERED, 50))
                 return SetSwitchinAndSwitch(battler, PARTY_SIZE);
         }
         // If at -3 or worse, switch out regardless
-        else if (spAttackingStage < DEFAULT_STAT_STAGE - 2)
+        else if (spAttackingStage < ESTADISTICA_NEUTRA - 2)
             return SetSwitchinAndSwitch(battler, PARTY_SIZE);
     }
     return FALSE;

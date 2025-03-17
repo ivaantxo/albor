@@ -303,7 +303,7 @@ void IsTrendyPhraseBoring(void)
         if (!gSaveBlockPtr->dewfordTrends[1].gainingTrendiness)
             break;
         result = TRUE;
-    } while (0);
+    } while(0);
 
     gSpecialVar_Result = result;
 }

@@ -1393,7 +1393,7 @@ void GenerateBattlePyramidWildMon(void)
     #endif
     {
         id = (Random() % 17) + 15;
-        for (i = 0; i < NUM_STATS; i++)
+        for (i = 0; i < NUMERO_ESTADISTICAS; i++)
             SetMonData(&gEnemyParty[0], MON_DATA_HP_IV + i, &id);
     }
     CalculateMonStats(&gEnemyParty[0]);

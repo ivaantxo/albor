@@ -138,66 +138,6 @@ void PadNameString(u8 *dest, u8 padChar)
     dest[length] = EOS;
 }
 
-void ConvertInternationalPlayerName(u8 *str)
-{
-    if (StringLength(str) < PLAYER_NAME_LENGTH - 1)
-        ConvertInternationalString(str, LANGUAGE_JAPANESE);
-    else
-        StripExtCtrlCodes(str);
-}
-
-void ConvertInternationalPlayerNameStripChar(u8 *str, u8 removeChar)
-{
-    u8 *buffer;
-    if (StringLength(str) < PLAYER_NAME_LENGTH - 1)
-    {
-        ConvertInternationalString(str, LANGUAGE_JAPANESE);
-    }
-    else if (removeChar == EXT_CTRL_CODE_BEGIN)
-    {
-        StripExtCtrlCodes(str);
-    }
-    else
-    {
-        buffer = str;
-        while (buffer[1] != EOS)
-            buffer++;
-
-        while (buffer >= str && buffer[0] == removeChar)
-        {
-            buffer[0] = EOS;
-            buffer--;
-        }
-    }
-}
-
-void ConvertInternationalContestantName(u8 *str)
-{
-    if (*str++ == EXT_CTRL_CODE_BEGIN && *str++ == EXT_CTRL_CODE_JPN)
-    {
-        while (*str != EOS)
-        {
-            if (str[0] == EXT_CTRL_CODE_BEGIN && str[1] == EXT_CTRL_CODE_ENG)
-                return;
-
-            str++;
-        }
-
-        *str++ = EXT_CTRL_CODE_BEGIN;
-        *str++ = EXT_CTRL_CODE_ENG;
-        *str = EOS;
-    }
-}
-
-// It's impossible to distinguish between Latin languages just from a string alone, so the function defaults to LANGUAGE_ENGLISH. This is the case in all of the versions of the game.
-int GetNicknameLanguage(u8 *str)
-{
-    if (str[0] == EXT_CTRL_CODE_BEGIN && str[1] == EXT_CTRL_CODE_JPN)
-        return LANGUAGE_JAPANESE;
-    else
-        return LANGUAGE_ENGLISH;
-}
-
 // Used by Pokénav's Match Call to erase the previous trainer's flavor text when switching between their info pages.
 void FillWindowTilesByRow(int windowId, int columnStart, int rowStart, int numFillTiles, int numRows)
 {

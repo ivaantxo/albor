@@ -141,7 +141,7 @@ enum {
 struct InGameTrade {
     u8 nickname[POKEMON_NAME_LENGTH + 1];
     u16 species;
-    u8 ivs[NUM_STATS];
+    u8 ivs[NUMERO_ESTADISTICAS];
     u8 abilityNum;
     u32 otId;
     u8 conditions[CONTEST_CATEGORIES_COUNT];

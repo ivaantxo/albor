@@ -2151,7 +2151,7 @@ static void PlayerHandleDMA3Transfer(u32 battler)
     u8 *dst = (u8 *)(dstArg);
     u32 size = sizeArg;
 
-    while (1)
+    while(1)
     {
         if (size <= 0x1000)
         {

@@ -362,7 +362,7 @@ static void GenerateOpponentMons(void)
     gFacilityTrainers = gSlateportBattleTentTrainers;
     gFacilityTrainerMons = gSlateportBattleTentMons;
 
-    while (1)
+    while(1)
     {
         do
         {

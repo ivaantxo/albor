@@ -921,7 +921,7 @@ static bool8 TryPrintNextEnhancement(void)
 {
     FillWindowPixelBuffer(WIN_TEXT, 17);
 
-    while (1)
+    while(1)
     {
         sInfo->condition++;
         if (sInfo->condition < CONDITION_COUNT)

@@ -399,11 +399,11 @@ void BS_SetMaxMoveEffect(void)
                 switch (maxEffect)
                 {
                     case MAX_EFFECT_LOWER_SPEED_2_FOES:
-                        statId = STAT_SPEED;
+                        statId = ESTADISTICA_VELOCIDAD;
                         stage = 2;
                         break;
                     case MAX_EFFECT_LOWER_EVASIVENESS_FOES:
-                        statId = STAT_EVASION;
+                        statId = ESTADISTICA_EVASION;
                         break;
                     default:
                         // Max Effects are ordered by stat ID.

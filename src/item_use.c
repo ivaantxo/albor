@@ -1151,7 +1151,7 @@ bool32 CannotUseItemsInBattle(u16 itemId, struct Pokemon *mon)
     switch (battleUsage)
     {
     case EFFECT_ITEM_INCREASE_STAT:
-        if (gBattleMons[gBattlerInMenuId].statStages[ItemId_GetEffect(itemId)[1]] == MAX_STAT_STAGE)
+        if (gBattleMons[gBattlerInMenuId].statStages[ItemId_GetEffect(itemId)[1]] == ESTADISTICA_MAS_6)
             cannotUse = TRUE;
         break;
     case EFFECT_ITEM_SET_FOCUS_ENERGY:
@@ -1188,9 +1188,9 @@ bool32 CannotUseItemsInBattle(u16 itemId, struct Pokemon *mon)
         }
         break;
     case EFFECT_ITEM_INCREASE_ALL_STATS:
-        for (i = STAT_ATK; i < NUM_STATS; i++)
+        for (i = ESTADISTICA_ATAQUE; i < NUMERO_ESTADISTICAS; i++)
         {
-            if (CompareStat(gBattlerInMenuId, i, MAX_STAT_STAGE, CMP_EQUAL))
+            if (CompareStat(gBattlerInMenuId, i, ESTADISTICA_MAS_6, COMPARACION_IGUAL))
             {
                 cannotUse = TRUE;
                 break;

@@ -1356,7 +1356,7 @@ static void ShowAllConditionSparkles(struct Sprite *sprite)
 #undef sMonSpriteId
 #undef sNextSparkleSpriteId
 
-static const u8 *const sLvlUpStatStrings[NUM_STATS] =
+static const u8 *const sLvlUpStatStrings[NUMERO_ESTADISTICAS] =
 {
     gText_MaxPS,
     gText_Ataque,
@@ -1369,24 +1369,24 @@ static const u8 *const sLvlUpStatStrings[NUM_STATS] =
 void DrawLevelUpWindowPg1(u16 windowId, u16 *statsBefore, u16 *statsAfter, u8 bgClr, u8 fgClr, u8 shadowClr)
 {
     u16 i, x;
-    s16 statsDiff[NUM_STATS];
+    s16 statsDiff[NUMERO_ESTADISTICAS];
     u8 text[12];
     u8 color[3];
 
     FillWindowPixelBuffer(windowId, PIXEL_FILL(bgClr));
 
-    statsDiff[0] = statsAfter[STAT_HP]    - statsBefore[STAT_HP];
-    statsDiff[1] = statsAfter[STAT_ATK]   - statsBefore[STAT_ATK];
-    statsDiff[2] = statsAfter[STAT_DEF]   - statsBefore[STAT_DEF];
-    statsDiff[3] = statsAfter[STAT_SPATK] - statsBefore[STAT_SPATK];
-    statsDiff[4] = statsAfter[STAT_SPDEF] - statsBefore[STAT_SPDEF];
-    statsDiff[5] = statsAfter[STAT_SPEED] - statsBefore[STAT_SPEED];
+    statsDiff[0] = statsAfter[ESTADISTICA_PS]    - statsBefore[ESTADISTICA_PS];
+    statsDiff[1] = statsAfter[ESTADISTICA_ATAQUE]   - statsBefore[ESTADISTICA_ATAQUE];
+    statsDiff[2] = statsAfter[ESTADISTICA_DEFENSA]   - statsBefore[ESTADISTICA_DEFENSA];
+    statsDiff[3] = statsAfter[ESTADISTICA_ATAQUE_ESPECIAL] - statsBefore[ESTADISTICA_ATAQUE_ESPECIAL];
+    statsDiff[4] = statsAfter[ESTADISTICA_DEFENSA_ESPECIAL] - statsBefore[ESTADISTICA_DEFENSA_ESPECIAL];
+    statsDiff[5] = statsAfter[ESTADISTICA_VELOCIDAD] - statsBefore[ESTADISTICA_VELOCIDAD];
 
     color[0] = bgClr;
     color[1] = fgClr;
     color[2] = shadowClr;
 
-    for (i = 0; i < NUM_STATS; i++)
+    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
     {
 
         AddTextPrinterParameterized3(windowId,
@@ -1424,24 +1424,24 @@ void DrawLevelUpWindowPg1(u16 windowId, u16 *statsBefore, u16 *statsAfter, u8 bg
 void DrawLevelUpWindowPg2(u16 windowId, u16 *currStats, u8 bgClr, u8 fgClr, u8 shadowClr)
 {
     u16 i, numDigits, x;
-    s16 stats[NUM_STATS];
+    s16 stats[NUMERO_ESTADISTICAS];
     u8 text[12];
     u8 color[3];
 
     FillWindowPixelBuffer(windowId, PIXEL_FILL(bgClr));
 
-    stats[0] = currStats[STAT_HP];
-    stats[1] = currStats[STAT_ATK];
-    stats[2] = currStats[STAT_DEF];
-    stats[3] = currStats[STAT_SPATK];
-    stats[4] = currStats[STAT_SPDEF];
-    stats[5] = currStats[STAT_SPEED];
+    stats[0] = currStats[ESTADISTICA_PS];
+    stats[1] = currStats[ESTADISTICA_ATAQUE];
+    stats[2] = currStats[ESTADISTICA_DEFENSA];
+    stats[3] = currStats[ESTADISTICA_ATAQUE_ESPECIAL];
+    stats[4] = currStats[ESTADISTICA_DEFENSA_ESPECIAL];
+    stats[5] = currStats[ESTADISTICA_VELOCIDAD];
 
     color[0] = bgClr;
     color[1] = fgClr;
     color[2] = shadowClr;
 
-    for (i = 0; i < NUM_STATS; i++)
+    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
     {
         if (stats[i] > 99)
             numDigits = 3;
@@ -1473,10 +1473,10 @@ void DrawLevelUpWindowPg2(u16 windowId, u16 *currStats, u8 bgClr, u8 fgClr, u8 s
 
 void GetMonLevelUpWindowStats(struct Pokemon *mon, u16 *currStats)
 {
-    currStats[STAT_HP]    = GetMonData(mon, MON_DATA_MAX_HP);
-    currStats[STAT_ATK]   = GetMonData(mon, MON_DATA_ATK);
-    currStats[STAT_DEF]   = GetMonData(mon, MON_DATA_DEF);
-    currStats[STAT_SPEED] = GetMonData(mon, MON_DATA_SPEED);
-    currStats[STAT_SPATK] = GetMonData(mon, MON_DATA_SPATK);
-    currStats[STAT_SPDEF] = GetMonData(mon, MON_DATA_SPDEF);
+    currStats[ESTADISTICA_PS]    = GetMonData(mon, MON_DATA_MAX_HP);
+    currStats[ESTADISTICA_ATAQUE]   = GetMonData(mon, MON_DATA_ATK);
+    currStats[ESTADISTICA_DEFENSA]   = GetMonData(mon, MON_DATA_DEF);
+    currStats[ESTADISTICA_VELOCIDAD] = GetMonData(mon, MON_DATA_SPEED);
+    currStats[ESTADISTICA_ATAQUE_ESPECIAL] = GetMonData(mon, MON_DATA_SPATK);
+    currStats[ESTADISTICA_DEFENSA_ESPECIAL] = GetMonData(mon, MON_DATA_SPDEF);
 }

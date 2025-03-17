@@ -53,7 +53,6 @@
 - Crear habilidad exclusiva de Beedrill (Empalador o algo así).
 - Arreglar tiendas.
 - Arreglar icono de guardado que cambia con el día.
-- Limpiar IsContest
 
 -Lista de moves hechos:
 *Bomba huevo.

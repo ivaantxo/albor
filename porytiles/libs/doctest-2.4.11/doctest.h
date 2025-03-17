@@ -1748,7 +1748,7 @@ DOCTEST_CLANG_SUPPRESS_WARNING_POP
             }                                                                                      \
             return !failed;                                                                        \
         }                                                                                          \
-    } while(false)
+    } while(0)
 
 #define DOCTEST_ASSERT_IN_TESTS(decomp)                                                            \
     ResultBuilder rb(at, file, line, expr);                                                        \
@@ -2128,7 +2128,7 @@ int registerReporter(const char* name, int priority, bool isReporter) {
 #define DOCTEST_FUNC_SCOPE_RET(v) return v
 #else
 #define DOCTEST_FUNC_SCOPE_BEGIN do
-#define DOCTEST_FUNC_SCOPE_END while(false)
+#define DOCTEST_FUNC_SCOPE_END while(0)
 #define DOCTEST_FUNC_SCOPE_RET(v) (void)0
 #endif
 

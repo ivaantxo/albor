@@ -34,8 +34,6 @@ static void Cmd_createsprite(void);
 static void Cmd_createvisualtask(void);
 static void Cmd_delay(void);
 static void Cmd_waitforvisualfinish(void);
-static void Cmd_nop(void);
-static void Cmd_nop2(void);
 static void Cmd_end(void);
 static void Cmd_playse(void);
 static void Cmd_monbg(void);
@@ -58,13 +56,11 @@ static void Cmd_setpan(void);
 static void Cmd_panse(void);
 static void Cmd_loopsewithpan(void);
 static void Cmd_waitplaysewithpan(void);
-static void Cmd_setbldcnt(void);
 static void Cmd_createsoundtask(void);
 static void Cmd_waitsound(void);
 static void Cmd_jumpargeq(void);
 static void Cmd_monbg_static(void);
 static void Cmd_clearmonbg_static(void);
-static void Cmd_jumpifcontest(void);
 static void Cmd_fadetobgfromset(void);
 static void Cmd_panse_adjustnone(void);
 static void Cmd_panse_adjustall(void);
@@ -73,13 +69,10 @@ static void Cmd_splitbgprio_all(void);
 static void Cmd_splitbgprio_foes(void);
 static void Cmd_invisible(void);
 static void Cmd_visible(void);
-static void Cmd_teamattack_moveback(void);
-static void Cmd_teamattack_movefwd(void);
 static void Cmd_stopsound(void);
 static void Cmd_createvisualtaskontargets(void);
 static void Cmd_createspriteontargets(void);
 static void Cmd_createspriteontargets_onpos(void);
-static void Cmd_jumpifmovetypeequal(void);
 static void Cmd_createdragondartsprite(void);
 static void RunAnimScriptCommand(void);
 static void Task_UpdateMonBg(u8 taskId);
@@ -110,7 +103,7 @@ EWRAM_DATA static u16 sSoundAnimFramesToWait = 0;
 EWRAM_DATA static u8 sMonAnimTaskIdArray[2] = {0};
 EWRAM_DATA u8 gAnimMoveTurn = 0;
 EWRAM_DATA static u8 sAnimBackgroundFadeState = 0;
-EWRAM_DATA u16 gAnimMoveIndex = 0; // Set but unused.
+EWRAM_DATA u16 gAnimMoveIndex = 0;
 EWRAM_DATA u8 gBattleAnimAttacker = 0;
 EWRAM_DATA u8 gBattleAnimTarget = 0;
 EWRAM_DATA u16 gAnimBattlerSpecies[MAX_BATTLERS_COUNT] = {0};
@@ -121,59 +114,52 @@ EWRAM_DATA static bool8 sAnimHideHpBoxes = FALSE;
 
 static void (* const sScriptCmdTable[])(void) =
 {
-    Cmd_loadspritegfx,        // 0x00
-    Cmd_unloadspritegfx,      // 0x01
-    Cmd_createsprite,         // 0x02
-    Cmd_createvisualtask,     // 0x03
-    Cmd_delay,                // 0x04
-    Cmd_waitforvisualfinish,  // 0x05
-    Cmd_nop,                  // 0x06
-    Cmd_nop2,                 // 0x07
-    Cmd_end,                  // 0x08
-    Cmd_playse,               // 0x09
-    Cmd_monbg,                // 0x0A
-    Cmd_clearmonbg,           // 0x0B
-    Cmd_setalpha,             // 0x0C
-    Cmd_blendoff,             // 0x0D
-    Cmd_call,                 // 0x0E
-    Cmd_return,               // 0x0F
-    Cmd_setarg,               // 0x10
-    Cmd_choosetwoturnanim,    // 0x11
-    Cmd_jumpifmoveturn,       // 0x12
-    Cmd_goto,                 // 0x13
-    Cmd_fadetobg,             // 0x14
-    Cmd_restorebg,            // 0x15
-    Cmd_waitbgfadeout,        // 0x16
-    Cmd_waitbgfadein,         // 0x17
-    Cmd_changebg,             // 0x18
-    Cmd_playsewithpan,        // 0x19
-    Cmd_setpan,               // 0x1A
-    Cmd_panse,                // 0x1B
-    Cmd_loopsewithpan,        // 0x1C
-    Cmd_waitplaysewithpan,    // 0x1D
-    Cmd_setbldcnt,            // 0x1E
-    Cmd_createsoundtask,      // 0x1F
-    Cmd_waitsound,            // 0x20
-    Cmd_jumpargeq,            // 0x21
-    Cmd_monbg_static,         // 0x22
-    Cmd_clearmonbg_static,    // 0x23
-    Cmd_jumpifcontest,        // 0x24
-    Cmd_fadetobgfromset,      // 0x25
-    Cmd_panse_adjustnone,     // 0x26
-    Cmd_panse_adjustall,      // 0x27
-    Cmd_splitbgprio,          // 0x28
-    Cmd_splitbgprio_all,      // 0x29
-    Cmd_splitbgprio_foes,     // 0x2A
-    Cmd_invisible,            // 0x2B
-    Cmd_visible,              // 0x2C
-    Cmd_teamattack_moveback,  // 0x2D
-    Cmd_teamattack_movefwd,   // 0x2E
-    Cmd_stopsound,            // 0x2F
-    Cmd_createvisualtaskontargets,  // 0x30
-    Cmd_createspriteontargets,      // 0x31
-    Cmd_createspriteontargets_onpos, // 0x32
-    Cmd_jumpifmovetypeequal,         // 0x33
-    Cmd_createdragondartsprite,      // 0x34
+    Cmd_loadspritegfx,                  // 0
+    Cmd_unloadspritegfx,                // 1
+    Cmd_createsprite,                   // 2
+    Cmd_createvisualtask,               // 3
+    Cmd_delay,                          // 4
+    Cmd_waitforvisualfinish,            // 5
+    Cmd_end,                            // 6
+    Cmd_playse,                         // 7
+    Cmd_monbg,                          // 8
+    Cmd_clearmonbg,                     // 9
+    Cmd_setalpha,                       // 10
+    Cmd_blendoff,                       // 11
+    Cmd_call,                           // 12
+    Cmd_return,                         // 13
+    Cmd_setarg,                         // 14
+    Cmd_choosetwoturnanim,              // 15
+    Cmd_jumpifmoveturn,                 // 16
+    Cmd_goto,                           // 17
+    Cmd_fadetobg,                       // 18
+    Cmd_restorebg,                      // 19
+    Cmd_waitbgfadeout,                  // 20
+    Cmd_waitbgfadein,                   // 21
+    Cmd_changebg,                       // 22
+    Cmd_playsewithpan,                  // 23
+    Cmd_setpan,                         // 24
+    Cmd_panse,                          // 25
+    Cmd_loopsewithpan,                  // 26
+    Cmd_waitplaysewithpan,              // 27
+    Cmd_createsoundtask,                // 28
+    Cmd_waitsound,                      // 29
+    Cmd_jumpargeq,                      // 30
+    Cmd_monbg_static,                   // 31
+    Cmd_clearmonbg_static,              // 32
+    Cmd_fadetobgfromset,                // 33
+    Cmd_panse_adjustnone,               // 34
+    Cmd_panse_adjustall,                // 35
+    Cmd_splitbgprio,                    // 36
+    Cmd_splitbgprio_all,                // 37
+    Cmd_splitbgprio_foes,               // 38
+    Cmd_invisible,                      // 39
+    Cmd_visible,                        // 40
+    Cmd_stopsound,                      // 41
+    Cmd_createvisualtaskontargets,      // 42
+    Cmd_createspriteontargets,          // 43
+    Cmd_createspriteontargets_onpos,    // 44
+    Cmd_createdragondartsprite,         // 45
 };
 
 static const u16 sMovesWithQuietBGM[] =
@@ -800,14 +786,6 @@ static void Cmd_waitforvisualfinish(void)
     }
 }
 
-static void Cmd_nop(void)
-{
-}
-
-static void Cmd_nop2(void)
-{
-}
-
 static void Cmd_end(void)
 {
     s32 i;
@@ -1379,16 +1357,6 @@ static void Cmd_setalpha(void)
     half2 = *(sBattleAnimScriptPtr++) << 8;
     SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_ALL);
     SetGpuReg(REG_OFFSET_BLDALPHA, half1 | half2);
-}
-
-static void Cmd_setbldcnt(void)
-{
-    u16 half1, half2;
-
-    sBattleAnimScriptPtr++;
-    half1 = *(sBattleAnimScriptPtr++);
-    half2 = *(sBattleAnimScriptPtr++) << 8;
-    SetGpuReg(REG_OFFSET_BLDCNT, half1 | half2);
 }
 
 static void Cmd_blendoff(void)
@@ -2035,12 +2003,6 @@ static void Cmd_jumpargeq(void)
         sBattleAnimScriptPtr += 7;
 }
 
-static void Cmd_jumpifcontest(void)
-{
-    sBattleAnimScriptPtr++;
-    sBattleAnimScriptPtr += 4;
-}
-
 static void Cmd_splitbgprio(void)
 {
     u8 wantedBattler;
@@ -2123,88 +2085,11 @@ static void Cmd_visible(void)
     sBattleAnimScriptPtr += 2;
 }
 
-// Below two commands are never used
-static void Cmd_teamattack_moveback(void)
-{
-    u8 wantedBattler;
-    u8 priorityRank;
-    u8 spriteId;
-
-    wantedBattler = sBattleAnimScriptPtr[1];
-    sBattleAnimScriptPtr += 2;
-
-    // Apply to double battles when attacking own side
-    if (!IsContest() && IsDoubleBattle()
-     && GetBattlerSide(gBattleAnimAttacker) == GetBattlerSide(gBattleAnimTarget))
-    {
-        if (wantedBattler == ANIM_ATTACKER)
-        {
-            priorityRank = GetBattlerSpriteBGPriorityRank(gBattleAnimAttacker);
-            spriteId = GetAnimBattlerSpriteId(ANIM_ATTACKER);
-        }
-        else
-        {
-            priorityRank = GetBattlerSpriteBGPriorityRank(gBattleAnimTarget);
-            spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
-        }
-        if (spriteId != SPRITE_NONE)
-        {
-            gSprites[spriteId].invisible = FALSE;
-            if (priorityRank == 2)
-                gSprites[spriteId].oam.priority = 3;
-
-            if (priorityRank == 1)
-                ResetBattleAnimBg(FALSE);
-            else
-                ResetBattleAnimBg(TRUE);
-        }
-    }
-}
-
-static void Cmd_teamattack_movefwd(void)
-{
-    u8 wantedBattler;
-    u8 priorityRank;
-    u8 spriteId;
-
-    wantedBattler = sBattleAnimScriptPtr[1];
-    sBattleAnimScriptPtr += 2;
-
-    // Apply to double battles when attacking own side
-    if (!IsContest() && IsDoubleBattle()
-     && GetBattlerSide(gBattleAnimAttacker) == GetBattlerSide(gBattleAnimTarget))
-    {
-        if (wantedBattler == ANIM_ATTACKER)
-        {
-            priorityRank = GetBattlerSpriteBGPriorityRank(gBattleAnimAttacker);
-            spriteId = GetAnimBattlerSpriteId(ANIM_ATTACKER);
-        }
-        else
-        {
-            priorityRank = GetBattlerSpriteBGPriorityRank(gBattleAnimTarget);
-            spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
-        }
-
-        if (spriteId != SPRITE_NONE && priorityRank == 2)
-            gSprites[spriteId].oam.priority = 2;
-    }
-}
-
 static void Cmd_stopsound(void)
 {
     m4aMPlayStop(&gMPlayInfo_SE1);
     m4aMPlayStop(&gMPlayInfo_SE2);
     sBattleAnimScriptPtr++;
-}
-
-static void Cmd_jumpifmovetypeequal(void)
-{
-    const u8 *type = sBattleAnimScriptPtr + 1;
-    sBattleAnimScriptPtr += 2;
-    if (*type != GetMoveType(gCurrentMove))
-        sBattleAnimScriptPtr += 4;
-    else
-        sBattleAnimScriptPtr = T2_READ_PTR(sBattleAnimScriptPtr);
 }
 
 static void Cmd_createdragondartsprite(void)

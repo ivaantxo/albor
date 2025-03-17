@@ -681,7 +681,7 @@ static void SetNextFacilityOpponent(void)
         else
         {
             s32 i;
-            while (1)
+            while(1)
             {
                 id = GetRandomScaledFrontierTrainerId(challengeNum, gSaveBlockPtr->frontier.curChallengeBattleNum);
 

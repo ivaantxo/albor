@@ -293,7 +293,6 @@ static void PrintContestPaintingCaption(u8 contestType, bool8 isForArtist)
         StringAppend(gStringVar1, gText_Space);
         StringAppend(gStringVar1, sContestRankNames[gContestPaintingWinner->contestRank]);
         StringCopy(gStringVar2, gContestPaintingWinner->trainerName);
-        ConvertInternationalContestantName(gStringVar2);
         StringCopy(gStringVar3, gContestPaintingWinner->monName);
         StringExpandPlaceholders(gStringVar4, gContestHallPaintingCaption);
     }

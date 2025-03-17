@@ -99,26 +99,40 @@ enum Naturalezas
     NUMERO_NATURALEZAS
 };
 
-// Pokémon Stats
-#define STAT_HP      0
-#define STAT_ATK     1
-#define STAT_DEF     2
-#define STAT_SPEED   3
-#define STAT_SPATK   4
-#define STAT_SPDEF   5
-#define NUM_STATS    6
+enum Estadisticas
+{
+    ESTADISTICA_PS,
+    ESTADISTICA_ATAQUE,
+    ESTADISTICA_DEFENSA,
+    ESTADISTICA_ATAQUE_ESPECIAL,
+    ESTADISTICA_DEFENSA_ESPECIAL,
+    ESTADISTICA_VELOCIDAD,
+    NUMERO_ESTADISTICAS,
 
-#define STAT_ACC     6 // Only in battles.
-#define STAT_EVASION 7 // Only in battles.
+    ESTADISTICA_PRECISION,
+    ESTADISTICA_EVASION,
+};
 
-#define NUM_NATURE_STATS (NUM_STATS - 1) // excludes HP
-#define NUM_BATTLE_STATS (NUM_STATS + 2) // includes Accuracy and Evasion
+#define NUMERO_ESTADISTICAS_BATALLA (NUMERO_ESTADISTICAS + 2) // //Incluye precisión y evasión
 
-#define MIN_STAT_STAGE     0
-#define DEFAULT_STAT_STAGE 6
-#define MAX_STAT_STAGE    12
+enum CambiosEstadisticas
+{
+    ESTADISTICA_MENOS_6,
+    ESTADISTICA_MENOS_5,
+    ESTADISTICA_MENOS_4,
+    ESTADISTICA_MENOS_3,
+    ESTADISTICA_MENOS_2,
+    ESTADISTICA_MENOS_1,
+    ESTADISTICA_NEUTRA,
+    ESTADISTICA_MAS_1,
+    ESTADISTICA_MAS_2,
+    ESTADISTICA_MAS_3,
+    ESTADISTICA_MAS_4,
+    ESTADISTICA_MAS_5,
+    ESTADISTICA_MAS_6
+    NUMERO_CAMBIOS_ESTADISTICAS
+}
 
-// Shiny odds
 #define SHINY_ODDS 128 //Probabilidad de 1/4096
 
 // Ribbon IDs used by TV and Pokénav

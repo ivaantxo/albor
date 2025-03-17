@@ -278,6 +278,19 @@ Debug_EventScript_Script_4::
 	end
 
 Debug_EventScript_Script_5::
+	trainerbattle_double TRAINER_CYNTHIA, Debug_Text_CynthiaIntro, Debug_Text_CynthiaDerrota, 0
+	msgbox Debug_Text_CynthiaPost, MSGBOX_DEFAULT
+	release
+	end
+
+Debug_Text_CynthiaIntro:
+	.string "…$"
+
+Debug_Text_CynthiaDerrota:
+	.string "Bú.$"
+
+Debug_Text_CynthiaPost:
+	.string "Jijiji.$"
 	release
 	end
 

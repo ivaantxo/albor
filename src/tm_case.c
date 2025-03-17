@@ -293,7 +293,7 @@ static void VBlankCB_Idle(void)
 
 static void CB2_SetUpTMCaseUI_Blocking(void)
 {
-    while (1)
+    while(1)
     {
         if (DoSetUpTMCaseUI() == TRUE)
             break;
@@ -683,7 +683,7 @@ static void TMCaseSetup_UpdateVisualMenuOffset(void)
     {
         for (i = 0; i <= sTMCaseStaticResources.selectedRow - 3 && sTMCaseStaticResources.scrollOffset + sTMCaseDynamicResources->maxTMsShown != sTMCaseDynamicResources->numTMs; i++)
         {
-            do {} while (0);
+            do {} while(0);
             sTMCaseStaticResources.selectedRow--;
             sTMCaseStaticResources.scrollOffset++;
         }

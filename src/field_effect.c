@@ -40,8 +40,6 @@
 
 EWRAM_DATA s32 gFieldEffectArguments[8] = {0};
 
-// Static type declarations
-
 static void Task_PokecenterHeal(u8 taskId);
 static void PokecenterHealEffect_Init(struct Task *);
 static void PokecenterHealEffect_WaitForBallPlacement(struct Task *);
@@ -240,11 +238,8 @@ static void UseVsSeeker_DoPlayerAnimation(struct Task *task);
 static void UseVsSeeker_ResetPlayerGraphics(struct Task *task);
 static void UseVsSeeker_CleanUpFieldEffect(struct Task *task);
 
-// Static RAM declarations
-
 static u8 sActiveList[32];
 
-// External declarations
 extern u8 *gFieldEffectScriptPointers[];
 extern const struct SpriteTemplate *const gFieldEffectObjectTemplatePointers[];
 

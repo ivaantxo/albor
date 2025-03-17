@@ -660,7 +660,7 @@ do                                        \
     va_start(args, format);               \
     ReportDiagnostic(type, format, args); \
     va_end(args);                         \
-} while (0)
+} while(0)
 
 // Reports an error diagnostic and terminates the program.
 void AsmFile::RaiseError(const char* format, ...)

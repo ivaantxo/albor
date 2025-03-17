@@ -93,16 +93,6 @@ static u8 *const sScriptStringVars[] =
     gStringVar3,
 };
 
-bool8 ScrCmd_nop(struct ScriptContext *ctx)
-{
-    return FALSE;
-}
-
-bool8 ScrCmd_nop1(struct ScriptContext *ctx)
-{
-    return FALSE;
-}
-
 bool8 ScrCmd_end(struct ScriptContext *ctx)
 {
     FlagClear(FLAG_SAFE_FOLLOWER_MOVEMENT);

@@ -1724,7 +1724,7 @@ static u16 HandleEasyChatInput_Phrase(void)
         }
 
         return ECFUNC_NONE;
-    } while (0);
+    } while(0);
 
     // Handle D-Pad input
 
@@ -1807,7 +1807,7 @@ static u16 HandleEasyChatInput_MainScreenButtons(void)
         }
 
         return ECFUNC_NONE;
-    } while (0);
+    } while(0);
 
     if (sEasyChatScreen->mainCursorRow == sEasyChatScreenTemplates[sEasyChatScreen->templateId].numRows)
     {
@@ -4165,7 +4165,7 @@ static void PrintKeyboardGroupNames(void)
 
     i = 0;
     y = 97;
-    while (1)
+    while(1)
     {
         for (x = 0; x < 2; x++)
         {

@@ -7822,7 +7822,7 @@ gBattleAnimMove_ParabolicCharge::
 	delay 12
 	createsprite gGrowingShockWaveOrbSpriteTemplate, ANIM_ATTACKER, 2
 	delay 30
-	jumpifdoublebattle ParabolicChargeDouble
+	saltasientrenador ParabolicChargeDouble
 	createvisualtask AnimTask_ShockWaveProgressingBolt, 5, ANIM_TARGET
 	delay 12
 	waitforvisualfinish
@@ -8404,7 +8404,7 @@ gBattleAnimMove_Boomburst::
 	createvisualtask AnimTask_ShakeMon2, 2, ANIM_ATK_PARTNER, 1, 0, 6, 1
 	createvisualtask SoundTask_WaitForCry, 2, 1, 0, 6, 1
 	delay 20
-	jumpifdoublebattle Boomburst_Doubles
+	saltasientrenador Boomburst_Doubles
 	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
 	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0, 0, 1, 1
 	delay 4
@@ -20189,7 +20189,6 @@ FuryAttackLeft:
 gBattleAnimMove_HornDrill::
 	loadspritegfx ANIM_TAG_IMPACT
 	loadspritegfx ANIM_TAG_HORN_HIT
-	jumpifcontest HornDrillInContest
 	fadetobg BG_DRILL
 	waitbgfadeout
 	createvisualtask AnimTask_StartSlidingBg, 5, -2304, 768, 1, -1
@@ -20246,12 +20245,6 @@ HornDrillContinue:
 	setarg 7, 0xFFFF
 	waitbgfadein
 	end
-
-HornDrillInContest:
-	fadetobg BG_DRILL_CONTESTS
-	waitbgfadeout
-	createvisualtask AnimTask_StartSlidingBg, 5, 2304, 768, 0, -1
-	goto HornDrillContinue
 
 gBattleAnimMove_Thrash::
 	loadspritegfx ANIM_TAG_IMPACT
@@ -20802,21 +20795,12 @@ gBattleAnimMove_Sketch::
 gBattleAnimMove_Nightmare::
 	fadetobg BG_GHOST
 	waitbgfadein
-	jumpifcontest NightmareInContest
 	monbg ANIM_DEF_PARTNER
 	createvisualtask AnimTask_NightmareClone, 2
 	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 3, 0, 40, 1
 	playsewithpan SE_M_NIGHTMARE, SOUND_PAN_TARGET
 	waitforvisualfinish
 	clearmonbg ANIM_DEF_PARTNER
-	restorebg
-	waitbgfadein
-	end
-NightmareInContest:
-	createvisualtask AnimTask_BlendMonInAndOut, 2, ANIM_ATTACKER, RGB_WHITE, 10, 2, 1
-	createvisualtask AnimTask_ShakeMon, 2, ANIM_ATTACKER, 3, 0, 32, 1
-	playsewithpan SE_M_NIGHTMARE, SOUND_PAN_TARGET
-	waitforvisualfinish
 	restorebg
 	waitbgfadein
 	end
@@ -23817,7 +23801,6 @@ gBattleAnimMove_Megahorn::
 	loadspritegfx ANIM_TAG_IMPACT
 	monbg ANIM_DEF_PARTNER
 	playsewithpan SE_M_DRAGON_RAGE, SOUND_PAN_ATTACKER
-	jumpifcontest MegahornInContest
 	fadetobg BG_DRILL
 	waitbgfadeout
 	createvisualtask AnimTask_StartSlidingBg, 5, -2304, 768, 1, -1
@@ -23849,11 +23832,6 @@ MegahornContinue:
 	setarg 7, 0xFFFF
 	waitbgfadein
 	end
-MegahornInContest:
-	fadetobg BG_DRILL_CONTESTS
-	waitbgfadeout
-	createvisualtask AnimTask_StartSlidingBg, 5, 2304, 768, 0, -1
-	goto MegahornContinue
 
 gBattleAnimMove_Gust::
 	loadspritegfx ANIM_TAG_GUST
@@ -27949,18 +27927,12 @@ UnsetPsychicBg:
 	return
 
 SetSkyBg:
-	jumpifcontest SetSkyBgContest
 	fadetobg BG_SKY
 	waitbgfadeout
 	createvisualtask AnimTask_StartSlidingBg, 5, -2304, 768, 1, -1
 SetSkyBgContinue:
 	waitbgfadein
 	return
-SetSkyBgContest:
-	fadetobg BG_SKY_CONTESTS
-	waitbgfadeout
-	createvisualtask AnimTask_StartSlidingBg, 5, 2304, 768, 0, -1
-	goto SetSkyBgContinue
 
 UnsetSkyBg:
 	restorebg

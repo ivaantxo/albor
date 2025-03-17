@@ -14,7 +14,7 @@
     { \
         _Static_assert(_Alignof(dest) >= (bit / 8), "destination potentially unaligned"); \
         CPU_FILL_UNCHECKED(value, dest, size, bit); \
-    } while (0)
+    } while(0)
 
 #define CpuFill16(value, dest, size) CPU_FILL(value, dest, size, 16)
 #define CpuFill32(value, dest, size) CPU_FILL(value, dest, size, 32)
@@ -27,7 +27,7 @@
         _Static_assert(_Alignof(src) >= (bit / 8), "source potentially unaligned"); \
         _Static_assert(_Alignof(dest) >= (bit / 8), "destination potentially unaligned"); \
         CPU_COPY_UNCHECKED(src, dest, size, bit); \
-    } while (0)
+    } while(0)
 
 #define CpuCopy16(src, dest, size) CPU_COPY(src, dest, size, 16)
 #define CpuCopy32(src, dest, size) CPU_COPY(src, dest, size, 32)
@@ -101,7 +101,7 @@
         _Static_assert(_Alignof(src) >= __builtin_choose_expr(__builtin_constant_p(control), ((control) & (DMA_32BIT << 16)) ? 4 : 2, 2), "source potentially unaligned"); \
         _Static_assert(_Alignof(dest) >= __builtin_choose_expr(__builtin_constant_p(control), ((control) & (DMA_32BIT << 16)) ? 4 : 2, 2), "destination potentially unaligned"); \
         DmaSetUnchecked(dmaNum, src, dest, control); \
-    } while (0)
+    } while(0)
 
 #define DMA_FILL_UNCHECKED(dmaNum, value, dest, size, bit)                                    \
 {                                                                                             \
@@ -118,7 +118,7 @@
     { \
         _Static_assert(_Alignof(dest) >= (bit / 8), "destination potentially unaligned"); \
         DMA_FILL_UNCHECKED(dmaNum, value, dest, size, bit); \
-    } while (0)
+    } while(0)
 
 #define DmaFill16(dmaNum, value, dest, size) DMA_FILL(dmaNum, value, dest, size, 16)
 #define DmaFill32(dmaNum, value, dest, size) DMA_FILL(dmaNum, value, dest, size, 32)
@@ -140,7 +140,7 @@
     { \
         _Static_assert(_Alignof(dest) >= (bit / 8), "destination potentially unaligned"); \
         DMA_CLEAR_UNCHECKED(dmaNum, dest, size, bit); \
-    } while (0)
+    } while(0)
 
 #define DmaClear16(dmaNum, dest, size) DMA_CLEAR(dmaNum, dest, size, 16)
 #define DmaClear32(dmaNum, dest, size) DMA_CLEAR(dmaNum, dest, size, 32)
@@ -158,7 +158,7 @@
         _Static_assert(_Alignof(src) >= (bit / 8), "source potentially unaligned"); \
         _Static_assert(_Alignof(dest) >= (bit / 8), "destination potentially unaligned"); \
         DMA_COPY_UNCHECKED(dmaNum, src, dest, size, bit); \
-    } while (0)
+    } while(0)
 
 #define DmaCopy16(dmaNum, src, dest, size) DMA_COPY(dmaNum, src, dest, size, 16)
 #define DmaCopy32(dmaNum, src, dest, size) DMA_COPY(dmaNum, src, dest, size, 32)
@@ -168,7 +168,7 @@
     const void *_src = src;                               \
     void *_dest = dest;                                   \
     u32 _size = size;                                     \
-    while (1)                                             \
+    while(1)                                             \
     {                                                     \
         DmaCopy##bit(dmaNum, _src, _dest, (block));       \
         _src += (block);                                  \
@@ -190,7 +190,7 @@
 {                                                           \
     void *_dest = dest;                                     \
     u32 _size = size;                                       \
-    while (1)                                               \
+    while(1)                                               \
     {                                                       \
         DmaFill##bit(dmaNum, value, _dest, (block));       \
         _dest += (block);                                   \
@@ -211,7 +211,7 @@
 {                                                           \
     void *_dest = dest;                                     \
     u32 _size = size;                                       \
-    while (1)                                               \
+    while(1)                                               \
     {                                                       \
         DmaFill##bit(dmaNum, 0, _dest, (block));       \
         _dest += (block);                                   \

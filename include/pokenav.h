@@ -401,7 +401,6 @@ bool32 OpenPokenavMenuNotInitial(void);
 void CreateMenuHandlerLoopedTask(s32 ltIdx);
 bool32 IsMenuHandlerLoopedTaskActive(void);
 void FreeMenuHandlerSubstruct2(void);
-void ResetBldCnt_(void);
 
 // pokenav_match_call_list.c
 bool32 PokenavCallback_Init_MatchCall(void);

@@ -7,12 +7,12 @@
 #define ITEM0_INFATUATION       0x80
 
 // new field 1 masks
-#define ITEM1_X_ATTACK          STAT_ATK
-#define ITEM1_X_DEFENSE         STAT_DEF
-#define ITEM1_X_SPEED           STAT_SPEED
-#define ITEM1_X_SPATK           STAT_SPATK
-#define ITEM1_X_SPDEF           STAT_SPDEF
-#define ITEM1_X_ACCURACY        STAT_ACC
+#define ITEM1_X_ATTACK          ESTADISTICA_ATAQUE
+#define ITEM1_X_DEFENSE         ESTADISTICA_DEFENSA
+#define ITEM1_X_SPEED           ESTADISTICA_VELOCIDAD
+#define ITEM1_X_SPATK           ESTADISTICA_ATAQUE_ESPECIAL
+#define ITEM1_X_SPDEF           ESTADISTICA_DEFENSA_ESPECIAL
+#define ITEM1_X_ACCURACY        ESTADISTICA_PRECISION
 
 // field 3 masks
 #define ITEM3_CONFUSION         0x1

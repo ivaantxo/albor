@@ -670,7 +670,7 @@ struct JsonParser final {
             if (ch == '}')
                 return data;
 
-            while (1) {
+            while(1) {
                 if (ch != '"')
                     return fail("expected '\"' in object, got " + esc(ch));
 
@@ -703,7 +703,7 @@ struct JsonParser final {
             if (ch == ']')
                 return data;
 
-            while (1) {
+            while(1) {
                 i--;
                 data.push_back(parse_json(depth + 1));
                 if (failed)
