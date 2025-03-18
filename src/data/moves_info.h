@@ -6041,7 +6041,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .description = COMPOUND_STRING(
             "The effectiveness varies\n"
             "with the user."),
-        .power = B_HIDDEN_POWER_DMG >= GEN_6 ? 60 : 1,
+        .power = 60,
         .effect = EFFECT_HIDDEN_POWER,
         .type = TIPO_NORMAL,
         .accuracy = 100,

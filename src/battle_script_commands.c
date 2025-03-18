@@ -8778,13 +8778,13 @@ static void Cmd_various(void)
     case VARIOUS_VOLUME_DOWN:
     {
         VARIOUS_ARGS();
-        m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, 0x55);
+        m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, VOLUMEN_BAJO);
         break;
     }
     case VARIOUS_VOLUME_UP:
     {
         VARIOUS_ARGS();
-        m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, 256);
+        m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, VOLUMEN_MAXIMO);
         break;
     }
     case VARIOUS_SET_ALREADY_STATUS_MOVE_ATTEMPT:

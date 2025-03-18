@@ -74,18 +74,17 @@ struct TrainerMon
 
 struct Trainer
 {
-    /*0x00*/ u32 aiFlags;
-    /*0x04*/ const struct TrainerMon *party;
-    /*0x08*/ u16 items[MAX_TRAINER_ITEMS];
-    /*0x10*/ u8 trainerClass;
-    /*0x11*/ u8 encounterMusic_gender; // last bit is gender
-    /*0x12*/ u8 trainerPic;
-    /*0x13*/ u8 trainerName[TRAINER_NAME_LENGTH + 1];
-    /*0x1E*/ bool8 doubleBattle:1;
-             bool8 mugshotEnabled:1;
-             u8 startingStatus:6;    // this trainer starts a battle with a given status. see include/constants/battle.h for values
-    /*0x1F*/ u8 mugshotColor;
-    /*0x20*/ u8 partySize;
+    u32 aiFlags;
+    const struct TrainerMon *party;
+    u16 items[MAX_TRAINER_ITEMS];
+    u8 trainerClass;
+    u8 encounterMusic_gender; // last bit is gender
+    u8 trainerPic;
+    u8 trainerName[TRAINER_NAME_LENGTH + 1];
+    bool8 mugshotEnabled;
+    u8 startingStatus;    // this trainer starts a battle with a given status. see include/constants/battle.h for values
+    u8 mugshotColor;
+    u8 partySize;
 };
 
 struct TrainerClass
@@ -212,11 +211,6 @@ static inline const u8 GetTrainerPicFromId(u16 trainerId)
 static inline const u8 GetTrainerStartingStatusFromId(u16 trainerId)
 {
     return gTrainers[SanitizeTrainerId(trainerId)].startingStatus;
-}
-
-static inline const bool32 IsTrainerDoubleBattle(u16 trainerId)
-{
-    return gTrainers[SanitizeTrainerId(trainerId)].doubleBattle;
 }
 
 static inline const u8 GetTrainerPartySizeFromId(u16 trainerId)

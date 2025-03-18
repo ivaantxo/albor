@@ -1262,7 +1262,7 @@ void CB2_Pokemon_Sprite_Visualizer(void)
             EnableInterrupts(1);
             SetVBlankCallback(VBlankCB);
             SetMainCallback2(CB2_PokemonSpriteVisualizerRunner);
-            m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, 128);
+            m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, VOLUMEN_MEDIO);
             break;
     }
 }
@@ -1944,6 +1944,6 @@ static void Exit_PokemonSpriteVisualizer(u8 taskId)
         FreeMonSpritesGfx();
         DestroyTask(taskId);
         SetMainCallback2(CB2_ReturnToFieldWithOpenMenu);
-        m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, 256);
+        m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, VOLUMEN_MAXIMO);
     }
 }

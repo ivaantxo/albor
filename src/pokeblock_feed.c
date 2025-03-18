@@ -802,7 +802,7 @@ static void Task_ExitPokeblockFeed(u8 taskId)
     {
         ResetSpriteData();
         FreeAllSpritePalettes();
-        m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, 256);
+        m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, VOLUMEN_MAXIMO);
         SetMainCallback2(gMain.savedCallback);
         DestroyTask(taskId);
         FreeAllWindowBuffers();

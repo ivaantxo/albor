@@ -423,7 +423,7 @@ static void StatsChangeAnimation_Step1(u8 taskId)
         sAnimStatsChangeData->battler1 = gBattleAnimTarget;
 
     sAnimStatsChangeData->battler2 = BATTLE_PARTNER(sAnimStatsChangeData->battler1);
-    if (IsContest() || (sAnimStatsChangeData->aMultipleBattlers && !IsBattlerSpriteVisible(sAnimStatsChangeData->battler2)))
+    if (sAnimStatsChangeData->aMultipleBattlers && !IsBattlerSpriteVisible(sAnimStatsChangeData->battler2))
         sAnimStatsChangeData->aMultipleBattlers = FALSE;
 
     gBattle_WIN0H = 0;
@@ -435,8 +435,7 @@ static void StatsChangeAnimation_Step1(u8 taskId)
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 16));
     SetAnimBgAttribute(1, BG_ANIM_PRIORITY, 0);
     SetAnimBgAttribute(1, BG_ANIM_SCREEN_SIZE, 0);
-    if (!IsContest())
-        SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 1);
+    SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 1);
 
     if (IsDoubleBattle() && !sAnimStatsChangeData->aMultipleBattlers)
     {
@@ -453,17 +452,10 @@ static void StatsChangeAnimation_Step1(u8 taskId)
         }
     }
 
-    if (IsContest())
-    {
-        sAnimStatsChangeData->species = gContestResources->moveAnim->species;
-    }
+    if (GetBattlerSide(sAnimStatsChangeData->battler1) != B_SIDE_PLAYER)
+        sAnimStatsChangeData->species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[sAnimStatsChangeData->battler1]], MON_DATA_SPECIES);
     else
-    {
-        if (GetBattlerSide(sAnimStatsChangeData->battler1) != B_SIDE_PLAYER)
-            sAnimStatsChangeData->species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[sAnimStatsChangeData->battler1]], MON_DATA_SPECIES);
-        else
-            sAnimStatsChangeData->species = GetMonData(&gPlayerParty[gBattlerPartyIndexes[sAnimStatsChangeData->battler1]], MON_DATA_SPECIES);
-    }
+        sAnimStatsChangeData->species = GetMonData(&gPlayerParty[gBattlerPartyIndexes[sAnimStatsChangeData->battler1]], MON_DATA_SPECIES);
 
     gTasks[taskId].func = StatsChangeAnimation_Step2;
 }
@@ -599,8 +591,7 @@ static void StatsChangeAnimation_Step3(u8 taskId)
         SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_ALL | WININ_WIN1_ALL);
         SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_ALL | WINOUT_WINOBJ_ALL);
 
-        if (!IsContest())
-            SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 0);
+        SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 0);
 
         SetGpuReg(REG_OFFSET_DISPCNT, GetGpuReg(REG_OFFSET_DISPCNT) ^ DISPCNT_OBJWIN_ON);
         SetGpuReg(REG_OFFSET_BLDCNT, 0);
@@ -1027,11 +1018,7 @@ void AnimTask_CopyPalFadedToUnfaded(u8 taskId)
 
 void AnimTask_IsContest(u8 taskId)
 {
-    if (IsContest())
-        gBattleAnimArgs[ARG_RET_ID] = TRUE;
-    else
-        gBattleAnimArgs[ARG_RET_ID] = FALSE;
-
+    gBattleAnimArgs[ARG_RET_ID] = FALSE;
     DestroyAnimVisualTask(taskId);
 }
 

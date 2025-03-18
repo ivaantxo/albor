@@ -993,7 +993,7 @@ static void SpriteCB_ReleaseMonFromBall(struct Sprite *sprite)
         if ((battlerId == GetBattlerAtPosition(B_POSITION_PLAYER_LEFT) || battlerId == GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT))
          && IsDoubleBattle() && gBattleSpritesDataPtr->animationData->introAnimActive)
         {
-            m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, 128);
+            m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, VOLUMEN_MEDIO);
         }
 
         if (!IsDoubleBattle() || !gBattleSpritesDataPtr->animationData->introAnimActive)
