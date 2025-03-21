@@ -101,7 +101,7 @@ static void MainCB2(void)
 
 static void Task_DiplomaFadeIn(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
         gTasks[taskId].func = Task_DiplomaWaitForKeyPress;
 }
 
@@ -116,7 +116,7 @@ static void Task_DiplomaWaitForKeyPress(u8 taskId)
 
 static void Task_DiplomaFadeOut(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         Free(sDiplomaTilemapPtr);
         FreeAllWindowBuffers();

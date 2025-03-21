@@ -1332,7 +1332,7 @@ static void VBlankCB_RayquazaScene(void)
 
 static void Task_EndAfterFadeScreen(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         ResetSpriteData();
         FreeAllSpritePalettes();
@@ -1344,7 +1344,7 @@ static void Task_EndAfterFadeScreen(u8 taskId)
 
 static void Task_SetNextAnim(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         if (sRayScene->endEarly == TRUE)
         {
@@ -1392,7 +1392,7 @@ static void Task_HandleDuoFightPre(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
     DuoFight_AnimateRain();
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         s16 frame = tTimer;
         if (frame == 64)
@@ -1703,7 +1703,7 @@ static void Task_HandleDuoFight(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
     DuoFight_AnimateRain();
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         s16 frame = tTimer;
         if (frame == 32 || frame == 112)
@@ -1799,7 +1799,7 @@ static void Task_DuoFightEnd(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
     DuoFight_AnimateRain();
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         DestroyTask(tHelperTaskId);
         ChangeBgY(1, 0, BG_COORD_SET);
@@ -2141,7 +2141,7 @@ static void Task_HandleRayTakesFlight(u8 taskId)
 
 static void Task_RayTakesFlightEnd(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         SetVBlankCallback(NULL);
         ResetSpriteData();
@@ -2322,7 +2322,7 @@ static void Task_HandleRayDescends(u8 taskId)
         }
         break;
     case 1:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             // Delay, then start ray of light
             if (tTimer == 10)
@@ -2369,7 +2369,7 @@ static void Task_HandleRayDescends(u8 taskId)
 
 static void Task_RayDescendsEnd(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         SetVBlankCallback(NULL);
         SetHBlankCallback(NULL);
@@ -2635,7 +2635,7 @@ static void Task_RayChargesEnd(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
     RayCharges_AnimateBg();
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         SetVBlankCallback(NULL);
         ResetWindowDimensions();
@@ -2818,7 +2818,7 @@ static void Task_ChasesAway_AnimateBg(u8 taskId)
 static void Task_RayChasesAwayEnd(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         StopMapMusic();
         if (tTimer == 0)

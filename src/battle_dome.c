@@ -2406,14 +2406,14 @@ static void Task_HandleInfoCardInput(u8 taskId)
     switch (gTasks[taskId].tState)
     {
     case STATE_FADE_IN:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             BeginNormalPaletteFade(PALETTES_ALL, 0, 0x10, 0, RGB_BLACK);
             gTasks[taskId].tState = STATE_WAIT_FADE;
         }
         break;
     case STATE_WAIT_FADE:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
             gTasks[taskId].tState = STATE_GET_INPUT;
         break;
     case STATE_GET_INPUT:
@@ -3060,7 +3060,7 @@ static void Task_HandleInfoCardInput(u8 taskId)
         }
         break;
     case STATE_CLOSE_CARD:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             for (i = 0; i < NUM_INFOCARD_SPRITES / 2; i++)
             {

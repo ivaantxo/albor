@@ -1315,7 +1315,7 @@ static void Task_ClosePokedex(u8 taskId)
 {
     u16 music = GetCurrLocationDefaultMusic();
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         ClearMonSprites();
         FreeWindowAndBgBuffers();
@@ -1345,7 +1345,7 @@ static bool8 LoadPokedexListPage(u8 page)
     {
     case 0:
     default:
-        if (gPaletteFade.active)
+        if (gFundidoPaletas.activo)
             return 0;
         SetVBlankCallback(NULL);
         sPokedexView->currentPage = page;
@@ -1424,7 +1424,7 @@ static bool8 LoadPokedexListPage(u8 page)
         gMain.state++;
         break;
     case 6:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             gMain.state = 0;
             return TRUE;
@@ -1720,7 +1720,7 @@ static void CreateMonSpritesAtPos(u16 selectedMon)
     u16 dexNum;
     u8 spriteId;
 
-    gPaletteFade.bufferTransferDisabled = TRUE;
+    gFundidoPaletas.transferenciaBufferDeshabilitada = TRUE;
 
     for (i = 0; i < MAX_MONS_ON_SCREEN; i++)
         sPokedexView->monSpriteIds[i] = 0xFFFF;
@@ -1759,7 +1759,7 @@ static void CreateMonSpritesAtPos(u16 selectedMon)
     sPokedexView->listVOffset = 0;
     sPokedexView->listMovingVOffset = 0;
 
-    gPaletteFade.bufferTransferDisabled = FALSE;
+    gFundidoPaletas.transferenciaBufferDeshabilitada = FALSE;
 }
 
 static bool8 UpdateDexListScroll(u8 direction, u8 monMoveIncrement, u8 scrollTimerMax)
@@ -2475,7 +2475,7 @@ static void Task_LoadInfoScreen(u8 taskId)
     {
     case 0:
     default:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             u16 r2;
 
@@ -2551,7 +2551,7 @@ static void Task_LoadInfoScreen(u8 taskId)
         gMain.state++;
         break;
     case 8:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             gMain.state++;
         }
@@ -2620,7 +2620,7 @@ static void Task_HandleInfoScreenInput(u8 taskId)
 
 static void Task_SwitchScreensFromInfoScreen(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         FreeAndDestroyMonPicSprite(gTasks[taskId].tMonSpriteId);
         switch (sPokedexView->screenSwitchState)
@@ -2635,7 +2635,7 @@ static void Task_SwitchScreensFromInfoScreen(u8 taskId)
 
 static void Task_LoadInfoScreenWaitForFade(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         FreeAndDestroyMonPicSprite(gTasks[taskId].tMonSpriteId);
         gTasks[taskId].func = Task_LoadInfoScreen;
@@ -2644,7 +2644,7 @@ static void Task_LoadInfoScreenWaitForFade(u8 taskId)
 
 static void Task_ExitInfoScreen(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         FreeAndDestroyMonPicSprite(gTasks[taskId].tMonSpriteId);
         FreeInfoScreenWindowAndBgBuffers();
@@ -2665,7 +2665,7 @@ static void Task_LoadAreaScreen(u8 taskId)
     {
     case 0:
     default:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             sPokedexView->currentPage = PAGE_AREA;
             gPokedexVBlankCB = gMain.vblankCallback;
@@ -2699,7 +2699,7 @@ static void Task_WaitForAreaScreenInput(u8 taskId)
 
 static void Task_SwitchScreensFromAreaScreen(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         switch (sPokedexView->screenSwitchState)
         {
@@ -2756,7 +2756,7 @@ void Task_DisplayCaughtMonDexPageHGSS(u8 taskId)
     {
     case 0:
     default:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             gPokedexVBlankCB = gMain.vblankCallback;
             SetVBlankCallback(NULL);
@@ -2817,7 +2817,7 @@ void Task_DisplayCaughtMonDexPageHGSS(u8 taskId)
         gTasks[taskId].tState++;
         break;
     case 6:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             PlayCry_Normal(species, 0);
             gTasks[taskId].tPalTimer = 0;
@@ -2841,7 +2841,7 @@ static void Task_HandleCaughtMonPageInput(u8 taskId)
 
 static void Task_ExitCaughtMonPage(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         u16 species;
         u32 otId;
@@ -3294,7 +3294,7 @@ static void Task_LoadStatsScreen(u8 taskId)
     {
     case 0:
     default:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             u16 r2;
 
@@ -3396,7 +3396,7 @@ static void Task_LoadStatsScreen(u8 taskId)
         gMain.state++;
         break;
     case 9:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
             gMain.state++;
         break;
     case 10:
@@ -4250,7 +4250,7 @@ static void PrintStatsScreen_Abilities(u8 taskId)
 
 static void Task_SwitchScreensFromStatsScreen(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         FreeSpriteTilesByTag(ITEM_TAG);                         //Destroy item icon
         FreeSpritePaletteByTag(ITEM_TAG);                       //Destroy item icon
@@ -4281,7 +4281,7 @@ static void Task_SwitchScreensFromStatsScreen(u8 taskId)
 
 static void Task_ExitStatsScreen(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         FreeSpriteTilesByTag(ITEM_TAG);                         //Destroy item icon
         FreeSpritePaletteByTag(ITEM_TAG);                       //Destroy item icon
@@ -4376,7 +4376,7 @@ static void Task_LoadEvolutionScreen(u8 taskId)
     {
     case 0:
     default:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             u16 r2;
 
@@ -4464,7 +4464,7 @@ static void Task_LoadEvolutionScreen(u8 taskId)
         gMain.state++;
         break;
     case 7:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
             gMain.state++;
         break;
     case 8:
@@ -4875,7 +4875,7 @@ static u8 PrintEvolutionTargetSpeciesAndMethod(u8 taskId, u16 species, u8 depth,
 static void Task_SwitchScreensFromEvolutionScreen(u8 taskId)
 {
     u8 i;
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         //FreeMonIconPalettes();                                          //Destroy pokemon icon sprite
         FreeAndDestroyMonIconSprite(&gSprites[gTasks[taskId].data[4]]); //Destroy pokemon icon sprite
@@ -4903,7 +4903,7 @@ static void Task_SwitchScreensFromEvolutionScreen(u8 taskId)
 static void Task_ExitEvolutionScreen(u8 taskId)
 {
     u8 i;
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         //FreeMonIconPalettes();                                          //Destroy pokemon icon sprite
         FreeAndDestroyMonIconSprite(&gSprites[gTasks[taskId].data[4]]); //Destroy pokemon icon sprite
@@ -4931,7 +4931,7 @@ static void Task_LoadFormsScreen(u8 taskId)
     {
     case 0:
     default:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             u16 r2;
 
@@ -5011,7 +5011,7 @@ static void Task_LoadFormsScreen(u8 taskId)
         gMain.state++;
         break;
     case 7:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
             gMain.state++;
         break;
     case 8:
@@ -5169,7 +5169,7 @@ static void PrintForms(u8 taskId, u16 species)
 static void Task_SwitchScreensFromFormsScreen(u8 taskId)
 {
     u8 i;
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         //FreeMonIconPalettes();                                          //Destroy pokemon icon sprite
         FreeAndDestroyMonIconSprite(&gSprites[gTasks[taskId].data[4]]); //Destroy pokemon icon sprite
@@ -5194,7 +5194,7 @@ static void Task_SwitchScreensFromFormsScreen(u8 taskId)
 static void Task_ExitFormsScreen(u8 taskId)
 {
     u8 i;
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         //FreeMonIconPalettes();                                          //Destroy pokemon icon sprite
         FreeAndDestroyMonIconSprite(&gSprites[gTasks[taskId].data[4]]); //Destroy pokemon icon sprite

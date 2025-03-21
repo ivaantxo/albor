@@ -515,7 +515,7 @@ static void Task_HandleMultichoiceInput(u8 taskId)
     s8 selection;
     s16 *data = gTasks[taskId].data;
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         if (sProcessInputDelay)
         {

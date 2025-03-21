@@ -1123,7 +1123,7 @@ static void UpdatePyramidLightRadius(void)
         switch (gSpecialVar_Result)
         {
         case 0:
-            if (!gPaletteFade.active)
+            if (!gFundidoPaletas.activo)
             {
                 if (gSaveBlockPtr->frontier.pyramidLightRadius >= 120)
                     gSaveBlockPtr->frontier.pyramidLightRadius = 120;
@@ -1179,7 +1179,7 @@ static void SetPyramidFloorPalette(void)
 
 static void Task_SetPyramidFloorPalette(u8 taskId)
 {
-    if (gPaletteFade.active)
+    if (gFundidoPaletas.activo)
     {
         CpuCopy16(gBattlePyramidFloor_Pal[gSaveBlockPtr->frontier.curChallengeBattleNum], &gPlttBufferUnfaded[BG_PLTT_ID(6)], PLTT_SIZE_4BPP);
         DestroyTask(taskId);

@@ -439,7 +439,7 @@ void EggHatch(void)
 
 static void Task_EggHatch(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         CleanupOverworldWindowsAndTilemaps();
         SetMainCallback2(CB2_LoadEggHatch);
@@ -586,7 +586,7 @@ static void CB2_EggHatch(void)
         CreateTask(Task_EggHatchPlayBGM, 5);
         break;
     case 1:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             FillWindowPixelBuffer(sEggHatchData->windowId, PIXEL_FILL(0));
             sEggHatchData->delayTimer = 0;
@@ -672,7 +672,7 @@ static void CB2_EggHatch(void)
         sEggHatchData->state++;
         break;
     case 12:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             FreeMonSpritesGfx();
             RemoveWindow(sEggHatchData->windowId);
@@ -804,7 +804,7 @@ static void SpriteCB_Egg_Hatch(struct Sprite *sprite)
 
     sprite->sTimer++;
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         // Screen is hidden by the fade to white, hide egg
         PlaySE(SE_EGG_HATCH);

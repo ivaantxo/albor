@@ -993,7 +993,7 @@ void CycleSceneryPalette(u8 mode)
     {
         case 0:
         default:
-            if (gMain.vblankCounter1 & 3 || gPaletteFade.active)
+            if (gMain.vblankCounter1 & 3 || gFundidoPaletas.activo)
                 break;
             if (gMain.vblankCounter1 & 4)
             {
@@ -1009,7 +1009,7 @@ void CycleSceneryPalette(u8 mode)
             LoadPalette(&y, BG_PLTT_ID(0) + 10, sizeof(y));
             break;
         case 2:
-            if (gMain.vblankCounter1 & 3 || gPaletteFade.active)
+            if (gMain.vblankCounter1 & 3 || gFundidoPaletas.activo)
                 break;
             if (gMain.vblankCounter1 & 4)
             {

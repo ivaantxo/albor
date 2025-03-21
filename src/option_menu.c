@@ -249,7 +249,7 @@ void CB2_InitOptionMenu(void)
 
 static void Task_OptionMenuFadeIn(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
         gTasks[taskId].func = Task_OptionMenuProcessInput;
 }
 
@@ -347,7 +347,7 @@ static void Task_OptionMenuSave(u8 taskId)
 
 static void Task_OptionMenuFadeOut(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         DestroyTask(taskId);
         FreeAllWindowBuffers();

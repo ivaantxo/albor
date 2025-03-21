@@ -1582,7 +1582,7 @@ static void SpriteCB_Ball_FadeOut(struct Sprite *sprite)
         sprite->sState++;
         break;
     default:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             SetGpuReg(REG_OFFSET_BLDCNT, 0);
             SetGpuReg(REG_OFFSET_BLDALPHA, 0);
@@ -2267,7 +2267,7 @@ static void Task_FadeMon_ToBallColor(u8 taskId)
         gTasks[taskId].tCoeff += gTasks[taskId].tdCoeff;
         gTasks[taskId].tTimer++;
     }
-    else if (!gPaletteFade.active)
+    else if (!gFundidoPaletas.activo)
     {
         u32 selectedPalettes = (u16)gTasks[taskId].tPaletteLo | ((u16)gTasks[taskId].tPaletteHi << 16);
         BeginNormalPaletteFade(selectedPalettes, 0, 16, 0, RGB_WHITE);
@@ -2277,7 +2277,7 @@ static void Task_FadeMon_ToBallColor(u8 taskId)
 
 static void Task_FadeMon_ToNormal(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         u32 selectedPalettes = (u16)gTasks[taskId].tPaletteLo | ((u16)gTasks[taskId].tPaletteHi << 16);
         BeginNormalPaletteFade(selectedPalettes, 0, 16, 0, RGB_WHITE);

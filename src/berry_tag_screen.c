@@ -229,7 +229,7 @@ static bool8 InitBerryTagScreen(void)
         break;
     case 2:
         ResetPaletteFade();
-        gPaletteFade.bufferTransferDisabled = 1;
+        gFundidoPaletas.transferenciaBufferDeshabilitada = TRUE;
         gMain.state++;
         break;
     case 3:
@@ -284,7 +284,7 @@ static bool8 InitBerryTagScreen(void)
         break;
     case 15:
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0x10, 0, RGB_BLACK);
-        gPaletteFade.bufferTransferDisabled = 0;
+        gFundidoPaletas.transferenciaBufferDeshabilitada = FALSE;
         gMain.state++;
         break;
     default: // done
@@ -526,7 +526,7 @@ static void PrepareToCloseBerryTagScreen(u8 taskId)
 
 static void Task_CloseBerryTagScreen(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         DestroyBerrySprite();
         DestroyFlavorCircleSprites();
@@ -539,7 +539,7 @@ static void Task_CloseBerryTagScreen(u8 taskId)
 
 static void Task_HandleInput(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         u16 arrowKeys = JOY_REPEAT(DPAD_ANY);
         if (arrowKeys == DPAD_UP)

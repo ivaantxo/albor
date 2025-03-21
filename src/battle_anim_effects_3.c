@@ -1443,15 +1443,14 @@ static void SetPsychicBackground_Step(u8 taskId)
 {
     int i;
     u16 lastColor;
-    u8 paletteIndex = GetBattleBgPaletteNum();
 
     if (++gTasks[taskId].data[5] == 4)
     {
-        lastColor = gPlttBufferFaded[BG_PLTT_ID(paletteIndex) + 11];
+        lastColor = gPlttBufferFaded[BG_PLTT_ID(2) + 11];
         for (i = 10; i > 0; i--)
-            gPlttBufferFaded[BG_PLTT_ID(paletteIndex) + i + 1] = gPlttBufferFaded[BG_PLTT_ID(paletteIndex) + i];
+            gPlttBufferFaded[BG_PLTT_ID(2) + i + 1] = gPlttBufferFaded[BG_PLTT_ID(2) + i];
 
-        gPlttBufferFaded[BG_PLTT_ID(paletteIndex) + 1] = lastColor;
+        gPlttBufferFaded[BG_PLTT_ID(2) + 1] = lastColor;
         gTasks[taskId].data[5] = 0;
     }
 
@@ -1469,19 +1468,18 @@ static void FadeScreenToWhite_Step(u8 taskId)
 {
     int i;
     u16 lastColor;
-    u8 paletteIndex = GetBattleBgPaletteNum();
 
     if (++gTasks[taskId].data[5] == 4)
     {
-        lastColor = gPlttBufferFaded[BG_PLTT_ID(paletteIndex) + 11];
+        lastColor = gPlttBufferFaded[BG_PLTT_ID(2) + 11];
         for (i = 10; i > 0; i--)
-            gPlttBufferFaded[BG_PLTT_ID(paletteIndex) + i + 1] = gPlttBufferFaded[BG_PLTT_ID(paletteIndex) + i];
-        gPlttBufferFaded[BG_PLTT_ID(paletteIndex) + 1] = lastColor;
+            gPlttBufferFaded[BG_PLTT_ID(2) + i + 1] = gPlttBufferFaded[BG_PLTT_ID(2) + i];
+        gPlttBufferFaded[BG_PLTT_ID(2) + 1] = lastColor;
 
-        lastColor = gPlttBufferUnfaded[BG_PLTT_ID(paletteIndex) + 11];
+        lastColor = gPlttBufferUnfaded[BG_PLTT_ID(2) + 11];
         for (i = 10; i > 0; i--)
-            gPlttBufferUnfaded[BG_PLTT_ID(paletteIndex) + i + 1] = gPlttBufferUnfaded[BG_PLTT_ID(paletteIndex) + i];
-        gPlttBufferUnfaded[BG_PLTT_ID(paletteIndex) + 1] = lastColor;
+            gPlttBufferUnfaded[BG_PLTT_ID(2) + i + 1] = gPlttBufferUnfaded[BG_PLTT_ID(2) + i];
+        gPlttBufferUnfaded[BG_PLTT_ID(2) + 1] = lastColor;
 
         gTasks[taskId].data[5] = 0;
     }
@@ -2292,12 +2290,10 @@ void AnimTask_SwallowDeformMon(u8 taskId)
 
 void AnimTask_HideSwapSprite(u8 taskId)
 {
-    int i, j;
     u8 position;
     struct BattleAnimBgData animBg;
     u8 *dest;
     u8 *src;
-    u16 *bgTilemap;
     u8 spriteId = gBattlerSpriteIds[gBattleAnimAttacker];
 
     switch (gTasks[taskId].data[0])
@@ -2333,12 +2329,10 @@ void AnimTask_HideSwapSprite(u8 taskId)
 
 void AnimTask_TransformMon(u8 taskId)
 {
-    int i, j;
     u8 position;
     struct BattleAnimBgData animBg;
     u8 *dest;
     u8 *src;
-    u16 *bgTilemap;
     u16 stretch;
 
     switch (gTasks[taskId].data[0])
@@ -2424,7 +2418,7 @@ void AnimTask_MorningSunLightBeam(u8 taskId)
         SetAnimBgAttribute(1, BG_ANIM_PRIORITY, 1);
         SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 1);
         GetBattleAnimBg1Data(&animBg);
-        AnimLoadCompressedBgTilemapHandleContest(&animBg, &gBattleAnimMaskTilemap_LightBeam, FALSE);
+        AnimLoadCompressedBgTilemap(animBg.bgId, &gBattleAnimMaskTilemap_LightBeam);
         if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
             gBattle_BG1_X = -135;
         else
@@ -2593,9 +2587,9 @@ void AnimTask_DoomDesireLightBeam(u8 taskId)
         SetAnimBgAttribute(1, BG_ANIM_PRIORITY, 1);
         SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 1);
         GetBattleAnimBg1Data(&animBg);
-        AnimLoadCompressedBgTilemapHandleContest(&animBg, &gBattleAnimMaskTilemap_LightBeam, FALSE);
+        AnimLoadCompressedBgTilemap(animBg.bgId, &gBattleAnimMaskTilemap_LightBeam);
         u8 position = GetBattlerPosition(gBattleAnimTarget);
-        if (IsDoubleBattle() == TRUE)
+        if (EsContraEntrenador() == TRUE)
         {
             if (position == B_POSITION_OPPONENT_LEFT)
                 gBattle_BG1_X = -155;
@@ -4470,7 +4464,7 @@ void AnimTask_HelpingHandAttackerMovement(u8 taskId)
     struct Task *task = &gTasks[taskId];
 
     task->data[15] = GetAnimBattlerSpriteId(ANIM_ATTACKER);
-    if (IsDoubleBattle() == TRUE)
+    if (EsContraEntrenador() == TRUE)
     {
         int attackerX = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_X);
         int partnerX = GetBattlerSpriteCoord(BATTLE_PARTNER(gBattleAnimAttacker), BATTLER_COORD_X);

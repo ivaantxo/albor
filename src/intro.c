@@ -1037,7 +1037,7 @@ void MainCB2_Intro(void)
     AnimateSprites();
     BuildOamBuffer();
     UpdatePaletteFade();
-    if (gMain.newKeys != 0 && !gPaletteFade.active)
+    if (gMain.newKeys != 0 && !gFundidoPaletas.activo)
         SetMainCallback2(MainCB2_EndIntro);
     else if (gIntroFrameCounter != -1)
         gIntroFrameCounter++;
@@ -1741,7 +1741,7 @@ static void Task_Scene3_WaitGroudon(u8 taskId)
 
 static void Task_Scene3_LoadGroudon(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         IntroResetGpuRegs();
         ResetSpriteData();
@@ -1934,7 +1934,7 @@ static void Task_Scene3_Groudon(u8 taskId)
             tState++;
         break;
     case 9:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             gTasks[taskId].func = Task_Scene3_LoadKyogre;
             gScanlineEffect.state = 3;
@@ -2173,7 +2173,7 @@ static void Task_Scene3_Kyogre(u8 taskId)
             tState++;
         break;
     case 13:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             gTasks[taskId].func = Task_Scene3_LoadClouds1;
             gScanlineEffect.state = 3;
@@ -2382,7 +2382,7 @@ static void Task_Scene3_Clouds(u8 taskId)
         // Move clouds inward toward each other
         if (tCloudPos != 0)
             tCloudPos -= 128;
-        else if (!gPaletteFade.active)
+        else if (!gFundidoPaletas.activo)
             gTasks[taskId].func = Task_Scene3_LoadLightning;
         break;
     }
@@ -2548,7 +2548,7 @@ static void Task_Scene3_Rayquaza(u8 taskId)
         data[2] -= 2;
         data[3] -= 4;
         data[4] -= 2;
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             data[5] = 0x8C;
             tState++;
@@ -2657,7 +2657,7 @@ static void Task_RayquazaAttack(u8 taskId)
         }
         break;
     case 5:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
             DestroyTask(taskId);
         break;
     }

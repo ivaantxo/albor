@@ -1348,15 +1348,15 @@ static void Task_EasyChatScreen(u8 taskId)
             tState = MAINSTATE_HANDLE_INPUT;
         break;
     case MAINSTATE_TO_QUIZ_LADY:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
             EnterQuizLadyScreen(tFuncId);
         break;
     case MAINSTATE_EXIT:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
             ExitEasyChatScreen((MainCallback)GetWordTaskArg(taskId, TASKIDX_EXIT_CALLBACK));
         break;
     case MAINSTATE_WAIT_FADE_IN:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
             tState = MAINSTATE_HANDLE_INPUT;
         break;
     }
@@ -1503,7 +1503,7 @@ static void CB2_QuizLadyQuestion(void)
         FadeScreen(FADE_TO_BLACK, 0);
         break;
     case 1:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             lilycoveLady = &gSaveBlockPtr->lilycoveLady;
             lilycoveLady->quiz.playerAnswer = EC_EMPTY_WORD;

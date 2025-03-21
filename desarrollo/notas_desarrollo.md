@@ -91,3 +91,5 @@ porytiles compile-primary -Wall -o /Users/ivanmartinez/Desktop/pokeemerald/data/
 *Cloyster/Slowking/Slowbro aprenden ataques Veneno (+Ataque custom tipo Control Mental?)
 
 paletas: (\d+) (\d+) (\d+) \d+ --> $1 $2 $3
+
+//falta terminar lista de macros (scrcmd...) y terminar strings, después comprobar que todo va bien, y añadir cambios de rama principal.

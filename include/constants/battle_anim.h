@@ -551,7 +551,7 @@
 #define B_ANIM_MEGA_EVOLUTION           22
 #define B_ANIM_ILLUSION_OFF             23
 #define B_ANIM_FORM_CHANGE              24
-#define B_ANIM_SLIDE_OFFSCREEN          25 // for Emergency Exit
+#define B_ANIM_SLIDE_OFFSCREEN          25 // Sin usar
 #define B_ANIM_RESTORE_BG               26 // for Terrain Endings
 #define B_ANIM_TOTEM_FLARE              27 // Totem boosts aura flare
 #define B_ANIM_GULP_MISSILE             28

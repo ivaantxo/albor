@@ -1937,7 +1937,7 @@ static void ReloadPokemonSprites(struct PokemonSpriteVisualizer *data)
 
 static void Exit_PokemonSpriteVisualizer(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         struct PokemonSpriteVisualizer *data = GetStructPtr(taskId);
         Free(data);

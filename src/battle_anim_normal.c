@@ -409,7 +409,7 @@ u32 UnpackSelectedBattlePalettes(s16 selector)
 
 static void AnimSimplePaletteBlend_Step(struct Sprite *sprite)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
         DestroyAnimSprite(sprite);
 }
 
@@ -442,7 +442,7 @@ static void AnimComplexPaletteBlend_Step1(struct Sprite *sprite)
         return;
     }
 
-    if (gPaletteFade.active)
+    if (gFundidoPaletas.activo)
         return;
 
     if (sprite->data[2] == 0)
@@ -466,7 +466,7 @@ static void AnimComplexPaletteBlend_Step2(struct Sprite *sprite)
 {
     u32 selectedPalettes;
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         selectedPalettes = UnpackSelectedBattlePalettes(sprite->data[7]);
         BlendPalettes(selectedPalettes, 0, 0);
@@ -518,7 +518,7 @@ static void BlendColorCycle(u8 taskId, u8 startBlendAmount, u8 targetBlendAmount
 static void AnimTask_BlendColorCycleLoop(u8 taskId)
 {
     u8 startBlendAmount, targetBlendAmount;
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         if (gTasks[taskId].tNumBlends > 0)
         {
@@ -593,7 +593,7 @@ static void BlendColorCycleExclude(u8 taskId, u8 startBlendAmount, u8 targetBlen
 static void AnimTask_BlendColorCycleExcludeLoop(u8 taskId)
 {
     u8 startBlendAmount, targetBlendAmount;
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         if (gTasks[taskId].tNumBlends > 0)
         {
@@ -654,7 +654,7 @@ static void BlendColorCycleByTag(u8 taskId, u8 startBlendAmount, u8 targetBlendA
 static void AnimTask_BlendColorCycleByTagLoop(u8 taskId)
 {
     u8 startBlendAmount, targetBlendAmount;
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         if (gTasks[taskId].tNumBlends > 0)
         {
@@ -729,7 +729,7 @@ static void AnimTask_FlashAnimTagWithColor_Step1(u8 taskId)
         return;
     }
 
-    if (gPaletteFade.active)
+    if (gFundidoPaletas.activo)
         return;
 
     if (gTasks[taskId].data[2] == 0)
@@ -767,7 +767,7 @@ static void AnimTask_FlashAnimTagWithColor_Step2(u8 taskId)
 {
     u32 selectedPalettes;
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         selectedPalettes = 1 << (IndexOfSpritePaletteTag(gTasks[taskId].data[7]) + 16);
         BeginNormalPaletteFade(selectedPalettes, 0, 0, 0, RGB_BLACK);

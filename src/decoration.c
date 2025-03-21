@@ -594,7 +594,7 @@ void DoPlayerRoomDecorationMenu(u8 taskId)
 
 static void HandleDecorationActionsMenuInput(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         s8 menuPos = Menu_GetCursorPos();
         switch (Menu_ProcessInput())
@@ -762,7 +762,7 @@ static void ColorMenuItemString(u8 *str, bool8 disabled)
 
 static void HandleDecorationCategoriesMenuInput(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         s8 input = Menu_ProcessInput();
         switch (input)
@@ -965,7 +965,7 @@ static void HandleDecorationItemsMenuInput(u8 taskId)
     s32 input;
 
     data = gTasks[taskId].data;
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         input = ListMenu_ProcessInput(tMenuTaskId);
         ListMenuGetScrollAndRow(tMenuTaskId, &sDecorationsScrollOffset, &sDecorationsCursorPos);
@@ -1325,7 +1325,7 @@ static void Task_PlaceDecoration(u8 taskId)
     switch (gTasks[taskId].tState)
     {
         case 0:
-            if (!gPaletteFade.active)
+            if (!gFundidoPaletas.activo)
             {
                 SetInitialPositions(taskId);
                 gTasks[taskId].tState = 1;
@@ -1333,12 +1333,12 @@ static void Task_PlaceDecoration(u8 taskId)
             break;
         case 1:
             RemoveFollowingPokemon();
-            gPaletteFade.bufferTransferDisabled = TRUE;
+            gFundidoPaletas.transferenciaBufferDeshabilitada = TRUE;
             ConfigureCameraObjectForPlacingDecoration(&sPlaceDecorationGraphicsDataBuffer, gCurDecorationItems[gCurDecorationIndex]);
             SetUpDecorationShape(taskId);
             SetUpPlacingDecorationPlayerAvatar(taskId, &sPlaceDecorationGraphicsDataBuffer);
             FadeInFromBlack();
-            gPaletteFade.bufferTransferDisabled = FALSE;
+            gFundidoPaletas.transferenciaBufferDeshabilitada = FALSE;
             gTasks[taskId].tState = 2;
             break;
         case 2:
@@ -1653,7 +1653,7 @@ static void c1_overworld_prev_quest(u8 taskId)
     {
     case 0:
         LockPlayerFieldControls();
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             WarpToInitialPosition(taskId);
             gTasks[taskId].tState = 1;
@@ -2024,7 +2024,7 @@ static void Task_ContinuePuttingAwayDecorations(u8 taskId)
     switch (tState)
     {
     case 0:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             SetInitialPositions(taskId);
             tState = 1;
@@ -2339,7 +2339,7 @@ static void Task_StopPuttingAwayDecorations(u8 taskId)
     switch (gTasks[taskId].tState)
     {
     case 0:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             WarpToInitialPosition(taskId);
             gTasks[taskId].tState = 1;

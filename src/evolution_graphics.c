@@ -427,7 +427,7 @@ static void Task_Sparkles_SprayAndFlash(u8 taskId)
 
 static void Task_Sparkles_SprayAndFlash_End(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
         DestroyTask(taskId);
 }
 

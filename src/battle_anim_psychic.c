@@ -564,7 +564,7 @@ static void AnimDefensiveWall(struct Sprite *sprite)
     if (IsBattlerSpriteVisible(battler))
         MoveBattlerSpriteToBG(battler, toBG_2 ^ var0, FALSE);
 
-    if (IsDoubleBattle())
+    if (EsContraEntrenador())
     {
         if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
         {
@@ -691,7 +691,7 @@ static void AnimWallSparkle(struct Sprite *sprite)
         if (!ignoreOffsets)
             respectMonPicOffsets = TRUE;
 
-        if (IsDoubleBattle())
+        if (EsContraEntrenador())
         {
             if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
             {

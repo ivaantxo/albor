@@ -166,7 +166,7 @@ static void FieldUpdateRegionMap(void)
             sFieldRegionMapHandler->state++;
             break;
         case 3:
-            if (!gPaletteFade.active)
+            if (!gFundidoPaletas.activo)
             {
                 sFieldRegionMapHandler->state++;
             }
@@ -188,7 +188,7 @@ static void FieldUpdateRegionMap(void)
             sFieldRegionMapHandler->state++;
             break;
         case 6:
-            if (!gPaletteFade.active)
+            if (!gFundidoPaletas.activo)
             {
                 FreeRegionMapIconResources();
                 SetMainCallback2(sFieldRegionMapHandler->callback);

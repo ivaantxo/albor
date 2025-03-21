@@ -394,7 +394,7 @@ void ChooseItemsToTossFromPyramidBag(void)
 
 static void Task_ChooseItemsToTossFromPyramidBag(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         CleanupOverworldWindowsAndTilemaps();
         gFieldCallback2 = CB2_FadeFromPartyMenu;
@@ -468,7 +468,7 @@ static bool8 LoadPyramidBagMenu(void)
             break;
         case 3:
             ResetPaletteFade();
-            gPaletteFade.bufferTransferDisabled = TRUE;
+            gFundidoPaletas.transferenciaBufferDeshabilitada = TRUE;
             gMain.state++;
             break;
         case 4:
@@ -524,7 +524,7 @@ static bool8 LoadPyramidBagMenu(void)
             break;
         case 16:
             BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
-            gPaletteFade.bufferTransferDisabled = FALSE;
+            gFundidoPaletas.transferenciaBufferDeshabilitada = FALSE;
             gMain.state++;
             break;
         default:
@@ -866,7 +866,7 @@ void CloseBattlePyramidBag(u8 taskId)
 static void Task_ClosePyramidBag(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         DestroyListMenuTask(tListTaskId, &gPyramidBagMenuState.scrollPosition, &gPyramidBagMenuState.cursorPosition);
 
@@ -888,7 +888,7 @@ static void Task_ClosePyramidBag(u8 taskId)
 static void Task_HandlePyramidBagInput(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
-    if (gPaletteFade.active)
+    if (gFundidoPaletas.activo)
         return;
 
     if (JOY_NEW(SELECT_BUTTON))

@@ -249,7 +249,7 @@ void Task_HandleExpansionIntro(u8 taskId)
         tState++;
         break;
     case 1:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
             tState++;
         break;
     case 2:
@@ -273,7 +273,7 @@ void Task_HandleExpansionIntro(u8 taskId)
         }
         break;
     case 3:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             ResetSpriteData();
             FreeAllSpritePalettes();

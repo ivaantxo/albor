@@ -456,7 +456,7 @@ void CB2_StartCreditsSequence(void)
 
 static void Task_WaitPaletteFade(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
         gTasks[taskId].func = Task_CreditsMain;
 }
 
@@ -496,7 +496,7 @@ static void Task_CreditsMain(u8 taskId)
 
 static void Task_ReadyBikeScene(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         SetGpuReg(REG_OFFSET_DISPCNT, 0);
         ResetCreditsTasks(taskId);
@@ -519,7 +519,7 @@ static void Task_SetBikeScene(u8 taskId)
 
 static void Task_ReadyShowMons(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         SetGpuReg(REG_OFFSET_DISPCNT, 0);
         ResetCreditsTasks(taskId);
@@ -604,7 +604,7 @@ static void Task_CreditsTheEnd1(u8 taskId)
 
 static void Task_CreditsTheEnd2(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         ResetCreditsTasks(taskId);
         gTasks[taskId].func = Task_CreditsTheEnd3;
@@ -650,7 +650,7 @@ static void Task_CreditsTheEnd4(u8 taskId)
 
 static void Task_CreditsTheEnd5(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         DrawTheEnd(0x3800, 0);
 
@@ -662,7 +662,7 @@ static void Task_CreditsTheEnd5(u8 taskId)
 
 static void Task_CreditsTheEnd6(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         if (gTasks[taskId].tDelay == 0 || gMain.newKeys)
         {
@@ -686,7 +686,7 @@ static void Task_CreditsTheEnd6(u8 taskId)
 
 static void Task_CreditsSoftReset(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
         SoftReset(RESET_ALL);
 }
 
@@ -727,7 +727,7 @@ static void Task_UpdatePage(u8 taskId)
     case 8:
     case 9:
     default:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             gTasks[taskId].tState = 1;
             gTasks[taskId].tDelay = 72;
@@ -774,7 +774,7 @@ static void Task_UpdatePage(u8 taskId)
         gTasks[gTasks[taskId].tMainTaskId].tPrintedPage = FALSE;
         return;
     case 3:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             gTasks[taskId].tDelay = 115;
             gTasks[taskId].tState++;
@@ -799,7 +799,7 @@ static void Task_UpdatePage(u8 taskId)
             BeginNormalPaletteFade(0x300, 0, 0, 16, COLOR_DARK_GREEN);
         return;
     case 5:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             // Still more Credits pages to show, return to state 2 to print
             FillWindowPixelBuffer(0, PIXEL_FILL(0));

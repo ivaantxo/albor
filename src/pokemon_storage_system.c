@@ -1237,7 +1237,7 @@ static void Task_PCMainMenu(u8 taskId)
         }
         break;
     case STATE_ENTER_PC:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             CleanupOverworldWindowsAndTilemaps();
             EnterPokeStorage(task->tInput);
@@ -1510,7 +1510,7 @@ static void VBlankCB_PokeStorage(void)
     LoadOam();
     ProcessSpriteCopyRequests();
     // Instead of transferring the entire palette buffer, transfer bg and non-dynamic palettes
-    if (sPaletteSwapBuffer && !gPaletteFade.bufferTransferDisabled && !gPaletteFade.active && !sStorage->transferWholePlttFrames)
+    if (sPaletteSwapBuffer && !gFundidoPaletas.transferenciaBufferDeshabilitada && !gFundidoPaletas.activo&& !sStorage->transferWholePlttFrames)
     {
         RequestDma3Copy(gPlttBufferFaded, (void*)PLTT, 32*17, 0);
         // Skip the 12-1 palettes that are being dynamically swapped anyway
@@ -1641,7 +1641,7 @@ static void HBlankCB_PokeStorage(void)
 {
     u8 vCount = REG_VCOUNT;
     u32 i;
-    if (vCount >= DISPLAY_HEIGHT || !sPaletteSwapBuffer || (gPaletteFade.active && gPaletteFade.y == 16 && gPaletteFade.mode == 2)) // HARDWARE_FADE
+    if (vCount >= DISPLAY_HEIGHT || !sPaletteSwapBuffer || (gFundidoPaletas.activo&& gFundidoPaletas.y == 16 && gFundidoPaletas.modo == 2)) // FUNDIDO_HARDWARE
         return;
     // For each row in the pc box
     for (i = 0; i < IN_BOX_ROWS; i++)
@@ -1802,7 +1802,7 @@ static void Task_ReshowPokeStorage(u8 taskId)
     {
     case 0:
         BlendPalettes(PALETTES_ALL, 0, RGB_BLACK);
-        BeginHardwarePaletteFade(0xFF, 0, 16, 0, TRUE);
+        EmpiezaFundidoPaletasHardware(BLDCNT_TGT1_ALL | BLDCNT_EFFECT_BLEND, 0, 16, 0, TRUE);
         EnableInterrupts(INTR_FLAG_VBLANK | INTR_FLAG_HBLANK);
         SetHBlankCallback(HBlankCB_PokeStorage);
         sStorage->state++;
@@ -2951,11 +2951,11 @@ static void Task_NameBox(u8 taskId)
     {
     case 0:
         SaveMovingMon();
-        BeginHardwarePaletteFade(0xFF, 0, 0, 16, TRUE);
+        EmpiezaFundidoPaletasHardware(BLDCNT_TGT1_ALL | BLDCNT_EFFECT_BLEND, 0, 0, 16, TRUE);
         sStorage->state++;
         break;
     case 1:
-        if (gPaletteFade.y == 16) // blend last frame of hardware fade
+        if (gFundidoPaletas.y == 16) // blend last frame of hardware fade
             BlendPalettes(PALETTES_ALL, 16, RGB_BLACK);
         if (!UpdatePaletteFade())
         {
@@ -2974,11 +2974,11 @@ static void Task_ShowMonSummary(u8 taskId)
     {
     case 0:
         InitSummaryScreenData();
-        BeginHardwarePaletteFade(0xFF, 0, 0, 16, TRUE);
+        EmpiezaFundidoPaletasHardware(BLDCNT_TGT1_ALL | BLDCNT_EFFECT_BLEND, 0, 0, 16, TRUE);
         sStorage->state++;
         break;
     case 1:
-        if (gPaletteFade.y == 16) // blend last frame of hardware fade
+        if (gFundidoPaletas.y == 16) // blend last frame of hardware fade
             BlendPalettes(PALETTES_ALL, 16, RGB_BLACK);
         if (!UpdatePaletteFade())
         {
@@ -2996,11 +2996,11 @@ static void Task_GiveItemFromBag(u8 taskId)
     switch (sStorage->state)
     {
     case 0:
-        BeginHardwarePaletteFade(0xFF, 0, 0, 16, TRUE);
+        EmpiezaFundidoPaletasHardware(BLDCNT_TGT1_ALL | BLDCNT_EFFECT_BLEND, 0, 0, 16, TRUE);
         sStorage->state++;
         break;
     case 1:
-        if (gPaletteFade.y == 16) // blend last frame of hardware fade
+        if (gFundidoPaletas.y == 16) // blend last frame of hardware fade
             BlendPalettes(PALETTES_ALL, 16, RGB_BLACK);
         if (!UpdatePaletteFade())
         {

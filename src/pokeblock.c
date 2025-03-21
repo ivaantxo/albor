@@ -520,7 +520,7 @@ static bool8 InitPokeblockMenu(void)
         break;
     case 3:
         ResetPaletteFade();
-        gPaletteFade.bufferTransferDisabled = TRUE;
+        gFundidoPaletas.transferenciaBufferDeshabilitada = TRUE;
         gMain.state++;
         break;
     case 4:
@@ -587,7 +587,7 @@ static bool8 InitPokeblockMenu(void)
         break;
     case 18:
         BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
-        gPaletteFade.bufferTransferDisabled = FALSE;
+        gFundidoPaletas.transferenciaBufferDeshabilitada = FALSE;
         gMain.state++;
         break;
     default:
@@ -960,7 +960,7 @@ static void Task_FreeDataAndExitPokeblockCase(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         if (sPokeblockMenu->caseId == PBLOCK_CASE_FEEDER || sPokeblockMenu->caseId == PBLOCK_CASE_GIVE)
             gFieldCallback = FieldCB_ContinueScriptHandleMusic;
@@ -985,7 +985,7 @@ static void Task_HandlePokeblockMenuInput(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         if (JOY_NEW(SELECT_BUTTON))
         {

@@ -64,7 +64,7 @@ void InitBattleControllers(void)
 
 static void InitSinglePlayerBtlControllers(void)
 {
-    if (!IsDoubleBattle())
+    if (!EsContraEntrenador())
     {
         gBattleMainFunc = BeginBattleIntro;
 
@@ -1173,7 +1173,7 @@ static bool8 ShouldDoSlideInAnim(void)
     struct ObjectEvent *followerObj = GetFollowerObject();
     if (!followerObj || followerObj->invisible)
         return FALSE;
-    if (gBattleTypeFlags & TIPO_BATALLA_ENTRENADOR)
+    if (EsContraEntrenador())
         return FALSE;
     return TRUE;
 }
@@ -1882,12 +1882,12 @@ void BtlController_HandleSpriteInvisibility(u32 battler)
 
 bool32 TwoPlayerIntroMons(u32 battler) // Double battle with both player pokemon active.
 {
-    return (IsDoubleBattle() && IsValidForBattle(&gPlayerParty[gBattlerPartyIndexes[battler ^ BIT_FLANK]]));
+    return (EsContraEntrenador() && IsValidForBattle(&gPlayerParty[gBattlerPartyIndexes[battler ^ BIT_FLANK]]));
 }
 
 bool32 TwoOpponentIntroMons(u32 battler) // Double battle with both opponent pokemon active.
 {
-    return (IsDoubleBattle()
+    return (EsContraEntrenador()
             && IsValidForBattle(&gEnemyParty[gBattlerPartyIndexes[battler]])
             && IsValidForBattle(&gEnemyParty[gBattlerPartyIndexes[BATTLE_PARTNER(battler)]]));
 }

@@ -5,19 +5,19 @@
 
 struct InitialPlayerAvatarState
 {
-    u8 transitionFlags;
-    u8 direction;
+  u8 transitionFlags;
+  u8 direction;
 };
 
-struct __attribute__((packed)) TimeBlendSettings {
-  u16 weight:9;
-  u16 time1:3;
-  u16 time0:3;
-  u16 unused:1;
-  u16 altWeight;
+struct ConfiguracionBlendHora
+{
+  u16 intensidad:9; //0-256, 9 bits
+  u16 tiempoFinal:3;
+  u16 tiempoInicial:3;
+  u16 sinUso:1;
+  u16 intensidadRelativa;
 };
 
-// Exported RAM declarations
 extern struct WarpData gLastUsedWarp;
 
 extern u16 *gOverworldTilemapBuffer_Bg2;
@@ -28,7 +28,7 @@ extern bool8 (*gFieldCallback2)(void);
 extern u8 gTimeOfDay;
 extern u16 gTimeUpdateCounter;
 
-extern struct TimeBlendSettings currentTimeBlend;
+extern struct ConfiguracionBlendHora blendHoraActual;
 
 extern bool8 gExitStairsMovementDisabled;
 
@@ -105,9 +105,9 @@ u8 GetCurrentRegionMapSectionId(void);
 u8 GetCurrentMapBattleScene(void);
 void CleanupOverworldWindowsAndTilemaps(void);
 void CB1_Overworld(void);
-void CB2_OverworldBasic(void);
+void OverworldBasic(void);
 u8 UpdateTimeOfDay(void);
-bool8 MapHasNaturalLight(u8 mapType);
+bool32 MapaTieneLuzNatural(u8 mapType);
 void UpdateAltBgPalettes(u16 palettes);
 void UpdatePalettesWithTime(u32);
 void CB2_Overworld(void);

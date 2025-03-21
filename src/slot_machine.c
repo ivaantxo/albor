@@ -1007,7 +1007,7 @@ static void Task_FadeToSlotMachine(u8 taskId)
         gTasks[taskId].tState++;
         break;
     case 1:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             SetMainCallback2(CB2_SlotMachineSetup);
             DestroyTask(taskId);
@@ -1291,7 +1291,7 @@ static bool8 SlotTask_UnfadeScreen(struct Task *task)
 // SLOTTASK_WAIT_FADE
 static bool8 SlotTask_WaitUnfade(struct Task *task)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
         sSlotMachine->state++;
     return FALSE;
 }
@@ -1733,7 +1733,7 @@ static bool8 SlotTask_EndGame(struct Task *task)
 // SLOTTASK_FREE
 static bool8 SlotTask_FreeDataStructures(struct Task *task)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         SetMainCallback2(sSlotMachine->prevMainCb);
         FREE_AND_SET_NULL(sImageTable_DigitalDisplay_Reel);
@@ -3905,7 +3905,7 @@ static void InfoBox_FadeIn(struct Task *task)
 
 static void InfoBox_WaitFade(struct Task *task)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
         task->tState++;
 }
 

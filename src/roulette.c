@@ -351,8 +351,6 @@ static EWRAM_DATA struct Roulette
 
 static EWRAM_DATA u8 sTextWindowId = 0;
 
-static void Task_SpinWheel(u8);
-static void Task_StartPlaying(u8);
 static void Task_ContinuePlaying(u8);
 static void Task_StopPlaying(u8);
 static void Task_SelectFirstEmptySquare(u8);
@@ -380,23 +378,15 @@ static bool8 IsHitInBetSelection(u8, u8);
 static void FlashSelectionOnWheel(u8);
 static void DrawGridBackground(u8);
 static u8 GetMultiplier(u8);
-static void UpdateWheelPosition(void);
-static void LoadOrFreeMiscSpritePalettesAndSheets(u8);
-static void CreateGridSprites(void);
 static void ShowHideGridIcons(bool8, u8);
-static void CreateGridBallSprites(void);
 static void ShowHideGridBalls(bool8, u8);
 static void ShowHideWinSlotCursor(u8);
-static void CreateWheelIconSprites(void);
 static void SpriteCB_WheelIcon(struct Sprite *);
-static void CreateInterfaceSprites(void);
 static void SetCreditDigits(u16);
 static void SetMultiplierSprite(u8);
 static void SetBallCounterNumLeft(u8);
 static void SpriteCB_GridSquare(struct Sprite *);
-static void CreateWheelCenterSprite(void);
 static void SpriteCB_WheelCenter(struct Sprite *);
-static void CreateWheelBallSprites(void);
 static void HideWheelBalls(void);
 static void SpriteCB_RollBall_Start(struct Sprite *);
 static void CreateShroomishSprite(struct Sprite *);
@@ -941,68 +931,6 @@ static const struct YesNoFuncTable sYesNoTable_KeepPlaying =
     Task_StopPlaying
 };
 
-static void CB2_Roulette(void)
-{
-    RunTasks();
-    AnimateSprites();
-    BuildOamBuffer();
-    if (sRoulette->flashUtil.enabled)
-        RouletteFlash_Run(&sRoulette->flashUtil);
-}
-
-static void VBlankCB_Roulette(void)
-{
-    LoadOam();
-    ProcessSpriteCopyRequests();
-    TransferPlttBuffer();
-    UpdateWheelPosition();
-    SetGpuReg(REG_OFFSET_BG1HOFS, 0x200 - sRoulette->gridX);
-
-    if (sRoulette->shroomishShadowTimer)
-        SetGpuReg(REG_OFFSET_BLDALPHA, sRoulette->shroomishShadowAlpha);
-
-    if (sRoulette->updateGridHighlight)
-    {
-        DmaCopy16(3, &sRoulette->tilemapBuffers[2][0xE0], (void *)BG_SCREEN_ADDR(4) + 0x1C0, 0x340);
-        sRoulette->updateGridHighlight = FALSE;
-    }
-    switch (sRoulette->selectionRectDrawState)
-    {
-    case SELECT_STATE_DRAW:
-        SetBgAttribute(0, BG_ATTR_CHARBASEINDEX, 0);
-        ShowBg(0);
-        DmaCopy16(3, &sRoulette->tilemapBuffers[0][0xE0], (void *)BG_SCREEN_ADDR(31) + 0x1C0, 0x340);
-        sRoulette->selectionRectDrawState = SELECT_STATE_UPDATE;
-        break;
-    case SELECT_STATE_UPDATE:
-        DmaCopy16(3, &sRoulette->tilemapBuffers[0][0xE0], (void *)BG_SCREEN_ADDR(31) + 0x1C0, 0x340);
-        break;
-    case SELECT_STATE_ERASE:
-        SetBgAttribute(0, BG_ATTR_CHARBASEINDEX, 2);
-        ShowBg(0);
-        DmaFill16(3, 0, (void *)BG_SCREEN_ADDR(31) + 0x1C0, 0x340);
-        sRoulette->selectionRectDrawState = SELECT_STATE_WAIT;
-    case SELECT_STATE_WAIT:
-        break;
-    }
-}
-
-static void InitRouletteBgAndWindows(void)
-{
-    u32 size = 0;
-
-    sRoulette = AllocZeroed(sizeof(*sRoulette));
-    ResetBgsAndClearDma3BusyFlags();
-    InitBgsFromTemplates(1, sBgTemplates, ARRAY_COUNT(sBgTemplates));
-    SetBgTilemapBuffer(0, sRoulette->tilemapBuffers[0]);
-    SetBgTilemapBuffer(1, sRoulette->tilemapBuffers[2]);
-    SetBgTilemapBuffer(2, sRoulette->tilemapBuffers[6]);
-    InitWindows(sWindowTemplates);
-    InitTextBoxGfxAndPrinters();
-    sTextWindowId = 0;
-    sRoulette->gridTilemap = malloc_and_decompress(sGrid_Tilemap, &size);
-}
-
 static void FreeRoulette(void)
 {
     FREE_AND_SET_NULL(sRoulette->gridTilemap);
@@ -1015,47 +943,6 @@ static void FreeRoulette(void)
     FREE_AND_SET_NULL(sRoulette);
 }
 
-static void InitRouletteTableData(void)
-{
-    u8 i;
-    u16 bgColors[3] = {RGB(24, 4, 10), RGB(10, 19, 6), RGB(24, 4, 10)}; // 3rd is never used, same as 1st
-
-    sRoulette->tableId = (gSpecialVar_0x8004 & 1);
-
-    if (gSpecialVar_0x8004 & ROULETTE_SPECIAL_RATE)
-        sRoulette->isSpecialRate = TRUE;
-
-    sRoulette->wheelSpeed = sRouletteTables[sRoulette->tableId].wheelSpeed;
-    sRoulette->wheelDelay = sRouletteTables[sRoulette->tableId].wheelDelay;
-    sRoulette->minBet = sTableMinBets[sRoulette->tableId + sRoulette->isSpecialRate * 2];
-
-    // Left table (with min bet of 1) has red background, other table has green
-    if (sRoulette->minBet == 1)
-        gPlttBufferUnfaded[BG_PLTT_ID(0)] = gPlttBufferUnfaded[BG_PLTT_ID(5) + 1] = gPlttBufferFaded[BG_PLTT_ID(0)] = gPlttBufferFaded[BG_PLTT_ID(5) + 1] = bgColors[0];
-    else
-        gPlttBufferUnfaded[BG_PLTT_ID(0)] = gPlttBufferUnfaded[BG_PLTT_ID(5) + 1] = gPlttBufferFaded[BG_PLTT_ID(0)] = gPlttBufferFaded[BG_PLTT_ID(5) + 1] = bgColors[1];
-
-    RouletteFlash_Reset(&sRoulette->flashUtil);
-
-    // Init flash util for flashing the selected colors on the wheel
-    // + 1 for the additional entry to flash the outer edges on a win
-    for (i = 0; i < NUM_ROULETTE_SLOTS + 1; i++)
-    {
-        RouletteFlash_Add(&sRoulette->flashUtil, i, &sFlashData_Colors[i]);
-    }
-
-    for (i = 0; i < PARTY_SIZE; i++)
-    {
-        switch (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG))
-        {
-        case SPECIES_TAILLOW:
-            sRoulette->partySpeciesFlags |= HAS_TAILLOW;
-            break;
-        }
-    }
-    RtcCalcLocalTime();
-}
-
 // Task data for the roulette game tasks, starting with Task_StartPlaying
 #define tMultiplier      data[2]
 #define tSelectionId     data[4]
@@ -1065,128 +952,6 @@ static void InitRouletteTableData(void)
 #define tConsecutiveWins data[11]
 #define tWinningSquare   data[12]
 #define tCoins           data[13]
-
-static void CB2_LoadRoulette(void)
-{
-    u8 taskId;
-
-    switch (gMain.state)
-    {
-    case 0:
-        SetVBlankCallback(NULL);
-        ScanlineEffect_Stop();
-        SetVBlankHBlankCallbacksToNull();
-        ResetVramOamAndBgCntRegs();
-        ResetAllBgsCoordinates();
-        break;
-    case 1:
-        InitRouletteBgAndWindows();
-        DeactivateAllTextPrinters();
-        SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_EFFECT_NONE |
-                                     BLDCNT_TGT2_BG2 |
-                                     BLDCNT_TGT2_BD);
-        SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(10, 6));
-        break;
-    case 2:
-        ResetPaletteFade();
-        ResetSpriteData();
-        ResetTasks();
-        ResetTempTileDataBuffers();
-        break;
-    case 3:
-        LoadPalette(&sWheel_Pal, BG_PLTT_ID(0), 14 * PLTT_SIZE_4BPP);
-        DecompressAndCopyTileDataToVram(1, gRouletteMenu_Gfx, 0, 0, 0);
-        DecompressAndCopyTileDataToVram(2, gRouletteWheel_Gfx, 0, 0, 0);
-        break;
-    case 4:
-        if (FreeTempTileDataBuffersIfPossible())
-            return;
-
-        InitRouletteTableData();
-        CopyToBgTilemapBuffer(2, sWheel_Tilemap, 0, 0);
-        break;
-    case 5:
-        LoadOrFreeMiscSpritePalettesAndSheets(FALSE);
-        CreateWheelBallSprites();
-        CreateWheelCenterSprite();
-        CreateInterfaceSprites();
-        CreateGridSprites();
-        CreateGridBallSprites();
-        CreateWheelIconSprites();
-        break;
-    case 6:
-        AnimateSprites();
-        BuildOamBuffer();
-        SetCreditDigits(GetCoins());
-        SetBallCounterNumLeft(BALLS_PER_ROUND);
-        SetMultiplierSprite(SELECTION_NONE);
-        DrawGridBackground(SELECTION_NONE);
-        DrawStdWindowFrame(sTextWindowId, FALSE);
-        AddTextPrinterParameterized(sTextWindowId, FONT_NORMAL, Roulette_Text_ControlsInstruction, 0, 1, TEXT_SKIP_DRAW, NULL);
-        CopyWindowToVram(sTextWindowId, COPYWIN_FULL);
-        gSpriteCoordOffsetX = -60;
-        gSpriteCoordOffsetY = 0;
-        break;
-    case 7:
-        SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_MODE_0 |
-                                      DISPCNT_OBJ_1D_MAP |
-                                      DISPCNT_OBJ_ON);
-        CopyBgTilemapBufferToVram(1);
-        CopyBgTilemapBufferToVram(2);
-        ShowBg(0);
-        ShowBg(1);
-        ShowBg(2);
-        break;
-    case 8:
-        EnableInterrupts(INTR_FLAG_VBLANK);
-        SetVBlankCallback(VBlankCB_Roulette);
-        BeginHardwarePaletteFade(0xFF, 0, 16, 0, 1);
-        taskId = sRoulette->playTaskId = CreateTask(Task_StartPlaying, 0);
-        gTasks[taskId].tBallNum = BALLS_PER_ROUND;
-        gTasks[taskId].tCoins = GetCoins();
-        sRoulette->spinTaskId = CreateTask(Task_SpinWheel, 1);
-        SetMainCallback2(CB2_Roulette);
-        return;
-    }
-    gMain.state++;
-}
-
-static void Task_SpinWheel(u8 taskId)
-{
-    s16 sin;
-    s16 cos;
-
-    if (sRoulette->wheelDelayTimer++ == sRoulette->wheelDelay)
-    {
-        sRoulette->wheelDelayTimer = 0;
-        if ((sRoulette->wheelAngle -= sRoulette->wheelSpeed) < 0)
-            sRoulette->wheelAngle = 360 - sRoulette->wheelSpeed;
-    }
-    sin = Sin2(sRoulette->wheelAngle);
-    cos = Cos2(sRoulette->wheelAngle);
-    sin = sin / 16;
-    sRoulette->wheelRotation.a = sRoulette->wheelRotation.d = cos / 16;
-    sRoulette->wheelRotation.b =  sin;
-    sRoulette->wheelRotation.c = -sin;
-}
-
-static void Task_StartPlaying(u8 taskId)
-{
-    if (UpdatePaletteFade() == 0)
-    {
-        SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_EFFECT_NONE |
-                                     BLDCNT_TGT2_BG2 |
-                                     BLDCNT_TGT2_BD);
-        SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(8, 8));
-        gTasks[taskId].tBallNum = 0;
-        ResetBallDataForNewSpin(taskId);
-        ResetHits();
-        HideWheelBalls();
-        DrawGridBackground(SELECTION_NONE);
-        SetBallCounterNumLeft(BALLS_PER_ROUND);
-        StartTaskAfterDelayOrInput(taskId, Task_ContinuePlaying, NO_DELAY, A_BUTTON | B_BUTTON);
-    }
-}
 
 static void Task_AskKeepPlaying(u8 taskId)
 {
@@ -1780,7 +1545,7 @@ static void ExitRoulette(u8 taskId)
         gSpecialVar_0x8004 = TRUE;
     else
         gSpecialVar_0x8004 = FALSE;
-    BeginHardwarePaletteFade(0xFF, 0, 0, 16, 0);
+    EmpiezaFundidoPaletasHardware(BLDCNT_TGT1_ALL | BLDCNT_EFFECT_BLEND, 0, 0, 16, FALSE);
     gTasks[taskId].func = Task_ExitRoulette;
 }
 
@@ -2111,24 +1876,6 @@ static u8 GetMultiplier(u8 selectionId)
         return multipliers[ARRAY_COUNT(multipliers) - 1];
     }
     return 0;
-}
-
-static void UpdateWheelPosition(void)
-{
-    s32 bg2x;
-    s32 bg2y;
-    SetGpuReg(REG_OFFSET_BG2PA, sRoulette->wheelRotation.a);
-    SetGpuReg(REG_OFFSET_BG2PB, sRoulette->wheelRotation.b);
-    SetGpuReg(REG_OFFSET_BG2PC, sRoulette->wheelRotation.c);
-    SetGpuReg(REG_OFFSET_BG2PD, sRoulette->wheelRotation.d);
-    bg2x = 0x7400 - sRoulette->wheelRotation.a * (gSpriteCoordOffsetX + 116)
-                - sRoulette->wheelRotation.b * (gSpriteCoordOffsetY + 80);
-    bg2y = 0x5400 - sRoulette->wheelRotation.c * (gSpriteCoordOffsetX + 116)
-                - sRoulette->wheelRotation.d * (gSpriteCoordOffsetY + 80);
-    SetGpuReg(REG_OFFSET_BG2X_L, bg2x);
-    SetGpuReg(REG_OFFSET_BG2X_H, (bg2x & 0x0fff0000) >> 16);
-    SetGpuReg(REG_OFFSET_BG2Y_L, bg2y);
-    SetGpuReg(REG_OFFSET_BG2Y_H, (bg2y & 0x0fff0000) >> 16);
 }
 
 static const u8 sFiller[3] = {};
@@ -3144,25 +2891,9 @@ static void Task_ShowMinBetYesNo(u8 taskId)
     DoYesNoFuncWithChoice(taskId, &sYesNoTable_AcceptMinBet);
 }
 
-static void Task_FadeToRouletteGame(u8 taskId)
-{
-    if (!gPaletteFade.active)
-    {
-        SetVBlankCallback(NULL);
-        SetMainCallback2(CB2_LoadRoulette);
-        DestroyTask(taskId);
-    }
-}
-
 static void Task_AcceptMinBet(u8 taskId)
 {
-    ClearStdWindowAndFrame(0, TRUE);
-    HideCoinsWindow();
-    FreeAllWindowBuffers();
-    BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
-    gPaletteFade.delayCounter = gPaletteFade.multipurpose2;
-    UpdatePaletteFade();
-    gTasks[taskId].func = Task_FadeToRouletteGame;
+
 }
 
 static void Task_DeclineMinBet(u8 taskId)
@@ -3249,81 +2980,6 @@ void PlayRoulette(void)
     gTasks[taskId].tCoins = GetCoins();
 }
 
-static void LoadOrFreeMiscSpritePalettesAndSheets(bool8 free)
-{
-    if (!free)
-    {
-        FreeAllSpritePalettes();
-        LoadSpritePalettes(sSpritePalettes);
-        LoadCompressedSpriteSheet(&sSpriteSheet_Ball);
-        LoadCompressedSpriteSheet(&sSpriteSheet_ShroomishTaillow);
-        LoadCompressedSpriteSheet(&sSpriteSheet_Shadow);
-    }
-    else
-    {
-        // Unused
-        FreeSpriteTilesByTag(GFXTAG_SHADOW);
-        FreeSpriteTilesByTag(GFXTAG_SHROOMISH_TAILLOW);
-        FreeSpriteTilesByTag(GFXTAG_BALL);
-        FreeAllSpritePalettes();
-    }
-}
-
-static u8 CreateWheelIconSprite(const struct SpriteTemplate *template, u8 r1, u16 *angle)
-{
-    u16 temp;
-    u8 spriteId = CreateSprite(template, 116, 80, template->oam->y);
-    gSprites[spriteId].data[0] = *angle;
-    gSprites[spriteId].data[1] = r1;
-    gSprites[spriteId].coordOffsetEnabled = TRUE;
-    gSprites[spriteId].animPaused = TRUE;
-    gSprites[spriteId].affineAnimPaused = TRUE;
-    temp = *angle;
-    *angle += DEGREES_PER_SLOT;
-    if (*angle >= 360)
-        *angle = temp - (360 - DEGREES_PER_SLOT);
-    return spriteId;
-}
-
-static void CreateGridSprites(void)
-{
-    u8 i, j;
-    u8 spriteId;
-    struct SpriteSheet s;
-    LZ77UnCompWram(sSpriteSheet_Headers.data, gDecompressionBuffer);
-    s.data = gDecompressionBuffer;
-    s.size = sSpriteSheet_Headers.size;
-    s.tag  = sSpriteSheet_Headers.tag;
-    LoadSpriteSheet(&s);
-    LZ77UnCompWram(sSpriteSheet_GridIcons.data, gDecompressionBuffer);
-    s.data = gDecompressionBuffer;
-    s.size = sSpriteSheet_GridIcons.size;
-    s.tag  = sSpriteSheet_GridIcons.tag;
-    LoadSpriteSheet(&s);
-    for (i = 0; i < NUM_BOARD_COLORS; i++)
-    {
-        u8 y = i * 24;
-        for (j = 0; j < NUM_BOARD_POKES; j++)
-        {
-            spriteId = sRoulette->spriteIds[(i * NUM_BOARD_POKES) + SPR_GRID_ICONS + j] = CreateSprite(&sSpriteTemplates_GridIcons[j], (j * 24) + 148, y + 92, 30);
-            gSprites[spriteId].animPaused = TRUE;
-            y += 24;
-            if (y >= 72)
-                y = 0;
-        }
-    }
-    for (i = 0; i < ARRAY_COUNT(sSpriteTemplates_PokeHeaders); i++)
-    {
-        spriteId = sRoulette->spriteIds[i + SPR_POKE_HEADERS] = CreateSprite(&sSpriteTemplates_PokeHeaders[i], (i * 24) + 148, 70, 30);
-        gSprites[spriteId].animPaused = TRUE;
-    }
-    for (i = 0; i < ARRAY_COUNT(sSpriteTemplates_ColorHeaders); i++)
-    {
-        spriteId = sRoulette->spriteIds[i + SPR_COLOR_HEADERS] = CreateSprite(&sSpriteTemplates_ColorHeaders[i], 126, (i * 24) + 92, 30);
-        gSprites[spriteId].animPaused = TRUE;
-    }
-}
-
 static void ShowHideGridIcons(bool8 hideAll, u8 hideSquare)
 {
     u8 i;
@@ -3352,20 +3008,6 @@ static void ShowHideGridIcons(bool8 hideAll, u8 hideSquare)
             gSprites[sRoulette->spriteIds[i + SPR_GRID_ICONS]].invisible = FALSE;
         }
         break;
-    }
-}
-
-static void CreateGridBallSprites(void)
-{
-    u8 i;
-    for (i = 0; i < BALLS_PER_ROUND; i++)
-    {
-        sRoulette->spriteIds[i + SPR_GRID_BALLS] = CreateSprite(&sSpriteTemplate_Ball, 116, 20, 10);
-        gSprites[sRoulette->spriteIds[i + SPR_GRID_BALLS]].invisible = TRUE;
-        gSprites[sRoulette->spriteIds[i + SPR_GRID_BALLS]].data[0] = 1;
-        gSprites[sRoulette->spriteIds[i + SPR_GRID_BALLS]].callback = SpriteCB_GridSquare;
-        gSprites[sRoulette->spriteIds[i + SPR_GRID_BALLS]].oam.priority = 1;
-        StartSpriteAnim(&gSprites[sRoulette->spriteIds[i + SPR_GRID_BALLS]], 8);
     }
 }
 
@@ -3411,31 +3053,6 @@ static void ShowHideWinSlotCursor(u8 selectionId)
     }
 }
 
-static void CreateWheelIconSprites(void)
-{
-    u8 i, j;
-    u16 angle;
-    struct SpriteSheet s;
-
-    LZ77UnCompWram(sSpriteSheet_WheelIcons.data, gDecompressionBuffer);
-    s.data = gDecompressionBuffer;
-    s.size = sSpriteSheet_WheelIcons.size;
-    s.tag  = sSpriteSheet_WheelIcons.tag;
-    LoadSpriteSheet(&s);
-
-    angle = 15;
-    for (i = 0; i < NUM_BOARD_COLORS; i++)
-    {
-        for (j = 0; j < NUM_BOARD_POKES; j++)
-        {
-            u8 spriteId;
-            spriteId = sRoulette->spriteIds[(i * NUM_BOARD_POKES) + SPR_WHEEL_ICONS + j] = CreateWheelIconSprite(&sSpriteTemplates_WheelIcons[i * NUM_BOARD_POKES + j], 40, &angle);
-            gSprites[spriteId].animPaused = TRUE;
-            gSprites[spriteId].affineAnimPaused = TRUE;
-        }
-    }
-}
-
 static void SpriteCB_WheelIcon(struct Sprite *sprite)
 {
     s16 cos;
@@ -3454,41 +3071,6 @@ static void SpriteCB_WheelIcon(struct Sprite *sprite)
     gOamMatrices[matrixNum].a = cos;
     gOamMatrices[matrixNum].b = sin;
     gOamMatrices[matrixNum].c = -sin;
-}
-
-static void CreateInterfaceSprites(void)
-{
-    u8 i;
-    for (i = 0; i < ARRAY_COUNT(sSpriteSheets_Interface) - 1; i++)
-    {
-        struct SpriteSheet s;
-        LZ77UnCompWram(sSpriteSheets_Interface[i].data, gDecompressionBuffer);
-        s.data = gDecompressionBuffer;
-        s.size = sSpriteSheets_Interface[i].size;
-        s.tag  = sSpriteSheets_Interface[i].tag;
-        LoadSpriteSheet(&s);
-    }
-    sRoulette->spriteIds[SPR_CREDIT] = CreateSprite(&sSpriteTemplate_Credit, 208, 16, 4);
-    gSprites[sRoulette->spriteIds[SPR_CREDIT]].animPaused = TRUE;
-    for (i = 0; i < MAX_COIN_DIGITS; i++)
-    {
-        sRoulette->spriteIds[i + SPR_CREDIT_DIGITS] = CreateSprite(&sSpriteTemplate_CreditDigit, i * 8 + 196, 24, 0);
-        gSprites[sRoulette->spriteIds[i + SPR_CREDIT_DIGITS]].invisible = TRUE;
-        gSprites[sRoulette->spriteIds[i + SPR_CREDIT_DIGITS]].animPaused = TRUE;
-    }
-    sRoulette->spriteIds[SPR_MULTIPLIER] = CreateSprite(&sSpriteTemplate_Multiplier, 120, 68, 4);
-    gSprites[sRoulette->spriteIds[SPR_MULTIPLIER]].animPaused = TRUE;
-    for (i = 0; i < BALLS_PER_ROUND / 2; i++)
-    {
-        // Each ball counter sprite has 2 balls
-        sRoulette->spriteIds[i + SPR_BALL_COUNTER] = CreateSprite(&sSpriteTemplate_BallCounter, i * 16 + 192, 36, 4);
-        gSprites[sRoulette->spriteIds[i + SPR_BALL_COUNTER]].invisible = TRUE;
-        gSprites[sRoulette->spriteIds[i + SPR_BALL_COUNTER]].animPaused = TRUE;
-    }
-    sRoulette->spriteIds[SPR_WIN_SLOT_CURSOR] = CreateSprite(&sSpriteTemplate_Cursor, 152, 96, 9);
-    gSprites[sRoulette->spriteIds[SPR_WIN_SLOT_CURSOR]].oam.priority = 1;
-    gSprites[sRoulette->spriteIds[SPR_WIN_SLOT_CURSOR]].animPaused = TRUE;
-    gSprites[sRoulette->spriteIds[SPR_WIN_SLOT_CURSOR]].invisible = TRUE;
 }
 
 static void SetCreditDigits(u16 num)
@@ -3606,25 +3188,6 @@ static void SpriteCB_GridSquare(struct Sprite *sprite)
     sprite->x2 = sRoulette->gridX;
 }
 
-static void CreateWheelCenterSprite(void)
-{
-    u8 spriteId;
-    struct SpriteSheet s;
-    LZ77UnCompWram(sSpriteSheet_WheelCenter.data, gDecompressionBuffer);
-    s.data = gDecompressionBuffer;
-    s.size = sSpriteSheet_WheelCenter.size;
-    s.tag = sSpriteSheet_WheelCenter.tag;
-    LoadSpriteSheet(&s);
-    // This sprite id isn't saved because it doesn't need to be referenced again
-    // but by virtue of creation order it's SPR_WHEEL_CENTER
-    spriteId = CreateSprite(&sSpriteTemplate_WheelCenter, 116, 80, 81);
-    gSprites[spriteId].data[0] = sRoulette->wheelAngle;
-    gSprites[spriteId].data[1] = 0;
-    gSprites[spriteId].animPaused = TRUE;
-    gSprites[spriteId].affineAnimPaused = TRUE;
-    gSprites[spriteId].coordOffsetEnabled = TRUE;
-}
-
 static void SpriteCB_WheelCenter(struct Sprite *sprite)
 {
     u32 matrixNum = sprite->oam.matrixNum;
@@ -3633,20 +3196,6 @@ static void SpriteCB_WheelCenter(struct Sprite *sprite)
     matrix[matrixNum].a = sRoulette->wheelRotation.a;
     matrix[matrixNum].b = sRoulette->wheelRotation.b;
     matrix[matrixNum].c = sRoulette->wheelRotation.c;
-}
-
-static void CreateWheelBallSprites(void)
-{
-    u8 i;
-    for (i = 0; i < BALLS_PER_ROUND; i++)
-    {
-        sRoulette->spriteIds[i] = CreateSprite(&sSpriteTemplate_Ball, 116, 80, 57 - i);
-        if (sRoulette->spriteIds[i] != MAX_SPRITES)
-        {
-            gSprites[sRoulette->spriteIds[i]].invisible = TRUE;
-            gSprites[sRoulette->spriteIds[i]].coordOffsetEnabled = TRUE;
-        }
-    }
 }
 
 static void HideWheelBalls(void)

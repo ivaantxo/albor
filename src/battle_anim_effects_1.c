@@ -3074,7 +3074,7 @@ static void AnimSolarBeamSmallOrb(struct Sprite *sprite)
 {
     InitSpritePosToAnimAttacker(sprite, TRUE);
 
-    if (IsDoubleBattle() && gAnimMoveIndex == MOVE_CORE_ENFORCER)
+    if (EsContraEntrenador() && gAnimMoveIndex == MOVE_CORE_ENFORCER)
     {
         CoreEnforcerLoadBeamTarget(sprite);
     }
@@ -3588,7 +3588,7 @@ static void AnimSporeParticle_Step(struct Sprite *sprite)
 // No args.
 void AnimTask_SporeDoubleBattle(u8 taskId)
 {
-    if (!IsDoubleBattle())
+    if (!EsContraEntrenador())
     {
         DestroyAnimVisualTask(taskId);
     }
@@ -3814,7 +3814,7 @@ static void AnimTranslateLinearSingleSineWave_Step(struct Sprite *sprite)
 // arg 4: speedup frame (particles move faster at the end of the animation)
 void AnimMoveTwisterParticle(struct Sprite *sprite)
 {
-    if (IsDoubleBattle() == TRUE)
+    if (EsContraEntrenador() == TRUE)
         SetAverageBattlerPositions(gBattleAnimTarget, TRUE, &sprite->x, &sprite->y);
 
     sprite->y += 32;
@@ -4296,9 +4296,6 @@ static void AnimItemSteal_Step3(struct Sprite *sprite)
 // arg 1: initial wave offset
 static void AnimTrickBag(struct Sprite *sprite)
 {
-    int a;
-    int b;
-
     if (!sprite->data[0])
     {
         sprite->data[1] = gBattleAnimArgs[1];
@@ -4759,7 +4756,7 @@ void AnimNeedleArmSpike(struct Sprite *sprite)
     {
         if (gBattleAnimArgs[0] == 0)
         {
-            if (IsDoubleBattle())
+            if (EsContraEntrenador())
             {
                 SetAverageBattlerPositions(gBattleAnimAttacker, TRUE, &a, &b);
             }
@@ -4771,7 +4768,7 @@ void AnimNeedleArmSpike(struct Sprite *sprite)
         }
         else
         {
-            if (IsDoubleBattle())
+            if (EsContraEntrenador())
             {
                 SetAverageBattlerPositions(gBattleAnimTarget, TRUE, &a, &b);
             }
@@ -5136,7 +5133,7 @@ static void AnimSparklingStars(struct Sprite *sprite)
     else
         battler = gBattleAnimTarget;
 
-    if (IsDoubleBattle() && IsBattlerSpriteVisible(BATTLE_PARTNER(battler)))
+    if (EsContraEntrenador() && IsBattlerSpriteVisible(BATTLE_PARTNER(battler)))
     {
         SetAverageBattlerPositions(battler, gBattleAnimArgs[6], &sprite->x, &sprite->y);
         SetAnimSpriteInitialXOffset(sprite, gBattleAnimArgs[0]);
@@ -5953,7 +5950,7 @@ static void AnimTask_MoonlightEndFade_Step(u8 taskId)
         }
         break;
     case 1:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             u8 spriteId;
             for (spriteId = 0; spriteId < MAX_SPRITES; spriteId++)
@@ -5974,7 +5971,7 @@ static void AnimTask_MoonlightEndFade_Step(u8 taskId)
         }
         break;
     case 3:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
             DestroyAnimVisualTask(taskId);
         break;
     }

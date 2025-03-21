@@ -1671,7 +1671,7 @@ void ProtectChecks(u32 battlerAtk, u32 battlerDef, u32 move, u32 predictedMove, 
     }
     else
     {
-        if (IsDoubleBattle())
+        if (EsContraEntrenador())
             ADJUST_SCORE_PTR(-(2 * min(uses, 3)));
         else
             ADJUST_SCORE_PTR(-(min(uses, 3)));
@@ -2669,7 +2669,7 @@ enum AIPivot ShouldPivot(u32 battlerAtk, u32 battlerDef, u32 defAbility, u32 mov
     if (PartyBattlerShouldAvoidHazards(battlerAtk, battlerToSwitch))
         return DONT_PIVOT;
 
-    if (!IsDoubleBattle())
+    if (!EsContraEntrenador())
     {
         if (CountUsablePartyMons(battlerAtk) == 0)
             return CAN_TRY_PIVOT; // can't switch, but attack might still be useful
@@ -3052,7 +3052,7 @@ bool32 AnyPartyMemberStatused(u32 battlerId, bool32 checkSoundproof)
 
     party = GetBattlerParty(battlerId);
 
-    if (IsDoubleBattle())
+    if (EsContraEntrenador())
     {
         battlerOnField1 = gBattlerPartyIndexes[battlerId];
         battlerOnField2 = gBattlerPartyIndexes[GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(battlerId)))];
@@ -3099,7 +3099,7 @@ u32 GetBattlerSideSpeedAverage(u32 battler)
         numBattlersAlive++;
     }
 
-    if (IsDoubleBattle() && IsBattlerAlive(BATTLE_PARTNER(battler)))
+    if (EsContraEntrenador() && IsBattlerAlive(BATTLE_PARTNER(battler)))
     {
         speed2 = AI_DATA->speedStats[BATTLE_PARTNER(battler)];
         numBattlersAlive++;
@@ -3205,7 +3205,7 @@ bool32 ShouldSetScreen(u32 battlerAtk, u32 battlerDef, u32 moveEffect)
 // Partner Logic
 bool32 IsValidDoubleBattle(u32 battlerAtk)
 {
-    if (IsDoubleBattle()
+    if (EsContraEntrenador()
       && ((IsBattlerAlive(BATTLE_OPPOSITE(battlerAtk)) && IsBattlerAlive(BATTLE_PARTNER(BATTLE_OPPOSITE(battlerAtk)))) || IsBattlerAlive(BATTLE_PARTNER(battlerAtk))))
         return TRUE;
     return FALSE;
@@ -3226,7 +3226,7 @@ u32 GetAllyChosenMove(u32 battlerId)
 //PARTNER_MOVE_EFFECT_IS_SAME
 bool32 DoesPartnerHaveSameMoveEffect(u32 battlerAtkPartner, u32 battlerDef, u32 move, u32 partnerMove)
 {
-    if (!IsDoubleBattle())
+    if (!EsContraEntrenador())
         return FALSE;
 
     if (gMovesInfo[move].effect == gMovesInfo[partnerMove].effect
@@ -3241,7 +3241,7 @@ bool32 DoesPartnerHaveSameMoveEffect(u32 battlerAtkPartner, u32 battlerDef, u32 
 //PARTNER_MOVE_EFFECT_IS_SAME_NO_TARGET
 bool32 PartnerHasSameMoveEffectWithoutTarget(u32 battlerAtkPartner, u32 move, u32 partnerMove)
 {
-    if (!IsDoubleBattle())
+    if (!EsContraEntrenador())
         return FALSE;
 
     if (gMovesInfo[move].effect == gMovesInfo[partnerMove].effect
@@ -3253,7 +3253,7 @@ bool32 PartnerHasSameMoveEffectWithoutTarget(u32 battlerAtkPartner, u32 move, u3
 //PARTNER_MOVE_EFFECT_IS_STATUS_SAME_TARGET
 bool32 PartnerMoveEffectIsStatusSameTarget(u32 battlerAtkPartner, u32 battlerDef, u32 partnerMove)
 {
-    if (!IsDoubleBattle())
+    if (!EsContraEntrenador())
         return FALSE;
 
     if (partnerMove != MOVE_NONE
@@ -3284,7 +3284,7 @@ bool32 IsMoveEffectWeather(u32 move)
 //PARTNER_MOVE_EFFECT_IS_TERRAIN
 bool32 PartnerMoveEffectIsTerrain(u32 battlerAtkPartner, u32 partnerMove)
 {
-    if (!IsDoubleBattle())
+    if (!EsContraEntrenador())
         return FALSE;
 
     if (partnerMove != MOVE_NONE
@@ -3300,7 +3300,7 @@ bool32 PartnerMoveEffectIsTerrain(u32 battlerAtkPartner, u32 partnerMove)
 //PARTNER_MOVE_IS_TAILWIND_TRICKROOM
 bool32 PartnerMoveIs(u32 battlerAtkPartner, u32 partnerMove, u32 moveCheck)
 {
-    if (!IsDoubleBattle())
+    if (!EsContraEntrenador())
         return FALSE;
 
     if (partnerMove != MOVE_NONE && partnerMove == moveCheck)
@@ -3311,7 +3311,7 @@ bool32 PartnerMoveIs(u32 battlerAtkPartner, u32 partnerMove, u32 moveCheck)
 //PARTNER_MOVE_IS_SAME
 bool32 PartnerMoveIsSameAsAttacker(u32 battlerAtkPartner, u32 battlerDef, u32 move, u32 partnerMove)
 {
-    if (!IsDoubleBattle())
+    if (!EsContraEntrenador())
         return FALSE;
 
     if (partnerMove != MOVE_NONE && move == partnerMove && gBattleStruct->moveTarget[battlerAtkPartner] == battlerDef)
@@ -3322,7 +3322,7 @@ bool32 PartnerMoveIsSameAsAttacker(u32 battlerAtkPartner, u32 battlerDef, u32 mo
 //PARTNER_MOVE_IS_SAME_NO_TARGET
 bool32 PartnerMoveIsSameNoTarget(u32 battlerAtkPartner, u32 move, u32 partnerMove)
 {
-    if (!IsDoubleBattle())
+    if (!EsContraEntrenador())
         return FALSE;
     if (partnerMove != MOVE_NONE && move == partnerMove)
         return TRUE;
@@ -3359,7 +3359,7 @@ bool32 ShouldUseWishAromatherapy(u32 battlerAtk, u32 battlerDef, u32 move)
         }
     }
 
-    if (!IsDoubleBattle())
+    if (!EsContraEntrenador())
     {
         switch (gMovesInfo[move].effect)
         {
@@ -3454,7 +3454,7 @@ s32 CountUsablePartyMons(u32 battlerId)
     struct Pokemon *party;
     party = GetBattlerParty(battlerId);
 
-    if (IsDoubleBattle())
+    if (EsContraEntrenador())
     {
         battlerOnField1 = gBattlerPartyIndexes[battlerId];
         battlerOnField2 = gBattlerPartyIndexes[GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(battlerId)))];
@@ -3527,7 +3527,7 @@ bool32 PartyHasMoveCategory(u32 battlerId, u32 category)
 
 bool32 SideHasMoveCategory(u32 battlerId, u32 category)
 {
-    if (IsDoubleBattle())
+    if (EsContraEntrenador())
     {
         if (HasMoveWithCategory(battlerId, category) || HasMoveWithCategory(BATTLE_PARTNER(battlerId), category))
             return TRUE;

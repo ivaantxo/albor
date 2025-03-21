@@ -221,7 +221,7 @@ static const struct SpriteTemplate sSpriteTemplate_Cable =
 
 static void Task_LoadCableCar(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         SetMainCallback2(CB2_LoadCableCar);
         DestroyTask(taskId);
@@ -460,7 +460,7 @@ static void Task_CableCar(u8 taskId)
         break;
     case 3:
         // Wait for fade out
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
             sCableCar->state = STATE_END;
         break;
     case STATE_END:

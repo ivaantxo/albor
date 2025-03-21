@@ -1436,20 +1436,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 6,
     },
 
-    [ABILITY_WIMP_OUT] =
-    {
-        .name = _("Wimp Out"),
-        .description = COMPOUND_STRING("Flees at half HP."),
-        .aiRating = 3,
-    },
-
-    [ABILITY_EMERGENCY_EXIT] =
-    {
-        .name = _("Emergency Exit"),
-        .description = COMPOUND_STRING("Flees at half HP."),
-        .aiRating = 3,
-    },
-
     [ABILITY_WATER_COMPACTION] =
     {
         .name = _("Water Compaction"),

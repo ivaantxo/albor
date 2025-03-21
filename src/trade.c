@@ -319,7 +319,7 @@ static void InitTradeMenu(void)
     ResetTasks();
     ResetPaletteFade();
 
-    gPaletteFade.bufferTransferDisabled = TRUE;
+    gFundidoPaletas.transferenciaBufferDeshabilitada = TRUE;
 
     SetVBlankCallback(VBlankCB_TradeMenu);
     LoadPalette(gStandardMenuPalette, BG_PLTT_ID(15), PLTT_SIZEOF(10));
@@ -381,7 +381,7 @@ static void CB2_CreateTradeMenu(void)
         gMain.state++;
         break;
     case 1:
-        gPaletteFade.bufferTransferDisabled = FALSE;
+        gFundidoPaletas.transferenciaBufferDeshabilitada = FALSE;
 
         for (i = 0; i < PARTY_SIZE; i++)
             CreateMon(&gEnemyParty[i], SPECIES_NONE, 0, USE_RANDOM_IVS, FALSE, 0, OT_ID_PLAYER_ID, 0);
@@ -579,7 +579,7 @@ static void CB2_CreateTradeMenu(void)
         gMain.state++;
         break;
     case 22:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             gMain.callback1 = CB1_UpdateLink;
             SetMainCallback2(CB2_TradeMenu);
@@ -739,7 +739,7 @@ static void CB2_ReturnToTradeMenu(void)
         gMain.state++;
         break;
     case 18:
-        gPaletteFade.bufferTransferDisabled = FALSE;
+        gFundidoPaletas.transferenciaBufferDeshabilitada = FALSE;
         BlendPalettes(PALETTES_ALL, 16, RGB_BLACK);
         BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
         gMain.state++;
@@ -757,7 +757,7 @@ static void CB2_ReturnToTradeMenu(void)
         gMain.state++;
         break;
     case 22:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
             SetMainCallback2(CB2_TradeMenu);
         break;
     }
@@ -786,7 +786,7 @@ static void CB_FadeToStartTrade(void)
 
 static void CB_WaitToStartTrade(void)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         gSelectedTradeMonPositions[TRADE_PLAYER] = sTradeMenu->cursorPosition;
         gSelectedTradeMonPositions[TRADE_PARTNER] = sTradeMenu->partnerCursorPosition;
@@ -1285,7 +1285,7 @@ static void CB_ChooseMonAfterButtonPress(void)
 
 static void CB_ShowTradeMonSummaryScreen(void)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         if (sTradeMenu->cursorPosition < PARTY_SIZE)
             ShowPokemonSummaryScreen(SUMMARY_MODE_LOCK_MOVES, gPlayerParty, sTradeMenu->cursorPosition, sTradeMenu->partyCounts[TRADE_PLAYER] - 1, CB2_ReturnToTradeMenu);
@@ -1440,7 +1440,7 @@ static void CB_HandleTradeCanceled(void)
 
 static void CB_InitExitCanceledTrade(void)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         SetCloseLinkCallbackAndType(12);
         sTradeMenu->callbackId = CB_EXIT_CANCELED_TRADE;
@@ -2123,21 +2123,6 @@ static void SpriteCB_GbaScreen(struct Sprite *sprite)
     }
 }
 
-static void SetTradeBGAffine(void)
-{
-    struct BgAffineDstData affine;
-
-    DoBgAffineSet(&affine, sTradeAnim->texX * 0x100, sTradeAnim->texY * 0x100, sTradeAnim->scrX, sTradeAnim->scrY, sTradeAnim->sXY, sTradeAnim->sXY, sTradeAnim->alpha);
-    SetGpuReg(REG_OFFSET_BG2PA, affine.pa);
-    SetGpuReg(REG_OFFSET_BG2PB, affine.pb);
-    SetGpuReg(REG_OFFSET_BG2PC, affine.pc);
-    SetGpuReg(REG_OFFSET_BG2PD, affine.pd);
-    SetGpuReg(REG_OFFSET_BG2X_L, affine.dx);
-    SetGpuReg(REG_OFFSET_BG2X_H, affine.dx >> 16);
-    SetGpuReg(REG_OFFSET_BG2Y_L, affine.dy);
-    SetGpuReg(REG_OFFSET_BG2Y_H, affine.dy >> 16);
-}
-
 static void SetTradeGpuRegs(void)
 {
     u16 dispcnt;
@@ -2150,10 +2135,6 @@ static void SetTradeGpuRegs(void)
     {
         SetGpuReg(REG_OFFSET_BG2VOFS, sTradeAnim->bg2vofs);
         SetGpuReg(REG_OFFSET_BG2HOFS, sTradeAnim->bg2hofs);
-    }
-    else
-    {
-        SetTradeBGAffine();
     }
 }
 
@@ -2348,7 +2329,7 @@ void CB2_LinkTrade(void)
         gMain.state++;
         break;
     case 12:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             SetMainCallback2(CB2_UpdateLinkTrade);
         }
@@ -3009,7 +2990,7 @@ void DoInGameTradeScene(void)
 
 static void Task_InGameTrade(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         SetMainCallback2(CB2_InitInGameTrade);
         gFieldCallback = FieldCB_ContinueScriptHandleMusic;

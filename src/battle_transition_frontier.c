@@ -439,7 +439,7 @@ static bool8 CirclesMeet_CreateSprites(struct Task *task)
 
 static bool8 CirclesMeet_End(struct Task *task)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         DestroyLogoCirclesGfx(task);
         DestroyTask(FindTaskIdByFunc(Task_FrontierCirclesMeet));
@@ -465,7 +465,7 @@ static bool8 CirclesCross_CreateSprites(struct Task *task)
 
 static bool8 CirclesCross_End(struct Task *task)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         DestroyLogoCirclesGfx(task);
         DestroyTask(FindTaskIdByFunc(Task_FrontierCirclesCross));
@@ -491,7 +491,7 @@ static bool8 CirclesAsymmetricSpiral_CreateSprites(struct Task *task)
 
 static bool8 CirclesAsymmetricSpiral_End(struct Task *task)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         DestroyLogoCirclesGfx(task);
         DestroyTask(FindTaskIdByFunc(Task_FrontierCirclesAsymmetricSpiral));
@@ -517,7 +517,7 @@ static bool8 CirclesSymmetricSpiral_CreateSprites(struct Task *task)
 
 static bool8 CirclesSymmetricSpiral_End(struct Task *task)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         DestroyLogoCirclesGfx(task);
         DestroyTask(FindTaskIdByFunc(Task_FrontierCirclesSymmetricSpiral));
@@ -553,7 +553,7 @@ static bool8 CirclesMeetInSeq_CreateSprites(struct Task *task)
 
 static bool8 CirclesMeetInSeq_End(struct Task *task)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         DestroyLogoCirclesGfx(task);
         DestroyTask(FindTaskIdByFunc(Task_FrontierCirclesMeetInSeq));
@@ -589,7 +589,7 @@ static bool8 CirclesCrossInSeq_CreateSprites(struct Task *task)
 
 static bool8 CirclesCrossInSeq_End(struct Task *task)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         DestroyLogoCirclesGfx(task);
         DestroyTask(FindTaskIdByFunc(Task_FrontierCirclesCrossInSeq));
@@ -625,7 +625,7 @@ static bool8 CirclesAsymmetricSpiralInSeq_CreateSprites(struct Task *task)
 
 static bool8 CirclesAsymmetricSpiralInSeq_End(struct Task *task)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         DestroyLogoCirclesGfx(task);
         DestroyTask(FindTaskIdByFunc(Task_FrontierCirclesAsymmetricSpiralInSeq));
@@ -661,7 +661,7 @@ static bool8 CirclesSymmetricSpiralInSeq_CreateSprites(struct Task *task)
 
 static bool8 CirclesSymmetricSpiralInSeq_End(struct Task *task)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         DestroyLogoCirclesGfx(task);
         DestroyTask(FindTaskIdByFunc(Task_FrontierCirclesSymmetricSpiralInSeq));

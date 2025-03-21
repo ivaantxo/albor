@@ -714,7 +714,7 @@ static void Task_FadeOutAndCloseTMCase(u8 taskId)
     s16 * data = gTasks[taskId].data;
     u16 music = GetCurrLocationDefaultMusic();
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         DestroyListMenuTask(tListTaskId, &sTMCaseStaticResources.scrollOffset, &sTMCaseStaticResources.selectedRow);
         if (sTMCaseDynamicResources->nextScreenCallback != NULL)
@@ -733,7 +733,7 @@ static void Task_HandleListInput(u8 taskId)
     s16 * data = gTasks[taskId].data;
     s32 input;
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         input = ListMenu_ProcessInput(tListTaskId);
         ListMenuGetScrollAndRow(tListTaskId, &sTMCaseStaticResources.scrollOffset, &sTMCaseStaticResources.selectedRow);

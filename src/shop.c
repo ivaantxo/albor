@@ -448,7 +448,7 @@ static void Task_HandleShopMenuQuit(u8 taskId)
 static void Task_GoToBuyOrSellMenu(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         DestroyTask(taskId);
         SetMainCallback2((void *)((u16)tCallbackHi << 16 | (u16)tCallbackLo));
@@ -993,7 +993,7 @@ static void Task_BuyMenu(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         s32 itemId = ListMenu_ProcessInput(tListTaskId);
         ListMenuGetScrollAndRow(tListTaskId, &sShopData->scrollOffset, &sShopData->selectedRow);
@@ -1252,7 +1252,7 @@ static void ExitBuyMenu(u8 taskId)
 
 static void Task_ExitBuyMenu(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         RemoveMoneyLabelObject();
         BuyMenuFreeMemory();

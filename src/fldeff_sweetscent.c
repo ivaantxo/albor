@@ -63,7 +63,7 @@ void StartSweetScentFieldEffect(void)
 
 static void TrySweetScentEncounter(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         ClearMirageTowerPulseBlendEffect();
         BlendPalettes(0x00000040, 8, RGB_RED);
@@ -90,7 +90,7 @@ static void TrySweetScentEncounter(u8 taskId)
 
 static void FailSweetScentEncounter(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         CpuFastCopy(gDecompressionBuffer, gPlttBufferUnfaded, PLTT_SIZE);
         SetWeatherPalStateIdle();

@@ -1039,7 +1039,7 @@ static void AnimTask_CurseStretchingBlackBg_Step1(u8 taskId)
 
 static void AnimTask_CurseStretchingBlackBg_Step2(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         gBattle_WIN0H = 0;
         gBattle_WIN0V = 0;

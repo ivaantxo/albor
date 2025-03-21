@@ -169,7 +169,7 @@ static void Task_BeginEvolutionScene(u8 taskId)
         gTasks[taskId].tState++;
         break;
     case 1:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             u16 postEvoSpecies;
             u8 partyId;
@@ -654,7 +654,7 @@ static void Task_EvolutionScene(u8 taskId)
         ShowBg(3);
         break;
     case EVOSTATE_INTRO_MSG:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             StringExpandPlaceholders(gStringVar4, gText_PkmnIsEvolving);
             BattlePutTextOnWindow(gStringVar4, B_WIN_MSG);
@@ -685,7 +685,7 @@ static void Task_EvolutionScene(u8 taskId)
         }
         break;
     case EVOSTATE_START_BG_AND_SPARKLE_SPIRAL:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             StartBgAnimation(FALSE);
             sEvoGraphicsTaskId = EvolutionSparkles_SpiralUpward(17);
@@ -744,7 +744,7 @@ static void Task_EvolutionScene(u8 taskId)
         }
         break;
     case EVOSTATE_EVO_MON_ANIM:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             EvoScene_DoMonAnimAndCry(sEvoStructPtr->postEvoSpriteId, gTasks[taskId].tPostEvoSpecies);
             gTasks[taskId].tState++;
@@ -799,7 +799,7 @@ static void Task_EvolutionScene(u8 taskId)
         }
         break;
     case EVOSTATE_END:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             if (!(gTasks[taskId].tBits & TASK_BIT_LEARN_MOVE))
             {
@@ -825,7 +825,7 @@ static void Task_EvolutionScene(u8 taskId)
         }
         break;
     case EVOSTATE_CANCEL_MON_ANIM:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             EvoScene_DoMonAnimAndCry(sEvoStructPtr->preEvoSpriteId, gTasks[taskId].tPreEvoSpecies);
             gTasks[taskId].tState++;
@@ -948,7 +948,7 @@ static void Task_EvolutionScene(u8 taskId)
             }
             break;
         case MVSTATE_SHOW_MOVE_SELECT:
-            if (!gPaletteFade.active)
+            if (!gFundidoPaletas.activo)
             {
                 FreeAllWindowBuffers();
                 ShowSelectMovePokemonSummaryScreen(gPlayerParty, gTasks[taskId].tPartyId,
@@ -958,7 +958,7 @@ static void Task_EvolutionScene(u8 taskId)
             }
             break;
         case MVSTATE_HANDLE_MOVE_SELECT:
-            if (!gPaletteFade.active && gMain.callback2 == CB2_EvolutionSceneUpdate)
+            if (!gFundidoPaletas.activo&& gMain.callback2 == CB2_EvolutionSceneUpdate)
             {
                 var = GetMoveSlotToReplace();
                 if (var == MAX_MON_MOVES)
@@ -1099,7 +1099,7 @@ static void Task_TradeEvolutionScene(u8 taskId)
         }
         break;
     case T_EVOSTATE_START_BG_AND_SPARKLE_SPIRAL:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             StartBgAnimation(TRUE);
             var = gSprites[sEvoStructPtr->preEvoSpriteId].oam.paletteNum + 16;
@@ -1220,7 +1220,7 @@ static void Task_TradeEvolutionScene(u8 taskId)
         }
         break;
     case T_EVOSTATE_CANCEL_MON_ANIM:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             EvoScene_DoMonAnimAndCry(sEvoStructPtr->preEvoSpriteId, gTasks[taskId].tPreEvoSpecies);
             gTasks[taskId].tState++;
@@ -1313,7 +1313,7 @@ static void Task_TradeEvolutionScene(u8 taskId)
             }
             break;
         case T_MVSTATE_SHOW_MOVE_SELECT:
-            if (!gPaletteFade.active)
+            if (!gFundidoPaletas.activo)
             {
                 Free(GetBgTilemapBuffer(3));
                 Free(GetBgTilemapBuffer(1));
@@ -1327,7 +1327,7 @@ static void Task_TradeEvolutionScene(u8 taskId)
             }
             break;
         case T_MVSTATE_HANDLE_MOVE_SELECT:
-            if (!gPaletteFade.active && gMain.callback2 == CB2_TradeEvolutionSceneUpdate)
+            if (!gFundidoPaletas.activo&& gMain.callback2 == CB2_TradeEvolutionSceneUpdate)
             {
                 var = GetMoveSlotToReplace();
                 if (var == MAX_MON_MOVES)

@@ -110,7 +110,7 @@ void RemoveRecordsWindow(void)
 
 static void Task_TrainerHillWaitForPaletteFade(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
         gTasks[taskId].func = Task_CloseTrainerHillRecordsOnButton;
 }
 
@@ -133,7 +133,7 @@ static void Task_BeginPaletteFade(u8 taskId)
 
 static void Task_ExitTrainerHillRecords(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
         Free(sTilemapBuffer);

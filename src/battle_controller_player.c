@@ -381,7 +381,7 @@ static void HandleInputChooseAction(u32 battler)
     }
     else if (JOY_NEW(B_BUTTON) || gPlayerDpadHoldFrames > 59)
     {
-        if (IsDoubleBattle()
+        if (EsContraEntrenador()
          && GetBattlerPosition(battler) == B_POSITION_PLAYER_RIGHT
          && !(gAbsentBattlerFlags & (1u << GetBattlerAtPosition(B_POSITION_PLAYER_LEFT))))
         {
@@ -393,7 +393,7 @@ static void HandleInputChooseAction(u32 battler)
         }
         else if (B_QUICK_MOVE_CURSOR_TO_RUN)
         {
-            if (!(gBattleTypeFlags & TIPO_BATALLA_ENTRENADOR)) // If wild battle, pressing B moves cursor to "Run".
+            if (!(EsContraEntrenador())) // If wild battle, pressing B moves cursor to "Run".
             {
                 PlaySE(SE_SELECT);
                 gActionSelectionCursor[battler] = 2;
@@ -1143,7 +1143,7 @@ static void Task_GiveExpToMon(u8 taskId)
             gainedExp -= nextLvlExp - currExp;
             BtlController_EmitTwoReturnValues(battler, BUFFER_B, RET_VALUE_LEVELED_UP, gainedExp);
 
-            if (IsDoubleBattle() == TRUE
+            if (EsContraEntrenador() == TRUE
              && (monId == gBattlerPartyIndexes[battler] || monId == gBattlerPartyIndexes[BATTLE_PARTNER(battler)]))
                 gTasks[taskId].func = Task_LaunchLvlUpAnim;
             else
@@ -1243,7 +1243,7 @@ static void Task_LaunchLvlUpAnim(u8 taskId)
     u8 battler = gTasks[taskId].tExpTask_battler;
     u8 monIndex = gTasks[taskId].tExpTask_monId;
 
-    if (IsDoubleBattle() == TRUE && monIndex == gBattlerPartyIndexes[BATTLE_PARTNER(battler)])
+    if (EsContraEntrenador() == TRUE && monIndex == gBattlerPartyIndexes[BATTLE_PARTNER(battler)])
         battler ^= BIT_FLANK;
 
     InitAndLaunchSpecialAnimation(battler, battler, battler, B_ANIM_LVL_UP);
@@ -1258,7 +1258,7 @@ static void Task_UpdateLvlInHealthbox(u8 taskId)
     {
         u8 monIndex = gTasks[taskId].tExpTask_monId;
 
-        if (IsDoubleBattle() == TRUE && monIndex == gBattlerPartyIndexes[BATTLE_PARTNER(battler)])
+        if (EsContraEntrenador() == TRUE && monIndex == gBattlerPartyIndexes[BATTLE_PARTNER(battler)])
             UpdateHealthboxAttribute(gHealthboxSpriteIds[BATTLE_PARTNER(battler)], &gPlayerParty[monIndex], HEALTHBOX_ALL);
         else
             UpdateHealthboxAttribute(gHealthboxSpriteIds[battler], &gPlayerParty[monIndex], HEALTHBOX_ALL);
@@ -1276,7 +1276,7 @@ static void Task_SetControllerToWaitForString(u8 taskId)
 
 static void OpenPartyMenuToChooseMon(u32 battler)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         u8 caseId;
 
@@ -1290,7 +1290,7 @@ static void OpenPartyMenuToChooseMon(u32 battler)
 
 static void WaitForMonSelection(u32 battler)
 {
-    if (gMain.callback2 == BattleMainCB2 && !gPaletteFade.active)
+    if (gMain.callback2 == BattleMainCB2 && !gFundidoPaletas.activo)
     {
         if (gPartyMenuUseExitCallback == TRUE)
             BtlController_EmitChosenMonReturnValue(battler, BUFFER_B, gSelectedMonPartyId, gBattlePartyCurrentOrder);
@@ -1303,7 +1303,7 @@ static void WaitForMonSelection(u32 battler)
 
 static void OpenBagAndChooseItem(u32 battler)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         gBattlerControllerFuncs[battler] = CompleteWhenChoseItem;
         ReshowBattleScreenDummy();
@@ -1314,7 +1314,7 @@ static void OpenBagAndChooseItem(u32 battler)
 
 static void CompleteWhenChoseItem(u32 battler)
 {
-    if (gMain.callback2 == BattleMainCB2 && !gPaletteFade.active)
+    if (gMain.callback2 == BattleMainCB2 && !gFundidoPaletas.activo)
     {
         BtlController_EmitOneReturnValue(battler, BUFFER_B, gSpecialVar_ItemId);
         PlayerBufferExecCompleted(battler);
@@ -2248,7 +2248,7 @@ static void PlayerHandleResetActionMoveSelection(u32 battler)
 
 static void Controller_WaitForDebug(u32 battler)
 {
-    if (gMain.callback2 == BattleMainCB2 && !gPaletteFade.active)
+    if (gMain.callback2 == BattleMainCB2 && !gFundidoPaletas.activo)
     {
         PlayerBufferExecCompleted(battler);
     }

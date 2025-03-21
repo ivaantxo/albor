@@ -333,7 +333,7 @@ void OpenPokenavForTutorial(void)
 static void CB2_InitPokenavForTutorial(void)
 {
     UpdatePaletteFade();
-    if (gPaletteFade.active)
+    if (gFundidoPaletas.activo)
         return;
 
     gPokenavResources = Alloc(sizeof(*gPokenavResources));

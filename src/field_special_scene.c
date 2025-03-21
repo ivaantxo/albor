@@ -214,7 +214,7 @@ static void Task_HandleTruckSequence(u8 taskId)
         break;
     case 2:
         tTimer++;
-        if (!gPaletteFade.active && tTimer > 300)
+        if (!gFundidoPaletas.activo&& tTimer > 300)
         {
             tTimer = 0;
             DestroyTask(tTaskId1);
@@ -303,7 +303,7 @@ void Task_HandlePorthole(u8 taskId)
     switch (data[0])
     {
     case INIT_PORTHOLE: // finish fading before making porthole finish.
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             data[1] = 0;
             data[0] = EXECUTE_MOVEMENT; // execute movement before checking if should be exited. strange?

@@ -582,7 +582,7 @@ static bool8 ShowPartyMenu(void)
         break;
     case 2:
         ResetPaletteFade();
-        gPaletteFade.bufferTransferDisabled = TRUE;
+        gFundidoPaletas.transferenciaBufferDeshabilitada = TRUE;
         gMain.state++;
         break;
     case 3:
@@ -674,7 +674,7 @@ static bool8 ShowPartyMenu(void)
         break;
     case 21:
         BlendPalettes(PALETTES_ALL, 16, 0);
-        gPaletteFade.bufferTransferDisabled = FALSE;
+        gFundidoPaletas.transferenciaBufferDeshabilitada = FALSE;
         gMain.state++;
         break;
     case 22:
@@ -699,7 +699,7 @@ static void ExitPartyMenu(void)
 
 static void Task_ExitPartyMenu(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         SetMainCallback2(gPartyMenu.exitCallback);
         FreePartyPointers();
@@ -1235,7 +1235,7 @@ static void Task_ClosePartyMenu(u8 taskId)
 
 static void Task_ClosePartyMenuAndSetCB2(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         if (gPartyMenu.menuType == PARTY_MENU_TYPE_IN_BATTLE)
             UpdatePartyToFieldOrder();
@@ -1263,7 +1263,7 @@ u8 GetPartyMenuType(void)
 
 void Task_HandleChooseMonInput(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         s8 *slotPtr = GetCurrentPartySlotPtr();
 
@@ -2737,7 +2737,7 @@ static void Task_TryCreateSelectionWindow(u8 taskId)
 
 static void Task_HandleSelectionMenuInput(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         s8 input;
         s16 *data = gTasks[taskId].data;
@@ -2793,7 +2793,7 @@ static void CB2_ShowPokemonSummaryScreen(void)
 
 static void CB2_ReturnToPartyMenuFromSummaryScreen(void)
 {
-    gPaletteFade.bufferTransferDisabled = TRUE;
+    gFundidoPaletas.transferenciaBufferDeshabilitada = TRUE;
     gPartyMenu.slotId = gLastViewedMonIndex;
     InitPartyMenu(gPartyMenu.menuType, KEEP_PARTY_LAYOUT, gPartyMenu.action, TRUE, PARTY_MSG_DO_WHAT_WITH_MON, Task_TryCreateSelectionWindow, gPartyMenu.exitCallback);
 }
@@ -3139,7 +3139,7 @@ static void Task_GiveHoldItem(u8 taskId)
 {
     u16 item;
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         item = gSpecialVar_ItemId;
         DisplayGaveHeldItemMessage(&gPlayerParty[gPartyMenu.slotId], item, FALSE);
@@ -3151,7 +3151,7 @@ static void Task_GiveHoldItem(u8 taskId)
 
 static void Task_SwitchHoldItemsPrompt(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         DisplayAlreadyHoldingItemSwitchMessage(&gPlayerParty[gPartyMenu.slotId], sPartyMenuItemId, TRUE);
         gTasks[taskId].func = Task_SwitchItemsYesNo;
@@ -3249,7 +3249,7 @@ static void CB2_ReturnToPartyMenuFromWritingMail(void)
 // Nearly redundant with Task_DisplayGaveMailFromBagMessgae
 static void Task_DisplayGaveMailFromPartyMessage(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         if (sPartyMenuItemId == ITEM_NONE)
             DisplayGaveHeldItemMessage(&gPlayerParty[gPartyMenu.slotId], gSpecialVar_ItemId, FALSE);
@@ -3399,7 +3399,7 @@ static void CB2_ReadHeldMail(void)
 
 static void CB2_ReturnToPartyMenuFromReadingMail(void)
 {
-    gPaletteFade.bufferTransferDisabled = TRUE;
+    gFundidoPaletas.transferenciaBufferDeshabilitada = TRUE;
     InitPartyMenu(gPartyMenu.menuType, KEEP_PARTY_LAYOUT, gPartyMenu.action, TRUE, PARTY_MSG_DO_WHAT_WITH_MON, Task_TryCreateSelectionWindow, gPartyMenu.exitCallback);
 }
 
@@ -4104,7 +4104,7 @@ static void CB2_ReturnToBagMenu(void)
 
 static void Task_SetSacredAshCB(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         if (gPartyMenu.menuType == PARTY_MENU_TYPE_IN_BATTLE)
             sPartyMenuInternal->exitCallback = CB2_SetUpExitToBattleScreen;
@@ -5035,7 +5035,7 @@ static void CB2_ReturnToPartyMenuWhileLearningMove(void)
 
 static void Task_ReturnToPartyMenuWhileLearningMove(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         if (GetMoveSlotToReplace() != MAX_MON_MOVES)
             DisplayPartyMenuForgotMoveMessage(taskId);
@@ -5890,7 +5890,7 @@ static void TryTutorSelectedMon(u8 taskId)
     struct Pokemon *mon;
     s16 *move;
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         mon = &gPlayerParty[gPartyMenu.slotId];
         move = &gPartyMenu.data1;
@@ -5969,7 +5969,7 @@ static void GiveItemToSelectedMon(u8 taskId)
 {
     u16 item;
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         item = gPartyMenu.bagItem;
         DisplayGaveHeldItemMessage(&gPlayerParty[gPartyMenu.slotId], item, FALSE);
@@ -6026,7 +6026,7 @@ static void CB2_ReturnToPartyOrBagMenuFromWritingMail(void)
 
 static void Task_DisplayGaveMailFromBagMessage(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         if (sPartyMenuItemId != ITEM_NONE)
             DisplaySwitchedHeldItemMessage(gPartyMenu.bagItem, sPartyMenuItemId, FALSE);
@@ -6285,7 +6285,7 @@ void ChooseMonForWirelessMinigame(void)
 
 static u8 GetPartyLayoutFromBattleType(void)
 {
-    if (!IsDoubleBattle() || gPlayerPartyCount == 1) // Draw the single layout in a double battle where the player has only one pokemon.
+    if (!EsContraEntrenador() || gPlayerPartyCount == 1) // Draw the single layout in a double battle where the player has only one pokemon.
         return PARTY_LAYOUT_SINGLE;
     return PARTY_LAYOUT_DOUBLE;
 }
@@ -6377,7 +6377,7 @@ static void BufferBattlePartyOrder(u8 *partyBattleOrder, u8 flankId)
     u8 partyIds[PARTY_SIZE];
     int i, j;
 
-    if (IsDoubleBattle() == FALSE)
+    if (EsContraEntrenador() == FALSE)
     {
         j = 1;
         partyIds[0] = gBattlerPartyIndexes[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)];
@@ -6432,7 +6432,7 @@ static void BufferBattlePartyOrderBySide(u8 *partyBattleOrder, u8 flankId, u8 ba
         rightBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
     }
 
-    if (IsDoubleBattle() == FALSE)
+    if (EsContraEntrenador() == FALSE)
     {
         j = 1;
         partyIndexes[0] = gBattlerPartyIndexes[leftBattler];
@@ -6568,7 +6568,7 @@ static void Task_MultiPartnerPartySlideIn(u8 taskId)
     s16 *data = gTasks[taskId].data;
     u8 i;
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         tXPos -= 8;
         SlideMultiPartyMenuBoxSpritesOneStep(taskId);
@@ -6660,7 +6660,7 @@ void ChooseContestMon(void)
 
 static void Task_ChooseContestMon(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         CleanupOverworldWindowsAndTilemaps();
         InitPartyMenu(PARTY_MENU_TYPE_CONTEST, PARTY_LAYOUT_SINGLE, PARTY_ACTION_CHOOSE_AND_CLOSE, FALSE, PARTY_MSG_CHOOSE_MON, Task_HandleChooseMonInput, CB2_ChooseContestMon);
@@ -6688,7 +6688,7 @@ void ChoosePartyMon(void)
 
 static void Task_ChoosePartyMon(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         CleanupOverworldWindowsAndTilemaps();
         InitPartyMenu(PARTY_MENU_TYPE_CHOOSE_MON, PARTY_LAYOUT_SINGLE, PARTY_ACTION_CHOOSE_AND_CLOSE, FALSE, PARTY_MSG_CHOOSE_MON, Task_HandleChooseMonInput, BufferMonSelection);
@@ -6705,7 +6705,7 @@ void ChooseMonForMoveRelearner(void)
 
 static void Task_ChooseMonForMoveRelearner(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         CleanupOverworldWindowsAndTilemaps();
         InitPartyMenu(PARTY_MENU_TYPE_MOVE_RELEARNER, PARTY_LAYOUT_SINGLE, PARTY_ACTION_CHOOSE_AND_CLOSE, FALSE, PARTY_MSG_CHOOSE_MON, Task_HandleChooseMonInput, CB2_ChooseMonForMoveRelearner);
@@ -6750,7 +6750,7 @@ void BattlePyramidChooseMonHeldItems(void)
 
 static void Task_BattlePyramidChooseMonHeldItems(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         CleanupOverworldWindowsAndTilemaps();
         InitPartyMenu(PARTY_MENU_TYPE_STORE_PYRAMID_HELD_ITEMS, PARTY_LAYOUT_SINGLE, PARTY_ACTION_CHOOSE_MON, FALSE, PARTY_MSG_CHOOSE_MON, Task_HandleChooseMonInput, BufferMonSelection);

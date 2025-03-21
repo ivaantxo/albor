@@ -373,7 +373,7 @@ static void FadeInScreenWithWeather(void)
     case WEATHER_FOG_DIAGONAL:
     case WEATHER_UNDERWATER:
     default:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             gWeatherPtr->colorMapIndex = gWeatherPtr->targetColorMapIndex;
             gWeatherPtr->palProcessingState = WEATHER_PAL_STATE_IDLE;
@@ -446,7 +446,7 @@ static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
         palOffset = PLTT_ID(startPalIndex);
         UpdateAltBgPalettes(palettes & PALETTES_BG);
         // Thunder gamma-shift looks bad on night-blended palettes, so ignore time blending in some situations
-        if (!(colorMapIndex > 3) && MapHasNaturalLight(gMapHeader.mapType))
+        if (!(colorMapIndex > 3) && MapaTieneLuzNatural(gMapHeader.mapType))
             UpdatePalettesWithTime(palettes);
         else
             CpuFastCopy(gPlttBufferUnfaded + palOffset, gPlttBufferFaded + palOffset, PLTT_SIZE_4BPP * numPalettes);
@@ -516,7 +516,7 @@ static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
     }
     else
     {
-        if (MapHasNaturalLight(gMapHeader.mapType)) 
+        if (MapaTieneLuzNatural(gMapHeader.mapType)) 
         { // Time-blend
             u32 palettes = ((1 << numPalettes) - 1) << startPalIndex;
             UpdateAltBgPalettes(palettes & PALETTES_BG);
@@ -767,13 +767,13 @@ void FadeScreen(u8 mode, s8 delay)
             gWeatherPtr->fadeScreenCounter = 0; // Triggers gamma-shift-based fade-in
         else 
         {
-            if (MapHasNaturalLight(gMapHeader.mapType)) 
+            if (MapaTieneLuzNatural(gMapHeader.mapType)) 
             {
                 UpdateAltBgPalettes(PALETTES_BG);
                 BeginTimeOfDayPaletteFade(PALETTES_ALL, delay, 16, 0,
-                (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time0],
-                (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time1],
-                currentTimeBlend.weight, fadeColor);
+                (struct ConfiguracionBlend *)&gBlendHoraDia[blendHoraActual.tiempoInicial],
+                (struct ConfiguracionBlend *)&gBlendHoraDia[blendHoraActual.tiempoFinal],
+                blendHoraActual.intensidad, fadeColor);
             } 
             else 
             {
@@ -812,7 +812,7 @@ void UpdateSpritePaletteWithWeather(u8 spritePaletteIndex, bool8 allowFog)
     case WEATHER_PAL_STATE_SCREEN_FADING_OUT:
         paletteIndex = PLTT_ID(paletteIndex);
         CpuFastCopy(&gPlttBufferFaded[paletteIndex], &gPlttBufferUnfaded[paletteIndex], PLTT_SIZE_4BPP);
-        BlendPalette(paletteIndex, 16, gPaletteFade.y, gPaletteFade.blendColor);
+        BlendPalette(paletteIndex, 16, gFundidoPaletas.y, gFundidoPaletas.colorBlend);
         break;
     // WEATHER_PAL_STATE_CHANGING_WEATHER
     // WEATHER_PAL_STATE_CHANGING_IDLE
@@ -846,7 +846,7 @@ void UpdateSpritePaletteWithWeather(u8 spritePaletteIndex, bool8 allowFog)
     // If faded out, i.e due to fadescreenswapbuffers,
     // Copy unfaded palette to pal decomp buffer
     // so it will be restored on fade-in
-    if (gPaletteFade.y == 16)
+    if (gFundidoPaletas.y == 16)
         {
             CpuFastCopy(gPlttBufferUnfaded + OBJ_PLTT_ID(spritePaletteIndex), gPlttBufferFaded + 2 * OBJ_PLTT_ID(spritePaletteIndex), PLTT_SIZE_4BPP);
         }

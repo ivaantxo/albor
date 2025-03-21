@@ -318,7 +318,7 @@ void ShutdownPokenav(void)
 
 bool32 WaitForPokenavShutdownFade(void)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         FreeMenuHandlerSubstruct2();
         CleanupPokenavMainMenuResources();
@@ -529,7 +529,7 @@ void PokenavFadeScreen(s32 fadeType)
 
 bool32 IsPaletteFadeActive(void)
 {
-    return gPaletteFade.active;
+    return gFundidoPaletas.activo;
 }
 
 // Excludes the first obj and bg palettes

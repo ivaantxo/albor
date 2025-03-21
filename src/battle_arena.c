@@ -171,7 +171,7 @@ u8 BattleArena_ShowJudgmentWindow(u8 *state)
         (*state)++;
         break;
     case 1:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             HandleBattleWindow(5, 0, 24, 13, 0);
             (*state)++;
@@ -270,7 +270,7 @@ u8 BattleArena_ShowJudgmentWindow(u8 *state)
         (*state)++;
         break;
     case JUDGMENT_STATE_FINISHED + 2:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_ALL | WININ_WIN1_ALL);
             FreeSpriteTilesByTag(TAG_JUDGMENT_ICON);

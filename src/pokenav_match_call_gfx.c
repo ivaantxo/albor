@@ -916,7 +916,7 @@ static void Task_FlashPokeballIcons(u8 taskId)
         tSinIdx &= 0x7F;
         tSinVal = gSineTable[tSinIdx] >> 4;
         PokenavCopyPalette(sPokeball_Pal, &sPokeball_Pal[0x10], 0x10, 0x10, tSinVal, &gPlttBufferUnfaded[BG_PLTT_ID(5)]);
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
             CpuCopy32(&gPlttBufferUnfaded[BG_PLTT_ID(5)], &gPlttBufferFaded[BG_PLTT_ID(5)], PLTT_SIZE_4BPP);
     }
 }

@@ -619,7 +619,7 @@ static void Task_MainMenuCheckSaveFile(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         SetGpuReg(REG_OFFSET_WIN0H, 0);
         SetGpuReg(REG_OFFSET_WIN0V, 0);
@@ -684,7 +684,7 @@ static void Task_WaitForSaveFileErrorWindow(u8 taskId)
 
 static void Task_MainMenuCheckBattery(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         SetGpuReg(REG_OFFSET_WIN0H, 0);
         SetGpuReg(REG_OFFSET_WIN0V, 0);
@@ -721,7 +721,7 @@ static void Task_DisplayMainMenu(u8 taskId)
 {
     u16 palette;
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         SetGpuReg(REG_OFFSET_WIN0H, 0);
         SetGpuReg(REG_OFFSET_WIN0V, 0);
@@ -843,7 +843,7 @@ static void Task_HandleMainMenuAPressed(u8 taskId)
 {
     u8 action;
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         ClearStdWindowAndFrame(0, TRUE);
         ClearStdWindowAndFrame(1, TRUE);
@@ -929,7 +929,7 @@ static void Task_HandleMainMenuAPressed(u8 taskId)
 
 static void Task_HandleMainMenuBPressed(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         sCurrItemAndOptionMenuCheck = 0;
         FreeAllWindowBuffers();
@@ -947,7 +947,7 @@ static void Task_DisplayMainMenuInvalidActionError(u8 taskId)
             gTasks[taskId].tCurrItem++;
             break;
         case 1:
-            if (!gPaletteFade.active)
+            if (!gFundidoPaletas.activo)
                 gTasks[taskId].tCurrItem++;
             break;
         case 2:
@@ -1103,7 +1103,7 @@ static void Task_NewGameBirchSpeech_WaitForSpriteFadeInWelcome(u8 taskId)
 
 static void Task_NewGameBirchSpeech_ThisIsAPokemon(u8 taskId)
 {
-    if (!gPaletteFade.active && !RunTextPrintersAndIsPrinter0Active())
+    if (!gFundidoPaletas.activo&& !RunTextPrintersAndIsPrinter0Active())
     {
         gTasks[taskId].func = Task_NewGameBirchSpeech_MainSpeech;
         StringExpandPlaceholders(gStringVar4, gText_ThisIsAPokemon);
@@ -1355,7 +1355,7 @@ static void Task_NewGameBirchSpeech_WaitPressBeforeNameChoice(u8 taskId)
 
 static void Task_NewGameBirchSpeech_StartNamingScreen(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         FreeAllWindowBuffers();
         FreeAndDestroyMonPicSprite(gTasks[taskId].tLotadSpriteId);
@@ -1522,7 +1522,7 @@ static void Task_NewGameBirchSpeech_FadePlayerToWhite(u8 taskId)
 {
     u8 spriteId;
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         spriteId = gTasks[taskId].tPlayerSpriteId;
         gSprites[spriteId].callback = SpriteCB_Null;
@@ -1534,7 +1534,7 @@ static void Task_NewGameBirchSpeech_FadePlayerToWhite(u8 taskId)
 
 static void Task_NewGameBirchSpeech_Cleanup(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         FreeAllWindowBuffers();
         FreeAndDestroyMonPicSprite(gTasks[taskId].tLotadSpriteId);

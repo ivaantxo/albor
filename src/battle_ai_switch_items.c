@@ -74,7 +74,7 @@ static bool32 ShouldSwitchIfHasBadOdds(u32 battler)
         return FALSE;
 
     // Double Battles aren't included in AI_FLAG_SMART_MON_CHOICE. Defaults to regular switch in logic
-    if (IsDoubleBattle())
+    if (EsContraEntrenador())
         return FALSE;
 
     opposingPosition = BATTLE_OPPOSITE(GetBattlerPosition(battler));
@@ -223,7 +223,7 @@ static bool32 ShouldSwitchIfAllMovesBad(u32 battler)
     u32 aiMove;
 
     // Switch if no moves affect opponents
-    if (IsDoubleBattle())
+    if (EsContraEntrenador())
     {
         u32 opposingPartner = GetBattlerAtPosition(BATTLE_PARTNER(opposingBattler));
         for (moveIndex = 0; moveIndex < MAX_MON_MOVES; moveIndex++)
@@ -264,7 +264,7 @@ static bool32 FindMonThatHitsWonderGuard(u32 battler)
     struct Pokemon *party = NULL;
     u16 move;
 
-    if (IsDoubleBattle())
+    if (EsContraEntrenador())
         return FALSE;
 
     if (AI_DATA->abilities[opposingBattler] != ABILITY_WONDER_GUARD)
@@ -330,7 +330,7 @@ static bool32 FindMonThatAbsorbsOpponentsMove(u32 battler)
     if (HasSuperEffectiveMoveAgainstOpponents(battler, TRUE) && RandomPercentage(RNG_AI_SWITCH_ABSORBING, 66))
         return FALSE;
 
-    if (IsDoubleBattle())
+    if (EsContraEntrenador())
     {
         battlerIn1 = battler;
         if (gAbsentBattlerFlags & (1u << GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(battler)))))
@@ -425,7 +425,7 @@ static bool32 ShouldSwitchIfOpponentChargingOrInvulnerable(u32 battler)
     u32 incomingMove = AI_DATA->lastUsedMove[opposingBattler];
     bool32 isOpposingBattlerChargingOrInvulnerable = (IsSemiInvulnerable(opposingBattler, incomingMove) || IsTwoTurnNotSemiInvulnerableMove(opposingBattler, incomingMove));
 
-    if (IsDoubleBattle() || !(AI_THINKING_STRUCT->aiFlags[battler] & AI_FLAG_SMART_SWITCHING))
+    if (EsContraEntrenador() || !(AI_THINKING_STRUCT->aiFlags[battler] & AI_FLAG_SMART_SWITCHING))
         return FALSE;
 
     if (isOpposingBattlerChargingOrInvulnerable && AI_DATA->mostSuitableMonId[battler] != PARTY_SIZE)
@@ -631,7 +631,7 @@ static bool32 HasSuperEffectiveMoveAgainstOpponents(u32 battler, bool32 noRng)
             }
         }
     }
-    if (!IsDoubleBattle())
+    if (!EsContraEntrenador())
         return FALSE;
 
     opposingBattler = GetBattlerAtPosition(BATTLE_PARTNER(opposingPosition));
@@ -693,7 +693,7 @@ static bool32 FindMonWithFlagsAndSuperEffective(u32 battler, u16 flags, u32 perc
     if (IS_MOVE_STATUS(gLastLandedMoves[battler]))
         return FALSE;
 
-    if (IsDoubleBattle())
+    if (EsContraEntrenador())
     {
         battlerIn1 = battler;
         if (gAbsentBattlerFlags & (1u << GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(battler)))))
@@ -765,7 +765,7 @@ static bool32 CanMonSurviveHazardSwitchin(u32 battler)
     // Battler will faint to hazards, check to see if another mon can clear them
     if (hazardDamage > battlerHp)
     {
-        if (IsDoubleBattle())
+        if (EsContraEntrenador())
         {
             battlerIn1 = battler;
             if (gAbsentBattlerFlags & (1u << GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(battler)))))
@@ -925,7 +925,7 @@ bool32 ShouldSwitch(u32 battler)
 
     availableToSwitch = 0;
 
-    if (IsDoubleBattle())
+    if (EsContraEntrenador())
     {
         u32 partner = GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerAtPosition(battler)));
         battlerIn1 = battler;
@@ -1027,7 +1027,7 @@ bool32 ShouldSwitch(u32 battler)
 bool32 IsSwitchinValid(u32 battler)
 {
     // Edge case: See if partner already chose to switch into the same mon
-    if (IsDoubleBattle())
+    if (EsContraEntrenador())
     {
         u32 partner = GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerAtPosition(battler)));
         if (gBattleStruct->AI_monToSwitchIntoId[battler] == PARTY_SIZE) // Generic switch
@@ -1057,7 +1057,7 @@ void AI_TrySwitchOrUseItem(u32 battler)
     u8 battlerPosition = GetBattlerPosition(battler);
     party = GetBattlerParty(battler);
 
-    if (gBattleTypeFlags & TIPO_BATALLA_ENTRENADOR)
+    if (EsContraEntrenador())
     {
         if (AI_DATA->shouldSwitch & (1u << battler) && IsSwitchinValid(battler))
         {
@@ -1067,7 +1067,7 @@ void AI_TrySwitchOrUseItem(u32 battler)
                 s32 monToSwitchId = AI_DATA->mostSuitableMonId[battler];
                 if (monToSwitchId == PARTY_SIZE)
                 {
-                    if (!IsDoubleBattle())
+                    if (!EsContraEntrenador())
                     {
                         battlerIn1 = GetBattlerAtPosition(battlerPosition);
                         battlerIn2 = battlerIn1;
@@ -1725,7 +1725,7 @@ static inline bool32 IsFreeSwitch(bool32 isSwitchAfterKO, u32 battlerSwitchingOu
     bool32 movedSecond = GetBattlerTurnOrderNum(battlerSwitchingOut) > GetBattlerTurnOrderNum(opposingBattler) ? TRUE : FALSE;
 
     // Switch out effects
-    if (!IsDoubleBattle()) // Not handling doubles' additional complexity
+    if (!EsContraEntrenador()) // Not handling doubles' additional complexity
     {
         if (IsSwitchOutEffect(gMovesInfo[gLastUsedMove].effect) && movedSecond)
             return TRUE;
@@ -1975,7 +1975,7 @@ u32 GetMostSuitableMonToSwitchInto(u32 battler, bool32 switchAfterMonKOd)
     if (*(gBattleStruct->monToSwitchIntoId + battler) != PARTY_SIZE)
         return *(gBattleStruct->monToSwitchIntoId + battler);
 
-    if (IsDoubleBattle())
+    if (EsContraEntrenador())
     {
         battlerIn1 = battler;
         if (gAbsentBattlerFlags & (1u << GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(battler)))))
@@ -2004,7 +2004,7 @@ u32 GetMostSuitableMonToSwitchInto(u32 battler, bool32 switchAfterMonKOd)
     }
 
     // Only use better mon selection if AI_FLAG_SMART_MON_CHOICES is set for the trainer.
-    if (AI_THINKING_STRUCT->aiFlags[battler] & AI_FLAG_SMART_MON_CHOICES && !IsDoubleBattle()) // Double Battles aren't included in AI_FLAG_SMART_MON_CHOICE. Defaults to regular switch in logic
+    if (AI_THINKING_STRUCT->aiFlags[battler] & AI_FLAG_SMART_MON_CHOICES && !EsContraEntrenador()) // Double Battles aren't included in AI_FLAG_SMART_MON_CHOICE. Defaults to regular switch in logic
     {
         bestMonId = GetBestMonIntegrated(party, firstId, lastId, battler, opposingBattler, battlerIn1, battlerIn2, switchAfterMonKOd);
         return bestMonId;

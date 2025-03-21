@@ -782,7 +782,7 @@ static void CB2_WallClock(void)
 
 static void Task_SetClock_WaitFadeIn(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         gTasks[taskId].func = Task_SetClock_HandleInput;
     }
@@ -865,7 +865,7 @@ static void Task_SetClock_Confirmed(u8 taskId)
 
 static void Task_SetClock_Exit(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         FreeAllWindowBuffers();
         SetMainCallback2(gMain.savedCallback);
@@ -874,7 +874,7 @@ static void Task_SetClock_Exit(u8 taskId)
 
 static void Task_ViewClock_WaitFadeIn(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
         gTasks[taskId].func = Task_ViewClock_HandleInput;
 }
 
@@ -893,7 +893,7 @@ static void Task_ViewClock_FadeOut(u8 taskId)
 
 static void Task_ViewClock_Exit(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
         SetMainCallback2(gMain.savedCallback);
 }
 

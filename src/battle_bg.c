@@ -693,7 +693,7 @@ void DrawMainBattleBackground(void)
     }
     else
     {
-        if (gBattleTypeFlags & TIPO_BATALLA_ENTRENADOR)
+        if (EsContraEntrenador())
         {
             u32 trainerClass = GetTrainerClassFromId(gTrainerBattleOpponent_A);
             if (trainerClass == TRAINER_CLASS_LEADER)
@@ -804,7 +804,7 @@ void DrawBattleEntryBackground(void)
     }
     else
     {
-        if (gBattleTypeFlags & TIPO_BATALLA_ENTRENADOR)
+        if (EsContraEntrenador())
         {
             u32 trainerClass = GetTrainerClassFromId(gTrainerBattleOpponent_A);
             if (trainerClass == TRAINER_CLASS_LEADER)
@@ -866,7 +866,7 @@ bool8 LoadChosenBattleElement(u8 caseId)
         }
         else
         {
-            if (gBattleTypeFlags & TIPO_BATALLA_ENTRENADOR)
+            if (EsContraEntrenador())
             {
                 u32 trainerClass = GetTrainerClassFromId(gTrainerBattleOpponent_A);
                 if (trainerClass == TRAINER_CLASS_LEADER)
@@ -924,7 +924,7 @@ bool8 LoadChosenBattleElement(u8 caseId)
         }
         else
         {
-            if (gBattleTypeFlags & TIPO_BATALLA_ENTRENADOR)
+            if (EsContraEntrenador())
             {
                 u32 trainerClass = GetTrainerClassFromId(gTrainerBattleOpponent_A);
                 if (trainerClass == TRAINER_CLASS_LEADER)
@@ -982,7 +982,7 @@ bool8 LoadChosenBattleElement(u8 caseId)
         }
         else
         {
-            if (gBattleTypeFlags & TIPO_BATALLA_ENTRENADOR)
+            if (EsContraEntrenador())
             {
                 u32 trainerClass = GetTrainerClassFromId(gTrainerBattleOpponent_A);
                 if (trainerClass == TRAINER_CLASS_LEADER)

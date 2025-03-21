@@ -1009,7 +1009,7 @@ static void Task_ShowAiPoints(u8 taskId)
         break;
     // Input
     case 2:
-        if (JOY_NEW(R_BUTTON) && IsDoubleBattle())
+        if (JOY_NEW(R_BUTTON) && EsContraEntrenador())
         {
             CleanUpAiInfoWindow(taskId);
             do {
@@ -1018,7 +1018,7 @@ static void Task_ShowAiPoints(u8 taskId)
             } while (!IsBattlerAlive(data->battlerId));
             data->aiViewState = 0;
         }
-        else if (JOY_NEW(L_BUTTON) && IsDoubleBattle())
+        else if (JOY_NEW(L_BUTTON) && EsContraEntrenador())
         {
             CleanUpAiInfoWindow(taskId);
             do {
@@ -1306,7 +1306,7 @@ static void SwitchToDebugView(u8 taskId)
 
 static void Task_DebugMenuFadeIn(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
         gTasks[taskId].func = Task_DebugMenuProcessInput;
 }
 
@@ -1440,7 +1440,7 @@ static void Task_DebugMenuProcessInput(u8 taskId)
 
 static void Task_DebugMenuFadeOut(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         struct BattleDebugMenu *data = GetStructPtr(taskId);
         DestroyListMenuTask(data->mainListTaskId, 0, 0);

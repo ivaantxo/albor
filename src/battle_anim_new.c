@@ -7306,7 +7306,7 @@ static u8 LoadBattleAnimTarget(u8 arg)
 {
     u8 battler;
 
-    if (IsDoubleBattle())
+    if (EsContraEntrenador())
     {
         switch (gBattleAnimArgs[arg])
         {
@@ -7337,7 +7337,7 @@ static u8 LoadBattleAnimTarget(u8 arg)
 
 static u8 GetProperCentredCoord(u8 battler, u8 coordType)
 {
-    if (IsDoubleBattle())
+    if (EsContraEntrenador())
         return (GetBattlerSpriteCoord2(battler, coordType) + GetBattlerSpriteCoord2(BATTLE_PARTNER(battler), coordType)) / 2;
 
     return GetBattlerSpriteCoord(battler, coordType);
@@ -7563,14 +7563,14 @@ static void SpriteCB_SpriteToCentreOfSide(struct Sprite *sprite)
 
         if (gBattleAnimArgs[2] == 0) //Attacker
         {
-            if (IsDoubleBattle())
+            if (EsContraEntrenador())
                 InitSpritePosToAnimAttackersCentre(sprite, var);
             else
                 InitSpritePosToAnimAttacker(sprite, var);
         }
         else
         {
-            if (IsDoubleBattle())
+            if (EsContraEntrenador())
                 InitSpritePosToAnimTargetsCentre(sprite, var);
             else
                 InitSpritePosToAnimTarget(sprite, var);
@@ -7654,7 +7654,7 @@ static void SpriteCB_GrowingSuperpower(struct Sprite *sprite)
 
 static void SpriteCB_CentredSpiderWeb(struct Sprite *sprite)
 {
-    if (IsDoubleBattle())
+    if (EsContraEntrenador())
         InitSpritePosToAnimTargetsCentre(sprite, FALSE);
     else
         InitSpritePosToAnimTarget(sprite, FALSE);
@@ -7668,14 +7668,14 @@ static void SpriteCB_CoreEnforcerHits(struct Sprite *sprite)
 
     if (gBattleAnimArgs[2] == 0)
     {
-        if (IsDoubleBattle())
+        if (EsContraEntrenador())
             InitSpritePosToAnimAttackersCentre(sprite, FALSE);
         else
             InitSpritePosToAnimAttacker(sprite, FALSE);
     }
     else
     {
-        if (IsDoubleBattle())
+        if (EsContraEntrenador())
             InitSpritePosToAnimTargetsCentre(sprite, FALSE);
         else
             InitSpritePosToAnimTarget(sprite, FALSE);
@@ -7687,7 +7687,7 @@ static void SpriteCB_CoreEnforcerHits(struct Sprite *sprite)
 
 static void SpriteCB_CoreEnforcerBeam(struct Sprite *sprite)
 {
-    if (!IsDoubleBattle())
+    if (!EsContraEntrenador())
     {
         AnimSolarBeamBigOrb(sprite);
     }
@@ -7959,14 +7959,14 @@ void SpriteCB_RandomCentredHits(struct Sprite *sprite)
 
     if (gBattleAnimArgs[0] == 0)
     {
-        if (IsDoubleBattle())
+        if (EsContraEntrenador())
             InitSpritePosToAnimAttackersCentre(sprite, FALSE);
         else
             InitSpritePosToAnimAttacker(sprite, FALSE);
     }
     else
     {
-        if (IsDoubleBattle())
+        if (EsContraEntrenador())
             InitSpritePosToAnimTargetsCentre(sprite, FALSE);
         else
             InitSpritePosToAnimTarget(sprite, FALSE);
@@ -8271,7 +8271,7 @@ static void SpriteCB_BeamUpStep(struct Sprite *sprite)
 
 static void SpriteCB_CentredElectricity(struct Sprite *sprite)
 {
-    if (IsDoubleBattle())
+    if (EsContraEntrenador())
         InitSpritePosToAnimTargetsCentre(sprite, FALSE);
     else
         InitSpritePosToAnimTarget(sprite, FALSE);
@@ -8901,14 +8901,14 @@ static void SpriteCB_AnimSpriteOnTargetSideCentre(struct Sprite *sprite)
     {
         if (IsAlly(gBattleAnimAttacker, target))
         {
-            if (IsDoubleBattle())
+            if (EsContraEntrenador())
                 InitSpritePosToAnimAttackersCentre(sprite, FALSE);
             else
                 InitSpritePosToAnimAttacker(sprite, FALSE);
         }
         else
         {
-            if (IsDoubleBattle())
+            if (EsContraEntrenador())
                 InitSpritePosToAnimTargetsCentre(sprite, FALSE);
             else
                 InitSpritePosToAnimTarget(sprite, FALSE);
@@ -9075,7 +9075,7 @@ static void SpriteCB_DragonEnergyShot(struct Sprite* sprite)
     u8 def1 = gBattleAnimTarget;
     u8 def2 = BATTLE_PARTNER(def1);
 
-    if (!IsDoubleBattle() || IsAlly(gBattleAnimAttacker, gBattleAnimTarget))
+    if (!EsContraEntrenador() || IsAlly(gBattleAnimAttacker, gBattleAnimTarget))
         y = GetBattlerSpriteCoord(def1, BATTLER_COORD_Y_PIC_OFFSET);
     else
     {
@@ -9175,7 +9175,7 @@ static void SpriteCB_GlacialLance(struct Sprite* sprite)
 
     sprite->data[0] = gBattleAnimArgs[6];
 
-    if (!IsDoubleBattle() || IsAlly(gBattleAnimAttacker, gBattleAnimTarget))
+    if (!EsContraEntrenador() || IsAlly(gBattleAnimAttacker, gBattleAnimTarget))
     {
         sprite->data[2] = GetBattlerSpriteCoord(def1, BATTLER_COORD_X_2) + gBattleAnimArgs[2]; //Converge on target
         sprite->data[4] = GetBattlerSpriteCoord(def1, BATTLER_COORD_Y_PIC_OFFSET) + gBattleAnimArgs[3];

@@ -114,14 +114,6 @@
 #define EXCHANGE_CORNER_VITAMIN_CLERK    2
 #define EXCHANGE_CORNER_HOLD_ITEM_CLERK  3
 
-// unused
-#define F_EV_SPREAD_HP         (1 << 0)
-#define F_EV_SPREAD_ATTACK     (1 << 1)
-#define F_EV_SPREAD_DEFENSE    (1 << 2)
-#define F_EV_SPREAD_SPEED      (1 << 3)
-#define F_EV_SPREAD_SP_ATTACK  (1 << 4)
-#define F_EV_SPREAD_SP_DEFENSE (1 << 5)
-
 // CreateFacilityMonFlags
 #define FLAG_FRONTIER_MON_FACTORY       (1 << 0)
 

@@ -663,7 +663,7 @@ static bool8 MainState_FadeIn(void)
 
 static bool8 MainState_WaitFadeIn(void)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         SetInputState(INPUT_STATE_ENABLED);
         SetCursorFlashing(TRUE);
@@ -717,7 +717,7 @@ static bool8 MainState_FadeOut(void)
 
 static bool8 MainState_Exit(void)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         if (sNamingScreen->templateNum == NAMING_SCREEN_PLAYER)
             SeedRngAndSetTrainerId();

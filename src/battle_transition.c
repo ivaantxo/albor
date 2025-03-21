@@ -891,7 +891,7 @@ static const u8 sFrontierSquaresScroll_Positions[] = {
 
 void BattleTransition_StartOnField(u8 transitionId)
 {
-    gMain.callback2 = CB2_OverworldBasic;
+    gMain.callback2 = OverworldBasic;
     LaunchBattleTransitionTask(transitionId);
 }
 
@@ -1034,7 +1034,7 @@ static bool8 Blur_Main(struct Task *task)
 
 static bool8 Blur_End(struct Task *task)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         u8 taskId = FindTaskIdByFunc(Task_Blur);
         DestroyTask(taskId);
@@ -1081,7 +1081,7 @@ static bool8 Swirl_End(struct Task *task)
 
     SetSinWave((s16*)gScanlineEffectRegBuffers[0], sTransitionData->cameraX, task->tSinIndex, 2, task->tAmplitude, DISPLAY_HEIGHT);
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         u8 taskId = FindTaskIdByFunc(Task_Swirl);
         DestroyTask(taskId);
@@ -1155,7 +1155,7 @@ static bool8 Shuffle_End(struct Task *task)
         gScanlineEffectRegBuffers[0][i] = sTransitionData->cameraY + Sin(sinIndex, amplitude);
     }
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
         DestroyTask(FindTaskIdByFunc(Task_Shuffle));
 
     sTransitionData->VBlank_DMA++;
@@ -1461,7 +1461,7 @@ static bool8 WeatherDuo_FadeOut(struct Task *task)
 
 static bool8 WeatherDuo_End(struct Task *task)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         DmaStop(0);
         FadeScreenBlack();
@@ -1551,7 +1551,7 @@ static bool8 WeatherTrio_BgFadeBlack(struct Task *task)
 
 static bool8 WeatherTrio_WaitFade(struct Task *task)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
         task->tState++;
     return FALSE;
 }
@@ -1992,7 +1992,7 @@ static bool8 Ripple_Main(struct Task *task)
         BeginNormalPaletteFade(PALETTES_ALL, -2, 0, 16, RGB_BLACK);
     }
 
-    if (task->tFadeStarted && !gPaletteFade.active)
+    if (task->tFadeStarted && !gFundidoPaletas.activo)
         DestroyTask(FindTaskIdByFunc(Task_Ripple));
 
     sTransitionData->VBlank_DMA++;
@@ -3325,7 +3325,7 @@ static bool8 Rayquaza_FadeToBlack(struct Task *task)
 
 static bool8 Rayquaza_WaitFade(struct Task *task)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         sTransitionData->counter = 1;
         task->tState++;
@@ -4230,7 +4230,7 @@ static bool8 FrontierLogoWave_Main(struct Task *task)
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
     }
 
-    if (task->tStartedFade && !gPaletteFade.active)
+    if (task->tStartedFade && !gFundidoPaletas.activo)
         DestroyTask(FindTaskIdByFunc(Task_FrontierLogoWave));
 
     task->tSinDecrement -= 17;

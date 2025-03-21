@@ -112,8 +112,6 @@ static void Contest_SetBgCopyFlags(u32 flagIndex);
 static void CalculateFinalScores(void);
 static void CalculateAppealMoveImpact(u8);
 static void SetMoveAnimAttackerData(u8);
-static void BlinkContestantBox(u8, u8);
-static u8 CreateContestantBoxBlinkSprites(u8);
 static u16 SanitizeMove(u16);
 static void SetMoveSpecificAnimData(u8);
 static void SetMoveTargetPosition(u16);
@@ -148,8 +146,6 @@ static void Task_StopFlashJudgeAttentionEye(u8);
 static void Task_UnusedBlend(u8);
 static void InitUnusedBlendTaskData(u8);
 static void UpdateBlendTaskContestantData(u8);
-static void SpriteCB_BlinkContestantBox(struct Sprite *);
-static void SpriteCB_EndBlinkContestantBox(struct Sprite *sprite);
 static u8 StartApplauseOverflowAnimation(void);
 static void Task_ApplauseOverflowAnimation(u8);
 static void Task_SlideApplauseMeterIn(u8);
@@ -1231,7 +1227,7 @@ void CB2_StartContest(void)
         SetupContestGpuRegs();
         ScanlineEffect_Clear();
         ResetPaletteFade();
-        gPaletteFade.bufferTransferDisabled = TRUE;
+        gFundidoPaletas.transferenciaBufferDeshabilitada = TRUE;
         ResetSpriteData();
         ResetTasks();
         FreeAllSpritePalettes();
@@ -1254,8 +1250,8 @@ void CB2_StartContest(void)
         SetBgForCurtainDrop();
         gBattle_BG1_X = 0;
         gBattle_BG1_Y = 0;
-        BeginFastPaletteFade(2);
-        gPaletteFade.bufferTransferDisabled = FALSE;
+        EmpiezaFundidoPaletasRapido(FUNDIDO_DESDE_NEGRO);
+        gFundidoPaletas.transferenciaBufferDeshabilitada = FALSE;
         SetVBlankCallback(VBlankCB_Contest);
         eContest.mainTaskId = CreateTask(Task_StartContestWaitFade, 10);
         SetMainCallback2(CB2_ContestMain);
@@ -1265,7 +1261,7 @@ void CB2_StartContest(void)
 
 static void Task_StartContestWaitFade(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         gTasks[taskId].data[0] = 0;
     }
@@ -1279,7 +1275,7 @@ static bool8 SetupContestGraphics(u8 *stateVar)
     switch (*stateVar)
     {
     case 0:
-        gPaletteFade.bufferTransferDisabled = TRUE;
+        gFundidoPaletas.transferenciaBufferDeshabilitada = TRUE;
         RequestDma3Fill(0, (void *)VRAM, 0x8000, 1);
         RequestDma3Fill(0, (void *)VRAM + 0x8000, 0x8000, 1);
         RequestDma3Fill(0, (void *)VRAM + 0x10000, 0x8000, 1);
@@ -1645,7 +1641,6 @@ static void Task_DoAppeals(u8 taskId)
         gSprites[spriteId].callback = SpriteCB_MonSlideIn;
         gTasks[taskId].tMonSpriteId = spriteId;
         gBattlerSpriteIds[gBattlerAttacker] = spriteId;
-        BlinkContestantBox(CreateContestantBoxBlinkSprites(eContest.currentContestant), FALSE);
         gTasks[taskId].tState = APPEALSTATE_WAIT_SLIDE_MON;
         return;
     case APPEALSTATE_WAIT_SLIDE_MON:
@@ -2124,7 +2119,7 @@ static void Task_DoAppeals(u8 taskId)
             }
             break;
         case 3:
-            if (!gPaletteFade.active)
+            if (!gFundidoPaletas.activo)
             {
                 gTasks[taskId].tCounter = 0;
                 gTasks[taskId].data[11] = 0;
@@ -2175,7 +2170,7 @@ static void Task_DoAppeals(u8 taskId)
             }
             break;
         case 4:
-            if (!gPaletteFade.active)
+            if (!gFundidoPaletas.activo)
             {
                 gTasks[taskId].tCounter = 0;
                 gTasks[taskId].data[11] = 0;
@@ -2538,7 +2533,7 @@ static void Task_TryCommunicateFinalStandings(u8 taskId)
 
 static void Task_ContestReturnToField(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         DestroyTask(taskId);
         gFieldCallback = FieldCB_ContestReturnToField;
@@ -3772,111 +3767,6 @@ static void StartStopFlashJudgeAttentionEye(u8 contestant)
         StartFlashJudgeAttentionEye(contestant);
     else
         StopFlashJudgeAttentionEye(contestant);
-}
-
-static u8 CreateContestantBoxBlinkSprites(u8 contestant)
-{
-    u8 spriteId1, spriteId2;
-    u8 x = gContestantTurnOrder[contestant] * 40 + 32;
-
-    LoadCompressedSpriteSheet(&sSpriteSheets_ContestantsTurnBlinkEffect[contestant]);
-    LoadSpritePalette(&sSpritePalettes_ContestantsTurnBlinkEffect[contestant]);
-    spriteId1 = CreateSprite(&sSpriteTemplates_ContestantsTurnBlinkEffect[contestant], 184, x, 29);
-    spriteId2 = CreateSprite(&sSpriteTemplates_ContestantsTurnBlinkEffect[contestant], 248, x, 29);
-    gSprites[spriteId2].oam.tileNum += 64;
-
-    CopySpriteTiles(0,
-                    3,
-                    (void *)VRAM,
-                    (u16 *)(BG_SCREEN_ADDR(28) + gContestantTurnOrder[contestant] * 5 * 64 + 0x26),
-                    gContestResources->boxBlinkTiles1);
-
-    CopySpriteTiles(0,
-                    3, (void *)VRAM,
-                    (u16 *)(BG_SCREEN_ADDR(28) + gContestantTurnOrder[contestant] * 5 * 64 + 0x36),
-                    gContestResources->boxBlinkTiles2);
-
-    CpuFill32(0, gContestResources->boxBlinkTiles1 + 0x500, 0x300);
-    CpuFill32(0, gContestResources->boxBlinkTiles2 + 0x500, 0x300);
-
-    RequestDma3Copy(gContestResources->boxBlinkTiles1,
-                    (u8 *)(OBJ_VRAM0 + gSprites[spriteId1].oam.tileNum * 32),
-                    0x800,
-                    1);
-
-    RequestDma3Copy(gContestResources->boxBlinkTiles2,
-                    (u8 *)(OBJ_VRAM0 + gSprites[spriteId2].oam.tileNum * 32),
-                    0x800,
-                    1);
-
-    gSprites[spriteId1].data[0] = spriteId2;
-    gSprites[spriteId2].data[0] = spriteId1;
-
-    gSprites[spriteId1].data[1] = contestant;
-    gSprites[spriteId2].data[1] = contestant;
-
-    return spriteId1;
-}
-
-static void DestroyContestantBoxBlinkSprites(u8 spriteId)
-{
-    u8 spriteId2 = gSprites[spriteId].data[0];
-
-    FreeSpriteOamMatrix(&gSprites[spriteId2]);
-    DestroySprite(&gSprites[spriteId2]);
-    DestroySpriteAndFreeResources(&gSprites[spriteId]);
-}
-
-static void SetBlendForContestantBoxBlink(void)
-{
-    SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND);
-    SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(7, 9));
-}
-
-static void ResetBlendForContestantBoxBlink(void)
-{
-    SetGpuReg(REG_OFFSET_BLDCNT, 0);
-    SetGpuReg(REG_OFFSET_BLDALPHA, 0);
-}
-
-// To indicate whose turn is up
-static void BlinkContestantBox(u8 spriteId, bool8 b)
-{
-    u8 spriteId2;
-
-    SetBlendForContestantBoxBlink();
-    eContestGfxState[gSprites[spriteId].data[1]].boxBlinking = TRUE;
-    spriteId2 = gSprites[spriteId].data[0];
-    StartSpriteAffineAnim(&gSprites[spriteId], 1);
-    StartSpriteAffineAnim(&gSprites[spriteId2], 1);
-    gSprites[spriteId].callback = SpriteCB_BlinkContestantBox;
-    gSprites[spriteId2].callback = SpriteCallbackDummy;
-    if (b == FALSE)
-        PlaySE(SE_CONTEST_MONS_TURN);
-    else
-        PlaySE(SE_PC_LOGIN);
-}
-
-static void SpriteCB_BlinkContestantBox(struct Sprite *sprite)
-{
-    if (sprite->affineAnimEnded)
-    {
-        u8 spriteId2 = sprite->data[0];
-
-        if (gSprites[spriteId2].affineAnimEnded)
-        {
-            sprite->invisible = TRUE;
-            gSprites[spriteId2].invisible = TRUE;
-            sprite->callback = SpriteCB_EndBlinkContestantBox;
-        }
-    }
-}
-
-static void SpriteCB_EndBlinkContestantBox(struct Sprite *sprite)
-{
-    eContestGfxState[sprite->data[1]].boxBlinking = FALSE;
-    DestroyContestantBoxBlinkSprites(sprite->data[0]);
-    ResetBlendForContestantBoxBlink();
 }
 
 void SortContestants(bool8 useRanking)

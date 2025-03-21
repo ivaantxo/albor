@@ -346,7 +346,7 @@ static u8 GetBattlePalaceMoveGroup(u8 battler, u16 move)
 
 static u16 GetBattlePalaceTarget(u32 battler)
 {
-    if (IsDoubleBattle())
+    if (EsContraEntrenador())
     {
         u8 opposing1, opposing2;
 
@@ -686,7 +686,7 @@ bool8 BattleLoadAllHealthBoxesGfx(u8 state)
             LoadSpritePalette(&sSpritePalettes_HealthBoxHealthBar[1]);
             CategoryIcons_LoadSpritesGfx();
         }
-        else if (!IsDoubleBattle())
+        else if (!EsContraEntrenador())
         {
             if (state == 2)
             {
@@ -971,12 +971,12 @@ void HandleLowHpMusicChange(struct Pokemon *mon, u8 battler)
     else
     {
         gBattleSpritesDataPtr->battlerData[battler].lowHpSong = 0;
-        if (!IsDoubleBattle())
+        if (!EsContraEntrenador())
         {
             m4aSongNumStop(SE_LOW_HEALTH);
             return;
         }
-        if (IsDoubleBattle() && !gBattleSpritesDataPtr->battlerData[BATTLE_PARTNER(battler)].lowHpSong)
+        if (EsContraEntrenador() && !gBattleSpritesDataPtr->battlerData[BATTLE_PARTNER(battler)].lowHpSong)
         {
             m4aSongNumStop(SE_LOW_HEALTH);
             return;
@@ -989,7 +989,7 @@ void BattleStopLowHpSound(void)
     u8 playerBattler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
 
     gBattleSpritesDataPtr->battlerData[playerBattler].lowHpSong = 0;
-    if (IsDoubleBattle())
+    if (EsContraEntrenador())
         gBattleSpritesDataPtr->battlerData[BATTLE_PARTNER(playerBattler)].lowHpSong = 0;
 
     m4aSongNumStop(SE_LOW_HEALTH);
@@ -1014,7 +1014,7 @@ void HandleBattleLowHpMusicChange(void)
 
         if (GetMonData(&gPlayerParty[battler1PartyId], MON_DATA_HP) != 0)
             HandleLowHpMusicChange(&gPlayerParty[battler1PartyId], playerBattler1);
-        if (IsDoubleBattle() && GetMonData(&gPlayerParty[battler2PartyId], MON_DATA_HP) != 0)
+        if (EsContraEntrenador() && GetMonData(&gPlayerParty[battler2PartyId], MON_DATA_HP) != 0)
             HandleLowHpMusicChange(&gPlayerParty[battler2PartyId], playerBattler2);
     }
 }
@@ -1099,7 +1099,7 @@ void LoadAndCreateEnemyShadowSprites(void)
     battler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
     CreateEnemyShadowSprite(battler);
 
-    if (IsDoubleBattle())
+    if (EsContraEntrenador())
     {
         battler = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
         CreateEnemyShadowSprite(battler);

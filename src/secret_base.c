@@ -310,7 +310,7 @@ static void Task_EnterSecretBase(u8 taskId)
     switch (gTasks[taskId].tState)
     {
     case 0:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
             gTasks[taskId].tState = 1;
         break;
     case 1:
@@ -487,7 +487,7 @@ static void Task_WarpOutOfSecretBase(u8 taskId)
         gTasks[taskId].data[0] = 1;
         break;
     case 1:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
             gTasks[taskId].data[0] = 2;
         break;
     case 2:

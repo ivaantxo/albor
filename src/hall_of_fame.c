@@ -397,7 +397,7 @@ static bool8 InitHallOfFameScreen(void)
         break;
     case 4:
         UpdatePaletteFade();
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             SetMainCallback2(CB2_HallOfFame);
             PlayBGM(MUS_HALL_OF_FAME);
@@ -748,7 +748,7 @@ static void Task_Hof_HandlePaletteOnExit(u8 taskId)
 
 static void Task_Hof_HandleExit(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         s32 i;
 

@@ -550,7 +550,7 @@ static bool8 LoadPokeblockFeedScene(void)
         break;
     case 1:
         ResetPaletteFade();
-        gPaletteFade.bufferTransferDisabled = TRUE;
+        gFundidoPaletas.transferenciaBufferDeshabilitada = TRUE;
         gMain.state++;
         break;
     case 2:
@@ -599,7 +599,7 @@ static bool8 LoadPokeblockFeedScene(void)
         break;
     case 13:
         BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
-        gPaletteFade.bufferTransferDisabled = FALSE;
+        gFundidoPaletas.transferenciaBufferDeshabilitada = FALSE;
         gMain.state++;
         break;
     default:
@@ -729,7 +729,7 @@ static void SetPokeblockSpritePal(u8 pokeblockCaseId)
 
 static void Task_HandlePokeblockFeed(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         switch (gTasks[taskId].tState)
         {
@@ -798,7 +798,7 @@ static void Task_PrintAtePokeblockMessage(u8 taskId)
 
 static void Task_ExitPokeblockFeed(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         ResetSpriteData();
         FreeAllSpritePalettes();

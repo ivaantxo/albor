@@ -351,7 +351,7 @@ void TeachMoveRelearnerMove(void)
 
 static void Task_WaitForFadeOut(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         SetMainCallback2(CB2_InitLearnMove);
         gFieldCallback = FieldCB_ContinueScriptHandleMusic;
@@ -455,7 +455,7 @@ static void DoMoveRelearnerMain(void)
         BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
         break;
     case MENU_STATE_WAIT_FOR_FADE:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             if (gOriginSummaryScreenPage == PSS_PAGE_CONTEST_MOVES)
                 sMoveRelearnerStruct->state = MENU_STATE_IDLE_CONTEST_MODE;
@@ -632,7 +632,7 @@ static void DoMoveRelearnerMain(void)
         }
         break;
     case MENU_STATE_SHOW_MOVE_SUMMARY_SCREEN:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             ShowSelectMovePokemonSummaryScreen(gPlayerParty, sMoveRelearnerStruct->partyMon, gPlayerPartyCount - 1, CB2_InitLearnMoveReturnFromSelectMove, GetCurrentSelectedMove());
             FreeMoveRelearnerResources();
@@ -652,7 +652,7 @@ static void DoMoveRelearnerMain(void)
         sMoveRelearnerStruct->state++;
         break;
     case MENU_STATE_RETURN_TO_FIELD:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             if (gInitialSummaryScreenCallback != NULL)
             {
@@ -693,7 +693,7 @@ static void DoMoveRelearnerMain(void)
         CopyWindowToVram(RELEARNERWIN_MSG, COPYWIN_GFX);
         break;
     case MENU_STATE_TRY_OVERWRITE_MOVE:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             if (sMoveRelearnerStruct->moveSlot == MAX_MON_MOVES)
             {

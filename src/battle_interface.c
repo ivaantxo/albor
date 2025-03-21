@@ -771,7 +771,7 @@ u32 WhichBattleCoords(u32 battlerId)
              && gEnemyPartyCount == 1)
         return MODO_INDIVIDUAL;
     else
-        return IsDoubleBattle();
+        return EsContraEntrenador();
 }
 
 u8 CreateBattlerHealthboxSprites(u8 battlerId)
@@ -1729,7 +1729,7 @@ static void TryAddPokeballIconToHealthbox(u8 healthboxSpriteId, bool8 noStatus)
 {
     u8 battlerId, healthBarSpriteId;
 
-    if (gBattleTypeFlags & TIPO_BATALLA_ENTRENADOR)
+    if (EsContraEntrenador())
         return;
 
     battlerId = gSprites[healthboxSpriteId].hMain_Battler;
@@ -2644,9 +2644,6 @@ void CreateAbilityPopUp(u8 battlerId, u32 ability, bool32 isDoubleBattle)
     const s16 (*coords)[2];
     u8 spriteId1, spriteId2, battlerPosition, taskId;
 
-    if (B_ABILITY_POP_UP == FALSE)
-        return;
-
     if (gBattleScripting.abilityPopupOverwrite != 0)
         ability = gBattleScripting.abilityPopupOverwrite;
 
@@ -2827,8 +2824,8 @@ static const struct SpriteSheet sSpriteSheet_LastUsedBallWindow =
 
 #define LAST_USED_BALL_X_F    14
 #define LAST_USED_BALL_X_0    -14
-#define LAST_USED_BALL_Y      ((IsDoubleBattle()) ? 78 : 68)
-#define LAST_USED_BALL_Y_BNC  ((IsDoubleBattle()) ? 76 : 66)
+#define LAST_USED_BALL_Y      ((EsContraEntrenador()) ? 78 : 68)
+#define LAST_USED_BALL_Y_BNC  ((EsContraEntrenador()) ? 76 : 66)
 
 #define LAST_BALL_WIN_X_F       (LAST_USED_BALL_X_F - 0)
 #define LAST_BALL_WIN_X_0       (LAST_USED_BALL_X_0 - 0)

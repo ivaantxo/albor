@@ -170,7 +170,7 @@ static bool8 SetupClearSaveDataScreen(void)
         break;
     case 1:
         UpdatePaletteFade();
-        if(!gPaletteFade.active)
+        if(!gFundidoPaletas.activo)
         {
             SetMainCallback2(MainCB);
             return TRUE;
@@ -190,7 +190,7 @@ static void CB2_FadeAndDoReset(void)
         break;
     case 1:
         UpdatePaletteFade();
-        if(!gPaletteFade.active)
+        if(!gFundidoPaletas.activo)
         {
             FreeAllWindowBuffers();
             DoSoftReset();

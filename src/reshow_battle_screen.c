@@ -29,7 +29,7 @@ void ReshowBattleScreenDummy(void)
 
 void ReshowBattleScreenAfterMenu(void)
 {
-    gPaletteFade.bufferTransferDisabled = 1;
+    gFundidoPaletas.transferenciaBufferDeshabilitada = TRUE;
     SetHBlankCallback(NULL);
     SetVBlankCallback(NULL);
     SetGpuReg(REG_OFFSET_MOSAIC, 0);
@@ -139,7 +139,7 @@ static void CB2_ReshowBattleScreenAfterMenu(void)
             species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[opponentBattler]], MON_DATA_SPECIES);
             SetBattlerShadowSpriteCallback(opponentBattler, species);
 
-            if (IsDoubleBattle())
+            if (EsContraEntrenador())
             {
                 opponentBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
                 species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[opponentBattler]], MON_DATA_SPECIES);
@@ -150,8 +150,8 @@ static void CB2_ReshowBattleScreenAfterMenu(void)
     default:
         SetVBlankCallback(VBlankCB_Battle);
         ClearBattleBgCntBaseBlocks();
-        BeginHardwarePaletteFade(0xFF, 0, 0x10, 0, 1);
-        gPaletteFade.bufferTransferDisabled = 0;
+        EmpiezaFundidoPaletasHardware(BLDCNT_TGT1_ALL | BLDCNT_EFFECT_BLEND, 0, 16, 0, TRUE);
+        gFundidoPaletas.transferenciaBufferDeshabilitada = FALSE;
         SetMainCallback2(BattleMainCB2);
         FillAroundBattleWindows();
         break;

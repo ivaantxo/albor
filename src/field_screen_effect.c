@@ -436,7 +436,7 @@ void FieldCB_ReturnToFieldNoScriptCheckMusic(void)
 
 static bool32 PaletteFadeActive(void)
 {
-    return gPaletteFade.active;
+    return gFundidoPaletas.activo;
 }
 
 static bool32 WaitForWeatherFadeIn(void)

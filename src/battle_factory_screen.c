@@ -1469,7 +1469,7 @@ static void Select_Task_OpenSummaryScreen(u8 taskId)
         gTasks[taskId].tState = STATE_SUMMARY_CLEAN;
         break;
     case STATE_SUMMARY_CLEAN:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             DestroyTask(sFactorySelectScreen->fadeSpeciesNameTaskId);
             HideMonPic(sFactorySelectScreen->monPics[1], &sFactorySelectScreen->monPicAnimating);
@@ -1652,7 +1652,7 @@ static void Select_Task_HandleMenu(u8 taskId)
         }
         break;
     case STATE_MENU_REINIT:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             if (sFactorySelectScreen->fromSummaryScreen == TRUE)
             {
@@ -1679,7 +1679,7 @@ static void Select_Task_HandleChooseMons(u8 taskId)
     switch (gTasks[taskId].tState)
     {
     case STATE_CHOOSE_MONS_INIT:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             gTasks[taskId].tState = STATE_CHOOSE_MONS_HANDLE_INPUT;
             sFactorySelectScreen->fadeSpeciesNameActive = TRUE;
@@ -2354,7 +2354,7 @@ static void Swap_Task_OpenSummaryScreen(u8 taskId)
         gTasks[taskId].tState = STATE_SUMMARY_CLEAN;
         break;
     case STATE_SUMMARY_CLEAN:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             DestroyTask(sFactorySwapScreen->fadeSpeciesNameTaskId);
             HideMonPic(sFactorySwapScreen->monPic, &sFactorySwapScreen->monPicAnimating);
@@ -2606,7 +2606,7 @@ static void Swap_Task_HandleChooseMons(u8 taskId)
     switch (gTasks[taskId].tState)
     {
     case STATE_CHOOSE_MONS_INIT:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             sFactorySwapScreen->fadeSpeciesNameActive = TRUE;
             gTasks[taskId].tState = STATE_CHOOSE_MONS_HANDLE_INPUT;
@@ -2990,7 +2990,7 @@ static void Swap_Task_ScreenInfoTransitionOut(u8 taskId)
         gTasks[taskId].tState++;
         break;
     case 3:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             FillWindowPixelBuffer(SWAP_WIN_ACTION_FADE, PIXEL_FILL(0));
             CopyWindowToVram(SWAP_WIN_ACTION_FADE, COPYWIN_GFX);
@@ -3118,7 +3118,7 @@ static void Swap_Task_ScreenInfoTransitionIn(u8 taskId)
         gTasks[taskId].tState++;
         break;
     case 4:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             Swap_PrintOneActionString(0);
             gTasks[taskId].tState++;

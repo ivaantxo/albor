@@ -177,19 +177,19 @@ const u8 gPPUpAddValues[MAX_MON_MOVES] = {PP_UP_SHIFTS(1)};
 
 const u16 gMultiplicadoresEstadisticas[NUMERO_CAMBIOS_ESTADISTICAS] =
 {
-    [ESTADÍSTICA_MENOS_6]   = 64,   //  25%
-    [ESTADÍSTICA_MENOS_5]   = 96,   //  37,5%
-    [ESTADÍSTICA_MENOS_4]   = 128,  //  50%
-    [ESTADÍSTICA_MENOS_3]   = 160,  //  62,5%
-    [ESTADÍSTICA_MENOS_2]   = 192,  //  75%
-    [ESTADÍSTICA_MENOS_1]   = 224,  //  87,5%
-    [ESTADÍSTICA_NEUTRA]    = 256,  //  100%
-    [ESTADÍSTICA_MAS_1]     = 320,  //  125%
-    [ESTADÍSTICA_MAS_2]     = 384,  //  150%
-    [ESTADÍSTICA_MAS_3]     = 448,  //  175%
-    [ESTADÍSTICA_MAS_4]     = 512,  //  200%
-    [ESTADÍSTICA_MAS_5]     = 576,  //  225%
-    [ESTADÍSTICA_MAS_6]     = 640   //  250%
+    [ESTADISTICA_MENOS_6]   = 64,   //  25%
+    [ESTADISTICA_MENOS_5]   = 96,   //  37,5%
+    [ESTADISTICA_MENOS_4]   = 128,  //  50%
+    [ESTADISTICA_MENOS_3]   = 160,  //  62,5%
+    [ESTADISTICA_MENOS_2]   = 192,  //  75%
+    [ESTADISTICA_MENOS_1]   = 224,  //  87,5%
+    [ESTADISTICA_NEUTRA]    = 256,  //  100%
+    [ESTADISTICA_MAS_1]     = 320,  //  125%
+    [ESTADISTICA_MAS_2]     = 384,  //  150%
+    [ESTADISTICA_MAS_3]     = 448,  //  175%
+    [ESTADISTICA_MAS_4]     = 512,  //  200%
+    [ESTADISTICA_MAS_5]     = 576,  //  225%
+    [ESTADISTICA_MAS_6]     = 640   //  250%
 };
 
 const struct SpriteTemplate gBattlerSpriteTemplates[MAX_BATTLERS_COUNT] =
@@ -818,66 +818,6 @@ void ConvertPokemonToBattleTowerPokemon(struct Pokemon *mon, struct BattleTowerP
     GetMonData(mon, MON_DATA_NICKNAME10, dest->nickname);
 }
 
-static void CreateEventMon(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 hasFixedPersonality, u32 fixedPersonality, u8 otIdType, u32 fixedOtId)
-{
-    bool32 isModernFatefulEncounter = TRUE;
-
-    CreateMon(mon, species, level, fixedIV, hasFixedPersonality, fixedPersonality, otIdType, fixedOtId);
-    SetMonData(mon, MON_DATA_MODERN_FATEFUL_ENCOUNTER, &isModernFatefulEncounter);
-}
-
-// If FALSE, should load this game's Deoxys form. If TRUE, should load normal Deoxys form
-bool8 ShouldIgnoreDeoxysForm(u8 caseId, u8 battlerId)
-{
-    switch (caseId)
-    {
-    case 0:
-    default:
-        return FALSE;
-    case 1: // Player's side in battle
-        if (!gMain.inBattle)
-            return FALSE;
-        if (gLinkPlayers[GetMultiplayerId()].id == battlerId)
-            return FALSE;
-        break;
-    case 2:
-        break;
-    case 3: // Summary Screen
-        if (!gMain.inBattle)
-            return FALSE;
-        if (battlerId == 1 || battlerId == 4 || battlerId == 5)
-            return TRUE;
-        return FALSE;
-    case 4:
-        break;
-    case 5: // In move animation, e.g. in Role Play or Snatch
-        if (!gMain.inBattle)
-            return FALSE;
-        if (GetBattlerSide(battlerId) == B_SIDE_PLAYER)
-            return FALSE;
-        break;
-    }
-
-    return TRUE;
-}
-
-void CreateEnemyEventMon(void)
-{
-    s32 species = gSpecialVar_0x8004;
-    s32 level = gSpecialVar_0x8005;
-    s32 itemId = gSpecialVar_0x8006;
-
-    ZeroEnemyPartyMons();
-    CreateEventMon(&gEnemyParty[0], species, level, USE_RANDOM_IVS, FALSE, 0, OT_ID_PLAYER_ID, 0);
-    if (itemId)
-    {
-        u8 heldItem[2];
-        heldItem[0] = itemId;
-        heldItem[1] = itemId >> 8;
-        SetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, heldItem);
-    }
-}
-
 #define CALC_STAT(base, iv, ev, statIndex, field)               \
 {                                                               \
     u8 baseStat = gSpeciesInfo[species].base;                   \
@@ -890,20 +830,19 @@ void CalculateMonStats(struct Pokemon *mon)
 {
     s32 oldMaxHP = GetMonData(mon, MON_DATA_MAX_HP, NULL);
     s32 currentHP = GetMonData(mon, MON_DATA_HP, NULL);
-    s32 hpIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_HP) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_HP_IV, NULL);
+    s32 hpIV = GetMonData(mon, MON_DATA_HP_IV, NULL);
     s32 hpEV = GetMonData(mon, MON_DATA_HP_EV, NULL);
-    s32 attackIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_ATK) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_ATK_IV, NULL);
+    s32 attackIV = GetMonData(mon, MON_DATA_ATK_IV, NULL);
     s32 attackEV = GetMonData(mon, MON_DATA_ATK_EV, NULL);
-    s32 defenseIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_DEF) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_DEF_IV, NULL);
+    s32 defenseIV = GetMonData(mon, MON_DATA_DEF_IV, NULL);
     s32 defenseEV = GetMonData(mon, MON_DATA_DEF_EV, NULL);
-    s32 speedIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_SPEED) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_SPEED_IV, NULL);
+    s32 speedIV = GetMonData(mon, MON_DATA_SPEED_IV, NULL);
     s32 speedEV = GetMonData(mon, MON_DATA_SPEED_EV, NULL);
-    s32 spAttackIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_SPATK) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_SPATK_IV, NULL);
+    s32 spAttackIV = GetMonData(mon, MON_DATA_SPATK_IV, NULL);
     s32 spAttackEV = GetMonData(mon, MON_DATA_SPATK_EV, NULL);
-    s32 spDefenseIV = GetMonData(mon, MON_DATA_HYPER_TRAINED_SPDEF) ? MAX_PER_STAT_IVS : GetMonData(mon, MON_DATA_SPDEF_IV, NULL);
+    s32 spDefenseIV = GetMonData(mon, MON_DATA_SPDEF_IV, NULL);
     s32 spDefenseEV = GetMonData(mon, MON_DATA_SPDEF_EV, NULL);
     u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
-    u8 friendship = GetMonData(mon, MON_DATA_FRIENDSHIP, NULL);
     s32 level = GetLevelFromMonExp(mon);
     s32 newMaxHP;
 
@@ -1219,7 +1158,7 @@ u8 GetDefaultMoveTarget(u8 battlerId)
 {
     u8 opposing = BATTLE_OPPOSITE(GetBattlerSide(battlerId));
 
-    if (!IsDoubleBattle())
+    if (!EsContraEntrenador())
         return GetBattlerAtPosition(opposing);
     if (CountAliveMonsInBattle(BATTLE_ALIVE_EXCEPT_BATTLER, battlerId) > 1)
     {
@@ -1534,7 +1473,6 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
         case MON_DATA_NATIONAL_RIBBON:
         case MON_DATA_EARTH_RIBBON:
         case MON_DATA_WORLD_RIBBON:
-        case MON_DATA_MODERN_FATEFUL_ENCOUNTER:
             retVal = 0;
             break;
         case MON_DATA_SPECIES_OR_EGG:
@@ -1570,12 +1508,6 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
             break;
         case MON_DATA_RIBBON_COUNT:
         case MON_DATA_RIBBONS:
-        case MON_DATA_HYPER_TRAINED_HP:
-        case MON_DATA_HYPER_TRAINED_ATK:
-        case MON_DATA_HYPER_TRAINED_DEF:
-        case MON_DATA_HYPER_TRAINED_SPEED:
-        case MON_DATA_HYPER_TRAINED_SPATK:
-        case MON_DATA_HYPER_TRAINED_SPDEF:
             retVal = 0;
             break;
         case MON_DATA_STATUS:
@@ -1822,7 +1754,6 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         case MON_DATA_NATIONAL_RIBBON:
         case MON_DATA_EARTH_RIBBON:
         case MON_DATA_WORLD_RIBBON:
-        case MON_DATA_MODERN_FATEFUL_ENCOUNTER:
             break;
         case MON_DATA_IVS:
         {
@@ -1835,13 +1766,6 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
             boxMon->spDefenseIV = (ivs >> 25) & MAX_IV_MASK;
             break;
         }
-        case MON_DATA_HYPER_TRAINED_HP:
-        case MON_DATA_HYPER_TRAINED_ATK:
-        case MON_DATA_HYPER_TRAINED_DEF:
-        case MON_DATA_HYPER_TRAINED_SPEED:
-        case MON_DATA_HYPER_TRAINED_SPATK:
-        case MON_DATA_HYPER_TRAINED_SPDEF:
-            break;
         case MON_DATA_STATUS:
             break;
         case MON_DATA_PERSONALITY:
@@ -3176,7 +3100,7 @@ void AdjustFriendship(struct Pokemon *mon, u8 event)
         if (event == FRIENDSHIP_EVENT_LEAGUE_BATTLE)
         {
             // Only if it's a trainer battle with league progression significance
-            if (!(gBattleTypeFlags & TIPO_BATALLA_ENTRENADOR))
+            if (!(EsContraEntrenador()))
                 return;
             if (!(opponentTrainerClass == TRAINER_CLASS_LEADER
                 || opponentTrainerClass == TRAINER_CLASS_ELITE_FOUR
@@ -3667,7 +3591,7 @@ u16 GetBattleBGM(void)
             return MUS_RG_VS_LEGEND;
         }
     }
-    else if (gBattleTypeFlags & TIPO_BATALLA_ENTRENADOR)
+    else if (EsContraEntrenador())
     {
         u8 trainerClass = GetTrainerClassFromId(gTrainerBattleOpponent_A);
 

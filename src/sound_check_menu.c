@@ -264,7 +264,7 @@ static void Task_InitSoundCheckMenu_CreateWindows(u8 taskId) // SanitizeDayCareM
     const u8 upDownStr[] = _("{LEFT_ARROW}PREV {RIGHT_ARROW}NEXT");
     const u8 driverStr[] = _("R: CRY TEST");
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         SetStandardWindowBorderStyle(WIN_INFO, FALSE);
         AddTextPrinterParameterized(WIN_INFO, 2, soundcheckStr, 0, 0, TEXT_SKIP_DRAW, NULL);
@@ -429,7 +429,7 @@ static void Task_ExitToTitleScreen(u8 taskId) // sub_080E88A8
 {
     u8 windowId;
 
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         for (windowId = WIN_INFO; windowId < WIN_COUNT; windowId++)
         {

@@ -576,7 +576,7 @@ static void ShowUsePokeblockMenu(void)
         sInfo->mainState++;
         break;
     case 1:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             ResetConditionSparkleSprites(sMenu->sparkles);
             if (sMenu->info.curSelection != sMenu->info.numSelections - 1)
@@ -697,7 +697,7 @@ static void FeedPokeblockToMon(void)
         sInfo->mainState++;
         break;
     case 1:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             SetVBlankCallback(NULL);
             FREE_AND_SET_NULL(sGraph_Tilemap);
@@ -753,7 +753,7 @@ static void ShowUsePokeblockMenuForResults(void)
         sInfo->mainState++;
         break;
     case 6:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             ResetConditionSparkleSprites(sMenu->sparkles);
             SetUsePokeblockCallback(ShowPokeblockResults);
@@ -826,7 +826,7 @@ static void CloseUsePokeblockMenu(void)
         sInfo->mainState++;
         break;
     case 1:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
             sInfo->mainState = 2;
         break;
     case 2:

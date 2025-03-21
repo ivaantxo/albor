@@ -2609,7 +2609,7 @@ void BufferStringBattle(u16 stringID, u32 battler)
     switch (stringID)
     {
     case TEXTO_BATALLA_INTRO:
-        if (gBattleTypeFlags & TIPO_BATALLA_ENTRENADOR)
+        if (EsContraEntrenador())
         {
             stringPtr = sText_EntrenadorQuiereLuchar;
         }
@@ -2624,7 +2624,7 @@ void BufferStringBattle(u16 stringID, u32 battler)
     case TEXTO_BATALLA_ENVIAR_POKEMON:
         if (GetBattlerSide(battler) == B_SIDE_PLAYER)
         {
-            if (IsDoubleBattle() && IsValidForBattle(&gPlayerParty[gBattlerPartyIndexes[BATTLE_PARTNER(battler)]]))
+            if (EsContraEntrenador() && IsValidForBattle(&gPlayerParty[gBattlerPartyIndexes[BATTLE_PARTNER(battler)]]))
             {
                 stringPtr = sText_GoTwoPkmn;
             }
@@ -2635,7 +2635,7 @@ void BufferStringBattle(u16 stringID, u32 battler)
         }
         else
         {
-            if (IsDoubleBattle() && IsValidForBattle(&gEnemyParty[gBattlerPartyIndexes[BATTLE_PARTNER(battler)]]))
+            if (EsContraEntrenador() && IsValidForBattle(&gEnemyParty[gBattlerPartyIndexes[BATTLE_PARTNER(battler)]]))
             {
                 stringPtr = sText_Trainer1SentOutTwoPkmn;
             }
@@ -2650,7 +2650,7 @@ void BufferStringBattle(u16 stringID, u32 battler)
         {
             if (*(&gBattleStruct->hpScale) == 0)
                 stringPtr = sText_PkmnThatsEnough;
-            else if (*(&gBattleStruct->hpScale) == 1 || IsDoubleBattle())
+            else if (*(&gBattleStruct->hpScale) == 1 || EsContraEntrenador())
                 stringPtr = sText_PkmnComeBack;
             else if (*(&gBattleStruct->hpScale) == 2)
                 stringPtr = sText_PkmnOkComeBack;
@@ -2665,7 +2665,7 @@ void BufferStringBattle(u16 stringID, u32 battler)
     case STRINGID_SWITCHINMON:
         if (GetBattlerSide(gBattleScripting.battler) == B_SIDE_PLAYER)
         {
-            if (*(&gBattleStruct->hpScale) == 0 || IsDoubleBattle())
+            if (*(&gBattleStruct->hpScale) == 0 || EsContraEntrenador())
                 stringPtr = sText_GoPkmn2;
             else if (*(&gBattleStruct->hpScale) == 1)
                 stringPtr = sText_DoItPkmn;
@@ -2771,7 +2771,7 @@ static void GetBattlerNick(u32 battler, u8 *dst)
         }                                                             \
     if (GetBattlerSide(battler) != B_SIDE_PLAYER)                     \
     {                                                                 \
-        if (gBattleTypeFlags & TIPO_BATALLA_ENTRENADOR)               \
+        if (EsContraEntrenador())               \
             toCpy = sText_FoePkmnPrefix;                              \
         else                                                          \
             toCpy = sText_WildPkmnPrefix;                             \
@@ -3212,7 +3212,7 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
             }
             else
             {
-                if (gBattleTypeFlags & TIPO_BATALLA_ENTRENADOR)
+                if (EsContraEntrenador())
                     StringAppend(dst, sText_FoePkmnPrefix);
                 else
                     StringAppend(dst, sText_WildPkmnPrefix);
@@ -3465,7 +3465,7 @@ u32 ShouldDoTrainerSlide(u32 battler, u32 which)
 {
     u32 i, firstId, lastId, trainerId, retValue = 1;
 
-    if (!(gBattleTypeFlags & TIPO_BATALLA_ENTRENADOR) || GetBattlerSide(battler) != B_SIDE_OPPONENT)
+    if (!(EsContraEntrenador()) || GetBattlerSide(battler) != B_SIDE_OPPONENT)
         return 0;
 
     firstId = 0, lastId = PARTY_SIZE;

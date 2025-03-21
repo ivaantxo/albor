@@ -659,7 +659,7 @@ static bool8 HandleStartMenuInput(void)
 
 static bool8 StartMenuPokedexCallback(void)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         IncrementGameStat(GAME_STAT_CHECKED_POKEDEX);
         PlayRainStoppingSoundEffect();
@@ -675,7 +675,7 @@ static bool8 StartMenuPokedexCallback(void)
 
 static bool8 StartMenuPokemonCallback(void)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         PlayRainStoppingSoundEffect();
         RemoveExtraStartMenuWindows();
@@ -690,7 +690,7 @@ static bool8 StartMenuPokemonCallback(void)
 
 static bool8 StartMenuBagCallback(void)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         PlayRainStoppingSoundEffect();
         RemoveExtraStartMenuWindows();
@@ -705,7 +705,7 @@ static bool8 StartMenuBagCallback(void)
 
 static bool8 StartMenuPokeNavCallback(void)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         PlayRainStoppingSoundEffect();
         RemoveExtraStartMenuWindows();
@@ -720,7 +720,7 @@ static bool8 StartMenuPokeNavCallback(void)
 
 static bool8 StartMenuPlayerNameCallback(void)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         PlayRainStoppingSoundEffect();
         RemoveExtraStartMenuWindows();
@@ -749,7 +749,7 @@ static bool8 StartMenuSaveCallback(void)
 
 static bool8 StartMenuOptionCallback(void)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         PlayRainStoppingSoundEffect();
         RemoveExtraStartMenuWindows();
@@ -819,7 +819,7 @@ void ShowBattlePyramidStartMenu(void)
 
 static bool8 StartMenuBattlePyramidBagCallback(void)
 {
-    if (!gPaletteFade.active)
+    if (!gFundidoPaletas.activo)
     {
         PlayRainStoppingSoundEffect();
         RemoveExtraStartMenuWindows();

@@ -805,17 +805,6 @@ void AnimLoadCompressedBgTilemap(u32 bgId, const void *src)
     CopyBgTilemapBufferToVram(bgId);
 }
 
-void AnimLoadCompressedBgTilemapHandleContest(struct BattleAnimBgData *data, const void *src, bool32 largeScreen)
-{
-    InitAnimBgTilemapBuffer(data->bgId, src);
-    CopyBgTilemapBufferToVram(data->bgId);
-}
-
-u8 GetBattleBgPaletteNum(void)
-{
-    return 2;
-}
-
 void UpdateAnimBg3ScreenSize(bool8 largeScreenSize)
 {
     if (!largeScreenSize)
@@ -1919,7 +1908,7 @@ void SetAverageBattlerPositions(u8 battlerId, bool8 respectMonPicOffsets, s16 *x
 
     battlerX = GetBattlerSpriteCoord(battlerId, xCoordType);
     battlerY = GetBattlerSpriteCoord(battlerId, yCoordType);
-    if (IsDoubleBattle())
+    if (EsContraEntrenador())
     {
         partnerX = GetBattlerSpriteCoord(BATTLE_PARTNER(battlerId), xCoordType);
         partnerY = GetBattlerSpriteCoord(BATTLE_PARTNER(battlerId), yCoordType);

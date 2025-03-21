@@ -645,7 +645,7 @@ static void Task_ResetRtcScreen(u8 taskId)
         tState = MAINSTATE_CHECK_SAVE;
         break;
     case MAINSTATE_CHECK_SAVE:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             if (gSaveFileStatus == SAVE_STATUS_EMPTY
              || gSaveFileStatus == SAVE_STATUS_CORRUPT)
@@ -724,7 +724,7 @@ static void Task_ResetRtcScreen(u8 taskId)
             break;
         }
     case MAINSTATE_EXIT:
-        if (!gPaletteFade.active)
+        if (!gFundidoPaletas.activo)
         {
             DestroyTask(taskId);
             FreeAllWindowBuffers();

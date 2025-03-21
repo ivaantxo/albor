@@ -369,7 +369,7 @@ void UpdatePulseBlend(struct PulseBlend *pulseBlend)
         for (i = 0; i < 16; i++)
         {
             pulseBlendPalette = &pulseBlend->pulseBlendPalettes[i];
-            if ((!pulseBlendPalette->available && pulseBlendPalette->inUse) && (!gPaletteFade.active || !pulseBlendPalette->pulseBlendSettings.unk7_7))
+            if ((!pulseBlendPalette->available && pulseBlendPalette->inUse) && (!gFundidoPaletas.activo|| !pulseBlendPalette->pulseBlendSettings.unk7_7))
             {
                 if (--pulseBlendPalette->delayCounter == 0xFF)
                 {
