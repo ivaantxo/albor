@@ -1,26 +1,32 @@
-	.macro no
-	.byte 0
+	@ Does nothing.
+	.macro nop
+	.byte 0x00
 	.endm
-	
+
+	@ Does nothing.
+	.macro nop1
+	.byte 0x01
+	.endm
+
 	@ Terminates script execution.
 	.macro end
-	.byte 1
+	.byte 0x02
 	.endm
 
 	@ Jumps back to after the last-executed call statement, and continues script execution from there.
 	.macro return
-	.byte 2
+	.byte 0x03
 	.endm
 
 	@ Jumps to destination and continues script execution from there. The location of the calling script is remembered and can be returned to later.
 	.macro call destination:req
-	.byte 3
+	.byte 0x04
 	.4byte \destination
 	.endm
 
 	@ Jumps to destination and continues script execution from there.
 	.macro goto destination:req
-	.byte 4
+	.byte 0x05
 	.4byte \destination
 	.endm
 
@@ -1578,6 +1584,65 @@
 	.2byte \box
 	.endm
 
+	@ Used only in FireRed/LeafGreen, does nothing in Emerald.
+	.macro textcolor color:req
+	.byte 0xc7
+	.byte \color
+	.endm
+
+	@ Used only in FireRed/LeafGreen, does nothing in Emerald.
+	.macro loadhelp text:req
+	.byte 0xc8
+	.4byte \text
+	.endm
+
+	@ Used only in FireRed/LeafGreen, does nothing in Emerald.
+	.macro unloadhelp
+	.byte 0xc9
+	.endm
+
+	@ Used only in FireRed/LeafGreen, does nothing in Emerald.
+	.macro signmsg
+	.byte 0xca
+	.endm
+
+	@ Used only in FireRed/LeafGreen, does nothing in Emerald.
+	.macro normalmsg
+	.byte 0xcb
+	.endm
+
+	@ Used only in FireRed/LeafGreen, does nothing in Emerald.
+	.macro comparehiddenvar a:req, value:req
+	.byte 0xcc
+	.byte \a
+	.4byte \value
+	.endm
+
+	@ Sets the modernFatefulEncounter bit for the Pokemon in the specified slot of the player's party.
+	.macro setmodernfatefulencounter slot:req
+	.byte 0xcd
+	.2byte \slot
+	.endm
+
+	@ Checks if the modernFatefulEncounter bit is set for the Pokemon in the specified slot of the player's party. If it isn't set,
+	@ VAR_RESULT is TRUE. If the bit is set (or if the specified slot is empty or invalid), VAR_RESULT is FALSE.
+	.macro checkmodernfatefulencounter slot:req
+	.byte 0xce
+	.2byte \slot
+	.endm
+
+	@ Jumps to the ram script saved from a Wonder Card. If there is no valid saved Wonder Card or if the
+	@ ram script is invalid then this does nothing.
+	.macro trywondercardscript
+	.byte 0xcf
+	.endm
+
+	@ Used only in FireRed/LeafGreen, does nothing in Emerald.
+	.macro setworldmapflag worldmapflag:req
+	.byte 0xd0
+	.2byte \worldmapflag
+	.endm
+
 	@ Warps the player to the specified map using a teleport effect. Effect is similar to warpteleport, but
 	@ this warp has no fade out and maintains the original facing direction.
 	@ Warp commands can be given either the id of which warp location to go to on the destination map
@@ -1653,11 +1718,11 @@
 
 	@ Equivalent to fadescreen but copies gPlttBufferUnfaded to gDecompressionBuffer on the fade out
 	@ and the reverse on the fade in, in effect saving gPlttBufferUnfaded to restore it.
-  	@ If nowait set, does not wait for the fade to complete
+  @ If nowait set, does not wait for the fade to complete
 	.macro fadescreenswapbuffers mode:req, nowait=0
 	.byte 0xdc
 	.byte \mode
-  	.byte \nowait
+  .byte \nowait
 	.endm
 
 	@ Buffers the specified trainer's class name to the given string var.
@@ -1942,9 +2007,32 @@
 	closebraillemessage
 	.endm
 
+	@ Creates a Pokémon with the modernFatefulEncounter bit set for an encounter
+	.macro seteventmon species:req, level:req, item=ITEM_NONE
+	setvar VAR_0x8004, \species
+	setvar VAR_0x8005, \level
+	setvar VAR_0x8006, \item
+	special CreateEnemyEventMon
+	.endm
+
 	.macro setdynamicaifunc func:req
 	callnative ScriptSetDynamicAiFunc
 	.4byte \func
+	.endm
+
+	@ Sets VAR_RESULT to TRUE if stat can be hyper trained, or to
+	@ FALSE otherwise.
+	.macro canhypertrain stat:req, slot:req
+	callnative CanHyperTrain
+	.byte \stat
+	.2byte \slot
+	.endm
+
+	@ Hyper Trains a stat.
+	.macro hypertrain stat:req, slot:req
+	callnative HyperTrain
+	.byte \stat
+	.2byte \slot
 	.endm
 
 	@ Sets VAR_RESULT to one of the arguments (via setorcopyvar).
@@ -2157,4 +2245,3 @@
 	.2byte \localId
 	.2byte \dest
 	.endm
-

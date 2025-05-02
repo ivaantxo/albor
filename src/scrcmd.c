@@ -93,7 +93,12 @@ static u8 *const sScriptStringVars[] =
     gStringVar3,
 };
 
-bool8 ScrCmd_no(struct ScriptContext *ctx)
+bool8 ScrCmd_nop(struct ScriptContext *ctx)
+{
+    return FALSE;
+}
+
+bool8 ScrCmd_nop1(struct ScriptContext *ctx)
 {
     return FALSE;
 }
@@ -2205,6 +2210,17 @@ bool8 ScrCmd_lockfortrainer(struct ScriptContext *ctx)
         SetupNativeScript(ctx, IsFreezeObjectAndPlayerFinished);
     }
     return TRUE;
+}
+
+// This command will set a Pokémon's modernFatefulEncounter bit; there is no similar command to clear it.
+bool8 ScrCmd_setmodernfatefulencounter(struct ScriptContext *ctx)
+{
+    return FALSE;
+}
+
+bool8 ScrCmd_checkmodernfatefulencounter(struct ScriptContext *ctx)
+{
+    return FALSE;
 }
 
 // This warp is only used by the Union Room.
