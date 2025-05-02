@@ -65,14 +65,6 @@ CC1 := $(shell $(PATH_ARMCC) --print-prog-name=cc1) -quiet
 override CFLAGS += -mthumb -mthumb-interwork -O$(O_LEVEL) -mabi=apcs-gnu -mtune=arm7tdmi -march=armv4t -fno-toplevel-reorder -Wno-pointer-to-int-cast -std=gnu17 -Werror -Wall -Wno-strict-aliasing -Wno-attribute-alias -Woverride-init
 LIBPATH := -L "$(dir $(shell $(PATH_ARMCC) -mthumb -print-file-name=libgcc.a))" -L "$(dir $(shell $(PATH_ARMCC) -mthumb -print-file-name=libnosys.a))" -L "$(dir $(shell $(PATH_ARMCC) -mthumb -print-file-name=libc.a))"
 LIB := $(LIBPATH) -lc -lnosys -lgcc -L../../libagbsyscall -lagbsyscall
-ifeq ($(DINFO),1)
-  override CFLAGS += -g
-endif
-
-ifeq ($(NOOPT),1)
-override CFLAGS := $(filter-out -O1 -Og -O2,$(CFLAGS))
-override CFLAGS += -O0
-endif
 
 # Variable filled out in other make files
 AUTO_GEN_TARGETS :=
@@ -284,7 +276,7 @@ $(OBJ_DIR)/sym_ewram.ld: sym_ewram.txt
 	$(RAMSCRGEN) ewram_data $< ENGLISH > $@
 
 # Linker script
-LD_SCRIPT := ld_script_modern.ld
+LD_SCRIPT := ld_script.ld
 LD_SCRIPT_DEPS :=
 
 # Final rules
