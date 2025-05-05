@@ -18,13 +18,6 @@ MauvilleCity_PokemonCenter_1F_EventScript_Bard::
 	end
 
 MauvilleCity_PokemonCenter_1F_EventScript_PlaySong::
-	setvar VAR_0x8004, 0
-	special PlayBardSong
-	delay 60
-	special HasBardSongBeenChanged
-	goto_if_eq VAR_RESULT, FALSE, MauvilleCity_PokemonCenter_1F_EventScript_AskToWriteLyrics
-	msgbox MauvilleCity_PokemonCenter_1F_Text_WishICouldPlaySongForOthers, MSGBOX_DEFAULT
-	release
 	end
 
 MauvilleCity_PokemonCenter_1F_EventScript_DeclineSong::
@@ -39,20 +32,6 @@ MauvilleCity_PokemonCenter_1F_EventScript_AskToWriteLyrics::
 	end
 
 MauvilleCity_PokemonCenter_1F_EventScript_WriteLyrics::
-	setvar VAR_0x8004, EASY_CHAT_TYPE_BARD_SONG
-	call Common_ShowEasyChatScreen
-	lock
-	faceplayer
-	goto_if_eq VAR_RESULT, 0, MauvilleCity_PokemonCenter_1F_EventScript_DeclineWritingLyrics
-	msgbox MauvilleCity_PokemonCenter_1F_Text_LetMeSingItForYou, MSGBOX_DEFAULT
-	setvar VAR_0x8004, 1
-	special PlayBardSong
-	delay 60
-	msgbox MauvilleCity_PokemonCenter_1F_Text_ThatHowYouWantedSongToGo, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, MauvilleCity_PokemonCenter_1F_EventScript_WriteLyrics
-	special SaveBardSongLyrics
-	msgbox MauvilleCity_PokemonCenter_1F_Text_IllSingThisSongForAWhile, MSGBOX_DEFAULT
-	release
 	end
 
 MauvilleCity_PokemonCenter_1F_EventScript_DeclineWritingLyrics::

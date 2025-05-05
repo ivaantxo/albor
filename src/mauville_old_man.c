@@ -13,7 +13,6 @@
 #include "task.h"
 #include "menu.h"
 #include "m4a.h"
-#include "bard_music.h"
 #include "sound.h"
 #include "strings.h"
 #include "overworld.h"
@@ -24,26 +23,13 @@
 #include "constants/mauville_old_man.h"
 
 static void InitGiddyTaleList(void);
-static void StartBardSong(bool8 useTemporaryLyrics);
-static void Task_BardSong(u8 taskId);
 static void StorytellerSetup(void);
 static void Storyteller_ResetFlag(void);
 
 static u8 sSelectedStory;
 
-COMMON_DATA struct BardSong gBardSong = {0};
-
 static EWRAM_DATA struct MauvilleManStoryteller * sStorytellerPtr = NULL;
 static EWRAM_DATA u8 sStorytellerWindowId = 0;
-
-static const u16 sDefaultBardSongLyrics[BARD_SONG_LENGTH] = {
-    EC_WORD_SHAKE,
-    EC_WORD_IT,
-    EC_WORD_DO,
-    EC_WORD_THE,
-    EC_WORD_DIET,
-    EC_WORD_DANCE
-};
 
 static const u8 *const sGiddyAdjectives[] = {
     GiddyText_SoPretty,
@@ -72,14 +58,7 @@ static const u8 *const sGiddyQuestions[GIDDY_MAX_QUESTIONS] = {
 
 static void SetupBard(void)
 {
-    u16 i;
-    struct MauvilleManBard *bard = &gSaveBlockPtr->oldMan.bard;
 
-    bard->id = MAUVILLE_MAN_BARD;
-    bard->hasChangedSong = FALSE;
-    bard->language = gGameLanguage;
-    for (i = 0; i < BARD_SONG_LENGTH; i++)
-        bard->songLyrics[i] = sDefaultBardSongLyrics[i];
 }
 
 static void SetupHipster(void)
@@ -145,83 +124,6 @@ u8 GetCurrentMauvilleOldMan(void)
 void Script_GetCurrentMauvilleMan(void)
 {
     gSpecialVar_Result = GetCurrentMauvilleOldMan();
-}
-
-void HasBardSongBeenChanged(void)
-{
-    gSpecialVar_Result = (&gSaveBlockPtr->oldMan.bard)->hasChangedSong;
-}
-
-void SaveBardSongLyrics(void)
-{
-    u16 i;
-    struct MauvilleManBard *bard = &gSaveBlockPtr->oldMan.bard;
-
-    StringCopy(bard->playerName, gSaveBlockPtr->playerName);
-
-    for (i = 0; i < TRAINER_ID_LENGTH; i++)
-        bard->playerTrainerId[i] = gSaveBlockPtr->playerTrainerId[i];
-
-    for (i = 0; i < BARD_SONG_LENGTH; i++)
-        bard->songLyrics[i] = bard->temporaryLyrics[i];
-
-    bard->hasChangedSong = TRUE;
-}
-
-// Copies lyrics into gStringVar4
-static void PrepareSongText(void)
-{
-    struct MauvilleManBard *bard = &gSaveBlockPtr->oldMan.bard;
-    u16 * lyrics = gSpecialVar_0x8004 == 0 ? bard->songLyrics : bard->temporaryLyrics;
-    u8 *wordEnd = gStringVar4;
-    u8 *str = wordEnd;
-    u16 lineNum;
-
-    // Put three words on each line
-    for (lineNum = 0; lineNum < 2; lineNum++)
-    {
-        wordEnd = CopyEasyChatWord(wordEnd, *(lyrics++));
-        while (wordEnd != str)
-        {
-            if (*str == CHAR_SPACE)
-                *str = CHAR_BARD_WORD_DELIMIT;
-            str++;
-        }
-
-        str++;
-        *(wordEnd++) = CHAR_SPACE;
-
-        wordEnd = CopyEasyChatWord(wordEnd, *(lyrics++));
-        while (wordEnd != str)
-        {
-            if (*str == CHAR_SPACE)
-                *str = CHAR_BARD_WORD_DELIMIT;
-            str++;
-        }
-
-        str++;
-        *(wordEnd++) = CHAR_NEWLINE;
-
-        wordEnd = CopyEasyChatWord(wordEnd, *(lyrics++));
-        while (wordEnd != str)
-        {
-            if (*str == CHAR_SPACE)
-                *str = CHAR_BARD_WORD_DELIMIT;
-            str++;
-        }
-
-        if (lineNum == 0)
-        {
-            *(wordEnd++) = EXT_CTRL_CODE_BEGIN;
-            *(wordEnd++) = EXT_CTRL_CODE_FILL_WINDOW;
-        }
-    }
-}
-
-void PlayBardSong(void)
-{
-    StartBardSong(gSpecialVar_0x8004);
-    ScriptContext_Stop();
 }
 
 void HasHipsterTaughtWord(void)
@@ -400,18 +302,6 @@ void ResetMauvilleOldManFlag(void)
     SetMauvilleOldManObjEventGfx();
 }
 
-// States and task data for Task_BardSong.
-// The function BardSing receives this task as an
-// argument and reads its state as well.
-enum {
-    BARD_STATE_INIT,
-    BARD_STATE_WAIT_BGM,
-    BARD_STATE_GET_WORD,
-    BARD_STATE_HANDLE_WORD,
-    BARD_STATE_WAIT_WORD,
-    BARD_STATE_PAUSE,
-};
-
 #define tState              data[0]
 #define tWordState          data[1]
 #define tDelay              data[2]
@@ -421,266 +311,6 @@ enum {
 
 #define MACRO1(a) (((a) & 3) + (((a) / 8) & 1))
 #define MACRO2(a) (((a) % 4) + (((a) / 8) & 1))
-
-static void StartBardSong(bool8 useTemporaryLyrics)
-{
-    u8 taskId = CreateTask(Task_BardSong, 80);
-
-    gTasks[taskId].tUseTemporaryLyrics = useTemporaryLyrics;
-}
-
-static void EnableTextPrinters(void)
-{
-    gDisableTextPrinters = FALSE;
-}
-
-static void DisableTextPrinters(struct TextPrinterTemplate * printer, u16 renderCmd)
-{
-    gDisableTextPrinters = TRUE;
-}
-
-static void DrawSongTextWindow(const u8 *str)
-{
-    DrawDialogueFrame(0, FALSE);
-    AddTextPrinterParameterized(0, FONT_NORMAL, str, 0, 1, 1, DisableTextPrinters);
-    gDisableTextPrinters = TRUE;
-    CopyWindowToVram(0, COPYWIN_FULL);
-}
-
-static void BardSing(struct Task *task, struct BardSong *song)
-{
-    switch (task->tState)
-    {
-    case BARD_STATE_INIT:
-    {
-        struct MauvilleManBard *bard = &gSaveBlockPtr->oldMan.bard;
-        u16 *lyrics;
-        s32 i;
-
-        // Copy lyrics
-        if (gSpecialVar_0x8004 == 0)
-            lyrics = bard->songLyrics;
-        else
-            lyrics = bard->temporaryLyrics;
-        for (i = 0; i < BARD_SONG_LENGTH; i++)
-            song->lyrics[i] = lyrics[i];
-        song->currWord = 0;
-    }
-        break;
-    case BARD_STATE_WAIT_BGM:
-        break;
-    case BARD_STATE_GET_WORD:
-    {
-        u16 word = song->lyrics[song->currWord];
-        song->sound = GetWordSounds(word);
-        GetWordPhonemes(song, MACRO1(word));
-        song->currWord++;
-        if (song->sound->songLengthId != 0xFF)
-            song->state = 0;
-        else
-        {
-            song->state = 3;
-            song->phonemeTimer = 2;
-        }
-        break;
-    }
-    case BARD_STATE_HANDLE_WORD:
-    case BARD_STATE_WAIT_WORD:
-    {
-        const struct BardSound *sound = &song->sound[song->currPhoneme];
-
-        switch (song->state)
-        {
-        case 0:
-            song->phonemeTimer = song->phonemes[song->currPhoneme].length;
-            if (sound->songLengthId <= 50)
-            {
-                u8 num = sound->songLengthId / 3;
-                m4aSongNumStart(PH_TRAP_HELD + 3 * num);
-            }
-            song->state = 2;
-            song->phonemeTimer--;
-            break;
-        case 2:
-            song->state = 1;
-            if (sound->songLengthId <= 50)
-            {
-                song->volume = 0x100 + sound->volume * 16;
-                m4aMPlayVolumeControl(&gMPlayInfo_SE2, TRACKS_ALL, song->volume);
-                song->pitch = 0x200 + song->phonemes[song->currPhoneme].pitch;
-                m4aMPlayPitchControl(&gMPlayInfo_SE2, TRACKS_ALL, song->pitch);
-            }
-            break;
-        case 1:
-            if (song->voiceInflection > 10)
-                song->volume -= 2;
-            if (song->voiceInflection & 1)
-                song->pitch += 64;
-            else
-                song->pitch -= 64;
-            m4aMPlayVolumeControl(&gMPlayInfo_SE2, TRACKS_ALL, song->volume);
-            m4aMPlayPitchControl(&gMPlayInfo_SE2, TRACKS_ALL, song->pitch);
-            song->voiceInflection++;
-            song->phonemeTimer--;
-            if (song->phonemeTimer == 0)
-            {
-                song->currPhoneme++;
-                if (song->currPhoneme != 6 && song->sound[song->currPhoneme].songLengthId != 0xFF)
-                    song->state = 0;
-                else
-                {
-                    song->state = 3;
-                    song->phonemeTimer = 2;
-                }
-            }
-            break;
-        case 3:
-            song->phonemeTimer--;
-            if (song->phonemeTimer == 0)
-            {
-                m4aMPlayStop(&gMPlayInfo_SE2);
-                song->state = 4;
-            }
-            break;
-        }
-    }
-        break;
-    case BARD_STATE_PAUSE:
-        break;
-    }
-}
-
-static void Task_BardSong(u8 taskId)
-{
-    struct Task *task = &gTasks[taskId];
-
-    BardSing(task, &gBardSong);
-
-    switch (task->tState)
-    {
-    case BARD_STATE_INIT:
-        PrepareSongText();
-        DrawSongTextWindow(gStringVar4);
-        task->tWordState = 0;
-        task->tDelay = 0;
-        task->tCharIndex = 0;
-        task->tCurrWord = 0;
-        FadeOutBGMTemporarily(4);
-        task->tState = BARD_STATE_WAIT_BGM;
-        break;
-    case BARD_STATE_WAIT_BGM:
-        if (IsBGMPausedOrStopped())
-            task->tState = BARD_STATE_GET_WORD;
-        break;
-    case BARD_STATE_GET_WORD:
-    {
-        u8 *str = &gStringVar4[task->tCharIndex];
-        u16 wordLen = 0;
-
-        // Read letters until delimiter
-        while (*str != CHAR_SPACE
-            && *str != CHAR_NEWLINE
-            && *str != EXT_CTRL_CODE_BEGIN
-            && *str != EOS)
-        {
-            str++;
-            wordLen++;
-        }
-
-        gBardSong.length /= wordLen;
-        if (gBardSong.length <= 0)
-            gBardSong.length = 1;
-        task->tCurrWord++;
-
-        if (task->tDelay == 0)
-        {
-            task->tState = BARD_STATE_HANDLE_WORD;
-            task->tWordState = 0;
-        }
-        else
-        {
-            task->tState = BARD_STATE_PAUSE;
-            task->tWordState = 0;
-        }
-    }
-        break;
-    case BARD_STATE_PAUSE:
-        // Wait before singing next word
-        if (task->tDelay == 0)
-            task->tState = BARD_STATE_HANDLE_WORD;
-        else
-            task->tDelay--;
-        break;
-    case BARD_STATE_HANDLE_WORD:
-        if (gStringVar4[task->tCharIndex] == EOS)
-        {
-            // End song
-            FadeInBGM(6);
-            m4aMPlayFadeOutTemporarily(&gMPlayInfo_SE2, 2);
-            ScriptContext_Enable();
-            DestroyTask(taskId);
-        }
-        else if (gStringVar4[task->tCharIndex] == CHAR_SPACE)
-        {
-            // Handle space
-            EnableTextPrinters();
-            task->tCharIndex++;
-            task->tState = BARD_STATE_GET_WORD;
-            task->tDelay = 0;
-        }
-        else if (gStringVar4[task->tCharIndex] == CHAR_NEWLINE)
-        {
-            // Handle newline
-            task->tCharIndex++;
-            task->tState = BARD_STATE_GET_WORD;
-            task->tDelay = 0;
-        }
-        else if (gStringVar4[task->tCharIndex] == EXT_CTRL_CODE_BEGIN)
-        {
-            // Handle ctrl code
-            task->tCharIndex += 2;  // skip over control codes
-            task->tState = BARD_STATE_GET_WORD;
-            task->tDelay = 8;
-        }
-        else if (gStringVar4[task->tCharIndex] == CHAR_BARD_WORD_DELIMIT)
-        {
-            // Handle word boundary
-            gStringVar4[task->tCharIndex] = CHAR_SPACE;  // Replace with a real space
-            EnableTextPrinters();
-            task->tCharIndex++;
-            task->tDelay = 0;
-        }
-        else
-        {
-            // Handle regular word
-            switch (task->tWordState)
-            {
-            case 0:
-                EnableTextPrinters();
-                task->tWordState++;
-                break;
-            case 1:
-                task->tWordState++;
-                break;
-            case 2:
-                task->tCharIndex++;
-                task->tWordState = 0;
-                task->tDelay = gBardSong.length;
-                task->tState = BARD_STATE_WAIT_WORD;
-                break;
-            }
-        }
-        break;
-    case BARD_STATE_WAIT_WORD:
-        // Wait for word to finish being sung.
-        // BardSing will continue to play it.
-        task->tDelay--;
-        if (task->tDelay == 0)
-            task->tState = BARD_STATE_HANDLE_WORD;
-        break;
-    }
-    RunTextPrintersAndIsPrinter0Active();
-}
 
 void SetMauvilleOldManObjEventGfx(void)
 {
