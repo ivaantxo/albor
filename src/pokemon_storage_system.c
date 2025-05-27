@@ -3351,7 +3351,7 @@ static void LoadDisplayMonGfx(u16 species, u32 pid)
         LoadSpecialPokePic(sStorage->tileBuffer, species, pid, TRUE);
         CpuFastCopy(sStorage->tileBuffer, sStorage->displayMonTilePtr, MON_PIC_SIZE);
         LoadCompressedPaletteFast(sStorage->displayMonPalette, sStorage->displayMonPalOffset, PLTT_SIZE_4BPP);
-        UniquePalette(sStorage->displayMonPalOffset, pid);
+        DesplazaTonoPaleta(sStorage->displayMonPalOffset, pid);
         CpuFastCopy(&gPlttBufferFaded[sStorage->displayMonPalOffset], &gPlttBufferUnfaded[sStorage->displayMonPalOffset], PLTT_SIZE_4BPP);
         sStorage->displayMonSprite->invisible = FALSE;
     }
@@ -3739,7 +3739,7 @@ static void SetBoxMonDynamicPalette(u8 boxId, u8 position)
         else
         {
             LZ77UnCompWram(palette, &sPaletteSwapBuffer[PLTT_ID(position)]);
-            UniquePaletteBuffered(&sPaletteSwapBuffer[PLTT_ID(position)], GetMonData(mon, MON_DATA_PERSONALITY));
+            DesplazaTonoPaletaBuffer(&sPaletteSwapBuffer[PLTT_ID(position)], personality);
         }
     }
 
@@ -3957,7 +3957,7 @@ static void CreatePartyMonsSprites(bool8 visible)
     else
     {
         LoadCompressedPaletteFast(GetMonFrontSpritePal(&gPlayerParty[0]), OBJ_PLTT_ID(1), PLTT_SIZE_4BPP);
-        UniquePalette(OBJ_PLTT_ID(1), personality);
+        DesplazaTonoPaleta(OBJ_PLTT_ID(1), personality);
         CpuFastCopy(&gPlttBufferFaded[OBJ_PLTT_ID(1)], &gPlttBufferUnfaded[OBJ_PLTT_ID(1)], PLTT_SIZE_4BPP);
     }
 
@@ -3996,7 +3996,7 @@ static void CreatePartyMonsSprites(bool8 visible)
                 sStorage->partySprites[i] = CreateMonIconSprite(species, personality, 152, 8 * (3 * (i - 1)) + 16, 1, 12);
                 
                 LoadCompressedPaletteFast(GetMonFrontSpritePal(&gPlayerParty[i]), OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
-                UniquePalette(OBJ_PLTT_ID(paletteNum), personality);
+                DesplazaTonoPaleta(OBJ_PLTT_ID(paletteNum), personality);
                 CpuFastCopy(&gPlttBufferFaded[OBJ_PLTT_ID(paletteNum)], &gPlttBufferUnfaded[OBJ_PLTT_ID(paletteNum)], PLTT_SIZE_4BPP);
                 
                 sStorage->partySprites[i]->oam.paletteNum = paletteNum;
@@ -4246,7 +4246,7 @@ static void SetPlacedMonSprite(u8 boxId, u8 position)
             {
                 paletteNum = FindFreePartyPaletteSlot();
                 LoadCompressedPaletteFast(GetMonFrontSpritePal(&gPlayerParty[position]), OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
-                UniquePalette(OBJ_PLTT_ID(paletteNum), GetMonData(&gPlayerParty[position], MON_DATA_PERSONALITY));
+                DesplazaTonoPaleta(OBJ_PLTT_ID(paletteNum), GetMonData(&gPlayerParty[position], MON_DATA_PERSONALITY));
                 CpuFastCopy(&gPlttBufferFaded[OBJ_PLTT_ID(paletteNum)], &gPlttBufferUnfaded[OBJ_PLTT_ID(paletteNum)], PLTT_SIZE_4BPP);
                 sStorage->partySprites[position]->oam.paletteNum = paletteNum;
             }
@@ -5281,7 +5281,7 @@ static void SetShiftedMonSprites(u8 boxId, u8 position)
     // Set moving sprite palette to currently displayed pokemon's palette
     sStorage->displayMonSprite->invisible = TRUE;
     LoadCompressedPaletteFast(sStorage->displayMonPalette, sStorage->displayMonPalOffset, PLTT_SIZE_4BPP);
-    UniquePalette(sStorage->displayMonPalOffset, GetBoxMonData(GetBoxedMonPtr(boxId, position), MON_DATA_PERSONALITY));
+    DesplazaTonoPaleta(sStorage->displayMonPalOffset, GetBoxMonData(GetBoxedMonPtr(boxId, position), MON_DATA_PERSONALITY));
     CpuFastCopy(&gPlttBufferFaded[sStorage->displayMonPalOffset], &gPlttBufferUnfaded[sStorage->displayMonPalOffset], PLTT_SIZE_4BPP);
     sStorage->movingMonSprite->oam.paletteNum = displayIndex;
     sMovingMonOrigBoxId = boxId;

@@ -69,191 +69,125 @@ void BlendPalette(u16 palOffset, u16 numEntries, u8 coeff, u32 blendColor)
     }
 }
 
-#define CONSTANTE_DE_PALETAS_UNICAS 100
+#define LIMITADOR_DESPLAZAMIENTO_PALETA 80  // GRADOS EN VALOR ABSOLUTO QUE PUEDE VARIAR LA PALETA EN HSL (0-360). POR EJEMPLO, 30 PUEDE SER +-15
 
-void UniquePalette(u16 palOffset, u32 personality)
+void DesplazaTonoPaleta(u32 offsetPaleta, u32 personalidad)
 {
-    u32 i;
-    u32 value = ((personality >> 8) & 65535) % CONSTANTE_DE_PALETAS_UNICAS;
+    s32 desplazamiento = (s32)((personalidad & 0xFF) * LIMITADOR_DESPLAZAMIENTO_PALETA / 255) - (LIMITADOR_DESPLAZAMIENTO_PALETA / 2);
 
-    for (i = 0; i < 16; i++)
+    for (u32 i = 0; i < NUMERO_COLORES_POR_PALETA; i++)
     {
-        u32 index = i + palOffset;
-        struct PlttData *data = (struct PlttData *)&gPlttBufferUnfaded[index];
-        
-        s32 r = (data->r * 1000) / 31;
-        s32 g = (data->g * 1000) / 31;
-        s32 b = (data->b * 1000) / 31;
-        s32 maxv, minv, d, h, s, l, o, p, q;
+        u32 color = gPlttBufferUnfaded[offsetPaleta + i];
 
-        maxv = r;
-        if (g > maxv) maxv = g;
-        if (b > maxv) maxv = b;
+        u32 r = GET_R(color);
+        u32 g = GET_G(color);
+        u32 b = GET_B(color);
 
-        minv = r;
-        if (g < minv) minv = g;
-        if (b < minv) minv = b;
+        u32 max = r > g ? (r > b ? r : b) : (g > b ? g : b);
+        u32 min = r < g ? (r < b ? r : b) : (g < b ? g : b);
+        s32 delta = (s32)(max - min);
+        s32 tono;
 
-        d = maxv - minv;
-        l = (maxv + minv) / 2;
-        s = (maxv == minv) ? 0 : ((l > 500) ? (1000 * d / (2000 - maxv - minv)) : (1000 * d / (maxv + minv)));
-
-        if (maxv != minv)
-        {
-            if (maxv == r)
-                h = (g < b) ? (1000 * (g - b) / d + 6000) : (1000 * (g - b) / d);
-            else if (maxv == g)
-                h = 1000 * (b - r) / d + 2000;
-            else
-                h = 1000 * (r - g) / d + 4000;
-
-            h /= 6;
-        }
+        if (delta == 0)
+            tono = 0;
+        else if (max == r)
+            tono = 60 * ((s32)(g - b)) / delta;
+        else if (max == g)
+            tono = 60 * ((s32)(b - r)) / delta + 120;
         else
-            h = 0;
+            tono = 60 * ((s32)(r - g)) / delta + 240;
 
-        if (personality % 2 == 0)
-            h = (h + value + 1000) % 1000;
-        else 
-            h = (h - value + 1000) % 1000;
+        if (tono < 0)
+            tono += 360;
 
-        if (s != 0)
-        {
-            o = (h + 333) % 1000;
+        tono = (tono + desplazamiento) % 360;
+        if (tono < 0)
+            tono += 360;
 
-            p = (l < 500) ? (l * (s + 1000) / 1000) : (l + s - l * s / 1000);
-            q = l * 2 - p;
+        // Saturación y valor (con escala 0–31)
+        u32 valor = max;
+        u32 sat = (max == 0) ? 0 : (255 * (u32)delta) / max;
 
-            if (o < 167)
-                r = q + (p - q) * o * 6 / 1000;
-            else if (o < 500)
-                r = p;
-            else if (o < 667)
-                r = q + (p - q) * (667 - o) * 6 / 1000;
-            else
-                r = q;
+        u32 C = (valor * sat) / 255;
+        u32 X = (C * (60 - abs((tono % 120) - 60))) / 60;
+        u32 m = valor - C;
 
-            o = h;
+        u32 r1 = 0, g1 = 0, b1 = 0;
+        if (tono < 60)       { r1 = C; g1 = X; b1 = 0; }
+        else if (tono < 120) { r1 = X; g1 = C; b1 = 0; }
+        else if (tono < 180) { r1 = 0; g1 = C; b1 = X; }
+        else if (tono < 240) { r1 = 0; g1 = X; b1 = C; }
+        else if (tono < 300) { r1 = X; g1 = 0; b1 = C; }
+        else                 { r1 = C; g1 = 0; b1 = X; }
 
-            if (o < 167)
-                g = q + (p - q) * o * 6 / 1000;
-            else if (o < 500)
-                g = p;
-            else if (o < 667)
-                g = q + (p - q) * (667 - o) * 6 / 1000;
-            else
-                g = q;
+        u32 nuevoR = r1 + m;
+        u32 nuevoG = g1 + m;
+        u32 nuevoB = b1 + m;
 
-            o = (h + 1000 - 333) % 1000;
+        if (nuevoR > RGB_MAXIMO) nuevoR = RGB_MAXIMO;
+        if (nuevoG > RGB_MAXIMO) nuevoG = RGB_MAXIMO;
+        if (nuevoB > RGB_MAXIMO) nuevoB = RGB_MAXIMO;
 
-            if (o < 167)
-                b = q + (p - q) * o * 6 / 1000;
-            else if (o < 500)
-                b = p;
-            else if (o < 667)
-                b = q + (p - q) * (667 - o) * 6 / 1000;
-            else
-                b = q;
-        }
-        else
-        {
-            r = l;
-            g = l;
-            b = l;
-        }
-        gPlttBufferFaded[index] = RGB((u8)(r * 31 / 1000), (u8)(g * 31 / 1000), (u8)(b * 31 / 1000));
+        gPlttBufferFaded[offsetPaleta + i] = RGB(nuevoR, nuevoG, nuevoB);
     }
 }
 
-void UniquePaletteBuffered(u16 * buffer, u32 personality)
+void DesplazaTonoPaletaBuffer(u16 *buffer, u32 personalidad)
 {
-    u32 i;
-    u32 value = ((personality >> 8) & 65535) % CONSTANTE_DE_PALETAS_UNICAS;
+    s32 desplazamiento = (s32)((personalidad & 0xFF) * LIMITADOR_DESPLAZAMIENTO_PALETA / 255) - (LIMITADOR_DESPLAZAMIENTO_PALETA / 2);
 
-    for (i = 0; i < 16; i++)
+    for (u32 i = 0; i < NUMERO_COLORES_POR_PALETA; i++)
     {
-        struct PlttData *data = (struct PlttData *)&buffer[i];
+        u16 color = buffer[i];
 
-        s32 r = (data->r * 1000) / 31;
-        s32 g = (data->g * 1000) / 31;
-        s32 b = (data->b * 1000) / 31;
-        s32 maxv, minv, d, h, s, l, o, p, q;
+        u32 r = GET_R(color);
+        u32 g = GET_G(color);
+        u32 b = GET_B(color);
 
-        maxv = r;
-        if (g > maxv) maxv = g;
-        if (b > maxv) maxv = b;
+        u32 max = r > g ? (r > b ? r : b) : (g > b ? g : b);
+        u32 min = r < g ? (r < b ? r : b) : (g < b ? g : b);
+        s32 delta = (s32)(max - min);
+        s32 tono;
 
-        minv = r;
-        if (g < minv) minv = g;
-        if (b < minv) minv = b;
-
-        d = maxv - minv;
-        l = (maxv + minv) / 2;
-        s = (maxv == minv) ? 0 : ((l > 500) ? (1000 * d / (2000 - maxv - minv)) : (1000 * d / (maxv + minv)));
-
-        if (maxv != minv)
-        {
-            if (maxv == r)
-                h = (g < b) ? (1000 * (g - b) / d + 6000) : (1000 * (g - b) / d);
-            else if (maxv == g)
-                h = 1000 * (b - r) / d + 2000;
-            else
-                h = 1000 * (r - g) / d + 4000;
-            h /= 6;
-        }
+        if (delta == 0)
+            tono = 0;
+        else if (max == r)
+            tono = 60 * ((s32)(g - b)) / delta;
+        else if (max == g)
+            tono = 60 * ((s32)(b - r)) / delta + 120;
         else
-            h = 0;
+            tono = 60 * ((s32)(r - g)) / delta + 240;
 
-        if (personality % 2 == 0)
-            h = (h + value + 1000) % 1000;
-        else 
-            h = (h - value + 1000) % 1000;
+        if (tono < 0)
+            tono += 360;
 
-        if (s != 0)
-        {
-            o = (h + 333) % 1000;
+        tono = (tono + desplazamiento) % 360;
+        if (tono < 0)
+            tono += 360;
 
-            p = (l < 500) ? (l * (s + 1000) / 1000) : (l + s - l * s / 1000);
-            q = l * 2 - p;
+        u32 valor = max;
+        u32 sat = (max == 0) ? 0 : (255 * delta) / max;
 
-            if (o < 167)
-                r = q + (p - q) * o * 6 / 1000;
-            else if (o < 500)
-                r = p;
-            else if (o < 667)
-                r = q + (p - q) * (667 - o) * 6 / 1000;
-            else
-                r = q;
+        u32 C = (valor * sat) / 255;
+        u32 X = (C * (60 - abs((tono % 120) - 60))) / 60;
+        u32 m = valor - C;
 
-            o = h;
+        u32 r1 = 0, g1 = 0, b1 = 0;
+        if (tono < 60)       { r1 = C; g1 = X; b1 = 0; }
+        else if (tono < 120) { r1 = X; g1 = C; b1 = 0; }
+        else if (tono < 180) { r1 = 0; g1 = C; b1 = X; }
+        else if (tono < 240) { r1 = 0; g1 = X; b1 = C; }
+        else if (tono < 300) { r1 = X; g1 = 0; b1 = C; }
+        else                 { r1 = C; g1 = 0; b1 = X; }
 
-            if (o < 167)
-                g = q + (p - q) * o * 6 / 1000;
-            else if (o < 500)
-                g = p;
-            else if (o < 667)
-                g = q + (p - q) * (667 - o) * 6 / 1000;
-            else
-                g = q;
+        u32 nuevoR = r1 + m;
+        u32 nuevoG = g1 + m;
+        u32 nuevoB = b1 + m;
 
-            o = (h + 1000 - 333) % 1000;
+        if (nuevoR > RGB_MAXIMO) nuevoR = RGB_MAXIMO;
+        if (nuevoG > RGB_MAXIMO) nuevoG = RGB_MAXIMO;
+        if (nuevoB > RGB_MAXIMO) nuevoB = RGB_MAXIMO;
 
-            if (o < 167)
-                b = q + (p - q) * o * 6 / 1000;
-            else if (o < 500)
-                b = p;
-            else if (o < 667)
-                b = q + (p - q) * (667 - o) * 6 / 1000;
-            else
-                b = q;
-        }
-        else
-        {
-            r = l;
-            g = l;
-            b = l;
-        }
-
-        buffer[i] = RGB((u8)(r * 31 / 1000), (u8)(g * 31 / 1000), (u8)(b * 31 / 1000));
+        buffer[i] = RGB(nuevoR, nuevoG, nuevoB);
     }
 }

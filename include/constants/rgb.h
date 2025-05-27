@@ -37,4 +37,6 @@
 #define RGB_GRIS_CLARO          RGB2GBA(192, 192, 192)
 #define RGB_GRIS_OSCURO         RGB2GBA(71, 71, 71)
 
+#define RGB_MAXIMO  31
+
 #endif // GUARD_RGB_H

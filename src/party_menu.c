@@ -1079,7 +1079,7 @@ static void CreatePartyMonSprites(u8 slot)
         {
             CreatePartyMonIconSpriteParameterized(gMultiPartnerParty[actualSlot].species, gMultiPartnerParty[actualSlot].personality, &sPartyMenuBoxes[slot], 0);
             LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(gMultiPartnerParty[actualSlot].species, 0, gMultiPartnerParty[actualSlot].personality), OBJ_PLTT_ID(2 + slot), PLTT_SIZE_4BPP);
-            UniquePalette(OBJ_PLTT_ID(2 + slot), gMultiPartnerParty[actualSlot].personality);
+            DesplazaTonoPaleta(OBJ_PLTT_ID(2 + slot), gMultiPartnerParty[actualSlot].personality);
             CpuCopy32(&gPlttBufferFaded[OBJ_PLTT_ID(2 + slot)], &gPlttBufferUnfaded[OBJ_PLTT_ID(2 + slot)], PLTT_SIZE_4BPP);
             gSprites[sPartyMenuBoxes[slot].monSpriteId].oam.paletteNum = 2 + slot;
 
@@ -3769,7 +3769,7 @@ static void CreatePartyMonIconSprite(struct Pokemon *mon, struct PartyMenuBox *m
         menuBox->monSpriteId = CreateMonIcon(species, SpriteCB_MonIcon, menuBox->spriteCoords[0], menuBox->spriteCoords[1], 4, personality);
         gSprites[menuBox->monSpriteId].oam.priority = 1;
         LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality), OBJ_PLTT_ID(2 + slot), PLTT_SIZE_4BPP);
-        UniquePalette(OBJ_PLTT_ID(2 + slot), personality);
+        DesplazaTonoPaleta(OBJ_PLTT_ID(2 + slot), personality);
         CpuCopy32(&gPlttBufferFaded[OBJ_PLTT_ID(2 + slot)], &gPlttBufferUnfaded[OBJ_PLTT_ID(2 + slot)], PLTT_SIZE_4BPP);
         gSprites[menuBox->monSpriteId].oam.paletteNum = 2 + slot;
         UpdatePartyMonHPBar(menuBox->monSpriteId, mon);

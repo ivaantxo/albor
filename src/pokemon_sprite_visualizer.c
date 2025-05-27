@@ -1889,7 +1889,7 @@ static void ReloadPokemonSprites(struct PokemonSpriteVisualizer *data)
     data->frontspriteId = CreateSprite(&gMultiuseSpriteTemplate, front_x, front_y, 0);
     gSprites[data->frontspriteId].oam.paletteNum = 0;
     personality = Random32();
-    UniquePalette(OBJ_PLTT_ID(0), personality);
+    DesplazaTonoPaleta(OBJ_PLTT_ID(0), personality);
     CpuCopy32(&gPlttBufferFaded[OBJ_PLTT_ID(0)], &gPlttBufferUnfaded[OBJ_PLTT_ID(0)], PLTT_SIZE_4BPP);
     gSprites[data->frontspriteId].callback = SpriteCallbackDummy;
     gSprites[data->frontspriteId].oam.priority = 0;
