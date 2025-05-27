@@ -3707,11 +3707,11 @@ static void CreateMovingMonIcon(void)
     sStorage->movingMonSprite->callback = SpriteCB_HeldMon;
 }
 
-static void SetBoxMonDynamicPalette(u8 boxId, u8 position)
+static void SetBoxMonDynamicPalette(u32 boxId, u32 position)
 {
     struct Pokemon *mon = (struct Pokemon *)&gPokemonStoragePtr->boxes[boxId][position];
-    u16 species = GetMonData(mon, MON_DATA_SPECIES_OR_EGG);
-    bool8 isShiny = GetMonData(mon, MON_DATA_IS_SHINY);
+    u32 species = GetMonData(mon, MON_DATA_SPECIES_OR_EGG);
+    bool32 isShiny = GetMonData(mon, MON_DATA_IS_SHINY);
     u32 personality = GetMonData(mon, MON_DATA_PERSONALITY);
     const u32 *palette = GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality);
     const struct CompressedSpritePalette *pal1, *pal2;
