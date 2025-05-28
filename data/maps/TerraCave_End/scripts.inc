@@ -10,9 +10,6 @@ TerraCave_End_OnResume:
 	end
 
 TerraCave_End_EventScript_TryRemoveGroudon::
-	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, Common_EventScript_NopReturn
-	removeobject LOCALID_GROUDON
 	return
 
 TerraCave_End_OnTransition:

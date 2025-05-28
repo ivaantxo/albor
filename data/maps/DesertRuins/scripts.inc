@@ -9,9 +9,6 @@ DesertRuins_OnResume:
 	end
 
 DesertRuins_EventScript_TryRemoveRegirock::
-	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, Common_EventScript_NopReturn
-	removeobject VAR_LAST_TALKED
 	return
 
 DesertRuins_OnLoad:

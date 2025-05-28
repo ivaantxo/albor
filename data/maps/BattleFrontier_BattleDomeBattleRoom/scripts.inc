@@ -868,16 +868,9 @@ BattleFrontier_BattleDomePreBattleRoom_EventScript_WarpToLobbyDoubles::
 
 @ On round 1 there's a 50% chance that a specific audience member will walk to his seat
 BattleFrontier_BattleDomeBattleRoom_EventScript_SetWalkingAudienceMemberPos::
-	random 2
-	copyvar VAR_TEMP_D, VAR_RESULT
-	goto_if_eq VAR_TEMP_D, 0, Common_EventScript_NopReturn
-	setobjectxyperm LOCALID_AUDIENCE_WALKING, 2, 0
-	setobjectmovementtype LOCALID_AUDIENCE_WALKING, MOVEMENT_TYPE_FACE_RIGHT
 	return
 
 BattleFrontier_BattleDomeBattleRoom_EventScript_TryDoAudienceMemberWalkToSeat::
-	goto_if_eq VAR_TEMP_D, 0, Common_EventScript_NopReturn
-	applymovement LOCALID_AUDIENCE_WALKING, BattleFrontier_BattleDomeBattleRoom_Movement_AudienceMemberWalkToSeat
 	return
 
 BattleFrontier_BattleDomeBattleRoom_Movement_AudienceTwinJump:

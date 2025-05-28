@@ -11,9 +11,6 @@ SkyPillar_Top_OnResume:
 	end
 
 SkyPillar_Top_EventScript_TryRemoveRayquaza::
-	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, Common_EventScript_NopReturn
-	removeobject VAR_LAST_TALKED
 	return
 
 SkyPillar_Top_OnTransition:

@@ -9,9 +9,6 @@ IslandCave_OnResume:
 	end
 
 IslandCave_EventScript_TryRemoveRegice::
-	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, Common_EventScript_NopReturn
-	removeobject VAR_LAST_TALKED
 	return
 
 IslandCave_OnLoad:

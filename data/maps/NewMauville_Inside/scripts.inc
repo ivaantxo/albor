@@ -11,9 +11,6 @@ NewMauville_Inside_OnResume:
 	end
 
 NewMauville_Inside_EventScript_TryRemoveVoltorb::
-	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, Common_EventScript_NopReturn
-	removeobject VAR_LAST_TALKED
 	return
 
 NewMauville_Inside_OnTransition:

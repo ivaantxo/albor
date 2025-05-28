@@ -12,9 +12,6 @@ Route119_OnResume:
 	end
 
 Route119_EventScript_TryRemoveKecleon::
-	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, Common_EventScript_NopReturn
-	removeobject VAR_LAST_TALKED
 	return
 
 Route119_OnTransition:

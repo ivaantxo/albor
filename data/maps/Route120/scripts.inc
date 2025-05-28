@@ -22,16 +22,9 @@ Route120_EventScript_RemoveKecleonObject::
 	return
 
 Route120_EventScript_RemoveBridgeKecleon::
-	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, Common_EventScript_NopReturn
-	removeobject LOCALID_BRIDGE_KECLEON
-	removeobject LOCALID_BRIDGE_KECLEON_SHADOW
 	return
 
 Route120_EventScript_RemoveKecleon::
-	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, Common_EventScript_NopReturn
-	removeobject VAR_LAST_TALKED
 	return
 
 Route120_OnLoad:

@@ -10,9 +10,6 @@ MarineCave_End_OnResume:
 	end
 
 MarineCave_End_EventScript_TryRemoveKyogre::
-	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, Common_EventScript_NopReturn
-	removeobject LOCALID_KYOGRE
 	return
 
 MarineCave_End_OnTransition:

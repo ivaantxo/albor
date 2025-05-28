@@ -10,9 +10,6 @@ SouthernIsland_Interior_OnResume:
 	end
 
 SouthernIsland_Interior_EventScript_TryRemoveLati::
-	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, Common_EventScript_NopReturn
-	removeobject LOCALID_LATI
 	return
 
 SouthernIsland_Interior_OnTransition:

@@ -16,10 +16,6 @@ NavelRock_Top_EventScript_HideHoOh::
 	return
 
 NavelRock_Top_EventScript_TryShowHoOh::
-	setvar VAR_TEMP_1, 1
-	goto_if_set FLAG_DEFEATED_HO_OH, Common_EventScript_NopReturn
-	setvar VAR_TEMP_1, 0
-	clearflag FLAG_HIDE_HO_OH
 	return
 
 NavelRock_Top_OnResume:
@@ -27,9 +23,6 @@ NavelRock_Top_OnResume:
 	end
 
 NavelRock_Top_EventScript_TryRemoveHoOh::
-	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, Common_EventScript_NopReturn
-	removeobject LOCALID_HO_OH
 	return
 
 NavelRock_Top_EventScript_HoOh::
