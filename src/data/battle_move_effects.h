@@ -1706,11 +1706,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectExtremeEvoboost,
     },
 
-    [EFFECT_HIT_SET_REMOVE_TERRAIN] =
-    {
-        .battleScript = BattleScript_EffectHitSetRemoveTerrain,
-    },
-
     [EFFECT_DARK_VOID] =
     {
         .battleScript = BattleScript_EffectDarkVoid,

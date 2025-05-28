@@ -58,21 +58,21 @@
 #define BS_ATTACKER                 1
 #define BS_EFFECT_BATTLER           2
 #define BS_FAINTED                  3
-#define BS_ATTACKER_WITH_PARTNER    4 // for Cmd_updatestatusicon
+#define BS_ATTACKER_WITH_PARTNER    4 // for BATTLE_CMD_updatestatusicon
 #define BS_FAINTED_MULTIPLE_1       5 // for openpartyscreen
 #define BS_FAINTED_MULTIPLE_2       6 // for openpartyscreen
 #define BS_BATTLER_0                7
-#define BS_ATTACKER_SIDE            8 // for Cmd_jumpifability
-#define BS_TARGET_SIDE              9 // for Cmd_jumpifability
+#define BS_ATTACKER_SIDE            8 // for BATTLE_CMD_jumpifability
+#define BS_TARGET_SIDE              9 // for BATTLE_CMD_jumpifability
 #define BS_SCRIPTING                10
 #define BS_PLAYER1                  11
 #define BS_OPPONENT1                12
-#define BS_PLAYER2                  13 // for Cmd_updatestatusicon
+#define BS_PLAYER2                  13 // for BATTLE_CMD_updatestatusicon
 #define BS_OPPONENT2                14
 #define BS_ABILITY_BATTLER          15
 #define BS_ATTACKER_PARTNER         16
 
-// Cmd_accuracycheck
+// BATTLE_CMD_accuracycheck
 #define NO_ACC_CALC_CHECK_LOCK_ON 0xFFFF
 #define ACC_CURR_MOVE 0
 
@@ -86,7 +86,7 @@ enum Comparaciones
     COMPARACION_BITS_DISTINTOS,
 };
 
-// Cmd_various
+// BATTLE_CMD_various
 #define VARIOUS_CANCEL_MULTI_TURN_MOVES              0
 #define VARIOUS_SET_MAGIC_COAT_TARGET                1
 #define VARIOUS_IS_RUNNING_IMPOSSIBLE                2
@@ -225,7 +225,7 @@ enum Comparaciones
 #define VARIOUS_SWAP_STATS                           136
 #define VARIOUS_TRY_ACTIVATE_CARNIVORO               137
 
-// Cmd_manipulatedamage
+// BATTLE_CMD_manipulatedamage
 #define DMG_CHANGE_SIGN            0
 #define DMG_RECOIL_FROM_MISS       1
 #define DMG_DOUBLED                2
@@ -235,22 +235,22 @@ enum Comparaciones
 #define DMG_BIG_ROOT               6
 #define DMG_RECOIL_FROM_IMMUNE     7 // Used to calculate recoil for the Gen 4 version of Jump Kick
 
-// Cmd_jumpifcantswitch
+// BATTLE_CMD_jumpifcantswitch
 #define SWITCH_IGNORE_ESCAPE_PREVENTION   (1 << 7)
 
-// Cmd_statbuffchange
+// BATTLE_CMD_statbuffchange
 #define STAT_CHANGE_ALLOW_PTR               (1 << 0)   // If set, allow use of jumpptr. Set in every use of statbuffchange
 #define STAT_CHANGE_MIRROR_ARMOR            (1 << 1)   // Stat change redirection caused by Mirror Armor ability.
 #define STAT_CHANGE_NOT_PROTECT_AFFECTED    (1 << 5)
 #define STAT_CHANGE_UPDATE_MOVE_EFFECT      (1 << 6)
 
-// stat change flags for Cmd_playstatchangeanimation
+// stat change flags for BATTLE_CMD_playstatchangeanimation
 #define STAT_CHANGE_NEGATIVE             (1 << 0)
 #define STAT_CHANGE_BY_TWO               (1 << 1)
 #define STAT_CHANGE_MULTIPLE_STATS       (1 << 2)
 #define STAT_CHANGE_CANT_PREVENT         (1 << 3)
 
-// stat flags for Cmd_playstatchangeanimation
+// stat flags for BATTLE_CMD_playstatchangeanimation
 #define BIT_HP                      (1 << 0)
 #define BIT_ATK                     (1 << 1)
 #define BIT_DEF                     (1 << 2)
@@ -262,7 +262,7 @@ enum Comparaciones
 
 #define PARTY_SCREEN_OPTIONAL (1 << 7) // Flag for first argument to openpartyscreen
 
-// cases for Cmd_moveend
+// cases for BATTLE_CMD_moveend
 enum MoveEndEffects
 {
     MOVEEND_SUM_DAMAGE,
@@ -310,9 +310,252 @@ enum MoveEndEffects
 #define B_SWITCH_HIT        1   // dragon tail, circle throw
 #define B_SWITCH_RED_CARD   2
 
-// Argument labels for EFFECT_HIT_SET_REMOVE_TERRAIN
-#define ARG_SET_PSYCHIC_TERRAIN        0
-#define ARG_TRY_REMOVE_TERRAIN_HIT     1
-#define ARG_TRY_REMOVE_TERRAIN_FAIL    2
+enum BattleScriptCommands
+{
+    BATTLE_CMD_attackcanceler,
+    BATTLE_CMD_accuracycheck,
+    BATTLE_CMD_attackstring,
+    BATTLE_CMD_ppreduce,
+    BATTLE_CMD_critcalc,
+    BATTLE_CMD_damagecalc,
+    BATTLE_CMD_typecalc,
+    BATTLE_CMD_adjustdamage,
+    BATTLE_CMD_multihitresultmessage,
+    BATTLE_CMD_attackanimation,
+    BATTLE_CMD_waitanimation,
+    BATTLE_CMD_healthbarupdate,
+    BATTLE_CMD_datahpupdate,
+    BATTLE_CMD_critmessage,
+    BATTLE_CMD_effectivenesssound,
+    BATTLE_CMD_resultmessage,
+    BATTLE_CMD_printstring,
+    BATTLE_CMD_printselectionstring,
+    BATTLE_CMD_waitmessage,
+    BATTLE_CMD_printfromtable,
+    BATTLE_CMD_printselectionstringfromtable,
+    BATTLE_CMD_setadditionaleffects,
+    BATTLE_CMD_seteffectprimary,
+    BATTLE_CMD_seteffectsecondary,
+    BATTLE_CMD_clearstatusfromeffect,
+    BATTLE_CMD_tryfaintmon,
+    BATTLE_CMD_dofaintanimation,
+    BATTLE_CMD_cleareffectsonfaint,
+    BATTLE_CMD_jumpifstatus,
+    BATTLE_CMD_jumpifstatus2,
+    BATTLE_CMD_jumpifability,
+    BATTLE_CMD_jumpifsideaffecting,
+    BATTLE_CMD_jumpifstat,
+    BATTLE_CMD_jumpifstatus3condition,
+    BATTLE_CMD_jumpbasedontype,
+    BATTLE_CMD_getexp,
+    BATTLE_CMD_checkteamslost,
+    BATTLE_CMD_movevaluescleanup,
+    BATTLE_CMD_setmultihit,
+    BATTLE_CMD_decrementmultihit,
+    BATTLE_CMD_goto,
+    BATTLE_CMD_jumpifbyte,
+    BATTLE_CMD_jumpifhalfword,
+    BATTLE_CMD_jumpifword,
+    BATTLE_CMD_jumpifarrayequal,
+    BATTLE_CMD_jumpifarraynotequal,
+    BATTLE_CMD_setbyte,
+    BATTLE_CMD_addbyte,
+    BATTLE_CMD_subbyte,
+    BATTLE_CMD_copyarray,
+    BATTLE_CMD_copyarraywithindex,
+    BATTLE_CMD_orbyte,
+    BATTLE_CMD_orhalfword,
+    BATTLE_CMD_orword,
+    BATTLE_CMD_bicbyte,
+    BATTLE_CMD_bichalfword,
+    BATTLE_CMD_bicword,
+    BATTLE_CMD_pause,
+    BATTLE_CMD_waitstate,
+    BATTLE_CMD_healthbar_update,
+    BATTLE_CMD_return,
+    BATTLE_CMD_end,
+    BATTLE_CMD_end2,
+    BATTLE_CMD_end3,
+    BATTLE_CMD_call,
+    BATTLE_CMD_setroost,
+    BATTLE_CMD_jumpifabilitypresent,
+    BATTLE_CMD_endselectionscript,
+    BATTLE_CMD_playanimation,
+    BATTLE_CMD_playanimation_var,
+    BATTLE_CMD_setgraphicalstatchangevalues,
+    BATTLE_CMD_playstatchangeanimation,
+    BATTLE_CMD_moveend,
+    BATTLE_CMD_sethealblock,
+    BATTLE_CMD_returnatktoball,
+    BATTLE_CMD_getswitchedmondata,
+    BATTLE_CMD_switchindataupdate,
+    BATTLE_CMD_switchinanim,
+    BATTLE_CMD_jumpifcantswitch,
+    BATTLE_CMD_openpartyscreen,
+    BATTLE_CMD_switchhandleorder,
+    BATTLE_CMD_switchineffects,
+    BATTLE_CMD_trainerslidein,
+    BATTLE_CMD_playse,
+    BATTLE_CMD_fanfare,
+    BATTLE_CMD_playfaintcry,
+    BATTLE_CMD_returntoball,
+    BATTLE_CMD_handlelearnnewmove,
+    BATTLE_CMD_yesnoboxlearnmove,
+    BATTLE_CMD_yesnoboxstoplearningmove,
+    BATTLE_CMD_hitanimation,
+    BATTLE_CMD_getmoneyreward,
+    BATTLE_CMD_callnative,
+    BATTLE_CMD_swapattackerwithtarget,
+    BATTLE_CMD_incrementgamestat,
+    BATTLE_CMD_drawpartystatussummary,
+    BATTLE_CMD_hidepartystatussummary,
+    BATTLE_CMD_jumptocalledmove,
+    BATTLE_CMD_statusanimation,
+    BATTLE_CMD_status2animation,
+    BATTLE_CMD_chosenstatusanimation,
+    BATTLE_CMD_yesnobox,
+    BATTLE_CMD_cancelallactions,
+    BATTLE_CMD_setgravity,
+    BATTLE_CMD_removeitem,
+    BATTLE_CMD_atknameinbuff1,
+    BATTLE_CMD_drawlvlupbox,
+    BATTLE_CMD_resetsentmonsvalue,
+    BATTLE_CMD_setatktoplayer0,
+    BATTLE_CMD_makevisible,
+    BATTLE_CMD_recordability,
+    BATTLE_CMD_buffermovetolearn,
+    BATTLE_CMD_jumpifplayerran,
+    BATTLE_CMD_hpthresholds,
+    BATTLE_CMD_hpthresholds2,
+    BATTLE_CMD_useitemonopponent,
+    BATTLE_CMD_various,
+    BATTLE_CMD_setprotectlike,
+    BATTLE_CMD_tryexplosion,
+    BATTLE_CMD_setatkhptozero,
+    BATTLE_CMD_jumpifnexttargetvalid,
+    BATTLE_CMD_tryhealhalfhealth,
+    BATTLE_CMD_trymirrormove,
+    BATTLE_CMD_setfieldweather,
+    BATTLE_CMD_setreflect,
+    BATTLE_CMD_setseeded,
+    BATTLE_CMD_manipulatedamage,
+    BATTLE_CMD_trysetrest,
+    BATTLE_CMD_jumpifnotfirstturn,
+    BATTLE_CMD_setmiracleeye,
+    BATTLE_CMD_jumpifuproarwakes,
+    BATTLE_CMD_stockpile,
+    BATTLE_CMD_stockpiletobasedamage,
+    BATTLE_CMD_stockpiletohpheal,
+    BATTLE_CMD_setdrainedhp,
+    BATTLE_CMD_statbuffchange,
+    BATTLE_CMD_normalisebuffs,
+    BATTLE_CMD_setbide,
+    BATTLE_CMD_twoturnmoveschargestringandanimation,
+    BATTLE_CMD_setmultihitcounter,
+    BATTLE_CMD_initmultihitstring,
+    BATTLE_CMD_forcerandomswitch,
+    BATTLE_CMD_tryconversiontypechange,
+    BATTLE_CMD_givepaydaymoney,
+    BATTLE_CMD_setlightscreen,
+    BATTLE_CMD_tryKO,
+    BATTLE_CMD_damagetohalftargethp,
+    BATTLE_CMD_tryinfatuating,
+    BATTLE_CMD_updatestatusicon,
+    BATTLE_CMD_setmist,
+    BATTLE_CMD_setfocusenergy,
+    BATTLE_CMD_transformdataexecution,
+    BATTLE_CMD_setsubstitute,
+    BATTLE_CMD_mimicattackcopy,
+    BATTLE_CMD_metronome,
+    BATTLE_CMD_dmgtolevel,
+    BATTLE_CMD_psywavedamageeffect,
+    BATTLE_CMD_counterdamagecalculator,
+    BATTLE_CMD_mirrorcoatdamagecalculator,
+    BATTLE_CMD_disablelastusedattack,
+    BATTLE_CMD_trysetencore,
+    BATTLE_CMD_painsplitdmgcalc,
+    BATTLE_CMD_settypetorandomresistance,
+    BATTLE_CMD_setalwayshitflag,
+    BATTLE_CMD_copymovepermanently,
+    BATTLE_CMD_trychoosesleeptalkmove,
+    BATTLE_CMD_setdestinybond,
+    BATTLE_CMD_trysetdestinybondtohappen,
+    BATTLE_CMD_settailwind,
+    BATTLE_CMD_tryspiteppreduce,
+    BATTLE_CMD_healpartystatus,
+    BATTLE_CMD_cursetarget,
+    BATTLE_CMD_trysetspikes,
+    BATTLE_CMD_setforesight,
+    BATTLE_CMD_trysetperishsong,
+    BATTLE_CMD_handlerollout,
+    BATTLE_CMD_jumpifconfusedandstatmaxed,
+    BATTLE_CMD_handlefurycutter,
+    BATTLE_CMD_setembargo,
+    BATTLE_CMD_presentdamagecalculation,
+    BATTLE_CMD_setsafeguard,
+    BATTLE_CMD_magnitudedamagecalculation,
+    BATTLE_CMD_jumpifnopursuitswitchdmg,
+    BATTLE_CMD_halvehp,
+    BATTLE_CMD_copyfoestats,
+    BATTLE_CMD_rapidspinfree,
+    BATTLE_CMD_setdefensecurlbit,
+    BATTLE_CMD_recoverbasedonsunlight,
+    BATTLE_CMD_setstickyweb,
+    BATTLE_CMD_selectfirstvalidtarget,
+    BATTLE_CMD_trysetfutureattack,
+    BATTLE_CMD_trydobeatup,
+    BATTLE_CMD_setsemiinvulnerablebit,
+    BATTLE_CMD_tryfiretwoturnmovenowbyeffect,
+    BATTLE_CMD_setminimize,
+    BATTLE_CMD_trymemento,
+    BATTLE_CMD_setforcedtarget,
+    BATTLE_CMD_setcharge,
+    BATTLE_CMD_callterrainattack,
+    BATTLE_CMD_cureifburnedparalysedorpoisoned,
+    BATTLE_CMD_settorment,
+    BATTLE_CMD_jumpifnodamage,
+    BATTLE_CMD_settaunt,
+    BATTLE_CMD_trysethelpinghand,
+    BATTLE_CMD_tryswapitems,
+    BATTLE_CMD_trycopyability,
+    BATTLE_CMD_trywish,
+    BATTLE_CMD_settoxicspikes,
+    BATTLE_CMD_setgastroacid,
+    BATTLE_CMD_setyawn,
+    BATTLE_CMD_setdamagetohealthdifference,
+    BATTLE_CMD_setroom,
+    BATTLE_CMD_tryswapabilities,
+    BATTLE_CMD_tryimprison,
+    BATTLE_CMD_setstealthrock,
+    BATTLE_CMD_setuserstatus3,
+    BATTLE_CMD_assistattackselect,
+    BATTLE_CMD_trysetmagiccoat,
+    BATTLE_CMD_trysetsnatch,
+    BATTLE_CMD_switchoutabilities,
+    BATTLE_CMD_jumpifhasnohp,
+    BATTLE_CMD_jumpifnotcurrentmoveargtype,
+    BATTLE_CMD_pickup,
+    BATTLE_CMD_settypebasedhalvers,
+    BATTLE_CMD_jumpifsubstituteblocks,
+    BATTLE_CMD_tryrecycleitem,
+    BATTLE_CMD_settypetoterrain,
+    BATTLE_CMD_snatchsetbattlers,
+    BATTLE_CMD_removelightscreenreflect,
+    BATTLE_CMD_handleballthrow,
+    BATTLE_CMD_givecaughtmon,
+    BATTLE_CMD_trysetcaughtmondexflags,
+    BATTLE_CMD_displaydexinfo,
+    BATTLE_CMD_trygivecaughtmonnick,
+    BATTLE_CMD_subattackerhpbydmg,
+    BATTLE_CMD_removeattackerstatus1,
+    BATTLE_CMD_finishaction,
+    BATTLE_CMD_finishturn,
+    BATTLE_CMD_trainerslideout,
+    BATTLE_CMD_settelekinesis,
+    BATTLE_CMD_swapstatstages,
+    BATTLE_CMD_averagestats,
+    BATTLE_CMD_jumpifoppositegenders,
+    BATTLE_CMD_tryworryseed,
+};
 
 #endif // GUARD_CONSTANTS_BATTLE_SCRIPT_COMMANDS_H

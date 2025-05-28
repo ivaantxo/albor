@@ -18026,11 +18026,11 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
 
     [MOVE_STEEL_ROLLER] =
     {
-        .name = COMPOUND_STRING("Steel Roller"),
+        .name = COMPOUND_STRING("Steel Roller"), //Quitar trampas?
         .description = COMPOUND_STRING(
             "Destroys terrain. Fails if\n"
             "ground isn't terrain."),
-        .effect = EFFECT_HIT_SET_REMOVE_TERRAIN,
+        .effect = EFFECT_HIT,
         .power = 130,
         .type = TIPO_ACERO,
         .accuracy = 100,
@@ -18039,7 +18039,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .argument = ARG_TRY_REMOVE_TERRAIN_FAIL, // Remove a field terrain if there is one and hit, otherwise fail.
         .skyBattleBanned = TRUE,
         .contestEffect = CONTEST_EFFECT_WORSEN_CONDITION_OF_PREV_MONS,
         .contestCategory = CONTEST_CATEGORY_TOUGH,
@@ -19451,11 +19450,11 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
 
     [MOVE_ICE_SPINNER] =
     {
-        .name = COMPOUND_STRING("Ice Spinner"),
+        .name = COMPOUND_STRING("Ice Spinner"), //Quitar trampas?
         .description = COMPOUND_STRING(
             "Ice-covered feet hit a foe\n"
             "and destroy the terrain."),
-        .effect = EFFECT_HIT_SET_REMOVE_TERRAIN,
+        .effect = EFFECT_HIT,
         .power = 80,
         .type = TIPO_HIELO,
         .accuracy = 100,
@@ -19464,7 +19463,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .argument = ARG_TRY_REMOVE_TERRAIN_HIT, // Remove the active field terrain if there is one.
         .skyBattleBanned = B_EXTRAPOLATED_MOVE_FLAGS,
         .battleAnimScript = gBattleAnimMove_IceSpinner,
     },

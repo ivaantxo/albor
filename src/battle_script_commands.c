@@ -64,6 +64,7 @@
 #include "constants/pokemon.h"
 #include "config/battle.h"
 #include "data/battle_move_effects.h"
+#include "constants/battle_script_commands.h"
 
 // table to avoid ugly powing on gba (courtesy of doesnt)
 // this returns (i^2.5)/4
@@ -580,252 +581,254 @@ static void Cmd_jumpifoppositegenders(void);
 static void Cmd_tryworryseed(void);
 static void Cmd_callnative(void);
 
+#define BATTLE_CMD(name) [BATTLE_CMD_##name] = Cmd_##name
+
 void (* const gBattleScriptingCommandsTable[])(void) =
 {
-    Cmd_attackcanceler,                          // 0
-    Cmd_accuracycheck,                           // 1
-    Cmd_attackstring,                            // 2
-    Cmd_ppreduce,                                // 3
-    Cmd_critcalc,                                // 4
-    Cmd_damagecalc,                              // 5
-    Cmd_typecalc,                                // 6
-    Cmd_adjustdamage,                            // 7
-    Cmd_multihitresultmessage,                   // 8
-    Cmd_attackanimation,                         // 9
-    Cmd_waitanimation,                           // 10
-    Cmd_healthbarupdate,                         // 11
-    Cmd_datahpupdate,                            // 12
-    Cmd_critmessage,                             // 13
-    Cmd_effectivenesssound,                      // 14
-    Cmd_resultmessage,                           // 15
-    Cmd_printstring,                             // 16
-    Cmd_printselectionstring,                    // 17
-    Cmd_waitmessage,                             // 18
-    Cmd_printfromtable,                          // 19
-    Cmd_printselectionstringfromtable,           // 20
-    Cmd_setadditionaleffects,                    // 21
-    Cmd_seteffectprimary,                        // 22
-    Cmd_seteffectsecondary,                      // 23
-    Cmd_clearstatusfromeffect,                   // 24
-    Cmd_tryfaintmon,                             // 25
-    Cmd_dofaintanimation,                        // 26
-    Cmd_cleareffectsonfaint,                     // 27
-    Cmd_jumpifstatus,                            // 28
-    Cmd_jumpifstatus2,                           // 29
-    Cmd_jumpifability,                           // 30
-    Cmd_jumpifsideaffecting,                     // 31
-    Cmd_jumpifstat,                              // 32
-    Cmd_jumpifstatus3condition,                  // 33
-    Cmd_jumpbasedontype,                         // 34
-    Cmd_getexp,                                  // 35
-    Cmd_checkteamslost,                          // 36
-    Cmd_movevaluescleanup,                       // 37
-    Cmd_setmultihit,                             // 38
-    Cmd_decrementmultihit,                       // 39
-    Cmd_goto,                                    // 40
-    Cmd_jumpifbyte,                              // 41
-    Cmd_jumpifhalfword,                          // 42
-    Cmd_jumpifword,                              // 43
-    Cmd_jumpifarrayequal,                        // 44
-    Cmd_jumpifarraynotequal,                     // 45
-    Cmd_setbyte,                                 // 46
-    Cmd_addbyte,                                 // 47
-    Cmd_subbyte,                                 // 48
-    Cmd_copyarray,                               // 49
-    Cmd_copyarraywithindex,                      // 50
-    Cmd_orbyte,                                  // 51
-    Cmd_orhalfword,                              // 52
-    Cmd_orword,                                  // 53
-    Cmd_bicbyte,                                 // 54
-    Cmd_bichalfword,                             // 55
-    Cmd_bicword,                                 // 56
-    Cmd_pause,                                   // 57
-    Cmd_waitstate,                               // 58
-    Cmd_healthbar_update,                        // 59
-    Cmd_return,                                  // 60
-    Cmd_end,                                     // 61
-    Cmd_end2,                                    // 62
-    Cmd_end3,                                    // 63
-    Cmd_call,                                    // 64
-    Cmd_setroost,                                // 65
-    Cmd_jumpifabilitypresent,                    // 66
-    Cmd_endselectionscript,                      // 67
-    Cmd_playanimation,                           // 68
-    Cmd_playanimation_var,                       // 69
-    Cmd_setgraphicalstatchangevalues,            // 70
-    Cmd_playstatchangeanimation,                 // 71
-    Cmd_moveend,                                 // 72
-    Cmd_sethealblock,                            // 73
-    Cmd_returnatktoball,                         // 74
-    Cmd_getswitchedmondata,                      // 75
-    Cmd_switchindataupdate,                      // 76
-    Cmd_switchinanim,                            // 77
-    Cmd_jumpifcantswitch,                        // 78
-    Cmd_openpartyscreen,                         // 79
-    Cmd_switchhandleorder,                       // 80
-    Cmd_switchineffects,                         // 81
-    Cmd_trainerslidein,                          // 82
-    Cmd_playse,                                  // 83
-    Cmd_fanfare,                                 // 84
-    Cmd_playfaintcry,                            // 85
-    Cmd_returntoball,                            // 86
-    Cmd_handlelearnnewmove,                      // 87
-    Cmd_yesnoboxlearnmove,                       // 88
-    Cmd_yesnoboxstoplearningmove,                // 89
-    Cmd_hitanimation,                            // 90
-    Cmd_getmoneyreward,                          // 91
-    Cmd_callnative,                              // 92
-    Cmd_swapattackerwithtarget,                  // 93
-    Cmd_incrementgamestat,                       // 94
-    Cmd_drawpartystatussummary,                  // 95
-    Cmd_hidepartystatussummary,                  // 96
-    Cmd_jumptocalledmove,                        // 97
-    Cmd_statusanimation,                         // 98
-    Cmd_status2animation,                        // 99
-    Cmd_chosenstatusanimation,                   // 100
-    Cmd_yesnobox,                                // 101
-    Cmd_cancelallactions,                        // 102
-    Cmd_setgravity,                              // 103
-    Cmd_removeitem,                              // 104
-    Cmd_atknameinbuff1,                          // 105
-    Cmd_drawlvlupbox,                            // 106
-    Cmd_resetsentmonsvalue,                      // 107
-    Cmd_setatktoplayer0,                         // 108
-    Cmd_makevisible,                             // 109
-    Cmd_recordability,                           // 110
-    Cmd_buffermovetolearn,                       // 111
-    Cmd_jumpifplayerran,                         // 112
-    Cmd_hpthresholds,                            // 113
-    Cmd_hpthresholds2,                           // 114
-    Cmd_useitemonopponent,                       // 115
-    Cmd_various,                                 // 116
-    Cmd_setprotectlike,                          // 117
-    Cmd_tryexplosion,                            // 118
-    Cmd_setatkhptozero,                          // 119
-    Cmd_jumpifnexttargetvalid,                   // 120
-    Cmd_tryhealhalfhealth,                       // 121
-    Cmd_trymirrormove,                           // 122
-    Cmd_setfieldweather,                         // 123
-    Cmd_setreflect,                              // 124
-    Cmd_setseeded,                               // 125
-    Cmd_manipulatedamage,                        // 126
-    Cmd_trysetrest,                              // 127
-    Cmd_jumpifnotfirstturn,                      // 128
-    Cmd_setmiracleeye,                           // 129
-    Cmd_jumpifuproarwakes,                       // 130
-    Cmd_stockpile,                               // 131
-    Cmd_stockpiletobasedamage,                   // 132
-    Cmd_stockpiletohpheal,                       // 133
-    Cmd_setdrainedhp,                            // 134
-    Cmd_statbuffchange,                          // 135
-    Cmd_normalisebuffs,                          // 136
-    Cmd_setbide,                                 // 137
-    Cmd_twoturnmoveschargestringandanimation,    // 138
-    Cmd_setmultihitcounter,                      // 139
-    Cmd_initmultihitstring,                      // 140
-    Cmd_forcerandomswitch,                       // 141
-    Cmd_tryconversiontypechange,                 // 142
-    Cmd_givepaydaymoney,                         // 143
-    Cmd_setlightscreen,                          // 144
-    Cmd_tryKO,                                   // 145
-    Cmd_damagetohalftargethp,                    // 146
-    Cmd_tryinfatuating,                          // 147
-    Cmd_updatestatusicon,                        // 148
-    Cmd_setmist,                                 // 149
-    Cmd_setfocusenergy,                          // 150
-    Cmd_transformdataexecution,                  // 151
-    Cmd_setsubstitute,                           // 152
-    Cmd_mimicattackcopy,                         // 153
-    Cmd_metronome,                               // 154
-    Cmd_dmgtolevel,                              // 155
-    Cmd_psywavedamageeffect,                     // 156
-    Cmd_counterdamagecalculator,                 // 157
-    Cmd_mirrorcoatdamagecalculator,              // 158
-    Cmd_disablelastusedattack,                   // 159
-    Cmd_trysetencore,                            // 160
-    Cmd_painsplitdmgcalc,                        // 161
-    Cmd_settypetorandomresistance,               // 162
-    Cmd_setalwayshitflag,                        // 163
-    Cmd_copymovepermanently,                     // 164
-    Cmd_trychoosesleeptalkmove,                  // 165
-    Cmd_setdestinybond,                          // 166
-    Cmd_trysetdestinybondtohappen,               // 167
-    Cmd_settailwind,                             // 168
-    Cmd_tryspiteppreduce,                        // 169
-    Cmd_healpartystatus,                         // 170
-    Cmd_cursetarget,                             // 171
-    Cmd_trysetspikes,                            // 172
-    Cmd_setforesight,                            // 173
-    Cmd_trysetperishsong,                        // 174
-    Cmd_handlerollout,                           // 175
-    Cmd_jumpifconfusedandstatmaxed,              // 176
-    Cmd_handlefurycutter,                        // 177
-    Cmd_setembargo,                              // 178
-    Cmd_presentdamagecalculation,                // 179
-    Cmd_setsafeguard,                            // 180
-    Cmd_magnitudedamagecalculation,              // 181
-    Cmd_jumpifnopursuitswitchdmg,                // 182
-    Cmd_halvehp,                                 // 183
-    Cmd_copyfoestats,                            // 184
-    Cmd_rapidspinfree,                           // 185
-    Cmd_setdefensecurlbit,                       // 186
-    Cmd_recoverbasedonsunlight,                  // 187
-    Cmd_setstickyweb,                            // 188
-    Cmd_selectfirstvalidtarget,                  // 189
-    Cmd_trysetfutureattack,                      // 190
-    Cmd_trydobeatup,                             // 191
-    Cmd_setsemiinvulnerablebit,                  // 192
-    Cmd_tryfiretwoturnmovenowbyeffect,           // 193
-    Cmd_setminimize,                             // 194
-    Cmd_trymemento,                              // 195
-    Cmd_setforcedtarget,                         // 196
-    Cmd_setcharge,                               // 197
-    Cmd_callterrainattack,                       // 198
-    Cmd_cureifburnedparalysedorpoisoned,         // 199
-    Cmd_settorment,                              // 200
-    Cmd_jumpifnodamage,                          // 201
-    Cmd_settaunt,                                // 202
-    Cmd_trysethelpinghand,                       // 203
-    Cmd_tryswapitems,                            // 204
-    Cmd_trycopyability,                          // 205
-    Cmd_trywish,                                 // 206
-    Cmd_settoxicspikes,                          // 207
-    Cmd_setgastroacid,                           // 208
-    Cmd_setyawn,                                 // 209
-    Cmd_setdamagetohealthdifference,             // 210
-    Cmd_setroom,                                 // 211
-    Cmd_tryswapabilities,                        // 212
-    Cmd_tryimprison,                             // 213
-    Cmd_setstealthrock,                          // 214
-    Cmd_setuserstatus3,                          // 215
-    Cmd_assistattackselect,                      // 216
-    Cmd_trysetmagiccoat,                         // 217
-    Cmd_trysetsnatch,                            // 218
-    Cmd_switchoutabilities,                      // 219
-    Cmd_jumpifhasnohp,                           // 220
-    Cmd_jumpifnotcurrentmoveargtype,             // 221
-    Cmd_pickup,                                  // 222
-    Cmd_settypebasedhalvers,                     // 223
-    Cmd_jumpifsubstituteblocks,                  // 224
-    Cmd_tryrecycleitem,                          // 225
-    Cmd_settypetoterrain,                        // 226
-    Cmd_snatchsetbattlers,                       // 227
-    Cmd_removelightscreenreflect,                // 228
-    Cmd_handleballthrow,                         // 229
-    Cmd_givecaughtmon,                           // 230
-    Cmd_trysetcaughtmondexflags,                 // 231
-    Cmd_displaydexinfo,                          // 232
-    Cmd_trygivecaughtmonnick,                    // 233
-    Cmd_subattackerhpbydmg,                      // 234
-    Cmd_removeattackerstatus1,                   // 235
-    Cmd_finishaction,                            // 236
-    Cmd_finishturn,                              // 237
-    Cmd_trainerslideout,                         // 238
-    Cmd_settelekinesis,                          // 239
-    Cmd_swapstatstages,                          // 240
-    Cmd_averagestats,                            // 241
-    Cmd_jumpifoppositegenders,                   // 242
-    Cmd_tryworryseed,                            // 243
+    BATTLE_CMD(attackcanceler),
+    BATTLE_CMD(accuracycheck),
+    BATTLE_CMD(attackstring),
+    BATTLE_CMD(ppreduce),
+    BATTLE_CMD(critcalc),
+    BATTLE_CMD(damagecalc),
+    BATTLE_CMD(typecalc),
+    BATTLE_CMD(adjustdamage),
+    BATTLE_CMD(multihitresultmessage),
+    BATTLE_CMD(attackanimation),
+    BATTLE_CMD(waitanimation),
+    BATTLE_CMD(healthbarupdate),
+    BATTLE_CMD(datahpupdate),
+    BATTLE_CMD(critmessage),
+    BATTLE_CMD(effectivenesssound),
+    BATTLE_CMD(resultmessage),
+    BATTLE_CMD(printstring),
+    BATTLE_CMD(printselectionstring),
+    BATTLE_CMD(waitmessage),
+    BATTLE_CMD(printfromtable),
+    BATTLE_CMD(printselectionstringfromtable),
+    BATTLE_CMD(setadditionaleffects),
+    BATTLE_CMD(seteffectprimary),
+    BATTLE_CMD(seteffectsecondary),
+    BATTLE_CMD(clearstatusfromeffect),
+    BATTLE_CMD(tryfaintmon),
+    BATTLE_CMD(dofaintanimation),
+    BATTLE_CMD(cleareffectsonfaint),
+    BATTLE_CMD(jumpifstatus),
+    BATTLE_CMD(jumpifstatus2),
+    BATTLE_CMD(jumpifability),
+    BATTLE_CMD(jumpifsideaffecting),
+    BATTLE_CMD(jumpifstat),
+    BATTLE_CMD(jumpifstatus3condition),
+    BATTLE_CMD(jumpbasedontype),
+    BATTLE_CMD(getexp),
+    BATTLE_CMD(checkteamslost),
+    BATTLE_CMD(movevaluescleanup),
+    BATTLE_CMD(setmultihit),
+    BATTLE_CMD(decrementmultihit),
+    BATTLE_CMD(goto),
+    BATTLE_CMD(jumpifbyte),
+    BATTLE_CMD(jumpifhalfword),
+    BATTLE_CMD(jumpifword),
+    BATTLE_CMD(jumpifarrayequal),
+    BATTLE_CMD(jumpifarraynotequal),
+    BATTLE_CMD(setbyte),
+    BATTLE_CMD(addbyte),
+    BATTLE_CMD(subbyte),
+    BATTLE_CMD(copyarray),
+    BATTLE_CMD(copyarraywithindex),
+    BATTLE_CMD(orbyte),
+    BATTLE_CMD(orhalfword),
+    BATTLE_CMD(orword),
+    BATTLE_CMD(bicbyte),
+    BATTLE_CMD(bichalfword),
+    BATTLE_CMD(bicword),
+    BATTLE_CMD(pause),
+    BATTLE_CMD(waitstate),
+    BATTLE_CMD(healthbar_update),
+    BATTLE_CMD(return),
+    BATTLE_CMD(end),
+    BATTLE_CMD(end2),
+    BATTLE_CMD(end3),
+    BATTLE_CMD(call),
+    BATTLE_CMD(setroost),
+    BATTLE_CMD(jumpifabilitypresent),
+    BATTLE_CMD(endselectionscript),
+    BATTLE_CMD(playanimation),
+    BATTLE_CMD(playanimation_var),
+    BATTLE_CMD(setgraphicalstatchangevalues),
+    BATTLE_CMD(playstatchangeanimation),
+    BATTLE_CMD(moveend),
+    BATTLE_CMD(sethealblock),
+    BATTLE_CMD(returnatktoball),
+    BATTLE_CMD(getswitchedmondata),
+    BATTLE_CMD(switchindataupdate),
+    BATTLE_CMD(switchinanim),
+    BATTLE_CMD(jumpifcantswitch),
+    BATTLE_CMD(openpartyscreen),
+    BATTLE_CMD(switchhandleorder),
+    BATTLE_CMD(switchineffects),
+    BATTLE_CMD(trainerslidein),
+    BATTLE_CMD(playse),
+    BATTLE_CMD(fanfare),
+    BATTLE_CMD(playfaintcry),
+    BATTLE_CMD(returntoball),
+    BATTLE_CMD(handlelearnnewmove),
+    BATTLE_CMD(yesnoboxlearnmove),
+    BATTLE_CMD(yesnoboxstoplearningmove),
+    BATTLE_CMD(hitanimation),
+    BATTLE_CMD(getmoneyreward),
+    BATTLE_CMD(callnative),
+    BATTLE_CMD(swapattackerwithtarget),
+    BATTLE_CMD(incrementgamestat),
+    BATTLE_CMD(drawpartystatussummary),
+    BATTLE_CMD(hidepartystatussummary),
+    BATTLE_CMD(jumptocalledmove),
+    BATTLE_CMD(statusanimation),
+    BATTLE_CMD(status2animation),
+    BATTLE_CMD(chosenstatusanimation),
+    BATTLE_CMD(yesnobox),
+    BATTLE_CMD(cancelallactions),
+    BATTLE_CMD(setgravity),
+    BATTLE_CMD(removeitem),
+    BATTLE_CMD(atknameinbuff1),
+    BATTLE_CMD(drawlvlupbox),
+    BATTLE_CMD(resetsentmonsvalue),
+    BATTLE_CMD(setatktoplayer0),
+    BATTLE_CMD(makevisible),
+    BATTLE_CMD(recordability),
+    BATTLE_CMD(buffermovetolearn),
+    BATTLE_CMD(jumpifplayerran),
+    BATTLE_CMD(hpthresholds),
+    BATTLE_CMD(hpthresholds2),
+    BATTLE_CMD(useitemonopponent),
+    BATTLE_CMD(various),
+    BATTLE_CMD(setprotectlike),
+    BATTLE_CMD(tryexplosion),
+    BATTLE_CMD(setatkhptozero),
+    BATTLE_CMD(jumpifnexttargetvalid),
+    BATTLE_CMD(tryhealhalfhealth),
+    BATTLE_CMD(trymirrormove),
+    BATTLE_CMD(setfieldweather),
+    BATTLE_CMD(setreflect),
+    BATTLE_CMD(setseeded),
+    BATTLE_CMD(manipulatedamage),
+    BATTLE_CMD(trysetrest),
+    BATTLE_CMD(jumpifnotfirstturn),
+    BATTLE_CMD(setmiracleeye),
+    BATTLE_CMD(jumpifuproarwakes),
+    BATTLE_CMD(stockpile),
+    BATTLE_CMD(stockpiletobasedamage),
+    BATTLE_CMD(stockpiletohpheal),
+    BATTLE_CMD(setdrainedhp),
+    BATTLE_CMD(statbuffchange),
+    BATTLE_CMD(normalisebuffs),
+    BATTLE_CMD(setbide),
+    BATTLE_CMD(twoturnmoveschargestringandanimation),
+    BATTLE_CMD(setmultihitcounter),
+    BATTLE_CMD(initmultihitstring),
+    BATTLE_CMD(forcerandomswitch),
+    BATTLE_CMD(tryconversiontypechange),
+    BATTLE_CMD(givepaydaymoney),
+    BATTLE_CMD(setlightscreen),
+    BATTLE_CMD(tryKO),
+    BATTLE_CMD(damagetohalftargethp),
+    BATTLE_CMD(tryinfatuating),
+    BATTLE_CMD(updatestatusicon),
+    BATTLE_CMD(setmist),
+    BATTLE_CMD(setfocusenergy),
+    BATTLE_CMD(transformdataexecution),
+    BATTLE_CMD(setsubstitute),
+    BATTLE_CMD(mimicattackcopy),
+    BATTLE_CMD(metronome),
+    BATTLE_CMD(dmgtolevel),
+    BATTLE_CMD(psywavedamageeffect),
+    BATTLE_CMD(counterdamagecalculator),
+    BATTLE_CMD(mirrorcoatdamagecalculator),
+    BATTLE_CMD(disablelastusedattack),
+    BATTLE_CMD(trysetencore),
+    BATTLE_CMD(painsplitdmgcalc),
+    BATTLE_CMD(settypetorandomresistance),
+    BATTLE_CMD(setalwayshitflag),
+    BATTLE_CMD(copymovepermanently),
+    BATTLE_CMD(trychoosesleeptalkmove),
+    BATTLE_CMD(setdestinybond),
+    BATTLE_CMD(trysetdestinybondtohappen),
+    BATTLE_CMD(settailwind),
+    BATTLE_CMD(tryspiteppreduce),
+    BATTLE_CMD(healpartystatus),
+    BATTLE_CMD(cursetarget),
+    BATTLE_CMD(trysetspikes),
+    BATTLE_CMD(setforesight),
+    BATTLE_CMD(trysetperishsong),
+    BATTLE_CMD(handlerollout),
+    BATTLE_CMD(jumpifconfusedandstatmaxed),
+    BATTLE_CMD(handlefurycutter),
+    BATTLE_CMD(setembargo),
+    BATTLE_CMD(presentdamagecalculation),
+    BATTLE_CMD(setsafeguard),
+    BATTLE_CMD(magnitudedamagecalculation),
+    BATTLE_CMD(jumpifnopursuitswitchdmg),
+    BATTLE_CMD(halvehp),
+    BATTLE_CMD(copyfoestats),
+    BATTLE_CMD(rapidspinfree),
+    BATTLE_CMD(setdefensecurlbit),
+    BATTLE_CMD(recoverbasedonsunlight),
+    BATTLE_CMD(setstickyweb),
+    BATTLE_CMD(selectfirstvalidtarget),
+    BATTLE_CMD(trysetfutureattack),
+    BATTLE_CMD(trydobeatup),
+    BATTLE_CMD(setsemiinvulnerablebit),
+    BATTLE_CMD(tryfiretwoturnmovenowbyeffect),
+    BATTLE_CMD(setminimize),
+    BATTLE_CMD(trymemento),
+    BATTLE_CMD(setforcedtarget),
+    BATTLE_CMD(setcharge),
+    BATTLE_CMD(callterrainattack),
+    BATTLE_CMD(cureifburnedparalysedorpoisoned),
+    BATTLE_CMD(settorment),
+    BATTLE_CMD(jumpifnodamage),
+    BATTLE_CMD(settaunt),
+    BATTLE_CMD(trysethelpinghand),
+    BATTLE_CMD(tryswapitems),
+    BATTLE_CMD(trycopyability),
+    BATTLE_CMD(trywish),
+    BATTLE_CMD(settoxicspikes),
+    BATTLE_CMD(setgastroacid),
+    BATTLE_CMD(setyawn),
+    BATTLE_CMD(setdamagetohealthdifference),
+    BATTLE_CMD(setroom),
+    BATTLE_CMD(tryswapabilities),
+    BATTLE_CMD(tryimprison),
+    BATTLE_CMD(setstealthrock),
+    BATTLE_CMD(setuserstatus3),
+    BATTLE_CMD(assistattackselect),
+    BATTLE_CMD(trysetmagiccoat),
+    BATTLE_CMD(trysetsnatch),
+    BATTLE_CMD(switchoutabilities),
+    BATTLE_CMD(jumpifhasnohp),
+    BATTLE_CMD(jumpifnotcurrentmoveargtype),
+    BATTLE_CMD(pickup),
+    BATTLE_CMD(settypebasedhalvers),
+    BATTLE_CMD(jumpifsubstituteblocks),
+    BATTLE_CMD(tryrecycleitem),
+    BATTLE_CMD(settypetoterrain),
+    BATTLE_CMD(snatchsetbattlers),
+    BATTLE_CMD(removelightscreenreflect),
+    BATTLE_CMD(handleballthrow),
+    BATTLE_CMD(givecaughtmon),
+    BATTLE_CMD(trysetcaughtmondexflags),
+    BATTLE_CMD(displaydexinfo),
+    BATTLE_CMD(trygivecaughtmonnick),
+    BATTLE_CMD(subattackerhpbydmg),
+    BATTLE_CMD(removeattackerstatus1),
+    BATTLE_CMD(finishaction),
+    BATTLE_CMD(finishturn),
+    BATTLE_CMD(trainerslideout),
+    BATTLE_CMD(settelekinesis),
+    BATTLE_CMD(swapstatstages),
+    BATTLE_CMD(averagestats),
+    BATTLE_CMD(jumpifoppositegenders),
+    BATTLE_CMD(tryworryseed),
 };
 
 static const u32 sStatusFlagsForMoveEffects[NUM_MOVE_EFFECTS] =
@@ -14992,67 +14995,7 @@ void BS_JumpIfArgument(void)
 
 void BS_SetRemoveTerrain(void)
 {
-    NATIVE_ARGS(const u8 *jumpInstr);
-    u32 statusFlag = 0;
 
-    switch (gMovesInfo[gCurrentMove].effect)
-    {
-    case EFFECT_MISTY_TERRAIN:
-        statusFlag = STATUS_FIELD_MISTY_TERRAIN;
-        gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_TERRAIN_SET_MISTY;
-        break;
-    case EFFECT_GRASSY_TERRAIN:
-        statusFlag = STATUS_FIELD_GRASSY_TERRAIN;
-        gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_TERRAIN_SET_GRASSY;
-        break;
-    case EFFECT_ELECTRIC_TERRAIN:
-        statusFlag = STATUS_FIELD_ELECTRIC_TERRAIN;
-        gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_TERRAIN_SET_ELECTRIC;
-        break;
-    case EFFECT_PSYCHIC_TERRAIN:
-        statusFlag = STATUS_FIELD_PSYCHIC_TERRAIN;
-        gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_TERRAIN_SET_PSYCHIC;
-        break;
-    case EFFECT_HIT_SET_REMOVE_TERRAIN:
-        switch (gMovesInfo[gCurrentMove].argument)
-        {
-        case ARG_SET_PSYCHIC_TERRAIN: // Genesis Supernova
-            statusFlag = STATUS_FIELD_PSYCHIC_TERRAIN;
-            gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_TERRAIN_SET_PSYCHIC;
-            break;
-        case ARG_TRY_REMOVE_TERRAIN_HIT: // Splintered Stormshards
-        case ARG_TRY_REMOVE_TERRAIN_FAIL: // Steel Roller
-            if (!(gFieldStatuses & STATUS_FIELD_TERRAIN_ANY))
-            {
-                // No terrain to remove, jump to battle script pointer.
-                gBattlescriptCurrInstr = cmd->jumpInstr;
-            }
-            else
-            {
-                // Remove all terrains.
-                RemoveAllTerrains();
-                gBattlescriptCurrInstr = cmd->nextInstr;
-            }
-            return;
-        default:
-            break;
-        }
-        break;
-    }
-
-    if (gFieldStatuses & statusFlag || statusFlag == 0)
-    {
-        gBattlescriptCurrInstr = cmd->jumpInstr;
-    }
-    else
-    {
-        u32 atkHoldEffect = GetBattlerHoldEffect(gBattlerAttacker, TRUE);
-
-        gFieldStatuses &= ~(STATUS_FIELD_TERRAIN_ANY | STATUS_FIELD_TERRAIN_PERMANENT);
-        gFieldStatuses |= statusFlag;
-        gFieldTimers.terrainTimer = (atkHoldEffect == HOLD_EFFECT_TERRAIN_EXTENDER) ? 8 : 5;
-        gBattlescriptCurrInstr = cmd->nextInstr;
-    }
 }
 
 void BS_JumpIfTerrainAffected(void)

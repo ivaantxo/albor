@@ -9206,34 +9206,6 @@ BattleScript_ExtremeEvoboostSpDef::
 BattleScript_ExtremeEvoboostEnd::
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectHitSetRemoveTerrain::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	jumpifargument ARG_TRY_REMOVE_TERRAIN_FAIL, BattleScript_RemoveTerrain
-	critcalc
-	damagecalc
-	adjustdamage
-	attackanimation
-	waitanimation
-	effectivenesssound
-	hitanimation BS_TARGET
-	waitstate
-	healthbarupdate BS_TARGET
-	datahpupdate BS_TARGET
-	critmessage
-	waitmessage B_WAIT_TIME_LONG
-	resultmessage
-	waitmessage B_WAIT_TIME_LONG
-	setremoveterrain BattleScript_TryFaint
-	playanimation BS_ATTACKER, B_ANIM_RESTORE_BG
-	printfromtable gTerrainStringIds
-	waitmessage B_WAIT_TIME_LONG
-BattleScript_TryFaint:
-	tryfaintmon BS_TARGET
-	goto BattleScript_MoveEnd
-
 BattleScript_RemoveTerrain:
 	jumpifterrainaffected BS_TARGET, STATUS_FIELD_TERRAIN_ANY, BattleScript_RemoveTerrain_Cont
 	goto BattleScript_ButItFailed
