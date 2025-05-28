@@ -204,15 +204,15 @@ const struct FollowerMsgInfo gFollowerLoveMessages[] = {
 };
 
 // Unconditional surprised messages
-static const u8 sSurpriseMsg00[] = _("{STR_VAR_1} está en peligro de\ncaerse!");
+static const u8 sSurpriseMsg00[] = _("¡{STR_VAR_1} está en peligro de\ncaerse!");
 static const u8 sSurpriseMsg01[] = _("{STR_VAR_1} chocó contigo!");
 static const u8 sSurpriseMsg02[] = _("{STR_VAR_1} no se acostumbra\na su nombre.");
 static const u8 sSurpriseMsg03[] = _("{STR_VAR_1} está mirando hacia abajo.");
 static const u8 sSurpriseMsg04[] = _("¡Tu POKéMON tropezó y casi\nse cae!");
 static const u8 sSurpriseMsg05[] = _("¡{STR_VAR_1} ha percibido algo\ny aúlla!");
 static const u8 sSurpriseMsg06[] = _("¡{STR_VAR_1} parece revitalizado!");
-static const u8 sSurpriseMsg07[] = _("{STR_VAR_1} de repente se dio la vuelta\ny empezó a ladrar!");
-static const u8 sSurpriseMsg08[] = _("{STR_VAR_1} de repente se dio la vuelta!");
+static const u8 sSurpriseMsg07[] = _("¡{STR_VAR_1} de repente se dio la vuelta\ny empezó a ladrar!");
+static const u8 sSurpriseMsg08[] = _("¡{STR_VAR_1} de repente se dio la vuelta!");
 static const u8 sSurpriseMsg09[] = _("¡Tu POKéMON se sorprendió de que le\nhablaras de repente!");
 static const u8 sSurpriseMsg10[] = _("Sniff sniff, ¡algo huele\nrealmente bien!");
 static const u8 sSurpriseMsg11[] = _("¡{STR_VAR_1} tiene energías\nrenovadas!");
@@ -260,19 +260,19 @@ const struct FollowerMsgInfo gFollowerCuriousMessages[] = {
 };
 
 // Unconditional music messages
-static const u8 sMusicMsg00[] = _("{STR_VAR_1} está mostrando su\nagilidad!");
-static const u8 sMusicMsg01[] = _("{STR_VAR_1} se está moviendo\nalegremente!");
-static const u8 sMusicMsg02[] = _("¡Guau! {STR_VAR_1} de repente comenzó\na bailar de alegría!");
+static const u8 sMusicMsg00[] = _("¡{STR_VAR_1} está mostrando su\nagilidad!");
+static const u8 sMusicMsg01[] = _("¡{STR_VAR_1} se está moviendo\nalegremente!");
+static const u8 sMusicMsg02[] = _("¡Guau! ¡{STR_VAR_1} de repente comenzó\na bailar de alegría!");
 static const u8 sMusicMsg03[] = _("{STR_VAR_1} está manteniendo el paso!");
 static const u8 sMusicMsg04[] = _("{STR_VAR_1} parece querer jugar\ncontigo.");
 static const u8 sMusicMsg05[] = _("{STR_VAR_1} está saltando de alegría.");
 static const u8 sMusicMsg06[] = _("{STR_VAR_1} está cantando y tarareando.");
-static const u8 sMusicMsg07[] = _("{STR_VAR_1} está mordisqueándote\nlos pies!");
+static const u8 sMusicMsg07[] = _("¡{STR_VAR_1} está mordisqueándote\nlos pies!");
 static const u8 sMusicMsg08[] = _("{STR_VAR_1} se da la vuelta\ny te mira.");
-static const u8 sMusicMsg09[] = _("{STR_VAR_1} está esforzándose por mostrar\nsu gran poder!");
-static const u8 sMusicMsg10[] = _("¡Guau! {STR_VAR_1} de repente bailó de\nalegría!");
+static const u8 sMusicMsg09[] = _("¡{STR_VAR_1} está esforzándose por mostrar\nsu gran poder!");
+static const u8 sMusicMsg10[] = _("¡Guau! ¡{STR_VAR_1} de repente bailó de\nalegría!");
 static const u8 sMusicMsg11[] = _("{STR_VAR_1} está alegre!");
-static const u8 sMusicMsg12[] = _("{STR_VAR_1} está saltando de una\nmanera despreocupada!");
+static const u8 sMusicMsg12[] = _("¡{STR_VAR_1} está saltando\ndespreocupadamente!");
 static const u8 sMusicMsg13[] = _("Parece que a {STR_VAR_1} le\nha venido un olor familiar…");
 // Conditional music messages, index 14
 static const u8 sMusicMsg14[] = _("{STR_VAR_1} ama la lluvia.");
