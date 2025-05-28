@@ -101,47 +101,6 @@ void AnimTask_BlendBattleAnimPalExclude(u8 taskId)
     StartBlendAnimSpriteColor(taskId, selectedPalettes);
 }
 
-void AnimTask_SetCamouflageBlend(u8 taskId)
-{
-    u32 selectedPalettes = UnpackSelectedBattlePalettes(gBattleAnimArgs[0]);
-    switch (gBattleTerrain)
-    {
-    case BATTLE_TERRAIN_GRASS:
-        gBattleAnimArgs[4] = RGB(12, 24, 2);
-        break;
-    case BATTLE_TERRAIN_LONG_GRASS:
-        gBattleAnimArgs[4] = RGB(0, 15, 2);
-        break;
-    case BATTLE_TERRAIN_SAND:
-        gBattleAnimArgs[4] = RGB(30, 24, 11);
-        break;
-    case BATTLE_TERRAIN_UNDERWATER:
-        gBattleAnimArgs[4] = RGB(0, 0, 18);
-        break;
-    case BATTLE_TERRAIN_WATER:
-        gBattleAnimArgs[4] = RGB(11, 22, 31);
-        break;
-    case BATTLE_TERRAIN_POND:
-        gBattleAnimArgs[4] = RGB(11, 22, 31);
-        break;
-    case BATTLE_TERRAIN_MOUNTAIN:
-        gBattleAnimArgs[4] = RGB(22, 16, 10);
-        break;
-    case BATTLE_TERRAIN_CAVE:
-        gBattleAnimArgs[4] = RGB(14, 9, 3);
-        break;
-    case BATTLE_TERRAIN_BUILDING:
-        gBattleAnimArgs[4] = RGB_WHITE;
-        break;
-    case BATTLE_TERRAIN_PLAIN:
-    default:
-        gBattleAnimArgs[4] = RGB_WHITE;
-        break;
-    }
-
-    StartBlendAnimSpriteColor(taskId, selectedPalettes);
-}
-
 void AnimTask_BlendParticle(u8 taskId)
 {
     u8 paletteIndex = IndexOfSpritePaletteTag(gBattleAnimArgs[0]);

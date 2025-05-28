@@ -40,6 +40,7 @@
 #include "script_menu.h"
 #include "script_movement.h"
 #include "script_pokemon_util.h"
+#include "scrcmd.h"
 #include "shop.h"
 #include "slot_machine.h"
 #include "sound.h"
@@ -71,10 +72,6 @@ extern const u8 *gStdScripts_End[];
 static void CloseBrailleWindow(void);
 static void DynamicMultichoiceSortList(struct ListMenuItem *items, u32 count);
 
-// This is defined in here so the optimizer can't see its value when compiling
-// script.c.
-void * const gNullScriptPtr = NULL;
-
 static const u8 sScriptConditionTable[6][3] =
 {
 //  <  =  >
@@ -92,16 +89,6 @@ static u8 *const sScriptStringVars[] =
     gStringVar2,
     gStringVar3,
 };
-
-bool8 ScrCmd_nop(struct ScriptContext *ctx)
-{
-    return FALSE;
-}
-
-bool8 ScrCmd_nop1(struct ScriptContext *ctx)
-{
-    return FALSE;
-}
 
 bool8 ScrCmd_end(struct ScriptContext *ctx)
 {
@@ -140,12 +127,6 @@ bool8 ScrCmd_callnative(struct ScriptContext *ctx)
 
     func(ctx);
     return FALSE;
-}
-
-bool8 ScrCmd_callfunc(struct ScriptContext *ctx)
-{
-    u32 func = ScriptReadWord(ctx);
-    return ((ScrCmdFunc) func)(ctx);
 }
 
 bool8 ScrCmd_waitstate(struct ScriptContext *ctx)
@@ -1450,17 +1431,6 @@ bool8 ScrCmd_multichoicedefault(struct ScriptContext *ctx)
     }
 }
 
-bool8 ScrCmd_drawbox(struct ScriptContext *ctx)
-{
-    /*u8 left = ScriptReadByte(ctx);
-    u8 top = ScriptReadByte(ctx);
-    u8 right = ScriptReadByte(ctx);
-    u8 bottom = ScriptReadByte(ctx);
-
-    MenuDrawTextWindow(left, top, right, bottom);*/
-    return FALSE;
-}
-
 bool8 ScrCmd_multichoicegrid(struct ScriptContext *ctx)
 {
     u8 left = ScriptReadByte(ctx);
@@ -1478,22 +1448,6 @@ bool8 ScrCmd_multichoicegrid(struct ScriptContext *ctx)
     {
         return FALSE;
     }
-}
-
-bool8 ScrCmd_erasebox(struct ScriptContext *ctx)
-{
-    // Menu_EraseWindowRect(left, top, right, bottom);
-    return FALSE;
-}
-
-bool8 ScrCmd_drawboxtext(struct ScriptContext *ctx)
-{
-    /*if (Multichoice(left, top, multichoiceId, ignoreBPress) == TRUE)
-    {
-        ScriptContext_Stop();
-        return TRUE;
-    }*/
-    return FALSE;
 }
 
 bool8 ScrCmd_showmonpic(struct ScriptContext *ctx)
@@ -1539,10 +1493,7 @@ bool8 ScrCmd_braillemessage(struct ScriptContext *ctx)
     u8 xWindow, yWindow, xText, yText;
     u8 temp;
 
-    // + 6 for the 6 bytes at the start of a braille message (brailleformat macro)
-    // In RS these bytes are used to position the text and window, but
-    // in Emerald they are unused and position is calculated below instead
-    StringExpandPlaceholders(gStringVar4, ptr + 6);
+    StringExpandPlaceholders(gStringVar4, ptr);
 
     width = GetStringWidth(FONT_BRAILLE, gStringVar4, -1) / 8u;
 
@@ -2210,17 +2161,6 @@ bool8 ScrCmd_lockfortrainer(struct ScriptContext *ctx)
         SetupNativeScript(ctx, IsFreezeObjectAndPlayerFinished);
     }
     return TRUE;
-}
-
-// This command will set a Pokémon's modernFatefulEncounter bit; there is no similar command to clear it.
-bool8 ScrCmd_setmodernfatefulencounter(struct ScriptContext *ctx)
-{
-    return FALSE;
-}
-
-bool8 ScrCmd_checkmodernfatefulencounter(struct ScriptContext *ctx)
-{
-    return FALSE;
 }
 
 // This warp is only used by the Union Room.

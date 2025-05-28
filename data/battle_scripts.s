@@ -5343,17 +5343,6 @@ BattleScript_DragonDanceTrySpeed::
 BattleScript_DragonDanceEnd::
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectCamouflage::
-	attackcanceler
-	attackstring
-	ppreduce
-	settypetoterrain BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	printstring STRINGID_PKMNCHANGEDTYPE
-	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_MoveEnd
-
 BattleScript_FaintAttacker::
 	tryillusionoff BS_ATTACKER
 	tryactivategulpmissile

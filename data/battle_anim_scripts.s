@@ -21577,24 +21577,6 @@ gBattleAnimMove_Grudge::
 	clearmonbg ANIM_ATTACKER
 	end
 
-gBattleAnimMove_Camouflage::
-	monbg ANIM_ATK_PARTNER
-	splitbgprio ANIM_ATTACKER
-	setalpha 16, 0
-	createvisualtask AnimTask_SetCamouflageBlend, 5, F_PAL_ATTACKER, 3, 0, 14
-	delay 16
-	createvisualtask AnimTask_AttackerFadeToInvisible, 2, 4
-	playsewithpan SE_M_FAINT_ATTACK, SOUND_PAN_ATTACKER
-	waitforvisualfinish
-	delay 8
-	createvisualtask AnimTask_SetCamouflageBlend, 5, F_PAL_ATTACKER, 0, 0, 0
-	waitforvisualfinish
-	createvisualtask AnimTask_AttackerFadeFromInvisible, 2, 1
-	waitforvisualfinish
-	blendoff
-	clearmonbg ANIM_ATK_PARTNER
-	end
-
 gBattleAnimMove_TailGlow::
 	loadspritegfx ANIM_TAG_CIRCLE_OF_LIGHT
 	monbg ANIM_ATTACKER

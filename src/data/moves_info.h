@@ -7444,31 +7444,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_ArmThrust,
     },
 
-    [MOVE_CAMOUFLAGE] =
-    {
-        .name = COMPOUND_STRING("Camuflaje"),
-        .description = COMPOUND_STRING(
-            "Alters the Pokémon's type\n"
-            "depending on the location."),
-        .effect = EFFECT_CAMOUFLAGE,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 100,
-        .pp = 20,
-        .target = MOVE_TARGET_USER,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .zMove = { .effect = Z_EFFECT_EVSN_UP_1 },
-        .snatchAffected = TRUE,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .contestEffect = CONTEST_EFFECT_AFFECTED_BY_PREV_APPEAL,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Camouflage,
-    },
-
     [MOVE_TAIL_GLOW] =
     {
         .name = COMPOUND_STRING("Luminicola"),

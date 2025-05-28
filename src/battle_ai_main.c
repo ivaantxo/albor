@@ -2440,10 +2440,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
               || !IsBattlerGrounded(battlerAtk))
                 ADJUST_SCORE(-10);
             break;
-        case EFFECT_CAMOUFLAGE:
-            if (!CanCamouflage(battlerAtk))
-                ADJUST_SCORE(-10);
-            break;
         case EFFECT_SYNCHRONOISE:
             //Check holding ring target or is of same type
             if (aiData->holdEffects[battlerDef] == HOLD_EFFECT_RING_TARGET
@@ -4329,11 +4325,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
             }
         }
         break;
-    case EFFECT_CAMOUFLAGE:
-        if (predictedMove != MOVE_NONE && AI_IsFaster(battlerAtk, battlerDef, move) // Attacker goes first
-         && !IS_MOVE_STATUS(move) && AI_GetMoveEffectiveness(predictedMove, battlerDef, battlerAtk) != AI_EFFECTIVENESS_x0)
-            ADJUST_SCORE(DECENT_EFFECT);
-        break;
     case EFFECT_TOXIC_THREAD:
         IncreasePoisonScore(battlerAtk, battlerDef, move, &score);
         ADJUST_SCORE(IncreaseStatUpScore(battlerAtk, battlerDef, STAT_CHANGE_SPEED));
@@ -4721,7 +4712,6 @@ static s32 AI_ForceSetupFirstTurn(u32 battlerAtk, u32 battlerDef, u32 move, s32 
     case EFFECT_MINIMIZE:
     case EFFECT_CURSE:
     case EFFECT_SWAGGER:
-    case EFFECT_CAMOUFLAGE:
     case EFFECT_YAWN:
     case EFFECT_DEFENSE_CURL:
     case EFFECT_TORMENT:

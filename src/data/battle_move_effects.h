@@ -946,12 +946,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_CAMOUFLAGE] =
-    {
-        .battleScript = BattleScript_EffectCamouflage,
-        .encourageEncore = TRUE,
-    },
-
     [EFFECT_PLEDGE] =
     {
         .battleScript = BattleScript_EffectPledge,

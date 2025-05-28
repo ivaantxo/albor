@@ -39,7 +39,6 @@ u32 IsFlowerVeilProtected(u32 battler);
 u32 IsLeafGuardProtected(u32 battler);
 u32 IsAbilityStatusProtected(u32 battler);
 bool32 TryResetBattlerStatChanges(u8 battler);
-bool32 CanCamouflage(u8 battlerId);
 u32 GetNaturePowerMove(u32 battler);
 void StealTargetItem(u8 battlerStealer, u8 battlerItem);
 u8 GetCatchingBattler(void);

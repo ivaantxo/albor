@@ -295,7 +295,6 @@ extern const u8 gBattleAnimMove_Snatch[];
 extern const u8 gBattleAnimMove_SecretPower[];
 extern const u8 gBattleAnimMove_Dive[];
 extern const u8 gBattleAnimMove_ArmThrust[];
-extern const u8 gBattleAnimMove_Camouflage[];
 extern const u8 gBattleAnimMove_TailGlow[];
 extern const u8 gBattleAnimMove_LusterPurge[];
 extern const u8 gBattleAnimMove_MistBall[];

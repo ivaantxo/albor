@@ -14,14 +14,13 @@ struct ScriptContext
     u8 (*nativePtr)(void);
     const u8 *scriptPtr;
     const u8 *stack[20];
-    ScrCmdFunc *cmdTable;
-    ScrCmdFunc *cmdTableEnd;
+    const ScrCmdFunc *cmdTable;
     u32 data[4];
 };
 
 #define ScriptReadByte(ctx) (*(ctx->scriptPtr++))
 
-void InitScriptContext(struct ScriptContext *ctx, void *cmdTable, void *cmdTableEnd);
+void InitScriptContext(struct ScriptContext *ctx, const void *cmdTable);
 u8 SetupBytecodeScript(struct ScriptContext *ctx, const u8 *ptr);
 void SetupNativeScript(struct ScriptContext *ctx, bool8 (*ptr)(void));
 void StopScript(struct ScriptContext *ctx);
@@ -53,7 +52,6 @@ void RunOnDiveWarpMapScript(void);
 bool8 TryRunOnFrameMapScript(void);
 void TryRunOnWarpIntoMapScript(void);
 
-// srccmd.h
 void SetMovingNpcId(u16 npcId);
 
 extern u8 gMsgIsSignPost;

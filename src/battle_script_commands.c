@@ -980,70 +980,6 @@ static const u16 sNaturePowerMoves[BATTLE_TERRAIN_COUNT] =
     [BATTLE_TERRAIN_ULTRA_SPACE]      = MOVE_PSYSHOCK,
 };
 
-#define _ 0
-
-static const struct PickupItem sPickupTable[] =
-{//   Item                      1+  11+  21+  31+  41+  51+  61+  71+  81+  91+   Levels
-    { ITEM_POTION,          {  35,   _,   _,   _,   _,   _,   _,   _,   _,   _, } },
-    { ITEM_TINY_MUSHROOM,   {  25,  10,   _,   _,   _,   _,   _,   _,   _,   _, } },
-    { ITEM_REPEL,           {   8,  30,   _,   _,   _,   _,   _,   _,   _,   _, } },
-    { ITEM_SUPER_POTION,    {   8,  10,  30,   _,   _,   _,   _,   _,   _,   _, } },
-    { ITEM_POKE_DOLL,       {   8,  10,   9,  30,   _,   _,   _,   _,   _,   _, } },
-    { ITEM_BIG_MUSHROOM,    {   3,  10,   9,   _,   _,   _,   _,   _,   _,   _, } },
-    { ITEM_SUPER_REPEL,     {   3,  10,   9,   9,  30,   _,   _,   _,   _,   _, } },
-    { ITEM_FULL_HEAL,       {   3,   3,   9,   8,   9,  30,   _,   _,   _,   _, } },
-    { ITEM_REVIVE,          {   3,   3,   3,   8,   8,   9,  30,   _,   _,   _, } },
-    { ITEM_HYPER_POTION,    {   3,   3,   3,   4,   8,   9,   8,  30,   _,   _, } },
-    { ITEM_ETHER,           {   1,   1,   3,   4,   4,   _,   _,   _,   _,   _, } },
-    { ITEM_MAX_REPEL,       {   _,   3,   3,   4,   4,   9,   8,   8,  30,   _, } },
-    { ITEM_MOON_STONE,      {   _,   3,   3,   4,   4,   4,   4,   5,   9,  10, } },
-    { ITEM_SUN_STONE,       {   _,   3,   3,   4,   4,   4,   4,   5,   9,  10, } },
-    { ITEM_RARE_CANDY,      {   _,   1,   1,   1,   1,   4,   4,   5,   4,   5, } },
-    { ITEM_NUGGET,          {   _,   _,   3,   4,   4,   4,   4,   5,   4,   5, } },
-    { ITEM_MAX_POTION,      {   _,   _,   3,   4,   4,   4,   8,   8,   9,  30, } },
-    { ITEM_MAX_ETHER,       {   _,   _,   1,   1,   4,   4,   4,   _,   _,   _, } },
-    { ITEM_PP_UP,           {   _,   _,   1,   1,   1,   4,   4,   5,   4,   5, } },
-    { ITEM_BIG_NUGGET,      {   _,   _,   1,   1,   1,   1,   4,   5,   4,   5, } },
-    { ITEM_DESTINY_KNOT,    {   _,   _,   1,   1,   1,   1,   1,   1,   1,   1, } },
-    { ITEM_LEFTOVERS,       {   _,   _,   1,   1,   1,   1,   1,   1,   1,   1, } },
-    { ITEM_MENTAL_HERB,     {   _,   _,   1,   1,   1,   1,   1,   1,   1,   1, } },
-    { ITEM_POWER_HERB,      {   _,   _,   1,   1,   1,   1,   1,   1,   1,   1, } },
-    { ITEM_WHITE_HERB,      {   _,   _,   1,   1,   1,   1,   1,   1,   1,   1, } },
-    { ITEM_BALM_MUSHROOM,   {   _,   _,   1,   4,   4,   4,   4,   5,   4,   5, } },
-    { ITEM_MAX_REVIVE,      {   _,   _,   _,   4,   4,   4,   4,   7,   9,   9, } },
-    { ITEM_ELIXIR,          {   _,   _,   _,   _,   1,   1,   4,   5,   4,   5, } },
-    { ITEM_MAX_ELIXIR,      {   _,   _,   _,   _,   _,   _,   1,   1,   4,   5, } },
-    { ITEM_BOTTLE_CAP,      {   _,   _,   _,   _,   _,   _,   _,   1,   1,   1, } },
-};
-
-#undef _
-
-static const u8 sTerrainToType[BATTLE_TERRAIN_COUNT] =
-{
-    [BATTLE_TERRAIN_GRASS]            = TIPO_PLANTA,
-    [BATTLE_TERRAIN_LONG_GRASS]       = TIPO_PLANTA,
-    [BATTLE_TERRAIN_SAND]             = TIPO_TIERRA,
-    [BATTLE_TERRAIN_UNDERWATER]       = TIPO_AGUA,
-    [BATTLE_TERRAIN_WATER]            = TIPO_AGUA,
-    [BATTLE_TERRAIN_POND]             = TIPO_AGUA,
-    [BATTLE_TERRAIN_CAVE]             = TIPO_ROCA,
-    [BATTLE_TERRAIN_BUILDING]         = TIPO_NORMAL,
-    [BATTLE_TERRAIN_SOARING]          = TIPO_VOLADOR,
-    [BATTLE_TERRAIN_SKY_PILLAR]       = TIPO_VOLADOR,
-    [BATTLE_TERRAIN_BURIAL_GROUND]    = TIPO_FANTASMA,
-    [BATTLE_TERRAIN_PUDDLE]           = TIPO_TIERRA,
-    [BATTLE_TERRAIN_MARSH]            = TIPO_TIERRA,
-    [BATTLE_TERRAIN_SWAMP]            = TIPO_TIERRA,
-    [BATTLE_TERRAIN_SNOW]             = TIPO_HIELO,
-    [BATTLE_TERRAIN_ICE]              = TIPO_HIELO,
-    [BATTLE_TERRAIN_VOLCANO]          = TIPO_FUEGO,
-    [BATTLE_TERRAIN_DISTORTION_WORLD] = TIPO_NORMAL,
-    [BATTLE_TERRAIN_SPACE]            = TIPO_DRAGON,
-    [BATTLE_TERRAIN_ULTRA_SPACE]      = TIPO_PSIQUICO,
-    [BATTLE_TERRAIN_MOUNTAIN]         = (B_CAMOUFLAGE_TYPES >= GEN_5 ? TIPO_TIERRA : TIPO_ROCA),
-    [BATTLE_TERRAIN_PLAIN]            = (B_CAMOUFLAGE_TYPES >= GEN_4 ? TIPO_TIERRA : TIPO_NORMAL),
-};
-
 static bool32 NoTargetPresent(u8 battler, u32 move)
 {
     if (!IsBattlerAlive(gBattlerTarget))
@@ -13895,48 +13831,9 @@ static void Cmd_tryrecycleitem(void)
     }
 }
 
-bool32 CanCamouflage(u8 battler)
-{
-    if (IS_BATTLER_OF_TYPE(battler, sTerrainToType[gBattleTerrain]))
-        return FALSE;
-    return TRUE;
-}
-
 static void Cmd_settypetoterrain(void)
 {
-    CMD_ARGS(const u8 *failInstr);
 
-    u8 terrainType;
-    switch(gFieldStatuses & STATUS_FIELD_TERRAIN_ANY)
-    {
-    case STATUS_FIELD_ELECTRIC_TERRAIN:
-        terrainType = TIPO_ELECTRICO;
-        break;
-    case STATUS_FIELD_GRASSY_TERRAIN:
-        terrainType = TIPO_PLANTA;
-        break;
-    case STATUS_FIELD_MISTY_TERRAIN:
-        terrainType = TIPO_HADA;
-        break;
-    case STATUS_FIELD_PSYCHIC_TERRAIN:
-        terrainType = TIPO_PSIQUICO;
-        break;
-    default:
-        terrainType = sTerrainToType[gBattleTerrain];
-        break;
-    }
-
-    if (!IS_BATTLER_OF_TYPE(gBattlerAttacker, terrainType) && GetActiveGimmick(gBattlerAttacker) != GIMMICK_TERA)
-    {
-        SET_BATTLER_TYPE(gBattlerAttacker, terrainType);
-        PREPARE_TYPE_BUFFER(gBattleTextBuff1, terrainType);
-
-        gBattlescriptCurrInstr = cmd->nextInstr;
-    }
-    else
-    {
-        gBattlescriptCurrInstr = cmd->failInstr;
-    }
 }
 
 static void Cmd_snatchsetbattlers(void)
