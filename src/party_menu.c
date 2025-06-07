@@ -1080,7 +1080,6 @@ static void CreatePartyMonSprites(u8 slot)
             CreatePartyMonIconSpriteParameterized(gMultiPartnerParty[actualSlot].species, gMultiPartnerParty[actualSlot].personality, &sPartyMenuBoxes[slot], 0);
             LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(gMultiPartnerParty[actualSlot].species, 0, gMultiPartnerParty[actualSlot].personality), OBJ_PLTT_ID(2 + slot), PLTT_SIZE_4BPP);
             DesplazaTonoPaleta(OBJ_PLTT_ID(2 + slot), gMultiPartnerParty[actualSlot].personality);
-            CpuCopy32(&gPlttBufferFaded[OBJ_PLTT_ID(2 + slot)], &gPlttBufferUnfaded[OBJ_PLTT_ID(2 + slot)], PLTT_SIZE_4BPP);
             gSprites[sPartyMenuBoxes[slot].monSpriteId].oam.paletteNum = 2 + slot;
 
             CreatePartyMonHeldItemSpriteParameterized(gMultiPartnerParty[actualSlot].species, gMultiPartnerParty[actualSlot].heldItem, &sPartyMenuBoxes[slot]);

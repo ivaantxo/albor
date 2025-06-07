@@ -1785,7 +1785,6 @@ u32 LoadUniqueSpritePalette(const struct SpritePalette *palette, u32 personality
         sSpritePaletteTags[index] = palette->tag;
         DoLoadSpritePalette(palette->data, PLTT_ID(index));
         DesplazaTonoPaleta(OBJ_PLTT_ID(index), personality);
-        CpuCopy32(&gPlttBufferFaded[OBJ_PLTT_ID(index)], &gPlttBufferUnfaded[OBJ_PLTT_ID(index)], PLTT_SIZE_4BPP);
         return index;
     }
 }

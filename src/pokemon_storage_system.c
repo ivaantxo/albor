@@ -3351,7 +3351,6 @@ static void LoadDisplayMonGfx(u16 species, u32 pid)
         CpuFastCopy(sStorage->tileBuffer, sStorage->displayMonTilePtr, MON_PIC_SIZE);
         LoadCompressedPaletteFast(sStorage->displayMonPalette, sStorage->displayMonPalOffset, PLTT_SIZE_4BPP);
         DesplazaTonoPaleta(sStorage->displayMonPalOffset, pid);
-        CpuFastCopy(&gPlttBufferFaded[sStorage->displayMonPalOffset], &gPlttBufferUnfaded[sStorage->displayMonPalOffset], PLTT_SIZE_4BPP);
         sStorage->displayMonSprite->invisible = FALSE;
     }
     else
@@ -3957,7 +3956,6 @@ static void CreatePartyMonsSprites(bool8 visible)
     {
         LoadCompressedPaletteFast(GetMonFrontSpritePal(&gPlayerParty[0]), OBJ_PLTT_ID(1), PLTT_SIZE_4BPP);
         DesplazaTonoPaleta(OBJ_PLTT_ID(1), personality);
-        CpuFastCopy(&gPlttBufferFaded[OBJ_PLTT_ID(1)], &gPlttBufferUnfaded[OBJ_PLTT_ID(1)], PLTT_SIZE_4BPP);
     }
 
     sStorage->partySprites[0]->oam.paletteNum = 1;
@@ -3996,7 +3994,6 @@ static void CreatePartyMonsSprites(bool8 visible)
                 
                 LoadCompressedPaletteFast(GetMonFrontSpritePal(&gPlayerParty[i]), OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
                 DesplazaTonoPaleta(OBJ_PLTT_ID(paletteNum), personality);
-                CpuFastCopy(&gPlttBufferFaded[OBJ_PLTT_ID(paletteNum)], &gPlttBufferUnfaded[OBJ_PLTT_ID(paletteNum)], PLTT_SIZE_4BPP);
                 
                 sStorage->partySprites[i]->oam.paletteNum = paletteNum;
                 count++;
@@ -4246,7 +4243,6 @@ static void SetPlacedMonSprite(u8 boxId, u8 position)
                 paletteNum = FindFreePartyPaletteSlot();
                 LoadCompressedPaletteFast(GetMonFrontSpritePal(&gPlayerParty[position]), OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
                 DesplazaTonoPaleta(OBJ_PLTT_ID(paletteNum), GetMonData(&gPlayerParty[position], MON_DATA_PERSONALITY));
-                CpuFastCopy(&gPlttBufferFaded[OBJ_PLTT_ID(paletteNum)], &gPlttBufferUnfaded[OBJ_PLTT_ID(paletteNum)], PLTT_SIZE_4BPP);
                 sStorage->partySprites[position]->oam.paletteNum = paletteNum;
             }
         }
@@ -5281,7 +5277,6 @@ static void SetShiftedMonSprites(u8 boxId, u8 position)
     sStorage->displayMonSprite->invisible = TRUE;
     LoadCompressedPaletteFast(sStorage->displayMonPalette, sStorage->displayMonPalOffset, PLTT_SIZE_4BPP);
     DesplazaTonoPaleta(sStorage->displayMonPalOffset, GetBoxMonData(GetBoxedMonPtr(boxId, position), MON_DATA_PERSONALITY));
-    CpuFastCopy(&gPlttBufferFaded[sStorage->displayMonPalOffset], &gPlttBufferUnfaded[sStorage->displayMonPalOffset], PLTT_SIZE_4BPP);
     sStorage->movingMonSprite->oam.paletteNum = displayIndex;
     sMovingMonOrigBoxId = boxId;
     sMovingMonOrigBoxPos = position;

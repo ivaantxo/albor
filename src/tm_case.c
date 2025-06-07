@@ -957,7 +957,6 @@ static void DrawPartyMonIcons(void)
         u32 index = i < gPlayerPartyCount ? IndexOfSpritePaletteTag(POKE_ICON_BASE_PAL_TAG + i) : 0xFF;
         LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality), OBJ_PLTT_ID(index), PLTT_SIZE_4BPP);
         DesplazaTonoPaleta(OBJ_PLTT_ID(index), personality);
-        CpuCopy32(&gPlttBufferFaded[OBJ_PLTT_ID(index)], &gPlttBufferUnfaded[OBJ_PLTT_ID(index)], PLTT_SIZE_4BPP);
         gSprites[spriteIdData[i]].oam.priority = 0;
         StartSpriteAnim(&gSprites[spriteIdData[i]], 0);
     }

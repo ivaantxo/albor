@@ -67,12 +67,12 @@ void BlendPalette(u16 palOffset, u16 numEntries, u8 coeff, u32 blendColor)
     }
 }
 
-#define LIMITADOR_DESPLAZAMIENTO_PALETA 80  // GRADOS EN VALOR ABSOLUTO QUE PUEDE VARIAR LA PALETA EN HSL (0-360). POR EJEMPLO, 30 PUEDE SER +-15
+#define LIMITADOR_VARIACION_PALETAS 80  // Rango total en grados en HSL (que van desde 0 a 360º). 80 = ± 40
 
 static s32 CalcularDesplazamientoDesdePersonalidad(u32 personalidad)
 {
-    return (s32)((personalidad & 0xFF) * LIMITADOR_DESPLAZAMIENTO_PALETA / 255) 
-           - (LIMITADOR_DESPLAZAMIENTO_PALETA / 2);
+    u32 semilla = personalidad & 0xFF; // Solo 8 bits
+    return ((semilla * LIMITADOR_VARIACION_PALETAS) / 255) - (LIMITADOR_VARIACION_PALETAS / 2);
 }
 
 static void DesplazaTonoPaletaBase(const u16 *src, u16 *dst, s32 desplazamiento)
@@ -80,24 +80,23 @@ static void DesplazaTonoPaletaBase(const u16 *src, u16 *dst, s32 desplazamiento)
     for (u32 i = 0; i < COLORES_POR_PALETA; i++)
     {
         u32 color = src[i];
+        s32 r = GET_R(color);
+        s32 g = GET_G(color);
+        s32 b = GET_B(color);
 
-        u32 r = GET_R(color);
-        u32 g = GET_G(color);
-        u32 b = GET_B(color);
+        s32 max = r > g ? (r > b ? r : b) : (g > b ? g : b);
+        s32 min = r < g ? (r < b ? r : b) : (g < b ? g : b);
+        s32 delta = max - min;
 
-        u32 max = r > g ? (r > b ? r : b) : (g > b ? g : b);
-        u32 min = r < g ? (r < b ? r : b) : (g < b ? g : b);
-        s32 delta = (s32)(max - min);
         s32 tono;
-
         if (delta == 0)
             tono = 0;
         else if (max == r)
-            tono = 60 * ((s32)(g - b)) / delta;
+            tono = 60 * (g - b) / delta;
         else if (max == g)
-            tono = 60 * ((s32)(b - r)) / delta + 120;
+            tono = 60 * (b - r) / delta + 120;
         else
-            tono = 60 * ((s32)(r - g)) / delta + 240;
+            tono = 60 * (r - g) / delta + 240;
 
         if (tono < 0)
             tono += 360;
@@ -106,30 +105,30 @@ static void DesplazaTonoPaletaBase(const u16 *src, u16 *dst, s32 desplazamiento)
         if (tono < 0)
             tono += 360;
 
-        u32 valor = max;
-        u32 sat = (max == 0) ? 0 : (255 * delta) / max;
+        s32 sat = (max == 0) ? 0 : ((delta * 255) / max);
+        s32 val = max;
 
-        u32 C = (valor * sat) / 255;
-        u32 X = (C * (60 - abs((tono % 120) - 60))) / 60;
-        u32 m = valor - C;
+        s32 C = (val * sat) / 255;
+        s32 X = (C * (60 - abs((tono % 120) - 60))) / 60;
+        s32 m = val - C;
 
-        u32 r1 = 0, g1 = 0, b1 = 0;
-        if (tono < 60)       { r1 = C; g1 = X; b1 = 0; }
-        else if (tono < 120) { r1 = X; g1 = C; b1 = 0; }
-        else if (tono < 180) { r1 = 0; g1 = C; b1 = X; }
-        else if (tono < 240) { r1 = 0; g1 = X; b1 = C; }
-        else if (tono < 300) { r1 = X; g1 = 0; b1 = C; }
-        else                 { r1 = C; g1 = 0; b1 = X; }
+        s32 r1 = 0, g1 = 0, b1 = 0;
+        if (tono < 60)          { r1 = C; g1 = X; b1 = 0; }
+        else if (tono < 120)    { r1 = X; g1 = C; b1 = 0; }
+        else if (tono < 180)    { r1 = 0; g1 = C; b1 = X; }
+        else if (tono < 240)    { r1 = 0; g1 = X; b1 = C; }
+        else if (tono < 300)    { r1 = X; g1 = 0; b1 = C; }
+        else                    { r1 = C; g1 = 0; b1 = X; }
 
-        u32 nuevoR = r1 + m;
-        u32 nuevoG = g1 + m;
-        u32 nuevoB = b1 + m;
+        s32 R = r1 + m;
+        s32 G = g1 + m;
+        s32 B = b1 + m;
 
-        if (nuevoR > RGB_MAXIMO) nuevoR = RGB_MAXIMO;
-        if (nuevoG > RGB_MAXIMO) nuevoG = RGB_MAXIMO;
-        if (nuevoB > RGB_MAXIMO) nuevoB = RGB_MAXIMO;
+        if (R > RGB_MAXIMO) R = RGB_MAXIMO;
+        if (G > RGB_MAXIMO) G = RGB_MAXIMO;
+        if (B > RGB_MAXIMO) B = RGB_MAXIMO;
 
-        dst[i] = RGB(nuevoR, nuevoG, nuevoB);
+        dst[i] = RGB(R, G, B);
     }
 }
 
@@ -137,6 +136,7 @@ void DesplazaTonoPaleta(u32 offsetPaleta, u32 personalidad)
 {
     s32 desplazamiento = CalcularDesplazamientoDesdePersonalidad(personalidad);
     DesplazaTonoPaletaBase(&gPlttBufferUnfaded[offsetPaleta], &gPlttBufferFaded[offsetPaleta], desplazamiento);
+    CpuSmartCopy32(&gPlttBufferFaded[offsetPaleta], &gPlttBufferUnfaded[offsetPaleta], PLTT_SIZE_4BPP);
 }
 
 void DesplazaTonoPaletaBuffer(u16 *buffer, u32 personalidad)

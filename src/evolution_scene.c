@@ -197,11 +197,10 @@ void BeginEvolutionScene(struct Pokemon *mon, u16 postEvoSpecies, u8 partyId)
 void EvolutionScene(struct Pokemon *mon, u16 postEvoSpecies, u8 partyId)
 {
     u8 name[POKEMON_NAME_BUFFER_SIZE];
-    u16 currSpecies;
+    u32 currSpecies;
     u32 personality;
     bool32 isShiny;
-    u8 id;
-    struct BoxPokemon boxMon;
+    u32 id;
 
     SetHBlankCallback(NULL);
     SetVBlankCallback(NULL);
@@ -254,7 +253,6 @@ void EvolutionScene(struct Pokemon *mon, u16 postEvoSpecies, u8 partyId)
                         TRUE);
     LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(currSpecies, isShiny, personality), OBJ_PLTT_ID(1), PLTT_SIZE_4BPP);
     DesplazaTonoPaleta(OBJ_PLTT_ID(1), personality);
-    CpuCopy32(&gPlttBufferFaded[OBJ_PLTT_ID(1)], &gPlttBufferUnfaded[OBJ_PLTT_ID(1)], PLTT_SIZE_4BPP);
 
     SetMultiuseSpriteTemplateToPokemon(currSpecies, B_POSITION_OPPONENT_LEFT);
     gMultiuseSpriteTemplate.affineAnims = gDummySpriteAffineAnimTable;
@@ -270,10 +268,7 @@ void EvolutionScene(struct Pokemon *mon, u16 postEvoSpecies, u8 partyId)
                         personality,
                         TRUE);
     LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(postEvoSpecies, isShiny, personality), OBJ_PLTT_ID(2), PLTT_SIZE_4BPP);
-    CopyMon(&boxMon, &mon->box, sizeof(boxMon));
-    SetBoxMonData(&boxMon, MON_DATA_SPECIES, &postEvoSpecies);
     DesplazaTonoPaleta(OBJ_PLTT_ID(2), personality);
-    CpuCopy32(&gPlttBufferFaded[OBJ_PLTT_ID(2)], &gPlttBufferUnfaded[OBJ_PLTT_ID(2)], PLTT_SIZE_4BPP);
 
     SetMultiuseSpriteTemplateToPokemon(postEvoSpecies, B_POSITION_OPPONENT_RIGHT);
     gMultiuseSpriteTemplate.affineAnims = gDummySpriteAffineAnimTable;
@@ -304,16 +299,11 @@ void EvolutionScene(struct Pokemon *mon, u16 postEvoSpecies, u8 partyId)
 
 static void CB2_EvolutionSceneLoadGraphics(void)
 {
-    u8 id;
-    u16 postEvoSpecies;
-    u32 personality;
+    u32 id;
+    u32 postEvoSpecies = gTasks[sEvoStructPtr->evoTaskId].tPostEvoSpecies;
     struct Pokemon *mon = &gPlayerParty[gTasks[sEvoStructPtr->evoTaskId].tPartyId];
-    bool8 isShiny;
-    struct BoxPokemon boxMon;
-
-    postEvoSpecies = gTasks[sEvoStructPtr->evoTaskId].tPostEvoSpecies;
-    isShiny = GetMonData(mon, MON_DATA_IS_SHINY);
-    personality = GetMonData(mon, MON_DATA_PERSONALITY);
+    u32 personality = GetMonData(mon, MON_DATA_PERSONALITY);
+    bool32 isShiny = GetMonData(mon, MON_DATA_IS_SHINY);
 
     SetHBlankCallback(NULL);
     SetVBlankCallback(NULL);
@@ -351,10 +341,7 @@ static void CB2_EvolutionSceneLoadGraphics(void)
                         personality,
                         TRUE);
     LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(postEvoSpecies, isShiny, personality), OBJ_PLTT_ID(2), PLTT_SIZE_4BPP);
-    CopyMon(&boxMon, &mon->box, sizeof(boxMon));
-    SetBoxMonData(&boxMon, MON_DATA_SPECIES, &postEvoSpecies);
     DesplazaTonoPaleta(OBJ_PLTT_ID(2), personality);
-    CpuCopy32(&gPlttBufferFaded[OBJ_PLTT_ID(2)], &gPlttBufferUnfaded[OBJ_PLTT_ID(2)], PLTT_SIZE_4BPP);
 
     SetMultiuseSpriteTemplateToPokemon(postEvoSpecies, B_POSITION_OPPONENT_RIGHT);
     gMultiuseSpriteTemplate.affineAnims = gDummySpriteAffineAnimTable;
