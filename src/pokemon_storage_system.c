@@ -434,7 +434,6 @@ EWRAM_DATA static u8 sMovingMonOrigBoxPos = 0;
 EWRAM_DATA static bool8 sJustOpenedBag = 0;
 EWRAM_DATA static u16 *sPaletteSwapBuffer = NULL; // dynamically-allocated buffer to hold box palettes
 EWRAM_DATA static u8 allocCount = 0; // Track number of alloc's vs frees
-EWRAM_DATA static struct BoxPokemon sCurrentBoxPokemon = {0};
 
 // Main tasks
 static void Task_InitPokeStorage(u8);
@@ -5760,7 +5759,6 @@ static void SetDisplayMonData(void *pokemon, u8 mode)
     {
         struct Pokemon *mon = (struct Pokemon *)pokemon;
 
-        CopyMon(&sCurrentBoxPokemon, &mon->box, sizeof(sCurrentBoxPokemon));
         sStorage->displayMonSpecies = GetMonData(mon, MON_DATA_SPECIES_OR_EGG);
         if (sStorage->displayMonSpecies != SPECIES_NONE)
         {
@@ -5781,7 +5779,6 @@ static void SetDisplayMonData(void *pokemon, u8 mode)
     {
         struct BoxPokemon *boxMon = (struct BoxPokemon *)pokemon;
 
-        CopyMon(&sCurrentBoxPokemon, &boxMon, sizeof(sCurrentBoxPokemon));
         sStorage->displayMonSpecies = GetBoxMonData(pokemon, MON_DATA_SPECIES_OR_EGG);
         if (sStorage->displayMonSpecies != SPECIES_NONE)
         {
