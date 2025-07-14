@@ -109,7 +109,7 @@ u8 *GetBoxMonNickname(struct BoxPokemon *mon, u8 *dest)
 
 u8 CountPokemonInDaycare(struct DayCare *daycare)
 {
-    u8 i, count;
+    u32 i, count;
     count = 0;
 
     for (i = 0; i < DAYCARE_MON_COUNT; i++)
@@ -123,7 +123,7 @@ u8 CountPokemonInDaycare(struct DayCare *daycare)
 
 s8 Daycare_FindEmptySpot(struct DayCare *daycare)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < DAYCARE_MON_COUNT; i++)
     {
@@ -136,7 +136,7 @@ s8 Daycare_FindEmptySpot(struct DayCare *daycare)
 
 static void ClearHatchedEggMoves(void)
 {
-    u16 i;
+    u32 i;
 
     for (i = 0; i < EGG_MOVES_ARRAY_COUNT; i++)
         sHatchedEggEggMoves[i] = MOVE_NONE;
@@ -376,7 +376,7 @@ static void ClearDaycareMonMail(struct DaycareMail *mail)
 // given species.
 static u16 GetEggSpecies(u16 species)
 {
-    int i, j, k;
+    u32 i, j, k;
     bool8 found;
 
     // Working backwards up to 5 times seems arbitrary, since the maximum number
@@ -499,7 +499,7 @@ static void InheritIVs(struct Pokemon *egg, struct DayCare *daycare)
 {
     u16 motherItem = GetBoxMonData(&daycare->mons[0].mon, MON_DATA_HELD_ITEM);
     u16 fatherItem = GetBoxMonData(&daycare->mons[1].mon, MON_DATA_HELD_ITEM);
-    u8 i, start;
+    u32 i, start;
     u8 selectedIvs[5];
     u8 availableIVs[NUMERO_ESTADISTICAS];
     u8 whichParents[5];
@@ -698,7 +698,7 @@ static void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, stru
     u16 numSharedParentMoves;
     u32 numLevelUpMoves;
     u16 numEggMoves;
-    u16 i, j;
+    u32 i, j;
 
     numSharedParentMoves = 0;
     for (i = 0; i < MAX_MON_MOVES; i++)
@@ -822,7 +822,7 @@ void RejectEggFromDayCare(void)
 
 static u16 DetermineEggSpeciesAndParentSlots(struct DayCare *daycare, u8 *parentSlots)
 {
-    u16 i;
+    u32 i;
     u16 species[DAYCARE_MON_COUNT];
     u16 eggSpecies;
 
@@ -1100,7 +1100,7 @@ void SetDaycareCompatibilityString(void)
 
 bool8 NameHasGenderSymbol(const u8 *name, u8 genderRatio)
 {
-    u8 i;
+    u32 i;
     u8 symbolsCount[GENDER_COUNT];
     symbolsCount[MALE] = symbolsCount[FEMALE] = 0;
 

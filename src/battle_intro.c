@@ -137,7 +137,7 @@ static void BattleIntroSlideEnd(u8 taskId)
 
 static void BattleIntroSlide1(u8 taskId)
 {
-    int i;
+    u32 i;
 
     gBattle_BG1_X += 6;
     switch (gTasks[taskId].tState)
@@ -214,7 +214,7 @@ static void BattleIntroSlide1(u8 taskId)
 
 static void BattleIntroSlide2(u8 taskId)
 {
-    int i;
+    u32 i;
 
     switch (gTasks[taskId].tTerrain)
     {
@@ -318,7 +318,7 @@ static void BattleIntroSlide2(u8 taskId)
 
 static void BattleIntroSlide3(u8 taskId)
 {
-    int i;
+    u32 i;
 
     gBattle_BG1_X += 8;
     switch (gTasks[taskId].tState)
@@ -398,7 +398,7 @@ static void BattleIntroSlide3(u8 taskId)
 
 void DrawBattlerOnBg(int bgId, u8 x, u8 y, u8 battlerPosition, u8 paletteId, u8 *tiles, u16 *tilemap, u16 tilesOffset)
 {
-    int i, j;
+    u32 i, j;
     int offset = tilesOffset;
     CpuCopy16(gMonSpritesGfxPtr->spritesGfx[battlerPosition], tiles, BG_SCREEN_SIZE);
     LoadBgTiles(bgId, tiles, 0x1000, tilesOffset);

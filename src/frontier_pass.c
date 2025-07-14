@@ -572,7 +572,7 @@ static void LeaveFrontierPass(void)
 
 static u32 AllocateFrontierPassData(void (*callback)(void))
 {
-    u8 i;
+    u32 i;
 
     sPassData = AllocZeroed(sizeof(*sPassData));
 
@@ -814,7 +814,7 @@ static bool32 HideFrontierPass(void)
 
 static u8 GetCursorAreaFromCoords(s16 x, s16 y)
 {
-    u8 i;
+    u32 i;
 
     // Minus/Plus 1, because the table doesn't take CURSOR_AREA_NOTHING into account.
     for (i = 0; i < CURSOR_AREA_COUNT - 1; i++)
@@ -1038,7 +1038,7 @@ static void Task_PassAreaZoom(u8 taskId)
 static void ShowAndPrintWindows(void)
 {
     s32 x;
-    u8 i;
+    u32 i;
 
     for (i = 0; i < WINDOW_COUNT; i++)
     {
@@ -1586,7 +1586,7 @@ static void InitFrontierMapSprites(void)
 
 static void PrintOnFrontierMap(void)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < MAP_WINDOW_COUNT; i++)
     {

@@ -50,7 +50,7 @@ static void DummyPicSpriteCallback(struct Sprite *sprite)
 
 bool16 ResetAllPicSprites(void)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < PICS_COUNT; i ++)
         sSpritePics[i] = sDummyPicData;
@@ -130,10 +130,10 @@ static void AssignSpriteAnimsTable(bool8 isTrainer)
 
 static u16 CreatePicSprite(u16 species, bool8 isShiny, u32 personality, bool8 isFrontPic, s16 x, s16 y, u8 paletteSlot, u16 paletteTag, bool8 isTrainer)
 {
-    u8 i;
+    u32 i;
     u8 *framePics;
     struct SpriteFrameImage *images;
-    int j;
+    u32 j;
     u8 spriteId;
 
     for (i = 0; i < PICS_COUNT; i ++)
@@ -186,8 +186,8 @@ u16 CreateMonPicSprite_Affine(u16 species, bool8 isShiny, u32 personality, u8 fl
 {
     u8 *framePics;
     struct SpriteFrameImage *images;
-    int j;
-    u8 i;
+    u32 j;
+    u32 i;
     u8 spriteId;
     u8 type;
     species = SanitizeSpeciesId(species);
@@ -262,7 +262,7 @@ u16 CreateMonPicSprite_Affine(u16 species, bool8 isShiny, u32 personality, u8 fl
 
 static u16 FreeAndDestroyPicSpriteInternal(u16 spriteId, bool8 clearPalette)
 {
-    u8 i;
+    u32 i;
     u8 *framePics;
     struct SpriteFrameImage *images;
 

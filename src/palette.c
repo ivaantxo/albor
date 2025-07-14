@@ -450,7 +450,7 @@ void UnfadePlttBuffer(u32 selectedPalettes)
     {
         if (selectedPalettes & 1)
         {
-            u8 i;
+            u32 i;
             for (i = 0; i < 16; i++)
                 gPlttBufferFaded[paletteOffset + i] = gPlttBufferUnfaded[paletteOffset + i];
         }

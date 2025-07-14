@@ -1523,7 +1523,7 @@ static const struct MatchCallText *GetBattleMatchCallText(int matchCallId, u8 *s
 
 static const struct MatchCallText *GetGeneralMatchCallText(int matchCallId, u8 *str)
 {
-    int i;
+    u32 i;
     int count;
     u32 topic, id;
     u16 rand;
@@ -1576,7 +1576,7 @@ static u8 *const sMatchCallTextStringVars[] = { gStringVar1, gStringVar2, gStrin
 
 static void PopulateMatchCallStringVars(int matchCallId, const s8 *stringVarFuncIds)
 {
-    int i;
+    u32 i;
     for (i = 0; i < NUM_STRVARS_IN_MSG; i++)
     {
         if (stringVarFuncIds[i] >= 0)
@@ -1823,8 +1823,8 @@ static bool32 ShouldTrainerRequestBattle(int matchCallId)
 
 static u16 GetFrontierStreakInfo(u16 facilityId, u32 *topicTextId)
 {
-    int i;
-    int j;
+    u32 i;
+    u32 j;
     u16 streak = 0;
 
     switch (facilityId)

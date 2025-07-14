@@ -803,7 +803,7 @@ void AnimTask_RotateAuroraRingColors(u8 taskId)
 
 static void AnimTask_RotateAuroraRingColors_Step(u8 taskId)
 {
-    int i;
+    u32 i;
     u16 palIndex;
 
     if (++gTasks[taskId].data[10] == 3)
@@ -1065,7 +1065,7 @@ void AnimTask_CreateSurfWave(u8 taskId)
 static void AnimTask_CreateSurfWave_Step1(u8 taskId)
 {
     struct BattleAnimBgData animBg;
-    u8 i;
+    u32 i;
     u16 rgbBuffer;
     u16 *BGptrX = &gBattle_BG1_X;
     u16 *BGptrY = &gBattle_BG1_Y;
@@ -1321,7 +1321,7 @@ static void AnimTask_WaterSpoutLaunch_Step(u8 taskId)
 // A higher number results in more water sprites during the Water Spout animation
 static u8 GetWaterSpoutPowerForAnim(void)
 {
-    u8 i;
+    u32 i;
     u16 hp;
     u16 maxhp;
     u16 partyIndex;
@@ -1646,7 +1646,7 @@ static void AnimWaterSportDroplet(struct Sprite *sprite)
 
 static void AnimWaterSportDroplet_Step(struct Sprite *sprite)
 {
-    u16 i;
+    u32 i;
 
     if (TranslateAnimHorizontalArc(sprite))
     {

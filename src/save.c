@@ -71,7 +71,7 @@ EWRAM_DATA struct SaveSector gSaveDataBuffer = {0}; // Buffer used for reading/w
 
 void ClearSaveData(void)
 {
-    u16 i;
+    u32 i;
 
     for (i = 0; i < SECTORS_COUNT; i++)
     {
@@ -116,7 +116,7 @@ static u8 WriteSaveSectorOrSlot(u16 sectorId, const struct SaveSectorLocation *l
 {
     IntrCallback prevVblankCB;
     u32 status;
-    u16 i;
+    u32 i;
 
     gReadWriteSector = &gSaveDataBuffer;
 
@@ -156,7 +156,7 @@ static u8 WriteSaveSectorOrSlot(u16 sectorId, const struct SaveSectorLocation *l
 
 static u8 HandleWriteSector(u16 sectorId, const struct SaveSectorLocation *locations)
 {
-    u16 i;
+    u32 i;
     u16 sector;
     u8 *data;
     u16 size;
@@ -224,7 +224,7 @@ static u8 TryLoadSaveSlot(u16 sectorId, struct SaveSectorLocation *locations)
 // sectorId arg is ignored, this always reads the full save slot
 static u8 CopySaveSlotData(u16 sectorId, struct SaveSectorLocation *locations)
 {
-    u16 i;
+    u32 i;
     u16 checksum;
     u16 id;
 
@@ -241,7 +241,7 @@ static u8 CopySaveSlotData(u16 sectorId, struct SaveSectorLocation *locations)
         // Only copy data for sectors whose signature and checksum fields are correct
         if (gReadWriteSector->signature == SECTOR_SIGNATURE && gReadWriteSector->checksum == checksum)
         {
-            u16 j;
+            u32 j;
             for (j = 0; j < locations[id].size; j++)
                 ((u8 *)locations[id].data)[j] = gReadWriteSector->data[j];
         }
@@ -252,7 +252,7 @@ static u8 CopySaveSlotData(u16 sectorId, struct SaveSectorLocation *locations)
 
 static u8 GetSaveValidStatus(const struct SaveSectorLocation *locations)
 {
-    u16 i;
+    u32 i;
     u16 checksum;
     u32 validSectorFlags = 0;
     bool8 signatureValid = FALSE;
@@ -291,7 +291,7 @@ static bool8 ReadFlashSector(u8 sectorId, struct SaveSector *sector)
 
 static u16 CalculateChecksum(void *data, u16 size)
 {
-    u16 i;
+    u32 i;
     u32 checksum = 0;
 
     for (i = 0; i < (size / 4); i++)
@@ -305,7 +305,7 @@ static u16 CalculateChecksum(void *data, u16 size)
 
 static void UpdateSaveAddresses(void)
 {
-    int i;
+    u32 i;
 
     for (i = SECTOR_ID_SAVEBLOCK_START; i <= SECTOR_ID_SAVEBLOCK_END; i++)
     {

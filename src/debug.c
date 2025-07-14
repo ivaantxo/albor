@@ -2635,7 +2635,7 @@ static void DebugAction_FlagsVars_SetValue(u8 taskId)
 
 static void DebugAction_FlagsVars_PokedexFlags_All(u8 taskId)
 {
-    u16 i;
+    u32 i;
     for (i = 0; i < DEX_COUNT; i++)
     {
         GetSetPokedexFlag(i + 1, FLAG_SET_CAUGHT);
@@ -3883,7 +3883,7 @@ static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId) //https://githu
     u16 nationalDexNum;
     int sentToPc;
     struct Pokemon mon;
-    u8 i;
+    u32 i;
     u16 moves[4];
     u8 IVs[6];
     u8 iv_val;
@@ -5282,7 +5282,7 @@ SOUND_LIST_SE
 
 static void DebugAction_BerryFunctions_ClearAll(u8 taskId)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
@@ -5299,7 +5299,7 @@ static void DebugAction_BerryFunctions_ClearAll(u8 taskId)
 
 static void DebugAction_BerryFunctions_Ready(u8 taskId)
 {
-    u8 i;
+    u32 i;
     struct BerryTree *tree;
 
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
@@ -5321,7 +5321,7 @@ static void DebugAction_BerryFunctions_Ready(u8 taskId)
 
 static void DebugAction_BerryFunctions_NextStage(u8 taskId)
 {
-    u8 i;
+    u32 i;
     struct BerryTree *tree;
 
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
@@ -5339,7 +5339,7 @@ static void DebugAction_BerryFunctions_NextStage(u8 taskId)
 
 static void DebugAction_BerryFunctions_Pests(u8 taskId)
 {
-    u8 i;
+    u32 i;
 
     if (!OW_BERRY_PESTS)
     {
@@ -5362,7 +5362,7 @@ static void DebugAction_BerryFunctions_Pests(u8 taskId)
 
 static void DebugAction_BerryFunctions_Weeds(u8 taskId)
 {
-    u8 i;
+    u32 i;
 
     if (!OW_BERRY_WEEDS)
     {

@@ -1119,7 +1119,7 @@ void AI_TrySwitchOrUseItem(u32 battler)
 // as most often it can't do much on its own.
 static u32 GetBestMonBatonPass(struct Pokemon *party, int firstId, int lastId, u8 invalidMons, int aliveCount, u32 battler, u32 opposingBattler)
 {
-    int i, j, bits = 0;
+    u32 i, j, bits = 0;
 
     for (i = firstId; i < lastId; i++)
     {
@@ -1150,7 +1150,7 @@ static u32 GetBestMonBatonPass(struct Pokemon *party, int firstId, int lastId, u
 
 static u32 GetBestMonTypeMatchup(struct Pokemon *party, int firstId, int lastId, u8 invalidMons, u32 battler, u32 opposingBattler)
 {
-    int i, bits = 0;
+    u32 i, bits = 0;
 
     while (bits != 0x3F) // All mons were checked.
     {
@@ -1212,7 +1212,7 @@ static u32 GetBestMonTypeMatchup(struct Pokemon *party, int firstId, int lastId,
 
 static u32 GetBestMonDmg(struct Pokemon *party, int firstId, int lastId, u8 invalidMons, u32 battler, u32 opposingBattler)
 {
-    int i, j;
+    u32 i, j;
     int dmg, bestDmg = 0;
     int bestMonId = PARTY_SIZE;
     u32 rollType = GetDmgRollType(battler);
@@ -1768,7 +1768,7 @@ static u32 GetBestMonIntegrated(struct Pokemon *party, int firstId, int lastId, 
 {
     int revengeKillerId = PARTY_SIZE, slowRevengeKillerId = PARTY_SIZE, fastThreatenId = PARTY_SIZE, slowThreatenId = PARTY_SIZE, damageMonId = PARTY_SIZE;
     int batonPassId = PARTY_SIZE, typeMatchupId = PARTY_SIZE, typeMatchupEffectiveId = PARTY_SIZE, defensiveMonId = PARTY_SIZE, aceMonId = PARTY_SIZE, trapperId = PARTY_SIZE;
-    int i, j, aliveCount = 0, bits = 0;
+    u32 i, j, aliveCount = 0, bits = 0;
     s32 defensiveMonHitKOThreshold = 3; // 3HKO threshold that candidate defensive mons must exceed
     s32 playerMonHP = gBattleMons[opposingBattler].hp, maxDamageDealt = 0, damageDealt = 0;
     u32 aiMove, hitsToKOAI, maxHitsToKO = 0;

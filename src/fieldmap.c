@@ -113,7 +113,7 @@ static void InitBackupMapLayoutConnections(struct MapHeader *mapHeader)
 {
     int count;
     const struct MapConnection *connection;
-    int i;
+    u32 i;
 
     if (mapHeader->connections)
     {
@@ -149,7 +149,7 @@ static void InitBackupMapLayoutConnections(struct MapHeader *mapHeader)
 
 static void FillConnection(int x, int y, struct MapHeader const *connectedMapHeader, int x2, int y2, int width, int height)
 {
-    int i;
+    u32 i;
     const u16 *src;
     u16 *dest;
     int mapWidth;
@@ -365,7 +365,7 @@ u8 MapGridGetMetatileLayerTypeAt(int x, int y)
 
 void MapGridSetMetatileIdAt(int x, int y, u16 metatile)
 {
-    int i;
+    u32 i;
     if (AreCoordsWithinMapGridBounds(x, y))
     {
         i = x + y * gBackupMapLayout.width;
@@ -375,7 +375,7 @@ void MapGridSetMetatileIdAt(int x, int y, u16 metatile)
 
 void MapGridSetMetatileEntryAt(int x, int y, u16 metatile)
 {
-    int i;
+    u32 i;
     if (AreCoordsWithinMapGridBounds(x, y))
     {
         i = x + gBackupMapLayout.width * y;
@@ -404,7 +404,7 @@ u16 GetMetatileAttributesById(u16 metatile)
 
 void SaveMapView(void)
 {
-    int i, j;
+    u32 i, j;
     int x, y;
     u16 *mapView;
     int width;
@@ -421,7 +421,7 @@ void SaveMapView(void)
 
 static bool32 SavedMapViewIsEmpty(void)
 {
-    u16 i;
+    u32 i;
     u32 marker = 0;
 
 #ifndef UBFIX
@@ -449,7 +449,7 @@ static void ClearSavedMapView(void)
 static void LoadSavedMapView(void)
 {
     u8 yMode;
-    int i, j;
+    u32 i, j;
     int x, y;
     u16 *mapView;
     int width;
@@ -496,7 +496,7 @@ static void MoveMapViewToBackup(u8 direction)
     int srci, desti;
     int r9, r8;
     int x, y;
-    int i, j;
+    u32 i, j;
     mapView = gSaveBlockPtr->mapView;
     width = gBackupMapLayout.width;
     r9 = 0;
@@ -668,7 +668,7 @@ bool32 CameraMove(int x, int y)
 static const struct MapConnection *GetIncomingConnection(u8 direction, int x, int y)
 {
     int count;
-    int i;
+    u32 i;
     const struct MapConnection *connection;
     const struct MapConnections *connections = gMapHeader.connections;
 
@@ -747,7 +747,7 @@ const struct MapConnection *GetMapConnectionAtPos(s16 x, s16 y)
 {
     int count;
     const struct MapConnection *connection;
-    int i;
+    u32 i;
     u8 direction;
     if (!gMapHeader.connections)
     {

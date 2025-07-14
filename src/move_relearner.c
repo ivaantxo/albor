@@ -848,7 +848,7 @@ static void ShowTeachMoveText(bool8 shouldDoNothingInstead)
 
 static void CreateUISprites(void)
 {
-    int i;
+    u32 i;
 
     sMoveRelearnerStruct->moveDisplayArrowTask = TASK_NONE;
     sMoveRelearnerStruct->moveListScrollArrowTask = TASK_NONE;
@@ -926,7 +926,7 @@ static void CreateLearnableMovesList(void)
 void MoveRelearnerShowHideHearts(s32 moveId)
 {
     u16 numHearts;
-    u16 i;
+    u32 i;
 
     if (!sMoveRelearnerMenuSate.showContestInfo || moveId == LIST_CANCEL)
     {

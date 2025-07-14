@@ -203,7 +203,7 @@ void Script_FavorLadyOpenBagMenu(void)
 static bool8 DoesFavorLadyLikeItem(u16 itemId)
 {
     u8 numItems;
-    u8 i;
+    u32 i;
     bool8 likedItem;
 
     sFavorLadyPtr = &gSaveBlockPtr->lilycoveLady.favor;
@@ -274,7 +274,7 @@ void FieldCallback_FavorLadyEnableScriptContexts(void)
 static void QuizLadyPickQuestion(void)
 {
     u8 questionId;
-    u8 i;
+    u32 i;
 
     questionId = Random() % ARRAY_COUNT(sQuizLadyQuizQuestions);
     for (i = 0; i < QUIZ_QUESTION_LEN; i ++)
@@ -287,7 +287,7 @@ static void QuizLadyPickQuestion(void)
 
 static void InitLilycoveQuizLady(void)
 {
-    u8 i;
+    u32 i;
 
     sQuizLadyPtr = &gSaveBlockPtr->lilycoveLady.quiz;
     sQuizLadyPtr->id = LILYCOVE_LADY_QUIZ;
@@ -355,7 +355,7 @@ static u8 BufferQuizAuthorName(void)
 {
     u8 authorNameId;
     u8 nameLen;
-    u8 i;
+    u32 i;
 
     authorNameId = QUIZ_AUTHOR_NAME_PLAYER;
     sQuizLadyPtr = &gSaveBlockPtr->lilycoveLady.quiz;
@@ -390,7 +390,7 @@ static u8 BufferQuizAuthorName(void)
 static bool8 IsQuizTrainerIdNotPlayer(void)
 {
     bool8 notPlayer;
-    u8 i;
+    u32 i;
 
     sQuizLadyPtr = &gSaveBlockPtr->lilycoveLady.quiz;
     notPlayer = FALSE;
@@ -490,7 +490,7 @@ void QuizLadyPickNewQuestion(void)
 
 void ClearQuizLadyQuestionAndAnswer(void)
 {
-    u8 i;
+    u32 i;
 
     sQuizLadyPtr = &gSaveBlockPtr->lilycoveLady.quiz;
     for (i = 0; i < QUIZ_QUESTION_LEN; i++)
@@ -511,7 +511,7 @@ void QuizLadyTakePrizeForCustomQuiz(void)
 
 void QuizLadyRecordCustomQuizData(void)
 {
-    u8 i;
+    u32 i;
 
     sQuizLadyPtr = &gSaveBlockPtr->lilycoveLady.quiz;
     sQuizLadyPtr->prize = gSpecialVar_ItemId;

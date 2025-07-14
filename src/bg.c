@@ -62,7 +62,7 @@ u32 GetBgMode(void)
 
 void ResetBgControlStructs(void)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < NUM_BACKGROUNDS; i++)
     {
@@ -275,7 +275,7 @@ bool32 IsInvalidBg(u32 bg)
 
 void ResetBgsAndClearDma3BusyFlags(void)
 {
-    int i;
+    u32 i;
     ResetBgs();
 
     for (i = 0; i < NUM_BACKGROUNDS; i++)
@@ -286,7 +286,7 @@ void ResetBgsAndClearDma3BusyFlags(void)
 
 void InitBgsFromTemplates(u32 bgMode, const struct BgTemplate *templates, u8 numTemplates)
 {
-    int i;
+    u32 i;
     u32 bg;
 
     SetBgModeInternal(bgMode);
@@ -390,7 +390,7 @@ u16 LoadBgTilemap(u32 bg, const void *src, u16 size, u16 destOffset)
 
 bool32 IsDma3ManagerBusyWithBgCopy(void)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < 128; i++)
     {
@@ -833,7 +833,7 @@ void CopyRectToBgTilemapBufferRect(u32 bg, const void *src, u8 srcX, u8 srcY, u8
     u16 screenWidth, screenHeight, screenSize;
     u16 var;
     const void *srcPtr;
-    u16 i, j;
+    u32 i, j;
 
     if (!IsInvalidBg(bg) && !IsTileMapOutsideWram(bg))
     {

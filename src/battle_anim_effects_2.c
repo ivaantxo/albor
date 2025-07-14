@@ -1572,7 +1572,7 @@ static void AnimVoidLines(struct Sprite *sprite)
 static void AnimVoidLines_Step(struct Sprite *sprite)
 {
     u16 id, val;
-    int i;
+    u32 i;
 
     if (++sprite->data[1] == 2)
     {
@@ -1650,7 +1650,7 @@ static void AnimBulletSeed(struct Sprite *sprite)
 
 static void AnimBulletSeed_Step1(struct Sprite *sprite)
 {
-    int i;
+    u32 i;
     u16 rand;
     s16 *ptr;
     PlaySE12WithPanning(SE_M_HORN_ATTACK, BattleAnimAdjustPanning(SOUND_PAN_TARGET));
@@ -2839,7 +2839,7 @@ static void AnimSpeedDust(struct Sprite *sprite)
 
 void AnimTask_LoadMusicNotesPals(u8 taskId)
 {
-    int i;
+    u32 i;
     u8 paletteNums[NUM_MUSIC_NOTE_PAL_TAGS];
 
     paletteNums[0] = IndexOfSpritePaletteTag(ANIM_TAG_MUSIC_NOTES_2);
@@ -2857,7 +2857,7 @@ void AnimTask_LoadMusicNotesPals(u8 taskId)
 
 void AnimTask_FreeMusicNotesPals(u8 taskId)
 {
-    int i;
+    u32 i;
     for (i = 0; i < NUM_MUSIC_NOTE_PAL_TAGS; i++)
         FreeSpritePaletteByTag(sMusicNotePaletteTagsTable[i]);
 

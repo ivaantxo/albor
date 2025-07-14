@@ -311,7 +311,7 @@ u32 GetTotalBaseStat(u32 species)
 
 bool32 IsTruantMonVulnerable(u32 battlerAI, u32 opposingBattler)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
@@ -859,7 +859,7 @@ static bool32 AI_IsMoveEffectInMinus(u32 battlerAtk, u32 battlerDef, u32 move, s
 {
     u32 abilityAtk = AI_DATA->abilities[battlerAtk];
     u32 abilityDef = AI_DATA->abilities[battlerDef];
-    u8 i;
+    u32 i;
 
     // recoil
     if (gMovesInfo[move].recoil > 0 && AI_IsDamagedByRecoil(battlerAtk))
@@ -1293,7 +1293,7 @@ u32 AI_GetBattlerAbility(u32 battler)
 s32 AI_DecideKnownAbilityForTurn(u32 battlerId)
 {
     u32 validAbilities[NUM_ABILITY_SLOTS];
-    u8 i, numValidAbilities = 0;
+    u32 i, numValidAbilities = 0;
     u32 knownAbility = AI_GetBattlerAbility(battlerId);
 
     // We've had ability overwritten by e.g. Worry Seed. It is not part of AI_PARTY in case of switching
@@ -3881,7 +3881,7 @@ s32 AI_TryToClearStats(u32 battlerAtk, u32 battlerDef, bool32 isDoubleBattle)
 
 bool32 AI_ShouldCopyStatChanges(u32 battlerAtk, u32 battlerDef)
 {
-    u8 i;
+    u32 i;
     // Want to copy positive stat changes
     for (i = ESTADISTICA_ATAQUE; i < NUMERO_ESTADISTICAS_BATALLA; i++)
     {

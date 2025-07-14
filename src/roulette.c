@@ -1103,7 +1103,7 @@ static void ProcessBetGridInput(u8 taskId)
      && (!(JOY_NEW(DPAD_RIGHT)) || ((dirPressed = TRUE) && CanMoveSelectionInDir(&gTasks[taskId].tSelectionId, 3)))
      && (dirPressed))
     {
-        u8 i;
+        u32 i;
         DrawGridBackground(gTasks[taskId].tSelectionId);
         UpdateGridSelection(taskId);
         gTasks[taskId].data[1] = 0;
@@ -1615,7 +1615,7 @@ static void ResetBallDataForNewSpin(u8 taskId)
 
 static void ResetHits(void)
 {
-    u8 i;
+    u32 i;
     sRoulette->hitFlags = 0;
 
     for (i = 0; i < BALLS_PER_ROUND; i++)
@@ -1632,7 +1632,7 @@ static void ResetHits(void)
 
 static u8 RecordHit(u8 taskId, u8 slotId)
 {
-    u8 i, j;
+    u32 i, j;
     u32 columnFlags[NUM_BOARD_POKES] = {
         F_WYNAUT_COL | F_ORANGE_WYNAUT | F_GREEN_WYNAUT | F_PURPLE_WYNAUT,
         F_AZURILL_COL | F_ORANGE_AZURILL | F_GREEN_AZURILL | F_PURPLE_AZURILL,
@@ -1709,7 +1709,7 @@ static void FlashSelectionOnWheel(u8 selectionId)
     u16 flashFlags = 0;
     u8 numSelected;
     u16 palOffset;
-    u8 i;
+    u32 i;
 
     switch (selectionId)
     {
@@ -1796,7 +1796,7 @@ static void FlashSelectionOnWheel(u8 selectionId)
 
 static void DrawGridBackground(u8 selectionId)
 {
-    vu8 i, j;
+    vu32 i, j;
     vu16 x, y;
     vu8 tilemapOffset;
     u8 selectionIds[NUM_BOARD_POKES >= NUM_BOARD_COLORS ? NUM_BOARD_POKES + 1 : NUM_BOARD_COLORS + 1];
@@ -2982,7 +2982,7 @@ void PlayRoulette(void)
 
 static void ShowHideGridIcons(bool8 hideAll, u8 hideSquare)
 {
-    u8 i;
+    u32 i;
     switch (hideAll)
     {
     case TRUE:
@@ -3075,7 +3075,7 @@ static void SpriteCB_WheelIcon(struct Sprite *sprite)
 
 static void SetCreditDigits(u16 num)
 {
-    u8 i;
+    u32 i;
     u16 d = 1000;
     bool8 printZero = FALSE;
     for (i = 0; i < MAX_COIN_DIGITS; i++)
@@ -3132,7 +3132,7 @@ static void SetMultiplierSprite(u8 selectionId)
 
 static void SetBallCounterNumLeft(u8 numBalls)
 {
-    u8 i;
+    u32 i;
     u8 t = 0;
     if (sRoulette->minBet == 1)
         t = 2;
@@ -3201,10 +3201,10 @@ static void SpriteCB_WheelCenter(struct Sprite *sprite)
 static void HideWheelBalls(void)
 {
     u8 spriteId = sRoulette->spriteIds[SPR_WHEEL_BALLS];
-    u8 i;
+    u32 i;
     for (i = 0; i < BALLS_PER_ROUND; i++)
     {
-        u8 j;
+        u32 j;
         gSprites[spriteId].invisible = TRUE;
         gSprites[spriteId].callback = &SpriteCallbackDummy;
         StartSpriteAnim(&gSprites[spriteId], 0);
@@ -3654,7 +3654,7 @@ static void SpriteCB_RollBall_Start(struct Sprite *sprite)
 static void CreateShroomishSprite(struct Sprite *ball)
 {
     u16 t;
-    u8 i;
+    u32 i;
     s16 coords[2][2] = {
         {116, 44},
         {116, 112}

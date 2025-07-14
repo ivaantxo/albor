@@ -427,7 +427,7 @@ static bool8 TryDoMetatileBehaviorForcedMovement(void)
 
 static u8 GetForcedMovementByMetatileBehavior(void)
 {
-    u8 i;
+    u32 i;
 
     if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_CONTROLLABLE))
     {
@@ -802,7 +802,7 @@ static bool8 TryPushBoulder(s16 x, s16 y, u8 direction)
 
 static void CheckAcroBikeCollision(s16 x, s16 y, u8 metatileBehavior, u8 *collision)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < NUM_ACRO_BIKE_COLLISIONS; i++)
     {
@@ -1323,7 +1323,7 @@ u8 GetPlayerAvatarGenderByGraphicsId(u16 gfxId)
 
 bool8 PartyHasMonWithSurf(void)
 {
-    u8 i;
+    u32 i;
 
     if (!TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING))
     {
@@ -1374,7 +1374,7 @@ void SetPlayerAvatarStateMask(u8 flags)
 
 static u8 GetPlayerAvatarStateTransitionByGraphicsId(u16 graphicsId, u8 gender)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < ARRAY_COUNT(sPlayerAvatarGfxToStateFlag[0]); i++)
     {
@@ -1386,7 +1386,7 @@ static u8 GetPlayerAvatarStateTransitionByGraphicsId(u16 graphicsId, u8 gender)
 
 u16 GetPlayerAvatarGraphicsIdByCurrentState(void)
 {
-    u8 i;
+    u32 i;
     u8 flags = gPlayerAvatar.flags;
 
     for (i = 0; i < ARRAY_COUNT(sPlayerAvatarGfxToStateFlag[0]); i++)

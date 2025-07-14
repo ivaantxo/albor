@@ -887,7 +887,7 @@ void AnimTask_DestinyBondWhiteShadow(u8 taskId)
 
 static void AnimTask_DestinyBondWhiteShadow_Step(u8 taskId)
 {
-    u16 i;
+    u32 i;
     struct Task *task = &gTasks[taskId];
 
     switch (task->data[0])
@@ -1215,7 +1215,7 @@ void AnimTask_GrudgeFlames(u8 taskId)
 
 void AnimTask_GrudgeFlames_Step(u8 taskId)
 {
-    u16 i;
+    u32 i;
     u8 spriteId;
     struct Task *task = &gTasks[taskId];
 

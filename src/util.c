@@ -39,7 +39,7 @@ void LoadWordFromTwoHalfwords(u16 *h, u32 *w)
 
 int CountTrailingZeroBits(u32 value)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < 32; i++)
     {
@@ -53,7 +53,7 @@ int CountTrailingZeroBits(u32 value)
 
 void BlendPalette(u16 palOffset, u16 numEntries, u8 coeff, u32 blendColor)
 {
-    u16 i;
+    u32 i;
     struct PlttData *data2 = (struct PlttData *)&blendColor;
     for (i = 0; i < numEntries; i++)
     {

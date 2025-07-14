@@ -4652,7 +4652,7 @@ static s32 AI_CheckViability(u32 battlerAtk, u32 battlerDef, u32 move, s32 score
 // Effects that are encouraged on the first turn of battle
 static s32 AI_ForceSetupFirstTurn(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
 {
-    u8 i;
+    u32 i;
     if (IS_TARGETING_PARTNER(battlerAtk, battlerDef)
       || gBattleResults.battleTurnCounter != 0)
         return score;
@@ -4781,7 +4781,7 @@ static s32 AI_ForceSetupFirstTurn(u32 battlerAtk, u32 battlerDef, u32 move, s32 
 // Adds score bonus to 'riskier' move effects and high crit moves
 static s32 AI_Risky(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
 {
-    u8 i;
+    u32 i;
     struct AiLogicData *aiData = AI_DATA;
 
     if (IS_TARGETING_PARTNER(battlerAtk, battlerDef))

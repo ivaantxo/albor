@@ -197,7 +197,7 @@ void CallBattleFactoryFunction(void)
 
 static void InitFactoryChallenge(void)
 {
-    u8 i;
+    u32 i;
     u32 lvlMode = gSaveBlockPtr->frontier.lvlMode;
     u32 battleMode = VarGet(VAR_FRONTIER_BATTLE_MODE);
 
@@ -303,7 +303,7 @@ static void SetPerformedRentalSwap(void)
 
 static void GenerateOpponentMons(void)
 {
-    int i, j, k;
+    u32 i, j, k;
     u16 species[FRONTIER_PARTY_SIZE];
     u16 heldItems[FRONTIER_PARTY_SIZE];
     int firstMonId = 0;
@@ -380,7 +380,7 @@ static void SetOpponentGfxVar(void)
 
 static void SetRentalsToOpponentParty(void)
 {
-    u8 i;
+    u32 i;
 
     if (gSaveBlockPtr->frontier.lvlMode != FRONTIER_LVL_TENT)
         gFacilityTrainerMons = gBattleFrontierMons;
@@ -399,7 +399,7 @@ static void SetRentalsToOpponentParty(void)
 
 static void SetPlayerAndOpponentParties(void)
 {
-    int i;
+    u32 i;
     u8 monLevel;
     u16 monId;
     u8 ivs;
@@ -446,7 +446,7 @@ static void SetPlayerAndOpponentParties(void)
 
 static void GenerateInitialRentalMons(void)
 {
-    int i, j;
+    u32 i, j;
     u8 firstMonId;
     u8 battleMode;
     u8 lvlMode;
@@ -541,7 +541,7 @@ static void GenerateInitialRentalMons(void)
 // and NUMERO_DE_TIPOS is the result.
 static void GetOpponentMostCommonMonType(void)
 {
-    u8 i;
+    u32 i;
     u8 typeCounts[NUMERO_DE_TIPOS];
     u8 mostCommonTypes[2];
 
@@ -591,7 +591,7 @@ static void GetOpponentMostCommonMonType(void)
 
 static void GetOpponentBattleStyle(void)
 {
-    u8 i, j, count;
+    u32 i, j, count;
     u8 stylePoints[FACTORY_NUM_STYLES];
 
     count = 0;
@@ -627,7 +627,7 @@ static void GetOpponentBattleStyle(void)
 static u8 GetMoveBattleStyle(u16 move)
 {
     const u16 *moves;
-    u8 i, j;
+    u32 i, j;
 
     for (i = 0; i < ARRAY_COUNT(sMoveStyles); i++)
     {
@@ -648,7 +648,7 @@ bool8 InBattleFactory(void)
 
 static void RestorePlayerPartyHeldItems(void)
 {
-    u8 i;
+    u32 i;
 
     if (gSaveBlockPtr->frontier.lvlMode != FRONTIER_LVL_TENT)
         gFacilityTrainerMons = gBattleFrontierMons;
@@ -693,7 +693,7 @@ u8 GetFactoryMonFixedIV(u8 challengeNum, bool8 isLastBattle)
 
 void FillFactoryBrainParty(void)
 {
-    int i, j, k;
+    u32 i, j, k;
     u16 species[FRONTIER_PARTY_SIZE];
     u16 heldItems[FRONTIER_PARTY_SIZE];
     int monLevel;

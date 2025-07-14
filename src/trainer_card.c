@@ -604,7 +604,7 @@ static u32 GetCappedGameStat(u8 statId, u32 maxValue)
 
 static bool8 HasAllFrontierSymbols(void)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < NUM_FRONTIER_FACILITIES; i++)
     {
         if (!FlagGet(FLAG_SYS_TOWER_SILVER + 2 * i) || !FlagGet(FLAG_SYS_TOWER_GOLD + 2 * i))
@@ -646,7 +646,7 @@ static u8 GetRubyTrainerStars(struct TrainerCard *trainerCard)
 static void SetPlayerCardData(struct TrainerCard *trainerCard, u8 cardType)
 {
     u32 playTime;
-    u8 i;
+    u32 i;
 
     trainerCard->gender = gSaveBlockPtr->playerGender;
     trainerCard->playTimeHours = gSaveBlockPtr->playTimeHours;
@@ -752,7 +752,7 @@ void CopyTrainerCardData(struct TrainerCard *dst, struct TrainerCard *src, u8 ga
 
 static void SetDataFromTrainerCard(void)
 {
-    u8 i;
+    u32 i;
     u32 badgeFlag;
 
     sData->hasPokedex = FALSE;
@@ -1246,7 +1246,7 @@ static void PrintBattleFacilityStringOnCard(void)
 
 static void PrintPokemonIconsOnCard(void)
 {
-    u8 i;
+    u32 i;
     u8 paletteSlots[PARTY_SIZE] = {5, 6, 7, 14, 9, 10};
     u8 xOffsets[PARTY_SIZE] = {0, 4, 8, 12, 16, 20};
 
@@ -1264,7 +1264,7 @@ static void PrintPokemonIconsOnCard(void)
 
 static void PrintStickersOnCard(void)
 {
-    u8 i;
+    u32 i;
     u8 paletteSlots[4] = {11, 12, 13, 14};
 
     if (sData->cardType == CARD_TYPE_FRLG && sData->trainerCard.shouldDrawStickers == TRUE)
@@ -1677,7 +1677,7 @@ void ShowTrainerCardInLink(u8 cardId, void (*callback)(void))
 
 static void InitTrainerCardData(void)
 {
-    u8 i;
+    u32 i;
 
     sData->mainState = 0;
     sData->timeColonBlinkTimer = gSaveBlockPtr->playTimeVBlanks;

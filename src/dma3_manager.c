@@ -24,7 +24,7 @@ static u8 sDma3RequestCursor;
 
 void ClearDma3Requests(void)
 {
-    int i;
+    u32 i;
 
     sDma3ManagerLocked = TRUE;
     sDma3RequestCursor = 0;

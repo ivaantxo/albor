@@ -35,7 +35,7 @@ int GetStringWidthDifference(int fontId, const u8 *str, int totalWidth, int lett
 
 int GetMaxWidthInMenuTable(const struct MenuAction *actions, int numActions)
 {
-    int i, maxWidth;
+    u32 i, maxWidth;
 
     for (maxWidth = 0, i = 0; i < numActions; i++)
     {
@@ -49,7 +49,7 @@ int GetMaxWidthInMenuTable(const struct MenuAction *actions, int numActions)
 
 int GetMaxWidthInSubsetOfMenuTable(const struct MenuAction *actions, const u8 *actionIds, int numActions)
 {
-    int i, maxWidth;
+    u32 i, maxWidth;
 
     for (maxWidth = 0, i = 0; i < numActions; i++)
     {
@@ -63,7 +63,7 @@ int GetMaxWidthInSubsetOfMenuTable(const struct MenuAction *actions, const u8 *a
 
 int Intl_GetListMenuWidth(const struct ListMenuTemplate *listMenu)
 {
-    int i, maxWidth, finalWidth;
+    u32 i, maxWidth, finalWidth;
     const struct ListMenuItem *items = listMenu->items;
 
     maxWidth = 0;

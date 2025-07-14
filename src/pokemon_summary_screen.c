@@ -2030,7 +2030,7 @@ static void Task_HandleInput_MoveSelect(u8 taskId)
 
 static bool8 HasMoreThanOneMove(void)
 {
-    u8 i;
+    u32 i;
     for (i = 1; i < MAX_MON_MOVES; i++)
     {
         if (sMonSummaryScreen->summary.moves[i] != 0)
@@ -2319,7 +2319,7 @@ u8 GetMoveSlotToReplace(void)
 static void DrawPagination(void) // Updates the pagination dots at the top of the summary screen
 {
     u16 *tilemap = Alloc(8 * PSS_PAGE_COUNT);
-    u8 i;
+    u32 i;
 
     for (i = 0; i < PSS_PAGE_COUNT; i++)
     {
@@ -2385,7 +2385,7 @@ static void DrawPagination(void) // Updates the pagination dots at the top of th
 
 static void ChangeTilemap(const struct TilemapCtrl *unkStruct, u16 *dest, u8 c, bool8 d)
 {
-    u16 i;
+    u32 i;
     u16 *alloced = Alloc(unkStruct->field_6 * 2 * unkStruct->field_7);
     CpuFill16(unkStruct->field_4, alloced, unkStruct->field_6 * 2 * unkStruct->field_7);
     if (unkStruct->field_6 != c)
@@ -2558,7 +2558,7 @@ static void Task_ShowStatusWindow(u8 taskId)
 // Toggles the "Cancel" window that appears when selecting a move
 static void TilemapFiveMovesDisplay(u16 *dst, u16 palette, bool8 remove)
 {
-    u16 i, id;
+    u32 i, id;
 
     palette *= 0x1000;
     id = 0x56A;
@@ -2611,7 +2611,7 @@ static void DrawExperienceProgressBar(struct Pokemon *unused)
     s64 numExpProgressBarTicks;
     struct PokeSummary *summary = &sMonSummaryScreen->summary;
     u16 *dst;
-    u8 i;
+    u32 i;
 
     if (summary->level < MAX_LEVEL)
     {
@@ -2651,7 +2651,7 @@ static void DrawExperienceProgressBar(struct Pokemon *unused)
 static void DrawContestMoveHearts(u16 move)
 {
     u16 *tilemap = sMonSummaryScreen->bgTilemapBuffers[PSS_PAGE_CONTEST_MOVES][1];
-    u8 i;
+    u32 i;
 
     if (move != MOVE_NONE)
     {
@@ -2693,7 +2693,7 @@ static void LimitEggSummaryPageDisplay(void) // If the Pokémon is an egg, limit
 
 static void ResetWindows(void)
 {
-    u8 i;
+    u32 i;
 
     InitWindows(sSummaryTemplate);
     DeactivateAllTextPrinters();
@@ -2870,7 +2870,7 @@ static void PrintPageNamesAndStats(void)
 
 static void PutPageWindowTilemaps(u8 page)
 {
-    u8 i;
+    u32 i;
 
     ClearWindowTilemap(PSS_LABEL_WINDOW_POKEMON_INFO_TITLE);
     ClearWindowTilemap(PSS_LABEL_WINDOW_POKEMON_SKILLS_TITLE);
@@ -2930,7 +2930,7 @@ static void PutPageWindowTilemaps(u8 page)
 
 static void ClearPageWindowTilemaps(u8 page)
 {
-    u8 i;
+    u32 i;
 
     switch (page)
     {
@@ -3006,7 +3006,7 @@ static void RemoveWindowByIndex(u8 windowIndex)
 
 static void PrintPageSpecificText(u8 pageIndex)
 {
-    u16 i;
+    u32 i;
     for (i = 0; i < ARRAY_COUNT(sMonSummaryScreen->windowIds); i++)
     {
         if (sMonSummaryScreen->windowIds[i] != WINDOW_NONE)
@@ -3735,7 +3735,7 @@ static void SwapMovesNamesPP(u8 moveIndex1, u8 moveIndex2)
 
 static void ResetSpriteIds(void)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < ARRAY_COUNT(sMonSummaryScreen->spriteIds); i++)
         sMonSummaryScreen->spriteIds[i] = SPRITE_NONE;
@@ -3758,7 +3758,7 @@ static void SetSpriteInvisibility(u8 spriteArrayId, bool8 invisible)
 static void HidePageSpecificSprites(void)
 {
     // Keeps Pokémon, caught ball and status sprites visible.
-    u8 i;
+    u32 i;
 
     for (i = SPRITE_ARR_ID_TYPE; i < ARRAY_COUNT(sMonSummaryScreen->spriteIds); i++)
     {
@@ -3787,7 +3787,7 @@ static void SetTypeIcons(void)
 
 static void CreateMoveTypeIcons(void)
 {
-    u8 i;
+    u32 i;
 
     for (i = SPRITE_ARR_ID_TYPE; i < SPRITE_ARR_ID_TYPE + TYPE_ICON_SPRITE_COUNT; i++)
     {
@@ -3852,7 +3852,7 @@ static void SetMoveTypeIcons(void)
 
 static void SetContestMoveTypeIcons(void)
 {
-    u8 i;
+    u32 i;
     struct PokeSummary *summary = &sMonSummaryScreen->summary;
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
@@ -4022,7 +4022,7 @@ static void SummaryScreen_DestroyAnimDelayTask(void)
 
 static void StopPokemonAnimations(void)  // A subtle effect, this function stops Pokémon animations when leaving the PSS
 {
-    u16 i;
+    u32 i;
     u16 paletteIndex;
 
     gSprites[sMonSummaryScreen->spriteIds[SPRITE_ARR_ID_MON]].animPaused = TRUE;
@@ -4091,7 +4091,7 @@ static void CreateSetStatusSprite(void)
 
 static void CreateMoveSelectorSprites(u8 idArrayStart)
 {
-    u8 i;
+    u32 i;
     u8 *spriteIds = &sMonSummaryScreen->spriteIds[idArrayStart];
 
     if (sMonSummaryScreen->currPageIndex >= PSS_PAGE_BATTLE_MOVES)
@@ -4141,14 +4141,14 @@ static void SpriteCB_MoveSelector(struct Sprite *sprite)
 
 static void DestroyMoveSelectorSprites(u8 firstArrayId)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < MOVE_SELECTOR_SPRITES_COUNT; i++)
         DestroySpriteInArray(firstArrayId + i);
 }
 
 static void SetMainMoveSelectorColor(u8 which)
 {
-    u8 i;
+    u32 i;
     u8 *spriteIds = &sMonSummaryScreen->spriteIds[SPRITE_ARR_ID_MOVE_SELECTOR1];
 
     which *= 3;
@@ -4165,7 +4165,7 @@ static void SetMainMoveSelectorColor(u8 which)
 
 static void KeepMoveSelectorVisible(u8 firstSpriteId)
 {
-    u8 i;
+    u32 i;
     u8 *spriteIds = &sMonSummaryScreen->spriteIds[firstSpriteId];
 
     for (i = 0; i < MOVE_SELECTOR_SPRITES_COUNT; i++)

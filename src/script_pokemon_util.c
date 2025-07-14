@@ -190,7 +190,7 @@ static void CB2_ReturnFromChooseBattleFrontierParty(void)
 void ReducePlayerPartyToSelectedMons(void)
 {
     struct Pokemon party[MAX_FRONTIER_PARTY_SIZE];
-    int i;
+    u32 i;
 
     CpuFill32(0, party, sizeof party);
 

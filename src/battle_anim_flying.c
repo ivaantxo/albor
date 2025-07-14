@@ -360,7 +360,7 @@ static void AnimTask_AnimateGustTornadoPalette_Step(u8 taskId)
 {
     u8 data2;
     u16 temp;
-    int i, base;
+    u32 i, base;
 
     if (gTasks[taskId].data[10]++ == gTasks[taskId].data[1])
     {

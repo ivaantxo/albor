@@ -63,7 +63,6 @@ static const TaskFunc sPerStepCallbacks[] =
     [STEP_CB_FORTREE_BRIDGE]    = FortreeBridgePerStepCallback,
     [STEP_CB_PACIFIDLOG_BRIDGE] = PacifidlogBridgePerStepCallback,
     [STEP_CB_SOOTOPOLIS_ICE]    = SootopolisGymIcePerStepCallback,
-    [STEP_CB_TRUCK]             = EndTruckSequence,
     [STEP_CB_SECRET_BASE]       = SecretBasePerStepCallback,
     [STEP_CB_CRACKED_FLOOR]     = CrackedFloorPerStepCallback
 };
@@ -893,7 +892,7 @@ static void SetMuddySlopeMetatile(s16 *data, s16 x, s16 y)
 static void Task_MuddySlope(u8 taskId)
 {
     s16 x, y, cameraOffsetX, cameraOffsetY;
-    int i;
+    u32 i;
     u16 mapId;
     s16 *data = gTasks[taskId].data;
     PlayerGetDestCoords(&x, &y);

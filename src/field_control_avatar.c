@@ -633,7 +633,7 @@ static bool8 TryStartStepCountScript(u16 metatileBehavior)
 static void UpdateFriendshipStepCounter(void)
 {
     u16 *ptr = GetVarPointer(VAR_FRIENDSHIP_STEP_COUNTER);
-    int i;
+    u32 i;
 
     (*ptr)++;
     (*ptr) %= 128;
@@ -952,7 +952,7 @@ const u8 *GetCoordEventScriptAtMapPosition(struct MapPosition *position)
 
 static const struct BgEvent *GetBackgroundEventAtPosition(struct MapHeader *mapHeader, u16 x, u16 y, u8 elevation)
 {
-    u8 i;
+    u32 i;
     const struct BgEvent *bgEvents = mapHeader->events->bgEvents;
     u8 bgEventCount = mapHeader->events->bgEventCount;
 

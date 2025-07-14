@@ -484,7 +484,7 @@ static u32 LoopedTask_ExitRegionMap(s32 taskState)
 
 static void LoadCityZoomViewGfx(void)
 {
-    int i;
+    u32 i;
     for (i = 0; i < ARRAY_COUNT(sCityZoomTextSpriteSheet); i++)
         LoadCompressedSpriteSheet(&sCityZoomTextSpriteSheet[i]);
 
@@ -494,7 +494,7 @@ static void LoadCityZoomViewGfx(void)
 
 static void FreeCityZoomViewGfx(void)
 {
-    int i;
+    u32 i;
     struct Pokenav_RegionMapGfx *state = GetSubstructPtr(POKENAV_SUBSTRUCT_REGION_MAP_ZOOM);
     FreeSpriteTilesByTag(GFXTAG_CITY_ZOOM);
     FreeSpritePaletteByTag(PALTAG_CITY_ZOOM);
@@ -636,7 +636,7 @@ static u32 LoopedTask_DecompressCityMaps(s32 taskState)
 
 static void DrawCityMap(struct Pokenav_RegionMapGfx *state, int mapSecId, int pos)
 {
-    int i;
+    u32 i;
     for (i = 0; i < NUM_CITY_MAPS && (sPokenavCityMaps[i].mapSecId != mapSecId || sPokenavCityMaps[i].index != pos); i++)
         ;
 
@@ -664,7 +664,7 @@ static void PrintLandmarkNames(struct Pokenav_RegionMapGfx *state, int mapSecId,
 
 static void CreateCityZoomTextSprites(void)
 {
-    int i;
+    u32 i;
     int y;
     struct Sprite *sprite;
     struct Pokenav_RegionMapGfx *state = GetSubstructPtr(POKENAV_SUBSTRUCT_REGION_MAP_ZOOM);
@@ -726,7 +726,7 @@ static void SpriteCB_CityZoomText(struct Sprite *sprite)
 
 static void UpdateCityZoomTextPosition(void)
 {
-    int i;
+    u32 i;
     struct Pokenav_RegionMapGfx *state = GetSubstructPtr(POKENAV_SUBSTRUCT_REGION_MAP_ZOOM);
     int y = 132 - (GetBgY(1) >> 8);
     for (i = 0; i < (int)ARRAY_COUNT(state->cityZoomTextSprites); i++)
@@ -735,7 +735,7 @@ static void UpdateCityZoomTextPosition(void)
 
 static void SetCityZoomTextInvisibility(bool32 invisible)
 {
-    int i;
+    u32 i;
     struct Pokenav_RegionMapGfx *state = GetSubstructPtr(POKENAV_SUBSTRUCT_REGION_MAP_ZOOM);
     for (i = 0; i < (int)ARRAY_COUNT(state->cityZoomTextSprites); i++)
         state->cityZoomTextSprites[i]->invisible = invisible;

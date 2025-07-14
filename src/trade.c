@@ -363,7 +363,7 @@ void CB2_StartCreateTradeMenu(void)
 
 static void CB2_CreateTradeMenu(void)
 {
-    int i;
+    u32 i;
     struct SpriteTemplate temp;
     u8 id;
     u32 xPos;
@@ -596,7 +596,7 @@ static void CB2_CreateTradeMenu(void)
 
 static void CB2_ReturnToTradeMenu(void)
 {
-    int i;
+    u32 i;
     struct SpriteTemplate temp;
     u8 id;
     u32 xPos;
@@ -830,7 +830,7 @@ static void CB2_TradeMenu(void)
 
 static void LoadTradeBgGfx(u8 state)
 {
-    int i;
+    u32 i;
 
     switch (state)
     {
@@ -860,7 +860,7 @@ static void LoadTradeBgGfx(u8 state)
 // Determine (based on party counts) where the main menu cursor can go
 static void SetActiveMenuOptions(void)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
@@ -1129,7 +1129,7 @@ static void CB1_UpdateLink(void)
 
 static u8 GetNewCursorPosition(u8 oldPosition, u8 direction)
 {
-    int i;
+    u32 i;
     u8 newPosition = 0;
 
     for (i = 0; i < PARTY_SIZE; i++)
@@ -1303,7 +1303,7 @@ static u8 CheckValidityOfTradeMons(u8 *aliveMons, u8 playerPartyCount, u8 player
 // Returns TRUE if the partner's selected mon is invalid, FALSE otherwise
 static bool32 CheckMonsBeforeTrade(void)
 {
-    int i;
+    u32 i;
     u8 aliveMons[PARTY_SIZE * 2];
 
     for (i = 0; i < sTradeMenu->partyCounts[TRADE_PLAYER]; i++)
@@ -1355,7 +1355,7 @@ static void CB_ProcessConfirmTradeInput(void)
 // Only when choosing Yes to cancel, when No is chosen all are redrawn anyway
 static void RestoreNicknamesCoveredByYesNo(void)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < sTradeMenu->partyCounts[1] - 4; i++)
     {
@@ -1417,7 +1417,7 @@ static void CB_InitConfirmTradePrompt(void)
 
 static void CB_HandleTradeCanceled(void)
 {
-    int i;
+    u32 i;
 
     if (JOY_NEW(A_BUTTON))
     {
@@ -1530,7 +1530,7 @@ static void DrawSelectedMonScreen(u8 whichParty)
     s8 nameStringWidth;
     u8 nickname[POKEMON_NAME_BUFFER_SIZE];
     u8 movesString[56];
-    u8 i;
+    u32 i;
     u8 partyIdx;
     u8 selectedMonParty;
     u8 selectedMonIdx = sTradeMenu->selectedMonIdx[whichParty];
@@ -1628,7 +1628,7 @@ static u8 GetMonNicknameWidth(u8 *str, u8 whichParty, u8 partyIdx)
 static void BufferMovesString(u8 *str, u8 whichParty, u8 partyIdx)
 {
     u16 moves[MAX_MON_MOVES];
-    u16 i;
+    u32 i;
 
     if (!sTradeMenu->isEgg[whichParty][partyIdx])
     {
@@ -1669,7 +1669,7 @@ static void PrintPartyMonNickname(u8 whichParty, u8 windowId, u8 *nickname)
 
 static void PrintPartyNicknames(u8 whichParty)
 {
-    u8 i;
+    u32 i;
     u8 nickname[POKEMON_NAME_BUFFER_SIZE];
     u8 str[max(32, POKEMON_NAME_BUFFER_SIZE)];
     struct Pokemon *party = (whichParty == TRADE_PLAYER) ? gPlayerParty : gEnemyParty;
@@ -1762,7 +1762,7 @@ static void PrintPartyLevelsAndGenders(u8 whichParty)
 
 static void ShowTradePartyMonIcons(u8 whichParty)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < sTradeMenu->partyCounts[whichParty]; i++)
     {
@@ -1807,7 +1807,7 @@ static void Task_DrawSelectionTrade(u8 taskId)
 
 static void QueueAction(u16 delay, u8 actionId)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < (int)ARRAY_COUNT(sTradeMenu->queuedActions); i++)
     {
@@ -1824,7 +1824,7 @@ static void QueueAction(u16 delay, u8 actionId)
 
 static void DoQueuedActions(void)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < (int)ARRAY_COUNT(sTradeMenu->queuedActions); i++)
     {
@@ -1940,7 +1940,7 @@ static void DrawBottomRowText(const u8 *str, u8 *dest, u8 unused)
 
 static void ComputePartyTradeableFlags(u8 whichParty)
 {
-    int i;
+    u32 i;
 
     switch (whichParty)
     {
@@ -1989,7 +1989,7 @@ static void ComputePartyTradeableFlags(u8 whichParty)
 
 static void ComputePartyHPBarLevels(u8 whichParty)
 {
-    u16 i, curHp, maxHp;
+    u32 i, curHp, maxHp;
 
     switch (whichParty)
     {
@@ -2014,7 +2014,7 @@ static void ComputePartyHPBarLevels(u8 whichParty)
 
 static void SetTradePartyHPBarSprites(void)
 {
-    int i, j;
+    u32 i, j;
 
     for (i = 0; i < 2; i++)
     {
@@ -2025,7 +2025,7 @@ static void SetTradePartyHPBarSprites(void)
 
 static void SaveTradeGiftRibbons(void)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < (int)ARRAY_COUNT(sTradeMenu->giftRibbons); i++)
     {

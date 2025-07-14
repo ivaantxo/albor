@@ -624,7 +624,7 @@ static void AnimDefensiveWall_Step3(struct Sprite *sprite)
 {
     u16 color;
     u16 startOffset;
-    int i;
+    u32 i;
 
     if (++sprite->data[1] == 2)
     {
@@ -871,7 +871,7 @@ void AnimTask_ImprisonOrbs(u8 taskId)
 
 static void AnimTask_ImprisonOrbs_Step(u8 taskId)
 {
-    u16 i;
+    u32 i;
     u8 spriteId;
     struct Task *task = &gTasks[taskId];
 

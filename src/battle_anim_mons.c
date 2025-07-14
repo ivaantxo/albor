@@ -697,7 +697,7 @@ bool32 InitSpritePosToAnimBattler(u32 animBattlerId, struct Sprite *sprite, bool
 
 u8 GetBattlerAtPosition(u8 position)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < gBattlersCount; i++)
     {
@@ -1018,7 +1018,7 @@ void InitAnimFastLinearTranslationWithSpeedAndPos(struct Sprite *sprite)
 
 void SetSpriteRotScale(u8 spriteId, s16 xScale, s16 yScale, u16 rotation)
 {
-    int i;
+    u32 i;
     struct ObjAffineSrcData src;
     struct OamMatrix matrix;
 
@@ -1079,7 +1079,7 @@ void SetBattlerSpriteYOffsetFromRotation(u8 spriteId)
 
 void TrySetSpriteRotScale(struct Sprite *sprite, bool8 recalcCenterVector, s16 xScale, s16 yScale, u16 rotation)
 {
-    int i;
+    u32 i;
     struct ObjAffineSrcData src;
     struct OamMatrix matrix;
 
@@ -1122,7 +1122,7 @@ u16 ArcTan2Neg(s16 x, s16 y)
 
 void SetGrayscaleOrOriginalPalette(u16 paletteNum, bool8 restoreOriginalColor)
 {
-    int i;
+    u32 i;
     struct PlttData *originalColor;
     struct PlttData *destColor;
     u16 average;
@@ -1355,7 +1355,7 @@ void AnimTravelDiagonally(struct Sprite *sprite)
 
 s16 CloneBattlerSpriteWithBlend(u8 animBattler)
 {
-    u16 i;
+    u32 i;
     u8 spriteId = GetAnimBattlerSpriteId(animBattler);
 
     if (spriteId != SPRITE_NONE)
@@ -1629,7 +1629,7 @@ static u16 GetBattlerYDeltaFromSpriteId(u8 spriteId)
     struct BattleSpriteInfo *spriteInfo;
     u8 battlerId = gSprites[spriteId].data[0];
     u16 species;
-    u16 i;
+    u32 i;
 
     for (i = 0; i < MAX_BATTLERS_COUNT; i++)
     {
@@ -1724,7 +1724,7 @@ void AnimTask_GetFrustrationPowerLevel(u8 taskId)
 
 void InitPrioritiesForVisibleBattlers(void)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < gBattlersCount; i++)
     {

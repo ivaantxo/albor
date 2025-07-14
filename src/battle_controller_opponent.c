@@ -557,7 +557,7 @@ static void OpponentHandleChoosePokemon(u32 battler)
 
 static u8 CountAIAliveNonEggMonsExcept(u8 slotToIgnore)
 {
-    u16 i, count;
+    u32 i, count;
 
     for (i = 0, count = 0; i < PARTY_SIZE; i++)
     {

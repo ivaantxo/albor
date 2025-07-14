@@ -487,7 +487,7 @@ u32 FldEff_JumpTallGrass(void)
 
 u8 FindTallGrassFieldEffectSpriteId(u8 localId, u8 mapNum, u8 mapGroup, s16 x, s16 y)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < MAX_SPRITES; i ++)
     {
         if (gSprites[i].inUse)
@@ -1199,7 +1199,7 @@ static void SynchroniseSurfAnim(struct ObjectEvent *playerObj, struct Sprite *sp
 
 void SynchroniseSurfPosition(struct ObjectEvent *playerObj, struct Sprite *sprite)
 {
-    u8 i;
+    u32 i;
     s16 x = playerObj->currentCoords.x;
     s16 y = playerObj->currentCoords.y;
     s32 spriteY = sprite->y2;
@@ -1628,7 +1628,7 @@ static bool8 AnimateRayquazaInFigure8(struct Sprite *sprite)
 
 void UpdateRayquazaSpotlightEffect(struct Sprite *sprite)
 {
-    u8 i, j;
+    u32 i, j;
 
     switch (sprite->sState)
     {
@@ -1780,7 +1780,7 @@ void WaitFieldEffectSpriteAnim(struct Sprite *sprite)
 
 static void UpdateGrassFieldEffectSubpriority(struct Sprite *sprite, u8 elevation, u8 subpriority)
 {
-    u8 i;
+    u32 i;
     s16 var, xhi, lyhi, yhi, ylo;
 
     SetObjectSubpriorityByElevation(elevation, sprite, subpriority);

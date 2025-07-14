@@ -639,7 +639,7 @@ void StartRegiBattle(void)
 
 static void DowngradeBadPoison(void)
 {
-    u8 i;
+    u32 i;
     u32 status = STATUS1_POISON;
     if (B_TOXIC_REVERSAL < GEN_5)
         return;
@@ -773,7 +773,7 @@ static u8 GetBattleTransitionTypeByMap(void)
 static u16 GetSumOfPlayerPartyLevel(u8 numMons)
 {
     u8 sum = 0;
-    int i;
+    u32 i;
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
@@ -791,7 +791,7 @@ static u16 GetSumOfPlayerPartyLevel(u8 numMons)
 
 static u8 GetSumOfEnemyPartyLevel(u16 opponentId, u8 numMons)
 {
-    u8 i;
+    u32 i;
     u8 sum;
     u32 count = numMons;
     const struct TrainerMon *party;

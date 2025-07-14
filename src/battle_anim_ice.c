@@ -659,7 +659,7 @@ static void AnimFlickerIceEffectParticle(struct Sprite *sprite)
 // arg 5: multiple targets? (boolean)
 static void AnimSwirlingSnowball(struct Sprite *sprite)
 {
-    int i;
+    u32 i;
     s16 tempDataHolder[8];
 
     InitSpritePosToAnimAttacker(sprite, TRUE);
@@ -781,7 +781,7 @@ static void AnimSwirlingSnowball_End(struct Sprite *sprite)
 // arg 7: multiple targets? (boolean)
 void AnimMoveParticleBeyondTarget(struct Sprite *sprite)
 {
-    int i;
+    u32 i;
     s16 tempDataHolder[8];
 
     InitSpritePosToAnimAttacker(sprite, TRUE);

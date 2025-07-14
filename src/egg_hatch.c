@@ -310,7 +310,7 @@ static void CreateHatchedMon(struct Pokemon *egg, struct Pokemon *temp)
 {
     u16 species;
     u32 personality;
-    u8 i, friendship, ball;
+    u32 i, friendship, ball;
     u16 moves[MAX_MON_MOVES];
     u32 ivs[NUMERO_ESTADISTICAS];
 

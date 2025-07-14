@@ -1082,7 +1082,7 @@ static void CreateReflectionEffectSprites(void)
 
 u8 GetFirstInactiveObjectEventId(void)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
         if (!gObjectEvents[i].active)
@@ -1111,7 +1111,7 @@ bool8 TryGetObjectEventIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroupId, u
 
 u8 GetObjectEventIdByXY(s16 x, s16 y)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
         if (gObjectEvents[i].active && gObjectEvents[i].currentCoords.x == x && gObjectEvents[i].currentCoords.y == y)
@@ -1123,7 +1123,7 @@ u8 GetObjectEventIdByXY(s16 x, s16 y)
 
 static u8 GetObjectEventIdByLocalIdAndMapInternal(u8 localId, u8 mapNum, u8 mapGroupId)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
         if (gObjectEvents[i].active && gObjectEvents[i].localId == localId && gObjectEvents[i].mapNum == mapNum && gObjectEvents[i].mapGroup == mapGroupId)
@@ -1135,7 +1135,7 @@ static u8 GetObjectEventIdByLocalIdAndMapInternal(u8 localId, u8 mapNum, u8 mapG
 
 u8 GetObjectEventIdByLocalId(u8 localId)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
         if (gObjectEvents[i].active && gObjectEvents[i].localId == localId)
@@ -1200,7 +1200,7 @@ static u8 InitObjectEventStateFromTemplate(const struct ObjectEventTemplate *tem
 
 u8 Unref_TryInitLocalObjectEvent(u8 localId)
 {
-    u8 i;
+    u32 i;
     u8 objectEventCount;
     struct ObjectEventTemplate *template;
 
@@ -1289,7 +1289,7 @@ static void RemoveObjectEventInternal(struct ObjectEvent *objectEvent)
 
 void RemoveAllObjectEventsExceptPlayer(void)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
@@ -2166,7 +2166,7 @@ static void SpawnLightSprite(s16 x, s16 y, s16 camX, s16 camY, u32 lightType)
 {
     struct Sprite *sprite;
     const struct SpriteTemplate *template;
-    u8 i;
+    u32 i;
     for (i = 0; i < MAX_SPRITES; i++) 
     {
         sprite = &gSprites[i];
@@ -2210,7 +2210,7 @@ static void SpawnLightSprite(s16 x, s16 y, s16 camX, s16 camY, u32 lightType)
 
 void TrySpawnLightSprites(s16 camX, s16 camY) 
 {
-    u8 i;
+    u32 i;
     u8 objectCount;
     s16 left = gSaveBlockPtr->pos.x - 2;
     s16 right = gSaveBlockPtr->pos.x + MAP_OFFSET_W + 2;
@@ -2674,7 +2674,7 @@ static u32 LoadSpritePaletteIfTagExists(const struct SpritePalette *spritePalett
 
 static u8 FindObjectEventPaletteIndexByTag(u16 tag)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; sObjectEventSpritePalettes[i].tag != OBJ_EVENT_PAL_TAG_NONE; i++)
     {
@@ -2843,7 +2843,7 @@ static void CameraObject_UpdateFrozen(struct Sprite *sprite)
 
 static struct Sprite *FindCameraSprite(void)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < MAX_SPRITES; i++)
     {
@@ -2885,7 +2885,7 @@ void CameraObjectFreeze(void)
 
 u8 CopySprite(struct Sprite *sprite, s16 x, s16 y, u8 subpriority)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < MAX_SPRITES; i++)
     {
@@ -2997,7 +2997,7 @@ static const struct ObjectEventTemplate *GetObjectEventTemplateByLocalIdAndMap(u
 
 const struct ObjectEventTemplate *FindObjectEventTemplateByLocalId(u8 localId, const struct ObjectEventTemplate *templates, u8 count)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < count; i++)
     {
@@ -3009,7 +3009,7 @@ const struct ObjectEventTemplate *FindObjectEventTemplateByLocalId(u8 localId, c
 
 struct ObjectEventTemplate *GetBaseTemplateForObjectEvent(const struct ObjectEvent *objectEvent)
 {
-    int i;
+    u32 i;
 
     if (objectEvent->mapNum != gSaveBlockPtr->location.mapNum
      || objectEvent->mapGroup != gSaveBlockPtr->location.mapGroup)
@@ -5761,7 +5761,7 @@ static bool8 IsMetatileDirectionallyImpassable(struct ObjectEvent *objectEvent, 
 
 static bool8 DoesObjectCollideWithObjectAt(struct ObjectEvent *objectEvent, s16 x, s16 y)
 {
-    u8 i;
+    u32 i;
     struct ObjectEvent *curObject;
 
     if (objectEvent->localId == OBJ_EVENT_ID_FOLLOWER)
@@ -8908,7 +8908,7 @@ static void GetGroundEffectFlags_JumpLanding(struct ObjectEvent *objEvent, u32 *
 
     if (objEvent->landingJump && !objEvent->disableJumpLandingGroundEffect)
     {
-        u8 i;
+        u32 i;
 
         for (i = 0; i < ARRAY_COUNT(metatileFuncs); i++)
         {
@@ -9434,7 +9434,7 @@ static void GroundEffect_Shadow(struct ObjectEvent *objEvent, struct Sprite *spr
 
 static void DoFlaggedGroundEffects(struct ObjectEvent *objEvent, struct Sprite *sprite, u32 flags)
 {
-    u8 i;
+    u32 i;
     if (ObjectEventIsFarawayIslandMew(objEvent) == TRUE && !ShouldMewShakeGrass(objEvent))
         return;
 
@@ -10009,7 +10009,7 @@ static void SpriteCB_VirtualObject(struct Sprite *sprite)
 
 static int GetVirtualObjectSpriteId(u8 virtualObjId)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < MAX_SPRITES; i++)
     {
@@ -10169,7 +10169,7 @@ u8 MovementAction_LockAnim_Step0(struct ObjectEvent *objectEvent, struct Sprite 
     }
     else
     {
-        u8 i;
+        u32 i;
         u8 firstFreeSlot = OBJECT_EVENTS_COUNT;
         bool32 found = FALSE;
         for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
@@ -10233,7 +10233,7 @@ u8 MovementAction_UnlockAnim_Step0(struct ObjectEvent *objectEvent, struct Sprit
 
 u8 FindLockedObjectEventIndex(struct ObjectEvent *objectEvent)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
@@ -10283,7 +10283,7 @@ static void DestroyLevitateMovementTask(u8 taskId)
 // Used to freeze other objects except two trainers approaching for battle
 void FreezeObjectEventsExceptTwo(u8 objectEventId1, u8 objectEventId2)
 {
-    u8 i;
+    u32 i;
 
     for(i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {

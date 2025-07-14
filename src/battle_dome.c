@@ -1757,7 +1757,7 @@ static void InitDomeTrainers(void)
 static void CalcDomeMonStats(const struct TrainerMon *fmon, int level, u8 ivs, int *stats)
 {
     int evs[NUMERO_ESTADISTICAS];
-    int i;
+    u32 i;
 
     for (i = 0; i < NUMERO_ESTADISTICAS; i++)
     {
@@ -1786,7 +1786,7 @@ static void CalcDomeMonStats(const struct TrainerMon *fmon, int level, u8 ivs, i
 
 static void SwapDomeTrainers(int id1, int id2, u16 *statsArray)
 {
-    int i;
+    u32 i;
     u16 temp;
 
     SWAP(statsArray[id1], statsArray[id2], temp);
@@ -1830,7 +1830,7 @@ static void CreateDomeOpponentMons(u16 tournamentTrainerId)
 {
     u8 monsCount = 0;
     u32 otId = 0;
-    int i, selectedMonBits;
+    u32 i, selectedMonBits;
 
     ZeroEnemyPartyMons();
     selectedMonBits = GetDomeTrainerSelectedMons(tournamentTrainerId);
@@ -1988,7 +1988,7 @@ static void ShowDomeOpponentInfo(void)
 // For showing the opponent info card or the match info card
 static void Task_ShowTourneyInfoCard(u8 taskId)
 {
-    int i;
+    u32 i;
     int tournamentId = gTasks[taskId].tTournamentId;
     int mode = gTasks[taskId].tMode;
     int id = gTasks[taskId].tPrevTaskId;
@@ -2396,7 +2396,7 @@ static void SpriteCB_VerticalScrollArrow(struct Sprite *sprite)
 
 static void Task_HandleInfoCardInput(u8 taskId)
 {
-    int i;
+    u32 i;
     int windowId = 0;
     int mode = gTasks[taskId].data[3];
     int taskId2 = gTasks[taskId].data[4];
@@ -3341,7 +3341,7 @@ static void SetFacilityTrainerAndMonPtrs(void)
 
 static void ResetSketchedMoves(void)
 {
-    int i, moveSlot;
+    u32 i, moveSlot;
 
     for (i = 0; i < DOME_BATTLE_PARTY_SIZE; i++)
     {
@@ -3367,7 +3367,7 @@ static void ResetSketchedMoves(void)
 
 static void RestoreDomePlayerPartyHeldItems(void)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < DOME_BATTLE_PARTY_SIZE; i++)
     {
@@ -3389,7 +3389,7 @@ static void GetPlayerSeededBeforeOpponent(void)
 
 static void BufferLastDomeWinnerName(void)
 {
-    int i;
+    u32 i;
 
     SetFacilityTrainerAndMonPtrs();
     for (i = 0; i < DOME_TOURNAMENT_TRAINERS_COUNT; i++)
@@ -3403,7 +3403,7 @@ static void BufferLastDomeWinnerName(void)
 // For showing the previous tourney results before the player has entered a challenge
 static void InitRandomTourneyTreeResults(void)
 {
-    int i, j, k;
+    u32 i, j, k;
     int monLevel;
     int species[FRONTIER_PARTY_SIZE];
     int monTypesBits;
@@ -3534,7 +3534,7 @@ static void InitRandomTourneyTreeResults(void)
 
 static int TrainerIdToTournamentId(u16 trainerId)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < DOME_TOURNAMENT_TRAINERS_COUNT; i++)
     {
@@ -3548,7 +3548,7 @@ static int TrainerIdToTournamentId(u16 trainerId)
 // The same as the above one, but has global scope.
 int TrainerIdToDomeTournamentId(u16 trainerId)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < DOME_TOURNAMENT_TRAINERS_COUNT; i++)
     {

@@ -234,7 +234,7 @@ bool32 IsLoopedTaskActive(u32 taskId)
 
 bool32 FuncIsActiveLoopedTask(LoopedTask func)
 {
-    int i;
+    u32 i;
     for (i = 0; i < NUM_TASKS; i++)
     {
         if (gTasks[i].isActive
@@ -357,7 +357,7 @@ static void CB2_InitPokenavForTutorial(void)
 
 static void FreePokenavResources(void)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < POKENAV_SUBSTRUCT_COUNT; i++)
         FreePokenavSubstruct(i);
@@ -368,7 +368,7 @@ static void FreePokenavResources(void)
 
 static void InitPokenavResources(struct PokenavResources *resources)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < POKENAV_SUBSTRUCT_COUNT; i++)
         resources->substructPtrs[i] = NULL;
@@ -381,7 +381,7 @@ static void InitPokenavResources(struct PokenavResources *resources)
 
 static bool32 AnyMonHasRibbon(void)
 {
-    int i, j;
+    u32 i, j;
 
     for (i = 0; i < PARTY_SIZE; i++)
     {

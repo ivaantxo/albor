@@ -582,7 +582,7 @@ static void StatusInflictionScreenFlash(void)
 
 static void HealMon(struct Pokemon *mon)
 {
-    u8 i;
+    u32 i;
     u16 hp;
     u8 ppBonuses;
     u8 data[4];
@@ -677,7 +677,7 @@ static bool8 DoesTypePreventStatus(u16 species, u32 status)
 
 static bool8 TryInflictRandomStatus(void)
 {
-    u8 j, i;
+    u32 j, i;
     u8 count;
     u8 indices[FRONTIER_PARTY_SIZE];
     u32 status;
@@ -783,7 +783,7 @@ static bool8 TryInflictRandomStatus(void)
 
 static bool8 AtLeastOneHealthyMon(void)
 {
-    u8 i;
+    u32 i;
     u8 healthyMonsCount;
     u8 count;
 
@@ -816,7 +816,7 @@ static bool8 AtLeastOneHealthyMon(void)
 static u8 GetNextRoomType(void)
 {
     bool8 roomTypesDisabled[NUM_PIKE_ROOM_TYPES - 1]; // excludes Brain room, which cant be disabled
-    u8 i;
+    u32 i;
     u8 nextRoomType;
     u8 roomHint;
     u8 numRoomCandidates;
@@ -1049,7 +1049,7 @@ static void Task_DoStatusInflictionScreenFlash(u8 taskId)
 
 static void TryHealMons(u8 healCount)
 {
-    u8 j, i;
+    u32 j, i;
     u8 indices[FRONTIER_PARTY_SIZE];
 
     if (healCount == 0)
@@ -1115,7 +1115,7 @@ bool8 InBattlePike(void)
 
 static void SetHintedRoom(void)
 {
-    u8 i, count, id;
+    u32 i, count, id;
     u8 *roomCandidates;
 
     gSpecialVar_Result = FALSE;
@@ -1168,7 +1168,7 @@ static void GetRoomTypeHint(void)
 
 static void PrepareOneTrainer(bool8 difficult)
 {
-    int i;
+    u32 i;
     u8 lvlMode;
     u8 battleNum;
     u16 challengeNum;
@@ -1200,7 +1200,7 @@ static void PrepareOneTrainer(bool8 difficult)
 
 static void PrepareTwoTrainers(void)
 {
-    int i;
+    u32 i;
     u16 trainerId;
     u8 lvlMode = gSaveBlockPtr->frontier.lvlMode;
     u16 challengeNum = gSaveBlockPtr->frontier.pikeWinStreaks[lvlMode] / NUM_PIKE_ROOMS;
@@ -1241,7 +1241,7 @@ static void PrepareTwoTrainers(void)
 
 static void ClearPikeTrainerIds(void)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < NUM_PIKE_ROOMS; i++)
         gSaveBlockPtr->frontier.trainerIds[i] = 0xFFFF;
@@ -1264,7 +1264,7 @@ static void BufferTrainerIntro(void)
 static bool8 AtLeastTwoAliveMons(void)
 {
     struct Pokemon *mon;
-    u8 i, countDead;
+    u32 i, countDead;
 
     mon = &gPlayerParty[0];
     countDead = 0;
@@ -1332,7 +1332,7 @@ static void SetHealingroomTypesDisabled(void)
 
 static void IsPartyFullHealed(void)
 {
-    u8 i, j;
+    u32 i, j;
 
     gSpecialVar_Result = TRUE;
     for (i = 0; i < FRONTIER_PARTY_SIZE; i++)
@@ -1371,7 +1371,7 @@ static void IsPartyFullHealed(void)
 
 static void SaveMonHeldItems(void)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < FRONTIER_PARTY_SIZE; i++)
     {
@@ -1383,7 +1383,7 @@ static void SaveMonHeldItems(void)
 
 static void RestoreMonHeldItems(void)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < FRONTIER_PARTY_SIZE; i++)
     {

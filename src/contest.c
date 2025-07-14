@@ -1429,7 +1429,7 @@ static void Task_TryShowMoveSelectScreen(u8 taskId)
 
 static void Task_ShowMoveSelectScreen(u8 taskId)
 {
-    u8 i;
+    u32 i;
     u8 moveName[32];
 
     gBattle_BG0_Y = DISPLAY_HEIGHT;
@@ -3325,7 +3325,7 @@ static bool8 DidContestantPlaceHigher(s32 a, s32 b, struct ContestFinalStandings
 
 static void FillContestantWindowBgs(void)
 {
-    int i;
+    u32 i;
 
     for(i = 0; i < CONTESTANT_COUNT; i++)
         ContestBG_FillBoxWithTile(0, 0, 0x16, 2 + i * 5, 8, 2, 0x11);
@@ -3622,7 +3622,7 @@ static void CreateApplauseMeterSprite(void)
 
 static void CreateJudgeAttentionEyeTask(void)
 {
-    u8 i;
+    u32 i;
     u8 taskId = CreateTask(Task_FlashJudgeAttentionEye, 30);
 
     eContest.judgeAttentionTaskId = taskId;
@@ -3658,7 +3658,7 @@ static void Task_StopFlashJudgeAttentionEye(u8 taskId)
 
 static void Task_FlashJudgeAttentionEye(u8 taskId)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < CONTESTANT_COUNT; i++)
     {
@@ -3732,7 +3732,7 @@ static void UpdateBlendTaskContestantData(u8 contestant)
 // See comments on CreateUnusedBlendTask
 static void Task_UnusedBlend(u8 taskId)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < CONTESTANT_COUNT; i++)
     {

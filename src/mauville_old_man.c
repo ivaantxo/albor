@@ -213,7 +213,7 @@ static void InitGiddyTaleList(void)
         {EC_GROUP_MOVE_2,    0},
         {EC_GROUP_POKEMON_NATIONAL, 0}
     };
-    u16 i;
+    u32 i;
     u16 totalWords;
     u16 temp;
     u16 var; // re-used
@@ -757,7 +757,7 @@ static const u8 *GetStoryActionByStat(u32 stat)
 
 static u8 GetFreeStorySlot(void)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < NUM_STORYTELLER_TALES; i++)
     {

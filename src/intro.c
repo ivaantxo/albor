@@ -1959,7 +1959,7 @@ static void Task_Scene3_Groudon(u8 taskId)
 
 static void CreateGroudonRockSprites(u8 taskId)
 {
-    int i;
+    u32 i;
     u8 spriteId;
 
     for (i = 0; i < (int)ARRAY_COUNT(sGroudonRockData); i++)
@@ -2204,7 +2204,7 @@ static void Task_Scene3_Kyogre(u8 taskId)
 // Creates bubbles at positions spread across Kyogre's body
 static void CreateKyogreBubbleSprites_Body(u8 taskId)
 {
-    int i;
+    u32 i;
     u8 spriteId;
 
     for (i = 0; i < NUM_BUBBLES_IN_SET; i++)
@@ -2222,7 +2222,7 @@ static void CreateKyogreBubbleSprites_Body(u8 taskId)
 // Creates bubbles at positions around Kyogre's fins, for when it's moving them
 static void CreateKyogreBubbleSprites_Fins(void)
 {
-    int i;
+    u32 i;
     u8 spriteId;
 
     for (i = 0; i < NUM_BUBBLES_IN_SET; i++)
@@ -3264,7 +3264,7 @@ static void SpriteCB_GameFreakLogo(struct Sprite *sprite)
 
 static u8 CreateGameFreakLogoSprites(s16 x, s16 y, s16 unused)
 {
-    u16 i;
+    u32 i;
     u8 spriteId;
 
     // Create "Game Freak" letters

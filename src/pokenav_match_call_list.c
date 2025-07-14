@@ -206,7 +206,7 @@ static u32 CB2_HandleCallExitInput(struct Pokenav_MatchCallMenu *state)
 
 static u32 LoopedTask_BuildMatchCallList(s32 taskState)
 {
-    int i, j;
+    u32 i, j;
     struct Pokenav_MatchCallMenu *state = GetSubstructPtr(POKENAV_SUBSTRUCT_MATCH_CALL_MAIN);
     switch (taskState)
     {

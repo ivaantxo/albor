@@ -1122,7 +1122,7 @@ static void UpdateShadowSettingsText(struct PokemonSpriteVisualizer *data)
 
 static void ResetPokemonSpriteVisualizerWindows(void)
 {
-    u8 i;
+    u32 i;
 
     FreeAllWindowBuffers();
     InitWindows(sPokemonSpriteVisualizerWindowTemplate);

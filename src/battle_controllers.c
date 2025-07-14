@@ -1458,7 +1458,7 @@ void BtlController_HandleGetRawMonData(u32 battler)
 
     u8 *src = (u8 *)&party[gBattlerPartyIndexes[battler]] + gBattleResources->bufferA[battler][1];
     u8 *dst = (u8 *)&battleMon + gBattleResources->bufferA[battler][1];
-    u8 i;
+    u32 i;
 
     for (i = 0; i < gBattleResources->bufferA[battler][2]; i++)
         dst[i] = src[i];

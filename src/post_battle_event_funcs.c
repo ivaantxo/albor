@@ -10,7 +10,7 @@
 
 int GameClear(void)
 {
-    int i;
+    u32 i;
     bool32 ribbonGet;
     struct RibbonCounter {
         u8 partyIndex;

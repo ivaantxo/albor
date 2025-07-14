@@ -1709,7 +1709,7 @@ bool8 TryToWaterBerryTree(void)
 
 void ClearBerryTrees(void)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < BERRY_TREES_COUNT; i++)
         gSaveBlockPtr->berryTrees[i] = gBlankBerryTree;
@@ -1768,7 +1768,7 @@ static u16 GetMulchAffectedGrowthRate(u16 berryDuration, u8 mulch, u8 stage)
 
 void BerryTreeTimeUpdate(s32 minutes)
 {
-    int i;
+    u32 i;
     u32 drainVal;
     struct BerryTree *tree;
 
@@ -2181,7 +2181,7 @@ void SetBerryTreesSeen(void)
     s16 top;
     s16 right;
     s16 bottom;
-    int i;
+    u32 i;
 
     GetCameraCoords(&cam_left, &cam_top);
     left = cam_left;
@@ -2244,7 +2244,7 @@ static const u8 sBerryMutations[][3] = {
 
 static u8 GetMutationOutcome(u8 berry1, u8 berry2)
 {
-    u8 i;
+    u32 i;
     for(i = 0; i < ARRAY_COUNT(sBerryMutations); i++)
     {
         if ((sBerryMutations[i][0] == berry1 && sBerryMutations[i][1] == berry2)
@@ -2256,7 +2256,7 @@ static u8 GetMutationOutcome(u8 berry1, u8 berry2)
 
 static u8 TryForMutation(u8 berryTreeId, u8 berry)
 {
-    u8 i, j, mulch;
+    u32 i, j, mulch;
     s16 x1, x2, y1, y2;
 
     // Get location of current tree

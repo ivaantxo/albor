@@ -157,7 +157,7 @@ void CallBattleArenaFunction(void)
 
 u8 BattleArena_ShowJudgmentWindow(u8 *state)
 {
-    int i;
+    u32 i;
     u8 result = ARENA_RESULT_RUNNING;
     switch (*state)
     {

@@ -1147,7 +1147,7 @@ void CB2_OpenPokedexPlusHGSS(void)
 
 static void ResetPokedexView(struct PokedexView *pokedexView)
 {
-    u16 i;
+    u32 i;
 
     for (i = 0; i < DEX_COUNT - 1; i++)
     {
@@ -1483,7 +1483,7 @@ static void PrintMonName(u8 windowId, u8 fontId, const u8 *str, u8 left, u8 top)
 static void CreateMonListEntry(u8 position, u16 b)
 {
     s16 entryNum;
-    u16 i;
+    u32 i;
     u16 vOffset;
 
     switch (position)
@@ -1583,7 +1583,7 @@ static void CreateMonDexNum(u16 entryNum, u8 left, u8 top)
 
 void ResetPokedex(void)
 {
-    u16 i;
+    u32 i;
 
     sLastSelectedPokemon = 0;
     sPokeBallRotation = POKEBALL_ROTATION_TOP;
@@ -1598,7 +1598,7 @@ void ResetPokedex(void)
 u16 GetNationalPokedexCount(u8 caseID)
 {
     u16 count = 0;
-    u16 i;
+    u32 i;
     for (i = 0; i < DEX_COUNT - 1; i++)
     {
         switch (caseID)
@@ -1716,7 +1716,7 @@ static void ClearMonListEntry(u8 x, u8 y)
 
 static void CreateMonSpritesAtPos(u16 selectedMon)
 {
-    u8 i;
+    u32 i;
     u16 dexNum;
     u8 spriteId;
 
@@ -1764,7 +1764,7 @@ static void CreateMonSpritesAtPos(u16 selectedMon)
 
 static bool8 UpdateDexListScroll(u8 direction, u8 monMoveIncrement, u8 scrollTimerMax)
 {
-    u16 i;
+    u32 i;
     u8 step;
 
     if (sPokedexView->scrollTimer)
@@ -1843,7 +1843,7 @@ static u16 TryDoPokedexScroll(u16 selectedMon)
 {
     u8 scrollTimer;
     u8 scrollMonIncrement;
-    u8 i;
+    u32 i;
     u16 startingPos;
     u8 scrollDir = 0;
 
@@ -1911,7 +1911,7 @@ static u16 TryDoPokedexScroll(u16 selectedMon)
 
 static void UpdateSelectedMonSpriteId(void)
 {
-    u16 i;
+    u32 i;
 
     for (i = 0; i < MAX_MONS_ON_SCREEN; i++)
     {
@@ -1981,7 +1981,7 @@ static bool8 TryDoInfoScreenScroll(void)
 
 static u8 ClearMonSprites(void)
 {
-    u16 i;
+    u32 i;
 
     for (i = 0; i < MAX_MONS_ON_SCREEN; i++)
     {
@@ -2004,7 +2004,7 @@ static u16 GetPokemonSpriteToDisplay(u16 species)
 
 static u32 CreatePokedexMonSprite(u16 num, s16 x, s16 y)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < MAX_MONS_ON_SCREEN; i++)
     {
         if (sPokedexView->monSpriteIds[i] == 0xFFFF)
@@ -2329,7 +2329,7 @@ static void CreateStatBars(struct PokedexListItem *dexMon)
 
     if (dexMon->owned) // Show filed bars
     {
-        u8 i;
+        u32 i;
         u32 width, statValue;
         u8 *gfx = Alloc(64 * 64);
         static const u8 sBarsYOffset[] = {3, 13, 23, 33, 43, 53};
@@ -3000,7 +3000,7 @@ static void PrintCurrentSpeciesTypeInfo(u8 newEntry, u16 species)
 
 static void CreateTypeIconSprites(void)
 {
-    u8 i;
+    u32 i;
 
     LoadCompressedSpriteSheet(&gSpriteSheet_MoveTypes);
     LoadCompressedPalette(gMoveTypes_Pal, OBJ_PLTT_ID(14), 2 * PLTT_SIZE_4BPP);
@@ -3225,7 +3225,7 @@ static void StatsPage_PrintNavigationButtons(void)
 
 static void ResetStatsWindows(void)
 {
-    u8 i;
+    u32 i;
 
     FreeAllWindowBuffers();
     InitWindows(sStatsScreen_WindowTemplates);
@@ -3251,7 +3251,7 @@ static void SaveMonDataInStruct(void)
         [ESTADISTICA_DEFENSA_ESPECIAL] = gSpeciesInfo[species].evYield_SpDefense
     };
     u8 differentEVs = 0;
-    u8 i;
+    u32 i;
 
     //Count how many different EVs
     for (i = 0; i < NUMERO_ESTADISTICAS; i++)
@@ -3523,7 +3523,7 @@ static bool8 CalculateMoves(void)
     u8 numTMHMMoves = 0;
     u8 numTutorMoves = 0;
     u16 movesTotal = 0;
-    u8 i,j;
+    u32 i,j;
 
     //Calculate amount of Egg and LevelUp moves
     numEggMoves = GetEggMovesBySpecies(species, statsMovesEgg);
@@ -4342,7 +4342,7 @@ static void EvoFormsPage_PrintNavigationButtons(void)
 
 static void ResetEvoScreenDataStruct(void)
 {
-    u8 i;
+    u32 i;
     sPokedexView->sEvoScreenData.numAllEvolutions = 0;
     sPokedexView->sEvoScreenData.numSeen = 0;
     sPokedexView->sEvoScreenData.menuPos = 0;
@@ -4356,7 +4356,7 @@ static void ResetEvoScreenDataStruct(void)
 
 static void GetSeenFlagTargetSpecies(void)
 {
-    u8 i;
+    u32 i;
     u16 species;
     for (i = 0; i < sPokedexView->sEvoScreenData.numAllEvolutions; i++)
     {
@@ -4643,8 +4643,8 @@ static void HandlePreEvolutionSpeciesPrint(u8 taskId, u16 preSpecies, u16 specie
 
 static u8 PrintPreEvolutions(u8 taskId, u16 species)
 {
-    u16 i;
-    u16 j;
+    u32 i;
+    u32 j;
 
     u8 base_x = 13+8;
     u8 base_y = 51;
@@ -4729,7 +4729,7 @@ static u8 PrintPreEvolutions(u8 taskId, u16 species)
 
 static u8 PrintEvolutionTargetSpeciesAndMethod(u8 taskId, u16 species, u8 depth, u8 depth_i)
 {
-    u16 i;
+    u32 i;
     const struct MapHeader *mapHeader;
     u16 targetSpecies = 0;
     u16 previousTargetSpecies = 0;
@@ -4874,7 +4874,7 @@ static u8 PrintEvolutionTargetSpeciesAndMethod(u8 taskId, u16 species, u8 depth,
 
 static void Task_SwitchScreensFromEvolutionScreen(u8 taskId)
 {
-    u8 i;
+    u32 i;
     if (!gFundidoPaletas.activo)
     {
         //FreeMonIconPalettes();                                          //Destroy pokemon icon sprite
@@ -4902,7 +4902,7 @@ static void Task_SwitchScreensFromEvolutionScreen(u8 taskId)
 
 static void Task_ExitEvolutionScreen(u8 taskId)
 {
-    u8 i;
+    u32 i;
     if (!gFundidoPaletas.activo)
     {
         //FreeMonIconPalettes();                                          //Destroy pokemon icon sprite
@@ -5124,7 +5124,7 @@ static void Task_HandleFormsScreenInput(u8 taskId)
 
 static void PrintForms(u8 taskId, u16 species)
 {
-    u8 i;
+    u32 i;
     u8 j = 1;
     u16 speciesForm;
 
@@ -5168,7 +5168,7 @@ static void PrintForms(u8 taskId, u16 species)
 
 static void Task_SwitchScreensFromFormsScreen(u8 taskId)
 {
-    u8 i;
+    u32 i;
     if (!gFundidoPaletas.activo)
     {
         //FreeMonIconPalettes();                                          //Destroy pokemon icon sprite
@@ -5193,7 +5193,7 @@ static void Task_SwitchScreensFromFormsScreen(u8 taskId)
 
 static void Task_ExitFormsScreen(u8 taskId)
 {
-    u8 i;
+    u32 i;
     if (!gFundidoPaletas.activo)
     {
         //FreeMonIconPalettes();                                          //Destroy pokemon icon sprite

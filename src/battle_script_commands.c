@@ -4520,7 +4520,7 @@ static void Cmd_jumpifarrayequal(void)
     u32 size = cmd->size;
     const u8 *jumpInstr = cmd->jumpInstr;
 
-    u8 i;
+    u32 i;
     for (i = 0; i < size; i++)
     {
         if (*array1 != *array2)
@@ -4545,7 +4545,7 @@ static void Cmd_jumpifarraynotequal(void)
     u32 size = cmd->size;
     const u8 *jumpInstr = cmd->jumpInstr;
 
-    u8 i;
+    u32 i;
     for (i = 0; i < size; i++)
     {
         if (*array1 == *array2)
@@ -11579,7 +11579,7 @@ static void Cmd_mimicattackcopy(void)
     }
     else
     {
-        int i;
+        u32 i;
 
         for (i = 0; i < MAX_MON_MOVES; i++)
         {
@@ -14600,7 +14600,7 @@ static bool8 CanAbilityPreventStatLoss(u16 abilityDef)
 
 static bool8 CanBurnHitThaw(u16 move)
 {
-    u8 i;
+    u32 i;
 
     if (B_BURN_HIT_THAW >= GEN_6)
     {

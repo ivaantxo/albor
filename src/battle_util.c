@@ -3405,7 +3405,7 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
             else if (B_BEAT_UP >= GEN_5 && gMovesInfo[gCurrentMove].effect == EFFECT_BEAT_UP)
             {
                 struct Pokemon* party = GetBattlerParty(gBattlerAttacker);
-                int i;
+                u32 i;
 
                 for (i = 0; i < PARTY_SIZE; i++)
                 {
@@ -10622,7 +10622,7 @@ bool32 CanFling(u32 battler)
 // Useful for effects like pickpocket, eject button, red card, dancer
 void SortBattlersBySpeed(u8 *battlers, bool32 slowToFast)
 {
-    int i, j, currSpeed, currBattler;
+    u32 i, j, currSpeed, currBattler;
     u16 speeds[MAX_BATTLERS_COUNT] = {0};
 
     for (i = 0; i < gBattlersCount; i++)

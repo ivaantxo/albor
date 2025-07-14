@@ -434,7 +434,7 @@ void AnimMissileArc_Step(struct Sprite *sprite)
         s16 x2 = sprite->x2;
         u16 y1 = sprite->y;
         s16 y2 = sprite->y2;
-        int i;
+        u32 i;
 
         for (i = 0; i < 8; i++)
             tempData[i] = data[i];

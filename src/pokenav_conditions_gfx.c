@@ -614,7 +614,7 @@ static void CreateMonMarkingsOrPokeballIndicators(void)
     struct SpritePalette sprPals[3];
     struct SpriteSheet sprSheet;
     struct Sprite *sprite;
-    u16 i, spriteId;
+    u32 i, spriteId;
     struct Pokenav_ConditionMenuGfx *menu = GetSubstructPtr(POKENAV_SUBSTRUCT_CONDITION_GRAPH_MENU_GFX);
 
     LoadConditionSelectionIcons(sprSheets, &sprTemplate, sprPals);
@@ -696,7 +696,7 @@ static void CreateMonMarkingsOrPokeballIndicators(void)
 
 static void FreeConditionMenuGfx(struct Pokenav_ConditionMenuGfx *menu)
 {
-    u8 i;
+    u32 i;
 
     if (IsConditionMenuSearchMode() == TRUE)
     {

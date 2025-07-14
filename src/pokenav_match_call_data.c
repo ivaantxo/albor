@@ -1106,7 +1106,7 @@ int MatchCall_GetOverrideFacilityClass(u32 idx)
 
 bool32 MatchCall_HasRematchId(u32 idx)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < (int)ARRAY_COUNT(sMatchCallHeaders); i++)
     {

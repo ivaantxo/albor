@@ -1184,7 +1184,7 @@ static void SlotMachineSetup_InitGpuRegs(void)
 // Set up initial state of slot machine
 static void InitSlotMachine(void)
 {
-    u8 i;
+    u32 i;
 
     SlotMachine_InitFromTask();
     sSlotMachine->state = SLOTTASK_UNFADE;
@@ -1821,7 +1821,7 @@ static void ResetBiasFailure(void)
 // See sBiasSymbols for each bias's corresponding symbol.
 static u8 GetBiasSymbol(u8 machineBias)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < 8; i++)
     {
@@ -2239,7 +2239,7 @@ s16 AdvanceReeltimeReelToNextSymbol(s16 value)
 
 static void CreateReelTasks(void)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < NUM_REELS; i++)
     {
         u8 taskId = CreateTask(Task_Reel, 2);
@@ -3216,14 +3216,14 @@ static void DarkenMatchLine(u8 matchLineId)
 // light up the match line for each bet by the player
 static void LightenBetTiles(u8 betVal)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < sMatchLinesPerBet[betVal]; i++)
         LightenMatchLine(sBetToMatchLineIds[betVal][i]);
 }
 
 static void DarkenBetTiles(u8 betVal)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < sMatchLinesPerBet[betVal]; i++)
         DarkenMatchLine(sBetToMatchLineIds[betVal][i]);
 }
@@ -3240,7 +3240,7 @@ static void DarkenBetTiles(u8 betVal)
 // 5 are created, 1 for each possible match line (3 rows, 2 diagonals)
 static void CreateInvisibleFlashMatchLineSprites(void)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < ARRAY_COUNT(sSlotMachine->flashMatchLineSpriteIds); i++)
     {
         u8 spriteId = CreateInvisibleSprite(SpriteCB_FlashMatchingLines);
@@ -3264,7 +3264,7 @@ static void FlashMatchLine(u8 matchLineId)
 // After this it does half-brightness flashes until the payout finishes
 static bool8 IsMatchLineDoneFlashingBeforePayout(void)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < ARRAY_COUNT(sSlotMachine->flashMatchLineSpriteIds); i++)
     {
         struct Sprite *sprite = &gSprites[sSlotMachine->flashMatchLineSpriteIds[i]];
@@ -3277,7 +3277,7 @@ static bool8 IsMatchLineDoneFlashingBeforePayout(void)
 // When payout is finished, stop lines flashing (but not if they're in the middle of a flash)
 static bool8 TryStopMatchLinesFlashing(void)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < ARRAY_COUNT(sSlotMachine->flashMatchLineSpriteIds); i++)
     {
         if (!TryStopMatchLineFlashing(sSlotMachine->flashMatchLineSpriteIds[i]))
@@ -3473,7 +3473,7 @@ static void PikaPowerBolt_ClearAll(struct Task *task)
 
 static void ResetPikaPowerBoltTask(struct Task *task)
 {
-    u8 i;
+    u32 i;
 
     for (i = 2; i < NUM_TASK_DATA; i++)
         task->data[i] = 0;
@@ -3597,7 +3597,7 @@ static void ReelTime_WaitStartPikachu(struct Task *task)
 
 static void ReelTime_PikachuSpeedUp1(struct Task *task)
 {
-    int i;
+    u32 i;
     u8 pikachuAnimIds[ARRAY_COUNT(sReelTimePikachuAnimIds)];
     s16 reelTimeBoltDelays[ARRAY_COUNT(sReelTimeBoltDelays)];
     s16 pikachuAuraFlashDelays[ARRAY_COUNT(sPikachuAuraFlashDelays)];
@@ -3862,7 +3862,7 @@ static void LoadReelTimeWindowTilemap(s16 a0, s16 a1)
 
 static void ClearReelTimeWindowTilemap(s16 a0)
 {
-    u8 i;
+    u32 i;
     for (i = 4; i < 15; i++)
         LoadBgTilemap(1, sEmptyTilemap, 2, 32 * i + a0);
 }
@@ -3971,7 +3971,7 @@ static void InfoBox_FreeTask(struct Task *task)
 
 static void CreateDigitalDisplayTask(void)
 {
-    u8 i;
+    u32 i;
     struct Task *task;
     i = CreateTask(Task_DigitalDisplay, 3);
     sSlotMachine->digDisplayTaskId = i;
@@ -3984,7 +3984,7 @@ static void CreateDigitalDisplayTask(void)
 // For the panel on the right side of the slot screen
 static void CreateDigitalDisplayScene(u8 id)
 {
-    u8 i;
+    u32 i;
     struct Task *task;
 
     DestroyDigitalDisplayScene();
@@ -4006,7 +4006,7 @@ static void CreateDigitalDisplayScene(u8 id)
 
 static void AddDigitalDisplaySprite(u8 templateIdx, SpriteCallback callback, s16 x, s16 y, s16 spriteId)
 {
-    u8 i;
+    u32 i;
     struct Task *task = &gTasks[sSlotMachine->digDisplayTaskId];
     for (i = 4; i < NUM_TASK_DATA; i++)
     {
@@ -4020,7 +4020,7 @@ static void AddDigitalDisplaySprite(u8 templateIdx, SpriteCallback callback, s16
 
 static void DestroyDigitalDisplayScene(void)
 {
-    u8 i;
+    u32 i;
     struct Task *task = &gTasks[sSlotMachine->digDisplayTaskId];
 
     if ((u16)task->data[1] != 0xFFFF)
@@ -4038,7 +4038,7 @@ static void DestroyDigitalDisplayScene(void)
 
 static bool8 IsDigitalDisplayAnimFinished(void)
 {
-    u8 i;
+    u32 i;
     struct Task *task = &gTasks[sSlotMachine->digDisplayTaskId];
     for (i = 4; i < NUM_TASK_DATA; i++)
     {
@@ -4247,7 +4247,7 @@ static void CreateBrokenReelTimeMachineSprite(void)
 
 static void CreateReelTimeNumberSprites(void)
 {
-    u8 i;
+    u32 i;
     s16 r5;
     for (i = 0, r5 = 0; i < ARRAY_COUNT(sSlotMachine->reelTimeNumberSpriteIds); i++, r5 += 20)
     {
@@ -4298,7 +4298,7 @@ static void CreateReelTimeNumberGapSprite(void)
 
 static void DestroyReelTimeMachineSprites(void)
 {
-    u8 i;
+    u32 i;
 
     DestroySprite(&gSprites[sSlotMachine->reelTimeNumberGapSpriteId]);
     for (i = 0; i < ARRAY_COUNT(sSlotMachine->reelTimeMachineSpriteIds); i++)
@@ -4313,7 +4313,7 @@ static void DestroyReelTimeMachineSprites(void)
 
 static void DestroyReelTimeShadowSprites(void)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < ARRAY_COUNT(sSlotMachine->reelTimeShadowSpriteIds); i++)
         DestroySprite(&gSprites[sSlotMachine->reelTimeShadowSpriteIds[i]]);
@@ -4382,7 +4382,7 @@ static void SetReelTimeBoltDelay(s16 delay)
 
 static void DestroyReelTimeBoltSprites(void)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < ARRAY_COUNT(sSlotMachine->reelTimeBoltSpriteIds); i++)
         DestroySprite(&gSprites[sSlotMachine->reelTimeBoltSpriteIds[i]]);
@@ -4436,7 +4436,7 @@ static void SetReelTimePikachuAuraFlashDelay(s16 delay)
 
 static void DestroyReelTimePikachuAuraSprites(void)
 {
-    u8 i;
+    u32 i;
     MultiplyInvertedPaletteRGBComponents(OBJ_PLTT_ID(IndexOfSpritePaletteTag(PALTAG_PIKA_AURA)) + 3, 0, 0, 0);
     for (i = 0; i < ARRAY_COUNT(sSlotMachine->reelTimePikachuAuraSpriteIds); i++)
         DestroySprite(&gSprites[sSlotMachine->reelTimePikachuAuraSpriteIds[i]]);
@@ -4467,7 +4467,7 @@ static void DestroyReelTimeExplosionSprite(void)
 // The "confusion" ducks that circle Pikachu if the Reel Time machine explodes
 static void CreateReelTimeDuckSprites(void)
 {
-    u8 i;
+    u32 i;
     u16 sp[] = {0x0, 0x40, 0x80, 0xC0};
     for (i = 0; i < ARRAY_COUNT(sSlotMachine->reelTimeDuckSpriteIds); i++)
     {
@@ -4500,7 +4500,7 @@ static void SpriteCB_ReelTimeDuck(struct Sprite *sprite)
 
 static void DestroyReelTimeDuckSprites(void)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < ARRAY_COUNT(sSlotMachine->reelTimeDuckSpriteIds); i++)
     {
         DestroySprite(&gSprites[sSlotMachine->reelTimeDuckSpriteIds[i]]);
@@ -5003,7 +5003,7 @@ static void EndDigitalDisplayScene_InsertBet(void)
 
 static void LoadSlotMachineGfx(void)
 {
-    u8 i;
+    u32 i;
 
     LoadReelBackground();
     sDigitalDisplayGfxPtr = Alloc(0x3200);
@@ -5028,7 +5028,7 @@ static void LoadSlotMachineGfx(void)
 static void LoadReelBackground(void)
 {
     u8 *dest;
-    u8 i, j;
+    u32 i, j;
 
     sReelBackgroundSpriteSheet = AllocZeroed(sizeof(struct SpriteSheet));
     sReelBackground_Gfx = AllocZeroed(0x2000); // Background is plain white

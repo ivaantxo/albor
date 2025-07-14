@@ -105,7 +105,7 @@ static void SpriteCB_Sparkle_Dummy(struct Sprite *sprite)
 
 static void SetEvoSparklesMatrices(void)
 {
-    u16 i;
+    u32 i;
     for (i = 0; i < ARRAY_COUNT(sEvoSparkleMatrices); i++)
         SetOamMatrix(20 + i, sEvoSparkleMatrices[i], 0, 0, sEvoSparkleMatrices[i]);
 }
@@ -289,7 +289,7 @@ static void Task_Sparkles_SpiralUpward(u8 taskId)
     {
         if (!(gTasks[taskId].tTimer & 7))
         {
-            u8 i;
+            u32 i;
             for (i = 0; i < 4; i++)
                 CreateSparkle_SpiralUpward((gTasks[taskId].tTimer & 120) * 2 + i * 64);
         }
@@ -329,7 +329,7 @@ static void Task_Sparkles_ArcDown(u8 taskId)
     {
         if (gTasks[taskId].tTimer < 6)
         {
-            u8 i;
+            u32 i;
             for (i = 0; i < 9; i++)
                 CreateSparkle_ArcDown(i * 16);
         }
@@ -363,13 +363,13 @@ static void Task_Sparkles_CircleInward(u8 taskId)
     {
         if (gTasks[taskId].tTimer == 0)
         {
-            u8 i;
+            u32 i;
             for (i = 0; i < 16; i++)
                 CreateSparkle_CircleInward(i * 16, 4);
         }
         if (gTasks[taskId].tTimer == 32)
         {
-            u8 i;
+            u32 i;
             for (i = 0; i < 16; i++)
                 CreateSparkle_CircleInward(i * 16, 8);
         }
@@ -404,7 +404,7 @@ static void Task_Sparkles_SprayAndFlash(u8 taskId)
 {
     if (gTasks[taskId].tTimer < 128)
     {
-        u8 i;
+        u32 i;
         switch (gTasks[taskId].tTimer)
         {
         default:
@@ -452,7 +452,7 @@ static void Task_Sparkles_SprayAndFlashTrade(u8 taskId)
 {
     if (gTasks[taskId].tTimer < 128)
     {
-        u8 i;
+        u32 i;
         switch (gTasks[taskId].tTimer)
         {
         default:
@@ -498,7 +498,7 @@ static void SpriteCB_EvolutionMonSprite(struct Sprite *sprite)
 // Alternately grow/shrink the pre-evolution and post-evolution mon sprites
 u8 CycleEvolutionMonSprite(u8 preEvoSpriteId, u8 postEvoSpriteId)
 {
-    u16 i;
+    u32 i;
     u16 monPalette[16];
     u8 taskId;
     s32 toDiv;

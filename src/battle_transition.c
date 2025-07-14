@@ -1140,7 +1140,7 @@ static bool8 Shuffle_Init(struct Task *task)
 
 static bool8 Shuffle_End(struct Task *task)
 {
-    u8 i;
+    u32 i;
     u16 amplitude, sinVal;
 
     sTransitionData->VBlank_DMA = FALSE;
@@ -1749,7 +1749,7 @@ static void Task_ClockwiseWipe(u8 taskId)
 
 static bool8 ClockwiseWipe_Init(struct Task *task)
 {
-    u16 i;
+    u32 i;
 
     InitTransitionData();
     ScanlineEffect_Clear();
@@ -1948,7 +1948,7 @@ static void Task_Ripple(u8 taskId)
 
 static bool8 Ripple_Init(struct Task *task)
 {
-    u8 i;
+    u32 i;
 
     InitTransitionData();
     ScanlineEffect_Clear();
@@ -1967,7 +1967,7 @@ static bool8 Ripple_Init(struct Task *task)
 
 static bool8 Ripple_Main(struct Task *task)
 {
-    u8 i;
+    u32 i;
     s16 amplitude;
     u16 sinVal, speed;
 
@@ -2033,7 +2033,7 @@ static void Task_Wave(u8 taskId)
 
 static bool8 Wave_Init(struct Task *task)
 {
-    u8 i;
+    u32 i;
 
     InitTransitionData();
     ScanlineEffect_Clear();
@@ -2054,7 +2054,7 @@ static bool8 Wave_Init(struct Task *task)
 
 static bool8 Wave_Main(struct Task *task)
 {
-    u8 i, sinIndex;
+    u32 i, sinIndex;
     u16 *toStore;
     bool8 finished;
 
@@ -2133,7 +2133,7 @@ static void Task_Mugshot(u8 taskId)
 
 static bool8 Mugshot_Init(struct Task *task)
 {
-    u8 i;
+    u32 i;
 
     InitTransitionData();
     ScanlineEffect_Clear();
@@ -2186,7 +2186,7 @@ static bool8 Mugshot_SetGfx(struct Task *task)
 
 static bool8 Mugshot_ShowBanner(struct Task *task)
 {
-    u8 i, sinIndex;
+    u32 i, sinIndex;
     u16 *toStore;
     s16 x;
     s32 mergedValue;
@@ -2240,7 +2240,7 @@ static bool8 Mugshot_ShowBanner(struct Task *task)
 
 static bool8 Mugshot_StartOpponentSlide(struct Task *task)
 {
-    u8 i;
+    u32 i;
     u16 *toStore;
 
     sTransitionData->VBlank_DMA = FALSE;
@@ -2571,7 +2571,7 @@ static void Task_Slice(u8 taskId)
 
 static bool8 Slice_Init(struct Task *task)
 {
-    u16 i;
+    u32 i;
 
     InitTransitionData();
     ScanlineEffect_Clear();
@@ -2601,7 +2601,7 @@ static bool8 Slice_Init(struct Task *task)
 
 static bool8 Slice_Main(struct Task *task)
 {
-    u16 i;
+    u32 i;
 
     sTransitionData->VBlank_DMA = FALSE;
 
@@ -2690,7 +2690,7 @@ static void Task_ShredSplit(u8 taskId)
 
 static bool8 ShredSplit_Init(struct Task *task)
 {
-    u16 i;
+    u32 i;
 
     InitTransitionData();
     ScanlineEffect_Clear();
@@ -2725,7 +2725,7 @@ static bool8 ShredSplit_Init(struct Task *task)
 
 static bool8 ShredSplit_Main(struct Task *task)
 {
-    u16 i, j, k;
+    u32 i, j, k;
     u8 baseY[ARRAY_COUNT(sShredSplit_SectionYCoords)];
     s16 moveDirs[ARRAY_COUNT(sShredSplit_SectionMoveDirs)];
     u8 linesFinished;
@@ -3056,8 +3056,8 @@ static bool8 RectangularSpiral_Init(struct Task *task)
 static bool8 RectangularSpiral_Main(struct Task *task)
 {
     u16 *tilemap, *tileset;
-    u8 i;
-    u16 j;
+    u32 i;
+    u32 j;
     bool32 done = TRUE;
 
     GetBg0TilesDst(&tilemap, &tileset);
@@ -3260,7 +3260,7 @@ static void Task_Rayquaza(u8 taskId)
 static bool8 Rayquaza_Init(struct Task *task)
 {
     u16 *tilemap, *tileset;
-    u16 i;
+    u32 i;
 
     InitTransitionData();
     ScanlineEffect_Clear();
@@ -3352,7 +3352,7 @@ static bool8 Rayquaza_TriRing(struct Task *task)
     }
     if (++task->tTimer >= 40)
     {
-        u16 i;
+        u32 i;
 
         sTransitionData->WININ = 0;
         sTransitionData->WINOUT = WINOUT_WIN01_ALL;
@@ -3412,7 +3412,7 @@ static void Task_WhiteBarsFade(u8 taskId)
 
 static bool8 WhiteBarsFade_Init(struct Task *task)
 {
-    u16 i;
+    u32 i;
 
     InitTransitionData();
     ScanlineEffect_Clear();
@@ -3539,7 +3539,7 @@ static void SpriteCB_WhiteBarFade(struct Sprite *sprite)
     }
     else
     {
-        u16 i;
+        u32 i;
         u16 *ptr1 = &gScanlineEffectRegBuffers[0][sprite->y];
         u16 *ptr2 = &gScanlineEffectRegBuffers[0][sprite->y + DISPLAY_HEIGHT];
         for (i = 0; i < DISPLAY_HEIGHT / NUM_WHITE_BARS; i++)
@@ -3654,7 +3654,7 @@ static void Task_AngledWipes(u8 taskId)
 
 static bool8 AngledWipes_Init(struct Task *task)
 {
-    u16 i;
+    u32 i;
 
     InitTransitionData();
     ScanlineEffect_Clear();
@@ -3929,7 +3929,7 @@ static void FadeScreenBlack(void)
 
 static void SetSinWave(s16 *array, s16 sinAdd, s16 index, s16 indexIncrementer, s16 amplitude, s16 arrSize)
 {
-    u8 i;
+    u32 i;
     for (i = 0; arrSize > 0; arrSize--, i++, index += indexIncrementer)
         array[i] = sinAdd + Sin(index & 0xFF, amplitude);
 }
@@ -4170,7 +4170,7 @@ static bool8 FrontierLogoWave_SetGfx(struct Task *task)
 
 static bool8 FrontierLogoWave_InitScanline(struct Task *task)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < DISPLAY_HEIGHT; i++)
         gScanlineEffectRegBuffers[1][i] = sTransitionData->cameraY;
@@ -4185,7 +4185,7 @@ static bool8 FrontierLogoWave_InitScanline(struct Task *task)
 
 static bool8 FrontierLogoWave_Main(struct Task *task)
 {
-    u8 i;
+    u32 i;
     u16 sinVal, amplitude, sinSpread;
 
     sTransitionData->VBlank_DMA = FALSE;
@@ -4335,7 +4335,7 @@ static bool8 FrontierSquares_Draw(struct Task *task)
 
 static bool8 FrontierSquares_Shrink(struct Task *task)
 {
-    u8 i;
+    u32 i;
     u16 *tilemap, *tileset;
 
     GetBg0TilesDst(&tilemap, &tileset);

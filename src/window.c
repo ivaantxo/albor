@@ -19,9 +19,9 @@ static void DummyWindowBgTilemap(void)
 
 bool32 InitWindows(const struct WindowTemplate *templates)
 {
-    int i;
+    u32 i;
     void *bgTilemapBuffer;
-    int j;
+    u32 j;
     u32 bgLayer;
     u16 attrib;
     u8 *allocatedTilemapBuffer;
@@ -91,7 +91,7 @@ u32 AddWindow(const struct WindowTemplate *template)
     u32 bgLayer;
     u16 attrib;
     u8 *allocatedTilemapBuffer;
-    int i;
+    u32 i;
 
     for (win = 0; win < WINDOWS_MAX; ++win)
     {
@@ -183,7 +183,7 @@ void RemoveWindow(u32 windowId)
 
 void FreeAllWindowBuffers(void)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < NUM_BACKGROUNDS; ++i)
     {
@@ -276,7 +276,7 @@ void PutWindowRectTilemapOverridePalette(u32 windowId, u8 x, u8 y, u8 width, u8 
 {
     struct Window windowLocal = gWindows[windowId];
     u16 currentRow = windowLocal.window.baseBlock + (y * windowLocal.window.width) + x + GetBgAttribute(windowLocal.window.bg, BG_ATTR_BASETILE);
-    int i;
+    u32 i;
 
     for (i = 0; i < height; ++i)
     {
@@ -313,7 +313,7 @@ void PutWindowRectTilemap(u32 windowId, u8 x, u8 y, u8 width, u8 height)
 {
     struct Window windowLocal = gWindows[windowId];
     u16 currentRow = windowLocal.window.baseBlock + (y * windowLocal.window.width) + x + GetBgAttribute(windowLocal.window.bg, BG_ATTR_BASETILE);
-    int i;
+    u32 i;
 
     for (i = 0; i < height; ++i)
     {

@@ -590,7 +590,7 @@ static void AnimDigDirtMound(struct Sprite *sprite)
 // arg2: Length of time to shake for
 void AnimTask_HorizontalShake(u8 taskId)
 {
-    u16 i;
+    u32 i;
     struct Task *task = &gTasks[taskId];
 
     if (gBattleAnimArgs[1] != 0)
@@ -681,7 +681,7 @@ static void AnimTask_ShakeTerrain(u8 taskId)
 
 static void AnimTask_ShakeBattlers(u8 taskId)
 {
-    u16 i;
+    u32 i;
     struct Task *task = &gTasks[taskId];
 
     switch (task->tState)
@@ -723,7 +723,7 @@ static void AnimTask_ShakeBattlers(u8 taskId)
 
 static void SetBattlersXOffsetForShake(struct Task *task)
 {
-    u16 i;
+    u32 i;
     u16 xOffset;
 
     if ((task->tTimer & 1) == 0)

@@ -468,7 +468,7 @@ static void PrintSoundNumber(u16 soundIndex, u8 windowId) // sub_080E8928
 
 static void PrintPaddedString(const u8 *const string, u8 windowId) // sub_080E8978
 {
-    u8 i;
+    u32 i;
     u8 str[32];
 
     for (i = 0; i < 31; i++)

@@ -333,7 +333,7 @@ static void Task_UseItemfinder(u8 taskId)
 {
     u8 playerDir;
     u8 playerDirToItem;
-    u8 i;
+    u32 i;
     s16 *data = gTasks[taskId].data;
     if (tCounter == 0)
     {
@@ -409,7 +409,7 @@ static bool8 IsHiddenItemPresentAtCoords(const struct MapEvents *events, s16 x, 
 {
     u8 bgEventCount = events->bgEventCount;
     const struct BgEvent *bgEvent = events->bgEvents;
-    int i;
+    u32 i;
 
     for (i = 0; i < bgEventCount; i++)
     {

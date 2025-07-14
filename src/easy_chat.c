@@ -1421,7 +1421,7 @@ static void ExitEasyChatScreen(MainCallback callback)
 
 void ShowEasyChatScreen(void)
 {
-    int i;
+    u32 i;
     u16 *words;
     struct MauvilleManBard *bard;
     switch (gSpecialVar_0x8004)
@@ -1521,7 +1521,7 @@ void QuizLadyShowQuizQuestion(void)
 
 static int GetQuizLadyScreenByFuncId(u16 funcId)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < ARRAY_COUNT(sQuizLadyEasyChatScreens); i ++)
     {
@@ -1538,7 +1538,7 @@ static bool32 IsFuncIdForQuizLadyScreen(u16 funcId)
 
 static void EnterQuizLadyScreen(u16 funcId)
 {
-    int i;
+    u32 i;
 
     i = GetQuizLadyScreenByFuncId(funcId);
     ResetTasks();
@@ -1581,7 +1581,7 @@ static void DoQuizSetQuestionEasyChatScreen(void)
 static bool8 InitEasyChatScreenStruct(u8 type, u16 *words, u8 displayedPersonType)
 {
     u8 templateId;
-    int i;
+    u32 i;
 
     sEasyChatScreen = Alloc(sizeof(*sEasyChatScreen));
     if (sEasyChatScreen == NULL)
@@ -2230,21 +2230,21 @@ static int SelectNewWord(void)
 
 static void SaveCurrentPhrase(void)
 {
-    int i;
+    u32 i;
     for (i = 0; i < sEasyChatScreen->maxWords; i++)
         sEasyChatScreen->savedPhrase[i] = sEasyChatScreen->currentPhrase[i];
 }
 
 static void ResetCurrentPhrase(void)
 {
-    int i;
+    u32 i;
     for (i = 0; i < sEasyChatScreen->maxWords; i++)
         sEasyChatScreen->currentPhrase[i] = EC_EMPTY_WORD;
 }
 
 static void ResetCurrentPhraseToSaved(void)
 {
-    int i;
+    u32 i;
     for (i = 0; i < sEasyChatScreen->maxWords; i++)
         sEasyChatScreen->currentPhrase[i] = sEasyChatScreen->savedPhrase[i];
 }
@@ -2258,7 +2258,7 @@ static void SetSelectedWord(u16 easyChatWord)
 // Compare current phrase to the original saved phrase
 static bool8 DidPhraseChange(void)
 {
-    u16 i;
+    u32 i;
     for (i = 0; i < sEasyChatScreen->maxWords; i++)
     {
         if (sEasyChatScreen->currentPhrase[i] != sEasyChatScreen->savedPhrase[i])
@@ -2766,7 +2766,7 @@ static bool32 CanScrollDown(void)
 
 static bool8 IsPhraseDifferentThanPlayerInput(const u16 *phrase, u8 phraseLength)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < phraseLength; i++)
     {
@@ -2797,7 +2797,7 @@ static u8 GetEachChatScreenTemplateId(u8 type)
 
 static bool32 IsCurrentPhraseEmpty(void)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < sEasyChatScreen->maxWords; i++)
     {
@@ -2810,7 +2810,7 @@ static bool32 IsCurrentPhraseEmpty(void)
 
 static bool32 IsCurrentPhraseFull(void)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < sEasyChatScreen->maxWords; i++)
     {
@@ -2823,7 +2823,7 @@ static bool32 IsCurrentPhraseFull(void)
 
 static int IsQuizQuestionEmpty(void)
 {
-    int i;
+    u32 i;
     struct SaveBlock *saveBlock;
 
     if (sEasyChatScreen->type == EASY_CHAT_TYPE_QUIZ_SET_QUESTION)
@@ -2871,7 +2871,7 @@ static void GetQuizTitle(u8 *dst)
 
 static void BufferCurrentPhraseToStringVar2(void)
 {
-    int i;
+    u32 i;
     u16 *phrase;
     u8 *str;
 
@@ -2913,7 +2913,7 @@ static void SetSpecialEasyChatResult(void)
 
 static u16 DidPlayerInputABerryMasterWifePhrase(void)
 {
-    int i;
+    u32 i;
     for (i = 0; i < (int)ARRAY_COUNT(sBerryMasterWifePhrases); i++)
     {
         if (!IsPhraseDifferentThanPlayerInput(sBerryMasterWifePhrases[i], ARRAY_COUNT(*sBerryMasterWifePhrases)))
@@ -3080,7 +3080,7 @@ static bool8 ReprintPhrase(void)
 
 static bool8 UpdateMainCursor(void)
 {
-    u8 i;
+    u32 i;
     u16 *currentPhrase;
     u16 *ecWord;
     u8 frameId;
@@ -3971,7 +3971,7 @@ static void PrintCurrentPhrase(void)
     u8 *str;
     int frameId;
     bool32 isQuizQuestion;
-    int i, j, k;
+    u32 i, j, k;
 
     currentPhrase = GetCurrentPhrase();
     numColumns = GetNumColumns();
@@ -4159,7 +4159,7 @@ static void PrintKeyboardText(void)
 
 static void PrintKeyboardGroupNames(void)
 {
-    int i;
+    u32 i;
     int x, y;
 
     i = 0;
@@ -4241,7 +4241,7 @@ static void PrintWordSelectRowsPageUp(void)
 // the currently selected group and at the given offset and row
 static void PrintWordSelectText(u8 scrollOffset, u8 numRows)
 {
-    int i, j;
+    u32 i, j;
     u16 easyChatWord;
     int y;
     int wordIndex;
@@ -4990,7 +4990,7 @@ static int GetFooterOptionXOffset(int option)
 
 static void AddMainScreenButtonWindow(void)
 {
-    int i;
+    u32 i;
     u16 windowId;
     struct WindowTemplate template;
     int footerIndex = GetFooterIndex();
@@ -5047,7 +5047,7 @@ u16 EasyChat_GetNumWordsInGroup(u8 groupId)
 
 static bool8 IsEasyChatWordInvalid(u16 easyChatWord)
 {
-    u16 i;
+    u32 i;
     u8 groupId;
     u32 index;
     u16 numWords;
@@ -5126,7 +5126,7 @@ u8 *CopyEasyChatWord(u8 *dest, u16 easyChatWord)
 
 u8 *ConvertEasyChatWordsToString(u8 *dest, const u16 *src, u16 columns, u16 rows)
 {
-    u16 i, j;
+    u32 i, j;
     u16 numColumns = columns - 1;
 
     for (i = 0; i < rows; i++)
@@ -5172,7 +5172,7 @@ static u16 GetEasyChatWordStringLength(u16 easyChatWord)
 
 static bool8 CanPhraseFitInXRowsYCols(const u16 *easyChatWords, u8 numRows, u8 numColumns, u16 maxLength)
 {
-    u8 i, j;
+    u32 i, j;
 
     for (i = 0; i < numColumns; i++)
     {
@@ -5298,7 +5298,7 @@ void UnlockTrendySaying(u8 wordIndex)
 
 static u8 GetNumTrendySayingsUnlocked(void)
 {
-    u8 i;
+    u32 i;
     u8 numUnlocked;
 
     for (i = 0, numUnlocked = 0; i < NUM_TRENDY_SAYINGS; i++)
@@ -5312,7 +5312,7 @@ static u8 GetNumTrendySayingsUnlocked(void)
 
 u16 UnlockRandomTrendySaying(void)
 {
-    u16 i;
+    u32 i;
     u16 numToSkip;
     u8 numUnlocked = GetNumTrendySayingsUnlocked();
     if (numUnlocked == NUM_TRENDY_SAYINGS)
@@ -5342,7 +5342,7 @@ u16 UnlockRandomTrendySaying(void)
 
 static u16 GetRandomUnlockedEasyChatPokemon(void)
 {
-    u16 i;
+    u32 i;
     u16 numWords;
     const u16 *species;
     u16 index = EasyChat_GetNumWordsInGroup(EC_GROUP_POKEMON);
@@ -5371,7 +5371,7 @@ static u16 GetRandomUnlockedEasyChatPokemon(void)
 
 void InitEasyChatPhrases(void)
 {
-    u16 i, j;
+    u32 i, j;
 
     for (i = 0; i < ARRAY_COUNT(sDefaultProfileWords); i++)
         gSaveBlockPtr->easyChatProfile[i] = sDefaultProfileWords[i];
@@ -5422,7 +5422,7 @@ static void FreeEasyChatScreenWordData(void)
 
 static void SetUnlockedEasyChatGroups(void)
 {
-    int i;
+    u32 i;
 
     sWordData->numUnlockedGroups = 0;
     if (GetNationalPokedexCount(FLAG_GET_SEEN))
@@ -5465,7 +5465,7 @@ static const u8 *GetEasyChatWordGroupName(u8 groupId)
 
 static u8 *CopyEasyChatWordPadded(u8 *dest, u16 easyChatWord, u16 totalChars)
 {
-    u16 i;
+    u32 i;
     u8 *str = CopyEasyChatWord(dest, easyChatWord);
     for (i = str - dest; i < totalChars; i++)
     {
@@ -5479,7 +5479,7 @@ static u8 *CopyEasyChatWordPadded(u8 *dest, u16 easyChatWord, u16 totalChars)
 
 static void SetUnlockedWordsByAlphabet(void)
 {
-    int i, j, k;
+    u32 i, j, k;
     int numWords;
     const u16 *words;
     u16 numToProcess;
@@ -5577,7 +5577,7 @@ static u16 SetSelectedWordGroup_GroupMode(u16 groupId)
 
 static u16 SetSelectedWordGroup_AlphabetMode(u16 groupId)
 {
-    u16 i;
+    u32 i;
     u16 totalWords;
 
     for (i = 0, totalWords = 0; i < sWordData->numUnlockedAlphabetWords[groupId]; i++)
@@ -5588,7 +5588,7 @@ static u16 SetSelectedWordGroup_AlphabetMode(u16 groupId)
 
 static bool8 IsEasyChatGroupUnlocked2(u8 groupId)
 {
-    int i;
+    u32 i;
     for (i = 0; i < sWordData->numUnlockedGroups; i++)
     {
         if (sWordData->unlockedGroupIds[i] == groupId)
@@ -5644,9 +5644,7 @@ static u8 IsEasyChatWordUnlocked(u16 easyChatWord)
 
 void InitializeEasyChatWordArray(u16 *words, u16 length)
 {
-    u16 i;
-    for (i = length - 1; i != EC_EMPTY_WORD; i--)
-        *(words++) = EC_EMPTY_WORD;
+
 }
 
 bool32 IsEasyChatAnswerUnlocked(int easyChatWord)

@@ -473,7 +473,7 @@ static const struct UCoords8 sMauvilleGymSwitchCoords[] =
 // Presses the stepped-on switch and raises the rest
 void MauvilleGymPressSwitch(void)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < ARRAY_COUNT(sMauvilleGymSwitchCoords); i++)
     {
         if (i == gSpecialVar_0x8004)
@@ -580,7 +580,7 @@ void MauvilleGymSetDefaultBarriers(void)
 // Presses all switches and deactivates all beams.
 void MauvilleGymDeactivatePuzzle(void)
 {
-    int i, x, y;
+    u32 i, x, y;
     const struct UCoords8 *switchCoords = sMauvilleGymSwitchCoords;
     for (i = ARRAY_COUNT(sMauvilleGymSwitchCoords) - 1; i >= 0; i--)
     {
@@ -675,7 +675,7 @@ static void PetalburgGymSetDoorMetatiles(u8 roomNumber, u16 metatileId)
 {
     u16 doorCoordsX[4];
     u16 doorCoordsY[4];
-    u8 i;
+    u32 i;
     u8 nDoors = 0;
     switch (roomNumber)
     {
@@ -1097,7 +1097,7 @@ bool8 CheckLeadMonTough(void)
 
 void IsGrassTypeInParty(void)
 {
-    u8 i;
+    u32 i;
     u16 species;
     struct Pokemon *pokemon;
     for (i = 0; i < PARTY_SIZE; i++)
@@ -1281,7 +1281,7 @@ void LoadWallyZigzagoon(void)
 
 bool8 IsStarterInParty(void)
 {
-    u8 i;
+    u32 i;
     u16 starter = GetStarterPokemon(VarGet(VAR_STARTER_MON));
     u8 partyCount = CalculatePlayerPartyCount();
     for (i = 0; i < partyCount; i++)
@@ -1375,7 +1375,7 @@ void SetRoute123Weather(void)
 
 u8 GetLeadMonIndex(void)
 {
-    u8 i;
+    u32 i;
     u8 partyCount = CalculatePlayerPartyCount();
     for (i = 0; i < partyCount; i++)
     {
@@ -1466,7 +1466,7 @@ bool8 BufferTMHMMoveName(void)
 bool8 IsBadEggInParty(void)
 {
     u8 partyCount = CalculatePlayerPartyCount();
-    u8 i;
+    u32 i;
 
     for (i = 0; i < partyCount; i++)
     {
@@ -1779,7 +1779,7 @@ static void Task_MoveElevatorWindowLights(u8 taskId)
 
 void BufferVarsForIVRater(void)
 {
-    u8 i;
+    u32 i;
     u32 ivStorage[NUMERO_ESTADISTICAS];
 
     ivStorage[ESTADISTICA_PS] = GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_HP_IV);
@@ -1840,7 +1840,7 @@ bool8 UsedPokemonCenterWarp(void)
         MAP_UNDEFINED
     };
 
-    int i;
+    u32 i;
     u16 map = (gLastUsedWarp.mapGroup << 8) + gLastUsedWarp.mapNum;
 
     for (i = 0; sPokemonCenters[i] != MAP_UNDEFINED; i++)
@@ -1932,7 +1932,7 @@ void ShowFrontierManiacMessage(void)
         [FRONTIER_MANIAC_PYRAMID]       = { 7, 56 }
     };
 
-    u8 i;
+    u32 i;
     u16 winStreak = 0;
     u16 facility = VarGet(VAR_FRONTIER_MANIAC_FACILITY);
 
@@ -2005,7 +2005,7 @@ void BufferBattleTowerElevatorFloors(void)
         7, 14, 21, 28, 35, 49, 63, 77, 91, 0
     };
 
-    u8 i;
+    u32 i;
     u16 battleMode = VarGet(VAR_FRONTIER_BATTLE_MODE);
     u8 lvlMode = gSaveBlockPtr->frontier.lvlMode;
 
@@ -2342,7 +2342,7 @@ static const u8 *const sScrollableMultichoiceOptions[][MAX_SCROLL_MULTI_LENGTH] 
 static void Task_ShowScrollableMultichoice(u8 taskId)
 {
     u32 width;
-    u8 i, windowId;
+    u32 i, windowId;
     struct WindowTemplate template;
     struct Task *task = &gTasks[taskId];
 
@@ -2892,7 +2892,7 @@ void CloseBattleFrontierTutorWindow(void)
 void ScrollableMultichoice_RedrawPersistentMenu(void)
 {
     u16 scrollOffset, selectedRow;
-    u8 i;
+    u32 i;
     u8 taskId = FindTaskIdByFunc(Task_ScrollableMultichoice_WaitReturnToList);
     if (taskId != TASK_NONE)
     {
@@ -3098,7 +3098,7 @@ bool8 ShouldShowBoxWasFullMessage(void)
 bool8 IsDestinationBoxFull(void)
 {
     int box;
-    int i;
+    u32 i;
     SetPCBoxToSendMon(VarGet(VAR_PC_BOX_TO_SEND_MON));
     box = StorageGetCurrentBox();
     do
@@ -3276,7 +3276,7 @@ u32 GetMartEmployeeObjectEventId(void)
         { MAP_GROUP(BATTLE_FRONTIER_MART), MAP_NUM(BATTLE_FRONTIER_MART), LOCALID_BATTLE_FRONTIER_MART_CLERK }
     };
 
-    u8 i;
+    u32 i;
     for (i = 0; i < ARRAY_COUNT(sPokeMarts); i++)
     {
         if (gSaveBlockPtr->location.mapGroup == sPokeMarts[i][0])
@@ -3436,7 +3436,7 @@ bool8 InPokemonCenter(void)
         MAP_UNDEFINED
     };
 
-    int i;
+    u32 i;
     u16 map = (gSaveBlockPtr->location.mapGroup << 8) + gSaveBlockPtr->location.mapNum;
 
     for (i = 0; sPokemonCenters[i] != MAP_UNDEFINED; i++)
@@ -3567,7 +3567,7 @@ static u16 PlayerGainRandomTrainerFan(void)
         FANCLUB_MEMBER8
     };
 
-    u8 i;
+    u32 i;
     u8 idx = 0;
 
     for (i = 0; i < ARRAY_COUNT(sFanClubMemberIds); i++)
@@ -3603,7 +3603,7 @@ static u16 PlayerLoseRandomTrainerFan(void)
         FANCLUB_MEMBER2
     };
 
-    u8 i;
+    u32 i;
     u8 idx = 0;
 
     if (GetNumFansOfPlayerInTrainerFanClub() == 1)
@@ -3630,7 +3630,7 @@ static u16 PlayerLoseRandomTrainerFan(void)
 
 u16 GetNumFansOfPlayerInTrainerFanClub(void)
 {
-    u8 i;
+    u32 i;
     u8 numFans = 0;
 
     for (i = 0; i < NUM_TRAINER_FAN_CLUB_MEMBERS; i++)
@@ -3700,7 +3700,7 @@ u8 Script_TryGainNewFanFromCounter(void)
 
 void TrySkyBattle(void)
 {
-    int i;
+    u32 i;
 
     if (B_VAR_SKY_BATTLE == 0 || B_FLAG_SKY_BATTLE == 0)
     {
@@ -3723,7 +3723,7 @@ void TrySkyBattle(void)
 
 void PreparePartyForSkyBattle(void)
 {
-    int i, participatingPokemonSlot = 0;
+    u32 i, participatingPokemonSlot = 0;
     u8 partyCount = CalculatePlayerPartyCount();
 
     FlagSet(B_FLAG_SKY_BATTLE);

@@ -394,7 +394,7 @@ static void DrawMultichoiceMenuDynamic(u8 left, u8 top, u8 argc, struct ListMenu
 
 void DrawMultichoiceMenuInternal(u8 left, u8 top, u8 multichoiceId, bool8 ignoreBPress, u8 cursorPos, const struct MenuAction *actions, int count)
 {
-    int i;
+    u32 i;
     u8 windowId;
     int width = 0;
     u8 newWidth;
@@ -430,7 +430,7 @@ static void DrawMultichoiceMenu(u8 left, u8 top, u8 multichoiceId, bool8 ignoreB
 
 static void InitMultichoiceCheckWrap(bool8 ignoreBPress, u8 count, u8 windowId, u8 multichoiceId)
 {
-    u8 i;
+    u32 i;
     u8 taskId;
     sProcessInputDelay = 2;
 
@@ -614,7 +614,7 @@ bool8 ScriptMenu_MultichoiceGrid(u8 left, u8 top, u8 multichoiceId, bool8 ignore
     {
         u8 taskId;
         u8 rowCount, newWidth;
-        int i, width;
+        u32 i, width;
 
         gSpecialVar_Result = 0xFF;
         width = 0;
@@ -691,7 +691,7 @@ static void CreateLilycoveSSTidalMultichoice(void)
     u32 pixelWidth;
     u8 width;
     u8 windowId;
-    u8 i;
+    u32 i;
     u32 j;
 
     for (i = 0; i < SSTIDAL_SELECTION_COUNT; i++)

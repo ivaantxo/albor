@@ -1171,7 +1171,7 @@ static bool32 WaitForCallMessageBoxErase(struct Pokenav_MatchCallGfx *gfx)
 
 static void AllocMatchCallSprites(void)
 {
-    int i;
+    u32 i;
     u8 paletteNum;
     struct SpriteSheet spriteSheet;
     struct Pokenav_MatchCallGfx *gfx = GetSubstructPtr(POKENAV_SUBSTRUCT_MATCH_CALL_OPEN);

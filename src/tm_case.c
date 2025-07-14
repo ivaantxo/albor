@@ -462,7 +462,7 @@ static void CreateTMCaseListMenuBuffers(void)
 static void InitTMCaseListMenuItems(void)
 {
     struct BagPocket * pocket = &gBagPockets[POCKET_TM_HM - 1];
-    u16 i;
+    u32 i;
 
     for (i = 0; i < sTMCaseDynamicResources->numTMs; i++)
     {
@@ -537,7 +537,7 @@ static void List_MoveCursorFunc(s32 itemIndex, bool8 onInit, struct ListMenu *li
 
 static void PrintMoveInfo(u16 itemId)
 {
-    u8 i;
+    u32 i;
     u16 move;
     const u8 * str;
     struct Sprite *sprite;
@@ -647,7 +647,7 @@ static void RemoveScrollArrows(void)
 static void TMCaseSetup_GetTMCount(void)
 {
     struct BagPocket * pocket = &gBagPockets[POCKET_TM_HM - 1];
-    u16 i;
+    u32 i;
 
     UpdatePocketItemList(TMHM_POCKET);
     sTMCaseDynamicResources->numTMs = 0;
@@ -678,7 +678,7 @@ static void TMCaseSetup_InitListMenuPositions(void)
 
 static void TMCaseSetup_UpdateVisualMenuOffset(void)
 {
-    u8 i;
+    u32 i;
     if (sTMCaseStaticResources.selectedRow > 3)
     {
         for (i = 0; i <= sTMCaseStaticResources.selectedRow - 3 && sTMCaseStaticResources.scrollOffset + sTMCaseDynamicResources->maxTMsShown != sTMCaseDynamicResources->numTMs; i++)
@@ -855,7 +855,7 @@ static void Action_Exit(u8 taskId)
 
 static void InitWindowTemplatesAndPals(void)
 {
-    u8 i;
+    u32 i;
 
     InitWindows(sWindowTemplates);
     DeactivateAllTextPrinters();
@@ -919,7 +919,7 @@ static void SpriteCb_MonIcon(struct Sprite *sprite)
 
 static void DrawPartyMonIcons(void)
 {
-    u8 i;
+    u32 i;
     u8 icon_x = 0;
     u8 icon_y = 0;
 
@@ -965,7 +965,7 @@ static void DrawPartyMonIcons(void)
 
 static void TintPartyMonIcons(u16 tm)
 {
-    u8 i;
+    u32 i;
     u16 species;
 
     for (i = 0; i < gPlayerPartyCount; i++)

@@ -802,7 +802,7 @@ static void AllocateBagItemListBuffers(void)
 
 static void LoadBagItemListBuffers(u8 pocketId)
 {
-    u16 i;
+    u32 i;
     struct BagPocket *pocket = &gBagPockets[pocketId];
     struct ListMenuItem *subBuffer;
 
@@ -1042,7 +1042,7 @@ static void Task_CloseBagMenu(u8 taskId)
 
 void UpdatePocketItemList(u8 pocketId)
 {
-    u16 i;
+    u32 i;
     struct BagPocket *pocket = &gBagPockets[pocketId];
     switch (pocketId)
     {
@@ -1071,7 +1071,7 @@ void UpdatePocketItemList(u8 pocketId)
 
 static void UpdatePocketItemLists(void)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < POCKETS_COUNT; i++)
         UpdatePocketItemList(i);
 }
@@ -1083,14 +1083,14 @@ void UpdatePocketListPosition(u8 pocketId)
 
 static void InitPocketListPositions(void)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < POCKETS_COUNT; i++)
         UpdatePocketListPosition(i);
 }
 
 static void InitPocketScrollPositions(void)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < POCKETS_COUNT; i++)
         SetCursorScrollWithinListBounds(&gBagPosition.scrollPosition[i], &gBagPosition.cursorPosition[i], gBagMenu->numShownItems[i], gBagMenu->numItemStacks[i], MAX_ITEMS_SHOWN);
 }
@@ -2237,7 +2237,7 @@ static void CopyPocketNameToWindow(u32 a)
 
 static void LoadBagMenuTextWindows(void)
 {
-    u8 i;
+    u32 i;
 
     InitWindows(sDefaultBagWindows);
     DeactivateAllTextPrinters();

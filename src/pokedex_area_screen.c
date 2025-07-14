@@ -243,7 +243,7 @@ static bool8 DrawAreaGlow(void)
 
 static void FindMapsWithMon(u16 species)
 {
-    u16 i;
+    u32 i;
     struct Roamer *roamer;
 
     sPokedexAreaScreen->alteringCaveCounter = 0;
@@ -329,7 +329,7 @@ static void SetAreaHasMon(u16 mapGroup, u16 mapNum)
 
 static void SetSpecialMapHasMon(u16 mapGroup, u16 mapNum)
 {
-    int i;
+    u32 i;
 
     if (sPokedexAreaScreen->numSpecialAreas < MAX_AREA_MARKERS)
     {
@@ -401,7 +401,7 @@ static bool8 MapHasSpecies(const struct WildPokemonHeader *info, u16 species)
 
 static bool8 MonListHasSpecies(const struct WildPokemonInfo *info, u16 species, u16 size)
 {
-    u16 i;
+    u32 i;
     if (info != NULL)
     {
         for (i = 0; i < size; i++)
@@ -415,7 +415,7 @@ static bool8 MonListHasSpecies(const struct WildPokemonInfo *info, u16 species, 
 
 static void BuildAreaGlowTilemap(void)
 {
-    u16 i, y, x, j;
+    u32 i, y, x, j;
 
     // Reset tilemap
     for (i = 0; i < ARRAY_COUNT(sPokedexAreaScreen->areaGlowTilemap); i++)
@@ -522,7 +522,7 @@ static void StartAreaGlow(void)
 static void DoAreaGlow(void)
 {
     u16 x, y;
-    u16 i;
+    u32 i;
 
     if (!sPokedexAreaScreen->showingMarkers)
     {
@@ -744,7 +744,7 @@ static void CreateAreaMarkerSprites(void)
 
 static void DestroyAreaScreenSprites(void)
 {
-    u16 i;
+    u32 i;
 
     // Destroy area marker sprites
     FreeSpriteTilesByTag(TAG_AREA_MARKER);
@@ -776,7 +776,7 @@ static void LoadAreaUnknownGraphics(void)
 
 static void CreateAreaUnknownSprites(void)
 {
-    u16 i;
+    u32 i;
 
     if (sPokedexAreaScreen->numOverworldAreas || sPokedexAreaScreen->numSpecialAreas)
     {

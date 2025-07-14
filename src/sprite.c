@@ -554,7 +554,7 @@ void DestroySprite(struct Sprite *sprite)
     {
         if (!sprite->usingSheet)
         {
-            u16 i;
+            u32 i;
             u16 tileEnd = (sprite->images->size / TILE_SIZE_4BPP) + sprite->oam.tileNum;
             for (i = sprite->oam.tileNum; i < tileEnd; i++)
                 FREE_SPRITE_TILE(i);
@@ -1470,7 +1470,7 @@ void FreeSpriteTilesByTag(u16 tag)
     u8 index = IndexOfSpriteTileTag(tag);
     if (index != 0xFF)
     {
-        u16 i;
+        u32 i;
         u16 *rangeStarts;
         u16 *rangeCounts;
         u16 start;
@@ -1500,7 +1500,7 @@ void FreeSpriteTileRanges(void)
 
 u8 GetSpriteIndexByTileTag(u16 tag)
 {
-    u8 i;
+    u32 i;
     
     for (i = 0; i < MAX_SPRITES; i++)
         if (gSprites[i].template->tileTag == tag)

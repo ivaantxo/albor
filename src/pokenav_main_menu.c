@@ -540,7 +540,7 @@ void FadeToBlackExceptPrimary(void)
 
 void InitBgTemplates(const struct BgTemplate *templates, int count)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < count; i++)
         InitBgFromTemplate(templates++);

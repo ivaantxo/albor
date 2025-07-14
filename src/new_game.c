@@ -40,7 +40,6 @@
 
 extern const u8 EventScript_ResetAllMapFlags[];
 
-static void WarpToTruck(void);
 static void ResetItemFlags(void);
 
 EWRAM_DATA bool8 gDifferentSaveFile = FALSE;
@@ -104,12 +103,6 @@ void ClearAllContestWinnerPics(void)
         gSaveBlockPtr->contestWinners[i] = sContestWinnerPicDummy;
 }
 
-static void WarpToTruck(void)
-{
-    SetWarpDestination(MAP_GROUP(TEST), MAP_NUM(TEST), WARP_ID_NONE, -1, -1);
-    WarpIntoMap();
-}
-
 void ResetMenuAndMonGlobals(void)
 {
     gDifferentSaveFile = FALSE;
@@ -156,7 +149,8 @@ void NewGameInitData(void)
     InitDewfordTrend();
     ResetFanClub();
     ResetLotteryCorner();
-    WarpToTruck();
+    SetWarpDestination(MAP_GROUP(TEST), MAP_NUM(TEST), WARP_ID_NONE, -1, -1);
+    WarpIntoMap();
     RunScriptImmediately(EventScript_ResetAllMapFlags);
     InitLilycoveLady();
     InitMatchCallCounters();

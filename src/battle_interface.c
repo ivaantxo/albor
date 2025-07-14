@@ -2056,7 +2056,7 @@ static void MoveBattleBarGraphically(u8 battlerId, u8 whichBar)
     u8 array[8];
     u8 filledPixelsCount, level;
     u8 barElementId;
-    u8 i;
+    u32 i;
 
     switch (whichBar)
     {
@@ -2192,7 +2192,7 @@ static s32 CalcNewBarValue(s32 maxValue, s32 oldValue, s32 receivedValue, s32 *c
 static u8 CalcBarFilledPixels(s32 maxValue, s32 oldValue, s32 receivedValue, s32 *currValue, u8 *pixelsArray, u8 scale)
 {
     u8 pixels, filledPixels, totalPixels;
-    u8 i;
+    u32 i;
 
     s32 newValue = oldValue - receivedValue;
     if (newValue < 0)
@@ -2489,7 +2489,7 @@ static void ClearAbilityName(u8 spriteId1, u8 spriteId2)
 
 static void PrintBattlerOnAbilityPopUp(u8 battlerId, u8 spriteId1, u8 spriteId2)
 {
-    int i;
+    u32 i;
     u8* textPtr;
     u8 monName[POKEMON_NAME_LENGTH + 3] = {0};
     u8* nick = gBattleMons[battlerId].nickname; // This needs to be updated for Illusion support

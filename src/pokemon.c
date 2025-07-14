@@ -1933,7 +1933,7 @@ u8 GetMonsStateToDoubles_2(void)
 
 u16 GetAbilityBySpecies(u16 species, u8 abilityNum)
 {
-    int i;
+    u32 i;
 
     if (abilityNum < NUM_ABILITY_SLOTS)
         gLastUsedAbility = gSpeciesInfo[species].abilities[abilityNum];
@@ -2658,8 +2658,8 @@ u8 GetItemEffectParamOffset(u32 battler, u16 itemId, u8 effectByte, u8 effectBit
     const u8 *temp;
     const u8 *itemEffect;
     u8 offset;
-    int i;
-    u8 j;
+    u32 i;
+    u32 j;
     u8 effectFlags;
 
     offset = ITEM_EFFECT_ARG_START;
@@ -2835,7 +2835,7 @@ u8 GetNatureFromPersonality(u32 personality)
 
 u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u16 evolutionItem)
 {
-    int i, j;
+    u32 i, j;
     u16 targetSpecies = SPECIES_NONE;
     u16 species = GetMonData(mon, MON_DATA_SPECIES, 0);
     u16 heldItem = GetMonData(mon, MON_DATA_HELD_ITEM, 0);
@@ -3138,7 +3138,7 @@ void MonGainEVs(struct Pokemon *mon, u16 defeatedSpecies)
     u16 totalEVs = 0;
     u16 heldItem;
     u8 holdEffect;
-    int i, multiplier;
+    u32 i, multiplier;
     u8 stat;
     u8 bonus;
 
@@ -3225,7 +3225,7 @@ void MonGainEVs(struct Pokemon *mon, u16 defeatedSpecies)
 
 u16 GetMonEVCount(struct Pokemon *mon)
 {
-    int i;
+    u32 i;
     u16 count = 0;
 
     for (i = 0; i < NUMERO_ESTADISTICAS; i++)
@@ -3328,7 +3328,7 @@ u8 CheckPartyHasHadPokerus(struct Pokemon *party, u8 selection)
 
 void UpdatePartyPokerusTime(u16 days)
 {
-    int i;
+    u32 i;
     for (i = 0; i < PARTY_SIZE; i++)
     {
         if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, 0))
@@ -3354,7 +3354,7 @@ void PartySpreadPokerus(struct Pokemon *party)
 {
     if ((Random() % 3) == 0)
     {
-        int i;
+        u32 i;
         for (i = 0; i < PARTY_SIZE; i++)
         {
             if (GetMonData(&party[i], MON_DATA_SPECIES, 0))
@@ -3477,7 +3477,7 @@ u8 GetMoveRelearnerMoves(struct Pokemon *mon, u16 *moves)
     u16 species = GetMonData(mon, MON_DATA_SPECIES, 0);
     u8 level = GetMonData(mon, MON_DATA_LEVEL, 0);
     const struct LevelUpMove *learnset = GetSpeciesLevelUpLearnset(species);
-    int i, j, k;
+    u32 i, j, k;
 
     for (i = 0; i < MAX_MON_MOVES; i++)
         learnedMoves[i] = GetMonData(mon, MON_DATA_MOVE1 + i, 0);
@@ -3513,7 +3513,7 @@ u8 GetMoveRelearnerMoves(struct Pokemon *mon, u16 *moves)
 u8 GetLevelUpMovesBySpecies(u16 species, u16 *moves)
 {
     u8 numMoves = 0;
-    int i;
+    u32 i;
     const struct LevelUpMove *learnset = GetSpeciesLevelUpLearnset(species);
 
     for (i = 0; i < MAX_LEVEL_UP_MOVES && learnset[i].move != LEVEL_UP_MOVE_END; i++)
@@ -3530,7 +3530,7 @@ u8 GetNumberOfRelearnableMoves(struct Pokemon *mon)
     u16 species = GetMonData(mon, MON_DATA_SPECIES_OR_EGG, 0);
     u8 level = GetMonData(mon, MON_DATA_LEVEL, 0);
     const struct LevelUpMove *learnset = GetSpeciesLevelUpLearnset(species);
-    int i, j, k;
+    u32 i, j, k;
 
     if (species == SPECIES_EGG)
         return 0;
@@ -3797,7 +3797,7 @@ bool8 IsOtherTrainer(u32 otId, u8 *otName)
       | (gSaveBlockPtr->playerTrainerId[2] << 16)
       | (gSaveBlockPtr->playerTrainerId[3] << 24)))
     {
-        int i;
+        u32 i;
         for (i = 0; otName[i] != EOS; i++)
             if (otName[i] != gSaveBlockPtr->playerName[i])
                 return TRUE;
@@ -3814,7 +3814,7 @@ void MonRestorePP(struct Pokemon *mon)
 
 void BoxMonRestorePP(struct BoxPokemon *boxMon)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
@@ -3868,7 +3868,7 @@ void SetWildMonHeldItem(void)
         u16 rnd;
         u16 species;
         u16 count = 1;
-        u16 i;
+        u32 i;
         bool32 itemHeldBoost = CanFirstMonBoostHeldItemRarity();
         u16 chanceNoItem = itemHeldBoost ? 20 : 45;
         u16 chanceNotRare = itemHeldBoost ? 80 : 95;
@@ -4359,7 +4359,7 @@ bool32 IsSpeciesEnabled(u16 species)
 
 void TryToSetBattleFormChangeMoves(struct Pokemon *mon, u16 method)
 {
-    int i, j;
+    u32 i, j;
     u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
     const struct FormChange *formChanges = GetSpeciesFormChanges(species);
 
@@ -4450,7 +4450,7 @@ u16 GetCryIdBySpecies(u16 species)
 
 u16 GetSpeciesPreEvolution(u16 species)
 {
-    int i, j;
+    u32 i, j;
 
     for (i = SPECIES_BULBASAUR; i < NUM_SPECIES; i++)
     {

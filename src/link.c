@@ -125,7 +125,7 @@ void Task_DestroySelf(u8 taskId)
 
 static void InitLink(void)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i < CMD_LENGTH; i++)
         gSendCmd[i] = LINKCMD_NONE;
@@ -145,7 +145,7 @@ static void Task_TriggerHandshake(u8 taskId)
 
 void OpenLink(void)
 {
-    int i;
+    u32 i;
 
     ResetSerial();
     InitLink();
@@ -172,7 +172,7 @@ void CloseLink(void)
 
 u16 LinkMain2(const u16 *heldKeys)
 {
-    u8 i;
+    u32 i;
 
     if (!sLinkOpen)
         return 0;
@@ -231,7 +231,7 @@ void OpenLinkTimed(void)
 
 u8 GetLinkPlayerDataExchangeStatusTimed(int minPlayers, int maxPlayers)
 {
-    int i;
+    u32 i;
     int count;
     u32 index;
     u8 numPlayers;
@@ -303,7 +303,7 @@ u8 GetLinkPlayerDataExchangeStatusTimed(int minPlayers, int maxPlayers)
 
 bool8 IsLinkPlayerDataExchangeComplete(void)
 {
-    u8 i;
+    u32 i;
     u8 count;
     bool8 retval;
 
@@ -333,7 +333,7 @@ u32 GetLinkPlayerTrainerId(u8 who)
 
 void ResetLinkPlayers(void)
 {
-    int i;
+    u32 i;
 
     for (i = 0; i <= MAX_LINK_PLAYERS; i++)
         gLinkPlayers[i] = (struct LinkPlayer){};
@@ -381,7 +381,7 @@ static void LinkCB_BlockSendBegin(void)
 
 static void LinkCB_BlockSend(void)
 {
-    int i;
+    u32 i;
     const u8 *src;
 
     src = sBlockSend.src;
@@ -454,7 +454,7 @@ static void LinkCB_RequestPlayerDataExchange(void)
 
 u8 GetSavedLinkPlayerCountAsBitFlags(void)
 {
-    int i;
+    u32 i;
     u8 flags;
 
     flags = 0;
@@ -466,7 +466,7 @@ u8 GetSavedLinkPlayerCountAsBitFlags(void)
 
 u8 GetLinkPlayerCountAsBitFlags(void)
 {
-    int i;
+    u32 i;
     u8 flags;
 
     flags = 0;
@@ -478,7 +478,7 @@ u8 GetLinkPlayerCountAsBitFlags(void)
 
 void SaveLinkPlayers(u8 playerCount)
 {
-    int i;
+    u32 i;
 
     gSavedLinkPlayerCount = playerCount;
     gSavedMultiplayerId = GetMultiplayerId();
@@ -495,7 +495,7 @@ u8 GetSavedPlayerCount(void)
 
 bool8 DoesLinkPlayerCountMatchSaved(void)
 {
-    int i;
+    u32 i;
     u32 count = 0;
 
     for (i = 0; i < gSavedLinkPlayerCount; i++)
@@ -531,7 +531,7 @@ void ClearSavedLinkPlayers(void)
 #ifdef UBFIX
     memset(sSavedLinkPlayers, 0, sizeof(sSavedLinkPlayers));
 #else
-    int i;
+    u32 i;
     for (i = 0; i < MAX_LINK_PLAYERS; i++)
         CpuSet(&sSavedLinkPlayers[i], NULL, sizeof(struct LinkPlayer));
 #endif
@@ -539,7 +539,7 @@ void ClearSavedLinkPlayers(void)
 
 void CheckLinkPlayersMatchSaved(void)
 {
-    u8 i;
+    u32 i;
 
     for (i = 0; i < gSavedLinkPlayerCount; i++)
     {
@@ -629,7 +629,7 @@ static void LinkCB_Standby(void)
 
 static void LinkCB_StandbyForAll(void)
 {
-    u8 i;
+    u32 i;
     u8 linkPlayerCount = GetLinkPlayerCount();
     for (i = 0; i < linkPlayerCount; i++)
     {
@@ -878,7 +878,7 @@ static void InitTimer(void)
 
 static void EnqueueSendCmd(u16 *sendCmd)
 {
-    u8 i;
+    u32 i;
     u8 offset;
 
     gLinkSavedIme = REG_IME;
@@ -914,8 +914,8 @@ static void EnqueueSendCmd(u16 *sendCmd)
 
 static void DequeueRecvCmds(u16 (*recvCmds)[CMD_LENGTH])
 {
-    u8 i;
-    u8 j;
+    u32 i;
+    u32 j;
 
     gLinkSavedIme = REG_IME;
     REG_IME = 0;
@@ -1046,7 +1046,7 @@ static void StartTransfer(void)
 
 static bool8 DoHandshake(void)
 {
-    u8 i;
+    u32 i;
     u8 playerCount;
     u16 minRecv;
 
@@ -1098,7 +1098,7 @@ static bool8 DoHandshake(void)
 static void DoRecv(void)
 {
     u16 recv[4];
-    u8 i;
+    u32 i;
     u8 index;
 
     *(u64 *)recv = REG_SIOMLT_RECV;
@@ -1204,8 +1204,8 @@ static void SendRecvDone(void)
 
 void ResetSendBuffer(void)
 {
-    u8 i;
-    u8 j;
+    u32 i;
+    u32 j;
 
     gLink.sendQueue.count = 0;
     gLink.sendQueue.pos = 0;
@@ -1218,8 +1218,8 @@ void ResetSendBuffer(void)
 
 void ResetRecvBuffer(void)
 {
-    u8 i;
-    u8 j;
+    u32 i;
+    u32 j;
     u8 k;
 
     gLink.recvQueue.count = 0;

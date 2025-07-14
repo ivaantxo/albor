@@ -4960,7 +4960,7 @@ static void AnimProtect(struct Sprite *sprite)
 
 static void AnimProtect_Step(struct Sprite *sprite)
 {
-    int i, id, savedPal;
+    u32 i, id, savedPal;
     sprite->data[5] += 96;
     sprite->x2 = -(sprite->data[5] >> 8);
     if (++sprite->data[1] > 1)
@@ -5910,8 +5910,8 @@ static void AnimTask_MoonlightEndFade_Step(u8 taskId)
             u16 color;
             u16 bitmask;
             u16 r3;
-            u16 i;
-            u16 j;
+            u32 i;
+            u32 j;
             task->data[1] = 0;
             if (++task->data[2] <= 15)
             {
@@ -6325,7 +6325,7 @@ void AnimTask_MusicNotesRainbowBlend(u8 taskId)
 // clears the rainbow effect for musical notes.
 void AnimTask_MusicNotesClearRainbowBlend(u8 taskId)
 {
-    u16 i;
+    u32 i;
     for (i = 1; i < ARRAY_COUNT(gParticlesColorBlendTable); i++)
         FreeSpritePaletteByTag(gParticlesColorBlendTable[i][0]);
 

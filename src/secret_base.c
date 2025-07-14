@@ -177,7 +177,7 @@ static const struct ListMenuTemplate sRegistryListMenuTemplate =
 
 static void ClearSecretBase(struct SecretBase *secretBase)
 {
-    u16 i;
+    u32 i;
     CpuFastFill16(0, secretBase, sizeof(struct SecretBase));
     for (i = 0; i < PLAYER_NAME_LENGTH; i++)
         secretBase->trainerName[i] = EOS;
@@ -185,7 +185,7 @@ static void ClearSecretBase(struct SecretBase *secretBase)
 
 void ClearSecretBases(void)
 {
-    u16 i;
+    u32 i;
     for (i = 0; i < SECRET_BASES_COUNT; i++)
         ClearSecretBase(&gSaveBlockPtr->secretBases[i]);
 }
@@ -197,7 +197,7 @@ static void SetCurSecretBaseId(void)
 
 void TrySetCurSecretBaseIndex(void)
 {
-    u16 i;
+    u32 i;
 
     gSpecialVar_Result = FALSE;
     for (i = 0; i < SECRET_BASES_COUNT; i++)
@@ -233,7 +233,7 @@ void GetSecretBaseTypeInFrontOfPlayer(void)
 // Opens or closes the secret base entrance metatile in front of the player.
 void ToggleSecretBaseEntranceMetatile(void)
 {
-    u16 i;
+    u32 i;
     s16 x, y;
     s16 metatileId;
 
@@ -265,7 +265,7 @@ void ToggleSecretBaseEntranceMetatile(void)
 
 static u8 GetNameLength(const u8 *secretBaseOwnerName)
 {
-    u8 i;
+    u32 i;
     for (i = 0; i < PLAYER_NAME_LENGTH; i++)
     {
         if (secretBaseOwnerName[i] == EOS)
@@ -277,7 +277,7 @@ static u8 GetNameLength(const u8 *secretBaseOwnerName)
 
 void SetPlayerSecretBase(void)
 {
-    u16 i;
+    u32 i;
 
     gSaveBlockPtr->secretBases[0].secretBaseId = sCurSecretBaseId;
     for (i = 0; i < TRAINER_ID_LENGTH; i++)
@@ -353,7 +353,7 @@ void InitSecretBaseAppearance(bool8 hidePC)
 
 void InitSecretBaseDecorationSprites(void)
 {
-    u8 i;
+    u32 i;
     u8 *decorations;
     u8 *decorationPositions;
     u8 objectEventId;
@@ -560,7 +560,7 @@ static u8 GetAverageEVs(struct Pokemon *pokemon)
 
 void SetPlayerSecretBaseParty(void)
 {
-    u16 i;
+    u32 i;
     u16 moveIdx;
     u16 partyId;
     struct SecretBaseParty *party;
@@ -703,7 +703,7 @@ static void Task_ShowSecretBaseRegistryMenu(u8 taskId)
 static void BuildRegistryMenuItems(u8 taskId)
 {
     s16 *data;
-    u8 i;
+    u32 i;
     u8 count;
 
     data = gTasks[taskId].data;
@@ -913,7 +913,7 @@ void SetBattledOwnerFromResult(void)
 void GetSecretBaseOwnerAndState(void)
 {
     u16 secretBaseIdx;
-    u8 i;
+    u32 i;
 
     secretBaseIdx = VarGet(VAR_CURRENT_SECRET_BASE);
     if (!FlagGet(FLAG_DAILY_SECRET_BASE))
