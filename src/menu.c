@@ -1797,7 +1797,7 @@ void BufferSaveMenuText(u8 textId, u8 *dest, u8 color)
     }
 }
 
-u8 Menu_InitCursorInternal(u8 windowId, u8 fontId, u8 left, u8 top, u8 cursorHeight, u8 numChoices, u8 initialCursorPos, bool8 APressMuted)
+u32 Menu_InitCursor(u32 windowId, u32 fontId, u32 left, u32 top, u32 cursorHeight, u32 numChoices, u32 initialCursorPos)
 {
     s32 pos;
 
@@ -1808,7 +1808,6 @@ u8 Menu_InitCursorInternal(u8 windowId, u8 fontId, u8 left, u8 top, u8 cursorHei
     sMenu.windowId = windowId;
     sMenu.fontId = fontId;
     sMenu.optionHeight = cursorHeight;
-    sMenu.APressMuted = APressMuted;
     pos = initialCursorPos;
     if (pos < 0 || pos > sMenu.maxCursorPos)
         sMenu.cursorPos = 0;
@@ -1817,11 +1816,6 @@ u8 Menu_InitCursorInternal(u8 windowId, u8 fontId, u8 left, u8 top, u8 cursorHei
 
     Menu_MoveCursor(0);
     return sMenu.cursorPos;
-}
-
-u8 Menu_InitCursor(u8 windowId, u8 fontId, u8 left, u8 top, u8 cursorHeight, u8 numChoices, u8 initialCursorPos)
-{
-    return Menu_InitCursorInternal(windowId, fontId, left, top, cursorHeight, numChoices, initialCursorPos, 0);
 }
 
 // BW map pop-ups
