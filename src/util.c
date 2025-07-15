@@ -16,8 +16,6 @@ static const struct SpriteTemplate sInvisibleSpriteTemplate =
     .callback = SpriteCallbackDummy,
 };
 
-const u8 gMiscBlank_Gfx[] = INCBIN_U8("graphics/interface/blank.4bpp");
-
 u8 CreateInvisibleSpriteWithCallback(void (*callback)(struct Sprite *))
 {
     u8 sprite = CreateSprite(&sInvisibleSpriteTemplate, DISPLAY_WIDTH + 8, DISPLAY_HEIGHT + 8, 14);
@@ -79,7 +77,7 @@ static s32 CalcularDesplazamientoDesdePersonalidad(u32 personalidad)
 
 static void DesplazaTonoPaletaBase(const u16 *src, u16 *dst, s32 desplazamiento)
 {
-    for (u32 i = 0; i < NUMERO_COLORES_POR_PALETA; i++)
+    for (u32 i = 0; i < COLORES_POR_PALETA; i++)
     {
         u32 color = src[i];
 

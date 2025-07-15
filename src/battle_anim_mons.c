@@ -80,8 +80,8 @@ static const struct SpriteTemplate sSpriteTemplates_MoveEffectMons[] =
 
 static const struct SpriteSheet sSpriteSheets_MoveEffectMons[] =
 {
-    { gMiscBlank_Gfx, MON_PIC_SIZE, TAG_MOVE_EFFECT_MON_1, },
-    { gMiscBlank_Gfx, MON_PIC_SIZE, TAG_MOVE_EFFECT_MON_2, },
+    { NULL, MON_PIC_SIZE, TAG_MOVE_EFFECT_MON_1, },
+    { NULL, MON_PIC_SIZE, TAG_MOVE_EFFECT_MON_2, },
 };
 
 u8 GetBattlerSpriteCoord(u8 battlerId, u8 coordType)

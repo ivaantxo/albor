@@ -19,7 +19,7 @@
 #define OBJ_PLTT_ID(n) (OBJ_PLTT_OFFSET + PLTT_ID(n))
 #define OBJ_PLTT_ID2(n) (PLTT_ID((n) + 16))
 
-#define NUMERO_COLORES_POR_PALETA 16
+#define COLORES_POR_PALETA 16
 
 struct ConfiguracionBlend 
 {
