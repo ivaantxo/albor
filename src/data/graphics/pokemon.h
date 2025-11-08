@@ -1233,9 +1233,9 @@ const u32 gMonShinyPalette_Flaaffy[] = INCBIN_U32("graphics/pokemon/flaaffy/shin
 const u32 gObjectEventPic_Flaaffy[] = INCBIN_U32("graphics/pokemon/flaaffy/follower.4bpp");
 
 const u32 gMonFrontPic_Ampharos[] = INCBIN_U32("graphics/pokemon/ampharos/anim_front.4bpp.lz");
-const u32 gMonPalette_Ampharos[] = INCBIN_U32("graphics/pokemon/ampharos/normal.gbapal.lz");
+const u32 gMonPalette_Ampharos[] = INCBIN_U32("graphics/pokemon/ampharos/anim_front.gbapal.lz");
 const u32 gMonBackPic_Ampharos[] = INCBIN_U32("graphics/pokemon/ampharos/back.4bpp.lz");
-const u32 gMonShinyPalette_Ampharos[] = INCBIN_U32("graphics/pokemon/ampharos/shiny.gbapal.lz");
+const u32 gMonShinyPalette_Ampharos[] = INCBIN_U32("graphics/pokemon/ampharos/back.gbapal.lz");
 const u32 gObjectEventPic_Ampharos[] = INCBIN_U32("graphics/pokemon/ampharos/follower.4bpp");
 
 const u32 gMonFrontPic_Azurill[] = INCBIN_U32("graphics/pokemon/azurill/anim_front.4bpp.lz");
