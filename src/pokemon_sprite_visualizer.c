@@ -59,26 +59,26 @@ static struct PokemonSpriteVisualizer *GetStructPtr(u8 taskId)
 
 static const union AnimCmd sAnim_Follower_1[] =
 {
-    ANIMCMD_FRAME(0, 30),
     ANIMCMD_FRAME(1, 30),
-    ANIMCMD_FRAME(0, 30),
+    ANIMCMD_FRAME(2, 30),
     ANIMCMD_FRAME(1, 30),
-    ANIMCMD_FRAME(0, 10),
     ANIMCMD_FRAME(2, 30),
+    ANIMCMD_FRAME(1, 10),
     ANIMCMD_FRAME(3, 30),
-    ANIMCMD_FRAME(2, 30),
+    ANIMCMD_FRAME(4, 30),
     ANIMCMD_FRAME(3, 30),
-    ANIMCMD_FRAME(2, 10),
     ANIMCMD_FRAME(4, 30),
+    ANIMCMD_FRAME(3, 10),
     ANIMCMD_FRAME(5, 30),
-    ANIMCMD_FRAME(4, 30),
+    ANIMCMD_FRAME(6, 30),
     ANIMCMD_FRAME(5, 30),
-    ANIMCMD_FRAME(4, 10),
-    ANIMCMD_FRAME(4, 30, .hFlip = TRUE),
+    ANIMCMD_FRAME(6, 30),
+    ANIMCMD_FRAME(5, 10),
     ANIMCMD_FRAME(5, 30, .hFlip = TRUE),
-    ANIMCMD_FRAME(4, 30, .hFlip = TRUE),
+    ANIMCMD_FRAME(6, 30, .hFlip = TRUE),
     ANIMCMD_FRAME(5, 30, .hFlip = TRUE),
-    ANIMCMD_FRAME(4, 10, .hFlip = TRUE),
+    ANIMCMD_FRAME(6, 30, .hFlip = TRUE),
+    ANIMCMD_FRAME(5, 10, .hFlip = TRUE),
     ANIMCMD_END,
 };
 
@@ -88,7 +88,6 @@ static const union AnimCmd *const sAnims_Follower[] =
     sAnim_Follower_1,
 };
 
-//BgTemplates
 static const struct BgTemplate sBgTemplates[] =
 {
     {
