@@ -892,22 +892,22 @@ static const struct WindowTemplate sContestWindowTemplates[] =
 static const struct CompressedSpriteSheet sSpriteSheets_ContestantsTurnBlinkEffect[CONTESTANT_COUNT] =
 {
     {
-        .data = gBlankGfxCompressed,
+        .data = NULL,
         .size = 0x1000,
         .tag = TAG_BLINK_EFFECT_CONTESTANT0
     },
     {
-        .data = gBlankGfxCompressed,
+        .data = NULL,
         .size = 0x1000,
         .tag = TAG_BLINK_EFFECT_CONTESTANT1
     },
     {
-        .data = gBlankGfxCompressed,
+        .data = NULL,
         .size = 0x1000,
         .tag = TAG_BLINK_EFFECT_CONTESTANT2
     },
     {
-        .data = gBlankGfxCompressed,
+        .data = NULL,
         .size = 0x1000,
         .tag = TAG_BLINK_EFFECT_CONTESTANT3
     }

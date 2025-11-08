@@ -9,8 +9,6 @@ const u32 gSmokescreenImpactPalette[] = INCBIN_U32("graphics/battle_anims/sprite
 
 #include "data/graphics/pokeballs.h"
 
-const u32 gBlankGfxCompressed[] = INCBIN_U32("graphics/interface/blank.4bpp.lz");
-
 // New Battle anims Particles
 const u32 gBattleAnimSpriteGfx_WhiteStreak[] = INCBIN_U32("graphics/battle_anims/sprites/white_streak.4bpp.lz");
 const u32 gBattleAnimSpritePal_WhiteStreak[] = INCBIN_U32("graphics/battle_anims/sprites/white_streak.gbapal.lz");

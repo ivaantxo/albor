@@ -233,19 +233,23 @@ enum ObjectEventGraphics
 #define OBJ_EVENT_GFX_VAR_E  (OBJ_EVENT_GFX_VARS + 14)
 #define OBJ_EVENT_GFX_VAR_F  (OBJ_EVENT_GFX_VARS + 15)
 
-#define OBJ_EVENT_GFX_MON_BASE  512
-#define OBJ_EVENT_GFX_SPECIES_BITS 12
-#define OBJ_EVENT_GFX_SPECIES_MASK ((1 << OBJ_EVENT_GFX_SPECIES_BITS) - 1)
 
-// Used to call a specific species' follower graphics. Useful for static encounters.
-#define OBJ_EVENT_GFX_SPECIES(name)       (SPECIES_##name + OBJ_EVENT_GFX_MON_BASE)
-#define OBJ_EVENT_GFX_SPECIES_SHINY(name) (SPECIES_##name + OBJ_EVENT_GFX_MON_BASE + SPECIES_SHINY_TAG)
+// Don't use (1u << 15) to avoid conflict with BLEND_IMMUNE_FLAG.
+#define OBJ_EVENT_MON               (1u << 14)
+#define OBJ_EVENT_MON_SHINY         (1u << 13)
+#define OBJ_EVENT_MON_FEMALE        (1u << 12)
+#define OBJ_EVENT_MON_SPECIES_MASK  (~(7u << 12))
 
-#define OW_SPECIES(x) (((x)->graphicsId & OBJ_EVENT_GFX_SPECIES_MASK) - OBJ_EVENT_GFX_MON_BASE)
-#define OW_FORM(x) ((x)->graphicsId >> OBJ_EVENT_GFX_SPECIES_BITS)
+#define OBJ_EVENT_GFX_SPECIES(name)                 (SPECIES_##name + OBJ_EVENT_MON)
+#define OBJ_EVENT_GFX_SPECIES_SHINY(name)           (SPECIES_##name + OBJ_EVENT_MON + OBJ_EVENT_MON_SHINY)
+#define OBJ_EVENT_GFX_SPECIES_FEMALE(name)          (SPECIES_##name + OBJ_EVENT_MON + OBJ_EVENT_MON_FEMALE)
+#define OBJ_EVENT_GFX_SPECIES_SHINY_FEMALE(name)    (SPECIES_##name + OBJ_EVENT_MON + OBJ_EVENT_MON_SHINY + OBJ_EVENT_MON_FEMALE)
 
-// Whether Object Event is an OW pokemon
-#define IS_OW_MON_OBJ(obj) ((obj)->graphicsId >= OBJ_EVENT_GFX_MON_BASE)
+#define OW_SPECIES(x) ((x)->graphicsId & OBJ_EVENT_MON_SPECIES_MASK)
+#define OW_SHINY(x) ((x)->graphicsId & OBJ_EVENT_MON_SHINY)
+#define OW_FEMALE(x) ((x)->graphicsId & OBJ_EVENT_MON_FEMALE)
+
+#define IS_OW_MON_OBJ(obj) ((obj)->graphicsId & OBJ_EVENT_MON)
 
 enum Sombras
 {
