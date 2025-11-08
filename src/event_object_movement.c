@@ -1457,11 +1457,7 @@ static u32 CargaPaletaDinamicaFollower(u32 especie, bool32 shiny, bool32 hembra)
     const u32 *paleta = GetMonSpritePalFromSpecies(especie, shiny, hembra);
     struct Pokemon *mon = GetFirstLiveMon();
     {
-        if (gSpeciesInfo[especie].brilla && GetTimeOfDay() == TIEMPO_NOCHE)
-            LoadCompressedSpritePaletteWithTag(paleta, especie);
-        else
-            LoadCompressedSpritePaletteWithTagHueShifted(paleta, especie, GetMonData(mon, MON_DATA_PERSONALITY));
-
+        LoadCompressedSpritePaletteWithTagHueShifted(paleta, especie, GetMonData(mon, MON_DATA_PERSONALITY));
         numeroPaleta = IndexOfSpritePaletteTag(especie);
         UpdateSpritePaletteWithWeather(numeroPaleta, FALSE);
     }

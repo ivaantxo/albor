@@ -75,60 +75,86 @@ static s32 CalcularDesplazamientoDesdePersonalidad(u32 personalidad)
     return ((semilla * LIMITADOR_VARIACION_PALETAS) / 255) - (LIMITADOR_VARIACION_PALETAS / 2);
 }
 
+// Convierte 5 bits [0..31] a 8 bits [0..255]
+static inline s32 Componente5a8(s32 c5)
+{
+    return (c5 * 255 + 15) / 31;
+}
+
+// Convierte 8 bits [0..255] a 5 bits [0..31]
+static inline s32 Componente8a5(s32 c8)
+{
+    return (c8 * 31 + 127) / 255;
+}
+
+// Rota solo el tono del color en espacio HSV, manteniendo saturación y valor.
 static void DesplazaTonoPaletaBase(const u16 *src, u16 *dst, s32 desplazamiento)
 {
     for (u32 i = 0; i < COLORES_POR_PALETA; i++)
     {
-        u32 color = src[i];
-        s32 r = GET_R(color);
-        s32 g = GET_G(color);
-        s32 b = GET_B(color);
+        u16 colorRaw = src[i];
+        u16 marcador = IS_ALPHA(colorRaw) ? RGB_ALPHA : 0;
+        u16 color15 = colorRaw & ~RGB_ALPHA;
 
-        s32 max = r > g ? (r > b ? r : b) : (g > b ? g : b);
-        s32 min = r < g ? (r < b ? r : b) : (g < b ? g : b);
-        s32 delta = max - min;
+        s32 r = Componente5a8(GET_R(color15));
+        s32 g = Componente5a8(GET_G(color15));
+        s32 b = Componente5a8(GET_B(color15));
 
-        s32 tono;
+        s32 maxc = r > g ? (r > b ? r : b) : (g > b ? g : b);
+        s32 minc = r < g ? (r < b ? r : b) : (g < b ? g : b);
+        s32 delta = maxc - minc;
+
+        // Si el color es neutro (gris, blanco, negro), no tiene tono → no se modifica.
         if (delta == 0)
-            tono = 0;
-        else if (max == r)
-            tono = 60 * (g - b) / delta;
-        else if (max == g)
-            tono = 60 * (b - r) / delta + 120;
+        {
+            dst[i] = colorRaw;
+            continue;
+        }
+
+        // Calcula el tono original (0..359)
+        s32 h;
+        if (maxc == r)
+            h = 60 * (g - b) / delta;
+        else if (maxc == g)
+            h = 60 * (b - r) / delta + 120;
         else
-            tono = 60 * (r - g) / delta + 240;
+            h = 60 * (r - g) / delta + 240;
+        if (h < 0)
+            h += 360;
 
-        if (tono < 0)
-            tono += 360;
+        // Aplica desplazamiento (solo tono)
+        h = (h + desplazamiento) % 360;
+        if (h < 0) h += 360;
 
-        tono = (tono + desplazamiento) % 360;
-        if (tono < 0)
-            tono += 360;
+        // Conserva saturación y valor originales
+        s32 s = (maxc == 0) ? 0 : (delta * 255) / maxc;
+        s32 v = maxc;
 
-        s32 sat = (max == 0) ? 0 : ((delta * 255) / max);
-        s32 val = max;
+        // Reconstruye color en base a nuevo tono (manteniendo s y v)
+        s32 C = (v * s) / 255;
+        s32 hueMod = h % 120;
+        s32 X = (C * (60 - abs(hueMod - 60))) / 60;
+        s32 m = v - C;
 
-        s32 C = (val * sat) / 255;
-        s32 X = (C * (60 - abs((tono % 120) - 60))) / 60;
-        s32 m = val - C;
+        s32 r1, g1, b1;
+        if (h < 60)          { r1 = C; g1 = X; b1 = 0; }
+        else if (h < 120)    { r1 = X; g1 = C; b1 = 0; }
+        else if (h < 180)    { r1 = 0; g1 = C; b1 = X; }
+        else if (h < 240)    { r1 = 0; g1 = X; b1 = C; }
+        else if (h < 300)    { r1 = X; g1 = 0; b1 = C; }
+        else                 { r1 = C; g1 = 0; b1 = X; }
 
-        s32 r1 = 0, g1 = 0, b1 = 0;
-        if (tono < 60)          { r1 = C; g1 = X; b1 = 0; }
-        else if (tono < 120)    { r1 = X; g1 = C; b1 = 0; }
-        else if (tono < 180)    { r1 = 0; g1 = C; b1 = X; }
-        else if (tono < 240)    { r1 = 0; g1 = X; b1 = C; }
-        else if (tono < 300)    { r1 = X; g1 = 0; b1 = C; }
-        else                    { r1 = C; g1 = 0; b1 = X; }
+        // Ajusta brillo base (m)
+        s32 R8 = r1 + m;
+        s32 G8 = g1 + m;
+        s32 B8 = b1 + m;
 
-        s32 R = r1 + m;
-        s32 G = g1 + m;
-        s32 B = b1 + m;
+        // Clamp y convierte a 5 bits
+        s32 R5 = Componente8a5(R8 < 0 ? 0 : (R8 > 255 ? 255 : R8));
+        s32 G5 = Componente8a5(G8 < 0 ? 0 : (G8 > 255 ? 255 : G8));
+        s32 B5 = Componente8a5(B8 < 0 ? 0 : (B8 > 255 ? 255 : B8));
 
-        if (R > RGB_MAXIMO) R = RGB_MAXIMO;
-        if (G > RGB_MAXIMO) G = RGB_MAXIMO;
-        if (B > RGB_MAXIMO) B = RGB_MAXIMO;
-
-        dst[i] = RGB(R, G, B);
+        dst[i] = RGB(R5, G5, B5) | marcador;
     }
 }
 
