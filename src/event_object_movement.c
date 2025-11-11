@@ -10381,3 +10381,13 @@ static u16 ObtenIDGraficosParaPokemon(u32 species, bool32 shiny, bool32 hembra)
         graphicsId += OBJ_EVENT_MON_FEMALE;
     return graphicsId;
 }
+
+void Script_ArcanineTransparentAndFree(void)
+{
+    u8 objectEventId = gSelectedObjectEvent;
+
+    struct ObjectEvent *obj = &gObjectEvents[objectEventId];
+    struct Sprite *sprite = &gSprites[obj->spriteId];
+
+    sprite->oam.objMode = ST_OAM_OBJ_BLEND;
+}
