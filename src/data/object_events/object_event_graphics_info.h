@@ -2089,6 +2089,23 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lance = {
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Sombra32x16 = {
+    .tileTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_SOMBRA,
+    .size = 512,
+    .width = 32,
+    .height = 16,
+    .shadowSize = SHADOW_SIZE_NONE,
+    .inanimate = TRUE,
+    .compressed = FALSE,
+    .tracks = TRACKS_NONE,
+    .oam = &gObjectEventBaseOam_32x16_Transparente,
+    .subspriteTables = NULL,
+    .anims = sAnimTable_Standard,
+    .images = sPicTable_Sombra32x16,
+    .affineAnims = gDummySpriteAffineAnimTable,
+};
+
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Wally = {
     .tileTag = TAG_NONE,
     .paletteTag = OBJ_EVENT_PAL_TAG_NPC_1,

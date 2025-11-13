@@ -74,7 +74,7 @@
 *paletas: 0-12 tileset primario 0-9 (es necesario?) secundario 10-12 (chequear SWAP_PAL)
 *paletas primary: 0/arboles 1/centro_pokemon 2/hierba_y_hierba_alta 3/agua 4/agua_playa
 
-porytiles compile-primary -Wall -o /Users/ivanmartinez/Desktop/pokeemerald/data/tilesets/primary/principal /Users/ivanmartinez/Desktop/pokeemerald/desarrollo/graficos /Users/ivanmartinez/Desktop/pokeemerald/include/constants/metatile_behaviors.h
+porytiles compile-primary -Wall -o /Users/ivanmartinez/Documents/Volverá/albor/data/tilesets/primary/principal /Users/ivanmartinez/Documents/Volverá/albor/desarrollo/graficos /Users/ivanmartinez/Documents/Volverá/albor/include/constants/metatile_behaviors.h
 
 *Cada roedor (Furret, Linoone, Diggersby, Raticate, Bidoof) tiene un stat más dominante (PS-Raticate, At-Diggersby, Df-Bidoof, Df. Esp-Furret, Vel-Linoone)
 *Porygon Elect-Normal??

@@ -580,6 +580,10 @@ static const struct SpriteFrameImage sPicTable_Lance[] = {
     overworld_ascending_frames(gObjectEventPic_Lance, 4, 4),
 };
 
+static const struct SpriteFrameImage sPicTable_Sombra32x16[] = {
+    overworld_ascending_frames(gObjectEventPic_Sombra32x16, 4, 2),
+};
+
 static const struct SpriteFrameImage sPicTable_Wally[] = {
     overworld_ascending_frames(gObjectEventPic_Wally, 2, 4),
 };

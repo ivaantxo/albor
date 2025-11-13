@@ -146,6 +146,24 @@
     .affineAnims = gDummySpriteAffineAnimTable,                                                                 \
 }
 
+#define FOLLOWER_GRANDE(name, _tracks, ...)                                                                     \
+.followerData = {                                                                                               \
+    .tileTag = TAG_NONE,                                                                                        \
+    .paletteTag = OBJ_EVENT_PAL_TAG_DYNAMIC,                                                                    \
+    .size = 512,                                                                                                \
+    .width = 32,                                                                                                \
+    .height = 32,                                                                                               \
+    .shadowSize = SHADOW_SIZE_L,                                                                                \
+    .inanimate = FALSE,                                                                                         \
+    .compressed = FALSE,                                                                                        \
+    .tracks = _tracks,                                                                                          \
+    .oam = &gObjectEventBaseOam_32x32,                                                                          \
+    .subspriteTables = sOamTables_32x32,                                                                        \
+    .anims = DEFAULT(sAnimTable_Following, __VA_ARGS__),                                                        \
+    .images = (const struct SpriteFrameImage[]) { overworld_ascending_frames(gObjectEventPic_##name, 4, 4) },   \
+    .affineAnims = gDummySpriteAffineAnimTable,                                                                 \
+}
+
 const struct SpeciesInfo gSpeciesInfo[] =
 {
     [SPECIES_NONE] =
@@ -278,7 +296,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         ICONO(Venusaur),
         ICONO_HEMBRA(Venusaur),
         MOVIMIENTOS_HUEVO(Bulbasaur),
-        FOLLOWER(Venusaur, TRACKS_FOOT),
+        FOLLOWER_GRANDE(Venusaur, TRACKS_FOOT),
         FOLLOWER_HEMBRA(Venusaur, TRACKS_FOOT),
     },
 
