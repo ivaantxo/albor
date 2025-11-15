@@ -60,7 +60,7 @@
 #define MAPSEC_MT_CHIMNEY                   0x38
 #define MAPSEC_SAFARI_ZONE                  0x39
 #define MAPSEC_BATTLE_FRONTIER              0x3A
-#define MAPSEC_PETALBURG_WOODS              0x3B
+#define MAPSEC_UNUSED_0x3B              0x3B
 #define MAPSEC_RUSTURF_TUNNEL               0x3C
 #define MAPSEC_ABANDONED_SHIP               0x3D
 #define MAPSEC_NEW_MAUVILLE                 0x3E

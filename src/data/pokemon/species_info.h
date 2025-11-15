@@ -5461,7 +5461,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
                                 {EVO_ITEM, ITEM_CHARCOAL, SPECIES_FLAREON},
                                 {EVO_NIVEL_DIA, 40, SPECIES_ESPEON},
                                 {EVO_NIVEL_NOCHE, 40, SPECIES_UMBREON},
-                                {EVO_MAPSEC, MAPSEC_PETALBURG_WOODS, SPECIES_LEAFEON},
+                                {EVO_ITEM, ITEM_LEAF_STONE, SPECIES_LEAFEON},
                                 {EVO_MAPSEC, MAPSEC_SHOAL_CAVE, SPECIES_GLACEON},
                                 {EVO_AMISTAD, SPECIES_SYLVEON}),
     },

@@ -333,10 +333,6 @@ const struct FollowerMsgInfoExtended gFollowerConditionalMessages[COND_MSG_COUNT
     {
         .text = sCondMsg39,
         .emotion = FOLLOWER_EMOTION_PENSIVE,
-        .conditions =
-        {
-            MATCH_MAPSEC(MAPSEC_PETALBURG_WOODS),
-        },
     },
     [COND_MSG_ICE] =
     {
