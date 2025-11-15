@@ -304,6 +304,4 @@
 
 #define FRONTIER_TRAINERS_COUNT         300
 
-// special trainer IDs begin at 300, see constants/trainers.h
-
 #endif  // GUARD_CONSTANTS_BATTLE_FRONTIER_TRAINERS_H

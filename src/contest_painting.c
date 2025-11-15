@@ -29,10 +29,8 @@ COMMON_DATA u16 *gContestPaintingMonPalette = NULL;
 static u16 sMosaicVal;
 static u16 sFadeCounter;
 static bool8 sVarsInitialized;
-static u8 sWindowId;
 
 static void ShowContestPainting(void);
-static void InitContestPaintingWindow(void);
 static void InitContestPaintingBg(void);
 static void InitContestPaintingVars(bool8);
 static void CreateContestPaintingPicture(u8, u8);
@@ -180,10 +178,6 @@ static void ShowContestPainting(void)
         gMain.state++;
         break;
     case 2:
-        SeedRng(gMain.vblankCounter1);
-        InitKeys();
-        InitContestPaintingWindow();
-        gMain.state++;
         break;
     case 3:
         CreateContestPaintingPicture(gCurContestWinnerSaveIdx, gCurContestWinnerIsForArtist);
@@ -192,21 +186,6 @@ static void ShowContestPainting(void)
     case 4:
         break;
     }
-}
-
-static void InitContestPaintingWindow(void)
-{
-    ResetBgsAndClearDma3BusyFlags();
-    InitBgsFromTemplates(0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
-    ChangeBgX(1, 0, BG_COORD_SET);
-    ChangeBgY(1, 0, BG_COORD_SET);
-    SetBgTilemapBuffer(1, AllocZeroed(BG_SCREEN_SIZE));
-    sWindowId = AddWindow(&sWindowTemplate);
-    DeactivateAllTextPrinters();
-    FillWindowPixelBuffer(sWindowId, PIXEL_FILL(0));
-    PutWindowTilemap(sWindowId);
-    CopyWindowToVram(sWindowId, COPYWIN_FULL);
-    ShowBg(1);
 }
 
 static void InitContestPaintingBg(void)
@@ -292,7 +271,7 @@ static void _InitContestMonPixels(u8 *spriteGfx, u16 *palette, u16 (*destPixels)
 
 static void LoadContestPaintingFrame(u8 contestWinnerId, bool8 isForArtist)
 {
-    u8 x, y;
+    u32 x, y;
 
     LoadPalette(sPictureFramePalettes, BG_PLTT_ID(0), 8 * PLTT_SIZE_4BPP);
     if (isForArtist == TRUE)

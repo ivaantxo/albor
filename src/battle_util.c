@@ -10498,7 +10498,7 @@ bool32 SetIllusionMon(struct Pokemon *mon, u32 battler)
     for (i = PARTY_SIZE - 1; i >= 0; i--)
     {
         id = i;
-        if (GetMonData(&party[id], MON_DATA_SANITY_HAS_SPECIES)
+        if (GetMonData(&party[id], MON_DATA_SPECIES)
             && GetMonData(&party[id], MON_DATA_HP)
             && !GetMonData(&party[id], MON_DATA_IS_EGG)
             && &party[id] != mon
@@ -11094,7 +11094,7 @@ bool8 CanMonParticipateInSkyBattle(struct Pokemon *mon)
 
     bool8 hasLevitateAbility = gSpeciesInfo[species].abilities[monAbilityNum] == ABILITY_LEVITATE;
     bool8 isFlyingType = gSpeciesInfo[species].types[0] == TIPO_VOLADOR || gSpeciesInfo[species].types[1] == TIPO_VOLADOR;
-    bool8 monIsValidAndNotEgg = GetMonData(mon, MON_DATA_SANITY_HAS_SPECIES) && !GetMonData(mon, MON_DATA_IS_EGG);
+    bool8 monIsValidAndNotEgg = GetMonData(mon, MON_DATA_SPECIES) && !GetMonData(mon, MON_DATA_IS_EGG);
 
     if (monIsValidAndNotEgg)
     {

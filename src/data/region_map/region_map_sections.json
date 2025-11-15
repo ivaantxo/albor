@@ -594,22 +594,6 @@
       "height": 1
     },
     {
-      "map_section": "MAPSEC_JAGGED_PASS",
-      "name": "JAGGED PASS",
-      "x": 6,
-      "y": 3,
-      "width": 1,
-      "height": 1
-    },
-    {
-      "map_section": "MAPSEC_JAGGED_PASS2",
-      "name": "JAGGED PASS",
-      "x": 7,
-      "y": 2,
-      "width": 1,
-      "height": 1
-    },
-    {
       "map_section": "MAPSEC_SEALED_CHAMBER",
       "name": "SEALED CHAMBER",
       "x": 11,

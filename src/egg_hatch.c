@@ -308,10 +308,8 @@ static const s16 sEggShardVelocities[][2] =
 
 static void CreateHatchedMon(struct Pokemon *egg, struct Pokemon *temp)
 {
-    u16 species;
-    u32 personality;
-    u32 i, friendship, ball;
-    u16 moves[MAX_MON_MOVES];
+    u32 species, personality, i, friendship, ball;
+    u32 moves[MAX_MON_MOVES];
     u32 ivs[NUMERO_ESTADISTICAS];
 
     species = GetMonData(egg, MON_DATA_SPECIES);
@@ -326,7 +324,7 @@ static void CreateHatchedMon(struct Pokemon *egg, struct Pokemon *temp)
 
     ball = GetMonData(egg, MON_DATA_POKEBALL);
 
-    CreateMon(temp, species, EGG_HATCH_LEVEL, USE_RANDOM_IVS, TRUE, personality, OT_ID_PLAYER_ID, 0);
+    CreaPokemon(temp, species, EGG_HATCH_LEVEL, USE_RANDOM_IVS, TRUE, personality);
 
     for (i = 0; i < MAX_MON_MOVES; i++)
         SetMonData(temp, MON_DATA_MOVE1 + i,  &moves[i]);
@@ -893,7 +891,7 @@ u8 GetEggCyclesToSubtract(void)
     u8 count, i;
     for (count = CalculatePlayerPartyCount(), i = 0; i < count; i++)
     {
-        if (!GetMonData(&gPlayerParty[i], MON_DATA_SANITY_IS_EGG))
+        if (!GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG))
         {
             u16 ability = GetMonAbility(&gPlayerParty[i]);
             if (ability == ABILITY_MAGMA_ARMOR

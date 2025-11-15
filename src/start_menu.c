@@ -979,15 +979,7 @@ static u8 SaveConfirmSaveCallback(void)
 static u8 SaveDoSaveCallback(void)
 {
     IncrementGameStat(GAME_STAT_SAVED_GAME);
-
-    if (gDifferentSaveFile == TRUE)
-    {
-        TrySavingData();
-        gDifferentSaveFile = FALSE;
-    }
-    else
-        TrySavingData();
-
+    TrySavingData();
     DestroySprite(&gSprites[savingSpriteId]);
     sSaveDialogCallback = SaveSuccessCallback;
 

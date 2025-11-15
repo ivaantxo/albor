@@ -560,7 +560,7 @@ static void ListMenuPrint(struct ListMenu *list, const u8 *str, u8 x, u8 y)
 static void ListMenuPrintEntries(struct ListMenu *list, u16 startIndex, u16 yOffset, u16 count)
 {
     s32 i;
-    u8 x, y;
+    u32 x, y;
     u8 yMultiplier = GetFontAttribute(list->template.fontId, FONTATTR_MAX_LETTER_HEIGHT) + list->template.itemVerticalPadding;
 
     for (i = 0; i < count; i++)

@@ -1215,7 +1215,7 @@ static void Task_InitBallRoll(u8 taskId)
 {
     s8 startAngleId;
     u16 travelDist = 0;
-    u16 rand;
+    u32 rand;
     u16 randmod;
     u16 startAngles[4] = {0, 180, 90, 270}; // possible angles to start ball from
 

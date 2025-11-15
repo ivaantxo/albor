@@ -2332,16 +2332,6 @@
       "blockdata_filepath": "data/layouts/SouthernIsland_Interior/map.bin"
     },
     {
-      "id": "LAYOUT_JAGGED_PASS",
-      "name": "JaggedPass_Layout",
-      "width": 30,
-      "height": 46,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Lavaridge",
-      "border_filepath": "data/layouts/JaggedPass/border.bin",
-      "blockdata_filepath": "data/layouts/JaggedPass/map.bin"
-    },
-    {
       "id": "LAYOUT_FIERY_PATH",
       "name": "FieryPath_Layout",
       "width": 35,

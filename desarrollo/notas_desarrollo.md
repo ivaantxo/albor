@@ -53,6 +53,9 @@
 - Crear habilidad exclusiva de Beedrill (Empalador o algo así).
 - Arreglar tiendas.
 - Arreglar icono de guardado que cambia con el día.
+- Huevos heredan 50% de las veces habilidad de la madre.
+- Huevos tienen 50% en cada estadística de heredar los IVs del padre o de la madre: 2 padres con 31 IVs en ataque darán siempre un huevo con 31 IVs en ataque.
+- Huevos heredan 50% naturaleza del padre y 50% de la madre.
 
 -Lista de moves hechos:
 *Bomba huevo.

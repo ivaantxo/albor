@@ -185,10 +185,6 @@ enum CambiosEstadisticas
 
 #define MAX_DYNAMAX_LEVEL 10
 
-#define OT_ID_PLAYER_ID       0
-#define OT_ID_PRESET          1
-#define OT_ID_RANDOM_NO_SHINY 2
-
 #define MON_GIVEN_TO_PARTY      0
 #define MON_GIVEN_TO_PC         1
 #define MON_CANT_GIVE           2

@@ -910,7 +910,7 @@ static bool8 DestroySnowflakeSprite(void)
 
 static void InitSnowflakeSpriteMovement(struct Sprite *sprite)
 {
-    u16 rand;
+    u32 rand;
     u16 x = ((sprite->tSnowflakeId * 5) & 7) * 30 + (Random() % 30);
 
     sprite->y = -3 - (gSpriteCoordOffsetY + sprite->centerToCornerVecY);

@@ -351,10 +351,7 @@ static const u8 *GetInteractedObjectEventScript(struct MapPosition *position, u8
     gSpecialVar_LastTalked = gObjectEvents[objectEventId].localId;
     gSpecialVar_Facing = direction;
 
-    if (InTrainerHill() == TRUE)
-        script = GetTrainerHillTrainerScript();
-    else
-        script = GetObjectEventScriptPointerByObjectEventId(objectEventId);
+    script = GetObjectEventScriptPointerByObjectEventId(objectEventId);
     return script;
 }
 

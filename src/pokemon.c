@@ -434,395 +434,138 @@ void ZeroEnemyPartyMons(void)
         ZeroMonData(&gEnemyParty[i]);
 }
 
-void CreateMon(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 hasFixedPersonality, u32 fixedPersonality, u8 otIdType, u32 fixedOtId)
+void CreaPokemon(struct Pokemon *mon, u32 species, u32 level, u32 fixedIV, bool32 hasFixedPersonality, u32 fixedPersonality)
 {
-    u32 mail;
     ZeroMonData(mon);
-    CreateBoxMon(&mon->box, species, level, fixedIV, hasFixedPersonality, fixedPersonality, otIdType, fixedOtId);
+    CreaPokemonCaja(&mon->box, species, level, fixedIV, hasFixedPersonality, fixedPersonality);
     SetMonData(mon, MON_DATA_LEVEL, &level);
-    mail = MAIL_NONE;
-    SetMonData(mon, MON_DATA_MAIL, &mail);
     CalculateMonStats(mon);
 }
 
-void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, u8 hasFixedPersonality, u32 fixedPersonality, u8 otIdType, u32 fixedOtId)
+void CreaPokemonCaja(struct BoxPokemon *boxMon, u32 especie, u32 nivel, u32 ivFijo, bool32 tienePersonalidadFija, u32 personalidadFija)
 {
-    u8 speciesName[POKEMON_NAME_LENGTH + 1];
-    u32 personality;
-    u32 value;
-    bool32 isShiny;
+    u8 nombreEspecie[POKEMON_NAME_LENGTH + 1];
+    u32 personalidad;
+    bool32 esVariocolor;
 
     ZeroBoxMonData(boxMon);
 
-    if (hasFixedPersonality)
-        personality = fixedPersonality;
+    if (tienePersonalidadFija)
+        personalidad = personalidadFija;
     else
-        personality = Random32();
+        personalidad = Random();
 
-    // Determine original trainer ID
-    if (otIdType == OT_ID_RANDOM_NO_SHINY)
+    u32 rerollsExtra = 0;
+    if (CheckBagHasItem(ITEM_SHINY_CHARM, 1))
+        rerollsExtra += I_SHINY_CHARM_ADDITIONAL_ROLLS;
+
+    while (OBTEN_VALOR_SHINY(personalidad) >= SHINY_ODDS && rerollsExtra > 0)
     {
-        value = Random32();
-        isShiny = FALSE;
-    }
-    else if (otIdType == OT_ID_PRESET)
-    {
-        value = fixedOtId;
-        isShiny = GET_SHINY_VALUE(value, personality) < SHINY_ODDS;
-    }
-    else // Player is the OT
-    {
-        value = gSaveBlockPtr->playerTrainerId[0]
-              | (gSaveBlockPtr->playerTrainerId[1] << 8)
-              | (gSaveBlockPtr->playerTrainerId[2] << 16)
-              | (gSaveBlockPtr->playerTrainerId[3] << 24);
-
-        if (P_FLAG_FORCE_NO_SHINY != 0 && FlagGet(P_FLAG_FORCE_NO_SHINY))
-        {
-            isShiny = FALSE;
-        }
-        else if (P_FLAG_FORCE_SHINY != 0 && FlagGet(P_FLAG_FORCE_SHINY))
-        {
-            isShiny = TRUE;
-        }
-        else if (P_NO_SHINIES_WITHOUT_POKEBALLS && !HasAtLeastOnePokeBall())
-        {
-            isShiny = FALSE;
-        }
-        else
-        {
-            u32 totalRerolls = 0;
-            if (CheckBagHasItem(ITEM_SHINY_CHARM, 1))
-                totalRerolls += I_SHINY_CHARM_ADDITIONAL_ROLLS;
-            if (LURE_STEP_COUNT != 0)
-                totalRerolls += 1;
-            if (I_FISHING_CHAIN && gIsFishingEncounter)
-                totalRerolls += CalculateChainFishingShinyRolls();
-
-            while (GET_SHINY_VALUE(value, personality) >= SHINY_ODDS && totalRerolls > 0)
-            {
-                personality = Random32();
-                totalRerolls--;
-            }
-
-            isShiny = GET_SHINY_VALUE(value, personality) < SHINY_ODDS;
-        }
+        personalidad = Random();
+        rerollsExtra--;
     }
 
-    SetBoxMonData(boxMon, MON_DATA_PERSONALITY, &personality);
-    SetBoxMonData(boxMon, MON_DATA_OT_ID, &value);
+    esVariocolor = OBTEN_VALOR_SHINY(personalidad) < SHINY_ODDS;
 
-    SetBoxMonData(boxMon, MON_DATA_IS_SHINY, &isShiny);
-    StringCopy(speciesName, GetSpeciesName(species));
-    SetBoxMonData(boxMon, MON_DATA_NICKNAME, speciesName);
+    SetBoxMonData(boxMon, MON_DATA_PERSONALITY, &personalidad);
+    SetBoxMonData(boxMon, MON_DATA_IS_SHINY, &esVariocolor);
+    StringCopy(nombreEspecie, GetSpeciesName(especie));
+    SetBoxMonData(boxMon, MON_DATA_NICKNAME, nombreEspecie);
     SetBoxMonData(boxMon, MON_DATA_OT_NAME, gSaveBlockPtr->playerName);
-    SetBoxMonData(boxMon, MON_DATA_SPECIES, &species);
-    SetBoxMonData(boxMon, MON_DATA_EXP, &gExperienceTables[gSpeciesInfo[species].growthRate][level]);
-    SetBoxMonData(boxMon, MON_DATA_FRIENDSHIP, &gSpeciesInfo[species].friendship);
-    value = GetCurrentRegionMapSectionId();
-    SetBoxMonData(boxMon, MON_DATA_MET_LOCATION, &value);
-    SetBoxMonData(boxMon, MON_DATA_MET_LEVEL, &level);
-    value = ITEM_POKE_BALL;
-    SetBoxMonData(boxMon, MON_DATA_POKEBALL, &value);
+    SetBoxMonData(boxMon, MON_DATA_SPECIES, &especie);
 
-    if (fixedIV < USE_RANDOM_IVS)
+    u32 experiencia = gExperienceTables[gSpeciesInfo[especie].growthRate][nivel];
+    SetBoxMonData(boxMon, MON_DATA_EXP, &experiencia);
+    SetBoxMonData(boxMon, MON_DATA_FRIENDSHIP, &gSpeciesInfo[especie].friendship);
+
+    u32 localizacion = GetCurrentRegionMapSectionId();
+    SetBoxMonData(boxMon, MON_DATA_MET_LOCATION, &localizacion);
+    SetBoxMonData(boxMon, MON_DATA_MET_LEVEL, &nivel);
+
+    u32 pokeBall = ITEM_POKE_BALL;
+    SetBoxMonData(boxMon, MON_DATA_POKEBALL, &pokeBall);
+
+    if (ivFijo < USE_RANDOM_IVS)
     {
-        SetBoxMonData(boxMon, MON_DATA_HP_IV, &fixedIV);
-        SetBoxMonData(boxMon, MON_DATA_ATK_IV, &fixedIV);
-        SetBoxMonData(boxMon, MON_DATA_DEF_IV, &fixedIV);
-        SetBoxMonData(boxMon, MON_DATA_SPEED_IV, &fixedIV);
-        SetBoxMonData(boxMon, MON_DATA_SPATK_IV, &fixedIV);
-        SetBoxMonData(boxMon, MON_DATA_SPDEF_IV, &fixedIV);
+        SetBoxMonData(boxMon, MON_DATA_HP_IV, &ivFijo);
+        SetBoxMonData(boxMon, MON_DATA_ATK_IV, &ivFijo);
+        SetBoxMonData(boxMon, MON_DATA_DEF_IV, &ivFijo);
+        SetBoxMonData(boxMon, MON_DATA_SPEED_IV, &ivFijo);
+        SetBoxMonData(boxMon, MON_DATA_SPATK_IV, &ivFijo);
+        SetBoxMonData(boxMon, MON_DATA_SPDEF_IV, &ivFijo);
     }
     else
     {
         u32 iv;
-        u32 ivRandom = Random32();
-        value = (u16)ivRandom;
 
-        iv = value & MAX_IV_MASK;
+        iv = Random() & MAX_IV_MASK;
         SetBoxMonData(boxMon, MON_DATA_HP_IV, &iv);
-        iv = (value & (MAX_IV_MASK << 5)) >> 5;
+
+        iv = Random() & MAX_IV_MASK;
         SetBoxMonData(boxMon, MON_DATA_ATK_IV, &iv);
-        iv = (value & (MAX_IV_MASK << 10)) >> 10;
+
+        iv = Random() & MAX_IV_MASK;
         SetBoxMonData(boxMon, MON_DATA_DEF_IV, &iv);
 
-        value = (u16)(ivRandom >> 16);
-
-        iv = value & MAX_IV_MASK;
+        iv = Random() & MAX_IV_MASK;
         SetBoxMonData(boxMon, MON_DATA_SPEED_IV, &iv);
-        iv = (value & (MAX_IV_MASK << 5)) >> 5;
+
+        iv = Random() & MAX_IV_MASK;
         SetBoxMonData(boxMon, MON_DATA_SPATK_IV, &iv);
-        iv = (value & (MAX_IV_MASK << 10)) >> 10;
+
+        iv = Random() & MAX_IV_MASK;
         SetBoxMonData(boxMon, MON_DATA_SPDEF_IV, &iv);
     }
 
-    if (gSpeciesInfo[species].abilities[1])
     {
-        value = personality & 1;
-        SetBoxMonData(boxMon, MON_DATA_ABILITY_NUM, &value);
+        u32 habilidadNum;
+        u32 probabilidadHabilidadNum = Random() % 100;
+
+        if (probabilidadHabilidadNum == 0 && gSpeciesInfo[especie].abilities[2] != ABILITY_NONE)
+            habilidadNum = 2; // Habilidad oculta
+        else if (probabilidadHabilidadNum < 50 || gSpeciesInfo[especie].abilities[1] == ABILITY_NONE)
+            habilidadNum = 0; // Habilidad 1
+        else
+            habilidadNum = 1; // Habilidad 2
+
+        SetBoxMonData(boxMon, MON_DATA_ABILITY_NUM, &habilidadNum);
     }
 
     GiveBoxMonInitialMoveset(boxMon);
 }
 
-void CreateMonWithNature(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 nature)
+void CreaPokemonConNaturaleza(struct Pokemon *mon, u32 species, u32 level, u32 fixedIV, u32 nature)
 {
     u32 personality;
 
     do
     {
-        personality = Random32();
+        personality = Random();
     }
-    while (nature != GetNatureFromPersonality(personality));
+    while (nature != ObtenNaturalezaDePersonalidad(personality));
 
-    CreateMon(mon, species, level, fixedIV, TRUE, personality, OT_ID_PLAYER_ID, 0);
+    CreaPokemon(mon, species, level, fixedIV, TRUE, personality);
 }
 
-void CreateMonWithGenderNatureLetter(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 gender, u8 nature)
+void CreaPokemonConGeneroNaturaleza(struct Pokemon *mon, u32 species, u32 level, u32 fixedIV, u32 gender, u32 nature)
 {
     u32 personality;
 
     do
     {
-        personality = Random32();
+        personality = Random();
     }
-    while (nature != GetNatureFromPersonality(personality)
+    while (nature != ObtenNaturalezaDePersonalidad(personality)
         || gender != GetGenderFromSpeciesAndPersonality(species, personality));
 
-    CreateMon(mon, species, level, fixedIV, TRUE, personality, OT_ID_PLAYER_ID, 0);
-}
-
-// This is only used to create Wally's Ralts.
-void CreateMaleMon(struct Pokemon *mon, u16 species, u8 level)
-{
-    u32 personality;
-    u32 otId;
-
-    do
-    {
-        otId = Random32();
-        personality = Random32();
-    }
-    while (GetGenderFromSpeciesAndPersonality(species, personality) != MON_MALE);
-    CreateMon(mon, species, level, USE_RANDOM_IVS, TRUE, personality, OT_ID_PRESET, otId);
-}
-
-void CreateMonWithIVsPersonality(struct Pokemon *mon, u16 species, u8 level, u32 ivs, u32 personality)
-{
-    CreateMon(mon, species, level, 0, TRUE, personality, OT_ID_PLAYER_ID, 0);
-    SetMonData(mon, MON_DATA_IVS, &ivs);
-    CalculateMonStats(mon);
-}
-
-void CreateMonWithIVsOTID(struct Pokemon *mon, u16 species, u8 level, u8 *ivs, u32 otId)
-{
-    CreateMon(mon, species, level, 0, FALSE, 0, OT_ID_PRESET, otId);
-    SetMonData(mon, MON_DATA_HP_IV, &ivs[ESTADISTICA_PS]);
-    SetMonData(mon, MON_DATA_ATK_IV, &ivs[ESTADISTICA_ATAQUE]);
-    SetMonData(mon, MON_DATA_DEF_IV, &ivs[ESTADISTICA_DEFENSA]);
-    SetMonData(mon, MON_DATA_SPEED_IV, &ivs[ESTADISTICA_VELOCIDAD]);
-    SetMonData(mon, MON_DATA_SPATK_IV, &ivs[ESTADISTICA_ATAQUE_ESPECIAL]);
-    SetMonData(mon, MON_DATA_SPDEF_IV, &ivs[ESTADISTICA_DEFENSA_ESPECIAL]);
-    CalculateMonStats(mon);
-}
-
-void CreateMonWithEVSpread(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 evSpread)
-{
-    s32 i;
-    s32 statCount = 0;
-    u16 evAmount;
-    u8 evsBits;
-
-    CreateMon(mon, species, level, fixedIV, FALSE, 0, OT_ID_PLAYER_ID, 0);
-
-    evsBits = evSpread;
-
-    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
-    {
-        if (evsBits & 1)
-            statCount++;
-        evsBits >>= 1;
-    }
-
-    evAmount = MAX_TOTAL_EVS / statCount;
-
-    evsBits = 1;
-
-    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
-    {
-        if (evSpread & evsBits)
-            SetMonData(mon, MON_DATA_HP_EV + i, &evAmount);
-        evsBits <<= 1;
-    }
-
-    CalculateMonStats(mon);
-}
-
-void CreateBattleTowerMon(struct Pokemon *mon, struct BattleTowerPokemon *src)
-{
-    s32 i;
-    u8 nickname[max(32, POKEMON_NAME_BUFFER_SIZE)];
-    u8 value;
-
-    CreateMon(mon, src->species, src->level, 0, TRUE, src->personality, OT_ID_PRESET, src->otId);
-
-    for (i = 0; i < MAX_MON_MOVES; i++)
-        SetMonMoveSlot(mon, src->moves[i], i);
-
-    SetMonData(mon, MON_DATA_PP_BONUSES, &src->ppBonuses);
-    SetMonData(mon, MON_DATA_HELD_ITEM, &src->heldItem);
-    SetMonData(mon, MON_DATA_FRIENDSHIP, &src->friendship);
-
-    StringCopy(nickname, src->nickname);
-
-    SetMonData(mon, MON_DATA_NICKNAME, nickname);
-    SetMonData(mon, MON_DATA_HP_EV, &src->hpEV);
-    SetMonData(mon, MON_DATA_ATK_EV, &src->attackEV);
-    SetMonData(mon, MON_DATA_DEF_EV, &src->defenseEV);
-    SetMonData(mon, MON_DATA_SPEED_EV, &src->speedEV);
-    SetMonData(mon, MON_DATA_SPATK_EV, &src->spAttackEV);
-    SetMonData(mon, MON_DATA_SPDEF_EV, &src->spDefenseEV);
-    value = src->abilityNum;
-    SetMonData(mon, MON_DATA_ABILITY_NUM, &value);
-    value = src->hpIV;
-    SetMonData(mon, MON_DATA_HP_IV, &value);
-    value = src->attackIV;
-    SetMonData(mon, MON_DATA_ATK_IV, &value);
-    value = src->defenseIV;
-    SetMonData(mon, MON_DATA_DEF_IV, &value);
-    value = src->speedIV;
-    SetMonData(mon, MON_DATA_SPEED_IV, &value);
-    value = src->spAttackIV;
-    SetMonData(mon, MON_DATA_SPATK_IV, &value);
-    value = src->spDefenseIV;
-    SetMonData(mon, MON_DATA_SPDEF_IV, &value);
-    MonRestorePP(mon);
-    CalculateMonStats(mon);
-}
-
-void CreateBattleTowerMon_HandleLevel(struct Pokemon *mon, struct BattleTowerPokemon *src, bool8 lvl50)
-{
-    s32 i;
-    u8 nickname[max(32, POKEMON_NAME_BUFFER_SIZE)];
-    u8 level;
-    u8 value;
-
-    if (gSaveBlockPtr->frontier.lvlMode != FRONTIER_LVL_50)
-        level = GetFrontierEnemyMonLevel(gSaveBlockPtr->frontier.lvlMode);
-    else if (lvl50)
-        level = FRONTIER_MAX_LEVEL_50;
-    else
-        level = src->level;
-
-    CreateMon(mon, src->species, level, 0, TRUE, src->personality, OT_ID_PRESET, src->otId);
-
-    for (i = 0; i < MAX_MON_MOVES; i++)
-        SetMonMoveSlot(mon, src->moves[i], i);
-
-    SetMonData(mon, MON_DATA_PP_BONUSES, &src->ppBonuses);
-    SetMonData(mon, MON_DATA_HELD_ITEM, &src->heldItem);
-    SetMonData(mon, MON_DATA_FRIENDSHIP, &src->friendship);
-
-    StringCopy(nickname, src->nickname);
-
-    SetMonData(mon, MON_DATA_NICKNAME, nickname);
-    SetMonData(mon, MON_DATA_HP_EV, &src->hpEV);
-    SetMonData(mon, MON_DATA_ATK_EV, &src->attackEV);
-    SetMonData(mon, MON_DATA_DEF_EV, &src->defenseEV);
-    SetMonData(mon, MON_DATA_SPEED_EV, &src->speedEV);
-    SetMonData(mon, MON_DATA_SPATK_EV, &src->spAttackEV);
-    SetMonData(mon, MON_DATA_SPDEF_EV, &src->spDefenseEV);
-    value = src->abilityNum;
-    SetMonData(mon, MON_DATA_ABILITY_NUM, &value);
-    value = src->hpIV;
-    SetMonData(mon, MON_DATA_HP_IV, &value);
-    value = src->attackIV;
-    SetMonData(mon, MON_DATA_ATK_IV, &value);
-    value = src->defenseIV;
-    SetMonData(mon, MON_DATA_DEF_IV, &value);
-    value = src->speedIV;
-    SetMonData(mon, MON_DATA_SPEED_IV, &value);
-    value = src->spAttackIV;
-    SetMonData(mon, MON_DATA_SPATK_IV, &value);
-    value = src->spDefenseIV;
-    SetMonData(mon, MON_DATA_SPDEF_IV, &value);
-    MonRestorePP(mon);
-    CalculateMonStats(mon);
-}
-
-void CreateMonWithEVSpreadNatureOTID(struct Pokemon *mon, u16 species, u8 level, u8 nature, u8 fixedIV, u8 evSpread, u32 otId)
-{
-    s32 i;
-    s32 statCount = 0;
-    u8 evsBits;
-    u16 evAmount;
-
-    // i is reused as personality value
-    do
-    {
-        i = Random32();
-    } while (nature != GetNatureFromPersonality(i));
-
-    CreateMon(mon, species, level, fixedIV, TRUE, i, OT_ID_PRESET, otId);
-    evsBits = evSpread;
-    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
-    {
-        if (evsBits & 1)
-            statCount++;
-        evsBits >>= 1;
-    }
-
-    evAmount = MAX_TOTAL_EVS / statCount;
-    evsBits = 1;
-    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
-    {
-        if (evSpread & evsBits)
-            SetMonData(mon, MON_DATA_HP_EV + i, &evAmount);
-        evsBits <<= 1;
-    }
-
-    CalculateMonStats(mon);
-}
-
-void ConvertPokemonToBattleTowerPokemon(struct Pokemon *mon, struct BattleTowerPokemon *dest)
-{
-    s32 i;
-    u16 heldItem;
-
-    dest->species = GetMonData(mon, MON_DATA_SPECIES, NULL);
-    heldItem = GetMonData(mon, MON_DATA_HELD_ITEM, NULL);
-    dest->heldItem = heldItem;
-
-    for (i = 0; i < MAX_MON_MOVES; i++)
-        dest->moves[i] = GetMonData(mon, MON_DATA_MOVE1 + i, NULL);
-
-    dest->level = GetMonData(mon, MON_DATA_LEVEL, NULL);
-    dest->ppBonuses = GetMonData(mon, MON_DATA_PP_BONUSES, NULL);
-    dest->otId = GetMonData(mon, MON_DATA_OT_ID, NULL);
-    dest->hpEV = GetMonData(mon, MON_DATA_HP_EV, NULL);
-    dest->attackEV = GetMonData(mon, MON_DATA_ATK_EV, NULL);
-    dest->defenseEV = GetMonData(mon, MON_DATA_DEF_EV, NULL);
-    dest->speedEV = GetMonData(mon, MON_DATA_SPEED_EV, NULL);
-    dest->spAttackEV = GetMonData(mon, MON_DATA_SPATK_EV, NULL);
-    dest->spDefenseEV = GetMonData(mon, MON_DATA_SPDEF_EV, NULL);
-    dest->friendship = GetMonData(mon, MON_DATA_FRIENDSHIP, NULL);
-    dest->hpIV = GetMonData(mon, MON_DATA_HP_IV, NULL);
-    dest->attackIV = GetMonData(mon, MON_DATA_ATK_IV, NULL);
-    dest->defenseIV = GetMonData(mon, MON_DATA_DEF_IV, NULL);
-    dest->speedIV  = GetMonData(mon, MON_DATA_SPEED_IV, NULL);
-    dest->spAttackIV  = GetMonData(mon, MON_DATA_SPATK_IV, NULL);
-    dest->spDefenseIV  = GetMonData(mon, MON_DATA_SPDEF_IV, NULL);
-    dest->abilityNum = GetMonData(mon, MON_DATA_ABILITY_NUM, NULL);
-    dest->personality = GetMonData(mon, MON_DATA_PERSONALITY, NULL);
-    GetMonData(mon, MON_DATA_NICKNAME10, dest->nickname);
+    CreaPokemon(mon, species, level, fixedIV, TRUE, personality);
 }
 
 #define CALC_STAT(base, iv, ev, statIndex, field)               \
 {                                                               \
     u8 baseStat = gSpeciesInfo[species].base;                   \
     s32 n = (((2 * baseStat + iv + ev / 4) * level) / 100) + 5; \
-    n = ModifyStatByNature(nature, n, statIndex);               \
+    n = ModifyStatByNature(naturaleza, n, statIndex);           \
     SetMonData(mon, field, &n);                                 \
 }
 
@@ -845,8 +588,7 @@ void CalculateMonStats(struct Pokemon *mon)
     u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
     s32 level = GetLevelFromMonExp(mon);
     s32 newMaxHP;
-
-    u8 nature = GetMonData(mon, MON_DATA_HIDDEN_NATURE, NULL);
+    u32 naturaleza = ObtenNaturaleza(mon);
 
     SetMonData(mon, MON_DATA_LEVEL, &level);
 
@@ -1516,20 +1258,8 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
         case MON_DATA_PERSONALITY:
             retVal = boxMon->personality;
             break;
-        case MON_DATA_OT_ID:
-            retVal = boxMon->otId;
-            break;
         case MON_DATA_LANGUAGE:
             retVal = 0;
-            break;
-        case MON_DATA_SANITY_IS_BAD_EGG:
-            retVal = 0;
-            break;
-        case MON_DATA_SANITY_HAS_SPECIES:
-            retVal = 0;
-            break;
-        case MON_DATA_SANITY_IS_EGG:
-            retVal = boxMon->isEgg;
             break;
         case MON_DATA_OT_NAME:
         {
@@ -1549,14 +1279,8 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
             break;
         case MON_DATA_IS_SHINY:
         {
-            u32 shinyValue = GET_SHINY_VALUE(boxMon->otId, boxMon->personality);
-            retVal = (shinyValue < SHINY_ODDS) ^ boxMon->shinyModifier;
-            break;
-        }
-        case MON_DATA_HIDDEN_NATURE:
-        {
-            u32 nature = GetNatureFromPersonality(boxMon->personality);
-            retVal = nature;
+            u32 shinyValue = OBTEN_VALOR_SHINY(boxMon->personality);
+            retVal = (shinyValue < SHINY_ODDS) ^ boxMon->esShiny;
             break;
         }
         default:
@@ -1771,13 +1495,7 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         case MON_DATA_PERSONALITY:
             SET32(boxMon->personality);
             break;
-        case MON_DATA_OT_ID:
-            SET32(boxMon->otId);
-            break;
         case MON_DATA_LANGUAGE:
-        case MON_DATA_SANITY_IS_BAD_EGG:
-        case MON_DATA_SANITY_HAS_SPECIES:
-        case MON_DATA_SANITY_IS_EGG:
             break;
         case MON_DATA_OT_NAME:
         {
@@ -1788,16 +1506,16 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         }
         case MON_DATA_MARKINGS:
             break;
-        case MON_DATA_IS_SHINY:
+    case MON_DATA_IS_SHINY:
+    {
+        if (data) 
         {
-            u32 shinyValue = GET_SHINY_VALUE(boxMon->otId, boxMon->personality);
-            bool32 isShiny;
-            SET8(isShiny);
-            boxMon->shinyModifier = (shinyValue < SHINY_ODDS) ^ isShiny;
-            break;
+            bool32 forceShiny = *(bool32*)data;
+            u32 shinyValue = OBTEN_VALOR_SHINY(boxMon->personality);
+            boxMon->esShiny = (shinyValue < SHINY_ODDS) ^ forceShiny;
         }
-        case MON_DATA_HIDDEN_NATURE:
-            break;
+        break;
+    }
     default:
         break;
     }
@@ -1808,12 +1526,11 @@ void CopyMon(void *dest, void *src, size_t size)
     memcpy(dest, src, size);
 }
 
-u8 GiveMonToPlayer(struct Pokemon *mon)
+u32 GiveMonToPlayer(struct Pokemon *mon)
 {
     s32 i;
 
     SetMonData(mon, MON_DATA_OT_NAME, gSaveBlockPtr->playerName);
-    SetMonData(mon, MON_DATA_OT_ID, gSaveBlockPtr->playerTrainerId);
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
@@ -1829,7 +1546,7 @@ u8 GiveMonToPlayer(struct Pokemon *mon)
     return MON_GIVEN_TO_PARTY;
 }
 
-u8 CopyMonToPC(struct Pokemon *mon)
+u32 CopyMonToPC(struct Pokemon *mon)
 {
     s32 boxNo, boxPos;
 
@@ -1963,50 +1680,6 @@ u16 GetMonAbility(struct Pokemon *mon)
     return GetAbilityBySpecies(species, abilityNum);
 }
 
-void CreateSecretBaseEnemyParty(struct SecretBase *secretBaseRecord)
-{
-    s32 i, j;
-
-    ZeroEnemyPartyMons();
-    *gBattleResources->secretBase = *secretBaseRecord;
-
-    for (i = 0; i < PARTY_SIZE; i++)
-    {
-        if (gBattleResources->secretBase->party.species[i])
-        {
-            CreateMon(&gEnemyParty[i],
-                gBattleResources->secretBase->party.species[i],
-                gBattleResources->secretBase->party.levels[i],
-                15,
-                TRUE,
-                gBattleResources->secretBase->party.personality[i],
-                OT_ID_RANDOM_NO_SHINY,
-                0);
-
-            SetMonData(&gEnemyParty[i], MON_DATA_HELD_ITEM, &gBattleResources->secretBase->party.heldItems[i]);
-
-            for (j = 0; j < NUMERO_ESTADISTICAS; j++)
-                SetMonData(&gEnemyParty[i], MON_DATA_HP_EV + j, &gBattleResources->secretBase->party.EVs[i]);
-
-            for (j = 0; j < MAX_MON_MOVES; j++)
-            {
-                SetMonData(&gEnemyParty[i], MON_DATA_MOVE1 + j, &gBattleResources->secretBase->party.moves[i * MAX_MON_MOVES + j]);
-                SetMonData(&gEnemyParty[i], MON_DATA_PP1 + j, &gMovesInfo[gBattleResources->secretBase->party.moves[i * MAX_MON_MOVES + j]].pp);
-            }
-        }
-    }
-}
-
-u8 GetSecretBaseTrainerPicIndex(void)
-{
-    return 0;
-}
-
-u8 GetSecretBaseTrainerClass(void)
-{
-    return 0;
-}
-
 bool8 IsPlayerPartyAndPokemonStorageFull(void)
 {
     s32 i;
@@ -2137,7 +1810,6 @@ void PokemonToBattleMon(struct Pokemon *src, struct BattlePokemon *dst)
     dst->spAttack = GetMonData(src, MON_DATA_SPATK, NULL);
     dst->spDefense = GetMonData(src, MON_DATA_SPDEF, NULL);
     dst->abilityNum = GetMonData(src, MON_DATA_ABILITY_NUM, NULL);
-    dst->otId = GetMonData(src, MON_DATA_OT_ID, NULL);
     dst->types[0] = gSpeciesInfo[dst->species].types[0];
     dst->types[1] = gSpeciesInfo[dst->species].types[1];
     dst->types[2] = TIPO_MISTERIO;
@@ -2823,14 +2495,14 @@ u8 *UseStatIncreaseItem(u16 itemId)
     return gDisplayedStringBattle;
 }
 
-u8 GetNature(struct Pokemon *mon)
+u32 ObtenNaturaleza(struct Pokemon *pokemon)
 {
-    return GetMonData(mon, MON_DATA_PERSONALITY, 0) % NUMERO_NATURALEZAS;
+    return GetMonData(pokemon, MON_DATA_PERSONALITY, 0) % NUMERO_NATURALEZAS;
 }
 
-u8 GetNatureFromPersonality(u32 personality)
+u32 ObtenNaturalezaDePersonalidad(u32 personalidad)
 {
-    return personality % NUMERO_NATURALEZAS;
+    return personalidad % NUMERO_NATURALEZAS;
 }
 
 u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u16 evolutionItem)
@@ -3728,9 +3400,9 @@ static void Task_PlayMapChosenOrBattleBGM(u8 taskId)
 
 const u32 *GetMonFrontSpritePal(struct Pokemon *mon)
 {
-    u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
-    bool32 isShiny = GetMonData(mon, MON_DATA_IS_SHINY, NULL);
-    u32 personality = GetMonData(mon, MON_DATA_PERSONALITY, NULL);
+    u16 species = GetMonData(mon, MON_DATA_SPECIES);
+    bool32 isShiny = GetMonData(mon, MON_DATA_IS_SHINY);
+    u32 personality = GetMonData(mon, MON_DATA_PERSONALITY);
     return GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality);
 }
 
@@ -3770,41 +3442,14 @@ bool8 IsMonSpriteNotFlipped(u16 species)
 
 s8 GetMonFlavorRelation(struct Pokemon *mon, u8 flavor)
 {
-    u8 nature = GetNature(mon);
+    u8 nature = ObtenNaturaleza(mon);
     return gPokeblockFlavorCompatibilityTable[nature * FLAVOR_COUNT + flavor];
 }
 
 s8 GetFlavorRelationByPersonality(u32 personality, u8 flavor)
 {
-    u8 nature = GetNatureFromPersonality(personality);
+    u8 nature = ObtenNaturalezaDePersonalidad(personality);
     return gPokeblockFlavorCompatibilityTable[nature * FLAVOR_COUNT + flavor];
-}
-
-bool8 IsTradedMon(struct Pokemon *mon)
-{
-    u8 otName[PLAYER_NAME_LENGTH + 1];
-    u32 otId;
-    GetMonData(mon, MON_DATA_OT_NAME, otName);
-    otId = GetMonData(mon, MON_DATA_OT_ID, 0);
-    return IsOtherTrainer(otId, otName);
-}
-
-bool8 IsOtherTrainer(u32 otId, u8 *otName)
-{
-    if (otId ==
-        (gSaveBlockPtr->playerTrainerId[0]
-      | (gSaveBlockPtr->playerTrainerId[1] << 8)
-      | (gSaveBlockPtr->playerTrainerId[2] << 16)
-      | (gSaveBlockPtr->playerTrainerId[3] << 24)))
-    {
-        u32 i;
-        for (i = 0; otName[i] != EOS; i++)
-            if (otName[i] != gSaveBlockPtr->playerName[i])
-                return TRUE;
-        return FALSE;
-    }
-
-    return TRUE;
 }
 
 void MonRestorePP(struct Pokemon *mon)
@@ -3850,7 +3495,7 @@ void SetMonPreventsSwitchingString(void)
 static inline bool32 CanFirstMonBoostHeldItemRarity(void)
 {
     u32 ability;
-    if (GetMonData(&gPlayerParty[0], MON_DATA_SANITY_IS_EGG))
+    if (GetMonData(&gPlayerParty[0], MON_DATA_IS_EGG))
         return FALSE;
 
     ability = GetMonAbility(&gPlayerParty[0]);
@@ -4406,15 +4051,6 @@ u32 GetMonFriendshipScore(struct Pokemon *pokemon)
         return FRIENDSHIP_1_TO_49;
 
     return FRIENDSHIP_NONE;
-}
-
-void UpdateMonPersonality(struct BoxPokemon *boxMon, u32 personality)
-{
-    bool32 isShiny = GetBoxMonData(boxMon, MON_DATA_IS_SHINY, NULL);
-    u32 hiddenNature = GetBoxMonData(boxMon, MON_DATA_HIDDEN_NATURE, NULL);
-
-    SetBoxMonData(boxMon, MON_DATA_IS_SHINY, &isShiny);
-    SetBoxMonData(boxMon, MON_DATA_HIDDEN_NATURE, &hiddenNature);
 }
 
 void HealPokemon(struct Pokemon *mon)

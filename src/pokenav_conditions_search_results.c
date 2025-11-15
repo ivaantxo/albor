@@ -261,26 +261,6 @@ static u32 GetConditionSearchLoopedTask(s32 state)
 
 static u32 BuildPartyMonSearchResults(s32 state)
 {
-    s32 i;
-    struct PokenavMonListItem item;
-    struct Pokenav_SearchResults * menu = GetSubstructPtr(POKENAV_SUBSTRUCT_CONDITION_SEARCH_RESULTS);
-
-    menu->monList->listCount = 0;
-    menu->monList->currIndex = 0;
-    item.boxId = TOTAL_BOXES_COUNT;
-    for (i = 0; i < PARTY_SIZE; i++)
-    {
-        struct Pokemon *pokemon = &gPlayerParty[i];
-        if (!GetMonData(pokemon, MON_DATA_SANITY_HAS_SPECIES))
-            return LT_INC_AND_CONTINUE;
-        if (!GetMonData(pokemon, MON_DATA_SANITY_IS_EGG))
-        {
-            item.monId = i;
-            item.data = GetMonData(pokemon, menu->conditionDataId);
-            InsertMonListItem(menu, &item);
-        }
-    }
-
     return LT_INC_AND_CONTINUE;
 }
 
@@ -304,13 +284,10 @@ static u32 BuildBoxMonSearchResults(s32 state)
     {
         while (monId < IN_BOX_COUNT)
         {
-            if (CheckBoxMonSanityAt(boxId, monId))
-            {
-                item.boxId = boxId;
-                item.monId = monId;
-                item.data = GetBoxMonDataAt(boxId, monId, menu->conditionDataId);
-                InsertMonListItem(menu, &item);
-            }
+            item.boxId = boxId;
+            item.monId = monId;
+            item.data = GetBoxMonDataAt(boxId, monId, menu->conditionDataId);
+            InsertMonListItem(menu, &item);
             boxCount++;
             monId++;
             if (boxCount > TOTAL_BOXES_COUNT)

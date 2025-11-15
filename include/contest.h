@@ -109,7 +109,6 @@ struct ContestPokemon
     bool8 gameCleared;
     u8 isShiny:1;
     u32 personality;
-    u32 otId;
 };
 
 struct ContestTempSave
@@ -129,7 +128,6 @@ struct ContestMoveAnimData
     u8 targetIsShiny:1;
     u8 contestant;
     u32 personality;
-    u32 otId;
     u32 targetPersonality;
 };
 

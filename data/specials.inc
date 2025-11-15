@@ -96,7 +96,6 @@ gSpecials::
 	def_special MauvilleGymDeactivatePuzzle
 	def_special PetalburgGymSlideOpenRoomDoors
 	def_special PetalburgGymUnlockRoomDoors
-	def_special GetPlayerTrainerIdOnesDigit
 	def_special GetPlayerBigGuyGirlString
 	def_special GetRivalSonDaughterString
 	def_special SetHiddenItemFlag
@@ -189,7 +188,6 @@ gSpecials::
 	def_special ReducePlayerPartyToSelectedMons
 	def_special FieldShowRegionMap
 	def_special GetInGameTradeSpeciesInfo
-	def_special CreateInGameTradePokemon
 	def_special DoInGameTradeScene
 	def_special GetTradeSpecies
 	def_special GetWeekCount
@@ -233,7 +231,6 @@ gSpecials::
 	def_special TryUpdateRusturfTunnelState
 	def_special IsGrassTypeInParty
 	def_special DoContestHallWarp
-	def_special LoadWallyZigzagoon
 	def_special IsStarterInParty
 	def_special CopyCurSecretBaseOwnerName_StrVar1
 	def_special ScriptCheckFreePokemonStorageSpace
@@ -327,7 +324,6 @@ gSpecials::
 	def_special StartPlayerDescendMirageTower
 	def_special BufferTMHMMoveName
 	def_special ChooseMonForWirelessMinigame
-	def_special IsBadEggInParty
 	def_special HasAtLeastOneBerry
 	def_special OffsetCameraForBattle
 	def_special GetDeptStoreDefaultFloorChoice

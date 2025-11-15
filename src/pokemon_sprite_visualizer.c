@@ -1891,7 +1891,7 @@ static void ReloadPokemonSprites(struct PokemonSpriteVisualizer *data)
     front_y = GetBattlerSpriteFinal_YCustom(species, 0, 0);
     data->frontspriteId = CreateSprite(&gMultiuseSpriteTemplate, front_x, front_y, 0);
     gSprites[data->frontspriteId].oam.paletteNum = 0;
-    personality = Random32();
+    personality = Random();
     DesplazaTonoPaleta(OBJ_PLTT_ID(0), personality);
     gSprites[data->frontspriteId].callback = SpriteCallbackDummy;
     gSprites[data->frontspriteId].oam.priority = 0;

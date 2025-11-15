@@ -42,38 +42,20 @@ extern const u8 EventScript_ResetAllMapFlags[];
 
 static void ResetItemFlags(void);
 
-EWRAM_DATA bool8 gDifferentSaveFile = FALSE;
-
 static const struct ContestWinner sContestWinnerPicDummy =
 {
     .monName = _(""),
     .trainerName = _("")
 };
 
-void SetTrainerId(u32 trainerId, u8 *dst)
+u32 ObtenPersonalidadJugador(void)
 {
-    dst[0] = trainerId;
-    dst[1] = trainerId >> 8;
-    dst[2] = trainerId >> 16;
-    dst[3] = trainerId >> 24;
+    return gSaveBlockPtr->personalidadJugador;
 }
 
-u32 GetTrainerId(u8 *trainerId)
+static void CreaPersonalidadJugador(void)
 {
-    return (trainerId[3] << 24) | (trainerId[2] << 16) | (trainerId[1] << 8) | (trainerId[0]);
-}
-
-void CopyTrainerId(u8 *dst, u8 *src)
-{
-    s32 i;
-    for (i = 0; i < TRAINER_ID_LENGTH; i++)
-        dst[i] = src[i];
-}
-
-static void InitPlayerTrainerId(void)
-{
-    u32 trainerId = (Random() << 16) | GetGeneratedTrainerIdLower();
-    SetTrainerId(trainerId, gSaveBlockPtr->playerTrainerId);
+    gSaveBlockPtr->personalidadJugador = Random();
 }
 
 // L=A isnt set here for some reason.
@@ -105,7 +87,6 @@ void ClearAllContestWinnerPics(void)
 
 void ResetMenuAndMonGlobals(void)
 {
-    gDifferentSaveFile = FALSE;
     ResetPokedexScrollPositions();
     ZeroPlayerPartyMons();
     ZeroEnemyPartyMons();
@@ -118,42 +99,29 @@ void NewGameInitData(void)
     if (gSaveFileStatus == SAVE_STATUS_EMPTY || gSaveFileStatus == SAVE_STATUS_CORRUPT)
         RtcReset();
 
-    gDifferentSaveFile = TRUE;
+    GeneraSemillaAleatoria();
     ZeroPlayerPartyMons();
     ZeroEnemyPartyMons();
     ResetPokedex();
     gSaveBlockPtr->specialSaveWarpFlags = 0;
-    InitPlayerTrainerId();
+    CreaPersonalidadJugador();
     PlayTimeCounter_Reset();
     ClearPokedexFlags();
     InitEventData();
-    ClearSecretBases();
     ClearBerryTrees();
     SetMoney(&gSaveBlockPtr->money, 3000);
     SetCoins(0);
     ResetGameStats();
     ClearAllContestWinnerPics();
-    ClearPlayerLinkBattleRecords();
-    InitSeedotSizeRecord();
-    InitLotadSizeRecord();
     gPlayerPartyCount = 0;
     ZeroPlayerPartyMons();
     ResetPokemonStorageSystem();
     DeactivateAllRoamers();
     gSaveBlockPtr->registeredItem = ITEM_NONE;
     ClearBag();
-    ClearPokeblocks();
-    ClearDecorationInventories();
-    InitEasyChatPhrases();
-    SetMauvilleOldMan();
-    InitDewfordTrend();
-    ResetFanClub();
-    ResetLotteryCorner();
     SetWarpDestination(MAP_GROUP(TEST), MAP_NUM(TEST), WARP_ID_NONE, -1, -1);
     WarpIntoMap();
     RunScriptImmediately(EventScript_ResetAllMapFlags);
-    InitLilycoveLady();
-    InitMatchCallCounters();
     ResetItemFlags();
 }
 

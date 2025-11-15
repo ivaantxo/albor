@@ -913,7 +913,7 @@ void AnimTranslateLinear_WithFollowup(struct Sprite *sprite)
 
 void InitAnimLinearTranslationWithSpeed(struct Sprite *sprite)
 {
-    int v1 = abs(sprite->data[2] - sprite->data[1]) << 8;
+    u32 v1 = abs(sprite->data[2] - sprite->data[1]) << 8;
     sprite->data[0] = v1 / sprite->data[0];
     InitAnimLinearTranslation(sprite);
 }

@@ -8567,7 +8567,7 @@ static void Cmd_various(void)
         {
             gBattleStruct->palaceFlags |= 1u << battler;
             gBattleCommunication[0] = TRUE;
-            gBattleCommunication[MULTISTRING_CHOOSER] = gNaturesInfo[GetNatureFromPersonality(gBattleMons[battler].personality)].battlePalaceFlavorText;
+            gBattleCommunication[MULTISTRING_CHOOSER] = gNaturesInfo[ObtenNaturalezaDePersonalidad(gBattleMons[battler].personality)].battlePalaceFlavorText;
         }
         break;
     }

@@ -23,7 +23,6 @@
 #include "constants/mauville_old_man.h"
 
 static void InitGiddyTaleList(void);
-static void StorytellerSetup(void);
 static void Storyteller_ResetFlag(void);
 
 static u8 sSelectedStory;
@@ -56,64 +55,9 @@ static const u8 *const sGiddyQuestions[GIDDY_MAX_QUESTIONS] = {
     GiddyText_SecretBasesAreSoWonderful
 };
 
-static void SetupBard(void)
-{
-
-}
-
-static void SetupHipster(void)
-{
-    struct MauvilleManHipster *hipster = &gSaveBlockPtr->oldMan.hipster;
-
-    hipster->id = MAUVILLE_MAN_HIPSTER;
-    hipster->taughtWord = FALSE;
-    hipster->language = gGameLanguage;
-}
-
-static void SetupStoryteller(void)
-{
-    StorytellerSetup();
-}
-
-static void SetupGiddy(void)
-{
-    struct MauvilleManGiddy *giddy = &gSaveBlockPtr->oldMan.giddy;
-
-    giddy->id = MAUVILLE_MAN_GIDDY;
-    giddy->taleCounter = 0;
-    giddy->language = gGameLanguage;
-}
-
-static void SetupTrader(void)
-{
-    TraderSetup();
-}
-
 void SetMauvilleOldMan(void)
 {
-    u16 trainerId = (gSaveBlockPtr->playerTrainerId[1] << 8) | gSaveBlockPtr->playerTrainerId[0];
 
-
-    // Determine man based on the last digit of the player's trainer ID.
-    switch ((trainerId % 10) / 2)
-    {
-    case MAUVILLE_MAN_BARD:
-        SetupBard();
-        break;
-    case MAUVILLE_MAN_HIPSTER:
-        SetupHipster();
-        break;
-    case MAUVILLE_MAN_TRADER:
-        SetupTrader();
-        break;
-    case MAUVILLE_MAN_STORYTELLER:
-        SetupStoryteller();
-        break;
-    case MAUVILLE_MAN_GIDDY:
-        SetupGiddy();
-        break;
-    }
-    SetMauvilleOldManObjEventGfx();
 }
 
 u8 GetCurrentMauvilleOldMan(void)
@@ -248,7 +192,7 @@ static void InitGiddyTaleList(void)
         {
             // Pick a random word id, then advance through the word
             // groups until the group where that id landed.
-            s16 randWord = Random() % totalWords;
+            s32 randWord = Random() % totalWords;
             for (var = 0; i < ARRAY_COUNT(wordGroupsAndCount); var++)
                 if ((randWord -= wordGroupsAndCount[var][1]) <= 0)
                     break;
@@ -698,20 +642,6 @@ static const struct Story sStorytellerStories[] = {
 };
 
 static const s32 sNumStories = ARRAY_COUNT(sStorytellerStories);
-
-static void StorytellerSetup(void)
-{
-    s32 i;
-    sStorytellerPtr = &gSaveBlockPtr->oldMan.storyteller;
-
-    sStorytellerPtr->id = MAUVILLE_MAN_STORYTELLER;
-    sStorytellerPtr->alreadyRecorded = FALSE;
-    for (i = 0; i < NUM_STORYTELLER_TALES; i++)
-    {
-        sStorytellerPtr->gameStatIDs[i] = 0;
-        sStorytellerPtr->trainerNames[0][i] = EOS;  // Maybe they meant storyteller->trainerNames[i][0] instead?
-    }
-}
 
 static void Storyteller_ResetFlag(void)
 {

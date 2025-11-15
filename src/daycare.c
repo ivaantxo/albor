@@ -27,7 +27,7 @@
 #include "constants/region_map_sections.h"
 
 static void ClearDaycareMonMail(struct DaycareMail *mail);
-static void SetInitialEggData(struct Pokemon *mon, u16 species, struct DayCare *daycare);
+static void EstableceDatosInicialesHuevoGuarderia(struct Pokemon *mon, u16 species, struct DayCare *daycare);
 static void DaycarePrintMonInfo(u8 windowId, u32 daycareSlotId, u8 y);
 static u8 ModifyBreedingScoreForOvalCharm(u8 score);
 static u8 GetEggMoves(struct Pokemon *pokemon, u16 *eggMoves);
@@ -91,8 +91,6 @@ static const u8 *const sCompatibilityMessages[] =
     gDaycareText_PlayOther
 };
 
-static const u8 sHuevoNickname[] = _("Huevo");
-
 u8 *GetMonNicknameVanilla(struct Pokemon *mon, u8 *dest)
 {
     u8 nickname[POKEMON_NAME_BUFFER_SIZE];
@@ -152,7 +150,7 @@ static void TransferEggMoves(void)
         u16 moveLearnerSpecies = GetBoxMonData(&gSaveBlockPtr->daycare.mons[i].mon, MON_DATA_SPECIES);
         u16 eggSpecies = GetEggSpecies(moveLearnerSpecies);
 
-        if (!GetBoxMonData(&gSaveBlockPtr->daycare.mons[i].mon, MON_DATA_SANITY_HAS_SPECIES))
+        if (!GetBoxMonData(&gSaveBlockPtr->daycare.mons[i].mon, MON_DATA_SPECIES))
             continue;
 
         ClearHatchedEggMoves();
@@ -164,7 +162,7 @@ static void TransferEggMoves(void)
             {
                 u16 moveTeacherSpecies = GetBoxMonData(&gSaveBlockPtr->daycare.mons[k].mon, MON_DATA_SPECIES);
 
-                if (k == i || !GetBoxMonData(&gSaveBlockPtr->daycare.mons[k].mon, MON_DATA_SANITY_HAS_SPECIES))
+                if (k == i || !GetBoxMonData(&gSaveBlockPtr->daycare.mons[k].mon, MON_DATA_SPECIES))
                     continue;
 
                 // Check if you can inherit from them
@@ -410,62 +408,19 @@ static u16 GetEggSpecies(u16 species)
     return species;
 }
 
-static s32 GetParentToInheritNature(struct DayCare *daycare)
+static u32 GeneraPersonalidadConNaturaleza(struct DayCare *daycare)
 {
-    u32 i;
-    u8 numWithEverstone = 0;
-    s32 slot = -1;
+    u32 naturalezaMadre = ObtenNaturalezaDePersonalidad(GetBoxMonData(&daycare->mons[0].mon, MON_DATA_PERSONALITY));
+    u32 naturalezaPadre = ObtenNaturalezaDePersonalidad(GetBoxMonData(&daycare->mons[1].mon, MON_DATA_PERSONALITY));
 
-    for (i = 0; i < DAYCARE_MON_COUNT; i++)
-    {
-        if (ItemId_GetHoldEffect(GetBoxMonData(&daycare->mons[i].mon, MON_DATA_HELD_ITEM)) == HOLD_EFFECT_PREVENT_EVOLVE
-            && (P_NATURE_INHERITANCE != GEN_3 || GetBoxMonGender(&daycare->mons[i].mon) == MON_FEMALE))
-        {
-            slot = i;
-            numWithEverstone++;
-        }
-    }
-
-    if (numWithEverstone >= DAYCARE_MON_COUNT)
-        return Random() & 1;
-
-    if (P_NATURE_INHERITANCE > GEN_4)
-        return slot;
-
-    return Random() & 1 ? slot : -1;
+    u32 naturalezaDeseada = PorcentajeAleatorio(50) ? naturalezaMadre : naturalezaPadre;
+    u32 r = Random();
+    return r - (r % NUMERO_NATURALEZAS) + naturalezaDeseada;
 }
 
 static void _TriggerPendingDaycareEgg(struct DayCare *daycare)
 {
-    s32 parent;
-    s32 natureTries = 0;
-
-    SeedRng2(gMain.vblankCounter2);
-    parent = GetParentToInheritNature(daycare);
-
-    // don't inherit nature
-    if (parent < 0)
-    {
-        daycare->offspringPersonality = (Random2() << 16) | ((Random() % 0xfffe) + 1);
-    }
-    // inherit nature
-    else
-    {
-        u8 wantedNature = GetNatureFromPersonality(GetBoxMonData(&daycare->mons[parent].mon, MON_DATA_PERSONALITY, NULL));
-        u32 personality;
-
-        do
-        {
-            personality = (Random2() << 16) | (Random());
-            if (wantedNature == GetNatureFromPersonality(personality) && personality != 0)
-                break; // found a personality with the same nature
-
-            natureTries++;
-        } while (natureTries <= 2400);
-
-        daycare->offspringPersonality = personality;
-    }
-
+    daycare->offspringPersonality = GeneraPersonalidadConNaturaleza(daycare);
     FlagSet(FLAG_PENDING_DAYCARE_EGG);
 }
 
@@ -474,168 +429,38 @@ void TriggerPendingDaycareEgg(void)
     _TriggerPendingDaycareEgg(&gSaveBlockPtr->daycare);
 }
 
-// Removes the selected index from the given IV list and shifts the remaining
-// elements to the left.
-static void RemoveIVIndexFromList(u8 *ivs, u8 selectedIv)
+static void HeredaIVs(struct Pokemon *huevo, struct BoxPokemon *padre, struct BoxPokemon *madre)
 {
-    s32 i, j;
-    u8 temp[NUMERO_ESTADISTICAS];
-
-    ivs[selectedIv] = 0xFF;
-    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
+    const u32 CamposIvs[NUMERO_ESTADISTICAS] =
     {
-        temp[i] = ivs[i];
-    }
+        MON_DATA_HP_IV,
+        MON_DATA_ATK_IV,
+        MON_DATA_DEF_IV,
+        MON_DATA_SPEED_IV,
+        MON_DATA_SPATK_IV,
+        MON_DATA_SPDEF_IV
+    };
 
-    j = 0;
-    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
+    for (u32 i = 0; i < NUMERO_ESTADISTICAS; i++)
     {
-        if (temp[i] != 0xFF)
-            ivs[j++] = temp[i];
-    }
-}
+        u32 iv;
 
-static void InheritIVs(struct Pokemon *egg, struct DayCare *daycare)
-{
-    u16 motherItem = GetBoxMonData(&daycare->mons[0].mon, MON_DATA_HELD_ITEM);
-    u16 fatherItem = GetBoxMonData(&daycare->mons[1].mon, MON_DATA_HELD_ITEM);
-    u32 i, start;
-    u8 selectedIvs[5];
-    u8 availableIVs[NUMERO_ESTADISTICAS];
-    u8 whichParents[5];
-    u8 iv;
-    u8 howManyIVs = 5;
-
-    // Initialize a list of IV indices.
-    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
-    {
-        availableIVs[i] = i;
-    }
-
-    start = 0;
-    if (ItemId_GetHoldEffect(motherItem) == HOLD_EFFECT_POWER_ITEM &&
-        ItemId_GetHoldEffect(fatherItem) == HOLD_EFFECT_POWER_ITEM)
-    {
-        whichParents[0] = Random() % DAYCARE_MON_COUNT;
-        selectedIvs[0] = ItemId_GetSecondaryId(
-            GetBoxMonData(&daycare->mons[whichParents[0]].mon, MON_DATA_HELD_ITEM));
-        RemoveIVIndexFromList(availableIVs, selectedIvs[0]);
-        start++;
-    }
-    else if (ItemId_GetHoldEffect(motherItem) == HOLD_EFFECT_POWER_ITEM)
-    {
-        whichParents[0] = 0;
-        selectedIvs[0] = ItemId_GetSecondaryId(motherItem);
-        RemoveIVIndexFromList(availableIVs, selectedIvs[0]);
-        start++;
-    }
-    else if (ItemId_GetHoldEffect(fatherItem) == HOLD_EFFECT_POWER_ITEM)
-    {
-        whichParents[0] = 1;
-        selectedIvs[0] = ItemId_GetSecondaryId(fatherItem);
-        RemoveIVIndexFromList(availableIVs, selectedIvs[0]);
-        start++;
-    }
-
-    // Select which IVs that will be inherited.
-    for (i = start; i < howManyIVs; i++)
-    {
-        // Randomly pick an IV from the available list and stop from being chosen again.
-        // BUG: Instead of removing the IV that was just picked, this
-        // removes position 0 (HP) then position 1 (DEF), then position 2. This is why HP and DEF
-        // have a lower chance to be inherited in Emerald and why the IV picked for inheritance can
-        // be repeated. Amusingly, FRLG and RS also got this wrong. They remove selectedIvs[i], which
-        // is not an index! This means that it can sometimes remove the wrong stat.
-        #ifndef BUGFIX
-        selectedIvs[i] = availableIVs[Random() % (NUMERO_ESTADISTICAS - i)];
-        RemoveIVIndexFromList(availableIVs, i);
-        #else
-        u8 index = Random() % (NUMERO_ESTADISTICAS - i);
-        selectedIvs[i] = availableIVs[index];
-        RemoveIVIndexFromList(availableIVs, index);
-        #endif
-    }
-
-    // Determine which parent each of the selected IVs should inherit from.
-    for (i = start; i < howManyIVs; i++)
-    {
-        whichParents[i] = Random() % DAYCARE_MON_COUNT;
-    }
-
-    // Set each of inherited IVs on the egg mon.
-    for (i = 0; i < howManyIVs; i++)
-    {
-        switch (selectedIvs[i])
-        {
-            case 0:
-                iv = GetBoxMonData(&daycare->mons[whichParents[i]].mon, MON_DATA_HP_IV);
-                SetMonData(egg, MON_DATA_HP_IV, &iv);
-                break;
-            case 1:
-                iv = GetBoxMonData(&daycare->mons[whichParents[i]].mon, MON_DATA_ATK_IV);
-                SetMonData(egg, MON_DATA_ATK_IV, &iv);
-                break;
-            case 2:
-                iv = GetBoxMonData(&daycare->mons[whichParents[i]].mon, MON_DATA_DEF_IV);
-                SetMonData(egg, MON_DATA_DEF_IV, &iv);
-                break;
-            case 3:
-                iv = GetBoxMonData(&daycare->mons[whichParents[i]].mon, MON_DATA_SPEED_IV);
-                SetMonData(egg, MON_DATA_SPEED_IV, &iv);
-                break;
-            case 4:
-                iv = GetBoxMonData(&daycare->mons[whichParents[i]].mon, MON_DATA_SPATK_IV);
-                SetMonData(egg, MON_DATA_SPATK_IV, &iv);
-                break;
-            case 5:
-                iv = GetBoxMonData(&daycare->mons[whichParents[i]].mon, MON_DATA_SPDEF_IV);
-                SetMonData(egg, MON_DATA_SPDEF_IV, &iv);
-                break;
-        }
-    }
-}
-
-static void InheritPokeball(struct Pokemon *egg, struct BoxPokemon *father, struct BoxPokemon *mother)
-{
-    u16 inheritBall = ITEM_POKE_BALL;
-    u16 fatherBall = GetBoxMonData(father, MON_DATA_POKEBALL);
-    u16 motherBall = GetBoxMonData(mother, MON_DATA_POKEBALL);
-    u16 fatherSpecies = GetBoxMonData(father, MON_DATA_SPECIES);
-    u16 motherSpecies = GetBoxMonData(mother, MON_DATA_SPECIES);
-
-    if (fatherBall == ITEM_MASTER_BALL || fatherBall == ITEM_CHERISH_BALL)
-        fatherBall = ITEM_POKE_BALL;
-
-    if (motherBall == ITEM_MASTER_BALL || motherBall == ITEM_CHERISH_BALL)
-        motherBall = ITEM_POKE_BALL;
-
-    if (P_BALL_INHERITING >= GEN_7)
-    {
-        if (GET_BASE_SPECIES_ID(fatherSpecies) == GET_BASE_SPECIES_ID(motherSpecies))
-            inheritBall = (Random() % 2 == 0 ? motherBall : fatherBall);
+        if (PorcentajeAleatorio(50))
+            iv = GetBoxMonData(madre, CamposIvs[i]);
         else
-            inheritBall = motherBall;
+            iv = GetBoxMonData(padre, CamposIvs[i]);
+
+        SetMonData(huevo, CamposIvs[i], &iv);
     }
-    else if (P_BALL_INHERITING == GEN_6)
-    {
-        inheritBall = motherBall;
-    }
-    SetMonData(egg, MON_DATA_POKEBALL, &inheritBall);
 }
 
-static void InheritAbility(struct Pokemon *egg, struct BoxPokemon *father, struct BoxPokemon *mother)
+static void HeredaHabilidad(struct Pokemon *huevo, struct BoxPokemon *madre)
 {
-    u16 motherAbility = GetBoxMonData(mother, MON_DATA_ABILITY_NUM);
-    u16 inheritAbility = motherAbility;
+    u32 habilidadMadre = GetBoxMonData(madre, MON_DATA_ABILITY_NUM);
 
-    if (inheritAbility < 2 && (Random() % 10 < 8))
+    if (PorcentajeAleatorio(50))
     {
-        SetMonData(egg, MON_DATA_ABILITY_NUM, &inheritAbility);
-    }
-    else if (Random() % 10 < (P_ABILITY_INHERITANCE >= GEN_6 ? 6 : 8))
-    {
-        // Hidden Abilities have a different chance of being passed down
-        SetMonData(egg, MON_DATA_ABILITY_NUM, &inheritAbility);
+        SetMonData(huevo, MON_DATA_ABILITY_NUM, &habilidadMadre);
     }
 }
 
@@ -852,62 +677,50 @@ static void _GiveEggFromDaycare(struct DayCare *daycare)
     struct Pokemon egg;
     u16 species;
     u8 parentSlots[DAYCARE_MON_COUNT] = {0};
-    bool8 isEgg;
+    bool32 isEgg = TRUE;
 
     species = DetermineEggSpeciesAndParentSlots(daycare, parentSlots);
-    SetInitialEggData(&egg, species, daycare);
-    InheritIVs(&egg, daycare);
-    InheritPokeball(&egg, &daycare->mons[parentSlots[1]].mon, &daycare->mons[parentSlots[0]].mon);
-    BuildEggMoveset(&egg, &daycare->mons[parentSlots[1]].mon, &daycare->mons[parentSlots[0]].mon);
-    if (P_ABILITY_INHERITANCE >= GEN_6)
-        InheritAbility(&egg, &daycare->mons[parentSlots[1]].mon, &daycare->mons[parentSlots[0]].mon);
 
-    isEgg = TRUE;
+    struct BoxPokemon *madre = &daycare->mons[parentSlots[0]].mon;
+    struct BoxPokemon *padre = &daycare->mons[parentSlots[1]].mon;
+
+    EstableceDatosInicialesHuevoGuarderia(&egg, species, daycare);
+
+    HeredaIVs(&egg, padre, madre);
+
+    BuildEggMoveset(&egg, padre, madre);
+
+    HeredaHabilidad(&egg, madre);
+
     SetMonData(&egg, MON_DATA_IS_EGG, &isEgg);
+
     gPlayerParty[PARTY_SIZE - 1] = egg;
     CompactPartySlots();
     CalculatePlayerPartyCount();
+
     RemoveEggFromDayCare(daycare);
 }
 
-void CreateEgg(struct Pokemon *mon, u16 species, bool8 setHotSpringsLocation)
+void CreaHuevo(struct Pokemon *pokemon, u16 especie)
 {
-    u8 metLevel;
-    u16 ball;
-    u8 metLocation;
-    u8 isEgg;
-
-    CreateMon(mon, species, EGG_HATCH_LEVEL, USE_RANDOM_IVS, FALSE, 0, OT_ID_PLAYER_ID, 0);
-    metLevel = 0;
-    ball = ITEM_POKE_BALL;
-    SetMonData(mon, MON_DATA_POKEBALL, &ball);
-    SetMonData(mon, MON_DATA_NICKNAME, sHuevoNickname);
-    SetMonData(mon, MON_DATA_FRIENDSHIP, &gSpeciesInfo[species].eggCycles);
-    SetMonData(mon, MON_DATA_MET_LEVEL, &metLevel);
-    if (setHotSpringsLocation)
-    {
-        metLocation = METLOC_SPECIAL_EGG;
-        SetMonData(mon, MON_DATA_MET_LOCATION, &metLocation);
-    }
-
-    isEgg = TRUE;
-    SetMonData(mon, MON_DATA_IS_EGG, &isEgg);
+    bool32 isEgg = TRUE;
+    CreaPokemon(pokemon, especie, EGG_HATCH_LEVEL, USE_RANDOM_IVS, FALSE, 0);
+    SetMonData(pokemon, MON_DATA_NICKNAME, COMPOUND_STRING("Huevo.\p"));
+    SetMonData(pokemon, MON_DATA_FRIENDSHIP, &gSpeciesInfo[especie].eggCycles);
+    SetMonData(pokemon, MON_DATA_MET_LEVEL, 0);
+    SetMonData(pokemon, MON_DATA_IS_EGG, &isEgg);
 }
 
-static void SetInitialEggData(struct Pokemon *mon, u16 species, struct DayCare *daycare)
+static void EstableceDatosInicialesHuevoGuarderia(struct Pokemon *mon, u16 species, struct DayCare *daycare)
 {
-    u32 personality;
-    u16 ball;
-    u8 metLevel;
-
-    personality = daycare->offspringPersonality;
-    CreateMon(mon, species, EGG_HATCH_LEVEL, USE_RANDOM_IVS, TRUE, personality, OT_ID_PLAYER_ID, 0);
-    metLevel = 0;
-    ball = ITEM_POKE_BALL;
-    SetMonData(mon, MON_DATA_POKEBALL, &ball);
-    SetMonData(mon, MON_DATA_NICKNAME, sHuevoNickname);
+    u32 personality = daycare->offspringPersonality;
+    u32 pokeBall = ITEM_POKE_BALL;
+    u32 nivelDeEncuentro = 0;   
+    CreaPokemon(mon, species, EGG_HATCH_LEVEL, USE_RANDOM_IVS, TRUE, personality);
+    SetMonData(mon, MON_DATA_POKEBALL, &pokeBall);
+    SetMonData(mon, MON_DATA_NICKNAME, COMPOUND_STRING("Huevo.\p"));
     SetMonData(mon, MON_DATA_FRIENDSHIP, &gSpeciesInfo[species].eggCycles);
-    SetMonData(mon, MON_DATA_MET_LEVEL, &metLevel);
+    SetMonData(mon, MON_DATA_MET_LEVEL, &nivelDeEncuentro);
 }
 
 void GiveEggFromDaycare(void)
@@ -921,7 +734,7 @@ static bool8 TryProduceOrHatchEgg(struct DayCare *daycare)
 
     for (i = 0; i < DAYCARE_MON_COUNT; i++)
     {
-        if (GetBoxMonData(&daycare->mons[i].mon, MON_DATA_SANITY_HAS_SPECIES))
+        if (GetBoxMonData(&daycare->mons[i].mon, MON_DATA_SPECIES))
             daycare->mons[i].steps++, validEggs++;
     }
 
@@ -942,8 +755,6 @@ static bool8 TryProduceOrHatchEgg(struct DayCare *daycare)
         for (i = 0; i < gPlayerPartyCount; i++)
         {
             if (!GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG))
-                continue;
-            if (GetMonData(&gPlayerParty[i], MON_DATA_SANITY_IS_BAD_EGG))
                 continue;
 
             eggCycles = GetMonData(&gPlayerParty[i], MON_DATA_FRIENDSHIP);
