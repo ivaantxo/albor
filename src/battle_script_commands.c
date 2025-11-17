@@ -1498,7 +1498,7 @@ u32 GetTotalAccuracy(u32 battlerAtk, u32 battlerDef, u32 move, u32 atkAbility, u
     gPotentialItemEffectBattler = battlerDef;
     accStage = gBattleMons[battlerAtk].statStages[ESTADISTICA_PRECISION];
     evasionStage = gBattleMons[battlerDef].statStages[ESTADISTICA_EVASION];
-    if (atkAbility == ABILITY_UNAWARE || atkAbility == ABILITY_KEEN_EYE || atkAbility == ABILITY_MINDS_EYE)
+    if (atkAbility == ABILITY_UNAWARE || atkAbility == ABILITY_MINDS_EYE)
         evasionStage = ESTADISTICA_NEUTRA;
     if (gMovesInfo[move].ignoresTargetDefenseEvasionStages)
         evasionStage = ESTADISTICA_NEUTRA;
@@ -1529,11 +1529,9 @@ u32 GetTotalAccuracy(u32 battlerAtk, u32 battlerDef, u32 move, u32 atkAbility, u
     {
     case ABILITY_COMPOUND_EYES:
     case ABILITY_DISPARO_CERTERO:
-        calc = (calc * 130) / 100;
-        break;
     case ABILITY_VICTORY_STAR:
-    case ABILITY_KEEN_EYE:
-        calc = (calc * 110) / 100;
+    case ABILITY_VISTA_LINCE:
+        calc = (calc * 125) / 100;
         break;
     case ABILITY_HUSTLE:
         if (IS_MOVE_PHYSICAL(move))
@@ -4947,7 +4945,7 @@ static void Cmd_playstatchangeanimation(void)
                         && ability != ABILITY_CLEAR_BODY
                         && ability != ABILITY_FULL_METAL_BODY
                         && ability != ABILITY_WHITE_SMOKE
-                        && !((ability == ABILITY_KEEN_EYE || ability == ABILITY_MINDS_EYE) && currStat == ESTADISTICA_PRECISION)
+                        && !((ability == ABILITY_MINDS_EYE) && currStat == ESTADISTICA_PRECISION)
                         && !(ability == ABILITY_HYPER_CUTTER && currStat == ESTADISTICA_ATAQUE)
                         && !(ability == ABILITY_BIG_PECKS && currStat == ESTADISTICA_DEFENSA))
                 {
@@ -10773,7 +10771,7 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
             return STAT_CHANGE_DIDNT_WORK;
         }
         else if (!certain
-                && (((battlerAbility == ABILITY_KEEN_EYE || battlerAbility == ABILITY_MINDS_EYE) && statId == ESTADISTICA_PRECISION)
+                && (((battlerAbility == ABILITY_MINDS_EYE) && statId == ESTADISTICA_PRECISION)
                 || (battlerAbility == ABILITY_HYPER_CUTTER && statId == ESTADISTICA_ATAQUE)
                 || (battlerAbility == ABILITY_BIG_PECKS && statId == ESTADISTICA_DEFENSA)))
         {

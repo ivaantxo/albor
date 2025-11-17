@@ -387,10 +387,10 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 6,
     },
 
-    [ABILITY_KEEN_EYE] =
+    [ABILITY_VISTA_LINCE] =
     {
         .name = _("Vista lince"),
-        .description = COMPOUND_STRING("+10% precisión y no baja."),
+        .description = COMPOUND_STRING("+25% precisión."),
         .aiRating = 4,
         .breakable = TRUE,
     },
@@ -718,7 +718,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 5,
     },
 
-    [ABILITY_NORMALIZE] =
+    [ABILITY_NORMALIDAD] =
     {
         .name = _("Normalidad"),
         .description = COMPOUND_STRING("Normal +25%."),
@@ -2214,13 +2214,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Cortante"),
         .description = COMPOUND_STRING("Cortantes +25%."),
         .aiRating = 7,
-    },
-
-    [ABILITY_SUPREME_OVERLORD] =
-    {
-        .name = _("Supreme Overlord"),
-        .description = COMPOUND_STRING("Inherits fallen's strength."),
-        .aiRating = 6,
     },
 
     [ABILITY_COSTAR] =

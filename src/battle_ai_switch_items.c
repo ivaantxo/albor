@@ -516,7 +516,6 @@ static bool32 ShouldSwitchIfBadlyStatused(u32 battler)
             // Check if Active Pokemon evasion boosted and might be able to dodge until awake
             if (gBattleMons[battler].statStages[ESTADISTICA_EVASION] > (ESTADISTICA_NEUTRA + 3)
                 && AI_DATA->abilities[opposingBattler] != ABILITY_UNAWARE
-                && AI_DATA->abilities[opposingBattler] != ABILITY_KEEN_EYE
                 && AI_DATA->abilities[opposingBattler] != ABILITY_MINDS_EYE
                 && !(gBattleMons[battler].status2 & STATUS2_FORESIGHT)
                 && !(gStatuses3[battler] & STATUS3_MIRACLE_EYED))

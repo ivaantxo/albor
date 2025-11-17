@@ -1522,6 +1522,7 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_ATTACKERLOSTITSTYPE] = sText_AttackerLostItsType,
     [STRINGID_CLOAKEDINAHARSHLIGHT] = sText_PkmnIsCloakedInAHarshLight,
     [STRINGID_AMOLADORAS] = sText_Amoladoras,
+    [TEXTO_BATALLA_HABILIDAD_PROTEGE_EQUIPO_DE_PRIORIDAD] = COMPOUND_STRING("{B_DEF_ABILITY} de {B_DEF_NAME_WITH_PREFIX} protege al equipo\nde ataques de prioridad\p"),
 };
 
 const u16 gTrainerUsedItemStringIds[] =

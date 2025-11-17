@@ -7755,13 +7755,6 @@ BattleScript_RuinAbilityActivates::
 	waitmessage B_WAIT_TIME_LONG
 	end3
 
-BattleScript_SupremeOverlordActivates::
-	pause B_WAIT_TIME_SHORT
-	call BattleScript_AbilityPopUp
-	printstring STRINGID_ATTACKERGAINEDSTRENGTHFROMTHEFALLEN
-	waitmessage B_WAIT_TIME_LONG
-	end3
-
 BattleScript_CostarActivates::
 	pause B_WAIT_TIME_SHORT
 	savetarget
@@ -8058,12 +8051,12 @@ BattleScript_IceFaceNullsDamage::
 	call BattleScript_TargetFormChangeWithString
 	return
 
-BattleScript_DazzlingProtected::
+BattleScript_HabilidadProtegeEquipoDePrioridad::
 	attackstring
 	ppreduce
 	pause B_WAIT_TIME_SHORT
 	call BattleScript_AbilityPopUpScripting
-	printstring STRINGID_POKEMONCANNOTUSEMOVE
+	printstring TEXTO_BATALLA_HABILIDAD_PROTEGE_EQUIPO_DE_PRIORIDAD
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 

@@ -3546,7 +3546,7 @@ u32 GetDynamicMoveType(struct Pokemon *mon, u32 move, u32 battler, u8 *ateBoost)
     else if (moveType != TIPO_NORMAL
           && moveEffect != EFFECT_HIDDEN_POWER
           && moveEffect != EFFECT_WEATHER_BALL
-          && ability == ABILITY_NORMALIZE)
+          && ability == ABILITY_NORMALIDAD)
     {
         if (gMain.inBattle && ateBoost != NULL)
             *ateBoost = TRUE;

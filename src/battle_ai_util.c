@@ -1709,7 +1709,7 @@ bool32 ShouldLowerStat(u32 battler, u32 battlerAbility, u32 stat)
                     && CountUsablePartyMons(sBattler_AI) == 0
                     && !HasMoveEffect(sBattler_AI, EFFECT_ELECTRO_BALL));
             case ESTADISTICA_PRECISION:
-                return !(battlerAbility == ABILITY_KEEN_EYE);
+                return TRUE;
         }
         return TRUE;
     }
@@ -1869,7 +1869,6 @@ bool32 ShouldLowerAccuracy(u32 battlerAtk, u32 battlerDef, u32 defAbility)
       && defAbility != ABILITY_CLEAR_BODY
       && defAbility != ABILITY_WHITE_SMOKE
       && defAbility != ABILITY_FULL_METAL_BODY
-      && defAbility != ABILITY_KEEN_EYE
       && defAbility != ABILITY_MINDS_EYE
       && AI_DATA->holdEffects[battlerDef] != HOLD_EFFECT_CLEAR_AMULET)
         return TRUE;
