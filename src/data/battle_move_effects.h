@@ -1018,11 +1018,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectHit,
     },
 
-    [EFFECT_ROUND] =
-    {
-        .battleScript = BattleScript_EffectHit,
-    },
-
     [EFFECT_BRINE] =
     {
         .battleScript = BattleScript_EffectHit,
@@ -1306,9 +1301,9 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_NOBLE_ROAR] =
+    [EFFECT_RUGIDO_NOBLE] =
     {
-        .battleScript = BattleScript_EffectNobleRoar,
+        .battleScript = BattleScript_EffectRugidoNoble,
     },
 
     [EFFECT_VENOM_DRENCH] =
@@ -1652,11 +1647,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_OCTOLOCK] =
     {
         .battleScript = BattleScript_EffectOctolock,
-    },
-
-    [EFFECT_CLANGOROUS_SOUL] =
-    {
-        .battleScript = BattleScript_EffectClangorousSoul,
     },
 
     [EFFECT_BOLT_BEAK] =

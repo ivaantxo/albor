@@ -3784,62 +3784,6 @@ const struct SpriteTemplate gFishiousRendTeethTemplate =
     .callback = SpriteCB_LeftRightSlice
 };
 
-//clangorous soul
-const struct SpriteTemplate gClangorousSoulBlueBuffTemplate =
-{
-    .tileTag = ANIM_TAG_FOCUS_ENERGY,
-    .paletteTag = ANIM_TAG_WATER_ORB,
-    .oam = &gOamData_AffineOff_ObjNormal_16x32,
-    .anims = gEndureEnergyAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimEndureEnergy
-};
-
-const struct SpriteTemplate gClangorousSoulPurpleBuffTemplate =
-{
-    .tileTag = ANIM_TAG_FOCUS_ENERGY,
-    .paletteTag = ANIM_TAG_POISON_BUBBLE,
-    .oam = &gOamData_AffineOff_ObjNormal_16x32,
-    .anims = gEndureEnergyAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimEndureEnergy
-};
-
-const struct SpriteTemplate gClangorousSoulWhiteBuffTemplate =
-{
-    .tileTag = ANIM_TAG_FOCUS_ENERGY,
-    .paletteTag = ANIM_TAG_AIR_WAVE_2,
-    .oam = &gOamData_AffineOff_ObjNormal_16x32,
-    .anims = gEndureEnergyAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimEndureEnergy
-};
-
-const struct SpriteTemplate gClangorousSoulRedFistTemplate =
-{
-    .tileTag = ANIM_TAG_HORSESHOE_SIDE_FIST,
-    .paletteTag = ANIM_TAG_VERTICAL_HEX,
-    .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gAnims_HandsAndFeet,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimJumpKick
-};
-
-const struct SpriteTemplate gClangorousSoulRedRingTemplate =
-{
-    .tileTag = ANIM_TAG_THIN_RING,
-    .paletteTag = ANIM_TAG_VERTICAL_HEX,
-    .oam = &gOamData_AffineDouble_ObjNormal_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gThinRingExpandingAffineAnimTable,
-    .callback = AnimSpriteOnMonPos
-};
-
 //pyro ball
 static const struct OamData sPyroBallRockOAM =
 {
@@ -6812,48 +6756,6 @@ const struct SpriteTemplate gSnuggleForeverHeartSpriteTemplate =
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = AnimMagentaHeart
-};
-
-// clangorous soulblaze
-const struct SpriteTemplate gClangoorousSoulblazeWhiteFlySpriteTemplate =
-{
-    .tileTag = ANIM_TAG_ROUND_SHADOW,
-    .paletteTag = ANIM_TAG_AIR_WAVE_2,
-    .oam = &gOamData_AffineDouble_ObjNormal_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gAffineAnims_FlyBallUp,
-    .callback = AnimFlyBallUp
-};
-const struct SpriteTemplate gClangoorousSoulblazePurpleSwirlSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_WATER_ORB,
-    .paletteTag = ANIM_TAG_POISON_BUBBLE,
-    .oam = &gOamData_AffineNormal_ObjBlend_16x16,
-    .anims = gAnims_WaterMudOrb,
-    .images = NULL,
-    .affineAnims = gAffineAnims_Whirlpool,
-    .callback = AnimParticleInVortex
-};
-const struct SpriteTemplate gClangoorousSoulblazePurpleChargeSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_CIRCLE_OF_LIGHT,
-    .paletteTag = ANIM_TAG_POISON_BUBBLE,
-    .oam = &gOamData_AffineNormal_ObjBlend_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gAffineAnims_GrowingElectricOrb,
-    .callback = AnimGrowingChargeOrb
-};
-const struct SpriteTemplate gClangoorousSoulblazePulseSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_THIN_RING,
-    .paletteTag = ANIM_TAG_POISON_BUBBLE,
-    .oam = &gOamData_AffineOff_ObjBlend_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = TranslateAnimSpriteToTargetMonLocation
 };
 
 // guardian of alola

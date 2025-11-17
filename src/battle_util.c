@@ -8568,16 +8568,6 @@ static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData
             || gDisableStructs[battlerDef].isFirstTurn == 2)
             basePower *= 2;
         break;
-    case EFFECT_ROUND:
-        for (i = 0; i < gBattlersCount; i++)
-        {
-            if (i != battlerAtk && IsBattlerAlive(i) && gLastMoves[i] == MOVE_ROUND)
-            {
-                basePower *= 2;
-                break;
-            }
-        }
-        break;
     case EFFECT_FUSION_COMBO:
         if (gMovesInfo[gLastUsedMove].effect == EFFECT_FUSION_COMBO && move != gLastUsedMove)
             basePower *= 2;

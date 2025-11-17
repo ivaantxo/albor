@@ -70,7 +70,7 @@
 *Encanto (TM01).
 *Día de pago.
 *Chupasangre.
-
+*Alarido
 
 *limpiar minijuegos y saveblocks
 

@@ -2173,7 +2173,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 961
-                MOVE_SONIC_BOOM,
+                MOVE_BOMBA_SONICA,
                 MOVE_THUNDER_WAVE,
                 MOVE_METAL_SOUND,
                 MOVE_THUNDERBOLT,
@@ -2946,7 +2946,7 @@ F_TRAINER_FEMALE |
                 MOVE_THUNDERBOLT,
                 MOVE_SUPERSONIC,
                 MOVE_THUNDER_WAVE,
-                MOVE_SONIC_BOOM,
+                MOVE_BOMBA_SONICA,
             },
             },
             {
@@ -11053,7 +11053,7 @@ F_TRAINER_FEMALE |
                 MOVE_SUPERSONIC,
                 MOVE_SHOCK_WAVE,
                 MOVE_THUNDER_WAVE,
-                MOVE_SONIC_BOOM,
+                MOVE_BOMBA_SONICA,
             },
             },
             {

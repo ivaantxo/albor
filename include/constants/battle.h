@@ -372,7 +372,7 @@ enum ResultadosBatalla
 #define MOVE_EFFECT_BUG_BITE            67
 #define MOVE_EFFECT_RECOIL_HP_25        68
 #define MOVE_EFFECT_TRAP_BOTH           69
-#define MOVE_EFFECT_ROUND               70
+#define MOVE_EFFECT_UNUSED_70               70
 #define MOVE_EFFECT_STOCKPILE_WORE_OFF  71
 #define MOVE_EFFECT_DIRE_CLAW           72
 #define MOVE_EFFECT_STEALTH_ROCK        73

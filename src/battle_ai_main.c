@@ -786,7 +786,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                 break;
             case ABILITY_HYPER_CUTTER:
                 if ((moveEffect == EFFECT_ATTACK_DOWN ||  moveEffect == EFFECT_ATTACK_DOWN_2)
-                  && move != MOVE_PLAY_NICE && move != MOVE_NOBLE_ROAR && move != MOVE_TEARFUL_LOOK && move != MOVE_VENOM_DRENCH)
+                  && move != MOVE_PLAY_NICE && move != MOVE_RUGIDO_NOBLE && move != MOVE_TEARFUL_LOOK && move != MOVE_VENOM_DRENCH)
                     RETURN_SCORE_MINUS(10);
                 break;
             case ABILITY_MINDS_EYE:
@@ -1235,7 +1235,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                     ADJUST_SCORE(-6);
             }
             break;
-        case EFFECT_NOBLE_ROAR:
+        case EFFECT_RUGIDO_NOBLE:
             if (!ShouldLowerStat(battlerDef, aiData->abilities[battlerDef], ESTADISTICA_ATAQUE_ESPECIAL))
                 ADJUST_SCORE(-10);
             else if (!ShouldLowerStat(battlerDef, aiData->abilities[battlerDef], ESTADISTICA_ATAQUE))
@@ -2452,13 +2452,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
              || aiData->hpPercents[battlerAtk] > 50)
                 ADJUST_SCORE(-4);
             break;
-        //TODO
-        //case EFFECT_PLASMA_FISTS:
-            //break;
-        //case EFFECT_SHELL_TRAP:
-            //break;
-        //case EFFECT_BEAK_BLAST:
-            //break;
         case EFFECT_SKY_DROP:
             if (IS_BATTLER_OF_TYPE(battlerDef, TIPO_VOLADOR))
                 ADJUST_SCORE(-10);
@@ -2467,18 +2460,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             ||  GetBattlerWeight(battlerDef) >= 2000) //200.0 kg
                 ADJUST_SCORE(-10);
             break;
-        /*case EFFECT_NO_RETREAT:
-            if (TrappedByNoRetreat(battlerAtk))
-                ADJUST_SCORE(-10);
-            break;
-        case EFFECT_EXTREME_EVOBOOST:
-            if (MainStatsMaxed(battlerAtk))
-                ADJUST_SCORE(-10);
-            break;
-        case EFFECT_CLANGOROUS_SOUL:
-            if (gBattleMons[battlerAtk].hp <= gBattleMons[battlerAtk].maxHP / 3)
-                ADJUST_SCORE(-10);
-            break;*/
         case EFFECT_REVIVAL_BLESSING:
             if (GetFirstFaintedPartyIndex(battlerAtk) == PARTY_SIZE)
                 ADJUST_SCORE(-10);
@@ -4354,14 +4335,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         if (GetFirstFaintedPartyIndex(battlerAtk) != PARTY_SIZE)
             ADJUST_SCORE(DECENT_EFFECT);
         break;
-    //case EFFECT_EXTREME_EVOBOOST: // TODO
-        //break;
-    //case EFFECT_CLANGOROUS_SOUL:  // TODO
-        //break;
-    //case EFFECT_NO_RETREAT:       // TODO
-        //break;
-    //case EFFECT_SKY_DROP
-        //break;
     case EFFECT_JUNGLE_HEALING:
         if (ShouldRecover(battlerAtk, battlerDef, move, 25)
          || ShouldRecover(BATTLE_PARTNER(battlerAtk), battlerDef, move, 25)

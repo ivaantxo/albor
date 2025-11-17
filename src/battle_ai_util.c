@@ -2282,7 +2282,7 @@ bool32 IsStatLoweringEffect(u32 effect)
     case EFFECT_EVASION_DOWN_2:
     case EFFECT_TICKLE:
     case EFFECT_CAPTIVATE:
-    case EFFECT_NOBLE_ROAR:
+    case EFFECT_RUGIDO_NOBLE:
     case EFFECT_MEMENTO:
         return TRUE;
     default:

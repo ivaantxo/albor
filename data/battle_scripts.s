@@ -774,19 +774,6 @@ BattleScript_EffectPhotonGeyser::
 BattleScript_EffectAuraWheel:: @ Aura Wheel can only be used by Morpeko
 	goto BattleScript_PokemonCantUseTheMove
 
-BattleScript_EffectClangorousSoul::
-	attackcanceler
-	attackstring
-	ppreduce
-	cutonethirdhpraisestats BattleScript_ButItFailed
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_IGNORE_BIDE | HITMARKER_PASSIVE_DAMAGE | HITMARKER_IGNORE_DISGUISE
-	attackanimation
-	waitanimation
-	healthbarupdate BS_ATTACKER
-	datahpupdate BS_ATTACKER
-	call BattleScript_AllStatsUp
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectOctolock::
 	attackcanceler
 	jumpifsubstituteblocks BattleScript_FailedFromAtkString
@@ -1838,13 +1825,13 @@ BattleScript_VenomDrenchTryLowerSpeed::
 BattleScript_VenomDrenchEnd::
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectNobleRoar::
+BattleScript_EffectRugidoNoble::
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifstat BS_TARGET, COMPARACION_MAYOR, ESTADISTICA_ATAQUE, ESTADISTICA_MENOS_6, BattleScript_NobleRoarDoMoveAnim
+	jumpifstat BS_TARGET, COMPARACION_MAYOR, ESTADISTICA_ATAQUE, ESTADISTICA_MENOS_6, BattleScript_RugidoNobleDoMoveAnim
 	jumpifstat BS_TARGET, COMPARACION_IGUAL, ESTADISTICA_ATAQUE_ESPECIAL, ESTADISTICA_MENOS_6, BattleScript_CantLowerMultipleStats
-BattleScript_NobleRoarDoMoveAnim::
+BattleScript_RugidoNobleDoMoveAnim::
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	attackanimation
 	waitanimation
@@ -1852,18 +1839,18 @@ BattleScript_NobleRoarDoMoveAnim::
 	playstatchangeanimation BS_TARGET, BIT_ATK | BIT_SPATK, STAT_CHANGE_NEGATIVE | STAT_CHANGE_MULTIPLE_STATS
 	playstatchangeanimation BS_TARGET, BIT_ATK, STAT_CHANGE_NEGATIVE
 	setstatchanger ESTADISTICA_ATAQUE, 1, TRUE
-	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_NobleRoarTryLowerSpAtk
-	jumpifbyte COMPARACION_IGUAL, cMULTISTRING_CHOOSER, B_MSG_STAT_WONT_DECREASE, BattleScript_NobleRoarTryLowerSpAtk
+	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_RugidoNobleTryLowerSpAtk
+	jumpifbyte COMPARACION_IGUAL, cMULTISTRING_CHOOSER, B_MSG_STAT_WONT_DECREASE, BattleScript_RugidoNobleTryLowerSpAtk
 	printfromtable gStatDownStringIds
 	waitmessage B_WAIT_TIME_LONG
-BattleScript_NobleRoarTryLowerSpAtk::
+BattleScript_RugidoNobleTryLowerSpAtk::
 	playstatchangeanimation BS_TARGET, BIT_SPATK, STAT_CHANGE_NEGATIVE
 	setstatchanger ESTADISTICA_ATAQUE_ESPECIAL, 1, TRUE
-	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_NobleRoarEnd
-	jumpifbyte COMPARACION_IGUAL, cMULTISTRING_CHOOSER, B_MSG_STAT_WONT_DECREASE, BattleScript_NobleRoarEnd
+	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_RugidoNobleEnd
+	jumpifbyte COMPARACION_IGUAL, cMULTISTRING_CHOOSER, B_MSG_STAT_WONT_DECREASE, BattleScript_RugidoNobleEnd
 	printfromtable gStatDownStringIds
 	waitmessage B_WAIT_TIME_LONG
-BattleScript_NobleRoarEnd::
+BattleScript_RugidoNobleEnd::
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectShellSmash::

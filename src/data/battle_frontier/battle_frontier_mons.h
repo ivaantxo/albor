@@ -1710,7 +1710,7 @@ const struct TrainerMon gBattleFrontierMons[NUM_FRONTIER_MONS] =
     },
     [FRONTIER_MON_MAGNETON_1] = {
         .species = SPECIES_MAGNETON,
-        .moves = {MOVE_SHOCK_WAVE, MOVE_SONIC_BOOM, MOVE_THUNDER_WAVE, MOVE_SUPERSONIC},
+        .moves = {MOVE_SHOCK_WAVE, MOVE_BOMBA_SONICA, MOVE_THUNDER_WAVE, MOVE_SUPERSONIC},
         .heldItem = ITEM_CHERI_BERRY,
         .ev = TRAINER_PARTY_EVS(0, 0, 0, 252, 252, 0),
         .nature = NATURALEZA_OFENSIVA

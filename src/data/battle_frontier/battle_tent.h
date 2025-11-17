@@ -2829,7 +2829,7 @@ const struct TrainerMon gFallarborBattleTentMons[NUM_FALLARBOR_TENT_MONS] =
     },
     [FALLARBOR_TENT_MON_VOLTORB] = {
         .species = SPECIES_MEW,
-        .moves = {MOVE_CHARGE, MOVE_SPARK, MOVE_SCREECH, MOVE_SONIC_BOOM},
+        .moves = {MOVE_CHARGE, MOVE_SPARK, MOVE_SCREECH, MOVE_BOMBA_SONICA},
         .heldItem = ITEM_ASPEAR_BERRY,
         .ev = TRAINER_PARTY_EVS(0, 0, 0, 252, 252, 0),
         .nature = NATURALEZA_OFENSIVA_ESPECIAL

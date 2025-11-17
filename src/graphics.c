@@ -1363,10 +1363,6 @@ const u32 gBattleAnimBgImage_BoltStrike[] = INCBIN_U32("graphics/battle_anims/ba
 const u32 gBattleAnimBgPalette_BoltStrike[] = INCBIN_U32("graphics/battle_anims/backgrounds/bolt_strike.gbapal.lz");
 const u32 gBattleAnimBgTilemap_BoltStrike[] = INCBIN_U32("graphics/battle_anims/backgrounds/bolt_strike.bin.lz");
 
-const u32 gBattleAnimBgImage_ClangorousSoulblaze[] = INCBIN_U32("graphics/battle_anims/backgrounds/clangorous_soulblaze.4bpp.lz");
-const u32 gBattleAnimBgPalette_ClangorousSoulblaze[] = INCBIN_U32("graphics/battle_anims/backgrounds/clangorous_soulblaze.gbapal.lz");
-const u32 gBattleAnimBgTilemap_ClangorousSoulblaze[] = INCBIN_U32("graphics/battle_anims/backgrounds/clangorous_soulblaze.bin.lz");
-
 const u32 gBattleAnimBgPalette_DynamaxCannon[] = INCBIN_U32("graphics/battle_anims/backgrounds/dynamax_cannon.gbapal.lz");
 
 const u32 gBattleAnimBgImage_Fire1[] = INCBIN_U32("graphics/battle_anims/backgrounds/fire1.4bpp.lz");

@@ -326,7 +326,6 @@ static void DrawLevelUpBannerText(void);
 static void SpriteCB_MonIconOnLvlUpBanner(struct Sprite *sprite);
 static void BestowItem(u32 battlerAtk, u32 battlerDef);
 static bool8 IsFinalStrikeEffect(u32 moveEffect);
-static void TryUpdateRoundTurnOrder(void);
 static bool32 ChangeOrderTargetAfterAttacker(void);
 void ApplyExperienceMultipliers(s32 *expAmount, u8 expGetterMonId, u8 faintedBattler);
 static void RemoveAllWeather(void);
@@ -3491,10 +3490,6 @@ void SetMoveEffect(bool32 primary, bool32 certain)
                         break;
                 }
                 RemoveBattlerType(gEffectBattler, gMovesInfo[gCurrentMove].argument);
-                break;
-            case MOVE_EFFECT_ROUND:
-                TryUpdateRoundTurnOrder(); // If another Pokémon uses Round before the user this turn, the user will use Round directly after it
-                gBattlescriptCurrInstr++;
                 break;
             case MOVE_EFFECT_DIRE_CLAW:
                 if (!gBattleMons[gEffectBattler].status1)
@@ -14662,51 +14657,6 @@ void BS_TrySymbiosis(void)
 void BS_SetZEffect(void)
 {
     SetZEffect();   // Handles battle script jumping internally
-}
-
-static void TryUpdateRoundTurnOrder(void)
-{
-    if (EsContraEntrenador())
-    {
-        u32 i;
-        u32 j = 0;
-        u32 k = 0;
-        u32 currRounder = 0;
-        u8 roundUsers[3] = {0xFF, 0xFF, 0xFF};
-        u8 nonRoundUsers[3] = {0xFF, 0xFF, 0xFF};
-        for (i = 0; i < gBattlersCount; i++)
-        {
-            if (gBattlerByTurnOrder[i] == gBattlerAttacker)
-            {
-                currRounder = i + 1; // Current battler going after attacker
-                break;
-            }
-        }
-
-        // Get battlers after us using round
-        for (i = currRounder; i < gBattlersCount; i++)
-        {
-            if (gChosenMoveByBattler[gBattlerByTurnOrder[i]] == MOVE_ROUND)
-                roundUsers[j++] = gBattlerByTurnOrder[i];
-            else
-                nonRoundUsers[k++] = gBattlerByTurnOrder[i];
-        }
-
-        // update turn order for round users
-        for (i = 0; roundUsers[i] != 0xFF && i < 3; i++)
-        {
-            gBattlerByTurnOrder[currRounder] = roundUsers[i];
-            gProtectStructs[roundUsers[i]].quash = TRUE; // Make it so their turn order can't be changed again
-            currRounder++;
-        }
-
-        // Update turn order for non-round users
-        for (i = 0; nonRoundUsers[i] != 0xFF && i < 3; i++)
-        {
-            gBattlerByTurnOrder[currRounder] = nonRoundUsers[i];
-            currRounder++;
-        }
-    }
 }
 
 u8 GetFirstFaintedPartyIndex(u8 battler)

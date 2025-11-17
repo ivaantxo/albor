@@ -1322,7 +1322,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_Supersonic,
     },
 
-    [MOVE_SONIC_BOOM] =
+    [MOVE_BOMBA_SONICA] =
     {
         .name = COMPOUND_STRING("Bomba sónica"),
         .description = COMPOUND_STRING(
@@ -1342,7 +1342,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SonicBoom,
+        .battleAnimScript = gBattleAnimMove_BombaSonica,
     },
 
     [MOVE_DISABLE] =
@@ -11252,13 +11252,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .assistBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_CONFUSION,
-        #if B_UPDATED_MOVE_DATA >= GEN_6
             .chance = 100,
-        #elif B_UPDATED_MOVE_DATA >= GEN_5
-            .chance = 10,
-        #else
-            .chance = 31,
-        #endif
         }),
         .contestEffect = CONTEST_EFFECT_SCRAMBLE_NEXT_TURN_ORDER,
         .contestCategory = CONTEST_CATEGORY_SMART,
@@ -12392,32 +12386,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
         .battleAnimScript = gBattleAnimMove_AfterYou,
-    },
-
-    [MOVE_ROUND] =
-    {
-        .name = COMPOUND_STRING("Canon"),
-        .description = COMPOUND_STRING(
-            "A song that inflicts damage.\n"
-            "Others can join in too."),
-        .effect = EFFECT_ROUND,
-        .power = 60,
-        .type = TIPO_NORMAL,
-        .accuracy = 100,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        .soundMove = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_ROUND,
-        }),
-        .contestEffect = CONTEST_EFFECT_REPETITION_NOT_BORING,
-        .contestCategory = CONTEST_CATEGORY_CUTE,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Round,
     },
 
     [MOVE_ECHOED_VOICE] =
@@ -13820,21 +13788,21 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_IceBurn,
     },
 
-    [MOVE_SNARL] =
+    [MOVE_ALARIDO] =
     {
         .name = COMPOUND_STRING("Alarido"),
         .description = COMPOUND_STRING(
             "Yells and rants at the foe\n"
             "lowering its Sp. Atk."),
         .effect = EFFECT_HIT,
-        .power = 55,
+        .power = 50,
         .type = TIPO_SINIESTRO,
-        .accuracy = 95,
+        .accuracy = 100,
         .pp = 15,
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
+        .ignoresSubstitute = TRUE,
         .soundMove = TRUE,
         .metronomeBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
@@ -13845,7 +13813,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Snarl,
+        .battleAnimScript = gBattleAnimMove_Alarido,
     },
 
     [MOVE_ICICLE_CRASH] =
@@ -14156,13 +14124,13 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_TrickOrTreat,
     },
 
-    [MOVE_NOBLE_ROAR] =
+    [MOVE_RUGIDO_NOBLE] =
     {
-        .name = COMPOUND_STRING("Noble Roar"),
+        .name = COMPOUND_STRING("Rugido noble"),
         .description = COMPOUND_STRING(
             "Intimidates the foe, to cut\n"
             "Attack and Sp. Atk."),
-        .effect = EFFECT_NOBLE_ROAR,
+        .effect = EFFECT_RUGIDO_NOBLE,
         .power = 0,
         .type = TIPO_NORMAL,
         .accuracy = 100,
@@ -14171,14 +14139,14 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .zMove = { .effect = Z_EFFECT_DEF_UP_1 },
-        .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
+        .ignoresSubstitute = TRUE,
         .magicCoatAffected = TRUE,
         .soundMove = TRUE,
         .contestEffect = CONTEST_EFFECT_BETTER_IF_LAST,
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_NobleRoar,
+        .battleAnimScript = gBattleAnimMove_RugidoNoble,
     },
 
     [MOVE_ION_DELUGE] =
@@ -16657,7 +16625,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .description = COMPOUND_STRING(
             "The user tears up, dropping\n"
             "Attack and Sp. Attack."),
-        .effect = EFFECT_NOBLE_ROAR,
+        .effect = EFFECT_RUGIDO_NOBLE,
         .power = 0,
         .type = TIPO_NORMAL,
         .accuracy = 0,
@@ -17435,33 +17403,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
         .battleAnimScript = gBattleAnimMove_CourtChange,
-    },
-
-    [MOVE_CLANGOROUS_SOUL] =
-    {
-        .name = COMPOUND_STRING("Clangorous Soul"),
-        .description = COMPOUND_STRING(
-            "The user uses some of its\n"
-            "HP to raise all its stats."),
-        .effect = EFFECT_CLANGOROUS_SOUL,
-        .power = 0,
-        .type = TIPO_DRAGON,
-        .accuracy = 100,
-        .pp = 5,
-        .target = MOVE_TARGET_USER,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .soundMove = TRUE,
-        .danceMove = TRUE,
-        .metronomeBanned = TRUE,
-        .contestEffect = CONTEST_EFFECT_IMPROVE_CONDITION_PREVENT_NERVOUSNESS,
-        .contestCategory = CONTEST_CATEGORY_TOUGH,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ClangorousSoul,
     },
 
     [MOVE_BODY_PRESS] =
@@ -20571,14 +20512,13 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_DragonCheer,
     },
 
-    [MOVE_ALLURING_VOICE] =
+    [MOVE_CANTO_ENCANTADOR] =
     {
         .name = COMPOUND_STRING("Canto encantador"),
         .description = COMPOUND_STRING(
-            "Confunde si rival ha subido\n"
-            "estadísticas este turno."),
+            "Probabilidad de confundir."),
         .effect = EFFECT_HIT,
-        .power = 80,
+        .power = 70,
         .type = TIPO_HADA,
         .accuracy = 100,
         .pp = 10,
@@ -20589,10 +20529,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .ignoresSubstitute = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_CONFUSION,
-            .onlyIfTargetRaisedStats = TRUE,
-            .chance = 100,
+            .chance = 30,
         }),
-        .battleAnimScript = gBattleAnimMove_AlluringVoice,
+        .battleAnimScript = gBattleAnimMove_CantoEncantador,
     },
 
     [MOVE_TEMPER_FLARE] =

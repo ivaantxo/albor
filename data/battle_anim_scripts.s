@@ -4694,28 +4694,6 @@ gBattleAnimMove_AfterYou::
 	waitforvisualfinish
 	end
 
-gBattleAnimMove_Round::
-	loadspritegfx ANIM_TAG_MUSIC_NOTES
-	createvisualtask AnimTask_MusicNotesRainbowBlend, 2
-	waitforvisualfinish
-	monbg ANIM_TARGET
-	createvisualtask SoundTask_PlayCryHighPitch, 2, ANIM_ATTACKER, 255
-	createvisualtask AnimTask_UproarDistortion, 2, 0
-	createsprite gWavyMusicNotesSpriteTemplate, ANIM_TARGET, 2, 7, 0, 12
-	delay 5
-	createsprite gWavyMusicNotesSpriteTemplate, ANIM_TARGET, 2, 6, 1, 12
-	delay 5
-	createsprite gWavyMusicNotesSpriteTemplate, ANIM_TARGET, 2, 1, 2, 12
-	delay 5
-	createsprite gWavyMusicNotesSpriteTemplate, ANIM_TARGET, 2, 2, 3, 12
-	delay 20
-	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 1, 0, 13, 1
-	waitforvisualfinish
-	clearmonbg ANIM_TARGET
-	createvisualtask AnimTask_MusicNotesClearRainbowBlend, 2
-	waitforvisualfinish
-	end
-
 gBattleAnimMove_EchoedVoice::
 	loadspritegfx ANIM_TAG_METAL_SOUND_WAVES
 	monbg ANIM_DEF_PARTNER
@@ -7223,7 +7201,7 @@ IceBurnUnleash:
 	clearmonbg ANIM_TARGET
 	end
 
-gBattleAnimMove_Snarl::
+gBattleAnimMove_Alarido::
 	loadspritegfx ANIM_TAG_JAGGED_MUSIC_NOTE
 	loadspritegfx ANIM_TAG_THIN_RING
 	loadspritegfx ANIM_TAG_IMPACT
@@ -7771,7 +7749,7 @@ gBattleAnimMove_TrickOrTreat::
 	waitbgfadein
 	end
 
-gBattleAnimMove_NobleRoar::
+gBattleAnimMove_RugidoNoble::
 	loadspritegfx ANIM_TAG_NOISE_LINE
 	monbg ANIM_ATTACKER
 	splitbgprio ANIM_ATTACKER
@@ -11004,7 +10982,7 @@ gBattleAnimMove_SmartStrike::
 	monbg ANIM_DEF_PARTNER
 	splitbgprio ANIM_TARGET
 	setalpha 12, 8
-	call SonicBoomProjectile
+	call ProyectilBombaSonica
 	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 3, 0, 10, 1
 	loadspritegfx ANIM_TAG_FLASH_CANNON_BALL
 	createsprite gSmartStrikeImpactTemplate, ANIM_TARGET, 4, 0x0, 0x0, 0x8, 0x1, 0x0
@@ -13485,45 +13463,6 @@ FishousRendBubbles:
 
 gBattleAnimMove_CourtChange::
 	goto gBattleAnimMove_TrickRoom
-
-gBattleAnimMove_ClangorousSoul::
-	loadspritegfx ANIM_TAG_FOCUS_ENERGY @focus energy
-	loadspritegfx ANIM_TAG_WATER_ORB @blue
-	loadspritegfx ANIM_TAG_POISON_BUBBLE @purple
-	loadspritegfx ANIM_TAG_AIR_WAVE_2 @white/grey
-	loadspritegfx ANIM_TAG_SPARKLE_2 @stars
-	createvisualtask AnimTask_RockMonBackAndForth, 5, ANIM_ATTACKER, 2, 0
-	call ClangorousSoulStarBuffEffect
-	call ClangorousSoulStarBuffEffect
-	call ClangorousSoulStarBuffEffect
-	waitforvisualfinish
-	loadspritegfx ANIM_TAG_VERTICAL_HEX @red
-	loadspritegfx ANIM_TAG_HORSESHOE_SIDE_FIST @fist
-	createsprite gClangorousSoulRedFistTemplate, ANIM_ATTACKER, 2, 0xfff0, 0, 0, 0, 10, ANIM_ATTACKER, ANIM_RIGHT_FIST, 1
-	createsprite gClangorousSoulRedFistTemplate, ANIM_ATTACKER, 2, 0x10, 0, 0, 0, 10, ANIM_ATTACKER, ANIM_LEFT_FIST, 1
-	playsewithpan SE_M_VITAL_THROW2, SOUND_PAN_TARGET
-	waitforvisualfinish
-	unloadspritegfx ANIM_TAG_HORSESHOE_SIDE_FIST
-	unloadspritegfx ANIM_TAG_SPARKLE_2 @stars
-	waitforvisualfinish
-	loadspritegfx ANIM_TAG_THIN_RING @ring
-	playsewithpan SE_SHINY, SOUND_PAN_ATTACKER
-	createsprite gClangorousSoulRedRingTemplate, ANIM_ATTACKER, 3, 0x0, 0x0, 0x0, 0x0
-	waitforvisualfinish
-	end
-ClangorousSoulStarBuffEffect:
-	playsewithpan SE_M_DRAGON_RAGE, SOUND_PAN_ATTACKER
-	createsprite gClangorousSoulBlueBuffTemplate, ANIM_ATTACKER, 2, 0x0, 0xffe8, 0x1a, 0x2
-	delay 0x4
-	createsprite gEndureEnergySpriteTemplate, ANIM_ATTACKER, 2, 0x0, 0xe, 0x1c, 0x1
-	delay 0x4
-	createsprite gClangorousSoulPurpleBuffTemplate, ANIM_ATTACKER, 2, 0x0, 0xfffb, 0xa, 0x2
-	createsprite gGrantingStarsSpriteTemplate, ANIM_ATTACKER, 2, 0xfff1, 0x0, 0x0, 0x0, 0x20, 0x3c
-	delay 0x4
-	createsprite gClangorousSoulWhiteBuffTemplate, ANIM_ATTACKER, 2, 0x0, 0x1c, 0x1a, 0x3
-	delay 0x4
-	createsprite gGrantingStarsSpriteTemplate, ANIM_ATTACKER, 2, 0xc, 0xfffb, 0x0, 0x0, 0x20, 0x3c
-	return
 
 gBattleAnimMove_BodyPress::
 	loadspritegfx ANIM_TAG_ROUND_SHADOW @fly and bounce animation
@@ -16588,7 +16527,7 @@ gBattleAnimMove_BurningBulwark::
 	clearmonbg ANIM_ATK_PARTNER
 	end
 
-gBattleAnimMove_AlluringVoice::
+gBattleAnimMove_CantoEncantador::
 	loadspritegfx ANIM_TAG_THIN_RING
 	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x0, 0x8, 0x6e7d
 	waitforvisualfinish
@@ -18746,27 +18685,27 @@ CometPunchRight:
 	createsprite gFistFootSpriteTemplate, ANIM_ATTACKER, 3, 8, 0, 8, 1, 0
 	goto CometPunchContinue
 
-gBattleAnimMove_SonicBoom::
+gBattleAnimMove_BombaSonica::
 	loadspritegfx ANIM_TAG_AIR_WAVE
 	loadspritegfx ANIM_TAG_IMPACT
 	monbg ANIM_DEF_PARTNER
 	splitbgprio ANIM_TARGET
 	setalpha 12, 8
-	call SonicBoomProjectile
-	call SonicBoomProjectile
-	call SonicBoomProjectile
+	call ProyectilBombaSonica
+	call ProyectilBombaSonica
+	call ProyectilBombaSonica
 	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 3, 0, 10, 1
-	call SonicBoomHit
+	call BombaSonicaGolpe
 	waitforvisualfinish
 	clearmonbg ANIM_DEF_PARTNER
 	blendoff
 	end
-SonicBoomProjectile:
+ProyectilBombaSonica:
 	playsewithpan SE_M_RAZOR_WIND2, SOUND_PAN_ATTACKER
 	createsprite gSonicBoomSpriteTemplate, ANIM_TARGET, 2, 16, 0, 0, 0, 15
 	delay 4
 	return
-SonicBoomHit:
+BombaSonicaGolpe:
 	createsprite gBasicHitSplatSpriteTemplate, ANIM_TARGET, 3, 0, 0, ANIM_TARGET, 2
 	delay 4
 	return
@@ -33131,294 +33070,6 @@ LetsSnuggleForeverStars_2:
 	createsprite gSnuggleForeverStarSpriteTemplate, ANIM_TARGET, 3, 0x10, 0x8, 0xff80, 0xffea
 	createsprite gSnuggleForeverStarSpriteTemplate, ANIM_TARGET, 3, 0x10, 0x8, 0xfe80, 0xffe1
 	return
-
-
-gBattleAnimMove_ClangorousSoulblaze::
-	loadspritegfx ANIM_TAG_FOCUS_ENERGY @focus energy
-	loadspritegfx ANIM_TAG_WATER_ORB @blue
-	loadspritegfx ANIM_TAG_POISON_BUBBLE @purple
-	loadspritegfx ANIM_TAG_AIR_WAVE_2 @white/grey
-	loadspritegfx ANIM_TAG_SPARKLE_2 @stars
-	fadetobg BG_CLANGOROUS_SOULBLAZE
-	waitbgfadein
-	createvisualtask AnimTask_RockMonBackAndForth, 5, ANIM_ATTACKER, 2, 0
-	call ClangorousSoulblazeBuffEffect
-	call ClangorousSoulblazeBuffEffect
-	call ClangorousSoulblazeBuffEffect
-	waitforvisualfinish
-	loadspritegfx ANIM_TAG_VERTICAL_HEX @red
-	loadspritegfx ANIM_TAG_HORSESHOE_SIDE_FIST @fist
-	createsprite gClangorousSoulRedFistTemplate, ANIM_ATTACKER, 2, 0xfff0, 0x0, 0x0, 0x0, 0xa, ANIM_ATTACKER, ANIM_RIGHT_FIST, 0x1
-	createsprite gClangorousSoulRedFistTemplate, ANIM_ATTACKER, 2, 0x10, 0x0, 0x0, 0x0, 0xa, ANIM_ATTACKER, ANIM_LEFT_FIST, 0x1
-	playsewithpan SE_M_VITAL_THROW2, SOUND_PAN_TARGET
-	waitforvisualfinish
-	unloadspritegfx ANIM_TAG_HORSESHOE_SIDE_FIST
-	unloadspritegfx ANIM_TAG_SPARKLE_2 @stars
-	waitforvisualfinish
-	loadspritegfx ANIM_TAG_THIN_RING @ring
-	playsewithpan SE_SHINY, SOUND_PAN_ATTACKER
-	createsprite gClangorousSoulRedRingTemplate, ANIM_ATTACKER, 3, 0x0, 0x0, 0x0, 0x0
-	waitforvisualfinish
-	unloadspritegfx ANIM_TAG_HORSESHOE_SIDE_FIST
-	unloadspritegfx ANIM_TAG_SPARKLE_2 @stars
-	loadspritegfx ANIM_TAG_ROUND_SHADOW	@ fly
-	playsewithpan SE_M_FLY, SOUND_PAN_ATTACKER
-	createsprite gClangoorousSoulblazeWhiteFlySpriteTemplate, ANIM_ATTACKER, 2, 0x0, 0x0, 0xd, 0x150
-	delay 0x2
-	createvisualtask AnimTask_StartSlidingBg, 0x5, 0x0, 0xFFE0, 0x1, 0xffff
-	createsprite gSlideMonToOffsetSpriteTemplate, ANIM_ATTACKER, 2, ANIM_TARGET, 0xfd00, 0xa, 0x0, 0x2a
-	createsprite gSlideMonToOffsetSpriteTemplate, ANIM_ATTACKER, 2, ANIM_DEF_PARTNER, 0xfd00, 0xa, 0x0, 0x2a
-	delay 0x20
-	createvisualtask AnimTask_StartSlidingBg, 0x5, 0x0, 0x20, 0x1, 0xffff
-	delay 0xC
-	setalpha 12, 8
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x0, 0x4, 0x0
-	loadspritegfx ANIM_TAG_CIRCLE_OF_LIGHT @charge
-	visible ANIM_ATTACKER
-	monbg ANIM_ATTACKER
-	loopsewithpan SE_M_PSYBEAM2, SOUND_PAN_ATTACKER, 0xe, 0xa
-	createsprite gClangoorousSoulblazePurpleChargeSpriteTemplate, ANIM_ATTACKER, 2, 0x0 	@charge
-	call ClangorousSoulblazeEnergySwirl
-	call ClangorousSoulblazeEnergySwirl
-	call ClangorousSoulblazeEnergySwirl
-	call ClangorousSoulblazeEnergySwirl
-	call ClangorousSoulblazeEnergySwirl
-	waitforvisualfinish
-	unloadspritegfx ANIM_TAG_WATER_ORB @whirlpool
-	unloadspritegfx ANIM_TAG_CIRCLE_OF_LIGHT @charge
-	unloadspritegfx ANIM_TAG_ROUND_SHADOW @fly
-	unloadspritegfx ANIM_TAG_AIR_WAVE_2 @white
-	unloadspritegfx ANIM_TAG_FOCUS_ENERGY @focus energy
-	loadspritegfx ANIM_TAG_MUSIC_NOTES @music note
-	clearmonbg ANIM_ATTACKER
-	invisible ANIM_ATTACKER
-	invisible ANIM_ATK_PARTNER
-	delay 0x0
-	monbg ANIM_TARGET
-	playsewithpan SE_M_GIGA_DRAIN, SOUND_PAN_ATTACKER
-	createsprite gClangoorousSoulblazePulseSpriteTemplate, ANIM_ATTACKER, 2, 0x10, 0x0, 0x0, 0x0, 0x1d, 0x0
-	createsprite gSlowFlyingMusicNotesSpriteTemplate, ANIM_ATTACKER, 2, 0x0, 0x0, 0x0, 0x0 @music note
-	delay 0x5
-	createvisualtask AnimTask_HorizontalShake, 5, ANIM_TARGET, 2, 60
-	createvisualtask AnimTask_HorizontalShake, 5, ANIM_DEF_PARTNER, 2, 60
-	call ClangorousSoulblazePulse_1
-	delay 0x5
-	call ClangorousSoulblazePulse_2
-	delay 0x5
-	call ClangorousSoulblazePulse_3
-	delay 0x5
-	call ClangorousSoulblazePulse_4
-	loadspritegfx ANIM_TAG_EXPLOSION
-	createvisualtask AnimTask_IsTargetPlayerSide, 0x2
-	jumpargeq 0x7 ANIM_TARGET ClangorousSoulblazeOnOpponent
-ClangorousSoulblazeOnPlayer:
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x10, 0xfff0, ANIM_ATTACKER, 0x1
-	delay 0x5
-	call ClangorousSoulblazePulse_5
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x10, 0x10, ANIM_ATTACKER, 0x1
-	delay 0x5
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x20, 0xffe0, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_1
-	delay 0x5
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x20, 0x0, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_2
-	delay 0x5
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x30, 0xffe0, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_3
-	delay 0x5
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x30, 0xfff0, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_4
-	delay 0x5
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x35, 0x0, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_5
-	delay 0x5
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x40, 0x10, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_1
-	delay 0x5
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x40, 0x0, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_2
-	delay 0x5
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x45, 0xfff0, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_3
-	delay 0x5
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x50, 0x10, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_4
-	delay 0x5
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x50, 0xffe0, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_5
-	delay 0x5
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x60, 0xfff0, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_1
-	delay 0x5
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x60, 0xffe0, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_2
-	delay 0x5
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, (F_PAL_BG | F_PAL_BATTLERS_2), 0x4, 0x0, 0x10, 0x7fff
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x65, 0xfff0, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_3
-	delay 0x5
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x65, 0xffe0, ANIM_ATTACKER, 0x1
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x0, 0x0, ANIM_TARGET, 0x1
-	call ClangorousSoulblazePulse_4
-	delay 0x5
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x18, 0xffe8, ANIM_TARGET, 0x1
-	call ClangorousSoulblazePulse_5
-	delay 0x5
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0xfff0, 0x10, ANIM_TARGET, 0x1
-	call ClangorousSoulblazePulse_1
-	delay 0x5
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0xffe8, 0xfff4, ANIM_TARGET, 0x1
-	call ClangorousSoulblazePulse_2
-	delay 0x5
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x10, 0x10, ANIM_TARGET, 0x1
-	goto FINISH_SOULBLAZE
-ClangorousSoulblazeOnOpponent:
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0x10, 0x15, ANIM_ATTACKER, 0x1
-	delay 0x5
-	call ClangorousSoulblazePulse_5
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0x10, 0x0, ANIM_ATTACKER, 0x1
-	delay 0x5
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0x20, 0x25, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_1
-	delay 0x5
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0x20, 0x5, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_2
-	delay 0x5
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0x30, 0x25, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_3
-	delay 0x5
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0x30, 0x15, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_4
-	delay 0x5
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0x35, 0x0, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_5
-	delay 0x5
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0x40, 0xa, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_1
-	delay 0x5
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0x40, 0x0, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_2
-	delay 0x5
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0x45, 0x10, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_3
-	delay 0x5
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0x50, 0x30, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_4
-	delay 0x5
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0x50, 0x25, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_5
-	delay 0x5
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0x60, 0x40, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_1
-	delay 0x5
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0x60, 0x45, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_2
-	delay 0x5
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, (F_PAL_BG | F_PAL_BATTLERS_2), 0x4, 0x0, 0x10, 0x7fff
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0x65, 0x35, ANIM_ATTACKER, 0x1
-	call ClangorousSoulblazePulse_3
-	delay 0x5
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0x65, 0x40, ANIM_ATTACKER, 0x1
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0x0, 0x0, ANIM_TARGET, 0x1
-	call ClangorousSoulblazePulse_4
-	delay 0x5
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0x18, 0xffe8, ANIM_TARGET, 0x1
-	call ClangorousSoulblazePulse_5
-	delay 0x5
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0xfff0, 0x10, ANIM_TARGET, 0x1
-	call ClangorousSoulblazePulse_1
-	delay 0x5
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0xffe8, 0xfff4, ANIM_TARGET, 0x1
-	call ClangorousSoulblazePulse_2
-	delay 0x5
-	createsprite gExplosionSpriteTemplate, ANIM_TARGET, 3, 0x10, 0x10, ANIM_TARGET, 0x1
-FINISH_SOULBLAZE:
-	waitforvisualfinish
-	clearmonbg ANIM_TARGET
-	delay 0x5
-	call ResetFromWhiteScreen
-	blendoff
-	createsprite gSlideMonToOriginalPosSpriteTemplate, ANIM_ATTACKER, 2, ANIM_TARGET, 0x0, 0x10
-	createsprite gSlideMonToOriginalPosSpriteTemplate, ANIM_ATTACKER, 2, ANIM_DEF_PARTNER, 0x0, 0x10
-	waitforvisualfinish
-	end
-ClangorousSoulblazeEnergySwirl:
-	createsprite gClangoorousSoulblazePurpleSwirlSpriteTemplate, ANIM_TARGET, 2, 0x0, 0x1c, 0x180, 0x32, 0x8, 0x32, ANIM_ATTACKER
-	createsprite gEndureEnergySpriteTemplate, ANIM_ATTACKER, 2, 0x0, 0xffe8, 0x1a, 0x2
-	delay 0x2
-	createsprite gClangoorousSoulblazePurpleSwirlSpriteTemplate, ANIM_TARGET, 2, 0x0, 0x20, 0xf0, 0x28, 0xb, 0xffd2, ANIM_ATTACKER
-	delay 0x2
-	createsprite gEndureEnergySpriteTemplate, ANIM_ATTACKER, 2, 0x0, 0xe, 0x1c, 0x1
-	createsprite gClangoorousSoulblazePurpleSwirlSpriteTemplate, ANIM_TARGET, 2, 0x0, 0x21, 0x1a0, 0x28, 0x4, 0x2a, ANIM_ATTACKER
-	delay 0x2
-	createsprite gClangoorousSoulblazePurpleSwirlSpriteTemplate, ANIM_TARGET, 2, 0x0, 0x1f, 0x120, 0x2d, 0x6, 0xffd6, ANIM_ATTACKER
-	delay 0x2
-	createsprite gEndureEnergySpriteTemplate, ANIM_ATTACKER, 2, 0x0, 0xfffb, 0xa, 0x2
-	createsprite gClangoorousSoulblazePurpleSwirlSpriteTemplate, ANIM_TARGET, 2, 0x0, 0x1c, 0x1c0, 0x2d, 0xb, 0x2e, ANIM_ATTACKER
-	delay 0x2
-	createsprite gClangoorousSoulblazePurpleSwirlSpriteTemplate, ANIM_TARGET, 2, 0x0, 0x21, 0x1d0, 0x32, 0xa, 0xffce, ANIM_ATTACKER
-	delay 0x2
-	createsprite gEndureEnergySpriteTemplate, ANIM_ATTACKER, 2, 0x0, 0x1c, 0x1a, 0x3
-	return
-ClangorousSoulblazeBuffEffect:
-	playsewithpan SE_M_DRAGON_RAGE, SOUND_PAN_ATTACKER
-	createsprite gClangorousSoulBlueBuffTemplate, ANIM_ATTACKER, 2, 0x0, 0xffe8, 0x1a, 0x2
-	delay 0x4
-	createsprite gEndureEnergySpriteTemplate, ANIM_ATTACKER, 2, 0x0, 0xe, 0x1c, 0x1
-	delay 0x4
-	createsprite gClangorousSoulPurpleBuffTemplate, ANIM_ATTACKER, 2, 0x0, 0xfffb, 0xa, 0x2
-	createsprite gGrantingStarsSpriteTemplate, ANIM_ATTACKER, 2, 0xfff1, 0x0, 0x0, 0x0, 0x20, 0x3c
-	delay 0x4
-	createsprite gClangorousSoulWhiteBuffTemplate, ANIM_ATTACKER, 2, 0x0, 0x1c, 0x1a, 0x3
-	delay 0x4
-	createsprite gGrantingStarsSpriteTemplate, ANIM_ATTACKER, 2, 0xc, 0xfffb, 0x0, 0x0, 0x20, 0x3c
-	return
-ClangorousSoulblazePulse_1:
-	playsewithpan SE_M_UPROAR, SOUND_PAN_ATTACKER
-	createsprite gClangoorousSoulblazePulseSpriteTemplate, ANIM_ATTACKER, 2, 0x10, 0x0, 0x0, 0x0, 0x1d, 0x0
-	createsprite gSlowFlyingMusicNotesSpriteTemplate, ANIM_ATTACKER, 2, 0x1, 0x1, 0x1, 0x0
-	return
-ClangorousSoulblazePulse_2:
-	playsewithpan SE_M_UPROAR, SOUND_PAN_ATTACKER
-	createsprite gClangoorousSoulblazePulseSpriteTemplate, ANIM_ATTACKER, 2, 0x10, 0x0, 0x0, 0x0, 0x1d, 0x0
-	createsprite gSlowFlyingMusicNotesSpriteTemplate, ANIM_ATTACKER, 2, 0x0, 0x3, 0x3, 0x80
-	return
-ClangorousSoulblazePulse_3:
-	playsewithpan SE_M_UPROAR, SOUND_PAN_ATTACKER
-	createsprite gClangoorousSoulblazePulseSpriteTemplate, ANIM_ATTACKER, 2, 0x10, 0x0, 0x0, 0x0, 0x1d, 0x0
-	createsprite gSlowFlyingMusicNotesSpriteTemplate, ANIM_ATTACKER, 2, 0x1, 0x2, 0x0, 0x80
-	return
-ClangorousSoulblazePulse_4:
-	playsewithpan SE_M_UPROAR, SOUND_PAN_ATTACKER
-	createsprite gClangoorousSoulblazePulseSpriteTemplate, ANIM_ATTACKER, 2, 0x10, 0x0, 0x0, 0x0, 0x1d, 0x0
-	createsprite gSlowFlyingMusicNotesSpriteTemplate, ANIM_ATTACKER, 2, 0x0, 0x1, 0x1, 0x0
-	return
-ClangorousSoulblazePulse_5:
-	playsewithpan SE_M_UPROAR, SOUND_PAN_ATTACKER
-	createsprite gClangoorousSoulblazePulseSpriteTemplate, ANIM_ATTACKER, 2, 0x10, 0x0, 0x0, 0x0, 0x1d, 0x0
-	createsprite gSlowFlyingMusicNotesSpriteTemplate, ANIM_ATTACKER, 2, 0x1, 0x0, 0x3, 0x0
-	return
-
 
 gBattleAnimMove_GuardianOfAlola::
 	loadspritegfx ANIM_TAG_THIN_RING @ring

@@ -49,14 +49,18 @@ static const u16 sNidoranMEggMoveLearnset[] = {
 };
 
 static const u16 sCleffaEggMoveLearnset[] = {
+    MOVE_CANTO_ENCANTADOR,
     MOVE_UNAVAILABLE,
 };
 
 static const u16 sVulpixEggMoveLearnset[] = {
+    MOVE_ALARIDO,
+    MOVE_CANTO_ENCANTADOR,
     MOVE_UNAVAILABLE,
 };
 
 static const u16 sVulpixAlolaEggMoveLearnset[] = {
+    MOVE_ALARIDO,
     MOVE_UNAVAILABLE,
 };
 
@@ -89,8 +93,14 @@ static const u16 sMankeyEggMoveLearnset[] = {
 };
 
 static const u16 sGrowlitheEggMoveLearnset[] = {
+    MOVE_ALARIDO,
     MOVE_UNAVAILABLE,
 };
+
+//static const u16 sGrowlitheHisuiEggMoveLearnset[] = {
+//    MOVE_ALARIDO,
+//    MOVE_UNAVAILABLE,
+//};
 
 static const u16 sPoliwagEggMoveLearnset[] = {
     MOVE_UNAVAILABLE,
@@ -513,6 +523,7 @@ static const u16 sMedititeEggMoveLearnset[] = {
 };
 
 static const u16 sElectrikeEggMoveLearnset[] = {
+    MOVE_ALARIDO,
     MOVE_UNAVAILABLE,
 };
 
@@ -523,6 +534,11 @@ static const u16 sBudewEggMoveLearnset[] = {
 static const u16 sCarvanhaEggMoveLearnset[] = {
     MOVE_UNAVAILABLE,
 };
+
+//static const u16 sSpoinkEggMoveLearnset[] = {
+//    MOVE_ALARIDO,
+//    MOVE_UNAVAILABLE,
+//};
 
 static const u16 sWailmerEggMoveLearnset[] = {
     MOVE_UNAVAILABLE,
@@ -569,6 +585,7 @@ static const u16 sAnorithEggMoveLearnset[] = {
 };
 
 static const u16 sFeebasEggMoveLearnset[] = {
+    MOVE_CANTO_ENCANTADOR,
     MOVE_UNAVAILABLE,
 };
 
