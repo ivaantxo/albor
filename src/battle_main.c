@@ -37,7 +37,6 @@
 #include "pokedex.h"
 #include "pokemon.h"
 #include "random.h"
-#include "roamer.h"
 #include "safari_zone.h"
 #include "scanline_effect.h"
 #include "script.h"

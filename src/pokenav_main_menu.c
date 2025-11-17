@@ -442,7 +442,7 @@ static u32 LoopedTask_SlideMenuHeaderDown(s32 state)
 
 void CopyPaletteIntoBufferUnfaded(const u16 *palette, u32 bufferOffset, u32 size)
 {
-    CpuCopy16(palette, &gPlttBufferUnfaded[bufferOffset], size);
+    CopiaCpu16(palette, &gPlttBufferUnfaded[bufferOffset], size);
 }
 
 void Pokenav_AllocAndLoadPalettes(const struct SpritePalette *palettes)
@@ -474,11 +474,11 @@ void PokenavCopyPalette(const u16 *src, const u16 *dest, int size, int a3, int a
 {
     if (a4 == 0)
     {
-        CpuCopy16(src, palette, size * 2);
+        CopiaCpu16(src, palette, size * 2);
     }
     else if (a4 >= a3)
     {
-        CpuCopy16(dest, palette, size * 2);
+        CopiaCpu16(dest, palette, size * 2);
     }
     else
     {

@@ -11,7 +11,6 @@
 #include "pokedex.h"
 #include "pokedex_area_screen.h"
 #include "region_map.h"
-#include "roamer.h"
 #include "sound.h"
 #include "string_util.h"
 #include "trig.h"
@@ -226,7 +225,7 @@ static bool8 DrawAreaGlow(void)
     case 3:
         if (!FreeTempTileDataBuffersIfPossible())
         {
-            CpuCopy32(sAreaGlow_Pal, &gPlttBufferUnfaded[BG_PLTT_ID(GLOW_PALETTE)], sizeof(sAreaGlow_Pal));
+            CopiaCpu32(sAreaGlow_Pal, &gPlttBufferUnfaded[BG_PLTT_ID(GLOW_PALETTE)], sizeof(sAreaGlow_Pal));
             sPokedexAreaScreen->drawAreaGlowState++;
         }
         return TRUE;
@@ -244,7 +243,6 @@ static bool8 DrawAreaGlow(void)
 static void FindMapsWithMon(u16 species)
 {
     u32 i;
-    struct Roamer *roamer;
 
     sPokedexAreaScreen->alteringCaveCounter = 0;
     sPokedexAreaScreen->alteringCaveId = VarGet(VAR_ALTERING_CAVE_WILD_SET);
@@ -298,20 +296,6 @@ static void FindMapsWithMon(u16 species)
                 SetSpecialMapHasMon(gWildMonHeaders[i].mapGroup, gWildMonHeaders[i].mapNum);
                 break;
             }
-        }
-    }
-
-    // Add roamers to the area map
-    for (i = 0; i < ROAMER_COUNT; i++)
-    {
-        roamer = &gSaveBlockPtr->roamer[i];
-        if (species == roamer->species && roamer->active)
-        {
-            // This is a roamer's species, show where this roamer is currently
-            struct OverworldArea *roamerLocation = &sPokedexAreaScreen->overworldAreasWithMons[sPokedexAreaScreen->numOverworldAreas];
-            GetRoamerLocation(i, &roamerLocation->mapGroup, &roamerLocation->mapNum);
-            roamerLocation->regionMapSectionId = Overworld_GetMapHeaderByGroupAndId(roamerLocation->mapGroup, roamerLocation->mapNum)->regionMapSectionId;
-            sPokedexAreaScreen->numOverworldAreas++;
         }
     }
 }

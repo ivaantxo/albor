@@ -103,7 +103,7 @@ static void InitBackupMapLayoutData(const u16 *map, u16 width, u16 height)
     dest += gBackupMapLayout.width * 7 + MAP_OFFSET;
     for (y = 0; y < height; y++)
     {
-        CpuCopy16(map, dest, width * 2);
+        CopiaCpu16(map, dest, width * 2);
         dest += width + MAP_OFFSET_W;
         map += width;
     }
@@ -160,7 +160,7 @@ static void FillConnection(int x, int y, struct MapHeader const *connectedMapHea
 
     for (i = 0; i < height; i++)
     {
-        CpuCopy16(src, dest, width * 2);
+        CopiaCpu16(src, dest, width * 2);
         dest += gBackupMapLayout.width;
         src += mapWidth;
     }
@@ -851,7 +851,7 @@ static void LoadTilesetPalette(struct Tileset const *tileset, u16 destOffset, u1
         {
             // LoadPalette(&black, destOffset, 2);
             if (skipFaded)
-                CpuFastCopy(tileset->palettes, &gPlttBufferUnfaded[destOffset], size);
+                CopiaRapidaCpu(tileset->palettes, &gPlttBufferUnfaded[destOffset], size);
             else
                 LoadPaletteFast(tileset->palettes, destOffset, size);
             gPlttBufferFaded[destOffset] = gPlttBufferUnfaded[destOffset] = RGB_BLACK; // why does it have to be black?
@@ -861,7 +861,7 @@ static void LoadTilesetPalette(struct Tileset const *tileset, u16 destOffset, u1
             // (void*) is to silence 'source potentially unaligned' error
             // All 'gTilesetPalettes_' arrays should have ALIGNED(4) in them
             if (skipFaded)
-                CpuFastCopy((void*)tileset->palettes[NUM_PALS_IN_PRIMARY], &gPlttBufferUnfaded[destOffset], size);
+                CopiaRapidaCpu((void*)tileset->palettes[NUM_PALS_IN_PRIMARY], &gPlttBufferUnfaded[destOffset], size);
             else
                 LoadPaletteFast(tileset->palettes[NUM_PALS_IN_PRIMARY], destOffset, size);
         }

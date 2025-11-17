@@ -730,7 +730,7 @@ static void Task_Hof_ExitOnKeyPressed(u8 taskId)
 
 static void Task_Hof_HandlePaletteOnExit(u8 taskId)
 {
-    CpuCopy16(gPlttBufferFaded, gPlttBufferUnfaded, PLTT_SIZE);
+    CopiaCpu16(gPlttBufferFaded, gPlttBufferUnfaded, PLTT_SIZE);
     BeginNormalPaletteFade(PALETTES_ALL, 8, 0, 0x10, RGB_BLACK);
     gTasks[taskId].func = Task_Hof_HandleExit;
 }
@@ -859,7 +859,7 @@ static void Task_HofPC_CopySaveData(u8 taskId)
         u32 i;
         struct HallofFameTeam *savedTeams;
 
-        CpuCopy16(gDecompressionBuffer, sHofMonPtr, SECTOR_SIZE);
+        CopiaCpu16(gDecompressionBuffer, sHofMonPtr, SECTOR_SIZE);
         savedTeams = sHofMonPtr;
         for (i = 0; i < HALL_OF_FAME_MAX_TEAMS; i++, savedTeams++)
         {
@@ -1034,7 +1034,7 @@ static void Task_HofPC_HandlePaletteOnExit(u8 taskId)
 {
     struct HallofFameTeam *fameTeam;
 
-    CpuCopy16(gPlttBufferFaded, gPlttBufferUnfaded, PLTT_SIZE);
+    CopiaCpu16(gPlttBufferFaded, gPlttBufferUnfaded, PLTT_SIZE);
     fameTeam = (struct HallofFameTeam *)(gDecompressionBuffer);
     fameTeam->mon[0] = sDummyFameMon;
     ComputerScreenCloseEffect(0, 0, 0);

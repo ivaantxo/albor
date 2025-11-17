@@ -730,7 +730,7 @@ void CopyToBgTilemapBuffer(u32 bg, const void *src, u32 mode, u32 destOffset)
     if (!IsInvalidBg(bg) && !IsTileMapOutsideWram(bg))
     {
         if (mode != 0)
-            CpuCopy16(src, (void *)(sGpuBgConfigs2[bg].tilemap + (destOffset * 2)), mode);
+            CopiaCpu16(src, (void *)(sGpuBgConfigs2[bg].tilemap + (destOffset * 2)), mode);
         else
             LZ77UnCompWram(src, (void *)(sGpuBgConfigs2[bg].tilemap + (destOffset * 2)));
     }

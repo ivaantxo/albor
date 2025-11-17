@@ -934,7 +934,7 @@ static void Task_BattleTransition(u8 taskId)
 static bool8 Transition_StartIntro(struct Task *task)
 {
     SetWeatherScreenFadeOut();
-    CpuCopy32(gPlttBufferFaded, gPlttBufferUnfaded, PLTT_SIZE);
+    CopiaCpu32(gPlttBufferFaded, gPlttBufferUnfaded, PLTT_SIZE);
     if (sTasks_Intro[task->tTransitionId] != NULL)
     {
         CreateTask(sTasks_Intro[task->tTransitionId], 4);
@@ -1300,7 +1300,7 @@ static bool8 Regi_Init(struct Task *task)
     InitPatternWeaveTransition(task);
     GetBg0TilesDst(&tilemap, &tileset);
     CpuFill16(0, tilemap, BG_SCREEN_SIZE);
-    CpuCopy16(sRegis_Tileset, tileset, 0x2000);
+    CopiaCpu16(sRegis_Tileset, tileset, 0x2000);
 
     task->tState++;
     return FALSE;
@@ -1313,7 +1313,7 @@ static bool8 BigPokeball_Init(struct Task *task)
     InitPatternWeaveTransition(task);
     GetBg0TilesDst(&tilemap, &tileset);
     CpuFill16(0, tilemap, BG_SCREEN_SIZE);
-    CpuCopy16(sBigPokeball_Tileset, tileset, sizeof(sBigPokeball_Tileset));
+    CopiaCpu16(sBigPokeball_Tileset, tileset, sizeof(sBigPokeball_Tileset));
     LoadPalette(sFieldEffectPal_Pokeball, BG_PLTT_ID(15), sizeof(sFieldEffectPal_Pokeball));
 
     task->tState++;
@@ -1370,7 +1370,7 @@ static bool8 Regice_SetGfx(struct Task *task)
 
     GetBg0TilesDst(&tilemap, &tileset);
     LoadPalette(sRegice_Palette, BG_PLTT_ID(15), sizeof(sRegice_Palette));
-    CpuCopy16(sRegice_Tilemap, tilemap, 0x500);
+    CopiaCpu16(sRegice_Tilemap, tilemap, 0x500);
     SetSinWave((s16*)gScanlineEffectRegBuffers[0], 0, task->tSinIndex, 132, task->tAmplitude, DISPLAY_HEIGHT);
 
     task->tState++;
@@ -1383,7 +1383,7 @@ static bool8 Registeel_SetGfx(struct Task *task)
 
     GetBg0TilesDst(&tilemap, &tileset);
     LoadPalette(sRegisteel_Palette, BG_PLTT_ID(15), sizeof(sRegisteel_Palette));
-    CpuCopy16(sRegisteel_Tilemap, tilemap, 0x500);
+    CopiaCpu16(sRegisteel_Tilemap, tilemap, 0x500);
     SetSinWave((s16*)gScanlineEffectRegBuffers[0], 0, task->tSinIndex, 132, task->tAmplitude, DISPLAY_HEIGHT);
 
     task->tState++;
@@ -1396,7 +1396,7 @@ static bool8 Regirock_SetGfx(struct Task *task)
 
     GetBg0TilesDst(&tilemap, &tileset);
     LoadPalette(sRegirock_Palette, BG_PLTT_ID(15), sizeof(sRegirock_Palette));
-    CpuCopy16(sRegirock_Tilemap, tilemap, 0x500);
+    CopiaCpu16(sRegirock_Tilemap, tilemap, 0x500);
     SetSinWave((s16*)gScanlineEffectRegBuffers[0], 0, task->tSinIndex, 132, task->tAmplitude, DISPLAY_HEIGHT);
 
     task->tState++;
@@ -3014,8 +3014,8 @@ static bool8 RectangularSpiral_Init(struct Task *task)
     u16 *tilemap, *tileset;
 
     GetBg0TilesDst(&tilemap, &tileset);
-    CpuCopy16(sShrinkingBoxTileset, tileset, 0x20);
-    CpuCopy16(&sShrinkingBoxTileset[0x70], &tileset[0x20], 0x20);
+    CopiaCpu16(sShrinkingBoxTileset, tileset, 0x20);
+    CopiaCpu16(&sShrinkingBoxTileset[0x70], &tileset[0x20], 0x20);
     CpuFill16(0xF0 << 8, tilemap, BG_SCREEN_SIZE);
     LoadPalette(sFieldEffectPal_Pokeball, BG_PLTT_ID(15), sizeof(sFieldEffectPal_Pokeball));
 
@@ -3268,7 +3268,7 @@ static bool8 Rayquaza_Init(struct Task *task)
     SetGpuReg(REG_OFFSET_BG0CNT, BGCNT_CHARBASE(2) | BGCNT_SCREENBASE(26) | BGCNT_TXT256x512);
     GetBg0TilesDst(&tilemap, &tileset);
     CpuFill16(0, tilemap, BG_SCREEN_SIZE);
-    CpuCopy16(sRayquaza_Tileset, tileset, 0x2000);
+    CopiaCpu16(sRayquaza_Tileset, tileset, 0x2000);
 
     sTransitionData->counter = 0;
     task->tState++;
@@ -3289,7 +3289,7 @@ static bool8 Rayquaza_SetGfx(struct Task *task)
     u16 *tilemap, *tileset;
 
     GetBg0TilesDst(&tilemap, &tileset);
-    CpuCopy16(sRayquaza_Tilemap, tilemap, sizeof(sRayquaza_Tilemap));
+    CopiaCpu16(sRayquaza_Tilemap, tilemap, sizeof(sRayquaza_Tilemap));
     task->tState++;
     return FALSE;
 }

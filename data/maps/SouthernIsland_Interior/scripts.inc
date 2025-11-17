@@ -13,9 +13,6 @@ SouthernIsland_Interior_EventScript_TryRemoveLati::
 	return
 
 SouthernIsland_Interior_OnTransition:
-	call_if_eq VAR_ROAMER_POKEMON, 0, SouthernIsland_Interior_EventScript_SetUpLatios
-	call_if_ne VAR_ROAMER_POKEMON, 0, SouthernIsland_Interior_EventScript_SetUpLatias
-	call SouthernIsland_Interior_EventScript_SetUpPlayerGfx
 	end
 
 SouthernIsland_Interior_EventScript_SetUpLatios::
@@ -49,40 +46,6 @@ SouthernIsland_Interior_EventScript_TryLatiEncounter::
 	end
 
 SouthernIsland_Interior_EventScript_Lati::
-	goto_if_set FLAG_TEMP_2, SouthernIsland_Interior_EventScript_Sign
-	goto_if_set FLAG_DEFEATED_LATIAS_OR_LATIOS, SouthernIsland_Interior_EventScript_Sign
-	goto_if_set FLAG_CAUGHT_LATIAS_OR_LATIOS, SouthernIsland_Interior_EventScript_Sign
-	goto_if_unset FLAG_ENABLE_SHIP_SOUTHERN_ISLAND, SouthernIsland_Interior_EventScript_Sign
-	setflag FLAG_ENCOUNTERED_LATIAS_OR_LATIOS
-	setflag FLAG_TEMP_2
-	special SpawnCameraObject
-	applymovement OBJ_EVENT_ID_CAMERA, SouthernIsland_Interior_Movement_CameraPanUp
-	waitmovement 0
-	delay 50
-	waitse
-	playmoncry VAR_TEMP_4, CRY_MODE_NORMAL
-	delay 30
-	waitmoncry
-	addobject LOCALID_LATI
-	delay 30
-	applymovement OBJ_EVENT_ID_CAMERA, SouthernIsland_Interior_Movement_CameraPanDown
-	applymovement LOCALID_LATI, SouthernIsland_Interior_Movement_LatiApproach
-	waitmovement 0
-	delay 50
-	special RemoveCameraObject
-	setvar VAR_LAST_TALKED, LOCALID_LATI
-	call_if_eq VAR_ROAMER_POKEMON, 0, SouthernIsland_Interior_EventScript_SetLatiosBattleVars
-	call_if_ne VAR_ROAMER_POKEMON, 0, SouthernIsland_Interior_EventScript_SetLatiasBattleVars
-	setflag FLAG_SYS_CTRL_OBJ_DELETE
-	special BattleSetup_StartLatiBattle
-	waitstate
-	clearflag FLAG_SYS_CTRL_OBJ_DELETE
-	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_eq VAR_RESULT, B_OUTCOME_WON, SouthernIsland_Interior_EventScript_LatiDefeated
-	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, SouthernIsland_Interior_EventScript_RanFromLati
-	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, SouthernIsland_Interior_EventScript_RanFromLati
-	setflag FLAG_CAUGHT_LATIAS_OR_LATIOS
-	releaseall
 	end
 
 SouthernIsland_Interior_EventScript_LatiDefeated::

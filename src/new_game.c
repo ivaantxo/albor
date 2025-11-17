@@ -2,7 +2,6 @@
 #include "new_game.h"
 #include "random.h"
 #include "pokemon.h"
-#include "roamer.h"
 #include "pokemon_size_record.h"
 #include "script.h"
 #include "lottery_corner.h"
@@ -114,7 +113,6 @@ void NewGameInitData(void)
     gPlayerPartyCount = 0;
     ZeroPlayerPartyMons();
     ResetPokemonStorageSystem();
-    DeactivateAllRoamers();
     gSaveBlockPtr->registeredItem = ITEM_NONE;
     ClearBag();
     SetWarpDestination(MAP_GROUP(TEST), MAP_NUM(TEST), WARP_ID_NONE, -1, -1);

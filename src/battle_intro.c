@@ -400,7 +400,7 @@ void DrawBattlerOnBg(int bgId, u8 x, u8 y, u8 battlerPosition, u8 paletteId, u8 
 {
     u32 i, j;
     int offset = tilesOffset;
-    CpuCopy16(gMonSpritesGfxPtr->spritesGfx[battlerPosition], tiles, BG_SCREEN_SIZE);
+    CopiaCpu16(gMonSpritesGfxPtr->spritesGfx[battlerPosition], tiles, BG_SCREEN_SIZE);
     LoadBgTiles(bgId, tiles, 0x1000, tilesOffset);
     for (i = y; i < y + 8; i++)
     {

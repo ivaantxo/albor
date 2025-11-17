@@ -346,7 +346,7 @@ static void VBlankCB_UpdateClockGraphics(void)
         gMain.oamBuffer[0].tileNum = 1;
     }
 
-    CpuFastCopy(gMain.oamBuffer, (void *)OAM, 4);
+    CopiaRapidaCpu(gMain.oamBuffer, (void *)OAM, 4);
 
     if (sClockInfo[DEBUG_TIMER])
         sClockInfo[DEBUG_TIMER]--;

@@ -369,24 +369,6 @@ struct Pokeblock
     u8 feel;
 };
 
-struct Roamer
-{
-    /*0x00*/ u32 ivs;
-    /*0x04*/ u32 personality;
-    /*0x08*/ u16 species;
-    /*0x0A*/ u16 hp;
-    /*0x0C*/ u8 level;
-    /*0x0D*/ u8 statusA;
-    /*0x0E*/ u8 cool;
-    /*0x0F*/ u8 beauty;
-    /*0x10*/ u8 cute;
-    /*0x11*/ u8 smart;
-    /*0x12*/ u8 tough;
-    /*0x13*/ bool8 active;
-    /*0x14*/ u8 statusB; // Stores frostbite
-    /*0x14*/ u8 filler[0x7];
-};
-
 // See dewford_trend.c
 struct DewfordTrend
 {
@@ -521,7 +503,6 @@ struct SaveBlock
     struct ContestWinner contestWinners[NUM_CONTEST_WINNERS];  //eliminar
     struct DayCare daycare;
     u8 giftRibbons[GIFT_RIBBONS_COUNT]; //eliminar
-    struct Roamer roamer[ROAMER_COUNT]; //eliminar
     u8 dexSeen[NUM_DEX_FLAG_BYTES];
     u8 dexCaught[NUM_DEX_FLAG_BYTES];
 };

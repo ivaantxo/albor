@@ -478,11 +478,6 @@ void DoStandardWildBattle_Debug(void)
     CreateBattleStartTask_Debug(GetWildBattleTransition(), 0);
 }
 
-void BattleSetup_StartRoamerBattle(void)
-{
-
-}
-
 static void DoSafariBattle(void)
 {
 

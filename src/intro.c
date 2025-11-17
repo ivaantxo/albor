@@ -1165,13 +1165,13 @@ void Task_Scene1_Load(u8 taskId)
     LoadSpritePalettes(sSpritePalettes_Intro1);
     LoadCompressedSpriteSheet(sSpriteSheet_Sparkle);
     LoadSpritePalettes(sSpritePalette_Sparkle);
-    CpuCopy16(&gPlttBufferUnfaded[OBJ_PLTT_ID(0)], &gPlttBufferUnfaded[OBJ_PLTT_ID(15) + 0], PLTT_SIZEOF(16 - 0));
-    CpuCopy16(&gPlttBufferUnfaded[OBJ_PLTT_ID(0)], &gPlttBufferUnfaded[OBJ_PLTT_ID(14) + 1], PLTT_SIZEOF(16 - 1) + 1); // Copying an extra half color?
-    CpuCopy16(&gPlttBufferUnfaded[OBJ_PLTT_ID(0)], &gPlttBufferUnfaded[OBJ_PLTT_ID(13) + 2], PLTT_SIZEOF(16 - 2));
-    CpuCopy16(&gPlttBufferUnfaded[OBJ_PLTT_ID(0)], &gPlttBufferUnfaded[OBJ_PLTT_ID(12) + 3], PLTT_SIZEOF(16 - 3));
-    CpuCopy16(&gPlttBufferUnfaded[OBJ_PLTT_ID(0)], &gPlttBufferUnfaded[OBJ_PLTT_ID(11) + 4], PLTT_SIZEOF(16 - 4));
-    CpuCopy16(&gPlttBufferUnfaded[OBJ_PLTT_ID(0)], &gPlttBufferUnfaded[OBJ_PLTT_ID(10) + 5], PLTT_SIZEOF(16 - 5));
-    CpuCopy16(&gPlttBufferUnfaded[OBJ_PLTT_ID(0)], &gPlttBufferUnfaded[OBJ_PLTT_ID( 9) + 6], PLTT_SIZEOF(16 - 6));
+    CopiaCpu16(&gPlttBufferUnfaded[OBJ_PLTT_ID(0)], &gPlttBufferUnfaded[OBJ_PLTT_ID(15) + 0], PLTT_SIZEOF(16 - 0));
+    CopiaCpu16(&gPlttBufferUnfaded[OBJ_PLTT_ID(0)], &gPlttBufferUnfaded[OBJ_PLTT_ID(14) + 1], PLTT_SIZEOF(16 - 1) + 1); // Copying an extra half color?
+    CopiaCpu16(&gPlttBufferUnfaded[OBJ_PLTT_ID(0)], &gPlttBufferUnfaded[OBJ_PLTT_ID(13) + 2], PLTT_SIZEOF(16 - 2));
+    CopiaCpu16(&gPlttBufferUnfaded[OBJ_PLTT_ID(0)], &gPlttBufferUnfaded[OBJ_PLTT_ID(12) + 3], PLTT_SIZEOF(16 - 3));
+    CopiaCpu16(&gPlttBufferUnfaded[OBJ_PLTT_ID(0)], &gPlttBufferUnfaded[OBJ_PLTT_ID(11) + 4], PLTT_SIZEOF(16 - 4));
+    CopiaCpu16(&gPlttBufferUnfaded[OBJ_PLTT_ID(0)], &gPlttBufferUnfaded[OBJ_PLTT_ID(10) + 5], PLTT_SIZEOF(16 - 5));
+    CopiaCpu16(&gPlttBufferUnfaded[OBJ_PLTT_ID(0)], &gPlttBufferUnfaded[OBJ_PLTT_ID( 9) + 6], PLTT_SIZEOF(16 - 6));
     CreateGameFreakLogoSprites(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, 0);
     gTasks[taskId].sBigDropSpriteId = CreateWaterDrop(236, -14, 0x200, 1, 0x78, FALSE);
     gTasks[taskId].func = Task_Scene1_FadeIn;
@@ -1753,7 +1753,7 @@ static void Task_Scene3_LoadGroudon(u8 taskId)
         LZDecompressVram(gIntroGroudonBg_Tilemap, (void *)(BG_SCREEN_ADDR(28)));
         LoadCompressedSpriteSheetUsingHeap(&gBattleAnimPicTable[GET_TRUE_SPRITE_INDEX(ANIM_TAG_ROCKS)]);
         LoadCompressedSpritePaletteUsingHeap(&gBattleAnimPaletteTable[GET_TRUE_SPRITE_INDEX(ANIM_TAG_ROCKS)]);
-        CpuCopy16(gIntro3Bg_Pal, gPlttBufferUnfaded, sizeof(gIntro3Bg_Pal));
+        CopiaCpu16(gIntro3Bg_Pal, gPlttBufferUnfaded, sizeof(gIntro3Bg_Pal));
         gTasks[taskId].func = Task_Scene3_InitGroudonBg;
     }
 }
@@ -1861,7 +1861,7 @@ static void Task_Scene3_Groudon(u8 taskId)
         if (--tDelay == 0)
         {
             tDelay = 2;
-            CpuCopy16(&gIntro3Bg_Pal[tPalIdx], &gPlttBufferFaded[BG_PLTT_ID(1) + 15], PLTT_SIZEOF(1));
+            CopiaCpu16(&gIntro3Bg_Pal[tPalIdx], &gPlttBufferFaded[BG_PLTT_ID(1) + 15], PLTT_SIZEOF(1));
             tPalIdx += 2;
             if (tPalIdx == 0x1EC)
                 tState++;
@@ -1878,7 +1878,7 @@ static void Task_Scene3_Groudon(u8 taskId)
         if (--tDelay == 0)
         {
             tDelay = 2;
-            CpuCopy16(&gIntro3Bg_Pal[tPalIdx], &gPlttBufferFaded[BG_PLTT_ID(1) + 15], PLTT_SIZEOF(1));
+            CopiaCpu16(&gIntro3Bg_Pal[tPalIdx], &gPlttBufferFaded[BG_PLTT_ID(1) + 15], PLTT_SIZEOF(1));
             tPalIdx -= 2;
             if (tPalIdx == 0x1E0)
             {
@@ -2120,7 +2120,7 @@ static void Task_Scene3_Kyogre(u8 taskId)
         if (--tDelay == 0)
         {
             tDelay = 4;
-            CpuCopy16(&gIntro3Bg_Pal[tPalIdx], &gPlttBufferFaded[BG_PLTT_ID(2) + 15], PLTT_SIZEOF(1));
+            CopiaCpu16(&gIntro3Bg_Pal[tPalIdx], &gPlttBufferFaded[BG_PLTT_ID(2) + 15], PLTT_SIZEOF(1));
             tPalIdx -= 2;
             if (tPalIdx == 0x1E0)
                 tState++;
@@ -2138,7 +2138,7 @@ static void Task_Scene3_Kyogre(u8 taskId)
         if (--tDelay == 0)
         {
             tDelay = 4;
-            CpuCopy16(&gIntro3Bg_Pal[tPalIdx], &gPlttBufferFaded[BG_PLTT_ID(2) + 15], PLTT_SIZEOF(1));
+            CopiaCpu16(&gIntro3Bg_Pal[tPalIdx], &gPlttBufferFaded[BG_PLTT_ID(2) + 15], PLTT_SIZEOF(1));
             tPalIdx += 2;
             if (tPalIdx == 0x1EE)
             {
@@ -2466,7 +2466,7 @@ static void SpriteCB_Lightning(struct Sprite *sprite)
         sprite->sPalIdx = 0x1C2;
         sprite->sState++;
     case 1:
-        CpuCopy16(&gIntro3Bg_Pal[sprite->sPalIdx], &gPlttBufferFaded[BG_PLTT_ID(5) + 13], PLTT_SIZEOF(1));
+        CopiaCpu16(&gIntro3Bg_Pal[sprite->sPalIdx], &gPlttBufferFaded[BG_PLTT_ID(5) + 13], PLTT_SIZEOF(1));
         sprite->sPalIdx += 2;
         if (sprite->sPalIdx != 0x1CE)
             break;
@@ -2477,7 +2477,7 @@ static void SpriteCB_Lightning(struct Sprite *sprite)
         if (--sprite->sDelay == 0)
         {
             sprite->sDelay = 4;
-            CpuCopy16(&gIntro3Bg_Pal[sprite->sPalIdx], &gPlttBufferFaded[BG_PLTT_ID(5) + 13], PLTT_SIZEOF(1));
+            CopiaCpu16(&gIntro3Bg_Pal[sprite->sPalIdx], &gPlttBufferFaded[BG_PLTT_ID(5) + 13], PLTT_SIZEOF(1));
             sprite->sPalIdx -= 2;
             if (sprite->sPalIdx == 0x1C0)
                 DestroySprite(sprite);
@@ -2580,7 +2580,7 @@ static void Task_RayquazaAttack(u8 taskId)
     case 0:
         if ((data[2] & 1) != 0)
         {
-            CpuCopy16(&gIntro3Bg_Pal[0x1A2 + data[1] * 2], &gPlttBufferFaded[BG_PLTT_ID(5) + 14], PLTT_SIZEOF(1));
+            CopiaCpu16(&gIntro3Bg_Pal[0x1A2 + data[1] * 2], &gPlttBufferFaded[BG_PLTT_ID(5) + 14], PLTT_SIZEOF(1));
             data[1]++;
         }
         if (data[1] == 6)
@@ -2595,7 +2595,7 @@ static void Task_RayquazaAttack(u8 taskId)
         {
             if ((data[2] & 1) != 0)
             {
-                CpuCopy16(&gIntro3Bg_Pal[0x1A2 + data[1] * 2], &gPlttBufferFaded[BG_PLTT_ID(5) + 8], PLTT_SIZEOF(1));
+                CopiaCpu16(&gIntro3Bg_Pal[0x1A2 + data[1] * 2], &gPlttBufferFaded[BG_PLTT_ID(5) + 8], PLTT_SIZEOF(1));
                 data[1]++;
             }
             if (data[1] == 6)
@@ -2614,7 +2614,7 @@ static void Task_RayquazaAttack(u8 taskId)
         {
             if ((data[2] & 1) != 0)
             {
-                CpuCopy16(&gIntro3Bg_Pal[0x182 + data[1] * 2], &gPlttBufferFaded[BG_PLTT_ID(5) + 12], PLTT_SIZEOF(1));
+                CopiaCpu16(&gIntro3Bg_Pal[0x182 + data[1] * 2], &gPlttBufferFaded[BG_PLTT_ID(5) + 12], PLTT_SIZEOF(1));
                 data[1]++;
             }
             if (data[1] == 6)
@@ -2638,9 +2638,9 @@ static void Task_RayquazaAttack(u8 taskId)
             if (--data[3] != 0)
             {
                 BlendPalette(BG_PLTT_ID(5), 16, data[3], RGB(9, 10, 10));
-                CpuCopy16(&gIntro3Bg_Pal[428], &gPlttBufferFaded[BG_PLTT_ID(5) + 14], PLTT_SIZEOF(1));
-                CpuCopy16(&gIntro3Bg_Pal[428], &gPlttBufferFaded[BG_PLTT_ID(5) + 8], PLTT_SIZEOF(1));
-                CpuCopy16(&gIntro3Bg_Pal[396], &gPlttBufferFaded[BG_PLTT_ID(5) + 12], PLTT_SIZEOF(1));
+                CopiaCpu16(&gIntro3Bg_Pal[428], &gPlttBufferFaded[BG_PLTT_ID(5) + 14], PLTT_SIZEOF(1));
+                CopiaCpu16(&gIntro3Bg_Pal[428], &gPlttBufferFaded[BG_PLTT_ID(5) + 8], PLTT_SIZEOF(1));
+                CopiaCpu16(&gIntro3Bg_Pal[396], &gPlttBufferFaded[BG_PLTT_ID(5) + 12], PLTT_SIZEOF(1));
             }
             else
             {
@@ -3171,16 +3171,16 @@ static void SpriteCB_LogoLetter(struct Sprite *sprite)
             sprite->sColorDelay = 2;
             if (sprite->sTimer != 0)
             {
-                CpuCopy16(&gIntroGameFreakTextFade_Pal[sprite->sTimer],      &gPlttBufferFaded[OBJ_PLTT_ID(1) + 15], PLTT_SIZEOF(1));
-                CpuCopy16(&gIntroGameFreakTextFade_Pal[sprite->sTimer + 16], &gPlttBufferFaded[OBJ_PLTT_ID(1) + 4], PLTT_SIZEOF(1));
-                CpuCopy16(&gIntroGameFreakTextFade_Pal[sprite->sTimer + 32], &gPlttBufferFaded[OBJ_PLTT_ID(1) + 10], PLTT_SIZEOF(1));
+                CopiaCpu16(&gIntroGameFreakTextFade_Pal[sprite->sTimer],      &gPlttBufferFaded[OBJ_PLTT_ID(1) + 15], PLTT_SIZEOF(1));
+                CopiaCpu16(&gIntroGameFreakTextFade_Pal[sprite->sTimer + 16], &gPlttBufferFaded[OBJ_PLTT_ID(1) + 4], PLTT_SIZEOF(1));
+                CopiaCpu16(&gIntroGameFreakTextFade_Pal[sprite->sTimer + 32], &gPlttBufferFaded[OBJ_PLTT_ID(1) + 10], PLTT_SIZEOF(1));
                 sprite->sTimer--;
             }
             else
             {
-                CpuCopy16(&gIntroGameFreakTextFade_Pal[sprite->sTimer],      &gPlttBufferFaded[OBJ_PLTT_ID(1) + 15], PLTT_SIZEOF(1));
-                CpuCopy16(&gIntroGameFreakTextFade_Pal[sprite->sTimer + 16], &gPlttBufferFaded[OBJ_PLTT_ID(1) + 4], PLTT_SIZEOF(1));
-                CpuCopy16(&gIntroGameFreakTextFade_Pal[sprite->sTimer + 32], &gPlttBufferFaded[OBJ_PLTT_ID(1) + 10], PLTT_SIZEOF(1));
+                CopiaCpu16(&gIntroGameFreakTextFade_Pal[sprite->sTimer],      &gPlttBufferFaded[OBJ_PLTT_ID(1) + 15], PLTT_SIZEOF(1));
+                CopiaCpu16(&gIntroGameFreakTextFade_Pal[sprite->sTimer + 16], &gPlttBufferFaded[OBJ_PLTT_ID(1) + 4], PLTT_SIZEOF(1));
+                CopiaCpu16(&gIntroGameFreakTextFade_Pal[sprite->sTimer + 32], &gPlttBufferFaded[OBJ_PLTT_ID(1) + 10], PLTT_SIZEOF(1));
                 sprite->sState++;
             }
         }
@@ -3200,9 +3200,9 @@ static void SpriteCB_LogoLetter(struct Sprite *sprite)
             sprite->sColorDelay = 2;
             if (sprite->sTimer <= COLOR_CHANGES)
             {
-                CpuCopy16(&gIntroGameFreakTextFade_Pal[sprite->sTimer],      &gPlttBufferFaded[OBJ_PLTT_ID(1) + 15], PLTT_SIZEOF(1));
-                CpuCopy16(&gIntroGameFreakTextFade_Pal[sprite->sTimer + 16], &gPlttBufferFaded[OBJ_PLTT_ID(1) + 4], PLTT_SIZEOF(1));
-                CpuCopy16(&gIntroGameFreakTextFade_Pal[sprite->sTimer + 32], &gPlttBufferFaded[OBJ_PLTT_ID(1) + 10], PLTT_SIZEOF(1));
+                CopiaCpu16(&gIntroGameFreakTextFade_Pal[sprite->sTimer],      &gPlttBufferFaded[OBJ_PLTT_ID(1) + 15], PLTT_SIZEOF(1));
+                CopiaCpu16(&gIntroGameFreakTextFade_Pal[sprite->sTimer + 16], &gPlttBufferFaded[OBJ_PLTT_ID(1) + 4], PLTT_SIZEOF(1));
+                CopiaCpu16(&gIntroGameFreakTextFade_Pal[sprite->sTimer + 32], &gPlttBufferFaded[OBJ_PLTT_ID(1) + 10], PLTT_SIZEOF(1));
                 sprite->sTimer++;
             }
             else

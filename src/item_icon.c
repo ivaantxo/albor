@@ -79,7 +79,7 @@ void CopyItemIconPicTo4x4Buffer(const void *src, void *dest)
     u32 i;
 
     for (i = 0; i < 3; i++)
-        CpuCopy16(src + i * 96, dest + i * 128, 0x60);
+        CopiaCpu16(src + i * 96, dest + i * 128, 0x60);
 }
 
 u8 AddItemIconSprite(u16 tilesTag, u16 paletteTag, u16 itemId)
@@ -107,7 +107,7 @@ u8 AddItemIconSprite(u16 tilesTag, u16 paletteTag, u16 itemId)
         LoadCompressedSpritePalette(&spritePalette);
 
         spriteTemplate = Alloc(sizeof(*spriteTemplate));
-        CpuCopy16(&gItemIconSpriteTemplate, spriteTemplate, sizeof(*spriteTemplate));
+        CopiaCpu16(&gItemIconSpriteTemplate, spriteTemplate, sizeof(*spriteTemplate));
         spriteTemplate->tileTag = tilesTag;
         spriteTemplate->paletteTag = paletteTag;
         spriteId = CreateSprite(spriteTemplate, 0, 0, 0);
@@ -144,7 +144,7 @@ u8 AddCustomItemIconSprite(const struct SpriteTemplate *customSpriteTemplate, u1
         LoadCompressedSpritePalette(&spritePalette);
 
         spriteTemplate = Alloc(sizeof(*spriteTemplate));
-        CpuCopy16(customSpriteTemplate, spriteTemplate, sizeof(*spriteTemplate));
+        CopiaCpu16(customSpriteTemplate, spriteTemplate, sizeof(*spriteTemplate));
         spriteTemplate->tileTag = tilesTag;
         spriteTemplate->paletteTag = paletteTag;
         spriteId = CreateSprite(spriteTemplate, 0, 0, 0);

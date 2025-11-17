@@ -63,7 +63,7 @@ static void None_Main(void);
 static u8 None_Finish(void);
 
 EWRAM_DATA struct Weather gWeather = {0};
-EWRAM_DATA static u8 ALIGNED(2) sFieldEffectPaletteColorMapTypes[32] = {0};
+EWRAM_DATA static u8 ALIGNED(4) sFieldEffectPaletteColorMapTypes[32] = {0};
 
 static const u8 *sPaletteColorMapTypes;
 
@@ -159,7 +159,7 @@ void (*const gWeatherPalStateFuncs[])(void) =
 
 // This table specifies which of the color maps should be
 // applied to each of the background and sprite palettes.
-static const u8 ALIGNED(2) sBasePaletteColorMapTypes[32] =
+static const u8 ALIGNED(4) sBasePaletteColorMapTypes[32] =
 {
     // background palettes
     COLOR_MAP_DARK_CONTRAST,
@@ -204,7 +204,7 @@ void StartWeather(void)
     if (!FuncIsActiveTask(Task_WeatherMain))
     {
         u32 index = AllocSpritePalette(PALTAG_WEATHER);
-        CpuCopy32(gFogPalette, &gPlttBufferUnfaded[OBJ_PLTT_ID(index)], PLTT_SIZE_4BPP);
+        CopiaCpu32(gFogPalette, &gPlttBufferUnfaded[OBJ_PLTT_ID(index)], PLTT_SIZE_4BPP);
         sPaletteColorMapTypes = sBasePaletteColorMapTypes;
         gWeatherPtr->contrastColorMapSpritePalIndex = index;
         gWeatherPtr->weatherPicSpritePalIndex = 0xFF; // defer allocation until needed
@@ -449,7 +449,7 @@ static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
         if (!(colorMapIndex > 3) && MapaTieneLuzNatural(gMapHeader.mapType))
             UpdatePalettesWithTime(palettes);
         else
-            CpuFastCopy(gPlttBufferUnfaded + palOffset, gPlttBufferFaded + palOffset, PLTT_SIZE_4BPP * numPalettes);
+            CopiaRapidaCpu(gPlttBufferUnfaded + palOffset, gPlttBufferFaded + palOffset, PLTT_SIZE_4BPP * numPalettes);
         numPalettes += startPalIndex;
         curPalIndex = startPalIndex;
 
@@ -499,7 +499,7 @@ static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
             if (sPaletteColorMapTypes[curPalIndex] == COLOR_MAP_NONE)
             {
                 // No palette change.
-                CpuFastCopy(&gPlttBufferUnfaded[palOffset], &gPlttBufferFaded[palOffset], PLTT_SIZE_4BPP);
+                CopiaRapidaCpu(&gPlttBufferUnfaded[palOffset], &gPlttBufferFaded[palOffset], PLTT_SIZE_4BPP);
                 palOffset += 16;
             }
             else
@@ -524,7 +524,7 @@ static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
         } 
         else 
         { // copy
-            CpuFastCopy(&gPlttBufferUnfaded[PLTT_ID(startPalIndex)], &gPlttBufferFaded[PLTT_ID(startPalIndex)], numPalettes * PLTT_SIZE_4BPP);
+            CopiaRapidaCpu(&gPlttBufferUnfaded[PLTT_ID(startPalIndex)], &gPlttBufferFaded[PLTT_ID(startPalIndex)], numPalettes * PLTT_SIZE_4BPP);
         }
     }
 }
@@ -547,7 +547,7 @@ static void ApplyColorMapWithBlend(u8 startPalIndex, u8 numPalettes, s8 colorMap
     while (curPalIndex < numPalettes)
     {
         UpdateAltBgPalettes((1 << (palOffset >> 4)) & PALETTES_BG);
-        CpuFastCopy(gPlttBufferUnfaded + palOffset, gPlttBufferFaded + palOffset, 16 * sizeof(u16));
+        CopiaRapidaCpu(gPlttBufferUnfaded + palOffset, gPlttBufferFaded + palOffset, 16 * sizeof(u16));
         UpdatePalettesWithTime(1 << (palOffset >> 4)); // Apply TOD blend
         if (sPaletteColorMapTypes[curPalIndex] == COLOR_MAP_NONE)
         {
@@ -647,7 +647,7 @@ static void ApplyFogBlend(u8 blendCoeff, u32 blendColor)
 
     // First blend all palettes with time
     UpdateAltBgPalettes(PALETTES_BG);
-    CpuFastCopy(gPlttBufferUnfaded, gPlttBufferFaded, PLTT_BUFFER_SIZE * 2);
+    CopiaRapidaCpu(gPlttBufferUnfaded, gPlttBufferFaded, PLTT_BUFFER_SIZE * 2);
     UpdatePalettesWithTime(PALETTES_ALL);
     // Then blend tile palettes [0, 12] faded->faded with fadeIn color
     BlendPalettesFine(8191, gPlttBufferFaded, gPlttBufferFaded, blendCoeff, blendColor);
@@ -754,7 +754,7 @@ void FadeScreen(u8 mode, s8 delay)
         // Note: Copying faded -> unfaded like this works fine, except if the screen is faded back in
         // without transitioning to a different screen
         // For cases like that, use fadescreenswapbuffers
-        CpuFastCopy(gPlttBufferFaded, gPlttBufferUnfaded, PLTT_BUFFER_SIZE * 2);
+        CopiaRapidaCpu(gPlttBufferFaded, gPlttBufferUnfaded, PLTT_BUFFER_SIZE * 2);
 
         BeginNormalPaletteFade(PALETTES_ALL, delay, 0, 16, fadeColor);
         gWeatherPtr->palProcessingState = WEATHER_PAL_STATE_SCREEN_FADING_OUT;
@@ -811,7 +811,7 @@ void UpdateSpritePaletteWithWeather(u8 spritePaletteIndex, bool8 allowFog)
         break;
     case WEATHER_PAL_STATE_SCREEN_FADING_OUT:
         paletteIndex = PLTT_ID(paletteIndex);
-        CpuFastCopy(&gPlttBufferFaded[paletteIndex], &gPlttBufferUnfaded[paletteIndex], PLTT_SIZE_4BPP);
+        CopiaRapidaCpu(&gPlttBufferFaded[paletteIndex], &gPlttBufferUnfaded[paletteIndex], PLTT_SIZE_4BPP);
         BlendPalette(paletteIndex, 16, gFundidoPaletas.y, gFundidoPaletas.colorBlend);
         break;
     // WEATHER_PAL_STATE_CHANGING_WEATHER
@@ -831,7 +831,7 @@ void UpdateSpritePaletteWithWeather(u8 spritePaletteIndex, bool8 allowFog)
                 i = min((gTimeOfDay + 1) * 4, 12); // fog coeff, highest in day and lowest at night
                 paletteIndex = PLTT_ID(paletteIndex);
                 // First blend with time
-                CpuFastCopy(gPlttBufferUnfaded + paletteIndex, gPlttBufferFaded + paletteIndex, PLTT_SIZE_4BPP);
+                CopiaRapidaCpu(gPlttBufferUnfaded + paletteIndex, gPlttBufferFaded + paletteIndex, PLTT_SIZE_4BPP);
                 ActualizaPaletaSpriteSegunHora(spritePaletteIndex);
                 // Then blend faded->faded with fog coeff
                 BlendPalettesFine(1, gPlttBufferFaded + paletteIndex, gPlttBufferFaded + paletteIndex, i, RGB(28, 31, 28));
@@ -848,7 +848,7 @@ void UpdateSpritePaletteWithWeather(u8 spritePaletteIndex, bool8 allowFog)
     // so it will be restored on fade-in
     if (gFundidoPaletas.y == 16)
         {
-            CpuFastCopy(gPlttBufferUnfaded + OBJ_PLTT_ID(spritePaletteIndex), gPlttBufferFaded + 2 * OBJ_PLTT_ID(spritePaletteIndex), PLTT_SIZE_4BPP);
+            CopiaRapidaCpu(gPlttBufferUnfaded + OBJ_PLTT_ID(spritePaletteIndex), gPlttBufferFaded + 2 * OBJ_PLTT_ID(spritePaletteIndex), PLTT_SIZE_4BPP);
         }
 }
 
@@ -1003,7 +1003,7 @@ void SetWeatherPalStateIdle(void)
 
 void PreservePaletteInWeather(u8 preservedPalIndex)
 {
-    CpuCopy16(sBasePaletteColorMapTypes, sFieldEffectPaletteColorMapTypes, 32);
+    CopiaCpu16(sBasePaletteColorMapTypes, sFieldEffectPaletteColorMapTypes, 32);
     sFieldEffectPaletteColorMapTypes[preservedPalIndex] = COLOR_MAP_NONE;
     sPaletteColorMapTypes = sFieldEffectPaletteColorMapTypes;
 }

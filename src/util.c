@@ -162,7 +162,7 @@ void DesplazaTonoPaleta(u32 offsetPaleta, u32 personalidad)
 {
     s32 desplazamiento = CalcularDesplazamientoDesdePersonalidad(personalidad);
     DesplazaTonoPaletaBase(&gPlttBufferUnfaded[offsetPaleta], &gPlttBufferFaded[offsetPaleta], desplazamiento);
-    CpuSmartCopy32(&gPlttBufferFaded[offsetPaleta], &gPlttBufferUnfaded[offsetPaleta], PLTT_SIZE_4BPP);
+    CopiaCpu32(&gPlttBufferFaded[offsetPaleta], &gPlttBufferUnfaded[offsetPaleta], PLTT_SIZE_4BPP);
 }
 
 void DesplazaTonoPaletaBuffer(u16 *buffer, u32 personalidad)

@@ -10,7 +10,6 @@
 #include "overworld.h"
 #include "pokeblock.h"
 #include "battle_setup.h"
-#include "roamer.h"
 #include "link.h"
 #include "script.h"
 #include "battle_debug.h"
@@ -622,7 +621,6 @@ static bool8 AreLegendariesInSootopolisPreventingEncounters(void)
 bool8 StandardWildEncounter(u16 curMetatileBehavior, u16 prevMetatileBehavior)
 {
     u16 headerId;
-    struct Roamer *roamer;
 
     if (sWildEncountersDisabled == TRUE)
         return FALSE;
@@ -671,42 +669,30 @@ bool8 StandardWildEncounter(u16 curMetatileBehavior, u16 prevMetatileBehavior)
             else if (WildEncounterCheck(gWildMonHeaders[headerId].landMonsInfo->encounterRate, FALSE) != TRUE)
                 return FALSE;
 
-            if (TryStartRoamerEncounter())
+            if (DoMassOutbreakEncounterTest() == TRUE && SetUpMassOutbreakEncounter(WILD_CHECK_REPEL | WILD_CHECK_KEEN_EYE) == TRUE)
             {
-                roamer = &gSaveBlockPtr->roamer[gEncounteredRoamerIndex];
-                if (!IsWildLevelAllowedByRepel(roamer->level))
-                    return FALSE;
-
-                BattleSetup_StartRoamerBattle();
+                BattleSetup_StartWildBattle();
                 return TRUE;
             }
-            else
+
+            // try a regular wild land encounter
+            if (TryGenerateWildMon(gWildMonHeaders[headerId].landMonsInfo, WILD_AREA_LAND, WILD_CHECK_REPEL | WILD_CHECK_KEEN_EYE) == TRUE)
             {
-                if (DoMassOutbreakEncounterTest() == TRUE && SetUpMassOutbreakEncounter(WILD_CHECK_REPEL | WILD_CHECK_KEEN_EYE) == TRUE)
+                if (TryDoDoubleWildBattle())
+                {
+                    struct Pokemon mon1 = gEnemyParty[0];
+                    TryGenerateWildMon(gWildMonHeaders[headerId].landMonsInfo, WILD_AREA_LAND, WILD_CHECK_KEEN_EYE);
+                    gEnemyParty[1] = mon1;
+                    BattleSetup_StartDoubleWildBattle();
+                }
+                else
                 {
                     BattleSetup_StartWildBattle();
-                    return TRUE;
                 }
-
-                // try a regular wild land encounter
-                if (TryGenerateWildMon(gWildMonHeaders[headerId].landMonsInfo, WILD_AREA_LAND, WILD_CHECK_REPEL | WILD_CHECK_KEEN_EYE) == TRUE)
-                {
-                    if (TryDoDoubleWildBattle())
-                    {
-                        struct Pokemon mon1 = gEnemyParty[0];
-                        TryGenerateWildMon(gWildMonHeaders[headerId].landMonsInfo, WILD_AREA_LAND, WILD_CHECK_KEEN_EYE);
-                        gEnemyParty[1] = mon1;
-                        BattleSetup_StartDoubleWildBattle();
-                    }
-                    else
-                    {
-                        BattleSetup_StartWildBattle();
-                    }
-                    return TRUE;
-                }
-
-                return FALSE;
+                return TRUE;
             }
+
+            return FALSE;
         }
         else if (MetatileBehavior_IsWaterWildEncounter(curMetatileBehavior) == TRUE
                  || (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING) && MetatileBehavior_IsBridgeOverWater(curMetatileBehavior) == TRUE))
@@ -720,36 +706,24 @@ bool8 StandardWildEncounter(u16 curMetatileBehavior, u16 prevMetatileBehavior)
             else if (WildEncounterCheck(gWildMonHeaders[headerId].waterMonsInfo->encounterRate, FALSE) != TRUE)
                 return FALSE;
 
-            if (TryStartRoamerEncounter())
+            if (TryGenerateWildMon(gWildMonHeaders[headerId].waterMonsInfo, WILD_AREA_WATER, WILD_CHECK_REPEL | WILD_CHECK_KEEN_EYE) == TRUE)
             {
-                roamer = &gSaveBlockPtr->roamer[gEncounteredRoamerIndex];
-                if (!IsWildLevelAllowedByRepel(roamer->level))
-                    return FALSE;
-
-                BattleSetup_StartRoamerBattle();
+                gIsSurfingEncounter = TRUE;
+                if (TryDoDoubleWildBattle())
+                {
+                    struct Pokemon mon1 = gEnemyParty[0];
+                    TryGenerateWildMon(gWildMonHeaders[headerId].waterMonsInfo, WILD_AREA_WATER, WILD_CHECK_KEEN_EYE);
+                    gEnemyParty[1] = mon1;
+                    BattleSetup_StartDoubleWildBattle();
+                }
+                else
+                {
+                    BattleSetup_StartWildBattle();
+                }
                 return TRUE;
             }
-            else // try a regular surfing encounter
-            {
-                if (TryGenerateWildMon(gWildMonHeaders[headerId].waterMonsInfo, WILD_AREA_WATER, WILD_CHECK_REPEL | WILD_CHECK_KEEN_EYE) == TRUE)
-                {
-                    gIsSurfingEncounter = TRUE;
-                    if (TryDoDoubleWildBattle())
-                    {
-                        struct Pokemon mon1 = gEnemyParty[0];
-                        TryGenerateWildMon(gWildMonHeaders[headerId].waterMonsInfo, WILD_AREA_WATER, WILD_CHECK_KEEN_EYE);
-                        gEnemyParty[1] = mon1;
-                        BattleSetup_StartDoubleWildBattle();
-                    }
-                    else
-                    {
-                        BattleSetup_StartWildBattle();
-                    }
-                    return TRUE;
-                }
 
-                return FALSE;
-            }
+            return FALSE;
         }
     }
 
@@ -822,12 +796,6 @@ bool8 SweetScentWildEncounter(void)
             if (gWildMonHeaders[headerId].landMonsInfo == NULL)
                 return FALSE;
 
-            if (TryStartRoamerEncounter())
-            {
-                BattleSetup_StartRoamerBattle();
-                return TRUE;
-            }
-
             if (DoMassOutbreakEncounterTest() == TRUE)
                 SetUpMassOutbreakEncounter(0);
             else
@@ -842,12 +810,6 @@ bool8 SweetScentWildEncounter(void)
                 return FALSE;
             if (gWildMonHeaders[headerId].waterMonsInfo == NULL)
                 return FALSE;
-
-            if (TryStartRoamerEncounter())
-            {
-                BattleSetup_StartRoamerBattle();
-                return TRUE;
-            }
 
             TryGenerateWildMon(gWildMonHeaders[headerId].waterMonsInfo, WILD_AREA_WATER, 0);
             BattleSetup_StartWildBattle();

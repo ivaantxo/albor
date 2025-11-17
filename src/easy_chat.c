@@ -55,8 +55,6 @@ static u16 HandleEasyChatInput_ConfirmLyricsYesNo(void);
 static u16 StartConfirmExitPrompt(void);
 static u16 TryConfirmWords(void);
 static u8 GetEasyChatScreenFrameId(void);
-static u8 GetEachChatScreenTemplateId(u8);
-static void GetQuizTitle(u8 *);
 static bool8 InitEasyChatScreenControl(void);
 static bool8 LoadEasyChatScreen(void);
 static void FreeEasyChatScreenControl(void);
@@ -1408,54 +1406,6 @@ void ShowEasyChatScreen(void)
 
 static bool8 InitEasyChatScreenStruct(u8 type, u16 *words, u8 displayedPersonType)
 {
-    u8 templateId;
-    u32 i;
-
-    sEasyChatScreen = Alloc(sizeof(*sEasyChatScreen));
-    if (sEasyChatScreen == NULL)
-        return FALSE;
-
-    sEasyChatScreen->type = type;
-    sEasyChatScreen->savedPhrase = words;
-    sEasyChatScreen->mainCursorColumn = 0;
-    sEasyChatScreen->mainCursorRow = 0;
-    sEasyChatScreen->inAlphabetMode = FALSE;
-    sEasyChatScreen->displayedPersonType = displayedPersonType;
-    templateId = GetEachChatScreenTemplateId(type);
-    if (type == EASY_CHAT_TYPE_QUIZ_QUESTION)
-    {
-        GetQuizTitle(sEasyChatScreen->quizTitle);
-        sEasyChatScreen->titleText = sEasyChatScreen->quizTitle;
-        sEasyChatScreen->inputState = INPUTSTATE_QUIZ_QUESTION;
-    }
-    else
-    {
-        sEasyChatScreen->inputState = INPUTSTATE_PHRASE;
-        sEasyChatScreen->titleText = sEasyChatScreenTemplates[templateId].titleText;
-    }
-
-    sEasyChatScreen->numColumns = sEasyChatScreenTemplates[templateId].numColumns;
-    sEasyChatScreen->numRows = sEasyChatScreenTemplates[templateId].numRows;
-    sEasyChatScreen->maxWords = sEasyChatScreen->numColumns * sEasyChatScreen->numRows;
-    sEasyChatScreen->templateId = templateId;
-    if (sEasyChatScreen->maxWords > ARRAY_COUNT(sEasyChatScreen->currentPhrase))
-        sEasyChatScreen->maxWords = ARRAY_COUNT(sEasyChatScreen->currentPhrase);
-
-    if (words != NULL)
-    {
-        // Phrase starts with words filled in, copy to current phrase
-        CpuCopy16(words, sEasyChatScreen->currentPhrase, sEasyChatScreen->maxWords * sizeof(u16));
-    }
-    else
-    {
-        // Phrase starts with no words, fill with empty words and save
-        for (i = 0; i < sEasyChatScreen->maxWords; i ++)
-            sEasyChatScreen->currentPhrase[i] = EC_EMPTY_WORD;
-
-        sEasyChatScreen->savedPhrase = sEasyChatScreen->currentPhrase;
-    }
-
-    sEasyChatScreen->keyboardLastRow = (GetNumUnlockedEasyChatGroups() - 1) / 2 + 1;
     return TRUE;
 }
 
@@ -2454,24 +2404,6 @@ static bool8 IsPhraseDifferentThanPlayerInput(const u16 *phrase, u8 phraseLength
 static u8 GetDisplayedPersonType(void)
 {
     return sEasyChatScreen->displayedPersonType;
-}
-
-static u8 GetEachChatScreenTemplateId(u8 type)
-{
-    u32 i;
-
-    for (i = 0; i < ARRAY_COUNT(sEasyChatScreenTemplates); i++)
-    {
-        if (sEasyChatScreenTemplates[i].type == type)
-            return i;
-    }
-
-    return 0;
-}
-
-static void GetQuizTitle(u8 *dst)
-{
-
 }
 
 static void BufferCurrentPhraseToStringVar2(void)

@@ -1,7 +1,7 @@
 #ifndef GUARD_GBA_MACRO_H
 #define GUARD_GBA_MACRO_H
 
-#define CPU_FILL_UNCHECKED(value, dest, size, bit)                                          \
+#define CPU_FILL_UNCHECKED(value, dest, size, bit)                                \
 {                                                                                 \
     vu##bit tmp = (vu##bit)(value);                                               \
     CpuSet((void *)&tmp,                                                          \
@@ -29,26 +29,23 @@
         CPU_COPY_UNCHECKED(src, dest, size, bit); \
     } while(0)
 
-#define CpuCopy16(src, dest, size) CPU_COPY(src, dest, size, 16)
-#define CpuCopy32(src, dest, size) CPU_COPY(src, dest, size, 32)
-
-#define CpuSmartCopy16(src, dest, size) \
-{ \
-    if ((((size) & 0x1f) == 0) && ((((u32)(src)) & 3) == 0) && ((((u32)(dest)) & 3) == 0)) { \
-        CpuFastCopy((src), (dest), (size)); \
+#define CopiaCpu16(src, dest, size) \
+do { \
+    if ((((size) & 31) == 0) && ((((u32)(src)) & 3) == 0) && ((((u32)(dest)) & 3) == 0)) { \
+        CopiaRapidaCpu((src), (dest), (size)); \
     } else { \
-        CpuCopy16((src), (dest), (size)); \
+        CPU_COPY((src), (dest), (size), 16); \
     } \
-}
+} while (0)
 
-#define CpuSmartCopy32(src, dest, size) \
-{ \
-    if ((((size) & 0x1f) == 0) && ((((u32)(src)) & 3) == 0) && ((((u32)(dest)) & 3) == 0)) { \
-        CpuFastCopy((src), (dest), (size)); \
+#define CopiaCpu32(src, dest, size) \
+do { \
+    if ((((size) & 31) == 0) && ((((u32)(src)) & 3) == 0) && ((((u32)(dest)) & 3) == 0)) { \
+        CopiaRapidaCpu((src), (dest), (size)); \
     } else { \
-        CpuCopy32((src), (dest), (size)); \
+        CPU_COPY((src), (dest), (size), 32); \
     } \
-}
+} while (0)
 
 #define CpuFastFill(value, dest, size)                               \
 {                                                                    \
@@ -80,7 +77,7 @@
     } \
 }
 
-#define CpuFastCopy(src, dest, size) CpuFastSet(src, dest, ((size)/(32/8) & 0x1FFFFF))
+#define CopiaRapidaCpu(src, dest, size) CpuFastSet(src, dest, ((size)/(32/8) & 0x1FFFFF))
 
 #define DmaSetUnchecked(dmaNum, src, dest, control) \
 {                                                 \

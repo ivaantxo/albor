@@ -1148,11 +1148,7 @@ static void SetPyramidFloorPalette(void)
 
 static void Task_SetPyramidFloorPalette(u8 taskId)
 {
-    if (gFundidoPaletas.activo)
-    {
-        CpuCopy16(gBattlePyramidFloor_Pal[gSaveBlockPtr->frontier.curChallengeBattleNum], &gPlttBufferUnfaded[BG_PLTT_ID(6)], PLTT_SIZE_4BPP);
-        DestroyTask(taskId);
-    }
+
 }
 
 // Unused. Handled by BuildStartMenuActions

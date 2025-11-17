@@ -208,7 +208,7 @@ struct PartyMenuInternal
     // However, a full 0x100 hwords (0x200 bytes) are allocated.
     // It is likely that the 0x160 value used below is a constant defined by
     // bin2c, the utility used to encode the compressed palette data.
-    u16 palBuffer[BG_PLTT_SIZE / sizeof(u16)];
+    u16 ALIGNED(4) palBuffer[BG_PLTT_SIZE / sizeof(u16)];
     s16 data[16];
 };
 
@@ -755,7 +755,7 @@ static bool8 AllocPartyMenuBgGfx(void)
         break;
     case 2:
         LoadCompressedPalette(gPartyMenuBg_Pal, BG_PLTT_ID(0), 11 * PLTT_SIZE_4BPP);
-        CpuCopy16(gPlttBufferUnfaded, sPartyMenuInternal->palBuffer, 11 * PLTT_SIZE_4BPP);
+        CopiaCpu16(gPlttBufferUnfaded, sPartyMenuInternal->palBuffer, 11 * PLTT_SIZE_4BPP);
         sPartyMenuInternal->data[0]++;
         break;
     case 3:
@@ -787,8 +787,8 @@ static bool8 AllocPartyMenuBgGfx(void)
 static void PartyPaletteBufferCopy(u8 palNum)
 {
     u8 offset = PLTT_ID(palNum);
-    CpuCopy16(&gPlttBufferUnfaded[BG_PLTT_ID(3)], &gPlttBufferUnfaded[offset], PLTT_SIZE_4BPP);
-    CpuCopy16(&gPlttBufferUnfaded[BG_PLTT_ID(3)], &gPlttBufferFaded[offset], PLTT_SIZE_4BPP);
+    CopiaCpu16(&gPlttBufferUnfaded[BG_PLTT_ID(3)], &gPlttBufferUnfaded[offset], PLTT_SIZE_4BPP);
+    CopiaCpu16(&gPlttBufferUnfaded[BG_PLTT_ID(3)], &gPlttBufferFaded[offset], PLTT_SIZE_4BPP);
 }
 
 static void FreePartyPointers(void)
@@ -2114,7 +2114,7 @@ static void BlitBitmapToPartyWindow(u8 windowId, const u8 *b, u8 c, u8 x, u8 y, 
         for (i = 0; i < height; i++)
         {
             for (j = 0; j < width; j++)
-                CpuCopy16(GetPartyMenuBgTile(b[x + j + ((y + i) * c)]), &pixels[(i * width + j) * 32], 32);
+                CopiaCpu16(GetPartyMenuBgTile(b[x + j + ((y + i) * c)]), &pixels[(i * width + j) * 32], 32);
         }
         BlitBitmapToWindow(windowId, pixels, x * 8, y * 8, width * 8, height * 8);
         Free(pixels);
@@ -3767,7 +3767,7 @@ static void CreatePartyMonIconSprite(struct Pokemon *mon, struct PartyMenuBox *m
         gSprites[menuBox->monSpriteId].oam.priority = 1;
         LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality), OBJ_PLTT_ID(2 + slot), PLTT_SIZE_4BPP);
         DesplazaTonoPaleta(OBJ_PLTT_ID(2 + slot), personality);
-        CpuCopy32(&gPlttBufferFaded[OBJ_PLTT_ID(2 + slot)], &gPlttBufferUnfaded[OBJ_PLTT_ID(2 + slot)], PLTT_SIZE_4BPP);
+        CopiaCpu32(&gPlttBufferFaded[OBJ_PLTT_ID(2 + slot)], &gPlttBufferUnfaded[OBJ_PLTT_ID(2 + slot)], PLTT_SIZE_4BPP);
         gSprites[menuBox->monSpriteId].oam.paletteNum = 2 + slot;
         UpdatePartyMonHPBar(menuBox->monSpriteId, mon);
     }

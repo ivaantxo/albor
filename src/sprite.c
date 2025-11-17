@@ -573,7 +573,7 @@ void ResetOamRange(u32 start, u32 end)
 void LoadOam(void)
 {
     if (!gMain.oamLoadDisabled)
-        CpuCopy32(gMain.oamBuffer, (void *)OAM, sizeof(gMain.oamBuffer));
+        CopiaCpu32(gMain.oamBuffer, (void *)OAM, sizeof(gMain.oamBuffer));
 }
 
 void ClearSpriteCopyRequests(void)
@@ -712,7 +712,7 @@ void ProcessSpriteCopyRequests(void)
 
         while (sSpriteCopyRequestCount > 0)
         {
-            CpuCopy16(sSpriteCopyRequests[i].src, sSpriteCopyRequests[i].dest, sSpriteCopyRequests[i].size);
+            CopiaCpu16(sSpriteCopyRequests[i].src, sSpriteCopyRequests[i].dest, sSpriteCopyRequests[i].size);
             sSpriteCopyRequestCount--;
             i++;
         }
@@ -1432,7 +1432,7 @@ static u16 LoadSpriteSheetWithOffset(const struct SpriteSheet *sheet, u32 offset
     else
     {
         AllocSpriteTileRange(sheet->tag, (u16)tileStart, sheet->size / TILE_SIZE_4BPP);
-        CpuSmartCopy16(sheet->data, (u8 *)OBJ_VRAM0 + TILE_SIZE_4BPP * tileStart + offset, sheet->size - offset);
+        CopiaCpu16(sheet->data, (u8 *)OBJ_VRAM0 + TILE_SIZE_4BPP * tileStart + offset, sheet->size - offset);
         return (u16)tileStart;
     }
 }

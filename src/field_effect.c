@@ -2634,7 +2634,7 @@ static void FieldMoveShowMonOutdoorsEffect_LoadGfx(struct Task *task)
 {
     u16 offset = ((REG_BG0CNT >> 2) << 14);
     u16 delta = ((REG_BG0CNT >> 8) << 11);
-    CpuCopy16(sFieldMoveStreaksOutdoors_Gfx, (void *)(VRAM + offset), 0x200);
+    CopiaCpu16(sFieldMoveStreaksOutdoors_Gfx, (void *)(VRAM + offset), 0x200);
     CpuFill32(0, (void *)(VRAM + delta), 0x800);
     LoadPalette(sFieldMoveStreaksOutdoors_Pal, BG_PLTT_ID(15), sizeof(sFieldMoveStreaksOutdoors_Pal));
     LoadFieldMoveOutdoorStreaksTilemap(delta);
@@ -2797,7 +2797,7 @@ static void FieldMoveShowMonIndoorsEffect_LoadGfx(struct Task *task)
     offset = ((REG_BG0CNT >> 2) << 14);
     delta = ((REG_BG0CNT >> 8) << 11);
     task->data[12] = delta;
-    CpuCopy16(sFieldMoveStreaksIndoors_Gfx, (void *)(VRAM + offset), 0x80);
+    CopiaCpu16(sFieldMoveStreaksIndoors_Gfx, (void *)(VRAM + offset), 0x80);
     CpuFill32(0, (void *)(VRAM + delta), 0x800);
     LoadPalette(sFieldMoveStreaksIndoors_Pal, BG_PLTT_ID(15), sizeof(sFieldMoveStreaksIndoors_Pal));
     task->tState++;

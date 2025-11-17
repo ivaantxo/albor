@@ -2310,7 +2310,7 @@ void AnimTask_HideSwapSprite(u8 taskId)
         position = GetBattlerPosition(gBattleAnimAttacker);
         src = gMonSpritesGfxPtr->spritesGfx[position];
         dest = animBg.bgTiles;
-        CpuCopy32(src, dest, MON_PIC_SIZE);
+        CopiaCpu32(src, dest, MON_PIC_SIZE);
         LoadBgTiles(1, animBg.bgTiles, 2048, animBg.tilesOffset);
         gTasks[taskId].data[0]++;
         break;
@@ -2365,7 +2365,7 @@ void AnimTask_TransformMon(u8 taskId)
         position = GetBattlerPosition(gBattleAnimAttacker);
         src = gMonSpritesGfxPtr->spritesGfx[position];
         dest = animBg.bgTiles;
-        CpuCopy32(src, dest, MON_PIC_SIZE);
+        CopiaCpu32(src, dest, MON_PIC_SIZE);
         LoadBgTiles(1, animBg.bgTiles, 2048, animBg.tilesOffset);
         gTasks[taskId].data[0]++;
         break;

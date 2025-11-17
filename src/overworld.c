@@ -343,7 +343,7 @@ void LoadObjEventTemplatesFromHeader(void)
     CpuFill32(0, gSaveBlockPtr->objectEventTemplates, sizeof(gSaveBlockPtr->objectEventTemplates));
 
     // Copy map header events to save block
-    CpuCopy32(gMapHeader.events->objectEvents,
+    CopiaCpu32(gMapHeader.events->objectEvents,
               gSaveBlockPtr->objectEventTemplates,
               gMapHeader.events->objectEventCount * sizeof(struct ObjectEventTemplate));
 }

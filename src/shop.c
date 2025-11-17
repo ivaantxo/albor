@@ -950,7 +950,7 @@ static void BuyMenuDrawObjectEvents(void)
     }
 
     gWeatherPtr->palProcessingState = weatherTemp; // restore weather state
-    CpuFastCopy(gPlttBufferFaded + PLTT_ID(16), gPlttBufferUnfaded + PLTT_ID(16), PLTT_BUFFER_SIZE);
+    CopiaRapidaCpu(gPlttBufferFaded + PLTT_ID(16), gPlttBufferUnfaded + PLTT_ID(16), PLTT_BUFFER_SIZE);
 }
 
 static bool8 BuyMenuCheckIfObjectEventOverlapsMenuBg(s16 *object)

@@ -31,32 +31,32 @@ EWRAM_DATA struct ControlFundidoPaletas gFundidoPaletas = {0};
 void LoadCompressedPalette(const u32 *src, u32 offset, u32 size)
 {
     LZDecompressWram(src, gDecompressionBuffer);
-    CpuCopy16(gDecompressionBuffer, &gPlttBufferUnfaded[offset], size);
-    CpuCopy16(gDecompressionBuffer, &gPlttBufferFaded[offset], size);
+    CopiaCpu16(gDecompressionBuffer, &gPlttBufferUnfaded[offset], size);
+    CopiaCpu16(gDecompressionBuffer, &gPlttBufferFaded[offset], size);
 }
 
-// Drop in replacement but uses CpuFastCopy, size must be 0 % 32
+// Drop in replacement but uses CopiaRapidaCpu, size must be 0 % 32
 void LoadCompressedPaletteFast(const u32 *src, u32 offset, u32 size) 
 {
     LZDecompressWram(src, gDecompressionBuffer);
-    CpuFastCopy(gDecompressionBuffer, &gPlttBufferUnfaded[offset], size);
-    CpuFastCopy(&gPlttBufferUnfaded[offset], &gPlttBufferFaded[offset], size);
+    CopiaRapidaCpu(gDecompressionBuffer, &gPlttBufferUnfaded[offset], size);
+    CopiaRapidaCpu(&gPlttBufferUnfaded[offset], &gPlttBufferFaded[offset], size);
 }
 
 void LoadPalette(const void *src, u32 offset, u32 size)
 {
-    CpuCopy16(src, &gPlttBufferUnfaded[offset], size);
-    CpuCopy16(src, &gPlttBufferFaded[offset], size);
+    CopiaCpu16(src, &gPlttBufferUnfaded[offset], size);
+    CopiaCpu16(src, &gPlttBufferFaded[offset], size);
 }
 
-// Drop in replacement for LoadPalette, uses CpuFastCopy, size must be 0 % 32
+// Drop in replacement for LoadPalette, uses CopiaRapidaCpu, size must be 0 % 32
 void LoadPaletteFast(const void *src, u32 offset, u32 size) 
 {
     if ((u32)src & 3) // In case palette is not 4 byte aligned
         return LoadPalette(src, offset, size);
-    CpuFastCopy(src, &gPlttBufferUnfaded[offset], size);
+    CopiaRapidaCpu(src, &gPlttBufferUnfaded[offset], size);
     // Copying from EWRAM->EWRAM is faster than ROM->EWRAM
-    CpuFastCopy(&gPlttBufferUnfaded[offset], &gPlttBufferFaded[offset], size);
+    CopiaRapidaCpu(&gPlttBufferUnfaded[offset], &gPlttBufferFaded[offset], size);
 }
 
 void FillPalette(u32 value, u32 offset, u32 size)
@@ -131,7 +131,7 @@ bool32 BeginNormalPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targ
 
     bufferTransferState = gFundidoPaletas.transferenciaBufferDeshabilitada;
     gFundidoPaletas.transferenciaBufferDeshabilitada = FALSE;
-    CpuCopy32(gPlttBufferFaded, (void *)PLTT, PLTT_SIZE);
+    CopiaCpu32(gPlttBufferFaded, (void *)PLTT, PLTT_SIZE);
     if (gFundidoPaletas.modo == FUNDIDO_HARDWARE && gFundidoPaletas.activo)
         UpdateBlendRegisters();
     gFundidoPaletas.transferenciaBufferDeshabilitada = bufferTransferState;
@@ -179,7 +179,7 @@ bool32 BeginTimeOfDayPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 t
 
         temp = gFundidoPaletas.transferenciaBufferDeshabilitada;
         gFundidoPaletas.transferenciaBufferDeshabilitada = FALSE;
-        CpuCopy32(gPlttBufferFaded, (void *)PLTT, PLTT_SIZE);
+        CopiaCpu32(gPlttBufferFaded, (void *)PLTT, PLTT_SIZE);
         if (gFundidoPaletas.modo == FUNDIDO_HARDWARE && gFundidoPaletas.activo)
             UpdateBlendRegisters();
         gFundidoPaletas.transferenciaBufferDeshabilitada = temp;
@@ -274,7 +274,7 @@ static u32 UpdateTimeOfDayPaletteFade(void)
       while (copyPalettes) 
         {
         if (copyPalettes & 1)
-            CpuFastCopy(src1, dst1, PLTT_SIZE_4BPP);
+            CopiaRapidaCpu(src1, dst1, PLTT_SIZE_4BPP);
         copyPalettes >>= 1;
         src1 += 16;
         dst1 += 16;
@@ -562,7 +562,7 @@ static u32 UpdateFastPaletteFade(void)
         switch (gFundidoPaletas.submodo)
         {
         case FUNDIDO_DESDE_NEGRO:
-            CpuCopy32(gPlttBufferUnfaded, gPlttBufferFaded, PLTT_SIZE);
+            CopiaCpu32(gPlttBufferUnfaded, gPlttBufferFaded, PLTT_SIZE);
             break;
         case FUNDIDO_A_NEGRO:
             CpuFill32(0x00000000, gPlttBufferFaded, PLTT_SIZE);

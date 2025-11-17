@@ -275,7 +275,7 @@ static const u8 sActionHighlightMiddle_Gfx[] = INCBIN_U8( "graphics/battle_front
 static const u8 sActionHighlightRight_Gfx[]  = INCBIN_U8( "graphics/battle_frontier/factory_screen/action_highlight_right.4bpp");
 static const u8 sMonPicBgAnim_Gfx[]          = INCBIN_U8( "graphics/battle_frontier/factory_screen/mon_pic_bg_anim.4bpp");
 static const u8 sMonPicBg_Tilemap[]          = INCBIN_U8( "graphics/battle_frontier/factory_screen/mon_pic_bg.bin");
-static const u16 sMonPicBg_Gfx[]             = INCBIN_U16("graphics/battle_frontier/factory_screen/mon_pic_bg.4bpp");
+static const u16 ALIGNED(2) sMonPicBg_Gfx[]             = INCBIN_U16("graphics/battle_frontier/factory_screen/mon_pic_bg.4bpp");
 static const u16 sMonPicBg_Pal[]             = INCBIN_U16("graphics/battle_frontier/factory_screen/mon_pic_bg.gbapal");
 
 static const struct SpriteSheet sSelect_SpriteSheets[] =
@@ -1034,7 +1034,7 @@ static const struct WindowTemplate sSwap_WindowTemplates[] =
     DUMMY_WIN_TEMPLATE,
 };
 
-static const u16 sSwapText_Pal[] = INCBIN_U16("graphics/battle_frontier/factory_screen/text.gbapal"); // Identical to sSelectText_Pal
+static const ALIGNED(2) u16 sSwapText_Pal[] = INCBIN_U16("graphics/battle_frontier/factory_screen/text.gbapal"); // Identical to sSelectText_Pal
 static const u8 sSwapMenuOptionsTextColors[] = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_TRANSPARENT};
 static const u8 sSwapSpeciesNameTextColors[] = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_RED, TEXT_COLOR_TRANSPARENT};
 
@@ -1180,19 +1180,6 @@ static void CB2_InitSelectScreen(void)
         gMain.state++;
         break;
     case 2:
-        ResetPaletteFade();
-        ResetSpriteData();
-        ResetTasks();
-        FreeAllSpritePalettes();
-        CpuCopy16(gFrontierFactoryMenu_Gfx, sSelectMenuTilesetBuffer, sizeof(gFrontierFactoryMenu_Gfx));
-        CpuCopy16(sMonPicBg_Gfx, sSelectMonPicBgTilesetBuffer, sizeof(sMonPicBg_Gfx));
-        LoadBgTiles(1, sSelectMenuTilesetBuffer, sizeof(gFrontierFactoryMenu_Gfx), 0);
-        LoadBgTiles(3, sSelectMonPicBgTilesetBuffer, sizeof(sMonPicBg_Gfx), 0);
-        CpuCopy16(gFrontierFactoryMenu_Tilemap, sSelectMenuTilemapBuffer, BG_SCREEN_SIZE);
-        LoadBgTilemap(1, sSelectMenuTilemapBuffer, BG_SCREEN_SIZE, 0);
-        LoadPalette(gFrontierFactoryMenu_Pal, 0, 2 * PLTT_SIZE_4BPP);
-        LoadPalette(sSelectText_Pal, BG_PLTT_ID(PALNUM_TEXT), PLTT_SIZEOF(4));
-        LoadPalette(sSelectText_Pal, BG_PLTT_ID(PALNUM_FADE_TEXT), PLTT_SIZEOF(5));
 #ifdef UBFIX
         if (sFactorySelectScreen && sFactorySelectScreen->fromSummaryScreen)
 #else
@@ -3241,21 +3228,6 @@ static void CB2_InitSwapScreen(void)
         gMain.state++;
         break;
     case 2:
-        ResetPaletteFade();
-        ResetSpriteData();
-        ResetTasks();
-        FreeAllSpritePalettes();
-        ResetAllPicSprites();
-        CpuCopy16(gFrontierFactoryMenu_Gfx, sSwapMenuTilesetBuffer, sizeof(gFrontierFactoryMenu_Gfx));
-        CpuCopy16(sMonPicBg_Gfx, sSwapMonPicBgTilesetBuffer, sizeof(sMonPicBg_Gfx));
-        LoadBgTiles(1, sSwapMenuTilesetBuffer, sizeof(gFrontierFactoryMenu_Gfx), 0);
-        LoadBgTiles(3, sSwapMonPicBgTilesetBuffer, sizeof(sMonPicBg_Gfx), 0);
-        CpuCopy16(gFrontierFactoryMenu_Tilemap, sSwapMenuTilemapBuffer, BG_SCREEN_SIZE);
-        LoadBgTilemap(1, sSwapMenuTilemapBuffer, BG_SCREEN_SIZE, 0);
-        LoadPalette(gFrontierFactoryMenu_Pal, 0, 2 * PLTT_SIZE_4BPP);
-        LoadPalette(sSwapText_Pal, BG_PLTT_ID(PALNUM_TEXT), sizeof(sSwapText_Pal));
-        LoadPalette(sSwapText_Pal, BG_PLTT_ID(PALNUM_FADE_TEXT), sizeof(sSwapText_Pal));
-        LoadPalette(sMonPicBg_Pal, BG_PLTT_ID(2), PLTT_SIZEOF(2));
         gMain.state++;
         break;
     case 3:
@@ -3801,62 +3773,13 @@ static void Swap_PrintOneActionString(u8 which)
 // For printing the species name once its selected. Keep the current fade but don't keep fading in and out
 static void Swap_PrintMonSpeciesAtFade(void)
 {
-    u16 species;
-    u8 x;
-    u16 pal[5];
 
-    CpuCopy16(sSwapText_Pal, pal, 8);
-    if (!sFactorySwapScreen->fromSummaryScreen)
-        pal[4] = gPlttBufferFaded[BG_PLTT_ID(PALNUM_FADE_TEXT) + 4];
-    else
-        pal[4] = sFactorySwapScreen->speciesNameColorBackup;
-    LoadPalette(pal, BG_PLTT_ID(PALNUM_TEXT), sizeof(sSwapText_Pal));
-
-    PutWindowTilemap(SWAP_WIN_SPECIES_AT_FADE);
-    FillWindowPixelBuffer(SWAP_WIN_SPECIES_AT_FADE, PIXEL_FILL(0));
-    if (sFactorySwapScreen->cursorPos >= FRONTIER_PARTY_SIZE)
-    {
-        CopyWindowToVram(SWAP_WIN_SPECIES_AT_FADE, COPYWIN_FULL);
-    }
-    else
-    {
-        u8 monId = sFactorySwapScreen->cursorPos;
-        if (!sFactorySwapScreen->inEnemyScreen)
-            species = GetMonData(&gPlayerParty[monId], MON_DATA_SPECIES, NULL);
-        else
-            species = GetMonData(&gEnemyParty[monId], MON_DATA_SPECIES, NULL);
-        StringCopy(gStringVar4, GetSpeciesName(species));
-        x = GetStringRightAlignXOffset(FONT_NORMAL, gStringVar4, 86);
-        AddTextPrinterParameterized3(SWAP_WIN_SPECIES_AT_FADE, FONT_NORMAL, x, 1, sSwapSpeciesNameTextColors, 0, gStringVar4);
-        CopyWindowToVram(SWAP_WIN_SPECIES_AT_FADE, COPYWIN_FULL);
-    }
 }
 
 // Reprints the species name over the faded one after a transition
 static void Swap_PrintMonSpeciesForTransition(void)
 {
-    u16 species;
-    u8 x;
 
-    LoadPalette(sSwapText_Pal, BG_PLTT_ID(PALNUM_FADE_TEXT), sizeof(sSwapText_Pal));
-    CpuCopy16(&gPlttBufferUnfaded[BG_PLTT_ID(PALNUM_TEXT)], &gPlttBufferFaded[BG_PLTT_ID(PALNUM_FADE_TEXT)], PLTT_SIZEOF(5));
-
-    if (sFactorySwapScreen->cursorPos >= FRONTIER_PARTY_SIZE)
-    {
-        CopyWindowToVram(SWAP_WIN_SPECIES, COPYWIN_GFX);
-    }
-    else
-    {
-        u8 monId = sFactorySwapScreen->cursorPos;
-        if (!sFactorySwapScreen->inEnemyScreen)
-            species = GetMonData(&gPlayerParty[monId], MON_DATA_SPECIES, NULL);
-        else
-            species = GetMonData(&gEnemyParty[monId], MON_DATA_SPECIES, NULL);
-        StringCopy(gStringVar4, GetSpeciesName(species));
-        x = GetStringRightAlignXOffset(FONT_NORMAL, gStringVar4, 86);
-        AddTextPrinterParameterized3(SWAP_WIN_SPECIES, FONT_NORMAL, x, 1, sSwapSpeciesNameTextColors, 0, gStringVar4);
-        CopyWindowToVram(SWAP_WIN_SPECIES, COPYWIN_FULL);
-    }
 }
 
 static void Swap_PrintMonCategory(void)
