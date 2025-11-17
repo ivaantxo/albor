@@ -12,7 +12,6 @@ enum {
     FONT_NORMAL,
     FONT_SHORT,
     FONT_BIG,
-    FONT_BRAILLE,
     FONT_NARROW,
     FONT_SMALL_NARROW, // Very similar to FONT_SMALL, some glyphs are narrower
     FONT_BOLD, // JP glyph set only
@@ -29,7 +28,7 @@ enum {
     RENDER_UPDATE,
 };
 
-// Text printer states read by RenderText / FontFunc_Braille
+// Text printer states read by RenderText
 enum {
     RENDER_STATE_HANDLE_CHAR,
     RENDER_STATE_WAIT,
@@ -162,10 +161,6 @@ u8 GetKeypadIconHeight(u8 keypadIconId);
 void SetDefaultFontsPointer(void);
 u8 GetFontAttribute(u8 fontId, u8 attributeId);
 u8 GetMenuCursorDimensionByFont(u8 fontId, u8 whichDimension);
-
-// braille.c
-u16 FontFunc_Braille(struct TextPrinter *textPrinter);
-u32 GetGlyphWidth_Braille(u16 glyphId, bool32 isJapanese);
 
 u32 GetFontIdToFit(const u8 *string, u32 widestFontId, u32 letterSpacing, u32 widthPx);
 u8 *PrependFontIdToFit(u8 *start, u8 *end, u32 fontId, u32 width);

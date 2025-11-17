@@ -57,7 +57,6 @@
 #define FLDEFF_SECRET_POWER_SHRUB        52
 #define FLDEFF_CUT_GRASS                 53
 #define FLDEFF_FIELD_MOVE_SHOW_MON_INIT  54
-#define FLDEFF_USE_TOMB_PUZZLE_EFFECT    55
 #define FLDEFF_PCTURN_ON                 56
 #define FLDEFF_HALL_OF_FAME_RECORD       57
 #define FLDEFF_USE_TELEPORT              58

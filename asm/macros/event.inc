@@ -913,13 +913,6 @@
 	.byte \winnerId
 	.endm
 
-	@ Displays the given string as braille text in a standard message box. The string should use
-	@ the .braille directive to convert text to braille.
-	.macro braillemessage text:req
-	.byte SCR_CMD_braillemessage
-	.4byte \text
-	.endm
-
 	@ Gives the player a Pokémon of the specified species and level, and allows to customize extra parameters.
 	@ VAR_RESULT will be set to MON_GIVEN_TO_PARTY, MON_GIVEN_TO_PC, or MON_CANT_GIVE depending on the outcome.
 	.macro givemon species:req, level:req, item, ball, nature, abilityNum, gender, hpEv, atkEv, defEv, speedEv, spAtkEv, spDefEv, hpIv, atkIv, defIv, speedIv, spAtkIv, spDefIv, move1, move2, move3, move4, isShiny
@@ -1583,11 +1576,6 @@
 	.byte SCR_CMD_lockfortrainer
 	.endm
 
-	@ Destroys the window created by braillemessage.
-	.macro closebraillemessage
-	.byte SCR_CMD_closebraillemessage
-	.endm
-
 	@ Prints and draws the message all at once rather than character by character.
 	@ Does not wait for player input to continue.
 	.macro messageinstant text:req
@@ -1877,13 +1865,6 @@
 	setfieldeffectargument 1, \y
 	setfieldeffectargument 2, \priority
 	dofieldeffect FLDEFF_SPARKLE
-	.endm
-
-	@ Prints a braille message, waits for an A or B press, then closes the message.
-	.macro braillemsgbox text:req
-	braillemessage \text
-	waitbuttonpress
-	closebraillemessage
 	.endm
 
 	.macro setdynamicaifunc func:req

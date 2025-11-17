@@ -61,14 +61,12 @@ static EWRAM_DATA u16 sMovingNpcMapGroup = 0;
 static EWRAM_DATA u16 sMovingNpcMapNum = 0;
 static EWRAM_DATA u16 sFieldEffectScriptId = 0;
 
-static u8 sBrailleWindowId;
 static bool8 sIsScriptedWildDouble;
 
 extern const SpecialFunc gSpecials[];
 extern const u8 *gStdScripts[];
 extern const u8 *gStdScripts_End[];
 
-static void CloseBrailleWindow(void);
 static void DynamicMultichoiceSortList(struct ListMenuItem *items, u32 count);
 
 static const u8 sScriptConditionTable[6][3] =
@@ -1483,63 +1481,6 @@ bool8 ScrCmd_showcontestpainting(struct ScriptContext *ctx)
     return TRUE;
 }
 
-bool8 ScrCmd_braillemessage(struct ScriptContext *ctx)
-{
-    u8 *ptr = (u8 *)ScriptReadWord(ctx);
-    struct WindowTemplate winTemplate;
-    s32 i;
-    u8 width, height;
-    u8 xWindow, yWindow, xText, yText;
-    u8 temp;
-
-    StringExpandPlaceholders(gStringVar4, ptr);
-
-    width = GetStringWidth(FONT_BRAILLE, gStringVar4, -1) / 8u;
-
-    if (width > 28)
-        width = 28;
-
-    for (i = 0, height = 4; gStringVar4[i] != EOS;)
-    {
-        if (gStringVar4[i++] == CHAR_NEWLINE)
-            height += 3;
-    }
-
-    if (height > 18)
-        height = 18;
-
-    temp = width + 2;
-    xWindow = (30 - temp) / 2;
-
-    temp = height + 2;
-    yText = (20 - temp) / 2;
-
-    xText = xWindow;
-    xWindow += 1;
-
-    yWindow = yText;
-    yText += 2;
-
-    xText = (xWindow - xText - 1) * 8 + 3;
-    yText = (yText - yWindow - 1) * 8;
-
-    winTemplate = CreateWindowTemplate(0, xWindow, yWindow + 1, width, height, 0xF, 0x1);
-    sBrailleWindowId = AddWindow(&winTemplate);
-    LoadUserWindowBorderGfx(sBrailleWindowId, 0x214, BG_PLTT_ID(14));
-    DrawStdWindowFrame(sBrailleWindowId, FALSE);
-    PutWindowTilemap(sBrailleWindowId);
-    FillWindowPixelBuffer(sBrailleWindowId, PIXEL_FILL(1));
-    AddTextPrinterParameterized(sBrailleWindowId, FONT_BRAILLE, gStringVar4, xText, yText, TEXT_SKIP_DRAW, NULL);
-    CopyWindowToVram(sBrailleWindowId, COPYWIN_FULL);
-    return FALSE;
-}
-
-bool8 ScrCmd_closebraillemessage(struct ScriptContext *ctx)
-{
-    CloseBrailleWindow();
-    return FALSE;
-}
-
 bool8 ScrCmd_bufferspeciesname(struct ScriptContext *ctx)
 {
     u8 stringVarIndex = ScriptReadByte(ctx);
@@ -2183,12 +2124,6 @@ bool8 ScrCmd_setmonmetlocation(struct ScriptContext *ctx)
     if (partyIndex < PARTY_SIZE)
         SetMonData(&gPlayerParty[partyIndex], MON_DATA_MET_LOCATION, &location);
     return FALSE;
-}
-
-static void CloseBrailleWindow(void)
-{
-    ClearStdWindowAndFrame(sBrailleWindowId, TRUE);
-    RemoveWindow(sBrailleWindowId);
 }
 
 bool8 ScrCmd_buffertrainerclassname(struct ScriptContext *ctx)

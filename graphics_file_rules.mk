@@ -202,28 +202,6 @@ $(FONTGFXDIR)/small_narrower.latfont: $(FONTGFXDIR)/latin_small_narrower.png
 $(FONTGFXDIR)/short_narrow.latfont: $(FONTGFXDIR)/latin_short_narrow.png
 	$(GFX) $< $@
 
-$(FONTGFXDIR)/small.hwjpnfont: $(FONTGFXDIR)/japanese_small.png
-	$(GFX) $< $@
-
-$(FONTGFXDIR)/normal.hwjpnfont: $(FONTGFXDIR)/japanese_normal.png
-	$(GFX) $< $@
-
-$(FONTGFXDIR)/bold.hwjpnfont: $(FONTGFXDIR)/japanese_bold.png
-	$(GFX) $< $@
-
-$(FONTGFXDIR)/short.fwjpnfont: $(FONTGFXDIR)/japanese_short.png
-	$(GFX) $< $@
-
-$(FONTGFXDIR)/braille.fwjpnfont: $(FONTGFXDIR)/braille.png
-	$(GFX) $< $@
-
-$(FONTGFXDIR)/frlg_male.fwjpnfont: $(FONTGFXDIR)/japanese_frlg_male.png
-	$(GFX) $< $@
-
-$(FONTGFXDIR)/frlg_female.fwjpnfont: $(FONTGFXDIR)/japanese_frlg_female.png
-	$(GFX) $< $@
-
-
 ### Miscellaneous ###
 
 $(TITLESCREENGFXDIR)/pokemon_logo.gbapal: %.gbapal: %.pal

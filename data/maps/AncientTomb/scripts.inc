@@ -25,19 +25,9 @@ AncientTomb_OnLoad:
 	end
 
 AncientTomb_EventScript_HideRegiEntrance::
-	setmetatile 7, 19, METATILE_Cave_EntranceCover, TRUE
-	setmetatile 8, 19, METATILE_Cave_EntranceCover, TRUE
-	setmetatile 9, 19, METATILE_Cave_EntranceCover, TRUE
-	setmetatile 7, 20, METATILE_Cave_SealedChamberBraille_Mid, TRUE
-	setmetatile 8, 20, METATILE_Cave_SealedChamberBraille_Mid, TRUE
-	setmetatile 9, 20, METATILE_Cave_SealedChamberBraille_Mid, TRUE
 	return
 
 AncientTomb_EventScript_CaveEntranceMiddle::
-	lockall
-	goto_if_set FLAG_SYS_REGISTEEL_PUZZLE_COMPLETED, AncientTomb_EventScript_BigHoleInWall
-	braillemsgbox AncientTomb_Braille_ShineInTheMiddle
-	releaseall
 	end
 
 AncientTomb_EventScript_BigHoleInWall::
@@ -46,9 +36,6 @@ AncientTomb_EventScript_BigHoleInWall::
 	end
 
 AncientTomb_EventScript_CaveEntranceSide::
-	lockall
-	braillemsgbox AncientTomb_Braille_ShineInTheMiddle
-	releaseall
 	end
 
 AncientTomb_EventScript_Registeel::

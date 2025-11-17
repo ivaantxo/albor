@@ -16,12 +16,6 @@ DesertRuins_OnLoad:
 	end
 
 DesertRuins_EventScript_HideRegiEntrance::
-	setmetatile 7, 19, METATILE_Cave_EntranceCover, TRUE
-	setmetatile 8, 19, METATILE_Cave_EntranceCover, TRUE
-	setmetatile 9, 19, METATILE_Cave_EntranceCover, TRUE
-	setmetatile 7, 20, METATILE_Cave_SealedChamberBraille_Mid, TRUE
-	setmetatile 8, 20, METATILE_Cave_SealedChamberBraille_Mid, TRUE
-	setmetatile 9, 20, METATILE_Cave_SealedChamberBraille_Mid, TRUE
 	return
 
 DesertRuins_OnTransition:
@@ -34,10 +28,6 @@ DesertRuins_EventScript_ShowRegirock::
 	return
 
 DesertRuins_EventScript_CaveEntranceMiddle::
-	lockall
-	goto_if_set FLAG_SYS_REGIROCK_PUZZLE_COMPLETED, DesertRuins_EventScript_BigHoleInWall
-	braillemsgbox DesertRuins_Braille_UseRockSmash
-	releaseall
 	end
 
 DesertRuins_EventScript_BigHoleInWall::
@@ -46,9 +36,6 @@ DesertRuins_EventScript_BigHoleInWall::
 	end
 
 DesertRuins_EventScript_CaveEntranceSide::
-	lockall
-	braillemsgbox DesertRuins_Braille_UseRockSmash
-	releaseall
 	end
 
 DesertRuins_EventScript_Regirock::

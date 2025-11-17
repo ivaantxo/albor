@@ -93,7 +93,6 @@ static const struct GlyphWidthFunc sGlyphWidthFuncs[] =
     {FONT_NORMAL,         GetGlyphWidth_Normal},
     {FONT_SHORT,          GetGlyphWidth_Short},
     {FONT_BIG,            GetGlyphWidth_Big},
-    {FONT_BRAILLE,        GetGlyphWidth_Braille},
     {FONT_NARROW,         GetGlyphWidth_Narrow},
     {FONT_SMALL_NARROW,   GetGlyphWidth_SmallNarrow},
     {FONT_NARROWER,       GetGlyphWidth_Narrower},
@@ -167,16 +166,6 @@ static const struct FontInfo sFontInfos[] =
         .bgColor = 1,
         .shadowColor = 3,
     },
-    [FONT_BRAILLE] = {
-        .fontFunction = FontFunc_Braille,
-        .maxLetterWidth = 8,
-        .maxLetterHeight = 16,
-        .letterSpacing = 0,
-        .lineSpacing = 8,
-        .fgColor = 2,
-        .bgColor = 1,
-        .shadowColor = 3,
-    },
     [FONT_NARROW] = {
         .fontFunction = FontFunc_Narrow,
         .maxLetterWidth = 5,
@@ -245,7 +234,6 @@ static const u8 sMenuCursorDimensions[][2] =
     [FONT_NORMAL]         = {8, 15},
     [FONT_SHORT]          = {8, 14},
     [FONT_BIG]            = {8, 15},
-    [FONT_BRAILLE]        = {8, 16},
     [FONT_NARROW]         = {8, 15},
     [FONT_SMALL_NARROW]   = {8,  8},
     [FONT_BOLD]           = {},
@@ -1115,9 +1103,6 @@ static u16 RenderText(struct TextPrinter *textPrinter)
             case EXT_CTRL_CODE_MIN_LETTER_SPACING:
                 textPrinter->minLetterSpacing = *textPrinter->printerTemplate.currentChar++;
                 return RENDER_REPEAT;
-            case EXT_CTRL_CODE_JPN:
-                textPrinter->japanese = TRUE;
-                return RENDER_REPEAT;
             case EXT_CTRL_CODE_ENG:
                 textPrinter->japanese = FALSE;
                 return RENDER_REPEAT;
@@ -1172,8 +1157,6 @@ static u16 RenderText(struct TextPrinter *textPrinter)
             break;
         case FONT_SHORT_NARROW:
             DecompressGlyph_ShortNarrow(currChar, textPrinter->japanese);
-            break;
-        case FONT_BRAILLE:
             break;
         }
 
@@ -1390,9 +1373,6 @@ s32 GetStringWidth(u8 fontId, const u8 *str, s16 letterSpacing)
             case EXT_CTRL_CODE_MIN_LETTER_SPACING:
                 minGlyphWidth = *++str;
                 break;
-            case EXT_CTRL_CODE_JPN:
-                isJapanese = 1;
-                break;
             case EXT_CTRL_CODE_ENG:
                 isJapanese = 0;
                 break;
@@ -1546,7 +1526,6 @@ u8 RenderTextHandleBold(u8 *pixels, u8 fontId, u8 *str)
             case EXT_CTRL_CODE_PAUSE_UNTIL_PRESS:
             case EXT_CTRL_CODE_WAIT_SE:
             case EXT_CTRL_CODE_FILL_WINDOW:
-            case EXT_CTRL_CODE_JPN:
             case EXT_CTRL_CODE_ENG:
             default:
                 continue;
@@ -1925,7 +1904,6 @@ static const s8 sNarrowerFontIds[] =
     [FONT_SMALL] = FONT_SMALL_NARROW,
     [FONT_NORMAL] = FONT_NARROW,
     [FONT_SHORT] = FONT_SHORT_NARROW,
-    [FONT_BRAILLE] = -1,
     [FONT_NARROW] = FONT_NARROWER,
     [FONT_SMALL_NARROW] = FONT_SMALL_NARROWER,
     [FONT_BOLD] = -1,

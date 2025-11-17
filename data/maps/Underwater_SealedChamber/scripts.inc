@@ -16,9 +16,3 @@ Underwater_SealedChamber_EventScript_SurfaceSealedChamber::
 	setdivewarp MAP_SEALED_CHAMBER_OUTER_ROOM, 10, 19
 	end
 
-Underwater_SealedChamber_EventScript_Braille::
-	lockall
-	braillemsgbox Underwater_SealedChamber_Braille_GoUpHere
-	releaseall
-	end
-

@@ -359,10 +359,6 @@ EventScript_DigCommon:
 	dofieldeffect FLDEFF_USE_DIG
 	waitstate
 EventScript_DigSealedChamber:: @ fallthrough
-	setflag FLAG_SAFE_FOLLOWER_MOVEMENT
-	call_if_eq VAR_0x8004, TRUE, EventScript_FollowerFieldMove
-	callnative DoBrailleDigEffect
-	releaseall
 	end
 
 @ Use Dig from party menu

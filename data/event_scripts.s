@@ -1026,7 +1026,6 @@ EventScript_VsSeekerChargingDone::
 	.include "data/text/pokedex_rating.inc"
 	.include "data/text/lottery_corner.inc"
 	.include "data/text/event_ticket_1.inc"
-	.include "data/text/braille.inc"
 	.include "data/text/berries.inc"
 	.include "data/text/shoal_cave.inc"
 	.include "data/text/check_furniture.inc"

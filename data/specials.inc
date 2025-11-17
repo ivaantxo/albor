@@ -192,8 +192,6 @@ gSpecials::
 	def_special RemoveCameraObject
 	def_special GetPokeblockNameByMonNature
 	def_special GetSecretBaseNearbyMapName
-	def_special CheckRelicanthWailord
-	def_special ShouldDoBrailleRegirockEffectOld
 	def_special DoOrbEffect
 	def_special FadeOutOrbEffect
 	def_special WaitWeather
@@ -215,7 +213,6 @@ gSpecials::
 	def_special IsStarterInParty
 	def_special CopyCurSecretBaseOwnerName_StrVar1
 	def_special ScriptCheckFreePokemonStorageSpace
-	def_special DoSealedChamberShakingEffect_Long
 	def_special ShowDeptStoreElevatorFloorSelect
 	def_special InteractWithShieldOrTVDecoration
 	def_special IsPokerusInParty
@@ -225,7 +222,6 @@ gSpecials::
 	def_special BattleSetup_StartLegendaryBattle
 	def_special StartRegiBattle
 	def_special SetTrainerFacingDirection
-	def_special DoSealedChamberShakingEffect_Short
 	def_special FoundBlackGlasses
 	def_special StartDroughtWeatherBlend
 	def_special DoDiveWarp
@@ -311,7 +307,6 @@ gSpecials::
 	def_special GetAbnormalWeatherMapNameAndType
 	def_special GetMartEmployeeObjectEventId
 	def_special IsTrainerRegistered
-	def_special ShouldDoBrailleRegicePuzzle
 	def_special ScriptMenu_CreateLilycoveSSTidalMultichoice
 	def_special GetLilycoveSSTidalSelection
 	def_special SetMewAboveGrass
