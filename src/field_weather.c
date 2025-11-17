@@ -822,7 +822,7 @@ void UpdateSpritePaletteWithWeather(u8 spritePaletteIndex, bool8 allowFog)
             if (gWeatherPtr->colorMapIndex)
                 ApplyColorMap(paletteIndex, 1, gWeatherPtr->colorMapIndex);
             else
-                UpdateSpritePaletteWithTime(spritePaletteIndex);
+                ActualizaPaletaSpriteSegunHora(spritePaletteIndex);
         }
         else 
         { // In horizontal fog, only specific palettes should be fog-blended
@@ -832,13 +832,13 @@ void UpdateSpritePaletteWithWeather(u8 spritePaletteIndex, bool8 allowFog)
                 paletteIndex = PLTT_ID(paletteIndex);
                 // First blend with time
                 CpuFastCopy(gPlttBufferUnfaded + paletteIndex, gPlttBufferFaded + paletteIndex, PLTT_SIZE_4BPP);
-                UpdateSpritePaletteWithTime(spritePaletteIndex);
+                ActualizaPaletaSpriteSegunHora(spritePaletteIndex);
                 // Then blend faded->faded with fog coeff
                 BlendPalettesFine(1, gPlttBufferFaded + paletteIndex, gPlttBufferFaded + paletteIndex, i, RGB(28, 31, 28));
             } 
             else 
             { // Otherwise, just time-blend the palette
-                UpdateSpritePaletteWithTime(spritePaletteIndex);
+                ActualizaPaletaSpriteSegunHora(spritePaletteIndex);
             }
         }
         break;

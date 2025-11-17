@@ -1355,17 +1355,17 @@ void UpdatePalettesWithTime(u32 palettes)
     }
 }
 
-u8 UpdateSpritePaletteWithTime(u8 paletteNum) 
+u32 ActualizaPaletaSpriteSegunHora(u32 numeroPaleta) 
 {
     if (MapaTieneLuzNatural(gMapHeader.mapType)) 
     {
-        u16 offset;
-        if (GetSpritePaletteTagByPaletteNum(paletteNum) >> 15)
-            return paletteNum;
-        offset = (paletteNum + 16) << 4;
-        TimeMixPalettes(1, gPlttBufferUnfaded + offset, gPlttBufferFaded + offset, (struct ConfiguracionBlend *)&gBlendHoraDia[blendHoraActual.tiempoInicial], (struct ConfiguracionBlend *)&gBlendHoraDia[blendHoraActual.tiempoFinal], blendHoraActual.intensidad);
+        u32 posicionPaleta;
+        if (GetSpritePaletteTagByPaletteNum(numeroPaleta) >> 15)
+            return numeroPaleta;
+        posicionPaleta = (numeroPaleta + 16) << 4;
+        TimeMixPalettes(1, gPlttBufferUnfaded + posicionPaleta, gPlttBufferFaded + posicionPaleta, (struct ConfiguracionBlend *)&gBlendHoraDia[blendHoraActual.tiempoInicial], (struct ConfiguracionBlend *)&gBlendHoraDia[blendHoraActual.tiempoFinal], blendHoraActual.intensidad);
     }
-  return paletteNum;
+  return numeroPaleta;
 }
 
 void OverworldBasic(void)

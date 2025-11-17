@@ -67,8 +67,6 @@
 #define SAFE_DIV(a, b) ((a) / (b))
 #endif
 
-#define IS_POW_OF_TWO(n) (((n) & ((n)-1)) == 0)
-
 // The below macro does a%n, but (to match) will switch to a&(n-1) if n is a power of 2.
 // There are cases where GF does a&(n-1) where we would really like to have a%n, because
 // if n is changed to a value that isn't a power of 2 then a&(n-1) is unlikely to work as
@@ -128,31 +126,6 @@
 #define STATIC_ASSERT(expr, id) typedef char id[(expr) ? 1 : -1];
 
 #define FEATURE_FLAG_ASSERT(flag, id) STATIC_ASSERT(flag > TEMP_FLAGS_END || flag == 0, id)
-
-#ifndef NDEBUG
-static inline void CycleCountStart()
-{
-    REG_TM2CNT_H = 0;
-    REG_TM3CNT_H = 0;
-
-    REG_TM2CNT_L = 0;
-    REG_TM3CNT_L = 0;
-
-    // init timers (tim3 count up mode, tim2 every clock cycle)
-    REG_TM3CNT_H = TIMER_ENABLE | TIMER_COUNTUP;
-    REG_TM2CNT_H = TIMER_1CLK | TIMER_ENABLE;
-}
-
-static inline u32 CycleCountEnd()
-{
-    // stop timers
-    REG_TM2CNT_H = 0;
-    REG_TM3CNT_H = 0;
-
-    // return result
-    return REG_TM2CNT_L | (REG_TM3CNT_L << 16u);
-}
-#endif
 
 struct Coords8
 {
@@ -337,7 +310,7 @@ struct BattleFrontier
 #include "constants/items.h"
 #define ITEM_FLAGS_COUNT ((ITEMS_COUNT / 8) + ((ITEMS_COUNT % 8) ? 1 : 0))
 
-extern u8 UpdateSpritePaletteWithTime(u8);
+extern u32 ActualizaPaletaSpriteSegunHora(u32 numeroPaleta);
 
 struct SecretBaseParty
 {
