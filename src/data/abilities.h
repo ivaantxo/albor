@@ -358,7 +358,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 5,
     },
 
-    [ABILITY_THICK_FAT] =
+    [ABILITY_SEBO] =
     {
         .name = _("Sebo"),
         .description = COMPOUND_STRING("Resiste hielo y fuego."),
@@ -704,7 +704,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 4,
     },
 
-    [ABILITY_SOLAR_POWER] =
+    [ABILITY_PODER_SOLAR] =
     {
         .name = _("Poder solar"),
         .description = COMPOUND_STRING("+25% de potencia en sol."),

@@ -9105,7 +9105,7 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
         if (gDisableStructs[battlerAtk].slowStartTimer != 0)
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(0.5));
         break;
-    case ABILITY_SOLAR_POWER:
+    case ABILITY_PODER_SOLAR:
         if (IsBattlerWeatherAffected(battlerAtk, B_WEATHER_SUN))
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.25));
         break;
@@ -9174,12 +9174,12 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
     // target's abilities
     switch (defAbility)
     {
-    case ABILITY_THICK_FAT:
+    case ABILITY_SEBO:
         if (moveType == TIPO_FUEGO || moveType == TIPO_HIELO)
         {
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(0.5));
             if (damageCalcData->updateFlags)
-                RecordAbilityBattle(battlerDef, ABILITY_THICK_FAT);
+                RecordAbilityBattle(battlerDef, ABILITY_SEBO);
         }
         break;
     case ABILITY_ILLUMINATE:
