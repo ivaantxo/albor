@@ -7,7 +7,7 @@ CRY_BIN_DIR := $(CRY_SUBDIR)
 SOUND_BIN_DIR := sound
 
 SPECIAL_OUTDIRS := $(MID_ASM_DIR) $(CRY_BIN_DIR) 
-SPECIAL_OUTDIRS += $(SOUND_BIN_DIR) $(SOUND_BIN_DIR)/direct_sound_samples/phonemes $(SOUND_BIN_DIR)/direct_sound_samples/cries
+SPECIAL_OUTDIRS += $(SOUND_BIN_DIR) $(SOUND_BIN_DIR)/direct_sound_samples/cries
 $(shell mkdir -p $(SPECIAL_OUTDIRS) )
 
 # Assembly song compilation

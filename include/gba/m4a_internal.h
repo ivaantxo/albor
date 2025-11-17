@@ -363,8 +363,6 @@ struct Song
 extern const struct MusicPlayer gMPlayTable[];
 extern const struct Song gSongTable[];
 
-
-
 extern u8 gMPlayMemAccArea[];
 
 #define MAX_POKEMON_CRIES 2
@@ -396,11 +394,8 @@ extern const struct PokemonCrySong gPokemonCrySongTemplate;
 
 extern const struct ToneData voicegroup000;
 
-extern char gNumMusicPlayers[];
-extern char gMaxLines[];
-
-#define NUM_MUSIC_PLAYERS ((u16)gNumMusicPlayers)
-#define MAX_LINES ((u32)gMaxLines)
+#define NUM_MUSIC_PLAYERS 4
+#define MAX_LINES 0
 
 u32 umul3232H32(u32 multiplier, u32 multiplicand);
 void SoundMain(void);
