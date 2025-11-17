@@ -1394,8 +1394,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
             .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = B_UPDATED_MOVE_DATA >= GEN_4 ? MOVE_EFFECT_SP_DEF_MINUS_1 : MOVE_EFFECT_DEF_MINUS_1,
-            .chance = 10,
+            .moveEffect = MOVE_EFFECT_DEF_MINUS_1,
+            .chance = 100,
         }),
         .contestEffect = CONTEST_EFFECT_BADLY_STARTLE_FRONT_MON,
         .contestCategory = CONTEST_CATEGORY_SMART,
@@ -1638,7 +1638,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Forcefully sprays bubbles\n"
             "that may lower Speed."),
         .effect = EFFECT_HIT,
-        .power = 65,
+        .power = 50,
         .type = TIPO_AGUA,
         .accuracy = 100,
         .pp = 20,
@@ -1647,7 +1647,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_ESPECIAL,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
-            .chance = 10,
+            .chance = 100,
         }),
         .contestEffect = CONTEST_EFFECT_BADLY_STARTLE_PREV_MONS,
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
@@ -1663,7 +1663,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Fires a rainbow-colored\n"
             "beam that may lower Attack."),
         .effect = EFFECT_HIT,
-        .power = 65,
+        .power = 70,
         .type = TIPO_HIELO,
         .accuracy = 100,
         .pp = 20,
@@ -1672,7 +1672,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_ESPECIAL,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_ATK_MINUS_1,
-            .chance = 10,
+            .chance = 30,
         }),
         .contestEffect = CONTEST_EFFECT_STARTLE_MONS_SAME_TYPE_APPEAL,
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
@@ -3391,7 +3391,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_SpikeCannon,
     },
 
-    [MOVE_CONSTRICT] =
+    [MOVE_CONSTRICT] = //eliminar?? Quizás Constricción Enrollar o algo así
     {
         .name = COMPOUND_STRING("Constricción"),
         .description = COMPOUND_STRING(
@@ -3739,7 +3739,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "An attack using bubbles.\n"
             "May lower the foe's Speed."),
         .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 40 : 20,
+        .power = 40,
         .type = TIPO_AGUA,
         .accuracy = 100,
         .pp = 30,
@@ -3748,7 +3748,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_ESPECIAL,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
-            .chance = 10,
+            .chance = 100,
         }),
         .contestEffect = CONTEST_EFFECT_STARTLE_PREV_MONS,
         .contestCategory = CONTEST_CATEGORY_CUTE,
@@ -4836,7 +4836,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Hurls mud in the foe's face\n"
             "to reduce its accuracy."),
         .effect = EFFECT_HIT,
-        .power = 20,
+        .power = 50,
         .type = TIPO_TIERRA,
         .accuracy = 100,
         .pp = 10,
@@ -4861,9 +4861,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Fires a lump of ink to\n"
             "damage and cut accuracy."),
         .effect = EFFECT_HIT,
-        .power = 65,
+        .power = 60,
         .type = TIPO_AGUA,
-        .accuracy = 85,
+        .accuracy = 100,
         .pp = 10,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -5018,9 +5018,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "A chilling attack that\n"
             "lowers the foe's Speed."),
         .effect = EFFECT_HIT,
-        .power = 55,
+        .power = 40,
         .type = TIPO_HIELO,
-        .accuracy = 95,
+        .accuracy = 100,
         .pp = 15,
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
@@ -5887,9 +5887,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Attacks with a rock-hard\n"
             "tail. May lower Defense."),
         .effect = EFFECT_HIT,
-        .power = 100,
+        .power = 70,
         .type = TIPO_ACERO,
-        .accuracy = 75,
+        .accuracy = 100,
         .pp = 15,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -6177,11 +6177,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .makesContact = TRUE,
         .bitingMove = TRUE,
             .additionalEffects = ADDITIONAL_EFFECTS({
-        #if B_UPDATED_MOVE_DATA >= GEN_4
             .moveEffect = MOVE_EFFECT_DEF_MINUS_1,
-        #else
-            .moveEffect = MOVE_EFFECT_SP_DEF_MINUS_1,
-        #endif
             .chance = 20,
         }),
         .contestEffect = CONTEST_EFFECT_BADLY_STARTLE_FRONT_MON,
@@ -6353,7 +6349,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "A rock-crushing attack\n"
             "that may lower Defense."),
         .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_4 ? 40 : 20,
+        .power = 60,
         .type = TIPO_LUCHA,
         .accuracy = 100,
         .pp = 15,
@@ -7476,7 +7472,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Attacks with a burst of\n"
             "light. May lower Sp. Def."),
         .effect = EFFECT_HIT,
-        .power = (B_UPDATED_MOVE_DATA >= GEN_9) ? 95 : 70,
+        .power = 60,
         .type = TIPO_PSIQUICO,
         .accuracy = 100,
         .pp = 5,
@@ -7501,7 +7497,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Attacks with a flurry of\n"
             "down. May lower Sp. Atk."),
         .effect = EFFECT_HIT,
-        .power = (B_UPDATED_MOVE_DATA >= GEN_9) ? 95 : 70,
+        .power = 60,
         .type = TIPO_PSIQUICO,
         .accuracy = 100,
         .pp = 5,
@@ -7755,9 +7751,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Tears at the foe with sharp\n"
             "claws. May lower Defense."),
         .effect = EFFECT_HIT,
-        .power = 75,
+        .power = 60,
         .type = TIPO_NORMAL,
-        .accuracy = 95,
+        .accuracy = 100,
         .pp = 10,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -8032,11 +8028,11 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Stops the foe from moving\n"
             "with rocks and cuts Speed."),
         .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 60 : 50,
+        .power = 40,
         .type = TIPO_ROCA,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_6 ? 95 : 80,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_6 ? 15 : 10,
-        .target = MOVE_TARGET_SELECTED,
+        .accuracy = 100,
+        .pp = 15,
+        .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .additionalEffects = ADDITIONAL_EFFECTS({
@@ -8346,9 +8342,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Attacks with muddy water.\n"
             "May lower accuracy."),
         .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 90 : 95,
+        .power = 70,
         .type = TIPO_AGUA,
-        .accuracy = 85,
+        .accuracy = 100,
         .pp = 10,
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
@@ -8617,9 +8613,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Hurls mud at the foe and\n"
             "reduces Speed."),
         .effect = EFFECT_HIT,
-        .power = 55,
+        .power = 50,
         .type = TIPO_TIERRA,
-        .accuracy = 95,
+        .accuracy = 100,
         .pp = 15,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -9069,9 +9065,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "A swinging fist attack\n"
             "that also lowers Speed."),
         .effect = EFFECT_HIT,
-        .power = 100,
+        .power = 110,
         .type = TIPO_LUCHA,
-        .accuracy = 90,
+        .accuracy = 100,
         .pp = 10,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -10176,7 +10172,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .type = TIPO_BICHO,
         .accuracy = 100,
         .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
+        .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .soundMove = TRUE,
@@ -10338,7 +10334,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Draws power from nature to\n"
             "attack. May lower Sp. Def."),
         .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 90 : 80,
+        .power = 90,
         .type = TIPO_PLANTA,
         .accuracy = 100,
         .pp = 10,
@@ -10693,9 +10689,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Throws a blob of mud to\n"
             "damage and cut accuracy."),
         .effect = EFFECT_HIT,
-        .power = 65,
+        .power = 70,
         .type = TIPO_TIERRA,
-        .accuracy = 85,
+        .accuracy = 100,
         .pp = 10,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -10769,9 +10765,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Emits a flash of energy to\n"
             "damage and cut accuracy."),
         .effect = EFFECT_HIT,
-        .power = 65,
+        .power = 70,
         .type = TIPO_ACERO,
-        .accuracy = 85,
+        .accuracy = 100,
         .pp = 10,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -10805,7 +10801,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_ESPECIAL,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SP_DEF_MINUS_1,
-            .chance = 10,
+            .chance = 20,
         }),
         .contestEffect = CONTEST_EFFECT_BADLY_STARTLE_PREV_MONS,
         .contestCategory = CONTEST_CATEGORY_SMART,
@@ -12250,7 +12246,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Attacks the foe's legs\n"
             "lowering its Speed."),
         .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 65 : 60,
+        .power = 50,
         .type = TIPO_LUCHA,
         .accuracy = 100,
         .pp = 20,
@@ -12984,7 +12980,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Resisting, the user attacks\n"
             "the foe. Lowers Sp. Atk."),
         .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 50 : 30,
+        .power = 40,
         .type = TIPO_BICHO,
         .accuracy = 100,
         .pp = 20,
@@ -13009,7 +13005,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Stomps down on the ground.\n"
             "Lowers Speed."),
         .effect = EFFECT_EARTHQUAKE,
-        .power = 60,
+        .power = 50,
         .type = TIPO_TIERRA,
         .accuracy = 100,
         .pp = 20,
@@ -13103,9 +13099,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Snares the foe with an\n"
             "electric net. Lowers Speed."),
         .effect = EFFECT_HIT,
-        .power = 55,
+        .power = 40,
         .type = TIPO_ELECTRICO,
-        .accuracy = 95,
+        .accuracy = 100,
         .pp = 15,
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
@@ -13267,9 +13263,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Tears at the foe with sharp\n"
             "shells. May lower Defense."),
         .effect = EFFECT_HIT,
-        .power = 75,
+        .power = 60,
         .type = TIPO_AGUA,
-        .accuracy = 95,
+        .accuracy = 100,
         .pp = 10,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -13315,9 +13311,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Circles the foe with leaves\n"
             "to damage and cut accuracy."),
         .effect = EFFECT_HIT,
-        .power = 65,
+        .power = 60,
         .type = TIPO_PLANTA,
-        .accuracy = 90,
+        .accuracy = 100,
         .pp = 10,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -13393,16 +13389,16 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Looses a pitch-black shock\n"
             "wave. May lower accuracy."),
         .effect = EFFECT_HIT,
-        .power = 85,
+        .power = 50,
         .type = TIPO_SINIESTRO,
-        .accuracy = 95,
+        .accuracy = 100,
         .pp = 10,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_ACC_MINUS_1,
-            .chance = 40,
+            .chance = 50,
         }),
         .contestEffect = CONTEST_EFFECT_STARTLE_MON_WITH_JUDGES_ATTENTION,
         .contestCategory = CONTEST_CATEGORY_COOL,
@@ -13631,19 +13627,19 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
     {
         .name = COMPOUND_STRING("Glaciación"),
         .description = COMPOUND_STRING(
-            "Blows very cold air at the\n"
+            "Congela rivales 50%\n"
             "foe. It lowers their Speed."),
         .effect = EFFECT_HIT,
-        .power = 65,
+        .power = 60,
         .type = TIPO_HIELO,
-        .accuracy = 95,
+        .accuracy = 100,
         .pp = 10,
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
-            .chance = 100,
+            .moveEffect = MOVE_EFFECT_FREEZE_OR_FROSTBITE,
+            .chance = 50,
         }),
         .contestEffect = CONTEST_EFFECT_STARTLE_PREV_MONS,
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
@@ -13795,7 +13791,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Yells and rants at the foe\n"
             "lowering its Sp. Atk."),
         .effect = EFFECT_HIT,
-        .power = 50,
+        .power = 40,
         .type = TIPO_SINIESTRO,
         .accuracy = 100,
         .pp = 15,
@@ -14495,7 +14491,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .effect = EFFECT_HIT,
         .power = 90,
         .type = TIPO_HADA,
-        .accuracy = 90,
+        .accuracy = 100,
         .pp = 10,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -14541,7 +14537,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Attacks with the power of\n"
             "the moon. May lower Sp. Atk."),
         .effect = EFFECT_HIT,
-        .power = 95,
+        .power = 90,
         .type = TIPO_HADA,
         .accuracy = 100,
         .pp = 15,
@@ -14550,7 +14546,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_ESPECIAL,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SP_ATK_MINUS_1,
-            .chance = 30,
+            .chance = 10,
         }),
         .contestEffect = CONTEST_EFFECT_HIGHLY_APPEALING,
         .contestCategory = CONTEST_CATEGORY_CUTE,
@@ -14792,7 +14788,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Breathes a special, hot\n"
             "fire. Lowers Sp. Atk."),
         .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_7 ? 75 : 65,
+        .power = 50,
         .type = TIPO_FUEGO,
         .accuracy = 100,
         .pp = 10,
@@ -15423,7 +15419,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_DragonAscent,
     },
 
-    [MOVE_HYPERSPACE_FURY] =
+    [MOVE_HYPERSPACE_FURY] = //eliminar?
     {
         .name = COMPOUND_STRING("Hyperspace Fury"),
         .description = sHyperspaceHoleDescription,
@@ -15610,9 +15606,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Swings the fist to strike.\n"
             "Lowers the user's Speed."),
         .effect = EFFECT_HIT,
-        .power = 100,
+        .power = 110,
         .type = TIPO_HIELO,
-        .accuracy = 90,
+        .accuracy = 100,
         .pp = 10,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -15955,7 +15951,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Lunges at the foe to lower\n"
             "its Attack stat."),
         .effect = EFFECT_HIT,
-        .power = 80,
+        .power = 50,
         .type = TIPO_BICHO,
         .accuracy = 100,
         .pp = 15,
@@ -15981,7 +15977,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Whips the foe with fire\n"
             "lowering its Defense."),
         .effect = EFFECT_HIT,
-        .power = 80,
+        .power = 50,
         .type = TIPO_FUEGO,
         .accuracy = 100,
         .pp = 15,
@@ -16174,7 +16170,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "An intense kick from the\n"
             "tropics. Lowers Attack."),
         .effect = EFFECT_HIT,
-        .power = 70,
+        .power = 50,
         .type = TIPO_PLANTA,
         .accuracy = 100,
         .pp = 15,
@@ -16454,7 +16450,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Strikes with a haunted\n"
             "bone. Might drop Defense."),
         .effect = EFFECT_HIT,
-        .power = 85,
+        .power = 80,
         .type = TIPO_FANTASMA,
         .accuracy = 100,
         .pp = 10,
@@ -16501,7 +16497,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Slams the foe with water.\n"
             "Can lower Defense."),
         .effect = EFFECT_HIT,
-        .power = 85,
+        .power = 80,
         .type = TIPO_AGUA,
         .accuracy = 100,
         .pp = 10,
@@ -17460,7 +17456,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Plays a drum to attack.\n"
             "The foe's Speed is lowered."),
         .effect = EFFECT_HIT,
-        .power = 80,
+        .power = 50,
         .type = TIPO_PLANTA,
         .accuracy = 100,
         .pp = 10,
@@ -17621,7 +17617,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Swings its tail to attack.\n"
             "Lowers the Atk of those hit."),
         .effect = EFFECT_HIT,
-        .power = 60,
+        .power = 40,
         .type = TIPO_DRAGON,
         .accuracy = 100,
         .pp = 15,
@@ -17689,7 +17685,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_Overdrive,
     },
 
-    [MOVE_APPLE_ACID] =
+    [MOVE_APPLE_ACID] = //eliminar
     {
         .name = COMPOUND_STRING("Apple Acid"),
         .description = COMPOUND_STRING(
@@ -17715,7 +17711,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_AppleAcid,
     },
 
-    [MOVE_GRAV_APPLE] =
+    [MOVE_GRAV_APPLE] = //eliminar
     {
         .name = COMPOUND_STRING("Grav Apple"),
         .description = COMPOUND_STRING(
@@ -17748,7 +17744,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Attacks with spirit-breaking\n"
             "force. Lowers Sp. Atk."),
         .effect = EFFECT_HIT,
-        .power = 75,
+        .power = 50,
         .type = TIPO_HADA,
         .accuracy = 100,
         .pp = 15,
@@ -18158,9 +18154,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "User skitters behind foe to\n"
             "attack. Lowers foe's Sp. Atk."),
         .effect = EFFECT_HIT,
-        .power = 70,
+        .power = 50,
         .type = TIPO_BICHO,
-        .accuracy = 90,
+        .accuracy = 100,
         .pp = 10,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -18574,7 +18570,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Uses a lightning-like kick\n"
             "to hit. Lowers foe's Defense."),
         .effect = EFFECT_HIT,
-        .power = 90,
+        .power = 50,
         .type = TIPO_LUCHA,
         .accuracy = 100,
         .pp = 10,
@@ -18757,9 +18753,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "Wraps a foe in fierce winds.\n"
             "Varies with the user's form."),
         .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_9 ? 100 : 95,
+        .power = 70,
         .type = TIPO_HADA,
-        .accuracy = 80,
+        .accuracy = 100,
         .pp = 5,
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
@@ -18972,7 +18968,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             "A spine-chilling resentment.\n"
             "Lowers the foe's Attack."),
         .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_9 ? 75 : 60,
+        .power = 50,
         .type = TIPO_FANTASMA,
         .accuracy = 100,
         .pp = 15,
@@ -19008,7 +19004,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
 
     [MOVE_TRIPLE_ARROWS] =
     {
-        .name = COMPOUND_STRING("Triple Arrows"),
+        .name = COMPOUND_STRING("Triple Arrows"), // Esto está demasiado roto
         .description = COMPOUND_STRING(
             "High critical hit ratio.\n"
             "May lower Defense or flinch."),
@@ -19077,16 +19073,16 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_CeaselessEdge,
     },
 
-    [MOVE_BLEAKWIND_STORM] =
+    [MOVE_BLEAKWIND_STORM] = //ajustar
     {
         .name = COMPOUND_STRING("Bleakwind Storm"),
         .description = COMPOUND_STRING(
             "Hits with brutal, cold winds.\n"
             "May lower the foe's Speed."),
         .effect = EFFECT_RAIN_ALWAYS_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_9 ? 100 : 95,
+        .power = 90,
         .type = TIPO_VOLADOR,
-        .accuracy = 80,
+        .accuracy = 85,
         .pp = B_UPDATED_MOVE_DATA >= GEN_9 ? 10 : 5,
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
@@ -19657,7 +19653,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_RagingBull,
     },
 
-    [MOVE_MAKE_IT_RAIN] =
+    [MOVE_MAKE_IT_RAIN] = //eliminar
     {
         .name = COMPOUND_STRING("Make It Rain"),
         .description = COMPOUND_STRING(
@@ -19824,7 +19820,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
 
     [MOVE_POUNCE] =
     {
-        .name = COMPOUND_STRING("Pounce"),
+        .name = COMPOUND_STRING("Brinco"),
         .description = COMPOUND_STRING(
             "The user pounces on the foe,\n"
             "lowering its Speed."),
