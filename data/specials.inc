@@ -57,25 +57,6 @@ gSpecials::
 	def_special DoWateringBerryTreeAnim
 	def_special ShowEasyChatScreen
 	def_special ShowEasyChatProfile
-	def_special Script_GetCurrentMauvilleMan
-	def_special HasHipsterTaughtWord
-	def_special SetHipsterTaughtWord
-	def_special HipsterTryTeachWord
-	def_special SetMauvilleOldManObjEventGfx
-	def_special GenerateGiddyLine
-	def_special GiddyShouldTellAnotherTale
-	def_special StorytellerGetFreeStorySlot
-	def_special Script_StorytellerDisplayStory
-	def_special StorytellerStoryListMenu
-	def_special StorytellerUpdateStat
-	def_special Script_StorytellerInitializeRandomStat
-	def_special HasStorytellerAlreadyRecorded
-	def_special TraderMenuGetDecoration
-	def_special GetTraderTradedFlag
-	def_special DoesPlayerHaveNoDecorations
-	def_special IsDecorationCategoryFull
-	def_special TraderShowDecorationMenu
-	def_special TraderDoDecorationTrade
 	def_special GetSeedotSizeRecordInfo
 	def_special CompareSeedotSize
 	def_special GetLotadSizeRecordInfo
@@ -96,7 +77,6 @@ gSpecials::
 	def_special MauvilleGymDeactivatePuzzle
 	def_special PetalburgGymSlideOpenRoomDoors
 	def_special PetalburgGymUnlockRoomDoors
-	def_special GetPlayerTrainerIdOnesDigit
 	def_special GetPlayerBigGuyGirlString
 	def_special GetRivalSonDaughterString
 	def_special SetHiddenItemFlag
@@ -189,7 +169,6 @@ gSpecials::
 	def_special ReducePlayerPartyToSelectedMons
 	def_special FieldShowRegionMap
 	def_special GetInGameTradeSpeciesInfo
-	def_special CreateInGameTradePokemon
 	def_special DoInGameTradeScene
 	def_special GetTradeSpecies
 	def_special GetWeekCount
@@ -233,7 +212,6 @@ gSpecials::
 	def_special TryUpdateRusturfTunnelState
 	def_special IsGrassTypeInParty
 	def_special DoContestHallWarp
-	def_special LoadWallyZigzagoon
 	def_special IsStarterInParty
 	def_special CopyCurSecretBaseOwnerName_StrVar1
 	def_special ScriptCheckFreePokemonStorageSpace
@@ -279,45 +257,6 @@ gSpecials::
 	def_special CheckInteractedWithFriendsFurnitureMiddle
 	def_special CheckInteractedWithFriendsFurnitureTop
 	def_special CheckInteractedWithFriendsPosterDecor
-	def_special SetLilycoveLadyGfx
-	def_special Script_GetLilycoveLadyId
-	def_special GetFavorLadyState
-	def_special BufferFavorLadyRequest
-	def_special HasAnotherPlayerGivenFavorLadyItem
-	def_special BufferFavorLadyItemName
-	def_special BufferFavorLadyPlayerName
-	def_special DidFavorLadyLikeItem
-	def_special Script_FavorLadyOpenBagMenu
-	def_special Script_DoesFavorLadyLikeItem
-	def_special IsFavorLadyThresholdMet
-	def_special FavorLadyGetPrize
-	def_special SetFavorLadyState_Complete
-	def_special GetQuizLadyState
-	def_special GetQuizAuthor
-	def_special IsQuizLadyWaitingForChallenger
-	def_special QuizLadyShowQuizQuestion
-	def_special QuizLadyGetPlayerAnswer
-	def_special IsQuizAnswerCorrect
-	def_special BufferQuizPrizeItem
-	def_special SetQuizLadyState_Complete
-	def_special BufferQuizAuthorNameAndCheckIfLady
-	def_special SetQuizLadyState_GivePrize
-	def_special ClearQuizLadyPlayerAnswer
-	def_special Script_QuizLadyOpenBagMenu
-	def_special ClearQuizLadyQuestionAndAnswer
-	def_special QuizLadySetCustomQuestion
-	def_special QuizLadyTakePrizeForCustomQuiz
-	def_special QuizLadyRecordCustomQuizData
-	def_special QuizLadySetWaitingForChallenger
-	def_special BufferQuizCorrectAnswer
-	def_special BufferQuizPrizeName
-	def_special QuizLadyPickNewQuestion
-	def_special HasPlayerGivenContestLadyPokeblock
-	def_special Script_BufferContestLadyCategoryAndMonName
-	def_special OpenPokeblockCaseForContestLady
-	def_special SetContestLadyGivenPokeblock
-	def_special GetContestLadyMonSpecies
-	def_special GetContestLadyCategory
 	def_special CloseBattlePikeCurtain
 	def_special ShouldTryGetTrainerScript
 	def_special ShowMapNamePopup
@@ -327,7 +266,6 @@ gSpecials::
 	def_special StartPlayerDescendMirageTower
 	def_special BufferTMHMMoveName
 	def_special ChooseMonForWirelessMinigame
-	def_special IsBadEggInParty
 	def_special HasAtLeastOneBerry
 	def_special OffsetCameraForBattle
 	def_special GetDeptStoreDefaultFloorChoice

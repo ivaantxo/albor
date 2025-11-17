@@ -49,7 +49,7 @@ static void HealPlayerBoxes(void)
         for (boxPosition = 0; boxPosition < IN_BOX_COUNT; boxPosition++)
         {
             boxMon = &gPokemonStoragePtr->boxes[boxId][boxPosition];
-            if (GetBoxMonData(boxMon, MON_DATA_SANITY_HAS_SPECIES))
+            if (GetBoxMonData(boxMon, MON_DATA_SPECIES))
                 HealBoxPokemon(boxMon);
         }
     }
@@ -58,10 +58,9 @@ static void HealPlayerBoxes(void)
 u8 ScriptGiveEgg(u16 species)
 {
     struct Pokemon mon;
-    u8 isEgg;
+    bool32 isEgg = TRUE;
 
-    CreateEgg(&mon, species, TRUE);
-    isEgg = TRUE;
+    CreaHuevo(&mon, species);
     SetMonData(&mon, MON_DATA_IS_EGG, &isEgg);
 
     return GiveMonToPlayer(&mon);
@@ -89,9 +88,9 @@ void CreateScriptedWildMon(u16 species, u8 level, u16 item)
 
     ZeroEnemyPartyMons();
     if (OW_SYNCHRONIZE_NATURE > GEN_3)
-        CreateMonWithNature(&gEnemyParty[0], species, level, USE_RANDOM_IVS, PickWildMonNature());
+        CreaPokemonConNaturaleza(&gEnemyParty[0], species, level, USE_RANDOM_IVS, PickWildMonNature());
     else
-        CreateMon(&gEnemyParty[0], species, level, USE_RANDOM_IVS, 0, 0, OT_ID_PLAYER_ID, 0);
+        CreaPokemon(&gEnemyParty[0], species, level, USE_RANDOM_IVS, 0, 0);
     if (item)
     {
         heldItem[0] = item;
@@ -107,9 +106,9 @@ void CreateScriptedDoubleWildMon(u16 species1, u8 level1, u16 item1, u16 species
     ZeroEnemyPartyMons();
 
     if (OW_SYNCHRONIZE_NATURE > GEN_3)
-        CreateMonWithNature(&gEnemyParty[0], species1, level1, 32, PickWildMonNature());
+        CreaPokemonConNaturaleza(&gEnemyParty[0], species1, level1, 32, PickWildMonNature());
     else
-        CreateMon(&gEnemyParty[0], species1, level1, 32, 0, 0, OT_ID_PLAYER_ID, 0);
+        CreaPokemon(&gEnemyParty[0], species1, level1, 32, 0, 0);
     if (item1)
     {
         heldItem1[0] = item1;
@@ -118,9 +117,9 @@ void CreateScriptedDoubleWildMon(u16 species1, u8 level1, u16 item1, u16 species
     }
 
     if (OW_SYNCHRONIZE_NATURE > GEN_3)
-        CreateMonWithNature(&gEnemyParty[1], species2, level2, 32, PickWildMonNature());
+        CreaPokemonConNaturaleza(&gEnemyParty[1], species2, level2, 32, PickWildMonNature());
     else
-        CreateMon(&gEnemyParty[1], species2, level2, 32, 0, 0, OT_ID_PLAYER_ID, 0);
+        CreaPokemon(&gEnemyParty[1], species2, level2, 32, 0, 0);
     if (item2)
     {
         heldItem2[0] = item2;
@@ -214,8 +213,7 @@ void ReducePlayerPartyToSelectedMons(void)
  */
 static u32 ScriptGiveMonParameterized(u8 side, u8 slot, u16 species, u8 level, u16 item, u8 ball, u8 nature, u8 abilityNum, u8 gender, u8 *evs, u8 *ivs, u16 *moves, bool8 isShiny)
 {
-    u16 nationalDexNum;
-    int sentToPc;
+    u32 nationalDexNum, sentToPc;
     struct Pokemon mon;
     u32 i;
     u8 genderRatio = gSpeciesInfo[species].genderRatio;
@@ -234,15 +232,10 @@ static u32 ScriptGiveMonParameterized(u8 side, u8 slot, u16 species, u8 level, u
     if ((gender == MON_MALE && genderRatio != MON_FEMALE && genderRatio != MON_GENDERLESS)
      || (gender == MON_FEMALE && genderRatio != MON_MALE && genderRatio != MON_GENDERLESS)
      || (gender == MON_GENDERLESS && genderRatio == MON_GENDERLESS))
-        CreateMonWithGenderNatureLetter(&mon, species, level, 32, gender, nature);
+        CreaPokemonConGeneroNaturaleza(&mon, species, level, 32, gender, nature);
     else
-        CreateMonWithNature(&mon, species, level, 32, nature);
+        CreaPokemonConNaturaleza(&mon, species, level, 32, nature);
 
-    // shininess
-    if (P_FLAG_FORCE_SHINY != 0 && FlagGet(P_FLAG_FORCE_SHINY))
-        isShiny = TRUE;
-    else if (P_FLAG_FORCE_NO_SHINY != 0 && FlagGet(P_FLAG_FORCE_NO_SHINY))
-        isShiny = FALSE;
     SetMonData(&mon, MON_DATA_IS_SHINY, &isShiny);
 
     // EV and IV

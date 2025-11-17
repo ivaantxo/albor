@@ -1,5 +1,6 @@
 #include "global.h"
 #include "random.h"
+#include "malloc.h"
 #include <alloca.h>
 
 // IWRAM common
@@ -39,7 +40,7 @@ static void SFC32_Seed(struct Sfc32State *state, u32 seed, u8 stream)
 /*This ASM implementation uses some shortcuts and is generally faster on the GBA.
 * It's not necessarily faster if inlined, or on other platforms.
 * In addition, it's extremely non-portable. */
-u32 NAKED Random32(void)
+u32 NAKED Random(void)
 {
     asm(".thumb\n\
     push {r4, r5, r6}\n\
@@ -67,37 +68,39 @@ u32 NAKED Random32(void)
     );
 }
 
-u32 Random2_32(void)
-{
-    return _SFC32_Next_Stream(&gRng2Value, STREAM2);
-}
-
-void SeedRng(u32 seed)
+void GeneraSemillaAleatoria(void)
 {
     struct Sfc32State state;
-    SFC32_Seed(&state, seed, STREAM1);
+    u32 semilla = 0;
+
+    // Línea de escaneo del haz vertical (0–159, se reinicia cada frame)
+    semilla ^= REG_VCOUNT << 8;
+
+    // Timer 0 (si está corriendo) — útil si lo usas para temporización
+    semilla ^= REG_TM0CNT_L ^ (REG_TM0CNT_H << 16);
+
+    // Entrada del jugador — por si pulsa algún botón
+    semilla ^= REG_KEYINPUT;
+
+    // Dirección actual del stack pointer
+    register u32 sp;
+    __asm__("mov %0, sp" : "=r"(sp));
+    semilla ^= sp;
+
+    semilla ^= *(vu32*)(gHeap + 16);
+    semilla ^= *(vu32*)(gHeap + 64);
+
+    SFC32_Seed(&state, semilla, STREAM1);
 
     sRngLoopUnlocked = FALSE;
     gRngValue = state;
     sRngLoopUnlocked = TRUE;
 }
 
-void SeedRng2(u32 seed)
-{
-    SFC32_Seed(&gRng2Value, seed, STREAM2);
-}
-
-rng_value_t LocalRandomSeed(u32 seed)
-{
-    rng_value_t result;
-    SFC32_Seed(&result, seed, STREAM1);
-    return result;
-}
-
 void AdvanceRandom(void)
 {
     if (sRngLoopUnlocked == TRUE)
-        Random32();
+        Random();
 }
 
 #define LOOP_RANDOM_START \
@@ -220,4 +223,9 @@ u8 RandomWeightedIndex(u8 *weights, u8 length)
             return i;
     }
     return 0;
+}
+
+bool32 PorcentajeAleatorio(u32 porcentaje)
+{
+    return (Random() % 100) < porcentaje;
 }

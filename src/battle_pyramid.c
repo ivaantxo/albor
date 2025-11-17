@@ -967,38 +967,7 @@ static void SeedPyramidFloor(void)
 
 static void SetPickupItem(void)
 {
-    u32 i;
-    int itemIndex;
-    int rand;
-    u8 id;
-    u32 lvlMode = gSaveBlockPtr->frontier.lvlMode;
-    u32 floor = gSaveBlockPtr->frontier.curChallengeBattleNum;
-    u32 round = (gSaveBlockPtr->frontier.pyramidWinStreaks[lvlMode] / FRONTIER_STAGES_PER_CHALLENGE) % TOTAL_PYRAMID_ROUNDS;
 
-    if (round >= TOTAL_PYRAMID_ROUNDS)
-        round = TOTAL_PYRAMID_ROUNDS - 1;
-
-    id = GetPyramidFloorTemplateId();
-    itemIndex = (gSpecialVar_LastTalked - sPyramidFloorTemplates[id].numTrainers) - 1;
-    rand = gSaveBlockPtr->frontier.pyramidRandoms[itemIndex / 2];
-    SeedRng2(rand);
-
-    for (i = 0; i < itemIndex + 1; i++)
-        rand = Random2() % 100;
-
-    for (i = sPickupItemOffsets[floor]; i < ARRAY_COUNT(sPickupItemSlots); i++)
-    {
-        if (rand < sPickupItemSlots[i][0])
-            break;
-    }
-
-    if (lvlMode != FRONTIER_LVL_50)
-        gSpecialVar_0x8000 = sPickupItemsLvlOpen[round][sPickupItemSlots[i][1]];
-    else
-        gSpecialVar_0x8000 = sPickupItemsLvl50[round][sPickupItemSlots[i][1]];
-
-    // Quantity of item to give
-    gSpecialVar_0x8001 = 1;
 }
 
 static void HidePyramidItem(void)
@@ -1926,7 +1895,7 @@ static void InitPyramidBagItems(u8 lvlMode)
 
 u16 GetBattlePyramidPickupItemId(void)
 {
-    int rand;
+    u32 rand;
     u32 i;
     u32 lvlMode = gSaveBlockPtr->frontier.lvlMode;
     int round = (gSaveBlockPtr->frontier.pyramidWinStreaks[lvlMode] / FRONTIER_STAGES_PER_CHALLENGE);

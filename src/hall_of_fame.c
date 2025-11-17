@@ -441,7 +441,6 @@ static void Task_Hof_InitMonData(u8 taskId)
         if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES))
         {
             sHofMonPtr->mon[i].species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG);
-            sHofMonPtr->mon[i].tid = GetMonData(&gPlayerParty[i], MON_DATA_OT_ID);
             sHofMonPtr->mon[i].isShiny = GetMonData(&gPlayerParty[i], MON_DATA_IS_SHINY);
             sHofMonPtr->mon[i].personality = GetMonData(&gPlayerParty[i], MON_DATA_PERSONALITY);
             sHofMonPtr->mon[i].lvl = GetMonData(&gPlayerParty[i], MON_DATA_LEVEL);
@@ -1199,48 +1198,7 @@ static void HallOfFame_PrintMonInfo(struct HallofFameMon* currMon, u8 unused1, u
 
 static void HallOfFame_PrintPlayerInfo(u8 unused1, u8 unused2)
 {
-    u8 text[20];
-    u32 width;
-    u16 trainerId;
 
-    FillWindowPixelBuffer(1, PIXEL_FILL(1));
-    PutWindowTilemap(1);
-    DrawStdFrameWithCustomTileAndPalette(1, FALSE, 0x21D, 0xD);
-    AddTextPrinterParameterized3(1, FONT_NORMAL, 0, 1, sPlayerInfoTextColors, TEXT_SKIP_DRAW, gText_Name);
-
-    width = GetStringRightAlignXOffset(FONT_NORMAL, gSaveBlockPtr->playerName, 0x70);
-    AddTextPrinterParameterized3(1, FONT_NORMAL, width, 1, sPlayerInfoTextColors, TEXT_SKIP_DRAW, gSaveBlockPtr->playerName);
-
-    trainerId = (gSaveBlockPtr->playerTrainerId[0]) | (gSaveBlockPtr->playerTrainerId[1] << 8);
-    AddTextPrinterParameterized3(1, FONT_NORMAL, 0, 0x11, sPlayerInfoTextColors, 0, gText_IDNumber);
-    text[0] = (trainerId % 100000) / 10000 + CHAR_0;
-    text[1] = (trainerId % 10000) / 1000 + CHAR_0;
-    text[2] = (trainerId % 1000) / 100 + CHAR_0;
-    text[3] = (trainerId % 100) / 10 + CHAR_0;
-    text[4] = (trainerId % 10) / 1 + CHAR_0;
-    text[5] = EOS;
-    width = GetStringRightAlignXOffset(FONT_NORMAL, text, 0x70);
-    AddTextPrinterParameterized3(1, FONT_NORMAL, width, 0x11, sPlayerInfoTextColors, TEXT_SKIP_DRAW, text);
-
-    AddTextPrinterParameterized3(1, FONT_NORMAL, 0, 0x21, sPlayerInfoTextColors, TEXT_SKIP_DRAW, gText_Time);
-    text[0] = (gSaveBlockPtr->playTimeHours / 100) + CHAR_0;
-    text[1] = (gSaveBlockPtr->playTimeHours % 100) / 10 + CHAR_0;
-    text[2] = (gSaveBlockPtr->playTimeHours % 10) + CHAR_0;
-
-    if (text[0] == CHAR_0)
-        text[0] = CHAR_SPACE;
-    if (text[0] == CHAR_SPACE && text[1] == CHAR_0)
-        text[8] = CHAR_SPACE;
-
-    text[3] = CHAR_COLON;
-    text[4] = (gSaveBlockPtr->playTimeMinutes % 100) / 10 + CHAR_0;
-    text[5] = (gSaveBlockPtr->playTimeMinutes % 10) + CHAR_0;
-    text[6] = EOS;
-
-    width = GetStringRightAlignXOffset(FONT_NORMAL, text, 0x70);
-    AddTextPrinterParameterized3(1, FONT_NORMAL, width, 0x21, sPlayerInfoTextColors, TEXT_SKIP_DRAW, text);
-
-    CopyWindowToVram(1, COPYWIN_FULL);
 }
 
 static void ClearVramOamPltt_LoadHofPal(void)
@@ -1379,7 +1337,7 @@ static void SpriteCB_HofConfetti(struct Sprite *sprite)
     }
     else
     {
-        u16 rand;
+        u32 rand;
         u8 sineIdx;
 
         sprite->y2++;

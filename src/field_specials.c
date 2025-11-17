@@ -752,11 +752,6 @@ void StorePlayerCoordsInVars(void)
     gSpecialVar_0x8005 = gSaveBlockPtr->pos.y;
 }
 
-u8 GetPlayerTrainerIdOnesDigit(void)
-{
-    return (u16)((gSaveBlockPtr->playerTrainerId[1] << 8) | gSaveBlockPtr->playerTrainerId[0]) % 10;
-}
-
 void GetPlayerBigGuyGirlString(void)
 {
     if (gSaveBlockPtr->playerGender == MALE)
@@ -1103,7 +1098,7 @@ void IsGrassTypeInParty(void)
     for (i = 0; i < PARTY_SIZE; i++)
     {
         pokemon = &gPlayerParty[i];
-        if (GetMonData(pokemon, MON_DATA_SANITY_HAS_SPECIES) && !GetMonData(pokemon, MON_DATA_IS_EGG))
+        if (GetMonData(pokemon, MON_DATA_SPECIES) && !GetMonData(pokemon, MON_DATA_IS_EGG))
         {
             species = GetMonData(pokemon, MON_DATA_SPECIES);
             if (gSpeciesInfo[species].types[0] == TIPO_PLANTA || gSpeciesInfo[species].types[1] == TIPO_PLANTA)
@@ -1136,7 +1131,7 @@ void RemoveCameraObject(void)
 
 u8 GetPokeblockNameByMonNature(void)
 {
-    return CopyMonFavoritePokeblockName(GetNature(&gPlayerParty[GetLeadMonIndex()]), gStringVar1);
+    return CopyMonFavoritePokeblockName(ObtenNaturaleza(&gPlayerParty[GetLeadMonIndex()]), gStringVar1);
 }
 
 void GetSecretBaseNearbyMapName(void)
@@ -1263,20 +1258,6 @@ u8 TryUpdateRusturfTunnelState(void)
 void SetShoalItemFlag(u16 unused)
 {
     FlagSet(FLAG_SYS_SHOAL_ITEM);
-}
-
-void LoadWallyZigzagoon(void)
-{
-    u16 monData;
-    CreateMon(&gPlayerParty[0], SPECIES_MEW, 7, USE_RANDOM_IVS, FALSE, 0, OT_ID_PLAYER_ID, 0);
-    monData = TRUE;
-    SetMonData(&gPlayerParty[0], MON_DATA_ABILITY_NUM, &monData);
-    monData = MOVE_TACKLE;
-    SetMonData(&gPlayerParty[0], MON_DATA_MOVE1, &monData);
-    monData = MOVE_NONE;
-    SetMonData(&gPlayerParty[0], MON_DATA_MOVE2, &monData);
-    SetMonData(&gPlayerParty[0], MON_DATA_MOVE3, &monData);
-    SetMonData(&gPlayerParty[0], MON_DATA_MOVE4, &monData);
 }
 
 bool8 IsStarterInParty(void)
@@ -1458,20 +1439,6 @@ bool8 BufferTMHMMoveName(void)
     {
         StringCopy(gStringVar2, GetMoveName(ItemIdToBattleMoveId(gSpecialVar_0x8004)));
         return TRUE;
-    }
-
-    return FALSE;
-}
-
-bool8 IsBadEggInParty(void)
-{
-    u8 partyCount = CalculatePlayerPartyCount();
-    u32 i;
-
-    for (i = 0; i < partyCount; i++)
-    {
-        if (GetMonData(&gPlayerParty[i], MON_DATA_SANITY_IS_BAD_EGG) == TRUE)
-            return TRUE;
     }
 
     return FALSE;
@@ -1739,7 +1706,7 @@ static void MoveElevatorWindowLights(u16 floorDelta, bool8 descending)
 
 static void Task_MoveElevatorWindowLights(u8 taskId)
 {
-    u8 x, y;
+    u32 x, y;
     s16 *data = gTasks[taskId].data;
 
     if (tTimer == 6)
@@ -2564,7 +2531,7 @@ void ShowNatureGirlMessage(void)
     if (gSpecialVar_0x8004 >= PARTY_SIZE)
         gSpecialVar_0x8004 = 0;
 
-    nature = GetNature(&gPlayerParty[gSpecialVar_0x8004]);
+    nature = ObtenNaturaleza(&gPlayerParty[gSpecialVar_0x8004]);
     ShowFieldMessage(gNaturesInfo[nature].natureGirlMessage);
 }
 
@@ -3366,7 +3333,7 @@ void CloseBattlePikeCurtain(void)
 
 static void Task_CloseBattlePikeCurtain(u8 taskId)
 {
-    u8 x, y;
+    u32 x, y;
     s16 *data = gTasks[taskId].data;
 
     tFrameTimer[tCurrentFrame]--;

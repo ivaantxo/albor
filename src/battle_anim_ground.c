@@ -220,16 +220,16 @@ static void AnimBoneHitProjectile(struct Sprite *sprite)
 // arg 4: target y pixel offset
 void AnimDirtScatter(struct Sprite *sprite)
 {
-    u8 targetXPos, targetYPos;
-    s16 xOffset, yOffset;
+    u32 targetXPos, targetYPos;
+    s32 xOffset, yOffset;
 
     InitSpritePosToAnimAttacker(sprite, TRUE);
 
     targetXPos = GetBattlerSpriteCoord2(gBattleAnimTarget, BATTLER_COORD_X_2);
     targetYPos = GetBattlerSpriteCoord2(gBattleAnimTarget, BATTLER_COORD_Y_PIC_OFFSET);
 
-    xOffset = Random2() & 0x1F;
-    yOffset = Random2() & 0x1F;
+    xOffset = Random() & 0x1F;
+    yOffset = Random() & 0x1F;
     if (xOffset > 16)
         xOffset = 16 - xOffset;
     if (yOffset > 16)

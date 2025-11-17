@@ -143,7 +143,6 @@ struct InGameTrade {
     u16 species;
     u8 ivs[NUMERO_ESTADISTICAS];
     u8 abilityNum;
-    u32 otId;
     u8 conditions[CONTEST_CATEGORIES_COUNT];
     u32 personality;
     u16 heldItem;
@@ -280,7 +279,6 @@ static bool8 DoTradeAnim(void);
 static bool8 DoTradeAnim_Cable(void);
 static bool8 DoTradeAnim_Wireless(void);
 static void SpriteCB_BouncingPokeball(struct Sprite *);
-static void GetInGameTradeMail(struct Mail *, const struct InGameTrade *);
 static void CB2_UpdateLinkTrade(void);
 static void CB2_WaitTradeComplete(void);
 static void Task_InGameTrade(u8);
@@ -384,7 +382,7 @@ static void CB2_CreateTradeMenu(void)
         gFundidoPaletas.transferenciaBufferDeshabilitada = FALSE;
 
         for (i = 0; i < PARTY_SIZE; i++)
-            CreateMon(&gEnemyParty[i], SPECIES_NONE, 0, USE_RANDOM_IVS, FALSE, 0, OT_ID_PLAYER_ID, 0);
+            CreaPokemon(&gEnemyParty[i], SPECIES_NONE, 0, USE_RANDOM_IVS, FALSE, 0);
 
         PrintTradeMessage(MSG_STANDBY);
         ShowBg(0);
@@ -2855,81 +2853,12 @@ u16 GetInGameTradeSpeciesInfo(void)
     return inGameTrade->requestedSpecies;
 }
 
-static void CreateInGameTradePokemonInternal(u8 whichPlayerMon, u8 whichInGameTrade)
-{
-    const struct InGameTrade *inGameTrade = &sIngameTrades[whichInGameTrade];
-    u8 level = GetMonData(&gPlayerParty[whichPlayerMon], MON_DATA_LEVEL);
-
-    struct Mail mail;
-    u8 metLocation = METLOC_IN_GAME_TRADE;
-    u8 mailNum;
-    struct Pokemon *pokemon = &gEnemyParty[0];
-
-    CreateMon(pokemon, inGameTrade->species, level, USE_RANDOM_IVS, TRUE, inGameTrade->personality, OT_ID_PRESET, inGameTrade->otId);
-
-    SetMonData(pokemon, MON_DATA_HP_IV, &inGameTrade->ivs[0]);
-    SetMonData(pokemon, MON_DATA_ATK_IV, &inGameTrade->ivs[1]);
-    SetMonData(pokemon, MON_DATA_DEF_IV, &inGameTrade->ivs[2]);
-    SetMonData(pokemon, MON_DATA_SPEED_IV, &inGameTrade->ivs[3]);
-    SetMonData(pokemon, MON_DATA_SPATK_IV, &inGameTrade->ivs[4]);
-    SetMonData(pokemon, MON_DATA_SPDEF_IV, &inGameTrade->ivs[5]);
-    SetMonData(pokemon, MON_DATA_NICKNAME, inGameTrade->nickname);
-    SetMonData(pokemon, MON_DATA_OT_NAME, inGameTrade->otName);
-    SetMonData(pokemon, MON_DATA_ABILITY_NUM, &inGameTrade->abilityNum);
-    SetMonData(pokemon, MON_DATA_BEAUTY, &inGameTrade->conditions[1]);
-    SetMonData(pokemon, MON_DATA_CUTE, &inGameTrade->conditions[2]);
-    SetMonData(pokemon, MON_DATA_COOL, &inGameTrade->conditions[0]);
-    SetMonData(pokemon, MON_DATA_SMART, &inGameTrade->conditions[3]);
-    SetMonData(pokemon, MON_DATA_TOUGH, &inGameTrade->conditions[4]);
-    SetMonData(pokemon, MON_DATA_SHEEN, &inGameTrade->sheen);
-    SetMonData(pokemon, MON_DATA_MET_LOCATION, &metLocation);
-
-    mailNum = 0;
-    if (inGameTrade->heldItem != ITEM_NONE)
-    {
-        if (ItemIsMail(inGameTrade->heldItem))
-        {
-            GetInGameTradeMail(&mail, inGameTrade);
-            gTradeMail[0] = mail;
-            SetMonData(pokemon, MON_DATA_MAIL, &mailNum);
-            SetMonData(pokemon, MON_DATA_HELD_ITEM, &inGameTrade->heldItem);
-        }
-        else
-        {
-            SetMonData(pokemon, MON_DATA_HELD_ITEM, &inGameTrade->heldItem);
-        }
-    }
-    CalculateMonStats(&gEnemyParty[0]);
-}
-
-static void GetInGameTradeMail(struct Mail *mail, const struct InGameTrade *trade)
-{
-    s32 i;
-
-    for (i = 0; i < MAIL_WORDS_COUNT; i++)
-        mail->words[i] = sIngameTradeMail[trade->mailNum][i];
-
-    StringCopy(mail->playerName, trade->otName);
-    PadNameString(mail->playerName, CHAR_SPACE);
-
-    mail->trainerId[0] = trade->otId >> 24;
-    mail->trainerId[1] = trade->otId >> 16;
-    mail->trainerId[2] = trade->otId >> 8;
-    mail->trainerId[3] = trade->otId;
-    mail->species = trade->species;
-    mail->itemId = trade->heldItem;
-}
 
 u16 GetTradeSpecies(void)
 {
     if (GetMonData(&gPlayerParty[gSpecialVar_0x8005], MON_DATA_IS_EGG))
         return SPECIES_NONE;
     return GetMonData(&gPlayerParty[gSpecialVar_0x8005], MON_DATA_SPECIES);
-}
-
-void CreateInGameTradePokemon(void)
-{
-    CreateInGameTradePokemonInternal(gSpecialVar_0x8005, gSpecialVar_0x8004);
 }
 
 static void CB2_UpdateLinkTrade(void)

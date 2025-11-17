@@ -865,7 +865,7 @@ void AnimTask_SwitchOutBallEffect(u8 taskId)
     u8 spriteId;
     u16 ball;
     u8 ballId;
-    u8 x, y;
+    u32 x, y;
     u8 priority, subpriority;
     u32 selectedPalettes;
 
@@ -1799,7 +1799,7 @@ static void IncrBallParticleCount(void)
 static void PokeBallOpenParticleAnimation(u8 taskId)
 {
     u8 spriteId;
-    u8 x, y;
+    u32 x, y;
     u8 priority, subpriority;
     u8 ballId;
     u8 var0;
@@ -2463,7 +2463,7 @@ void TryShinyAnimation(u8 battler, struct Pokemon *mon)
 static void Task_ShinyStars(u8 taskId)
 {
     u8 battler;
-    u8 x, y;
+    u32 x, y;
     u8 spriteId;
     u16 timer;
     s16 starIdx;

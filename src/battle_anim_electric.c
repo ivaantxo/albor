@@ -1394,7 +1394,7 @@ static void AnimShockWaveLightning(struct Sprite *sprite)
 // arg 2: duration
 void AnimTask_CreateIons(u8 taskId)
 {
-    u8 x, y;
+    u32 x, y;
 
     if (gTasks[taskId].data[0] == 0)
     {
@@ -1405,8 +1405,8 @@ void AnimTask_CreateIons(u8 taskId)
     gTasks[taskId].data[0]++;
     if (gTasks[taskId].data[0] % gTasks[taskId].data[2] == 1)
     {
-        x = Random2() % DISPLAY_WIDTH;
-        y = Random2() % (DISPLAY_HEIGHT / 2);
+        x = Random() % DISPLAY_WIDTH;
+        y = Random() % (DISPLAY_HEIGHT / 2);
         CreateSprite(&gIonSpriteTemplate, x, y, 4);
     }
     if (gTasks[taskId].data[0] == gTasks[taskId].data[3])

@@ -1815,15 +1815,7 @@ static void InitDomeOpponentParty(void)
 
 static void CreateDomeOpponentMon(u8 monPartyId, u16 tournamentTrainerId, u8 tournamentMonId, u32 otId)
 {
-    #ifdef BUGFIX
-    u8 fixedIv = GetDomeTrainerMonIvs(DOME_TRAINERS[tournamentTrainerId].trainerId);
-    #else
-    u8 fixedIv = GetDomeTrainerMonIvs(tournamentTrainerId); // BUG: Using the wrong ID. As a result, all Pokémon have ivs of 3.
-    #endif
-    u8 level = SetFacilityPtrsGetLevel();
 
-    CreateFacilityMon(&gFacilityTrainerMons[DOME_MONS[tournamentTrainerId][tournamentMonId]],
-                      level, fixedIv, otId, 0, &gEnemyParty[monPartyId]);
 }
 
 static void CreateDomeOpponentMons(u16 tournamentTrainerId)
@@ -1834,7 +1826,7 @@ static void CreateDomeOpponentMons(u16 tournamentTrainerId)
 
     ZeroEnemyPartyMons();
     selectedMonBits = GetDomeTrainerSelectedMons(tournamentTrainerId);
-    otId = Random32();
+    otId = Random();
 
     if (Random() % 10 > 5)
     {

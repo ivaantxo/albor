@@ -2055,7 +2055,6 @@ const u8 gText_LineBreak[] = _("\l");
 const u8 gText_NewLine[] = _("\n");
 const u8 gText_Are[] = _("are");
 const u8 gText_Are2[] = _("are");
-const u8 gText_BadEgg[] = _("Bad Egg");
 const u8 gText_BattleWallyName[] = _("WALLY");
 const u8 gText_Win[] = _("{HIGHLIGHT TRANSPARENT}Win");
 const u8 gText_Loss[] = _("{HIGHLIGHT TRANSPARENT}Loss");
@@ -3149,7 +3148,7 @@ static void IllusionNickHack(u32 battler, u32 partyId, u8 *dst)
         for (i = PARTY_SIZE - 1; i >= 0; i--)
         {
             id = i;
-            if (GetMonData(&gEnemyParty[id], MON_DATA_SANITY_HAS_SPECIES)
+            if (GetMonData(&gEnemyParty[id], MON_DATA_SPECIES)
                 && GetMonData(&gEnemyParty[id], MON_DATA_HP)
                 && &gEnemyParty[id] != mon
                 && &gEnemyParty[id] != partnerMon)

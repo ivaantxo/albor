@@ -886,7 +886,7 @@ u16 GetCurrLocationDefaultMusic(void)
     if (gSaveBlockPtr->location.mapGroup == MAP_GROUP(ROUTE111)
      && gSaveBlockPtr->location.mapNum == MAP_NUM(ROUTE111)
      && GetSavedWeather() == WEATHER_SANDSTORM)
-        return MUS_DESERT;
+        return MUS_ROUTE111;
 
     music = GetLocationMusic(&gSaveBlockPtr->location);
     if (music != MUS_ROUTE118)
@@ -1074,7 +1074,7 @@ void UpdateAmbientCry(s16 *state, u16 *delayCounter)
         monsCount = CalculatePlayerPartyCount();
         for (i = 0; i < monsCount; i++)
         {
-            if (!GetMonData(&gPlayerParty[i], MON_DATA_SANITY_IS_EGG)
+            if (!GetMonData(&gPlayerParty[i], MON_DATA_SPECIES)
                 && GetMonAbility(&gPlayerParty[0]) == ABILITY_SWARM)
             {
                 divBy = 2;

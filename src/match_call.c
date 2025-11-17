@@ -991,7 +991,7 @@ static bool32 UpdateMatchCallMinutesCounter(void)
 static bool32 CheckMatchCallChance(void)
 {
     int callChance = 1;
-    if (!GetMonData(&gPlayerParty[0], MON_DATA_SANITY_IS_EGG) && GetMonAbility(&gPlayerParty[0]) == ABILITY_LIGHTNING_ROD)
+    if (!GetMonData(&gPlayerParty[0], MON_DATA_IS_EGG) && GetMonAbility(&gPlayerParty[0]) == ABILITY_LIGHTNING_ROD)
         callChance = 2;
 
     if (Random() % 10 < callChance * 3)
@@ -1402,39 +1402,6 @@ static u16 GetRematchTrainerLocation(int matchCallId)
     return mapHeader->regionMapSectionId;
 }
 
-static u32 GetNumRematchTrainersFought(void)
-{
-    u32 i, count;
-    for (i = 0, count = 0; i < REMATCH_SPECIAL_TRAINER_START; i++)
-    {
-        if (HasTrainerBeenFought(gRematchTable[i].trainerIds[0]))
-            count++;
-    }
-
-    return count;
-}
-
-// Look through the rematch table for trainers that have been defeated once before.
-// Return the index into the rematch table of the nth defeated trainer,
-// or REMATCH_TABLE_ENTRIES if fewer than n rematch trainers have been defeated.
-static u32 GetNthRematchTrainerFought(int n)
-{
-    u32 i, count;
-
-    for (i = 0, count = 0; i < REMATCH_TABLE_ENTRIES; i++)
-    {
-        if (HasTrainerBeenFought(gRematchTable[i].trainerIds[0]))
-        {
-            if (count == n)
-                return i;
-
-            count++;
-        }
-    }
-
-    return REMATCH_TABLE_ENTRIES;
-}
-
 bool32 SelectMatchCallMessage(int trainerId, u8 *str)
 {
     u32 matchCallId;
@@ -1526,7 +1493,7 @@ static const struct MatchCallText *GetGeneralMatchCallText(int matchCallId, u8 *
     u32 i;
     int count;
     u32 topic, id;
-    u16 rand;
+    u32 rand;
 
     rand = Random();
     if (!(rand & 1))
@@ -1779,45 +1746,9 @@ static const u16 sBadgeFlags[NUM_BADGES] =
     FLAG_BADGE08_GET,
 };
 
-static int GetNumOwnedBadges(void)
-{
-    u32 i;
-
-    for (i = 0; i < NUM_BADGES; i++)
-    {
-        if (!FlagGet(sBadgeFlags[i]))
-            break;
-    }
-
-    return i;
-}
-
 // Whether or not a trainer calling the player from a different route should request a battle
 static bool32 ShouldTrainerRequestBattle(int matchCallId)
 {
-    int dayCount;
-    int otId;
-    u16 dewfordRand;
-    int numRematchTrainersFought;
-    int max, rand, n;
-
-    if (GetNumOwnedBadges() < 5)
-        return FALSE;
-
-    dayCount = RtcGetLocalDayCount();
-    otId = GetTrainerId(gSaveBlockPtr->playerTrainerId) & 0xFFFF;
-
-    dewfordRand = gSaveBlockPtr->dewfordTrends[0].rand;
-    numRematchTrainersFought = GetNumRematchTrainersFought();
-    max = (numRematchTrainersFought * 13) / 10;
-    rand = ((dayCount ^ dewfordRand) + (dewfordRand ^ GetGameStat(GAME_STAT_TRAINER_BATTLES))) ^ otId;
-    n = rand % max;
-    if (n < numRematchTrainersFought)
-    {
-        if (GetNthRematchTrainerFought(n) == matchCallId)
-            return TRUE;
-    }
-
     return FALSE;
 }
 

@@ -1,6 +1,10 @@
-#ifndef GUARD_CONSTANTS_SONGS_H
-#define GUARD_CONSTANTS_SONGS_H
+import re
 
+# ----------------------------------------------------------
+# PEGAR AQUÍ TUS ENUMS (tal cual están en tus archivos .h)
+# ----------------------------------------------------------
+
+enum_musica = """
 enum Musica
 {
     MUS_DUMMY,
@@ -852,10 +856,56 @@ enum Musica
     MUS_HG_OBTAIN_CASTLE_POINTS,
     MUS_HG_OBTAIN_B_POINTS,
     MUS_HG_WIN_MINIGAME,
-    NUMERO_CANCIONES = MUS_HG_WIN_MINIGAME,
+    NUMERO_CANCIONES = MUS_HG_WIN_MINIGAME
 };
+"""
 
-#define MUS_ROUTE118                      0x7FFF  // Map is split into 2 music sections. controlled by GetCurrLocationDefaultMusic().
-#define MUS_NONE                          0xFFFF
+# ----------------------------------------------------------
+# PARSEAR ENUMS
+# ----------------------------------------------------------
 
-#endif  // GUARD_CONSTANTS_SONGS_H
+def extraer_identificadores(texto_enum):
+    """
+    Devuelve lista de identificadores dentro del enum,
+    excluyendo el último (NUMERO_XXXXX).
+    """
+    contenido = re.search(r"\{([\s\S]*?)\};", texto_enum)
+    if not contenido:
+        return []
+
+    lineas = contenido.group(1).split("\n")
+    ids = []
+
+    for linea in lineas:
+        linea = linea.strip().rstrip(",")
+        if not linea:
+            continue
+        if linea.startswith("NUMERO_"):
+            continue
+        ids.append(linea)
+
+    return ids
+
+musica = extraer_identificadores(enum_musica)
+
+# ----------------------------------------------------------
+# GENERAR charmap.txt
+# ----------------------------------------------------------
+
+def generar_charmap(musica):
+    salida = []
+
+    for idx, name in enumerate(musica):
+        lo = idx & 0xFF
+        hi = 0x00
+        salida.append(f"{name:30} = {lo:02X} {hi:02X}")
+
+    return "\n".join(salida)
+
+resultado = generar_charmap(musica)
+
+# ----------------------------------------------------------
+# MOSTRAR RESULTADO
+# ----------------------------------------------------------
+print("===== charmap.txt AUTOGENERADO =====\n")
+print(resultado)

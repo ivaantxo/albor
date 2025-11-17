@@ -277,17 +277,7 @@ static u8 GetNameLength(const u8 *secretBaseOwnerName)
 
 void SetPlayerSecretBase(void)
 {
-    u32 i;
 
-    gSaveBlockPtr->secretBases[0].secretBaseId = sCurSecretBaseId;
-    for (i = 0; i < TRAINER_ID_LENGTH; i++)
-        gSaveBlockPtr->secretBases[0].trainerId[i] = gSaveBlockPtr->playerTrainerId[i];
-
-    VarSet(VAR_CURRENT_SECRET_BASE, 0);
-    StringCopyN(gSaveBlockPtr->secretBases[0].trainerName, gSaveBlockPtr->playerName, GetNameLength(gSaveBlockPtr->playerName));
-    gSaveBlockPtr->secretBases[0].gender = gSaveBlockPtr->playerGender;
-    gSaveBlockPtr->secretBases[0].language = GAME_LANGUAGE;
-    VarSet(VAR_SECRET_BASE_MAP, gMapHeader.regionMapSectionId);
 }
 
 // Set the 'open' entrance metatile for any occupied secret base on this map

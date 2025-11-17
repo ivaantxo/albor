@@ -8,17 +8,10 @@
 
 /* Some functions have been added to support Expansion's RNG implementation.
 *
-* LocalRandom(*val) provides a higher-quality replacement for uses of
-* ISO_RANDOMIZE in vanilla Emerald. You can use LocalRandomSeed(u32) to
-* create a local state.
-*
 * It is no longer possible to call Random() in interrupt handlers safely.
 * AdvanceRandom() is provided to handle burning numbers in VBlank handlers.
 * If you need to use random numbers in the VBlank handler, a local state
 * should be used instead.
-*
-* Random2_32() was added, even though it is not used directly, because the
-* underlying RNG always outputs 32 bits.
 */
 
 struct Sfc32State {
@@ -32,8 +25,6 @@ typedef struct Sfc32State rng_value_t;
 
 #define RNG_VALUE_EMPTY {}
 
-// Calling this function directly is discouraged.
-// Use LocalRandom() instead.
 static inline u32 _SFC32_Next(struct Sfc32State *state)
 {
     const u32 result = state->a + state->b + state->ctr++;
@@ -43,32 +34,13 @@ static inline u32 _SFC32_Next(struct Sfc32State *state)
     return result;
 }
 
-static inline u16 LocalRandom(rng_value_t *val)
-{
-    return _SFC32_Next(val) >> 16;
-}
+u32 Random(void);
 
-u32 Random32(void);
-u32 Random2_32(void);
-
-static inline u16 Random(void)
-{
-    return Random32() >> 16;
-}
-
-void SeedRng(u32 seed);
-void SeedRng2(u32 seed);
-rng_value_t LocalRandomSeed(u32 seed);
-
-static inline u16 Random2(void)
-{
-    return Random2_32() >> 16;
-}
+void GeneraSemillaAleatoria(void);
 
 void AdvanceRandom(void);
 
 extern rng_value_t gRngValue;
-extern rng_value_t gRng2Value;
 
 void Shuffle8(void *data, size_t n);
 void Shuffle16(void *data, size_t n);
@@ -225,5 +197,5 @@ u32 RandomWeightedArrayDefault(enum RandomTag, u32 sum, u32 n, const u8 *weights
 const void *RandomElementArrayDefault(enum RandomTag, const void *array, size_t size, size_t count);
 
 u8 RandomWeightedIndex(u8 *weights, u8 length);
-
+bool32 PorcentajeAleatorio(u32 porcentaje); //  Devuelve TRUE el porcentaje dado.
 #endif // GUARD_RANDOM_H

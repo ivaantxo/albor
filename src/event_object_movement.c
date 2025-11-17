@@ -21,7 +21,6 @@
 #include "follower_helper.h"
 #include "gpu_regs.h"
 #include "graphics.h"
-#include "mauville_old_man.h"
 #include "metatile_behavior.h"
 #include "overworld.h"
 #include "palette.h"
@@ -45,7 +44,6 @@
 #include "constants/field_effects.h"
 #include "constants/items.h"
 #include "constants/map_types.h"
-#include "constants/mauville_old_man.h"
 #include "constants/rgb.h"
 #include "constants/region_map_sections.h"
 #include "constants/songs.h"
@@ -480,7 +478,8 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPal_RubySapphireBrendan,   OBJ_EVENT_PAL_TAG_RS_BRENDAN},
     {gObjectEventPal_RubySapphireMay,       OBJ_EVENT_PAL_TAG_RS_MAY},
     {gObjectEventPal_Cynthia,               OBJ_EVENT_PAL_TAG_CYNTHIA},
-    {gObjectEventPal_Lance,               OBJ_EVENT_PAL_TAG_LANCE},
+    {gObjectEventPal_Lance,                 OBJ_EVENT_PAL_TAG_LANCE},
+    {gObjectEventPal_Sombra,                OBJ_EVENT_PAL_TAG_SOMBRA},
     {gObjectEventPal_MasterBall,            OBJ_EVENT_PAL_TAG_BALL_MASTER},
     {gObjectEventPal_UltraBall,             OBJ_EVENT_PAL_TAG_BALL_ULTRA},
     {gObjectEventPal_GreatBall,             OBJ_EVENT_PAL_TAG_BALL_GREAT},
@@ -2176,20 +2175,13 @@ static void SpawnLightSprite(s16 x, s16 y, s16 camX, s16 camY, u32 lightType)
 void TrySpawnLightSprites(s16 camX, s16 camY) 
 {
     u32 i;
-    u8 objectCount;
+    u8 objectCount = gMapHeader.events->objectEventCount;
     s16 left = gSaveBlockPtr->pos.x - 2;
     s16 right = gSaveBlockPtr->pos.x + MAP_OFFSET_W + 2;
     s16 top = gSaveBlockPtr->pos.y;
     s16 bottom = gSaveBlockPtr->pos.y + MAP_OFFSET_H + 2;
     if (gMapHeader.events == NULL)
         return;
-
-    if (InBattlePyramid())
-        objectCount = GetNumBattlePyramidObjectEvents();
-    else if (InTrainerHill())
-        objectCount = 2;
-    else
-        objectCount = gMapHeader.events->objectEventCount;
 
     for (i = 0; i < objectCount; i++) 
     {
@@ -10380,4 +10372,14 @@ static u16 ObtenIDGraficosParaPokemon(u32 species, bool32 shiny, bool32 hembra)
     if (hembra)
         graphicsId += OBJ_EVENT_MON_FEMALE;
     return graphicsId;
+}
+
+void Script_ArcanineTransparentAndFree(void)
+{
+    u8 objectEventId = gSelectedObjectEvent;
+
+    struct ObjectEvent *obj = &gObjectEvents[objectEventId];
+    struct Sprite *sprite = &gSprites[obj->spriteId];
+
+    sprite->oam.objMode = ST_OAM_OBJ_BLEND;
 }

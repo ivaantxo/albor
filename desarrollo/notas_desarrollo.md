@@ -53,6 +53,9 @@
 - Crear habilidad exclusiva de Beedrill (Empalador o algo así).
 - Arreglar tiendas.
 - Arreglar icono de guardado que cambia con el día.
+- Huevos heredan 50% de las veces habilidad de la madre.
+- Huevos tienen 50% en cada estadística de heredar los IVs del padre o de la madre: 2 padres con 31 IVs en ataque darán siempre un huevo con 31 IVs en ataque.
+- Huevos heredan 50% naturaleza del padre y 50% de la madre.
 
 -Lista de moves hechos:
 *Bomba huevo.
@@ -74,7 +77,7 @@
 *paletas: 0-12 tileset primario 0-9 (es necesario?) secundario 10-12 (chequear SWAP_PAL)
 *paletas primary: 0/arboles 1/centro_pokemon 2/hierba_y_hierba_alta 3/agua 4/agua_playa
 
-porytiles compile-primary -Wall -o /Users/ivanmartinez/Desktop/pokeemerald/data/tilesets/primary/principal /Users/ivanmartinez/Desktop/pokeemerald/desarrollo/graficos /Users/ivanmartinez/Desktop/pokeemerald/include/constants/metatile_behaviors.h
+porytiles compile-primary -Wall -o /Users/ivanmartinez/Documents/Volverá/albor/data/tilesets/primary/principal /Users/ivanmartinez/Documents/Volverá/albor/desarrollo/graficos /Users/ivanmartinez/Documents/Volverá/albor/include/constants/metatile_behaviors.h
 
 *Cada roedor (Furret, Linoone, Diggersby, Raticate, Bidoof) tiene un stat más dominante (PS-Raticate, At-Diggersby, Df-Bidoof, Df. Esp-Furret, Vel-Linoone)
 *Porygon Elect-Normal??
@@ -93,3 +96,5 @@ porytiles compile-primary -Wall -o /Users/ivanmartinez/Desktop/pokeemerald/data/
 paletas: (\d+) (\d+) (\d+) \d+ --> $1 $2 $3
 
 //falta terminar lista de macros (scrcmd...) y terminar strings, después comprobar que todo va bien, y añadir cambios de rama principal.
+
+find . -name "* 2.inc" -delete //para limpiar archivos generados

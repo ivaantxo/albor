@@ -44,39 +44,6 @@ bool8 MonHasMail(struct Pokemon *mon)
 
 u8 GiveMailToMonByItemId(struct Pokemon *mon, u16 itemId)
 {
-    u8 heldItem[2];
-    u8 id, i;
-    u16 species;
-    u32 personality;
-
-    heldItem[0] = itemId;
-    heldItem[1] = itemId >> 8;
-
-    for (id = 0; id < PARTY_SIZE; id++)
-    {
-        if (gSaveBlockPtr->mail[id].itemId == ITEM_NONE)
-        {
-            for (i = 0; i < MAIL_WORDS_COUNT; i++)
-                gSaveBlockPtr->mail[id].words[i] = EC_EMPTY_WORD;
-
-            for (i = 0; i < PLAYER_NAME_LENGTH; i++)
-                gSaveBlockPtr->mail[id].playerName[i] = gSaveBlockPtr->playerName[i];
-            gSaveBlockPtr->mail[id].playerName[i] = EOS;
-            PadNameString(gSaveBlockPtr->mail[id].playerName, CHAR_SPACE);
-
-            for (i = 0; i < TRAINER_ID_LENGTH; i++)
-                gSaveBlockPtr->mail[id].trainerId[i] = gSaveBlockPtr->playerTrainerId[i];
-
-            species = GetBoxMonData(&mon->box, MON_DATA_SPECIES);
-            personality = GetBoxMonData(&mon->box, MON_DATA_PERSONALITY);
-            gSaveBlockPtr->mail[id].species = SpeciesToMailSpecies(species, personality);
-            gSaveBlockPtr->mail[id].itemId = itemId;
-            SetMonData(mon, MON_DATA_MAIL, &id);
-            SetMonData(mon, MON_DATA_HELD_ITEM, heldItem);
-            return id;
-        }
-    }
-
     return MAIL_NONE;
 }
 

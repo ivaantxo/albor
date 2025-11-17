@@ -7,7 +7,6 @@
 #define EASY_CHAT_TYPE_BATTLE_LOST             3
 #define EASY_CHAT_TYPE_MAIL                    4
 #define EASY_CHAT_TYPE_INTERVIEW               5
-#define EASY_CHAT_TYPE_BARD_SONG               6
 #define EASY_CHAT_TYPE_FAN_CLUB                7
 #define EASY_CHAT_TYPE_DUMMY_SHOW              8
 #define EASY_CHAT_TYPE_TRENDY_PHRASE           9

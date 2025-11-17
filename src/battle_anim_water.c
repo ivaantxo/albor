@@ -653,7 +653,7 @@ static void AnimKnockOffAquaTailStep(struct Sprite *sprite)
 
 void AnimTask_CreateRaindrops(u8 taskId)
 {
-    u8 x, y;
+    u32 x, y;
 
     if (gTasks[taskId].data[0] == 0)
     {
@@ -664,8 +664,8 @@ void AnimTask_CreateRaindrops(u8 taskId)
     gTasks[taskId].data[0]++;
     if (gTasks[taskId].data[0] % gTasks[taskId].data[2] == 1)
     {
-        x = Random2() % DISPLAY_WIDTH;
-        y = Random2() % (DISPLAY_HEIGHT / 2);
+        x = Random() % DISPLAY_WIDTH;
+        y = Random() % (DISPLAY_HEIGHT / 2);
         CreateSprite(&gRainDropSpriteTemplate, x, y, 4);
     }
     if (gTasks[taskId].data[0] == gTasks[taskId].data[3])
@@ -1194,13 +1194,12 @@ static void AnimTask_SurfWaveScanlineEffect(u8 taskId)
 
 static void AnimSmallDriftingBubbles(struct Sprite *sprite)
 {
-    s16 randData;
-    s16 randData2;
+    s32 randData, randData2;
 
     sprite->oam.tileNum += 8;
     InitSpritePosToAnimTarget(sprite, TRUE);
-    randData = (Random2() & 0xFF) | 256;
-    randData2 = (Random2() & 0x1FF);
+    randData = (Random() & 0xFF) | 256;
+    randData2 = (Random() & 0x1FF);
     if (randData2 > 255)
         randData2 = 256 - randData2;
     sprite->data[1] = randData;
@@ -1636,9 +1635,9 @@ static void AnimWaterSportDroplet(struct Sprite *sprite)
         sprite->x += sprite->x2;
         sprite->y += sprite->y2;
         sprite->data[0] = 6;
-        sprite->data[2] = (Random2() & 0x1F) - 16 + sprite->x;
-        sprite->data[4] = (Random2() & 0x1F) - 16 + sprite->y;
-        sprite->data[5] = ~(Random2() & 7);
+        sprite->data[2] = (Random() & 0x1F) - 16 + sprite->x;
+        sprite->data[4] = (Random() & 0x1F) - 16 + sprite->y;
+        sprite->data[5] = ~(Random() & 7);
         InitAnimArcTranslation(sprite);
         sprite->callback = AnimWaterSportDroplet_Step;
     }
@@ -1725,22 +1724,14 @@ static void AnimWaterPulseRing_Step(struct Sprite *sprite)
 
 static void CreateWaterPulseRingBubbles(struct Sprite *sprite, int xDiff, int yDiff)
 {
-    s16 combinedX;
-    s16 combinedY;
-    s16 i;
-    s16 something;
-    s16 unusedVar = 1; //unusedVar is needed to match
-    s16 randomSomethingY;
-    s16 randomSomethingX;
-    u8 spriteId;
+    s32 combinedX, combinedY, i, something, randomSomethingY, randomSomethingX;
+    u32 spriteId;
 
     something = sprite->data[0] / 2;
     combinedX = sprite->x + sprite->x2;
     combinedY = sprite->y + sprite->y2;
-    if (yDiff < 0)
-        unusedVar *= -1; //Needed to match
-    randomSomethingY = yDiff + (Random2() % 10) - 5;
-    randomSomethingX = -xDiff + (Random2() % 10) - 5;
+    randomSomethingY = yDiff + (Random() % 10) - 5;
+    randomSomethingX = -xDiff + (Random() % 10) - 5;
 
     for (i = 0; i <= 0; i++)
     {

@@ -240,30 +240,6 @@ static u32 GetMonRibbonListLoopTaskFunc(s32 state)
 
 static u32 BuildPartyMonRibbonList(s32 state)
 {
-    s32 i;
-    struct PokenavMonListItem item;
-    struct Pokenav_RibbonsMonList * list = GetSubstructPtr(POKENAV_SUBSTRUCT_RIBBONS_MON_LIST);
-
-    list->monList->listCount = 0;
-    list->monList->currIndex = 0;
-    item.boxId = TOTAL_BOXES_COUNT;
-    for (i = 0; i < PARTY_SIZE; i++)
-    {
-        struct Pokemon *pokemon = &gPlayerParty[i];
-        if (!GetMonData(pokemon, MON_DATA_SANITY_HAS_SPECIES))
-            return LT_INC_AND_CONTINUE;
-        if (!GetMonData(pokemon, MON_DATA_SANITY_IS_EGG) && !GetMonData(pokemon, MON_DATA_SANITY_IS_BAD_EGG))
-        {
-            u32 ribbonCount = GetMonData(pokemon, MON_DATA_RIBBON_COUNT);
-            if (ribbonCount != 0)
-            {
-                item.monId = i;
-                item.data = ribbonCount;
-                InsertMonListItem(list, &item);
-            }
-        }
-    }
-
     return LT_INC_AND_CONTINUE;
 }
 
@@ -287,16 +263,13 @@ static u32 BuildBoxMonRibbonList(s32 state)
     {
         while (monId < IN_BOX_COUNT)
         {
-            if (CheckBoxMonSanityAt(boxId, monId))
+            u32 ribbonCount = GetBoxMonDataAt(boxId, monId, MON_DATA_RIBBON_COUNT);
+            if (ribbonCount != 0)
             {
-                u32 ribbonCount = GetBoxMonDataAt(boxId, monId, MON_DATA_RIBBON_COUNT);
-                if (ribbonCount != 0)
-                {
-                    item.boxId = boxId;
-                    item.monId = monId;
-                    item.data = ribbonCount;
-                    InsertMonListItem(list, &item);
-                }
+                item.boxId = boxId;
+                item.monId = monId;
+                item.data = ribbonCount;
+                InsertMonListItem(list, &item);
             }
             boxCount++;
             monId++;

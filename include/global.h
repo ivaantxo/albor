@@ -215,7 +215,6 @@ struct BattleTowerPokemon
     u8 speedEV;
     u8 spAttackEV;
     u8 spDefenseEV;
-    u32 otId;
     u32 hpIV:5;
     u32 attackIV:5;
     u32 defenseIV:5;
@@ -421,71 +420,9 @@ struct DewfordTrend
     u16 trendiness:7;
     u16 maxTrendiness:7;
     u16 gainingTrendiness:1;
-    u16 rand;
+    u32 rand;
     u16 words[2];
 }; /*size = 0x8*/
-
-struct MauvilleManCommon
-{
-    u8 id;
-};
-
-struct MauvilleManBard
-{
-    /*0x00*/ u8 id;
-    /*0x02*/ u16 songLyrics[BARD_SONG_LENGTH];
-    /*0x0E*/ u16 temporaryLyrics[BARD_SONG_LENGTH];
-    /*0x1A*/ u8 playerName[PLAYER_NAME_LENGTH + 1];
-    /*0x25*/ u8 playerTrainerId[TRAINER_ID_LENGTH];
-    /*0x29*/ bool8 hasChangedSong;
-    /*0x2A*/ u8 language;
-}; /*size = 0x2C*/
-
-struct MauvilleManStoryteller
-{
-    u8 id;
-    bool8 alreadyRecorded;
-    u8 gameStatIDs[NUM_STORYTELLER_TALES];
-    u8 trainerNames[NUM_STORYTELLER_TALES][PLAYER_NAME_LENGTH];
-    u8 statValues[NUM_STORYTELLER_TALES][4];
-    u8 language[NUM_STORYTELLER_TALES];
-};
-
-struct MauvilleManGiddy
-{
-    /*0x00*/ u8 id;
-    /*0x01*/ u8 taleCounter;
-    /*0x02*/ u8 questionNum;
-    /*0x04*/ u16 randomWords[GIDDY_MAX_TALES];
-    /*0x18*/ u8 questionList[GIDDY_MAX_QUESTIONS];
-    /*0x20*/ u8 language;
-}; /*size = 0x2C*/
-
-struct MauvilleManHipster
-{
-    u8 id;
-    bool8 taughtWord;
-    u8 language;
-};
-
-struct MauvilleOldManTrader
-{
-    u8 id;
-    u8 decorations[NUM_TRADER_ITEMS];
-    u8 playerNames[NUM_TRADER_ITEMS][11];
-    u8 alreadyTraded;
-    u8 language[NUM_TRADER_ITEMS];
-};
-
-typedef union OldMan
-{
-    struct MauvilleManCommon common;
-    struct MauvilleManBard bard;
-    struct MauvilleManGiddy giddy;
-    struct MauvilleManHipster hipster;
-    struct MauvilleOldManTrader trader;
-    struct MauvilleManStoryteller storyteller;
-} OldMan;
 
 struct ContestWinner
 {
@@ -531,61 +468,12 @@ struct DayCare
     u8 stepCounter;
 };
 
-struct LilycoveLadyQuiz
-{
-    /*0x000*/ u8 id;
-    /*0x001*/ u8 state;
-    /*0x002*/ u16 question[QUIZ_QUESTION_LEN];
-    /*0x014*/ u16 correctAnswer;
-    /*0x016*/ u16 playerAnswer;
-    /*0x018*/ u8 playerName[PLAYER_NAME_LENGTH + 1];
-    /*0x020*/ u16 playerTrainerId[TRAINER_ID_LENGTH];
-    /*0x028*/ u16 prize;
-    /*0x02A*/ bool8 waitingForChallenger;
-    /*0x02B*/ u8 questionId;
-    /*0x02C*/ u8 prevQuestionId;
-    /*0x02D*/ u8 language;
-};
-
-struct LilycoveLadyFavor
-{
-    /*0x000*/ u8 id;
-    /*0x001*/ u8 state;
-    /*0x002*/ bool8 likedItem;
-    /*0x003*/ u8 numItemsGiven;
-    /*0x004*/ u8 playerName[PLAYER_NAME_LENGTH + 1];
-    /*0x00C*/ u8 favorId;
-    /*0x00E*/ u16 itemId;
-    /*0x010*/ u16 bestItem;
-    /*0x012*/ u8 language;
-};
-
-struct LilycoveLadyContest
-{
-    /*0x000*/ u8 id;
-    /*0x001*/ bool8 givenPokeblock;
-    /*0x002*/ u8 numGoodPokeblocksGiven;
-    /*0x003*/ u8 numOtherPokeblocksGiven;
-    /*0x004*/ u8 playerName[PLAYER_NAME_LENGTH + 1];
-    /*0x00C*/ u8 maxSheen;
-    /*0x00D*/ u8 category;
-    /*0x00E*/ u8 language;
-};
-
-typedef union // 3b58
-{
-    struct LilycoveLadyQuiz quiz;
-    struct LilycoveLadyFavor favor;
-    struct LilycoveLadyContest contest;
-    u8 id;
-} LilycoveLady;
-
 struct SaveBlock
 {
     u8 playerName[PLAYER_NAME_LENGTH + 1];
     u8 playerGender; // MALE, FEMALE
     u8 specialSaveWarpFlags;
-    u8 playerTrainerId[TRAINER_ID_LENGTH];
+    u32 personalidadJugador;
     u16 playTimeHours;
     u8 playTimeMinutes;
     u8 playTimeSeconds;
@@ -656,7 +544,6 @@ struct SaveBlock
     u16 easyChatBattleLost[EASY_CHAT_BATTLE_WORDS_COUNT]; //eliminar
     struct Mail mail[MAIL_COUNT]; //eliminar
     u8 unlockedTrendySayings[NUM_TRENDY_SAYING_BYTES]; //eliminar
-    OldMan oldMan; //eliminar
     struct DewfordTrend dewfordTrends[SAVED_TRENDS_COUNT]; //eliminar
     struct ContestWinner contestWinners[NUM_CONTEST_WINNERS];  //eliminar
     struct DayCare daycare;
@@ -664,7 +551,6 @@ struct SaveBlock
     struct Roamer roamer[ROAMER_COUNT]; //eliminar
     u8 dexSeen[NUM_DEX_FLAG_BYTES];
     u8 dexCaught[NUM_DEX_FLAG_BYTES];
-    LilycoveLady lilycoveLady; //eliminar
 };
 
 extern struct SaveBlock* gSaveBlockPtr;

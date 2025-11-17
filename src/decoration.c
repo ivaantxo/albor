@@ -30,7 +30,6 @@
 #include "task.h"
 #include "text.h"
 #include "tilesets.h"
-#include "trader.h"
 #include "constants/decorations.h"
 #include "constants/event_objects.h"
 #include "constants/songs.h"
@@ -140,8 +139,6 @@ static void HandleDecorationCategoriesMenuInput(u8 taskId);
 static void SelectDecorationCategory(u8 taskId);
 static void ReturnToDecorationCategoriesAfterInvalidSelection(u8 taskId);
 static void ExitDecorationCategoriesMenu(u8 taskId);
-static void ReturnToActionsMenuFromCategories(u8 taskId);
-static void ExitTraderDecorationMenu(u8 taskId);
 static void CopyDecorationMenuItemName(u8 *dest, u16 decoration);
 static void DecorationItemsMenu_OnCursorMove(s32 itemIndex, bool8 flag, struct ListMenu *menu);
 static void ShowDecorationItemsWindow(u8 taskId);
@@ -246,7 +243,6 @@ static const TaskFunc sSecretBasePC_SelectedDecorationActions[][2] =
 {
    { DecorationItemsMenuAction_AttemptPlace, DecorationItemsMenuAction_Cancel},
    { DecorationItemsMenuAction_AttemptToss,  DecorationItemsMenuAction_Cancel},
-   { DecorationItemsMenuAction_Trade,        DecorationItemsMenuAction_Cancel},
 };
 
 static const struct WindowTemplate sDecorationWindowTemplates[WINDOW_COUNT] =
@@ -811,19 +807,7 @@ static void ReturnToDecorationCategoriesAfterInvalidSelection(u8 taskId)
 
 static void ExitDecorationCategoriesMenu(u8 taskId)
 {
-    if (gTasks[taskId].tDecorationMenuCommand != DECOR_MENU_TRADE)
-        ReturnToActionsMenuFromCategories(taskId);
-    else
-        ExitTraderDecorationMenu(taskId);
-}
 
-static void ReturnToActionsMenuFromCategories(u8 taskId)
-{
-    RemoveDecorationWindow(WINDOW_DECORATION_CATEGORIES);
-    AddDecorationActionsWindow();
-    DrawDialogueFrame(0, FALSE);
-    PrintCurMainMenuDescription();
-    gTasks[taskId].func = HandleDecorationActionsMenuInput;
 }
 
 void ShowDecorationCategoriesWindow(u8 taskId)
@@ -838,12 +822,6 @@ void ShowDecorationCategoriesWindow(u8 taskId)
 void CopyDecorationCategoryName(u8 *dest, u8 category)
 {
     StringCopy(dest, sDecorationCategoryNames[category]);
-}
-
-static void ExitTraderDecorationMenu(u8 taskId)
-{
-    RemoveDecorationWindow(WINDOW_DECORATION_CATEGORIES);
-    ExitTraderMenu(taskId);
 }
 
 static void InitDecorationItemsMenuLimits(void)

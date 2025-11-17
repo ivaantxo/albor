@@ -719,8 +719,6 @@ static bool8 MainState_Exit(void)
 {
     if (!gFundidoPaletas.activo)
     {
-        if (sNamingScreen->templateNum == NAMING_SCREEN_PLAYER)
-            SeedRngAndSetTrainerId();
         SetMainCallback2(sNamingScreen->returnCallback);
         DestroyTask(FindTaskIdByFunc(Task_NamingScreen));
         FreeAllWindowBuffers();

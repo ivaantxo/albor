@@ -700,7 +700,7 @@ static bool8 TryInflictRandomStatus(void)
     status = 0;
     do
     {
-        u8 rand;
+        u32 rand;
 
         statusChosen = FALSE;
         rand = Random() % 100;
@@ -1409,17 +1409,6 @@ static void InitPikeChallenge(void)
 
 static bool8 CanEncounterWildMon(u8 enemyMonLevel)
 {
-    if (!GetMonData(&gPlayerParty[0], MON_DATA_SANITY_IS_EGG))
-    {
-        u16 monAbility = GetMonAbility(&gPlayerParty[0]);
-        if (monAbility == ABILITY_KEEN_EYE || monAbility == ABILITY_INTIMIDATE)
-        {
-            u8 playerMonLevel = GetMonData(&gPlayerParty[0], MON_DATA_LEVEL);
-            if (playerMonLevel > 5 && enemyMonLevel <= playerMonLevel - 5 && Random() % 2 == 0)
-                return FALSE;
-        }
-    }
-
     return TRUE;
 }
 

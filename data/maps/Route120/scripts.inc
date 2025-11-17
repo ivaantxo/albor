@@ -78,25 +78,6 @@ Route120_EventScript_SetRainyWeather::
 	return
 
 Route120_EventScript_BerryBeauty::
-	lock
-	faceplayer
-	dotimebasedevents
-	goto_if_set FLAG_DAILY_ROUTE_120_RECEIVED_BERRY, Route120_EventScript_ReceivedBerry
-	msgbox Route120_Text_BerriesExpressionOfLoveIsntIt, MSGBOX_YESNO
-	call_if_eq VAR_RESULT, YES, Route120_EventScript_BerryLove
-	call_if_eq VAR_RESULT, NO, Route120_EventScript_BerryNotLove
-	specialvar VAR_RESULT, GetPlayerTrainerIdOnesDigit
-	switch VAR_RESULT
-	case 0, Route120_EventScript_GiveFigyBerry
-	case 5, Route120_EventScript_GiveFigyBerry
-	case 1, Route120_EventScript_GiveWikiBerry
-	case 6, Route120_EventScript_GiveWikiBerry
-	case 2, Route120_EventScript_GiveMagoBerry
-	case 7, Route120_EventScript_GiveMagoBerry
-	case 3, Route120_EventScript_GiveAguavBerry
-	case 8, Route120_EventScript_GiveAguavBerry
-	case 4, Route120_EventScript_GiveIapapaBerry
-	case 9, Route120_EventScript_GiveIapapaBerry
 	end
 
 Route120_EventScript_GiveFigyBerry::

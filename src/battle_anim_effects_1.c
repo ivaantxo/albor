@@ -3158,8 +3158,8 @@ static void AnimAbsorptionOrb_Step(struct Sprite *sprite)
 // properties and the sprite anim are randomly determined.
 void AnimHyperBeamOrb(struct Sprite *sprite)
 {
-    u16 speed;
-    u16 animNum = Random2();
+    u32 speed;
+    u32 animNum = Random();
 
     StartSpriteAnim(sprite, animNum % 8);
     sprite->x = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_X_2);
@@ -3169,14 +3169,14 @@ void AnimHyperBeamOrb(struct Sprite *sprite)
     else
         sprite->x += 20;
 
-    speed = Random2();
+    speed = Random();
     sprite->data[0] = (speed & 31) + 64;
     sprite->data[1] = sprite->x;
     sprite->data[2] = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X_2);
     sprite->data[3] = sprite->y;
     sprite->data[4] = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y_PIC_OFFSET);
     InitAnimFastLinearTranslationWithSpeed(sprite);
-    sprite->data[5] = Random2() & 0xFF;
+    sprite->data[5] = Random() & 0xFF;
     sprite->data[6] = sprite->subpriority;
     sprite->callback = AnimHyperBeamOrb_Step;
     sprite->callback(sprite);
@@ -4085,8 +4085,8 @@ static void AnimIngrainOrb(struct Sprite *sprite)
 
 static void InitItemBagData(struct Sprite *sprite, s16 c)
 {
-    int a = (sprite->x << 8) | sprite->y;
-    int b = (sprite->data[6] << 8) | sprite->data[7];
+    u32 a = (sprite->x << 8) | sprite->y;
+    u32 b = (sprite->data[6] << 8) | sprite->data[7];
     c <<= 8;
     sprite->data[5] = a;
     sprite->data[6] = b;
@@ -4180,20 +4180,18 @@ static void AnimPresent(struct Sprite *sprite)
 
 static void AnimKnockOffOpponentsItem(struct Sprite *sprite)
 {
-    int zero;
     sprite->data[0] += ((sprite->data[3] * 128) / sprite->data[4]);
-    zero = 0;
     if (sprite->data[0] > 0x7F)
     {
         sprite->data[1]++;
-        sprite->data[0] = zero;
+        sprite->data[0] = 0;
     }
 
     sprite->y2 = Sin(sprite->data[0] + 0x80, 30 - sprite->data[1] * 8);
     if (moveAlongLinearPath(sprite))
     {
-        sprite->y2 = zero;
-        sprite->data[0] = zero;
+        sprite->y2 = 0;
+        sprite->data[0] = 0;
         DestroyAnimSprite(sprite);
     }
 }
@@ -4269,13 +4267,11 @@ static void AnimItemSteal(struct Sprite *sprite)
 
 static void AnimItemSteal_Step3(struct Sprite *sprite)
 {
-    int zero;
     sprite->data[0] += ((sprite->data[3] * 128) / sprite->data[4]);
-    zero = 0;
     if (sprite->data[0] > 127)
     {
         sprite->data[1]++;
-        sprite->data[0] = zero;
+        sprite->data[0] = 0;
     }
 
     sprite->y2 = Sin(sprite->data[0] + 0x80, 30 - sprite->data[1] * 8);
@@ -4409,7 +4405,7 @@ static void AnimTask_LeafBlade_Step(u8 taskId)
 {
     struct Task *task = &gTasks[taskId];
     struct Sprite *sprite = &gSprites[task->data[2]];
-    int a = task->data[0];
+    u32 a = task->data[0];
     switch (a)
     {
     case 4:
@@ -4691,7 +4687,7 @@ static void AnimFlyingParticle(struct Sprite *sprite)
 
 static void AnimFlyingParticle_Step(struct Sprite *sprite)
 {
-    int a = sprite->data[7];
+    u32 a = sprite->data[7];
     sprite->data[7]++;
     sprite->y2 = (sprite->data[1] * gSineTable[sprite->data[0]]) >> 8;
     sprite->x2 = sprite->data[2] * a;
@@ -4873,7 +4869,7 @@ void AnimCuttingSlice(struct Sprite *sprite)
 
 static void AnimAirCutterSlice(struct Sprite *sprite)
 {
-    u8 x, y;
+    u32 x, y;
     switch (gBattleAnimArgs[3])
     {
     case 1:
@@ -5303,7 +5299,7 @@ static void AnimLockOnTarget_Step4(struct Sprite *sprite)
     BlendPalettes(GetBattlePalettesMask(TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE), sprite->data[1], RGB_WHITE);
     if (sprite->data[1] == 16)
     {
-        int pal;
+        u32 pal;
         sprite->data[2]++;
         pal = sprite->oam.paletteNum;
         LoadPalette(&gPlttBufferUnfaded[OBJ_PLTT_ID(pal) + 8], OBJ_PLTT_ID(pal) + 1, PLTT_SIZEOF(2));
@@ -5874,10 +5870,8 @@ static void AnimMoonlightSparkle_Step(struct Sprite *sprite)
 
 void AnimTask_MoonlightEndFade(u8 taskId)
 {
-    int a = GetBattlePalettesMask(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE) & 0xFFFF;
-    int b;
-    int c;
-    int d;
+    u32 a = GetBattlePalettesMask(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE) & 0xFFFF;
+    u32 b, c, d;
 
     gTasks[taskId].data[0] = 0;
     gTasks[taskId].data[1] = 0;
@@ -6344,7 +6338,7 @@ void AnimTask_MusicNotesClearRainbowBlend(u8 taskId)
 static void AnimWavyMusicNotes(struct Sprite *sprite)
 {
     u32 index;
-    u8 x, y;
+    u32 x, y;
     SetSpriteCoordsToAnimAttackerCoords(sprite);
     StartSpriteAnim(sprite, gBattleAnimArgs[0]);
     if ((index = IndexOfSpritePaletteTag(gParticlesColorBlendTable[gBattleAnimArgs[1]][0])) != 0xFF)
@@ -6364,8 +6358,7 @@ static void AnimWavyMusicNotes(struct Sprite *sprite)
 
 static void AnimWavyMusicNotes_CalcVelocity(s16 x, s16 y, s16 *velocX, s16 *velocY, s8 xSpeedFactor)
 {
-    int x2;
-    int time;
+    u32 x2, time;
     if (x < 0)
         xSpeedFactor = -xSpeedFactor;
 
@@ -6673,7 +6666,7 @@ static void AnimTauntFinger_Step2(struct Sprite *sprite)
 // arg 1: initial y pixel offset
 static void AnimRockPolishStreak(struct Sprite *sprite)
 {
-    int affineAnimNum = Random2() % ARRAY_COUNT(gRockPolishStreak_AffineAnimCmds);
+    u32 affineAnimNum = Random() % ARRAY_COUNT(gRockPolishStreak_AffineAnimCmds);
     InitSpritePosToAnimAttacker(sprite, TRUE);
     StartSpriteAffineAnim(sprite, affineAnimNum);
     StoreSpriteCallbackInData6(sprite, DestroySpriteAndMatrix);
@@ -6715,7 +6708,7 @@ static void AnimPoisonJabProjectile(struct Sprite *sprite)
 
 void AnimTask_BlendNightSlash(u8 taskId)
 {
-    int paletteOffset = IndexOfSpritePaletteTag(ANIM_TAG_SLASH) * 16 + 256;
+    u32 paletteOffset = IndexOfSpritePaletteTag(ANIM_TAG_SLASH) * 16 + 256;
     BlendPalette(paletteOffset, 16, 6, RGB_RED);
     DestroyAnimVisualTask(taskId);
 }
@@ -6785,7 +6778,7 @@ void AnimTask_CreateSmallSteelBeamOrbs(u8 taskId)
 
 static void AnimAcrobaticsSlashes(struct Sprite *sprite)
 {
-    int affineAnimNum = Random2() % ARRAY_COUNT(gRockPolishStreak_AffineAnimCmds);
+    u32 affineAnimNum = Random() % ARRAY_COUNT(gRockPolishStreak_AffineAnimCmds);
     InitSpritePosToAnimTarget(sprite, TRUE);
     StartSpriteAffineAnim(sprite, affineAnimNum);
     StoreSpriteCallbackInData6(sprite, DestroySpriteAndMatrix);

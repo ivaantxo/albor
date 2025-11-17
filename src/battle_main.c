@@ -707,7 +707,7 @@ static u32 GeneratePartyHash(const struct Trainer *trainer, u32 i)
 
 void ModifyPersonalityForNature(u32 *personality, u32 newNature)
 {
-    u32 nature = GetNatureFromPersonality(*personality);
+    u32 nature = ObtenNaturalezaDePersonalidad(*personality);
     s32 diff = abs((s32)nature - (s32)newNature);
     s32 sign = (nature > newNature) ? 1 : -1;
     if (diff > NUMERO_NATURALEZAS / 2)
@@ -762,8 +762,6 @@ u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer 
             s32 ball = -1;
             u32 personalityHash = GeneratePartyHash(trainer, i);
             const struct TrainerMon *partyData = trainer->party;
-            u32 otIdType = OT_ID_RANDOM_NO_SHINY;
-            u32 fixedOtId = 0;
             u32 ability = 0;
             u32 personalityValue = 128;
 
@@ -775,12 +773,7 @@ u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer 
             else if (partyData[i].gender == TRAINER_MON_RANDOM_GENDER)
                 personalityValue = (personalityValue & 0xFFFFFF00) | GeneratePersonalityForGender(Random() & 1 ? MON_MALE : MON_FEMALE, partyData[i].species);
             ModifyPersonalityForNature(&personalityValue, partyData[i].nature);
-            if (partyData[i].isShiny)
-            {
-                otIdType = OT_ID_PRESET;
-                fixedOtId = HIHALF(personalityValue) ^ LOHALF(personalityValue);
-            }
-            CreateMon(&party[i], partyData[i].species, partyData[i].lvl, 0, TRUE, personalityValue, otIdType, fixedOtId);
+            CreaPokemon(&party[i], partyData[i].species, partyData[i].lvl, 0, TRUE, personalityValue);
             SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
 
             CustomTrainerPartyAssignMoves(&party[i], &partyData[i]);

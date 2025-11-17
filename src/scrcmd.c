@@ -24,7 +24,6 @@
 #include "field_weather.h"
 #include "fieldmap.h"
 #include "item.h"
-#include "lilycove_lady.h"
 #include "main.h"
 #include "menu.h"
 #include "money.h"
@@ -1637,10 +1636,6 @@ bool8 ScrCmd_bufferstdstring(struct ScriptContext *ctx)
 
 bool8 ScrCmd_buffercontestname(struct ScriptContext *ctx)
 {
-    u8 stringVarIndex = ScriptReadByte(ctx);
-    u16 category = VarGet(ScriptReadHalfword(ctx));
-
-    BufferContestName(sScriptStringVars[stringVarIndex], category);
     return FALSE;
 }
 

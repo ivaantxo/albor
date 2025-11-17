@@ -1516,13 +1516,13 @@ static void AnimThrowIceBall(struct Sprite *sprite)
 // Initializes the particles that scatter at the end of the Ice Ball animation.
 static void InitIceBallParticle(struct Sprite *sprite)
 {
-    s16 randA, randB;
+    s32 randA, randB;
 
     sprite->oam.tileNum += 8;
     InitSpritePosToAnimTarget(sprite, TRUE);
 
-    randA = (Random2() & 0xFF) + 256;
-    randB = Random2() & 0x1FF;
+    randA = (Random() & 0xFF) + 256;
+    randB = Random() & 0x1FF;
 
     if (randB > 0xFF)
         randB = 256 - randB;
@@ -1587,7 +1587,7 @@ const struct SpriteTemplate gSnowFlakesSpriteTemplate =
 
 void AnimTask_CreateSnowflakes(u8 taskId)
 {
-    u8 x, y;
+    u32 x, y;
 
     if (gTasks[taskId].data[0] == 0)
     {
@@ -1598,8 +1598,8 @@ void AnimTask_CreateSnowflakes(u8 taskId)
     gTasks[taskId].data[0]++;
     if (gTasks[taskId].data[0] % gTasks[taskId].data[2] == 1)
     {
-        x = Random2() % DISPLAY_WIDTH;
-        y = Random2() % (DISPLAY_HEIGHT / 2);
+        x = Random() % DISPLAY_WIDTH;
+        y = Random() % (DISPLAY_HEIGHT / 2);
         CreateSprite(&gSnowFlakesSpriteTemplate, x, y, 4);
     }
     if (gTasks[taskId].data[0] == gTasks[taskId].data[3])

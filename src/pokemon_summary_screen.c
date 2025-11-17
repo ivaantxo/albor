@@ -159,10 +159,7 @@ static EWRAM_DATA struct PokemonSummaryScreenData
         u8 OTGender; // 0x32
         u8 nature; // 0x33
         u8 ppBonuses; // 0x34
-        u8 sanity; // 0x35
         u8 OTName[17]; // 0x36
-        u32 OTID; // 0x48
-        u8 mintNature;
     } summary;
     u16 bgTilemapBuffers[PSS_PAGE_COUNT][2][0x400];
     u8 mode;
@@ -249,18 +246,13 @@ static void CreateTextPrinterTask(u8);
 static void PrintInfoPageText(void);
 static void Task_PrintInfoPage(u8);
 static void PrintMonOTName(void);
-static void PrintMonOTID(void);
 static void PrintMonAbilityName(void);
 static void PrintMonAbilityDescription(void);
 static void BufferMonTrainerMemo(void);
 static void PrintMonTrainerMemo(void);
 static void BufferNatureString(void);
 static void GetMetLevelString(u8 *);
-static bool8 DoesMonOTMatchOwner(void);
-static bool8 DidMonComeFromGBAGames(void);
-static bool8 IsInGamePartnerMon(void);
 static void PrintEggOTName(void);
-static void PrintEggOTID(void);
 static void PrintEggState(void);
 static void PrintEggMemo(void);
 static void Task_PrintSkillsPage(u8);
@@ -1472,13 +1464,7 @@ static bool8 ExtractMonDataToSummaryStruct(struct Pokemon *mon)
         sum->abilityNum = GetMonData(mon, MON_DATA_ABILITY_NUM);
         sum->item = GetMonData(mon, MON_DATA_HELD_ITEM);
         sum->pid = GetMonData(mon, MON_DATA_PERSONALITY);
-        sum->sanity = GetMonData(mon, MON_DATA_SANITY_IS_BAD_EGG);
-
-        if (sum->sanity)
-            sum->isEgg = TRUE;
-        else
-            sum->isEgg = GetMonData(mon, MON_DATA_IS_EGG);
-
+        sum->isEgg = GetMonData(mon, MON_DATA_IS_EGG);
         break;
     case 1:
         for (i = 0; i < MAX_MON_MOVES; i++)
@@ -1489,8 +1475,7 @@ static bool8 ExtractMonDataToSummaryStruct(struct Pokemon *mon)
         sum->ppBonuses = GetMonData(mon, MON_DATA_PP_BONUSES);
         break;
     case 2:
-        sum->nature = GetNature(mon);
-        sum->mintNature = GetMonData(mon, MON_DATA_HIDDEN_NATURE);
+        sum->nature = ObtenNaturaleza(mon);
         sum->currentHP = GetMonData(mon, MON_DATA_HP);
         sum->maxHP = GetMonData(mon, MON_DATA_MAX_HP);
         sum->atk = GetMonData(mon, MON_DATA_ATK);
@@ -1503,7 +1488,6 @@ static bool8 ExtractMonDataToSummaryStruct(struct Pokemon *mon)
         GetMonData(mon, MON_DATA_OT_NAME, sum->OTName);
         sum->ailment = GetMonAilment(mon);
         sum->OTGender = gSaveBlockPtr->playerGender;
-        sum->OTID = GetMonData(mon, MON_DATA_OT_ID);
         sum->metLocation = GetMonData(mon, MON_DATA_MET_LOCATION);
         sum->metLevel = GetMonData(mon, MON_DATA_MET_LEVEL);
         sum->friendship = GetMonData(mon, MON_DATA_FRIENDSHIP);
@@ -3025,14 +3009,12 @@ static void PrintInfoPageText(void)
     if (sMonSummaryScreen->summary.isEgg)
     {
         PrintEggOTName();
-        PrintEggOTID();
         PrintEggState();
         PrintEggMemo();
     }
     else
     {
         PrintMonOTName();
-        PrintMonOTID();
         PrintMonAbilityName();
         PrintMonAbilityDescription();
         BufferMonTrainerMemo();
@@ -3049,7 +3031,6 @@ static void Task_PrintInfoPage(u8 taskId)
         PrintMonOTName();
         break;
     case 2:
-        PrintMonOTID();
         break;
     case 3:
         PrintMonAbilityName();
@@ -3085,17 +3066,6 @@ static void PrintMonOTName(void)
     }
 }
 
-static void PrintMonOTID(void)
-{
-    int xPos;
-    if (InBattleFactory() != TRUE && InSlateportBattleTent() != TRUE)
-    {
-        ConvertIntToDecimalStringN(StringCopy(gStringVar1, gText_IDNumber2), (u16)sMonSummaryScreen->summary.OTID, STR_CONV_MODE_LEADING_ZEROS, 5);
-        xPos = GetStringRightAlignXOffset(FONT_NORMAL, gStringVar1, 56);
-        PrintTextOnWindow(AddWindowFromTemplateList(sPageInfoTemplate, PSS_DATA_WINDOW_INFO_ID), gStringVar1, xPos, 1, 0, 1);
-    }
-}
-
 static void PrintMonAbilityName(void)
 {
     u16 ability = GetAbilityBySpecies(sMonSummaryScreen->summary.species, sMonSummaryScreen->summary.abilityNum);
@@ -3118,46 +3088,24 @@ static void BufferMonTrainerMemo(void)
     DynamicPlaceholderTextUtil_SetPlaceholderPtr(1, sMemoMiscTextColor);
     BufferNatureString();
 
-    if (InBattleFactory() == TRUE || InSlateportBattleTent() == TRUE || IsInGamePartnerMon() == TRUE)
+    u8 *metLevelString = Alloc(32);
+    u8 *metLocationString = Alloc(32);
+    GetMetLevelString(metLevelString);
+
+    if (sum->metLocation < MAPSEC_NONE)
     {
-        DynamicPlaceholderTextUtil_ExpandPlaceholders(gStringVar4, gText_XNature);
+        GetMapNameHandleAquaHideout(metLocationString, sum->metLocation);
+        DynamicPlaceholderTextUtil_SetPlaceholderPtr(4, metLocationString);
     }
+
+    if (sum->metLevel == 0)
+        text = (sum->metLocation >= MAPSEC_NONE) ? gText_XNatureHatchedSomewhereAt : gText_XNatureHatchedAtYZ;
     else
-    {
-        u8 *metLevelString = Alloc(32);
-        u8 *metLocationString = Alloc(32);
-        GetMetLevelString(metLevelString);
+        text = (sum->metLocation >= MAPSEC_NONE) ? gText_XNatureMetSomewhereAt : gText_XNatureMetAtYZ;
 
-        if (sum->metLocation < MAPSEC_NONE)
-        {
-            GetMapNameHandleAquaHideout(metLocationString, sum->metLocation);
-            DynamicPlaceholderTextUtil_SetPlaceholderPtr(4, metLocationString);
-        }
-
-        if (DoesMonOTMatchOwner() == TRUE)
-        {
-            if (sum->metLevel == 0)
-                text = (sum->metLocation >= MAPSEC_NONE) ? gText_XNatureHatchedSomewhereAt : gText_XNatureHatchedAtYZ;
-            else
-                text = (sum->metLocation >= MAPSEC_NONE) ? gText_XNatureMetSomewhereAt : gText_XNatureMetAtYZ;
-        }
-        else if (sum->metLocation == METLOC_FATEFUL_ENCOUNTER)
-        {
-            text = gText_XNatureFatefulEncounter;
-        }
-        else if (sum->metLocation != METLOC_IN_GAME_TRADE && DidMonComeFromGBAGames())
-        {
-            text = (sum->metLocation >= MAPSEC_NONE) ? gText_XNatureObtainedInTrade : gText_XNatureProbablyMetAt;
-        }
-        else
-        {
-            text = gText_XNatureObtainedInTrade;
-        }
-
-        DynamicPlaceholderTextUtil_ExpandPlaceholders(gStringVar4, text);
-        Free(metLevelString);
-        Free(metLocationString);
-    }
+    DynamicPlaceholderTextUtil_ExpandPlaceholders(gStringVar4, text);
+    Free(metLevelString);
+    Free(metLocationString);
 }
 
 static void PrintMonTrainerMemo(void)
@@ -3181,52 +3129,6 @@ static void GetMetLevelString(u8 *output)
     DynamicPlaceholderTextUtil_SetPlaceholderPtr(3, output);
 }
 
-u32 GetPlayerIDAsU32(void)
-{
-    return (gSaveBlockPtr->playerTrainerId[3] << 24) | (gSaveBlockPtr->playerTrainerId[2] << 16) | (gSaveBlockPtr->playerTrainerId[1] << 8) | gSaveBlockPtr->playerTrainerId[0];
-}
-
-static bool8 DoesMonOTMatchOwner(void)
-{
-    struct PokeSummary *sum = &sMonSummaryScreen->summary;
-    u32 trainerId;
-    u8 gender;
-
-    if (sMonSummaryScreen->monList.mons == gEnemyParty)
-    {
-        u8 multiID = GetMultiplayerId() ^ 1;
-        trainerId = gLinkPlayers[multiID].trainerId & 0xFFFF;
-        gender = gLinkPlayers[multiID].gender;
-        StringCopy(gStringVar1, gLinkPlayers[multiID].name);
-    }
-    else
-    {
-        trainerId = GetPlayerIDAsU32() & 0xFFFF;
-        gender = gSaveBlockPtr->playerGender;
-        StringCopy(gStringVar1, gSaveBlockPtr->playerName);
-    }
-
-    if (gender != sum->OTGender || trainerId != (sum->OTID & 0xFFFF) || StringCompareWithoutExtCtrlCodes(gStringVar1, sum->OTName))
-        return FALSE;
-    else
-        return TRUE;
-}
-
-static bool8 DidMonComeFromGBAGames(void)
-{
-    return TRUE;
-}
-
-bool8 DidMonComeFromRSE(void)
-{
-    return TRUE;
-}
-
-static bool8 IsInGamePartnerMon(void)
-{
-    return FALSE;
-}
-
 static void PrintEggOTName(void)
 {
     u32 windowId = AddWindowFromTemplateList(sPageInfoTemplate, PSS_DATA_WINDOW_INFO_ORIGINAL_TRAINER);
@@ -3235,23 +3137,12 @@ static void PrintEggOTName(void)
     PrintTextOnWindow(windowId, gText_FiveMarks, width, 1, 0, 1);
 }
 
-static void PrintEggOTID(void)
-{
-    int x;
-    StringCopy(gStringVar1, gText_IDNumber2);
-    StringAppend(gStringVar1, gText_FiveMarks);
-    x = GetStringRightAlignXOffset(FONT_NORMAL, gStringVar1, 56);
-    PrintTextOnWindow(AddWindowFromTemplateList(sPageInfoTemplate, PSS_DATA_WINDOW_INFO_ID), gStringVar1, x, 1, 0, 1);
-}
-
 static void PrintEggState(void)
 {
     const u8 *text;
     struct PokeSummary *sum = &sMonSummaryScreen->summary;
 
-    if (sMonSummaryScreen->summary.sanity == TRUE)
-        text = gText_EggWillTakeALongTime;
-    else if (sum->friendship <= 5)
+    if (sum->friendship <= 5)
         text = gText_EggAboutToHatch;
     else if (sum->friendship <= 10)
         text = gText_EggWillHatchSoon;
@@ -3265,24 +3156,7 @@ static void PrintEggState(void)
 
 static void PrintEggMemo(void)
 {
-    const u8 *text;
-    struct PokeSummary *sum = &sMonSummaryScreen->summary;
-
-    if (sMonSummaryScreen->summary.sanity != 1)
-    {
-        if (sum->metLocation == METLOC_FATEFUL_ENCOUNTER)
-            text = gText_PeculiarEggNicePlace;
-        else if (DidMonComeFromGBAGames() == FALSE || DoesMonOTMatchOwner() == FALSE)
-            text = gText_PeculiarEggTrade;
-        else if (sum->metLocation == METLOC_SPECIAL_EGG)
-            text = (DidMonComeFromRSE() == TRUE) ? gText_EggFromHotSprings : gText_EggFromTraveler;
-        else
-            text = gText_OddEggFoundByCouple;
-    }
-    else
-    {
-        text = gText_OddEggFoundByCouple;
-    }
+    const u8 *text = gText_OddEggFoundByCouple;
 
     PrintTextOnWindow(AddWindowFromTemplateList(sPageInfoTemplate, PSS_DATA_WINDOW_INFO_MEMO), text, 0, 1, 0, 0);
 }
@@ -3381,7 +3255,7 @@ static void BufferStat(u8 *dst, u8 statIndex, u32 stat, u32 strId, u32 n)
 
     if (statIndex == 0 || !SUMMARY_SCREEN_NATURE_COLORS)
         txtPtr = StringCopy(dst, sTextNatureNeutral);
-    else if (statIndex == gNaturesInfo[sMonSummaryScreen->summary.mintNature].statUp)
+    else if (statIndex == gNaturesInfo[sMonSummaryScreen->summary.nature].statUp)
         txtPtr = StringCopy(dst, sTextNatureUp);
     else
         txtPtr = StringCopy(dst, sTextNatureNeutral);
@@ -4192,10 +4066,7 @@ static inline bool32 ShouldShowRename(void)
          && !sMonSummaryScreen->lockMovesFlag
          && !sMonSummaryScreen->summary.isEgg
          && sMonSummaryScreen->mode != SUMMARY_MODE_BOX
-         && sMonSummaryScreen->mode != SUMMARY_MODE_BOX_CURSOR
-         && !InBattleFactory() 
-         && !InSlateportBattleTent()
-         && GetPlayerIDAsU32() == sMonSummaryScreen->summary.OTID);
+         && sMonSummaryScreen->mode != SUMMARY_MODE_BOX_CURSOR);
 }
 
 static void ShowCancelOrRenamePrompt(void)

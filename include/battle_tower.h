@@ -48,6 +48,5 @@ u8 SetFacilityPtrsGetLevel(void);
 u8 GetFrontierEnemyMonLevel(u8 lvlMode);
 s32 GetHighestLevelInPlayerParty(void);
 void TrySetLinkBattleTowerEnemyPartyLevel(void);
-void CreateFacilityMon(const struct TrainerMon *fmon, u16 level, u8 fixedIV, u32 otID, u32 flags, struct Pokemon *dst);
 
 #endif //GUARD_BATTLE_TOWER_H

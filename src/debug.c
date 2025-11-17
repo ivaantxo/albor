@@ -1354,7 +1354,7 @@ static void Debug_GenerateListMenuNames(u32 totalItems)
                 name = sDebugText_Continue;
                 StringCopy(&sDebugMenuListData->itemNames[i][0], name);
             }
-            else if (GetMonData(&gEnemyParty[i], MON_DATA_SANITY_HAS_SPECIES))
+            else if (GetMonData(&gEnemyParty[i], MON_DATA_SPECIES))
             {
                 species = GetMonData(&gEnemyParty[i], MON_DATA_SPECIES);
                 StringCopy(gStringVar1, GetSpeciesName(species));
@@ -1744,7 +1744,7 @@ static void Debug_InitializeBattle(u8 taskId)
     for (i = 0; i < PARTY_SIZE; i++)
     {
         ZeroMonData(&gEnemyParty[i]);
-        if (GetMonData(&gPlayerParty[i], MON_DATA_SANITY_HAS_SPECIES))
+        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES))
             gEnemyParty[i] = gPlayerParty[i];
     }
 
@@ -2291,8 +2291,6 @@ static void DebugAction_Util_Player_Gender(u8 taskId)
 
 static void DebugAction_Util_Player_Id(u8 taskId)
 {
-    u32 trainerId = Random32();
-    SetTrainerId(trainerId, gSaveBlockPtr->playerTrainerId);
     Debug_DestroyMenu_Full(taskId);
     ScriptContext_Enable();
 }
@@ -2657,7 +2655,7 @@ static void DebugAction_FlagsVars_PokedexFlags_Reset(u8 taskId)
     // Add party Pokemon to Pokedex
     for (partyId = 0; partyId < PARTY_SIZE; partyId++)
     {
-        if (GetMonData(&gPlayerParty[partyId], MON_DATA_SANITY_HAS_SPECIES))
+        if (GetMonData(&gPlayerParty[partyId], MON_DATA_SPECIES))
         {
             species = GetMonData(&gPlayerParty[partyId], MON_DATA_SPECIES);
             GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_SET_CAUGHT);
@@ -2670,7 +2668,7 @@ static void DebugAction_FlagsVars_PokedexFlags_Reset(u8 taskId)
     {
         for (boxPosition = 0; boxPosition < IN_BOX_COUNT; boxPosition++)
         {
-            if (GetBoxMonData(&gPokemonStoragePtr->boxes[boxId][boxPosition], MON_DATA_SANITY_HAS_SPECIES))
+            if (GetBoxMonData(&gPokemonStoragePtr->boxes[boxId][boxPosition], MON_DATA_SPECIES))
             {
                 species = GetBoxMonData(&gPokemonStoragePtr->boxes[boxId][boxPosition], MON_DATA_SPECIES);
                 GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_SET_CAUGHT);
@@ -3880,8 +3878,7 @@ static void DebugAction_Give_Pokemon_Move(u8 taskId)
 
 static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId) //https://github.com/ghoulslash/pokeemerald/tree/custom-givemon
 {
-    u16 nationalDexNum;
-    int sentToPc;
+    u32 nationalDexNum, sentToPc;
     struct Pokemon mon;
     u32 i;
     u16 moves[4];
@@ -3914,7 +3911,7 @@ static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId) //https://githu
     //Nature
     if (nature == NUMERO_NATURALEZAS || nature == 0xFF)
         nature = Random() % NUMERO_NATURALEZAS;
-    CreateMonWithNature(&mon, species, level, 32, nature);
+    CreaPokemonConNaturaleza(&mon, species, level, 32, nature);
 
     //Shininess
     SetMonData(&mon, MON_DATA_IS_SHINY, &isShiny);
@@ -4037,21 +4034,20 @@ static void DebugAction_OpenPCBagFillMenu(u8 taskId)
 
 static void DebugAction_PCBag_Fill_PCBoxes_Fast(u8 taskId) //Credit: Sierraffinity
 {
-    int boxId, boxPosition;
-    u32 personality;
+    u32 boxId, boxPosition, personality;
     struct BoxPokemon boxMon;
-    u16 species = SPECIES_BULBASAUR;
+    u32 species = SPECIES_BULBASAUR;
     u8 speciesName[POKEMON_NAME_LENGTH + 1];
 
-    personality = Random32();
+    personality = Random();
 
-    CreateBoxMon(&boxMon, species, 100, USE_RANDOM_IVS, FALSE, personality, OT_ID_PLAYER_ID, 0);
+    CreaPokemonCaja(&boxMon, species, 100, USE_RANDOM_IVS, FALSE, personality);
 
     for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
     {
         for (boxPosition = 0; boxPosition < IN_BOX_COUNT; boxPosition++, species++)
         {
-            if (!GetBoxMonData(&gPokemonStoragePtr->boxes[boxId][boxPosition], MON_DATA_SANITY_HAS_SPECIES))
+            if (!GetBoxMonData(&gPokemonStoragePtr->boxes[boxId][boxPosition], MON_DATA_SPECIES))
             {
                 StringCopy(speciesName, GetSpeciesName(species));
                 SetBoxMonData(&boxMon, MON_DATA_NICKNAME, &speciesName);
@@ -4070,20 +4066,20 @@ static void DebugAction_PCBag_Fill_PCBoxes_Fast(u8 taskId) //Credit: Sierraffini
 
 static void DebugAction_PCBag_Fill_PCBoxes_Slow(u8 taskId)
 {
-    int boxId, boxPosition;
+    u32 boxId, boxPosition;
     struct BoxPokemon boxMon;
     u32 species = SPECIES_BULBASAUR;
-    bool8 spaceAvailable = FALSE;
+    bool32 spaceAvailable = FALSE;
 
     for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
     {
         for (boxPosition = 0; boxPosition < IN_BOX_COUNT; boxPosition++)
         {
-            if (!GetBoxMonData(&gPokemonStoragePtr->boxes[boxId][boxPosition], MON_DATA_SANITY_HAS_SPECIES))
+            if (!GetBoxMonData(&gPokemonStoragePtr->boxes[boxId][boxPosition], MON_DATA_SPECIES))
             {
                 if (!spaceAvailable)
                     PlayBGM(MUS_RG_MYSTERY_GIFT);
-                CreateBoxMon(&boxMon, species, 100, USE_RANDOM_IVS, FALSE, 0, OT_ID_PLAYER_ID, 0);
+                CreaPokemonCaja(&boxMon, species, 100, USE_RANDOM_IVS, FALSE, 0);
                 gPokemonStoragePtr->boxes[boxId][boxPosition] = boxMon;
                 species = (species < NUM_SPECIES - 1) ? species + 1 : 1;
                 spaceAvailable = TRUE;
@@ -4216,8 +4212,8 @@ static void DebugAction_Sound_SE_SelectId(u8 taskId)
         if (JOY_NEW(DPAD_UP))
         {
             gTasks[taskId].tInput += sPowersOfTen[gTasks[taskId].tDigit];
-            if (gTasks[taskId].tInput > END_SE)
-                gTasks[taskId].tInput = END_SE;
+            if (gTasks[taskId].tInput > NUMERO_EFECTOS_SONIDO)
+                gTasks[taskId].tInput = NUMERO_EFECTOS_SONIDO;
         }
         if (JOY_NEW(DPAD_DOWN))
         {
@@ -4277,7 +4273,7 @@ static void DebugAction_Sound_MUS(u8 taskId)
 
     // Display initial song
     StringCopy(gStringVar2, gText_DigitIndicator[0]);
-    ConvertIntToDecimalStringN(gStringVar3, START_MUS, STR_CONV_MODE_LEADING_ZEROS, DEBUG_NUMBER_DIGITS_ITEMS);
+    ConvertIntToDecimalStringN(gStringVar3, NUMERO_EFECTOS_SONIDO + 1, STR_CONV_MODE_LEADING_ZEROS, DEBUG_NUMBER_DIGITS_ITEMS);
     StringCopyPadded(gStringVar1, sBGMNames[0], CHAR_SPACE, 35);
     StringExpandPlaceholders(gStringVar4, sDebugText_Sound_Music_ID);
     AddTextPrinterParameterized(windowId, DEBUG_MENU_FONT, gStringVar4, 1, 1, 0, NULL);
@@ -4286,7 +4282,7 @@ static void DebugAction_Sound_MUS(u8 taskId)
 
     gTasks[taskId].func = DebugAction_Sound_MUS_SelectId;
     gTasks[taskId].tSubWindowId = windowId;
-    gTasks[taskId].tInput = START_MUS;
+    gTasks[taskId].tInput = NUMERO_EFECTOS_SONIDO + 1;
     gTasks[taskId].tDigit = 0;
     gTasks[taskId].tCurrentSong = gTasks[taskId].tInput;
 }
@@ -4298,14 +4294,14 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
         if (JOY_NEW(DPAD_UP))
         {
             gTasks[taskId].tInput += sPowersOfTen[gTasks[taskId].tDigit];
-            if (gTasks[taskId].tInput > END_MUS)
-                gTasks[taskId].tInput = END_MUS;
+            if (gTasks[taskId].tInput > NUMERO_CANCIONES)
+                gTasks[taskId].tInput = NUMERO_CANCIONES;
         }
         if (JOY_NEW(DPAD_DOWN))
         {
             gTasks[taskId].tInput -= sPowersOfTen[gTasks[taskId].tDigit];
-            if (gTasks[taskId].tInput < START_MUS)
-                gTasks[taskId].tInput = START_MUS;
+            if (gTasks[taskId].tInput < NUMERO_EFECTOS_SONIDO + 1)
+                gTasks[taskId].tInput = NUMERO_EFECTOS_SONIDO + 1;
         }
         if (JOY_NEW(DPAD_LEFT))
         {
@@ -4319,7 +4315,7 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
         }
 
         StringCopy(gStringVar2, gText_DigitIndicator[gTasks[taskId].tDigit]);
-        StringCopyPadded(gStringVar1, sBGMNames[gTasks[taskId].tInput-START_MUS], CHAR_SPACE, 35);
+        StringCopyPadded(gStringVar1, sBGMNames[gTasks[taskId].tInput - NUMERO_EFECTOS_SONIDO + 1], CHAR_SPACE, 35);
         ConvertIntToDecimalStringN(gStringVar3, gTasks[taskId].tInput, STR_CONV_MODE_LEADING_ZEROS, DEBUG_NUMBER_DIGITS_ITEMS);
         StringExpandPlaceholders(gStringVar4, sDebugText_Sound_Music_ID);
         AddTextPrinterParameterized(gTasks[taskId].tSubWindowId, DEBUG_MENU_FONT, gStringVar4, 1, 1, 0, NULL);
@@ -5201,57 +5197,6 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
     X(SE_PIKE_CURTAIN_OPEN) \
     X(SE_SUDOWOODO_SHAKE) \
     X(SE_DUMMY_1) \
-    X(PH_TRAP_BLEND) \
-    X(PH_TRAP_HELD) \
-    X(PH_TRAP_SOLO) \
-    X(PH_FACE_BLEND) \
-    X(PH_FACE_HELD) \
-    X(PH_FACE_SOLO) \
-    X(PH_CLOTH_BLEND) \
-    X(PH_CLOTH_HELD) \
-    X(PH_CLOTH_SOLO) \
-    X(PH_DRESS_BLEND) \
-    X(PH_DRESS_HELD) \
-    X(PH_DRESS_SOLO) \
-    X(PH_FLEECE_BLEND) \
-    X(PH_FLEECE_HELD) \
-    X(PH_FLEECE_SOLO) \
-    X(PH_KIT_BLEND) \
-    X(PH_KIT_HELD) \
-    X(PH_KIT_SOLO) \
-    X(PH_PRICE_BLEND) \
-    X(PH_PRICE_HELD) \
-    X(PH_PRICE_SOLO) \
-    X(PH_LOT_BLEND) \
-    X(PH_LOT_HELD) \
-    X(PH_LOT_SOLO) \
-    X(PH_GOAT_BLEND) \
-    X(PH_GOAT_HELD) \
-    X(PH_GOAT_SOLO) \
-    X(PH_THOUGHT_BLEND) \
-    X(PH_THOUGHT_HELD) \
-    X(PH_THOUGHT_SOLO) \
-    X(PH_CHOICE_BLEND) \
-    X(PH_CHOICE_HELD) \
-    X(PH_CHOICE_SOLO) \
-    X(PH_MOUTH_BLEND) \
-    X(PH_MOUTH_HELD) \
-    X(PH_MOUTH_SOLO) \
-    X(PH_FOOT_BLEND) \
-    X(PH_FOOT_HELD) \
-    X(PH_FOOT_SOLO) \
-    X(PH_GOOSE_BLEND) \
-    X(PH_GOOSE_HELD) \
-    X(PH_GOOSE_SOLO) \
-    X(PH_STRUT_BLEND) \
-    X(PH_STRUT_HELD) \
-    X(PH_STRUT_SOLO) \
-    X(PH_CURE_BLEND) \
-    X(PH_CURE_HELD) \
-    X(PH_CURE_SOLO) \
-    X(PH_NURSE_BLEND) \
-    X(PH_NURSE_HELD) \
-    X(PH_NURSE_SOLO) \
 
 // Create BGM list
 #define X(songId) static const u8 sBGMName_##songId[] = _(#songId);

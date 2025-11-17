@@ -20,7 +20,6 @@
 #include "item.h"
 #include "item_menu_icons.h"
 #include "item_use.h"
-#include "lilycove_lady.h"
 #include "list_menu.h"
 #include "link.h"
 #include "mail.h"
@@ -84,8 +83,6 @@ enum {
     ACTION_DESELECT,
     ACTION_CHECK_TAG,
     ACTION_CONFIRM,
-    ACTION_GIVE_FAVOR_LADY,
-    ACTION_CONFIRM_QUIZ_LADY,
     ACTION_DUMMY,
 };
 
@@ -170,8 +167,6 @@ static void RemoveMoneyWindow(void);
 static void Task_ChooseHowManyToSell(u8);
 static void SellItem(u8);
 static void WaitAfterItemSell(u8);
-static void CB2_FavorLadyExitBagMenu(void);
-static void CB2_QuizLadyExitBagMenu(void);
 static void UpdatePocketItemLists(void);
 static void InitPocketListPositions(void);
 static void InitPocketScrollPositions(void);
@@ -186,8 +181,6 @@ static void ItemMenu_Give(u8);
 static void ItemMenu_Cancel(u8);
 static void ItemMenu_UseInBattle(u8);
 static void ItemMenu_CheckTag(u8);
-static void ItemMenu_GiveFavorLady(u8);
-static void ItemMenu_ConfirmQuizLady(u8);
 static void Task_ItemContext_Normal(u8);
 static void Task_ItemContext_GiveToParty(u8);
 static void Task_ItemContext_Sell(u8);
@@ -263,8 +256,6 @@ static const struct MenuAction sItemMenuActions[] = {
     [ACTION_DESELECT]          = {gMenuText_Deselect,   {ItemMenu_Register}},
     [ACTION_CHECK_TAG]         = {gMenuText_CheckTag,   {ItemMenu_CheckTag}},
     [ACTION_CONFIRM]           = {gMenuText_Confirm,    {Task_FadeAndCloseBagMenu}},
-    [ACTION_GIVE_FAVOR_LADY]   = {gMenuText_Give2,      {ItemMenu_GiveFavorLady}},
-    [ACTION_CONFIRM_QUIZ_LADY] = {gMenuText_Confirm,    {ItemMenu_ConfirmQuizLady}},
     [ACTION_DUMMY]             = {gText_EmptyString,    {NULL}}
 };
 
@@ -308,14 +299,6 @@ static const u8 sContextMenuItems_BerryBlenderCrush[] = {
     ACTION_DUMMY,       ACTION_CANCEL
 };
 
-static const u8 sContextMenuItems_FavorLady[] = {
-    ACTION_GIVE_FAVOR_LADY, ACTION_CANCEL
-};
-
-static const u8 sContextMenuItems_QuizLady[] = {
-    ACTION_CONFIRM_QUIZ_LADY, ACTION_CANCEL
-};
-
 static const TaskFunc sContextMenuFuncs[] = {
     [ITEMMENULOCATION_FIELD] =                  Task_ItemContext_Normal,
     [ITEMMENULOCATION_BATTLE] =                 Task_ItemContext_Normal,
@@ -323,8 +306,6 @@ static const TaskFunc sContextMenuFuncs[] = {
     [ITEMMENULOCATION_SHOP] =                   Task_ItemContext_Sell,
     [ITEMMENULOCATION_BERRY_TREE] =             Task_FadeAndCloseBagMenu,
     [ITEMMENULOCATION_BERRY_BLENDER_CRUSH] =    Task_ItemContext_Normal,
-    [ITEMMENULOCATION_FAVOR_LADY] =             Task_ItemContext_Normal,
-    [ITEMMENULOCATION_QUIZ_LADY] =              Task_ItemContext_Normal,
     [ITEMMENULOCATION_WALLY] =                  NULL,
     [ITEMMENULOCATION_PCBOX] =                  Task_ItemContext_GiveToPC,
     [ITEMMENULOCATION_BERRY_TREE_MULCH] =       Task_FadeAndCloseBagMenuIfMulch,
@@ -546,18 +527,6 @@ void ChooseBerryForMachine(void (*exitCallback)(void))
 void CB2_GoToSellMenu(void)
 {
     GoToBagMenu(ITEMMENULOCATION_SHOP, POCKETS_COUNT, CB2_ExitSellMenu);
-}
-
-void FavorLadyOpenBagMenu(void)
-{
-    GoToBagMenu(ITEMMENULOCATION_FAVOR_LADY, POCKETS_COUNT, CB2_FavorLadyExitBagMenu);
-    gSpecialVar_Result = FALSE;
-}
-
-void QuizLadyOpenBagMenu(void)
-{
-    GoToBagMenu(ITEMMENULOCATION_QUIZ_LADY, POCKETS_COUNT, CB2_QuizLadyExitBagMenu);
-    gSpecialVar_Result = FALSE;
 }
 
 void GoToBagMenu(u8 location, u8 pocket, void ( *exitCallback)())
@@ -1480,30 +1449,6 @@ static void OpenContextMenu(u8 taskId)
         gBagMenu->contextMenuItemsPtr = sContextMenuItems_BerryBlenderCrush;
         gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_BerryBlenderCrush);
         break;
-    case ITEMMENULOCATION_FAVOR_LADY:
-        if (!ItemId_GetImportance(gSpecialVar_ItemId))
-        {
-            gBagMenu->contextMenuItemsPtr = sContextMenuItems_FavorLady;
-            gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_FavorLady);
-        }
-        else
-        {
-            gBagMenu->contextMenuItemsPtr = sContextMenuItems_Cancel;
-            gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_Cancel);
-        }
-        break;
-    case ITEMMENULOCATION_QUIZ_LADY:
-        if (!ItemId_GetImportance(gSpecialVar_ItemId))
-        {
-            gBagMenu->contextMenuItemsPtr = sContextMenuItems_QuizLady;
-            gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_QuizLady);
-        }
-        else
-        {
-            gBagMenu->contextMenuItemsPtr = sContextMenuItems_Cancel;
-            gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_Cancel);
-        }
-        break;
     case ITEMMENULOCATION_PARTY:
     case ITEMMENULOCATION_SHOP:
     case ITEMMENULOCATION_BERRY_TREE:
@@ -2169,35 +2114,6 @@ static void Task_WallyTutorialBagMenu(u8 taskId)
 }
 
 #undef tTimer
-
-static void ItemMenu_GiveFavorLady(u8 taskId)
-{
-    RemoveBagItem(gSpecialVar_ItemId, 1);
-    gSpecialVar_Result = TRUE;
-    RemoveContextWindow();
-    Task_FadeAndCloseBagMenu(taskId);
-}
-
-static void CB2_FavorLadyExitBagMenu(void)
-{
-    gFieldCallback = FieldCallback_FavorLadyEnableScriptContexts;
-    SetMainCallback2(CB2_ReturnToField);
-}
-
-// This action is used to confirm which item to use as
-// a prize for a custom quiz with the Lilycove Quiz Lady
-static void ItemMenu_ConfirmQuizLady(u8 taskId)
-{
-    gSpecialVar_Result = TRUE;
-    RemoveContextWindow();
-    Task_FadeAndCloseBagMenu(taskId);
-}
-
-static void CB2_QuizLadyExitBagMenu(void)
-{
-    gFieldCallback = FieldCallback_QuizLadyEnableScriptContexts;
-    SetMainCallback2(CB2_ReturnToField);
-}
 
 static void PrintPocketNames(const u8 *pocketName1, const u8 *pocketName2)
 {

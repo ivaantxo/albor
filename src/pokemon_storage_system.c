@@ -5476,7 +5476,7 @@ static bool32 AtLeastThreeUsableMons(void)
     // Check party for usable Pokémon
     for (j = 0; j < PARTY_SIZE; j++)
     {
-        if (GetMonData(&gPlayerParty[j], MON_DATA_SANITY_HAS_SPECIES))
+        if (GetMonData(&gPlayerParty[j], MON_DATA_SPECIES))
             count++;
     }
 
@@ -5488,11 +5488,8 @@ static bool32 AtLeastThreeUsableMons(void)
     {
         for (j = 0; j < IN_BOX_COUNT; j++)
         {
-            if (CheckBoxMonSanityAt(i, j))
-            {
-                if (++count >= 3)
-                    return TRUE;
-            }
+            if (++count >= 3)
+                return TRUE;
         }
     }
 
@@ -6727,12 +6724,12 @@ static void TryLoadItemIconAtPos(u8 cursorArea, u8 cursorPos)
     switch (cursorArea)
     {
     case CURSOR_AREA_IN_BOX:
-        if (!GetCurrentBoxMonData(cursorPos, MON_DATA_SANITY_HAS_SPECIES))
+        if (!GetCurrentBoxMonData(cursorPos, MON_DATA_SPECIES))
             return;
         heldItem = GetCurrentBoxMonData(cursorPos, MON_DATA_HELD_ITEM);
         break;
     case CURSOR_AREA_IN_PARTY:
-        if (cursorPos >= PARTY_SIZE || !GetMonData(&gPlayerParty[cursorPos], MON_DATA_SANITY_HAS_SPECIES))
+        if (cursorPos >= PARTY_SIZE || !GetMonData(&gPlayerParty[cursorPos], MON_DATA_SPECIES))
             return;
         heldItem = GetMonData(&gPlayerParty[cursorPos], MON_DATA_HELD_ITEM);
         break;
@@ -7012,7 +7009,7 @@ static u8 GetItemIconIdxBySprite(struct Sprite *sprite)
 
 static void SetItemIconPosition(u8 id, u8 cursorArea, u8 cursorPos)
 {
-    u8 x, y;
+    u32 x, y;
 
     if (id >= MAX_ITEM_ICONS)
         return;
@@ -7387,28 +7384,6 @@ void SetCurrentBoxMonData(u8 boxPosition, s32 request, const void *value)
     SetBoxMonDataAt(gPokemonStoragePtr->currentBox, boxPosition, request, value);
 }
 
-void GetBoxMonNickAt(u8 boxId, u8 boxPosition, u8 *dst)
-{
-    if (boxId < TOTAL_BOXES_COUNT && boxPosition < IN_BOX_COUNT)
-        GetBoxMonData(&gPokemonStoragePtr->boxes[boxId][boxPosition], MON_DATA_NICKNAME, dst);
-    else
-        *dst = EOS;
-}
-
-u32 GetBoxMonLevelAt(u8 boxId, u8 boxPosition)
-{
-    u32 lvl;
-
-    if (boxId < TOTAL_BOXES_COUNT && boxPosition < IN_BOX_COUNT && GetBoxMonData(&gPokemonStoragePtr->boxes[boxId][boxPosition], MON_DATA_SANITY_HAS_SPECIES))
-        lvl = GetLevelFromBoxMonExp(&gPokemonStoragePtr->boxes[boxId][boxPosition]);
-#ifdef BUGFIX
-    else
-#endif
-        lvl = 0;
-
-    return lvl;
-}
-
 void SetBoxMonNickAt(u8 boxId, u8 boxPosition, const u8 *nick)
 {
     if (boxId < TOTAL_BOXES_COUNT && boxPosition < IN_BOX_COUNT)
@@ -7427,25 +7402,6 @@ void SetBoxMonAt(u8 boxId, u8 boxPosition, struct BoxPokemon *src)
 {
     if (boxId < TOTAL_BOXES_COUNT && boxPosition < IN_BOX_COUNT)
         gPokemonStoragePtr->boxes[boxId][boxPosition] = *src;
-}
-
-void CopyBoxMonAt(u8 boxId, u8 boxPosition, struct BoxPokemon *dst)
-{
-    if (boxId < TOTAL_BOXES_COUNT && boxPosition < IN_BOX_COUNT)
-        *dst = gPokemonStoragePtr->boxes[boxId][boxPosition];
-}
-
-void CreateBoxMonAt(u8 boxId, u8 boxPosition, u16 species, u8 level, u8 fixedIV, u8 hasFixedPersonality, u32 personality, u8 otIDType, u32 otID)
-{
-    if (boxId < TOTAL_BOXES_COUNT && boxPosition < IN_BOX_COUNT)
-    {
-        CreateBoxMon(&gPokemonStoragePtr->boxes[boxId][boxPosition],
-                     species,
-                     level,
-                     fixedIV,
-                     hasFixedPersonality, personality,
-                     otIDType, otID);
-    }
 }
 
 void ZeroBoxMonAt(u8 boxId, u8 boxPosition)
@@ -7514,24 +7470,12 @@ bool8 CheckFreePokemonStorageSpace(void)
     {
         for (j = 0; j < IN_BOX_COUNT; j++)
         {
-            if (!GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_SANITY_HAS_SPECIES))
+            if (!GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_SPECIES))
                 return TRUE;
         }
     }
 
     return FALSE;
-}
-
-bool32 CheckBoxMonSanityAt(u32 boxId, u32 boxPosition)
-{
-    if (boxId < TOTAL_BOXES_COUNT
-        && boxPosition < IN_BOX_COUNT
-        && GetBoxMonData(&gPokemonStoragePtr->boxes[boxId][boxPosition], MON_DATA_SANITY_HAS_SPECIES)
-        && !GetBoxMonData(&gPokemonStoragePtr->boxes[boxId][boxPosition], MON_DATA_SANITY_IS_EGG)
-        && !GetBoxMonData(&gPokemonStoragePtr->boxes[boxId][boxPosition], MON_DATA_SANITY_IS_BAD_EGG))
-        return TRUE;
-    else
-        return FALSE;
 }
 
 u32 CountStorageNonEggMons(void)
@@ -7543,8 +7487,8 @@ u32 CountStorageNonEggMons(void)
     {
         for (j = 0; j < IN_BOX_COUNT; j++)
         {
-            if (GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_SANITY_HAS_SPECIES)
-                && !GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_SANITY_IS_EGG))
+            if (GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_SPECIES)
+                && !GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_IS_EGG))
                 count++;
         }
     }
@@ -7561,8 +7505,8 @@ u32 CountAllStorageMons(void)
     {
         for (j = 0; j < IN_BOX_COUNT; j++)
         {
-            if (GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_SANITY_HAS_SPECIES)
-                || GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_SANITY_IS_EGG))
+            if (GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_SPECIES)
+                || GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_IS_EGG))
                 count++;
         }
     }
@@ -7579,8 +7523,8 @@ bool32 AnyStorageMonWithMove(u16 moveId)
     {
         for (j = 0; j < IN_BOX_COUNT; j++)
         {
-            if (GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_SANITY_HAS_SPECIES)
-                && !GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_SANITY_IS_EGG)
+            if (GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_SPECIES)
+                && !GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_IS_EGG)
                 && GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_KNOWN_MOVES, (u8 *)moves))
                 return TRUE;
         }
