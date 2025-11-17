@@ -3530,8 +3530,6 @@ static void CursorCb_Trade1(u8 taskId)
     Task_ClosePartyMenu(taskId);
 }
 
-// Spin Trade (based on the translation of the Japanese trade prompt)
-// Not fully implemented, and normally unreachable because PARTY_MENU_TYPE_SPIN_TRADE is never used
 static void CursorCb_Trade2(u8 taskId)
 {
     PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[0]);

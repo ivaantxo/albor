@@ -328,10 +328,6 @@ static const struct SpriteTemplate sSpriteTemplate_HofConfetti =
     .callback = SpriteCB_HofConfetti
 };
 
-static const u16 sHallOfFame_Pal[] = INCBIN_U16("graphics/misc/japanese_hof.gbapal");
-
-static const u32 sHallOfFame_Gfx[] = INCBIN_U32("graphics/misc/japanese_hof.4bpp.lz");
-
 static const struct HallofFameMon sDummyFameMon =
 {
     .tid = 0x3EA03EA,
@@ -1203,33 +1199,7 @@ static void HallOfFame_PrintPlayerInfo(u8 unused1, u8 unused2)
 
 static void ClearVramOamPltt_LoadHofPal(void)
 {
-    u32 vramOffset, oamOffset, plttOffset;
-    u32 vramSize, oamSize, plttSize;
 
-    vramOffset = (VRAM);
-    vramSize = VRAM_SIZE;
-    while (TRUE)
-    {
-        DmaFill16(3, 0, vramOffset, 0x1000);
-        vramOffset += 0x1000;
-        vramSize -= 0x1000;
-        if (vramSize <= 0x1000)
-        {
-            DmaFill16(3, 0, vramOffset, vramSize);
-            break;
-        }
-    }
-
-    oamOffset = OAM;
-    oamSize = OAM_SIZE;
-    DmaFill32(3, 0, oamOffset, oamSize);
-
-    plttOffset = PLTT;
-    plttSize = PLTT_SIZE;
-    DmaFill16(3, 0, plttOffset, plttSize);
-
-    ResetPaletteFade();
-    LoadPalette(sHallOfFame_Pal, BG_PLTT_ID(0), sizeof(sHallOfFame_Pal));
 }
 
 static void LoadHofGfx(void)
@@ -1261,39 +1231,7 @@ static void InitHofBgs(void)
 
 static bool8 LoadHofBgs(void)
 {
-    switch (sHofGfxPtr->state)
-    {
-    case 0:
-        DecompressAndCopyTileDataToVram(1, sHallOfFame_Gfx, 0, 0, 0);
-        break;
-    case 1:
-        if (FreeTempTileDataBuffersIfPossible())
-            return TRUE;
-        break;
-    case 2:
-        FillBgTilemapBufferRect_Palette0(1, 1, 0, 0, 0x20, 2);
-        FillBgTilemapBufferRect_Palette0(1, 0, 0, 3, 0x20, 0xB);
-        FillBgTilemapBufferRect_Palette0(1, 1, 0, 0xE, 0x20, 6);
-        FillBgTilemapBufferRect_Palette0(3, 2, 0, 0, 0x20, 0x20);
-
-        CopyBgTilemapBufferToVram(1);
-        CopyBgTilemapBufferToVram(3);
-        break;
-    case 3:
-        InitStandardTextBoxWindows();
-        InitTextBoxGfxAndPrinters();
-        break;
-    case 4:
-        SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_1D_MAP | DISPCNT_OBJ_ON);
-        ShowBg(0);
-        ShowBg(1);
-        ShowBg(3);
-        sHofGfxPtr->state = 0;
-        return FALSE;
-    }
-
-    sHofGfxPtr->state++;
-    return TRUE;
+    return FALSE;
 }
 
 static void SpriteCB_GetOnScreenAndAnimate(struct Sprite *sprite)
