@@ -1499,9 +1499,6 @@ static bool8 KeyboardKeyHandler_Character(u8 input)
 
 static void SwapKeyboardToLowerAfterFirstCapitalLetter(void)
 {
-    if (AUTO_LOWERCASE_KEYBOARD < GEN_6)
-        return;
-
     if (sNamingScreen->currentPage != KBPAGE_LETTERS_UPPER)
         return;
 
