@@ -530,55 +530,6 @@ struct DayCare
     u8 stepCounter;
 };
 
-struct LilycoveLadyQuiz
-{
-    /*0x000*/ u8 id;
-    /*0x001*/ u8 state;
-    /*0x002*/ u16 question[QUIZ_QUESTION_LEN];
-    /*0x014*/ u16 correctAnswer;
-    /*0x016*/ u16 playerAnswer;
-    /*0x018*/ u8 playerName[PLAYER_NAME_LENGTH + 1];
-    /*0x020*/ u16 playerTrainerId[TRAINER_ID_LENGTH];
-    /*0x028*/ u16 prize;
-    /*0x02A*/ bool8 waitingForChallenger;
-    /*0x02B*/ u8 questionId;
-    /*0x02C*/ u8 prevQuestionId;
-    /*0x02D*/ u8 language;
-};
-
-struct LilycoveLadyFavor
-{
-    /*0x000*/ u8 id;
-    /*0x001*/ u8 state;
-    /*0x002*/ bool8 likedItem;
-    /*0x003*/ u8 numItemsGiven;
-    /*0x004*/ u8 playerName[PLAYER_NAME_LENGTH + 1];
-    /*0x00C*/ u8 favorId;
-    /*0x00E*/ u16 itemId;
-    /*0x010*/ u16 bestItem;
-    /*0x012*/ u8 language;
-};
-
-struct LilycoveLadyContest
-{
-    /*0x000*/ u8 id;
-    /*0x001*/ bool8 givenPokeblock;
-    /*0x002*/ u8 numGoodPokeblocksGiven;
-    /*0x003*/ u8 numOtherPokeblocksGiven;
-    /*0x004*/ u8 playerName[PLAYER_NAME_LENGTH + 1];
-    /*0x00C*/ u8 maxSheen;
-    /*0x00D*/ u8 category;
-    /*0x00E*/ u8 language;
-};
-
-typedef union // 3b58
-{
-    struct LilycoveLadyQuiz quiz;
-    struct LilycoveLadyFavor favor;
-    struct LilycoveLadyContest contest;
-    u8 id;
-} LilycoveLady;
-
 struct SaveBlock
 {
     u8 playerName[PLAYER_NAME_LENGTH + 1];
@@ -663,7 +614,6 @@ struct SaveBlock
     struct Roamer roamer[ROAMER_COUNT]; //eliminar
     u8 dexSeen[NUM_DEX_FLAG_BYTES];
     u8 dexCaught[NUM_DEX_FLAG_BYTES];
-    LilycoveLady lilycoveLady; //eliminar
 };
 
 extern struct SaveBlock* gSaveBlockPtr;

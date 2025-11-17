@@ -12,8 +12,6 @@ enum {
     ITEMMENULOCATION_BERRY_TREE,
     ITEMMENULOCATION_BERRY_BLENDER_CRUSH,
     ITEMMENULOCATION_ITEMPC,
-    ITEMMENULOCATION_FAVOR_LADY,
-    ITEMMENULOCATION_QUIZ_LADY,
     ITEMMENULOCATION_WALLY,
     ITEMMENULOCATION_PCBOX,
     ITEMMENULOCATION_BERRY_TREE_MULCH,
@@ -83,8 +81,6 @@ extern struct BagMenu *gBagMenu;
 extern u16 gSpecialVar_ItemId;
 
 void CB2_GoToItemDepositMenu(void);
-void FavorLadyOpenBagMenu(void);
-void QuizLadyOpenBagMenu(void);
 void CB2_BagMenuFromBattle(void);
 void UpdatePocketListPosition(u8 pocketId);
 void CB2_ReturnToBagMenuPocket(void);

@@ -314,10 +314,6 @@ extern const u8 gTVInSearchOfTrainersText05[];
 extern const u8 gTVInSearchOfTrainersText06[];
 extern const u8 gTVInSearchOfTrainersText07[];
 extern const u8 gTVInSearchOfTrainersText08[];
-extern const u8 ContestLadyShow_Text_Intro[];
-extern const u8 ContestLadyShow_Text_Won[];
-extern const u8 ContestLadyShow_Text_Lost[];
-extern const u8 ContestLadyShow_Text_LostBadly[];
 
 //field effects
 extern const u8 EventScript_UseStrength[];
