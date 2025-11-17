@@ -108,7 +108,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 5,
     },
 
-    [ABILITY_COMPOUND_EYES] =
+    [ABILITY_OJO_COMPUESTO] =
     {
         .name = _("Ojo compuesto"),
         .description = COMPOUND_STRING("+30% precisión."),
@@ -390,9 +390,8 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_VISTA_LINCE] =
     {
         .name = _("Vista lince"),
-        .description = COMPOUND_STRING("+25% precisión."),
-        .aiRating = 4,
-        .breakable = TRUE,
+        .description = COMPOUND_STRING("+30% precisión."),
+        .aiRating = 7,
     },
 
     [ABILITY_HYPER_CUTTER] =
@@ -1330,7 +1329,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 6,
     },
 
-    [ABILITY_MEGA_LAUNCHER] =
+    [ABILITY_MEGADISPARADOR] =
     {
         .name = _("Megadisparador"),
         .description = COMPOUND_STRING("+25% balísticos."),
@@ -2337,7 +2336,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_DISPARO_CERTERO] =
     {
         .name = _("Disparo certero"),
-        .description = COMPOUND_STRING("+30% precisión."),
+        .description = COMPOUND_STRING("+2 índice crítico."),
         .aiRating = 7,
     },
 

@@ -308,7 +308,7 @@ struct MoveInfo
     u32 punchingMove:1;
     u32 bitingMove:1;
     u32 soundMove:1;
-    u32 ballisticMove:1;
+    u32 balistico:1;
     u32 peckMove:1;
     u32 hammerMove:1;
     u32 tailMove:1;

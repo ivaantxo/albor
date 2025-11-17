@@ -2752,7 +2752,7 @@ s8 GetMovePriority(u32 battler, u16 move)
     }
     else if (ability == ABILITY_TRIAGE && IsHealingMove(move))
         priority += 3;
-    else if (ability == ABILITY_ATAQUE_RELAMPAGO && gMovesInfo[move].ballisticMove)
+    else if (ability == ABILITY_ATAQUE_RELAMPAGO && gMovesInfo[move].balistico)
         priority++;
     else if (ability == ABILITY_OJOS_PRESTOS && gMovesInfo[move].eyesMove)
         priority++;

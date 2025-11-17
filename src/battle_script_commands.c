@@ -1526,11 +1526,10 @@ u32 GetTotalAccuracy(u32 battlerAtk, u32 battlerDef, u32 move, u32 atkAbility, u
 
     switch (atkAbility)
     {
-    case ABILITY_COMPOUND_EYES:
-    case ABILITY_DISPARO_CERTERO:
+    case ABILITY_OJO_COMPUESTO:
     case ABILITY_VICTORY_STAR:
     case ABILITY_VISTA_LINCE:
-        calc = (calc * 125) / 100;
+        calc = (calc * 130) / 100;
         break;
     case ABILITY_HUSTLE:
         if (IS_MOVE_PHYSICAL(move))
@@ -1798,7 +1797,8 @@ s32 CalcCritChanceStageArgs(u32 battlerAtk, u32 battlerDef, u32 move, bool32 rec
                     + 1 * ((gBattleMons[battlerAtk].status2 & STATUS2_DRAGON_CHEER) != 0)
                     + gMovesInfo[move].criticalHitStage
                     + (holdEffectAtk == HOLD_EFFECT_SCOPE_LENS)
-                    + 2 * (abilityAtk == ABILITY_SUPER_LUCK)               
+                    + 2 * (abilityAtk == ABILITY_SUPER_LUCK)
+                    + 2 * (abilityAtk == ABILITY_DISPARO_CERTERO)
                     + gBattleStruct->bonusCritStages[gBattlerAttacker];
 
         if (gMovesInfo[gCurrentMove].soundMove && (abilityAtk == ABILITY_PERCUSIONISTA))
@@ -15160,7 +15160,7 @@ void BS_TryHealPulse(void)
     }
     else
     {
-        if (GetBattlerAbility(gBattlerAttacker) == ABILITY_MEGA_LAUNCHER && gMovesInfo[gCurrentMove].ballisticMove)
+        if (GetBattlerAbility(gBattlerAttacker) == ABILITY_MEGADISPARADOR && gMovesInfo[gCurrentMove].balistico)
             gBattleMoveDamage = -(GetNonDynamaxMaxHP(gBattlerTarget) * 75 / 100);
         else if (gFieldStatuses & STATUS_FIELD_GRASSY_TERRAIN && gMovesInfo[gCurrentMove].argument == MOVE_EFFECT_FLORAL_HEALING)
             gBattleMoveDamage = -(GetNonDynamaxMaxHP(gBattlerTarget) * 2 / 3);

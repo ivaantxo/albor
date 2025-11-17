@@ -3727,7 +3727,7 @@ u32 CanAbilityBlockMove(u32 battlerAtk, u32 battlerDef, u32 move, u32 abilityDef
             effect = MOVE_BLOCKED_BY_SOUNDPROOF_OR_BULLETPROOF;
         break;
     case ABILITY_BULLETPROOF:
-        if (gMovesInfo[move].ballisticMove)
+        if (gMovesInfo[move].balistico)
             effect = MOVE_BLOCKED_BY_SOUNDPROOF_OR_BULLETPROOF;
         break;
     case ABILITY_DAZZLING:
@@ -8761,8 +8761,8 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
         if (gMovesInfo[move].bitingMove)
            modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
         break;
-    case ABILITY_MEGA_LAUNCHER:
-        if (gMovesInfo[move].ballisticMove)
+    case ABILITY_MEGADISPARADOR:
+        if (gMovesInfo[move].balistico)
            modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
         break;
     case ABILITY_CARPINTERO:
