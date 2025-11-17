@@ -7,7 +7,6 @@
 #include "script.h"
 #include "lottery_corner.h"
 #include "play_time.h"
-#include "mauville_old_man.h"
 #include "match_call.h"
 #include "load_save.h"
 #include "pokeblock.h"
