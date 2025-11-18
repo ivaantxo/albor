@@ -184,7 +184,6 @@ gSpecials::
 	def_special Script_ClearHeldMovement
 	def_special TryUpdateRusturfTunnelState
 	def_special IsGrassTypeInParty
-	def_special DoContestHallWarp
 	def_special IsStarterInParty
 	def_special CopyCurSecretBaseOwnerName_StrVar1
 	def_special ScriptCheckFreePokemonStorageSpace
