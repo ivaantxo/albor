@@ -97,3 +97,6 @@ paletas: (\d+) (\d+) (\d+) \d+ --> $1 $2 $3
 
 //para limpiar archivos generados
 find . -name "* 2.inc" -delete
+
+//para limpiar defines a enum
+\s+[0-9]+

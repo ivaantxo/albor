@@ -1,8 +1,6 @@
 #include "global.h"
 #include "battle.h"
 #include "battle_anim.h"
-#include "battle_arena.h"
-#include "battle_pyramid.h"
 #include "battle_util.h"
 #include "battle_controllers.h"
 #include "battle_interface.h"
@@ -388,7 +386,6 @@ bool32 TryRunFromBattle(u32 battler)
 {
     bool32 effect = FALSE;
     u8 holdEffect = ItemId_GetHoldEffect(gBattleMons[battler].item);
-    u8 pyramidMultiplier;
     u8 speedVar;
 
     gPotentialItemEffectBattler = battler;
@@ -405,24 +402,9 @@ bool32 TryRunFromBattle(u32 battler)
     }
     else if (GetBattlerAbility(battler) == ABILITY_RUN_AWAY)
     {
-        if (InBattlePyramid())
-        {
-            gBattleStruct->runTries++;
-            pyramidMultiplier = GetPyramidRunMultiplier();
-            speedVar = (gBattleMons[battler].speed * pyramidMultiplier) / (gBattleMons[BATTLE_OPPOSITE(battler)].speed) + (gBattleStruct->runTries * 30);
-            if (speedVar > (Random() & 0xFF))
-            {
-                gLastUsedAbility = ABILITY_RUN_AWAY;
-                gProtectStructs[battler].fleeType = FLEE_ABILITY;
-                effect++;
-            }
-        }
-        else
-        {
-            gLastUsedAbility = ABILITY_RUN_AWAY;
-            gProtectStructs[battler].fleeType = FLEE_ABILITY;
-            effect++;
-        }
+        gLastUsedAbility = ABILITY_RUN_AWAY;
+        gProtectStructs[battler].fleeType = FLEE_ABILITY;
+        effect++;
     }
     else
     {
@@ -430,14 +412,7 @@ bool32 TryRunFromBattle(u32 battler)
         if (!IsBattlerAlive(runningFromBattler))
             runningFromBattler |= BIT_FLANK;
 
-        if (InBattlePyramid())
-        {
-            pyramidMultiplier = GetPyramidRunMultiplier();
-            speedVar = (gBattleMons[battler].speed * pyramidMultiplier) / (gBattleMons[runningFromBattler].speed) + (gBattleStruct->runTries * 30);
-            if (speedVar > (Random() & 0xFF))
-                effect++;
-        }
-        else if (gBattleMons[battler].speed < gBattleMons[runningFromBattler].speed)
+        if (gBattleMons[battler].speed < gBattleMons[runningFromBattler].speed)
         {
             speedVar = (gBattleMons[battler].speed * 128) / (gBattleMons[runningFromBattler].speed) + (gBattleStruct->runTries * 30);
             if (speedVar > (Random() & 0xFF))
@@ -11202,98 +11177,6 @@ void SwitchPartyOrderInGameMulti(u8 battler, u8 arg1)
         for (i = 0; i < (int)ARRAY_COUNT(gBattlePartyCurrentOrder); i++)
             *(0 * 3 + i + (u8 *)(gBattleStruct->battlerPartyOrders)) = gBattlePartyCurrentOrder[i];
     }
-}
-
-// Called when a Pokémon is unable to attack during a Battle Palace battle.
-// Check if it was because they are frozen/asleep, and if so try to cure the status.
-u32 BattlePalace_TryEscapeStatus(u8 battler)
-{
-    u32 effect = 0;
-
-    do
-    {
-        switch (gBattleCommunication[MULTIUSE_STATE])
-        {
-        case 0:
-            if (gBattleMons[battler].status1 & STATUS1_SLEEP)
-            {
-                if (UproarWakeUpCheck(battler))
-                {
-                    // Wake up from Uproar
-                    gBattleMons[battler].status1 &= ~(STATUS1_SLEEP);
-                    gBattleMons[battler].status2 &= ~(STATUS2_NIGHTMARE);
-                    BattleScriptPushCursor();
-                    gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_WOKE_UP_UPROAR;
-                    gBattlescriptCurrInstr = BattleScript_MoveUsedWokeUp;
-                    effect = 2;
-                }
-                else
-                {
-                    u32 toSub;
-
-                    if (GetBattlerAbility(battler) == ABILITY_EARLY_BIRD)
-                        toSub = 2;
-                    else
-                        toSub = 1;
-
-                    // Reduce number of sleep turns
-                    if ((gBattleMons[battler].status1 & STATUS1_SLEEP) < toSub)
-                        gBattleMons[battler].status1 &= ~(STATUS1_SLEEP);
-                    else
-                        gBattleMons[battler].status1 -= toSub;
-
-                    if (gBattleMons[battler].status1 & STATUS1_SLEEP)
-                    {
-                        // Still asleep
-                        gBattlescriptCurrInstr = BattleScript_MoveUsedIsAsleep;
-                        effect = 2;
-                    }
-                    else
-                    {
-                        // Wake up
-                        gBattleMons[battler].status2 &= ~(STATUS2_NIGHTMARE);
-                        BattleScriptPushCursor();
-                        gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_WOKE_UP;
-                        gBattlescriptCurrInstr = BattleScript_MoveUsedWokeUp;
-                        effect = 2;
-                    }
-                }
-            }
-            gBattleCommunication[MULTIUSE_STATE]++;
-            break;
-        case 1:
-            if (gBattleMons[battler].status1 & STATUS1_FREEZE)
-            {
-                if (Random() % 5 != 0)
-                {
-                    // Still frozen
-                    gBattlescriptCurrInstr = BattleScript_MoveUsedIsFrozen;
-                }
-                else
-                {
-                    // Unfreeze
-                    gBattleMons[battler].status1 &= ~(STATUS1_FREEZE);
-                    BattleScriptPushCursor();
-                    gBattlescriptCurrInstr = BattleScript_MoveUsedUnfroze;
-                    gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_DEFROSTED;
-                }
-                effect = 2;
-            }
-            gBattleCommunication[MULTIUSE_STATE]++;
-            break;
-        case 2:
-            break;
-        }
-        // Loop until reaching the final state, or stop early if Pokémon was Asleep/Frozen
-    } while (gBattleCommunication[MULTIUSE_STATE] != 2 && effect == 0);
-
-    if (effect == 2)
-    {
-        BtlController_EmitSetMonData(battler, BUFFER_A, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[battler].status1);
-        MarkBattlerForControllerExec(battler);
-    }
-
-    return effect;
 }
 
 void SetShellSideArmCategory(void)

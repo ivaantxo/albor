@@ -5,10 +5,7 @@
 #include "battle_anim.h"
 #include "battle_controllers.h"
 #include "battle_message.h"
-#include "battle_pike.h"
-#include "battle_pyramid.h"
 #include "battle_setup.h"
-#include "battle_tower.h"
 #include "battle_z_move.h"
 #include "data.h"
 #include "event_data.h"
@@ -39,7 +36,6 @@
 #include "text.h"
 #include "util.h"
 #include "constants/abilities.h"
-#include "constants/battle_frontier.h"
 #include "constants/battle_move_effects.h"
 #include "constants/battle_script_commands.h"
 #include "constants/battle_partner.h"
@@ -80,14 +76,6 @@ EWRAM_DATA u16 gFollowerSteps = 0;
 #include "data/moves_info.h"
 #include "data/abilities.h"
 
-// In Battle Palace, moves are chosen based on the pokemons nature rather than by the player
-// Moves are grouped into "Attack", "Defense", or "Support" (see PALACE_MOVE_GROUP_*)
-// Each nature has a certain percent chance of selecting a move from a particular group
-// and a separate percent chance for each group when at or below 50% HP
-// The table below doesn't list percentages for Support because you can subtract the other two
-// Support percentages are listed in comments off to the side instead
-#define PALACE_STYLE(atk, def, atkLow, defLow) {atk, atk + def, atkLow, atkLow + defLow}
-
 const struct NatureInfo gNaturesInfo[NUMERO_NATURALEZAS] =
 {
     [NATURALEZA_OFENSIVA] =
@@ -95,55 +83,30 @@ const struct NatureInfo gNaturesInfo[NUMERO_NATURALEZAS] =
         .name = COMPOUND_STRING("Ofensiva"),
         .statUp = ESTADISTICA_ATAQUE,
         .backAnim = 1,
-        .pokeBlockAnim = {ANIM_HARDY, AFFINE_NONE},
-        .natureGirlMessage = BattleFrontier_Lounge5_Text_NatureGirlHardy,
-        .battlePalacePercents = PALACE_STYLE(61, 7, 61, 7), //32% support >= 50% HP, 32% support < 50% HP
-        .battlePalaceFlavorText = B_MSG_EAGER_FOR_MORE,
-        .battlePalaceSmokescreen = PALACE_TARGET_STRONGER,
     },
     [NATURALEZA_DEFENSIVA] =
     {
         .name = COMPOUND_STRING("Defensiva"),
         .statUp = ESTADISTICA_DEFENSA,
         .backAnim = 2,
-        .pokeBlockAnim = {ANIM_LONELY, AFFINE_NONE},
-        .natureGirlMessage = BattleFrontier_Lounge5_Text_NatureGirlLonely,
-        .battlePalacePercents = PALACE_STYLE(20, 25, 84, 8), //55%,  8%
-        .battlePalaceFlavorText = B_MSG_GLINT_IN_EYE,
-        .battlePalaceSmokescreen = PALACE_TARGET_STRONGER,
     },
     [NATURALEZA_OFENSIVA_ESPECIAL] =
     {
         .name = COMPOUND_STRING("Ofensiva esp."),
         .statUp = ESTADISTICA_ATAQUE_ESPECIAL,
         .backAnim = 1,
-        .pokeBlockAnim = {ANIM_BRAVE, AFFINE_TURN_UP},
-        .natureGirlMessage = BattleFrontier_Lounge5_Text_NatureGirlBrave,
-        .battlePalacePercents = PALACE_STYLE(70, 15, 32, 60), //15%, 8%
-        .battlePalaceFlavorText = B_MSG_GETTING_IN_POS,
-        .battlePalaceSmokescreen = PALACE_TARGET_WEAKER,
     },
     [NATURALEZA_DEFENSIVA_ESPECIAL] =
     {
         .name = COMPOUND_STRING("Defensiva esp."),
         .statUp = ESTADISTICA_DEFENSA_ESPECIAL,
         .backAnim = 2,
-        .pokeBlockAnim = {ANIM_ADAMANT, AFFINE_NONE},
-        .natureGirlMessage = BattleFrontier_Lounge5_Text_NatureGirlAdamant,
-        .battlePalacePercents = PALACE_STYLE(38, 31, 70, 15), //31%, 15%
-        .battlePalaceFlavorText = B_MSG_GLINT_IN_EYE,
-        .battlePalaceSmokescreen = PALACE_TARGET_STRONGER,
     },
     [NATURALEZA_RAPIDA] =
     {
         .name = COMPOUND_STRING("Rápida"),
         .statUp = ESTADISTICA_VELOCIDAD,
         .backAnim = 0,
-        .pokeBlockAnim = {ANIM_NAUGHTY, AFFINE_NONE},
-        .natureGirlMessage = BattleFrontier_Lounge5_Text_NatureGirlNaughty,
-        .battlePalacePercents = PALACE_STYLE(20, 70, 70, 22), //10%, 8%
-        .battlePalaceFlavorText = B_MSG_GLINT_IN_EYE,
-        .battlePalaceSmokescreen = PALACE_TARGET_WEAKER,
     }
 };
 
@@ -308,23 +271,6 @@ static const struct SpriteTemplate sTrainerBackSpriteTemplates[] =
 };
 
 #define NUM_SECRET_BASE_CLASSES 5
-static const u8 sSecretBaseFacilityClasses[GENDER_COUNT][NUM_SECRET_BASE_CLASSES] =
-{
-    [MALE] = {
-        FACILITY_CLASS_YOUNGSTER,
-        FACILITY_CLASS_BUG_CATCHER,
-        FACILITY_CLASS_RICH_BOY,
-        FACILITY_CLASS_CAMPER,
-        FACILITY_CLASS_COOLTRAINER_M
-    },
-    [FEMALE] = {
-        FACILITY_CLASS_LASS,
-        FACILITY_CLASS_SCHOOL_KID_F,
-        FACILITY_CLASS_LADY,
-        FACILITY_CLASS_PICNICKER,
-        FACILITY_CLASS_COOLTRAINER_F
-    }
-};
 
 static const u8 sGetMonDataEVConstants[] =
 {
@@ -3286,14 +3232,6 @@ u16 GetBattleBGM(void)
             return MUS_VS_RIVAL;
         case TRAINER_CLASS_ELITE_FOUR:
             return MUS_VS_ELITE_FOUR;
-        case TRAINER_CLASS_SALON_MAIDEN:
-        case TRAINER_CLASS_DOME_ACE:
-        case TRAINER_CLASS_PALACE_MAVEN:
-        case TRAINER_CLASS_ARENA_TYCOON:
-        case TRAINER_CLASS_FACTORY_HEAD:
-        case TRAINER_CLASS_PIKE_QUEEN:
-        case TRAINER_CLASS_PYRAMID_KING:
-            return MUS_VS_FRONTIER_BRAIN;
         default:
             return MUS_VS_TRAINER;
         }

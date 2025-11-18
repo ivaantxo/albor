@@ -149,7 +149,6 @@ static const u16 sRegionMap_SpecialPlaceLocations[][2] =
     {MAPSEC_MIRAGE_TOWER,               MAPSEC_ROUTE_111},
     {MAPSEC_DESERT_UNDERPASS,           MAPSEC_ROUTE_114},
     {MAPSEC_ALTERING_CAVE,              MAPSEC_ROUTE_103},
-    {MAPSEC_ARTISAN_CAVE,               MAPSEC_ROUTE_103},
     {MAPSEC_ABANDONED_SHIP,             MAPSEC_ROUTE_108},
     {MAPSEC_NONE,                       MAPSEC_NONE}
 };
@@ -416,8 +415,8 @@ static const struct SpritePalette sFlyTargetIconsSpritePalette =
 static const u16 sRedOutlineFlyDestinations[][2] =
 {
     {
-        FLAG_LANDMARK_BATTLE_FRONTIER,
-        MAPSEC_BATTLE_FRONTIER
+        -1,
+        MAPSEC_NONE
     },
     {
         -1,
@@ -468,7 +467,6 @@ static const union AnimCmd sFlyDestIcon_Anim_8x16CantFly[] =
     ANIMCMD_END
 };
 
-// Only used by Battle Frontier
 static const union AnimCmd sFlyDestIcon_Anim_RedOutline[] =
 {
     ANIMCMD_FRAME(10, 5),
@@ -1192,8 +1190,6 @@ static u8 GetMapsecType(u16 mapSecId)
         return FlagGet(FLAG_VISITED_SOOTOPOLIS_CITY) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
     case MAPSEC_EVER_GRANDE_CITY:
         return FlagGet(FLAG_VISITED_EVER_GRANDE_CITY) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
-    case MAPSEC_BATTLE_FRONTIER:
-        return FlagGet(FLAG_LANDMARK_BATTLE_FRONTIER) ? MAPSECTYPE_BATTLE_FRONTIER : MAPSECTYPE_NONE;
     case MAPSEC_SOUTHERN_ISLAND:
         return FlagGet(FLAG_LANDMARK_SOUTHERN_ISLAND) ? MAPSECTYPE_ROUTE : MAPSECTYPE_NONE;
     default:
@@ -1927,7 +1923,7 @@ static void CB_HandleFlyMapInput(void)
             DrawFlyDestTextWindow();
             break;
         case MAP_INPUT_A_BUTTON:
-            if (sFlyMap->regionMap.mapSecType == MAPSECTYPE_CITY_CANFLY || sFlyMap->regionMap.mapSecType == MAPSECTYPE_BATTLE_FRONTIER)
+            if (sFlyMap->regionMap.mapSecType == MAPSECTYPE_CITY_CANFLY)
             {
                 m4aSongNumStart(SE_SELECT);
                 sFlyMap->choseFlyLocation = TRUE;
@@ -1961,9 +1957,6 @@ static void CB_ExitFlyMap(void)
                 {
                 case MAPSEC_SOUTHERN_ISLAND:
                     SetWarpDestinationToHealLocation(HEAL_LOCATION_SOUTHERN_ISLAND_EXTERIOR);
-                    break;
-                case MAPSEC_BATTLE_FRONTIER:
-                    SetWarpDestinationToHealLocation(HEAL_LOCATION_BATTLE_FRONTIER_OUTSIDE_EAST);
                     break;
                 case MAPSEC_LITTLEROOT_TOWN:
                     SetWarpDestinationToHealLocation(gSaveBlockPtr->playerGender == MALE ? HEAL_LOCATION_LITTLEROOT_TOWN_BRENDANS_HOUSE : HEAL_LOCATION_LITTLEROOT_TOWN_MAYS_HOUSE);

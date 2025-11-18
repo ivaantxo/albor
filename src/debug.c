@@ -56,7 +56,6 @@
 #include "wild_encounter.h"
 #include "constants/abilities.h"
 #include "constants/battle_ai.h"
-#include "constants/battle_frontier.h"
 #include "constants/coins.h"
 #include "constants/expansion.h"
 #include "constants/flags.h"
@@ -155,7 +154,6 @@ enum FlagsVarsDebugMenu
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_RUN_SHOES,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_LOCATIONS,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_BADGES_ALL,
-    DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_FRONTIER_PASS,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_COLISSION,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_ENCOUNTER,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_TRAINER_SEE,
@@ -406,7 +404,6 @@ static void DebugAction_FlagsVars_SwitchPokeNav(u8 taskId);
 static void DebugAction_FlagsVars_SwitchMatchCall(u8 taskId);
 static void DebugAction_FlagsVars_ToggleFlyFlags(u8 taskId);
 static void DebugAction_FlagsVars_ToggleBadgeFlags(u8 taskId);
-static void DebugAction_FlagsVars_ToggleFrontierPass(u8 taskId);
 static void DebugAction_FlagsVars_CollisionOnOff(u8 taskId);
 static void DebugAction_FlagsVars_EncounterOnOff(u8 taskId);
 static void DebugAction_FlagsVars_TrainerSeeOnOff(u8 taskId);
@@ -567,7 +564,6 @@ static const u8 sDebugText_FlagsVars_SwitchMatchCall[] =     _("Toggle {STR_VAR_
 static const u8 sDebugText_FlagsVars_RunningShoes[] =        _("Toggle {STR_VAR_1}Running Shoes");
 static const u8 sDebugText_FlagsVars_ToggleFlyFlags[] =      _("Toggle {STR_VAR_1}Fly Flags");
 static const u8 sDebugText_FlagsVars_ToggleAllBadges[] =     _("Toggle {STR_VAR_1}All badges");
-static const u8 sDebugText_FlagsVars_ToggleFrontierPass[] =  _("Toggle {STR_VAR_1}Frontier Pass");
 static const u8 sDebugText_FlagsVars_SwitchCollision[] =     _("Toggle {STR_VAR_1}Collision OFF");
 static const u8 sDebugText_FlagsVars_SwitchEncounter[] =     _("Toggle {STR_VAR_1}Encounter OFF");
 static const u8 sDebugText_FlagsVars_SwitchTrainerSee[] =    _("Toggle {STR_VAR_1}Trainer See OFF");
@@ -774,7 +770,6 @@ static const struct ListMenuItem sDebugMenu_Items_FlagsVars[] =
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_RUN_SHOES]     = {sDebugText_FlagsVars_RunningShoes,       DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_RUN_SHOES},
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_LOCATIONS]     = {sDebugText_FlagsVars_ToggleFlyFlags,     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_LOCATIONS},
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_BADGES_ALL]    = {sDebugText_FlagsVars_ToggleAllBadges,    DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_BADGES_ALL},
-    [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_FRONTIER_PASS] = {sDebugText_FlagsVars_ToggleFrontierPass, DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_FRONTIER_PASS},
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_COLISSION]     = {sDebugText_FlagsVars_SwitchCollision,    DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_COLISSION},
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_ENCOUNTER]     = {sDebugText_FlagsVars_SwitchEncounter,    DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_ENCOUNTER},
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_TRAINER_SEE]   = {sDebugText_FlagsVars_SwitchTrainerSee,   DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_TRAINER_SEE},
@@ -942,7 +937,6 @@ static void (*const sDebugMenu_Actions_Flags[])(u8) =
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_RUN_SHOES]     = DebugAction_FlagsVars_RunningShoes,
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_LOCATIONS]     = DebugAction_FlagsVars_ToggleFlyFlags,
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_BADGES_ALL]    = DebugAction_FlagsVars_ToggleBadgeFlags,
-    [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_FRONTIER_PASS] = DebugAction_FlagsVars_ToggleFrontierPass,
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_COLISSION]     = DebugAction_FlagsVars_CollisionOnOff,
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_ENCOUNTER]     = DebugAction_FlagsVars_EncounterOnOff,
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_TRAINER_SEE]   = DebugAction_FlagsVars_TrainerSeeOnOff,
@@ -1276,8 +1270,7 @@ static u8 Debug_CheckToggleFlags(u8 id)
                 FlagGet(FLAG_VISITED_MOSSDEEP_CITY) &&
                 FlagGet(FLAG_VISITED_SOOTOPOLIS_CITY) &&
                 FlagGet(FLAG_VISITED_EVER_GRANDE_CITY) &&
-                FlagGet(FLAG_LANDMARK_POKEMON_LEAGUE) &&
-                FlagGet(FLAG_LANDMARK_BATTLE_FRONTIER);
+                FlagGet(FLAG_LANDMARK_POKEMON_LEAGUE);
             break;
         case DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_BADGES_ALL:
             result = FlagGet(FLAG_BADGE01_GET) &&
@@ -1288,9 +1281,6 @@ static u8 Debug_CheckToggleFlags(u8 id)
                 FlagGet(FLAG_BADGE06_GET) &&
                 FlagGet(FLAG_BADGE07_GET) &&
                 FlagGet(FLAG_BADGE08_GET);
-            break;
-        case DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_FRONTIER_PASS:
-            result = FlagGet(FLAG_SYS_FRONTIER_PASS);
             break;
     #if OW_FLAG_NO_COLLISION != 0
         case DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_COLISSION:
@@ -2725,50 +2715,24 @@ static void DebugAction_FlagsVars_RunningShoes(u8 taskId)
 
 static void DebugAction_FlagsVars_ToggleFlyFlags(u8 taskId)
 {
-    if (FlagGet(FLAG_LANDMARK_BATTLE_FRONTIER))
-    {
-        PlaySE(SE_PC_OFF);
-        FlagClear(FLAG_VISITED_LITTLEROOT_TOWN);
-        FlagClear(FLAG_VISITED_OLDALE_TOWN);
-        FlagClear(FLAG_VISITED_DEWFORD_TOWN);
-        FlagClear(FLAG_VISITED_LAVARIDGE_TOWN);
-        FlagClear(FLAG_VISITED_FALLARBOR_TOWN);
-        FlagClear(FLAG_VISITED_VERDANTURF_TOWN);
-        FlagClear(FLAG_VISITED_PACIFIDLOG_TOWN);
-        FlagClear(FLAG_VISITED_PETALBURG_CITY);
-        FlagClear(FLAG_VISITED_SLATEPORT_CITY);
-        FlagClear(FLAG_VISITED_MAUVILLE_CITY);
-        FlagClear(FLAG_VISITED_RUSTBORO_CITY);
-        FlagClear(FLAG_VISITED_FORTREE_CITY);
-        FlagClear(FLAG_VISITED_LILYCOVE_CITY);
-        FlagClear(FLAG_VISITED_MOSSDEEP_CITY);
-        FlagClear(FLAG_VISITED_SOOTOPOLIS_CITY);
-        FlagClear(FLAG_VISITED_EVER_GRANDE_CITY);
-        FlagClear(FLAG_LANDMARK_POKEMON_LEAGUE);
-        FlagClear(FLAG_LANDMARK_BATTLE_FRONTIER);
-    }
-    else
-    {
-        PlaySE(SE_PC_LOGIN);
-        FlagSet(FLAG_VISITED_LITTLEROOT_TOWN);
-        FlagSet(FLAG_VISITED_OLDALE_TOWN);
-        FlagSet(FLAG_VISITED_DEWFORD_TOWN);
-        FlagSet(FLAG_VISITED_LAVARIDGE_TOWN);
-        FlagSet(FLAG_VISITED_FALLARBOR_TOWN);
-        FlagSet(FLAG_VISITED_VERDANTURF_TOWN);
-        FlagSet(FLAG_VISITED_PACIFIDLOG_TOWN);
-        FlagSet(FLAG_VISITED_PETALBURG_CITY);
-        FlagSet(FLAG_VISITED_SLATEPORT_CITY);
-        FlagSet(FLAG_VISITED_MAUVILLE_CITY);
-        FlagSet(FLAG_VISITED_RUSTBORO_CITY);
-        FlagSet(FLAG_VISITED_FORTREE_CITY);
-        FlagSet(FLAG_VISITED_LILYCOVE_CITY);
-        FlagSet(FLAG_VISITED_MOSSDEEP_CITY);
-        FlagSet(FLAG_VISITED_SOOTOPOLIS_CITY);
-        FlagSet(FLAG_VISITED_EVER_GRANDE_CITY);
-        FlagSet(FLAG_LANDMARK_POKEMON_LEAGUE);
-        FlagSet(FLAG_LANDMARK_BATTLE_FRONTIER);
-    }
+    PlaySE(SE_PC_LOGIN);
+    FlagSet(FLAG_VISITED_LITTLEROOT_TOWN);
+    FlagSet(FLAG_VISITED_OLDALE_TOWN);
+    FlagSet(FLAG_VISITED_DEWFORD_TOWN);
+    FlagSet(FLAG_VISITED_LAVARIDGE_TOWN);
+    FlagSet(FLAG_VISITED_FALLARBOR_TOWN);
+    FlagSet(FLAG_VISITED_VERDANTURF_TOWN);
+    FlagSet(FLAG_VISITED_PACIFIDLOG_TOWN);
+    FlagSet(FLAG_VISITED_PETALBURG_CITY);
+    FlagSet(FLAG_VISITED_SLATEPORT_CITY);
+    FlagSet(FLAG_VISITED_MAUVILLE_CITY);
+    FlagSet(FLAG_VISITED_RUSTBORO_CITY);
+    FlagSet(FLAG_VISITED_FORTREE_CITY);
+    FlagSet(FLAG_VISITED_LILYCOVE_CITY);
+    FlagSet(FLAG_VISITED_MOSSDEEP_CITY);
+    FlagSet(FLAG_VISITED_SOOTOPOLIS_CITY);
+    FlagSet(FLAG_VISITED_EVER_GRANDE_CITY);
+    FlagSet(FLAG_LANDMARK_POKEMON_LEAGUE);
 }
 
 static void DebugAction_FlagsVars_ToggleBadgeFlags(u8 taskId)
@@ -2797,16 +2761,6 @@ static void DebugAction_FlagsVars_ToggleBadgeFlags(u8 taskId)
         FlagSet(FLAG_BADGE07_GET);
         FlagSet(FLAG_BADGE08_GET);
     }
-}
-
-static void DebugAction_FlagsVars_ToggleFrontierPass(u8 taskId)
-{
-    // Sound effect
-    if (FlagGet(FLAG_SYS_FRONTIER_PASS))
-        PlaySE(SE_PC_OFF);
-    else
-        PlaySE(SE_PC_LOGIN);
-    FlagToggle(FLAG_SYS_FRONTIER_PASS);
 }
 
 static void DebugAction_FlagsVars_CollisionOnOff(u8 taskId)
@@ -4007,7 +3961,7 @@ static void DebugAction_Give_MaxCoins(u8 taskId)
 
 static void DebugAction_Give_MaxBattlePoints(u8 taskId)
 {
-    gSaveBlockPtr->frontier.battlePoints = MAX_BATTLE_FRONTIER_POINTS;
+
 }
 
 static void DebugAction_Give_DayCareEgg(u8 taskId)

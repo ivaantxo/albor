@@ -40,19 +40,6 @@ LilycoveCity_Harbor_EventScript_NoFirstTimeEventTickets::
 	end
 
 LilycoveCity_Harbor_EventScript_FerryRegularLocationSelect::
-	setvar VAR_0x8004, 0
-	special ScriptMenu_CreateLilycoveSSTidalMultichoice
-	waitstate
-	special GetLilycoveSSTidalSelection
-	switch VAR_RESULT
-	case 0, LilycoveCity_Harbor_EventScript_GoToSlateport
-	case 1, LilycoveCity_Harbor_EventScript_GoToBattleFrontier
-	case 2, LilycoveCity_Harbor_EventScript_GoToSouthernIsland
-	case 3, LilycoveCity_Harbor_EventScript_GoToNavelRock
-	case 4, LilycoveCity_Harbor_EventScript_GoToBirthIsland
-	case 5, LilycoveCity_Harbor_EventScript_GoToFarawayIsland
-	case 6, LilycoveCity_Harbor_EventScript_ExitSailSelect
-	case MULTI_B_PRESSED, LilycoveCity_Harbor_EventScript_ExitSailSelect
 	end
 
 LilycoveCity_Harbor_EventScript_GoToSouthernIsland::
@@ -89,15 +76,6 @@ LilycoveCity_Harbor_EventScript_GoToSlateport::
 	setvar VAR_SS_TIDAL_STATE, SS_TIDAL_BOARD_LILYCOVE
 	call LilycoveCity_Harbor_EventScript_BoardFerry
 	warp MAP_SS_TIDAL_CORRIDOR, 1, 10
-	waitstate
-	release
-	end
-
-LilycoveCity_Harbor_EventScript_GoToBattleFrontier::
-	msgbox LilycoveCity_Harbor_Text_BattleFrontierItIs, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, LilycoveCity_Harbor_EventScript_FerryDestinationChangeMind
-	call LilycoveCity_Harbor_EventScript_BoardFerry
-	warp MAP_BATTLE_FRONTIER_OUTSIDE_WEST, 19, 67
 	waitstate
 	release
 	end
@@ -518,9 +496,6 @@ LilycoveCity_Harbor_Text_SailAnotherTime:
 
 LilycoveCity_Harbor_Text_SlateportItIs:
 	.string "SLATEPORT CITY it is, then!$"
-
-LilycoveCity_Harbor_Text_BattleFrontierItIs:
-	.string "BATTLE FRONTIER it is, then!$"
 
 LilycoveCity_Harbor_Text_PleaseBoard:
 	.string "Please board the ferry and wait for\n"

@@ -465,14 +465,6 @@
       "height": 1
     },
     {
-      "map_section": "MAPSEC_BATTLE_FRONTIER",
-      "name": "BATTLE FRONTIER",
-      "x": 22,
-      "y": 12,
-      "width": 1,
-      "height": 1
-    },
-    {
       "map_section": "MAPSEC_RUSTURF_TUNNEL",
       "name": "RUSTURF TUNNEL",
       "x": 2,
@@ -1580,14 +1572,6 @@
       "name": "FARAWAY ISLAND",
       "x": 0,
       "y": 0,
-      "width": 1,
-      "height": 1
-    },
-    {
-      "map_section": "MAPSEC_ARTISAN_CAVE",
-      "name": "ARTISAN CAVE",
-      "x": 22,
-      "y": 12,
       "width": 1,
       "height": 1
     },

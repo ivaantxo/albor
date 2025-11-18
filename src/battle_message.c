@@ -4,11 +4,9 @@
 #include "battle_controllers.h"
 #include "battle_message.h"
 #include "battle_setup.h"
-#include "battle_tower.h"
 #include "battle_z_move.h"
 #include "data.h"
 #include "event_data.h"
-#include "frontier_util.h"
 #include "graphics.h"
 #include "international_string_util.h"
 #include "item.h"
@@ -20,9 +18,7 @@
 #include "text.h"
 #include "window.h"
 #include "constants/abilities.h"
-#include "constants/battle_dome.h"
 #include "constants/battle_string_ids.h"
-#include "constants/frontier_util.h"
 #include "constants/items.h"
 #include "constants/moves.h"
 #include "constants/opponents.h"
@@ -2049,7 +2045,6 @@ const u8 gText_Confusion[] = _("confusion");
 const u8 gText_Love[] = _("love");
 const u8 gText_SpaceAndSpace[] = _(" and ");
 const u8 gText_CommaSpace[] = _(", ");
-const u8 gText_Space2[] = _(" ");
 const u8 gText_LineBreak[] = _("\l");
 const u8 gText_NewLine[] = _("\n");
 const u8 gText_Are[] = _("are");
@@ -2065,14 +2060,6 @@ static const u8 sText_Round1[] = _("Round 1");
 static const u8 sText_Round2[] = _("Round 2");
 static const u8 sText_Semifinal[] = _("Semifinal");
 static const u8 sText_Final[] = _("Final");
-
-const u8 *const gRoundsStringTable[DOME_ROUNDS_COUNT] =
-{
-    [DOME_ROUND1]    = sText_Round1,
-    [DOME_ROUND2]    = sText_Round2,
-    [DOME_SEMIFINAL] = sText_Semifinal,
-    [DOME_FINAL]     = sText_Final
-};
 
 const u8 gText_TheGreatNewHope[] = _("The great new hope!\p");
 const u8 gText_WillChampionshipDreamComeTrue[] = _("Will the championship dream come true?!\p");
@@ -2097,14 +2084,6 @@ static const u8 sText_GlintAppearsInEye[] = _("A glint appears in {B_SCR_ACTIVE_
 static const u8 sText_PkmnGettingIntoPosition[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} is getting into position!");
 static const u8 sText_PkmnBeganGrowlingDeeply[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} began growling deeply!");
 static const u8 sText_PkmnEagerForMore[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} is eager for more!");
-
-const u16 gBattlePalaceFlavorTextTable[] =
-{
-    [B_MSG_GLINT_IN_EYE]   = STRINGID_GLINTAPPEARSINEYE,
-    [B_MSG_GETTING_IN_POS] = STRINGID_PKMNGETTINGINTOPOSITION,
-    [B_MSG_GROWL_DEEPLY]   = STRINGID_PKMNBEGANGROWLINGDEEPLY,
-    [B_MSG_EAGER_FOR_MORE] = STRINGID_PKMNEAGERFORMORE,
-};
 
 static const u8 sText_RefIfNothingIsDecided[] = _("REFEREE: If nothing is decided in 3 turns, we will go to judging!");
 static const u8 sText_RefThatsIt[] = _("REFEREE: That's it! We will now go to judging to determine the winner!");
@@ -2148,7 +2127,7 @@ static const u8 sText_Opposing2[] = _("the opposing");
 
 static const u8 sText_EmptyStatus[] = _("$$$$$$$");
 
-static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
+static const struct BattleWindowText sTextOnWindowsInfo[] =
 {
     [B_WIN_MSG] = {
         .fillValue = PIXEL_FILL(2),
@@ -2368,215 +2347,6 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
         .bgColor = TEXT_DYNAMIC_COLOR_5,
         .shadowColor = TEXT_DYNAMIC_COLOR_6,
     },
-};
-
-static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
-{
-    [B_WIN_MSG] = {
-        .fillValue = PIXEL_FILL(0xF),
-        .fontId = FONT_NORMAL,
-        .x = 0,
-        .y = 1,
-        .speed = 1,
-        .fgColor = 1,
-        .bgColor = 15,
-        .shadowColor = 6,
-    },
-    [B_WIN_MOVE_NAME_1] = {
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NARROW,
-        .x = 0,
-        .y = 1,
-        .speed = 0,
-        .fgColor = 13,
-        .bgColor = 14,
-        .shadowColor = 15,
-    },
-    [B_WIN_MOVE_NAME_2] = {
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NARROW,
-        .x = 0,
-        .y = 1,
-        .speed = 0,
-        .fgColor = 13,
-        .bgColor = 14,
-        .shadowColor = 15,
-    },
-    [B_WIN_MOVE_NAME_3] = {
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NARROW,
-        .x = 0,
-        .y = 1,
-        .speed = 0,
-        .fgColor = 13,
-        .bgColor = 14,
-        .shadowColor = 15,
-    },
-    [B_WIN_MOVE_NAME_4] = {
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NARROW,
-        .x = 0,
-        .y = 1,
-        .speed = 0,
-        .fgColor = 13,
-        .bgColor = 14,
-        .shadowColor = 15,
-    },
-    [B_WIN_PP_1] = {
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NARROW,
-        .x = 0,
-        .y = 1,
-        .speed = 0,
-        .fgColor = 12,
-        .bgColor = 14,
-        .shadowColor = 11,
-    },
-    [B_WIN_PP_2] = {
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NARROW,
-        .x = 0,
-        .y = 1,
-        .speed = 0,
-        .fgColor = 12,
-        .bgColor = 14,
-        .shadowColor = 11,
-    },
-    [B_WIN_PP_3] = {
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NARROW,
-        .x = 0,
-        .y = 1,
-        .speed = 0,
-        .fgColor = 12,
-        .bgColor = 14,
-        .shadowColor = 11,
-    },
-    [B_WIN_PP_4] = {
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NARROW,
-        .x = 0,
-        .y = 1,
-        .speed = 0,
-        .fgColor = 12,
-        .bgColor = 14,
-        .shadowColor = 11,
-    },
-    [B_WIN_YESNO] = {
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NORMAL,
-        .x = 0,
-        .y = 1,
-        .speed = 0,
-        .fgColor = 13,
-        .bgColor = 14,
-        .shadowColor = 15,
-    },
-    [B_WIN_LEVEL_UP_BOX] = {
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NORMAL,
-        .x = 0,
-        .y = 1,
-        .speed = 0,
-        .fgColor = 13,
-        .bgColor = 14,
-        .shadowColor = 15,
-    },
-    [B_WIN_LEVEL_UP_BANNER] = {
-        .fillValue = PIXEL_FILL(0),
-        .fontId = FONT_NORMAL,
-        .x = 32,
-        .y = 1,
-        .speed = 0,
-        .fgColor = 1,
-        .shadowColor = 2,
-    },
-    [ARENA_WIN_PLAYER_NAME] = {
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NORMAL,
-        .x = -1,
-        .y = 1,
-        .speed = 0,
-        .fgColor = 1,
-        .bgColor = 14,
-        .shadowColor = 15,
-    },
-    [ARENA_WIN_VS] = {
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NORMAL,
-        .x = -1,
-        .y = 1,
-        .speed = 0,
-        .fgColor = 13,
-        .bgColor = 14,
-        .shadowColor = 15,
-    },
-    [ARENA_WIN_OPPONENT_NAME] = {
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NORMAL,
-        .x = -1,
-        .y = 1,
-        .speed = 0,
-        .fgColor = 13,
-        .bgColor = 14,
-        .shadowColor = 15,
-    },
-    [ARENA_WIN_MIND] = {
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NORMAL,
-        .x = -1,
-        .y = 1,
-        .speed = 0,
-        .fgColor = 13,
-        .bgColor = 14,
-        .shadowColor = 15,
-    },
-    [ARENA_WIN_SKILL] = {
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NORMAL,
-        .x = -1,
-        .y = 1,
-        .speed = 0,
-        .fgColor = 13,
-        .bgColor = 14,
-        .shadowColor = 15,
-    },
-    [ARENA_WIN_BODY] = {
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NORMAL,
-        .x = -1,
-        .y = 1,
-        .speed = 0,
-        .fgColor = 13,
-        .bgColor = 14,
-        .shadowColor = 15,
-    },
-    [ARENA_WIN_JUDGMENT_TITLE] = {
-        .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NORMAL,
-        .x = -1,
-        .y = 1,
-        .speed = 0,
-        .fgColor = 13,
-        .bgColor = 14,
-        .shadowColor = 15,
-    },
-    [ARENA_WIN_JUDGMENT_TEXT] = {
-        .fillValue = PIXEL_FILL(0x1),
-        .fontId = FONT_NORMAL,
-        .x = 0,
-        .y = 1,
-        .speed = 1,
-        .fgColor = 1,
-        .bgColor = 3,
-        .shadowColor = 2,
-    },
-};
-
-static const struct BattleWindowText *const sBattleTextOnWindowsInfo[] =
-{
-    [B_WIN_TYPE_NORMAL] = sTextOnWindowsInfo_Normal,
-    [B_WIN_TYPE_ARENA]  = sTextOnWindowsInfo_Arena
 };
 
 void BufferStringBattle(u16 stringID, u32 battler)
@@ -3025,7 +2795,6 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
             case B_TXT_TRAINER2_WIN_TEXT:
                 break;
             case B_TXT_PARTNER_CLASS:
-                toCpy = gTrainerClasses[GetFrontierOpponentClass(gPartnerTrainerId)].name;
                 break;
             case B_TXT_PARTNER_NAME:
                 toCpy = gSaveBlockPtr->playerName;
@@ -3269,7 +3038,7 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
 
 void BattlePutTextOnWindow(const u8 *text, u8 windowId)
 {
-    const struct BattleWindowText *textInfo = sBattleTextOnWindowsInfo[gBattleScripting.windowsType];
+    const struct BattleWindowText *textInfo = sTextOnWindowsInfo;
     bool32 copyToVram;
     struct TextPrinterTemplate printerTemplate;
     u8 speed;
@@ -3311,7 +3080,7 @@ void BattlePutTextOnWindow(const u8 *text, u8 windowId)
 
     if (printerTemplate.x == 0xFF)
     {
-        u32 width = GetBattleWindowTemplatePixelWidth(gBattleScripting.windowsType, windowId);
+        u32 width = GetBattleWindowTemplatePixelWidth(windowId);
         s32 alignX = GetStringCenterAlignXOffsetWithLetterSpacing(printerTemplate.fontId, printerTemplate.currentChar, width, printerTemplate.letterSpacing);
         printerTemplate.x = printerTemplate.currentX = alignX;
     }
@@ -3375,7 +3144,6 @@ u8 GetCurrentPpToMaxPpState(u8 currentPp, u8 maxPp)
 struct TrainerSlide
 {
     u16 trainerId;
-    bool8 isFrontierTrainer;
     const u8 *msgLastSwitchIn;
     const u8 *msgLastLowHp;
     const u8 *msgFirstDown;
@@ -3396,7 +3164,6 @@ static const struct TrainerSlide sTrainerSlides[] =
     Example:
     {
         .trainerId = TRAINER_WALLY_VR_2,
-        .isFrontierTrainer = FALSE,
         .msgLastSwitchIn = sText_AarghAlmostHadIt,
         .msgLastLowHp = sText_BoxIsFull,
         .msgFirstDown = sText_123Poof,
@@ -3471,7 +3238,7 @@ u32 ShouldDoTrainerSlide(u32 battler, u32 which)
 
     for (i = 0; i < ARRAY_COUNT(sTrainerSlides); i++)
     {
-        if (trainerId == sTrainerSlides[i].trainerId && (!sTrainerSlides[i].isFrontierTrainer))
+        if (trainerId == sTrainerSlides[i].trainerId)
         {
             gBattleScripting.battler = battler;
             switch (which)

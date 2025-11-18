@@ -926,12 +926,6 @@ void WriteFlashScanlineEffectBuffer(u8 flashLevel)
     }
 }
 
-void WriteBattlePyramidViewScanlineEffectBuffer(void)
-{
-    SetFlashScanlineEffectWindowBoundaries(&gScanlineEffectRegBuffers[0][0], DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, gSaveBlockPtr->frontier.pyramidLightRadius);
-    CpuFastSet(&gScanlineEffectRegBuffers[0], &gScanlineEffectRegBuffers[1], 480);
-}
-
 static void Task_SpinEnterWarp(u8 taskId)
 {
     switch (gTasks[taskId].tState)

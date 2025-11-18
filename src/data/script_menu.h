@@ -8,7 +8,7 @@ static const struct MenuAction MultichoiceList_BrineyOnDewford[] =
 
 static const struct MenuAction MultichoiceList_EnterInfo[] =
 {
-    {gText_Enter2},
+    {COMPOUND_STRING("Entrar")},
     {gText_Info2},
     {gText_Salir},
 };
@@ -245,18 +245,6 @@ static const struct MenuAction MultichoiceList_SternDeepSea[] =
     {gText_Salir},
 };
 
-static const struct MenuAction MultichoiceList_UnusedAshVendor[] =
-{
-    {gText_BlueFlute2},
-    {gText_YellowFlute2},
-    {gText_RedFlute2},
-    {gText_WhiteFlute2},
-    {gText_BlackFlute2},
-    {gText_GlassChair},
-    {gText_GlassDesk},
-    {gText_Salir},
-};
-
 static const struct MenuAction MultichoiceList_GameCornerDolls[] =
 {
     {gText_TreeckoDollAndPrice},
@@ -288,30 +276,10 @@ static const struct MenuAction MultichoiceList_HowsFishing[] =
     {gText_NotSoGood},
 };
 
-static const struct MenuAction MultichoiceList_SSTidalSlateportWithBF[] =
-{
-    {gText_LilycoveCity},
-    {gText_BattleFrontier},
-    {gText_Salir},
-};
-
-static const struct MenuAction MultichoiceList_SSTidalBattleFrontier[] =
-{
-    {gText_SlateportCity},
-    {gText_LilycoveCity},
-    {gText_Salir},
-};
-
 static const struct MenuAction MultichoiceList_RightLeft[] =
 {
     {gText_Right},
     {gText_Left},
-};
-
-static const struct MenuAction MultichoiceList_SSTidalSlateportNoBF[] =
-{
-    {gText_LilycoveCity},
-    {gText_Salir},
 };
 
 static const struct MenuAction MultichoiceList_Floors[] =
@@ -450,12 +418,6 @@ static const struct MenuAction MultichoiceList_TourneyNoRecord[] =
     {gText_Retire},
 };
 
-static const struct MenuAction MultichoiceList_Tent[] =
-{
-    {gText_RedTent},
-    {gText_BlueTent},
-};
-
 static const struct MenuAction MultichoiceList_LinkServicesNoBerry[] =
 {
     {gText_TradeCenter},
@@ -526,13 +488,6 @@ static const struct MenuAction MultichoiceList_ContestRank[] =
     {gText_Salir},
 };
 
-static const struct MenuAction MultichoiceList_FrontierItemChoose[] =
-{
-    {gText_BattleBag},
-    {gText_HeldItem},
-    {gText_Salir},
-};
-
 static const struct MenuAction MultichoiceList_ForcedStartMenu[] =
 {
     {gText_MenuOptionPokedex},
@@ -543,43 +498,6 @@ static const struct MenuAction MultichoiceList_ForcedStartMenu[] =
     {gText_MenuOptionSave},
     {gText_MenuOptionOption},
     {gText_MenuOptionExit},
-};
-
-static const struct MenuAction MultichoiceList_FrontierGamblerBet[] =
-{
-    {gText_5BP},
-    {gText_10BP},
-    {gText_15BP},
-    {gText_Salir},
-};
-
-static const struct MenuAction MultichoiceList_UnusedSSTidal1[] =
-{
-    {gText_SouthernIsland},
-    {gText_BirthIsland},
-    {gText_Salir},
-};
-
-static const struct MenuAction MultichoiceList_UnusedSSTidal2[] =
-{
-    {gText_SouthernIsland},
-    {gText_FarawayIsland},
-    {gText_Salir},
-};
-
-static const struct MenuAction MultichoiceList_UnusedSSTidal3[] =
-{
-    {gText_BirthIsland},
-    {gText_FarawayIsland},
-    {gText_Salir},
-};
-
-static const struct MenuAction MultichoiceList_UnusedSSTidal4[] =
-{
-    {gText_SouthernIsland},
-    {gText_BirthIsland},
-    {gText_FarawayIsland},
-    {gText_Salir},
 };
 
 static const struct MenuAction MultichoiceList_Fossil[] =
@@ -593,87 +511,6 @@ static const struct MenuAction MultichoiceList_YesNo[] =
 {
     {gText_Yes},
     {gText_No4},
-};
-
-static const struct MenuAction MultichoiceList_FrontierRules[] =
-{
-    {gText_TwoStyles},
-    {gText_Lv50_3},
-    {gText_OpenLevel2},
-    {gText_MonTypeAndNo},
-    {gText_HoldItems},
-    {gText_Salir},
-};
-
-static const struct MenuAction MultichoiceList_FrontierPassInfo[] =
-{
-    {gText_Symbols2},
-    {gText_Record3},
-    {gText_BattlePts},
-    {gText_Salir},
-};
-
-static const struct MenuAction MultichoiceList_BattleArenaRules[] =
-{
-    {gText_BattleRules},
-    {gText_JudgeMind},
-    {gText_JudgeSkill},
-    {gText_JudgeBody},
-    {gText_Salir},
-};
-
-static const struct MenuAction MultichoiceList_BattleTowerRules[] =
-{
-    {gText_TowerInfo},
-    {gText_BattleMon},
-    {gText_BattleSalon},
-    {gText_MultiLink2},
-    {gText_Salir},
-};
-
-static const struct MenuAction MultichoiceList_BattleDomeRules[] =
-{
-    {gText_Matchup},
-    {gText_TourneyTree},
-    {gText_DoubleKO},
-    {gText_Salir},
-};
-
-static const struct MenuAction MultichoiceList_BattleFactoryRules[] =
-{
-    {gText_BasicRules},
-    {gText_SwapPartners},
-    {gText_SwapNumber},
-    {gText_SwapNotes},
-    {gText_OpenLevel3},
-    {gText_Salir},
-};
-
-static const struct MenuAction MultichoiceList_BattlePalaceRules[] =
-{
-    {gText_BattleBasics},
-    {gText_PokemonNature},
-    {gText_PokemonMoves},
-    {gText_Underpowered},
-    {gText_WhenInDanger},
-    {gText_Salir},
-};
-
-static const struct MenuAction MultichoiceList_BattlePyramidRules[] =
-{
-    {gText_PyramidPokemon},
-    {gText_PyramidTrainers},
-    {gText_PyramidMaze},
-    {gText_BattleBag2},
-    {gText_Salir},
-};
-
-static const struct MenuAction MultichoiceList_BattlePikeRules[] =
-{
-    {gText_PokenavAndBag},
-    {gText_HeldItems},
-    {gText_PokemonOrder},
-    {gText_Salir},
 };
 
 static const struct MenuAction MultichoiceList_GoOnRecordRestRetire[] =
@@ -710,40 +547,12 @@ static const struct MenuAction MultichoiceList_TVLati[] =
     {gText_Blue},
 };
 
-static const struct MenuAction MultichoiceList_BattleTowerFeelings[] =
-{
-    {gText_IllBattleNow},
-    {gText_IWon},
-    {gText_ILost},
-    {gText_IWontTell},
-};
-
 static const struct MenuAction MultichoiceList_WheresRayquaza[] =
 {
     {gText_CaveOfOrigin},
     {gText_MtPyre},
     {gText_SkyPillar},
     {gText_DontRemember},
-};
-
-static const struct MenuAction MultichoiceList_SlateportTentRules[] =
-{
-    {gText_BasicRules},
-    {gText_SwapPartners},
-    {gText_SwapNumber},
-    {gText_SwapNotes},
-    {gText_BattlePokemon},
-    {gText_Salir},
-};
-
-static const struct MenuAction MultichoiceList_FallarborTentRules[] =
-{
-    {gText_BattleTrainers},
-    {gText_BattleRules},
-    {gText_JudgeMind},
-    {gText_JudgeSkill},
-    {gText_JudgeBody},
-    {gText_Salir},
 };
 
 static const struct MenuAction MultichoiceList_TagMatchType[] =
@@ -784,20 +593,13 @@ static const struct MultichoiceListStruct sMultichoiceLists[] =
     [MULTI_BASE_PC_WITH_REGISTRY]      = MULTICHOICE(MultichoiceList_BasePCWithRegistry),
     [MULTI_REGISTER_MENU]              = MULTICHOICE(MultichoiceList_RegisterMenu),
     [MULTI_SSTIDAL_LILYCOVE]           = MULTICHOICE(MultichoiceList_Exit),
-    [MULTI_UNUSED_9]                   = MULTICHOICE(MultichoiceList_Exit),
-    [MULTI_UNUSED_10]                  = MULTICHOICE(MultichoiceList_Exit),
-    [MULTI_FRONTIER_PASS_INFO]         = MULTICHOICE(MultichoiceList_FrontierPassInfo),
     [MULTI_BIKE]                       = MULTICHOICE(MultichoiceList_Bike),
     [MULTI_STATUS_INFO]                = MULTICHOICE(MultichoiceList_StatusInfo),
     [MULTI_BRINEY_OFF_DEWFORD]         = MULTICHOICE(MultichoiceList_BrineyOffDewford),
-    [MULTI_UNUSED_15]                  = MULTICHOICE(MultichoiceList_Exit),
     [MULTI_VIEWED_PAINTINGS]           = MULTICHOICE(MultichoiceList_ViewedPaintings),
     [MULTI_YESNOINFO]                  = MULTICHOICE(MultichoiceList_YesNoInfo),
     [MULTI_BATTLE_MODE]                = MULTICHOICE(MultichoiceList_BattleMode),
-    [MULTI_UNUSED_19]                  = MULTICHOICE(MultichoiceList_Exit),
     [MULTI_YESNOINFO_2]                = MULTICHOICE(MultichoiceList_YesNoInfo2),
-    [MULTI_UNUSED_21]                  = MULTICHOICE(MultichoiceList_Exit),
-    [MULTI_UNUSED_22]                  = MULTICHOICE(MultichoiceList_Exit),
     [MULTI_CHALLENGEINFO]              = MULTICHOICE(MultichoiceList_ChallengeInfo),
     [MULTI_LEVEL_MODE]                 = MULTICHOICE(MultichoiceList_LevelMode),
     [MULTI_MECHADOLL1_Q1]              = MULTICHOICE(MultichoiceList_Mechadoll1_Q1),
@@ -815,23 +617,16 @@ static const struct MultichoiceListStruct sMultichoiceLists[] =
     [MULTI_MECHADOLL5_Q1]              = MULTICHOICE(MultichoiceList_Mechadoll5_Q1),
     [MULTI_MECHADOLL5_Q2]              = MULTICHOICE(MultichoiceList_Mechadoll5_Q2),
     [MULTI_MECHADOLL5_Q3]              = MULTICHOICE(MultichoiceList_Mechadoll5_Q3),
-    [MULTI_UNUSED_40]                  = MULTICHOICE(MultichoiceList_Exit),
-    [MULTI_UNUSED_41]                  = MULTICHOICE(MultichoiceList_Exit),
     [MULTI_VENDING_MACHINE]            = MULTICHOICE(MultichoiceList_VendingMachine),
     [MULTI_MACH_BIKE_INFO]             = MULTICHOICE(MultichoiceList_MachBikeInfo),
     [MULTI_ACRO_BIKE_INFO]             = MULTICHOICE(MultichoiceList_AcroBikeInfo),
     [MULTI_SATISFACTION]               = MULTICHOICE(MultichoiceList_Satisfaction),
     [MULTI_STERN_DEEPSEA]              = MULTICHOICE(MultichoiceList_SternDeepSea),
-    [MULTI_UNUSED_ASH_VENDOR]          = MULTICHOICE(MultichoiceList_UnusedAshVendor),
     [MULTI_GAME_CORNER_DOLLS]          = MULTICHOICE(MultichoiceList_GameCornerDolls),
     [MULTI_GAME_CORNER_COINS]          = MULTICHOICE(MultichoiceList_GameCornerCoins),
     [MULTI_HOWS_FISHING]               = MULTICHOICE(MultichoiceList_HowsFishing),
-    [MULTI_UNUSED_51]                  = MULTICHOICE(MultichoiceList_Exit),
-    [MULTI_SSTIDAL_SLATEPORT_WITH_BF]  = MULTICHOICE(MultichoiceList_SSTidalSlateportWithBF),
-    [MULTI_SSTIDAL_BATTLE_FRONTIER]    = MULTICHOICE(MultichoiceList_SSTidalBattleFrontier),
     [MULTI_RIGHTLEFT]                  = MULTICHOICE(MultichoiceList_RightLeft),
     [MULTI_GAME_CORNER_TMS]            = MULTICHOICE(MultichoiceList_GameCornerTMs),
-    [MULTI_SSTIDAL_SLATEPORT_NO_BF]    = MULTICHOICE(MultichoiceList_SSTidalSlateportNoBF),
     [MULTI_FLOORS]                     = MULTICHOICE(MultichoiceList_Floors),
     [MULTI_SHARDS_R]                   = MULTICHOICE(MultichoiceList_ShardsR),
     [MULTI_SHARDS_Y]                   = MULTICHOICE(MultichoiceList_ShardsY),
@@ -856,34 +651,16 @@ static const struct MultichoiceListStruct sMultichoiceLists[] =
     [MULTI_WIRELESS_MINIGAME]          = MULTICHOICE(MultichoiceList_WirelessMinigame),
     [MULTI_LINK_LEADER]                = MULTICHOICE(MultichoiceList_LinkLeader),
     [MULTI_CONTEST_RANK]               = MULTICHOICE(MultichoiceList_ContestRank),
-    [MULTI_FRONTIER_ITEM_CHOOSE]       = MULTICHOICE(MultichoiceList_FrontierItemChoose),
     [MULTI_FORCED_START_MENU]          = MULTICHOICE(MultichoiceList_ForcedStartMenu),
-    [MULTI_FRONTIER_GAMBLER_BET]       = MULTICHOICE(MultichoiceList_FrontierGamblerBet),
-    [MULTI_TENT]                       = MULTICHOICE(MultichoiceList_Tent),
-    [MULTI_UNUSED_SSTIDAL_1]           = MULTICHOICE(MultichoiceList_UnusedSSTidal1),
-    [MULTI_UNUSED_SSTIDAL_2]           = MULTICHOICE(MultichoiceList_UnusedSSTidal2),
-    [MULTI_UNUSED_SSTIDAL_3]           = MULTICHOICE(MultichoiceList_UnusedSSTidal3),
-    [MULTI_UNUSED_SSTIDAL_4]           = MULTICHOICE(MultichoiceList_UnusedSSTidal4),
     [MULTI_FOSSIL]                     = MULTICHOICE(MultichoiceList_Fossil),
     [MULTI_YESNO]                      = MULTICHOICE(MultichoiceList_YesNo),
-    [MULTI_FRONTIER_RULES]             = MULTICHOICE(MultichoiceList_FrontierRules),
-    [MULTI_BATTLE_ARENA_RULES]         = MULTICHOICE(MultichoiceList_BattleArenaRules),
-    [MULTI_BATTLE_TOWER_RULES]         = MULTICHOICE(MultichoiceList_BattleTowerRules),
-    [MULTI_BATTLE_DOME_RULES]          = MULTICHOICE(MultichoiceList_BattleDomeRules),
-    [MULTI_BATTLE_FACTORY_RULES]       = MULTICHOICE(MultichoiceList_BattleFactoryRules),
-    [MULTI_BATTLE_PALACE_RULES]        = MULTICHOICE(MultichoiceList_BattlePalaceRules),
-    [MULTI_BATTLE_PYRAMID_RULES]       = MULTICHOICE(MultichoiceList_BattlePyramidRules),
-    [MULTI_BATTLE_PIKE_RULES]          = MULTICHOICE(MultichoiceList_BattlePikeRules),
     [MULTI_GO_ON_RECORD_REST_RETIRE]   = MULTICHOICE(MultichoiceList_GoOnRecordRestRetire),
     [MULTI_GO_ON_REST_RETIRE]          = MULTICHOICE(MultichoiceList_GoOnRestRetire),
     [MULTI_GO_ON_RECORD_RETIRE]        = MULTICHOICE(MultichoiceList_GoOnRecordRetire),
     [MULTI_GO_ON_RETIRE]               = MULTICHOICE(MultichoiceList_GoOnRetire),
     [MULTI_TOURNEY_NO_RECORD]          = MULTICHOICE(MultichoiceList_TourneyNoRecord),
     [MULTI_TV_LATI]                    = MULTICHOICE(MultichoiceList_TVLati),
-    [MULTI_BATTLE_TOWER_FEELINGS]      = MULTICHOICE(MultichoiceList_BattleTowerFeelings),
     [MULTI_WHERES_RAYQUAZA]            = MULTICHOICE(MultichoiceList_WheresRayquaza),
-    [MULTI_SLATEPORT_TENT_RULES]       = MULTICHOICE(MultichoiceList_SlateportTentRules),
-    [MULTI_FALLARBOR_TENT_RULES]       = MULTICHOICE(MultichoiceList_FallarborTentRules),
     [MULTI_TAG_MATCH_TYPE]             = MULTICHOICE(MultichoiceList_TagMatchType),
     [MULTI_BERRY_PLOT]                 = MULTICHOICE(MultichoiceList_BerryPlot),
 };
@@ -913,13 +690,6 @@ const u8 *const gStdStrings[] =
     [STDSTRING_DOUBLE] = gText_Double2,
     [STDSTRING_MULTI] = gText_Multi,
     [STDSTRING_MULTI_LINK] = gText_MultiLink,
-    [STDSTRING_BATTLE_TOWER] = gText_BattleTower2,
-    [STDSTRING_BATTLE_DOME] = gText_BattleDome,
-    [STDSTRING_BATTLE_FACTORY] = gText_BattleFactory,
-    [STDSTRING_BATTLE_PALACE] = gText_BattlePalace,
-    [STDSTRING_BATTLE_ARENA] = gText_BattleArena,
-    [STDSTRING_BATTLE_PIKE] = gText_BattlePike,
-    [STDSTRING_BATTLE_PYRAMID] = gText_BattlePyramid,
 };
 
 static const u8 sLinkServicesMultichoiceIds[] =
@@ -930,13 +700,12 @@ static const u8 sLinkServicesMultichoiceIds[] =
     MULTI_WIRELESS_ALL_SERVICES
 };
 
-static const u8 *const sLilycoveSSTidalDestinations[SSTIDAL_SELECTION_COUNT] =
+static const u8 *const sLilycoveSSTidalDestinations[SSTIDAL_COUNT] =
 {
-    [SSTIDAL_SELECTION_SLATEPORT]       = gText_SlateportCity,
-    [SSTIDAL_SELECTION_BATTLE_FRONTIER] = gText_BattleFrontier,
-    [SSTIDAL_SELECTION_SOUTHERN_ISLAND] = gText_SouthernIsland,
-    [SSTIDAL_SELECTION_NAVEL_ROCK]      = gText_NavelRock,
-    [SSTIDAL_SELECTION_BIRTH_ISLAND]    = gText_BirthIsland,
-    [SSTIDAL_SELECTION_FARAWAY_ISLAND]  = gText_FarawayIsland,
-    [SSTIDAL_SELECTION_EXIT]            = gText_Salir,
+    [SSTIDAL_SLATEPORT]       = gText_SlateportCity,
+    [SSTIDAL_SOUTHERN_ISLAND] = gText_SouthernIsland,
+    [SSTIDAL_NAVEL_ROCK]      = gText_NavelRock,
+    [SSTIDAL_BIRTH_ISLAND]    = gText_BirthIsland,
+    [SSTIDAL_FARAWAY_ISLAND]  = gText_FarawayIsland,
+    [SSTIDAL_EXIT]            = gText_Salir,
 };

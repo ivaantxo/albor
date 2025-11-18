@@ -31,7 +31,6 @@ VerdanturfTown_EventScript_Man::
 	end
 
 VerdanturfTown_EventScript_Camper::
-	msgbox VerdanturfTown_Text_MakeBattleTentDebut, MSGBOX_NPC
 	end
 
 VerdanturfTown_EventScript_Boy::
@@ -53,10 +52,6 @@ VerdanturfTown_EventScript_TownSign::
 
 VerdanturfTown_EventScript_WandasHouseSign::
 	msgbox VerdanturfTown_Text_WandasHouse, MSGBOX_SIGN
-	end
-
-VerdanturfTown_EventScript_BattleTentSign::
-	msgbox VerdanturfTown_Text_BattleTentSign, MSGBOX_SIGN
 	end
 
 VerdanturfTown_EventScript_RusturfTunnelSign::
@@ -86,12 +81,6 @@ VerdanturfTown_Text_AirCleanHere:
 	.string "Living here should do wonders for even\l"
 	.string "frail and sickly people.$"
 
-VerdanturfTown_Text_MakeBattleTentDebut:
-	.string "My POKéMON and I, we've been riding\n"
-	.string "a hot winning streak.\p"
-	.string "So I decided to make my BATTLE TENT\n"
-	.string "debut in this town.$"
-
 VerdanturfTown_Text_GuyTryingToBustThroughCave:
 	.string "Did you see the cave next to the\n"
 	.string "POKéMON MART?\p"
@@ -114,10 +103,6 @@ VerdanturfTown_Text_TownSign:
 
 VerdanturfTown_Text_WandasHouse:
 	.string "WANDA'S HOUSE$"
-
-VerdanturfTown_Text_BattleTentSign:
-	.string "BATTLE TENT VERDANTURF SITE\n"
-	.string "“Feast Your Eyes on Battles!”$"
 
 VerdanturfTown_Text_RusturfTunnelSign:
 	.string "RUSTURF TUNNEL\n"

@@ -102,7 +102,6 @@ typedef union {
 
 struct MatchCallCheckPageOverride {
     u16 idx;
-    u16 facilityClass;
     u32 flag;
     const u8 *flavorTexts[CHECK_PAGE_ENTRY_COUNT];
 };
@@ -677,7 +676,6 @@ static const u8 gText_MatchCallMay_Intro2[] = _("my father's research.");
 static const struct MatchCallCheckPageOverride sCheckPageOverrides[] = {
     {
         .idx = MC_HEADER_STEVEN,
-        .facilityClass = FACILITY_CLASS_STEVEN,
         .flag = 0xFFFF,
         .flavorTexts = {
             [CHECK_PAGE_STRATEGY] = gText_MatchCallSteven_Strategy,
@@ -688,7 +686,6 @@ static const struct MatchCallCheckPageOverride sCheckPageOverrides[] = {
     },
     {
         .idx = MC_HEADER_STEVEN,
-        .facilityClass = FACILITY_CLASS_STEVEN,
         .flag = FLAG_DEFEATED_MOSSDEEP_GYM,
         .flavorTexts = {
             [CHECK_PAGE_STRATEGY] = gText_MatchCallSteven_Strategy,
@@ -699,13 +696,11 @@ static const struct MatchCallCheckPageOverride sCheckPageOverrides[] = {
     },
     {
         .idx = MC_HEADER_BRENDAN,
-        .facilityClass = FACILITY_CLASS_BRENDAN,
         .flag = 0xFFFF,
         .flavorTexts = MCFLAVOR(Brendan)
     },
     {
         .idx = MC_HEADER_MAY,
-        .facilityClass = FACILITY_CLASS_MAY,
         .flag = 0xFFFF,
         .flavorTexts = MCFLAVOR(May)
     }
@@ -1090,18 +1085,6 @@ const u8 *MatchCall_GetOverrideFlavorText(u32 idx, u32 offset)
         }
     }
     return NULL;
-}
-
-int MatchCall_GetOverrideFacilityClass(u32 idx)
-{
-    u32 i;
-
-    for (i = 0; i < ARRAY_COUNT(sCheckPageOverrides); i++)
-    {
-        if (sCheckPageOverrides[i].idx == idx)
-            return sCheckPageOverrides[i].facilityClass;
-    }
-    return -1;
 }
 
 bool32 MatchCall_HasRematchId(u32 idx)

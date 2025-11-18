@@ -2,7 +2,6 @@
 #include "debug.h"
 #include "malloc.h"
 #include "battle.h"
-#include "battle_tower.h"
 #include "data.h"
 #include "decoration.h"
 #include "diploma.h"
@@ -45,9 +44,6 @@
 #include "tilesets.h"
 #include "wallclock.h"
 #include "window.h"
-#include "constants/battle_frontier.h"
-#include "constants/battle_pyramid.h"
-#include "constants/battle_tower.h"
 #include "constants/decorations.h"
 #include "constants/event_objects.h"
 #include "constants/event_object_movement.h"
@@ -60,7 +56,6 @@
 #include "constants/songs.h"
 #include "constants/moves.h"
 #include "constants/party_menu.h"
-#include "constants/battle_frontier.h"
 #include "constants/weather.h"
 #include "constants/metatile_labels.h"
 #include "palette.h"
@@ -71,22 +66,15 @@
 #define GFXTAG_MULTICHOICE_SCROLL_ARROWS 2000
 #define PALTAG_MULTICHOICE_SCROLL_ARROWS 100
 
-#define ELEVATOR_WINDOW_WIDTH  3
-#define ELEVATOR_WINDOW_HEIGHT 3
-#define ELEVATOR_LIGHT_STAGES  3
-
 EWRAM_DATA bool8 gBikeCyclingChallenge = FALSE;
 EWRAM_DATA u8 gBikeCollisions = 0;
 static EWRAM_DATA u32 sBikeCyclingTimer = 0;
 static EWRAM_DATA u8 sSlidingDoorNextFrameCounter = 0;
 static EWRAM_DATA u8 sSlidingDoorFrame = 0;
-static EWRAM_DATA u8 sTutorMoveAndElevatorWindowId = 0;
 static EWRAM_DATA u16 sLilycoveDeptStore_DefaultFloorChoice = 0;
 static EWRAM_DATA struct ListMenuItem *sScrollableMultichoice_ListMenuItem = NULL;
 
 static EWRAM_DATA u8 sScrollableMultichoice_ItemSpriteId = 0;
-static EWRAM_DATA u8 sBattlePointsWindowId = 0;
-static EWRAM_DATA u8 sFrontierExchangeCorner_ItemIconWindowId = 0;
 static EWRAM_DATA u8 sPCBoxToSendMon = 0;
 
 COMMON_DATA struct ListMenuTemplate gScrollableMultichoice_ListMenuTemplate = {0};
@@ -107,28 +95,19 @@ static void Task_LotteryCornerComputerEffect(u8);
 static void LotteryCornerComputerEffect(struct Task *);
 static void Task_ShakeCamera(u8);
 static void StopCameraShake(u8);
-static void Task_MoveElevator(u8);
-static void MoveElevatorWindowLights(u16, bool8);
-static void Task_MoveElevatorWindowLights(u8);
 static void Task_ShowScrollableMultichoice(u8);
-static void FillFrontierExchangeCornerWindowAndItemIcon(u16, u16);
-static void ShowBattleFrontierTutorWindow(u8, u16);
 static void InitScrollableMultichoice(void);
 static void ScrollableMultichoice_ProcessInput(u8);
 static void ScrollableMultichoice_UpdateScrollArrows(u8);
 static void ScrollableMultichoice_MoveCursor(s32, bool8, struct ListMenu *);
-static void HideFrontierExchangeCornerItemIcon(u16, u16);
-static void ShowBattleFrontierTutorMoveDescription(u8, u16);
 static void CloseScrollableMultichoice(u8);
 static void ScrollableMultichoice_RemoveScrollArrows(u8);
 static void Task_ScrollableMultichoice_WaitReturnToList(u8);
 static void Task_ScrollableMultichoice_ReturnToList(u8);
-static void ShowFrontierExchangeCornerItemIcon(u16);
 static void Task_DeoxysRockInteraction(u8);
 static void ChangeDeoxysRockLevel(u8);
 static void WaitForDeoxysRockMovement(u8);
 static void Task_LoopWingFlapSE(u8);
-static void Task_CloseBattlePikeCurtain(u8);
 static void SetInitialFansOfPlayer(void);
 static u16 PlayerGainRandomTrainerFan(void);
 
@@ -373,31 +352,6 @@ bool32 ShouldDoScottFortreeCall(void)
         case MAP_TYPE_ROUTE:
         case MAP_TYPE_OCEAN_ROUTE:
             if (++(*GetVarPointer(VAR_SCOTT_FORTREE_CALL_STEP_COUNTER)) < 10)
-                return FALSE;
-            break;
-        default:
-            return FALSE;
-        }
-    }
-    else
-    {
-        return FALSE;
-    }
-
-    return TRUE;
-}
-
-bool32 ShouldDoScottBattleFrontierCall(void)
-{
-    if (FlagGet(FLAG_SCOTT_CALL_BATTLE_FRONTIER))
-    {
-        switch (gMapHeader.mapType)
-        {
-        case MAP_TYPE_TOWN:
-        case MAP_TYPE_CITY:
-        case MAP_TYPE_ROUTE:
-        case MAP_TYPE_OCEAN_ROUTE:
-            if (++(*GetVarPointer(VAR_SCOTT_BF_CALL_STEP_COUNTER)) < 10)
                 return FALSE;
             break;
         default:
@@ -1139,11 +1093,6 @@ void GetSecretBaseNearbyMapName(void)
     GetMapName(gStringVar1, VarGet(VAR_SECRET_BASE_MAP), 0);
 }
 
-u16 GetBattleTowerSinglesStreak(void)
-{
-    return GetGameStat(GAME_STAT_BATTLE_TOWER_SINGLES_STREAK);
-}
-
 u16 GetSlotMachineId(void)
 {
     return 0;
@@ -1428,10 +1377,6 @@ bool8 BufferTMHMMoveName(void)
 
 bool8 InMultiPartnerRoom(void)
 {
-    if (gSaveBlockPtr->location.mapGroup == MAP_GROUP(BATTLE_FRONTIER_BATTLE_TOWER_MULTI_PARTNER_ROOM)
-        && gSaveBlockPtr->location.mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_TOWER_MULTI_PARTNER_ROOM) &&
-        VarGet(VAR_FRONTIER_BATTLE_MODE) == FRONTIER_MODE_MULTIS)
-        return TRUE;
     return FALSE;
 }
 
@@ -1440,17 +1385,6 @@ void OffsetCameraForBattle(void)
     SetCameraPanningCallback(NULL);
     SetCameraPanning(8, 0);
 }
-
-static const struct WindowTemplate sWindowTemplate_ElevatorFloor =
-{
-    .bg = 0,
-    .tilemapLeft = 21,
-    .tilemapTop = 1,
-    .width = 8,
-    .height = 4,
-    .paletteNum = 15,
-    .baseBlock = 8,
-};
 
 static const u8 *const sDeptStoreFloorNames[] =
 {
@@ -1470,44 +1404,6 @@ static const u8 *const sDeptStoreFloorNames[] =
     [DEPT_STORE_FLOORNUM_10F] = gText_10F,
     [DEPT_STORE_FLOORNUM_11F] = gText_11F,
     [DEPT_STORE_FLOORNUM_ROOFTOP] = gText_Rooftop
-};
-
-static const u16 sElevatorWindowTiles_Ascending[ELEVATOR_WINDOW_HEIGHT][ELEVATOR_LIGHT_STAGES] =
-{
-    {
-        METATILE_BattleFrontier_Elevator_Top0,
-        METATILE_BattleFrontier_Elevator_Top1,
-        METATILE_BattleFrontier_Elevator_Top2
-    },
-    {
-        METATILE_BattleFrontier_Elevator_Mid0,
-        METATILE_BattleFrontier_Elevator_Mid1,
-        METATILE_BattleFrontier_Elevator_Mid2
-    },
-    {
-        METATILE_BattleFrontier_Elevator_Bottom0,
-        METATILE_BattleFrontier_Elevator_Bottom1,
-        METATILE_BattleFrontier_Elevator_Bottom2
-    },
-};
-
-static const u16 sElevatorWindowTiles_Descending[ELEVATOR_WINDOW_HEIGHT][ELEVATOR_LIGHT_STAGES] =
-{
-    {
-        METATILE_BattleFrontier_Elevator_Top0,
-        METATILE_BattleFrontier_Elevator_Top2,
-        METATILE_BattleFrontier_Elevator_Top1
-    },
-    {
-        METATILE_BattleFrontier_Elevator_Mid0,
-        METATILE_BattleFrontier_Elevator_Mid2,
-        METATILE_BattleFrontier_Elevator_Mid1
-    },
-    {
-        METATILE_BattleFrontier_Elevator_Bottom0,
-        METATILE_BattleFrontier_Elevator_Bottom2,
-        METATILE_BattleFrontier_Elevator_Bottom1
-    },
 };
 
 void SetDeptStoreFloor(void)
@@ -1569,163 +1465,6 @@ u16 GetDeptStoreDefaultFloorChoice(void)
     return sLilycoveDeptStore_DefaultFloorChoice;
 }
 
-// Task data for Task_MoveElevator
-#define tTimer       data[1]
-#define tMoveCounter data[2]
-#define tVerticalPan data[4]
-#define tTotalMoves  data[5]
-#define tDescending  data[6]
-
-// The maximum considered difference between floors.
-// Elevator trips with a larger difference are treated the same
-// (i.e. traveling 9 floors and 200 floors would take the same amount of time).
-#define MAX_ELEVATOR_TRIP 9
-
-// gSpecialVar_0x8005 here is expected to be the current floor number, and
-// gSpecialVar_0x8006 is expected to be the destination floor number.
-void MoveElevator(void)
-{
-    static const u8 sElevatorTripLength[MAX_ELEVATOR_TRIP] = { 8, 16, 24, 32, 38, 46, 52, 56, 57 };
-
-    s16 *data = gTasks[CreateTask(Task_MoveElevator, 9)].data;
-    u16 floorDelta;
-
-    tTimer = 0;
-    tMoveCounter = 0;
-    tVerticalPan = 1;
-
-    if (gSpecialVar_0x8005 > gSpecialVar_0x8006)
-    {
-        floorDelta = gSpecialVar_0x8005 - gSpecialVar_0x8006;
-        tDescending = TRUE;
-    }
-    else
-    {
-        floorDelta = gSpecialVar_0x8006 - gSpecialVar_0x8005;
-        tDescending = FALSE;
-    }
-
-    if (floorDelta > MAX_ELEVATOR_TRIP - 1)
-        floorDelta = MAX_ELEVATOR_TRIP - 1;
-
-    tTotalMoves = sElevatorTripLength[floorDelta];
-
-    SetCameraPanningCallback(NULL);
-    MoveElevatorWindowLights(floorDelta, tDescending);
-    PlaySE(SE_ELEVATOR);
-}
-
-static void Task_MoveElevator(u8 taskId)
-{
-    s16 *data = gTasks[taskId].data;
-    tTimer++;
-    if (tTimer % 3 == 0)
-    {
-        tTimer = 0;
-        tMoveCounter++;
-        tVerticalPan = -tVerticalPan;
-        SetCameraPanning(0, tVerticalPan);
-
-        if (tMoveCounter == tTotalMoves)
-        {
-            // Arrived at floor
-            PlaySE(SE_DING_DONG);
-            DestroyTask(taskId);
-            ScriptContext_Enable();
-            InstallCameraPanAheadCallback();
-        }
-    }
-}
-
-#undef tTimer
-#undef tMoveCounter
-#undef tVerticalPan
-#undef tTotalMoves
-#undef tDescending
-
-void ShowDeptStoreElevatorFloorSelect(void)
-{
-    int xPos;
-
-    sTutorMoveAndElevatorWindowId = AddWindow(&sWindowTemplate_ElevatorFloor);
-    SetStandardWindowBorderStyle(sTutorMoveAndElevatorWindowId, FALSE);
-
-    xPos = GetStringCenterAlignXOffset(FONT_NORMAL, gText_ElevatorNowOn, 64);
-    AddTextPrinterParameterized(sTutorMoveAndElevatorWindowId, FONT_NORMAL, gText_ElevatorNowOn, xPos, 1, TEXT_SKIP_DRAW, NULL);
-
-    xPos = GetStringCenterAlignXOffset(FONT_NORMAL, sDeptStoreFloorNames[gSpecialVar_0x8005], 64);
-    AddTextPrinterParameterized(sTutorMoveAndElevatorWindowId, FONT_NORMAL, sDeptStoreFloorNames[gSpecialVar_0x8005], xPos, 17, TEXT_SKIP_DRAW, NULL);
-
-    PutWindowTilemap(sTutorMoveAndElevatorWindowId);
-    CopyWindowToVram(sTutorMoveAndElevatorWindowId, COPYWIN_FULL);
-}
-
-void CloseDeptStoreElevatorWindow(void)
-{
-    ClearStdWindowAndFrameToTransparent(sTutorMoveAndElevatorWindowId, TRUE);
-    RemoveWindow(sTutorMoveAndElevatorWindowId);
-}
-
-// Task data for Task_MoveElevatorWindowLights
-#define tMoveCounter data[0]
-#define tTimer       data[1]
-#define tDescending  data[2]
-#define tTotalMoves  data[3]
-
-static void MoveElevatorWindowLights(u16 floorDelta, bool8 descending)
-{
-    static const u8 sElevatorLightCycles[MAX_ELEVATOR_TRIP] = { 3, 6, 9, 12, 15, 18, 21, 24, 27 };
-
-    if (FuncIsActiveTask(Task_MoveElevatorWindowLights) != TRUE)
-    {
-        u8 taskId = CreateTask(Task_MoveElevatorWindowLights, 8);
-        gTasks[taskId].tMoveCounter = 0;
-        gTasks[taskId].tTimer = 0;
-        gTasks[taskId].tDescending = descending;
-        gTasks[taskId].tTotalMoves = sElevatorLightCycles[floorDelta];
-    }
-}
-
-static void Task_MoveElevatorWindowLights(u8 taskId)
-{
-    u32 x, y;
-    s16 *data = gTasks[taskId].data;
-
-    if (tTimer == 6)
-    {
-        tMoveCounter++;
-
-        if (!tDescending)
-        {
-            // Ascending
-            for (y = 0; y < ELEVATOR_WINDOW_HEIGHT; y++)
-            {
-                for (x = 0; x < ELEVATOR_WINDOW_WIDTH; x++)
-                    MapGridSetMetatileIdAt(x + MAP_OFFSET + 1, y + MAP_OFFSET, sElevatorWindowTiles_Ascending[y][tMoveCounter % ELEVATOR_LIGHT_STAGES] | MAPGRID_COLLISION_MASK);
-            }
-        }
-        else
-        {
-            // Descending
-            for (y = 0; y < ELEVATOR_WINDOW_HEIGHT; y++)
-            {
-                for (x = 0; x < ELEVATOR_WINDOW_WIDTH; x++)
-                    MapGridSetMetatileIdAt(x + MAP_OFFSET + 1, y + MAP_OFFSET, sElevatorWindowTiles_Descending[y][tMoveCounter % ELEVATOR_LIGHT_STAGES] | MAPGRID_COLLISION_MASK);
-            }
-        }
-        DrawWholeMapView();
-        tTimer = 0;
-        if (tMoveCounter == tTotalMoves)
-            DestroyTask(taskId);
-    }
-    tTimer++;
-}
-
-#undef tMoveCounter
-#undef tTimer
-#undef tDescending
-#undef tTotalMoves
-
 void BufferVarsForIVRater(void)
 {
     u32 i;
@@ -1785,7 +1524,6 @@ bool8 UsedPokemonCenterWarp(void)
         MAP_SOOTOPOLIS_CITY_POKEMON_CENTER_1F,
         MAP_EVER_GRANDE_CITY_POKEMON_CENTER_1F,
         MAP_EVER_GRANDE_CITY_POKEMON_LEAGUE_1F,
-        MAP_BATTLE_FRONTIER_POKEMON_CENTER_1F,
         MAP_UNDEFINED
     };
 
@@ -1799,184 +1537,6 @@ bool8 UsedPokemonCenterWarp(void)
     }
 
     return FALSE;
-}
-
-void UpdateFrontierManiac(u16 daysSince)
-{
-    u16 *var = GetVarPointer(VAR_FRONTIER_MANIAC_FACILITY);
-    *var += daysSince;
-    *var %= FRONTIER_MANIAC_FACILITY_COUNT;
-}
-
-void ShowFrontierManiacMessage(void)
-{
-    static const u8 *const sFrontierManiacMessages[][FRONTIER_MANIAC_MESSAGE_COUNT] =
-    {
-        [FRONTIER_MANIAC_TOWER_SINGLES] =
-        {
-            BattleFrontier_Lounge2_Text_SalonMaidenIsThere,
-            BattleFrontier_Lounge2_Text_SalonMaidenSilverMons,
-            BattleFrontier_Lounge2_Text_SalonMaidenGoldMons
-        },
-        [FRONTIER_MANIAC_TOWER_DOUBLES] =
-        {
-            BattleFrontier_Lounge2_Text_DoubleBattleAdvice1,
-            BattleFrontier_Lounge2_Text_DoubleBattleAdvice2,
-            BattleFrontier_Lounge2_Text_DoubleBattleAdvice3
-        },
-        [FRONTIER_MANIAC_TOWER_MULTIS] =
-        {
-            BattleFrontier_Lounge2_Text_MultiBattleAdvice,
-            BattleFrontier_Lounge2_Text_MultiBattleAdvice,
-            BattleFrontier_Lounge2_Text_MultiBattleAdvice
-        },
-        [FRONTIER_MANIAC_DOME] =
-        {
-            BattleFrontier_Lounge2_Text_DomeAceIsThere,
-            BattleFrontier_Lounge2_Text_DomeAceSilverMons,
-            BattleFrontier_Lounge2_Text_DomeAceGoldMons
-        },
-        [FRONTIER_MANIAC_FACTORY] =
-        {
-            BattleFrontier_Lounge2_Text_FactoryHeadIsThere,
-            BattleFrontier_Lounge2_Text_FactoryHeadSilverMons,
-            BattleFrontier_Lounge2_Text_FactoryHeadGoldMons
-        },
-        [FRONTIER_MANIAC_PALACE] =
-        {
-            BattleFrontier_Lounge2_Text_PalaceMavenIsThere,
-            BattleFrontier_Lounge2_Text_PalaceMavenSilverMons,
-            BattleFrontier_Lounge2_Text_PalaceMavenGoldMons
-        },
-        [FRONTIER_MANIAC_ARENA] =
-        {
-            BattleFrontier_Lounge2_Text_ArenaTycoonIsThere,
-            BattleFrontier_Lounge2_Text_ArenaTycoonSilverMons,
-            BattleFrontier_Lounge2_Text_ArenaTycoonGoldMons
-        },
-        [FRONTIER_MANIAC_PIKE] =
-        {
-            BattleFrontier_Lounge2_Text_PikeQueenIsThere,
-            BattleFrontier_Lounge2_Text_PikeQueenSilverMons,
-            BattleFrontier_Lounge2_Text_PikeQueenGoldMons
-        },
-        [FRONTIER_MANIAC_PYRAMID] =
-        {
-            BattleFrontier_Lounge2_Text_PyramidKingIsThere,
-            BattleFrontier_Lounge2_Text_PyramidKingSilverMons,
-            BattleFrontier_Lounge2_Text_PyramidKingGoldMons
-        },
-    };
-
-    static const u8 sFrontierManiacStreakThresholds[][FRONTIER_MANIAC_MESSAGE_COUNT - 1] =
-    {
-        [FRONTIER_MANIAC_TOWER_SINGLES] = { 21, 56 },
-        [FRONTIER_MANIAC_TOWER_DOUBLES] = { 21, 35 },
-        [FRONTIER_MANIAC_TOWER_MULTIS]  = { 255, 255 },
-        [FRONTIER_MANIAC_DOME]          = { 2, 4 },
-        [FRONTIER_MANIAC_FACTORY]       = { 7, 21 },
-        [FRONTIER_MANIAC_PALACE]        = { 7, 21 },
-        [FRONTIER_MANIAC_ARENA]         = { 14, 28 },
-        [FRONTIER_MANIAC_PIKE]          = { 13, 112 }, //BUG: 112 (0x70) is probably a mistake; the Pike Queen is battled twice well before that
-        [FRONTIER_MANIAC_PYRAMID]       = { 7, 56 }
-    };
-
-    u32 i;
-    u16 winStreak = 0;
-    u16 facility = VarGet(VAR_FRONTIER_MANIAC_FACILITY);
-
-    switch (facility)
-    {
-    case FRONTIER_MANIAC_TOWER_SINGLES:
-    case FRONTIER_MANIAC_TOWER_DOUBLES:
-    case FRONTIER_MANIAC_TOWER_MULTIS:
-        if (gSaveBlockPtr->frontier.towerWinStreaks[facility][FRONTIER_LVL_50]
-            >= gSaveBlockPtr->frontier.towerWinStreaks[facility][FRONTIER_LVL_OPEN])
-            winStreak = gSaveBlockPtr->frontier.towerWinStreaks[facility][FRONTIER_LVL_50];
-        else
-            winStreak = gSaveBlockPtr->frontier.towerWinStreaks[facility][FRONTIER_LVL_OPEN];
-        break;
-    case FRONTIER_MANIAC_DOME:
-        if (gSaveBlockPtr->frontier.domeWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_50]
-            >= gSaveBlockPtr->frontier.domeWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_OPEN])
-            winStreak = gSaveBlockPtr->frontier.domeWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_50];
-        else
-            winStreak = gSaveBlockPtr->frontier.domeWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_OPEN];
-        break;
-    case FRONTIER_MANIAC_FACTORY:
-        if (gSaveBlockPtr->frontier.factoryWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_50]
-            >= gSaveBlockPtr->frontier.factoryWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_OPEN])
-            winStreak = gSaveBlockPtr->frontier.factoryWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_50];
-        else
-            winStreak = gSaveBlockPtr->frontier.factoryWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_OPEN];
-        break;
-    case FRONTIER_MANIAC_PALACE:
-        if (gSaveBlockPtr->frontier.palaceWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_50]
-            >= gSaveBlockPtr->frontier.palaceWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_OPEN])
-            winStreak = gSaveBlockPtr->frontier.palaceWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_50];
-        else
-            winStreak = gSaveBlockPtr->frontier.palaceWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_OPEN];
-        break;
-    case FRONTIER_MANIAC_ARENA:
-        if (gSaveBlockPtr->frontier.arenaWinStreaks[FRONTIER_LVL_50]
-            >= gSaveBlockPtr->frontier.arenaWinStreaks[FRONTIER_LVL_OPEN])
-            winStreak = gSaveBlockPtr->frontier.arenaWinStreaks[FRONTIER_LVL_50];
-        else
-            winStreak = gSaveBlockPtr->frontier.arenaWinStreaks[FRONTIER_LVL_OPEN];
-        break;
-    case FRONTIER_MANIAC_PIKE:
-        if (gSaveBlockPtr->frontier.pikeWinStreaks[FRONTIER_LVL_50]
-            >= gSaveBlockPtr->frontier.pikeWinStreaks[FRONTIER_LVL_OPEN])
-            winStreak = gSaveBlockPtr->frontier.pikeWinStreaks[FRONTIER_LVL_50];
-        else
-            winStreak = gSaveBlockPtr->frontier.pikeWinStreaks[FRONTIER_LVL_OPEN];
-        break;
-    case FRONTIER_MANIAC_PYRAMID:
-        if (gSaveBlockPtr->frontier.pyramidWinStreaks[FRONTIER_LVL_50]
-            >= gSaveBlockPtr->frontier.pyramidWinStreaks[FRONTIER_LVL_OPEN])
-            winStreak = gSaveBlockPtr->frontier.pyramidWinStreaks[FRONTIER_LVL_50];
-        else
-            winStreak = gSaveBlockPtr->frontier.pyramidWinStreaks[FRONTIER_LVL_OPEN];
-        break;
-    default:
-        return;
-    }
-
-    for (i = 0; i < FRONTIER_MANIAC_MESSAGE_COUNT - 1 && sFrontierManiacStreakThresholds[facility][i] < winStreak; i++);
-
-    ShowFieldMessage(sFrontierManiacMessages[facility][i]);
-}
-
-// gSpecialVar_0x8005 and 0x8006 here are used by MoveElevator
-void BufferBattleTowerElevatorFloors(void)
-{
-    static const u16 sBattleTowerStreakThresholds[] = {
-        7, 14, 21, 28, 35, 49, 63, 77, 91, 0
-    };
-
-    u32 i;
-    u16 battleMode = VarGet(VAR_FRONTIER_BATTLE_MODE);
-    u8 lvlMode = gSaveBlockPtr->frontier.lvlMode;
-
-    if (battleMode == FRONTIER_MODE_MULTIS && !FlagGet(FLAG_CHOSEN_MULTI_BATTLE_NPC_PARTNER))
-    {
-        gSpecialVar_0x8005 = 5;
-        gSpecialVar_0x8006 = 4;
-        return;
-    }
-
-    for (i = 0; i < ARRAY_COUNT(sBattleTowerStreakThresholds) - 1; i++)
-    {
-        if (sBattleTowerStreakThresholds[i] > gSaveBlockPtr->frontier.towerWinStreaks[battleMode][lvlMode])
-        {
-            gSpecialVar_0x8005 = 4;
-            gSpecialVar_0x8006 = i + 5;
-            return;
-        }
-    }
-
-    gSpecialVar_0x8005 = 4;
-    gSpecialVar_0x8006 = 12;
 }
 
 // Scrollable Multichoice task data defines
@@ -2115,16 +1675,6 @@ void ShowScrollableMultichoice(void)
         task->tKeepOpenAfterSelect = FALSE;
         task->tTaskId = taskId;
         break;
-    case SCROLL_MULTI_BATTLE_TENT_RULES:
-        task->tMaxItemsOnScreen = MAX_SCROLL_MULTI_ON_SCREEN;
-        task->tNumItems = 7;
-        task->tLeft = 17;
-        task->tTop = 1;
-        task->tWidth = 12;
-        task->tHeight = 12;
-        task->tKeepOpenAfterSelect = FALSE;
-        task->tTaskId = taskId;
-        break;
     default:
         gSpecialVar_Result = MULTI_B_PRESSED;
         DestroyTask(taskId);
@@ -2225,65 +1775,13 @@ static const u8 *const sScrollableMultichoiceOptions[][MAX_SCROLL_MULTI_LENGTH] 
         gText_PPUp3000,
         gText_Salir
     },
-    [SCROLL_MULTI_BF_RECEPTIONIST] =
-    {
-        gText_BattleTower2,
-        gText_BattleDome,
-        gText_BattlePalace,
-        gText_BattleArena,
-        gText_BattleFactory,
-        gText_BattlePike,
-        gText_BattlePyramid,
-        gText_RankingHall,
-        gText_ExchangeService,
-        gText_Salir
-    },
-    [SCROLL_MULTI_BF_MOVE_TUTOR_1] =
-    {
-        gText_Softboiled16BP,
-        gText_SeismicToss24BP,
-        gText_DreamEater24BP,
-        gText_MegaPunch24BP,
-        gText_MegaKick48BP,
-        gText_BodySlam48BP,
-        gText_RockSlide48BP,
-        gText_Counter48BP,
-        gText_ThunderWave48BP,
-        gText_SwordsDance48BP,
-        gText_Salir
-    },
-    [SCROLL_MULTI_BF_MOVE_TUTOR_2] =
-    {
-        gText_DefenseCurl16BP,
-        gText_Snore24BP,
-        gText_MudSlap24BP,
-        gText_Swift24BP,
-        gText_IcyWind24BP,
-        gText_Endure48BP,
-        gText_PsychUp48BP,
-        gText_IcePunch48BP,
-        gText_ThunderPunch48BP,
-        gText_FirePunch48BP,
-        gText_Salir
-    },
     [SCROLL_MULTI_SS_TIDAL_DESTINATION] =
     {
         gText_SlateportCity,
-        gText_BattleFrontier,
         gText_SouthernIsland,
         gText_NavelRock,
         gText_BirthIsland,
         gText_FarawayIsland,
-        gText_Salir
-    },
-    [SCROLL_MULTI_BATTLE_TENT_RULES] =
-    {
-        gText_BattleTrainers,
-        gText_BattleBasics,
-        gText_PokemonNature,
-        gText_PokemonMoves,
-        gText_Underpowered,
-        gText_WhenInDanger,
         gText_Salir
     }
 };
@@ -2298,8 +1796,6 @@ static void Task_ShowScrollableMultichoice(u8 taskId)
     LockPlayerFieldControls();
     gScrollableMultichoice_ScrollOffset = 0;
     sScrollableMultichoice_ItemSpriteId = MAX_SPRITES;
-    FillFrontierExchangeCornerWindowAndItemIcon(task->tScrollMultiId, 0);
-    ShowBattleFrontierTutorWindow(task->tScrollMultiId, 0);
     sScrollableMultichoice_ListMenuItem = AllocZeroed(task->tNumItems * 8);
     InitScrollableMultichoice();
 
@@ -2371,9 +1867,6 @@ static void ScrollableMultichoice_MoveCursor(s32 itemIndex, bool8 onInit, struct
         ListMenuGetScrollAndRow(task->tListTaskId, &selection, NULL);
         gScrollableMultichoice_ScrollOffset = selection;
         ListMenuGetCurrentItemArrayId(task->tListTaskId, &selection);
-        HideFrontierExchangeCornerItemIcon(task->tScrollMultiId, 0);
-        FillFrontierExchangeCornerWindowAndItemIcon(task->tScrollMultiId, selection);
-        ShowBattleFrontierTutorMoveDescription(task->tScrollMultiId, selection);
     }
 }
 
@@ -2419,7 +1912,6 @@ static void CloseScrollableMultichoice(u8 taskId)
     u16 selection;
     struct Task *task = &gTasks[taskId];
     ListMenuGetCurrentItemArrayId(task->tListTaskId, &selection);
-    HideFrontierExchangeCornerItemIcon(task->tScrollMultiId, selection);
     ScrollableMultichoice_RemoveScrollArrows(taskId);
     DestroyListMenuTask(task->tListTaskId, NULL, NULL);
     Free(sScrollableMultichoice_ListMenuItem);
@@ -2504,377 +1996,6 @@ static void ScrollableMultichoice_RemoveScrollArrows(u8 taskId)
 void ShowGlassWorkshopMenu(void)
 {
 
-}
-
-void ShowNatureGirlMessage(void)
-{
-    u8 nature;
-
-    if (gSpecialVar_0x8004 >= PARTY_SIZE)
-        gSpecialVar_0x8004 = 0;
-
-    nature = ObtenNaturaleza(&gPlayerParty[gSpecialVar_0x8004]);
-    ShowFieldMessage(gNaturesInfo[nature].natureGirlMessage);
-}
-
-void UpdateFrontierGambler(u16 daysSince)
-{
-    u16 *var = GetVarPointer(VAR_FRONTIER_GAMBLER_CHALLENGE);
-    *var += daysSince;
-    *var %= FRONTIER_GAMBLER_CHALLENGE_COUNT;
-}
-
-void ShowFrontierGamblerLookingMessage(void)
-{
-    static const u8 *const sFrontierGamblerLookingMessages[] =
-    {
-        BattleFrontier_Lounge3_Text_ChallengeBattleTowerSingle,
-        BattleFrontier_Lounge3_Text_ChallengeBattleTowerDouble,
-        BattleFrontier_Lounge3_Text_ChallengeBattleTowerMulti,
-        BattleFrontier_Lounge3_Text_ChallengeBattleDomeSingle,
-        BattleFrontier_Lounge3_Text_ChallengeBattleDomeDouble,
-        BattleFrontier_Lounge3_Text_ChallengeBattleFactorySingle,
-        BattleFrontier_Lounge3_Text_ChallengeBattleFactoryDouble,
-        BattleFrontier_Lounge3_Text_ChallengeBattlePalaceSingle,
-        BattleFrontier_Lounge3_Text_ChallengeBattlePalaceDouble,
-        BattleFrontier_Lounge3_Text_ChallengeBattleArena,
-        BattleFrontier_Lounge3_Text_ChallengeBattlePike,
-        BattleFrontier_Lounge3_Text_ChallengeBattlePyramid,
-    };
-
-    u16 challenge = VarGet(VAR_FRONTIER_GAMBLER_CHALLENGE);
-    ShowFieldMessage(sFrontierGamblerLookingMessages[challenge]);
-    VarSet(VAR_FRONTIER_GAMBLER_SET_CHALLENGE, challenge);
-}
-
-void ShowFrontierGamblerGoMessage(void)
-{
-    static const u8 *const sFrontierGamblerGoMessages[] =
-    {
-        BattleFrontier_Lounge3_Text_GetToBattleTowerSingle,
-        BattleFrontier_Lounge3_Text_GetToBattleTowerDouble,
-        BattleFrontier_Lounge3_Text_GetToBattleTowerMulti,
-        BattleFrontier_Lounge3_Text_GetToBattleDomeSingle,
-        BattleFrontier_Lounge3_Text_GetToBattleDomeDouble,
-        BattleFrontier_Lounge3_Text_GetToBattleFactorySingle,
-        BattleFrontier_Lounge3_Text_GetToBattleFactoryDouble,
-        BattleFrontier_Lounge3_Text_GetToBattlePalaceSingle,
-        BattleFrontier_Lounge3_Text_GetToBattlePalaceDouble,
-        BattleFrontier_Lounge3_Text_GetToBattleArena,
-        BattleFrontier_Lounge3_Text_GetToBattlePike,
-        BattleFrontier_Lounge3_Text_GetToBattlePyramid,
-    };
-
-    ShowFieldMessage(sFrontierGamblerGoMessages[VarGet(VAR_FRONTIER_GAMBLER_SET_CHALLENGE)]);
-}
-
-void FrontierGamblerSetWonOrLost(bool8 won)
-{
-    static const u16 sFrontierChallenges[] =
-    {
-        FRONTIER_CHALLENGE(FRONTIER_FACILITY_TOWER,   FRONTIER_MODE_SINGLES),
-        FRONTIER_CHALLENGE(FRONTIER_FACILITY_TOWER,   FRONTIER_MODE_DOUBLES),
-        FRONTIER_CHALLENGE(FRONTIER_FACILITY_TOWER,   FRONTIER_MODE_MULTIS),
-        FRONTIER_CHALLENGE(FRONTIER_FACILITY_DOME,    FRONTIER_MODE_SINGLES),
-        FRONTIER_CHALLENGE(FRONTIER_FACILITY_DOME,    FRONTIER_MODE_DOUBLES),
-        FRONTIER_CHALLENGE(FRONTIER_FACILITY_FACTORY, FRONTIER_MODE_SINGLES),
-        FRONTIER_CHALLENGE(FRONTIER_FACILITY_FACTORY, FRONTIER_MODE_DOUBLES),
-        FRONTIER_CHALLENGE(FRONTIER_FACILITY_PALACE,  FRONTIER_MODE_SINGLES),
-        FRONTIER_CHALLENGE(FRONTIER_FACILITY_PALACE,  FRONTIER_MODE_DOUBLES),
-        FRONTIER_CHALLENGE(FRONTIER_FACILITY_ARENA,   FRONTIER_MODE_SINGLES),
-        FRONTIER_CHALLENGE(FRONTIER_FACILITY_PIKE,    FRONTIER_MODE_SINGLES),
-        FRONTIER_CHALLENGE(FRONTIER_FACILITY_PYRAMID, FRONTIER_MODE_SINGLES)
-    };
-
-    u16 battleMode = VarGet(VAR_FRONTIER_BATTLE_MODE);
-    u16 challenge = VarGet(VAR_FRONTIER_GAMBLER_SET_CHALLENGE);
-    u16 frontierFacilityId = VarGet(VAR_FRONTIER_FACILITY);
-
-    if (VarGet(VAR_FRONTIER_GAMBLER_STATE) == FRONTIER_GAMBLER_PLACED_BET)
-    {
-        if (sFrontierChallenges[challenge] ==  FRONTIER_CHALLENGE(frontierFacilityId, battleMode))
-        {
-            if (won)
-                VarSet(VAR_FRONTIER_GAMBLER_STATE, FRONTIER_GAMBLER_WON);
-            else
-                VarSet(VAR_FRONTIER_GAMBLER_STATE, FRONTIER_GAMBLER_LOST);
-        }
-    }
-}
-
-void UpdateBattlePointsWindow(void)
-{
-    u8 string[32];
-    u32 x;
-    StringCopy(ConvertIntToDecimalStringN(string, gSaveBlockPtr->frontier.battlePoints, STR_CONV_MODE_RIGHT_ALIGN, 4), gText_BP);
-    x = GetStringRightAlignXOffset(FONT_NORMAL, string, 48);
-    AddTextPrinterParameterized(sBattlePointsWindowId, FONT_NORMAL, string, x, 1, 0, NULL);
-}
-
-void ShowBattlePointsWindow(void)
-{
-    static const struct WindowTemplate sBattlePoints_WindowTemplate =
-    {
-        .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 1,
-        .width = 6,
-        .height = 2,
-        .paletteNum = 15,
-        .baseBlock = 8,
-    };
-
-    sBattlePointsWindowId = AddWindow(&sBattlePoints_WindowTemplate);
-    SetStandardWindowBorderStyle(sBattlePointsWindowId, FALSE);
-    UpdateBattlePointsWindow();
-    CopyWindowToVram(sBattlePointsWindowId, COPYWIN_GFX);
-}
-
-void CloseBattlePointsWindow(void)
-{
-    ClearStdWindowAndFrameToTransparent(sBattlePointsWindowId, TRUE);
-    RemoveWindow(sBattlePointsWindowId);
-}
-
-void TakeFrontierBattlePoints(void)
-{
-    if (gSaveBlockPtr->frontier.battlePoints < gSpecialVar_0x8004)
-        gSaveBlockPtr->frontier.battlePoints = 0;
-    else
-        gSaveBlockPtr->frontier.battlePoints -= gSpecialVar_0x8004;
-}
-
-void GiveFrontierBattlePoints(void)
-{
-    if (gSaveBlockPtr->frontier.battlePoints + gSpecialVar_0x8004 > MAX_BATTLE_FRONTIER_POINTS)
-        gSaveBlockPtr->frontier.battlePoints = MAX_BATTLE_FRONTIER_POINTS;
-    else
-        gSaveBlockPtr->frontier.battlePoints = gSaveBlockPtr->frontier.battlePoints + gSpecialVar_0x8004;
-}
-
-u16 GetFrontierBattlePoints(void)
-{
-    return gSaveBlockPtr->frontier.battlePoints;
-}
-
-void ShowFrontierExchangeCornerItemIconWindow(void)
-{
-    static const struct WindowTemplate sFrontierExchangeCorner_ItemIconWindowTemplate =
-    {
-        .bg = 0,
-        .tilemapLeft = 2,
-        .tilemapTop = 9,
-        .width = 4,
-        .height = 4,
-        .paletteNum = 15,
-        .baseBlock = 20,
-    };
-
-    sFrontierExchangeCorner_ItemIconWindowId = AddWindow(&sFrontierExchangeCorner_ItemIconWindowTemplate);
-    SetStandardWindowBorderStyle(sFrontierExchangeCorner_ItemIconWindowId, FALSE);
-    CopyWindowToVram(sFrontierExchangeCorner_ItemIconWindowId, COPYWIN_GFX);
-}
-
-void CloseFrontierExchangeCornerItemIconWindow(void)
-{
-    ClearStdWindowAndFrameToTransparent(sFrontierExchangeCorner_ItemIconWindowId, TRUE);
-    RemoveWindow(sFrontierExchangeCorner_ItemIconWindowId);
-}
-
-static void FillFrontierExchangeCornerWindowAndItemIcon(u16 menu, u16 selection)
-{
-    #include "data/battle_frontier/battle_frontier_exchange_corner.h"
-
-    if (menu >= SCROLL_MULTI_BF_EXCHANGE_CORNER_DECOR_VENDOR_1 && menu <= SCROLL_MULTI_BF_EXCHANGE_CORNER_HOLD_ITEM_VENDOR)
-    {
-        FillWindowPixelRect(0, PIXEL_FILL(1), 0, 0, 216, 32);
-        switch (menu)
-        {
-        case SCROLL_MULTI_BF_EXCHANGE_CORNER_DECOR_VENDOR_1:
-            AddTextPrinterParameterized2(0, FONT_NORMAL, sFrontierExchangeCorner_Decor1Descriptions[selection], 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
-            if (sFrontierExchangeCorner_Decor1[selection] == ITEM_LIST_END)
-            {
-                ShowFrontierExchangeCornerItemIcon(sFrontierExchangeCorner_Decor1[selection]);
-            }
-            else
-            {
-                FreeSpriteTilesByTag(TAG_ITEM_ICON);
-                FreeSpritePaletteByTag(TAG_ITEM_ICON);
-                sScrollableMultichoice_ItemSpriteId = AddDecorationIconObject(sFrontierExchangeCorner_Decor1[selection], 33, 88, 0, TAG_ITEM_ICON, TAG_ITEM_ICON);
-            }
-            break;
-        case SCROLL_MULTI_BF_EXCHANGE_CORNER_DECOR_VENDOR_2:
-            AddTextPrinterParameterized2(0, FONT_NORMAL, sFrontierExchangeCorner_Decor2Descriptions[selection], 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
-            if (sFrontierExchangeCorner_Decor2[selection] == ITEM_LIST_END)
-            {
-                ShowFrontierExchangeCornerItemIcon(sFrontierExchangeCorner_Decor2[selection]);
-            }
-            else
-            {
-                FreeSpriteTilesByTag(TAG_ITEM_ICON);
-                FreeSpritePaletteByTag(TAG_ITEM_ICON);
-                sScrollableMultichoice_ItemSpriteId = AddDecorationIconObject(sFrontierExchangeCorner_Decor2[selection], 33, 88, 0, TAG_ITEM_ICON, TAG_ITEM_ICON);
-            }
-            break;
-        case SCROLL_MULTI_BF_EXCHANGE_CORNER_VITAMIN_VENDOR:
-            AddTextPrinterParameterized2(0, FONT_NORMAL, sFrontierExchangeCorner_VitaminsDescriptions[selection], 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
-            ShowFrontierExchangeCornerItemIcon(sFrontierExchangeCorner_Vitamins[selection]);
-            break;
-        case SCROLL_MULTI_BF_EXCHANGE_CORNER_HOLD_ITEM_VENDOR:
-            AddTextPrinterParameterized2(0, FONT_NORMAL, sFrontierExchangeCorner_HoldItemsDescriptions[selection], 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
-            ShowFrontierExchangeCornerItemIcon(sFrontierExchangeCorner_HoldItems[selection]);
-            break;
-        }
-    }
-}
-
-static void ShowFrontierExchangeCornerItemIcon(u16 item)
-{
-    FreeSpriteTilesByTag(TAG_ITEM_ICON);
-    FreeSpritePaletteByTag(TAG_ITEM_ICON);
-    sScrollableMultichoice_ItemSpriteId = AddItemIconSprite(TAG_ITEM_ICON, TAG_ITEM_ICON, item);
-
-    if (sScrollableMultichoice_ItemSpriteId != MAX_SPRITES)
-    {
-        gSprites[sScrollableMultichoice_ItemSpriteId].oam.priority = 0;
-        gSprites[sScrollableMultichoice_ItemSpriteId].x = 36;
-        gSprites[sScrollableMultichoice_ItemSpriteId].y = 92;
-    }
-}
-
-static void HideFrontierExchangeCornerItemIcon(u16 menu, u16 unused)
-{
-    if (sScrollableMultichoice_ItemSpriteId != MAX_SPRITES)
-    {
-        switch (menu)
-        {
-        case SCROLL_MULTI_BF_EXCHANGE_CORNER_DECOR_VENDOR_1:
-        case SCROLL_MULTI_BF_EXCHANGE_CORNER_DECOR_VENDOR_2:
-        case SCROLL_MULTI_BF_EXCHANGE_CORNER_VITAMIN_VENDOR:
-        case SCROLL_MULTI_BF_EXCHANGE_CORNER_HOLD_ITEM_VENDOR:
-            // This makes sure deleting the icon will not clear palettes in use by object events
-            FieldEffectFreeGraphicsResources(&gSprites[sScrollableMultichoice_ItemSpriteId]);
-            break;
-        }
-        sScrollableMultichoice_ItemSpriteId = MAX_SPRITES;
-    }
-}
-
-void BufferBattleFrontierTutorMoveName(void)
-{
-    StringCopy(gStringVar1, GetMoveName(gSpecialVar_0x8005));
-}
-
-static void ShowBattleFrontierTutorWindow(u8 menu, u16 selection)
-{
-    static const struct WindowTemplate sBattleFrontierTutor_WindowTemplate =
-    {
-        .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 7,
-        .width = 12,
-        .height = 6,
-        .paletteNum = 15,
-        .baseBlock = 28,
-    };
-
-    if (menu == SCROLL_MULTI_BF_MOVE_TUTOR_1 || menu == SCROLL_MULTI_BF_MOVE_TUTOR_2)
-    {
-        if (gSpecialVar_0x8006 == 0)
-        {
-            sTutorMoveAndElevatorWindowId = AddWindow(&sBattleFrontierTutor_WindowTemplate);
-            SetStandardWindowBorderStyle(sTutorMoveAndElevatorWindowId, FALSE);
-        }
-        ShowBattleFrontierTutorMoveDescription(menu, selection);
-    }
-}
-
-static void ShowBattleFrontierTutorMoveDescription(u8 menu, u16 selection)
-{
-    static const u8 *const sBattleFrontier_TutorMoveDescriptions1[] =
-    {
-        BattleFrontier_Lounge7_Text_SoftboiledDesc,
-        BattleFrontier_Lounge7_Text_SeismicTossDesc,
-        BattleFrontier_Lounge7_Text_DreamEaterDesc,
-        BattleFrontier_Lounge7_Text_MegaPunchDesc,
-        BattleFrontier_Lounge7_Text_MegaKickDesc,
-        BattleFrontier_Lounge7_Text_BodySlamDesc,
-        BattleFrontier_Lounge7_Text_RockSlideDesc,
-        BattleFrontier_Lounge7_Text_CounterDesc,
-        BattleFrontier_Lounge7_Text_ThunderWaveDesc,
-        BattleFrontier_Lounge7_Text_SwordsDanceDesc,
-        gText_Salir,
-    };
-
-    static const u8 *const sBattleFrontier_TutorMoveDescriptions2[] =
-    {
-        BattleFrontier_Lounge7_Text_DefenseCurlDesc,
-        BattleFrontier_Lounge7_Text_SnoreDesc,
-        BattleFrontier_Lounge7_Text_MudSlapDesc,
-        BattleFrontier_Lounge7_Text_SwiftDesc,
-        BattleFrontier_Lounge7_Text_IcyWindDesc,
-        BattleFrontier_Lounge7_Text_EndureDesc,
-        BattleFrontier_Lounge7_Text_PsychUpDesc,
-        BattleFrontier_Lounge7_Text_IcePunchDesc,
-        BattleFrontier_Lounge7_Text_ThunderPunchDesc,
-        BattleFrontier_Lounge7_Text_FirePunchDesc,
-        gText_Salir,
-    };
-
-    if (menu == SCROLL_MULTI_BF_MOVE_TUTOR_1 || menu == SCROLL_MULTI_BF_MOVE_TUTOR_2)
-    {
-        FillWindowPixelRect(sTutorMoveAndElevatorWindowId, PIXEL_FILL(1), 0, 0, 96, 48);
-        if (menu == SCROLL_MULTI_BF_MOVE_TUTOR_2)
-            AddTextPrinterParameterized(sTutorMoveAndElevatorWindowId, FONT_NORMAL, sBattleFrontier_TutorMoveDescriptions2[selection], 0, 1, 0, NULL);
-        else
-            AddTextPrinterParameterized(sTutorMoveAndElevatorWindowId, FONT_NORMAL, sBattleFrontier_TutorMoveDescriptions1[selection], 0, 1, 0, NULL);
-    }
-}
-
-void CloseBattleFrontierTutorWindow(void)
-{
-    ClearStdWindowAndFrameToTransparent(sTutorMoveAndElevatorWindowId, TRUE);
-    RemoveWindow(sTutorMoveAndElevatorWindowId);
-}
-
-// Never called
-void ScrollableMultichoice_RedrawPersistentMenu(void)
-{
-    u16 scrollOffset, selectedRow;
-    u32 i;
-    u8 taskId = FindTaskIdByFunc(Task_ScrollableMultichoice_WaitReturnToList);
-    if (taskId != TASK_NONE)
-    {
-        struct Task *task = &gTasks[taskId];
-        ListMenuGetScrollAndRow(task->tListTaskId, &scrollOffset, &selectedRow);
-        SetStandardWindowBorderStyle(task->tWindowId, FALSE);
-
-        for (i = 0; i < MAX_SCROLL_MULTI_ON_SCREEN; i++)
-            AddTextPrinterParameterized5(task->tWindowId, FONT_NORMAL, sScrollableMultichoiceOptions[gSpecialVar_0x8004][scrollOffset + i], 10, i * 16, TEXT_SKIP_DRAW, NULL, 0, 0);
-
-        AddTextPrinterParameterized(task->tWindowId, FONT_NORMAL, gText_SelectorArrow, 0, selectedRow * 16, TEXT_SKIP_DRAW, NULL);
-        PutWindowTilemap(task->tWindowId);
-        CopyWindowToVram(task->tWindowId, COPYWIN_FULL);
-    }
-}
-
-// Never called
-// Close a scrollable multichoice that stays open after selection
-void ScrollableMultichoice_ClosePersistentMenu(void)
-{
-    u8 taskId = FindTaskIdByFunc(Task_ScrollableMultichoice_WaitReturnToList);
-    if (taskId != TASK_NONE)
-    {
-        struct Task *task = &gTasks[taskId];
-        DestroyListMenuTask(task->tListTaskId, NULL, NULL);
-        Free(sScrollableMultichoice_ListMenuItem);
-        ClearStdWindowAndFrameToTransparent(task->tWindowId, TRUE);
-        FillWindowPixelBuffer(task->tWindowId, PIXEL_FILL(0));
-        ClearWindowTilemap(task->tWindowId);
-        CopyWindowToVram(task->tWindowId, COPYWIN_GFX);
-        RemoveWindow(task->tWindowId);
-        DestroyTask(taskId);
-    }
 }
 
 // Undefine Scrollable Multichoice task data macros
@@ -3222,7 +2343,6 @@ u32 GetMartEmployeeObjectEventId(void)
         { MAP_GROUP(FORTREE_CITY_MART),    MAP_NUM(FORTREE_CITY_MART),    LOCALID_FORTREE_MART_CLERK},
         { MAP_GROUP(MOSSDEEP_CITY_MART),   MAP_NUM(MOSSDEEP_CITY_MART),   LOCALID_MOSSDEEP_MART_CLERK},
         { MAP_GROUP(SOOTOPOLIS_CITY_MART), MAP_NUM(SOOTOPOLIS_CITY_MART), LOCALID_SOOTOPOLIS_MART_CLERK},
-        { MAP_GROUP(BATTLE_FRONTIER_MART), MAP_NUM(BATTLE_FRONTIER_MART), LOCALID_BATTLE_FRONTIER_MART_CLERK }
     };
 
     u32 i;
@@ -3304,53 +2424,10 @@ static void Task_LoopWingFlapSE(u8 taskId)
 #define tFrameTimer   data
 #define tCurrentFrame data[3]
 
-void CloseBattlePikeCurtain(void)
-{
-    u8 taskId = CreateTask(Task_CloseBattlePikeCurtain, 8);
-    gTasks[taskId].tFrameTimer[0] = 4;
-    gTasks[taskId].tFrameTimer[1] = 4;
-    gTasks[taskId].tFrameTimer[2] = 4;
-    gTasks[taskId].tCurrentFrame = 0;
-}
-
-static void Task_CloseBattlePikeCurtain(u8 taskId)
-{
-    u32 x, y;
-    s16 *data = gTasks[taskId].data;
-
-    tFrameTimer[tCurrentFrame]--;
-    if (tFrameTimer[tCurrentFrame] == 0)
-    {
-        for (y = 0; y < CURTAIN_HEIGHT; y++)
-        {
-            for (x = 0; x < CURTAIN_WIDTH; x++)
-            {
-                MapGridSetMetatileIdAt(gSaveBlockPtr->pos.x + x + MAP_OFFSET - 1,
-                                       gSaveBlockPtr->pos.y + y + MAP_OFFSET - 3,
-                                       (x + METATILE_BattlePike_CurtainFrames_Start) + (y * METATILE_ROW_WIDTH) + (tCurrentFrame * CURTAIN_HEIGHT * METATILE_ROW_WIDTH));
-            }
-        }
-        DrawWholeMapView();
-        tCurrentFrame++;
-        if (tCurrentFrame == 3)
-        {
-            DestroyTask(taskId);
-            ScriptContext_Enable();
-        }
-    }
-}
-
 #undef CURTAIN_HEIGHT
 #undef CURTAIN_WIDTH
 #undef tFrameTimer
 #undef tCurrentFrame
-
-void GetBattlePyramidHint(void)
-{
-    // gSpecialVar_0x8004 here is expected to be the current Battle Pyramid win streak.
-    gSpecialVar_Result = gSpecialVar_0x8004 / FRONTIER_STAGES_PER_CHALLENGE;
-    gSpecialVar_Result -= (gSpecialVar_Result / TOTAL_PYRAMID_ROUNDS) * TOTAL_PYRAMID_ROUNDS;
-}
 
 // Used to avoid a potential softlock if the player respawns on Dewford with no way off
 void ResetHealLocationFromDewford(void)
@@ -3379,9 +2456,6 @@ bool8 InPokemonCenter(void)
         MAP_SOOTOPOLIS_CITY_POKEMON_CENTER_1F,
         MAP_EVER_GRANDE_CITY_POKEMON_CENTER_1F,
         MAP_EVER_GRANDE_CITY_POKEMON_LEAGUE_1F,
-        MAP_BATTLE_FRONTIER_POKEMON_CENTER_1F,
-        MAP_BATTLE_COLOSSEUM_2P,
-        MAP_BATTLE_COLOSSEUM_4P,
         MAP_UNDEFINED
     };
 
@@ -3471,7 +2545,6 @@ u8 TryGainNewFanFromCounter(u8 incrementId)
         [FANCOUNTER_DEFEATED_DRAKE]    = 2,
         [FANCOUNTER_BATTLED_AT_BASE]   = 1,
         [FANCOUNTER_FINISHED_CONTEST]  = 2,
-        [FANCOUNTER_USED_BATTLE_TOWER] = 1
     };
 
     if (VarGet(VAR_LILYCOVE_FAN_CLUB_STATE) == 2)

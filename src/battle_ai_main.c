@@ -6,7 +6,6 @@
 #include "battle_ai_util.h"
 #include "battle_ai_main.h"
 #include "battle_controllers.h"
-#include "battle_factory.h"
 #include "battle_setup.h"
 #include "battle_z_move.h"
 #include "data.h"

@@ -26,10 +26,7 @@
 #include "string_util.h"
 #include "overworld.h"
 #include "field_weather.h"
-#include "battle_tower.h"
 #include "gym_leader_rematch.h"
-#include "battle_pike.h"
-#include "battle_pyramid.h"
 #include "fldeff.h"
 #include "fldeff_misc.h"
 #include "field_control_avatar.h"
@@ -38,7 +35,6 @@
 #include "data.h"
 #include "vs_seeker.h"
 #include "item.h"
-#include "constants/battle_frontier.h"
 #include "constants/battle_setup.h"
 #include "constants/game_stat.h"
 #include "constants/items.h"
@@ -71,7 +67,6 @@ struct TrainerBattleParameter
 };
 
 // this file's functions
-static void DoBattlePikeWildBattle(void);
 static void DoSafariBattle(void);
 static void DoStandardWildBattle(bool32 isDouble);
 static void CB2_EndWildBattle(void);
@@ -123,38 +118,6 @@ static const u8 sBattleTransitionTable_Trainer[][2] =
     [TRANSITION_TYPE_CAVE]   = {B_TRANSITION_SHUFFLE,         B_TRANSITION_BIG_POKEBALL},
     [TRANSITION_TYPE_FLASH]  = {B_TRANSITION_BLUR,            B_TRANSITION_GRID_SQUARES},
     [TRANSITION_TIPO_AGUA]  = {B_TRANSITION_SWIRL,           B_TRANSITION_RIPPLE},
-};
-
-// Battle Frontier (excluding Pyramid and Dome, which have their own tables below)
-static const u8 sBattleTransitionTable_BattleFrontier[] =
-{
-    B_TRANSITION_FRONTIER_LOGO_WIGGLE,
-    B_TRANSITION_FRONTIER_LOGO_WAVE,
-    B_TRANSITION_FRONTIER_SQUARES,
-    B_TRANSITION_FRONTIER_SQUARES_SCROLL,
-    B_TRANSITION_FRONTIER_CIRCLES_MEET,
-    B_TRANSITION_FRONTIER_CIRCLES_CROSS,
-    B_TRANSITION_FRONTIER_CIRCLES_ASYMMETRIC_SPIRAL,
-    B_TRANSITION_FRONTIER_CIRCLES_SYMMETRIC_SPIRAL,
-    B_TRANSITION_FRONTIER_CIRCLES_MEET_IN_SEQ,
-    B_TRANSITION_FRONTIER_CIRCLES_CROSS_IN_SEQ,
-    B_TRANSITION_FRONTIER_CIRCLES_ASYMMETRIC_SPIRAL_IN_SEQ,
-    B_TRANSITION_FRONTIER_CIRCLES_SYMMETRIC_SPIRAL_IN_SEQ
-};
-
-static const u8 sBattleTransitionTable_BattlePyramid[] =
-{
-    B_TRANSITION_FRONTIER_SQUARES,
-    B_TRANSITION_FRONTIER_SQUARES_SCROLL,
-    B_TRANSITION_FRONTIER_SQUARES_SPIRAL
-};
-
-static const u8 sBattleTransitionTable_BattleDome[] =
-{
-    B_TRANSITION_FRONTIER_LOGO_WIGGLE,
-    B_TRANSITION_FRONTIER_SQUARES,
-    B_TRANSITION_FRONTIER_SQUARES_SCROLL,
-    B_TRANSITION_FRONTIER_SQUARES_SPIRAL
 };
 
 static const struct TrainerBattleParameter sOrdinaryBattleParams[] =
@@ -446,11 +409,6 @@ void BattleSetup_StartDoubleWildBattle(void)
     DoStandardWildBattle(TRUE);
 }
 
-void BattleSetup_StartBattlePikeWildBattle(void)
-{
-    DoBattlePikeWildBattle();
-}
-
 static void DoStandardWildBattle(bool32 isDouble)
 {
     LockPlayerFieldControls();
@@ -479,19 +437,6 @@ void DoStandardWildBattle_Debug(void)
 static void DoSafariBattle(void)
 {
 
-}
-
-static void DoBattlePikeWildBattle(void)
-{
-    LockPlayerFieldControls();
-    FreezeObjectEvents();
-    StopPlayerAvatar();
-    gMain.savedCallback = CB2_EndWildBattle;
-    gBattleTypeFlags = TIPO_BATALLA_SALVAJE;
-    CreateBattleStartTask(GetWildBattleTransition(), 0);
-    IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
-    IncrementGameStat(GAME_STAT_WILD_BATTLES);
-    TryUpdateGymLeaderRematchFromWild();
 }
 
 static void DoTrainerBattle(void)
@@ -645,7 +590,7 @@ static void CB2_EndWildBattle(void)
     CpuFill16(0, (void *)(BG_PLTT), BG_PLTT_SIZE);
     ResetOamRange(0, 128);
 
-    if (IsPlayerDefeated(gBattleOutcome) == TRUE && !InBattlePyramid() && !InBattlePike())
+    if (IsPlayerDefeated(gBattleOutcome) == TRUE)
     {
         SetMainCallback2(CB2_WhiteOut);
     }
@@ -664,10 +609,7 @@ static void CB2_EndScriptedWildBattle(void)
 
     if (IsPlayerDefeated(gBattleOutcome) == TRUE)
     {
-        if (InBattlePyramid())
-            SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
-        else
-            SetMainCallback2(CB2_WhiteOut);
+        SetMainCallback2(CB2_WhiteOut);
     }
     else
     {
@@ -806,17 +748,11 @@ u8 GetWildBattleTransition(void)
 
     if (enemyLevel < playerLevel)
     {
-        if (InBattlePyramid())
-            return B_TRANSITION_BLUR;
-        else
-            return sBattleTransitionTable_Wild[transitionType][0];
+        return sBattleTransitionTable_Wild[transitionType][0];
     }
     else
     {
-        if (InBattlePyramid())
-            return B_TRANSITION_GRID_SQUARES;
-        else
-            return sBattleTransitionTable_Wild[transitionType][1];
+        return sBattleTransitionTable_Wild[transitionType][1];
     }
 }
 
@@ -850,52 +786,6 @@ u8 GetTrainerBattleTransition(void)
         return sBattleTransitionTable_Trainer[transitionType][0];
     else
         return sBattleTransitionTable_Trainer[transitionType][1];
-}
-
-#define RANDOM_TRANSITION(table) (table[Random() % ARRAY_COUNT(table)])
-u8 GetSpecialBattleTransition(s32 id)
-{
-    u16 var;
-    u8 enemyLevel = GetMonData(&gEnemyParty[0], MON_DATA_LEVEL);
-    u8 playerLevel = GetSumOfPlayerPartyLevel(1);
-
-    if (enemyLevel < playerLevel)
-    {
-        switch (id)
-        {
-        case B_TRANSITION_GROUP_SECRET_BASE:
-        case B_TRANSITION_GROUP_E_READER:
-            return B_TRANSITION_POKEBALLS_TRAIL;
-        case B_TRANSITION_GROUP_B_PYRAMID:
-            return RANDOM_TRANSITION(sBattleTransitionTable_BattlePyramid);
-        case B_TRANSITION_GROUP_B_DOME:
-            return RANDOM_TRANSITION(sBattleTransitionTable_BattleDome);
-        }
-
-        if (VarGet(VAR_FRONTIER_BATTLE_MODE) != FRONTIER_MODE_LINK_MULTIS)
-            return RANDOM_TRANSITION(sBattleTransitionTable_BattleFrontier);
-    }
-    else
-    {
-        switch (id)
-        {
-        case B_TRANSITION_GROUP_SECRET_BASE:
-        case B_TRANSITION_GROUP_E_READER:
-            return B_TRANSITION_BIG_POKEBALL;
-        case B_TRANSITION_GROUP_B_PYRAMID:
-            return RANDOM_TRANSITION(sBattleTransitionTable_BattlePyramid);
-        case B_TRANSITION_GROUP_B_DOME:
-            return RANDOM_TRANSITION(sBattleTransitionTable_BattleDome);
-        }
-
-        if (VarGet(VAR_FRONTIER_BATTLE_MODE) != FRONTIER_MODE_LINK_MULTIS)
-            return RANDOM_TRANSITION(sBattleTransitionTable_BattleFrontier);
-    }
-
-    var = gSaveBlockPtr->frontier.trainerIds[gSaveBlockPtr->frontier.curChallengeBattleNum * 2 + 0]
-        + gSaveBlockPtr->frontier.trainerIds[gSaveBlockPtr->frontier.curChallengeBattleNum * 2 + 1];
-
-    return sBattleTransitionTable_BattleFrontier[var % ARRAY_COUNT(sBattleTransitionTable_BattleFrontier)];
 }
 
 void ChooseStarter(void)
@@ -1115,19 +1005,6 @@ const u8 *BattleSetup_ConfigureTrainerBattle(const u8 *data)
         TrainerBattleLoadArgs(sContinueScriptDoubleBattleParams, data);
         SetMapVarsToTrainer();
         return EventScript_TryDoDoubleTrainerBattle;
-    case TRAINER_BATTLE_PYRAMID:
-        if (gApproachingTrainerId == 0)
-        {
-            TrainerBattleLoadArgs(sOrdinaryBattleParams, data);
-            SetMapVarsToTrainer();
-            gTrainerBattleOpponent_A = LocalIdToPyramidTrainerId(gSpecialVar_LastTalked);
-        }
-        else
-        {
-            TrainerBattleLoadArgs(sTrainerBOrdinaryBattleParams, data);
-            gTrainerBattleOpponent_B = LocalIdToPyramidTrainerId(gSpecialVar_LastTalked);
-        }
-        return EventScript_TryDoNormalTrainerBattle;
     case TRAINER_BATTLE_SET_TRAINER_A:
         TrainerBattleLoadArgs(sOrdinaryBattleParams, data);
         return sTrainerBattleEndScript;

@@ -42,27 +42,6 @@ $(OBJEVENTGFXDIR)/people/elite_four/phoebe.4bpp: %.4bpp: %.png
 $(OBJEVENTGFXDIR)/people/elite_four/sidney.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
 
-$(OBJEVENTGFXDIR)/people/frontier_brains/anabel.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -mwidth 2 -mheight 4
-
-$(OBJEVENTGFXDIR)/people/frontier_brains/brandon.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -mwidth 2 -mheight 4
-
-$(OBJEVENTGFXDIR)/people/frontier_brains/greta.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -mwidth 2 -mheight 4
-
-$(OBJEVENTGFXDIR)/people/frontier_brains/lucy.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -mwidth 2 -mheight 4
-
-$(OBJEVENTGFXDIR)/people/frontier_brains/noland.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -mwidth 2 -mheight 4
-
-$(OBJEVENTGFXDIR)/people/frontier_brains/spenser.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -mwidth 2 -mheight 4
-
-$(OBJEVENTGFXDIR)/people/frontier_brains/tucker.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -mwidth 2 -mheight 4
-
 $(OBJEVENTGFXDIR)/people/gym_leaders/brawly.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
 
@@ -633,9 +612,6 @@ $(FLDEFFGFXDIR)/secret_power_shrub.4bpp: %.4bpp: %.png
 
 $(FLDEFFGFXDIR)/secret_power_tree.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 2
-
-$(FLDEFFGFXDIR)/record_mix_lights.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -mwidth 4 -mheight 1
 
 $(POKEMONGFXDIR)/bulbasaur/follower.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 4 -mheight 4
@@ -2226,9 +2202,6 @@ $(MISCGFXDIR)/emotes.4bpp: %.4bpp: %.png
 
 # All pokeballs are 16x32
 $(OBJEVENTGFXDIR)/misc/ball_%.4bpp: $(OBJEVENTGFXDIR)/misc/ball_%.png ; $(GFX) $< $@ -mwidth 2 -mheight 4
-
-graphics/door_anims/battle_tower_multi_corridor.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -mwidth 2 -mheight 4
 
 $(OBJEVENTGFXDIR)/misc/sombra_32x16.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 4 -mheight 2

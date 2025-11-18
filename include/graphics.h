@@ -275,7 +275,6 @@ extern const u32 gBattleTerrainAnimTiles_Building[];
 extern const u32 gBattleTerrainAnimTilemap_Building[];
 extern const u32 gBattleTerrainPalette_Building[];
 extern const u32 gBattleTerrainPalette_Plain[];
-extern const u32 gBattleTerrainPalette_Frontier[];
 extern const u32 gBattleTerrainTiles_Stadium[];
 extern const u32 gBattleTerrainTilemap_Stadium[];
 extern const u32 gBattleTerrainTiles_Rayquaza[];
@@ -2010,12 +2009,6 @@ extern const u16 gBattleInterface_BallDisplayPal[];
 extern const u32 gSwapLineGfx[];
 extern const u32 gSwapLinePal[];
 
-extern const u32 gBattlePyramidBag_Gfx[];
-extern const u32 gBattlePyramidBag_Pal[];
-extern const u32 gBattlePyramidBagTilemap[];
-extern const u32 gBattlePyramidBagInterface_Pal[];
-extern const u16 gBattlePyramidFloor_Pal[][16];
-
 extern const u16 gStandardMenuPalette[];
 
 extern const u32 gTitleScreenEmeraldVersionGfx[];
@@ -2026,27 +2019,6 @@ extern const u32 gTitleScreenCloudsTilemap[];
 extern const u16 gTitleScreenBgPalettes[];
 extern const u16 gTitleScreenPressStartPal[];
 extern const u16 gTitleScreenEmeraldVersionPal[];
-
-// Battle Dome
-extern const u32 gDomeTourneyInfoCard_Gfx[];
-extern const u32 gDomeTourneyInfoCard_Tilemap[];
-extern const u32 gDomeTourneyInfoCardBg_Tilemap[];
-extern const u32 gDomeTourneyTree_Pal[];
-extern const u32 gDomeTourneyTreeButtons_Pal[];
-extern const u32 gDomeTourneyMatchCardBg_Pal[];
-extern const u32 gDomeTourneyTree_Gfx[];
-extern const u32 gDomeTourneyLine_Gfx[];
-extern const u32 gDomeTourneyLineDown_Tilemap[];
-extern const u32 gDomeTourneyLineUp_Tilemap[];
-extern const u32 gDomeTourneyTree_Tilemap[];
-extern const u32 gDomeTourneyTreeButtons_Gfx[];
-extern const u16 gTilesetAnims_BattleDomePals0_0[];
-extern const u16 gTilesetAnims_BattleDomePals0_1[];
-extern const u16 gTilesetAnims_BattleDomePals0_2[];
-extern const u16 gTilesetAnims_BattleDomePals0_3[];
-
-extern const u32 gBattleArenaJudgmentSymbolsGfx[];
-extern const u32 gBattleArenaJudgmentSymbolsPalette[];
 
 extern const u32 gBattleWindowTextPalette[];
 
@@ -3249,19 +3221,6 @@ extern const u32 gHoennTrainerCardFrontLink_Tilemap[];
 extern const u32 gKantoTrainerCardFrontLink_Tilemap[];
 extern const u32 gHoennTrainerCardBg_Tilemap[];
 
-// Frontier Pass
-extern const u32 gFrontierPassBg_Gfx[];
-extern const u32 gFrontierPassBg_Tilemap[];
-extern const u16 gFrontierPassBg_Pal[][16];
-extern const u32 gFrontierPassMapAndCard_Gfx[];
-extern const u32 gFrontierPassCancelButton_Tilemap[];
-extern const u32 gFrontierPassCancelButtonHighlighted_Tilemap[];
-extern const u32 gFrontierPassMedals_Gfx[];
-extern const u16 gFrontierPassCursor_Pal[];
-extern const u16 gFrontierPassMedalsGold_Pal[];
-extern const u16 gFrontierPassMedalsSilver_Pal[];
-extern const u16 gFrontierPassMapCursor_Pal[];
-
 // Use Pokeblock
 extern const u32 gUsePokeblockCondition_Gfx[];
 
@@ -3278,11 +3237,6 @@ extern const u32 gPokenavMessageBox_Tilemap[];
 extern const u16 gPokenavMessageBox_Pal[];
 extern const u32 gPokenavOptions_Gfx[];
 extern const u16 gPokenavOptions_Pal[];
-
-// Battle Factory Screen
-extern const u16 ALIGNED(2) gFrontierFactoryMenu_Gfx[34 * TILE_SIZE_4BPP / 2];
-extern const u16 ALIGNED(2) gFrontierFactoryMenu_Tilemap[];
-extern const u16 gFrontierFactoryMenu_Pal[];
 
 // Object event pals
 extern const u16 gObjectEventPal_Brendan[];

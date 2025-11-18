@@ -172,7 +172,6 @@ struct ProtectStruct
     u32 flag2Unknown:1; // Only set to 0 once. Checked in 'WasUnableToUseMove' function.
     u32 flinchImmobility:1;
     u32 notFirstStrike:1;
-    u32 palaceUnableToUseMove:1;
     u32 usedHealBlockedMove:1;
     u32 usedGravityPreventedMove:1;
     u32 powderSelfDmg:1;
@@ -574,7 +573,6 @@ struct BattleStruct
     u8 prevSelectedPartySlot;
     u8 stringMoveType;
     u8 absentBattlerFlags;
-    u8 palaceFlags; // First 4 bits are "is <= 50% HP and not asleep" for each battler, last 4 bits are selected moves to pass to AI
     u8 field_93; // related to choosing pokemon?
     u8 wallyBattleState;
     u8 wallyMovesState;
@@ -597,7 +595,6 @@ struct BattleStruct
     u16 changedItems[MAX_BATTLERS_COUNT];
     u8 canPickupItem;
     u8 switchInBattlerCounter;
-    u8 arenaTurnCounter;
     u8 turnSideTracker;
     u16 lastTakenMoveFrom[MAX_BATTLERS_COUNT][MAX_BATTLERS_COUNT]; // a 2-D array [target][attacker]
     u8 wishPerishSongState;
@@ -614,11 +611,6 @@ struct BattleStruct
     u8 startingStatusTimer;
     u8 atkCancellerTracker;
     u8 AI_monToSwitchIntoId[MAX_BATTLERS_COUNT];
-    s8 arenaMindPoints[2];
-    s8 arenaSkillPoints[2];
-    u16 arenaStartHp[2];
-    u8 arenaLostPlayerMons; // Bits for party member, lost as in referee's decision, not by fainting.
-    u8 arenaLostOpponentMons;
     u8 alreadyStatusedMoveAttempt; // As bits for battlers; For example when using Thunder Wave on an already paralyzed Pokémon.
     u8 debugBattler;
     u8 magnitudeBasePower;
@@ -715,11 +707,6 @@ struct BattleStruct
     u8 usedMicleBerry;
 };
 
-// The palaceFlags member of struct BattleStruct contains 1 flag per move to indicate which moves the AI should consider,
-// and 1 flag per battler to indicate whether the battler is awake and at <= 50% HP (which affects move choice).
-// The assert below is to ensure palaceFlags is large enough to store these flags without overlap.
-STATIC_ASSERT(sizeof(((struct BattleStruct *)0)->palaceFlags) * 8 >= MAX_BATTLERS_COUNT + MAX_MON_MOVES, PalaceFlagsTooSmall)
-
 #define DYNAMIC_TYPE_MASK                 ((1 << 6) - 1)
 #define F_DYNAMIC_TYPE_IGNORE_PHYSICALITY  (1 << 6) // If set, the dynamic type's physicality won't be used for certain move effects.
 #define F_DYNAMIC_TYPE_SET                 (1 << 7) // Set for all dynamic types to distinguish a dynamic type of Normal (0) from no dynamic type.
@@ -799,7 +786,6 @@ struct BattleScripting
     u8 reshowMainState;
     u8 reshowHelperState;
     u8 levelUpHP;
-    u8 windowsType; // B_WIN_TYPE_*
     u8 multiplayerId;
     bool8 monCaught;
     s32 savedDmg;
@@ -964,7 +950,6 @@ extern u8 gMultiHitCounter;
 extern const u8 *gBattlescriptCurrInstr;
 extern u8 gChosenActionByBattler[MAX_BATTLERS_COUNT];
 extern const u8 *gSelectionBattleScripts[MAX_BATTLERS_COUNT];
-extern const u8 *gPalaceSelectionBattleScripts[MAX_BATTLERS_COUNT];
 extern u16 gLastPrintedMoves[MAX_BATTLERS_COUNT];
 extern u16 gLastMoves[MAX_BATTLERS_COUNT];
 extern u16 gLastLandedMoves[MAX_BATTLERS_COUNT];

@@ -1,5 +1,4 @@
 #include "global.h"
-#include "battle_pyramid.h"
 #include "bg.h"
 #include "event_data.h"
 #include "field_weather.h"
@@ -16,7 +15,6 @@
 #include "string_util.h"
 #include "task.h"
 #include "text.h"
-#include "constants/battle_frontier.h"
 #include "constants/layouts.h"
 #include "constants/region_map_sections.h"
 #include "constants/weather.h"
@@ -40,27 +38,6 @@ static const u8 sMapPopUpTilesPrimary_BW[] = INCBIN_U8("graphics/map_popup/bw_pr
 static const u8 sMapPopUpTilesSecondary_BW[] = INCBIN_U8("graphics/map_popup/bw_secondary.4bpp");
 static const u16 sMapPopUpTilesPalette_BW_Black[16] = INCBIN_U16("graphics/map_popup/black.gbapal");
 static const u16 sMapPopUpTilesPalette_BW_White[16] = INCBIN_U16("graphics/map_popup/white.gbapal");
-
-static const u8 sText_PyramidFloor1[] = _("PYRAMID FLOOR 1");
-static const u8 sText_PyramidFloor2[] = _("PYRAMID FLOOR 2");
-static const u8 sText_PyramidFloor3[] = _("PYRAMID FLOOR 3");
-static const u8 sText_PyramidFloor4[] = _("PYRAMID FLOOR 4");
-static const u8 sText_PyramidFloor5[] = _("PYRAMID FLOOR 5");
-static const u8 sText_PyramidFloor6[] = _("PYRAMID FLOOR 6");
-static const u8 sText_PyramidFloor7[] = _("PYRAMID FLOOR 7");
-static const u8 sText_Pyramid[] = _("PYRAMID");
-
-static const u8 *const sBattlePyramid_MapHeaderStrings[FRONTIER_STAGES_PER_CHALLENGE + 1] =
-{
-    sText_PyramidFloor1,
-    sText_PyramidFloor2,
-    sText_PyramidFloor3,
-    sText_PyramidFloor4,
-    sText_PyramidFloor5,
-    sText_PyramidFloor6,
-    sText_PyramidFloor7,
-    sText_Pyramid,
-};
 
 // States and data defines for Task_MapNamePopUpWindow
 enum {

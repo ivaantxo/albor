@@ -40,12 +40,6 @@ const u16 gMetatileAttributes_Pacifidlog[] = INCBIN_U16("data/tilesets/secondary
 const u16 gMetatiles_Sootopolis[] = INCBIN_U16("data/tilesets/secondary/sootopolis/metatiles.bin");
 const u16 gMetatileAttributes_Sootopolis[] = INCBIN_U16("data/tilesets/secondary/sootopolis/metatile_attributes.bin");
 
-const u16 gMetatiles_BattleFrontierOutsideWest[] = INCBIN_U16("data/tilesets/secondary/battle_frontier_outside_west/metatiles.bin");
-const u16 gMetatileAttributes_BattleFrontierOutsideWest[] = INCBIN_U16("data/tilesets/secondary/battle_frontier_outside_west/metatile_attributes.bin");
-
-const u16 gMetatiles_BattleFrontierOutsideEast[] = INCBIN_U16("data/tilesets/secondary/battle_frontier_outside_east/metatiles.bin");
-const u16 gMetatileAttributes_BattleFrontierOutsideEast[] = INCBIN_U16("data/tilesets/secondary/battle_frontier_outside_east/metatile_attributes.bin");
-
 const u16 gMetatiles_InsideBuilding[] = INCBIN_U16("data/tilesets/primary/building/metatiles.bin");
 const u16 gMetatileAttributes_InsideBuilding[] = INCBIN_U16("data/tilesets/primary/building/metatile_attributes.bin");
 
@@ -145,27 +139,6 @@ const u16 gMetatileAttributes_InsideShip[] = INCBIN_U16("data/tilesets/secondary
 const u16 gMetatiles_EliteFour[] = INCBIN_U16("data/tilesets/secondary/elite_four/metatiles.bin");
 const u16 gMetatileAttributes_EliteFour[] = INCBIN_U16("data/tilesets/secondary/elite_four/metatile_attributes.bin");
 
-const u16 gMetatiles_BattleFrontier[] = INCBIN_U16("data/tilesets/secondary/battle_frontier/metatiles.bin");
-const u16 gMetatileAttributes_BattleFrontier[] = INCBIN_U16("data/tilesets/secondary/battle_frontier/metatile_attributes.bin");
-
-const u16 gMetatiles_BattlePalace[] = INCBIN_U16("data/tilesets/secondary/battle_palace/metatiles.bin");
-const u16 gMetatileAttributes_BattlePalace[] = INCBIN_U16("data/tilesets/secondary/battle_palace/metatile_attributes.bin");
-
-const u16 gMetatiles_BattleDome[] = INCBIN_U16("data/tilesets/secondary/battle_dome/metatiles.bin");
-const u16 gMetatileAttributes_BattleDome[] = INCBIN_U16("data/tilesets/secondary/battle_dome/metatile_attributes.bin");
-
-const u16 gMetatiles_BattleFactory[] = INCBIN_U16("data/tilesets/secondary/battle_factory/metatiles.bin");
-const u16 gMetatileAttributes_BattleFactory[] = INCBIN_U16("data/tilesets/secondary/battle_factory/metatile_attributes.bin");
-
-const u16 gMetatiles_BattlePike[] = INCBIN_U16("data/tilesets/secondary/battle_pike/metatiles.bin");
-const u16 gMetatileAttributes_BattlePike[] = INCBIN_U16("data/tilesets/secondary/battle_pike/metatile_attributes.bin");
-
-const u16 gMetatiles_BattleArena[] = INCBIN_U16("data/tilesets/secondary/battle_arena/metatiles.bin");
-const u16 gMetatileAttributes_BattleArena[] = INCBIN_U16("data/tilesets/secondary/battle_arena/metatile_attributes.bin");
-
-const u16 gMetatiles_BattlePyramid[] = INCBIN_U16("data/tilesets/secondary/battle_pyramid/metatiles.bin");
-const u16 gMetatileAttributes_BattlePyramid[] = INCBIN_U16("data/tilesets/secondary/battle_pyramid/metatile_attributes.bin");
-
 const u16 gMetatiles_MirageTower[] = INCBIN_U16("data/tilesets/secondary/mirage_tower/metatiles.bin");
 const u16 gMetatileAttributes_MirageTower[] = INCBIN_U16("data/tilesets/secondary/mirage_tower/metatile_attributes.bin");
 
@@ -177,12 +150,6 @@ const u16 gMetatileAttributes_IslandHarbor[] = INCBIN_U16("data/tilesets/seconda
 
 const u16 gMetatiles_NavelRock[] = INCBIN_U16("data/tilesets/secondary/navel_rock/metatiles.bin");
 const u16 gMetatileAttributes_NavelRock[] = INCBIN_U16("data/tilesets/secondary/navel_rock/metatile_attributes.bin");
-
-const u16 gMetatiles_BattleFrontierRankingHall[] = INCBIN_U16("data/tilesets/secondary/battle_frontier_ranking_hall/metatiles.bin");
-const u16 gMetatileAttributes_BattleFrontierRankingHall[] = INCBIN_U16("data/tilesets/secondary/battle_frontier_ranking_hall/metatile_attributes.bin");
-
-const u16 gMetatiles_BattleTent[] = INCBIN_U16("data/tilesets/secondary/battle_tent/metatiles.bin");
-const u16 gMetatileAttributes_BattleTent[] = INCBIN_U16("data/tilesets/secondary/battle_tent/metatile_attributes.bin");
 
 const u16 gMetatiles_MysteryEventsHouse[] = INCBIN_U16("data/tilesets/secondary/mystery_events_house/metatiles.bin");
 const u16 gMetatileAttributes_MysteryEventsHouse[] = INCBIN_U16("data/tilesets/secondary/mystery_events_house/metatile_attributes.bin");

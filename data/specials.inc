@@ -32,7 +32,6 @@ gSpecials::
 	def_special DoSecretBasePCTurnOffEffect
 	def_special SavePlayerParty
 	def_special LoadPlayerParty
-	def_special ChooseHalfPartyForBattle
 	def_special ObjectEventInteractionGetBerryTreeData
 	def_special ObjectEventInteractionGetBerryName
 	def_special ObjectEventInteractionGetBerryCountString
@@ -144,22 +143,7 @@ gSpecials::
 	def_special FinishCyclingRoadChallenge
 	def_special UpdateCyclingRoadState
 	def_special GetLeadMonFriendshipScore
-	def_special CallFrontierUtilFunc
-	def_special CallBattleTowerFunc
-	def_special CallBattleDomeFunction
-	def_special CallBattlePalaceFunction
-	def_special DoSpecialTrainerBattle
-	def_special CallBattleArenaFunction
-	def_special CallBattleFactoryFunction
-	def_special CallBattlePikeFunction
-	def_special CallBattlePyramidFunction
 	def_special StopMapMusic
-	def_special CallVerdanturfTentFunction
-	def_special CallFallarborTentFunction
-	def_special CallSlateportTentFunction
-	def_special ChoosePartyForBattleFrontier
-	def_special GetBattleTowerSinglesStreak
-	def_special ReducePlayerPartyToSelectedMons
 	def_special FieldShowRegionMap
 	def_special GetInGameTradeSpeciesInfo
 	def_special DoInGameTradeScene
@@ -179,7 +163,6 @@ gSpecials::
 	def_special LookThroughPorthole
 	def_special DoSoftReset
 	def_special GameClear
-	def_special MoveElevator
 	def_special ShowGlassWorkshopMenu
 	def_special SpawnCameraObject
 	def_special RemoveCameraObject
@@ -205,7 +188,6 @@ gSpecials::
 	def_special IsStarterInParty
 	def_special CopyCurSecretBaseOwnerName_StrVar1
 	def_special ScriptCheckFreePokemonStorageSpace
-	def_special ShowDeptStoreElevatorFloorSelect
 	def_special InteractWithShieldOrTVDecoration
 	def_special IsPokerusInParty
 	def_special SetSootopolisGymCrackedIceMetatiles
@@ -245,7 +227,6 @@ gSpecials::
 	def_special CheckInteractedWithFriendsFurnitureMiddle
 	def_special CheckInteractedWithFriendsFurnitureTop
 	def_special CheckInteractedWithFriendsPosterDecor
-	def_special CloseBattlePikeCurtain
 	def_special ShouldTryGetTrainerScript
 	def_special ShowMapNamePopup
 	def_special ShowMapNamePopup
@@ -258,34 +239,13 @@ gSpecials::
 	def_special OffsetCameraForBattle
 	def_special GetDeptStoreDefaultFloorChoice
 	def_special BufferVarsForIVRater
-	def_special ShowFrontierManiacMessage
 	def_special ShowScrollableMultichoice
 	def_special ScrollableMultichoice_TryReturnToList
-	def_special BufferBattleTowerElevatorFloors
-	def_special TryStoreHeldItemsInPyramidBag
-	def_special ChooseItemsToTossFromPyramidBag
-	def_special DoBattlePyramidMonsHaveHeldItem
-	def_special BattlePyramidChooseMonHeldItems
-	def_special ShowNatureGirlMessage
-	def_special ShowBattlePointsWindow
-	def_special UpdateBattlePointsWindow
-	def_special CloseBattlePointsWindow
-	def_special GiveFrontierBattlePoints
-	def_special TakeFrontierBattlePoints
-	def_special GetFrontierBattlePoints
-	def_special ShowFrontierExchangeCornerItemIconWindow
-	def_special CloseFrontierExchangeCornerItemIconWindow
-	def_special ShowFrontierGamblerLookingMessage
-	def_special ShowFrontierGamblerGoMessage
 	def_special Script_DoRayquazaScene
 	def_special OpenPokenavForTutorial
 	def_special ScriptMenu_CreateStartMenuForPokenavTutorial
 	def_special CountPlayerTrainerStars
-	def_special BufferBattleFrontierTutorMoveName
-	def_special CloseBattleFrontierTutorWindow
-	def_special ScrollableMultichoice_RedrawPersistentMenu
 	def_special ChooseMonForMoveTutor
-	def_special ScrollableMultichoice_ClosePersistentMenu
 	def_special DoDeoxysRockInteraction
 	def_special SetDeoxysRockPalette
 	def_special StartMirageTowerDisintegration
@@ -294,7 +254,6 @@ gSpecials::
 	def_special GetPCBoxToSendMon
 	def_special ShouldShowBoxWasFullMessage
 	def_special SetMatchCallRegisteredFlag
-	def_special DoDomeConfetti
 	def_special CreateAbnormalWeatherEvent
 	def_special GetAbnormalWeatherMapNameAndType
 	def_special GetMartEmployeeObjectEventId
@@ -305,13 +264,11 @@ gSpecials::
 	def_special ShouldDistributeEonTicket
 	def_special LoopWingFlapSE
 	def_special DestroyMewEmergingGrassSprite
-	def_special GetBattlePyramidHint
 	def_special PlayerFaceTrainerAfterBattle
 	def_special ResetHealLocationFromDewford
 	def_special IsLastMonThatKnowsSurf
 	def_special CountPartyAliveNonEggMons
 	def_special TryPrepareSecondApproachingTrainer
-	def_special CloseDeptStoreElevatorWindow
 	def_special GetNumberSprayStrength
 	def_special GetSprayId
 	def_special GetLastUsedSprayType

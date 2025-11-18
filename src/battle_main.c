@@ -3,15 +3,12 @@
 #include "battle_anim.h"
 #include "battle_ai_main.h"
 #include "battle_ai_util.h"
-#include "battle_arena.h"
 #include "battle_controllers.h"
 #include "battle_interface.h"
 #include "battle_main.h"
 #include "battle_message.h"
-#include "battle_pyramid.h"
 #include "battle_scripts.h"
 #include "battle_setup.h"
-#include "battle_tower.h"
 #include "battle_util.h"
 #include "berry.h"
 #include "bg.h"
@@ -65,7 +62,7 @@
 #include "constants/weather.h"
 
 extern const struct BgTemplate gBattleBgTemplates[];
-extern const struct WindowTemplate *const gBattleWindowTemplates[];
+extern const struct WindowTemplate sBattleWindowTemplates[];
 
 static void CB2_InitBattleInternal(void);
 static void CB2_PreInitIngamePlayerPartnerBattle(void);
@@ -158,7 +155,6 @@ EWRAM_DATA u8 gMultiHitCounter = 0;
 EWRAM_DATA const u8 *gBattlescriptCurrInstr = NULL;
 EWRAM_DATA u8 gChosenActionByBattler[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA const u8 *gSelectionBattleScripts[MAX_BATTLERS_COUNT] = {NULL};
-EWRAM_DATA const u8 *gPalaceSelectionBattleScripts[MAX_BATTLERS_COUNT] = {NULL};
 EWRAM_DATA u16 gLastPrintedMoves[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA u16 gLastMoves[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA u16 gLastLandedMoves[MAX_BATTLERS_COUNT] = {0};
@@ -271,8 +267,6 @@ static const s8 sCenterToCornerVecXs[8] ={-32, -16, -16, -32, -32};
 
 const struct TrainerClass gTrainerClasses[TRAINER_CLASS_COUNT] =
 {
-    TRAINER_CLASS(PKMN_TRAINER_1, "Entrenador", 6, ITEM_POKE_BALL),
-    TRAINER_CLASS(PKMN_TRAINER_2, "Entrenador", 6, ITEM_POKE_BALL),
     TRAINER_CLASS(HIKER, "Montañero", 10, ITEM_ULTRA_BALL),
     TRAINER_CLASS(TEAM_AQUA, "Equipo Aqua", 8, ITEM_DIVE_BALL),
     TRAINER_CLASS(PKMN_BREEDER, "Criador {PKMN}", 10, ITEM_HEAL_BALL),
@@ -319,7 +313,6 @@ const struct TrainerClass gTrainerClasses[TRAINER_CLASS_COUNT] =
     TRAINER_CLASS(SWIMMER_F, "Nadadora", 2, ITEM_DIVE_BALL),
     TRAINER_CLASS(TWINS, "Gemelas", 3, ITEM_FRIEND_BALL),
     TRAINER_CLASS(SAILOR, "Marinero", 8, ITEM_DIVE_BALL),
-    TRAINER_CLASS(COOLTRAINER_2, "Molón", 10, ITEM_ULTRA_BALL),
     TRAINER_CLASS(MAGMA_ADMIN, "Admin. Magma", 10, ITEM_DUSK_BALL),
     TRAINER_CLASS(RIVAL, "Entrenador", 15, ITEM_ULTRA_BALL),
     TRAINER_CLASS(BUG_CATCHER, "Cazabichos", 4, ITEM_NET_BALL),
@@ -329,13 +322,6 @@ const struct TrainerClass gTrainerClasses[TRAINER_CLASS_COUNT] =
     TRAINER_CLASS(YOUNG_COUPLE, "Joven pareja", 8, ITEM_LOVE_BALL),
     TRAINER_CLASS(OLD_COUPLE, "Pareja mayor", 10, ITEM_LOVE_BALL),
     TRAINER_CLASS(SIS_AND_BRO, "Hermanos", 3, ITEM_FRIEND_BALL),
-    TRAINER_CLASS(SALON_MAIDEN, "Dama Torre"),
-    TRAINER_CLASS(DOME_ACE, "Astro Cúpula"),
-    TRAINER_CLASS(PALACE_MAVEN, "Amo Palacio"),
-    TRAINER_CLASS(ARENA_TYCOON, "Maestra Dojo"),
-    TRAINER_CLASS(FACTORY_HEAD, "Jefe Fábrica"),
-    TRAINER_CLASS(PIKE_QUEEN, "Reina Sierpe"),
-    TRAINER_CLASS(PYRAMID_KING, "Rey Pirámide"),
     TRAINER_CLASS(RS_PROTAG, "Entrenador"),
 };
 
@@ -461,7 +447,6 @@ static void CB2_InitBattleInternal(void)
     }
 
     gMain.inBattle = TRUE;
-    gSaveBlockPtr->frontier.disableRecordBattle = FALSE;
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
@@ -933,9 +918,9 @@ u32 GetBattleBgTemplateData(u8 arrayId, u8 caseId)
     return ret;
 }
 
-u32 GetBattleWindowTemplatePixelWidth(u32 windowsType, u32 tableId)
+u32 GetBattleWindowTemplatePixelWidth(u32 tableId)
 {
-    return gBattleWindowTemplates[windowsType][tableId].width * 8;
+    return sBattleWindowTemplates[tableId].width * 8;
 }
 
 #define sBattler            data[0]
@@ -1269,11 +1254,7 @@ static void BattleMainCB1(void)
 
 static void ClearSetBScriptingStruct(void)
 {
-    // windowsType is set up earlier in BattleInitBgsAndWindows, so we need to save the value
-    u32 temp = gBattleScripting.windowsType;
     memset(&gBattleScripting, 0, sizeof(gBattleScripting));
-
-    gBattleScripting.windowsType                = temp;
 }
 
 static void BattleStartClearSetData(void)
@@ -1305,7 +1286,6 @@ static void BattleStartClearSetData(void)
         gLockedMoves[i] = MOVE_NONE;
         gLastPrintedMoves[i] = MOVE_NONE;
         gBattleResources->flags->flags[i] = 0;
-        gPalaceSelectionBattleScripts[i] = 0;
         gBattleStruct->lastTakenMove[i] = MOVE_NONE;
         gBattleStruct->choicedMove[i] = MOVE_NONE;
         gBattleStruct->changedItems[i] = 0;
@@ -1357,12 +1337,8 @@ static void BattleStartClearSetData(void)
     gBattleStruct->moneyMultiplier = 1;
 
     gBattleStruct->givenExpMons = 0;
-    gBattleStruct->palaceFlags = 0;
 
     gBattleResults.shinyWildMon = IsMonShiny(&gEnemyParty[0]);
-
-    gBattleStruct->arenaLostPlayerMons = 0;
-    gBattleStruct->arenaLostOpponentMons = 0;
 
     for (i = 0; i < ARRAY_COUNT(gSideTimers); i++)
     {
@@ -1481,7 +1457,6 @@ void SwitchInClearSetData(u32 battler)
     gBattleStruct->lastTakenMoveFrom[battler][2] = 0;
     gBattleStruct->lastTakenMoveFrom[battler][3] = 0;
     gBattleStruct->lastMoveFailed &= ~(1u << battler);
-    gBattleStruct->palaceFlags &= ~(1u << battler);
     gBattleStruct->boosterEnergyActivates &= ~(1u << battler);
     gBattleStruct->canPickupItem &= ~(1u << battler);
 
@@ -1503,7 +1478,6 @@ void SwitchInClearSetData(u32 battler)
     gBattleStruct->choicedMove[battler] = MOVE_NONE;
     gBattleResources->flags->flags[battler] = 0;
     gCurrentMove = MOVE_NONE;
-    gBattleStruct->arenaTurnCounter = 0xFF;
 
     // Reset damage to prevent things like red card activating if the switched-in mon is holding it
     gSpecialStatuses[battler].physicalDmg = 0;
@@ -1606,7 +1580,6 @@ const u8* FaintClearSetData(u32 battler)
     gBattleStruct->lastTakenMoveFrom[battler][2] = 0;
     gBattleStruct->lastTakenMoveFrom[battler][3] = 0;
 
-    gBattleStruct->palaceFlags &= ~(1u << battler);
     gBattleStruct->boosterEnergyActivates &= ~(1u << battler);
 
     if (gBattleStruct->commanderActive[battler] != SPECIES_NONE)
@@ -2111,7 +2084,6 @@ void BattleTurnPassed(void)
     if (gBattleResults.battleTurnCounter < 0xFF)
     {
         gBattleResults.battleTurnCounter++;
-        gBattleStruct->arenaTurnCounter++;
     }
 
     for (i = 0; i < gBattlersCount; i++)

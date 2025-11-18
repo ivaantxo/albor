@@ -27,26 +27,12 @@
 
 #define NUM_VERSIONS 15
 
-#define LANGUAGE_ENGLISH  2
-#define LANGUAGE_FRENCH   3
-#define LANGUAGE_ITALIAN  4
-#define LANGUAGE_GERMAN   5
-#define LANGUAGE_KOREAN   6 // 6 goes unused but the theory is it was meant to be Korean
-#define LANGUAGE_SPANISH  7
-#define NUM_LANGUAGES     7
-
+#define CASTELLANO 0
 #define GAME_VERSION (VERSION_EMERALD)
-#define GAME_LANGUAGE (LANGUAGE_ENGLISH)
 
 // party sizes
 #define PARTY_SIZE 6
 #define MULTI_PARTY_SIZE (PARTY_SIZE / 2)
-#define FRONTIER_PARTY_SIZE         3
-#define FRONTIER_DOUBLES_PARTY_SIZE 4
-#define FRONTIER_MULTI_PARTY_SIZE   2
-#define MAX_FRONTIER_PARTY_SIZE    (max(FRONTIER_PARTY_SIZE,        \
-                                    max(FRONTIER_DOUBLES_PARTY_SIZE,\
-                                        FRONTIER_MULTI_PARTY_SIZE)))
 
 // capacities of various saveblock objects
 #define DAYCARE_MON_COUNT 2
@@ -65,20 +51,6 @@
 #define MAX_REMATCH_ENTRIES 100 // only REMATCH_TABLE_ENTRIES (78) are used
 #define NUM_CONTEST_WINNERS 13
 #define GIFT_RIBBONS_COUNT 11
-#define PYRAMID_BAG_ITEMS_COUNT 10
-
-// Number of facilities for Ranking Hall.
-// 7 facilities for single mode + tower double mode + tower multi mode.
-// Excludes link modes. See RANKING_HALL_* in include/constants/battle_frontier.h
-#define HALL_FACILITIES_COUNT 9
-// Received via record mixing, 1 for each player other than yourself
-#define HALL_RECORDS_COUNT 3
-
-// Battle Frontier level modes.
-#define FRONTIER_LVL_50         0
-#define FRONTIER_LVL_OPEN       1
-#define FRONTIER_LVL_MODE_COUNT 2
-#define FRONTIER_LVL_TENT       FRONTIER_LVL_MODE_COUNT // Special usage for indicating Battle Tent
 
 #define TRAINER_ID_LENGTH 4
 #define MAX_MON_MOVES 4

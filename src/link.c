@@ -231,73 +231,6 @@ void OpenLinkTimed(void)
 
 u8 GetLinkPlayerDataExchangeStatusTimed(int minPlayers, int maxPlayers)
 {
-    u32 i;
-    int count;
-    u32 index;
-    u8 numPlayers;
-    u32 linkType1;
-    u32 linkType2;
-
-    count = 0;
-    if (gReceivedRemoteLinkPlayers == TRUE)
-    {
-        numPlayers = GetLinkPlayerCount_2();
-        if (minPlayers > numPlayers || numPlayers > maxPlayers)
-        {
-            sPlayerDataExchangeStatus = EXCHANGE_WRONG_NUM_PLAYERS;
-            return sPlayerDataExchangeStatus;
-        }
-        else
-        {
-            if (GetLinkPlayerCount() == 0)
-            {
-                gLinkErrorOccurred = TRUE;
-                CloseLink();
-            }
-            for (i = 0, index = 0; i < GetLinkPlayerCount(); index++, i++)
-            {
-                if (gLinkPlayers[index].linkType == gLinkPlayers[0].linkType)
-                {
-                    count++;
-                }
-            }
-            if (count == GetLinkPlayerCount())
-            {
-                if (gLinkPlayers[0].linkType == LINKTYPE_TRADE_SETUP)
-                {
-                    switch (GetGameProgressForLinkTrade())
-                    {
-                    case TRADE_PLAYER_NOT_READY:
-                        sPlayerDataExchangeStatus = EXCHANGE_PLAYER_NOT_READY;
-                        break;
-                    case TRADE_PARTNER_NOT_READY:
-                        sPlayerDataExchangeStatus = EXCHANGE_PARTNER_NOT_READY;
-                        break;
-                    case TRADE_BOTH_PLAYERS_READY:
-                        sPlayerDataExchangeStatus = EXCHANGE_COMPLETE;
-                        break;
-                    }
-                }
-                else
-                {
-                    sPlayerDataExchangeStatus = EXCHANGE_COMPLETE;
-                }
-            }
-            else
-            {
-                sPlayerDataExchangeStatus = EXCHANGE_DIFF_SELECTIONS;
-                linkType1 = gLinkPlayers[GetMultiplayerId()].linkType;
-                linkType2 = gLinkPlayers[GetMultiplayerId() ^ 1].linkType;
-                if ((linkType1 == LINKTYPE_BATTLE_TOWER_50 && linkType2 == LINKTYPE_BATTLE_TOWER_OPEN)
-                 || (linkType1 == LINKTYPE_BATTLE_TOWER_OPEN && linkType2 == LINKTYPE_BATTLE_TOWER_50))
-                {
-                    // 3 below indicates partner made different level mode selection
-                    // See BattleFrontier_BattleTowerLobby_EventScript_AbortLinkDifferentSelections
-                    gSpecialVar_0x8005 = 3;
-                }
-            }
-        }
-    }
     return sPlayerDataExchangeStatus;
 }
 
@@ -495,31 +428,6 @@ u8 GetSavedPlayerCount(void)
 
 bool8 DoesLinkPlayerCountMatchSaved(void)
 {
-    u32 i;
-    u32 count = 0;
-
-    for (i = 0; i < gSavedLinkPlayerCount; i++)
-    {
-        if (gLinkPlayers[i].trainerId == sSavedLinkPlayers[i].trainerId)
-        {
-            if (gLinkType == LINKTYPE_BATTLE_TOWER)
-            {
-                if (gLinkType == gLinkPlayers[i].linkType)
-                    count++;
-            }
-            else
-            {
-                count++;
-            }
-        }
-    }
-    if (count == gSavedLinkPlayerCount)
-    {
-        if (GetLinkPlayerCount_2() == gSavedLinkPlayerCount)
-        {
-            return TRUE;
-        }
-    }
     return FALSE;
 }
 

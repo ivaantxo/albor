@@ -18,7 +18,6 @@
 struct GFRomHeader
 {
     u32 version;
-    u32 language;
     u8 gameName[32];
     const struct CompressedSpriteSheet * monFrontPics;
     const struct CompressedSpriteSheet * monBackPics;
@@ -44,8 +43,6 @@ struct GFRomHeader
     u32 trainerIdOffset;
     u32 playerNameOffset;
     u32 playerGenderOffset;
-    u32 frontierStatusOffset;
-    u32 frontierStatusOffset2;
     const struct SpeciesInfo * speciesInfo;
     const u8 (* abilityNames)[];
     const u8 *const * abilityDescriptions;
@@ -69,7 +66,6 @@ struct GFRomHeader
 __attribute__((section(".text.consts")))
 static const struct GFRomHeader sGFRomHeader = {
     .version = GAME_VERSION,
-    .language = GAME_LANGUAGE,
     .gameName = "pokemon emerald version",
     .decorations = gDecorations,
     .flagsOffset = offsetof(struct SaveBlock, flags),
@@ -89,8 +85,6 @@ static const struct GFRomHeader sGFRomHeader = {
     .trainerIdOffset = offsetof(struct SaveBlock, personalidadJugador),
     .playerNameOffset = offsetof(struct SaveBlock, playerName),
     .playerGenderOffset = offsetof(struct SaveBlock, playerGender),
-    .frontierStatusOffset = offsetof(struct SaveBlock, frontier.challengeStatus),
-    .frontierStatusOffset2 = offsetof(struct SaveBlock, frontier.challengeStatus),
     .speciesInfo = gSpeciesInfo,
     .items = gItemsInfo,
     .moves = gMovesInfo,

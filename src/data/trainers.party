@@ -46,7 +46,7 @@ Optional fields for Pokemon:
           (Order does not matter)
     - EVs (252 HP / 128 Spe / 48 Def, defaults to all 0, is not capped at 512 total)
           (Order does not matter)
-    - Ball (Poke Ball or ITEM_POKE_BALL, defaults to Poke Ball
+    - Ball (Poke Ball or ITEM_POKE_BALL, defaults to Poke Ball)
     - Happiness (Number between 1 and 255)
     - Nature (Rash or NATURE_RASH, defaults to Hardy)
     - Shiny (Yes/No, defaults to No)
@@ -71,7 +71,7 @@ Comments can be added as C comment blocks
 
 === TRAINER_NONE ===
 Name:
-Class: Pkmn Trainer 1
+Class: Hiker
 Pic: Hiker
 Gender: Male
 Music: Male
@@ -8676,7 +8676,7 @@ IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 
 === TRAINER_JAZMYN ===
 Name: JAZMYN
-Class: Cooltrainer 2
+Class: Cooltrainer
 Pic: Cooltrainer F
 Gender: Female
 Music: Cool
@@ -15101,90 +15101,6 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Psychic
 - Meteor Mash
 - Shadow Ball
-
-=== TRAINER_ANABEL ===
-Name: ANABEL
-Class: Salon Maiden
-Pic: Salon Maiden Anabel
-Gender: Female
-Music: Male
-AI: Basic Trainer
-
-Beldum
-Level: 5
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-=== TRAINER_TUCKER ===
-Name: TUCKER
-Class: Dome Ace
-Pic: Dome Ace Tucker
-Gender: Male
-Music: Male
-AI: Basic Trainer
-
-Beldum
-Level: 5
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-=== TRAINER_SPENSER ===
-Name: SPENSER
-Class: Palace Maven
-Pic: Palace Maven Spenser
-Gender: Male
-Music: Male
-AI: Basic Trainer
-
-Beldum
-Level: 5
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-=== TRAINER_GRETA ===
-Name: GRETA
-Class: Arena Tycoon
-Pic: Arena Tycoon Greta
-Gender: Female
-Music: Male
-AI: Basic Trainer
-
-Beldum
-Level: 5
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-=== TRAINER_NOLAND ===
-Name: NOLAND
-Class: Factory Head
-Pic: Factory Head Noland
-Gender: Male
-Music: Male
-AI: Basic Trainer
-
-Beldum
-Level: 5
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-=== TRAINER_LUCY ===
-Name: LUCY
-Class: Pike Queen
-Pic: Pike Queen Lucy
-Gender: Female
-Music: Male
-AI: Basic Trainer
-
-Beldum
-Level: 5
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-
-=== TRAINER_BRANDON ===
-Name: BRANDON
-Class: Pyramid King
-Pic: Pyramid King Brandon
-Gender: Male
-Music: Male
-AI: Basic Trainer
-
-Beldum
-Level: 5
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_ANDRES_2 ===
 Name: ANDRES

@@ -33,7 +33,6 @@ VerdanturfTown_Mart_EventScript_Boy::
 	end
 
 VerdanturfTown_Mart_EventScript_ExpertF::
-	msgbox VerdanturfTown_Mart_Text_NoStrategyGuidesForBattleTent, MSGBOX_NPC
 	end
 
 VerdanturfTown_Mart_EventScript_Lass::
@@ -45,12 +44,6 @@ VerdanturfTown_Mart_Text_XSpecialIsCrucial:
 	.string "is crucial.\p"
 	.string "It jacks up the power of some moves\n"
 	.string "even though it's only for one battle.$"
-
-VerdanturfTown_Mart_Text_NoStrategyGuidesForBattleTent:
-	.string "They don't seem to sell any winning\n"
-	.string "strategy guides for the BATTLE TENT…\p"
-	.string "It seems one must rely on one's\n"
-	.string "own wits after all…$"
 
 VerdanturfTown_Mart_Text_NestBallOnWeakenedPokemon:
 	.string "The NEST BALL works better on\n"

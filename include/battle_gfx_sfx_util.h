@@ -3,7 +3,6 @@
 
 void AllocateBattleSpritesData(void);
 void FreeBattleSpritesData(void);
-u16 ChooseMoveAndTargetInBattlePalace(u32 battler);
 void SpriteCB_WaitForBattlerBallReleaseAnim(struct Sprite *sprite);
 void SpriteCB_TrainerSlideIn(struct Sprite *sprite);
 void InitAndLaunchChosenStatusAnimation(u32 battler, bool32 isStatus2, u32 status);

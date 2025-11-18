@@ -1,7 +1,6 @@
 #include "global.h"
 #include "malloc.h"
 #include "battle_anim.h"
-#include "battle_pyramid.h"
 #include "battle_util.h"
 #include "berry.h"
 #include "data.h"

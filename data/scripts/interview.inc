@@ -81,33 +81,3 @@ LilycoveCity_ContestLobby_EventScript_ShowContestReporter::
 
 LilycoveCity_ContestLobby_EventScript_DontShowContestReporter::
 	return
-
-BattleFrontier_BattleTowerLobby_EventScript_Reporter::
-	end
-
-BattleFrontier_BattleTowerLobby_EventScript_AcceptInterview::
-	end
-
-BattleFrontier_BattleTowerLobby_EventScript_DeclineInterview::
-	end
-
-BattleFrontier_BattleTowerLobby_EventScript_Satisfied::
-	return
-
-BattleFrontier_BattleTowerLobby_EventScript_Dissatisfied::
-	return
-
-BattleFrontier_BattleTowerLobby_EventScript_SubmitResponse::
-	end
-
-BattleFrontier_BattleTowerLobby_EventScript_CancelInterview::
-	end
-
-BattleFrontier_BattleTowerLobby_EventScript_AlreadyInterviewed::
-	end
-
-BattleFrontier_BattleTowerLobby_EventScript_ShowOrHideReporter::
-	return
-
-BattleFrontier_BattleTowerLobby_EventScript_HideReporter::
-	return

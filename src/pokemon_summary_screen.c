@@ -2,10 +2,7 @@
 #include "main.h"
 #include "battle.h"
 #include "battle_anim.h"
-#include "frontier_util.h"
 #include "battle_message.h"
-#include "battle_tent.h"
-#include "battle_factory.h"
 #include "bg.h"
 #include "contest.h"
 #include "contest_effect.h"
@@ -2866,8 +2863,7 @@ static void PutPageWindowTilemaps(u8 page)
     case PSS_PAGE_INFO:
         PutWindowTilemap(PSS_LABEL_WINDOW_POKEMON_INFO_TITLE);
         PutWindowTilemap(PSS_LABEL_WINDOW_PROMPT_CANCEL);
-        if (InBattleFactory() == TRUE || InSlateportBattleTent() == TRUE)
-            PutWindowTilemap(PSS_LABEL_WINDOW_POKEMON_INFO_RENTAL);
+        PutWindowTilemap(PSS_LABEL_WINDOW_POKEMON_INFO_RENTAL);
         PutWindowTilemap(PSS_LABEL_WINDOW_POKEMON_INFO_TYPE);
         break;
     case PSS_PAGE_SKILLS:
@@ -2920,8 +2916,6 @@ static void ClearPageWindowTilemaps(u8 page)
     {
     case PSS_PAGE_INFO:
         ClearWindowTilemap(PSS_LABEL_WINDOW_PROMPT_CANCEL);
-        if (InBattleFactory() == TRUE || InSlateportBattleTent() == TRUE)
-            ClearWindowTilemap(PSS_LABEL_WINDOW_POKEMON_INFO_RENTAL);
         ClearWindowTilemap(PSS_LABEL_WINDOW_POKEMON_INFO_TYPE);
         break;
     case PSS_PAGE_SKILLS:
@@ -3053,17 +3047,15 @@ static void Task_PrintInfoPage(u8 taskId)
 
 static void PrintMonOTName(void)
 {
-    int x, windowId;
-    if (InBattleFactory() != TRUE && InSlateportBattleTent() != TRUE)
-    {
-        windowId = AddWindowFromTemplateList(sPageInfoTemplate, PSS_DATA_WINDOW_INFO_ORIGINAL_TRAINER);
-        PrintTextOnWindow(windowId, gText_OTSlash, 0, 1, 0, 1);
-        x = GetStringWidth(FONT_NORMAL, gText_OTSlash, 0);
-        if (sMonSummaryScreen->summary.OTGender == 0)
-            PrintTextOnWindow(windowId, sMonSummaryScreen->summary.OTName, x, 1, 0, 5);
-        else
-            PrintTextOnWindow(windowId, sMonSummaryScreen->summary.OTName, x, 1, 0, 6);
-    }
+    u32 x, windowId;
+
+    windowId = AddWindowFromTemplateList(sPageInfoTemplate, PSS_DATA_WINDOW_INFO_ORIGINAL_TRAINER);
+    PrintTextOnWindow(windowId, gText_OTSlash, 0, 1, 0, 1);
+    x = GetStringWidth(FONT_NORMAL, gText_OTSlash, 0);
+    if (sMonSummaryScreen->summary.OTGender == 0)
+        PrintTextOnWindow(windowId, sMonSummaryScreen->summary.OTName, x, 1, 0, 5);
+    else
+        PrintTextOnWindow(windowId, sMonSummaryScreen->summary.OTName, x, 1, 0, 6);
 }
 
 static void PrintMonAbilityName(void)
@@ -4055,9 +4047,7 @@ static inline bool32 ShouldShowMoveRelearner(void)
          && !sMonSummaryScreen->lockMovesFlag
          && sMonSummaryScreen->mode != SUMMARY_MODE_BOX
          && sMonSummaryScreen->mode != SUMMARY_MODE_BOX_CURSOR
-         && sMonSummaryScreen->relearnableMovesNum > 0
-         && !InBattleFactory() 
-         && !InSlateportBattleTent());
+         && sMonSummaryScreen->relearnableMovesNum > 0);
 }
 
 static inline bool32 ShouldShowRename(void)

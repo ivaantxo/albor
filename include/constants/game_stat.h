@@ -31,9 +31,9 @@
 #define GAME_STAT_USED_STRUGGLE               27
 #define GAME_STAT_SLOT_JACKPOTS               28
 #define GAME_STAT_CONSECUTIVE_ROULETTE_WINS   29
-#define GAME_STAT_ENTERED_BATTLE_TOWER        30
+#define GAME_STAT_unused_30        30
 #define GAME_STAT_UNKNOWN_31                  31
-#define GAME_STAT_BATTLE_TOWER_SINGLES_STREAK 32
+#define GAME_STAT_unused_32 32
 #define GAME_STAT_POKEBLOCKS                  33
 #define GAME_STAT_POKEBLOCKS_WITH_FRIENDS     34
 #define GAME_STAT_WON_LINK_CONTEST            35

@@ -232,11 +232,6 @@ SlateportCity_EventScript_GirlSecretBase::
 	end
 
 SlateportCity_EventScript_RichBoy::
-	lock
-	faceplayer
-	call_if_eq VAR_SLATEPORT_CITY_STATE, 1, SlateportCity_EventScript_RichBoySternInterview
-	msgbox SlateportCity_Text_GoingToCompeteInBattleTent, MSGBOX_DEFAULT
-	release
 	end
 
 SlateportCity_EventScript_RichBoySternInterview::
@@ -277,10 +272,6 @@ SlateportCity_EventScript_Woman1::
 SlateportCity_EventScript_Woman1AquaGone::
 	msgbox SlateportCity_Text_VisitedMuseumOften, MSGBOX_DEFAULT
 	release
-	end
-
-SlateportCity_EventScript_BattleTentSign::
-	msgbox SlateportCity_Text_BattleTentSign, MSGBOX_SIGN
 	end
 
 SlateportCity_EventScript_SternsShipyardSign::
@@ -364,7 +355,6 @@ SlateportCity_EventScript_PokefanF::
 	end
 
 SlateportCity_EventScript_Man2::
-	msgbox SlateportCity_Text_BattleTentBuiltRecently, MSGBOX_NPC
 	end
 
 SlateportCity_EventScript_AquaGrunt1::
@@ -867,29 +857,6 @@ SlateportCity_EventScript_NotEnoughBerryPowder::
 	goto SlateportCity_EventScript_ChooseBerryPowderItem
 	end
 
-SlateportCity_EventScript_ScottBattleTentScene::
-	lockall
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceUp
-	waitmovement 0
-	opendoor 10, 12
-	waitdooranim
-	addobject LOCALID_SCOTT
-	applymovement OBJ_EVENT_ID_PLAYER, SlateportCity_Movement_PushPlayerDown
-	applymovement LOCALID_SCOTT, SlateportCity_Movement_ScottExitBattleTent
-	waitmovement 0
-	closedoor 10, 12
-	waitdooranim
-	msgbox SlateportCity_Text_TakingBattleTentChallenge, MSGBOX_DEFAULT
-	closemessage
-	applymovement OBJ_EVENT_ID_PLAYER, SlateportCity_Movement_PlayerWatchScottExit
-	applymovement LOCALID_SCOTT, SlateportCity_Movement_ScottExitAfterBattleTent
-	waitmovement 0
-	removeobject LOCALID_SCOTT
-	addvar VAR_SCOTT_STATE, 1
-	setvar VAR_SLATEPORT_OUTSIDE_MUSEUM_STATE, 3
-	releaseall
-	end
-
 SlateportCity_Movement_PushPlayerDown:
 	lock_facing_direction
 	walk_down
@@ -899,22 +866,6 @@ SlateportCity_Movement_PushPlayerDown:
 SlateportCity_Movement_PlayerWatchScottExit:
 	delay_16
 	walk_in_place_faster_right
-	step_end
-
-SlateportCity_Movement_ScottExitBattleTent:
-	delay_8
-	walk_down
-	step_end
-
-SlateportCity_Movement_ScottExitAfterBattleTent:
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	walk_right
 	step_end
 
 SlateportCity_EventScript_BerryCrushRankingsSign::
@@ -980,12 +931,6 @@ SlateportCity_Text_BuyBricksSoDecorWontGetDirty:
 	.string "I'm going to buy some BRICKS so my\n"
 	.string "DOLLS and CUSHIONS won't get dirty\l"
 	.string "when I leave them out.$"
-
-SlateportCity_Text_GoingToCompeteInBattleTent:
-	.string "Wroooar! I'm going to compete in\n"
-	.string "the BATTLE TENT, too!\p"
-	.string "But before that, I need to catch\n"
-	.string "some POKéMON!$"
 
 SlateportCity_Text_BushedHikingFromMauville:
 	.string "Whew… I'm just bushed…\p"
@@ -1099,14 +1044,6 @@ SlateportCity_Text_CantChangeTradeMonName:
 	.string "The original TRAINER's love for that\n"
 	.string "POKéMON is in the nickname.$"
 
-SlateportCity_Text_BattleTentBuiltRecently:
-	.string "Recently, a BATTLE TENT was built\n"
-	.string "in SLATEPORT.\p"
-	.string "GYMS are fun, but the BATTLE TENT's\n"
-	.string "awesome in its own way.\p"
-	.string "You should go find tough POKéMON\n"
-	.string "for the BATTLE TENT!$"
-
 SlateportCity_Text_CaptSternBeingInterviewed:
 	.string "I was hoping that it was a famous star\n"
 	.string "so I could get an autograph.\p"
@@ -1197,10 +1134,6 @@ SlateportCity_Text_FromHarborTryingToTakeSub:
 SlateportCity_Text_PleaseComeWithMe:
 	.string "{PLAYER}{KUN}!\n"
 	.string "Please, come with me!$"
-
-SlateportCity_Text_BattleTentSign:
-	.string "BATTLE TENT SLATEPORT SITE\n"
-	.string "“Find it! The ultimate POKéMON!”$"
 
 SlateportCity_Text_SternsShipyardWantedSign:
 	.string "STERN'S SHIPYARD\p"
@@ -1342,14 +1275,3 @@ SlateportCity_Text_KeepEyeOnTrainersBeSeeingYou:
 	.string "So, I'll be off to roam other towns\n"
 	.string "a bit more.\p"
 	.string "Be seeing you, {PLAYER}{KUN}!$"
-
-SlateportCity_Text_TakingBattleTentChallenge:
-	.string "SCOTT: Oh, hey!\n"
-	.string "If it isn't {PLAYER}{KUN}!\p"
-	.string "{PLAYER}{KUN}, let me guess--you're going\n"
-	.string "to take the BATTLE TENT challenge?\p"
-	.string "Yeah! That's a good idea!\n"
-	.string "That's a really great idea!\p"
-	.string "After all, a tough TRAINER is\n"
-	.string "the perfect fit for the BATTLE TENT!\p"
-	.string "Give it your best effort!$"

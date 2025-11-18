@@ -1196,23 +1196,6 @@ const u32 gVsLettersGfx[] = INCBIN_U32("graphics/battle_transitions/vs.4bpp.lz")
 
 #include "data/graphics/battle_terrain.h"
 
-// Battle Dome
-const u32 gDomeTourneyTree_Gfx[] = INCBIN_U32("graphics/battle_frontier/tourney_tree.4bpp.lz");
-const u32 gDomeTourneyLine_Gfx[] = INCBIN_U32("graphics/battle_frontier/tourney_line.4bpp.lz"); // the red glow mask for the tourney advancement lines
-const u32 gDomeTourneyTree_Tilemap[] = INCBIN_U32("graphics/battle_frontier/tourney_tree.bin.lz");
-const u32 gDomeTourneyLineDown_Tilemap[] = INCBIN_U32("graphics/battle_frontier/tourney_line_down_map.bin.lz");
-const u32 gDomeTourneyLineUp_Tilemap[] = INCBIN_U32("graphics/battle_frontier/tourney_line_up_map.bin.lz");
-const u32 gDomeTourneyInfoCard_Gfx[] = INCBIN_U32("graphics/battle_frontier/tourney_info_card.4bpp.lz");
-const u32 gDomeTourneyInfoCard_Tilemap[] = INCBIN_U32("graphics/battle_frontier/tourney_info_card_tilemap.bin.lz");
-const u32 gDomeTourneyInfoCardBg_Tilemap[] = INCBIN_U32("graphics/battle_frontier/tourney_info_card_bg.bin.lz");
-const u32 gDomeTourneyTreeButtons_Gfx[] = INCBIN_U32("graphics/battle_frontier/tourney_buttons.4bpp.lz"); // exit/cancel and Poké Ball buttons
-const u32 gDomeTourneyTree_Pal[] = INCBIN_U32("graphics/battle_frontier/tourney_tree.gbapal.lz");
-const u32 gDomeTourneyTreeButtons_Pal[] = INCBIN_U32("graphics/battle_frontier/tourney_buttons.gbapal.lz");
-const u32 gDomeTourneyMatchCardBg_Pal[] = INCBIN_U32("graphics/battle_frontier/tourney_match_card_bg.gbapal.lz");
-
-const u32 gBattleArenaJudgmentSymbolsGfx[] = INCBIN_U32("graphics/battle_frontier/arena_judgment_symbols.4bpp.lz");
-const u32 gBattleArenaJudgmentSymbolsPalette[] = INCBIN_U32("graphics/battle_frontier/arena_judgment_symbols.gbapal.lz");
-
 const u32 gBattleWindowTextPalette[] = INCBIN_U32("graphics/battle_interface/text.gbapal.lz");
 
 const u32 gBattleActionsPalFight[] = INCBIN_U32("graphics/battle_interface/battle_actions_fight.gbapal.lz");
@@ -1240,16 +1223,6 @@ const u32 gMoveTypePalMystery[] = INCBIN_U32("graphics/battle_interface/types/mo
 const u32 gMoveTypePalPoison[] = INCBIN_U32("graphics/battle_interface/types/move_poison.gbapal.lz");
 
 const u32 gBattleInterfaceSelector[] = INCBIN_U32("graphics/battle_interface/selector.4bpp");
-
-const u16 gTilesetAnims_BattleDomePals0_0[] = INCBIN_U16("graphics/battle_frontier/dome_anim1.gbapal");
-const u16 gTilesetAnims_BattleDomePals0_1[] = INCBIN_U16("graphics/battle_frontier/dome_anim2.gbapal");
-const u16 gTilesetAnims_BattleDomePals0_2[] = INCBIN_U16("graphics/battle_frontier/dome_anim3.gbapal");
-const u16 gTilesetAnims_BattleDomePals0_3[] = INCBIN_U16("graphics/battle_frontier/dome_anim4.gbapal");
-
-const u16 gBattlePyramidFloor_Pal[] = INCBIN_U16("graphics/battle_frontier/pyramid_floor.gbapal");
-
-const u32 gMultiBattleIntroBg_Opponent_Tilemap[] = INCBIN_U32("graphics/battle_frontier/multi_battle_intro_bg_opponent.bin.lz");
-const u32 gMultiBattleIntroBg_Player_Tilemap[] = INCBIN_U32("graphics/battle_frontier/multi_battle_intro_bg_player.bin.lz");
 
 #include "data/graphics/intro_scene.h"
 
@@ -1617,11 +1590,6 @@ const u32 gBagScreenFemale_Pal[] = INCBIN_U32("graphics/bag/menu_female.gbapal.l
 const u32 gBagScreen_Gfx[] = INCBIN_U32("graphics/bag/menu.4bpp.lz");
 const u32 gBagScreen_GfxTileMap[] = INCBIN_U32("graphics/bag/menu.bin.lz");
 
-const u32 gBattlePyramidBag_Gfx[]          = INCBIN_U32("graphics/bag/bag_pyramid.4bpp.lz");
-const u32 gBattlePyramidBag_Pal[]          = INCBIN_U32("graphics/bag/bag_pyramid.gbapal.lz"); // female palette is first and male is second.
-const u32 gBattlePyramidBagTilemap[]       = INCBIN_U32("graphics/bag/menu_pyramid.bin.lz");
-const u32 gBattlePyramidBagInterface_Pal[] = INCBIN_U32("graphics/bag/menu_pyramid.gbapal.lz");
-
 const u32 gSwapLineGfx[] = INCBIN_U32("graphics/interface/swap_line.4bpp.lz");
 const u32 gSwapLinePal[] = INCBIN_U32("graphics/interface/swap_line.gbapal.lz");
 
@@ -1689,19 +1657,6 @@ const u32 gRouletteNumbers_Gfx[] = INCBIN_U32("graphics/roulette/numbers.4bpp.lz
 const u32 gRouletteMultiplier_Gfx[] = INCBIN_U32("graphics/roulette/multiplier.4bpp.lz");
 
 #include "data/graphics/mail.h"
-
-const u16 gFrontierFactoryMenu_Pal[] = INCBIN_U16("graphics/battle_frontier/factory_screen/menu.gbapal");
-const u16 ALIGNED(2) gFrontierFactoryMenu_Gfx[] = INCBIN_U16("graphics/battle_frontier/factory_screen/menu.4bpp");
-const u16 ALIGNED(2) gFrontierFactoryMenu_Tilemap[] = INCBIN_U16("graphics/battle_frontier/factory_screen/menu.bin");
-
-const u32 gFrontierPassMedals_Gfx[] = INCBIN_U32("graphics/frontier_pass/medals.4bpp.lz");
-
-const u16 gFrontierPassCursor_Pal[] = INCBIN_U16("graphics/frontier_pass/cursor.gbapal");
-
-const u16 gFrontierPassMapCursor_Pal[] = INCBIN_U16("graphics/frontier_pass/map_cursor.gbapal");
-
-const u16 gFrontierPassMedalsSilver_Pal[] = INCBIN_U16("graphics/frontier_pass/silver.gbapal");
-const u16 gFrontierPassMedalsGold_Pal[] = INCBIN_U16("graphics/frontier_pass/gold.gbapal");
 
 const u16 gSummaryScreen_MoveEffect_Battle_Tilemap[] = INCBIN_U16("graphics/summary_screen/effect_battle.bin");
 const u16 gSummaryScreen_MoveEffect_Contest_Tilemap[] = INCBIN_U16("graphics/summary_screen/effect_contest.bin");
@@ -1893,13 +1848,6 @@ const u32 gTitleScreenEmeraldVersionGfx[]  = INCBIN_U32("graphics/title_screen/e
 const u16 gTitleScreenPressStartPal[]      = INCBIN_U16("graphics/title_screen/press_start.gbapal");
 const u32 gTitleScreenPressStartGfx[]      = INCBIN_U32("graphics/title_screen/press_start.4bpp.lz");
 const u32 gTitleScreenPokemonLogoTilemap[] = INCBIN_U32("graphics/title_screen/pokemon_logo.bin.lz");
-
-const u16 gFrontierPassBg_Pal[]                          = INCBIN_U16("graphics/frontier_pass/bg.gbapal"); // 8 x 16
-const u32 gFrontierPassBg_Gfx[]                          = INCBIN_U32("graphics/frontier_pass/bg.4bpp.lz");
-const u32 gFrontierPassMapAndCard_Gfx[]                  = INCBIN_U32("graphics/frontier_pass/map_and_card.8bpp.lz");
-const u32 gFrontierPassBg_Tilemap[]                      = INCBIN_U32("graphics/frontier_pass/bg.bin.lz");
-const u16 gFrontierPassCancelButton_Tilemap[]            = INCBIN_U16("graphics/frontier_pass/cancel.bin");
-const u16 gFrontierPassCancelButtonHighlighted_Tilemap[] = INCBIN_U16("graphics/frontier_pass/cancel_highlighted.bin");
 
 // Máquina de discos
 const u32 gTMCase_Gfx[] = INCBIN_U32("graphics/tm_case/tiles.4bpp.lz");

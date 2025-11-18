@@ -2,9 +2,6 @@
 #include "item_menu.h"
 #include "battle.h"
 #include "battle_controllers.h"
-#include "battle_pyramid.h"
-#include "frontier_util.h"
-#include "battle_pyramid_bag.h"
 #include "berry_tag_screen.h"
 #include "bg.h"
 #include "data.h"
@@ -44,7 +41,6 @@
 #include "text_window.h"
 #include "menu_helpers.h"
 #include "window.h"
-#include "battle_pike.h"
 #include "constants/items.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
@@ -500,10 +496,7 @@ void CB2_BagMenuFromStartMenu(void)
 
 void CB2_BagMenuFromBattle(void)
 {
-    if (!InBattlePyramid())
-        GoToBagMenu(ITEMMENULOCATION_BATTLE, POCKETS_COUNT, CB2_SetUpReshowBattleScreenAfterMenu2);
-    else
-        GoToBattlePyramidBagMenu(PYRAMIDBAG_LOC_BATTLE, CB2_SetUpReshowBattleScreenAfterMenu2);
+    GoToBagMenu(ITEMMENULOCATION_BATTLE, POCKETS_COUNT, CB2_SetUpReshowBattleScreenAfterMenu2);
 }
 
 // Choosing berry to plant

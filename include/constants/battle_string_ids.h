@@ -924,12 +924,6 @@ enum TextosBatalla
 #define B_MSG_FROSTBITE_HEALED         0
 #define B_MSG_FROSTBITE_HEALED_BY_MOVE 1
 
-// gBattlePalaceFlavorTextTable
-#define B_MSG_GLINT_IN_EYE   0
-#define B_MSG_GETTING_IN_POS 1
-#define B_MSG_GROWL_DEEPLY   2
-#define B_MSG_EAGER_FOR_MORE 3
-
 // gRefereeStringsTable
 #define B_MSG_REF_NOTHING_IS_DECIDED 0
 #define B_MSG_REF_THATS_IT           1

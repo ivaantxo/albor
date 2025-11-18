@@ -51,12 +51,6 @@ $(TILESETGFXDIR)/secondary/pacifidlog/tiles.4bpp: %.4bpp: %.png
 $(TILESETGFXDIR)/secondary/sootopolis/tiles.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 328 -Wnum_tiles
 
-$(TILESETGFXDIR)/secondary/battle_frontier_outside_west/tiles.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -num_tiles 508 -Wnum_tiles
-
-$(TILESETGFXDIR)/secondary/battle_frontier_outside_east/tiles.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -num_tiles 508 -Wnum_tiles
-
 $(TILESETGFXDIR)/primary/building/tiles.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 502 -Wnum_tiles
 
@@ -141,15 +135,6 @@ $(TILESETGFXDIR)/secondary/inside_ship/tiles.4bpp: %.4bpp: %.png
 $(TILESETGFXDIR)/secondary/elite_four/tiles.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 505 -Wnum_tiles
 
-$(TILESETGFXDIR)/secondary/battle_frontier/tiles.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -num_tiles 310 -Wnum_tiles
-
-$(TILESETGFXDIR)/secondary/battle_factory/tiles.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -num_tiles 424 -Wnum_tiles
-
-$(TILESETGFXDIR)/secondary/battle_pike/tiles.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -num_tiles 382 -Wnum_tiles
-
 $(TILESETGFXDIR)/secondary/mirage_tower/tiles.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 420 -Wnum_tiles
 
@@ -161,9 +146,6 @@ $(TILESETGFXDIR)/secondary/island_harbor/tiles.4bpp: %.4bpp: %.png
 
 $(TILESETGFXDIR)/secondary/navel_rock/tiles.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 420 -Wnum_tiles
-
-$(TILESETGFXDIR)/secondary/battle_frontier_ranking_hall/tiles.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -num_tiles 136 -Wnum_tiles
 
 $(TILESETGFXDIR)/secondary/mystery_events_house/tiles.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 509 -Wnum_tiles
@@ -298,22 +280,6 @@ $(BATTRANSGFXDIR)/regis.4bpp: %.4bpp: %.png
 $(BATTRANSGFXDIR)/rayquaza.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 938 -Wnum_tiles
 
-$(BATTRANSGFXDIR)/frontier_square_1.4bpp: $(BATTRANSGFXDIR)/frontier_squares_blanktiles.4bpp \
-                                          $(BATTRANSGFXDIR)/frontier_squares_1.4bpp
-	@cat $^ >$@
-
-$(BATTRANSGFXDIR)/frontier_square_2.4bpp: $(BATTRANSGFXDIR)/frontier_squares_blanktiles.4bpp \
-                                          $(BATTRANSGFXDIR)/frontier_squares_2.4bpp
-	@cat $^ >$@
-
-$(BATTRANSGFXDIR)/frontier_square_3.4bpp: $(BATTRANSGFXDIR)/frontier_squares_blanktiles.4bpp \
-                                          $(BATTRANSGFXDIR)/frontier_squares_3.4bpp
-	@cat $^ >$@
-
-$(BATTRANSGFXDIR)/frontier_square_4.4bpp: $(BATTRANSGFXDIR)/frontier_squares_blanktiles.4bpp \
-                                          $(BATTRANSGFXDIR)/frontier_squares_4.4bpp
-	@cat $^ >$@
-
 $(SLOTMACHINEGFXDIR)/reel_time_gfx.4bpp: $(SLOTMACHINEGFXDIR)/reel_time_pikachu.4bpp \
                                          $(SLOTMACHINEGFXDIR)/reel_time_machine.4bpp
 	@cat $^ >$@
@@ -322,11 +288,6 @@ $(SLOTMACHINEGFXDIR)/reel_time_gfx.4bpp: $(SLOTMACHINEGFXDIR)/reel_time_pikachu.
 
 $(INTERFACEGFXDIR)/outline_cursor.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 8 -Wnum_tiles
-
-$(BATTRANSGFXDIR)/frontier_logo_center.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -num_tiles 43 -Wnum_tiles
-
-
 
 ### Pokenav ###
 

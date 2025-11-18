@@ -45,7 +45,7 @@ static EWRAM_DATA u8 sDynamicMenuEventId = 0;
 static EWRAM_DATA struct DynamicMultichoiceStack *sDynamicMultiChoiceStack = NULL;
 static EWRAM_DATA u16 *sDynamicMenuEventScratchPad = NULL;
 
-static u8 sLilycoveSSTidalSelections[SSTIDAL_SELECTION_COUNT];
+static u8 sLilycoveSSTidalSelections[SSTIDAL_COUNT];
 
 static void FreeListMenuItems(struct ListMenuItem *items, u32 count);
 static void Task_HandleScrollingMultichoiceInput(u8 taskId);
@@ -694,7 +694,7 @@ static void CreateLilycoveSSTidalMultichoice(void)
     u32 i;
     u32 j;
 
-    for (i = 0; i < SSTIDAL_SELECTION_COUNT; i++)
+    for (i = 0; i < SSTIDAL_COUNT; i++)
     {
         sLilycoveSSTidalSelections[i] = 0xFF;
     }
@@ -703,12 +703,11 @@ static void CreateLilycoveSSTidalMultichoice(void)
 
     if (gSpecialVar_0x8004 == 0)
     {
-        sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_SELECTION_SLATEPORT;
+        sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_SLATEPORT;
         selectionCount++;
 
         if (FlagGet(FLAG_MET_SCOTT_ON_SS_TIDAL) == TRUE)
         {
-            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_SELECTION_BATTLE_FRONTIER;
             selectionCount++;
         }
     }
@@ -717,13 +716,13 @@ static void CreateLilycoveSSTidalMultichoice(void)
     {
         if (gSpecialVar_0x8004 == 0)
         {
-            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_SELECTION_SOUTHERN_ISLAND;
+            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_SOUTHERN_ISLAND;
             selectionCount++;
         }
 
         if (gSpecialVar_0x8004 == 1 && FlagGet(FLAG_SHOWN_EON_TICKET) == FALSE)
         {
-            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_SELECTION_SOUTHERN_ISLAND;
+            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_SOUTHERN_ISLAND;
             selectionCount++;
             FlagSet(FLAG_SHOWN_EON_TICKET);
         }
@@ -733,13 +732,13 @@ static void CreateLilycoveSSTidalMultichoice(void)
     {
         if (gSpecialVar_0x8004 == 0)
         {
-            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_SELECTION_NAVEL_ROCK;
+            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_NAVEL_ROCK;
             selectionCount++;
         }
 
         if (gSpecialVar_0x8004 == 1 && FlagGet(FLAG_SHOWN_MYSTIC_TICKET) == FALSE)
         {
-            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_SELECTION_NAVEL_ROCK;
+            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_NAVEL_ROCK;
             selectionCount++;
             FlagSet(FLAG_SHOWN_MYSTIC_TICKET);
         }
@@ -749,13 +748,13 @@ static void CreateLilycoveSSTidalMultichoice(void)
     {
         if (gSpecialVar_0x8004 == 0)
         {
-            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_SELECTION_BIRTH_ISLAND;
+            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_BIRTH_ISLAND;
             selectionCount++;
         }
 
         if (gSpecialVar_0x8004 == 1 && FlagGet(FLAG_SHOWN_AURORA_TICKET) == FALSE)
         {
-            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_SELECTION_BIRTH_ISLAND;
+            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_BIRTH_ISLAND;
             selectionCount++;
             FlagSet(FLAG_SHOWN_AURORA_TICKET);
         }
@@ -765,19 +764,19 @@ static void CreateLilycoveSSTidalMultichoice(void)
     {
         if (gSpecialVar_0x8004 == 0)
         {
-            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_SELECTION_FARAWAY_ISLAND;
+            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_FARAWAY_ISLAND;
             selectionCount++;
         }
 
         if (gSpecialVar_0x8004 == 1 && FlagGet(FLAG_SHOWN_OLD_SEA_MAP) == FALSE)
         {
-            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_SELECTION_FARAWAY_ISLAND;
+            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_FARAWAY_ISLAND;
             selectionCount++;
             FlagSet(FLAG_SHOWN_OLD_SEA_MAP);
         }
     }
 
-    sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_SELECTION_EXIT;
+    sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_EXIT;
     selectionCount++;
 
     if (gSpecialVar_0x8004 == 0 && FlagGet(FLAG_MET_SCOTT_ON_SS_TIDAL) == TRUE)
@@ -786,7 +785,7 @@ static void CreateLilycoveSSTidalMultichoice(void)
     }
 
     count = selectionCount;
-    if (count == SSTIDAL_SELECTION_COUNT)
+    if (count == SSTIDAL_COUNT)
     {
         gSpecialVar_0x8004 = SCROLL_MULTI_SS_TIDAL_DESTINATION;
         ShowScrollableMultichoice();
@@ -795,7 +794,7 @@ static void CreateLilycoveSSTidalMultichoice(void)
     {
         pixelWidth = 0;
 
-        for (j = 0; j < SSTIDAL_SELECTION_COUNT; j++)
+        for (j = 0; j < SSTIDAL_COUNT; j++)
         {
             u8 selection = sLilycoveSSTidalSelections[j];
             if (selection != 0xFF)
@@ -808,7 +807,7 @@ static void CreateLilycoveSSTidalMultichoice(void)
         windowId = CreateWindowFromRect(MAX_MULTICHOICE_WIDTH - width, (6 - count) * 2, width, count * 2);
         SetStandardWindowBorderStyle(windowId, FALSE);
 
-        for (selectionCount = 0, i = 0; i < SSTIDAL_SELECTION_COUNT; i++)
+        for (selectionCount = 0, i = 0; i < SSTIDAL_COUNT; i++)
         {
             if (sLilycoveSSTidalSelections[i] != 0xFF)
             {

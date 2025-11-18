@@ -64,12 +64,6 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Man4;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Man5;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ReporterM;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_ReporterF;
-extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Anabel;
-extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Tucker;
-extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Greta;
-extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Spenser;
-extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Noland;
-extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lucy;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_CuttableTree;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_MartEmployee;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RooftopSaleWoman;
@@ -196,7 +190,6 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_UnionRoomAt
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Red;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Leaf;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BirthIslandStone;
-extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Brandon;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireBrendan;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_RubySapphireMay;
 // Begin pokemon event objects
@@ -276,12 +269,6 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_MAN_5] =                    &gObjectEventGraphicsInfo_Man5,
     [OBJ_EVENT_GFX_REPORTER_M] =               &gObjectEventGraphicsInfo_ReporterM,
     [OBJ_EVENT_GFX_REPORTER_F] =               &gObjectEventGraphicsInfo_ReporterF,
-    [OBJ_EVENT_GFX_ANABEL] =                   &gObjectEventGraphicsInfo_Anabel,
-    [OBJ_EVENT_GFX_TUCKER] =                   &gObjectEventGraphicsInfo_Tucker,
-    [OBJ_EVENT_GFX_GRETA] =                    &gObjectEventGraphicsInfo_Greta,
-    [OBJ_EVENT_GFX_SPENSER] =                  &gObjectEventGraphicsInfo_Spenser,
-    [OBJ_EVENT_GFX_NOLAND] =                   &gObjectEventGraphicsInfo_Noland,
-    [OBJ_EVENT_GFX_LUCY] =                     &gObjectEventGraphicsInfo_Lucy,
     [OBJ_EVENT_GFX_CUTTABLE_TREE] =            &gObjectEventGraphicsInfo_CuttableTree,
     [OBJ_EVENT_GFX_MART_EMPLOYEE] =            &gObjectEventGraphicsInfo_MartEmployee,
     [OBJ_EVENT_GFX_ROOFTOP_SALE_WOMAN] =       &gObjectEventGraphicsInfo_RooftopSaleWoman,
@@ -406,7 +393,6 @@ const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM
     [OBJ_EVENT_GFX_RED] =                      &gObjectEventGraphicsInfo_Red,
     [OBJ_EVENT_GFX_LEAF] =                     &gObjectEventGraphicsInfo_Leaf,
     [OBJ_EVENT_GFX_DEOXYS_TRIANGLE] =          &gObjectEventGraphicsInfo_BirthIslandStone,
-    [OBJ_EVENT_GFX_BRANDON] =                  &gObjectEventGraphicsInfo_Brandon,
     [OBJ_EVENT_GFX_LINK_RS_BRENDAN] =          &gObjectEventGraphicsInfo_RubySapphireBrendan,
     [OBJ_EVENT_GFX_LINK_RS_MAY] =              &gObjectEventGraphicsInfo_RubySapphireMay,
     [OBJ_EVENT_GFX_CYNTHIA] =                  &gObjectEventGraphicsInfo_Cynthia,

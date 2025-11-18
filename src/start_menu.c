@@ -1,7 +1,4 @@
 #include "global.h"
-#include "battle_pike.h"
-#include "battle_pyramid.h"
-#include "battle_pyramid_bag.h"
 #include "bg.h"
 #include "debug.h"
 #include "decompress.h"
@@ -15,8 +12,6 @@
 #include "field_specials.h"
 #include "field_weather.h"
 #include "field_screen_effect.h"
-#include "frontier_pass.h"
-#include "frontier_util.h"
 #include "gpu_regs.h"
 #include "international_string_util.h"
 #include "item_menu.h"
@@ -44,7 +39,6 @@
 #include "text_window.h"
 #include "trainer_card.h"
 #include "window.h"
-#include "constants/battle_frontier.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
@@ -128,9 +122,6 @@ enum
     MENU_ACTION_OPTION,
     MENU_ACTION_EXIT,
     MENU_ACTION_RETIRE_SAFARI,
-    MENU_ACTION_REST_FRONTIER,
-    MENU_ACTION_RETIRE_FRONTIER,
-    MENU_ACTION_PYRAMID_BAG,
     MENU_ACTION_DEBUG,
 };
 
@@ -148,7 +139,6 @@ COMMON_DATA bool8 (*gMenuCallback)(void) = NULL;
 
 // EWRAM
 EWRAM_DATA static u8 sSafariBallsWindowId = 0;
-EWRAM_DATA static u8 sBattlePyramidFloorWindowId = 0;
 EWRAM_DATA static u8 sStartMenuCursorPos = 0;
 EWRAM_DATA static u8 sNumStartMenuActions = 0;
 EWRAM_DATA static u8 sCurrentStartMenuActions[9] = {0};
@@ -168,16 +158,11 @@ static bool8 StartMenuSaveCallback(void);
 static bool8 StartMenuOptionCallback(void);
 static bool8 StartMenuExitCallback(void);
 static bool8 StartMenuSafariZoneRetireCallback(void);
-static bool8 StartMenuBattlePyramidRetireCallback(void);
-static bool8 StartMenuBattlePyramidBagCallback(void);
 static bool8 StartMenuDebugCallback(void);
 
 // Menu callbacks
 static bool8 SaveStartCallback(void);
 static bool8 SaveCallback(void);
-static bool8 BattlePyramidRetireStartCallback(void);
-static bool8 BattlePyramidRetireReturnCallback(void);
-static bool8 BattlePyramidRetireCallback(void);
 static bool8 HandleStartMenuInput(void);
 
 // Save dialog callbacks
@@ -185,9 +170,6 @@ static u8 SaveConfirmSaveCallback(void);
 static u8 SaveDoSaveCallback(void);
 static u8 SaveSuccessCallback(void);
 static u8 SaveReturnSuccessCallback(void);
-static u8 BattlePyramidConfirmRetireCallback(void);
-static u8 BattlePyramidRetireYesNoCallback(void);
-static u8 BattlePyramidRetireInputCallback(void);
 
 // Task callbacks
 static void StartMenuTask(u8 taskId);
@@ -199,38 +181,6 @@ static const struct WindowTemplate sWindowTemplate_SafariBalls = {
     .tilemapLeft = 1,
     .tilemapTop = 1,
     .width = 9,
-    .height = 4,
-    .paletteNum = 15,
-    .baseBlock = 0x8
-};
-
-static const u8 *const sPyramidFloorNames[FRONTIER_STAGES_PER_CHALLENGE + 1] =
-{
-    gText_Floor1,
-    gText_Floor2,
-    gText_Floor3,
-    gText_Floor4,
-    gText_Floor5,
-    gText_Floor6,
-    gText_Floor7,
-    gText_Peak
-};
-
-static const struct WindowTemplate sWindowTemplate_PyramidFloor = {
-    .bg = 0,
-    .tilemapLeft = 1,
-    .tilemapTop = 1,
-    .width = 10,
-    .height = 4,
-    .paletteNum = 15,
-    .baseBlock = 0x8
-};
-
-static const struct WindowTemplate sWindowTemplate_PyramidPeak = {
-    .bg = 0,
-    .tilemapLeft = 1,
-    .tilemapTop = 1,
-    .width = 12,
     .height = 4,
     .paletteNum = 15,
     .baseBlock = 0x8
@@ -249,9 +199,6 @@ static const struct MenuAction sStartMenuItems[] =
     [MENU_ACTION_OPTION]          = {gText_MenuOption,  {.u8_void = StartMenuOptionCallback}},
     [MENU_ACTION_EXIT]            = {gText_MenuExit,    {.u8_void = StartMenuExitCallback}},
     [MENU_ACTION_RETIRE_SAFARI]   = {gText_MenuRetire,  {.u8_void = StartMenuSafariZoneRetireCallback}},
-    [MENU_ACTION_REST_FRONTIER]   = {gText_MenuRest,    {.u8_void = StartMenuSaveCallback}},
-    [MENU_ACTION_RETIRE_FRONTIER] = {gText_MenuRetire,  {.u8_void = StartMenuBattlePyramidRetireCallback}},
-    [MENU_ACTION_PYRAMID_BAG]     = {gText_MenuBag,     {.u8_void = StartMenuBattlePyramidBagCallback}},
     [MENU_ACTION_DEBUG]           = {sText_MenuDebug,   {.u8_void = StartMenuDebugCallback}},
 };
 
@@ -297,12 +244,7 @@ static void BuildStartMenuActions(void);
 static void AddStartMenuAction(u8 action);
 static void BuildNormalStartMenu(void);
 static void BuildDebugStartMenu(void);
-static void BuildSafariZoneStartMenu(void);
-static void BuildBattlePikeStartMenu(void);
-static void BuildBattlePyramidStartMenu(void);
-static void BuildMultiPartnerRoomStartMenu(void);
 static void ShowSafariBallsWindow(void);
-static void ShowPyramidFloorWindow(void);
 static void RemoveExtraStartMenuWindows(void);
 static bool32 PrintStartMenuActions(s8 *pIndex, u32 count);
 static bool32 InitStartMenuStep(void);
@@ -311,9 +253,7 @@ static void CreateStartMenuTask(TaskFunc followupFunc);
 static void InitSave(void);
 static u8 RunSaveCallback(void);
 static void ShowSaveMessage(const u8 *message, u8 (*saveCallback)(void));
-static void HideSaveMessageWindow(void);
 static void HideSaveInfoWindow(void);
-static void InitBattlePyramidRetire(void);
 static void ShowSaveInfoWindow(void);
 static void RemoveSaveInfoWindow(void);
 static void HideStartMenuWindow(void);
@@ -323,29 +263,10 @@ static void BuildStartMenuActions(void)
 {
     sNumStartMenuActions = 0;
 
-    if (GetSafariZoneFlag() == TRUE)
-    {
-        BuildSafariZoneStartMenu();
-    }
-    else if (InBattlePike())
-    {
-        BuildBattlePikeStartMenu();
-    }
-    else if (InBattlePyramid())
-    {
-        BuildBattlePyramidStartMenu();
-    }
-    else if (InMultiPartnerRoom())
-    {
-        BuildMultiPartnerRoomStartMenu();
-    }
+    if (DEBUG_OVERWORLD_MENU == TRUE && DEBUG_OVERWORLD_IN_MENU == TRUE)
+        BuildDebugStartMenu();
     else
-    {
-        if (DEBUG_OVERWORLD_MENU == TRUE && DEBUG_OVERWORLD_IN_MENU == TRUE)
-            BuildDebugStartMenu();
-        else
-            BuildNormalStartMenu();
-    }
+        BuildNormalStartMenu();
 }
 
 static void AddStartMenuAction(u8 action)
@@ -392,45 +313,6 @@ static void BuildDebugStartMenu(void)
     AddStartMenuAction(MENU_ACTION_OPTION);
 }
 
-static void BuildSafariZoneStartMenu(void)
-{
-    AddStartMenuAction(MENU_ACTION_RETIRE_SAFARI);
-    AddStartMenuAction(MENU_ACTION_POKEDEX);
-    AddStartMenuAction(MENU_ACTION_POKEMON);
-    AddStartMenuAction(MENU_ACTION_BAG);
-    AddStartMenuAction(MENU_ACTION_PLAYER);
-    AddStartMenuAction(MENU_ACTION_OPTION);
-    AddStartMenuAction(MENU_ACTION_EXIT);
-}
-
-static void BuildBattlePikeStartMenu(void)
-{
-    AddStartMenuAction(MENU_ACTION_POKEDEX);
-    AddStartMenuAction(MENU_ACTION_POKEMON);
-    AddStartMenuAction(MENU_ACTION_PLAYER);
-    AddStartMenuAction(MENU_ACTION_OPTION);
-    AddStartMenuAction(MENU_ACTION_EXIT);
-}
-
-static void BuildBattlePyramidStartMenu(void)
-{
-    AddStartMenuAction(MENU_ACTION_POKEMON);
-    AddStartMenuAction(MENU_ACTION_PYRAMID_BAG);
-    AddStartMenuAction(MENU_ACTION_PLAYER);
-    AddStartMenuAction(MENU_ACTION_REST_FRONTIER);
-    AddStartMenuAction(MENU_ACTION_RETIRE_FRONTIER);
-    AddStartMenuAction(MENU_ACTION_OPTION);
-    AddStartMenuAction(MENU_ACTION_EXIT);
-}
-
-static void BuildMultiPartnerRoomStartMenu(void)
-{
-    AddStartMenuAction(MENU_ACTION_POKEMON);
-    AddStartMenuAction(MENU_ACTION_PLAYER);
-    AddStartMenuAction(MENU_ACTION_OPTION);
-    AddStartMenuAction(MENU_ACTION_EXIT);
-}
-
 static void ShowSafariBallsWindow(void)
 {
     sSafariBallsWindowId = AddWindow(&sWindowTemplate_SafariBalls);
@@ -442,34 +324,9 @@ static void ShowSafariBallsWindow(void)
     CopyWindowToVram(sSafariBallsWindowId, COPYWIN_GFX);
 }
 
-static void ShowPyramidFloorWindow(void)
-{
-    if (gSaveBlockPtr->frontier.curChallengeBattleNum == FRONTIER_STAGES_PER_CHALLENGE)
-        sBattlePyramidFloorWindowId = AddWindow(&sWindowTemplate_PyramidPeak);
-    else
-        sBattlePyramidFloorWindowId = AddWindow(&sWindowTemplate_PyramidFloor);
-
-    PutWindowTilemap(sBattlePyramidFloorWindowId);
-    DrawStdWindowFrame(sBattlePyramidFloorWindowId, FALSE);
-    StringCopy(gStringVar1, sPyramidFloorNames[gSaveBlockPtr->frontier.curChallengeBattleNum]);
-    StringExpandPlaceholders(gStringVar4, gText_BattlePyramidFloor);
-    AddTextPrinterParameterized(sBattlePyramidFloorWindowId, FONT_NORMAL, gStringVar4, 0, 1, TEXT_SKIP_DRAW, NULL);
-    CopyWindowToVram(sBattlePyramidFloorWindowId, COPYWIN_GFX);
-}
-
 static void RemoveExtraStartMenuWindows(void)
 {
-    if (GetSafariZoneFlag())
-    {
-        ClearStdWindowAndFrameToTransparent(sSafariBallsWindowId, FALSE);
-        CopyWindowToVram(sSafariBallsWindowId, COPYWIN_GFX);
-        RemoveWindow(sSafariBallsWindowId);
-    }
-    if (InBattlePyramid())
-    {
-        ClearStdWindowAndFrameToTransparent(sBattlePyramidFloorWindowId, FALSE);
-        RemoveWindow(sBattlePyramidFloorWindowId);
-    }
+
 }
 
 static bool32 PrintStartMenuActions(s8 *pIndex, u32 count)
@@ -525,8 +382,6 @@ static bool32 InitStartMenuStep(void)
     case 3:
         if (GetSafariZoneFlag())
             ShowSafariBallsWindow();
-        if (InBattlePyramid())
-            ShowPyramidFloorWindow();
         sInitStartMenuData[0]++;
         break;
     case 4:
@@ -637,9 +492,7 @@ static bool8 HandleStartMenuInput(void)
 
         if (gMenuCallback != StartMenuSaveCallback
             && gMenuCallback != StartMenuExitCallback
-            && gMenuCallback != StartMenuDebugCallback
-            && gMenuCallback != StartMenuSafariZoneRetireCallback
-            && gMenuCallback != StartMenuBattlePyramidRetireCallback)
+            && gMenuCallback != StartMenuDebugCallback)
         {
            FadeScreen(FADE_TO_BLACK, 0);
         }
@@ -726,10 +579,7 @@ static bool8 StartMenuPlayerNameCallback(void)
         RemoveExtraStartMenuWindows();
         CleanupOverworldWindowsAndTilemaps();
 
-        if (FlagGet(FLAG_SYS_FRONTIER_PASS))
-            ShowFrontierPass(CB2_ReturnToFieldWithOpenMenu); // Display frontier pass
-        else
-            ShowPlayerTrainerCard(CB2_ReturnToFieldWithOpenMenu); // Display trainer card
+        ShowPlayerTrainerCard(CB2_ReturnToFieldWithOpenMenu); // Display trainer card
 
         return TRUE;
     }
@@ -739,9 +589,6 @@ static bool8 StartMenuPlayerNameCallback(void)
 
 static bool8 StartMenuSaveCallback(void)
 {
-    if (InBattlePyramid())
-        RemoveExtraStartMenuWindows();
-
     gMenuCallback = SaveStartCallback; // Display save menu
 
     return FALSE;
@@ -801,37 +648,6 @@ static void HideStartMenuDebug(void)
     RemoveStartMenuWindow();
 }
 
-static bool8 StartMenuBattlePyramidRetireCallback(void)
-{
-    gMenuCallback = BattlePyramidRetireStartCallback; // Confirm retire
-
-    return FALSE;
-}
-
-// Functionally unused
-void ShowBattlePyramidStartMenu(void)
-{
-    ClearDialogWindowAndFrameToTransparent(0, FALSE);
-    ScriptUnfreezeObjectEvents();
-    CreateStartMenuTask(Task_ShowStartMenu);
-    LockPlayerFieldControls();
-}
-
-static bool8 StartMenuBattlePyramidBagCallback(void)
-{
-    if (!gFundidoPaletas.activo)
-    {
-        PlayRainStoppingSoundEffect();
-        RemoveExtraStartMenuWindows();
-        CleanupOverworldWindowsAndTilemaps();
-        SetMainCallback2(CB2_PyramidBagMenuFromStartMenu);
-
-        return TRUE;
-    }
-
-    return FALSE;
-}
-
 static bool8 SaveStartCallback(void)
 {
     InitSave();
@@ -856,44 +672,6 @@ static bool8 SaveCallback(void)
         ClearDialogWindowAndFrameToTransparent(0, TRUE);
         ScriptUnfreezeObjectEvents();
         UnlockPlayerFieldControls();
-        SoftResetInBattlePyramid();
-        return TRUE;
-    }
-
-    return FALSE;
-}
-
-static bool8 BattlePyramidRetireStartCallback(void)
-{
-    InitBattlePyramidRetire();
-    gMenuCallback = BattlePyramidRetireCallback;
-
-    return FALSE;
-}
-
-static bool8 BattlePyramidRetireReturnCallback(void)
-{
-    InitStartMenu();
-    gMenuCallback = HandleStartMenuInput;
-
-    return FALSE;
-}
-
-static bool8 BattlePyramidRetireCallback(void)
-{
-    switch (RunSaveCallback())
-    {
-    case SAVE_SUCCESS: // No (Stay in battle pyramid)
-        RemoveExtraStartMenuWindows();
-        gMenuCallback = BattlePyramidRetireReturnCallback;
-        return FALSE;
-    case SAVE_IN_PROGRESS:
-        return FALSE;
-    case SAVE_CANCELED: // Yes (Retire from battle pyramid)
-        ClearDialogWindowAndFrameToTransparent(0, TRUE);
-        ScriptUnfreezeObjectEvents();
-        UnlockPlayerFieldControls();
-        ScriptContext_SetupScript(BattlePyramid_Retire);
         return TRUE;
     }
 
@@ -955,11 +733,6 @@ static void SaveGameTask(u8 taskId)
     ScriptContext_Enable();
 }
 
-static void HideSaveMessageWindow(void)
-{
-    ClearDialogWindowAndFrame(0, TRUE);
-}
-
 static void HideSaveInfoWindow(void)
 {
     RemoveSaveInfoWindow();
@@ -1008,44 +781,6 @@ static u8 SaveReturnSuccessCallback(void)
     {
         return SAVE_IN_PROGRESS;
     }
-}
-
-static void InitBattlePyramidRetire(void)
-{
-    sSaveDialogCallback = BattlePyramidConfirmRetireCallback;
-    sSavingComplete = FALSE;
-}
-
-static u8 BattlePyramidConfirmRetireCallback(void)
-{
-    ClearStdWindowAndFrame(GetStartMenuWindowId(), FALSE);
-    RemoveStartMenuWindow();
-    ShowSaveMessage(gText_BattlePyramidConfirmRetire, BattlePyramidRetireYesNoCallback);
-
-    return SAVE_IN_PROGRESS;
-}
-
-static u8 BattlePyramidRetireYesNoCallback(void)
-{
-    DisplayYesNoMenuWithDefault(1); // Show Yes/No menu (No selected as default)
-    sSaveDialogCallback = BattlePyramidRetireInputCallback;
-
-    return SAVE_IN_PROGRESS;
-}
-
-static u8 BattlePyramidRetireInputCallback(void)
-{
-    switch (Menu_ProcessInputNoWrapClearOnChoose())
-    {
-    case 0: // Yes
-        return SAVE_CANCELED;
-    case MENU_B_PRESSED:
-    case 1: // No
-        HideSaveMessageWindow();
-        return SAVE_SUCCESS;
-    }
-
-    return SAVE_IN_PROGRESS;
 }
 
 static void ShowSaveInfoWindow(void)

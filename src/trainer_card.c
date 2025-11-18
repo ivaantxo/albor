@@ -8,7 +8,6 @@
 #include "link.h"
 #include "bg.h"
 #include "sound.h"
-#include "frontier_pass.h"
 #include "overworld.h"
 #include "menu.h"
 #include "text.h"
@@ -26,7 +25,6 @@
 #include "trainer_pokemon_sprites.h"
 #include "constants/songs.h"
 #include "constants/game_stat.h"
-#include "constants/battle_frontier.h"
 #include "constants/rgb.h"
 #include "constants/trainers.h"
 
@@ -51,7 +49,6 @@ struct TrainerCardData
     bool8 hasPokedex;
     bool8 hasHofResult;
     bool8 hasLinkResults;
-    bool8 hasBattleTowerWins;
     bool8 hasTrades;
     u8 badgeCount[NUM_BADGES];
     u8 textPlayersCard[70];
@@ -61,7 +58,6 @@ struct TrainerCardData
     u8 textLinkBattleLosses[140];
     u8 textNumTrades[140];
     u8 textNumLinkPokeblocks[70];
-    u8 textBattleFacilityStat[70];
     u16 monIconPal[16 * PARTY_SIZE];
     s8 flipBlendY;
     bool8 timeColonNeedDraw;
@@ -102,7 +98,6 @@ static void PrintTimeOnCard(void);
 static void FlipTrainerCard(void);
 static bool8 LoadCardGfx(void);
 static void CB2_InitTrainerCard(void);
-static bool8 HasAllFrontierSymbols(void);
 static void SetPlayerCardData(struct TrainerCard *, u8);
 static void TrainerCard_GenerateCardForPlayer(struct TrainerCard *);
 static u8 VersionToCardType(u8);
@@ -127,7 +122,6 @@ static void PrintPokeblockStringOnCard(void);
 static void PrintUnionStringOnCard(void);
 static void PrintContestStringOnCard(void);
 static void PrintPokemonIconsOnCard(void);
-static void PrintBattleFacilityStringOnCard(void);
 static void PrintStickersOnCard(void);
 static void BufferTextsVarsForCardPage2(void);
 static void BufferNameForCardBack(void);
@@ -135,7 +129,6 @@ static void BufferHofDebutTime(void);
 static void BufferLinkBattleResults(void);
 static void BufferNumTrades(void);
 static void BufferLinkPokeblocksNum(void);
-static void BufferBattleFacilityStats(void);
 static void PrintStatOnBackOfCard(u8 top, const u8 *str1, u8 *str2, const u8 *color);
 static void LoadStickerGfx(void);
 static u8 SetCardBgsAndPals(void);
@@ -277,25 +270,6 @@ static const u8 sTrainerPicOffset[2][GENDER_COUNT][2] =
         [MALE]   = {1, 0},
         [FEMALE] = {1, 0}
     },
-};
-
-static const u8 sTrainerPicFacilityClass[][GENDER_COUNT] =
-{
-    [CARD_TYPE_FRLG] =
-    {
-        [MALE]   = FACILITY_CLASS_RED,
-        [FEMALE] = FACILITY_CLASS_LEAF
-    },
-    [CARD_TYPE_RS] =
-    {
-        [MALE]   = FACILITY_CLASS_RS_BRENDAN,
-        [FEMALE] = FACILITY_CLASS_RS_MAY
-    },
-    [CARD_TYPE_EMERALD] =
-    {
-        [MALE]   = FACILITY_CLASS_BRENDAN,
-        [FEMALE] = FACILITY_CLASS_MAY
-    }
 };
 
 static bool8 (*const sTrainerCardFlipTasks[])(struct Task *) =
@@ -589,17 +563,6 @@ static void CB2_InitTrainerCard(void)
     }
 }
 
-static bool8 HasAllFrontierSymbols(void)
-{
-    u32 i;
-    for (i = 0; i < NUM_FRONTIER_FACILITIES; i++)
-    {
-        if (!FlagGet(FLAG_SYS_TOWER_SILVER + 2 * i) || !FlagGet(FLAG_SYS_TOWER_GOLD + 2 * i))
-            return FALSE;
-    }
-    return TRUE;
-}
-
 u32 CountPlayerTrainerStars(void)
 {
     u8 stars = 0;
@@ -607,8 +570,6 @@ u32 CountPlayerTrainerStars(void)
     if (GetGameStat(GAME_STAT_ENTERED_HOF))
         stars++;
     if (HasAllMons())
-        stars++;
-    if (HasAllFrontierSymbols())
         stars++;
 
     return stars;
@@ -624,10 +585,6 @@ static void TrainerCard_GenerateCardForPlayer(struct TrainerCard *trainerCard)
     memset(trainerCard, 0, sizeof(struct TrainerCard));
     trainerCard->version = GAME_VERSION;
     SetPlayerCardData(trainerCard, CARD_TYPE_EMERALD);
-    trainerCard->hasAllFrontierSymbols = HasAllFrontierSymbols();
-    trainerCard->frontierBP = gSaveBlockPtr->frontier.cardBattlePoints;
-    if (trainerCard->hasAllFrontierSymbols)
-        trainerCard->stars++;
 }
 
 void TrainerCard_GenerateCardForLinkPlayer(struct TrainerCard *trainerCard)
@@ -635,10 +592,6 @@ void TrainerCard_GenerateCardForLinkPlayer(struct TrainerCard *trainerCard)
     memset(trainerCard, 0, 0x60);
     trainerCard->version = GAME_VERSION;
     SetPlayerCardData(trainerCard, CARD_TYPE_EMERALD);
-    trainerCard->linkHasAllFrontierSymbols = HasAllFrontierSymbols();
-    *((u16 *)&trainerCard->linkPoints.frontier) = gSaveBlockPtr->frontier.cardBattlePoints;
-    if (trainerCard->linkHasAllFrontierSymbols)
-        trainerCard->stars++;
 }
 
 void CopyTrainerCardData(struct TrainerCard *dst, struct TrainerCard *src, u8 gameVersion)
@@ -656,9 +609,6 @@ void CopyTrainerCardData(struct TrainerCard *dst, struct TrainerCard *src, u8 ga
         break;
     case CARD_TYPE_EMERALD:
         memcpy(dst, src, 0x60);
-        dst->linkPoints.frontier = 0;
-        dst->hasAllFrontierSymbols = src->linkHasAllFrontierSymbols;
-        dst->frontierBP = *((u16 *)&src->linkPoints.frontier);
         break;
     }
 }
@@ -671,7 +621,6 @@ static void SetDataFromTrainerCard(void)
     sData->hasPokedex = FALSE;
     sData->hasHofResult = FALSE;
     sData->hasLinkResults = FALSE;
-    sData->hasBattleTowerWins = FALSE;
     sData->hasTrades = FALSE;
     memset(sData->badgeCount, 0, sizeof(sData->badgeCount));
     if (sData->trainerCard.hasPokedex)
@@ -686,8 +635,6 @@ static void SetDataFromTrainerCard(void)
         sData->hasLinkResults++;
     if (sData->trainerCard.pokemonTrades)
         sData->hasTrades++;
-    if (sData->trainerCard.battleTowerWins || sData->trainerCard.battleTowerStraightWins)
-        sData->hasBattleTowerWins++;
 
     for (i = 0, badgeFlag = FLAG_BADGE01_GET; badgeFlag < FLAG_BADGE01_GET + NUM_BADGES; badgeFlag++, i++)
     {
@@ -823,7 +770,6 @@ static bool8 PrintAllOnCardBack(void)
         break;
     case 6:
         PrintPokemonIconsOnCard();
-        PrintBattleFacilityStringOnCard();
         break;
     case 7:
         PrintStickersOnCard();
@@ -843,7 +789,6 @@ static void BufferTextsVarsForCardPage2(void)
     BufferLinkBattleResults();
     BufferNumTrades();
     BufferLinkPokeblocksNum();
-    BufferBattleFacilityStats();
 }
 
 static void PrintNameOnCardFront(void)
@@ -1102,47 +1047,6 @@ static void PrintContestStringOnCard(void)
 
 }
 
-static void BufferBattleFacilityStats(void)
-{
-    switch (sData->cardType)
-    {
-    case CARD_TYPE_RS:
-        if (sData->hasBattleTowerWins)
-        {
-            ConvertIntToDecimalStringN(gStringVar1, sData->trainerCard.battleTowerWins, STR_CONV_MODE_RIGHT_ALIGN, 4);
-            ConvertIntToDecimalStringN(gStringVar2, sData->trainerCard.battleTowerStraightWins, STR_CONV_MODE_RIGHT_ALIGN, 4);
-            StringExpandPlaceholders(sData->textBattleFacilityStat, gText_WinsStraight);
-        }
-        break;
-    case CARD_TYPE_EMERALD:
-        if (sData->trainerCard.frontierBP)
-        {
-            ConvertIntToDecimalStringN(gStringVar1, sData->trainerCard.frontierBP, STR_CONV_MODE_RIGHT_ALIGN, 5);
-            StringExpandPlaceholders(sData->textBattleFacilityStat, gText_NumBP);
-        }
-        break;
-    case CARD_TYPE_FRLG:
-        break;
-    }
-}
-
-static void PrintBattleFacilityStringOnCard(void)
-{
-    switch (sData->cardType)
-    {
-    case CARD_TYPE_RS:
-        if (sData->hasBattleTowerWins)
-            PrintStatOnBackOfCard(5, gText_BattleTower, sData->textBattleFacilityStat, sTrainerCardTextColors);
-        break;
-    case CARD_TYPE_EMERALD:
-        if (sData->trainerCard.frontierBP)
-            PrintStatOnBackOfCard(5, gText_BattlePtsWon, sData->textBattleFacilityStat, sTrainerCardStatColors);
-        break;
-    case CARD_TYPE_FRLG:
-        break;
-    }
-}
-
 static void PrintPokemonIconsOnCard(void)
 {
     u32 i;
@@ -1317,13 +1221,6 @@ static void DrawCardBackStats(void)
         {
             FillBgTilemapBufferRect(3, 141, 27, 13, 1, 1, 0);
             FillBgTilemapBufferRect(3, 157, 27, 14, 1, 1, 0);
-        }
-        if (sData->hasBattleTowerWins)
-        {
-            FillBgTilemapBufferRect(3, 141, 17, 15, 1, 1, 0);
-            FillBgTilemapBufferRect(3, 157, 17, 16, 1, 1, 0);
-            FillBgTilemapBufferRect(3, 140, 27, 15, 1, 1, 0);
-            FillBgTilemapBufferRect(3, 156, 27, 16, 1, 1, 0);
         }
     }
     CopyBgTilemapBufferToVram(3);
@@ -1552,14 +1449,10 @@ void ShowPlayerTrainerCard(void (*callback)(void))
 {
     sData = AllocZeroed(sizeof(*sData));
     sData->callback2 = callback;
-    if (callback == CB2_ReshowFrontierPass)
-        sData->blendColor = RGB_WHITE;
-    else
-        sData->blendColor = RGB_BLACK;
+    sData->blendColor = RGB_BLACK;
 
     sData->isLink = FALSE;
 
-    sData->language = GAME_LANGUAGE;
     TrainerCard_GenerateCardForPlayer(&sData->trainerCard);
     SetMainCallback2(CB2_InitTrainerCard);
 }

@@ -4,16 +4,13 @@
 #include "battle_ai_util.h"
 #include "constants/battle_ai.h"
 #include "battle_anim.h"
-#include "battle_arena.h"
 #include "battle_controllers.h"
 #include "battle_message.h"
 #include "battle_interface.h"
 #include "battle_setup.h"
-#include "battle_tower.h"
 #include "battle_z_move.h"
 #include "bg.h"
 #include "data.h"
-#include "frontier_util.h"
 #include "item.h"
 #include "link.h"
 #include "main.h"
@@ -418,7 +415,7 @@ static void OpponentHandleMoveAnimation(u32 battler)
 
 static void OpponentHandlePrintString(u32 battler)
 {
-    BtlController_HandlePrintString(battler, TRUE);
+    BtlController_HandlePrintString(battler);
 }
 
 static void OpponentHandleChooseAction(u32 battler)

@@ -187,26 +187,6 @@ SSTidalCorridor_EventScript_TrainerNotDefeated::
 	return
 
 SSTidalCorridor_EventScript_ScottScene::
-	lockall
-	applymovement LOCALID_SCOTT, SSTidalCorridor_Movement_ScottApproachPlayer
-	waitmovement 0
-	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkInPlaceFasterRight
-	waitmovement 0
-	msgbox SSTidalCorridor_Text_ScottBattleFrontierInvite, MSGBOX_DEFAULT
-	closemessage
-	applymovement OBJ_EVENT_ID_PLAYER, SSTidalCorridor_Movement_PlayerWatchScottExit
-	applymovement LOCALID_SAILOR, SSTidalCorridor_Movement_SailorMoveForScott
-	applymovement LOCALID_SCOTT, SSTidalCorridor_Movement_ScottExit
-	waitmovement 0
-	playse SE_EXIT
-	waitse
-	removeobject LOCALID_SCOTT
-	applymovement LOCALID_SAILOR, SSTidalCorridor_Movement_SailorReturn
-	waitmovement 0
-	delay 30
-	setflag FLAG_MET_SCOTT_ON_SS_TIDAL
-	setvar VAR_SS_TIDAL_SCOTT_STATE, 1
-	releaseall
 	end
 
 SSTidalCorridor_Movement_ScottApproachPlayer:
@@ -252,26 +232,6 @@ SSTidalCorridor_Movement_SailorReturn:
 	walk_left
 	walk_in_place_faster_up
 	step_end
-
-SSTidalCorridor_Text_ScottBattleFrontierInvite:
-	.string "SCOTT: Well, hi, hi!\n"
-	.string "{PLAYER}{KUN}, {PLAYER}{KUN}!\p"
-	.string "Something's come up, so I have to\n"
-	.string "disembark, but am I glad to see you!\p"
-	.string "Congratulations, LEAGUE CHAMPION!\p"
-	.string "There's a place I'd like to invite\n"
-	.string "someone like you.\p"
-	.string "It's the…\n"
-	.string "BATTLE FRONTIER!\p"
-	.string "What's the place like?\n"
-	.string "You'll understand when you see it!\p"
-	.string "I've spoken with the ship's CAPTAIN\n"
-	.string "about this.\p"
-	.string "The next time you take a ferry,\n"
-	.string "you should be able to sail to\l"
-	.string "the BATTLE FRONTIER.\p"
-	.string "Okay, {PLAYER}{KUN}, I'll be waiting for you\n"
-	.string "at the BATTLE FRONTIER!$"
 
 SSTidal_Text_FastCurrentsHopeYouEnjoyVoyage:
 	.string "This ferry is built to plow through\n"

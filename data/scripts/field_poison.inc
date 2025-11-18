@@ -3,7 +3,6 @@ EventScript_FieldPoison::
 	special TryFieldPoisonWhiteOut
 	waitstate
 	goto_if_eq VAR_RESULT, FLDPSN_WHITEOUT, EventScript_FieldWhiteOut
-	goto_if_eq VAR_RESULT, FLDPSN_FRONTIER_WHITEOUT, EventScript_FrontierFieldWhiteOut
 	releaseall
 	end
 
@@ -22,6 +21,3 @@ EventScript_FieldWhiteOut::
 EventScript_SetRespawnLavaridgePkmnCenter::
 	setrespawn HEAL_LOCATION_LAVARIDGE_TOWN
 	return
-
-EventScript_FrontierFieldWhiteOut::
-	end

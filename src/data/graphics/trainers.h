@@ -247,27 +247,6 @@ const u32 gTrainerPalette_SisAndBro[] = INCBIN_U32("graphics/trainers/front_pics
 const u32 gTrainerFrontPic_Steven[] = INCBIN_U32("graphics/trainers/front_pics/steven.4bpp.lz");
 const u32 gTrainerPalette_Steven[] = INCBIN_U32("graphics/trainers/front_pics/steven.gbapal.lz");
 
-const u32 gTrainerFrontPic_SalonMaidenAnabel[] = INCBIN_U32("graphics/trainers/front_pics/salon_maiden_anabel.4bpp.lz");
-const u32 gTrainerPalette_SalonMaidenAnabel[] = INCBIN_U32("graphics/trainers/front_pics/salon_maiden_anabel.gbapal.lz");
-
-const u32 gTrainerFrontPic_DomeAceTucker[] = INCBIN_U32("graphics/trainers/front_pics/dome_ace_tucker.4bpp.lz");
-const u32 gTrainerPalette_DomeAceTucker[] = INCBIN_U32("graphics/trainers/front_pics/dome_ace_tucker.gbapal.lz");
-
-const u32 gTrainerFrontPic_PalaceMavenSpenser[] = INCBIN_U32("graphics/trainers/front_pics/palace_maven_spenser.4bpp.lz");
-const u32 gTrainerPalette_PalaceMavenSpenser[] = INCBIN_U32("graphics/trainers/front_pics/palace_maven_spenser.gbapal.lz");
-
-const u32 gTrainerFrontPic_ArenaTycoonGreta[] = INCBIN_U32("graphics/trainers/front_pics/arena_tycoon_greta.4bpp.lz");
-const u32 gTrainerPalette_ArenaTycoonGreta[] = INCBIN_U32("graphics/trainers/front_pics/arena_tycoon_greta.gbapal.lz");
-
-const u32 gTrainerFrontPic_FactoryHeadNoland[] = INCBIN_U32("graphics/trainers/front_pics/factory_head_noland.4bpp.lz");
-const u32 gTrainerPalette_FactoryHeadNoland[] = INCBIN_U32("graphics/trainers/front_pics/factory_head_noland.gbapal.lz");
-
-const u32 gTrainerFrontPic_PikeQueenLucy[] = INCBIN_U32("graphics/trainers/front_pics/pike_queen_lucy.4bpp.lz");
-const u32 gTrainerPalette_PikeQueenLucy[] = INCBIN_U32("graphics/trainers/front_pics/pike_queen_lucy.gbapal.lz");
-
-const u32 gTrainerFrontPic_PyramidKingBrandon[] = INCBIN_U32("graphics/trainers/front_pics/pyramid_king_brandon.4bpp.lz");
-const u32 gTrainerPalette_PyramidKingBrandon[] = INCBIN_U32("graphics/trainers/front_pics/pyramid_king_brandon.gbapal.lz");
-
 const u32 gTrainerFrontPic_Red[] = INCBIN_U32("graphics/trainers/front_pics/red.4bpp.lz");
 const u32 gTrainerPalette_Red[] = INCBIN_U32("graphics/trainers/front_pics/red.gbapal.lz");
 
@@ -396,13 +375,6 @@ const struct TrainerSprite gTrainerSprites[] =
     TRAINER_SPRITE(OLD_COUPLE, OldCouple),
     TRAINER_SPRITE(SIS_AND_BRO, SisAndBro),
     TRAINER_SPRITE(STEVEN, Steven, 0, 7, 392),
-    TRAINER_SPRITE(SALON_MAIDEN_ANABEL, SalonMaidenAnabel),
-    TRAINER_SPRITE(DOME_ACE_TUCKER, DomeAceTucker),
-    TRAINER_SPRITE(PALACE_MAVEN_SPENSER, PalaceMavenSpenser),
-    TRAINER_SPRITE(ARENA_TYCOON_GRETA, ArenaTycoonGreta),
-    TRAINER_SPRITE(FACTORY_HEAD_NOLAND, FactoryHeadNoland),
-    TRAINER_SPRITE(PIKE_QUEEN_LUCY, PikeQueenLucy),
-    TRAINER_SPRITE(PYRAMID_KING_BRANDON, PyramidKingBrandon),
     TRAINER_SPRITE(RED, Red),
     TRAINER_SPRITE(LEAF, Leaf),
     TRAINER_SPRITE(RS_BRENDAN, RubySapphireBrendan),

@@ -7,7 +7,6 @@ LilycoveCity_DepartmentStoreElevator_EventScript_Attendant::
 	setvar VAR_0x8004, 0
 	call_if_unset FLAG_TEMP_2, LilycoveCity_DepartmentStoreElevator_EventScript_SetFloor
 	copyvar VAR_0x8005, VAR_DEPT_STORE_FLOOR
-	special ShowDeptStoreElevatorFloorSelect
 	message gText_WhichFloorWouldYouLike
 	waitmessage
 	setvar VAR_0x8004, 0
@@ -103,19 +102,9 @@ LilycoveCity_DepartmentStoreElevator_EventScript_5thFloor::
 	end
 
 LilycoveCity_DepartmentStoreElevator_EventScript_ExitFloorSelect::
-	special CloseDeptStoreElevatorWindow
-	release
 	end
 
 LilycoveCity_DepartmentStoreElevator_EventScript_MoveElevator::
-	special CloseDeptStoreElevatorWindow
-	closemessage
-	applymovement VAR_LAST_TALKED, Common_Movement_WalkInPlaceFasterDown
-	waitmovement 0
-	waitse
-	special MoveElevator
-	waitstate
-	setflag FLAG_TEMP_2
 	return
 
 LilycoveCity_DepartmentStoreElevator_EventScript_SetFloor::

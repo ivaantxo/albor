@@ -54,7 +54,6 @@
 #include "scanline_effect.h"
 #include "wild_encounter.h"
 #include "vs_seeker.h"
-#include "frontier_util.h"
 #include "constants/abilities.h"
 #include "constants/event_objects.h"
 #include "constants/layouts.h"
@@ -1936,7 +1935,7 @@ void ScriptShowItemDescription(struct ScriptContext *ctx)
     u8 *dst;
     bool8 handleFlash = FALSE;
 
-    if (GetFlashLevel() > 0 || InBattlePyramid_())
+    if (GetFlashLevel() > 0)
         handleFlash = TRUE;
 
     if (headerType == 1) // berry
@@ -2035,7 +2034,7 @@ static void DestroyItemIconSprite(void)
     FreeSpriteOamMatrix(&gSprites[sItemIconSpriteId]);
     DestroySprite(&gSprites[sItemIconSpriteId]);
 
-    if ((GetFlashLevel() > 0 || InBattlePyramid_()) && sItemIconSpriteId2 != MAX_SPRITES)
+    if ((GetFlashLevel() > 0)
     {
         FreeSpriteOamMatrix(&gSprites[sItemIconSpriteId2]);
         DestroySprite(&gSprites[sItemIconSpriteId2]);

@@ -12,7 +12,7 @@
   "allow_escaping": true,
   "allow_running": true,
   "show_map_name": true,
-  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "battle_scene": "BATTLE_BACKGROUND_NORMAL",
   "connections": null,
   "object_events": [],
   "warp_events": [

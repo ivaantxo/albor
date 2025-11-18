@@ -37,9 +37,6 @@
 #include "wild_encounter.h"
 #include "rtc.h"
 #include "party_menu.h"
-#include "battle_arena.h"
-#include "battle_pike.h"
-#include "battle_pyramid.h"
 #include "field_specials.h"
 #include "pokemon_summary_screen.h"
 #include "pokenav.h"
@@ -4261,8 +4258,7 @@ bool32 NoAliveMonsForPlayer(void)
     // Get total HP for the player's party to determine if the player has lost
     for (i = 0; i < maxI; i++)
     {
-        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) && !GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG)
-            && (!(gBattleStruct->arenaLostPlayerMons & (1u << i))))
+        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) && !GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG))
         {
             HP_count += GetMonData(&gPlayerParty[i], MON_DATA_HP);
         }
@@ -4279,8 +4275,7 @@ static bool32 NoAliveMonsForOpponent(void)
     // Get total HP for the enemy's party to determine if the player has won
     for (i = 0; i < PARTY_SIZE; i++)
     {
-        if (GetMonData(&gEnemyParty[i], MON_DATA_SPECIES) && !GetMonData(&gEnemyParty[i], MON_DATA_IS_EGG)
-         && (!(gBattleStruct->arenaLostOpponentMons & (1u << i))))
+        if (GetMonData(&gEnemyParty[i], MON_DATA_SPECIES) && !GetMonData(&gEnemyParty[i], MON_DATA_IS_EGG))
             HP_count += GetMonData(&gEnemyParty[i], MON_DATA_HP);
     }
 
@@ -8547,101 +8542,11 @@ static void Cmd_various(void)
         }
         break;
     }
-    case VARIOUS_PALACE_FLAVOR_TEXT:
-    {
-        VARIOUS_ARGS();
-        // Try and print end-of-turn Battle Palace flavor text (e.g. "A glint appears in mon's eyes")
-        gBattleCommunication[0] = FALSE; // whether or not msg should be printed
-        gBattleScripting.battler = battler = gBattleCommunication[1];
-        if (!(gBattleStruct->palaceFlags & (1u << battler))
-            && gBattleMons[battler].maxHP / 2 >= gBattleMons[battler].hp
-            && IsBattlerAlive(battler)
-            && !(gBattleMons[battler].status1 & STATUS1_SLEEP))
-        {
-            gBattleStruct->palaceFlags |= 1u << battler;
-            gBattleCommunication[0] = TRUE;
-            gBattleCommunication[MULTISTRING_CHOOSER] = gNaturesInfo[ObtenNaturalezaDePersonalidad(gBattleMons[battler].personality)].battlePalaceFlavorText;
-        }
-        break;
-    }
-    case VARIOUS_ARENA_JUDGMENT_WINDOW:
-    {
-        VARIOUS_ARGS();
-
-        i = BattleArena_ShowJudgmentWindow(&gBattleCommunication[0]);
-
-        // BattleArena_ShowJudgmentWindow's last state was an intermediate step.
-        // Return without advancing the current instruction so that it will be called again.
-        if (i == ARENA_RESULT_RUNNING)
-            return;
-
-        gBattleCommunication[1] = i;
-        break;
-    }
-    case VARIOUS_ARENA_OPPONENT_MON_LOST:
-    {
-        VARIOUS_ARGS();
-        gBattleMons[1].hp = 0;
-        gHitMarker |= HITMARKER_FAINTED(1);
-        gBattleStruct->arenaLostOpponentMons |= 1u << gBattlerPartyIndexes[1];
-        gDisableStructs[1].truantSwitchInHack = 1;
-        break;
-    }
-    case VARIOUS_ARENA_PLAYER_MON_LOST:
-    {
-        VARIOUS_ARGS();
-        gBattleMons[0].hp = 0;
-        gHitMarker |= HITMARKER_FAINTED(0);
-        gHitMarker |= HITMARKER_PLAYER_FAINTED;
-        gBattleStruct->arenaLostPlayerMons |= 1u << gBattlerPartyIndexes[0];
-        gDisableStructs[0].truantSwitchInHack = 1;
-        break;
-    }
-    case VARIOUS_ARENA_BOTH_MONS_LOST:
-    {
-        VARIOUS_ARGS();
-        gBattleMons[0].hp = 0;
-        gBattleMons[1].hp = 0;
-        gHitMarker |= HITMARKER_FAINTED(0);
-        gHitMarker |= HITMARKER_FAINTED(1);
-        gHitMarker |= HITMARKER_PLAYER_FAINTED;
-        gBattleStruct->arenaLostPlayerMons |= 1u << gBattlerPartyIndexes[0];
-        gBattleStruct->arenaLostOpponentMons |= 1u << gBattlerPartyIndexes[1];
-        gDisableStructs[0].truantSwitchInHack = 1;
-        gDisableStructs[1].truantSwitchInHack = 1;
-        break;
-    }
     case VARIOUS_EMIT_YESNOBOX:
     {
         VARIOUS_ARGS();
         BtlController_EmitYesNoBox(battler, BUFFER_A);
         MarkBattlerForControllerExec(battler);
-        break;
-    }
-    case VARIOUS_DRAW_ARENA_REF_TEXT_BOX:
-    {
-        VARIOUS_ARGS();
-        DrawArenaRefereeTextBox();
-        break;
-    }
-    case VARIOUS_ERASE_ARENA_REF_TEXT_BOX:
-    {
-        VARIOUS_ARGS();
-        EraseArenaRefereeTextBox();
-        break;
-    }
-    case VARIOUS_ARENA_JUDGMENT_STRING:
-    {
-        CMD_ARGS(u8 id, u8 _);
-        BattleStringExpandPlaceholdersToDisplayedString(gRefereeStringsTable[cmd->id]);
-        BattlePutTextOnWindow(gDisplayedStringBattle, ARENA_WIN_JUDGMENT_TEXT);
-        break;
-    }
-    case VARIOUS_ARENA_WAIT_STRING:
-    {
-        VARIOUS_ARGS();
-        if (IsTextPrinterActive(ARENA_WIN_JUDGMENT_TEXT))
-            return;
         break;
     }
     case VARIOUS_WAIT_CRY:
@@ -8692,13 +8597,6 @@ static void Cmd_various(void)
     {
         VARIOUS_ARGS();
         gBattleStruct->alreadyStatusedMoveAttempt |= 1u << battler;
-        break;
-    }
-    case VARIOUS_PALACE_TRY_ESCAPE_STATUS:
-    {
-        VARIOUS_ARGS();
-        if (BattlePalace_TryEscapeStatus(battler))
-            return;
         break;
     }
     case VARIOUS_SET_TELEPORT_OUTCOME:
@@ -8775,7 +8673,7 @@ static void Cmd_various(void)
         MarkBattlerForControllerExec(battler);
         break;
     }
-    case INTENTA_ACTIVAR_AUTOESTIMA:    // and chilling neigh + as one ice rider
+    case VARIOUS_INTENTA_ACTIVAR_AUTOESTIMA:    // and chilling neigh + as one ice rider
     {
         VARIOUS_ARGS();
 

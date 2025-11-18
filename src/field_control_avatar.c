@@ -526,11 +526,6 @@ static bool8 TryStartMiscWalkingScripts(u16 metatileBehavior)
         ScriptContext_SetupScript(EventScript_FallDownHole);
         return TRUE;
     }
-    else if (MetatileBehavior_IsBattlePyramidWarp(metatileBehavior))
-    {
-        ScriptContext_SetupScript(BattlePyramid_WarpToNextFloor);
-        return TRUE;
-    }
     else if (MetatileBehavior_IsSecretBaseGlitterMat(metatileBehavior) == TRUE)
     {
         DoSecretBaseGlitterMatSparkle();
@@ -580,11 +575,6 @@ static bool8 TryStartStepCountScript(u16 metatileBehavior)
         if (ShouldDoScottFortreeCall() == TRUE)
         {
             ScriptContext_SetupScript(Route119_EventScript_ScottWonAtFortreeGymCall);
-            return TRUE;
-        }
-        if (ShouldDoScottBattleFrontierCall() == TRUE)
-        {
-            ScriptContext_SetupScript(LittlerootTown_ProfessorBirchsLab_EventScript_ScottAboardSSTidalCall);
             return TRUE;
         }
         if (ShouldDoRoxanneCall() == TRUE)

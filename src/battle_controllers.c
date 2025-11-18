@@ -3,7 +3,6 @@
 #include "battle_ai_main.h"
 #include "battle_ai_util.h"
 #include "battle_anim.h"
-#include "battle_arena.h"
 #include "battle_controllers.h"
 #include "battle_gfx_sfx_util.h"
 #include "battle_interface.h"
@@ -1727,7 +1726,7 @@ void BtlController_HandleMoveAnimation(u32 battler)
     }
 }
 
-void BtlController_HandlePrintString(u32 battler, bool32 arenaPtsDeduct)
+void BtlController_HandlePrintString(u32 battler)
 {
     u16 *stringId;
 
@@ -1738,8 +1737,6 @@ void BtlController_HandlePrintString(u32 battler, bool32 arenaPtsDeduct)
 
     BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
     gBattlerControllerFuncs[battler] = Controller_WaitForString;
-    if (arenaPtsDeduct)
-        BattleArena_DeductSkillPoints(battler, *stringId);
 }
 
 void BtlController_HandleHealthBarUpdate(u32 battler, bool32 updateHpText)

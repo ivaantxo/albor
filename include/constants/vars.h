@@ -63,11 +63,11 @@
 #define VAR_UNUSED_0x402D                                0x402D
 #define VAR_UNUSED_0x402E                                0x402E
 
-#define VAR_FRONTIER_MANIAC_FACILITY                     0x402F
-#define VAR_FRONTIER_GAMBLER_CHALLENGE                   0x4030
-#define VAR_FRONTIER_GAMBLER_SET_CHALLENGE               0x4031
-#define VAR_FRONTIER_GAMBLER_AMOUNT_BET                  0x4032
-#define VAR_FRONTIER_GAMBLER_STATE                       0x4033
+#define VAR_UNUSED_0x402F                     0x402F
+#define VAR_UNUSED_0x4030                   0x4030
+#define VAR_UNUSED_0x4031               0x4031
+#define VAR_UNUSED_0x4032                  0x4032
+#define VAR_UNUSED_0x4033                       0x4033
 
 #define VAR_DEOXYS_ROCK_STEP_COUNT                       0x4034
 #define VAR_DEOXYS_ROCK_LEVEL                            0x4035
@@ -205,7 +205,7 @@
 #define VAR_MT_PYRE_STATE                                0x40B9
 #define VAR_NEW_MAUVILLE_STATE                           0x40BA
 #define VAR_UNUSED_0x40BB                                0x40BB // Unused Var
-#define VAR_BRAVO_TRAINER_BATTLE_TOWER_ON                0x40BC
+#define VAR_UNUSED_0x40Bc                0x40BC
 #define VAR_JAGGED_PASS_ASH_WEATHER                      0x40BD
 #define VAR_GLASS_WORKSHOP_STATE                         0x40BE
 #define VAR_METEOR_FALLS_STATE                           0x40BF
@@ -223,9 +223,9 @@
 #define VAR_MIRAGE_TOWER_STATE                           0x40CB
 #define VAR_FOSSIL_MANIAC_STATE                          0x40CC
 #define VAR_UNUSED_0x40CD                                0x40CD
-#define VAR_FRONTIER_BATTLE_MODE                         0x40CE
-#define VAR_FRONTIER_FACILITY                            0x40CF
-#define VAR_HAS_ENTERED_BATTLE_FRONTIER                  0x40D0 // Var is used like a flag.
+#define VAR_UNUSED_0x40Ce                         0x40CE
+#define VAR_UNUSED_0x40Cf                            0x40CF
+#define VAR_UNUSED_0x40d0                  0x40D0 // Var is used like a flag.
 #define VAR_SCOTT_STATE                                  0x40D1
 #define VAR_SLATEPORT_OUTSIDE_MUSEUM_STATE               0x40D2
 #define VAR_DEX_UPGRADE_JOHTO_STARTER_STATE              0x40D3
@@ -313,13 +313,6 @@
 
 // Temp var aliases
 #define VAR_TEMP_CHALLENGE_STATUS  VAR_TEMP_0
-
-#define VAR_TEMP_MIXED_RECORDS         VAR_TEMP_0
-
-#define VAR_TEMP_PLAYING_PYRAMID_MUSIC  VAR_TEMP_E
-
-#define VAR_TEMP_FRONTIER_TUTOR_SELECTION  VAR_TEMP_D
-#define VAR_TEMP_FRONTIER_TUTOR_ID         VAR_TEMP_E
 
 #define VAR_TEMP_TRANSFERRED_SPECIES  VAR_TEMP_1
 

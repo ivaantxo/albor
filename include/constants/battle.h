@@ -430,10 +430,7 @@ enum ResultadosBatalla
 #define BATTLE_RUN_FORBIDDEN      1
 #define BATTLE_RUN_FAILURE        2
 
-#define B_WIN_TYPE_NORMAL 0
-#define B_WIN_TYPE_ARENA  1
-
-// Window Ids for sStandardBattleWindowTemplates / sBattleArenaWindowTemplates
+// Window Ids for sBattleWindowTemplates
 #define B_WIN_MSG                 0
 #define B_WIN_MOVE_NAME_1         1 // Top left
 #define B_WIN_MOVE_NAME_2         2 // Top right
@@ -456,16 +453,6 @@ enum ResultadosBatalla
 #define B_WIN_VS_OUTCOME_LEFT     19
 #define B_WIN_VS_OUTCOME_RIGHT    20
 #define B_WIN_MOVE_DESCRIPTION    21
-
-// The following are duplicate id values for windows that Battle Arena uses differently.
-#define ARENA_WIN_PLAYER_NAME      15
-#define ARENA_WIN_VS               16
-#define ARENA_WIN_OPPONENT_NAME    17
-#define ARENA_WIN_MIND             18
-#define ARENA_WIN_SKILL            19
-#define ARENA_WIN_BODY             20
-#define ARENA_WIN_JUDGMENT_TITLE   21
-#define ARENA_WIN_JUDGMENT_TEXT    22
 
 // Flag for BattlePutTextOnWindow. Never set
 #define B_WIN_COPYTOVRAM (1 << 7)

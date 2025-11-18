@@ -13,8 +13,6 @@
 #include "link.h"
 #include "script.h"
 #include "battle_debug.h"
-#include "battle_pike.h"
-#include "battle_pyramid.h"
 #include "constants/abilities.h"
 #include "constants/game_stat.h"
 #include "constants/item.h"
@@ -399,7 +397,7 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 ar
     level = ChooseWildMonLevel(wildMonInfo->wildPokemon, wildMonIndex, area);
     if (flags & WILD_CHECK_REPEL && !IsWildLevelAllowedByRepel(level))
         return FALSE;
-    if (gMapHeader.mapLayoutId != LAYOUT_BATTLE_FRONTIER_BATTLE_PIKE_ROOM_WILD_MONS && flags & WILD_CHECK_KEEN_EYE && !IsAbilityAllowingEncounter(level))
+    if (flags & WILD_CHECK_KEEN_EYE && !IsAbilityAllowingEncounter(level))
         return FALSE;
 
     CreateWildMon(wildMonInfo->wildPokemon[wildMonIndex].species, level);
@@ -464,9 +462,7 @@ static bool8 WildEncounterCheck(u32 encounterRate, bool8 ignoreAbility)
     {
         u32 ability = GetMonAbility(&gPlayerParty[0]);
 
-        if (ability == ABILITY_STENCH && gMapHeader.mapLayoutId == LAYOUT_BATTLE_FRONTIER_BATTLE_PYRAMID_FLOOR)
-            encounterRate = encounterRate * 3 / 4;
-        else if (ability == ABILITY_STENCH)
+        if (ability == ABILITY_STENCH)
             encounterRate /= 2;
         else if (ability == ABILITY_ILLUMINATE)
             encounterRate *= 2;
@@ -519,39 +515,7 @@ bool8 StandardWildEncounter(u16 curMetatileBehavior, u16 prevMetatileBehavior)
         return FALSE;
 
     headerId = GetCurrentMapWildMonHeaderId();
-    if (headerId == HEADER_NONE)
-    {
-        if (gMapHeader.mapLayoutId == LAYOUT_BATTLE_FRONTIER_BATTLE_PIKE_ROOM_WILD_MONS)
-        {
-            headerId = GetBattlePikeWildMonHeaderId();
-            if (prevMetatileBehavior != curMetatileBehavior && !AllowWildCheckOnNewMetatile())
-                return FALSE;
-            else if (WildEncounterCheck(gBattlePikeWildMonHeaders[headerId].landMonsInfo->encounterRate, FALSE) != TRUE)
-                return FALSE;
-            else if (TryGenerateWildMon(gBattlePikeWildMonHeaders[headerId].landMonsInfo, WILD_AREA_LAND, WILD_CHECK_KEEN_EYE) != TRUE)
-                return FALSE;
-            else if (!TryGenerateBattlePikeWildMon(TRUE))
-                return FALSE;
-
-            BattleSetup_StartBattlePikeWildBattle();
-            return TRUE;
-        }
-        if (gMapHeader.mapLayoutId == LAYOUT_BATTLE_FRONTIER_BATTLE_PYRAMID_FLOOR)
-        {
-            headerId = gSaveBlockPtr->frontier.curChallengeBattleNum;
-            if (prevMetatileBehavior != curMetatileBehavior && !AllowWildCheckOnNewMetatile())
-                return FALSE;
-            else if (WildEncounterCheck(gBattlePyramidWildMonHeaders[headerId].landMonsInfo->encounterRate, FALSE) != TRUE)
-                return FALSE;
-            else if (TryGenerateWildMon(gBattlePyramidWildMonHeaders[headerId].landMonsInfo, WILD_AREA_LAND, WILD_CHECK_KEEN_EYE) != TRUE)
-                return FALSE;
-
-            GenerateBattlePyramidWildMon();
-            BattleSetup_StartWildBattle();
-            return TRUE;
-        }
-    }
-    else
+    if (headerId != HEADER_NONE)
     {
         if (MetatileBehavior_IsLandWildEncounter(curMetatileBehavior) == TRUE)
         {
@@ -654,62 +618,6 @@ void RockSmashWildEncounter(void)
 
 bool8 SweetScentWildEncounter(void)
 {
-    s16 x, y;
-    u16 headerId;
-
-    PlayerGetDestCoords(&x, &y);
-    headerId = GetCurrentMapWildMonHeaderId();
-    if (headerId == HEADER_NONE)
-    {
-        if (gMapHeader.mapLayoutId == LAYOUT_BATTLE_FRONTIER_BATTLE_PIKE_ROOM_WILD_MONS)
-        {
-            headerId = GetBattlePikeWildMonHeaderId();
-            if (TryGenerateWildMon(gBattlePikeWildMonHeaders[headerId].landMonsInfo, WILD_AREA_LAND, 0) != TRUE)
-                return FALSE;
-
-            TryGenerateBattlePikeWildMon(FALSE);
-            BattleSetup_StartBattlePikeWildBattle();
-            return TRUE;
-        }
-        if (gMapHeader.mapLayoutId == LAYOUT_BATTLE_FRONTIER_BATTLE_PYRAMID_FLOOR)
-        {
-            headerId = gSaveBlockPtr->frontier.curChallengeBattleNum;
-            if (TryGenerateWildMon(gBattlePyramidWildMonHeaders[headerId].landMonsInfo, WILD_AREA_LAND, 0) != TRUE)
-                return FALSE;
-
-            GenerateBattlePyramidWildMon();
-            BattleSetup_StartWildBattle();
-            return TRUE;
-        }
-    }
-    else
-    {
-        if (MetatileBehavior_IsLandWildEncounter(MapGridGetMetatileBehaviorAt(x, y)) == TRUE)
-        {
-            if (gWildMonHeaders[headerId].landMonsInfo == NULL)
-                return FALSE;
-
-            if (DoMassOutbreakEncounterTest() == TRUE)
-                SetUpMassOutbreakEncounter(0);
-            else
-                TryGenerateWildMon(gWildMonHeaders[headerId].landMonsInfo, WILD_AREA_LAND, 0);
-
-            BattleSetup_StartWildBattle();
-            return TRUE;
-        }
-        else if (MetatileBehavior_IsWaterWildEncounter(MapGridGetMetatileBehaviorAt(x, y)) == TRUE)
-        {
-            if (AreLegendariesInSootopolisPreventingEncounters() == TRUE)
-                return FALSE;
-            if (gWildMonHeaders[headerId].waterMonsInfo == NULL)
-                return FALSE;
-
-            TryGenerateWildMon(gWildMonHeaders[headerId].waterMonsInfo, WILD_AREA_WATER, 0);
-            BattleSetup_StartWildBattle();
-            return TRUE;
-        }
-    }
-
     return FALSE;
 }
 
@@ -802,9 +710,6 @@ bool8 UpdateRepelCounter(void)
     u16 repelLureVar = VarGet(VAR_REPEL_STEP_COUNT);
     u16 steps = REPEL_LURE_STEPS(repelLureVar);
     bool32 isLure = IS_LAST_USED_LURE(repelLureVar);
-
-    if (InBattlePike() || InBattlePyramid())
-        return FALSE;
 
     if (steps != 0)
     {

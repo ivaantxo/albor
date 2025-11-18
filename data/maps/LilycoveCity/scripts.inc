@@ -341,12 +341,6 @@ LilycoveCity_EventScript_MayCollectBadges::
 	return
 
 LilycoveCity_EventScript_MayPokemonLeague::
-	goto_if_set FLAG_SYS_GAME_CLEAR, LilycoveCity_EventScript_MayBattleFrontier
-	msgbox LilycoveCity_Text_MayYouGoingToPokemonLeague, MSGBOX_DEFAULT
-	return
-
-LilycoveCity_EventScript_MayBattleFrontier::
-	msgbox LilycoveCity_Text_MayYouGoingToBattleFrontier, MSGBOX_DEFAULT
 	return
 
 LilycoveCity_EventScript_DefeatedBrendan::
@@ -365,12 +359,6 @@ LilycoveCity_EventScript_BrendanCollectBadges::
 	return
 
 LilycoveCity_EventScript_BrendanPokemonLeague::
-	goto_if_set FLAG_SYS_GAME_CLEAR, LilycoveCity_EventScript_BrendanBattleFrontier
-	msgbox LilycoveCity_Text_BrendanYouGoingToPokemonLeague, MSGBOX_DEFAULT
-	return
-
-LilycoveCity_EventScript_BrendanBattleFrontier::
-	msgbox LilycoveCity_Text_BrendanYouGoingToBattleFrontier, MSGBOX_DEFAULT
 	return
 
 LilycoveCity_EventScript_RivalFlyAway::
@@ -466,16 +454,6 @@ LilycoveCity_Text_MayYouGoingToPokemonLeague:
 	.string "but I'll finish my POKéDEX before you!\p"
 	.string "See you!$"
 
-LilycoveCity_Text_MayYouGoingToBattleFrontier:
-	.string "{PLAYER}{KUN}, what are you going to do?\p"
-	.string "Are you taking the BATTLE FRONTIER\n"
-	.string "challenge?\p"
-	.string "Or, are you going to complete your\n"
-	.string "POKéDEX?\p"
-	.string "I might've lost to you in battling,\n"
-	.string "but I'll finish my POKéDEX before you!\p"
-	.string "See you!$"
-
 LilycoveCity_Text_BrendanShoppingLetsBattle:
 	.string "BRENDAN: Oh, hey, it's {PLAYER}.\p"
 	.string "I'm running an errand for my dad.\n"
@@ -523,20 +501,6 @@ LilycoveCity_Text_BrendanYouGoingToPokemonLeague:
 	.string "Heh, even me--if I trained my POKéMON\n"
 	.string "a bit more, I should be stronger than\l"
 	.string "you, {PLAYER}.\p"
-	.string "Well, anyway, hang in there!$"
-
-LilycoveCity_Text_BrendanYouGoingToBattleFrontier:
-	.string "{PLAYER}, what are you going to do?\p"
-	.string "Are you taking the BATTLE FRONTIER\n"
-	.string "challenge?\p"
-	.string "Or, are you going to complete your\n"
-	.string "POKéDEX?\p"
-	.string "Since you're that strong, you should\n"
-	.string "consider the BATTLE FRONTIER.\p"
-	.string "Heh, if I train my POKéMON a bit more,\n"
-	.string "I'll get stronger than you, {PLAYER}.\p"
-	.string "Maybe I should go to the BATTLE\n"
-	.string "FRONTIER.\p"
 	.string "Well, anyway, hang in there!$"
 
 LilycoveCity_Text_MovedLootIntoHideoutToday:

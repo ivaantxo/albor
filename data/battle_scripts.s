@@ -3,7 +3,6 @@
 #include "constants/global.h"
 #include "constants/battle.h"
 #include "constants/pokemon.h"
-#include "constants/battle_arena.h"
 #include "constants/battle_script_commands.h"
 #include "constants/battle_anim.h"
 #include "constants/battle_string_ids.h"
@@ -5483,8 +5482,6 @@ BattleScript_LocalBattleLostEnd::
 	end2
 .endif
 
-BattleScript_CheckDomeDrew::
-	jumpifbyte COMPARACION_IGUAL, gBattleOutcome, B_OUTCOME_DREW, BattleScript_LocalBattleLostEnd_
 BattleScript_LocalBattleLostPrintTrainersWinText::
 	jumpifnotbattletype TIPO_BATALLA_ENTRENADOR, BattleScript_LocalBattleLostPrintWhiteOut
 	returnopponentmon1toball BS_ATTACKER
@@ -5989,12 +5986,6 @@ BattleScript_DisabledNoMore::
 	waitmessage B_WAIT_TIME_LONG
 	end2
 
-BattleScript_SelectingDisabledMoveInPalace::
-	printstring STRINGID_PKMNMOVEISDISABLED
-BattleScript_SelectingUnusableMoveInPalace::
-	moveendto MOVEEND_NEXT_TARGET
-	end
-
 BattleScript_EncoredNoMore::
 	printstring STRINGID_PKMNENCOREENDED
 	waitmessage B_WAIT_TIME_LONG
@@ -6451,10 +6442,6 @@ BattleScript_MoveUsedIsTormented::
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
-BattleScript_SelectingTormentedMoveInPalace::
-	printstring STRINGID_PKMNCANTUSEMOVETORMENT
-	goto BattleScript_SelectingUnusableMoveInPalace
-
 BattleScript_SelectingNotAllowedMoveTaunt::
 	printselectionstring STRINGID_PKMNCANTUSEMOVETAUNT
 	endselectionscript
@@ -6464,10 +6451,6 @@ BattleScript_MoveUsedIsTaunted::
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
-BattleScript_SelectingNotAllowedMoveTauntInPalace::
-	printstring STRINGID_PKMNCANTUSEMOVETAUNT
-	goto BattleScript_SelectingUnusableMoveInPalace
-
 BattleScript_SelectingNotAllowedMoveThroatChop::
 	printselectionstring STRINGID_PKMNCANTUSEMOVETHROATCHOP
 	endselectionscript
@@ -6476,10 +6459,6 @@ BattleScript_MoveUsedIsThroatChopPrevented::
 	printstring STRINGID_PKMNCANTUSEMOVETHROATCHOP
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
-
-BattleScript_SelectingNotAllowedMoveThroatChopInPalace::
-	printstring STRINGID_PKMNCANTUSEMOVETHROATCHOP
-	goto BattleScript_SelectingUnusableMoveInPalace
 
 BattleScript_ThroatChopEndTurn::
 	printstring STRINGID_THROATCHOPENDS
@@ -6502,26 +6481,14 @@ BattleScript_SelectingNotAllowedStuffCheeks::
 	printselectionstring STRINGID_STUFFCHEEKSCANTSELECT
 	endselectionscript
 
-BattleScript_SelectingNotAllowedStuffCheeksInPalace::
-	printstring STRINGID_STUFFCHEEKSCANTSELECT
-	goto BattleScript_SelectingUnusableMoveInPalace
-
 BattleScript_SelectingNotAllowedBelch::
 	printselectionstring STRINGID_BELCHCANTSELECT
 	endselectionscript
-
-BattleScript_SelectingNotAllowedBelchInPalace::
-	printstring STRINGID_BELCHCANTSELECT
-	goto BattleScript_SelectingUnusableMoveInPalace
 
 BattleScript_MoveUsedGravityPrevents::
 	printstring STRINGID_GRAVITYPREVENTSUSAGE
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
-
-BattleScript_SelectingNotAllowedMoveGravityInPalace::
-	printstring STRINGID_GRAVITYPREVENTSUSAGE
-	goto BattleScript_SelectingUnusableMoveInPalace
 
 BattleScript_SelectingNotAllowedMoveHealBlock::
 	printselectionstring STRINGID_HEALBLOCKPREVENTSUSAGE
@@ -6532,17 +6499,9 @@ BattleScript_MoveUsedHealBlockPrevents::
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
-BattleScript_SelectingNotAllowedMoveHealBlockInPalace::
-	printstring STRINGID_HEALBLOCKPREVENTSUSAGE
-	goto BattleScript_SelectingUnusableMoveInPalace
-
 BattleScript_SelectingNotAllowedCurrentMove::
 	printselectionstring STRINGID_CURRENTMOVECANTSELECT
 	endselectionscript
-
-BattleScript_SelectingNotAllowedCurrentMoveInPalace::
-	printstring STRINGID_CURRENTMOVECANTSELECT
-	goto BattleScript_SelectingUnusableMoveInPalace
 
 BattleScript_WishComesTrue::
 	trywish 1, BattleScript_WishButFullHp
@@ -6657,10 +6616,6 @@ BattleScript_MoveUsedIsImprisoned::
 BattleScript_SelectingImprisonedMove::
 	printselectionstring STRINGID_PKMNCANTUSEMOVESEALED
 	endselectionscript
-
-BattleScript_SelectingImprisonedMoveInPalace::
-	printstring STRINGID_PKMNCANTUSEMOVESEALED
-	goto BattleScript_SelectingUnusableMoveInPalace
 
 BattleScript_GrudgeTakesPp::
 	printstring STRINGID_PKMNLOSTPPGRUDGE
@@ -8467,10 +8422,8 @@ BattleScript_IgnoresAndUsesRandomMove::
 
 BattleScript_MoveUsedLoafingAround::
 	jumpifbyte COMPARACION_IGUAL, cMULTISTRING_CHOOSER, B_MSG_LOAFING, BattleScript_MoveUsedLoafingAroundMsg
-	@ Skip ahead if not the Battle Palace message
 	jumpifbyte COMPARACION_DESIGUAL, cMULTISTRING_CHOOSER, B_MSG_INCAPABLE_OF_POWER, BattleScript_MoveUsedLoafingAroundMsg
 	setbyte gBattleCommunication, 0
-	palacetryescapestatus BS_ATTACKER
 	setbyte cMULTISTRING_CHOOSER, B_MSG_INCAPABLE_OF_POWER
 BattleScript_MoveUsedLoafingAroundMsg::
 	printfromtable gInobedientStringIds
@@ -8730,33 +8683,17 @@ BattleScript_SelectingNotAllowedMoveChoiceItem::
 	printselectionstring STRINGID_ITEMALLOWSONLYYMOVE
 	endselectionscript
 
-BattleScript_SelectingNotAllowedMoveChoiceItemInPalace::
-	printstring STRINGID_ITEMALLOWSONLYYMOVE
-	goto BattleScript_SelectingUnusableMoveInPalace
-
 BattleScript_SelectingNotAllowedMoveGorillaTactics::
 	printselectionstring STRINGID_ABILITYALLOWSONLYMOVE
 	endselectionscript
-
-BattleScript_SelectingNotAllowedMoveGorillaTacticsInPalace::
-	printstring STRINGID_ABILITYALLOWSONLYMOVE
-	goto BattleScript_SelectingUnusableMoveInPalace
 
 BattleScript_SelectingNotAllowedMoveAssaultVest::
 	printselectionstring STRINGID_ASSAULTVESTDOESNTALLOW
 	endselectionscript
 
-BattleScript_SelectingNotAllowedMoveAssaultVestInPalace::
-	printstring STRINGID_ASSAULTVESTDOESNTALLOW
-	goto BattleScript_SelectingUnusableMoveInPalace
-
 BattleScript_SelectingNotAllowedPlaceholder::
 	printselectionstring STRINGID_NOTDONEYET
 	endselectionscript
-
-BattleScript_SelectingNotAllowedPlaceholderInPalace::
-	printstring STRINGID_NOTDONEYET
-	goto BattleScript_SelectingUnusableMoveInPalace
 
 BattleScript_HangedOnMsg::
 	playanimation BS_TARGET, B_ANIM_HANGED_ON
@@ -8847,109 +8784,6 @@ BattleScript_ActionSelectionItemsCantBeUsed::
 BattleScript_FlushMessageBox::
 	flushtextbox
 	return
-
-BattleScript_PalacePrintFlavorText::
-	setbyte gBattleCommunication + 1, 0
-BattleScript_PalaceTryBattlerFlavorText::
-	palaceflavortext BS_ATTACKER @ BS_ATTACKER here overwritten by gBattleCommunication + 1
-	jumpifbyte COMPARACION_DESIGUAL, gBattleCommunication, TRUE, BattleScript_PalaceEndFlavorText
-	printfromtable gBattlePalaceFlavorTextTable
-	waitmessage B_WAIT_TIME_LONG
-BattleScript_PalaceEndFlavorText::
-	addbyte gBattleCommunication + 1, 1
-	jumpifbytenotequal gBattleCommunication + 1, gBattlersCount, BattleScript_PalaceTryBattlerFlavorText
-	setbyte gBattleCommunication, 0
-	setbyte gBattleCommunication + 1, 0
-	end2
-
-BattleScript_ArenaTurnBeginning::
-	waitcry BS_ATTACKER
-	volumedown
-	playse SE_ARENA_TIMEUP1
-	pause 8
-	playse SE_ARENA_TIMEUP1
-	arenadrawreftextbox
-	arenajudgmentstring B_MSG_REF_COMMENCE_BATTLE
-	arenawaitmessage B_MSG_REF_COMMENCE_BATTLE
-	pause B_WAIT_TIME_LONG
-	arenaerasereftextbox
-	volumeup
-	end2
-
-BattleScript_ArenaDoJudgment::
-	makevisible BS_PLAYER1
-	waitstate
-	makevisible BS_OPPONENT1
-	waitstate
-	volumedown
-	playse SE_ARENA_TIMEUP1
-	pause 8
-	playse SE_ARENA_TIMEUP1
-	pause B_WAIT_TIME_LONG
-	arenadrawreftextbox
-	arenajudgmentstring B_MSG_REF_THATS_IT
-	arenawaitmessage B_MSG_REF_THATS_IT
-	pause B_WAIT_TIME_LONG
-	setbyte gBattleCommunication, 0  @ Reset state for arenajudgmentwindow
-	arenajudgmentwindow
-	pause B_WAIT_TIME_LONG
-	arenajudgmentwindow
-	arenajudgmentstring B_MSG_REF_JUDGE_MIND
-	arenawaitmessage B_MSG_REF_JUDGE_MIND
-	arenajudgmentwindow
-	arenajudgmentstring B_MSG_REF_JUDGE_SKILL
-	arenawaitmessage B_MSG_REF_JUDGE_SKILL
-	arenajudgmentwindow
-	arenajudgmentstring B_MSG_REF_JUDGE_BODY
-	arenawaitmessage B_MSG_REF_JUDGE_BODY
-	arenajudgmentwindow
-	jumpifbyte COMPARACION_IGUAL, gBattleCommunication + 1, ARENA_RESULT_PLAYER_LOST, BattleScript_ArenaJudgmentPlayerLoses
-	jumpifbyte COMPARACION_IGUAL, gBattleCommunication + 1, ARENA_RESULT_TIE, BattleScript_ArenaJudgmentDraw
-@ ARENA_RESULT_PLAYER_WON
-	arenajudgmentstring B_MSG_REF_PLAYER_WON
-	arenawaitmessage B_MSG_REF_PLAYER_WON
-	arenajudgmentwindow
-	arenaerasereftextbox
-	printstring STRINGID_DEFEATEDOPPONENTBYREFEREE
-	waitmessage B_WAIT_TIME_LONG
-	playfaintcry BS_OPPONENT1
-	waitcry BS_ATTACKER
-	dofaintanimation BS_OPPONENT1
-	cleareffectsonfaint BS_OPPONENT1
-	arenaopponentmonlost
-	end2
-
-BattleScript_ArenaJudgmentPlayerLoses:
-	arenajudgmentstring B_MSG_REF_OPPONENT_WON
-	arenawaitmessage B_MSG_REF_OPPONENT_WON
-	arenajudgmentwindow
-	arenaerasereftextbox
-	printstring STRINGID_LOSTTOOPPONENTBYREFEREE
-	waitmessage B_WAIT_TIME_LONG
-	playfaintcry BS_PLAYER1
-	waitcry BS_ATTACKER
-	dofaintanimation BS_PLAYER1
-	cleareffectsonfaint BS_PLAYER1
-	arenaplayermonlost
-	end2
-
-BattleScript_ArenaJudgmentDraw:
-	arenajudgmentstring B_MSG_REF_DRAW
-	arenawaitmessage B_MSG_REF_DRAW
-	arenajudgmentwindow
-	arenaerasereftextbox
-	printstring STRINGID_TIEDOPPONENTBYREFEREE
-	waitmessage B_WAIT_TIME_LONG
-	playfaintcry BS_PLAYER1
-	waitcry BS_ATTACKER
-	dofaintanimation BS_PLAYER1
-	cleareffectsonfaint BS_PLAYER1
-	playfaintcry BS_OPPONENT1
-	waitcry BS_ATTACKER
-	dofaintanimation BS_OPPONENT1
-	cleareffectsonfaint BS_OPPONENT1
-	arenabothmonlost
-	end2
 
 BattleScript_AskIfWantsToForfeitMatch::
 	printselectionstring STRINGID_QUESTIONFORFEITMATCH

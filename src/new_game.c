@@ -19,7 +19,6 @@
 #include "mail.h"
 #include "item.h"
 #include "pokedex.h"
-#include "frontier_util.h"
 #include "pokedex.h"
 #include "save.h"
 #include "main.h"

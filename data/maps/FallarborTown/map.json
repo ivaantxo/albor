@@ -11,7 +11,7 @@
   "allow_escaping": false,
   "allow_running": true,
   "show_map_name": true,
-  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "battle_scene": "BATTLE_BACKGROUND_NORMAL",
   "connections": [
     {
       "map": "MAP_ROUTE114",
@@ -87,13 +87,6 @@
       "dest_warp_id": "0"
     },
     {
-      "x": 8,
-      "y": 7,
-      "elevation": 0,
-      "dest_map": "MAP_FALLARBOR_TOWN_BATTLE_TENT_LOBBY",
-      "dest_warp_id": "0"
-    },
-    {
       "x": 14,
       "y": 7,
       "elevation": 0,
@@ -134,14 +127,6 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_NORTH",
       "script": "Common_EventScript_ShowPokemonCenterSign"
-    },
-    {
-      "type": "sign",
-      "x": 6,
-      "y": 8,
-      "elevation": 0,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-      "script": "FallarborTown_EventScript_BattleTentSign"
     },
     {
       "type": "sign",

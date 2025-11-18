@@ -2,9 +2,7 @@
 #include "malloc.h"
 #include "battle.h"
 #include "battle_anim.h"
-#include "battle_arena.h"
 #include "battle_controllers.h"
-#include "battle_dome.h"
 #include "battle_interface.h"
 #include "battle_message.h"
 #include "battle_setup.h"
@@ -1978,7 +1976,7 @@ static void PlayerHandleMoveAnimation(u32 battler)
 
 static void PlayerHandlePrintString(u32 battler)
 {
-    BtlController_HandlePrintString(battler, TRUE);
+    BtlController_HandlePrintString(battler);
 }
 
 static void PlayerHandlePrintSelectionString(u32 battler)
