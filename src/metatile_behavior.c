@@ -76,7 +76,6 @@ static const u8 sTileBitAttributes[NUM_METATILE_BEHAVIORS] =
     [MB_NORTH_ARROW_WARP]                   = TILE_FLAG_UNUSED,
     [MB_SOUTH_ARROW_WARP]                   = TILE_FLAG_UNUSED,
     [MB_CRACKED_FLOOR_HOLE]                 = TILE_FLAG_UNUSED,
-    [MB_AQUA_HIDEOUT_WARP]                  = TILE_FLAG_UNUSED,
     [MB_LAVARIDGE_GYM_1F_WARP]              = TILE_FLAG_UNUSED,
     [MB_ANIMATED_DOOR]                      = TILE_FLAG_UNUSED,
     [MB_UP_ESCALATOR]                       = TILE_FLAG_UNUSED,
@@ -1085,14 +1084,6 @@ bool8 MetatileBehavior_IsLavaridgeB1FWarp(u8 metatileBehavior)
 bool8 MetatileBehavior_IsLavaridge1FWarp(u8 metatileBehavior)
 {
     if (metatileBehavior == MB_LAVARIDGE_GYM_1F_WARP)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsAquaHideoutWarp(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_AQUA_HIDEOUT_WARP)
         return TRUE;
     else
         return FALSE;
