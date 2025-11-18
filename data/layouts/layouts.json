@@ -2802,16 +2802,6 @@
       "blockdata_filepath": "data/layouts/FarawayIsland_Interior/map.bin"
     },
     {
-      "id": "LAYOUT_BIRTH_ISLAND_EXTERIOR",
-      "name": "BirthIsland_Exterior_Layout",
-      "width": 30,
-      "height": 30,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Dewford",
-      "border_filepath": "data/layouts/BirthIsland_Exterior/border.bin",
-      "blockdata_filepath": "data/layouts/BirthIsland_Exterior/map.bin"
-    },
-    {
       "id": "LAYOUT_ISLAND_HARBOR",
       "name": "IslandHarbor_Layout",
       "width": 17,

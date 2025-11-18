@@ -57,10 +57,6 @@ LilycoveCity_Harbor_EventScript_GoToNavelRock::
 	end
 
 LilycoveCity_Harbor_EventScript_GoToBirthIsland::
-	call LilycoveCity_Harbor_EventScript_BoardFerry
-	warp MAP_BIRTH_ISLAND_HARBOR, 8, 4
-	waitstate
-	release
 	end
 
 LilycoveCity_Harbor_EventScript_GoToFarawayIsland::
@@ -167,11 +163,6 @@ LilycoveCity_Harbor_EventScript_AuroraTicketFirstTime::
 	end
 
 LilycoveCity_Harbor_EventScript_GoToBirthIslandFirstTime::
-	closemessage
-	call LilycoveCity_Harbor_EventScript_BoardFerryWithSailor
-	warp MAP_BIRTH_ISLAND_HARBOR, 8, 4
-	waitstate
-	release
 	end
 
 LilycoveCity_Harbor_EventScript_OldSeaMapFirstTime::

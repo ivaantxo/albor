@@ -564,60 +564,30 @@ ContestHall_EventScript_AudienceMember3AlreadyEmoted::
 	return
 
 ContestHall_EventScript_TryDisplayHeartAudienceMember4::
-	goto_if_eq VAR_TEMP_4, 1, ContestHall_EventScript_Audience4MemberAlreadyEmoted
-	applymovement LOCALID_AUDIENCE_4, ContestHall_Movement_Heart
-	playse SE_PIN
-	delay 14
-	setvar VAR_TEMP_4, 1
-	addvar VAR_TEMP_0, -1
 	return
 
 ContestHall_EventScript_Audience4MemberAlreadyEmoted::
 	return
 
 ContestHall_EventScript_TryDisplayHeartAudienceMember5::
-	goto_if_eq VAR_TEMP_5, 1, ContestHall_EventScript_AudienceMember5AlreadyEmoted
-	applymovement LOCALID_AUDIENCE_5, ContestHall_Movement_Heart
-	playse SE_PIN
-	delay 14
-	setvar VAR_TEMP_5, 1
-	addvar VAR_TEMP_0, -1
 	return
 
 ContestHall_EventScript_AudienceMember5AlreadyEmoted::
 	return
 
 ContestHall_EventScript_TryDisplayHeartAudienceMember6::
-	goto_if_eq VAR_TEMP_6, 1, ContestHall_EventScript_AudienceMember6AlreadyEmoted
-	applymovement LOCALID_AUDIENCE_6, ContestHall_Movement_Heart
-	playse SE_PIN
-	delay 14
-	setvar VAR_TEMP_6, 1
-	addvar VAR_TEMP_0, -1
 	return
 
 ContestHall_EventScript_AudienceMember6AlreadyEmoted::
 	return
 
 ContestHall_EventScript_TryDisplayHeartAudienceMember7::
-	goto_if_eq VAR_TEMP_7, 1, ContestHall_EventScript_AudienceMember7AlreadyEmoted
-	applymovement LOCALID_AUDIENCE_7, ContestHall_Movement_Heart
-	playse SE_PIN
-	delay 14
-	setvar VAR_TEMP_7, 1
-	addvar VAR_TEMP_0, -1
 	return
 
 ContestHall_EventScript_AudienceMember7AlreadyEmoted::
 	return
 
 ContestHall_EventScript_TryDisplayHeartAudienceMember8::
-	goto_if_eq VAR_TEMP_8, 1, ContestHall_EventScript_AudienceMember8AlreadyEmoted
-	applymovement LOCALID_ARTIST, ContestHall_Movement_Heart
-	playse SE_PIN
-	delay 14
-	setvar VAR_TEMP_8, 1
-	addvar VAR_TEMP_0, -1
 	return
 
 ContestHall_EventScript_AudienceMember8AlreadyEmoted::
@@ -737,19 +707,15 @@ ContestHall_EventScript_GetWinnerObjEventId::
 	return
 
 ContestHall_EventScript_GetPlayer1ObjEventId::
-	setvar VAR_TEMP_3, LOCALID_CONTESTANT_1
 	return
 
 ContestHall_EventScript_GetPlayer2ObjEventId::
-	setvar VAR_TEMP_3, LOCALID_CONTESTANT_2
 	return
 
 ContestHall_EventScript_GetPlayer3ObjEventId::
-	setvar VAR_TEMP_3, LOCALID_CONTESTANT_3
 	return
 
 ContestHall_EventScript_GetPlayer4ObjEventId::
-	setvar VAR_TEMP_3, LOCALID_CONTESTANT_4
 	return
 
 ContestHall_EventScript_CongratulateWinner::
@@ -766,19 +732,6 @@ ContestHall_EventScript_CongratsWinnerLink::
 	return
 
 ContestHall_EventScript_AudienceLookAround::
-	addvar VAR_TEMP_1, 1
-	lockall
-	call_if_gt VAR_CONTEST_TYPE, CONTEST_TYPE_NPC_NORMAL, ContestHall_EventScript_VObjectAudienceLookAround
-	applymovement LOCALID_AUDIENCE_5, ContestHall_Movement_AudienceMemberLookRight
-	applymovement LOCALID_AUDIENCE_2, ContestHall_Movement_AudienceMemberLookDown
-	applymovement LOCALID_AUDIENCE_3, ContestHall_Movement_AudienceMemberLookRight
-	delay 30
-	applymovement LOCALID_AUDIENCE_6, ContestHall_Movement_AudienceMemberLookLeft
-	applymovement LOCALID_AUDIENCE_7, ContestHall_Movement_AudienceMemberLookDown
-	applymovement LOCALID_AUDIENCE_1, ContestHall_Movement_AudienceMemberLookUp
-	applymovement LOCALID_AUDIENCE_4, ContestHall_Movement_AudienceMemberLookLeft
-	goto_if_ne VAR_TEMP_1, 4, ContestHall_EventScript_AudienceLookAround
-	delay 30
 	return
 
 ContestHall_EventScript_VObjectAudienceLookAround::

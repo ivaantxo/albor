@@ -36,9 +36,7 @@ static const s16 sFarawayIslandRockCoords[4][2] =
 
 static u8 GetMewObjectEventId(void)
 {
-    u8 objectEventId;
-    TryGetObjectEventIdByLocalIdAndMap(LOCALID_FARAWAY_ISLAND_MEW, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, &objectEventId);
-    return objectEventId;
+    return 0;
 }
 
 // When the player enters Faraway Island interior it begins a "hide and seek" minigame where Mew disappears into the grass
