@@ -143,7 +143,6 @@ const ScrCmdFunc gScriptCmdTable[] =
     SCR_CMD(multichoicegrid),
     SCR_CMD(showmonpic),
     SCR_CMD(hidemonpic),
-    SCR_CMD(showcontestpainting),
     SCR_CMD(giveegg),
     SCR_CMD(setmonmove),
     SCR_CMD(checkpartymove),

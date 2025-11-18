@@ -907,12 +907,6 @@
 	.byte SCR_CMD_hidemonpic
 	.endm
 
-	@ Draws an image of the winner of the contest. winnerId is any CONTEST_WINNER_* constant.
-	.macro showcontestpainting winnerId:req
-	.byte SCR_CMD_showcontestpainting
-	.byte \winnerId
-	.endm
-
 	@ Gives the player a Pokémon of the specified species and level, and allows to customize extra parameters.
 	@ VAR_RESULT will be set to MON_GIVEN_TO_PARTY, MON_GIVEN_TO_PC, or MON_CANT_GIVE depending on the outcome.
 	.macro givemon species:req, level:req, item, ball, nature, abilityNum, gender, hpEv, atkEv, defEv, speedEv, spAtkEv, spDefEv, hpIv, atkIv, defIv, speedIv, spAtkIv, spDefIv, move1, move2, move3, move4, isShiny

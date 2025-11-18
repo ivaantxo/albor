@@ -112,7 +112,6 @@ enum ScrCmds
     SCR_CMD_multichoicegrid,
     SCR_CMD_showmonpic,
     SCR_CMD_hidemonpic,
-    SCR_CMD_showcontestpainting,
     SCR_CMD_giveegg,
     SCR_CMD_setmonmove,
     SCR_CMD_checkpartymove,

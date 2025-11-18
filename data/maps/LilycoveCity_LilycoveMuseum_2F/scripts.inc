@@ -172,38 +172,18 @@ LilycoveCity_LilycoveMuseum_2F_EventScript_RichBoy::
 	end
 
 LilycoveCity_LilycoveMuseum_2F_EventScript_ShowCoolPainting::
-	msgbox LilycoveCity_LilycoveMuseum_2F_Text_ItsPaintingOfPokemon, MSGBOX_SIGN
-	fadescreen FADE_TO_BLACK
-	showcontestpainting CONTEST_WINNER_MUSEUM_COOL
-	releaseall
 	end
 
 LilycoveCity_LilycoveMuseum_2F_EventScript_ShowBeautyPainting::
-	msgbox LilycoveCity_LilycoveMuseum_2F_Text_ItsPaintingOfPokemon, MSGBOX_SIGN
-	fadescreen FADE_TO_BLACK
-	showcontestpainting CONTEST_WINNER_MUSEUM_BEAUTY
-	releaseall
 	end
 
 LilycoveCity_LilycoveMuseum_2F_EventScript_ShowCutePainting::
-	msgbox LilycoveCity_LilycoveMuseum_2F_Text_ItsPaintingOfPokemon, MSGBOX_SIGN
-	fadescreen FADE_TO_BLACK
-	showcontestpainting CONTEST_WINNER_MUSEUM_CUTE
-	releaseall
 	end
 
 LilycoveCity_LilycoveMuseum_2F_EventScript_ShowSmartPainting::
-	msgbox LilycoveCity_LilycoveMuseum_2F_Text_ItsPaintingOfPokemon, MSGBOX_SIGN
-	fadescreen FADE_TO_BLACK
-	showcontestpainting CONTEST_WINNER_MUSEUM_SMART
-	releaseall
 	end
 
 LilycoveCity_LilycoveMuseum_2F_EventScript_ShowToughPainting::
-	msgbox LilycoveCity_LilycoveMuseum_2F_Text_ItsPaintingOfPokemon, MSGBOX_SIGN
-	fadescreen FADE_TO_BLACK
-	showcontestpainting CONTEST_WINNER_MUSEUM_TOUGH
-	releaseall
 	end
 
 LilycoveCity_LilycoveMuseum_2F_Text_ThisIsExhibitHall:

@@ -79,8 +79,6 @@
 
 porytiles compile-primary -Wall -o /Users/ivanmartinez/Documents/Volverá/albor/data/tilesets/primary/principal /Users/ivanmartinez/Documents/Volverá/albor/desarrollo/graficos /Users/ivanmartinez/Documents/Volverá/albor/include/constants/metatile_behaviors.h
 
-*Cada roedor (Furret, Linoone, Diggersby, Raticate, Bidoof) tiene un stat más dominante (PS-Raticate, At-Diggersby, Df-Bidoof, Df. Esp-Furret, Vel-Linoone)
-*Porygon Elect-Normal??
 *Recordatorio de que el primer color de la paleta del Pokémon no puede ser negro (se bugea el almacenamiento).
 *Recordatorio de deserializar las pokeballs.
 *Recordatorio de revisar learnsets (encanto, especialmente).

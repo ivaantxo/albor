@@ -1011,7 +1011,6 @@ EventScript_VsSeekerChargingDone::
 	.include "data/scripts/berry_tree.inc"
 	.include "data/scripts/contest_hall.inc"
 	.include "data/text/contest_strings.inc"
-	.include "data/text/contest_painting.inc"
 	.include "data/scripts/interview.inc"
 	.include "data/scripts/field_move_scripts.inc"
 	.include "data/scripts/item_ball_scripts.inc"

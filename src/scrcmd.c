@@ -5,7 +5,6 @@
 #include "clock.h"
 #include "coins.h"
 #include "contest.h"
-#include "contest_painting.h"
 #include "data.h"
 #include "decompress.h"
 #include "decoration.h"
@@ -1466,18 +1465,6 @@ bool8 ScrCmd_hidemonpic(struct ScriptContext *ctx)
     if (func == NULL)
         return FALSE;
     SetupNativeScript(ctx, func);
-    return TRUE;
-}
-
-bool8 ScrCmd_showcontestpainting(struct ScriptContext *ctx)
-{
-    u8 contestWinnerId = ScriptReadByte(ctx);
-
-    // Artist's painting is temporary and already has its data loaded
-    if (contestWinnerId != CONTEST_WINNER_ARTIST)
-        SetContestWinnerForPainting(contestWinnerId);
-
-    ScriptContext_Stop();
     return TRUE;
 }
 

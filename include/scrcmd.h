@@ -114,7 +114,6 @@ extern bool8 ScrCmd_multichoicedefault(struct ScriptContext *ctx);
 extern bool8 ScrCmd_multichoicegrid(struct ScriptContext *ctx);
 extern bool8 ScrCmd_showmonpic(struct ScriptContext *ctx);
 extern bool8 ScrCmd_hidemonpic(struct ScriptContext *ctx);
-extern bool8 ScrCmd_showcontestpainting(struct ScriptContext *ctx);
 extern bool8 ScrCmd_giveegg(struct ScriptContext *ctx);
 extern bool8 ScrCmd_setmonmove(struct ScriptContext *ctx);
 extern bool8 ScrCmd_checkpartymove(struct ScriptContext *ctx);
