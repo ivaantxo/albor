@@ -138,13 +138,6 @@ extern const u8 gTVTodaysRivalTrainerText03[];
 extern const u8 gTVTodaysRivalTrainerText04[];
 extern const u8 gTVTodaysRivalTrainerText05[];
 extern const u8 gTVTodaysRivalTrainerText06[];
-extern const u8 TrendWatcher_Text_Intro[];
-extern const u8 TrendWatcher_Text_MaleTaughtMePhrase[];
-extern const u8 TrendWatcher_Text_FemaleTaughtMePhrase[];
-extern const u8 TrendWatcher_Text_PhraseWasHopeless[];
-extern const u8 TrendWatcher_Text_MaleTellMeBigger[];
-extern const u8 TrendWatcher_Text_FemaleTellMeBigger[];
-extern const u8 TrendWatcher_Text_Outro[];
 extern const u8 gTVHoennTreasureInvestigatorsText00[];
 extern const u8 gTVHoennTreasureInvestigatorsText01[];
 extern const u8 gTVHoennTreasureInvestigatorsText02[];
@@ -346,8 +339,6 @@ extern const u8 EventScript_Vase[];
 extern const u8 EventScript_EmptyTrashCan[];
 extern const u8 EventScript_ShopShelf[];
 extern const u8 EventScript_Blueprint[];
-extern const u8 EventScript_Questionnaire[];
-extern const u8 EventScript_TrainerHillTimer[];
 extern const u8 EventScript_UseSurf[];
 extern const u8 EventScript_UseWaterfall[];
 extern const u8 EventScript_CannotUseWaterfall[];
@@ -371,9 +362,6 @@ extern const u8 BattlePyramid_Retire[];
 extern const u8 BattlePyramid_WarpToNextFloor[];
 extern const u8 BattlePyramid_TrainerBattle[];
 extern const u8 BattlePyramid_FindItemBall[];
-
-// trainer hill
-extern const u8 TrainerHill_EventScript_TrainerBattle[];
 
 // Item Use
 extern const u8 BerryTree_EventScript_ItemUsePlantBerry[];

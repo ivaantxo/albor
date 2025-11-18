@@ -12,7 +12,6 @@
 #include "pokenav.h"
 #include "script.h"
 #include "secret_base.h"
-#include "trainer_hill.h"
 #include "constants/rgb.h"
 #include "constants/metatile_behaviors.h"
 #include "wild_encounter.h"

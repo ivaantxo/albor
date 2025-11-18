@@ -18,7 +18,6 @@
 #include "string_util.h"
 #include "strings.h"
 #include "text.h"
-#include "trainer_hill.h"
 #include "window.h"
 #include "constants/abilities.h"
 #include "constants/battle_dome.h"
@@ -29,7 +28,6 @@
 #include "constants/opponents.h"
 #include "constants/species.h"
 #include "constants/trainers.h"
-#include "constants/trainer_hill.h"
 #include "constants/weather.h"
 
 struct BattleWindowText

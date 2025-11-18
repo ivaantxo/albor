@@ -44,7 +44,6 @@
 enum
 {
     WINDOW_EARNED_SYMBOLS,
-    WINDOW_BATTLE_RECORD,
     WINDOW_BATTLE_POINTS,
     WINDOW_DESCRIPTION,
     WINDOW_DUMMY,
@@ -254,15 +253,6 @@ static const struct WindowTemplate sPassWindowTemplates[WINDOW_COUNT] =
         .height = 3,
         .paletteNum = 15,
         .baseBlock = 0x1,
-    },
-    [WINDOW_BATTLE_RECORD] = {
-        .bg = 0,
-        .tilemapLeft = 2,
-        .tilemapTop = 10,
-        .width = 12,
-        .height = 3,
-        .paletteNum = 15,
-        .baseBlock = 0x26,
     },
     [WINDOW_BATTLE_POINTS] = {
         .bg = 0,
@@ -1037,34 +1027,7 @@ static void Task_PassAreaZoom(u8 taskId)
 
 static void ShowAndPrintWindows(void)
 {
-    s32 x;
-    u32 i;
 
-    for (i = 0; i < WINDOW_COUNT; i++)
-    {
-        PutWindowTilemap(i);
-        FillWindowPixelBuffer(i, PIXEL_FILL(0));
-    }
-
-    x = GetStringCenterAlignXOffset(FONT_NORMAL, gText_SymbolsEarned, 96);
-    AddTextPrinterParameterized3(WINDOW_EARNED_SYMBOLS, FONT_NORMAL, x, 5, sTextColors[0], 0, gText_SymbolsEarned);
-
-    x = GetStringCenterAlignXOffset(FONT_NORMAL, gText_BattleRecord, 96);
-    AddTextPrinterParameterized3(WINDOW_BATTLE_RECORD, FONT_NORMAL, x, 5, sTextColors[0], 0, gText_BattleRecord);
-
-    AddTextPrinterParameterized3(WINDOW_BATTLE_POINTS, FONT_SMALL_NARROW, 5, 4, sTextColors[0], 0, gText_BattlePoints);
-    ConvertIntToDecimalStringN(gStringVar4, sPassData->battlePoints, STR_CONV_MODE_LEFT_ALIGN, 5);
-    x = GetStringRightAlignXOffset(FONT_SMALL_NARROW, gStringVar4, 91);
-    AddTextPrinterParameterized3(WINDOW_BATTLE_POINTS, FONT_SMALL_NARROW, x, 16, sTextColors[0], 0, gStringVar4);
-
-    sPassData->cursorArea = GetCursorAreaFromCoords(sPassData->cursorX - 5, sPassData->cursorY + 5);
-    sPassData->previousCursorArea = CURSOR_AREA_NOTHING;
-    PrintAreaDescription(sPassData->cursorArea);
-
-    for (i = 0; i < WINDOW_COUNT; i++)
-        CopyWindowToVram(i, COPYWIN_FULL);
-
-    CopyBgTilemapBufferToVram(0);
 }
 
 static void PrintAreaDescription(u8 cursorArea)

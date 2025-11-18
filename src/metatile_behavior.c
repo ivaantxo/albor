@@ -1318,33 +1318,9 @@ bool8 MetatileBehavior_IsCableBoxResults2(u8 tile, u8 playerDir)
         return FALSE;
 }
 
-bool8 MetatileBehavior_IsQuestionnaire(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_QUESTIONNAIRE)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsLongGrass_Duplicate(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_LONG_GRASS)
-        return TRUE;
-    else
-        return FALSE;
-}
-
 bool8 MetatileBehavior_IsLongGrassSouthEdge(u8 metatileBehavior)
 {
     if (metatileBehavior == MB_LONG_GRASS_SOUTH_EDGE)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-bool8 MetatileBehavior_IsTrainerHillTimer(u8 metatileBehavior)
-{
-    if (metatileBehavior == MB_TRAINER_HILL_TIMER)
         return TRUE;
     else
         return FALSE;

@@ -4,7 +4,6 @@
 #include "time_events.h"
 #include "field_specials.h"
 #include "lottery_corner.h"
-#include "dewford_trend.h"
 #include "field_weather.h"
 #include "berry.h"
 #include "main.h"

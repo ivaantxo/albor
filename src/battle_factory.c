@@ -312,7 +312,7 @@ static void GenerateOpponentMons(void)
     u32 battleMode = VarGet(VAR_FRONTIER_BATTLE_MODE);
     u32 winStreak = gSaveBlockPtr->frontier.factoryWinStreaks[battleMode][lvlMode];
     u32 challengeNum = winStreak / FRONTIER_STAGES_PER_CHALLENGE;
-    gFacilityTrainers = gBattleFrontierTrainers;
+    gFacilityTrainers = 0;
 
     do
     {
@@ -418,7 +418,7 @@ static void GenerateInitialRentalMons(void)
     u16 monIds[PARTY_SIZE];
     u16 heldItems[PARTY_SIZE];
 
-    gFacilityTrainers = gBattleFrontierTrainers;
+    gFacilityTrainers = 0;
     for (i = 0; i < PARTY_SIZE; i++)
     {
         species[i] = SPECIES_NONE;

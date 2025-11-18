@@ -8,9 +8,6 @@ struct BattleFrontierTrainer
     u8 facilityClass;
     u8 filler1[3];
     u8 trainerName[PLAYER_NAME_LENGTH + 1];
-    u16 speechBefore[EASY_CHAT_BATTLE_WORDS_COUNT];
-    u16 speechWin[EASY_CHAT_BATTLE_WORDS_COUNT];
-    u16 speechLose[EASY_CHAT_BATTLE_WORDS_COUNT];
     const u16 *monSet;
 };
 
@@ -19,9 +16,7 @@ extern const u16 gTowerMaleTrainerGfxIds[30];
 extern const u8 gTowerFemaleFacilityClasses[20];
 extern const u16 gTowerFemaleTrainerGfxIds[20];
 extern const struct TrainerMon gBattleFrontierMons[];
-extern const struct BattleFrontierTrainer gBattleFrontierTrainers[];
 extern const struct TrainerMon gSlateportBattleTentMons[];
-extern const struct BattleFrontierTrainer gSlateportBattleTentTrainers[];
 
 // Temporary storage for monIds of the opponent team
 // during team generation in battle factory and similar facilities.

@@ -34,7 +34,6 @@
 #include "sprite.h"
 #include "task.h"
 #include "trainer_see.h"
-#include "trainer_hill.h"
 #include "util.h"
 #include "wild_encounter.h"
 #include "constants/event_object_movement.h"
@@ -1207,12 +1206,7 @@ u8 Unref_TryInitLocalObjectEvent(u8 localId)
 
     if (gMapHeader.events != NULL)
     {
-        if (InBattlePyramid())
-            objectEventCount = GetNumBattlePyramidObjectEvents();
-        else if (InTrainerHill())
-            objectEventCount = HILL_TRAINERS_PER_FLOOR;
-        else
-            objectEventCount = gMapHeader.events->objectEventCount;
+        objectEventCount = gMapHeader.events->objectEventCount;
 
         for (i = 0; i < objectEventCount; i++)
         {

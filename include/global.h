@@ -15,8 +15,6 @@
 #include "constants/berry.h"
 #include "constants/maps.h"
 #include "constants/pokemon.h"
-#include "constants/easy_chat.h"
-#include "constants/trainer_hill.h"
 #include "constants/items.h"
 
 // Prevent cross-jump optimization.
@@ -119,7 +117,6 @@
 #define NUM_DEX_FLAG_BYTES ROUND_BITS_TO_BYTES(DEX_COUNT)
 #define NUM_FLAG_BYTES ROUND_BITS_TO_BYTES(FLAGS_COUNT)
 #define NUM_TRAINER_FLAG_BYTES ROUND_BITS_TO_BYTES(TRAINERS_COUNT)
-#define NUM_TRENDY_SAYING_BYTES ROUND_BITS_TO_BYTES(NUM_TRENDY_SAYINGS)
 
 // This produces an error at compile-time if expr is zero.
 // It looks like file.c:line: size of array `id' is negative
@@ -369,16 +366,6 @@ struct Pokeblock
     u8 feel;
 };
 
-// See dewford_trend.c
-struct DewfordTrend
-{
-    u16 trendiness:7;
-    u16 maxTrendiness:7;
-    u16 gainingTrendiness:1;
-    u32 rand;
-    u16 words[2];
-}; /*size = 0x8*/
-
 struct ContestWinner
 {
     u32 personality;
@@ -493,13 +480,7 @@ struct SaveBlock
     u16 outbreakPokemonMoves[MAX_MON_MOVES]; //???
     u8 outbreakPokemonProbability; //???
     u16 outbreakDaysLeft; //???
-    u16 easyChatProfile[EASY_CHAT_BATTLE_WORDS_COUNT]; //eliminar
-    u16 easyChatBattleStart[EASY_CHAT_BATTLE_WORDS_COUNT]; //eliminar
-    u16 easyChatBattleWon[EASY_CHAT_BATTLE_WORDS_COUNT]; //eliminar
-    u16 easyChatBattleLost[EASY_CHAT_BATTLE_WORDS_COUNT]; //eliminar
     struct Mail mail[MAIL_COUNT]; //eliminar
-    u8 unlockedTrendySayings[NUM_TRENDY_SAYING_BYTES]; //eliminar
-    struct DewfordTrend dewfordTrends[SAVED_TRENDS_COUNT]; //eliminar
     struct ContestWinner contestWinners[NUM_CONTEST_WINNERS];  //eliminar
     struct DayCare daycare;
     u8 giftRibbons[GIFT_RIBBONS_COUNT]; //eliminar

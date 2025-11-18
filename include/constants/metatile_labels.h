@@ -768,9 +768,5 @@
 #define METATILE_SecretBase_YellowBalloon               0x340
 #define METATILE_SecretBase_YellowBrick_Bottom          0x22E
 #define METATILE_SecretBase_YellowBrick_Top             0x226
-#define METATILE_TrainerHill_CounterDoor                0x334
-#define METATILE_TrainerHill_Door_Elevator_Lobby        0x32C
-#define METATILE_TrainerHill_Door_Elevator_Roof         0x383
-#define METATILE_TrainerHill_GreenFloorTile             0x307
 
 #endif // GUARD_METATILE_LABELS_H

@@ -10,7 +10,6 @@
 #include "battle.h"
 #include "frontier_util.h"
 #include "strings.h"
-#include "easy_chat.h"
 #include "gym_leader_rematch.h"
 #include "battle_transition.h"
 #include "trainer_see.h"
@@ -63,7 +62,6 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount);
 static u8 SetTentPtrsGetLevel(void);
 
 #include "data/battle_frontier/battle_frontier_trainer_mons.h"
-#include "data/battle_frontier/battle_frontier_trainers.h"
 #include "data/battle_frontier/battle_frontier_mons.h"
 
 const u8 gTowerMaleFacilityClasses[30] =
@@ -538,48 +536,12 @@ static const u32 sWinStreakMasks[][2] =
     {~(STREAK_TOWER_LINK_MULTIS_50), ~(STREAK_TOWER_LINK_MULTIS_OPEN)},
 };
 
-// Trainer ID ranges for possible frontier trainers to encounter on particular challenges
-// Trainers are scaled by difficulty, so higher trainer IDs have better teams
-static const u16 sFrontierTrainerIdRanges[][2] =
-{
-    {FRONTIER_TRAINER_BRADY,   FRONTIER_TRAINER_JILL},   //   0 -  99
-    {FRONTIER_TRAINER_TREVIN,  FRONTIER_TRAINER_CHLOE},  //  80 - 119
-    {FRONTIER_TRAINER_ERIK,    FRONTIER_TRAINER_SOFIA},  // 100 - 139
-    {FRONTIER_TRAINER_NORTON,  FRONTIER_TRAINER_JAZLYN}, // 120 - 159
-    {FRONTIER_TRAINER_BRADEN,  FRONTIER_TRAINER_ALISON}, // 140 - 179
-    {FRONTIER_TRAINER_ZACHERY, FRONTIER_TRAINER_LAMAR},  // 160 - 199
-    {FRONTIER_TRAINER_HANK,    FRONTIER_TRAINER_TESS},   // 180 - 219
-    {FRONTIER_TRAINER_JAXON,   FRONTIER_TRAINER_GRETEL}, // 200 - 299
-};
-
-static const u16 sFrontierTrainerIdRangesHard[][2] =
-{
-    {FRONTIER_TRAINER_ERIK,    FRONTIER_TRAINER_CHLOE},  // 100 - 119
-    {FRONTIER_TRAINER_NORTON,  FRONTIER_TRAINER_SOFIA},  // 120 - 139
-    {FRONTIER_TRAINER_BRADEN,  FRONTIER_TRAINER_JAZLYN}, // 140 - 159
-    {FRONTIER_TRAINER_ZACHERY, FRONTIER_TRAINER_ALISON}, // 160 - 179
-    {FRONTIER_TRAINER_HANK,    FRONTIER_TRAINER_LAMAR},  // 180 - 199
-    {FRONTIER_TRAINER_JAXON,   FRONTIER_TRAINER_TESS},   // 200 - 219
-    {FRONTIER_TRAINER_LEON,    FRONTIER_TRAINER_RAUL},   // 220 - 239
-    {FRONTIER_TRAINER_JAXON,   FRONTIER_TRAINER_GRETEL}, // 200 - 299
-};
-
 static const u8 sBattleTowerPartySizes[FRONTIER_MODE_COUNT] =
 {
     [FRONTIER_MODE_SINGLES]     = FRONTIER_PARTY_SIZE,
     [FRONTIER_MODE_DOUBLES]     = FRONTIER_DOUBLES_PARTY_SIZE,
     [FRONTIER_MODE_MULTIS]      = FRONTIER_MULTI_PARTY_SIZE,
     [FRONTIER_MODE_LINK_MULTIS] = FRONTIER_MULTI_PARTY_SIZE,
-};
-
-static const u16 sRecordTrainerSpeechWon[] =
-{
-    EC_WORD_YAY, EC_WORD_YAY, EC_WORD_EXCL_EXCL, EC_WORD_I_VE, EC_WORD_WON, EC_WORD_EXCL_EXCL
-};
-
-static const u16 sRecordTrainerSpeechLost[] =
-{
-    EC_WORD_TOO, EC_WORD_BAD, EC_WORD_ELLIPSIS, EC_WORD_WE, EC_WORD_LOST, EC_WORD_ELLIPSIS
 };
 
 // code
@@ -705,30 +667,7 @@ static void SetNextFacilityOpponent(void)
 
 u16 GetRandomScaledFrontierTrainerId(u8 challengeNum, u8 battleNum)
 {
-    u16 trainerId;
-
-    if (challengeNum <= 7)
-    {
-        if (battleNum == FRONTIER_STAGES_PER_CHALLENGE - 1)
-        {
-            // The last battle in each challenge has a jump in difficulty, pulls from a table with higher ranges
-            trainerId = (sFrontierTrainerIdRangesHard[challengeNum][1] - sFrontierTrainerIdRangesHard[challengeNum][0]) + 1;
-            trainerId = sFrontierTrainerIdRangesHard[challengeNum][0] + (Random() % trainerId);
-        }
-        else
-        {
-            trainerId = (sFrontierTrainerIdRanges[challengeNum][1] - sFrontierTrainerIdRanges[challengeNum][0]) + 1;
-            trainerId = sFrontierTrainerIdRanges[challengeNum][0] + (Random() % trainerId);
-        }
-    }
-    else
-    {
-        // After challenge 7, trainer IDs always come from the last, hardest range, which is the same for both trainer ID tables
-        trainerId = (sFrontierTrainerIdRanges[7][1] - sFrontierTrainerIdRanges[7][0]) + 1;
-        trainerId = sFrontierTrainerIdRanges[7][0] + (Random() % trainerId);
-    }
-
-    return trainerId;
+    return 0;
 }
 
 void SetBattleFacilityTrainerGfxId(u16 trainerId, u8 tempVarId)
@@ -802,19 +741,7 @@ u16 GetRandomFrontierMonFromSet(u16 trainerId)
 
 void FrontierSpeechToString(const u16 *words)
 {
-    ConvertEasyChatWordsToString(gStringVar4, words, 3, 2);
-    if (GetStringWidth(FONT_NORMAL, gStringVar4, -1) > 204u)
-    {
-        s32 i = 0;
 
-        ConvertEasyChatWordsToString(gStringVar4, words, 2, 3);
-        while (gStringVar4[i++] != CHAR_NEWLINE)
-            ;
-        while (gStringVar4[i] != CHAR_NEWLINE)
-            i++;
-
-        gStringVar4[i] = CHAR_PROMPT_SCROLL;
-    }
 }
 
 static void GetOpponentIntroSpeech(void)
@@ -1036,7 +963,7 @@ u8 SetFacilityPtrsGetLevel(void)
     }
     else
     {
-        gFacilityTrainers = gBattleFrontierTrainers;
+        gFacilityTrainers = 0;
         gFacilityTrainerMons = gBattleFrontierMons;
         return GetFrontierEnemyMonLevel(gSaveBlockPtr->frontier.lvlMode);
     }
@@ -1104,22 +1031,22 @@ static u8 SetTentPtrsGetLevel(void)
 
     if (facility == FRONTIER_FACILITY_FACTORY)
     {
-        gFacilityTrainers = gSlateportBattleTentTrainers;
+        gFacilityTrainers = 0;
         gFacilityTrainerMons = gSlateportBattleTentMons;
     }
     else if (facility == FRONTIER_FACILITY_PALACE)
     {
-        gFacilityTrainers = gVerdanturfBattleTentTrainers;
+        gFacilityTrainers = 0;
         gFacilityTrainerMons = gVerdanturfBattleTentMons;
     }
     else if (facility == FRONTIER_FACILITY_ARENA)
     {
-        gFacilityTrainers = gFallarborBattleTentTrainers;
+        gFacilityTrainers = 0;
         gFacilityTrainerMons = gFallarborBattleTentMons;
     }
     else
     {
-        gFacilityTrainers = gBattleFrontierTrainers;
+        gFacilityTrainers = 0;
         gFacilityTrainerMons = gBattleFrontierMons;
     }
 

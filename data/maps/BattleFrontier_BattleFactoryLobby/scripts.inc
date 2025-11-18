@@ -243,19 +243,9 @@ BattleFrontier_BattleFactoryLobby_EventScript_ExplainDoublesChallenge::
 	return
 
 BattleFrontier_BattleFactoryLobby_EventScript_ShowSinglesResults::
-	lockall
-	frontier_results FRONTIER_FACILITY_FACTORY, FRONTIER_MODE_SINGLES
-	waitbuttonpress
-	special RemoveRecordsWindow
-	releaseall
 	end
 
 BattleFrontier_BattleFactoryLobby_EventScript_ShowDoublesResults::
-	lockall
-	frontier_results FRONTIER_FACILITY_FACTORY, FRONTIER_MODE_DOUBLES
-	waitbuttonpress
-	special RemoveRecordsWindow
-	releaseall
 	end
 
 BattleFrontier_BattleFactoryLobby_EventScript_Woman::

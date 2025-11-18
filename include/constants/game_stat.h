@@ -3,7 +3,7 @@
 
 #define GAME_STAT_SAVED_GAME                   0
 #define GAME_STAT_FIRST_HOF_PLAY_TIME          1
-#define GAME_STAT_STARTED_TRENDS               2
+#define GAME_STAT_UNUSED_2               2
 #define GAME_STAT_PLANTED_BERRIES              3
 #define GAME_STAT_TRADED_BIKES                 4
 #define GAME_STAT_STEPS                        5

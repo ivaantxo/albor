@@ -22,7 +22,6 @@
 #include "sprite.h"
 #include "string_util.h"
 #include "task.h"
-#include "trainer_hill.h"
 #include "trig.h"
 #include "window.h"
 #include "battle_message.h"

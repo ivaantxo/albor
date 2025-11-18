@@ -38,7 +38,6 @@
 	special CallFrontierUtilFunc
 	.endm
 
-	@ Loads gBattleFrontierTrainers into gFacilityTrainers
 	.macro frontier_settrainers
 	setvar VAR_0x8004, FRONTIER_UTIL_FUNC_SET_TRAINERS
 	special CallFrontierUtilFunc

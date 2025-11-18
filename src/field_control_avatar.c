@@ -28,7 +28,6 @@
 #include "sound.h"
 #include "start_menu.h"
 #include "trainer_see.h"
-#include "trainer_hill.h"
 #include "vs_seeker.h"
 #include "wild_encounter.h"
 #include "constants/event_bg.h"
@@ -37,7 +36,6 @@
 #include "constants/map_types.h"
 #include "constants/metatile_behaviors.h"
 #include "constants/songs.h"
-#include "constants/trainer_hill.h"
 
 static EWRAM_DATA u8 sWildEncounterImmunitySteps = 0;
 static EWRAM_DATA u16 sPrevMetatileBehavior = 0;
@@ -435,10 +433,6 @@ static const u8 *GetInteractedMetatileScript(struct MapPosition *position, u8 me
         return EventScript_ShopShelf;
     if (MetatileBehavior_IsBlueprint(metatileBehavior) == TRUE)
         return EventScript_Blueprint;
-    if (MetatileBehavior_IsQuestionnaire(metatileBehavior) == TRUE)
-        return EventScript_Questionnaire;
-    if (MetatileBehavior_IsTrainerHillTimer(metatileBehavior) == TRUE)
-        return EventScript_TrainerHillTimer;
 
     elevation = position->elevation;
     if (elevation == MapGridGetElevationAt(position->x, position->y))

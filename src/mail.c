@@ -17,7 +17,6 @@
 #include "bg.h"
 #include "pokemon_icon.h"
 #include "malloc.h"
-#include "easy_chat.h"
 #include "graphics.h"
 #include "constants/rgb.h"
 
@@ -30,7 +29,6 @@ enum {
 
 struct MailLineLayout
 {
-    u8 numEasyChatWords:2;
     u8 xOffset:6;
     u8 height;
 };
@@ -74,10 +72,6 @@ struct MailRead
     /*0x022c*/ u8 bg1TilemapBuffer[0x1000];
     /*0x122c*/ u8 bg2TilemapBuffer[0x1000];
 };
-
-static EWRAM_DATA struct MailRead *sMailRead = NULL;
-
-static void CB2_InitMailRead(void);
 
 static const struct BgTemplate sBgTemplates[] = {
     {
@@ -212,9 +206,9 @@ static const struct MailGraphics sMailGraphics[] = {
 };
 
 static const struct MailLineLayout sLineLayouts_Wide[] = {
-    { .numEasyChatWords = 3, .xOffset = 0, .height = 16 },
-    { .numEasyChatWords = 3, .xOffset = 0, .height = 16 },
-    { .numEasyChatWords = 3, .xOffset = 0, .height = 16 }
+    { .xOffset = 0, .height = 16 },
+    { .xOffset = 0, .height = 16 },
+    { .xOffset = 0, .height = 16 }
 };
 
 static const struct MailLayout sMailLayouts_Wide[] = {
@@ -317,11 +311,11 @@ static const struct MailLayout sMailLayouts_Wide[] = {
 };
 
 static const struct MailLineLayout sLineLayouts_Tall[] = {
-    { .numEasyChatWords = 2, .xOffset = 0, .height = 16 },
-    { .numEasyChatWords = 2, .xOffset = 0, .height = 16 },
-    { .numEasyChatWords = 2, .xOffset = 0, .height = 16 },
-    { .numEasyChatWords = 2, .xOffset = 0, .height = 16 },
-    { .numEasyChatWords = 1, .xOffset = 0, .height = 16 }
+    { .xOffset = 0, .height = 16 },
+    { .xOffset = 0, .height = 16 },
+    { .xOffset = 0, .height = 16 },
+    { .xOffset = 0, .height = 16 },
+    { .xOffset = 0, .height = 16 }
 };
 
 static const struct MailLayout sMailLayouts_Tall[] = {
@@ -424,62 +418,6 @@ static const struct MailLayout sMailLayouts_Tall[] = {
 };
 
 void ReadMail(struct Mail *mail, void (*exitCallback)(void), bool8 hasText)
-{
-    u16 buffer[2];
-    u16 species;
-
-    sMailRead = AllocZeroed(sizeof(*sMailRead));
-    sMailRead->language = GAME_LANGUAGE;
-    sMailRead->international = TRUE;
-    sMailRead->parserSingle = CopyEasyChatWord;
-    sMailRead->parserMultiple = ConvertEasyChatWordsToString;
-    if (IS_ITEM_MAIL(mail->itemId))
-    {
-        sMailRead->mailType = ITEM_TO_MAIL(mail->itemId);
-    }
-    else
-    {
-        sMailRead->mailType = ITEM_TO_MAIL(FIRST_MAIL_INDEX);
-        hasText = FALSE;
-    }
-    switch (sMailRead->international)
-    {
-    case FALSE:
-    default:
-        // Never reached. JP only?
-        sMailRead->layout = &sMailLayouts_Wide[sMailRead->mailType];
-        break;
-    case TRUE:
-        sMailRead->layout = &sMailLayouts_Tall[sMailRead->mailType];
-        break;
-    }
-    species = MailSpeciesToSpecies(mail->species, buffer);
-    if (species > SPECIES_NONE && species < NUM_SPECIES)
-    {
-        switch (sMailRead->mailType)
-        {
-        default:
-            sMailRead->iconType = ICON_TYPE_NONE;
-            break;
-        case ITEM_TO_MAIL(ITEM_BEAD_MAIL):
-            sMailRead->iconType = ICON_TYPE_BEAD;
-            break;
-        case ITEM_TO_MAIL(ITEM_DREAM_MAIL):
-            sMailRead->iconType = ICON_TYPE_DREAM;
-            break;
-        }
-    }
-    else
-    {
-        sMailRead->iconType = ICON_TYPE_NONE;
-    }
-    sMailRead->mail = mail;
-    sMailRead->exitCallback = exitCallback;
-    sMailRead->hasText = hasText;
-    SetMainCallback2(CB2_InitMailRead);
-}
-
-static void CB2_InitMailRead(void)
 {
 
 }

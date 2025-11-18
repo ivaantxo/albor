@@ -1662,14 +1662,6 @@
       "y": 0,
       "width": 1,
       "height": 1
-    },
-    {
-      "map_section": "MAPSEC_TRAINER_HILL",
-      "name": "TRAINER HILL",
-      "x": 8,
-      "y": 4,
-      "width": 1,
-      "height": 1
     }
   ]
 }

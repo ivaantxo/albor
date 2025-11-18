@@ -2,7 +2,6 @@
 #define GUARD_TRAINERS_H
 
 #include "constants/opponents.h"
-#include "constants/battle_frontier_trainers.h"
 
 #define TRAINER_PIC_HIKER                  0
 #define TRAINER_PIC_AQUA_GRUNT_M           1

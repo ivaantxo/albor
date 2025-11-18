@@ -22,7 +22,6 @@
 #include "field_message_box.h"
 #include "sound.h"
 #include "strings.h"
-#include "trainer_hill.h"
 #include "secret_base.h"
 #include "string_util.h"
 #include "overworld.h"
@@ -46,7 +45,6 @@
 #include "constants/songs.h"
 #include "constants/map_types.h"
 #include "constants/trainers.h"
-#include "constants/trainer_hill.h"
 #include "constants/weather.h"
 
 enum {
@@ -865,7 +863,6 @@ u8 GetSpecialBattleTransition(s32 id)
     {
         switch (id)
         {
-        case B_TRANSITION_GROUP_TRAINER_HILL:
         case B_TRANSITION_GROUP_SECRET_BASE:
         case B_TRANSITION_GROUP_E_READER:
             return B_TRANSITION_POKEBALLS_TRAIL;
@@ -882,7 +879,6 @@ u8 GetSpecialBattleTransition(s32 id)
     {
         switch (id)
         {
-        case B_TRANSITION_GROUP_TRAINER_HILL:
         case B_TRANSITION_GROUP_SECRET_BASE:
         case B_TRANSITION_GROUP_E_READER:
             return B_TRANSITION_BIG_POKEBALL;
@@ -1138,19 +1134,6 @@ const u8 *BattleSetup_ConfigureTrainerBattle(const u8 *data)
     case TRAINER_BATTLE_SET_TRAINER_B:
         TrainerBattleLoadArgs(sTrainerBOrdinaryBattleParams, data);
         return sTrainerBattleEndScript;
-    case TRAINER_BATTLE_HILL:
-        if (gApproachingTrainerId == 0)
-        {
-            TrainerBattleLoadArgs(sOrdinaryBattleParams, data);
-            SetMapVarsToTrainer();
-            gTrainerBattleOpponent_A = LocalIdToHillTrainerId(gSpecialVar_LastTalked);
-        }
-        else
-        {
-            TrainerBattleLoadArgs(sTrainerBOrdinaryBattleParams, data);
-            gTrainerBattleOpponent_B = LocalIdToHillTrainerId(gSpecialVar_LastTalked);
-        }
-        return EventScript_TryDoNormalTrainerBattle;
     case TRAINER_BATTLE_TWO_TRAINERS_NO_INTRO:
         gNoOfApproachingTrainers = 2; // set TWO_OPPONENTS gBattleTypeFlags
         gApproachingTrainerId = 1; // prevent trainer approach

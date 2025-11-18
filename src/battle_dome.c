@@ -1904,26 +1904,7 @@ static int SelectOpponentMons_Bad(u16 tournamentTrainerId, bool8 allowRandom)
 //       To fix, see CreateDomeOpponentMon
 static u8 GetDomeTrainerMonIvs(u16 trainerId)
 {
-    u8 fixedIv;
-
-    if (trainerId <= FRONTIER_TRAINER_JILL)         // 0 - 99
-        fixedIv = 3;
-    else if (trainerId <= FRONTIER_TRAINER_CHLOE)   // 100 - 119
-        fixedIv = 6;
-    else if (trainerId <= FRONTIER_TRAINER_SOFIA)   // 120 - 139
-        fixedIv = 9;
-    else if (trainerId <= FRONTIER_TRAINER_JAZLYN)  // 140 - 159
-        fixedIv = 12;
-    else if (trainerId <= FRONTIER_TRAINER_ALISON)  // 160 - 179
-        fixedIv = 15;
-    else if (trainerId <= FRONTIER_TRAINER_LAMAR)   // 180 - 199
-        fixedIv = 18;
-    else if (trainerId <= FRONTIER_TRAINER_TESS)    // 200 - 219
-        fixedIv = 21;
-    else                                            // 220+ (- 299)
-        fixedIv = MAX_PER_STAT_IVS;
-
-    return fixedIv;
+    return 0;
 }
 
 static void SetDomeOpponentId(void)
@@ -3328,7 +3309,7 @@ static void VblankCb_TourneyInfoCard(void)
 static void SetFacilityTrainerAndMonPtrs(void)
 {
     gFacilityTrainerMons = gBattleFrontierMons;
-    gFacilityTrainers = gBattleFrontierTrainers;
+    gFacilityTrainers = 0;
 }
 
 static void ResetSketchedMoves(void)

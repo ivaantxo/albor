@@ -65,7 +65,6 @@
 #define MAX_REMATCH_ENTRIES 100 // only REMATCH_TABLE_ENTRIES (78) are used
 #define NUM_CONTEST_WINNERS 13
 #define GIFT_RIBBONS_COUNT 11
-#define SAVED_TRENDS_COUNT 5
 #define PYRAMID_BAG_ITEMS_COUNT 10
 
 // Number of facilities for Ranking Hall.
@@ -101,10 +100,7 @@
 #define POKEMON_NAME_BUFFER_SIZE max(20, POKEMON_NAME_LENGTH + 1) // Frequently used buffer size. Larger than necessary
 #define PLAYER_NAME_LENGTH 7
 #define MAIL_WORDS_COUNT 9
-#define EASY_CHAT_BATTLE_WORDS_COUNT 6
 #define MOVE_NAME_LENGTH 16
-#define NUM_QUESTIONNAIRE_WORDS 4
-#define QUIZ_QUESTION_LEN 9
 #define TYPE_NAME_LENGTH 11
 #define ABILITY_NAME_LENGTH 16
 #define TRAINER_NAME_LENGTH 10

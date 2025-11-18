@@ -289,11 +289,6 @@ BattleFrontier_BattleArenaLobby_Movement_PlayerWalkToRightDoor:
 	step_end
 
 BattleFrontier_BattleArenaLobby_EventScript_ShowResults::
-	lockall
-	frontier_results FRONTIER_FACILITY_ARENA
-	waitbuttonpress
-	special RemoveRecordsWindow
-	releaseall
 	end
 
 BattleFrontier_BattleArenaLobby_EventScript_Youngster::

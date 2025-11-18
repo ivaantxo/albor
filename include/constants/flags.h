@@ -1267,7 +1267,7 @@
 #define FLAG_SYS_EXP_SHARE                           (SYSTEM_FLAGS + 0x3)
 #define FLAG_SYS_GAME_CLEAR                          (SYSTEM_FLAGS + 0x4)
 #define FLAG_SYS_CHAT_USED                           (SYSTEM_FLAGS + 0x5)
-#define FLAG_UNLOCKED_TRENDY_SAYINGS                 (SYSTEM_FLAGS + 0x6)
+#define FLAG_SYS_UNUSED_0x6                 (SYSTEM_FLAGS + 0x6)
 
 // Badges
 #define FLAG_BADGE01_GET                             (SYSTEM_FLAGS + 0x7)
@@ -1323,7 +1323,7 @@
 #define FLAG_SYS_TV_HOME                            (SYSTEM_FLAGS + 0x30)
 #define FLAG_SYS_TV_WATCH                           (SYSTEM_FLAGS + 0x31)
 #define FLAG_SYS_TV_START                           (SYSTEM_FLAGS + 0x32)
-#define FLAG_SYS_CHANGED_DEWFORD_TREND              (SYSTEM_FLAGS + 0x33)
+#define FLAG_SYS_UNUSED_0x33              (SYSTEM_FLAGS + 0x33)
 #define FLAG_SYS_MIX_RECORD                         (SYSTEM_FLAGS + 0x34)
 #define FLAG_SYS_CLOCK_SET                          (SYSTEM_FLAGS + 0x35)
 #define FLAG_SYS_UNUSED_0x36                        (SYSTEM_FLAGS + 0x36)
@@ -1415,7 +1415,7 @@
 #define FLAG_LANDMARK_ARTISAN_CAVE                  (SYSTEM_FLAGS + 0x7F)
 #define FLAG_ENABLE_SHIP_NAVEL_ROCK                 (SYSTEM_FLAGS + 0x80)
 #define FLAG_ARRIVED_AT_NAVEL_ROCK                  (SYSTEM_FLAGS + 0x81)
-#define FLAG_LANDMARK_TRAINER_HILL                  (SYSTEM_FLAGS + 0x82)
+#define FLAG_SYS_UNUSED_0x82                  (SYSTEM_FLAGS + 0x82)
 
 #define FLAG_SYS_UNUSED_0x83                        (SYSTEM_FLAGS + 0x83)
 

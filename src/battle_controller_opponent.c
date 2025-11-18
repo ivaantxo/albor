@@ -36,7 +36,6 @@
 #include "constants/party_menu.h"
 #include "constants/songs.h"
 #include "constants/trainers.h"
-#include "trainer_hill.h"
 
 static void OpponentHandleLoadMonSprite(u32 battler);
 static void OpponentHandleSwitchInAnim(u32 battler);

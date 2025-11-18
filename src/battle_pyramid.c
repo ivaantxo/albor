@@ -993,7 +993,7 @@ static void HidePyramidItem(void)
 
 static void SetPyramidFacilityTrainers(void)
 {
-    gFacilityTrainers = gBattleFrontierTrainers;
+    gFacilityTrainers = 0;
 }
 
 static void ShowPostBattleHintText(void)
@@ -1405,17 +1405,17 @@ void SoftResetInBattlePyramid(void)
 
 void CopyPyramidTrainerSpeechBefore(u16 trainerId)
 {
-    FrontierSpeechToString(gFacilityTrainers[trainerId].speechBefore);
+
 }
 
 void CopyPyramidTrainerWinSpeech(u16 trainerId)
 {
-    FrontierSpeechToString(gFacilityTrainers[trainerId].speechWin);
+
 }
 
 void CopyPyramidTrainerLoseSpeech(u16 trainerId)
 {
-    FrontierSpeechToString(gFacilityTrainers[trainerId].speechLose);
+
 }
 
 static u16 GetUniqueTrainerId(u8 objectEventId)

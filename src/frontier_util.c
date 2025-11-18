@@ -12,7 +12,6 @@
 #include "window.h"
 #include "menu.h"
 #include "text.h"
-#include "battle_records.h"
 #include "international_string_util.h"
 #include "string_util.h"
 #include "new_game.h"
@@ -879,7 +878,7 @@ static void DoSoftReset_(void)
 
 static void SetFrontierTrainers(void)
 {
-    gFacilityTrainers = gBattleFrontierTrainers;
+    gFacilityTrainers = 0;
 }
 
 static void SaveSelectedParty(void)
@@ -926,531 +925,39 @@ static void ShowFacilityResultsWindow(void)
     }
 }
 
-static bool8 IsWinStreakActive(u32 challenge)
-{
-    if (gSaveBlockPtr->frontier.winStreakActiveFlags & challenge)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-static void PrintAligned(const u8 *str, s32 y)
-{
-    s32 x = GetStringCenterAlignXOffset(FONT_NORMAL, str, DISPLAY_WIDTH - 16);
-    y = (y * 8) + 1;
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, str, x, y, TEXT_SKIP_DRAW, NULL);
-}
-
-static void PrintHyphens(s32 y)
-{
-    s32 i;
-    u8 text[37];
-
-    for (i = 0; i < (int)ARRAY_COUNT(text) - 1; i++)
-        text[i] = CHAR_HYPHEN;
-    text[i] = EOS;
-
-    y = (y * 8) + 1;
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, text, 4, y, TEXT_SKIP_DRAW, NULL);
-}
-
-// Battle Tower records.
-static void TowerPrintStreak(const u8 *str, u16 num, u8 x1, u8 x2, u8 y)
-{
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, str, x1, y, TEXT_SKIP_DRAW, NULL);
-    if (num > MAX_STREAK)
-        num = MAX_STREAK;
-    ConvertIntToDecimalStringN(gStringVar1, num, STR_CONV_MODE_RIGHT_ALIGN, 4);
-    StringExpandPlaceholders(gStringVar4, gText_WinStreak);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gStringVar4, x2, y, TEXT_SKIP_DRAW, NULL);
-}
-
-static void TowerPrintRecordStreak(u8 battleMode, u8 lvlMode, u8 x1, u8 x2, u8 y)
-{
-    u16 num = gSaveBlockPtr->frontier.towerRecordWinStreaks[battleMode][lvlMode];
-    TowerPrintStreak(gText_Record, num, x1, x2, y);
-}
-
-static u16 TowerGetWinStreak(u8 battleMode, u8 lvlMode)
-{
-    u16 winStreak = gSaveBlockPtr->frontier.towerWinStreaks[battleMode][lvlMode];
-    if (winStreak > MAX_STREAK)
-        return MAX_STREAK;
-    else
-        return winStreak;
-}
-
-static void TowerPrintPrevOrCurrentStreak(u8 battleMode, u8 lvlMode, u8 x1, u8 x2, u8 y)
-{
-    bool8 isCurrent;
-    u16 winStreak = TowerGetWinStreak(battleMode, lvlMode);
-    switch (battleMode)
-    {
-    default:
-    case FRONTIER_MODE_SINGLES:
-        if (lvlMode != FRONTIER_LVL_50)
-            isCurrent = IsWinStreakActive(STREAK_TOWER_SINGLES_OPEN);
-        else
-            isCurrent = IsWinStreakActive(STREAK_TOWER_SINGLES_50);
-        break;
-    case FRONTIER_MODE_DOUBLES:
-        if (lvlMode != FRONTIER_LVL_50)
-            isCurrent = IsWinStreakActive(STREAK_TOWER_DOUBLES_OPEN);
-        else
-            isCurrent = IsWinStreakActive(STREAK_TOWER_DOUBLES_50);
-        break;
-    case FRONTIER_MODE_MULTIS:
-        if (lvlMode != FRONTIER_LVL_50)
-            isCurrent = IsWinStreakActive(STREAK_TOWER_MULTIS_OPEN);
-        else
-            isCurrent = IsWinStreakActive(STREAK_TOWER_MULTIS_50);
-        break;
-    case FRONTIER_MODE_LINK_MULTIS:
-        if (lvlMode != FRONTIER_LVL_50)
-            isCurrent = IsWinStreakActive(STREAK_TOWER_LINK_MULTIS_OPEN);
-        else
-            isCurrent = IsWinStreakActive(STREAK_TOWER_LINK_MULTIS_50);
-        break;
-    }
-
-    if (isCurrent == TRUE)
-        TowerPrintStreak(gText_Current, winStreak, x1, x2, y);
-    else
-        TowerPrintStreak(gText_Prev, winStreak, x1, x2, y);
-}
-
 static void ShowTowerResultsWindow(u8 battleMode)
 {
-    gRecordsWindowId = AddWindow(&sFrontierResultsWindowTemplate);
-    DrawStdWindowFrame(gRecordsWindowId, FALSE);
-    FillWindowPixelBuffer(gRecordsWindowId, PIXEL_FILL(1));
-    if (battleMode == FRONTIER_MODE_SINGLES)
-        StringExpandPlaceholders(gStringVar4, gText_SingleBattleRoomResults);
-    else if (battleMode == FRONTIER_MODE_DOUBLES)
-        StringExpandPlaceholders(gStringVar4, gText_DoubleBattleRoomResults);
-    else if (battleMode == FRONTIER_MODE_MULTIS)
-        StringExpandPlaceholders(gStringVar4, gText_MultiBattleRoomResults);
-    else
-        StringExpandPlaceholders(gStringVar4, gText_LinkMultiBattleRoomResults);
 
-    PrintAligned(gStringVar4, 2);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gText_Lv502, 16, 49, TEXT_SKIP_DRAW, NULL);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gText_OpenLv, 16, 97, TEXT_SKIP_DRAW, NULL);
-    PrintHyphens(10);
-    TowerPrintPrevOrCurrentStreak(battleMode, FRONTIER_LVL_50, 72, 132, 49);
-    TowerPrintRecordStreak(battleMode, FRONTIER_LVL_50, 72, 132, 65);
-    TowerPrintPrevOrCurrentStreak(battleMode, FRONTIER_LVL_OPEN, 72, 132, 97);
-    TowerPrintRecordStreak(battleMode, FRONTIER_LVL_OPEN, 72, 132, 113);
-    PutWindowTilemap(gRecordsWindowId);
-    CopyWindowToVram(gRecordsWindowId, COPYWIN_FULL);
-}
-
-// Battle Dome records.
-static u16 DomeGetWinStreak(u8 battleMode, u8 lvlMode)
-{
-    u16 winStreak = gSaveBlockPtr->frontier.domeWinStreaks[battleMode][lvlMode];
-    if (winStreak > MAX_STREAK)
-        return MAX_STREAK;
-    else
-        return winStreak;
-}
-
-static void PrintTwoStrings(const u8 *str1, const u8 *str2, u16 num, u8 x1, u8 x2, u8 y)
-{
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, str1, x1, y, TEXT_SKIP_DRAW, NULL);
-    ConvertIntToDecimalStringN(gStringVar1, num, STR_CONV_MODE_RIGHT_ALIGN, 4);
-    StringExpandPlaceholders(gStringVar4, str2);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gStringVar4, x2, y, TEXT_SKIP_DRAW, NULL);
-}
-
-static void DomePrintPrevOrCurrentStreak(u8 battleMode, u8 lvlMode, u8 x1, u8 x2, u8 y)
-{
-    bool8 isCurrent;
-    u16 winStreak = DomeGetWinStreak(battleMode, lvlMode);
-    switch (battleMode)
-    {
-    default:
-    case FRONTIER_MODE_SINGLES:
-        if (lvlMode != FRONTIER_LVL_50)
-            isCurrent = IsWinStreakActive(STREAK_DOME_SINGLES_OPEN);
-        else
-            isCurrent = IsWinStreakActive(STREAK_DOME_SINGLES_50);
-        break;
-    case FRONTIER_MODE_DOUBLES:
-        if (lvlMode != FRONTIER_LVL_50)
-            isCurrent = IsWinStreakActive(STREAK_DOME_DOUBLES_OPEN);
-        else
-            isCurrent = IsWinStreakActive(STREAK_DOME_DOUBLES_50);
-        break;
-    }
-
-    if (isCurrent == TRUE)
-        PrintTwoStrings(gText_Current, gText_ClearStreak, winStreak, x1, x2, y);
-    else
-        PrintTwoStrings(gText_Prev, gText_ClearStreak, winStreak, x1, x2, y);
 }
 
 static void ShowDomeResultsWindow(u8 battleMode)
 {
-    gRecordsWindowId = AddWindow(&sFrontierResultsWindowTemplate);
-    DrawStdWindowFrame(gRecordsWindowId, FALSE);
-    FillWindowPixelBuffer(gRecordsWindowId, PIXEL_FILL(1));
-    if (battleMode == FRONTIER_MODE_SINGLES)
-        StringExpandPlaceholders(gStringVar4, gText_SingleBattleTourneyResults);
-    else
-        StringExpandPlaceholders(gStringVar4, gText_DoubleBattleTourneyResults);
 
-    PrintAligned(gStringVar4, 0);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gText_Lv502, 8, 33, TEXT_SKIP_DRAW, NULL);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gText_OpenLv, 8, 97, TEXT_SKIP_DRAW, NULL);
-    PrintHyphens(10);
-    DomePrintPrevOrCurrentStreak(battleMode, FRONTIER_LVL_50, 64, 121, 33);
-    PrintTwoStrings(gText_Record, gText_ClearStreak, gSaveBlockPtr->frontier.domeRecordWinStreaks[battleMode][FRONTIER_LVL_50], 64, 121, 49);
-    PrintTwoStrings(gText_Total, gText_Championships, gSaveBlockPtr->frontier.domeTotalChampionships[battleMode][FRONTIER_LVL_50], 64, 112, 65);
-    DomePrintPrevOrCurrentStreak(battleMode, FRONTIER_LVL_OPEN, 64, 121, 97);
-    PrintTwoStrings(gText_Record, gText_ClearStreak, gSaveBlockPtr->frontier.domeRecordWinStreaks[battleMode][FRONTIER_LVL_OPEN], 64, 121, 113);
-    PrintTwoStrings(gText_Total, gText_Championships, gSaveBlockPtr->frontier.domeTotalChampionships[battleMode][FRONTIER_LVL_OPEN], 64, 112, 129);
-    PutWindowTilemap(gRecordsWindowId);
-    CopyWindowToVram(gRecordsWindowId, COPYWIN_FULL);
-}
-
-// Battle Palace records.
-static void PalacePrintStreak(const u8 *str, u16 num, u8 x1, u8 x2, u8 y)
-{
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, str, x1, y, TEXT_SKIP_DRAW, NULL);
-    if (num > MAX_STREAK)
-        num = MAX_STREAK;
-    ConvertIntToDecimalStringN(gStringVar1, num, STR_CONV_MODE_RIGHT_ALIGN, 4);
-    StringExpandPlaceholders(gStringVar4, gText_WinStreak);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gStringVar4, x2, y, TEXT_SKIP_DRAW, NULL);
-}
-
-static void PalacePrintRecordStreak(u8 battleMode, u8 lvlMode, u8 x1, u8 x2, u8 y)
-{
-    u16 num = gSaveBlockPtr->frontier.palaceRecordWinStreaks[battleMode][lvlMode];
-    PalacePrintStreak(gText_Record, num, x1, x2, y);
-}
-
-static u16 PalaceGetWinStreak(u8 battleMode, u8 lvlMode)
-{
-    u16 winStreak = gSaveBlockPtr->frontier.palaceWinStreaks[battleMode][lvlMode];
-    if (winStreak > MAX_STREAK)
-        return MAX_STREAK;
-    else
-        return winStreak;
-}
-
-static void PalacePrintPrevOrCurrentStreak(u8 battleMode, u8 lvlMode, u8 x1, u8 x2, u8 y)
-{
-    bool8 isCurrent;
-    u16 winStreak = PalaceGetWinStreak(battleMode, lvlMode);
-    switch (battleMode)
-    {
-    default:
-    case FRONTIER_MODE_SINGLES:
-        if (lvlMode != FRONTIER_LVL_50)
-            isCurrent = IsWinStreakActive(STREAK_PALACE_SINGLES_OPEN);
-        else
-            isCurrent = IsWinStreakActive(STREAK_PALACE_SINGLES_50);
-        break;
-    case FRONTIER_MODE_DOUBLES:
-        if (lvlMode != FRONTIER_LVL_50)
-            isCurrent = IsWinStreakActive(STREAK_PALACE_DOUBLES_OPEN);
-        else
-            isCurrent = IsWinStreakActive(STREAK_PALACE_DOUBLES_50);
-    }
-
-    if (isCurrent == TRUE)
-        PalacePrintStreak(gText_Current, winStreak, x1, x2, y);
-    else
-        PalacePrintStreak(gText_Prev, winStreak, x1, x2, y);
 }
 
 static void ShowPalaceResultsWindow(u8 battleMode)
 {
-    gRecordsWindowId = AddWindow(&sFrontierResultsWindowTemplate);
-    DrawStdWindowFrame(gRecordsWindowId, FALSE);
-    FillWindowPixelBuffer(gRecordsWindowId, PIXEL_FILL(1));
-    if (battleMode == FRONTIER_MODE_SINGLES)
-        StringExpandPlaceholders(gStringVar4, gText_SingleBattleHallResults);
-    else
-        StringExpandPlaceholders(gStringVar4, gText_DoubleBattleHallResults);
 
-    PrintAligned(gStringVar4, 2);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gText_Lv502, 16, 49, TEXT_SKIP_DRAW, NULL);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gText_OpenLv, 16, 97, TEXT_SKIP_DRAW, NULL);
-    PrintHyphens(10);
-    PalacePrintPrevOrCurrentStreak(battleMode, FRONTIER_LVL_50, 72, 131, 49);
-    PalacePrintRecordStreak(battleMode, FRONTIER_LVL_50, 72, 131, 65);
-    PalacePrintPrevOrCurrentStreak(battleMode, FRONTIER_LVL_OPEN, 72, 131, 97);
-    PalacePrintRecordStreak(battleMode, FRONTIER_LVL_OPEN, 72, 131, 113);
-    PutWindowTilemap(gRecordsWindowId);
-    CopyWindowToVram(gRecordsWindowId, COPYWIN_FULL);
-}
-
-// Battle Pike records.
-static u16 PikeGetWinStreak(u8 lvlMode)
-{
-    u16 winStreak = gSaveBlockPtr->frontier.pikeWinStreaks[lvlMode];
-    if (winStreak > MAX_STREAK)
-        return MAX_STREAK;
-    else
-        return winStreak;
-}
-
-static void PikePrintCleared(const u8 *str1, const u8 *str2, u16 num, u8 x1, u8 x2, u8 y)
-{
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, str1, x1, y, TEXT_SKIP_DRAW, NULL);
-    ConvertIntToDecimalStringN(gStringVar1, num, STR_CONV_MODE_RIGHT_ALIGN, 4);
-    StringExpandPlaceholders(gStringVar4, str2);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gStringVar4, x2, y, TEXT_SKIP_DRAW, NULL);
-}
-
-static void PikePrintPrevOrCurrentStreak(u8 lvlMode, u8 x1, u8 x2, u8 y)
-{
-    bool8 isCurrent;
-    u16 winStreak = PikeGetWinStreak(lvlMode);
-
-    if (lvlMode != FRONTIER_LVL_50)
-        isCurrent = IsWinStreakActive(STREAK_PIKE_OPEN);
-    else
-        isCurrent = IsWinStreakActive(STREAK_PIKE_50);
-
-    if (isCurrent == TRUE)
-        PrintTwoStrings(gText_Current, gText_RoomsCleared, winStreak, x1, x2, y);
-    else
-        PrintTwoStrings(gText_Prev, gText_RoomsCleared, winStreak, x1, x2, y);
 }
 
 static void ShowPikeResultsWindow(void)
 {
-    gRecordsWindowId = AddWindow(&sFrontierResultsWindowTemplate);
-    DrawStdWindowFrame(gRecordsWindowId, FALSE);
-    FillWindowPixelBuffer(gRecordsWindowId, PIXEL_FILL(1));
-    StringExpandPlaceholders(gStringVar4, gText_BattleChoiceResults);
-    PrintAligned(gStringVar4, 0);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gText_Lv502, 8, 33, TEXT_SKIP_DRAW, NULL);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gText_OpenLv, 8, 97, TEXT_SKIP_DRAW, NULL);
-    PrintHyphens(10);
-    PikePrintPrevOrCurrentStreak(FRONTIER_LVL_50, 64, 114, 33);
-    PikePrintCleared(gText_Record, gText_RoomsCleared, gSaveBlockPtr->frontier.pikeRecordStreaks[FRONTIER_LVL_50], 64, 114, 49);
-    PikePrintCleared(gText_Total, gText_TimesCleared, gSaveBlockPtr->frontier.pikeTotalStreaks[FRONTIER_LVL_50], 64, 114, 65);
-    PikePrintPrevOrCurrentStreak(FRONTIER_LVL_OPEN, 64, 114, 97);
-    PikePrintCleared(gText_Record, gText_RoomsCleared, gSaveBlockPtr->frontier.pikeRecordStreaks[FRONTIER_LVL_OPEN], 64, 114, 113);
-    PikePrintCleared(gText_Total, gText_TimesCleared, gSaveBlockPtr->frontier.pikeTotalStreaks[FRONTIER_LVL_OPEN], 64, 114, 129);
-    PutWindowTilemap(gRecordsWindowId);
-    CopyWindowToVram(gRecordsWindowId, COPYWIN_FULL);
-}
 
-// Battle Arena records.
-static void ArenaPrintStreak(const u8 *str, u16 num, u8 x1, u8 x2, u8 y)
-{
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, str, x1, y, TEXT_SKIP_DRAW, NULL);
-    if (num > MAX_STREAK)
-        num = MAX_STREAK;
-    ConvertIntToDecimalStringN(gStringVar1, num, STR_CONV_MODE_RIGHT_ALIGN, 4);
-    StringExpandPlaceholders(gStringVar4, gText_KOsInARow);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gStringVar4, x2, y, TEXT_SKIP_DRAW, NULL);
-}
-
-static void ArenaPrintRecordStreak(u8 lvlMode, u8 x1, u8 x2, u8 y)
-{
-    u16 num = gSaveBlockPtr->frontier.arenaRecordStreaks[lvlMode];
-    ArenaPrintStreak(gText_Record, num, x1, x2, y);
-}
-
-static u16 ArenaGetWinStreak(u8 lvlMode)
-{
-    u16 winStreak = gSaveBlockPtr->frontier.arenaWinStreaks[lvlMode];
-    if (winStreak > MAX_STREAK)
-        return MAX_STREAK;
-    else
-        return winStreak;
-}
-
-static void ArenaPrintPrevOrCurrentStreak(u8 lvlMode, u8 x1, u8 x2, u8 y)
-{
-    bool8 isCurrent;
-    u16 winStreak = ArenaGetWinStreak(lvlMode);
-
-    if (lvlMode != FRONTIER_LVL_50)
-        isCurrent = IsWinStreakActive(STREAK_ARENA_OPEN);
-    else
-        isCurrent = IsWinStreakActive(STREAK_ARENA_50);
-
-    if (isCurrent == TRUE)
-        ArenaPrintStreak(gText_Current, winStreak, x1, x2, y);
-    else
-        ArenaPrintStreak(gText_Prev, winStreak, x1, x2, y);
 }
 
 static void ShowArenaResultsWindow(void)
 {
-    gRecordsWindowId = AddWindow(&sFrontierResultsWindowTemplate);
-    DrawStdWindowFrame(gRecordsWindowId, FALSE);
-    FillWindowPixelBuffer(gRecordsWindowId, PIXEL_FILL(1));
-    PrintHyphens(10);
-    StringExpandPlaceholders(gStringVar4, gText_SetKOTourneyResults);
-    PrintAligned(gStringVar4, 2);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gText_Lv502, 16, 49, TEXT_SKIP_DRAW, NULL);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gText_OpenLv, 16, 97, TEXT_SKIP_DRAW, NULL);
-    ArenaPrintPrevOrCurrentStreak(FRONTIER_LVL_50, 72, 126, 49);
-    ArenaPrintRecordStreak(FRONTIER_LVL_50, 72, 126, 65);
-    ArenaPrintPrevOrCurrentStreak(FRONTIER_LVL_OPEN, 72, 126, 97);
-    ArenaPrintRecordStreak(FRONTIER_LVL_OPEN, 72, 126, 113);
-    PutWindowTilemap(gRecordsWindowId);
-    CopyWindowToVram(gRecordsWindowId, COPYWIN_FULL);
-}
 
-// Battle Factory records.
-static void FactoryPrintStreak(const u8 *str, u16 num1, u16 num2, u8 x1, u8 x2, u8 x3, u8 y)
-{
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, str, x1, y, TEXT_SKIP_DRAW, NULL);
-    if (num1 > MAX_STREAK)
-        num1 = MAX_STREAK;
-    ConvertIntToDecimalStringN(gStringVar1, num1, STR_CONV_MODE_RIGHT_ALIGN, 4);
-    StringExpandPlaceholders(gStringVar4, gText_WinStreak);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gStringVar4, x2, y, TEXT_SKIP_DRAW, NULL);
-
-    ConvertIntToDecimalStringN(gStringVar1, num2, STR_CONV_MODE_RIGHT_ALIGN, 4);
-    StringExpandPlaceholders(gStringVar4, gText_TimesVar1);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gStringVar4, x3, y, TEXT_SKIP_DRAW, NULL);
-}
-
-static void FactoryPrintRecordStreak(u8 battleMode, u8 lvlMode, u8 x1, u8 x2, u8 x3, u8 y)
-{
-    u16 num1 = gSaveBlockPtr->frontier.factoryRecordWinStreaks[battleMode][lvlMode];
-    u16 num2 = gSaveBlockPtr->frontier.factoryRecordRentsCount[battleMode][lvlMode];
-    FactoryPrintStreak(gText_Record, num1, num2, x1, x2, x3, y);
-}
-
-static u16 FactoryGetWinStreak(u8 battleMode, u8 lvlMode)
-{
-    u16 winStreak = gSaveBlockPtr->frontier.factoryWinStreaks[battleMode][lvlMode];
-    if (winStreak > MAX_STREAK)
-        return MAX_STREAK;
-    else
-        return winStreak;
-}
-
-static u16 FactoryGetRentsCount(u8 battleMode, u8 lvlMode)
-{
-    u16 rents = gSaveBlockPtr->frontier.factoryRentsCount[battleMode][lvlMode];
-    if (rents > MAX_STREAK)
-        return MAX_STREAK;
-    else
-        return rents;
-}
-
-static void FactoryPrintPrevOrCurrentStreak(u8 battleMode, u8 lvlMode, u8 x1, u8 x2, u8 x3, u8 y)
-{
-    bool8 isCurrent;
-    u16 winStreak = FactoryGetWinStreak(battleMode, lvlMode);
-    u16 rents = FactoryGetRentsCount(battleMode, lvlMode);
-    switch (battleMode)
-    {
-    default:
-    case FRONTIER_MODE_SINGLES:
-        if (lvlMode != FRONTIER_LVL_50)
-            isCurrent = IsWinStreakActive(STREAK_FACTORY_SINGLES_OPEN);
-        else
-            isCurrent = IsWinStreakActive(STREAK_FACTORY_SINGLES_50);
-        break;
-    case FRONTIER_MODE_DOUBLES:
-        if (lvlMode != FRONTIER_LVL_50)
-            isCurrent = IsWinStreakActive(STREAK_FACTORY_DOUBLES_OPEN);
-        else
-            isCurrent = IsWinStreakActive(STREAK_FACTORY_DOUBLES_50);
-        break;
-    }
-
-    if (isCurrent == TRUE)
-        FactoryPrintStreak(gText_Current, winStreak, rents, x1, x2, x3, y);
-    else
-        FactoryPrintStreak(gText_Prev, winStreak, rents, x1, x2, x3, y);
 }
 
 static void ShowFactoryResultsWindow(u8 battleMode)
 {
-    gRecordsWindowId = AddWindow(&sFrontierResultsWindowTemplate);
-    DrawStdWindowFrame(gRecordsWindowId, FALSE);
-    FillWindowPixelBuffer(gRecordsWindowId, PIXEL_FILL(1));
-    if (battleMode == FRONTIER_MODE_SINGLES)
-        StringExpandPlaceholders(gStringVar4, gText_BattleSwapSingleResults);
-    else
-        StringExpandPlaceholders(gStringVar4, gText_BattleSwapDoubleResults);
 
-    PrintAligned(gStringVar4, 0);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gText_Lv502, 8, 33, TEXT_SKIP_DRAW, NULL);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gText_RentalSwap, 152, 33, TEXT_SKIP_DRAW, NULL);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gText_OpenLv, 8, 97, TEXT_SKIP_DRAW, NULL);
-    PrintHyphens(10);
-    FactoryPrintPrevOrCurrentStreak(battleMode, FRONTIER_LVL_50, 8, 64, 158, 49);
-    FactoryPrintRecordStreak(battleMode, FRONTIER_LVL_50, 8, 64, 158, 65);
-    FactoryPrintPrevOrCurrentStreak(battleMode, FRONTIER_LVL_OPEN, 8, 64, 158, 113);
-    FactoryPrintRecordStreak(battleMode, FRONTIER_LVL_OPEN, 8, 64, 158, 129);
-    PutWindowTilemap(gRecordsWindowId);
-    CopyWindowToVram(gRecordsWindowId, COPYWIN_FULL);
-}
-
-// Battle Pyramid records.
-static void PyramidPrintStreak(const u8 *str, u16 num, u8 x1, u8 x2, u8 y)
-{
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, str, x1, y, TEXT_SKIP_DRAW, NULL);
-    if (num > MAX_STREAK)
-        num = MAX_STREAK;
-    ConvertIntToDecimalStringN(gStringVar1, num, STR_CONV_MODE_RIGHT_ALIGN, 4);
-    StringExpandPlaceholders(gStringVar4, gText_FloorsCleared);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gStringVar4, x2, y, TEXT_SKIP_DRAW, NULL);
-}
-
-static void PyramidPrintRecordStreak(u8 lvlMode, u8 x1, u8 x2, u8 y)
-{
-    u16 num = gSaveBlockPtr->frontier.pyramidRecordStreaks[lvlMode];
-    PyramidPrintStreak(gText_Record, num, x1, x2, y);
-}
-
-static u16 PyramidGetWinStreak(u8 lvlMode)
-{
-    u16 winStreak = gSaveBlockPtr->frontier.pyramidWinStreaks[lvlMode];
-    if (winStreak > MAX_STREAK)
-        return MAX_STREAK;
-    else
-        return winStreak;
-}
-
-static void PyramidPrintPrevOrCurrentStreak(u8 lvlMode, u8 x1, u8 x2, u8 y)
-{
-    bool8 isCurrent;
-    u16 winStreak = PyramidGetWinStreak(lvlMode);
-
-    if (lvlMode != FRONTIER_LVL_50)
-        isCurrent = IsWinStreakActive(STREAK_PYRAMID_OPEN);
-    else
-        isCurrent = IsWinStreakActive(STREAK_PYRAMID_50);
-
-    if (isCurrent == TRUE)
-        PyramidPrintStreak(gText_Current, winStreak, x1, x2, y);
-    else
-        PyramidPrintStreak(gText_Prev, winStreak, x1, x2, y);
 }
 
 static void ShowPyramidResultsWindow(void)
 {
-    gRecordsWindowId = AddWindow(&sFrontierResultsWindowTemplate);
-    DrawStdWindowFrame(gRecordsWindowId, FALSE);
-    FillWindowPixelBuffer(gRecordsWindowId, PIXEL_FILL(1));
-    StringExpandPlaceholders(gStringVar4, gText_BattleQuestResults);
-    PrintAligned(gStringVar4, 2);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gText_Lv502, 8, 49, TEXT_SKIP_DRAW, NULL);
-    AddTextPrinterParameterized(gRecordsWindowId, FONT_NORMAL, gText_OpenLv, 8, 97, TEXT_SKIP_DRAW, NULL);
-    PrintHyphens(10);
-    PyramidPrintPrevOrCurrentStreak(FRONTIER_LVL_50, 64, 111, 49);
-    PyramidPrintRecordStreak(FRONTIER_LVL_50, 64, 111, 65);
-    PyramidPrintPrevOrCurrentStreak(FRONTIER_LVL_OPEN, 64, 111, 97);
-    PyramidPrintRecordStreak(FRONTIER_LVL_OPEN, 64, 111, 113);
-    PutWindowTilemap(gRecordsWindowId);
-    CopyWindowToVram(gRecordsWindowId, COPYWIN_FULL);
+
 }
 
 static void Script_GetFrontierBrainStatus(void)

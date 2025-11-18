@@ -18,19 +18,7 @@ void ClearAllMail(void)
 
 void ClearMail(struct Mail *mail)
 {
-    s32 i;
 
-    for (i = 0; i < MAIL_WORDS_COUNT; i++)
-        mail->words[i] = EC_EMPTY_WORD;
-
-    for (i = 0; i < PLAYER_NAME_LENGTH + 1; i++)
-        mail->playerName[i] = EOS;
-
-    for (i = 0; i < TRAINER_ID_LENGTH; i++)
-        mail->trainerId[i] = 0;
-
-    mail->species = SPECIES_BULBASAUR;
-    mail->itemId = ITEM_NONE;
 }
 
 bool8 MonHasMail(struct Pokemon *mon)

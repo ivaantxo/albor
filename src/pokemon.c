@@ -37,7 +37,6 @@
 #include "strings.h"
 #include "task.h"
 #include "text.h"
-#include "trainer_hill.h"
 #include "util.h"
 #include "constants/abilities.h"
 #include "constants/battle_frontier.h"

@@ -173,11 +173,6 @@ RustboroCity_DevonCorp_3F_EventScript_GiveExpShare::
 	end
 
 RustboroCity_DevonCorp_3F_EventScript_MrStoneAfterFavor::
-	msgbox RustboroCity_DevonCorp_3F_Text_NotFamiliarWithTrends, MSGBOX_DEFAULT
-	closemessage
-	applymovement VAR_LAST_TALKED, Common_Movement_FaceOriginalDirection
-	waitmovement 0
-	release
 	end
 
 RustboroCity_DevonCorp_3F_EventScript_Employee::
@@ -258,14 +253,6 @@ RustboroCity_DevonCorp_3F_Text_ExplainExpShare:
 	.string "actually battle.\p"
 	.string "I would say EXP. SHARE is quite useful\n"
 	.string "for raising weak POKéMON.$"
-
-RustboroCity_DevonCorp_3F_Text_NotFamiliarWithTrends:
-	.string "MR. STONE: Since my youth, I've immersed\n"
-	.string "myself in work.\p"
-	.string "Consequently, I'm not familiar with\n"
-	.string "trends and that sort of thing.\p"
-	.string "But do young people all want to be\n"
-	.string "TRAINERS in the POKéMON LEAGUE?$"
 
 RustboroCity_DevonCorp_3F_Text_ThisIs3rdFloorWaitHere:
 	.string "This is the DEVON CORPORATION's\n"

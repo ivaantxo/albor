@@ -55,16 +55,10 @@ gSpecials::
 	def_special HasEnoughMonsForDoubleBattle
 	def_special SaveGame
 	def_special DoWateringBerryTreeAnim
-	def_special ShowEasyChatScreen
-	def_special ShowEasyChatProfile
 	def_special GetSeedotSizeRecordInfo
 	def_special CompareSeedotSize
 	def_special GetLotadSizeRecordInfo
 	def_special CompareLotadSize
-	def_special BufferTrendyPhraseString
-	def_special IsTrendyPhraseBoring
-	def_special BufferDeepLinkPhrase
-	def_special GetDewfordHallPaintingNameIndex
 	def_special SwapRegisteredBike
 	def_special CalculatePlayerPartyCount
 	def_special CountPartyNonEggMons
@@ -116,7 +110,6 @@ gSpecials::
 	def_special ScriptHatchMon
 	def_special EggHatch
 	def_special CheckDaycareMonReceivedMail
-	def_special ShowLinkBattleRecords
 	def_special IsEnoughForCostInVar0x8005
 	def_special SubtractMoneyFromVar0x8005
 	def_special TryFieldPoisonWhiteOut
@@ -310,17 +303,14 @@ gSpecials::
 	def_special GetLilycoveSSTidalSelection
 	def_special SetMewAboveGrass
 	def_special ShouldDistributeEonTicket
-	def_special CallTrainerHillFunction
 	def_special LoopWingFlapSE
 	def_special DestroyMewEmergingGrassSprite
 	def_special GetBattlePyramidHint
-	def_special ShowTrainerHillRecords
 	def_special PlayerFaceTrainerAfterBattle
 	def_special ResetHealLocationFromDewford
 	def_special IsLastMonThatKnowsSurf
 	def_special CountPartyAliveNonEggMons
 	def_special TryPrepareSecondApproachingTrainer
-	def_special RemoveRecordsWindow
 	def_special CloseDeptStoreElevatorWindow
 	def_special GetNumberSprayStrength
 	def_special GetSprayId

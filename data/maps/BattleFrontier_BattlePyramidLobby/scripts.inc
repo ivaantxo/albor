@@ -362,11 +362,6 @@ BattleFrontier_BattlePyramidLobby_EventScript_HintNormal::
 	return
 
 BattleFrontier_BattlePyramidLobby_EventScript_ShowResults::
-	lockall
-	frontier_results FRONTIER_FACILITY_PYRAMID
-	waitbuttonpress
-	special RemoveRecordsWindow
-	releaseall
 	end
 
 BattleFrontier_BattlePyramidLobby_EventScript_WalkToPanelAndReceiveBag::

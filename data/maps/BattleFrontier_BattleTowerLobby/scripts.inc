@@ -397,30 +397,12 @@ BattleFrontier_BattleTowerLobby_EventScript_FeelingsMan::
 	end
 
 BattleFrontier_BattleTowerLobby_EventScript_FeelingsBattleNow::
-	msgbox BattleFrontier_BattleTowerLobby_Text_FeelWhatWhenYouBegin, MSGBOX_DEFAULT
-	setvar VAR_0x8004, EASY_CHAT_TYPE_BATTLE_START
-	call Common_ShowEasyChatScreen
-	lock
-	faceplayer
-	goto BattleFrontier_BattleTowerLobby_EventScript_CheckFeelings
 	end
 
 BattleFrontier_BattleTowerLobby_EventScript_FeelingsIWon::
-	msgbox BattleFrontier_BattleTowerLobby_Text_FeelWhatWhenYouveWon, MSGBOX_DEFAULT
-	setvar VAR_0x8004, EASY_CHAT_TYPE_BATTLE_WON
-	call Common_ShowEasyChatScreen
-	lock
-	faceplayer
-	goto BattleFrontier_BattleTowerLobby_EventScript_CheckFeelings
 	end
 
 BattleFrontier_BattleTowerLobby_EventScript_FeelingsILost::
-	msgbox BattleFrontier_BattleTowerLobby_Text_FeelWhatWhenYouveLost, MSGBOX_DEFAULT
-	setvar VAR_0x8004, EASY_CHAT_TYPE_BATTLE_LOST
-	call Common_ShowEasyChatScreen
-	lock
-	faceplayer
-	goto BattleFrontier_BattleTowerLobby_EventScript_CheckFeelings
 	end
 
 BattleFrontier_BattleTowerLobby_EventScript_FeelingsWontTell::
@@ -429,13 +411,6 @@ BattleFrontier_BattleTowerLobby_EventScript_FeelingsWontTell::
 	end
 
 BattleFrontier_BattleTowerLobby_EventScript_CheckFeelings::
-	goto_if_eq VAR_RESULT, 0, BattleFrontier_BattleTowerLobby_EventScript_CanceledEasyChat
-	goto_if_eq VAR_RESULT, 1, BattleFrontier_BattleTowerLobby_EventScript_SubmittedFeelings
-	end
-
-BattleFrontier_BattleTowerLobby_EventScript_CanceledEasyChat::
-	msgbox BattleFrontier_BattleTowerLobby_Text_ChangedYourMind, MSGBOX_DEFAULT
-	release
 	end
 
 BattleFrontier_BattleTowerLobby_EventScript_SubmittedFeelings::
@@ -452,35 +427,15 @@ BattleFrontier_BattleTowerLobby_EventScript_Boy::
 	end
 
 BattleFrontier_BattleTowerLobby_EventScript_ShowSinglesResults::
-	lockall
-	frontier_results FRONTIER_FACILITY_TOWER, FRONTIER_MODE_SINGLES
-	waitbuttonpress
-	special RemoveRecordsWindow
-	releaseall
 	end
 
 BattleFrontier_BattleTowerLobby_EventScript_ShowDoublesResults::
-	lockall
-	frontier_results FRONTIER_FACILITY_TOWER, FRONTIER_MODE_DOUBLES
-	waitbuttonpress
-	special RemoveRecordsWindow
-	releaseall
 	end
 
 BattleFrontier_BattleTowerLobby_EventScript_ShowMultisResults::
-	lockall
-	frontier_results FRONTIER_FACILITY_TOWER, FRONTIER_MODE_MULTIS
-	waitbuttonpress
-	special RemoveRecordsWindow
-	releaseall
 	end
 
 BattleFrontier_BattleTowerLobby_EventScript_ShowLinkMultisResults::
-	lockall
-	frontier_results FRONTIER_FACILITY_TOWER, FRONTIER_MODE_LINK_MULTIS
-	waitbuttonpress
-	special RemoveRecordsWindow
-	releaseall
 	end
 
 BattleFrontier_BattleTowerLobby_EventScript_NotEnoughValidMons::

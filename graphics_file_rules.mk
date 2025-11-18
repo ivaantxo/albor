@@ -159,9 +159,6 @@ $(TILESETGFXDIR)/secondary/mossdeep_game_corner/tiles.4bpp: %.4bpp: %.png
 $(TILESETGFXDIR)/secondary/island_harbor/tiles.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 503 -Wnum_tiles
 
-$(TILESETGFXDIR)/secondary/trainer_hill/tiles.4bpp: %.4bpp: %.png
-	$(GFX) $< $@ -num_tiles 374 -Wnum_tiles
-
 $(TILESETGFXDIR)/secondary/navel_rock/tiles.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 420 -Wnum_tiles
 
@@ -170,8 +167,6 @@ $(TILESETGFXDIR)/secondary/battle_frontier_ranking_hall/tiles.4bpp: %.4bpp: %.pn
 
 $(TILESETGFXDIR)/secondary/mystery_events_house/tiles.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 509 -Wnum_tiles
-
-
 
 ### Fonts ###
 

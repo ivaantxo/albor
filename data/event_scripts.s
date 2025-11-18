@@ -18,7 +18,6 @@
 #include "constants/contest.h"
 #include "constants/daycare.h"
 #include "constants/decorations.h"
-#include "constants/easy_chat.h"
 #include "constants/event_objects.h"
 #include "constants/event_object_movement.h"
 #include "constants/field_effects.h"
@@ -46,7 +45,6 @@
 #include "constants/sound.h"
 #include "constants/species.h"
 #include "constants/trade.h"
-#include "constants/trainer_hill.h"
 #include "constants/trainers.h"
 #include "constants/vars.h"
 #include "constants/weather.h"
@@ -657,21 +655,9 @@ Common_EventScript_ShowPokemonCenterSign::
 	msgbox gText_PokemonCenterSign, MSGBOX_SIGN
 	end
 
-Common_ShowEasyChatScreen::
-	fadescreen FADE_TO_BLACK
-	special ShowEasyChatScreen
-	fadescreen FADE_FROM_BLACK
-	return
-
 Common_EventScript_ReadyPetalburgGymForBattle::
 	clearflag FLAG_HIDE_PETALBURG_GYM_GREETER
 	setflag FLAG_PETALBURG_MART_EXPANDED_ITEMS
-	return
-
-Common_EventScript_BufferTrendyPhrase::
-	dotimebasedevents
-	setvar VAR_0x8004, 0
-	special BufferTrendyPhraseString
 	return
 
 EventScript_BackupMrBrineyLocation::
@@ -963,7 +949,6 @@ gText_Sudowoodo_Attacked::
 gText_LegendaryFlewAway::
 	.string "The {STR_VAR_1} flew away!$"
 
-	.include "data/text/questionnaire.inc"
 	.include "data/text/abnormal_weather.inc"
 
 EventScript_SelectWithoutRegisteredItem::
@@ -1005,7 +990,6 @@ EventScript_VsSeekerChargingDone::
 	end
 
 	.include "data/scripts/pc_transfer.inc"
-	.include "data/scripts/questionnaire.inc"
 	.include "data/scripts/abnormal_weather.inc"
 	.include "data/scripts/trainer_script.inc"
 	.include "data/scripts/berry_tree.inc"
@@ -1037,7 +1021,6 @@ EventScript_VsSeekerChargingDone::
 	.include "data/text/event_ticket_2.inc"
 	.include "data/text/move_tutors.inc"
 	.include "data/scripts/move_tutors.inc"
-	.include "data/scripts/trainer_hill.inc"
 	.include "data/scripts/test_signpost.inc"
 	.include "data/scripts/follower.inc"
 	.include "data/text/save.inc"

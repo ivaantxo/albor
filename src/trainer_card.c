@@ -13,7 +13,6 @@
 #include "menu.h"
 #include "text.h"
 #include "event_data.h"
-#include "easy_chat.h"
 #include "money.h"
 #include "strings.h"
 #include "string_util.h"
@@ -55,7 +54,6 @@ struct TrainerCardData
     bool8 hasBattleTowerWins;
     bool8 hasTrades;
     u8 badgeCount[NUM_BADGES];
-    u8 easyChatProfile[TRAINER_CARD_PROFILE_LENGTH][13];
     u8 textPlayersCard[70];
     u8 textHofTime[70];
     u8 textLinkBattleType[140];
@@ -115,7 +113,6 @@ static void InitBgsAndWindows(void);
 static void SetTrainerCardCb2(void);
 static void SetUpTrainerCardTask(void);
 static void InitTrainerCardData(void);
-static u8 GetSetCardType(void);
 static void PrintNameOnCardFront(void);
 static void PrintIdOnCard(void);
 static void PrintMoneyOnCard(void);
@@ -990,16 +987,7 @@ static void PrintTimeOnCard(void)
 
 static void PrintProfilePhraseOnCard(void)
 {
-    static const u8 yOffsetsLine1[] = {113, 104};
-    static const u8 yOffsetsLine2[] = {129, 120};
 
-    if (sData->isLink)
-    {
-        AddTextPrinterParameterized3(WIN_CARD_TEXT, FONT_NORMAL, 8, yOffsetsLine1[sData->isHoenn], sTrainerCardTextColors, TEXT_SKIP_DRAW, sData->easyChatProfile[0]);
-        AddTextPrinterParameterized3(WIN_CARD_TEXT, FONT_NORMAL, GetStringWidth(FONT_NORMAL, sData->easyChatProfile[0], 0) + 14, yOffsetsLine1[sData->isHoenn], sTrainerCardTextColors, TEXT_SKIP_DRAW, sData->easyChatProfile[1]);
-        AddTextPrinterParameterized3(WIN_CARD_TEXT, FONT_NORMAL, 8, yOffsetsLine2[sData->isHoenn], sTrainerCardTextColors, TEXT_SKIP_DRAW, sData->easyChatProfile[2]);
-        AddTextPrinterParameterized3(WIN_CARD_TEXT, FONT_NORMAL, GetStringWidth(FONT_NORMAL, sData->easyChatProfile[2], 0) + 14, yOffsetsLine2[sData->isHoenn], sTrainerCardTextColors, TEXT_SKIP_DRAW, sData->easyChatProfile[3]);
-    }
 }
 
 static void BufferNameForCardBack(void)
@@ -1588,47 +1576,7 @@ void ShowTrainerCardInLink(u8 cardId, void (*callback)(void))
 
 static void InitTrainerCardData(void)
 {
-    u32 i;
 
-    sData->mainState = 0;
-    sData->timeColonBlinkTimer = gSaveBlockPtr->playTimeVBlanks;
-    sData->timeColonInvisible = FALSE;
-    sData->onBack = FALSE;
-    sData->flipBlendY = 0;
-    sData->cardType = GetSetCardType();
-    for (i = 0; i < TRAINER_CARD_PROFILE_LENGTH; i++)
-        CopyEasyChatWord(sData->easyChatProfile[i], sData->trainerCard.easyChatProfile[i]);
-}
-
-static u8 GetSetCardType(void)
-{
-    if (sData == NULL)
-    {
-        if (gGameVersion == VERSION_FIRE_RED || gGameVersion == VERSION_LEAF_GREEN)
-            return CARD_TYPE_FRLG;
-        else if (gGameVersion == VERSION_EMERALD)
-            return CARD_TYPE_EMERALD;
-        else
-            return CARD_TYPE_RS;
-    }
-    else
-    {
-        if (sData->trainerCard.version == VERSION_FIRE_RED || sData->trainerCard.version == VERSION_LEAF_GREEN)
-        {
-            sData->isHoenn = FALSE;
-            return CARD_TYPE_FRLG;
-        }
-        else if (sData->trainerCard.version == VERSION_EMERALD)
-        {
-            sData->isHoenn = TRUE;
-            return CARD_TYPE_EMERALD;
-        }
-        else
-        {
-            sData->isHoenn = TRUE;
-            return CARD_TYPE_RS;
-        }
-    }
 }
 
 static u8 VersionToCardType(u8 version)

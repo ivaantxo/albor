@@ -194,11 +194,6 @@ BattleFrontier_BattlePikeLobby_EventScript_EndCancelChallenge::
 	end
 
 BattleFrontier_BattlePikeLobby_EventScript_ShowResults::
-	lockall
-	frontier_results FRONTIER_FACILITY_PIKE
-	waitbuttonpress
-	special RemoveRecordsWindow
-	releaseall
 	end
 
 BattleFrontier_BattlePikeLobby_EventScript_WalkToCorridor::

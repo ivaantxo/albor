@@ -297,19 +297,9 @@ BattleFrontier_BattlePalaceLobby_Movement_PlayerEnterDoor:
 	step_end
 
 BattleFrontier_BattlePalaceLobby_EventScript_ShowSinglesResults::
-	lockall
-	frontier_results FRONTIER_FACILITY_PALACE, FRONTIER_MODE_SINGLES
-	waitbuttonpress
-	special RemoveRecordsWindow
-	releaseall
 	end
 
 BattleFrontier_BattlePalaceLobby_EventScript_ShowDoublesResults::
-	lockall
-	frontier_results FRONTIER_FACILITY_PALACE, FRONTIER_MODE_DOUBLES
-	waitbuttonpress
-	special RemoveRecordsWindow
-	releaseall
 	end
 
 BattleFrontier_BattlePalaceLobby_EventScript_BlackBelt::
