@@ -97,4 +97,5 @@ paletas: (\d+) (\d+) (\d+) \d+ --> $1 $2 $3
 
 //falta terminar lista de macros (scrcmd...) y terminar strings, después comprobar que todo va bien, y añadir cambios de rama principal.
 
-find . -name "* 2.inc" -delete //para limpiar archivos generados
+//para limpiar archivos generados
+find . -name "* 2.inc" -delete
