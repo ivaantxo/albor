@@ -1147,7 +1147,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 5,
     },
 
-    [ABILITY_MOXIE] =
+    [ABILITY_AUTOESTIMA] =
     {
         .name = _("Autoestima"),
         .description = COMPOUND_STRING("KOs suben ataque."),
@@ -1372,9 +1372,9 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 5,
     },
 
-    [ABILITY_AERILATE] =
+    [ABILITY_CELESTE] =
     {
-        .name = _("Piel celeste"),
+        .name = _("Celeste"),
         .description = COMPOUND_STRING("Volador +25%."),
         .aiRating = 8,
     },
@@ -1482,7 +1482,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 6,
     },
 
-    [ABILITY_BERSERK] =
+    [ABILITY_COLERA] =
     {
         .name = _("Cólera"),
         .description = COMPOUND_STRING("+1 At. esp. si PS -50%."),

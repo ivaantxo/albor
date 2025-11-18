@@ -1770,8 +1770,8 @@
 	various \battler, VARIOUS_RESTORE_PP
 	.endm
 
-	.macro tryactivatemoxie battler:req
-	various \battler, VARIOUS_TRY_ACTIVATE_MOXIE
+	.macro intentaactivarautoestima battler:req
+	various \battler, INTENTA_ACTIVAR_AUTOESTIMA
 	.endm
 
 	.macro tryactivatebeastboost battler:req

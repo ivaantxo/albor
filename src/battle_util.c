@@ -3659,36 +3659,39 @@ static inline u8 GetBattlerSideFaintCounter(u32 battler)
     return GetSideFaintCounter(GetBattlerSide(battler));
 }
 
-static inline bool32 HadMoreThanHalfHpNowDoesnt(u32 battler)
+static inline bool32 BajoMediaVIda(u32 combatiente)
 {
-    u32 cutoff = gBattleMons[battler].maxHP / 2;
-    // Had more than half of hp before, now has less
-     return (gBattleStruct->hpBefore[battler] > cutoff
-             && gBattleMons[battler].hp <= cutoff);
+    u32 mediaVida = gBattleMons[combatiente].maxHP / 2;
+     return (gBattleStruct->hpBefore[combatiente] > mediaVida
+             && gBattleMons[combatiente].hp <= mediaVida);
 }
 
-#define ANIM_ESTADISTICA_PS      0
-#define ANIM_ESTADISTICA_ATAQUE     1
-#define ANIM_ESTADISTICA_DEFENSA     2
-#define ANIM_ESTADISTICA_ATAQUE_ESPECIAL   3
-#define ANIM_ESTADISTICA_DEFENSA_ESPECIAL   4
-#define ANIM_ESTADISTICA_VELOCIDAD   5
-#define ANIM_ESTADISTICA_PRECISION     6
-#define ANIM_ESTADISTICA_EVASION 7
+enum AnimacionesEstadisticas
+{
+    ANIM_ESTADISTICA_PS,
+    ANIM_ESTADISTICA_ATAQUE,
+    ANIM_ESTADISTICA_DEFENSA,
+    ANIM_ESTADISTICA_ATAQUE_ESPECIAL,
+    ANIM_ESTADISTICA_DEFENSA_ESPECIAL,
+    ANIM_ESTADISTICA_VELOCIDAD,
+    ANIM_ESTADISTICA_PRECISION,
+    ANIM_ESTADISTICA_EVASION,
+};
+
 static void ChooseStatBoostAnimation(u32 battler)
 {
     u32 stat;
     bool32 statBuffMoreThan1 = FALSE;
     u32 static const statsOrder[NUMERO_ESTADISTICAS_BATALLA] =
     {
-        [ANIM_ESTADISTICA_PS]      = ESTADISTICA_PS,
-        [ANIM_ESTADISTICA_ATAQUE]     = ESTADISTICA_ATAQUE,
-        [ANIM_ESTADISTICA_DEFENSA]     = ESTADISTICA_DEFENSA,
-        [ANIM_ESTADISTICA_ATAQUE_ESPECIAL]   = ESTADISTICA_ATAQUE_ESPECIAL,
-        [ANIM_ESTADISTICA_DEFENSA_ESPECIAL]   = ESTADISTICA_DEFENSA_ESPECIAL,
-        [ANIM_ESTADISTICA_VELOCIDAD]   = ESTADISTICA_VELOCIDAD,
-        [ANIM_ESTADISTICA_PRECISION]     = ESTADISTICA_PRECISION,
-        [ANIM_ESTADISTICA_EVASION] = ESTADISTICA_EVASION,
+        [ANIM_ESTADISTICA_PS]                   = ESTADISTICA_PS,
+        [ANIM_ESTADISTICA_ATAQUE]               = ESTADISTICA_ATAQUE,
+        [ANIM_ESTADISTICA_DEFENSA]              = ESTADISTICA_DEFENSA,
+        [ANIM_ESTADISTICA_ATAQUE_ESPECIAL]      = ESTADISTICA_ATAQUE_ESPECIAL,
+        [ANIM_ESTADISTICA_DEFENSA_ESPECIAL]     = ESTADISTICA_DEFENSA_ESPECIAL,
+        [ANIM_ESTADISTICA_VELOCIDAD]            = ESTADISTICA_VELOCIDAD,
+        [ANIM_ESTADISTICA_PRECISION]            = ESTADISTICA_PRECISION,
+        [ANIM_ESTADISTICA_EVASION]              = ESTADISTICA_EVASION,
     };
     gBattleScripting.animArg1 = 0;
 
@@ -5109,11 +5112,11 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 effect++;
             }
             break;
-        case ABILITY_BERSERK:
+        case ABILITY_COLERA:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && TARGET_TURN_DAMAGED
              && IsBattlerAlive(battler)
-             && HadMoreThanHalfHpNowDoesnt(battler)
+             && BajoMediaVIda(battler)
              && (gMultiHitCounter == 0 || gMultiHitCounter == 1)
              && !(TestIfSheerForceAffected(gBattlerAttacker, gCurrentMove))
              && CompareStat(battler, ESTADISTICA_ATAQUE_ESPECIAL, ESTADISTICA_MAS_6, COMPARACION_MENOR))
@@ -5129,7 +5132,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && TARGET_TURN_DAMAGED
              && IsBattlerAlive(battler)
-             && HadMoreThanHalfHpNowDoesnt(battler)
+             && BajoMediaVIda(battler)
              && (gMultiHitCounter == 0 || gMultiHitCounter == 1)
              && !(TestIfSheerForceAffected(gBattlerAttacker, gCurrentMove))
              && CompareStat(battler, ESTADISTICA_ATAQUE, ESTADISTICA_MAS_6, COMPARACION_MENOR))
@@ -5629,7 +5632,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
              && TARGET_TURN_DAMAGED
              && (gMultiHitCounter == 0 || gMultiHitCounter == 1) // Activates after all hits from a multi-hit move.
              && IsBattlerAlive(gBattlerTarget)
-             && HadMoreThanHalfHpNowDoesnt(gBattlerTarget)
+             && BajoMediaVIda(gBattlerTarget)
              && !(TestIfSheerForceAffected(gBattlerAttacker, gCurrentMove)))
             {
                 BattleScriptPushCursor();
@@ -8808,7 +8811,7 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
         if (moveType == TIPO_HIELO)
             modifier = uq4_12_multiply(modifier, UQ_4_12(1.2));
         break;
-    case ABILITY_AERILATE:
+    case ABILITY_CELESTE:
         if (moveType == TIPO_VOLADOR)
             modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
         break;

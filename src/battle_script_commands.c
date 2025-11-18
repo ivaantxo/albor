@@ -8775,13 +8775,13 @@ static void Cmd_various(void)
         MarkBattlerForControllerExec(battler);
         break;
     }
-    case VARIOUS_TRY_ACTIVATE_MOXIE:    // and chilling neigh + as one ice rider
+    case INTENTA_ACTIVAR_AUTOESTIMA:    // and chilling neigh + as one ice rider
     {
         VARIOUS_ARGS();
 
         u16 battlerAbility = GetBattlerAbility(battler);
 
-        if ((battlerAbility == ABILITY_MOXIE
+        if ((battlerAbility == ABILITY_AUTOESTIMA
          || battlerAbility == ABILITY_CHILLING_NEIGH
          || battlerAbility == ABILITY_AS_ONE_ICE_RIDER)
           && HasAttackerFaintedTarget()

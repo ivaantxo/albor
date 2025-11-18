@@ -119,7 +119,7 @@ enum Comparaciones
 #define VARIOUS_INSTANT_HP_DROP                      29
 #define VARIOUS_CLEAR_STATUS                         30
 #define VARIOUS_RESTORE_PP                           31
-#define VARIOUS_TRY_ACTIVATE_MOXIE                   32
+#define INTENTA_ACTIVAR_AUTOESTIMA                   32
 #define VARIOUS_TRY_ACTIVATE_FELL_STINGER            33
 #define VARIOUS_PLAY_MOVE_ANIMATION                  34
 #define VARIOUS_SET_LUCKY_CHANT                      35
