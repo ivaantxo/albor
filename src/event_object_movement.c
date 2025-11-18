@@ -1956,7 +1956,7 @@ void GetFollowerAction(struct ScriptContext *ctx) // Essentially a big switch fo
     // Gym type advantage/disadvantage
     if (GetCurrentMapMusic() == MUS_GYM || GetCurrentMapMusic() == MUS_RG_GYM)
     {
-        switch (gMapHeader.regionMapSectionId)
+        /*switch (gMapHeader.regionMapSectionId)
         {
         case MAPSEC_RUSTBORO_CITY:
         case MAPSEC_PEWTER_CITY:
@@ -2006,7 +2006,7 @@ void GetFollowerAction(struct ScriptContext *ctx) // Essentially a big switch fo
                 condEmotes[condCount++] = (struct SpecialEmote) {.emotion = FOLLOWER_EMOTION_HAPPY, .index = 32};
             else if (multi >= UQ_4_12(2.0))
                 condEmotes[condCount++] = (struct SpecialEmote) {.emotion = FOLLOWER_EMOTION_SAD, .index = 7};
-        }
+        }*/
     }
 
     emotion = RandomWeightedIndex(emotion_weight, FOLLOWER_EMOTION_LENGTH);
@@ -2916,7 +2916,6 @@ u8 GetObjectEventBerryTreeId(u8 objectEventId)
 static const struct ObjectEventTemplate *GetObjectEventTemplateByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup)
 {
     const struct ObjectEventTemplate *templates;
-    const struct MapHeader *mapHeader;
     u8 count;
 
     if (gSaveBlockPtr->location.mapNum == mapNum && gSaveBlockPtr->location.mapGroup == mapGroup)
@@ -2926,9 +2925,8 @@ static const struct ObjectEventTemplate *GetObjectEventTemplateByLocalIdAndMap(u
     }
     else
     {
-        mapHeader = Overworld_GetMapHeaderByGroupAndId(mapGroup, mapNum);
-        templates = mapHeader->events->objectEvents;
-        count = mapHeader->events->objectEventCount;
+        templates = Overworld_GetMapHeaderByGroupAndId(mapGroup, mapNum)->events->objectEvents;
+        count = Overworld_GetMapHeaderByGroupAndId(mapGroup, mapNum)->events->objectEventCount;
     }
     return FindObjectEventTemplateByLocalId(localId, templates, count);
 }

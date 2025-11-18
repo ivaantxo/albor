@@ -20,19 +20,6 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
-// There are two types of indicators for the area screen to show where a Pokémon can occur:
-// - Area glows, which highlight any of the maps in MAP_GROUP_TOWNS_AND_ROUTES that have the species.
-//   These are a tilemap with colored rectangular areas that blends in and out. The positions of the
-//   rectangles is determined by the positions of the matching MAPSEC values on the region map layout.
-// - Area markers, which highlight any of the maps in MAP_GROUP_DUNGEONS or MAP_GROUP_SPECIAL_AREA that
-//   have the species. These are circular sprites that flash twice. The positions of the sprites is
-//   determined by the data for the corresponding MAPSEC in gRegionMapEntries.
-
-// Only maps in the following map groups have their encounters considered for the area screen
-#define MAP_GROUP_TOWNS_AND_ROUTES MAP_GROUP(PETALBURG_CITY)
-#define MAP_GROUP_DUNGEONS MAP_GROUP(METEOR_FALLS_1F_1R)
-#define MAP_GROUP_SPECIAL_AREA MAP_GROUP(SAFARI_ZONE_NORTHWEST)
-
 #define AREA_SCREEN_WIDTH 32
 #define AREA_SCREEN_HEIGHT 20
 
@@ -93,11 +80,6 @@ struct
 
 static void FindMapsWithMon(u16);
 static void BuildAreaGlowTilemap(void);
-static void SetAreaHasMon(u16, u16);
-static void SetSpecialMapHasMon(u16, u16);
-static u16 GetRegionMapSectionId(u8, u8);
-static bool8 MapHasSpecies(const struct WildPokemonHeader *, u16);
-static bool8 MonListHasSpecies(const struct WildPokemonInfo *, u16, u16);
 static void DoAreaGlow(void);
 static void Task_ShowPokedexAreaScreen(u8);
 static void CreateAreaMarkerSprites(void);
@@ -116,24 +98,17 @@ static const u16 sSpeciesHiddenFromAreaScreen[] = { SPECIES_MEW };
 
 static const u16 sMovingRegionMapSections[3] =
 {
-    MAPSEC_MARINE_CAVE,
-    MAPSEC_UNDERWATER_MARINE_CAVE,
-    MAPSEC_TERRA_CAVE
+    MAPSEC_NONE
 };
 
 static const u16 sFeebasData[][3] =
 {
-    {SPECIES_FEEBAS, MAP_GROUP(ROUTE119), MAP_NUM(ROUTE119)},
     {NUM_SPECIES}
 };
 
 static const u16 sLandmarkData[][2] =
 {
-    {MAPSEC_SKY_PILLAR,       FLAG_LANDMARK_SKY_PILLAR},
-    {MAPSEC_SEAFLOOR_CAVERN,  FLAG_LANDMARK_SEAFLOOR_CAVERN},
-    {MAPSEC_ALTERING_CAVE,    FLAG_LANDMARK_ALTERING_CAVE},
-    {MAPSEC_MIRAGE_TOWER,     FLAG_LANDMARK_MIRAGE_TOWER},
-    {MAPSEC_DESERT_UNDERPASS, FLAG_LANDMARK_DESERT_UNDERPASS},
+
     {MAPSEC_NONE}
 };
 
@@ -258,142 +233,6 @@ static void FindMapsWithMon(u16 species)
         if (sSpeciesHiddenFromAreaScreen[i] == species)
             return;
     }
-
-    // Add Pokémon with special encounter circumstances (i.e. not listed
-    // in the regular wild encounter table) to the area map.
-    // This only applies to Feebas on Route 119, but it was clearly set
-    // up to allow handling others.
-    for (i = 0; sFeebasData[i][0] != NUM_SPECIES; i++)
-    {
-        if (species == sFeebasData[i][0])
-        {
-            switch (sFeebasData[i][1])
-            {
-            case MAP_GROUP_TOWNS_AND_ROUTES:
-                SetAreaHasMon(sFeebasData[i][1], sFeebasData[i][2]);
-                break;
-            case MAP_GROUP_DUNGEONS:
-            case MAP_GROUP_SPECIAL_AREA:
-                SetSpecialMapHasMon(sFeebasData[i][1], sFeebasData[i][2]);
-                break;
-            }
-        }
-    }
-
-    // Add regular species to the area map
-    for (i = 0; gWildMonHeaders[i].mapGroup != MAP_GROUP(UNDEFINED); i++)
-    {
-        if (MapHasSpecies(&gWildMonHeaders[i], species))
-        {
-            switch (gWildMonHeaders[i].mapGroup)
-            {
-            case MAP_GROUP_TOWNS_AND_ROUTES:
-                SetAreaHasMon(gWildMonHeaders[i].mapGroup, gWildMonHeaders[i].mapNum);
-                break;
-            case MAP_GROUP_DUNGEONS:
-            case MAP_GROUP_SPECIAL_AREA:
-                SetSpecialMapHasMon(gWildMonHeaders[i].mapGroup, gWildMonHeaders[i].mapNum);
-                break;
-            }
-        }
-    }
-}
-
-static void SetAreaHasMon(u16 mapGroup, u16 mapNum)
-{
-    if (sPokedexAreaScreen->numOverworldAreas < MAX_AREA_HIGHLIGHTS)
-    {
-        sPokedexAreaScreen->overworldAreasWithMons[sPokedexAreaScreen->numOverworldAreas].mapGroup = mapGroup;
-        sPokedexAreaScreen->overworldAreasWithMons[sPokedexAreaScreen->numOverworldAreas].mapNum = mapNum;
-        sPokedexAreaScreen->overworldAreasWithMons[sPokedexAreaScreen->numOverworldAreas].regionMapSectionId = CorrectSpecialMapSecId(Overworld_GetMapHeaderByGroupAndId(mapGroup, mapNum)->regionMapSectionId);
-        sPokedexAreaScreen->numOverworldAreas++;
-    }
-}
-
-static void SetSpecialMapHasMon(u16 mapGroup, u16 mapNum)
-{
-    u32 i;
-
-    if (sPokedexAreaScreen->numSpecialAreas < MAX_AREA_MARKERS)
-    {
-        u16 regionMapSectionId = GetRegionMapSectionId(mapGroup, mapNum);
-        if (regionMapSectionId < MAPSEC_NONE)
-        {
-            // Don't highlight the area if it's a moving area (Marine/Terra Cave)
-            for (i = 0; i < ARRAY_COUNT(sMovingRegionMapSections); i++)
-            {
-                if (regionMapSectionId == sMovingRegionMapSections[i])
-                    return;
-            }
-
-            // Don't highlight the area if it's an undiscovered landmark (e.g. Sky Pillar)
-            for (i = 0; sLandmarkData[i][0] != MAPSEC_NONE; i++)
-            {
-                if (regionMapSectionId == sLandmarkData[i][0] && !FlagGet(sLandmarkData[i][1]))
-                    return;
-            }
-
-            // Check if this special area is already being tracked
-            for (i = 0; i < sPokedexAreaScreen->numSpecialAreas; i++)
-            {
-                if (sPokedexAreaScreen->specialAreaRegionMapSectionIds[i] == regionMapSectionId)
-                    break;
-            }
-
-            if (i == sPokedexAreaScreen->numSpecialAreas)
-            {
-                // New special area
-                sPokedexAreaScreen->specialAreaRegionMapSectionIds[i] = regionMapSectionId;
-                sPokedexAreaScreen->numSpecialAreas++;
-            }
-        }
-    }
-}
-
-static u16 GetRegionMapSectionId(u8 mapGroup, u8 mapNum)
-{
-    return Overworld_GetMapHeaderByGroupAndId(mapGroup, mapNum)->regionMapSectionId;
-}
-
-static bool8 MapHasSpecies(const struct WildPokemonHeader *info, u16 species)
-{
-    // If this is a header for Altering Cave, skip it if it's not the current Altering Cave encounter set
-    if (GetRegionMapSectionId(info->mapGroup, info->mapNum) == MAPSEC_ALTERING_CAVE)
-    {
-        sPokedexAreaScreen->alteringCaveCounter++;
-        if (sPokedexAreaScreen->alteringCaveCounter != sPokedexAreaScreen->alteringCaveId + 1)
-            return FALSE;
-    }
-
-    if (MonListHasSpecies(info->landMonsInfo, species, LAND_WILD_COUNT))
-        return TRUE;
-    if (MonListHasSpecies(info->waterMonsInfo, species, WATER_WILD_COUNT))
-        return TRUE;
-// When searching the fishing encounters, this incorrectly uses the size of the land encounters.
-// As a result it's reading out of bounds of the fishing encounters tables.
-#ifdef BUGFIX
-    if (MonListHasSpecies(info->fishingMonsInfo, species, FISH_WILD_COUNT))
-#else
-    if (MonListHasSpecies(info->fishingMonsInfo, species, LAND_WILD_COUNT))
-#endif
-        return TRUE;
-    if (MonListHasSpecies(info->rockSmashMonsInfo, species, ROCK_WILD_COUNT))
-        return TRUE;
-    return FALSE;
-}
-
-static bool8 MonListHasSpecies(const struct WildPokemonInfo *info, u16 species, u16 size)
-{
-    u32 i;
-    if (info != NULL)
-    {
-        for (i = 0; i < size; i++)
-        {
-            if (info->wildPokemon[i].species == species)
-                return TRUE;
-        }
-    }
-    return FALSE;
 }
 
 static void BuildAreaGlowTilemap(void)

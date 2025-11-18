@@ -1077,7 +1077,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         FOLLOWER(Pikachu, TRACKS_FOOT),
         FOLLOWER_HEMBRA(Pikachu, TRACKS_FOOT),
         .evolutions = EVOLUTION({EVO_ITEM, ITEM_MAGNET, SPECIES_RAICHU},
-                                {EVO_MAPSEC, MAPSEC_NEW_MAUVILLE, SPECIES_RAICHU_ALOLA}),
+                                {EVO_MAPSEC, MAPSEC_TEST, SPECIES_RAICHU_ALOLA}),
     },
 
     [SPECIES_RAICHU] =
@@ -1589,7 +1589,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         ICONO(Clefairy),
         FOLLOWER(Clefairy, TRACKS_FOOT),
         MOVIMIENTOS(Clefairy),
-        .evolutions = EVOLUTION({EVO_MAPSEC, MAPSEC_MT_MOON, SPECIES_CLEFABLE}),
+        .evolutions = EVOLUTION({EVO_MAPSEC, MAPSEC_TEST, SPECIES_CLEFABLE}),
         MOVIMIENTOS_HUEVO(Cleffa),
     },
 
@@ -1662,7 +1662,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         ICONO(Vulpix),
         FOLLOWER(Vulpix, TRACKS_FOOT),
         MOVIMIENTOS(Vulpix),
-        .evolutions = EVOLUTION({EVO_MAPSEC, MAPSEC_POKEMON_TOWER, SPECIES_NINETALES}),
+        .evolutions = EVOLUTION({EVO_MAPSEC, MAPSEC_TEST, SPECIES_NINETALES}),
         MOVIMIENTOS_HUEVO(Vulpix),
     },
 
@@ -2361,7 +2361,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         ICONO(Growlithe),
         FOLLOWER(Growlithe, TRACKS_FOOT),
         MOVIMIENTOS(Growlithe),
-        .evolutions = EVOLUTION({EVO_MAPSEC, MAPSEC_EVER_GRANDE_CITY, SPECIES_ARCANINE}), //MAPSEC_TORRE_QUEMADA
+        .evolutions = EVOLUTION({EVO_MAPSEC, MAPSEC_TEST, SPECIES_ARCANINE}), //MAPSEC_TORRE_QUEMADA
         MOVIMIENTOS_HUEVO(Growlithe),
     },
 
@@ -3220,7 +3220,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         FOLLOWER(Magneton, TRACKS_NONE),
         MOVIMIENTOS(Magneton),
         MOVIMIENTOS_HUEVO(Magnemite),
-        .evolutions = EVOLUTION({EVO_MAPSEC, MAPSEC_NEW_MAUVILLE, SPECIES_MAGNEZONE}),
+        .evolutions = EVOLUTION({EVO_MAPSEC, MAPSEC_TEST, SPECIES_MAGNEZONE}),
     },
 
     [SPECIES_MAGNEZONE] =
@@ -3782,7 +3782,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         FOLLOWER(Exeggcute, TRACKS_SPOT),
         MOVIMIENTOS(Exeggcute),
         MOVIMIENTOS_HUEVO(Exeggcute),
-        .evolutions = EVOLUTION({EVO_MAPSEC, MAPSEC_ROUTE_101, SPECIES_EXEGGUTOR}), //MAPSEC_BAHIA_GRESCA?
+        .evolutions = EVOLUTION({EVO_MAPSEC, MAPSEC_TEST, SPECIES_EXEGGUTOR}), //MAPSEC_BAHIA_GRESCA?
     },
 
     [SPECIES_EXEGGUTOR] =
@@ -4712,7 +4712,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         FOLLOWER(Staryu, TRACKS_FOOT),
         MOVIMIENTOS(Staryu),
         MOVIMIENTOS_HUEVO(Staryu),
-        .evolutions = EVOLUTION({EVO_MAPSEC, MAPSEC_MT_MOON, SPECIES_STARMIE}),
+        .evolutions = EVOLUTION({EVO_MAPSEC, MAPSEC_TEST, SPECIES_STARMIE}),
     },
 
     [SPECIES_STARMIE] =
@@ -5461,7 +5461,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
                                 {EVO_NIVEL_DIA, 40, SPECIES_ESPEON},
                                 {EVO_NIVEL_NOCHE, 40, SPECIES_UMBREON},
                                 {EVO_ITEM, ITEM_LEAF_STONE, SPECIES_LEAFEON},
-                                {EVO_MAPSEC, MAPSEC_SHOAL_CAVE, SPECIES_GLACEON},
+                                {EVO_MAPSEC, MAPSEC_TEST, SPECIES_GLACEON},
                                 {EVO_AMISTAD, SPECIES_SYLVEON}),
     },
 
@@ -10879,7 +10879,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         FOLLOWER(Nosepass, TRACKS_FOOT),
         MOVIMIENTOS(Nosepass),
         MOVIMIENTOS_HUEVO(Nosepass),
-        .evolutions = EVOLUTION({EVO_MAPSEC, MAPSEC_NEW_MAUVILLE, SPECIES_PROBOPASS},
+        .evolutions = EVOLUTION({EVO_MAPSEC, MAPSEC_TEST, SPECIES_PROBOPASS},
                                 {EVO_ITEM, ITEM_THUNDER_STONE, SPECIES_PROBOPASS}),
     },
 
