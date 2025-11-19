@@ -37,6 +37,7 @@
 #include "new_game.h"
 #include "palette.h"
 #include "play_time.h"
+#include "pokemon_salvajes_ow.h"
 #include "random.h"
 #include "rotating_gate.h"
 #include "rtc.h"
@@ -1397,6 +1398,7 @@ void OverworldBasic(void)
             UpdatePalettesWithTime(PALETTES_ALL);
         }
     }
+    ActualizarPokemonSalvajesOw();
 }
 
 void CB2_Overworld(void)

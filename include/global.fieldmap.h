@@ -223,20 +223,20 @@ struct ObjectEvent
 
 struct ObjectEventGraphicsInfo
 {
-    /*0x00*/ u16 tileTag;
-    /*0x02*/ u16 paletteTag;
-    /*0x06*/ u16 size;
-    /*0x08*/ s16 width;
-    /*0x0A*/ s16 height;
-             u8 shadowSize:2;
-             u8 inanimate:1;
-             u8 compressed:1;
-    /*0x0D*/ u8 tracks;
-    /*0x10*/ const struct OamData *oam;
-    /*0x14*/ const struct SubspriteTable *subspriteTables;
-    /*0x18*/ const union AnimCmd *const *anims;
-    /*0x1C*/ const struct SpriteFrameImage *images;
-    /*0x20*/ const union AffineAnimCmd *const *affineAnims;
+    u16 tileTag;
+    u16 paletteTag;
+    u16 size;
+    s16 width;
+    s16 height;
+        u8 shadowSize:2;
+        u8 inanimate:1;
+        u8 compressed:1;
+    u8 tracks;
+    const struct OamData *oam;
+    const struct SubspriteTable *subspriteTables;
+    const union AnimCmd *const *anims;
+    const struct SpriteFrameImage *images;
+    const union AffineAnimCmd *const *affineAnims;
 };
 
 enum {
@@ -337,7 +337,7 @@ struct PlayerAvatar
 
 struct Camera
 {
-    bool8 active:1;
+    bool32 active;
     s32 x;
     s32 y;
 };

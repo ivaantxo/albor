@@ -400,23 +400,21 @@ void BattleSetup_StartWildBattle(void)
     if (GetSafariZoneFlag())
         DoSafariBattle();
     else
-        DoStandardWildBattle(FALSE);
+        DoStandardWildBattle();
 }
 
 void BattleSetup_StartDoubleWildBattle(void)
 {
-    DoStandardWildBattle(TRUE);
+    DoStandardWildBattle();
 }
 
-void DoStandardWildBattle(bool32 isDouble)
+void DoStandardWildBattle(void)
 {
     LockPlayerFieldControls();
     FreezeObjectEvents();
     StopPlayerAvatar();
     gMain.savedCallback = CB2_EndWildBattle;
     gBattleTypeFlags = TIPO_BATALLA_SALVAJE;
-    if (isDouble)
-        gBattleTypeFlags |= TIPO_BATALLA_ENTRENADOR;
     CreateBattleStartTask(GetWildBattleTransition(), 0);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);

@@ -65,7 +65,7 @@ bool8 IsTrainerReadyForRematch(void);
 void ShouldTryGetTrainerScript(void);
 u16 CountBattledRematchTeams(u16 trainerId);
 
-void DoStandardWildBattle(bool32 isDouble);
+void DoStandardWildBattle(void);
 void DoStandardWildBattle_Debug(void);
 void BattleSetup_StartTrainerBattle_Debug(void);
 s32 TrainerIdToRematchTableId(const struct RematchTrainer *table, u16 trainerId);

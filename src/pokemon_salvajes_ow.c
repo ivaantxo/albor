@@ -6,26 +6,14 @@
 #include "metatile_behavior.h"
 #include "random.h"
 #include "overworld.h"
-#include "object_event.h"
 #include "event_object_movement.h"
 #include "wild_encounter.h"
 #include "battle_setup.h"
 #include "script.h"
+#include "constants/event_objects.h"
+#include "constants/wild_encounter.h"
 
 static struct PokemonSalvajeOw sPokemonSalvajesOw[MAXIMO_POKEMON_SALVAJES_OW];
-
-static bool32 EsVisibleEnCamara(s16 x, s16 y)
-{
-    s16 xJugador, yJugador;
-    PlayerGetDestCoords(&xJugador, &yJugador);
-
-    if (x < (xJugador - VISIBILIDAD_POKEMON_SALVAJE_OW) || x > (xJugador + VISIBILIDAD_POKEMON_SALVAJE_OW))
-        return FALSE;
-    if (y < (yJugador - VISIBILIDAD_POKEMON_SALVAJE_OW) || y > (yJugador + VISIBILIDAD_POKEMON_SALVAJE_OW))
-        return FALSE;
-
-    return TRUE;
-}
 
 static bool32 EsTileDeHierba(s16 x, s16 y)
 {
@@ -63,155 +51,152 @@ static const struct WildPokemonHeader *ObtenHeaderPokemonSalvajeDeMapa(void)
     }
 }
 
-static void GeneraEspeciePokemonOw(u16 *especie, u8 *nivel)
+static bool32 GeneraEspeciePokemonOw(u16 *especie, u8 *nivel)
 {
     const struct WildPokemonHeader *header = ObtenHeaderPokemonSalvajeDeMapa();
     if (header == NULL || header->landMonsInfo == NULL)
-        return;
+        return FALSE;
 
     const struct WildPokemonInfo *info = header->landMonsInfo;
-    u32 index = ChooseWildMonIndex_Land();
-    *especie = info->wildPokemon[index].species;
-    *nivel = ChooseWildMonLevel(info->wildPokemon, index, WILD_AREA_LAND);
+
+    u32 indice = ChooseWildMonIndex_Land();
+    *especie = info->wildPokemon[indice].species;
+    *nivel   = ChooseWildMonLevel(info->wildPokemon, indice, WILD_AREA_LAND);
+
+    return TRUE;
 }
 
-static u8 CreateWildOwObject(struct PokemonSalvajeOw *slot)
+static u32 CreaObjetoPokemonSalvajeOw(struct PokemonSalvajeOw *pokemonSalvaje, u8 indice)
 {
-    struct ObjectEventTemplate tmpl = {0};
+    struct ObjectEventTemplate plantilla = {0};
+    // Por ahora, solo especie sin shiny/female
+    plantilla.graphicsId = pokemonSalvaje->especie + OBJ_EVENT_MON;
 
-    tmpl.graphicsId = OBJ_EVENT_GFX_MON_ICON;     // usa tu sprite de follower compartido
-    tmpl.localId = OBJ_EVENT_ID_PLAYER + 20;      // ID alto para evitar conflictos
-    tmpl.x = slot->x;
-    tmpl.y = slot->y;
-    tmpl.movementType = MOVEMENT_TYPE_WANDER_AROUND; // movimiento base
-    tmpl.elevation = 1;
+    plantilla.localId = 200 + indice;
+    plantilla.x = pokemonSalvaje->x;
+    plantilla.y = pokemonSalvaje->y;
+    plantilla.movementType = MOVEMENT_TYPE_WANDER_AROUND;
+    plantilla.elevation = 1;
 
-    u8 id = SpawnObjectEvent(&tmpl);
+    u32 id = SpawnSpecialObjectEvent(&plantilla);
+
+    if (id == OBJECT_EVENTS_COUNT)
+        return 0;
+
+    pokemonSalvaje->idObjetoEvento = id;
     return id;
 }
 
-// ------------------------------------------------------
-// Intento de spawn
-// ------------------------------------------------------
-static void TrySpawnOwMonsterAt(s16 x, s16 y)
+static void IntentaCrearPokemonEnPosicion(s16 x, s16 y)
 {
     if (Random() % FRECUENCIA_APARICION_POKEMON_SALVAJES_OW != 0)
         return;
 
-    for (int i = 0; i < MAXIMO_POKEMON_SALVAJES_OW; i++)
+    for (u32 i = 0; i < MAXIMO_POKEMON_SALVAJES_OW; i++)
     {
-        struct PokemonSalvajeOw *s = &sPokemonSalvajesOw[i];
+        struct PokemonSalvajeOw *pokemonSalvaje = &sPokemonSalvajesOw[i];
 
-        if (s->estado == ESTADO_POKEMON_SALVAJE_INACTIVO)
+        if (pokemonSalvaje->estado == ESTADO_POKEMON_SALVAJE_INACTIVO)
         {
-            if (!GenerateWildSpecies(&s->especie, &s->nivel))
+            if (!GeneraEspeciePokemonOw(&pokemonSalvaje->especie, &pokemonSalvaje->nivel))
                 return;
 
-            s->x = x;
-            s->y = y;
-            s->estado = ESTADO_POKEMON_SALVAJE_ACTIVO;
-            s->personalidad = Random();
+            pokemonSalvaje->x = x;
+            pokemonSalvaje->y = y;
+            pokemonSalvaje->estado = ESTADO_POKEMON_SALVAJE_ACTIVO;
+            pokemonSalvaje->personalidad = Random();
 
-            s->idObjetoEvento = CreateWildOwObject(s);
+            pokemonSalvaje->idObjetoEvento = CreaObjetoPokemonSalvajeOw(pokemonSalvaje, i);
             return;
         }
     }
 }
 
-// ------------------------------------------------------
-// Movimiento aleatorio simple por hierba
-// ------------------------------------------------------
-static void MoveOwMonster(struct PokemonSalvajeOw *s)
+static void MuevePokemonOw(struct PokemonSalvajeOw *pokemon)
 {
-    if (Random() & 1)
-        return;
-
-    s16 nx = s->x;
-    s16 ny = s->y;
+    s16 nuevaXPokemon = pokemon->x;
+    s16 nuevaYPokemon = pokemon->y;
 
     switch (Random() & 3)
     {
     case 0:
-        nx++;
+        nuevaXPokemon++;
         break;
     case 1:
-        nx--;
+        nuevaXPokemon--;
         break;
     case 2:
-        ny++;
+        nuevaYPokemon++;
         break;
     case 3:
-        ny--;
+        nuevaYPokemon--;
         break;
     }
 
-    if (!EsTileDeHierba(nx, ny))
+    if (!EsTileDeHierba(nuevaXPokemon, nuevaYPokemon))
         return;
 
-    MoveObjectEventToPosition(&gObjectEvents[s->idObjetoEvento], nx, ny);
-    s->x = nx;
-    s->y = ny;
+    MoveObjectEventToMapCoords(&gObjectEvents[pokemon->idObjetoEvento], nuevaXPokemon, nuevaYPokemon); // ???
+    pokemon->x = nuevaXPokemon;
+    pokemon->y = nuevaYPokemon;
 }
 
-static bool8 IsAdjacentToPlayer(s16 x, s16 y)
+static bool32 EsAdyacenteAJugador(s16 x, s16 y)
 {
-    s16 px, py;
-    PlayerGetDestCoords(&px, &py);
+    s16 xJugador, yJugador;
+    PlayerGetDestCoords(&xJugador, &yJugador);
 
-    if ((abs(px - x) + abs(py - y)) == 1)
+    if ((abs(xJugador - x) + abs(yJugador - y)) == 1)
         return TRUE;
 
     return FALSE;
 }
 
-static void StartOwBattle(struct PokemonSalvajeOw *s)
+static void EmpiezaBatallaPokemonSalvajeOw(struct PokemonSalvajeOw *pokemonSalvaje)
 {
-    CreateWildMon(s->especie, s->nivel);
+    CreateWildMon(pokemonSalvaje->especie, pokemonSalvaje->nivel);
 
-    gEnemyParty[0].personality = s->personalidad;
+    gEnemyParty[0].box.personality = pokemonSalvaje->personalidad; // ?????
 
-    gObjectEvents[s->idObjetoEvento].active = FALSE;
-    s->estado = ESTADO_POKEMON_SALVAJE_INACTIVO;
+    gObjectEvents[pokemonSalvaje->idObjetoEvento].active = FALSE;
+    pokemonSalvaje->estado = ESTADO_POKEMON_SALVAJE_INACTIVO;
 
     DoStandardWildBattle();
 }
 
-void PokemonSalvajesOw_Update(void)
+void ActualizarPokemonSalvajesOw(void)
 {
-    s16 px, py;
-    PlayerGetDestCoords(&px, &py);
+    s16 xJugador, yJugador;
+    PlayerGetDestCoords(&xJugador, &yJugador);
 
-    for (s16 dx = -8; dx <= 8; dx++)
+    for (s16 distanciaHorizontal = -VISIBILIDAD_POKEMON_SALVAJE_OW; distanciaHorizontal <= VISIBILIDAD_POKEMON_SALVAJE_OW; distanciaHorizontal++)
     {
-        for (s16 dy = -6; dy <= 6; dy++)
+        for (s16 distanciaVertical = -VISIBILIDAD_POKEMON_SALVAJE_OW; distanciaVertical <= VISIBILIDAD_POKEMON_SALVAJE_OW; distanciaVertical++)
         {
-            s16 x = px + dx;
-            s16 y = py + dy;
+            s16 x = xJugador + distanciaHorizontal;
+            s16 y = yJugador + distanciaVertical;
 
             if (!EsTileDeHierba(x, y))
-                continue;
-
-            if (!EsVisibleEnCamara(x, y))
                 continue;
 
             if (EstaDemasiadoCercaDeJugador(x, y))
                 continue;
 
-            TrySpawnOwMonsterAt(x, y);
+            IntentaCrearPokemonEnPosicion(x, y);
         }
     }
 
     for (u32 i = 0; i < MAXIMO_POKEMON_SALVAJES_OW; i++)
     {
-        struct PokemonSalvajeOw *s = &sPokemonSalvajesOw[i];
-        if (s->estado != ESTADO_POKEMON_SALVAJE_ACTIVO)
+        struct PokemonSalvajeOw *pokemonSalvaje = &sPokemonSalvajesOw[i];
+        if (pokemonSalvaje->estado != ESTADO_POKEMON_SALVAJE_ACTIVO)
             continue;
 
-        MoveOwMonster(s);
+        MuevePokemonOw(pokemonSalvaje);
 
-        if (IsAdjacentToPlayer(s->x, s->y))
+        if (EsAdyacenteAJugador(pokemonSalvaje->x, pokemonSalvaje->y))
         {
-            StartOwBattle(s);
+            EmpiezaBatallaPokemonSalvajeOw(pokemonSalvaje);
             return;
         }
     }

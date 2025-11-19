@@ -42,7 +42,6 @@ static EWRAM_DATA u16 sPrevMetatileBehavior = 0;
 
 COMMON_DATA u8 gSelectedObjectEvent = 0;
 
-static void GetPlayerPosition(struct MapPosition *);
 static void GetInFrontOfPlayerPosition(struct MapPosition *);
 static u16 GetPlayerCurMetatileBehavior(int);
 static bool8 TryStartInteractionScript(struct MapPosition *, u16, u8);
@@ -234,7 +233,7 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
     return FALSE;
 }
 
-static void GetPlayerPosition(struct MapPosition *position)
+void GetPlayerPosition(struct MapPosition *position)
 {
     PlayerGetDestCoords(&position->x, &position->y);
     position->elevation = PlayerGetElevation();
