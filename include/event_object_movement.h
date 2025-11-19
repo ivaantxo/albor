@@ -466,4 +466,6 @@ u8 GetSidewaysStairsCollision(struct ObjectEvent *objectEvent, u8 dir, u8 curren
 bool8 MovementAction_EmoteX_Step0(struct ObjectEvent *, struct Sprite *);
 bool8 MovementAction_EmoteDoubleExclamationMark_Step0(struct ObjectEvent *, struct Sprite *);
 
+void RemoveObjectEvent(struct ObjectEvent *objectEvent);
+
 #endif //GUARD_EVENT_OBJECT_MOVEMENT_H

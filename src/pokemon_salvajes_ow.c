@@ -13,6 +13,8 @@
 #include "constants/event_objects.h"
 #include "constants/wild_encounter.h"
 
+static u8 sPrevTileTransitionState = T_NOT_MOVING;
+static u8 sTemporizadorGeneracion = 0;
 static struct PokemonSalvajeOw sPokemonSalvajesOw[MAXIMO_POKEMON_SALVAJES_OW];
 
 static bool32 EsTileDeHierba(s16 x, s16 y)
@@ -21,15 +23,24 @@ static bool32 EsTileDeHierba(s16 x, s16 y)
     return MetatileBehavior_IsTallGrass(comportamientoMetatile);
 }
 
+static bool32 EstaTileOcupado(s16 x, s16 y)
+{
+    u32 objId = GetObjectEventIdByXY(x, y);
+    return (objId != OBJECT_EVENTS_COUNT);
+}
+
 static bool32 EstaDemasiadoCercaDeJugador(s16 x, s16 y)
 {
     s16 xJugador, yJugador;
     PlayerGetDestCoords(&xJugador, &yJugador);
 
-    s16 distanciaHorizontal = abs(x - xJugador);
-    s16 distanciaVertical = abs(y - yJugador);
+    return (abs(x - xJugador) <= DISTANCIA_MINIMA_POKEMON_SALVAJE_OW
+         && abs(y - yJugador) <= DISTANCIA_MINIMA_POKEMON_SALVAJE_OW);
+}
 
-    return (distanciaHorizontal <= DISTANCIA_MINIMA_POKEMON_SALVAJE_OW && distanciaVertical <= DISTANCIA_MINIMA_POKEMON_SALVAJE_OW);
+bool32 JugadorHaDadoUnPaso(void)
+{
+    return gPlayerAvatar.tileTransitionState == T_TILE_TRANSITION;
 }
 
 static const struct WildPokemonHeader *ObtenHeaderPokemonSalvajeDeMapa(void)
@@ -40,7 +51,7 @@ static const struct WildPokemonHeader *ObtenHeaderPokemonSalvajeDeMapa(void)
     {
         const struct WildPokemonHeader *header = &gWildMonHeaders[i];
 
-        if (header->mapGroup == MAP_GROUP(UNDEFINED))
+        if (header->mapGroup == MAP_GROUP(MAP_UNDEFINED))
             return NULL;
 
         if (header->mapGroup == gSaveBlockPtr->location.mapGroup &&
@@ -66,79 +77,65 @@ static bool32 GeneraEspeciePokemonOw(u16 *especie, u8 *nivel)
     return TRUE;
 }
 
-static u32 CreaObjetoPokemonSalvajeOw(struct PokemonSalvajeOw *pokemonSalvaje, u8 indice)
+static u32 CreaObjetoPokemonSalvajeOw(struct PokemonSalvajeOw *pokemonSalvaje, u32 indice)
 {
     struct ObjectEventTemplate plantilla = {0};
-    // Por ahora, solo especie sin shiny/female
+
     plantilla.graphicsId = pokemonSalvaje->especie + OBJ_EVENT_MON;
 
-    plantilla.localId = 200 + indice;
+    // ❗ Corregido: localId no puede ser LOCALID_NONE
+    plantilla.localId = (u8)(indice + 1);
+
     plantilla.x = pokemonSalvaje->x;
     plantilla.y = pokemonSalvaje->y;
     plantilla.movementType = MOVEMENT_TYPE_WANDER_AROUND;
-    plantilla.elevation = 1;
 
     u32 id = SpawnSpecialObjectEvent(&plantilla);
-
     if (id == OBJECT_EVENTS_COUNT)
-        return 0;
+        return OBJECT_EVENTS_COUNT;
 
     pokemonSalvaje->idObjetoEvento = id;
     return id;
 }
 
-static void IntentaCrearPokemonEnPosicion(s16 x, s16 y)
+static void EliminarObjetoPokemonOw(struct PokemonSalvajeOw *pokemonSalvaje)
 {
-    if (Random() % FRECUENCIA_APARICION_POKEMON_SALVAJES_OW != 0)
-        return;
-
-    for (u32 i = 0; i < MAXIMO_POKEMON_SALVAJES_OW; i++)
+    if (pokemonSalvaje->idObjetoEvento != OBJECT_EVENTS_COUNT)
     {
-        struct PokemonSalvajeOw *pokemonSalvaje = &sPokemonSalvajesOw[i];
-
-        if (pokemonSalvaje->estado == ESTADO_POKEMON_SALVAJE_INACTIVO)
-        {
-            if (!GeneraEspeciePokemonOw(&pokemonSalvaje->especie, &pokemonSalvaje->nivel))
-                return;
-
-            pokemonSalvaje->x = x;
-            pokemonSalvaje->y = y;
-            pokemonSalvaje->estado = ESTADO_POKEMON_SALVAJE_ACTIVO;
-            pokemonSalvaje->personalidad = Random();
-
-            pokemonSalvaje->idObjetoEvento = CreaObjetoPokemonSalvajeOw(pokemonSalvaje, i);
-            return;
-        }
+        RemoveObjectEvent(&gObjectEvents[pokemonSalvaje->idObjetoEvento]);
+        pokemonSalvaje->idObjetoEvento = OBJECT_EVENTS_COUNT;
     }
+    pokemonSalvaje->estado = ESTADO_POKEMON_SALVAJE_INACTIVO;
 }
 
 static void MuevePokemonOw(struct PokemonSalvajeOw *pokemon)
 {
-    s16 nuevaXPokemon = pokemon->x;
-    s16 nuevaYPokemon = pokemon->y;
+    s16 nuevaX = pokemon->x;
+    s16 nuevaY = pokemon->y;
 
     switch (Random() & 3)
     {
-    case 0:
-        nuevaXPokemon++;
-        break;
-    case 1:
-        nuevaXPokemon--;
-        break;
-    case 2:
-        nuevaYPokemon++;
-        break;
-    case 3:
-        nuevaYPokemon--;
-        break;
+        case 0: nuevaX++; break;
+        case 1: nuevaX--; break;
+        case 2: nuevaY++; break;
+        case 3: nuevaY--; break;
     }
 
-    if (!EsTileDeHierba(nuevaXPokemon, nuevaYPokemon))
+    if (!EsTileDeHierba(nuevaX, nuevaY))
         return;
 
-    MoveObjectEventToMapCoords(&gObjectEvents[pokemon->idObjetoEvento], nuevaXPokemon, nuevaYPokemon); // ???
-    pokemon->x = nuevaXPokemon;
-    pokemon->y = nuevaYPokemon;
+    s16 xJugador, yJugador;
+    PlayerGetDestCoords(&xJugador, &yJugador);
+    if (nuevaX == xJugador && nuevaY == yJugador)
+        return;
+
+    if (EstaTileOcupado(nuevaX, nuevaY))
+        return;
+
+    MoveObjectEventToMapCoords(&gObjectEvents[pokemon->idObjetoEvento], nuevaX, nuevaY);
+
+    pokemon->x = nuevaX;
+    pokemon->y = nuevaY;
 }
 
 static bool32 EsAdyacenteAJugador(s16 x, s16 y)
@@ -146,20 +143,17 @@ static bool32 EsAdyacenteAJugador(s16 x, s16 y)
     s16 xJugador, yJugador;
     PlayerGetDestCoords(&xJugador, &yJugador);
 
-    if ((abs(xJugador - x) + abs(yJugador - y)) == 1)
-        return TRUE;
-
-    return FALSE;
+    return (abs(xJugador - x) + abs(yJugador - y)) == 1;
 }
 
 static void EmpiezaBatallaPokemonSalvajeOw(struct PokemonSalvajeOw *pokemonSalvaje)
 {
     CreateWildMon(pokemonSalvaje->especie, pokemonSalvaje->nivel);
 
-    gEnemyParty[0].box.personality = pokemonSalvaje->personalidad; // ?????
+    gEnemyParty[0].box.personality = pokemonSalvaje->personalidad;
+    CalculateMonStats(&gEnemyParty[0]);   // ✔ necesario
 
-    gObjectEvents[pokemonSalvaje->idObjetoEvento].active = FALSE;
-    pokemonSalvaje->estado = ESTADO_POKEMON_SALVAJE_INACTIVO;
+    EliminarObjetoPokemonOw(pokemonSalvaje);
 
     DoStandardWildBattle();
 }
@@ -169,34 +163,95 @@ void ActualizarPokemonSalvajesOw(void)
     s16 xJugador, yJugador;
     PlayerGetDestCoords(&xJugador, &yJugador);
 
-    for (s16 distanciaHorizontal = -VISIBILIDAD_POKEMON_SALVAJE_OW; distanciaHorizontal <= VISIBILIDAD_POKEMON_SALVAJE_OW; distanciaHorizontal++)
+    if (sTemporizadorGeneracion > 0)
+        sTemporizadorGeneracion--;
+    bool32 intentoSpawn = (sTemporizadorGeneracion == 0);
+    if (intentoSpawn)
+        sTemporizadorGeneracion = 20;
+
+    bool32 spawnedThisCycle = FALSE;
+
+    if (intentoSpawn)
     {
-        for (s16 distanciaVertical = -VISIBILIDAD_POKEMON_SALVAJE_OW; distanciaVertical <= VISIBILIDAD_POKEMON_SALVAJE_OW; distanciaVertical++)
+        for (s16 dx = -VISIBILIDAD_POKEMON_SALVAJE_OW; dx <= VISIBILIDAD_POKEMON_SALVAJE_OW && !spawnedThisCycle; dx++)
         {
-            s16 x = xJugador + distanciaHorizontal;
-            s16 y = yJugador + distanciaVertical;
+            for (s16 dy = -VISIBILIDAD_POKEMON_SALVAJE_OW; dy <= VISIBILIDAD_POKEMON_SALVAJE_OW && !spawnedThisCycle; dy++)
+            {
+                s16 x = xJugador + dx;
+                s16 y = yJugador + dy;
 
-            if (!EsTileDeHierba(x, y))
-                continue;
+                if (!EsTileDeHierba(x, y))
+                    continue;
 
-            if (EstaDemasiadoCercaDeJugador(x, y))
-                continue;
+                if (EstaDemasiadoCercaDeJugador(x, y))
+                    continue;
 
-            IntentaCrearPokemonEnPosicion(x, y);
+                if (Random() % FRECUENCIA_APARICION_POKEMON_SALVAJES_OW != 0)
+                    continue;
+
+                for (u32 i = 0; i < MAXIMO_POKEMON_SALVAJES_OW; i++)
+                {
+                    struct PokemonSalvajeOw *p = &sPokemonSalvajesOw[i];
+
+                    if (p->estado == ESTADO_POKEMON_SALVAJE_INACTIVO)
+                    {
+                        if (!GeneraEspeciePokemonOw(&p->especie, &p->nivel))
+                            continue;
+
+                        p->x = x;
+                        p->y = y;
+                        p->estado = ESTADO_POKEMON_SALVAJE_ACTIVO;
+                        p->personalidad = Random();
+                        p->temporizador = 0;
+                        p->idObjetoEvento = OBJECT_EVENTS_COUNT;
+
+                        u32 id = CreaObjetoPokemonSalvajeOw(p, i);
+                        if (id != OBJECT_EVENTS_COUNT)
+                        {
+                            spawnedThisCycle = TRUE;
+                            break;
+                        }
+                        else
+                        {
+                            p->estado = ESTADO_POKEMON_SALVAJE_INACTIVO;
+                        }
+                    }
+                }
+            }
         }
     }
 
+    bool32 jugadorHaEmpezadoPaso = FALSE;
+
+    u32 state = gPlayerAvatar.tileTransitionState;
+
+    // Detectar SOLO cuando pasa de quieto a empezar transición
+    if (sPrevTileTransitionState == T_NOT_MOVING
+    && state == T_TILE_TRANSITION)
+    {
+        jugadorHaEmpezadoPaso = TRUE;
+    }
+
+    sPrevTileTransitionState = state;
     for (u32 i = 0; i < MAXIMO_POKEMON_SALVAJES_OW; i++)
     {
-        struct PokemonSalvajeOw *pokemonSalvaje = &sPokemonSalvajesOw[i];
-        if (pokemonSalvaje->estado != ESTADO_POKEMON_SALVAJE_ACTIVO)
+        struct PokemonSalvajeOw *p = &sPokemonSalvajesOw[i];
+        if (p->estado != ESTADO_POKEMON_SALVAJE_ACTIVO)
             continue;
 
-        MuevePokemonOw(pokemonSalvaje);
+        if (jugadorHaEmpezadoPaso)
+            p->temporizador = 1;
 
-        if (EsAdyacenteAJugador(pokemonSalvaje->x, pokemonSalvaje->y))
+        if (p->temporizador > 0)
         {
-            EmpiezaBatallaPokemonSalvajeOw(pokemonSalvaje);
+            p->temporizador--;
+            if (p->temporizador == 0)
+                MuevePokemonOw(p);
+        }
+
+        if (EsAdyacenteAJugador(p->x, p->y))
+        {
+            EmpiezaBatallaPokemonSalvajeOw(p);
             return;
         }
     }
@@ -205,5 +260,13 @@ void ActualizarPokemonSalvajesOw(void)
 void IniciarPokemonSalvajesOw(void)
 {
     for (u32 i = 0; i < MAXIMO_POKEMON_SALVAJES_OW; i++)
+    {
+        if (sPokemonSalvajesOw[i].idObjetoEvento != OBJECT_EVENTS_COUNT)
+            EliminarObjetoPokemonOw(&sPokemonSalvajesOw[i]);
+
         sPokemonSalvajesOw[i].estado = ESTADO_POKEMON_SALVAJE_INACTIVO;
+        sPokemonSalvajesOw[i].idObjetoEvento = OBJECT_EVENTS_COUNT;
+        sPokemonSalvajesOw[i].temporizador = 0;
+    }
+    sTemporizadorGeneracion = 0;
 }
