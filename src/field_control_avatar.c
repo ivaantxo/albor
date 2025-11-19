@@ -156,7 +156,7 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
     u8 playerDirection;
     u16 metatileBehavior;
 
-    gSpecialVar_LastTalked = 0;
+    gSpecialVar_LastTalked = LOCALID_NONE;
     gSelectedObjectEvent = 0;
 
     gMsgIsSignPost = FALSE;
@@ -332,14 +332,14 @@ static const u8 *GetInteractedObjectEventScript(struct MapPosition *position, u8
         break;
     }
 
-    if (objectEventId == OBJECT_EVENTS_COUNT || gObjectEvents[objectEventId].localId == OBJ_EVENT_ID_PLAYER)
+    if (objectEventId == OBJECT_EVENTS_COUNT || gObjectEvents[objectEventId].localId == LOCALID_PLAYER)
     {
         if (MetatileBehavior_IsCounter(metatileBehavior) != TRUE)
             return NULL;
 
         // Look for an object event on the other side of the counter.
         objectEventId = GetObjectEventIdByPosition(position->x + gDirectionToVectors[direction].x, position->y + gDirectionToVectors[direction].y, position->elevation);
-        if (objectEventId == OBJECT_EVENTS_COUNT || gObjectEvents[objectEventId].localId == OBJ_EVENT_ID_PLAYER)
+        if (objectEventId == OBJECT_EVENTS_COUNT || gObjectEvents[objectEventId].localId == LOCALID_PLAYER)
             return NULL;
     }
 

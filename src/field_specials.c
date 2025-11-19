@@ -1005,7 +1005,7 @@ void SpawnCameraObject(void)
 {
     u8 obj = SpawnSpecialObjectEventParameterized(OBJ_EVENT_GFX_BOY_1,
                                                   MOVEMENT_TYPE_FACE_DOWN,
-                                                  OBJ_EVENT_ID_CAMERA,
+                                                  LOCALID_CAMERA,
                                                   gSaveBlockPtr->pos.x + MAP_OFFSET,
                                                   gSaveBlockPtr->pos.y + MAP_OFFSET,
                                                   3); // elevation
@@ -1016,7 +1016,7 @@ void SpawnCameraObject(void)
 void RemoveCameraObject(void)
 {
     CameraObjectSetFollowedSpriteId(GetPlayerAvatarSpriteId());
-    RemoveObjectEventByLocalIdAndMap(OBJ_EVENT_ID_CAMERA, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup);
+    RemoveObjectEventByLocalIdAndMap(LOCALID_CAMERA, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup);
 }
 
 u8 GetPokeblockNameByMonNature(void)

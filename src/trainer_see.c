@@ -991,15 +991,15 @@ void PlayerFaceTrainerAfterBattle(void)
         objEvent = &gObjectEvents[gApproachingTrainers[gWhichTrainerToFaceAfterBattle].objectEventId];
         gPostBattleMovementScript[0] = GetFaceDirectionMovementAction(GetOppositeDirection(objEvent->facingDirection));
         gPostBattleMovementScript[1] = MOVEMENT_ACTION_STEP_END;
-        ScriptMovement_StartObjectMovementScript(OBJ_EVENT_ID_PLAYER, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, gPostBattleMovementScript);
+        ScriptMovement_StartObjectMovementScript(LOCALID_PLAYER, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, gPostBattleMovementScript);
     }
     else
     {
         objEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
         gPostBattleMovementScript[0] = GetFaceDirectionMovementAction(objEvent->facingDirection);
         gPostBattleMovementScript[1] = MOVEMENT_ACTION_STEP_END;
-        ScriptMovement_StartObjectMovementScript(OBJ_EVENT_ID_PLAYER, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, gPostBattleMovementScript);
+        ScriptMovement_StartObjectMovementScript(LOCALID_PLAYER, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, gPostBattleMovementScript);
     }
 
-    SetMovingNpcId(OBJ_EVENT_ID_PLAYER);
+    SetMovingNpcId(LOCALID_PLAYER);
 }

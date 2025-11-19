@@ -113,8 +113,8 @@ EWRAM_DATA bool8 gExitStairsMovementDisabled = FALSE;
 
 static const struct WarpData sDummyWarpData =
 {
-    .mapGroup = MAP_GROUP(UNDEFINED),
-    .mapNum = MAP_NUM(UNDEFINED),
+    .mapGroup = MAP_GROUP(MAP_UNDEFINED),
+    .mapNum = MAP_NUM(MAP_UNDEFINED),
     .warpId = WARP_ID_NONE,
     .x = -1,
     .y = -1,
@@ -429,9 +429,9 @@ static void SetWarpData(struct WarpData *warp, s8 mapGroup, s8 mapNum, s8 warpId
 
 static bool32 IsDummyWarp(struct WarpData *warp)
 {
-    if (warp->mapGroup != (s8)MAP_GROUP(UNDEFINED))
+    if (warp->mapGroup != (s8)MAP_GROUP(MAP_UNDEFINED))
         return FALSE;
-    else if (warp->mapNum != (s8)MAP_NUM(UNDEFINED))
+    else if (warp->mapNum != (s8)MAP_NUM(MAP_UNDEFINED))
         return FALSE;
     else if (warp->warpId != WARP_ID_NONE)
         return FALSE;
@@ -526,29 +526,19 @@ void SetWarpDestinationToHealLocation(u8 healLocationId)
 {
     const struct HealLocation *healLocation = GetHealLocation(healLocationId);
     if (healLocation)
-        SetWarpDestination(healLocation->group, healLocation->map, WARP_ID_NONE, healLocation->x, healLocation->y);
-}
-
-static bool32 IsFRLGWhiteout(void)
-{
-    if (!OW_FRLG_WHITEOUT)
-        return FALSE;
-    return GetHealNpcLocalId(GetHealLocationIndexByWarpData(&gSaveBlockPtr->lastHealLocation)) > 0;
+        SetWarpDestination(healLocation->mapGroup, healLocation->mapNum, WARP_ID_NONE, healLocation->x, healLocation->y);
 }
 
 void SetWarpDestinationToLastHealLocation(void)
 {
-    if (IsFRLGWhiteout())
-        SetWhiteoutRespawnWarpAndHealerNPC(&sWarpDestination);
-    else
-        sWarpDestination = gSaveBlockPtr->lastHealLocation;
+    sWarpDestination = gSaveBlockPtr->lastHealLocation;
 }
 
 void SetLastHealLocationWarp(u8 healLocationId)
 {
     const struct HealLocation *healLocation = GetHealLocation(healLocationId);
     if (healLocation)
-        SetWarpData(&gSaveBlockPtr->lastHealLocation, healLocation->group, healLocation->map, WARP_ID_NONE, healLocation->x, healLocation->y);
+        SetWarpData(&gSaveBlockPtr->lastHealLocation, healLocation->mapGroup, healLocation->mapNum, WARP_ID_NONE, healLocation->x, healLocation->y);
 }
 
 void UpdateEscapeWarp(s16 x, s16 y)
@@ -606,7 +596,7 @@ void SetContinueGameWarpToHealLocation(u8 healLocationId)
 {
     const struct HealLocation *healLocation = GetHealLocation(healLocationId);
     if (healLocation)
-        SetWarpData(&gSaveBlockPtr->continueGameWarp, healLocation->group, healLocation->map, WARP_ID_NONE, healLocation->x, healLocation->y);
+        SetWarpData(&gSaveBlockPtr->continueGameWarp, healLocation->mapGroup, healLocation->mapNum, WARP_ID_NONE, healLocation->x, healLocation->y);
 }
 
 void SetContinueGameWarpToDynamicWarp(int unused)
@@ -1421,10 +1411,7 @@ void CB2_WhiteOut(void)
         ResetInitialPlayerAvatarState();
         ScriptContext_Init();
         UnlockPlayerFieldControls();
-        if (IsFRLGWhiteout())
-            gFieldCallback = FieldCB_RushInjuredPokemonToCenter;
-        else
-            gFieldCallback = FieldCB_WarpExitFadeFromBlack;
+        gFieldCallback = FieldCB_WarpExitFadeFromBlack;
         state = 0;
         DoMapLoadLoop(&state);
         SetFieldVBlankCallback();

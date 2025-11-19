@@ -697,7 +697,7 @@ bool8 ScrCmd_warphole(struct ScriptContext *ctx)
     s16 y;
 
     PlayerGetDestCoords(&x, &y);
-    if (mapGroup == MAP_GROUP(UNDEFINED) && mapNum == MAP_NUM(UNDEFINED))
+    if (mapGroup == MAP_GROUP(MAP_UNDEFINED) && mapNum == MAP_NUM(MAP_UNDEFINED))
         SetWarpDestinationToFixedHoleWarp(x - MAP_OFFSET, y - MAP_OFFSET);
     else
         SetWarpDestination(mapGroup, mapNum, WARP_ID_NONE, x - MAP_OFFSET, y - MAP_OFFSET);
@@ -907,7 +907,7 @@ bool8 ScrCmd_applymovement(struct ScriptContext *ctx)
     struct ObjectEvent *objEvent;
 
     // When applying script movements to follower, it may have frozen animation that must be cleared
-    if (localId == OBJ_EVENT_ID_FOLLOWER && (objEvent = GetFollowerObject()) && objEvent->frozen)
+    if (localId == LOCALID_FOLLOWER && (objEvent = GetFollowerObject()) && objEvent->frozen)
     {
         ClearObjectEventMovement(objEvent, &gSprites[objEvent->spriteId]);
         gSprites[objEvent->spriteId].animCmdIndex = 0; // Reset start frame of animation
@@ -918,7 +918,7 @@ bool8 ScrCmd_applymovement(struct ScriptContext *ctx)
     sMovingNpcId = localId;
     objEvent = GetFollowerObject();
     // Force follower into pokeball
-    if (localId != OBJ_EVENT_ID_FOLLOWER
+    if (localId != LOCALID_FOLLOWER
         && !FlagGet(FLAG_SAFE_FOLLOWER_MOVEMENT)
         && (movementScript < Common_Movement_FollowerSafeStart || movementScript > Common_Movement_FollowerSafeEnd)
         && (objEvent = GetFollowerObject())
@@ -926,7 +926,7 @@ bool8 ScrCmd_applymovement(struct ScriptContext *ctx)
     {
         ClearObjectEventMovement(objEvent, &gSprites[objEvent->spriteId]);
         gSprites[objEvent->spriteId].animCmdIndex = 0; // Reset start frame of animation
-        ScriptMovement_StartObjectMovementScript(OBJ_EVENT_ID_FOLLOWER, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, EnterPokeballMovement);
+        ScriptMovement_StartObjectMovementScript(LOCALID_FOLLOWER, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, EnterPokeballMovement);
     }
     return FALSE;
 }
@@ -951,7 +951,7 @@ static bool8 WaitForMovementFinish(void)
         struct ObjectEvent *objEvent = GetFollowerObject();
         // If the follower is still entering the pokeball, wait for it to finish too
         // This prevents a `release` after this script command from getting the follower stuck in an intermediate state
-        if (sMovingNpcId != OBJ_EVENT_ID_FOLLOWER && objEvent && ObjectEventGetHeldMovementActionId(objEvent) == MOVEMENT_ACTION_ENTER_POKEBALL)
+        if (sMovingNpcId != LOCALID_FOLLOWER && objEvent && ObjectEventGetHeldMovementActionId(objEvent) == MOVEMENT_ACTION_ENTER_POKEBALL)
             return ScriptMovement_IsObjectMovementFinished(objEvent->localId, objEvent->mapNum, objEvent->mapGroup);
         return TRUE;
     }
@@ -962,7 +962,7 @@ bool8 ScrCmd_waitmovement(struct ScriptContext *ctx)
 {
     u16 localId = VarGet(ScriptReadHalfword(ctx));
 
-    if (localId != 0)
+    if (localId != LOCALID_NONE)
         sMovingNpcId = localId;
     sMovingNpcMapGroup = gSaveBlockPtr->location.mapGroup;
     sMovingNpcMapNum = gSaveBlockPtr->location.mapNum;
@@ -976,7 +976,7 @@ bool8 ScrCmd_waitmovementat(struct ScriptContext *ctx)
     u8 mapGroup;
     u8 mapNum;
 
-    if (localId != 0)
+    if (localId != LOCALID_NONE)
         sMovingNpcId = localId;
     mapGroup = ScriptReadByte(ctx);
     mapNum = ScriptReadByte(ctx);
@@ -1157,7 +1157,7 @@ bool8 ScrCmd_lock(struct ScriptContext *ctx)
         FreezeObjects_WaitForPlayerAndSelected();
         SetupNativeScript(ctx, IsFreezeSelectedObjectAndPlayerFinished);
         // follower is being talked to; keep it frozen
-        if (gObjectEvents[gSelectedObjectEvent].localId == OBJ_EVENT_ID_FOLLOWER)
+        if (gObjectEvents[gSelectedObjectEvent].localId == LOCALID_FOLLOWER)
             followerObj = NULL;
     }
     else
@@ -1179,7 +1179,7 @@ bool8 ScrCmd_releaseall(struct ScriptContext *ctx)
         ClearObjectEventMovement(followerObject, &gSprites[followerObject->spriteId]);
 
     HideFieldMessageBox();
-    playerObjectId = GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0);
+    playerObjectId = GetObjectEventIdByLocalIdAndMap(LOCALID_PLAYER, 0, 0);
     ObjectEventClearHeldMovementIfFinished(&gObjectEvents[playerObjectId]);
     ScriptMovement_UnfreezeObjectEvents();
     UnfreezeObjectEvents();
@@ -1198,7 +1198,7 @@ bool8 ScrCmd_release(struct ScriptContext *ctx)
     HideFieldMessageBox();
     if (gObjectEvents[gSelectedObjectEvent].active)
         ObjectEventClearHeldMovementIfFinished(&gObjectEvents[gSelectedObjectEvent]);
-    playerObjectId = GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0);
+    playerObjectId = GetObjectEventIdByLocalIdAndMap(LOCALID_PLAYER, 0, 0);
     ObjectEventClearHeldMovementIfFinished(&gObjectEvents[playerObjectId]);
     ScriptMovement_UnfreezeObjectEvents();
     UnfreezeObjectEvents();

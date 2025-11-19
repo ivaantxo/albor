@@ -100,3 +100,5 @@ find . -name "* 2.inc" -delete
 
 //para limpiar defines a enum
 \s+[0-9]+
+
+muy probable que RAMSCRGEN se pueda eliminar

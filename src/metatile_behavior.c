@@ -11,7 +11,6 @@ static const u8 sTileBitAttributes[NUM_METATILE_BEHAVIORS] =
     [MB_NORMAL]                             = TILE_FLAG_UNUSED,
     [MB_TALL_GRASS]                         = TILE_FLAG_UNUSED | TILE_FLAG_HAS_ENCOUNTERS,
     [MB_LONG_GRASS]                         = TILE_FLAG_UNUSED | TILE_FLAG_HAS_ENCOUNTERS,
-    [MB_UNUSED_05]                          = TILE_FLAG_HAS_ENCOUNTERS,
     [MB_DEEP_SAND]                          = TILE_FLAG_UNUSED | TILE_FLAG_HAS_ENCOUNTERS,
     [MB_SHORT_GRASS]                        = TILE_FLAG_UNUSED,
     [MB_CAVE]                               = TILE_FLAG_UNUSED | TILE_FLAG_HAS_ENCOUNTERS,
@@ -35,7 +34,6 @@ static const u8 sTileBitAttributes[NUM_METATILE_BEHAVIORS] =
     [MB_ICE]                                = TILE_FLAG_UNUSED,
     [MB_SAND]                               = TILE_FLAG_UNUSED,
     [MB_SEAWEED]                            = TILE_FLAG_UNUSED | TILE_FLAG_SURFABLE | TILE_FLAG_HAS_ENCOUNTERS,
-    [MB_UNUSED_23]                          = TILE_FLAG_UNUSED,
     [MB_ASHGRASS]                           = TILE_FLAG_UNUSED | TILE_FLAG_HAS_ENCOUNTERS,
     [MB_FOOTPRINTS]                         = TILE_FLAG_UNUSED | TILE_FLAG_HAS_ENCOUNTERS,
     [MB_THIN_ICE]                           = TILE_FLAG_UNUSED,
@@ -83,7 +81,6 @@ static const u8 sTileBitAttributes[NUM_METATILE_BEHAVIORS] =
     [MB_WATER_DOOR]                         = TILE_FLAG_UNUSED | TILE_FLAG_SURFABLE,
     [MB_WATER_SOUTH_ARROW_WARP]             = TILE_FLAG_UNUSED | TILE_FLAG_SURFABLE,
     [MB_DEEP_SOUTH_WARP]                    = TILE_FLAG_UNUSED,
-    [MB_UNUSED_6F]                          = TILE_FLAG_UNUSED | TILE_FLAG_SURFABLE,
     [MB_BRIDGE_OVER_POND_LOW]               = TILE_FLAG_UNUSED,
     [MB_BRIDGE_OVER_POND_MED]               = TILE_FLAG_UNUSED,
     [MB_BRIDGE_OVER_POND_HIGH]              = TILE_FLAG_UNUSED,
@@ -96,7 +93,6 @@ static const u8 sTileBitAttributes[NUM_METATILE_BEHAVIORS] =
     [MB_BRIDGE_OVER_POND_MED_EDGE_2]        = TILE_FLAG_UNUSED,
     [MB_BRIDGE_OVER_POND_HIGH_EDGE_1]       = TILE_FLAG_UNUSED,
     [MB_BRIDGE_OVER_POND_HIGH_EDGE_2]       = TILE_FLAG_UNUSED,
-    [MB_UNUSED_BRIDGE]                      = TILE_FLAG_UNUSED,
     [MB_BIKE_BRIDGE_OVER_BARRIER]           = TILE_FLAG_UNUSED,
     [MB_SECRET_BASE_SCENERY]                = TILE_FLAG_UNUSED,
     [MB_SECRET_BASE_TRAINER_SPOT]           = TILE_FLAG_UNUSED,
@@ -206,7 +202,6 @@ bool8 MetatileBehavior_IsReflective(u8 metatileBehavior)
 {
     if (metatileBehavior == MB_POND_WATER
      || metatileBehavior == MB_PUDDLE
-     || metatileBehavior == MB_UNUSED_SOOTOPOLIS_DEEP_WATER_2
      || metatileBehavior == MB_ICE
      || metatileBehavior == MB_SOOTOPOLIS_DEEP_WATER
      || metatileBehavior == MB_REFLECTION_UNDER_BRIDGE)
@@ -745,7 +740,6 @@ bool8 MetatileBehavior_IsBridgeOverWater(u8 metatileBehavior)
       || metatileBehavior == MB_BRIDGE_OVER_POND_HIGH)
       || (metatileBehavior == MB_BRIDGE_OVER_POND_HIGH_EDGE_1
        || metatileBehavior == MB_BRIDGE_OVER_POND_HIGH_EDGE_2
-       || metatileBehavior == MB_UNUSED_BRIDGE
        || metatileBehavior == MB_BIKE_BRIDGE_OVER_BARRIER))
         return TRUE;
     else

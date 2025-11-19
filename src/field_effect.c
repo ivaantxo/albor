@@ -1966,7 +1966,7 @@ static bool8 LavaridgeGymB1FWarpEffect_Init(struct Task *task, struct ObjectEven
     objectEvent->fixedPriority = 1;
     task->data[1] = 1;
     task->data[0]++;
-    if (objectEvent->localId == OBJ_EVENT_ID_PLAYER) // Hide follower before warping
+    if (objectEvent->localId == LOCALID_PLAYER) // Hide follower before warping
         HideFollowerForFieldEffect();
     return TRUE;
 }
@@ -2159,7 +2159,7 @@ static bool8 LavaridgeGym1FWarpEffect_Init(struct Task *task, struct ObjectEvent
     gPlayerAvatar.preventStep = TRUE;
     objectEvent->fixedPriority = 1;
     task->data[0]++;
-    if (objectEvent->localId == OBJ_EVENT_ID_PLAYER) // Hide follower before warping
+    if (objectEvent->localId == LOCALID_PLAYER) // Hide follower before warping
         HideFollowerForFieldEffect();
     return FALSE;
 }

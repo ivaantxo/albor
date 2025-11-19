@@ -36,6 +36,7 @@
 #include "vs_seeker.h"
 #include "item.h"
 #include "constants/battle_setup.h"
+#include "constants/event_objects.h"
 #include "constants/game_stat.h"
 #include "constants/items.h"
 #include "constants/songs.h"
@@ -227,13 +228,6 @@ static const struct TrainerBattleParameter sTrainerTwoTrainerBattleParams[] =
     {&sTrainerBBattleScriptRetAddr, TRAINER_PARAM_CLEAR_VAL_32BIT},
     {&sTrainerBattleEndScript,      TRAINER_PARAM_LOAD_SCRIPT_RET_ADDR},
 };
-
-#define REMATCH(trainer1, trainer2, trainer3, trainer4, trainer5, map)  \
-{                                                                       \
-    .trainerIds = {trainer1, trainer2, trainer3, trainer4, trainer5},   \
-    .mapGroup = MAP_GROUP(map),                                         \
-    .mapNum = MAP_NUM(map),                                             \
-}
 
 const struct RematchTrainer gRematchTable[REMATCH_TABLE_ENTRIES] =
 {
@@ -887,7 +881,7 @@ static void TrainerBattleLoadArgs(const struct TrainerBattleParameter *specs, co
 
 void SetMapVarsToTrainer(void)
 {
-    if (sTrainerObjectEventLocalId != 0)
+    if (sTrainerObjectEventLocalId != LOCALID_NONE)
     {
         gSpecialVar_LastTalked = sTrainerObjectEventLocalId;
         gSelectedObjectEvent = GetObjectEventIdByLocalIdAndMap(sTrainerObjectEventLocalId, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup);

@@ -19,5 +19,4 @@ EventScript_FieldWhiteOut::
 	end
 
 EventScript_SetRespawnLavaridgePkmnCenter::
-	setrespawn HEAL_LOCATION_LAVARIDGE_TOWN
 	return

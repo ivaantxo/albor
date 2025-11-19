@@ -1043,9 +1043,9 @@ static const u8 sPlayerDirectionToCopyDirection[][4] = {
 static void ClearObjectEvent(struct ObjectEvent *objectEvent)
 {
     *objectEvent = (struct ObjectEvent){};
-    objectEvent->localId = OBJ_EVENT_ID_PLAYER;
-    objectEvent->mapNum = MAP_NUM(UNDEFINED);
-    objectEvent->mapGroup = MAP_GROUP(UNDEFINED);
+    objectEvent->localId = LOCALID_PLAYER;
+    objectEvent->mapNum = MAP_NUM(MAP_UNDEFINED);
+    objectEvent->mapGroup = MAP_GROUP(MAP_UNDEFINED);
     objectEvent->movementActionId = MOVEMENT_ACTION_NONE;
 }
 
@@ -1093,7 +1093,7 @@ u8 GetFirstInactiveObjectEventId(void)
 
 u8 GetObjectEventIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroupId)
 {
-    if (localId < OBJ_EVENT_ID_FOLLOWER)
+    if (localId < LOCALID_FOLLOWER)
         return GetObjectEventIdByLocalIdAndMapInternal(localId, mapNum, mapGroupId);
 
     return GetObjectEventIdByLocalId(localId);
@@ -1195,26 +1195,6 @@ static u8 InitObjectEventStateFromTemplate(const struct ObjectEventTemplate *tem
             objectEvent->rangeY++;
     }
     return objectEventId;
-}
-
-u8 Unref_TryInitLocalObjectEvent(u8 localId)
-{
-    u32 i;
-    u8 objectEventCount;
-    struct ObjectEventTemplate *template;
-
-    if (gMapHeader.events != NULL)
-    {
-        objectEventCount = gMapHeader.events->objectEventCount;
-
-        for (i = 0; i < objectEventCount; i++)
-        {
-            template = &gSaveBlockPtr->objectEventTemplates[i];
-            if (template->localId == localId && !FlagGet(template->flagId))
-                return InitObjectEventStateFromTemplate(template, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup);
-        }
-    }
-    return OBJECT_EVENTS_COUNT;
 }
 
 static bool8 GetAvailableObjectEventId(u16 localId, u8 mapNum, u8 mapGroup, u8 *objectEventId)
@@ -1556,7 +1536,7 @@ struct ObjectEvent *GetFollowerObject(void)
     u32 i;
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
-        if (gObjectEvents[i].localId == OBJ_EVENT_ID_FOLLOWER && gObjectEvents[i].active)
+        if (gObjectEvents[i].localId == LOCALID_FOLLOWER && gObjectEvents[i].active)
             return &gObjectEvents[i];
     }
     return NULL;
@@ -1703,7 +1683,7 @@ void UpdateFollowingPokemon(void)
         u32 objId = gPlayerAvatar.objectEventId;
         struct ObjectEventTemplate template =
         {
-            .localId = OBJ_EVENT_ID_FOLLOWER,
+            .localId = LOCALID_FOLLOWER,
             .graphicsId = ObtenIDGraficosParaPokemon(especie, shiny, hembra),
             .flagId = 0,
             .x = gSaveBlockPtr->pos.x,
@@ -2234,7 +2214,7 @@ void RemoveObjectEventsOutsideView(void)
 
         // Followers should not go OOB, or their sprites may be freed early during a cross-map scripting event,
         // such as Wally's Ralts catch sequence
-        if (objectEvent->active && !objectEvent->isPlayer && objectEvent->localId != OBJ_EVENT_ID_FOLLOWER)
+        if (objectEvent->active && !objectEvent->isPlayer && objectEvent->localId != LOCALID_FOLLOWER)
             RemoveObjectEventIfOutsideView(objectEvent);
     }
 }
@@ -2871,7 +2851,7 @@ void SetObjectEventDirection(struct ObjectEvent *objectEvent, u8 direction)
 
 static const u8 *GetObjectEventScriptPointerByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup)
 {
-    if (localId == OBJ_EVENT_ID_FOLLOWER)
+    if (localId == LOCALID_FOLLOWER)
         return EventScript_Follower;
     return GetObjectEventTemplateByLocalIdAndMap(localId, mapNum, mapGroup)->script;
 }
@@ -5700,7 +5680,7 @@ static bool8 DoesObjectCollideWithObjectAt(struct ObjectEvent *objectEvent, s16 
     u32 i;
     struct ObjectEvent *curObject;
 
-    if (objectEvent->localId == OBJ_EVENT_ID_FOLLOWER)
+    if (objectEvent->localId == LOCALID_FOLLOWER)
         return FALSE; // follower cannot collide with other objects, but they can collide with it
 
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
@@ -5841,7 +5821,7 @@ bool8 ObjectEventIsHeldMovementActive(struct ObjectEvent *objectEvent)
 
 static u8 TryUpdateMovementActionOnStairs(struct ObjectEvent *objectEvent, u8 movementActionId)
 {
-    if (objectEvent->isPlayer || objectEvent->localId == OBJ_EVENT_ID_FOLLOWER)
+    if (objectEvent->isPlayer || objectEvent->localId == LOCALID_FOLLOWER)
         return movementActionId;    // handled separately
 
     if (!ObjectMovingOnRockStairs(objectEvent, objectEvent->movementDirection))
@@ -6461,7 +6441,7 @@ static void InitJump(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 
 static void InitJumpRegular(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 direction, u8 distance, u8 type)
 {
     // For follower only, match the anim duration of the player's movement, whether dashing, walking or jumping
-    if (objectEvent->localId == OBJ_EVENT_ID_FOLLOWER
+    if (objectEvent->localId == LOCALID_FOLLOWER
       && type == JUMP_TYPE_HIGH
       && distance == JUMP_DISTANCE_FAR
       // In some areas (i.e Meteor Falls), the player can jump as the follower jumps, so preserve type in this case
@@ -6770,7 +6750,7 @@ static u8 LoadFillColorPalette(u16 color, u16 paletteTag, struct Sprite *sprite)
 static void ObjectEventSetPokeballGfx(struct ObjectEvent *objEvent)
 {
     u32 ball = BALL_POKE;
-    if (objEvent->localId == OBJ_EVENT_ID_FOLLOWER)
+    if (objEvent->localId == LOCALID_FOLLOWER)
     {
         struct Pokemon *mon = GetFirstLiveMon();
         if (mon)
@@ -7432,7 +7412,7 @@ bool8 MovementAction_FacePlayer_Step0(struct ObjectEvent *objectEvent, struct Sp
 {
     u8 playerObjectId;
 
-    if (!TryGetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0, &playerObjectId))
+    if (!TryGetObjectEventIdByLocalIdAndMap(LOCALID_PLAYER, 0, 0, &playerObjectId))
         FaceDirection(objectEvent, sprite, GetDirectionToFace(objectEvent->currentCoords.x,
                                                               objectEvent->currentCoords.y,
                                                               gObjectEvents[playerObjectId].currentCoords.x,
@@ -7445,7 +7425,7 @@ bool8 MovementAction_FaceAwayPlayer_Step0(struct ObjectEvent *objectEvent, struc
 {
     u8 playerObjectId;
 
-    if (!TryGetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0, &playerObjectId))
+    if (!TryGetObjectEventIdByLocalIdAndMap(LOCALID_PLAYER, 0, 0, &playerObjectId))
         FaceDirection(objectEvent, sprite, GetOppositeDirection(GetDirectionToFace(objectEvent->currentCoords.x,
                                                                                    objectEvent->currentCoords.y,
                                                                                    gObjectEvents[playerObjectId].currentCoords.x,
@@ -8981,7 +8961,7 @@ static void UpdateObjectEventElevationAndPriority(struct ObjectEvent *objEvent, 
         return;
 
     ObjectEventUpdateElevation(objEvent, sprite);
-    if (objEvent->localId == OBJ_EVENT_ID_FOLLOWER)
+    if (objEvent->localId == LOCALID_FOLLOWER)
     {
         // if transitioning between elevations, use the player's elevation
         if (!objEvent->currentElevation)
@@ -9036,7 +9016,7 @@ static void ObjectEventUpdateSubpriority(struct ObjectEvent *objEvent, struct Sp
         return;
 
     // If transitioning between elevations, use the player's elevation
-    if (!objEvent->currentElevation && objEvent->localId == OBJ_EVENT_ID_FOLLOWER)
+    if (!objEvent->currentElevation && objEvent->localId == LOCALID_FOLLOWER)
         objEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
 
     SetObjectSubpriorityByElevation(objEvent->previousElevation, sprite, 1);
@@ -9408,7 +9388,7 @@ static void DoGroundEffects_OnSpawn(struct ObjectEvent *objEvent, struct Sprite 
     u32 flags;
 
 #ifdef BUGFIX
-    if (objEvent->triggerGroundEffectsOnMove && objEvent->localId != OBJ_EVENT_ID_CAMERA)
+    if (objEvent->triggerGroundEffectsOnMove && objEvent->localId != LOCALID_CAMERA)
 #else
     if (objEvent->triggerGroundEffectsOnMove)
 #endif
@@ -9428,7 +9408,7 @@ static void DoGroundEffects_OnBeginStep(struct ObjectEvent *objEvent, struct Spr
     u32 flags;
 
 #ifdef BUGFIX
-    if (objEvent->triggerGroundEffectsOnMove && objEvent->localId != OBJ_EVENT_ID_CAMERA)
+    if (objEvent->triggerGroundEffectsOnMove && objEvent->localId != LOCALID_CAMERA)
 #else
     if (objEvent->triggerGroundEffectsOnMove)
 #endif
@@ -9449,7 +9429,7 @@ static void DoGroundEffects_OnFinishStep(struct ObjectEvent *objEvent, struct Sp
     u32 flags;
 
 #ifdef BUGFIX
-    if (objEvent->triggerGroundEffectsOnStop && objEvent->localId != OBJ_EVENT_ID_CAMERA)
+    if (objEvent->triggerGroundEffectsOnStop && objEvent->localId != LOCALID_CAMERA)
 #else
     if (objEvent->triggerGroundEffectsOnStop)
 #endif
@@ -10110,7 +10090,7 @@ u8 MovementAction_LockAnim_Step0(struct ObjectEvent *objectEvent, struct Sprite 
         bool32 found = FALSE;
         for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
         {
-            if (firstFreeSlot == OBJECT_EVENTS_COUNT && sLockedAnimObjectEvents->localIds[i] == 0)
+            if (firstFreeSlot == OBJECT_EVENTS_COUNT && sLockedAnimObjectEvents->localIds[i] == LOCALID_NONE)
                 firstFreeSlot = i;
 
             if (sLockedAnimObjectEvents->localIds[i] == objectEvent->localId)
@@ -10150,7 +10130,7 @@ u8 MovementAction_UnlockAnim_Step0(struct ObjectEvent *objectEvent, struct Sprit
         index = FindLockedObjectEventIndex(objectEvent);
         if (index != OBJECT_EVENTS_COUNT)
         {
-            sLockedAnimObjectEvents->localIds[index] = 0;
+            sLockedAnimObjectEvents->localIds[index] = LOCALID_NONE;
             sLockedAnimObjectEvents->count--;
             ableToStore = TRUE;
         }

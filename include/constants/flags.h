@@ -855,7 +855,7 @@
 #define FLAG_HIDE_ROUTE_111_GABBY_AND_TY_1                          0x31C
 #define FLAG_HIDE_ROUTE_118_GABBY_AND_TY_1                          0x31D
 #define FLAG_HIDE_ROUTE_120_GABBY_AND_TY_1                          0x31E
-#define FLAG_HIDE_ROUTE_111_GABBY_AND_TY_3                          0x31F
+#define flag_unused_0x31f                          0x31F
 #define FLAG_HIDE_LUGIA                                             0x320
 #define FLAG_HIDE_HO_OH                                             0x321
 #define FLAG_HIDE_LILYCOVE_CONTEST_HALL_REPORTER                    0x322

@@ -248,7 +248,7 @@ static u16 GetCurrentMapWildMonHeaderId(void)
     for (i = 0; ; i++)
     {
         const struct WildPokemonHeader *wildHeader = &gWildMonHeaders[i];
-        if (wildHeader->mapGroup == MAP_GROUP(UNDEFINED))
+        if (wildHeader->mapGroup == MAP_GROUP(MAP_UNDEFINED))
             break;
 
         if (gWildMonHeaders[i].mapGroup == gSaveBlockPtr->location.mapGroup &&

@@ -1,6 +1,9 @@
 #ifndef GUARD_CONSTANTS_EVENT_OBJECTS_H
 #define GUARD_CONSTANTS_EVENT_OBJECTS_H
 
+#include "constants/global.h"
+#include "constants/map_event_ids.h"
+
 enum ObjectEventGraphics
 {
     OBJ_EVENT_GFX_BRENDAN_NORMAL,
@@ -268,10 +271,15 @@ enum Sombras
 #define OBJ_KIND_NORMAL 0
 #define OBJ_KIND_CLONE  255 // Exclusive to FRLG
 
-// Special object event local ids
-#define OBJ_EVENT_ID_PLAYER 0xFF
-#define OBJ_EVENT_ID_CAMERA 0x7F
-#define OBJ_EVENT_ID_FOLLOWER 0xFE
+// Each object event template gets an ID that can be used to refer to it in scripts and elsewhere.
+// This is referred to as the "local id" (and it's really just 1 + its index in the templates array).
+// There are a few special IDs reserved for objects that don't have templates in the map data -- one for the player
+// in regular offline play, five for linked players while playing Berry Blender, and one for an invisible object that
+// can be spawned for the camera to track instead of the player. Additionally, the value 0 is reserved as an "empty" indicator.
+#define LOCALID_NONE                        0
+#define LOCALID_CAMERA                      127
+#define LOCALID_FOLLOWER                    254
+#define LOCALID_PLAYER                      255
 
 enum ObjectEventPalTags
 {

@@ -1,7 +1,7 @@
 {
   "map_sections": [
       {
-        "map_section": "MAPSEC_TEST",
+        "id": "MAPSEC_TEST",
         "name": "TEST",
         "x": 4,
         "y": 11,

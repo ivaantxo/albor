@@ -162,7 +162,6 @@ gSpecials::
 	def_special CheckLeadMonTough
 	def_special LookThroughPorthole
 	def_special DoSoftReset
-	def_special GameClear
 	def_special ShowGlassWorkshopMenu
 	def_special SpawnCameraObject
 	def_special RemoveCameraObject
