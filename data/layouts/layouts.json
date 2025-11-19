@@ -1,15 +1,15 @@
 {
   "layouts_table_label": "gMapLayouts",
   "layouts": [
-      {
-        "id": "LAYOUT_TEST",
-        "name": "Test_Layout",
-        "width": 50,
-        "height": 50,
-        "primary_tileset": "gTileset_Principal",
-        "secondary_tileset": "gTileset_MysteryEventsHouse",
-        "border_filepath": "data/layouts/Test/border.bin",
-        "blockdata_filepath": "data/layouts/Test/map.bin"
-      }
+    {
+      "id": "LAYOUT_TEST",
+      "name": "Test_Layout",
+      "width": 50,
+      "height": 50,
+      "primary_tileset": "gTileset_Principal",
+      "secondary_tileset": "gTileset_MysteryEventsHouse",
+      "border_filepath": "data/layouts/Test/border.bin",
+      "blockdata_filepath": "data/layouts/Test/map.bin"
+    }
   ]
 }

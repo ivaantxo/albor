@@ -1,12 +1,12 @@
 {
   "map_sections": [
-      {
-        "id": "MAPSEC_TEST",
-        "name": "TEST",
-        "x": 4,
-        "y": 11,
-        "width": 1,
-        "height": 1
-      }
+    {
+      "id": "MAPSEC_TEST",
+      "name": "TEST",
+      "x": 4,
+      "y": 11,
+      "width": 1,
+      "height": 1
+    }
   ]
 }
