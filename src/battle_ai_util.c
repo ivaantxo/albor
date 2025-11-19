@@ -282,7 +282,7 @@ bool32 IsBattlerTrapped(u32 battler, bool32 checkSwitch)
         return FALSE;
     if (checkSwitch && holdEffect == HOLD_EFFECT_SHED_SHELL)
         return FALSE;
-    else if (!checkSwitch && AI_DATA->abilities[battler] == ABILITY_RUN_AWAY)
+    else if (!checkSwitch && AI_DATA->abilities[battler] == ABILITY_HUIDIZO)
         return FALSE;
     else if (!checkSwitch && holdEffect == HOLD_EFFECT_CAN_ALWAYS_RUN)
         return FALSE;
@@ -638,6 +638,11 @@ struct SimulatedDamage AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u
                     simDamage.minimum *= 3;
                 }
                 else if (aiData->abilities[battlerAtk] == ABILITY_SKILL_LINK)
+                {
+                    simDamage.expected *= 5;
+                    simDamage.minimum *= 5;
+                }
+                else if (aiData->abilities[battlerAtk] == ABILITY_ENJAMBRE)
                 {
                     simDamage.expected *= 5;
                     simDamage.minimum *= 5;
@@ -1590,6 +1595,7 @@ bool32 ShouldSetRain(u32 battlerAtk, u32 atkAbility, u32 holdEffect)
       || atkAbility == ABILITY_RAIN_DISH
       || atkAbility == ABILITY_DRY_SKIN
       || atkAbility == ABILITY_OLOR_FLUVIAL
+      || atkAbility == ABILITY_ALAS_HIDROFOBAS
       || HasMoveEffect(battlerAtk, EFFECT_THUNDER)
       || HasMoveEffect(battlerAtk, EFFECT_WEATHER_BALL)
       || HasMoveWithType(battlerAtk, TIPO_AGUA)))

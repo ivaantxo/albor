@@ -9190,19 +9190,6 @@ void AnimTask_GetWeatherToSet(u8 taskId)
     DestroyAnimVisualTask(taskId);
 }
 
-void AnimTask_SyrupBomb(u8 taskId)
-{
-    struct Pokemon *party = GetBattlerParty(gBattleAnimAttacker);
-    gBattleAnimArgs[0] = IsMonShiny(&party[gBattlerPartyIndexes[gBattleAnimAttacker]]);
-    DestroyAnimVisualTask(taskId);
-}
-
-void AnimTask_StickySyrup(u8 taskId)
-{
-    gBattleAnimArgs[0] = gAnimDisableStructPtr->syrupBombIsShiny;
-    DestroyAnimVisualTask(taskId);
-}
-
 void AnimTask_RandomBool(u8 taskId)
 {
     if (RandomPercentage(RNG_NONE, 50))

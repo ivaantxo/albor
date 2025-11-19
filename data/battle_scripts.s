@@ -238,21 +238,6 @@ BattleScript_EffectGlaiveRush::
 	setglaiverush
 	goto BattleScript_TryFaintMon
 
-BattleScript_SyrupBombActivates::
-	printstring STRINGID_TARGETCOVEREDINSTICKYCANDYSYRUP
-	waitmessage B_WAIT_TIME_LONG
-	return
-
-BattleScript_SyrupBombEndTurn::
-	flushtextbox
-	playanimation BS_ATTACKER, B_ANIM_SYRUP_BOMB_SPEED_DROP
-	setstatchanger ESTADISTICA_VELOCIDAD, 1, TRUE
-	statbuffchange STAT_CHANGE_ALLOW_PTR | STAT_CHANGE_NOT_PROTECT_AFFECTED, BattleScript_SyrupBombTurnDmgEnd
-	printfromtable gStatDownStringIds
-	waitmessage B_WAIT_TIME_LONG
-BattleScript_SyrupBombTurnDmgEnd:
-	end2
-
 BattleScript_EffectChillyReception::
 	printstring STRINGID_PKMNTELLCHILLINGRECEPTIONJOKE
 	waitmessage B_WAIT_TIME_LONG
@@ -4033,7 +4018,7 @@ BattleScript_EffectMeanLook::
 .if B_GHOSTS_ESCAPE >= GEN_6
 	jumpiftype BS_TARGET, TIPO_FANTASMA, BattleScript_ButItFailed
 .endif
-	jumpifability BS_TARGET, ABILITY_RUN_AWAY, BattleScript_ButItFailed
+	jumpifability BS_TARGET, ABILITY_HUIDIZO, BattleScript_ButItFailed
 	attackanimation
 	waitanimation
 	seteffectprimary MOVE_EFFECT_PREVENT_ESCAPE
@@ -7580,55 +7565,6 @@ BattleScript_IntimidateInReverse:
 	modifybattlerstatstage BS_TARGET, ESTADISTICA_ATAQUE, INCREASE, 1, BattleScript_IntimidateLoopIncrement, ANIM_ON
 	call BattleScript_TryIntimidateHoldEffects
 	goto BattleScript_IntimidateLoopIncrement
-
-BattleScript_SupersweetSyrupActivates::
- 	savetarget
-	showabilitypopup BS_ATTACKER
-	pause B_WAIT_TIME_LONG
-	destroyabilitypopup
-	printstring STRINGID_SUPERSWEETAROMAWAFTS
-	waitmessage B_WAIT_TIME_LONG
-	setbyte gBattlerTarget, 0
-BattleScript_SupersweetSyrupLoop:
-	jumpifbyteequal gBattlerTarget, gBattlerAttacker, BattleScript_SupersweetSyrupLoopIncrement
-	jumpiftargetally BattleScript_SupersweetSyrupLoopIncrement
-	jumpifabsent BS_TARGET, BattleScript_SupersweetSyrupLoopIncrement
-	jumpifstatus2 BS_TARGET, STATUS2_SUBSTITUTE, BattleScript_SupersweetSyrupLoopIncrement
-BattleScript_SupersweetSyrupEffect:
-	copybyte sBATTLER, gBattlerAttacker
-	setstatchanger ESTADISTICA_EVASION, 1, TRUE
-	statbuffchange STAT_CHANGE_NOT_PROTECT_AFFECTED | STAT_CHANGE_ALLOW_PTR, BattleScript_SupersweetSyrupLoopIncrement
-	setgraphicalstatchangevalues
-	jumpifability BS_TARGET, ABILITY_CONTRARY, BattleScript_SupersweetSyrupContrary
-	jumpifbyte COMPARACION_IGUAL, cMULTISTRING_CHOOSER, B_MSG_STAT_WONT_DECREASE, BattleScript_SupersweetSyrupWontDecrease
-	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	printfromtable gStatDownStringIds
-BattleScript_SupersweetSyrupEffect_WaitString:
-	waitmessage B_WAIT_TIME_LONG
-	copybyte sBATTLER, gBattlerTarget
-	call BattleScript_TryIntimidateHoldEffects
-BattleScript_SupersweetSyrupLoopIncrement:
-	addbyte gBattlerTarget, 1
-	jumpifbytenotequal gBattlerTarget, gBattlersCount, BattleScript_SupersweetSyrupLoop
-	copybyte sBATTLER, gBattlerAttacker
-	destroyabilitypopup
- 	restoretarget
-	pause B_WAIT_TIME_MED
-	end3
-
-BattleScript_SupersweetSyrupWontDecrease:
-	printstring STRINGID_STATSWONTDECREASE
-	goto BattleScript_SupersweetSyrupEffect_WaitString
-
-BattleScript_SupersweetSyrupContrary:
-	call BattleScript_AbilityPopUpTarget
-	jumpifbyte COMPARACION_IGUAL, cMULTISTRING_CHOOSER, B_MSG_STAT_WONT_INCREASE, BattleScript_SupersweetSyrupContrary_WontIncrease
-	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	printfromtable gStatUpStringIds
-	goto BattleScript_SupersweetSyrupEffect_WaitString
-BattleScript_SupersweetSyrupContrary_WontIncrease:
-	printstring STRINGID_TARGETSTATWONTGOHIGHER
-	goto BattleScript_SupersweetSyrupEffect_WaitString
 
 BattleScript_DroughtActivates::
 	pause B_WAIT_TIME_SHORT

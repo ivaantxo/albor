@@ -400,9 +400,9 @@ bool32 TryRunFromBattle(u32 battler)
     {
         effect++;
     }
-    else if (GetBattlerAbility(battler) == ABILITY_RUN_AWAY)
+    else if (GetBattlerAbility(battler) == ABILITY_HUIDIZO)
     {
-        gLastUsedAbility = ABILITY_RUN_AWAY;
+        gLastUsedAbility = ABILITY_HUIDIZO;
         gProtectStructs[battler].fleeType = FLEE_ABILITY;
         effect++;
     }
@@ -995,7 +995,8 @@ void PrepareStringBattle(u16 stringId, u32 battler)
         else
             SET_STATCHANGER(ESTADISTICA_ATAQUE_ESPECIAL, 2, FALSE);
     }
-    else if (B_UPDATED_INTIMIDATE >= GEN_8 && stringId == STRINGID_PKMNCUTSATTACKWITH && targetAbility == ABILITY_RATTLED
+    else if (stringId == STRINGID_PKMNCUTSATTACKWITH
+            && targetAbility == ABILITY_RATTLED
             && CompareStat(gBattlerTarget, ESTADISTICA_VELOCIDAD, ESTADISTICA_MAS_6, COMPARACION_MENOR))
     {
         gBattlerAbility = gBattlerTarget;
@@ -2009,7 +2010,6 @@ enum
     ENDTURN_CUD_CHEW,
     ENDTURN_TORMENT, // supposedly this goes after Taunt, before Encore, but Encore is first right now?
     ENDTURN_SALT_CURE,
-    ENDTURN_SYRUP_BOMB,
     ENDTURN_DYNAMAX,
     ENDTURN_GMAX_MOVE_RESIDUAL_DAMAGE,
     ENDTURN_SEA_OF_FIRE_DAMAGE,
@@ -2636,19 +2636,6 @@ u8 DoBattlerEndTurnEffects(void)
                     gBattleMoveDamage = 1;
                 PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_SALT_CURE);
                 BattleScriptExecute(BattleScript_SaltCureExtraDamage);
-                effect++;
-            }
-            gBattleStruct->turnEffectsTracker++;
-            break;
-        case ENDTURN_SYRUP_BOMB:
-            if ((gStatuses4[battler] & STATUS4_SYRUP_BOMB) && (IsBattlerAlive(battler)))
-            {
-                if (gDisableStructs[battler].syrupBombTimer > 0 && --gDisableStructs[battler].syrupBombTimer == 0)
-                    gStatuses4[battler] &= ~STATUS4_SYRUP_BOMB;
-                gBattlerTarget = battler;
-                PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_SYRUP_BOMB);
-                gBattlescriptCurrInstr = BattleScript_SyrupBombEndTurn;
-                BattleScriptExecute(gBattlescriptCurrInstr);
                 effect++;
             }
             gBattleStruct->turnEffectsTracker++;
@@ -4515,17 +4502,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 effect++;
             }
             break;
-        case ABILITY_SUPERSWEET_SYRUP:
-            if (!gSpecialStatuses[battler].switchInAbilityDone
-                    && !(gBattleStruct->supersweetSyrup[GetBattlerSide(battler)] & (1u << gBattlerPartyIndexes[battler])))
-            {
-                gBattlerAttacker = battler;
-                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
-                gBattleStruct->supersweetSyrup[GetBattlerSide(battler)] |= (1u << gBattlerPartyIndexes[battler]);
-                BattleScriptPushCursorAndCallback(BattleScript_SupersweetSyrupActivates);
-                effect++;
-            }
-            break;
         case ABILITY_CLOUD_NINE:
         case ABILITY_AIR_LOCK:
             if (!gSpecialStatuses[battler].switchInAbilityDone)
@@ -4749,9 +4725,9 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                     goto ABILITY_HEAL_MON_STATUS;
                 }
                 break;
-            case ABILITY_SHED_SKIN:
+            case ABILITY_MUDAR:
                 if ((gBattleMons[battler].status1 & STATUS1_ANY)
-                 && (RandomChance(RNG_SHED_SKIN, 1, 2)))
+                && PorcentajeAleatorio(50))
                 {
                 ABILITY_HEAL_MON_STATUS:
                     if (gBattleMons[battler].status1 & (STATUS1_POISON | STATUS1_TOXIC_POISON))
@@ -5031,15 +5007,15 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 effect++;
             }
             break;
-        case ABILITY_WATER_COMPACTION:
+        case ABILITY_ALAS_HIDROFOBAS:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && TARGET_TURN_DAMAGED
              && IsBattlerAlive(battler)
              && moveType == TIPO_AGUA
-             && CompareStat(battler, ESTADISTICA_DEFENSA, ESTADISTICA_MAS_6, COMPARACION_MENOR))
+             && CompareStat(battler, ESTADISTICA_VELOCIDAD, ESTADISTICA_MAS_6, COMPARACION_MENOR))
             {
                 gEffectBattler = battler;
-                SET_STATCHANGER(ESTADISTICA_DEFENSA, 2, FALSE);
+                SET_STATCHANGER(ESTADISTICA_VELOCIDAD, 1, FALSE);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_TargetAbilityStatRaiseRet;
                 effect++;
@@ -5054,20 +5030,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             {
                 gEffectBattler = battler;
                 SET_STATCHANGER(ESTADISTICA_DEFENSA, 1, FALSE);
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_TargetAbilityStatRaiseRet;
-                effect++;
-            }
-            break;
-        case ABILITY_GUACAMOLE:
-            if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
-             && gBattlerAttacker != gBattlerTarget
-             && TARGET_TURN_DAMAGED
-             && IsBattlerAlive(battler)
-             && CompareStat(battler, ESTADISTICA_VELOCIDAD, ESTADISTICA_MAS_6, COMPARACION_MENOR))
-            {
-                gEffectBattler = battler;
-                SET_STATCHANGER(ESTADISTICA_VELOCIDAD, 1, FALSE);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_TargetAbilityStatRaiseRet;
                 effect++;
@@ -5663,24 +5625,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
     case ABILITYEFFECT_MOVE_END_ATTACKER: // Same as above, but for attacker
         switch (gLastUsedAbility)
         {
-        case ABILITY_POISON_TOUCH:
-            if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
-             && IsBattlerAlive(gBattlerTarget)
-             && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
-             && CanBePoisoned(gBattlerTarget, GetBattlerAbility(gBattlerTarget))
-             && GetBattlerHoldEffect(gBattlerAttacker, TRUE) != HOLD_EFFECT_PROTECTIVE_PADS
-             && IsMoveMakingContact(move, gBattlerAttacker)
-             && TARGET_TURN_DAMAGED // Need to actually hit the target
-             && RandomPercentage(RNG_POISON_TOUCH, 50))
-            {
-                gBattleScripting.moveEffect = MOVE_EFFECT_POISON;
-                PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
-                gHitMarker |= HITMARKER_STATUS_ABILITY_EFFECT;
-                effect++;
-            }
-            break;
         case ABILITY_PESTE_BUBONICA:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && gBattleMons[gBattlerTarget].hp != 0
@@ -5690,7 +5634,26 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
              && GetBattlerHoldEffect(gBattlerAttacker, TRUE) != HOLD_EFFECT_PROTECTIVE_PADS
              && IsMoveMakingContact(move, gBattlerAttacker)
              && TARGET_TURN_DAMAGED // Need to actually hit the target
-             && RandomPercentage(RNG_POISON_TOUCH, 25))
+            && PorcentajeAleatorio(50))
+            {
+                gBattleScripting.moveEffect = MOVE_EFFECT_POISON;
+                PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
+                gHitMarker |= HITMARKER_STATUS_ABILITY_EFFECT;
+                effect++;
+            }
+            break;
+        case ABILITY_AGUJA_ENVENENADA:
+            if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+            && gBattleMons[gBattlerTarget].hp != 0
+            && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
+            && CanBePoisoned(gBattlerTarget, GetBattlerAbility(gBattlerTarget))
+            && (gMovesInfo[move].movimientoPunzante)
+            && GetBattlerHoldEffect(gBattlerAttacker, TRUE) != HOLD_EFFECT_PROTECTIVE_PADS
+            && IsMoveMakingContact(move, gBattlerAttacker)
+            && TARGET_TURN_DAMAGED // Need to actually hit the target
+            && PorcentajeAleatorio(50))
             {
                 gBattleScripting.moveEffect = MOVE_EFFECT_POISON;
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
@@ -5707,7 +5670,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
              && CanBeBurned(gBattlerTarget, GetBattlerAbility(gBattlerTarget))
              && (gMovesInfo[move].type == TIPO_PSIQUICO)
              && TARGET_TURN_DAMAGED // Need to actually hit the target
-             && RandomPercentage(RNG_POISON_TOUCH, 25))
+            && PorcentajeAleatorio(50))
             {
                 gBattleScripting.moveEffect = MOVE_EFFECT_BURN;
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
@@ -5724,7 +5687,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
              && CanBeParalyzed(gBattlerTarget, GetBattlerAbility(gBattlerTarget))
              && (gMovesInfo[move].type == TIPO_LUCHA)
              && TARGET_TURN_DAMAGED // Need to actually hit the target
-             && RandomPercentage(RNG_POISON_TOUCH, 25))
+            && PorcentajeAleatorio(50))
             {
                 gBattleScripting.moveEffect = MOVE_EFFECT_PARALYSIS;
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
@@ -5741,7 +5704,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
              && CanBeSlept(gBattlerTarget, GetBattlerAbility(gBattlerTarget))
              && (gMovesInfo[move].soundMove)
              && TARGET_TURN_DAMAGED // Need to actually hit the target
-             && RandomPercentage(RNG_POISON_TOUCH, 25))
+            && PorcentajeAleatorio(50))
             {
                 gBattleScripting.moveEffect = MOVE_EFFECT_SLEEP;
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
@@ -5758,7 +5721,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
              && CanGetFrostbite(gBattlerTarget)
              && (gMovesInfo[move].soundMove)
              && TARGET_TURN_DAMAGED // Need to actually hit the target
-             && (Random() % 2) == 0)
+            && PorcentajeAleatorio(50))
             {
                 gBattleScripting.moveEffect = MOVE_EFFECT_FROSTBITE;
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
@@ -5775,25 +5738,9 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
              && CanBeSlept(gBattlerTarget, GetBattlerAbility(gBattlerTarget))
              && (gMovesInfo[move].soundMove)
              && TARGET_TURN_DAMAGED // Need to actually hit the target
-             && RandomPercentage(RNG_POISON_TOUCH, 25))
+            && PorcentajeAleatorio(50))
             {
                 gBattleScripting.moveEffect = MOVE_EFFECT_CONFUSION;
-                PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
-                gHitMarker |= HITMARKER_STATUS_ABILITY_EFFECT;
-                effect++;
-            }
-            break;
-        case ABILITY_TOXIC_CHAIN:
-            if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
-             && IsBattlerAlive(gBattlerTarget)
-             && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
-             && CanBePoisoned(gBattlerTarget, GetBattlerAbility(gBattlerTarget))
-             && TARGET_TURN_DAMAGED // Need to actually hit the target
-             && RandomWeighted(RNG_TOXIC_CHAIN, 7, 3))
-            {
-                gBattleScripting.moveEffect = MOVE_EFFECT_TOXIC;
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
@@ -6224,7 +6171,7 @@ u32 IsAbilityPreventingEscape(u32 battler)
     u32 id;
     if (B_GHOSTS_ESCAPE >= GEN_6 && IS_BATTLER_OF_TYPE(battler, TIPO_FANTASMA))
         return 0;
-    if (GetBattlerAbility(battler) == ABILITY_RUN_AWAY)
+    if (GetBattlerAbility(battler) == ABILITY_HUIDIZO)
         return 0;
     if ((id = IsAbilityOnOpposingSide(battler, ABILITY_SHADOW_TAG))
         && (B_SHADOW_TAG_ESCAPE >= GEN_4 && GetBattlerAbility(battler) != ABILITY_SHADOW_TAG))
@@ -6247,7 +6194,7 @@ bool32 CanBattlerEscape(u32 battler) // no ability check
         return TRUE;
     else if (B_GHOSTS_ESCAPE >= GEN_6 && IS_BATTLER_OF_TYPE(battler, TIPO_FANTASMA))
         return TRUE;
-    else if (GetBattlerAbility(battler) == ABILITY_RUN_AWAY)
+    else if (GetBattlerAbility(battler) == ABILITY_HUIDIZO)
         return TRUE;
     else if (gBattleMons[battler].status2 & (STATUS2_ESCAPE_PREVENTION | STATUS2_WRAPPED))
         return FALSE;
@@ -7828,18 +7775,6 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
             case HOLD_EFFECT_MARANGA_BERRY:  // consume and boost sp. defense if used special move
                 effect = DamagedStatBoostBerryEffect(battler, ESTADISTICA_DEFENSA_ESPECIAL, CATEGORIA_ESPECIAL);
                 break;
-            case HOLD_EFFECT_CURE_STATUS: // only Toxic Chain's interaction with Knock Off
-            case HOLD_EFFECT_CURE_PSN:
-                if (gBattleMons[battler].status1 & STATUS1_PSN_ANY && !UnnerveOn(battler, gLastUsedItem) && GetBattlerAbility(gBattlerAttacker) == ABILITY_TOXIC_CHAIN && gMovesInfo[gCurrentMove].effect == EFFECT_KNOCK_OFF)
-                {
-                    gBattleScripting.battler = battler;
-                    gBattleMons[battler].status1 &= ~(STATUS1_PSN_ANY | STATUS1_TOXIC_COUNTER);
-                    BattleScriptExecute(BattleScript_BerryCurePsnEnd2);
-                    BtlController_EmitSetMonData(battler, 0, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[battler].status1);
-                    MarkBattlerForControllerExec(battler);
-                    effect = ITEM_STATUS_CHANGE;
-                }
-                break;
             case HOLD_EFFECT_STICKY_BARB:
                 if (TARGET_TURN_DAMAGED
                   && (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT))
@@ -8537,8 +8472,10 @@ static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData
         break;
     case EFFECT_PAYBACK:
         if (GetBattlerTurnOrderNum(battlerAtk) > GetBattlerTurnOrderNum(battlerDef)
-            && (B_PAYBACK_SWITCH_BOOST < GEN_5 || gDisableStructs[battlerDef].isFirstTurn != 2))
+            && gDisableStructs[battlerDef].isFirstTurn != 2)
+        {
             basePower *= 2;
+        }
         break;
     case EFFECT_BOLT_BEAK:
         if (GetBattlerTurnOrderNum(battlerAtk) < GetBattlerTurnOrderNum(battlerDef)
@@ -8726,8 +8663,9 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
             modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
         break;
     case ABILITY_ANALYTIC:
+    case ABILITY_AGRESIVIDAD:
         if (GetBattlerTurnOrderNum(battlerAtk) == gBattlersCount - 1 && move != MOVE_FUTURE_SIGHT && move != MOVE_DOOM_DESIRE)
-           modifier = uq4_12_multiply(modifier, UQ_4_12(1.3));
+           modifier = uq4_12_multiply(modifier, UQ_4_12(1.5));
         break;
     case ABILITY_TOUGH_CLAWS:
         if (IsMoveMakingContact(move, battlerAtk))
@@ -8743,7 +8681,7 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
            modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
         break;
     case ABILITY_CARPINTERO:
-        if (gMovesInfo[move].peckMove)
+        if (gMovesInfo[move].movimientoPunzante)
            modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
         break;
     case ABILITY_MARTILLADOR:
@@ -8755,7 +8693,7 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
            modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
         break;
     case ABILITY_CORNAMENTA:
-        if (gMovesInfo[move].hornMove)
+        if (gMovesInfo[move].movimientoPunzante)
            modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
         break;
     case ABILITY_LENGUALARGA:
@@ -8850,10 +8788,6 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
         break;
     case ABILITY_GORILLA_TACTICS:
         if (IS_MOVE_PHYSICAL(move))
-            modifier = uq4_12_multiply(modifier, UQ_4_12(1.5));
-        break;
-    case ABILITY_ROCKY_PAYLOAD:
-        if (moveType == TIPO_ROCA)
             modifier = uq4_12_multiply(modifier, UQ_4_12(1.5));
         break;
     case ABILITY_TERRESTRE:
@@ -9579,18 +9513,23 @@ static inline uq4_12_t GetAttackerAbilitiesModifier(u32 battlerAtk, uq4_12_t typ
 {
     switch (abilityAtk)
     {
-    case ABILITY_NEUROFORCE:
-        if (typeEffectivenessModifier >= UQ_4_12(2.0))
-            return UQ_4_12(1.25);
-        break;
-    case ABILITY_SNIPER:
-        if (isCrit)
-            return UQ_4_12(1.5);
-        break;
-    case ABILITY_TINTED_LENS:
-        if (typeEffectivenessModifier <= UQ_4_12(0.5))
-            return UQ_4_12(2.0);
-        break;
+        case ABILITY_NEUROFORCE:
+            if (typeEffectivenessModifier >= UQ_4_12(2.0))
+                return UQ_4_12(1.25);
+            break;
+        case ABILITY_SNIPER:
+            if (isCrit)
+                return UQ_4_12(1.5);
+            break;
+        case ABILITY_CROMOLENTE:
+        {
+            u32 newModifier = typeEffectivenessModifier * UQ_4_12(2.0);
+
+            if (newModifier > UQ_4_12(1.0))
+                newModifier = UQ_4_12(1.0);
+
+            return newModifier;
+        }
     }
     return UQ_4_12(1.0);
 }

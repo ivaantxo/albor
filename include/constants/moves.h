@@ -872,7 +872,7 @@
 // The Teal Mask Moves
 #define MOVE_BLOOD_MOON 829
 #define MOVE_MATCHA_GOTCHA 830
-#define MOVE_SYRUP_BOMB 831
+#define MOVE_UNUSED_831 831
 #define MOVE_IVY_CUDGEL 832
 // The Indigo Disk Moves
 #define MOVE_ELECTRO_SHOT 833

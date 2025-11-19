@@ -1,7 +1,6 @@
 #ifndef GUARD_BATTLE_SCRIPTS_H
 #define GUARD_BATTLE_SCRIPTS_H
 
-extern const u8 BattleScript_SupersweetSyrupActivates[];
 extern const u8 BattleScript_OpportunistCopyStatChange[];
 extern const u8 BattleScript_MirrorHerbCopyStatChange[];
 extern const u8 BattleScript_MirrorHerbCopyStatChangeEnd2[];
@@ -480,8 +479,6 @@ extern const u8 BattleScript_DefDown[];
 extern const u8 BattleScript_UltraBurst[];
 extern const u8 BattleScript_SelectingNotAllowedCurrentMove[];
 extern const u8 BattleScript_SaltCureExtraDamage[];
-extern const u8 BattleScript_SyrupBombEndTurn[];
-extern const u8 BattleScript_SyrupBombActivates[];
 extern const u8 BattleScript_EffectCombinedPledge_Water[];
 extern const u8 BattleScript_EffectCombinedPledge_Fire[];
 extern const u8 BattleScript_EffectCombinedPledge_Grass[];

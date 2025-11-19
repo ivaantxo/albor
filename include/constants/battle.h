@@ -171,8 +171,7 @@ enum ResultadosBatalla
 #define STATUS4_WATER_SPORT             (1 << 2)    // Only used if B_SPORT_TURNS < GEN_6
 #define STATUS4_INFINITE_CONFUSION      (1 << 3)    // Used for Berserk Gene
 #define STATUS4_SALT_CURE               (1 << 4)
-#define STATUS4_SYRUP_BOMB              (1 << 5)
-#define STATUS4_GLAIVE_RUSH             (1 << 6)
+#define STATUS4_GLAIVE_RUSH             (1 << 5)
 
 #define HITMARKER_WAKE_UP_CLEAR         (1 << 4) // Cleared when waking up. Never set or checked.
 #define HITMARKER_IGNORE_BIDE           (1 << 5)
@@ -377,7 +376,7 @@ enum ResultadosBatalla
 #define MOVE_EFFECT_DIRE_CLAW           72
 #define MOVE_EFFECT_STEALTH_ROCK        73
 #define MOVE_EFFECT_SPIKES              74
-#define MOVE_EFFECT_SYRUP_BOMB          75
+#define MOVE_EFFECT_UNUSED_75          75
 #define MOVE_EFFECT_FLORAL_HEALING      76
 #define MOVE_EFFECT_SECRET_POWER        77
 #define MOVE_EFFECT_PSYCHIC_NOISE       78

@@ -1416,8 +1416,6 @@ void SwitchInClearSetData(u32 battler)
             gBattleMons[i].status2 &= ~STATUS2_INFATUATED_WITH(battler);
         if ((gBattleMons[i].status2 & STATUS2_WRAPPED) && *(gBattleStruct->wrappedBy + i) == battler)
             gBattleMons[i].status2 &= ~STATUS2_WRAPPED;
-        if ((gStatuses4[i] & STATUS4_SYRUP_BOMB) && *(gBattleStruct->stickySyrupdBy + i) == battler)
-            gStatuses4[i] &= ~STATUS4_SYRUP_BOMB;
     }
 
     gActionSelectionCursor[battler] = 0;
@@ -1520,8 +1518,6 @@ const u8* FaintClearSetData(u32 battler)
             gBattleMons[i].status2 &= ~STATUS2_INFATUATED_WITH(battler);
         if ((gBattleMons[i].status2 & STATUS2_WRAPPED) && *(gBattleStruct->wrappedBy + i) == battler)
             gBattleMons[i].status2 &= ~STATUS2_WRAPPED;
-        if ((gStatuses4[i] & STATUS4_SYRUP_BOMB) && *(gBattleStruct->stickySyrupdBy + i) == battler)
-            gStatuses4[i] &= ~STATUS4_SYRUP_BOMB;
     }
 
     gActionSelectionCursor[battler] = 0;
@@ -2132,7 +2128,7 @@ u8 IsRunningFromBattleImpossible(u32 battler)
         return BATTLE_RUN_SUCCESS;
     if (B_GHOSTS_ESCAPE >= GEN_6 && IS_BATTLER_OF_TYPE(battler, TIPO_FANTASMA))
         return BATTLE_RUN_SUCCESS;
-    if (GetBattlerAbility(battler) == ABILITY_RUN_AWAY)
+    if (GetBattlerAbility(battler) == ABILITY_HUIDIZO)
         return BATTLE_RUN_SUCCESS;
 
     if ((i = IsAbilityPreventingEscape(battler)))
@@ -2647,13 +2643,15 @@ u32 GetBattlerTotalSpeedStatArgs(u32 battler, u32 ability, u32 holdEffect)
 
     if (WEATHER_HAS_EFFECT)
     {
-        if (ability == ABILITY_SWIFT_SWIM       && gBattleWeather & B_WEATHER_RAIN)
+        if (ability == ABILITY_SWIFT_SWIM                   && gBattleWeather & B_WEATHER_RAIN)
             speed = (speed * 150) / 100;
-        else if (ability == ABILITY_CHLOROPHYLL && gBattleWeather & B_WEATHER_SUN)
+        else if (ability == ABILITY_ALAS_HIDROFOBAS         && gBattleWeather & B_WEATHER_RAIN)
             speed = (speed * 150) / 100;
-        else if (ability == ABILITY_SAND_RUSH   && gBattleWeather & B_WEATHER_SANDSTORM)
+        else if (ability == ABILITY_CHLOROPHYLL             && gBattleWeather & B_WEATHER_SUN)
             speed = (speed * 150) / 100;
-        else if (ability == ABILITY_SLUSH_RUSH  && (gBattleWeather & (B_WEATHER_HAIL | B_WEATHER_SNOW)))
+        else if (ability == ABILITY_SAND_RUSH               && gBattleWeather & B_WEATHER_SANDSTORM)
+            speed = (speed * 150) / 100;
+        else if (ability == ABILITY_SLUSH_RUSH              && gBattleWeather & B_WEATHER_SNOW)
             speed = (speed * 150) / 100;
     }
 
@@ -2728,7 +2726,7 @@ s8 GetMovePriority(u32 battler, u16 move)
         priority++;
     else if (ability == ABILITY_OJOS_PRESTOS && gMovesInfo[move].eyesMove)
         priority++;
-    else if (ability == ABILITY_RUN_AWAY && gMovesInfo[move].effect == EFFECT_HIT_ESCAPE)
+    else if (ability == ABILITY_HUIDIZO && gMovesInfo[move].effect == EFFECT_HIT_ESCAPE)
         priority++;
     else if (ability == ABILITY_VOZ_CANTANTE && gMovesInfo[move].soundMove)
         priority++;

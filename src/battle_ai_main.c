@@ -757,6 +757,11 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                   && (moveType == TIPO_SINIESTRO || moveType == TIPO_FANTASMA || moveType == TIPO_BICHO))
                     RETURN_SCORE_MINUS(10);
                 break;
+            case ABILITY_ALAS_HIDROFOBAS:
+                if (!IS_MOVE_STATUS(move)
+                  && (moveType == TIPO_AGUA))
+                    RETURN_SCORE_MINUS(10);
+                break;    
             case ABILITY_AROMA_VEIL:
                 if (IsAromaVeilProtectedMove(move))
                     RETURN_SCORE_MINUS(10);
@@ -2778,6 +2783,15 @@ static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                     RETURN_SCORE_PLUS(WEAK_EFFECT);
                 }
                 break;
+            case ABILITY_ALAS_HIDROFOBAS:
+                if (!IS_MOVE_STATUS(move)
+                    && (moveType == TIPO_AGUA)
+                    && BattlerStatCanRise(battlerAtkPartner, atkPartnerAbility, ESTADISTICA_VELOCIDAD)
+                    && !CanIndexMoveFaintTarget(battlerAtk, battlerAtkPartner, AI_THINKING_STRUCT->movesetIndex, 1))
+                {
+                    RETURN_SCORE_PLUS(WEAK_EFFECT);
+                }
+                break;
             case ABILITY_CONTRARY:
                 if (IsStatLoweringEffect(effect))
                 {
@@ -3389,7 +3403,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
               || aiData->holdEffects[battlerAtk] == HOLD_EFFECT_CURE_STATUS
               || HasMoveEffect(EFFECT_SLEEP_TALK, battlerAtk)
               || HasMoveEffect(EFFECT_SNORE, battlerAtk)
-              || aiData->abilities[battlerAtk] == ABILITY_SHED_SKIN
+              || aiData->abilities[battlerAtk] == ABILITY_MUDAR
               || aiData->abilities[battlerAtk] == ABILITY_EARLY_BIRD
               || (AI_GetWeather(aiData) & B_WEATHER_RAIN && gWishFutureKnock.weatherDuration != 1 && aiData->abilities[battlerAtk] == ABILITY_HYDRATION && aiData->holdEffects[battlerAtk] != HOLD_EFFECT_UTILITY_UMBRELLA))
                 ADJUST_SCORE(GOOD_EFFECT);
@@ -3879,6 +3893,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
                 switch (aiData->abilities[battlerDef])
                 {
                 case ABILITY_SWIFT_SWIM:
+                case ABILITY_ALAS_HIDROFOBAS:
                     if (AI_GetWeather(aiData) & B_WEATHER_RAIN)
                         ADJUST_SCORE(DECENT_EFFECT); // Slow 'em down
                     break;
