@@ -8794,10 +8794,6 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
         if (moveType == TIPO_TIERRA)
             modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
         break;
-    case ABILITY_QUARK_DRIVE:
-    case ABILITY_ORICHALCUM_PULSE:
-    case ABILITY_HADRON_ENGINE:
-        break;
     case ABILITY_SHARPNESS:
         if (gMovesInfo[move].slicingMove)
            modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
@@ -8852,15 +8848,6 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
     case ABILITY_DRY_SKIN:
         if (moveType == TIPO_FUEGO)
             modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
-        break;
-    case ABILITY_QUARK_DRIVE:
-        {
-            u8 defHighestStat = GetHighestStatId(battlerDef);
-            if ((gFieldStatuses & STATUS_FIELD_ELECTRIC_TERRAIN || gBattleStruct->boosterEnergyActivates & (1u << battlerDef))
-             && ((IS_MOVE_PHYSICAL(move) && defHighestStat == ESTADISTICA_DEFENSA) || (IS_MOVE_SPECIAL(move) && defHighestStat == ESTADISTICA_DEFENSA_ESPECIAL))
-             && !(gBattleMons[battlerDef].status2 & STATUS2_TRANSFORMED))
-                modifier = uq4_12_multiply(modifier, UQ_4_12(0.7));
-        }
         break;
     }
 
@@ -8918,8 +8905,6 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
     case HOLD_EFFECT_PUNCHING_GLOVE:
         if (gMovesInfo[move].punchingMove)
            modifier = uq4_12_multiply(modifier, UQ_4_12(1.1));
-        break;
-    case HOLD_EFFECT_OGERPON_MASK:
         break;
     }
 
@@ -9052,8 +9037,6 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
                 modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.5));
         }
         break;
-    case ABILITY_FLOWER_GIFT:
-        break;
     case ABILITY_GENERADOR:
         if (moveType == TIPO_ELECTRICO)
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.25));
@@ -9114,8 +9097,6 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
     {
         switch (GetBattlerAbility(BATTLE_PARTNER(battlerAtk)))
         {
-        case ABILITY_FLOWER_GIFT:
-            break;
         case ABILITY_GENERADOR:
             if (moveType == TIPO_ELECTRICO)
                 modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.25));
@@ -9975,10 +9956,6 @@ static inline uq4_12_t CalcTypeEffectivenessMultiplierInternal(u32 move, u32 mov
             RecordAbilityBattle(battlerDef, ABILITY_LEVITATE);
         }
     }
-    else if (B_SHEER_COLD_IMMUNITY >= GEN_7 && move == MOVE_SHEER_COLD && IS_BATTLER_OF_TYPE(battlerDef, TIPO_HIELO))
-    {
-        modifier = UQ_4_12(0.0);
-    }
 
     // Thousand Arrows ignores type modifiers for flying mons
     if (!IsBattlerGrounded(battlerDef) && (gMovesInfo[move].ignoreTypeIfFlyingAndUngrounded)
@@ -10016,8 +9993,6 @@ uq4_12_t CalcTypeEffectivenessMultiplier(u32 move, u32 moveType, u32 battlerAtk,
     if (move != MOVE_STRUGGLE && moveType != TIPO_MISTERIO)
     {
         modifier = CalcTypeEffectivenessMultiplierInternal(move, moveType, battlerAtk, battlerDef, recordAbilities, modifier, defAbility);
-        if (gMovesInfo[move].effect == EFFECT_TWO_TYPED_MOVE)
-            modifier = CalcTypeEffectivenessMultiplierInternal(move, gMovesInfo[move].argument, battlerAtk, battlerDef, recordAbilities, modifier, defAbility);
     }
 
     if (recordAbilities)
