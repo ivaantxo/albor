@@ -69,7 +69,6 @@ struct TrainerBattleParameter
 
 // this file's functions
 static void DoSafariBattle(void);
-static void DoStandardWildBattle(bool32 isDouble);
 static void CB2_EndWildBattle(void);
 static void CB2_EndScriptedWildBattle(void);
 static void TryUpdateGymLeaderRematchFromWild(void);
@@ -321,23 +320,21 @@ void BattleSetup_StartWildBattle(void)
     if (GetSafariZoneFlag())
         DoSafariBattle();
     else
-        DoStandardWildBattle(FALSE);
+        DoStandardWildBattle();
 }
 
 void BattleSetup_StartDoubleWildBattle(void)
 {
-    DoStandardWildBattle(TRUE);
+    DoStandardWildBattle();
 }
 
-static void DoStandardWildBattle(bool32 isDouble)
+void DoStandardWildBattle(void)
 {
     LockPlayerFieldControls();
     FreezeObjectEvents();
     StopPlayerAvatar();
     gMain.savedCallback = CB2_EndWildBattle;
     gBattleTypeFlags = TIPO_BATALLA_SALVAJE;
-    if (isDouble)
-        gBattleTypeFlags |= TIPO_BATALLA_ENTRENADOR;
     CreateBattleStartTask(GetWildBattleTransition(), 0);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
