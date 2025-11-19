@@ -481,14 +481,9 @@ static void CB2_InitBattleInternal(void)
 
 static void CB2_HandleStartBattle(void)
 {
-    u8 playerMultiplayerId;
-
     RunTasks();
     AnimateSprites();
     BuildOamBuffer();
-
-    playerMultiplayerId = GetMultiplayerId();
-    gBattleScripting.multiplayerId = playerMultiplayerId;
 
     switch (gBattleCommunication[MULTIUSE_STATE])
     {
@@ -504,72 +499,15 @@ static void CB2_HandleStartBattle(void)
         }
         break;
     case 1:
-        gBattleCommunication[MULTIUSE_STATE] = 15;
+        gBattleCommunication[MULTIUSE_STATE] = 2;
         break;
     case 2:
-        break;
-    case 3:
-        // Link battle, send/receive party Pokémon 2 at a time
-        if (IsLinkTaskFinished())
-        {
-            // Send Pokémon 1-2
-            SendBlock(BitmaskAllOtherLinkPlayers(), gPlayerParty, sizeof(struct Pokemon) * 2);
-            gBattleCommunication[MULTIUSE_STATE]++;
-        }
-        break;
-    case 4:
-        if ((GetBlockReceivedStatus() & 3) == 3)
-        {
-            // Recv Pokémon 1-2
-            gBattleCommunication[MULTIUSE_STATE]++;
-        }
-        break;
-    case 7:
-        if (IsLinkTaskFinished())
-        {
-            // Send Pokémon 3-4
-            SendBlock(BitmaskAllOtherLinkPlayers(), &gPlayerParty[2], sizeof(struct Pokemon) * 2);
-            gBattleCommunication[MULTIUSE_STATE]++;
-        }
-        break;
-    case 8:
-        if ((GetBlockReceivedStatus() & 3) == 3)
-        {
-            // Recv Pokémon 3-4
-            gBattleCommunication[MULTIUSE_STATE]++;
-        }
-        break;
-    case 11:
-        if (IsLinkTaskFinished())
-        {
-            // Send Pokémon 5-6
-            SendBlock(BitmaskAllOtherLinkPlayers(), &gPlayerParty[4], sizeof(struct Pokemon) * 2);
-            gBattleCommunication[MULTIUSE_STATE]++;
-        }
-        break;
-    case 12:
-        if ((GetBlockReceivedStatus() & 3) == 3)
-        {
-            // Recv Pokémon 5-6
-            gBattleCommunication[MULTIUSE_STATE]++;
-        }
-        break;
-    case 15:
         InitBattleControllers();
         gBattleCommunication[SPRITES_INIT_STATE1] = 0;
         gBattleCommunication[SPRITES_INIT_STATE2] = 0;
-        gBattleCommunication[MULTIUSE_STATE] = 18;
+        gBattleCommunication[MULTIUSE_STATE] = 3;
         break;
-    case 16:
-        break;
-    case 17:
-        // Receive rng seed for recorded battle (only read it if partner is the link master)
-        if ((GetBlockReceivedStatus() & 3) == 3)
-        {
-            gBattleCommunication[MULTIUSE_STATE]++;
-        }
-        break;
-    case 18:
+    case 3:
         // Finish, start battle
         if (BattleInitAllSprites(&gBattleCommunication[SPRITES_INIT_STATE1], &gBattleCommunication[SPRITES_INIT_STATE2]))
         {
@@ -577,18 +515,6 @@ static void CB2_HandleStartBattle(void)
             gMain.callback1 = BattleMainCB1;
             SetMainCallback2(BattleMainCB2);
         }
-        break;
-    // Introduce short delays between sending party Pokémon for link
-    case 5:
-    case 9:
-    case 13:
-        gBattleCommunication[MULTIUSE_STATE]++;
-        gBattleCommunication[1] = 1;
-    case 6:
-    case 10:
-    case 14:
-        if (--gBattleCommunication[1] == 0)
-            gBattleCommunication[MULTIUSE_STATE]++;
         break;
     }
 }
@@ -1728,7 +1654,7 @@ static void DoBattleIntro(void)
             case B_POSITION_PLAYER_RIGHT:
                 break;
             case B_POSITION_OPPONENT_RIGHT:
-                if (!(EsContraEntrenador()) && IsBattlerAlive(battler))
+                if (IsBattlerAlive(battler)) // wild mon 2 if alive
                 {
                     BtlController_EmitLoadMonSprite(battler, BUFFER_A);
                     MarkBattlerForControllerExec(battler);
@@ -1741,7 +1667,7 @@ static void DoBattleIntro(void)
         if (EsContraEntrenador())
             gBattleStruct->estadoIntro++;
         else // Skip party summary since it is a wild battle.
-            gBattleStruct->estadoIntro = BATTLE_INTRO_STATE_INTRO_TEXT; // Don't wait for sprite, print message at the same time.
+            gBattleStruct->estadoIntro = BATTLE_INTRO_STATE_INTRO_TEXT;
         break;
     case BATTLE_INTRO_STATE_DRAW_PARTY_SUMMARY:
         if (!gBattleControllerExecFlags)
@@ -1750,7 +1676,8 @@ static void DoBattleIntro(void)
 
             for (i = 0; i < PARTY_SIZE; i++)
             {
-                if (GetMonData(&gEnemyParty[i], MON_DATA_SPECIES_OR_EGG) == SPECIES_NONE || GetMonData(&gEnemyParty[i], MON_DATA_SPECIES_OR_EGG) == SPECIES_EGG)
+                if (GetMonData(&gEnemyParty[i], MON_DATA_SPECIES_OR_EGG) == SPECIES_NONE
+                 || GetMonData(&gEnemyParty[i], MON_DATA_SPECIES_OR_EGG) == SPECIES_EGG)
                 {
                     hpStatus[i].hp = HP_EMPTY_SLOT;
                     hpStatus[i].status = 0;
@@ -1768,7 +1695,8 @@ static void DoBattleIntro(void)
 
             for (i = 0; i < PARTY_SIZE; i++)
             {
-                if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG) == SPECIES_NONE || GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG) == SPECIES_EGG)
+                if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG) == SPECIES_NONE
+                 || GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG) == SPECIES_EGG)
                 {
                     hpStatus[i].hp = HP_EMPTY_SLOT;
                     hpStatus[i].status = 0;
@@ -1802,12 +1730,16 @@ static void DoBattleIntro(void)
         if (!IsBattlerMarkedForControllerExec(GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)))
         {
             if (EsContraEntrenador())
+            {
                 gBattleStruct->estadoIntro++;
+            }
             else
+            {
                 gBattleStruct->estadoIntro = BATTLE_INTRO_STATE_WAIT_FOR_WILD_BATTLE_TEXT;
+            }
         }
         break;
-    case ESTADO_INTRO_BATALLA_ENTRENADOR_TEXTO_ENVIAR_POKEMON:
+    case BATTLE_INTRO_STATE_TRAINER_SEND_OUT_TEXT:
         PrepareStringBattle(TEXTO_BATALLA_ENVIAR_POKEMON, GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT));
         gBattleStruct->estadoIntro++;
         break;
@@ -1815,18 +1747,30 @@ static void DoBattleIntro(void)
         if (!gBattleControllerExecFlags)
             gBattleStruct->estadoIntro++;
         break;
-    case BATTLE_INTRO_STATE_TRAINER_SEND_OUT_ANIM:
+    case BATTLE_INTRO_STATE_TRAINER_1_SEND_OUT_ANIM:
         battler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
         BtlController_EmitIntroTrainerBallThrow(battler, BUFFER_A);
         MarkBattlerForControllerExec(battler);
         gBattleStruct->estadoIntro++;
         break;
+    case BATTLE_INTRO_STATE_TRAINER_2_SEND_OUT_ANIM:
+        gBattleStruct->estadoIntro = BATTLE_INTRO_STATE_WAIT_FOR_WILD_BATTLE_TEXT; // Print at the same time as trainer sends out second mon.
+        break;
+    case BATTLE_INTRO_STATE_WAIT_FOR_TRAINER_2_SEND_OUT_ANIM:
+        if (!gBattleControllerExecFlags)
+            gBattleStruct->estadoIntro++;
+        break;
     case BATTLE_INTRO_STATE_WAIT_FOR_WILD_BATTLE_TEXT:
         if (!IsBattlerMarkedForControllerExec(GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)))
             gBattleStruct->estadoIntro++;
         break;
-    case ESTADO_INTRO_BATALLA_JUGADOR_TEXTO_ENVIAR_POKEMON:
+    case BATTLE_INTRO_STATE_PRINT_PLAYER_SEND_OUT_TEXT:
         battler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
+        // A hack that makes fast intro work in trainer battles too.
+        if (EsContraEntrenador() && gSprites[gHealthboxSpriteIds[battler ^ BIT_SIDE]].callback == SpriteCallbackDummy)
+        {
+            return;
+        }
         PrepareStringBattle(TEXTO_BATALLA_ENVIAR_POKEMON, battler);
         BtlController_EmitIntroTrainerBallThrow(battler, BUFFER_A);
         MarkBattlerForControllerExec(battler);
@@ -1836,6 +1780,15 @@ static void DoBattleIntro(void)
         battler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
         if (!IsBattlerMarkedForControllerExec(battler))
             gBattleStruct->estadoIntro++;
+        break;
+    case BATTLE_INTRO_STATE_PRINT_PLAYER_1_SEND_OUT_TEXT:
+        battler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
+        BtlController_EmitIntroTrainerBallThrow(battler, BUFFER_A);
+        MarkBattlerForControllerExec(battler);
+        gBattleStruct->estadoIntro++;
+        break;
+    case BATTLE_INTRO_STATE_PRINT_PLAYER_2_SEND_OUT_TEXT:
+        gBattleStruct->estadoIntro++;
         break;
     case BATTLE_INTRO_STATE_SET_DEX_AND_BATTLE_VARS:
         if (!gBattleControllerExecFlags)
@@ -1847,24 +1800,10 @@ static void DoBattleIntro(void)
                     HandleSetPokedexFlag(SpeciesToNationalPokedexNum(gBattleMons[battler].species), FLAG_SET_SEEN);
                 }
             }
-
             gBattleStruct->eventsBeforeFirstTurnState = 0;
             gBattleStruct->switchInBattlerCounter = 0;
             gBattleStruct->overworldWeatherDone = FALSE;
             Ai_InitPartyStruct(); // Save mons party counts, and first 2/4 mons on the battlefield.
-
-            // Try to set a status to start the battle with
-            gBattleStruct->startingStatus = 0;
-            if (EsContraEntrenador() && GetTrainerStartingStatusFromId(gTrainerBattleOpponent_A))
-            {
-                gBattleStruct->startingStatus = GetTrainerStartingStatusFromId(gTrainerBattleOpponent_A);
-                gBattleStruct->startingStatusTimer = 0; // infinite
-            }
-            else if (B_VAR_STARTING_STATUS != 0)
-            {
-                gBattleStruct->startingStatus = VarGet(B_VAR_STARTING_STATUS);
-                gBattleStruct->startingStatusTimer = VarGet(B_VAR_STARTING_STATUS_TIMER);
-            }
             gBattleMainFunc = TryDoEventsBeforeFirstTurn;
         }
         break;
@@ -2223,7 +2162,7 @@ static void HandleTurnActionSelectionState(void)
             u32 isAiRisky = AI_THINKING_STRUCT->aiFlags[battler] & AI_FLAG_RISKY; // Risky AI switches aggressively even mid battle
 
             // Do AI score computations here so we can use them in AI_TrySwitchOrUseItem
-            if ((EsContraEntrenador() || IsWildMonSmart()) && (BattlerHasAi(battler)))
+            if (EsContraEntrenador())
             {
                 AI_DATA->aiCalcInProgress = TRUE;
 
@@ -2327,19 +2266,8 @@ static void HandleTurnActionSelectionState(void)
                         return;
                     }
 
-                    if (gStatuses3[battler] & STATUS3_SKY_DROPPED)
-                    {
-                        gSelectionBattleScripts[battler] = BattleScript_ActionSelectionItemsCantBeUsed;
-                        gBattleCommunication[battler] = STATE_SELECTION_SCRIPT;
-                        *(gBattleStruct->selectionScriptFinished + battler) = FALSE;
-                        *(gBattleStruct->stateIdAfterSelScript + battler) = STATE_BEFORE_ACTION_CHOSEN;
-                        return;
-                    }
-                    else
-                    {
-                        BtlController_EmitChooseItem(battler, BUFFER_A, gBattleStruct->battlerPartyOrders[battler]);
-                        MarkBattlerForControllerExec(battler);
-                    }
+                    BtlController_EmitChooseItem(battler, BUFFER_A, gBattleStruct->battlerPartyOrders[battler]);
+                    MarkBattlerForControllerExec(battler);
                     break;
                 case B_ACTION_SWITCH:
                     *(gBattleStruct->battlerPartyIndexes + battler) = gBattlerPartyIndexes[battler];
@@ -2450,7 +2378,6 @@ static void HandleTurnActionSelectionState(void)
                         }
                         else
                         {
-                            // Get the chosen move position (and thus the chosen move) and target from the returned buffer.
                             gChosenMoveByBattler[battler] = gBattleMons[battler].moves[gBattleStruct->chosenMovePositions[battler]];
                             gBattleStruct->moveTarget[battler] = gBattleResources->bufferB[battler][3];
                             gBattleCommunication[battler]++;
@@ -3152,7 +3079,6 @@ static void RunTurnActionsFunctions(void)
     if (gBattleOutcome != 0)
         gCurrentActionFuncId = B_ACTION_FINISHED;
 
-    // Focus Punch-like moves after switching, items, running, but before using a move.
     if (gCurrentActionFuncId == B_ACTION_USE_MOVE && !gBattleStruct->effectsBeforeUsingMoveDone)
     {
         if (TryDoMoveEffectsBeforeMoves())
@@ -3277,7 +3203,7 @@ static void HandleEndTurn_FinishBattle(void)
             }
         }
 
-        if (!(gBattleTypeFlags & (TIPO_BATALLA_ENTRENADOR))
+        if (!EsContraEntrenador()
             && gBattleResults.shinyWildMon)
 
         EmpiezaFundidoPaletasRapido(FUNDIDO_A_NEGRO);

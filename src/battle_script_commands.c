@@ -14654,7 +14654,7 @@ void BS_ItemRestoreHP(void)
             {
                 gAbsentBattlerFlags &= ~(1u << battler);
                 gBattleMons[battler].hp = hp;
-                gBattleCommunication[MULTIUSE_STATE] = TRUE;
+                gBattleCommunication[MULTIUSE_STATE] = 1;
             }
             gBattlescriptCurrInstr = cmd->nextInstr;
         }

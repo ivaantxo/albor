@@ -104,3 +104,5 @@ find . -name "* 2.inc" -delete
 \s+[0-9]+
 
 muy probable que RAMSCRGEN se pueda eliminar
+limpiar y documentar estados de intro batalla.
+static void CB2_HandleStartBattle(void) es una locura sin sentido

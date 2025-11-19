@@ -749,32 +749,8 @@ void BS_TrySetStatus2(void)
     switch (status2)
     {
         case STATUS2_CONFUSION:
-            if (CanBeConfused(gBattlerTarget))
-            {
-                gBattleMons[gBattlerTarget].status2 |= STATUS2_CONFUSION_TURN(((Random()) % 4) + 2);
-                gBattleCommunication[MULTISTRING_CHOOSER] = 0;
-                gBattleCommunication[MULTIUSE_STATE] = 1;
-                effect++;
-            }
-            break;
         case STATUS2_INFATUATION:
-        {
-            u8 atkGender = GetGenderFromSpeciesAndPersonality(gBattleMons[gBattlerAttacker].species, gBattleMons[gBattlerAttacker].personality);
-            u8 defGender = GetGenderFromSpeciesAndPersonality(gBattleMons[gBattlerTarget].species, gBattleMons[gBattlerTarget].personality);
-            if (!(gBattleMons[gBattlerTarget].status2 & STATUS2_INFATUATION)
-                && gBattleMons[gBattlerTarget].ability != ABILITY_OBLIVIOUS
-                && !IsAbilityOnSide(gBattlerTarget, ABILITY_AROMA_VEIL)
-                && atkGender != defGender
-                && atkGender != MON_GENDERLESS
-                && defGender != MON_GENDERLESS)
-            {
-                gBattleMons[gBattlerTarget].status2 |= STATUS2_INFATUATED_WITH(gBattlerAttacker);
-                gBattleCommunication[MULTISTRING_CHOOSER] = 1;
-                gBattleCommunication[MULTIUSE_STATE] = 2;
-                effect++;
-            }
             break;
-        }
         case STATUS2_ESCAPE_PREVENTION:
             if (!(gBattleMons[gBattlerTarget].status2 & STATUS2_ESCAPE_PREVENTION))
             {
