@@ -76,10 +76,10 @@ void DisableWildEncounters(bool8 disabled)
 }
 
 // LAND_WILD_COUNT
-static u8 ChooseWildMonIndex_Land(void)
+u32 ChooseWildMonIndex_Land(void)
 {
-    u8 wildMonIndex = 0;
-    bool8 swap = FALSE;
+    u32 wildMonIndex = 0;
+    bool32 swap = FALSE;
     u32 rand = Random() % ENCOUNTER_CHANCE_LAND_MONS_TOTAL;
 
     if (rand < ENCOUNTER_CHANCE_LAND_MONS_SLOT_0)
@@ -195,7 +195,7 @@ static u8 ChooseWildMonIndex_Fishing(u8 rod)
     return wildMonIndex;
 }
 
-static u8 ChooseWildMonLevel(const struct WildPokemon *wildPokemon, u8 wildMonIndex, u8 area)
+u32 ChooseWildMonLevel(const struct WildPokemon *wildPokemon, u32 wildMonIndex, u32 area)
 {
     u32 min, max, range, rand;
 

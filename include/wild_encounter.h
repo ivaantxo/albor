@@ -43,5 +43,7 @@ bool8 UpdateRepelCounter(void);
 bool8 TryDoDoubleWildBattle(void);
 bool8 StandardWildEncounter_Debug(void);
 u32 CalculateChainFishingShinyRolls(void);
+u32 ChooseWildMonLevel(const struct WildPokemon *wildPokemon, u32 wildMonIndex, u32 area);
+u32 ChooseWildMonIndex_Land(void);
 
 #endif // GUARD_WILD_ENCOUNTER_H

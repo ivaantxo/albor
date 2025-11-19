@@ -68,7 +68,6 @@ struct TrainerBattleParameter
 
 // this file's functions
 static void DoSafariBattle(void);
-static void DoStandardWildBattle(bool32 isDouble);
 static void CB2_EndWildBattle(void);
 static void CB2_EndScriptedWildBattle(void);
 static void TryUpdateGymLeaderRematchFromWild(void);
@@ -409,7 +408,7 @@ void BattleSetup_StartDoubleWildBattle(void)
     DoStandardWildBattle(TRUE);
 }
 
-static void DoStandardWildBattle(bool32 isDouble)
+void DoStandardWildBattle(bool32 isDouble)
 {
     LockPlayerFieldControls();
     FreezeObjectEvents();
