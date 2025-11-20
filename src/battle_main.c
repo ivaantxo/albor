@@ -1652,14 +1652,7 @@ static void DoBattleIntro(void)
                 }
                 break;
             case B_POSITION_PLAYER_RIGHT:
-                break;
             case B_POSITION_OPPONENT_RIGHT:
-                if (IsBattlerAlive(battler)) // wild mon 2 if alive
-                {
-                    BtlController_EmitLoadMonSprite(battler, BUFFER_A);
-                    MarkBattlerForControllerExec(battler);
-                    gBattleResults.lastOpponentSpecies = GetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES, NULL);
-                }
                 break;
             }
         }
@@ -2378,6 +2371,8 @@ static void HandleTurnActionSelectionState(void)
                         }
                         else
                         {
+                            // Get the chosen move position (and thus the chosen move) and target from the returned buffer.
+                            gBattleStruct->chosenMovePositions[battler] = gBattleResources->bufferB[battler][2];
                             gChosenMoveByBattler[battler] = gBattleMons[battler].moves[gBattleStruct->chosenMovePositions[battler]];
                             gBattleStruct->moveTarget[battler] = gBattleResources->bufferB[battler][3];
                             gBattleCommunication[battler]++;

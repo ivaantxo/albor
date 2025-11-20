@@ -105,4 +105,4 @@ find . -name "* 2.inc" -delete
 
 muy probable que RAMSCRGEN se pueda eliminar
 limpiar y documentar estados de intro batalla.
-static void CB2_HandleStartBattle(void) es una locura sin sentido
+static void CB2_HandleStartBattle(void) es una locura sin sentido --> MULTIUSE_STATE dividirlo en 2, y documentar
