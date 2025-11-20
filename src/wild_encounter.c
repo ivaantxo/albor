@@ -254,37 +254,15 @@ static u16 GetCurrentMapWildMonHeaderId(void)
     return HEADER_NONE;
 }
 
-u8 PickWildMonNature(void)
+u32 EscogeNaturalezaPokemonSalvaje(void)
 {
-    u32 i;
-    struct Pokeblock *safariPokeblock;
-    u8 natures[NUMERO_NATURALEZAS];
-
-    if (GetSafariZoneFlag() == TRUE && Random() % 100 < 80)
-    {
-        safariPokeblock = SafariZoneGetActivePokeblock();
-        if (safariPokeblock != NULL)
-        {
-            for (i = 0; i < NUMERO_NATURALEZAS; i++)
-                natures[i] = i;
-            Shuffle(natures, NUMERO_NATURALEZAS, sizeof(natures[0]));
-            for (i = 0; i < NUMERO_NATURALEZAS; i++)
-            {
-                if (PokeblockGetGain(natures[i], safariPokeblock) > 0)
-                    return natures[i];
-            }
-        }
-    }
-    // check synchronize for a Pokémon with the same ability
     if (!GetMonData(&gPlayerParty[0], MON_DATA_IS_EGG)
-        && GetMonAbility(&gPlayerParty[0]) == ABILITY_SYNCHRONIZE
-        && (OW_SYNCHRONIZE_NATURE >= GEN_8 || Random() % 2 == 0))
+        && GetMonAbility(&gPlayerParty[0]) == ABILITY_SYNCHRONIZE)
     {
         return GetMonData(&gPlayerParty[0], MON_DATA_PERSONALITY) % NUMERO_NATURALEZAS;
     }
-
-    // random nature
-    return Random() % NUMERO_NATURALEZAS;
+    else
+        return Random() % NUMERO_NATURALEZAS;
 }
 
 void CreateWildMon(u32 species, u32 level)
@@ -317,11 +295,11 @@ void CreateWildMon(u32 species, u32 level)
         else
             gender = MON_FEMALE;
 
-        CreaPokemonConGeneroNaturaleza(&gEnemyParty[0], species, level, USE_RANDOM_IVS, gender, PickWildMonNature());
+        CreaPokemonConGeneroNaturaleza(&gEnemyParty[0], species, level, USE_RANDOM_IVS, gender, EscogeNaturalezaPokemonSalvaje());
         return;
     }
 
-    CreaPokemonConNaturaleza(&gEnemyParty[0], species, level, USE_RANDOM_IVS, PickWildMonNature());
+    CreaPokemonConNaturaleza(&gEnemyParty[0], species, level, USE_RANDOM_IVS, EscogeNaturalezaPokemonSalvaje());
 }
 #ifdef BUGFIX
 #define TRY_GET_ABILITY_INFLUENCED_WILD_MON_INDEX(wildPokemon, type, ability, ptr, count) TryGetAbilityInfluencedWildMonIndex(wildPokemon, type, ability, ptr, count)
@@ -445,9 +423,7 @@ static bool8 WildEncounterCheck(u32 encounterRate, bool8 ignoreAbility)
     {
         u32 ability = GetMonAbility(&gPlayerParty[0]);
 
-        if (ability == ABILITY_STENCH)
-            encounterRate /= 2;
-        else if (ability == ABILITY_ILLUMINATE)
+        if (ability == ABILITY_ILLUMINATE)
             encounterRate *= 2;
         else if (ability == ABILITY_WHITE_SMOKE)
             encounterRate /= 2;

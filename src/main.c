@@ -262,7 +262,7 @@ static void VBlankIntr(void)
     m4aSoundMain();
 
     if (!gMain.inBattle)
-        AdvanceRandom();
+        AvanzaAleatoriedad();
 
     INTR_CHECK |= INTR_FLAG_VBLANK;
     gMain.intrCheck |= INTR_FLAG_VBLANK;

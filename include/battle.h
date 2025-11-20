@@ -339,12 +339,6 @@ struct SwitchinCandidate
     bool8 hypotheticalStatus;
 };
 
-struct SimulatedDamage
-{
-    s32 expected;
-    s32 minimum;
-};
-
 // Ai Data used when deciding which move to use, computed only once before each turn's start.
 struct AiLogicData
 {
@@ -356,7 +350,7 @@ struct AiLogicData
     u8 hpPercents[MAX_BATTLERS_COUNT];
     u16 partnerMove;
     u16 speedStats[MAX_BATTLERS_COUNT]; // Speed stats for all battles, calculated only once, same way as damages
-    struct SimulatedDamage simulatedDmg[MAX_BATTLERS_COUNT][MAX_BATTLERS_COUNT][MAX_MON_MOVES]; // attacker, target, moveIndex
+    s32 simulatedDmg[MAX_BATTLERS_COUNT][MAX_BATTLERS_COUNT][MAX_MON_MOVES]; // attacker, target, moveIndex
     u8 effectiveness[MAX_BATTLERS_COUNT][MAX_BATTLERS_COUNT][MAX_MON_MOVES]; // attacker, target, moveIndex
     u8 moveAccuracy[MAX_BATTLERS_COUNT][MAX_BATTLERS_COUNT][MAX_MON_MOVES]; // attacker, target, moveIndex
     u8 moveLimitations[MAX_BATTLERS_COUNT];
@@ -571,7 +565,6 @@ struct BattleStruct
     u16 chosenItem[MAX_BATTLERS_COUNT];
     u16 choicedMove[MAX_BATTLERS_COUNT];
     u16 changedItems[MAX_BATTLERS_COUNT];
-    u8 canPickupItem;
     u8 switchInBattlerCounter;
     u8 turnSideTracker;
     u16 lastTakenMoveFrom[MAX_BATTLERS_COUNT][MAX_BATTLERS_COUNT]; // a 2-D array [target][attacker]
@@ -618,7 +611,7 @@ struct BattleStruct
     u8 aiChosenTarget[MAX_BATTLERS_COUNT];
     u8 soulheartBattlerId;
     u8 friskedBattler; // Frisk needs to identify 2 battlers in double battles.
-    u8 sameMoveTurns[MAX_BATTLERS_COUNT]; // For Metronome, number of times the same moves has been SUCCESFULLY used.
+    u8 sameMoveTurns[MAX_BATTLERS_COUNT]; // For ECHOED VOICE, number of times the same moves has been SUCCESFULLY used.
     u16 moveEffect2; // For Knock Off
     u16 changedSpecies[NUM_BATTLE_SIDES][PARTY_SIZE]; // For forms when multiple mons can change into the same pokemon.
     u8 quickClawBattlerId;

@@ -120,7 +120,6 @@ extern const u8 gBattleAnimMove_Haze[];
 extern const u8 gBattleAnimMove_Reflect[];
 extern const u8 gBattleAnimMove_FocusEnergy[];
 extern const u8 gBattleAnimMove_Bide[];
-extern const u8 gBattleAnimMove_Metronome[];
 extern const u8 gBattleAnimMove_MirrorMove[];
 extern const u8 gBattleAnimMove_SelfDestruct[];
 extern const u8 gBattleAnimMove_EggBomb[];

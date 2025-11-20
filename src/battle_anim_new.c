@@ -8422,7 +8422,7 @@ void AnimTask_TwinkleTackleLaunchStep(u8 taskId)
             ++task->tTimer;
         return;
     }
-    else if ((u16) task->tTimer < NELEMS(sHomerunEnemyHorizontalMovement))
+    else if ((u16) task->tTimer < ARRAY_COUNT(sHomerunEnemyHorizontalMovement))
     {
         s8 movement = sHomerunEnemyHorizontalMovement[task->tTimer];
         if (task->tSide == B_SIDE_PLAYER)
@@ -9192,7 +9192,7 @@ void AnimTask_GetWeatherToSet(u8 taskId)
 
 void AnimTask_RandomBool(u8 taskId)
 {
-    if (RandomPercentage(RNG_NONE, 50))
+    if (PorcentajeAleatorio(50))
         gBattleAnimArgs[ARG_RET_ID] = TRUE;
     else
         gBattleAnimArgs[ARG_RET_ID] = FALSE;

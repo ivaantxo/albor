@@ -21426,7 +21426,7 @@ F_TRAINER_FEMALE |
 #line 8863
                 MOVE_SUPERSONIC,
                 MOVE_THUNDERBOLT,
-                MOVE_TRI_ATTACK,
+                MOVE_TRIATAQUE,
                 MOVE_SCREECH,
             },
             },
@@ -27465,7 +27465,7 @@ F_TRAINER_FEMALE |
 #line 11319
                 MOVE_SUPERSONIC,
                 MOVE_THUNDERBOLT,
-                MOVE_TRI_ATTACK,
+                MOVE_TRIATAQUE,
                 MOVE_SCREECH,
             },
             },
@@ -27571,7 +27571,7 @@ F_TRAINER_FEMALE |
 #line 11368
                 MOVE_SUPERSONIC,
                 MOVE_THUNDERBOLT,
-                MOVE_TRI_ATTACK,
+                MOVE_TRIATAQUE,
                 MOVE_SCREECH,
             },
             },
@@ -27677,7 +27677,7 @@ F_TRAINER_FEMALE |
 #line 11417
                 MOVE_SUPERSONIC,
                 MOVE_THUNDERBOLT,
-                MOVE_TRI_ATTACK,
+                MOVE_TRIATAQUE,
                 MOVE_SCREECH,
             },
             },
@@ -27783,7 +27783,7 @@ F_TRAINER_FEMALE |
 #line 11466
                 MOVE_SUPERSONIC,
                 MOVE_THUNDERBOLT,
-                MOVE_TRI_ATTACK,
+                MOVE_TRIATAQUE,
                 MOVE_SCREECH,
             },
             },
@@ -28031,6 +28031,13 @@ F_TRAINER_FEMALE |
 #line 11568
             .lvl = 32,
             .nature = NATURALEZA_OFENSIVA,
+            .moves = {
+#line 11570
+                MOVE_SUPERSONIC,
+                MOVE_THUNDERBOLT,
+                MOVE_TRIATAQUE,
+                MOVE_SCREECH,
+            },
             },
             {
 #line 11571

@@ -230,7 +230,6 @@ static const struct TrainerBattleParameter sTrainerTwoTrainerBattleParams[] =
 
 const struct RematchTrainer gRematchTable[REMATCH_TABLE_ENTRIES] =
 {
-
 };
 
 static const u16 sBadgeFlags[NUM_BADGES] =

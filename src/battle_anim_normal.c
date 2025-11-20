@@ -779,15 +779,15 @@ void AnimTask_InvertScreenColor(u8 taskId)
 {
     u32 selectedPalettes = 0;
 
-    if (gBattleAnimArgs[0] & 0x1)
+    if (gBattleAnimArgs[0] & 1)
         selectedPalettes = GetBattlePalettesMask(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE);
-    if (gBattleAnimArgs[0] & 0x2)
+    if (gBattleAnimArgs[0] & 2)
         selectedPalettes |= (0x10000 << gBattleAnimAttacker);
-    if (gBattleAnimArgs[0] & 0x4)
+    if (gBattleAnimArgs[0] & 4)
         selectedPalettes |= (0x10000 << gBattleAnimTarget);
-    if (gBattleAnimArgs[0] & 0x8 && IsBattlerAlive(BATTLE_PARTNER(gBattleAnimTarget)))
+    if (gBattleAnimArgs[0] & 8 && IsBattlerAlive(BATTLE_PARTNER(gBattleAnimTarget)))
         selectedPalettes |= (0x10000 << BATTLE_PARTNER(gBattleAnimTarget));
-    if (gBattleAnimArgs[0] & 0x10 && IsBattlerAlive(BATTLE_PARTNER(gBattleAnimAttacker)))
+    if (gBattleAnimArgs[0] & 16 && IsBattlerAlive(BATTLE_PARTNER(gBattleAnimAttacker)))
         selectedPalettes |= (0x10000 << BATTLE_PARTNER(gBattleAnimAttacker));
 
     InvertPlttBuffer(selectedPalettes);

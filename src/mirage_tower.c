@@ -73,8 +73,6 @@ static void SpriteCB_CeilingCrumble(struct Sprite *);
 static void DoMirageTowerDisintegration(u8);
 static void InitMirageTowerShake(u8);
 static void Task_FossilFallAndSink(u8);
-static void SpriteCB_FallingFossil(struct Sprite *);
-static void UpdateDisintegrationEffect(u8 *, u16, u8, u8, u8);
 
 static const u8 ALIGNED(2) sBlankTile_Gfx[32] = {0};
 static const u8 sMirageTower_Gfx[] = INCBIN_U8("graphics/misc/mirage_tower.4bpp");
@@ -528,9 +526,7 @@ static void InitMirageTowerShake(u8 taskId)
 #define INNER_BUFFER_LENGTH 0x30
 static void DoMirageTowerDisintegration(u8 taskId)
 {
-    u8 bgShakeTaskId, j;
-    u32 i;
-    u8 index;
+    u8 bgShakeTaskId;
 
     switch (gTasks[taskId].tState)
     {
@@ -538,47 +534,6 @@ static void DoMirageTowerDisintegration(u8 taskId)
         sFallingTower = AllocZeroed(OUTER_BUFFER_LENGTH * sizeof(struct FallAnim_Tower));
         break;
     case 3:
-        if (gTasks[taskId].data[3] <= (OUTER_BUFFER_LENGTH - 1))
-        {
-            if (gTasks[taskId].data[1] > 1)
-            {
-                // Initialize disintegration pattern
-                index = gTasks[taskId].data[3];
-                sFallingTower[index].disintegrateRand = Alloc(INNER_BUFFER_LENGTH);
-                for (i = 0; i <= (INNER_BUFFER_LENGTH - 1); i++)
-                    sFallingTower[index].disintegrateRand[i] = i;
-
-                // Randomize disintegration pattern
-                Shuffle(sFallingTower[index].disintegrateRand, INNER_BUFFER_LENGTH,
-                    sizeof(sFallingTower[index].disintegrateRand[0]));
-
-                if (gTasks[taskId].data[3] <= (OUTER_BUFFER_LENGTH - 1))
-                    gTasks[taskId].data[3]++;
-                gTasks[taskId].data[1] = 0;
-            }
-            gTasks[taskId].data[1]++;
-        }
-        index = gTasks[taskId].data[3];
-        for (i = (u8)(gTasks[taskId].data[2]); i < index; i++)
-        {
-            for (j = 0; j < 1; j++)
-            {
-                UpdateDisintegrationEffect(sMirageTowerGfxBuffer,
-                            (OUTER_BUFFER_LENGTH - 1 - i) * INNER_BUFFER_LENGTH + sFallingTower[i].disintegrateRand[sFallingTower[i].disintegrateIdx++],
-                            0, INNER_BUFFER_LENGTH, 1);
-            }
-            if (sFallingTower[i].disintegrateIdx > (INNER_BUFFER_LENGTH - 1))
-            {
-                FREE_AND_SET_NULL(sFallingTower[i].disintegrateRand);
-                gTasks[taskId].data[2]++;
-                if ((i % 2) == 1)
-                    sBgShakeOffsets->bgVOFS--;
-            }
-        }
-        LoadBgTiles(0, sMirageTowerGfxBuffer, MIRAGE_TOWER_GFX_LENGTH, 0);
-        if (sFallingTower[OUTER_BUFFER_LENGTH - 1].disintegrateIdx > INNER_BUFFER_LENGTH - 1)
-            break;
-        return;
     case 4:
         UnsetBgTilemapBuffer(0);
         bgShakeTaskId = FindTaskIdByFunc(UpdateBgShake);
@@ -649,10 +604,6 @@ static void Task_FossilFallAndSink(u8 taskId)
             sFallingFossil->disintegrateRand[i] = i;
         break;
     case 6:
-        // Randomize disintegration pattern
-        Shuffle(sFallingFossil->disintegrateRand, FOSSIL_DISINTEGRATE_LENGTH,
-            sizeof(sFallingFossil->disintegrateRand[0]));
-        gSprites[sFallingFossil->spriteId].callback = SpriteCB_FallingFossil;
         break;
     case 7:
         // Wait for fossil to finish falling / disintegrating
@@ -672,54 +623,4 @@ static void Task_FossilFallAndSink(u8 taskId)
         break;
     }
     gTasks[taskId].tState++;
-}
-
-static void SpriteCB_FallingFossil(struct Sprite *sprite)
-{
-    if (sFallingFossil->disintegrateIdx >= FOSSIL_DISINTEGRATE_LENGTH)
-    {
-        // End animation
-        sprite->callback = SpriteCallbackDummy;
-    }
-    else if (sprite->y >= 96)
-    {
-        // Fossil has reached the ground, update disintegration animation
-        u32 i;
-        for (i = 0; i < 2; i++)
-            UpdateDisintegrationEffect(sFallingFossil->frameImageTiles, sFallingFossil->disintegrateRand[sFallingFossil->disintegrateIdx++], 0, 16, 0);
-
-        StartSpriteAnim(sprite, 0);
-    }
-    else
-    {
-        // Fossil is still falling
-        sprite->y++;
-    }
-}
-
-static void UpdateDisintegrationEffect(u8 *tiles, u16 randId, u8 c, u8 size, u8 offset)
-{
-    u8 heightTiles, height, widthTiles, width;
-    u16 var, baseOffset;
-    u8 col, row;
-    u8 flag, tileMask;
-
-    height = randId / size;
-
-    width = randId % size;
-
-    row = height & 7;
-    col = width & 7;
-
-    widthTiles = width / 8;
-    heightTiles = height / 8;
-
-    var = (size / 8) * (heightTiles * 64) + (widthTiles * 64);
-
-    baseOffset = var + ((row * 8) + col);
-    baseOffset /= 2;
-
-    flag = ((randId % 2) ^ 1);
-    tileMask = (c << (flag << 2)) | 15 << (((flag ^ 1) << 2));
-    tiles[baseOffset + (offset * 32)] &= tileMask;
 }

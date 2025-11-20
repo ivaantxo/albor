@@ -763,7 +763,7 @@ void CreateTrainerPartyForPlayer(void)
 
 void VBlankCB_Battle(void)
 {
-    AdvanceRandom();
+    AvanzaAleatoriedad();
     SetGpuReg(REG_OFFSET_BG0HOFS, gBattle_BG0_X);
     SetGpuReg(REG_OFFSET_BG0VOFS, gBattle_BG0_Y);
     SetGpuReg(REG_OFFSET_BG1HOFS, gBattle_BG1_X);
@@ -1382,7 +1382,6 @@ void SwitchInClearSetData(u32 battler)
     gBattleStruct->lastTakenMoveFrom[battler][3] = 0;
     gBattleStruct->lastMoveFailed &= ~(1u << battler);
     gBattleStruct->boosterEnergyActivates &= ~(1u << battler);
-    gBattleStruct->canPickupItem &= ~(1u << battler);
 
     for (i = 0; i < ARRAY_COUNT(gSideTimers); i++)
     {
@@ -1822,7 +1821,7 @@ static void TryDoEventsBeforeFirstTurn(void)
                 gAbsentBattlerFlags |= 1u << i;
         }
 
-        gBattleStruct->speedTieBreaks = RandomUniform(RNG_SPEED_TIE, 0, Factorial(MAX_BATTLERS_COUNT) - 1);
+        gBattleStruct->speedTieBreaks = ElementoAleatorio(Factorial(MAX_BATTLERS_COUNT));
 
         for (i = 0; i < gBattlersCount; i++)
             gBattlerByTurnOrder[i] = i;
@@ -1972,7 +1971,7 @@ void BattleTurnPassed(void)
 {
     s32 i;
 
-    gBattleStruct->speedTieBreaks = RandomUniform(RNG_SPEED_TIE, 0, Factorial(MAX_BATTLERS_COUNT) - 1);
+    gBattleStruct->speedTieBreaks = ElementoAleatorio(Factorial(MAX_BATTLERS_COUNT));
 
     TurnValuesCleanUp(TRUE);
     if (gBattleOutcome == 0)
@@ -2848,8 +2847,8 @@ static void SetActionsAndBattlersTurnOrder(void)
             {
                 gActionsByTurnOrder[turnOrderId] = gChosenActionByBattler[battler];
                 gBattlerByTurnOrder[turnOrderId] = battler;
-                gBattleStruct->quickClawRandom[battler] = RandomPercentage(RNG_QUICK_CLAW, GetBattlerHoldEffectParam(battler));
-                gBattleStruct->quickDrawRandom[battler] = RandomPercentage(RNG_QUICK_DRAW, 30);
+                gBattleStruct->quickClawRandom[battler] = PorcentajeAleatorio(GetBattlerHoldEffectParam(battler));
+                gBattleStruct->quickDrawRandom[battler] = PorcentajeAleatorio(30);
                 turnOrderId++;
             }
         }
@@ -2907,7 +2906,6 @@ static void TurnValuesCleanUp(bool8 var0)
                 if (gDisableStructs[i].rechargeTimer == 0)
                     gBattleMons[i].status2 &= ~STATUS2_RECHARGE;
             }
-            gBattleStruct->canPickupItem &= ~(1u << i);
         }
 
         if (gDisableStructs[i].substituteHP == 0)
@@ -3132,7 +3130,7 @@ static void HandleEndTurn_BattleWon(void)
     }
     else
     {
-        gBattlescriptCurrInstr = BattleScript_PayDayMoneyAndPickUpItems;
+        gBattlescriptCurrInstr = BattleScript_PayDayMoney;
     }
 
     gBattleMainFunc = HandleEndTurn_FinishBattle;

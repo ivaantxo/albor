@@ -103,19 +103,6 @@ MoveTutor_EventScript_MimicTaught::
 	end
 
 FallarborTown_Mart_EventScript_MetronomeTutor::
-	lock
-	faceplayer
-	goto_if_set FLAG_MOVE_TUTOR_TAUGHT_METRONOME, MoveTutor_EventScript_MetronomeTaught
-	msgbox MoveTutor_Text_MetronomeTeach, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, MoveTutor_EventScript_MetronomeDeclined
-	call MoveTutor_EventScript_CanOnlyBeLearnedOnce
-	goto_if_eq VAR_RESULT, NO, MoveTutor_EventScript_MetronomeDeclined
-	msgbox MoveTutor_Text_MetronomeWhichMon, MSGBOX_DEFAULT
-	setvar VAR_0x8005, MOVE_METRONOME
-	call MoveTutor_EventScript_OpenPartyMenu
-	goto_if_eq VAR_RESULT, 0, MoveTutor_EventScript_MetronomeDeclined
-	setflag FLAG_MOVE_TUTOR_TAUGHT_METRONOME
-	goto MoveTutor_EventScript_MetronomeTaught
 	end
 
 MoveTutor_EventScript_MetronomeDeclined::

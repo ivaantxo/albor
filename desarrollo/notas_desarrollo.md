@@ -56,6 +56,7 @@
 - Huevos heredan 50% de las veces habilidad de la madre.
 - Huevos tienen 50% en cada estadística de heredar los IVs del padre o de la madre: 2 padres con 31 IVs en ataque darán siempre un huevo con 31 IVs en ataque.
 - Huevos heredan 50% naturaleza del padre y 50% de la madre.
+- Probabilidad de movimientos que golpean de 2 a 5 veces: 25% cada una.
 
 -Lista de moves hechos:
 *Bomba huevo.
@@ -92,7 +93,7 @@ porytiles compile-primary -Wall -o /Users/ivanmartinez/desktop/albor/data/tilese
 *Decouple poké balls de item id
 *Jigglypuff evoluciona al aprender Vozarrón.
 *Cloyster/Slowking/Slowbro aprenden ataques Veneno (+Ataque custom tipo Control Mental?)
-
+*Golpes críticos: posibilidades neutra: 6%, +1: 12%, +2: 24%, +3: 38%, +4: 96%.
 paletas: (\d+) (\d+) (\d+) \d+ --> $1 $2 $3
 
 //falta terminar lista de macros (scrcmd...) y terminar strings, después comprobar que todo va bien, y añadir cambios de rama principal.
@@ -106,3 +107,6 @@ find . -name "* 2.inc" -delete
 muy probable que RAMSCRGEN se pueda eliminar
 limpiar y documentar estados de intro batalla.
 static void CB2_HandleStartBattle(void) es una locura sin sentido --> MULTIUSE_STATE dividirlo en 2, y documentar
+
+//revisar animación y crear efecto de Triataque
+//unificar frozen/frostbite

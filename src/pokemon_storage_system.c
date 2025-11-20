@@ -3208,8 +3208,8 @@ static const u16 sColoresStorage[] =
 
 static void TintBackground(void)
 {
-    u8 coeffScrollBg = 4;
-    u32 blendColorBg = RandomElement(RNG_NONE, sColoresStorage);
+    u32 coeffScrollBg = 4;
+    u32 blendColorBg = sColoresStorage[NumeroAleatorioEnRango(0, ARRAY_COUNT(sColoresStorage) - 1)];
 
     BlendPalette(BG_PLTT_ID(3), 4, coeffScrollBg, blendColorBg);
 }

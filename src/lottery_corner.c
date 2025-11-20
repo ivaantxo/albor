@@ -27,7 +27,7 @@ void SetRandomLotteryNumber(u16 i)
     u32 var = Random();
 
     while (--i != 0xFFFF)
-        var = ISO_RANDOMIZE2(var);
+        var = ISO_RANDOMIZE(var);
 
     SetLotteryNumber(var);
 }

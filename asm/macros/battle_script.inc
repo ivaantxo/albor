@@ -794,15 +794,6 @@
 	2:
 	.endm
 
-	.macro setmultihitcounter value:req
-	.byte BATTLE_CMD_setmultihitcounter
-	.byte \value
-	.endm
-
-	.macro initmultihitstring
-	.byte BATTLE_CMD_initmultihitstring
-	.endm
-
 	.macro forcerandomswitch failInstr:req
 	.byte BATTLE_CMD_forcerandomswitch
 	.4byte \failInstr
@@ -860,10 +851,6 @@
 	.macro mimicattackcopy failInstr:req
 	.byte BATTLE_CMD_mimicattackcopy
 	.4byte \failInstr
-	.endm
-
-	.macro metronome
-	.byte BATTLE_CMD_metronome
 	.endm
 
 	.macro dmgtolevel
@@ -1200,10 +1187,6 @@
 	.byte BATTLE_CMD_jumpifnotcurrentmoveargtype
 	.byte \battler
 	.4byte \failInstr
-	.endm
-
-	.macro pickup
-	.byte BATTLE_CMD_pickup
 	.endm
 
 	.macro settypebasedhalvers failInstr:req

@@ -85,7 +85,7 @@ void CreateScriptedWildMon(u16 species, u8 level, u16 item)
 
     ZeroEnemyPartyMons();
     if (OW_SYNCHRONIZE_NATURE > GEN_3)
-        CreaPokemonConNaturaleza(&gEnemyParty[0], species, level, USE_RANDOM_IVS, PickWildMonNature());
+        CreaPokemonConNaturaleza(&gEnemyParty[0], species, level, USE_RANDOM_IVS, EscogeNaturalezaPokemonSalvaje());
     else
         CreaPokemon(&gEnemyParty[0], species, level, USE_RANDOM_IVS, 0, 0);
     if (item)
@@ -103,7 +103,7 @@ void CreateScriptedDoubleWildMon(u16 species1, u8 level1, u16 item1, u16 species
     ZeroEnemyPartyMons();
 
     if (OW_SYNCHRONIZE_NATURE > GEN_3)
-        CreaPokemonConNaturaleza(&gEnemyParty[0], species1, level1, 32, PickWildMonNature());
+        CreaPokemonConNaturaleza(&gEnemyParty[0], species1, level1, 32, EscogeNaturalezaPokemonSalvaje());
     else
         CreaPokemon(&gEnemyParty[0], species1, level1, 32, 0, 0);
     if (item1)
@@ -114,7 +114,7 @@ void CreateScriptedDoubleWildMon(u16 species1, u8 level1, u16 item1, u16 species
     }
 
     if (OW_SYNCHRONIZE_NATURE > GEN_3)
-        CreaPokemonConNaturaleza(&gEnemyParty[1], species2, level2, 32, PickWildMonNature());
+        CreaPokemonConNaturaleza(&gEnemyParty[1], species2, level2, 32, EscogeNaturalezaPokemonSalvaje());
     else
         CreaPokemon(&gEnemyParty[1], species2, level2, 32, 0, 0);
     if (item2)
@@ -159,7 +159,7 @@ static u32 ScriptGiveMonParameterized(u8 side, u8 slot, u16 species, u8 level, u
     {
         if (OW_SYNCHRONIZE_NATURE >= GEN_6
          && (gSpeciesInfo[species].eggGroups[0] == GRUPO_HUEVO_BEBE || OW_SYNCHRONIZE_NATURE == GEN_7))
-            nature = PickWildMonNature();
+            nature = EscogeNaturalezaPokemonSalvaje();
         else
             nature = Random() % NUMERO_NATURALEZAS;
     }

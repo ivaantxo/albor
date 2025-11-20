@@ -1484,7 +1484,7 @@ static void CreateWaterSpoutRainDroplet(struct Task *task, u8 taskId)
     }
     task->data[11]++;
     task->data[8] = (task->data[8] + 39) & 0xFF;
-    task->data[7] = (ISO_RANDOMIZE2(task->data[7]) % task->data[5]) + task->data[4];
+    task->data[7] = (ISO_RANDOMIZE(task->data[7]) % task->data[5]) + task->data[4];
 }
 
 static void AnimWaterSpoutRain(struct Sprite *sprite)

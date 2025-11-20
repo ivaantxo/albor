@@ -337,7 +337,6 @@ struct MoveInfo
     u32 mirrorMoveBanned:1;
     u32 meFirstBanned:1;
     u32 mimicBanned:1;
-    u32 metronomeBanned:1;
     u32 copycatBanned:1;
     u32 assistBanned:1; // Matches same moves as copycatBanned + semi-invulnerable moves and Mirror Coat.
     u32 sleepTalkBanned:1;
