@@ -1738,55 +1738,12 @@ static void Select_Task_HandleChooseMons(u8 taskId)
 
 static void CreateFrontierFactorySelectableMons(u8 firstMonId)
 {
-    u8 i = 0;
-    u8 ivs = 0;
-    u8 level = 0;
-    u32 otId = 0;
-    u8 battleMode = VarGet(VAR_FRONTIER_BATTLE_MODE);
-    u8 lvlMode = gSaveBlockPtr->frontier.lvlMode;
-    u8 challengeNum = gSaveBlockPtr->frontier.factoryWinStreaks[battleMode][lvlMode] / 7;
-    u8 rentalRank = 0;
 
-    gFacilityTrainerMons = gBattleFrontierMons;
-    if (gSaveBlockPtr->frontier.lvlMode != FRONTIER_LVL_50)
-        level = FRONTIER_MAX_LEVEL_OPEN;
-    else
-        level = FRONTIER_MAX_LEVEL_50;
-
-    rentalRank = GetNumPastRentalsRank(battleMode, lvlMode);
-    otId = T1_READ_32(gSaveBlockPtr->playerTrainerId);
-
-    for (i = 0; i < SELECTABLE_MONS_COUNT; i++)
-    {
-        u16 monId = gSaveBlockPtr->frontier.rentalMons[i].monId;
-        sFactorySelectScreen->mons[i + firstMonId].monId = monId;
-        if (i < rentalRank)
-            ivs = GetFactoryMonFixedIV(challengeNum + 1, FALSE);
-        else
-            ivs = GetFactoryMonFixedIV(challengeNum, FALSE);
-
-        CreateFacilityMon(&gFacilityTrainerMons[monId],
-                level, ivs, otId, FLAG_FRONTIER_MON_FACTORY,
-                &sFactorySelectScreen->mons[i + firstMonId].monData);
-    }
 }
 
 static void CreateSlateportTentSelectableMons(u8 firstMonId)
 {
-    u32 i;
-    u8 ivs = 0;
-    u8 level = TENT_MIN_LEVEL;
-    u32 otId = 0;
 
-    gFacilityTrainerMons = gSlateportBattleTentMons;
-    otId = T1_READ_32(gSaveBlockPtr->playerTrainerId);
-
-    for (i = 0; i < SELECTABLE_MONS_COUNT; i++)
-    {
-        u16 monId = gSaveBlockPtr->frontier.rentalMons[i].monId;
-        sFactorySelectScreen->mons[i + firstMonId].monId = monId;
-        CreateFacilityMon(&gFacilityTrainerMons[monId], level, ivs, otId, 0, &sFactorySelectScreen->mons[i + firstMonId].monData);
-    }
 }
 
 static void Select_CopyMonsToPlayerParty(void)

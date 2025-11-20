@@ -2185,13 +2185,13 @@ static void AnimMiniTwinklingStar(struct Sprite *sprite)
     u8 rand;
     s8 y;
 
-    rand = Random2() & 3;
+    rand = Random() & 3;
     if (rand == 0)
         sprite->oam.tileNum += 4;
     else
         sprite->oam.tileNum += 5;
 
-    y = Random2() & 7;
+    y = Random() & 7;
     if (y > 3)
         y = -y;
 
@@ -2491,7 +2491,7 @@ static void AnimGreenStar(struct Sprite *sprite)
     u8 spriteId1;
     u8 spriteId2;
 
-    xOffset = Random2();
+    xOffset = Random();
     xOffset &= 0x3F;
     if (xOffset > 31)
         xOffset = 32 - xOffset;
@@ -3045,10 +3045,10 @@ static void AnimFlatterConfetti(struct Sprite *sprite)
     int rand1;
     int rand2;
 
-    tileOffset = Random2() % 12;
+    tileOffset = Random() % 12;
     sprite->oam.tileNum += tileOffset;
-    rand1 = Random2() & 0x1FF;
-    rand2 = Random2() & 0xFF;
+    rand1 = Random() & 0x1FF;
+    rand2 = Random() & 0xFF;
 
     if (rand1 & 1)
         sprite->data[0] = 0x5E0 + rand1;

@@ -2135,7 +2135,7 @@ static bool32 Fishing_DoesFirstMonInPartyHaveSuctionCupsOrStickyHold(void)
 {
     u32 ability;
 
-    if (GetMonData(&gPlayerParty[0], MON_DATA_SANITY_IS_EGG))
+    if (GetMonData(&gPlayerParty[0], MON_DATA_IS_EGG))
         return FALSE;
 
     ability = GetMonAbility(&gPlayerParty[0]);

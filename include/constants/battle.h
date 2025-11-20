@@ -312,7 +312,7 @@ enum ResultadosBatalla
 #define MOVE_EFFECT_FREEZE_OR_FROSTBITE (B_USE_FROSTBITE == TRUE ? MOVE_EFFECT_FROSTBITE : MOVE_EFFECT_FREEZE)
 #define MOVE_EFFECT_CONFUSION           8
 #define MOVE_EFFECT_FLINCH              9
-#define MOVE_EFFECT_TRI_ATTACK          10
+#define MOVE_EFFECT_UNUSED_10           10
 #define MOVE_EFFECT_UPROAR              11
 #define MOVE_EFFECT_PAYDAY              12
 #define MOVE_EFFECT_CHARGING            13
@@ -382,9 +382,8 @@ enum ResultadosBatalla
 #define MOVE_EFFECT_SECRET_POWER        77
 #define MOVE_EFFECT_PSYCHIC_NOISE       78
 #define MOVE_EFFECT_TERA_BLAST          79
-#define MOVE_EFFECT_ORDER_UP            80
 
-#define NUM_MOVE_EFFECTS                81
+#define NUM_MOVE_EFFECTS                80
 
 #define MOVE_EFFECT_AFFECTS_USER        0x2000
 #define MOVE_EFFECT_CERTAIN             0x4000

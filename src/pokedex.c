@@ -16,6 +16,7 @@
 #include "malloc.h"
 #include "menu.h"
 #include "m4a.h"
+#include "new_game.h"
 #include "overworld.h"
 #include "palette.h"
 #include "party_menu.h"
@@ -1670,8 +1671,6 @@ u8 DisplayCaughtMonDexPage(u16 species, bool32 isShiny, u32 personality)
 #undef tSpecies
 #undef tPalTimer
 #undef tMonSpriteId
-#undef tOtIdLo
-#undef tOtIdHi
 #undef tPersonalityLo
 #undef tPersonalityHi
 
@@ -2739,8 +2738,6 @@ static void LoadScreenSelectBarMain(void)
 #define tSpecies       data[1]
 #define tPalTimer      data[2]
 #define tMonSpriteId   data[3]
-#define tOtIdLo        data[12]
-#define tOtIdHi        data[13]
 #define tPersonalityLo data[14]
 #define tPersonalityHi data[15]
 
@@ -2843,10 +2840,9 @@ static void Task_ExitCaughtMonPage(u8 taskId)
 {
     if (!gFundidoPaletas.activo)
     {
-        u16 species;
-        u32 otId;
+        u32 species;
         u32 personality;
-        u8 paletteNum;
+        u32 paletteNum;
         const u32 *lzPaletteData;
         void *buffer;
 
@@ -2860,10 +2856,9 @@ static void Task_ExitCaughtMonPage(u8 taskId)
             Free(buffer);
 
         species = gTasks[taskId].tSpecies;
-        otId = ((u16)gTasks[taskId].tOtIdHi << 16) | (u16)gTasks[taskId].tOtIdLo;
         personality = ((u16)gTasks[taskId].tPersonalityHi << 16) | (u16)gTasks[taskId].tPersonalityLo;
         paletteNum = gSprites[gTasks[taskId].tMonSpriteId].oam.paletteNum;
-        lzPaletteData = GetMonSpritePalFromSpeciesAndPersonality(species, otId, personality);
+        lzPaletteData = GetMonSpritePalFromSpeciesAndPersonality(species, OBTEN_VALOR_SHINY(personality), personality);
         LoadCompressedPalette(lzPaletteData, OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
         DestroyTask(taskId);
     }
@@ -2886,16 +2881,8 @@ static void SpriteCB_SlideCaughtMonToCenter(struct Sprite *sprite)
 #undef tDexNum
 #undef tPalTimer
 #undef tMonSpriteId
-#undef tOtIdLo
-#undef tOtIdHi
 #undef tPersonalityLo
 #undef tPersonalityHi
-
-
-
-
-
-
 
 //************************************
 //*                                  *

@@ -21,6 +21,7 @@
 #include "party_menu.h"
 #include "pokemon.h"
 #include "pokemon_storage_system.h"
+#include "random.h"
 #include "script.h"
 #include "sound.h"
 #include "sprite.h"
@@ -905,11 +906,11 @@ u8 AddNewGameBirchObject(s16 x, s16 y, u8 subpriority)
 }
 
 
-u8 CreateMonSprite_FieldMove(u16 species, u32 otId, u32 personality, s16 x, s16 y, u8 subpriority)
+u8 CreateMonSprite_FieldMove(u16 species, bool32 isShiny, u32 personality, s16 x, s16 y, u8 subpriority)
 {
     // force load unique tag here to avoid collision with follower pokemon
     u32 paletteSlot = AllocSpritePalette(FLDEFF_PAL_TAG_FIELD_MOVE_MON);
-    u16 spriteId = CreateMonPicSprite(species, otId, personality, TRUE, x, y, paletteSlot, TAG_NONE);
+    u16 spriteId = CreateMonPicSprite(species, isShiny, personality, TRUE, x, y, paletteSlot, TAG_NONE);
     PreservePaletteInWeather(paletteSlot + 0x10);
     if (spriteId == 0xFFFF)
         return MAX_SPRITES;
@@ -917,10 +918,10 @@ u8 CreateMonSprite_FieldMove(u16 species, u32 otId, u32 personality, s16 x, s16 
         return spriteId;
 }
 
-u8 CreateMonSprite_PicBox(u16 species, s16 x, s16 y, u8 subpriority)
+u32 CreateMonSprite_PicBox(u32 species, s32 x, s32 y, u32 subpriority)
 {
-    // Reuse logic; (otId ^ pid) >= SHINY_ODDS ensures non-shiny
-    return CreateMonSprite_FieldMove(species, 0, SHINY_ODDS, x, y, subpriority);
+    u32 personality = Random();
+    return CreateMonSprite_FieldMove(species, FALSE, personality, x, y, subpriority);
 }
 
 void FreeResourcesAndDestroySprite(struct Sprite *sprite, u8 spriteId)

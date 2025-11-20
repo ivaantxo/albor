@@ -25,7 +25,7 @@ static void SetMirageRnd(u32 rnd)
 // unused
 void InitMirageRnd(void)
 {
-    SetMirageRnd(Random32());
+    SetMirageRnd(Random());
 }
 
 void UpdateMirageRnd(u16 days)
@@ -33,7 +33,7 @@ void UpdateMirageRnd(u16 days)
     s32 rnd = GetMirageRnd();
     while (days)
     {
-        rnd = ISO_RANDOMIZE2(rnd);
+        rnd = ISO_RANDOMIZE(rnd);
         days--;
     }
     SetMirageRnd(rnd);

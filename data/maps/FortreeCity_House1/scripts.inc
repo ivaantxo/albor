@@ -21,7 +21,6 @@ FortreeCity_House1_EventScript_Trader::
 	goto_if_ne VAR_RESULT, VAR_0x8009, FortreeCity_House1_EventScript_NotRequestedMon
 	copyvar VAR_0x8004, VAR_0x8008
 	copyvar VAR_0x8005, VAR_0x800A
-	special CreateInGameTradePokemon
 	special DoInGameTradeScene
 	waitstate
 	bufferspeciesname STR_VAR_1, VAR_0x8009

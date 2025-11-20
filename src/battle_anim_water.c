@@ -664,8 +664,8 @@ void AnimTask_CreateRaindrops(u8 taskId)
     gTasks[taskId].data[0]++;
     if (gTasks[taskId].data[0] % gTasks[taskId].data[2] == 1)
     {
-        x = Random2() % DISPLAY_WIDTH;
-        y = Random2() % (DISPLAY_HEIGHT / 2);
+        x = Random() % DISPLAY_WIDTH;
+        y = Random() % (DISPLAY_HEIGHT / 2);
         CreateSprite(&gRainDropSpriteTemplate, x, y, 4);
     }
     if (gTasks[taskId].data[0] == gTasks[taskId].data[3])
@@ -1199,8 +1199,8 @@ static void AnimSmallDriftingBubbles(struct Sprite *sprite)
 
     sprite->oam.tileNum += 8;
     InitSpritePosToAnimTarget(sprite, TRUE);
-    randData = (Random2() & 0xFF) | 256;
-    randData2 = (Random2() & 0x1FF);
+    randData = (Random() & 0xFF) | 256;
+    randData2 = (Random() & 0x1FF);
     if (randData2 > 255)
         randData2 = 256 - randData2;
     sprite->data[1] = randData;
@@ -1485,7 +1485,7 @@ static void CreateWaterSpoutRainDroplet(struct Task *task, u8 taskId)
     }
     task->data[11]++;
     task->data[8] = (task->data[8] + 39) & 0xFF;
-    task->data[7] = (ISO_RANDOMIZE2(task->data[7]) % task->data[5]) + task->data[4];
+    task->data[7] = (ISO_RANDOMIZE(task->data[7]) % task->data[5]) + task->data[4];
 }
 
 static void AnimWaterSpoutRain(struct Sprite *sprite)
@@ -1636,9 +1636,9 @@ static void AnimWaterSportDroplet(struct Sprite *sprite)
         sprite->x += sprite->x2;
         sprite->y += sprite->y2;
         sprite->data[0] = 6;
-        sprite->data[2] = (Random2() & 0x1F) - 16 + sprite->x;
-        sprite->data[4] = (Random2() & 0x1F) - 16 + sprite->y;
-        sprite->data[5] = ~(Random2() & 7);
+        sprite->data[2] = (Random() & 0x1F) - 16 + sprite->x;
+        sprite->data[4] = (Random() & 0x1F) - 16 + sprite->y;
+        sprite->data[5] = ~(Random() & 7);
         InitAnimArcTranslation(sprite);
         sprite->callback = AnimWaterSportDroplet_Step;
     }
@@ -1739,8 +1739,8 @@ static void CreateWaterPulseRingBubbles(struct Sprite *sprite, int xDiff, int yD
     combinedY = sprite->y + sprite->y2;
     if (yDiff < 0)
         unusedVar *= -1; //Needed to match
-    randomSomethingY = yDiff + (Random2() % 10) - 5;
-    randomSomethingX = -xDiff + (Random2() % 10) - 5;
+    randomSomethingY = yDiff + (Random() % 10) - 5;
+    randomSomethingX = -xDiff + (Random() % 10) - 5;
 
     for (i = 0; i <= 0; i++)
     {

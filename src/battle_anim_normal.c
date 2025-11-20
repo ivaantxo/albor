@@ -779,15 +779,15 @@ void AnimTask_InvertScreenColor(u8 taskId)
 {
     u32 selectedPalettes = 0;
 
-    if (gBattleAnimArgs[0] & 0x1)
+    if (gBattleAnimArgs[0] & 1)
         selectedPalettes = GetBattlePalettesMask(TRUE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE);
-    if (gBattleAnimArgs[0] & 0x2)
+    if (gBattleAnimArgs[0] & 2)
         selectedPalettes |= (0x10000 << gBattleAnimAttacker);
-    if (gBattleAnimArgs[0] & 0x4)
+    if (gBattleAnimArgs[0] & 4)
         selectedPalettes |= (0x10000 << gBattleAnimTarget);
-    if (gBattleAnimArgs[0] & 0x8 && IsBattlerAlive(BATTLE_PARTNER(gBattleAnimTarget)))
+    if (gBattleAnimArgs[0] & 8 && IsBattlerAlive(BATTLE_PARTNER(gBattleAnimTarget)))
         selectedPalettes |= (0x10000 << BATTLE_PARTNER(gBattleAnimTarget));
-    if (gBattleAnimArgs[0] & 0x10 && IsBattlerAlive(BATTLE_PARTNER(gBattleAnimAttacker)))
+    if (gBattleAnimArgs[0] & 16 && IsBattlerAlive(BATTLE_PARTNER(gBattleAnimAttacker)))
         selectedPalettes |= (0x10000 << BATTLE_PARTNER(gBattleAnimAttacker));
 
     InvertPlttBuffer(selectedPalettes);
@@ -1041,14 +1041,14 @@ static void AnimHitSplatHandleInvert(struct Sprite *sprite)
 void AnimHitSplatRandom(struct Sprite *sprite)
 {
     if (gBattleAnimArgs[1] == -1)
-        gBattleAnimArgs[1] = Random2() & 3;
+        gBattleAnimArgs[1] = Random() & 3;
 
     if (!InitSpritePosToAnimBattler(gBattleAnimArgs[0], sprite, FALSE))
         return;
     StartSpriteAffineAnim(sprite, gBattleAnimArgs[1]);
 
-    sprite->x2 += (Random2() % 48) - 24;
-    sprite->y2 += (Random2() % 24) - 12;
+    sprite->x2 += (Random() % 48) - 24;
+    sprite->y2 += (Random() % 24) - 12;
 
     StoreSpriteCallbackInData6(sprite, DestroySpriteAndMatrix);
     sprite->callback = RunStoredCallbackWhenAffineAnimEnds;

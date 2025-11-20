@@ -21684,7 +21684,7 @@ F_TRAINER_FEMALE |
 #line 8967
                 MOVE_SUPERSONIC,
                 MOVE_THUNDERBOLT,
-                MOVE_TRI_ATTACK,
+                MOVE_TRIATAQUE,
                 MOVE_SCREECH,
             },
             },
@@ -27723,7 +27723,7 @@ F_TRAINER_FEMALE |
 #line 11423
                 MOVE_SUPERSONIC,
                 MOVE_THUNDERBOLT,
-                MOVE_TRI_ATTACK,
+                MOVE_TRIATAQUE,
                 MOVE_SCREECH,
             },
             },
@@ -27829,7 +27829,7 @@ F_TRAINER_FEMALE |
 #line 11472
                 MOVE_SUPERSONIC,
                 MOVE_THUNDERBOLT,
-                MOVE_TRI_ATTACK,
+                MOVE_TRIATAQUE,
                 MOVE_SCREECH,
             },
             },
@@ -27935,7 +27935,7 @@ F_TRAINER_FEMALE |
 #line 11521
                 MOVE_SUPERSONIC,
                 MOVE_THUNDERBOLT,
-                MOVE_TRI_ATTACK,
+                MOVE_TRIATAQUE,
                 MOVE_SCREECH,
             },
             },
@@ -28041,7 +28041,7 @@ F_TRAINER_FEMALE |
 #line 11570
                 MOVE_SUPERSONIC,
                 MOVE_THUNDERBOLT,
-                MOVE_TRI_ATTACK,
+                MOVE_TRIATAQUE,
                 MOVE_SCREECH,
             },
             },

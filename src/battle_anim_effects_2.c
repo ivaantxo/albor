@@ -1662,9 +1662,9 @@ static void AnimBulletSeed_Step1(struct Sprite *sprite)
     for (i = 0; i < 8; i++)
         ptr[i - 7] = 0;
 
-    rand = Random2();
+    rand = Random();
     sprite->data[6] = 0xFFF4 - (rand & 7);
-    rand = Random2();
+    rand = Random();
     sprite->data[7] = (rand % 0xA0) + 0xA0;
     sprite->callback = AnimBulletSeed_Step2;
     sprite->affineAnimPaused = 0;
@@ -3387,7 +3387,7 @@ static void AnimPinkHeart(struct Sprite *sprite)
             sprite->y += sprite->y2;
             sprite->x2 = 0;
             sprite->y2 = 0;
-            sprite->data[3] = Random2() % 180;
+            sprite->data[3] = Random() % 180;
         }
     }
 }

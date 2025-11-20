@@ -81,10 +81,6 @@ enum {
 #define IS_WHOLE_SIDE_ALIVE(battler)    ((IsBattlerAlive(battler) && IsBattlerAlive(BATTLE_PARTNER(battler))))
 #define IS_ALIVE_AND_PRESENT(battler)   (IsBattlerAlive(battler) && IsBattlerSpritePresent(battler))
 
-// Lowest and highest percentages used for damage roll calculations
-#define DMG_ROLL_PERCENT_LO 85
-#define DMG_ROLL_PERCENT_HI 100
-
 // for Natural Gift and Fling
 struct TypePower
 {
@@ -141,9 +137,8 @@ struct DamageCalculationData
     u32 move:16;
     u32 moveType:5;
     u32 isCrit:1;
-    u32 randomFactor:1;
     u32 updateFlags:1;
-    u32 padding:2;
+    u32 padding:3;
 };
 
 void HandleAction_ThrowBall(void);
@@ -267,8 +262,6 @@ bool32 TryRoomService(u32 battler);
 void BufferStatChange(u32 battler, u8 statId, u8 stringId);
 bool32 BlocksPrankster(u16 move, u32 battlerPrankster, u32 battlerDef, bool32 checkTarget);
 u16 GetUsedHeldItem(u32 battler);
-bool32 PickupHasValidTarget(u32 battler);
-bool32 CantPickupItem(u32 battler);
 bool32 IsBattlerWeatherAffected(u32 battler, u32 weatherFlags);
 u32 GetBattlerMoveTargetType(u32 battler, u32 move);
 bool32 CanTargetBattler(u32 battlerAtk, u32 battlerDef, u16 move);
@@ -289,7 +282,7 @@ bool32 CanBeSlept(u32 battler, u32 ability);
 bool32 CanBePoisoned(u32 battler, u32 ability);
 bool32 CanBeBurned(u32 battler, u32 ability);
 bool32 CanBeParalyzed(u32 battler, u32 ability);
-bool32 CanBeFrozen(u32 battler);
+bool32 CanBeFrozen(u32 battler, u32 ability);
 bool32 CanGetFrostbite(u32 battler);
 bool32 CanBeConfused(u32 battler);
 bool32 IsBattlerTerrainAffected(u32 battler, u32 terrainFlag);

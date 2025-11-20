@@ -43,10 +43,6 @@
 
 #define ARRAY_COUNT(array) (size_t)(sizeof(array) / sizeof((array)[0]))
 
-// GameFreak used a macro called "NELEMS", as evidenced by
-// AgbAssert calls.
-#define NELEMS(arr) (sizeof(arr)/sizeof(*(arr)))
-
 #define SWAP(a, b, temp)    \
 {                           \
     temp = a;               \
@@ -215,7 +211,6 @@ struct BattleTowerPokemon
     u8 speedEV;
     u8 spAttackEV;
     u8 spDefenseEV;
-    u32 otId;
     u32 hpIV:5;
     u32 attackIV:5;
     u32 defenseIV:5;
@@ -421,7 +416,7 @@ struct DewfordTrend
     u16 trendiness:7;
     u16 maxTrendiness:7;
     u16 gainingTrendiness:1;
-    u16 rand;
+    u32 rand;
     u16 words[2];
 }; /*size = 0x8*/
 
@@ -585,7 +580,7 @@ struct SaveBlock
     u8 playerName[PLAYER_NAME_LENGTH + 1];
     u8 playerGender; // MALE, FEMALE
     u8 specialSaveWarpFlags;
-    u8 playerTrainerId[TRAINER_ID_LENGTH];
+    u32 personalidadJugador;
     u16 playTimeHours;
     u8 playTimeMinutes;
     u8 playTimeSeconds;

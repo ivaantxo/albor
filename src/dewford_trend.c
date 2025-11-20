@@ -363,7 +363,7 @@ static bool8 CompareTrends(struct DewfordTrend *a, struct DewfordTrend *b, u8 mo
 
 static void SeedTrendRng(struct DewfordTrend *trend)
 {
-    u16 rand;
+    u32 rand;
 
     rand = Random() % 98;
     if (rand > 50)

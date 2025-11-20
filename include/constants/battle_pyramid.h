@@ -2,7 +2,6 @@
 #define GUARD_CONSTANTS_BATTLE_PYRAMID_H
 
 #define TOTAL_PYRAMID_ROUNDS 20
-#define PICKUP_ITEMS_PER_ROUND 10
 
 #define HINT_EXIT_DIRECTION                   0
 #define HINT_REMAINING_ITEMS                  1

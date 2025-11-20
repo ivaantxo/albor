@@ -367,7 +367,6 @@ static void SetBattlerAiMovesData(struct AiLogicData *aiData, u32 battlerAtk, u3
 {
     u16 *moves;
     u32 battlerDef, moveIndex, move;
-    u32 rollType = GetDmgRollType(battlerAtk);
     SaveBattlerData(battlerAtk);
     moves = GetMovesArray(battlerAtk);
 
@@ -383,7 +382,7 @@ static void SetBattlerAiMovesData(struct AiLogicData *aiData, u32 battlerAtk, u3
         SetBattlerData(battlerDef);
         for (moveIndex = 0; moveIndex < MAX_MON_MOVES; moveIndex++)
         {
-            struct SimulatedDamage dmg = {0};
+            s32 simulatedDmg = 0;
             u8 effectiveness = AI_EFFECTIVENESS_x0;
             move = moves[moveIndex];
 
@@ -392,10 +391,10 @@ static void SetBattlerAiMovesData(struct AiLogicData *aiData, u32 battlerAtk, u3
              //&& gMovesInfo[move].power != 0  /* we want to get effectiveness and accuracy of status moves */
              && !(aiData->moveLimitations[battlerAtk] & (1u << moveIndex)))
             {
-                dmg = AI_CalcDamage(move, battlerAtk, battlerDef, &effectiveness, TRUE, weather, rollType);
+                simulatedDmg = AI_CalcDamage(move, battlerAtk, battlerDef, &effectiveness, TRUE, weather);
                 aiData->moveAccuracy[battlerAtk][battlerDef][moveIndex] = Ai_SetMoveAccuracy(aiData, battlerAtk, battlerDef, move);
             }
-            aiData->simulatedDmg[battlerAtk][battlerDef][moveIndex] = dmg;
+            aiData->simulatedDmg[battlerAtk][battlerDef][moveIndex] = simulatedDmg;
             aiData->effectiveness[battlerAtk][battlerDef][moveIndex] = effectiveness;
         }
         RestoreBattlerData(battlerDef);
@@ -1796,8 +1795,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                 // TODO predicted move separate from gLastMoves
                 ADJUST_SCORE(-10);
             }
-            break;
-        case EFFECT_METRONOME:
             break;
 
         case EFFECT_CONVERSION_2:

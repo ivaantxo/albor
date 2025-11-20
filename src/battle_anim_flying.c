@@ -1001,8 +1001,8 @@ static void AnimDiveWaterSplash(struct Sprite *sprite)
 // Launches a water droplet away from the specified battler. Used by Astonish and Dive
 static void AnimSprayWaterDroplet(struct Sprite *sprite)
 {
-    int v1 = 0x1ff & Random2();
-    int v2 = 0x7f & Random2();
+    int v1 = 0x1ff & Random();
+    int v2 = 0x7f & Random();
 
     if (v1 % 2)
         sprite->data[0] = 736 + v1;

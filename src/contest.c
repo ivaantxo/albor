@@ -2589,7 +2589,6 @@ void CreateContestMonFromParty(u8 partyIndex)
     gContestMons[gContestPlayerMonIndex].moves[2] = GetMonData(&gPlayerParty[partyIndex], MON_DATA_MOVE3);
     gContestMons[gContestPlayerMonIndex].moves[3] = GetMonData(&gPlayerParty[partyIndex], MON_DATA_MOVE4);
     gContestMons[gContestPlayerMonIndex].personality = GetMonData(&gPlayerParty[partyIndex], MON_DATA_PERSONALITY);
-    gContestMons[gContestPlayerMonIndex].otId = GetMonData(&gPlayerParty[partyIndex], MON_DATA_OT_ID);
     gContestMons[gContestPlayerMonIndex].isShiny = GetMonData(&gPlayerParty[partyIndex], MON_DATA_IS_SHINY);
 
     heldItem = GetMonData(&gPlayerParty[partyIndex], MON_DATA_HELD_ITEM);
@@ -4811,7 +4810,6 @@ static void SetMoveAnimAttackerData(u8 contestant)
     gContestResources->moveAnim->contestant = contestant;
     gContestResources->moveAnim->species = SanitizeSpecies(gContestMons[contestant].species);
     gContestResources->moveAnim->personality = gContestMons[contestant].personality;
-    gContestResources->moveAnim->otId = gContestMons[contestant].otId;
     gContestResources->moveAnim->isShiny = gContestMons[contestant].isShiny;
 }
 
@@ -4991,7 +4989,6 @@ bool8 SaveContestWinner(u8 rank)
         u8 id = GetContestWinnerSaveIdx(rank, TRUE);
         gSaveBlockPtr->contestWinners[id].personality = gContestMons[i].personality;
         gSaveBlockPtr->contestWinners[id].species = gContestMons[i].species;
-        gSaveBlockPtr->contestWinners[id].trainerId = gContestMons[i].otId;
         StringCopyN(gSaveBlockPtr->contestWinners[id].monName, gContestMons[i].nickname, VANILLA_POKEMON_NAME_LENGTH);
         StringCopy(gSaveBlockPtr->contestWinners[id].trainerName, gContestMons[i].trainerName);
         gSaveBlockPtr->contestWinners[id].contestRank = gSpecialVar_ContestRank;
@@ -5006,7 +5003,6 @@ bool8 SaveContestWinner(u8 rank)
         // Set the most recent winner so the artist can show the player their painting
         gCurContestWinner.personality = gContestMons[i].personality;
         gCurContestWinner.isShiny = gContestMons[i].isShiny;
-        gCurContestWinner.trainerId = gContestMons[i].otId;
         gCurContestWinner.species = gContestMons[i].species;
         StringCopyN(gCurContestWinner.monName, gContestMons[i].nickname, VANILLA_POKEMON_NAME_LENGTH);
         StringCopy(gCurContestWinner.trainerName, gContestMons[i].trainerName);

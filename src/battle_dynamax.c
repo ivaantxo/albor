@@ -258,7 +258,6 @@ static u8 GetMaxPowerTier(u32 move)
             return MAX_POWER_TIER_2;
         case EFFECT_OHKO:
         case EFFECT_RETURN:
-        case EFFECT_FRUSTRATION:
         case EFFECT_HEAT_CRASH:
         case EFFECT_STORED_POWER:
         case EFFECT_GYRO_BALL:
@@ -322,37 +321,7 @@ void ChooseDamageNonTypesString(u8 type)
 // Returns the status effect that should be applied by a G-Max Move.
 static u32 GetMaxMoveStatusEffect(u32 move)
 {
-    u8 maxEffect = gMovesInfo[move].argument;
-    switch (maxEffect)
-    {
-        // Status 1
-        case MAX_EFFECT_PARALYZE_FOES:
-            return STATUS1_PARALYSIS;
-        case MAX_EFFECT_POISON_FOES:
-            return STATUS1_POISON;
-        case MAX_EFFECT_POISON_PARALYZE_FOES:
-        {
-            static const u8 sStunShockEffects[] = {STATUS1_PARALYSIS, STATUS1_POISON};
-            return RandomElement(RNG_G_MAX_STUN_SHOCK, sStunShockEffects);
-        }
-        case MAX_EFFECT_EFFECT_SPORE_FOES:
-        {
-            static const u8 sBefuddleEffects[] = {STATUS1_PARALYSIS, STATUS1_POISON, STATUS1_SLEEP};
-            return RandomElement(RNG_G_MAX_BEFUDDLE, sBefuddleEffects);
-        }
-        // Status 2
-        case MAX_EFFECT_CONFUSE_FOES:
-        case MAX_EFFECT_CONFUSE_FOES_PAY_DAY:
-            return STATUS2_CONFUSION;
-        case MAX_EFFECT_INFATUATE_FOES:
-            return STATUS2_INFATUATION;
-        case MAX_EFFECT_MEAN_LOOK:
-            return STATUS2_ESCAPE_PREVENTION;
-        case MAX_EFFECT_TORMENT_FOES:
-            return STATUS2_TORMENT;
-        default:
-            return STATUS1_NONE;
-    }
+    return 0;
 }
 
 // Activates the secondary effect of a Max Move.
@@ -594,19 +563,7 @@ void BS_SetMaxMoveEffect(void)
             break;
         }
         case MAX_EFFECT_YAWN_FOE:
-        {
-            static const u8 sSnoozeEffects[] = {TRUE, FALSE};
-            if (!(gStatuses3[gBattlerTarget] & STATUS3_YAWN)
-                && CanBeSlept(gBattlerTarget, GetBattlerAbility(gBattlerTarget))
-                && RandomElement(RNG_G_MAX_SNOOZE, sSnoozeEffects)) // 50% chance of success
-            {
-                gStatuses3[gBattlerTarget] |= STATUS3_YAWN_TURN(2);
-                BattleScriptPush(gBattlescriptCurrInstr + 1);
-                gBattlescriptCurrInstr = BattleScript_EffectYawnSuccess;
-                effect++;
-            }
             break;
-        }
         case MAX_EFFECT_SPITE:
             if (gLastMoves[gBattlerTarget] != MOVE_NONE
                 && gLastMoves[gBattlerTarget] != MOVE_UNAVAILABLE)
@@ -619,7 +576,6 @@ void BS_SetMaxMoveEffect(void)
         case MAX_EFFECT_PARALYZE_FOES:
         case MAX_EFFECT_POISON_FOES:
         case MAX_EFFECT_POISON_PARALYZE_FOES:
-        case MAX_EFFECT_EFFECT_SPORE_FOES:
             BattleScriptPush(gBattlescriptCurrInstr + 1);
             gBattlescriptCurrInstr = BattleScript_EffectStatus1Foes;
             effect++;
@@ -660,16 +616,7 @@ void BS_SetMaxMoveEffect(void)
             effect++;
             break;
         case MAX_EFFECT_RECYCLE_BERRIES:
-        {
-            static const u8 sReplenishEffects[] = {TRUE, FALSE};
-            if (RandomElement(RNG_G_MAX_REPLENISH, sReplenishEffects)) // 50% chance of success
-            {
-                BattleScriptPush(gBattlescriptCurrInstr + 1);
-                gBattlescriptCurrInstr = BattleScript_EffectRecycleBerriesAllies;
-                effect++;
-            }
             break;
-        }
     }
 
     if (!effect)

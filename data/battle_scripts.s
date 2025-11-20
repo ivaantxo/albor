@@ -3777,16 +3777,6 @@ BattleScript_EffectMimic::
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectMetronome::
-	attackcanceler
-	attackstring
-	pause B_WAIT_TIME_SHORT
-	attackanimation
-	waitanimation
-	setbyte sB_ANIM_TURN, 0
-	setbyte sB_ANIM_TARGETS_HIT, 0
-	metronome
-
 BattleScript_EffectLeechSeed::
 	attackcanceler
 	attackstring
@@ -5464,9 +5454,8 @@ BattleScript_LocalBattleWonReward::
 	getmoneyreward
 	printstring STRINGID_PLAYERGOTMONEY
 	waitmessage B_WAIT_TIME_LONG
-BattleScript_PayDayMoneyAndPickUpItems::
+BattleScript_PayDayMoney::
 	givepaydaymoney
-	pickup
 	end2
 
 BattleScript_LocalBattleLost::
@@ -7481,15 +7470,6 @@ BattleScript_CheekPouchActivates::
 	call BattleScript_AbilityHpHeal
 	copybyte gBattlerAttacker, sSAVED_BATTLER
 	return
-
-BattleScript_PickupActivates::
-	pause 5
-	tryrecycleitem BattleScript_PickupActivatesEnd
-	call BattleScript_AbilityPopUp
-	printstring STRINGID_XFOUNDONEY
-	waitmessage B_WAIT_TIME_LONG
-BattleScript_PickupActivatesEnd:
-	end3
 
 BattleScript_HarvestActivates::
 	pause 5

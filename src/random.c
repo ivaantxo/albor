@@ -1,16 +1,14 @@
 #include "global.h"
 #include "random.h"
+#include "malloc.h"
 #include <alloca.h>
 
 // IWRAM common
 COMMON_DATA rng_value_t gRngValue = {0};
-COMMON_DATA rng_value_t gRng2Value = {0};
 
 EWRAM_DATA static volatile bool8 sRngLoopUnlocked;
 
-// Streams allow generators seeded the same to have separate outputs.
-#define STREAM1 1
-#define STREAM2 29
+#define STREAM 1
 
 // A variant of SFC32 that lets you change the stream.
 // stream can be any odd number.
@@ -46,10 +44,10 @@ u32 NAKED Random32(void)
     mov r6, #11\n\
     ldr r5, =gRngValue\n\
     ldmia r5!, {r1, r2, r3, r4}\n\
-    @ result = a + b + (d+=STREAM1)\n\
+    @ result = a + b + (d+=STREAM)\n\
     add r1, r1, r2\n\
     add r0, r1, r4\n\
-    add r4, r4, #" STR(STREAM1) "\n\
+    add r4, r4, #" STR(STREAM) "\n\
     @ a = b ^ (b >> 9)\n\
     lsr r1, r2, #9\n\
     eor r1, r1, r2\n\
@@ -67,157 +65,80 @@ u32 NAKED Random32(void)
     );
 }
 
-u32 Random2_32(void)
-{
-    return _SFC32_Next_Stream(&gRng2Value, STREAM2);
-}
-
-void SeedRng(u32 seed)
+void GeneraSemillaAleatoria(void)
 {
     struct Sfc32State state;
-    SFC32_Seed(&state, seed, STREAM1);
+    u32 semilla = 0;
+
+    // Línea de escaneo del haz vertical (0–159, se reinicia cada frame)
+    semilla ^= REG_VCOUNT << 8;
+
+    // Timer 0 (si está corriendo) — útil si lo usas para temporización
+    semilla ^= REG_TM0CNT_L ^ (REG_TM0CNT_H << 16);
+
+    // Entrada del jugador — por si pulsa algún botón
+    semilla ^= REG_KEYINPUT;
+
+    // Dirección actual del stack pointer
+    register u32 sp;
+    __asm__("mov %0, sp" : "=r"(sp));
+    semilla ^= sp;
+
+    semilla ^= *(vu32*)(gHeap + 16);
+    semilla ^= *(vu32*)(gHeap + 64);
+
+    SFC32_Seed(&state, semilla, STREAM);
 
     sRngLoopUnlocked = FALSE;
     gRngValue = state;
     sRngLoopUnlocked = TRUE;
 }
 
-void SeedRng2(u32 seed)
-{
-    SFC32_Seed(&gRng2Value, seed, STREAM2);
-}
-
-rng_value_t LocalRandomSeed(u32 seed)
-{
-    rng_value_t result;
-    SFC32_Seed(&result, seed, STREAM1);
-    return result;
-}
-
-void AdvanceRandom(void)
+void AvanzaAleatoriedad(void)
 {
     if (sRngLoopUnlocked == TRUE)
-        Random32();
+        Random();
 }
 
-#define LOOP_RANDOM_START \
-    struct Sfc32State *const state = &gRngValue; \
-    sRngLoopUnlocked = FALSE;
-
-#define LOOP_RANDOM_END sRngLoopUnlocked = TRUE;
-
-#define LOOP_RANDOM ((u16)(_SFC32_Next(state) >> 16))
-
-#define SHUFFLE_IMPL \
-    u32 tmp; \
-    LOOP_RANDOM_START; \
-    --n; \
-    while (n > 1) \
-    { \
-        int j = (LOOP_RANDOM * (n+1)) >> 16; \
-        SWAP(data[n], data[j], tmp); \
-        --n; \
-    } \
-    LOOP_RANDOM_END
-
-void Shuffle8(void *data_, size_t n)
+bool32 PorcentajeAleatorio(u32 porcentaje)
 {
-    u8 *data = data_;
-    SHUFFLE_IMPL;
+    return (Random() % 100) < porcentaje;
 }
 
-void Shuffle16(void *data_, size_t n)
+u32 ElementoAleatorio(u32 numeroElementos)
 {
-    u16 *data = data_;
-    SHUFFLE_IMPL;
+    return Random() % numeroElementos;
 }
 
-void Shuffle32(void *data_, size_t n)
+u32 NumeroAleatorioEnRango(u32 minimo, u32 maximo)
 {
-    u32 *data = data_;
-    SHUFFLE_IMPL;
+    return minimo + (Random() % (maximo - minimo + 1));
 }
 
-void ShuffleN(void *data, size_t n, size_t size)
+u32 ElementoAleatorioPonderado(const u8 *pesos, u32 numElementos)
 {
-    void *tmp = alloca(size);
-    LOOP_RANDOM_START;
-    --n;
+    u32 suma = 0;
 
-    while (n > 1)
+    // Sumar todos los pesos
+    for (u32 i = 0; i < numElementos; i++)
+        suma += pesos[i];
+
+    // Si todos los pesos son 0 → devolver un valor por defecto
+    if (suma == 0)
+        return 0;
+
+    // Elegir un valor aleatorio entre 0 y suma-1
+    u32 r = NumeroAleatorioEnRango(0, suma - 1);
+
+    // Buscar qué índice corresponde
+    u32 acumulado = 0;
+    for (u32 i = 0; i < numElementos; i++)
     {
-        int j = (LOOP_RANDOM * (n+1)) >> 16;
-        memcpy(tmp, (u8 *)data + n*size, size); // tmp = data[n];
-        memcpy((u8 *)data + n*size, (u8 *)data + j*size, size); // data[n] = data[j];
-        memcpy((u8 *)data + j*size, tmp, size); // data[j] = tmp;
-        --n;
-    }
-
-    LOOP_RANDOM_END;
-}
-
-__attribute__((weak, alias("RandomUniformDefault")))
-u32 RandomUniform(enum RandomTag tag, u32 lo, u32 hi);
-
-__attribute__((weak, alias("RandomUniformExceptDefault")))
-u32 RandomUniformExcept(enum RandomTag, u32 lo, u32 hi, bool32 (*reject)(u32));
-
-__attribute__((weak, alias("RandomWeightedArrayDefault")))
-u32 RandomWeightedArray(enum RandomTag tag, u32 sum, u32 n, const u8 *weights);
-
-__attribute__((weak, alias("RandomElementArrayDefault")))
-const void *RandomElementArray(enum RandomTag tag, const void *array, size_t size, size_t count);
-
-u32 RandomUniformDefault(enum RandomTag tag, u32 lo, u32 hi)
-{
-    return lo + (((hi - lo + 1) * Random()) >> 16);
-}
-
-u32 RandomUniformExceptDefault(enum RandomTag tag, u32 lo, u32 hi, bool32 (*reject)(u32))
-{
-    LOOP_RANDOM_START;
-    while (TRUE)
-    {
-        u32 n = lo + (((hi - lo + 1) * LOOP_RANDOM) >> 16);
-        if (!reject(n))
-            return n;
-    }
-    LOOP_RANDOM_END;
-}
-
-u32 RandomWeightedArrayDefault(enum RandomTag tag, u32 sum, u32 n, const u8 *weights)
-{
-    s32 i, targetSum;
-    targetSum = (sum * Random()) >> 16;
-    for (i = 0; i < n - 1; i++)
-    {
-        targetSum -= weights[i];
-        if (targetSum < 0)
+        acumulado += pesos[i];
+        if (r < acumulado)
             return i;
     }
-    return n - 1;
-}
 
-const void *RandomElementArrayDefault(enum RandomTag tag, const void *array, size_t size, size_t count)
-{
-    return (const u8 *)array + size * RandomUniformDefault(tag, 0, count - 1);
-}
-
-// Returns a random index according to a list of weights
-u8 RandomWeightedIndex(u8 *weights, u8 length)
-{
-    u32 i;
-    u16 randomValue;
-    u16 weightSum = 0;
-    for (i = 0; i < length; i++)
-        weightSum += weights[i];
-    randomValue = weightSum > 0 ? Random() % weightSum : 0;
-    weightSum = 0;
-    for (i = 0; i < length; i++)
-    {
-        weightSum += weights[i];
-        if (randomValue <= weightSum)
-            return i;
-    }
-    return 0;
+    // Failsafe
+    return numElementos - 1;
 }

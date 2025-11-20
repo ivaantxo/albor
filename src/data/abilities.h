@@ -9,13 +9,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .cantBeTraced = TRUE,
     },
 
-    [ABILITY_STENCH] =
-    {
-        .name = _("Stench"),
-        .description = COMPOUND_STRING("May cause a foe to flinch."),
-        .aiRating = 1,
-    },
-
     [ABILITY_DRIZZLE] =
     {
         .name = _("Drizzle"),
@@ -209,11 +202,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .breakable = TRUE,
     },
 
-    [ABILITY_EFFECT_SPORE] =
+    [ABILITY_PSICODELICO] =
     {
-        .name = _("Effect Spore"),
-        .description = COMPOUND_STRING("Leaves spores on contact."),
-        .aiRating = 4,
+        .name = _("Psicodélico"),
+        .description = COMPOUND_STRING("50% de causar estado aleatorio."),
+        .aiRating = 5,
     },
 
     [ABILITY_SYNCHRONIZE] =
@@ -401,13 +394,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Prevents Attack reduction."),
         .aiRating = 3,
         .breakable = TRUE,
-    },
-
-    [ABILITY_PICKUP] =
-    {
-        .name = _("Pickup"),
-        .description = COMPOUND_STRING("May pick up items."),
-        .aiRating = 1,
     },
 
     [ABILITY_TRUANT] =
@@ -2275,13 +2261,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .breakable = TRUE,
     },
 
-    [ABILITY_TOXIC_CHAIN] =
-    {
-        .name = _("Toxic Chain"),
-        .description = COMPOUND_STRING("Moves can poison."),
-        .aiRating = 8,
-    },
-
     [ABILITY_SUPERSWEET_SYRUP] =
     {
         .name = _("Supersweet Syrup"),
@@ -2699,24 +2678,10 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 8,
     },
 
-    [ABILITY_ESPORA_TOXICA] =
-    {
-        .name = _("Espora tóxica"),
-        .description = COMPOUND_STRING("50% de envenenar si recibe ataque."),
-        .aiRating = 8,
-    },
-
     [ABILITY_VENENOSO] =
     {
         .name = _("Venenoso"),
         .description = COMPOUND_STRING("Veneno +25%."),
-        .aiRating = 8,
-    },
-
-    [ABILITY_ALERGIA] =
-    {
-        .name = _("Alergia"),
-        .description = COMPOUND_STRING("50% de paralizar si recibe ataque."),
         .aiRating = 8,
     },
 

@@ -707,7 +707,7 @@ static u32 GeneratePartyHash(const struct Trainer *trainer, u32 i)
 
 void ModifyPersonalityForNature(u32 *personality, u32 newNature)
 {
-    u32 nature = GetNatureFromPersonality(*personality);
+    u32 nature = ObtenNaturalezaDePersonalidad(*personality);
     s32 diff = abs((s32)nature - (s32)newNature);
     s32 sign = (nature > newNature) ? 1 : -1;
     if (diff > NUMERO_NATURALEZAS / 2)
@@ -762,8 +762,6 @@ u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer 
             s32 ball = -1;
             u32 personalityHash = GeneratePartyHash(trainer, i);
             const struct TrainerMon *partyData = trainer->party;
-            u32 otIdType = OT_ID_RANDOM_NO_SHINY;
-            u32 fixedOtId = 0;
             u32 ability = 0;
             u32 personalityValue = 128;
 
@@ -775,12 +773,7 @@ u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer 
             else if (partyData[i].gender == TRAINER_MON_RANDOM_GENDER)
                 personalityValue = (personalityValue & 0xFFFFFF00) | GeneratePersonalityForGender(Random() & 1 ? MON_MALE : MON_FEMALE, partyData[i].species);
             ModifyPersonalityForNature(&personalityValue, partyData[i].nature);
-            if (partyData[i].isShiny)
-            {
-                otIdType = OT_ID_PRESET;
-                fixedOtId = HIHALF(personalityValue) ^ LOHALF(personalityValue);
-            }
-            CreateMon(&party[i], partyData[i].species, partyData[i].lvl, 0, TRUE, personalityValue, otIdType, fixedOtId);
+            CreaPokemon(&party[i], partyData[i].species, partyData[i].lvl, 0, TRUE, personalityValue);
             SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
 
             CustomTrainerPartyAssignMoves(&party[i], &partyData[i]);
@@ -860,7 +853,7 @@ void CreateTrainerPartyForPlayer(void)
 
 void VBlankCB_Battle(void)
 {
-    AdvanceRandom();
+    AvanzaAleatoriedad();
     SetGpuReg(REG_OFFSET_BG0HOFS, gBattle_BG0_X);
     SetGpuReg(REG_OFFSET_BG0VOFS, gBattle_BG0_Y);
     SetGpuReg(REG_OFFSET_BG1HOFS, gBattle_BG1_X);
@@ -1491,7 +1484,6 @@ void SwitchInClearSetData(u32 battler)
     gBattleStruct->lastMoveFailed &= ~(1u << battler);
     gBattleStruct->palaceFlags &= ~(1u << battler);
     gBattleStruct->boosterEnergyActivates &= ~(1u << battler);
-    gBattleStruct->canPickupItem &= ~(1u << battler);
 
     for (i = 0; i < ARRAY_COUNT(gSideTimers); i++)
     {
@@ -1929,7 +1921,7 @@ static void TryDoEventsBeforeFirstTurn(void)
                 gAbsentBattlerFlags |= 1u << i;
         }
 
-        gBattleStruct->speedTieBreaks = RandomUniform(RNG_SPEED_TIE, 0, Factorial(MAX_BATTLERS_COUNT) - 1);
+        gBattleStruct->speedTieBreaks = ElementoAleatorio(Factorial(MAX_BATTLERS_COUNT));
 
         for (i = 0; i < gBattlersCount; i++)
             gBattlerByTurnOrder[i] = i;
@@ -2079,7 +2071,7 @@ void BattleTurnPassed(void)
 {
     s32 i;
 
-    gBattleStruct->speedTieBreaks = RandomUniform(RNG_SPEED_TIE, 0, Factorial(MAX_BATTLERS_COUNT) - 1);
+    gBattleStruct->speedTieBreaks = ElementoAleatorio(Factorial(MAX_BATTLERS_COUNT));
 
     TurnValuesCleanUp(TRUE);
     if (gBattleOutcome == 0)
@@ -2964,8 +2956,8 @@ static void SetActionsAndBattlersTurnOrder(void)
             {
                 gActionsByTurnOrder[turnOrderId] = gChosenActionByBattler[battler];
                 gBattlerByTurnOrder[turnOrderId] = battler;
-                gBattleStruct->quickClawRandom[battler] = RandomPercentage(RNG_QUICK_CLAW, GetBattlerHoldEffectParam(battler));
-                gBattleStruct->quickDrawRandom[battler] = RandomPercentage(RNG_QUICK_DRAW, 30);
+                gBattleStruct->quickClawRandom[battler] = PorcentajeAleatorio(GetBattlerHoldEffectParam(battler));
+                gBattleStruct->quickDrawRandom[battler] = PorcentajeAleatorio(30);
                 turnOrderId++;
             }
         }
@@ -3023,7 +3015,6 @@ static void TurnValuesCleanUp(bool8 var0)
                 if (gDisableStructs[i].rechargeTimer == 0)
                     gBattleMons[i].status2 &= ~STATUS2_RECHARGE;
             }
-            gBattleStruct->canPickupItem &= ~(1u << i);
         }
 
         if (gDisableStructs[i].substituteHP == 0)
@@ -3249,7 +3240,7 @@ static void HandleEndTurn_BattleWon(void)
     }
     else
     {
-        gBattlescriptCurrInstr = BattleScript_PayDayMoneyAndPickUpItems;
+        gBattlescriptCurrInstr = BattleScript_PayDayMoney;
     }
 
     gBattleMainFunc = HandleEndTurn_FinishBattle;

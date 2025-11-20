@@ -343,11 +343,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectMimic,
     },
 
-    [EFFECT_METRONOME] =
-    {
-        .battleScript = BattleScript_EffectMetronome,
-    },
-
     [EFFECT_LEECH_SEED] =
     {
         .battleScript = BattleScript_EffectLeechSeed,
@@ -545,11 +540,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_PRESENT] =
     {
         .battleScript = BattleScript_EffectPresent,
-    },
-
-    [EFFECT_FRUSTRATION] =
-    {
-        .battleScript = BattleScript_EffectHit,
     },
 
     [EFFECT_SAFEGUARD] =

@@ -41,7 +41,6 @@ static const u8 LandmarkName_GraniteCave[] = _("GRANITE CAVE");
 static const u8 LandmarkName_OceanCurrent[] = _("OCEAN CURRENT");
 static const u8 LandmarkName_LanettesHouse[] = _("LANETTE'S HOUSE");
 static const u8 LandmarkName_FieryPath[] = _("FIERY PATH");
-static const u8 LandmarkName_JaggedPass[] = _("JAGGED PASS");
 static const u8 LandmarkName_SkyPillar[] = _("SKY PILLAR");
 static const u8 LandmarkName_BerryMastersHouse[] = _("BERRY MASTER'S HOUSE");
 static const u8 LandmarkName_IslandCave[] = _("ISLAND CAVE");
@@ -83,7 +82,6 @@ static const struct Landmark Landmark_GraniteCave = {LandmarkName_GraniteCave, -
 static const struct Landmark Landmark_OceanCurrent = {LandmarkName_OceanCurrent, -1};
 static const struct Landmark Landmark_LanettesHouse = {LandmarkName_LanettesHouse, FLAG_LANDMARK_LANETTES_HOUSE};
 static const struct Landmark Landmark_FieryPath = {LandmarkName_FieryPath, FLAG_LANDMARK_FIERY_PATH};
-static const struct Landmark Landmark_JaggedPass = {LandmarkName_JaggedPass, -1};
 static const struct Landmark Landmark_BerryMastersHouse = {LandmarkName_BerryMastersHouse, FLAG_LANDMARK_BERRY_MASTERS_HOUSE};
 static const struct Landmark Landmark_IslandCave = {LandmarkName_IslandCave, FLAG_LANDMARK_ISLAND_CAVE};
 static const struct Landmark Landmark_DesertRuins = {LandmarkName_DesertRuins, FLAG_LANDMARK_DESERT_RUINS};
@@ -198,7 +196,6 @@ static const struct Landmark *const Landmarks_Route111_4[]  =
 static const struct Landmark *const Landmarks_Route112_0[]  =
 {
     &Landmark_FieryPath,
-    &Landmark_JaggedPass,
     NULL,
 };
 
@@ -329,7 +326,6 @@ static const struct Landmark *const Landmarks_Route134_2[]  =
 static const struct Landmark *const Landmarks_MtChimney_2[]  =
 {
     &Landmark_CableCar,
-    &Landmark_JaggedPass,
     NULL,
 };
 

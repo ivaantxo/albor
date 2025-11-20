@@ -3159,7 +3159,7 @@ static void AnimAbsorptionOrb_Step(struct Sprite *sprite)
 void AnimHyperBeamOrb(struct Sprite *sprite)
 {
     u16 speed;
-    u16 animNum = Random2();
+    u16 animNum = Random();
 
     StartSpriteAnim(sprite, animNum % 8);
     sprite->x = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_X_2);
@@ -3169,14 +3169,14 @@ void AnimHyperBeamOrb(struct Sprite *sprite)
     else
         sprite->x += 20;
 
-    speed = Random2();
+    speed = Random();
     sprite->data[0] = (speed & 31) + 64;
     sprite->data[1] = sprite->x;
     sprite->data[2] = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X_2);
     sprite->data[3] = sprite->y;
     sprite->data[4] = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y_PIC_OFFSET);
     InitAnimFastLinearTranslationWithSpeed(sprite);
-    sprite->data[5] = Random2() & 0xFF;
+    sprite->data[5] = Random() & 0xFF;
     sprite->data[6] = sprite->subpriority;
     sprite->callback = AnimHyperBeamOrb_Step;
     sprite->callback(sprite);
@@ -6673,7 +6673,7 @@ static void AnimTauntFinger_Step2(struct Sprite *sprite)
 // arg 1: initial y pixel offset
 static void AnimRockPolishStreak(struct Sprite *sprite)
 {
-    int affineAnimNum = Random2() % ARRAY_COUNT(gRockPolishStreak_AffineAnimCmds);
+    int affineAnimNum = Random() % ARRAY_COUNT(gRockPolishStreak_AffineAnimCmds);
     InitSpritePosToAnimAttacker(sprite, TRUE);
     StartSpriteAffineAnim(sprite, affineAnimNum);
     StoreSpriteCallbackInData6(sprite, DestroySpriteAndMatrix);
@@ -6785,7 +6785,7 @@ void AnimTask_CreateSmallSteelBeamOrbs(u8 taskId)
 
 static void AnimAcrobaticsSlashes(struct Sprite *sprite)
 {
-    int affineAnimNum = Random2() % ARRAY_COUNT(gRockPolishStreak_AffineAnimCmds);
+    int affineAnimNum = Random() % ARRAY_COUNT(gRockPolishStreak_AffineAnimCmds);
     InitSpritePosToAnimTarget(sprite, TRUE);
     StartSpriteAffineAnim(sprite, affineAnimNum);
     StoreSpriteCallbackInData6(sprite, DestroySpriteAndMatrix);

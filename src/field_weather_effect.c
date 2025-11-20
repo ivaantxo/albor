@@ -547,7 +547,7 @@ static void StartRainSpriteFall(struct Sprite *sprite)
     if (sprite->tRandom == 0)
         sprite->tRandom = 361;
 
-    rand = ISO_RANDOMIZE2(sprite->tRandom);
+    rand = ISO_RANDOMIZE(sprite->tRandom);
     sprite->tRandom = ((rand & 0x7FFF0000) >> 16) % 600;
 
     numFallingFrames = sRainSpriteFallingDurations[gWeatherPtr->isDownpour][0];
@@ -910,7 +910,7 @@ static bool8 DestroySnowflakeSprite(void)
 
 static void InitSnowflakeSpriteMovement(struct Sprite *sprite)
 {
-    u16 rand;
+    u32 rand;
     u16 x = ((sprite->tSnowflakeId * 5) & 7) * 30 + (Random() % 30);
 
     sprite->y = -3 - (gSpriteCoordOffsetY + sprite->centerToCornerVecY);

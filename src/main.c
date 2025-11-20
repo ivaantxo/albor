@@ -66,18 +66,15 @@ COMMON_DATA IntrFunc gIntrTable[INTR_COUNT] = {0};
 COMMON_DATA u32 IntrMain_Buffer[512] = {0};
 COMMON_DATA s8 gPcmDmaCounter = 0;
 
-static EWRAM_DATA u16 sTrainerId = 0;
-
 static void InitMainCallbacks(void);
 static void CallCallbacks(void);
-static void SeedRngWithRtc(void);
 static void ReadKeys(void);
 void InitIntrHandlers(void);
 void EnableVCountIntrAtLine150(void);
 
 #define B_START_SELECT (B_BUTTON | START_BUTTON | SELECT_BUTTON)
 
-void AgbMain()
+void AgbMain(void)
 {
     *(vu16 *)BG_PLTT = RGB_WHITE; // Set the backdrop to white on startup
     InitGpuRegManager();
@@ -90,7 +87,6 @@ void AgbMain()
     CheckForFlashMemory();
     InitMainCallbacks();
     InitMapMusic();
-    SeedRngWithRtc(); // see comment at SeedRngWithRtc definition below
     ClearDma3Requests();
     ResetBgs();
     SetDefaultFontsPointer();
@@ -145,42 +141,11 @@ void StartTimer1(void)
     REG_TM1CNT_H = TIMER_ENABLE;
 }
 
-void SeedRngAndSetTrainerId(void)
-{
-    u32 val;
-
-    REG_TM1CNT_H = 0;
-    REG_TM2CNT_H = 0;
-    val = ((u32)REG_TM2CNT_L) << 16;
-    val |= REG_TM1CNT_L;
-    SeedRng(val);
-    sTrainerId = Random();
-}
-
-u16 GetGeneratedTrainerIdLower(void)
-{
-    return sTrainerId;
-}
-
 void EnableVCountIntrAtLine150(void)
 {
     u16 gpuReg = (GetGpuReg(REG_OFFSET_DISPSTAT) & 0xFF) | (150 << 8);
     SetGpuReg(REG_OFFSET_DISPSTAT, gpuReg | DISPSTAT_VCOUNT_INTR);
     EnableInterrupts(INTR_FLAG_VCOUNT);
-}
-
-static void SeedRngWithRtc(void)
-{
-    #define BCD8(x) ((((x) >> 4) & 0xF) * 10 + ((x) & 0xF))
-    u32 seconds;
-    struct SiiRtcInfo rtc;
-    RtcGetInfo(&rtc);
-    seconds =
-        ((HORAS_POR_DIA * RtcGetDayCount(&rtc) + BCD8(rtc.hour))
-        * MINUTOS_POR_HORA + BCD8(rtc.minute))
-        * SEGUNDOS_POR_MINUTO + BCD8(rtc.second);
-    SeedRng(seconds);
-    #undef BCD8
 }
 
 void InitKeys(void)
@@ -300,7 +265,7 @@ static void VBlankIntr(void)
     m4aSoundMain();
 
     if (!gMain.inBattle)
-        AdvanceRandom();
+        AvanzaAleatoriedad();
 
     INTR_CHECK |= INTR_FLAG_VBLANK;
     gMain.intrCheck |= INTR_FLAG_VBLANK;
