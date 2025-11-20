@@ -391,6 +391,7 @@
 // Some Match Call entries (like those for gym leaders, Wally, and all non-trainer NPCs like Prof. Birch)
 // have their own separate flag that needs to be set to be enabled; see src/pokenav_match_call_data.c
 #define TRAINER_REGISTERED_FLAGS_START       0x15C
+// todas sin suar
 #define FLAG_REGISTERED_ROSE                 (TRAINER_REGISTERED_FLAGS_START + REMATCH_ROSE)
 #define FLAG_REGISTERED_ANDRES               (TRAINER_REGISTERED_FLAGS_START + REMATCH_ANDRES)
 #define FLAG_REGISTERED_DUSTY                (TRAINER_REGISTERED_FLAGS_START + REMATCH_DUSTY)
@@ -550,6 +551,7 @@
 #define FLAG_UNUSED_0x1F3                    0x1F3
 
 // Hidden Items
+// todas sin usar
 #define FLAG_HIDDEN_ITEMS_START                                                         0x1F4
 #define FLAG_HIDDEN_ITEM_LAVARIDGE_TOWN_ICE_HEAL             (FLAG_HIDDEN_ITEMS_START + 0x00)
 #define FLAG_HIDDEN_ITEM_TRICK_HOUSE_NUGGET                  (FLAG_HIDDEN_ITEMS_START + 0x01)
@@ -1062,6 +1064,7 @@
 #define FLAG_HIDE_RUSTBORO_CITY_POKEMON_SCHOOL_SCOTT                0x3E7
 
 // Item Ball Flags
+//todas sin usar
 #define FLAG_ITEM_ROUTE_102_POTION                                  0x3E8
 #define FLAG_ITEM_ROUTE_116_X_SPECIAL                               0x3E9
 #define FLAG_ITEM_ROUTE_104_PP_UP                                   0x3EA
@@ -1097,7 +1100,7 @@
 #define FLAG_ITEM_ROUTE_123_CALCIUM                                 0x408
 
 #define FLAG_UNUSED_0x409                                           0x409
-
+// Todas sin usar
 #define FLAG_ITEM_ROUTE_127_ZINC                                    0x40A
 #define FLAG_ITEM_ROUTE_127_CARBOS                                  0x40B
 #define FLAG_ITEM_ROUTE_132_RARE_CANDY                              0x40C
@@ -1137,6 +1140,7 @@
 #define FLAG_ITEM_JAGGED_PASS_BURN_HEAL                             0x42E
 #define flag_unused_0x42f                       0x42F
 #define flag_unused_0x430                        0x430
+//Todas sin usar
 #define FLAG_ITEM_MT_PYRE_EXTERIOR_MAX_POTION                       0x431
 #define FLAG_ITEM_MT_PYRE_EXTERIOR_TM_SKILL_SWAP                    0x432
 #define FLAG_ITEM_NEW_MAUVILLE_ULTRA_BALL                           0x433
@@ -1413,8 +1417,8 @@
 #define FLAG_LANDMARK_ALTERING_CAVE                 (SYSTEM_FLAGS + 0x7D)
 #define FLAG_LANDMARK_DESERT_UNDERPASS              (SYSTEM_FLAGS + 0x7E)
 #define FLag_sys_unused_0x7f                  (SYSTEM_FLAGS + 0x7F)
-#define FLAG_ENABLE_SHIP_NAVEL_ROCK                 (SYSTEM_FLAGS + 0x80)
-#define FLAG_ARRIVED_AT_NAVEL_ROCK                  (SYSTEM_FLAGS + 0x81)
+#define FLag_sys_unused_0x80                 (SYSTEM_FLAGS + 0x80)
+#define FLag_sys_unused_0x81                  (SYSTEM_FLAGS + 0x81)
 #define FLAG_SYS_UNUSED_0x82                  (SYSTEM_FLAGS + 0x82)
 
 #define FLAG_SYS_UNUSED_0x83                        (SYSTEM_FLAGS + 0x83)
@@ -1482,8 +1486,7 @@
 #define FLAG_SYS_UNUSED_0xBF                           (SYSTEM_FLAGS + 0xBF)
 
 // Daily Flags
-// These flags are cleared once per day
-// The start and end are byte-aligned because the flags are cleared in byte increments
+// Todas sin usar
 #define DAILY_FLAGS_START                           (FLAG_SYS_UNUSED_0xBF + (8 - FLAG_SYS_UNUSED_0xBF % 8))
 #define FLAG_DAILY_UNUSED_0x0                       (DAILY_FLAGS_START + 0x0) 
 #define FLAG_DAILY_CONTEST_LOBBY_RECEIVED_BERRY     (DAILY_FLAGS_START + 0x1)
@@ -1565,11 +1568,5 @@
 
 #define SPECIAL_FLAGS_END                       (SPECIAL_FLAGS_START + 0x8)
 #define NUM_SPECIAL_FLAGS                       (SPECIAL_FLAGS_END - SPECIAL_FLAGS_START + 1)
-
-// Temp flag aliases
-#define FLAG_TEMP_SKIP_GABBY_INTERVIEW          FLAG_TEMP_1
-#define FLAG_TEMP_REGICE_PUZZLE_STARTED         FLAG_TEMP_2
-#define FLAG_TEMP_REGICE_PUZZLE_FAILED          FLAG_TEMP_3
-#define FLAG_TEMP_HIDE_MIRAGE_ISLAND_BERRY_TREE FLAG_TEMP_11
 
 #endif // GUARD_CONSTANTS_FLAGS_H

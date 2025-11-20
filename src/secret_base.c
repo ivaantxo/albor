@@ -902,19 +902,7 @@ void SetBattledOwnerFromResult(void)
 
 void GetSecretBaseOwnerAndState(void)
 {
-    u16 secretBaseIdx;
-    u32 i;
 
-    secretBaseIdx = VarGet(VAR_CURRENT_SECRET_BASE);
-    if (!FlagGet(FLAG_DAILY_SECRET_BASE))
-    {
-        for (i = 0; i < SECRET_BASES_COUNT; i++)
-            gSaveBlockPtr->secretBases[i].battledOwnerToday = FALSE;
-
-        FlagSet(FLAG_DAILY_SECRET_BASE);
-    }
-    gSpecialVar_0x8004 = GetSecretBaseOwnerType(secretBaseIdx);
-    gSpecialVar_Result = gSaveBlockPtr->secretBases[secretBaseIdx].battledOwnerToday;
 }
 
 #define tStepCb  data[0] // See Task_RunPerStepCallback
