@@ -6,7 +6,6 @@
 #include "battle_interface.h"
 #include "battle_message.h"
 #include "battle_setup.h"
-#include "battle_z_move.h"
 #include "battle_gimmick.h"
 #include "bg.h"
 #include "data.h"
@@ -90,8 +89,6 @@ static void Task_PrepareToGiveExpWithExpBar(u8);
 static void Task_SetControllerToWaitForString(u8);
 static void Task_GiveExpWithExpBar(u8);
 static void Task_UpdateLvlInHealthbox(u8);
-
-static void ReloadMoveNames(u32 battler);
 
 #define TAG_ICON_TYPES 30005
 
@@ -723,13 +720,6 @@ void HandleInputChooseMove(u32 battler)
 
         moveTarget = GetBattlerMoveTargetType(battler, moveInfo->moves[gMoveSelectionCursor[battler]]);
 
-        if (gBattleStruct->zmove.viewing)
-        {
-            gBattleStruct->zmove.viewing = FALSE;
-            if (gMovesInfo[moveInfo->moves[gMoveSelectionCursor[battler]]].category != CATEGORIA_ESTADO)
-                moveTarget = MOVE_TARGET_SELECTED;  //damaging z moves always have selected target
-        }
-
         // Status moves turn into Max Guard when Dynamaxed, targets user.
         if (GetActiveGimmick(battler) == GIMMICK_DYNAMAX || IsGimmickSelected(battler, GIMMICK_DYNAMAX))
             moveTarget = gMovesInfo[GetMaxMove(battler, moveInfo->moves[gMoveSelectionCursor[battler]])].target;
@@ -840,20 +830,13 @@ void HandleInputChooseMove(u32 battler)
     {
         PlaySE(SE_SELECT);
         gBattleStruct->gimmick.playerSelect = FALSE;
-        if (gBattleStruct->zmove.viewing)
-        {
-            ReloadMoveNames(battler);
-        }
-        else
-        {
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, 0xFFFF);
-            HideGimmickTriggerSprite();
-            PlayerBufferExecCompleted(battler);
-            LoadBattleMenuWindowGfx();
-            MoveSelectionDestroyCursor();
-        }
+        BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, 0xFFFF);
+        HideGimmickTriggerSprite();
+        PlayerBufferExecCompleted(battler);
+        LoadBattleMenuWindowGfx();
+        MoveSelectionDestroyCursor();
     }
-    else if (JOY_NEW(DPAD_LEFT) && !gBattleStruct->zmove.viewing)
+    else if (JOY_NEW(DPAD_LEFT))
     {
         if (gMoveSelectionCursor[battler] & 1)
         {
@@ -865,7 +848,7 @@ void HandleInputChooseMove(u32 battler)
             MoveSelectionDisplayMoveType(battler);
         }
     }
-    else if (JOY_NEW(DPAD_RIGHT) && !gBattleStruct->zmove.viewing)
+    else if (JOY_NEW(DPAD_RIGHT))
     {
         if (!(gMoveSelectionCursor[battler] & 1)
          && (gMoveSelectionCursor[battler] ^ 1) < gNumberOfMovesToChoose)
@@ -878,7 +861,7 @@ void HandleInputChooseMove(u32 battler)
             MoveSelectionDisplayMoveType(battler);
         }
     }
-    else if (JOY_NEW(DPAD_UP) && !gBattleStruct->zmove.viewing)
+    else if (JOY_NEW(DPAD_UP))
     {
         if (gMoveSelectionCursor[battler] & 2)
         {
@@ -890,7 +873,7 @@ void HandleInputChooseMove(u32 battler)
             MoveSelectionDisplayMoveType(battler);
         }
     }
-    else if (JOY_NEW(DPAD_DOWN) && !gBattleStruct->zmove.viewing)
+    else if (JOY_NEW(DPAD_DOWN))
     {
         if (!(gMoveSelectionCursor[battler] & 2)
          && (gMoveSelectionCursor[battler] ^ 2) < gNumberOfMovesToChoose)
@@ -903,15 +886,6 @@ void HandleInputChooseMove(u32 battler)
             MoveSelectionDisplayMoveType(battler);
         }
     }
-}
-
-static void ReloadMoveNames(u32 battler)
-{
-    MoveSelectionDestroyCursor();
-    MoveSelectionDisplayMoveNames(battler);
-    MoveSelectionCreateCursorAt(gMoveSelectionCursor[battler]);
-    MoveSelectionDisplayPpNumber(battler);
-    MoveSelectionDisplayMoveType(battler);
 }
 
 static void Intro_DelayAndEnd(u32 battler)

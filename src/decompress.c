@@ -162,7 +162,7 @@ u32 GetDecompressedDataSize(const u32 *ptr)
     return (ptr8[3] << 16) | (ptr8[2] << 8) | (ptr8[1]);
 }
 
-bool8 LoadCompressedSpriteSheetUsingHeap(const struct CompressedSpriteSheet *src)
+void LoadCompressedSpriteSheetUsingHeap(const struct CompressedSpriteSheet *src)
 {
     struct SpriteSheet dest;
     void *buffer;
@@ -176,10 +176,9 @@ bool8 LoadCompressedSpriteSheetUsingHeap(const struct CompressedSpriteSheet *src
 
     LoadSpriteSheet(&dest);
     Free(buffer);
-    return FALSE;
 }
 
-bool8 LoadCompressedSpritePaletteUsingHeap(const struct CompressedSpritePalette *src)
+void LoadCompressedSpritePaletteUsingHeap(const struct CompressedSpritePalette *src)
 {
     struct SpritePalette dest;
     void *buffer;
@@ -191,7 +190,6 @@ bool8 LoadCompressedSpritePaletteUsingHeap(const struct CompressedSpritePalette 
 
     LoadSpritePalette(&dest);
     Free(buffer);
-    return FALSE;
 }
 
 void LoadCompressedEggSpritePalette(const struct CompressedSpritePalette *src1, const struct CompressedSpritePalette *src2)
@@ -224,4 +222,29 @@ void LoadCompressedEggHatchSpritePalette(const struct CompressedSpritePalette *s
     dest2.tag = src2->tag;
 
     LoadEggSpritePalette(&dest1, &dest2);
+}
+
+void LoadCompressedSpriteSheetAndPaletteUsingHeap(const struct CompressedSpriteSheetAndPalette *src)
+{
+    struct SpriteSheet sheetDest;
+    void *sheetBuffer = AllocZeroed(src->sheetSize);
+    LZ77UnCompWram(src->sheet, sheetBuffer);
+
+    sheetDest.data = sheetBuffer;
+    sheetDest.size = src->sheetSize;
+    sheetDest.tag  = src->tag;
+
+    LoadSpriteSheet(&sheetDest);
+    Free(sheetBuffer);
+
+    struct SpritePalette palDest;
+    void *palBuffer = AllocZeroed(PLTT_SIZE_4BPP * sizeof(u32)); // CAMBIAR CUANDO PALETAS DESCOMPRIMIDAS
+
+    LZ77UnCompWram(src->palette, palBuffer);
+
+    palDest.data = palBuffer;
+    palDest.tag  = src->tag;
+
+    LoadSpritePalette(&palDest);
+    Free(palBuffer);
 }

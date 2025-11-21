@@ -4,7 +4,6 @@
 #include "battle_controllers.h"
 #include "battle_message.h"
 #include "battle_setup.h"
-#include "battle_z_move.h"
 #include "data.h"
 #include "event_data.h"
 #include "graphics.h"
@@ -686,14 +685,6 @@ static const u8 sText_CanActFaster[] = _("{B_ATK_NAME_WITH_PREFIX} can act faste
 static const u8 sText_MicleBerryActivates[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} boosted the accuracy of its next move using {B_LAST_ITEM}!");
 static const u8 sText_PkmnShookOffTheTaunt[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} shook off the taunt!");
 static const u8 sText_PkmnGotOverItsInfatuation[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} got over its infatuation!");
-static const u8 sText_ZPowerSurrounds[] = _("{B_ATK_NAME_WITH_PREFIX} surrounded itself with its Z-Power!");
-static const u8 sText_ZPowerUnleashed[] = _("{B_ATK_NAME_WITH_PREFIX} unleashes its full-force Z-Move!");
-static const u8 sText_ZMoveResetsStats[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} returned its decreased stats to normal using its Z-Power!");
-static const u8 sText_ZMoveAllStatsUp[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} boosted its stats using its Z-Power!");
-static const u8 sText_ZMoveBoostCrit[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} boosted its critical-hit ratio using its Z-Power!");
-static const u8 sText_ZMoveRestoreHp[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} restored its HP using its Z-Power!");
-static const u8 sText_ZMoveStatUp[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} boosted its stats using its Z-Power!");
-static const u8 sText_ZMoveHpSwitchInTrap[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s HP was restored by the Z-Power!");
 static const u8 sText_TerrainReturnedToNormal[] = _("The terrain returned to normal!");
 static const u8 sText_ItemCannotBeRemoved[] = _("{B_ATK_NAME_WITH_PREFIX}'s item cannot be removed!");
 static const u8 sText_StickyBarbTransfer[] = _("The {B_LAST_ITEM} attached itself to {B_ATK_NAME_WITH_PREFIX}!");
@@ -865,14 +856,6 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_ATTACKERBROKETHROUGHPARALYSIS] = sText_AttackerBrokeThroughParalysis,
     [STRINGID_ATTACKERSHOOKITSELFAWAKE] = sText_AttackerShookItselfAwake,
     [STRINGID_ATTACKEREXPELLEDTHEPOISON] = sText_AttackerExpelledThePoison,
-    [STRINGID_ZPOWERSURROUNDS] = sText_ZPowerSurrounds,
-    [STRINGID_ZMOVEUNLEASHED] = sText_ZPowerUnleashed,
-    [STRINGID_ZMOVERESETSSTATS] = sText_ZMoveResetsStats,
-    [STRINGID_ZMOVEALLSTATSUP] = sText_ZMoveAllStatsUp,
-    [STRINGID_ZMOVEZBOOSTCRIT] = sText_ZMoveBoostCrit,
-    [STRINGID_ZMOVERESTOREHP] = sText_ZMoveRestoreHp,
-    [STRINGID_ZMOVESTATUP] = sText_ZMoveStatUp,
-    [STRINGID_ZMOVEHPTRAP] = sText_ZMoveHpSwitchInTrap,
     [STRINGID_PLAYERLOSTTOENEMYTRAINER] = sText_PlayerLostToEnemyTrainer,
     [STRINGID_PLAYERPAIDPRIZEMONEY] = sText_PlayerPaidPrizeMoney,
     [STRINGID_SHELLTRAPDIDNTWORK] = sText_ShellTrapDidntWork,
@@ -1518,17 +1501,6 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
 const u16 gTrainerUsedItemStringIds[] =
 {
     STRINGID_PLAYERUSEDITEM, STRINGID_TRAINER1USEDITEM
-};
-
-const u16 gZEffectStringIds[] =
-{
-    [B_MSG_Z_RESET_STATS] = STRINGID_ZMOVERESETSSTATS,
-    [B_MSG_Z_ALL_STATS_UP]= STRINGID_ZMOVEALLSTATSUP,
-    [B_MSG_Z_BOOST_CRITS] = STRINGID_ZMOVEZBOOSTCRIT,
-    [B_MSG_Z_FOLLOW_ME]   = STRINGID_PKMNCENTERATTENTION,
-    [B_MSG_Z_RECOVER_HP]  = STRINGID_ZMOVERESTOREHP,
-    [B_MSG_Z_STAT_UP]     = STRINGID_ZMOVESTATUP,
-    [B_MSG_Z_HP_TRAP]     = STRINGID_ZMOVEHPTRAP,
 };
 
 const u16 gMentalHerbCureStringIds[] =
@@ -2689,20 +2661,10 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
                 HANDLE_NICKNAME_STRING_CASE(gBattleScripting.battler)
                 break;
             case B_TXT_CURRENT_MOVE: // current move name
-                if (gBattleMsgDataPtr->currentMove >= MOVES_COUNT
-                 && !IsZMove(gBattleMsgDataPtr->currentMove)
-                 && !IsMaxMove(gBattleMsgDataPtr->currentMove))
-                    toCpy = gTypesInfo[gBattleStruct->stringMoveType].generic;
-                else
-                    toCpy = GetMoveName(gBattleMsgDataPtr->currentMove);
+                toCpy = GetMoveName(gBattleMsgDataPtr->currentMove);
                 break;
             case B_TXT_LAST_MOVE: // originally used move name
-                if (gBattleMsgDataPtr->originallyUsedMove >= MOVES_COUNT
-                 && !IsZMove(gBattleMsgDataPtr->currentMove)
-                 && !IsMaxMove(gBattleMsgDataPtr->currentMove))
-                    toCpy = gTypesInfo[gBattleStruct->stringMoveType].generic;
-                else
-                    toCpy = GetMoveName(gBattleMsgDataPtr->originallyUsedMove);
+                toCpy = GetMoveName(gBattleMsgDataPtr->originallyUsedMove);
                 break;
             case B_TXT_LAST_ITEM: // last used item
                 CopyItemName(gLastUsedItem, text);
@@ -3065,13 +3027,7 @@ void BattlePutTextOnWindow(const u8 *text, u8 windowId)
 
     if (B_WIN_MOVE_NAME_1 <= windowId && windowId <= B_WIN_MOVE_NAME_4)
     {
-        // We cannot check the actual width of the window because
-        // B_WIN_MOVE_NAME_1 and B_WIN_MOVE_NAME_3 are 16 wide for
-        // Z-move details.
-        if (gBattleStruct->zmove.viewing && windowId == B_WIN_MOVE_NAME_1)
-            printerTemplate.fontId = GetFontIdToFit(text, printerTemplate.fontId, printerTemplate.letterSpacing, 16 * TILE_WIDTH);
-        else
-            printerTemplate.fontId = GetFontIdToFit(text, printerTemplate.fontId, printerTemplate.letterSpacing, 8 * TILE_WIDTH);
+        printerTemplate.fontId = GetFontIdToFit(text, printerTemplate.fontId, printerTemplate.letterSpacing, 8 * TILE_WIDTH);
     }
 
     if (printerTemplate.x == 0xFF)
@@ -3149,7 +3105,6 @@ struct TrainerSlide
     const u8 *msgFirstSTABMove;
     const u8 *msgPlayerMonUnaffected;
     const u8 *msgMegaEvolution;
-    const u8 *msgZMove;
     const u8 *msgBeforeFirstTurn;
     const u8 *msgDynamax;
 };
@@ -3169,7 +3124,6 @@ static const struct TrainerSlide sTrainerSlides[] =
         .msgFirstSTABMove = sText_ABoosted,
         .msgPlayerMonUnaffected = sText_ButNoEffect,
         .msgMegaEvolution = sText_PowderExplodes,
-        .msgZMove = sText_Electromagnetism,
         .msgBeforeFirstTurn = sText_GravityIntensified,
         .msgDynamax = sText_TargetWokeUp,
     },
@@ -3318,14 +3272,6 @@ u32 ShouldDoTrainerSlide(u32 battler, u32 which)
                 {
                     gBattleStruct->trainerSlideMegaEvolutionMsgDone = TRUE;
                     gBattleStruct->trainerSlideMsg = sTrainerSlides[i].msgMegaEvolution;
-                    return TRUE;
-                }
-                break;
-            case TRAINER_SLIDE_Z_MOVE:
-                if (sTrainerSlides[i].msgZMove != NULL && !gBattleStruct->trainerSlideZMoveMsgDone)
-                {
-                    gBattleStruct->trainerSlideZMoveMsgDone = TRUE;
-                    gBattleStruct->trainerSlideMsg = sTrainerSlides[i].msgZMove;
                     return TRUE;
                 }
                 break;

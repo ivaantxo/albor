@@ -1,5 +1,4 @@
 #include "global.h"
-#include "battle_z_move.h"
 #include "malloc.h"
 #include "battle.h"
 #include "battle_anim.h"
@@ -348,20 +347,6 @@ bool32 MovesWithCategoryUnusable(u32 attacker, u32 target, u32 category)
     return (usable == 0);
 }
 
-// To save computation time this function has 2 variants. One saves, sets and restores battlers, while the other doesn't.
-s32 AI_CalcDamageSaveBattlers(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectiveness, bool32 considerZPower)
-{
-    s32 simulatedDmg;
-    SaveBattlerData(battlerAtk);
-    SaveBattlerData(battlerDef);
-    SetBattlerData(battlerAtk);
-    SetBattlerData(battlerDef);
-    simulatedDmg = AI_CalcDamage(move, battlerAtk, battlerDef,  typeEffectiveness, considerZPower, AI_GetWeather(AI_DATA));
-    RestoreBattlerData(battlerAtk);
-    RestoreBattlerData(battlerDef);
-    return simulatedDmg;
-}
-
 bool32 IsDamageMoveUnusable(u32 battlerAtk, u32 battlerDef, u32 move, u32 moveType)
 {
     struct AiLogicData *aiData = AI_DATA;
@@ -437,7 +422,7 @@ bool32 IsDamageMoveUnusable(u32 battlerAtk, u32 battlerDef, u32 move, u32 moveTy
     return FALSE;
 }
 
-s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectiveness, bool32 considerZPower, u32 weather)
+s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectiveness, u32 weather)
 {
     s32 simulatedDmg;
     s32 moveType;
@@ -450,18 +435,6 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
 
     if (moveEffect == EFFECT_NATURE_POWER)
         move = GetNaturePowerMove(battlerAtk);
-
-    // Temporarily enable gimmicks for damage calcs if planned
-    if (gBattleStruct->gimmick.usableGimmick[battlerAtk] && GetActiveGimmick(battlerAtk) == GIMMICK_NONE
-        && !(gBattleStruct->gimmick.usableGimmick[battlerAtk] == GIMMICK_Z_MOVE && !considerZPower))
-    {
-        // Set Z-Move variables if needed
-        if (gBattleStruct->gimmick.usableGimmick[battlerAtk] == GIMMICK_Z_MOVE && IsViableZMove(battlerAtk, move))
-            gBattleStruct->zmove.baseMoves[battlerAtk] = move;
-
-        toggledGimmick = TRUE;
-        SetActiveGimmick(battlerAtk, gBattleStruct->gimmick.usableGimmick[battlerAtk]);
-    }
 
     switch (moveEffect)
     {
@@ -568,88 +541,85 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
             simulatedDmg = nonCritDmg;
         }
 
-        if (GetActiveGimmick(battlerAtk) != GIMMICK_Z_MOVE)
+        // Handle dynamic move damage
+        switch (moveEffect)
         {
-            // Handle dynamic move damage
-            switch (moveEffect)
+        case EFFECT_LEVEL_DAMAGE:
+            simulatedDmg = gBattleMons[battlerAtk].level * (aiData->abilities[battlerAtk] == ABILITY_PARENTAL_BOND ? 2 : 1);
+            break;
+        case EFFECT_PSYWAVE:
+            simulatedDmg = gBattleMons[battlerAtk].level * (aiData->abilities[battlerAtk] == ABILITY_PARENTAL_BOND ? 2 : 1);
+            break;
+        case EFFECT_FIXED_DAMAGE_ARG:
+            simulatedDmg = gMovesInfo[move].argument * (aiData->abilities[battlerAtk] == ABILITY_PARENTAL_BOND ? 2 : 1);
+            break;
+        case EFFECT_MULTI_HIT:
+            if (move == MOVE_WATER_SHURIKEN && gBattleMons[battlerAtk].species == SPECIES_GRENINJA)
             {
-            case EFFECT_LEVEL_DAMAGE:
-                simulatedDmg = gBattleMons[battlerAtk].level * (aiData->abilities[battlerAtk] == ABILITY_PARENTAL_BOND ? 2 : 1);
-                break;
-            case EFFECT_PSYWAVE:
-                simulatedDmg = gBattleMons[battlerAtk].level * (aiData->abilities[battlerAtk] == ABILITY_PARENTAL_BOND ? 2 : 1);
-                break;
-            case EFFECT_FIXED_DAMAGE_ARG:
-                simulatedDmg = gMovesInfo[move].argument * (aiData->abilities[battlerAtk] == ABILITY_PARENTAL_BOND ? 2 : 1);
-                break;
-            case EFFECT_MULTI_HIT:
-                if (move == MOVE_WATER_SHURIKEN && gBattleMons[battlerAtk].species == SPECIES_GRENINJA)
-                {
-                    simulatedDmg *= 3;
-                }
-                else if (aiData->abilities[battlerAtk] == ABILITY_SKILL_LINK)
-                {
-                    simulatedDmg *= 5;
-                }
-                else if (aiData->abilities[battlerAtk] == ABILITY_ENJAMBRE)
-                {
-                    simulatedDmg *= 5;
-                }
-                else if (aiData->holdEffects[battlerAtk] == HOLD_EFFECT_LOADED_DICE)
-                {
-                    simulatedDmg *= 9;
-                    simulatedDmg /= 2;
-                }
-                else
-                {
-                    simulatedDmg *= 3;
-                }
-                break;
-            case EFFECT_ENDEAVOR:
-                // If target has less HP than user, Endeavor does no damage
-                simulatedDmg = max(0, gBattleMons[battlerDef].hp - gBattleMons[battlerAtk].hp);
-                break;
-            case EFFECT_SUPER_FANG:
-                simulatedDmg = (aiData->abilities[battlerAtk] == ABILITY_PARENTAL_BOND
-                    ? max(2, gBattleMons[battlerDef].hp * 3 / 4)
-                    : max(1, gBattleMons[battlerDef].hp / 2));
-                break;
-            case EFFECT_FINAL_GAMBIT:
-                simulatedDmg = gBattleMons[battlerAtk].hp;
-                break;
-            case EFFECT_BEAT_UP:
-                if (B_BEAT_UP >= GEN_5)
-                {
-                    u32 partyCount = CalculatePartyCount(GetBattlerParty(battlerAtk));
-                    u32 i;
-                    gBattleStruct->beatUpSlot = 0;
-                    damageCalcData.isCrit = FALSE;
-                    simulatedDmg = 0;
-                    for (i = 0; i < partyCount; i++)
-                    {
-                        simulatedDmg += CalculateMoveDamage(&damageCalcData, 0);
-                    }
-                    gBattleStruct->beatUpSlot = 0;
-                }
-                break;
+                simulatedDmg *= 3;
             }
-
-            // Handle other multi-strike moves
-            if (gMovesInfo[move].strikeCount > 1 && gMovesInfo[move].effect != EFFECT_TRIPLE_KICK)
+            else if (aiData->abilities[battlerAtk] == ABILITY_SKILL_LINK)
             {
-                if (gMovesInfo[move].strikeCount == 2 && aiData->abilities[battlerAtk] == ABILITY_HAZLO_TRIPLE)
-                {
-                    simulatedDmg *= gMovesInfo[move].strikeCount + 1;
-                }
-                else
-                {
-                    simulatedDmg *= gMovesInfo[move].strikeCount;
-                }
+                simulatedDmg *= 5;
             }
-
-            if (simulatedDmg == 0)
-                simulatedDmg = 1;
+            else if (aiData->abilities[battlerAtk] == ABILITY_ENJAMBRE)
+            {
+                simulatedDmg *= 5;
+            }
+            else if (aiData->holdEffects[battlerAtk] == HOLD_EFFECT_LOADED_DICE)
+            {
+                simulatedDmg *= 9;
+                simulatedDmg /= 2;
+            }
+            else
+            {
+                simulatedDmg *= 3;
+            }
+            break;
+        case EFFECT_ENDEAVOR:
+            // If target has less HP than user, Endeavor does no damage
+            simulatedDmg = max(0, gBattleMons[battlerDef].hp - gBattleMons[battlerAtk].hp);
+            break;
+        case EFFECT_SUPER_FANG:
+            simulatedDmg = (aiData->abilities[battlerAtk] == ABILITY_PARENTAL_BOND
+                ? max(2, gBattleMons[battlerDef].hp * 3 / 4)
+                : max(1, gBattleMons[battlerDef].hp / 2));
+            break;
+        case EFFECT_FINAL_GAMBIT:
+            simulatedDmg = gBattleMons[battlerAtk].hp;
+            break;
+        case EFFECT_BEAT_UP:
+            if (B_BEAT_UP >= GEN_5)
+            {
+                u32 partyCount = CalculatePartyCount(GetBattlerParty(battlerAtk));
+                u32 i;
+                gBattleStruct->beatUpSlot = 0;
+                damageCalcData.isCrit = FALSE;
+                simulatedDmg = 0;
+                for (i = 0; i < partyCount; i++)
+                {
+                    simulatedDmg += CalculateMoveDamage(&damageCalcData, 0);
+                }
+                gBattleStruct->beatUpSlot = 0;
+            }
+            break;
         }
+
+        // Handle other multi-strike moves
+        if (gMovesInfo[move].strikeCount > 1 && gMovesInfo[move].effect != EFFECT_TRIPLE_KICK)
+        {
+            if (gMovesInfo[move].strikeCount == 2 && aiData->abilities[battlerAtk] == ABILITY_HAZLO_TRIPLE)
+            {
+                simulatedDmg *= gMovesInfo[move].strikeCount + 1;
+            }
+            else
+            {
+                simulatedDmg *= gMovesInfo[move].strikeCount;
+            }
+        }
+
+        if (simulatedDmg == 0)
+            simulatedDmg = 1;
     }
     else
     {
@@ -662,7 +632,6 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
     // Undo temporary settings
     gBattleStruct->dynamicMoveType = 0;
     gBattleStruct->swapDamageCategory = FALSE;
-    gBattleStruct->zmove.baseMoves[battlerAtk] = MOVE_NONE;
     if (toggledGimmick)
         SetActiveGimmick(battlerAtk, GIMMICK_NONE);
     AI_DATA->aiCalcInProgress = FALSE;
@@ -3364,7 +3333,7 @@ s32 AI_CalcPartyMonDamage(u32 move, u32 battlerAtk, u32 battlerDef, struct Battl
         AI_THINKING_STRUCT->saved[battlerAtk].saved = FALSE;
     }
 
-    simulatedDmg = AI_CalcDamage(move, battlerAtk, battlerDef, &effectiveness, FALSE, AI_GetWeather(AI_DATA));
+    simulatedDmg = AI_CalcDamage(move, battlerAtk, battlerDef, &effectiveness, AI_GetWeather(AI_DATA));
     // restores original gBattleMon struct
     FreeRestoreBattleMons(savedBattleMons);
 
@@ -3801,12 +3770,6 @@ bool32 AI_MoveMakesContact(u32 ability, u32 holdEffect, u32 move)
       && ability != ABILITY_NINJA
       && holdEffect != HOLD_EFFECT_PROTECTIVE_PADS)
         return TRUE;
-    return FALSE;
-}
-
-//TODO - this could use some more sophisticated logic
-bool32 ShouldUseZMove(u32 battlerAtk, u32 battlerDef, u32 chosenMove)
-{
     return FALSE;
 }
 

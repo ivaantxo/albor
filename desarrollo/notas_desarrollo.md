@@ -110,3 +110,4 @@ static void CB2_HandleStartBattle(void) es una locura sin sentido --> MULTIUSE_S
 
 //revisar animación y crear efecto de Triataque
 //unificar frozen/frostbite
+//revisar cantidad de daño, hay algo raro creo

@@ -214,7 +214,6 @@ static const u8* const sBattleAnims_General[NUM_B_ANIMS_GENERAL] =
     [B_ANIM_AQUA_RING_HEAL]         = gBattleAnimGeneral_AquaRingHeal,
     [B_ANIM_BEAK_BLAST_SETUP]       = gBattleAnimGeneral_BeakBlastSetUp,
     [B_ANIM_SHELL_TRAP_SETUP]       = gBattleAnimGeneral_ShellTrapSetUp,
-    [B_ANIM_ZMOVE_ACTIVATE]         = gBattleAnimGeneral_ZMoveActivate,
     [B_ANIM_SNOW_CONTINUES]         = gBattleAnimGeneral_Snow,
     [B_ANIM_ULTRA_BURST]            = gBattleAnimGeneral_UltraBurst,
     [B_ANIM_SALT_CURE_DAMAGE]       = gBattleAnimGeneral_SaltCureDamage,
@@ -457,10 +456,9 @@ static void Cmd_loadspritegfx(void)
 
     sBattleAnimScriptPtr++;
     index = T1_READ_16(sBattleAnimScriptPtr);
-    LoadCompressedSpriteSheetUsingHeap(&gBattleAnimPicTable[GET_TRUE_SPRITE_INDEX(index)]);
-    LoadCompressedSpritePaletteUsingHeap(&gBattleAnimPaletteTable[GET_TRUE_SPRITE_INDEX(index)]);
+    LoadCompressedSpriteSheetAndPaletteUsingHeap(&gBattleAnimTable[index]);
     sBattleAnimScriptPtr += 2;
-    AddSpriteIndex(GET_TRUE_SPRITE_INDEX(index));
+    AddSpriteIndex(index);
     sAnimFramesToWait = 1;
     gAnimScriptCallback = WaitAnimFrameCount;
 }
@@ -471,10 +469,10 @@ static void Cmd_unloadspritegfx(void)
 
     sBattleAnimScriptPtr++;
     index = T1_READ_16(sBattleAnimScriptPtr);
-    FreeSpriteTilesByTag(gBattleAnimPicTable[GET_TRUE_SPRITE_INDEX(index)].tag);
-    FreeSpritePaletteByTag(gBattleAnimPicTable[GET_TRUE_SPRITE_INDEX(index)].tag);
+    FreeSpriteTilesByTag(gBattleAnimTable[index].tag);
+    FreeSpritePaletteByTag(gBattleAnimTable[index].tag);
     sBattleAnimScriptPtr += 2;
-    ClearSpriteIndex(GET_TRUE_SPRITE_INDEX(index));
+    ClearSpriteIndex(index);
 }
 
 static u8 GetBattleAnimMoveTargets(u8 battlerArgIndex, u8 *targets)
@@ -811,8 +809,8 @@ static void Cmd_end(void)
     {
         if (sAnimSpriteIndexArray[i] != 0xFFFF)
         {
-            FreeSpriteTilesByTag(gBattleAnimPicTable[sAnimSpriteIndexArray[i]].tag);
-            FreeSpritePaletteByTag(gBattleAnimPicTable[sAnimSpriteIndexArray[i]].tag);
+            FreeSpriteTilesByTag(gBattleAnimTable[sAnimSpriteIndexArray[i]].tag);
+            FreeSpritePaletteByTag(gBattleAnimTable[sAnimSpriteIndexArray[i]].tag);
             sAnimSpriteIndexArray[i] = 0xFFFF; // set terminator.
         }
     }

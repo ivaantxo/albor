@@ -8,7 +8,6 @@
 #include "battle_message.h"
 #include "battle_interface.h"
 #include "battle_setup.h"
-#include "battle_z_move.h"
 #include "bg.h"
 #include "data.h"
 #include "item.h"

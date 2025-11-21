@@ -782,8 +782,8 @@ const struct SpriteTemplate gBellSpriteTemplate =
 static const u16 sMusicNotePaletteTagsTable[NUM_MUSIC_NOTE_PAL_TAGS] =
 {
     ANIM_TAG_MUSIC_NOTES_2,
-    ANIM_SPRITES_START - 1,
-    ANIM_SPRITES_START - 2,
+    TAG_MUSIC_NOTES_TEMP_BASE,
+    TAG_MUSIC_NOTES_TEMP_BASE + 1,
 };
 
 const struct SpriteTemplate gHealBellMusicNoteSpriteTemplate =
@@ -2840,16 +2840,18 @@ static void AnimSpeedDust(struct Sprite *sprite)
 void AnimTask_LoadMusicNotesPals(u8 taskId)
 {
     u32 i;
-    u8 paletteNums[NUM_MUSIC_NOTE_PAL_TAGS];
+    u32 paletteNums[NUM_MUSIC_NOTE_PAL_TAGS];
 
     paletteNums[0] = IndexOfSpritePaletteTag(ANIM_TAG_MUSIC_NOTES_2);
+
     for (i = 1; i < NUM_MUSIC_NOTE_PAL_TAGS; i++)
-        paletteNums[i] = AllocSpritePalette(ANIM_SPRITES_START - i);
+        paletteNums[i] = AllocSpritePalette(TAG_MUSIC_NOTES_TEMP_BASE + (i - 1));
 
     gMonSpritesGfxPtr->buffer = AllocZeroed(MON_PIC_SIZE * MAX_MON_PIC_FRAMES);
     LZDecompressWram(gBattleAnimSpritePal_MusicNotes2, gMonSpritesGfxPtr->buffer);
+
     for (i = 0; i < NUM_MUSIC_NOTE_PAL_TAGS; i++)
-        LoadPalette(&gMonSpritesGfxPtr->buffer[i * 32], (u16)(OBJ_PLTT_ID(paletteNums[i])), PLTT_SIZE_4BPP);
+        LoadPalette(&gMonSpritesGfxPtr->buffer[i * 32], OBJ_PLTT_ID(paletteNums[i]), PLTT_SIZE_4BPP);
 
     FREE_AND_SET_NULL(gMonSpritesGfxPtr->buffer);
     DestroyAnimVisualTask(taskId);

@@ -140,7 +140,7 @@ static bool32 ShouldSwitchIfHasBadOdds(u32 battler)
         playerMove = gBattleMons[opposingBattler].moves[i];
         if (playerMove != MOVE_NONE && !IS_MOVE_STATUS(playerMove))
         {
-            damageTaken = AI_CalcDamage(playerMove, opposingBattler, battler, &effectiveness, FALSE, weather);
+            damageTaken = AI_CalcDamage(playerMove, opposingBattler, battler, &effectiveness, weather);
             if (damageTaken > maxDamageTaken)
                 maxDamageTaken = damageTaken;
         }
