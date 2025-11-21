@@ -111,9 +111,7 @@ struct FollowerMessagePool
 struct TypeInfo
 {
     u8 name[TYPE_NAME_LENGTH + 1];
-    u8 generic[21];
     u8 palette;
-    u16 zMove;
     u16 maxMove;
     u16 damageCategory:2;    // Used for B_PHYSICAL_SPECIAL_SPLIT <= GEN_3
     u16 useSecondTypeIconPalette:1;
@@ -125,7 +123,6 @@ struct TypeInfo
     //u16 gem;
     //u16 plate;
     //u16 memory;
-    //u16 zCrystal;
     //u16 teraShard;
     //u16 arceusForm;
 };

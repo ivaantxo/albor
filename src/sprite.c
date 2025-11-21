@@ -85,7 +85,7 @@ static void ApplyAffineAnimFrameRelativeAndUpdateMatrix(u8 matrixNum, struct Aff
 static s16 ConvertScaleParam(s16 scale);
 static void GetAffineAnimFrame(u8 matrixNum, struct Sprite *sprite, struct AffineAnimFrameCmd *frameCmd);
 static void ApplyAffineAnimFrame(u8 matrixNum, struct AffineAnimFrameCmd *frameCmd);
-static u8 IndexOfSpriteTileTag(u16 tag);
+static u32 IndexOfSpriteTileTag(u16 tag);
 static void AllocSpriteTileRange(u16 tag, u16 start, u16 count);
 static void DoLoadSpritePalette(const u16 *src, u16 paletteOffset);
 static void UpdateSpriteMatrixAnchorPos(struct Sprite *, s32, s32);
@@ -1467,7 +1467,7 @@ void LoadSpriteSheets(const struct SpriteSheet *sheets)
 
 void FreeSpriteTilesByTag(u16 tag)
 {
-    u8 index = IndexOfSpriteTileTag(tag);
+    u32 index = IndexOfSpriteTileTag(tag);
     if (index != 0xFF)
     {
         u32 i;
@@ -1498,7 +1498,7 @@ void FreeSpriteTileRanges(void)
     }
 }
 
-u8 GetSpriteIndexByTileTag(u16 tag)
+u32 GetSpriteIndexByTileTag(u16 tag)
 {
     u32 i;
     
@@ -1511,13 +1511,13 @@ u8 GetSpriteIndexByTileTag(u16 tag)
 
 u16 GetSpriteTileStartByTag(u16 tag)
 {
-    u8 index = IndexOfSpriteTileTag(tag);
+    u32 index = IndexOfSpriteTileTag(tag);
     if (index == 0xFF)
         return 0xFFFF;
     return sSpriteTileRanges[index * 2];
 }
 
-u8 IndexOfSpriteTileTag(u16 tag)
+u32 IndexOfSpriteTileTag(u16 tag)
 {
     u32 i;
 
@@ -1543,7 +1543,7 @@ u16 GetSpriteTileTagByTileStart(u16 start)
 
 void AllocSpriteTileRange(u16 tag, u16 start, u16 count)
 {
-    u8 freeIndex = IndexOfSpriteTileTag(TAG_NONE);
+    u32 freeIndex = IndexOfSpriteTileTag(TAG_NONE);
     sSpriteTileRangeTags[freeIndex] = tag;
     SET_SPRITE_TILE_RANGE(freeIndex, start, count);
 }

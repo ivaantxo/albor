@@ -15,14 +15,6 @@ const struct GimmickInfo gGimmicksInfo[GIMMICKS_COUNT] =
         .CanActivate = CanMegaEvolve,
         .ActivateGimmick = ActivateMegaEvolution,
     },
-    [GIMMICK_Z_MOVE] =
-    {
-        .triggerSheet = &sSpriteSheet_ZMoveTrigger,
-        .triggerPal = &sSpritePalette_ZMoveTrigger,
-        .triggerTemplate = &sSpriteTemplate_GimmickTrigger,
-        .CanActivate = CanUseZMove,
-        .ActivateGimmick = ActivateZMove,
-    },
     [GIMMICK_ULTRA_BURST] =
     {
         .triggerSheet = &sSpriteSheet_BurstTrigger,

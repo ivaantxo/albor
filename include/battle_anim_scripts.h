@@ -982,7 +982,6 @@ extern const u8 gBattleAnimGeneral_PrimalReversion[];
 extern const u8 gBattleAnimGeneral_AquaRingHeal[];
 extern const u8 gBattleAnimGeneral_BeakBlastSetUp[];
 extern const u8 gBattleAnimGeneral_ShellTrapSetUp[];
-extern const u8 gBattleAnimGeneral_ZMoveActivate[];
 extern const u8 gBattleAnimGeneral_Snow[];
 extern const u8 gBattleAnimGeneral_UltraBurst[];
 extern const u8 gBattleAnimGeneral_SaltCureDamage[];

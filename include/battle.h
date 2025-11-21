@@ -464,15 +464,6 @@ struct Illusion
     struct Pokemon *mon;
 };
 
-struct ZMoveData
-{
-    u8 viable:1;   // current move can become a z move
-    u8 viewing:1;  // if player is viewing the z move name instead of regular moves
-    u8 healReplacement:6;
-    u8 possibleZMoves[MAX_BATTLERS_COUNT];
-    u16 baseMoves[MAX_BATTLERS_COUNT];
-};
-
 struct DynamaxData
 {
     u8 dynamaxTurns[MAX_BATTLERS_COUNT];
@@ -594,7 +585,6 @@ struct BattleStruct
     bool8 ateBoost[MAX_BATTLERS_COUNT];
     u8 activeAbilityPopUps; // as bits for each battler
     u8 abilityPopUpSpriteIds[MAX_BATTLERS_COUNT][2];    // two per battler
-    struct ZMoveData zmove;
     struct DynamaxData dynamax;
     struct BattleGimmickData gimmick;
     const u8 *trainerSlideMsg;
@@ -649,7 +639,6 @@ struct BattleStruct
     u8 trainerSlidePlayerMonUnaffectedMsgState:2;
     u8 trainerSlideHalfHpMsgDone:1;
     u8 trainerSlideMegaEvolutionMsgDone:1;
-    u8 trainerSlideZMoveMsgDone:1;
     u8 trainerSlideBeforeFirstTurnMsgDone:1;
     u8 trainerSlideDynamaxMsgDone:1;
     u8 trainerSlideLowHpMsgDone:1;

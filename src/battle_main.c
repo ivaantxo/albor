@@ -790,8 +790,8 @@ static void SpriteCB_VsLetter(struct Sprite *sprite)
 
     if (sprite->affineAnimEnded)
     {
-        FreeSpriteTilesByTag(ANIM_SPRITES_START);
-        FreeSpritePaletteByTag(ANIM_SPRITES_START);
+        FreeSpriteTilesByTag(TAG_VS_LETTER);
+        FreeSpritePaletteByTag(TAG_VS_LETTER);
         FreeSpriteOamMatrix(sprite);
         DestroySprite(sprite);
     }
@@ -2213,7 +2213,6 @@ static void HandleTurnActionSelectionState(void)
                     {
                         struct ChooseMoveStruct moveInfo;
 
-                        moveInfo.zmove = gBattleStruct->zmove;
                         moveInfo.species = gBattleMons[battler].species;
                         moveInfo.monTypes[0] = gBattleMons[battler].types[0];
                         moveInfo.monTypes[1] = gBattleMons[battler].types[1];

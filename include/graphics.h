@@ -1501,8 +1501,6 @@ extern const u32 gItemIconPalette_ReinsOfUnity[];
 // Battle Mechanic Key Items
 extern const u32 gItemIcon_MegaRing[];
 extern const u32 gItemIconPalette_MegaRing[];
-extern const u32 gItemIcon_ZPowerRing[];
-extern const u32 gItemIconPalette_ZPowerRing[];
 extern const u32 gItemIcon_DynamaxBand[];
 extern const u32 gItemIconPalette_DynamaxBand[];
 // Misc. Key Items
@@ -2834,8 +2832,6 @@ extern const u32 gBattleAnimSpriteGfx_NewHandsAndFeet[];
 extern const u32 gBattleAnimSpritePal_NewHandsAndFeet[];
 extern const u32 gBattleAnimSpriteGfx_Tornado[];
 extern const u32 gBattleAnimSpritePal_Tornado[];
-extern const u32 gBattleAnimSpriteGfx_ZMoveSymbol[];
-extern const u32 gBattleAnimSpritePal_ZMoveSymbol[];
 extern const u32 gBattleAnimSpriteGfx_Teapot[];
 extern const u32 gBattleAnimSpritePal_Teapot[];
 extern const u32 gBattleAnimSpriteGfx_WoodHammerHammer[];
@@ -3010,12 +3006,6 @@ extern const u32 gBattleAnimBgImage_Waterfall[];
 extern const u32 gBattleAnimBgPalette_Waterfall[];
 extern const u32 gBattleAnimBgTilemap_Waterfall[];
 extern const u32 gBattleAnimBgPalette_WonderRoom[];
-extern const u32 gBattleAnimBgImage_ZMoveActivate[];
-extern const u32 gBattleAnimBgPalette_ZMoveActivate[];
-extern const u32 gBattleAnimBgTilemap_ZMoveActivate[];
-extern const u32 gBattleAnimBgImage_ZMoveMountain[];
-extern const u32 gBattleAnimBgPalette_ZMoveMountain[];
-extern const u32 gBattleAnimBgTilemap_ZMoveMountain[];
 extern const u32 gBattleAnimSpritePal_SteelBeam[];
 extern const u32 gBattleAnimBgPalette_SteelBeam[];
 

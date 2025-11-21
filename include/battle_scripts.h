@@ -79,7 +79,6 @@ extern const u8 BattleScript_DmgHazardsOnBattlerScripting[];
 extern const u8 BattleScript_DmgHazardsOnFaintedBattler[];
 extern const u8 BattleScript_PerishSongTakesLife[];
 extern const u8 BattleScript_PerishSongCountGoesDown[];
-extern const u8 BattleScript_AllStatsUpZMove[];
 extern const u8 BattleScript_AllStatsUp[];
 extern const u8 BattleScript_RapidSpinAway[];
 extern const u8 BattleScript_WrapFree[];
@@ -314,7 +313,6 @@ extern const u8 BattleScript_ProteanActivates[];
 extern const u8 BattleScript_HabilidadProtegeEquipoDePrioridad[];
 extern const u8 BattleScript_MoveUsedPsychicTerrainPrevents[];
 extern const u8 BattleScript_MoveUsedPowder[];
-extern const u8 BattleScript_ZMoveActivatePowder[];
 extern const u8 BattleScript_SelectingNotAllowedStuffCheeks[];
 extern const u8 BattleScript_SelectingNotAllowedBelch[];
 extern const u8 BattleScript_PsychicSurgeActivates[];
@@ -491,15 +489,6 @@ extern const u8 BattleScript_Terastallization[];
 extern const u8 BattleScript_BoosterEnergyEnd2[];
 extern const u8 BattleScript_TeraShellDistortingTypeMatchups[];
 extern const u8 BattleScript_TeraFormChange[];
-
-// zmoves
-extern const u8 BattleScript_ZMoveActivateDamaging[];
-extern const u8 BattleScript_ZMoveActivateStatus[];
-extern const u8 BattleScript_ZEffectPrintString[];
-extern const u8 BattleScript_RecoverHPZMove[];
-extern const u8 BattleScript_StatUpZMove[];
-extern const u8 BattleScript_HealReplacementZMove[];
-extern const u8 BattleScript_EffectExtremeEvoboost[];
 
 // max moves
 extern const u8 BattleScript_EffectRaiseStatAllies[];
@@ -793,7 +782,6 @@ extern const u8 BattleScript_EffectOctolock[];
 extern const u8 BattleScript_EffectSkyDrop[];
 extern const u8 BattleScript_EffectMeteorBeam[];
 extern const u8 BattleScript_EffectCourtChange[];
-extern const u8 BattleScript_EffectExtremeEvoboost[];
 extern const u8 BattleScript_EffectDarkVoid[];
 extern const u8 BattleScript_EffectVictoryDance[];
 extern const u8 BattleScript_EffectTeatime[];

@@ -46,6 +46,14 @@ struct CompressedSpritePalette
     u16 tag;
 };
 
+struct CompressedSpriteSheetAndPalette
+{
+    const u32 *sheet;   // LZ77 compressed pixel data
+    const u32 *palette; // LZ77 compressed palette data
+    u16 sheetSize;      // Uncompressed size of pixel data
+    u16 tag;
+};
+
 struct AnimFrameCmd
 {
     // If the sprite has an array of images, this is the array index.
@@ -319,7 +327,7 @@ void ClearSpriteCopyRequests(void);
 void ResetAffineAnimData(void);
 u32 GetSpanPerImage(u32 shape, u32 size);
 u32 LoadUniqueSpritePalette(const struct SpritePalette *palette, u32 personality);
-u8 GetSpriteIndexByTileTag(u16 tag);
+u32 GetSpriteIndexByTileTag(u16 tag);
 void RequestSpriteFrameImageCopy(u16 index, u16 tileNum, const struct SpriteFrameImage *images);
 void SetSpriteOamFlipBits(struct Sprite *sprite, u8 hFlip, u8 vFlip);
 
