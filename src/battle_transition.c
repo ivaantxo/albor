@@ -2042,7 +2042,7 @@ static bool8 Mugshot_SetGfx(struct Task *task)
     s16 i, j;
     u16 *tilemap, *tileset;
     const u16 *mugshotsMap = sMugshotsTilemap;
-    u8 mugshotColor = GetTrainerMugshotColorFromId(gTrainerBattleOpponent_A);
+    u8 mugshotColor = GetTrainerMugshotColorFromId(gTrainerBattleOpponent);
 
     GetBg0TilesDst(&tilemap, &tileset);
     CpuSet(sEliteFour_Tileset, tileset, 0xF0);
@@ -2301,7 +2301,7 @@ static void Mugshots_CreateTrainerPics(struct Task *task)
 {
     struct Sprite *opponentSprite, *playerSprite;
 
-    u8 trainerPicId = GetTrainerPicFromId(gTrainerBattleOpponent_A);
+    u8 trainerPicId = GetTrainerPicFromId(gTrainerBattleOpponent);
     s16 opponentRotationScales = 0;
 
     gReservedSpritePaletteCount = 10;

@@ -385,7 +385,7 @@ static void OpponentHandleSwitchInAnim(u32 battler)
 
 static u32 OpponentGetTrainerPicId(u32 battlerId)
 {
-    u32 trainerPicId = GetTrainerPicFromId(gTrainerBattleOpponent_A);
+    u32 trainerPicId = GetTrainerPicFromId(gTrainerBattleOpponent);
     return trainerPicId;
 }
 

@@ -149,7 +149,7 @@ void FieldGetPlayerInput(struct FieldInput *input, u16 newKeys, u16 heldKeys)
     }
 }
 
-int ProcessPlayerFieldInput(struct FieldInput *input)
+bool32 ProcessPlayerFieldInput(struct FieldInput *input)
 {
     struct MapPosition position;
     u8 playerDirection;
@@ -163,7 +163,7 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
     GetPlayerPosition(&position);
     metatileBehavior = MapGridGetMetatileBehaviorAt(position.x, position.y);
 
-    if (CheckForTrainersWantingBattle() == TRUE)
+    if (ChequeaSiEntrenadorQuiereLuchar() == TRUE)
         return TRUE;
 
     if (TryRunOnFrameMapScript() == TRUE)

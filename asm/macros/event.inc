@@ -681,10 +681,7 @@
 		.4byte \pointer2 @ text
 		.4byte \pointer3 @ text
 		.4byte \pointer4 @ event script
-	.elseif \type == TRAINER_BATTLE_SET_TRAINER_A
-		.4byte \pointer1 @ text
-		.4byte \pointer2 @ text
-	.elseif \type == TRAINER_BATTLE_SET_TRAINER_B
+	.elseif \type == TRAINER_BATTLE_SET_TRAINER
 		.4byte \pointer1 @ text
 		.4byte \pointer2 @ text
 	.endif
@@ -729,17 +726,6 @@
 	@ Starts a trainer battle, skipping intro text. Takes a trainer and loss text
 	.macro trainerbattle_no_intro trainer:req, lose_text:req
 	trainerbattle TRAINER_BATTLE_SINGLE_NO_INTRO_TEXT, \trainer, 0, \lose_text
-	.endm
-
-	@ Starts a double battle with the player against two trainers
-	@ Takes two trainers and defeat text for each
-	.macro trainerbattle_two_trainers trainer_a:req, lose_text_a:req, trainer_b:req, lose_text_b:req
-	.byte SCR_CMD_trainerbattle_two_trainers
-	.byte TRAINER_BATTLE_TWO_TRAINERS_NO_INTRO
-	.2byte \trainer_a
-	.4byte \lose_text_a
-	.2byte \trainer_b
-	.4byte \lose_text_b
 	.endm
 
 	@ Starts a trainer battle using the battle information stored in RAM (usually by the scripts in trainer_battle.inc, which

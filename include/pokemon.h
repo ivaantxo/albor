@@ -494,7 +494,6 @@ u32 CopyMonToPC(struct Pokemon *mon);
 u8 CalculatePlayerPartyCount(void);
 u8 CalculateEnemyPartyCount(void);
 u8 GetMonsStateToDoubles(void);
-u8 GetMonsStateToDoubles_2(void);
 u16 GetAbilityBySpecies(u16 species, u8 abilityNum);
 u16 GetMonAbility(struct Pokemon *mon);
 bool8 IsPlayerPartyAndPokemonStorageFull(void);

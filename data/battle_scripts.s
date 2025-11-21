@@ -5419,7 +5419,7 @@ BattleScript_LocalTrainerBattleWon::
 BattleScript_LocalBattleWonLoseTexts::
 	trainerslidein BS_OPPONENT1
 	waitstate
-	printstring STRINGID_TRAINER1LOSETEXT
+	printstring STRINGID_TRAINERLOSETEXT
 	goto BattleScript_LocalBattleWonReward
 BattleScript_LocalBattleWonReward::
 	getmoneyreward
@@ -5464,7 +5464,7 @@ BattleScript_LocalBattleLostPrintTrainersWinText::
 	waitstate
 	trainerslidein BS_OPPONENT1
 	waitstate
-	printstring STRINGID_TRAINER1WINTEXT
+	printstring STRINGID_TRAINERWINTEXT
 	goto BattleScript_LocalBattleLostEnd_
 BattleScript_LocalBattleLostEnd_::
 	end2

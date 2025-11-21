@@ -9,7 +9,6 @@
 #include "scanline_effect.h"
 #include "task.h"
 #include "trig.h"
-#include "constants/battle_partner.h"
 #include "constants/trainers.h"
 
 static void BattleIntroSlide1(u8);

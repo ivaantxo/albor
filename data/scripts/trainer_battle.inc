@@ -111,7 +111,6 @@ EventScript_ShowTrainerIntroMsg::
 	special ShowTrainerIntroSpeech
 	waitmessage
 	waitbuttonpress
-	special TryPrepareSecondApproachingTrainer
 	goto_if_eq VAR_RESULT, TRUE, EventScript_TrainerApproach
 	goto EventScript_DoTrainerBattle
 

@@ -35,11 +35,11 @@
 #define B_TXT_DEF_ABILITY 0x19
 #define B_TXT_SCR_ACTIVE_ABILITY 0x1A
 #define B_TXT_EFF_ABILITY 0x1B
-#define B_TXT_TRAINER1_CLASS 0x1C
-#define B_TXT_TRAINER1_NAME 0x1D
+#define B_TXT_TRAINER_CLASS 0x1C
+#define B_TXT_TRAINER_NAME 0x1D
 #define B_TXT_PLAYER_NAME 0x23
-#define B_TXT_TRAINER1_LOSE_TEXT 0x24
-#define B_TXT_TRAINER1_WIN_TEXT 0x25
+#define B_TXT_TRAINER_LOSE_TEXT 0x24
+#define B_TXT_TRAINER_WIN_TEXT 0x25
 #define B_TXT_PC_CREATOR_NAME 0x27
 #define B_TXT_ATK_PREFIX1 0x28
 #define B_TXT_DEF_PREFIX1 0x29
@@ -47,10 +47,6 @@
 #define B_TXT_DEF_PREFIX2 0x2B
 #define B_TXT_ATK_PREFIX3 0x2C
 #define B_TXT_DEF_PREFIX3 0x2D
-#define B_TXT_TRAINER2_CLASS 0x2E
-#define B_TXT_TRAINER2_NAME 0x2F
-#define B_TXT_TRAINER2_LOSE_TEXT 0x30
-#define B_TXT_TRAINER2_WIN_TEXT 0x31
 #define B_TXT_PARTNER_CLASS 0x32
 #define B_TXT_PARTNER_NAME 0x33
 #define B_TXT_BUFF3 0x34
@@ -244,7 +240,7 @@ u32 BattleStringExpandPlaceholdersToDisplayedString(const u8 *src);
 u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize);
 void BattlePutTextOnWindow(const u8 *text, u8 windowId);
 u8 GetCurrentPpToMaxPpState(u8 currentPp, u8 maxPp);
-u32 ShouldDoTrainerSlide(u32 battler, u32 which); // return 1 for TrainerA, 2 forTrainerB
+bool32 ShouldDoTrainerSlide(u32 battler, u32 which);
 void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst);
 
 extern struct BattleMsgData *gBattleMsgDataPtr;

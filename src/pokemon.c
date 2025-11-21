@@ -38,7 +38,6 @@
 #include "constants/abilities.h"
 #include "constants/battle_move_effects.h"
 #include "constants/battle_script_commands.h"
-#include "constants/battle_partner.h"
 #include "constants/cries.h"
 #include "constants/event_objects.h"
 #include "constants/form_change_types.h"
@@ -1552,29 +1551,6 @@ u8 GetMonsStateToDoubles(void)
 {
     s32 aliveCount = 0;
     s32 i;
-    CalculatePlayerPartyCount();
-
-    if (OW_DOUBLE_APPROACH_WITH_ONE_MON)
-        return PLAYER_HAS_TWO_USABLE_MONS;
-
-    if (gPlayerPartyCount == 1)
-        return gPlayerPartyCount; // PLAYER_HAS_ONE_MON
-
-    for (i = 0; i < gPlayerPartyCount; i++)
-    {
-        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG, NULL) != SPECIES_EGG
-         && GetMonData(&gPlayerParty[i], MON_DATA_HP, NULL) != 0
-         && GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG, NULL) != SPECIES_NONE)
-            aliveCount++;
-    }
-
-    return (aliveCount > 1) ? PLAYER_HAS_TWO_USABLE_MONS : PLAYER_HAS_ONE_USABLE_MON;
-}
-
-u8 GetMonsStateToDoubles_2(void)
-{
-    s32 aliveCount = 0;
-    s32 i;
 
     if (OW_DOUBLE_APPROACH_WITH_ONE_MON)
         return PLAYER_HAS_TWO_USABLE_MONS;
@@ -2701,7 +2677,7 @@ void AdjustFriendship(struct Pokemon *mon, u8 event)
     {
         u8 friendshipLevel = 0;
         s16 friendship = GetMonData(mon, MON_DATA_FRIENDSHIP, 0);
-        u32 opponentTrainerClass = GetTrainerClassFromId(gTrainerBattleOpponent_A);
+        u32 opponentTrainerClass = GetTrainerClassFromId(gTrainerBattleOpponent);
 
         if (friendship > 99)
             friendshipLevel++;
@@ -3210,7 +3186,7 @@ u16 GetBattleBGM(void)
     }
     else if (EsContraEntrenador())
     {
-        u8 trainerClass = GetTrainerClassFromId(gTrainerBattleOpponent_A);
+        u8 trainerClass = GetTrainerClassFromId(gTrainerBattleOpponent);
 
         switch (trainerClass)
         {
@@ -3227,7 +3203,7 @@ u16 GetBattleBGM(void)
         case TRAINER_CLASS_CHAMPION:
             return MUS_VS_CHAMPION;
         case TRAINER_CLASS_RIVAL:
-            if (!StringCompare(GetTrainerNameFromId(gTrainerBattleOpponent_A), gText_BattleWallyName))
+            if (!StringCompare(GetTrainerNameFromId(gTrainerBattleOpponent), gText_BattleWallyName))
                 return MUS_VS_TRAINER;
             return MUS_VS_RIVAL;
         case TRAINER_CLASS_ELITE_FOUR:

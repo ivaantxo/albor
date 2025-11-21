@@ -386,7 +386,7 @@ void ClearRematchMovementByTrainerId(void)
     struct ObjectEventTemplate *objectEventTemplates = gSaveBlockPtr->objectEventTemplates;
     struct ObjectEvent *objectEvent;
 
-    int vsSeekerDataIdx = TrainerIdToRematchTableId(gRematchTable, gTrainerBattleOpponent_A);
+    int vsSeekerDataIdx = TrainerIdToRematchTableId(gRematchTable, gTrainerBattleOpponent);
 
     if (!I_VS_SEEKER_CHARGING) return;
 

@@ -65,7 +65,7 @@ gSpecialVars::
 	.4byte gSpecialVar_ContestCategory
 	.4byte gSpecialVar_MonBoxId
 	.4byte gSpecialVar_MonBoxPos
-	.4byte gTrainerBattleOpponent_A
+	.4byte gTrainerBattleOpponent
 
 	.include "data/specials.inc"
 

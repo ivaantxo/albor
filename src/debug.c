@@ -1290,11 +1290,6 @@ static u8 Debug_CheckToggleFlags(u8 id)
             result = FlagGet(OW_FLAG_NO_ENCOUNTER);
             break;
     #endif
-    #if OW_FLAG_NO_TRAINER_SEE != 0
-        case DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_TRAINER_SEE:
-            result = FlagGet(OW_FLAG_NO_TRAINER_SEE);
-            break;
-    #endif
     #if B_FLAG_NO_BAG_USE != 0
         case DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_BAG_USE:
             result = FlagGet(B_FLAG_NO_BAG_USE);
@@ -2789,15 +2784,7 @@ static void DebugAction_FlagsVars_EncounterOnOff(u8 taskId)
 
 static void DebugAction_FlagsVars_TrainerSeeOnOff(u8 taskId)
 {
-#if OW_FLAG_NO_TRAINER_SEE == 0
     Debug_DestroyMenu_Full_Script(taskId, Debug_FlagsNotSetOverworldConfigMessage);
-#else
-    if (FlagGet(OW_FLAG_NO_TRAINER_SEE))
-        PlaySE(SE_PC_OFF);
-    else
-        PlaySE(SE_PC_LOGIN);
-    FlagToggle(OW_FLAG_NO_TRAINER_SEE);
-#endif
 }
 
 static void DebugAction_FlagsVars_BagUseOnOff(u8 taskId)

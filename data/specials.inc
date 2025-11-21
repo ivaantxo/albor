@@ -218,7 +218,6 @@ gSpecials::
 	def_special CheckInteractedWithFriendsFurnitureMiddle
 	def_special CheckInteractedWithFriendsFurnitureTop
 	def_special CheckInteractedWithFriendsPosterDecor
-	def_special ShouldTryGetTrainerScript
 	def_special ShowMapNamePopup
 	def_special ShowMapNamePopup
 	def_special DoMirageTowerCeilingCrumble
@@ -259,7 +258,6 @@ gSpecials::
 	def_special ResetHealLocationFromDewford
 	def_special IsLastMonThatKnowsSurf
 	def_special CountPartyAliveNonEggMons
-	def_special TryPrepareSecondApproachingTrainer
 	def_special GetNumberSprayStrength
 	def_special GetSprayId
 	def_special GetLastUsedSprayType

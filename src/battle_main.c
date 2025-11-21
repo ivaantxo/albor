@@ -51,7 +51,6 @@
 #include "constants/battle_ai.h"
 #include "constants/battle_move_effects.h"
 #include "constants/battle_string_ids.h"
-#include "constants/battle_partner.h"
 #include "constants/hold_effects.h"
 #include "constants/items.h"
 #include "constants/moves.h"
@@ -441,7 +440,7 @@ static void CB2_InitBattleInternal(void)
 
     if (!DEBUG_OVERWORLD_MENU || (DEBUG_OVERWORLD_MENU && !gIsDebugBattle))
     {
-        CreateNPCTrainerParty(&gEnemyParty[0], gTrainerBattleOpponent_A, TRUE);
+        CreateNPCTrainerParty(&gEnemyParty[0], gTrainerBattleOpponent, TRUE);
         SetWildMonHeldItem();
         CalculateEnemyPartyCount();
     }
@@ -752,13 +751,6 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
     u8 retVal;
     retVal = CreateNPCTrainerPartyFromTrainer(party, GetTrainerStructFromId(trainerNum), firstTrainer, gBattleTypeFlags);
     return retVal;
-}
-
-void CreateTrainerPartyForPlayer(void)
-{
-    ZeroPlayerPartyMons();
-    gPartnerTrainerId = gSpecialVar_0x8004;
-    CreateNPCTrainerPartyFromTrainer(gPlayerParty, GetTrainerStructFromId(gSpecialVar_0x8004), TRUE, TIPO_BATALLA_ENTRENADOR);
 }
 
 void VBlankCB_Battle(void)
@@ -1739,18 +1731,11 @@ static void DoBattleIntro(void)
         if (!gBattleControllerExecFlags)
             gBattleStruct->estadoIntro++;
         break;
-    case BATTLE_INTRO_STATE_TRAINER_1_SEND_OUT_ANIM:
+    case BATTLE_INTRO_STATE_TRAINER_SEND_OUT_ANIM:
         battler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
         BtlController_EmitIntroTrainerBallThrow(battler, BUFFER_A);
         MarkBattlerForControllerExec(battler);
         gBattleStruct->estadoIntro++;
-        break;
-    case BATTLE_INTRO_STATE_TRAINER_2_SEND_OUT_ANIM:
-        gBattleStruct->estadoIntro = BATTLE_INTRO_STATE_WAIT_FOR_WILD_BATTLE_TEXT; // Print at the same time as trainer sends out second mon.
-        break;
-    case BATTLE_INTRO_STATE_WAIT_FOR_TRAINER_2_SEND_OUT_ANIM:
-        if (!gBattleControllerExecFlags)
-            gBattleStruct->estadoIntro++;
         break;
     case BATTLE_INTRO_STATE_WAIT_FOR_WILD_BATTLE_TEXT:
         if (!IsBattlerMarkedForControllerExec(GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)))
@@ -3106,7 +3091,7 @@ static void HandleEndTurn_BattleWon(void)
         BattleStopLowHpSound();
         gBattlescriptCurrInstr = BattleScript_LocalTrainerBattleWon;
 
-        switch (GetTrainerClassFromId(gTrainerBattleOpponent_A))
+        switch (GetTrainerClassFromId(gTrainerBattleOpponent))
         {
         case TRAINER_CLASS_ELITE_FOUR:
         case TRAINER_CLASS_CHAMPION:

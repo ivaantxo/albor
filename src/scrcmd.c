@@ -1723,7 +1723,7 @@ bool8 ScrCmd_gotopostbattlescript(struct ScriptContext *ctx)
 
 bool8 ScrCmd_gotobeatenscript(struct ScriptContext *ctx)
 {
-    ctx->scriptPtr = BattleSetup_GetTrainerPostBattleScript();
+    ctx->scriptPtr = gApproachingTrainer.trainerScriptPtr;
     return FALSE;
 }
 
@@ -2071,7 +2071,7 @@ bool8 ScrCmd_freerotatingtilepuzzle(struct ScriptContext *ctx)
 
 bool8 ScrCmd_selectapproachingtrainer(struct ScriptContext *ctx)
 {
-    gSelectedObjectEvent = GetCurrentApproachingTrainerObjectEventId();
+    gSelectedObjectEvent = gApproachingTrainer.objectEventId;
     return FALSE;
 }
 

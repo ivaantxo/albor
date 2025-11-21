@@ -1,7 +1,6 @@
 #ifndef GUARD_CONSTANTS_OPPONENTS_H
 #define GUARD_CONSTANTS_OPPONENTS_H
 
-#include "constants/battle_partner.h"
 enum Entrenadores
 {
 	TRAINER_NONE,

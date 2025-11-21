@@ -138,44 +138,17 @@ static void Task_FreezeObjectAndPlayer(u8 taskId)
 // The approaching trainers and player are frozen once their movement is finished
 void FreezeForApproachingTrainers(void)
 {
-    u8 trainerObjectId1, trainerObjectId2, taskId;
+    u8 trainerObjectId, taskId;
     struct ObjectEvent *followerObj = GetFollowerObject();
-    trainerObjectId1 = GetChosenApproachingTrainerObjectEventId(0);
+    trainerObjectId = gApproachingTrainer.objectEventId;
 
-    if (gNoOfApproachingTrainers == 2)
+    FreezeObjectEventsExceptOne(trainerObjectId);
+    taskId = CreateTask(Task_FreezeObjectAndPlayer, 80);
+    gTasks[taskId].tObjectId = trainerObjectId;
+    if (!gObjectEvents[trainerObjectId].singleMovementActive)
     {
-        // Get second trainer, freeze all other objects
-        trainerObjectId2 = GetChosenApproachingTrainerObjectEventId(1);
-        FreezeObjectEventsExceptTwo(trainerObjectId1, trainerObjectId2);
-
-        // Start task to freeze trainer 1 (and player) after movement
-        taskId = CreateTask(Task_FreezeObjectAndPlayer, 80);
-        gTasks[taskId].tObjectId = trainerObjectId1;
-        if (!gObjectEvents[trainerObjectId1].singleMovementActive)
-        {
-            FreezeObjectEvent(&gObjectEvents[trainerObjectId1]);
-            gTasks[taskId].tObjectFrozen = TRUE;
-        }
-
-        // Start task to freeze trainer 2 after movement
-        taskId = CreateTask(Task_FreezeObjectAndPlayer, 81);
-        gTasks[taskId].tObjectId = trainerObjectId2;
-        if (!gObjectEvents[trainerObjectId2].singleMovementActive)
-        {
-            FreezeObjectEvent(&gObjectEvents[trainerObjectId2]);
-            gTasks[taskId].tObjectFrozen = TRUE;
-        }
-    }
-    else
-    {
-        FreezeObjectEventsExceptOne(trainerObjectId1);
-        taskId = CreateTask(Task_FreezeObjectAndPlayer, 80);
-        gTasks[taskId].tObjectId = trainerObjectId1;
-        if (!gObjectEvents[trainerObjectId1].singleMovementActive)
-        {
-            FreezeObjectEvent(&gObjectEvents[trainerObjectId1]);
-            gTasks[taskId].tObjectFrozen = TRUE;
-        }
+        FreezeObjectEvent(&gObjectEvents[trainerObjectId]);
+        gTasks[taskId].tObjectFrozen = TRUE;
     }
     if (followerObj) // Unfreeze follower so it can move behind player
         UnfreezeObjectEvent(followerObj);
