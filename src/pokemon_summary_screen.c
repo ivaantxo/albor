@@ -3084,10 +3084,8 @@ static void BufferMonTrainerMemo(void)
     u8 *metLocationString = Alloc(32);
     GetMetLevelString(metLevelString);
 
-    if (sum->metLocation < MAPSEC_NONE)
-    {
-        DynamicPlaceholderTextUtil_SetPlaceholderPtr(4, metLocationString);
-    }
+    if (sum->metLocation >= MAPSEC_COUNT)
+        sum->metLocation = MAPSEC_NONE;
 
     if (sum->metLevel == 0)
         text = (sum->metLocation >= MAPSEC_NONE) ? gText_XNatureHatchedSomewhereAt : gText_XNatureHatchedAtYZ;
