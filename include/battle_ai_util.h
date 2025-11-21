@@ -13,6 +13,7 @@ enum AIPivot
 bool32 AI_IsFaster(u32 battlerAi, u32 battlerDef, u32 move);
 bool32 AI_IsSlower(u32 battlerAi, u32 battlerDef, u32 move);
 bool32 AI_RandLessThan(u32 val);
+u32 GetDmgRollType(u32 battlerAtk);
 bool32 BattlerHasAi(u32 battlerId);
 bool32 IsAiBattlerAware(u32 battlerId);
 void ClearBattlerMoveHistory(u32 battlerId);
@@ -30,7 +31,7 @@ void RestoreBattlerData(u32 battlerId);
 u32 GetAIChosenMove(u32 battlerId);
 u32 GetTotalBaseStat(u32 species);
 bool32 IsTruantMonVulnerable(u32 battlerAI, u32 opposingBattler);
-bool32 AtMaxHp(u32 battler);
+bool32 AI_BattlerAtMaxHp(u32 battler);
 u32 GetHealthPercentage(u32 battler);
 bool32 IsBattlerTrapped(u32 battler, bool32 switching);
 s32 AI_WhoStrikesFirst(u32 battlerAI, u32 battler2, u32 moveConsidered);
