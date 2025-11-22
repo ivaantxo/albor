@@ -10,6 +10,16 @@
       "secondary_tileset": "gTileset_MysteryEventsHouse",
       "border_filepath": "data/layouts/Test/border.bin",
       "blockdata_filepath": "data/layouts/Test/map.bin"
+    },
+    {
+      "id": "LAYOUT_CENTRO_POKEMON",
+      "name": "CentroPokemon_Layout",
+      "width": 14,
+      "height": 10,
+      "primary_tileset": "gTileset_CentroPokemon",
+      "secondary_tileset": "gTileset_Petalburg",
+      "border_filepath": "data/layouts/CentroPokemon/border.bin",
+      "blockdata_filepath": "data/layouts/CentroPokemon/map.bin"
     }
   ]
 }

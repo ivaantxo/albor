@@ -80,7 +80,7 @@
 
 porytiles compile-primary -Wall -o /Users/ivanmartinez/Documents/Volverá/albor/data/tilesets/primary/principal /Users/ivanmartinez/Documents/Volverá/albor/desarrollo/graficos /Users/ivanmartinez/Documents/Volverá/albor/include/constants/metatile_behaviors.h
 
-porytiles compile-primary -Wall -o /Users/ivanmartinez/desktop/albor/data/tilesets/primary/principal /Users/ivanmartinez/desktop/albor/desarrollo/graficos /Users/ivanmartinez/desktop/albor/include/constants/metatile_behaviors.h
+porytiles compile-primary -Wall -o /Users/ivanmartinez/proyectos/albor/data/tilesets/primary/centro_pokemon /Users/ivanmartinez/proyectos/albor/desarrollo/graficos /Users/ivanmartinez/proyectos/albor/include/constants/metatile_behaviors_porytiles.h
 
 *Recordatorio de que el primer color de la paleta del Pokémon no puede ser negro (se bugea el almacenamiento).
 *Recordatorio de deserializar las pokeballs.

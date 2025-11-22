@@ -1,0 +1,5 @@
+#define MB_NORMAL 0
+#define MB_SECRET_BASE_WALL 1
+#define MB_TALL_GRASS 2
+#define MB_LONG_GRASS 3
+#define MB_DEEP_SAND 4

@@ -17,7 +17,7 @@ enum MetatileBehaviors
     MB_MOSSDEEP_GYM_WARP,
     MB_MT_PYRE_HOLE,
     MB_POND_WATER,
-    MB_INTERIOR_DEEP_WATER, // Used by interior maps; functionally the same as MB_DEEP_WATER
+    MB_INTERIOR_DEEP_WATER,
     MB_DEEP_WATER,
     MB_WATERFALL,
     MB_SOOTOPOLIS_DEEP_WATER,

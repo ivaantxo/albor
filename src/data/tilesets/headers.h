@@ -607,3 +607,14 @@ const struct Tileset gTileset_Test =
     .metatileAttributes = gMetatileAttributes_Test,
     .callback = NULL,
 };
+
+const struct Tileset gTileset_CentroPokemon =
+{
+    .isCompressed = TRUE,
+    .isSecondary = FALSE,
+    .tiles = gTilesetTiles_CentroPokemon,
+    .palettes = gTilesetPalettes_CentroPokemon,
+    .metatiles = gMetatiles_CentroPokemon,
+    .metatileAttributes = gMetatileAttributes_CentroPokemon,
+    .callback = NULL,
+};

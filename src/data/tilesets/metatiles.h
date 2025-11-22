@@ -159,3 +159,6 @@ const u16 gMetatileAttributes_Principal[] = INCBIN_U16("data/tilesets/primary/pr
 
 const u16 gMetatiles_Test[] = INCBIN_U16("data/tilesets/primary/test/metatiles.bin");
 const u16 gMetatileAttributes_Test[] = INCBIN_U16("data/tilesets/primary/test/metatile_attributes.bin");
+
+const u16 gMetatiles_CentroPokemon[] = INCBIN_U16("data/tilesets/primary/centro_pokemon/metatiles.bin");
+const u16 gMetatileAttributes_CentroPokemon[] = INCBIN_U16("data/tilesets/primary/centro_pokemon/metatile_attributes.bin");
