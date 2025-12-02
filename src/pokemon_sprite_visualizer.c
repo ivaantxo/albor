@@ -95,8 +95,8 @@ static const struct BgTemplate sBgTemplates[] =
         .bg = 0,
         .charBaseIndex = 0,
         .mapBaseIndex = 24,
-        .screenSize = 2,
-        .paletteMode = 0,
+        .screenSize = FONDO_32x64,
+        .paletteMode = MODO_PALETAS_4BPP,
         .priority = 0,
         .baseTile = 0
     },
@@ -104,8 +104,8 @@ static const struct BgTemplate sBgTemplates[] =
         .bg = 1,
         .charBaseIndex = 1,
         .mapBaseIndex = 28,
-        .screenSize = 2,
-        .paletteMode = 0,
+        .screenSize = FONDO_32x64,
+        .paletteMode = MODO_PALETAS_4BPP,
         .priority = 0,
         .baseTile = 0
     },
@@ -113,8 +113,8 @@ static const struct BgTemplate sBgTemplates[] =
         .bg = 2,
         .charBaseIndex = 1,
         .mapBaseIndex = 30,
-        .screenSize = 1,
-        .paletteMode = 0,
+        .screenSize = FONDO_64x32,
+        .paletteMode = MODO_PALETAS_4BPP,
         .priority = 1,
         .baseTile = 0
     },
@@ -122,8 +122,8 @@ static const struct BgTemplate sBgTemplates[] =
         .bg = 3,
         .charBaseIndex = 2,
         .mapBaseIndex = 26,
-        .screenSize = 1,
-        .paletteMode = 0,
+        .screenSize = FONDO_64x32,
+        .paletteMode = MODO_PALETAS_4BPP,
         .priority = 3,
         .baseTile = 0
     },

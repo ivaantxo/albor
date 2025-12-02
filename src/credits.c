@@ -168,8 +168,8 @@ static const struct BgTemplate sBackgroundTemplates[] =
         .bg = 0,
         .charBaseIndex = 2,
         .mapBaseIndex = 28,
-        .screenSize = 0,
-        .paletteMode = 0,
+        .screenSize = FONDO_32x32,
+        .paletteMode = MODO_PALETAS_4BPP,
         .priority = 0,
         .baseTile = 0
     },

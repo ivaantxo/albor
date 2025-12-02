@@ -1,5 +1,6 @@
 #include "global.h"
 #include "battle_anim.h"
+#include "bg.h"
 #include "contest.h"
 #include "gpu_regs.h"
 #include "graphics.h"
@@ -253,7 +254,7 @@ void AnimTask_DrawFallingWhiteLinesOnAttacker(u8 taskId)
     struct BgCnt *bg1CntStruct = (struct BgCnt *)&bg1Cnt; // Convertir a puntero de BgCnt
 
     bg1CntStruct->priority = 0; // Cambiar la prioridad
-    bg1CntStruct->screenSize = 0; // Cambiar el tamaño de la pantalla
+    bg1CntStruct->screenSize = FONDO_32x32; // Cambiar el tamaño de la pantalla
     bg1CntStruct->charBaseBlock = 1; // Cambiar el bloque base de caracteres
     SetGpuReg(REG_OFFSET_BG1CNT, bg1Cnt); // Guardar el valor actualizado
 
@@ -778,7 +779,7 @@ void StartMonScrollingBgMask(u8 taskId, u16 scrollSpeed, u8 battler, bool8 inclu
     bg1CntValue = GetGpuReg(REG_OFFSET_BG1CNT);
     struct BgCnt *bg1CntStruct = (struct BgCnt *)&bg1CntValue;
     bg1CntStruct->priority = 0;
-    bg1CntStruct->screenSize = 0;
+    bg1CntStruct->screenSize = FONDO_32x32;
     bg1CntStruct->areaOverflowMode = 1;
     bg1CntStruct->charBaseBlock = 1;
 

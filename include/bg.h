@@ -30,13 +30,35 @@ enum {
 
 struct BgTemplate
 {
-    u16 bg:2;                   // 0x1, 0x2 -> 0x3
-    u16 charBaseIndex:2;        // 0x4, 0x8 -> 0xC
-    u16 mapBaseIndex:5;         // 0x10, 0x20, 0x40, 0x80, 0x100 -> 0x1F0
-    u16 screenSize:2;           // 0x200, 0x400 -> 0x600
-    u16 paletteMode:1;          // 0x800
-    u16 priority:2;             // 0x1000, 0x2000 > 0x3000
+    u16 bg:2;
+    u16 charBaseIndex:2;
+    u16 mapBaseIndex:5;
+    u16 screenSize:2;
+    u16 paletteMode:1;
+    u16 priority:2;
     u16 baseTile:10;
+};
+
+enum ModosPaletas
+{
+    MODO_PALETAS_4BPP,
+    MODO_PALETAS_8BPP,
+};
+
+enum DimensionesFondo
+{
+    FONDO_32x32,
+    FONDO_64x32,
+    FONDO_32x64,
+    FONDO_64x64,
+};
+
+enum DimensionesFondoAfin
+{
+    FONDO_AFIN_16x16,
+    FONDO_AFIN_32x32,
+    FONDO_AFIN_64x64,
+    FONDO_AFIN_128x128,
 };
 
 void ResetBgs(void);

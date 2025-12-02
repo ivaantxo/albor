@@ -109,8 +109,8 @@ static const struct BgTemplate sOptionMenuBgTemplates[] =
         .bg = 1,
         .charBaseIndex = 1,
         .mapBaseIndex = 30,
-        .screenSize = 0,
-        .paletteMode = 0,
+        .screenSize = FONDO_32x32,
+        .paletteMode = MODO_PALETAS_4BPP,
         .priority = 0,
         .baseTile = 0
     },
@@ -118,8 +118,8 @@ static const struct BgTemplate sOptionMenuBgTemplates[] =
         .bg = 0,
         .charBaseIndex = 1,
         .mapBaseIndex = 31,
-        .screenSize = 0,
-        .paletteMode = 0,
+        .screenSize = FONDO_32x32,
+        .paletteMode = MODO_PALETAS_4BPP,
         .priority = 1,
         .baseTile = 0
     }

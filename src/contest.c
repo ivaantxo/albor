@@ -749,8 +749,8 @@ static const struct BgTemplate sContestBgTemplates[] =
         .bg = 0,
         .charBaseIndex = 0,
         .mapBaseIndex = 0x18,
-        .screenSize = 2,
-        .paletteMode = 0,
+        .screenSize = FONDO_32x64,
+        .paletteMode = MODO_PALETAS_4BPP,
         .priority = 0,
         .baseTile = 0
     },
@@ -758,8 +758,8 @@ static const struct BgTemplate sContestBgTemplates[] =
         .bg = 1,
         .charBaseIndex = 2,
         .mapBaseIndex = 0x1E,
-        .screenSize = 2,
-        .paletteMode = 0,
+        .screenSize = FONDO_32x64,
+        .paletteMode = MODO_PALETAS_4BPP,
         .priority = 1,
         .baseTile = 0
     },
@@ -767,8 +767,8 @@ static const struct BgTemplate sContestBgTemplates[] =
         .bg = 2,
         .charBaseIndex = 0,
         .mapBaseIndex = 0x1C,
-        .screenSize = 2,
-        .paletteMode = 0,
+        .screenSize = FONDO_32x64,
+        .paletteMode = MODO_PALETAS_4BPP,
         .priority = 0,
         .baseTile = 0
     },
@@ -776,8 +776,8 @@ static const struct BgTemplate sContestBgTemplates[] =
         .bg = 3,
         .charBaseIndex = 0,
         .mapBaseIndex = 0x1A,
-        .screenSize = 0,
-        .paletteMode = 0,
+        .screenSize = FONDO_32x32,
+        .paletteMode = MODO_PALETAS_4BPP,
         .priority = 3,
         .baseTile = 0
     }
@@ -4531,7 +4531,7 @@ static void SetBgForCurtainDrop(void)
 
     bg1Cnt = GetGpuReg(REG_OFFSET_BG1CNT);
     ((vBgCnt *)&bg1Cnt)->priority = 0;
-    ((vBgCnt *)&bg1Cnt)->screenSize = 2;
+    ((vBgCnt *)&bg1Cnt)->screenSize = FONDO_32x64;
     ((vBgCnt *)&bg1Cnt)->areaOverflowMode = 0;
     ((vBgCnt *)&bg1Cnt)->charBaseBlock = 0;
 
@@ -4572,7 +4572,7 @@ static void UpdateContestantBoxOrder(void)
     Contest_SetBgCopyFlags(1);
     bg1Cnt = GetGpuReg(REG_OFFSET_BG1CNT);
     ((vBgCnt *) &bg1Cnt)->priority = 1;
-    ((vBgCnt *) &bg1Cnt)->screenSize = 0;
+    ((vBgCnt *) &bg1Cnt)->screenSize = FONDO_32x32;
     ((vBgCnt *) &bg1Cnt)->areaOverflowMode = 0;
     ((vBgCnt *) &bg1Cnt)->charBaseBlock = 2;
 

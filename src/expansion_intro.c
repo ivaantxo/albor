@@ -167,7 +167,7 @@ static const struct OamData sOamData_DizzyEgg =
 {
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = 0,
+    .mosaic = FALSE,
     .bpp = ST_OAM_4BPP,
     .shape = SPRITE_SHAPE(32x32),
     .size = SPRITE_SIZE(32x32),
@@ -178,7 +178,7 @@ static const struct OamData sOamData_Porygon =
 {
     .affineMode = ST_OAM_AFFINE_NORMAL,
     .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = 0,
+    .mosaic = FALSE,
     .bpp = ST_OAM_4BPP,
     .shape = SPRITE_SHAPE(64x64),
     .size = SPRITE_SIZE(64x64),
@@ -213,13 +213,13 @@ static const struct BgTemplate sBgTemplates_RhhCopyrightScreen[] =
         .bg = 2,
         .charBaseIndex = 1,
         .mapBaseIndex = 20,
-        .screenSize = 2,
-        .paletteMode = 1
+        .screenSize = FONDO_32x64,
+        .paletteMode = MODO_PALETAS_8BPP
     },
     [EXPANSION_INTRO_BG3] = {
         .bg = 3,
         .mapBaseIndex = 22,
-        .screenSize = 2
+        .screenSize = FONDO_32x64
     },
 };
 
