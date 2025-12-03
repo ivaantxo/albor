@@ -947,7 +947,6 @@ extern const u8 gText_Time[];
 // daycare
 extern const u8 gText_MaleSymbol4[];
 extern const u8 gText_FemaleSymbol4[];
-extern const u8 gText_GenderlessSymbol[];
 extern const u8 gText_NewLine2[];
 extern const u8 gText_Lv[];
 extern const u8 gExpandedPlaceholder_Empty[];
@@ -1013,13 +1012,6 @@ extern const u8 gText_ThatIsntAnEgg[];
 extern const u8 gText_OtherTrainersPkmnCantBeTraded[];
 extern const u8 gText_OtherTrainerCantAcceptPkmn[];
 extern const u8 gText_CantTradeWithTrainer[];
-
-// trade
-extern const u8 gText_XWillBeSentToY[];
-extern const u8 gText_ByeByeVar1[];
-extern const u8 gText_XSentOverY[];
-extern const u8 gText_TakeGoodCareOfX[];
-extern const u8 gText_CommunicationStandby5[];
 
 // match call
 extern const u8 MatchCall_WildBattleText1[];

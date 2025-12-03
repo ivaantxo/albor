@@ -54,7 +54,6 @@
 #include "text.h"
 #include "text_window.h"
 #include "tm_case.h"
-#include "trade.h"
 #include "util.h"
 #include "window.h"
 #include "constants/battle.h"
@@ -82,8 +81,6 @@ enum {
     MENU_SEND_OUT,
     MENU_STORE,
     MENU_REGISTER,
-    MENU_TRADE1,
-    MENU_TRADE2,
     MENU_TOSS,
     MENU_CATALOG_BULB,
     MENU_CATALOG_OVEN,
@@ -107,8 +104,6 @@ enum {
     ACTIONS_ITEM,
     ACTIONS_MAIL,
     ACTIONS_REGISTER,
-    ACTIONS_TRADE,
-    ACTIONS_SPIN_TRADE,
     ACTIONS_TAKEITEM_TOSS,
     ACTIONS_ROTOM_CATALOG,
     ACTIONS_ZYGARDE_CUBE,
@@ -358,8 +353,6 @@ static void UpdatePartyMonHPBar(u8, struct Pokemon *);
 static void SpriteCB_UpdatePartyMonIcon(struct Sprite *);
 static void SpriteCB_BouncePartyMonIcon(struct Sprite *);
 static void ShowOrHideHeldItemSprite(u16, struct PartyMenuBox *);
-static void CreateHeldItemSpriteForTrade(u8, bool8);
-static void SpriteCB_HeldItem(struct Sprite *);
 static void SetPartyMonAilmentGfx(struct Pokemon *, struct PartyMenuBox *);
 static void UpdatePartyMonAilmentGfx(u8, struct PartyMenuBox *);
 static u8 GetPartyLayoutFromBattleType(void);
@@ -436,8 +429,6 @@ static void CursorCb_Cancel2(u8);
 static void CursorCb_SendMon(u8);
 static void CursorCb_Store(u8);
 static void CursorCb_Register(u8);
-static void CursorCb_Trade1(u8);
-static void CursorCb_Trade2(u8);
 static void CursorCb_Toss(u8);
 static void CursorCb_FieldMove(u8);
 static void CursorCb_CatalogBulb(u8);
@@ -2478,9 +2469,6 @@ static u8 GetPartyMenuActionsType(struct Pokemon *mon)
     case PARTY_MENU_TYPE_DAYCARE:
         actionType = (GetMonData(mon, MON_DATA_IS_EGG)) ? ACTIONS_SUMMARY_ONLY : ACTIONS_STORE;
         break;
-    case PARTY_MENU_TYPE_SPIN_TRADE:
-        actionType = ACTIONS_SPIN_TRADE;
-        break;
     // The following have no selection actions (i.e. they exit immediately upon selection)
     // PARTY_MENU_TYPE_CONTEST
     // PARTY_MENU_TYPE_CHOOSE_MON
@@ -3180,22 +3168,6 @@ static void CursorCb_Register(u8 taskId)
     gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
 }
 
-static void CursorCb_Trade1(u8 taskId)
-{
-    PlaySE(SE_SELECT);
-    Task_ClosePartyMenu(taskId);
-}
-
-static void CursorCb_Trade2(u8 taskId)
-{
-    PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[0]);
-    PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[1]);
-    PlaySE(SE_FAILURE);
-    StringAppend(gStringVar4, gText_PauseUntilPress);
-    DisplayPartyMenuMessage(gStringVar4, TRUE);
-    gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
-}
-
 static void CursorCb_FieldMove(u8 taskId)
 {
     u8 fieldMove = sPartyMenuInternal->actions[Menu_GetCursorPos()] - MENU_FIELD_MOVES;
@@ -3553,61 +3525,6 @@ void LoadHeldItemIcons(void)
 {
     LoadSpriteSheet(&sSpriteSheet_HeldItem);
     LoadSpritePalette(&sSpritePalette_HeldItem);
-}
-
-void DrawHeldItemIconsForTrade(u8 *partyCounts, u8 *partySpriteIds, u8 whichParty)
-{
-    u32 i;
-    u16 item;
-
-    switch (whichParty)
-    {
-    case TRADE_PLAYER:
-        for (i = 0; i < partyCounts[TRADE_PLAYER]; i++)
-        {
-            item = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
-            if (item != ITEM_NONE)
-                CreateHeldItemSpriteForTrade(partySpriteIds[i], ItemIsMail(item));
-        }
-        break;
-    case TRADE_PARTNER:
-        for (i = 0; i < partyCounts[TRADE_PARTNER]; i++)
-        {
-            item = GetMonData(&gEnemyParty[i], MON_DATA_HELD_ITEM);
-            if (item != ITEM_NONE)
-                CreateHeldItemSpriteForTrade(partySpriteIds[i + PARTY_SIZE], ItemIsMail(item));
-        }
-        break;
-    }
-}
-
-static void CreateHeldItemSpriteForTrade(u8 spriteId, bool8 isMail)
-{
-    u8 subpriority = gSprites[spriteId].subpriority;
-    u8 newSpriteId = CreateSprite(&sSpriteTemplate_HeldItem, 250, 170, subpriority - 1);
-
-    gSprites[newSpriteId].x2 = 4;
-    gSprites[newSpriteId].y2 = 10;
-    gSprites[newSpriteId].callback = SpriteCB_HeldItem;
-    gSprites[newSpriteId].data[7] = spriteId;
-    StartSpriteAnim(&gSprites[newSpriteId], isMail);
-    gSprites[newSpriteId].callback(&gSprites[newSpriteId]);
-}
-
-static void SpriteCB_HeldItem(struct Sprite *sprite)
-{
-    u8 otherSpriteId = sprite->data[7];
-
-    if (gSprites[otherSpriteId].invisible)
-    {
-        sprite->invisible = TRUE;
-    }
-    else
-    {
-        sprite->invisible = FALSE;
-        sprite->x = gSprites[otherSpriteId].x + gSprites[otherSpriteId].x2;
-        sprite->y = gSprites[otherSpriteId].y + gSprites[otherSpriteId].y2;
-    }
 }
 
 static void CreatePartyMonPokeballSprite(struct Pokemon *mon, struct PartyMenuBox *menuBox)

@@ -1788,20 +1788,6 @@ const u16 ALIGNED(4) gTilesetPalettes_General[][16] =
 
 const u32 gTilesetTiles_General[] = INCBIN_U32("data/tilesets/primary/general/tiles.4bpp.lz");
 
-// trade/egg hatch
-
-const u16 gTradeGba_Pal[] = INCBIN_U16("graphics/trade/gba.gbapal");
-const u16 gTradeGba2_Pal[] = INCBIN_U16("graphics/trade/gba_pal2.gbapal");
-const u8 gTradeGba_Gfx[] = INCBIN_U8("graphics/trade/gba.4bpp");
-
-// Trade
-const u16 gTradeMenu_Pal[] = INCBIN_U16("graphics/trade/menu.gbapal");
-const u16 gTradeCursor_Pal[] = INCBIN_U16("graphics/trade/cursor.gbapal");
-const u8 gTradeMenu_Gfx[] = INCBIN_U8("graphics/trade/menu.4bpp");
-const u8 gTradeCursor_Gfx[] = INCBIN_U8("graphics/trade/cursor.4bpp");
-const u16 gTradeMenu_Tilemap[] = INCBIN_U16("graphics/trade/menu.bin");
-const u16 gTradeMenuMonBox_Tilemap[] = INCBIN_U16("graphics/trade/menu_mon_box.bin");
-
 const u16 gMessageBox_Pal[] = INCBIN_U16("graphics/text_window/message_box.gbapal");
 const u8 gMessageBox_Gfx[] = INCBIN_U8("graphics/text_window/message_box.4bpp");
 const u8 gSignpostWindow_Gfx[] = INCBIN_U8("graphics/text_window/signpost.4bpp");

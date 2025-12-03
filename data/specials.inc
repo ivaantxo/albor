@@ -145,9 +145,6 @@ gSpecials::
 	def_special GetLeadMonFriendshipScore
 	def_special StopMapMusic
 	def_special FieldShowRegionMap
-	def_special GetInGameTradeSpeciesInfo
-	def_special DoInGameTradeScene
-	def_special GetTradeSpecies
 	def_special GetWeekCount
 	def_special RetrieveLotteryNumber
 	def_special PickLotteryCornerTicket

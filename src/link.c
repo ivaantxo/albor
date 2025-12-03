@@ -20,11 +20,9 @@
 #include "strings.h"
 #include "constants/songs.h"
 #include "sound.h"
-#include "trade.h"
 #include "battle.h"
 #include "link.h"
 #include "constants/rgb.h"
-#include "constants/trade.h"
 
 // Window IDs for the link error screens
 enum {

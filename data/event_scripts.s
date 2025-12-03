@@ -34,7 +34,6 @@
 #include "constants/songs.h"
 #include "constants/sound.h"
 #include "constants/species.h"
-#include "constants/trade.h"
 #include "constants/trainers.h"
 #include "constants/vars.h"
 #include "constants/weather.h"

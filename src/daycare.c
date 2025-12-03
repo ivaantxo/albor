@@ -936,15 +936,15 @@ static u8 *AppendGenderSymbol(u8 *name, u8 gender)
     if (gender == MON_MALE)
     {
         if (!NameHasGenderSymbol(name, MON_MALE))
-            return StringAppend(name, gText_MaleSymbol4);
+            return StringAppend(name, COMPOUND_STRING("♂"));
     }
     else if (gender == MON_FEMALE)
     {
         if (!NameHasGenderSymbol(name, MON_FEMALE))
-            return StringAppend(name, gText_FemaleSymbol4);
+            return StringAppend(name, COMPOUND_STRING("♀"));
     }
 
-    return StringAppend(name, gText_GenderlessSymbol);
+    return StringAppend(name, COMPOUND_STRING(""));
 }
 
 static u8 *AppendMonGenderSymbol(u8 *name, struct BoxPokemon *boxMon)
