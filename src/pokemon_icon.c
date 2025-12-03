@@ -13,7 +13,7 @@
 struct MonIconSpriteTemplate
 {
     const struct OamData *oam;
-    const u32 *image;
+    const struct SpriteFrameImage *image;
     const union AnimCmd *const *anims;
     const union AffineAnimCmd *const *affineAnims;
     void (*callback)(struct Sprite *);
@@ -132,7 +132,7 @@ u8 CreateMonIcon(u16 species, void (*callback)(struct Sprite *), s16 x, s16 y, u
     struct MonIconSpriteTemplate iconTemplate =
     {
         .oam = &sMonIconOamData,
-        .image = GetMonIconPtr(species, personality),
+        .image = GetMonIconTiles(species, personality),
         .anims = sMonIconAnims,
         .affineAnims = sMonIconAffineAnims,
         .callback = callback,
@@ -157,11 +157,6 @@ u16 GetIconSpecies(u16 species, u32 personality)
     return species;
 }
 
-const u32 *GetMonIconPtr(u16 species, u32 personality)
-{
-    return GetMonIconTiles(GetIconSpecies(species, personality), personality);
-}
-
 void FreeAndDestroyMonIconSprite(struct Sprite *sprite)
 {
     FreeAndDestroyMonIconSprite_(sprite);
@@ -172,19 +167,19 @@ void SpriteCB_MonIcon(struct Sprite *sprite)
     UpdateMonIconFrame(sprite);
 }
 
-const u32 *GetMonIconTiles(u16 species, u32 personality)
+const struct SpriteFrameImage *GetMonIconTiles(u16 species, u32 personality)
 {
-    const u32 *iconSprite;
+    const struct SpriteFrameImage *iconSprite;
 
-    if (species > NUM_SPECIES)
+    if (species >= NUM_SPECIES)
         species = SPECIES_NONE;
 
-    if (gSpeciesInfo[species].iconSpriteFemale != NULL && IsPersonalityFemale(species, personality))
-        iconSprite = gSpeciesInfo[species].iconSpriteFemale;
-    else if (gSpeciesInfo[species].iconSprite != NULL)
-        iconSprite = gSpeciesInfo[species].iconSprite;
+    if (IsPersonalityFemale(species, personality) && gSpeciesInfo[species].followerDataFemale.images != NULL)
+        iconSprite = gSpeciesInfo[species].followerDataFemale.images->data;
+    else if (gSpeciesInfo[species].followerData.images != NULL)
+        iconSprite = gSpeciesInfo[species].followerData.images->data;
     else
-        iconSprite = gSpeciesInfo[SPECIES_NONE].iconSprite;
+        iconSprite = gSpeciesInfo[SPECIES_NONE].followerData.images->data;
 
     return iconSprite;
 }
