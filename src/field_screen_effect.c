@@ -14,7 +14,6 @@
 #include "gpu_regs.h"
 #include "heal_location.h"
 #include "io_reg.h"
-#include "link.h"
 #include "load_save.h"
 #include "main.h"
 #include "menu.h"
@@ -147,71 +146,6 @@ void FieldCB_ContinueScript(void)
     LockPlayerFieldControls();
     FadeInFromBlack();
     CreateTask(Task_WaitForFadeAndEnableScriptCtx, 10);
-}
-
-static void Task_ReturnToFieldCableLink(u8 taskId)
-{
-    struct Task *task = &gTasks[taskId];
-
-    switch (task->tState)
-    {
-    case 0:
-        task->tState++;
-        break;
-    case 1:
-        if (gTasks[task->data[1]].isActive != TRUE)
-        {
-            WarpFadeInScreen();
-            task->tState++;
-        }
-        break;
-    case 2:
-        if (WaitForWeatherFadeIn() == TRUE)
-        {
-            UnlockPlayerFieldControls();
-            DestroyTask(taskId);
-        }
-        break;
-    }
-}
-
-void FieldCB_ReturnToFieldCableLink(void)
-{
-    LockPlayerFieldControls();
-    Overworld_PlaySpecialMapMusic();
-    FillPalBufferBlack();
-    CreateTask(Task_ReturnToFieldCableLink, 10);
-}
-
-static void Task_ReturnToFieldWirelessLink(u8 taskId)
-{
-    struct Task *task = &gTasks[taskId];
-
-    switch (task->tState)
-    {
-    case 0:
-        SetLinkStandbyCallback();
-        task->tState++;
-        break;
-    case 1:
-        break;
-    case 2:
-        if (WaitForWeatherFadeIn() == TRUE)
-        {
-            StartSendingKeysToLink();
-            UnlockPlayerFieldControls();
-            DestroyTask(taskId);
-        }
-        break;
-    }
-}
-
-void FieldCB_ReturnToFieldWirelessLink(void)
-{
-    LockPlayerFieldControls();
-    Overworld_PlaySpecialMapMusic();
-    FillPalBufferBlack();
-    CreateTask(Task_ReturnToFieldWirelessLink, 10);
 }
 
 static void SetUpWarpExitTask(void)
@@ -538,42 +472,6 @@ void DoPortholeWarp(void)
     WarpFadeOutScreen();
     CreateTask(Task_WarpAndLoadMap, 10);
     gFieldCallback = FieldCB_ShowPortholeView;
-}
-
-static void Task_ReturnToWorldFromLinkRoom(u8 taskId)
-{
-    s16 *data = gTasks[taskId].data;
-
-    switch (tState)
-    {
-    case 0:
-        ClearLinkCallback_2();
-        FadeScreen(FADE_TO_BLACK, 0);
-        TryFadeOutOldMapMusic();
-        PlaySE(SE_EXIT);
-        tState++;
-        break;
-    case 1:
-        if (!PaletteFadeActive() && BGMusicStopped())
-        {
-            SetCloseLinkCallback();
-            tState++;
-        }
-        break;
-    case 2:
-        if (!gReceivedRemoteLinkPlayers)
-        {
-            WarpIntoMap();
-            SetMainCallback2(CB2_LoadMap);
-            DestroyTask(taskId);
-        }
-        break;
-    }
-}
-
-void ReturnFromLinkRoom(void)
-{
-    CreateTask(Task_ReturnToWorldFromLinkRoom, 10);
 }
 
 static void Task_WarpAndLoadMap(u8 taskId)

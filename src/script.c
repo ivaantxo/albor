@@ -219,7 +219,6 @@ const ScrCmdFunc gScriptCmdTable[] =
     SCR_CMD(warpmossdeepgym),
     SCR_CMD(selectapproachingtrainer),
     SCR_CMD(lockfortrainer),
-    SCR_CMD(messageinstant),
     SCR_CMD(fadescreenswapbuffers),
     SCR_CMD(buffertrainerclassname),
     SCR_CMD(buffertrainername),

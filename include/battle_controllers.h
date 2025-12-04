@@ -80,12 +80,6 @@ enum {
     BALL_TRAINER_BLOCK,
 };
 
-enum {
-    LINK_STANDBY_MSG_STOP_BOUNCE,
-    LINK_STANDBY_STOP_BOUNCE_ONLY,
-    LINK_STANDBY_MSG_ONLY,
-};
-
 #define INSTANT_HP_BAR_DROP     0x7FFF
 
 #define PARTY_SUMM_SKIP_DRAW_DELAY (1 << 7)
@@ -164,7 +158,6 @@ enum
     CONTROLLER_ENDBOUNCE,
     CONTROLLER_SPRITEINVISIBILITY,
     CONTROLLER_BATTLEANIMATION,
-    CONTROLLER_LINKSTANDBYMSG,
     CONTROLLER_RESETACTIONMOVESELECTION,
     CONTROLLER_DEBUGMENU,
     /*new controllers should go here*/
@@ -180,8 +173,6 @@ extern u8 gBattleControllerData[MAX_BATTLERS_COUNT];
 void SetUpBattleVarsAndBirchZigzagoon(void);
 void InitBattleControllers(void);
 bool32 IsValidForBattle(struct Pokemon *mon);
-void TryReceiveLinkBattleData(void);
-void PrepareBufferDataTransferLink(u32 battler, u32 bufferId, u16 size, u8 *data);
 
 // emitters
 void BtlController_EmitGetMonData(u32 battler, u32 bufferId, u8 requestId, u8 monToCheck);
@@ -222,7 +213,6 @@ void BtlController_EmitHidePartyStatusSummary(u32 battler, u32 bufferId);
 void BtlController_EmitEndBounceEffect(u32 battler, u32 bufferId);
 void BtlController_EmitSpriteInvisibility(u32 battler, u32 bufferId, bool8 isInvisible);
 void BtlController_EmitBattleAnimation(u32 battler, u32 bufferId, u8 animationId, struct DisableStruct* disableStructPtr, u16 argument);
-void BtlController_EmitLinkStandbyMsg(u32 battler, u32 bufferId, u8 mode, bool32 record);
 void BtlController_EmitResetActionMoveSelection(u32 battler, u32 bufferId, u8 caseId);
 void BtlController_EmitDebugMenu(u32 battler, u32 bufferId);
 
@@ -271,7 +261,6 @@ void BtlController_HandleBattleAnimation(u32 battler, bool32 ignoreSE);
 void SetControllerToPlayer(u32 battler);
 void PlayerHandleBallThrowAnim(u32 battler);
 void PlayerHandleExpUpdate(u32 battler);
-u32 LinkPlayerGetTrainerPicId(u32 multiplayerId);
 void CB2_SetUpReshowBattleScreenAfterMenu(void);
 void CB2_SetUpReshowBattleScreenAfterMenu2(void);
 void Task_PlayerController_RestoreBgmAfterCry(u8 taskId);
@@ -289,11 +278,5 @@ void HandleChooseMoveAfterDma3(u32 battler);
 
 // opponent controller
 void SetControllerToOpponent(u32 battler);
-
-// link opponent
-void SetControllerToLinkOpponent(u32 battler);
-
-// link partner
-void SetControllerToLinkPartner(u32 battler);
 
 #endif // GUARD_BATTLE_CONTROLLERS_H

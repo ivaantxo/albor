@@ -9,7 +9,6 @@
 #include "graphics.h"
 #include "international_string_util.h"
 #include "item.h"
-#include "link.h"
 #include "menu.h"
 #include "palette.h"
 #include "string_util.h"
@@ -2489,14 +2488,14 @@ static void GetBattlerNick(u32 battler, u8 *dst)
             toCpy = sText_WildPkmnPrefix;                             \
     }
 
-static const u8 *BattleStringGetOpponentNameByTrainerId(u16 trainerId, u8 *text, u8 multiplayerId, u8 battler)
+static const u8 *BattleStringGetOpponentNameByTrainerId(u16 trainerId)
 {
     const u8 *toCpy = GetTrainerNameFromId(trainerId);
 
     return toCpy;
 }
 
-static const u8 *BattleStringGetOpponentName(u8 *text, u8 multiplayerId, u8 battler)
+static const u8 *BattleStringGetOpponentName(u8 battler)
 {
     const u8 *toCpy = NULL;
 
@@ -2504,19 +2503,19 @@ static const u8 *BattleStringGetOpponentName(u8 *text, u8 multiplayerId, u8 batt
     {
     case B_POSITION_OPPONENT_LEFT:
     case B_POSITION_OPPONENT_RIGHT:
-        toCpy = BattleStringGetOpponentNameByTrainerId(gTrainerBattleOpponent, text, multiplayerId, battler);
+        toCpy = BattleStringGetOpponentNameByTrainerId(gTrainerBattleOpponent);
         break;
     }
 
     return toCpy;
 }
 
-static const u8 *BattleStringGetTrainerName(u8 *text, u8 multiplayerId, u8 battler)
+static const u8 *BattleStringGetTrainerName(u8 battler)
 {
     if (GetBattlerSide(battler) == B_SIDE_PLAYER)
         return gSaveBlockPtr->playerName;
     else
-        return BattleStringGetOpponentName(text, multiplayerId, battler);
+        return BattleStringGetOpponentName(battler);
 }
 
 static const u8 *BattleStringGetOpponentClassByTrainerId(u16 trainerId)
@@ -2535,12 +2534,9 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
     u32 dstWidth = 0;
     // This buffer may hold either the name of a trainer, Pokémon, or item.
     u8 text[max(max(max(32, TRAINER_NAME_LENGTH + 1), POKEMON_NAME_LENGTH + 1), ITEM_NAME_LENGTH)];
-    u8 multiplayerId;
     u8 fontId = FONT_NORMAL;
     s16 letterSpacing = 0;
     u32 lineNum = 1;
-
-    multiplayerId = GetMultiplayerId();
 
     // Clear destination first
     while (dstID < dstSize)
@@ -2665,7 +2661,7 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
                 toCpy = BattleStringGetOpponentClassByTrainerId(gTrainerBattleOpponent);
                 break;
             case B_TXT_TRAINER_NAME:
-                toCpy = BattleStringGetOpponentNameByTrainerId(gTrainerBattleOpponent, text, multiplayerId, GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT));
+                toCpy = BattleStringGetOpponentNameByTrainerId(gTrainerBattleOpponent);
                 break;
             case B_TXT_PLAYER_NAME:
                 toCpy = gSaveBlockPtr->playerName;
@@ -2721,7 +2717,7 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
                 toCpy = gSaveBlockPtr->playerName;
                 break;
             case B_TXT_ATK_TRAINER_NAME:
-                toCpy = BattleStringGetTrainerName(text, multiplayerId, gBattlerAttacker);
+                toCpy = BattleStringGetTrainerName(gBattlerAttacker);
                 break;
             case B_TXT_ATK_TRAINER_CLASS:
                 switch (GetBattlerPosition(gBattlerAttacker))

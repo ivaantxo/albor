@@ -33,20 +33,15 @@ struct TrainerCard
     /*0x0E*/ u16 trainerId;
     /*0x10*/ u16 playTimeHours;
     /*0x12*/ u16 playTimeMinutes;
-    /*0x14*/ u16 linkBattleWins;
-    /*0x16*/ u16 linkBattleLosses;
     /*0x1C*/ u16 contestsWithFriends;
     /*0x1E*/ u16 pokeblocksWithFriends;
     /*0x20*/ u16 pokemonTrades;
     /*0x24*/ u32 money;
     /*0x30*/ u8 playerName[PLAYER_NAME_LENGTH + 1];
     /*0x38*/ u8 version;
-    /*0x3C*/ union {
-                u32 berryCrush;
-             } linkPoints; // This field is used differently by FRLG vs Emerald
-    /*0x44*/ u8 filler[8];
+    u32 berryCrush;
+
     /*0x4C*/ bool8 shouldDrawStickers; // FRLG only
-    /*0x4D*/ u8 unused;
     /*0x4E*/ u8 monIconTint; // FRLG only
     /*0x50*/ u8 stickers[TRAINER_CARD_STICKER_TYPES]; // FRLG only
     /*0x54*/ u16 monSpecies[PARTY_SIZE]; // FRLG only
@@ -58,7 +53,5 @@ u32 CountPlayerTrainerStars(void);
 u8 GetTrainerCardStars(u8 cardId);
 void CopyTrainerCardData(struct TrainerCard *dst, struct TrainerCard *src, u8 gameVersion);
 void ShowPlayerTrainerCard(void (*callback)(void));
-void ShowTrainerCardInLink(u8 cardId, void (*callback)(void));
-void TrainerCard_GenerateCardForLinkPlayer(struct TrainerCard *);
 
 #endif // GUARD_TRAINER_CARD_H

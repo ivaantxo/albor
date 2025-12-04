@@ -418,14 +418,6 @@ static const struct MenuAction MultichoiceList_TourneyNoRecord[] =
     {gText_Retire},
 };
 
-static const struct MenuAction MultichoiceList_LinkServicesNoBerry[] =
-{
-    {gText_TradeCenter},
-    {gText_Colosseum},
-    {gText_RecordCorner},
-    {gText_Salir},
-};
-
 static const struct MenuAction MultichoiceList_YesNoInfo[] =
 {
     {gText_Yes},
@@ -439,43 +431,6 @@ static const struct MenuAction MultichoiceList_BattleMode[] =
     {gText_DoubleBattle},
     {gText_MultiBattle},
     {gText_Info2},
-    {gText_Salir},
-};
-
-static const struct MenuAction MultichoiceList_LinkServicesNoRecord[] =
-{
-    {gText_TradeCenter},
-    {gText_Colosseum},
-    {gText_BerryCrush3},
-    {gText_Salir},
-};
-
-static const struct MenuAction MultichoiceList_LinkServicesAll[] =
-{
-    {gText_TradeCenter},
-    {gText_Colosseum},
-    {gText_RecordCorner},
-    {gText_BerryCrush3},
-    {gText_Salir},
-};
-
-static const struct MenuAction MultichoiceList_LinkServicesNoRecordBerry[] =
-{
-    {gText_TradeCenter},
-    {gText_Colosseum},
-    {gText_Salir},
-};
-
-static const struct MenuAction MultichoiceList_WirelessMinigame[] =
-{
-    {gText_DodrioBerryPicking},
-    {gText_Salir},
-};
-
-static const struct MenuAction MultichoiceList_LinkLeader[] =
-{
-    {gText_JoinGroup},
-    {gText_BecomeLeader},
     {gText_Salir},
 };
 
@@ -644,12 +599,6 @@ static const struct MultichoiceListStruct sMultichoiceLists[] =
     [MULTI_SHARDS_YBG]                 = MULTICHOICE(MultichoiceList_ShardsYBG),
     [MULTI_SHARDS_RYBG]                = MULTICHOICE(MultichoiceList_ShardsRYBG),
     [MULTI_TOURNEY_WITH_RECORD]        = MULTICHOICE(MultichoiceList_TourneyWithRecord),
-    [MULTI_WIRELESS_NO_RECORD_BERRY]   = MULTICHOICE(MultichoiceList_LinkServicesNoRecordBerry),
-    [MULTI_WIRELESS_NO_BERRY]          = MULTICHOICE(MultichoiceList_LinkServicesNoBerry),
-    [MULTI_WIRELESS_NO_RECORD]         = MULTICHOICE(MultichoiceList_LinkServicesNoRecord),
-    [MULTI_WIRELESS_ALL_SERVICES]      = MULTICHOICE(MultichoiceList_LinkServicesAll),
-    [MULTI_WIRELESS_MINIGAME]          = MULTICHOICE(MultichoiceList_WirelessMinigame),
-    [MULTI_LINK_LEADER]                = MULTICHOICE(MultichoiceList_LinkLeader),
     [MULTI_CONTEST_RANK]               = MULTICHOICE(MultichoiceList_ContestRank),
     [MULTI_FORCED_START_MENU]          = MULTICHOICE(MultichoiceList_ForcedStartMenu),
     [MULTI_FOSSIL]                     = MULTICHOICE(MultichoiceList_Fossil),
@@ -689,15 +638,6 @@ const u8 *const gStdStrings[] =
     [STDSTRING_SINGLE] = gText_Single2,
     [STDSTRING_DOUBLE] = gText_Double2,
     [STDSTRING_MULTI] = gText_Multi,
-    [STDSTRING_MULTI_LINK] = gText_MultiLink,
-};
-
-static const u8 sLinkServicesMultichoiceIds[] =
-{
-    MULTI_WIRELESS_NO_RECORD_BERRY,
-    MULTI_WIRELESS_NO_BERRY,
-    MULTI_WIRELESS_NO_RECORD,
-    MULTI_WIRELESS_ALL_SERVICES
 };
 
 static const u8 *const sLilycoveSSTidalDestinations[SSTIDAL_COUNT] =

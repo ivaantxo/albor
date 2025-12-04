@@ -362,9 +362,6 @@ gText_PokemonTrainerSchoolEmail::
 gText_PlayerHouseBootPC::
 	.string "{PLAYER} booted up the PC.$"
 
-gText_PokeblockLinkCanceled::
-	.string "The link was canceled.$"
-
 gText_PlayerWhitedOut::
 	.string "{PLAYER} is out of usable\n"
 	.string "POKéMON!\p{PLAYER} whited out!$"
@@ -442,11 +439,6 @@ gText_DoorOpenedFarAway::
 gText_BigHoleInTheWall::
 	.string "There is a big hole in the wall.$"
 
-gText_SorryWirelessClubAdjustments::
-	.string "I'm terribly sorry.\n"
-	.string "The POKéMON WIRELESS CLUB is\l"
-	.string "undergoing adjustments now.$"
-
 gText_UndergoingAdjustments::
 	.string "It appears to be undergoing\n"
 	.string "adjustments…$"
@@ -480,9 +472,6 @@ EventScript_SelectWithoutRegisteredItem::
 	.include "data/scripts/field_poison.inc"
 
 Common_EventScript_UnionRoomAttendant::
-	end
-
-Common_EventScript_WirelessClubAttendant::
 	end
 
 Common_EventScript_DirectCornerAttendant::

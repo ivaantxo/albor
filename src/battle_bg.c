@@ -10,7 +10,6 @@
 #include "decompress.h"
 #include "gpu_regs.h"
 #include "graphics.h"
-#include "link.h"
 #include "main.h"
 #include "menu.h"
 #include "overworld.h"

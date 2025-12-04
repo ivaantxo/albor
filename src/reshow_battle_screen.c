@@ -9,7 +9,6 @@
 #include "gpu_regs.h"
 #include "bg.h"
 #include "battle_controllers.h"
-#include "link.h"
 #include "sprite.h"
 #include "constants/trainers.h"
 #include "battle_interface.h"

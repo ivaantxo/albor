@@ -18,7 +18,6 @@
 #include "item_menu_icons.h"
 #include "item_use.h"
 #include "list_menu.h"
-#include "link.h"
 #include "mail.h"
 #include "main.h"
 #include "malloc.h"

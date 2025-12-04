@@ -14,7 +14,6 @@
 #include "graphics.h"
 #include "item.h"
 #include "item_menu.h"
-#include "link.h"
 #include "main.h"
 #include "m4a.h"
 #include "palette.h"
@@ -71,7 +70,6 @@ static void PlayerHandleIntroTrainerBallThrow(u32 battler);
 static void PlayerHandleDrawPartyStatusSummary(u32 battler);
 static void PlayerHandleEndBounceEffect(u32 battler);
 static void PlayerHandleBattleAnimation(u32 battler);
-static void PlayerHandleLinkStandbyMsg(u32 battler);
 static void PlayerHandleResetActionMoveSelection(u32 battler);
 static void PlayerHandleBattleDebug(u32 battler);
 
@@ -141,7 +139,6 @@ static void (*const sPlayerBufferCommands[CONTROLLER_CMDS_COUNT])(u32 battler) =
     [CONTROLLER_ENDBOUNCE]                = PlayerHandleEndBounceEffect,
     [CONTROLLER_SPRITEINVISIBILITY]       = BtlController_HandleSpriteInvisibility,
     [CONTROLLER_BATTLEANIMATION]          = PlayerHandleBattleAnimation,
-    [CONTROLLER_LINKSTANDBYMSG]           = PlayerHandleLinkStandbyMsg,
     [CONTROLLER_RESETACTIONMOVESELECTION] = PlayerHandleResetActionMoveSelection,
     [CONTROLLER_DEBUGMENU]                = PlayerHandleBattleDebug,
     [CONTROLLER_TERMINATOR_NOP]           = BtlController_TerminatorNop
@@ -1868,23 +1865,6 @@ static void PlayerHandleSwitchInAnim(u32 battler)
     BtlController_HandleSwitchInAnim(battler, TRUE, SwitchIn_TryShinyAnimShowHealthbox);
 }
 
-u32 LinkPlayerGetTrainerPicId(u32 multiplayerId)
-{
-    u32 trainerPicId;
-
-    u8 gender = gLinkPlayers[multiplayerId].gender;
-    u8 version = gLinkPlayers[multiplayerId].version & 0xFF;
-
-    if (version == VERSION_FIRE_RED || version == VERSION_LEAF_GREEN)
-        trainerPicId = gender + TRAINER_BACK_PIC_RED;
-    else if (version == VERSION_RUBY || version == VERSION_SAPPHIRE)
-        trainerPicId = gender + TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN;
-    else
-        trainerPicId = gender + TRAINER_BACK_PIC_BRENDAN;
-
-    return trainerPicId;
-}
-
 static u32 PlayerGetTrainerBackPicId(void)
 {
     u32 trainerPicId = gSaveBlockPtr->playerGender + TRAINER_BACK_PIC_BRENDAN;
@@ -2168,21 +2148,6 @@ static void PlayerHandleEndBounceEffect(u32 battler)
 static void PlayerHandleBattleAnimation(u32 battler)
 {
     BtlController_HandleBattleAnimation(battler, TRUE);
-}
-
-static void PlayerHandleLinkStandbyMsg(u32 battler)
-{
-    switch (gBattleResources->bufferA[battler][1])
-    {
-    case LINK_STANDBY_MSG_STOP_BOUNCE:
-    case LINK_STANDBY_STOP_BOUNCE_ONLY:
-        EndBounceEffect(battler, BOUNCE_HEALTHBOX);
-        EndBounceEffect(battler, BOUNCE_MON);
-        break;
-    case LINK_STANDBY_MSG_ONLY:
-        break;
-    }
-    PlayerBufferExecCompleted(battler);
 }
 
 static void PlayerHandleResetActionMoveSelection(u32 battler)

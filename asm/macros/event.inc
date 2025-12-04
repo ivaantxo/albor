@@ -1550,13 +1550,6 @@
 	.byte SCR_CMD_lockfortrainer
 	.endm
 
-	@ Prints and draws the message all at once rather than character by character.
-	@ Does not wait for player input to continue.
-	.macro messageinstant text:req
-	.byte SCR_CMD_messageinstant
-	.4byte \text
-	.endm
-
 	@ Equivalent to fadescreen but copies gPlttBufferUnfaded to gDecompressionBuffer on the fade out
 	@ and the reverse on the fade in, in effect saving gPlttBufferUnfaded to restore it.
   @ If nowait set, does not wait for the fade to complete

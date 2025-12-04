@@ -11,7 +11,6 @@
 #include "gpu_regs.h"
 #include "graphics.h"
 #include "international_string_util.h"
-#include "link.h"
 #include "main.h"
 #include "main_menu.h"
 #include "menu.h"
@@ -265,7 +264,6 @@ static const u8 gText_MainMenuOption[] = _("OPTION");
 static const u8 gText_MainMenuMysteryGift[] = _("MYSTERY GIFT");
 static const u8 gText_MainMenuMysteryGift2[] = _("MYSTERY GIFT");
 static const u8 gText_MainMenuMysteryEvents[] = _("MYSTERY EVENTS");
-static const u8 gText_WirelessNotConnected[] = _("The Wireless Adapter is not\nconnected.");
 static const u8 gText_MysteryGiftCantUse[] = _("MYSTERY GIFT can't be used while\nthe Wireless Adapter is attached.");
 static const u8 gText_MysteryEventsCantUse[] = _("MYSTERY EVENTS can't be used while\nthe Wireless Adapter is attached.");
 
@@ -610,7 +608,6 @@ static u32 InitMainMenu(bool8 returningFromOptionsMenu)
 #define tItemCount data[12]
 #define tScrollArrowTaskId data[13]
 #define tIsScrolled data[14]
-#define tWirelessAdapterConnected data[15]
 
 #define tArrowTaskIsScrolled data[15]   // For scroll indicator arrow task
 
@@ -969,7 +966,6 @@ static void Task_DisplayMainMenuInvalidActionError(u8 taskId)
 #undef tItemCount
 #undef tScrollArrowTaskId
 #undef tIsScrolled
-#undef tWirelessAdapterConnected
 
 #undef tArrowTaskIsScrolled
 

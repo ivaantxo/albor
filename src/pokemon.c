@@ -14,7 +14,6 @@
 #include "field_weather.h"
 #include "graphics.h"
 #include "item.h"
-#include "link.h"
 #include "main.h"
 #include "overworld.h"
 #include "m4a.h"
@@ -2600,51 +2599,6 @@ void EvolutionRenameMon(struct Pokemon *mon, u16 oldSpecies, u16 newSpecies)
         SetMonData(mon, MON_DATA_NICKNAME, GetSpeciesName(newSpecies));
 }
 
-// The below two functions determine which side of a multi battle the trainer battles on
-// 0 is the left (top in  party menu), 1 is right (bottom in party menu)
-u8 GetPlayerFlankId(void)
-{
-    u8 flankId = 0;
-    switch (gLinkPlayers[GetMultiplayerId()].id)
-    {
-    case 0:
-    case 3:
-        flankId = 0;
-        break;
-    case 1:
-    case 2:
-        flankId = 1;
-        break;
-    }
-    return flankId;
-}
-
-u16 GetLinkTrainerFlankId(u8 linkPlayerId)
-{
-    u16 flankId = 0;
-    switch (gLinkPlayers[linkPlayerId].id)
-    {
-    case 0:
-    case 3:
-        flankId = 0;
-        break;
-    case 1:
-    case 2:
-        flankId = 1;
-        break;
-    }
-    return flankId;
-}
-
-s32 GetBattlerMultiplayerId(u16 id)
-{
-    s32 multiplayerId;
-    for (multiplayerId = 0; multiplayerId < MAX_LINK_PLAYERS; multiplayerId++)
-        if (gLinkPlayers[multiplayerId].id == id)
-            break;
-    return multiplayerId;
-}
-
 u8 GetTrainerEncounterMusicId(u16 trainerOpponentId)
 {
     return gTrainers[SanitizeTrainerId(trainerOpponentId)].encounterMusic_gender & (F_TRAINER_FEMALE - 1);
@@ -3591,29 +3545,6 @@ void BattleAnimateBackSprite(struct Sprite *sprite, u16 species)
         LaunchAnimationTaskForBackSprite(sprite, GetSpeciesBackAnimSet(species));
         sprite->callback = SpriteCallbackDummy;
     }
-}
-
-u8 GetOpposingLinkMultiBattlerId(bool8 rightSide, u8 multiplayerId)
-{
-    s32 i;
-    s32 battlerId = 0;
-    switch (gLinkPlayers[multiplayerId].id)
-    {
-    case 0:
-    case 2:
-        battlerId = rightSide ? 1 : 3;
-        break;
-    case 1:
-    case 3:
-        battlerId = rightSide ? 2 : 0;
-        break;
-    }
-    for (i = 0; i < MAX_LINK_PLAYERS; i++)
-    {
-        if (gLinkPlayers[i].id == (s16)battlerId)
-            break;
-    }
-    return i;
 }
 
 u16 PlayerGenderToFrontTrainerPicId(u8 playerGender)

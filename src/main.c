@@ -1,7 +1,6 @@
 #include "global.h"
 #include "crt0.h"
 #include "malloc.h"
-#include "link.h"
 #include "m4a.h"
 #include "bg.h"
 #include "rtc.h"
@@ -25,7 +24,6 @@
 static void VBlankIntr(void);
 static void HBlankIntr(void);
 static void VCountIntr(void);
-static void SerialIntr(void);
 static void IntrDummy(void);
 
 // Defined in the linker script so that the test build can override it.
@@ -38,8 +36,8 @@ const char BuildDateTime[] = "2005 02 21 11:10";
 const IntrFunc gIntrTableTemplate[] =
 {
     VCountIntr, // V-count interrupt
-    SerialIntr, // Serial interrupt
-    Timer3Intr, // Timer 3 interrupt
+    IntrDummy, // Serial interrupt
+    IntrDummy, // Timer 3 interrupt
     HBlankIntr, // H-blank interrupt
     VBlankIntr, // V-blank interrupt
     IntrDummy,  // Timer 0 interrupt
@@ -236,12 +234,6 @@ void SetVCountCallback(IntrCallback callback)
     gMain.vcountCallback = callback;
 }
 
-void RestoreSerialTimer3IntrHandlers(void)
-{
-    gIntrTable[1] = SerialIntr;
-    gIntrTable[2] = Timer3Intr;
-}
-
 void SetSerialCallback(IntrCallback callback)
 {
     gMain.serialCallback = callback;
@@ -290,15 +282,6 @@ static void VCountIntr(void)
     m4aSoundVSync();
     INTR_CHECK |= INTR_FLAG_VCOUNT;
     gMain.intrCheck |= INTR_FLAG_VCOUNT;
-}
-
-static void SerialIntr(void)
-{
-    if (gMain.serialCallback)
-        gMain.serialCallback();
-
-    INTR_CHECK |= INTR_FLAG_SERIAL;
-    gMain.intrCheck |= INTR_FLAG_SERIAL;
 }
 
 static void IntrDummy(void)

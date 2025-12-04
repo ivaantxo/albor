@@ -9,7 +9,6 @@
 #include "evolution_graphics.h"
 #include "gpu_regs.h"
 #include "item.h"
-#include "link.h"
 #include "m4a.h"
 #include "main.h"
 #include "menu.h"
@@ -56,7 +55,7 @@ static void EvoDummyFunc(void);
 static void VBlankCB_EvolutionScene(void);
 static void EvoScene_DoMonAnimAndCry(u8 monSpriteId, u16 speciesId);
 static bool32 EvoScene_IsMonAnimFinished(u8 monSpriteId);
-static void StartBgAnimation(bool8 isLink);
+static void StartBgAnimation(void);
 static void StopBgAnimation(void);
 static void Task_AnimateBg(u8 taskId);
 static void RestoreBgAfterAnim(void);
@@ -519,7 +518,7 @@ static void Task_EvolutionScene(u8 taskId)
     case EVOSTATE_START_BG_AND_SPARKLE_SPIRAL:
         if (!gFundidoPaletas.activo)
         {
-            StartBgAnimation(FALSE);
+            StartBgAnimation();
             sEvoGraphicsTaskId = EvolutionSparkles_SpiralUpward(17);
             gTasks[taskId].tState++;
         }
@@ -946,18 +945,6 @@ static void Task_UpdateBgPalette(u8 taskId)
 #undef CYCLES
 #undef DELAY
 
-#define tIsLink data[2]
-
-static void CreateBgAnimTask(bool8 isLink)
-{
-    u8 taskId = CreateTask(Task_AnimateBg, 7);
-
-    if (!isLink)
-        gTasks[taskId].tIsLink = FALSE;
-    else
-        gTasks[taskId].tIsLink = TRUE;
-}
-
 static void Task_AnimateBg(u8 taskId)
 {
     u16 *outer_X, *outer_Y;
@@ -965,16 +952,8 @@ static void Task_AnimateBg(u8 taskId)
     u16 *inner_X = &gBattle_BG1_X;
     u16 *inner_Y = &gBattle_BG1_Y;
 
-    if (!gTasks[taskId].tIsLink)
-    {
-        outer_X = &gBattle_BG2_X;
-        outer_Y = &gBattle_BG2_Y;
-    }
-    else
-    {
-        outer_X = &gBattle_BG3_X;
-        outer_Y = &gBattle_BG3_Y;
-    }
+    outer_X = &gBattle_BG2_X;
+    outer_Y = &gBattle_BG2_Y;
 
     gTasks[taskId].data[0] = (gTasks[taskId].data[0] + 5) & 0xFF;
     gTasks[taskId].data[1] = (gTasks[taskId].data[0] + 0x80) & 0xFF;
@@ -997,8 +976,6 @@ static void Task_AnimateBg(u8 taskId)
     }
 }
 
-#undef tIsLink
-
 static void InitMovingBgPalette(u16 *palette)
 {
     s32 i, j;
@@ -1012,17 +989,14 @@ static void InitMovingBgPalette(u16 *palette)
     }
 }
 
-static void StartBgAnimation(bool8 isLink)
+static void StartBgAnimation(void)
 {
     u8 innerBgId, outerBgId;
 
     sBgAnimPal = AllocZeroed(0x640);
     InitMovingBgPalette(sBgAnimPal);
 
-    if (!isLink)
-        innerBgId = 1, outerBgId = 2;
-    else
-        innerBgId = 1, outerBgId = 3;
+    innerBgId = 1, outerBgId = 2;
 
     LoadPalette(sBgAnim_Intro_Pal, BG_PLTT_ID(10), PLTT_SIZE_4BPP);
 
@@ -1032,27 +1006,18 @@ static void StartBgAnimation(bool8 isLink)
     CopyBgTilemapBufferToVram(innerBgId);
     CopyBgTilemapBufferToVram(outerBgId);
 
-    if (!isLink)
-    {
-        SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_BG1 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_BG2);
-        SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(8, 8));
-        SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_BG2_ON | DISPCNT_BG1_ON | DISPCNT_BG0_ON | DISPCNT_OBJ_1D_MAP);
+    SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_BG1 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_BG2);
+    SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(8, 8));
+    SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_BG2_ON | DISPCNT_BG1_ON | DISPCNT_BG0_ON | DISPCNT_OBJ_1D_MAP);
 
-        SetBgAttribute(innerBgId, BG_ATTR_PRIORITY, 2);
-        SetBgAttribute(outerBgId, BG_ATTR_PRIORITY, 2);
+    SetBgAttribute(innerBgId, BG_ATTR_PRIORITY, 2);
+    SetBgAttribute(outerBgId, BG_ATTR_PRIORITY, 2);
 
-        ShowBg(1);
-        ShowBg(2);
-    }
-    else
-    {
-        SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_BG1 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_BG3);
-        SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(8, 8));
-        SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_BG3_ON | DISPCNT_BG1_ON | DISPCNT_BG0_ON | DISPCNT_OBJ_1D_MAP);
-    }
+    ShowBg(1);
+    ShowBg(2);
 
     CreateTask(Task_UpdateBgPalette, 5);
-    CreateBgAnimTask(isLink);
+    CreateTask(Task_AnimateBg, 7);
 }
 
 #undef tPaused

@@ -110,4 +110,4 @@ static void CB2_HandleStartBattle(void) es una locura sin sentido --> MULTIUSE_S
 
 //revisar animación y crear efecto de Triataque
 //unificar frozen/frostbite
-//revisar cantidad de daño, hay algo raro creo
+//solucionar: problema de que se envían 2 pokémon 2 veces + problema iconos al debilitarse un pokémon (quizá también con 2)

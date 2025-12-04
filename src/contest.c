@@ -8,7 +8,6 @@
 #include "data.h"
 #include "decompress.h"
 #include "graphics.h"
-#include "link.h"
 #include "m4a.h"
 #include "main.h"
 #include "menu.h"
@@ -245,7 +244,6 @@ enum {
 // States for Task_DoAppeals
 enum {
     APPEALSTATE_START_TURN,
-    APPEALSTATE_WAIT_LINK,
     APPEALSTATE_CHECK_SKIP_TURN,
     APPEALSTATE_SLIDE_MON_IN,
     APPEALSTATE_WAIT_SLIDE_MON,
@@ -1623,10 +1621,6 @@ static void Task_DoAppeals(u8 taskId)
         CalculateAppealMoveImpact(eContest.currentContestant);
         gTasks[taskId].tState = APPEALSTATE_CHECK_SKIP_TURN;
         return;
-    case APPEALSTATE_WAIT_LINK:
-        if (!eContest.waitForLink)
-            gTasks[taskId].tState = APPEALSTATE_CHECK_SKIP_TURN;
-        return;
     case APPEALSTATE_CHECK_SKIP_TURN:
         return;
     case APPEALSTATE_SLIDE_MON_IN:
@@ -2328,8 +2322,7 @@ static void Task_FinishRoundOfAppeals(u8 taskId)
         gTasks[taskId].data[0] = 2;
         break;
     case 1:
-        if (!eContest.waitForLink)
-            gTasks[taskId].data[0] = 2;
+        gTasks[taskId].data[0] = 2;
         break;
     case 2:
         gTasks[taskId].data[0] = 0;
@@ -4631,8 +4624,7 @@ static void Task_ResetForNextRound(u8 taskId)
         gTasks[taskId].data[0] = 3;
         break;
     case 2:
-        if (!eContest.waitForLink)
-            gTasks[taskId].data[0] = 3;
+        gTasks[taskId].data[0] = 3;
         break;
     case 3:
         DrawStatusSymbols();

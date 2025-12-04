@@ -23,7 +23,6 @@
 #include "gpu_regs.h"
 #include "international_string_util.h"
 #include "item.h"
-#include "link.h"
 #include "load_save.h"
 #include "main.h"
 #include "malloc.h"
@@ -2435,16 +2434,6 @@ static void HandleTurnActionSelectionState(void)
                 else
                     i = FALSE;
 
-                if ((!EsContraEntrenador())
-                    || (position & BIT_FLANK) != B_FLANK_LEFT
-                    || (*(&gBattleStruct->absentBattlerFlags) & (1u << GetBattlerAtPosition(BATTLE_PARTNER(position)))))
-                {
-                    BtlController_EmitLinkStandbyMsg(battler, BUFFER_A, LINK_STANDBY_MSG_STOP_BOUNCE, i);
-                }
-                else
-                {
-                    BtlController_EmitLinkStandbyMsg(battler, BUFFER_A, LINK_STANDBY_STOP_BOUNCE_ONLY, i);
-                }
                 MarkBattlerForControllerExec(battler);
                 gBattleCommunication[battler]++;
             }

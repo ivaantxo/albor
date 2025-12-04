@@ -9,8 +9,6 @@ void FadeInFromBlack(void);
 void FadeInFromWhite(void);
 void FieldCB_ContinueScriptHandleMusic(void);
 void FieldCB_ContinueScript(void);
-void FieldCB_ReturnToFieldCableLink(void);
-void FieldCB_ReturnToFieldWirelessLink(void);
 void FieldCB_DefaultWarpExit(void);
 void FieldCB_WarpExitFadeFromBlack(void);
 void FieldCB_WarpExitFadeFromWhite(void);

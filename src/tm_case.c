@@ -12,7 +12,6 @@
 #include "list_menu.h"
 #include "item.h"
 #include "item_menu.h"
-#include "link.h"
 #include "money.h"
 #include "overworld.h"
 #include "palette.h"

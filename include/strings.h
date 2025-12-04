@@ -59,7 +59,6 @@ extern const u8 gText_Berries2[];
 extern const u8 gText_Single2[];
 extern const u8 gText_Double2[];
 extern const u8 gText_Multi[];
-extern const u8 gText_MultiLink[];
 
 extern const u8 gText_Single[];
 extern const u8 gText_Double[];
@@ -158,7 +157,6 @@ extern const u8 gText_OkayToDeleteFromRegistry[];
 extern const u8 gText_RegisteredDataDeleted[];
 extern const u8 gText_DelRegist[];
 extern const u8 gText_CommErrorEllipsis[];
-extern const u8 gText_MoveCloserToLinkPartner[];
 extern const u8 gText_CommErrorCheckConnections[];
 extern const u8 gText_ABtnTitleScreen[];
 extern const u8 gText_ABtnRegistrationCounter[];
@@ -668,11 +666,6 @@ extern const u8 gText_TwoDashes[];
 
 extern const u8 *const gBagMenu_ReturnToStrings[];
 
-extern const u8 gText_NumPlayerLink[];
-extern const u8 gText_ConfirmLinkWhenPlayersReady[];
-extern const u8 gText_ConfirmStartLinkWithXPlayers[];
-extern const u8 gText_AwaitingLinkup[];
-extern const u8 gText_PleaseWaitForLink[];
 extern const u8 gText_BronzeCard[];
 extern const u8 gText_CopperCard[];
 extern const u8 gText_SilverCard[];
@@ -873,7 +866,6 @@ extern const u8 gText_JudgeBody[];
 extern const u8 gText_TowerInfo[];
 extern const u8 gText_BattleMon[];
 extern const u8 gText_BattleSalon[];
-extern const u8 gText_MultiLink2[];
 extern const u8 gText_Matchup[];
 extern const u8 gText_TourneyTree[];
 extern const u8 gText_DoubleKO[];
@@ -1257,17 +1249,7 @@ extern const u8 MatchCall_Text_Glacia[];
 extern const u8 MatchCall_Text_Drake[];
 extern const u8 MatchCall_Text_Wallace[];
 
-// Contest Link
-extern const u8 gText_ColorDarkGray[];
-extern const u8 gText_CommunicationStandby[];
-extern const u8 gText_AnnouncingResults[];
-extern const u8 gText_PreliminaryResults[];
-extern const u8 gText_Round2Results[];
-extern const u8 gText_ContestantsMonWon[];
-
 // Trainer Card
-extern const u8 gText_LinkCableBattles[];
-extern const u8 gText_LinkBattles[];
 extern const u8 gText_WaitingTrainerFinishReading[];
 extern const u8 gText_TrainerCardName[];
 extern const u8 gText_TrainerCardIDNo[];

@@ -190,7 +190,6 @@ extern bool8 ScrCmd_freerotatingtilepuzzle(struct ScriptContext *ctx);
 extern bool8 ScrCmd_warpmossdeepgym(struct ScriptContext *ctx);
 extern bool8 ScrCmd_selectapproachingtrainer(struct ScriptContext *ctx);
 extern bool8 ScrCmd_lockfortrainer(struct ScriptContext *ctx);
-extern bool8 ScrCmd_messageinstant(struct ScriptContext *ctx);
 extern bool8 ScrCmd_fadescreenswapbuffers(struct ScriptContext *ctx);
 extern bool8 ScrCmd_buffertrainerclassname(struct ScriptContext *ctx);
 extern bool8 ScrCmd_buffertrainername(struct ScriptContext *ctx);

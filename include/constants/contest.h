@@ -8,22 +8,16 @@
 
 #define CONTESTANT_NONE 0xFF
 
-#define LINK_CONTEST_FLAG_IS_LINK       (1 << 0)
-#define LINK_CONTEST_FLAG_IS_WIRELESS   (1 << 1)
-#define LINK_CONTEST_FLAG_HAS_RS_PLAYER (1 << 2)
-
 #define CONTEST_RANK_NORMAL  0
 #define CONTEST_RANK_SUPER   1
 #define CONTEST_RANK_HYPER   2
 #define CONTEST_RANK_MASTER  3
-#define CONTEST_RANK_LINK    4
 
 // States for VAR_CONTEST_TYPE
 #define CONTEST_TYPE_NPC_NORMAL  (CONTEST_RANK_NORMAL + 1)
 #define CONTEST_TYPE_NPC_SUPER   (CONTEST_RANK_SUPER + 1)
 #define CONTEST_TYPE_NPC_HYPER   (CONTEST_RANK_HYPER + 1)
 #define CONTEST_TYPE_NPC_MASTER  (CONTEST_RANK_MASTER + 1)
-#define CONTEST_TYPE_LINK        (CONTEST_RANK_LINK + 1)
 
 // IDs below - 1 are indexes into gSaveBlockPtr->contestWinners[]
 // CONTEST_WINNER_ARTIST is for the winner of the most recent contest, and is not saved.

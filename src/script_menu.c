@@ -55,7 +55,6 @@ static void Task_HandleMultichoiceGridInput(u8 taskId);
 static void DrawMultichoiceMenuDynamic(u8 left, u8 top, u8 argc, struct ListMenuItem *items, bool8 ignoreBPress, u32 initialRow, u8 maxBeforeScroll, u32 callbackSet);
 static void DrawMultichoiceMenu(u8 left, u8 top, u8 multichoiceId, bool8 ignoreBPress, u8 cursorPos);
 static void InitMultichoiceCheckWrap(bool8 ignoreBPress, u8 count, u8 windowId, u8 multichoiceId);
-static void DrawLinkServicesMultichoiceMenu(u8 multichoiceId);
 static void CreateLilycoveSSTidalMultichoice(void);
 static bool8 IsPicboxClosed(void);
 static void CreateStartMenuForPokenavTutorial(void);
@@ -430,17 +429,7 @@ static void DrawMultichoiceMenu(u8 left, u8 top, u8 multichoiceId, bool8 ignoreB
 
 static void InitMultichoiceCheckWrap(bool8 ignoreBPress, u8 count, u8 windowId, u8 multichoiceId)
 {
-    u32 i;
     u8 taskId;
-    sProcessInputDelay = 2;
-
-    for (i = 0; i < ARRAY_COUNT(sLinkServicesMultichoiceIds); i++)
-    {
-        if (sLinkServicesMultichoiceIds[i] == multichoiceId)
-        {
-            sProcessInputDelay = 12;
-        }
-    }
 
     taskId = CreateTask(Task_HandleMultichoiceInput, 80);
 
@@ -453,8 +442,6 @@ static void InitMultichoiceCheckWrap(bool8 ignoreBPress, u8 count, u8 windowId, 
 
     gTasks[taskId].tWindowId = windowId;
     gTasks[taskId].tMultichoiceId = multichoiceId;
-
-    DrawLinkServicesMultichoiceMenu(multichoiceId);
 }
 
 static void Task_HandleScrollingMultichoiceInput(u8 taskId)
@@ -527,11 +514,6 @@ static void Task_HandleMultichoiceInput(u8 taskId)
                 selection = Menu_ProcessInputNoWrap();
             else
                 selection = Menu_ProcessInput();
-
-            if (JOY_NEW(DPAD_UP | DPAD_DOWN))
-            {
-                DrawLinkServicesMultichoiceMenu(tMultichoiceId);
-            }
 
             if (selection != MENU_NOTHING_CHOSEN)
             {
@@ -890,18 +872,6 @@ void ClearToTransparentAndRemoveWindow(u8 windowId)
 {
     ClearStdWindowAndFrameToTransparent(windowId, TRUE);
     RemoveWindow(windowId);
-}
-
-static void DrawLinkServicesMultichoiceMenu(u8 multichoiceId)
-{
-    switch (multichoiceId)
-    {
-    case MULTI_WIRELESS_NO_BERRY:
-    case MULTI_WIRELESS_NO_RECORD:
-    case MULTI_WIRELESS_ALL_SERVICES:
-    case MULTI_WIRELESS_NO_RECORD_BERRY:
-        break;
-    }
 }
 
 bool16 ScriptMenu_CreateStartMenuForPokenavTutorial(void)

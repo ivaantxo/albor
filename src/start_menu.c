@@ -15,7 +15,6 @@
 #include "gpu_regs.h"
 #include "international_string_util.h"
 #include "item_menu.h"
-#include "link.h"
 #include "load_save.h"
 #include "main.h"
 #include "menu.h"
@@ -200,33 +199,6 @@ static const struct MenuAction sStartMenuItems[] =
     [MENU_ACTION_EXIT]            = {gText_MenuExit,    {.u8_void = StartMenuExitCallback}},
     [MENU_ACTION_RETIRE_SAFARI]   = {gText_MenuRetire,  {.u8_void = StartMenuSafariZoneRetireCallback}},
     [MENU_ACTION_DEBUG]           = {sText_MenuDebug,   {.u8_void = StartMenuDebugCallback}},
-};
-
-static const struct BgTemplate sBgTemplates_LinkBattleSave[] =
-{
-    {
-        .bg = 0,
-        .charBaseIndex = 2,
-        .mapBaseIndex = 31,
-        .screenSize = FONDO_32x32,
-        .paletteMode = MODO_PALETAS_4BPP,
-        .priority = 0,
-        .baseTile = 0
-    }
-};
-
-static const struct WindowTemplate sWindowTemplates_LinkBattleSave[] =
-{
-    {
-        .bg = 0,
-        .tilemapLeft = 2,
-        .tilemapTop = 15,
-        .width = 26,
-        .height = 4,
-        .paletteNum = 15,
-        .baseBlock = 0x194
-    },
-    DUMMY_WIN_TEMPLATE
 };
 
 static const struct WindowTemplate sSaveInfoWindowTemplate = {

@@ -25,7 +25,6 @@
 #include "battle_ai_main.h"
 #include "battle_ai_util.h"
 #include "event_data.h"
-#include "link.h"
 #include "malloc.h"
 #include "berry.h"
 #include "pokedex.h"
@@ -840,16 +839,6 @@ bool32 IsBattlerMarkedForControllerExec(u32 battler)
 void MarkBattlerForControllerExec(u32 battler)
 {
     gBattleControllerExecFlags |= 1u << battler;
-}
-
-void MarkBattlerReceivedLinkData(u32 battler)
-{
-    s32 i;
-
-    for (i = 0; i < GetLinkPlayerCount(); i++)
-        gBattleControllerExecFlags |= 1u << (battler + (i << 2));
-
-    gBattleControllerExecFlags &= ~(1u << (28 + battler));
 }
 
 const u8* CancelMultiTurnMoves(u32 battler)

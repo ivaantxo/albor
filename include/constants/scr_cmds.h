@@ -188,7 +188,6 @@ enum ScrCmds
     SCR_CMD_warpmossdeepgym,
     SCR_CMD_selectapproachingtrainer,
     SCR_CMD_lockfortrainer,
-    SCR_CMD_messageinstant,
     SCR_CMD_fadescreenswapbuffers,
     SCR_CMD_buffertrainerclassname,
     SCR_CMD_buffertrainername,

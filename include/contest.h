@@ -141,7 +141,6 @@ struct Contest
     bool16 animatingAudience:1;
     bool16 waitForAudienceBlend:1;
     bool16 sliderHeartsAnimating:1; // When the slider heart is appearing/disappearing
-    bool16 waitForLink:1;
     u8 mainTaskId;
     u8 judgeAttentionTaskId;
     u8 blendTaskId;
@@ -314,7 +313,6 @@ void LoadContestBgAfterMoveAnim(void);
 void CB2_StartContest(void);
 void CreateContestMonFromParty(u8 partyIndex);
 void SetContestants(u8 contestType, u8 rank);
-void SetLinkAIContestants(u8 contestType, u8 rank, bool32 isPostgame);
 u8 GetContestEntryEligibility(struct Pokemon *pkmn);
 void CalculateRound1Points(u8 contestCategory);
 bool8 IsSpeciesNotUnown(u16 species);

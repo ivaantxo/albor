@@ -8708,9 +8708,6 @@ BattleScript_PrintPlayerForfeited::
 	waitmessage B_WAIT_TIME_LONG
 	end2
 
-BattleScript_PrintPlayerForfeitedLinkBattle::
-	end2
-
 BattleScript_MirrorHerbCopyStatChangeEnd2::
 	call BattleScript_MirrorHerbCopyStatChange
 	end2

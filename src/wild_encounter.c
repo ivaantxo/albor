@@ -10,7 +10,6 @@
 #include "overworld.h"
 #include "pokeblock.h"
 #include "battle_setup.h"
-#include "link.h"
 #include "script.h"
 #include "battle_debug.h"
 #include "constants/abilities.h"

@@ -706,11 +706,11 @@ void ApplyWeatherColorMapIfIdle_Gradual(u8 colorMapIndex, u8 targetColorMapIndex
     }
 }
 
-void FadeScreen(u8 mode, s8 delay)
+void FadeScreen(u32 mode, s32 delay)
 {
     u32 fadeColor;
-    bool8 fadeOut;
-    bool8 useWeatherPal;
+    bool32 fadeOut;
+    bool32 useWeatherPal;
 
     switch (mode)
     {

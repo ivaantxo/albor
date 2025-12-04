@@ -63,7 +63,6 @@ void SetSerialCallback(IntrCallback callback);
 void InitFlashTimer(void);
 void DoSoftReset(void);
 void ClearPokemonCrySongs(void);
-void RestoreSerialTimer3IntrHandlers(void);
 void StartTimer1(void);
 size_t CountDigits(int value);
 
