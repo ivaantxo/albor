@@ -148,7 +148,6 @@ gSpecials::
 	def_special RetrieveLotteryNumber
 	def_special PickLotteryCornerTicket
 	def_special AccessHallOfFamePC
-	def_special Special_ShowDiploma
 	def_special CheckLeadMonCool
 	def_special CheckLeadMonBeauty
 	def_special CheckLeadMonCute

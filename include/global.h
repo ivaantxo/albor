@@ -74,8 +74,7 @@
 #define LOHALF(n) ((n) & 0xFFFF)
 
 // There are many quirks in the source code which have overarching behavioral differences from
-// a number of other files. For example, diploma.c seems to declare rodata before each use while
-// other files declare out of order and must be at the beginning. There are also a number of
+// a number of other files. There are also a number of
 // macros which differ from one file to the next due to the method of obtaining the result, such
 // as these below. Because of this, there is a theory (Two Team Theory) that states that these
 // programming projects had more than 1 "programming team" which utilized different macros for

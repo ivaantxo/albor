@@ -4,7 +4,6 @@
 #include "battle.h"
 #include "data.h"
 #include "decoration.h"
-#include "diploma.h"
 #include "event_data.h"
 #include "event_object_movement.h"
 #include "fieldmap.h"
@@ -108,12 +107,6 @@ static void ChangeDeoxysRockLevel(u8);
 static void Task_LoopWingFlapSE(u8);
 static void SetInitialFansOfPlayer(void);
 static u16 PlayerGainRandomTrainerFan(void);
-
-void Special_ShowDiploma(void)
-{
-    SetMainCallback2(CB2_ShowDiploma);
-    LockPlayerFieldControls();
-}
 
 void Special_ViewWallClock(void)
 {

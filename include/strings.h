@@ -831,7 +831,6 @@ extern const u8 gText_SingleBattle[];
 extern const u8 gText_DoubleBattle[];
 extern const u8 gText_MultiBattle[];
 extern const u8 gText_BerryCrush3[];
-extern const u8 gText_DodrioBerryPicking[];
 extern const u8 gText_JoinGroup[];
 extern const u8 gText_BecomeLeader[];
 extern const u8 gText_NormalRank[];
