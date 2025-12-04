@@ -16,7 +16,6 @@
 #include "save.h"
 #include "strings.h"
 #include "window.h"
-#include "credits.h"
 #include "bg.h"
 #include "constants/game_stat.h"
 #include "util.h"
@@ -71,7 +70,6 @@ static void ClearVramOamPltt_LoadHofPal(void);
 static void LoadHofGfx(void);
 static void InitHofBgs(void);
 static bool8 CreateHofConfettiSprite(void);
-static void StartCredits(void);
 static bool8 LoadHofBgs(void);
 static void Task_Hof_InitMonData(u8 taskId);
 static void Task_Hof_InitTeamSaveData(u8 taskId);
@@ -475,16 +473,6 @@ static void Task_Hof_InitTeamSaveData(u8 taskId)
     u32 i;
     struct HallofFameTeam *lastSavedTeam = (struct HallofFameTeam *)(gDecompressionBuffer);
 
-    if (!gHasHallOfFameRecords)
-    {
-        memset(gDecompressionBuffer, 0, SECTOR_SIZE);
-    }
-    else
-    {
-        if (LoadGameSave() != SAVE_STATUS_OK)
-            memset(gDecompressionBuffer, 0, SECTOR_SIZE);
-    }
-
     for (i = 0; i < HALL_OF_FAME_MAX_TEAMS; i++, lastSavedTeam++)
     {
         if (lastSavedTeam->mon[0].species == SPECIES_NONE)
@@ -762,14 +750,7 @@ static void Task_Hof_HandleExit(u8 taskId)
 
         TRY_FREE_AND_SET_NULL(sHofGfxPtr);
         TRY_FREE_AND_SET_NULL(sHofMonPtr);
-
-        StartCredits();
     }
-}
-
-static void StartCredits(void)
-{
-    SetMainCallback2(CB2_StartCreditsSequence);
 }
 
 #undef tDontSaveData

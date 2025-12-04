@@ -1,6 +1,5 @@
 #include "global.h"
 #include "main.h"
-#include "credits.h"
 #include "event_data.h"
 #include "hall_of_fame.h"
 #include "load_save.h"

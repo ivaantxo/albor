@@ -13,7 +13,6 @@
 #include "berry.h"
 #include "clock.h"
 #include "coins.h"
-#include "credits.h"
 #include "data.h"
 #include "daycare.h"
 #include "debug.h"
@@ -90,7 +89,6 @@ enum UtilDebugMenu
     DEBUG_UTIL_MENU_ITEM_WEATHER,
     DEBUG_UTIL_MENU_ITEM_CHECKWALLCLOCK,
     DEBUG_UTIL_MENU_ITEM_SETWALLCLOCK,
-    DEBUG_UTIL_MENU_ITEM_WATCHCREDITS,
     DEBUG_UTIL_MENU_ITEM_PLAYER_NAME,
     DEBUG_UTIL_MENU_ITEM_PLAYER_GENDER,
     DEBUG_UTIL_MENU_ITEM_PLAYER_ID,
@@ -363,7 +361,6 @@ static void DebugAction_Util_Weather(u8 taskId);
 static void DebugAction_Util_Weather_SelectId(u8 taskId);
 static void DebugAction_Util_CheckWallClock(u8 taskId);
 static void DebugAction_Util_SetWallClock(u8 taskId);
-static void DebugAction_Util_WatchCredits(u8 taskId);
 static void DebugAction_Util_Player_Name(u8 taskId);
 static void DebugAction_Util_Player_Gender(u8 taskId);
 static void DebugAction_Util_Player_Id(u8 taskId);
@@ -518,7 +515,6 @@ static const u8 sDebugText_Util_Weather[] =                  _("Set weather…{C
 static const u8 sDebugText_Util_Weather_ID[] =               _("Weather ID: {STR_VAR_3}\n{STR_VAR_1}\n{STR_VAR_2}");
 static const u8 sDebugText_Util_CheckWallClock[] =           _("Check wall clock…{CLEAR_TO 110}{RIGHT_ARROW}");
 static const u8 sDebugText_Util_SetWallClock[] =             _("Set wall clock…{CLEAR_TO 110}{RIGHT_ARROW}");
-static const u8 sDebugText_Util_WatchCredits[] =             _("Watch credits…{CLEAR_TO 110}{RIGHT_ARROW}");
 static const u8 sDebugText_Util_Player_Name[] =              _("Player name");
 static const u8 sDebugText_Util_Player_Gender[] =            _("Toggle gender");
 static const u8 sDebugText_Util_Player_Id[] =                _("New Trainer ID");
@@ -704,7 +700,6 @@ static const struct ListMenuItem sDebugMenu_Items_Utilities[] =
     [DEBUG_UTIL_MENU_ITEM_WEATHER]         = {sDebugText_Util_Weather,          DEBUG_UTIL_MENU_ITEM_WEATHER},
     [DEBUG_UTIL_MENU_ITEM_CHECKWALLCLOCK]  = {sDebugText_Util_CheckWallClock,   DEBUG_UTIL_MENU_ITEM_CHECKWALLCLOCK},
     [DEBUG_UTIL_MENU_ITEM_SETWALLCLOCK]    = {sDebugText_Util_SetWallClock,     DEBUG_UTIL_MENU_ITEM_SETWALLCLOCK},
-    [DEBUG_UTIL_MENU_ITEM_WATCHCREDITS]    = {sDebugText_Util_WatchCredits,     DEBUG_UTIL_MENU_ITEM_WATCHCREDITS},
     [DEBUG_UTIL_MENU_ITEM_PLAYER_NAME]     = {sDebugText_Util_Player_Name,      DEBUG_UTIL_MENU_ITEM_PLAYER_NAME},
     [DEBUG_UTIL_MENU_ITEM_PLAYER_GENDER]   = {sDebugText_Util_Player_Gender,    DEBUG_UTIL_MENU_ITEM_PLAYER_GENDER},
     [DEBUG_UTIL_MENU_ITEM_PLAYER_ID]       = {sDebugText_Util_Player_Id,        DEBUG_UTIL_MENU_ITEM_PLAYER_ID},
@@ -871,7 +866,6 @@ static void (*const sDebugMenu_Actions_Utilities[])(u8) =
     [DEBUG_UTIL_MENU_ITEM_WEATHER]         = DebugAction_Util_Weather,
     [DEBUG_UTIL_MENU_ITEM_CHECKWALLCLOCK]  = DebugAction_Util_CheckWallClock,
     [DEBUG_UTIL_MENU_ITEM_SETWALLCLOCK]    = DebugAction_Util_SetWallClock,
-    [DEBUG_UTIL_MENU_ITEM_WATCHCREDITS]    = DebugAction_Util_WatchCredits,
     [DEBUG_UTIL_MENU_ITEM_PLAYER_NAME]     = DebugAction_Util_Player_Name,
     [DEBUG_UTIL_MENU_ITEM_PLAYER_GENDER]   = DebugAction_Util_Player_Gender,
     [DEBUG_UTIL_MENU_ITEM_PLAYER_ID]       = DebugAction_Util_Player_Id,
@@ -2249,12 +2243,6 @@ static void DebugAction_Util_CheckWallClock(u8 taskId)
 static void DebugAction_Util_SetWallClock(u8 taskId)
 {
     Debug_DestroyMenu_Full_Script(taskId, PlayersHouse_2F_EventScript_SetWallClock);
-}
-
-static void DebugAction_Util_WatchCredits(u8 taskId)
-{
-    Debug_DestroyMenu_Full(taskId);
-    SetMainCallback2(CB2_StartCreditsSequence);
 }
 
 static void DebugAction_Util_Player_Name(u8 taskId)
