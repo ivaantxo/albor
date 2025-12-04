@@ -248,8 +248,6 @@ struct SpeciesInfo
     const u32 *paletteFemale;
     const u32 *shinyPalette;
     const u32 *shinyPaletteFemale;
-    const u32 *iconSprite;
-    const u32 *iconSpriteFemale;
     u8 frontPicSize; // The dimensions of this drawn pixel area.
     u8 frontPicSizeFemale; // The dimensions of this drawn pixel area.
     u8 frontPicYOffset; // The number of pixels between the drawn pixel area and the bottom edge.

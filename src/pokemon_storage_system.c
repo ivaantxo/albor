@@ -4389,7 +4389,7 @@ static u16 TryLoadMonIconTiles(u16 species, u32 personality)
     u32 i, offset;
 
     // Treat female mons as a seperate species as they may have a different icon than males
-    if (gSpeciesInfo[species].iconSpriteFemale != NULL && IsPersonalityFemale(species, personality))
+    if (gSpeciesInfo[species].followerDataFemale.images != NULL && IsPersonalityFemale(species, personality))
         species |= 1 << 15;
 
     // Search icon list for this species

@@ -3870,7 +3870,7 @@ bool32 SpeciesHasGenderDifferences(u16 species)
      || gSpeciesInfo[species].backPicFemale != NULL
      || gSpeciesInfo[species].paletteFemale != NULL
      || gSpeciesInfo[species].shinyPaletteFemale != NULL
-     || gSpeciesInfo[species].iconSpriteFemale != NULL)
+     || gSpeciesInfo[species].followerDataFemale.images != NULL)
         return TRUE;
 
     return FALSE;

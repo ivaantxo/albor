@@ -1546,7 +1546,7 @@ static const struct ObjectEventGraphicsInfo *InformacionGraficaDesdeEspecie(u32 
 {
     const struct ObjectEventGraphicsInfo *graphicsInfo = NULL;
 
-    if (gSpeciesInfo[especie].iconSpriteFemale != NULL)
+    if (gSpeciesInfo[especie].followerDataFemale.images != NULL)
     {
         if (hembra)
             graphicsInfo = &gSpeciesInfo[especie].followerDataFemale;
