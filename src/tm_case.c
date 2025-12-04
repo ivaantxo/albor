@@ -945,7 +945,7 @@ static void DrawPartyMonIcons(void)
             icon_x = i < 3 ? MON_ICON_START_X : MON_ICON_START_X + MON_ICON_PADDING;
             icon_y = i < 3 ? MON_ICON_START_Y + MON_ICON_PADDING * i : MON_ICON_START_Y + MON_ICON_PADDING * (i - 3);
         }
-        spriteIdData[i] = CreateMonIcon(species, icon_x, icon_y, 1, GetMonData(&gPlayerParty[i], MON_DATA_PERSONALITY));
+        spriteIdData[i] = CreaIconoPokemon(species, icon_x, icon_y, 1, GetMonData(&gPlayerParty[i], MON_DATA_PERSONALITY));
         u32 index = i < gPlayerPartyCount ? IndexOfSpritePaletteTag(ETIQUETA_ICONO_POKEMON + i) : 0xFF;
         LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality), OBJ_PLTT_ID(index), PLTT_SIZE_4BPP);
         DesplazaTonoPaleta(OBJ_PLTT_ID(index), personality);

@@ -939,7 +939,7 @@ static void CleanUpAiInfoWindow(u8 taskId)
     for (i = 0; i < MAX_BATTLERS_COUNT; i++)
     {
         if (data->spriteIds.aiIconSpriteIds[i] != 0xFF)
-            FreeAndDestroyMonIconSprite(&gSprites[data->spriteIds.aiIconSpriteIds[i]]);
+            BorraIconoPokemon(&gSprites[data->spriteIds.aiIconSpriteIds[i]]);
     }
     FreeAndDestroyMonPicSprite(data->aiMonSpriteId);
     ClearWindowTilemap(data->aiMovesWindowId);
@@ -972,7 +972,7 @@ static void Task_ShowAiPoints(u8 taskId)
         {
             if (i != data->aiBattlerId && IsBattlerAlive(i))
             {
-                data->spriteIds.aiIconSpriteIds[i] = CreateMonIcon(gBattleMons[i].species, 95 + (count * 60), 17, 0, 0);
+                data->spriteIds.aiIconSpriteIds[i] = CreaIconoPokemon(gBattleMons[i].species, 95 + (count * 60), 17, 0, 0);
                 gSprites[data->spriteIds.aiIconSpriteIds[i]].data[0] = i; // battler id
                 count++;
             }
@@ -1150,7 +1150,7 @@ static void Task_ShowAiKnowledge(u8 taskId)
         {
             if (GetBattlerSide(i) == B_SIDE_PLAYER && IsBattlerAlive(i))
             {
-                data->spriteIds.aiIconSpriteIds[i] = CreateMonIcon(gBattleMons[i].species, 95 + (count * 80), 17, 0, 0);
+                data->spriteIds.aiIconSpriteIds[i] = CreaIconoPokemon(gBattleMons[i].species, 95 + (count * 80), 17, 0, 0);
                 gSprites[data->spriteIds.aiIconSpriteIds[i]].data[0] = i; // battler id
                 count++;
             }
@@ -1213,7 +1213,7 @@ static void Task_ShowAiParty(u8 taskId)
             u16 species = SPECIES_NONE; // Question mark
             if (aiMons[i].wasSentInBattle && aiMons[i].species)
                 species = aiMons[i].species;
-            data->spriteIds.aiPartyIcons[i] = CreateMonIcon(species, (i * 41) + 15, 7, 1, 0);
+            data->spriteIds.aiPartyIcons[i] = CreaIconoPokemon(species, (i * 41) + 15, 7, 1, 0);
             gSprites[data->spriteIds.aiPartyIcons[i]].oam.priority = 0;
 
             gSprites[data->spriteIds.aiPartyIcons[i]].sConditionSpriteId = CreateSprite(&gSpriteTemplate_StatusIcons, (i * 41) + 15, 7, 0);
@@ -1276,7 +1276,7 @@ static void SwitchToDebugViewFromAiParty(u8 taskId)
         if (data->spriteIds.aiPartyIcons[i] != 0xFF)
         {
             DestroySpriteAndFreeResources(&gSprites[gSprites[data->spriteIds.aiPartyIcons[i]].sConditionSpriteId]);
-            FreeAndDestroyMonIconSprite(&gSprites[data->spriteIds.aiPartyIcons[i]]);
+            BorraIconoPokemon(&gSprites[data->spriteIds.aiPartyIcons[i]]);
         }
     }
     ClearWindowTilemap(data->aiMovesWindowId);

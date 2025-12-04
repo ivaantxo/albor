@@ -3378,7 +3378,7 @@ static void CreatePartyMonIconSprite(struct Pokemon *mon, struct PartyMenuBox *m
 
     if (species != SPECIES_NONE)
     {
-        menuBox->monSpriteId = CreateMonIcon(species, menuBox->spriteCoords[0], menuBox->spriteCoords[1], 4, personality);
+        menuBox->monSpriteId = CreaIconoPokemon(species, menuBox->spriteCoords[0], menuBox->spriteCoords[1], 4, personality);
         gSprites[menuBox->monSpriteId].oam.priority = 1;
         LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality), OBJ_PLTT_ID(2 + slot), PLTT_SIZE_4BPP);
         DesplazaTonoPaleta(OBJ_PLTT_ID(2 + slot), personality);
@@ -3392,10 +3392,17 @@ static void CreatePartyMonIconSpriteParameterized(u16 species, u32 pid, struct P
 {
     if (species != SPECIES_NONE)
     {
-        menuBox->monSpriteId = CreateMonIcon(species, menuBox->spriteCoords[0], menuBox->spriteCoords[1], 4, pid);
+        menuBox->monSpriteId = CreaIconoPokemon(species, menuBox->spriteCoords[0], menuBox->spriteCoords[1], 4, pid);
         gSprites[menuBox->monSpriteId].oam.priority = priority;
         gSprites[menuBox->monSpriteId].oam.priority = priority;
     }
+}
+
+static void SetPartyHPBarSprite(struct Sprite *sprite, u8 animNum)
+{
+    sprite->animNum = animNum;
+    sprite->animDelayCounter = 0;
+    sprite->animCmdIndex = 0;
 }
 
 static void UpdateHPBar(u8 spriteId, u16 hp, u16 maxhp)
@@ -5161,7 +5168,7 @@ static void Task_TryItemUseFormChange(u8 taskId)
 
         if (gTasks[taskId].tAnimWait == 0)
         {
-            FreeAndDestroyMonIconSprite(icon);
+            BorraIconoPokemon(icon);
             CreatePartyMonIconSpriteParameterized(targetSpecies, GetMonData(mon, MON_DATA_PERSONALITY, NULL), &sPartyMenuBoxes[gPartyMenu.slotId], 1);
             icon->oam.mosaic = TRUE;
             icon->data[0] = 10;

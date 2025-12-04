@@ -185,12 +185,6 @@ enum {
 #define BOXID_CANCELED    201
 
 enum {
-    PALTAG_MON_ICON_0 = ETIQUETA_ICONO_POKEMON, // Used implicitly in CreateMonIconSprite
-    PALTAG_MON_ICON_1, // Used implicitly in CreateMonIconSprite
-    PALTAG_MON_ICON_2, // Used implicitly in CreateMonIconSprite
-    PALTAG_MON_ICON_3, // Used implicitly in CreateMonIconSprite
-    PALTAG_MON_ICON_4, // Used implicitly in CreateMonIconSprite
-    PALTAG_MON_ICON_5, // Used implicitly in CreateMonIconSprite
     PALTAG_DISPLAY_MON,
     PALTAG_MISC,
     PALTAG_BOX_TITLE,
@@ -891,7 +885,7 @@ static const struct OamData sOamData_MonIcon;
 static const struct SpriteTemplate sSpriteTemplate_MonIcon =
 {
     .tileTag = GFXTAG_MON_ICON,
-    .paletteTag = PALTAG_MON_ICON_0,
+    .paletteTag = ETIQUETA_ICONO_POKEMON,
     .oam = &sOamData_MonIcon,
     .anims = gDummySpriteAnimTable,
     .images = NULL,
@@ -4419,7 +4413,7 @@ static u16 TryLoadMonIconTiles(u16 species, u32 personality)
     sStorage->numIconsPerSpecies[i]++;
     offset = PLTT_ID(i);
     species &= GENDER_MASK;
-    CopiaRapidaCpu(GetMonIconTiles(species, personality), (void *)(OBJ_VRAM0) + offset * TILE_SIZE_4BPP, 512);
+    CopiaRapidaCpu(ObtenGraficosIconoPokemon(species, personality), (void *)(OBJ_VRAM0) + offset * TILE_SIZE_4BPP, 512);
 
     return offset;
 }
@@ -4455,7 +4449,7 @@ static struct Sprite *CreateMonIconSprite(u16 species, u32 personality, s16 x, s
     u8 spriteId;
     struct SpriteTemplate template = sSpriteTemplate_MonIcon;
 
-    template.paletteTag = PALTAG_MON_ICON_0;
+    template.paletteTag = ETIQUETA_ICONO_POKEMON;
     tileNum = TryLoadMonIconTiles(species, personality);
     if (tileNum == 0xFFFF)
         return NULL;

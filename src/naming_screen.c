@@ -1384,14 +1384,14 @@ static void CreateTextEntrySprites(void)
 static void NamingScreen_NoIcon(void);
 static void NamingScreen_CreatePlayerIcon(void);
 static void NamingScreen_CreatePCIcon(void);
-static void NamingScreen_CreateMonIcon(void);
+static void NamingScreen_CreaIconoPokemon(void);
 
 static void (*const sIconFunctions[])(void) =
 {
     NamingScreen_NoIcon,
     NamingScreen_CreatePlayerIcon,
     NamingScreen_CreatePCIcon,
-    NamingScreen_CreateMonIcon,
+    NamingScreen_CreaIconoPokemon,
 };
 
 static void CreateInputTargetIcon(void)
@@ -1424,11 +1424,11 @@ static void NamingScreen_CreatePCIcon(void)
     gSprites[spriteId].oam.priority = 3;
 }
 
-static void NamingScreen_CreateMonIcon(void)
+static void NamingScreen_CreaIconoPokemon(void)
 {
     u8 spriteId;
 
-    spriteId = CreateMonIcon(sNamingScreen->monSpecies, 56, 40, 0, sNamingScreen->monPersonality);
+    spriteId = CreaIconoPokemon(sNamingScreen->monSpecies, 56, 40, 0, sNamingScreen->monPersonality);
     LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(sNamingScreen->monSpecies, sNamingScreen->isShiny, sNamingScreen->monPersonality), OBJ_PLTT_ID(15), PLTT_SIZE_4BPP);
     gSprites[spriteId].oam.paletteNum = 15;
     gSprites[spriteId].oam.priority = 3;

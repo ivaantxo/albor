@@ -1978,7 +1978,7 @@ static void PlayerHandleChooseAction(u32 battler)
 
     u16 species = GetMonData(&gPlayerParty[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES);
     u32 personality = GetMonData(&gPlayerParty[gBattlerPartyIndexes[battler]], MON_DATA_PERSONALITY);
-    monIconData = CreateMonIcon(species, 20, 132, 1, personality);
+    monIconData = CreaIconoPokemon(species, 20, 132, 1, personality);
     gSprites[monIconData].oam.priority = 0;
     StartSpriteAnim(&gSprites[monIconData], 0);
 }
