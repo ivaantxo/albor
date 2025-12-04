@@ -8,7 +8,7 @@
 #include "util.h"
 #include "data.h"
 #include "decompress.h"
-#include "constants/pokemon_icon.h"
+#include "constants/etiquetas.h"
 
 struct MonIconSpriteTemplate
 {
@@ -126,45 +126,30 @@ static const u16 sSpriteImageSizes[3][4] =
     },
 };
 
-u8 CreateMonIcon(u16 species, void (*callback)(struct Sprite *), s16 x, s16 y, u8 subpriority, u32 personality)
+u8 CreateMonIcon(u16 species, s16 x, s16 y, u8 subpriority, u32 personality)
 {
     u8 spriteId;
     struct MonIconSpriteTemplate iconTemplate =
     {
         .oam = &sMonIconOamData,
-        .image = GetMonIconTiles(species, personality),
+        .image = NULL,
         .anims = sMonIconAnims,
         .affineAnims = sMonIconAffineAnims,
-        .callback = callback,
-        .paletteTag = TAG_NONE,
+        .callback = SpriteCallbackDummy,
+        .paletteTag = ETIQUETA_ICONO_POKEMON,
     };
 
     spriteId = CreateMonIconSprite(&iconTemplate, x, y, subpriority);
-    UpdateMonIconFrame(&gSprites[spriteId]);
+
+    CopiaCpu32(GetMonIconTiles(species, personality),(void *)(OBJ_VRAM0 + gSprites[spriteId].oam.tileNum * TILE_SIZE_4BPP),512
+    );
 
     return spriteId;
-}
-
-// Solo se usa en los sistemas que no pueden ser shiny, por eso le pasamos un 0 en personalidad.
-u8 CreateMonIconNoPersonality(u16 species, void (*callback)(struct Sprite *), s16 x, s16 y, u8 subpriority)
-{
-    return CreateMonIcon(species, callback, x, y, subpriority, 0);
-}
-
-u16 GetIconSpecies(u16 species, u32 personality)
-{
-    species = SanitizeSpeciesId(species);
-    return species;
 }
 
 void FreeAndDestroyMonIconSprite(struct Sprite *sprite)
 {
     FreeAndDestroyMonIconSprite_(sprite);
-}
-
-void SpriteCB_MonIcon(struct Sprite *sprite)
-{
-    UpdateMonIconFrame(sprite);
 }
 
 const struct SpriteFrameImage *GetMonIconTiles(u16 species, u32 personality)
@@ -182,42 +167,6 @@ const struct SpriteFrameImage *GetMonIconTiles(u16 species, u32 personality)
         iconSprite = gSpeciesInfo[SPECIES_NONE].followerData.images->data;
 
     return iconSprite;
-}
-
-u8 UpdateMonIconFrame(struct Sprite *sprite)
-{
-    u8 result = 0;
-
-    if (sprite->animDelayCounter == 0)
-    {
-        s16 frame = sprite->anims[sprite->animNum][sprite->animCmdIndex].frame.imageValue;
-
-        switch (frame)
-        {
-        case -1:
-            break;
-        case -2:
-            sprite->animCmdIndex = 0;
-            break;
-        default:
-            RequestSpriteCopy(
-                // pointer arithmetic is needed to get the correct pointer to perform the sprite copy on.
-                // because sprite->images is a struct def, it has to be casted to (u8 *) before any
-                // arithmetic can be performed.
-                (u8 *)sprite->images + (sSpriteImageSizes[sprite->oam.shape][sprite->oam.size] * frame),
-                (u8 *)(OBJ_VRAM0 + sprite->oam.tileNum * TILE_SIZE_4BPP),
-                sSpriteImageSizes[sprite->oam.shape][sprite->oam.size]);
-            sprite->animDelayCounter = sprite->anims[sprite->animNum][sprite->animCmdIndex].frame.duration & 0xFF;
-            sprite->animCmdIndex++;
-            result = sprite->animCmdIndex;
-            break;
-        }
-    }
-    else
-    {
-        sprite->animDelayCounter--;
-    }
-    return result;
 }
 
 static u8 CreateMonIconSprite(struct MonIconSpriteTemplate *iconTemplate, s16 x, s16 y, u8 subpriority)

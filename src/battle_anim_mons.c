@@ -467,8 +467,6 @@ static void TranslateSpriteLinearFixedPointIconFrame(struct Sprite *sprite)
     {
         SetCallbackToStoredInData6(sprite);
     }
-
-    UpdateMonIconFrame(sprite);
 }
 
 // Same as TranslateSpriteLinear but takes an id to specify which sprite to move

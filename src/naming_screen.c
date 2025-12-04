@@ -28,7 +28,6 @@
 #include "util.h"
 #include "main.h"
 #include "constants/event_objects.h"
-#include "constants/pokemon_icon.h"
 #include "constants/rgb.h"
 
 enum {
@@ -1429,7 +1428,7 @@ static void NamingScreen_CreateMonIcon(void)
 {
     u8 spriteId;
 
-    spriteId = CreateMonIcon(sNamingScreen->monSpecies, SpriteCallbackDummy, 56, 40, 0, sNamingScreen->monPersonality);
+    spriteId = CreateMonIcon(sNamingScreen->monSpecies, 56, 40, 0, sNamingScreen->monPersonality);
     LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(sNamingScreen->monSpecies, sNamingScreen->isShiny, sNamingScreen->monPersonality), OBJ_PLTT_ID(15), PLTT_SIZE_4BPP);
     gSprites[spriteId].oam.paletteNum = 15;
     gSprites[spriteId].oam.priority = 3;

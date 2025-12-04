@@ -38,7 +38,6 @@
 #include "constants/items.h"
 #include "constants/moves.h"
 #include "constants/party_menu.h"
-#include "constants/pokemon_icon.h"
 #include "constants/songs.h"
 #include "constants/trainers.h"
 #include "constants/rgb.h"
@@ -1970,16 +1969,6 @@ static void HandleChooseActionAfterDma3(u32 battler)
     }
 }
 
-#define sMonIconStill data[3]
-
-static void SpriteCb_MonIcon(struct Sprite *sprite)
-{
-    if (!sprite->sMonIconStill)
-        UpdateMonIconFrame(sprite);
-}
-
-#undef sMonIconStill
-
 static void PlayerHandleChooseAction(u32 battler)
 {
     gBattlerControllerFuncs[battler] = HandleChooseActionAfterDma3;
@@ -1987,12 +1976,9 @@ static void PlayerHandleChooseAction(u32 battler)
     TryRestoreLastUsedBall();
     PREPARE_MON_NICK_BUFFER(gBattleTextBuff1, battler, gBattlerPartyIndexes[battler]);
 
-    //LoadMonIconPalettes();
     u16 species = GetMonData(&gPlayerParty[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES);
     u32 personality = GetMonData(&gPlayerParty[gBattlerPartyIndexes[battler]], MON_DATA_PERSONALITY);
-    monIconData = CreateMonIcon(species, SpriteCb_MonIcon, 20, 132, 1, personality);
-    //u32 index = IndexOfSpritePaletteTag(POKE_ICON_BASE_PAL_TAG);
-    //SetMonIconPalette(&gPlayerParty[gBattlerPartyIndexes[battler]], &gSprites[monIconData], index);
+    monIconData = CreateMonIcon(species, 20, 132, 1, personality);
     gSprites[monIconData].oam.priority = 0;
     StartSpriteAnim(&gSprites[monIconData], 0);
 }

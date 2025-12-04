@@ -968,14 +968,11 @@ static void Task_ShowAiPoints(u8 taskId)
         }
         data->battlerId = data->aiBattlerId;
 
-        //LoadMonIconPalettes();
         for (count = 0, i = 0; i < MAX_BATTLERS_COUNT; i++)
         {
             if (i != data->aiBattlerId && IsBattlerAlive(i))
             {
-                data->spriteIds.aiIconSpriteIds[i] = CreateMonIcon(gBattleMons[i].species,
-                                                         SpriteCallbackDummy,
-                                                         95 + (count * 60), 17, 0, 0);
+                data->spriteIds.aiIconSpriteIds[i] = CreateMonIcon(gBattleMons[i].species, 95 + (count * 60), 17, 0, 0);
                 gSprites[data->spriteIds.aiIconSpriteIds[i]].data[0] = i; // battler id
                 count++;
             }
@@ -1149,14 +1146,11 @@ static void Task_ShowAiKnowledge(u8 taskId)
                 data->aiBattlerId = 0;
         }
 
-        //LoadMonIconPalettes();
         for (count = 0, i = 0; i < MAX_BATTLERS_COUNT; i++)
         {
             if (GetBattlerSide(i) == B_SIDE_PLAYER && IsBattlerAlive(i))
             {
-                data->spriteIds.aiIconSpriteIds[i] = CreateMonIcon(gBattleMons[i].species,
-                                                         SpriteCallbackDummy,
-                                                         95 + (count * 80), 17, 0, 0);
+                data->spriteIds.aiIconSpriteIds[i] = CreateMonIcon(gBattleMons[i].species, 95 + (count * 80), 17, 0, 0);
                 gSprites[data->spriteIds.aiIconSpriteIds[i]].data[0] = i; // battler id
                 count++;
             }
@@ -1211,7 +1205,6 @@ static void Task_ShowAiParty(u8 taskId)
         HideBg(0);
         ShowBg(1);
 
-        //LoadMonIconPalettes();
         LoadPartyMenuAilmentGfx();
         data->aiBattlerId = data->battlerId;
         aiMons = AI_PARTY->mons[GetBattlerSide(data->aiBattlerId)];
@@ -1220,7 +1213,7 @@ static void Task_ShowAiParty(u8 taskId)
             u16 species = SPECIES_NONE; // Question mark
             if (aiMons[i].wasSentInBattle && aiMons[i].species)
                 species = aiMons[i].species;
-            data->spriteIds.aiPartyIcons[i] = CreateMonIcon(species, SpriteCallbackDummy, (i * 41) + 15, 7, 1, 0);
+            data->spriteIds.aiPartyIcons[i] = CreateMonIcon(species, (i * 41) + 15, 7, 1, 0);
             gSprites[data->spriteIds.aiPartyIcons[i]].oam.priority = 0;
 
             gSprites[data->spriteIds.aiPartyIcons[i]].sConditionSpriteId = CreateSprite(&gSpriteTemplate_StatusIcons, (i * 41) + 15, 7, 0);

@@ -63,7 +63,6 @@
 #include "constants/items.h"
 #include "constants/moves.h"
 #include "constants/party_menu.h"
-#include "constants/pokemon_icon.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
@@ -350,8 +349,6 @@ static void Task_HandleFieldMoveExitAreaYesNoInput(u8);
 static void Task_FieldMoveWaitForFade(u8);
 static u16 GetFieldMoveMonSpecies(void);
 static void UpdatePartyMonHPBar(u8, struct Pokemon *);
-static void SpriteCB_UpdatePartyMonIcon(struct Sprite *);
-static void SpriteCB_BouncePartyMonIcon(struct Sprite *);
 static void ShowOrHideHeldItemSprite(u16, struct PartyMenuBox *);
 static void SetPartyMonAilmentGfx(struct Pokemon *, struct PartyMenuBox *);
 static void UpdatePartyMonAilmentGfx(u8, struct PartyMenuBox *);
@@ -590,44 +587,34 @@ static bool8 ShowPartyMenu(void)
         gMain.state++;
         break;
     case 14:
-        //LoadMonIconPalettes();
-        gMain.state++;
-        break;
-    case 15:
         if (CreatePartyMonSpritesLoop())
         {
             sPartyMenuInternal->data[0] = 0;
             gMain.state++;
         }
         break;
-    case 16:
+    case 15:
         if (RenderPartyMenuBoxes())
         {
             sPartyMenuInternal->data[0] = 0;
             gMain.state++;
         }
         break;
-    case 17:
+    case 16:
         CreateCancelConfirmPokeballSprites();
         gMain.state++;
         break;
-    case 18:
-        gMain.state++;
-        break;
-    case 19:
-        gMain.state++;
-        break;
-    case 20:
+    case 17:
         CreateTask(sPartyMenuInternal->task, 0);
         DisplayPartyMenuStdMessage(sPartyMenuInternal->messageId);
         gMain.state++;
         break;
-    case 21:
+    case 18:
         BlendPalettes(PALETTES_ALL, 16, 0);
         gFundidoPaletas.transferenciaBufferDeshabilitada = FALSE;
         gMain.state++;
         break;
-    case 22:
+    case 19:
         BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
         gMain.state++;
         break;
@@ -3391,7 +3378,7 @@ static void CreatePartyMonIconSprite(struct Pokemon *mon, struct PartyMenuBox *m
 
     if (species != SPECIES_NONE)
     {
-        menuBox->monSpriteId = CreateMonIcon(species, SpriteCB_MonIcon, menuBox->spriteCoords[0], menuBox->spriteCoords[1], 4, personality);
+        menuBox->monSpriteId = CreateMonIcon(species, menuBox->spriteCoords[0], menuBox->spriteCoords[1], 4, personality);
         gSprites[menuBox->monSpriteId].oam.priority = 1;
         LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality), OBJ_PLTT_ID(2 + slot), PLTT_SIZE_4BPP);
         DesplazaTonoPaleta(OBJ_PLTT_ID(2 + slot), personality);
@@ -3405,7 +3392,7 @@ static void CreatePartyMonIconSpriteParameterized(u16 species, u32 pid, struct P
 {
     if (species != SPECIES_NONE)
     {
-        menuBox->monSpriteId = CreateMonIcon(species, SpriteCB_MonIcon, menuBox->spriteCoords[0], menuBox->spriteCoords[1], 4, pid);
+        menuBox->monSpriteId = CreateMonIcon(species, menuBox->spriteCoords[0], menuBox->spriteCoords[1], 4, pid);
         gSprites[menuBox->monSpriteId].oam.priority = priority;
         gSprites[menuBox->monSpriteId].oam.priority = priority;
     }
@@ -3453,32 +3440,12 @@ static void AnimateSelectedPartyIcon(u8 spriteId, u8 animNum)
             gSprites[spriteId].x2 = -4;
             gSprites[spriteId].y2 = 0;
         }
-        gSprites[spriteId].callback = SpriteCB_UpdatePartyMonIcon;
     }
     else
     {
         gSprites[spriteId].x2 = 0;
         gSprites[spriteId].y2 = 0;
-        gSprites[spriteId].callback = SpriteCB_BouncePartyMonIcon;
     }
-}
-
-static void SpriteCB_BouncePartyMonIcon(struct Sprite *sprite)
-{
-    //u8 animCmd = UpdateMonIconFrame(sprite);
-
-    //if (animCmd != 0)
-    //{
-    //    if (animCmd & 1) // % 2 also matches
-    //        sprite->y2 = -3;
-    //    else
-    //        sprite->y2 = 1;
-    //}
-}
-
-static void SpriteCB_UpdatePartyMonIcon(struct Sprite *sprite)
-{
-    UpdateMonIconFrame(sprite);
 }
 
 static void CreatePartyMonHeldItemSprite(struct Pokemon *mon, struct PartyMenuBox *menuBox)

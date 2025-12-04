@@ -320,4 +320,7 @@ enum SlotsHabilidades
 // Used as a signal for givemon to generate a default ability by personality.
 #define NUM_ABILITY_PERSONALITY 0xFF
 
+//Para crear icono de Pokemon "por defecto"
+#define SIN_PERSONALIDAD    0
+
 #endif // GUARD_CONSTANTS_POKEMON_H

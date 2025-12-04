@@ -30,7 +30,7 @@
 #include "text.h"
 #include "tm_case.h"
 #include "constants/items.h"
-#include "constants/pokemon_icon.h"
+#include "constants/etiquetas.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
 
@@ -905,14 +905,6 @@ static void RemoveContextMenu(u8 * windowId)
     *windowId = WINDOW_NONE;
 }
 
-#define sMonIconStill data[3]
-static void SpriteCb_MonIcon(struct Sprite *sprite)
-{
-    if (!sprite->sMonIconStill)
-        UpdateMonIconFrame(sprite);
-}
-#undef sMonIconStill
-
 #define MON_ICON_START_X  8
 #define MON_ICON_START_Y  30
 #define MON_ICON_PADDING  16
@@ -953,8 +945,8 @@ static void DrawPartyMonIcons(void)
             icon_x = i < 3 ? MON_ICON_START_X : MON_ICON_START_X + MON_ICON_PADDING;
             icon_y = i < 3 ? MON_ICON_START_Y + MON_ICON_PADDING * i : MON_ICON_START_Y + MON_ICON_PADDING * (i - 3);
         }
-        spriteIdData[i] = CreateMonIcon(species, SpriteCb_MonIcon, icon_x, icon_y, 1, GetMonData(&gPlayerParty[i], MON_DATA_PERSONALITY));
-        u32 index = i < gPlayerPartyCount ? IndexOfSpritePaletteTag(POKE_ICON_BASE_PAL_TAG + i) : 0xFF;
+        spriteIdData[i] = CreateMonIcon(species, icon_x, icon_y, 1, GetMonData(&gPlayerParty[i], MON_DATA_PERSONALITY));
+        u32 index = i < gPlayerPartyCount ? IndexOfSpritePaletteTag(ETIQUETA_ICONO_POKEMON + i) : 0xFF;
         LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality), OBJ_PLTT_ID(index), PLTT_SIZE_4BPP);
         DesplazaTonoPaleta(OBJ_PLTT_ID(index), personality);
         gSprites[spriteIdData[i]].oam.priority = 0;

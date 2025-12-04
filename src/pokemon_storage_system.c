@@ -42,7 +42,7 @@
 #include "constants/moves.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
-#include "constants/pokemon_icon.h"
+#include "constants/etiquetas.h"
 
 /*
     NOTE: This file is large. Some general groups of functions have
@@ -185,7 +185,7 @@ enum {
 #define BOXID_CANCELED    201
 
 enum {
-    PALTAG_MON_ICON_0 = POKE_ICON_BASE_PAL_TAG,
+    PALTAG_MON_ICON_0 = ETIQUETA_ICONO_POKEMON, // Used implicitly in CreateMonIconSprite
     PALTAG_MON_ICON_1, // Used implicitly in CreateMonIconSprite
     PALTAG_MON_ICON_2, // Used implicitly in CreateMonIconSprite
     PALTAG_MON_ICON_3, // Used implicitly in CreateMonIconSprite
@@ -4455,7 +4455,6 @@ static struct Sprite *CreateMonIconSprite(u16 species, u32 personality, s16 x, s
     u8 spriteId;
     struct SpriteTemplate template = sSpriteTemplate_MonIcon;
 
-    species = GetIconSpecies(species, personality);
     template.paletteTag = PALTAG_MON_ICON_0;
     tileNum = TryLoadMonIconTiles(species, personality);
     if (tileNum == 0xFFFF)
