@@ -5,18 +5,18 @@
 
 EventScript_BufferSprayName::
 .if VAR_LAST_REPEL_LURE_USED != 0
-	bufferitemname STR_VAR_1, VAR_LAST_REPEL_LURE_USED
+	bufferitemname VAR_TEXTO_1, VAR_LAST_REPEL_LURE_USED
 	return
 .endif
 	specialvar LOCAL_VAR_SPRAY_TYPE, GetLastUsedSprayType
 	compare LOCAL_VAR_SPRAY_TYPE, ITEM_REPEL
 	goto_if_eq EventScript_BufferSprayName_2
-	bufferitemname STR_VAR_1, ITEM_LURE
+	bufferitemname VAR_TEXTO_1, ITEM_LURE
 EventScript_BufferSprayName_1:
 	return
 
 EventScript_BufferSprayName_2:
-	bufferitemname STR_VAR_1, ITEM_REPEL
+	bufferitemname VAR_TEXTO_1, ITEM_REPEL
 	goto EventScript_BufferSprayName_1
 
 
@@ -74,7 +74,7 @@ EventScript_SetSingleSprayAndUse::
 
 EventScript_UseDifferentSpray::
 	specialvar LOCAL_VAR_NEW_SPRAY, GetSprayId
-	bufferitemname STR_VAR_2, LOCAL_VAR_NEW_SPRAY
+	bufferitemname VAR_TEXTO_2, LOCAL_VAR_NEW_SPRAY
 	msgbox Text_SprayWoreOffAskUseX, MSGBOX_YESNO
 	compare VAR_RESULT, YES
 	goto_if_eq EventScript_UseDifferentSpray_2
@@ -131,22 +131,22 @@ EventScript_UseSpray::
 	waitse
 	callnative HandleSprayMenuChoice
 	removeitem LOCAL_VAR_SPRAY, 1
-	bufferitemname STR_VAR_2, LOCAL_VAR_SPRAY
+	bufferitemname VAR_TEXTO_2, LOCAL_VAR_SPRAY
 	msgbox Text_SprayWoreOffUseX, MSGBOX_SIGN
 	return
 
 
 Text_SprayWoreOff::
-	.string "{STR_VAR_1}'s effect wore off…$"
+	.string "{VAR_TEXTO_1}'s effect wore off…$"
 
 Text_SprayWoreOffAskUseAnother::
-	.string "{STR_VAR_1}'s effect wore off!\n"
+	.string "{VAR_TEXTO_1}'s effect wore off!\n"
 	.string "Use another?$"
 
 Text_SprayWoreOffAskUseX::
-	.string "{STR_VAR_1}'s effect wore off…\n"
-	.string "Use a {STR_VAR_2}?$"
+	.string "{VAR_TEXTO_1}'s effect wore off…\n"
+	.string "Use a {VAR_TEXTO_2}?$"
 
 Text_SprayWoreOffUseX::
-	.string "{PLAYER} used the\n"
-	.string "{STR_VAR_2}.$"
+	.string "{JUGADOR} used the\n"
+	.string "{VAR_TEXTO_2}.$"

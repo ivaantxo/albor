@@ -3,19 +3,6 @@
 
 #include "gba/types.h"
 
-// Placeholders
-extern const u8 gText_ExpandedPlaceholder_Empty[];
-extern const u8 gText_ExpandedPlaceholder_Kun[];
-extern const u8 gText_ExpandedPlaceholder_Chan[];
-extern const u8 gText_ExpandedPlaceholder_Sapphire[];
-extern const u8 gText_ExpandedPlaceholder_Ruby[];
-extern const u8 gText_ExpandedPlaceholder_Emerald[];
-extern const u8 gText_ExpandedPlaceholder_Aqua[];
-extern const u8 gText_ExpandedPlaceholder_Magma[];
-extern const u8 gText_ExpandedPlaceholder_Archie[];
-extern const u8 gText_ExpandedPlaceholder_Maxie[];
-extern const u8 gText_ExpandedPlaceholder_Kyogre[];
-extern const u8 gText_ExpandedPlaceholder_Groudon[];
 extern const u8 gText_ExpandedPlaceholder_Brendan[];
 extern const u8 gText_ExpandedPlaceholder_May[];
 
@@ -382,8 +369,6 @@ extern const u8 gText_SizeComparedTo[];
 extern const u8 gText_PokedexRegistration[];
 extern const u8 gText_NumberClear01[];
 extern const u8 gText_5MarksPokemon[];
-extern const u8 gText_UnkHeight[];
-extern const u8 gText_UnkWeight[];
 extern const u8 gText_HTHeight[];
 extern const u8 gText_WTWeight[];
 extern const u8 gText_SearchingPleaseWait[];

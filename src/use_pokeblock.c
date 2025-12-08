@@ -868,10 +868,10 @@ static void AskUsePokeblock(void)
     GetMonData(&gPlayerParty[GetPartyIdFromSelectionId(sMenu->info.curSelection)], MON_DATA_NICKNAME, stringBuffer);
     StringGet_Nickname(stringBuffer);
     StringAppend(stringBuffer, gText_GetsAPokeBlockQuestion);
-    StringCopy(gStringVar4, stringBuffer);
+    StringCopy(gVariableTextoAmpliada, stringBuffer);
     FillWindowPixelBuffer(WIN_TEXT, 17);
     DrawTextBorderOuter(WIN_TEXT, 151, 14);
-    AddTextPrinterParameterized(WIN_TEXT, FONT_NORMAL, gStringVar4, 0, 1, 0, NULL);
+    AddTextPrinterParameterized(WIN_TEXT, FONT_NORMAL, gVariableTextoAmpliada, 0, 1, 0, NULL);
     PutWindowTilemap(WIN_TEXT);
     CopyWindowToVram(WIN_TEXT, COPYWIN_FULL);
     CreateYesNoMenu(&sUsePokeblockYesNoWinTemplate, 151, 14, 0);
@@ -908,11 +908,11 @@ static void PrintFirstEnhancement(void)
     }
 
     if (sInfo->condition < CONDITION_COUNT)
-        BufferEnhancedText(gStringVar4, sInfo->condition, sInfo->enhancements[sInfo->condition]);
+        BufferEnhancedText(gVariableTextoAmpliada, sInfo->condition, sInfo->enhancements[sInfo->condition]);
     else
-        BufferEnhancedText(gStringVar4, sInfo->condition, 0);
+        BufferEnhancedText(gVariableTextoAmpliada, sInfo->condition, 0);
 
-    PrintMenuWindowText(gStringVar4);
+    PrintMenuWindowText(gVariableTextoAmpliada);
     PutWindowTilemap(WIN_TEXT);
     CopyWindowToVram(WIN_TEXT, COPYWIN_FULL);
 }
@@ -936,8 +936,8 @@ static bool8 TryPrintNextEnhancement(void)
         }
     }
 
-    BufferEnhancedText(gStringVar4, sInfo->condition, sInfo->enhancements[sInfo->condition]);
-    PrintMenuWindowText(gStringVar4);
+    BufferEnhancedText(gVariableTextoAmpliada, sInfo->condition, sInfo->enhancements[sInfo->condition]);
+    PrintMenuWindowText(gVariableTextoAmpliada);
     CopyWindowToVram(WIN_TEXT, COPYWIN_GFX);
 
     return TRUE;
@@ -961,7 +961,7 @@ static void EraseMenuWindow(void)
 
 static void PrintMenuWindowText(const u8 *message)
 {
-    AddTextPrinterParameterized(WIN_TEXT, FONT_NORMAL, gStringVar4, 0, 1, 0, NULL);
+    AddTextPrinterParameterized(WIN_TEXT, FONT_NORMAL, gVariableTextoAmpliada, 0, 1, 0, NULL);
 }
 
 static void BufferEnhancedText(u8 *dest, u8 condition, s16 enhancement)

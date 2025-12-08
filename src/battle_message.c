@@ -1985,9 +1985,9 @@ const u16 gDamageNonTypesDmgStringIds[] =
     [B_MSG_HURT_BY_ROCKS_THROWN] = STRINGID_PKMNHURTBYROCKSTHROWN,
 };
 
-const u8 gText_PkmnIsEvolving[] = _("What?\n{STR_VAR_1} is evolving!");
-const u8 gText_CongratsPkmnEvolved[] = _("Congratulations! Your {STR_VAR_1}\nevolved into {STR_VAR_2}!{WAIT_SE}\p");
-const u8 gText_PkmnStoppedEvolving[] = _("Huh? {STR_VAR_1}\nstopped evolving!\p");
+const u8 gText_PkmnIsEvolving[] = _("What?\n{VAR_TEXTO_1} is evolving!");
+const u8 gText_CongratsPkmnEvolved[] = _("Congratulations! Your {VAR_TEXTO_1}\nevolved into {VAR_TEXTO_2}!{WAIT_SE}\p");
+const u8 gText_PkmnStoppedEvolving[] = _("Huh? {VAR_TEXTO_1}\nstopped evolving!\p");
 const u8 gText_EllipsisQuestionMark[] = _("……?\p");
 const u8 gText_SafariZoneMenu[] = _("BALL{CLEAR_TO 56}{POKEBLOCK}\nGO NEAR{CLEAR_TO 56}RUN");
 const u8 gText_MoveInterfacePP[] = _("PP ");
@@ -2513,7 +2513,7 @@ static const u8 *BattleStringGetOpponentName(u8 battler)
 static const u8 *BattleStringGetTrainerName(u8 battler)
 {
     if (GetBattlerSide(battler) == B_SIDE_PLAYER)
-        return gSaveBlockPtr->playerName;
+        return gSaveBlockPtr->nombreJugador;
     else
         return BattleStringGetOpponentName(battler);
 }
@@ -2559,8 +2559,8 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
             case B_TXT_BUFF1:
                 if (gBattleTextBuff1[0] == B_BUFF_PLACEHOLDER_BEGIN)
                 {
-                    ExpandBattleTextBuffPlaceholders(gBattleTextBuff1, gStringVar1);
-                    toCpy = gStringVar1;
+                    ExpandBattleTextBuffPlaceholders(gBattleTextBuff1, gVariableTexto1);
+                    toCpy = gVariableTexto1;
                 }
                 else
                 {
@@ -2572,8 +2572,8 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
             case B_TXT_BUFF2:
                 if (gBattleTextBuff2[0] == B_BUFF_PLACEHOLDER_BEGIN)
                 {
-                    ExpandBattleTextBuffPlaceholders(gBattleTextBuff2, gStringVar2);
-                    toCpy = gStringVar2;
+                    ExpandBattleTextBuffPlaceholders(gBattleTextBuff2, gVariableTexto2);
+                    toCpy = gVariableTexto2;
                 }
                 else
                     toCpy = gBattleTextBuff2;
@@ -2581,20 +2581,20 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
             case B_TXT_BUFF3:
                 if (gBattleTextBuff3[0] == B_BUFF_PLACEHOLDER_BEGIN)
                 {
-                    ExpandBattleTextBuffPlaceholders(gBattleTextBuff3, gStringVar3);
-                    toCpy = gStringVar3;
+                    ExpandBattleTextBuffPlaceholders(gBattleTextBuff3, gVariableTexto3);
+                    toCpy = gVariableTexto3;
                 }
                 else
                     toCpy = gBattleTextBuff3;
                 break;
             case B_TXT_COPY_VAR_1:
-                toCpy = gStringVar1;
+                toCpy = gVariableTexto1;
                 break;
             case B_TXT_COPY_VAR_2:
-                toCpy = gStringVar2;
+                toCpy = gVariableTexto2;
                 break;
             case B_TXT_COPY_VAR_3:
-                toCpy = gStringVar3;
+                toCpy = gVariableTexto3;
                 break;
             case B_TXT_PLAYER_MON1_NAME: // first player poke name
                 GetBattlerNick(GetBattlerAtPosition(B_POSITION_PLAYER_LEFT), text);
@@ -2664,7 +2664,7 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
                 toCpy = BattleStringGetOpponentNameByTrainerId(gTrainerBattleOpponent);
                 break;
             case B_TXT_PLAYER_NAME:
-                toCpy = gSaveBlockPtr->playerName;
+                toCpy = gSaveBlockPtr->nombreJugador;
                 break;
             case B_TXT_TRAINER_LOSE_TEXT: // trainerA lose text
                 toCpy = GetTrainerLoseText();
@@ -2714,7 +2714,7 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
             case B_TXT_PARTNER_CLASS:
                 break;
             case B_TXT_PARTNER_NAME:
-                toCpy = gSaveBlockPtr->playerName;
+                toCpy = gSaveBlockPtr->nombreJugador;
                 break;
             case B_TXT_ATK_TRAINER_NAME:
                 toCpy = BattleStringGetTrainerName(gBattlerAttacker);

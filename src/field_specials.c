@@ -137,24 +137,24 @@ static void DetermineCyclingRoadResults(u32 numFrames, u8 numBikeCollisions)
 
     if (numBikeCollisions < 100)
     {
-        ConvertIntToDecimalStringN(gStringVar1, numBikeCollisions, STR_CONV_MODE_LEFT_ALIGN, 2);
-        StringAppend(gStringVar1, gText_SpaceTimes);
+        ConvertIntToDecimalStringN(gVariableTexto1, numBikeCollisions, STR_CONV_MODE_LEFT_ALIGN, 2);
+        StringAppend(gVariableTexto1, gText_SpaceTimes);
     }
     else
     {
-        StringCopy(gStringVar1, gText_99TimesPlus);
+        StringCopy(gVariableTexto1, gText_99TimesPlus);
     }
 
     if (numFrames < 3600)
     {
-        ConvertIntToDecimalStringN(gStringVar2, numFrames / 60, STR_CONV_MODE_RIGHT_ALIGN, 2);
-        gStringVar2[2] = CHAR_COMMA;
-        ConvertIntToDecimalStringN(&gStringVar2[3], ((numFrames % 60) * 100) / 60, STR_CONV_MODE_LEADING_ZEROS, 2);
-        StringAppend(gStringVar2, gText_SpaceSeconds);
+        ConvertIntToDecimalStringN(gVariableTexto2, numFrames / 60, STR_CONV_MODE_RIGHT_ALIGN, 2);
+        gVariableTexto2[2] = CHAR_COMMA;
+        ConvertIntToDecimalStringN(&gVariableTexto2[3], ((numFrames % 60) * 100) / 60, STR_CONV_MODE_LEADING_ZEROS, 2);
+        StringAppend(gVariableTexto2, gText_SpaceSeconds);
     }
     else
     {
-        StringCopy(gStringVar2, gText_1MinutePlus);
+        StringCopy(gVariableTexto2, gText_1MinutePlus);
     }
 
     result = 0;
@@ -629,7 +629,7 @@ void PetalburgGymUnlockRoomDoors(void)
 
 void ShowFieldMessageStringVar4(void)
 {
-    ShowFieldMessage(gStringVar4);
+    ShowFieldMessage(gVariableTextoAmpliada);
 }
 
 void StorePlayerCoordsInVars(void)
@@ -641,17 +641,17 @@ void StorePlayerCoordsInVars(void)
 void GetPlayerBigGuyGirlString(void)
 {
     if (gSaveBlockPtr->playerGender == MALE)
-        StringCopy(gStringVar1, gText_BigGuy);
+        StringCopy(gVariableTexto1, gText_BigGuy);
     else
-        StringCopy(gStringVar1, gText_BigGirl);
+        StringCopy(gVariableTexto1, gText_BigGirl);
 }
 
 void GetRivalSonDaughterString(void)
 {
     if (gSaveBlockPtr->playerGender == MALE)
-        StringCopy(gStringVar1, gText_Daughter);
+        StringCopy(gVariableTexto1, gText_Daughter);
     else
-        StringCopy(gStringVar1, gText_Son);
+        StringCopy(gVariableTexto1, gText_Son);
 }
 
 u8 GetBattleOutcome(void)
@@ -998,12 +998,12 @@ void RemoveCameraObject(void)
 
 u8 GetPokeblockNameByMonNature(void)
 {
-    return CopyMonFavoritePokeblockName(ObtenNaturaleza(&gPlayerParty[GetLeadMonIndex()]), gStringVar1);
+    return CopyMonFavoritePokeblockName(ObtenNaturaleza(&gPlayerParty[GetLeadMonIndex()]), gVariableTexto1);
 }
 
 void GetSecretBaseNearbyMapName(void)
 {
-    GetMapName(gStringVar1, VarGet(VAR_SECRET_BASE_MAP), 0);
+    GetMapName(gVariableTexto1, VarGet(VAR_SECRET_BASE_MAP), 0);
 }
 
 u16 GetSlotMachineId(void)
@@ -1171,9 +1171,9 @@ u16 SetPacifidlogTMReceivedDay(void)
 
 bool8 MonOTNameNotPlayer(void)
 {
-    GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_OT_NAME, gStringVar1);
+    GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_OT_NAME, gVariableTexto1);
 
-    if (!StringCompare(gSaveBlockPtr->playerName, gStringVar1))
+    if (!StringCompare(gSaveBlockPtr->nombreJugador, gVariableTexto1))
         return FALSE;
 
     return TRUE;
@@ -1187,29 +1187,29 @@ void BufferLottoTicketNumber(void)
     }
     else if (gSpecialVar_Result >= 1000)
     {
-        gStringVar1[0] = CHAR_0;
-        ConvertIntToDecimalStringN(gStringVar1 + 1, gSpecialVar_Result, STR_CONV_MODE_LEFT_ALIGN, CountDigits(gSpecialVar_Result));
+        gVariableTexto1[0] = CHAR_0;
+        ConvertIntToDecimalStringN(gVariableTexto1 + 1, gSpecialVar_Result, STR_CONV_MODE_LEFT_ALIGN, CountDigits(gSpecialVar_Result));
     }
     else if (gSpecialVar_Result >= 100)
     {
-        gStringVar1[0] = CHAR_0;
-        gStringVar1[1] = CHAR_0;
-        ConvertIntToDecimalStringN(gStringVar1 + 2, gSpecialVar_Result, STR_CONV_MODE_LEFT_ALIGN, CountDigits(gSpecialVar_Result));
+        gVariableTexto1[0] = CHAR_0;
+        gVariableTexto1[1] = CHAR_0;
+        ConvertIntToDecimalStringN(gVariableTexto1 + 2, gSpecialVar_Result, STR_CONV_MODE_LEFT_ALIGN, CountDigits(gSpecialVar_Result));
     }
     else if (gSpecialVar_Result >= 10)
     {
-        gStringVar1[0] = CHAR_0;
-        gStringVar1[1] = CHAR_0;
-        gStringVar1[2] = CHAR_0;
-        ConvertIntToDecimalStringN(gStringVar1 + 3, gSpecialVar_Result, STR_CONV_MODE_LEFT_ALIGN, CountDigits(gSpecialVar_Result));
+        gVariableTexto1[0] = CHAR_0;
+        gVariableTexto1[1] = CHAR_0;
+        gVariableTexto1[2] = CHAR_0;
+        ConvertIntToDecimalStringN(gVariableTexto1 + 3, gSpecialVar_Result, STR_CONV_MODE_LEFT_ALIGN, CountDigits(gSpecialVar_Result));
     }
     else
     {
-        gStringVar1[0] = CHAR_0;
-        gStringVar1[1] = CHAR_0;
-        gStringVar1[2] = CHAR_0;
-        gStringVar1[3] = CHAR_0;
-        ConvertIntToDecimalStringN(gStringVar1 + 4, gSpecialVar_Result, STR_CONV_MODE_LEFT_ALIGN, CountDigits(gSpecialVar_Result));
+        gVariableTexto1[0] = CHAR_0;
+        gVariableTexto1[1] = CHAR_0;
+        gVariableTexto1[2] = CHAR_0;
+        gVariableTexto1[3] = CHAR_0;
+        ConvertIntToDecimalStringN(gVariableTexto1 + 4, gSpecialVar_Result, STR_CONV_MODE_LEFT_ALIGN, CountDigits(gSpecialVar_Result));
     }
 }
 
@@ -1217,7 +1217,7 @@ bool8 BufferTMHMMoveName(void)
 {
     if (gSpecialVar_0x8004 >= ITEM_TM01 && gSpecialVar_0x8004 <= ITEM_HM08)
     {
-        StringCopy(gStringVar2, GetMoveName(ItemIdToBattleMoveId(gSpecialVar_0x8004)));
+        StringCopy(gVariableTexto2, GetMoveName(ItemIdToBattleMoveId(gSpecialVar_0x8004)));
         return TRUE;
     }
 
@@ -1957,7 +1957,7 @@ void CreateAbnormalWeatherEvent(void)
     }
 }
 
-// Saves the map name for the current abnormal weather location in gStringVar1, then
+// Saves the map name for the current abnormal weather location in gVariableTexto1, then
 // returns TRUE if the weather is for Kyogre, and FALSE if it's for Groudon.
 bool32 GetAbnormalWeatherMapNameAndType(void)
 {

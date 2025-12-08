@@ -1274,18 +1274,22 @@ s32 GetStringWidth(u8 fontId, const u8 *str, s16 letterSpacing)
         case PLACEHOLDER_BEGIN:
             switch (*++str)
             {
-            case PLACEHOLDER_ID_STRING_VAR_1:
-                bufferPointer = gStringVar1;
+            case VARIABLE_TEXTO_NOMBRE_JUGADOR:
+                bufferPointer = gSaveBlockPtr->nombreJugador;
                 break;
-            case PLACEHOLDER_ID_STRING_VAR_2:
-                bufferPointer = gStringVar2;
+            case VARIABLE_TEXTO_1:
+                bufferPointer = gVariableTexto1;
                 break;
-            case PLACEHOLDER_ID_STRING_VAR_3:
-                bufferPointer = gStringVar3;
+            case VARIABLE_TEXTO_2:
+                bufferPointer = gVariableTexto2;
+                break;
+            case VARIABLE_TEXTO_3:
+                bufferPointer = gVariableTexto3;
                 break;
             default:
                 return 0;
             }
+            break;
         case CHAR_DYNAMIC:
             if (bufferPointer == NULL)
                 bufferPointer = DynamicPlaceholderTextUtil_GetPlaceholderPtr(*++str);

@@ -413,7 +413,7 @@ void CreaPokemonCaja(struct BoxPokemon *boxMon, u32 especie, u32 nivel, u32 ivFi
     SetBoxMonData(boxMon, MON_DATA_IS_SHINY, &esVariocolor);
     StringCopy(nombreEspecie, GetSpeciesName(especie));
     SetBoxMonData(boxMon, MON_DATA_NICKNAME, nombreEspecie);
-    SetBoxMonData(boxMon, MON_DATA_OT_NAME, gSaveBlockPtr->playerName);
+    SetBoxMonData(boxMon, MON_DATA_OT_NAME, gSaveBlockPtr->nombreJugador);
     SetBoxMonData(boxMon, MON_DATA_SPECIES, &especie);
 
     u32 experiencia = gExperienceTables[gSpeciesInfo[especie].growthRate][nivel];
@@ -1207,7 +1207,7 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
         {
             retVal = 0;
 
-            while (retVal < PLAYER_NAME_LENGTH)
+            while (retVal < MAXIMO_CARACTERES_NOMBRE_JUGADOR)
             {
                 data[retVal] = boxMon->otName[retVal];
                 retVal++;
@@ -1442,7 +1442,7 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         case MON_DATA_OT_NAME:
         {
             s32 i;
-            for (i = 0; i < PLAYER_NAME_LENGTH; i++)
+            for (i = 0; i < MAXIMO_CARACTERES_NOMBRE_JUGADOR; i++)
                 boxMon->otName[i] = data[i];
             break;
         }
@@ -1472,7 +1472,7 @@ u32 GiveMonToPlayer(struct Pokemon *mon)
 {
     s32 i;
 
-    SetMonData(mon, MON_DATA_OT_NAME, gSaveBlockPtr->playerName);
+    SetMonData(mon, MON_DATA_OT_NAME, gSaveBlockPtr->nombreJugador);
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
@@ -2594,8 +2594,8 @@ u16 SpeciesToNationalPokedexNum(u16 species)
 
 void EvolutionRenameMon(struct Pokemon *mon, u16 oldSpecies, u16 newSpecies)
 {
-    GetMonData(mon, MON_DATA_NICKNAME, gStringVar1);
-    if (!StringCompare(GetSpeciesName(oldSpecies), gStringVar1))
+    GetMonData(mon, MON_DATA_NICKNAME, gVariableTexto1);
+    if (!StringCompare(GetSpeciesName(oldSpecies), gVariableTexto1))
         SetMonData(mon, MON_DATA_NICKNAME, GetSpeciesName(newSpecies));
 }
 
@@ -3355,7 +3355,7 @@ void SetMonPreventsSwitchingString(void)
 
     PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff2, gBattlerInMenuId, GetPartyIdFromBattlePartyId(gBattlerPartyIndexes[gBattlerInMenuId]))
 
-    BattleStringExpandPlaceholders(gText_PkmnsXPreventsSwitching, gStringVar4, sizeof(gStringVar4));
+    BattleStringExpandPlaceholders(gText_PkmnsXPreventsSwitching, gVariableTextoAmpliada, sizeof(gVariableTextoAmpliada));
 }
 
 static inline bool32 CanFirstMonBoostHeldItemRarity(void)

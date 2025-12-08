@@ -1440,10 +1440,10 @@ static void Task_GivePayout(u8 taskId)
 
 static void Task_PrintPayout(u8 taskId)
 {
-    ConvertIntToDecimalStringN(gStringVar1, (sRoulette->minBet * gTasks[taskId].tMultiplier), STR_CONV_MODE_LEFT_ALIGN, 2);
-    StringExpandPlaceholders(gStringVar4, Roulette_Text_YouveWonXCoins);
+    ConvertIntToDecimalStringN(gVariableTexto1, (sRoulette->minBet * gTasks[taskId].tMultiplier), STR_CONV_MODE_LEFT_ALIGN, 2);
+    StringExpandPlaceholders(gVariableTextoAmpliada, Roulette_Text_YouveWonXCoins);
     DrawStdWindowFrame(sTextWindowId, FALSE);
-    AddTextPrinterParameterized(sTextWindowId, FONT_NORMAL, gStringVar4, 0, 1, TEXT_SKIP_DRAW, NULL);
+    AddTextPrinterParameterized(sTextWindowId, FONT_NORMAL, gVariableTextoAmpliada, 0, 1, TEXT_SKIP_DRAW, NULL);
     CopyWindowToVram(sTextWindowId, COPYWIN_FULL);
     gTasks[taskId].tPayout = (sRoulette->minBet * gTasks[taskId].tMultiplier);
     gTasks[taskId].data[7] = 0;
@@ -2922,10 +2922,10 @@ static void Task_PrintMinBet(u8 taskId)
     if (JOY_NEW(A_BUTTON | B_BUTTON))
     {
         u32 minBet = sTableMinBets[GET_MIN_BET_ID(gSpecialVar_0x8004)];
-        ConvertIntToDecimalStringN(gStringVar1, minBet, STR_CONV_MODE_LEADING_ZEROS, 1);
-        StringExpandPlaceholders(gStringVar4, Roulette_Text_PlayMinimumWagerIsX);
+        ConvertIntToDecimalStringN(gVariableTexto1, minBet, STR_CONV_MODE_LEADING_ZEROS, 1);
+        StringExpandPlaceholders(gVariableTextoAmpliada, Roulette_Text_PlayMinimumWagerIsX);
         DrawStdWindowFrame(0, FALSE);
-        AddTextPrinterParameterized(0, FONT_NORMAL, gStringVar4, 0, 1, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(0, FONT_NORMAL, gVariableTextoAmpliada, 0, 1, TEXT_SKIP_DRAW, NULL);
         CopyWindowToVram(0, COPYWIN_FULL);
         gTasks[taskId].func = Task_ShowMinBetYesNo;
     }
@@ -2936,7 +2936,7 @@ static void Task_PrintRouletteEntryMsg(u8 taskId)
     s32 minBet;
     PrintCoinsString(gTasks[taskId].tCoins);
     minBet = sTableMinBets[GET_MIN_BET_ID(gSpecialVar_0x8004)];
-    ConvertIntToDecimalStringN(gStringVar1, minBet, STR_CONV_MODE_LEADING_ZEROS, 1);
+    ConvertIntToDecimalStringN(gVariableTexto1, minBet, STR_CONV_MODE_LEADING_ZEROS, 1);
 
     if (gTasks[taskId].tCoins >= minBet)
     {
@@ -2951,9 +2951,9 @@ static void Task_PrintRouletteEntryMsg(u8 taskId)
         else
         {
             // Print minimum bet
-            StringExpandPlaceholders(gStringVar4, Roulette_Text_PlayMinimumWagerIsX);
+            StringExpandPlaceholders(gVariableTextoAmpliada, Roulette_Text_PlayMinimumWagerIsX);
             DrawStdWindowFrame(0, FALSE);
-            AddTextPrinterParameterized(0, FONT_NORMAL, gStringVar4, 0, 1, TEXT_SKIP_DRAW, NULL);
+            AddTextPrinterParameterized(0, FONT_NORMAL, gVariableTextoAmpliada, 0, 1, TEXT_SKIP_DRAW, NULL);
             CopyWindowToVram(0, COPYWIN_FULL);
             gTasks[taskId].func = Task_ShowMinBetYesNo;
         }
@@ -2961,9 +2961,9 @@ static void Task_PrintRouletteEntryMsg(u8 taskId)
     else
     {
         // Not enough for minimum bet
-        StringExpandPlaceholders(gStringVar4, Roulette_Text_NotEnoughCoins);
+        StringExpandPlaceholders(gVariableTextoAmpliada, Roulette_Text_NotEnoughCoins);
         DrawStdWindowFrame(0, FALSE);
-        AddTextPrinterParameterized(0, FONT_NORMAL, gStringVar4, 0, 1, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(0, FONT_NORMAL, gVariableTextoAmpliada, 0, 1, TEXT_SKIP_DRAW, NULL);
         CopyWindowToVram(0, COPYWIN_FULL);
         gTasks[taskId].func = Task_NotEnoughForMinBet;
         gTasks[taskId].tCoins = 0;

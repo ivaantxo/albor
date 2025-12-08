@@ -2725,17 +2725,17 @@ static void PrintNotEggInfo(void)
     if (dexNum != 0xFFFF)
     {
         u8 digitCount = (DEX_COUNT > 999) ? 4 : 3;
-        StringCopy(gStringVar1, &gText_NumberClear01[0]);
-        ConvertIntToDecimalStringN(gStringVar2, dexNum, STR_CONV_MODE_LEADING_ZEROS, digitCount);
-        StringAppend(gStringVar1, gStringVar2);
+        StringCopy(gVariableTexto1, &gText_NumberClear01[0]);
+        ConvertIntToDecimalStringN(gVariableTexto2, dexNum, STR_CONV_MODE_LEADING_ZEROS, digitCount);
+        StringAppend(gVariableTexto1, gVariableTexto2);
         if (!IsMonShiny(mon))
         {
-            PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_DEX_NUMBER, gStringVar1, 0, 1, 0, 1);
+            PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_DEX_NUMBER, gVariableTexto1, 0, 1, 0, 1);
             SetMonPicBackgroundPalette(FALSE);
         }
         else
         {
-            PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_DEX_NUMBER, gStringVar1, 0, 1, 0, 7);
+            PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_DEX_NUMBER, gVariableTexto1, 0, 1, 0, 7);
             SetMonPicBackgroundPalette(TRUE);
         }
         PutWindowTilemap(PSS_LABEL_WINDOW_PORTRAIT_DEX_NUMBER);
@@ -2748,12 +2748,12 @@ static void PrintNotEggInfo(void)
         else
             SetMonPicBackgroundPalette(TRUE);
     }
-    StringCopy(gStringVar1, gText_LevelSymbol);
-    ConvertIntToDecimalStringN(gStringVar2, summary->level, STR_CONV_MODE_LEFT_ALIGN, 3);
-    StringAppend(gStringVar1, gStringVar2);
-    PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_SPECIES, gStringVar1, 24, 17, 0, 1);
-    GetMonNickname(mon, gStringVar1);
-    PrintTextOnWindowToFitPx(PSS_LABEL_WINDOW_PORTRAIT_NICKNAME, gStringVar1, 0, 1, 0, 1, WindowWidthPx(PSS_LABEL_WINDOW_PORTRAIT_NICKNAME) - 9);
+    StringCopy(gVariableTexto1, gText_LevelSymbol);
+    ConvertIntToDecimalStringN(gVariableTexto2, summary->level, STR_CONV_MODE_LEFT_ALIGN, 3);
+    StringAppend(gVariableTexto1, gVariableTexto2);
+    PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_SPECIES, gVariableTexto1, 24, 17, 0, 1);
+    GetMonNickname(mon, gVariableTexto1);
+    PrintTextOnWindowToFitPx(PSS_LABEL_WINDOW_PORTRAIT_NICKNAME, gVariableTexto1, 0, 1, 0, 1, WindowWidthPx(PSS_LABEL_WINDOW_PORTRAIT_NICKNAME) - 9);
     PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_SPECIES, gText_Slash, 0, 1, 0, 1);
     PrintTextOnWindowToFitPx(PSS_LABEL_WINDOW_PORTRAIT_SPECIES, GetSpeciesName(summary->species2), 6, 1, 0, 1, WindowWidthPx(PSS_LABEL_WINDOW_PORTRAIT_SPECIES) - 9);
     PrintGenderSymbol(mon, summary->species2);
@@ -2763,8 +2763,8 @@ static void PrintNotEggInfo(void)
 
 static void PrintEggInfo(void)
 {
-    GetMonNickname(&sMonSummaryScreen->currentMon, gStringVar1);
-    PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_NICKNAME, gStringVar1, 0, 1, 0, 1);
+    GetMonNickname(&sMonSummaryScreen->currentMon, gVariableTexto1);
+    PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_NICKNAME, gVariableTexto1, 0, 1, 0, 1);
     PutWindowTilemap(PSS_LABEL_WINDOW_PORTRAIT_NICKNAME);
     ClearWindowTilemap(PSS_LABEL_WINDOW_PORTRAIT_DEX_NUMBER);
     ClearWindowTilemap(PSS_LABEL_WINDOW_PORTRAIT_SPECIES);
@@ -3091,14 +3091,14 @@ static void BufferMonTrainerMemo(void)
     else
         text = (sum->metLocation >= MAPSEC_NONE) ? gText_XNatureMetSomewhereAt : gText_XNatureMetAtYZ;
 
-    DynamicPlaceholderTextUtil_ExpandPlaceholders(gStringVar4, text);
+    DynamicPlaceholderTextUtil_ExpandPlaceholders(gVariableTextoAmpliada, text);
     Free(metLevelString);
     Free(metLocationString);
 }
 
 static void PrintMonTrainerMemo(void)
 {
-    PrintTextOnWindow(AddWindowFromTemplateList(sPageInfoTemplate, PSS_DATA_WINDOW_INFO_MEMO), gStringVar4, 0, 1, 0, 0);
+    PrintTextOnWindow(AddWindowFromTemplateList(sPageInfoTemplate, PSS_DATA_WINDOW_INFO_MEMO), gVariableTextoAmpliada, 0, 1, 0, 0);
 }
 
 static void BufferNatureString(void)
@@ -3206,8 +3206,8 @@ static void PrintHeldItemName(void)
     }
     else
     {
-        CopyItemName(sMonSummaryScreen->summary.item, gStringVar1);
-        text = gStringVar1;
+        CopyItemName(sMonSummaryScreen->summary.item, gVariableTexto1);
+        text = gVariableTexto1;
     }
 
     fontId = GetFontIdToFit(text, FONT_NORMAL, 0, WindowTemplateWidthPx(&sPageSkillsTemplate[PSS_DATA_WINDOW_SKILLS_HELD_ITEM]) - 8);
@@ -3226,9 +3226,9 @@ static void PrintRibbonCount(void)
     }
     else
     {
-        ConvertIntToDecimalStringN(gStringVar1, sMonSummaryScreen->summary.ribbonCount, STR_CONV_MODE_RIGHT_ALIGN, 2);
-        StringExpandPlaceholders(gStringVar4, gText_RibbonsVar1);
-        text = gStringVar4;
+        ConvertIntToDecimalStringN(gVariableTexto1, sMonSummaryScreen->summary.ribbonCount, STR_CONV_MODE_RIGHT_ALIGN, 2);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_RibbonsVar1);
+        text = gVariableTextoAmpliada;
     }
 
     x = GetStringCenterAlignXOffset(FONT_NORMAL, text, 70) + 6;
@@ -3264,7 +3264,7 @@ static void BufferLeftColumnStats(void)
     BufferStat(maxHPString, 0, sMonSummaryScreen->summary.maxHP, 1, 3);
     BufferStat(attackString, ESTADISTICA_ATAQUE, sMonSummaryScreen->summary.atk, 2, 7);
     BufferStat(defenseString, ESTADISTICA_DEFENSA, sMonSummaryScreen->summary.def, 3, 7);
-    DynamicPlaceholderTextUtil_ExpandPlaceholders(gStringVar4, sStatsLeftColumnLayout);
+    DynamicPlaceholderTextUtil_ExpandPlaceholders(gVariableTextoAmpliada, sStatsLeftColumnLayout);
 
     Free(currentHPString);
     Free(maxHPString);
@@ -3274,21 +3274,21 @@ static void BufferLeftColumnStats(void)
 
 static void PrintLeftColumnStats(void)
 {
-    PrintTextOnWindow(AddWindowFromTemplateList(sPageSkillsTemplate, PSS_DATA_WINDOW_SKILLS_STATS_LEFT), gStringVar4, 4, 1, 0, 0);
+    PrintTextOnWindow(AddWindowFromTemplateList(sPageSkillsTemplate, PSS_DATA_WINDOW_SKILLS_STATS_LEFT), gVariableTextoAmpliada, 4, 1, 0, 0);
 }
 
 static void BufferRightColumnStats(void)
 {
     DynamicPlaceholderTextUtil_Reset();
-    BufferStat(gStringVar1, ESTADISTICA_ATAQUE_ESPECIAL, sMonSummaryScreen->summary.spatk, 0, 3);
-    BufferStat(gStringVar2, ESTADISTICA_DEFENSA_ESPECIAL, sMonSummaryScreen->summary.spdef, 1, 3);
-    BufferStat(gStringVar3, ESTADISTICA_VELOCIDAD, sMonSummaryScreen->summary.speed, 2, 3);
-    DynamicPlaceholderTextUtil_ExpandPlaceholders(gStringVar4, sStatsRightColumnLayout);
+    BufferStat(gVariableTexto1, ESTADISTICA_ATAQUE_ESPECIAL, sMonSummaryScreen->summary.spatk, 0, 3);
+    BufferStat(gVariableTexto2, ESTADISTICA_DEFENSA_ESPECIAL, sMonSummaryScreen->summary.spdef, 1, 3);
+    BufferStat(gVariableTexto3, ESTADISTICA_VELOCIDAD, sMonSummaryScreen->summary.speed, 2, 3);
+    DynamicPlaceholderTextUtil_ExpandPlaceholders(gVariableTextoAmpliada, sStatsRightColumnLayout);
 }
 
 static void PrintRightColumnStats(void)
 {
-    PrintTextOnWindow(AddWindowFromTemplateList(sPageSkillsTemplate, PSS_DATA_WINDOW_SKILLS_STATS_RIGHT), gStringVar4, 2, 1, 0, 0);
+    PrintTextOnWindow(AddWindowFromTemplateList(sPageSkillsTemplate, PSS_DATA_WINDOW_SKILLS_STATS_RIGHT), gVariableTextoAmpliada, 2, 1, 0, 0);
 }
 
 static void PrintExpPointsNextLevel(void)
@@ -3298,18 +3298,18 @@ static void PrintExpPointsNextLevel(void)
     int x;
     u32 expToNextLevel;
 
-    ConvertIntToDecimalStringN(gStringVar1, sum->exp, STR_CONV_MODE_RIGHT_ALIGN, 7);
-    x = GetStringRightAlignXOffset(FONT_NORMAL, gStringVar1, 42) + 2;
-    PrintTextOnWindow(windowId, gStringVar1, x, 1, 0, 0);
+    ConvertIntToDecimalStringN(gVariableTexto1, sum->exp, STR_CONV_MODE_RIGHT_ALIGN, 7);
+    x = GetStringRightAlignXOffset(FONT_NORMAL, gVariableTexto1, 42) + 2;
+    PrintTextOnWindow(windowId, gVariableTexto1, x, 1, 0, 0);
 
     if (sum->level < MAX_LEVEL)
         expToNextLevel = gExperienceTables[gSpeciesInfo[sum->species].growthRate][sum->level + 1] - sum->exp;
     else
         expToNextLevel = 0;
 
-    ConvertIntToDecimalStringN(gStringVar1, expToNextLevel, STR_CONV_MODE_RIGHT_ALIGN, 6);
-    x = GetStringRightAlignXOffset(FONT_NORMAL, gStringVar1, 42) + 2;
-    PrintTextOnWindow(windowId, gStringVar1, x, 17, 0, 0);
+    ConvertIntToDecimalStringN(gVariableTexto1, expToNextLevel, STR_CONV_MODE_RIGHT_ALIGN, 6);
+    x = GetStringRightAlignXOffset(FONT_NORMAL, gVariableTexto1, 42) + 2;
+    PrintTextOnWindow(windowId, gVariableTexto1, x, 17, 0, 0);
 }
 
 static void PrintBattleMoves(void)
@@ -3393,13 +3393,13 @@ static void PrintMoveNameAndPP(u8 moveIndex)
     {
         pp = CalculatePPWithBonus(move, summary->ppBonuses, moveIndex);
         PrintTextOnWindowToFit(moveNameWindowId, GetMoveName(move), 0, moveIndex * 16 + 1, 0, 1);
-        ConvertIntToDecimalStringN(gStringVar1, summary->pp[moveIndex], STR_CONV_MODE_RIGHT_ALIGN, 2);
-        ConvertIntToDecimalStringN(gStringVar2, pp, STR_CONV_MODE_RIGHT_ALIGN, 2);
+        ConvertIntToDecimalStringN(gVariableTexto1, summary->pp[moveIndex], STR_CONV_MODE_RIGHT_ALIGN, 2);
+        ConvertIntToDecimalStringN(gVariableTexto2, pp, STR_CONV_MODE_RIGHT_ALIGN, 2);
         DynamicPlaceholderTextUtil_Reset();
-        DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gStringVar1);
-        DynamicPlaceholderTextUtil_SetPlaceholderPtr(1, gStringVar2);
-        DynamicPlaceholderTextUtil_ExpandPlaceholders(gStringVar4, sMovesPPLayout);
-        text = gStringVar4;
+        DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gVariableTexto1);
+        DynamicPlaceholderTextUtil_SetPlaceholderPtr(1, gVariableTexto2);
+        DynamicPlaceholderTextUtil_ExpandPlaceholders(gVariableTextoAmpliada, sMovesPPLayout);
+        text = gVariableTextoAmpliada;
         ppState = GetCurrentPpToMaxPpState(summary->pp[moveIndex], pp) + 9;
         x = GetStringRightAlignXOffset(FONT_NORMAL, text, 44);
     }
@@ -3427,8 +3427,8 @@ static void PrintMovePowerAndAccuracy(u16 moveIndex)
         }
         else
         {
-            ConvertIntToDecimalStringN(gStringVar1, gMovesInfo[moveIndex].power, STR_CONV_MODE_RIGHT_ALIGN, 3);
-            text = gStringVar1;
+            ConvertIntToDecimalStringN(gVariableTexto1, gMovesInfo[moveIndex].power, STR_CONV_MODE_RIGHT_ALIGN, 3);
+            text = gVariableTexto1;
         }
 
         PrintTextOnWindow(PSS_LABEL_WINDOW_MOVES_POWER_ACC, text, 53, 1, 0, 0);
@@ -3439,8 +3439,8 @@ static void PrintMovePowerAndAccuracy(u16 moveIndex)
         }
         else
         {
-            ConvertIntToDecimalStringN(gStringVar1, gMovesInfo[moveIndex].accuracy, STR_CONV_MODE_RIGHT_ALIGN, 3);
-            text = gStringVar1;
+            ConvertIntToDecimalStringN(gVariableTexto1, gMovesInfo[moveIndex].accuracy, STR_CONV_MODE_RIGHT_ALIGN, 3);
+            text = gVariableTexto1;
         }
 
         PrintTextOnWindow(PSS_LABEL_WINDOW_MOVES_POWER_ACC, text, 53, 17, 0, 0);
@@ -3564,12 +3564,12 @@ static void PrintNewMoveDetailsOrCancelText(void)
         else
             PrintTextOnWindowToFit(windowId1, GetMoveName(move), 0, 65, 0, 5);
 
-        ConvertIntToDecimalStringN(gStringVar1, gMovesInfo[move].pp, STR_CONV_MODE_RIGHT_ALIGN, 2);
+        ConvertIntToDecimalStringN(gVariableTexto1, gMovesInfo[move].pp, STR_CONV_MODE_RIGHT_ALIGN, 2);
         DynamicPlaceholderTextUtil_Reset();
-        DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gStringVar1);
-        DynamicPlaceholderTextUtil_SetPlaceholderPtr(1, gStringVar1);
-        DynamicPlaceholderTextUtil_ExpandPlaceholders(gStringVar4, sMovesPPLayout);
-        PrintTextOnWindow(windowId2, gStringVar4, GetStringRightAlignXOffset(FONT_NORMAL, gStringVar4, 44), 65, 0, 12);
+        DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gVariableTexto1);
+        DynamicPlaceholderTextUtil_SetPlaceholderPtr(1, gVariableTexto1);
+        DynamicPlaceholderTextUtil_ExpandPlaceholders(gVariableTextoAmpliada, sMovesPPLayout);
+        PrintTextOnWindow(windowId2, gVariableTextoAmpliada, GetStringRightAlignXOffset(FONT_NORMAL, gVariableTextoAmpliada, 44), 65, 0, 12);
     }
 }
 
@@ -4070,15 +4070,15 @@ static void ShowCancelOrRenamePrompt(void)
 
 static void CB2_ReturnToSummaryScreenFromNamingScreen(void)
 {
-    SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_NICKNAME, gStringVar2);
+    SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_NICKNAME, gVariableTexto2);
     ShowPokemonSummaryScreen(SUMMARY_MODE_NORMAL, gPlayerParty, gSpecialVar_0x8004, gPlayerPartyCount - 1, gInitialSummaryScreenCallback);
 }
 
 static void CB2_PssChangePokemonNickname(void)
 {
-    GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_NICKNAME, gStringVar3);
-    GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_NICKNAME, gStringVar2);
-    DoNamingScreen(NAMING_SCREEN_NICKNAME, gStringVar2, GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPECIES), 
+    GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_NICKNAME, gVariableTexto3);
+    GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_NICKNAME, gVariableTexto2);
+    DoNamingScreen(NAMING_SCREEN_NICKNAME, gVariableTexto2, GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPECIES), 
                    GetMonGender(&gPlayerParty[gSpecialVar_0x8004]), GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_PERSONALITY), 
                    CB2_ReturnToSummaryScreenFromNamingScreen,
                    GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_IS_SHINY));

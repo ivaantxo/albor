@@ -411,20 +411,20 @@ void ChangePokemonNickname(void)
 {
     void ChangePokemonNickname_CB(void);
 
-    GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_NICKNAME, gStringVar3);
-    GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_NICKNAME, gStringVar2);
-    DoNamingScreen(NAMING_SCREEN_NICKNAME, gStringVar2, GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPECIES), GetMonGender(&gPlayerParty[gSpecialVar_0x8004]), GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_PERSONALITY), ChangePokemonNickname_CB, GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_IS_SHINY));
+    GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_NICKNAME, gVariableTexto3);
+    GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_NICKNAME, gVariableTexto2);
+    DoNamingScreen(NAMING_SCREEN_NICKNAME, gVariableTexto2, GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPECIES), GetMonGender(&gPlayerParty[gSpecialVar_0x8004]), GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_PERSONALITY), ChangePokemonNickname_CB, GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_IS_SHINY));
 }
 
 void ChangePokemonNickname_CB(void)
 {
-    SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_NICKNAME, gStringVar2);
+    SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_NICKNAME, gVariableTexto2);
     CB2_ReturnToFieldContinueScriptPlayMapMusic();
 }
 
 static void ChangeBoxPokemonNickname_CB(void)
 {
-    SetBoxMonNickAt(gSpecialVar_MonBoxId, gSpecialVar_MonBoxPos, gStringVar2);
+    SetBoxMonNickAt(gSpecialVar_MonBoxId, gSpecialVar_MonBoxPos, gVariableTexto2);
     CB2_ReturnToFieldContinueScriptPlayMapMusic();
 }
 
@@ -433,9 +433,9 @@ void ChangeBoxPokemonNickname(void)
     struct BoxPokemon *boxMon;
 
     boxMon = GetBoxedMonPtr(gSpecialVar_MonBoxId, gSpecialVar_MonBoxPos);
-    GetBoxMonData(boxMon, MON_DATA_NICKNAME, gStringVar3);
-    GetBoxMonData(boxMon, MON_DATA_NICKNAME, gStringVar2);
-    DoNamingScreen(NAMING_SCREEN_NICKNAME, gStringVar2, GetBoxMonData(boxMon, MON_DATA_SPECIES), GetBoxMonGender(boxMon), GetBoxMonData(boxMon, MON_DATA_PERSONALITY), ChangeBoxPokemonNickname_CB, GetBoxMonData(boxMon, MON_DATA_IS_SHINY));
+    GetBoxMonData(boxMon, MON_DATA_NICKNAME, gVariableTexto3);
+    GetBoxMonData(boxMon, MON_DATA_NICKNAME, gVariableTexto2);
+    DoNamingScreen(NAMING_SCREEN_NICKNAME, gVariableTexto2, GetBoxMonData(boxMon, MON_DATA_SPECIES), GetBoxMonGender(boxMon), GetBoxMonData(boxMon, MON_DATA_PERSONALITY), ChangeBoxPokemonNickname_CB, GetBoxMonData(boxMon, MON_DATA_IS_SHINY));
 }
 
 static void CB2_LoadNamingScreen(void)
@@ -730,20 +730,20 @@ static void DisplaySentToPCMessage(void)
 {
     if (!IsDestinationBoxFull())
     {
-        StringCopy(gStringVar1, GetBoxNamePtr(VarGet(VAR_PC_BOX_TO_SEND_MON)));
-        StringCopy(gStringVar2, sNamingScreen->destBuffer);
+        StringCopy(gVariableTexto1, GetBoxNamePtr(VarGet(VAR_PC_BOX_TO_SEND_MON)));
+        StringCopy(gVariableTexto2, sNamingScreen->destBuffer);
     }
     else
     {
-        StringCopy(gStringVar1, GetBoxNamePtr(VarGet(VAR_PC_BOX_TO_SEND_MON)));
-        StringCopy(gStringVar2, sNamingScreen->destBuffer);
-        StringCopy(gStringVar3, GetBoxNamePtr(GetPCBoxToSendMon()));
+        StringCopy(gVariableTexto1, GetBoxNamePtr(VarGet(VAR_PC_BOX_TO_SEND_MON)));
+        StringCopy(gVariableTexto2, sNamingScreen->destBuffer);
+        StringCopy(gVariableTexto3, GetBoxNamePtr(GetPCBoxToSendMon()));
     }
 
-    StringExpandPlaceholders(gStringVar4, gText_PkmnFueTransferidoAlPC);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnFueTransferidoAlPC);
     DrawDialogueFrame(0, FALSE);
     gTextFlags.canABSpeedUpPrint = TRUE;
-    AddTextPrinterParameterized2(0, FONT_NORMAL, gStringVar4, GetPlayerTextSpeedDelay(), 0, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+    AddTextPrinterParameterized2(0, FONT_NORMAL, gVariableTextoAmpliada, GetPlayerTextSpeedDelay(), 0, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
     CopyWindowToVram(0, COPYWIN_FULL);
 }
 
@@ -1925,7 +1925,7 @@ static void DrawTextEntry(void)
     for (i = 0; i < maxChars; i++)
     {
         temp[0] = sNamingScreen->textBuffer[i];
-        temp[1] = gText_ExpandedPlaceholder_Empty[0];
+        temp[1] = COMPOUND_STRING("")[0];
         extraWidth = (IsWideLetter(temp[0]) == TRUE) ? 2 : 0;
 
         AddTextPrinterParameterized(sNamingScreen->windows[WIN_TEXT_ENTRY], FONT_NORMAL, temp, i * 8 + x + extraWidth, 1, TEXT_SKIP_DRAW, NULL);
@@ -2083,7 +2083,7 @@ static bool8 IsWideLetter(u8 character)
 static const struct NamingScreenTemplate sPlayerNamingScreenTemplate =
 {
     .copyExistingString = FALSE,
-    .maxChars = PLAYER_NAME_LENGTH,
+    .maxChars = MAXIMO_CARACTERES_NOMBRE_JUGADOR,
     .iconFunction = 1,
     .addGenderIcon = FALSE,
     .initialPage = KBPAGE_LETTERS_UPPER,

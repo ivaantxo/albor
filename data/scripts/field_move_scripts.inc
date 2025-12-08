@@ -4,8 +4,8 @@ EventScript_CutTree::
 	checkpartymove MOVE_CUT
 	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CheckTreeCantCut
 	setfieldeffectargument 0, VAR_RESULT
-	bufferpartymonnick STR_VAR_1, VAR_RESULT
-	buffermovename STR_VAR_2, MOVE_CUT
+	bufferpartymonnick VAR_TEXTO_1, VAR_RESULT
+	buffermovename VAR_TEXTO_2, MOVE_CUT
 	msgbox Text_MonUsedFieldMove, MSGBOX_DEFAULT
 	closemessage
 EventScript_CutTreeCommon:
@@ -37,7 +37,7 @@ EventScript_CheckTreeCantCut::
 	end
 
 Text_MonUsedFieldMove:
-	.string "¡{STR_VAR_1} usó {STR_VAR_2}!$"
+	.string "¡{VAR_TEXTO_1} usó {VAR_TEXTO_2}!$"
 
 Text_CantCut:
 	.string "¡Este arbolito parece que\n"
@@ -54,8 +54,8 @@ EventScript_RockSmash::
 	checkpartymove MOVE_ROCK_SMASH
 	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CantSmashRock
 	setfieldeffectargument 0, VAR_RESULT
-	bufferpartymonnick STR_VAR_1, VAR_RESULT
-	buffermovename STR_VAR_2, MOVE_ROCK_SMASH
+	bufferpartymonnick VAR_TEXTO_1, VAR_RESULT
+	buffermovename VAR_TEXTO_2, MOVE_ROCK_SMASH
 	msgbox Text_WantToSmash, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, EventScript_CancelSmash
 	msgbox Text_MonUsedFieldMove, MSGBOX_DEFAULT
@@ -261,8 +261,8 @@ Text_WantToStrength:
 	.string "Would you like to use STRENGTH?$"
 
 Text_MonUsedStrength:
-	.string "{STR_VAR_1} used STRENGTH!\p"
-	.string "{STR_VAR_1}'s STRENGTH made it\n"
+	.string "{VAR_TEXTO_1} used STRENGTH!\p"
+	.string "{VAR_TEXTO_1}'s STRENGTH made it\n"
 	.string "possible to move boulders around!$"
 
 Text_CantStrength:
@@ -277,7 +277,7 @@ EventScript_UseWaterfall::
 	lockall
 	checkpartymove MOVE_WATERFALL
 	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CantWaterfall
-	bufferpartymonnick STR_VAR_1, VAR_RESULT
+	bufferpartymonnick VAR_TEXTO_1, VAR_RESULT
 	setfieldeffectargument 0, VAR_RESULT
 	msgbox Text_WantToWaterfall, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, EventScript_EndWaterfall
@@ -304,13 +304,13 @@ Text_WantToWaterfall:
 	.string "Would you like to use WATERFALL?$"
 
 Text_MonUsedWaterfall:
-	.string "{STR_VAR_1} used WATERFALL.$"
+	.string "{VAR_TEXTO_1} used WATERFALL.$"
 
 EventScript_UseDive::
 	lockall
 	checkpartymove MOVE_DIVE
 	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CantDive
-	bufferpartymonnick STR_VAR_1, VAR_RESULT
+	bufferpartymonnick VAR_TEXTO_1, VAR_RESULT
 	setfieldeffectargument 0, VAR_RESULT
 	setfieldeffectargument 1, 1
 	msgbox Text_WantToDive, MSGBOX_YESNO
@@ -333,7 +333,7 @@ EventScript_UseDiveUnderwater::
 	lockall
 	checkpartymove MOVE_DIVE
 	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CantSurface
-	bufferpartymonnick STR_VAR_1, VAR_RESULT
+	bufferpartymonnick VAR_TEXTO_1, VAR_RESULT
 	setfieldeffectargument 0, VAR_RESULT
 	setfieldeffectargument 1, 1
 	msgbox Text_WantToSurface, MSGBOX_YESNO
@@ -375,7 +375,7 @@ Text_WantToDive:
 	.string "Would you like to use DIVE?$"
 
 Text_MonUsedDive:
-	.string "{STR_VAR_1} used DIVE.$"
+	.string "{VAR_TEXTO_1} used DIVE.$"
 
 Text_CantSurface:
 	.string "Light is filtering down from above.\n"

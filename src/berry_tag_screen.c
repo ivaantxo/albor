@@ -175,8 +175,8 @@ static void HandleBagCursorPositionChange(s8 toMove);
 
 static const u8 sText_SizeSlash[] = _("SIZE /");
 static const u8 sText_FirmSlash[] = _("FIRM /");
-static const u8 sText_Var1DotVar2[] = _("{STR_VAR_1}.{STR_VAR_2}”");
-static const u8 sText_NumberVar1Var2[] = _("{NO}{STR_VAR_1} {STR_VAR_2}");
+static const u8 sText_Var1DotVar2[] = _("{VAR_TEXTO_1}.{VAR_TEXTO_2}”");
+static const u8 sText_NumberVar1Var2[] = _("{NO}{VAR_TEXTO_1} {VAR_TEXTO_2}");
 static const u8 sText_BerryTag[] = _("BERRY TAG");
 static const u8 sText_ThreeMarks[] = _("???");
 
@@ -406,10 +406,10 @@ static void PrintAllBerryData(void)
 static void PrintBerryNumberAndName(void)
 {
     const struct Berry *berry = GetBerryInfo(sBerryTag->berryId);
-    ConvertIntToDecimalStringN(gStringVar1, sBerryTag->berryId, STR_CONV_MODE_LEADING_ZEROS, 2);
-    StringCopy(gStringVar2, berry->name);
-    StringExpandPlaceholders(gStringVar4, sText_NumberVar1Var2);
-    PrintTextInBerryTagScreen(WIN_BERRY_NAME, gStringVar4, 0, 1, 0, 0);
+    ConvertIntToDecimalStringN(gVariableTexto1, sBerryTag->berryId, STR_CONV_MODE_LEADING_ZEROS, 2);
+    StringCopy(gVariableTexto2, berry->name);
+    StringExpandPlaceholders(gVariableTextoAmpliada, sText_NumberVar1Var2);
+    PrintTextInBerryTagScreen(WIN_BERRY_NAME, gVariableTextoAmpliada, 0, 1, 0, 0);
 }
 
 static void PrintBerrySize(void)
@@ -426,10 +426,10 @@ static void PrintBerrySize(void)
         fraction = (inches % 100) / 10;
         inches /= 100;
 
-        ConvertIntToDecimalStringN(gStringVar1, inches, STR_CONV_MODE_LEFT_ALIGN, 2);
-        ConvertIntToDecimalStringN(gStringVar2, fraction, STR_CONV_MODE_LEFT_ALIGN, 2);
-        StringExpandPlaceholders(gStringVar4, sText_Var1DotVar2);
-        AddTextPrinterParameterized(WIN_SIZE_FIRM, FONT_NORMAL, gStringVar4, 0x28, 1, 0, NULL);
+        ConvertIntToDecimalStringN(gVariableTexto1, inches, STR_CONV_MODE_LEFT_ALIGN, 2);
+        ConvertIntToDecimalStringN(gVariableTexto2, fraction, STR_CONV_MODE_LEFT_ALIGN, 2);
+        StringExpandPlaceholders(gVariableTextoAmpliada, sText_Var1DotVar2);
+        AddTextPrinterParameterized(WIN_SIZE_FIRM, FONT_NORMAL, gVariableTextoAmpliada, 0x28, 1, 0, NULL);
     }
     else
     {

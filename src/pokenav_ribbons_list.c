@@ -647,7 +647,7 @@ static void BufferRibbonMonInfoText(struct PokenavListItem * listItem, u8 *dest)
         struct Pokemon *mon = &gPlayerParty[item->monId];
         gender = GetMonGender(mon);
         level = GetLevelFromMonExp(mon);
-        GetMonData(mon, MON_DATA_NICKNAME, gStringVar3);
+        GetMonData(mon, MON_DATA_NICKNAME, gVariableTexto3);
     }
     // Mon is in PC
     else
@@ -655,7 +655,7 @@ static void BufferRibbonMonInfoText(struct PokenavListItem * listItem, u8 *dest)
         struct BoxPokemon * mon = GetBoxedMonPtr(item->boxId, item->monId);
         gender = GetBoxMonGender(mon);
         level = GetLevelFromBoxMonExp(mon);
-        GetBoxMonData(mon, MON_DATA_NICKNAME, gStringVar3);
+        GetBoxMonData(mon, MON_DATA_NICKNAME, gVariableTexto3);
     }
 
     switch (gender)
@@ -670,16 +670,16 @@ static void BufferRibbonMonInfoText(struct PokenavListItem * listItem, u8 *dest)
         genderStr = sText_FemaleSymbol;
         break;
     }
-    end = StringGet_Nickname(gStringVar3);
-    fontId = GetFontIdToFit(gStringVar3, FONT_NORMAL, 0, 60);
-    WrapFontIdToFit(gStringVar3, end, FONT_NORMAL, 60);
-    dest = GetStringClearToWidth(dest, fontId, gStringVar3, 60);
+    end = StringGet_Nickname(gVariableTexto3);
+    fontId = GetFontIdToFit(gVariableTexto3, FONT_NORMAL, 0, 60);
+    WrapFontIdToFit(gVariableTexto3, end, FONT_NORMAL, 60);
+    dest = GetStringClearToWidth(dest, fontId, gVariableTexto3, 60);
 
-    s = StringCopy(gStringVar1, genderStr);
+    s = StringCopy(gVariableTexto1, genderStr);
     *s++ = CHAR_SLASH;
     *s++ = CHAR_EXTRA_SYMBOL;
     *s++ = CHAR_LV_2;
     ConvertIntToDecimalStringN(s, level, STR_CONV_MODE_LEFT_ALIGN, 3);
-    dest = GetStringClearToWidth(dest, FONT_NORMAL, gStringVar1, 54);
+    dest = GetStringClearToWidth(dest, FONT_NORMAL, gVariableTexto1, 54);
     ConvertIntToDecimalStringN(dest, item->data, STR_CONV_MODE_RIGHT_ALIGN, 2);
 }

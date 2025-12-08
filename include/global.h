@@ -179,7 +179,7 @@ struct SecretBase
     /*0x1A9D*/ u8 gender:1;
     /*0x1A9D*/ u8 battledOwnerToday:1;
     /*0x1A9D*/ u8 registryStatus:2;
-    /*0x1A9E*/ u8 trainerName[PLAYER_NAME_LENGTH];
+    /*0x1A9E*/ u8 trainerName[MAXIMO_CARACTERES_NOMBRE_JUGADOR];
     /*0x1AA5*/ u8 trainerId[TRAINER_ID_LENGTH]; // byte 0 is used for determining trainer class
     /*0x1AA9*/ u8 language;
     /*0x1AAA*/ u16 numSecretBasesReceived;
@@ -226,7 +226,7 @@ struct ContestWinner
     u16 species;
     u8 contestCategory;
     u8 monName[VANILLA_POKEMON_NAME_LENGTH + 1];
-    u8 trainerName[PLAYER_NAME_LENGTH + 1];
+    u8 trainerName[MAXIMO_CARACTERES_NOMBRE_JUGADOR + 1];
     u8 contestRank:7;
     bool8 isShiny:1;
 };
@@ -234,7 +234,7 @@ struct ContestWinner
 struct Mail
 {
     /*0x00*/ u16 words[MAIL_WORDS_COUNT];
-    /*0x12*/ u8 playerName[PLAYER_NAME_LENGTH + 1];
+    /*0x12*/ u8 playerName[MAXIMO_CARACTERES_NOMBRE_JUGADOR + 1];
     /*0x1A*/ u8 trainerId[TRAINER_ID_LENGTH];
     /*0x1E*/ u16 species;
     /*0x20*/ u16 itemId;
@@ -243,7 +243,7 @@ struct Mail
 struct DaycareMail
 {
     struct Mail message;
-    u8 otName[PLAYER_NAME_LENGTH + 1];
+    u8 otName[MAXIMO_CARACTERES_NOMBRE_JUGADOR + 1];
     u8 monName[VANILLA_POKEMON_NAME_LENGTH + 1];
 };
 
@@ -263,7 +263,7 @@ struct DayCare
 
 struct SaveBlock
 {
-    u8 playerName[PLAYER_NAME_LENGTH + 1];
+    u8 nombreJugador[MAXIMO_CARACTERES_NOMBRE_JUGADOR + 1];
     u8 playerGender; // MALE, FEMALE
     u8 specialSaveWarpFlags;
     u32 personalidadJugador;

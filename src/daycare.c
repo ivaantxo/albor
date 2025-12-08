@@ -55,8 +55,8 @@ static const struct WindowTemplate sDaycareLevelMenuWindowTemplate =
 // which is copied to VAR_0x8004 and used as an index for GetDaycareCost
 static const struct ListMenuItem sLevelMenuItems[] =
 {
-    {gText_ExpandedPlaceholder_Empty, 0},
-    {gText_ExpandedPlaceholder_Empty, 1},
+    {COMPOUND_STRING(""), 0},
+    {COMPOUND_STRING(""), 1},
     {gText_Salir, DAYCARE_LEVEL_MENU_EXIT}
 };
 
@@ -262,7 +262,7 @@ static u16 TakeSelectedPokemonFromDaycare(struct DaycareMon *daycareMon)
     u32 experience;
     struct Pokemon pokemon;
 
-    GetBoxMonNickname(&daycareMon->mon, gStringVar1);
+    GetBoxMonNickname(&daycareMon->mon, gVariableTexto1);
     species = GetBoxMonData(&daycareMon->mon, MON_DATA_SPECIES);
     BoxMonToMon(&daycareMon->mon, &pokemon);
 
@@ -323,8 +323,8 @@ static u8 GetNumLevelsGainedFromSteps(struct DaycareMon *daycareMon)
 static u8 GetNumLevelsGainedForDaycareMon(struct DaycareMon *daycareMon)
 {
     u8 numLevelsGained = GetNumLevelsGainedFromSteps(daycareMon);
-    ConvertIntToDecimalStringN(gStringVar2, numLevelsGained, STR_CONV_MODE_LEFT_ALIGN, 2);
-    GetBoxMonNickname(&daycareMon->mon, gStringVar1);
+    ConvertIntToDecimalStringN(gVariableTexto2, numLevelsGained, STR_CONV_MODE_LEFT_ALIGN, 2);
+    GetBoxMonNickname(&daycareMon->mon, gVariableTexto1);
     return numLevelsGained;
 }
 
@@ -333,9 +333,9 @@ static u32 GetDaycareCostForSelectedMon(struct DaycareMon *daycareMon)
     u32 cost;
 
     u8 numLevelsGained = GetNumLevelsGainedFromSteps(daycareMon);
-    GetBoxMonNickname(&daycareMon->mon, gStringVar1);
+    GetBoxMonNickname(&daycareMon->mon, gVariableTexto1);
     cost = 100 + 100 * numLevelsGained;
-    ConvertIntToDecimalStringN(gStringVar2, cost, STR_CONV_MODE_LEFT_ALIGN, 5);
+    ConvertIntToDecimalStringN(gVariableTexto2, cost, STR_CONV_MODE_LEFT_ALIGN, 5);
     return cost;
 }
 
@@ -361,7 +361,7 @@ static void ClearDaycareMonMail(struct DaycareMail *mail)
 {
     s32 i;
 
-    for (i = 0; i < PLAYER_NAME_LENGTH + 1; i++)
+    for (i = 0; i < MAXIMO_CARACTERES_NOMBRE_JUGADOR + 1; i++)
         mail->otName[i] = 0;
     for (i = 0; i < VANILLA_POKEMON_NAME_LENGTH + 1; i++)
         mail->monName[i] = 0;
@@ -784,28 +784,28 @@ static bool8 IsEggPending(struct DayCare *daycare)
     return (daycare->offspringPersonality != 0);
 }
 
-// gStringVar1 = first mon's nickname
-// gStringVar2 = second mon's nickname
-// gStringVar3 = first mon trainer's name
+// gVariableTexto1 = first mon's nickname
+// gVariableTexto2 = second mon's nickname
+// gVariableTexto3 = first mon trainer's name
 static void _GetDaycareMonNicknames(struct DayCare *daycare)
 {
-    u8 otName[max(12, PLAYER_NAME_LENGTH + 1)];
+    u8 otName[max(12, MAXIMO_CARACTERES_NOMBRE_JUGADOR + 1)];
     if (GetBoxMonData(&daycare->mons[0].mon, MON_DATA_SPECIES) != 0)
     {
-        GetBoxMonNickname(&daycare->mons[0].mon, gStringVar1);
+        GetBoxMonNickname(&daycare->mons[0].mon, gVariableTexto1);
         GetBoxMonData(&daycare->mons[0].mon, MON_DATA_OT_NAME, otName);
-        StringCopy(gStringVar3, otName);
+        StringCopy(gVariableTexto3, otName);
     }
 
     if (GetBoxMonData(&daycare->mons[1].mon, MON_DATA_SPECIES) != 0)
     {
-        GetBoxMonNickname(&daycare->mons[1].mon, gStringVar2);
+        GetBoxMonNickname(&daycare->mons[1].mon, gVariableTexto2);
     }
 }
 
 u16 GetSelectedMonNicknameAndSpecies(void)
 {
-    GetBoxMonNickname(&gPlayerParty[GetCursorSelectionMonId()].box, gStringVar1);
+    GetBoxMonNickname(&gPlayerParty[GetCursorSelectionMonId()].box, gVariableTexto1);
     return GetBoxMonData(&gPlayerParty[GetCursorSelectionMonId()].box, MON_DATA_SPECIES);
 }
 
@@ -906,7 +906,7 @@ void SetDaycareCompatibilityString(void)
     if (relationshipScore == PARENTS_MAX_COMPATIBILITY)
         whichString = 0;
 
-    StringCopy(gStringVar4, sCompatibilityMessages[whichString]);
+    StringCopy(gVariableTextoAmpliada, sCompatibilityMessages[whichString]);
 }
 
 bool8 NameHasGenderSymbol(const u8 *name, u8 genderRatio)

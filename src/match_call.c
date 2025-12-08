@@ -1058,8 +1058,8 @@ static bool32 MatchCall_PrintIntro(u8 taskId)
 
         // Ready the message
         if (!sMatchCallState.triggeredFromScript)
-            SelectMatchCallMessage(sMatchCallState.trainerId, gStringVar4);
-        InitMatchCallTextPrinter(tWindowId, gStringVar4);
+            SelectMatchCallMessage(sMatchCallState.trainerId, gVariableTextoAmpliada);
+        InitMatchCallTextPrinter(tWindowId, gVariableTextoAmpliada);
         return TRUE;
     }
 
@@ -1304,7 +1304,7 @@ static void BuildMatchCallString(int matchCallId, const struct MatchCallText *ma
     StringExpandPlaceholders(str, matchCallText->text);
 }
 
-static u8 *const sMatchCallTextStringVars[] = { gStringVar1, gStringVar2, gStringVar3 };
+static u8 *const sMatchCallTextStringVars[] = { gVariableTexto1, gVariableTexto2, gVariableTexto3 };
 
 static void PopulateMatchCallStringVars(int matchCallId, const s8 *stringVarFuncIds)
 {
@@ -1406,7 +1406,7 @@ void BufferPokedexRatingForMatchCall(u8 *destStr)
     int numSeen, numCaught;
     u8 *str;
 
-    u8 *buffer = Alloc(sizeof(gStringVar4));
+    u8 *buffer = Alloc(sizeof(gVariableTextoAmpliada));
     if (!buffer)
     {
         destStr[0] = EOS;
@@ -1415,8 +1415,8 @@ void BufferPokedexRatingForMatchCall(u8 *destStr)
 
     numSeen = GetNationalPokedexCount(FLAG_GET_SEEN);
     numCaught = GetNationalPokedexCount(FLAG_GET_CAUGHT);
-    ConvertIntToDecimalStringN(gStringVar1, numSeen, STR_CONV_MODE_LEFT_ALIGN, 3);
-    ConvertIntToDecimalStringN(gStringVar2, numCaught, STR_CONV_MODE_LEFT_ALIGN, 3);
+    ConvertIntToDecimalStringN(gVariableTexto1, numSeen, STR_CONV_MODE_LEFT_ALIGN, 3);
+    ConvertIntToDecimalStringN(gVariableTexto2, numCaught, STR_CONV_MODE_LEFT_ALIGN, 3);
     str = StringCopy(buffer, gBirchDexRatingText_AreYouCurious);
     *(str++) = CHAR_PROMPT_CLEAR;
     str = StringCopy(str, gBirchDexRatingText_SoYouveSeenAndCaught);
@@ -1427,8 +1427,8 @@ void BufferPokedexRatingForMatchCall(u8 *destStr)
     *(str++) = CHAR_PROMPT_CLEAR;
     numSeen = GetNationalPokedexCount(FLAG_GET_SEEN);
     numCaught = GetNationalPokedexCount(FLAG_GET_CAUGHT);
-    ConvertIntToDecimalStringN(gStringVar1, numSeen, STR_CONV_MODE_LEFT_ALIGN, 4);
-    ConvertIntToDecimalStringN(gStringVar2, numCaught, STR_CONV_MODE_LEFT_ALIGN, 4);
+    ConvertIntToDecimalStringN(gVariableTexto1, numSeen, STR_CONV_MODE_LEFT_ALIGN, 4);
+    ConvertIntToDecimalStringN(gVariableTexto2, numCaught, STR_CONV_MODE_LEFT_ALIGN, 4);
     StringExpandPlaceholders(str, gBirchDexRatingText_OnANationwideBasis);
 
     Free(buffer);

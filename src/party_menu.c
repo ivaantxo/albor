@@ -928,9 +928,9 @@ static void DisplayPartyPokemonDataForMultiBattle(u8 slot)
     else
     {
         menuBox->infoRects->blitFunc(menuBox->windowId, 0, 0, 0, 0, FALSE);
-        StringCopy(gStringVar1, gMultiPartnerParty[actualSlot].nickname);
-        StringGet_Nickname(gStringVar1);
-        DisplayPartyPokemonBarDetail(menuBox->windowId, gStringVar1, 0, menuBox->infoRects->dimensions);
+        StringCopy(gVariableTexto1, gMultiPartnerParty[actualSlot].nickname);
+        StringGet_Nickname(gVariableTexto1);
+        DisplayPartyPokemonBarDetail(menuBox->windowId, gVariableTexto1, 0, menuBox->infoRects->dimensions);
         DisplayPartyPokemonLevel(gMultiPartnerParty[actualSlot].level, menuBox);
         DisplayPartyPokemonGender(gMultiPartnerParty[actualSlot].gender, gMultiPartnerParty[actualSlot].species, gMultiPartnerParty[actualSlot].nickname, menuBox);
         DisplayPartyPokemonHP(gMultiPartnerParty[actualSlot].hp, gMultiPartnerParty[actualSlot].maxhp, menuBox);
@@ -1280,8 +1280,8 @@ static bool8 DisplayCancelChooseMonYesNo(u8 taskId)
         return FALSE;
 
     PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[1]);
-    StringExpandPlaceholders(gStringVar4, stringPtr);
-    DisplayPartyMenuMessage(gStringVar4, TRUE);
+    StringExpandPlaceholders(gVariableTextoAmpliada, stringPtr);
+    DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
     gTasks[taskId].func = Task_CancelChooseMonYesNo;
     return TRUE;
 }
@@ -1593,37 +1593,37 @@ static void Task_ReturnToChooseMonAfterText(u8 taskId)
 
 static void DisplayGaveHeldItemMessage(struct Pokemon *mon, u16 item, bool8 keepOpen)
 {
-    GetMonNickname(mon, gStringVar1);
-    CopyItemName(item, gStringVar2);
-    StringExpandPlaceholders(gStringVar4, gText_PkmnWasGivenItem);
-    DisplayPartyMenuMessage(gStringVar4, keepOpen);
+    GetMonNickname(mon, gVariableTexto1);
+    CopyItemName(item, gVariableTexto2);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnWasGivenItem);
+    DisplayPartyMenuMessage(gVariableTextoAmpliada, keepOpen);
     ScheduleBgCopyTilemapToVram(2);
 }
 
 static void DisplayTookHeldItemMessage(struct Pokemon *mon, u16 item, bool8 keepOpen)
 {
-    GetMonNickname(mon, gStringVar1);
-    CopyItemName(item, gStringVar2);
-    StringExpandPlaceholders(gStringVar4, gText_ReceivedItemFromPkmn);
-    DisplayPartyMenuMessage(gStringVar4, keepOpen);
+    GetMonNickname(mon, gVariableTexto1);
+    CopyItemName(item, gVariableTexto2);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_ReceivedItemFromPkmn);
+    DisplayPartyMenuMessage(gVariableTextoAmpliada, keepOpen);
     ScheduleBgCopyTilemapToVram(2);
 }
 
 static void DisplayAlreadyHoldingItemSwitchMessage(struct Pokemon *mon, u16 item, bool8 keepOpen)
 {
-    GetMonNickname(mon, gStringVar1);
-    CopyItemName(item, gStringVar2);
-    StringExpandPlaceholders(gStringVar4, gText_PkmnAlreadyHoldingItemSwitch);
-    DisplayPartyMenuMessage(gStringVar4, keepOpen);
+    GetMonNickname(mon, gVariableTexto1);
+    CopyItemName(item, gVariableTexto2);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnAlreadyHoldingItemSwitch);
+    DisplayPartyMenuMessage(gVariableTextoAmpliada, keepOpen);
     ScheduleBgCopyTilemapToVram(2);
 }
 
 static void DisplaySwitchedHeldItemMessage(u16 item, u16 item2, bool8 keepOpen)
 {
-    CopyItemName(item, gStringVar1);
-    CopyItemName(item2, gStringVar2);
-    StringExpandPlaceholders(gStringVar4, gText_SwitchedPkmnItem);
-    DisplayPartyMenuMessage(gStringVar4, keepOpen);
+    CopyItemName(item, gVariableTexto1);
+    CopyItemName(item2, gVariableTexto2);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_SwitchedPkmnItem);
+    DisplayPartyMenuMessage(gVariableTextoAmpliada, keepOpen);
     ScheduleBgCopyTilemapToVram(2);
 }
 
@@ -1657,7 +1657,7 @@ static u8 TryTakeMonItem(struct Pokemon *mon)
 
 static void BufferBagFullCantTakeItemMessage(void)
 {
-    StringExpandPlaceholders(gStringVar4, gText_BagFullCouldNotRemoveItem);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_BagFullCouldNotRemoveItem);
 }
 
 #define tHP           data[0]
@@ -1680,7 +1680,7 @@ static void Task_PartyMenuModifyHP(u8 taskId)
     {
         // If HP was recovered, buffer the amount recovered
         if (tHP > tStartHP)
-            ConvertIntToDecimalStringN(gStringVar2, tHP - tStartHP, STR_CONV_MODE_LEFT_ALIGN, 3);
+            ConvertIntToDecimalStringN(gVariableTexto2, tHP - tStartHP, STR_CONV_MODE_LEFT_ALIGN, 3);
 
         SwitchTaskToFollowupFunc(taskId);
     }
@@ -2050,10 +2050,10 @@ static void DisplayPartyPokemonLevelCheck(struct Pokemon *mon, struct PartyMenuB
 
 static void DisplayPartyPokemonLevel(u8 level, struct PartyMenuBox *menuBox)
 {
-    ConvertIntToDecimalStringN(gStringVar2, level, STR_CONV_MODE_LEFT_ALIGN, 3);
-    StringCopy(gStringVar1, gText_LevelSymbol);
-    StringAppend(gStringVar1, gStringVar2);
-    DisplayPartyPokemonBarDetail(menuBox->windowId, gStringVar1, 0, &menuBox->infoRects->dimensions[4]);
+    ConvertIntToDecimalStringN(gVariableTexto2, level, STR_CONV_MODE_LEFT_ALIGN, 3);
+    StringCopy(gVariableTexto1, gText_LevelSymbol);
+    StringAppend(gVariableTexto1, gVariableTexto2);
+    DisplayPartyPokemonBarDetail(menuBox->windowId, gVariableTexto1, 0, &menuBox->infoRects->dimensions[4]);
 }
 
 static void DisplayPartyPokemonGenderNidoranCheck(struct Pokemon *mon, struct PartyMenuBox *menuBox, u8 c)
@@ -2112,15 +2112,15 @@ static void DisplayParty4DigitsHP(struct PartyMenuBox *menuBox, const u8 *str, c
 static void DisplayPartyPokemonHP(u16 hp, u16 maxhp, struct PartyMenuBox *menuBox)
 {
     bool32 fourDigits = (maxhp >= 1000);
-    u8 *strOut = ConvertIntToDecimalStringN(gStringVar1, hp, STR_CONV_MODE_RIGHT_ALIGN, fourDigits ? 4 : 3);
+    u8 *strOut = ConvertIntToDecimalStringN(gVariableTexto1, hp, STR_CONV_MODE_RIGHT_ALIGN, fourDigits ? 4 : 3);
 
     strOut[0] = CHAR_SLASH;
     strOut[1] = EOS;
 
     if (fourDigits)
-        DisplayParty4DigitsHP(menuBox, gStringVar1, &menuBox->infoRects->dimensions[12], 10);
+        DisplayParty4DigitsHP(menuBox, gVariableTexto1, &menuBox->infoRects->dimensions[12], 10);
     else
-        DisplayPartyPokemonBarDetail(menuBox->windowId, gStringVar1, 0, &menuBox->infoRects->dimensions[12]);
+        DisplayPartyPokemonBarDetail(menuBox->windowId, gVariableTexto1, 0, &menuBox->infoRects->dimensions[12]);
 }
 
 static void DisplayPartyPokemonMaxHPCheck(struct Pokemon *mon, struct PartyMenuBox *menuBox, u8 c)
@@ -2138,14 +2138,14 @@ static void DisplayPartyPokemonMaxHP(u16 maxhp, struct PartyMenuBox *menuBox)
 {
     bool32 fourDigits = (maxhp >= 1000);
 
-    ConvertIntToDecimalStringN(gStringVar2, maxhp, STR_CONV_MODE_RIGHT_ALIGN, fourDigits ? 4 : 3);
-    StringCopy(gStringVar1, gText_Slash);
-    StringAppend(gStringVar1, gStringVar2);
+    ConvertIntToDecimalStringN(gVariableTexto2, maxhp, STR_CONV_MODE_RIGHT_ALIGN, fourDigits ? 4 : 3);
+    StringCopy(gVariableTexto1, gText_Slash);
+    StringAppend(gVariableTexto1, gVariableTexto2);
 
     if (fourDigits)
-        DisplayParty4DigitsHP(menuBox, gStringVar1, &menuBox->infoRects->dimensions[16], 5);
+        DisplayParty4DigitsHP(menuBox, gVariableTexto1, &menuBox->infoRects->dimensions[16], 5);
     else
-        DisplayPartyPokemonBarDetail(menuBox->windowId, gStringVar1, 0, &menuBox->infoRects->dimensions[16]);
+        DisplayPartyPokemonBarDetail(menuBox->windowId, gVariableTexto1, 0, &menuBox->infoRects->dimensions[16]);
 }
 
 static void DisplayPartyPokemonHPBarCheck(struct Pokemon *mon, struct PartyMenuBox *menuBox)
@@ -2252,8 +2252,8 @@ void DisplayPartyMenuStdMessage(u32 stringId)
                 stringId = PARTY_MSG_CHOOSE_MON_OR_CANCEL;
         }
         DrawStdFrameWithCustomTileAndPalette(*windowPtr, FALSE, 0x4F, 13);
-        StringExpandPlaceholders(gStringVar4, sActionStringTable[stringId]);
-        AddTextPrinterParameterized(*windowPtr, FONT_NORMAL, gStringVar4, 0, 1, 0, 0);
+        StringExpandPlaceholders(gVariableTextoAmpliada, sActionStringTable[stringId]);
+        AddTextPrinterParameterized(*windowPtr, FONT_NORMAL, gVariableTextoAmpliada, 0, 1, 0, 0);
         ScheduleBgCopyTilemapToVram(2);
     }
 }
@@ -2442,7 +2442,7 @@ static u8 GetPartyMenuActionsType(struct Pokemon *mon)
 static bool8 CreateSelectionWindow(u8 taskId)
 {
     struct Pokemon *mon = &gPlayerParty[gPartyMenu.slotId];
-    GetMonNickname(mon, gStringVar1);
+    GetMonNickname(mon, gVariableTexto1);
     PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[1]);
     SetPartyMonSelectionActions(gPlayerParty, gPartyMenu.slotId, GetPartyMenuActionsType(mon));
     DisplaySelectionWindow(SELECTWINDOW_ACTIONS);
@@ -2900,7 +2900,7 @@ static void Task_HandleSwitchItemsYesNoInput(u8 taskId)
         {
             AddBagItem(gSpecialVar_ItemId, 1);
             BufferBagFullCantTakeItemMessage();
-            DisplayPartyMenuMessage(gStringVar4, FALSE);
+            DisplayPartyMenuMessage(gVariableTextoAmpliada, FALSE);
             gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
         }
         // Giving mail
@@ -2962,13 +2962,13 @@ static void CursorCb_TakeItem(u8 taskId)
     switch (TryTakeMonItem(mon))
     {
     case 0: // Not holding item
-        GetMonNickname(mon, gStringVar1);
-        StringExpandPlaceholders(gStringVar4, gText_PkmnNotHolding);
-        DisplayPartyMenuMessage(gStringVar4, TRUE);
+        GetMonNickname(mon, gVariableTexto1);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnNotHolding);
+        DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
         break;
     case 1: // No room to take item
         BufferBagFullCantTakeItemMessage();
-        DisplayPartyMenuMessage(gStringVar4, TRUE);
+        DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
         break;
     default: // Took item
         DisplayTookHeldItemMessage(mon, item, TRUE);
@@ -2988,16 +2988,16 @@ static void CursorCb_Toss(u8 taskId)
     PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[1]);
     if (item == ITEM_NONE)
     {
-        GetMonNickname(mon, gStringVar1);
-        StringExpandPlaceholders(gStringVar4, gText_PkmnNotHolding);
-        DisplayPartyMenuMessage(gStringVar4, TRUE);
+        GetMonNickname(mon, gVariableTexto1);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnNotHolding);
+        DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
         gTasks[taskId].func = Task_UpdateHeldItemSprite;
     }
     else
     {
-        CopyItemName(item, gStringVar1);
-        StringExpandPlaceholders(gStringVar4, gText_ThrowAwayItem);
-        DisplayPartyMenuMessage(gStringVar4, TRUE);
+        CopyItemName(item, gVariableTexto1);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_ThrowAwayItem);
+        DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
         gTasks[taskId].func = Task_TossHeldItemYesNo;
     }
 }
@@ -3018,9 +3018,9 @@ static void Task_HandleTossHeldItemYesNoInput(u8 taskId)
     switch (Menu_ProcessInputNoWrapClearOnChoose())
     {
     case 0:
-        CopyItemName(GetMonData(mon, MON_DATA_HELD_ITEM), gStringVar1);
-        StringExpandPlaceholders(gStringVar4, gText_ItemThrownAway);
-        DisplayPartyMenuMessage(gStringVar4, FALSE);
+        CopyItemName(GetMonData(mon, MON_DATA_HELD_ITEM), gVariableTexto1);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_ItemThrownAway);
+        DisplayPartyMenuMessage(gVariableTextoAmpliada, FALSE);
         gTasks[taskId].func = Task_TossHeldItem;
         break;
     case MENU_B_PRESSED:
@@ -3101,9 +3101,9 @@ static void CursorCb_SendMon(u8 taskId)
     }
     else
     {
-        // gStringVar4 below is the error message buffered by TrySwitchInPokemon
+        // gVariableTextoAmpliada below is the error message buffered by TrySwitchInPokemon
         PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[1]);
-        DisplayPartyMenuMessage(gStringVar4, TRUE);
+        DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
         gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
     }
 }
@@ -3120,8 +3120,8 @@ static void CursorCb_Register(u8 taskId)
     PlaySE(SE_FAILURE);
     PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[0]);
     PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[1]);
-    StringAppend(gStringVar4, gText_PauseUntilPress);
-    DisplayPartyMenuMessage(gStringVar4, TRUE);
+    StringAppend(gVariableTextoAmpliada, gText_PauseUntilPress);
+    DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
     gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
 }
 
@@ -3146,15 +3146,15 @@ static void CursorCb_FieldMove(u8 taskId)
             break;
         case FIELD_MOVE_TELEPORT:
             mapHeader = Overworld_GetMapHeaderByGroupAndId(gSaveBlockPtr->lastHealLocation.mapGroup, gSaveBlockPtr->lastHealLocation.mapNum);
-            GetMapNameGeneric(gStringVar1, mapHeader->regionMapSectionId);
-            StringExpandPlaceholders(gStringVar4, gText_ReturnToHealingSpot);
+            GetMapNameGeneric(gVariableTexto1, mapHeader->regionMapSectionId);
+            StringExpandPlaceholders(gVariableTextoAmpliada, gText_ReturnToHealingSpot);
             DisplayFieldMoveExitAreaMessage(taskId);
             sPartyMenuInternal->data[0] = fieldMove;
             break;
         case FIELD_MOVE_DIG:
             mapHeader = Overworld_GetMapHeaderByGroupAndId(gSaveBlockPtr->escapeWarp.mapGroup, gSaveBlockPtr->escapeWarp.mapNum);
-            GetMapNameGeneric(gStringVar1, mapHeader->regionMapSectionId);
-            StringExpandPlaceholders(gStringVar4, gText_EscapeFromHere);
+            GetMapNameGeneric(gVariableTexto1, mapHeader->regionMapSectionId);
+            StringExpandPlaceholders(gVariableTextoAmpliada, gText_EscapeFromHere);
             DisplayFieldMoveExitAreaMessage(taskId);
             sPartyMenuInternal->data[0] = fieldMove;
             break;
@@ -3189,7 +3189,7 @@ static void CursorCb_FieldMove(u8 taskId)
 
 static void DisplayFieldMoveExitAreaMessage(u8 taskId)
 {
-    DisplayPartyMenuMessage(gStringVar4, TRUE);
+    DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
     gTasks[taskId].func = Task_FieldMoveExitAreaYesNo;
 }
 
@@ -3635,65 +3635,65 @@ static void GetMedicineItemEffectMessage(u16 item, u32 statusCured)
     switch (GetItemEffectType(item))
     {
     case ITEM_EFFECT_CURE_POISON:
-        StringExpandPlaceholders(gStringVar4, gText_PkmnCuredOfPoison);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnCuredOfPoison);
         break;
     case ITEM_EFFECT_CURE_SLEEP:
-        StringExpandPlaceholders(gStringVar4, gText_PkmnWokeUp2);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnWokeUp2);
         break;
     case ITEM_EFFECT_CURE_BURN:
-        StringExpandPlaceholders(gStringVar4, gText_PkmnBurnHealed);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnBurnHealed);
         break;
     case ITEM_EFFECT_CURE_FREEZE_FROSTBITE:
         if (statusCured & STATUS1_FREEZE)
-            StringExpandPlaceholders(gStringVar4, gText_PkmnThawedOut);
+            StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnThawedOut);
         if (statusCured & STATUS1_FROSTBITE)
-            StringExpandPlaceholders(gStringVar4, gText_PkmnFrostbiteHealed);
+            StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnFrostbiteHealed);
         break;
     case ITEM_EFFECT_CURE_PARALYSIS:
-        StringExpandPlaceholders(gStringVar4, gText_PkmnCuredOfParalysis);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnCuredOfParalysis);
         break;
     case ITEM_EFFECT_CURE_CONFUSION:
-        StringExpandPlaceholders(gStringVar4, gText_PkmnSnappedOutOfConfusion);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnSnappedOutOfConfusion);
         break;
     case ITEM_EFFECT_CURE_INFATUATION:
-        StringExpandPlaceholders(gStringVar4, gText_PkmnGotOverInfatuation);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnGotOverInfatuation);
         break;
     case ITEM_EFFECT_CURE_ALL_STATUS:
-        StringExpandPlaceholders(gStringVar4, gText_PkmnBecameHealthy);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnBecameHealthy);
         break;
     case ITEM_EFFECT_HP_EV:
-        StringCopy(gStringVar2, gText_PS);
-        StringExpandPlaceholders(gStringVar4, gText_PkmnBaseVar2StatIncreased);
+        StringCopy(gVariableTexto2, gText_PS);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnBaseVar2StatIncreased);
         break;
     case ITEM_EFFECT_ATK_EV:
-        StringCopy(gStringVar2, gText_Ataque);
-        StringExpandPlaceholders(gStringVar4, gText_PkmnBaseVar2StatIncreased);
+        StringCopy(gVariableTexto2, gText_Ataque);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnBaseVar2StatIncreased);
         break;
     case ITEM_EFFECT_DEF_EV:
-        StringCopy(gStringVar2, gText_Defensa);
-        StringExpandPlaceholders(gStringVar4, gText_PkmnBaseVar2StatIncreased);
+        StringCopy(gVariableTexto2, gText_Defensa);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnBaseVar2StatIncreased);
         break;
     case ITEM_EFFECT_SPEED_EV:
-        StringCopy(gStringVar2, gText_Velocidad);
-        StringExpandPlaceholders(gStringVar4, gText_PkmnBaseVar2StatIncreased);
+        StringCopy(gVariableTexto2, gText_Velocidad);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnBaseVar2StatIncreased);
         break;
     case ITEM_EFFECT_SPATK_EV:
-        StringCopy(gStringVar2, gText_AtEsp);
-        StringExpandPlaceholders(gStringVar4, gText_PkmnBaseVar2StatIncreased);
+        StringCopy(gVariableTexto2, gText_AtEsp);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnBaseVar2StatIncreased);
         break;
     case ITEM_EFFECT_SPDEF_EV:
-        StringCopy(gStringVar2, gText_DefEsp);
-        StringExpandPlaceholders(gStringVar4, gText_PkmnBaseVar2StatIncreased);
+        StringCopy(gVariableTexto2, gText_DefEsp);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnBaseVar2StatIncreased);
         break;
     case ITEM_EFFECT_PP_UP:
     case ITEM_EFFECT_PP_MAX:
-        StringExpandPlaceholders(gStringVar4, gText_MovesPPIncreased);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_MovesPPIncreased);
         break;
     case ITEM_EFFECT_HEAL_PP:
-        StringExpandPlaceholders(gStringVar4, gText_PPWasRestored);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_PPWasRestored);
         break;
     default:
-        StringExpandPlaceholders(gStringVar4, gText_WontHaveEffect);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_WontHaveEffect);
         break;
     }
 }
@@ -3790,9 +3790,9 @@ void ItemUseCB_Medicine(u8 taskId, TaskFunc task)
         }
         else
         {
-            GetMonNickname(mon, gStringVar1);
+            GetMonNickname(mon, gVariableTexto1);
             GetMedicineItemEffectMessage(item, oldStatus);
-            DisplayPartyMenuMessage(gStringVar4, TRUE);
+            DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
             ScheduleBgCopyTilemapToVram(2);
             if (gPartyMenu.menuType == PARTY_MENU_TYPE_FIELD && CheckBagHasItem(item, 1))
                 gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
@@ -3810,8 +3810,8 @@ void ItemUseCB_Medicine(u8 taskId, TaskFunc task)
 
 void Task_AbilityCapsule(u8 taskId)
 {
-    static const u8 askText[] = _("Would you like to change {STR_VAR_1}'s\nability to {STR_VAR_2}?");
-    static const u8 doneText[] = _("{STR_VAR_1}'s ability became\n{STR_VAR_2}!{PAUSE_UNTIL_PRESS}");
+    static const u8 askText[] = _("Would you like to change {VAR_TEXTO_1}'s\nability to {VAR_TEXTO_2}?");
+    static const u8 doneText[] = _("{VAR_TEXTO_1}'s ability became\n{VAR_TEXTO_2}!{PAUSE_UNTIL_PRESS}");
     s16 *data = gTasks[taskId].data;
 
     switch (tState)
@@ -3831,11 +3831,11 @@ void Task_AbilityCapsule(u8 taskId)
             return;
         }
         gPartyMenuUseExitCallback = TRUE;
-        GetMonNickname(&gPlayerParty[tMonId], gStringVar1);
-        StringCopy(gStringVar2, gAbilitiesInfo[GetAbilityBySpecies(tSpecies, tAbilityNum)].name);
-        StringExpandPlaceholders(gStringVar4, askText);
+        GetMonNickname(&gPlayerParty[tMonId], gVariableTexto1);
+        StringCopy(gVariableTexto2, gAbilitiesInfo[GetAbilityBySpecies(tSpecies, tAbilityNum)].name);
+        StringExpandPlaceholders(gVariableTextoAmpliada, askText);
         PlaySE(SE_SELECT);
-        DisplayPartyMenuMessage(gStringVar4, 1);
+        DisplayPartyMenuMessage(gVariableTextoAmpliada, 1);
         ScheduleBgCopyTilemapToVram(2);
         tState++;
         break;
@@ -3867,8 +3867,8 @@ void Task_AbilityCapsule(u8 taskId)
         break;
     case 3:
         PlaySE(SE_USE_ITEM);
-        StringExpandPlaceholders(gStringVar4, doneText);
-        DisplayPartyMenuMessage(gStringVar4, 1);
+        StringExpandPlaceholders(gVariableTextoAmpliada, doneText);
+        DisplayPartyMenuMessage(gVariableTextoAmpliada, 1);
         ScheduleBgCopyTilemapToVram(2);
         tState++;
         break;
@@ -3898,8 +3898,8 @@ void ItemUseCB_AbilityCapsule(u8 taskId, TaskFunc task)
 
 void Task_AbilityPatch(u8 taskId)
 {
-    static const u8 askText[] = _("Would you like to change {STR_VAR_1}'s\nability to {STR_VAR_2}?");
-    static const u8 doneText[] = _("{STR_VAR_1}'s ability became\n{STR_VAR_2}!{PAUSE_UNTIL_PRESS}");
+    static const u8 askText[] = _("Would you like to change {VAR_TEXTO_1}'s\nability to {VAR_TEXTO_2}?");
+    static const u8 doneText[] = _("{VAR_TEXTO_1}'s ability became\n{VAR_TEXTO_2}!{PAUSE_UNTIL_PRESS}");
     s16 *data = gTasks[taskId].data;
 
     switch (tState)
@@ -3918,11 +3918,11 @@ void Task_AbilityPatch(u8 taskId)
             return;
         }
         gPartyMenuUseExitCallback = TRUE;
-        GetMonNickname(&gPlayerParty[tMonId], gStringVar1);
-        StringCopy(gStringVar2, gAbilitiesInfo[GetAbilityBySpecies(tSpecies, tAbilityNum)].name);
-        StringExpandPlaceholders(gStringVar4, askText);
+        GetMonNickname(&gPlayerParty[tMonId], gVariableTexto1);
+        StringCopy(gVariableTexto2, gAbilitiesInfo[GetAbilityBySpecies(tSpecies, tAbilityNum)].name);
+        StringExpandPlaceholders(gVariableTextoAmpliada, askText);
         PlaySE(SE_SELECT);
-        DisplayPartyMenuMessage(gStringVar4, 1);
+        DisplayPartyMenuMessage(gVariableTextoAmpliada, 1);
         ScheduleBgCopyTilemapToVram(2);
         tState++;
         break;
@@ -3954,8 +3954,8 @@ void Task_AbilityPatch(u8 taskId)
         break;
     case 3:
         PlaySE(SE_USE_ITEM);
-        StringExpandPlaceholders(gStringVar4, doneText);
-        DisplayPartyMenuMessage(gStringVar4, 1);
+        StringExpandPlaceholders(gVariableTextoAmpliada, doneText);
+        DisplayPartyMenuMessage(gVariableTextoAmpliada, 1);
         ScheduleBgCopyTilemapToVram(2);
         tState++;
         break;
@@ -4000,8 +4000,8 @@ void ItemUseCB_AbilityPatch(u8 taskId, TaskFunc task)
 
 void Task_Mint(u8 taskId)
 {
-    static const u8 askText[] = _("It might affect {STR_VAR_1}'s stats.\nAre you sure you want to use it?");
-    static const u8 doneText[] = _("{STR_VAR_1}'s stats may have changed due\nto the effects of the {STR_VAR_2}!{PAUSE_UNTIL_PRESS}");
+    static const u8 askText[] = _("It might affect {VAR_TEXTO_1}'s stats.\nAre you sure you want to use it?");
+    static const u8 doneText[] = _("{VAR_TEXTO_1}'s stats may have changed due\nto the effects of the {VAR_TEXTO_2}!{PAUSE_UNTIL_PRESS}");
     s16 *data = gTasks[taskId].data;
 
     switch (tState)
@@ -4018,11 +4018,11 @@ void Task_Mint(u8 taskId)
             return;
         }
         gPartyMenuUseExitCallback = TRUE;
-        GetMonNickname(&gPlayerParty[tMonId], gStringVar1);
-        CopyItemName(gSpecialVar_ItemId, gStringVar2);
-        StringExpandPlaceholders(gStringVar4, askText);
+        GetMonNickname(&gPlayerParty[tMonId], gVariableTexto1);
+        CopyItemName(gSpecialVar_ItemId, gVariableTexto2);
+        StringExpandPlaceholders(gVariableTextoAmpliada, askText);
         PlaySE(SE_SELECT);
-        DisplayPartyMenuMessage(gStringVar4, 1);
+        DisplayPartyMenuMessage(gVariableTextoAmpliada, 1);
         ScheduleBgCopyTilemapToVram(2);
         tState++;
         break;
@@ -4054,8 +4054,8 @@ void Task_Mint(u8 taskId)
         break;
     case 3:
         PlaySE(SE_USE_ITEM);
-        StringExpandPlaceholders(gStringVar4, doneText);
-        DisplayPartyMenuMessage(gStringVar4, 1);
+        StringExpandPlaceholders(gVariableTextoAmpliada, doneText);
+        DisplayPartyMenuMessage(gVariableTextoAmpliada, 1);
         ScheduleBgCopyTilemapToVram(2);
         tState++;
         break;
@@ -4084,9 +4084,9 @@ void ItemUseCB_Mint(u8 taskId, TaskFunc task)
 
 static void Task_DisplayHPRestoredMessage(u8 taskId)
 {
-    GetMonNickname(&gPlayerParty[gPartyMenu.slotId], gStringVar1);
-    StringExpandPlaceholders(gStringVar4, gText_PkmnHPRestoredByVar2);
-    DisplayPartyMenuMessage(gStringVar4, FALSE);
+    GetMonNickname(&gPlayerParty[gPartyMenu.slotId], gVariableTexto1);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnHPRestoredByVar2);
+    DisplayPartyMenuMessage(gVariableTextoAmpliada, FALSE);
     ScheduleBgCopyTilemapToVram(2);
     HandleBattleLowHpMusicChange();
     if (gPartyMenu.menuType == PARTY_MENU_TYPE_FIELD && CheckBagHasItem(gSpecialVar_ItemId, 1))
@@ -4124,9 +4124,9 @@ void ItemUseCB_ResetEVs(u8 taskId, TaskFunc task)
         gPartyMenuUseExitCallback = TRUE;
         PlaySE(SE_USE_ITEM);
         RemoveBagItem(item, 1);
-        GetMonNickname(mon, gStringVar1);
-        StringExpandPlaceholders(gStringVar4, gText_BasePointsResetToZero);
-        DisplayPartyMenuMessage(gStringVar4, TRUE);
+        GetMonNickname(mon, gVariableTexto1);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_BasePointsResetToZero);
+        DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
         ScheduleBgCopyTilemapToVram(2);
         gTasks[taskId].func = task;
     }
@@ -4156,20 +4156,20 @@ void ItemUseCB_ReduceEV(u8 taskId, TaskFunc task)
         gPartyMenuUseExitCallback = TRUE;
         PlaySE(SE_USE_ITEM);
         RemoveBagItem(item, 1);
-        GetMonNickname(mon, gStringVar1);
-        ItemEffectToStatString(effectType, gStringVar2);
+        GetMonNickname(mon, gVariableTexto1);
+        ItemEffectToStatString(effectType, gVariableTexto2);
         if (friendship != newFriendship)
         {
             if (ev != newEv)
-                StringExpandPlaceholders(gStringVar4, gText_PkmnFriendlyBaseVar2Fell);
+                StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnFriendlyBaseVar2Fell);
             else
-                StringExpandPlaceholders(gStringVar4, gText_PkmnFriendlyBaseVar2CantFall);
+                StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnFriendlyBaseVar2CantFall);
         }
         else
         {
-            StringExpandPlaceholders(gStringVar4, gText_PkmnAdoresBaseVar2Fell);
+            StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnAdoresBaseVar2Fell);
         }
-        DisplayPartyMenuMessage(gStringVar4, TRUE);
+        DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
         ScheduleBgCopyTilemapToVram(2);
         gTasks[taskId].func = task;
     }
@@ -4339,9 +4339,9 @@ static void TryUseItemOnMove(u8 taskId)
             PlaySE(SE_USE_ITEM);
             RemoveBagItem(item, 1);
             move = GetMonData(mon, MON_DATA_MOVE1 + *moveSlot);
-            StringCopy(gStringVar1, GetMoveName(move));
+            StringCopy(gVariableTexto1, GetMoveName(move));
             GetMedicineItemEffectMessage(item, 0);
-            DisplayPartyMenuMessage(gStringVar4, TRUE);
+            DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
             ScheduleBgCopyTilemapToVram(2);
             gTasks[taskId].func = Task_ClosePartyMenuAfterText;
         }
@@ -4387,8 +4387,8 @@ bool8 BoxMonKnowsMove(struct BoxPokemon *boxMon, u16 move)
 
 static void DisplayLearnMoveMessage(const u8 *str)
 {
-    StringExpandPlaceholders(gStringVar4, str);
-    DisplayPartyMenuMessage(gStringVar4, TRUE);
+    StringExpandPlaceholders(gVariableTextoAmpliada, str);
+    DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
     ScheduleBgCopyTilemapToVram(2);
 }
 
@@ -4412,8 +4412,8 @@ void ItemUseCB_TMHM(u8 taskId, TaskFunc task)
     PlaySE(SE_SELECT);
     mon = &gPlayerParty[gPartyMenu.slotId];
 
-    GetMonNickname(mon, gStringVar1);
-    StringCopy(gStringVar2, GetMoveName(move));
+    GetMonNickname(mon, gVariableTexto1);
+    StringCopy(gVariableTexto2, GetMoveName(move));
 
     switch (CanTeachMove(mon, move))
     {
@@ -4448,10 +4448,10 @@ static void Task_LearnedMove(u8 taskId)
         if (!ItemId_GetImportance(item))
             RemoveBagItem(item, 1);
     }
-    GetMonNickname(mon, gStringVar1);
-    StringCopy(gStringVar2, GetMoveName(move[0]));
-    StringExpandPlaceholders(gStringVar4, gText_PkmnLearnedMove3);
-    DisplayPartyMenuMessage(gStringVar4, TRUE);
+    GetMonNickname(mon, gVariableTexto1);
+    StringCopy(gVariableTexto2, GetMoveName(move[0]));
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnLearnedMove3);
+    DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
     ScheduleBgCopyTilemapToVram(2);
     gTasks[taskId].func = Task_DoLearnedMoveFanfareAfterText;
 }
@@ -4546,8 +4546,8 @@ static void DisplayPartyMenuForgotMoveMessage(u8 taskId)
     struct Pokemon *mon = &gPlayerParty[gPartyMenu.slotId];
     u16 move = GetMonData(mon, MON_DATA_MOVE1 + GetMoveSlotToReplace());
 
-    GetMonNickname(mon, gStringVar1);
-    StringCopy(gStringVar2, GetMoveName(move));
+    GetMonNickname(mon, gVariableTexto1);
+    StringCopy(gVariableTexto2, GetMoveName(move));
     DisplayLearnMoveMessage(gText_12PoofForgotMove);
     gTasks[taskId].func = Task_PartyMenuReplaceMove;
 }
@@ -4569,9 +4569,9 @@ static void Task_PartyMenuReplaceMove(u8 taskId)
 
 static void StopLearningMovePrompt(u8 taskId)
 {
-    StringCopy(gStringVar2, GetMoveName(gPartyMenu.data1));
-    StringExpandPlaceholders(gStringVar4, gText_StopLearningMove2);
-    DisplayPartyMenuMessage(gStringVar4, TRUE);
+    StringCopy(gVariableTexto2, GetMoveName(gPartyMenu.data1));
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_StopLearningMove2);
+    DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
     ScheduleBgCopyTilemapToVram(2);
     gTasks[taskId].func = Task_StopLearningMoveYesNo;
 }
@@ -4592,10 +4592,10 @@ static void Task_HandleStopLearningMoveYesNoInput(u8 taskId)
     switch (Menu_ProcessInputNoWrapClearOnChoose())
     {
     case 0:
-        GetMonNickname(mon, gStringVar1);
-        StringCopy(gStringVar2, GetMoveName(gPartyMenu.data1));
-        StringExpandPlaceholders(gStringVar4, gText_MoveNotLearned);
-        DisplayPartyMenuMessage(gStringVar4, TRUE);
+        GetMonNickname(mon, gVariableTexto1);
+        StringCopy(gVariableTexto2, GetMoveName(gPartyMenu.data1));
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_MoveNotLearned);
+        DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
         if (gPartyMenu.learnMoveState == 1)
         {
             gTasks[taskId].func = Task_TryLearningNextMoveAfterText;
@@ -4611,8 +4611,8 @@ static void Task_HandleStopLearningMoveYesNoInput(u8 taskId)
         PlaySE(SE_SELECT);
         // fallthrough
     case 1:
-        GetMonNickname(mon, gStringVar1);
-        StringCopy(gStringVar2, GetMoveName(gPartyMenu.data1));
+        GetMonNickname(mon, gVariableTexto1);
+        StringCopy(gVariableTexto2, GetMoveName(gPartyMenu.data1));
         DisplayLearnMoveMessage(gText_PkmnNeedsToReplaceMove);
         gTasks[taskId].func = Task_ReplaceMoveYesNo;
         break;
@@ -4681,23 +4681,23 @@ void ItemUseCB_RareCandy(u8 taskId, TaskFunc task)
         gPartyMenuUseExitCallback = TRUE;
         UpdateMonDisplayInfoAfterRareCandy(gPartyMenu.slotId, mon);
         RemoveBagItem(gSpecialVar_ItemId, 1);
-        GetMonNickname(mon, gStringVar1);
+        GetMonNickname(mon, gVariableTexto1);
         if (sFinalLevel > sInitialLevel)
         {
             PlayFanfareByFanfareNum(FANFARE_LEVEL_UP);
             if (holdEffectParam == 0) // Rare Candy
             {
-                ConvertIntToDecimalStringN(gStringVar2, sFinalLevel, STR_CONV_MODE_LEFT_ALIGN, 3);
-                StringExpandPlaceholders(gStringVar4, gText_PkmnElevatedToLvVar2);
+                ConvertIntToDecimalStringN(gVariableTexto2, sFinalLevel, STR_CONV_MODE_LEFT_ALIGN, 3);
+                StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnElevatedToLvVar2);
             }
             else // Exp Candies
             {
-                ConvertIntToDecimalStringN(gStringVar2, sExpCandyExperienceTable[holdEffectParam - 1], STR_CONV_MODE_LEFT_ALIGN, 6);
-                ConvertIntToDecimalStringN(gStringVar3, sFinalLevel, STR_CONV_MODE_LEFT_ALIGN, 3);
-                StringExpandPlaceholders(gStringVar4, gText_PkmnGainedExpAndElevatedToLvVar3);
+                ConvertIntToDecimalStringN(gVariableTexto2, sExpCandyExperienceTable[holdEffectParam - 1], STR_CONV_MODE_LEFT_ALIGN, 6);
+                ConvertIntToDecimalStringN(gVariableTexto3, sFinalLevel, STR_CONV_MODE_LEFT_ALIGN, 3);
+                StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnGainedExpAndElevatedToLvVar3);
             }
 
-            DisplayPartyMenuMessage(gStringVar4, TRUE);
+            DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
             ScheduleBgCopyTilemapToVram(2);
             gTasks[taskId].func = Task_DisplayLevelUpStatsPg1;
         }
@@ -4705,9 +4705,9 @@ void ItemUseCB_RareCandy(u8 taskId, TaskFunc task)
         {
             PlaySE(SE_USE_ITEM);
             gPartyMenuUseExitCallback = FALSE;
-            ConvertIntToDecimalStringN(gStringVar2, sExpCandyExperienceTable[holdEffectParam - 1], STR_CONV_MODE_LEFT_ALIGN, 6);
-            StringExpandPlaceholders(gStringVar4, gText_PkmnGainedExp);
-            DisplayPartyMenuMessage(gStringVar4, FALSE);
+            ConvertIntToDecimalStringN(gVariableTexto2, sExpCandyExperienceTable[holdEffectParam - 1], STR_CONV_MODE_LEFT_ALIGN, 6);
+            StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnGainedExp);
+            DisplayPartyMenuMessage(gVariableTextoAmpliada, FALSE);
             ScheduleBgCopyTilemapToVram(2);
             gTasks[taskId].func = task;
         }
@@ -4869,10 +4869,10 @@ static void PartyMenuTryEvolution(u8 taskId)
 
 static void DisplayMonNeedsToReplaceMove(u8 taskId)
 {
-    GetMonNickname(&gPlayerParty[gPartyMenu.slotId], gStringVar1);
-    StringCopy(gStringVar2, GetMoveName(gMoveToLearn));
-    StringExpandPlaceholders(gStringVar4, gText_PkmnNeedsToReplaceMove);
-    DisplayPartyMenuMessage(gStringVar4, TRUE);
+    GetMonNickname(&gPlayerParty[gPartyMenu.slotId], gVariableTexto1);
+    StringCopy(gVariableTexto2, GetMoveName(gMoveToLearn));
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnNeedsToReplaceMove);
+    DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
     ScheduleBgCopyTilemapToVram(2);
     gPartyMenu.data1 = gMoveToLearn;
     gTasks[taskId].func = Task_ReplaceMoveYesNo;
@@ -4880,10 +4880,10 @@ static void DisplayMonNeedsToReplaceMove(u8 taskId)
 
 static void DisplayMonLearnedMove(u8 taskId, u16 move)
 {
-    GetMonNickname(&gPlayerParty[gPartyMenu.slotId], gStringVar1);
-    StringCopy(gStringVar2, GetMoveName(move));
-    StringExpandPlaceholders(gStringVar4, gText_PkmnLearnedMove3);
-    DisplayPartyMenuMessage(gStringVar4, TRUE);
+    GetMonNickname(&gPlayerParty[gPartyMenu.slotId], gVariableTexto1);
+    StringCopy(gVariableTexto2, GetMoveName(move));
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnLearnedMove3);
+    DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
     ScheduleBgCopyTilemapToVram(2);
     gPartyMenu.data1 = move;
     gTasks[taskId].func = Task_DoLearnedMoveFanfareAfterText;
@@ -4985,9 +4985,9 @@ static void Task_SacredAshLoop(u8 taskId)
 
 static void Task_SacredAshDisplayHPRestored(u8 taskId)
 {
-    GetMonNickname(&gPlayerParty[gPartyMenu.slotId], gStringVar1);
-    StringExpandPlaceholders(gStringVar4, gText_PkmnHPRestoredByVar2);
-    DisplayPartyMenuMessage(gStringVar4, FALSE);
+    GetMonNickname(&gPlayerParty[gPartyMenu.slotId], gVariableTexto1);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnHPRestoredByVar2);
+    DisplayPartyMenuMessage(gVariableTextoAmpliada, FALSE);
     ScheduleBgCopyTilemapToVram(2);
     gTasks[taskId].func = Task_SacredAshLoop;
 }
@@ -5035,8 +5035,8 @@ void FormChangeTeachMove(u8 taskId, u32 move, u32 slot)
 
     PlaySE(SE_SELECT);
     mon = &gPlayerParty[slot];
-    GetMonNickname(mon, gStringVar1);
-    StringCopy(gStringVar2, GetMoveName(move));
+    GetMonNickname(mon, gVariableTexto1);
+    StringCopy(gVariableTexto2, GetMoveName(move));
 
     if (GiveMoveToMon(mon, move) != MON_HAS_MAX_MOVES)
     {
@@ -5160,9 +5160,9 @@ static void Task_TryItemUseFormChange(u8 taskId)
     case 5:
         if (IsCryFinished())
         {
-            GetMonNickname(mon, gStringVar1);
-            StringExpandPlaceholders(gStringVar4, gText_PkmnTransformed);
-            DisplayPartyMenuMessage(gStringVar4, FALSE);
+            GetMonNickname(mon, gVariableTexto1);
+            StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnTransformed);
+            DisplayPartyMenuMessage(gVariableTextoAmpliada, FALSE);
             ScheduleBgCopyTilemapToVram(2);
             gTasks[taskId].tState++;
         }
@@ -5391,9 +5391,9 @@ static void TryTutorSelectedMon(u8 taskId)
     {
         mon = &gPlayerParty[gPartyMenu.slotId];
         move = &gPartyMenu.data1;
-        GetMonNickname(mon, gStringVar1);
+        GetMonNickname(mon, gVariableTexto1);
         gPartyMenu.data1 = gSpecialVar_0x8005;
-        StringCopy(gStringVar2, GetMoveName(gPartyMenu.data1));
+        StringCopy(gVariableTexto2, GetMoveName(gPartyMenu.data1));
         move[1] = 2;
         switch (CanTeachMove(mon, gPartyMenu.data1))
         {
@@ -5514,7 +5514,7 @@ static void Task_HandleSwitchItemsFromBagYesNoInput(u8 taskId)
         {
             AddBagItem(item, 1);
             BufferBagFullCantTakeItemMessage();
-            DisplayPartyMenuMessage(gStringVar4, FALSE);
+            DisplayPartyMenuMessage(gVariableTextoAmpliada, FALSE);
             gTasks[taskId].func = Task_UpdateHeldItemSpriteAndClosePartyMenu;
         }
         else if (ItemIsMail(item))
@@ -5600,28 +5600,28 @@ static bool8 TrySwitchInPokemon(void)
 
     if (GetMonData(&gPlayerParty[slot], MON_DATA_HP) == 0)
     {
-        GetMonNickname(&gPlayerParty[slot], gStringVar1);
-        StringExpandPlaceholders(gStringVar4, gText_PkmnHasNoEnergy);
+        GetMonNickname(&gPlayerParty[slot], gVariableTexto1);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnHasNoEnergy);
         return FALSE;
     }
     for (i = 0; i < gBattlersCount; i++)
     {
         if (GetBattlerSide(i) == B_SIDE_PLAYER && GetPartyIdFromBattleSlot(slot) == gBattlerPartyIndexes[i])
         {
-            GetMonNickname(&gPlayerParty[slot], gStringVar1);
-            StringExpandPlaceholders(gStringVar4, gText_PkmnAlreadyInBattle);
+            GetMonNickname(&gPlayerParty[slot], gVariableTexto1);
+            StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnAlreadyInBattle);
             return FALSE;
         }
     }
     if (GetMonData(&gPlayerParty[slot], MON_DATA_IS_EGG))
     {
-        StringExpandPlaceholders(gStringVar4, gText_EggCantBattle);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_EggCantBattle);
         return FALSE;
     }
     if (GetPartyIdFromBattleSlot(slot) == gBattleStruct->prevSelectedPartySlot)
     {
-        GetMonNickname(&gPlayerParty[slot], gStringVar1);
-        StringExpandPlaceholders(gStringVar4, gText_PkmnAlreadySelected);
+        GetMonNickname(&gPlayerParty[slot], gVariableTexto1);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnAlreadySelected);
         return FALSE;
     }
     if (gPartyMenu.action == PARTY_ACTION_ABILITY_PREVENTS)
@@ -5632,8 +5632,8 @@ static bool8 TrySwitchInPokemon(void)
     if (gPartyMenu.action == PARTY_ACTION_CANT_SWITCH)
     {
         u8 currBattler = gBattlerInMenuId;
-        GetMonNickname(&gPlayerParty[GetPartyIdFromBattlePartyId(gBattlerPartyIndexes[currBattler])], gStringVar1);
-        StringExpandPlaceholders(gStringVar4, gText_PkmnCantSwitchOut);
+        GetMonNickname(&gPlayerParty[GetPartyIdFromBattlePartyId(gBattlerPartyIndexes[currBattler])], gVariableTexto1);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnCantSwitchOut);
         return FALSE;
     }
     gSelectedMonPartyId = GetPartyIdFromBattleSlot(slot);
@@ -6019,8 +6019,8 @@ void BufferMoveDeleterNicknameAndMove(void)
     struct Pokemon *mon = &gPlayerParty[gSpecialVar_0x8004];
     u16 move = GetMonData(mon, MON_DATA_MOVE1 + gSpecialVar_0x8005);
 
-    GetMonNickname(mon, gStringVar1);
-    StringCopy(gStringVar2, GetMoveName(move));
+    GetMonNickname(mon, gVariableTexto1);
+    StringCopy(gVariableTexto2, GetMoveName(move));
 }
 
 void MoveDeleterForgetMove(void)

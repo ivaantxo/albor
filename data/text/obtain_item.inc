@@ -1,37 +1,37 @@
 gText_ObtainedTheItem::
-	.string "¡Obtuviste {STR_VAR_2}!$"
+	.string "¡Obtuviste {VAR_TEXTO_2}!$"
 
 gText_TheBagIsFull::
 	.string "The BAG is full…$"
 
 gText_PutItemInPocket::
-	.string "{PLAYER} put away the {STR_VAR_2}\n"
-	.string "in the {STR_VAR_3} POCKET.$"
+	.string "{JUGADOR} put away the {VAR_TEXTO_2}\n"
+	.string "in the {VAR_TEXTO_3} POCKET.$"
 
 gText_PlayerFoundOneItem::
-	.string "¡{PLAYER} encontró {STR_VAR_2}!$"
+	.string "¡{JUGADOR} encontró {VAR_TEXTO_2}!$"
 
 gText_TooBadBagIsFull::
 	.string "Too bad!\n"
 	.string "The BAG is full…$"
 
 gText_PlayerPutItemInBag::
-	.string "{PLAYER} put away the {STR_VAR_2}\n"
+	.string "{JUGADOR} put away the {VAR_TEXTO_2}\n"
 	.string "in the BAG.$"
 
 gText_ObtainedTheDecor::
-	.string "Obtained the {STR_VAR_2}!$"
+	.string "Obtained the {VAR_TEXTO_2}!$"
 
 gText_NoRoomLeftForAnother::
 	.string "Too bad! There's no room left for\n"
-	.string "another {STR_VAR_2}…$"
+	.string "another {VAR_TEXTO_2}…$"
 
 gText_TheDecorWasTransferredToThePC::
-	.string "The {STR_VAR_2} was transferred\n"
+	.string "The {VAR_TEXTO_2} was transferred\n"
 	.string "to the PC.$"
 
 gText_ObtainedTheItems::
-	.string "Obtained {STR_VAR_1} {STR_VAR_2}!$"
+	.string "Obtained {VAR_TEXTO_1} {VAR_TEXTO_2}!$"
 
 gText_PlayerFoundItems::
-	.string "{PLAYER} found {STR_VAR_1} {STR_VAR_2}!$"
+	.string "{JUGADOR} found {VAR_TEXTO_1} {VAR_TEXTO_2}!$"

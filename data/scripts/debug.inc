@@ -105,10 +105,10 @@ Debug_EventScript_CheckEVs_End::
 	end
 
 Debug_EventScript_Text_OffensiveEVs:
-	.string "ATK EVs: {STR_VAR_1}, SPATK EVs: {STR_VAR_2}, SPEED EVs: {STR_VAR_3}$"
+	.string "ATK EVs: {VAR_TEXTO_1}, SPATK EVs: {VAR_TEXTO_2}, SPEED EVs: {VAR_TEXTO_3}$"
 
 Debug_EventScript_Text_DefensiveEVs:
-	.string "HP EVs: {STR_VAR_1}, DEF EVs: {STR_VAR_2}, SPDEF EVs: {STR_VAR_3}$"
+	.string "HP EVs: {VAR_TEXTO_1}, DEF EVs: {VAR_TEXTO_2}, SPDEF EVs: {VAR_TEXTO_3}$"
 
 Debug_EventScript_CheckIVs::
 	lockall
@@ -126,10 +126,10 @@ Debug_EventScript_CheckIVs_End::
 	end
 
 Debug_EventScript_Text_OffensiveIVs:
-	.string "ATK IVs: {STR_VAR_1}, SPATK IVs: {STR_VAR_2}, SPEED IVs: {STR_VAR_3}$"
+	.string "ATK IVs: {VAR_TEXTO_1}, SPATK IVs: {VAR_TEXTO_2}, SPEED IVs: {VAR_TEXTO_3}$"
 
 Debug_EventScript_Text_DefensiveIVs:
-	.string "HP IVs: {STR_VAR_1}, DEF IVs: {STR_VAR_2}, SPDEF IVs: {STR_VAR_3}$"
+	.string "HP IVs: {VAR_TEXTO_1}, DEF IVs: {VAR_TEXTO_2}, SPDEF IVs: {VAR_TEXTO_3}$"
 
 Debug_EventScript_Script_1::
 	givemon SPECIES_BULBASAUR, 1, ITEM_NONE
@@ -314,12 +314,12 @@ Debug_CheckSaveBlock::
 	end
 
 Debug_SaveBlockSize::
-	.string "SaveBlock size: {STR_VAR_1}b/{STR_VAR_2}b.\n"
-	.string "Free space: {STR_VAR_3}b.$"
+	.string "SaveBlock size: {VAR_TEXTO_1}b/{VAR_TEXTO_2}b.\n"
+	.string "Free space: {VAR_TEXTO_3}b.$"
 
 Debug_PokemonStorageSize::
-	.string "{PKMN}Storage size: {STR_VAR_1}b/{STR_VAR_2}b.\n"
-	.string "Free space: {STR_VAR_3}b.$"
+	.string "{PKMN}Storage size: {VAR_TEXTO_1}b/{VAR_TEXTO_2}b.\n"
+	.string "Free space: {VAR_TEXTO_3}b.$"
 
 Debug_CheckROMSpace::
 	callnative CheckROMSize
@@ -328,8 +328,8 @@ Debug_CheckROMSpace::
 	end
 
 Debug_ROMSize::
-	.string "ROM size: {STR_VAR_1}MB/32MB.\n"
-	.string "Free space: {STR_VAR_2}MB.$"
+	.string "ROM size: {VAR_TEXTO_1}MB/32MB.\n"
+	.string "Free space: {VAR_TEXTO_2}MB.$"
 
 Debug_HatchAnEgg::
 	lockall
@@ -393,7 +393,7 @@ Debug_ShowExpansionVersion::
 	end
 
 Debug_ExpansionVersion:
-	.string "pokeemerald-expansion {STR_VAR_1}$"
+	.string "pokeemerald-expansion {VAR_TEXTO_1}$"
 
 Debug_BerryPestsDisabled::
 	msgbox DebugText_BerryPestsDisabled, MSGBOX_DEFAULT
@@ -570,5 +570,5 @@ Debug_EventScript_EWRAMCounters::
 	end
 
 Debug_EventScript_EWRAMCounters_Text::
-	.string "Follower Steps: {STR_VAR_1}.\n"
-	.string "Fishing Chain: {STR_VAR_2}.$"
+	.string "Follower Steps: {VAR_TEXTO_1}.\n"
+	.string "Fishing Chain: {VAR_TEXTO_2}.$"

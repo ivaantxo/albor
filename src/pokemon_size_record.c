@@ -102,7 +102,7 @@ static u8 CompareMonSize(u16 species, u16 *sizeRecord)
             *(&sizeParams) = GetMonSizeHash(pkmn);
             newSize = GetMonSize(species, sizeParams);
             oldSize = GetMonSize(species, *sizeRecord);
-            FormatMonSizeRecord(gStringVar2, newSize);
+            FormatMonSizeRecord(gVariableTexto2, newSize);
             if (newSize <= oldSize)
             {
                 return 2;
@@ -116,17 +116,17 @@ static u8 CompareMonSize(u16 species, u16 *sizeRecord)
     }
 }
 
-// Stores species name in gStringVar1, trainer's name in gStringVar2, and size in gStringVar3
+// Stores species name in gVariableTexto1, trainer's name in gVariableTexto2, and size in gVariableTexto3
 static void GetMonSizeRecordInfo(u16 species, u16 *sizeRecord)
 {
     u32 size = GetMonSize(species, *sizeRecord);
 
-    FormatMonSizeRecord(gStringVar3, size);
-    StringCopy(gStringVar1, GetSpeciesName(species));
+    FormatMonSizeRecord(gVariableTexto3, size);
+    StringCopy(gVariableTexto1, GetSpeciesName(species));
     if (*sizeRecord == DEFAULT_MAX_SIZE)
-        StringCopy(gStringVar2, gText_Marco);
+        StringCopy(gVariableTexto2, gText_Marco);
     else
-        StringCopy(gStringVar2, gSaveBlockPtr->playerName);
+        StringCopy(gVariableTexto2, gSaveBlockPtr->nombreJugador);
 }
 
 void InitSeedotSizeRecord(void)

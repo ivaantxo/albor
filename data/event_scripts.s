@@ -309,7 +309,7 @@ Common_EventScript_NameReceivedPartyMon::
 	return
 
 Common_EventScript_PlayerHandedOverTheItem::
-	bufferitemname STR_VAR_1, VAR_0x8004
+	bufferitemname VAR_TEXTO_1, VAR_0x8004
 	playfanfare MUS_OBTAIN_TMHM
 	message gText_PlayerHandedOverTheItem
 	waitmessage
@@ -334,7 +334,7 @@ gText_PokemonCenterSign::
 	.string "POKéMON CENTER$"
 
 gText_MomOrDadMightLikeThisProgram::
-	.string "{STR_VAR_1} might like this program.\n"
+	.string "{VAR_TEXTO_1} might like this program.\n"
 	.string "… … … … … … … … … … … … … … … …\p"
 	.string "Better get going!$"
 
@@ -360,11 +360,11 @@ gText_PokemonTrainerSchoolEmail::
 	.string "… … … … … …$"
 
 gText_PlayerHouseBootPC::
-	.string "{PLAYER} booted up the PC.$"
+	.string "{JUGADOR} booted up the PC.$"
 
 gText_PlayerWhitedOut::
-	.string "{PLAYER} is out of usable\n"
-	.string "POKéMON!\p{PLAYER} whited out!$"
+	.string "{JUGADOR} is out of usable\n"
+	.string "POKéMON!\p{JUGADOR} whited out!$"
 
 gText_FirstShouldRestoreMonsHealth::
 	.string "First, you should restore your\n"
@@ -386,7 +386,7 @@ gText_MonsHealed::
 	.string "We hope you excel!$"
 
 gText_HadQuiteAnExperienceTakeRest::
-	.string "MOM: {PLAYER}!\n"
+	.string "MOM: {JUGADOR}!\n"
 	.string "Welcome home.\p"
 	.string "It sounds like you had quite\n"
 	.string "an experience.\p"
@@ -409,7 +409,7 @@ gText_MomExplainHPGetPotions::
 	.string "Take care!$"
 
 gText_RegisteredTrainerinPokeNav::
-	.string "Registered {STR_VAR_1} {STR_VAR_2}\n"
+	.string "Registered {VAR_TEXTO_1} {VAR_TEXTO_2}\n"
 	.string "in the POKéNAV.$"
 
 gText_ComeBackWithSecretPower::
@@ -444,16 +444,16 @@ gText_UndergoingAdjustments::
 	.string "adjustments…$"
 
 gText_PlayerHandedOverTheItem::
-	.string "{PLAYER} handed over the\n"
-	.string "{STR_VAR_1}.$"
+	.string "{JUGADOR} handed over the\n"
+	.string "{VAR_TEXTO_1}.$"
 
 gText_PlayerFoundOneTMHM::
-	.string "{PLAYER} found one {STR_VAR_1}\n"
-	.string "{STR_VAR_2}!$"
+	.string "{JUGADOR} found one {VAR_TEXTO_1}\n"
+	.string "{VAR_TEXTO_2}!$"
 
 gText_PlayerFoundTMHMs::
-	.string "{PLAYER} found {STR_VAR_3} {STR_VAR_1}\n"
-	.string "{STR_VAR_2}!$"
+	.string "{JUGADOR} found {VAR_TEXTO_3} {VAR_TEXTO_1}\n"
+	.string "{VAR_TEXTO_2}!$"
 
 gText_Sudowoodo_Attacked::
 	.string "The weird tree doesn't like the\n"
@@ -461,7 +461,7 @@ gText_Sudowoodo_Attacked::
 	.string "The weird tree attacked!$"
 
 gText_LegendaryFlewAway::
-	.string "The {STR_VAR_1} flew away!$"
+	.string "The {VAR_TEXTO_1} flew away!$"
 
 	.include "data/text/abnormal_weather.inc"
 
@@ -488,7 +488,7 @@ Common_EventScript_LegendaryFlewAway::
 	fadescreenswapbuffers FADE_TO_BLACK
 	removeobject VAR_LAST_TALKED
 	fadescreenswapbuffers FADE_FROM_BLACK
-	bufferspeciesname STR_VAR_1, VAR_0x8004
+	bufferspeciesname VAR_TEXTO_1, VAR_0x8004
 	msgbox gText_LegendaryFlewAway, MSGBOX_DEFAULT
 	release
 	end

@@ -155,19 +155,19 @@ void AddTextPrinterForMessage(bool8 allowSkippingDelayWithButtonPress)
 {
     void (*callback)(struct TextPrinterTemplate *, u16) = NULL;
     gTextFlags.canABSpeedUpPrint = allowSkippingDelayWithButtonPress;
-    AddTextPrinterParameterized2(0, FONT_NORMAL, gStringVar4, GetPlayerTextSpeedDelay(), callback, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+    AddTextPrinterParameterized2(0, FONT_NORMAL, gVariableTextoAmpliada, GetPlayerTextSpeedDelay(), callback, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
 }
 
 void AddTextPrinterForMessage_2(bool8 allowSkippingDelayWithButtonPress)
 {
     gTextFlags.canABSpeedUpPrint = allowSkippingDelayWithButtonPress;
-    AddTextPrinterParameterized2(0, FONT_NORMAL, gStringVar4, GetPlayerTextSpeedDelay(), NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+    AddTextPrinterParameterized2(0, FONT_NORMAL, gVariableTextoAmpliada, GetPlayerTextSpeedDelay(), NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
 }
 
 void AddTextPrinterWithCustomSpeedForMessage(bool8 allowSkippingDelayWithButtonPress, u8 speed)
 {
     gTextFlags.canABSpeedUpPrint = allowSkippingDelayWithButtonPress;
-    AddTextPrinterParameterized2(0, FONT_NORMAL, gStringVar4, speed, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+    AddTextPrinterParameterized2(0, FONT_NORMAL, gVariableTextoAmpliada, speed, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
 }
 
 void LoadMessageBoxAndBorderGfx(void)
@@ -602,7 +602,7 @@ void RemoveMapNamePopUpWindow(void)
 void AddTextPrinterWithCallbackForMessage(bool8 canSpeedUp, void (*callback)(struct TextPrinterTemplate *, u16))
 {
     gTextFlags.canABSpeedUpPrint = canSpeedUp;
-    AddTextPrinterParameterized2(0, FONT_NORMAL, gStringVar4, GetPlayerTextSpeedDelay(), callback, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+    AddTextPrinterParameterized2(0, FONT_NORMAL, gVariableTextoAmpliada, GetPlayerTextSpeedDelay(), callback, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
 }
 
 void EraseFieldMessageBox(bool8 copyToVram)
@@ -1746,12 +1746,12 @@ void AddTextPrinterParameterized5(u8 windowId, u8 fontId, const u8 *str, u8 left
 void PrintPlayerNameOnWindow(u8 windowId, const u8 *src, u16 x, u16 y)
 {
     int count = 0;
-    while (gSaveBlockPtr->playerName[count] != EOS)
+    while (gSaveBlockPtr->nombreJugador[count] != EOS)
         count++;
 
-    StringExpandPlaceholders(gStringVar4, src);
+    StringExpandPlaceholders(gVariableTextoAmpliada, src);
 
-    AddTextPrinterParameterized(windowId, FONT_NORMAL, gStringVar4, x, y, TEXT_SKIP_DRAW, 0);
+    AddTextPrinterParameterized(windowId, FONT_NORMAL, gVariableTextoAmpliada, x, y, TEXT_SKIP_DRAW, 0);
 }
 
 void BufferSaveMenuText(u8 textId, u8 *dest, u8 color)
@@ -1771,7 +1771,7 @@ void BufferSaveMenuText(u8 textId, u8 *dest, u8 color)
     switch (textId)
     {
         case SAVE_MENU_NAME:
-            StringCopy(string, gSaveBlockPtr->playerName);
+            StringCopy(string, gSaveBlockPtr->nombreJugador);
             break;
         case SAVE_MENU_CAUGHT:
             string = ConvertIntToDecimalStringN(string, GetNationalPokedexCount(FLAG_GET_CAUGHT), STR_CONV_MODE_LEFT_ALIGN, 4);

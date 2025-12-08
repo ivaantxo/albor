@@ -438,8 +438,8 @@ static void CB2_MoveRelearnerMain(void)
 
 static void PrintMessageWithPlaceholders(const u8 *src)
 {
-    StringExpandPlaceholders(gStringVar4, src);
-    MoveRelearnerPrintMessage(gStringVar4);
+    StringExpandPlaceholders(gVariableTextoAmpliada, src);
+    MoveRelearnerPrintMessage(gVariableTextoAmpliada);
 }
 
 // See the state machine doc at the top of the file.
@@ -576,7 +576,7 @@ static void DoMoveRelearnerMain(void)
         }
         break;
     case MENU_STATE_PRINT_STOP_TEACHING:
-        StringCopy(gStringVar2, GetMoveName(GetCurrentSelectedMove()));
+        StringCopy(gVariableTexto2, GetMoveName(GetCurrentSelectedMove()));
         PrintMessageWithPlaceholders(gText_MoveRelearnerStopTryingToTeachMove);
         sMoveRelearnerStruct->state++;
         break;
@@ -704,13 +704,13 @@ static void DoMoveRelearnerMain(void)
                 u16 moveId = GetMonData(&gPlayerParty[sMoveRelearnerStruct->partyMon], MON_DATA_MOVE1 + sMoveRelearnerStruct->moveSlot);
                 u8 originalPP = GetMonData(&gPlayerParty[sMoveRelearnerStruct->partyMon], MON_DATA_PP1 + sMoveRelearnerStruct->moveSlot);
                 
-                StringCopy(gStringVar3, GetMoveName(moveId));
+                StringCopy(gVariableTexto3, GetMoveName(moveId));
                 RemoveMonPPBonus(&gPlayerParty[sMoveRelearnerStruct->partyMon], sMoveRelearnerStruct->moveSlot);
                 SetMonMoveSlot(&gPlayerParty[sMoveRelearnerStruct->partyMon], GetCurrentSelectedMove(), sMoveRelearnerStruct->moveSlot);
                 u8 newPP = GetMonData(&gPlayerParty[sMoveRelearnerStruct->partyMon], MON_DATA_PP1 + sMoveRelearnerStruct->moveSlot);
                 if (!P_SUMMARY_MOVE_RELEARNER_FULL_PP && gOriginSummaryScreenPage != 0 && originalPP < newPP)
                     SetMonData(&gPlayerParty[sMoveRelearnerStruct->partyMon], MON_DATA_PP1 + sMoveRelearnerStruct->moveSlot, &originalPP);
-                StringCopy(gStringVar2, GetMoveName(GetCurrentSelectedMove()));
+                StringCopy(gVariableTexto2, GetMoveName(GetCurrentSelectedMove()));
                 PrintMessageWithPlaceholders(gText_MoveRelearnerAndPoof);
                 sMoveRelearnerStruct->state = MENU_STATE_DOUBLE_FANFARE_FORGOT_MOVE;
                 gSpecialVar_0x8004 = TRUE;
@@ -769,9 +769,9 @@ static void HideHeartSpritesAndShowTeachMoveText(bool8 onlyHideSprites)
 
     if (!onlyHideSprites)
     {
-        StringExpandPlaceholders(gStringVar4, gText_TeachWhichMoveToPkmn);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_TeachWhichMoveToPkmn);
         FillWindowPixelBuffer(RELEARNERWIN_MSG, 0x11);
-        AddTextPrinterParameterized(RELEARNERWIN_MSG, FONT_NORMAL, gStringVar4, 0, 1, 0, NULL);
+        AddTextPrinterParameterized(RELEARNERWIN_MSG, FONT_NORMAL, gVariableTextoAmpliada, 0, 1, 0, NULL);
     }
 }
 
@@ -811,16 +811,16 @@ static void HandleInput(bool8 showContest)
         PlaySE(SE_SELECT);
         RemoveScrollArrows();
         sMoveRelearnerStruct->state = MENU_STATE_PRINT_GIVE_UP_PROMPT;
-        StringExpandPlaceholders(gStringVar4, gText_MoveRelearnerGiveUp);
-        MoveRelearnerPrintMessage(gStringVar4);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_MoveRelearnerGiveUp);
+        MoveRelearnerPrintMessage(gVariableTextoAmpliada);
         break;
     default:
         PlaySE(SE_SELECT);
         RemoveScrollArrows();
         sMoveRelearnerStruct->state = MENU_STATE_PRINT_TEACH_MOVE_PROMPT;
-        StringCopy(gStringVar2, GetMoveName(itemId));
-        StringExpandPlaceholders(gStringVar4, gText_MoveRelearnerTeachMoveConfirm);
-        MoveRelearnerPrintMessage(gStringVar4);
+        StringCopy(gVariableTexto2, GetMoveName(itemId));
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_MoveRelearnerTeachMoveConfirm);
+        MoveRelearnerPrintMessage(gVariableTextoAmpliada);
         break;
     }
 }
@@ -840,9 +840,9 @@ static void ShowTeachMoveText(bool8 shouldDoNothingInstead)
 {
     if (shouldDoNothingInstead == FALSE)
     {
-        StringExpandPlaceholders(gStringVar4, gText_TeachWhichMoveToPkmn);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_TeachWhichMoveToPkmn);
         FillWindowPixelBuffer(RELEARNERWIN_MSG, 0x11);
-        AddTextPrinterParameterized(RELEARNERWIN_MSG, FONT_NORMAL, gStringVar4, 0, 1, 0, NULL);
+        AddTextPrinterParameterized(RELEARNERWIN_MSG, FONT_NORMAL, gVariableTextoAmpliada, 0, 1, 0, NULL);
     }
 }
 
@@ -916,7 +916,7 @@ static void CreateLearnableMovesList(void)
     }
 
     GetMonData(&gPlayerParty[sMoveRelearnerStruct->partyMon], MON_DATA_NICKNAME, nickname);
-    StringCopy_Nickname(gStringVar1, nickname);
+    StringCopy_Nickname(gVariableTexto1, nickname);
     sMoveRelearnerStruct->menuItems[sMoveRelearnerStruct->numMenuChoices].name = gText_Salir;
     sMoveRelearnerStruct->menuItems[sMoveRelearnerStruct->numMenuChoices].id = LIST_CANCEL;
     sMoveRelearnerStruct->numMenuChoices++;

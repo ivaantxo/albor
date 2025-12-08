@@ -2055,13 +2055,13 @@ void ObjectEventInteractionGetBerryTreeData(void)
         gSpecialVar_0x8004 = GetStageByBerryTreeId(id);
     gSpecialVar_0x8005 = GetNumStagesWateredByBerryTreeId(id);
     gSpecialVar_0x8006 = GetBerryCountByBerryTreeId(id);
-    CopyItemNameHandlePlural(BerryTypeToItemId(berry), gStringVar1, gSpecialVar_0x8006);
+    CopyItemNameHandlePlural(BerryTypeToItemId(berry), gVariableTexto1, gSpecialVar_0x8006);
 }
 
 void ObjectEventInteractionGetBerryName(void)
 {
     u8 berryType = GetBerryTypeByBerryTreeId(GetObjectEventBerryTreeId(gSelectedObjectEvent));
-    GetBerryNameByBerryType(berryType, gStringVar1);
+    GetBerryNameByBerryType(berryType, gVariableTexto1);
 }
 
 void ObjectEventInteractionGetBerryCountString(void)
@@ -2071,12 +2071,12 @@ void ObjectEventInteractionGetBerryCountString(void)
     u8 count = GetBerryCountByBerryTreeId(treeId);
 
     gSpecialVar_0x8006 = BerryTypeToItemId(berry);
-    CopyItemNameHandlePlural(BerryTypeToItemId(berry), gStringVar1, count);
+    CopyItemNameHandlePlural(BerryTypeToItemId(berry), gVariableTexto1, count);
     berry = GetTreeMutationValue(treeId);
     if (berry > 0)
     {
         count = 1;
-        CopyItemNameHandlePlural(BerryTypeToItemId(berry), gStringVar3, count);
+        CopyItemNameHandlePlural(BerryTypeToItemId(berry), gVariableTexto3, count);
         gSpecialVar_Result = TRUE;
     }
     else
@@ -2106,7 +2106,7 @@ void ObjectEventInteractionApplyMulch(void)
     u8 mulch = ITEM_TO_MULCH(gSpecialVar_ItemId);
 
     gSaveBlockPtr->berryTrees[GetObjectEventBerryTreeId(gSelectedObjectEvent)].mulch = mulch;
-    StringExpandPlaceholders(gStringVar1, gItemsInfo[gSpecialVar_ItemId].name);
+    StringExpandPlaceholders(gVariableTexto1, gItemsInfo[gSpecialVar_ItemId].name);
 }
 
 void ObjectEventInteractionPickBerryTree(void)

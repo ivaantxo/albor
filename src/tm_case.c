@@ -492,23 +492,23 @@ static void InitTMCaseListMenuItems(void)
 
 static void GetTMNumberAndMoveString(u8 * dest, u16 itemId)
 {
-    StringCopy(gStringVar4, gText_FontBig);
+    StringCopy(gVariableTextoAmpliada, gText_FontBig);
     if (itemId >= ITEM_HM01)
     {
-        StringAppend(gStringVar4, gText_MO);
-        ConvertIntToDecimalStringN(gStringVar1, itemId - ITEM_HM01 + 1, STR_CONV_MODE_LEADING_ZEROS, 2);
-        StringAppend(gStringVar4, gStringVar1);
+        StringAppend(gVariableTextoAmpliada, gText_MO);
+        ConvertIntToDecimalStringN(gVariableTexto1, itemId - ITEM_HM01 + 1, STR_CONV_MODE_LEADING_ZEROS, 2);
+        StringAppend(gVariableTextoAmpliada, gVariableTexto1);
     }
     else
     {
-        StringAppend(gStringVar4, gText_MT);
-        ConvertIntToDecimalStringN(gStringVar1, itemId - ITEM_TM01 + 1, STR_CONV_MODE_LEADING_ZEROS, 2);
-        StringAppend(gStringVar4, gStringVar1);
+        StringAppend(gVariableTextoAmpliada, gText_MT);
+        ConvertIntToDecimalStringN(gVariableTexto1, itemId - ITEM_TM01 + 1, STR_CONV_MODE_LEADING_ZEROS, 2);
+        StringAppend(gVariableTextoAmpliada, gVariableTexto1);
     }
-    StringAppend(gStringVar4, sText_SingleSpace);
-    StringAppend(gStringVar4, gText_FontNormal);
-    StringAppend(gStringVar4, gMovesInfo[ItemIdToBattleMoveId(itemId)].name);
-    StringCopy(dest, gStringVar4);
+    StringAppend(gVariableTextoAmpliada, sText_SingleSpace);
+    StringAppend(gVariableTextoAmpliada, gText_FontNormal);
+    StringAppend(gVariableTextoAmpliada, gMovesInfo[ItemIdToBattleMoveId(itemId)].name);
+    StringCopy(dest, gVariableTextoAmpliada);
 }
 
 static void List_MoveCursorFunc(s32 itemIndex, bool8 onInit, struct ListMenu *list)
@@ -575,8 +575,8 @@ static void PrintMoveInfo(u16 itemId)
             str = gText_ThreeDashes;
         else
         {
-            ConvertIntToDecimalStringN(gStringVar1, gMovesInfo[move].power, STR_CONV_MODE_RIGHT_ALIGN, 3);
-            str = gStringVar1;
+            ConvertIntToDecimalStringN(gVariableTexto1, gMovesInfo[move].power, STR_CONV_MODE_RIGHT_ALIGN, 3);
+            str = gVariableTexto1;
         }
             TMCase_Print(WIN_MOVE_INFO, FONT_BIG, gText_Pot, 9, 0, 1, 0, 0, COLOR_TITLE);
             TMCase_Print(WIN_MOVE_INFO, FONT_NORMAL, str, 36, 0, 1, 0, 0, COLOR_LIGHT);
@@ -586,16 +586,16 @@ static void PrintMoveInfo(u16 itemId)
             str = gText_ThreeDashes;
         else
         {
-            ConvertIntToDecimalStringN(gStringVar1, gMovesInfo[move].accuracy, STR_CONV_MODE_RIGHT_ALIGN, 3);
-            str = gStringVar1;
+            ConvertIntToDecimalStringN(gVariableTexto1, gMovesInfo[move].accuracy, STR_CONV_MODE_RIGHT_ALIGN, 3);
+            str = gVariableTexto1;
         }
             TMCase_Print(WIN_MOVE_INFO, FONT_BIG, gText_Pre, 56, 0, 1, 0, 0, COLOR_TITLE);
             TMCase_Print(WIN_MOVE_INFO, FONT_NORMAL, str, 84, 0, 1, 0, 0, COLOR_LIGHT);
 
         // Print PP
-        ConvertIntToDecimalStringN(gStringVar1, gMovesInfo[move].pp, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        ConvertIntToDecimalStringN(gVariableTexto1, gMovesInfo[move].pp, STR_CONV_MODE_RIGHT_ALIGN, 3);
         TMCase_Print(WIN_MOVE_INFO, FONT_BIG, gText_PP, 105, 0, 1, 0, 0, COLOR_TITLE);
-        TMCase_Print(WIN_MOVE_INFO, FONT_NORMAL, gStringVar1, 116, 0, 1, 0, 0, COLOR_LIGHT);
+        TMCase_Print(WIN_MOVE_INFO, FONT_NORMAL, gVariableTexto1, 116, 0, 1, 0, 0, COLOR_LIGHT);
 
         // Print Priority
         TMCase_Print(WIN_MOVE_INFO, FONT_BIG, gText_Pri, 137, 0, 1, 0, 0, COLOR_TITLE);

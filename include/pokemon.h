@@ -135,7 +135,7 @@ struct BoxPokemon
     u32 spDefenseIV:5;
     bool32 esShiny:1;
 
-    u8 otName[PLAYER_NAME_LENGTH];
+    u8 otName[MAXIMO_CARACTERES_NOMBRE_JUGADOR];
 
     u32 pp4:7;
     u32 abilityNum:2;
@@ -191,7 +191,7 @@ struct BattlePokemon
     u16 item;
     u8 nickname[POKEMON_NAME_LENGTH + 1];
     u8 ppBonuses;
-    u8 otName[PLAYER_NAME_LENGTH + 1];
+    u8 otName[MAXIMO_CARACTERES_NOMBRE_JUGADOR + 1];
     u32 experience;
     u32 personality;
     u32 status1;
@@ -256,8 +256,8 @@ struct SpeciesInfo
     u8 backPicYOffset; // The number of pixels between the drawn pixel area and the bottom edge.
     u8 enemyMonElevation; // This determines how much higher above the usual position the enemy Pokémon is during battle. Species that float or fly have nonzero values.
     u32 isLegendary:1;
-    u32 brilla:1;
-    u32 transparente:1;
+    bool32 brilla:1;
+    bool32 transparente:1;
     s8 enemyShadowXOffset; // This determines the X-offset for an enemy Pokémon's shadow during battle; negative values point left, positive values point right.
     s8 enemyShadowYOffset; // This determines the Y-offset for an enemy Pokémon's shadow during battle; negative values point up, positive values point down.
     u16 enemyShadowSize:3; // This determines the size of the shadow sprite used for an enemy Pokémon's front sprite during battle.

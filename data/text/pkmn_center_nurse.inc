@@ -1,5 +1,5 @@
 gText_BienvenidoAlCentroPokemon::
-	.string "¡Bienvenido al Centro Pokémon, {PLAYER}!\n"
+	.string "¡Bienvenido al Centro Pokémon, {JUGADOR}!\n"
 	.string "Será solo un segundo.$"
 
 gText_VuelveCuandoQuieras::

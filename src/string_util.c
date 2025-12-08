@@ -3,11 +3,10 @@
 #include "text.h"
 #include "strings.h"
 
-EWRAM_DATA u8 gStringVar1[0x100] = {0};
-EWRAM_DATA u8 gStringVar2[0x100] = {0};
-EWRAM_DATA u8 gStringVar3[0x100] = {0};
-EWRAM_DATA u8 gStringVar4[0x3E8] = {0};
-EWRAM_DATA static u8 sUnknownStringVar[16] = {0};
+EWRAM_DATA u8 gVariableTexto1[256] = {0};
+EWRAM_DATA u8 gVariableTexto2[256] = {0};
+EWRAM_DATA u8 gVariableTexto3[256] = {0};
+EWRAM_DATA u8 gVariableTextoAmpliada[1000] = {0};
 
 static const u8 sDigits[] = __("0123456789ABCDEF");
 
@@ -58,7 +57,7 @@ u8 *StringGet_Nickname(u8 *str)
 u8 *StringCopy_PlayerName(u8 *dest, const u8 *src)
 {
     s32 i;
-    s32 limit = PLAYER_NAME_LENGTH;
+    s32 limit = MAXIMO_CARACTERES_NOMBRE_JUGADOR;
 
     for (i = 0; i < limit; i++)
     {
@@ -403,108 +402,43 @@ u8 *StringExpandPlaceholders(u8 *dest, const u8 *src)
     }
 }
 
-static const u8 *ExpandPlaceholder_UnknownStringVar(void)
+static const u8 *VariableTexto_NombreJugador(void)
 {
-    return sUnknownStringVar;
+    return gSaveBlockPtr->nombreJugador;
 }
 
-static const u8 *ExpandPlaceholder_PlayerName(void)
+static const u8 *VariableTexto_1(void)
 {
-    return gSaveBlockPtr->playerName;
+    return gVariableTexto1;
 }
 
-static const u8 *ExpandPlaceholder_StringVar1(void)
+static const u8 *VariableTexto_2(void)
 {
-    return gStringVar1;
+    return gVariableTexto2;
 }
 
-static const u8 *ExpandPlaceholder_StringVar2(void)
+static const u8 *VariableTexto_3(void)
 {
-    return gStringVar2;
-}
-
-static const u8 *ExpandPlaceholder_StringVar3(void)
-{
-    return gStringVar3;
-}
-
-static const u8 *ExpandPlaceholder_KunChan(void)
-{
-    if (gSaveBlockPtr->playerGender == MALE)
-        return gText_ExpandedPlaceholder_Kun;
-    else
-        return gText_ExpandedPlaceholder_Chan;
-}
-
-static const u8 *ExpandPlaceholder_RivalName(void)
-{
-    if (gSaveBlockPtr->playerGender == MALE)
-        return gText_ExpandedPlaceholder_May;
-    else
-        return gText_ExpandedPlaceholder_Brendan;
-}
-
-static const u8 *ExpandPlaceholder_Version(void)
-{
-    return gText_ExpandedPlaceholder_Emerald;
-}
-
-static const u8 *ExpandPlaceholder_Aqua(void)
-{
-    return gText_ExpandedPlaceholder_Aqua;
-}
-
-static const u8 *ExpandPlaceholder_Magma(void)
-{
-    return gText_ExpandedPlaceholder_Magma;
-}
-
-static const u8 *ExpandPlaceholder_Archie(void)
-{
-    return gText_ExpandedPlaceholder_Archie;
-}
-
-static const u8 *ExpandPlaceholder_Maxie(void)
-{
-    return gText_ExpandedPlaceholder_Maxie;
-}
-
-static const u8 *ExpandPlaceholder_Kyogre(void)
-{
-    return gText_ExpandedPlaceholder_Kyogre;
-}
-
-static const u8 *ExpandPlaceholder_Groudon(void)
-{
-    return gText_ExpandedPlaceholder_Groudon;
+    return gVariableTexto3;
 }
 
 const u8 *GetExpandedPlaceholder(u32 id)
 {
     typedef const u8 *(*ExpandPlaceholderFunc)(void);
+    static const u8 sTextoVacio[] = ("");
 
-    static const ExpandPlaceholderFunc funcs[] =
+    static const ExpandPlaceholderFunc funciones[] =
     {
-        [PLACEHOLDER_ID_UNKNOWN]      = ExpandPlaceholder_UnknownStringVar,
-        [PLACEHOLDER_ID_PLAYER]       = ExpandPlaceholder_PlayerName,
-        [PLACEHOLDER_ID_STRING_VAR_1] = ExpandPlaceholder_StringVar1,
-        [PLACEHOLDER_ID_STRING_VAR_2] = ExpandPlaceholder_StringVar2,
-        [PLACEHOLDER_ID_STRING_VAR_3] = ExpandPlaceholder_StringVar3,
-        [PLACEHOLDER_ID_KUN]          = ExpandPlaceholder_KunChan,
-        [PLACEHOLDER_ID_RIVAL]        = ExpandPlaceholder_RivalName,
-        [PLACEHOLDER_ID_VERSION]      = ExpandPlaceholder_Version,
-        [PLACEHOLDER_ID_AQUA]         = ExpandPlaceholder_Aqua,
-        [PLACEHOLDER_ID_MAGMA]        = ExpandPlaceholder_Magma,
-        [PLACEHOLDER_ID_ARCHIE]       = ExpandPlaceholder_Archie,
-        [PLACEHOLDER_ID_MAXIE]        = ExpandPlaceholder_Maxie,
-        [PLACEHOLDER_ID_KYOGRE]       = ExpandPlaceholder_Kyogre,
-        [PLACEHOLDER_ID_GROUDON]      = ExpandPlaceholder_Groudon,
+        [VARIABLE_TEXTO_NOMBRE_JUGADOR] = VariableTexto_NombreJugador,
+        [VARIABLE_TEXTO_1]              = VariableTexto_1,
+        [VARIABLE_TEXTO_2]              = VariableTexto_2,
+        [VARIABLE_TEXTO_3]              = VariableTexto_3,
     };
 
-    if (id >= ARRAY_COUNT(funcs))
-        return gText_ExpandedPlaceholder_Empty;
+    if (id >= ARRAY_COUNT(funciones))
+        return sTextoVacio;
     else
-        return funcs[id]();
+        return funciones[id]();
 }
 
 u8 *StringFill(u8 *dest, u8 c, u16 n)

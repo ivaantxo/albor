@@ -1024,16 +1024,16 @@
 	.2byte \move
 	.endm
 
-	@ Converts STR_VAR_1, STR_VAR_2, or STR_VAR_3 to its corresponding index into sScriptStringVars (0, 1, or 2).
+	@ Converts VAR_TEXTO_1, VAR_TEXTO_2, or VAR_TEXTO_3 to its corresponding index into sScriptStringVars (0, 1, or 2).
 	@ If given anything else it will output it directly.
-	@ Note: Because the STR_VAR_# arguments given to this macro are not part of a processed string they are not
-	@       replaced with their charmap values, they are just passed as the literal characters "STR_VAR_#".
+	@ Note: Because the VAR_TEXTO_# arguments given to this macro are not part of a processed string they are not
+	@       replaced with their charmap values, they are just passed as the literal characters "VAR_TEXTO_#".
 	.macro stringvar id:req
-	.if \id == STR_VAR_1
+	.if \id == VAR_TEXTO_1
 		.byte 0
-	.elseif \id == STR_VAR_2
+	.elseif \id == VAR_TEXTO_2
 		.byte 1
-	.elseif \id == STR_VAR_3
+	.elseif \id == VAR_TEXTO_3
 		.byte 2
 	.else
 		.byte \id

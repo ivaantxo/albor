@@ -358,7 +358,7 @@ static void AddHatchedMonToParty(u8 id)
     GetSetPokedexFlag(species, FLAG_SET_SEEN);
     GetSetPokedexFlag(species, FLAG_SET_CAUGHT);
 
-    GetMonNickname(mon, gStringVar1);
+    GetMonNickname(mon, gVariableTexto1);
 
     // A met level of 0 is interpreted on the summary screen as "hatched at"
     metLevel = 0;
@@ -538,7 +538,7 @@ static void CB2_LoadEggHatch(void)
 
 static void EggHatchSetMonNickname(void)
 {
-    SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_NICKNAME, gStringVar3);
+    SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_NICKNAME, gVariableTexto3);
     FreeMonSpritesGfx();
     Free(sEggHatchData);
     SetMainCallback2(CB2_ReturnToField);
@@ -614,9 +614,9 @@ static void CB2_EggHatch(void)
         break;
     case 5:
         // "{mon} hatched from egg" message/fanfare
-        GetMonNickname(&gPlayerParty[sEggHatchData->eggPartyId], gStringVar1);
-        StringExpandPlaceholders(gStringVar4, gText_HatchedFromEgg);
-        EggHatchPrintMessage(sEggHatchData->windowId, gStringVar4, 0, 3, TEXT_SKIP_DRAW);
+        GetMonNickname(&gPlayerParty[sEggHatchData->eggPartyId], gVariableTexto1);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_HatchedFromEgg);
+        EggHatchPrintMessage(sEggHatchData->windowId, gVariableTextoAmpliada, 0, 3, TEXT_SKIP_DRAW);
         PlayFanfare(MUS_EVOLVED);
         sEggHatchData->state++;
         PutWindowTilemap(sEggHatchData->windowId);
@@ -632,9 +632,9 @@ static void CB2_EggHatch(void)
         break;
     case 8:
         // Ready the nickname prompt
-        GetMonNickname(&gPlayerParty[sEggHatchData->eggPartyId], gStringVar1);
-        StringExpandPlaceholders(gStringVar4, gText_NicknameHatchPrompt);
-        EggHatchPrintMessage(sEggHatchData->windowId, gStringVar4, 0, 2, 1);
+        GetMonNickname(&gPlayerParty[sEggHatchData->eggPartyId], gVariableTexto1);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_NicknameHatchPrompt);
+        EggHatchPrintMessage(sEggHatchData->windowId, gVariableTextoAmpliada, 0, 2, 1);
         sEggHatchData->state++;
         break;
     case 9:
@@ -651,12 +651,12 @@ static void CB2_EggHatch(void)
         switch (Menu_ProcessInputNoWrapClearOnChoose())
         {
         case 0: // Yes
-            GetMonNickname(&gPlayerParty[sEggHatchData->eggPartyId], gStringVar3);
+            GetMonNickname(&gPlayerParty[sEggHatchData->eggPartyId], gVariableTexto3);
             species = GetMonData(&gPlayerParty[sEggHatchData->eggPartyId], MON_DATA_SPECIES);
             gender = GetMonGender(&gPlayerParty[sEggHatchData->eggPartyId]);
             personality = GetMonData(&gPlayerParty[sEggHatchData->eggPartyId], MON_DATA_PERSONALITY, 0);
             isShiny = GetMonData(&gPlayerParty[sEggHatchData->eggPartyId], MON_DATA_IS_SHINY);
-            DoNamingScreen(NAMING_SCREEN_NICKNAME, gStringVar3, species, gender, personality, EggHatchSetMonNickname, isShiny);
+            DoNamingScreen(NAMING_SCREEN_NICKNAME, gVariableTexto3, species, gender, personality, EggHatchSetMonNickname, isShiny);
             break;
         case 1: // No
         case MENU_B_PRESSED:

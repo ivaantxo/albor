@@ -4783,7 +4783,7 @@ Route134_Text_HudsonPostBattle:
 VSSeeker_Text_BatteryNotChargedNeedXSteps::
 	.string "The battery isn't charged enough.\p"
 	.string "No. of steps required to fully\n"
-	.string "charge the battery: {STR_VAR_1}{PAUSE_UNTIL_PRESS}$"
+	.string "charge the battery: {VAR_TEXTO_1}{PAUSE_UNTIL_PRESS}$"
 
 VSSeeker_Text_NoTrainersWithinRange::
 	.string "There are no Trainers within range\n"

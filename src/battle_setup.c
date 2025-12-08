@@ -1086,8 +1086,8 @@ const u8 *GetTrainerLoseText(void)
 {
     const u8 *string = sTrainerDefeatSpeech;
 
-    StringExpandPlaceholders(gStringVar4, ReturnEmptyStringIfNull(string));
-    return gStringVar4;
+    StringExpandPlaceholders(gVariableTextoAmpliada, ReturnEmptyStringIfNull(string));
+    return gVariableTextoAmpliada;
 }
 
 const u8 *GetTrainerWonSpeech(void)

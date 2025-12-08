@@ -82,11 +82,11 @@ SafariZone_Text_PlacePokeblockOnFeeder:
 	.string "on the {POKEBLOCK} FEEDER?$"
 
 SafariZone_Text_PokeblockStillHere:
-	.string "The {STR_VAR_1} you left\n"
+	.string "The {VAR_TEXTO_1} you left\n"
 	.string "before is still here.$"
 
 SafariZone_Text_PokeblockWasPlaced:
-	.string "The {STR_VAR_1} was placed\n"
+	.string "The {VAR_TEXTO_1} was placed\n"
 	.string "on the {POKEBLOCK} FEEDER.$"
 
 Route121_SafariZoneEntrance_Text_WelcomeToSafariZone:
@@ -137,7 +137,7 @@ Route121_SafariZoneEntrance_Text_HereAreYourSafariBalls:
 	.string "Here are your SAFARI BALLS.$"
 
 Route121_SafariZoneEntrance_Text_Received30SafariBalls:
-	.string "{PLAYER} received 30 SAFARI BALLS.$"
+	.string "{JUGADOR} received 30 SAFARI BALLS.$"
 
 Route121_SafariZoneEntrance_Text_PleaseEnjoyYourself:
 	.string "We'll let you know when your game\n"

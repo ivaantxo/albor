@@ -7480,9 +7480,9 @@ static void DrawLevelUpBannerText(void)
     struct Pokemon *mon = &gPlayerParty[gBattleStruct->expGetterMonId];
     u32 monLevel = GetMonData(mon, MON_DATA_LEVEL);
     u8 monGender = GetMonGender(mon);
-    GetMonNickname(mon, gStringVar4);
+    GetMonNickname(mon, gVariableTextoAmpliada);
 
-    printerTemplate.currentChar = gStringVar4;
+    printerTemplate.currentChar = gVariableTextoAmpliada;
     printerTemplate.windowId = B_WIN_LEVEL_UP_BANNER;
     printerTemplate.fontId = FONT_SMALL;
     printerTemplate.x = 32;
@@ -7497,7 +7497,7 @@ static void DrawLevelUpBannerText(void)
 
     AddTextPrinter(&printerTemplate, TEXT_SKIP_DRAW, NULL);
 
-    txtPtr = gStringVar4;
+    txtPtr = gVariableTextoAmpliada;
     *(txtPtr)++ = CHAR_EXTRA_SYMBOL;
     *(txtPtr)++ = CHAR_LV_2;
 
@@ -13631,8 +13631,8 @@ static void Cmd_givecaughtmon(void)
     if (GiveMonToPlayer(&gEnemyParty[gBattlerPartyIndexes[GetCatchingBattler()]]) != MON_GIVEN_TO_PARTY)
     {
         gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_SENT_SOMEONES_PC;
-        StringCopy(gStringVar1, GetBoxNamePtr(VarGet(VAR_PC_BOX_TO_SEND_MON)));
-        GetMonData(&gEnemyParty[gBattlerPartyIndexes[GetCatchingBattler()]], MON_DATA_NICKNAME, gStringVar2);
+        StringCopy(gVariableTexto1, GetBoxNamePtr(VarGet(VAR_PC_BOX_TO_SEND_MON)));
+        GetMonData(&gEnemyParty[gBattlerPartyIndexes[GetCatchingBattler()]], MON_DATA_NICKNAME, gVariableTexto2);
     }
 
     gBattleResults.caughtMonSpecies = GetMonData(&gEnemyParty[gBattlerPartyIndexes[GetCatchingBattler()]], MON_DATA_SPECIES, NULL);

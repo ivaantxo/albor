@@ -80,9 +80,9 @@ static const u8 sScriptConditionTable[6][3] =
 
 static u8 *const sScriptStringVars[] =
 {
-    gStringVar1,
-    gStringVar2,
-    gStringVar3,
+    gVariableTexto1,
+    gVariableTexto2,
+    gVariableTexto3,
 };
 
 bool8 ScrCmd_end(struct ScriptContext *ctx)

@@ -178,7 +178,7 @@ static void ClearSecretBase(struct SecretBase *secretBase)
 {
     u32 i;
     CpuFastFill16(0, secretBase, sizeof(struct SecretBase));
-    for (i = 0; i < PLAYER_NAME_LENGTH; i++)
+    for (i = 0; i < MAXIMO_CARACTERES_NOMBRE_JUGADOR; i++)
         secretBase->trainerName[i] = EOS;
 }
 
@@ -265,13 +265,13 @@ void ToggleSecretBaseEntranceMetatile(void)
 static u8 GetNameLength(const u8 *secretBaseOwnerName)
 {
     u32 i;
-    for (i = 0; i < PLAYER_NAME_LENGTH; i++)
+    for (i = 0; i < MAXIMO_CARACTERES_NOMBRE_JUGADOR; i++)
     {
         if (secretBaseOwnerName[i] == EOS)
             return i;
     }
 
-    return PLAYER_NAME_LENGTH;
+    return MAXIMO_CARACTERES_NOMBRE_JUGADOR;
 }
 
 void SetPlayerSecretBase(void)
@@ -523,8 +523,8 @@ void CopyCurSecretBaseOwnerName_StrVar1(void)
 
     secretBaseIdx = VarGet(VAR_CURRENT_SECRET_BASE);
     name = gSaveBlockPtr->secretBases[secretBaseIdx].trainerName;
-    *StringCopyN(gStringVar1, name, GetNameLength(name)) = EOS;
-    ConvertInternationalString(gStringVar1, gSaveBlockPtr->secretBases[secretBaseIdx].language);
+    *StringCopyN(gVariableTexto1, name, GetNameLength(name)) = EOS;
+    ConvertInternationalString(gVariableTexto1, gSaveBlockPtr->secretBases[secretBaseIdx].language);
 }
 
 static bool8 IsSecretBaseRegistered(u8 secretBaseIdx)
@@ -815,9 +815,9 @@ static void ShowRegistryMenuDeleteConfirmation(u8 taskId)
     ClearWindowTilemap(tActionWindowId);
     RemoveWindow(tActionWindowId);
     ScheduleBgCopyTilemapToVram(0);
-    GetSecretBaseName(gStringVar1, tSelectedBaseId);
-    StringExpandPlaceholders(gStringVar4, gText_OkayToDeleteFromRegistry);
-    DisplayItemMessageOnField(taskId, gStringVar4, ShowRegistryMenuDeleteYesNo);
+    GetSecretBaseName(gVariableTexto1, tSelectedBaseId);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_OkayToDeleteFromRegistry);
+    DisplayItemMessageOnField(taskId, gVariableTextoAmpliada, ShowRegistryMenuDeleteYesNo);
 }
 
 static void ShowRegistryMenuDeleteYesNo(u8 taskId)

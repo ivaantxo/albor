@@ -14,8 +14,8 @@ Common_EventScript_NameReceivedBoxMon::
 	return
 
 Common_EventScript_TransferredToPC::
-	bufferboxname STR_VAR_1, VAR_PC_BOX_TO_SEND_MON
-	bufferspeciesname STR_VAR_2, VAR_TEMP_TRANSFERRED_SPECIES
+	bufferboxname VAR_TEXTO_1, VAR_PC_BOX_TO_SEND_MON
+	bufferspeciesname VAR_TEXTO_2, VAR_TEMP_TRANSFERRED_SPECIES
 	call_if_unset FLAG_SYS_PC_LANETTE, EventScript_TransferredSomeonesPC
 	call_if_set FLAG_SYS_PC_LANETTE, EventScript_TransferredLanettesPC
 	return
@@ -28,7 +28,7 @@ EventScript_TransferredSomeonesPC::
 
 EventScript_SomeonesPCBoxFull::
 	specialvar VAR_RESULT, GetPCBoxToSendMon
-	bufferboxname STR_VAR_3, VAR_RESULT
+	bufferboxname VAR_TEXTO_3, VAR_RESULT
 	msgbox gText_PkmnFueTransferidoAlPC, MSGBOX_DEFAULT
 	return
 
@@ -40,7 +40,7 @@ EventScript_TransferredLanettesPC::
 
 EventScript_LanettesPCBoxFull::
 	specialvar VAR_RESULT, GetPCBoxToSendMon
-	bufferboxname STR_VAR_3, VAR_RESULT
+	bufferboxname VAR_TEXTO_3, VAR_RESULT
 	msgbox gText_PkmnFueTransferidoAlPC, MSGBOX_DEFAULT
 	return
 

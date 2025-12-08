@@ -1089,7 +1089,7 @@ static void Task_NewGameBirchSpeech_WaitForSpriteFadeInWelcome(u8 taskId)
             PutWindowTilemap(0);
             CopyWindowToVram(0, COPYWIN_GFX);
             NewGameBirchSpeech_ClearWindow(0);
-            StringExpandPlaceholders(gStringVar4, gText_Birch_Welcome);
+            StringExpandPlaceholders(gVariableTextoAmpliada, gText_Birch_Welcome);
             AddTextPrinterForMessage(TRUE);
             gTasks[taskId].func = Task_NewGameBirchSpeech_ThisIsAPokemon;
         }
@@ -1101,7 +1101,7 @@ static void Task_NewGameBirchSpeech_ThisIsAPokemon(u8 taskId)
     if (!gFundidoPaletas.activo&& !RunTextPrintersAndIsPrinter0Active())
     {
         gTasks[taskId].func = Task_NewGameBirchSpeech_MainSpeech;
-        StringExpandPlaceholders(gStringVar4, gText_ThisIsAPokemon);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_ThisIsAPokemon);
         AddTextPrinterWithCallbackForMessage(TRUE, NewGameBirchSpeech_WaitForThisIsPokemonText);
         sBirchSpeechMainTaskId = taskId;
     }
@@ -1111,7 +1111,7 @@ static void Task_NewGameBirchSpeech_MainSpeech(u8 taskId)
 {
     if (!RunTextPrintersAndIsPrinter0Active())
     {
-        StringExpandPlaceholders(gStringVar4, gText_Birch_MainSpeech);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_Birch_MainSpeech);
         AddTextPrinterForMessage(TRUE);
         gTasks[taskId].func = Task_NewGameBirchSpeech_AndYouAre;
     }
@@ -1166,7 +1166,7 @@ static void Task_NewGameBirchSpeech_AndYouAre(u8 taskId)
     if (!RunTextPrintersAndIsPrinter0Active())
     {
         sStartedPokeBallTask = FALSE;
-        StringExpandPlaceholders(gStringVar4, gText_Birch_AndYouAre);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_Birch_AndYouAre);
         AddTextPrinterForMessage(TRUE);
         gTasks[taskId].func = Task_NewGameBirchSpeech_StartBirchLotadPlatformFade;
     }
@@ -1238,7 +1238,7 @@ static void Task_NewGameBirchSpeech_WaitForPlayerFadeIn(u8 taskId)
 static void Task_NewGameBirchSpeech_BoyOrGirl(u8 taskId)
 {
     NewGameBirchSpeech_ClearWindow(0);
-    StringExpandPlaceholders(gStringVar4, gText_Birch_BoyOrGirl);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_Birch_BoyOrGirl);
     AddTextPrinterForMessage(TRUE);
     gTasks[taskId].func = Task_NewGameBirchSpeech_WaitToShowGenderMenu;
 }
@@ -1328,7 +1328,7 @@ static void Task_NewGameBirchSpeech_SlideInNewGenderSprite(u8 taskId)
 static void Task_NewGameBirchSpeech_WhatsYourName(u8 taskId)
 {
     NewGameBirchSpeech_ClearWindow(0);
-    StringExpandPlaceholders(gStringVar4, gText_Birch_WhatsYourName);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_Birch_WhatsYourName);
     AddTextPrinterForMessage(TRUE);
     gTasks[taskId].func = Task_NewGameBirchSpeech_WaitForWhatsYourNameToPrint;
 }
@@ -1356,14 +1356,14 @@ static void Task_NewGameBirchSpeech_StartNamingScreen(u8 taskId)
         FreeAndDestroyMonPicSprite(gTasks[taskId].tLotadSpriteId);
         NewGameBirchSpeech_SetDefaultPlayerName(Random() % NUM_PRESET_NAMES);
         DestroyTask(taskId);
-        DoNamingScreen(NAMING_SCREEN_PLAYER, gSaveBlockPtr->playerName, gSaveBlockPtr->playerGender, 0, 0, CB2_NewGameBirchSpeech_ReturnFromNamingScreen, 0);
+        DoNamingScreen(NAMING_SCREEN_PLAYER, gSaveBlockPtr->nombreJugador, gSaveBlockPtr->playerGender, 0, 0, CB2_NewGameBirchSpeech_ReturnFromNamingScreen, 0);
     }
 }
 
 static void Task_NewGameBirchSpeech_SoItsPlayerName(u8 taskId)
 {
     NewGameBirchSpeech_ClearWindow(0);
-    StringExpandPlaceholders(gStringVar4, gText_Birch_SoItsPlayer);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_Birch_SoItsPlayer);
     AddTextPrinterForMessage(TRUE);
     gTasks[taskId].func = Task_NewGameBirchSpeech_CreateNameYesNo;
 }
@@ -1429,7 +1429,7 @@ static void Task_NewGameBirchSpeech_ReshowBirchLotad(u8 taskId)
         NewGameBirchSpeech_StartFadeInTarget1OutTarget2(taskId, 2);
         NewGameBirchSpeech_StartFadePlatformOut(taskId, 1);
         NewGameBirchSpeech_ClearWindow(0);
-        StringExpandPlaceholders(gStringVar4, gText_Birch_YourePlayer);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_Birch_YourePlayer);
         AddTextPrinterForMessage(TRUE);
         gTasks[taskId].func = Task_NewGameBirchSpeech_WaitForSpriteFadeInAndTextPrinter;
     }
@@ -1477,7 +1477,7 @@ static void Task_NewGameBirchSpeech_AreYouReady(u8 taskId)
         gTasks[taskId].tPlayerSpriteId = spriteId;
         NewGameBirchSpeech_StartFadeInTarget1OutTarget2(taskId, 2);
         NewGameBirchSpeech_StartFadePlatformOut(taskId, 1);
-        StringExpandPlaceholders(gStringVar4, gText_Birch_AreYouReady);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_Birch_AreYouReady);
         AddTextPrinterForMessage(TRUE);
         gTasks[taskId].func = Task_NewGameBirchSpeech_ShrinkPlayer;
     }
@@ -1866,9 +1866,9 @@ void NewGameBirchSpeech_SetDefaultPlayerName(u8 nameId)
         name = sMalePresetNames[nameId];
     else
         name = sFemalePresetNames[nameId];
-    for (i = 0; i < PLAYER_NAME_LENGTH; i++)
-        gSaveBlockPtr->playerName[i] = name[i];
-    gSaveBlockPtr->playerName[PLAYER_NAME_LENGTH] = EOS;
+    for (i = 0; i < MAXIMO_CARACTERES_NOMBRE_JUGADOR; i++)
+        gSaveBlockPtr->nombreJugador[i] = name[i];
+    gSaveBlockPtr->nombreJugador[MAXIMO_CARACTERES_NOMBRE_JUGADOR] = EOS;
 }
 
 static void CreateMainMenuErrorWindow(const u8 *str)
@@ -1892,9 +1892,9 @@ static void MainMenu_FormatSavegameText(void)
 
 static void MainMenu_FormatSavegamePlayer(void)
 {
-    StringExpandPlaceholders(gStringVar4, gText_ContinueMenuPlayer);
-    AddTextPrinterParameterized3(2, FONT_NORMAL, 0, 17, sTextColor_MenuInfo, TEXT_SKIP_DRAW, gStringVar4);
-    AddTextPrinterParameterized3(2, FONT_NORMAL, GetStringRightAlignXOffset(FONT_NORMAL, gSaveBlockPtr->playerName, 100), 17, sTextColor_MenuInfo, TEXT_SKIP_DRAW, gSaveBlockPtr->playerName);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_ContinueMenuPlayer);
+    AddTextPrinterParameterized3(2, FONT_NORMAL, 0, 17, sTextColor_MenuInfo, TEXT_SKIP_DRAW, gVariableTextoAmpliada);
+    AddTextPrinterParameterized3(2, FONT_NORMAL, GetStringRightAlignXOffset(FONT_NORMAL, gSaveBlockPtr->nombreJugador, 100), 17, sTextColor_MenuInfo, TEXT_SKIP_DRAW, gSaveBlockPtr->nombreJugador);
 }
 
 static void MainMenu_FormatSavegameTime(void)
@@ -1902,8 +1902,8 @@ static void MainMenu_FormatSavegameTime(void)
     u8 str[0x20];
     u8 *ptr;
 
-    StringExpandPlaceholders(gStringVar4, gText_ContinueMenuTime);
-    AddTextPrinterParameterized3(2, FONT_NORMAL, 0x6C, 17, sTextColor_MenuInfo, TEXT_SKIP_DRAW, gStringVar4);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_ContinueMenuTime);
+    AddTextPrinterParameterized3(2, FONT_NORMAL, 0x6C, 17, sTextColor_MenuInfo, TEXT_SKIP_DRAW, gVariableTextoAmpliada);
     ptr = ConvertIntToDecimalStringN(str, gSaveBlockPtr->playTimeHours, STR_CONV_MODE_LEFT_ALIGN, 3);
     *ptr = 0xF0;
     ConvertIntToDecimalStringN(ptr + 1, gSaveBlockPtr->playTimeMinutes, STR_CONV_MODE_LEADING_ZEROS, 2);
@@ -1918,8 +1918,8 @@ static void MainMenu_FormatSavegamePokedex(void)
     if (FlagGet(FLAG_SYS_POKEDEX_GET) == TRUE)
     {
         dexCount = GetNationalPokedexCount(FLAG_GET_CAUGHT);
-        StringExpandPlaceholders(gStringVar4, gText_ContinueMenuPokedex);
-        AddTextPrinterParameterized3(2, FONT_NORMAL, 0, 33, sTextColor_MenuInfo, TEXT_SKIP_DRAW, gStringVar4);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_ContinueMenuPokedex);
+        AddTextPrinterParameterized3(2, FONT_NORMAL, 0, 33, sTextColor_MenuInfo, TEXT_SKIP_DRAW, gVariableTextoAmpliada);
         ConvertIntToDecimalStringN(str, dexCount, STR_CONV_MODE_LEFT_ALIGN, 4);
         AddTextPrinterParameterized3(2, FONT_NORMAL, GetStringRightAlignXOffset(FONT_NORMAL, str, 100), 33, sTextColor_MenuInfo, TEXT_SKIP_DRAW, str);
     }
@@ -1936,8 +1936,8 @@ static void MainMenu_FormatSavegameBadges(void)
         if (FlagGet(i))
             badgeCount++;
     }
-    StringExpandPlaceholders(gStringVar4, gText_ContinueMenuBadges);
-    AddTextPrinterParameterized3(2, FONT_NORMAL, 0x6C, 33, sTextColor_MenuInfo, TEXT_SKIP_DRAW, gStringVar4);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_ContinueMenuBadges);
+    AddTextPrinterParameterized3(2, FONT_NORMAL, 0x6C, 33, sTextColor_MenuInfo, TEXT_SKIP_DRAW, gVariableTextoAmpliada);
     ConvertIntToDecimalStringN(str, badgeCount, STR_CONV_MODE_LEADING_ZEROS, 1);
     AddTextPrinterParameterized3(2, FONT_NORMAL, GetStringRightAlignXOffset(FONT_NORMAL, str, 0xD0), 33, sTextColor_MenuInfo, TEXT_SKIP_DRAW, str);
 }

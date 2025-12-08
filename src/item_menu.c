@@ -803,15 +803,15 @@ static void GetItemName(u8 *dest, u16 itemId)
     switch (gBagPosition.pocket)
     {
     case BERRIES_POCKET:
-        ConvertIntToDecimalStringN(gStringVar1, itemId - FIRST_BERRY_INDEX + 1, STR_CONV_MODE_LEADING_ZEROS, 2);
-        end = CopyItemName(itemId, gStringVar2);
-        PrependFontIdToFit(gStringVar2, end, FONT_NARROW, 73);
+        ConvertIntToDecimalStringN(gVariableTexto1, itemId - FIRST_BERRY_INDEX + 1, STR_CONV_MODE_LEADING_ZEROS, 2);
+        end = CopyItemName(itemId, gVariableTexto2);
+        PrependFontIdToFit(gVariableTexto2, end, FONT_NARROW, 73);
         StringExpandPlaceholders(dest, gText_NumberItem_TMBerry);
         break;
     default:
         if (itemId == ITEM_TM_CASE)
         {
-            CopyItemName(itemId, gStringVar2);
+            CopyItemName(itemId, gVariableTexto2);
             StringExpandPlaceholders(dest, gText_TMCase);
         }
         else
@@ -863,10 +863,10 @@ static void BagMenu_ItemPrintCallback(u8 windowId, u32 itemIndex, u8 y)
         if (gBagPosition.pocket != KEYITEMS_POCKET && ItemId_GetImportance(itemId) == FALSE)
         {
             // Print item quantity
-            ConvertIntToDecimalStringN(gStringVar1, itemQuantity, STR_CONV_MODE_RIGHT_ALIGN, MAX_ITEM_DIGITS);
-            StringExpandPlaceholders(gStringVar4, gText_xVar1);
-            offset = GetStringRightAlignXOffset(FONT_NARROW, gStringVar4, 119);
-            BagMenu_Print(windowId, FONT_NARROW, gStringVar4, offset, y, 0, 0, TEXT_SKIP_DRAW, COLORID_NORMAL);
+            ConvertIntToDecimalStringN(gVariableTexto1, itemQuantity, STR_CONV_MODE_RIGHT_ALIGN, MAX_ITEM_DIGITS);
+            StringExpandPlaceholders(gVariableTextoAmpliada, gText_xVar1);
+            offset = GetStringRightAlignXOffset(FONT_NARROW, gVariableTextoAmpliada, 119);
+            BagMenu_Print(windowId, FONT_NARROW, gVariableTextoAmpliada, offset, y, 0, 0, TEXT_SKIP_DRAW, COLORID_NORMAL);
         }
         else
         {
@@ -887,9 +887,9 @@ static void PrintItemDescription(int itemIndex)
     else
     {
         // Print 'Cancel' description
-        StringCopy(gStringVar1, gBagMenu_ReturnToStrings[gBagPosition.location]);
-        StringExpandPlaceholders(gStringVar4, gText_ReturnToVar1);
-        str = gStringVar4;
+        StringCopy(gVariableTexto1, gBagMenu_ReturnToStrings[gBagPosition.location]);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_ReturnToVar1);
+        str = gVariableTextoAmpliada;
     }
     FillWindowPixelBuffer(WIN_DESCRIPTION, PIXEL_FILL(0));
     BagMenu_Print(WIN_DESCRIPTION, FONT_NORMAL, str, 3, 1, 0, 0, 0, COLORID_NORMAL);
@@ -1093,17 +1093,17 @@ static void AddItemQuantityWindow(u8 windowType)
 
 static void PrintItemQuantity(u8 windowId, s16 quantity)
 {
-    ConvertIntToDecimalStringN(gStringVar1, quantity, STR_CONV_MODE_LEADING_ZEROS, MAX_ITEM_DIGITS);
-    StringExpandPlaceholders(gStringVar4, gText_xVar1);
-    AddTextPrinterParameterized(windowId, FONT_NORMAL, gStringVar4, GetStringCenterAlignXOffset(FONT_NORMAL, gStringVar4, 0x28), 2, 0, 0);
+    ConvertIntToDecimalStringN(gVariableTexto1, quantity, STR_CONV_MODE_LEADING_ZEROS, MAX_ITEM_DIGITS);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_xVar1);
+    AddTextPrinterParameterized(windowId, FONT_NORMAL, gVariableTextoAmpliada, GetStringCenterAlignXOffset(FONT_NORMAL, gVariableTextoAmpliada, 0x28), 2, 0, 0);
 }
 
 // Prints the quantity of items to be sold and the amount that would be earned
 static void PrintItemSoldAmount(int windowId, int numSold, int moneyEarned)
 {
-    ConvertIntToDecimalStringN(gStringVar1, numSold, STR_CONV_MODE_LEADING_ZEROS, MAX_ITEM_DIGITS);
-    StringExpandPlaceholders(gStringVar4, gText_xVar1);
-    AddTextPrinterParameterized(windowId, FONT_NORMAL, gStringVar4, 0, 1, TEXT_SKIP_DRAW, 0);
+    ConvertIntToDecimalStringN(gVariableTexto1, numSold, STR_CONV_MODE_LEADING_ZEROS, MAX_ITEM_DIGITS);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_xVar1);
+    AddTextPrinterParameterized(windowId, FONT_NORMAL, gVariableTextoAmpliada, 0, 1, TEXT_SKIP_DRAW, 0);
     PrintMoneyAmount(windowId, CalculateMoneyTextHorizontalPosition(moneyEarned), 1, moneyEarned, 0);
 }
 
@@ -1331,10 +1331,10 @@ static void StartItemSwap(u8 taskId)
     ListMenuSetUnkIndicatorsStructField(tListTaskId, 16, 1);
     tListPosition = gBagPosition.scrollPosition[gBagPosition.pocket] + gBagPosition.cursorPosition[gBagPosition.pocket];
     gBagMenu->toSwapPos = tListPosition;
-    CopyItemName(BagGetItemIdByPocketPosition(gBagPosition.pocket + 1, tListPosition), gStringVar1);
-    StringExpandPlaceholders(gStringVar4, gText_MoveVar1Where);
+    CopyItemName(BagGetItemIdByPocketPosition(gBagPosition.pocket + 1, tListPosition), gVariableTexto1);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_MoveVar1Where);
     FillWindowPixelBuffer(WIN_DESCRIPTION, PIXEL_FILL(0));
-    BagMenu_Print(WIN_DESCRIPTION, FONT_NORMAL, gStringVar4, 3, 1, 0, 0, 0, COLORID_NORMAL);
+    BagMenu_Print(WIN_DESCRIPTION, FONT_NORMAL, gVariableTextoAmpliada, 3, 1, 0, 0, 0, COLORID_NORMAL);
     UpdateItemMenuSwapLinePos(tListPosition);
     DestroyPocketSwitchArrowPair();
     BagMenu_PrintCursor(tListTaskId, COLORID_GRAY_CURSOR);
@@ -1477,11 +1477,11 @@ static void OpenContextMenu(u8 taskId)
             break;
         }
     }
-    u8 *end = CopyItemName(gSpecialVar_ItemId, gStringVar1);
-    WrapFontIdToFit(gStringVar1, end, FONT_NORMAL, WindowWidthPx(WIN_DESCRIPTION) - 10 - 6);
-    StringExpandPlaceholders(gStringVar4, gText_Var1IsSelected);
+    u8 *end = CopyItemName(gSpecialVar_ItemId, gVariableTexto1);
+    WrapFontIdToFit(gVariableTexto1, end, FONT_NORMAL, WindowWidthPx(WIN_DESCRIPTION) - 10 - 6);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_Var1IsSelected);
     FillWindowPixelBuffer(WIN_DESCRIPTION, PIXEL_FILL(0));
-    BagMenu_Print(WIN_DESCRIPTION, FONT_NORMAL, gStringVar4, 3, 1, 0, 0, 0, COLORID_NORMAL);
+    BagMenu_Print(WIN_DESCRIPTION, FONT_NORMAL, gVariableTextoAmpliada, 3, 1, 0, 0, 0, COLORID_NORMAL);
     if (gBagMenu->contextMenuNumItems == 1)
         PrintContextMenuItems(BagMenu_AddWindow(ITEMWIN_1x1));
     else if (gBagMenu->contextMenuNumItems == 2)
@@ -1637,11 +1637,11 @@ static void ItemMenu_Toss(u8 taskId)
     }
     else
     {
-        u8 *end = CopyItemNameHandlePlural(gSpecialVar_ItemId, gStringVar1, 2);
-        WrapFontIdToFit(gStringVar1, end, FONT_NORMAL, WindowWidthPx(WIN_DESCRIPTION) - 10 - 6);
-        StringExpandPlaceholders(gStringVar4, gText_TossHowManyVar1s);
+        u8 *end = CopyItemNameHandlePlural(gSpecialVar_ItemId, gVariableTexto1, 2);
+        WrapFontIdToFit(gVariableTexto1, end, FONT_NORMAL, WindowWidthPx(WIN_DESCRIPTION) - 10 - 6);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_TossHowManyVar1s);
         FillWindowPixelBuffer(WIN_DESCRIPTION, PIXEL_FILL(0));
-        BagMenu_Print(WIN_DESCRIPTION, FONT_NORMAL, gStringVar4, 3, 1, 0, 0, 0, COLORID_NORMAL);
+        BagMenu_Print(WIN_DESCRIPTION, FONT_NORMAL, gVariableTextoAmpliada, 3, 1, 0, 0, 0, COLORID_NORMAL);
         AddItemQuantityWindow(ITEMWIN_QUANTITY);
         gTasks[taskId].func = Task_ChooseHowManyToToss;
     }
@@ -1651,12 +1651,12 @@ static void AskTossItems(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
 
-    u8 *end = CopyItemNameHandlePlural(gSpecialVar_ItemId, gStringVar1, tItemCount);
-    WrapFontIdToFit(gStringVar1, end, FONT_NORMAL, WindowWidthPx(WIN_DESCRIPTION) - 10 - 6);
-    ConvertIntToDecimalStringN(gStringVar2, tItemCount, STR_CONV_MODE_LEFT_ALIGN, MAX_ITEM_DIGITS);
-    StringExpandPlaceholders(gStringVar4, gText_ConfirmTossItems);
+    u8 *end = CopyItemNameHandlePlural(gSpecialVar_ItemId, gVariableTexto1, tItemCount);
+    WrapFontIdToFit(gVariableTexto1, end, FONT_NORMAL, WindowWidthPx(WIN_DESCRIPTION) - 10 - 6);
+    ConvertIntToDecimalStringN(gVariableTexto2, tItemCount, STR_CONV_MODE_LEFT_ALIGN, MAX_ITEM_DIGITS);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_ConfirmTossItems);
     FillWindowPixelBuffer(WIN_DESCRIPTION, PIXEL_FILL(0));
-    BagMenu_Print(WIN_DESCRIPTION, FONT_NORMAL, gStringVar4, 3, 1, 0, 0, 0, COLORID_NORMAL);
+    BagMenu_Print(WIN_DESCRIPTION, FONT_NORMAL, gVariableTextoAmpliada, 3, 1, 0, 0, 0, COLORID_NORMAL);
     BagMenu_YesNo(taskId, ITEMWIN_YESNO_LOW, &sYesNoTossFunctions);
 }
 
@@ -1695,12 +1695,12 @@ static void ConfirmToss(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
 
-    u8 *end = CopyItemNameHandlePlural(gSpecialVar_ItemId, gStringVar1, tItemCount);
-    WrapFontIdToFit(gStringVar1, end, FONT_NORMAL, WindowWidthPx(WIN_DESCRIPTION) - 10 - 6);
-    ConvertIntToDecimalStringN(gStringVar2, tItemCount, STR_CONV_MODE_LEFT_ALIGN, MAX_ITEM_DIGITS);
-    StringExpandPlaceholders(gStringVar4, gText_ThrewAwayVar2Var1s);
+    u8 *end = CopyItemNameHandlePlural(gSpecialVar_ItemId, gVariableTexto1, tItemCount);
+    WrapFontIdToFit(gVariableTexto1, end, FONT_NORMAL, WindowWidthPx(WIN_DESCRIPTION) - 10 - 6);
+    ConvertIntToDecimalStringN(gVariableTexto2, tItemCount, STR_CONV_MODE_LEFT_ALIGN, MAX_ITEM_DIGITS);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_ThrewAwayVar2Var1s);
     FillWindowPixelBuffer(WIN_DESCRIPTION, PIXEL_FILL(0));
-    BagMenu_Print(WIN_DESCRIPTION, FONT_NORMAL, gStringVar4, 3, 1, 0, 0, 0, COLORID_NORMAL);
+    BagMenu_Print(WIN_DESCRIPTION, FONT_NORMAL, gVariableTextoAmpliada, 3, 1, 0, 0, 0, COLORID_NORMAL);
     gTasks[taskId].func = Task_RemoveItemFromBag;
 }
 
@@ -1775,9 +1775,9 @@ static void PrintThereIsNoPokemon(u8 taskId)
 
 static void PrintItemCantBeHeld(u8 taskId)
 {
-    CopyItemName(gSpecialVar_ItemId, gStringVar1);
-    StringExpandPlaceholders(gStringVar4, gText_Var1CantBeHeld);
-    DisplayItemMessage(taskId, FONT_NORMAL, gStringVar4, HandleErrorMessage);
+    CopyItemName(gSpecialVar_ItemId, gVariableTexto1);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_Var1CantBeHeld);
+    DisplayItemMessage(taskId, FONT_NORMAL, gVariableTextoAmpliada, HandleErrorMessage);
 }
 
 static void HandleErrorMessage(u8 taskId)
@@ -1836,9 +1836,9 @@ static void Task_ItemContext_GiveToParty(u8 taskId)
     }
     else if (!IsHoldingItemAllowed(gSpecialVar_ItemId))
     {
-        CopyItemName(gSpecialVar_ItemId, gStringVar1);
-        StringExpandPlaceholders(gStringVar4, gText_Var1CantBeHeldHere);
-        DisplayItemMessage(taskId, FONT_NORMAL, gStringVar4, HandleErrorMessage);
+        CopyItemName(gSpecialVar_ItemId, gVariableTexto1);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_Var1CantBeHeldHere);
+        DisplayItemMessage(taskId, FONT_NORMAL, gVariableTextoAmpliada, HandleErrorMessage);
     }
     else if (gBagPosition.pocket != KEYITEMS_POCKET && !ItemId_GetImportance(gSpecialVar_ItemId))
     {
@@ -1899,9 +1899,9 @@ static void Task_ItemContext_Sell(u8 taskId)
 
     if (ItemId_GetPrice(gSpecialVar_ItemId) == 0 || ItemId_GetImportance(gSpecialVar_ItemId))
     {
-        CopyItemName(gSpecialVar_ItemId, gStringVar2);
-        StringExpandPlaceholders(gStringVar4, gText_CantBuyKeyItem);
-        DisplayItemMessage(taskId, FONT_NORMAL, gStringVar4, CloseItemMessage);
+        CopyItemName(gSpecialVar_ItemId, gVariableTexto2);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_CantBuyKeyItem);
+        DisplayItemMessage(taskId, FONT_NORMAL, gVariableTextoAmpliada, CloseItemMessage);
     }
     else
     {
@@ -1913,9 +1913,9 @@ static void Task_ItemContext_Sell(u8 taskId)
         }
         else
         {
-            CopyItemName(gSpecialVar_ItemId, gStringVar2);
-            StringExpandPlaceholders(gStringVar4, gText_HowManyToSell);
-            DisplayItemMessage(taskId, FONT_NORMAL, gStringVar4, InitSellHowManyInput);
+            CopyItemName(gSpecialVar_ItemId, gVariableTexto2);
+            StringExpandPlaceholders(gVariableTextoAmpliada, gText_HowManyToSell);
+            DisplayItemMessage(taskId, FONT_NORMAL, gVariableTextoAmpliada, InitSellHowManyInput);
         }
     }
 }
@@ -1926,9 +1926,9 @@ static void DisplaySellItemPriceAndConfirm(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
 
-    ConvertIntToDecimalStringN(gStringVar1, (ItemId_GetPrice(gSpecialVar_ItemId) / ITEM_SELL_FACTOR) * tItemCount, STR_CONV_MODE_LEFT_ALIGN, MAX_MONEY_DIGITS);
-    StringExpandPlaceholders(gStringVar4, gText_ICanPayVar1);
-    DisplayItemMessage(taskId, FONT_NORMAL, gStringVar4, AskSellItems);
+    ConvertIntToDecimalStringN(gVariableTexto1, (ItemId_GetPrice(gSpecialVar_ItemId) / ITEM_SELL_FACTOR) * tItemCount, STR_CONV_MODE_LEFT_ALIGN, MAX_MONEY_DIGITS);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_ICanPayVar1);
+    DisplayItemMessage(taskId, FONT_NORMAL, gVariableTextoAmpliada, AskSellItems);
 }
 
 static void AskSellItems(u8 taskId)
@@ -1985,10 +1985,10 @@ static void ConfirmSell(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
 
-    CopyItemName(gSpecialVar_ItemId, gStringVar2);
-    ConvertIntToDecimalStringN(gStringVar1, (ItemId_GetPrice(gSpecialVar_ItemId) / ITEM_SELL_FACTOR) * tItemCount, STR_CONV_MODE_LEFT_ALIGN, MAX_MONEY_DIGITS);
-    StringExpandPlaceholders(gStringVar4, gText_TurnedOverVar1ForVar2);
-    DisplayItemMessage(taskId, FONT_NORMAL, gStringVar4, SellItem);
+    CopyItemName(gSpecialVar_ItemId, gVariableTexto2);
+    ConvertIntToDecimalStringN(gVariableTexto1, (ItemId_GetPrice(gSpecialVar_ItemId) / ITEM_SELL_FACTOR) * tItemCount, STR_CONV_MODE_LEFT_ALIGN, MAX_MONEY_DIGITS);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_TurnedOverVar1ForVar2);
+    DisplayItemMessage(taskId, FONT_NORMAL, gVariableTextoAmpliada, SellItem);
 }
 
 static void SellItem(u8 taskId)

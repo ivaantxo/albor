@@ -235,8 +235,8 @@ void EvolutionScene(struct Pokemon *mon, u16 postEvoSpecies, u8 partyId)
     AllocateMonSpritesGfx();
 
     GetMonData(mon, MON_DATA_NICKNAME, name);
-    StringCopy_Nickname(gStringVar1, name);
-    StringCopy(gStringVar2, GetSpeciesName(postEvoSpecies));
+    StringCopy_Nickname(gVariableTexto1, name);
+    StringCopy(gVariableTexto2, GetSpeciesName(postEvoSpecies));
 
     // preEvo sprite
     currSpecies = GetMonData(mon, MON_DATA_SPECIES);
@@ -487,8 +487,8 @@ static void Task_EvolutionScene(u8 taskId)
     case EVOSTATE_INTRO_MSG:
         if (!gFundidoPaletas.activo)
         {
-            StringExpandPlaceholders(gStringVar4, gText_PkmnIsEvolving);
-            BattlePutTextOnWindow(gStringVar4, B_WIN_MSG);
+            StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnIsEvolving);
+            BattlePutTextOnWindow(gVariableTextoAmpliada, B_WIN_MSG);
             gTasks[taskId].tState++;
         }
         break;
@@ -584,8 +584,8 @@ static void Task_EvolutionScene(u8 taskId)
     case EVOSTATE_SET_MON_EVOLVED:
         if (IsCryFinished())
         {
-            StringExpandPlaceholders(gStringVar4, gText_CongratsPkmnEvolved);
-            BattlePutTextOnWindow(gStringVar4, B_WIN_MSG);
+            StringExpandPlaceholders(gVariableTextoAmpliada, gText_CongratsPkmnEvolved);
+            BattlePutTextOnWindow(gVariableTextoAmpliada, B_WIN_MSG);
             PlayBGM(MUS_EVOLVED);
             gTasks[taskId].tState++;
             SetMonData(mon, MON_DATA_SPECIES, (void *)(&gTasks[taskId].tPostEvoSpecies));
@@ -666,11 +666,11 @@ static void Task_EvolutionScene(u8 taskId)
         if (EvoScene_IsMonAnimFinished(sEvoStructPtr->preEvoSpriteId))
         {
             if (gTasks[taskId].tEvoWasStopped) // FRLG auto cancellation
-                StringExpandPlaceholders(gStringVar4, gText_EllipsisQuestionMark);
+                StringExpandPlaceholders(gVariableTextoAmpliada, gText_EllipsisQuestionMark);
             else
-                StringExpandPlaceholders(gStringVar4, gText_PkmnStoppedEvolving);
+                StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnStoppedEvolving);
 
-            BattlePutTextOnWindow(gStringVar4, B_WIN_MSG);
+            BattlePutTextOnWindow(gVariableTextoAmpliada, B_WIN_MSG);
             gTasks[taskId].tEvoWasStopped = TRUE;
             gTasks[taskId].tState = EVOSTATE_TRY_LEARN_MOVE;
         }

@@ -140,7 +140,7 @@ void GetPokeblockFeederInFront(void)
          && sPokeblockFeeders[i].y == y)
         {
             gSpecialVar_Result = i;
-            StringCopy(gStringVar1, gPokeblockNames[sPokeblockFeeders[i].pokeblock.color]);
+            StringCopy(gVariableTexto1, gPokeblockNames[sPokeblockFeeders[i].pokeblock.color]);
             return;
         }
     }

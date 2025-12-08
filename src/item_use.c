@@ -133,13 +133,13 @@ static void Task_CallItemUseOnFieldCallback(u8 taskId)
 
 static void DisplayCannotUseItemMessage(u8 taskId, bool8 isUsingRegisteredKeyItemOnField, const u8 *str)
 {
-    StringExpandPlaceholders(gStringVar4, str);
+    StringExpandPlaceholders(gVariableTextoAmpliada, str);
     if (!isUsingRegisteredKeyItemOnField)
     {
-        DisplayItemMessage(taskId, FONT_NORMAL, gStringVar4, CloseItemMessage);
+        DisplayItemMessage(taskId, FONT_NORMAL, gVariableTextoAmpliada, CloseItemMessage);
     }
     else
-        DisplayItemMessageOnField(taskId, gStringVar4, Task_CloseCantUseKeyItemMessage);
+        DisplayItemMessageOnField(taskId, gVariableTextoAmpliada, Task_CloseCantUseKeyItemMessage);
 }
 
 void DisplayDadsAdviceCannotUseItemMessage(u8 taskId, bool8 isUsingRegisteredKeyItemOnField)
@@ -657,16 +657,16 @@ static void Task_OpenRegisteredPokeblockCase(u8 taskId)
 
 void ItemUseOutOfBattle_CoinCase(u8 taskId)
 {
-    ConvertIntToDecimalStringN(gStringVar1, GetCoins(), STR_CONV_MODE_LEFT_ALIGN, 4);
-    StringExpandPlaceholders(gStringVar4, gText_CoinCase);
+    ConvertIntToDecimalStringN(gVariableTexto1, GetCoins(), STR_CONV_MODE_LEFT_ALIGN, 4);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_CoinCase);
 
     if (!gTasks[taskId].tUsingRegisteredKeyItem)
     {
-        DisplayItemMessage(taskId, FONT_NORMAL, gStringVar4, CloseItemMessage);
+        DisplayItemMessage(taskId, FONT_NORMAL, gVariableTextoAmpliada, CloseItemMessage);
     }
     else
     {
-        DisplayItemMessageOnField(taskId, gStringVar4, Task_CloseCantUseKeyItemMessage);
+        DisplayItemMessageOnField(taskId, gVariableTextoAmpliada, Task_CloseCantUseKeyItemMessage);
     }
 }
 
@@ -827,9 +827,9 @@ static void Task_ShowTMHMContainedMessage(u8 taskId)
 {
     if (JOY_NEW(A_BUTTON | B_BUTTON))
     {
-        StringCopy(gStringVar1, GetMoveName(ItemIdToBattleMoveId(gSpecialVar_ItemId)));
-        StringExpandPlaceholders(gStringVar4, gText_TMHMContainedVar1);
-        DisplayItemMessage(taskId, FONT_NORMAL, gStringVar4, UseTMHMYesNo);
+        StringCopy(gVariableTexto1, GetMoveName(ItemIdToBattleMoveId(gSpecialVar_ItemId)));
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_TMHMContainedVar1);
+        DisplayItemMessage(taskId, FONT_NORMAL, gVariableTextoAmpliada, UseTMHMYesNo);
     }
 }
 
@@ -847,8 +847,8 @@ static void UseTMHM(u8 taskId)
 static void RemoveUsedItem(void)
 {
     RemoveBagItem(gSpecialVar_ItemId, 1);
-    CopyItemName(gSpecialVar_ItemId, gStringVar2);
-    StringExpandPlaceholders(gStringVar4, gText_PlayerUsedVar2);
+    CopyItemName(gSpecialVar_ItemId, gVariableTexto2);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_PlayerUsedVar2);
     UpdatePocketItemList(ItemId_GetPocket(gSpecialVar_ItemId));
     UpdatePocketListPosition(ItemId_GetPocket(gSpecialVar_ItemId));
 }
@@ -881,7 +881,7 @@ static void Task_UseRepel(u8 taskId)
         VarSet(VAR_LAST_REPEL_LURE_USED, gSpecialVar_ItemId);
     #endif
         RemoveUsedItem();
-        DisplayItemMessage(taskId, FONT_NORMAL, gStringVar4, CloseItemMessage);
+        DisplayItemMessage(taskId, FONT_NORMAL, gVariableTextoAmpliada, CloseItemMessage);
     }
 }
 void HandleUseExpiredRepel(struct ScriptContext *ctx)
@@ -908,24 +908,24 @@ static void Task_UsedBlackWhiteFlute(u8 taskId)
     if(++gTasks[taskId].data[8] > 7)
     {
         PlaySE(SE_GLASS_FLUTE);
-        DisplayItemMessage(taskId, FONT_NORMAL, gStringVar4, CloseItemMessage);
+        DisplayItemMessage(taskId, FONT_NORMAL, gVariableTextoAmpliada, CloseItemMessage);
     }
 }
 
 void ItemUseOutOfBattle_BlackWhiteFlute(u8 taskId)
 {
-    CopyItemName(gSpecialVar_ItemId, gStringVar2);
+    CopyItemName(gSpecialVar_ItemId, gVariableTexto2);
     if (gSpecialVar_ItemId == ITEM_WHITE_FLUTE)
     {
         FlagSet(FLAG_SYS_ENC_UP_ITEM);
         FlagClear(FLAG_SYS_ENC_DOWN_ITEM);
-        StringExpandPlaceholders(gStringVar4, gText_UsedVar2WildLured);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_UsedVar2WildLured);
     }
     else
     {
         FlagSet(FLAG_SYS_ENC_DOWN_ITEM);
         FlagClear(FLAG_SYS_ENC_UP_ITEM);
-        StringExpandPlaceholders(gStringVar4, gText_UsedVar2WildRepelled);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_UsedVar2WildRepelled);
     }
     gTasks[taskId].data[8] = 0;
     gTasks[taskId].func = Task_UsedBlackWhiteFlute;
@@ -944,10 +944,10 @@ static void ItemUseOnFieldCB_EscapeRope(u8 taskId)
     if (I_KEY_ESCAPE_ROPE < GEN_8)
         RemoveBagItem(gSpecialVar_ItemId, 1);
 
-    CopyItemName(gSpecialVar_ItemId, gStringVar2);
-    StringExpandPlaceholders(gStringVar4, gText_PlayerUsedVar2);
+    CopyItemName(gSpecialVar_ItemId, gVariableTexto2);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_PlayerUsedVar2);
     gTasks[taskId].data[0] = 0;
-    DisplayItemMessageOnField(taskId, gStringVar4, Task_UseDigEscapeRopeOnField);
+    DisplayItemMessageOnField(taskId, gVariableTextoAmpliada, Task_UseDigEscapeRopeOnField);
 }
 
 bool8 CanUseDigOrEscapeRopeOnCurMap(void)
@@ -1146,9 +1146,9 @@ bool32 CannotUseItemsInBattle(u16 itemId, struct Pokemon *mon)
     }
 
     if (failStr != NULL)
-        StringExpandPlaceholders(gStringVar4, failStr);
+        StringExpandPlaceholders(gVariableTextoAmpliada, failStr);
     else
-        StringExpandPlaceholders(gStringVar4, gText_WontHaveEffect);
+        StringExpandPlaceholders(gVariableTextoAmpliada, gText_WontHaveEffect);
 
     return cannotUse;
 }
@@ -1157,7 +1157,7 @@ void ItemUseInBattle_BagMenu(u8 taskId)
 {
     if (CannotUseItemsInBattle(gSpecialVar_ItemId, NULL))
     {
-        DisplayItemMessage(taskId, FONT_NORMAL, gStringVar4, CloseItemMessage);
+        DisplayItemMessage(taskId, FONT_NORMAL, gVariableTextoAmpliada, CloseItemMessage);
     }
     else
     {
@@ -1240,10 +1240,10 @@ static void ItemUseOnFieldCB_Honey(u8 taskId)
 {
     Overworld_ResetStateAfterDigEscRope();
     RemoveBagItem(gSpecialVar_ItemId, 1);
-    CopyItemName(gSpecialVar_ItemId, gStringVar2);
-    StringExpandPlaceholders(gStringVar4, gText_PlayerUsedVar2);
+    CopyItemName(gSpecialVar_ItemId, gVariableTexto2);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_PlayerUsedVar2);
     gTasks[taskId].data[0] = 0;
-    DisplayItemMessageOnField(taskId, gStringVar4, Task_UseHoneyOnField);
+    DisplayItemMessageOnField(taskId, gVariableTextoAmpliada, Task_UseHoneyOnField);
 }
 
 void ItemUseOutOfBattle_Honey(u8 taskId)

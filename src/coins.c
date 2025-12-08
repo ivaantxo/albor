@@ -14,11 +14,11 @@ void PrintCoinsString(u32 coinAmount)
 {
     u32 xAlign;
 
-    ConvertIntToDecimalStringN(gStringVar1, coinAmount, STR_CONV_MODE_RIGHT_ALIGN, MAX_COIN_DIGITS);
-    StringExpandPlaceholders(gStringVar4, gText_Coins);
+    ConvertIntToDecimalStringN(gVariableTexto1, coinAmount, STR_CONV_MODE_RIGHT_ALIGN, MAX_COIN_DIGITS);
+    StringExpandPlaceholders(gVariableTextoAmpliada, gText_Coins);
 
-    xAlign = GetStringRightAlignXOffset(FONT_NORMAL, gStringVar4, 0x40);
-    AddTextPrinterParameterized(sCoinsWindowId, FONT_NORMAL, gStringVar4, xAlign, 1, 0, NULL);
+    xAlign = GetStringRightAlignXOffset(FONT_NORMAL, gVariableTextoAmpliada, 0x40);
+    AddTextPrinterParameterized(sCoinsWindowId, FONT_NORMAL, gVariableTextoAmpliada, xAlign, 1, 0, NULL);
 }
 
 void ShowCoinsWindow(u32 coinAmount, u8 x, u8 y)

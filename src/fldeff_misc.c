@@ -1077,14 +1077,14 @@ void InteractWithShieldOrTVDecoration(void)
     switch (metatileId)
     {
     case METATILE_SecretBase_GoldShield_Base1:
-        ConvertIntToDecimalStringN(gStringVar1, 100, STR_CONV_MODE_LEFT_ALIGN, 3);
-        StringCopy(gStringVar2, gText_Gold);
+        ConvertIntToDecimalStringN(gVariableTexto1, 100, STR_CONV_MODE_LEFT_ALIGN, 3);
+        StringCopy(gVariableTexto2, gText_Gold);
 
         gSpecialVar_Result = 0;
         break;
     case METATILE_SecretBase_SilverShield_Base1:
-        ConvertIntToDecimalStringN(gStringVar1, 50, STR_CONV_MODE_LEFT_ALIGN, 2);
-        StringCopy(gStringVar2, gText_Silver);
+        ConvertIntToDecimalStringN(gVariableTexto1, 50, STR_CONV_MODE_LEFT_ALIGN, 2);
+        StringCopy(gVariableTexto2, gText_Silver);
 
         gSpecialVar_Result = 0;
 

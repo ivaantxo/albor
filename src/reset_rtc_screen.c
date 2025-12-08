@@ -359,28 +359,28 @@ static void HideChooseTimeWindow(u8 windowId)
 
 static void PrintTime(u8 windowId, u8 x, u8 y, u16 days, u8 hours, u8 minutes, u8 seconds)
 {
-    u8 *dest = gStringVar4;
+    u8 *dest = gVariableTextoAmpliada;
 
     // Print days
-    ConvertIntToDecimalStringN(gStringVar1, days, STR_CONV_MODE_RIGHT_ALIGN, 4);
-    dest = StringCopy(dest, gStringVar1);
+    ConvertIntToDecimalStringN(gVariableTexto1, days, STR_CONV_MODE_RIGHT_ALIGN, 4);
+    dest = StringCopy(dest, gVariableTexto1);
     dest = StringCopy(dest, gText_Day);
 
     // Print hours
-    ConvertIntToDecimalStringN(gStringVar1, hours, STR_CONV_MODE_RIGHT_ALIGN, 3);
-    dest = StringCopy(dest, gStringVar1);
+    ConvertIntToDecimalStringN(gVariableTexto1, hours, STR_CONV_MODE_RIGHT_ALIGN, 3);
+    dest = StringCopy(dest, gVariableTexto1);
     dest = StringCopy(dest, gText_Colon3);
 
     // Print minutes
-    ConvertIntToDecimalStringN(gStringVar1, minutes, STR_CONV_MODE_LEADING_ZEROS, 2);
-    dest = StringCopy(dest, gStringVar1);
+    ConvertIntToDecimalStringN(gVariableTexto1, minutes, STR_CONV_MODE_LEADING_ZEROS, 2);
+    dest = StringCopy(dest, gVariableTexto1);
     dest = StringCopy(dest, gText_Colon3);
 
     // Print seconds
-    ConvertIntToDecimalStringN(gStringVar1, seconds, STR_CONV_MODE_LEADING_ZEROS, 2);
-    dest = StringCopy(dest, gStringVar1);
+    ConvertIntToDecimalStringN(gVariableTexto1, seconds, STR_CONV_MODE_LEADING_ZEROS, 2);
+    dest = StringCopy(dest, gVariableTexto1);
 
-    AddTextPrinterParameterized(windowId, FONT_NORMAL, gStringVar4, x, y, TEXT_SKIP_DRAW, NULL);
+    AddTextPrinterParameterized(windowId, FONT_NORMAL, gVariableTextoAmpliada, x, y, TEXT_SKIP_DRAW, NULL);
 }
 
 static void ShowChooseTimeWindow(u8 windowId, u16 days, u8 hours, u8 minutes, u8 seconds)

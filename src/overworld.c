@@ -1876,9 +1876,9 @@ void ScriptShowItemDescription(struct ScriptContext *ctx)
         handleFlash = TRUE;
 
     if (headerType == 1) // berry
-        dst = gStringVar3;
+        dst = gVariableTexto3;
     else
-        dst = gStringVar1;
+        dst = gVariableTexto1;
 
     if (GetSetItemObtained(item, FLAG_GET_ITEM_OBTAINED))
     {
