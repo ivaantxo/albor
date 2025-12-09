@@ -325,7 +325,6 @@ void CopyFromSprites(u8 *dest);
 u8 SpriteTileAllocBitmapOp(u16 bit, u8 op);
 void ClearSpriteCopyRequests(void);
 void ResetAffineAnimData(void);
-u32 GetSpanPerImage(u32 shape, u32 size);
 u32 LoadUniqueSpritePalette(const struct SpritePalette *palette, u32 personality);
 u32 GetSpriteIndexByTileTag(u16 tag);
 void RequestSpriteFrameImageCopy(u16 index, u16 tileNum, const struct SpriteFrameImage *images);
