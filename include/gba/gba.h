@@ -6,6 +6,5 @@
 #include "gba/types.h"
 #include "gba/syscall.h"
 #include "gba/macro.h"
-#include "gba/isagbprint.h"
 
 #endif // GUARD_GBA_GBA_H

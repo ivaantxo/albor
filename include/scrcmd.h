@@ -195,7 +195,6 @@ extern bool8 ScrCmd_buffertrainerclassname(struct ScriptContext *ctx);
 extern bool8 ScrCmd_buffertrainername(struct ScriptContext *ctx);
 extern bool8 ScrCmd_pokenavcall(struct ScriptContext *ctx);
 extern bool8 ScrCmd_warpwhitefade(struct ScriptContext *ctx);
-extern bool8 ScrCmd_buffercontestname(struct ScriptContext *ctx);
 extern bool8 ScrCmd_bufferitemnameplural(struct ScriptContext *ctx);
 extern bool8 ScrCmd_dynmultichoice(struct ScriptContext *ctx);
 extern bool8 ScrCmd_dynmultipush(struct ScriptContext *ctx);

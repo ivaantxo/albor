@@ -14018,16 +14018,12 @@ void SaveBattlerTarget(u32 battler)
 {
     if (gBattleStruct->savedTargetCount < ARRAY_COUNT(gBattleStruct->savedBattlerTarget))
         gBattleStruct->savedBattlerTarget[gBattleStruct->savedTargetCount++] = battler;
-    else
-        DebugPrintfLevel(MGBA_LOG_WARN, "Attempting to exceed savedBattlerTarget array size!");
 }
 
 void SaveBattlerAttacker(u32 battler)
 {
     if (gBattleStruct->savedAttackerCount < ARRAY_COUNT(gBattleStruct->savedBattlerAttacker))
         gBattleStruct->savedBattlerAttacker[gBattleStruct->savedAttackerCount++] = battler;
-    else
-        DebugPrintfLevel(MGBA_LOG_WARN, "Attempting to exceed savedBattlerAttacker array size!");
 }
 
 void BS_SaveTarget(void)

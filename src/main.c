@@ -88,7 +88,7 @@ void AgbMain(void)
     InitHeap(gHeap, HEAP_SIZE);
 
     if (gFlashMemoryPresent != TRUE)
-        SetMainCallback2((SAVE_TYPE_ERROR_SCREEN) ? CB2_FlashNotDetectedScreen : NULL);
+        SetMainCallback2(CB2_FlashNotDetectedScreen);
 
     AgbMainLoop();
 }

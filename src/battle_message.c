@@ -2549,7 +2549,7 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
     while (*src != EOS)
     {
         toCpy = NULL;
-        dstWidth = GetStringLineWidth(fontId, dst, letterSpacing, lineNum, dstSize, FALSE);
+        dstWidth = GetStringLineWidth(fontId, dst, letterSpacing, lineNum, dstSize);
 
         if (*src == PLACEHOLDER_BEGIN)
         {
@@ -2758,12 +2758,12 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
 
             if (toCpy != NULL)
             {
-                toCpyWidth = GetStringLineWidth(fontId, toCpy, letterSpacing, 1, dstSize, FALSE);
+                toCpyWidth = GetStringLineWidth(fontId, toCpy, letterSpacing, 1, dstSize);
 
                 if (dstWidth + toCpyWidth > BATTLE_MSG_MAX_WIDTH)
                 {
                     dst[lastValidSkip] = lineNum == 1 ? CHAR_NEWLINE : CHAR_PROMPT_SCROLL;
-                    dstWidth = GetStringLineWidth(fontId, dst, letterSpacing, lineNum, dstSize, FALSE);
+                    dstWidth = GetStringLineWidth(fontId, dst, letterSpacing, lineNum, dstSize);
                     lineNum++;
                 }
                 while (*toCpy != EOS)

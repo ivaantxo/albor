@@ -618,7 +618,6 @@ static void SetPositionFromConnection(const struct MapConnection *connection, in
         gSaveBlockPtr->pos.y = mapHeader->mapLayout->height;
         break;
     default:
-        DebugPrintfLevel(MGBA_LOG_WARN, "SetPositionFromConnection was passed an invalid direction (%d)!", direction);
         break;
     }
 }
@@ -652,10 +651,6 @@ bool32 CameraMove(int x, int y)
             gSaveBlockPtr->pos.x += x;
             gSaveBlockPtr->pos.y += y;
             MoveMapViewToBackup(direction);
-        }
-        else
-        {
-            DebugPrintfLevel(MGBA_LOG_WARN, "GetIncomingConnection returned an invalid connection inside CameraMove!");
         }
 
     }

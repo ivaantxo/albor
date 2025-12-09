@@ -3955,7 +3955,6 @@ const u8 *GetMoveAnimationScript(u16 moveId)
 {
     if (gMovesInfo[moveId].battleAnimScript == NULL)
     {
-        DebugPrintfLevel(MGBA_LOG_WARN, "No animation for moveId=%u", moveId);
         return gMovesInfo[MOVE_NONE].battleAnimScript;
     }
     return gMovesInfo[moveId].battleAnimScript;

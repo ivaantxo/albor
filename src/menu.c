@@ -51,7 +51,7 @@ static void WindowFunc_DrawDialogFrameWithCustomTileAndPalette(u8, u8, u8, u8, u
 static void WindowFunc_ClearDialogWindowAndFrameNullPalette(u8, u8, u8, u8, u8, u8);
 static void WindowFunc_DrawStdFrameWithCustomTileAndPalette(u8, u8, u8, u8, u8, u8);
 static void WindowFunc_ClearStdWindowAndFrameToTransparent(u8, u8, u8, u8, u8, u8);
-static void task_free_buf_after_copying_tile_data_to_vram(u8 taskId);
+static void TaskFreeBufferAfterCopyingTileDataToVram(u8 taskId);
 
 static EWRAM_DATA u8 sStartMenuWindowId = 0;
 static EWRAM_DATA u8 sMapNamePopupWindowId = 0;
@@ -1550,12 +1550,12 @@ void *DecompressAndCopyTileDataToVram(u8 bgId, const void *src, u32 size, u16 of
     u32 sizeOut;
     if (sTempTileDataBufferIdx < ARRAY_COUNT(sTempTileDataBuffer))
     {
-        void *ptr = malloc_and_decompress(src, &sizeOut);
+        void *ptr = MallocAndDecompress(src, &sizeOut);
         if (!size)
             size = sizeOut;
         if (ptr)
         {
-            copy_decompressed_tile_data_to_vram(bgId, ptr, size, offset, mode);
+            CopyDecompressedTileDataToVram(bgId, ptr, size, offset, mode);
             sTempTileDataBuffer[sTempTileDataBufferIdx++] = ptr;
         }
         return ptr;
@@ -1566,18 +1566,18 @@ void *DecompressAndCopyTileDataToVram(u8 bgId, const void *src, u32 size, u16 of
 void DecompressAndLoadBgGfxUsingHeap(u8 bgId, const void *src, u32 size, u16 offset, u8 mode)
 {
     u32 sizeOut;
-    void *ptr = malloc_and_decompress(src, &sizeOut);
+    void *ptr = MallocAndDecompress(src, &sizeOut);
     if (!size)
         size = sizeOut;
     if (ptr)
     {
-        u8 taskId = CreateTask(task_free_buf_after_copying_tile_data_to_vram, 0);
-        gTasks[taskId].data[0] = copy_decompressed_tile_data_to_vram(bgId, ptr, size, offset, mode);
+        u8 taskId = CreateTask(TaskFreeBufferAfterCopyingTileDataToVram, 0);
+        gTasks[taskId].data[0] = CopyDecompressedTileDataToVram(bgId, ptr, size, offset, mode);
         SetWordTaskArg(taskId, 1, (u32)ptr);
     }
 }
 
-void task_free_buf_after_copying_tile_data_to_vram(u8 taskId)
+void TaskFreeBufferAfterCopyingTileDataToVram(u8 taskId)
 {
     if (!CheckForSpaceForDma3Request(gTasks[taskId].data[0]))
     {
@@ -1586,7 +1586,7 @@ void task_free_buf_after_copying_tile_data_to_vram(u8 taskId)
     }
 }
 
-void *malloc_and_decompress(const void *src, u32 *size)
+void *MallocAndDecompress(const void *src, u32 *size)
 {
     void *ptr;
     u8 *sizeAsBytes = (u8 *)size;
@@ -1603,7 +1603,7 @@ void *malloc_and_decompress(const void *src, u32 *size)
     return ptr;
 }
 
-u16 copy_decompressed_tile_data_to_vram(u8 bgId, const void *src, u16 size, u16 offset, u8 mode)
+u16 CopyDecompressedTileDataToVram(u8 bgId, const void *src, u16 size, u16 offset, u8 mode)
 {
     switch (mode)
     {

@@ -59,21 +59,12 @@ static void CreateLilycoveSSTidalMultichoice(void);
 static bool8 IsPicboxClosed(void);
 static void CreateStartMenuForPokenavTutorial(void);
 static void InitMultichoiceNoWrap(bool8 ignoreBPress, u8 unusedCount, u8 windowId, u8 multichoiceId);
-static void MultichoiceDynamicEventDebug_OnInit(struct DynamicListMenuEventArgs *eventArgs);
-static void MultichoiceDynamicEventDebug_OnSelectionChanged(struct DynamicListMenuEventArgs *eventArgs);
-static void MultichoiceDynamicEventDebug_OnDestroy(struct DynamicListMenuEventArgs *eventArgs);
 static void MultichoiceDynamicEventShowItem_OnInit(struct DynamicListMenuEventArgs *eventArgs);
 static void MultichoiceDynamicEventShowItem_OnSelectionChanged(struct DynamicListMenuEventArgs *eventArgs);
 static void MultichoiceDynamicEventShowItem_OnDestroy(struct DynamicListMenuEventArgs *eventArgs);
 
 static const struct DynamicListMenuEventCollection sDynamicListMenuEventCollections[] =
 {
-    [DYN_MULTICHOICE_CB_DEBUG] =
-    {
-        .OnInit = MultichoiceDynamicEventDebug_OnInit,
-        .OnSelectionChanged = MultichoiceDynamicEventDebug_OnSelectionChanged,
-        .OnDestroy = MultichoiceDynamicEventDebug_OnDestroy
-    },
     [DYN_MULTICHOICE_CB_SHOW_ITEM] =
     {
         .OnInit = MultichoiceDynamicEventShowItem_OnInit,
@@ -135,21 +126,6 @@ bool8 ScriptMenu_MultichoiceWithDefault(u8 left, u8 top, u8 multichoiceId, bool8
         DrawMultichoiceMenu(left, top, multichoiceId, ignoreBPress, defaultChoice);
         return TRUE;
     }
-}
-
-static void MultichoiceDynamicEventDebug_OnInit(struct DynamicListMenuEventArgs *eventArgs)
-{
-    DebugPrintf("OnInit: %d", eventArgs->windowId);
-}
-
-static void MultichoiceDynamicEventDebug_OnSelectionChanged(struct DynamicListMenuEventArgs *eventArgs)
-{
-    DebugPrintf("OnSelectionChanged: %d", eventArgs->selectedItem);
-}
-
-static void MultichoiceDynamicEventDebug_OnDestroy(struct DynamicListMenuEventArgs *eventArgs)
-{
-    DebugPrintf("OnDestroy: %d", eventArgs->windowId);
 }
 
 #define sAuxWindowId sDynamicMenuEventScratchPad[0]
@@ -218,9 +194,7 @@ static void FreeListMenuItems(struct ListMenuItem *items, u32 count)
 
 void MultichoiceDynamic_InitStack(u32 capacity)
 {
-    AGB_ASSERT(sDynamicMultiChoiceStack == NULL);
     sDynamicMultiChoiceStack = AllocZeroed(sizeof(*sDynamicMultiChoiceStack));
-    AGB_ASSERT(sDynamicMultiChoiceStack != NULL);
     sDynamicMultiChoiceStack->capacity = capacity;
     sDynamicMultiChoiceStack->top = -1;
     sDynamicMultiChoiceStack->elements = AllocZeroed(capacity * sizeof(struct ListMenuItem));
@@ -229,10 +203,7 @@ void MultichoiceDynamic_InitStack(u32 capacity)
 void MultichoiceDynamic_ReallocStack(u32 newCapacity)
 {
     struct ListMenuItem *newElements;
-    AGB_ASSERT(sDynamicMultiChoiceStack != NULL);
-    AGB_ASSERT(sDynamicMultiChoiceStack->capacity < newCapacity);
     newElements = AllocZeroed(newCapacity * sizeof(struct ListMenuItem));
-    AGB_ASSERT(newElements != NULL);
     memcpy(newElements, sDynamicMultiChoiceStack->elements, sDynamicMultiChoiceStack->capacity * sizeof(struct ListMenuItem));
     Free(sDynamicMultiChoiceStack->elements);
     sDynamicMultiChoiceStack->elements = newElements;
@@ -241,19 +212,16 @@ void MultichoiceDynamic_ReallocStack(u32 newCapacity)
 
 bool32 MultichoiceDynamic_StackFull(void)
 {
-    AGB_ASSERT(sDynamicMultiChoiceStack != NULL);
     return sDynamicMultiChoiceStack->top == sDynamicMultiChoiceStack->capacity - 1;
 }
 
 bool32 MultichoiceDynamic_StackEmpty(void)
 {
-    AGB_ASSERT(sDynamicMultiChoiceStack != NULL);
     return sDynamicMultiChoiceStack->top == -1;
 }
 
 u32 MultichoiceDynamic_StackSize(void)
 {
-    AGB_ASSERT(sDynamicMultiChoiceStack != NULL);
     return sDynamicMultiChoiceStack->top + 1;
 }
 

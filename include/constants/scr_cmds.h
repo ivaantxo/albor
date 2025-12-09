@@ -193,7 +193,6 @@ enum ScrCmds
     SCR_CMD_buffertrainername,
     SCR_CMD_pokenavcall,
     SCR_CMD_warpwhitefade,
-    SCR_CMD_buffercontestname,
     SCR_CMD_bufferitemnameplural,
     SCR_CMD_dynmultichoice,
     SCR_CMD_dynmultipush,

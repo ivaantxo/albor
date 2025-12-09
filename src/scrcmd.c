@@ -1548,11 +1548,6 @@ bool8 ScrCmd_bufferstdstring(struct ScriptContext *ctx)
     return FALSE;
 }
 
-bool8 ScrCmd_buffercontestname(struct ScriptContext *ctx)
-{
-    return FALSE;
-}
-
 bool8 ScrCmd_bufferstring(struct ScriptContext *ctx)
 {
     u8 stringVarIndex = ScriptReadByte(ctx);

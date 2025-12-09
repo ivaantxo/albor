@@ -817,10 +817,6 @@ static void Cmd_end(void)
 
     if (!continuousAnim) // May have been used for debug?
     {
-        // Debugging - ensure no hanging mon bg tasks
-        if (FuncIsActiveTask(Task_UpdateMonBg))
-            DebugPrintf("Move %d animation still has Task_UpdateMonBg active at the end!", gAnimMoveIndex);
-
         m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, VOLUMEN_MAXIMO);
         InitPrioritiesForVisibleBattlers();
         UpdateOamPriorityInAllHealthboxes(1, sAnimHideHpBoxes);

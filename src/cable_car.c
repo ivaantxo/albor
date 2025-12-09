@@ -280,10 +280,10 @@ static void CB2_LoadCableCar(void)
             LoadCompressedSpriteSheet(&sSpriteSheets[i]);
 
         LoadSpritePalettes(sSpritePalettes);
-        sCableCar->groundTilemap = malloc_and_decompress(sGround_Tilemap, &sizeOut);
-        sCableCar->treesTilemap = malloc_and_decompress(sTrees_Tilemap, &sizeOut);
-        sCableCar->bgMountainsTilemap = malloc_and_decompress(sBgMountains_Tilemap, &sizeOut);
-        sCableCar->pylonPoleTilemap = malloc_and_decompress(sPylonPole_Tilemap, &sizeOut);
+        sCableCar->groundTilemap = MallocAndDecompress(sGround_Tilemap, &sizeOut);
+        sCableCar->treesTilemap = MallocAndDecompress(sTrees_Tilemap, &sizeOut);
+        sCableCar->bgMountainsTilemap = MallocAndDecompress(sBgMountains_Tilemap, &sizeOut);
+        sCableCar->pylonPoleTilemap = MallocAndDecompress(sPylonPole_Tilemap, &sizeOut);
         sCableCar->pylonTopTilemap = sPylonTop_Tilemap;
         DecompressAndCopyTileDataToVram(0, gCableCarBg_Gfx, 0, 0, 0);
         gMain.state++;

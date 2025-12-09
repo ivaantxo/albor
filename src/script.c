@@ -224,7 +224,6 @@ const ScrCmdFunc gScriptCmdTable[] =
     SCR_CMD(buffertrainername),
     SCR_CMD(pokenavcall),
     SCR_CMD(warpwhitefade),
-    SCR_CMD(buffercontestname),
     SCR_CMD(bufferitemnameplural),
     SCR_CMD(dynmultichoice),
     SCR_CMD(dynmultipush),
