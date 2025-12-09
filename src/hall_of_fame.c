@@ -31,7 +31,6 @@
 #include "fldeff_misc.h"
 #include "trainer_pokemon_sprites.h"
 #include "data.h"
-#include "confetti_util.h"
 #include "constants/rgb.h"
 
 #define HALL_OF_FAME_MAX_TEAMS 25
