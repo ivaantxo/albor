@@ -35,28 +35,10 @@ void LoadCompressedPalette(const u32 *src, u32 offset, u32 size)
     CopiaCpu16(gDecompressionBuffer, &gPlttBufferFaded[offset], size);
 }
 
-// Drop in replacement but uses CopiaRapidaCpu, size must be 0 % 32
-void LoadCompressedPaletteFast(const u32 *src, u32 offset, u32 size) 
-{
-    LZDecompressWram(src, gDecompressionBuffer);
-    CopiaRapidaCpu(gDecompressionBuffer, &gPlttBufferUnfaded[offset], size);
-    CopiaRapidaCpu(&gPlttBufferUnfaded[offset], &gPlttBufferFaded[offset], size);
-}
-
 void LoadPalette(const void *src, u32 offset, u32 size)
 {
     CopiaCpu16(src, &gPlttBufferUnfaded[offset], size);
     CopiaCpu16(src, &gPlttBufferFaded[offset], size);
-}
-
-// Drop in replacement for LoadPalette, uses CopiaRapidaCpu, size must be 0 % 32
-void LoadPaletteFast(const void *src, u32 offset, u32 size) 
-{
-    if ((u32)src & 3) // In case palette is not 4 byte aligned
-        return LoadPalette(src, offset, size);
-    CopiaRapidaCpu(src, &gPlttBufferUnfaded[offset], size);
-    // Copying from EWRAM->EWRAM is faster than ROM->EWRAM
-    CopiaRapidaCpu(&gPlttBufferUnfaded[offset], &gPlttBufferFaded[offset], size);
 }
 
 void FillPalette(u32 value, u32 offset, u32 size)

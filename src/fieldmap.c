@@ -845,7 +845,7 @@ static void LoadTilesetPalette(struct Tileset const *tileset, u16 destOffset, u1
             if (skipFaded)
                 CopiaRapidaCpu(tileset->palettes, &gPlttBufferUnfaded[destOffset], size);
             else
-                LoadPaletteFast(tileset->palettes, destOffset, size);
+                LoadPalette(tileset->palettes, destOffset, size);
             gPlttBufferFaded[destOffset] = gPlttBufferUnfaded[destOffset] = RGB_BLACK; // why does it have to be black?
         }
         else if (tileset->isSecondary == TRUE)
@@ -855,7 +855,7 @@ static void LoadTilesetPalette(struct Tileset const *tileset, u16 destOffset, u1
             if (skipFaded)
                 CopiaRapidaCpu((void*)tileset->palettes[NUM_PALS_IN_PRIMARY], &gPlttBufferUnfaded[destOffset], size);
             else
-                LoadPaletteFast(tileset->palettes[NUM_PALS_IN_PRIMARY], destOffset, size);
+                LoadPalette(tileset->palettes[NUM_PALS_IN_PRIMARY], destOffset, size);
         }
         else
         {
