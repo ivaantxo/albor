@@ -88,9 +88,9 @@ void BlendPalettesGradually(u32 selectedPalettes, s8 delay, u8 coeff, u8 coeffTa
 void TimeMixPalettes(u32, u16 *, u16 *, struct ConfiguracionBlend *, struct ConfiguracionBlend *, u16);
 void AvgPaletteWeighted(u16 *src0, u16 *src1, u16 *dst, u16 intensidadRelativa);
 
-static inline void SetBackdropFromColor(u32 color)
+static inline void CambiaColorDeFondo(u32 color)
 {
-  FillPalette(color, 0, PLTT_SIZEOF(1));
+  FillPalette(color, BG_PLTT_OFFSET, PLTT_SIZEOF(1)); // El color de fondo es el primer color de la paleta 0 del background.
 }
 
 #endif // GUARD_PALETTE_H

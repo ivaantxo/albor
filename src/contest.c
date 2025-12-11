@@ -1126,7 +1126,7 @@ static void LoadContestPalettes(void)
     s32 i;
 
     LoadPalette(sText_Pal, BG_PLTT_ID(15), sizeof(sText_Pal));
-    SetBackdropFromColor(RGB_BLACK);
+    CambiaColorDeFondo(RGB_BLACK);
     for (i = 10; i < 14; i++)
         LoadPalette(&gPlttBufferUnfaded[BG_PLTT_ID(15) + 1], BG_PLTT_ID(15) + i, PLTT_SIZEOF(1));
     FillPalette(RGB(31, 17, 31), BG_PLTT_ID(15) + 3, PLTT_SIZEOF(1));
