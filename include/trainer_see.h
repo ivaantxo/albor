@@ -3,7 +3,7 @@
 
 struct ApproachingTrainer
 {
-    u8 objectEventId;
+    u32 objectEventId;
     u8 radius; // plus 1
     const u8 *trainerScriptPtr;
     u8 taskId;

@@ -278,7 +278,7 @@ struct RouletteTable
 
 struct GridSelection
 {
-    u8 spriteIdOffset;
+    u32 spriteIdOffset;
     u8 baseMultiplier:4;
     u8 x;
     u8 y;
@@ -321,7 +321,7 @@ static EWRAM_DATA struct Roulette
     struct OamMatrix wheelRotation;
     u16 shroomishShadowAlpha;
     struct Sprite *ball;
-    u8 spriteIds[MAX_SPRITES];
+    u32 spriteIds[MAX_SPRITES];
     u8 curBallSpriteId;
     u8 ballState;
     u8 hitSlot;
@@ -3200,7 +3200,7 @@ static void SpriteCB_WheelCenter(struct Sprite *sprite)
 
 static void HideWheelBalls(void)
 {
-    u8 spriteId = sRoulette->spriteIds[SPR_WHEEL_BALLS];
+    u32 spriteId = sRoulette->spriteIds[SPR_WHEEL_BALLS];
     u32 i;
     for (i = 0; i < BALLS_PER_ROUND; i++)
     {

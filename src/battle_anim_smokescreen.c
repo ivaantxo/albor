@@ -99,7 +99,7 @@ static const struct SpriteTemplate sSmokescreenImpactSpriteTemplate =
 u8 SmokescreenImpact(s16 x, s16 y, bool8 persist)
 {
     u8 mainSpriteId;
-    u8 spriteId1, spriteId2, spriteId3, spriteId4;
+    u32 spriteId1, spriteId2, spriteId3, spriteId4;
     struct Sprite *mainSprite;
 
     if (GetSpriteTileStartByTag(sSmokescreenImpactSpriteSheet.tag) == 0xFFFF)

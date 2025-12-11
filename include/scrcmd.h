@@ -129,7 +129,6 @@ extern bool8 ScrCmd_bufferstring(struct ScriptContext *ctx);
 extern bool8 ScrCmd_pokemart(struct ScriptContext *ctx);
 extern bool8 ScrCmd_pokemartdecoration(struct ScriptContext *ctx);
 extern bool8 ScrCmd_pokemartdecoration2(struct ScriptContext *ctx);
-extern bool8 ScrCmd_playslotmachine(struct ScriptContext *ctx);
 extern bool8 ScrCmd_setberrytree(struct ScriptContext *ctx);
 extern bool8 ScrCmd_choosecontestmon(struct ScriptContext *ctx);
 extern bool8 ScrCmd_startcontest(struct ScriptContext *ctx);

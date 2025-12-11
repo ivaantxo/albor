@@ -757,7 +757,7 @@ static void CreateConditionMonPic(u8 id)
     struct SpriteTemplate sprTemplate;
     struct SpriteSheet sprSheet;
     struct SpritePalette sprPal;
-    u8 spriteId;
+    u32 spriteId;
     struct Pokenav_ConditionMenuGfx *menu = GetSubstructPtr(POKENAV_SUBSTRUCT_CONDITION_GRAPH_MENU_GFX);
 
     if (menu->monPicSpriteId == SPRITE_NONE)

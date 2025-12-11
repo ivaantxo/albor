@@ -162,7 +162,7 @@ bool8 Sunny_Finish(void)
 static void CreateCloudSprites(void)
 {
     u32 i;
-    u8 spriteId;
+    u32 spriteId;
     struct Sprite *sprite;
 
     if (gWeatherPtr->cloudSpritesCreated == TRUE)
@@ -654,7 +654,7 @@ static void LoadRainSpriteSheet(void)
 static bool8 CreateRainSprite(void)
 {
     u8 spriteIndex;
-    u8 spriteId;
+    u32 spriteId;
 
     if (gWeatherPtr->rainSpriteCount == MAX_RAIN_SPRITES)
         return FALSE;
@@ -886,7 +886,7 @@ static const struct SpriteTemplate sSnowflakeSpriteTemplate =
 
 static bool8 CreateSnowflakeSprite(void)
 {
-    u8 spriteId = CreateSpriteAtEnd(&sSnowflakeSpriteTemplate, 0, 0, 78);
+    u32 spriteId = CreateSpriteAtEnd(&sSnowflakeSpriteTemplate, 0, 0, 78);
     if (spriteId == MAX_SPRITES)
         return FALSE;
 
@@ -1397,7 +1397,7 @@ static void FogHorizontalSpriteCallback(struct Sprite *sprite)
 static void CreateFogHorizontalSprites(void)
 {
     u32 i;
-    u8 spriteId;
+    u32 spriteId;
     struct Sprite *sprite;
 
     if (!gWeatherPtr->fogHSpritesCreated)
@@ -1576,7 +1576,7 @@ static const struct SpriteTemplate sAshSpriteTemplate =
 static void CreateAshSprites(void)
 {
     u32 i;
-    u8 spriteId;
+    u32 spriteId;
     struct Sprite *sprite;
 
     if (!gWeatherPtr->ashSpritesCreated)
@@ -1785,7 +1785,7 @@ static void CreateFogDiagonalSprites(void)
 {
     u32 i;
     struct SpriteSheet fogDiagonalSpriteSheet;
-    u8 spriteId;
+    u32 spriteId;
     struct Sprite *sprite;
 
     if (!gWeatherPtr->fogDSpritesCreated)
@@ -2037,7 +2037,7 @@ static const struct SpriteSheet sSandstormSpriteSheet =
 static void CreateSandstormSprites(void)
 {
     u32 i;
-    u8 spriteId;
+    u32 spriteId;
 
     if (!gWeatherPtr->sandstormSpritesCreated)
     {
@@ -2067,7 +2067,7 @@ static const u16 sSwirlEntranceDelays[] = {0, 120, 80, 160, 40, 0};
 static void CreateSwirlSandstormSprites(void)
 {
     u32 i;
-    u8 spriteId;
+    u32 spriteId;
 
     if (!gWeatherPtr->sandstormSwirlSpritesCreated)
     {
@@ -2279,7 +2279,7 @@ static void CreateBubbleSprite(u16 coordsIndex)
 {
     s16 x = sBubbleStartCoords[coordsIndex][0];
     s16 y = sBubbleStartCoords[coordsIndex][1] - gSpriteCoordOffsetY;
-    u8 spriteId = CreateSpriteAtEnd(&sBubbleSpriteTemplate, x, y, 0);
+    u32 spriteId = CreateSpriteAtEnd(&sBubbleSpriteTemplate, x, y, 0);
     if (spriteId != MAX_SPRITES)
     {
         gSprites[spriteId].oam.priority = 1;

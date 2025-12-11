@@ -1422,7 +1422,7 @@ static void Task_HandleDuoFightPre(u8 taskId)
 
 static u8 DuoFightPre_CreateGroudonSprites(void)
 {
-    u8 spriteId;
+    u32 spriteId;
     s16 *data;
 
     spriteId = CreateSprite(&sSpriteTemplate_DuoFightPre_Groudon, 88, 72, 3);
@@ -1474,7 +1474,7 @@ static void SpriteCB_DuoFightPre_Groudon(struct Sprite *sprite)
 
 static u8 DuoFightPre_CreateKyogreSprites(void)
 {
-    u8 spriteId;
+    u32 spriteId;
     s16 *data;
 
     spriteId = CreateSprite(&sSpriteTemplate_DuoFightPre_Kyogre, 136, 96, 1);
@@ -1814,7 +1814,7 @@ static void Task_DuoFightEnd(u8 taskId)
 
 static u8 DuoFight_CreateGroudonSprites(void)
 {
-    u8 spriteId;
+    u32 spriteId;
     s16 *data;
 
     spriteId = CreateSprite(&sSpriteTemplate_DuoFight_Groudon, 98, 72, 3);
@@ -1878,7 +1878,7 @@ static void DuoFight_SlideGroudonDown(struct Sprite *sprite)
 
 static u8 DuoFight_CreateKyogreSprites(void)
 {
-    u8 spriteId;
+    u32 spriteId;
     s16 *data;
 
     spriteId = CreateSprite(&sSpriteTemplate_DuoFight_Kyogre, 126, 96, 1);
@@ -2161,7 +2161,7 @@ static void Task_TakesFlight_CreateSmoke(u8 taskId)
     s16 *data = gTasks[taskId].data;
     if ((tTimer & 3) == 0)
     {
-        u8 spriteId = CreateSprite(&sSpriteTemplate_TakesFlight_Smoke,
+        u32 spriteId = CreateSprite(&sSpriteTemplate_TakesFlight_Smoke,
                                    (sTakesFlight_SmokeCoords[tSmokeId][0] * 4) + 120,
                                    (sTakesFlight_SmokeCoords[tSmokeId][1] * 4) + 80,
                                    0);
@@ -2386,7 +2386,7 @@ static void Task_RayDescendsEnd(u8 taskId)
 
 static u8 CreateDescendsRayquazaSprite(void)
 {
-    u8 spriteId = CreateSprite(&sSpriteTemplate_Descends_Rayquaza, 160, 0, 0);
+    u32 spriteId = CreateSprite(&sSpriteTemplate_Descends_Rayquaza, 160, 0, 0);
     s16 *data = gSprites[spriteId].data;
     sTailSpriteId = CreateSprite(&sSpriteTemplate_Descends_RayquazaTail, 184, -48, 0);
     gSprites[spriteId].callback = SpriteCB_Descends_Rayquaza;

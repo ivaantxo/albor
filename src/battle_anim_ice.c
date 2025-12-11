@@ -1429,7 +1429,7 @@ static bool8 GenerateHailParticle(u8 hailStructId, u8 affineAnimNum, u8 taskId, 
 
 static void AnimHailBegin(struct Sprite *sprite)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     sprite->x += 4;
     sprite->y += 8;

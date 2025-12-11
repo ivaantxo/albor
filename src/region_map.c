@@ -1127,7 +1127,7 @@ static void SpriteCB_CursorMapZoomed(struct Sprite *sprite)
 
 void CreateRegionMapCursor(u16 tileTag, u16 paletteTag)
 {
-    u8 spriteId;
+    u32 spriteId;
     struct SpriteTemplate template;
     struct SpritePalette palette;
     struct SpriteSheet sheet;
@@ -1189,7 +1189,7 @@ static void FreeRegionMapCursorSprite(void)
 
 void CreateRegionMapPlayerIcon(u16 tileTag, u16 paletteTag)
 {
-    u8 spriteId;
+    u32 spriteId;
     struct SpriteSheet sheet = {sRegionMapPlayerIcon_BrendanGfx, 0x80, tileTag};
     struct SpritePalette palette = {sRegionMapPlayerIcon_BrendanPal, paletteTag};
     struct SpriteTemplate template = {tileTag, paletteTag, &sRegionMapPlayerIconOam, sRegionMapPlayerIconAnimTable, NULL, gDummySpriteAffineAnimTable, SpriteCallbackDummy};
@@ -1577,7 +1577,7 @@ static void TryCreateRedOutlineFlyDestIcons(void)
     u16 width;
     u16 height;
     u16 mapSecId;
-    u8 spriteId;
+    u32 spriteId;
 
     for (i = 0; sRedOutlineFlyDestinations[i][1] != MAPSEC_NONE; i++)
     {

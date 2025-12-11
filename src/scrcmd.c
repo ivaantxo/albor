@@ -39,7 +39,6 @@
 #include "script_pokemon_util.h"
 #include "scrcmd.h"
 #include "shop.h"
-#include "slot_machine.h"
 #include "sound.h"
 #include "string_util.h"
 #include "text.h"
@@ -1172,7 +1171,7 @@ bool8 ScrCmd_lock(struct ScriptContext *ctx)
 
 bool8 ScrCmd_releaseall(struct ScriptContext *ctx)
 {
-    u8 playerObjectId;
+    u32 playerObjectId;
     struct ObjectEvent *followerObject = GetFollowerObject();
     // Release follower from movement iff it exists and is in the shadowing state
     if (followerObject && gSprites[followerObject->spriteId].data[1] == 0)
@@ -1189,7 +1188,7 @@ bool8 ScrCmd_releaseall(struct ScriptContext *ctx)
 
 bool8 ScrCmd_release(struct ScriptContext *ctx)
 {
-    u8 playerObjectId;
+    u32 playerObjectId;
     struct ObjectEvent *followerObject = GetFollowerObject();
     // Release follower from movement iff it exists and is in the shadowing state
     if (followerObject && gSprites[followerObject->spriteId].data[1] == 0)
@@ -1792,15 +1791,6 @@ bool8 ScrCmd_pokemartdecoration2(struct ScriptContext *ctx)
     const void *ptr = (void *)ScriptReadWord(ctx);
 
     CreateDecorationShop2Menu(ptr);
-    ScriptContext_Stop();
-    return TRUE;
-}
-
-bool8 ScrCmd_playslotmachine(struct ScriptContext *ctx)
-{
-    u8 machineId = VarGet(ScriptReadHalfword(ctx));
-
-    PlaySlotMachine(machineId, CB2_ReturnToFieldContinueScriptPlayMapMusic);
     ScriptContext_Stop();
     return TRUE;
 }

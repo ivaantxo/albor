@@ -388,7 +388,7 @@ static void AnimTask_DigBounceMovement(u8 taskId)
 
 static void AnimTask_DigEndBounceMovementSetInvisible(u8 taskId)
 {
-    u8 spriteId = GetAnimBattlerSpriteId(ANIM_ATTACKER);
+    u32 spriteId = GetAnimBattlerSpriteId(ANIM_ATTACKER);
     gSprites[spriteId].invisible = TRUE;
     gSprites[spriteId].x2 = 0;
     gSprites[spriteId].y2 = 0;

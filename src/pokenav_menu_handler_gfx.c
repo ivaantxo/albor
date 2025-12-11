@@ -806,7 +806,7 @@ static void CreateMenuOptionSprites(void)
     {
         for (j = 0; j < NUM_OPTION_SUBSPRITES; j++)
         {
-            u8 spriteId = CreateSprite(&sMenuOptionSpriteTemplate, 0x8c, 20 * i + 40, 3);
+            u32 spriteId = CreateSprite(&sMenuOptionSpriteTemplate, 0x8c, 20 * i + 40, 3);
             gfx->iconSprites[i][j] = &gSprites[spriteId];
             gSprites[spriteId].x2 = 32 * j;
         }
@@ -1169,7 +1169,7 @@ static void Task_OptionBlend(u8 taskId)
 static void CreateMatchCallBlueLightSprite(void)
 {
     struct Pokenav_MenuGfx * gfx = GetSubstructPtr(POKENAV_SUBSTRUCT_MENU_GFX);
-    u8 spriteId = CreateSprite(&sMatchCallBlueLightSpriteTemplate, 0x10, 0x60, 4);
+    u32 spriteId = CreateSprite(&sMatchCallBlueLightSpriteTemplate, 0x10, 0x60, 4);
     gfx->blueLightSprite = &gSprites[spriteId];
     if (AreAnyTrainerRematchesNearby())
         gfx->blueLightSprite->callback = SpriteCB_BlinkingBlueLight;

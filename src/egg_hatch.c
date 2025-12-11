@@ -389,7 +389,7 @@ bool8 CheckDaycareMonReceivedMail(void)
 static u8 EggHatchCreateMonSprite(u8 state, u8 partyId, u16 *speciesLoc)
 {
     u8 position = 0;
-    u8 spriteId = 0;
+    u32 spriteId = 0;
     struct Pokemon *mon = NULL;
     u16 species = SPECIES_NONE;
 
@@ -869,7 +869,7 @@ static void CreateRandomEggShardSprite(void)
 
 static void CreateEggShardSprite(u8 x, u8 y, s16 velocityX, s16 velocityY, s16 acceleration, u8 spriteAnimIndex)
 {
-    u8 spriteId = CreateSprite(&sSpriteTemplate_EggShard, x, y, 4);
+    u32 spriteId = CreateSprite(&sSpriteTemplate_EggShard, x, y, 4);
     gSprites[spriteId].sVelocX = velocityX;
     gSprites[spriteId].sVelocY = velocityY;
     gSprites[spriteId].sAccelY = acceleration;

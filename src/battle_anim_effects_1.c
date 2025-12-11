@@ -3903,7 +3903,7 @@ static void AnimConstrictBinding_Step2(struct Sprite *sprite)
 
 void AnimTask_ShrinkTargetCopy(u8 taskId)
 {
-    u8 spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
+    u32 spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
     if (gSprites[spriteId].invisible)
     {
         DestroyAnimVisualTask(taskId);
@@ -3925,7 +3925,7 @@ void AnimTask_ShrinkTargetCopy(u8 taskId)
 
 static void AnimTask_DuplicateAndShrinkToPos_Step1(u8 taskId)
 {
-    u8 spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
+    u32 spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
     gTasks[taskId].data[10] += gTasks[taskId].data[0];
     gSprites[spriteId].x2 = gTasks[taskId].data[10] >> 8;
     if (GetBattlerSide(gBattleAnimTarget) != B_SIDE_PLAYER)
@@ -3947,7 +3947,7 @@ static void AnimTask_DuplicateAndShrinkToPos_Step2(u8 taskId)
     {
         if (gTasks[taskId].data[0] == 0)
         {
-            u8 spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
+            u32 spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
             ResetSpriteRotScale(spriteId);
             gSprites[spriteId].x2 = 0;
             gSprites[spriteId].y2 = 0;
@@ -4600,7 +4600,7 @@ static void AnimTask_LeafBlade_Step2(struct Task *task, u8 taskId)
     task->data[14]++;
     if (task->data[14] > 0)
     {
-        u8 spriteId;
+        u32 spriteId;
         s16 spriteX;
         s16 spriteY;
         task->data[14] = 0;
@@ -5946,7 +5946,7 @@ static void AnimTask_MoonlightEndFade_Step(u8 taskId)
     case 1:
         if (!gFundidoPaletas.activo)
         {
-            u8 spriteId;
+            u32 spriteId;
             for (spriteId = 0; spriteId < MAX_SPRITES; spriteId++)
             {
                 if (gSprites[spriteId].template == &gMoonSpriteTemplate || gSprites[spriteId].template == &gMoonlightSparkleSpriteTemplate)
@@ -6746,7 +6746,7 @@ static void AnimTask_CompressTargetStep(u8 taskId)
 void AnimTask_CompressTargetHorizontally(u8 taskId)
 {
     struct Task* task = &gTasks[taskId];
-    u8 spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
+    u32 spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
     PrepareAffineAnimInTaskData(task, spriteId, sCompressTargetHorizontallyAffineAnimCmds);
     task->func = AnimTask_CompressTargetStep;
 }
@@ -6754,7 +6754,7 @@ void AnimTask_CompressTargetHorizontally(u8 taskId)
 void AnimTask_CompressTargetHorizontallyFast(u8 taskId)
 {
     struct Task* task = &gTasks[taskId];
-    u8 spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
+    u32 spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
     PrepareAffineAnimInTaskData(task, spriteId, sCompressTargetHorizontallyAffineAnimCmdsFast);
     task->func = AnimTask_CompressTargetStep;
 }

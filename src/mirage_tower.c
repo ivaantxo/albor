@@ -50,7 +50,7 @@ struct FallAnim_Fossil
 {
     u8 *frameImageTiles;
     struct SpriteFrameImage *frameImage;
-    u8 spriteId;
+    u32 spriteId;
     u16 *disintegrateRand;
     u16 disintegrateIdx;
 };
@@ -397,7 +397,7 @@ static void FinishCeilingCrumbleTask(u8 taskId)
 static void CreateCeilingCrumbleSprites(void)
 {
     u32 i;
-    u8 spriteId;
+    u32 spriteId;
 
     for (i = 0; i < 8; i++)
     {

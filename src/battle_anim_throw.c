@@ -633,7 +633,7 @@ void AnimTask_UnusedLevelUpHealthBox(u8 taskId)
     struct BattleAnimBgData animBgData;
     u8 healthBoxSpriteId;
     u8 battler;
-    u8 spriteId1, spriteId2, spriteId3, spriteId4;
+    u32 spriteId1, spriteId2, spriteId3, spriteId4;
 
     battler = gBattleAnimAttacker;
     gBattle_WIN0H = 0;
@@ -678,7 +678,7 @@ void AnimTask_UnusedLevelUpHealthBox(u8 taskId)
 
 static void AnimTask_UnusedLevelUpHealthBox_Step(u8 taskId)
 {
-    u8 spriteId1, spriteId2;
+    u32 spriteId1, spriteId2;
     u8 battler;
 
     battler = gBattleAnimAttacker;
@@ -738,7 +738,7 @@ static void AnimTask_UnusedLevelUpHealthBox_Step(u8 taskId)
 static void LoadHealthboxPalsForLevelUp(u8 *paletteId1, u8 *paletteId2, u8 battler)
 {
     u8 healthBoxSpriteId;
-    u8 spriteId1, spriteId2;
+    u32 spriteId1, spriteId2;
     u16 offset1, offset2;
 
     healthBoxSpriteId = gHealthboxSpriteIds[battler];
@@ -767,7 +767,7 @@ void AnimTask_LoadHealthboxPalsForLevelUp(u8 taskId)
 static void FreeHealthboxPalsForLevelUp(u8 battler)
 {
     u8 healthBoxSpriteId;
-    u8 spriteId1, spriteId2;
+    u32 spriteId1, spriteId2;
     u32 paletteId1, paletteId2;
 
     healthBoxSpriteId = gHealthboxSpriteIds[battler];
@@ -835,7 +835,7 @@ static void AnimTask_FlashHealthboxOnLevelUp_Step(u8 taskId)
 
 void AnimTask_SwitchOutShrinkMon(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     spriteId = gBattlerSpriteIds[gBattleAnimAttacker];
     switch (gTasks[taskId].data[0])
@@ -862,7 +862,7 @@ void AnimTask_SwitchOutShrinkMon(u8 taskId)
 
 void AnimTask_SwitchOutBallEffect(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
     u16 ball;
     u8 ballId;
     u32 x, y;
@@ -991,7 +991,7 @@ u8 ItemIdToBallId(u16 ballItem)
 void AnimTask_ThrowBall(u8 taskId)
 {
     u8 ballId;
-    u8 spriteId;
+    u32 spriteId;
 
     ballId = ItemIdToBallId(gLastUsedItem);
     spriteId = CreateSprite(&gBallSpriteTemplates[ballId], 32, 80, 29);
@@ -1006,7 +1006,7 @@ void AnimTask_ThrowBall(u8 taskId)
 
 static void AnimTask_ThrowBall_Step(u8 taskId)
 {
-    u8 spriteId = gTasks[taskId].tSpriteId;
+    u32 spriteId = gTasks[taskId].tSpriteId;
     if ((u16)gSprites[spriteId].sDuration == 0xFFFF)
         DestroyAnimVisualTask(taskId);
 }
@@ -1018,7 +1018,7 @@ void AnimTask_ThrowBall_StandingTrainer(u8 taskId)
     s16 y = 5;
     u8 ballId;
     u8 subpriority;
-    u8 spriteId;
+    u32 spriteId;
 
     ballId = ItemIdToBallId(gLastUsedItem);
     subpriority = GetBattlerSpriteSubpriority(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)) + 1;
@@ -1148,7 +1148,7 @@ static void SpriteCB_Ball_MonShrink(struct Sprite *sprite)
 
 static void SpriteCB_Ball_MonShrink_Step(struct Sprite *sprite)
 {
-    u8 spriteId;
+    u32 spriteId;
     u8 taskId;
 
     spriteId = gBattlerSpriteIds[gBattleAnimTarget];
@@ -1632,7 +1632,7 @@ static void MakeCaptureStars(struct Sprite *sprite)
     LoadBallParticleGfx(BALL_MASTER);
     for (i = 0; i < ARRAY_COUNT(sCaptureStars); i++)
     {
-        u8 spriteId = CreateSprite(&sBallParticleSpriteTemplates[BALL_MASTER], sprite->x, sprite->y, subpriority);
+        u32 spriteId = CreateSprite(&sBallParticleSpriteTemplates[BALL_MASTER], sprite->x, sprite->y, subpriority);
         if (spriteId != MAX_SPRITES)
         {
             gSprites[spriteId].sDuration = 24;
@@ -1798,7 +1798,7 @@ static void IncrBallParticleCount(void)
 
 static void PokeBallOpenParticleAnimation(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
     u32 x, y;
     u8 priority, subpriority;
     u8 ballId;
@@ -1861,7 +1861,7 @@ static void TimerBallOpenParticleAnimation(u8 taskId)
 {
     u32 i;
     u8 x, y, priority, subpriority, ballId;
-    u8 spriteId;
+    u32 spriteId;
 
     ballId = gTasks[taskId].data[15];
     x = gTasks[taskId].data[1];
@@ -1895,7 +1895,7 @@ static void DiveBallOpenParticleAnimation(u8 taskId)
 {
     u32 i;
     u8 x, y, priority, subpriority, ballId;
-    u8 spriteId;
+    u32 spriteId;
 
     ballId = gTasks[taskId].data[15];
     x = gTasks[taskId].data[1];
@@ -1930,7 +1930,7 @@ static void SafariBallOpenParticleAnimation(u8 taskId)
 {
     u32 i;
     u8 x, y, priority, subpriority, ballId;
-    u8 spriteId;
+    u32 spriteId;
 
     ballId = gTasks[taskId].data[15];
     x = gTasks[taskId].data[1];
@@ -1965,7 +1965,7 @@ static void UltraBallOpenParticleAnimation(u8 taskId)
 {
     u32 i;
     u8 x, y, priority, subpriority, ballId;
-    u8 spriteId;
+    u32 spriteId;
 
     ballId = gTasks[taskId].data[15];
     x = gTasks[taskId].data[1];
@@ -2000,7 +2000,7 @@ static void GreatBallOpenParticleAnimation(u8 taskId)
 {
     u32 i;
     u8 x, y, priority, subpriority, ballId;
-    u8 spriteId;
+    u32 spriteId;
 
     if (gTasks[taskId].data[7])
     {
@@ -2056,7 +2056,7 @@ static void RepeatBallOpenParticleAnimation(u8 taskId)
 {
     u32 i;
     u8 x, y, priority, subpriority, ballId;
-    u8 spriteId;
+    u32 spriteId;
 
     ballId = gTasks[taskId].data[15];
     x = gTasks[taskId].data[1];
@@ -2098,7 +2098,7 @@ static void MasterBallOpenParticleAnimation(u8 taskId)
 {
     u32 i, j;
     u8 x, y, priority, subpriority, ballId;
-    u8 spriteId;
+    u32 spriteId;
 
     ballId = gTasks[taskId].data[15];
     x = gTasks[taskId].data[1];
@@ -2144,7 +2144,7 @@ static void PremierBallOpenParticleAnimation(u8 taskId)
 {
     u32 i;
     u8 x, y, priority, subpriority, ballId;
-    u8 spriteId;
+    u32 spriteId;
 
     ballId = gTasks[taskId].data[15];
     x = gTasks[taskId].data[1];
@@ -2312,7 +2312,7 @@ static void Task_FadeMon_ToNormal_Step(u8 taskId)
 // arg0: TRUE to swap to mon, FALSE to swap to substitute
 void AnimTask_SwapMonSpriteToFromSubstitute(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
     u32 x;
     u32 done = FALSE;
 
@@ -2370,7 +2370,7 @@ void AnimTask_SwapMonSpriteToFromSubstitute(u8 taskId)
 
 void AnimTask_SubstituteFadeToInvisible(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     switch (gTasks[taskId].data[15])
     {
@@ -2463,7 +2463,7 @@ static void Task_ShinyStars(u8 taskId)
 {
     u8 battler;
     u32 x, y;
-    u8 spriteId;
+    u32 spriteId;
     u16 timer;
     s16 starIdx;
     u8 pan;

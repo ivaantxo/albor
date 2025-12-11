@@ -422,7 +422,7 @@ static void SpriteCB_PressStartCopyrightBanner(struct Sprite *sprite)
 static void CreatePressStartBanner(s16 x, s16 y)
 {
     u32 i;
-    u8 spriteId;
+    u32 spriteId;
 
     x -= 64;
     for (i = 0; i < NUM_PRESS_START_FRAMES; i++, x += 32)
@@ -436,7 +436,7 @@ static void CreatePressStartBanner(s16 x, s16 y)
 static void CreateCopyrightBanner(s16 x, s16 y)
 {
     u32 i;
-    u8 spriteId;
+    u32 spriteId;
 
     x -= 64;
     for (i = 0; i < NUM_COPYRIGHT_FRAMES; i++, x += 32)
@@ -521,7 +521,7 @@ static void SpriteCB_PokemonLogoShine_Fast(struct Sprite *sprite)
 
 static void StartPokemonLogoShine(u8 mode)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     switch (mode)
     {
@@ -699,7 +699,7 @@ static void Task_TitleScreenPhase1(u8 taskId)
     }
     else
     {
-        u8 spriteId;
+        u32 spriteId;
 
         SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_MODE_1 | DISPCNT_OBJ_1D_MAP | DISPCNT_BG2_ON | DISPCNT_OBJ_ON);
         SetGpuReg(REG_OFFSET_WININ, 0);

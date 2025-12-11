@@ -102,7 +102,7 @@ static void PlayCollisionSoundIfNotFacingWarp(u8);
 
 static void HideShowWarpArrow(struct ObjectEvent *);
 
-static void StartStrengthAnim(u8, u8);
+static void StartStrengthAnim(u32 objectEventId, u8 direction);
 static void Task_PushBoulder(u8);
 static bool8 PushBoulder_Start(struct Task *, struct ObjectEvent *, struct ObjectEvent *);
 static bool8 PushBoulder_Move(struct Task *, struct ObjectEvent *, struct ObjectEvent *);
@@ -782,7 +782,7 @@ static bool8 TryPushBoulder(s16 x, s16 y, u8 direction)
 {
     if (FlagGet(FLAG_SYS_USE_STRENGTH))
     {
-        u8 objectEventId = GetObjectEventIdByXY(x, y);
+        u32 objectEventId = GetObjectEventIdByXY(x, y);
 
         if (objectEventId != OBJECT_EVENTS_COUNT && gObjectEvents[objectEventId].graphicsId == OBJ_EVENT_GFX_PUSHABLE_BOULDER)
         {
@@ -877,7 +877,7 @@ static void PlayerAvatarTransition_AcroBike(struct ObjectEvent *objEvent)
 
 static void PlayerAvatarTransition_Surfing(struct ObjectEvent *objEvent)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     ObjectEventSetGraphicsId(objEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_SURFING));
     ObjectEventTurn(objEvent, objEvent->movementDirection);
@@ -1379,7 +1379,7 @@ void SetPlayerAvatarExtraStateTransition(u16 graphicsId, u8 transitionFlag)
 void InitPlayerAvatar(s16 x, s16 y, u8 direction, u8 gender)
 {
     struct ObjectEventTemplate playerObjEventTemplate;
-    u8 objectEventId;
+    u32 objectEventId;
     struct ObjectEvent *objectEvent;
 
     playerObjEventTemplate.localId = LOCALID_PLAYER;
@@ -1468,7 +1468,7 @@ static void HideShowWarpArrow(struct ObjectEvent *objectEvent)
 #define tBoulderObjId data[1]
 #define tDirection    data[2]
 
-static void StartStrengthAnim(u8 objectEventId, u8 direction)
+static void StartStrengthAnim(u32 objectEventId, u8 direction)
 {
     u8 taskId = CreateTask(Task_PushBoulder, 0xFF);
 

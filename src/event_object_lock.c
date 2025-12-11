@@ -98,7 +98,7 @@ void FreezeObjects_WaitForPlayerAndSelected(void)
 
 void ScriptUnfreezeObjectEvents(void)
 {
-    u8 playerObjectId = GetObjectEventIdByLocalIdAndMap(LOCALID_PLAYER, 0, 0);
+    u32 playerObjectId = GetObjectEventIdByLocalIdAndMap(LOCALID_PLAYER, 0, 0);
     ObjectEventClearHeldMovementIfFinished(&gObjectEvents[playerObjectId]);
     ScriptMovement_UnfreezeObjectEvents();
     UnfreezeObjectEvents();
@@ -118,7 +118,7 @@ void Script_ClearHeldMovement(void)
 static void Task_FreezeObjectAndPlayer(u8 taskId)
 {
     struct Task *task = &gTasks[taskId];
-    u8 objectEventId = task->tObjectId;
+    u32 objectEventId = task->tObjectId;
 
     if (!task->tPlayerFrozen && IsPlayerStandingStill() == TRUE)
     {

@@ -537,7 +537,7 @@ static void Task_Hof_SetMonDisplayTask(u8 taskId)
 
 static void Task_Hof_DisplayMon(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
     s16 startX, startY, destX, destY;
 
     u16 currMonId = gTasks[taskId].tDisplayedMonId;
@@ -729,7 +729,7 @@ static void Task_Hof_HandleExit(u8 taskId)
 
         for (i = 0; i < PARTY_SIZE; i++)
         {
-            u8 spriteId = gTasks[taskId].tMonSpriteId(i);
+            u32 spriteId = gTasks[taskId].tMonSpriteId(i);
             if (spriteId != SPRITE_NONE)
             {
                 FreeOamMatrix(gSprites[spriteId].oam.matrixNum);
@@ -967,7 +967,7 @@ static void Task_HofPC_HandleInput(u8 taskId)
             gTasks[taskId].tCurrTeamNo--;
             for (i = 0; i < PARTY_SIZE; i++)
             {
-                u8 spriteId = gTasks[taskId].tMonSpriteId(i);
+                u32 spriteId = gTasks[taskId].tMonSpriteId(i);
                 if (spriteId != SPRITE_NONE)
                 {
                     FreeAndDestroyMonPicSprite(spriteId);
@@ -1270,14 +1270,14 @@ static void SpriteCB_HofConfetti(struct Sprite *sprite)
 
 static bool8 CreateHofConfettiSprite(void)
 {
-    u8 spriteID;
+    u32 spriteId;
     struct Sprite *sprite;
 
     s16 posX = Random() % DISPLAY_WIDTH;
     s16 posY = -(Random() % 8);
 
-    spriteID = CreateSprite(&sSpriteTemplate_HofConfetti, posX, posY, 0);
-    sprite = &gSprites[spriteID];
+    spriteId = CreateSprite(&sSpriteTemplate_HofConfetti, posX, posY, 0);
+    sprite = &gSprites[spriteId];
 
     StartSpriteAnim(sprite, Random() % ARRAY_COUNT(sAnims_Confetti));
 

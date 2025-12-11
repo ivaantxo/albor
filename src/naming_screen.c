@@ -1346,7 +1346,7 @@ static void SetPageSwapButtonGfx(u8 page, struct Sprite *text, struct Sprite *bu
 
 static void CreateBackOkSprites(void)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     spriteId = CreateSprite(&sSpriteTemplate_BackButton, 204, 116, 0);
     SetSubspriteTables(&gSprites[spriteId], sSubspriteTable_Button);
@@ -1359,7 +1359,7 @@ static void CreateBackOkSprites(void)
 
 static void CreateTextEntrySprites(void)
 {
-    u8 spriteId;
+    u32 spriteId;
     s16 xPos;
     u32 i;
 
@@ -1407,7 +1407,7 @@ static void NamingScreen_NoIcon(void)
 static void NamingScreen_CreatePlayerIcon(void)
 {
     u16 rivalGfxId;
-    u8 spriteId;
+    u32 spriteId;
 
     rivalGfxId = GetRivalAvatarGraphicsIdByStateIdAndGender(PLAYER_AVATAR_STATE_NORMAL, sNamingScreen->monSpecies);
     spriteId = CreateObjectGraphicsSprite(rivalGfxId, SpriteCallbackDummy, 56, 37, 0);
@@ -1417,7 +1417,7 @@ static void NamingScreen_CreatePlayerIcon(void)
 
 static void NamingScreen_CreatePCIcon(void)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     spriteId = CreateSprite(&sSpriteTemplate_PCIcon, 56, 41, 0);
     SetSubspriteTables(&gSprites[spriteId], sSubspriteTable_PCIcon);
@@ -1426,7 +1426,7 @@ static void NamingScreen_CreatePCIcon(void)
 
 static void NamingScreen_CreaIconoPokemon(void)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     spriteId = CreaIconoPokemon(sNamingScreen->monSpecies, 56, 40, 0, sNamingScreen->monPersonality);
     LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(sNamingScreen->monSpecies, sNamingScreen->isShiny, sNamingScreen->monPersonality), OBJ_PLTT_ID(15), PLTT_SIZE_4BPP);

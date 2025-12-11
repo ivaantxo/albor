@@ -345,7 +345,7 @@ void InitSecretBaseDecorationSprites(void)
     u32 i;
     u8 *decorations;
     u8 *decorationPositions;
-    u8 objectEventId;
+    u32 objectEventId;
     u8 metatileBehavior;
     u8 category;
     u8 permission;
@@ -425,7 +425,7 @@ void InitSecretBaseDecorationSprites(void)
 
 void HideSecretBaseDecorationSprites(void)
 {
-    u8 objectEventId;
+    u32 objectEventId;
     u16 flag;
 
     for (objectEventId = 0; objectEventId < gMapHeader.events->objectEventCount; objectEventId++)

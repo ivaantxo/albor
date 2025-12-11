@@ -31,9 +31,9 @@ void SetItemListPerPageCount(struct ItemSlot *slots, u8 slotsCount, u8 *pageItem
 void SetCursorWithinListBounds(u16 *scrollOffset, u16 *cursorPos, u8 maxShownItems, u8 totalItems);
 void SetCursorScrollWithinListBounds(u16 *scrollOffset, u16 *cursorPos, u8 shownItems, u8 totalItems, u8 maxShownItems);
 void LoadListMenuSwapLineGfx(void);
-void CreateSwapLineSprites(u8 *spriteIds, u8 count);
-void DestroySwapLineSprites(u8 *spriteIds, u8 count);
-void SetSwapLineSpritesInvisibility(u8 *spriteIds, u8 count, bool8 invisible);
-void UpdateSwapLineSpritesPos(u8 *spriteIds, u8 count, s16 x, u16 y);
+void CreateSwapLineSprites(u32 *spriteIds, u8 count);
+void DestroySwapLineSprites(u32 *spriteIds, u8 count);
+void SetSwapLineSpritesInvisibility(u32 *spriteIds, u8 count, bool8 invisible);
+void UpdateSwapLineSpritesPos(u32 *spriteIds, u8 count, s16 x, u16 y);
 
 #endif //GUARD_MENU_HELPERS_H

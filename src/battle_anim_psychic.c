@@ -795,7 +795,7 @@ static void AnimQuestionMark_Step2(struct Sprite *sprite)
 void AnimTask_MeditateStretchAttacker(u8 taskId)
 {
     struct Task *task = &gTasks[taskId];
-    u8 spriteId = GetAnimBattlerSpriteId(ANIM_ATTACKER);
+    u32 spriteId = GetAnimBattlerSpriteId(ANIM_ATTACKER);
     task->data[0] = spriteId;
     PrepareAffineAnimInTaskData(task, spriteId, sAffineAnim_MeditateStretchAttacker);
     task->func = AnimTask_MeditateStretchAttacker_Step;
@@ -810,7 +810,7 @@ static void AnimTask_MeditateStretchAttacker_Step(u8 taskId)
 void AnimTask_Teleport(u8 taskId)
 {
     struct Task *task = &gTasks[taskId];
-    u8 spriteId = GetAnimBattlerSpriteId(ANIM_ATTACKER);
+    u32 spriteId = GetAnimBattlerSpriteId(ANIM_ATTACKER);
     task->data[0] = spriteId;
     task->data[1] = 0;
     task->data[2] = 0;
@@ -872,7 +872,7 @@ void AnimTask_ImprisonOrbs(u8 taskId)
 static void AnimTask_ImprisonOrbs_Step(u8 taskId)
 {
     u32 i;
-    u8 spriteId;
+    u32 spriteId;
     struct Task *task = &gTasks[taskId];
 
     switch (task->data[0])
@@ -1016,7 +1016,7 @@ void AnimTask_HeartSwap(u8 taskId)
 
 static void AnimTask_SkillSwap_Step(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
     struct Task *task = &gTasks[taskId];
 
     switch (task->data[0])
@@ -1052,7 +1052,7 @@ static void AnimTask_SkillSwap_Step(u8 taskId)
 // CreateSprite modified so it uses the pink orbs instead of the blue/green ones
 static void AnimTask_HeartSwap_Step(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
     struct Task *task = &gTasks[taskId];
 
     switch (task->data[0])

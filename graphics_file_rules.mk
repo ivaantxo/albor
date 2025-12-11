@@ -9,7 +9,6 @@ TYPESGFXDIR := graphics/types
 BATTYPESGFXDIR := graphics/battle_interface/types
 RAYQUAZAGFXDIR := graphics/rayquaza_scene
 ROULETTEGFXDIR := graphics/roulette
-SLOTMACHINEGFXDIR := graphics/slot_machine
 PKNAVGFXDIR := graphics/pokenav
 PKNAVOPTIONSGFXDIR := graphics/pokenav/options
 OBJEVENTGFXDIR := graphics/object_events
@@ -279,10 +278,6 @@ $(BATTRANSGFXDIR)/regis.4bpp: %.4bpp: %.png
 
 $(BATTRANSGFXDIR)/rayquaza.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 938 -Wnum_tiles
-
-$(SLOTMACHINEGFXDIR)/reel_time_gfx.4bpp: $(SLOTMACHINEGFXDIR)/reel_time_pikachu.4bpp \
-                                         $(SLOTMACHINEGFXDIR)/reel_time_machine.4bpp
-	@cat $^ >$@
 
 ### Pokémon Storage System ###
 

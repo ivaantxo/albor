@@ -1051,7 +1051,7 @@ static void Task_NewGameBirchSpeech_Init(u8 taskId)
 
 static void Task_NewGameBirchSpeech_WaitToShowBirch(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     if (gTasks[taskId].tTimer)
     {
@@ -1121,7 +1121,7 @@ static void Task_NewGameBirchSpeech_MainSpeech(u8 taskId)
 
 static void Task_NewGameBirchSpeechSub_InitPokeBall(u8 taskId)
 {
-    u8 spriteId = gTasks[sBirchSpeechMainTaskId].tLotadSpriteId;
+    u32 spriteId = gTasks[sBirchSpeechMainTaskId].tLotadSpriteId;
 
     gSprites[spriteId].x = 100;
     gSprites[spriteId].y = 75;
@@ -1211,7 +1211,7 @@ static void Task_NewGameBirchSpeech_StartPlayerFadeIn(u8 taskId)
         }
         else
         {
-            u8 spriteId = gTasks[taskId].tBrendanSpriteId;
+            u32 spriteId = gTasks[taskId].tBrendanSpriteId;
 
             gSprites[spriteId].x = 180;
             gSprites[spriteId].y = 60;
@@ -1284,7 +1284,7 @@ static void Task_NewGameBirchSpeech_ChooseGender(u8 taskId)
 
 static void Task_NewGameBirchSpeech_SlideOutOldGenderSprite(u8 taskId)
 {
-    u8 spriteId = gTasks[taskId].tPlayerSpriteId;
+    u32 spriteId = gTasks[taskId].tPlayerSpriteId;
     if (gTasks[taskId].tIsDoneFadingSprites == 0)
     {
         gSprites[spriteId].x += 4;
@@ -1308,7 +1308,7 @@ static void Task_NewGameBirchSpeech_SlideOutOldGenderSprite(u8 taskId)
 
 static void Task_NewGameBirchSpeech_SlideInNewGenderSprite(u8 taskId)
 {
-    u8 spriteId = gTasks[taskId].tPlayerSpriteId;
+    u32 spriteId = gTasks[taskId].tPlayerSpriteId;
 
     if (gSprites[spriteId].x > 180)
     {
@@ -1410,7 +1410,7 @@ static void Task_NewGameBirchSpeech_SlidePlatformAway2(u8 taskId)
 
 static void Task_NewGameBirchSpeech_ReshowBirchLotad(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     if (gTasks[taskId].tIsDoneFadingSprites)
     {
@@ -1455,7 +1455,7 @@ static void Task_NewGameBirchSpeech_WaitForSpriteFadeInAndTextPrinter(u8 taskId)
 
 static void Task_NewGameBirchSpeech_AreYouReady(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     if (gTasks[taskId].tIsDoneFadingSprites)
     {
@@ -1485,7 +1485,7 @@ static void Task_NewGameBirchSpeech_AreYouReady(u8 taskId)
 
 static void Task_NewGameBirchSpeech_ShrinkPlayer(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     if (gTasks[taskId].tIsDoneFadingSprites)
     {
@@ -1507,7 +1507,7 @@ static void Task_NewGameBirchSpeech_ShrinkPlayer(u8 taskId)
 
 static void Task_NewGameBirchSpeech_WaitForPlayerShrink(u8 taskId)
 {
-    u8 spriteId = gTasks[taskId].tPlayerSpriteId;
+    u32 spriteId = gTasks[taskId].tPlayerSpriteId;
 
     if (gSprites[spriteId].affineAnimEnded)
         gTasks[taskId].func = Task_NewGameBirchSpeech_FadePlayerToWhite;
@@ -1515,7 +1515,7 @@ static void Task_NewGameBirchSpeech_WaitForPlayerShrink(u8 taskId)
 
 static void Task_NewGameBirchSpeech_FadePlayerToWhite(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     if (!gFundidoPaletas.activo)
     {
@@ -1542,7 +1542,7 @@ static void Task_NewGameBirchSpeech_Cleanup(u8 taskId)
 static void CB2_NewGameBirchSpeech_ReturnFromNamingScreen(void)
 {
     u8 taskId;
-    u8 spriteId;
+    u32 spriteId;
     u16 savedIme;
 
     ResetBgsAndClearDma3BusyFlags();

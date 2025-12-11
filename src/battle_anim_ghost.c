@@ -376,7 +376,7 @@ static void AnimConfuseRayBallSpiral_Step(struct Sprite *sprite)
 // Creates a large transparent clone of the attacker centered on their position which shrinks to original size
 void AnimTask_NightShadeClone(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
     SetGpuReg(REG_OFFSET_BLDCNT, (BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_ALL));
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 0x10));
     spriteId = GetAnimBattlerSpriteId(ANIM_ATTACKER);
@@ -408,7 +408,7 @@ static void AnimTask_NightShadeClone_Step1(u8 taskId)
 
 static void AnimTask_NightShadeClone_Step2(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
     if (gTasks[taskId].data[1] > 0)
     {
         gTasks[taskId].data[1] -= 1;
@@ -835,7 +835,7 @@ void AnimTask_DestinyBondWhiteShadow(u8 taskId)
 {
     struct Task *task;
     s16 battler;
-    u8 spriteId;
+    u32 spriteId;
     s16 baseX, baseY;
     s16 x, y;
 
@@ -1216,7 +1216,7 @@ void AnimTask_GrudgeFlames(u8 taskId)
 void AnimTask_GrudgeFlames_Step(u8 taskId)
 {
     u32 i;
-    u8 spriteId;
+    u32 spriteId;
     struct Task *task = &gTasks[taskId];
 
     switch (task->data[0])
@@ -1363,7 +1363,7 @@ static void AnimPoltergeistItem(struct Sprite *sprite)
 void AnimTask_PulverizingPancakeWhiteShadow(u8 taskId)
 {
     struct Task *task;
-    u8 spriteId;
+    u32 spriteId;
     s16 baseX, baseY;
     s16 x, y;
 

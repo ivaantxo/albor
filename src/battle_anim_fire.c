@@ -22,9 +22,9 @@ static void UpdateFireRingCircleOffset(struct Sprite *);
 static void AnimFireSpiralOutward_Step1(struct Sprite *);
 static void AnimFireSpiralOutward_Step2(struct Sprite *);
 static void AnimTask_EruptionLaunchRocks_Step(u8);
-static void CreateEruptionLaunchRocks(u8, u8, u8);
+static void CreateEruptionLaunchRocks(u32 spriteId, u8 taskId, u8 activeSpritesIdx);
 static void AnimEruptionLaunchRock(struct Sprite *);
-static u16 GetEruptionLaunchRockInitialYPos(u8);
+static u16 GetEruptionLaunchRockInitialYPos(u32 spriteId);
 static void InitEruptionLaunchRockCoordData(struct Sprite *, s16, s16);
 static void UpdateEruptionLaunchRockPos(struct Sprite *);
 static void AnimEruptionFallingRock_Step(struct Sprite *);
@@ -904,7 +904,7 @@ static void AnimTask_EruptionLaunchRocks_Step(u8 taskId)
     }
 }
 
-static void CreateEruptionLaunchRocks(u8 spriteId, u8 taskId, u8 activeSpritesIdx)
+static void CreateEruptionLaunchRocks(u32 spriteId, u8 taskId, u8 activeSpritesIdx)
 {
     u32 i, j;
     s8 sign;
@@ -925,7 +925,7 @@ static void CreateEruptionLaunchRocks(u8 spriteId, u8 taskId, u8 activeSpritesId
 
     for (i = 0, j = 0; i <= 6; i++)
     {
-        u8 spriteId = CreateSprite(&gEruptionLaunchRockSpriteTemplate, x, y, 2);
+        u32 spriteId = CreateSprite(&gEruptionLaunchRockSpriteTemplate, x, y, 2);
 
         if (spriteId != MAX_SPRITES)
         {
@@ -954,7 +954,7 @@ static void AnimEruptionLaunchRock(struct Sprite *sprite)
     }
 }
 
-static u16 GetEruptionLaunchRockInitialYPos(u8 spriteId)
+static u16 GetEruptionLaunchRockInitialYPos(u32 spriteId)
 {
     s16 y = gSprites[spriteId].y + gSprites[spriteId].y2 + gSprites[spriteId].centerToCornerVecY;
 
@@ -1318,7 +1318,7 @@ void AnimTask_BlendBackground(u8 taskId)
 void AnimTask_ShakeTargetInPattern(u8 taskId)
 {
     s8 dir;
-    u8 spriteId;
+    u32 spriteId;
 
     if (gTasks[taskId].tShakeNum == 0)
     {

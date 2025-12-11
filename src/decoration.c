@@ -1831,7 +1831,7 @@ static u8 AddDecorationIconObjectFromIconTable(u16 tilesTag, u16 paletteTag, u8 
     struct SpriteSheet sheet;
     struct CompressedSpritePalette palette;
     struct SpriteTemplate *template;
-    u8 spriteId;
+    u32 spriteId;
 
     if (!AllocItemIconTemporaryBuffers())
         return MAX_SPRITES;
@@ -1870,7 +1870,7 @@ static u8 AddDecorationIconObjectFromObjectEvent(u16 tilesTag, u16 paletteTag, u
 
 u8 AddDecorationIconObject(u8 decor, s16 x, s16 y, u8 priority, u16 tilesTag, u16 paletteTag)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     if (decor > NUM_DECORATIONS)
     {

@@ -716,7 +716,7 @@ static u8 RotatingGate_CreateGate(u8 gateId, s16 deltaX, s16 deltaY)
 {
     struct Sprite *sprite;
     struct SpriteTemplate template;
-    u8 spriteId;
+    u32 spriteId;
     s16 x, y;
 
     const struct RotatingGatePuzzle *gate = &sRotatingGate_PuzzleConfig[gateId];

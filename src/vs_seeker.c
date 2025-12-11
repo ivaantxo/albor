@@ -56,7 +56,7 @@ struct VsSeekerTrainerInfo
     const u8 *script;
     u16 trainerIdx;
     u8 localId;
-    u8 objectEventId;
+    u32 objectEventId;
     s16 xCoord;
     s16 yCoord;
     u8 graphicsId;
@@ -90,7 +90,7 @@ static u8 GetVsSeekerResponseInArea(void);
 static u16 GetTrainerFlagFromScript(const u8 * script);
 static void ClearAllTrainerRematchStates(void);
 static void StartAllRespondantIdleMovements(void);
-static bool8 ObjectEventIdIsSane(u8 objectEventId);
+static bool8 ObjectEventIdIsSane(u32 objectEventId);
 static u8 GetRandomFaceDirectionMovementType();
 
 static const u8 sMovementScript_Wait48[] = {
@@ -189,7 +189,7 @@ void VsSeekerResetObjectMovementAfterChargeComplete(void)
     struct ObjectEventTemplate * templates = gSaveBlockPtr->objectEventTemplates;
     u32 i;
     u32 movementType;
-    u8 objEventId;
+    u32 objEventId;
     struct ObjectEvent * objectEvent;
 
     for (i = 0; i < gMapHeader.events->objectEventCount; i++)
@@ -325,7 +325,7 @@ static void Task_VsSeeker_PlaySoundAndGetResponseCode(u8 taskId)
 static void GatherNearbyTrainerInfo(void)
 {
     struct ObjectEventTemplate *templates = gSaveBlockPtr->objectEventTemplates;
-    u8 objectEventId = 0;
+    u32 objectEventId = 0;
     u8 vsSeekerObjectIdx = 0;
     s32 objectEventIdx;
 
@@ -382,7 +382,7 @@ static u8 GetVsSeekerResponseInArea(void)
 void ClearRematchMovementByTrainerId(void)
 {
     s32 i;
-    u8 objEventId = 0;
+    u32 objEventId = 0;
     struct ObjectEventTemplate *objectEventTemplates = gSaveBlockPtr->objectEventTemplates;
     struct ObjectEvent *objectEvent;
 
@@ -458,7 +458,7 @@ bool32 IsVsSeekerEnabled(void)
     return (CheckBagHasItem(ITEM_VS_SEEKER, 1));
 }
 
-static bool8 ObjectEventIdIsSane(u8 objectEventId)
+static bool8 ObjectEventIdIsSane(u32 objectEventId)
 {
     struct ObjectEvent *objectEvent = &gObjectEvents[objectEventId];
 

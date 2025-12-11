@@ -14,9 +14,9 @@ enum {
 
 u8 CreateWarpArrowSprite(void);
 u8 StartUnderwaterSurfBlobBobbing(u8 oldSpriteId);
-void SetSurfBlob_BobState(u8 spriteId, u8 state);
-void SetSurfBlob_DontSyncAnim(u8 spriteId, bool8 dontSync);
-void SetSurfBlob_PlayerOffset(u8 spriteId, bool8 hasOffset, s16 offset);
+void SetSurfBlob_BobState(u32 spriteId, u8 state);
+void SetSurfBlob_DontSyncAnim(u32 spriteId, bool8 dontSync);
+void SetSurfBlob_PlayerOffset(u32 spriteId, bool8 hasOffset, s16 offset);
 bool8 UpdateRevealDisguise(struct ObjectEvent *);
 void StartRevealDisguise(struct ObjectEvent *);
 void StartAshFieldEffect(s16, s16, u16, s16);
@@ -40,7 +40,7 @@ void UpdateShortGrassFieldEffect(struct Sprite *);
 void UpdateHotSpringsWaterFieldEffect(struct Sprite *);
 void UpdateBubblesFieldEffect(struct Sprite *);
 void UpdateSparkleFieldEffect(struct Sprite *);
-void SetSpriteInvisible(u8 spriteId);
-void ShowWarpArrowSprite(u8 spriteId, u8 direction, s16 x, s16 y);
+void SetSpriteInvisible(u32 spriteId);
+void ShowWarpArrowSprite(u32 spriteId, u8 direction, s16 x, s16 y);
 
 #endif //GUARD_FIELD_EFFECT_HELPERS_H

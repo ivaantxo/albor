@@ -733,7 +733,7 @@ static void AnimTask_ElectricBolt_Step(u8 taskId)
     u16 r8;
     u16 r2;
     s16 r12;
-    u8 spriteId = 0;
+    u32 spriteId = 0;
     u8 r7 = 0;
     u8 sp = gTasks[taskId].data[2];
     s16 x = gTasks[taskId].data[0];
@@ -816,7 +816,7 @@ static void AnimElectricBoltSegment(struct Sprite *sprite)
 // The horizontal bands of electricity used in Thunder Wave
 void AnimThunderWave(struct Sprite *sprite)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     sprite->x += gBattleAnimArgs[0];
     sprite->y += gBattleAnimArgs[1];
@@ -878,7 +878,7 @@ static void AnimTask_ElectricChargingParticles_Step(u8 taskId)
     {
         if (++task->data[12] > task->data[13])
         {
-            u8 spriteId;
+            u32 spriteId;
             task->data[12] = 0;
             if (gAnimMoveIndex == MOVE_FLASH_CANNON || gAnimMoveIndex == MOVE_STEEL_BEAM)
                 spriteId = CreateSprite(&gLightOfRuinGrayChargeTemplate, task->data[14], task->data[15], 2);
@@ -1283,7 +1283,7 @@ void AnimTask_ShockWaveProgressingBolt(u8 taskId)
 
 static bool8 CreateShockWaveBoltSprite(struct Task *task, u8 taskId)
 {
-    u8 spriteId = CreateSprite(&gShockWaveProgressingBoltSpriteTemplate, task->data[6], task->data[7], 35);
+    u32 spriteId = CreateSprite(&gShockWaveProgressingBoltSpriteTemplate, task->data[6], task->data[7], 35);
     if (spriteId != MAX_SPRITES)
     {
         gSprites[spriteId].oam.tileNum += task->data[4];
@@ -1364,7 +1364,7 @@ void AnimTask_ShockWaveLightning(u8 taskId)
 
 static bool8 CreateShockWaveLightningSprite(struct Task *task, u8 taskId)
 {
-    u8 spriteId = CreateSprite(&gLightningSpriteTemplate, task->data[13], task->data[14], task->data[12]);
+    u32 spriteId = CreateSprite(&gLightningSpriteTemplate, task->data[13], task->data[14], task->data[12]);
 
     if (spriteId != MAX_SPRITES)
     {

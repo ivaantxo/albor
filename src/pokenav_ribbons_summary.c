@@ -1216,7 +1216,7 @@ static const struct SpriteTemplate sSpriteTemplate_RibbonIconBig =
 // Create dummy sprite to be used for the zoomed in version of the selected ribbon
 static void CreateBigRibbonSprite(struct Pokenav_RibbonsSummaryMenu *menu)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     LoadCompressedSpriteSheet(&sSpriteSheet_RibbonIconsBig);
     Pokenav_AllocAndLoadPalettes(sSpritePalettes_RibbonIcons);
