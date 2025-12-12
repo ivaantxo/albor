@@ -60,7 +60,7 @@ static const u32 sBlueLightCopy[] = INCBIN_U32("graphics/pokenav/blue_light.4bpp
 const struct BgTemplate gPokenavMainMenuBgTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 5,
         .screenSize = FONDO_32x32,
@@ -73,7 +73,7 @@ const struct BgTemplate gPokenavMainMenuBgTemplates[] =
 static const struct WindowTemplate sHelpBarWindowTemplate[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 22,
         .width = 16,

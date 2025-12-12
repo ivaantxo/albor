@@ -96,13 +96,13 @@ typedef void (*AffineAnimCmdFunc)(u8 matrixNum, struct Sprite *);
 
 #define DUMMY_OAM_DATA                      \
 {                                           \
-    .y = DISPLAY_HEIGHT,                    \
+    .y = ALTURA_PANTALLA,                    \
     .affineMode = ST_OAM_AFFINE_OFF,        \
     .objMode = ST_OAM_OBJ_NORMAL,           \
     .mosaic = FALSE,                        \
     .bpp = ST_OAM_4BPP,                     \
     .shape = SPRITE_SHAPE(8x8),             \
-    .x = DISPLAY_WIDTH + 64,                \
+    .x = ANCHO_PANTALLA + 64,                \
     .matrixNum = 0,                         \
     .size = SPRITE_SIZE(8x8),               \
     .tileNum = 0,                           \
@@ -148,8 +148,8 @@ static const struct Sprite sDummySprite =
     .affineAnims = gDummySpriteAffineAnimTable,
     .template = &gDummySpriteTemplate,
     .callback = SpriteCallbackDummy,
-    .x = DISPLAY_WIDTH + 64,
-    .y = DISPLAY_HEIGHT,
+    .x = ANCHO_PANTALLA + 64,
+    .y = ALTURA_PANTALLA,
     .subpriority = 0xFF
 };
 
@@ -351,7 +351,7 @@ void BuildOamBuffer(void)
         }
 
         y = sprite->oam.y;
-        if (y >= DISPLAY_HEIGHT)
+        if (y >= ALTURA_PANTALLA)
         {
             y -= 256;
         }
@@ -640,7 +640,7 @@ s16 AllocSpriteTiles(u16 tileCount)
 
     if (tileCount == 0)
     {
-        for (i = gReservedSpriteTileCount; i < TOTAL_OBJ_TILE_COUNT; i++)
+        for (i = gReservedSpriteTileCount; i < NUMERO_TILES_SPRITES; i++)
             FREE_SPRITE_TILE(i);
         return 0;
     }
@@ -664,7 +664,7 @@ s16 AllocSpriteTiles(u16 tileCount)
 
         i++;
 
-        if (i == TOTAL_OBJ_TILE_COUNT)
+        if (i == NUMERO_TILES_SPRITES)
             return -1;
     }
 

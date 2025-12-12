@@ -1,7 +1,7 @@
 static const struct BgTemplate sPartyMenuBgTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -10,7 +10,7 @@ static const struct BgTemplate sPartyMenuBgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 0,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,
@@ -19,7 +19,7 @@ static const struct BgTemplate sPartyMenuBgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 0,
         .mapBaseIndex = 28,
         .screenSize = FONDO_64x32,
@@ -123,7 +123,7 @@ static const u8 sFontColorTable[][3] =
 static const struct WindowTemplate sSinglePartyMenuWindowTemplate[] =
 {
     { // Party mon 1
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 3,
         .width = 10,
@@ -132,7 +132,7 @@ static const struct WindowTemplate sSinglePartyMenuWindowTemplate[] =
         .baseBlock = 0x63,
     },
     { // Party mon 2
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 12,
         .tilemapTop = 1,
         .width = 18,
@@ -141,7 +141,7 @@ static const struct WindowTemplate sSinglePartyMenuWindowTemplate[] =
         .baseBlock = 0xA9,
     },
     { // Party mon 3
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 12,
         .tilemapTop = 4,
         .width = 18,
@@ -150,7 +150,7 @@ static const struct WindowTemplate sSinglePartyMenuWindowTemplate[] =
         .baseBlock = 0xDF,
     },
     { // Party mon 4
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 12,
         .tilemapTop = 7,
         .width = 18,
@@ -159,7 +159,7 @@ static const struct WindowTemplate sSinglePartyMenuWindowTemplate[] =
         .baseBlock = 0x115,
     },
     { // Party mon 5
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 12,
         .tilemapTop = 10,
         .width = 18,
@@ -168,7 +168,7 @@ static const struct WindowTemplate sSinglePartyMenuWindowTemplate[] =
         .baseBlock = 0x14B,
     },
     { // Party mon 6
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 12,
         .tilemapTop = 13,
         .width = 18,
@@ -177,7 +177,7 @@ static const struct WindowTemplate sSinglePartyMenuWindowTemplate[] =
         .baseBlock = 0x181,
     },
     [WIN_MSG] = {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 1,
         .tilemapTop = 15,
         .width = 28,
@@ -191,7 +191,7 @@ static const struct WindowTemplate sSinglePartyMenuWindowTemplate[] =
 static const struct WindowTemplate sDoublePartyMenuWindowTemplate[] =
 {
     { // Party mon 1
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 1,
         .width = 10,
@@ -200,7 +200,7 @@ static const struct WindowTemplate sDoublePartyMenuWindowTemplate[] =
         .baseBlock = 0x63,
     },
     { // Party mon 2
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 8,
         .width = 10,
@@ -209,7 +209,7 @@ static const struct WindowTemplate sDoublePartyMenuWindowTemplate[] =
         .baseBlock = 0xA9,
     },
     { // Party mon 3
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 12,
         .tilemapTop = 1,
         .width = 18,
@@ -218,7 +218,7 @@ static const struct WindowTemplate sDoublePartyMenuWindowTemplate[] =
         .baseBlock = 0xEF,
     },
     { // Party mon 4
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 12,
         .tilemapTop = 5,
         .width = 18,
@@ -227,7 +227,7 @@ static const struct WindowTemplate sDoublePartyMenuWindowTemplate[] =
         .baseBlock = 0x125,
     },
     { // Party mon 5
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 12,
         .tilemapTop = 9,
         .width = 18,
@@ -236,7 +236,7 @@ static const struct WindowTemplate sDoublePartyMenuWindowTemplate[] =
         .baseBlock = 0x15B,
     },
     { // Party mon 6
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 12,
         .tilemapTop = 13,
         .width = 18,
@@ -245,7 +245,7 @@ static const struct WindowTemplate sDoublePartyMenuWindowTemplate[] =
         .baseBlock = 0x191,
     },
     [WIN_MSG] = {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 1,
         .tilemapTop = 15,
         .width = 28,
@@ -259,7 +259,7 @@ static const struct WindowTemplate sDoublePartyMenuWindowTemplate[] =
 static const struct WindowTemplate sMultiPartyMenuWindowTemplate[] =
 {
     { // Party mon 1
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 1,
         .width = 10,
@@ -268,7 +268,7 @@ static const struct WindowTemplate sMultiPartyMenuWindowTemplate[] =
         .baseBlock = 0x63,
     },
     { // Party mon 2
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 8,
         .width = 10,
@@ -277,7 +277,7 @@ static const struct WindowTemplate sMultiPartyMenuWindowTemplate[] =
         .baseBlock = 0xA9,
     },
     { // Party mon 3
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 12,
         .tilemapTop = 2,
         .width = 18,
@@ -286,7 +286,7 @@ static const struct WindowTemplate sMultiPartyMenuWindowTemplate[] =
         .baseBlock = 0xEF,
     },
     { // Party mon 4
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 12,
         .tilemapTop = 5,
         .width = 18,
@@ -295,7 +295,7 @@ static const struct WindowTemplate sMultiPartyMenuWindowTemplate[] =
         .baseBlock = 0x125,
     },
     { // Party mon 5
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 12,
         .tilemapTop = 9,
         .width = 18,
@@ -304,7 +304,7 @@ static const struct WindowTemplate sMultiPartyMenuWindowTemplate[] =
         .baseBlock = 0x15B,
     },
     { // Party mon 6
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 12,
         .tilemapTop = 12,
         .width = 18,
@@ -313,7 +313,7 @@ static const struct WindowTemplate sMultiPartyMenuWindowTemplate[] =
         .baseBlock = 0x191,
     },
     [WIN_MSG] = {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 1,
         .tilemapTop = 15,
         .width = 28,
@@ -327,7 +327,7 @@ static const struct WindowTemplate sMultiPartyMenuWindowTemplate[] =
 static const struct WindowTemplate sShowcaseMultiPartyMenuWindowTemplate[] =
 {
     { // Party mon 1
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 2,
         .width = 10,
@@ -336,7 +336,7 @@ static const struct WindowTemplate sShowcaseMultiPartyMenuWindowTemplate[] =
         .baseBlock = 0x63,
     },
     { // Party mon 2
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 12,
         .tilemapTop = 3,
         .width = 18,
@@ -345,7 +345,7 @@ static const struct WindowTemplate sShowcaseMultiPartyMenuWindowTemplate[] =
         .baseBlock = 0xA9,
     },
     { // Party mon 3
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 12,
         .tilemapTop = 6,
         .width = 18,
@@ -354,7 +354,7 @@ static const struct WindowTemplate sShowcaseMultiPartyMenuWindowTemplate[] =
         .baseBlock = 0xDF,
     },
     { // Party mon 4
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 1,
         .tilemapTop = 11,
         .width = 10,
@@ -363,7 +363,7 @@ static const struct WindowTemplate sShowcaseMultiPartyMenuWindowTemplate[] =
         .baseBlock = 0x115,
     },
     { // Party mon 5
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 12,
         .tilemapTop = 12,
         .width = 18,
@@ -372,7 +372,7 @@ static const struct WindowTemplate sShowcaseMultiPartyMenuWindowTemplate[] =
         .baseBlock = 0x16B,
     },
     { // Party mon 6
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 12,
         .tilemapTop = 15,
         .width = 18,
@@ -385,7 +385,7 @@ static const struct WindowTemplate sShowcaseMultiPartyMenuWindowTemplate[] =
 
 static const struct WindowTemplate sCancelButtonWindowTemplate =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 24,
     .tilemapTop = 17,
     .width = 6,
@@ -396,7 +396,7 @@ static const struct WindowTemplate sCancelButtonWindowTemplate =
 
 static const struct WindowTemplate sMultiCancelButtonWindowTemplate =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 24,
     .tilemapTop = 18,
     .width = 6,
@@ -407,7 +407,7 @@ static const struct WindowTemplate sMultiCancelButtonWindowTemplate =
 
 static const struct WindowTemplate sConfirmButtonWindowTemplate =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 24,
     .tilemapTop = 16,
     .width = 6,
@@ -418,7 +418,7 @@ static const struct WindowTemplate sConfirmButtonWindowTemplate =
 
 static const struct WindowTemplate sDefaultPartyMsgWindowTemplate =
 {
-    .bg = 2,
+    .bg = FONDO_2,
     .tilemapLeft = 1,
     .tilemapTop = 17,
     .width = 21,
@@ -429,7 +429,7 @@ static const struct WindowTemplate sDefaultPartyMsgWindowTemplate =
 
 static const struct WindowTemplate sDoWhatWithMonMsgWindowTemplate =
 {
-    .bg = 2,
+    .bg = FONDO_2,
     .tilemapLeft = 1,
     .tilemapTop = 17,
     .width = 16,
@@ -440,7 +440,7 @@ static const struct WindowTemplate sDoWhatWithMonMsgWindowTemplate =
 
 static const struct WindowTemplate sDoWhatWithItemMsgWindowTemplate =
 {
-    .bg = 2,
+    .bg = FONDO_2,
     .tilemapLeft = 1,
     .tilemapTop = 17,
     .width = 20,
@@ -451,7 +451,7 @@ static const struct WindowTemplate sDoWhatWithItemMsgWindowTemplate =
 
 static const struct WindowTemplate sDoWhatWithMailMsgWindowTemplate =
 {
-    .bg = 2,
+    .bg = FONDO_2,
     .tilemapLeft = 1,
     .tilemapTop = 17,
     .width = 18,
@@ -462,7 +462,7 @@ static const struct WindowTemplate sDoWhatWithMailMsgWindowTemplate =
 
 static const struct WindowTemplate sWhichMoveMsgWindowTemplate =
 {
-    .bg = 2,
+    .bg = FONDO_2,
     .tilemapLeft = 1,
     .tilemapTop = 17,
     .width = 16,
@@ -473,7 +473,7 @@ static const struct WindowTemplate sWhichMoveMsgWindowTemplate =
 
 static const struct WindowTemplate sAlreadyHoldingOneMsgWindowTemplate =
 {
-    .bg = 2,
+    .bg = FONDO_2,
     .tilemapLeft = 1,
     .tilemapTop = 15,
     .width = 20,
@@ -484,7 +484,7 @@ static const struct WindowTemplate sAlreadyHoldingOneMsgWindowTemplate =
 
 static const struct WindowTemplate sOrderWhichApplianceMsgWindowTemplate =
 {
-    .bg = 2,
+    .bg = FONDO_2,
     .tilemapLeft = 1,
     .tilemapTop = 15,
     .width = 14,
@@ -495,7 +495,7 @@ static const struct WindowTemplate sOrderWhichApplianceMsgWindowTemplate =
 
 static const struct WindowTemplate sItemGiveTakeWindowTemplate =
 {
-    .bg = 2,
+    .bg = FONDO_2,
     .tilemapLeft = 23,
     .tilemapTop = 13,
     .width = 6,
@@ -506,7 +506,7 @@ static const struct WindowTemplate sItemGiveTakeWindowTemplate =
 
 static const struct WindowTemplate sMailReadTakeWindowTemplate =
 {
-    .bg = 2,
+    .bg = FONDO_2,
     .tilemapLeft = 21,
     .tilemapTop = 13,
     .width = 8,
@@ -517,7 +517,7 @@ static const struct WindowTemplate sMailReadTakeWindowTemplate =
 
 static const struct WindowTemplate sMoveSelectWindowTemplate =
 {
-    .bg = 2,
+    .bg = FONDO_2,
     .tilemapLeft = 19,
     .tilemapTop = 11,
     .width = 10,
@@ -528,7 +528,7 @@ static const struct WindowTemplate sMoveSelectWindowTemplate =
 
 static const struct WindowTemplate sCatalogSelectWindowTemplate =
 {
-    .bg = 2,
+    .bg = FONDO_2,
     .tilemapLeft = 17,
     .tilemapTop = 5,
     .width = 12,
@@ -539,7 +539,7 @@ static const struct WindowTemplate sCatalogSelectWindowTemplate =
 
 static const struct WindowTemplate sZygardeCubeSelectWindowTemplate =
 {
-    .bg = 2,
+    .bg = FONDO_2,
     .tilemapLeft = 18,
     .tilemapTop = 13,
     .width = 11,
@@ -550,7 +550,7 @@ static const struct WindowTemplate sZygardeCubeSelectWindowTemplate =
 
 static const struct WindowTemplate sPartyMenuYesNoWindowTemplate =
 {
-    .bg = 2,
+    .bg = FONDO_2,
     .tilemapLeft = 21,
     .tilemapTop = 9,
     .width = 5,
@@ -561,7 +561,7 @@ static const struct WindowTemplate sPartyMenuYesNoWindowTemplate =
 
 static const struct WindowTemplate sLevelUpStatsWindowTemplate =
 {
-    .bg = 2,
+    .bg = FONDO_2,
     .tilemapLeft = 19,
     .tilemapTop = 1,
     .width = 10,

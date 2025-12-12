@@ -24,7 +24,7 @@
 #include "overworld.h"
 #include "palette.h"
 #include "party_menu.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "script.h"
 #include "shop.h"
 #include "sound.h"
@@ -174,7 +174,7 @@ static const struct MenuAction sShopMenuActions_BuyQuit[] =
 static const struct WindowTemplate sShopMenuWindowTemplates[] =
 {
     [WIN_BUY_SELL_QUIT] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 2,
         .tilemapTop = 1,
         .width = 9,
@@ -184,7 +184,7 @@ static const struct WindowTemplate sShopMenuWindowTemplates[] =
     },
     // Separate shop menu window for decorations, which can't be sold
     [WIN_BUY_QUIT] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 2,
         .tilemapTop = 1,
         .width = 9,
@@ -220,7 +220,7 @@ static const struct ListMenuTemplate sShopBuyMenuListTemplate =
 static const struct BgTemplate sShopBuyMenuBgTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 2,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -229,7 +229,7 @@ static const struct BgTemplate sShopBuyMenuBgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 0,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,
@@ -238,7 +238,7 @@ static const struct BgTemplate sShopBuyMenuBgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 0,
         .mapBaseIndex = 29,
         .screenSize = FONDO_32x32,
@@ -247,7 +247,7 @@ static const struct BgTemplate sShopBuyMenuBgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 0,
         .mapBaseIndex = 28,
         .screenSize = FONDO_32x32,
@@ -260,7 +260,7 @@ static const struct BgTemplate sShopBuyMenuBgTemplates[] =
 static const struct WindowTemplate sShopBuyMenuWindowTemplates[] =
 {
     [WIN_MONEY] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 1,
         .width = 10,
@@ -269,7 +269,7 @@ static const struct WindowTemplate sShopBuyMenuWindowTemplates[] =
         .baseBlock = 0x001E,
     },
     [WIN_ITEM_LIST] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 14,
         .tilemapTop = 2,
         .width = 15,
@@ -278,7 +278,7 @@ static const struct WindowTemplate sShopBuyMenuWindowTemplates[] =
         .baseBlock = 0x0032,
     },
     [WIN_ITEM_DESCRIPTION] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 0,
         .tilemapTop = 13,
         .width = 14,
@@ -287,7 +287,7 @@ static const struct WindowTemplate sShopBuyMenuWindowTemplates[] =
         .baseBlock = 0x0122,
     },
     [WIN_QUANTITY_IN_BAG] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 11,
         .width = 12,
@@ -296,7 +296,7 @@ static const struct WindowTemplate sShopBuyMenuWindowTemplates[] =
         .baseBlock = 0x0176,
     },
     [WIN_QUANTITY_PRICE] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 18,
         .tilemapTop = 11,
         .width = 10,
@@ -305,7 +305,7 @@ static const struct WindowTemplate sShopBuyMenuWindowTemplates[] =
         .baseBlock = 0x018E,
     },
     [WIN_MESSAGE] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 2,
         .tilemapTop = 15,
         .width = 27,
@@ -318,7 +318,7 @@ static const struct WindowTemplate sShopBuyMenuWindowTemplates[] =
 
 static const struct WindowTemplate sShopBuyMenuYesNoWindowTemplates =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 21,
     .tilemapTop = 9,
     .width = 5,
@@ -503,7 +503,7 @@ static void CB2_InitBuyMenu(void)
     case 0:
         SetVBlankHBlankCallbacksToNull();
         CpuFastFill(0, (void *)OAM, OAM_SIZE);
-        ScanlineEffect_Stop();
+        ParaEfectoHorizontal();
         ResetTempTileDataBuffers();
         FreeAllSpritePalettes();
         ResetPaletteFade();

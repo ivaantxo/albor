@@ -13,7 +13,7 @@
 #include "gym_leader_rematch.h"
 #include "window.h"
 #include "strings.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
 
@@ -33,7 +33,7 @@
 
 #define OPTION_DEFAULT_X   140
 #define OPTION_SELECTED_X  130
-#define OPTION_EXIT_X      (DISPLAY_WIDTH + 16)
+#define OPTION_EXIT_X      (ANCHO_PANTALLA + 16)
 
 struct Pokenav_MenuGfx
 {
@@ -111,7 +111,7 @@ static const u8 gText_NoRibbonWinners[] = _("There are no RIBBON winners.");
 
 static const struct BgTemplate sPokenavMainMenuBgTemplates[] = {
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 1,
         .mapBaseIndex = 15,
         .screenSize = FONDO_32x32,
@@ -119,7 +119,7 @@ static const struct BgTemplate sPokenavMainMenuBgTemplates[] = {
         .priority = 1,
         .baseTile = 0x000
     }, {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 2,
         .mapBaseIndex = 23,
         .screenSize = FONDO_32x32,
@@ -127,7 +127,7 @@ static const struct BgTemplate sPokenavMainMenuBgTemplates[] = {
         .priority = 2,
         .baseTile = 0x000
     }, {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 3,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -257,7 +257,7 @@ struct
 
 static const struct WindowTemplate sOptionDescWindowTemplate =
 {
-    .bg = 1,
+    .bg = FONDO_1,
     .tilemapLeft = 3,
     .tilemapTop = 17,
     .width = 24,
@@ -356,11 +356,11 @@ static const struct SpriteTemplate sMatchCallBlueLightSpriteTemplate =
     .callback = SpriteCallbackDummy,
 };
 
-static const struct ScanlineEffectParams sPokenavMainMenuScanlineEffectParams =
+static const struct ParametrosEfectoHorizontal sPokenavMainMenuScanlineEffectParams =
 {
     .dmaDest = &REG_WIN0H,
-    .dmaControl = ((DMA_ENABLE | DMA_START_HBLANK | DMA_REPEAT | DMA_DEST_RELOAD) << 16) | 1,
-    .initState = 1,
+    .bitsDMA = EFECTO_HORIZONTAL_DMA_16,
+    .estado = 1,
 };
 
 static bool32 AreAnyTrainerRematchesNearby(void)
@@ -1288,7 +1288,7 @@ static void VBlankCB_PokenavMainMenu(void)
     TransferPlttBuffer();
     LoadOam();
     ProcessSpriteCopyRequests();
-    ScanlineEffect_InitHBlankDmaTransfer();
+    IniciaTransferenciaDMAEnHblankEfectoHorizontal();
 }
 
 static void SetupPokenavMenuScanlineEffects(void)
@@ -1298,10 +1298,10 @@ static void SetupPokenavMenuScanlineEffects(void)
     SetGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_WIN0_ON);
     SetGpuRegBits(REG_OFFSET_WININ, WININ_WIN0_ALL);
     SetGpuRegBits(REG_OFFSET_WINOUT, WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ);
-    SetGpuRegBits(REG_OFFSET_WIN0V, DISPLAY_HEIGHT);
-    ScanlineEffect_Stop();
+    SetGpuRegBits(REG_OFFSET_WIN0V, ALTURA_PANTALLA);
+    ParaEfectoHorizontal();
     SetMenuOptionGlow();
-    ScanlineEffect_SetParams(sPokenavMainMenuScanlineEffectParams);
+    EscribeParametrosEfectoHorizontal(sPokenavMainMenuScanlineEffectParams);
     SetVBlankCallback_(VBlankCB_PokenavMainMenu);
     CreateTask(Task_CurrentMenuOptionGlow, 3);
 }
@@ -1310,7 +1310,7 @@ static void DestroyMenuOptionGlowTask(void)
 {
     SetGpuReg(REG_OFFSET_BLDCNT, 0);
     ClearGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_WIN0_ON);
-    ScanlineEffect_Stop();
+    ParaEfectoHorizontal();
     DestroyTask(FindTaskIdByFunc(Task_CurrentMenuOptionGlow));
     SetPokenavVBlankCallback();
 }
@@ -1339,8 +1339,8 @@ static void SetMenuOptionGlow(void)
     int menuType = GetPokenavMenuType();
     int cursorPos = GetPokenavCursorPos();
     int r4 = sPokenavMenuOptionLabelGfx[menuType].deltaY * cursorPos + sPokenavMenuOptionLabelGfx[menuType].yStart - 8;
-    CpuFill16(0, gScanlineEffectRegBuffers[0], DISPLAY_HEIGHT * 2);
-    CpuFill16(0, gScanlineEffectRegBuffers[1], DISPLAY_HEIGHT * 2);
-    CpuFill16(RGB(16, 23, 28), &gScanlineEffectRegBuffers[0][r4], 0x20);
-    CpuFill16(RGB(16, 23, 28), &gScanlineEffectRegBuffers[1][r4], 0x20);
+    CpuFill16(0, gRegistrosBuffersEfectoHorizontal[0], ALTURA_PANTALLA * 2);
+    CpuFill16(0, gRegistrosBuffersEfectoHorizontal[1], ALTURA_PANTALLA * 2);
+    CpuFill16(RGB(16, 23, 28), &gRegistrosBuffersEfectoHorizontal[0][r4], 0x20);
+    CpuFill16(RGB(16, 23, 28), &gRegistrosBuffersEfectoHorizontal[1][r4], 0x20);
 }

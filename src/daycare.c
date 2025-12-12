@@ -1,6 +1,7 @@
 #include "global.h"
 #include "pokemon.h"
 #include "battle.h"
+#include "bg.h"
 #include "daycare.h"
 #include "string_util.h"
 #include "mail.h"
@@ -42,7 +43,7 @@ EWRAM_DATA static u16 sHatchedEggMotherMoves[MAX_MON_MOVES] = {0};
 
 static const struct WindowTemplate sDaycareLevelMenuWindowTemplate =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 15,
     .tilemapTop = 1,
     .width = 14,

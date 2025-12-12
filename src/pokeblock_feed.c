@@ -246,7 +246,7 @@ static const union AffineAnimCmd *const sAffineAnims_Mon[] =
 static const struct BgTemplate sBackgroundTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -255,7 +255,7 @@ static const struct BgTemplate sBackgroundTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 2,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,
@@ -268,7 +268,7 @@ static const struct BgTemplate sBackgroundTemplates[] =
 static const struct WindowTemplate sWindowTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 15,
         .width = 28,

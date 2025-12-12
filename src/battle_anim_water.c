@@ -5,7 +5,7 @@
 #include "graphics.h"
 #include "palette.h"
 #include "random.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "sprite.h"
 #include "task.h"
 #include "trig.h"
@@ -664,8 +664,8 @@ void AnimTask_CreateRaindrops(u8 taskId)
     gTasks[taskId].data[0]++;
     if (gTasks[taskId].data[0] % gTasks[taskId].data[2] == 1)
     {
-        x = Random() % DISPLAY_WIDTH;
-        y = Random() % (DISPLAY_HEIGHT / 2);
+        x = Random() % ANCHO_PANTALLA;
+        y = Random() % (ALTURA_PANTALLA / 2);
         CreateSprite(&gRainDropSpriteTemplate, x, y, 4);
     }
     if (gTasks[taskId].data[0] == gTasks[taskId].data[3])
@@ -1127,28 +1127,28 @@ static void AnimTask_CreateSurfWave_Step2(u8 taskId)
 static void AnimTask_SurfWaveScanlineEffect(u8 taskId)
 {
     s16 i;
-    struct ScanlineEffectParams params;
+    struct ParametrosEfectoHorizontal params;
     struct Task *task = &gTasks[taskId];
 
     switch (task->data[0])
     {
     case 0:
         for (i = 0; i < task->data[4]; i++)
-            gScanlineEffectRegBuffers[0][i] = gScanlineEffectRegBuffers[1][i] = task->data[2];
+            gRegistrosBuffersEfectoHorizontal[0][i] = gRegistrosBuffersEfectoHorizontal[1][i] = task->data[2];
         for (i = task->data[4]; i < task->data[5]; i++)
-            gScanlineEffectRegBuffers[0][i] = gScanlineEffectRegBuffers[1][i] = task->data[1];
+            gRegistrosBuffersEfectoHorizontal[0][i] = gRegistrosBuffersEfectoHorizontal[1][i] = task->data[1];
         for (i = task->data[5]; i < 160; i++)
-            gScanlineEffectRegBuffers[0][i] = gScanlineEffectRegBuffers[1][i] = task->data[2];
+            gRegistrosBuffersEfectoHorizontal[0][i] = gRegistrosBuffersEfectoHorizontal[1][i] = task->data[2];
 
         if (task->data[4] == 0)
-            gScanlineEffectRegBuffers[0][i] = gScanlineEffectRegBuffers[1][i] = task->data[1];
+            gRegistrosBuffersEfectoHorizontal[0][i] = gRegistrosBuffersEfectoHorizontal[1][i] = task->data[1];
         else
-            gScanlineEffectRegBuffers[0][i] = gScanlineEffectRegBuffers[1][i] = task->data[2];
+            gRegistrosBuffersEfectoHorizontal[0][i] = gRegistrosBuffersEfectoHorizontal[1][i] = task->data[2];
 
         params.dmaDest = &REG_BLDALPHA;
-        params.dmaControl = SCANLINE_EFFECT_DMACNT_16BIT;
-        params.initState = 1;
-        ScanlineEffect_SetParams(params);
+        params.bitsDMA = EFECTO_HORIZONTAL_DMA_16;
+        params.estado = ESTADO_EFECTO_HORIZONTAL_ACTIVO;
+        EscribeParametrosEfectoHorizontal(params);
         task->data[0]++;
         break;
     case 1:
@@ -1166,23 +1166,23 @@ static void AnimTask_SurfWaveScanlineEffect(u8 taskId)
         }
 
         for (i = 0; i < task->data[4]; i++)
-            gScanlineEffectRegBuffers[gScanlineEffect.srcBuffer][i] = task->data[2];
+            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = task->data[2];
         for (i = task->data[4]; i < task->data[5]; i++)
-            gScanlineEffectRegBuffers[gScanlineEffect.srcBuffer][i] = task->data[1];
+            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = task->data[1];
         for (i = task->data[5]; i < 160; i++)
-            gScanlineEffectRegBuffers[gScanlineEffect.srcBuffer][i] = task->data[2];
+            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = task->data[2];
         break;
     case 2:
         for (i = 0; i < task->data[4]; i++)
-            gScanlineEffectRegBuffers[gScanlineEffect.srcBuffer][i] = task->data[2];
+            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = task->data[2];
         for (i = task->data[4]; i < task->data[5]; i++)
-            gScanlineEffectRegBuffers[gScanlineEffect.srcBuffer][i] = task->data[1];
+            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = task->data[1];
         for (i = task->data[5]; i < 160; i++)
-            gScanlineEffectRegBuffers[gScanlineEffect.srcBuffer][i] = task->data[2];
+            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = task->data[2];
 
         if (task->data[15] == -1)
         {
-            ScanlineEffect_Stop();
+            ParaEfectoHorizontal();
             DestroyTask(taskId);
         }
         break;

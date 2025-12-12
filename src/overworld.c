@@ -52,7 +52,7 @@
 #include "tileset_anims.h"
 #include "time_events.h"
 #include "trainer_pokemon_sprites.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "wild_encounter.h"
 #include "vs_seeker.h"
 #include "constants/abilities.h"
@@ -173,7 +173,7 @@ const struct UCoords32 gDirectionToVectors[] =
 static const struct BgTemplate sOverworldBgTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 2,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -182,7 +182,7 @@ static const struct BgTemplate sOverworldBgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 0,
         .mapBaseIndex = 29,
         .screenSize = FONDO_32x32,
@@ -191,7 +191,7 @@ static const struct BgTemplate sOverworldBgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 0,
         .mapBaseIndex = 28,
         .screenSize = FONDO_32x32,
@@ -200,7 +200,7 @@ static const struct BgTemplate sOverworldBgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 0,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,
@@ -210,11 +210,11 @@ static const struct BgTemplate sOverworldBgTemplates[] =
     }
 };
 
-static const struct ScanlineEffectParams sFlashEffectParams =
+static const struct ParametrosEfectoHorizontal sFlashEffectParams =
 {
     .dmaDest = &REG_WIN0H,
-    .dmaControl = ((DMA_ENABLE | DMA_START_HBLANK | DMA_REPEAT | DMA_DEST_RELOAD) << 16) | 1,
-    .initState = 1,
+    .bitsDMA = EFECTO_HORIZONTAL_DMA_16,
+    .estado = 1,
 };
 
 // code
@@ -1552,7 +1552,7 @@ static void VBlankCB_Field(void)
 {
     LoadOam();
     ProcessSpriteCopyRequests();
-    ScanlineEffect_InitHBlankDmaTransfer();
+    IniciaTransferenciaDMAEnHblankEfectoHorizontal();
     FieldUpdateBgTilemapScroll();
     TransferPlttBuffer();
     TransferTilesetAnimsBuffer();
@@ -1565,7 +1565,7 @@ static void InitCurrentFlashLevelScanlineEffect(void)
     if ((flashLevel = GetFlashLevel()))
     {
         WriteFlashScanlineEffectBuffer(flashLevel);
-        ScanlineEffect_SetParams(sFlashEffectParams);
+        EscribeParametrosEfectoHorizontal(sFlashEffectParams);
     }
 }
 
@@ -1686,7 +1686,7 @@ static void ResetMirageTowerAndSaveBlockPtrs(void)
 static void ResetScreenForMapLoad(void)
 {
     SetGpuReg(REG_OFFSET_DISPCNT, 0);
-    ScanlineEffect_Stop();
+    ParaEfectoHorizontal();
 
     DmaClear16(3, PLTT + 2, PLTT_SIZE - 2);
     DmaFillLarge16(3, 0, (void *)VRAM, VRAM_SIZE, 0x1000);
@@ -1735,6 +1735,7 @@ static void InitOverworldGraphicsRegisters(void)
     ShowBg(2);
     ShowBg(3);
     InitFieldMessageBox();
+    IniciaEfectoHorizontal(0, ALTURA_PANTALLA, 4, 4, 0, EFECTO_HORIZONTAL_BG_3_VERTICAL, TRUE);
 }
 
 static void ResumeMap(void)
@@ -1742,7 +1743,7 @@ static void ResumeMap(void)
     ResetTasks();
     ResetSpriteData();
     ResetPaletteFade();
-    ScanlineEffect_Clear();
+    LimpiaEfectoHorizontal();
     ResetAllPicSprites();
     ResetCameraUpdateInfo();
     InstallCameraPanAheadCallback();

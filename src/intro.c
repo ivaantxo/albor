@@ -1,7 +1,7 @@
 #include "global.h"
 #include "main.h"
 #include "palette.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "task.h"
 #include "title_screen.h"
 #include "malloc.h"
@@ -208,7 +208,7 @@ static const struct SpritePalette sSpritePalette_Sparkle[] =
 };
 static const struct OamData sOamData_Sparkle =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = FALSE,
@@ -276,7 +276,7 @@ static const struct SpritePalette sSpritePalettes_RunningPokemon[] =
 };
 static const struct OamData sOamData_Volbeat =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = FALSE,
@@ -312,7 +312,7 @@ static const struct SpriteTemplate sSpriteTemplate_Volbeat =
 };
 static const struct OamData sOamData_Torchic =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = FALSE,
@@ -372,7 +372,7 @@ static const struct SpriteTemplate sSpriteTemplate_Torchic =
 };
 static const struct OamData sOamData_Manectric =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = FALSE,
@@ -420,7 +420,7 @@ static const struct SpritePalette sSpritePalette_Lightning[] =
 };
 static const struct OamData sOamData_Lightning =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = FALSE,
@@ -511,7 +511,7 @@ static const s16 sKyogreBubbleData[NUM_BUBBLES_IN_SET * 2][3] =
 };
 static const struct OamData sOamData_Bubbles =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = FALSE,
@@ -550,7 +550,7 @@ static const struct SpriteTemplate sSpriteTemplate_Bubbles =
 };
 static const struct OamData sOamData_WaterDrop =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = FALSE,
@@ -652,7 +652,7 @@ static const union AnimCmd *const sAnims_PlayerBicycle[] =
 };
 static const struct OamData sOamData_GameFreakLetter =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_DOUBLE,
     .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = FALSE,
@@ -668,7 +668,7 @@ static const struct OamData sOamData_GameFreakLetter =
 };
 static const struct OamData sOamData_PresentsLetter =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = FALSE,
@@ -684,7 +684,7 @@ static const struct OamData sOamData_PresentsLetter =
 };
 static const struct OamData sOamData_GameFreakLogo =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_DOUBLE,
     .objMode = ST_OAM_OBJ_BLEND,
     .mosaic = FALSE,
@@ -923,7 +923,7 @@ static const u8 sGameFreakLetterStartDelays[NUM_GF_LETTERS] =
 };
 static const struct OamData sOamData_FlygonSilhouette =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = FALSE,
@@ -975,7 +975,7 @@ static const struct SpritePalette sSpritePalettes_Intro1[] =
 };
 static const struct OamData sOamData_RayquazaOrb =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = FALSE,
@@ -1025,7 +1025,7 @@ static void VBlankCB_Intro(void)
     LoadOam();
     ProcessSpriteCopyRequests();
     TransferPlttBuffer();
-    ScanlineEffect_InitHBlankDmaTransfer();
+    IniciaTransferenciaDMAEnHblankEfectoHorizontal();
 }
 
 void MainCB2_Intro(void)
@@ -1071,7 +1071,7 @@ static u8 SetUpCopyrightScreen(void)
         CpuFill16(0, (void *)(PLTT + 2), PLTT_SIZE - 2);
         ResetPaletteFade();
         LoadCopyrightGraphics(0, 0x3800, BG_PLTT_ID(0));
-        ScanlineEffect_Stop();
+        ParaEfectoHorizontal();
         ResetTasks();
         ResetSpriteData();
         FreeAllSpritePalettes();
@@ -1169,7 +1169,7 @@ void Task_Scene1_Load(u8 taskId)
     CopiaCpu16(&gPlttBufferUnfaded[OBJ_PLTT_ID(0)], &gPlttBufferUnfaded[OBJ_PLTT_ID(11) + 4], PLTT_SIZEOF(16 - 4));
     CopiaCpu16(&gPlttBufferUnfaded[OBJ_PLTT_ID(0)], &gPlttBufferUnfaded[OBJ_PLTT_ID(10) + 5], PLTT_SIZEOF(16 - 5));
     CopiaCpu16(&gPlttBufferUnfaded[OBJ_PLTT_ID(0)], &gPlttBufferUnfaded[OBJ_PLTT_ID( 9) + 6], PLTT_SIZEOF(16 - 6));
-    CreateGameFreakLogoSprites(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, 0);
+    CreateGameFreakLogoSprites(ANCHO_PANTALLA / 2, ALTURA_PANTALLA / 2, 0);
     gTasks[taskId].sBigDropSpriteId = CreateWaterDrop(236, -14, 0x200, 1, 0x78, FALSE);
     gTasks[taskId].func = Task_Scene1_FadeIn;
 }
@@ -1300,7 +1300,7 @@ static void Task_Scene1_PanUp(u8 taskId)
         if (gIntroFrameCounter == TIMER_FLYGON_SILHOUETTE_APPEAR)
         {
             // Show Flygon silhouette
-            u32 spriteId = CreateSprite(&sSpriteTemplate_FlygonSilhouette, 120, DISPLAY_HEIGHT, 10);
+            u32 spriteId = CreateSprite(&sSpriteTemplate_FlygonSilhouette, 120, ALTURA_PANTALLA, 10);
             gSprites[spriteId].invisible = TRUE;
         }
     }
@@ -1360,18 +1360,18 @@ static void Task_Scene2_CreateSprites(u8 taskId)
     LoadSpritePalettes(sSpritePalettes_RunningPokemon);
 
     // Create Pokémon and player sprites
-    CreateSprite(&sSpriteTemplate_Manectric, DISPLAY_WIDTH + 32, 128, 0);
-    CreateSprite(&sSpriteTemplate_Torchic, DISPLAY_WIDTH + 48, 110, 1);
+    CreateSprite(&sSpriteTemplate_Manectric, ANCHO_PANTALLA + 32, 128, 0);
+    CreateSprite(&sSpriteTemplate_Torchic, ANCHO_PANTALLA + 48, 110, 1);
 
     if (sIntroCharacterGender == MALE)
-        spriteId = CreateIntroBrendanSprite(DISPLAY_WIDTH + 32, 100);
+        spriteId = CreateIntroBrendanSprite(ANCHO_PANTALLA + 32, 100);
     else
-        spriteId = CreateIntroMaySprite(DISPLAY_WIDTH + 32, 100);
+        spriteId = CreateIntroMaySprite(ANCHO_PANTALLA + 32, 100);
 
     gSprites[spriteId].callback = SpriteCB_PlayerOnBicycle;
     gSprites[spriteId].anims = sAnims_PlayerBicycle;
     gTasks[taskId].tPlayerSpriteId = spriteId;
-    CreateSprite(&sSpriteTemplate_Volbeat, DISPLAY_WIDTH + 32, 80, 4);
+    CreateSprite(&sSpriteTemplate_Volbeat, ANCHO_PANTALLA + 32, 80, 4);
     spriteId = CreateIntroFlygonSprite(-64, 60);
     gSprites[spriteId].callback = SpriteCB_Flygon;
     gTasks[taskId].tFlygonSpriteId = spriteId;
@@ -1695,7 +1695,7 @@ static void Task_Scene3_Load(u8 taskId)
     gTasks[taskId].tZoomDiv = 0;
     gTasks[taskId].tZoomDivSpeed = 0;
     gTasks[taskId].data[3] = 0;
-    PanFadeAndZoomScreen(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, 0, 0);
+    PanFadeAndZoomScreen(ANCHO_PANTALLA / 2, ALTURA_PANTALLA / 2, 0, 0);
     ResetSpriteData();
     FreeAllSpritePalettes();
     BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_WHITEALPHA);
@@ -1719,7 +1719,7 @@ static void Task_Scene3_SpinPokeball(u8 taskId)
         gTasks[taskId].func = Task_Scene3_WaitGroudon;
     }
 
-    PanFadeAndZoomScreen(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, SAFE_DIV(0x10000, gTasks[taskId].tZoomDiv), gTasks[taskId].tAlpha);
+    PanFadeAndZoomScreen(ANCHO_PANTALLA / 2, ALTURA_PANTALLA / 2, SAFE_DIV(0x10000, gTasks[taskId].tZoomDiv), gTasks[taskId].tAlpha);
 
     if (gIntroFrameCounter == TIMER_POKEBALL_FADE)
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_WHITEALPHA);
@@ -1760,8 +1760,8 @@ static void Task_Scene3_LoadGroudon(u8 taskId)
 
 static void Task_Scene3_InitGroudonBg(u8 taskId)
 {
-    SetGpuReg(REG_OFFSET_WIN0H, DISPLAY_WIDTH);
-    SetGpuReg(REG_OFFSET_WIN0V, DISPLAY_HEIGHT);
+    SetGpuReg(REG_OFFSET_WIN0H, ANCHO_PANTALLA);
+    SetGpuReg(REG_OFFSET_WIN0V, ALTURA_PANTALLA);
     SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_ALL);
     SetGpuReg(REG_OFFSET_WINOUT, 0);
     SetGpuReg(REG_OFFSET_BG2CNT, BGCNT_PRIORITY(0)
@@ -1798,11 +1798,11 @@ static void Task_Scene3_NarrowWindow(u8 taskId)
     if (gTasks[taskId].tWinPos != NARROW_HEIGHT)
     {
         gTasks[taskId].tWinPos += 4;
-        SetGpuReg(REG_OFFSET_WIN0V, (gTasks[taskId].tWinPos * 256) - (gTasks[taskId].tWinPos - DISPLAY_HEIGHT));
+        SetGpuReg(REG_OFFSET_WIN0V, (gTasks[taskId].tWinPos * 256) - (gTasks[taskId].tWinPos - ALTURA_PANTALLA));
     }
     else
     {
-        SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(NARROW_HEIGHT, DISPLAY_HEIGHT - NARROW_HEIGHT));
+        SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(NARROW_HEIGHT, ALTURA_PANTALLA - NARROW_HEIGHT));
         gTasks[taskId].func = Task_Scene3_EndNarrowWindow;
     }
 }
@@ -1820,7 +1820,7 @@ static void Task_Scene3_StartGroudon(u8 taskId)
 {
     gTasks[taskId].tState = 0;
     gTasks[taskId].func = Task_Scene3_Groudon;
-    ScanlineEffect_InitWave(0, DISPLAY_HEIGHT, 4, 4, 1, SCANLINE_EFFECT_REG_BG1HOFS, FALSE);
+    IniciaEfectoHorizontal(0, ALTURA_PANTALLA, 4, 4, 1, EFECTO_HORIZONTAL_BG_1_HORIZONTAL, FALSE);
 }
 
 #define tScreenX data[1]
@@ -1932,7 +1932,7 @@ static void Task_Scene3_Groudon(u8 taskId)
         if (!gFundidoPaletas.activo)
         {
             gTasks[taskId].func = Task_Scene3_LoadKyogre;
-            gScanlineEffect.state = 3;
+            gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
         }
         break;
     }
@@ -1959,7 +1959,7 @@ static void CreateGroudonRockSprites(u8 taskId)
 
     for (i = 0; i < (int)ARRAY_COUNT(sGroudonRockData); i++)
     {
-        spriteId = CreateSprite(gAncientPowerRockSpriteTemplate, sGroudonRockData[i][0], DISPLAY_HEIGHT, i);
+        spriteId = CreateSprite(gAncientPowerRockSpriteTemplate, sGroudonRockData[i][0], ALTURA_PANTALLA, i);
         gSprites[spriteId].callback = SpriteCB_GroudonRocks;
         gSprites[spriteId].oam.priority = 0;
         gSprites[spriteId].sRockId = i;
@@ -1989,12 +1989,12 @@ static void SpriteCB_GroudonRocks(struct Sprite *sprite)
         break;
     case 1:
         // Scene zooms in, move rock offscreen
-        if (sprite->x < DISPLAY_WIDTH / 2)
+        if (sprite->x < ANCHO_PANTALLA / 2)
             sprite->x -= 2;
         else
             sprite->x += 2;
 
-        if (sprite->y < DISPLAY_HEIGHT / 2)
+        if (sprite->y < ALTURA_PANTALLA / 2)
             sprite->y -= 2;
         else
             sprite->y += 2;
@@ -2030,7 +2030,7 @@ static void Task_Scene3_LoadKyogre(u8 taskId)
     gTasks[taskId].tDelay = 16;
     gTasks[taskId].tZoom = 256;
     PanFadeAndZoomScreen(gTasks[taskId].tScreenX, gTasks[taskId].tScreenY, gTasks[taskId].tZoom, 0);
-    ScanlineEffect_InitWave(0, DISPLAY_HEIGHT, 4, 4, 1, SCANLINE_EFFECT_REG_BG1VOFS, FALSE);
+    IniciaEfectoHorizontal(0, ALTURA_PANTALLA, 4, 4, 1, EFECTO_HORIZONTAL_BG_1_VERTICAL, FALSE);
 }
 
 static void Task_Scene3_Kyogre(u8 taskId)
@@ -2171,7 +2171,7 @@ static void Task_Scene3_Kyogre(u8 taskId)
         if (!gFundidoPaletas.activo)
         {
             gTasks[taskId].func = Task_Scene3_LoadClouds1;
-            gScanlineEffect.state = 3;
+            gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
         }
         break;
     }
@@ -2264,17 +2264,17 @@ static void SpriteCB_KyogreBubbles(struct Sprite *sprite)
         break;
     case 1:
         // Scene zooms in, move bubbles offscreen
-        if (sprite->x < DISPLAY_WIDTH / 2)
+        if (sprite->x < ANCHO_PANTALLA / 2)
             sprite->x -= 3;
         else
             sprite->x += 3;
 
-        if (sprite->y < DISPLAY_HEIGHT / 2)
+        if (sprite->y < ALTURA_PANTALLA / 2)
             sprite->y -= 3;
         else
             sprite->y += 3;
 
-        if ((u16)(sprite->y - 20) > DISPLAY_HEIGHT - 20)
+        if ((u16)(sprite->y - 20) > ALTURA_PANTALLA - 20)
             DestroySprite(sprite);
         break;
     }
@@ -3102,7 +3102,7 @@ static void SpriteCB_Flygon(struct Sprite *sprite)
     case 0:
         break;
     case 1:
-        if (sprite->x2 + sprite->x < DISPLAY_WIDTH + 64)
+        if (sprite->x2 + sprite->x < ANCHO_PANTALLA + 64)
             sprite->x2 += 8;
         else
             sprite->sState = 2;

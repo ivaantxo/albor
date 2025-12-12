@@ -1,6 +1,6 @@
 #include "global.h"
 #include "battle_anim.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "task.h"
 #include "trig.h"
 #include "constants/rgb.h"
@@ -512,23 +512,23 @@ static void AnimDragonDanceOrb_Step(struct Sprite *sprite)
 // Used by Dragon Dance
 void AnimTask_DragonDanceWaver(u8 taskId)
 {
-    struct ScanlineEffectParams scanlineParams;
+    struct ParametrosEfectoHorizontal parametrosEfectoHorizontal;
     struct Task *task = &gTasks[taskId];
     u32 i;
     u8 y;
     if (GetBattlerSpriteBGPriorityRank(gBattleAnimAttacker) == 1)
     {
-        scanlineParams.dmaDest = &REG_BG1HOFS;
+        parametrosEfectoHorizontal.dmaDest = &REG_BG1HOFS;
         task->data[2] = gBattle_BG1_X;
     }
     else
     {
-        scanlineParams.dmaDest = &REG_BG2HOFS;
+        parametrosEfectoHorizontal.dmaDest = &REG_BG2HOFS;
         task->data[2] = gBattle_BG2_X;
     }
 
-    scanlineParams.dmaControl = SCANLINE_EFFECT_DMACNT_16BIT;
-    scanlineParams.initState = 1;
+    parametrosEfectoHorizontal.bitsDMA = EFECTO_HORIZONTAL_DMA_16;
+    parametrosEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_ACTIVO;
     y = GetBattlerYCoordWithElevation(gBattleAnimAttacker);
     task->data[3] = y - 32;
     task->data[4] = y + 32;
@@ -537,11 +537,11 @@ void AnimTask_DragonDanceWaver(u8 taskId)
 
     for (i = task->data[3]; i <= task->data[4]; i++)
     {
-        gScanlineEffectRegBuffers[0][i] = task->data[2];
-        gScanlineEffectRegBuffers[1][i] = task->data[2];
+        gRegistrosBuffersEfectoHorizontal[0][i] = task->data[2];
+        gRegistrosBuffersEfectoHorizontal[1][i] = task->data[2];
     }
 
-    ScanlineEffect_SetParams(scanlineParams);
+    EscribeParametrosEfectoHorizontal(parametrosEfectoHorizontal);
     task->func = AnimTask_DragonDanceWaver_Step;
 }
 
@@ -574,7 +574,7 @@ static void AnimTask_DragonDanceWaver_Step(u8 taskId)
         UpdateDragonDanceScanlineEffect(task);
         break;
     case 3:
-        gScanlineEffect.state = 3;
+        gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
         task->data[0]++;
         break;
     case 4:
@@ -589,7 +589,7 @@ static void UpdateDragonDanceScanlineEffect(struct Task *task)
     u32 i;
     for (i = task->data[3]; i <= task->data[4]; i++)
     {
-        gScanlineEffectRegBuffers[gScanlineEffect.srcBuffer][i] = ((gSineTable[sineIndex] * task->data[6]) >> 7) + task->data[2];
+        gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = ((gSineTable[sineIndex] * task->data[6]) >> 7) + task->data[2];
         sineIndex = (sineIndex + 8) & 0xFF;
     }
 

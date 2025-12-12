@@ -10,7 +10,7 @@
 #include "palette.h"
 #include "random.h"
 #include "reshow_battle_screen.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "sound.h"
 #include "trig.h"
 #include "util.h"
@@ -3796,9 +3796,9 @@ static void AnimTranslateLinearSingleSineWave_Step(struct Sprite *sprite)
             destroy = TRUE;
     }
 
-    if (sprite->x + sprite->x2 > DISPLAY_WIDTH + 16
+    if (sprite->x + sprite->x2 > ANCHO_PANTALLA + 16
      || sprite->x + sprite->x2 < -16
-     || sprite->y + sprite->y2 > DISPLAY_HEIGHT
+     || sprite->y + sprite->y2 > ALTURA_PANTALLA
      || sprite->y + sprite->y2 < -16)
         destroy = TRUE;
 
@@ -4109,7 +4109,7 @@ bool8 moveAlongLinearPath(struct Sprite *sprite)
     if (xEndPos == 0)
         xEndPos = -32;
     else if (xEndPos == 255)
-        xEndPos = DISPLAY_WIDTH + 32;
+        xEndPos = ANCHO_PANTALLA + 32;
 
     yEndPos_2 = yEndPos - yStartPos;
     r0 = xEndPos - xStartPos;
@@ -4655,7 +4655,7 @@ static void AnimFlyingParticle(struct Sprite *sprite)
     {
         sprite->data[4] = 1;
         sprite->data[2] = -gBattleAnimArgs[3];
-        sprite->x = DISPLAY_WIDTH + 16;
+        sprite->x = ANCHO_PANTALLA + 16;
     }
 
     sprite->data[1] = gBattleAnimArgs[1];
@@ -4694,7 +4694,7 @@ static void AnimFlyingParticle_Step(struct Sprite *sprite)
     sprite->data[0] = (sprite->data[3] * a) & 0xFF;
     if (!sprite->data[4])
     {
-        if (sprite->x2 + sprite->x < DISPLAY_WIDTH + 8)
+        if (sprite->x2 + sprite->x < ANCHO_PANTALLA + 8)
             return;
     }
     else
@@ -6385,7 +6385,7 @@ static void AnimWavyMusicNotes_Step(struct Sprite *sprite)
     sprite->y2 = Sin(trigIdx, 15);
 
     y = sprite->y;
-    if (sprite->x < -16 || sprite->x > DISPLAY_WIDTH + 16 || y < -16 || y > DISPLAY_HEIGHT - 32)
+    if (sprite->x < -16 || sprite->x > ANCHO_PANTALLA + 16 || y < -16 || y > ALTURA_PANTALLA - 32)
     {
         DestroySpriteAndMatrix(sprite);
     }

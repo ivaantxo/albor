@@ -85,7 +85,7 @@ static const u32 sRegionMapCityZoomTiles_Gfx[] = INCBIN_U32("graphics/pokenav/re
 static const struct BgTemplate sRegionMapBgTemplates[3] =
 {
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 1,
         .mapBaseIndex = 0x1F,
         .screenSize = FONDO_32x32,
@@ -94,7 +94,7 @@ static const struct BgTemplate sRegionMapBgTemplates[3] =
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 2,
         .mapBaseIndex = 0x06,
         .screenSize = FONDO_32x32,
@@ -103,7 +103,7 @@ static const struct BgTemplate sRegionMapBgTemplates[3] =
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 0,
         .mapBaseIndex = 0x00,
         .screenSize = FONDO_32x64,
@@ -135,7 +135,7 @@ static const struct SpritePalette sCityZoomTilesSpritePalette[] =
 
 static const struct WindowTemplate sMapSecInfoWindowTemplate =
 {
-    .bg = 1,
+    .bg = FONDO_1,
     .tilemapLeft = 17,
     .tilemapTop = 4,
     .width = 12,

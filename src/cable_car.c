@@ -12,7 +12,7 @@
 #include "overworld.h"
 #include "palette.h"
 #include "random.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "script.h"
 #include "sound.h"
 #include "sprite.h"
@@ -89,7 +89,7 @@ static void DrawNextGroundSegmentGoingDown(void);
 
 static const struct BgTemplate sBgTemplates[4] = {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 28,
         .screenSize = FONDO_32x32,
@@ -98,7 +98,7 @@ static const struct BgTemplate sBgTemplates[4] = {
         .baseTile = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 0,
         .mapBaseIndex = 29,
         .screenSize = FONDO_32x32,
@@ -107,7 +107,7 @@ static const struct BgTemplate sBgTemplates[4] = {
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 0,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,
@@ -116,7 +116,7 @@ static const struct BgTemplate sBgTemplates[4] = {
         .baseTile = 0
     },
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 0,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -247,7 +247,7 @@ static void CB2_LoadCableCar(void)
     default:
         SetVBlankCallback(NULL);
         SetBgRegs(FALSE);
-        ScanlineEffect_Stop();
+        ParaEfectoHorizontal();
         DmaFillLarge16(3, 0, (void *)VRAM, VRAM_SIZE, 0x1000);
         DmaFill32Defvars(3, 0, (void *)OAM, OAM_SIZE);
         DmaFill16Defvars(3, 0, (void *)PLTT, PLTT_SIZE);
@@ -665,7 +665,7 @@ static void SpriteCB_HikerGoingUp(struct Sprite *sprite)
             break;
         }
 
-        if (sprite->y > DISPLAY_HEIGHT)
+        if (sprite->y > ALTURA_PANTALLA)
             DestroySprite(sprite);
     }
 }

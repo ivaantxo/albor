@@ -39,6 +39,15 @@ struct BgTemplate
     u16 baseTile:10;
 };
 
+enum Fondos
+{
+    FONDO_0,
+    FONDO_1,
+    FONDO_2,
+    FONDO_3,
+    NUMERO_FONDOS
+};
+
 enum ModosPaletas
 {
     MODO_PALETAS_4BPP,

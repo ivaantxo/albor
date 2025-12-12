@@ -80,7 +80,7 @@ static const u16 sMonRibbonListUi_Pal[] = INCBIN_U16("graphics/pokenav/ribbons/l
 static const struct BgTemplate sMonRibbonListBgTemplates[] =
 {
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 1,
         .mapBaseIndex = 0x06,
         .screenSize = FONDO_32x32,
@@ -88,7 +88,7 @@ static const struct BgTemplate sMonRibbonListBgTemplates[] =
         .priority = 2,
         .baseTile = 0
     }, {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 2,
         .mapBaseIndex = 0x07,
         .screenSize = FONDO_32x32,
@@ -111,7 +111,7 @@ static const LoopedTask sRibbonsMonMenuLoopTaskFuncs[] =
 
 static const struct WindowTemplate sRibbonsMonListWindowTemplate =
 {
-    .bg = 1,
+    .bg = FONDO_1,
     .tilemapLeft = 1,
     .tilemapTop = 6,
     .width = 7,

@@ -77,7 +77,7 @@ static const u8 sTextSpeedFrameDelays[] =
 static const struct WindowTemplate sStandardTextBox_WindowTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 2,
         .tilemapTop = 15,
         .width = 27,
@@ -90,7 +90,7 @@ static const struct WindowTemplate sStandardTextBox_WindowTemplates[] =
 
 static const struct WindowTemplate sYesNo_WindowTemplates =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 21,
     .tilemapTop = 9,
     .width = 5,

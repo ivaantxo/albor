@@ -441,7 +441,7 @@ static const struct IntroCreditsSpriteMetadata sSpriteMetadata_HouseSilhouette[]
 
 static const struct OamData sOamData_Player =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .shape = SPRITE_SHAPE(64x64),
     .size = SPRITE_SIZE(64x64),
     .priority = 1
@@ -485,7 +485,7 @@ static const struct SpriteTemplate sSpriteTemplate_May =
 
 static const struct OamData sOamData_Bicycle =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .shape = SPRITE_SHAPE(64x32),
     .size = SPRITE_SIZE(64x32),
     .priority = 1
@@ -529,7 +529,7 @@ static const struct SpriteTemplate sSpriteTemplate_MayBicycle =
 
 static const struct OamData sOamData_Flygon =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .shape = SPRITE_SHAPE(64x64),
     .size = SPRITE_SIZE(64x64),
     .priority = 1

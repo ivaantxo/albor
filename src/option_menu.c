@@ -6,7 +6,7 @@
 #include "main.h"
 #include "menu.h"
 #include "palette.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "sprite.h"
 #include "strings.h"
 #include "task.h"
@@ -83,7 +83,7 @@ static const u8 *const sOptionMenuItemsNames[MENUITEM_COUNT] =
 static const struct WindowTemplate sOptionMenuWinTemplates[] =
 {
     [WIN_HEADER] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 2,
         .tilemapTop = 1,
         .width = 26,
@@ -92,7 +92,7 @@ static const struct WindowTemplate sOptionMenuWinTemplates[] =
         .baseBlock = 2
     },
     [WIN_OPTIONS] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 2,
         .tilemapTop = 5,
         .width = 26,
@@ -106,7 +106,7 @@ static const struct WindowTemplate sOptionMenuWinTemplates[] =
 static const struct BgTemplate sOptionMenuBgTemplates[] =
 {
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 1,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,
@@ -115,7 +115,7 @@ static const struct BgTemplate sOptionMenuBgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 1,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -182,7 +182,7 @@ void CB2_InitOptionMenu(void)
         break;
     case 2:
         ResetPaletteFade();
-        ScanlineEffect_Stop();
+        ParaEfectoHorizontal();
         ResetTasks();
         ResetSpriteData();
         gMain.state++;
@@ -356,7 +356,7 @@ static void Task_OptionMenuFadeOut(u8 taskId)
 
 static void HighlightOptionMenuItem(u8 index)
 {
-    SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(16, DISPLAY_WIDTH - 16));
+    SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(16, ANCHO_PANTALLA - 16));
     SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(index * 16 + 40, index * 16 + 56));
 }
 

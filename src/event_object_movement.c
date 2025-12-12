@@ -8576,10 +8576,10 @@ static void UpdateObjectEventOffscreen(struct ObjectEvent *objectEvent, struct S
     y2 = y;
     y2 += graphicsInfo->height;
 
-    if ((s16)x >= DISPLAY_WIDTH + 16 || (s16)x2 < -16)
+    if ((s16)x >= ANCHO_PANTALLA + 16 || (s16)x2 < -16)
         objectEvent->offScreen = TRUE;
 
-    if ((s16)y >= DISPLAY_HEIGHT + 16 || (s16)y2 < -16)
+    if ((s16)y >= ALTURA_PANTALLA + 16 || (s16)y2 < -16)
         objectEvent->offScreen = TRUE;
 }
 
@@ -9892,9 +9892,9 @@ void UpdateObjectEventSpriteInvisibility(struct Sprite *sprite, bool8 invisible)
     x2 = x - (sprite->centerToCornerVecX >> 1);
     y2 = y - (sprite->centerToCornerVecY >> 1);
 
-    if ((s16)x >= DISPLAY_WIDTH + 16 || x2 < -16)
+    if ((s16)x >= ANCHO_PANTALLA + 16 || x2 < -16)
         sprite->invisible = TRUE;
-    if ((s16)y >= DISPLAY_HEIGHT + 16 || y2 < -16)
+    if ((s16)y >= ALTURA_PANTALLA + 16 || y2 < -16)
         sprite->invisible = TRUE;
 }
 
@@ -10206,14 +10206,14 @@ u8 MovementAction_FlyUp_Step1(struct ObjectEvent *objectEvent, struct Sprite *sp
 {
     sprite->y2 -= 8;
 
-    if(sprite->y2 == -DISPLAY_HEIGHT)
+    if(sprite->y2 == -ALTURA_PANTALLA)
         sprite->sActionFuncId++;
     return FALSE;
 }
 
 u8 MovementAction_FlyDown_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
-    sprite->y2 = -DISPLAY_HEIGHT;
+    sprite->y2 = -ALTURA_PANTALLA;
     sprite->sActionFuncId++;
     return FALSE;
 }

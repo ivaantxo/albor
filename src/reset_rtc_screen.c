@@ -13,7 +13,7 @@
 #include "strings.h"
 #include "task.h"
 #include "text.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "bg.h"
 #include "window.h"
 #include "gpu_regs.h"
@@ -71,7 +71,7 @@ static void InitResetRtcScreenBgAndWindows(void);
 static const struct BgTemplate sBgTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -84,7 +84,7 @@ static const struct BgTemplate sBgTemplates[] =
 static const struct WindowTemplate sWindowTemplates[] =
 {
     [WIN_TIME] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 1,
         .width = 19,
@@ -93,7 +93,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .baseBlock = 0x155
     },
     [WIN_MSG] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 2,
         .tilemapTop = 15,
         .width = 27,
@@ -105,7 +105,7 @@ static const struct WindowTemplate sWindowTemplates[] =
 };
 
 static const struct WindowTemplate sInputTimeWindow = {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 4,
     .tilemapTop = 9,
     .width = 21,
@@ -519,8 +519,8 @@ void CB2_InitResetRtcScreen(void)
     DmaFillLarge16(3, 0, (u8 *)VRAM, VRAM_SIZE, 0x1000);
     ResetOamRange(0, 128);
     LoadOam();
-    ScanlineEffect_Stop();
-    ScanlineEffect_Clear();
+    ParaEfectoHorizontal();
+    LimpiaEfectoHorizontal();
     ResetSpriteData();
     ResetTasks();
     ResetPaletteFade();

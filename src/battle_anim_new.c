@@ -7347,7 +7347,7 @@ void AnimEmboarCarga_Step(struct Sprite *sprite)
     sprite->x = sprite->data[4] >> 4;
     sprite->y = sprite->data[5] >> 4;
 
-    if (sprite->x > DISPLAY_WIDTH + 45 || sprite->x < -45
+    if (sprite->x > ANCHO_PANTALLA + 45 || sprite->x < -45
      || sprite->y > 157 || sprite->y < -45)
         DestroySpriteAndMatrix(sprite);
 }

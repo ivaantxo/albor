@@ -4,7 +4,7 @@
 #include "palette.h"
 #include "pokemon.h"
 #include "main.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "text.h"
 #include "gpu_regs.h"
 #include "bg.h"
@@ -42,7 +42,7 @@ static void CB2_ReshowBattleScreenAfterMenu(void)
     switch (gBattleScripting.reshowMainState)
     {
     case 0:
-        ScanlineEffect_Clear();
+        LimpiaEfectoHorizontal();
         BattleInitBgsAndWindows();
         SetBgAttribute(1, BG_ATTR_CHARBASEINDEX, 0);
         SetBgAttribute(2, BG_ATTR_CHARBASEINDEX, 0);

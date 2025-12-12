@@ -48,7 +48,7 @@ static void PrintRegionMapSecName(void);
 
 static const struct BgTemplate sFieldRegionMapBgTemplates[] = {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -56,7 +56,7 @@ static const struct BgTemplate sFieldRegionMapBgTemplates[] = {
         .priority = 0,
         .baseTile = 0
     }, {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 2,
         .mapBaseIndex = 28,
         .screenSize = FONDO_32x64,
@@ -69,7 +69,7 @@ static const struct BgTemplate sFieldRegionMapBgTemplates[] = {
 static const struct WindowTemplate sFieldRegionMapWindowTemplates[] =
 {
     [WIN_MAPSEC_NAME] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 17,
         .tilemapTop = 17,
         .width = 12,
@@ -78,7 +78,7 @@ static const struct WindowTemplate sFieldRegionMapWindowTemplates[] =
         .baseBlock = 1
     },
     [WIN_TITLE] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 22,
         .tilemapTop = 1,
         .width = 7,

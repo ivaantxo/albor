@@ -21,7 +21,7 @@
 #include "string_util.h"
 #include "task.h"
 #include "text.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "util.h"
 #include "dma3.h"
 #include "battle_message.h"
@@ -744,7 +744,7 @@ static const u8 *const sRoundResultTexts[] =
 static const struct BgTemplate sContestBgTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 0x18,
         .screenSize = FONDO_32x64,
@@ -753,7 +753,7 @@ static const struct BgTemplate sContestBgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 2,
         .mapBaseIndex = 0x1E,
         .screenSize = FONDO_32x64,
@@ -762,7 +762,7 @@ static const struct BgTemplate sContestBgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 0,
         .mapBaseIndex = 0x1C,
         .screenSize = FONDO_32x64,
@@ -771,7 +771,7 @@ static const struct BgTemplate sContestBgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 0,
         .mapBaseIndex = 0x1A,
         .screenSize = FONDO_32x32,
@@ -784,7 +784,7 @@ static const struct BgTemplate sContestBgTemplates[] =
 static const struct WindowTemplate sContestWindowTemplates[] =
 {
     [WIN_CONTESTANT0_NAME] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 18,
         .tilemapTop = 0,
         .width = 12,
@@ -793,7 +793,7 @@ static const struct WindowTemplate sContestWindowTemplates[] =
         .baseBlock = 0x200
     },
     [WIN_CONTESTANT1_NAME] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 18,
         .tilemapTop = 5,
         .width = 12,
@@ -802,7 +802,7 @@ static const struct WindowTemplate sContestWindowTemplates[] =
         .baseBlock = 0x218
     },
     [WIN_CONTESTANT2_NAME] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 18,
         .tilemapTop = 10,
         .width = 12,
@@ -811,7 +811,7 @@ static const struct WindowTemplate sContestWindowTemplates[] =
         .baseBlock = 0x230
     },
     [WIN_CONTESTANT3_NAME] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 18,
         .tilemapTop = 15,
         .width = 12,
@@ -820,7 +820,7 @@ static const struct WindowTemplate sContestWindowTemplates[] =
         .baseBlock = 0x248
     },
     [WIN_GENERAL_TEXT] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 15,
         .width = 17,
@@ -829,7 +829,7 @@ static const struct WindowTemplate sContestWindowTemplates[] =
         .baseBlock = 0x260
     },
     [WIN_MOVE0] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 31,
         .width = 9,
@@ -838,7 +838,7 @@ static const struct WindowTemplate sContestWindowTemplates[] =
         .baseBlock = 0x2A4
     },
     [WIN_MOVE1] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 33,
         .width = 9,
@@ -847,7 +847,7 @@ static const struct WindowTemplate sContestWindowTemplates[] =
         .baseBlock = 0x2B6
     },
     [WIN_MOVE2] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 35,
         .width = 9,
@@ -856,7 +856,7 @@ static const struct WindowTemplate sContestWindowTemplates[] =
         .baseBlock = 0x2C8
     },
     [WIN_MOVE3] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 37,
         .width = 9,
@@ -865,7 +865,7 @@ static const struct WindowTemplate sContestWindowTemplates[] =
         .baseBlock = 0x2DA
     },
     [WIN_SLASH] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 16,
         .tilemapTop = 31,
         .width = 1,
@@ -874,7 +874,7 @@ static const struct WindowTemplate sContestWindowTemplates[] =
         .baseBlock = 0x2EC
     },
     [WIN_MOVE_DESCRIPTION] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 11,
         .tilemapTop = 35,
         .width = 18,
@@ -1223,7 +1223,7 @@ void CB2_StartContest(void)
         InitContestInfoBgs();
         InitContestWindows();
         SetupContestGpuRegs();
-        ScanlineEffect_Clear();
+        LimpiaEfectoHorizontal();
         ResetPaletteFade();
         gFundidoPaletas.transferenciaBufferDeshabilitada = TRUE;
         ResetSpriteData();
@@ -1376,7 +1376,7 @@ static void VBlankCB_Contest(void)
     TransferPlttBuffer();
     LoadOam();
     ProcessSpriteCopyRequests();
-    ScanlineEffect_InitHBlankDmaTransfer();
+    IniciaTransferenciaDMAEnHblankEfectoHorizontal();
 }
 
 static void Task_DisplayAppealNumberText(u8 taskId)
@@ -1430,8 +1430,8 @@ static void Task_ShowMoveSelectScreen(u8 taskId)
     u32 i;
     u8 moveName[32];
 
-    gBattle_BG0_Y = DISPLAY_HEIGHT;
-    gBattle_BG2_Y = DISPLAY_HEIGHT;
+    gBattle_BG0_Y = ALTURA_PANTALLA;
+    gBattle_BG2_Y = ALTURA_PANTALLA;
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
@@ -2495,7 +2495,7 @@ static void Task_WaitForOutOfTimeMsg(u8 taskId)
     {
         SetBgForCurtainDrop();
         gBattle_BG1_X = 0;
-        gBattle_BG1_Y = DISPLAY_HEIGHT;
+        gBattle_BG1_Y = ALTURA_PANTALLA;
         PlaySE12WithPanning(SE_CONTEST_CURTAIN_FALL, 0);
         gTasks[taskId].data[0] = 0;
         gTasks[taskId].func = Task_DropCurtainAtAppealsEnd;
@@ -4538,8 +4538,8 @@ static void SetBgForCurtainDrop(void)
     SetGpuReg(REG_OFFSET_BG0CNT, bg0Cnt);
     SetGpuReg(REG_OFFSET_BG2CNT, bg2Cnt);
 
-    gBattle_BG1_X = DISPLAY_WIDTH;
-    gBattle_BG1_Y = DISPLAY_HEIGHT;
+    gBattle_BG1_X = ANCHO_PANTALLA;
+    gBattle_BG1_Y = ALTURA_PANTALLA;
     SetGpuReg(REG_OFFSET_BG1HOFS, gBattle_BG1_X);
     SetGpuReg(REG_OFFSET_BG1VOFS, gBattle_BG1_Y);
 
@@ -4584,7 +4584,7 @@ static void UpdateContestantBoxOrder(void)
 static void Task_StartDropCurtainAtRoundEnd(u8 taskId)
 {
     gBattle_BG1_X = 0;
-    gBattle_BG1_Y = DISPLAY_HEIGHT;
+    gBattle_BG1_Y = ALTURA_PANTALLA;
     PlaySE12WithPanning(SE_CONTEST_CURTAIN_FALL, 0);
     gTasks[taskId].func = Task_UpdateCurtainDropAtRoundEnd;
 }
@@ -4637,7 +4637,7 @@ static void Task_ResetForNextRound(u8 taskId)
 
 static void Task_UpdateRaiseCurtainAtRoundEnd(u8 taskId)
 {
-    if ((s16)(gBattle_BG1_Y += 7) > DISPLAY_HEIGHT)
+    if ((s16)(gBattle_BG1_Y += 7) > ALTURA_PANTALLA)
         gTasks[taskId].func = Task_UpdateContestantBoxOrder;
 }
 

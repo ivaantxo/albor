@@ -20,7 +20,7 @@
 #include "strings.h"
 #include "bg.h"
 #include "malloc.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "gpu_regs.h"
 #include "graphics.h"
 #include "item_menu_icons.h"
@@ -55,7 +55,7 @@ static EWRAM_DATA struct BerryTagScreenStruct *sBerryTag = NULL;
 static const struct BgTemplate sBackgroundTemplates[] =
 {
   {
-      .bg = 0,
+      .bg = FONDO_0,
       .charBaseIndex = 0,
       .mapBaseIndex = 31,
       .screenSize = FONDO_32x32,
@@ -64,7 +64,7 @@ static const struct BgTemplate sBackgroundTemplates[] =
       .baseTile = 0
   },
   {
-      .bg = 1,
+      .bg = FONDO_1,
       .charBaseIndex = 0,
       .mapBaseIndex = 30,
       .screenSize = FONDO_32x32,
@@ -73,7 +73,7 @@ static const struct BgTemplate sBackgroundTemplates[] =
       .baseTile = 0
   },
   {
-      .bg = 2,
+      .bg = FONDO_2,
       .charBaseIndex = 0,
       .mapBaseIndex = 29,
       .screenSize = FONDO_32x32,
@@ -82,7 +82,7 @@ static const struct BgTemplate sBackgroundTemplates[] =
       .baseTile = 0
   },
   {
-      .bg = 3,
+      .bg = FONDO_3,
       .charBaseIndex = 0,
       .mapBaseIndex = 28,
       .screenSize = FONDO_32x32,
@@ -103,7 +103,7 @@ static const u8 sTextColors[2][3] =
 static const struct WindowTemplate sWindowTemplates[] =
 {
     [WIN_BERRY_NAME] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 11,
         .tilemapTop = 4,
         .width = 8,
@@ -112,7 +112,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .baseBlock = 69,
     },
     [WIN_SIZE_FIRM] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 11,
         .tilemapTop = 7,
         .width = 18,
@@ -121,7 +121,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .baseBlock = 85,
     },
     [WIN_DESC] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 4,
         .tilemapTop = 14,
         .width = 25,
@@ -130,7 +130,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .baseBlock = 157,
     },
     [WIN_BERRY_TAG] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 2,
         .tilemapTop = 0,
         .width = 8,
@@ -224,7 +224,7 @@ static bool8 InitBerryTagScreen(void)
         gMain.state++;
         break;
     case 1:
-        ScanlineEffect_Stop();
+        ParaEfectoHorizontal();
         gMain.state++;
         break;
     case 2:

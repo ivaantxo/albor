@@ -8,7 +8,7 @@
 #include "palette.h"
 #include "pokenav.h"
 #include "menu_specialized.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "text.h"
 #include "bg.h"
 #include "window.h"
@@ -204,7 +204,7 @@ static const u8 sNatureTextColors[] =
 static const struct BgTemplate sBgTemplates[4] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 2,
         .mapBaseIndex = 0x1F,
         .screenSize = FONDO_32x32,
@@ -213,7 +213,7 @@ static const struct BgTemplate sBgTemplates[4] =
         .baseTile = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 0,
         .mapBaseIndex = 0x1E,
         .screenSize = FONDO_32x32,
@@ -222,7 +222,7 @@ static const struct BgTemplate sBgTemplates[4] =
         .baseTile = 0
     },
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 3,
         .mapBaseIndex = 0x1D,
         .screenSize = FONDO_32x32,
@@ -231,7 +231,7 @@ static const struct BgTemplate sBgTemplates[4] =
         .baseTile = 0x100
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 0,
         .mapBaseIndex = 0x17,
         .screenSize = FONDO_32x32,
@@ -244,7 +244,7 @@ static const struct BgTemplate sBgTemplates[4] =
 static const struct WindowTemplate sWindowTemplates[WIN_COUNT + 1] =
 {
     [WIN_NAME] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 13,
         .tilemapTop = 1,
         .width = 13,
@@ -253,7 +253,7 @@ static const struct WindowTemplate sWindowTemplates[WIN_COUNT + 1] =
         .baseBlock = 1
     },
     [WIN_NATURE] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 0,
         .tilemapTop = 14,
         .width = 11,
@@ -262,7 +262,7 @@ static const struct WindowTemplate sWindowTemplates[WIN_COUNT + 1] =
         .baseBlock = 0x35
     },
     [WIN_TEXT] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 17,
         .width = 28,
@@ -275,7 +275,7 @@ static const struct WindowTemplate sWindowTemplates[WIN_COUNT + 1] =
 
 static const struct WindowTemplate sUsePokeblockYesNoWinTemplate =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 24,
     .tilemapTop = 11,
     .width = 5,
@@ -470,7 +470,7 @@ static void VBlankCB_UsePokeblockMenu(void)
     ProcessSpriteCopyRequests();
     TransferPlttBuffer();
     ConditionGraph_Draw(&sMenu->graph);
-    ScanlineEffect_InitHBlankDmaTransfer();
+    IniciaTransferenciaDMAEnHblankEfectoHorizontal();
 }
 
 static void SetUsePokeblockCallback(void (*func)(void))
@@ -830,8 +830,8 @@ static void CloseUsePokeblockMenu(void)
             sInfo->mainState = 2;
         break;
     case 2:
-        gScanlineEffect.state = 3;
-        ScanlineEffect_InitHBlankDmaTransfer();
+        gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
+        IniciaTransferenciaDMAEnHblankEfectoHorizontal();
         sInfo->mainState++;
         break;
     case 3:

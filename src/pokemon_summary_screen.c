@@ -30,7 +30,7 @@
 #include "pokemon_storage_system.h"
 #include "pokemon_summary_screen.h"
 #include "region_map.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "sound.h"
 #include "sprite.h"
 #include "string_util.h"
@@ -303,7 +303,7 @@ static void CB2_PssChangePokemonNickname(void);
 static const struct BgTemplate sBgTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -312,7 +312,7 @@ static const struct BgTemplate sBgTemplates[] =
         .baseTile = 0,
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 2,
         .mapBaseIndex = 27,
         .screenSize = FONDO_64x32,
@@ -321,7 +321,7 @@ static const struct BgTemplate sBgTemplates[] =
         .baseTile = 0,
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 2,
         .mapBaseIndex = 25,
         .screenSize = FONDO_64x32,
@@ -330,7 +330,7 @@ static const struct BgTemplate sBgTemplates[] =
         .baseTile = 0,
     },
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 2,
         .mapBaseIndex = 29,
         .screenSize = FONDO_64x32,
@@ -371,7 +371,7 @@ static const s8 sMultiBattleOrder[] = {0, 2, 3, 1, 4, 5};
 static const struct WindowTemplate sSummaryTemplate[] =
 {
     [PSS_LABEL_WINDOW_POKEMON_INFO_TITLE] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 0,
         .tilemapTop = 0,
         .width = 11,
@@ -380,7 +380,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .baseBlock = 1,
     },
     [PSS_LABEL_WINDOW_POKEMON_SKILLS_TITLE] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 0,
         .tilemapTop = 0,
         .width = 11,
@@ -389,7 +389,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .baseBlock = 23,
     },
     [PSS_LABEL_WINDOW_BATTLE_MOVES_TITLE] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 0,
         .tilemapTop = 0,
         .width = 11,
@@ -398,7 +398,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .baseBlock = 45,
     },
     [PSS_LABEL_WINDOW_CONTEST_MOVES_TITLE] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 0,
         .tilemapTop = 0,
         .width = 11,
@@ -407,7 +407,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .baseBlock = 67,
     },
     [PSS_LABEL_WINDOW_PROMPT_CANCEL] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 22,
         .tilemapTop = 0,
         .width = 8,
@@ -416,7 +416,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .baseBlock = 89,
     },
     [PSS_LABEL_WINDOW_PROMPT_INFO] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 22,
         .tilemapTop = 0,
         .width = 8,
@@ -425,7 +425,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .baseBlock = 105,
     },
     [PSS_LABEL_WINDOW_PROMPT_SWITCH] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 22,
         .tilemapTop = 0,
         .width = 8,
@@ -434,7 +434,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .baseBlock = 121,
     },
     [PSS_LABEL_WINDOW_UNUSED1] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 11,
         .tilemapTop = 4,
         .width = 0,
@@ -443,7 +443,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .baseBlock = 137,
     },
     [PSS_LABEL_WINDOW_POKEMON_INFO_RENTAL] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 11,
         .tilemapTop = 4,
         .width = 18,
@@ -452,7 +452,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .baseBlock = 137,
     },
     [PSS_LABEL_WINDOW_POKEMON_INFO_TYPE] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 11,
         .tilemapTop = 6,
         .width = 18,
@@ -461,7 +461,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .baseBlock = 173,
     },
     [PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_LEFT] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 10,
         .tilemapTop = 7,
         .width = 6,
@@ -470,7 +470,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .baseBlock = 209,
     },
     [PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_RIGHT] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 22,
         .tilemapTop = 7,
         .width = 5,
@@ -479,7 +479,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .baseBlock = 245,
     },
     [PSS_LABEL_WINDOW_POKEMON_SKILLS_EXP] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 10,
         .tilemapTop = 14,
         .width = 11,
@@ -488,7 +488,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .baseBlock = 275,
     },
     [PSS_LABEL_WINDOW_POKEMON_SKILLS_STATUS] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 0,
         .tilemapTop = 18,
         .width = 6,
@@ -497,7 +497,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .baseBlock = 319,
     },
     [PSS_LABEL_WINDOW_MOVES_POWER_ACC] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 15,
         .width = 9,
@@ -506,7 +506,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .baseBlock = 331,
     },
     [PSS_LABEL_WINDOW_MOVES_APPEAL_JAM] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 15,
         .width = 5,
@@ -515,7 +515,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .baseBlock = 367,
     },
     [PSS_LABEL_WINDOW_PROMPT_RELEARN] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 22,
         .tilemapTop = 2,
         .width = 8,
@@ -524,7 +524,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .baseBlock = 387,
     },
     [PSS_LABEL_WINDOW_PORTRAIT_DEX_NUMBER] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 2,
         .width = 5,
@@ -533,7 +533,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .baseBlock = 403,
     },
     [PSS_LABEL_WINDOW_PORTRAIT_NICKNAME] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 12,
         .width = 9,
@@ -542,7 +542,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
         .baseBlock = 413,
     },
     [PSS_LABEL_WINDOW_PORTRAIT_SPECIES] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 14,
         .width = 9,
@@ -555,7 +555,7 @@ static const struct WindowTemplate sSummaryTemplate[] =
 static const struct WindowTemplate sPageInfoTemplate[] =
 {
     [PSS_DATA_WINDOW_INFO_ORIGINAL_TRAINER] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 11,
         .tilemapTop = 4,
         .width = 11,
@@ -564,7 +564,7 @@ static const struct WindowTemplate sPageInfoTemplate[] =
         .baseBlock = 467,
     },
     [PSS_DATA_WINDOW_INFO_ID] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 22,
         .tilemapTop = 4,
         .width = 7,
@@ -573,7 +573,7 @@ static const struct WindowTemplate sPageInfoTemplate[] =
         .baseBlock = 489,
     },
     [PSS_DATA_WINDOW_INFO_ABILITY] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 11,
         .tilemapTop = 9,
         .width = 18,
@@ -582,7 +582,7 @@ static const struct WindowTemplate sPageInfoTemplate[] =
         .baseBlock = 503,
     },
     [PSS_DATA_WINDOW_INFO_MEMO] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 11,
         .tilemapTop = 14,
         .width = 18,
@@ -594,7 +594,7 @@ static const struct WindowTemplate sPageInfoTemplate[] =
 static const struct WindowTemplate sPageSkillsTemplate[] =
 {
     [PSS_DATA_WINDOW_SKILLS_HELD_ITEM] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 10,
         .tilemapTop = 4,
         .width = 10,
@@ -603,7 +603,7 @@ static const struct WindowTemplate sPageSkillsTemplate[] =
         .baseBlock = 467,
     },
     [PSS_DATA_WINDOW_SKILLS_RIBBON_COUNT] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 20,
         .tilemapTop = 4,
         .width = 10,
@@ -612,7 +612,7 @@ static const struct WindowTemplate sPageSkillsTemplate[] =
         .baseBlock = 487,
     },
     [PSS_DATA_WINDOW_SKILLS_STATS_LEFT] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 16,
         .tilemapTop = 7,
         .width = 6,
@@ -621,7 +621,7 @@ static const struct WindowTemplate sPageSkillsTemplate[] =
         .baseBlock = 507,
     },
     [PSS_DATA_WINDOW_SKILLS_STATS_RIGHT] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 27,
         .tilemapTop = 7,
         .width = 3,
@@ -630,7 +630,7 @@ static const struct WindowTemplate sPageSkillsTemplate[] =
         .baseBlock = 543,
     },
     [PSS_DATA_WINDOW_EXP] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 24,
         .tilemapTop = 14,
         .width = 6,
@@ -642,7 +642,7 @@ static const struct WindowTemplate sPageSkillsTemplate[] =
 static const struct WindowTemplate sPageMovesTemplate[] = // This is used for both battle and contest moves
 {
     [PSS_DATA_WINDOW_MOVE_NAMES] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 15,
         .tilemapTop = 4,
         .width = 9,
@@ -651,7 +651,7 @@ static const struct WindowTemplate sPageMovesTemplate[] = // This is used for bo
         .baseBlock = 467,
     },
     [PSS_DATA_WINDOW_MOVE_PP] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 24,
         .tilemapTop = 4,
         .width = 6,
@@ -660,7 +660,7 @@ static const struct WindowTemplate sPageMovesTemplate[] = // This is used for bo
         .baseBlock = 557,
     },
     [PSS_DATA_WINDOW_MOVE_DESCRIPTION] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 10,
         .tilemapTop = 15,
         .width = 20,
@@ -1230,7 +1230,7 @@ static bool8 LoadGraphics(void)
         gMain.state++;
         break;
     case 1:
-        ScanlineEffect_Stop();
+        ParaEfectoHorizontal();
         gMain.state++;
         break;
     case 2:

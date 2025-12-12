@@ -8,7 +8,7 @@
 #include "main.h"
 #include "malloc.h"
 #include "palette.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "menu.h"
 #include "menu_helpers.h"
 #include "gpu_regs.h"
@@ -490,17 +490,17 @@ static const struct SpriteTemplate sSpriteTemplate_DuoFightPre_KyogreDorsalFin =
     .callback = SpriteCallbackDummy,
 };
 
-static const struct ScanlineEffectParams sScanlineParams_DuoFight_Clouds =
+static const struct ParametrosEfectoHorizontal sScanlineParams_DuoFight_Clouds =
 {
     .dmaDest = &REG_BG1HOFS,
-    .dmaControl = SCANLINE_EFFECT_DMACNT_16BIT,
-    .initState = 1
+    .bitsDMA = EFECTO_HORIZONTAL_DMA_16,
+    .estado = 1
 };
 
 static const struct BgTemplate sBgTemplates_DuoFight[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -509,7 +509,7 @@ static const struct BgTemplate sBgTemplates_DuoFight[] =
         .baseTile = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 0,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,
@@ -518,7 +518,7 @@ static const struct BgTemplate sBgTemplates_DuoFight[] =
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 0,
         .mapBaseIndex = 29,
         .screenSize = FONDO_32x32,
@@ -773,7 +773,7 @@ static const struct SpriteTemplate sSpriteTemplate_DuoFight_KyogreDorsalFin =
 static const struct BgTemplate sBgTemplates_TakesFlight[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 2,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -782,7 +782,7 @@ static const struct BgTemplate sBgTemplates_TakesFlight[] =
         .baseTile = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 0,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,
@@ -791,7 +791,7 @@ static const struct BgTemplate sBgTemplates_TakesFlight[] =
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 1,
         .mapBaseIndex = 29,
         .screenSize = FONDO_64x32,
@@ -863,7 +863,7 @@ static const s8 sTakesFlight_SmokeCoords[MAX_SMOKE][2] =
 static const struct BgTemplate sBgTemplates_Descends[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -872,7 +872,7 @@ static const struct BgTemplate sBgTemplates_Descends[] =
         .baseTile = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 1,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,
@@ -881,7 +881,7 @@ static const struct BgTemplate sBgTemplates_Descends[] =
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 2,
         .mapBaseIndex = 29,
         .screenSize = FONDO_32x32,
@@ -890,7 +890,7 @@ static const struct BgTemplate sBgTemplates_Descends[] =
         .baseTile = 0
     },
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 1,
         .mapBaseIndex = 28,
         .screenSize = FONDO_32x32,
@@ -964,7 +964,7 @@ static const struct SpriteTemplate sSpriteTemplate_Descends_RayquazaTail =
 static const struct BgTemplate sBgTemplates_Charges[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 2,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -973,7 +973,7 @@ static const struct BgTemplate sBgTemplates_Charges[] =
         .baseTile = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 1,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,
@@ -982,7 +982,7 @@ static const struct BgTemplate sBgTemplates_Charges[] =
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 2,
         .mapBaseIndex = 29,
         .screenSize = FONDO_32x32,
@@ -991,7 +991,7 @@ static const struct BgTemplate sBgTemplates_Charges[] =
         .baseTile = 0
     },
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 3,
         .mapBaseIndex = 28,
         .screenSize = FONDO_32x32,
@@ -1257,7 +1257,7 @@ static const struct SpriteTemplate sSpriteTemplate_ChasesAway_KyogreSplash =
 static const struct BgTemplate sBgTemplates_ChasesAway[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 1,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -1266,7 +1266,7 @@ static const struct BgTemplate sBgTemplates_ChasesAway[] =
         .baseTile = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 1,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,
@@ -1275,7 +1275,7 @@ static const struct BgTemplate sBgTemplates_ChasesAway[] =
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 0,
         .mapBaseIndex = 29,
         .screenSize = FONDO_32x32,
@@ -1299,7 +1299,7 @@ static void CB2_InitRayquazaScene(void)
     u32 i;
     SetVBlankHBlankCallbacksToNull();
     ClearScheduledBgCopiesToVram();
-    ScanlineEffect_Stop();
+    ParaEfectoHorizontal();
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
         if (gObjectEvents[i].graphicsId == OBJ_EVENT_GFX_SPECIES(RAYQUAZA))
@@ -1364,8 +1364,8 @@ static void SetWindowsHideVertBorders(void)
 {
     SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_ALL);
     SetGpuReg(REG_OFFSET_WINOUT, 0);
-    SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(0, DISPLAY_WIDTH));
-    SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(24, DISPLAY_HEIGHT - 24));
+    SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(0, ANCHO_PANTALLA));
+    SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(24, ALTURA_PANTALLA - 24));
     gPlttBufferUnfaded[0] = 0;
     gPlttBufferFaded[0] = 0;
 }
@@ -1568,7 +1568,7 @@ static void SpriteCB_DuoFightPre_Kyogre(struct Sprite *sprite)
 static void VBlankCB_DuoFight(void)
 {
     VBlankCB_RayquazaScene();
-    ScanlineEffect_InitHBlankDmaTransfer();
+    IniciaTransferenciaDMAEnHblankEfectoHorizontal();
 }
 
 static void InitDuoFightSceneBgs(void)
@@ -1613,11 +1613,11 @@ static void LoadDuoFightSceneGfx(void)
 static void Task_DuoFightAnim(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
-    ScanlineEffect_Clear();
+    LimpiaEfectoHorizontal();
     InitDuoFightSceneBgs();
     LoadDuoFightSceneGfx();
-    CpuFastFill16(0, gScanlineEffectRegBuffers, sizeof(gScanlineEffectRegBuffers));
-    ScanlineEffect_SetParams(sScanlineParams_DuoFight_Clouds);
+    CpuFastFill16(0, gRegistrosBuffersEfectoHorizontal, sizeof(gRegistrosBuffersEfectoHorizontal));
+    EscribeParametrosEfectoHorizontal(sScanlineParams_DuoFight_Clouds);
     tTimer = 0;
     tHelperTaskId = CreateTask(Task_DuoFight_AnimateClouds, 0);
     if (sRayScene->animId == RAY_ANIM_DUO_FIGHT_PRE)
@@ -1649,33 +1649,33 @@ static void Task_DuoFight_AnimateClouds(u8 taskId)
     {
         if (i <= 47)
         {
-            gScanlineEffectRegBuffers[0][i] = data[0] >> 8;
-            gScanlineEffectRegBuffers[1][i] = data[0] >> 8;
+            gRegistrosBuffersEfectoHorizontal[0][i] = data[0] >> 8;
+            gRegistrosBuffersEfectoHorizontal[1][i] = data[0] >> 8;
         }
         else if (i <= 63)
         {
-            gScanlineEffectRegBuffers[0][i] = data[1] >> 8;
-            gScanlineEffectRegBuffers[1][i] = data[1] >> 8;
+            gRegistrosBuffersEfectoHorizontal[0][i] = data[1] >> 8;
+            gRegistrosBuffersEfectoHorizontal[1][i] = data[1] >> 8;
         }
         else if (i <= 75)
         {
-            gScanlineEffectRegBuffers[0][i] = data[2] >> 8;
-            gScanlineEffectRegBuffers[1][i] = data[2] >> 8;
+            gRegistrosBuffersEfectoHorizontal[0][i] = data[2] >> 8;
+            gRegistrosBuffersEfectoHorizontal[1][i] = data[2] >> 8;
         }
         else if (i <= 83)
         {
-            gScanlineEffectRegBuffers[0][i] = data[3] >> 8;
-            gScanlineEffectRegBuffers[1][i] = data[3] >> 8;
+            gRegistrosBuffersEfectoHorizontal[0][i] = data[3] >> 8;
+            gRegistrosBuffersEfectoHorizontal[1][i] = data[3] >> 8;
         }
         else if (i <= 87)
         {
-            gScanlineEffectRegBuffers[0][i] = data[4] >> 8;
-            gScanlineEffectRegBuffers[1][i] = data[4] >> 8;
+            gRegistrosBuffersEfectoHorizontal[0][i] = data[4] >> 8;
+            gRegistrosBuffersEfectoHorizontal[1][i] = data[4] >> 8;
         }
         else
         {
-            gScanlineEffectRegBuffers[0][i] = data[5] >> 8;
-            gScanlineEffectRegBuffers[1][i] = data[5] >> 8;
+            gRegistrosBuffersEfectoHorizontal[0][i] = data[5] >> 8;
+            gRegistrosBuffersEfectoHorizontal[1][i] = data[5] >> 8;
         }
     }
 
@@ -1731,7 +1731,7 @@ static void Task_HandleDuoFight(u8 taskId)
                 gTasks[tHelperTaskId].data[0] = 0;
                 gTasks[tHelperTaskId].data[2] = data[2];
                 gTasks[tHelperTaskId].data[3] = data[3];
-                ScanlineEffect_Stop();
+                ParaEfectoHorizontal();
                 break;
             }
         }
@@ -1804,7 +1804,7 @@ static void Task_DuoFightEnd(u8 taskId)
         DestroyTask(tHelperTaskId);
         ChangeBgY(1, 0, BG_COORD_SET);
         SetVBlankCallback(NULL);
-        ScanlineEffect_Stop();
+        ParaEfectoHorizontal();
         ResetSpriteData();
         FreeAllSpritePalettes();
         tTimer = 0;
@@ -1867,7 +1867,7 @@ static void SpriteCB_DuoFight_Groudon(struct Sprite *sprite)
 static void DuoFight_SlideGroudonDown(struct Sprite *sprite)
 {
     s16 *data = sprite->data;
-    if (sprite->y <= DISPLAY_HEIGHT)
+    if (sprite->y <= ALTURA_PANTALLA)
     {
         sprite->y += 8;
         gSprites[sprite->sGroudonBodySpriteId].y += 8;
@@ -1972,7 +1972,7 @@ static void SpriteCB_DuoFight_Kyogre(struct Sprite *sprite)
 static void DuoFight_SlideKyogreDown(struct Sprite *sprite)
 {
     s16 *data = sprite->data;
-    if (sprite->y <= DISPLAY_HEIGHT)
+    if (sprite->y <= ALTURA_PANTALLA)
     {
         sprite->y += 8;
         gSprites[sprite->data[0] >> 8].y += 8;

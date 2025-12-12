@@ -130,7 +130,7 @@ static const u8 gText_Unknown[] = _("UNKNOWN");
 static const struct BgTemplate sMatchCallBgTemplates[3] =
 {
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 3,
         .mapBaseIndex = 0x1F,
         .screenSize = FONDO_32x32,
@@ -139,7 +139,7 @@ static const struct BgTemplate sMatchCallBgTemplates[3] =
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 2,
         .mapBaseIndex = 0x06,
         .screenSize = FONDO_32x32,
@@ -148,7 +148,7 @@ static const struct BgTemplate sMatchCallBgTemplates[3] =
         .baseTile = 0x80
     },
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 1,
         .mapBaseIndex = 0x07,
         .screenSize = FONDO_32x32,
@@ -180,7 +180,7 @@ static const LoopedTask sMatchCallLoopTaskFuncs[] =
 
 static const struct WindowTemplate sMatchCallLocationWindowTemplate =
 {
-    .bg = 2,
+    .bg = FONDO_2,
     .tilemapLeft = 0,
     .tilemapTop = 5,
     .width = 11,
@@ -191,7 +191,7 @@ static const struct WindowTemplate sMatchCallLocationWindowTemplate =
 
 static const struct WindowTemplate sMatchCallInfoBoxWindowTemplate =
 {
-    .bg = 2,
+    .bg = FONDO_2,
     .tilemapLeft = 0,
     .tilemapTop = 9,
     .width = 11,
@@ -212,7 +212,7 @@ static const u8 sText_CallingDots[] = _("·{PAUSE 4}·{PAUSE 4}·{PAUSE 4}·{PAU
 
 static const struct WindowTemplate sCallMsgBoxWindowTemplate =
 {
-    .bg = 1,
+    .bg = FONDO_1,
     .tilemapLeft = 1,
     .tilemapTop = 12,
     .width = 28,

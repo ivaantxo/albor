@@ -585,8 +585,8 @@ static void UpdateRainSprite(struct Sprite *sprite)
         sprite->y = sprite->tPosY >> 4;
 
         if (sprite->tActive
-         && (sprite->x >= -8 && sprite->x <= DISPLAY_WIDTH + 8)
-         && sprite->y >= -16 && sprite->y <= DISPLAY_HEIGHT + 16)
+         && (sprite->x >= -8 && sprite->x <= ANCHO_PANTALLA + 8)
+         && sprite->y >= -16 && sprite->y <= ALTURA_PANTALLA + 16)
             sprite->invisible = FALSE;
         else
             sprite->invisible = TRUE;
@@ -1387,9 +1387,9 @@ static void FogHorizontalSpriteCallback(struct Sprite *sprite)
 {
     sprite->y2 = (u8)gSpriteCoordOffsetY;
     sprite->x = gWeatherPtr->fogHScrollPosX + 32 + sprite->tSpriteColumn * 64;
-    if (sprite->x >= DISPLAY_WIDTH + 32)
+    if (sprite->x >= ANCHO_PANTALLA + 32)
     {
-        sprite->x = (DISPLAY_WIDTH * 2) + gWeatherPtr->fogHScrollPosX - (4 - sprite->tSpriteColumn) * 64;
+        sprite->x = (ANCHO_PANTALLA * 2) + gWeatherPtr->fogHScrollPosX - (4 - sprite->tSpriteColumn) * 64;
         sprite->x &= 0x1FF;
     }
 }
@@ -1475,8 +1475,8 @@ void Ash_InitAll(void)
 void Ash_Main(void)
 {
     gWeatherPtr->ashBaseSpritesX = gSpriteCoordOffsetX & 0x1FF;
-    while (gWeatherPtr->ashBaseSpritesX >= DISPLAY_WIDTH)
-        gWeatherPtr->ashBaseSpritesX -= DISPLAY_WIDTH;
+    while (gWeatherPtr->ashBaseSpritesX >= ANCHO_PANTALLA)
+        gWeatherPtr->ashBaseSpritesX -= ANCHO_PANTALLA;
 
     switch (gWeatherPtr->initStep)
     {
@@ -1630,9 +1630,9 @@ static void UpdateAshSprite(struct Sprite *sprite)
 
     sprite->y = gSpriteCoordOffsetY + sprite->tOffsetY;
     sprite->x = gWeatherPtr->ashBaseSpritesX + 32 + sprite->tSpriteColumn * 64;
-    if (sprite->x >= DISPLAY_WIDTH + 32)
+    if (sprite->x >= ANCHO_PANTALLA + 32)
     {
-        sprite->x = gWeatherPtr->ashBaseSpritesX + (DISPLAY_WIDTH * 2) - (4 - sprite->tSpriteColumn) * 64;
+        sprite->x = gWeatherPtr->ashBaseSpritesX + (ANCHO_PANTALLA * 2) - (4 - sprite->tSpriteColumn) * 64;
         sprite->x &= 0x1FF;
     }
 }
@@ -1833,9 +1833,9 @@ static void UpdateFogDiagonalSprite(struct Sprite *sprite)
 {
     sprite->y2 = gWeatherPtr->fogDPosY;
     sprite->x = gWeatherPtr->fogDBaseSpritesX + 32 + sprite->tSpriteColumn * 64;
-    if (sprite->x >= DISPLAY_WIDTH + 32)
+    if (sprite->x >= ANCHO_PANTALLA + 32)
     {
-        sprite->x = gWeatherPtr->fogDBaseSpritesX + (DISPLAY_WIDTH * 2) - (4 - sprite->tSpriteColumn) * 64;
+        sprite->x = gWeatherPtr->fogDBaseSpritesX + (ANCHO_PANTALLA * 2) - (4 - sprite->tSpriteColumn) * 64;
         sprite->x &= 0x1FF;
     }
 }
@@ -2100,9 +2100,9 @@ static void UpdateSandstormSprite(struct Sprite *sprite)
 {
     sprite->y2 = gWeatherPtr->sandstormPosY;
     sprite->x = gWeatherPtr->sandstormBaseSpritesX + 32 + sprite->tSpriteColumn * 64;
-    if (sprite->x >= DISPLAY_WIDTH + 32)
+    if (sprite->x >= ANCHO_PANTALLA + 32)
     {
-        sprite->x = gWeatherPtr->sandstormBaseSpritesX + (DISPLAY_WIDTH * 2) - (4 - sprite->tSpriteColumn) * 64;
+        sprite->x = gWeatherPtr->sandstormBaseSpritesX + (ANCHO_PANTALLA * 2) - (4 - sprite->tSpriteColumn) * 64;
         sprite->x &= 0x1FF;
     }
 }
@@ -2119,7 +2119,7 @@ static void UpdateSandstormSwirlSprite(struct Sprite *sprite)
 
     if (--sprite->y < -48)
     {
-        sprite->y = DISPLAY_HEIGHT + 48;
+        sprite->y = ALTURA_PANTALLA + 48;
         sprite->tRadius = 4;
     }
 

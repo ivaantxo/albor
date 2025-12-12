@@ -611,7 +611,7 @@ void AnimFlyingSandCrescent(struct Sprite *sprite)
     {
         if (gBattleAnimArgs[3] != 0 && GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
         {
-            sprite->x = DISPLAY_WIDTH + 64;
+            sprite->x = ANCHO_PANTALLA + 64;
             gBattleAnimArgs[1] = -gBattleAnimArgs[1];
             sprite->data[5] = 1;
             sprite->oam.matrixNum = ST_OAM_HFLIP;
@@ -638,7 +638,7 @@ void AnimFlyingSandCrescent(struct Sprite *sprite)
 
         if (sprite->data[5] == 0)
         {
-            if (sprite->x + sprite->x2 > DISPLAY_WIDTH + 32)
+            if (sprite->x + sprite->x2 > ANCHO_PANTALLA + 32)
             {
                 sprite->callback = DestroyAnimSprite;
             }

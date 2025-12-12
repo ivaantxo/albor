@@ -4,7 +4,7 @@
 #include "gpu_regs.h"
 #include "graphics.h"
 #include "palette.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "trig.h"
 #include "util.h"
 #include "constants/rgb.h"
@@ -423,7 +423,7 @@ static void AnimTearDrop_Step(struct Sprite *sprite)
 
 void AnimTask_MoveAttackerMementoShadow(u8 taskId)
 {
-    struct ScanlineEffectParams scanlineParams;
+    struct ParametrosEfectoHorizontal parametrosEfectoHorizontal;
     struct BattleAnimBgData animBg;
     u32 i;
     u8 pos;
@@ -452,22 +452,22 @@ void AnimTask_MoveAttackerMementoShadow(u8 taskId)
         task->data[10] = gBattle_BG1_Y;
         SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG1);
         FillPalette(RGB_BLACK, BG_PLTT_ID(animBg.paletteId), PLTT_SIZE_4BPP);
-        scanlineParams.dmaDest = &REG_BG1VOFS;
+        parametrosEfectoHorizontal.dmaDest = &REG_BG1VOFS;
         var0 = WINOUT_WIN01_BG1;
-        gBattle_BG2_X += DISPLAY_WIDTH;
+        gBattle_BG2_X += ANCHO_PANTALLA;
     }
     else
     {
         task->data[10] = gBattle_BG2_Y;
         SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG2);
         FillPalette(RGB_BLACK, BG_PLTT_ID(9), PLTT_SIZE_4BPP);
-        scanlineParams.dmaDest = &REG_BG2VOFS;
+        parametrosEfectoHorizontal.dmaDest = &REG_BG2VOFS;
         var0 = WINOUT_WIN01_BG2;
-        gBattle_BG1_X += DISPLAY_WIDTH;
+        gBattle_BG1_X += ANCHO_PANTALLA;
     }
 
-    scanlineParams.dmaControl = SCANLINE_EFFECT_DMACNT_16BIT;
-    scanlineParams.initState = 1;
+    parametrosEfectoHorizontal.bitsDMA = EFECTO_HORIZONTAL_DMA_16;
+    parametrosEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_ACTIVO;
     task->data[11] = 0;
     task->data[12] = 16;
     task->data[0] = 0;
@@ -476,15 +476,15 @@ void AnimTask_MoveAttackerMementoShadow(u8 taskId)
     SetAllBattlersSpritePriority(3);
     for (i = 0; i < 112; i++)
     {
-        gScanlineEffectRegBuffers[0][i] = task->data[10];
-        gScanlineEffectRegBuffers[1][i] = task->data[10];
+        gRegistrosBuffersEfectoHorizontal[0][i] = task->data[10];
+        gRegistrosBuffersEfectoHorizontal[1][i] = task->data[10];
     }
 
-    ScanlineEffect_SetParams(scanlineParams);
+    EscribeParametrosEfectoHorizontal(parametrosEfectoHorizontal);
     SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WINOBJ_BG_ALL | WINOUT_WINOBJ_OBJ | WINOUT_WINOBJ_CLR | (var0 ^ (WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR)));
     SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR | WININ_WIN1_BG_ALL | WININ_WIN1_OBJ | WININ_WIN1_CLR);
     gBattle_WIN0H = (task->data[14] << 8) | task->data[15];
-    gBattle_WIN0V = DISPLAY_HEIGHT;
+    gBattle_WIN0V = ALTURA_PANTALLA;
 
     task->func = AnimTask_MoveAttackerMementoShadow_Step;
 }
@@ -538,7 +538,7 @@ static void AnimTask_MoveAttackerMementoShadow_Step(u8 taskId)
             task->data[0]++;
         break;
     case 3:
-        gScanlineEffect.state = 3;
+        gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
         task->data[0]++;
         break;
     case 4:
@@ -550,7 +550,7 @@ static void AnimTask_MoveAttackerMementoShadow_Step(u8 taskId)
 void AnimTask_MoveTargetMementoShadow(u8 taskId)
 {
     struct BattleAnimBgData animBg;
-    struct ScanlineEffectParams scanlineParams;
+    struct ParametrosEfectoHorizontal parametrosEfectoHorizontal;
     u8 x;
     u32 i;
     struct Task *task = &gTasks[taskId];
@@ -562,12 +562,12 @@ void AnimTask_MoveTargetMementoShadow(u8 taskId)
         if (task->data[3] == 1)
         {
             SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG1);
-            gBattle_BG2_X += DISPLAY_WIDTH;
+            gBattle_BG2_X += ANCHO_PANTALLA;
         }
         else
         {
             SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG2);
-            gBattle_BG1_X += DISPLAY_WIDTH;
+            gBattle_BG1_X += ANCHO_PANTALLA;
         }
 
         task->data[0]++;
@@ -609,19 +609,19 @@ void AnimTask_MoveTargetMementoShadow(u8 taskId)
         break;
     case 3:
         if (task->data[3] == 1)
-            scanlineParams.dmaDest = &REG_BG1VOFS;
+            parametrosEfectoHorizontal.dmaDest = &REG_BG1VOFS;
         else
-            scanlineParams.dmaDest = &REG_BG2VOFS;
+            parametrosEfectoHorizontal.dmaDest = &REG_BG2VOFS;
 
         for (i = 0; i < 112; i++)
         {
-            gScanlineEffectRegBuffers[0][i] = task->data[10] + (159 - i);
-            gScanlineEffectRegBuffers[1][i] = task->data[10] + (159 - i);
+            gRegistrosBuffersEfectoHorizontal[0][i] = task->data[10] + (159 - i);
+            gRegistrosBuffersEfectoHorizontal[1][i] = task->data[10] + (159 - i);
         }
 
-        scanlineParams.dmaControl = SCANLINE_EFFECT_DMACNT_16BIT;
-        scanlineParams.initState = 1;
-        ScanlineEffect_SetParams(scanlineParams);
+        parametrosEfectoHorizontal.bitsDMA = EFECTO_HORIZONTAL_DMA_16;
+        parametrosEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_ACTIVO;
+        EscribeParametrosEfectoHorizontal(parametrosEfectoHorizontal);
         task->data[0]++;
         break;
     case 4:
@@ -632,7 +632,7 @@ void AnimTask_MoveTargetMementoShadow(u8 taskId)
 
         SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR | WININ_WIN1_BG_ALL | WININ_WIN1_OBJ | WININ_WIN1_CLR);
         gBattle_WIN0H = (task->data[14] << 8) | task->data[15];
-        gBattle_WIN0V = DISPLAY_HEIGHT;
+        gBattle_WIN0V = ALTURA_PANTALLA;
 
         task->data[0] = 0;
         task->data[1] = 0;
@@ -703,7 +703,7 @@ static void AnimTask_MoveTargetMementoShadow_Step(u8 taskId)
         }
         break;
     case 3:
-        gScanlineEffect.state = 3;
+        gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
         task->data[0]++;
         break;
     case 4:
@@ -731,7 +731,7 @@ static void DoMementoShadowEffect(struct Task *task)
 
         for (i = 0; i < task->data[4]; i++)
         {
-            gScanlineEffectRegBuffers[gScanlineEffect.srcBuffer][i] = task->data[10] - (i - 159);
+            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = task->data[10] - (i - 159);
         }
 
         for (i = task->data[4]; i <= task->data[5]; i++)
@@ -739,7 +739,7 @@ static void DoMementoShadowEffect(struct Task *task)
             if (i >= 0)
             {
                 s16 var3 = (var1 >> 8) - i;
-                gScanlineEffectRegBuffers[gScanlineEffect.srcBuffer][i] = var3 + task->data[10];
+                gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = var3 + task->data[10];
             }
 
             var1 += var0;
@@ -750,7 +750,7 @@ static void DoMementoShadowEffect(struct Task *task)
         {
             if (i >= 0)
             {
-                gScanlineEffectRegBuffers[gScanlineEffect.srcBuffer][i] = var4;
+                gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = var4;
                 var4--;
             }
         }
@@ -760,8 +760,8 @@ static void DoMementoShadowEffect(struct Task *task)
         var4 = task->data[10] + 159;
         for (i = 0; i < 112; i++)
         {
-            gScanlineEffectRegBuffers[0][i] = var4;
-            gScanlineEffectRegBuffers[1][i] = var4;
+            gRegistrosBuffersEfectoHorizontal[0][i] = var4;
+            gRegistrosBuffersEfectoHorizontal[1][i] = var4;
             var4--;
         }
     }

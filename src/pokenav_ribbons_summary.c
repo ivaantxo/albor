@@ -156,7 +156,7 @@ static const u32 sRibbonIconsBig_Gfx[] = INCBIN_U32("graphics/pokenav/ribbons/ic
 static const struct BgTemplate sBgTemplates[] =
 {
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 3,
         .mapBaseIndex = 0x07,
         .screenSize = FONDO_32x32,
@@ -165,7 +165,7 @@ static const struct BgTemplate sBgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 1,
         .mapBaseIndex = 0x06,
         .screenSize = FONDO_32x32,
@@ -785,7 +785,7 @@ static u32 LoopedTask_ShrinkExpandedRibbon(s32 state)
 
 static const struct WindowTemplate sRibbonCountWindowTemplate =
 {
-    .bg = 2,
+    .bg = FONDO_2,
     .tilemapLeft = 12,
     .tilemapTop = 13,
     .width = 16,
@@ -849,7 +849,7 @@ static void PrintRibbonNameAndDescription(struct Pokenav_RibbonsSummaryMenu *men
 
 static const struct WindowTemplate sRibbonSummaryMonNameWindowTemplate =
 {
-    .bg = 2,
+    .bg = FONDO_2,
     .tilemapLeft = 14,
     .tilemapTop = 1,
     .width = 13,
@@ -904,7 +904,7 @@ static void PrintRibbbonsSummaryMonInfo(struct Pokenav_RibbonsSummaryMenu *menu)
 static const struct WindowTemplate sRibbonMonListIndexWindowTemplate[] =
 {
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 1,
         .tilemapTop = 5,
         .width = 7,

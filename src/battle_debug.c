@@ -5,7 +5,7 @@
 #include "main.h"
 #include "menu.h"
 #include "menu_helpers.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "palette.h"
 #include "party_menu.h"
 #include "pokemon_icon.h"
@@ -687,7 +687,7 @@ static const struct ListMenuTemplate sSecondaryListTemplate =
 
 static const struct WindowTemplate sMainListWindowTemplate =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 1,
     .tilemapTop = 3,
     .width = 9,
@@ -698,7 +698,7 @@ static const struct WindowTemplate sMainListWindowTemplate =
 
 static const struct WindowTemplate sSecondaryListWindowTemplate =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 12,
     .tilemapTop = 3,
     .width = 20,
@@ -709,7 +709,7 @@ static const struct WindowTemplate sSecondaryListWindowTemplate =
 
 static const struct WindowTemplate sModifyWindowTemplate =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 25,
     .tilemapTop = 2,
     .width = 4,
@@ -720,7 +720,7 @@ static const struct WindowTemplate sModifyWindowTemplate =
 
 static const struct WindowTemplate sBattlerWindowTemplate =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 10,
     .tilemapTop = 0,
     .width = 14,
@@ -732,7 +732,7 @@ static const struct WindowTemplate sBattlerWindowTemplate =
 static const struct BgTemplate sBgTemplates[] =
 {
    {
-       .bg = 0,
+       .bg = FONDO_0,
        .charBaseIndex = 0,
        .mapBaseIndex = 31,
        .screenSize = FONDO_32x32,
@@ -741,7 +741,7 @@ static const struct BgTemplate sBgTemplates[] =
        .baseTile = 0
    },
    {
-       .bg = 1,
+       .bg = FONDO_1,
        .charBaseIndex = 2,
        .mapBaseIndex = 20,
        .screenSize = FONDO_32x32,
@@ -856,7 +856,7 @@ void CB2_BattleDebugMenu(void)
         break;
     case 2:
         ResetPaletteFade();
-        ScanlineEffect_Stop();
+        ParaEfectoHorizontal();
         ResetTasks();
         ResetSpriteData();
         gMain.state++;

@@ -671,7 +671,7 @@ static const sMainMenuTexts[OPTIONS_COUNT] =
 
 static const struct WindowTemplate sWindowTemplate_MainMenu =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 1,
     .tilemapTop = 1,
     .width = 17,
@@ -740,7 +740,7 @@ static const struct WindowTemplate sWindowTemplates[] =
 {
     // The panel below the currently displayed Pokémon
     [WIN_DISPLAY_INFO] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 0,
         .tilemapTop = 11,
         .width = 9,
@@ -749,7 +749,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .baseBlock = 192,
     },
     [WIN_MESSAGE] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 11,
         .tilemapTop = 17,
         .width = 18,
@@ -758,7 +758,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .baseBlock = 20,
     },
     [WIN_ITEM_DESC] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 0,
         .tilemapTop = 13,
         .width = 21,
@@ -772,7 +772,7 @@ static const struct WindowTemplate sWindowTemplates[] =
 static const struct BgTemplate sBgTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 29,
         .screenSize = FONDO_32x32,
@@ -781,7 +781,7 @@ static const struct BgTemplate sBgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 1,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,
@@ -790,7 +790,7 @@ static const struct BgTemplate sBgTemplates[] =
         .baseTile = 256
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 2,
         .mapBaseIndex = 27,
         .screenSize = FONDO_64x32,
@@ -799,7 +799,7 @@ static const struct BgTemplate sBgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 3,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -855,7 +855,7 @@ static const struct StorageMessage sMessages[] =
 
 static const struct WindowTemplate sYesNoWindowTemplate =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 24,
     .tilemapTop = 11,
     .width = 5,
@@ -1634,7 +1634,7 @@ static void HBlankCB_PokeStorage(void)
 {
     u8 vCount = REG_VCOUNT;
     u32 i;
-    if (vCount >= DISPLAY_HEIGHT || !sPaletteSwapBuffer || (gFundidoPaletas.activo&& gFundidoPaletas.y == 16 && gFundidoPaletas.modo == 2)) // FUNDIDO_HARDWARE
+    if (vCount >= ALTURA_PANTALLA || !sPaletteSwapBuffer || (gFundidoPaletas.activo&& gFundidoPaletas.y == 16 && gFundidoPaletas.modo == 2)) // FUNDIDO_HARDWARE
         return;
     // For each row in the pc box
     for (i = 0; i < IN_BOX_ROWS; i++)
@@ -4003,7 +4003,7 @@ static void CreatePartyMonsSprites(bool8 visible)
     {
         for (i = 0; i < count; i++)
         {
-            sStorage->partySprites[i]->y -= DISPLAY_HEIGHT;
+            sStorage->partySprites[i]->y -= ALTURA_PANTALLA;
             sStorage->partySprites[i]->invisible = TRUE;
         }
     }
@@ -4692,7 +4692,7 @@ static void SpriteCB_OutgoingBoxTitle(struct Sprite *sprite)
 
 static s16 GetBoxTitleBaseX(const u8 *string)
 {
-    return DISPLAY_WIDTH - 64 - GetStringWidth(FONT_NORMAL, string, 0)/2;
+    return ANCHO_PANTALLA - 64 - GetStringWidth(FONT_NORMAL, string, 0)/2;
 }
 
 //------------------------------------------------------------------------------

@@ -191,25 +191,25 @@ static const u8 sText_AlphabetUpperLower[] = _("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdef
 static const struct BgTemplate sBgTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 30,
         .priority = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 2,
         .mapBaseIndex = 29,
         .priority = 1
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 2,
         .mapBaseIndex = 28,
         .priority = 2
     },
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 3,
         .mapBaseIndex = 31,
         .priority = 3
@@ -219,7 +219,7 @@ static const struct BgTemplate sBgTemplates[] =
 static const struct WindowTemplate sWindowTemplates[WIN_COUNT + 1] =
 {
     [WIN_KB_PAGE_1] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 3,
         .tilemapTop = 10,
         .width = 19,
@@ -228,7 +228,7 @@ static const struct WindowTemplate sWindowTemplates[WIN_COUNT + 1] =
         .baseBlock = 0x030
     },
     [WIN_KB_PAGE_2] = {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 3,
         .tilemapTop = 10,
         .width = 19,
@@ -237,7 +237,7 @@ static const struct WindowTemplate sWindowTemplates[WIN_COUNT + 1] =
         .baseBlock = 0x0C8
     },
     [WIN_TEXT_ENTRY] = {
-        .bg = 3,
+        .bg = FONDO_3,
         .tilemapLeft = 8,
         .tilemapTop = 6,
         .width = 17,
@@ -246,7 +246,7 @@ static const struct WindowTemplate sWindowTemplates[WIN_COUNT + 1] =
         .baseBlock = 0x030
     },
     [WIN_TEXT_ENTRY_BOX] = {
-        .bg = 3,
+        .bg = FONDO_3,
         .tilemapLeft = 8,
         .tilemapTop = 4,
         .width = 17,
@@ -255,10 +255,10 @@ static const struct WindowTemplate sWindowTemplates[WIN_COUNT + 1] =
         .baseBlock = 0x052
     },
     [WIN_BANNER] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 0,
         .tilemapTop = 0,
-        .width = DISPLAY_TILE_WIDTH,
+        .width = TILES_ANCHO_PANTALLA,
         .height = 2,
         .paletteNum = 11,
         .baseBlock = 0x074
@@ -496,7 +496,7 @@ static void NamingScreen_Init(void)
     sNamingScreen->bgToHide = 1;
     sNamingScreen->template = sNamingScreenTemplates[sNamingScreen->templateNum];
     sNamingScreen->currentPage = sNamingScreen->template->initialPage;
-    sNamingScreen->inputCharBaseXPos = (DISPLAY_WIDTH - sNamingScreen->template->maxChars * 8) / 2 + 6;
+    sNamingScreen->inputCharBaseXPos = (ANCHO_PANTALLA - sNamingScreen->template->maxChars * 8) / 2 + 6;
     sNamingScreen->keyRepeatStartDelayCopy = gKeyRepeatStartDelay;
     memset(sNamingScreen->textBuffer, EOS, sizeof(sNamingScreen->textBuffer));
     if (sNamingScreen->template->copyExistingString)

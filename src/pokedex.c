@@ -27,7 +27,7 @@
 #include "region_map.h"
 #include "pokemon.h"
 #include "reset_rtc_screen.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "shop.h"
 #include "sound.h"
 #include "sprite.h"
@@ -559,7 +559,7 @@ static const struct SpritePalette sStatBarSpritePal[] =
 
 static const struct OamData sOamData_ScrollBar =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = FALSE,
@@ -576,7 +576,7 @@ static const struct OamData sOamData_ScrollBar =
 
 static const struct OamData sOamData_ScrollArrow =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = FALSE,
@@ -593,7 +593,7 @@ static const struct OamData sOamData_ScrollArrow =
 
 static const struct OamData sOamData_InterfaceText =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = FALSE,
@@ -610,7 +610,7 @@ static const struct OamData sOamData_InterfaceText =
 
 static const struct OamData sOamData_RotatingPokeBall =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_WINDOW,
     .mosaic = FALSE,
@@ -627,7 +627,7 @@ static const struct OamData sOamData_RotatingPokeBall =
 
 static const struct OamData sOamData_Dex8x16 =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = FALSE,
@@ -789,7 +789,7 @@ static const struct BgTemplate sPokedex_BgTemplate[] =
 {
     [BG_TEXTO] =
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 12,
         .screenSize = FONDO_32x32,
@@ -799,7 +799,7 @@ static const struct BgTemplate sPokedex_BgTemplate[] =
     },
     [BG_CURSOR] =
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 0,
         .mapBaseIndex = 13,
         .screenSize = FONDO_32x32,
@@ -809,7 +809,7 @@ static const struct BgTemplate sPokedex_BgTemplate[] =
     },
     [BG_FONDO] =
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 2,
         .mapBaseIndex = 14,
         .screenSize = FONDO_32x32,
@@ -819,7 +819,7 @@ static const struct BgTemplate sPokedex_BgTemplate[] =
     },
     [BG_SCROLLING] =
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 0,
         .mapBaseIndex = 15,
         .screenSize = FONDO_32x32,
@@ -833,7 +833,7 @@ static const struct WindowTemplate sPokemonList_WindowTemplate[] =
 {
     [WIN_POKEMON_LIST] =
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 0,
         .tilemapTop = 0,
         .width = 32,
@@ -843,7 +843,7 @@ static const struct WindowTemplate sPokemonList_WindowTemplate[] =
     },
     [WIN_TITLE] =
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 0,
         .width = 7,
@@ -853,7 +853,7 @@ static const struct WindowTemplate sPokemonList_WindowTemplate[] =
     },
     [WIN_SEEN] =
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 17,
         .tilemapTop = 0,
         .width = 4,
@@ -863,7 +863,7 @@ static const struct WindowTemplate sPokemonList_WindowTemplate[] =
     },
     [WIN_OWN] =
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 24,
         .tilemapTop = 0,
         .width = 4,
@@ -877,7 +877,7 @@ static const struct WindowTemplate sPokemonList_WindowTemplate[] =
 static const struct BgTemplate sInfoScreen_BgTemplate[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 2,
         .mapBaseIndex = 12,
         .screenSize = FONDO_32x32,
@@ -886,7 +886,7 @@ static const struct BgTemplate sInfoScreen_BgTemplate[] =
         .baseTile = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 0,
         .mapBaseIndex = 13,
         .screenSize = FONDO_32x32,
@@ -895,7 +895,7 @@ static const struct BgTemplate sInfoScreen_BgTemplate[] =
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 2,
         .mapBaseIndex = 14,
         .screenSize = FONDO_32x32,
@@ -904,7 +904,7 @@ static const struct BgTemplate sInfoScreen_BgTemplate[] =
         .baseTile = 0
     },
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 0,
         .mapBaseIndex = 15,
         .screenSize = FONDO_32x32,
@@ -921,7 +921,7 @@ static const struct WindowTemplate sInfoScreen_WindowTemplates[] =
 {
     [WIN_INFO] =
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 0,
         .tilemapTop = 0,
         .width = 32,
@@ -931,7 +931,7 @@ static const struct WindowTemplate sInfoScreen_WindowTemplates[] =
     },
     [WIN_NAVIGATION_BUTTONS] =
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 0,
         .tilemapTop = 18,
         .width = 20,
@@ -959,7 +959,7 @@ static const struct WindowTemplate sStatsScreen_WindowTemplates[] =
 {
     [WIN_STATS_TOPBAR] =
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 0,
         .tilemapTop = 0,
         .width = 30,
@@ -969,7 +969,7 @@ static const struct WindowTemplate sStatsScreen_WindowTemplates[] =
     },
     [WIN_STATS_SIDEBAR] =
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 30,
         .tilemapTop = 0,
         .width = 2,
@@ -979,7 +979,7 @@ static const struct WindowTemplate sStatsScreen_WindowTemplates[] =
     },
     [WIN_STATS_NAME_GENDER] =
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 0,
         .tilemapTop = 2,
         .width = 12,
@@ -989,7 +989,7 @@ static const struct WindowTemplate sStatsScreen_WindowTemplates[] =
     },
     [WIN_STATS_LEFT] =
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 0,
         .tilemapTop = 6,
         .width = 12,
@@ -999,7 +999,7 @@ static const struct WindowTemplate sStatsScreen_WindowTemplates[] =
     },
     [WIN_STATS_NAVIGATION_BUTTONS] =
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 0,
         .tilemapTop = 18,
         .width = 12,
@@ -1009,7 +1009,7 @@ static const struct WindowTemplate sStatsScreen_WindowTemplates[] =
     },
     [WIN_STATS_MOVES_TOP] =
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 12,
         .tilemapTop = 2,
         .width = 18,
@@ -1019,7 +1019,7 @@ static const struct WindowTemplate sStatsScreen_WindowTemplates[] =
     },
     [WIN_STATS_MOVES_DESCRIPTION] =
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 12,
         .tilemapTop = 6,
         .width = 18,
@@ -1029,7 +1029,7 @@ static const struct WindowTemplate sStatsScreen_WindowTemplates[] =
     },
     [WIN_STATS_MOVES_BOTTOM] =
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 12,
         .tilemapTop = 10,
         .width = 18,
@@ -1039,7 +1039,7 @@ static const struct WindowTemplate sStatsScreen_WindowTemplates[] =
     },
     [WIN_STATS_ABILITIES] =
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 12,
         .tilemapTop = 12,
         .width = 18,
@@ -1049,7 +1049,7 @@ static const struct WindowTemplate sStatsScreen_WindowTemplates[] =
     },
     [WIN_STATS_LEFT_BLANK] =
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 0,
         .tilemapTop = 14,
         .width = 12,
@@ -1063,7 +1063,7 @@ static const struct WindowTemplate sStatsScreen_WindowTemplates[] =
 static const struct BgTemplate sNewEntryInfoScreen_BgTemplate[] =
 {
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 2,
         .mapBaseIndex = 14,
         .screenSize = FONDO_32x32,
@@ -1072,7 +1072,7 @@ static const struct BgTemplate sNewEntryInfoScreen_BgTemplate[] =
         .baseTile = 0
     },
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 1,
         .mapBaseIndex = 15,
         .screenSize = FONDO_32x32,
@@ -1086,7 +1086,7 @@ static const struct WindowTemplate sNewEntryInfoScreen_WindowTemplates[] =
 {
     [WIN_INFO] =
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 0,
         .tilemapTop = 0,
         .width = 32,
@@ -1116,7 +1116,7 @@ void CB2_OpenPokedexPlusHGSS(void)
         gMain.state = 1;
         break;
     case 1:
-        ScanlineEffect_Stop();
+        ParaEfectoHorizontal();
         ResetTasks();
         ResetSpriteData();
         ResetPaletteFade();

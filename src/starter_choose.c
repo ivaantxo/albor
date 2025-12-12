@@ -10,7 +10,7 @@
 #include "palette.h"
 #include "pokedex.h"
 #include "pokemon.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "sound.h"
 #include "sprite.h"
 #include "starter_choose.h"
@@ -27,7 +27,7 @@
 #define STARTER_MON_COUNT   3
 
 // Position of the sprite of the selected starter Pokémon
-#define STARTER_PKMN_POS_X (DISPLAY_WIDTH / 2)
+#define STARTER_PKMN_POS_X (ANCHO_PANTALLA / 2)
 #define STARTER_PKMN_POS_Y 64
 
 #define TAG_POKEBALL_SELECT 0x1000
@@ -63,7 +63,7 @@ static const u32 sStarterCircle_Gfx[] = INCBIN_U32("graphics/starter_choose/star
 static const struct WindowTemplate sWindowTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 3,
         .tilemapTop = 15,
         .width = 24,
@@ -76,7 +76,7 @@ static const struct WindowTemplate sWindowTemplates[] =
 
 static const struct WindowTemplate sWindowTemplate_ConfirmStarter =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 24,
     .tilemapTop = 9,
     .width = 5,
@@ -87,7 +87,7 @@ static const struct WindowTemplate sWindowTemplate_ConfirmStarter =
 
 static const struct WindowTemplate sWindowTemplate_StarterLabel =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 0,
     .tilemapTop = 0,
     .width = 13,
@@ -120,7 +120,7 @@ static const u16 sStarterMon[STARTER_MON_COUNT] =
 static const struct BgTemplate sBgTemplates[3] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 2,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -129,7 +129,7 @@ static const struct BgTemplate sBgTemplates[3] =
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 0,
         .mapBaseIndex = 7,
         .screenSize = FONDO_32x32,
@@ -138,7 +138,7 @@ static const struct BgTemplate sBgTemplates[3] =
         .baseTile = 0
     },
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 0,
         .mapBaseIndex = 6,
         .screenSize = FONDO_32x32,
@@ -152,7 +152,7 @@ static const u8 sTextColors[] = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_WHITE, TEXT_
 
 static const struct OamData sOam_Hand =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = FALSE,
@@ -169,7 +169,7 @@ static const struct OamData sOam_Hand =
 
 static const struct OamData sOam_Pokeball =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = FALSE,
@@ -186,7 +186,7 @@ static const struct OamData sOam_Pokeball =
 
 static const struct OamData sOam_StarterCircle =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_DOUBLE,
     .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = FALSE,
@@ -408,7 +408,7 @@ void CB2_ChooseStarter(void)
     DeactivateAllTextPrinters();
     LoadUserWindowBorderGfx(0, 0x2A8, BG_PLTT_ID(13));
     ClearScheduledBgCopiesToVram();
-    ScanlineEffect_Stop();
+    ParaEfectoHorizontal();
     ResetTasks();
     ResetSpriteData();
     ResetPaletteFade();

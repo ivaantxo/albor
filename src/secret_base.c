@@ -2,6 +2,7 @@
 #include "malloc.h"
 #include "battle.h"
 #include "battle_setup.h"
+#include "bg.h"
 #include "decoration.h"
 #include "event_data.h"
 #include "event_object_movement.h"
@@ -133,7 +134,7 @@ static const u16 sSecretBaseOwnerGfxIds[10] =
 static const struct WindowTemplate sRegistryWindowTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 18,
         .tilemapTop = 1,
         .width = 11,
@@ -142,7 +143,7 @@ static const struct WindowTemplate sRegistryWindowTemplates[] =
         .baseBlock = 0x01,
     },
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 2,
         .tilemapTop = 1,
         .width = 28,

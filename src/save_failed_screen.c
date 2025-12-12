@@ -44,7 +44,7 @@ static EWRAM_DATA u8 sWindowIds[2] = {0};
 
 static const struct OamData sClockOamData =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
     .mosaic = FALSE,
@@ -62,7 +62,7 @@ static const struct OamData sClockOamData =
 static const struct BgTemplate sBgTemplates[3] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 2,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -71,7 +71,7 @@ static const struct BgTemplate sBgTemplates[3] =
         .baseTile = 0,
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 0,
         .mapBaseIndex = 14,
         .screenSize = FONDO_32x32,
@@ -80,7 +80,7 @@ static const struct BgTemplate sBgTemplates[3] =
         .baseTile = 0,
     },
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 0,
         .mapBaseIndex = 15,
         .screenSize = FONDO_32x32,
@@ -95,7 +95,7 @@ static const struct WindowTemplate sDummyWindowTemplate[] = { DUMMY_WIN_TEMPLATE
 static const struct WindowTemplate sWindowTemplate_Text[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 13,
         .width = 28,
@@ -108,7 +108,7 @@ static const struct WindowTemplate sWindowTemplate_Text[] =
 static const struct WindowTemplate sWindowTemplate_Clock[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 14,
         .tilemapTop = 9,
         .width = 2,
@@ -403,7 +403,7 @@ void CB2_FlashNotDetectedScreen(void)
     static const struct WindowTemplate textWin[] =
     {
         {
-            .bg = 0,
+            .bg = FONDO_0,
             .tilemapLeft = 3,
             .tilemapTop = 2,
             .width = 24,
