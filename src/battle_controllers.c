@@ -1230,7 +1230,7 @@ static void Controller_ReturnMonToBall(u32 battler)
 static void Controller_FaintPlayerMon(u32 battler)
 {
     u32 spriteId = gBattlerSpriteIds[battler];
-    if (gSprites[spriteId].y + gSprites[spriteId].y2 > DISPLAY_HEIGHT)
+    if (gSprites[spriteId].y + gSprites[spriteId].y2 > ALTURA_PANTALLA)
     {
         FreeOamMatrix(gSprites[spriteId].oam.matrixNum);
         DestroySprite(&gSprites[spriteId]);
@@ -1490,7 +1490,7 @@ void BtlController_HandleLoadMonSprite(u32 battler, void (*controllerCallback)(u
                                                GetBattlerSpriteDefault_Y(battler),
                                                GetBattlerSpriteSubpriority(battler));
 
-    gSprites[gBattlerSpriteIds[battler]].x2 = -DISPLAY_WIDTH;
+    gSprites[gBattlerSpriteIds[battler]].x2 = -ANCHO_PANTALLA;
     gSprites[gBattlerSpriteIds[battler]].data[0] = battler;
     gSprites[gBattlerSpriteIds[battler]].data[2] = species;
     gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = battler;
@@ -1546,7 +1546,7 @@ void BtlController_HandleDrawTrainerPic(u32 battler, u32 trainerPicId, bool32 is
                                                    subpriority);
 
         gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = IndexOfSpritePaletteTag(gTrainerSprites[trainerPicId].palette.tag);
-        gSprites[gBattlerSpriteIds[battler]].x2 = -DISPLAY_WIDTH;
+        gSprites[gBattlerSpriteIds[battler]].x2 = -ANCHO_PANTALLA;
         gSprites[gBattlerSpriteIds[battler]].sSpeedX = 2;
         gSprites[gBattlerSpriteIds[battler]].oam.affineParam = trainerPicId;
         StartSpriteAnim(&gSprites[gBattlerSpriteIds[battler]], 1);
@@ -1582,7 +1582,7 @@ void BtlController_HandleDrawTrainerPic(u32 battler, u32 trainerPicId, bool32 is
 
             gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = battler;
         }
-        gSprites[gBattlerSpriteIds[battler]].x2 = DISPLAY_WIDTH;
+        gSprites[gBattlerSpriteIds[battler]].x2 = ANCHO_PANTALLA;
         gSprites[gBattlerSpriteIds[battler]].sSpeedX = -2;
     }
     gSprites[gBattlerSpriteIds[battler]].callback = SpriteCB_TrainerSlideIn;

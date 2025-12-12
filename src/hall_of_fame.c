@@ -22,7 +22,7 @@
 #include "string_util.h"
 #include "m4a.h"
 #include "international_string_util.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "trig.h"
 #include "random.h"
 #include "event_data.h"
@@ -103,7 +103,7 @@ static void SpriteCB_HofConfetti(struct Sprite *sprite);
 static const struct BgTemplate sHof_BgTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 2,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -112,7 +112,7 @@ static const struct BgTemplate sHof_BgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 0,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,
@@ -121,7 +121,7 @@ static const struct BgTemplate sHof_BgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 0,
         .mapBaseIndex = 29,
         .screenSize = FONDO_32x32,
@@ -132,7 +132,7 @@ static const struct BgTemplate sHof_BgTemplates[] =
 };
 
 static const struct WindowTemplate sHof_WindowTemplate = {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 2,
     .tilemapTop = 2,
     .width = 14,
@@ -1183,7 +1183,7 @@ static void ClearVramOamPltt_LoadHofPal(void)
 
 static void LoadHofGfx(void)
 {
-    ScanlineEffect_Stop();
+    ParaEfectoHorizontal();
     ResetTasks();
     ResetSpriteData();
     ResetTempTileDataBuffers();
@@ -1273,7 +1273,7 @@ static bool8 CreateHofConfettiSprite(void)
     u32 spriteId;
     struct Sprite *sprite;
 
-    s16 posX = Random() % DISPLAY_WIDTH;
+    s16 posX = Random() % ANCHO_PANTALLA;
     s16 posY = -(Random() % 8);
 
     spriteId = CreateSprite(&sSpriteTemplate_HofConfetti, posX, posY, 0);

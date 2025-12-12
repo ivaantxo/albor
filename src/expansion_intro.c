@@ -210,14 +210,14 @@ static const struct SpriteTemplate sSpriteTemplate_Porygon =
 static const struct BgTemplate sBgTemplates_RhhCopyrightScreen[] =
 {
     [EXPANSION_INTRO_BG2] = {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 1,
         .mapBaseIndex = 20,
         .screenSize = FONDO_32x64,
         .paletteMode = MODO_PALETAS_8BPP
     },
     [EXPANSION_INTRO_BG3] = {
-        .bg = 3,
+        .bg = FONDO_3,
         .mapBaseIndex = 22,
         .screenSize = FONDO_32x64
     },

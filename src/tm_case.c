@@ -21,7 +21,7 @@
 #include "party_menu.h"
 #include "util.h"
 #include "data.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "shop.h"
 #include "sound.h"
 #include "string_util.h"
@@ -124,7 +124,7 @@ static void TintPartyMonIcons(u16 tm);
 
 static const struct BgTemplate sBGTemplates[] = {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -132,7 +132,7 @@ static const struct BgTemplate sBGTemplates[] = {
         .priority = 1,
         .baseTile = 0
     }, {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 0,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,
@@ -140,7 +140,7 @@ static const struct BgTemplate sBGTemplates[] = {
         .priority = 0,
         .baseTile = 0
     }, {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 0,
         .mapBaseIndex = 29,
         .screenSize = FONDO_32x32,
@@ -169,7 +169,7 @@ static const u8 sTextColors[][3] = {
 
 static const struct WindowTemplate sWindowTemplates[] = {
     [WIN_LIST] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 15,
         .tilemapTop = 2,
         .width = 19,
@@ -178,7 +178,7 @@ static const struct WindowTemplate sWindowTemplates[] = {
         .baseBlock = 129
     },
     [WIN_TITLE] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 0,
         .width = 14,
@@ -187,7 +187,7 @@ static const struct WindowTemplate sWindowTemplates[] = {
         .baseBlock = 565
     },
     [WIN_MOVE_INFO] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 8,
         .tilemapTop = 18,
         .width = 22,
@@ -199,7 +199,7 @@ static const struct WindowTemplate sWindowTemplates[] = {
 };
 
 static const struct WindowTemplate sYesNoWindowTemplate = {
-    .bg = 1,
+    .bg = FONDO_1,
     .tilemapLeft = 21,
     .tilemapTop = 9,
     .width = 6,
@@ -210,7 +210,7 @@ static const struct WindowTemplate sYesNoWindowTemplate = {
 
 static const struct WindowTemplate sWindowTemplates_ContextMenu[] = {
     [WIN_USE_EXIT] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 24,
         .tilemapTop = 15,
         .width = 5,
@@ -219,7 +219,7 @@ static const struct WindowTemplate sWindowTemplates_ContextMenu[] = {
         .baseBlock = 463
     },
     [WIN_EXIT] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 22,
         .tilemapTop = 15,
         .width = 5,
@@ -314,7 +314,7 @@ static bool8 DoSetUpTMCaseUI(void)
         gMain.state++;
         break;
     case 1:
-        ScanlineEffect_Stop();
+        ParaEfectoHorizontal();
         gMain.state++;
         break;
     case 2:

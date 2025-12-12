@@ -287,7 +287,7 @@ static const struct MultiNameFlyDest sMultiNameFlyDestinations[] =
 static const struct BgTemplate sFlyMapBgTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -295,7 +295,7 @@ static const struct BgTemplate sFlyMapBgTemplates[] =
         .priority = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 3,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,
@@ -303,7 +303,7 @@ static const struct BgTemplate sFlyMapBgTemplates[] =
         .priority = 1
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 2,
         .mapBaseIndex = 28,
         .screenSize = FONDO_32x64,
@@ -315,7 +315,7 @@ static const struct BgTemplate sFlyMapBgTemplates[] =
 static const struct WindowTemplate sFlyMapWindowTemplates[] =
 {
     [WIN_MAPSEC_NAME] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 17,
         .tilemapTop = 17,
         .width = 12,
@@ -324,7 +324,7 @@ static const struct WindowTemplate sFlyMapWindowTemplates[] =
         .baseBlock = 0x01
     },
     [WIN_MAPSEC_NAME_TALL] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 17,
         .tilemapTop = 15,
         .width = 12,
@@ -333,7 +333,7 @@ static const struct WindowTemplate sFlyMapWindowTemplates[] =
         .baseBlock = 0x19
     },
     [WIN_FLY_TO_WHERE] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 18,
         .width = 14,
@@ -1265,7 +1265,7 @@ static void SpriteCB_PlayerIconMapZoomed(struct Sprite *sprite)
     sprite->y2 = -2 * sRegionMap->scrollY;
     sprite->sY = sprite->y + sprite->y2 + sprite->centerToCornerVecY;
     sprite->sX = sprite->x + sprite->x2 + sprite->centerToCornerVecX;
-    if (sprite->sY < -8 || sprite->sY > DISPLAY_HEIGHT + 8 || sprite->sX < -8 || sprite->sX > DISPLAY_WIDTH + 8)
+    if (sprite->sY < -8 || sprite->sY > ALTURA_PANTALLA + 8 || sprite->sX < -8 || sprite->sX > ANCHO_PANTALLA + 8)
         sprite->sVisible = FALSE;
     else
         sprite->sVisible = TRUE;

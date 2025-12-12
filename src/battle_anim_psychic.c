@@ -3,7 +3,7 @@
 #include "gpu_regs.h"
 #include "palette.h"
 #include "sound.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "trig.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
@@ -840,7 +840,7 @@ static void AnimTask_Teleport_Step(u8 taskId)
         else
         {
             gSprites[task->data[0]].invisible = TRUE;
-            gSprites[task->data[0]].x = DISPLAY_WIDTH + 32;
+            gSprites[task->data[0]].x = ANCHO_PANTALLA + 32;
             ResetSpriteRotScale(task->data[0]);
             DestroyAnimVisualTask(taskId);
         }
@@ -1099,7 +1099,7 @@ void AnimTask_ExtrasensoryDistortion(u8 taskId)
 {
     s16 i;
     u8 yOffset;
-    struct ScanlineEffectParams scanlineParams;
+    struct ParametrosEfectoHorizontal parametrosEfectoHorizontal;
     struct Task *task = &gTasks[taskId];
 
     yOffset = GetBattlerYCoordWithElevation(gBattleAnimTarget);
@@ -1133,23 +1133,23 @@ void AnimTask_ExtrasensoryDistortion(u8 taskId)
     if (GetBattlerSpriteBGPriorityRank(gBattleAnimTarget) == 1)
     {
         task->data[10] = gBattle_BG1_X;
-        scanlineParams.dmaDest = &REG_BG1HOFS;
+        parametrosEfectoHorizontal.dmaDest = &REG_BG1HOFS;
     }
     else
     {
         task->data[10] = gBattle_BG2_X;
-        scanlineParams.dmaDest = &REG_BG2HOFS;
+        parametrosEfectoHorizontal.dmaDest = &REG_BG2HOFS;
     }
 
     for (i = task->data[14]; i <= task->data[14] + 64; i++)
     {
-        gScanlineEffectRegBuffers[0][i] = task->data[10];
-        gScanlineEffectRegBuffers[1][i] = task->data[10];
+        gRegistrosBuffersEfectoHorizontal[0][i] = task->data[10];
+        gRegistrosBuffersEfectoHorizontal[1][i] = task->data[10];
     }
 
-    scanlineParams.dmaControl = SCANLINE_EFFECT_DMACNT_16BIT;
-    scanlineParams.initState = 1;
-    ScanlineEffect_SetParams(scanlineParams);
+    parametrosEfectoHorizontal.bitsDMA = EFECTO_HORIZONTAL_DMA_16;
+    parametrosEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_ACTIVO;
+    EscribeParametrosEfectoHorizontal(parametrosEfectoHorizontal);
     task->func = AnimTask_ExtrasensoryDistortion_Step;
 }
 
@@ -1171,8 +1171,8 @@ static void AnimTask_ExtrasensoryDistortion_Step(u8 taskId)
             else if (var2 < 0)
                 var2 -= (task->data[1] & 3);
 
-            gScanlineEffectRegBuffers[0][i] = task->data[10] + var2;
-            gScanlineEffectRegBuffers[1][i] = task->data[10] + var2;
+            gRegistrosBuffersEfectoHorizontal[0][i] = task->data[10] + var2;
+            gRegistrosBuffersEfectoHorizontal[1][i] = task->data[10] + var2;
             sineIndex += task->data[11];
             i++;
         }
@@ -1181,7 +1181,7 @@ static void AnimTask_ExtrasensoryDistortion_Step(u8 taskId)
             task->data[0]++;
         break;
     case 1:
-        gScanlineEffect.state = 3;
+        gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
         task->data[0]++;
         break;
     case 2:

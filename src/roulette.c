@@ -17,7 +17,7 @@
 #include "random.h"
 #include "roulette.h"
 #include "rtc.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "script.h"
 #include "sound.h"
 #include "sprite.h"
@@ -402,7 +402,7 @@ static const struct BgTemplate sBgTemplates[] =
 {
     // Text box
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 2,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -412,7 +412,7 @@ static const struct BgTemplate sBgTemplates[] =
     },
     // Selection grid
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 0,
         .mapBaseIndex = 4,
         .screenSize = FONDO_64x32,
@@ -422,7 +422,7 @@ static const struct BgTemplate sBgTemplates[] =
     },
     // Wheel
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 1,
         .mapBaseIndex = 6,
         .screenSize = FONDO_64x32,
@@ -434,7 +434,7 @@ static const struct BgTemplate sBgTemplates[] =
 static const struct WindowTemplate sWindowTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 3,
         .tilemapTop = 15,
         .width = 24,

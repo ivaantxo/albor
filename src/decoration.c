@@ -1,5 +1,6 @@
 #include "global.h"
 #include "malloc.h"
+#include "bg.h"
 #include "decompress.h"
 #include "decoration.h"
 #include "decoration_inventory.h"
@@ -248,7 +249,7 @@ static const TaskFunc sSecretBasePC_SelectedDecorationActions[][2] =
 static const struct WindowTemplate sDecorationWindowTemplates[WINDOW_COUNT] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 1,
         .width = 18,
@@ -257,7 +258,7 @@ static const struct WindowTemplate sDecorationWindowTemplates[WINDOW_COUNT] =
         .baseBlock = 0x0001
     },
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 1,
         .width = 13,
@@ -266,7 +267,7 @@ static const struct WindowTemplate sDecorationWindowTemplates[WINDOW_COUNT] =
         .baseBlock = 0x0091
     },
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 17,
         .tilemapTop = 1,
         .width = 12,
@@ -275,7 +276,7 @@ static const struct WindowTemplate sDecorationWindowTemplates[WINDOW_COUNT] =
         .baseBlock = 0x017b
     },
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 16,
         .tilemapTop = 13,
         .width = 13,

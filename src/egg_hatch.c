@@ -27,7 +27,7 @@
 #include "constants/abilities.h"
 #include "daycare.h"
 #include "overworld.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "field_weather.h"
 #include "international_string_util.h"
 #include "naming_screen.h"
@@ -43,8 +43,8 @@
 
 #define PALTAG_EGG       54321
 
-#define EGG_X (DISPLAY_WIDTH / 2)
-#define EGG_Y (DISPLAY_HEIGHT / 2 - 5)
+#define EGG_X (ANCHO_PANTALLA / 2)
+#define EGG_Y (ALTURA_PANTALLA / 2 - 5)
 
 struct EggHatchData
 {
@@ -232,7 +232,7 @@ static const struct SpriteTemplate sSpriteTemplate_EggShard =
 static const struct BgTemplate sBgTemplates_EggHatch[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 2,
         .mapBaseIndex = 24,
         .screenSize = FONDO_64x64,
@@ -242,7 +242,7 @@ static const struct BgTemplate sBgTemplates_EggHatch[] =
     },
 
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 0,
         .mapBaseIndex = 8,
         .screenSize = FONDO_64x32,
@@ -255,7 +255,7 @@ static const struct BgTemplate sBgTemplates_EggHatch[] =
 static const struct WindowTemplate sWinTemplates_EggHatch[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 2,
         .tilemapTop = 15,
         .width = 26,
@@ -268,7 +268,7 @@ static const struct WindowTemplate sWinTemplates_EggHatch[] =
 
 static const struct WindowTemplate sYesNoWinTemplate =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 21,
     .tilemapTop = 9,
     .width = 5,
@@ -480,7 +480,7 @@ static void CB2_LoadEggHatch(void)
         FreeAllSpritePalettes();
         ResetSpriteData();
         ResetTasks();
-        ScanlineEffect_Stop();
+        ParaEfectoHorizontal();
         m4aSoundVSyncOn();
         gMain.state++;
         break;

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "bg.h"
 #include "malloc.h"
 #include "battle_main.h"
 #include "contest_effect.h"
@@ -14,7 +15,7 @@
 #include "palette.h"
 #include "pokemon_summary_screen.h"
 #include "pokemon_storage_system.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "sound.h"
 #include "strings.h"
 #include "string_util.h"
@@ -42,11 +43,11 @@ static const u8 sPlayerNameTextColors[] =
 
 static const u8 sEmptyItemName[] = _("");
 
-static const struct ScanlineEffectParams sConditionGraphScanline =
+static const struct ParametrosEfectoHorizontal sConditionGraphScanline =
 {
     .dmaDest = &REG_WIN0H,
-    .dmaControl = SCANLINE_EFFECT_DMACNT_32BIT,
-    .initState = 1,
+    .bitsDMA = EFECTO_HORIZONTAL_DMA_32,
+    .estado = 1,
 };
 
 static const u8 sConditionToLineLength[MAX_CONDITION + 1] =
@@ -72,7 +73,7 @@ static const u8 sConditionToLineLength[MAX_CONDITION + 1] =
 static const struct WindowTemplate sMoveRelearnerWindowTemplates[] =
 {
     [RELEARNERWIN_DESC_BATTLE] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 1,
         .tilemapTop = 1,
         .width = 16,
@@ -81,7 +82,7 @@ static const struct WindowTemplate sMoveRelearnerWindowTemplates[] =
         .baseBlock = 0xA
     },
     [RELEARNERWIN_DESC_CONTEST] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 1,
         .tilemapTop = 1,
         .width = 16,
@@ -90,7 +91,7 @@ static const struct WindowTemplate sMoveRelearnerWindowTemplates[] =
         .baseBlock = 0xCA
     },
     [RELEARNERWIN_MOVE_LIST] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 19,
         .tilemapTop = 1,
         .width = 10,
@@ -99,7 +100,7 @@ static const struct WindowTemplate sMoveRelearnerWindowTemplates[] =
         .baseBlock = 0x18A
     },
     [RELEARNERWIN_MSG] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 4,
         .tilemapTop = 15,
         .width = 22,
@@ -109,7 +110,7 @@ static const struct WindowTemplate sMoveRelearnerWindowTemplates[] =
     },
     // Unused. Identical to sMoveRelearnerYesNoMenuTemplate
     [RELEARNERWIN_YESNO] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 22,
         .tilemapTop = 8,
         .width = 5,
@@ -122,7 +123,7 @@ static const struct WindowTemplate sMoveRelearnerWindowTemplates[] =
 
 static const struct WindowTemplate sMoveRelearnerYesNoMenuTemplate =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 22,
     .tilemapTop = 8,
     .width = 5,
@@ -246,17 +247,17 @@ void ConditionGraph_InitResetScanline(struct ConditionGraph *graph)
 
 bool8 ConditionGraph_ResetScanline(struct ConditionGraph *graph)
 {
-    struct ScanlineEffectParams params;
+    struct ParametrosEfectoHorizontal params;
 
     switch (graph->scanlineResetState)
     {
     case 0:
-        ScanlineEffect_Clear();
+        LimpiaEfectoHorizontal();
         graph->scanlineResetState++;
         return TRUE;
     case 1:
         params = sConditionGraphScanline;
-        ScanlineEffect_SetParams(params);
+        EscribeParametrosEfectoHorizontal(params);
         graph->scanlineResetState++;
         return FALSE;
     default:
@@ -277,11 +278,11 @@ void ConditionGraph_Draw(struct ConditionGraph *graph)
     for (i = 0; i < CONDITION_GRAPH_HEIGHT; i++)
     {
         // Draw right half
-        gScanlineEffectRegBuffers[1][(i + CONDITION_GRAPH_TOP_Y - 1) * 2 + 0] = // double assignment
-        gScanlineEffectRegBuffers[0][(i + CONDITION_GRAPH_TOP_Y - 1) * 2 + 0] = (graph->scanlineRight[i][0] << 8) | (graph->scanlineRight[i][1]);
+        gRegistrosBuffersEfectoHorizontal[1][(i + CONDITION_GRAPH_TOP_Y - 1) * 2 + 0] = // double assignment
+        gRegistrosBuffersEfectoHorizontal[0][(i + CONDITION_GRAPH_TOP_Y - 1) * 2 + 0] = (graph->scanlineRight[i][0] << 8) | (graph->scanlineRight[i][1]);
         // Draw left half
-        gScanlineEffectRegBuffers[1][(i + CONDITION_GRAPH_TOP_Y - 1) * 2 + 1] = // double assignment
-        gScanlineEffectRegBuffers[0][(i + CONDITION_GRAPH_TOP_Y - 1) * 2 + 1] = (graph->scanlineLeft[i][0] << 8) | (graph->scanlineLeft[i][1]);
+        gRegistrosBuffersEfectoHorizontal[1][(i + CONDITION_GRAPH_TOP_Y - 1) * 2 + 1] = // double assignment
+        gRegistrosBuffersEfectoHorizontal[0][(i + CONDITION_GRAPH_TOP_Y - 1) * 2 + 1] = (graph->scanlineLeft[i][0] << 8) | (graph->scanlineLeft[i][1]);
     }
 
     graph->needsDraw = FALSE;
@@ -291,14 +292,14 @@ void ConditionGraph_InitWindow(u8 bg)
 {
     u32 flags;
 
-    if (bg >= NUM_BACKGROUNDS)
+    if (bg >= NUMERO_FONDOS)
         bg = 0;
 
     // Unset the WINOUT flag for the bg.
     flags = (WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ) & ~(1 << bg);
 
     // Set limits for graph data
-    SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE( 0, DISPLAY_WIDTH)); // Right side horizontal
+    SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE( 0, ANCHO_PANTALLA)); // Right side horizontal
     SetGpuReg(REG_OFFSET_WIN1H, WIN_RANGE( 0, CONDITION_GRAPH_CENTER_X)); // Left side horizontal
     SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(CONDITION_GRAPH_TOP_Y, CONDITION_GRAPH_BOTTOM_Y)); // Right side vertical
     SetGpuReg(REG_OFFSET_WIN1V, WIN_RANGE(CONDITION_GRAPH_TOP_Y, CONDITION_GRAPH_BOTTOM_Y)); // Left side vertical

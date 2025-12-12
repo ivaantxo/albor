@@ -1,6 +1,7 @@
 #include "global.h"
 #include "malloc.h"
 #include "battle.h"
+#include "bg.h"
 #include "pokemon.h"
 #include "battle_controllers.h"
 #include "battle_interface.h"
@@ -732,7 +733,7 @@ static const u16 sStatusIconColors[] =
 };
 
 static const struct WindowTemplate sHealthboxWindowTemplate = {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 0,
     .tilemapTop = 0,
     .width = 8,
@@ -784,8 +785,8 @@ u8 CreateBattlerHealthboxSprites(u8 battlerId)
     {
         if (GetBattlerSide(battlerId) == B_SIDE_PLAYER)
         {
-            healthboxLeftSpriteId = CreateSprite(&sHealthboxPlayerSpriteTemplates[0], DISPLAY_WIDTH, DISPLAY_HEIGHT, 1);
-            healthboxRightSpriteId = CreateSpriteAtEnd(&sHealthboxPlayerSpriteTemplates[0], DISPLAY_WIDTH, DISPLAY_HEIGHT, 1);
+            healthboxLeftSpriteId = CreateSprite(&sHealthboxPlayerSpriteTemplates[0], ANCHO_PANTALLA, ALTURA_PANTALLA, 1);
+            healthboxRightSpriteId = CreateSpriteAtEnd(&sHealthboxPlayerSpriteTemplates[0], ANCHO_PANTALLA, ALTURA_PANTALLA, 1);
 
             gSprites[healthboxLeftSpriteId].oam.shape = ST_OAM_SQUARE;
 
@@ -794,8 +795,8 @@ u8 CreateBattlerHealthboxSprites(u8 battlerId)
         }
         else
         {
-            healthboxLeftSpriteId = CreateSprite(&sHealthboxOpponentSpriteTemplates[0], DISPLAY_WIDTH, DISPLAY_HEIGHT, 1);
-            healthboxRightSpriteId = CreateSpriteAtEnd(&sHealthboxOpponentSpriteTemplates[0], DISPLAY_WIDTH, DISPLAY_HEIGHT, 1);
+            healthboxLeftSpriteId = CreateSprite(&sHealthboxOpponentSpriteTemplates[0], ANCHO_PANTALLA, ALTURA_PANTALLA, 1);
+            healthboxRightSpriteId = CreateSpriteAtEnd(&sHealthboxOpponentSpriteTemplates[0], ANCHO_PANTALLA, ALTURA_PANTALLA, 1);
 
             gSprites[healthboxRightSpriteId].oam.tileNum += 32;
 
@@ -810,8 +811,8 @@ u8 CreateBattlerHealthboxSprites(u8 battlerId)
     {
         if (GetBattlerSide(battlerId) == B_SIDE_PLAYER)
         {
-            healthboxLeftSpriteId = CreateSprite(&sHealthboxPlayerSpriteTemplates[GetBattlerPosition(battlerId) / 2], DISPLAY_WIDTH, DISPLAY_HEIGHT, 1);
-            healthboxRightSpriteId = CreateSpriteAtEnd(&sHealthboxPlayerSpriteTemplates[GetBattlerPosition(battlerId) / 2], DISPLAY_WIDTH, DISPLAY_HEIGHT, 1);
+            healthboxLeftSpriteId = CreateSprite(&sHealthboxPlayerSpriteTemplates[GetBattlerPosition(battlerId) / 2], ANCHO_PANTALLA, ALTURA_PANTALLA, 1);
+            healthboxRightSpriteId = CreateSpriteAtEnd(&sHealthboxPlayerSpriteTemplates[GetBattlerPosition(battlerId) / 2], ANCHO_PANTALLA, ALTURA_PANTALLA, 1);
 
             gSprites[healthboxLeftSpriteId].oam.affineParam = healthboxRightSpriteId;
 
@@ -823,8 +824,8 @@ u8 CreateBattlerHealthboxSprites(u8 battlerId)
         }
         else
         {
-            healthboxLeftSpriteId = CreateSprite(&sHealthboxOpponentSpriteTemplates[GetBattlerPosition(battlerId) / 2], DISPLAY_WIDTH, DISPLAY_HEIGHT, 1);
-            healthboxRightSpriteId = CreateSpriteAtEnd(&sHealthboxOpponentSpriteTemplates[GetBattlerPosition(battlerId) / 2], DISPLAY_WIDTH, DISPLAY_HEIGHT, 1);
+            healthboxLeftSpriteId = CreateSprite(&sHealthboxOpponentSpriteTemplates[GetBattlerPosition(battlerId) / 2], ANCHO_PANTALLA, ALTURA_PANTALLA, 1);
+            healthboxRightSpriteId = CreateSpriteAtEnd(&sHealthboxOpponentSpriteTemplates[GetBattlerPosition(battlerId) / 2], ANCHO_PANTALLA, ALTURA_PANTALLA, 1);
 
             gSprites[healthboxLeftSpriteId].oam.affineParam = healthboxRightSpriteId;
 
@@ -864,8 +865,8 @@ u8 CreateSafariPlayerHealthboxSprites(void)
 {
     u8 healthboxLeftSpriteId, healthboxRightSpriteId;
 
-    healthboxLeftSpriteId = CreateSprite(&sHealthboxSafariSpriteTemplate, DISPLAY_WIDTH, DISPLAY_HEIGHT, 1);
-    healthboxRightSpriteId = CreateSpriteAtEnd(&sHealthboxSafariSpriteTemplate, DISPLAY_WIDTH, DISPLAY_HEIGHT, 1);
+    healthboxLeftSpriteId = CreateSprite(&sHealthboxSafariSpriteTemplate, ANCHO_PANTALLA, ALTURA_PANTALLA, 1);
+    healthboxRightSpriteId = CreateSpriteAtEnd(&sHealthboxSafariSpriteTemplate, ANCHO_PANTALLA, ALTURA_PANTALLA, 1);
 
     gSprites[healthboxLeftSpriteId].oam.shape = ST_OAM_SQUARE;
     gSprites[healthboxRightSpriteId].oam.shape = ST_OAM_SQUARE;

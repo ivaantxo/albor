@@ -21,7 +21,7 @@
 #include "pokeblock.h"
 #include "pokemon.h"
 #include "safari_zone.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "sound.h"
 #include "string_util.h"
 #include "strings.h"
@@ -147,7 +147,7 @@ const s8 gPokeblockFlavorCompatibilityTable[NUMERO_NATURALEZAS * FLAVOR_COUNT] =
 static const struct BgTemplate sBgTemplatesForPokeblockMenu[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -156,7 +156,7 @@ static const struct BgTemplate sBgTemplatesForPokeblockMenu[] =
         .baseTile = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 0,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,
@@ -165,7 +165,7 @@ static const struct BgTemplate sBgTemplatesForPokeblockMenu[] =
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 3,
         .mapBaseIndex = 29,
         .screenSize = FONDO_32x32,
@@ -288,7 +288,7 @@ static const struct Pokeblock sFavoritePokeblocksTable[FLAVOR_COUNT] =
 static const struct WindowTemplate sWindowTemplates[] =
 {
     [WIN_TITLE] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 2,
         .tilemapTop = 1,
         .width = 9,
@@ -297,7 +297,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .baseBlock = 0x1E
     },
     [WIN_LIST] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 15,
         .tilemapTop = 1,
         .width = 14,
@@ -306,7 +306,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .baseBlock = 0x30
     },
     [WIN_SPICY] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 2,
         .tilemapTop = 13,
         .width = 5,
@@ -315,7 +315,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .baseBlock = 0x12C
     },
     [WIN_DRY] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 2,
         .tilemapTop = 15,
         .width = 5,
@@ -324,7 +324,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .baseBlock = 0x136
     },
     [WIN_SWEET] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 2,
         .tilemapTop = 17,
         .width = 5,
@@ -333,7 +333,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .baseBlock = 0x140
     },
     [WIN_BITTER] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 8,
         .tilemapTop = 13,
         .width = 5,
@@ -342,7 +342,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .baseBlock = 0x14A
     },
     [WIN_SOUR] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 8,
         .tilemapTop = 15,
         .width = 5,
@@ -351,7 +351,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .baseBlock = 0x154
     },
     [WIN_FEEL] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 11,
         .tilemapTop = 17,
         .width = 2,
@@ -360,7 +360,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .baseBlock = 0x15E
     },
     [WIN_ACTIONS_TALL] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 7,
         .tilemapTop = 5,
         .width = 6,
@@ -369,7 +369,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .baseBlock = 0x162
     },
     [WIN_ACTIONS] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 7,
         .tilemapTop = 7,
         .width = 6,
@@ -378,7 +378,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .baseBlock = 0x186
     },
     [WIN_TOSS_MSG] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 2,
         .tilemapTop = 15,
         .width = 27,
@@ -391,7 +391,7 @@ static const struct WindowTemplate sWindowTemplates[] =
 
 static const struct WindowTemplate sTossPkblockWindowTemplate =
 {
-    .bg = 1,
+    .bg = FONDO_1,
     .tilemapLeft = 21,
     .tilemapTop = 9,
     .width = 5,
@@ -503,7 +503,7 @@ static bool8 InitPokeblockMenu(void)
         gMain.state++;
         break;
     case 1:
-        ScanlineEffect_Stop();
+        ParaEfectoHorizontal();
         gMain.state++;
         break;
     case 2:

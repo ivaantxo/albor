@@ -4,7 +4,7 @@
 #include "main.h"
 #include "overworld.h"
 #include "task.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "palette.h"
 #include "text.h"
 #include "menu.h"
@@ -75,17 +75,17 @@ struct MailRead
 
 static const struct BgTemplate sBgTemplates[] = {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 2,
         .mapBaseIndex = 31,
         .priority = 0
     }, {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 0,
         .mapBaseIndex = 30,
         .priority = 1
     }, {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 0,
         .mapBaseIndex = 29,
         .priority = 2
@@ -94,7 +94,7 @@ static const struct BgTemplate sBgTemplates[] = {
 
 static const struct WindowTemplate sWindowTemplates[] = {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 2,
         .tilemapTop = 3,
         .width = 26,

@@ -2986,7 +2986,7 @@ void BattlePutTextOnWindow(const u8 *text, u8 windowId)
 
     if (B_WIN_MOVE_NAME_1 <= windowId && windowId <= B_WIN_MOVE_NAME_4)
     {
-        printerTemplate.fontId = GetFontIdToFit(text, printerTemplate.fontId, printerTemplate.letterSpacing, 8 * TILE_WIDTH);
+        printerTemplate.fontId = GetFontIdToFit(text, printerTemplate.fontId, printerTemplate.letterSpacing, 8 * LADO_TILE);
     }
 
     if (printerTemplate.x == 0xFF)

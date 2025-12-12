@@ -695,9 +695,9 @@ static void AnimSwirlingSnowball(struct Sprite *sprite)
         sprite->data[0] = 1;
         AnimFastTranslateLinear(sprite);
 
-        if (sprite->x + sprite->x2 > DISPLAY_WIDTH + 16
+        if (sprite->x + sprite->x2 > ANCHO_PANTALLA + 16
          || sprite->x + sprite->x2 < -16
-         || sprite->y + sprite->y2 > DISPLAY_HEIGHT
+         || sprite->y + sprite->y2 > ALTURA_PANTALLA
          || sprite->y + sprite->y2 < -16)
             break;
     }
@@ -817,9 +817,9 @@ void AnimMoveParticleBeyondTarget(struct Sprite *sprite)
     {
         sprite->data[0] = 1;
         AnimFastTranslateLinear(sprite);
-        if (sprite->x + sprite->x2 > DISPLAY_WIDTH + 16
+        if (sprite->x + sprite->x2 > ANCHO_PANTALLA + 16
          || sprite->x + sprite->x2 < -16
-         || sprite->y + sprite->y2 > DISPLAY_HEIGHT
+         || sprite->y + sprite->y2 > ALTURA_PANTALLA
          || sprite->y + sprite->y2 < -16)
             break;
     }
@@ -848,9 +848,9 @@ static void AnimWiggleParticleTowardsTarget(struct Sprite *sprite)
     sprite->data[7] = (sprite->data[7] + sprite->data[6]) & 0xFF;
     if (sprite->data[0] == 1)
     {
-        if (sprite->x + sprite->x2 > DISPLAY_WIDTH + 16
+        if (sprite->x + sprite->x2 > ANCHO_PANTALLA + 16
          || sprite->x + sprite->x2 < -16
-         || sprite->y + sprite->y2 > DISPLAY_HEIGHT
+         || sprite->y + sprite->y2 > ALTURA_PANTALLA
          || sprite->y + sprite->y2 < -16)
             DestroyAnimSprite(sprite);
     }
@@ -1292,7 +1292,7 @@ static void MovePoisonGasCloud(struct Sprite *sprite)
             sprite->data[3] = sprite->y += sprite->y2;
             sprite->data[4] = sprite->y + 4;
             if (GetBattlerSide(gBattleAnimTarget) != B_SIDE_PLAYER)
-                sprite->data[2] = DISPLAY_WIDTH + 16;
+                sprite->data[2] = ANCHO_PANTALLA + 16;
             else
                 sprite->data[2] = -16;
 
@@ -1598,8 +1598,8 @@ void AnimTask_CreateSnowflakes(u8 taskId)
     gTasks[taskId].data[0]++;
     if (gTasks[taskId].data[0] % gTasks[taskId].data[2] == 1)
     {
-        x = Random() % DISPLAY_WIDTH;
-        y = Random() % (DISPLAY_HEIGHT / 2);
+        x = Random() % ANCHO_PANTALLA;
+        y = Random() % (ALTURA_PANTALLA / 2);
         CreateSprite(&gSnowFlakesSpriteTemplate, x, y, 4);
     }
     if (gTasks[taskId].data[0] == gTasks[taskId].data[3])

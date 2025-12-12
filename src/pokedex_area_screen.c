@@ -116,7 +116,7 @@ static const u16 sLandmarkData[][2] =
 
 static const struct PokedexAreaMapTemplate sPokedexAreaMapTemplate =
 {
-    .bg = 3,
+    .bg = FONDO_3,
     .offset = 0,
     .mode = 0,
 };

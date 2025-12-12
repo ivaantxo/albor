@@ -50,8 +50,6 @@
 #define BG_TILE_H_FLIP(n) (0x400 + (n))
 #define BG_TILE_V_FLIP(n) (0x800 + (n))
 
-#define NUM_BACKGROUNDS 4
-
 // text-mode BG
 #define OBJ_VRAM0      (VRAM + 0x10000)
 #define OBJ_VRAM0_SIZE 0x8000
@@ -62,20 +60,16 @@
 #define OAM      0x7000000
 #define OAM_SIZE 0x400
 
-// Dimensions of a tile in pixels
-#define TILE_WIDTH  8
-#define TILE_HEIGHT 8
+#define LADO_TILE  8
 
-// Dimensions of the GBA screen in pixels
-#define DISPLAY_WIDTH  240
-#define DISPLAY_HEIGHT 160
+#define ANCHO_PANTALLA  240
+#define ALTURA_PANTALLA 160
 
-// Dimensions of the GBA screen in tiles
-#define DISPLAY_TILE_WIDTH  (DISPLAY_WIDTH / TILE_WIDTH)
-#define DISPLAY_TILE_HEIGHT (DISPLAY_HEIGHT / TILE_HEIGHT)
+#define TILES_ANCHO_PANTALLA    (ANCHO_PANTALLA / LADO_TILE)
+#define TILES_ALTO_PANTALLA     (ALTURA_PANTALLA / LADO_TILE)
 
 // Size of different tile formats in bytes
-#define TILE_SIZE(bpp) ((bpp) * TILE_WIDTH * TILE_HEIGHT / 8)
+#define TILE_SIZE(bpp) ((bpp) * LADO_TILE * LADO_TILE / 8)
 #define TILE_SIZE_1BPP TILE_SIZE(1) // 8
 #define TILE_SIZE_4BPP TILE_SIZE(4) // 32
 #define TILE_SIZE_8BPP TILE_SIZE(8) // 64
@@ -83,7 +77,7 @@
 #define TILE_OFFSET_4BPP(n) ((n) * TILE_SIZE_4BPP)
 #define TILE_OFFSET_8BPP(n) ((n) * TILE_SIZE_8BPP)
 
-#define TOTAL_OBJ_TILE_COUNT 1024
+#define NUMERO_TILES_SPRITES 1024
 
 #define PLTT_SIZEOF(n) ((n) * sizeof(u16))
 #define PLTT_SIZE_4BPP PLTT_SIZEOF(16) //32

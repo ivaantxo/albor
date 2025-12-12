@@ -1,5 +1,5 @@
 #include "global.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "palette.h"
 #include "task.h"
 #include "main.h"
@@ -155,7 +155,7 @@ static const u32 sKantoTrainerCardBadges_Gfx[]   = INCBIN_U32("graphics/trainer_
 static const struct BgTemplate sTrainerCardBgTemplates[4] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 27,
         .screenSize = FONDO_32x64,
@@ -164,7 +164,7 @@ static const struct BgTemplate sTrainerCardBgTemplates[4] =
         .baseTile = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 2,
         .mapBaseIndex = 29,
         .screenSize = FONDO_32x32,
@@ -173,7 +173,7 @@ static const struct BgTemplate sTrainerCardBgTemplates[4] =
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 0,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,
@@ -182,7 +182,7 @@ static const struct BgTemplate sTrainerCardBgTemplates[4] =
         .baseTile = 0
     },
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 0,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -195,7 +195,7 @@ static const struct BgTemplate sTrainerCardBgTemplates[4] =
 static const struct WindowTemplate sTrainerCardWindowTemplates[] =
 {
     [WIN_MSG] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 2,
         .tilemapTop = 15,
         .width = 27,
@@ -204,7 +204,7 @@ static const struct WindowTemplate sTrainerCardWindowTemplates[] =
         .baseBlock = 0x253,
     },
     [WIN_CARD_TEXT] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 1,
         .tilemapTop = 1,
         .width = 28,
@@ -213,7 +213,7 @@ static const struct WindowTemplate sTrainerCardWindowTemplates[] =
         .baseBlock = 0x1,
     },
     [WIN_TRAINER_PIC] = {
-        .bg = 3,
+        .bg = FONDO_3,
         .tilemapLeft = 19,
         .tilemapTop = 5,
         .width = 9,
@@ -277,7 +277,7 @@ static void VblankCb_TrainerCard(void)
     TransferPlttBuffer();
     BlinkTimeColon();
     if (sData->allowDMACopy)
-        DmaCopy16(3, &gScanlineEffectRegBuffers[0], &gScanlineEffectRegBuffers[1], 0x140);
+        DmaCopy16(3, &gRegistrosBuffersEfectoHorizontal[0], &gRegistrosBuffersEfectoHorizontal[1], 0x140);
 }
 
 static void HblankCb_TrainerCard(void)
@@ -287,7 +287,7 @@ static void HblankCb_TrainerCard(void)
 
     backup = REG_IME;
     REG_IME = 0;
-    bgVOffset = gScanlineEffectRegBuffers[1][REG_VCOUNT & 0xFF];
+    bgVOffset = gRegistrosBuffersEfectoHorizontal[1][REG_VCOUNT & 0xFF];
     REG_BG0VOFS = bgVOffset;
     REG_IME = backup;
 }
@@ -594,8 +594,8 @@ static void InitGpuRegs(void)
     SetGpuReg(REG_OFFSET_BLDY, 0);
     SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR);
     SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG1 | WINOUT_WIN01_BG2 | WINOUT_WIN01_BG3 | WINOUT_WIN01_OBJ);
-    SetGpuReg(REG_OFFSET_WIN0V, DISPLAY_HEIGHT);
-    SetGpuReg(REG_OFFSET_WIN0H, DISPLAY_WIDTH);
+    SetGpuReg(REG_OFFSET_WIN0V, ALTURA_PANTALLA);
+    SetGpuReg(REG_OFFSET_WIN0H, ANCHO_PANTALLA);
     EnableInterrupts(INTR_FLAG_VBLANK | INTR_FLAG_HBLANK);
 }
 
@@ -607,7 +607,7 @@ static void UpdateCardFlipRegs(u16 cardTop)
         blendY = 0;
     sData->flipBlendY = blendY;
     SetGpuReg(REG_OFFSET_BLDY, sData->flipBlendY);
-    SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(sData->cardTop, DISPLAY_HEIGHT - sData->cardTop));
+    SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(sData->cardTop, ALTURA_PANTALLA - sData->cardTop));
 }
 
 static void ResetGpuRegs(void)
@@ -646,7 +646,7 @@ static void SetTrainerCardCb2(void)
 static void SetUpTrainerCardTask(void)
 {
     ResetTasks();
-    ScanlineEffect_Stop();
+    ParaEfectoHorizontal();
     CreateTask(Task_TrainerCard, 0);
     InitTrainerCardData();
     SetDataFromTrainerCard();
@@ -1149,16 +1149,16 @@ static bool8 Task_BeginCardFlip(struct Task *task)
 
     HideBg(1);
     HideBg(3);
-    ScanlineEffect_Stop();
-    ScanlineEffect_Clear();
-    for (i = 0; i < DISPLAY_HEIGHT; i++)
-        gScanlineEffectRegBuffers[1][i] = 0;
+    ParaEfectoHorizontal();
+    LimpiaEfectoHorizontal();
+    for (i = 0; i < ALTURA_PANTALLA; i++)
+        gRegistrosBuffersEfectoHorizontal[1][i] = 0;
     task->tFlipState++;
     return FALSE;
 }
 
-// Note: Cannot be DISPLAY_HEIGHT / 2, or cardHeight will be 0
-#define CARD_FLIP_Y ((DISPLAY_HEIGHT / 2) - 3)
+// Note: Cannot be ALTURA_PANTALLA / 2, or cardHeight will be 0
+#define CARD_FLIP_Y ((ALTURA_PANTALLA / 2) - 3)
 
 static bool8 Task_AnimateCardFlipDown(struct Task *task)
 {
@@ -1175,10 +1175,10 @@ static bool8 Task_AnimateCardFlipDown(struct Task *task)
     UpdateCardFlipRegs(task->tCardTop);
 
     cardTop = task->tCardTop;
-    cardBottom = DISPLAY_HEIGHT - cardTop;
+    cardBottom = ALTURA_PANTALLA - cardTop;
     cardHeight = cardBottom - cardTop;
     r6 = -cardTop << 16;
-    r5 = (DISPLAY_HEIGHT << 16) / cardHeight;
+    r5 = (ALTURA_PANTALLA << 16) / cardHeight;
     r5 -= 1 << 16;
     var_24 = r6;
     var_24 += r5 * cardHeight;
@@ -1186,17 +1186,17 @@ static bool8 Task_AnimateCardFlipDown(struct Task *task)
     r5 *= 2;
 
     for (i = 0; i < cardTop; i++)
-        gScanlineEffectRegBuffers[0][i] = -i;
+        gRegistrosBuffersEfectoHorizontal[0][i] = -i;
     for (; i < (s16)cardBottom; i++)
     {
         var = r6 >> 16;
         r6 += r5;
         r5 -= r10;
-        gScanlineEffectRegBuffers[0][i] = var;
+        gRegistrosBuffersEfectoHorizontal[0][i] = var;
     }
     var = var_24 >> 16;
-    for (; i < DISPLAY_HEIGHT; i++)
-        gScanlineEffectRegBuffers[0][i] = var;
+    for (; i < ALTURA_PANTALLA; i++)
+        gRegistrosBuffersEfectoHorizontal[0][i] = var;
 
     sData->allowDMACopy = TRUE;
     if (task->tCardTop >= CARD_FLIP_Y)
@@ -1288,10 +1288,10 @@ static bool8 Task_AnimateCardFlipUp(struct Task *task)
     UpdateCardFlipRegs(task->tCardTop);
 
     cardTop = task->tCardTop;
-    cardBottom = DISPLAY_HEIGHT - cardTop;
+    cardBottom = ALTURA_PANTALLA - cardTop;
     cardHeight = cardBottom - cardTop;
     r6 = -cardTop << 16;
-    r5 = (DISPLAY_HEIGHT << 16) / cardHeight;
+    r5 = (ALTURA_PANTALLA << 16) / cardHeight;
     r5 -= 1 << 16;
     var_24 = r6;
     var_24 += r5 * cardHeight;
@@ -1299,17 +1299,17 @@ static bool8 Task_AnimateCardFlipUp(struct Task *task)
     r5 /= 2;
 
     for (i = 0; i < cardTop; i++)
-        gScanlineEffectRegBuffers[0][i] = -i;
+        gRegistrosBuffersEfectoHorizontal[0][i] = -i;
     for (; i < (s16)cardBottom; i++)
     {
         var = r6 >> 16;
         r6 += r5;
         r5 += r10;
-        gScanlineEffectRegBuffers[0][i] = var;
+        gRegistrosBuffersEfectoHorizontal[0][i] = var;
     }
     var = var_24 >> 16;
-    for (; i < DISPLAY_HEIGHT; i++)
-        gScanlineEffectRegBuffers[0][i] = var;
+    for (; i < ALTURA_PANTALLA; i++)
+        gRegistrosBuffersEfectoHorizontal[0][i] = var;
 
     sData->allowDMACopy = TRUE;
     if (task->tCardTop <= 0)

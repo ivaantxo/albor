@@ -967,7 +967,7 @@ static void ExecuteMatchCall(u8 taskId)
 
 static const struct WindowTemplate sMatchCallTextWindow =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 1,
     .tilemapTop = 15,
     .width = 28,

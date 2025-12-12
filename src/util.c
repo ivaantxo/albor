@@ -18,7 +18,7 @@ static const struct SpriteTemplate sInvisibleSpriteTemplate =
 
 u8 CreateInvisibleSpriteWithCallback(void (*callback)(struct Sprite *))
 {
-    u8 sprite = CreateSprite(&sInvisibleSpriteTemplate, DISPLAY_WIDTH + 8, DISPLAY_HEIGHT + 8, 14);
+    u8 sprite = CreateSprite(&sInvisibleSpriteTemplate, ANCHO_PANTALLA + 8, ALTURA_PANTALLA + 8, 14);
     gSprites[sprite].invisible = TRUE;
     gSprites[sprite].callback = callback;
     return sprite;

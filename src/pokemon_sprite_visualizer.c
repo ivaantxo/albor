@@ -26,7 +26,7 @@
 #include "pokemon_sprite_visualizer.h"
 #include "pokemon_icon.h"
 #include "reset_rtc_screen.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "script.h"
 #include "script_pokemon_util.h"
 #include "sound.h"
@@ -92,7 +92,7 @@ static const union AnimCmd *const sAnims_Follower[] =
 static const struct BgTemplate sBgTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 24,
         .screenSize = FONDO_32x64,
@@ -101,7 +101,7 @@ static const struct BgTemplate sBgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 1,
         .mapBaseIndex = 28,
         .screenSize = FONDO_32x64,
@@ -110,7 +110,7 @@ static const struct BgTemplate sBgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 1,
         .mapBaseIndex = 30,
         .screenSize = FONDO_64x32,
@@ -119,7 +119,7 @@ static const struct BgTemplate sBgTemplates[] =
         .baseTile = 0
     },
    {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 2,
         .mapBaseIndex = 26,
         .screenSize = FONDO_64x32,
@@ -133,7 +133,7 @@ static const struct BgTemplate sBgTemplates[] =
 static const struct WindowTemplate sPokemonSpriteVisualizerWindowTemplate[] =
 {
     [WIN_NAME_NUMBERS] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 15,
         .tilemapTop = 12,
         .width = 15,
@@ -142,7 +142,7 @@ static const struct WindowTemplate sPokemonSpriteVisualizerWindowTemplate[] =
         .baseBlock = 1
     },
     [WIN_INSTRUCTIONS] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 0,
         .tilemapTop = 0,
         .width = 15,
@@ -151,7 +151,7 @@ static const struct WindowTemplate sPokemonSpriteVisualizerWindowTemplate[] =
         .baseBlock = 1 + 30
     },
     [WIN_BOTTOM_LEFT] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 14,
         .width = 6,
@@ -160,7 +160,7 @@ static const struct WindowTemplate sPokemonSpriteVisualizerWindowTemplate[] =
         .baseBlock = 1 + 30 + 60
     },
     [WIN_BOTTOM_RIGHT] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 7,
         .tilemapTop = 14,
         .width = 24,
@@ -757,8 +757,8 @@ static u8 GetBattlerSpriteFinal_YCustom(u16 species, s8 offset_picCoords, s8 off
     //Main position
     y = offset + sBattlerCoords[0][1].y;
 
-    if (y > DISPLAY_HEIGHT - MON_PIC_HEIGHT + 8)
-        y = DISPLAY_HEIGHT - MON_PIC_HEIGHT + 8;
+    if (y > ALTURA_PANTALLA - MON_PIC_HEIGHT + 8)
+        y = ALTURA_PANTALLA - MON_PIC_HEIGHT + 8;
 
     return y;
 }
@@ -1155,7 +1155,7 @@ void CB2_Pokemon_Sprite_Visualizer(void)
             gMain.state = 1;
             break;
         case 1:
-            ScanlineEffect_Stop();
+            ParaEfectoHorizontal();
             ResetTasks();
             ResetSpriteData();
             ResetPaletteFade();

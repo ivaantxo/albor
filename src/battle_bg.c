@@ -112,7 +112,7 @@ static const struct CompressedSpriteSheet sVsLettersSpriteSheet =
 const struct BgTemplate gBattleBgTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 24,
         .screenSize = FONDO_32x64,
@@ -121,7 +121,7 @@ const struct BgTemplate gBattleBgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 1,
         .mapBaseIndex = 28,
         .screenSize = FONDO_32x64,
@@ -130,7 +130,7 @@ const struct BgTemplate gBattleBgTemplates[] =
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 1,
         .mapBaseIndex = 30,
         .screenSize = FONDO_64x32,
@@ -139,7 +139,7 @@ const struct BgTemplate gBattleBgTemplates[] =
         .baseTile = 0
     },
    {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 2,
         .mapBaseIndex = 26,
         .screenSize = FONDO_64x32,
@@ -152,7 +152,7 @@ const struct BgTemplate gBattleBgTemplates[] =
 const struct WindowTemplate sBattleWindowTemplates[] =
 {
     [B_WIN_MSG] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 6,
         .tilemapTop = 15,
         .width = 19,
@@ -161,7 +161,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 0x0090,
     },
     [B_WIN_MOVE_NAME_1] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 3,
         .tilemapTop = 54,
         .width = 9,
@@ -170,7 +170,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 768,
     },
     [B_WIN_MOVE_NAME_2] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 18,
         .tilemapTop = 54,
         .width = 9,
@@ -179,7 +179,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 801,
     },
     [B_WIN_MOVE_NAME_3] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 3,
         .tilemapTop = 57,
         .width = 9,
@@ -188,7 +188,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 834,
     },
     [B_WIN_MOVE_NAME_4] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 18,
         .tilemapTop = 57,
         .width = 9,
@@ -197,7 +197,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 867,
     },
     [B_WIN_PP_1] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 13,
         .tilemapTop = 54,
         .width = 2,
@@ -206,7 +206,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 656,
     },
     [B_WIN_PP_2] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 28,
         .tilemapTop = 54,
         .width = 2,
@@ -215,7 +215,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 662,
     },
     [B_WIN_PP_3] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 13,
         .tilemapTop = 57,
         .width = 2,
@@ -224,7 +224,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 668,
     },
     [B_WIN_PP_4] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 28,
         .tilemapTop = 57,
         .width = 2,
@@ -233,7 +233,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 674,
     },
     [B_WIN_YESNO] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 26,
         .tilemapTop = 9,
         .width = 3,
@@ -242,7 +242,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 0x0100,
     },
     [B_WIN_LEVEL_UP_BOX] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 19,
         .tilemapTop = 8,
         .width = 10,
@@ -251,7 +251,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 0x0100,
     },
     [B_WIN_LEVEL_UP_BANNER] = {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 18,
         .tilemapTop = 0,
         .width = 12,
@@ -260,7 +260,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 0x016e,
     },
     [B_WIN_VS_PLAYER] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 2,
         .tilemapTop = 3,
         .width = 6,
@@ -269,7 +269,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 0x0020,
     },
     [B_WIN_VS_OPPONENT] = {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 2,
         .tilemapTop = 3,
         .width = 6,
@@ -278,7 +278,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 0x0040,
     },
     [B_WIN_VS_MULTI_PLAYER_1] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 2,
         .tilemapTop = 2,
         .width = 6,
@@ -287,7 +287,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 0x0020,
     },
     [B_WIN_VS_MULTI_PLAYER_2] = {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 2,
         .tilemapTop = 2,
         .width = 6,
@@ -296,7 +296,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 0x0040,
     },
     [B_WIN_VS_MULTI_PLAYER_3] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 2,
         .tilemapTop = 6,
         .width = 6,
@@ -305,7 +305,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 0x0060,
     },
     [B_WIN_VS_MULTI_PLAYER_4] = {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 2,
         .tilemapTop = 6,
         .width = 6,
@@ -314,7 +314,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 0x0080,
     },
     [B_WIN_VS_OUTCOME_DRAW] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 12,
         .tilemapTop = 2,
         .width = 6,
@@ -323,7 +323,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 0x00a0,
     },
     [B_WIN_VS_OUTCOME_LEFT] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 4,
         .tilemapTop = 2,
         .width = 7,
@@ -332,7 +332,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 0x00a0,
     },
     [B_WIN_VS_OUTCOME_RIGHT] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 19,
         .tilemapTop = 2,
         .width = 7,
@@ -341,7 +341,7 @@ const struct WindowTemplate sBattleWindowTemplates[] =
         .baseBlock = 0x00b0,
     },
     [B_WIN_MOVE_DESCRIPTION] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 1,
         .tilemapTop = 47,
         .width = 18,

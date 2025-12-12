@@ -9,7 +9,7 @@
 #include "math_util.h"
 #include "palette.h"
 #include "random.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "sound.h"
 #include "trig.h"
 #include "util.h"
@@ -2214,7 +2214,7 @@ static void AnimTask_ThrashMoveMonVertical_Step(u8 taskId)
 void AnimTask_SketchDrawMon(u8 taskId)
 {
     struct Task *task = &gTasks[taskId];
-    struct ScanlineEffectParams params;
+    struct ParametrosEfectoHorizontal params;
 
     s16 i;
     task->data[0] = GetBattlerYCoordWithElevation(gBattleAnimTarget) + 32;
@@ -2240,14 +2240,14 @@ void AnimTask_SketchDrawMon(u8 taskId)
     {
         if (i >= 0)
         {
-            gScanlineEffectRegBuffers[0][i] = task->data[6] + 0xF0;
-            gScanlineEffectRegBuffers[1][i] = task->data[6] + 0xF0;
+            gRegistrosBuffersEfectoHorizontal[0][i] = task->data[6] + 0xF0;
+            gRegistrosBuffersEfectoHorizontal[1][i] = task->data[6] + 0xF0;
         }
     }
 
-    params.dmaControl = SCANLINE_EFFECT_DMACNT_16BIT;
-    params.initState = 1;
-    ScanlineEffect_SetParams(params);
+    params.bitsDMA = EFECTO_HORIZONTAL_DMA_16;
+    params.estado = ESTADO_EFECTO_HORIZONTAL_ACTIVO;
+    EscribeParametrosEfectoHorizontal(params);
     task->func = AnimTask_SketchDrawMon_Step;
 }
 
@@ -2284,13 +2284,13 @@ static void AnimTask_SketchDrawMon_Step(u8 taskId)
 
             if (task->data[5] >= 0)
             {
-                gScanlineEffectRegBuffers[0][task->data[5]] = task->data[6];
-                gScanlineEffectRegBuffers[1][task->data[5]] = task->data[6];
+                gRegistrosBuffersEfectoHorizontal[0][task->data[5]] = task->data[6];
+                gRegistrosBuffersEfectoHorizontal[1][task->data[5]] = task->data[6];
             }
 
             if (++task->data[3] >= task->data[15])
             {
-                gScanlineEffect.state = 3;
+                gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
                 DestroyAnimVisualTask(taskId);
             }
         }
@@ -2902,11 +2902,11 @@ void AnimMagentaHeart(struct Sprite *sprite)
 
 void AnimTask_FakeOut(u8 taskId)
 {
-    u16 win0h = DISPLAY_WIDTH;
+    u16 win0h = ANCHO_PANTALLA;
     u16 win0v = 0;
 
     gBattle_WIN0H = win0h;
-    gBattle_WIN0V = DISPLAY_HEIGHT;
+    gBattle_WIN0V = ALTURA_PANTALLA;
     SetGpuReg(REG_OFFSET_WIN0H, gBattle_WIN0H);
     SetGpuReg(REG_OFFSET_WIN0V, gBattle_WIN0V);
     SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN1_ALL);
@@ -3043,7 +3043,7 @@ void AnimParticleBurst(struct Sprite *sprite)
 static void AnimRedHeartRising(struct Sprite *sprite)
 {
     sprite->x = gBattleAnimArgs[0];
-    sprite->y = DISPLAY_HEIGHT;
+    sprite->y = ALTURA_PANTALLA;
     sprite->data[0] = gBattleAnimArgs[2];
     sprite->data[1] = gBattleAnimArgs[1];
     sprite->callback = WaitAnimForDuration;
@@ -3295,8 +3295,8 @@ static void AnimOrbitScatter_Step(struct Sprite *sprite)
 {
     sprite->x2 += sprite->data[0];
     sprite->y2 += sprite->data[1];
-    if (sprite->x + sprite->x2 + 16 > ((u32)DISPLAY_WIDTH + 32)
-     || sprite->y + sprite->y2 > DISPLAY_HEIGHT || sprite->y + sprite->y2 < -16)
+    if (sprite->x + sprite->x2 + 16 > ((u32)ANCHO_PANTALLA + 32)
+     || sprite->y + sprite->y2 > ALTURA_PANTALLA || sprite->y + sprite->y2 < -16)
         DestroyAnimSprite(sprite);
 }
 

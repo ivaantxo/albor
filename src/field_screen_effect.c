@@ -1,4 +1,5 @@
 #include "global.h"
+#include "bg.h"
 #include "event_data.h"
 #include "fieldmap.h"
 #include "field_camera.h"
@@ -21,7 +22,7 @@
 #include "metatile_behavior.h"
 #include "palette.h"
 #include "overworld.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "script.h"
 #include "sound.h"
 #include "start_menu.h"
@@ -61,11 +62,11 @@ static void ForceStairsMovement(u32, s16*, s16*);
 static const u16 sFlashLevelToRadius[] = { 200, 72, 64, 56, 48, 40, 32, 24, 0 };
 const s32 gMaxFlashLevel = ARRAY_COUNT(sFlashLevelToRadius) - 1;
 
-static const struct ScanlineEffectParams sFlashEffectParams =
+static const struct ParametrosEfectoHorizontal sFlashEffectParams =
 {
     .dmaDest = &REG_WIN0H,
-    .dmaControl = ((DMA_ENABLE | DMA_START_HBLANK | DMA_REPEAT | DMA_DEST_RELOAD) << 16) | 1,
-    .initState = 1,
+    .bitsDMA = EFECTO_HORIZONTAL_DMA_16,
+    .estado = 1,
 };
 
 // code
@@ -647,18 +648,18 @@ static void UpdateFlashLevelEffect(u8 taskId)
     switch (tState)
     {
     case 0:
-        SetFlashScanlineEffectWindowBoundaries(gScanlineEffectRegBuffers[gScanlineEffect.srcBuffer], tFlashCenterX, tFlashCenterY, tCurFlashRadius);
+        SetFlashScanlineEffectWindowBoundaries(gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer], tFlashCenterX, tFlashCenterY, tCurFlashRadius);
         tState = 1;
         break;
     case 1:
-        SetFlashScanlineEffectWindowBoundaries(gScanlineEffectRegBuffers[gScanlineEffect.srcBuffer], tFlashCenterX, tFlashCenterY, tCurFlashRadius);
+        SetFlashScanlineEffectWindowBoundaries(gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer], tFlashCenterX, tFlashCenterY, tCurFlashRadius);
         tState = 0;
         tCurFlashRadius += tFlashRadiusDelta;
         if (tCurFlashRadius > tDestFlashRadius)
         {
             if (tClearScanlineEffect == 1)
             {
-                ScanlineEffect_Stop();
+                ParaEfectoHorizontal();
                 tState = 2;
             }
             else
@@ -668,7 +669,7 @@ static void UpdateFlashLevelEffect(u8 taskId)
         }
         break;
     case 2:
-        ScanlineEffect_Clear();
+        LimpiaEfectoHorizontal();
         DestroyTask(taskId);
         break;
     }
@@ -681,18 +682,18 @@ static void UpdateOrbFlashEffect(u8 taskId)
     switch (tState)
     {
     case 0:
-        SetOrbFlashScanlineEffectWindowBoundaries(gScanlineEffectRegBuffers[gScanlineEffect.srcBuffer], tFlashCenterX, tFlashCenterY, tCurFlashRadius);
+        SetOrbFlashScanlineEffectWindowBoundaries(gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer], tFlashCenterX, tFlashCenterY, tCurFlashRadius);
         tState = 1;
         break;
     case 1:
-        SetOrbFlashScanlineEffectWindowBoundaries(gScanlineEffectRegBuffers[gScanlineEffect.srcBuffer], tFlashCenterX, tFlashCenterY, tCurFlashRadius);
+        SetOrbFlashScanlineEffectWindowBoundaries(gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer], tFlashCenterX, tFlashCenterY, tCurFlashRadius);
         tState = 0;
         tCurFlashRadius += tFlashRadiusDelta;
         if (tCurFlashRadius > tDestFlashRadius)
         {
             if (tClearScanlineEffect == 1)
             {
-                ScanlineEffect_Stop();
+                ParaEfectoHorizontal();
                 tState = 2;
             }
             else
@@ -702,7 +703,7 @@ static void UpdateOrbFlashEffect(u8 taskId)
         }
         break;
     case 2:
-        ScanlineEffect_Clear();
+        LimpiaEfectoHorizontal();
         DestroyTask(taskId);
         break;
     }
@@ -773,7 +774,7 @@ void AnimateFlash(u8 newFlashLevel)
     bool8 fullBrightness = FALSE;
     if (newFlashLevel == 0)
         fullBrightness = TRUE;
-    StartUpdateFlashLevelEffect(DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, sFlashLevelToRadius[curFlashLevel], sFlashLevelToRadius[newFlashLevel], fullBrightness, 1);
+    StartUpdateFlashLevelEffect(ANCHO_PANTALLA / 2, ALTURA_PANTALLA / 2, sFlashLevelToRadius[curFlashLevel], sFlashLevelToRadius[newFlashLevel], fullBrightness, 1);
     StartWaitForFlashUpdate();
     LockPlayerFieldControls();
 }
@@ -782,8 +783,8 @@ void WriteFlashScanlineEffectBuffer(u8 flashLevel)
 {
     if (flashLevel)
     {
-        SetFlashScanlineEffectWindowBoundaries(&gScanlineEffectRegBuffers[0][0], DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2, sFlashLevelToRadius[flashLevel]);
-        CpuFastSet(&gScanlineEffectRegBuffers[0], &gScanlineEffectRegBuffers[1], 480);
+        SetFlashScanlineEffectWindowBoundaries(&gRegistrosBuffersEfectoHorizontal[0][0], ANCHO_PANTALLA / 2, ALTURA_PANTALLA / 2, sFlashLevelToRadius[flashLevel]);
+        CpuFastSet(&gRegistrosBuffersEfectoHorizontal[0], &gRegistrosBuffersEfectoHorizontal[1], 480);
     }
 }
 
@@ -924,11 +925,11 @@ static void Task_OrbEffect(u8 taskId)
         SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(12, 7));
         SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR);
         SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG1 | WINOUT_WIN01_BG2 | WINOUT_WIN01_BG3 | WINOUT_WIN01_OBJ);
-        SetBgTilemapPalette(0, 0, 0, DISPLAY_TILE_WIDTH, DISPLAY_TILE_HEIGHT, 0xF);
+        SetBgTilemapPalette(0, 0, 0, TILES_ANCHO_PANTALLA, TILES_ALTO_PANTALLA, 0xF);
         ScheduleBgCopyTilemapToVram(0);
-        SetOrbFlashScanlineEffectWindowBoundaries(&gScanlineEffectRegBuffers[0][0], tCenterX, tCenterY, 1);
-        CpuFastSet(&gScanlineEffectRegBuffers[0], &gScanlineEffectRegBuffers[1], 480);
-        ScanlineEffect_SetParams(sFlashEffectParams);
+        SetOrbFlashScanlineEffectWindowBoundaries(&gRegistrosBuffersEfectoHorizontal[0][0], tCenterX, tCenterY, 1);
+        CpuFastSet(&gRegistrosBuffersEfectoHorizontal[0], &gRegistrosBuffersEfectoHorizontal[1], 480);
+        EscribeParametrosEfectoHorizontal(sFlashEffectParams);
         tState = 1;
         break;
     case 1:
@@ -1060,7 +1061,7 @@ static void Task_EnableScriptAfterMusicFade(u8 taskId)
 
 static const struct WindowTemplate sWindowTemplate_WhiteoutText =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 0,
     .tilemapTop = 5,
     .width = 30,

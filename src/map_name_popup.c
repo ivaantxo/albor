@@ -210,7 +210,7 @@ static void ShowMapNamePopUpWindow(void)
         {
             RtcCalcLocalTime();
             FormatDecimalTimeWithoutSeconds(withoutPrefixPtr, gLocalTime.hours, gLocalTime.minutes, OW_POPUP_BW_TIME_MODE == OW_POPUP_BW_TIME_24_HR);
-            AddTextPrinterParameterized(secondaryPopUpWindowId, FONT_SMALL, mapDisplayHeader, GetStringRightAlignXOffset(FONT_SMALL, mapDisplayHeader, DISPLAY_WIDTH) - 5, 8, TEXT_SKIP_DRAW, NULL);
+            AddTextPrinterParameterized(secondaryPopUpWindowId, FONT_SMALL, mapDisplayHeader, GetStringRightAlignXOffset(FONT_SMALL, mapDisplayHeader, ANCHO_PANTALLA) - 5, 8, TEXT_SKIP_DRAW, NULL);
         }
 
         CopyWindowToVram(mapNamePopUpWindowId, COPYWIN_FULL);

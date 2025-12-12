@@ -87,7 +87,7 @@ static const u16 sListBg_Pal[] = INCBIN_U16("graphics/pokenav/condition/search_r
 static const struct BgTemplate sConditionSearchResultBgTemplates[] =
 {
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 1,
         .mapBaseIndex = 0x06,
         .screenSize = FONDO_32x32,
@@ -95,7 +95,7 @@ static const struct BgTemplate sConditionSearchResultBgTemplates[] =
         .priority = 2,
         .baseTile = 0
     }, {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 2,
         .mapBaseIndex = 0x07,
         .screenSize = FONDO_32x32,
@@ -118,7 +118,7 @@ static const LoopedTask sSearchResultLoopTaskFuncs[] =
 
 static const struct WindowTemplate sSearchResultListMenuWindowTemplate =
 {
-    .bg = 1,
+    .bg = FONDO_1,
     .tilemapLeft = 1,
     .tilemapTop = 6,
     .width = 7,

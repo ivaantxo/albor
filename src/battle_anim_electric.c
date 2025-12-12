@@ -1405,8 +1405,8 @@ void AnimTask_CreateIons(u8 taskId)
     gTasks[taskId].data[0]++;
     if (gTasks[taskId].data[0] % gTasks[taskId].data[2] == 1)
     {
-        x = Random() % DISPLAY_WIDTH;
-        y = Random() % (DISPLAY_HEIGHT / 2);
+        x = Random() % ANCHO_PANTALLA;
+        y = Random() % (ALTURA_PANTALLA / 2);
         CreateSprite(&gIonSpriteTemplate, x, y, 4);
     }
     if (gTasks[taskId].data[0] == gTasks[taskId].data[3])

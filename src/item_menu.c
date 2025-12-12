@@ -29,7 +29,7 @@
 #include "party_menu.h"
 #include "pokemon.h"
 #include "pokemon_summary_screen.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "script.h"
 #include "shop.h"
 #include "sound.h"
@@ -189,7 +189,7 @@ static void Task_FadeAndCloseBagMenuIfMulch(u8 taskId);
 static const struct BgTemplate sBgTemplates_ItemMenu[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -198,7 +198,7 @@ static const struct BgTemplate sBgTemplates_ItemMenu[] =
         .baseTile = 0,
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 0,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,
@@ -207,7 +207,7 @@ static const struct BgTemplate sBgTemplates_ItemMenu[] =
         .baseTile = 0,
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 3,
         .mapBaseIndex = 29,
         .screenSize = FONDO_32x32,
@@ -342,7 +342,7 @@ static const u8 sFontColorTable[][3] = {
 static const struct WindowTemplate sDefaultBagWindows[] =
 {
     [WIN_ITEM_LIST] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 14,
         .tilemapTop = 2,
         .width = 15,
@@ -351,7 +351,7 @@ static const struct WindowTemplate sDefaultBagWindows[] =
         .baseBlock = 0x27,
     },
     [WIN_DESCRIPTION] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 0,
         .tilemapTop = 13,
         .width = 14,
@@ -360,7 +360,7 @@ static const struct WindowTemplate sDefaultBagWindows[] =
         .baseBlock = 0x117,
     },
     [WIN_POCKET_NAME] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 4,
         .tilemapTop = 1,
         .width = 8,
@@ -369,7 +369,7 @@ static const struct WindowTemplate sDefaultBagWindows[] =
         .baseBlock = 0x1A1,
     },
     [WIN_MESSAGE] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 2,
         .tilemapTop = 15,
         .width = 27,
@@ -383,7 +383,7 @@ static const struct WindowTemplate sDefaultBagWindows[] =
 static const struct WindowTemplate sContextMenuWindowTemplates[] =
 {
     [ITEMWIN_1x1] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 22,
         .tilemapTop = 17,
         .width = 7,
@@ -392,7 +392,7 @@ static const struct WindowTemplate sContextMenuWindowTemplates[] =
         .baseBlock = 0x21D,
     },
     [ITEMWIN_1x2] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 22,
         .tilemapTop = 15,
         .width = 7,
@@ -401,7 +401,7 @@ static const struct WindowTemplate sContextMenuWindowTemplates[] =
         .baseBlock = 0x21D,
     },
     [ITEMWIN_2x2] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 15,
         .tilemapTop = 15,
         .width = 14,
@@ -410,7 +410,7 @@ static const struct WindowTemplate sContextMenuWindowTemplates[] =
         .baseBlock = 0x21D,
     },
     [ITEMWIN_2x3] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 15,
         .tilemapTop = 13,
         .width = 14,
@@ -419,7 +419,7 @@ static const struct WindowTemplate sContextMenuWindowTemplates[] =
         .baseBlock = 0x21D,
     },
     [ITEMWIN_MESSAGE] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 2,
         .tilemapTop = 15,
         .width = 27,
@@ -428,7 +428,7 @@ static const struct WindowTemplate sContextMenuWindowTemplates[] =
         .baseBlock = 0x1B1,
     },
     [ITEMWIN_YESNO_LOW] = { // Yes/No tucked in corner, for toss confirm
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 24,
         .tilemapTop = 15,
         .width = 5,
@@ -437,7 +437,7 @@ static const struct WindowTemplate sContextMenuWindowTemplates[] =
         .baseBlock = 0x21D,
     },
     [ITEMWIN_YESNO_HIGH] = { // Yes/No higher up, positioned above a lower message box
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 21,
         .tilemapTop = 9,
         .width = 5,
@@ -446,7 +446,7 @@ static const struct WindowTemplate sContextMenuWindowTemplates[] =
         .baseBlock = 0x21D,
     },
     [ITEMWIN_QUANTITY] = { // Used for quantity of items to Toss/Deposit
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 24,
         .tilemapTop = 17,
         .width = 5,
@@ -455,7 +455,7 @@ static const struct WindowTemplate sContextMenuWindowTemplates[] =
         .baseBlock = 0x21D,
     },
     [ITEMWIN_QUANTITY_WIDE] = { // Used for quantity and price of items to Sell
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 18,
         .tilemapTop = 11,
         .width = 10,
@@ -464,7 +464,7 @@ static const struct WindowTemplate sContextMenuWindowTemplates[] =
         .baseBlock = 0x245,
     },
     [ITEMWIN_MONEY] = {
-        .bg = 1,
+        .bg = FONDO_1,
         .tilemapLeft = 1,
         .tilemapTop = 1,
         .width = 10,
@@ -594,7 +594,7 @@ static bool8 SetupBagMenu(void)
         gMain.state++;
         break;
     case 1:
-        ScanlineEffect_Stop();
+        ParaEfectoHorizontal();
         gMain.state++;
         break;
     case 2:

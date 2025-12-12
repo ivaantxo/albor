@@ -25,7 +25,7 @@ static void InitClearSaveDataScreenWindows(void);
 static const struct BgTemplate sClearSaveBgTemplates[2] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -34,7 +34,7 @@ static const struct BgTemplate sClearSaveBgTemplates[2] =
         .baseTile = 0,
     },
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 0,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,
@@ -47,7 +47,7 @@ static const struct BgTemplate sClearSaveBgTemplates[2] =
 static const struct WindowTemplate sClearSaveTextWindow[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 3,
         .tilemapTop = 15,
         .width = 26,
@@ -61,7 +61,7 @@ static const struct WindowTemplate sClearSaveTextWindow[] =
 static const struct WindowTemplate sClearSaveYesNo[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 3,
         .tilemapTop = 2,
         .width = 5,

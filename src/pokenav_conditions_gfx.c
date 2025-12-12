@@ -10,7 +10,7 @@
 #include "mon_markings.h"
 #include "palette.h"
 #include "pokenav.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "string_util.h"
 #include "strings.h"
 #include "text.h"
@@ -33,7 +33,7 @@ static const u8 gText_Number2[] = _("No. ");
 static const struct BgTemplate sMenuBgTemplates[3] =
 {
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 1,
         .mapBaseIndex = 0x1F,
         .screenSize = FONDO_32x32,
@@ -42,7 +42,7 @@ static const struct BgTemplate sMenuBgTemplates[3] =
         .baseTile = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 3,
         .mapBaseIndex = 0x1D,
         .screenSize = FONDO_32x32,
@@ -51,7 +51,7 @@ static const struct BgTemplate sMenuBgTemplates[3] =
         .baseTile = 0
     },
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 2,
         .mapBaseIndex = 0x1E,
         .screenSize = FONDO_32x32,
@@ -63,7 +63,7 @@ static const struct BgTemplate sMenuBgTemplates[3] =
 
 static const struct WindowTemplate sMonNameGenderWindowTemplate =
 {
-    .bg = 1,
+    .bg = FONDO_1,
     .tilemapLeft = 13,
     .tilemapTop = 1,
     .width = 13,
@@ -74,7 +74,7 @@ static const struct WindowTemplate sMonNameGenderWindowTemplate =
 
 static const struct WindowTemplate sListIndexWindowTemplate =
 {
-    .bg = 1,
+    .bg = FONDO_1,
     .tilemapLeft = 1,
     .tilemapTop = 6,
     .width = 7,
@@ -797,7 +797,7 @@ static void VBlankCB_PokenavConditionGraph(void)
     ProcessSpriteCopyRequests();
     TransferPlttBuffer();
     ConditionGraph_Draw(graph);
-    ScanlineEffect_InitHBlankDmaTransfer();
+    IniciaTransferenciaDMAEnHblankEfectoHorizontal();
 }
 
 static void SetExitVBlank(void)

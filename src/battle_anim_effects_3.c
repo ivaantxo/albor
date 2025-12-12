@@ -12,7 +12,7 @@
 #include "palette.h"
 #include "pokemon_icon.h"
 #include "random.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "sound.h"
 #include "sprite.h"
 #include "task.h"
@@ -1562,7 +1562,7 @@ static void AnimLetterZ(struct Sprite *sprite)
     sprite->x2 = sprite->data[3] / 2;
     sprite->y2 = Sin(var0 & 0xFF, 5) + (sprite->data[4] / 2);
 
-    if ((u16)(sprite->x + sprite->x2) > DISPLAY_WIDTH)
+    if ((u16)(sprite->x + sprite->x2) > ANCHO_PANTALLA)
         DestroyAnimSprite(sprite);
 }
 
@@ -1728,8 +1728,8 @@ static void AnimClappingHand2(struct Sprite *sprite)
 void AnimTask_CreateSpotlight(u8 taskId)
 {
     SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR | WININ_WIN1_BG_ALL | WININ_WIN1_OBJ);
-    gBattle_WIN1H = WIN_RANGE(0, DISPLAY_WIDTH);
-    gBattle_WIN1V = WIN_RANGE(120, DISPLAY_HEIGHT);
+    gBattle_WIN1H = WIN_RANGE(0, ANCHO_PANTALLA);
+    gBattle_WIN1V = WIN_RANGE(120, ALTURA_PANTALLA);
     SetGpuReg(REG_OFFSET_WIN1H, gBattle_WIN1H);
     SetGpuReg(REG_OFFSET_WIN1V, gBattle_WIN1V);
     SetGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_WIN1_ON);
@@ -1796,7 +1796,7 @@ void AnimTask_RapinSpinMonElevation(u8 taskId)
     int var3;
     int var4;
     s16 i;
-    struct ScanlineEffectParams scanlineParams;
+    struct ParametrosEfectoHorizontal parametrosEfectoHorizontal;
     struct Task *task = &gTasks[taskId];
 
     if (!gBattleAnimArgs[0])
@@ -1826,13 +1826,13 @@ void AnimTask_RapinSpinMonElevation(u8 taskId)
     {
         var3 = gBattle_BG1_X;
         task->data[8] = var3;
-        var4 = var3 + DISPLAY_WIDTH;
+        var4 = var3 + ANCHO_PANTALLA;
     }
     else
     {
         var3 = gBattle_BG2_X;
         task->data[8] = var3;
-        var4 = var3 + DISPLAY_WIDTH;
+        var4 = var3 + ANCHO_PANTALLA;
     }
 
     task->data[9] = var4;
@@ -1854,19 +1854,19 @@ void AnimTask_RapinSpinMonElevation(u8 taskId)
     i = task->data[2];
     while (i <= task->data[3])
     {
-        gScanlineEffectRegBuffers[0][i] = var2;
-        gScanlineEffectRegBuffers[1][i] = var2;
+        gRegistrosBuffersEfectoHorizontal[0][i] = var2;
+        gRegistrosBuffersEfectoHorizontal[1][i] = var2;
         i++;
     }
 
     if (toBG2 == 1)
-        scanlineParams.dmaDest = &REG_BG1HOFS;
+        parametrosEfectoHorizontal.dmaDest = &REG_BG1HOFS;
     else
-        scanlineParams.dmaDest = &REG_BG2HOFS;
+        parametrosEfectoHorizontal.dmaDest = &REG_BG2HOFS;
 
-    scanlineParams.dmaControl = SCANLINE_EFFECT_DMACNT_16BIT;
-    scanlineParams.initState = 1;
-    ScanlineEffect_SetParams(scanlineParams);
+    parametrosEfectoHorizontal.bitsDMA = EFECTO_HORIZONTAL_DMA_16;
+    parametrosEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_ACTIVO;
+    EscribeParametrosEfectoHorizontal(parametrosEfectoHorizontal);
 
     task->func = RapinSpinMonElevation_Step;
 }
@@ -1908,23 +1908,23 @@ static void RapinSpinMonElevation_Step(u8 taskId)
     i = task->data[0];
     while (i < task->data[1])
     {
-        gScanlineEffectRegBuffers[0][i] = task->data[12];
-        gScanlineEffectRegBuffers[1][i] = task->data[12];
+        gRegistrosBuffersEfectoHorizontal[0][i] = task->data[12];
+        gRegistrosBuffersEfectoHorizontal[1][i] = task->data[12];
         i++;
     }
 
     i = task->data[1];
     while (i <= task->data[3])
     {
-        gScanlineEffectRegBuffers[0][i] = task->data[11];
-        gScanlineEffectRegBuffers[1][i] = task->data[11];
+        gRegistrosBuffersEfectoHorizontal[0][i] = task->data[11];
+        gRegistrosBuffersEfectoHorizontal[1][i] = task->data[11];
         i++;
     }
 
     if (task->data[15])
     {
         if (task->data[10])
-            gScanlineEffect.state = 3;
+            gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
 
         DestroyAnimVisualTask(taskId);
     }
@@ -2147,7 +2147,7 @@ static void AnimWishStar(struct Sprite *sprite)
     if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
         sprite->x = -16;
     else
-        sprite->x = DISPLAY_WIDTH + 16;
+        sprite->x = ANCHO_PANTALLA + 16;
 
     sprite->y = 0;
     sprite->callback = AnimWishStar_Step;
@@ -2176,7 +2176,7 @@ static void AnimWishStar_Step(struct Sprite *sprite)
     }
 
     newX = sprite->x + sprite->x2 + 32;
-    if (newX > DISPLAY_WIDTH + 64)
+    if (newX > ANCHO_PANTALLA + 64)
         DestroyAnimSprite(sprite);
 }
 
@@ -2814,7 +2814,7 @@ void AnimSweetScentPetal(struct Sprite *sprite)
     }
     else
     {
-        sprite->x = DISPLAY_WIDTH;
+        sprite->x = ANCHO_PANTALLA;
         sprite->y = gBattleAnimArgs[0] - 30;
     }
 
@@ -2831,7 +2831,7 @@ static void AnimSweetScentPetal_Step(struct Sprite *sprite)
         sprite->x += 5;
         sprite->y -= 1;
 
-        if (sprite->x > DISPLAY_WIDTH)
+        if (sprite->x > ANCHO_PANTALLA)
             DestroyAnimSprite(sprite);
 
         sprite->y2 = Sin(sprite->data[0] & 0xFF, 16);
@@ -3061,7 +3061,7 @@ static void AnimFlatterConfetti(struct Sprite *sprite)
     if (sprite->data[2] == ANIM_ATTACKER)
         sprite->x = -8;
     else
-        sprite->x = DISPLAY_WIDTH + 8;
+        sprite->x = ANCHO_PANTALLA + 8;
 
     sprite->y = 104;
     sprite->callback = AnimFlatterConfetti_Step;
@@ -3291,7 +3291,7 @@ void AnimTask_AcidArmor(u8 taskId)
     u8 battler;
     u16 bgX, bgY;
     s16 y, i;
-    struct ScanlineEffectParams scanlineParams;
+    struct ParametrosEfectoHorizontal parametrosEfectoHorizontal;
     struct Task *task = &gTasks[taskId];
 
     if (gBattleAnimArgs[0] == ANIM_ATTACKER)
@@ -3320,14 +3320,14 @@ void AnimTask_AcidArmor(u8 taskId)
     task->data[15] = GetAnimBattlerSpriteId(gBattleAnimArgs[0]);
     if (GetBattlerSpriteBGPriorityRank(battler) == 1)
     {
-        scanlineParams.dmaDest = &REG_BG1HOFS;
+        parametrosEfectoHorizontal.dmaDest = &REG_BG1HOFS;
         SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG1);
         bgX = gBattle_BG1_X;
         bgY = gBattle_BG1_Y;
     }
     else
     {
-        scanlineParams.dmaDest = &REG_BG2HOFS;
+        parametrosEfectoHorizontal.dmaDest = &REG_BG2HOFS;
         SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG2);
         bgX = gBattle_BG2_X;
         bgY = gBattle_BG2_Y;
@@ -3335,15 +3335,15 @@ void AnimTask_AcidArmor(u8 taskId)
 
     for (y = 0, i = 0; y < 160; y++, i += 2)
     {
-        gScanlineEffectRegBuffers[0][i] = bgX;
-        gScanlineEffectRegBuffers[1][i] = bgX;
-        gScanlineEffectRegBuffers[0][i + 1] = bgY;
-        gScanlineEffectRegBuffers[1][i + 1] = bgY;
+        gRegistrosBuffersEfectoHorizontal[0][i] = bgX;
+        gRegistrosBuffersEfectoHorizontal[1][i] = bgX;
+        gRegistrosBuffersEfectoHorizontal[0][i + 1] = bgY;
+        gRegistrosBuffersEfectoHorizontal[1][i + 1] = bgY;
     }
 
-    scanlineParams.dmaControl = SCANLINE_EFFECT_DMACNT_32BIT;
-    scanlineParams.initState = 1;
-    ScanlineEffect_SetParams(scanlineParams);
+    parametrosEfectoHorizontal.bitsDMA = EFECTO_HORIZONTAL_DMA_32;
+    parametrosEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_ACTIVO;
+    EscribeParametrosEfectoHorizontal(parametrosEfectoHorizontal);
     task->func = AnimTask_AcidArmor_Step;
 }
 
@@ -3388,8 +3388,8 @@ static void AnimTask_AcidArmor_Step(u8 taskId)
         var0 = task->data[14];
         while (var0 > task->data[13])
         {
-            gScanlineEffectRegBuffers[gScanlineEffect.srcBuffer][offset + 1] = (i - var2) + bgY;
-            gScanlineEffectRegBuffers[gScanlineEffect.srcBuffer][offset] = bgX + var3 + (gSineTable[sineIndex] >> 5);
+            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][offset + 1] = (i - var2) + bgY;
+            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][offset] = bgX + var3 + (gSineTable[sineIndex] >> 5);
             sineIndex = (sineIndex + 10) & 0xFF;
             task->data[11] += task->data[10];
             var3 = task->data[11] >> 5;
@@ -3405,8 +3405,8 @@ static void AnimTask_AcidArmor_Step(u8 taskId)
         var0 *= 2;
         while (var0 >= 0)
         {
-            gScanlineEffectRegBuffers[0][var0] = bgX + DISPLAY_WIDTH;
-            gScanlineEffectRegBuffers[1][var0] = bgX + DISPLAY_WIDTH;
+            gRegistrosBuffersEfectoHorizontal[0][var0] = bgX + ANCHO_PANTALLA;
+            gRegistrosBuffersEfectoHorizontal[1][var0] = bgX + ANCHO_PANTALLA;
             var0 -= 2;
         }
 
@@ -3435,7 +3435,7 @@ static void AnimTask_AcidArmor_Step(u8 taskId)
     case 1:
         if (++task->data[2] > 12)
         {
-            gScanlineEffect.state = 3;
+            gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
             task->data[2] = 0;
             task->data[0]++;
         }
@@ -5037,7 +5037,7 @@ void AnimTask_SnatchOpposingMonMove(u8 taskId)
 
         gTasks[taskId].data[1] &= 0xFF;
         x = gSprites[spriteId].x + gSprites[spriteId].x2;
-        if (x < -32 || x > DISPLAY_WIDTH + 32)
+        if (x < -32 || x > ANCHO_PANTALLA + 32)
         {
             gTasks[taskId].data[1] = 0;
             gTasks[taskId].data[0]++;
@@ -5055,7 +5055,7 @@ void AnimTask_SnatchOpposingMonMove(u8 taskId)
 
             subpriority = gSprites[GetAnimBattlerSpriteId(ANIM_TARGET)].subpriority + 1;
             isBackPic = FALSE;
-            x = DISPLAY_WIDTH + 32;
+            x = ANCHO_PANTALLA + 32;
         }
         else
         {
@@ -5108,7 +5108,7 @@ void AnimTask_SnatchOpposingMonMove(u8 taskId)
             }
         }
 
-        if (x < -32 || x > DISPLAY_WIDTH + 32)
+        if (x < -32 || x > ANCHO_PANTALLA + 32)
         {
             gTasks[taskId].data[1] = 0;
             gTasks[taskId].data[0]++;
@@ -5121,7 +5121,7 @@ void AnimTask_SnatchOpposingMonMove(u8 taskId)
         if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
             gSprites[spriteId].x2 = -gSprites[spriteId].x - 32;
         else
-            gSprites[spriteId].x2 = DISPLAY_WIDTH + 32 - gSprites[spriteId].x;
+            gSprites[spriteId].x2 = ANCHO_PANTALLA + 32 - gSprites[spriteId].x;
 
         gTasks[taskId].data[0]++;
         break;

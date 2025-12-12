@@ -318,10 +318,10 @@ static void Task_ComputerScreenOpenEffect(u8 taskId)
     switch (task->tState)
     {
     case 0:
-        task->tWinLeft = DISPLAY_WIDTH / 2;
-        task->tWinRight = DISPLAY_WIDTH / 2;
-        task->tWinTop = DISPLAY_HEIGHT / 2;
-        task->tWinBottom = DISPLAY_HEIGHT / 2 + 1;
+        task->tWinLeft = ANCHO_PANTALLA / 2;
+        task->tWinRight = ANCHO_PANTALLA / 2;
+        task->tWinTop = ALTURA_PANTALLA / 2;
+        task->tWinBottom = ALTURA_PANTALLA / 2 + 1;
 
         SetGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_WIN0_ON);
         SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(task->tWinLeft, task->tWinRight));
@@ -342,10 +342,10 @@ static void Task_ComputerScreenOpenEffect(u8 taskId)
         task->tWinLeft -= task->tHorzIncrement;
         task->tWinRight += task->tHorzIncrement;
 
-        if (task->tWinLeft < 1 || task->tWinRight > DISPLAY_WIDTH - 1)
+        if (task->tWinLeft < 1 || task->tWinRight > ANCHO_PANTALLA - 1)
         {
             task->tWinLeft = 0;
-            task->tWinRight = DISPLAY_WIDTH;
+            task->tWinRight = ANCHO_PANTALLA;
             SetGpuReg(REG_OFFSET_BLDY, 0);
             SetGpuReg(REG_OFFSET_BLDCNT, task->tBlendCnt);
             BlendPalettes(PALETTES_ALL, 0, 0);
@@ -360,10 +360,10 @@ static void Task_ComputerScreenOpenEffect(u8 taskId)
         task->tWinTop -= task->tVertIncrement;
         task->tWinBottom += task->tVertIncrement;
 
-        if (task->tWinTop < 1 || task->tWinBottom > DISPLAY_HEIGHT - 1)
+        if (task->tWinTop < 1 || task->tWinBottom > ALTURA_PANTALLA - 1)
         {
             task->tWinTop = 0;
-            task->tWinBottom = DISPLAY_HEIGHT;
+            task->tWinBottom = ALTURA_PANTALLA;
             ClearGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_WIN0_ON);
         }
         SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(task->tWinTop, task->tWinBottom));
@@ -390,9 +390,9 @@ static void Task_ComputerScreenCloseEffect(u8 taskId)
         break;
     case 1:
         task->tWinLeft = 0;
-        task->tWinRight = DISPLAY_WIDTH;
+        task->tWinRight = ANCHO_PANTALLA;
         task->tWinTop = 0;
-        task->tWinBottom = DISPLAY_HEIGHT;
+        task->tWinBottom = ALTURA_PANTALLA;
 
         SetGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_WIN0_ON);
         SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(task->tWinLeft, task->tWinRight));
@@ -404,32 +404,32 @@ static void Task_ComputerScreenCloseEffect(u8 taskId)
         task->tWinTop += task->tVertIncrement;
         task->tWinBottom -= task->tVertIncrement;
 
-        if (task->tWinTop >= DISPLAY_HEIGHT / 2 || task->tWinBottom <= DISPLAY_HEIGHT / 2 + 1)
+        if (task->tWinTop >= ALTURA_PANTALLA / 2 || task->tWinBottom <= ALTURA_PANTALLA / 2 + 1)
         {
-            task->tWinTop = DISPLAY_HEIGHT / 2;
-            task->tWinBottom = DISPLAY_HEIGHT / 2 + 1;
+            task->tWinTop = ALTURA_PANTALLA / 2;
+            task->tWinBottom = ALTURA_PANTALLA / 2 + 1;
             SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_ALL | BLDCNT_EFFECT_LIGHTEN);
             SetGpuReg(REG_OFFSET_BLDY, 16);
         }
         SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(task->tWinTop, task->tWinBottom));
 
-        if (task->tWinTop != DISPLAY_HEIGHT / 2)
+        if (task->tWinTop != ALTURA_PANTALLA / 2)
             return;
         break;
     case 3:
         task->tWinLeft += task->tHorzIncrement;
         task->tWinRight -= task->tHorzIncrement;
 
-        if (task->tWinLeft >= DISPLAY_WIDTH / 2 || task->tWinRight <= DISPLAY_WIDTH / 2)
+        if (task->tWinLeft >= ANCHO_PANTALLA / 2 || task->tWinRight <= ANCHO_PANTALLA / 2)
         {
-            task->tWinLeft = DISPLAY_WIDTH / 2;
-            task->tWinRight = DISPLAY_WIDTH / 2;
+            task->tWinLeft = ANCHO_PANTALLA / 2;
+            task->tWinRight = ANCHO_PANTALLA / 2;
             BlendPalettes(PALETTES_ALL, 16, 0);
             gPlttBufferFaded[0] = 0;
         }
         SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(task->tWinLeft, task->tWinRight));
 
-        if (task->tWinLeft != DISPLAY_WIDTH / 2)
+        if (task->tWinLeft != ANCHO_PANTALLA / 2)
             return;
         break;
     default:

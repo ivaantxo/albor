@@ -19,7 +19,7 @@ struct BgControl
         u8 charBaseIndex:2;
         u8 mapBaseIndex:5;
         u8 paletteMode:1;
-    } configs[NUM_BACKGROUNDS];
+    } configs[NUMERO_FONDOS];
 
     u16 bgVisibilityAndMode;
 };
@@ -35,8 +35,8 @@ struct BgConfig2
 };
 
 static struct BgControl sGpuBgConfigs;
-static struct BgConfig2 sGpuBgConfigs2[NUM_BACKGROUNDS];
-static u32 sDmaBusyBitfield[NUM_BACKGROUNDS];
+static struct BgConfig2 sGpuBgConfigs2[NUMERO_FONDOS];
+static u32 sDmaBusyBitfield[NUMERO_FONDOS];
 
 static const struct BgConfig sZeroedBgControlStruct = { 0 };
 
@@ -64,7 +64,7 @@ void ResetBgControlStructs(void)
 {
     u32 i;
 
-    for (i = 0; i < NUM_BACKGROUNDS; i++)
+    for (i = 0; i < NUMERO_FONDOS; i++)
     {
         sGpuBgConfigs.configs[i] = sZeroedBgControlStruct;
     }
@@ -269,7 +269,7 @@ void SetBgAffine(u32 bg, s32 srcCenterX, s32 srcCenterY, s32 dispCenterX, s32 di
 
 bool32 IsInvalidBg(u32 bg)
 {
-    if (bg >= NUM_BACKGROUNDS)
+    if (bg >= NUMERO_FONDOS)
         return TRUE;
     else
         return FALSE;
@@ -280,7 +280,7 @@ void ResetBgsAndClearDma3BusyFlags(void)
     u32 i;
     ResetBgs();
 
-    for (i = 0; i < NUM_BACKGROUNDS; i++)
+    for (i = 0; i < NUMERO_FONDOS; i++)
     {
         sDmaBusyBitfield[i] = 0;
     }
@@ -297,7 +297,7 @@ void InitBgsFromTemplates(u32 bgMode, const struct BgTemplate *templates, u32 nu
     for (i = 0; i < numTemplates; i++)
     {
         bg = templates[i].bg;
-        if (bg < NUM_BACKGROUNDS)
+        if (bg < NUMERO_FONDOS)
         {
             SetBgControlAttributes(bg,
                                    templates[i].charBaseIndex,
@@ -322,7 +322,7 @@ void InitBgFromTemplate(const struct BgTemplate *template)
 {
     u32 bg = template->bg;
 
-    if (bg < NUM_BACKGROUNDS)
+    if (bg < NUMERO_FONDOS)
     {
         SetBgControlAttributes(bg,
                                template->charBaseIndex,

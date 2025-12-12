@@ -9,7 +9,7 @@
 #include "menu.h"
 #include "palette.h"
 #include "rtc.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "sound.h"
 #include "strings.h"
 #include "task.h"
@@ -77,7 +77,7 @@ static const u16 sTextPrompt_Pal[] = INCBIN_U16("graphics/wallclock/text_prompt.
 static const struct WindowTemplate sWindowTemplates[] =
 {
     [WIN_MSG] = {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 3,
         .tilemapTop = 17,
         .width = 24,
@@ -86,7 +86,7 @@ static const struct WindowTemplate sWindowTemplates[] =
         .baseBlock = 512
     },
     [WIN_BUTTON_LABEL] = {
-        .bg = 2,
+        .bg = FONDO_2,
         .tilemapLeft = 24,
         .tilemapTop = 16,
         .width = 6,
@@ -99,7 +99,7 @@ static const struct WindowTemplate sWindowTemplates[] =
 
 static const struct WindowTemplate sWindowTemplate_ConfirmYesNo =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 24,
     .tilemapTop = 9,
     .width = 5,
@@ -111,19 +111,19 @@ static const struct WindowTemplate sWindowTemplate_ConfirmYesNo =
 static const struct BgTemplate sBgTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 2,
         .mapBaseIndex = 31,
         .priority = 0
     },
     {
-        .bg = 2,
+        .bg = FONDO_2,
         .charBaseIndex = 1,
         .mapBaseIndex = 8,
         .priority = 1
     },
     {
-        .bg = 3,
+        .bg = FONDO_3,
         .charBaseIndex = 0,
         .mapBaseIndex = 7,
         .priority = 2
@@ -150,7 +150,7 @@ static const struct SpritePalette sSpritePalettes_Clock[] =
 
 static const struct OamData sOam_ClockHand =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .shape = SPRITE_SHAPE(64x64),
     .size = SPRITE_SIZE(64x64),
     .priority = 1,
@@ -202,7 +202,7 @@ static const struct SpriteTemplate sSpriteTemplate_HourHand =
 
 static const struct OamData sOam_PeriodIndicator =
 {
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .shape = SPRITE_SHAPE(16x16),
     .size = SPRITE_SIZE(16x16),
     .priority = 3,
@@ -657,7 +657,7 @@ static void LoadWallClockGraphics(void)
     DeactivateAllTextPrinters();
     LoadUserWindowBorderGfx(0, 0x250, BG_PLTT_ID(13));
     ClearScheduledBgCopiesToVram();
-    ScanlineEffect_Stop();
+    ParaEfectoHorizontal();
     ResetTasks();
     ResetSpriteData();
     ResetPaletteFade();

@@ -4,7 +4,7 @@
 #include "bg.h"
 #include "blit.h"
 
-COMMON_DATA void *gWindowBgTilemapBuffers[NUM_BACKGROUNDS] = {0};
+COMMON_DATA void *gWindowBgTilemapBuffers[NUMERO_FONDOS] = {0};
 
 EWRAM_DATA struct Window gWindows[WINDOWS_MAX] = {0};
 
@@ -26,7 +26,7 @@ bool32 InitWindows(const struct WindowTemplate *templates)
     u32 attrib;
     u8 *allocatedTilemapBuffer;
 
-    for (i = 0; i < NUM_BACKGROUNDS; ++i)
+    for (i = 0; i < NUMERO_FONDOS; ++i)
     {
         bgTilemapBuffer = GetBgTilemapBuffer(i);
         if (bgTilemapBuffer != NULL)
@@ -185,7 +185,7 @@ void FreeAllWindowBuffers(void)
 {
     u32 i;
 
-    for (i = 0; i < NUM_BACKGROUNDS; ++i)
+    for (i = 0; i < NUMERO_FONDOS; ++i)
     {
         if (gWindowBgTilemapBuffers[i] != NULL && gWindowBgTilemapBuffers[i] != DummyWindowBgTilemap)
         {
@@ -519,10 +519,10 @@ static u32 GetNumActiveWindowsOnBg(u32 bgId)
 
 u32 WindowWidthPx(u32 windowId)
 {
-    return gWindows[windowId].window.width * TILE_WIDTH;
+    return gWindows[windowId].window.width * LADO_TILE;
 }
 
 u32 WindowTemplateWidthPx(const struct WindowTemplate *template)
 {
-    return template->width * TILE_WIDTH;
+    return template->width * LADO_TILE;
 }

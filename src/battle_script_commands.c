@@ -5,6 +5,7 @@
 #include "battle_ai_main.h"
 #include "battle_ai_util.h"
 #include "battle_scripts.h"
+#include "bg.h"
 #include "constants/moves.h"
 #include "constants/abilities.h"
 #include "item.h"

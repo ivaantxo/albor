@@ -27,7 +27,7 @@
 #include "pokenav.h"
 #include "safari_zone.h"
 #include "save.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "script.h"
 #include "sound.h"
 #include "start_menu.h"
@@ -49,7 +49,7 @@ static u8 savingSpriteId;
 static const struct OamData sOam_SavingAnimation =
 {
     .objMode = ST_OAM_OBJ_BLEND,
-    .y = DISPLAY_HEIGHT,
+    .y = ALTURA_PANTALLA,
     .shape = SPRITE_SHAPE(16x16),
     .size = SPRITE_SIZE(16x16),
     .priority = 0,
@@ -176,7 +176,7 @@ static void SaveGameTask(u8 taskId);
 static bool8 FieldCB_ReturnToFieldStartMenu(void);
 
 static const struct WindowTemplate sWindowTemplate_SafariBalls = {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 1,
     .tilemapTop = 1,
     .width = 9,
@@ -202,7 +202,7 @@ static const struct MenuAction sStartMenuItems[] =
 };
 
 static const struct WindowTemplate sSaveInfoWindowTemplate = {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 1,
     .tilemapTop = 1,
     .width = 14,

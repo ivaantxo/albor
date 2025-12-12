@@ -25,7 +25,7 @@
 #include "random.h"
 #include "rtc.h"
 #include "save.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "sound.h"
 #include "sprite.h"
 #include "strings.h"
@@ -305,7 +305,7 @@ static const struct WindowTemplate sWindowTemplates_MainMenu[] =
     // No saved game
     // NEW GAME
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = MENU_LEFT,
         .tilemapTop = MENU_TOP_WIN0,
         .width = MENU_WIDTH,
@@ -315,7 +315,7 @@ static const struct WindowTemplate sWindowTemplates_MainMenu[] =
     },
     // OPTIONS
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = MENU_LEFT,
         .tilemapTop = MENU_TOP_WIN1,
         .width = MENU_WIDTH,
@@ -326,7 +326,7 @@ static const struct WindowTemplate sWindowTemplates_MainMenu[] =
     // Has saved game
     // CONTINUE
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = MENU_LEFT,
         .tilemapTop = MENU_TOP_WIN2,
         .width = MENU_WIDTH,
@@ -336,7 +336,7 @@ static const struct WindowTemplate sWindowTemplates_MainMenu[] =
     },
     // NEW GAME
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = MENU_LEFT,
         .tilemapTop = MENU_TOP_WIN3,
         .width = MENU_WIDTH,
@@ -346,7 +346,7 @@ static const struct WindowTemplate sWindowTemplates_MainMenu[] =
     },
     // OPTION
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = MENU_LEFT,
         .tilemapTop = MENU_TOP_WIN6,
         .width = MENU_WIDTH,
@@ -356,7 +356,7 @@ static const struct WindowTemplate sWindowTemplates_MainMenu[] =
     },
     // Error message window
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = MENU_LEFT_ERROR,
         .tilemapTop = MENU_TOP_ERROR,
         .width = MENU_WIDTH_ERROR,
@@ -370,7 +370,7 @@ static const struct WindowTemplate sWindowTemplates_MainMenu[] =
 static const struct WindowTemplate sNewGameBirchSpeechTextWindows[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 2,
         .tilemapTop = 15,
         .width = 27,
@@ -379,7 +379,7 @@ static const struct WindowTemplate sNewGameBirchSpeechTextWindows[] =
         .baseBlock = 1
     },
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 3,
         .tilemapTop = 5,
         .width = 6,
@@ -388,7 +388,7 @@ static const struct WindowTemplate sNewGameBirchSpeechTextWindows[] =
         .baseBlock = 109
     },
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .tilemapLeft = 3,
         .tilemapTop = 2,
         .width = 9,
@@ -407,7 +407,7 @@ static const u8 sTextColor_MenuInfo[] = {TEXT_DYNAMIC_COLOR_1, TEXT_COLOR_WHITE,
 
 static const struct BgTemplate sMainMenuBgTemplates[] = {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 2,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,
@@ -416,7 +416,7 @@ static const struct BgTemplate sMainMenuBgTemplates[] = {
         .baseTile = 0
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 0,
         .mapBaseIndex = 7,
         .screenSize = FONDO_32x32,
@@ -427,7 +427,7 @@ static const struct BgTemplate sMainMenuBgTemplates[] = {
 };
 
 static const struct BgTemplate sBirchBgTemplate = {
-    .bg = 0,
+    .bg = FONDO_0,
     .charBaseIndex = 3,
     .mapBaseIndex = 30,
     .screenSize = FONDO_32x32,
@@ -566,7 +566,7 @@ static u32 InitMainMenu(bool8 returningFromOptionsMenu)
     ResetPaletteFade();
     LoadPalette(sMainMenuBgPal, BG_PLTT_ID(0), PLTT_SIZE_4BPP);
     LoadPalette(sMainMenuTextPal, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
-    ScanlineEffect_Stop();
+    ParaEfectoHorizontal();
     ResetTasks();
     ResetSpriteData();
     FreeAllSpritePalettes();
@@ -810,8 +810,8 @@ static bool8 HandleMainMenuInput(u8 taskId)
     {
         PlaySE(SE_SELECT);
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_WHITEALPHA);
-        SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(0, DISPLAY_WIDTH));
-        SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(0, DISPLAY_HEIGHT));
+        SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(0, ANCHO_PANTALLA));
+        SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(0, ALTURA_PANTALLA));
         gTasks[taskId].func = Task_HandleMainMenuBPressed;
     }
     else if ((JOY_NEW(DPAD_UP)) && tCurrItem > 0)
@@ -939,7 +939,7 @@ static void Task_DisplayMainMenuInvalidActionError(u8 taskId)
     switch (gTasks[taskId].tCurrItem)
     {
         case 0:
-            FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, DISPLAY_TILE_WIDTH, DISPLAY_TILE_HEIGHT);
+            FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, TILES_ANCHO_PANTALLA, TILES_ALTO_PANTALLA);
             gTasks[taskId].tCurrItem++;
             break;
         case 1:
@@ -1033,7 +1033,7 @@ static void Task_NewGameBirchSpeech_Init(u8 taskId)
     LZ77UnCompVram(sBirchSpeechBgMap, (void *)(BG_SCREEN_ADDR(7)));
     LoadPalette(sBirchSpeechBgPals, BG_PLTT_ID(0), 2 * PLTT_SIZE_4BPP);
     LoadPalette(sBirchSpeechPlatformBlackPal, BG_PLTT_ID(0) + 1, PLTT_SIZEOF(8));
-    ScanlineEffect_Stop();
+    ParaEfectoHorizontal();
     ResetSpriteData();
     FreeAllSpritePalettes();
     ResetAllPicSprites();
@@ -1296,7 +1296,7 @@ static void Task_NewGameBirchSpeech_SlideOutOldGenderSprite(u8 taskId)
             spriteId = gTasks[taskId].tMaySpriteId;
         else
             spriteId = gTasks[taskId].tBrendanSpriteId;
-        gSprites[spriteId].x = DISPLAY_WIDTH;
+        gSprites[spriteId].x = ANCHO_PANTALLA;
         gSprites[spriteId].y = 60;
         gSprites[spriteId].invisible = FALSE;
         gTasks[taskId].tPlayerSpriteId = spriteId;
@@ -1572,7 +1572,7 @@ static void CB2_NewGameBirchSpeech_ReturnFromNamingScreen(void)
     taskId = CreateTask(Task_NewGameBirchSpeech_ReturnFromNamingScreenShowTextbox, 0);
     gTasks[taskId].tTimer = 5;
     gTasks[taskId].tBG1HOFS = -60;
-    ScanlineEffect_Stop();
+    ParaEfectoHorizontal();
     ResetSpriteData();
     FreeAllSpritePalettes();
     ResetAllPicSprites();
@@ -1878,8 +1878,8 @@ static void CreateMainMenuErrorWindow(const u8 *str)
     PutWindowTilemap(7);
     CopyWindowToVram(7, COPYWIN_GFX);
     DrawMainMenuWindowBorder(&sWindowTemplates_MainMenu[7], MAIN_MENU_BORDER_TILE);
-    SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(9, DISPLAY_WIDTH - 9));
-    SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(113, DISPLAY_HEIGHT - 1));
+    SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(9, ANCHO_PANTALLA - 9));
+    SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(113, ALTURA_PANTALLA - 1));
 }
 
 static void MainMenu_FormatSavegameText(void)

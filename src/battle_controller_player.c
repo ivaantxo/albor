@@ -1944,7 +1944,7 @@ static void HandleChooseActionAfterDma3(u32 battler)
     if (!IsDma3ManagerBusyWithBgCopy())
     {
         gBattle_BG0_X = 0;
-        gBattle_BG0_Y = DISPLAY_HEIGHT;
+        gBattle_BG0_Y = ALTURA_PANTALLA;
         gBattlerControllerFuncs[battler] = HandleInputChooseAction;
     }
 }
@@ -1984,7 +1984,7 @@ void HandleChooseMoveAfterDma3(u32 battler)
     if (!IsDma3ManagerBusyWithBgCopy())
     {
         gBattle_BG0_X = 0;
-        gBattle_BG0_Y = DISPLAY_HEIGHT * 2;
+        gBattle_BG0_Y = ALTURA_PANTALLA * 2;
         gBattlerControllerFuncs[battler] = HandleInputChooseMove;
     }
 }

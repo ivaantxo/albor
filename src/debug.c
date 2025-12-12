@@ -965,7 +965,7 @@ static void (*const sDebugMenu_Actions_BerryFunctions[])(u8) =
 // Windows
 static const struct WindowTemplate sDebugMenuWindowTemplateMain =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 1,
     .tilemapTop = 1,
     .width = DEBUG_MENU_WIDTH_MAIN,
@@ -976,7 +976,7 @@ static const struct WindowTemplate sDebugMenuWindowTemplateMain =
 
 static const struct WindowTemplate sDebugMenuWindowTemplateExtra =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 30 - DEBUG_MENU_WIDTH_EXTRA - 1,
     .tilemapTop = 1,
     .width = DEBUG_MENU_WIDTH_EXTRA,
@@ -987,7 +987,7 @@ static const struct WindowTemplate sDebugMenuWindowTemplateExtra =
 
 static const struct WindowTemplate sDebugMenuWindowTemplateWeather =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 30 - DEBUG_MENU_WIDTH_WEATHER - 1,
     .tilemapTop = 1,
     .width = DEBUG_MENU_WIDTH_WEATHER,
@@ -998,7 +998,7 @@ static const struct WindowTemplate sDebugMenuWindowTemplateWeather =
 
 static const struct WindowTemplate sDebugMenuWindowTemplateSound =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 30 - DEBUG_MENU_WIDTH_SOUND - 1,
     .tilemapTop = 1,
     .width = DEBUG_MENU_WIDTH_SOUND,
@@ -1009,7 +1009,7 @@ static const struct WindowTemplate sDebugMenuWindowTemplateSound =
 
 static const struct WindowTemplate sDebugMenuWindowTemplateFlagsVars =
 {
-    .bg = 0,
+    .bg = FONDO_0,
     .tilemapLeft = 30 - DEBUG_MENU_WIDTH_FLAGVAR - 1,
     .tilemapTop = 1,
     .width = DEBUG_MENU_WIDTH_FLAGVAR,

@@ -4,7 +4,7 @@
 #include "m4a.h"
 #include "bg.h"
 #include "rtc.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "overworld.h"
 #include "play_time.h"
 #include "random.h"
@@ -291,7 +291,7 @@ void DoSoftReset(void)
 {
     REG_IME = 0;
     m4aSoundVSyncOff();
-    ScanlineEffect_Stop();
+    ParaEfectoHorizontal();
     DmaStop(1);
     DmaStop(2);
     DmaStop(3);

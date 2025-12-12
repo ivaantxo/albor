@@ -299,7 +299,7 @@ static const struct SpriteTemplate sConstestMoveHeartSprite =
 static const struct BgTemplate sMoveRelearnerMenuBackgroundTemplates[] =
 {
     {
-        .bg = 0,
+        .bg = FONDO_0,
         .charBaseIndex = 0,
         .mapBaseIndex = 31,
         .screenSize = FONDO_32x32,
@@ -308,7 +308,7 @@ static const struct BgTemplate sMoveRelearnerMenuBackgroundTemplates[] =
         .baseTile = 0,
     },
     {
-        .bg = 1,
+        .bg = FONDO_1,
         .charBaseIndex = 0,
         .mapBaseIndex = 30,
         .screenSize = FONDO_32x32,

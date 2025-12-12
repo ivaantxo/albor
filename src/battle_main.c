@@ -34,7 +34,7 @@
 #include "pokemon.h"
 #include "random.h"
 #include "safari_zone.h"
-#include "scanline_effect.h"
+#include "efecto_horizontal.h"
 #include "script.h"
 #include "sound.h"
 #include "sprite.h"
@@ -215,9 +215,11 @@ COMMON_DATA u8 gHealthboxSpriteIds[MAX_BATTLERS_COUNT] = {0};
 COMMON_DATA u8 gMultiUsePlayerCursor = 0;
 COMMON_DATA u8 gNumberOfMovesToChoose = 0;
 
-static const struct ScanlineEffectParams sIntroScanlineParams16Bit =
+static const struct ParametrosEfectoHorizontal sIntroScanlineParams16Bit =
 {
-    &REG_BG3HOFS, SCANLINE_EFFECT_DMACNT_16BIT, 1
+    .dmaDest = &REG_BG1HOFS,
+    .bitsDMA = EFECTO_HORIZONTAL_DMA_16,
+    .estado = 1
 };
 
 const struct OamData gOamData_BattleSpriteOpponentSide =
@@ -387,29 +389,29 @@ static void CB2_InitBattleInternal(void)
     CpuFill32(0, (void *)(VRAM), VRAM_SIZE);
 
     SetGpuReg(REG_OFFSET_MOSAIC, 0);
-    SetGpuReg(REG_OFFSET_WIN0H, DISPLAY_WIDTH);
-    SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(DISPLAY_HEIGHT / 2, DISPLAY_HEIGHT / 2 + 1));
+    SetGpuReg(REG_OFFSET_WIN0H, ANCHO_PANTALLA);
+    SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(ALTURA_PANTALLA / 2, ALTURA_PANTALLA / 2 + 1));
     SetGpuReg(REG_OFFSET_WININ, 0);
     SetGpuReg(REG_OFFSET_WINOUT, 0);
 
-    gBattle_WIN0H = DISPLAY_WIDTH;
+    gBattle_WIN0H = ANCHO_PANTALLA;
 
-    gBattle_WIN0V = WIN_RANGE(DISPLAY_HEIGHT / 2, DISPLAY_HEIGHT / 2 + 1);
-    ScanlineEffect_Clear();
+    gBattle_WIN0V = WIN_RANGE(ALTURA_PANTALLA / 2, ALTURA_PANTALLA / 2 + 1);
+    LimpiaEfectoHorizontal();
 
-    for (i = 0; i < DISPLAY_HEIGHT / 2; i++)
+    for (i = 0; i < ALTURA_PANTALLA / 2; i++)
     {
-        gScanlineEffectRegBuffers[0][i] = 0xF0;
-        gScanlineEffectRegBuffers[1][i] = 0xF0;
+        gRegistrosBuffersEfectoHorizontal[0][i] = 0xF0;
+        gRegistrosBuffersEfectoHorizontal[1][i] = 0xF0;
     }
 
-    for (; i < DISPLAY_HEIGHT; i++)
+    for (; i < ALTURA_PANTALLA; i++)
     {
-        gScanlineEffectRegBuffers[0][i] = 0xFF10;
-        gScanlineEffectRegBuffers[1][i] = 0xFF10;
+        gRegistrosBuffersEfectoHorizontal[0][i] = 0xFF10;
+        gRegistrosBuffersEfectoHorizontal[1][i] = 0xFF10;
     }
 
-    ScanlineEffect_SetParams(sIntroScanlineParams16Bit);
+    EscribeParametrosEfectoHorizontal(sIntroScanlineParams16Bit);
 
     ResetPaletteFade();
     gBattle_BG0_X = 0;
@@ -770,7 +772,7 @@ void VBlankCB_Battle(void)
     LoadOam();
     ProcessSpriteCopyRequests();
     TransferPlttBuffer();
-    ScanlineEffect_InitHBlankDmaTransfer();
+    IniciaTransferenciaDMAEnHblankEfectoHorizontal();
 }
 
 void SpriteCB_VsLetterDummy(struct Sprite *sprite)
