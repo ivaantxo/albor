@@ -16,15 +16,9 @@ $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 $(MID_BUILDDIR)/%.o: $(MID_ASM_DIR)/%.s
 	$(AS) $(ASFLAGS) -I sound -o $@ $<
 
-# Compressed cries
 $(CRY_BIN_DIR)/%.bin: $(CRY_SUBDIR)/%.aif 
 	$(AIF) $< $@ --compress
 
-# Uncompressed cries
-$(CRY_BIN_DIR)/uncomp_%.bin: $(CRY_SUBDIR)/uncomp_%.aif 
-	$(AIF) $< $@
-
-# Uncompressed sounds
 $(SOUND_BIN_DIR)/%.bin: sound/%.aif 
 	$(AIF) $< $@
 
