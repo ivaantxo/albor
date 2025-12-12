@@ -3,7 +3,7 @@
 #include "gpu_regs.h"
 #include "palette.h"
 #include "sound.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "trig.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
@@ -1099,7 +1099,7 @@ void AnimTask_ExtrasensoryDistortion(u8 taskId)
 {
     s16 i;
     u8 yOffset;
-    struct ParametrosEfectoHorizontal parametrosEfectoHorizontal;
+    struct ParametrosDistorsionFondo parametrosDistorsionFondo;
     struct Task *task = &gTasks[taskId];
 
     yOffset = GetBattlerYCoordWithElevation(gBattleAnimTarget);
@@ -1133,23 +1133,23 @@ void AnimTask_ExtrasensoryDistortion(u8 taskId)
     if (GetBattlerSpriteBGPriorityRank(gBattleAnimTarget) == 1)
     {
         task->data[10] = gBattle_BG1_X;
-        parametrosEfectoHorizontal.dmaDest = &REG_BG1HOFS;
+        parametrosDistorsionFondo.dmaDest = &REG_BG1HOFS;
     }
     else
     {
         task->data[10] = gBattle_BG2_X;
-        parametrosEfectoHorizontal.dmaDest = &REG_BG2HOFS;
+        parametrosDistorsionFondo.dmaDest = &REG_BG2HOFS;
     }
 
     for (i = task->data[14]; i <= task->data[14] + 64; i++)
     {
-        gRegistrosBuffersEfectoHorizontal[0][i] = task->data[10];
-        gRegistrosBuffersEfectoHorizontal[1][i] = task->data[10];
+        gRegistrosBuffersDistorsionFondo[0][i] = task->data[10];
+        gRegistrosBuffersDistorsionFondo[1][i] = task->data[10];
     }
 
-    parametrosEfectoHorizontal.bitsDMA = EFECTO_HORIZONTAL_DMA_16;
-    parametrosEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_ACTIVO;
-    EscribeParametrosEfectoHorizontal(parametrosEfectoHorizontal);
+    parametrosDistorsionFondo.bitsDMA = DISTORSION_FONDO_DMA_16;
+    parametrosDistorsionFondo.estado = ESTADO_DISTORSION_FONDO_ACTIVO;
+    EscribeParametrosDistorsionFondo(parametrosDistorsionFondo);
     task->func = AnimTask_ExtrasensoryDistortion_Step;
 }
 
@@ -1171,8 +1171,8 @@ static void AnimTask_ExtrasensoryDistortion_Step(u8 taskId)
             else if (var2 < 0)
                 var2 -= (task->data[1] & 3);
 
-            gRegistrosBuffersEfectoHorizontal[0][i] = task->data[10] + var2;
-            gRegistrosBuffersEfectoHorizontal[1][i] = task->data[10] + var2;
+            gRegistrosBuffersDistorsionFondo[0][i] = task->data[10] + var2;
+            gRegistrosBuffersDistorsionFondo[1][i] = task->data[10] + var2;
             sineIndex += task->data[11];
             i++;
         }
@@ -1181,7 +1181,7 @@ static void AnimTask_ExtrasensoryDistortion_Step(u8 taskId)
             task->data[0]++;
         break;
     case 1:
-        gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
+        gDistorsionFondo.estado = ESTADO_DISTORSION_FONDO_PARAR;
         task->data[0]++;
         break;
     case 2:

@@ -12,7 +12,7 @@
 #include "overworld.h"
 #include "palette.h"
 #include "random.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "script.h"
 #include "sound.h"
 #include "sprite.h"
@@ -247,7 +247,7 @@ static void CB2_LoadCableCar(void)
     default:
         SetVBlankCallback(NULL);
         SetBgRegs(FALSE);
-        ParaEfectoHorizontal();
+        ParaDistorsionFondo();
         DmaFillLarge16(3, 0, (void *)VRAM, VRAM_SIZE, 0x1000);
         DmaFill32Defvars(3, 0, (void *)OAM, OAM_SIZE);
         DmaFill16Defvars(3, 0, (void *)PLTT, PLTT_SIZE);

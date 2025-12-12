@@ -22,7 +22,7 @@
 #include "metatile_behavior.h"
 #include "palette.h"
 #include "overworld.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "script.h"
 #include "sound.h"
 #include "start_menu.h"
@@ -62,10 +62,10 @@ static void ForceStairsMovement(u32, s16*, s16*);
 static const u16 sFlashLevelToRadius[] = { 200, 72, 64, 56, 48, 40, 32, 24, 0 };
 const s32 gMaxFlashLevel = ARRAY_COUNT(sFlashLevelToRadius) - 1;
 
-static const struct ParametrosEfectoHorizontal sFlashEffectParams =
+static const struct ParametrosDistorsionFondo sFlashEffectParams =
 {
     .dmaDest = &REG_WIN0H,
-    .bitsDMA = EFECTO_HORIZONTAL_DMA_16,
+    .bitsDMA = DISTORSION_FONDO_DMA_16,
     .estado = 1,
 };
 
@@ -648,18 +648,18 @@ static void UpdateFlashLevelEffect(u8 taskId)
     switch (tState)
     {
     case 0:
-        SetFlashScanlineEffectWindowBoundaries(gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer], tFlashCenterX, tFlashCenterY, tCurFlashRadius);
+        SetFlashScanlineEffectWindowBoundaries(gRegistrosBuffersDistorsionFondo[gDistorsionFondo.srcBuffer], tFlashCenterX, tFlashCenterY, tCurFlashRadius);
         tState = 1;
         break;
     case 1:
-        SetFlashScanlineEffectWindowBoundaries(gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer], tFlashCenterX, tFlashCenterY, tCurFlashRadius);
+        SetFlashScanlineEffectWindowBoundaries(gRegistrosBuffersDistorsionFondo[gDistorsionFondo.srcBuffer], tFlashCenterX, tFlashCenterY, tCurFlashRadius);
         tState = 0;
         tCurFlashRadius += tFlashRadiusDelta;
         if (tCurFlashRadius > tDestFlashRadius)
         {
             if (tClearScanlineEffect == 1)
             {
-                ParaEfectoHorizontal();
+                ParaDistorsionFondo();
                 tState = 2;
             }
             else
@@ -669,7 +669,7 @@ static void UpdateFlashLevelEffect(u8 taskId)
         }
         break;
     case 2:
-        LimpiaEfectoHorizontal();
+        LimpiaDistorsionFondo();
         DestroyTask(taskId);
         break;
     }
@@ -682,18 +682,18 @@ static void UpdateOrbFlashEffect(u8 taskId)
     switch (tState)
     {
     case 0:
-        SetOrbFlashScanlineEffectWindowBoundaries(gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer], tFlashCenterX, tFlashCenterY, tCurFlashRadius);
+        SetOrbFlashScanlineEffectWindowBoundaries(gRegistrosBuffersDistorsionFondo[gDistorsionFondo.srcBuffer], tFlashCenterX, tFlashCenterY, tCurFlashRadius);
         tState = 1;
         break;
     case 1:
-        SetOrbFlashScanlineEffectWindowBoundaries(gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer], tFlashCenterX, tFlashCenterY, tCurFlashRadius);
+        SetOrbFlashScanlineEffectWindowBoundaries(gRegistrosBuffersDistorsionFondo[gDistorsionFondo.srcBuffer], tFlashCenterX, tFlashCenterY, tCurFlashRadius);
         tState = 0;
         tCurFlashRadius += tFlashRadiusDelta;
         if (tCurFlashRadius > tDestFlashRadius)
         {
             if (tClearScanlineEffect == 1)
             {
-                ParaEfectoHorizontal();
+                ParaDistorsionFondo();
                 tState = 2;
             }
             else
@@ -703,7 +703,7 @@ static void UpdateOrbFlashEffect(u8 taskId)
         }
         break;
     case 2:
-        LimpiaEfectoHorizontal();
+        LimpiaDistorsionFondo();
         DestroyTask(taskId);
         break;
     }
@@ -783,8 +783,8 @@ void WriteFlashScanlineEffectBuffer(u8 flashLevel)
 {
     if (flashLevel)
     {
-        SetFlashScanlineEffectWindowBoundaries(&gRegistrosBuffersEfectoHorizontal[0][0], ANCHO_PANTALLA / 2, ALTURA_PANTALLA / 2, sFlashLevelToRadius[flashLevel]);
-        CpuFastSet(&gRegistrosBuffersEfectoHorizontal[0], &gRegistrosBuffersEfectoHorizontal[1], 480);
+        SetFlashScanlineEffectWindowBoundaries(&gRegistrosBuffersDistorsionFondo[0][0], ANCHO_PANTALLA / 2, ALTURA_PANTALLA / 2, sFlashLevelToRadius[flashLevel]);
+        CpuFastSet(&gRegistrosBuffersDistorsionFondo[0], &gRegistrosBuffersDistorsionFondo[1], 480);
     }
 }
 
@@ -927,9 +927,9 @@ static void Task_OrbEffect(u8 taskId)
         SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG1 | WINOUT_WIN01_BG2 | WINOUT_WIN01_BG3 | WINOUT_WIN01_OBJ);
         SetBgTilemapPalette(0, 0, 0, TILES_ANCHO_PANTALLA, TILES_ALTO_PANTALLA, 0xF);
         ScheduleBgCopyTilemapToVram(0);
-        SetOrbFlashScanlineEffectWindowBoundaries(&gRegistrosBuffersEfectoHorizontal[0][0], tCenterX, tCenterY, 1);
-        CpuFastSet(&gRegistrosBuffersEfectoHorizontal[0], &gRegistrosBuffersEfectoHorizontal[1], 480);
-        EscribeParametrosEfectoHorizontal(sFlashEffectParams);
+        SetOrbFlashScanlineEffectWindowBoundaries(&gRegistrosBuffersDistorsionFondo[0][0], tCenterX, tCenterY, 1);
+        CpuFastSet(&gRegistrosBuffersDistorsionFondo[0], &gRegistrosBuffersDistorsionFondo[1], 480);
+        EscribeParametrosDistorsionFondo(sFlashEffectParams);
         tState = 1;
         break;
     case 1:

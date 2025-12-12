@@ -27,7 +27,7 @@
 #include "region_map.h"
 #include "pokemon.h"
 #include "reset_rtc_screen.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "shop.h"
 #include "sound.h"
 #include "sprite.h"
@@ -1116,7 +1116,7 @@ void CB2_OpenPokedexPlusHGSS(void)
         gMain.state = 1;
         break;
     case 1:
-        ParaEfectoHorizontal();
+        ParaDistorsionFondo();
         ResetTasks();
         ResetSpriteData();
         ResetPaletteFade();

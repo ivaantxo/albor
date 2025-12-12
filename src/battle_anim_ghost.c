@@ -5,7 +5,7 @@
 #include "item_icon.h"
 #include "palette.h"
 #include "constants/rgb.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "constants/songs.h"
 #include "sound.h"
 #include "trig.h"
@@ -695,9 +695,9 @@ static void AnimTask_SpiteTargetShadow_Step1(u8 taskId)
             startLine = 0;
 
         if (position == 1)
-            task->data[10] = IniciaEfectoHorizontal(startLine, startLine + 64, 2, 6, 0, EFECTO_HORIZONTAL_BG_1_HORIZONTAL, TRUE);
+            task->data[10] = IniciaDistorsionFondo(startLine, startLine + 64, 2, 6, 0, DISTORSION_FONDO_BG_1_HORIZONTAL, TRUE);
         else
-            task->data[10] = IniciaEfectoHorizontal(startLine, startLine + 64, 2, 6, 0, EFECTO_HORIZONTAL_BG_2_HORIZONTAL, TRUE);
+            task->data[10] = IniciaDistorsionFondo(startLine, startLine + 64, 2, 6, 0, DISTORSION_FONDO_BG_2_HORIZONTAL, TRUE);
 
         task->data[15]++;
         break;
@@ -753,7 +753,7 @@ static void AnimTask_SpiteTargetShadow_Step3(u8 taskId)
     switch (task->data[15])
     {
     case 0:
-        gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
+        gDistorsionFondo.estado = ESTADO_DISTORSION_FONDO_PARAR;
         task->data[14] = GetAnimBattlerSpriteId(ANIM_TARGET);
         if (rank == 1)
             ClearGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_BG1_ON);

@@ -8,7 +8,7 @@
 #include "palette.h"
 #include "pokenav.h"
 #include "menu_specialized.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "text.h"
 #include "bg.h"
 #include "window.h"
@@ -470,7 +470,7 @@ static void VBlankCB_UsePokeblockMenu(void)
     ProcessSpriteCopyRequests();
     TransferPlttBuffer();
     ConditionGraph_Draw(&sMenu->graph);
-    IniciaTransferenciaDMAEnHblankEfectoHorizontal();
+    IniciaTransferenciaDMAEnHblankDistorsionFondo();
 }
 
 static void SetUsePokeblockCallback(void (*func)(void))
@@ -830,8 +830,8 @@ static void CloseUsePokeblockMenu(void)
             sInfo->mainState = 2;
         break;
     case 2:
-        gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
-        IniciaTransferenciaDMAEnHblankEfectoHorizontal();
+        gDistorsionFondo.estado = ESTADO_DISTORSION_FONDO_PARAR;
+        IniciaTransferenciaDMAEnHblankDistorsionFondo();
         sInfo->mainState++;
         break;
     case 3:

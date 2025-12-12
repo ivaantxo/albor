@@ -29,7 +29,7 @@
 #include "party_menu.h"
 #include "pokemon.h"
 #include "pokemon_summary_screen.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "script.h"
 #include "shop.h"
 #include "sound.h"
@@ -594,7 +594,7 @@ static bool8 SetupBagMenu(void)
         gMain.state++;
         break;
     case 1:
-        ParaEfectoHorizontal();
+        ParaDistorsionFondo();
         gMain.state++;
         break;
     case 2:

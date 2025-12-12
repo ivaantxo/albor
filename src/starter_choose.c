@@ -10,7 +10,7 @@
 #include "palette.h"
 #include "pokedex.h"
 #include "pokemon.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "sound.h"
 #include "sprite.h"
 #include "starter_choose.h"
@@ -408,7 +408,7 @@ void CB2_ChooseStarter(void)
     DeactivateAllTextPrinters();
     LoadUserWindowBorderGfx(0, 0x2A8, BG_PLTT_ID(13));
     ClearScheduledBgCopiesToVram();
-    ParaEfectoHorizontal();
+    ParaDistorsionFondo();
     ResetTasks();
     ResetSpriteData();
     ResetPaletteFade();

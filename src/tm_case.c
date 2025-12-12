@@ -21,7 +21,7 @@
 #include "party_menu.h"
 #include "util.h"
 #include "data.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "shop.h"
 #include "sound.h"
 #include "string_util.h"
@@ -314,7 +314,7 @@ static bool8 DoSetUpTMCaseUI(void)
         gMain.state++;
         break;
     case 1:
-        ParaEfectoHorizontal();
+        ParaDistorsionFondo();
         gMain.state++;
         break;
     case 2:

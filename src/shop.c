@@ -24,7 +24,7 @@
 #include "overworld.h"
 #include "palette.h"
 #include "party_menu.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "script.h"
 #include "shop.h"
 #include "sound.h"
@@ -503,7 +503,7 @@ static void CB2_InitBuyMenu(void)
     case 0:
         SetVBlankHBlankCallbacksToNull();
         CpuFastFill(0, (void *)OAM, OAM_SIZE);
-        ParaEfectoHorizontal();
+        ParaDistorsionFondo();
         ResetTempTileDataBuffers();
         FreeAllSpritePalettes();
         ResetPaletteFade();

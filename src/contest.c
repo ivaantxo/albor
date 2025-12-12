@@ -21,7 +21,7 @@
 #include "string_util.h"
 #include "task.h"
 #include "text.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "util.h"
 #include "dma3.h"
 #include "battle_message.h"
@@ -1223,7 +1223,7 @@ void CB2_StartContest(void)
         InitContestInfoBgs();
         InitContestWindows();
         SetupContestGpuRegs();
-        LimpiaEfectoHorizontal();
+        LimpiaDistorsionFondo();
         ResetPaletteFade();
         gFundidoPaletas.transferenciaBufferDeshabilitada = TRUE;
         ResetSpriteData();
@@ -1376,7 +1376,7 @@ static void VBlankCB_Contest(void)
     TransferPlttBuffer();
     LoadOam();
     ProcessSpriteCopyRequests();
-    IniciaTransferenciaDMAEnHblankEfectoHorizontal();
+    IniciaTransferenciaDMAEnHblankDistorsionFondo();
 }
 
 static void Task_DisplayAppealNumberText(u8 taskId)

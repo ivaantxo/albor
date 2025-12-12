@@ -13,7 +13,7 @@
 #include "strings.h"
 #include "task.h"
 #include "text.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "bg.h"
 #include "window.h"
 #include "gpu_regs.h"
@@ -519,8 +519,8 @@ void CB2_InitResetRtcScreen(void)
     DmaFillLarge16(3, 0, (u8 *)VRAM, VRAM_SIZE, 0x1000);
     ResetOamRange(0, 128);
     LoadOam();
-    ParaEfectoHorizontal();
-    LimpiaEfectoHorizontal();
+    ParaDistorsionFondo();
+    LimpiaDistorsionFondo();
     ResetSpriteData();
     ResetTasks();
     ResetPaletteFade();

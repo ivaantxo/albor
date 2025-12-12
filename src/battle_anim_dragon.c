@@ -1,6 +1,6 @@
 #include "global.h"
 #include "battle_anim.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "task.h"
 #include "trig.h"
 #include "constants/rgb.h"
@@ -512,23 +512,23 @@ static void AnimDragonDanceOrb_Step(struct Sprite *sprite)
 // Used by Dragon Dance
 void AnimTask_DragonDanceWaver(u8 taskId)
 {
-    struct ParametrosEfectoHorizontal parametrosEfectoHorizontal;
+    struct ParametrosDistorsionFondo parametrosDistorsionFondo;
     struct Task *task = &gTasks[taskId];
     u32 i;
     u8 y;
     if (GetBattlerSpriteBGPriorityRank(gBattleAnimAttacker) == 1)
     {
-        parametrosEfectoHorizontal.dmaDest = &REG_BG1HOFS;
+        parametrosDistorsionFondo.dmaDest = &REG_BG1HOFS;
         task->data[2] = gBattle_BG1_X;
     }
     else
     {
-        parametrosEfectoHorizontal.dmaDest = &REG_BG2HOFS;
+        parametrosDistorsionFondo.dmaDest = &REG_BG2HOFS;
         task->data[2] = gBattle_BG2_X;
     }
 
-    parametrosEfectoHorizontal.bitsDMA = EFECTO_HORIZONTAL_DMA_16;
-    parametrosEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_ACTIVO;
+    parametrosDistorsionFondo.bitsDMA = DISTORSION_FONDO_DMA_16;
+    parametrosDistorsionFondo.estado = ESTADO_DISTORSION_FONDO_ACTIVO;
     y = GetBattlerYCoordWithElevation(gBattleAnimAttacker);
     task->data[3] = y - 32;
     task->data[4] = y + 32;
@@ -537,11 +537,11 @@ void AnimTask_DragonDanceWaver(u8 taskId)
 
     for (i = task->data[3]; i <= task->data[4]; i++)
     {
-        gRegistrosBuffersEfectoHorizontal[0][i] = task->data[2];
-        gRegistrosBuffersEfectoHorizontal[1][i] = task->data[2];
+        gRegistrosBuffersDistorsionFondo[0][i] = task->data[2];
+        gRegistrosBuffersDistorsionFondo[1][i] = task->data[2];
     }
 
-    EscribeParametrosEfectoHorizontal(parametrosEfectoHorizontal);
+    EscribeParametrosDistorsionFondo(parametrosDistorsionFondo);
     task->func = AnimTask_DragonDanceWaver_Step;
 }
 
@@ -574,7 +574,7 @@ static void AnimTask_DragonDanceWaver_Step(u8 taskId)
         UpdateDragonDanceScanlineEffect(task);
         break;
     case 3:
-        gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
+        gDistorsionFondo.estado = ESTADO_DISTORSION_FONDO_PARAR;
         task->data[0]++;
         break;
     case 4:
@@ -589,7 +589,7 @@ static void UpdateDragonDanceScanlineEffect(struct Task *task)
     u32 i;
     for (i = task->data[3]; i <= task->data[4]; i++)
     {
-        gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = ((gSineTable[sineIndex] * task->data[6]) >> 7) + task->data[2];
+        gRegistrosBuffersDistorsionFondo[gDistorsionFondo.srcBuffer][i] = ((gSineTable[sineIndex] * task->data[6]) >> 7) + task->data[2];
         sineIndex = (sineIndex + 8) & 0xFF;
     }
 

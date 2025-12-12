@@ -21,7 +21,7 @@
 #include "pokeblock.h"
 #include "pokemon.h"
 #include "safari_zone.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "sound.h"
 #include "string_util.h"
 #include "strings.h"
@@ -503,7 +503,7 @@ static bool8 InitPokeblockMenu(void)
         gMain.state++;
         break;
     case 1:
-        ParaEfectoHorizontal();
+        ParaDistorsionFondo();
         gMain.state++;
         break;
     case 2:

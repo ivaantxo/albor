@@ -52,7 +52,7 @@
 #include "tileset_anims.h"
 #include "time_events.h"
 #include "trainer_pokemon_sprites.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "wild_encounter.h"
 #include "vs_seeker.h"
 #include "constants/abilities.h"
@@ -210,10 +210,10 @@ static const struct BgTemplate sOverworldBgTemplates[] =
     }
 };
 
-static const struct ParametrosEfectoHorizontal sFlashEffectParams =
+static const struct ParametrosDistorsionFondo sFlashEffectParams =
 {
     .dmaDest = &REG_WIN0H,
-    .bitsDMA = EFECTO_HORIZONTAL_DMA_16,
+    .bitsDMA = DISTORSION_FONDO_DMA_16,
     .estado = 1,
 };
 
@@ -1552,7 +1552,7 @@ static void VBlankCB_Field(void)
 {
     LoadOam();
     ProcessSpriteCopyRequests();
-    IniciaTransferenciaDMAEnHblankEfectoHorizontal();
+    IniciaTransferenciaDMAEnHblankDistorsionFondo();
     FieldUpdateBgTilemapScroll();
     TransferPlttBuffer();
     TransferTilesetAnimsBuffer();
@@ -1565,7 +1565,7 @@ static void InitCurrentFlashLevelScanlineEffect(void)
     if ((flashLevel = GetFlashLevel()))
     {
         WriteFlashScanlineEffectBuffer(flashLevel);
-        EscribeParametrosEfectoHorizontal(sFlashEffectParams);
+        EscribeParametrosDistorsionFondo(sFlashEffectParams);
     }
 }
 
@@ -1686,7 +1686,7 @@ static void ResetMirageTowerAndSaveBlockPtrs(void)
 static void ResetScreenForMapLoad(void)
 {
     SetGpuReg(REG_OFFSET_DISPCNT, 0);
-    ParaEfectoHorizontal();
+    ParaDistorsionFondo();
 
     DmaClear16(3, PLTT + 2, PLTT_SIZE - 2);
     DmaFillLarge16(3, 0, (void *)VRAM, VRAM_SIZE, 0x1000);
@@ -1735,7 +1735,7 @@ static void InitOverworldGraphicsRegisters(void)
     ShowBg(2);
     ShowBg(3);
     InitFieldMessageBox();
-    IniciaEfectoHorizontal(0, ALTURA_PANTALLA, 4, 4, 0, EFECTO_HORIZONTAL_BG_3_VERTICAL, TRUE);
+    IniciaDistorsionFondo(0, ALTURA_PANTALLA, 4, 4, 0, DISTORSION_FONDO_BG_3_VERTICAL, TRUE);
 }
 
 static void ResumeMap(void)
@@ -1743,7 +1743,7 @@ static void ResumeMap(void)
     ResetTasks();
     ResetSpriteData();
     ResetPaletteFade();
-    LimpiaEfectoHorizontal();
+    LimpiaDistorsionFondo();
     ResetAllPicSprites();
     ResetCameraUpdateInfo();
     InstallCameraPanAheadCallback();

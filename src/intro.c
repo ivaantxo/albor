@@ -1,7 +1,7 @@
 #include "global.h"
 #include "main.h"
 #include "palette.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "task.h"
 #include "title_screen.h"
 #include "malloc.h"
@@ -1025,7 +1025,7 @@ static void VBlankCB_Intro(void)
     LoadOam();
     ProcessSpriteCopyRequests();
     TransferPlttBuffer();
-    IniciaTransferenciaDMAEnHblankEfectoHorizontal();
+    IniciaTransferenciaDMAEnHblankDistorsionFondo();
 }
 
 void MainCB2_Intro(void)
@@ -1071,7 +1071,7 @@ static u8 SetUpCopyrightScreen(void)
         CpuFill16(0, (void *)(PLTT + 2), PLTT_SIZE - 2);
         ResetPaletteFade();
         LoadCopyrightGraphics(0, 0x3800, BG_PLTT_ID(0));
-        ParaEfectoHorizontal();
+        ParaDistorsionFondo();
         ResetTasks();
         ResetSpriteData();
         FreeAllSpritePalettes();
@@ -1820,7 +1820,7 @@ static void Task_Scene3_StartGroudon(u8 taskId)
 {
     gTasks[taskId].tState = 0;
     gTasks[taskId].func = Task_Scene3_Groudon;
-    IniciaEfectoHorizontal(0, ALTURA_PANTALLA, 4, 4, 1, EFECTO_HORIZONTAL_BG_1_HORIZONTAL, FALSE);
+    IniciaDistorsionFondo(0, ALTURA_PANTALLA, 4, 4, 1, DISTORSION_FONDO_BG_1_HORIZONTAL, FALSE);
 }
 
 #define tScreenX data[1]
@@ -1932,7 +1932,7 @@ static void Task_Scene3_Groudon(u8 taskId)
         if (!gFundidoPaletas.activo)
         {
             gTasks[taskId].func = Task_Scene3_LoadKyogre;
-            gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
+            gDistorsionFondo.estado = ESTADO_DISTORSION_FONDO_PARAR;
         }
         break;
     }
@@ -2030,7 +2030,7 @@ static void Task_Scene3_LoadKyogre(u8 taskId)
     gTasks[taskId].tDelay = 16;
     gTasks[taskId].tZoom = 256;
     PanFadeAndZoomScreen(gTasks[taskId].tScreenX, gTasks[taskId].tScreenY, gTasks[taskId].tZoom, 0);
-    IniciaEfectoHorizontal(0, ALTURA_PANTALLA, 4, 4, 1, EFECTO_HORIZONTAL_BG_1_VERTICAL, FALSE);
+    IniciaDistorsionFondo(0, ALTURA_PANTALLA, 4, 4, 1, DISTORSION_FONDO_BG_1_VERTICAL, FALSE);
 }
 
 static void Task_Scene3_Kyogre(u8 taskId)
@@ -2171,7 +2171,7 @@ static void Task_Scene3_Kyogre(u8 taskId)
         if (!gFundidoPaletas.activo)
         {
             gTasks[taskId].func = Task_Scene3_LoadClouds1;
-            gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
+            gDistorsionFondo.estado = ESTADO_DISTORSION_FONDO_PARAR;
         }
         break;
     }

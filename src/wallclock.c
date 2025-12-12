@@ -9,7 +9,7 @@
 #include "menu.h"
 #include "palette.h"
 #include "rtc.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "sound.h"
 #include "strings.h"
 #include "task.h"
@@ -657,7 +657,7 @@ static void LoadWallClockGraphics(void)
     DeactivateAllTextPrinters();
     LoadUserWindowBorderGfx(0, 0x250, BG_PLTT_ID(13));
     ClearScheduledBgCopiesToVram();
-    ParaEfectoHorizontal();
+    ParaDistorsionFondo();
     ResetTasks();
     ResetSpriteData();
     ResetPaletteFade();

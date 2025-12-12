@@ -17,7 +17,7 @@
 #include "pokedex.h"
 #include "pokemon.h"
 #include "pokemon_summary_screen.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "sound.h"
 #include "sprite.h"
 #include "string_util.h"
@@ -225,7 +225,7 @@ void EvolutionScene(struct Pokemon *mon, u16 postEvoSpecies, u8 partyId)
     InitBattleBgsVideo();
     LoadBattleTextboxAndBackground();
     ResetSpriteData();
-    ParaEfectoHorizontal();
+    ParaDistorsionFondo();
     ResetTasks();
     FreeAllSpritePalettes();
 
@@ -881,7 +881,7 @@ static void VBlankCB_EvolutionScene(void)
     LoadOam();
     ProcessSpriteCopyRequests();
     TransferPlttBuffer();
-    IniciaTransferenciaDMAEnHblankEfectoHorizontal();
+    IniciaTransferenciaDMAEnHblankDistorsionFondo();
 }
 
 #define tCycleTimer   data[0]

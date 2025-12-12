@@ -9,7 +9,7 @@
 #include "math_util.h"
 #include "palette.h"
 #include "random.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "sound.h"
 #include "trig.h"
 #include "util.h"
@@ -2214,7 +2214,7 @@ static void AnimTask_ThrashMoveMonVertical_Step(u8 taskId)
 void AnimTask_SketchDrawMon(u8 taskId)
 {
     struct Task *task = &gTasks[taskId];
-    struct ParametrosEfectoHorizontal params;
+    struct ParametrosDistorsionFondo parametros;
 
     s16 i;
     task->data[0] = GetBattlerYCoordWithElevation(gBattleAnimTarget) + 32;
@@ -2228,26 +2228,26 @@ void AnimTask_SketchDrawMon(u8 taskId)
     if (GetBattlerSpriteBGPriorityRank(gBattleAnimTarget) == 1)
     {
         task->data[6] = gBattle_BG1_X;
-        params.dmaDest = &REG_BG1HOFS;
+        parametros.dmaDest = &REG_BG1HOFS;
     }
     else
     {
         task->data[6] = gBattle_BG2_X;
-        params.dmaDest = &REG_BG2HOFS;
+        parametros.dmaDest = &REG_BG2HOFS;
     }
 
     for (i = task->data[0] - 0x40; i <= task->data[0]; i++)
     {
         if (i >= 0)
         {
-            gRegistrosBuffersEfectoHorizontal[0][i] = task->data[6] + 0xF0;
-            gRegistrosBuffersEfectoHorizontal[1][i] = task->data[6] + 0xF0;
+            gRegistrosBuffersDistorsionFondo[0][i] = task->data[6] + 0xF0;
+            gRegistrosBuffersDistorsionFondo[1][i] = task->data[6] + 0xF0;
         }
     }
 
-    params.bitsDMA = EFECTO_HORIZONTAL_DMA_16;
-    params.estado = ESTADO_EFECTO_HORIZONTAL_ACTIVO;
-    EscribeParametrosEfectoHorizontal(params);
+    parametros.bitsDMA = DISTORSION_FONDO_DMA_16;
+    parametros.estado = ESTADO_DISTORSION_FONDO_ACTIVO;
+    EscribeParametrosDistorsionFondo(parametros);
     task->func = AnimTask_SketchDrawMon_Step;
 }
 
@@ -2284,13 +2284,13 @@ static void AnimTask_SketchDrawMon_Step(u8 taskId)
 
             if (task->data[5] >= 0)
             {
-                gRegistrosBuffersEfectoHorizontal[0][task->data[5]] = task->data[6];
-                gRegistrosBuffersEfectoHorizontal[1][task->data[5]] = task->data[6];
+                gRegistrosBuffersDistorsionFondo[0][task->data[5]] = task->data[6];
+                gRegistrosBuffersDistorsionFondo[1][task->data[5]] = task->data[6];
             }
 
             if (++task->data[3] >= task->data[15])
             {
-                gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
+                gDistorsionFondo.estado = ESTADO_DISTORSION_FONDO_PARAR;
                 DestroyAnimVisualTask(taskId);
             }
         }

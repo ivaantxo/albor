@@ -27,7 +27,7 @@
 #include "pokenav.h"
 #include "safari_zone.h"
 #include "save.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "script.h"
 #include "sound.h"
 #include "start_menu.h"

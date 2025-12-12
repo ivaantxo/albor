@@ -22,7 +22,7 @@
 #include "string_util.h"
 #include "m4a.h"
 #include "international_string_util.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "trig.h"
 #include "random.h"
 #include "event_data.h"
@@ -1183,7 +1183,7 @@ static void ClearVramOamPltt_LoadHofPal(void)
 
 static void LoadHofGfx(void)
 {
-    ParaEfectoHorizontal();
+    ParaDistorsionFondo();
     ResetTasks();
     ResetSpriteData();
     ResetTempTileDataBuffers();

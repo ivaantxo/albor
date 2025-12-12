@@ -6,7 +6,7 @@
 #include "main.h"
 #include "menu.h"
 #include "palette.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "sprite.h"
 #include "strings.h"
 #include "task.h"
@@ -182,7 +182,7 @@ void CB2_InitOptionMenu(void)
         break;
     case 2:
         ResetPaletteFade();
-        ParaEfectoHorizontal();
+        ParaDistorsionFondo();
         ResetTasks();
         ResetSpriteData();
         gMain.state++;

@@ -13,7 +13,7 @@
 #include "gym_leader_rematch.h"
 #include "window.h"
 #include "strings.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
 
@@ -356,10 +356,10 @@ static const struct SpriteTemplate sMatchCallBlueLightSpriteTemplate =
     .callback = SpriteCallbackDummy,
 };
 
-static const struct ParametrosEfectoHorizontal sPokenavMainMenuScanlineEffectParams =
+static const struct ParametrosDistorsionFondo sPokenavMainMenuScanlineEffectParams =
 {
     .dmaDest = &REG_WIN0H,
-    .bitsDMA = EFECTO_HORIZONTAL_DMA_16,
+    .bitsDMA = DISTORSION_FONDO_DMA_16,
     .estado = 1,
 };
 
@@ -1288,7 +1288,7 @@ static void VBlankCB_PokenavMainMenu(void)
     TransferPlttBuffer();
     LoadOam();
     ProcessSpriteCopyRequests();
-    IniciaTransferenciaDMAEnHblankEfectoHorizontal();
+    IniciaTransferenciaDMAEnHblankDistorsionFondo();
 }
 
 static void SetupPokenavMenuScanlineEffects(void)
@@ -1299,9 +1299,9 @@ static void SetupPokenavMenuScanlineEffects(void)
     SetGpuRegBits(REG_OFFSET_WININ, WININ_WIN0_ALL);
     SetGpuRegBits(REG_OFFSET_WINOUT, WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ);
     SetGpuRegBits(REG_OFFSET_WIN0V, ALTURA_PANTALLA);
-    ParaEfectoHorizontal();
+    ParaDistorsionFondo();
     SetMenuOptionGlow();
-    EscribeParametrosEfectoHorizontal(sPokenavMainMenuScanlineEffectParams);
+    EscribeParametrosDistorsionFondo(sPokenavMainMenuScanlineEffectParams);
     SetVBlankCallback_(VBlankCB_PokenavMainMenu);
     CreateTask(Task_CurrentMenuOptionGlow, 3);
 }
@@ -1310,7 +1310,7 @@ static void DestroyMenuOptionGlowTask(void)
 {
     SetGpuReg(REG_OFFSET_BLDCNT, 0);
     ClearGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_WIN0_ON);
-    ParaEfectoHorizontal();
+    ParaDistorsionFondo();
     DestroyTask(FindTaskIdByFunc(Task_CurrentMenuOptionGlow));
     SetPokenavVBlankCallback();
 }
@@ -1339,8 +1339,8 @@ static void SetMenuOptionGlow(void)
     int menuType = GetPokenavMenuType();
     int cursorPos = GetPokenavCursorPos();
     int r4 = sPokenavMenuOptionLabelGfx[menuType].deltaY * cursorPos + sPokenavMenuOptionLabelGfx[menuType].yStart - 8;
-    CpuFill16(0, gRegistrosBuffersEfectoHorizontal[0], ALTURA_PANTALLA * 2);
-    CpuFill16(0, gRegistrosBuffersEfectoHorizontal[1], ALTURA_PANTALLA * 2);
-    CpuFill16(RGB(16, 23, 28), &gRegistrosBuffersEfectoHorizontal[0][r4], 0x20);
-    CpuFill16(RGB(16, 23, 28), &gRegistrosBuffersEfectoHorizontal[1][r4], 0x20);
+    CpuFill16(0, gRegistrosBuffersDistorsionFondo[0], ALTURA_PANTALLA * 2);
+    CpuFill16(0, gRegistrosBuffersDistorsionFondo[1], ALTURA_PANTALLA * 2);
+    CpuFill16(RGB(16, 23, 28), &gRegistrosBuffersDistorsionFondo[0][r4], 0x20);
+    CpuFill16(RGB(16, 23, 28), &gRegistrosBuffersDistorsionFondo[1][r4], 0x20);
 }

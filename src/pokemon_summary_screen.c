@@ -30,7 +30,7 @@
 #include "pokemon_storage_system.h"
 #include "pokemon_summary_screen.h"
 #include "region_map.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "sound.h"
 #include "sprite.h"
 #include "string_util.h"
@@ -1230,7 +1230,7 @@ static bool8 LoadGraphics(void)
         gMain.state++;
         break;
     case 1:
-        ParaEfectoHorizontal();
+        ParaDistorsionFondo();
         gMain.state++;
         break;
     case 2:

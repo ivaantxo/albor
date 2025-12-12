@@ -42,7 +42,7 @@
 #include "pokemon_summary_screen.h"
 #include "region_map.h"
 #include "reshow_battle_screen.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "script.h"
 #include "sound.h"
 #include "sprite.h"
@@ -522,7 +522,7 @@ static bool8 ShowPartyMenu(void)
         gMain.state++;
         break;
     case 1:
-        ParaEfectoHorizontal();
+        ParaDistorsionFondo();
         gMain.state++;
         break;
     case 2:

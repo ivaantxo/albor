@@ -15,7 +15,7 @@
 #include "sound.h"
 #include "sprite.h"
 #include "task.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "gpu_regs.h"
 #include "trig.h"
 #include "graphics.h"
@@ -557,7 +557,7 @@ static void StartPokemonLogoShine(u8 mode)
 
 static void VBlankCB(void)
 {
-    IniciaTransferenciaDMAEnHblankEfectoHorizontal();
+    IniciaTransferenciaDMAEnHblankDistorsionFondo();
     LoadOam();
     ProcessSpriteCopyRequests();
     TransferPlttBuffer();
@@ -602,7 +602,7 @@ void CB2_InitTitleScreen(void)
         // bg1
         LZ77UnCompVram(sTitleScreenCloudsGfx, (void *)(BG_CHAR_ADDR(3)));
         LZ77UnCompVram(gTitleScreenCloudsTilemap, (void *)(BG_SCREEN_ADDR(27)));
-        ParaEfectoHorizontal();
+        ParaDistorsionFondo();
         ResetTasks();
         ResetSpriteData();
         FreeAllSpritePalettes();
@@ -662,7 +662,7 @@ void CB2_InitTitleScreen(void)
         if (!UpdatePaletteFade())
         {
             StartPokemonLogoShine(SHINE_MODE_SINGLE_NO_BG_COLOR);
-            IniciaEfectoHorizontal(0, ALTURA_PANTALLA, 4, 4, 0, EFECTO_HORIZONTAL_BG_1_HORIZONTAL, TRUE);
+            IniciaDistorsionFondo(0, ALTURA_PANTALLA, 4, 4, 0, DISTORSION_FONDO_BG_1_HORIZONTAL, TRUE);
             SetMainCallback2(MainCB2);
         }
         break;

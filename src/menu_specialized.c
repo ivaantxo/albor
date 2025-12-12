@@ -15,7 +15,7 @@
 #include "palette.h"
 #include "pokemon_summary_screen.h"
 #include "pokemon_storage_system.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "sound.h"
 #include "strings.h"
 #include "string_util.h"
@@ -43,10 +43,10 @@ static const u8 sPlayerNameTextColors[] =
 
 static const u8 sEmptyItemName[] = _("");
 
-static const struct ParametrosEfectoHorizontal sConditionGraphScanline =
+static const struct ParametrosDistorsionFondo sConditionGraphScanline =
 {
     .dmaDest = &REG_WIN0H,
-    .bitsDMA = EFECTO_HORIZONTAL_DMA_32,
+    .bitsDMA = DISTORSION_FONDO_DMA_32,
     .estado = 1,
 };
 
@@ -247,17 +247,17 @@ void ConditionGraph_InitResetScanline(struct ConditionGraph *graph)
 
 bool8 ConditionGraph_ResetScanline(struct ConditionGraph *graph)
 {
-    struct ParametrosEfectoHorizontal params;
+    struct ParametrosDistorsionFondo parametros;
 
     switch (graph->scanlineResetState)
     {
     case 0:
-        LimpiaEfectoHorizontal();
+        LimpiaDistorsionFondo();
         graph->scanlineResetState++;
         return TRUE;
     case 1:
-        params = sConditionGraphScanline;
-        EscribeParametrosEfectoHorizontal(params);
+        parametros = sConditionGraphScanline;
+        EscribeParametrosDistorsionFondo(parametros);
         graph->scanlineResetState++;
         return FALSE;
     default:
@@ -278,11 +278,11 @@ void ConditionGraph_Draw(struct ConditionGraph *graph)
     for (i = 0; i < CONDITION_GRAPH_HEIGHT; i++)
     {
         // Draw right half
-        gRegistrosBuffersEfectoHorizontal[1][(i + CONDITION_GRAPH_TOP_Y - 1) * 2 + 0] = // double assignment
-        gRegistrosBuffersEfectoHorizontal[0][(i + CONDITION_GRAPH_TOP_Y - 1) * 2 + 0] = (graph->scanlineRight[i][0] << 8) | (graph->scanlineRight[i][1]);
+        gRegistrosBuffersDistorsionFondo[1][(i + CONDITION_GRAPH_TOP_Y - 1) * 2 + 0] = // double assignment
+        gRegistrosBuffersDistorsionFondo[0][(i + CONDITION_GRAPH_TOP_Y - 1) * 2 + 0] = (graph->scanlineRight[i][0] << 8) | (graph->scanlineRight[i][1]);
         // Draw left half
-        gRegistrosBuffersEfectoHorizontal[1][(i + CONDITION_GRAPH_TOP_Y - 1) * 2 + 1] = // double assignment
-        gRegistrosBuffersEfectoHorizontal[0][(i + CONDITION_GRAPH_TOP_Y - 1) * 2 + 1] = (graph->scanlineLeft[i][0] << 8) | (graph->scanlineLeft[i][1]);
+        gRegistrosBuffersDistorsionFondo[1][(i + CONDITION_GRAPH_TOP_Y - 1) * 2 + 1] = // double assignment
+        gRegistrosBuffersDistorsionFondo[0][(i + CONDITION_GRAPH_TOP_Y - 1) * 2 + 1] = (graph->scanlineLeft[i][0] << 8) | (graph->scanlineLeft[i][1]);
     }
 
     graph->needsDraw = FALSE;

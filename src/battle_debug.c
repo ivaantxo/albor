@@ -5,7 +5,7 @@
 #include "main.h"
 #include "menu.h"
 #include "menu_helpers.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "palette.h"
 #include "party_menu.h"
 #include "pokemon_icon.h"
@@ -856,7 +856,7 @@ void CB2_BattleDebugMenu(void)
         break;
     case 2:
         ResetPaletteFade();
-        ParaEfectoHorizontal();
+        ParaDistorsionFondo();
         ResetTasks();
         ResetSpriteData();
         gMain.state++;

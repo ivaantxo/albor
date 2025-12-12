@@ -27,7 +27,7 @@
 #include "constants/abilities.h"
 #include "daycare.h"
 #include "overworld.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "field_weather.h"
 #include "international_string_util.h"
 #include "naming_screen.h"
@@ -480,7 +480,7 @@ static void CB2_LoadEggHatch(void)
         FreeAllSpritePalettes();
         ResetSpriteData();
         ResetTasks();
-        ParaEfectoHorizontal();
+        ParaDistorsionFondo();
         m4aSoundVSyncOn();
         gMain.state++;
         break;

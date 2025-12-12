@@ -8,7 +8,7 @@
 #include "main.h"
 #include "malloc.h"
 #include "palette.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "menu.h"
 #include "menu_helpers.h"
 #include "gpu_regs.h"
@@ -490,10 +490,10 @@ static const struct SpriteTemplate sSpriteTemplate_DuoFightPre_KyogreDorsalFin =
     .callback = SpriteCallbackDummy,
 };
 
-static const struct ParametrosEfectoHorizontal sScanlineParams_DuoFight_Clouds =
+static const struct ParametrosDistorsionFondo sScanlineParams_DuoFight_Clouds =
 {
     .dmaDest = &REG_BG1HOFS,
-    .bitsDMA = EFECTO_HORIZONTAL_DMA_16,
+    .bitsDMA = DISTORSION_FONDO_DMA_16,
     .estado = 1
 };
 
@@ -1299,7 +1299,7 @@ static void CB2_InitRayquazaScene(void)
     u32 i;
     SetVBlankHBlankCallbacksToNull();
     ClearScheduledBgCopiesToVram();
-    ParaEfectoHorizontal();
+    ParaDistorsionFondo();
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
         if (gObjectEvents[i].graphicsId == OBJ_EVENT_GFX_SPECIES(RAYQUAZA))
@@ -1568,7 +1568,7 @@ static void SpriteCB_DuoFightPre_Kyogre(struct Sprite *sprite)
 static void VBlankCB_DuoFight(void)
 {
     VBlankCB_RayquazaScene();
-    IniciaTransferenciaDMAEnHblankEfectoHorizontal();
+    IniciaTransferenciaDMAEnHblankDistorsionFondo();
 }
 
 static void InitDuoFightSceneBgs(void)
@@ -1613,11 +1613,11 @@ static void LoadDuoFightSceneGfx(void)
 static void Task_DuoFightAnim(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
-    LimpiaEfectoHorizontal();
+    LimpiaDistorsionFondo();
     InitDuoFightSceneBgs();
     LoadDuoFightSceneGfx();
-    CpuFastFill16(0, gRegistrosBuffersEfectoHorizontal, sizeof(gRegistrosBuffersEfectoHorizontal));
-    EscribeParametrosEfectoHorizontal(sScanlineParams_DuoFight_Clouds);
+    CpuFastFill16(0, gRegistrosBuffersDistorsionFondo, sizeof(gRegistrosBuffersDistorsionFondo));
+    EscribeParametrosDistorsionFondo(sScanlineParams_DuoFight_Clouds);
     tTimer = 0;
     tHelperTaskId = CreateTask(Task_DuoFight_AnimateClouds, 0);
     if (sRayScene->animId == RAY_ANIM_DUO_FIGHT_PRE)
@@ -1649,33 +1649,33 @@ static void Task_DuoFight_AnimateClouds(u8 taskId)
     {
         if (i <= 47)
         {
-            gRegistrosBuffersEfectoHorizontal[0][i] = data[0] >> 8;
-            gRegistrosBuffersEfectoHorizontal[1][i] = data[0] >> 8;
+            gRegistrosBuffersDistorsionFondo[0][i] = data[0] >> 8;
+            gRegistrosBuffersDistorsionFondo[1][i] = data[0] >> 8;
         }
         else if (i <= 63)
         {
-            gRegistrosBuffersEfectoHorizontal[0][i] = data[1] >> 8;
-            gRegistrosBuffersEfectoHorizontal[1][i] = data[1] >> 8;
+            gRegistrosBuffersDistorsionFondo[0][i] = data[1] >> 8;
+            gRegistrosBuffersDistorsionFondo[1][i] = data[1] >> 8;
         }
         else if (i <= 75)
         {
-            gRegistrosBuffersEfectoHorizontal[0][i] = data[2] >> 8;
-            gRegistrosBuffersEfectoHorizontal[1][i] = data[2] >> 8;
+            gRegistrosBuffersDistorsionFondo[0][i] = data[2] >> 8;
+            gRegistrosBuffersDistorsionFondo[1][i] = data[2] >> 8;
         }
         else if (i <= 83)
         {
-            gRegistrosBuffersEfectoHorizontal[0][i] = data[3] >> 8;
-            gRegistrosBuffersEfectoHorizontal[1][i] = data[3] >> 8;
+            gRegistrosBuffersDistorsionFondo[0][i] = data[3] >> 8;
+            gRegistrosBuffersDistorsionFondo[1][i] = data[3] >> 8;
         }
         else if (i <= 87)
         {
-            gRegistrosBuffersEfectoHorizontal[0][i] = data[4] >> 8;
-            gRegistrosBuffersEfectoHorizontal[1][i] = data[4] >> 8;
+            gRegistrosBuffersDistorsionFondo[0][i] = data[4] >> 8;
+            gRegistrosBuffersDistorsionFondo[1][i] = data[4] >> 8;
         }
         else
         {
-            gRegistrosBuffersEfectoHorizontal[0][i] = data[5] >> 8;
-            gRegistrosBuffersEfectoHorizontal[1][i] = data[5] >> 8;
+            gRegistrosBuffersDistorsionFondo[0][i] = data[5] >> 8;
+            gRegistrosBuffersDistorsionFondo[1][i] = data[5] >> 8;
         }
     }
 
@@ -1731,7 +1731,7 @@ static void Task_HandleDuoFight(u8 taskId)
                 gTasks[tHelperTaskId].data[0] = 0;
                 gTasks[tHelperTaskId].data[2] = data[2];
                 gTasks[tHelperTaskId].data[3] = data[3];
-                ParaEfectoHorizontal();
+                ParaDistorsionFondo();
                 break;
             }
         }
@@ -1804,7 +1804,7 @@ static void Task_DuoFightEnd(u8 taskId)
         DestroyTask(tHelperTaskId);
         ChangeBgY(1, 0, BG_COORD_SET);
         SetVBlankCallback(NULL);
-        ParaEfectoHorizontal();
+        ParaDistorsionFondo();
         ResetSpriteData();
         FreeAllSpritePalettes();
         tTimer = 0;

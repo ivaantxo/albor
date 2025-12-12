@@ -34,7 +34,7 @@
 #include "pokemon.h"
 #include "random.h"
 #include "safari_zone.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "script.h"
 #include "sound.h"
 #include "sprite.h"
@@ -215,10 +215,10 @@ COMMON_DATA u8 gHealthboxSpriteIds[MAX_BATTLERS_COUNT] = {0};
 COMMON_DATA u8 gMultiUsePlayerCursor = 0;
 COMMON_DATA u8 gNumberOfMovesToChoose = 0;
 
-static const struct ParametrosEfectoHorizontal sIntroScanlineParams16Bit =
+static const struct ParametrosDistorsionFondo sIntroScanlineParams16Bit =
 {
     .dmaDest = &REG_BG1HOFS,
-    .bitsDMA = EFECTO_HORIZONTAL_DMA_16,
+    .bitsDMA = DISTORSION_FONDO_DMA_16,
     .estado = 1
 };
 
@@ -397,21 +397,21 @@ static void CB2_InitBattleInternal(void)
     gBattle_WIN0H = ANCHO_PANTALLA;
 
     gBattle_WIN0V = WIN_RANGE(ALTURA_PANTALLA / 2, ALTURA_PANTALLA / 2 + 1);
-    LimpiaEfectoHorizontal();
+    LimpiaDistorsionFondo();
 
     for (i = 0; i < ALTURA_PANTALLA / 2; i++)
     {
-        gRegistrosBuffersEfectoHorizontal[0][i] = 0xF0;
-        gRegistrosBuffersEfectoHorizontal[1][i] = 0xF0;
+        gRegistrosBuffersDistorsionFondo[0][i] = 0xF0;
+        gRegistrosBuffersDistorsionFondo[1][i] = 0xF0;
     }
 
     for (; i < ALTURA_PANTALLA; i++)
     {
-        gRegistrosBuffersEfectoHorizontal[0][i] = 0xFF10;
-        gRegistrosBuffersEfectoHorizontal[1][i] = 0xFF10;
+        gRegistrosBuffersDistorsionFondo[0][i] = 0xFF10;
+        gRegistrosBuffersDistorsionFondo[1][i] = 0xFF10;
     }
 
-    EscribeParametrosEfectoHorizontal(sIntroScanlineParams16Bit);
+    EscribeParametrosDistorsionFondo(sIntroScanlineParams16Bit);
 
     ResetPaletteFade();
     gBattle_BG0_X = 0;
@@ -772,7 +772,7 @@ void VBlankCB_Battle(void)
     LoadOam();
     ProcessSpriteCopyRequests();
     TransferPlttBuffer();
-    IniciaTransferenciaDMAEnHblankEfectoHorizontal();
+    IniciaTransferenciaDMAEnHblankDistorsionFondo();
 }
 
 void SpriteCB_VsLetterDummy(struct Sprite *sprite)

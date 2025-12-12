@@ -25,7 +25,7 @@
 #include "random.h"
 #include "rtc.h"
 #include "save.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "sound.h"
 #include "sprite.h"
 #include "strings.h"
@@ -566,7 +566,7 @@ static u32 InitMainMenu(bool8 returningFromOptionsMenu)
     ResetPaletteFade();
     LoadPalette(sMainMenuBgPal, BG_PLTT_ID(0), PLTT_SIZE_4BPP);
     LoadPalette(sMainMenuTextPal, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
-    ParaEfectoHorizontal();
+    ParaDistorsionFondo();
     ResetTasks();
     ResetSpriteData();
     FreeAllSpritePalettes();
@@ -1033,7 +1033,7 @@ static void Task_NewGameBirchSpeech_Init(u8 taskId)
     LZ77UnCompVram(sBirchSpeechBgMap, (void *)(BG_SCREEN_ADDR(7)));
     LoadPalette(sBirchSpeechBgPals, BG_PLTT_ID(0), 2 * PLTT_SIZE_4BPP);
     LoadPalette(sBirchSpeechPlatformBlackPal, BG_PLTT_ID(0) + 1, PLTT_SIZEOF(8));
-    ParaEfectoHorizontal();
+    ParaDistorsionFondo();
     ResetSpriteData();
     FreeAllSpritePalettes();
     ResetAllPicSprites();
@@ -1572,7 +1572,7 @@ static void CB2_NewGameBirchSpeech_ReturnFromNamingScreen(void)
     taskId = CreateTask(Task_NewGameBirchSpeech_ReturnFromNamingScreenShowTextbox, 0);
     gTasks[taskId].tTimer = 5;
     gTasks[taskId].tBG1HOFS = -60;
-    ParaEfectoHorizontal();
+    ParaDistorsionFondo();
     ResetSpriteData();
     FreeAllSpritePalettes();
     ResetAllPicSprites();

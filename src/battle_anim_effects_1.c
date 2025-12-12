@@ -10,7 +10,7 @@
 #include "palette.h"
 #include "random.h"
 #include "reshow_battle_screen.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "sound.h"
 #include "trig.h"
 #include "util.h"

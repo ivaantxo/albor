@@ -13,7 +13,7 @@
 #include "overworld.h"
 #include "palette.h"
 #include "random.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "sound.h"
 #include "sprite.h"
 #include "task.h"
@@ -942,9 +942,9 @@ static void Task_Swirl(u8 taskId)
 static bool8 Swirl_Init(struct Task *task)
 {
     InitTransitionData();
-    LimpiaEfectoHorizontal();
+    LimpiaDistorsionFondo();
     BeginNormalPaletteFade(PALETTES_ALL, 4, 0, 16, RGB_BLACK);
-    SetSinWave((s16*)gRegistrosBuffersEfectoHorizontal[1], sTransitionData->cameraX, 0, 2, 0, ALTURA_PANTALLA);
+    SetSinWave((s16*)gRegistrosBuffersDistorsionFondo[1], sTransitionData->cameraX, 0, 2, 0, ALTURA_PANTALLA);
 
     SetVBlankCallback(VBlankCB_Swirl);
     SetHBlankCallback(HBlankCB_Swirl);
@@ -961,7 +961,7 @@ static bool8 Swirl_End(struct Task *task)
     task->tSinIndex += 4;
     task->tAmplitude += 8;
 
-    SetSinWave((s16*)gRegistrosBuffersEfectoHorizontal[0], sTransitionData->cameraX, task->tSinIndex, 2, task->tAmplitude, ALTURA_PANTALLA);
+    SetSinWave((s16*)gRegistrosBuffersDistorsionFondo[0], sTransitionData->cameraX, task->tSinIndex, 2, task->tAmplitude, ALTURA_PANTALLA);
 
     if (!gFundidoPaletas.activo)
     {
@@ -977,12 +977,12 @@ static void VBlankCB_Swirl(void)
 {
     VBlankCB_BattleTransition();
     if (sTransitionData->VBlank_DMA)
-        DmaCopy16(3, gRegistrosBuffersEfectoHorizontal[0], gRegistrosBuffersEfectoHorizontal[1], ALTURA_PANTALLA * 2);
+        DmaCopy16(3, gRegistrosBuffersDistorsionFondo[0], gRegistrosBuffersDistorsionFondo[1], ALTURA_PANTALLA * 2);
 }
 
 static void HBlankCB_Swirl(void)
 {
-    u16 var = gRegistrosBuffersEfectoHorizontal[1][REG_VCOUNT];
+    u16 var = gRegistrosBuffersDistorsionFondo[1][REG_VCOUNT];
     REG_BG1HOFS = var;
     REG_BG2HOFS = var;
     REG_BG3HOFS = var;
@@ -1006,10 +1006,10 @@ static void Task_Shuffle(u8 taskId)
 static bool8 Shuffle_Init(struct Task *task)
 {
     InitTransitionData();
-    LimpiaEfectoHorizontal();
+    LimpiaDistorsionFondo();
 
     BeginNormalPaletteFade(PALETTES_ALL, 4, 0, 16, RGB_BLACK);
-    memset(gRegistrosBuffersEfectoHorizontal[1], sTransitionData->cameraY, ALTURA_PANTALLA * 2);
+    memset(gRegistrosBuffersDistorsionFondo[1], sTransitionData->cameraY, ALTURA_PANTALLA * 2);
 
     SetVBlankCallback(VBlankCB_Shuffle);
     SetHBlankCallback(HBlankCB_Shuffle);
@@ -1034,7 +1034,7 @@ static bool8 Shuffle_End(struct Task *task)
     for (i = 0; i < ALTURA_PANTALLA; i++, sinVal += 4224)
     {
         u16 sinIndex = sinVal / 256;
-        gRegistrosBuffersEfectoHorizontal[0][i] = sTransitionData->cameraY + Sin(sinIndex, amplitude);
+        gRegistrosBuffersDistorsionFondo[0][i] = sTransitionData->cameraY + Sin(sinIndex, amplitude);
     }
 
     if (!gFundidoPaletas.activo)
@@ -1048,12 +1048,12 @@ static void VBlankCB_Shuffle(void)
 {
     VBlankCB_BattleTransition();
     if (sTransitionData->VBlank_DMA)
-        DmaCopy16(3, gRegistrosBuffersEfectoHorizontal[0], gRegistrosBuffersEfectoHorizontal[1], ALTURA_PANTALLA * 2);
+        DmaCopy16(3, gRegistrosBuffersDistorsionFondo[0], gRegistrosBuffersDistorsionFondo[1], ALTURA_PANTALLA * 2);
 }
 
 static void HBlankCB_Shuffle(void)
 {
-    u16 var = gRegistrosBuffersEfectoHorizontal[1][REG_VCOUNT];
+    u16 var = gRegistrosBuffersDistorsionFondo[1][REG_VCOUNT];
     REG_BG1VOFS = var;
     REG_BG2VOFS = var;
     REG_BG3VOFS = var;
@@ -1125,7 +1125,7 @@ static void InitPatternWeaveTransition(struct Task *task)
     s32 i;
 
     InitTransitionData();
-    LimpiaEfectoHorizontal();
+    LimpiaDistorsionFondo();
 
     task->tBlendTarget1 = 16;
     task->tBlendTarget2 = 0;
@@ -1139,7 +1139,7 @@ static void InitPatternWeaveTransition(struct Task *task)
     sTransitionData->BLDALPHA = BLDALPHA_BLEND(task->tBlendTarget2, task->tBlendTarget1);
 
     for (i = 0; i < ALTURA_PANTALLA; i++)
-        gRegistrosBuffersEfectoHorizontal[1][i] = ANCHO_PANTALLA;
+        gRegistrosBuffersDistorsionFondo[1][i] = ANCHO_PANTALLA;
 
     SetVBlankCallback(VBlankCB_PatternWeave);
 }
@@ -1216,7 +1216,7 @@ static bool8 BigPokeball_SetGfx(struct Task *task)
             SET_TILE(tilemap, i, j, *bigPokeballMap);
     }
 
-    SetSinWave((s16*)gRegistrosBuffersEfectoHorizontal[0], 0, task->tSinIndex, 132, task->tAmplitude, ALTURA_PANTALLA);
+    SetSinWave((s16*)gRegistrosBuffersDistorsionFondo[0], 0, task->tSinIndex, 132, task->tAmplitude, ALTURA_PANTALLA);
 
     task->tState++;
     return TRUE;
@@ -1228,7 +1228,7 @@ static bool8 Aqua_SetGfx(struct Task *task)
 
     GetBg0TilesDst(&tilemap, &tileset);
     LZ77UnCompVram(sTeamAqua_Tilemap, tilemap);
-    SetSinWave((s16*)gRegistrosBuffersEfectoHorizontal[0], 0, task->tSinIndex, 132, task->tAmplitude, ALTURA_PANTALLA);
+    SetSinWave((s16*)gRegistrosBuffersDistorsionFondo[0], 0, task->tSinIndex, 132, task->tAmplitude, ALTURA_PANTALLA);
 
     task->tState++;
     return FALSE;
@@ -1240,7 +1240,7 @@ static bool8 Magma_SetGfx(struct Task *task)
 
     GetBg0TilesDst(&tilemap, &tileset);
     LZ77UnCompVram(sTeamMagma_Tilemap, tilemap);
-    SetSinWave((s16*)gRegistrosBuffersEfectoHorizontal[0], 0, task->tSinIndex, 132, task->tAmplitude, ALTURA_PANTALLA);
+    SetSinWave((s16*)gRegistrosBuffersDistorsionFondo[0], 0, task->tSinIndex, 132, task->tAmplitude, ALTURA_PANTALLA);
 
     task->tState++;
     return FALSE;
@@ -1253,7 +1253,7 @@ static bool8 Regice_SetGfx(struct Task *task)
     GetBg0TilesDst(&tilemap, &tileset);
     LoadPalette(sRegice_Palette, BG_PLTT_ID(15), sizeof(sRegice_Palette));
     CopiaCpu16(sRegice_Tilemap, tilemap, 0x500);
-    SetSinWave((s16*)gRegistrosBuffersEfectoHorizontal[0], 0, task->tSinIndex, 132, task->tAmplitude, ALTURA_PANTALLA);
+    SetSinWave((s16*)gRegistrosBuffersDistorsionFondo[0], 0, task->tSinIndex, 132, task->tAmplitude, ALTURA_PANTALLA);
 
     task->tState++;
     return FALSE;
@@ -1266,7 +1266,7 @@ static bool8 Registeel_SetGfx(struct Task *task)
     GetBg0TilesDst(&tilemap, &tileset);
     LoadPalette(sRegisteel_Palette, BG_PLTT_ID(15), sizeof(sRegisteel_Palette));
     CopiaCpu16(sRegisteel_Tilemap, tilemap, 0x500);
-    SetSinWave((s16*)gRegistrosBuffersEfectoHorizontal[0], 0, task->tSinIndex, 132, task->tAmplitude, ALTURA_PANTALLA);
+    SetSinWave((s16*)gRegistrosBuffersDistorsionFondo[0], 0, task->tSinIndex, 132, task->tAmplitude, ALTURA_PANTALLA);
 
     task->tState++;
     return FALSE;
@@ -1279,7 +1279,7 @@ static bool8 Regirock_SetGfx(struct Task *task)
     GetBg0TilesDst(&tilemap, &tileset);
     LoadPalette(sRegirock_Palette, BG_PLTT_ID(15), sizeof(sRegirock_Palette));
     CopiaCpu16(sRegirock_Tilemap, tilemap, 0x500);
-    SetSinWave((s16*)gRegistrosBuffersEfectoHorizontal[0], 0, task->tSinIndex, 132, task->tAmplitude, ALTURA_PANTALLA);
+    SetSinWave((s16*)gRegistrosBuffersDistorsionFondo[0], 0, task->tSinIndex, 132, task->tAmplitude, ALTURA_PANTALLA);
 
     task->tState++;
     return FALSE;
@@ -1371,7 +1371,7 @@ static bool8 PatternWeave_Blend1(struct Task *task)
     task->tSinIndex += 8;
     task->tAmplitude -= 256;
 
-    SetSinWave((s16*)gRegistrosBuffersEfectoHorizontal[0], 0, task->tSinIndex, 132, task->tAmplitude >> 8, ALTURA_PANTALLA);
+    SetSinWave((s16*)gRegistrosBuffersDistorsionFondo[0], 0, task->tSinIndex, 132, task->tAmplitude >> 8, ALTURA_PANTALLA);
 
     sTransitionData->VBlank_DMA++;
     return FALSE;
@@ -1391,7 +1391,7 @@ static bool8 PatternWeave_Blend2(struct Task *task)
     task->tSinIndex += 8;
     task->tAmplitude -= 256;
 
-    SetSinWave((s16*)gRegistrosBuffersEfectoHorizontal[0], 0, task->tSinIndex, 132, task->tAmplitude >> 8, ALTURA_PANTALLA);
+    SetSinWave((s16*)gRegistrosBuffersDistorsionFondo[0], 0, task->tSinIndex, 132, task->tAmplitude >> 8, ALTURA_PANTALLA);
 
     sTransitionData->VBlank_DMA++;
     return FALSE;
@@ -1403,7 +1403,7 @@ static bool8 PatternWeave_FinishAppear(struct Task *task)
     task->tSinIndex += 8;
     task->tAmplitude -= 256;
 
-    SetSinWave((s16*)gRegistrosBuffersEfectoHorizontal[0], 0, task->tSinIndex, 132, task->tAmplitude >> 8, ALTURA_PANTALLA);
+    SetSinWave((s16*)gRegistrosBuffersDistorsionFondo[0], 0, task->tSinIndex, 132, task->tAmplitude >> 8, ALTURA_PANTALLA);
 
     if (task->tAmplitude <= 0)
     {
@@ -1450,7 +1450,7 @@ static bool8 PatternWeave_CircularMask(struct Task *task)
         if (task->tRadius < 0)
             task->tRadius = 0;
     }
-    SetCircularMask(gRegistrosBuffersEfectoHorizontal[0], ANCHO_PANTALLA / 2, ALTURA_PANTALLA / 2, task->tRadius);
+    SetCircularMask(gRegistrosBuffersDistorsionFondo[0], ANCHO_PANTALLA / 2, ALTURA_PANTALLA / 2, task->tRadius);
     if (task->tRadius == 0)
     {
         SetVBlankCallback(NULL);
@@ -1475,7 +1475,7 @@ static void VBlankCB_SetWinAndBlend(void)
     DmaStop(0);
     VBlankCB_BattleTransition();
     if (sTransitionData->VBlank_DMA)
-        DmaCopy16(3, gRegistrosBuffersEfectoHorizontal[0], gRegistrosBuffersEfectoHorizontal[1], ALTURA_PANTALLA * 2);
+        DmaCopy16(3, gRegistrosBuffersDistorsionFondo[0], gRegistrosBuffersDistorsionFondo[1], ALTURA_PANTALLA * 2);
     REG_WININ = sTransitionData->WININ;
     REG_WINOUT = sTransitionData->WINOUT;
     REG_WIN0V = sTransitionData->WIN0V;
@@ -1486,13 +1486,13 @@ static void VBlankCB_SetWinAndBlend(void)
 static void VBlankCB_PatternWeave(void)
 {
     VBlankCB_SetWinAndBlend();
-    DmaSet(0, gRegistrosBuffersEfectoHorizontal[1], &REG_BG0HOFS, B_TRANS_DMA_FLAGS);
+    DmaSet(0, gRegistrosBuffersDistorsionFondo[1], &REG_BG0HOFS, B_TRANS_DMA_FLAGS);
 }
 
 static void VBlankCB_CircularMask(void)
 {
     VBlankCB_SetWinAndBlend();
-    DmaSet(0, gRegistrosBuffersEfectoHorizontal[1], &REG_WIN0H, B_TRANS_DMA_FLAGS);
+    DmaSet(0, gRegistrosBuffersDistorsionFondo[1], &REG_WIN0H, B_TRANS_DMA_FLAGS);
 }
 
 #undef tAmplitude
@@ -1634,7 +1634,7 @@ static bool8 ClockwiseWipe_Init(struct Task *task)
     u32 i;
 
     InitTransitionData();
-    LimpiaEfectoHorizontal();
+    LimpiaDistorsionFondo();
 
     sTransitionData->WININ = 0;
     sTransitionData->WINOUT = WINOUT_WIN01_ALL;
@@ -1642,7 +1642,7 @@ static bool8 ClockwiseWipe_Init(struct Task *task)
     sTransitionData->WIN0V = ALTURA_PANTALLA;
 
     for (i = 0; i < ALTURA_PANTALLA; i++)
-        gRegistrosBuffersEfectoHorizontal[1][i] = ((ANCHO_PANTALLA + 3) << 8) | (ANCHO_PANTALLA + 4);
+        gRegistrosBuffersDistorsionFondo[1][i] = ((ANCHO_PANTALLA + 3) << 8) | (ANCHO_PANTALLA + 4);
 
     SetVBlankCallback(VBlankCB_ClockwiseWipe);
     sTransitionData->tWipeEndX = ANCHO_PANTALLA / 2;
@@ -1662,7 +1662,7 @@ static bool8 ClockwiseWipe_TopRight(struct Task *task)
 #endif
     do
     {
-        gRegistrosBuffersEfectoHorizontal[0][sTransitionData->tWipeCurrY] = (sTransitionData->tWipeCurrX + 1) | ((ANCHO_PANTALLA / 2) << 8);
+        gRegistrosBuffersDistorsionFondo[0][sTransitionData->tWipeCurrY] = (sTransitionData->tWipeCurrX + 1) | ((ANCHO_PANTALLA / 2) << 8);
     } while (!UpdateBlackWipe(sTransitionData->data, TRUE, TRUE));
 
     sTransitionData->tWipeEndX += 16;
@@ -1690,7 +1690,7 @@ static bool8 ClockwiseWipe_Right(struct Task *task)
         start = ANCHO_PANTALLA / 2, end = sTransitionData->tWipeCurrX + 1;
         if (sTransitionData->tWipeEndY >= ALTURA_PANTALLA / 2)
             start = sTransitionData->tWipeCurrX, end = ANCHO_PANTALLA;
-        gRegistrosBuffersEfectoHorizontal[0][sTransitionData->tWipeCurrY] = end | (start << 8);
+        gRegistrosBuffersDistorsionFondo[0][sTransitionData->tWipeCurrY] = end | (start << 8);
         if (finished)
             break;
         finished = UpdateBlackWipe(sTransitionData->data, TRUE, TRUE);
@@ -1705,7 +1705,7 @@ static bool8 ClockwiseWipe_Right(struct Task *task)
     else
     {
         while (sTransitionData->tWipeCurrY < sTransitionData->tWipeEndY)
-            gRegistrosBuffersEfectoHorizontal[0][++sTransitionData->tWipeCurrY] = end | (start << 8);
+            gRegistrosBuffersDistorsionFondo[0][++sTransitionData->tWipeCurrY] = end | (start << 8);
     }
 
     sTransitionData->VBlank_DMA++;
@@ -1719,7 +1719,7 @@ static bool8 ClockwiseWipe_Bottom(struct Task *task)
     InitBlackWipe(sTransitionData->data, ANCHO_PANTALLA / 2, ALTURA_PANTALLA / 2, sTransitionData->tWipeEndX, ALTURA_PANTALLA, 1, 1);
     do
     {
-        gRegistrosBuffersEfectoHorizontal[0][sTransitionData->tWipeCurrY] = (sTransitionData->tWipeCurrX << 8) | ANCHO_PANTALLA;
+        gRegistrosBuffersDistorsionFondo[0][sTransitionData->tWipeCurrY] = (sTransitionData->tWipeCurrX << 8) | ANCHO_PANTALLA;
     } while (!UpdateBlackWipe(sTransitionData->data, TRUE, TRUE));
 
     sTransitionData->tWipeEndX -= 16;
@@ -1744,12 +1744,12 @@ static bool8 ClockwiseWipe_Left(struct Task *task)
 
     while(1)
     {
-        end = (gRegistrosBuffersEfectoHorizontal[0][sTransitionData->tWipeCurrY]) & 0xFF;
+        end = (gRegistrosBuffersDistorsionFondo[0][sTransitionData->tWipeCurrY]) & 0xFF;
         start = sTransitionData->tWipeCurrX;
         if (sTransitionData->tWipeEndY <= ALTURA_PANTALLA / 2)
             start = ANCHO_PANTALLA / 2, end = sTransitionData->tWipeCurrX;
         temp = end | (start << 8);
-        gRegistrosBuffersEfectoHorizontal[0][sTransitionData->tWipeCurrY] = temp;
+        gRegistrosBuffersDistorsionFondo[0][sTransitionData->tWipeCurrY] = temp;
         if (finished)
             break;
         finished = UpdateBlackWipe(sTransitionData->data, TRUE, TRUE);
@@ -1764,7 +1764,7 @@ static bool8 ClockwiseWipe_Left(struct Task *task)
     else
     {
         while (sTransitionData->tWipeCurrY > sTransitionData->tWipeEndY)
-            gRegistrosBuffersEfectoHorizontal[0][--sTransitionData->tWipeCurrY] = end | (start << 8);
+            gRegistrosBuffersDistorsionFondo[0][--sTransitionData->tWipeCurrY] = end | (start << 8);
     }
 
     sTransitionData->VBlank_DMA++;
@@ -1782,7 +1782,7 @@ static bool8 ClockwiseWipe_TopLeft(struct Task *task)
         start = ANCHO_PANTALLA / 2, end = sTransitionData->tWipeCurrX;
         if (sTransitionData->tWipeCurrX >= ANCHO_PANTALLA / 2)
             start = 0, end = ANCHO_PANTALLA;
-        gRegistrosBuffersEfectoHorizontal[0][sTransitionData->tWipeCurrY] = end | (start << 8);
+        gRegistrosBuffersDistorsionFondo[0][sTransitionData->tWipeCurrY] = end | (start << 8);
     } while (!UpdateBlackWipe(sTransitionData->data, TRUE, TRUE));
 
     sTransitionData->tWipeEndX += 16;
@@ -1806,12 +1806,12 @@ static void VBlankCB_ClockwiseWipe(void)
     DmaStop(0);
     VBlankCB_BattleTransition();
     if (sTransitionData->VBlank_DMA != 0)
-        DmaCopy16(3, gRegistrosBuffersEfectoHorizontal[0], gRegistrosBuffersEfectoHorizontal[1], ALTURA_PANTALLA * 2);
+        DmaCopy16(3, gRegistrosBuffersDistorsionFondo[0], gRegistrosBuffersDistorsionFondo[1], ALTURA_PANTALLA * 2);
     REG_WININ = sTransitionData->WININ;
     REG_WINOUT = sTransitionData->WINOUT;
     REG_WIN0V = sTransitionData->WIN0V;
-    REG_WIN0H = gRegistrosBuffersEfectoHorizontal[1][0];
-    DmaSet(0, gRegistrosBuffersEfectoHorizontal[1], &REG_WIN0H, B_TRANS_DMA_FLAGS);
+    REG_WIN0H = gRegistrosBuffersDistorsionFondo[1][0];
+    DmaSet(0, gRegistrosBuffersDistorsionFondo[1], &REG_WIN0H, B_TRANS_DMA_FLAGS);
 }
 
 //---------------------
@@ -1833,10 +1833,10 @@ static bool8 Ripple_Init(struct Task *task)
     u32 i;
 
     InitTransitionData();
-    LimpiaEfectoHorizontal();
+    LimpiaDistorsionFondo();
 
     for (i = 0; i < ALTURA_PANTALLA; i++)
-        gRegistrosBuffersEfectoHorizontal[1][i] = sTransitionData->cameraY;
+        gRegistrosBuffersDistorsionFondo[1][i] = sTransitionData->cameraY;
 
     SetVBlankCallback(VBlankCB_Ripple);
     SetHBlankCallback(HBlankCB_Ripple);
@@ -1865,7 +1865,7 @@ static bool8 Ripple_Main(struct Task *task)
     for (i = 0; i < ALTURA_PANTALLA; i++, sinVal += speed)
     {
         s16 sinIndex = sinVal >> 8;
-        gRegistrosBuffersEfectoHorizontal[0][i] = sTransitionData->cameraY + Sin(sinIndex & 0xffff, amplitude);
+        gRegistrosBuffersDistorsionFondo[0][i] = sTransitionData->cameraY + Sin(sinIndex & 0xffff, amplitude);
     }
 
     if (++task->tTimer == 81)
@@ -1885,12 +1885,12 @@ static void VBlankCB_Ripple(void)
 {
     VBlankCB_BattleTransition();
     if (sTransitionData->VBlank_DMA)
-        DmaCopy16(3, gRegistrosBuffersEfectoHorizontal[0], gRegistrosBuffersEfectoHorizontal[1], ALTURA_PANTALLA * 2);
+        DmaCopy16(3, gRegistrosBuffersDistorsionFondo[0], gRegistrosBuffersDistorsionFondo[1], ALTURA_PANTALLA * 2);
 }
 
 static void HBlankCB_Ripple(void)
 {
-    u16 var = gRegistrosBuffersEfectoHorizontal[1][REG_VCOUNT];
+    u16 var = gRegistrosBuffersDistorsionFondo[1][REG_VCOUNT];
     REG_BG1VOFS = var;
     REG_BG2VOFS = var;
     REG_BG3VOFS = var;
@@ -1918,7 +1918,7 @@ static bool8 Wave_Init(struct Task *task)
     u32 i;
 
     InitTransitionData();
-    LimpiaEfectoHorizontal();
+    LimpiaDistorsionFondo();
 
     sTransitionData->WININ = WININ_WIN0_ALL;
     sTransitionData->WINOUT = 0;
@@ -1926,7 +1926,7 @@ static bool8 Wave_Init(struct Task *task)
     sTransitionData->WIN0V = ALTURA_PANTALLA;
 
     for (i = 0; i < ALTURA_PANTALLA; i++)
-        gRegistrosBuffersEfectoHorizontal[1][i] = ANCHO_PANTALLA + 2;
+        gRegistrosBuffersDistorsionFondo[1][i] = ANCHO_PANTALLA + 2;
 
     SetVBlankCallback(VBlankCB_Wave);
 
@@ -1941,7 +1941,7 @@ static bool8 Wave_Main(struct Task *task)
     bool8 finished;
 
     sTransitionData->VBlank_DMA = FALSE;
-    toStore = gRegistrosBuffersEfectoHorizontal[0];
+    toStore = gRegistrosBuffersDistorsionFondo[0];
     sinIndex = task->tSinIndex;
     task->tSinIndex += 16;
     task->tX += 8;
@@ -1977,11 +1977,11 @@ static void VBlankCB_Wave(void)
     DmaStop(0);
     VBlankCB_BattleTransition();
     if (sTransitionData->VBlank_DMA != 0)
-        DmaCopy16(3, gRegistrosBuffersEfectoHorizontal[0], gRegistrosBuffersEfectoHorizontal[1], ALTURA_PANTALLA * 2);
+        DmaCopy16(3, gRegistrosBuffersDistorsionFondo[0], gRegistrosBuffersDistorsionFondo[1], ALTURA_PANTALLA * 2);
     REG_WININ = sTransitionData->WININ;
     REG_WINOUT = sTransitionData->WINOUT;
     REG_WIN0V = sTransitionData->WIN0V;
-    DmaSet(0, gRegistrosBuffersEfectoHorizontal[1], &REG_WIN0H, B_TRANS_DMA_FLAGS);
+    DmaSet(0, gRegistrosBuffersDistorsionFondo[1], &REG_WIN0H, B_TRANS_DMA_FLAGS);
 }
 
 #undef tX
@@ -2018,7 +2018,7 @@ static bool8 Mugshot_Init(struct Task *task)
     u32 i;
 
     InitTransitionData();
-    LimpiaEfectoHorizontal();
+    LimpiaDistorsionFondo();
     Mugshots_CreateTrainerPics(task);
 
     task->tSinIndex = 0;
@@ -2029,7 +2029,7 @@ static bool8 Mugshot_Init(struct Task *task)
     sTransitionData->WIN0V = ALTURA_PANTALLA;
 
     for (i = 0; i < ALTURA_PANTALLA; i++)
-        gRegistrosBuffersEfectoHorizontal[1][i] = (ANCHO_PANTALLA << 8) | (ANCHO_PANTALLA + 1);
+        gRegistrosBuffersDistorsionFondo[1][i] = (ANCHO_PANTALLA << 8) | (ANCHO_PANTALLA + 1);
 
     SetVBlankCallback(VBlankCB_Mugshots);
 
@@ -2075,7 +2075,7 @@ static bool8 Mugshot_ShowBanner(struct Task *task)
 
     sTransitionData->VBlank_DMA = FALSE;
 
-    toStore = gRegistrosBuffersEfectoHorizontal[0];
+    toStore = gRegistrosBuffersDistorsionFondo[0];
     sinIndex = task->tSinIndex;
     task->tSinIndex += 16;
 
@@ -2127,7 +2127,7 @@ static bool8 Mugshot_StartOpponentSlide(struct Task *task)
 
     sTransitionData->VBlank_DMA = FALSE;
 
-    for (i = 0, toStore = gRegistrosBuffersEfectoHorizontal[0]; i < ALTURA_PANTALLA; i++, toStore++)
+    for (i = 0, toStore = gRegistrosBuffersDistorsionFondo[0]; i < ALTURA_PANTALLA; i++, toStore++)
         *toStore = ANCHO_PANTALLA;
 
     task->tState++;
@@ -2176,8 +2176,8 @@ static bool8 Mugshot_WaitPlayerSlide(struct Task *task)
         sTransitionData->VBlank_DMA = FALSE;
         SetVBlankCallback(NULL);
         DmaStop(0);
-        memset(gRegistrosBuffersEfectoHorizontal[0], 0, ALTURA_PANTALLA * 2);
-        memset(gRegistrosBuffersEfectoHorizontal[1], 0, ALTURA_PANTALLA * 2);
+        memset(gRegistrosBuffersDistorsionFondo[0], 0, ALTURA_PANTALLA * 2);
+        memset(gRegistrosBuffersDistorsionFondo[1], 0, ALTURA_PANTALLA * 2);
         SetGpuReg(REG_OFFSET_WIN0H, ANCHO_PANTALLA);
         SetGpuReg(REG_OFFSET_BLDY, 0);
         task->tState++;
@@ -2212,15 +2212,15 @@ static bool8 Mugshot_GradualWhiteFade(struct Task *task)
             // spreads outwards in both directions.
             s16 index1 = ALTURA_PANTALLA / 2 - i;
             s16 index2 = ALTURA_PANTALLA / 2 + i;
-            if (gRegistrosBuffersEfectoHorizontal[0][index1] <= 15)
+            if (gRegistrosBuffersDistorsionFondo[0][index1] <= 15)
             {
                 active = TRUE;
-                gRegistrosBuffersEfectoHorizontal[0][index1]++;
+                gRegistrosBuffersDistorsionFondo[0][index1]++;
             }
-            if (gRegistrosBuffersEfectoHorizontal[0][index2] <= 15)
+            if (gRegistrosBuffersDistorsionFondo[0][index2] <= 15)
             {
                 active = TRUE;
-                gRegistrosBuffersEfectoHorizontal[0][index2]++;
+                gRegistrosBuffersDistorsionFondo[0][index2]++;
             }
         }
     }
@@ -2250,7 +2250,7 @@ static bool8 Mugshot_FadeToBlack(struct Task *task)
     sTransitionData->VBlank_DMA = FALSE;
 
     task->tTimer++;
-    memset(gRegistrosBuffersEfectoHorizontal[0], task->tTimer, ALTURA_PANTALLA * 2);
+    memset(gRegistrosBuffersDistorsionFondo[0], task->tTimer, ALTURA_PANTALLA * 2);
     if (task->tTimer > 15)
         task->tState++;
 
@@ -2271,12 +2271,12 @@ static void VBlankCB_Mugshots(void)
     DmaStop(0);
     VBlankCB_BattleTransition();
     if (sTransitionData->VBlank_DMA != 0)
-        DmaCopy16(3, gRegistrosBuffersEfectoHorizontal[0], gRegistrosBuffersEfectoHorizontal[1], ALTURA_PANTALLA * 2);
+        DmaCopy16(3, gRegistrosBuffersDistorsionFondo[0], gRegistrosBuffersDistorsionFondo[1], ALTURA_PANTALLA * 2);
     REG_BG0VOFS = sTransitionData->BG0VOFS;
     REG_WININ = sTransitionData->WININ;
     REG_WINOUT = sTransitionData->WINOUT;
     REG_WIN0V = sTransitionData->WIN0V;
-    DmaSet(0, gRegistrosBuffersEfectoHorizontal[1], &REG_WIN0H, B_TRANS_DMA_FLAGS);
+    DmaSet(0, gRegistrosBuffersDistorsionFondo[1], &REG_WIN0H, B_TRANS_DMA_FLAGS);
 }
 
 static void VBlankCB_MugshotsFadeOut(void)
@@ -2284,9 +2284,9 @@ static void VBlankCB_MugshotsFadeOut(void)
     DmaStop(0);
     VBlankCB_BattleTransition();
     if (sTransitionData->VBlank_DMA != 0)
-        DmaCopy16(3, gRegistrosBuffersEfectoHorizontal[0], gRegistrosBuffersEfectoHorizontal[1], ALTURA_PANTALLA * 2);
+        DmaCopy16(3, gRegistrosBuffersDistorsionFondo[0], gRegistrosBuffersDistorsionFondo[1], ALTURA_PANTALLA * 2);
     REG_BLDCNT = sTransitionData->BLDCNT;
-    DmaSet(0, gRegistrosBuffersEfectoHorizontal[1], &REG_BLDY, B_TRANS_DMA_FLAGS);
+    DmaSet(0, gRegistrosBuffersDistorsionFondo[1], &REG_BLDY, B_TRANS_DMA_FLAGS);
 }
 
 static void HBlankCB_Mugshots(void)
@@ -2456,7 +2456,7 @@ static bool8 Slice_Init(struct Task *task)
     u32 i;
 
     InitTransitionData();
-    LimpiaEfectoHorizontal();
+    LimpiaDistorsionFondo();
 
     task->tSpeed = 1 << 8;
     task->tAccel = 1;
@@ -2467,8 +2467,8 @@ static bool8 Slice_Init(struct Task *task)
 
     for (i = 0; i < ALTURA_PANTALLA; i++)
     {
-        gRegistrosBuffersEfectoHorizontal[1][i] = sTransitionData->cameraX;
-        gRegistrosBuffersEfectoHorizontal[1][ALTURA_PANTALLA + i] = ANCHO_PANTALLA;
+        gRegistrosBuffersDistorsionFondo[1][i] = sTransitionData->cameraX;
+        gRegistrosBuffersDistorsionFondo[1][ALTURA_PANTALLA + i] = ANCHO_PANTALLA;
     }
 
     EnableInterrupts(INTR_FLAG_HBLANK);
@@ -2497,8 +2497,8 @@ static bool8 Slice_Main(struct Task *task)
 
     for (i = 0; i < ALTURA_PANTALLA; i++)
     {
-        u16 *storeLoc1 = &gRegistrosBuffersEfectoHorizontal[0][i];
-        u16 *storeLoc2 = &gRegistrosBuffersEfectoHorizontal[0][i + ALTURA_PANTALLA];
+        u16 *storeLoc1 = &gRegistrosBuffersDistorsionFondo[0][i];
+        u16 *storeLoc2 = &gRegistrosBuffersDistorsionFondo[0][i + ALTURA_PANTALLA];
 
         // Alternate rows
         if (i % 2)
@@ -2536,15 +2536,15 @@ static void VBlankCB_Slice(void)
     REG_WINOUT = sTransitionData->WINOUT;
     REG_WIN0V = sTransitionData->WIN0V;
     if (sTransitionData->VBlank_DMA)
-        DmaCopy16(3, gRegistrosBuffersEfectoHorizontal[0], gRegistrosBuffersEfectoHorizontal[1], ALTURA_PANTALLA * 4);
-    DmaSet(0, &gRegistrosBuffersEfectoHorizontal[1][ALTURA_PANTALLA], &REG_WIN0H, B_TRANS_DMA_FLAGS);
+        DmaCopy16(3, gRegistrosBuffersDistorsionFondo[0], gRegistrosBuffersDistorsionFondo[1], ALTURA_PANTALLA * 4);
+    DmaSet(0, &gRegistrosBuffersDistorsionFondo[1][ALTURA_PANTALLA], &REG_WIN0H, B_TRANS_DMA_FLAGS);
 }
 
 static void HBlankCB_Slice(void)
 {
     if (REG_VCOUNT < ALTURA_PANTALLA)
     {
-        u16 var = gRegistrosBuffersEfectoHorizontal[1][REG_VCOUNT];
+        u16 var = gRegistrosBuffersDistorsionFondo[1][REG_VCOUNT];
         REG_BG1HOFS = var;
         REG_BG2HOFS = var;
         REG_BG3HOFS = var;
@@ -2575,7 +2575,7 @@ static bool8 ShredSplit_Init(struct Task *task)
     u32 i;
 
     InitTransitionData();
-    LimpiaEfectoHorizontal();
+    LimpiaDistorsionFondo();
 
     sTransitionData->WININ = WININ_WIN0_ALL;
     sTransitionData->WINOUT = 0;
@@ -2583,13 +2583,13 @@ static bool8 ShredSplit_Init(struct Task *task)
 
     for (i = 0; i < ALTURA_PANTALLA; i++)
     {
-        gRegistrosBuffersEfectoHorizontal[1][i] = sTransitionData->cameraX;
-        gRegistrosBuffersEfectoHorizontal[1][ALTURA_PANTALLA + i] = ANCHO_PANTALLA;
-        gRegistrosBuffersEfectoHorizontal[0][i] = sTransitionData->cameraX;
-        gRegistrosBuffersEfectoHorizontal[0][ALTURA_PANTALLA + i] = ANCHO_PANTALLA;
-        gRegistrosBuffersEfectoHorizontal[0][ALTURA_PANTALLA * 2 + i] = 0;
-        gRegistrosBuffersEfectoHorizontal[0][ALTURA_PANTALLA * 3 + i] = 256;
-        gRegistrosBuffersEfectoHorizontal[0][ALTURA_PANTALLA * 4 + i] = 1;
+        gRegistrosBuffersDistorsionFondo[1][i] = sTransitionData->cameraX;
+        gRegistrosBuffersDistorsionFondo[1][ALTURA_PANTALLA + i] = ANCHO_PANTALLA;
+        gRegistrosBuffersDistorsionFondo[0][i] = sTransitionData->cameraX;
+        gRegistrosBuffersDistorsionFondo[0][ALTURA_PANTALLA + i] = ANCHO_PANTALLA;
+        gRegistrosBuffersDistorsionFondo[0][ALTURA_PANTALLA * 2 + i] = 0;
+        gRegistrosBuffersDistorsionFondo[0][ALTURA_PANTALLA * 3 + i] = 256;
+        gRegistrosBuffersDistorsionFondo[0][ALTURA_PANTALLA * 4 + i] = 1;
     }
 
     task->tDelayTimer = 0;
@@ -2630,9 +2630,9 @@ static bool8 ShredSplit_Main(struct Task *task)
                 y = baseY[j] + (moveDirs[k] * -i * 2);
                 if (y >= 0 && (y != ALTURA_PANTALLA / 2 - 1 || j != 1))
                 {
-                    ptr4 = &gRegistrosBuffersEfectoHorizontal[0][y + ALTURA_PANTALLA * 2];
-                    ptr3 = &gRegistrosBuffersEfectoHorizontal[0][y + ALTURA_PANTALLA * 3];
-                    ptr1 = &gRegistrosBuffersEfectoHorizontal[0][y + ALTURA_PANTALLA * 4];
+                    ptr4 = &gRegistrosBuffersDistorsionFondo[0][y + ALTURA_PANTALLA * 2];
+                    ptr3 = &gRegistrosBuffersDistorsionFondo[0][y + ALTURA_PANTALLA * 3];
+                    ptr1 = &gRegistrosBuffersDistorsionFondo[0][y + ALTURA_PANTALLA * 4];
                     if (*ptr4 >= ANCHO_PANTALLA)
                     {
                         *ptr4 = ANCHO_PANTALLA;
@@ -2646,8 +2646,8 @@ static bool8 ShredSplit_Main(struct Task *task)
                         if (*ptr3 <= 0xFFF)
                             *ptr3 += *ptr1;
                     }
-                    ptr2 = &gRegistrosBuffersEfectoHorizontal[0][y];
-                    ptr3 = &gRegistrosBuffersEfectoHorizontal[0][y + ALTURA_PANTALLA];
+                    ptr2 = &gRegistrosBuffersDistorsionFondo[0][y];
+                    ptr3 = &gRegistrosBuffersDistorsionFondo[0][y + ALTURA_PANTALLA];
                     *ptr2 = sTransitionData->cameraX + *ptr4;
                     *ptr3 = ANCHO_PANTALLA - *ptr4;
 
@@ -2665,9 +2665,9 @@ static bool8 ShredSplit_Main(struct Task *task)
                 y = baseY[j] + 1 + (moveDirs[k] * -i * 2);
                 if (y <= ALTURA_PANTALLA && (y != ALTURA_PANTALLA / 2 || j != 1))
                 {
-                    ptr4 = &gRegistrosBuffersEfectoHorizontal[0][y + ALTURA_PANTALLA * 2];
-                    ptr3 = &gRegistrosBuffersEfectoHorizontal[0][y + ALTURA_PANTALLA * 3];
-                    ptr1 = &gRegistrosBuffersEfectoHorizontal[0][y + ALTURA_PANTALLA * 4];
+                    ptr4 = &gRegistrosBuffersDistorsionFondo[0][y + ALTURA_PANTALLA * 2];
+                    ptr3 = &gRegistrosBuffersDistorsionFondo[0][y + ALTURA_PANTALLA * 3];
+                    ptr1 = &gRegistrosBuffersDistorsionFondo[0][y + ALTURA_PANTALLA * 4];
                     if (*ptr4 >= ANCHO_PANTALLA)
                     {
                         *ptr4 = ANCHO_PANTALLA;
@@ -2681,8 +2681,8 @@ static bool8 ShredSplit_Main(struct Task *task)
                         if (*ptr3 <= 0xFFF)
                             *ptr3 += *ptr1;
                     }
-                    ptr2 = &gRegistrosBuffersEfectoHorizontal[0][y];
-                    ptr3 = &gRegistrosBuffersEfectoHorizontal[0][y + ALTURA_PANTALLA];
+                    ptr2 = &gRegistrosBuffersDistorsionFondo[0][y];
+                    ptr3 = &gRegistrosBuffersDistorsionFondo[0][y + ALTURA_PANTALLA];
                     *ptr2 = sTransitionData->cameraX - *ptr4;
                     *ptr3 = (*ptr4 << 8) | (ANCHO_PANTALLA + 1);
 
@@ -2751,7 +2751,7 @@ static bool8 Blackhole_Init(struct Task *task)
     s32 i;
 
     InitTransitionData();
-    LimpiaEfectoHorizontal();
+    LimpiaDistorsionFondo();
 
     sTransitionData->WININ = 0;
     sTransitionData->WINOUT = WINOUT_WIN01_ALL;
@@ -2759,7 +2759,7 @@ static bool8 Blackhole_Init(struct Task *task)
     sTransitionData->WIN0V = ALTURA_PANTALLA;
 
     for (i = 0; i < ALTURA_PANTALLA; i++)
-        gRegistrosBuffersEfectoHorizontal[1][i] = 0;
+        gRegistrosBuffersDistorsionFondo[1][i] = 0;
 
     SetVBlankCallback(VBlankCB_CircularMask);
 
@@ -2788,7 +2788,7 @@ static bool8 Blackhole_GrowEnd(struct Task *task)
             task->tRadius += task->tGrowSpeed >> 8;
         if (task->tRadius > ALTURA_PANTALLA)
             task->tRadius = ALTURA_PANTALLA;
-        SetCircularMask(gRegistrosBuffersEfectoHorizontal[0], ANCHO_PANTALLA / 2, ALTURA_PANTALLA / 2, task->tRadius);
+        SetCircularMask(gRegistrosBuffersDistorsionFondo[0], ANCHO_PANTALLA / 2, ALTURA_PANTALLA / 2, task->tRadius);
         if (task->tRadius == ALTURA_PANTALLA)
         {
             task->tFlag = TRUE;
@@ -2814,7 +2814,7 @@ static bool8 Blackhole_Vibrate(struct Task *task)
     }
     task->tRadius += sBlackhole_Vibrations[task->tVibrateId];
     task->tVibrateId = (task->tVibrateId + 1) % (int)ARRAY_COUNT(sBlackhole_Vibrations);
-    SetCircularMask(gRegistrosBuffersEfectoHorizontal[0], ANCHO_PANTALLA / 2, ALTURA_PANTALLA / 2, task->tRadius);
+    SetCircularMask(gRegistrosBuffersDistorsionFondo[0], ANCHO_PANTALLA / 2, ALTURA_PANTALLA / 2, task->tRadius);
     if (task->tRadius < 9)
     {
         task->tState++;
@@ -2841,7 +2841,7 @@ static bool8 BlackholePulsate_Main(struct Task *task)
     if (task->tRadius > ALTURA_PANTALLA)
         task->tRadius = ALTURA_PANTALLA;
 
-    SetCircularMask(gRegistrosBuffersEfectoHorizontal[0], ANCHO_PANTALLA / 2, ALTURA_PANTALLA / 2, task->tRadius);
+    SetCircularMask(gRegistrosBuffersDistorsionFondo[0], ANCHO_PANTALLA / 2, ALTURA_PANTALLA / 2, task->tRadius);
     if (task->tRadius == ALTURA_PANTALLA)
     {
         DmaStop(0);
@@ -3145,7 +3145,7 @@ static bool8 Rayquaza_Init(struct Task *task)
     u32 i;
 
     InitTransitionData();
-    LimpiaEfectoHorizontal();
+    LimpiaDistorsionFondo();
 
     SetGpuReg(REG_OFFSET_BG0CNT, BGCNT_CHARBASE(2) | BGCNT_SCREENBASE(26) | BGCNT_TXT256x512);
     GetBg0TilesDst(&tilemap, &tileset);
@@ -3158,8 +3158,8 @@ static bool8 Rayquaza_Init(struct Task *task)
 
     for (i = 0; i < ALTURA_PANTALLA; i++)
     {
-        gRegistrosBuffersEfectoHorizontal[0][i] = 0;
-        gRegistrosBuffersEfectoHorizontal[1][i] = 0x100;
+        gRegistrosBuffersDistorsionFondo[0][i] = 0;
+        gRegistrosBuffersDistorsionFondo[1][i] = 0x100;
     }
 
     SetVBlankCallback(VBlankCB_Rayquaza);
@@ -3242,7 +3242,7 @@ static bool8 Rayquaza_TriRing(struct Task *task)
         sTransitionData->WIN0V = ALTURA_PANTALLA;
 
         for (i = 0; i < ALTURA_PANTALLA; i++)
-            gRegistrosBuffersEfectoHorizontal[1][i] = 0;
+            gRegistrosBuffersDistorsionFondo[1][i] = 0;
 
         SetVBlankCallback(VBlankCB_CircularMask);
         task->tState++;
@@ -3262,11 +3262,11 @@ static void VBlankCB_Rayquaza(void)
     VBlankCB_BattleTransition();
 
     if (sTransitionData->counter == 0)
-        dmaSrc = gRegistrosBuffersEfectoHorizontal[0];
+        dmaSrc = gRegistrosBuffersDistorsionFondo[0];
     else if (sTransitionData->counter == 1)
-        dmaSrc = gRegistrosBuffersEfectoHorizontal[1];
+        dmaSrc = gRegistrosBuffersDistorsionFondo[1];
     else
-        dmaSrc = gRegistrosBuffersEfectoHorizontal[0];
+        dmaSrc = gRegistrosBuffersDistorsionFondo[0];
 
     DmaSet(0, dmaSrc, &REG_BG0VOFS, B_TRANS_DMA_FLAGS);
 }
@@ -3297,7 +3297,7 @@ static bool8 WhiteBarsFade_Init(struct Task *task)
     u32 i;
 
     InitTransitionData();
-    LimpiaEfectoHorizontal();
+    LimpiaDistorsionFondo();
 
     sTransitionData->BLDCNT = BLDCNT_TGT1_ALL | BLDCNT_EFFECT_LIGHTEN;
     sTransitionData->BLDY = 0;
@@ -3307,8 +3307,8 @@ static bool8 WhiteBarsFade_Init(struct Task *task)
 
     for (i = 0; i < ALTURA_PANTALLA; i++)
     {
-        gRegistrosBuffersEfectoHorizontal[1][i] = 0;
-        gRegistrosBuffersEfectoHorizontal[1][i + ALTURA_PANTALLA] = ANCHO_PANTALLA;
+        gRegistrosBuffersDistorsionFondo[1][i] = 0;
+        gRegistrosBuffersDistorsionFondo[1][i + ALTURA_PANTALLA] = ANCHO_PANTALLA;
     }
 
     EnableInterrupts(INTR_FLAG_HBLANK);
@@ -3391,8 +3391,8 @@ static void VBlankCB_WhiteBarsFade(void)
     REG_WINOUT = sTransitionData->WINOUT;
     REG_WIN0V = sTransitionData->WIN0V;
     if (sTransitionData->VBlank_DMA)
-        DmaCopy16(3, gRegistrosBuffersEfectoHorizontal[0], gRegistrosBuffersEfectoHorizontal[1], ALTURA_PANTALLA * 4);
-    DmaSet(0, &gRegistrosBuffersEfectoHorizontal[1][ALTURA_PANTALLA], &REG_WIN0H, B_TRANS_DMA_FLAGS);
+        DmaCopy16(3, gRegistrosBuffersDistorsionFondo[0], gRegistrosBuffersDistorsionFondo[1], ALTURA_PANTALLA * 4);
+    DmaSet(0, &gRegistrosBuffersDistorsionFondo[1][ALTURA_PANTALLA], &REG_WIN0H, B_TRANS_DMA_FLAGS);
 }
 
 static void VBlankCB_WhiteBarsFade_Blend(void)
@@ -3408,7 +3408,7 @@ static void VBlankCB_WhiteBarsFade_Blend(void)
 
 static void HBlankCB_WhiteBarsFade(void)
 {
-    REG_BLDY = gRegistrosBuffersEfectoHorizontal[1][REG_VCOUNT];
+    REG_BLDY = gRegistrosBuffersDistorsionFondo[1][REG_VCOUNT];
 }
 
 static void SpriteCB_WhiteBarFade(struct Sprite *sprite)
@@ -3422,8 +3422,8 @@ static void SpriteCB_WhiteBarFade(struct Sprite *sprite)
     else
     {
         u32 i;
-        u16 *ptr1 = &gRegistrosBuffersEfectoHorizontal[0][sprite->y];
-        u16 *ptr2 = &gRegistrosBuffersEfectoHorizontal[0][sprite->y + ALTURA_PANTALLA];
+        u16 *ptr1 = &gRegistrosBuffersDistorsionFondo[0][sprite->y];
+        u16 *ptr2 = &gRegistrosBuffersDistorsionFondo[0][sprite->y + ALTURA_PANTALLA];
         for (i = 0; i < ALTURA_PANTALLA / NUM_WHITE_BARS; i++)
         {
             ptr1[i] = sprite->sFade >> 8;
@@ -3539,16 +3539,16 @@ static bool8 AngledWipes_Init(struct Task *task)
     u32 i;
 
     InitTransitionData();
-    LimpiaEfectoHorizontal();
+    LimpiaDistorsionFondo();
 
     sTransitionData->WININ = WININ_WIN0_ALL;
     sTransitionData->WINOUT = 0;
     sTransitionData->WIN0V = ALTURA_PANTALLA;
 
     for (i = 0; i < ALTURA_PANTALLA; i++)
-        gRegistrosBuffersEfectoHorizontal[0][i] = ANCHO_PANTALLA;
+        gRegistrosBuffersDistorsionFondo[0][i] = ANCHO_PANTALLA;
 
-    CpuSet(gRegistrosBuffersEfectoHorizontal[0], gRegistrosBuffersEfectoHorizontal[1], ALTURA_PANTALLA);
+    CpuSet(gRegistrosBuffersDistorsionFondo[0], gRegistrosBuffersDistorsionFondo[1], ALTURA_PANTALLA);
     SetVBlankCallback(VBlankCB_AngledWipes);
 
     task->tState++;
@@ -3577,8 +3577,8 @@ static bool8 AngledWipes_DoWipe(struct Task *task)
 
     for (i = 0, finished = FALSE; i < 16; i++)
     {
-        s16 r3 = gRegistrosBuffersEfectoHorizontal[0][sTransitionData->tWipeCurrY] >> 8;
-        s16 r4 = gRegistrosBuffersEfectoHorizontal[0][sTransitionData->tWipeCurrY] & 0xFF;
+        s16 r3 = gRegistrosBuffersDistorsionFondo[0][sTransitionData->tWipeCurrY] >> 8;
+        s16 r4 = gRegistrosBuffersDistorsionFondo[0][sTransitionData->tWipeCurrY] & 0xFF;
         if (task->tDir == 0)
         {
             // Moving down
@@ -3595,7 +3595,7 @@ static bool8 AngledWipes_DoWipe(struct Task *task)
             if (r4 <= r3)
                 r4 = r3;
         }
-        gRegistrosBuffersEfectoHorizontal[0][sTransitionData->tWipeCurrY] = (r4) | (r3 << 8);
+        gRegistrosBuffersDistorsionFondo[0][sTransitionData->tWipeCurrY] = (r4) | (r3 << 8);
         if (finished)
         {
             task->tState++;
@@ -3644,12 +3644,12 @@ static void VBlankCB_AngledWipes(void)
     DmaStop(0);
     VBlankCB_BattleTransition();
     if (sTransitionData->VBlank_DMA)
-        DmaCopy16(3, gRegistrosBuffersEfectoHorizontal[0], gRegistrosBuffersEfectoHorizontal[1], ALTURA_PANTALLA * 2);
+        DmaCopy16(3, gRegistrosBuffersDistorsionFondo[0], gRegistrosBuffersDistorsionFondo[1], ALTURA_PANTALLA * 2);
     REG_WININ = sTransitionData->WININ;
     REG_WINOUT = sTransitionData->WINOUT;
     REG_WIN0V = sTransitionData->WIN0V;
-    REG_WIN0H = gRegistrosBuffersEfectoHorizontal[1][0];
-    DmaSet(0, gRegistrosBuffersEfectoHorizontal[1], &REG_WIN0H, B_TRANS_DMA_FLAGS);
+    REG_WIN0H = gRegistrosBuffersDistorsionFondo[1][0];
+    DmaSet(0, gRegistrosBuffersDistorsionFondo[1], &REG_WIN0H, B_TRANS_DMA_FLAGS);
 }
 
 #undef tWipeId

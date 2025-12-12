@@ -1,5 +1,5 @@
 #include "global.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "palette.h"
 #include "task.h"
 #include "main.h"
@@ -277,7 +277,7 @@ static void VblankCb_TrainerCard(void)
     TransferPlttBuffer();
     BlinkTimeColon();
     if (sData->allowDMACopy)
-        DmaCopy16(3, &gRegistrosBuffersEfectoHorizontal[0], &gRegistrosBuffersEfectoHorizontal[1], 0x140);
+        DmaCopy16(3, &gRegistrosBuffersDistorsionFondo[0], &gRegistrosBuffersDistorsionFondo[1], 0x140);
 }
 
 static void HblankCb_TrainerCard(void)
@@ -287,7 +287,7 @@ static void HblankCb_TrainerCard(void)
 
     backup = REG_IME;
     REG_IME = 0;
-    bgVOffset = gRegistrosBuffersEfectoHorizontal[1][REG_VCOUNT & 0xFF];
+    bgVOffset = gRegistrosBuffersDistorsionFondo[1][REG_VCOUNT & 0xFF];
     REG_BG0VOFS = bgVOffset;
     REG_IME = backup;
 }
@@ -646,7 +646,7 @@ static void SetTrainerCardCb2(void)
 static void SetUpTrainerCardTask(void)
 {
     ResetTasks();
-    ParaEfectoHorizontal();
+    ParaDistorsionFondo();
     CreateTask(Task_TrainerCard, 0);
     InitTrainerCardData();
     SetDataFromTrainerCard();
@@ -1149,10 +1149,10 @@ static bool8 Task_BeginCardFlip(struct Task *task)
 
     HideBg(1);
     HideBg(3);
-    ParaEfectoHorizontal();
-    LimpiaEfectoHorizontal();
+    ParaDistorsionFondo();
+    LimpiaDistorsionFondo();
     for (i = 0; i < ALTURA_PANTALLA; i++)
-        gRegistrosBuffersEfectoHorizontal[1][i] = 0;
+        gRegistrosBuffersDistorsionFondo[1][i] = 0;
     task->tFlipState++;
     return FALSE;
 }
@@ -1186,17 +1186,17 @@ static bool8 Task_AnimateCardFlipDown(struct Task *task)
     r5 *= 2;
 
     for (i = 0; i < cardTop; i++)
-        gRegistrosBuffersEfectoHorizontal[0][i] = -i;
+        gRegistrosBuffersDistorsionFondo[0][i] = -i;
     for (; i < (s16)cardBottom; i++)
     {
         var = r6 >> 16;
         r6 += r5;
         r5 -= r10;
-        gRegistrosBuffersEfectoHorizontal[0][i] = var;
+        gRegistrosBuffersDistorsionFondo[0][i] = var;
     }
     var = var_24 >> 16;
     for (; i < ALTURA_PANTALLA; i++)
-        gRegistrosBuffersEfectoHorizontal[0][i] = var;
+        gRegistrosBuffersDistorsionFondo[0][i] = var;
 
     sData->allowDMACopy = TRUE;
     if (task->tCardTop >= CARD_FLIP_Y)
@@ -1299,17 +1299,17 @@ static bool8 Task_AnimateCardFlipUp(struct Task *task)
     r5 /= 2;
 
     for (i = 0; i < cardTop; i++)
-        gRegistrosBuffersEfectoHorizontal[0][i] = -i;
+        gRegistrosBuffersDistorsionFondo[0][i] = -i;
     for (; i < (s16)cardBottom; i++)
     {
         var = r6 >> 16;
         r6 += r5;
         r5 += r10;
-        gRegistrosBuffersEfectoHorizontal[0][i] = var;
+        gRegistrosBuffersDistorsionFondo[0][i] = var;
     }
     var = var_24 >> 16;
     for (; i < ALTURA_PANTALLA; i++)
-        gRegistrosBuffersEfectoHorizontal[0][i] = var;
+        gRegistrosBuffersDistorsionFondo[0][i] = var;
 
     sData->allowDMACopy = TRUE;
     if (task->tCardTop <= 0)

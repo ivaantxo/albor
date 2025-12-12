@@ -26,7 +26,7 @@
 #include "pokemon_sprite_visualizer.h"
 #include "pokemon_icon.h"
 #include "reset_rtc_screen.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "script.h"
 #include "script_pokemon_util.h"
 #include "sound.h"
@@ -1155,7 +1155,7 @@ void CB2_Pokemon_Sprite_Visualizer(void)
             gMain.state = 1;
             break;
         case 1:
-            ParaEfectoHorizontal();
+            ParaDistorsionFondo();
             ResetTasks();
             ResetSpriteData();
             ResetPaletteFade();

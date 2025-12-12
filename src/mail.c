@@ -4,7 +4,7 @@
 #include "main.h"
 #include "overworld.h"
 #include "task.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "palette.h"
 #include "text.h"
 #include "menu.h"

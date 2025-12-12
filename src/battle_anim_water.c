@@ -5,7 +5,7 @@
 #include "graphics.h"
 #include "palette.h"
 #include "random.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "sprite.h"
 #include "task.h"
 #include "trig.h"
@@ -1127,28 +1127,28 @@ static void AnimTask_CreateSurfWave_Step2(u8 taskId)
 static void AnimTask_SurfWaveScanlineEffect(u8 taskId)
 {
     s16 i;
-    struct ParametrosEfectoHorizontal params;
+    struct ParametrosDistorsionFondo parametros;
     struct Task *task = &gTasks[taskId];
 
     switch (task->data[0])
     {
     case 0:
         for (i = 0; i < task->data[4]; i++)
-            gRegistrosBuffersEfectoHorizontal[0][i] = gRegistrosBuffersEfectoHorizontal[1][i] = task->data[2];
+            gRegistrosBuffersDistorsionFondo[0][i] = gRegistrosBuffersDistorsionFondo[1][i] = task->data[2];
         for (i = task->data[4]; i < task->data[5]; i++)
-            gRegistrosBuffersEfectoHorizontal[0][i] = gRegistrosBuffersEfectoHorizontal[1][i] = task->data[1];
+            gRegistrosBuffersDistorsionFondo[0][i] = gRegistrosBuffersDistorsionFondo[1][i] = task->data[1];
         for (i = task->data[5]; i < 160; i++)
-            gRegistrosBuffersEfectoHorizontal[0][i] = gRegistrosBuffersEfectoHorizontal[1][i] = task->data[2];
+            gRegistrosBuffersDistorsionFondo[0][i] = gRegistrosBuffersDistorsionFondo[1][i] = task->data[2];
 
         if (task->data[4] == 0)
-            gRegistrosBuffersEfectoHorizontal[0][i] = gRegistrosBuffersEfectoHorizontal[1][i] = task->data[1];
+            gRegistrosBuffersDistorsionFondo[0][i] = gRegistrosBuffersDistorsionFondo[1][i] = task->data[1];
         else
-            gRegistrosBuffersEfectoHorizontal[0][i] = gRegistrosBuffersEfectoHorizontal[1][i] = task->data[2];
+            gRegistrosBuffersDistorsionFondo[0][i] = gRegistrosBuffersDistorsionFondo[1][i] = task->data[2];
 
-        params.dmaDest = &REG_BLDALPHA;
-        params.bitsDMA = EFECTO_HORIZONTAL_DMA_16;
-        params.estado = ESTADO_EFECTO_HORIZONTAL_ACTIVO;
-        EscribeParametrosEfectoHorizontal(params);
+        parametros.dmaDest = &REG_BLDALPHA;
+        parametros.bitsDMA = DISTORSION_FONDO_DMA_16;
+        parametros.estado = ESTADO_DISTORSION_FONDO_ACTIVO;
+        EscribeParametrosDistorsionFondo(parametros);
         task->data[0]++;
         break;
     case 1:
@@ -1166,23 +1166,23 @@ static void AnimTask_SurfWaveScanlineEffect(u8 taskId)
         }
 
         for (i = 0; i < task->data[4]; i++)
-            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = task->data[2];
+            gRegistrosBuffersDistorsionFondo[gDistorsionFondo.srcBuffer][i] = task->data[2];
         for (i = task->data[4]; i < task->data[5]; i++)
-            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = task->data[1];
+            gRegistrosBuffersDistorsionFondo[gDistorsionFondo.srcBuffer][i] = task->data[1];
         for (i = task->data[5]; i < 160; i++)
-            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = task->data[2];
+            gRegistrosBuffersDistorsionFondo[gDistorsionFondo.srcBuffer][i] = task->data[2];
         break;
     case 2:
         for (i = 0; i < task->data[4]; i++)
-            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = task->data[2];
+            gRegistrosBuffersDistorsionFondo[gDistorsionFondo.srcBuffer][i] = task->data[2];
         for (i = task->data[4]; i < task->data[5]; i++)
-            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = task->data[1];
+            gRegistrosBuffersDistorsionFondo[gDistorsionFondo.srcBuffer][i] = task->data[1];
         for (i = task->data[5]; i < 160; i++)
-            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = task->data[2];
+            gRegistrosBuffersDistorsionFondo[gDistorsionFondo.srcBuffer][i] = task->data[2];
 
         if (task->data[15] == -1)
         {
-            ParaEfectoHorizontal();
+            ParaDistorsionFondo();
             DestroyTask(taskId);
         }
         break;

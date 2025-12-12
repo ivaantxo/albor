@@ -17,7 +17,7 @@
 #include "random.h"
 #include "roulette.h"
 #include "rtc.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "script.h"
 #include "sound.h"
 #include "sprite.h"

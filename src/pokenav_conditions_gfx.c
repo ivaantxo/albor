@@ -10,7 +10,7 @@
 #include "mon_markings.h"
 #include "palette.h"
 #include "pokenav.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "string_util.h"
 #include "strings.h"
 #include "text.h"
@@ -797,7 +797,7 @@ static void VBlankCB_PokenavConditionGraph(void)
     ProcessSpriteCopyRequests();
     TransferPlttBuffer();
     ConditionGraph_Draw(graph);
-    IniciaTransferenciaDMAEnHblankEfectoHorizontal();
+    IniciaTransferenciaDMAEnHblankDistorsionFondo();
 }
 
 static void SetExitVBlank(void)

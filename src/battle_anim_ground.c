@@ -1,7 +1,7 @@
 #include "global.h"
 #include "battle_anim.h"
 #include "random.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "task.h"
 #include "trig.h"
 #include "constants/rgb.h"
@@ -17,7 +17,7 @@ static void AnimTask_DigBounceMovement(u8);
 static void AnimTask_DigEndBounceMovementSetInvisible(u8);
 static void AnimTask_DigSetVisibleUnderground(u8);
 static void AnimTask_DigRiseUpFromHole(u8);
-static void SetDigEfectoHorizontal(u8, s16, s16);
+static void SetDigDistorsionFondo(u8, s16, s16);
 static void AnimTask_ShakeTerrain(u8);
 static void AnimTask_ShakeBattlers(u8);
 static void SetBattlersXOffsetForShake(struct Task *);
@@ -346,7 +346,7 @@ static void AnimTask_DigBounceMovement(u8 taskId)
         task->data[0]++;
         break;
     case 1:
-        SetDigEfectoHorizontal(task->data[11], task->data[14], task->data[15]);
+        SetDigDistorsionFondo(task->data[11], task->data[14], task->data[15]);
         task->data[0]++;
         break;
     case 2:
@@ -376,7 +376,7 @@ static void AnimTask_DigBounceMovement(u8 taskId)
         }
         break;
     case 3:
-        gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
+        gDistorsionFondo.estado = ESTADO_DISTORSION_FONDO_PARAR;
         task->data[0]++;
         break;
     case 4:
@@ -452,7 +452,7 @@ static void AnimTask_DigRiseUpFromHole(u8 taskId)
         task->data[0]++;
         break;
     case 1:
-        SetDigEfectoHorizontal(task->data[11], 0, task->data[15]);
+        SetDigDistorsionFondo(task->data[11], 0, task->data[15]);
         task->data[0]++;
         break;
     case 2:
@@ -463,7 +463,7 @@ static void AnimTask_DigRiseUpFromHole(u8 taskId)
         gSprites[task->data[10]].y2 -= 8;
         if (gSprites[task->data[10]].y2 == 0)
         {
-            gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
+            gDistorsionFondo.estado = ESTADO_DISTORSION_FONDO_PARAR;
             task->data[0]++;
         }
         break;
@@ -473,20 +473,20 @@ static void AnimTask_DigRiseUpFromHole(u8 taskId)
     }
 }
 
-static void SetDigEfectoHorizontal(u8 useBG1, s16 y, s16 endY)
+static void SetDigDistorsionFondo(u8 useBG1, s16 y, s16 endY)
 {
     s16 bgX;
-    struct ParametrosEfectoHorizontal parametrosEfectoHorizontal;
+    struct ParametrosDistorsionFondo parametrosDistorsionFondo;
 
     if (useBG1 == 1)
     {
         bgX = gBattle_BG1_X;
-        parametrosEfectoHorizontal.dmaDest = &REG_BG1HOFS;
+        parametrosDistorsionFondo.dmaDest = &REG_BG1HOFS;
     }
     else
     {
         bgX = gBattle_BG2_X;
-        parametrosEfectoHorizontal.dmaDest = &REG_BG2HOFS;
+        parametrosDistorsionFondo.dmaDest = &REG_BG2HOFS;
     }
 
     if (y < 0)
@@ -494,21 +494,21 @@ static void SetDigEfectoHorizontal(u8 useBG1, s16 y, s16 endY)
 
     while (y < endY)
     {
-        gRegistrosBuffersEfectoHorizontal[0][y] = bgX;
-        gRegistrosBuffersEfectoHorizontal[1][y] = bgX;
+        gRegistrosBuffersDistorsionFondo[0][y] = bgX;
+        gRegistrosBuffersDistorsionFondo[1][y] = bgX;
         y++;
     }
 
     while (y < ALTURA_PANTALLA)
     {
-        gRegistrosBuffersEfectoHorizontal[0][y] = bgX + ANCHO_PANTALLA;
-        gRegistrosBuffersEfectoHorizontal[1][y] = bgX + ANCHO_PANTALLA;
+        gRegistrosBuffersDistorsionFondo[0][y] = bgX + ANCHO_PANTALLA;
+        gRegistrosBuffersDistorsionFondo[1][y] = bgX + ANCHO_PANTALLA;
         y++;
     }
 
-    parametrosEfectoHorizontal.bitsDMA = EFECTO_HORIZONTAL_DMA_16;
-    parametrosEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_ACTIVO;
-    EscribeParametrosEfectoHorizontal(parametrosEfectoHorizontal);
+    parametrosDistorsionFondo.bitsDMA = DISTORSION_FONDO_DMA_16;
+    parametrosDistorsionFondo.estado = ESTADO_DISTORSION_FONDO_ACTIVO;
+    EscribeParametrosDistorsionFondo(parametrosDistorsionFondo);
 }
 
 // Moves a particle of dirt in a plume of dirt. Used in Fissure and Dig.

@@ -6,7 +6,7 @@
 #include "bg.h"
 #include "gpu_regs.h"
 #include "main.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "task.h"
 #include "trig.h"
 #include "constants/trainers.h"
@@ -189,14 +189,14 @@ static void BattleIntroSlide1(u8 taskId)
 
         // Scanline settings have already been set in CB2_InitBattleInternal()
         for (i = 0; i < ALTURA_PANTALLA / 2; i++)
-            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = gTasks[taskId].data[2];
+            gRegistrosBuffersDistorsionFondo[gDistorsionFondo.srcBuffer][i] = gTasks[taskId].data[2];
 
         for (; i < ALTURA_PANTALLA; i++)
-            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = -gTasks[taskId].data[2];
+            gRegistrosBuffersDistorsionFondo[gDistorsionFondo.srcBuffer][i] = -gTasks[taskId].data[2];
 
         if (gTasks[taskId].data[2] == 0)
         {
-            gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
+            gDistorsionFondo.estado = ESTADO_DISTORSION_FONDO_PARAR;
             gTasks[taskId].tState++;
             CpuFill32(0, (void *)BG_SCREEN_ADDR(28), BG_SCREEN_SIZE);
             SetBgAttribute(1, BG_ATTR_CHARBASEINDEX, 0);
@@ -290,14 +290,14 @@ static void BattleIntroSlide2(u8 taskId)
 
         // Scanline settings have already been set in CB2_InitBattleInternal()
         for (i = 0; i < ALTURA_PANTALLA / 2; i++)
-            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = gTasks[taskId].data[2];
+            gRegistrosBuffersDistorsionFondo[gDistorsionFondo.srcBuffer][i] = gTasks[taskId].data[2];
 
         for (; i < ALTURA_PANTALLA; i++)
-            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = -gTasks[taskId].data[2];
+            gRegistrosBuffersDistorsionFondo[gDistorsionFondo.srcBuffer][i] = -gTasks[taskId].data[2];
 
         if (gTasks[taskId].data[2] == 0)
         {
-            gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
+            gDistorsionFondo.estado = ESTADO_DISTORSION_FONDO_PARAR;
             gTasks[taskId].tState++;
             CpuFill32(0, (void *)BG_SCREEN_ADDR(28), BG_SCREEN_SIZE);
             SetBgAttribute(1, BG_ATTR_CHARBASEINDEX, 0);
@@ -370,14 +370,14 @@ static void BattleIntroSlide3(u8 taskId)
 
         // Scanline settings have already been set in CB2_InitBattleInternal()
         for (i = 0; i < ALTURA_PANTALLA / 2; i++)
-            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = gTasks[taskId].data[2];
+            gRegistrosBuffersDistorsionFondo[gDistorsionFondo.srcBuffer][i] = gTasks[taskId].data[2];
 
         for (; i < ALTURA_PANTALLA; i++)
-            gRegistrosBuffersEfectoHorizontal[gEfectoHorizontal.srcBuffer][i] = -gTasks[taskId].data[2];
+            gRegistrosBuffersDistorsionFondo[gDistorsionFondo.srcBuffer][i] = -gTasks[taskId].data[2];
 
         if (gTasks[taskId].data[2] == 0)
         {
-            gEfectoHorizontal.estado = ESTADO_EFECTO_HORIZONTAL_PARAR;
+            gDistorsionFondo.estado = ESTADO_DISTORSION_FONDO_PARAR;
             gTasks[taskId].tState++;
             CpuFill32(0, (void *)BG_SCREEN_ADDR(28), BG_SCREEN_SIZE);
             SetBgAttribute(1, BG_ATTR_CHARBASEINDEX, 0);

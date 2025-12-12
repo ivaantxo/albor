@@ -20,7 +20,7 @@
 #include "strings.h"
 #include "bg.h"
 #include "malloc.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "gpu_regs.h"
 #include "graphics.h"
 #include "item_menu_icons.h"
@@ -224,7 +224,7 @@ static bool8 InitBerryTagScreen(void)
         gMain.state++;
         break;
     case 1:
-        ParaEfectoHorizontal();
+        ParaDistorsionFondo();
         gMain.state++;
         break;
     case 2:

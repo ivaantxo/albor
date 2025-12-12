@@ -4,7 +4,7 @@
 #include "m4a.h"
 #include "bg.h"
 #include "rtc.h"
-#include "efecto_horizontal.h"
+#include "distorsion_fondo.h"
 #include "overworld.h"
 #include "play_time.h"
 #include "random.h"
@@ -291,7 +291,7 @@ void DoSoftReset(void)
 {
     REG_IME = 0;
     m4aSoundVSyncOff();
-    ParaEfectoHorizontal();
+    ParaDistorsionFondo();
     DmaStop(1);
     DmaStop(2);
     DmaStop(3);
