@@ -504,26 +504,6 @@ struct LostItem
     u16 stolen:1;
 };
 
-enum EstadosIntroBatalla
-{
-    BATTLE_INTRO_STATE_GET_MON_DATA,
-    BATTLE_INTRO_STATE_LOOP_BATTLER_DATA,
-    BATTLE_INTRO_STATE_PREPARE_BG_SLIDE,
-    BATTLE_INTRO_STATE_WAIT_FOR_BG_SLIDE,
-    BATTLE_INTRO_STATE_DRAW_SPRITES,
-    BATTLE_INTRO_STATE_DRAW_PARTY_SUMMARY,
-    BATTLE_INTRO_STATE_WAIT_FOR_PARTY_SUMMARY,
-    BATTLE_INTRO_STATE_INTRO_TEXT,
-    BATTLE_INTRO_STATE_WAIT_FOR_INTRO_TEXT,
-    ESTADO_INTRO_BATALLA_ENTRENADOR_TEXTO_ENVIAR_POKEMON,
-    BATTLE_INTRO_STATE_WAIT_FOR_TRAINER_SEND_OUT_TEXT,
-    BATTLE_INTRO_STATE_TRAINER_SEND_OUT_ANIM,
-    BATTLE_INTRO_STATE_WAIT_FOR_WILD_BATTLE_TEXT,
-    ESTADO_INTRO_BATALLA_JUGADOR_TEXTO_ENVIAR_POKEMON,
-    BATTLE_INTRO_STATE_WAIT_FOR_PLAYER_SEND_OUT_TEXT,
-    BATTLE_INTRO_STATE_SET_DEX_AND_BATTLE_VARS
-};
-
 struct BattleStruct
 {
     u8 turnEffectsTracker;
@@ -625,7 +605,7 @@ struct BattleStruct
     struct DynamaxData dynamax;
     struct BattleGimmickData gimmick;
     const u8 *trainerSlideMsg;
-    enum EstadosIntroBatalla estadoIntro:8;
+    enum EstadosIntroBatalla estadoIntro;
     u8 ateBerry[2]; // array id determined by side, each party pokemon as bit
     u8 stolenStats[NUMERO_ESTADISTICAS_BATALLA]; // hp byte is used for which stats to raise, other inform about by how many stages
     u8 lastMoveFailed; // as bits for each battler, for the sake of Stomping Tantrum

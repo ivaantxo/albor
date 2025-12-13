@@ -481,14 +481,9 @@ static void CB2_InitBattleInternal(void)
 
 static void CB2_HandleStartBattle(void)
 {
-    u8 playerMultiplayerId;
-
     RunTasks();
     AnimateSprites();
     BuildOamBuffer();
-
-    playerMultiplayerId = GetMultiplayerId();
-    gBattleScripting.multiplayerId = playerMultiplayerId;
 
     switch (gBattleCommunication[MULTIUSE_STATE])
     {
@@ -504,72 +499,15 @@ static void CB2_HandleStartBattle(void)
         }
         break;
     case 1:
-        gBattleCommunication[MULTIUSE_STATE] = 15;
+        gBattleCommunication[MULTIUSE_STATE] = 2;
         break;
     case 2:
-        break;
-    case 3:
-        // Link battle, send/receive party Pokémon 2 at a time
-        if (IsLinkTaskFinished())
-        {
-            // Send Pokémon 1-2
-            SendBlock(BitmaskAllOtherLinkPlayers(), gPlayerParty, sizeof(struct Pokemon) * 2);
-            gBattleCommunication[MULTIUSE_STATE]++;
-        }
-        break;
-    case 4:
-        if ((GetBlockReceivedStatus() & 3) == 3)
-        {
-            // Recv Pokémon 1-2
-            gBattleCommunication[MULTIUSE_STATE]++;
-        }
-        break;
-    case 7:
-        if (IsLinkTaskFinished())
-        {
-            // Send Pokémon 3-4
-            SendBlock(BitmaskAllOtherLinkPlayers(), &gPlayerParty[2], sizeof(struct Pokemon) * 2);
-            gBattleCommunication[MULTIUSE_STATE]++;
-        }
-        break;
-    case 8:
-        if ((GetBlockReceivedStatus() & 3) == 3)
-        {
-            // Recv Pokémon 3-4
-            gBattleCommunication[MULTIUSE_STATE]++;
-        }
-        break;
-    case 11:
-        if (IsLinkTaskFinished())
-        {
-            // Send Pokémon 5-6
-            SendBlock(BitmaskAllOtherLinkPlayers(), &gPlayerParty[4], sizeof(struct Pokemon) * 2);
-            gBattleCommunication[MULTIUSE_STATE]++;
-        }
-        break;
-    case 12:
-        if ((GetBlockReceivedStatus() & 3) == 3)
-        {
-            // Recv Pokémon 5-6
-            gBattleCommunication[MULTIUSE_STATE]++;
-        }
-        break;
-    case 15:
         InitBattleControllers();
         gBattleCommunication[SPRITES_INIT_STATE1] = 0;
         gBattleCommunication[SPRITES_INIT_STATE2] = 0;
-        gBattleCommunication[MULTIUSE_STATE] = 18;
+        gBattleCommunication[MULTIUSE_STATE] = 3;
         break;
-    case 16:
-        break;
-    case 17:
-        // Receive rng seed for recorded battle (only read it if partner is the link master)
-        if ((GetBlockReceivedStatus() & 3) == 3)
-        {
-            gBattleCommunication[MULTIUSE_STATE]++;
-        }
-        break;
-    case 18:
+    case 3:
         // Finish, start battle
         if (BattleInitAllSprites(&gBattleCommunication[SPRITES_INIT_STATE1], &gBattleCommunication[SPRITES_INIT_STATE2]))
         {
@@ -577,18 +515,6 @@ static void CB2_HandleStartBattle(void)
             gMain.callback1 = BattleMainCB1;
             SetMainCallback2(BattleMainCB2);
         }
-        break;
-    // Introduce short delays between sending party Pokémon for link
-    case 5:
-    case 9:
-    case 13:
-        gBattleCommunication[MULTIUSE_STATE]++;
-        gBattleCommunication[1] = 1;
-    case 6:
-    case 10:
-    case 14:
-        if (--gBattleCommunication[1] == 0)
-            gBattleCommunication[MULTIUSE_STATE]++;
         break;
     }
 }
@@ -1238,8 +1164,8 @@ void BeginBattleIntroDummy(void)
 void BeginBattleIntro(void)
 {
     BattleStartClearSetData();
-    gBattleCommunication[1] = 0;
-    gBattleStruct->estadoIntro = 0;
+    gBattleCommunication[CURSOR_POSITION] = 0;
+    gBattleStruct->estadoIntro = ESTADO_INTRO_BATALLA_OBTEN_DATOS_POKEMON;
     gBattleMainFunc = DoBattleIntro;
 }
 
@@ -1662,37 +1588,37 @@ static void DoBattleIntro(void)
 
     switch (gBattleStruct->estadoIntro)
     {
-    case BATTLE_INTRO_STATE_GET_MON_DATA:
-        battler = gBattleCommunication[1];
+    case ESTADO_INTRO_BATALLA_OBTEN_DATOS_POKEMON:
+        battler = gBattleCommunication[CURSOR_POSITION];
         BtlController_EmitGetMonData(battler, BUFFER_A, REQUEST_ALL_BATTLE, 0);
         MarkBattlerForControllerExec(battler);
         gBattleStruct->estadoIntro++;
         break;
-    case BATTLE_INTRO_STATE_LOOP_BATTLER_DATA:
+    case ESTADO_INTRO_BATALLA_LOOP_DATOS_POKEMON:
         if (!gBattleControllerExecFlags)
         {
-            if (++gBattleCommunication[1] == gBattlersCount)
+            if (++gBattleCommunication[SPRITES_INIT_STATE1] == gBattlersCount)
                 gBattleStruct->estadoIntro++;
             else
-                gBattleStruct->estadoIntro = BATTLE_INTRO_STATE_GET_MON_DATA;
+                gBattleStruct->estadoIntro = ESTADO_INTRO_BATALLA_OBTEN_DATOS_POKEMON;
         }
         break;
-    case BATTLE_INTRO_STATE_PREPARE_BG_SLIDE:
+    case ESTADO_INTRO_BATALLA_PREPARA_DESLIZAMIENTO_FONDO:
         if (!gBattleControllerExecFlags)
         {
             battler = GetBattlerAtPosition(0);
             BtlController_EmitIntroSlide(battler, BUFFER_A, gBattleTerrain);
             MarkBattlerForControllerExec(battler);
-            gBattleCommunication[0] = 0;
-            gBattleCommunication[1] = 0;
+            gBattleCommunication[MULTIUSE_STATE] = 0;
+            gBattleCommunication[CURSOR_POSITION] = 0;
             gBattleStruct->estadoIntro++;
         }
         break;
-    case BATTLE_INTRO_STATE_WAIT_FOR_BG_SLIDE:
+    case ESTADO_INTRO_BATALLA_ESPERA_DESLIZAMIENTO_FONDO:
         if (!gBattleControllerExecFlags)
             gBattleStruct->estadoIntro++;
         break;
-    case BATTLE_INTRO_STATE_DRAW_SPRITES:
+    case ESTADO_INTRO_BATALLA_DIBUJA_SPRITES:
         for (battler = 0; battler < gBattlersCount; battler++)
         {
             memcpy(&gBattleMons[battler], &gBattleResources->bufferB[battler][4], sizeof(struct BattlePokemon));
@@ -1701,7 +1627,7 @@ static void DoBattleIntro(void)
             gBattleMons[battler].types[2] = TIPO_MISTERIO;
             gBattleMons[battler].ability = GetAbilityBySpecies(gBattleMons[battler].species, gBattleMons[battler].abilityNum);
             gBattleStruct->hpOnSwitchout[GetBattlerSide(battler)] = gBattleMons[battler].hp;
-            gBattleMons[battler].status2 = 0;
+            gBattleMons[battler].status2 = 0; // AQUÍ SE REINICIA STATUS 2 AL ENTRAR EN COMBATE
             for (i = 0; i < NUMERO_ESTADISTICAS_BATALLA; i++)
                 gBattleMons[battler].statStages[i] = ESTADISTICA_NEUTRA;
 
@@ -1741,9 +1667,9 @@ static void DoBattleIntro(void)
         if (EsContraEntrenador())
             gBattleStruct->estadoIntro++;
         else // Skip party summary since it is a wild battle.
-            gBattleStruct->estadoIntro = BATTLE_INTRO_STATE_INTRO_TEXT; // Don't wait for sprite, print message at the same time.
+            gBattleStruct->estadoIntro = ESTADO_INTRO_BATALLA_TEXTO_INICIAL; // Don't wait for sprite, print message at the same time.
         break;
-    case BATTLE_INTRO_STATE_DRAW_PARTY_SUMMARY:
+    case ESTADO_INTRO_BATALLA_DIBUJA_SUMARIO_EQUIPO:
         if (!gBattleControllerExecFlags)
         {
             struct HpAndStatus hpStatus[PARTY_SIZE];
@@ -1787,57 +1713,57 @@ static void DoBattleIntro(void)
             gBattleStruct->estadoIntro++;
         }
         break;
-    case BATTLE_INTRO_STATE_WAIT_FOR_PARTY_SUMMARY:
+    case ESTADO_INTRO_BATALLA_ESPERA_SUMARIO_EQUIPO:
         if (!gBattleControllerExecFlags)
             gBattleStruct->estadoIntro++;
         break;
-    case BATTLE_INTRO_STATE_INTRO_TEXT:
+    case ESTADO_INTRO_BATALLA_TEXTO_INICIAL:
         if (!IsBattlerMarkedForControllerExec(GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)))
         {
             PrepareStringBattle(TEXTO_BATALLA_INTRO, GetBattlerAtPosition(B_POSITION_PLAYER_LEFT));
             gBattleStruct->estadoIntro++;
         }
         break;
-    case BATTLE_INTRO_STATE_WAIT_FOR_INTRO_TEXT:
+    case ESTADO_INTRO_BATALLA_ESPERA_TEXTO_INICIAL:
         if (!IsBattlerMarkedForControllerExec(GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)))
         {
             if (EsContraEntrenador())
                 gBattleStruct->estadoIntro++;
             else
-                gBattleStruct->estadoIntro = BATTLE_INTRO_STATE_WAIT_FOR_WILD_BATTLE_TEXT;
+                gBattleStruct->estadoIntro = ESTADO_INTRO_BATALLA_ESPERA_TEXTO_BATALLA_SALVAJE;
         }
         break;
-    case ESTADO_INTRO_BATALLA_ENTRENADOR_TEXTO_ENVIAR_POKEMON:
+    case ESTADO_INTRO_BATALLA_TEXTO_ENTRENADOR:
         PrepareStringBattle(TEXTO_BATALLA_ENVIAR_POKEMON, GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT));
         gBattleStruct->estadoIntro++;
         break;
-    case BATTLE_INTRO_STATE_WAIT_FOR_TRAINER_SEND_OUT_TEXT:
+    case ESTADO_INTRO_BATALLA_ESPERA_TEXTO_ENTRENADOR:
         if (!gBattleControllerExecFlags)
             gBattleStruct->estadoIntro++;
         break;
-    case BATTLE_INTRO_STATE_TRAINER_SEND_OUT_ANIM:
+    case ESTADO_INTRO_BATALLA_ANIMACION_ENVIAR_POKEMON:
         battler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
         BtlController_EmitIntroTrainerBallThrow(battler, BUFFER_A);
         MarkBattlerForControllerExec(battler);
         gBattleStruct->estadoIntro++;
         break;
-    case BATTLE_INTRO_STATE_WAIT_FOR_WILD_BATTLE_TEXT:
+    case ESTADO_INTRO_BATALLA_ESPERA_TEXTO_BATALLA_SALVAJE:
         if (!IsBattlerMarkedForControllerExec(GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)))
             gBattleStruct->estadoIntro++;
         break;
-    case ESTADO_INTRO_BATALLA_JUGADOR_TEXTO_ENVIAR_POKEMON:
+    case ESTADO_INTRO_BATALLA_TEXTO_BATALLA_ENTRADA_JUGADOR:
         battler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
         PrepareStringBattle(TEXTO_BATALLA_ENVIAR_POKEMON, battler);
         BtlController_EmitIntroTrainerBallThrow(battler, BUFFER_A);
         MarkBattlerForControllerExec(battler);
         gBattleStruct->estadoIntro++;
         break;
-    case BATTLE_INTRO_STATE_WAIT_FOR_PLAYER_SEND_OUT_TEXT:
+    case ESTADO_INTRO_BATALLA_ESPERA_TEXTO_BATALLA_ENTRADA_JUGADOR:
         battler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
         if (!IsBattlerMarkedForControllerExec(battler))
             gBattleStruct->estadoIntro++;
         break;
-    case BATTLE_INTRO_STATE_SET_DEX_AND_BATTLE_VARS:
+    case ESTADO_INTRO_BATALLA_PREPARA_VARS:
         if (!gBattleControllerExecFlags)
         {
             for (battler = 0; battler < gBattlersCount; battler++)

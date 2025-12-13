@@ -1422,7 +1422,7 @@
 	callnative BS_TrySymbiosis
 	.endm
 
-	@ returns B_SIDE_x to gBattleCommunication[0]
+	@ returns B_SIDE_x to gBattleCommunication[MULTIUSE_STATE]
 	.macro getbattlerside battler:req
 	callnative BS_GetBattlerSide
 	.byte \battler
