@@ -3,6 +3,7 @@
 #include "bg.h"
 #include "data.h"
 #include "decompress.h"
+#include "distorsion_fondo.h"
 #include "dma3.h"
 #include "dynamic_placeholder_text_util.h"
 #include "event_data.h"
@@ -1597,6 +1598,7 @@ static void ResetForPokeStorage(void)
     ResetSpriteData();
     FreeSpriteTileRanges();
     FreeAllSpritePalettes();
+    ParaDistorsionFondo();
     ClearDma3Requests();
     gReservedSpriteTileCount = 640;
     gKeyRepeatStartDelay = 20;

@@ -14,7 +14,7 @@ EWRAM_DATA static bool32 sDeberiaPararOnda = FALSE;
 
 void ParaDistorsionFondo(void)
 {
-    gDistorsionFondo.estado = ESTADO_DISTORSION_FONDO_INACTIVO;
+    gDistorsionFondo.estado = ESTADO_DISTORSION_FONDO_PARAR;
     DmaStop(0);
     if (gDistorsionFondo.tareaOnda != TASK_NONE)
     {
