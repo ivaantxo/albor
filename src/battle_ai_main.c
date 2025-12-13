@@ -406,7 +406,7 @@ void SetAiLogicDataForTurn(struct AiLogicData *aiData)
         return;
 
     // Set delay timer to count how long it takes for AI to choose action/move
-    gBattleStruct->aiDelayTimer = gMain.vblankCounter1;
+    gBattleStruct->aiDelayTimer = gMain.vblankCounter;
 
     aiData->weatherHasEffect = WEATHER_HAS_EFFECT;
     weather = AI_GetWeather(aiData);

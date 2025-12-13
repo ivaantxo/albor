@@ -1735,7 +1735,7 @@ static void InitOverworldGraphicsRegisters(void)
     ShowBg(2);
     ShowBg(3);
     InitFieldMessageBox();
-    IniciaDistorsionFondo(0, ALTURA_PANTALLA, 4, 4, 0, DISTORSION_FONDO_BG_3_VERTICAL, TRUE);
+    //IniciaDistorsionFondo(0, ALTURA_PANTALLA, 4, 4, 0, DISTORSION_FONDO_BG_3_VERTICAL, TRUE);
 }
 
 static void ResumeMap(void)

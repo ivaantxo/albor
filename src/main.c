@@ -107,8 +107,7 @@ void AgbMainLoop(void)
 
 static void InitMainCallbacks(void)
 {
-    gMain.vblankCounter1 = 0;
-    gMain.vblankCounter2 = 0;
+    gMain.vblankCounter = 0;
     gMain.callback1 = NULL;
     SetMainCallback2(CB2_InitCopyrightScreenAfterBootup);
     gPokemonStoragePtr = &gPokemonStorage;
@@ -244,8 +243,7 @@ static void VBlankIntr(void)
     if (gMain.vblankCallback)
         gMain.vblankCallback();
 
-    gMain.vblankCounter2++;
-
+    gMain.vblankCounter++;
     CopyBufferedValuesToGpuRegs();
     ProcessDma3Requests();
 
