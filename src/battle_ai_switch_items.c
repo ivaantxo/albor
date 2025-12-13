@@ -1680,7 +1680,7 @@ static int GetRandomSwitchinWithBatonPass(int aliveCount, int bits, int firstId,
 
 static s32 GetMaxDamagePlayerCouldDealToSwitchin(u32 battler, u32 opposingBattler, struct BattlePokemon battleMon)
 {
-    int i = 0;
+    u32 i = 0;
     u32 playerMove;
     s32 damageTaken = 0, maxDamageTaken = 0;
 

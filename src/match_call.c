@@ -1245,7 +1245,7 @@ bool32 SelectMatchCallMessage(int trainerId, u8 *str)
 
 static int GetTrainerMatchCallId(int trainerId)
 {
-    int i = 0;
+    u32 i = 0;
     while(1)
     {
         if (sMatchCallTrainers[i].trainerId == trainerId)

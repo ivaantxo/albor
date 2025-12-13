@@ -3,24 +3,19 @@
 
 #define MAX_DMA_REQUESTS 128
 
-#define DMA_REQUEST_COPY32 1
-#define DMA_REQUEST_FILL32 2
-#define DMA_REQUEST_COPY16 3
-#define DMA_REQUEST_FILL16 4
-
 struct Dma3Request
 {
-    const u8 *src;
-    u8 *dest;
-    u16 size;
-    u16 mode;
+    const u32 *src;
+    u32 *dest;
+    u32 size;
+    u32 mode;
     u32 value;
 };
 
 static struct Dma3Request sDma3Requests[MAX_DMA_REQUESTS];
 
-static vbool8 sDma3ManagerLocked;
-static u8 sDma3RequestCursor;
+static vbool32 sDma3ManagerLocked;
+static u32 sDma3RequestCursor;
 
 void ClearDma3Requests(void)
 {
@@ -41,7 +36,7 @@ void ClearDma3Requests(void)
 
 void ProcessDma3Requests(void)
 {
-    u16 bytesTransferred;
+    u32 bytesTransferred;
 
     if (sDma3ManagerLocked)
         return;
@@ -55,7 +50,7 @@ void ProcessDma3Requests(void)
 
         if (bytesTransferred > 40 * 1024)
             return; // don't transfer more than 40 KiB
-        if (*(u8 *)REG_ADDR_VCOUNT > 224)
+        if (REG_VCOUNT > 224)
             return; // we're about to leave vblank, stop
 
         switch (sDma3Requests[sDma3RequestCursor].mode)
@@ -95,10 +90,10 @@ void ProcessDma3Requests(void)
     }
 }
 
-s16 RequestDma3Copy(const void *src, void *dest, u16 size, u32 mode)
+s32 RequestDma3Copy(const void *src, void *dest, u32 size, enum DmaRequestModes modo)
 {
-    int cursor;
-    int i = 0;
+    u32 cursor;
+    u32 i = 0;
 
     sDma3ManagerLocked = TRUE;
     cursor = sDma3RequestCursor;
@@ -110,12 +105,7 @@ s16 RequestDma3Copy(const void *src, void *dest, u16 size, u32 mode)
             sDma3Requests[cursor].src = src;
             sDma3Requests[cursor].dest = dest;
             sDma3Requests[cursor].size = size;
-
-            if (mode == 1)
-                sDma3Requests[cursor].mode = DMA_REQUEST_COPY32;
-            else
-                sDma3Requests[cursor].mode = DMA_REQUEST_COPY16;
-
+            sDma3Requests[cursor].mode = modo;
             sDma3ManagerLocked = FALSE;
             return cursor;
         }
@@ -127,10 +117,10 @@ s16 RequestDma3Copy(const void *src, void *dest, u16 size, u32 mode)
     return -1;  // no free DMA request was found
 }
 
-s16 RequestDma3Fill(s32 value, void *dest, u16 size, u32 mode)
+s32 RequestDma3Fill(s32 value, void *dest, u32 size, enum DmaRequestModes modo)
 {
-    int cursor;
-    int i = 0;
+    u32 cursor;
+    u32 i = 0;
 
     cursor = sDma3RequestCursor;
     sDma3ManagerLocked = TRUE;
@@ -141,14 +131,8 @@ s16 RequestDma3Fill(s32 value, void *dest, u16 size, u32 mode)
         {
             sDma3Requests[cursor].dest = dest;
             sDma3Requests[cursor].size = size;
-            sDma3Requests[cursor].mode = mode;
+            sDma3Requests[cursor].mode = modo;
             sDma3Requests[cursor].value = value;
-
-            if(mode == 1)
-                sDma3Requests[cursor].mode = DMA_REQUEST_FILL32;
-            else
-                sDma3Requests[cursor].mode = DMA_REQUEST_FILL16;
-
             sDma3ManagerLocked = FALSE;
             return cursor;
         }
@@ -160,9 +144,9 @@ s16 RequestDma3Fill(s32 value, void *dest, u16 size, u32 mode)
     return -1;  // no free DMA request was found
 }
 
-s16 CheckForSpaceForDma3Request(s16 index)
+s32 CheckForSpaceForDma3Request(s32 index)
 {
-    int i = 0;
+    u32 i = 0;
 
     if (index == -1)  // check if all requests are free
     {

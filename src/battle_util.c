@@ -6796,7 +6796,7 @@ static u8 ItemEffectMoveEnd(u32 battler, u16 holdEffect)
 
 u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
 {
-    int i = 0, moveType;
+    u32 i = 0, moveType;
     u8 effect = ITEM_NO_EFFECT;
     u32 battlerHoldEffect = 0, atkHoldEffect;
     u8 atkHoldEffectParam;

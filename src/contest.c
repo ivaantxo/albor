@@ -1274,9 +1274,9 @@ static bool8 SetupContestGraphics(u8 *stateVar)
     {
     case 0:
         gFundidoPaletas.transferenciaBufferDeshabilitada = TRUE;
-        RequestDma3Fill(0, (void *)VRAM, 0x8000, 1);
-        RequestDma3Fill(0, (void *)VRAM + 0x8000, 0x8000, 1);
-        RequestDma3Fill(0, (void *)VRAM + 0x10000, 0x8000, 1);
+        RequestDma3Fill(0, (void *)VRAM, 0x8000, DMA_REQUEST_FILL32);
+        RequestDma3Fill(0, (void *)VRAM + 0x8000, 0x8000, DMA_REQUEST_FILL32);
+        RequestDma3Fill(0, (void *)VRAM + 0x10000, 0x8000, DMA_REQUEST_FILL32);
         break;
     case 1:
         LZDecompressVram(gContestInterfaceGfx, (void *)VRAM);
@@ -4361,11 +4361,11 @@ static void Task_AnimateAudience(u8 taskId)
         gTasks[taskId].tDelay = 0;
         if (gTasks[taskId].tFrame == 0)
         {
-            RequestDma3Copy(eContestAudienceFrame2_Gfx, (void *)(BG_SCREEN_ADDR(4)), 0x1000, 1);
+            RequestDma3Copy(eContestAudienceFrame2_Gfx, (void *)(BG_SCREEN_ADDR(4)), 0x1000, DMA_REQUEST_COPY32);
         }
         else
         {
-            RequestDma3Copy(eUnzippedContestAudience_Gfx, (void *)(BG_SCREEN_ADDR(4)), 0x1000, 1);
+            RequestDma3Copy(eUnzippedContestAudience_Gfx, (void *)(BG_SCREEN_ADDR(4)), 0x1000, DMA_REQUEST_COPY32);
             gTasks[taskId].tCycles++;
         }
 
@@ -4560,7 +4560,7 @@ static void UpdateContestantBoxOrder(void)
     s32 i;
     u32 bg1Cnt;
 
-    RequestDma3Fill(0,(void *)(BG_CHAR_ADDR(2)), 0x2000, 1);
+    RequestDma3Fill(0,(void *)(BG_CHAR_ADDR(2)), 0x2000, DMA_REQUEST_FILL32);
     CpuFill32(0, gContestResources->contestBgTilemaps[1], 0x1000);
     Contest_SetBgCopyFlags(1);
     bg1Cnt = GetGpuReg(REG_OFFSET_BG1CNT);

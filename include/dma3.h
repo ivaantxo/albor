@@ -2,14 +2,22 @@
 #define GUARD_DMA3_H
 
 // Maximum amount of data we will transfer in one operation
-#define MAX_DMA_BLOCK_SIZE 0x1000
+#define MAX_DMA_BLOCK_SIZE 4096
+
+enum DmaRequestModes
+{
+    DMA_REQUEST_FILL16,
+    DMA_REQUEST_COPY32,
+    DMA_REQUEST_FILL32,
+    DMA_REQUEST_COPY16,
+};
 
 #define Dma3CopyLarge_(src, dest, size, bit)               \
 {                                                          \
     const void *_src = src;                                \
     void *_dest = dest;                                    \
     u32 _size = size;                                      \
-    while(1)                                              \
+    while(1)                                               \
     {                                                      \
         if (_size <= MAX_DMA_BLOCK_SIZE)                   \
         {                                                  \
@@ -48,8 +56,8 @@
 
 void ClearDma3Requests(void);
 void ProcessDma3Requests(void);
-s16 RequestDma3Copy(const void *src, void *dest, u16 size, u32 mode);
-s16 RequestDma3Fill(s32 value, void *dest, u16 size, u32 mode);
-s16 CheckForSpaceForDma3Request(s16 index);
+s32 RequestDma3Copy(const void *src, void *dest, u32 size, enum DmaRequestModes modo);
+s32 RequestDma3Fill(s32 value, void *dest, u32 size, enum DmaRequestModes modo);
+s32 CheckForSpaceForDma3Request(s32 index);
 
 #endif // GUARD_DMA3_H

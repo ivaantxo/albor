@@ -166,14 +166,14 @@ u32 LoadBgVram(u32 bg, const void *src, u32 size, u32 destOffset, u32 mode)
     case 1:
         offset = sGpuBgConfigs.configs[bg].charBaseIndex * BG_CHAR_SIZE;
         offset = destOffset + offset;
-        cursor = RequestDma3Copy(src, (void *)(offset + BG_VRAM), size, 0);
+        cursor = RequestDma3Copy(src, (void *)(offset + BG_VRAM), size, DMA_REQUEST_COPY16);
         if (cursor == -1)
             return -1;
         break;
     case 2:
         offset = sGpuBgConfigs.configs[bg].mapBaseIndex * BG_SCREEN_SIZE;
         offset = destOffset + offset;
-        cursor = RequestDma3Copy(src, (void *)(offset + BG_VRAM), size, 0);
+        cursor = RequestDma3Copy(src, (void *)(offset + BG_VRAM), size, DMA_REQUEST_COPY16);
         if (cursor == -1)
             return -1;
         break;

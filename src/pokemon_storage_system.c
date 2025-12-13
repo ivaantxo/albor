@@ -1505,9 +1505,9 @@ static void VBlankCB_PokeStorage(void)
     // Instead of transferring the entire palette buffer, transfer bg and non-dynamic palettes
     if (sPaletteSwapBuffer && !gFundidoPaletas.transferenciaBufferDeshabilitada && !gFundidoPaletas.activo&& !sStorage->transferWholePlttFrames)
     {
-        RequestDma3Copy(gPlttBufferFaded, (void*)PLTT, 32*17, 0);
+        RequestDma3Copy(gPlttBufferFaded, (void*)PLTT, 32*17, DMA_REQUEST_COPY16);
         // Skip the 12-1 palettes that are being dynamically swapped anyway
-        RequestDma3Copy(&gPlttBufferFaded[PLTT_ID(28)], (void*) 0x05000380, 32*4, 0);
+        RequestDma3Copy(&gPlttBufferFaded[PLTT_ID(28)], (void*) 0x05000380, 32*4, DMA_REQUEST_COPY16);
     }
     else
     {

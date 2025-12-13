@@ -981,8 +981,8 @@ void MoveBattlerSpriteToBG(u8 battlerId, bool8 toBG_2, bool8 setSpriteInvisible)
     {
         u8 battlerPosition;
 
-        RequestDma3Fill(0, (void *)(BG_SCREEN_ADDR(8)), 0x2000, 1);
-        RequestDma3Fill(0xFF, (void *)(BG_SCREEN_ADDR(28)), 0x1000, 0);
+        RequestDma3Fill(0, (void *)(BG_SCREEN_ADDR(8)), 0x2000, DMA_REQUEST_FILL32);
+        RequestDma3Fill(0xFF, (void *)(BG_SCREEN_ADDR(28)), 0x1000, DMA_REQUEST_FILL16);
 
         GetBattleAnimBg1Data(&animBg);
         CpuFill16(0, animBg.bgTiles, 0x1000);
@@ -1011,8 +1011,8 @@ void MoveBattlerSpriteToBG(u8 battlerId, bool8 toBG_2, bool8 setSpriteInvisible)
     }
     else
     {
-        RequestDma3Fill(0, (void *)(BG_SCREEN_ADDR(12)), 0x2000, 1);
-        RequestDma3Fill(0, (void *)(BG_SCREEN_ADDR(30)), 0x1000, 1);
+        RequestDma3Fill(0, (void *)(BG_SCREEN_ADDR(12)), 0x2000, DMA_REQUEST_FILL32);
+        RequestDma3Fill(0, (void *)(BG_SCREEN_ADDR(30)), 0x1000, DMA_REQUEST_FILL32);
         GetBattleAnimBgData(&animBg, 2);
         CpuFill16(0, animBg.bgTiles + 0x1000, 0x1000);
         CpuFill16(0, animBg.bgTilemap + 0x400, 0x800);
