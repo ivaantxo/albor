@@ -925,7 +925,7 @@ static void Task_OrbEffect(u8 taskId)
         SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(12, 7));
         SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR);
         SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG1 | WINOUT_WIN01_BG2 | WINOUT_WIN01_BG3 | WINOUT_WIN01_OBJ);
-        SetBgTilemapPalette(0, 0, 0, TILES_ANCHO_PANTALLA, TILES_ALTO_PANTALLA, 0xF);
+        SetBgTilemapPalette(0, 0, 0, TILES_ANCHO_PANTALLA, TILES_ALTURA_PANTALLA, 0xF);
         ScheduleBgCopyTilemapToVram(0);
         SetOrbFlashScanlineEffectWindowBoundaries(&gRegistrosBuffersDistorsionFondo[0][0], tCenterX, tCenterY, 1);
         CpuFastSet(&gRegistrosBuffersDistorsionFondo[0], &gRegistrosBuffersDistorsionFondo[1], 480);

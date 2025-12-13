@@ -20,6 +20,8 @@
 //  Número de valores posibles de "efectos" por línea horizontal para DMA.
 #define EFECTOS_POR_LINEA_HORIZONTAL        4
 
+#define VALOR_POSICION_ONDA (ALTURA_PANTALLA)
+
 enum EstadosDistorsionFondo
 {
     ESTADO_DISTORSION_FONDO_INACTIVO,

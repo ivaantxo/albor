@@ -151,7 +151,7 @@ static void Tarea_ActualizaOndaPorFrame(u8 taskId)
         if (gTasks[taskId].tFramesHastaMovimiento != 0)
         {
             gTasks[taskId].tFramesHastaMovimiento--;
-            offset = gTasks[taskId].tPosicionBuffer + 320;
+            offset = gTasks[taskId].tPosicionBuffer + VALOR_POSICION_ONDA;
             for (i = gTasks[taskId].tLineaInicial; i < gTasks[taskId].tLineaFinal; i++)
             {
                 gRegistrosBuffersDistorsionFondo[gDistorsionFondo.srcBuffer][i] = gRegistrosBuffersDistorsionFondo[0][offset] + value;
@@ -160,7 +160,7 @@ static void Tarea_ActualizaOndaPorFrame(u8 taskId)
         }
         else
         {
-            offset = gTasks[taskId].tPosicionBuffer + 320;
+            offset = gTasks[taskId].tPosicionBuffer + VALOR_POSICION_ONDA;
             for (i = gTasks[taskId].tLineaInicial; i < gTasks[taskId].tLineaFinal; i++)
             {
                 gRegistrosBuffersDistorsionFondo[gDistorsionFondo.srcBuffer][i] = gRegistrosBuffersDistorsionFondo[0][offset] + value;
@@ -190,7 +190,7 @@ static void GeneraOnda(u16 *buffer, u32 frecuencia, u32 amplitud)
 u32 IniciaDistorsionFondo(u32 lineaInicial, u32 lineaFinal, u32 frecuencia, u32 amplitud, u32 framesHastaMovimiento, u32 registroPosicion, bool32 aplicaPosicionFondosBatalla)
 {
     u32 i;
-    u32 posicion = 320; // Para dar suficiente espacio para cálculos de la tabla de seno.
+    u32 posicion = VALOR_POSICION_ONDA;
     struct ParametrosDistorsionFondo parametros;
     u8 taskId;
 
