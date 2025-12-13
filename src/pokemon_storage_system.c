@@ -3175,37 +3175,17 @@ static void ScrollBackground(void)
     ChangeBgY(3, 128, BG_COORD_SUB);
 }
 
-static const u16 sColoresStorage[] =
-{
-    RGB_BLACK,
-    RGB_WHITE,
-    RGB_RED,
-    RGB_GREEN,
-    RGB_BLUE,
-    RGB_PURPLE,
-    RGB_YELLOW,
-    RGB_MAGENTA,
-    RGB_CYAN,
-    RGB_LIME_GREEN,
-    RGB_AZUL_MARINO,
-    RGB_NARANJA,
-    RGB_AMARILLO_CLARO,
-    RGB_AZUL_PALIDO,
-    RGB_AZUL_OSCURO,
-    RGB_VERDE_AMARILLENTO,
-    RGB_ROSA_CLARO,
-    RGB_ROJO_VIVO,
-    RGB_MARRON,
-    RGB_GRIS_CLARO,
-    RGB_GRIS_OSCURO,
-};
+#define COEFICIENTE_MOVIMIENTO_FONDO 4
+#define NUMERO_COLORES_FONDO         4
 
 static void TintBackground(void)
 {
-    u32 coeffScrollBg = 4;
-    u32 blendColorBg = sColoresStorage[NumeroAleatorioEnRango(0, ARRAY_COUNT(sColoresStorage) - 1)];
+    u32 r = NumeroAleatorioEnRango(0, 31);
+    u32 g = NumeroAleatorioEnRango(0, 31);
+    u32 b = NumeroAleatorioEnRango(0, 31);
+    u32 ColorAleatorio = RGB(r, g, b);
 
-    BlendPalette(BG_PLTT_ID(3), 4, coeffScrollBg, blendColorBg);
+    BlendPalette(BG_PLTT_ID(3), NUMERO_COLORES_FONDO, COEFICIENTE_MOVIMIENTO_FONDO, ColorAleatorio);
 }
 
 static void LoadPokeStorageMenuGfx(void)

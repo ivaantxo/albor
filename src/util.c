@@ -49,17 +49,16 @@ int CountTrailingZeroBits(u32 value)
     return 0;
 }
 
-void BlendPalette(u16 palOffset, u16 numEntries, u8 coeff, u32 blendColor)
+void BlendPalette(u32 palOffset, u32 numEntries, u32 coeff, u32 blendColor)
 {
-    u32 i;
     struct PlttData *data2 = (struct PlttData *)&blendColor;
-    for (i = 0; i < numEntries; i++)
+    for (u32 i = 0; i < numEntries; i++)
     {
-        u16 index = i + palOffset;
+        u32 index = i + palOffset;
         struct PlttData *data1 = (struct PlttData *)&gPlttBufferUnfaded[index];
-        s8 r = data1->r;
-        s8 g = data1->g;
-        s8 b = data1->b;
+        s32 r = data1->r;
+        s32 g = data1->g;
+        s32 b = data1->b;
 
         gPlttBufferFaded[index] = RGB(r + (((data2->r - r) * coeff) >> 4),
                                       g + (((data2->g - g) * coeff) >> 4),
