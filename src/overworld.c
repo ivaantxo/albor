@@ -1556,6 +1556,7 @@ static void VBlankCB_Field(void)
     FieldUpdateBgTilemapScroll();
     TransferPlttBuffer();
     TransferTilesetAnimsBuffer();
+    //REG_GREENSWAP = gMain.vblankCounter & 1;
 }
 
 static void InitCurrentFlashLevelScanlineEffect(void)
