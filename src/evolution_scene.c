@@ -46,7 +46,7 @@ static EWRAM_DATA u16 *sBgAnimPal = NULL;
 
 COMMON_DATA void (*gCB2_AfterEvolution)(void) = NULL;
 
-#define sEvoCursorPos           gBattleCommunication[1] // when learning a new move
+#define sEvoCursorPos           gBattleCommunication[CURSOR_POSITION] // when learning a new move
 #define sEvoGraphicsTaskId      gBattleCommunication[2]
 
 static void Task_EvolutionScene(u8 taskId);
