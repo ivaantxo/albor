@@ -81,6 +81,7 @@ MAPJSON      := $(TOOLS_DIR)/mapjson/mapjson
 JSONPROC     := $(TOOLS_DIR)/jsonproc/jsonproc
 TRAINERPROC  := $(TOOLS_DIR)/trainerproc/trainerproc
 PATCHELF     := $(TOOLS_DIR)/patchelf/patchelf
+FAMICONV     := $(TOOLS_DIR)/superfamiconv/superfamiconv
 
 PERL := perl
 SHA1 := $(shell { command -v sha1sum || command -v shasum; } 2>/dev/null) -c
