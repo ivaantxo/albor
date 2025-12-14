@@ -6,6 +6,7 @@
 // I/O register offsets
 
 #define REG_OFFSET_DISPCNT     0x0
+#define REG_OFFSET_GREENSWAP   0x2
 #define REG_OFFSET_DISPSTAT    0x4
 #define REG_OFFSET_VCOUNT      0x6
 #define REG_OFFSET_BG0CNT      0x8
@@ -185,6 +186,7 @@
 // I/O register addresses
 
 #define REG_ADDR_DISPCNT     (REG_BASE + REG_OFFSET_DISPCNT)
+#define REG_ADDR_GREENSWAP   (REG_BASE + REG_OFFSET_GREENSWAP)
 #define REG_ADDR_DISPSTAT    (REG_BASE + REG_OFFSET_DISPSTAT)
 #define REG_ADDR_VCOUNT      (REG_BASE + REG_OFFSET_VCOUNT)
 #define REG_ADDR_BG0CNT      (REG_BASE + REG_OFFSET_BG0CNT)
@@ -348,6 +350,7 @@
 // I/O registers
 
 #define REG_DISPCNT     (*(vu16 *)REG_ADDR_DISPCNT)
+#define REG_GREENSWAP   (*(vu16 *)REG_ADDR_GREENSWAP)
 #define REG_DISPSTAT    (*(vu16 *)REG_ADDR_DISPSTAT)
 #define REG_VCOUNT      (*(vu16 *)REG_ADDR_VCOUNT)
 #define REG_BG0CNT      (*(vu16 *)REG_ADDR_BG0CNT)

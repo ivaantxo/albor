@@ -6413,7 +6413,7 @@ static void Cmd_switchhandleorder(void)
         }
         // fall through
     case 3:
-        gBattleCommunication[0] = gBattleResources->bufferB[battler][1];
+        gBattleCommunication[MULTIUSE_STATE] = gBattleResources->bufferB[battler][1];
         *(gBattleStruct->monToSwitchIntoId + battler) = gBattleResources->bufferB[battler][1];
         SwitchPartyOrder(battler);
 
@@ -6804,7 +6804,7 @@ static void Cmd_yesnoboxlearnmove(void)
         if (JOY_NEW(A_BUTTON))
         {
             PlaySE(SE_SELECT);
-            if (gBattleCommunication[1] == 0)
+            if (gBattleCommunication[CURSOR_POSITION] == 0)
             {
                 HandleBattleWindow(YESNOBOX_X_Y, WINDOW_CLEAR);
                 BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
@@ -6913,7 +6913,7 @@ static void Cmd_yesnoboxstoplearningmove(void)
         {
             PlaySE(SE_SELECT);
 
-            if (gBattleCommunication[1] != 0)
+            if (gBattleCommunication[CURSOR_POSITION] != 0)
                 gBattlescriptCurrInstr = cmd->noInstr;
             else
                 gBattlescriptCurrInstr = cmd->nextInstr;
@@ -7151,12 +7151,12 @@ static void Cmd_yesnobox(void)
 {
     CMD_ARGS();
 
-    switch (gBattleCommunication[0])
+    switch (gBattleCommunication[MULTIUSE_STATE])
     {
     case 0:
         HandleBattleWindow(YESNOBOX_X_Y, 0);
         BattlePutTextOnWindow(gText_BattleYesNoChoice, B_WIN_YESNO);
-        gBattleCommunication[0]++;
+        gBattleCommunication[MULTIUSE_STATE]++;
         gBattleCommunication[CURSOR_POSITION] = 0;
         BattleCreateYesNoCursorAt(0);
         break;
@@ -8411,7 +8411,7 @@ static void Cmd_various(void)
     case VARIOUS_IS_RUNNING_IMPOSSIBLE:
     {
         VARIOUS_ARGS();
-        gBattleCommunication[0] = IsRunningFromBattleImpossible(battler);
+        gBattleCommunication[MULTIUSE_STATE] = IsRunningFromBattleImpossible(battler);
         break;
     }
     case VARIOUS_GET_MOVE_TARGET:
@@ -8424,9 +8424,9 @@ static void Cmd_various(void)
     {
         VARIOUS_ARGS();
         if (gHitMarker & HITMARKER_FAINTED(battler))
-            gBattleCommunication[0] = TRUE;
+            gBattleCommunication[MULTIUSE_STATE] = TRUE;
         else
-            gBattleCommunication[0] = FALSE;
+            gBattleCommunication[MULTIUSE_STATE] = FALSE;
         break;
     }
     case VARIOUS_RESET_SWITCH_IN_ABILITY_BITS:
@@ -8557,7 +8557,7 @@ static void Cmd_various(void)
     case VARIOUS_STAT_TEXT_BUFFER:
     {
         VARIOUS_ARGS();
-        PREPARE_STAT_BUFFER(gBattleTextBuff1, gBattleCommunication[0]);
+        PREPARE_STAT_BUFFER(gBattleTextBuff1, gBattleCommunication[MULTIUSE_STATE]);
         break;
     }
     case VARIOUS_SWITCHIN_ABILITIES:
@@ -12526,30 +12526,30 @@ static void Cmd_trydobeatup(void)
     }
     else
     {
-        u8 beforeLoop = gBattleCommunication[0];
-        for (;gBattleCommunication[0] < PARTY_SIZE; gBattleCommunication[0]++)
+        u8 beforeLoop = gBattleCommunication[MULTIUSE_STATE];
+        for (;gBattleCommunication[MULTIUSE_STATE] < PARTY_SIZE; gBattleCommunication[MULTIUSE_STATE]++)
         {
-            if (GetMonData(&party[gBattleCommunication[0]], MON_DATA_HP)
-                && GetMonData(&party[gBattleCommunication[0]], MON_DATA_SPECIES_OR_EGG) != SPECIES_NONE
-                && GetMonData(&party[gBattleCommunication[0]], MON_DATA_SPECIES_OR_EGG) != SPECIES_EGG
-                && !GetMonData(&party[gBattleCommunication[0]], MON_DATA_STATUS))
+            if (GetMonData(&party[gBattleCommunication[MULTIUSE_STATE]], MON_DATA_HP)
+                && GetMonData(&party[gBattleCommunication[MULTIUSE_STATE]], MON_DATA_SPECIES_OR_EGG) != SPECIES_NONE
+                && GetMonData(&party[gBattleCommunication[MULTIUSE_STATE]], MON_DATA_SPECIES_OR_EGG) != SPECIES_EGG
+                && !GetMonData(&party[gBattleCommunication[MULTIUSE_STATE]], MON_DATA_STATUS))
                 break;
         }
-        if (gBattleCommunication[0] < PARTY_SIZE)
+        if (gBattleCommunication[MULTIUSE_STATE] < PARTY_SIZE)
         {
-            PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, gBattlerAttacker, gBattleCommunication[0])
+            PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, gBattlerAttacker, gBattleCommunication[MULTIUSE_STATE])
 
             gBattlescriptCurrInstr = cmd->nextInstr;
 
-            gBattleMoveDamage = gSpeciesInfo[GetMonData(&party[gBattleCommunication[0]], MON_DATA_SPECIES)].baseAttack;
+            gBattleMoveDamage = gSpeciesInfo[GetMonData(&party[gBattleCommunication[MULTIUSE_STATE]], MON_DATA_SPECIES)].baseAttack;
             gBattleMoveDamage *= gMovesInfo[gCurrentMove].power;
-            gBattleMoveDamage *= (GetMonData(&party[gBattleCommunication[0]], MON_DATA_LEVEL) * 2 / 5 + 2);
+            gBattleMoveDamage *= (GetMonData(&party[gBattleCommunication[MULTIUSE_STATE]], MON_DATA_LEVEL) * 2 / 5 + 2);
             gBattleMoveDamage /= gSpeciesInfo[gBattleMons[gBattlerTarget].species].baseDefense;
             gBattleMoveDamage = (gBattleMoveDamage / 50) + 2;
             if (gProtectStructs[gBattlerAttacker].helpingHand)
                 gBattleMoveDamage = gBattleMoveDamage * 15 / 10;
 
-            gBattleCommunication[0]++;
+            gBattleCommunication[MULTIUSE_STATE]++;
         }
         else if (beforeLoop != 0)
             gBattlescriptCurrInstr = cmd->endInstr;
@@ -13666,11 +13666,11 @@ static void Cmd_displaydexinfo(void)
 
     u16 species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[GetCatchingBattler()]], MON_DATA_SPECIES, NULL);
 
-    switch (gBattleCommunication[0])
+    switch (gBattleCommunication[MULTIUSE_STATE])
     {
     case 0:
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
-        gBattleCommunication[0]++;
+        gBattleCommunication[MULTIUSE_STATE]++;
         break;
     case 1:
         if (!gFundidoPaletas.activo)
@@ -13680,7 +13680,7 @@ static void Cmd_displaydexinfo(void)
             gBattleCommunication[TASK_ID] = DisplayCaughtMonDexPage(species,
                                                                     GetMonData(mon, MON_DATA_IS_SHINY),
                                                                     GetMonData(mon, MON_DATA_PERSONALITY));
-            gBattleCommunication[0]++;
+            gBattleCommunication[MULTIUSE_STATE]++;
         }
         break;
     case 2:
@@ -13689,14 +13689,14 @@ static void Cmd_displaydexinfo(void)
             && !gTasks[gBattleCommunication[TASK_ID]].isActive)
         {
             SetVBlankCallback(VBlankCB_Battle);
-            gBattleCommunication[0]++;
+            gBattleCommunication[MULTIUSE_STATE]++;
         }
         break;
     case 3:
         InitBattleBgsVideo();
         LoadBattleTextboxAndBackground();
         gBattle_BG3_X = 256;
-        gBattleCommunication[0]++;
+        gBattleCommunication[MULTIUSE_STATE]++;
         break;
     case 4:
         if (!IsDma3ManagerBusyWithBgCopy())
@@ -13704,7 +13704,7 @@ static void Cmd_displaydexinfo(void)
             BeginNormalPaletteFade(PALETTES_BG, 0, 16, 0, RGB_BLACK);
             ShowBg(0);
             ShowBg(3);
-            gBattleCommunication[0]++;
+            gBattleCommunication[MULTIUSE_STATE]++;
         }
         break;
     case 5:
@@ -13818,13 +13818,13 @@ static void Cmd_trygivecaughtmonnick(void)
             }
             else
             {
-                gBattleCommunication[MULTIUSE_STATE] = 4;
+                gBattleCommunication[MULTIUSE_STATE]++;
             }
         }
         else if (JOY_NEW(B_BUTTON))
         {
             PlaySE(SE_SELECT);
-            gBattleCommunication[MULTIUSE_STATE] = 4;
+            gBattleCommunication[MULTIUSE_STATE]++;
         }
         break;
     case 2:
@@ -14245,7 +14245,7 @@ void BS_JumpIfCantLoseItem(void)
 void BS_GetBattlerSide(void)
 {
     NATIVE_ARGS(u8 battler);
-    gBattleCommunication[0] = GetBattlerSide(GetBattlerForBattleScript(cmd->battler));
+    gBattleCommunication[MULTIUSE_STATE] = GetBattlerSide(GetBattlerForBattleScript(cmd->battler));
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 

@@ -151,14 +151,14 @@ static void RunTimeBasedEvents(s16 *data)
     switch (tState)
     {
     case 0:
-        if (gMain.vblankCounter1 & TIME_UPDATE_INTERVAL)
+        if (gMain.vblankCounter & TIME_UPDATE_INTERVAL)
         {
             DoTimeBasedEvents();
             tState++;
         }
         break;
     case 1:
-        if (!(gMain.vblankCounter1 & TIME_UPDATE_INTERVAL))
+        if (!(gMain.vblankCounter & TIME_UPDATE_INTERVAL))
             tState--;
         break;
     }

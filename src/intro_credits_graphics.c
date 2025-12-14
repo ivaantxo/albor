@@ -993,9 +993,9 @@ void CycleSceneryPalette(u8 mode)
     {
         case 0:
         default:
-            if (gMain.vblankCounter1 & 3 || gFundidoPaletas.activo)
+            if (gMain.vblankCounter & 3 || gFundidoPaletas.activo)
                 break;
-            if (gMain.vblankCounter1 & 4)
+            if (gMain.vblankCounter & 4)
             {
                 x = gPlttBufferUnfaded[BG_PLTT_ID(0) + 9];
                 y = gPlttBufferUnfaded[BG_PLTT_ID(0) + 10];
@@ -1009,9 +1009,9 @@ void CycleSceneryPalette(u8 mode)
             LoadPalette(&y, BG_PLTT_ID(0) + 10, sizeof(y));
             break;
         case 2:
-            if (gMain.vblankCounter1 & 3 || gFundidoPaletas.activo)
+            if (gMain.vblankCounter & 3 || gFundidoPaletas.activo)
                 break;
-            if (gMain.vblankCounter1 & 4)
+            if (gMain.vblankCounter & 4)
             {
                 x = RGB(7, 9, 15);
                 y = RGB(21, 20, 0);
