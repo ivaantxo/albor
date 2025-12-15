@@ -709,7 +709,7 @@ void BS_TrySetStatus2(void)
             break;
         case STATUS2_TORMENT:
             if (!(gBattleMons[gBattlerTarget].status2 & STATUS2_TORMENT)
-                && !IsAbilityOnSide(gBattlerTarget, ABILITY_AROMA_VEIL))
+                && !EstaHabilidadEnElLadoDeCombatiente(gBattlerTarget, ABILITY_AROMA_VEIL))
             {
                 gBattleMons[gBattlerTarget].status2 |= STATUS2_TORMENT;
                 gDisableStructs[gBattlerTarget].tormentTimer = 3; // 3 turns excluding current turn

@@ -76,7 +76,7 @@ enum {
 #define ITEMEFFECT_USE_LAST_ITEM                8 // move end effects for just the battler, not whole field
 #define ITEMEFFECT_STATS_CHANGED                9 // For White Herb and Eject Pack
 
-#define WEATHER_HAS_EFFECT ((!IsAbilityOnField(ABILITY_CLOUD_NINE) && !IsAbilityOnField(ABILITY_AIR_LOCK)))
+#define WEATHER_HAS_EFFECT ((!EstaHabilidadEnCampo(ABILITY_CLOUD_NINE) && !EstaHabilidadEnCampo(ABILITY_AIR_LOCK)))
 
 #define IS_WHOLE_SIDE_ALIVE(battler)    ((IsBattlerAlive(battler) && IsBattlerAlive(BATTLE_PARTNER(battler))))
 #define IS_ALIVE_AND_PRESENT(battler)   (IsBattlerAlive(battler) && IsBattlerSpritePresent(battler))
@@ -189,14 +189,14 @@ u32 CanAbilityAbsorbMove(u32 battlerAtk, u32 battlerDef, u32 abilityDef, u32 mov
 u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 moveArg);
 bool32 IsNeutralizingGasOnField(void);
 bool32 IsMoldBreakerTypeAbility(u32 battler, u32 ability);
-u32 GetBattlerAbility(u32 battler);
-u32 IsAbilityOnSide(u32 battler, u32 ability);
-u32 IsAbilityOnOpposingSide(u32 battler, u32 ability);
-u32 IsAbilityOnField(u32 ability);
-u32 IsAbilityOnFieldExcept(u32 battler, u32 ability);
-u32 IsAbilityPreventingEscape(u32 battler);
+u32 GetBattlerAbility(u32 combatiente);
+bool32 EstaHabilidadEnElLadoDeCombatiente(u32 battler, u32 ability);
+u32 QueCombatienteTieneHabilidad(u32 habilidad);
+bool32 EstaHabilidadEnCampoContrario(u32 combatiente, u32 habilidad);
+bool32 EstaHabilidadEnCampo(u32 habilidad);
+bool32 HabilidadRivalImpideEscapar(u32 combatiente);
 bool32 IsBattlerProtected(u32 battlerAtk, u32 battlerDef, u32 move);
-bool32 CanBattlerEscape(u32 battler); // no ability check
+bool32 PuedeCombatienteEscapar(u32 combatiente);
 void BattleScriptExecute(const u8 *BS_ptr);
 void BattleScriptPushCursorAndCallback(const u8 *BS_ptr);
 u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn);

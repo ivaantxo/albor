@@ -379,7 +379,7 @@ enum ResultadosBatalla
 #define MOVE_EFFECT_UNUSED_75          75
 #define MOVE_EFFECT_FLORAL_HEALING      76
 #define MOVE_EFFECT_SECRET_POWER        77
-#define MOVE_EFFECT_PSYCHIC_NOISE       78
+#define MOVE_EFFECT_UNUSED_78       78
 #define MOVE_EFFECT_TERA_BLAST          79
 
 #define NUM_MOVE_EFFECTS                80
@@ -423,7 +423,7 @@ enum ResultadosBatalla
 #define FLEE_ITEM    1
 #define FLEE_ABILITY 2
 
-// Return value for IsRunningFromBattleImpossible.
+// Return value for IntentaEscaparBatalla.
 #define BATTLE_RUN_SUCCESS        0
 #define BATTLE_RUN_FORBIDDEN      1
 #define BATTLE_RUN_FAILURE        2

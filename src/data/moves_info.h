@@ -20128,10 +20128,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_ESPECIAL,
         .soundMove = TRUE,
         .ignoresSubstitute = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_PSYCHIC_NOISE,
-            .chance = 100,
-        }),
         .battleAnimScript = gBattleAnimMove_PsychicNoise,
     },
 

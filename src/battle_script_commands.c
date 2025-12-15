@@ -3554,23 +3554,6 @@ void SetMoveEffect(bool32 primary, bool32 certain)
                 }
                 SetMoveEffect(primary, certain);
                 break;
-            case MOVE_EFFECT_PSYCHIC_NOISE:
-                battlerAbility = IsAbilityOnSide(gEffectBattler, ABILITY_AROMA_VEIL);
-
-                if (battlerAbility)
-                {
-                    gBattlerAbility = battlerAbility - 1;
-                    BattleScriptPush(gBattlescriptCurrInstr + 1);
-                    gBattlescriptCurrInstr = BattleScript_AromaVeilProtectsRet;
-                }
-                else if (!(gStatuses3[gEffectBattler] & STATUS3_HEAL_BLOCK))
-                {
-                    gStatuses3[gEffectBattler] |= STATUS3_HEAL_BLOCK;
-                    gDisableStructs[gEffectBattler].healBlockTimer = 2;
-                    BattleScriptPush(gBattlescriptCurrInstr + 1);
-                    gBattlescriptCurrInstr = BattleScript_EffectPsychicNoise;
-                }
-                break;
             }
         }
     }
@@ -3839,41 +3822,50 @@ static void Cmd_jumpifability(void)
 {
     CMD_ARGS(u8 battler, u16 ability, const u8 *jumpInstr);
 
-    u32 battler;
-    bool32 hasAbility = FALSE;
-    u32 ability = cmd->ability;
+    u32 foundBattler = 0xFF;
+    u32 checkBattler;
 
     switch (cmd->battler)
     {
     default:
-        battler = GetBattlerForBattleScript(cmd->battler);
-        if (GetBattlerAbility(battler) == ability)
-            hasAbility = TRUE;
+        checkBattler = GetBattlerForBattleScript(cmd->battler);
+        if (GetBattlerAbility(checkBattler) == cmd->ability)
+            foundBattler = checkBattler;
         break;
+
     case BS_ATTACKER_SIDE:
-        battler = IsAbilityOnSide(gBattlerAttacker, ability);
-        if (battler)
+        for (checkBattler = 0; checkBattler < gBattlersCount; checkBattler++)
         {
-            battler--;
-            hasAbility = TRUE;
+            if (GetBattlerSide(checkBattler) == GetBattlerSide(gBattlerAttacker)
+                && IsBattlerAlive(checkBattler)
+                && GetBattlerAbility(checkBattler) == cmd->ability)
+            {
+                foundBattler = checkBattler;
+                break;
+            }
         }
         break;
+
     case BS_TARGET_SIDE:
-        battler = IsAbilityOnOpposingSide(gBattlerAttacker, ability);
-        if (battler)
+        for (checkBattler = 0; checkBattler < gBattlersCount; checkBattler++)
         {
-            battler--;
-            hasAbility = TRUE;
+            if (GetBattlerSide(checkBattler) != GetBattlerSide(gBattlerAttacker)
+                && IsBattlerAlive(checkBattler)
+                && GetBattlerAbility(checkBattler) == cmd->ability)
+            {
+                foundBattler = checkBattler;
+                break;
+            }
         }
         break;
     }
 
-    if (hasAbility)
+    if (foundBattler != 0xFF)
     {
-        gLastUsedAbility = ability;
+        gLastUsedAbility = cmd->ability;
+        gBattlerAbility = foundBattler;
+        RecordAbilityBattle(foundBattler, gLastUsedAbility);
         gBattlescriptCurrInstr = cmd->jumpInstr;
-        RecordAbilityBattle(battler, gLastUsedAbility);
-        gBattlerAbility = battler;
     }
     else
     {
@@ -4699,13 +4691,13 @@ static void Cmd_setroost(void)
 
 static void Cmd_jumpifabilitypresent(void)
 {
-    CMD_ARGS(u16 ability, const u8 *jumpInstr);
+    CMD_ARGS(u32 habilidad, const u8 *jumpInstr);
 
-    u16 ability = cmd->ability;
-    u32 abilityBattler = IsAbilityOnField(ability);
-    if (abilityBattler)
+    u32 habilidad = cmd->habilidad;
+    u32 combatienteConHabilidad = QueCombatienteTieneHabilidad(habilidad);
+    if (combatienteConHabilidad)
     {
-        gBattlerAbility = abilityBattler - 1;
+        gBattlerAbility = combatienteConHabilidad - 1;
         gBattlescriptCurrInstr = cmd->jumpInstr;
     }
     else
@@ -5183,7 +5175,7 @@ static void Cmd_moveend(void)
                 gBattlescriptCurrInstr = BattleScript_MoveEffectRecoil;
                 effect = TRUE;
             }
-            else if (gMovesInfo[gCurrentMove].effect == EFFECT_EXPLOSION && !IsAbilityOnField(ABILITY_DAMP))
+            else if (gMovesInfo[gCurrentMove].effect == EFFECT_EXPLOSION && !EstaHabilidadEnCampo(ABILITY_DAMP))
             {
                 gBattleMoveDamage = 0;
                 BattleScriptPushCursor();
@@ -6178,7 +6170,7 @@ static void Cmd_jumpifcantswitch(void)
     CMD_ARGS(u8 battler:7, u8 ignoreEscapePrevention:1, const u8 *jumpInstr);
 
     u32 battler = GetBattlerForBattleScript(cmd->battler);
-    if (!cmd->ignoreEscapePrevention && !CanBattlerEscape(battler))
+    if (!cmd->ignoreEscapePrevention && (PuedeCombatienteEscapar(battler) == FALSE))
     {
         gBattlescriptCurrInstr = cmd->jumpInstr;
     }
@@ -6531,7 +6523,7 @@ static bool32 DoSwitchInEffectsForBattler(u32 battler)
             i = GetBattlerAbility(battler);
             if (!(gBattleMons[battler].status1 & STATUS1_ANY)
                 && i != ABILITY_IMMUNITY
-                && !IsAbilityOnSide(battler, ABILITY_PASTEL_VEIL)
+                && !EstaHabilidadEnElLadoDeCombatiente(battler, ABILITY_PASTEL_VEIL)
                 && !(gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_SAFEGUARD)
                 && !(gFieldStatuses & STATUS_FIELD_MISTY_TERRAIN))
             {
@@ -7919,7 +7911,7 @@ static bool32 TryTidyUpClear(u32 battlerAtk, bool32 clear)
 u32 IsFlowerVeilProtected(u32 battler)
 {
     if (IsBattlerWeatherAffected(battler, B_WEATHER_SUN))
-        return IsAbilityOnSide(battler, ABILITY_FLOWER_VEIL);
+        return EstaHabilidadEnElLadoDeCombatiente(battler, ABILITY_FLOWER_VEIL);
     else
         return 0;
 }
@@ -8411,7 +8403,7 @@ static void Cmd_various(void)
     case VARIOUS_IS_RUNNING_IMPOSSIBLE:
     {
         VARIOUS_ARGS();
-        gBattleCommunication[MULTIUSE_STATE] = IsRunningFromBattleImpossible(battler);
+        gBattleCommunication[MULTIUSE_STATE] = IntentaEscaparBatalla(battler);
         break;
     }
     case VARIOUS_GET_MOVE_TARGET:

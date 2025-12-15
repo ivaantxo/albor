@@ -57,6 +57,7 @@
 - Huevos tienen 50% en cada estadística de heredar los IVs del padre o de la madre: 2 padres con 31 IVs en ataque darán siempre un huevo con 31 IVs en ataque.
 - Huevos heredan 50% naturaleza del padre y 50% de la madre.
 - Probabilidad de movimientos que golpean de 2 a 5 veces: 25% cada una.
+- Chequear Sombra trampa que no la haya roto.
 
 -Lista de moves hechos:
 *Bomba huevo.
