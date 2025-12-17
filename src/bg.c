@@ -10,25 +10,24 @@
 struct BgControl
 {
     struct BgConfig {
-        u8 visible:1;
-        u8 unknown_1:1;
-        u8 screenSize:2;
-        u8 priority:2;
-        u8 mosaic:1;
-        u8 wraparound:1;
+        bool32 visible;
+        u32 screenSize;
+        u32 priority;
+        bool32 mosaic;
+        bool32 wraparound;
 
-        u8 charBaseIndex:2;
-        u8 mapBaseIndex:5;
-        u8 paletteMode:1;
+        u32 charBaseIndex;
+        u32 mapBaseIndex;
+        u32 paletteMode;
     } configs[NUMERO_FONDOS];
 
-    u16 bgVisibilityAndMode;
+    u32 bgVisibilityAndMode;
 };
 
 struct BgConfig2
 {
-    u32 baseTile:10;
-    u32 basePalette:4;
+    u32 baseTile;
+    u32 basePalette;
 
     void *tilemap;
     s32 bg_x;
