@@ -197,10 +197,10 @@ static void CB2_SaveFailedScreen(void)
         LZ77UnCompVram(gBirchGrassTilemap, (void *)(BG_SCREEN_ADDR(15)));
         LZ77UnCompVram(sSaveFailedClockGfx, (void *)(OBJ_VRAM0 + 0x20));
         ResetBgsAndClearDma3BusyFlags();
-        InitBgsFromTemplates(0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
+        IniciaFondosDesdePlantillas(MODO_0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
         SetBgTilemapBuffer(0, (void *)&gDecompressionBuffer[0x2000]);
         CpuFill32(0, &gDecompressionBuffer[0x2000], 0x800);
-        LoadBgTiles(0, gTextWindowFrame1_Gfx, 0x120, 0x214);
+        CargaTilesFondo(0, gTextWindowFrame1_Gfx, 0x120, 0x214);
         InitWindows(sDummyWindowTemplate);
         sWindowIds[TEXT_WIN_ID] = AddWindowWithoutTileMap(sWindowTemplate_Text);
         SetWindowAttribute(sWindowIds[TEXT_WIN_ID], 7, (u32)&gDecompressionBuffer[0x2800]);
@@ -425,8 +425,8 @@ void CB2_FlashNotDetectedScreen(void)
     DmaFill32(3, 0, OAM, OAM_SIZE);
     DmaFill16(3, 0, PLTT, PLTT_SIZE);
     ResetBgsAndClearDma3BusyFlags();
-    InitBgsFromTemplates(0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
-    LoadBgTiles(0, gTextWindowFrame1_Gfx, 0x120, 0x214);
+    IniciaFondosDesdePlantillas(MODO_0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
+    CargaTilesFondo(0, gTextWindowFrame1_Gfx, 0x120, 0x214);
     DeactivateAllTextPrinters();
     ResetTasks();
     ResetPaletteFade();

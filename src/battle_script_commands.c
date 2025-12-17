@@ -4697,7 +4697,7 @@ static void Cmd_jumpifabilitypresent(void)
     u32 combatienteConHabilidad = QueCombatienteTieneHabilidad(habilidad);
     if (combatienteConHabilidad)
     {
-        gBattlerAbility = combatienteConHabilidad - 1;
+        gBattlerAbility = combatienteConHabilidad - 1; //??????? comprobar
         gBattlescriptCurrInstr = cmd->jumpInstr;
     }
     else

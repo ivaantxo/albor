@@ -1166,7 +1166,7 @@ void CB2_Pokemon_Sprite_Visualizer(void)
             LoadPalette(GetTextWindowPalette(0), PLTT_ID(15), 64);
 
             FillBgTilemapBufferRect(0, 0, 0, 0, 32, 20, 15);
-            InitBgsFromTemplates(0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
+            IniciaFondosDesdePlantillas(MODO_0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
             LoadBattleBg(0, BATTLE_TERRAIN_GRASS);
 
             gMain.state++;

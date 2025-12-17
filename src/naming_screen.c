@@ -525,7 +525,7 @@ static void NamingScreen_InitBGs(void)
 
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_MODE_0);
     ResetBgsAndClearDma3BusyFlags();
-    InitBgsFromTemplates(0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
+    IniciaFondosDesdePlantillas(MODO_0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
 
     ChangeBgX(0, 0, BG_COORD_SET);
     ChangeBgY(0, 0, BG_COORD_SET);
@@ -1882,9 +1882,9 @@ static void SaveInputText(void)
 static void LoadGfx(void)
 {
     LZ77UnCompWram(gNamingScreenMenu_Gfx, sNamingScreen->tileBuffer);
-    LoadBgTiles(1, sNamingScreen->tileBuffer, sizeof(sNamingScreen->tileBuffer), 0);
-    LoadBgTiles(2, sNamingScreen->tileBuffer, sizeof(sNamingScreen->tileBuffer), 0);
-    LoadBgTiles(3, sNamingScreen->tileBuffer, sizeof(sNamingScreen->tileBuffer), 0);
+    CargaTilesFondo(1, sNamingScreen->tileBuffer, sizeof(sNamingScreen->tileBuffer), 0);
+    CargaTilesFondo(2, sNamingScreen->tileBuffer, sizeof(sNamingScreen->tileBuffer), 0);
+    CargaTilesFondo(3, sNamingScreen->tileBuffer, sizeof(sNamingScreen->tileBuffer), 0);
     LoadSpriteSheets(sSpriteSheets);
     LoadSpritePalettes(sSpritePalettes);
 }

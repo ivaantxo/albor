@@ -84,7 +84,7 @@ const struct CompressedSpriteSheet gSpriteSheet_EnemyShadow =
 const struct CompressedSpriteSheet gSpriteSheet_EnemyShadowsSized =
 {
     .data = gEnemyMonShadowsSized_Gfx,
-    .size = TILE_SIZE_4BPP * 8 * 4, // 8 tiles per sprite, 4 sprites total
+    .size = TILE_4BPP * 8 * 4, // 8 tiles per sprite, 4 sprites total
     .tag = TAG_SHADOW_TILE,
 };
 

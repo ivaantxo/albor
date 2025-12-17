@@ -2311,7 +2311,7 @@ void AnimTask_HideSwapSprite(u8 taskId)
         src = gMonSpritesGfxPtr->spritesGfx[position];
         dest = animBg.bgTiles;
         CopiaCpu32(src, dest, MON_PIC_SIZE);
-        LoadBgTiles(1, animBg.bgTiles, 2048, animBg.tilesOffset);
+        CargaTilesFondo(1, animBg.bgTiles, 2048, animBg.tilesOffset);
         gTasks[taskId].data[0]++;
         break;
     case 2:
@@ -2366,7 +2366,7 @@ void AnimTask_TransformMon(u8 taskId)
         src = gMonSpritesGfxPtr->spritesGfx[position];
         dest = animBg.bgTiles;
         CopiaCpu32(src, dest, MON_PIC_SIZE);
-        LoadBgTiles(1, animBg.bgTiles, 2048, animBg.tilesOffset);
+        CargaTilesFondo(1, animBg.bgTiles, 2048, animBg.tilesOffset);
         gTasks[taskId].data[0]++;
         break;
     case 3:

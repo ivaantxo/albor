@@ -448,7 +448,7 @@ const struct BattleBackground sBattleTerrainTable[] =
 void BattleInitBgsAndWindows(void)
 {
     ResetBgsAndClearDma3BusyFlags();
-    InitBgsFromTemplates(0, gBattleBgTemplates, ARRAY_COUNT(gBattleBgTemplates));
+    IniciaFondosDesdePlantillas(MODO_0, gBattleBgTemplates, ARRAY_COUNT(gBattleBgTemplates));
     InitWindows(sBattleWindowTemplates);
     DeactivateAllTextPrinters();
 }

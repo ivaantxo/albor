@@ -534,7 +534,7 @@ static void InitResetRtcScreenBgAndWindows(void)
 {
     ClearScheduledBgCopiesToVram();
     ResetBgsAndClearDma3BusyFlags();
-    InitBgsFromTemplates(0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
+    IniciaFondosDesdePlantillas(MODO_0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
     ScheduleBgCopyTilemapToVram(0);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
     ShowBg(0);

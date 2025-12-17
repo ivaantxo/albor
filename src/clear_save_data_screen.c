@@ -157,7 +157,7 @@ static bool8 SetupClearSaveDataScreen(void)
         ResetTasks();
         ResetSpriteData();
         ResetBgsAndClearDma3BusyFlags();
-        InitBgsFromTemplates(0, sClearSaveBgTemplates, ARRAY_COUNT(sClearSaveBgTemplates));
+        IniciaFondosDesdePlantillas(MODO_0, sClearSaveBgTemplates, ARRAY_COUNT(sClearSaveBgTemplates));
         SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
         ShowBg(0);
         ShowBg(3);

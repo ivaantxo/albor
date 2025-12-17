@@ -496,7 +496,7 @@ u32 CreateSpriteAt(u32 index, const struct SpriteTemplate *template, s16 x, s16 
     {
         s16 tileNum;
         sprite->images = template->images;
-        tileNum = AllocSpriteTiles((u8)(sprite->images->size / TILE_SIZE_4BPP));
+        tileNum = AllocSpriteTiles((u8)(sprite->images->size / TILE_4BPP));
         if (tileNum == -1)
         {
             ResetSprite(sprite);
@@ -555,7 +555,7 @@ void DestroySprite(struct Sprite *sprite)
         if (!sprite->usingSheet)
         {
             u32 i;
-            u16 tileEnd = (sprite->images->size / TILE_SIZE_4BPP) + sprite->oam.tileNum;
+            u16 tileEnd = (sprite->images->size / TILE_4BPP) + sprite->oam.tileNum;
             for (i = sprite->oam.tileNum; i < tileEnd; i++)
                 FREE_SPRITE_TILE(i);
         }
@@ -735,7 +735,7 @@ void RequestSpriteFrameImageCopy(u16 index, u16 tileNum, const struct SpriteFram
             sSpriteCopyRequests[sSpriteCopyRequestCount].src = images[0].data + images[0].size * index;
             sSpriteCopyRequests[sSpriteCopyRequestCount].size = images[0].size;
         }
-        sSpriteCopyRequests[sSpriteCopyRequestCount].dest = (u8 *)OBJ_VRAM0 + TILE_SIZE_4BPP * tileNum;
+        sSpriteCopyRequests[sSpriteCopyRequestCount].dest = (u8 *)OBJ_VRAM0 + TILE_4BPP * tileNum;
         sSpriteCopyRequestCount++;
     }
 }
@@ -1423,7 +1423,7 @@ void SetOamMatrixRotationScaling(u8 matrixNum, s16 xScale, s16 yScale, u16 rotat
 
 static u16 LoadSpriteSheetWithOffset(const struct SpriteSheet *sheet, u32 offset)
 {
-    s16 tileStart = AllocSpriteTiles(sheet->size / TILE_SIZE_4BPP);
+    s16 tileStart = AllocSpriteTiles(sheet->size / TILE_4BPP);
 
     if (tileStart < 0)
     {
@@ -1431,8 +1431,8 @@ static u16 LoadSpriteSheetWithOffset(const struct SpriteSheet *sheet, u32 offset
     }
     else
     {
-        AllocSpriteTileRange(sheet->tag, (u16)tileStart, sheet->size / TILE_SIZE_4BPP);
-        CopiaCpu16(sheet->data, (u8 *)OBJ_VRAM0 + TILE_SIZE_4BPP * tileStart + offset, sheet->size - offset);
+        AllocSpriteTileRange(sheet->tag, (u16)tileStart, sheet->size / TILE_4BPP);
+        CopiaCpu16(sheet->data, (u8 *)OBJ_VRAM0 + TILE_4BPP * tileStart + offset, sheet->size - offset);
         return (u16)tileStart;
     }
 }

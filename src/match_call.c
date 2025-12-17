@@ -989,7 +989,7 @@ static bool32 MatchCall_LoadGfx(u8 taskId)
         return FALSE;
     }
 
-    if (LoadBgTiles(0, sMatchCallWindow_Gfx, sizeof(sMatchCallWindow_Gfx), TILE_MC_WINDOW) == 0xFFFF)
+    if (CargaTilesFondo(0, sMatchCallWindow_Gfx, sizeof(sMatchCallWindow_Gfx), TILE_MC_WINDOW) == 0xFFFF)
     {
         RemoveWindow(tWindowId);
         DestroyTask(taskId);
@@ -1437,7 +1437,7 @@ void BufferPokedexRatingForMatchCall(u8 *destStr)
 void LoadMatchCallWindowGfx(u32 windowId, u32 destOffset, u32 paletteId)
 {
     u8 bg = GetWindowAttribute(windowId, WINDOW_BG);
-    LoadBgTiles(bg, sMatchCallWindow_Gfx, 0x100, destOffset);
+    CargaTilesFondo(bg, sMatchCallWindow_Gfx, 0x100, destOffset);
     LoadPalette(sMatchCallWindow_Pal, BG_PLTT_ID(paletteId), sizeof(sMatchCallWindow_Pal));
 }
 
