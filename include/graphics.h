@@ -519,8 +519,6 @@ extern const u32 gItemIcon_ExpCandyM[];
 extern const u32 gItemIcon_ExpCandyL[];
 extern const u32 gItemIcon_ExpCandyXL[];
 extern const u32 gItemIconPalette_ExpCandies[];
-extern const u32 gItemIcon_DynamaxCandy[];
-extern const u32 gItemIconPalette_DynamaxCandy[];
 // Medicinal Flutes
 extern const u32 gItemIcon_Flute[];
 extern const u32 gItemIconPalette_BlueFlute[];
@@ -1501,8 +1499,6 @@ extern const u32 gItemIconPalette_ReinsOfUnity[];
 // Battle Mechanic Key Items
 extern const u32 gItemIcon_MegaRing[];
 extern const u32 gItemIconPalette_MegaRing[];
-extern const u32 gItemIcon_DynamaxBand[];
-extern const u32 gItemIconPalette_DynamaxBand[];
 // Misc. Key Items
 extern const u32 gItemIcon_Bicycle[];
 extern const u32 gItemIconPalette_Bicycle[];
@@ -2929,7 +2925,6 @@ extern const u32 gBattleAnimBgTilemap_BloomDoom[];
 extern const u32 gBattleAnimBgImage_BoltStrike[];
 extern const u32 gBattleAnimBgPalette_BoltStrike[];
 extern const u32 gBattleAnimBgTilemap_BoltStrike[];
-extern const u32 gBattleAnimBgPalette_DynamaxCannon[];
 extern const u32 gBattleAnimBgImage_ElectricTerrain[];
 extern const u32 gBattleAnimBgPalette_ElectricTerrain[];
 extern const u32 gBattleAnimBgTilemap_ElectricTerrain[];

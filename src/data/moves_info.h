@@ -1,4 +1,3 @@
-#include "battle_dynamax.h"
 #include "battle_anim_scripts.h"
 #include "constants/battle.h"
 #include "constants/battle_move_effects.h"
@@ -16737,35 +16736,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_DoubleIronBash,
     },
 
-    [MOVE_DYNAMAX_CANNON] =
-    {
-        .name = COMPOUND_STRING("Dynamax Cannon"),
-        .description = COMPOUND_STRING(
-            "Unleashes core energy.\n"
-            "2x against Dynamaxed foes."),
-        .effect = EFFECT_DYNAMAX_DOUBLE_DMG,
-        .power = 100,
-        .type = TIPO_DRAGON,
-        .accuracy = 100,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .mirrorMoveBanned = TRUE,
-        .copycatBanned = TRUE,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .mimicBanned = TRUE,
-        .encoreBanned = TRUE,
-        .assistBanned = B_EXTRAPOLATED_MOVE_FLAGS,
-        .parentalBondBanned = TRUE,
-        .contestEffect = CONTEST_EFFECT_USER_MORE_EASILY_STARTLED,
-        .contestCategory = CONTEST_CATEGORY_SMART,
-        .contestComboStarterId = 0,
-        .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DynamaxCannon,
-    },
-
     [MOVE_SNIPE_SHOT] =
     {
         .name = COMPOUND_STRING("Disparo certero"),
@@ -17175,7 +17145,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .description = COMPOUND_STRING(
             "Strikes as a sword. Deals 2x\n"
             "damage to Dynamaxed foes."),
-        .effect = EFFECT_DYNAMAX_DOUBLE_DMG,
+        .effect = EFFECT_HIT,
         .power = 100,
         .type = TIPO_ACERO,
         .accuracy = 100,
@@ -17201,7 +17171,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .description = COMPOUND_STRING(
             "Attacks as a shield. Deals 2x\n"
             "damage to Dynamaxed foes."),
-        .effect = EFFECT_DYNAMAX_DOUBLE_DMG,
+        .effect = EFFECT_HIT,
         .power = 100,
         .type = TIPO_ACERO,
         .accuracy = 100,
@@ -18590,26 +18560,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .chance = 100,
         }),
         .battleAnimScript = gBattleAnimMove_BitterMalice,
-    },
-
-    [MOVE_SHELTER] =
-    {
-        .name = COMPOUND_STRING("Shelter"),
-        .description = COMPOUND_STRING(
-            "The user hardens their skin,\n"
-            "sharply raising its Defense."),
-        .effect = EFFECT_DEFENSE_UP_2,
-        .power = 0,
-        .type = TIPO_ACERO,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Shelter,
     },
 
     [MOVE_TRIPLE_ARROWS] =

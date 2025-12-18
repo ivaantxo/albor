@@ -46,7 +46,6 @@ static EWRAM_DATA u16 *sBgAnimPal = NULL;
 
 COMMON_DATA void (*gCB2_AfterEvolution)(void) = NULL;
 
-#define sEvoCursorPos           gBattleCommunication[CURSOR_POSITION] // when learning a new move
 #define sEvoGraphicsTaskId      gBattleCommunication[SPRITES_INIT_STATE2]
 
 static void Task_EvolutionScene(u8 taskId);
@@ -728,43 +727,41 @@ static void Task_EvolutionScene(u8 taskId)
                 HandleBattleWindow(YESNOBOX_X_Y, 0);
                 BattlePutTextOnWindow(gText_BattleYesNoChoice, B_WIN_YESNO);
                 gTasks[taskId].tLearnMoveState++;
-                sEvoCursorPos = 0;
-                BattleCreateYesNoCursorAt(0);
+                gPosicionCursorSiNo = CURSOR_SI;
+                CreaCursorBatallaSiNo();
             }
             break;
         case MVSTATE_HANDLE_YES_NO:
             // This Yes/No is used for both the initial "delete move?" prompt
             // and for the "stop learning move?" prompt
             // What Yes/No do next is determined by tLearnMoveYesState / tLearnMoveNoState
-            if (JOY_NEW(DPAD_UP) && sEvoCursorPos != 0)
+            if (JOY_NEW(DPAD_UP) && gPosicionCursorSiNo == CURSOR_NO)
             {
                 // Moved onto YES
                 PlaySE(SE_SELECT);
-                BattleDestroyYesNoCursorAt(sEvoCursorPos);
-                sEvoCursorPos = 0;
-                BattleCreateYesNoCursorAt(0);
+                BattleDestroyYesNoCursorAt(gPosicionCursorSiNo);
+                gPosicionCursorSiNo = CURSOR_SI;
+                CreaCursorBatallaSiNo();
             }
-            if (JOY_NEW(DPAD_DOWN) && sEvoCursorPos == 0)
+            if (JOY_NEW(DPAD_DOWN) && gPosicionCursorSiNo == CURSOR_SI)
             {
                 // Moved onto NO
                 PlaySE(SE_SELECT);
-                BattleDestroyYesNoCursorAt(sEvoCursorPos);
-                sEvoCursorPos = 1;
-                BattleCreateYesNoCursorAt(1);
+                BattleDestroyYesNoCursorAt(gPosicionCursorSiNo);
+                gPosicionCursorSiNo = CURSOR_NO;
+                CreaCursorBatallaSiNo();
             }
             if (JOY_NEW(A_BUTTON))
             {
                 HandleBattleWindow(YESNOBOX_X_Y, WINDOW_CLEAR);
                 PlaySE(SE_SELECT);
 
-                if (sEvoCursorPos != 0)
+                if (gPosicionCursorSiNo == CURSOR_NO)
                 {
-                    // NO
                     gTasks[taskId].tLearnMoveState = gTasks[taskId].tLearnMoveNoState;
                 }
                 else
                 {
-                    // YES
                     gTasks[taskId].tLearnMoveState = gTasks[taskId].tLearnMoveYesState;
                     if (gTasks[taskId].tLearnMoveState == MVSTATE_SHOW_MOVE_SELECT)
                         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);

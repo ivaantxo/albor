@@ -1455,11 +1455,6 @@
 	.4byte \failInstr
 	.endm
 
-	@ Used to active a different Max Move effects.
-	.macro setmaxmoveeffect
-	callnative BS_SetMaxMoveEffect
-	.endm
-
 	.macro setsteelsurge, failInstr:req
 	callnative BS_SetSteelsurge
 	.4byte \failInstr
@@ -1485,17 +1480,8 @@
 	.4byte \ptr
 	.endm
 
-	.macro jumpiftargetdynamaxed, ptr:req
-	callnative BS_JumpIfDynamaxed
-	.4byte \ptr
-	.endm
-
 	.macro trytrainerslidemegaevolutionmsg
 	callnative BS_TryTrainerSlideMegaEvolutionMsg
-	.endm
-
-	.macro trytrainerslidedynamaxmsg
-	callnative BS_TryTrainerSlideDynamaxMsg
 	.endm
 
 	.macro tryhealpulse failInstr:req

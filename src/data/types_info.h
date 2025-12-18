@@ -38,7 +38,6 @@ const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS] =
     {
         .name = _("None"),
         .palette = 14,
-        .maxMove = MOVE_MAX_STRIKE,
         .paletteTMHM = gItemIconPalette_NormalTMHM,
         .useSecondTypeIconPalette = FALSE,
         .isSpecialCaseType = TRUE,
@@ -47,7 +46,6 @@ const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS] =
     {
         .name = _("Normal"),
         .palette = 14,
-        .maxMove = MOVE_MAX_STRIKE,
         .paletteTMHM = gItemIconPalette_NormalTMHM,
         .useSecondTypeIconPalette = FALSE,
         .isSpecialCaseType = FALSE,
@@ -59,7 +57,6 @@ const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS] =
     {
         .name = _("Lucha"),
         .palette = 14,
-        .maxMove = MOVE_MAX_KNUCKLE,
         .paletteTMHM = gItemIconPalette_FightingTMHM,
         .useSecondTypeIconPalette = FALSE,
         .isSpecialCaseType = FALSE,
@@ -75,7 +72,6 @@ const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS] =
     {
         .name = _("Volador"),
         .palette = 14,
-        .maxMove = MOVE_MAX_AIRSTREAM,
         .paletteTMHM = gItemIconPalette_FlyingTMHM,
         .useSecondTypeIconPalette = FALSE,
         .isSpecialCaseType = FALSE,
@@ -87,7 +83,6 @@ const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS] =
     {
         .name = _("Veneno"),
         .palette = 14,
-        .maxMove = MOVE_MAX_OOZE,
         .paletteTMHM = gItemIconPalette_PoisonTMHM,
         .useSecondTypeIconPalette = FALSE,
         .isSpecialCaseType = FALSE,
@@ -99,7 +94,6 @@ const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS] =
     {
         .name = _("Tierra"),
         .palette = 14,
-        .maxMove = MOVE_MAX_QUAKE,
         .paletteTMHM = gItemIconPalette_GroundTMHM,
         .useSecondTypeIconPalette = FALSE,
         .isSpecialCaseType = FALSE,
@@ -111,7 +105,6 @@ const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS] =
     {
         .name = _("Roca"),
         .palette = 15,
-        .maxMove = MOVE_MAX_ROCKFALL,
         .paletteTMHM = gItemIconPalette_RockTMHM,
         .useSecondTypeIconPalette = FALSE,
         .isSpecialCaseType = FALSE,
@@ -123,7 +116,6 @@ const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS] =
     {
         .name = _("Bicho"),
         .palette = 14,
-        .maxMove = MOVE_MAX_FLUTTERBY,
         .paletteTMHM = gItemIconPalette_BugTMHM,
         .useSecondTypeIconPalette = FALSE,
         .isSpecialCaseType = FALSE,
@@ -135,7 +127,6 @@ const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS] =
     {
         .name = _("Fantasma"),
         .palette = 14,
-        .maxMove = MOVE_MAX_PHANTASM,
         .paletteTMHM = gItemIconPalette_GhostTMHM,
         .useSecondTypeIconPalette = FALSE,
         .isSpecialCaseType = FALSE,
@@ -147,7 +138,6 @@ const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS] =
     {
         .name = _("Acero"),
         .palette = 14,
-        .maxMove = MOVE_MAX_STEELSPIKE,
         .paletteTMHM = gItemIconPalette_SteelTMHM,
         .useSecondTypeIconPalette = FALSE,
         .isSpecialCaseType = FALSE,
@@ -167,7 +157,6 @@ const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS] =
     {
         .name = _("Fuego"),
         .palette = 14,
-        .maxMove = MOVE_MAX_FLARE,
         .paletteTMHM = gItemIconPalette_FireTMHM,
         .useSecondTypeIconPalette = TRUE,
         .isSpecialCaseType = FALSE,
@@ -179,7 +168,6 @@ const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS] =
     {
         .name = _("Agua"),
         .palette = 14,
-        .maxMove = MOVE_MAX_GEYSER,
         .paletteTMHM = gItemIconPalette_WaterTMHM,
         .useSecondTypeIconPalette = TRUE,
         .isSpecialCaseType = FALSE,
@@ -191,7 +179,6 @@ const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS] =
     {
         .name = _("Planta"),
         .palette = 14,
-        .maxMove = MOVE_MAX_OVERGROWTH,
         .paletteTMHM = gItemIconPalette_GrassTMHM,
         .useSecondTypeIconPalette = TRUE,
         .isSpecialCaseType = FALSE,
@@ -203,7 +190,6 @@ const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS] =
     {
         .name = _("Eléctrico"),
         .palette = 15,
-        .maxMove = MOVE_MAX_LIGHTNING,
         .paletteTMHM = gItemIconPalette_ElectricTMHM,
         .useSecondTypeIconPalette = TRUE,
         .isSpecialCaseType = FALSE,
@@ -215,7 +201,6 @@ const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS] =
     {
         .name = _("Psíquico"),
         .palette = 15,
-        .maxMove = MOVE_MAX_MINDSTORM,
         .paletteTMHM = gItemIconPalette_PsychicTMHM,
         .useSecondTypeIconPalette = TRUE,
         .isSpecialCaseType = FALSE,
@@ -227,7 +212,6 @@ const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS] =
     {
         .name = _("Hielo"),
         .palette = 15,
-        .maxMove = MOVE_MAX_HAILSTORM,
         .paletteTMHM = gItemIconPalette_IceTMHM,
         .useSecondTypeIconPalette = TRUE,
         .isSpecialCaseType = FALSE,
@@ -239,7 +223,6 @@ const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS] =
     {
         .name = _("Dragón"),
         .palette = 15,
-        .maxMove = MOVE_MAX_WYRMWIND,
         .paletteTMHM = gItemIconPalette_DragonTMHM,
         .useSecondTypeIconPalette = TRUE,
         .isSpecialCaseType = FALSE,
@@ -251,7 +234,6 @@ const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS] =
     {
         .name = _("Siniestro"),
         .palette = 14,
-        .maxMove = MOVE_MAX_DARKNESS,
         .paletteTMHM = gItemIconPalette_DarkTMHM,
         .useSecondTypeIconPalette = TRUE,
         .isSpecialCaseType = FALSE,
@@ -263,7 +245,6 @@ const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS] =
     {
         .name = _("Hada"),
         .palette = 15,
-        .maxMove = MOVE_MAX_STARFALL,
         .paletteTMHM = gItemIconPalette_FairyTMHM,
         .useSecondTypeIconPalette = TRUE,
         .isSpecialCaseType = FALSE,

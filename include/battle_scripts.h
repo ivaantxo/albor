@@ -464,7 +464,6 @@ extern const u8 BattleScript_HealingWishActivates[];
 extern const u8 BattleScript_LunarDanceActivates[];
 extern const u8 BattleScript_ShellTrapSetUp[];
 extern const u8 BattleScript_StealthRockActivates[];
-extern const u8 BattleScript_CouldntFullyProtect[];
 extern const u8 BattleScript_MoveEffectStockpileWoreOff[];
 extern const u8 BattleScript_StealthRockActivates[];
 extern const u8 BattleScript_SpikesActivates[];
@@ -488,36 +487,6 @@ extern const u8 BattleScript_Terastallization[];
 extern const u8 BattleScript_BoosterEnergyEnd2[];
 extern const u8 BattleScript_TeraShellDistortingTypeMatchups[];
 extern const u8 BattleScript_TeraFormChange[];
-
-// max moves
-extern const u8 BattleScript_EffectRaiseStatAllies[];
-extern const u8 BattleScript_EffectLowerStatFoes[];
-extern const u8 BattleScript_EffectSetWeather[];
-extern const u8 BattleScript_EffectSetTerrain[];
-extern const u8 BattleScript_EffectStonesurge[];
-extern const u8 BattleScript_EffectSteelsurge[];
-extern const u8 BattleScript_SteelsurgeFree[];
-extern const u8 BattleScript_SteelsurgeDefog[];
-extern const u8 BattleScript_DamageNonTypesStarts[];
-extern const u8 BattleScript_DamageNonTypesContinues[];
-extern const u8 BattleScript_DefogTryHazards[];
-extern const u8 BattleScript_EffectAuroraVeilSuccess[];
-extern const u8 BattleScript_EffectGravitySuccess[];
-extern const u8 BattleScript_EffectYawnSuccess[];
-extern const u8 BattleScript_EffectTryReducePP[];
-extern const u8 BattleScript_EffectStatus1Foes[];
-extern const u8 BattleScript_EffectStatus2Foes[];
-extern const u8 BattleScript_TormentEnds[];
-extern const u8 BattleScript_EffectRaiseCritAlliesAnim[];
-extern const u8 BattleScript_EffectHealOneSixthAllies[];
-extern const u8 BattleScript_EffectCureStatusAllies[];
-extern const u8 BattleScript_EffectRecycleBerriesAllies[];
-extern const u8 BattleScript_RemoveGenericType[];
-
-// dynamax and max raids
-extern const u8 BattleScript_DynamaxBegins[];
-extern const u8 BattleScript_DynamaxEnds[];
-extern const u8 BattleScript_MoveBlockedByDynamax[];
 
 // Battle move scripts
 extern const u8 BattleScript_EffectSleep[];
@@ -792,7 +761,6 @@ extern const u8 BattleScript_EffectTakeHeart[];
 extern const u8 BattleScript_EffectCorrosiveGas[];
 extern const u8 BattleScript_EffectSaltCure[];
 extern const u8 BattleScript_EffectChillyReception[];
-extern const u8 BattleScript_EffectMaxMove[];
 extern const u8 BattleScript_EffectGlaiveRush[];
 extern const u8 BattleScript_EffectBrickBreak[];
 extern const u8 BattleScript_EffectDoodle[];

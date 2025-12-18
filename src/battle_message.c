@@ -744,21 +744,7 @@ static const u8 sText_AbilityWeakenedSurroundingMonsStat[] = _("{B_SCR_ACTIVE_NA
 static const u8 sText_AttackerGainedStrengthFromTheFallen[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} gained strength from the fallen!");
 static const u8 sText_PrepareShellTrap[] = _("{B_ATK_NAME_WITH_PREFIX} set a shell trap!");
 static const u8 sText_ShellTrapDidntWork[] = _("{B_ATK_NAME_WITH_PREFIX}'s shell trap didn't work!");
-static const u8 sText_SharpSteelFloats[] = _("Sharp-pointed pieces of steel started floating around {B_DEF_TEAM2} Pokémon!");
-static const u8 sText_SharpSteelDmg[] = _("The sharp steel bit into {B_DEF_NAME_WITH_PREFIX}!");
-static const u8 sText_PkmnBlewAwaySharpSteel[] = _("{B_ATK_NAME_WITH_PREFIX} blew away sharp steel!");
-static const u8 sText_SharpSteelDisappearedFromTeam[] = _("The pieces of steel surrounding {B_ATK_TEAM2} Pokémon disappeared!");
-static const u8 sText_TeamTrappedWithVines[] = _("{B_DEF_TEAM1} Pokémon got trapped with vines!");
-static const u8 sText_PkmnHurtByVines[] = _("{B_ATK_NAME_WITH_PREFIX} is hurt by G-Max Vine Lash's ferocious beating!");
-static const u8 sText_TeamCaughtInVortex[] = _("{B_DEF_TEAM1} Pokémon got caught in a vortex of water!");
-static const u8 sText_PkmnHurtByVortex[] = _("{B_ATK_NAME_WITH_PREFIX} is hurt by G-Max Cannonade's vortex!");
-static const u8 sText_TeamSurroundedByFire[] = _("{B_DEF_TEAM1} Pokémon were surrounded by fire!");
-static const u8 sText_PkmnBurningUp[] = _("{B_ATK_NAME_WITH_PREFIX} is burning up within G-Max Wildfire's flames!");
-static const u8 sText_TeamSurroundedByRocks[] = _("{B_DEF_TEAM1} Pokémon became surrounded by rocks!");
-static const u8 sText_PkmnHurtByRocksThrown[] = _("{B_ATK_NAME_WITH_PREFIX} is hurt by rocks thrown out by G-Max Volcalith!");
-static const u8 sText_CouldntFullyProtect[] = _("{B_DEF_NAME_WITH_PREFIX} couldn't fully protect itself and got hurt!");
 static const u8 sText_StockpiledEffectWoreOff[] = _("{B_ATK_NAME_WITH_PREFIX}'s stockpiled effect wore off!");
-static const u8 sText_MoveBlockedByDynamax[] = _("The move was blocked by the power of Dynamax!");
 static const u8 sText_PkmnRevivedReadyToFight[] = _("{B_BUFF1} was revived and is ready to fight again!");
 static const u8 sText_ItemRestoredSpeciesHealth[] = _("{B_BUFF1} had its HP restored.");
 static const u8 sText_ItemCuredSpeciesStatus[] = _("{B_BUFF1} had its status healed!");
@@ -814,7 +800,6 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_ZEROTOHEROTRANSFORMATION] = sText_ZeroToHeroTransformation,
     [STRINGID_COMMANDERACTIVATES] = sText_CommanderActivates,
     [STRINGID_PKMNTELLCHILLINGRECEPTIONJOKE] = sText_PkmnTellChillingReceptionJoke,
-    [STRINGID_MOVEBLOCKEDBYDYNAMAX] = sText_MoveBlockedByDynamax,
     [STRINGID_TARGETISHURTBYSALTCURE] = sText_TargetIsHurtBySaltCure,
     [STRINGID_TARGETISBEINGSALTCURED] = sText_TargetIsBeingSaltCured,
     [STRINGID_CURRENTMOVECANTSELECT] = sText_CurrentMoveCantSelect,
@@ -826,18 +811,6 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_ITEMRESTOREDSPECIESPP] = sText_ItemRestoredSpeciesPP,
     [STRINGID_PKMNREVIVEDREADYTOFIGHT] = sText_PkmnRevivedReadyToFight,
     [STRINGID_STOCKPILEDEFFECTWOREOFF] = sText_StockpiledEffectWoreOff,
-    [STRINGID_COULDNTFULLYPROTECT] = sText_CouldntFullyProtect,
-    [STRINGID_PKMNHURTBYROCKSTHROWN] = sText_PkmnHurtByRocksThrown,
-    [STRINGID_TEAMSURROUNDEDBYROCKS] = sText_TeamSurroundedByRocks,
-    [STRINGID_PKMNBURNINGUP] = sText_PkmnBurningUp,
-    [STRINGID_TEAMSURROUNDEDBYFIRE] = sText_TeamSurroundedByFire,
-    [STRINGID_PKMNHURTBYVORTEX] = sText_PkmnHurtByVortex,
-    [STRINGID_TEAMCAUGHTINVORTEX] = sText_TeamCaughtInVortex,
-    [STRINGID_PKMNHURTBYVINES] = sText_PkmnHurtByVines,
-    [STRINGID_TEAMTRAPPEDWITHVINES] = sText_TeamTrappedWithVines,
-    [STRINGID_PKMNBLEWAWAYSHARPSTEEL] = sText_PkmnBlewAwaySharpSteel,
-    [STRINGID_SHARPSTEELDMG] = sText_SharpSteelDmg,
-    [STRINGID_SHARPSTEELFLOATS] = sText_SharpSteelFloats,
     [STRINGID_ATTACKERGAINEDSTRENGTHFROMTHEFALLEN] = sText_AttackerGainedStrengthFromTheFallen,
     [STRINGID_ABILITYWEAKENEDSURROUNDINGMONSSTAT] = sText_AbilityWeakenedSurroundingMonsStat,
     [STRINGID_ELECTRICTERRAINACTIVATEDABILITY] = sText_ElectricTerrainActivatedAbility,
@@ -3065,7 +3038,6 @@ struct TrainerSlide
     const u8 *msgPlayerMonUnaffected;
     const u8 *msgMegaEvolution;
     const u8 *msgBeforeFirstTurn;
-    const u8 *msgDynamax;
 };
 
 static const struct TrainerSlide sTrainerSlides[] =
@@ -3084,7 +3056,6 @@ static const struct TrainerSlide sTrainerSlides[] =
         .msgPlayerMonUnaffected = sText_ButNoEffect,
         .msgMegaEvolution = sText_PowderExplodes,
         .msgBeforeFirstTurn = sText_GravityIntensified,
-        .msgDynamax = sText_TargetWokeUp,
     },
     */
 };
@@ -3239,14 +3210,6 @@ bool32 ShouldDoTrainerSlide(u32 battler, u32 which)
                 {
                     gBattleStruct->trainerSlideBeforeFirstTurnMsgDone = TRUE;
                     gBattleStruct->trainerSlideMsg = sTrainerSlides[i].msgBeforeFirstTurn;
-                    return TRUE;
-                }
-                break;
-            case TRAINER_SLIDE_DYNAMAX:
-                if (sTrainerSlides[i].msgDynamax != NULL && !gBattleStruct->trainerSlideDynamaxMsgDone)
-                {
-                    gBattleStruct->trainerSlideDynamaxMsgDone = TRUE;
-                    gBattleStruct->trainerSlideMsg = sTrainerSlides[i].msgDynamax;
                     return TRUE;
                 }
                 break;

@@ -493,4 +493,10 @@ enum ResultadosBatalla
 #define STARTING_STATUS_TAILWIND_PLAYER     8
 #define STARTING_STATUS_TAILWIND_OPPONENT   9
 
+enum PosicionesCursorSiNo
+{
+    CURSOR_SI,
+    CURSOR_NO,
+};
+
 #endif // GUARD_CONSTANTS_BATTLE_H

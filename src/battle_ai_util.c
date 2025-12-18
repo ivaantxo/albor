@@ -24,7 +24,7 @@
     u16 *moves = GetMovesArray(battler);                                                                        \
     for (i = 0; i < MAX_MON_MOVES; i++)                                                                         \
     {                                                                                                           \
-        if (moves[i] != MOVE_NONE && moves[i] != MOVE_UNAVAILABLE && gMovesInfo[moves[i]].flag)                 \
+        if (moves[i] != MOVE_NONE && gMovesInfo[moves[i]].flag)                                                 \
             return TRUE;                                                                                        \
     }                                                                                                           \
     return FALSE
@@ -169,13 +169,13 @@ static bool32 ShouldFailForIllusion(u32 illusionSpecies, u32 battlerId)
             continue;
 
         learnset = GetSpeciesLevelUpLearnset(illusionSpecies);
-        for (j = 0; learnset[j].move != MOVE_UNAVAILABLE; j++)
+        for (j = 0; learnset[j].move != MOVE_NONE; j++)
         {
             if (learnset[j].move == move)
                 break;
         }
         // The used move is in the learnsets of the fake species.
-        if (learnset[j].move != MOVE_UNAVAILABLE)
+        if (learnset[j].move != MOVE_NONE)
             continue;
 
         // The used move can be learned from Tm/Hm or Move Tutors.
@@ -333,7 +333,6 @@ bool32 MovesWithCategoryUnusable(u32 attacker, u32 target, u32 category)
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         if (moves[i] != MOVE_NONE
-            && moves[i] != MOVE_UNAVAILABLE
             && GetBattleMoveCategory(moves[i]) == category
             && !(unusable & (1u << i)))
         {
@@ -388,11 +387,6 @@ bool32 IsDamageMoveUnusable(u32 battlerAtk, u32 battlerDef, u32 move, u32 moveTy
         break;
     case EFFECT_LAST_RESORT:
         if (!CanUseLastResort(battlerAtk))
-            return TRUE;
-        break;
-    case EFFECT_LOW_KICK:
-    case EFFECT_HEAT_CRASH:
-        if (GetActiveGimmick(battlerDef) == GIMMICK_DYNAMAX)
             return TRUE;
         break;
     case EFFECT_FAIL_IF_NOT_ARG_TYPE:
@@ -1036,7 +1030,7 @@ bool32 CanTargetFaintAi(u32 battlerDef, u32 battlerAtk)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && moves[i] != MOVE_UNAVAILABLE && !(unusable & (1u << i))
+        if (moves[i] != MOVE_NONE && !(unusable & (1u << i))
             && AI_DATA->simulatedDmg[battlerDef][battlerAtk][i] >= gBattleMons[battlerAtk].hp
             && !CanEndureHit(battlerDef, battlerAtk, moves[i]))
         {
@@ -1075,7 +1069,7 @@ u32 GetBestDmgMoveFromBattler(u32 battlerAtk, u32 battlerDef)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && moves[i] != MOVE_UNAVAILABLE && !(unusable & (1u << i))
+        if (moves[i] != MOVE_NONE && !(unusable & (1u << i))
             && bestDmg < AI_DATA->simulatedDmg[battlerAtk][battlerDef][i])
         {
             bestDmg = AI_DATA->simulatedDmg[battlerAtk][battlerDef][i];
@@ -1095,7 +1089,6 @@ u32 GetBestDmgFromBattler(u32 battler, u32 battlerTarget)
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         if (moves[i] != MOVE_NONE
-         && moves[i] != MOVE_UNAVAILABLE
          && !(unusable & (1u << i))
          && bestDmg < AI_DATA->simulatedDmg[battler][battlerTarget][i])
         {
@@ -1116,7 +1109,7 @@ bool32 CanAIFaintTarget(u32 battlerAtk, u32 battlerDef, u32 numHits)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && moves[i] != MOVE_UNAVAILABLE && !(moveLimitations & (1u << i)))
+        if (moves[i] != MOVE_NONE && !(moveLimitations & (1u << i)))
         {
             // Use the pre-calculated value in simulatedDmg instead of re-calculating it
             dmg = AI_DATA->simulatedDmg[battlerAtk][battlerDef][i];
@@ -1167,7 +1160,7 @@ bool32 CanTargetFaintAiWithMod(u32 battlerDef, u32 battlerAtk, s32 hpMod, s32 dm
         if (dmgMod)
             dmg *= dmgMod;
 
-        if (moves[i] != MOVE_NONE && moves[i] != MOVE_UNAVAILABLE && !(unusable & (1u << i)) && dmg >= hpCheck)
+        if (moves[i] != MOVE_NONE && !(unusable & (1u << i)) && dmg >= hpCheck)
         {
             return TRUE;
         }
@@ -1838,7 +1831,7 @@ bool32 HasOnlyMovesWithCategory(u32 battlerId, u32 category, bool32 onlyOffensiv
     {
         if (onlyOffensive && IS_MOVE_STATUS(moves[i]))
             continue;
-        if (moves[i] != MOVE_NONE && moves[i] != MOVE_UNAVAILABLE && GetBattleMoveCategory(moves[i]) != category)
+        if (moves[i] != MOVE_NONE && GetBattleMoveCategory(moves[i]) != category)
             return FALSE;
     }
 
@@ -1852,7 +1845,7 @@ bool32 HasMoveWithCategory(u32 battler, u32 category)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && moves[i] != MOVE_UNAVAILABLE && GetBattleMoveCategory(moves[i]) == category)
+        if (moves[i] != MOVE_NONE && GetBattleMoveCategory(moves[i]) == category)
             return TRUE;
     }
     return FALSE;
@@ -1865,7 +1858,7 @@ bool32 HasMoveWithType(u32 battler, u32 type)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && moves[i] != MOVE_UNAVAILABLE && gMovesInfo[moves[i]].type == type)
+        if (moves[i] != MOVE_NONE && gMovesInfo[moves[i]].type == type)
             return TRUE;
     }
 
@@ -1879,7 +1872,7 @@ bool32 HasMoveEffect(u32 battlerId, u32 effect)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && moves[i] != MOVE_UNAVAILABLE
+        if (moves[i] != MOVE_NONE
             && gMovesInfo[moves[i]].effect == effect)
             return TRUE;
     }
@@ -1894,7 +1887,7 @@ bool32 HasMoveEffectANDArg(u32 battlerId, u32 effect, u32 argument)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && moves[i] != MOVE_UNAVAILABLE
+        if (moves[i] != MOVE_NONE
             && gMovesInfo[moves[i]].effect == effect
             && (gMovesInfo[moves[i]].argument & argument))
             return TRUE;
@@ -1910,7 +1903,7 @@ bool32 HasMoveWithAdditionalEffect(u32 battlerId, u32 moveEffect)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && moves[i] != MOVE_UNAVAILABLE
+        if (moves[i] != MOVE_NONE
             && MoveHasAdditionalEffect(moves[i], moveEffect))
             return TRUE;
     }
@@ -1925,7 +1918,7 @@ bool32 HasMoveWithCriticalHitChance(u32 battlerId)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && moves[i] != MOVE_UNAVAILABLE
+        if (moves[i] != MOVE_NONE
             && gMovesInfo[moves[i]].criticalHitStage > 0)
             return TRUE;
     }
@@ -1940,7 +1933,7 @@ bool32 HasMoveWithMoveEffectExcept(u32 battlerId, u32 moveEffect, u32 exception)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && moves[i] != MOVE_UNAVAILABLE
+        if (moves[i] != MOVE_NONE
             && gMovesInfo[moves[i]].effect != exception
             && MoveHasAdditionalEffect(moves[i], moveEffect))
             return TRUE;
@@ -1956,7 +1949,7 @@ bool32 HasMove(u32 battlerId, u32 move)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && moves[i] != MOVE_UNAVAILABLE && moves[i] == move)
+        if (moves[i] != MOVE_NONE && moves[i] == move)
             return TRUE;
     }
 
@@ -1985,7 +1978,7 @@ bool32 HasMoveThatLowersOwnStats(u32 battlerId)
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         aiMove = moves[i];
-        if (aiMove != MOVE_NONE && aiMove != MOVE_UNAVAILABLE)
+        if (aiMove != MOVE_NONE)
         {
             for (j = 0; j < gMovesInfo[aiMove].numAdditionalEffects; j++)
             {
@@ -2005,7 +1998,7 @@ bool32 HasMoveWithLowAccuracy(u32 battlerAtk, u32 battlerDef, u32 accCheck, bool
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] == MOVE_NONE || moves[i] == MOVE_UNAVAILABLE)
+        if (moves[i] == MOVE_NONE)
             continue;
 
         if (!((1u << i) & moveLimitations))
@@ -2056,7 +2049,7 @@ bool32 HasHealingEffect(u32 battlerId)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && moves[i] != MOVE_UNAVAILABLE && IsHealingMove(moves[i]))
+        if (moves[i] != MOVE_NONE && IsHealingMove(moves[i]))
             return TRUE;
     }
 
@@ -2084,7 +2077,7 @@ bool32 HasTrappingMoveEffect(u32 battler)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && moves[i] != MOVE_UNAVAILABLE && IsTrappingMove(moves[i]))
+        if (moves[i] != MOVE_NONE && IsTrappingMove(moves[i]))
             return TRUE;
     }
 
@@ -2255,7 +2248,7 @@ bool32 HasDamagingMove(u32 battlerId)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && moves[i] != MOVE_UNAVAILABLE && !IS_MOVE_STATUS(moves[i]))
+        if (moves[i] != MOVE_NONE && !IS_MOVE_STATUS(moves[i]))
             return TRUE;
     }
 
@@ -2269,7 +2262,7 @@ bool32 HasDamagingMoveOfType(u32 battlerId, u32 type)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && moves[i] != MOVE_UNAVAILABLE
+        if (moves[i] != MOVE_NONE
           && gMovesInfo[moves[i]].type == type && !IS_MOVE_STATUS(moves[i]))
             return TRUE;
     }
@@ -2289,7 +2282,7 @@ bool32 HasHighCritRatioMove(u32 battler)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && moves[i] != MOVE_UNAVAILABLE && gMovesInfo[moves[i]].criticalHitStage > 0)
+        if (moves[i] != MOVE_NONE && gMovesInfo[moves[i]].criticalHitStage > 0)
             return TRUE;
     }
 
@@ -2325,7 +2318,7 @@ static u32 GetLeechSeedDamage(u32 battlerId)
     if ((gStatuses3[battlerId] & STATUS3_LEECHSEED)
      && gBattleMons[gStatuses3[battlerId] & STATUS3_LEECHSEED_BATTLER].hp != 0)
      {
-        damage = GetNonDynamaxMaxHP(battlerId) / 8;
+        damage = CuantosPSMaximos(battlerId) / 8;
         if (damage == 0)
             damage = 1;
      }
@@ -2337,7 +2330,7 @@ static u32 GetNightmareDamage(u32 battlerId)
     u32 damage = 0;
     if ((gBattleMons[battlerId].status2 & STATUS2_NIGHTMARE) && gBattleMons[battlerId].status1 & STATUS1_SLEEP)
     {
-        damage = GetNonDynamaxMaxHP(battlerId) / 4;
+        damage = CuantosPSMaximos(battlerId) / 4;
         if (damage == 0)
             damage = 1;
     }
@@ -2349,7 +2342,7 @@ static u32 GetCurseDamage(u32 battlerId)
     u32 damage = 0;
     if (gBattleMons[battlerId].status2 & STATUS2_CURSED)
     {
-        damage = GetNonDynamaxMaxHP(battlerId) / 4;
+        damage = CuantosPSMaximos(battlerId) / 4;
         if (damage == 0)
             damage = 1;
     }
@@ -2364,9 +2357,9 @@ static u32 GetTrapDamage(u32 battlerId)
     if (gBattleMons[battlerId].status2 & STATUS2_WRAPPED)
     {
         if (holdEffect == HOLD_EFFECT_BINDING_BAND)
-            damage = GetNonDynamaxMaxHP(battlerId) / (B_BINDING_DAMAGE >= GEN_6 ? 6 : 8);
+            damage = CuantosPSMaximos(battlerId) / (B_BINDING_DAMAGE >= GEN_6 ? 6 : 8);
         else
-            damage = GetNonDynamaxMaxHP(battlerId) / (B_BINDING_DAMAGE >= GEN_6 ? 8 : 16);
+            damage = CuantosPSMaximos(battlerId) / (B_BINDING_DAMAGE >= GEN_6 ? 8 : 16);
 
         if (damage == 0)
             damage = 1;
@@ -2436,7 +2429,7 @@ static u32 GetWeatherDamage(u32 battlerId)
           && !(gStatuses3[battlerId] & (STATUS3_UNDERGROUND | STATUS3_UNDERWATER))
           && holdEffect != HOLD_EFFECT_SAFETY_GOGGLES)
         {
-            damage = GetNonDynamaxMaxHP(battlerId) / 16;
+            damage = CuantosPSMaximos(battlerId) / 16;
             if (damage == 0)
                 damage = 1;
         }
@@ -2447,7 +2440,7 @@ static u32 GetWeatherDamage(u32 battlerId)
           && !(gStatuses3[battlerId] & (STATUS3_UNDERGROUND | STATUS3_UNDERWATER))
           && holdEffect != HOLD_EFFECT_SAFETY_GOGGLES)
         {
-            damage = GetNonDynamaxMaxHP(battlerId) / 16;
+            damage = CuantosPSMaximos(battlerId) / 16;
             if (damage == 0)
                 damage = 1;
         }

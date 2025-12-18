@@ -23,7 +23,6 @@
 #include "constants/songs.h"
 
 // function declarations
-static void AnimTask_DynamaxGrowthStep(u8 taskId);
 static void SpriteCB_SpriteToCentreOfSide(struct Sprite *sprite);
 static void SpriteCB_SpriteOnMonForDuration(struct Sprite *sprite);
 static void SpriteCB_ToxicThreadWrap(struct Sprite *sprite);
@@ -8263,33 +8262,6 @@ void AnimTask_FadeOutParticles(u8 taskId)
     gTasks[taskId].func = AnimTask_FadeOutParticlesHelper;
 }
 
-
-static const union AffineAnimCmd sShellSmashShrinkAffineAnimCmds[] =
-{
-    AFFINEANIMCMD_FRAME(64, 64, 0, 16), //Flatten
-    AFFINEANIMCMD_FRAME(0, 0, 0, 48),
-    AFFINEANIMCMD_FRAME(-64, -64, 0, 16),
-    AFFINEANIMCMD_END,
-};
-//Shrinks the attacker, pauses, then scales up the attacker again
-void AnimTask_ShellSmashShrinkAttacker(u8 taskId)
-{
-    struct Task* task = &gTasks[taskId];
-    u32 spriteId;
-
-    task->data[0] = gBattleAnimArgs[0]; //Pause
-    spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
-    PrepareAffineAnimInTaskData(task, spriteId, sShellSmashShrinkAffineAnimCmds);
-    task->func = AnimTask_DynamaxGrowthStep;
-}
-
-static void AnimTask_DynamaxGrowthStep(u8 taskId) // from CFRU
-{
-    struct Task* task = &gTasks[taskId];
-    if (!RunAffineAnimFromTaskData(task))
-        DestroyAnimVisualTask(taskId);
-}
-
 void AnimTask_AllBattlersInvisible(u8 taskId)
 {
     u32 i, spriteId;
@@ -8973,50 +8945,6 @@ static void SpriteCB_DragonEnergyShot(struct Sprite* sprite)
     StoreSpriteCallbackInData6(sprite, DestroySpriteAndMatrix);
 }
 
-//Moves the butterflies created in Max Flutterby
-//arg 0: initial x pixel offset
-//arg 1: initial y pixel offset
-//arg 2: wave amplitude
-static void SpriteCB_MaxFlutterby(struct Sprite* sprite)
-{
-    InitSpritePosToAnimAttacker(sprite, FALSE);
-
-    sprite->data[0] = 0x10; //Speed delay
-    sprite->data[2] = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X_2); //Target X
-    sprite->data[4] = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y_PIC_OFFSET); //Target Y
-    sprite->data[5] = gBattleAnimArgs[2]; //Wave amplitude
-
-    sprite->callback = SpriteCB_MaxFlutterbyStep1;
-}
-
-//The butterflies prepare to move towards the target
-static void SpriteCB_MaxFlutterbyStep1(struct Sprite* sprite)
-{
-    if (!FuncIsActiveTask(AnimTask_DynamaxGrowthStep))
-    {
-        if (gAnimMoveIndex != MOVE_INFERNAL_PARADE)
-            PlaySE(SE_M_SAND_ATTACK);
-
-        StartSpriteAffineAnim(sprite, 1);
-        InitAnimArcTranslation(sprite);
-        sprite->callback = SpriteCB_MaxFlutterbyStep2;
-    }
-}
-
-//Destroys the butterflies when they reach the target
-static void SpriteCB_MaxFlutterbyStep2(struct Sprite* sprite)
-{
-    sprite->invisible = FALSE;
-
-    if (TranslateAnimHorizontalArc(sprite))
-    {
-        if (gAnimMoveIndex == MOVE_INFERNAL_PARADE)
-            PlaySE(SE_M_FLAME_WHEEL2);
-
-        DestroySpriteAndMatrix(sprite);
-    }
-}
-
 //Moves the ice lance for Glacial Lance
 //arg 0: initial x pixel offset (from attacker)
 //arg 1: initial y pixel offset (from attacker)
@@ -9097,36 +9025,6 @@ static void SpriteCB_TripleArrowKick(struct Sprite* sprite)
 
     InitAnimArcTranslation(sprite);
     sprite->callback = SpriteCB_PowerShiftBallStep; //Arc until complete
-}
-
-// DYNAMAX
-static const union AffineAnimCmd sDynamaxGrowthAffineAnimCmds[] = // from CFRU
-{
-    AFFINEANIMCMD_FRAME(-2, -2, 0, 64), //Double in size over 1 second
-    AFFINEANIMCMD_FRAME(0, 0, 0, 64), //Pause for 1 seconds
-    AFFINEANIMCMD_FRAME(16, 16, 0, 8), //Shrink back down in 1/8 of a second
-    AFFINEANIMCMD_END,
-};
-
-static const union AffineAnimCmd sDynamaxGrowthAttackAnimationAffineAnimCmds[] =
-{
-    AFFINEANIMCMD_FRAME(-4, -4, 0, 32), //Double in size quicker
-    AFFINEANIMCMD_FRAME(0, 0, 0, 32), //Pause for less
-    AFFINEANIMCMD_FRAME(16, 16, 0, 8),
-    AFFINEANIMCMD_END,
-};
-
-//Arg 0: Animation for attack
-void AnimTask_DynamaxGrowth(u8 taskId) // from CFRU
-{
-    struct Task* task = &gTasks[taskId];
-    u32 spriteId = GetAnimBattlerSpriteId(ANIM_ATTACKER);
-
-    if (gBattleAnimArgs[0] == 0)
-        PrepareAffineAnimInTaskData(task, spriteId, sDynamaxGrowthAffineAnimCmds);
-    else
-        PrepareAffineAnimInTaskData(task, spriteId, sDynamaxGrowthAttackAnimationAffineAnimCmds);
-    task->func = AnimTask_DynamaxGrowthStep;
 }
 
 void AnimTask_GetWeatherToSet(u8 taskId)

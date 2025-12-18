@@ -685,8 +685,6 @@ static bool32 FindMonWithFlagsAndSuperEffective(u32 battler, u16 flags, u32 perc
 
     if (gLastLandedMoves[battler] == MOVE_NONE)
         return FALSE;
-    if (gLastLandedMoves[battler] == MOVE_UNAVAILABLE)
-        return FALSE;
     if (gLastHitBy[battler] == 0xFF)
         return FALSE;
     if (IS_MOVE_STATUS(gLastLandedMoves[battler]))

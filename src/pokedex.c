@@ -3530,7 +3530,7 @@ static bool8 CalculateMoves(void)
         movesTotal++;
     }
 
-    for (i = 0; teachableLearnset[i] != MOVE_UNAVAILABLE; i++)
+    for (i = 0; teachableLearnset[i] != MOVE_NONE; i++)
     {
         move = teachableLearnset[i];
         for (j = 0; j < NUM_TECHNICAL_MACHINES + NUM_HIDDEN_MACHINES; j++)
@@ -3547,7 +3547,7 @@ static bool8 CalculateMoves(void)
         }
     }
 
-    for (i = 0; teachableLearnset[i] != MOVE_UNAVAILABLE; i++)
+    for (i = 0; teachableLearnset[i] != MOVE_NONE; i++)
     {
         move = teachableLearnset[i];
         for (j = 0; j < NUM_TECHNICAL_MACHINES + NUM_HIDDEN_MACHINES; j++)

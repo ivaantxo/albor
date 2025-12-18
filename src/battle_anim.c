@@ -217,7 +217,6 @@ static const u8* const sBattleAnims_General[NUM_B_ANIMS_GENERAL] =
     [B_ANIM_SNOW_CONTINUES]         = gBattleAnimGeneral_Snow,
     [B_ANIM_ULTRA_BURST]            = gBattleAnimGeneral_UltraBurst,
     [B_ANIM_SALT_CURE_DAMAGE]       = gBattleAnimGeneral_SaltCureDamage,
-    [B_ANIM_DYNAMAX_GROWTH]         = gBattleAnimGeneral_DynamaxGrowth,
     [B_ANIM_MAX_SET_WEATHER]        = gBattleAnimGeneral_SetWeather,
     [B_ANIM_RAINBOW]                = gBattleAnimGeneral_Rainbow,
     [B_ANIM_SEA_OF_FIRE]            = gBattleAnimGeneral_SeaOfFire,

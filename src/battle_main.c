@@ -174,6 +174,7 @@ EWRAM_DATA struct DisableStruct gDisableStructs[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA u16 gPauseCounterBattle = 0;
 EWRAM_DATA u16 gPaydayMoney = 0;
 EWRAM_DATA u8 gBattleCommunication[BATTLE_COMMUNICATION_ENTRIES_COUNT] = {0};
+EWRAM_DATA u8 gPosicionCursorSiNo = CURSOR_SI;
 EWRAM_DATA u8 gBattleOutcome = 0;
 EWRAM_DATA struct ProtectStruct gProtectStructs[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA struct SpecialStatus gSpecialStatuses[MAX_BATTLERS_COUNT] = {0};
@@ -212,7 +213,6 @@ COMMON_DATA void (*gBattleMainFunc)(void) = NULL;
 COMMON_DATA struct BattleResults gBattleResults = {0};
 COMMON_DATA u8 gLeveledUpInBattle = 0;
 COMMON_DATA u8 gHealthboxSpriteIds[MAX_BATTLERS_COUNT] = {0};
-COMMON_DATA u8 gMultiUsePlayerCursor = 0;
 COMMON_DATA u8 gNumberOfMovesToChoose = 0;
 
 static const struct ParametrosDistorsionFondo sIntroScanlineParams16Bit =
@@ -1157,7 +1157,7 @@ void BeginBattleIntroDummy(void)
 void BeginBattleIntro(void)
 {
     BattleStartClearSetData();
-    gBattleCommunication[CURSOR_POSITION] = 0;
+    gPosicionCursorSiNo = CURSOR_SI;
     gBattleStruct->estadoIntro = ESTADO_INTRO_BATALLA_OBTEN_DATOS_POKEMON;
     gBattleMainFunc = DoBattleIntro;
 }
@@ -1581,7 +1581,7 @@ static void DoBattleIntro(void)
     switch (gBattleStruct->estadoIntro)
     {
     case ESTADO_INTRO_BATALLA_OBTEN_DATOS_POKEMON:
-        battler = gBattleCommunication[CURSOR_POSITION];
+        battler = gPosicionCursorSiNo // Esto no puede ser, comprobar;
         BtlController_EmitGetMonData(battler, BUFFER_A, REQUEST_ALL_BATTLE, 0);
         MarkBattlerForControllerExec(battler);
         gBattleStruct->estadoIntro++;
@@ -1602,7 +1602,7 @@ static void DoBattleIntro(void)
             BtlController_EmitIntroSlide(battler, BUFFER_A, gBattleTerrain);
             MarkBattlerForControllerExec(battler);
             gBattleCommunication[MULTIUSE_STATE] = 0;
-            gBattleCommunication[CURSOR_POSITION] = 0;
+            gPosicionCursorSiNo = 0;
             gBattleStruct->estadoIntro++;
         }
         break;

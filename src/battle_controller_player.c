@@ -418,10 +418,10 @@ void HandleInputChooseTarget(u32 battler)
     u16 move = GetMonData(&gPlayerParty[gBattlerPartyIndexes[battler]], MON_DATA_MOVE1 + gMoveSelectionCursor[battler]);
     u16 moveTarget = GetBattlerMoveTargetType(battler, move);
 
-    DoBounceEffect(gMultiUsePlayerCursor, BOUNCE_HEALTHBOX, 15, 1);
+    DoBounceEffect(gPosicionCursorSiNo, BOUNCE_HEALTHBOX, 15, 1); // REVISAR
     for (i = 0; i < gBattlersCount; i++)
     {
-        if (i != gMultiUsePlayerCursor)
+        if (i != gPosicionCursorSiNo)
             EndBounceEffect(i, BOUNCE_HEALTHBOX);
     }
 
@@ -430,12 +430,12 @@ void HandleInputChooseTarget(u32 battler)
     if (JOY_NEW(A_BUTTON))
     {
         PlaySE(SE_SELECT);
-        gSprites[gBattlerSpriteIds[gMultiUsePlayerCursor]].callback = SpriteCB_HideAsMoveTarget;
+        gSprites[gBattlerSpriteIds[gPosicionCursorSiNo]].callback = SpriteCB_HideAsMoveTarget;
         if (gBattleStruct->gimmick.playerSelect)
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | RET_GIMMICK | (gMultiUsePlayerCursor << 8));
+            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | RET_GIMMICK | (gPosicionCursorSiNo << 8));
         else
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | (gMultiUsePlayerCursor << 8));
-        EndBounceEffect(gMultiUsePlayerCursor, BOUNCE_HEALTHBOX);
+            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
+        EndBounceEffect(gPosicionCursorSiNo, BOUNCE_HEALTHBOX);
         TryHideLastUsedBall();
         HideGimmickTriggerSprite();
         PlayerBufferExecCompleted(battler);
@@ -464,26 +464,26 @@ void HandleInputChooseTarget(u32 battler)
     else if (JOY_NEW(B_BUTTON) || gPlayerDpadHoldFrames > 59)
     {
         PlaySE(SE_SELECT);
-        gSprites[gBattlerSpriteIds[gMultiUsePlayerCursor]].callback = SpriteCB_HideAsMoveTarget;
+        gSprites[gBattlerSpriteIds[gPosicionCursorSiNo]].callback = SpriteCB_HideAsMoveTarget;
         gBattlerControllerFuncs[battler] = HandleInputChooseMove;
         DoBounceEffect(battler, BOUNCE_HEALTHBOX, 7, 1);
         DoBounceEffect(battler, BOUNCE_MON, 7, 1);
-        EndBounceEffect(gMultiUsePlayerCursor, BOUNCE_HEALTHBOX);
+        EndBounceEffect(gPosicionCursorSiNo, BOUNCE_HEALTHBOX);
     }
     else if (JOY_NEW(DPAD_LEFT | DPAD_UP))
     {
         PlaySE(SE_SELECT);
-        gSprites[gBattlerSpriteIds[gMultiUsePlayerCursor]].callback = SpriteCB_HideAsMoveTarget;
+        gSprites[gBattlerSpriteIds[gPosicionCursorSiNo]].callback = SpriteCB_HideAsMoveTarget;
 
         if (moveTarget == (MOVE_TARGET_USER | MOVE_TARGET_ALLY))
         {
-            gMultiUsePlayerCursor ^= BIT_FLANK;
+            gPosicionCursorSiNo ^= BIT_FLANK;
         }
         else
         {
             do
             {
-                u8 currSelIdentity = GetBattlerPosition(gMultiUsePlayerCursor);
+                u8 currSelIdentity = GetBattlerPosition(gPosicionCursorSiNo);
 
                 for (i = 0; i < MAX_BATTLERS_COUNT; i++)
                 {
@@ -494,15 +494,15 @@ void HandleInputChooseTarget(u32 battler)
                 {
                     if (--i < 0)
                         i = MAX_BATTLERS_COUNT - 1;
-                    gMultiUsePlayerCursor = GetBattlerAtPosition(identities[i]);
-                } while (gMultiUsePlayerCursor == gBattlersCount);
+                    gPosicionCursorSiNo = GetBattlerAtPosition(identities[i]);
+                } while (gPosicionCursorSiNo == gBattlersCount);
 
                 i = 0;
-                switch (GetBattlerPosition(gMultiUsePlayerCursor))
+                switch (GetBattlerPosition(gPosicionCursorSiNo))
                 {
                 case B_POSITION_PLAYER_LEFT:
                 case B_POSITION_PLAYER_RIGHT:
-                    if (battler != gMultiUsePlayerCursor)
+                    if (battler != gPosicionCursorSiNo)
                         i++;
                     else if (moveTarget & MOVE_TARGET_USER_OR_SELECTED)
                         i++;
@@ -513,27 +513,27 @@ void HandleInputChooseTarget(u32 battler)
                     break;
                 }
 
-                if (gAbsentBattlerFlags & (1u << gMultiUsePlayerCursor)
-                 || !CanTargetBattler(battler, gMultiUsePlayerCursor, move))
+                if (gAbsentBattlerFlags & (1u << gPosicionCursorSiNo)
+                 || !CanTargetBattler(battler, gPosicionCursorSiNo, move))
                     i = 0;
             } while (i == 0);
         }
-        gSprites[gBattlerSpriteIds[gMultiUsePlayerCursor]].callback = SpriteCB_ShowAsMoveTarget;
+        gSprites[gBattlerSpriteIds[gPosicionCursorSiNo]].callback = SpriteCB_ShowAsMoveTarget;
     }
     else if (JOY_NEW(DPAD_RIGHT | DPAD_DOWN))
     {
         PlaySE(SE_SELECT);
-        gSprites[gBattlerSpriteIds[gMultiUsePlayerCursor]].callback = SpriteCB_HideAsMoveTarget;
+        gSprites[gBattlerSpriteIds[gPosicionCursorSiNo]].callback = SpriteCB_HideAsMoveTarget;
 
         if (moveTarget == (MOVE_TARGET_USER | MOVE_TARGET_ALLY))
         {
-            gMultiUsePlayerCursor ^= BIT_FLANK;
+            gPosicionCursorSiNo ^= BIT_FLANK;
         }
         else
         {
             do
             {
-                u8 currSelIdentity = GetBattlerPosition(gMultiUsePlayerCursor);
+                u8 currSelIdentity = GetBattlerPosition(gPosicionCursorSiNo);
 
                 for (i = 0; i < MAX_BATTLERS_COUNT; i++)
                 {
@@ -544,15 +544,15 @@ void HandleInputChooseTarget(u32 battler)
                 {
                     if (++i > 3)
                         i = 0;
-                    gMultiUsePlayerCursor = GetBattlerAtPosition(identities[i]);
-                } while (gMultiUsePlayerCursor == gBattlersCount);
+                    gPosicionCursorSiNo = GetBattlerAtPosition(identities[i]);
+                } while (gPosicionCursorSiNo == gBattlersCount);
 
                 i = 0;
-                switch (GetBattlerPosition(gMultiUsePlayerCursor))
+                switch (GetBattlerPosition(gPosicionCursorSiNo))
                 {
                 case B_POSITION_PLAYER_LEFT:
                 case B_POSITION_PLAYER_RIGHT:
-                    if (battler != gMultiUsePlayerCursor)
+                    if (battler != gPosicionCursorSiNo)
                         i++;
                     else if (moveTarget & MOVE_TARGET_USER_OR_SELECTED)
                         i++;
@@ -563,13 +563,13 @@ void HandleInputChooseTarget(u32 battler)
                     break;
                 }
 
-                if (gAbsentBattlerFlags & (1u << gMultiUsePlayerCursor)
-                 || !CanTargetBattler(battler, gMultiUsePlayerCursor, move))
+                if (gAbsentBattlerFlags & (1u << gPosicionCursorSiNo)
+                 || !CanTargetBattler(battler, gPosicionCursorSiNo, move))
                     i = 0;
             } while (i == 0);
         }
 
-        gSprites[gBattlerSpriteIds[gMultiUsePlayerCursor]].callback = SpriteCB_ShowAsMoveTarget;
+        gSprites[gBattlerSpriteIds[gPosicionCursorSiNo]].callback = SpriteCB_ShowAsMoveTarget;
     }
 }
 
@@ -608,9 +608,9 @@ void HandleInputShowEntireFieldTargets(u32 battler)
         PlaySE(SE_SELECT);
         HideAllTargets();
         if (gBattleStruct->gimmick.playerSelect)
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | RET_GIMMICK | (gMultiUsePlayerCursor << 8));
+            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | RET_GIMMICK | (gPosicionCursorSiNo << 8));
         else
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | (gMultiUsePlayerCursor << 8));
+            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
         HideGimmickTriggerSprite();
         PlayerBufferExecCompleted(battler);
         if (sIconTypeId[0] != 0xFF)
@@ -654,9 +654,9 @@ void HandleInputShowTargets(u32 battler)
         PlaySE(SE_SELECT);
         HideShownTargets(battler);
         if (gBattleStruct->gimmick.playerSelect)
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | RET_GIMMICK | (gMultiUsePlayerCursor << 8));
+            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | RET_GIMMICK | (gPosicionCursorSiNo << 8));
         else
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | (gMultiUsePlayerCursor << 8));
+            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
         HideGimmickTriggerSprite();
         TryHideLastUsedBall();
         PlayerBufferExecCompleted(battler);
@@ -715,14 +715,10 @@ void HandleInputChooseMove(u32 battler)
 
         moveTarget = GetBattlerMoveTargetType(battler, moveInfo->moves[gMoveSelectionCursor[battler]]);
 
-        // Status moves turn into Max Guard when Dynamaxed, targets user.
-        if (GetActiveGimmick(battler) == GIMMICK_DYNAMAX || IsGimmickSelected(battler, GIMMICK_DYNAMAX))
-            moveTarget = gMovesInfo[GetMaxMove(battler, moveInfo->moves[gMoveSelectionCursor[battler]])].target;
-
         if (moveTarget & MOVE_TARGET_USER)
-            gMultiUsePlayerCursor = battler;
+            gPosicionCursorSiNo = battler;
         else
-            gMultiUsePlayerCursor = GetBattlerAtPosition(BATTLE_OPPOSITE(GetBattlerSide(battler)));
+            gPosicionCursorSiNo = GetBattlerAtPosition(BATTLE_OPPOSITE(GetBattlerSide(battler)));
 
         if (!gBattleResources->bufferA[battler][1]) // not a double battle
         {
@@ -742,7 +738,7 @@ void HandleInputChooseMove(u32 battler)
             }
             else if (!(moveTarget & (MOVE_TARGET_USER | MOVE_TARGET_USER_OR_SELECTED)) && CountAliveMonsInBattle(BATTLE_ALIVE_EXCEPT_BATTLER, battler) <= 1)
             {
-                gMultiUsePlayerCursor = GetDefaultMoveTarget(battler);
+                gPosicionCursorSiNo = GetDefaultMoveTarget(battler);
                 canSelectTarget = 0;
             }
 
@@ -759,8 +755,8 @@ void HandleInputChooseMove(u32 battler)
                 }
                 else if (moveTarget & (MOVE_TARGET_OPPONENTS_FIELD | MOVE_TARGET_BOTH | MOVE_TARGET_FOES_AND_ALLY))
                 {
-                    TryShowAsTarget(gMultiUsePlayerCursor);
-                    TryShowAsTarget(BATTLE_PARTNER(gMultiUsePlayerCursor));
+                    TryShowAsTarget(gPosicionCursorSiNo);
+                    TryShowAsTarget(BATTLE_PARTNER(gPosicionCursorSiNo));
                     if (moveTarget & MOVE_TARGET_FOES_AND_ALLY)
                         TryShowAsTarget(BATTLE_PARTNER(battler));
                     canSelectTarget = 2;
@@ -773,9 +769,9 @@ void HandleInputChooseMove(u32 battler)
         case 0:
         default:
             if (gBattleStruct->gimmick.playerSelect)
-                BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | RET_GIMMICK | (gMultiUsePlayerCursor << 8));
+                BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | RET_GIMMICK | (gPosicionCursorSiNo << 8));
             else
-                BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | (gMultiUsePlayerCursor << 8));
+                BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
             HideGimmickTriggerSprite();
             TryHideLastUsedBall();
             PlayerBufferExecCompleted(battler);
@@ -805,13 +801,13 @@ void HandleInputChooseMove(u32 battler)
             gBattlerControllerFuncs[battler] = HandleInputChooseTarget;
 
             if (moveTarget & (MOVE_TARGET_USER | MOVE_TARGET_USER_OR_SELECTED))
-                gMultiUsePlayerCursor = battler;
+                gPosicionCursorSiNo = battler;
             else if (gAbsentBattlerFlags & (1u << GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)))
-                gMultiUsePlayerCursor = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
+                gPosicionCursorSiNo = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
             else
-                gMultiUsePlayerCursor = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+                gPosicionCursorSiNo = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
 
-            gSprites[gBattlerSpriteIds[gMultiUsePlayerCursor]].callback = SpriteCB_ShowAsMoveTarget;
+            gSprites[gBattlerSpriteIds[gPosicionCursorSiNo]].callback = SpriteCB_ShowAsMoveTarget;
             break;
         case 2:
             gBattlerControllerFuncs[battler] = HandleInputShowTargets;
@@ -1103,8 +1099,6 @@ static void Task_GiveExpToMon(u8 taskId)
         if (currExp + gainedExp >= nextLvlExp)
         {
             SetMonData(mon, MON_DATA_EXP, &nextLvlExp);
-            gBattleStruct->dynamax.levelUpHP = GetMonData(mon, MON_DATA_HP) \
-                + UQ_4_12_TO_INT((gBattleScripting.levelUpHP * UQ_4_12(1.5)) + UQ_4_12_ROUND);
             CalculateMonStats(mon);
 
             gainedExp -= nextLvlExp - currExp;
@@ -1178,17 +1172,7 @@ static void Task_GiveExpWithExpBar(u8 taskId)
             if (currExp + gainedExp >= expOnNextLvl)
             {
                 SetMonData(&gPlayerParty[monId], MON_DATA_EXP, &expOnNextLvl);
-                gBattleStruct->dynamax.levelUpHP = GetMonData(&gPlayerParty[monId], MON_DATA_HP) \
-                    + UQ_4_12_TO_INT((gBattleScripting.levelUpHP * UQ_4_12(1.5)) + UQ_4_12_ROUND);
                 CalculateMonStats(&gPlayerParty[monId]);
-
-                // Reapply Dynamax HP multiplier after stats are recalculated.
-                if (GetActiveGimmick(battler) == GIMMICK_DYNAMAX && monId == gBattlerPartyIndexes[battler])
-                {
-                    ApplyDynamaxHPMultiplier(battler, &gPlayerParty[monId]);
-                    gBattleMons[battler].hp = gBattleStruct->dynamax.levelUpHP;
-                    SetMonData(&gPlayerParty[monId], MON_DATA_HP, &gBattleMons[battler].hp);
-                }
 
                 gainedExp -= expOnNextLvl - currExp;
                 BtlController_EmitTwoReturnValues(battler, BUFFER_B, RET_VALUE_LEVELED_UP, gainedExp);
@@ -1290,26 +1274,26 @@ static void CompleteWhenChoseItem(u32 battler)
 
 static void PlayerHandleYesNoInput(u32 battler)
 {
-    if (JOY_NEW(DPAD_UP) && gMultiUsePlayerCursor != 0)
+    if (JOY_NEW(DPAD_UP) && gPosicionCursorSiNo == CURSOR_NO)
     {
         PlaySE(SE_SELECT);
-        BattleDestroyYesNoCursorAt(gMultiUsePlayerCursor);
-        gMultiUsePlayerCursor = 0;
-        BattleCreateYesNoCursorAt(0);
+        BattleDestroyYesNoCursorAt(gPosicionCursorSiNo);
+        gPosicionCursorSiNo = CURSOR_SI;
+        CreaCursorBatallaSiNo();
     }
-    if (JOY_NEW(DPAD_DOWN) && gMultiUsePlayerCursor == 0)
+    if (JOY_NEW(DPAD_DOWN) && gPosicionCursorSiNo == CURSOR_SI)
     {
         PlaySE(SE_SELECT);
-        BattleDestroyYesNoCursorAt(gMultiUsePlayerCursor);
-        gMultiUsePlayerCursor = 1;
-        BattleCreateYesNoCursorAt(1);
+        BattleDestroyYesNoCursorAt(gPosicionCursorSiNo);
+        gPosicionCursorSiNo = CURSOR_NO;
+        CreaCursorBatallaSiNo();
     }
     if (JOY_NEW(A_BUTTON))
     {
         HandleBattleWindow(YESNOBOX_X_Y, WINDOW_CLEAR);
         PlaySE(SE_SELECT);
 
-        if (gMultiUsePlayerCursor != 0)
+        if (gPosicionCursorSiNo == CURSOR_NO)
             BtlController_EmitTwoReturnValues(battler, BUFFER_B, 0xE, 0);
         else
             BtlController_EmitTwoReturnValues(battler, BUFFER_B, 0xD, 0);
@@ -1969,8 +1953,8 @@ static void PlayerHandleYesNoBox(u32 battler)
     {
         HandleBattleWindow(YESNOBOX_X_Y, 0);
         BattlePutTextOnWindow(gText_BattleYesNoChoice, B_WIN_YESNO);
-        gMultiUsePlayerCursor = 1;
-        BattleCreateYesNoCursorAt(1);
+        gPosicionCursorSiNo = CURSOR_NO; //REVISAR?
+        CreaCursorBatallaSiNo();
         gBattlerControllerFuncs[battler] = PlayerHandleYesNoInput;
     }
     else
@@ -2000,7 +1984,6 @@ void InitMoveSelectionsVarsAndStrings(u32 battler)
 {
     DestroySpriteAndFreeResources(&gSprites[monIconData]);
     MoveSelectionDisplayMoveNames(battler);
-    gMultiUsePlayerCursor = 0xFF;
     MoveSelectionCreateCursorAt(gMoveSelectionCursor[battler]);
     MoveSelectionDisplayPpNumber(battler);
     MoveSelectionDisplayMoveType(battler);
