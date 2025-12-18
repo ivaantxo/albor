@@ -1218,11 +1218,6 @@ bool8 BufferTMHMMoveName(void)
     return FALSE;
 }
 
-bool8 InMultiPartnerRoom(void)
-{
-    return FALSE;
-}
-
 void OffsetCameraForBattle(void)
 {
     SetCameraPanningCallback(NULL);

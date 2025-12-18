@@ -8,7 +8,6 @@ extern u16 gScrollableMultichoice_ScrollOffset;
 u8 GetLeadMonIndex(void);
 u8 IsDestinationBoxFull(void);
 u16 GetPCBoxToSendMon(void);
-bool8 InMultiPartnerRoom(void);
 void IncrementBirthIslandRockStepCount(void);
 bool8 AbnormalWeatherHasExpired(void);
 bool32 ShouldDoWallyCall(void);

@@ -13,11 +13,13 @@
 #define AILMENT_FNT   7
 #define AILMENT_FRB   8
 
-#define PARTY_LAYOUT_SINGLE          0
-#define PARTY_LAYOUT_DOUBLE          1
-#define PARTY_LAYOUT_MULTI           2
-#define PARTY_LAYOUT_MULTI_SHOWCASE  3  // The layout during the screen that appears just before a multi battle
-#define PARTY_LAYOUT_COUNT           4
+enum TiposDePantallaDeEquipo
+{
+    PARTY_LAYOUT_SINGLE,
+    PARTY_LAYOUT_DOUBLE,
+    PARTY_LAYOUT_COUNT
+};
+ 
 #define KEEP_PARTY_LAYOUT            0xFF
 
 enum PartyMenuTypes
