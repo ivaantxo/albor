@@ -763,41 +763,28 @@ static void LoadPartyMenuBoxes(u8 layout)
 
 static void RenderPartyMenuBox(u8 slot)
 {
-    if (gPartyMenu.menuType == PARTY_MENU_TYPE_MULTI_SHOWCASE && slot >= MULTI_PARTY_SIZE)
+    if (GetMonData(&gPlayerParty[slot], MON_DATA_SPECIES) == SPECIES_NONE)
     {
-        DisplayPartyPokemonDataForMultiBattle(slot);
-        LoadPartyBoxPalette(&sPartyMenuBoxes[slot], PARTY_PAL_MULTI_ALT);
+        DrawEmptySlot(sPartyMenuBoxes[slot].windowId);
+        LoadPartyBoxPalette(&sPartyMenuBoxes[slot], PARTY_PAL_NO_MON);
         CopyWindowToVram(sPartyMenuBoxes[slot].windowId, COPYWIN_GFX);
-        PutWindowTilemap(sPartyMenuBoxes[slot].windowId);
-        ScheduleBgCopyTilemapToVram(2);
     }
     else
     {
-        if (GetMonData(&gPlayerParty[slot], MON_DATA_SPECIES) == SPECIES_NONE)
-        {
-            DrawEmptySlot(sPartyMenuBoxes[slot].windowId);
-            LoadPartyBoxPalette(&sPartyMenuBoxes[slot], PARTY_PAL_NO_MON);
-            CopyWindowToVram(sPartyMenuBoxes[slot].windowId, COPYWIN_GFX);
-        }
-        else
-        {
-            if (gPartyMenu.menuType == PARTY_MENU_TYPE_MOVE_RELEARNER)
-                DisplayPartyPokemonDataForRelearner(slot);
-            else if (gPartyMenu.menuType == PARTY_MENU_TYPE_CONTEST)
-                DisplayPartyPokemonDataForContest(slot);
-            else if (!DisplayPartyPokemonDataForMoveTutorOrEvolutionItem(slot))
-                DisplayPartyPokemonData(slot);
+        if (gPartyMenu.menuType == PARTY_MENU_TYPE_MOVE_RELEARNER)
+            DisplayPartyPokemonDataForRelearner(slot);
+        else if (gPartyMenu.menuType == PARTY_MENU_TYPE_CONTEST)
+            DisplayPartyPokemonDataForContest(slot);
+        else if (!DisplayPartyPokemonDataForMoveTutorOrEvolutionItem(slot))
+            DisplayPartyPokemonData(slot);
 
-            if (gPartyMenu.menuType == PARTY_MENU_TYPE_MULTI_SHOWCASE)
-                AnimatePartySlot(slot, 0);
-            else if (gPartyMenu.slotId == slot)
-                AnimatePartySlot(slot, 1);
-            else
-                AnimatePartySlot(slot, 0);
-        }
-        PutWindowTilemap(sPartyMenuBoxes[slot].windowId);
-        ScheduleBgCopyTilemapToVram(0);
+        if (gPartyMenu.slotId == slot)
+            AnimatePartySlot(slot, 1);
+        else
+            AnimatePartySlot(slot, 0);
     }
+    PutWindowTilemap(sPartyMenuBoxes[slot].windowId);
+    ScheduleBgCopyTilemapToVram(0);
 }
 
 static void DisplayPartyPokemonData(u8 slot)
@@ -945,16 +932,8 @@ static bool8 CreatePartyMonSpritesLoop(void)
 
 static void CreateCancelConfirmPokeballSprites(void)
 {
-    if (gPartyMenu.menuType == PARTY_MENU_TYPE_MULTI_SHOWCASE)
-    {
-        // The showcase has no Cancel/Confirm buttons
-        FillBgTilemapBufferRect(1, 14, 23, 17, 7, 2, 1);
-    }
-    else
-    {
-        sPartyMenuInternal->spriteIdCancelPokeball = CreatePokeballButtonSprite(198, 148);
-        AnimatePartySlot(gPartyMenu.slotId, 1);
-    }
+    sPartyMenuInternal->spriteIdCancelPokeball = CreatePokeballButtonSprite(198, 148);
+    AnimatePartySlot(gPartyMenu.slotId, 1);
 }
 
 void AnimatePartySlot(u8 slot, u8 animNum)
@@ -2370,7 +2349,6 @@ static u8 GetPartyMenuActionsType(struct Pokemon *mon)
     // The following have no selection actions (i.e. they exit immediately upon selection)
     // PARTY_MENU_TYPE_CONTEST
     // PARTY_MENU_TYPE_CHOOSE_MON
-    // PARTY_MENU_TYPE_MULTI_SHOWCASE
     // PARTY_MENU_TYPE_MOVE_RELEARNER
     // PARTY_MENU_TYPE_MINIGAME
     default:

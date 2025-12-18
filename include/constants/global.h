@@ -32,7 +32,6 @@
 
 // party sizes
 #define PARTY_SIZE 6
-#define MULTI_PARTY_SIZE (PARTY_SIZE / 2)
 
 // capacities of various saveblock objects
 #define DAYCARE_MON_COUNT 2
