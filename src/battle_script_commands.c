@@ -6182,7 +6182,6 @@ static void ChooseMonToSendOut(u32 battler, u8 slotId)
 {
     gBattleStruct->battlerPartyIndexes[battler] = gBattlerPartyIndexes[battler];
     gBattleStruct->monToSwitchIntoId[battler] = PARTY_SIZE;
-    gBattleStruct->field_93 &= ~(1u << battler);
 
     BtlController_EmitChoosePokemon(battler, BUFFER_A, PARTY_ACTION_SEND_OUT, slotId, ABILITY_NONE, gBattleStruct->battlerPartyOrders[battler]);
     MarkBattlerForControllerExec(battler);
@@ -6339,7 +6338,6 @@ static void Cmd_openpartyscreen(void)
         {
             *(gBattleStruct->battlerPartyIndexes + battler) = gBattlerPartyIndexes[battler];
             *(gBattleStruct->monToSwitchIntoId + battler) = PARTY_SIZE;
-            gBattleStruct->field_93 &= ~(1u << battler);
 
             BtlController_EmitChoosePokemon(battler, BUFFER_A, hitmarkerFaintBits, *(gBattleStruct->monToSwitchIntoId + BATTLE_PARTNER(battler)), ABILITY_NONE, gBattleStruct->battlerPartyOrders[battler]);
             MarkBattlerForControllerExec(battler);
@@ -6380,10 +6378,6 @@ static void Cmd_switchhandleorder(void)
             if (gBattleResources->bufferB[i][0] == CONTROLLER_CHOSENMONRETURNVALUE)
             {
                 *(gBattleStruct->monToSwitchIntoId + i) = gBattleResources->bufferB[i][1];
-                if (!(gBattleStruct->field_93 & (1u << i)))
-                {
-                    gBattleStruct->field_93 |= 1u << i;
-                }
             }
         }
         break;
@@ -6391,12 +6385,6 @@ static void Cmd_switchhandleorder(void)
         SwitchPartyOrder(battler);
         break;
     case 2:
-        if (!(gBattleStruct->field_93 & (1u << battler)))
-        {
-            gBattleStruct->field_93 |= 1u << battler;
-        }
-        // fall through
-    case 3:
         gBattleCommunication[MULTIUSE_STATE] = gBattleResources->bufferB[battler][1];
         *(gBattleStruct->monToSwitchIntoId + battler) = gBattleResources->bufferB[battler][1];
         SwitchPartyOrder(battler);

@@ -8903,7 +8903,7 @@ BattleScript_EjectButtonActivates::
 	openpartyscreen BS_SCRIPTING, BattleScript_EjectButtonEnd
 	switchoutabilities BS_SCRIPTING
 	waitstate
-	switchhandleorder BS_SCRIPTING 0x2
+	switchhandleorder BS_SCRIPTING 2
 	returntoball BS_SCRIPTING, FALSE
 	getswitchedmondata BS_SCRIPTING
 	switchindataupdate BS_SCRIPTING

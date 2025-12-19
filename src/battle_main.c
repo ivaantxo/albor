@@ -2965,7 +2965,6 @@ static void CheckChangingTurnOrderEffects(void)
     }
 
     gBattleMainFunc = RunTurnActionsFunctions;
-    gBattleCommunication[MOVE_EFFECT_BYTE] = 0;
     gBattleCommunication[ACTIONS_CONFIRMED_COUNT] = 0;
     gBattleScripting.multihitMoveEffect = 0;
     gBattleResources->battleScriptsStack->size = 0;

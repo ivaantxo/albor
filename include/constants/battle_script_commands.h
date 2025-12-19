@@ -40,11 +40,9 @@ enum ComunicacionesBatalla
 
 };
 #define MULTIUSE_STATE          0
-#define CURSOR_POSITION         1
 #define TASK_ID                 1 // task Id and cursor position share the same field
 #define SPRITES_INIT_STATE1     1 // shares the Id as well
 #define SPRITES_INIT_STATE2     2
-#define MOVE_EFFECT_BYTE        3 // eliminar
 #define ACTIONS_CONFIRMED_COUNT 4
 #define MULTISTRING_CHOOSER     5
 #define MISS_TYPE               6
