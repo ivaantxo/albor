@@ -35,41 +35,32 @@
 #define sBERRY_OVERRIDE              (sSWITCH_CASE + 1)                 // overrideBerryRequirements (u8) -> 1 byte
 #define sSTICKY_WEB_STAT_DROP        (sBERRY_OVERRIDE + 1)              // stickyWebStatDrop (u8) -> 1 byte
 
-enum ComunicacionesBatalla
-{
-
-};
 #define MULTIUSE_STATE          0
 #define TASK_ID                 1 // task Id and cursor position share the same field
 #define SPRITES_INIT_STATE1     1 // shares the Id as well
 #define SPRITES_INIT_STATE2     2
 #define ACTIONS_CONFIRMED_COUNT 4
-#define MULTISTRING_CHOOSER     5
 #define MISS_TYPE               6
-#define MSG_DISPLAY             7
 #define BATTLE_COMMUNICATION_ENTRIES_COUNT  8
 
-#define cMULTISTRING_CHOOSER (gBattleCommunication + MULTISTRING_CHOOSER)
 #define cMISS_TYPE           (gBattleCommunication + MISS_TYPE)
 
-// Battle Script defines for getting the wanted battler
-#define BS_TARGET                   0
-#define BS_ATTACKER                 1
-#define BS_EFFECT_BATTLER           2
-#define BS_FAINTED                  3
-#define BS_ATTACKER_WITH_PARTNER    4 // for BATTLE_CMD_updatestatusicon
-#define BS_FAINTED_MULTIPLE_1       5 // for openpartyscreen
-#define BS_FAINTED_MULTIPLE_2       6 // for openpartyscreen
-#define BS_BATTLER_0                7
-#define BS_ATTACKER_SIDE            8 // for BATTLE_CMD_jumpifability
-#define BS_TARGET_SIDE              9 // for BATTLE_CMD_jumpifability
-#define BS_SCRIPTING                10
-#define BS_PLAYER1                  11
-#define BS_OPPONENT1                12
-#define BS_PLAYER2                  13 // for BATTLE_CMD_updatestatusicon
-#define BS_OPPONENT2                14
-#define BS_ABILITY_BATTLER          15
-#define BS_ATTACKER_PARTNER         16
+enum ScriptsBatallaCombatientes
+{
+    BS_TARGET,
+    BS_ATTACKER,
+    BS_EFFECT_BATTLER,
+    BS_ATTACKER_WITH_PARTNER,   //  updatestatusicon
+    BS_FAINTED_MULTIPLE_1,      //  openpartyscreen
+    BS_FAINTED_MULTIPLE_2,      //  openpartyscreen
+    BS_BATTLER_0,
+    BS_ATTACKER_SIDE,           //  jumpifability
+    BS_TARGET_SIDE,             //  jumpifability
+    BS_SCRIPTING,
+    BS_OPPONENT,
+    BS_ABILITY_BATTLER,
+    BS_ATTACKER_PARTNER,
+};
 
 // BATTLE_CMD_accuracycheck
 #define NO_ACC_CALC_CHECK_LOCK_ON 0xFFFF

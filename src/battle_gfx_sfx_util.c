@@ -498,68 +498,65 @@ void LoadBattleBarGfx(void)
     LZDecompressWram(gBattleInterfaceGfx_BattleBar, gMonSpritesGfxPtr->barFontGfx);
 }
 
-bool8 BattleInitAllSprites(u8 *state1, u8 *battler)
+bool32 IniciaSpritesBatalla(u32 *estado1, u32 *combatiente)
 {
-    bool8 retVal = FALSE;
+    bool32 retVal = FALSE;
 
-    switch (*state1)
+    switch (*estado1)
     {
     case 0:
         ClearSpritesBattlerHealthboxAnimData();
-        (*state1)++;
+        (*estado1)++;
         break;
     case 1:
-        if (!BattleLoadAllHealthBoxesGfx(*battler))
+        if (!BattleLoadAllHealthBoxesGfx(*combatiente))
         {
-            (*battler)++;
+            (*combatiente)++;
         }
         else
         {
-            *battler = 0;
-            (*state1)++;
+            *combatiente = 0;
+            (*estado1)++;
         }
         break;
     case 2:
-        (*state1)++;
+        gHealthboxSpriteIds[*combatiente] = CreateBattlerHealthboxSprites(*combatiente);
+
+        (*combatiente)++;
+        if (*combatiente == gBattlersCount)
+        {
+            *combatiente = 0;
+            (*estado1)++;
+        }
         break;
     case 3:
-        gHealthboxSpriteIds[*battler] = CreateBattlerHealthboxSprites(*battler);
+        InitBattlerHealthboxCoords(*combatiente);
 
-        (*battler)++;
-        if (*battler == gBattlersCount)
+        (*combatiente)++;
+        if (*combatiente == gBattlersCount)
         {
             *battler = 0;
-            (*state1)++;
+            (*estado1)++;
         }
         break;
     case 4:
-        InitBattlerHealthboxCoords(*battler);
-
-        (*battler)++;
-        if (*battler == gBattlersCount)
+        if (GetBattlerSide(*combatiente) == B_SIDE_PLAYER)
         {
-            *battler = 0;
-            (*state1)++;
-        }
-        break;
-    case 5:
-        if (GetBattlerSide(*battler) == B_SIDE_PLAYER)
-        {
-            UpdateHealthboxAttribute(gHealthboxSpriteIds[*battler], &gPlayerParty[gBattlerPartyIndexes[*battler]], HEALTHBOX_ALL);
+            UpdateHealthboxAttribute(gHealthboxSpriteIds[*combatiente], &gPlayerParty[gBattlerPartyIndexes[*combatiente]], HEALTHBOX_ALL);
         }
         else
         {
-            UpdateHealthboxAttribute(gHealthboxSpriteIds[*battler], &gEnemyParty[gBattlerPartyIndexes[*battler]], HEALTHBOX_ALL);
+            UpdateHealthboxAttribute(gHealthboxSpriteIds[*combatiente], &gEnemyParty[gBattlerPartyIndexes[*combatiente]], HEALTHBOX_ALL);
         }
-        SetHealthboxSpriteInvisible(gHealthboxSpriteIds[*battler]);
-        (*battler)++;
-        if (*battler == gBattlersCount)
+        SetHealthboxSpriteInvisible(gHealthboxSpriteIds[*combatiente]);
+        (*combatiente)++;
+        if (*combatiente == gBattlersCount)
         {
-            *battler = 0;
-            (*state1)++;
+            *combatiente = 0;
+            (*estado1)++;
         }
         break;
-    case 6:
+    case 5:
         LoadAndCreateEnemyShadowSprites();
         BufferBattlePartyCurrentOrder();
         retVal = TRUE;

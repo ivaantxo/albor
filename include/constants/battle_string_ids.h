@@ -695,7 +695,7 @@ enum TextosBatalla
 
 // The below IDs are all indexes into battle message tables,
 // used to determine which of a set of messages to print.
-// They are assigned to the MULTISTRING_CHOOSER byte of gBattleCommunication
+// They are assigned to gMensajeBatalla
 // and read when e.g. the command printfromtable is used.
 
 // gStatUpStringIds
