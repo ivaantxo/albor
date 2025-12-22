@@ -558,9 +558,9 @@ static bool32 UpdateConditionGraphMenuWindows(u8 mode, u16 bufferIndex, bool8 wi
         {
         case 0:
             if (winMode)
-                CopyWindowToVram(menu->nameGenderWindowId, COPYWIN_FULL);
+                CopyWindowToVram(menu->nameGenderWindowId, COPIA_VENTANA_COMPLETA);
             else
-                CopyWindowToVram(menu->nameGenderWindowId, COPYWIN_GFX);
+                CopyWindowToVram(menu->nameGenderWindowId, COPIA_VENTANA_TILES);
 
             if (IsConditionMenuSearchMode() == TRUE)
             {
@@ -574,9 +574,9 @@ static bool32 UpdateConditionGraphMenuWindows(u8 mode, u16 bufferIndex, bool8 wi
             }
         case 1:
             if (winMode)
-                CopyWindowToVram(menu->listIndexWindowId, COPYWIN_FULL);
+                CopyWindowToVram(menu->listIndexWindowId, COPIA_VENTANA_COMPLETA);
             else
-                CopyWindowToVram(menu->listIndexWindowId, COPYWIN_GFX);
+                CopyWindowToVram(menu->listIndexWindowId, COPIA_VENTANA_TILES);
 
             menu->windowModeState = 0;
             return TRUE;

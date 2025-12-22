@@ -140,7 +140,7 @@ static void MultichoiceDynamicEventShowItem_OnInit(struct DynamicListMenuEventAr
     u32 auxWindowId = AddWindow(&auxTemplate);
     SetStandardWindowBorderStyle(auxWindowId, FALSE);
     FillWindowPixelBuffer(auxWindowId, 0x11);
-    CopyWindowToVram(auxWindowId, COPYWIN_FULL);
+    CopyWindowToVram(auxWindowId, COPIA_VENTANA_COMPLETA);
     sAuxWindowId = auxWindowId;
     sItemSpriteId = MAX_SPRITES;
 }
@@ -304,7 +304,7 @@ static void DrawMultichoiceMenuDynamic(u8 left, u8 top, u8 argc, struct ListMenu
     left = ScriptMenu_AdjustLeftCoordFromWidth(left, newWidth);
     windowId = CreateWindowFromRect(left, top, newWidth, windowHeight);
     SetStandardWindowBorderStyle(windowId, FALSE);
-    CopyWindowToVram(windowId, COPYWIN_FULL);
+    CopyWindowToVram(windowId, COPIA_VENTANA_COMPLETA);
 
     // I don't like this being global either, but I could not come up with another solution that
     // does not invade the whole ListMenu infrastructure.
@@ -586,7 +586,7 @@ bool8 ScriptMenu_MultichoiceGrid(u8 left, u8 top, u8 multichoiceId, bool8 ignore
         SetStandardWindowBorderStyle(gTasks[taskId].tWindowId, FALSE);
         PrintMenuGridTable(gTasks[taskId].tWindowId, newWidth * 8, columnCount, rowCount, sMultichoiceLists[multichoiceId].list);
         InitMenuActionGrid(gTasks[taskId].tWindowId, newWidth * 8, columnCount, rowCount, 0);
-        CopyWindowToVram(gTasks[taskId].tWindowId, COPYWIN_FULL);
+        CopyWindowToVram(gTasks[taskId].tWindowId, COPIA_VENTANA_COMPLETA);
         return TRUE;
     }
 }
@@ -735,7 +735,7 @@ static void CreateLilycoveSSTidalMultichoice(void)
         }
 
         InitMenuInUpperLeftCornerNormal(windowId, count, count - 1);
-        CopyWindowToVram(windowId, COPYWIN_FULL);
+        CopyWindowToVram(windowId, COPIA_VENTANA_COMPLETA);
         InitMultichoiceCheckWrap(FALSE, count, windowId, MULTI_SSTIDAL_LILYCOVE);
     }
 }
@@ -870,7 +870,7 @@ static void CreateStartMenuForPokenavTutorial(void)
     AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_MenuOptionExit, 8, 121, TEXT_SKIP_DRAW, NULL);
     InitMenuNormal(windowId, FONT_NORMAL, 0, 9, 16, ARRAY_COUNT(MultichoiceList_ForcedStartMenu), 0);
     InitMultichoiceNoWrap(FALSE, ARRAY_COUNT(MultichoiceList_ForcedStartMenu), windowId, MULTI_FORCED_START_MENU);
-    CopyWindowToVram(windowId, COPYWIN_FULL);
+    CopyWindowToVram(windowId, COPIA_VENTANA_COMPLETA);
 }
 
 #define tWindowId       data[6]

@@ -185,7 +185,7 @@ void DrawMoneyBox(int amount, u8 x, u8 y)
     sMoneyBoxWindowId = AddWindow(&template);
     FillWindowPixelBuffer(sMoneyBoxWindowId, PIXEL_FILL(0));
     PutWindowTilemap(sMoneyBoxWindowId);
-    CopyWindowToVram(sMoneyBoxWindowId, COPYWIN_MAP);
+    CopyWindowToVram(sMoneyBoxWindowId, COPIA_VENTANA_TILEMAP);
     PrintMoneyAmountInMoneyBoxWithBorder(sMoneyBoxWindowId, 0x214, 14, amount);
     AddMoneyLabelObject((8 * x) + 19, (8 * y) + 11);
 }
@@ -194,7 +194,7 @@ void HideMoneyBox(void)
 {
     RemoveMoneyLabelObject();
     ClearStdWindowAndFrameToTransparent(sMoneyBoxWindowId, FALSE);
-    CopyWindowToVram(sMoneyBoxWindowId, COPYWIN_GFX);
+    CopyWindowToVram(sMoneyBoxWindowId, COPIA_VENTANA_TILES);
     RemoveWindow(sMoneyBoxWindowId);
 }
 

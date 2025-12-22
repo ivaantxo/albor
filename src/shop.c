@@ -362,7 +362,7 @@ static u8 CreateShopMenu(u8 martType)
     PrintMenuTable(sMartInfo.windowId, numMenuItems, sMartInfo.menuActions);
     InitMenuInUpperLeftCornerNormal(sMartInfo.windowId, numMenuItems, 0);
     PutWindowTilemap(sMartInfo.windowId);
-    CopyWindowToVram(sMartInfo.windowId, COPYWIN_MAP);
+    CopyWindowToVram(sMartInfo.windowId, COPIA_VENTANA_TILEMAP);
 
     return CreateTask(Task_ShopMenu, 8);
 }

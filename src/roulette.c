@@ -958,7 +958,7 @@ static void Task_AskKeepPlaying(u8 taskId)
     DisplayYesNoMenuDefaultYes();
     DrawStdWindowFrame(sTextWindowId, FALSE);
     AddTextPrinterParameterized(sTextWindowId, FONT_NORMAL, Roulette_Text_KeepPlaying, 0, 1, TEXT_SKIP_DRAW, 0);
-    CopyWindowToVram(sTextWindowId, COPYWIN_FULL);
+    CopyWindowToVram(sTextWindowId, COPIA_VENTANA_COMPLETA);
     DoYesNoFuncWithChoice(taskId, &sYesNoTable_KeepPlaying);
 }
 
@@ -1384,14 +1384,14 @@ static void Task_PrintSpinResult(u8 taskId)
             PlayFanfare(MUS_SLOTS_JACKPOT);
             DrawStdWindowFrame(sTextWindowId, FALSE);
             AddTextPrinterParameterized(sTextWindowId, FONT_NORMAL, Roulette_Text_Jackpot, 0, 1, TEXT_SKIP_DRAW, NULL);
-            CopyWindowToVram(sTextWindowId, COPYWIN_FULL);
+            CopyWindowToVram(sTextWindowId, COPIA_VENTANA_COMPLETA);
         }
         else
         {
             PlayFanfare(MUS_SLOTS_WIN);
             DrawStdWindowFrame(sTextWindowId, FALSE);
             AddTextPrinterParameterized(sTextWindowId, FONT_NORMAL, Roulette_Text_ItsAHit, 0, 1, TEXT_SKIP_DRAW, NULL);
-            CopyWindowToVram(sTextWindowId, COPYWIN_FULL);
+            CopyWindowToVram(sTextWindowId, COPIA_VENTANA_COMPLETA);
         }
         break;
     case FALSE:
@@ -1399,7 +1399,7 @@ static void Task_PrintSpinResult(u8 taskId)
         m4aSongNumStart(SE_FAILURE);
         DrawStdWindowFrame(sTextWindowId, FALSE);
         AddTextPrinterParameterized(sTextWindowId, FONT_NORMAL, Roulette_Text_NothingDoing, 0, 1, TEXT_SKIP_DRAW, NULL);
-        CopyWindowToVram(sTextWindowId, COPYWIN_FULL);
+        CopyWindowToVram(sTextWindowId, COPIA_VENTANA_COMPLETA);
         break;
     }
     gTasks[taskId].data[1] = 0;
@@ -1444,7 +1444,7 @@ static void Task_PrintPayout(u8 taskId)
     StringExpandPlaceholders(gVariableTextoAmpliada, Roulette_Text_YouveWonXCoins);
     DrawStdWindowFrame(sTextWindowId, FALSE);
     AddTextPrinterParameterized(sTextWindowId, FONT_NORMAL, gVariableTextoAmpliada, 0, 1, TEXT_SKIP_DRAW, NULL);
-    CopyWindowToVram(sTextWindowId, COPYWIN_FULL);
+    CopyWindowToVram(sTextWindowId, COPIA_VENTANA_COMPLETA);
     gTasks[taskId].tPayout = (sRoulette->minBet * gTasks[taskId].tMultiplier);
     gTasks[taskId].data[7] = 0;
     gTasks[taskId].func = Task_GivePayout;
@@ -1480,7 +1480,7 @@ static void Task_TryPrintEndTurnMsg(u8 taskId)
             // Reached Ball 6, clear board
             DrawStdWindowFrame(sTextWindowId, FALSE);
             AddTextPrinterParameterized(sTextWindowId, FONT_NORMAL, Roulette_Text_BoardWillBeCleared, 0, 1, TEXT_SKIP_DRAW, NULL);
-            CopyWindowToVram(sTextWindowId, COPYWIN_FULL);
+            CopyWindowToVram(sTextWindowId, COPIA_VENTANA_COMPLETA);
             StartTaskAfterDelayOrInput(taskId, Task_ClearBoard, NO_DELAY, A_BUTTON | B_BUTTON);
         }
         else if (gTasks[taskId].tCoins == MAX_COINS)
@@ -1488,7 +1488,7 @@ static void Task_TryPrintEndTurnMsg(u8 taskId)
             // Player maxed out coins
             DrawStdWindowFrame(sTextWindowId, FALSE);
             AddTextPrinterParameterized(sTextWindowId, FONT_NORMAL, Roulette_Text_CoinCaseIsFull, 0, 1, TEXT_SKIP_DRAW, NULL);
-            CopyWindowToVram(sTextWindowId, COPYWIN_FULL);
+            CopyWindowToVram(sTextWindowId, COPIA_VENTANA_COMPLETA);
             StartTaskAfterDelayOrInput(taskId, Task_AskKeepPlaying, NO_DELAY, A_BUTTON | B_BUTTON);
         }
         else
@@ -1502,7 +1502,7 @@ static void Task_TryPrintEndTurnMsg(u8 taskId)
         // Player out of coins
         DrawStdWindowFrame(sTextWindowId, FALSE);
         AddTextPrinterParameterized(sTextWindowId, FONT_NORMAL, Roulette_Text_NoCoinsLeft, 0, 1, TEXT_SKIP_DRAW, NULL);
-        CopyWindowToVram(sTextWindowId, COPYWIN_FULL);
+        CopyWindowToVram(sTextWindowId, COPIA_VENTANA_COMPLETA);
         StartTaskAfterDelayOrInput(taskId, Task_StopPlaying, 60, A_BUTTON | B_BUTTON);
     }
 }
@@ -1527,7 +1527,7 @@ static void Task_ClearBoard(u8 taskId)
     {
         DrawStdWindowFrame(sTextWindowId, FALSE);
         AddTextPrinterParameterized(sTextWindowId, FONT_NORMAL, Roulette_Text_CoinCaseIsFull, 0, 1, TEXT_SKIP_DRAW, NULL);
-        CopyWindowToVram(sTextWindowId, COPYWIN_FULL);
+        CopyWindowToVram(sTextWindowId, COPIA_VENTANA_COMPLETA);
         StartTaskAfterDelayOrInput(taskId, Task_AskKeepPlaying, NO_DELAY, A_BUTTON | B_BUTTON);
     }
     else
@@ -2926,7 +2926,7 @@ static void Task_PrintMinBet(u8 taskId)
         StringExpandPlaceholders(gVariableTextoAmpliada, Roulette_Text_PlayMinimumWagerIsX);
         DrawStdWindowFrame(0, FALSE);
         AddTextPrinterParameterized(0, FONT_NORMAL, gVariableTextoAmpliada, 0, 1, TEXT_SKIP_DRAW, NULL);
-        CopyWindowToVram(0, COPYWIN_FULL);
+        CopyWindowToVram(0, COPIA_VENTANA_COMPLETA);
         gTasks[taskId].func = Task_ShowMinBetYesNo;
     }
 }
@@ -2945,7 +2945,7 @@ static void Task_PrintRouletteEntryMsg(u8 taskId)
             // Special rate for Game Corner service day (only at second table)
             DrawStdWindowFrame(0, FALSE);
             AddTextPrinterParameterized(0, FONT_NORMAL, Roulette_Text_SpecialRateTable, 0, 1, TEXT_SKIP_DRAW, NULL);
-            CopyWindowToVram(0, COPYWIN_FULL);
+            CopyWindowToVram(0, COPIA_VENTANA_COMPLETA);
             gTasks[taskId].func = Task_PrintMinBet;
         }
         else
@@ -2954,7 +2954,7 @@ static void Task_PrintRouletteEntryMsg(u8 taskId)
             StringExpandPlaceholders(gVariableTextoAmpliada, Roulette_Text_PlayMinimumWagerIsX);
             DrawStdWindowFrame(0, FALSE);
             AddTextPrinterParameterized(0, FONT_NORMAL, gVariableTextoAmpliada, 0, 1, TEXT_SKIP_DRAW, NULL);
-            CopyWindowToVram(0, COPYWIN_FULL);
+            CopyWindowToVram(0, COPIA_VENTANA_COMPLETA);
             gTasks[taskId].func = Task_ShowMinBetYesNo;
         }
     }
@@ -2964,7 +2964,7 @@ static void Task_PrintRouletteEntryMsg(u8 taskId)
         StringExpandPlaceholders(gVariableTextoAmpliada, Roulette_Text_NotEnoughCoins);
         DrawStdWindowFrame(0, FALSE);
         AddTextPrinterParameterized(0, FONT_NORMAL, gVariableTextoAmpliada, 0, 1, TEXT_SKIP_DRAW, NULL);
-        CopyWindowToVram(0, COPYWIN_FULL);
+        CopyWindowToVram(0, COPIA_VENTANA_COMPLETA);
         gTasks[taskId].func = Task_NotEnoughForMinBet;
         gTasks[taskId].tCoins = 0;
         gTasks[taskId].data[0] = 0;

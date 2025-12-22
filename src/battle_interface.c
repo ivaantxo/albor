@@ -176,9 +176,9 @@ static void RemoveWindowOnHealthbox(u32 windowId);
 static void UpdateHpTextInHealthboxInDoubles(u32 healthboxSpriteId, u32 maxOrCurrent, s16 currHp, s16 maxHp);
 static void UpdateStatusIconInHealthbox(u8);
 
-static void TextIntoHealthboxObject(void *, u8 *, s32);
-static void SafariTextIntoHealthboxObject(void *, u8 *, u32);
-static void HpTextIntoHealthboxObject(void *, u8 *, u32);
+static void TextIntoHealthboxObject(void *dest, u32 *windowTileData, s32 windowWidth);
+static void SafariTextIntoHealthboxObject(void *dest, u32 *windowTileData, u32 windowWidth);
+static void HpTextIntoHealthboxObject(void *dest, u32 *windowTileData, u32 windowWidth);
 static void FillHealthboxObject(void *, u32, u32);
 
 static void Task_HidePartyStatusSummary_BattleStart_1(u8);
@@ -1027,7 +1027,7 @@ void InitBattlerHealthboxCoords(u8 battler)
 static void UpdateLvlInHealthbox(u8 healthboxSpriteId, u8 lvl)
 {
     u32 windowId, spriteTileNum;
-    u8 *windowTileData;
+    u32 *windowTileData;
     u8 text[16];
     u32 xPos;
     u8 *objVram;
@@ -1061,7 +1061,7 @@ static void UpdateLvlInHealthbox(u8 healthboxSpriteId, u8 lvl)
 
 static void PrintHpOnHealthbox(u32 spriteId, s16 currHp, s16 maxHp, u32 bgColor, u32 rightTile, u32 leftTile)
 {
-    u8 *windowTileData;
+    u32 *windowTileData;
     u32 windowId, tilesCount, x;
     u8 text[28], *txtPtr;
     void *objVram = (void *)(OBJ_VRAM0) + gSprites[spriteId].oam.tileNum * TILE_4BPP;
@@ -1673,7 +1673,7 @@ static void UpdateNickInHealthbox(u8 healthboxSpriteId, struct Pokemon *mon)
     u8 nickname[POKEMON_NAME_LENGTH + 1];
     void *ptr;
     u32 windowId, spriteTileNum, species;
-    u8 *windowTileData;
+    u32 *windowTileData;
     u8 gender;
     struct Pokemon *illusionMon = GetIllusionMonPtr(gSprites[healthboxSpriteId].hMain_Battler);
     if (illusionMon != NULL)
@@ -1903,7 +1903,7 @@ static u8 GetStatusIconForBattlerId(u8 statusElementId, u8 battlerId)
 static void UpdateSafariBallsTextOnHealthbox(u8 healthboxSpriteId)
 {
     u32 windowId, spriteTileNum;
-    u8 *windowTileData;
+    u32 *windowTileData;
 
     windowTileData = AddTextPrinterAndCreateWindowOnHealthbox(gText_SafariBalls, 0, 3, 2, &windowId);
     spriteTileNum = gSprites[healthboxSpriteId].oam.tileNum * TILE_4BPP;
@@ -1917,7 +1917,7 @@ static void UpdateLeftNoOfBallsTextOnHealthbox(u8 healthboxSpriteId)
     u8 text[16];
     u8 *txtPtr;
     u32 windowId, spriteTileNum;
-    u8 *windowTileData;
+    u32 *windowTileData;
 
     txtPtr = StringCopy(text, gText_SafariBallLeft);
     ConvertIntToDecimalStringN(txtPtr, gNumSafariBalls, STR_CONV_MODE_LEFT_ALIGN, 2);
@@ -2329,12 +2329,12 @@ static void FillHealthboxObject(void *dest, u32 valMult, u32 numTiles)
     CpuFill32(0x11111111 * valMult, dest, numTiles * TILE_4BPP);
 }
 
-static void HpTextIntoHealthboxObject(void *dest, u8 *windowTileData, u32 windowWidth)
+static void HpTextIntoHealthboxObject(void *dest, u32 *windowTileData, u32 windowWidth)
 {
     CopiaCpu32(windowTileData + 256, dest, windowWidth * TILE_4BPP);
 }
 
-static void TextIntoHealthboxObject(void *dest, u8 *windowTileData, s32 windowWidth)
+static void TextIntoHealthboxObject(void *dest, u32 *windowTileData, s32 windowWidth)
 {
     CopiaCpu32(windowTileData + 256, dest + 256, windowWidth * TILE_4BPP);
 // + 256 as that prevents the top 4 blank rows of sHealthboxWindowTemplate from being copied
@@ -2349,7 +2349,7 @@ static void TextIntoHealthboxObject(void *dest, u8 *windowTileData, s32 windowWi
     }
 }
 
-static void SafariTextIntoHealthboxObject(void *dest, u8 *windowTileData, u32 windowWidth)
+static void SafariTextIntoHealthboxObject(void *dest, u32 *windowTileData, u32 windowWidth)
 {
     CopiaCpu32(windowTileData, dest, windowWidth * TILE_4BPP);
     CopiaCpu32(windowTileData + 256, dest + 256, windowWidth * TILE_4BPP);
@@ -2437,7 +2437,7 @@ static u8* AddTextPrinterAndCreateWindowOnAbilityPopUp(const u8 *str, u32 x, u32
     return (u8 *)(GetWindowAttribute(*windowId, WINDOW_TILE_DATA));
 }
 
-static void TextIntoAbilityPopUp(void *dest, u8 *windowTileData, s32 xTileAmount, bool32 arg3)
+static void TextIntoAbilityPopUp(void *dest, u32 *windowTileData, s32 xTileAmount, bool32 arg3)
 {
     CopiaCpu32(windowTileData + 256, dest + 256, xTileAmount * 32);
     if (xTileAmount > 0)
@@ -2457,7 +2457,7 @@ static void TextIntoAbilityPopUp(void *dest, u8 *windowTileData, s32 xTileAmount
 static void PrintOnAbilityPopUp(const u8 *str, u8 *spriteTileData1, u8 *spriteTileData2, u32 x1, u32 x2, u32 y, u32 color1, u32 color2, u32 color3)
 {
     u32 windowId;
-    u8 *windowTileData;
+    u32 *windowTileData;
     u16 width;
 
     windowTileData = AddTextPrinterAndCreateWindowOnAbilityPopUp(str, x1, y, color1, color2, color3, &windowId);

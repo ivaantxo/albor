@@ -744,7 +744,7 @@ static void DisplaySentToPCMessage(void)
     DrawDialogueFrame(0, FALSE);
     gTextFlags.canABSpeedUpPrint = TRUE;
     AddTextPrinterParameterized2(0, FONT_NORMAL, gVariableTextoAmpliada, GetPlayerTextSpeedDelay(), 0, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
-    CopyWindowToVram(0, COPYWIN_FULL);
+    CopyWindowToVram(0, COPIA_VENTANA_COMPLETA);
 }
 
 static bool8 MainState_WaitSentToPCMessage(void)
@@ -1932,7 +1932,7 @@ static void DrawTextEntry(void)
     }
 
     TryDrawGenderIcon();
-    CopyWindowToVram(sNamingScreen->windows[WIN_TEXT_ENTRY], COPYWIN_GFX);
+    CopyWindowToVram(sNamingScreen->windows[WIN_TEXT_ENTRY], COPIA_VENTANA_TILES);
     PutWindowTilemap(sNamingScreen->windows[WIN_TEXT_ENTRY]);
 }
 
@@ -2019,7 +2019,7 @@ static void PrintControls(void)
     FillWindowPixelBuffer(sNamingScreen->windows[WIN_BANNER], PIXEL_FILL(15));
     AddTextPrinterParameterized3(sNamingScreen->windows[WIN_BANNER], FONT_SMALL, 2, 1, color, 0, gText_MoveOkBack);
     PutWindowTilemap(sNamingScreen->windows[WIN_BANNER]);
-    CopyWindowToVram(sNamingScreen->windows[WIN_BANNER], COPYWIN_FULL);
+    CopyWindowToVram(sNamingScreen->windows[WIN_BANNER], COPIA_VENTANA_COMPLETA);
 }
 
 static void CB2_NamingScreen(void)

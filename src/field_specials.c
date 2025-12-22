@@ -1695,7 +1695,7 @@ static void CloseScrollableMultichoice(u8 taskId)
     Free(sScrollableMultichoice_ListMenuItem);
     ClearStdWindowAndFrameToTransparent(task->tWindowId, TRUE);
     FillWindowPixelBuffer(task->tWindowId, PIXEL_FILL(0));
-    CopyWindowToVram(task->tWindowId, COPYWIN_GFX);
+    CopyWindowToVram(task->tWindowId, COPIA_VENTANA_TILES);
     RemoveWindow(task->tWindowId);
     DestroyTask(taskId);
     ScriptContext_Enable();

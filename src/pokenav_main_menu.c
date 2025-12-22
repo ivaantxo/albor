@@ -554,7 +554,7 @@ static void InitHelpBar(void)
     menu->helpBarWindowId = 0;
     DrawHelpBar(menu->helpBarWindowId);
     PutWindowTilemap(menu->helpBarWindowId);
-    CopyWindowToVram(menu->helpBarWindowId, COPYWIN_FULL);
+    CopyWindowToVram(menu->helpBarWindowId, COPIA_VENTANA_COMPLETA);
 }
 
 void PrintHelpBarText(u32 textId)

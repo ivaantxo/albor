@@ -311,7 +311,7 @@ u8 ListMenuInit(struct ListMenuTemplate *listMenuTemplate, u16 scrollOffset, u16
 {
     u8 taskId = ListMenuInitInternal(listMenuTemplate, scrollOffset, selectedRow);
     PutWindowTilemap(listMenuTemplate->windowId);
-    CopyWindowToVram(listMenuTemplate->windowId, COPYWIN_GFX);
+    CopyWindowToVram(listMenuTemplate->windowId, COPIA_VENTANA_TILES);
 
     return taskId;
 }
@@ -331,7 +331,7 @@ u8 ListMenuInitInRect(struct ListMenuTemplate *listMenuTemplate, struct ListMenu
                                             rect[i].height,
                                             rect[i].palNum);
     }
-    CopyWindowToVram(listMenuTemplate->windowId, COPYWIN_GFX);
+    CopyWindowToVram(listMenuTemplate->windowId, COPIA_VENTANA_TILES);
 
     return taskId;
 }
@@ -419,7 +419,7 @@ void RedrawListMenu(u8 listTaskId)
     FillWindowPixelBuffer(list->template.windowId, PIXEL_FILL(list->template.fillValue));
     ListMenuPrintEntries(list, list->scrollOffset, 0, list->template.maxShowed);
     ListMenuDrawCursor(list);
-    CopyWindowToVram(list->template.windowId, COPYWIN_GFX);
+    CopyWindowToVram(list->template.windowId, COPIA_VENTANA_TILES);
 }
 
 // unused
@@ -744,12 +744,12 @@ static void ListMenuScroll(struct ListMenu *list, u8 count, bool8 movingDown)
         {
             u16 y, width, height;
 
-            ScrollWindow(list->template.windowId, 1, count * yMultiplier, PIXEL_FILL(list->template.fillValue));
+            ScrollWindow(list->template.windowId, DIRECCION_SCROLL_VENTANA_ARRIBA, count * yMultiplier, PIXEL_FILL(list->template.fillValue));
             ListMenuPrintEntries(list, list->scrollOffset, 0, count);
 
             y = (list->template.maxShowed * yMultiplier) + list->template.upText_Y;
-            width = GetWindowAttribute(list->template.windowId, WINDOW_WIDTH) * 8;
-            height = (GetWindowAttribute(list->template.windowId, WINDOW_HEIGHT) * 8) - y;
+            width = GetWindowAttribute(list->template.windowId, WINDOW_WIDTH) * LADO_TILE;
+            height = (GetWindowAttribute(list->template.windowId, WINDOW_HEIGHT) * LADO_TILE) - y;
             FillWindowPixelRect(list->template.windowId,
                                 PIXEL_FILL(list->template.fillValue),
                                 0, y, width, height);
@@ -758,10 +758,10 @@ static void ListMenuScroll(struct ListMenu *list, u8 count, bool8 movingDown)
         {
             u16 width;
 
-            ScrollWindow(list->template.windowId, 0, count * yMultiplier, PIXEL_FILL(list->template.fillValue));
+            ScrollWindow(list->template.windowId, DIRECCION_SCROLL_VENTANA_ABAJO, count * yMultiplier, PIXEL_FILL(list->template.fillValue));
             ListMenuPrintEntries(list, list->scrollOffset + (list->template.maxShowed - count), list->template.maxShowed - count, count);
 
-            width = GetWindowAttribute(list->template.windowId, WINDOW_WIDTH) * 8;
+            width = GetWindowAttribute(list->template.windowId, WINDOW_WIDTH) * LADO_TILE;
             FillWindowPixelRect(list->template.windowId,
                                 PIXEL_FILL(list->template.fillValue),
                                 0, 0, width, list->template.upText_Y);
@@ -801,7 +801,7 @@ bool8 ListMenuChangeSelectionFull(struct ListMenu *list, bool32 updateCursor, bo
             ListMenuDrawCursor(list);
             if (callCallback)
                 ListMenuCallSelectionChangedCallback(list, FALSE);
-            CopyWindowToVram(list->template.windowId, COPYWIN_GFX);
+            CopyWindowToVram(list->template.windowId, COPIA_VENTANA_TILES);
             break;
         case 2:
         case 3:
@@ -810,7 +810,7 @@ bool8 ListMenuChangeSelectionFull(struct ListMenu *list, bool32 updateCursor, bo
             ListMenuDrawCursor(list);
             if (callCallback)
                 ListMenuCallSelectionChangedCallback(list, FALSE);
-            CopyWindowToVram(list->template.windowId, COPYWIN_GFX);
+            CopyWindowToVram(list->template.windowId, COPIA_VENTANA_TILES);
             break;
         }
     }

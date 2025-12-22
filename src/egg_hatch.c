@@ -620,7 +620,7 @@ static void CB2_EggHatch(void)
         PlayFanfare(MUS_EVOLVED);
         sEggHatchData->state++;
         PutWindowTilemap(sEggHatchData->windowId);
-        CopyWindowToVram(sEggHatchData->windowId, COPYWIN_FULL);
+        CopyWindowToVram(sEggHatchData->windowId, COPIA_VENTANA_COMPLETA);
         break;
     case 6:
         if (IsFanfareTaskInactive())

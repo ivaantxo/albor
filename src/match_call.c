@@ -1020,7 +1020,7 @@ static bool32 MatchCall_DrawWindow(u8 taskId)
     DrawMatchCallTextBoxBorder_Internal(tWindowId, TILE_MC_WINDOW, 14);
     WriteSequenceToBgTilemapBuffer(0, (0xF << 12) | TILE_POKENAV_ICON, 1, 15, 4, 4, 17, 1);
     tIconTaskId = CreateTask(Task_SpinPokenavIcon, 10);
-    CopyWindowToVram(tWindowId, COPYWIN_GFX);
+    CopyWindowToVram(tWindowId, COPIA_VENTANA_TILES);
     CopyBgTilemapBufferToVram(0);
     return TRUE;
 }
@@ -1072,7 +1072,7 @@ static bool32 MatchCall_PrintMessage(u8 taskId)
     if (!RunMatchCallTextPrinter(tWindowId) && !IsSEPlaying() && JOY_NEW(A_BUTTON | B_BUTTON))
     {
         FillWindowPixelBuffer(tWindowId, PIXEL_FILL(8));
-        CopyWindowToVram(tWindowId, COPYWIN_GFX);
+        CopyWindowToVram(tWindowId, COPIA_VENTANA_TILES);
         PlaySE(SE_POKENAV_HANG_UP);
         return TRUE;
     }

@@ -981,7 +981,7 @@ static void LoadStickerGfx(void)
 static void DrawTrainerCardWindow(u8 windowId)
 {
     PutWindowTilemap(windowId);
-    CopyWindowToVram(windowId, COPYWIN_FULL);
+    CopyWindowToVram(windowId, COPIA_VENTANA_COMPLETA);
 }
 
 static u8 SetCardBgsAndPals(void)

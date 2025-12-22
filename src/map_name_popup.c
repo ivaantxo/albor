@@ -213,14 +213,14 @@ static void ShowMapNamePopUpWindow(void)
             AddTextPrinterParameterized(secondaryPopUpWindowId, FONT_SMALL, mapDisplayHeader, GetStringRightAlignXOffset(FONT_SMALL, mapDisplayHeader, ANCHO_PANTALLA) - 5, 8, TEXT_SKIP_DRAW, NULL);
         }
 
-        CopyWindowToVram(mapNamePopUpWindowId, COPYWIN_FULL);
-        CopyWindowToVram(secondaryPopUpWindowId, COPYWIN_FULL);
+        CopyWindowToVram(mapNamePopUpWindowId, COPIA_VENTANA_COMPLETA);
+        CopyWindowToVram(secondaryPopUpWindowId, COPIA_VENTANA_COMPLETA);
     }
     else
     {
         x = GetStringCenterAlignXOffset(FONT_NARROW, withoutPrefixPtr, 80);
         AddTextPrinterParameterized(GetMapNamePopUpWindowId(), FONT_NARROW, mapDisplayHeader, x, 3, TEXT_SKIP_DRAW, NULL);
-        CopyWindowToVram(GetMapNamePopUpWindowId(), COPYWIN_FULL);
+        CopyWindowToVram(GetMapNamePopUpWindowId(), COPIA_VENTANA_COMPLETA);
     }
 }
 

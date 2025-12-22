@@ -7358,7 +7358,7 @@ static void Cmd_drawlvlupbox(void)
         // Draw page 1 of level up box
         DrawLevelUpWindow1();
         PutWindowTilemap(B_WIN_LEVEL_UP_BOX);
-        CopyWindowToVram(B_WIN_LEVEL_UP_BOX, COPYWIN_FULL);
+        CopyWindowToVram(B_WIN_LEVEL_UP_BOX, COPIA_VENTANA_COMPLETA);
         gBattleScripting.drawlvlupboxState++;
         break;
     case 5:
@@ -7376,7 +7376,7 @@ static void Cmd_drawlvlupbox(void)
             // Draw page 2 of level up box
             PlaySE(SE_SELECT);
             DrawLevelUpWindow2();
-            CopyWindowToVram(B_WIN_LEVEL_UP_BOX, COPYWIN_GFX);
+            CopyWindowToVram(B_WIN_LEVEL_UP_BOX, COPIA_VENTANA_TILES);
             gBattleScripting.drawlvlupboxState++;
         }
         break;
@@ -7393,10 +7393,10 @@ static void Cmd_drawlvlupbox(void)
         if (!SlideOutLevelUpBanner())
         {
             ClearWindowTilemap(B_WIN_LEVEL_UP_BANNER);
-            CopyWindowToVram(B_WIN_LEVEL_UP_BANNER, COPYWIN_MAP);
+            CopyWindowToVram(B_WIN_LEVEL_UP_BANNER, COPIA_VENTANA_TILEMAP);
 
             ClearWindowTilemap(B_WIN_LEVEL_UP_BOX);
-            CopyWindowToVram(B_WIN_LEVEL_UP_BOX, COPYWIN_MAP);
+            CopyWindowToVram(B_WIN_LEVEL_UP_BOX, COPIA_VENTANA_TILEMAP);
 
             SetBgAttribute(2, BG_ATTR_PRIORITY, 2);
             ShowBg(2);
@@ -7441,7 +7441,7 @@ static void InitLevelUpBanner(void)
     LoadPalette(sLevelUpBanner_Pal, BG_PLTT_ID(6), sizeof(sLevelUpBanner_Pal));
     CopyToWindowPixelBuffer(B_WIN_LEVEL_UP_BANNER, sLevelUpBanner_Gfx, 0, 0);
     PutWindowTilemap(B_WIN_LEVEL_UP_BANNER);
-    CopyWindowToVram(B_WIN_LEVEL_UP_BANNER, COPYWIN_FULL);
+    CopyWindowToVram(B_WIN_LEVEL_UP_BANNER, COPIA_VENTANA_COMPLETA);
 
     PutMonIconOnLvlUpBanner();
 }
@@ -7520,7 +7520,7 @@ static void DrawLevelUpBannerText(void)
     printerTemplate.currentY = 10;
     AddTextPrinter(&printerTemplate, TEXT_SKIP_DRAW, NULL);
 
-    CopyWindowToVram(B_WIN_LEVEL_UP_BANNER, COPYWIN_GFX);
+    CopyWindowToVram(B_WIN_LEVEL_UP_BANNER, COPIA_VENTANA_TILES);
 }
 
 static bool8 SlideOutLevelUpBanner(void)
