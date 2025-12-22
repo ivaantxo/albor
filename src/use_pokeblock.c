@@ -873,7 +873,7 @@ static void AskUsePokeblock(void)
     DrawTextBorderOuter(WIN_TEXT, 151, 14);
     AddTextPrinterParameterized(WIN_TEXT, FONT_NORMAL, gVariableTextoAmpliada, 0, 1, 0, NULL);
     PutWindowTilemap(WIN_TEXT);
-    CopyWindowToVram(WIN_TEXT, COPIA_VENTANA_COMPLETA);
+    CopyWindowToVram(WIN_TEXT, COPYWIN_FULL);
     CreateYesNoMenu(&sUsePokeblockYesNoWinTemplate, 151, 14, 0);
 }
 
@@ -914,7 +914,7 @@ static void PrintFirstEnhancement(void)
 
     PrintMenuWindowText(gVariableTextoAmpliada);
     PutWindowTilemap(WIN_TEXT);
-    CopyWindowToVram(WIN_TEXT, COPIA_VENTANA_COMPLETA);
+    CopyWindowToVram(WIN_TEXT, COPYWIN_FULL);
 }
 
 static bool8 TryPrintNextEnhancement(void)
@@ -938,7 +938,7 @@ static bool8 TryPrintNextEnhancement(void)
 
     BufferEnhancedText(gVariableTextoAmpliada, sInfo->condition, sInfo->enhancements[sInfo->condition]);
     PrintMenuWindowText(gVariableTextoAmpliada);
-    CopyWindowToVram(WIN_TEXT, COPIA_VENTANA_TILES);
+    CopyWindowToVram(WIN_TEXT, COPYWIN_GFX);
 
     return TRUE;
 }
@@ -949,14 +949,14 @@ static void PrintWontEatAnymore(void)
     DrawTextBorderOuter(WIN_TEXT, 151, 14);
     AddTextPrinterParameterized(WIN_TEXT, FONT_NORMAL, gText_WontEatAnymore, 0, 1, 0, NULL);
     PutWindowTilemap(WIN_TEXT);
-    CopyWindowToVram(WIN_TEXT, COPIA_VENTANA_COMPLETA);
+    CopyWindowToVram(WIN_TEXT, COPYWIN_FULL);
 }
 
 static void EraseMenuWindow(void)
 {
     rbox_fill_rectangle(WIN_TEXT);
     ClearWindowTilemap(WIN_TEXT);
-    CopyWindowToVram(WIN_TEXT, COPIA_VENTANA_COMPLETA);
+    CopyWindowToVram(WIN_TEXT, COPYWIN_FULL);
 }
 
 static void PrintMenuWindowText(const u8 *message)
@@ -1391,13 +1391,13 @@ static void UpdateMonInfoText(u16 loadId, bool8 firstPrint)
 
     if (firstPrint)
     {
-        CopyWindowToVram(WIN_NAME, COPIA_VENTANA_COMPLETA);
-        CopyWindowToVram(WIN_NATURE, COPIA_VENTANA_COMPLETA);
+        CopyWindowToVram(WIN_NAME, COPYWIN_FULL);
+        CopyWindowToVram(WIN_NATURE, COPYWIN_FULL);
     }
     else
     {
-        CopyWindowToVram(WIN_NAME, COPIA_VENTANA_TILES);
-        CopyWindowToVram(WIN_NATURE, COPIA_VENTANA_TILES);
+        CopyWindowToVram(WIN_NAME, COPYWIN_GFX);
+        CopyWindowToVram(WIN_NATURE, COPYWIN_GFX);
     }
 }
 

@@ -324,7 +324,7 @@ static const struct ScrollArrowsTemplate sBagScrollArrowsTemplate = {
     .palNum = 0,
 };
 
-static const u32 sRegisteredSelect_Gfx[] = INCBIN_U32("graphics/bag/select_button.4bpp");
+static const u8 sRegisteredSelect_Gfx[] = INCBIN_U8("graphics/bag/select_button.4bpp");
 
 enum {
     COLORID_NORMAL,
@@ -2131,16 +2131,16 @@ static void PrintPocketNames(const u8 *pocketName1, const u8 *pocketName2)
 static void CopyPocketNameToWindow(u32 a)
 {
     u8 (*tileDataBuffer)[32][32];
-    u32 *windowTileData;
+    u8 *windowTileData;
     int b;
     if (a > 8)
         a = 8;
     tileDataBuffer = &gBagMenu->pocketNameBuffer;
-    windowTileData = GetWindowAttribute(2, WINDOW_TILE_DATA);
+    windowTileData = (u8 *)GetWindowAttribute(2, WINDOW_TILE_DATA);
     CopiaCpu32(&tileDataBuffer[0][a], windowTileData, 0x100); // Top half of pocket name
     b = a + 16;
     CopiaCpu32(&tileDataBuffer[0][b], windowTileData + 0x100, 0x100); // Bottom half of pocket name
-    CopyWindowToVram(WIN_POCKET_NAME, COPIA_VENTANA_TILES);
+    CopyWindowToVram(WIN_POCKET_NAME, COPYWIN_GFX);
 }
 
 static void LoadBagMenuTextWindows(void)

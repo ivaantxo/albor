@@ -2788,7 +2788,7 @@ static void PrintGenderSymbol(struct Pokemon *mon, u16 species)
 
 static void PrintAOrBButtonIcon(u8 windowId, bool8 bButton, u32 x)
 {
-    const u32 *button;
+    const u8 *button;
     if (!bButton)
         button = sButtons_Gfx[0];
     else
@@ -3577,7 +3577,7 @@ static void AddAndFillMoveNamesWindow(void)
 {
     u8 windowId = AddWindowFromTemplateList(sPageMovesTemplate, PSS_DATA_WINDOW_MOVE_NAMES);
     FillWindowPixelRect(windowId, PIXEL_FILL(0), 0, 66, 72, 16);
-    CopyWindowToVram(windowId, COPIA_VENTANA_TILES);
+    CopyWindowToVram(windowId, COPYWIN_GFX);
 }
 
 static void SwapMovesNamesPP(u8 moveIndex1, u8 moveIndex2)

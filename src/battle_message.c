@@ -3015,7 +3015,7 @@ void BattlePutTextOnWindow(const u8 *text, u8 windowId)
     if (copyToVram)
     {
         PutWindowTilemap(windowId);
-        CopyWindowToVram(windowId, COPIA_VENTANA_COMPLETA);
+        CopyWindowToVram(windowId, COPYWIN_FULL);
     }
 }
 

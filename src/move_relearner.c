@@ -690,7 +690,7 @@ static void DoMoveRelearnerMain(void)
             ShowTeachMoveText(TRUE);
         }
         RemoveScrollArrows();
-        CopyWindowToVram(RELEARNERWIN_MSG, COPIA_VENTANA_TILES);
+        CopyWindowToVram(RELEARNERWIN_MSG, COPYWIN_GFX);
         break;
     case MENU_STATE_TRY_OVERWRITE_MOVE:
         if (!gFundidoPaletas.activo)

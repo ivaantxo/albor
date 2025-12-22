@@ -1200,7 +1200,7 @@ static void AddOptionDescriptionWindow(void)
     gfx->optionDescWindowId = AddWindow(&sOptionDescWindowTemplate);
     PutWindowTilemap(gfx->optionDescWindowId);
     FillWindowPixelBuffer(gfx->optionDescWindowId, PIXEL_FILL(6));
-    CopyWindowToVram(gfx->optionDescWindowId, COPIA_VENTANA_COMPLETA);
+    CopyWindowToVram(gfx->optionDescWindowId, COPYWIN_FULL);
 }
 
 static void PrintCurrentOptionDescription(void)

@@ -1143,8 +1143,8 @@ static void Task_PCMainMenu(u8 taskId)
         DrawDialogueFrame(0, FALSE);
         FillWindowPixelBuffer(0, PIXEL_FILL(1));
         AddTextPrinterParameterized2(0, FONT_NORMAL, sMainMenuTexts[task->tSelectedOption].desc, TEXT_SKIP_DRAW, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
-        CopyWindowToVram(0, COPIA_VENTANA_COMPLETA);
-        CopyWindowToVram(task->tWindowId, COPIA_VENTANA_COMPLETA);
+        CopyWindowToVram(0, COPYWIN_FULL);
+        CopyWindowToVram(task->tWindowId, COPYWIN_FULL);
         task->tState++;
         break;
     case STATE_FADE_IN:
@@ -3353,7 +3353,7 @@ static void PrintDisplayMonInfo(void)
         AddTextPrinterParameterized(WIN_DISPLAY_INFO, FONT_SHORT, sStorage->displayMonGenderLvlText, 10, 42, TEXT_SKIP_DRAW, NULL);
     }
 
-    CopyWindowToVram(WIN_DISPLAY_INFO, COPIA_VENTANA_TILES);
+    CopyWindowToVram(WIN_DISPLAY_INFO, COPYWIN_GFX);
 }
 
 static void InitSupplementalTilemaps(void)
@@ -3599,7 +3599,7 @@ static void PrintMessage(u8 id)
     AddTextPrinterParameterized(WIN_MESSAGE, FONT_NORMAL, sStorage->messageText, 0, 1, TEXT_SKIP_DRAW, NULL);
     DrawTextBorderOuter(WIN_MESSAGE, 2, 14);
     PutWindowTilemap(WIN_MESSAGE);
-    CopyWindowToVram(WIN_MESSAGE, COPIA_VENTANA_TILES);
+    CopyWindowToVram(WIN_MESSAGE, COPYWIN_GFX);
     ScheduleBgCopyTilemapToVram(0);
 }
 

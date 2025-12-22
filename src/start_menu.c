@@ -293,7 +293,7 @@ static void ShowSafariBallsWindow(void)
     ConvertIntToDecimalStringN(gVariableTexto1, gNumSafariBalls, STR_CONV_MODE_RIGHT_ALIGN, 2);
     StringExpandPlaceholders(gVariableTextoAmpliada, gText_SafariBallStock);
     AddTextPrinterParameterized(sSafariBallsWindowId, FONT_NORMAL, gVariableTextoAmpliada, 0, 1, TEXT_SKIP_DRAW, NULL);
-    CopyWindowToVram(sSafariBallsWindowId, COPIA_VENTANA_TILES);
+    CopyWindowToVram(sSafariBallsWindowId, COPYWIN_GFX);
 }
 
 static void RemoveExtraStartMenuWindows(void)
@@ -362,7 +362,7 @@ static bool32 InitStartMenuStep(void)
         break;
     case 5:
         sStartMenuCursorPos = InitMenuNormal(GetStartMenuWindowId(), FONT_NORMAL, 0, 9, 16, sNumStartMenuActions, sStartMenuCursorPos);
-        CopyWindowToVram(GetStartMenuWindowId(), COPIA_VENTANA_TILEMAP);
+        CopyWindowToVram(GetStartMenuWindowId(), COPYWIN_MAP);
         return TRUE;
     }
 
@@ -815,7 +815,7 @@ static void ShowSaveInfoWindow(void)
     xOffset = GetStringRightAlignXOffset(FONT_NORMAL, gVariableTextoAmpliada, 0x70);
     AddTextPrinterParameterized(sSaveInfoWindowId, FONT_NORMAL, gVariableTextoAmpliada, xOffset, yOffset, TEXT_SKIP_DRAW, NULL);
 
-    CopyWindowToVram(sSaveInfoWindowId, COPIA_VENTANA_TILES);
+    CopyWindowToVram(sSaveInfoWindowId, COPYWIN_GFX);
 }
 
 static void RemoveSaveInfoWindow(void)

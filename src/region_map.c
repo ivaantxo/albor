@@ -1537,7 +1537,7 @@ static void DrawFlyDestTextWindow(void)
             DrawStdFrameWithCustomTileAndPalette(WIN_MAPSEC_NAME, FALSE, 101, 13);
         }
         FillWindowPixelBuffer(WIN_MAPSEC_NAME, PIXEL_FILL(1));
-        CopyWindowToVram(WIN_MAPSEC_NAME, COPIA_VENTANA_TILES);
+        CopyWindowToVram(WIN_MAPSEC_NAME, COPYWIN_GFX);
         ScheduleBgCopyTilemapToVram(0);
         sDrawFlyDestTextWindow = FALSE;
     }

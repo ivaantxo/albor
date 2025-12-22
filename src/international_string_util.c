@@ -141,7 +141,7 @@ void PadNameString(u8 *dest, u8 padChar)
 // Used by Pokénav's Match Call to erase the previous trainer's flavor text when switching between their info pages.
 void FillWindowTilesByRow(int windowId, int columnStart, int rowStart, int numFillTiles, int numRows)
 {
-    u32 *windowTileData;
+    u8 *windowTileData;
     int fillSize, windowRowSize, i;
     struct Window *window = &gWindows[windowId];
 

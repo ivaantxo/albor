@@ -776,7 +776,7 @@ static void RenderPartyMenuBox(u8 slot)
             LoadPartyBoxPalette(&sPartyMenuBoxes[slot], PARTY_PAL_NO_MON);
         else
             LoadPartyBoxPalette(&sPartyMenuBoxes[slot], PARTY_PAL_MULTI_ALT);
-        CopyWindowToVram(sPartyMenuBoxes[slot].windowId, COPIA_VENTANA_TILES);
+        CopyWindowToVram(sPartyMenuBoxes[slot].windowId, COPYWIN_GFX);
         PutWindowTilemap(sPartyMenuBoxes[slot].windowId);
         ScheduleBgCopyTilemapToVram(2);
     }
@@ -786,7 +786,7 @@ static void RenderPartyMenuBox(u8 slot)
         {
             DrawEmptySlot(sPartyMenuBoxes[slot].windowId);
             LoadPartyBoxPalette(&sPartyMenuBoxes[slot], PARTY_PAL_NO_MON);
-            CopyWindowToVram(sPartyMenuBoxes[slot].windowId, COPIA_VENTANA_TILES);
+            CopyWindowToVram(sPartyMenuBoxes[slot].windowId, COPYWIN_GFX);
         }
         else
         {
@@ -1880,7 +1880,7 @@ static u16 *GetPartyMenuPalBufferPtr(u8 paletteId)
 
 static void BlitBitmapToPartyWindow(u8 windowId, const u8 *b, u8 c, u8 x, u8 y, u8 width, u8 height)
 {
-    u32 *pixels = AllocZeroed(height * width * 32);
+    u8 *pixels = AllocZeroed(height * width * 32);
     u32 i, j;
 
     if (pixels != NULL)
@@ -2185,7 +2185,7 @@ static void DisplayPartyPokemonHPBar(u16 hp, u16 maxhp, struct PartyMenuBox *men
         FillWindowPixelRect(menuBox->windowId, 0x0D, menuBox->infoRects->dimensions[20] + hpFraction, menuBox->infoRects->dimensions[21], menuBox->infoRects->dimensions[22] - hpFraction, 1);
         FillWindowPixelRect(menuBox->windowId, 0x02, menuBox->infoRects->dimensions[20] + hpFraction, menuBox->infoRects->dimensions[21] + 1, menuBox->infoRects->dimensions[22] - hpFraction, 2);
     }
-    CopyWindowToVram(menuBox->windowId, COPIA_VENTANA_TILES);
+    CopyWindowToVram(menuBox->windowId, COPYWIN_GFX);
 }
 
 static void DisplayPartyPokemonDescriptionText(u8 stringID, struct PartyMenuBox *menuBox, u8 c)
@@ -4754,7 +4754,7 @@ static void DisplayLevelUpStatsPg1(u8 taskId)
 
     arrayPtr[12] = CreateLevelUpStatsWindow();
     DrawLevelUpWindowPg1(arrayPtr[12], arrayPtr, &arrayPtr[6], TEXT_COLOR_WHITE, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY);
-    CopyWindowToVram(arrayPtr[12], COPIA_VENTANA_TILES);
+    CopyWindowToVram(arrayPtr[12], COPYWIN_GFX);
     ScheduleBgCopyTilemapToVram(2);
 }
 
@@ -4763,7 +4763,7 @@ static void DisplayLevelUpStatsPg2(u8 taskId)
     u16 *arrayPtr = (u16*) sPartyMenuInternal->data;
 
     DrawLevelUpWindowPg2(arrayPtr[12], &arrayPtr[6], TEXT_COLOR_WHITE, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY);
-    CopyWindowToVram(arrayPtr[12], COPIA_VENTANA_TILES);
+    CopyWindowToVram(arrayPtr[12], COPYWIN_GFX);
     ScheduleBgCopyTilemapToVram(2);
 }
 
