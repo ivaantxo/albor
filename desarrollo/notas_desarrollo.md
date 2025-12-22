@@ -94,7 +94,7 @@ porytiles compile-primary -Wall -o /Users/ivanmartinez/proyectos/albor/data/tile
 *Decouple poké balls de item id
 *Jigglypuff evoluciona al aprender Vozarrón.
 *Cloyster/Slowking/Slowbro aprenden ataques Veneno (+Ataque custom tipo Control Mental?)
-*Golpes críticos: posibilidades neutra: 6%, +1: 12%, +2: 24%, +3: 38%, +4: 96%.
+*Golpes críticos: posibilidades neutra: 6%, +1: 12%, +2: 24%, +3: 48%, +4: 96%.
 paletas: (\d+) (\d+) (\d+) \d+ --> $1 $2 $3
 
 //falta terminar lista de macros (scrcmd...) y terminar strings, después comprobar que todo va bien, y añadir cambios de rama principal.
