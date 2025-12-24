@@ -1031,8 +1031,7 @@ bool32 ProteanTryChangeType(u32 battler, u32 ability, u32 move, u32 moveType)
          && !gDisableStructs[gBattlerAttacker].usedProteanLibero
          && (gBattleMons[battler].types[0] != moveType || gBattleMons[battler].types[1] != moveType
              || (gBattleMons[battler].types[2] != moveType && gBattleMons[battler].types[2] != TIPO_MISTERIO))
-         && move != MOVE_STRUGGLE
-         && GetActiveGimmick(battler) != GIMMICK_TERA)
+         && move != MOVE_STRUGGLE)
     {
         SET_BATTLER_TYPE(battler, moveType);
         return TRUE;
@@ -9119,7 +9118,7 @@ static void Cmd_various(void)
     case VARIOUS_TRY_THIRD_TYPE:
     {
         VARIOUS_ARGS(const u8 *failInstr);
-        if (IS_BATTLER_OF_TYPE(battler, gMovesInfo[gCurrentMove].argument) || GetActiveGimmick(battler) == GIMMICK_TERA)
+        if (IS_BATTLER_OF_TYPE(battler, gMovesInfo[gCurrentMove].argument))
         {
             gBattlescriptCurrInstr = cmd->failInstr;
         }
@@ -10788,12 +10787,6 @@ static void Cmd_tryconversiontypechange(void)
     u8 moveChecked = 0;
     u8 moveType = 0;
 
-    if (GetActiveGimmick(gBattlerAttacker) == GIMMICK_TERA)
-    {
-        gBattlescriptCurrInstr = cmd->failInstr;
-        return;
-    }
-
     if (B_UPDATED_CONVERSION >= GEN_6)
     {
         // Changes user's type to its first move's type
@@ -11433,10 +11426,6 @@ static void Cmd_settypetorandomresistance(void)
         {
             gBattlescriptCurrInstr = cmd->failInstr;
         }
-        else if (GetActiveGimmick(gBattlerAttacker) == GIMMICK_TERA)
-        {
-            gBattlescriptCurrInstr = cmd->failInstr;
-        }
         else if (gLastHitByType[gBattlerAttacker] == TIPO_MISTERIO)
         {
             gBattlescriptCurrInstr = cmd->failInstr;
@@ -11491,10 +11480,6 @@ static void Cmd_settypetorandomresistance(void)
             gBattlescriptCurrInstr = cmd->failInstr;
         }
         else if (gLastUsedMoveType[gBattlerTarget] == TIPO_NINGUNO || gLastUsedMoveType[gBattlerTarget] == TIPO_MISTERIO)
-        {
-            gBattlescriptCurrInstr = cmd->failInstr;
-        }
-        else if (GetActiveGimmick(gBattlerAttacker) == GIMMICK_TERA)
         {
             gBattlescriptCurrInstr = cmd->failInstr;
         }
@@ -14845,7 +14830,7 @@ void BS_FickleBeamDamageCalculation(void)
 void BS_TryTarShot(void)
 {
     NATIVE_ARGS(const u8 *failInstr);
-    if (gDisableStructs[gBattlerTarget].tarShot || GetActiveGimmick(gBattlerTarget) == GIMMICK_TERA)
+    if (gDisableStructs[gBattlerTarget].tarShot)
     {
         gBattlescriptCurrInstr = cmd->failInstr;
     }

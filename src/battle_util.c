@@ -5,7 +5,6 @@
 #include "battle_controllers.h"
 #include "battle_interface.h"
 #include "battle_setup.h"
-#include "battle_gimmick.h"
 #include "party_menu.h"
 #include "pokemon.h"
 #include "international_string_util.h"
@@ -462,26 +461,6 @@ void HandleAction_Run(void)
     }
 }
 
-void HandleAction_WatchesCarefully(void)
-{
-    gBattlerAttacker = gBattlerByTurnOrder[gCurrentTurnActionNumber];
-    gBattle_BG0_X = 0;
-    gBattle_BG0_Y = 0;
-    gBattlescriptCurrInstr = gBattlescriptsForSafariActions[0];
-    gCurrentActionFuncId = B_ACTION_EXEC_SCRIPT;
-}
-
-void HandleAction_SafariZoneBallThrow(void)
-{
-    gBattlerAttacker = gBattlerByTurnOrder[gCurrentTurnActionNumber];
-    gBattle_BG0_X = 0;
-    gBattle_BG0_Y = 0;
-    gNumSafariBalls--;
-    gLastUsedItem = ITEM_SAFARI_BALL;
-    gBattlescriptCurrInstr = BattleScript_SafariBallThrow;
-    gCurrentActionFuncId = B_ACTION_EXEC_SCRIPT;
-}
-
 void HandleAction_ThrowBall(void)
 {
     gBattlerAttacker = gBattlerByTurnOrder[gCurrentTurnActionNumber];
@@ -491,83 +470,6 @@ void HandleAction_ThrowBall(void)
     RemoveBagItem(gLastUsedItem, 1);
     gBattlescriptCurrInstr = BattleScript_BallThrow;
     gCurrentActionFuncId = B_ACTION_EXEC_SCRIPT;
-}
-
-void HandleAction_ThrowPokeblock(void)
-{
-    gBattlerAttacker = gBattlerByTurnOrder[gCurrentTurnActionNumber];
-    gBattle_BG0_X = 0;
-    gBattle_BG0_Y = 0;
-    gBattleCommunication[MULTISTRING_CHOOSER] = gBattleResources->bufferB[gBattlerAttacker][1] - 1;
-    gLastUsedItem = gBattleResources->bufferB[gBattlerAttacker][2];
-
-    if (gBattleResults.pokeblockThrows < 255)
-        gBattleResults.pokeblockThrows++;
-    if (gBattleStruct->safariPkblThrowCounter < 3)
-        gBattleStruct->safariPkblThrowCounter++;
-    if (gBattleStruct->safariEscapeFactor > 1)
-    {
-        // BUG: safariEscapeFactor can become 0 below. This causes the pokeblock throw glitch.
-        #ifdef BUGFIX
-        if (gBattleStruct->safariEscapeFactor <= sPkblToEscapeFactor[gBattleStruct->safariPkblThrowCounter][gBattleCommunication[MULTISTRING_CHOOSER]])
-        #else
-        if (gBattleStruct->safariEscapeFactor < sPkblToEscapeFactor[gBattleStruct->safariPkblThrowCounter][gBattleCommunication[MULTISTRING_CHOOSER]])
-        #endif
-            gBattleStruct->safariEscapeFactor = 1;
-        else
-            gBattleStruct->safariEscapeFactor -= sPkblToEscapeFactor[gBattleStruct->safariPkblThrowCounter][gBattleCommunication[MULTISTRING_CHOOSER]];
-    }
-
-    gBattlescriptCurrInstr = gBattlescriptsForSafariActions[2];
-    gCurrentActionFuncId = B_ACTION_EXEC_SCRIPT;
-}
-
-void HandleAction_GoNear(void)
-{
-    gBattlerAttacker = gBattlerByTurnOrder[gCurrentTurnActionNumber];
-    gBattle_BG0_X = 0;
-    gBattle_BG0_Y = 0;
-
-    gBattleStruct->safariCatchFactor += sGoNearCounterToCatchFactor[gBattleStruct->safariGoNearCounter];
-    if (gBattleStruct->safariCatchFactor > 20)
-        gBattleStruct->safariCatchFactor = 20;
-
-    gBattleStruct->safariEscapeFactor += sGoNearCounterToEscapeFactor[gBattleStruct->safariGoNearCounter];
-    if (gBattleStruct->safariEscapeFactor > 20)
-        gBattleStruct->safariEscapeFactor = 20;
-
-    if (gBattleStruct->safariGoNearCounter < 3)
-    {
-        gBattleStruct->safariGoNearCounter++;
-        gMensajeBatalla = B_MSG_CREPT_CLOSER;
-    }
-    else
-    {
-        gMensajeBatalla = B_MSG_CANT_GET_CLOSER;
-    }
-    gBattlescriptCurrInstr = gBattlescriptsForSafariActions[1];
-    gCurrentActionFuncId = B_ACTION_EXEC_SCRIPT;
-}
-
-void HandleAction_SafariZoneRun(void)
-{
-    gBattlerAttacker = gBattlerByTurnOrder[gCurrentTurnActionNumber];
-    PlaySE(SE_FLEE);
-    gCurrentTurnActionNumber = gBattlersCount;
-    gBattleOutcome = B_OUTCOME_RAN;
-}
-
-void HandleAction_WallyBallThrow(void)
-{
-    gBattlerAttacker = gBattlerByTurnOrder[gCurrentTurnActionNumber];
-    gBattle_BG0_X = 0;
-    gBattle_BG0_Y = 0;
-
-    PREPARE_MON_NICK_BUFFER(gBattleTextBuff1, gBattlerAttacker, gBattlerPartyIndexes[gBattlerAttacker])
-
-    gBattlescriptCurrInstr = gBattlescriptsForSafariActions[3];
-    gCurrentActionFuncId = B_ACTION_EXEC_SCRIPT;
-    gActionsByTurnOrder[1] = B_ACTION_FINISHED;
 }
 
 void HandleAction_TryFinish(void)
@@ -10710,8 +10612,6 @@ u8 GetBattlerType(u32 battler, u8 typeIndex)
 void RemoveBattlerType(u32 battler, u8 type)
 {
     u32 i;
-    if (GetActiveGimmick(battler) == GIMMICK_TERA) // don't remove type if Terastallized
-        return;
     for (i = 0; i < 3; i++)
     {
         if (*(u8 *)(&gBattleMons[battler].types[0] + i) == type)
@@ -10733,8 +10633,8 @@ void AllocateBattleResources(void)
     gBattleResources->aiParty = AllocZeroed(sizeof(*gBattleResources->aiParty));
     gBattleResources->battleHistory = AllocZeroed(sizeof(*gBattleResources->battleHistory));
 
-    gBattleAnimBgTileBuffer = AllocZeroed(0x2000);
-    gBattleAnimBgTilemapBuffer = AllocZeroed(0x1000);
+    gBattleAnimBgTileBuffer = AllocZeroed(8192);
+    gBattleAnimBgTilemapBuffer = AllocZeroed(4096);
 }
 
 void FreeBattleResources(void)

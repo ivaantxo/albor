@@ -23,11 +23,6 @@
 #include "constants/items.h"
 #include "constants/trainers.h"
 
-#define AI_ACTION_DONE          (1 << 0)
-#define AI_ACTION_FLEE          (1 << 1)
-#define AI_ACTION_WATCH         (1 << 2)
-#define AI_ACTION_DO_NOT_ATTACK (1 << 3)
-
 static u32 ChooseMoveOrAction_Singles(u32 battlerAi);
 static u32 ChooseMoveOrAction_Doubles(u32 battlerAi);
 static inline void BattleAI_DoAIProcessing(struct AI_ThinkingStruct *aiThink, u32 battlerAi, u32 battlerDef);
@@ -47,9 +42,6 @@ static s32 AI_Risky(u32 battlerAtk, u32 battlerDef, u32 move, s32 score);
 static s32 AI_PreferStrongestMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score);
 static s32 AI_PreferBatonPass(u32 battlerAtk, u32 battlerDef, u32 move, s32 score);
 static s32 AI_HPAware(u32 battlerAtk, u32 battlerDef, u32 move, s32 score);
-static s32 AI_Roaming(u32 battlerAtk, u32 battlerDef, u32 move, s32 score);
-static s32 AI_Safari(u32 battlerAtk, u32 battlerDef, u32 move, s32 score);
-static s32 AI_FirstBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score);
 static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score);
 static s32 AI_PowerfulStatus(u32 battlerAtk, u32 battlerDef, u32 move, s32 score);
 static s32 AI_DynamicFunc(u32 battlerAtk, u32 battlerDef, u32 move, s32 score);
@@ -86,9 +78,9 @@ static s32 (*const sBattleAiFuncTable[])(u32, u32, u32, s32) =
     [26] = NULL,                     // Unused
     [27] = NULL,                     // Unused
     [28] = AI_DynamicFunc,          // AI_FLAG_DYNAMIC_FUNC
-    [29] = AI_Roaming,              // AI_FLAG_ROAMING
-    [30] = AI_Safari,               // AI_FLAG_SAFARI
-    [31] = AI_FirstBattle,          // AI_FLAG_FIRST_BATTLE
+    [29] = NULL,              // Unused
+    [30] = NULL,                    // Unused
+    [31] = NULL,          // Unused
 };
 
 // Functions
@@ -457,12 +449,6 @@ static u32 ChooseMoveOrAction_Singles(u32 battlerAi)
         gBattleStruct->aiFinalScore[battlerAi][gBattlerTarget][i] = AI_THINKING_STRUCT->score[i];
     }
 
-    // Check special AI actions.
-    if (AI_THINKING_STRUCT->aiAction & AI_ACTION_FLEE)
-        return AI_CHOICE_FLEE;
-    if (AI_THINKING_STRUCT->aiAction & AI_ACTION_WATCH)
-        return AI_CHOICE_WATCH;
-
     numOfBestMoves = 1;
     currentMoveArray[0] = AI_THINKING_STRUCT->score[0];
     consideredMoveArray[0] = 0;
@@ -527,48 +513,37 @@ static u32 ChooseMoveOrAction_Doubles(u32 battlerAi)
                 AI_THINKING_STRUCT->aiLogicId++;
             }
 
-            if (AI_THINKING_STRUCT->aiAction & AI_ACTION_FLEE)
+            mostViableMovesScores[0] = AI_THINKING_STRUCT->score[0];
+            mostViableMovesIndices[0] = 0;
+            mostViableMovesNo = 1;
+            for (j = 1; j < MAX_MON_MOVES; j++)
             {
-                actionOrMoveIndex[i] = AI_CHOICE_FLEE;
-            }
-            else if (AI_THINKING_STRUCT->aiAction & AI_ACTION_WATCH)
-            {
-                actionOrMoveIndex[i] = AI_CHOICE_WATCH;
-            }
-            else
-            {
-                mostViableMovesScores[0] = AI_THINKING_STRUCT->score[0];
-                mostViableMovesIndices[0] = 0;
-                mostViableMovesNo = 1;
-                for (j = 1; j < MAX_MON_MOVES; j++)
+                if (gBattleMons[battlerAi].moves[j] != 0)
                 {
-                    if (gBattleMons[battlerAi].moves[j] != 0)
-                    {
-                        if (!CanTargetBattler(battlerAi, i, gBattleMons[battlerAi].moves[j]))
-                            continue;
+                    if (!CanTargetBattler(battlerAi, i, gBattleMons[battlerAi].moves[j]))
+                        continue;
 
-                        if (mostViableMovesScores[0] == AI_THINKING_STRUCT->score[j])
-                        {
-                            mostViableMovesScores[mostViableMovesNo] = AI_THINKING_STRUCT->score[j];
-                            mostViableMovesIndices[mostViableMovesNo] = j;
-                            mostViableMovesNo++;
-                        }
-                        if (mostViableMovesScores[0] < AI_THINKING_STRUCT->score[j])
-                        {
-                            mostViableMovesScores[0] = AI_THINKING_STRUCT->score[j];
-                            mostViableMovesIndices[0] = j;
-                            mostViableMovesNo = 1;
-                        }
+                    if (mostViableMovesScores[0] == AI_THINKING_STRUCT->score[j])
+                    {
+                        mostViableMovesScores[mostViableMovesNo] = AI_THINKING_STRUCT->score[j];
+                        mostViableMovesIndices[mostViableMovesNo] = j;
+                        mostViableMovesNo++;
+                    }
+                    if (mostViableMovesScores[0] < AI_THINKING_STRUCT->score[j])
+                    {
+                        mostViableMovesScores[0] = AI_THINKING_STRUCT->score[j];
+                        mostViableMovesIndices[0] = j;
+                        mostViableMovesNo = 1;
                     }
                 }
-                actionOrMoveIndex[i] = mostViableMovesIndices[Random() % mostViableMovesNo];
-                bestMovePointsForTarget[i] = mostViableMovesScores[0];
+            }
+            actionOrMoveIndex[i] = mostViableMovesIndices[Random() % mostViableMovesNo];
+            bestMovePointsForTarget[i] = mostViableMovesScores[0];
 
-                // Don't use a move against ally if it has less than 100 points.
-                if (i == BATTLE_PARTNER(battlerAi) && bestMovePointsForTarget[i] < AI_SCORE_DEFAULT)
-                {
-                    bestMovePointsForTarget[i] = -1;
-                }
+            // Don't use a move against ally if it has less than 100 points.
+            if (i == BATTLE_PARTNER(battlerAi) && bestMovePointsForTarget[i] < AI_SCORE_DEFAULT)
+            {
+                bestMovePointsForTarget[i] = -1;
             }
 
             for (j = 0; j < MAX_MON_MOVES; j++)
@@ -642,7 +617,7 @@ static inline void BattleAI_DoAIProcessing(struct AI_ThinkingStruct *aiThink, u3
             aiThink->score[aiThink->movesetIndex] = 0;
         }
         aiThink->movesetIndex++;
-    } while (aiThink->movesetIndex < MAX_MON_MOVES && !(aiThink->aiAction & AI_ACTION_DO_NOT_ATTACK));
+    } while (aiThink->movesetIndex < MAX_MON_MOVES);
 
     aiThink->movesetIndex = 0;
 }
@@ -2287,11 +2262,11 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             switch (move)
             {
             case MOVE_TRICK_OR_TREAT:
-                if (IS_BATTLER_OF_TYPE(battlerDef, TIPO_FANTASMA) || PartnerMoveIsSameAsAttacker(BATTLE_PARTNER(battlerAtk), battlerDef, move, aiData->partnerMove) || GetActiveGimmick(battlerDef) == GIMMICK_TERA)
+                if (IS_BATTLER_OF_TYPE(battlerDef, TIPO_FANTASMA) || PartnerMoveIsSameAsAttacker(BATTLE_PARTNER(battlerAtk), battlerDef, move, aiData->partnerMove))
                     ADJUST_SCORE(-10);
                 break;
             case MOVE_FORESTS_CURSE:
-                if (IS_BATTLER_OF_TYPE(battlerDef, TIPO_PLANTA) || PartnerMoveIsSameAsAttacker(BATTLE_PARTNER(battlerAtk), battlerDef, move, aiData->partnerMove) || GetActiveGimmick(battlerDef) == GIMMICK_TERA)
+                if (IS_BATTLER_OF_TYPE(battlerDef, TIPO_PLANTA) || PartnerMoveIsSameAsAttacker(BATTLE_PARTNER(battlerAtk), battlerDef, move, aiData->partnerMove))
                     ADJUST_SCORE(-10);
                 break;
             }
@@ -2875,8 +2850,7 @@ static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                 break;
             case EFFECT_SOAK:
                 if (atkPartnerAbility == ABILITY_WONDER_GUARD
-                 && !IS_BATTLER_OF_TYPE(battlerAtkPartner, TIPO_AGUA)
-                 && GetActiveGimmick(battlerAtkPartner) != GIMMICK_TERA)
+                 && !IS_BATTLER_OF_TYPE(battlerAtkPartner, TIPO_AGUA))
                 {
                     RETURN_SCORE_PLUS(WEAK_EFFECT);
                 }
@@ -5143,49 +5117,6 @@ static s32 AI_PowerfulStatus(u32 battlerAtk, u32 battlerDef, u32 move, s32 score
 
     return score;
 }
-
-static void AI_Flee(void)
-{
-    AI_THINKING_STRUCT->aiAction |= (AI_ACTION_DONE | AI_ACTION_FLEE | AI_ACTION_DO_NOT_ATTACK);
-}
-
-static void AI_Watch(void)
-{
-    AI_THINKING_STRUCT->aiAction |= (AI_ACTION_DONE | AI_ACTION_WATCH | AI_ACTION_DO_NOT_ATTACK);
-}
-
-// Roaming pokemon logic
-static s32 AI_Roaming(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
-{
-    if (IsBattlerTrapped(battlerAtk, FALSE))
-        return score;
-
-    AI_Flee();
-    return score;
-}
-
-// Safari pokemon logic
-static s32 AI_Safari(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
-{
-    u32 safariFleeRate = gBattleStruct->safariEscapeFactor * 5; // Safari flee rate, from 0-20.
-
-    if ((Random() % 100) < safariFleeRate)
-        AI_Flee();
-    else
-        AI_Watch();
-
-    return score;
-}
-
-// First battle logic
-static s32 AI_FirstBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
-{
-    if (AI_DATA->hpPercents[battlerDef] <= 20)
-        AI_Flee();
-
-    return score;
-}
-
 
 // Dynamic AI Functions
 // For specific battle scenarios

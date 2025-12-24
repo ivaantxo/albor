@@ -423,66 +423,21 @@ static void OpponentHandleChooseAction(u32 battler)
 
 static void OpponentHandleChooseMove(u32 battler)
 {
-    u8 chosenMoveId;
+    u32 chosenMoveId = gBattleStruct->aiMoveOrAction[battler];
     struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct *)(&gBattleResources->bufferA[battler][4]);
+    u32 chosenMove = moveInfo->moves[chosenMoveId];
+    gBattlerTarget = gBattleStruct->aiChosenTarget[battler];
 
-    if (gBattleTypeFlags & (TIPO_BATALLA_ENTRENADOR) || IsWildMonSmart())
+    if (GetBattlerMoveTargetType(battler, chosenMove) & (MOVE_TARGET_USER_OR_SELECTED | MOVE_TARGET_USER))
+        gBattlerTarget = battler;
+    if (GetBattlerMoveTargetType(battler, chosenMove) & MOVE_TARGET_BOTH)
     {
-        chosenMoveId = gBattleStruct->aiMoveOrAction[battler];
-        gBattlerTarget = gBattleStruct->aiChosenTarget[battler];
-        switch (chosenMoveId)
-        {
-        case AI_CHOICE_WATCH:
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_SAFARI_WATCH_CAREFULLY, 0);
-            break;
-        case AI_CHOICE_FLEE:
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_RUN, 0);
-            break;
-        case 6:
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 15, gBattlerTarget);
-            break;
-        default:
-            {
-                u16 chosenMove = moveInfo->moves[chosenMoveId];
-                if (GetBattlerMoveTargetType(battler, chosenMove) & (MOVE_TARGET_USER_OR_SELECTED | MOVE_TARGET_USER))
-                    gBattlerTarget = battler;
-                if (GetBattlerMoveTargetType(battler, chosenMove) & MOVE_TARGET_BOTH)
-                {
-                    gBattlerTarget = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
-                    if (gAbsentBattlerFlags & (1u << gBattlerTarget))
-                        gBattlerTarget = GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT);
-                }
-                BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, (chosenMoveId) | (gBattlerTarget << 8));
-            }
-            break;
-        }
-        OpponentBufferExecCompleted(battler);
+        gBattlerTarget = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
+        if (gAbsentBattlerFlags & (1u << gBattlerTarget))
+            gBattlerTarget = GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT);
     }
-    else // Wild pokemon - use random move
-    {
-        u16 move;
-        u8 target;
-        do
-        {
-            chosenMoveId = Random() & 3;
-            move = moveInfo->moves[chosenMoveId];
-        } while (move == MOVE_NONE);
-
-        if (GetBattlerMoveTargetType(battler, move) & (MOVE_TARGET_USER_OR_SELECTED | MOVE_TARGET_USER))
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, (chosenMoveId) | (battler << 8));
-        else if (EsContraEntrenador())
-        {
-            do {
-                target = GetBattlerAtPosition(Random() & 2);
-            } while (!CanTargetBattler(battler, target, move));
-
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, (chosenMoveId) | (target << 8));
-        }
-        else
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, (chosenMoveId) | (GetBattlerAtPosition(B_POSITION_PLAYER_LEFT) << 8));
-
-        OpponentBufferExecCompleted(battler);
-    }
+    BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_EXEC_SCRIPT, (chosenMoveId) | (gBattlerTarget << 8));
+    OpponentBufferExecCompleted(battler);
 }
 
 static void OpponentHandleChooseItem(u32 battler)

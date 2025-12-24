@@ -13,7 +13,6 @@
 #include "battle_bg.h"
 #include "pokeball.h"
 #include "battle_debug.h"
-#include "battle_gimmick.h"
 #include "random.h" // for rng_value_t
 
 // Helper for accessing command arguments and advancing gBattlescriptCurrInstr.
@@ -47,12 +46,6 @@
 #define B_ACTION_USE_ITEM               1
 #define B_ACTION_SWITCH                 2
 #define B_ACTION_RUN                    3
-#define B_ACTION_SAFARI_WATCH_CAREFULLY 4
-#define B_ACTION_SAFARI_BALL            5
-#define B_ACTION_SAFARI_POKEBLOCK       6
-#define B_ACTION_SAFARI_GO_NEAR         7
-#define B_ACTION_SAFARI_RUN             8
-#define B_ACTION_WALLY_THROW            9
 #define B_ACTION_EXEC_SCRIPT            10
 #define B_ACTION_TRY_FINISH             11
 #define B_ACTION_FINISHED               12
@@ -60,8 +53,13 @@
 #define B_ACTION_NOTHING_FAINTED        13 // when choosing an action
 #define B_ACTION_DEBUG                  20
 #define B_ACTION_THROW_BALL             21 // R to throw last used ball
+RET_VALUE_LEVELED_UP
 #define B_ACTION_NONE                   0xFF
 
+enum AccionesBatalla
+{
+
+}
 // Special indicator value for shellBellDmg in SpecialStatus
 #define IGNORE_SHELL_BELL 0xFFFF
 
@@ -463,17 +461,6 @@ struct Illusion
     struct Pokemon *mon;
 };
 
-struct BattleGimmickData
-{
-    u8 usableGimmick[MAX_BATTLERS_COUNT];                // first usable gimmick that can be selected for each battler
-    bool8 playerSelect;                                  // used to toggle trigger and update battle UI
-    u8 triggerSpriteId;
-    u8 indicatorSpriteId[MAX_BATTLERS_COUNT];
-    u8 toActivate;                                       // stores whether a battler should transform at start of turn as bitfield
-    u8 activeGimmick[NUM_BATTLE_SIDES][PARTY_SIZE];      // stores the active gimmick for each party member
-    bool8 activated[MAX_BATTLERS_COUNT][GIMMICKS_COUNT]; // stores whether a trainer has used gimmick
-};
-
 struct LostItem
 {
     u16 originalItem:15;
@@ -572,7 +559,6 @@ struct BattleStruct
     bool8 ateBoost[MAX_BATTLERS_COUNT];
     u8 activeAbilityPopUps; // as bits for each battler
     u8 abilityPopUpSpriteIds[MAX_BATTLERS_COUNT][2];    // two per battler
-    struct BattleGimmickData gimmick;
     const u8 *trainerSlideMsg;
     enum EstadosIntroBatalla estadoIntro;
     u8 ateBerry[2]; // array id determined by side, each party pokemon as bit

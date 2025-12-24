@@ -329,12 +329,6 @@ static void (* const sTurnActionsFuncsTable[])(void) =
     [B_ACTION_USE_ITEM]               = HandleAction_UseItem,
     [B_ACTION_SWITCH]                 = HandleAction_Switch,
     [B_ACTION_RUN]                    = HandleAction_Run,
-    [B_ACTION_SAFARI_WATCH_CAREFULLY] = HandleAction_WatchesCarefully,
-    [B_ACTION_SAFARI_BALL]            = HandleAction_SafariZoneBallThrow,
-    [B_ACTION_SAFARI_POKEBLOCK]       = HandleAction_ThrowPokeblock,
-    [B_ACTION_SAFARI_GO_NEAR]         = HandleAction_GoNear,
-    [B_ACTION_SAFARI_RUN]             = HandleAction_SafariZoneRun,
-    [B_ACTION_WALLY_THROW]            = HandleAction_WallyBallThrow,
     [B_ACTION_EXEC_SCRIPT]            = HandleAction_RunBattleScript,
     [B_ACTION_TRY_FINISH]             = HandleAction_TryFinish,
     [B_ACTION_FINISHED]               = HandleAction_ActionFinished,
@@ -1527,7 +1521,7 @@ static void DoBattleIntro(void)
         MarkBattlerForControllerExec(battler);
         gBattleStruct->estadoIntro++;
         break;
-    case ESTADO_INTRO_BATALLA_LOOP_DATOS_POKEMON:
+    case ESTADO_INTRO_BATALLA_BUCLE_DATOS_POKEMON:
         if (!gBattleControllerExecFlags)
         {
             if (++gBattleCommunication[SPRITES_INIT_STATE1] == gBattlersCount)
@@ -1853,7 +1847,7 @@ static void TryDoEventsBeforeFirstTurn(void)
         SetAiLogicDataForTurn(AI_DATA); // get assumed abilities, hold effects, etc of all battlers
 
         if ((i = ShouldDoTrainerSlide(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT), TRAINER_SLIDE_BEFORE_FIRST_TURN)))
-            BattleScriptExecute(BattleScript_TrainerASlideMsgEnd;
+            BattleScriptExecute(BattleScript_TrainerSlideMsgRet);
         gBattleStruct->eventsBeforeFirstTurnState = 0;
         break;
     }
@@ -1950,17 +1944,17 @@ void BattleTurnPassed(void)
         gSideTimers[B_SIDE_OPPONENT].retaliateTimer--;
 
     if ((i = ShouldDoTrainerSlide(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT), TRAINER_SLIDE_LAST_LOW_HP)))
-        BattleScriptExecute(BattleScript_TrainerASlideMsgEnd;
+        BattleScriptExecute(BattleScript_TrainerSlideMsgRet);
     else if ((i = ShouldDoTrainerSlide(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT), TRAINER_SLIDE_LAST_HALF_HP)))
-        BattleScriptExecute(BattleScript_TrainerASlideMsgEnd;
+        BattleScriptExecute(BattleScript_TrainerSlideMsgRet);
     else if ((i = ShouldDoTrainerSlide(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT), TRAINER_SLIDE_FIRST_CRITICAL_HIT)))
-        BattleScriptExecute(BattleScript_TrainerASlideMsgEnd;
+        BattleScriptExecute(BattleScript_TrainerSlideMsgRet);
     else if ((i = ShouldDoTrainerSlide(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT), TRAINER_SLIDE_FIRST_SUPER_EFFECTIVE_HIT)))
-        BattleScriptExecute(BattleScript_TrainerASlideMsgEnd;
+        BattleScriptExecute(BattleScript_TrainerSlideMsgRet);
     else if ((i = ShouldDoTrainerSlide(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT), TRAINER_SLIDE_FIRST_STAB_MOVE)))
-        BattleScriptExecute(BattleScript_TrainerASlideMsgEnd;
+        BattleScriptExecute(BattleScript_TrainerSlideMsgRet);
     else if ((i = ShouldDoTrainerSlide(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT), TRAINER_SLIDE_PLAYER_MON_UNAFFECTED)))
-        BattleScriptExecute(BattleScript_TrainerASlideMsgEnd;
+        BattleScriptExecute(BattleScript_TrainerSlideMsgRet);
 }
 
 u8 IsRunningFromBattleImpossible(u32 battler)
@@ -2194,20 +2188,6 @@ static void HandleTurnActionSelectionState(void)
                     }
                     MarkBattlerForControllerExec(battler);
                     break;
-                case B_ACTION_SAFARI_BALL:
-                    if (IsPlayerPartyAndPokemonStorageFull())
-                    {
-                        gSelectionBattleScripts[battler] = BattleScript_PrintFullBox;
-                        gBattleCommunication[battler] = STATE_SELECTION_SCRIPT;
-                        *(gBattleStruct->selectionScriptFinished + battler) = FALSE;
-                        *(gBattleStruct->stateIdAfterSelScript + battler) = STATE_BEFORE_ACTION_CHOSEN;
-                        return;
-                    }
-                    break;
-                case B_ACTION_SAFARI_POKEBLOCK:
-                    BtlController_EmitChooseItem(battler, BUFFER_A, gBattleStruct->battlerPartyOrders[battler]);
-                    MarkBattlerForControllerExec(battler);
-                    break;
                 case B_ACTION_CANCEL_PARTNER:
                     gBattleCommunication[battler] = STATE_WAIT_SET_BEFORE_ACTION;
                     gBattleCommunication[GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(battler)))] = STATE_BEFORE_ACTION_CHOSEN;
@@ -2322,30 +2302,8 @@ static void HandleTurnActionSelectionState(void)
                     gHitMarker |= HITMARKER_RUN;
                     gBattleCommunication[battler]++;
                     break;
-                case B_ACTION_SAFARI_WATCH_CAREFULLY:
-                    gBattleCommunication[battler]++;
-                    break;
-                case B_ACTION_SAFARI_BALL:
-                    gBattleCommunication[battler]++;
-                    break;
                 case B_ACTION_THROW_BALL:
                     gBattleStruct->throwingPokeBall = TRUE;
-                    gBattleCommunication[battler]++;
-                    break;
-                case B_ACTION_SAFARI_POKEBLOCK:
-                    if ((gBattleResources->bufferB[battler][1] | (gBattleResources->bufferB[battler][2] << 8)) != 0)
-                        gBattleCommunication[battler]++;
-                    else
-                        gBattleCommunication[battler] = STATE_BEFORE_ACTION_CHOSEN;
-                    break;
-                case B_ACTION_SAFARI_GO_NEAR:
-                    gBattleCommunication[battler]++;
-                    break;
-                case B_ACTION_SAFARI_RUN:
-                    gHitMarker |= HITMARKER_RUN;
-                    gBattleCommunication[battler]++;
-                    break;
-                case B_ACTION_WALLY_THROW:
                     gBattleCommunication[battler]++;
                     break;
                 case B_ACTION_DEBUG:

@@ -6,7 +6,6 @@
 #include "battle_interface.h"
 #include "battle_message.h"
 #include "battle_setup.h"
-#include "battle_gimmick.h"
 #include "bg.h"
 #include "data.h"
 #include "decompress.h"
@@ -431,13 +430,9 @@ void HandleInputChooseTarget(u32 battler)
     {
         PlaySE(SE_SELECT);
         gSprites[gBattlerSpriteIds[gPosicionCursorSiNo]].callback = SpriteCB_HideAsMoveTarget;
-        if (gBattleStruct->gimmick.playerSelect)
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | RET_GIMMICK | (gPosicionCursorSiNo << 8));
-        else
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
+        BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_EXEC_SCRIPT, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
         EndBounceEffect(gPosicionCursorSiNo, BOUNCE_HEALTHBOX);
         TryHideLastUsedBall();
-        HideGimmickTriggerSprite();
         PlayerBufferExecCompleted(battler);
         if (sIconTypeId[0] != 0xFF)
         {
@@ -607,11 +602,7 @@ void HandleInputShowEntireFieldTargets(u32 battler)
     {
         PlaySE(SE_SELECT);
         HideAllTargets();
-        if (gBattleStruct->gimmick.playerSelect)
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | RET_GIMMICK | (gPosicionCursorSiNo << 8));
-        else
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
-        HideGimmickTriggerSprite();
+        BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_EXEC_SCRIPT, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
         PlayerBufferExecCompleted(battler);
         if (sIconTypeId[0] != 0xFF)
         {
@@ -653,11 +644,7 @@ void HandleInputShowTargets(u32 battler)
     {
         PlaySE(SE_SELECT);
         HideShownTargets(battler);
-        if (gBattleStruct->gimmick.playerSelect)
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | RET_GIMMICK | (gPosicionCursorSiNo << 8));
-        else
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
-        HideGimmickTriggerSprite();
+        BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_EXEC_SCRIPT, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
         TryHideLastUsedBall();
         PlayerBufferExecCompleted(battler);
         if (sIconTypeId[0] != 0xFF)
@@ -768,11 +755,7 @@ void HandleInputChooseMove(u32 battler)
         {
         case 0:
         default:
-            if (gBattleStruct->gimmick.playerSelect)
-                BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | RET_GIMMICK | (gPosicionCursorSiNo << 8));
-            else
-                BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
-            HideGimmickTriggerSprite();
+            BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_EXEC_SCRIPT, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
             TryHideLastUsedBall();
             PlayerBufferExecCompleted(battler);
             if (sIconTypeId[0] != 0xFF)
@@ -820,9 +803,7 @@ void HandleInputChooseMove(u32 battler)
     else if ((JOY_NEW(B_BUTTON) || gPlayerDpadHoldFrames > 59)  && !gBattleStruct->descriptionSubmenu)
     {
         PlaySE(SE_SELECT);
-        gBattleStruct->gimmick.playerSelect = FALSE;
-        BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, 0xFFFF);
-        HideGimmickTriggerSprite();
+        BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_EXEC_SCRIPT, 0xFFFF);
         PlayerBufferExecCompleted(battler);
         LoadBattleMenuWindowGfx();
         MoveSelectionDestroyCursor();
@@ -1294,9 +1275,9 @@ static void PlayerHandleYesNoInput(u32 battler)
         PlaySE(SE_SELECT);
 
         if (gPosicionCursorSiNo == CURSOR_NO)
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 0xE, 0);
+            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 14, 0);
         else
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 0xD, 0);
+            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 13, 0);
 
         PlayerBufferExecCompleted(battler);
     }
@@ -1976,7 +1957,6 @@ void HandleChooseMoveAfterDma3(u32 battler)
 void PlayerHandleChooseMove(u32 battler)
 {
     InitMoveSelectionsVarsAndStrings(battler);
-    gBattleStruct->gimmick.playerSelect = FALSE;
     gBattlerControllerFuncs[battler] = HandleChooseMoveAfterDma3;
 }
 
@@ -2073,15 +2053,15 @@ static void PlayerHandleDMA3Transfer(u32 battler)
 
     while(1)
     {
-        if (size <= 0x1000)
+        if (size <= 4096)
         {
             DmaCopy16(3, src, dst, size);
             break;
         }
-        DmaCopy16(3, src, dst, 0x1000);
-        src += 0x1000;
-        dst += 0x1000;
-        size -= 0x1000;
+        DmaCopy16(3, src, dst, 4096);
+        src += 4096;
+        dst += 4096;
+        size -= 4096;
     }
     PlayerBufferExecCompleted(battler);
 }

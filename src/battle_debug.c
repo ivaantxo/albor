@@ -233,8 +233,6 @@ enum
     LIST_AI_ACE_POKEMON,
     LIST_AI_OMNISCIENT,
     LIST_AI_SMART_MON_CHOICES,
-    LIST_AI_ROAMING,
-    LIST_AI_SAFARI,
     LIST_AI_FIRST_BATTLE,
 };
 
@@ -374,9 +372,6 @@ static const u8 sText_SmartSwitching[] = _("Smart Switching");
 static const u8 sText_AcePokemon[] = _("Ace Pokemon");
 static const u8 sText_Omniscient[] = _("Omniscient");
 static const u8 sText_SmartMonChoices[] = _("Smart Mon Choices");
-static const u8 sText_Roaming[] = _("Roaming");
-static const u8 sText_Safari[] = _("Safari");
-static const u8 sText_FirstBattle[] = _("First Battle");
 static const u8 sText_ShowHP[] = _("Show HP");
 static const u8 sText_SubstituteHp[] = _("Substitute HP");
 static const u8 sText_InLove[] = _("In Love");
@@ -471,9 +466,6 @@ static const struct BitfieldInfo sAIBitfield[] =
     {/*Ace Pokemon*/ 1, 16},
     {/*Omniscient*/ 1, 17},
     {/*Smart Mon Choices*/ 1, 18},
-    {/*Roaming*/ 1, 29},
-    {/*Safari*/ 1, 30},
-    {/*First Battle*/ 1, 31},
 };
 
 static const struct ListMenuItem sMainListItems[] =
@@ -614,8 +606,6 @@ static const struct ListMenuItem sAIListItems[] =
     {sText_AcePokemon, LIST_AI_ACE_POKEMON},
     {sText_Omniscient, LIST_AI_OMNISCIENT},
     {sText_SmartMonChoices, LIST_AI_SMART_MON_CHOICES},
-    {sText_Roaming, LIST_AI_ROAMING},
-    {sText_Safari, LIST_AI_SAFARI},
     {sText_FirstBattle, LIST_AI_FIRST_BATTLE},
 };
 

@@ -423,7 +423,6 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
     u32 moveEffect = gMovesInfo[move].effect;
     uq4_12_t effectivenessMultiplier;
     bool32 isDamageMoveUnusable = FALSE;
-    bool32 toggledGimmick = FALSE;
     struct AiLogicData *aiData = AI_DATA;
     AI_DATA->aiCalcInProgress = TRUE;
 
@@ -440,9 +439,6 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
             gBattleStruct->swapDamageCategory = TRUE;
         break;
     case EFFECT_TERA_BLAST:
-        if (GetActiveGimmick(battlerAtk) == GIMMICK_TERA)
-            gBattleStruct->swapDamageCategory = GetCategoryBasedOnStats(battlerAtk) == CATEGORIA_FISICA;
-        break;
     case EFFECT_TERA_STARSTORM:
         break;
     }
@@ -626,8 +622,6 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
     // Undo temporary settings
     gBattleStruct->dynamicMoveType = 0;
     gBattleStruct->swapDamageCategory = FALSE;
-    if (toggledGimmick)
-        SetActiveGimmick(battlerAtk, GIMMICK_NONE);
     AI_DATA->aiCalcInProgress = FALSE;
     return simulatedDmg;
 }
