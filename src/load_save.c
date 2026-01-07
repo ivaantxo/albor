@@ -70,7 +70,7 @@ void ResetHeap(void)
     SetSaveBlocksPointers();
 
     // heap was destroyed in the copying process, so reset it
-    InitHeap(gHeap, HEAP_SIZE);
+    InitHeap();
 
     // restore interrupt functions
     gMain.hblankCallback = hblankCB;

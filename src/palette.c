@@ -82,13 +82,13 @@ u32 UpdatePaletteFade(void)
     return result;
 }
 
-bool32 BeginNormalPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targetY, u32 blendColor)
+void BeginNormalPaletteFade(u32 selectedPalettes, s32 delay, u32 startY, u32 targetY, u32 blendColor)
 {
-    u8 bufferTransferState;
+    u32 bufferTransferState;
 
     if (gFundidoPaletas.activo)
     {
-        return FALSE;
+        return;
     }
 
     gFundidoPaletas.deltaY = 2;
@@ -117,7 +117,6 @@ bool32 BeginNormalPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targ
     if (gFundidoPaletas.modo == FUNDIDO_HARDWARE && gFundidoPaletas.activo)
         UpdateBlendRegisters();
     gFundidoPaletas.transferenciaBufferDeshabilitada = bufferTransferState;
-    return TRUE;
 }
 
 // Like normal palette fade but respects sprite/tile palettes immune to time of day fading
@@ -457,22 +456,14 @@ void EmpiezaFundidoPaletasRapido(u32 submodo)
 
 static u32 UpdateFastPaletteFade(void)
 {
-    u32 i;
-    u16 paletteOffsetStart;
-    u16 paletteOffsetEnd;
-    s8 r0;
-    s8 g0;
-    s8 b0;
-    s8 r;
-    s8 g;
-    s8 b;
+    u32 i, paletteOffsetStart, paletteOffsetEnd;
+    s32 r0, g0, b0, r, g, b;
 
     if (!gFundidoPaletas.activo)
         return PALETTE_FADE_STATUS_DONE;
 
     if (IsSoftwarePaletteFadeFinishing())
         return gFundidoPaletas.activo? PALETTE_FADE_STATUS_ACTIVE : PALETTE_FADE_STATUS_DONE;
-
 
     if (gFundidoPaletas.interruptorPaletasObjetos)
     {
@@ -547,7 +538,7 @@ static u32 UpdateFastPaletteFade(void)
             CopiaCpu32(gPlttBufferUnfaded, gPlttBufferFaded, PLTT_SIZE);
             break;
         case FUNDIDO_A_NEGRO:
-            CpuFill32(0x00000000, gPlttBufferFaded, PLTT_SIZE);
+            CpuFill32(0, gPlttBufferFaded, PLTT_SIZE);
             break;
         }
 

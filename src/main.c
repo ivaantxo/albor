@@ -85,7 +85,7 @@ void AgbMain(void)
     ClearDma3Requests();
     ResetBgs();
     SetDefaultFontsPointer();
-    InitHeap(gHeap, HEAP_SIZE);
+    InitHeap();
 
     if (gFlashMemoryPresent != TRUE)
         SetMainCallback2(CB2_FlashNotDetectedScreen);

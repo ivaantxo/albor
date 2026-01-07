@@ -74,7 +74,7 @@ void FillPalette(u32 value, u32 offset, u32 size);
 void TransferPlttBuffer(void);
 u32 UpdatePaletteFade(void);
 void ResetPaletteFade(void);
-bool32 BeginNormalPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targetY, u32 blendColor);
+void BeginNormalPaletteFade(u32 selectedPalettes, s32 delay, u32 startY, u32 targetY, u32 blendColor);
 bool32 BeginTimeOfDayPaletteFade(u32, s8, u8, u8, struct ConfiguracionBlend *, struct ConfiguracionBlend *, u16, u32);
 void InvertPlttBuffer(u32 selectedPalettes);
 void TintPlttBuffer(u32 selectedPalettes, s8 r, s8 g, s8 b);

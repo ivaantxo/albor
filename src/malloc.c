@@ -1,9 +1,6 @@
 #include "global.h"
 #include "malloc.h"
 
-static void *sHeapStart;
-static u32 sHeapSize;
-
 ALIGNED(4) EWRAM_DATA u8 gHeap[HEAP_SIZE] = {0};
 
 void PutMemBlockHeader(void *block, struct MemBlock *prev, struct MemBlock *next, u32 size)
@@ -168,49 +165,47 @@ bool32 CheckMemBlockInternal(void *heapStart, void *pointer)
     return TRUE;
 }
 
-void InitHeap(void *heapStart, u32 heapSize)
+void InitHeap(void)
 {
-    sHeapStart = heapStart;
-    sHeapSize = heapSize;
-    PutFirstMemBlockHeader(heapStart, heapSize);
+    PutFirstMemBlockHeader(gHeap, HEAP_SIZE);
 }
 
 void *Alloc_(u32 size, const char *location)
 {
-    return AllocInternal(sHeapStart, size, location);
+    return AllocInternal(gHeap, size, location);
 }
 
 void *AllocZeroed_(u32 size, const char *location)
 {
-    return AllocZeroedInternal(sHeapStart, size, location);
+    return AllocZeroedInternal(gHeap, size, location);
 }
 
 void Free(void *pointer)
 {
-    FreeInternal(sHeapStart, pointer);
+    FreeInternal(gHeap, pointer);
 }
 
 bool32 CheckMemBlock(void *pointer)
 {
-    return CheckMemBlockInternal(sHeapStart, pointer);
+    return CheckMemBlockInternal(gHeap, pointer);
 }
 
-bool32 CheckHeap()
+bool32 CheckHeap(void)
 {
-    struct MemBlock *pos = (struct MemBlock *)sHeapStart;
+    struct MemBlock *pos = (struct MemBlock *)gHeap;
 
     do {
-        if (!CheckMemBlockInternal(sHeapStart, pos->data))
+        if (!CheckMemBlockInternal(gHeap, pos->data))
             return FALSE;
         pos = pos->next;
-    } while (pos != (struct MemBlock *)sHeapStart);
+    } while (pos != (struct MemBlock *)gHeap);
 
     return TRUE;
 }
 
 const struct MemBlock *HeapHead(void)
 {
-    return (const struct MemBlock *)sHeapStart;
+    return (const struct MemBlock *)gHeap;
 }
 
 const char *MemBlockLocation(const struct MemBlock *block)

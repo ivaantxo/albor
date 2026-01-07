@@ -91,40 +91,6 @@ BattleScript_LowerAtkSpAtkEnd:
 	return
 
 BattleScript_EffectSpicyExtract::
-	attackcanceler
-	jumpifsubstituteblocks BattleScript_ButItFailed
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	jumpifstat BS_TARGET, COMPARACION_MENOR, ESTADISTICA_ATAQUE, ESTADISTICA_MAS_6 BattleScript_SpicyExtract_CheckShouldSkipAttackAnim
-	jumpifstat BS_TARGET, COMPARACION_MAYOR, ESTADISTICA_DEFENSA, ESTADISTICA_MENOS_6, BattleScript_SpicyExtract_CheckShouldSkipAttackAnim
-	goto BattleScript_ButItFailed
-BattleScript_SpicyExtract_CheckShouldSkipAttackAnim:
-	jumpifbyte COMPARACION_DESIGUAL, gBattleCommunication, 0, BattleScript_SpicyExtract_RaiseAtk
-	attackstring
-	ppreduce
-	bicword gHitMarker, HITMARKER_NO_ATTACKSTRING | HITMARKER_NO_PPDEDUCT
-	goto BattleScript_SpicyExtract_SkipAttackAnim
-BattleScript_SpicyExtract_RaiseAtk:
-	attackstring
-	ppreduce
-	attackanimation
-	waitanimation
-BattleScript_SpicyExtract_SkipAttackAnim:
-	setbyte sSTAT_ANIM_PLAYED, FALSE
-	playstatchangeanimation BS_TARGET, BIT_ATK, STAT_CHANGE_BY_TWO
-	setstatchanger ESTADISTICA_ATAQUE, 2, FALSE
-	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_EffectSpicyExtractDefenseDown
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_EffectSpicyExtractDefenseDown
-	printfromtable gStatUpStringIds
-	waitmessage B_WAIT_TIME_LONG
-BattleScript_EffectSpicyExtractDefenseDown:
-	setbyte sSTAT_ANIM_PLAYED, FALSE
-	playstatchangeanimation BS_TARGET, BIT_DEF, STAT_CHANGE_NEGATIVE | STAT_CHANGE_BY_TWO
-	setstatchanger ESTADISTICA_DEFENSA, 2, TRUE
-	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_EffectSpicyExtract_End
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_EffectSpicyExtract_End
-	printfromtable gStatDownStringIds
-	waitmessage B_WAIT_TIME_LONG
-BattleScript_EffectSpicyExtract_End:
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectTidyUp::
@@ -209,27 +175,6 @@ BattleScript_FilletAwayEnd::
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectDoodle::
-	attackcanceler
-	attackstring
-	ppreduce
-	trycopyability BS_ATTACKER, BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	setbyte gBattleCommunication, 0
-	goto BattleScript_EffectDoodle_AfterCopy
-BattleScript_EffectDoodle_CopyAbility:
-	trycopyability BS_ATTACKER, BattleScript_MoveEnd
-BattleScript_EffectDoodle_AfterCopy:
-	copybyte gBattlerAbility, gBattlerAttacker
-	call BattleScript_AbilityPopUpOverwriteThenNormal
-	recordability BS_ATTACKER
-	printstring STRINGID_PKMNCOPIEDFOE
-	waitmessage B_WAIT_TIME_LONG
-	switchinabilities BS_ATTACKER
-	jumpifbyte COMPARACION_DESIGUAL, gBattleCommunication, 0x0, BattleScript_MoveEnd
-	addbyte gBattleCommunication, 1
-	jumpifnoally BS_ATTACKER, BattleScript_MoveEnd
-	setallytonextattacker BattleScript_EffectDoodle_CopyAbility
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectGlaiveRush::

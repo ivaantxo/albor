@@ -31,17 +31,17 @@ struct MemBlock
     // Low 14 bits of location pointer.
     u32 locationLo:14;
 
-    // Previous block pointer. Equals sHeapStart if this is the first block.
+    // Previous block pointer. Equals gHeap if this is the first block.
     struct MemBlock *prev;
 
-    // Next block pointer. Equals sHeapStart if this is the last block.
+    // Next block pointer. Equals gHeap if this is the last block.
     struct MemBlock *next;
 
     // Data in the memory block. (Arrays of length 0 are a GNU extension.)
     u8 data[0];
 };
 
-#define HEAP_SIZE 0x1C000
+#define HEAP_SIZE 114688
 extern u8 gHeap[HEAP_SIZE];
 
 #define Alloc(size) Alloc_(size, NULL)
@@ -50,7 +50,7 @@ extern u8 gHeap[HEAP_SIZE];
 void *Alloc_(u32 size, const char *location);
 void *AllocZeroed_(u32 size, const char *location);
 void Free(void *pointer);
-void InitHeap(void *pointer, u32 size);
+void InitHeap(void);
 
 const struct MemBlock *HeapHead(void);
 const char *MemBlockLocation(const struct MemBlock *block);
