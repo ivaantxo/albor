@@ -20,9 +20,7 @@
 #define sLVLBOX_STATE                (sGIVEEXP_STATE + 1)               // drawlvlupboxState (u8) -> 1 byte
 #define sLEARNMOVE_STATE             (sLVLBOX_STATE + 1)                // learnMoveState (u8) -> 1 byte
 #define sSAVED_BATTLER               (sLEARNMOVE_STATE + 1)             // savedBattler (u8) -> 1 byte
-#define sRESHOW_MAIN_STATE           (sSAVED_BATTLER + 1)               // reshowMainState (u8) -> 1 byte
-#define sRESHOW_HELPER_STATE         (sRESHOW_MAIN_STATE + 1)           // reshowHelperState (u8) -> 1 byte
-#define sLVLUP_HP                    (sRESHOW_HELPER_STATE + 1)         // levelUpHP (u8) -> 1 byte
+#define sLVLUP_HP                    (sSAVED_BATTLER + 1)               // levelUpHP (u8) -> 1 byte
 #define sMON_CAUGHT                  (sLVLUP_HP + 1)                    // monCaught (bool8) -> 1 byte
 #define sSAVED_DMG                   (sMON_CAUGHT + 1)                  // savedDmg (s32) -> 4 bytes
 #define sSAVED_MOVE_EFFECT           (sSAVED_DMG + 4)                   // savedMoveEffect (u16) -> 2 bytes

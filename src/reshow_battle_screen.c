@@ -32,14 +32,14 @@ void ReshowBattleScreenAfterMenu(void)
     SetHBlankCallback(NULL);
     SetVBlankCallback(NULL);
     SetGpuReg(REG_OFFSET_MOSAIC, 0);
-    gBattleScripting.reshowMainState = 0;
-    gBattleScripting.reshowHelperState = 0;
     SetMainCallback2(CB2_ReshowBattleScreenAfterMenu);
 }
 
 static void CB2_ReshowBattleScreenAfterMenu(void)
 {
-    switch (gBattleScripting.reshowMainState)
+    static u32 sEstadoVueltaBatalla = 0;
+
+    switch (sEstadoVueltaBatalla)
     {
     case 0:
         LimpiaDistorsionFondo();
@@ -59,93 +59,101 @@ static void CB2_ReshowBattleScreenAfterMenu(void)
         gBattle_BG2_Y = 0;
         gBattle_BG3_X = 0;
         gBattle_BG3_Y = 0;
+        sEstadoVueltaBatalla++;
         break;
     case 1:
         CpuFastFill(0, (void *)(VRAM), VRAM_SIZE);
+        sEstadoVueltaBatalla++;
         break;
     case 2:
         LoadBattleTextboxAndBackground();
+        sEstadoVueltaBatalla++;
         break;
     case 3:
         ResetSpriteData();
+        sEstadoVueltaBatalla++;
         break;
     case 4:
         FreeAllSpritePalettes();
         gReservedSpritePaletteCount = MAX_BATTLERS_COUNT;
+        sEstadoVueltaBatalla++;
         break;
     case 5:
         ClearSpritesHealthboxAnimData();
+        sEstadoVueltaBatalla++;
         break;
     case 6:
-        if (CargaGraficosBarrasSalud(gBattleScripting.reshowHelperState))
-        {
-            gBattleScripting.reshowHelperState = 0;
-        }
-        else
-        {
-            gBattleScripting.reshowHelperState++;
-            gBattleScripting.reshowMainState--;
-        }
+        CargaBarrasSalud();
+        sEstadoVueltaBatalla++;
         break;
     case 7:
         if (!LoadBattlerSpriteGfx(0))
-            gBattleScripting.reshowMainState--;
+            return;
+        sEstadoVueltaBatalla++;
         break;
     case 8:
         if (!LoadBattlerSpriteGfx(1))
-            gBattleScripting.reshowMainState--;
+            return;
+        sEstadoVueltaBatalla++;
         break;
     case 9:
         if (!LoadBattlerSpriteGfx(2))
-            gBattleScripting.reshowMainState--;
+            return;
+        sEstadoVueltaBatalla++;
         break;
     case 10:
         if (!LoadBattlerSpriteGfx(3))
-            gBattleScripting.reshowMainState--;
+            return;
+        sEstadoVueltaBatalla++;
         break;
     case 11:
         CreateBattlerSprite(0);
+        sEstadoVueltaBatalla++;
         break;
     case 12:
         CreateBattlerSprite(1);
+        sEstadoVueltaBatalla++;
         break;
     case 13:
         CreateBattlerSprite(2);
+        sEstadoVueltaBatalla++;
         break;
     case 14:
         CreateBattlerSprite(3);
+        sEstadoVueltaBatalla++;
         break;
     case 15:
         CreateHealthboxSprite(0);
+        sEstadoVueltaBatalla++;
         break;
     case 16:
         CreateHealthboxSprite(1);
+        sEstadoVueltaBatalla++;
         break;
     case 17:
         CreateHealthboxSprite(2);
+        sEstadoVueltaBatalla++;
         break;
     case 18:
         CreateHealthboxSprite(3);
+        sEstadoVueltaBatalla++;
         break;
     case 19:
+    {
+        u32 opponentBattler, species;
+        LoadAndCreateEnemyShadowSprites();
+        opponentBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+        species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[opponentBattler]], MON_DATA_SPECIES);
+        SetBattlerShadowSpriteCallback(opponentBattler, species);
+        if (EsContraEntrenador())
         {
-            u8 opponentBattler;
-            u16 species;
-
-            LoadAndCreateEnemyShadowSprites();
-
-            opponentBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+            opponentBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
             species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[opponentBattler]], MON_DATA_SPECIES);
             SetBattlerShadowSpriteCallback(opponentBattler, species);
-
-            if (EsContraEntrenador())
-            {
-                opponentBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
-                species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[opponentBattler]], MON_DATA_SPECIES);
-                SetBattlerShadowSpriteCallback(opponentBattler, species);
-            }
         }
+        sEstadoVueltaBatalla++;
         break;
+    }
     default:
         SetVBlankCallback(VBlankCB_Battle);
         ClearBattleBgCntBaseBlocks();
@@ -153,10 +161,9 @@ static void CB2_ReshowBattleScreenAfterMenu(void)
         gFundidoPaletas.transferenciaBufferDeshabilitada = FALSE;
         SetMainCallback2(BattleMainCB2);
         FillAroundBattleWindows();
+        sEstadoVueltaBatalla = 0;
         break;
     }
-
-    gBattleScripting.reshowMainState++;
 }
 
 static void ClearBattleBgCntBaseBlocks(void)
@@ -185,8 +192,6 @@ static bool8 LoadBattlerSpriteGfx(u32 battler)
             BattleLoadMonSpriteGfx(&gPlayerParty[gBattlerPartyIndexes[battler]], battler);
         else
             BattleLoadSubstituteOrMonSpriteGfx(battler, FALSE);
-
-        gBattleScripting.reshowHelperState = 0;
     }
     return TRUE;
 }

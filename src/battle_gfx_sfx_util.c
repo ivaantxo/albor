@@ -435,62 +435,29 @@ void FreeTrainerFrontPicPalette(u16 frontPicId)
     FreeSpritePaletteByTag(gTrainerSprites[frontPicId].palette.tag);
 }
 
-bool32 CargaGraficosBarrasSalud(u8 state)
+void CargaBarrasSalud(void)
 {
-    bool32 bucleTerminado = FALSE;
-
-    if (state != 0)
+    LoadSpritePalette(&sSpritePalettes_HealthBoxHealthBar[0]);
+    LoadSpritePalette(&sSpritePalettes_HealthBoxHealthBar[1]);
+    CategoryIcons_LoadSpritesGfx();
+    if (EsContraEntrenador())
     {
-        if (state == 1)
-        {
-            LoadSpritePalette(&sSpritePalettes_HealthBoxHealthBar[0]);
-            LoadSpritePalette(&sSpritePalettes_HealthBoxHealthBar[1]);
-            CategoryIcons_LoadSpritesGfx();
-        }
-        else if (!EsContraEntrenador())
-        {
-            if (state == 2)
-            {
-                LoadCompressedSpriteSheet(&sSpriteSheet_SinglesPlayerHealthbox);
-            }
-            else if (state == 3)
-                LoadCompressedSpriteSheet(&sSpriteSheet_SinglesOpponentHealthbox);
-            else if (state == 4)
-                LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[GetBattlerPosition(0)]);
-            else if (state == 5)
-                LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[GetBattlerPosition(1)]);
-            else
-                retVal = TRUE;
-        }
-        else
-        {
-            if (state == 2)
-            {
-                if (WhichBattleCoords(B_POSITION_PLAYER_LEFT) == MODO_DOBLES)
-                    LoadCompressedSpriteSheet(&sSpriteSheets_DoublesPlayerHealthbox[0]);
-                else
-                    LoadCompressedSpriteSheet(&sSpriteSheet_SinglesPlayerHealthbox);
-            }
-            else if (state == 3)
-                LoadCompressedSpriteSheet(&sSpriteSheets_DoublesPlayerHealthbox[1]);
-            else if (state == 4)
-                LoadCompressedSpriteSheet(&sSpriteSheets_DoublesOpponentHealthbox[0]);
-            else if (state == 5)
-                LoadCompressedSpriteSheet(&sSpriteSheets_DoublesOpponentHealthbox[1]);
-            else if (state == 6)
-                LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[GetBattlerPosition(0)]);
-            else if (state == 7)
-                LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[GetBattlerPosition(1)]);
-            else if (state == 8)
-                LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[GetBattlerPosition(2)]);
-            else if (state == 9)
-                LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[GetBattlerPosition(3)]);
-            else
-                bucleTerminado = TRUE;
-        }
+        LoadCompressedSpriteSheet(&sSpriteSheets_DoublesPlayerHealthbox[0]);
+        LoadCompressedSpriteSheet(&sSpriteSheets_DoublesPlayerHealthbox[1]);
+        LoadCompressedSpriteSheet(&sSpriteSheets_DoublesOpponentHealthbox[0]);
+        LoadCompressedSpriteSheet(&sSpriteSheets_DoublesOpponentHealthbox[1]);
+        LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[GetBattlerPosition(0)]);
+        LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[GetBattlerPosition(1)]);
+        LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[GetBattlerPosition(2)]);
+        LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[GetBattlerPosition(3)]);
     }
-
-    return bucleTerminado;
+    else
+    {
+        LoadCompressedSpriteSheet(&sSpriteSheet_SinglesPlayerHealthbox);
+        LoadCompressedSpriteSheet(&sSpriteSheet_SinglesOpponentHealthbox);
+        LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[GetBattlerPosition(0)]);
+        LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[GetBattlerPosition(1)]);
+    }
 }
 
 void LoadBattleBarGfx(void)
@@ -509,7 +476,7 @@ bool32 IniciaSpritesBatalla(u32 *estado1, u32 *combatiente)
         (*estado1)++;
         break;
     case 1:
-        if (!CargaGraficosBarrasSalud(*combatiente))
+        if (!CargaBarrasSalud())
         {
             (*combatiente)++;
         }
