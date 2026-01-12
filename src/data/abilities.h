@@ -2096,18 +2096,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .failsOnImposter = TRUE,
     },
 
-    [ABILITY_COMMANDER] =
-    {
-        .name = _("Commander"),
-        .description = COMPOUND_STRING("Commands from Dondozo."),
-        .aiRating = 10,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .cantBeSuppressed = TRUE,
-        .cantBeOverwritten = TRUE,
-    },
-
     [ABILITY_ELECTROMORPHOSIS] =
     {
         .name = _("Electromorphosis"),

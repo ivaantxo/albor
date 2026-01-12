@@ -121,7 +121,7 @@ enum EfectosAtaques
     EFFECT_SOLAR_BEAM,
     EFFECT_THUNDER,
     EFFECT_TELEPORT,
-    EFFECT_BEAT_UP,
+    EFECTO_ATAQUE_EQUIPO,
     EFFECT_SEMI_INVULNERABLE,
     EFFECT_DEFENSE_CURL,
     EFFECT_SOFTBOILED, // differences vs Recover - can be used outside of battle to restore HP

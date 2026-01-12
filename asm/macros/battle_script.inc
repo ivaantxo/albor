@@ -1018,10 +1018,8 @@
 	.4byte \failInstr
 	.endm
 
-	.macro trydobeatup endInstr, failInstr
-	.byte BATTLE_CMD_trydobeatup
-	.4byte \endInstr
-	.4byte \failInstr
+	.macro intentaataqueequipo
+	.byte BATTLE_CMD_intentaataqueequipo
 	.endm
 
 	.macro setsemiinvulnerablebit clear=FALSE

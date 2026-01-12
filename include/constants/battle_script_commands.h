@@ -482,7 +482,7 @@ enum BattleScriptCommands
     BATTLE_CMD_setstickyweb,
     BATTLE_CMD_selectfirstvalidtarget,
     BATTLE_CMD_trysetfutureattack,
-    BATTLE_CMD_trydobeatup,
+    BATTLE_CMD_intentaataqueequipo,
     BATTLE_CMD_setsemiinvulnerablebit,
     BATTLE_CMD_tryfiretwoturnmovenowbyeffect,
     BATTLE_CMD_setminimize,
@@ -534,6 +534,7 @@ enum BattleScriptCommands
     BATTLE_CMD_averagestats,
     BATTLE_CMD_jumpifoppositegenders,
     BATTLE_CMD_tryworryseed,
+    BATTLE_CMD_preparaatacanteequipo,
 };
 
 #endif // GUARD_CONSTANTS_BATTLE_SCRIPT_COMMANDS_H

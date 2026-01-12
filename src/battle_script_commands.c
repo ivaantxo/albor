@@ -518,7 +518,7 @@ static void Cmd_recoverbasedonsunlight(void);
 static void Cmd_setstickyweb(void);
 static void Cmd_selectfirstvalidtarget(void);
 static void Cmd_trysetfutureattack(void);
-static void Cmd_trydobeatup(void);
+static void Cmd_intentaataqueequipo(void);
 static void Cmd_setsemiinvulnerablebit(void);
 static void Cmd_tryfiretwoturnmovenowbyeffect(void);
 static void Cmd_setminimize(void);
@@ -571,6 +571,7 @@ static void Cmd_averagestats(void);
 static void Cmd_jumpifoppositegenders(void);
 static void Cmd_tryworryseed(void);
 static void Cmd_callnative(void);
+static void Cmd_preparaatacanteequipo(void);
 
 #define BATTLE_CMD(name) [BATTLE_CMD_##name] = Cmd_##name
 
@@ -764,7 +765,7 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     BATTLE_CMD(setstickyweb),
     BATTLE_CMD(selectfirstvalidtarget),
     BATTLE_CMD(trysetfutureattack),
-    BATTLE_CMD(trydobeatup),
+    BATTLE_CMD(intentaataqueequipo),
     BATTLE_CMD(setsemiinvulnerablebit),
     BATTLE_CMD(tryfiretwoturnmovenowbyeffect),
     BATTLE_CMD(setminimize),
@@ -816,6 +817,7 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     BATTLE_CMD(averagestats),
     BATTLE_CMD(jumpifoppositegenders),
     BATTLE_CMD(tryworryseed),
+    BATTLE_CMD(preparaatacanteequipo),
 };
 
 static const u32 sStatusFlagsForMoveEffects[NUM_MOVE_EFFECTS] =
@@ -1338,7 +1340,6 @@ static bool32 AccuracyCalcHelper(u16 move)
     }
     // If the attacker has the ability No Guard and they aren't targeting a Pokemon involved in a Sky Drop with the move Sky Drop, move hits.
     else if (GetBattlerAbility(gBattlerAttacker) == ABILITY_NO_GUARD
-          && !(gStatuses3[gBattlerTarget] & STATUS3_COMMANDER)
           && (gMovesInfo[move].effect != EFFECT_SKY_DROP || gBattleStruct->skyDropTargets[gBattlerTarget] == 0xFF))
     {
         if (!JumpIfMoveFailed(7, move))
@@ -1362,8 +1363,7 @@ static bool32 AccuracyCalcHelper(u16 move)
         return TRUE;
     }
 
-    if ((gStatuses3[gBattlerTarget] & STATUS3_COMMANDER)
-     || (gStatuses3[gBattlerTarget] & STATUS3_PHANTOM_FORCE)
+    if ((gStatuses3[gBattlerTarget] & STATUS3_PHANTOM_FORCE)
      || ((gStatuses3[gBattlerTarget] & STATUS3_ON_AIR) && !(gMovesInfo[move].damagesAirborne || gMovesInfo[move].damagesAirborneDoubleDamage))
      || ((gStatuses3[gBattlerTarget] & STATUS3_UNDERGROUND) && !gMovesInfo[move].damagesUnderground)
      || ((gStatuses3[gBattlerTarget] & STATUS3_UNDERWATER) && !gMovesInfo[move].damagesUnderwater))
@@ -5729,15 +5729,8 @@ static void Cmd_moveend(void)
                             if (gMovesInfo[gCurrentMove].effect == EFFECT_HIT_ESCAPE)
                                 gBattlescriptCurrInstr = BattleScript_MoveEnd;  // Prevent user switch-in selection
                             BattleScriptPushCursor();
-                            if (gBattleStruct->commanderActive[gBattlerAttacker] != SPECIES_NONE)
-                            {
-                                gBattlescriptCurrInstr = BattleScript_RedCardActivationNoSwitch;
-                            }
-                            else
-                            {
-                                gBattlescriptCurrInstr = BattleScript_RedCardActivates;
-                                gSpecialStatuses[gBattlerAttacker].preventLifeOrbDamage = TRUE;
-                            }
+                            gBattlescriptCurrInstr = BattleScript_RedCardActivates;
+                            gSpecialStatuses[gBattlerAttacker].preventLifeOrbDamage = TRUE;
                             effect = TRUE;
                             break;  // Only fastest red card activates
                         }
@@ -5893,18 +5886,6 @@ static void Cmd_moveend(void)
             if (B_CHARGE <= GEN_8 || moveType == TIPO_ELECTRICO)
                 gStatuses3[gBattlerAttacker] &= ~(STATUS3_CHARGED_UP);
             memset(gQueuedStatBoosts, 0, sizeof(gQueuedStatBoosts));
-
-            for (i = 0; i < gBattlersCount; i++)
-            {
-                if (gBattleStruct->commanderActive[i] != SPECIES_NONE && !IsBattlerAlive(i))
-                {
-                    u32 partner = BATTLE_PARTNER(i);
-                    gBattleStruct->commanderActive[i] = SPECIES_NONE;
-                    if (IsBattlerAlive(partner))
-                        gStatuses3[partner] &= ~STATUS3_COMMANDER;
-                }
-            }
-
             gBattleScripting.moveendState++;
             break;
         case MOVEEND_COUNT:
@@ -6498,7 +6479,6 @@ static bool32 DoSwitchInEffectsForBattler(u32 battler)
             switch (GetBattlerAbility(i))
             {
             case ABILITY_TRACE:
-            case ABILITY_COMMANDER:
                 if (AbilityBattleEffects(ABILITYEFFECT_ON_SWITCHIN, i, 0, 0, 0))
                     return TRUE;
                 break;
@@ -11119,7 +11099,7 @@ static void Cmd_transformdataexecution(void)
     gBattlescriptCurrInstr = cmd->nextInstr;
     if (gBattleMons[gBattlerTarget].status2 & STATUS2_TRANSFORMED
         || gBattleStruct->illusion[gBattlerTarget].on
-        || gStatuses3[gBattlerTarget] & STATUS3_SEMI_INVULNERABLE_NO_COMMANDER)
+        || gStatuses3[gBattlerTarget] & STATUS3_SEMI_INVULNERABLE)
     {
         gMoveResultFlags |= MOVE_RESULT_FAILED;
         gMensajeBatalla = B_MSG_TRANSFORM_FAILED;
@@ -11879,8 +11859,7 @@ static void Cmd_trysetperishsong(void)
     {
         if (gStatuses3[i] & STATUS3_PERISH_SONG
             || GetBattlerAbility(i) == ABILITY_SOUNDPROOF
-            || BlocksPrankster(gCurrentMove, gBattlerAttacker, i, TRUE)
-            || gStatuses3[i] & STATUS3_COMMANDER)
+            || BlocksPrankster(gCurrentMove, gBattlerAttacker, i, TRUE))
         {
             notAffectedCount++;
         }
@@ -12354,54 +12333,12 @@ static void Cmd_trysetfutureattack(void)
     }
 }
 
-static void Cmd_trydobeatup(void)
+static void Cmd_intentaataqueequipo(void)
 {
-#if B_BEAT_UP >= GEN_5
     CMD_ARGS();
 
-    gBattleStruct->beatUpSlot++;
+    gBattleStruct->posicionPokemonEquipo++;
     gBattlescriptCurrInstr = cmd->nextInstr;
-#else
-    CMD_ARGS(const u8 *endInstr, const u8 *failInstr);
-    struct Pokemon *party = GetBattlerParty(gBattlerAttacker);
-
-    if (!IsBattlerAlive(gBattlerTarget))
-    {
-        gBattlescriptCurrInstr = cmd->endInstr;
-    }
-    else
-    {
-        u8 beforeLoop = gBattleCommunication[MULTIUSE_STATE];
-        for (;gBattleCommunication[MULTIUSE_STATE] < PARTY_SIZE; gBattleCommunication[MULTIUSE_STATE]++)
-        {
-            if (GetMonData(&party[gBattleCommunication[MULTIUSE_STATE]], MON_DATA_HP)
-                && GetMonData(&party[gBattleCommunication[MULTIUSE_STATE]], MON_DATA_SPECIES_OR_EGG) != SPECIES_NONE
-                && GetMonData(&party[gBattleCommunication[MULTIUSE_STATE]], MON_DATA_SPECIES_OR_EGG) != SPECIES_EGG
-                && !GetMonData(&party[gBattleCommunication[MULTIUSE_STATE]], MON_DATA_STATUS))
-                break;
-        }
-        if (gBattleCommunication[MULTIUSE_STATE] < PARTY_SIZE)
-        {
-            PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, gBattlerAttacker, gBattleCommunication[MULTIUSE_STATE])
-
-            gBattlescriptCurrInstr = cmd->nextInstr;
-
-            gBattleMoveDamage = gSpeciesInfo[GetMonData(&party[gBattleCommunication[MULTIUSE_STATE]], MON_DATA_SPECIES)].baseAttack;
-            gBattleMoveDamage *= gMovesInfo[gCurrentMove].power;
-            gBattleMoveDamage *= (GetMonData(&party[gBattleCommunication[MULTIUSE_STATE]], MON_DATA_LEVEL) * 2 / 5 + 2);
-            gBattleMoveDamage /= gSpeciesInfo[gBattleMons[gBattlerTarget].species].baseDefense;
-            gBattleMoveDamage = (gBattleMoveDamage / 50) + 2;
-            if (gProtectStructs[gBattlerAttacker].helpingHand)
-                gBattleMoveDamage = gBattleMoveDamage * 15 / 10;
-
-            gBattleCommunication[MULTIUSE_STATE]++;
-        }
-        else if (beforeLoop != 0)
-            gBattlescriptCurrInstr = cmd->endInstr;
-        else
-            gBattlescriptCurrInstr = cmd->failInstr;
-    }
-#endif
 }
 
 static void Cmd_setsemiinvulnerablebit(void)
@@ -14973,6 +14910,27 @@ void BS_SetMagicCoatTarget(void)
         gBattlerTarget = gSideTimers[side].followmeTarget;
     else
         gBattlerTarget = gBattleStruct->attackerBeforeBounce;
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+}
+
+static void Cmd_preparaatacanteequipo(void)
+{
+    CMD_ARGS(u8 indiceEquipo);
+
+    struct Pokemon *equipo;
+
+    if (GetBattlerSide(gBattlerAttacker) == B_SIDE_PLAYER)
+        equipo = gPlayerParty;
+    else
+        equipo = gEnemyParty;
+
+    struct Pokemon *pokemon = &equipo[cmd->indiceEquipo];
+
+    gBattleStruct->estadisticaAtaqueEquipo =
+        GetMonData(pokemon, MON_DATA_ATTACK, NULL);
+
+    gBattleStruct->ataqueEquipoActivo = TRUE;
 
     gBattlescriptCurrInstr = cmd->nextInstr;
 }

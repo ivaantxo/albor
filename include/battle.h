@@ -593,7 +593,6 @@ struct BattleStruct
     u8 skyDropTargets[MAX_BATTLERS_COUNT]; // For Sky Drop, to account for if multiple Pokemon use Sky Drop in a double battle.
     // When using a move which hits multiple opponents which is then bounced by a target, we need to make sure, the move hits both opponents, the one with bounce, and the one without.
     u8 attackerBeforeBounce:2;
-    u8 beatUpSlot:3;
     u8 hitSwitchTargetFailed:1;
     u8 effectsBeforeUsingMoveDone:1; // Mega Evo and Focus Punch/Shell Trap effects.
     u8 spriteIgnore0Hp:1;
@@ -629,11 +628,12 @@ struct BattleStruct
     u8 boosterEnergyActivates;
     u8 distortedTypeMatchups;
     u8 categoryOverride; // for Z-Moves and Max Moves
-    u8 commandingDondozo;
-    u16 commanderActive[NUM_BATTLE_SIDES];
     u32 stellarBoostFlags[NUM_BATTLE_SIDES]; // stored as a bitfield of flags for all types for each side
     u8 usedEjectItem;
     u8 usedMicleBerry;
+    u32 posicionPokemonEquipo;
+    bool32 ataqueEquipoActivo;
+    u32 estadisticaAtaqueEquipo;
 };
 
 #define DYNAMIC_TYPE_MASK                 ((1 << 6) - 1)

@@ -653,9 +653,9 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectTeleport,
     },
 
-    [EFFECT_BEAT_UP] =
+    [EFECTO_ATAQUE_EQUIPO] =
     {
-        .battleScript = BattleScript_EffectBeatUp,
+        .battleScript = ScriptBatalla_EfectoAtaqueEquipo,
     },
 
     [EFFECT_SEMI_INVULNERABLE] =

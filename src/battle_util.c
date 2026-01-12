@@ -113,19 +113,6 @@ static void CheckSetUnburden(u8 battler)
     }
 }
 
-static u8 CalcBeatUpPower(void)
-{
-    u8 basePower;
-    u16 species;
-    struct Pokemon *party = GetBattlerParty(gBattlerAttacker);
-
-    // Party slot is incremented by the battle script for Beat Up after this damage calculation
-    species = GetMonData(&party[gBattleStruct->beatUpSlot], MON_DATA_SPECIES);
-    basePower = (gSpeciesInfo[species].baseAttack / 10) + 5;
-
-    return basePower;
-}
-
 bool32 IsAffectedByFollowMe(u32 battlerAtk, u32 defSide, u32 move)
 {
     u32 ability = GetBattlerAbility(battlerAtk);
@@ -151,7 +138,6 @@ void HandleAction_UseMove(void)
 
     gBattlerAttacker = gBattlerByTurnOrder[gCurrentTurnActionNumber];
     if (gBattleStruct->absentBattlerFlags & (1u << gBattlerAttacker)
-     || gBattleStruct->commandingDondozo & (1u << gBattlerAttacker)
      || !IsBattlerAlive(gBattlerAttacker))
     {
         gCurrentActionFuncId = B_ACTION_FINISHED;
@@ -3169,7 +3155,7 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
 
                 PREPARE_BYTE_NUMBER_BUFFER(gBattleScripting.multihitString, 3, 0)
             }
-            else if (B_BEAT_UP >= GEN_5 && gMovesInfo[gCurrentMove].effect == EFFECT_BEAT_UP)
+            else if (gMovesInfo[gCurrentMove].effect == EFECTO_ATAQUE_EQUIPO)
             {
                 struct Pokemon* party = GetBattlerParty(gBattlerAttacker);
                 u32 i;
@@ -3178,12 +3164,11 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
                 {
                     if (GetMonData(&party[i], MON_DATA_HP)
                     && GetMonData(&party[i], MON_DATA_SPECIES) != SPECIES_NONE
-                    && !GetMonData(&party[i], MON_DATA_IS_EGG)
-                    && !GetMonData(&party[i], MON_DATA_STATUS))
+                    && !GetMonData(&party[i], MON_DATA_IS_EGG))
                         gMultiHitCounter++;
                 }
 
-                gBattleStruct->beatUpSlot = 0;
+                gBattleStruct->posicionPokemonEquipo = 0;
                 PREPARE_BYTE_NUMBER_BUFFER(gBattleScripting.multihitString, 1, 0)
             }
             else
@@ -3968,7 +3953,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 && !(gBattleMons[BATTLE_OPPOSITE(battler)].status2 & (STATUS2_TRANSFORMED | STATUS2_SUBSTITUTE))
                 && !(gBattleMons[battler].status2 & STATUS2_TRANSFORMED)
                 && !(gBattleStruct->illusion[BATTLE_OPPOSITE(battler)].on)
-                && !(gStatuses3[BATTLE_OPPOSITE(battler)] & STATUS3_SEMI_INVULNERABLE_NO_COMMANDER))
+                && !(gStatuses3[BATTLE_OPPOSITE(battler)] & STATUS3_SEMI_INVULNERABLE))
             {
                 gBattlerAttacker = battler;
                 gBattlerTarget = BATTLE_OPPOSITE(battler);
@@ -5877,9 +5862,7 @@ u32 IsAbilityPreventingEscape(u32 battler)
 
 bool32 CanBattlerEscape(u32 battler) // no ability check
 {
-    if (gBattleStruct->commanderActive[battler] != SPECIES_NONE)
-        return FALSE;
-    else if (GetBattlerHoldEffect(battler, TRUE) == HOLD_EFFECT_SHED_SHELL)
+    if (GetBattlerHoldEffect(battler, TRUE) == HOLD_EFFECT_SHED_SHELL)
         return TRUE;
     else if (B_GHOSTS_ESCAPE >= GEN_6 && IS_BATTLER_OF_TYPE(battler, TIPO_FANTASMA))
         return TRUE;
@@ -8180,10 +8163,6 @@ static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData
         if (IsBattlerTerrainAffected(battlerDef, STATUS_FIELD_ELECTRIC_TERRAIN))
             basePower *= 2;
         break;
-    case EFFECT_BEAT_UP:
-        if (B_BEAT_UP >= GEN_5)
-            basePower = CalcBeatUpPower();
-        break;
     case EFFECT_PSYBLADE:
         if (IsBattlerTerrainAffected(battlerAtk, STATUS_FIELD_ELECTRIC_TERRAIN))
             basePower = uq4_12_multiply(basePower, UQ_4_12(1.5));
@@ -9321,8 +9300,17 @@ static inline s32 DoMoveDamageCalcVars(struct DamageCalculationData *damageCalcD
     s32 dmg;
     u32 userFinalAttack;
     u32 targetFinalDefense;
-    u32 battlerAtk = damageCalcData->battlerAtk;
+    u32 movimiento = gCurrentMove; 
+    u32 efectoMovimiento = gMovesInfo[movimiento].effect;
+    u32 battlerAtk;
     u32 battlerDef = damageCalcData->battlerDef;
+
+    if (efectoMovimiento == EFECTO_ATAQUE_EQUIPO)
+    {
+        battleAtk = gBattleStruct->estadisticaAtaqueEquipo
+    else
+        battlerAtk = damageCalcData->battlerAtk
+    }
 
     if (fixedBasePower)
         gBattleMovePower = fixedBasePower;
@@ -10780,7 +10768,7 @@ u32 GetMoveType(u32 move)
     if (gMain.inBattle && gBattleStruct->dynamicMoveType)
         return gBattleStruct->dynamicMoveType & DYNAMIC_TYPE_MASK;
     else if (B_UPDATED_MOVE_TYPES < GEN_5
-         && (move == MOVE_BEAT_UP
+         && (move == MOVE_PALIZA
           || move == MOVE_FUTURE_SIGHT
           || move == MOVE_DOOM_DESIRE))
           return TIPO_MISTERIO;

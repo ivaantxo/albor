@@ -6253,14 +6253,14 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_Whirlpool,
     },
 
-    [MOVE_BEAT_UP] =
+    [MOVE_PALIZA] =
     {
         .name = COMPOUND_STRING("Paliza"),
         .description = COMPOUND_STRING(
             "Summons party Pokémon to\n"
             "join in the attack."),
-        .effect = EFFECT_BEAT_UP,
-        .power = B_UPDATED_MOVE_DATA >= GEN_5 ? 1 : 10,
+        .effect = EFECTO_ATAQUE_EQUIPO,
+        .power = 15,
         .type = TIPO_SINIESTRO,
         .accuracy = 100,
         .pp = 10,
@@ -6271,7 +6271,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BeatUp,
+        .battleAnimScript = gBattleAnimMove_Paliza,
     },
 
     [MOVE_FAKE_OUT] =
@@ -20134,8 +20134,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .description = COMPOUND_STRING(
             "Todo el equipo se suma\n"
             "al ataque."),
-        .effect = EFFECT_BEAT_UP,
-        .power = B_UPDATED_MOVE_DATA >= GEN_5 ? 1 : 10,
+        .effect = EFECTO_ATAQUE_EQUIPO,
+        .power = 15,
         .type = TIPO_BICHO,
         .accuracy = 100,
         .pp = 10,

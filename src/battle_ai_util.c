@@ -578,20 +578,17 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
         case EFFECT_FINAL_GAMBIT:
             simulatedDmg = gBattleMons[battlerAtk].hp;
             break;
-        case EFFECT_BEAT_UP:
-            if (B_BEAT_UP >= GEN_5)
+        case EFECTO_ATAQUE_EQUIPO:
+            u32 partyCount = CalculatePartyCount(GetBattlerParty(battlerAtk));
+            u32 i;
+            gBattleStruct->posicionPokemonEquipo = 0;
+            damageCalcData.isCrit = FALSE;
+            simulatedDmg = 0;
+            for (i = 0; i < partyCount; i++)
             {
-                u32 partyCount = CalculatePartyCount(GetBattlerParty(battlerAtk));
-                u32 i;
-                gBattleStruct->beatUpSlot = 0;
-                damageCalcData.isCrit = FALSE;
-                simulatedDmg = 0;
-                for (i = 0; i < partyCount; i++)
-                {
-                    simulatedDmg += CalculateMoveDamage(&damageCalcData, 0);
-                }
-                gBattleStruct->beatUpSlot = 0;
+                simulatedDmg += CalculateMoveDamage(&damageCalcData, 0);
             }
+            gBattleStruct->posicionPokemonEquipo = 0;
             break;
         }
 
@@ -1352,8 +1349,6 @@ bool32 IsMoveRedirectionPrevented(u32 move, u32 atkAbility)
 bool32 IsSemiInvulnerable(u32 battlerDef, u32 move)
 {
     if (gStatuses3[battlerDef] & STATUS3_PHANTOM_FORCE)
-        return TRUE;
-    else if (gBattleStruct->commandingDondozo & (1u << battlerDef))
         return TRUE;
     else if (!gMovesInfo[move].damagesAirborne && gStatuses3[battlerDef] & STATUS3_ON_AIR)
         return TRUE;

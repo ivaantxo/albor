@@ -1199,7 +1199,7 @@ static void BattleStartClearSetData(void)
         gSideTimers[i].stickyWebBattlerId = 0xFF;
     }
     gBattleStruct->appearedInBattle = 0;
-    gBattleStruct->beatUpSlot = 0;
+    gBattleStruct->posicionPokemonEquipo = 0;
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
@@ -1430,16 +1430,6 @@ const u8* FaintClearSetData(u32 battler)
     gBattleStruct->lastTakenMoveFrom[battler][3] = 0;
 
     gBattleStruct->boosterEnergyActivates &= ~(1u << battler);
-
-    if (gBattleStruct->commanderActive[battler] != SPECIES_NONE)
-    {
-        u32 partner = BATTLE_PARTNER(battler);
-        if (IsBattlerAlive(partner))
-        {
-            BtlController_EmitSpriteInvisibility(partner, BUFFER_A, FALSE);
-            MarkBattlerForControllerExec(partner);
-        }
-    }
 
     for (i = 0; i < ARRAY_COUNT(gSideTimers); i++)
     {
@@ -2088,7 +2078,7 @@ static void HandleTurnActionSelectionState(void)
                 || gBattleStruct->absentBattlerFlags & (1u << GetBattlerAtPosition(BATTLE_PARTNER(position)))
                 || gBattleCommunication[GetBattlerAtPosition(BATTLE_PARTNER(position))] == STATE_WAIT_ACTION_CONFIRMED)
             {
-                if ((gBattleStruct->absentBattlerFlags & (1u << battler)) || (gBattleStruct->commandingDondozo & (1u << battler)))
+                if ((gBattleStruct->absentBattlerFlags & (1u << battler)))
                 {
                     gChosenActionByBattler[battler] = B_ACTION_NOTHING_FAINTED;
                     gBattleCommunication[battler] = STATE_WAIT_ACTION_CONFIRMED;
@@ -2773,9 +2763,6 @@ static void TurnValuesCleanUp(bool8 var0)
 
         if (gDisableStructs[i].substituteHP == 0)
             gBattleMons[i].status2 &= ~STATUS2_SUBSTITUTE;
-
-        if (!(gStatuses3[i] & STATUS3_COMMANDER))
-            gBattleStruct->commandingDondozo &= ~(1u << i);
 
         gSpecialStatuses[i].parentalBondState = PARENTAL_BOND_OFF;
     }

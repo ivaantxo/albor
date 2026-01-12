@@ -4423,48 +4423,16 @@ BattleScript_EffectTeleport::
 	setoutcomeonteleport BS_ATTACKER
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectBeatUp::
+ScriptBatalla_EfectoAtaqueEquipo::
 	attackcanceler
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-.if B_BEAT_UP >= GEN_5
 	attackstring
 	ppreduce
 	critcalc
 	damagecalc
 	adjustdamage
-	trydobeatup
+	intentaataqueequipo
 	goto BattleScript_HitFromAtkAnimation
-.else
-	attackstring
-	pause B_WAIT_TIME_SHORT
-	ppreduce
-	setbyte gBattleCommunication, 0
-BattleScript_BeatUpLoop::
-	movevaluescleanup
-	trydobeatup BattleScript_BeatUpEnd, BattleScript_ButItFailed
-	printstring STRINGID_PKMNATTACK
-	critcalc
-	jumpifbyte COMPARACION_DESIGUAL, gIsCriticalHit, TRUE, BattleScript_BeatUpAttack
-	manipulatedamage DMG_DOUBLED
-BattleScript_BeatUpAttack::
-	adjustdamage
-	attackanimation
-	waitanimation
-	effectivenesssound
-	hitanimation BS_TARGET
-	waitstate
-	healthbarupdate BS_TARGET
-	datahpupdate BS_TARGET
-	critmessage
-	waitmessage B_WAIT_TIME_LONG
-	resultmessage
-	waitmessage B_WAIT_TIME_LONG
-	tryfaintmon BS_TARGET
-	moveendto MOVEEND_NEXT_TARGET
-	goto BattleScript_BeatUpLoop
-BattleScript_BeatUpEnd::
-	end
-.endif
 
 BattleScript_EffectDefenseCurl::
 	attackcanceler
@@ -7549,9 +7517,6 @@ BattleScript_CostarActivates::
 	end3
 
 BattleScript_ZeroToHeroActivates::
-	end3
-
-BattleScript_CommanderActivates::
 	end3
 
 BattleScript_HospitalityActivates::

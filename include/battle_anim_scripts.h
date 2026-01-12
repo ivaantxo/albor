@@ -252,7 +252,7 @@ extern const u8 gBattleAnimMove_ShadowBall[];
 extern const u8 gBattleAnimMove_FutureSight[];
 extern const u8 gBattleAnimMove_RockSmash[];
 extern const u8 gBattleAnimMove_Whirlpool[];
-extern const u8 gBattleAnimMove_BeatUp[];
+extern const u8 gBattleAnimMove_Paliza[];
 extern const u8 gBattleAnimMove_FakeOut[];
 extern const u8 gBattleAnimMove_Uproar[];
 extern const u8 gBattleAnimMove_Stockpile[];

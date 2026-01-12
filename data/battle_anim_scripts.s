@@ -18542,18 +18542,18 @@ gBattleAnimMove_ThunderWave::
 	waitforvisualfinish
 	end
 
-gBattleAnimMove_BeatUp::
+gBattleAnimMove_Paliza::
 	loadspritegfx ANIM_TAG_IMPACT
 	loadspritegfx ANIM_TAG_HANDS_AND_FEET
 	monbg ANIM_TARGET
 	setalpha 12, 8
-	choosetwoturnanim BeatUpLeft, BeatUpRight
-BeatUpContinue:
+	choosetwoturnanim PalizaLeft, PalizaRight
+PalizaContinue:
 	waitforvisualfinish
 	clearmonbg ANIM_TARGET
 	blendoff
 	end
-BeatUpLeft:
+PalizaLeft:
 	createsprite gBasicHitSplatSpriteTemplate, ANIM_TARGET, 2, -20, -20, ANIM_TARGET, 2
 	createsprite gFistFootSpriteTemplate, ANIM_TARGET, 3, -20, -12, 8, 1, 0
 	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 3, 0, 6, 1
@@ -18563,8 +18563,8 @@ BeatUpLeft:
 	createsprite gFistFootSpriteTemplate, ANIM_TARGET, 3, 8, 8, 8, 1, 0
 	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 3, 0, 6, 1
 	playsewithpan SE_M_VITAL_THROW2, SOUND_PAN_TARGET
-	goto BeatUpContinue
-BeatUpRight:
+	goto PalizaContinue
+PalizaRight:
 	createsprite gBasicHitSplatSpriteTemplate, ANIM_TARGET, 2, 12, -20, ANIM_TARGET, 2
 	createsprite gFistFootSpriteTemplate, ANIM_TARGET, 3, 12, -12, 8, 1, 0
 	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 3, 0, 6, 1
@@ -18574,7 +18574,7 @@ BeatUpRight:
 	createsprite gFistFootSpriteTemplate, ANIM_TARGET, 3, -12, 8, 8, 1, 0
 	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 3, 0, 6, 1
 	playsewithpan SE_M_VITAL_THROW2, SOUND_PAN_TARGET
-	goto BeatUpContinue
+	goto PalizaContinue
 
 gBattleAnimMove_Stomp::
 	loadspritegfx ANIM_TAG_HANDS_AND_FEET
