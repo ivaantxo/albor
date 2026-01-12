@@ -77,7 +77,7 @@ static void CB2_ReshowBattleScreenAfterMenu(void)
         ClearSpritesHealthboxAnimData();
         break;
     case 6:
-        if (BattleLoadAllHealthBoxesGfx(gBattleScripting.reshowHelperState))
+        if (CargaGraficosBarrasSalud(gBattleScripting.reshowHelperState))
         {
             gBattleScripting.reshowHelperState = 0;
         }

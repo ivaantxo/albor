@@ -435,9 +435,9 @@ void FreeTrainerFrontPicPalette(u16 frontPicId)
     FreeSpritePaletteByTag(gTrainerSprites[frontPicId].palette.tag);
 }
 
-bool8 BattleLoadAllHealthBoxesGfx(u8 state)
+bool32 CargaGraficosBarrasSalud(u8 state)
 {
-    bool8 retVal = FALSE;
+    bool32 bucleTerminado = FALSE;
 
     if (state != 0)
     {
@@ -486,11 +486,11 @@ bool8 BattleLoadAllHealthBoxesGfx(u8 state)
             else if (state == 9)
                 LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[GetBattlerPosition(3)]);
             else
-                retVal = TRUE;
+                bucleTerminado = TRUE;
         }
     }
 
-    return retVal;
+    return bucleTerminado;
 }
 
 void LoadBattleBarGfx(void)
@@ -500,7 +500,7 @@ void LoadBattleBarGfx(void)
 
 bool32 IniciaSpritesBatalla(u32 *estado1, u32 *combatiente)
 {
-    bool32 retVal = FALSE;
+    bool32 bucleTerminado = FALSE;
 
     switch (*estado1)
     {
@@ -509,7 +509,7 @@ bool32 IniciaSpritesBatalla(u32 *estado1, u32 *combatiente)
         (*estado1)++;
         break;
     case 1:
-        if (!BattleLoadAllHealthBoxesGfx(*combatiente))
+        if (!CargaGraficosBarrasSalud(*combatiente))
         {
             (*combatiente)++;
         }
@@ -563,7 +563,7 @@ bool32 IniciaSpritesBatalla(u32 *estado1, u32 *combatiente)
         break;
     }
 
-    return retVal;
+    return bucleTerminado;
 }
 
 void ClearSpritesHealthboxAnimData(void)

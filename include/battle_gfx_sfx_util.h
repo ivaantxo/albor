@@ -13,7 +13,7 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler);
 void DecompressTrainerFrontPic(u16 frontPicId, u8 battler);
 void DecompressTrainerBackPic(u16 backPicId, u8 battler);
 void FreeTrainerFrontPicPalette(u16 frontPicId);
-bool8 BattleLoadAllHealthBoxesGfx(u8 state);
+bool32 CargaGraficosBarrasSalud(u8 state);
 void LoadBattleBarGfx(void);
 bool32 IniciaSpritesBatalla(u32 *estado1, u32 *combatiente);
 void ClearSpritesHealthboxAnimData(void);

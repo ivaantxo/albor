@@ -43,10 +43,8 @@ struct EvoInfo
 
 static EWRAM_DATA struct EvoInfo *sEvoStructPtr = NULL;
 static EWRAM_DATA u16 *sBgAnimPal = NULL;
-
+static EWRAM_DATA u32 sEvoGraphicsTaskId = 0xFF;
 COMMON_DATA void (*gCB2_AfterEvolution)(void) = NULL;
-
-#define sEvoGraphicsTaskId      gBattleCommunication[SPRITES_INIT_STATE2]
 
 static void Task_EvolutionScene(u8 taskId);
 static void CB2_EvolutionSceneUpdate(void);
@@ -764,7 +762,7 @@ static void Task_EvolutionScene(u8 taskId)
                 {
                     gTasks[taskId].tLearnMoveState = gTasks[taskId].tLearnMoveYesState;
                     if (gTasks[taskId].tLearnMoveState == MVSTATE_SHOW_MOVE_SELECT)
-                        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
+                        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 10, RGB_BLACK);
                 }
             }
             if (JOY_NEW(B_BUTTON))

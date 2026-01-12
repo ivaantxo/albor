@@ -496,7 +496,6 @@ static void CB2_HandleStartBattle(void)
     case 2:
         InitBattleControllers();
         gBattleCommunication[SPRITES_INIT_STATE1] = 0;
-        gBattleCommunication[SPRITES_INIT_STATE2] = 0;
         gBattleCommunication[MULTIUSE_STATE] = 3;
         break;
     case 3:
@@ -1506,7 +1505,7 @@ static void DoBattleIntro(void)
     switch (gBattleStruct->estadoIntro)
     {
     case ESTADO_INTRO_BATALLA_OBTEN_DATOS_POKEMON:
-        battler = gPosicionCursorSiNo // Esto no puede ser, comprobar;
+        battler = gPosicionCursorSiNo  // REVISAR;
         BtlController_EmitGetMonData(battler, BUFFER_A, REQUEST_ALL_BATTLE, 0);
         MarkBattlerForControllerExec(battler);
         gBattleStruct->estadoIntro++;
@@ -1527,7 +1526,7 @@ static void DoBattleIntro(void)
             BtlController_EmitIntroSlide(battler, BUFFER_A, gBattleTerrain);
             MarkBattlerForControllerExec(battler);
             gBattleCommunication[MULTIUSE_STATE] = 0;
-            gPosicionCursorSiNo = 0;
+            gPosicionCursorSiNo = 0; // REVISAR
             gBattleStruct->estadoIntro++;
         }
         break;
