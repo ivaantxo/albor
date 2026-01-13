@@ -56,7 +56,6 @@ static const u8 sText_PkmnForgotMove[] = _("{B_BUFF1} olvidó\n{B_BUFF2}.\p");
 static const u8 sText_StopLearningMove[] = _("{PAUSE 32}¿No quieres que aprenda\n{B_BUFF2}?");
 static const u8 sText_DidNotLearnMove[] = _("{B_BUFF1} no aprendió\n{B_BUFF2}.\p");
 static const u8 sText_UseNextPkmn[] = _("¿Quieres usar otro Pokémon?");
-static const u8 sText_AttackMissed[] = _("¡El ataque de {B_ATK_NAME_WITH_PREFIX}\n falló!");
 static const u8 sText_PkmnProtectedItself[] = _("¡{B_DEF_NAME_WITH_PREFIX}\nse protegió!");
 static const u8 sText_AvoidedDamage[] = _("{B_DEF_NAME_WITH_PREFIX} avoided\ndamage with {B_DEF_ABILITY}!");
 static const u8 sText_PkmnMakesGroundMiss[] = _("{B_DEF_NAME_WITH_PREFIX} makes GROUND\nmoves miss with {B_DEF_ABILITY}!");
@@ -157,7 +156,6 @@ const u8 gText_PkmnShroudedInMist[] = _("{B_ATK_PREFIX2} became\nshrouded in MIS
 static const u8 sText_PkmnProtectedByMist[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} is protected\nby MIST!");
 const u8 gText_PkmnGettingPumped[] = _("{B_DEF_NAME_WITH_PREFIX} is getting\npumped!");
 static const u8 sText_PkmnHitWithRecoil[] = _("{B_ATK_NAME_WITH_PREFIX} is hit\nwith recoil!");
-static const u8 sText_PkmnProtectedItself2[] = _("¡{B_ATK_NAME_WITH_PREFIX} se protegió!");
 static const u8 sText_PkmnBuffetedBySandstorm[] = _("{B_ATK_NAME_WITH_PREFIX} is buffeted\nby the sandstorm!");
 static const u8 sText_PkmnPeltedByHail[] = _("{B_ATK_NAME_WITH_PREFIX} is pelted\nby HAIL!");
 static const u8 sText_PkmnsXWoreOff[] = _("{B_ATK_PREFIX1}'s {B_BUFF1}\nwore off!");
@@ -917,7 +915,7 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_STOPLEARNINGMOVE] = sText_StopLearningMove,
     [STRINGID_DIDNOTLEARNMOVE] = sText_DidNotLearnMove,
     [STRINGID_PKMNLEARNEDMOVE2] = sText_PkmnLearnedMove2,
-    [STRINGID_ATTACKMISSED] = sText_AttackMissed,
+    [TEXTO_BATALLA_ATAQUE_FALLO] = COMPOUND_STRING("¡El ataque de {B_ATK_NAME_WITH_PREFIX}\n falló!"),
     [STRINGID_PKMNPROTECTEDITSELF] = sText_PkmnProtectedItself,
     [STRINGID_STATSWONTINCREASE2] = sText_StatsWontIncrease2,
     [STRINGID_AVOIDEDDAMAGE] = sText_AvoidedDamage,
@@ -995,7 +993,7 @@ const u8 *const gBattleStringsTable[BATTLESTRINGS_COUNT] =
     [STRINGID_PKMNPROTECTEDBYMIST] = sText_PkmnProtectedByMist,
     [STRINGID_PKMNGETTINGPUMPED] = gText_PkmnGettingPumped,
     [STRINGID_PKMNHITWITHRECOIL] = sText_PkmnHitWithRecoil,
-    [STRINGID_PKMNPROTECTEDITSELF2] = sText_PkmnProtectedItself2,
+    [TEXTO_BATALLA_ATACANTE_SE_PROTEGIO] = COMPOUND_STRING("¡{B_ATK_NAME_WITH_PREFIX} se protegió!");,
     [STRINGID_PKMNBUFFETEDBYSANDSTORM] = sText_PkmnBuffetedBySandstorm,
     [STRINGID_PKMNPELTEDBYHAIL] = sText_PkmnPeltedByHail,
     [STRINGID_PKMNSEEDED] = sText_PkmnSeeded,
@@ -1548,7 +1546,7 @@ const u16 gSwitchInAbilityStringIds[] =
 
 const u16 gMissStringIds[] =
 {
-    [B_MSG_MISSED]      = STRINGID_ATTACKMISSED,
+    [B_MSG_MISSED]      = TEXTO_BATALLA_ATAQUE_FALLO,
     [B_MSG_PROTECTED]   = STRINGID_PKMNPROTECTEDITSELF,
     [B_MSG_AVOIDED_ATK] = STRINGID_PKMNAVOIDEDATTACK,
     [B_MSG_AVOIDED_DMG] = STRINGID_AVOIDEDDAMAGE,
@@ -1616,7 +1614,7 @@ const u16 gRainContinuesStringIds[] =
 
 const u16 gProtectLikeUsedStringIds[] =
 {
-    [B_MSG_PROTECTED_ITSELF] = STRINGID_PKMNPROTECTEDITSELF2,
+    [B_MSG_PROTECTED_ITSELF] = TEXTO_BATALLA_ATACANTE_SE_PROTEGIO,
     [B_MSG_BRACED_ITSELF]    = STRINGID_PKMNBRACEDITSELF,
     [B_MSG_PROTECT_FAILED]   = STRINGID_BUTITFAILED,
     [B_MSG_PROTECTED_TEAM]   = STRINGID_PROTECTEDTEAM,
@@ -1783,7 +1781,7 @@ const u16 gGotDefrostedStringIds[] =
 
 const u16 gKOFailedStringIds[] =
 {
-    [B_MSG_KO_MISS]       = STRINGID_ATTACKMISSED,
+    [B_MSG_KO_MISS]       = TEXTO_BATALLA_ATAQUE_FALLO,
     [B_MSG_KO_UNAFFECTED] = STRINGID_PKMNUNAFFECTED
 };
 

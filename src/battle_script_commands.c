@@ -1297,7 +1297,7 @@ static void Cmd_attackcanceler(void)
     }
 }
 
-static bool32 JumpIfMoveFailed(u8 adder, u16 move)
+static bool32 JumpIfMoveFailed(u32 movimiento)
 {
     if (gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
     {
@@ -1309,10 +1309,10 @@ static bool32 JumpIfMoveFailed(u8 adder, u16 move)
     else
     {
         TrySetDestinyBondToHappen();
-        if (AbilityBattleEffects(ABILITYEFFECT_ABSORBING, gBattlerTarget, 0, 0, move))
+        if (AbilityBattleEffects(ABILITYEFFECT_ABSORBING, gBattlerTarget, 0, 0, movimiento))
             return TRUE;
     }
-    gBattlescriptCurrInstr += adder;
+    gBattlescriptCurrInstr += 7;
     return FALSE;
 }
 
@@ -1322,7 +1322,7 @@ static bool8 JumpIfMoveAffectedByProtect(u16 move)
     if (IsBattlerProtected(gBattlerAttacker, gBattlerTarget, move))
     {
         gMoveResultFlags |= MOVE_RESULT_MISSED;
-        JumpIfMoveFailed(7, move);
+        JumpIfMoveFailed(move);
         gBattleCommunication[MISS_TYPE] = B_MSG_PROTECTED;
         affected = TRUE;
     }
@@ -1335,14 +1335,14 @@ static bool32 AccuracyCalcHelper(u16 move)
      || (B_TOXIC_NEVER_MISS >= GEN_6 && gMovesInfo[move].effect == EFFECT_TOXIC && IS_BATTLER_OF_TYPE(gBattlerAttacker, TIPO_VENENO))
      || gStatuses4[gBattlerTarget] & STATUS4_GLAIVE_RUSH)
     {
-        JumpIfMoveFailed(7, move);
+        JumpIfMoveFailed(move);
         return TRUE;
     }
     // If the attacker has the ability No Guard and they aren't targeting a Pokemon involved in a Sky Drop with the move Sky Drop, move hits.
     else if (GetBattlerAbility(gBattlerAttacker) == ABILITY_NO_GUARD
           && (gMovesInfo[move].effect != EFFECT_SKY_DROP || gBattleStruct->skyDropTargets[gBattlerTarget] == 0xFF))
     {
-        if (!JumpIfMoveFailed(7, move))
+        if (!JumpIfMoveFailed(move))
             RecordAbilityBattle(gBattlerAttacker, ABILITY_NO_GUARD);
         return TRUE;
     }
@@ -1350,7 +1350,7 @@ static bool32 AccuracyCalcHelper(u16 move)
     else if (GetBattlerAbility(gBattlerTarget) == ABILITY_NO_GUARD
           && (gMovesInfo[move].effect != EFFECT_SKY_DROP || gBattleStruct->skyDropTargets[gBattlerTarget] == 0xFF))
     {
-        if (!JumpIfMoveFailed(7, move))
+        if (!JumpIfMoveFailed(move))
             RecordAbilityBattle(gBattlerTarget, ABILITY_NO_GUARD);
         return TRUE;
     }
@@ -1359,7 +1359,7 @@ static bool32 AccuracyCalcHelper(u16 move)
           && !(gStatuses3[gBattlerTarget] & STATUS3_SEMI_INVULNERABLE)
           && gMovesInfo[move].effect != EFFECT_OHKO)
     {
-        JumpIfMoveFailed(7, move);
+        JumpIfMoveFailed(move);
         return TRUE;
     }
 
@@ -1369,7 +1369,7 @@ static bool32 AccuracyCalcHelper(u16 move)
      || ((gStatuses3[gBattlerTarget] & STATUS3_UNDERWATER) && !gMovesInfo[move].damagesUnderwater))
     {
         gMoveResultFlags |= MOVE_RESULT_MISSED;
-        JumpIfMoveFailed(7, move);
+        JumpIfMoveFailed(move);
         return TRUE;
     }
 
@@ -1379,18 +1379,18 @@ static bool32 AccuracyCalcHelper(u16 move)
             && IsBattlerWeatherAffected(gBattlerTarget, B_WEATHER_RAIN))
         {
             // thunder/hurricane/genie moves ignore acc checks in rain unless target is holding utility umbrella
-            JumpIfMoveFailed(7, move);
+            JumpIfMoveFailed(move);
             return TRUE;
         }
         else if ((gBattleWeather & (B_WEATHER_HAIL | B_WEATHER_SNOW)) && gMovesInfo[move].effect == EFFECT_BLIZZARD)
         {
             // Blizzard ignores acc checks in Hail in Gen4+
-            JumpIfMoveFailed(7, move);
+            JumpIfMoveFailed(move);
             return TRUE;
         }
         else if ((gBattleWeather & (B_WEATHER_RAIN)) && gMovesInfo[move].effect == EFFECT_BLIZZARD && GetBattlerAbility(gBattlerTarget) == ABILITY_HUMEDAD_RELATIVA)
         {
-            JumpIfMoveFailed(7, move);
+            JumpIfMoveFailed(move);
             return TRUE;
         }
     }
@@ -1399,13 +1399,13 @@ static bool32 AccuracyCalcHelper(u16 move)
      && (gStatuses3[gBattlerTarget] & STATUS3_MINIMIZED)
      && gMovesInfo[move].minimizeDoubleDamage)
     {
-        JumpIfMoveFailed(7, move);
+        JumpIfMoveFailed(move);
         return TRUE;
     }
 
     if (gMovesInfo[move].accuracy == 0)
     {
-        JumpIfMoveFailed(7, move);
+        JumpIfMoveFailed(move);
         return TRUE;
     }
 
@@ -1584,7 +1584,7 @@ static void AccuracyCheck(bool32 recalcDragonDarts, const u8 *nextInstr, const u
             if (gMovesInfo[move].power)
                 CalcTypeEffectivenessMultiplier(move, type, gBattlerAttacker, gBattlerTarget, abilityDef, TRUE);
         }
-        JumpIfMoveFailed(7, move);
+        JumpIfMoveFailed(move);
     }
 }
 

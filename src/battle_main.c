@@ -477,37 +477,20 @@ static void CB2_HandleStartBattle(void)
     AnimateSprites();
     BuildOamBuffer();
 
-    switch (gBattleCommunication[MULTIUSE_STATE])
-    {
-    case 0:
-        if (!IsDma3ManagerBusyWithBgCopy())
+    if (!IsDma3ManagerBusyWithBgCopy())
         {
             ShowBg(0);
             ShowBg(1);
             ShowBg(2);
             ShowBg(3);
             FillAroundBattleWindows();
-            gBattleCommunication[MULTIUSE_STATE] = 1;
         }
-        break;
-    case 1:
-        gBattleCommunication[MULTIUSE_STATE] = 2;
-        break;
-    case 2:
-        InitBattleControllers();
-        gBattleCommunication[SPRITES_INIT_STATE1] = 0;
-        gBattleCommunication[MULTIUSE_STATE] = 3;
-        break;
-    case 3:
-        // Finish, start battle
-        if (IniciaSpritesBatalla(&gBattleCommunication[SPRITES_INIT_STATE1], &gBattleCommunication[SPRITES_INIT_STATE2]))
-        {
-            gPreBattleCallback1 = gMain.callback1;
-            gMain.callback1 = BattleMainCB1;
-            SetMainCallback2(BattleMainCB2);
-        }
-        break;
-    }
+
+    InitBattleControllers();
+    IniciaSpritesBatalla();
+    gPreBattleCallback1 = gMain.callback1;
+    gMain.callback1 = BattleMainCB1;
+    SetMainCallback2(BattleMainCB2);
 }
 
 void BattleMainCB2(void)
