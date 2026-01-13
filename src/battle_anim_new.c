@@ -8275,7 +8275,7 @@ static const union AffineAnimCmd sShellSmashShrinkAffineAnimCmds[] =
 void AnimTask_ShellSmashShrinkAttacker(u8 taskId)
 {
     struct Task* task = &gTasks[taskId];
-    u8 spriteId;
+    u32 spriteId;
 
     task->data[0] = gBattleAnimArgs[0]; //Pause
     spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
@@ -8320,7 +8320,7 @@ void AnimTask_AllBattlersInvisibleExceptAttackerAndTarget(u8 taskId)
     u32 i;
     for (i = 0; i < gBattlersCount; ++i)
     {
-        u8 spriteId = gBattlerSpriteIds[i];
+        u32 spriteId = gBattlerSpriteIds[i];
         if (spriteId == GetAnimBattlerSpriteId(ANIM_ATTACKER) || spriteId == GetAnimBattlerSpriteId(ANIM_TARGET))
             continue;
         if (spriteId != 0xFF || !IsBattlerSpriteVisible(i)) //Pokemon that are already hidden
@@ -8452,7 +8452,7 @@ void AnimTask_GetTimeOfDay(u8 taskId)
 // No args.
 void AnimTask_GrowTarget(u8 taskId)
 {
-    u8 spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
+    u32 spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
     PrepareBattlerSpriteForRotScale(spriteId, ST_OAM_OBJ_BLEND);
     SetSpriteRotScale(spriteId, 208, 208, 0);
     gTasks[taskId].data[0] = 120;
@@ -8462,7 +8462,7 @@ static void AnimTask_GrowStep(u8 taskId)
 {
     if (--gTasks[taskId].data[0] == -1)
     {
-        u8 spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
+        u32 spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
         ResetSpriteRotScale(spriteId);
         DestroyAnimVisualTask(taskId);
     }
@@ -8499,7 +8499,7 @@ static void AnimTask_WaitAffineAnim(u8 taskId)
 void AnimTask_SquishTarget(u8 taskId)
 {
     struct Task* task = &gTasks[taskId];
-    u8 spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
+    u32 spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
 
     PrepareAffineAnimInTaskData(task, spriteId, sSquishTargetAffineAnimCmds);
     task->func = AnimTask_WaitAffineAnim;
@@ -8508,7 +8508,7 @@ void AnimTask_SquishTarget(u8 taskId)
 void AnimTask_SquishTargetShort(u8 taskId)
 {
     struct Task* task = &gTasks[taskId];
-    u8 spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
+    u32 spriteId = GetAnimBattlerSpriteId(ANIM_TARGET);
 
     PrepareAffineAnimInTaskData(task, spriteId, sSquishTargetShortAffineAnimCmds);
     task->func = AnimTask_WaitAffineAnim;
@@ -9120,7 +9120,7 @@ static const union AffineAnimCmd sDynamaxGrowthAttackAnimationAffineAnimCmds[] =
 void AnimTask_DynamaxGrowth(u8 taskId) // from CFRU
 {
     struct Task* task = &gTasks[taskId];
-    u8 spriteId = GetAnimBattlerSpriteId(ANIM_ATTACKER);
+    u32 spriteId = GetAnimBattlerSpriteId(ANIM_ATTACKER);
 
     if (gBattleAnimArgs[0] == 0)
         PrepareAffineAnimInTaskData(task, spriteId, sDynamaxGrowthAffineAnimCmds);

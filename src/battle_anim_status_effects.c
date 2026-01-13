@@ -136,7 +136,7 @@ void AnimTask_FrozenIceCubeAttacker(u8 taskId)
 {
     s16 x = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_X_2) - 32;
     s16 y = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_Y_PIC_OFFSET) - 36;
-    u8 spriteId;
+    u32 spriteId;
 
     SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_ALL);
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 16));
@@ -152,7 +152,7 @@ void AnimTask_CentredFrozenIceCube(u8 taskId)
 {
     // same as AnimTask_FrozenIceCube but center position on target(s)
     s16 x, y;
-    u8 spriteId;
+    u32 spriteId;
     u8 battler1 = gBattleAnimTarget;
     u8 battler2 = BATTLE_PARTNER(battler1);
 
@@ -183,7 +183,7 @@ void AnimTask_FrozenIceCube(u8 taskId)
 {
     s16 x = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X_2) - 32;
     s16 y = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y_PIC_OFFSET) - 36;
-    u8 spriteId;
+    u32 spriteId;
 
     SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_ALL);
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 16));
@@ -265,7 +265,7 @@ static void AnimTask_FrozenIceCube_Step4(u8 taskId)
     gTasks[taskId].data[1]++;
     if (gTasks[taskId].data[1] == 37)
     {
-        u8 spriteId = gTasks[taskId].data[15];
+        u32 spriteId = gTasks[taskId].data[15];
 
         FreeSpriteOamMatrix(&gSprites[spriteId]);
         DestroySprite(&gSprites[spriteId]);

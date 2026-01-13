@@ -361,7 +361,7 @@ void LoadListMenuSwapLineGfx(void)
     LoadCompressedSpritePalette(&sSpritePalette_SwapLine);
 }
 
-void CreateSwapLineSprites(u8 *spriteIds, u8 count)
+void CreateSwapLineSprites(u32 *spriteIds, u8 count)
 {
     u32 i;
 
@@ -375,7 +375,7 @@ void CreateSwapLineSprites(u8 *spriteIds, u8 count)
     }
 }
 
-void DestroySwapLineSprites(u8 *spriteIds, u8 count)
+void DestroySwapLineSprites(u32 *spriteIds, u8 count)
 {
     u32 i;
 
@@ -388,7 +388,7 @@ void DestroySwapLineSprites(u8 *spriteIds, u8 count)
     }
 }
 
-void SetSwapLineSpritesInvisibility(u8 *spriteIds, u8 count, bool8 invisible)
+void SetSwapLineSpritesInvisibility(u32 *spriteIds, u8 count, bool8 invisible)
 {
     u32 i;
 
@@ -396,7 +396,7 @@ void SetSwapLineSpritesInvisibility(u8 *spriteIds, u8 count, bool8 invisible)
         gSprites[spriteIds[i]].invisible = invisible;
 }
 
-void UpdateSwapLineSpritesPos(u8 *spriteIds, u8 count, s16 x, u16 y)
+void UpdateSwapLineSpritesPos(u32 *spriteIds, u8 count, s16 x, u16 y)
 {
     u32 i;
     bool8 hasMargin = count & SWAP_LINE_HAS_MARGIN;

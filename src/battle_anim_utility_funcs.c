@@ -423,7 +423,7 @@ static void StatsChangeAnimation_Step1(u8 taskId)
 static void StatsChangeAnimation_Step2(u8 taskId)
 {
     struct BattleAnimBgData animBgData;
-    u8 spriteId, spriteId2;
+    u32 spriteId, spriteId2;
     u8 battlerSpriteId;
 
     spriteId2 = 0;
@@ -755,7 +755,7 @@ void AnimTask_SetAllNonAttackersInvisiblity(u8 taskId)
 void StartMonScrollingBgMask(u8 taskId, u16 scrollSpeed, u8 battler, bool8 includePartner, u8 numFadeSteps, u8 fadeStepDelay, u8 duration, const u32 *gfx, const u32 *tilemap, const u32 *palette)
 {
     u16 species;
-    u8 spriteId, spriteId2;
+    u32 spriteId, spriteId2;
     u32 bg1CntValue;
     struct BattleAnimBgData animBgData;
     u8 battler2;

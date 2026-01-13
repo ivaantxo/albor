@@ -17,7 +17,7 @@
 #include "constants/field_effects.h"
 #include "constants/trainer_types.h"
 
-static u32 ChequeaSiHayEntrenador(u8 objectEventId);
+static u32 ChequeaSiHayEntrenador(u32 objectEventId);
 static u8 GetTrainerApproachDistance(struct ObjectEvent *trainerObj);
 static u8 CheckPathBetweenTrainerAndPlayer(struct ObjectEvent *trainerObj, u8 approachDistance, u8 direction);
 static void InitTrainerApproachTask(struct ObjectEvent *trainerObj, u8 range);
@@ -370,7 +370,7 @@ bool32 ChequeaSiEntrenadorQuiereLuchar(void)
     return FALSE;
 }
 
-static bool32 ChequeaSiHayEntrenador(u8 objectEventId)
+static bool32 ChequeaSiHayEntrenador(u32 objectEventId)
 {
     const u8 *script = GetObjectEventScriptPointerByObjectEventId(objectEventId);
 
@@ -761,7 +761,7 @@ static void Task_EndTrainerApproach(u8 taskId)
 
 u8 FldEff_ExclamationMarkIcon(void)
 {
-    u8 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_ExclamationQuestionMark, 0, 0, 0x53);
+    u32 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_ExclamationQuestionMark, 0, 0, 0x53);
 
     if (spriteId != MAX_SPRITES)
     {
@@ -774,7 +774,7 @@ u8 FldEff_ExclamationMarkIcon(void)
 
 u8 FldEff_QuestionMarkIcon(void)
 {
-    u8 spriteId;
+    u32 spriteId;
     if (gFieldEffectArguments[7] >= 0)
     {
         // Use follower emotes
@@ -799,7 +799,7 @@ u8 FldEff_QuestionMarkIcon(void)
 
 u8 FldEff_HeartIcon(void)
 {
-    u8 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_HeartIcon, 0, 0, 0x52);
+    u32 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_HeartIcon, 0, 0, 0x52);
 
     if (spriteId != MAX_SPRITES)
     {
@@ -815,7 +815,7 @@ u8 FldEff_HeartIcon(void)
 
 u8 FldEff_DoubleExclMarkIcon(void)
 {
-    u8 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_ExclamationQuestionMark, 0, 0, 0x53);
+    u32 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_ExclamationQuestionMark, 0, 0, 0x53);
 
     if (spriteId != MAX_SPRITES)
         SetIconSpriteData(&gSprites[spriteId], FLDEFF_EXCLAMATION_MARK_ICON, 2);
@@ -825,7 +825,7 @@ u8 FldEff_DoubleExclMarkIcon(void)
 
 u8 FldEff_XIcon(void)
 {
-    u8 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_ExclamationQuestionMark, 0, 0, 0x53);
+    u32 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_ExclamationQuestionMark, 0, 0, 0x53);
 
     if (spriteId != MAX_SPRITES)
         SetIconSpriteData(&gSprites[spriteId], FLDEFF_EXCLAMATION_MARK_ICON, 3);
@@ -849,7 +849,7 @@ static void SetIconSpriteData(struct Sprite *sprite, u16 fldEffId, u8 spriteAnim
 
 static void SpriteCB_TrainerIcons(struct Sprite *sprite)
 {
-    u8 objEventId;
+    u32 objEventId;
 
     if (TryGetObjectEventIdByLocalIdAndMap(sprite->sLocalId, sprite->sMapNum, sprite->sMapGroup, &objEventId)
      || sprite->animEnded)

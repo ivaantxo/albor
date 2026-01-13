@@ -158,7 +158,6 @@ const ScrCmdFunc gScriptCmdTable[] =
     SCR_CMD(pokemart),
     SCR_CMD(pokemartdecoration),
     SCR_CMD(pokemartdecoration2),
-    SCR_CMD(playslotmachine),
     SCR_CMD(setberrytree),
     SCR_CMD(choosecontestmon),
     SCR_CMD(startcontest),

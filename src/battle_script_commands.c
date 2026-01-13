@@ -7548,7 +7548,7 @@ static bool8 SlideOutLevelUpBanner(void)
 
 static void PutMonIconOnLvlUpBanner(void)
 {
-    u8 spriteId;
+    u32 spriteId;
     struct SpriteSheet iconSheet;
 
     struct Pokemon *mon = &gPlayerParty[gBattleStruct->expGetterMonId];

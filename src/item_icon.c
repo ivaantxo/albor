@@ -90,7 +90,7 @@ u8 AddItemIconSprite(u16 tilesTag, u16 paletteTag, u16 itemId)
     }
     else
     {
-        u8 spriteId;
+        u32 spriteId;
         struct SpriteSheet spriteSheet;
         struct CompressedSpritePalette spritePalette;
         struct SpriteTemplate *spriteTemplate;
@@ -127,7 +127,7 @@ u8 AddCustomItemIconSprite(const struct SpriteTemplate *customSpriteTemplate, u1
     }
     else
     {
-        u8 spriteId;
+        u32 spriteId;
         struct SpriteSheet spriteSheet;
         struct CompressedSpritePalette spritePalette;
         struct SpriteTemplate *spriteTemplate;

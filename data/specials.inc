@@ -163,7 +163,6 @@ gSpecials::
 	def_special DoOrbEffect
 	def_special FadeOutOrbEffect
 	def_special WaitWeather
-	def_special GetSlotMachineId
 	def_special GetPlayerFacingDirection
 	def_special LeadMonHasEffortRibbon
 	def_special GiveLeadMonEffortRibbon

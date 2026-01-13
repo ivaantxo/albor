@@ -69,12 +69,11 @@ struct PokeblockMenuStruct
     u8 maxShowed;
     struct ListMenuItem items[POKEBLOCKS_COUNT + 1];
     u8 menuItemsStrings[POKEBLOCKS_COUNT + 1][32]; // + 1 because of STOW CASE item
-    u8 pokeblockCaseSpriteId;
-    u8 swapLineSpriteIds[7];
+    u32 pokeblockCaseSpriteId;
+    u32 swapLineSpriteIds[7];
     u8 arrowTaskId;
     bool8 isSwapping;
     s16 gfxState;
-    u8 unused[8];
 };
 
 struct PokeblockSavedData

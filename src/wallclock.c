@@ -684,7 +684,7 @@ static void WallClockInit(void)
 void CB2_StartWallClock(void)
 {
     u8 taskId;
-    u8 spriteId;
+    u32 spriteId;
 
     LoadWallClockGraphics();
     LZ77UnCompVram(gWallClockStart_Tilemap, (u16 *)BG_SCREEN_ADDR(7));
@@ -726,7 +726,7 @@ void CB2_StartWallClock(void)
 void CB2_ViewWallClock(void)
 {
     u8 taskId;
-    u8 spriteId;
+    u32 spriteId;
     u8 angle1;
     u8 angle2;
 

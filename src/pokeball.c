@@ -1257,7 +1257,7 @@ static u8 LaunchBallFadeMonTaskForPokeball(bool8 unFadeLater, u8 spritePalNum, u
 // Poké Ball in Birch intro, and when receiving via trade
 void CreatePokeballSpriteToReleaseMon(u8 monSpriteId, u8 monPalNum, u8 x, u8 y, u8 oamPriority, u8 subpriority, u8 delay, u32 fadePalettes, u16 species)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     LoadCompressedSpriteSheetUsingHeap(&gBallSpriteSheets[BALL_POKE]);
     LoadCompressedSpritePaletteUsingHeap(&gBallSpritePalettes[BALL_POKE]);
@@ -1286,7 +1286,7 @@ static void SpriteCB_PokeballReleaseMon(struct Sprite *sprite)
     if (sprite->sDelay == 0)
     {
         u8 subpriority;
-        u8 spriteId = sprite->sMonSpriteId;
+        u32 spriteId = sprite->sMonSpriteId;
         u8 monPalNum = sprite->sMonPalNum;
         u32 selectedPalettes = (u16)sprite->sFadePalsLo | ((u16)sprite->sFadePalsHi << 16);
 
@@ -1369,7 +1369,7 @@ static void SpriteCB_ReleasedMonFlyOut(struct Sprite *sprite)
 
 u8 CreateTradePokeballSprite(u8 monSpriteId, u8 monPalNum, u8 x, u8 y, u8 oamPriority, u8 subPriority, u8 delay, u32 fadePalettes)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     LoadCompressedSpriteSheetUsingHeap(&gBallSpriteSheets[BALL_POKE]);
     LoadCompressedSpritePaletteUsingHeap(&gBallSpritePalettes[BALL_POKE]);
@@ -1504,7 +1504,7 @@ static void SpriteCB_HealthboxSlideIn(struct Sprite *sprite)
 
 void DoHitAnimHealthboxEffect(u8 battlerId)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     spriteId = CreateInvisibleSpriteWithCallback(SpriteCB_HitAnimHealthoxEffect);
     gSprites[spriteId].data[0] = 1;

@@ -78,8 +78,8 @@ static void HandleInitWindows(void);
 static void LaunchPokeblockFeedTask(void);
 static void SetPokeblockSpritePal(u8);
 static void CalculateMonAnimLength(void);
-static void DoPokeblockCaseThrowEffect(u8, bool8);
-static void StartMonJumpForPokeblock(u8);
+static void DoPokeblockCaseThrowEffect(u32 spriteId, bool8 horizontalThrow);
+static void StartMonJumpForPokeblock(u32 spriteId);
 static void Task_PrintAtePokeblockMessage(u8);
 static void Task_FadeOutPokeblockFeed(u8);
 static void UpdateMonAnim(void);
@@ -715,7 +715,7 @@ static void Task_FadeOutPokeblockFeed(u8 taskId)
 static u8 CreateMonSprite(struct Pokemon *mon)
 {
     u16 species = GetMonData(mon, MON_DATA_SPECIES_OR_EGG);
-    u8 spriteId = CreateSprite(&gMultiuseSpriteTemplate, MON_X, MON_Y, 2);
+    u32 spriteId = CreateSprite(&gMultiuseSpriteTemplate, MON_X, MON_Y, 2);
 
     sPokeblockFeed->species = species;
     sPokeblockFeed->monSpriteId_ = spriteId;
@@ -735,7 +735,7 @@ static u8 CreateMonSprite(struct Pokemon *mon)
     return spriteId;
 }
 
-static void StartMonJumpForPokeblock(u8 spriteId)
+static void StartMonJumpForPokeblock(u32 spriteId)
 {
     gSprites[spriteId].x = MON_X;
     gSprites[spriteId].y = MON_Y;
@@ -760,7 +760,7 @@ static void SpriteCB_MonJumpForPokeblock(struct Sprite *sprite)
 
 static u8 CreatePokeblockCaseSpriteForFeeding(void)
 {
-    u8 spriteId = CreatePokeblockCaseSprite(188, 100, 2);
+    u32 spriteId = CreatePokeblockCaseSprite(188, 100, 2);
     gSprites[spriteId].oam.affineMode = ST_OAM_AFFINE_NORMAL;
     gSprites[spriteId].affineAnims = sAffineAnims_PokeblockCase_Still;
     gSprites[spriteId].callback = SpriteCallbackDummy;
@@ -768,7 +768,7 @@ static u8 CreatePokeblockCaseSpriteForFeeding(void)
     return spriteId;
 }
 
-static void DoPokeblockCaseThrowEffect(u8 spriteId, bool8 horizontalThrow)
+static void DoPokeblockCaseThrowEffect(u32 spriteId, bool8 horizontalThrow)
 {
     FreeOamMatrix(gSprites[spriteId].oam.matrixNum);
     gSprites[spriteId].oam.affineMode = ST_OAM_AFFINE_DOUBLE;
@@ -783,7 +783,7 @@ static void DoPokeblockCaseThrowEffect(u8 spriteId, bool8 horizontalThrow)
 
 static u8 CreatePokeblockSprite(void)
 {
-    u8 spriteId = CreateSprite(&sSpriteTemplate_Pokeblock, 174, 84, 1);
+    u32 spriteId = CreateSprite(&sSpriteTemplate_Pokeblock, 174, 84, 1);
     gSprites[spriteId].sSpeed = -12;
     gSprites[spriteId].sAccel = 1;
     return spriteId;

@@ -1211,7 +1211,7 @@ static void CreateOptionsCursorSprite(struct Pokenav_MatchCallGfx *gfx, int top)
 {
     if (!gfx->optionsCursorSprite)
     {
-        u8 spriteId = CreateSprite(&sOptionsCursorSpriteTemplate, 4, 80, 5);
+        u32 spriteId = CreateSprite(&sOptionsCursorSpriteTemplate, 4, 80, 5);
         gfx->optionsCursorSprite = &gSprites[spriteId];
         UpdateCursorGfxPos(gfx, top);
     }
@@ -1239,7 +1239,7 @@ static void SpriteCB_OptionsCursor(struct Sprite *sprite)
 
 static struct Sprite *CreateTrainerPicSprite(void)
 {
-    u8 spriteId = CreateSprite(&sTrainerPicSpriteTemplate, 44, 104, 6);
+    u32 spriteId = CreateSprite(&sTrainerPicSpriteTemplate, 44, 104, 6);
     return &gSprites[spriteId];
 }
 

@@ -199,10 +199,10 @@ struct PartyMenuBox
     const struct PartyMenuBoxInfoRects *infoRects;
     const u8 *spriteCoords;
     u8 windowId;
-    u8 monSpriteId;
-    u8 itemSpriteId;
-    u8 pokeballSpriteId;
-    u8 statusSpriteId;
+    u32 monSpriteId;
+    u32 itemSpriteId;
+    u32 pokeballSpriteId;
+    u32 statusSpriteId;
 };
 
 // EWRAM vars
@@ -276,8 +276,8 @@ static void CreatePartyMonPokeballSprite(struct Pokemon *, struct PartyMenuBox *
 static void CreatePartyMonIconSprite(struct Pokemon *, struct PartyMenuBox *, u32);
 static void CreatePartyMonStatusSprite(struct Pokemon *, struct PartyMenuBox *);
 static u8 CreatePokeballButtonSprite(u8, u8);
-static void AnimateSelectedPartyIcon(u8, u8);
-static void PartyMenuStartSpriteAnim(u8, u8);
+static void AnimateSelectedPartyIcon(u32 spriteId, u8 animNum);
+static void PartyMenuStartSpriteAnim(u32 spriteId, u8 animNum);
 static u8 GetPartyBoxPaletteFlags(u8, u8);
 static u8 GetPartyIdFromBattleSlot(u8);
 static void Task_ClosePartyMenuAndSetCB2(u8);
@@ -345,7 +345,7 @@ static void Task_FieldMoveExitAreaYesNo(u8);
 static void Task_HandleFieldMoveExitAreaYesNoInput(u8);
 static void Task_FieldMoveWaitForFade(u8);
 static u16 GetFieldMoveMonSpecies(void);
-static void UpdatePartyMonHPBar(u8, struct Pokemon *);
+static void UpdatePartyMonHPBar(u32 spriteId, struct Pokemon *mon);
 static void ShowOrHideHeldItemSprite(u16, struct PartyMenuBox *);
 static void SetPartyMonAilmentGfx(struct Pokemon *, struct PartyMenuBox *);
 static void UpdatePartyMonAilmentGfx(u8, struct PartyMenuBox *);
@@ -1012,7 +1012,7 @@ static void CreateCancelConfirmPokeballSprites(void)
 
 void AnimatePartySlot(u8 slot, u8 animNum)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     switch (slot)
     {
@@ -2723,9 +2723,9 @@ static void Task_SlideSelectedSlotsOnscreen(u8 taskId)
     }
 }
 
-static void SwitchMenuBoxSprites(u8 *spriteIdPtr1, u8 *spriteIdPtr2)
+static void SwitchMenuBoxSprites(u32 *spriteIdPtr1, u32 *spriteIdPtr2)
 {
-    u8 spriteIdBuffer = *spriteIdPtr1;
+    u32 spriteIdBuffer = *spriteIdPtr1;
     u16 xBuffer1, yBuffer1, xBuffer2, yBuffer2;
 
     *spriteIdPtr1 = *spriteIdPtr2;
@@ -3375,7 +3375,7 @@ static void SetPartyHPBarSprite(struct Sprite *sprite, u8 animNum)
     sprite->animCmdIndex = 0;
 }
 
-static void UpdateHPBar(u8 spriteId, u16 hp, u16 maxhp)
+static void UpdateHPBar(u32 spriteId, u16 hp, u16 maxhp)
 {
     switch (GetHPBarLevel(hp, maxhp))
     {
@@ -3397,12 +3397,12 @@ static void UpdateHPBar(u8 spriteId, u16 hp, u16 maxhp)
     }
 }
 
-static void UpdatePartyMonHPBar(u8 spriteId, struct Pokemon *mon)
+static void UpdatePartyMonHPBar(u32 spriteId, struct Pokemon *mon)
 {
     UpdateHPBar(spriteId, GetMonData(mon, MON_DATA_HP), GetMonData(mon, MON_DATA_MAX_HP));
 }
 
-static void AnimateSelectedPartyIcon(u8 spriteId, u8 animNum)
+static void AnimateSelectedPartyIcon(u32 spriteId, u8 animNum)
 {
     gSprites[spriteId].data[0] = 0;
     if (animNum == 0)
@@ -3489,13 +3489,13 @@ static void CreatePartyMonPokeballSpriteParameterized(u16 species, struct PartyM
 // For Cancel when Confirm isnt present
 static u8 CreatePokeballButtonSprite(u8 x, u8 y)
 {
-    u8 spriteId = CreateSprite(&sSpriteTemplate_MenuPokeball, x, y, 8);
+    u32 spriteId = CreateSprite(&sSpriteTemplate_MenuPokeball, x, y, 8);
 
     gSprites[spriteId].oam.priority = 2;
     return spriteId;
 }
 
-static void PartyMenuStartSpriteAnim(u8 spriteId, u8 animNum)
+static void PartyMenuStartSpriteAnim(u32 spriteId, u8 animNum)
 {
     StartSpriteAnim(&gSprites[spriteId], animNum);
 }
@@ -5866,7 +5866,7 @@ static void Task_WaitAfterMultiPartnerPartySlideIn(u8 taskId)
         Task_ClosePartyMenu(taskId);
 }
 
-static void MoveMultiPartyMenuBoxSprite(u8 spriteId, s16 x)
+static void MoveMultiPartyMenuBoxSprite(u32 spriteId, s16 x)
 {
     if (x >= 0)
         gSprites[spriteId].x2 = x;

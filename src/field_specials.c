@@ -51,7 +51,6 @@
 #include "constants/items.h"
 #include "constants/heal_locations.h"
 #include "constants/map_types.h"
-#include "constants/slot_machine.h"
 #include "constants/songs.h"
 #include "constants/moves.h"
 #include "constants/party_menu.h"
@@ -1004,11 +1003,6 @@ u8 GetPokeblockNameByMonNature(void)
 void GetSecretBaseNearbyMapName(void)
 {
     GetMapName(gVariableTexto1, VarGet(VAR_SECRET_BASE_MAP), 0);
-}
-
-u16 GetSlotMachineId(void)
-{
-    return 0;
 }
 
 bool8 LeadMonHasEffortRibbon(void)

@@ -1076,7 +1076,7 @@ void ResetBattleAnimBg(bool8 toBG2)
 
 static void Task_UpdateMonBg(u8 taskId)
 {
-    u8 spriteId, battlerId;
+    u32 spriteId, battlerId;
     s16 x, y;
     struct BattleAnimBgData animBg;
 
@@ -1945,7 +1945,7 @@ static void Cmd_splitbgprio_foes(void)
 
 static void Cmd_invisible(void)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     spriteId = GetAnimBattlerSpriteId(sBattleAnimScriptPtr[1]);
     if (spriteId != SPRITE_NONE)
@@ -1956,7 +1956,7 @@ static void Cmd_invisible(void)
 
 static void Cmd_visible(void)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     spriteId = GetAnimBattlerSpriteId(sBattleAnimScriptPtr[1]);
     if (spriteId != SPRITE_NONE)

@@ -374,7 +374,7 @@ static void VblankCB_StarterChoose(void)
 void CB2_ChooseStarter(void)
 {
     u8 taskId;
-    u8 spriteId;
+    u32 spriteId;
 
     SetVBlankCallback(NULL);
 
@@ -487,7 +487,7 @@ static void Task_HandleStarterChooseInput(u8 taskId)
 
     if (JOY_NEW(A_BUTTON))
     {
-        u8 spriteId;
+        u32 spriteId;
 
         ClearStarterLabel();
 
@@ -537,7 +537,7 @@ static void Task_AskConfirmStarter(u8 taskId)
 
 static void Task_HandleConfirmStarterInput(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     switch (Menu_ProcessInputNoWrapClearOnChoose())
     {
@@ -597,7 +597,7 @@ static void Task_CreateStarterLabel(u8 taskId)
 
 static u8 CreatePokemonFrontSprite(u16 species, u8 x, u8 y)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     spriteId = CreateMonPicSprite_Affine(species, FALSE, 0, MON_PIC_AFFINE_FRONT, x, y, 14, TAG_NONE);
     gSprites[spriteId].oam.priority = 0;

@@ -153,17 +153,17 @@ static void ApplyLevitateMovement(u8);
 static bool8 MovementType_Disguise_Callback(struct ObjectEvent *, struct Sprite *);
 static bool8 MovementType_Buried_Callback(struct ObjectEvent *, struct Sprite *);
 static void CreateReflectionEffectSprites(void);
-static u8 GetObjectEventIdByLocalIdAndMapInternal(u8, u8, u8);
-static bool8 GetAvailableObjectEventId(u16, u8, u8, u8 *);
+static u32 GetObjectEventIdByLocalIdAndMapInternal(u32 localId, u32 mapNum, u32 mapGroupId);
+static bool32 GetAvailableObjectEventId(u32 localId, u32 mapNum, u32 mapGroup, u32 *objectEventId);
 static void SetObjectEventDynamicGraphicsId(struct ObjectEvent *);
 static void RemoveObjectEventInternal(struct ObjectEvent *);
-static u16 GetObjectEventFlagIdByObjectEventId(u8);
+static u32 GetObjectEventFlagIdByObjectEventId(u32 objectEventId);
 static void UpdateObjectEventVisibility(struct ObjectEvent *, struct Sprite *);
 static void GetObjectEventMovingCameraOffset(s16 *, s16 *);
 static const struct ObjectEventTemplate *GetObjectEventTemplateByLocalIdAndMap(u8, u8, u8);
 static void RemoveObjectEventIfOutsideView(struct ObjectEvent *);
-static void SpawnObjectEventOnReturnToField(u8, s16, s16);
-static void SetPlayerAvatarObjectEventIdAndObjectId(u8, u8);
+static void SpawnObjectEventOnReturnToField(u32 objectEventId, s16 x, s16 y);
+static void SetPlayerAvatarObjectEventIdAndObjectId(u32 objectEventId, u32 spriteId);
 static u8 UpdateSpritePalette(const struct SpritePalette *spritePalette, struct Sprite *sprite);
 static void ResetObjectEventFldEffData(struct ObjectEvent *);
 static u32 LoadSpritePaletteIfTagExists(const struct SpritePalette *);
@@ -1066,7 +1066,7 @@ void ResetObjectEvents(void)
 
 static void CreateReflectionEffectSprites(void)
 {
-    u8 spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_REFLECTION_DISTORTION], 0, 0, 31);
+    u32 spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_REFLECTION_DISTORTION], 0, 0, 31);
     gSprites[spriteId].oam.affineMode = ST_OAM_AFFINE_NORMAL;
     InitSpriteAffineAnim(&gSprites[spriteId]);
     StartSpriteAffineAnim(&gSprites[spriteId], 0);
@@ -1079,7 +1079,7 @@ static void CreateReflectionEffectSprites(void)
     gSprites[spriteId].invisible = TRUE;
 }
 
-u8 GetFirstInactiveObjectEventId(void)
+u32 GetFirstInactiveObjectEventId(void)
 {
     u32 i;
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
@@ -1091,7 +1091,7 @@ u8 GetFirstInactiveObjectEventId(void)
     return i;
 }
 
-u8 GetObjectEventIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroupId)
+u32 GetObjectEventIdByLocalIdAndMap(u32 localId, u32 mapNum, u32 mapGroupId)
 {
     if (localId < LOCALID_FOLLOWER)
         return GetObjectEventIdByLocalIdAndMapInternal(localId, mapNum, mapGroupId);
@@ -1099,7 +1099,7 @@ u8 GetObjectEventIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroupId)
     return GetObjectEventIdByLocalId(localId);
 }
 
-bool8 TryGetObjectEventIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroupId, u8 *objectEventId)
+bool32 TryGetObjectEventIdByLocalIdAndMap(u32 localId, u32 mapNum, u32 mapGroupId, u32 *objectEventId)
 {
     *objectEventId = GetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroupId);
     if (*objectEventId == OBJECT_EVENTS_COUNT)
@@ -1108,7 +1108,7 @@ bool8 TryGetObjectEventIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroupId, u
         return FALSE;
 }
 
-u8 GetObjectEventIdByXY(s16 x, s16 y)
+u32 GetObjectEventIdByXY(s16 x, s16 y)
 {
     u32 i;
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
@@ -1120,7 +1120,7 @@ u8 GetObjectEventIdByXY(s16 x, s16 y)
     return i;
 }
 
-static u8 GetObjectEventIdByLocalIdAndMapInternal(u8 localId, u8 mapNum, u8 mapGroupId)
+static u32 GetObjectEventIdByLocalIdAndMapInternal(u32 localId, u32 mapNum, u32 mapGroupId)
 {
     u32 i;
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
@@ -1132,7 +1132,7 @@ static u8 GetObjectEventIdByLocalIdAndMapInternal(u8 localId, u8 mapNum, u8 mapG
     return OBJECT_EVENTS_COUNT;
 }
 
-u8 GetObjectEventIdByLocalId(u8 localId)
+u32 GetObjectEventIdByLocalId(u32 localId)
 {
     u32 i;
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
@@ -1147,7 +1147,7 @@ u8 GetObjectEventIdByLocalId(u8 localId)
 static u8 InitObjectEventStateFromTemplate(const struct ObjectEventTemplate *template, u8 mapNum, u8 mapGroup)
 {
     struct ObjectEvent *objectEvent;
-    u8 objectEventId;
+    u32 objectEventId;
     s16 x;
     s16 y;
 
@@ -1197,7 +1197,7 @@ static u8 InitObjectEventStateFromTemplate(const struct ObjectEventTemplate *tem
     return objectEventId;
 }
 
-static bool8 GetAvailableObjectEventId(u16 localId, u8 mapNum, u8 mapGroup, u8 *objectEventId)
+static bool32 GetAvailableObjectEventId(u32 localId, u32 mapNum, u32 mapGroup, u32 *objectEventId)
 // Looks for an empty slot.
 // Returns FALSE and the location of the available slot
 // in *objectEventId.
@@ -1232,7 +1232,7 @@ void RemoveObjectEvent(struct ObjectEvent *objectEvent)
 
 void RemoveObjectEventByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup)
 {
-    u8 objectEventId;
+    u32 objectEventId;
     if (!TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId))
     {
         FlagSet(GetObjectEventFlagIdByObjectEventId(objectEventId));
@@ -1323,7 +1323,7 @@ static u8 TrySetupObjectEventSprite(const struct ObjectEventTemplate *objectEven
 
 static u8 TrySpawnObjectEventTemplate(const struct ObjectEventTemplate *objectEventTemplate, u8 mapNum, u8 mapGroup, s16 cameraX, s16 cameraY)
 {
-    u8 objectEventId;
+    u32 objectEventId;
     u16 graphicsId = objectEventTemplate->graphicsId;
     struct SpriteTemplate spriteTemplate;
     struct SpriteFrameImage spriteFrameImage;
@@ -1745,9 +1745,9 @@ static void ObjectEventEmote(struct ObjectEvent *objEvent, u8 emotion)
 // Script-accessible version of the above
 bool8 ScrFunc_emote(struct ScriptContext *ctx) 
 {
-    u8 localId = ScriptReadByte(ctx);
-    u8 emotion = ScriptReadByte(ctx) % FOLLOWER_EMOTION_LENGTH;
-    u8 i = GetObjectEventIdByLocalId(localId);
+    u32 localId = ScriptReadWord(ctx);
+    u32 emotion = ScriptReadWord(ctx) % FOLLOWER_EMOTION_LENGTH;
+    u32 i = GetObjectEventIdByLocalId(localId);
     if (i < OBJECT_EVENTS_COUNT)
         ObjectEventEmote(&gObjectEvents[i], emotion);
     return FALSE;
@@ -2249,7 +2249,7 @@ void SpawnObjectEventsOnReturnToField(s16 x, s16 y)
     TrySpawnLightSprites(x, y);
 }
 
-static void SpawnObjectEventOnReturnToField(u8 objectEventId, s16 x, s16 y)
+static void SpawnObjectEventOnReturnToField(u32 objectEventId, s16 x, s16 y)
 {
     u32 i;
     struct Sprite *sprite;
@@ -2317,7 +2317,7 @@ static void ResetObjectEventFldEffData(struct ObjectEvent *objectEvent)
     ObjectEventClearHeldMovement(objectEvent);
 }
 
-static void SetPlayerAvatarObjectEventIdAndObjectId(u8 objectEventId, u8 spriteId)
+static void SetPlayerAvatarObjectEventIdAndObjectId(u32 objectEventId, u32 spriteId)
 {
     gPlayerAvatar.objectEventId = objectEventId;
     gPlayerAvatar.spriteId = spriteId;
@@ -2386,7 +2386,7 @@ void ObjectEventSetGraphicsId(struct ObjectEvent *objectEvent, u16 graphicsId)
 
 void ObjectEventSetGraphicsIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup, u16 graphicsId)
 {
-    u8 objectEventId;
+    u32 objectEventId;
 
     if (!TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId))
         ObjectEventSetGraphicsId(&gObjectEvents[objectEventId], graphicsId);
@@ -2404,7 +2404,7 @@ void ObjectEventTurn(struct ObjectEvent *objectEvent, u8 direction)
 
 void ObjectEventTurnByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup, u8 direction)
 {
-    u8 objectEventId;
+    u32 objectEventId;
 
     if (!TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId))
         ObjectEventTurn(&gObjectEvents[objectEventId], direction);
@@ -2487,7 +2487,7 @@ static void SetObjectEventDynamicGraphicsId(struct ObjectEvent *objectEvent)
 
 void SetObjectInvisibility(u8 localId, u8 mapNum, u8 mapGroup, bool8 invisible)
 {
-    u8 objectEventId;
+    u32 objectEventId;
 
     if (!TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId))
         gObjectEvents[objectEventId].invisible = invisible;
@@ -2502,7 +2502,7 @@ void ObjectEventGetLocalIdAndMap(struct ObjectEvent *objectEvent, void *localId,
 
 void AllowObjectAtPosTriggerGroundEffects(s16 x, s16 y)
 {
-    u8 objectEventId;
+    u32 objectEventId;
     struct ObjectEvent *objectEvent;
 
     objectEventId = GetObjectEventIdByXY(x, y);
@@ -2515,7 +2515,7 @@ void AllowObjectAtPosTriggerGroundEffects(s16 x, s16 y)
 
 void SetObjectSubpriority(u8 localId, u8 mapNum, u8 mapGroup, u8 subpriority)
 {
-    u8 objectEventId;
+    u32 objectEventId;
     struct ObjectEvent *objectEvent;
     struct Sprite *sprite;
 
@@ -2530,7 +2530,7 @@ void SetObjectSubpriority(u8 localId, u8 mapNum, u8 mapGroup, u8 subpriority)
 
 void ResetObjectSubpriority(u8 localId, u8 mapNum, u8 mapGroup)
 {
-    u8 objectEventId;
+    u32 objectEventId;
     struct ObjectEvent *objectEvent;
 
     if (!TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId))
@@ -2543,7 +2543,7 @@ void ResetObjectSubpriority(u8 localId, u8 mapNum, u8 mapGroup)
 
 void SetObjectEventSpritePosByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup, s16 x, s16 y)
 {
-    u8 objectEventId;
+    u32 objectEventId;
     struct Sprite *sprite;
 
     if (!TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId))
@@ -2638,7 +2638,7 @@ void MoveObjectEventToMapCoords(struct ObjectEvent *objectEvent, s16 x, s16 y)
 
 void TryMoveObjectEventToMapCoords(u8 localId, u8 mapNum, u8 mapGroup, s16 x, s16 y)
 {
-    u8 objectEventId;
+    u32 objectEventId;
     if (!TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId))
     {
         x += MAP_OFFSET;
@@ -2677,7 +2677,7 @@ void UpdateObjectEventCoordsForCameraUpdate(void)
     }
 }
 
-u8 GetObjectEventIdByPosition(u16 x, u16 y, u8 elevation)
+u32 GetObjectEventIdByPosition(u16 x, u16 y, u32 elevation)
 {
     u32 i;
 
@@ -2714,7 +2714,7 @@ void UpdateObjectEventsForCameraUpdate(s16 x, s16 y)
 // and tracks x/y movement distances for the camera so it knows where to move.
 u8 AddCameraObject(u8 followSpriteId)
 {
-    u8 spriteId = CreateSprite(&sCameraSpriteTemplate, 0, 0, 4);
+    u32 spriteId = CreateSprite(&sCameraSpriteTemplate, 0, 0, 4);
 
     gSprites[spriteId].invisible = TRUE;
     gSprites[spriteId].sCamera_FollowSpriteId = followSpriteId;
@@ -2781,7 +2781,7 @@ void CameraObjectReset(void)
     }
 }
 
-void CameraObjectSetFollowedSpriteId(u8 spriteId)
+void CameraObjectSetFollowedSpriteId(u32 spriteId)
 {
     struct Sprite *camera = FindCameraSprite();
     if (camera != NULL)
@@ -2856,39 +2856,25 @@ static const u8 *GetObjectEventScriptPointerByLocalIdAndMap(u8 localId, u8 mapNu
     return GetObjectEventTemplateByLocalIdAndMap(localId, mapNum, mapGroup)->script;
 }
 
-const u8 *GetObjectEventScriptPointerByObjectEventId(u8 objectEventId)
+const u8 *GetObjectEventScriptPointerByObjectEventId(u32 objectEventId)
 {
     return GetObjectEventScriptPointerByLocalIdAndMap(gObjectEvents[objectEventId].localId, gObjectEvents[objectEventId].mapNum, gObjectEvents[objectEventId].mapGroup);
 }
 
-static u16 GetObjectEventFlagIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup)
+static u32 GetObjectEventFlagIdByLocalIdAndMap(u32 localId, u32 mapNum, u32 mapGroup)
 {
     const struct ObjectEventTemplate *obj = GetObjectEventTemplateByLocalIdAndMap(localId, mapNum, mapGroup);
-#ifdef UBFIX
-    // BUG: The function may return NULL, and attempting to read from NULL may freeze the game using modern compilers.
     if (obj == NULL)
         return 0;
-#endif // UBFIX
     return obj->flagId;
 }
 
-static u16 GetObjectEventFlagIdByObjectEventId(u8 objectEventId)
+static u32 GetObjectEventFlagIdByObjectEventId(u32 objectEventId)
 {
     return GetObjectEventFlagIdByLocalIdAndMap(gObjectEvents[objectEventId].localId, gObjectEvents[objectEventId].mapNum, gObjectEvents[objectEventId].mapGroup);
 }
 
-// Unused
-u8 GetObjectEventBerryTreeIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup)
-{
-    u8 objectEventId;
-
-    if (TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId))
-        return 0xFF;
-
-    return gObjectEvents[objectEventId].trainerRange_berryTreeId;
-}
-
-u8 GetObjectEventBerryTreeId(u8 objectEventId)
+u8 GetObjectEventBerryTreeId(u32 objectEventId)
 {
     return gObjectEvents[objectEventId].trainerRange_berryTreeId;
 }
@@ -2962,7 +2948,7 @@ void TryOverrideTemplateCoordsForObjectEvent(const struct ObjectEvent *objectEve
 
 void TryOverrideObjectEventTemplateCoords(u8 localId, u8 mapNum, u8 mapGroup)
 {
-    u8 objectEventId;
+    u32 objectEventId;
     if (!TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId))
         OverrideTemplateCoordsForObjectEvent(&gObjectEvents[objectEventId]);
 }
@@ -5427,8 +5413,8 @@ u8 GetDirectionToFace(s16 x, s16 y, s16 targetX, s16 targetY)
 void GetDirectionToFaceScript(struct ScriptContext *ctx)
 {
     u16 *var = GetVarPointer(ScriptReadHalfword(ctx));
-    u8 sourceId = GetObjectEventIdByLocalId(ScriptReadByte(ctx));
-    u8 targetId = GetObjectEventIdByLocalId(ScriptReadByte(ctx));
+    u32 sourceId = GetObjectEventIdByLocalId(ScriptReadWord(ctx));
+    u32 targetId = GetObjectEventIdByLocalId(ScriptReadWord(ctx));
     if (var == NULL)
         return;
     if (sourceId >= OBJECT_EVENTS_COUNT || targetId >= OBJECT_EVENTS_COUNT)
@@ -5701,7 +5687,7 @@ static bool8 DoesObjectCollideWithObjectAt(struct ObjectEvent *objectEvent, s16 
 
 bool8 IsBerryTreeSparkling(u8 localId, u8 mapNum, u8 mapGroup)
 {
-    u8 objectEventId;
+    u32 objectEventId;
 
     if (!TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId)
         && gSprites[gObjectEvents[objectEventId].spriteId].sBerryTreeFlags & BERRY_FLAG_SPARKLING)
@@ -5712,7 +5698,7 @@ bool8 IsBerryTreeSparkling(u8 localId, u8 mapNum, u8 mapGroup)
 
 void SetBerryTreeJustPicked(u8 localId, u8 mapNum, u8 mapGroup)
 {
-    u8 objectEventId;
+    u32 objectEventId;
 
     if (!TryGetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroup, &objectEventId))
         gSprites[gObjectEvents[objectEventId].spriteId].sBerryTreeFlags |= BERRY_FLAG_JUST_PICKED;
@@ -7410,7 +7396,7 @@ bool8 MovementAction_JumpSpecialRight_Step1(struct ObjectEvent *objectEvent, str
 
 bool8 MovementAction_FacePlayer_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
-    u8 playerObjectId;
+    u32 playerObjectId;
 
     if (!TryGetObjectEventIdByLocalIdAndMap(LOCALID_PLAYER, 0, 0, &playerObjectId))
         FaceDirection(objectEvent, sprite, GetDirectionToFace(objectEvent->currentCoords.x,
@@ -7423,7 +7409,7 @@ bool8 MovementAction_FacePlayer_Step0(struct ObjectEvent *objectEvent, struct Sp
 
 bool8 MovementAction_FaceAwayPlayer_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
-    u8 playerObjectId;
+    u32 playerObjectId;
 
     if (!TryGetObjectEventIdByLocalIdAndMap(LOCALID_PLAYER, 0, 0, &playerObjectId))
         FaceDirection(objectEvent, sprite, GetOppositeDirection(GetDirectionToFace(objectEvent->currentCoords.x,
@@ -9248,7 +9234,7 @@ void GroundEffect_SandHeap(struct ObjectEvent *objEvent, struct Sprite *sprite)
 
 void GroundEffect_JumpOnTallGrass(struct ObjectEvent *objEvent, struct Sprite *sprite)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     gFieldEffectArguments[0] = objEvent->currentCoords.x;
     gFieldEffectArguments[1] = objEvent->currentCoords.y;
@@ -9470,7 +9456,7 @@ void FreezeObjectEvents(void)
             FreezeObjectEvent(&gObjectEvents[i]);
 }
 
-void FreezeObjectEventsExceptOne(u8 objectEventId)
+void FreezeObjectEventsExceptOne(u32 objectEventId)
 {
     u32 i;
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
@@ -9938,7 +9924,7 @@ static int GetVirtualObjectSpriteId(u8 virtualObjId)
 
 void TurnVirtualObject(u8 virtualObjId, u8 direction)
 {
-    u8 spriteId = GetVirtualObjectSpriteId(virtualObjId);
+    u32 spriteId = GetVirtualObjectSpriteId(virtualObjId);
 
     if (spriteId != MAX_SPRITES)
         StartSpriteAnim(&gSprites[spriteId], GetFaceDirectionAnimNum(direction));
@@ -9978,7 +9964,7 @@ void SetVirtualObjectGraphics(u8 virtualObjId, u16 graphicsId)
 
 void SetVirtualObjectInvisibility(u8 virtualObjId, bool32 invisible)
 {
-    u8 spriteId = GetVirtualObjectSpriteId(virtualObjId);
+    u32 spriteId = GetVirtualObjectSpriteId(virtualObjId);
 
     if (spriteId == MAX_SPRITES)
         return;
@@ -9991,7 +9977,7 @@ void SetVirtualObjectInvisibility(u8 virtualObjId, bool32 invisible)
 
 bool32 IsVirtualObjectInvisible(u8 virtualObjId)
 {
-    u8 spriteId = GetVirtualObjectSpriteId(virtualObjId);
+    u32 spriteId = GetVirtualObjectSpriteId(virtualObjId);
 
     if (spriteId == MAX_SPRITES)
         return FALSE;
@@ -10001,7 +9987,7 @@ bool32 IsVirtualObjectInvisible(u8 virtualObjId)
 
 void SetVirtualObjectSpriteAnim(u8 virtualObjId, u8 animNum)
 {
-    u8 spriteId = GetVirtualObjectSpriteId(virtualObjId);
+    u32 spriteId = GetVirtualObjectSpriteId(virtualObjId);
 
     if (spriteId != MAX_SPRITES)
     {
@@ -10024,7 +10010,7 @@ static void VirtualObject_UpdateAnim(struct Sprite *sprite)
 
 bool32 IsVirtualObjectAnimating(u8 virtualObjId)
 {
-    u8 spriteId = GetVirtualObjectSpriteId(virtualObjId);
+    u32 spriteId = GetVirtualObjectSpriteId(virtualObjId);
 
     if (spriteId == MAX_SPRITES)
         return FALSE;
@@ -10197,7 +10183,7 @@ static void DestroyLevitateMovementTask(u8 taskId)
 }
 
 // Used to freeze other objects except two trainers approaching for battle
-void FreezeObjectEventsExceptTwo(u8 objectEventId1, u8 objectEventId2)
+void FreezeObjectEventsExceptTwo(u32 objectEventId1, u32 objectEventId2)
 {
     u32 i;
 
@@ -10347,7 +10333,7 @@ static u16 ObtenIDGraficosParaPokemon(u32 species, bool32 shiny, bool32 hembra)
 
 void Script_ArcanineTransparentAndFree(void)
 {
-    u8 objectEventId = gSelectedObjectEvent;
+    u32 objectEventId = gSelectedObjectEvent;
 
     struct ObjectEvent *obj = &gObjectEvents[objectEventId];
     struct Sprite *sprite = &gSprites[obj->spriteId];

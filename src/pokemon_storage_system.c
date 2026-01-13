@@ -1375,7 +1375,7 @@ static u8 HandleChooseBoxMenuInput(void)
 static void ChooseBoxMenu_CreateSprites(u8 curBox)
 {
     u32 i;
-    u8 spriteId;
+    u32 spriteId;
     struct SpriteTemplate template;
     struct OamData oamData = {};
     oamData.size = SPRITE_SIZE(64x64);
@@ -4446,7 +4446,7 @@ static void RemoveSpeciesFromIconList(u16 species)
 static struct Sprite *CreateMonIconSprite(u16 species, u32 personality, s16 x, s16 y, u8 oamPriority, u8 subpriority)
 {
     u16 tileNum;
-    u8 spriteId;
+    u32 spriteId;
     struct SpriteTemplate template = sSpriteTemplate_MonIcon;
 
     template.paletteTag = ETIQUETA_ICONO_POKEMON;
@@ -4595,7 +4595,7 @@ static void InitBoxTitle(u8 boxId)
     // Title is split across two sprites
     for (i = 0; i < 2; i++)
     {
-        u8 spriteId = CreateSprite(&sSpriteTemplate_BoxTitle, x + i * 32, 28, 24);
+        u32 spriteId = CreateSprite(&sSpriteTemplate_BoxTitle, x + i * 32, 28, 24);
         sStorage->curBoxTitleSprites[i] = &gSprites[spriteId];
         StartSpriteAnim(sStorage->curBoxTitleSprites[i], i);
     }
@@ -4638,7 +4638,7 @@ static void CreateIncomingBoxTitle(u8 boxId, s8 direction)
     // Title is split across two sprites
     for (i = 0; i < 2; i++)
     {
-        u8 spriteId = CreateSprite(&template, i * 32 + x, 28, 24);
+        u32 spriteId = CreateSprite(&template, i * 32 + x, 28, 24);
 
         sStorage->nextBoxTitleSprites[i] = &gSprites[spriteId];
         sStorage->nextBoxTitleSprites[i]->sIncomingDelay = 1;
@@ -6345,7 +6345,7 @@ static bool8 SetMenuTexts_Item(void)
 static void CreateCursorSprites(void)
 {
     u16 x, y;
-    u8 spriteId;
+    u32 spriteId;
     struct SpriteSheet spriteSheets[] =
     {
         {sHandCursor_Gfx, 2048, GFXTAG_CURSOR},
@@ -6671,7 +6671,7 @@ static const struct SpriteTemplate sSpriteTemplate_ItemIcon =
 static void CreateItemIconSprites(void)
 {
     s32 i;
-    u8 spriteId;
+    u32 spriteId;
     struct CompressedSpriteSheet spriteSheet;
     struct SpriteTemplate spriteTemplate;
 

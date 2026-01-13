@@ -45,7 +45,7 @@ void SpriteCB_AshPuff(struct Sprite *);
 void SpriteCB_AshLaunch(struct Sprite *);
 
 void MultiplyPaletteRGBComponents(u32 i, u8 r, u8 g, u8 b);
-void FreeResourcesAndDestroySprite(struct Sprite *sprite, u8 spriteId);
+void FreeResourcesAndDestroySprite(struct Sprite *sprite, u32 spriteId);
 u32 CreateMonSprite_PicBox(u32 species, s32 x, s32 y, u32 subpriority);
 void StartEscapeRopeFieldEffect(void);
 

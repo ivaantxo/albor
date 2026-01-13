@@ -444,7 +444,7 @@ bool8 HandleMonMarkingsMenuInput(void)
 static void CreateMonMarkingsMenuSprites(s16 x, s16 y, u16 baseTileTag, u16 basePaletteTag)
 {
     u32 i;
-    u8 spriteId;
+    u32 spriteId;
 
     struct SpriteSheet sheets[] =
     {
@@ -584,7 +584,7 @@ struct Sprite *CreateMonMarkingComboSprite(u16 tileTag, u16 paletteTag, const u1
 
 static struct Sprite *CreateMarkingComboSprite(u16 tileTag, u16 paletteTag, const u16 *palette, u16 size)
 {
-    u8 spriteId;
+    u32 spriteId;
     struct SpriteTemplate template;
     struct SpriteSheet sheet = { sMonMarkings_Gfx, 0x80, tileTag };
     struct SpritePalette sprPalette = { palette, paletteTag };

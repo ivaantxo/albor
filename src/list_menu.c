@@ -56,14 +56,14 @@ struct RedOutlineCursor
 {
     struct SubspriteTable subspriteTable;
     struct Subsprite *subspritesPtr; // not a const pointer
-    u8 spriteId;
+    u32 spriteId;
     u16 tileTag;
     u16 palTag;
 };
 
 struct RedArrowCursor
 {
-    u8 spriteId;
+    u32 spriteId;
     u16 tileTag;
     u16 palTag;
 };
@@ -938,7 +938,7 @@ static void SpriteCallback_ScrollIndicatorArrow(struct Sprite *sprite)
 
 static u8 AddScrollIndicatorArrowObject(u8 arrowDir, u8 x, u8 y, u16 tileTag, u16 palTag)
 {
-    u8 spriteId;
+    u32 spriteId;
     struct SpriteTemplate spriteTemplate;
 
     spriteTemplate = sSpriteTemplate_ScrollArrowIndicator;

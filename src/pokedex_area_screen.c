@@ -536,7 +536,7 @@ static void ResetPokedexAreaMapBg(void)
 // Creates the circular sprites to highlight special areas (like caves) where a Pokémon can be found
 static void CreateAreaMarkerSprites(void)
 {
-    u8 spriteId;
+    u32 spriteId;
     static s16 x;
     static s16 y;
     static s16 i;
@@ -611,7 +611,7 @@ static void CreateAreaUnknownSprites(void)
         // The current species is absent on the map, try to create "Area Unknown" sprites
         for (i = 0; i < ARRAY_COUNT(sPokedexAreaScreen->areaUnknownSprites); i++)
         {
-            u8 spriteId = CreateSprite(&sAreaUnknownSpriteTemplate, i * 32 + 160, 140, 0);
+            u32 spriteId = CreateSprite(&sAreaUnknownSpriteTemplate, i * 32 + 160, 140, 0);
             if (spriteId != MAX_SPRITES)
             {
                 gSprites[spriteId].oam.tileNum += i * 16;

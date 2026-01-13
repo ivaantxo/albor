@@ -21,7 +21,7 @@ struct PicData
     u8 *frames;
     struct SpriteFrameImage *images;
     u16 paletteTag;
-    u8 spriteId;
+    u32 spriteId;
     u8 active;
 };
 
@@ -132,7 +132,7 @@ static u16 CreatePicSprite(u16 species, bool8 isShiny, u32 personality, bool8 is
     u8 *framePics;
     struct SpriteFrameImage *images;
     u32 j;
-    u8 spriteId;
+    u32 spriteId;
 
     for (i = 0; i < PICS_COUNT; i ++)
     {
@@ -186,7 +186,7 @@ u16 CreateMonPicSprite_Affine(u16 species, bool8 isShiny, u32 personality, u8 fl
     struct SpriteFrameImage *images;
     u32 j;
     u32 i;
-    u8 spriteId;
+    u32 spriteId;
     u8 type;
     species = SanitizeSpeciesId(species);
 

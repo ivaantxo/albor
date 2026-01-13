@@ -1202,7 +1202,7 @@ static void LoadMonInfo(s16 partyId, u8 loadId)
 
 static void UpdateMonPic(u8 loadId)
 {
-    u8 spriteId;
+    u32 spriteId;
     struct SpriteTemplate spriteTemplate;
     struct SpriteSheet spriteSheet;
     struct SpritePalette spritePal;
@@ -1621,7 +1621,7 @@ static void CreateConditionSprite(void)
 
     for (i = 0, xDiff = 64, xStart = -96; i < 2; i++)
     {
-        u8 spriteId = CreateSprite(template, i * xDiff + xStart, yStart, 0);
+        u32 spriteId = CreateSprite(template, i * xDiff + xStart, yStart, 0);
         if (spriteId != MAX_SPRITES)
         {
             gSprites[spriteId].sSpeed = speed;

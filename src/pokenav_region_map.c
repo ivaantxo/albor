@@ -676,7 +676,7 @@ static void CreateCityZoomTextSprites(void)
 
     for (i = 0; i < (int)ARRAY_COUNT(state->cityZoomTextSprites); i++)
     {
-        u8 spriteId = CreateSprite(&sCityZoomTextSpriteTemplate, 152 + i * 32, y, 8);
+        u32 spriteId = CreateSprite(&sCityZoomTextSpriteTemplate, 152 + i * 32, y, 8);
         sprite = &gSprites[spriteId];
         sprite->data[0] = 0;
         sprite->data[1] = i * 4;

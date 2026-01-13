@@ -173,7 +173,7 @@ static EWRAM_DATA struct PokemonSummaryScreenData
     u8 bgDisplayOrder; // Determines the order page backgrounds are loaded while scrolling between them
     u8 relearnableMovesNum;
     u8 windowIds[8];
-    u8 spriteIds[SPRITE_ARR_ID_COUNT];
+    u32 spriteIds[SPRITE_ARR_ID_COUNT];
     bool8 handleDeoxys;
     s16 switchCounter; // Used for various switch statement cases that decompress/load graphics or Pokémon data
     u8 unk_filler4[6];
@@ -3838,7 +3838,7 @@ static void PlayMonCry(void)
 static u8 CreateMonSprite(struct Pokemon *unused)
 {
     struct PokeSummary *summary = &sMonSummaryScreen->summary;
-    u8 spriteId = CreateSprite(&gMultiuseSpriteTemplate, 40, 64, 5);
+    u32 spriteId = CreateSprite(&gMultiuseSpriteTemplate, 40, 64, 5);
 
     FreeSpriteOamMatrix(&gSprites[spriteId]);
     gSprites[spriteId].data[0] = summary->species2;
@@ -3933,7 +3933,7 @@ static void CreateCaughtBallSprite(struct Pokemon *mon)
 
 static void CreateSetStatusSprite(void)
 {
-    u8 *spriteId = &sMonSummaryScreen->spriteIds[SPRITE_ARR_ID_STATUS];
+    u32 *spriteId = &sMonSummaryScreen->spriteIds[SPRITE_ARR_ID_STATUS];
     u8 statusAnim;
 
     if (*spriteId == SPRITE_NONE)
@@ -3954,7 +3954,7 @@ static void CreateSetStatusSprite(void)
 static void CreateMoveSelectorSprites(u8 idArrayStart)
 {
     u32 i;
-    u8 *spriteIds = &sMonSummaryScreen->spriteIds[idArrayStart];
+    u32 *spriteIds = &sMonSummaryScreen->spriteIds[idArrayStart];
 
     if (sMonSummaryScreen->currPageIndex >= PSS_PAGE_BATTLE_MOVES)
     {
@@ -4011,7 +4011,7 @@ static void DestroyMoveSelectorSprites(u8 firstArrayId)
 static void SetMainMoveSelectorColor(u8 which)
 {
     u32 i;
-    u8 *spriteIds = &sMonSummaryScreen->spriteIds[SPRITE_ARR_ID_MOVE_SELECTOR1];
+    u32 *spriteIds = &sMonSummaryScreen->spriteIds[SPRITE_ARR_ID_MOVE_SELECTOR1];
 
     which *= 3;
     for (i = 0; i < MOVE_SELECTOR_SPRITES_COUNT; i++)
@@ -4028,7 +4028,7 @@ static void SetMainMoveSelectorColor(u8 which)
 static void KeepMoveSelectorVisible(u8 firstSpriteId)
 {
     u32 i;
-    u8 *spriteIds = &sMonSummaryScreen->spriteIds[firstSpriteId];
+    u32 *spriteIds = &sMonSummaryScreen->spriteIds[firstSpriteId];
 
     for (i = 0; i < MOVE_SELECTOR_SPRITES_COUNT; i++)
     {

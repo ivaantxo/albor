@@ -781,7 +781,7 @@ static void Task_PokemonPicWindow(u8 taskId)
 bool8 ScriptMenu_ShowPokemonPic(u16 species, u8 x, u8 y)
 {
     u8 taskId;
-    u8 spriteId;
+    u32 spriteId;
 
     if (FindTaskIdByFunc(Task_PokemonPicWindow) != TASK_NONE)
     {

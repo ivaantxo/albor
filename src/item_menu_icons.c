@@ -445,7 +445,7 @@ static const struct SpriteTemplate sBerryCheckCircleSpriteTemplate =
 // code
 void RemoveBagSprite(u8 id)
 {
-    u8 *spriteId = &gBagMenu->spriteIds[id];
+    u32 *spriteId = &gBagMenu->spriteIds[id];
     if (*spriteId != SPRITE_NONE)
     {
         FreeSpriteTilesByTag(id + TAG_BAG_GFX);
@@ -458,7 +458,7 @@ void RemoveBagSprite(u8 id)
 
 void AddBagVisualSprite(u8 bagPocketId)
 {
-    u8 *spriteId = &gBagMenu->spriteIds[ITEMMENUSPRITE_BAG];
+    u32 *spriteId = &gBagMenu->spriteIds[ITEMMENUSPRITE_BAG];
     *spriteId = CreateSprite(&sBagSpriteTemplate, 68, 66, 0);
     SetBagVisualPocketId(bagPocketId, FALSE);
 }
@@ -518,7 +518,7 @@ static void SpriteCB_ShakeBagSprite(struct Sprite *sprite)
 
 void AddSwitchPocketRotatingBallSprite(s16 rotationDirection)
 {
-    u8 *spriteId = &gBagMenu->spriteIds[ITEMMENUSPRITE_BALL];
+    u32 *spriteId = &gBagMenu->spriteIds[ITEMMENUSPRITE_BALL];
     LoadSpriteSheet(&sRotatingBallTable);
     LoadSpritePalette(&sRotatingBallPaletteTable);
     *spriteId = CreateSprite(&sRotatingBallSpriteTemplate, 16, 16, 0);
@@ -556,7 +556,7 @@ static void SpriteCB_SwitchPocketRotatingBallContinue(struct Sprite *sprite)
 
 void AddBagItemIconSprite(u16 itemId, u8 id)
 {
-    u8 *spriteId = &gBagMenu->spriteIds[id + ITEMMENUSPRITE_ITEM];
+    u32 *spriteId = &gBagMenu->spriteIds[id + ITEMMENUSPRITE_ITEM];
     if (*spriteId == SPRITE_NONE)
     {
         u8 iconSpriteId;
@@ -579,7 +579,7 @@ void RemoveBagItemIconSprite(u8 id)
 // BUG: For one frame, the item you scroll to in the Bag menu
 // will have an incorrect palette and may be seen as a flicker.
 #ifdef BUGFIX
-    u8 *spriteId = &gBagMenu->spriteIds[ITEMMENUSPRITE_ITEM];
+    u32 *spriteId = &gBagMenu->spriteIds[ITEMMENUSPRITE_ITEM];
 
     if (spriteId[id ^ 1] != SPRITE_NONE)
         gSprites[spriteId[id ^ 1]].invisible = TRUE;
@@ -662,7 +662,7 @@ void FreeBerryTagSpritePalette(void)
 // For throwing berries into the Berry Blender
 u8 CreateSpinningBerrySprite(u8 berryId, u8 x, u8 y, bool8 startAffine)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     FreeSpritePaletteByTag(TAG_BERRY_PIC_PAL);
     LoadBerryGfx(berryId);

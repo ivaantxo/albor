@@ -100,7 +100,7 @@ struct ShopData
     u16 maxQuantity;
     u8 scrollIndicatorsTaskId;
     u8 iconSlot;
-    u8 itemSpriteIds[2];
+    u32 itemSpriteIds[2];
     s16 viewportObjects[OBJECT_EVENTS_COUNT][5];
 };
 
@@ -678,8 +678,8 @@ static void BuyMenuPrintCursor(u8 scrollIndicatorsTaskId, u8 colorSet)
 
 static void BuyMenuAddItemIcon(u16 item, u8 iconSlot)
 {
-    u8 spriteId;
-    u8 *spriteIdPtr = &sShopData->itemSpriteIds[iconSlot];
+    u32 spriteId;
+    u32 *spriteIdPtr = &sShopData->itemSpriteIds[iconSlot];
     if (*spriteIdPtr != SPRITE_NONE)
         return;
 
@@ -703,7 +703,7 @@ static void BuyMenuAddItemIcon(u16 item, u8 iconSlot)
 
 static void BuyMenuRemoveItemIcon(u16 item, u8 iconSlot)
 {
-    u8 *spriteIdPtr = &sShopData->itemSpriteIds[iconSlot];
+    u32 *spriteIdPtr = &sShopData->itemSpriteIds[iconSlot];
     if (*spriteIdPtr == SPRITE_NONE)
         return;
 
@@ -883,7 +883,7 @@ static void BuyMenuCollectObjectEventData(void)
     {
         for (x = 0; x < 7; x++)
         {
-            u8 objEventId = GetObjectEventIdByXY(facingX - 4 + x, facingY - 2 + y);
+            u32 objEventId = GetObjectEventIdByXY(facingX - 4 + x, facingY - 2 + y);
 
             // skip if invalid or an overworld pokemon that is not following the player
             if (objEventId != OBJECT_EVENTS_COUNT && !(gObjectEvents[objEventId].active && gObjectEvents[objEventId].graphicsId & OBJ_EVENT_MON && gObjectEvents[objEventId].localId != LOCALID_FOLLOWER))
@@ -918,7 +918,7 @@ static void BuyMenuCollectObjectEventData(void)
 static void BuyMenuDrawObjectEvents(void)
 {
     u32 i;
-    u8 spriteId;
+    u32 spriteId;
     const struct ObjectEventGraphicsInfo *graphicsInfo;
     u8 weatherTemp = gWeatherPtr->palProcessingState;
 

@@ -150,7 +150,7 @@ void FreeBattleSpritesData(void)
 // Wait for the Pokémon to finish appearing out from the Poké Ball on send out
 void SpriteCB_WaitForBattlerBallReleaseAnim(struct Sprite *sprite)
 {
-    u8 spriteId = sprite->data[1];
+    u32 spriteId = sprite->data[1];
 
     if (!gSprites[spriteId].affineAnimEnded)
         return;
@@ -686,7 +686,7 @@ void BattleLoadSubstituteOrMonSpriteGfx(u8 battler, bool8 loadMonSprite)
         BattleLoadMonSpriteGfx(&GetBattlerParty(battler)[gBattlerPartyIndexes[battler]], battler);
 }
 
-void LoadBattleMonGfxAndAnimate(u8 battler, bool8 loadMonSprite, u8 spriteId)
+void LoadBattleMonGfxAndAnimate(u8 battler, bool8 loadMonSprite, u32 spriteId)
 {
     BattleLoadSubstituteOrMonSpriteGfx(battler, loadMonSprite);
     StartSpriteAnim(&gSprites[spriteId], 0);

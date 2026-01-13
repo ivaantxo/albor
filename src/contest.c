@@ -1606,7 +1606,7 @@ static void Task_AppealSetup(u8 taskId)
 
 static void Task_DoAppeals(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
     s32 i;
     u8 contestant = eContest.currentContestant;
     s8 r3;
@@ -2816,7 +2816,7 @@ void CalculateRound1Points(u8 contestCategory)
 
 static u8 CreateJudgeSprite(void)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     LoadCompressedSpriteSheet(&sSpriteSheet_Judge);
     LoadCompressedPalette(gContest2Pal, OBJ_PLTT_ID(1), PLTT_SIZE_4BPP);
@@ -2828,7 +2828,7 @@ static u8 CreateJudgeSprite(void)
 
 static u8 CreateJudgeSpeechBubbleSprite(void)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     LoadCompressedSpriteSheet(&sSpriteSheet_JudgeSymbols);
     LoadCompressedSpritePalette(&sSpritePalette_JudgeSymbols);
@@ -2840,7 +2840,7 @@ static u8 CreateJudgeSpeechBubbleSprite(void)
 
 static u8 CreateContestantSprite(u16 species, bool8 isShiny, u32 personality, u32 index)
 {
-    u8 spriteId;
+    u32 spriteId;
     species = SanitizeSpecies(species);
 
     HandleLoadSpecialPokePic(FALSE, gMonSpritesGfxPtr->spritesGfx[B_POSITION_PLAYER_LEFT], species, personality);
@@ -3497,7 +3497,7 @@ static void CreateSliderHeartSprites(void)
 
 static void UpdateHeartSlider(u8 contestant)
 {
-    u8 spriteId;
+    u32 spriteId;
     s16 slideTarget;
 
     eContestGfxState[contestant].sliderUpdating = TRUE;
@@ -3603,7 +3603,7 @@ static void CreateNextTurnSprites(void)
 
 static void CreateApplauseMeterSprite(void)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     LoadCompressedSpriteSheet(&sSpriteSheet_ApplauseMeter);
     LoadSpritePalette(&sSpritePalette_ApplauseMeter);
@@ -4146,7 +4146,7 @@ static void SpriteCB_JudgeSpeechBubble(struct Sprite *sprite)
 
 static void DoJudgeSpeechBubble(u8 symbolId)
 {
-    u8 spriteId = eContest.judgeSpeechBubbleSpriteId;
+    u32 spriteId = eContest.judgeSpeechBubbleSpriteId;
 
     switch (symbolId)
     {

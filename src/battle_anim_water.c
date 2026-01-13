@@ -691,7 +691,7 @@ static void AnimRainDrop_Step(struct Sprite *sprite)
 // For water bubbles that move to a dest, as in Bubble/Bubblebeam
 static void AnimWaterBubbleProjectile(struct Sprite *sprite)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
     {
@@ -1355,7 +1355,7 @@ static void CreateWaterSpoutLaunchDroplets(struct Task *task, u8 taskId)
     s16 trigIndex = 172;
     u8 subpriority = GetBattlerSpriteSubpriority(gBattleAnimAttacker) - 1;
     s16 increment = 4 - task->data[1];
-    u8 spriteId;
+    u32 spriteId;
 
     if (increment <= 0)
         increment = 1;
@@ -1469,7 +1469,7 @@ static void AnimTask_WaterSpoutRain_Step(u8 taskId)
 static void CreateWaterSpoutRainDroplet(struct Task *task, u8 taskId)
 {
     u16 yPosArg = ((gSineTable[task->data[8]] + 3) >> 4) + task->data[6];
-    u8 spriteId = CreateSprite(&gSmallWaterOrbSpriteTemplate, task->data[7], 0, 0);
+    u32 spriteId = CreateSprite(&gSmallWaterOrbSpriteTemplate, task->data[7], 0, 0);
 
     if (spriteId != MAX_SPRITES)
     {
@@ -1606,7 +1606,7 @@ static void AnimTask_WaterSport_Step(u8 taskId)
 
 static void CreateWaterSportDroplet(struct Task *task)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     if (++task->data[2] > 1)
     {

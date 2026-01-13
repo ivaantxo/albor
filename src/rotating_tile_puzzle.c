@@ -206,7 +206,7 @@ void TurnRotatingTileObjects(void)
     {
         s32 rotation;
         s8 tileDifference;
-        u8 objectEventId;
+        u32 objectEventId;
         s16 x = objectEvents[sRotatingTilePuzzle->objects[i].eventTemplateId].x + MAP_OFFSET;
         s16 y = objectEvents[sRotatingTilePuzzle->objects[i].eventTemplateId].y + MAP_OFFSET;
         u16 metatile = MapGridGetMetatileIdAt(x, y);

@@ -23,7 +23,7 @@ static void AnimFastTranslateLinearWaitEnd(struct Sprite *sprite);
 static void AnimThrowProjectile_Step(struct Sprite *sprite);
 static void AnimBattlerTrace(struct Sprite *sprite);
 static void AnimWeatherBallUp_Step(struct Sprite *sprite);
-static u16 GetBattlerYDeltaFromSpriteId(u8 spriteId);
+static u16 GetBattlerYDeltaFromSpriteId(u32 spriteId);
 static void AnimTask_BlendPalInAndOutSetup(struct Task *task);
 static void AnimTask_AlphaFadeIn_Step(u8 taskId);
 static void AnimTask_AttackerPunchWithTrace_Step(u8 taskId);
@@ -1014,7 +1014,7 @@ void InitAnimFastLinearTranslationWithSpeedAndPos(struct Sprite *sprite)
     sprite->callback(sprite);
 }
 
-void SetSpriteRotScale(u8 spriteId, s16 xScale, s16 yScale, u16 rotation)
+void SetSpriteRotScale(u32 spriteId, s16 xScale, s16 yScale, u16 rotation)
 {
     u32 i;
     struct ObjAffineSrcData src;
@@ -1039,7 +1039,7 @@ static bool8 ShouldRotScaleSpeciesBeFlipped(void)
     return FALSE;
 }
 
-void PrepareBattlerSpriteForRotScale(u8 spriteId, u8 objMode)
+void PrepareBattlerSpriteForRotScale(u32 spriteId, u8 objMode)
 {
     u8 battlerId = gSprites[spriteId].data[0];
 
@@ -1053,7 +1053,7 @@ void PrepareBattlerSpriteForRotScale(u8 spriteId, u8 objMode)
     CalcCenterToCornerVec(&gSprites[spriteId], gSprites[spriteId].oam.shape, gSprites[spriteId].oam.size, gSprites[spriteId].oam.affineMode);
 }
 
-void ResetSpriteRotScale(u8 spriteId)
+void ResetSpriteRotScale(u32 spriteId)
 {
     SetSpriteRotScale(spriteId, 0x100, 0x100, 0);
     gSprites[spriteId].oam.affineMode = ST_OAM_AFFINE_NORMAL;
@@ -1064,7 +1064,7 @@ void ResetSpriteRotScale(u8 spriteId)
 
 // Sets the sprite's y offset equal to the y displacement caused by the
 // matrix's rotation.
-void SetBattlerSpriteYOffsetFromRotation(u8 spriteId)
+void SetBattlerSpriteYOffsetFromRotation(u32 spriteId)
 {
     u16 matrixNum = gSprites[spriteId].oam.matrixNum;
     // The "c" component of the battler sprite matrix contains the sine of the rotation angle divided by some scale amount.
@@ -1354,7 +1354,7 @@ void AnimTravelDiagonally(struct Sprite *sprite)
 s16 CloneBattlerSpriteWithBlend(u8 animBattler)
 {
     u32 i;
-    u8 spriteId = GetAnimBattlerSpriteId(animBattler);
+    u32 spriteId = GetAnimBattlerSpriteId(animBattler);
 
     if (spriteId != SPRITE_NONE)
     {
@@ -1441,7 +1441,7 @@ static void AnimTask_AlphaFadeIn_Step(u8 taskId)
 // arg 4: number of times to blend in and out
 void AnimTask_BlendMonInAndOut(u8 task)
 {
-    u8 spriteId = GetAnimBattlerSpriteId(gBattleAnimArgs[0]);
+    u32 spriteId = GetAnimBattlerSpriteId(gBattleAnimArgs[0]);
     if (spriteId == SPRITE_NONE)
     {
         DestroyAnimVisualTask(task);
@@ -1512,7 +1512,7 @@ void AnimTask_BlendPalInAndOutByTag(u8 task)
     AnimTask_BlendPalInAndOutSetup(&gTasks[task]);
 }
 
-void PrepareAffineAnimInTaskData(struct Task *task, u8 spriteId, const union AffineAnimCmd *affineAnimCmds)
+void PrepareAffineAnimInTaskData(struct Task *task, u32 spriteId, const union AffineAnimCmd *affineAnimCmds)
 {
     task->data[7] = 0;
     task->data[8] = 0;
@@ -1598,7 +1598,7 @@ bool8 RunAffineAnimFromTaskData(struct Task *task)
 
 // Sets the sprite's y offset equal to the y displacement caused by the
 // matrix's scale in the y dimension.
-void SetBattlerSpriteYOffsetFromYScale(u8 spriteId)
+void SetBattlerSpriteYOffsetFromYScale(u32 spriteId)
 {
     int var = MON_PIC_HEIGHT - GetBattlerYDeltaFromSpriteId(spriteId) * 2;
     u16 matrix = gSprites[spriteId].oam.matrixNum;
@@ -1611,7 +1611,7 @@ void SetBattlerSpriteYOffsetFromYScale(u8 spriteId)
 
 // Sets the sprite's y offset equal to the y displacement caused by another sprite
 // matrix's scale in the y dimension.
-void SetBattlerSpriteYOffsetFromOtherYScale(u8 spriteId, u8 otherSpriteId)
+void SetBattlerSpriteYOffsetFromOtherYScale(u32 spriteId, u8 otherSpriteId)
 {
     int var = MON_PIC_HEIGHT - GetBattlerYDeltaFromSpriteId(otherSpriteId) * 2;
     u16 matrix = gSprites[spriteId].oam.matrixNum;
@@ -1622,7 +1622,7 @@ void SetBattlerSpriteYOffsetFromOtherYScale(u8 spriteId, u8 otherSpriteId)
     gSprites[spriteId].y2 = (var - var2) / 2;
 }
 
-static u16 GetBattlerYDeltaFromSpriteId(u8 spriteId)
+static u16 GetBattlerYDeltaFromSpriteId(u32 spriteId)
 {
     struct BattleSpriteInfo *spriteInfo;
     u8 battlerId = gSprites[spriteId].data[0];
@@ -1669,7 +1669,7 @@ void *LoadPointerFromVars(s16 lo, s16 hi)
     return (void *)((u16)lo | ((u16)hi << 16));
 }
 
-void PrepareEruptAnimTaskData(struct Task *task, u8 spriteId, s16 xScaleStart, s16 yScaleStart, s16 xScaleEnd, s16 yScaleEnd, u16 duration)
+void PrepareEruptAnimTaskData(struct Task *task, u32 spriteId, s16 xScaleStart, s16 yScaleStart, s16 xScaleEnd, s16 yScaleEnd, u16 duration)
 {
     task->data[8] = duration;
     task->data[15] = spriteId;
@@ -1775,7 +1775,7 @@ u8 GetBattlerSpriteBGPriorityRank(u8 battlerId)
 // Create Pokémon sprite to be used for a move animation effect (e.g. Role Play / Snatch)
 u8 CreateAdditionalMonSpriteForMoveAnim(u16 species, bool8 isBackpic, u8 id, s16 x, s16 y, u8 subpriority, u32 personality, bool8 isShiny, u32 battlerId)
 {
-    u8 spriteId;
+    u32 spriteId;
     u16 sheet = LoadSpriteSheet(&sSpriteSheets_MoveEffectMons[id]);
     u16 palette = AllocSpritePalette(sSpriteTemplates_MoveEffectMons[id].paletteTag);
 
@@ -1919,9 +1919,9 @@ void SetAverageBattlerPositions(u8 battlerId, bool8 respectMonPicOffsets, s16 *x
     *y = (battlerY + partnerY) / 2;
 }
 
-u8 CreateInvisibleSpriteCopy(int battlerId, u8 spriteId, int species)
+u8 CreateInvisibleSpriteCopy(u32 battlerId, u32 spriteId, u32 species)
 {
-    u8 newSpriteId = CreateInvisibleSpriteWithCallback(SpriteCallbackDummy);
+    u32 newSpriteId = CreateInvisibleSpriteWithCallback(SpriteCallbackDummy);
     gSprites[newSpriteId] = gSprites[spriteId];
     gSprites[newSpriteId].usingSheet = TRUE;
     gSprites[newSpriteId].oam.priority = 0;

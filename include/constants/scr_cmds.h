@@ -127,7 +127,6 @@ enum ScrCmds
     SCR_CMD_pokemart,
     SCR_CMD_pokemartdecoration,
     SCR_CMD_pokemartdecoration2,
-    SCR_CMD_playslotmachine,
     SCR_CMD_setberrytree,
     SCR_CMD_choosecontestmon,
     SCR_CMD_startcontest,

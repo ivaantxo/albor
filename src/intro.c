@@ -1300,7 +1300,7 @@ static void Task_Scene1_PanUp(u8 taskId)
         if (gIntroFrameCounter == TIMER_FLYGON_SILHOUETTE_APPEAR)
         {
             // Show Flygon silhouette
-            u8 spriteId = CreateSprite(&sSpriteTemplate_FlygonSilhouette, 120, DISPLAY_HEIGHT, 10);
+            u32 spriteId = CreateSprite(&sSpriteTemplate_FlygonSilhouette, 120, DISPLAY_HEIGHT, 10);
             gSprites[spriteId].invisible = TRUE;
         }
     }
@@ -1341,7 +1341,7 @@ static void Task_Scene2_Load(u8 taskId)
 
 static void Task_Scene2_CreateSprites(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     // Load sprite sheets
     if (sIntroCharacterGender == MALE)
@@ -1955,7 +1955,7 @@ static void Task_Scene3_Groudon(u8 taskId)
 static void CreateGroudonRockSprites(u8 taskId)
 {
     u32 i;
-    u8 spriteId;
+    u32 spriteId;
 
     for (i = 0; i < (int)ARRAY_COUNT(sGroudonRockData); i++)
     {
@@ -2200,7 +2200,7 @@ static void Task_Scene3_Kyogre(u8 taskId)
 static void CreateKyogreBubbleSprites_Body(u8 taskId)
 {
     u32 i;
-    u8 spriteId;
+    u32 spriteId;
 
     for (i = 0; i < NUM_BUBBLES_IN_SET; i++)
     {
@@ -2218,7 +2218,7 @@ static void CreateKyogreBubbleSprites_Body(u8 taskId)
 static void CreateKyogreBubbleSprites_Fins(void)
 {
     u32 i;
-    u8 spriteId;
+    u32 spriteId;
 
     for (i = 0; i < NUM_BUBBLES_IN_SET; i++)
     {
@@ -2410,7 +2410,7 @@ static void Task_Scene3_LoadLightning(u8 taskId)
 static void Task_Scene3_Lightning(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
-    u8 spriteId;
+    u32 spriteId;
 
     switch (tState)
     {
@@ -2566,7 +2566,7 @@ static void Task_EndIntroMovie(u8 taskId)
 
 static void Task_RayquazaAttack(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
     s16 *data = gTasks[taskId].data;
     data[2]++;
 
@@ -2982,7 +2982,7 @@ static void SpriteCB_WaterDropShort(struct Sprite *sprite)
 
 static u8 CreateWaterDrop(s16 x, s16 y, u16 c, u16 d, u16 e, u8 fallImmediately)
 {
-    u8 spriteId;
+    u32 spriteId;
     u8 oldSpriteId;
 
     // Create water drop reflection
@@ -3260,7 +3260,7 @@ static void SpriteCB_GameFreakLogo(struct Sprite *sprite)
 static u8 CreateGameFreakLogoSprites(s16 x, s16 y, s16 unused)
 {
     u32 i;
-    u8 spriteId;
+    u32 spriteId;
 
     // Create "Game Freak" letters
     for (i = 0; i < NUM_GF_LETTERS; i++)

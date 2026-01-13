@@ -28,7 +28,7 @@ static void FieldMove_RockSmash(void);
 
 bool8 CheckObjectGraphicsInFrontOfPlayer(u16 graphicsId)
 {
-    u8 objEventId;
+    u32 objEventId;
 
     GetXYCoordsOneStepInFrontOfPlayer(&gPlayerFacingPosition.x, &gPlayerFacingPosition.y);
     gPlayerFacingPosition.elevation = PlayerGetElevation();
@@ -52,7 +52,7 @@ u8 CreateFieldMoveTask(void)
 
 static void Task_DoFieldMove_Init(u8 taskId)
 {
-    u8 objEventId;
+    u32 objEventId;
 
     LockPlayerFieldControls();
     gPlayerAvatar.preventStep = TRUE;

@@ -773,7 +773,7 @@ static void SetAllBattlersSpritePriority(u8 priority)
 
     for (i = 0; i < MAX_BATTLERS_COUNT; i++)
     {
-        u8 spriteId = GetAnimBattlerSpriteId(i);
+        u32 spriteId = GetAnimBattlerSpriteId(i);
         if (spriteId != SPRITE_NONE)
             gSprites[spriteId].oam.priority = priority;
     }
@@ -824,7 +824,7 @@ void AnimClawSlash(struct Sprite *sprite)
 void AnimTask_MetallicShine(u8 taskId)
 {
     u16 species;
-    u8 spriteId;
+    u32 spriteId;
     u8 newSpriteId;
     u16 paletteNum;
     struct BattleAnimBgData animBg;
@@ -888,7 +888,7 @@ static void AnimTask_MetallicShine_Step(u8 taskId)
 {
     struct BattleAnimBgData animBg;
     u16 paletteNum;
-    u8 spriteId;
+    u32 spriteId;
 
     gTasks[taskId].data[10] += 4;
     gBattle_BG1_X -= 4;
@@ -931,7 +931,7 @@ static void AnimTask_MetallicShine_Step(u8 taskId)
 // arg1: FALSE grayscale, TRUE original
 void AnimTask_SetGrayscaleOrOriginalPal(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
     u8 battler;
     bool8 calcSpriteId = FALSE;
     u8 position = B_POSITION_PLAYER_LEFT;

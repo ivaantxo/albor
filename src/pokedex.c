@@ -1717,7 +1717,7 @@ static void CreateMonSpritesAtPos(u16 selectedMon)
 {
     u32 i;
     u16 dexNum;
-    u8 spriteId;
+    u32 spriteId;
 
     gFundidoPaletas.transferenciaBufferDeshabilitada = TRUE;
 
@@ -1804,7 +1804,7 @@ static bool8 UpdateDexListScroll(u8 direction, u8 monMoveIncrement, u8 scrollTim
 static void CreateScrollingPokemonSprite(u8 direction, u16 selectedMon)
 {
     u16 dexNum;
-    u8 spriteId;
+    u32 spriteId;
 
     sPokedexView->listMovingVOffset = sPokedexView->listVOffset;
     switch (direction)
@@ -2008,7 +2008,7 @@ static u32 CreatePokedexMonSprite(u16 num, s16 x, s16 y)
     {
         if (sPokedexView->monSpriteIds[i] == 0xFFFF)
         {
-            u8 spriteId = CreateMonSpriteFromNationalDexNumberHGSS(num, x, y, i);
+            u32 spriteId = CreateMonSpriteFromNationalDexNumberHGSS(num, x, y, i);
             gSprites[spriteId].oam.affineMode = ST_OAM_AFFINE_NORMAL;
             gSprites[spriteId].oam.priority = 3;
             gSprites[spriteId].data[0] = 0;
@@ -2035,7 +2035,7 @@ static u32 CreatePokedexMonSprite(u16 num, s16 x, s16 y)
 
 static void CreateInterfaceSprites(u8 page)
 {
-    u8 spriteId;
+    u32 spriteId;
 
     // Scroll arrows
     spriteId = CreateSprite(&sScrollArrowSpriteTemplate, 10, 4, 0);
@@ -2743,7 +2743,7 @@ static void LoadScreenSelectBarMain(void)
 
 void Task_DisplayCaughtMonDexPageHGSS(u8 taskId)
 {
-    u8 spriteId;
+    u32 spriteId;
     u16 species;
     u16 dexNum;
 

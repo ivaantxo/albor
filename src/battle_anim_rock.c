@@ -833,7 +833,7 @@ static void CreateRolloutDirtSprite(struct Task *task)
     const struct SpriteTemplate *spriteTemplate;
     int tileOffset;
     u16 x, y;
-    u8 spriteId;
+    u32 spriteId;
 
     switch (task->data[1])
     {

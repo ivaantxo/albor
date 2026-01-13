@@ -208,9 +208,9 @@ static void FlyOutFieldEffect_FlyOffWithBird(struct Task *);
 static void FlyOutFieldEffect_WaitFlyOff(struct Task *);
 static void FlyOutFieldEffect_End(struct Task *);
 
-static u8 CreateFlyBirdSprite(void);
-static u8 GetFlyBirdAnimCompleted(u8);
-static void StartFlyBirdSwoopDown(u8);
+static u32 CreateFlyBirdSprite(void);
+static u32 GetFlyBirdAnimCompleted(u32 spriteId);
+static void StartFlyBirdSwoopDown(u32 spriteId);
 static void SetFlyBirdPlayerSpriteId(u8, u8);
 static void SpriteCB_FlyBirdLeaveBall(struct Sprite *);
 static void SpriteCB_FlyBirdSwoopDown(struct Sprite *);
@@ -924,7 +924,7 @@ u32 CreateMonSprite_PicBox(u32 species, s32 x, s32 y, u32 subpriority)
     return CreateMonSprite_FieldMove(species, FALSE, personality, x, y, subpriority);
 }
 
-void FreeResourcesAndDestroySprite(struct Sprite *sprite, u8 spriteId)
+void FreeResourcesAndDestroySprite(struct Sprite *sprite, u32 spriteId)
 {
     u8 paletteNum = sprite->oam.paletteNum;
     ResetPreservedPalettesInWeather();
@@ -1118,7 +1118,7 @@ static void HallOfFameRecordEffect_WaitForSoundAndEnd(struct Task *task)
 
 static u8 CreateGlowingPokeballsEffect(s16 numMons, s16 x, s16 y, bool16 playHealSe)
 {
-    u8 spriteId;
+    u32 spriteId;
     struct Sprite *sprite;
     spriteId = CreateInvisibleSprite(SpriteCB_PokeballGlowEffect);
     sprite = &gSprites[spriteId];
@@ -1137,7 +1137,7 @@ static void SpriteCB_PokeballGlowEffect(struct Sprite *sprite)
 
 static void PokeballGlowEffect_PlaceBalls(struct Sprite *sprite)
 {
-    u8 spriteId;
+    u32 spriteId;
     if (sprite->sTimer == 0 || (--sprite->sTimer) == 0)
     {
         sprite->sTimer = 25;
@@ -1255,7 +1255,7 @@ static void SpriteCB_PokeballGlow(struct Sprite *sprite)
 
 static u8 CreatePokecenterMonitorSprite(s16 x, s16 y)
 {
-    u8 spriteId;
+    u32 spriteId;
     struct Sprite *sprite;
     spriteId = CreateSpriteAtEnd(&sSpriteTemplate_PokecenterMonitor, x, y, 0);
     sprite = &gSprites[spriteId];
@@ -1281,7 +1281,7 @@ static void SpriteCB_PokecenterMonitor(struct Sprite *sprite)
 
 static void CreateHofMonitorSprite(s16 taskId, s16 x, s16 y, bool8 isSmallMonitor)
 {
-    u8 spriteId;
+    u32 spriteId;
     if (!isSmallMonitor)
     {
         spriteId = CreateSpriteAtEnd(&sSpriteTemplate_HofMonitorBig, x, y, 0);
@@ -2128,7 +2128,7 @@ static bool8 LavaridgeGymB1FWarpExitEffect_End(struct Task *task, struct ObjectE
 // For the ash effect when jumping off the Lavaridge Gym B1F warp tiles
 u8 FldEff_AshLaunch(void)
 {
-    u8 spriteId;
+    u32 spriteId;
     SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
     spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_ASH_LAUNCH], gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2]);
     gSprites[spriteId].oam.priority = gFieldEffectArguments[3];
@@ -2222,7 +2222,7 @@ static bool8 LavaridgeGym1FWarpEffect_Warp(struct Task *task, struct ObjectEvent
 // For the ash effect when a trainer pops out of ash, or when the player enters/exits a warp in Lavaridge Gym 1F
 u8 FldEff_AshPuff(void)
 {
-    u8 spriteId;
+    u32 spriteId;
     SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
     spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_ASH_PUFF], gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2]);
     gSprites[spriteId].oam.priority = gFieldEffectArguments[3];
@@ -3088,7 +3088,7 @@ static void SurfFieldEffect_End(struct Task *task)
 u8 FldEff_RayquazaSpotlight(void)
 {
     u32 i, j, k;
-    u8 spriteId = CreateSprite(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_RAYQUAZA], 120, -24, 1);
+    u32 spriteId = CreateSprite(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_RAYQUAZA], 120, -24, 1);
     struct Sprite *sprite = &gSprites[spriteId];
 
     sprite->oam.priority = 1;
@@ -3123,7 +3123,7 @@ u8 FldEff_RayquazaSpotlight(void)
 
 u8 FldEff_NPCFlyOut(void)
 {
-    u8 spriteId = CreateSprite(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_BIRD], 0x78, 0, 1);
+    u32 spriteId = CreateSprite(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_BIRD], 0x78, 0, 1);
     struct Sprite *sprite = &gSprites[spriteId];
 
     sprite->oam.paletteNum = LoadPlayerObjectEventPalette(gSaveBlockPtr->playerGender);
@@ -3301,9 +3301,9 @@ static void FlyOutFieldEffect_End(struct Task *task)
     }
 }
 
-static u8 CreateFlyBirdSprite(void)
+static u32 CreateFlyBirdSprite(void)
 {
-    u8 spriteId;
+    u32 spriteId;
     struct Sprite *sprite;
     spriteId = CreateSprite(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_BIRD], 0xff, 0xb4, 0x1);
     sprite = &gSprites[spriteId];
@@ -3313,12 +3313,12 @@ static u8 CreateFlyBirdSprite(void)
     return spriteId;
 }
 
-static u8 GetFlyBirdAnimCompleted(u8 spriteId)
+static u32 GetFlyBirdAnimCompleted(u32 spriteId)
 {
     return gSprites[spriteId].sAnimCompleted;
 }
 
-static void StartFlyBirdSwoopDown(u8 spriteId)
+static void StartFlyBirdSwoopDown(u32 spriteId)
 {
     struct Sprite *sprite;
     sprite = &gSprites[spriteId];
@@ -3450,7 +3450,7 @@ static void SpriteCB_FlyBirdReturnToBall(struct Sprite *sprite)
     }
 }
 
-static void StartFlyBirdReturnToBall(u8 spriteId)
+static void StartFlyBirdReturnToBall(u32 spriteId)
 {
     StartFlyBirdSwoopDown(spriteId); // Set up is the same, but overrwrites the callback below
     gSprites[spriteId].callback = SpriteCB_FlyBirdReturnToBall;
@@ -3629,7 +3629,7 @@ static void FlyInFieldEffect_End(struct Task *task)
 bool8 FldEff_DestroyDeoxysRock(void)
 {
     u8 taskId;
-    u8 objectEventId;
+    u32 objectEventId;
     if (!TryGetObjectEventIdByLocalIdAndMap(gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2], &objectEventId))
     {
         taskId = CreateTask(Task_DestroyDeoxysRock, 80);
@@ -3803,7 +3803,7 @@ static void CreateDeoxysRockFragments(struct Sprite *sprite)
 
     for (i = 0; i < 4; i++)
     {
-        u8 spriteId = CreateSprite(&sSpriteTemplate_DeoxysRockFragment, xPos, yPos, 0);
+        u32 spriteId = CreateSprite(&sSpriteTemplate_DeoxysRockFragment, xPos, yPos, 0);
         if (spriteId != MAX_SPRITES)
         {
             StartSpriteAnim(&gSprites[spriteId], i);
@@ -3853,7 +3853,7 @@ static void SpriteCB_DeoxysRockFragment(struct Sprite *sprite)
 
 bool8 FldEff_MoveDeoxysRock(struct Sprite *sprite)
 {
-    u8 objectEventId;
+    u32 objectEventId;
     if (!TryGetObjectEventIdByLocalIdAndMap(gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2], &objectEventId))
     {
         struct ObjectEvent *object;

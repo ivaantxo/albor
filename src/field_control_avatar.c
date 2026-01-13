@@ -295,7 +295,7 @@ static const u8 *GetInteractionScript(struct MapPosition *position, u8 metatileB
 
 static const u8 *GetInteractedObjectEventScript(struct MapPosition *position, u8 metatileBehavior, u8 direction)
 {
-    u8 objectEventId;
+    u32 objectEventId;
     const u8 *script;
     s16 currX = gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x;
     s16 currY = gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y;
