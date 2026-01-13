@@ -167,7 +167,7 @@ static void SetPlayerAvatarObjectEventIdAndObjectId(u32 objectEventId, u32 sprit
 static u8 UpdateSpritePalette(const struct SpritePalette *spritePalette, struct Sprite *sprite);
 static void ResetObjectEventFldEffData(struct ObjectEvent *);
 static u32 LoadSpritePaletteIfTagExists(const struct SpritePalette *);
-static u8 FindObjectEventPaletteIndexByTag(u16);
+static u32 FindObjectEventPaletteIndexByTag(u16);
 static bool8 ObjectEventDoesElevationMatch(struct ObjectEvent *, u8);
 static void SpriteCB_CameraObject(struct Sprite *);
 static void CameraObject_Init(struct Sprite *);
@@ -1079,19 +1079,7 @@ static void CreateReflectionEffectSprites(void)
     gSprites[spriteId].invisible = TRUE;
 }
 
-u8 GetFirstInactiveObjectEventId(void)
-{
-    u32 i;
-    for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
-    {
-        if (!gObjectEvents[i].active)
-            break;
-    }
-
-    return i;
-}
-
-u8 GetObjectEventIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroupId)
+u32 GetObjectEventIdByLocalIdAndMap(u32 localId, u32 mapNum, u32 mapGroupId)
 {
     if (localId < LOCALID_FOLLOWER)
         return GetObjectEventIdByLocalIdAndMapInternal(localId, mapNum, mapGroupId);
@@ -1099,7 +1087,7 @@ u8 GetObjectEventIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroupId)
     return GetObjectEventIdByLocalId(localId);
 }
 
-bool32 TryGetObjectEventIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroupId, u32 *objectEventId)
+bool32 TryGetObjectEventIdByLocalIdAndMap(u32 localId, u32 mapNum, u32 mapGroupId, u32 *objectEventId)
 {
     *objectEventId = GetObjectEventIdByLocalIdAndMap(localId, mapNum, mapGroupId);
     if (*objectEventId == OBJECT_EVENTS_COUNT)
@@ -1108,7 +1096,7 @@ bool32 TryGetObjectEventIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroupId, 
         return FALSE;
 }
 
-u8 GetObjectEventIdByXY(s16 x, s16 y)
+u32 GetObjectEventIdByXY(s16 x, s16 y)
 {
     u32 i;
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
@@ -1132,7 +1120,7 @@ static u32 GetObjectEventIdByLocalIdAndMapInternal(u32 localId, u32 mapNum, u32 
     return OBJECT_EVENTS_COUNT;
 }
 
-u8 GetObjectEventIdByLocalId(u8 localId)
+u32 GetObjectEventIdByLocalId(u32 localId)
 {
     u32 i;
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
@@ -1745,9 +1733,9 @@ static void ObjectEventEmote(struct ObjectEvent *objEvent, u8 emotion)
 // Script-accessible version of the above
 bool8 ScrFunc_emote(struct ScriptContext *ctx) 
 {
-    u8 localId = ScriptReadByte(ctx);
-    u8 emotion = ScriptReadByte(ctx) % FOLLOWER_EMOTION_LENGTH;
-    u8 i = GetObjectEventIdByLocalId(localId);
+    u32 localId = ScriptReadWord(ctx);
+    u32 emotion = ScriptReadWord(ctx) % FOLLOWER_EMOTION_LENGTH;
+    u32 i = GetObjectEventIdByLocalId(localId);
     if (i < OBJECT_EVENTS_COUNT)
         ObjectEventEmote(&gObjectEvents[i], emotion);
     return FALSE;
@@ -2346,9 +2334,9 @@ static u8 UpdateSpritePalette(const struct SpritePalette *spritePalette, struct 
 }
 
 // Find and update based on template's paletteTag
-u8 UpdateSpritePaletteByTemplate(const struct SpriteTemplate *template, struct Sprite *sprite)
+u32 UpdateSpritePaletteByTemplate(const struct SpriteTemplate *template, struct Sprite *sprite)
 {
-    u8 i = FindObjectEventPaletteIndexByTag(template->paletteTag);
+    u32 i = FindObjectEventPaletteIndexByTag(template->paletteTag);
     if (i == 0xFF)
         return i;
     return UpdateSpritePalette(&sObjectEventSpritePalettes[i], sprite);
@@ -2554,17 +2542,17 @@ void SetObjectEventSpritePosByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup, 
     }
 }
 
-u8 LoadObjectEventPalette(u16 paletteTag)
+u32 LoadObjectEventPalette(u32 paletteTag)
 {
-    u16 i = FindObjectEventPaletteIndexByTag(paletteTag);
+    u32 i = FindObjectEventPaletteIndexByTag(paletteTag);
     if (i == 0xFF)
         return i;
     return LoadSpritePaletteIfTagExists(&sObjectEventSpritePalettes[i]);
 }
 
-u8 LoadPlayerObjectEventPalette(u8 gender)
+u32 LoadPlayerObjectEventPalette(u32 gender)
 {
-    u16 paletteTag;
+    u32 paletteTag;
     switch (gender)
     {
         default:
@@ -2590,7 +2578,7 @@ static u32 LoadSpritePaletteIfTagExists(const struct SpritePalette *spritePalett
     return paletteNum;
 }
 
-static u8 FindObjectEventPaletteIndexByTag(u16 tag)
+static u32 FindObjectEventPaletteIndexByTag(u32 tag)
 {
     u32 i;
 
@@ -2677,7 +2665,7 @@ void UpdateObjectEventCoordsForCameraUpdate(void)
     }
 }
 
-u8 GetObjectEventIdByPosition(u16 x, u16 y, u8 elevation)
+u32 GetObjectEventIdByPosition(u16 x, u16 y, u32 elevation)
 {
     u32 i;
 
@@ -5413,8 +5401,8 @@ u8 GetDirectionToFace(s16 x, s16 y, s16 targetX, s16 targetY)
 void GetDirectionToFaceScript(struct ScriptContext *ctx)
 {
     u16 *var = GetVarPointer(ScriptReadHalfword(ctx));
-    u8 sourceId = GetObjectEventIdByLocalId(ScriptReadByte(ctx));
-    u8 targetId = GetObjectEventIdByLocalId(ScriptReadByte(ctx));
+    u32 sourceId = GetObjectEventIdByLocalId(ScriptReadWord(ctx));
+    u32 targetId = GetObjectEventIdByLocalId(ScriptReadWord(ctx));
     if (var == NULL)
         return;
     if (sourceId >= OBJECT_EVENTS_COUNT || targetId >= OBJECT_EVENTS_COUNT)
@@ -8576,10 +8564,10 @@ static void UpdateObjectEventOffscreen(struct ObjectEvent *objectEvent, struct S
     y2 = y;
     y2 += graphicsInfo->height;
 
-    if ((s16)x >= ANCHO_PANTALLA + 16 || (s16)x2 < -16)
+    if ((s16)x >= DISPLAY_WIDTH + 16 || (s16)x2 < -16)
         objectEvent->offScreen = TRUE;
 
-    if ((s16)y >= ALTURA_PANTALLA + 16 || (s16)y2 < -16)
+    if ((s16)y >= DISPLAY_HEIGHT + 16 || (s16)y2 < -16)
         objectEvent->offScreen = TRUE;
 }
 
@@ -9892,9 +9880,9 @@ void UpdateObjectEventSpriteInvisibility(struct Sprite *sprite, bool8 invisible)
     x2 = x - (sprite->centerToCornerVecX >> 1);
     y2 = y - (sprite->centerToCornerVecY >> 1);
 
-    if ((s16)x >= ANCHO_PANTALLA + 16 || x2 < -16)
+    if ((s16)x >= DISPLAY_WIDTH + 16 || x2 < -16)
         sprite->invisible = TRUE;
-    if ((s16)y >= ALTURA_PANTALLA + 16 || y2 < -16)
+    if ((s16)y >= DISPLAY_HEIGHT + 16 || y2 < -16)
         sprite->invisible = TRUE;
 }
 
@@ -9909,14 +9897,14 @@ static void SpriteCB_VirtualObject(struct Sprite *sprite)
     UpdateObjectEventSpriteInvisibility(sprite, sprite->sInvisible);
 }
 
-static int GetVirtualObjectSpriteId(u8 virtualObjId)
+static u32 GetVirtualObjectSpriteId(u32 virtualObjId)
 {
     u32 i;
 
     for (i = 0; i < MAX_SPRITES; i++)
     {
         struct Sprite *sprite = &gSprites[i];
-        if (sprite->inUse && sprite->callback == SpriteCB_VirtualObject && (u8)sprite->sVirtualObjId == virtualObjId)
+        if (sprite->inUse && sprite->callback == SpriteCB_VirtualObject && sprite->sVirtualObjId == virtualObjId)
             return i;
     }
     return MAX_SPRITES;
@@ -9932,14 +9920,14 @@ void TurnVirtualObject(u8 virtualObjId, u8 direction)
 
 void SetVirtualObjectGraphics(u8 virtualObjId, u16 graphicsId)
 {
-    int spriteId = GetVirtualObjectSpriteId(virtualObjId);
+    u32 spriteId = GetVirtualObjectSpriteId(virtualObjId);
 
     if (spriteId != MAX_SPRITES)
     {
         struct Sprite *sprite = &gSprites[spriteId];
         const struct ObjectEventGraphicsInfo *graphicsInfo = GetObjectEventGraphicsInfo(graphicsId);
-        u16 tileNum = sprite->oam.tileNum;
-        u8 i = FindObjectEventPaletteIndexByTag(graphicsInfo->paletteTag);
+        u32 tileNum = sprite->oam.tileNum;
+        u32 i = FindObjectEventPaletteIndexByTag(graphicsInfo->paletteTag);
         if (i != 0xFF)
             UpdateSpritePalette(&sObjectEventSpritePalettes[i], sprite);
 
@@ -10206,14 +10194,14 @@ u8 MovementAction_FlyUp_Step1(struct ObjectEvent *objectEvent, struct Sprite *sp
 {
     sprite->y2 -= 8;
 
-    if(sprite->y2 == -ALTURA_PANTALLA)
+    if(sprite->y2 == -DISPLAY_HEIGHT)
         sprite->sActionFuncId++;
     return FALSE;
 }
 
 u8 MovementAction_FlyDown_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
-    sprite->y2 = -ALTURA_PANTALLA;
+    sprite->y2 = -DISPLAY_HEIGHT;
     sprite->sActionFuncId++;
     return FALSE;
 }
