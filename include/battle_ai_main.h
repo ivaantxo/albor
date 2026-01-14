@@ -2,7 +2,7 @@
 #define GUARD_BATTLE_AI_MAIN_H
 
 
-typedef s32 (*AiScoreFunc)(u32, u32, u32, s32);
+typedef s32 (*AIScoreFunc)(u32, u32, u32, s32);
 
 #define UNKNOWN_NO_OF_HITS UINT32_MAX
 
@@ -91,8 +91,8 @@ u32 BattleAI_ChooseMoveOrAction(void);
 void Ai_InitPartyStruct(void);
 void Ai_UpdateSwitchInData(u32 battler);
 void Ai_UpdateFaintData(u32 battler);
-void SetAiLogicDataForTurn(struct AiLogicData *aiData);
-void ResetDynamicAiFunc(void);
+void SetAILogicDataForTurn(struct AILogicData *aiData);
+void ResetDynamicAIFunc(void);
 
 extern u8 sBattler_AI;
 

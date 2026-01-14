@@ -3617,13 +3617,6 @@ static void GetMedicineItemEffectMessage(u16 item, u32 statusCured)
     }
 }
 
-static bool8 NotUsingHPEVItemOnShedinja(struct Pokemon *mon, u16 item)
-{
-    if (GetItemEffectType(item) == ITEM_EFFECT_HP_EV && GetMonData(mon, MON_DATA_SPECIES) == SPECIES_SHEDINJA)
-        return FALSE;
-    return TRUE;
-}
-
 // Battle scripts called in HandleAction_UseItem
 void ItemUseCB_BattleScript(u8 taskId, TaskFunc task)
 {
@@ -3663,21 +3656,14 @@ void ItemUseCB_Medicine(u8 taskId, TaskFunc task)
     bool8 canHeal, cannotUse;
     u32 oldStatus = GetMonData(mon, MON_DATA_STATUS);
 
-    if (NotUsingHPEVItemOnShedinja(mon, item) == FALSE)
+    canHeal = IsHPRecoveryItem(item);
+    if (canHeal == TRUE)
     {
-        cannotUse = TRUE;
+        hp = GetMonData(mon, MON_DATA_HP);
+        if (hp == GetMonData(mon, MON_DATA_MAX_HP))
+            canHeal = FALSE;
     }
-    else
-    {
-        canHeal = IsHPRecoveryItem(item);
-        if (canHeal == TRUE)
-        {
-            hp = GetMonData(mon, MON_DATA_HP);
-            if (hp == GetMonData(mon, MON_DATA_MAX_HP))
-                canHeal = FALSE;
-        }
-        cannotUse = ExecuteTableBasedItemEffect(mon, item, gPartyMenu.slotId, 0);
-    }
+    cannotUse = ExecuteTableBasedItemEffect(mon, item, gPartyMenu.slotId, 0);
 
     if (cannotUse != FALSE)
     {
@@ -4099,9 +4085,7 @@ static u16 ItemEffectToMonEv(struct Pokemon *mon, u8 effectType)
     switch (effectType)
     {
     case ITEM_EFFECT_HP_EV:
-        if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_SHEDINJA)
-            return GetMonData(mon, MON_DATA_HP_EV);
-        break;
+        return GetMonData(mon, MON_DATA_HP_EV);
     case ITEM_EFFECT_ATK_EV:
         return GetMonData(mon, MON_DATA_ATK_EV);
     case ITEM_EFFECT_DEF_EV:

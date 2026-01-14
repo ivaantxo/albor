@@ -2706,14 +2706,13 @@ void CreateAbilityPopUp(u8 battlerId, u32 ability, bool32 isDoubleBattle)
     RestoreOverwrittenPixels((void*)(OBJ_VRAM0) + (gSprites[spriteId1].oam.tileNum * 32));
 }
 
-void UpdateAbilityPopup(u8 battlerId)
+void ActualizaVentanaHabilidad(u32 combatiente)
 {
-    u32 spriteId1 = gBattleStruct->abilityPopUpSpriteIds[battlerId][0];
-    u32 spriteId2 = gBattleStruct->abilityPopUpSpriteIds[battlerId][1];
-    u16 ability = (gBattleScripting.abilityPopupOverwrite != 0) ? gBattleScripting.abilityPopupOverwrite : gBattleMons[battlerId].ability;
-
-    PrintAbilityOnAbilityPopUp(ability, spriteId1, spriteId2);
-    RestoreOverwrittenPixels((void*)(OBJ_VRAM0) + (gSprites[spriteId1].oam.tileNum * 32));
+    u32 spriteId1 = gBattleStruct->abilityPopUpSpriteIds[combatiente][0];
+    u32 spriteId2 = gBattleStruct->abilityPopUpSpriteIds[combatiente][1];
+    u32 habilidad = (gBattleScripting.abilityPopupOverwrite != 0) ? gBattleScripting.abilityPopupOverwrite : gBattleMons[combatiente].ability;
+    PrintAbilityOnAbilityPopUp(habilidad, spriteId1, spriteId2);
+    RestoreOverwrittenPixels((void*)(OBJ_VRAM0) + (gSprites[spriteId1].oam.tileNum * TILE_SIZE_4BPP));
 }
 
 #define FRAMES_TO_WAIT 48

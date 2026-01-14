@@ -31,7 +31,7 @@ static bool32 IsPinchBerryItemEffect(u32 holdEffect);
 // ewram
 EWRAM_DATA const u8 *gAIScriptPtr = NULL;   // Still used in contests
 EWRAM_DATA u8 sBattler_AI = 0;
-EWRAM_DATA AiScoreFunc sDynamicAiFunc = NULL;
+EWRAM_DATA AIScoreFunc sDynamicAIFunc = NULL;
 
 // const rom data
 static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score);
@@ -47,7 +47,7 @@ static s32 AI_PowerfulStatus(u32 battlerAtk, u32 battlerDef, u32 move, s32 score
 static s32 AI_DynamicFunc(u32 battlerAtk, u32 battlerDef, u32 move, s32 score);
 
 
-static s32 (*const sBattleAiFuncTable[])(u32, u32, u32, s32) =
+static s32 (*const sBattleAIFuncTable[])(u32, u32, u32, s32) =
 {
     [0] = AI_CheckBadMove,           // AI_FLAG_CHECK_BAD_MOVE
     [1] = AI_TryToFaint,             // AI_FLAG_TRY_TO_FAINT
@@ -107,7 +107,7 @@ void BattleAI_SetupItems(void)
     }
 }
 
-static u32 GetWildAiFlags(void)
+static u32 GetWildAIFlags(void)
 {
     u32 avgLevel = GetMonData(&gEnemyParty[0], MON_DATA_LEVEL);
     u32 flags = 0;
@@ -129,7 +129,7 @@ static u32 GetWildAiFlags(void)
     return flags;
 }
 
-static u32 GetAiFlags(u16 trainerId)
+static u32 GetAIFlags(u16 trainerId)
 {
     u32 flags = 0;
 
@@ -137,7 +137,7 @@ static u32 GetAiFlags(u16 trainerId)
         return 0;
     if (trainerId == 0xFFFF)
     {
-        flags = GetWildAiFlags();
+        flags = GetWildAIFlags();
     }
     else
     {
@@ -153,7 +153,7 @@ static u32 GetAiFlags(u16 trainerId)
     if (flags & AI_FLAG_SMART_SWITCHING)
         flags |= AI_FLAG_SMART_MON_CHOICES;
 
-    if (sDynamicAiFunc != NULL)
+    if (sDynamicAIFunc != NULL)
         flags |= AI_FLAG_DYNAMIC_FUNC;
 
     return flags;
@@ -173,12 +173,12 @@ void BattleAI_SetupFlags(void)
     if (IsWildMonSmart() && !(EsContraEntrenador()))
     {
         // smart wild AI
-        AI_THINKING_STRUCT->aiFlags[B_POSITION_OPPONENT_LEFT] = GetAiFlags(0xFFFF);
-        AI_THINKING_STRUCT->aiFlags[B_POSITION_OPPONENT_RIGHT] = GetAiFlags(0xFFFF);
+        AI_THINKING_STRUCT->aiFlags[B_POSITION_OPPONENT_LEFT] = GetAIFlags(0xFFFF);
+        AI_THINKING_STRUCT->aiFlags[B_POSITION_OPPONENT_RIGHT] = GetAIFlags(0xFFFF);
     }
     else
     {
-        AI_THINKING_STRUCT->aiFlags[B_POSITION_OPPONENT_LEFT] = GetAiFlags(gTrainerBattleOpponent);
+        AI_THINKING_STRUCT->aiFlags[B_POSITION_OPPONENT_LEFT] = GetAIFlags(gTrainerBattleOpponent);
         AI_THINKING_STRUCT->aiFlags[B_POSITION_OPPONENT_RIGHT] = AI_THINKING_STRUCT->aiFlags[B_POSITION_OPPONENT_LEFT];
     }
 
@@ -239,7 +239,7 @@ u32 BattleAI_ChooseMoveOrAction(void)
 static void CopyBattlerDataToAIParty(u32 bPosition, u32 side)
 {
     u32 battler = GetBattlerAtPosition(bPosition);
-    struct AiPartyMon *aiMon = &AI_PARTY->mons[side][gBattlerPartyIndexes[battler]];
+    struct AIPartyMon *aiMon = &AI_PARTY->mons[side][gBattlerPartyIndexes[battler]];
     struct BattlePokemon *bMon = &gBattleMons[battler];
 
     aiMon->species = bMon->species;
@@ -288,7 +288,7 @@ void Ai_UpdateSwitchInData(u32 battler)
 {
     u32 i;
     u32 side = GetBattlerSide(battler);
-    struct AiPartyMon *aiMon = &AI_PARTY->mons[side][gBattlerPartyIndexes[battler]];
+    struct AIPartyMon *aiMon = &AI_PARTY->mons[side][gBattlerPartyIndexes[battler]];
 
     // See if the switched-in mon has been already in battle
     if (aiMon->wasSentInBattle)
@@ -316,14 +316,14 @@ void Ai_UpdateSwitchInData(u32 battler)
 
 void Ai_UpdateFaintData(u32 battler)
 {
-    struct AiPartyMon *aiMon = &AI_PARTY->mons[GetBattlerSide(battler)][gBattlerPartyIndexes[battler]];
+    struct AIPartyMon *aiMon = &AI_PARTY->mons[GetBattlerSide(battler)][gBattlerPartyIndexes[battler]];
     ClearBattlerMoveHistory(battler);
     ClearBattlerAbilityHistory(battler);
     ClearBattlerItemEffectHistory(battler);
     aiMon->isFainted = TRUE;
 }
 
-void SetBattlerAiData(u32 battler, struct AiLogicData *aiData)
+void SetBattlerAIData(u32 battler, struct AILogicData *aiData)
 {
     u32 ability, holdEffect;
 
@@ -337,7 +337,7 @@ void SetBattlerAiData(u32 battler, struct AiLogicData *aiData)
     aiData->speedStats[battler] = GetBattlerTotalSpeedStatArgs(battler, ability, holdEffect);
 }
 
-static u32 Ai_SetMoveAccuracy(struct AiLogicData *aiData, u32 battlerAtk, u32 battlerDef, u32 move)
+static u32 Ai_SetMoveAccuracy(struct AILogicData *aiData, u32 battlerAtk, u32 battlerDef, u32 move)
 {
     u32 accuracy;
     u32 abilityAtk = aiData->abilities[battlerAtk];
@@ -350,7 +350,7 @@ static u32 Ai_SetMoveAccuracy(struct AiLogicData *aiData, u32 battlerAtk, u32 ba
     return accuracy;
 }
 
-static void SetBattlerAiMovesData(struct AiLogicData *aiData, u32 battlerAtk, u32 battlersCount, u32 weather)
+static void SetBattlerAIMovesData(struct AILogicData *aiData, u32 battlerAtk, u32 battlersCount, u32 weather)
 {
     u16 *moves;
     u32 battlerDef, moveIndex, move;
@@ -389,11 +389,11 @@ static void SetBattlerAiMovesData(struct AiLogicData *aiData, u32 battlerAtk, u3
     RestoreBattlerData(battlerAtk);
 }
 
-void SetAiLogicDataForTurn(struct AiLogicData *aiData)
+void SetAILogicDataForTurn(struct AILogicData *aiData)
 {
     u32 battlerAtk, battlersCount, weather;
 
-    memset(aiData, 0, sizeof(struct AiLogicData));
+    memset(aiData, 0, sizeof(struct AILogicData));
     if (!(EsContraEntrenador()) && !IsWildMonSmart())
         return;
 
@@ -412,7 +412,7 @@ void SetAiLogicDataForTurn(struct AiLogicData *aiData)
         if (!IsBattlerAlive(battlerAtk))
             continue;
 
-        SetBattlerAiData(battlerAtk, aiData);
+        SetBattlerAIData(battlerAtk, aiData);
     }
 
     for (battlerAtk = 0; battlerAtk < battlersCount; battlerAtk++)
@@ -420,7 +420,7 @@ void SetAiLogicDataForTurn(struct AiLogicData *aiData)
         if (!IsBattlerAlive(battlerAtk))
             continue;
 
-        SetBattlerAiMovesData(aiData, battlerAtk, battlersCount, weather);
+        SetBattlerAIMovesData(aiData, battlerAtk, battlersCount, weather);
     }
     AI_DATA->aiCalcInProgress = FALSE;
 }
@@ -601,12 +601,12 @@ static inline void BattleAI_DoAIProcessing(struct AI_ThinkingStruct *aiThink, u3
           && aiThink->score[aiThink->movesetIndex] > 0
           && ShouldConsiderMoveForBattler(battlerAi, battlerDef, aiThink->moveConsidered))
         {
-            if (aiThink->aiLogicId < ARRAY_COUNT(sBattleAiFuncTable)
-              && sBattleAiFuncTable[aiThink->aiLogicId] != NULL)
+            if (aiThink->aiLogicId < ARRAY_COUNT(sBattleAIFuncTable)
+              && sBattleAIFuncTable[aiThink->aiLogicId] != NULL)
             {
                 // Call AI function
                 aiThink->score[aiThink->movesetIndex] =
-                    sBattleAiFuncTable[aiThink->aiLogicId](battlerAi,
+                    sBattleAIFuncTable[aiThink->aiLogicId](battlerAi,
                       battlerDef,
                       aiThink->moveConsidered,
                       aiThink->score[aiThink->movesetIndex]);
@@ -631,7 +631,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     u32 moveEffect = gMovesInfo[move].effect;
     s32 moveType;
     u32 moveTarget = GetBattlerMoveTargetType(battlerAtk, move);
-    struct AiLogicData *aiData = AI_DATA;
+    struct AILogicData *aiData = AI_DATA;
     u32 effectiveness = aiData->effectiveness[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex];
     bool32 isDoubleBattle = IsValidDoubleBattle(battlerAtk);
     u32 i;
@@ -663,7 +663,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     case AI_EFFECTIVENESS_x0_25:
         switch (moveEffect)
         {
-        case EFFECT_FIXED_DAMAGE_ARG:
         case EFFECT_LEVEL_DAMAGE:
         case EFFECT_PSYWAVE:
         case EFFECT_OHKO:
@@ -710,8 +709,8 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                     break;
                 }
                 break;
-            case ABILITY_WONDER_GUARD:
-                if (effectiveness < AI_EFFECTIVENESS_x2)
+            case ABILITY_GUARDA:
+                if (effectiveness == AI_EFFECTIVENESS_x1)
                     RETURN_SCORE_MINUS(20);
                 break;
             case ABILITY_JUSTIFIED:
@@ -1237,10 +1236,9 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             }
             break;
         case EFFECT_PRESENT:
-        case EFFECT_FIXED_DAMAGE_ARG:
         case EFFECT_FOCUS_PUNCH:
             // AI_CBM_HighRiskForDamage
-            if (aiData->abilities[battlerDef] == ABILITY_WONDER_GUARD && effectiveness < AI_EFFECTIVENESS_x2)
+            if (aiData->abilities[battlerDef] == ABILITY_GUARDA && effectiveness == AI_EFFECTIVENESS_x1)
                 ADJUST_SCORE(-10);
             break;
         case EFFECT_COUNTER:
@@ -1310,7 +1308,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                 ADJUST_SCORE(-10);
             break;
         case EFFECT_SUBSTITUTE:
-            if (gBattleMons[battlerAtk].status2 & STATUS2_SUBSTITUTE || aiData->abilities[battlerDef] == ABILITY_INFILTRATOR)
+            if (gBattleMons[battlerAtk].status2 & STATUS2_SUBSTITUTE || aiData->abilities[battlerDef] == ABILITY_SIGILOSO)
                 ADJUST_SCORE(-8);
             else if (aiData->hpPercents[battlerAtk] <= 25)
                 ADJUST_SCORE(-10);
@@ -1320,7 +1318,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         case EFFECT_SHED_TAIL:
             if (CountUsablePartyMons(battlerAtk) == 0)
                 ADJUST_SCORE(-10);
-            if (gBattleMons[battlerAtk].status2 & STATUS2_SUBSTITUTE || aiData->abilities[battlerDef] == ABILITY_INFILTRATOR)
+            if (gBattleMons[battlerAtk].status2 & STATUS2_SUBSTITUTE || aiData->abilities[battlerDef] == ABILITY_SIGILOSO)
                 ADJUST_SCORE(-8);
             else if (aiData->hpPercents[battlerAtk] <= 50)
                 ADJUST_SCORE(-10);
@@ -2439,7 +2437,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             if (battlerAtk != BATTLE_PARTNER(battlerDef)
              && (HasMoveWithCategory(battlerDef, CATEGORIA_FISICA)
               || aiData->abilities[battlerDef] == ABILITY_CLEAR_BODY
-              || aiData->abilities[battlerDef] == ABILITY_GOOD_AS_GOLD
+              || aiData->abilities[battlerDef] == ABILITY_EXUVIA
               || aiData->holdEffects[battlerDef] == HOLD_EFFECT_CLEAR_AMULET))
                 ADJUST_SCORE(-10);
             break;
@@ -2509,7 +2507,7 @@ static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     u32 moveTarget = GetBattlerMoveTargetType(battlerAtk, move);
     // ally data
     u32 battlerAtkPartner = BATTLE_PARTNER(battlerAtk);
-    struct AiLogicData *aiData = AI_DATA;
+    struct AILogicData *aiData = AI_DATA;
     u32 atkPartnerAbility = aiData->abilities[BATTLE_PARTNER(battlerAtk)];
     u32 atkPartnerHoldEffect = aiData->holdEffects[BATTLE_PARTNER(battlerAtk)];
     bool32 partnerProtecting = (gMovesInfo[aiData->partnerMove].effect == EFFECT_PROTECT);
@@ -2846,11 +2844,6 @@ static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                 }
                 break;
             case EFFECT_SOAK:
-                if (atkPartnerAbility == ABILITY_WONDER_GUARD
-                 && !IS_BATTLER_OF_TYPE(battlerAtkPartner, TIPO_AGUA))
-                {
-                    RETURN_SCORE_PLUS(WEAK_EFFECT);
-                }
                 break;
             case EFFECT_INSTRUCT:
                 {
@@ -3058,7 +3051,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
 {
     // move data
     u32 moveEffect = gMovesInfo[move].effect;
-    struct AiLogicData *aiData = AI_DATA;
+    struct AILogicData *aiData = AI_DATA;
     u32 movesetIndex = AI_THINKING_STRUCT->movesetIndex;
     u32 effectiveness = aiData->effectiveness[battlerAtk][battlerDef][movesetIndex];
 
@@ -3512,7 +3505,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
             }
             else if (isDoubleBattle && GetBattlerMoveTargetType(BATTLE_PARTNER(battlerAtk), aiData->partnerMove) & MOVE_TARGET_FOES_AND_ALLY)
             {
-                if (aiData->abilities[battlerAtk] != ABILITY_TELEPATHY)
+                if (aiData->abilities[battlerAtk] != ABILITY_TELEPATA)
                   ProtectChecks(battlerAtk, battlerDef, move, predictedMove, &score);
             }
             break;
@@ -3919,8 +3912,8 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
             if (IsStatBoostingBerry(item) && aiData->hpPercents[battlerAtk] > 60)
                 ADJUST_SCORE(WEAK_EFFECT);
             else if (ShouldRestoreHpBerry(battlerAtk, item) && !CanAIFaintTarget(battlerAtk, battlerDef, 0)
-              && ((GetWhichBattlerFasterOrTies(battlerAtk, battlerDef, TRUE) == 1 && CanTargetFaintAiWithMod(battlerDef, battlerAtk, 0, 0))
-               || !CanTargetFaintAiWithMod(battlerDef, battlerAtk, toHeal, 0)))
+              && ((GetWhichBattlerFasterOrTies(battlerAtk, battlerDef, TRUE) == 1 && CanTargetFaintAIWithMod(battlerDef, battlerAtk, 0, 0))
+               || !CanTargetFaintAIWithMod(battlerDef, battlerAtk, toHeal, 0)))
                 ADJUST_SCORE(WEAK_EFFECT);    // Recycle healing berry if we can't otherwise faint the target and the target wont kill us after we activate the berry
         }
         break;
@@ -4197,8 +4190,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
             ADJUST_SCORE(DECENT_EFFECT); // Get some super effective moves
         break;
     case EFFECT_THIRD_TYPE:
-        if (aiData->abilities[battlerDef] == ABILITY_WONDER_GUARD)
-            ADJUST_SCORE(DECENT_EFFECT); // Give target more weaknesses
         break;
     case EFFECT_ELECTRIFY:
         if (predictedMove != MOVE_NONE
@@ -4696,7 +4687,7 @@ static s32 AI_ForceSetupFirstTurn(u32 battlerAtk, u32 battlerDef, u32 move, s32 
 static s32 AI_Risky(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
 {
     u32 i;
-    struct AiLogicData *aiData = AI_DATA;
+    struct AILogicData *aiData = AI_DATA;
 
     if (IS_TARGETING_PARTNER(battlerAtk, battlerDef))
         return score;
@@ -5137,18 +5128,18 @@ s32 AI_TagBattlePreferFoe(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
 
 static s32 AI_DynamicFunc(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
 {
-    if (sDynamicAiFunc != NULL)
-        score = sDynamicAiFunc(battlerAtk, battlerDef, move, score);
+    if (sDynamicAIFunc != NULL)
+        score = sDynamicAIFunc(battlerAtk, battlerDef, move, score);
     return score;
 }
 
-void ScriptSetDynamicAiFunc(struct ScriptContext *ctx)
+void ScriptSetDynamicAIFunc(struct ScriptContext *ctx)
 {
-    AiScoreFunc func = (AiScoreFunc)ScriptReadWord(ctx);
-    sDynamicAiFunc = func;
+    AIScoreFunc func = (AIScoreFunc)ScriptReadWord(ctx);
+    sDynamicAIFunc = func;
 }
 
-void ResetDynamicAiFunc(void)
+void ResetDynamicAIFunc(void)
 {
-    sDynamicAiFunc = NULL;
+    sDynamicAIFunc = NULL;
 }

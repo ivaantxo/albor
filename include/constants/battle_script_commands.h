@@ -37,10 +37,7 @@
 #define TASK_ID                 1 // task Id and cursor position share the same field
 #define SPRITES_INIT_STATE1     1 // shares the Id as well
 #define ACTIONS_CONFIRMED_COUNT 4
-#define MISS_TYPE               6
 #define BATTLE_COMMUNICATION_ENTRIES_COUNT  8
-
-#define cMISS_TYPE           (gBattleCommunication + MISS_TYPE)
 
 enum ScriptsBatallaCombatientes
 {

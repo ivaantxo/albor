@@ -285,8 +285,8 @@ static const u8 sText_Status4[] = _("Status4");
 static const u8 sText_SideStatus[] = _("Side Status");
 static const u8 sText_AI[] = _("AI");
 static const u8 sText_AIMovePts[] = _("AI Pts/Dmg");
-static const u8 sText_AiKnowledge[] = _("AI Info");
-static const u8 sText_AiParty[] = _("AI Party");
+static const u8 sText_AIKnowledge[] = _("AI Info");
+static const u8 sText_AIParty[] = _("AI Party");
 static const u8 sText_Various[] = _("Various");
 static const u8 sText_Sleep[] = _("Sleep");
 static const u8 sText_Poison[] = _("Poison");
@@ -484,8 +484,8 @@ static const struct ListMenuItem sMainListItems[] =
     {sText_SideStatus, LIST_ITEM_SIDE_STATUS},
     {sText_AI, LIST_ITEM_AI},
     {sText_AIMovePts, LIST_ITEM_AI_MOVES_PTS},
-    {sText_AiKnowledge, LIST_ITEM_AI_INFO},
-    {sText_AiParty, LIST_ITEM_AI_PARTY},
+    {sText_AIKnowledge, LIST_ITEM_AI_INFO},
+    {sText_AIParty, LIST_ITEM_AI_PARTY},
     {sText_Various, LIST_ITEM_VARIOUS},
 };
 
@@ -783,7 +783,7 @@ static void UpdateMonData(struct BattleDebugMenu *data);
 static u8 *GetSideStatusValue(struct BattleDebugMenu *data, bool32 changeStatus, bool32 statusTrue);
 static bool32 TryMoveDigit(struct BattleDebugModifyArrows *modArrows, bool32 moveUp);
 static void SwitchToDebugView(u8 taskId);
-static void SwitchToDebugViewFromAiParty(u8 taskId);
+static void SwitchToDebugViewFromAIParty(u8 taskId);
 
 // code
 static struct BattleDebugMenu *GetStructPtr(u8 taskId)
@@ -920,7 +920,7 @@ static void PutMovesPointsText(struct BattleDebugMenu *data)
     Free(text);
 }
 
-static void CleanUpAiInfoWindow(u8 taskId)
+static void CleanUpAIInfoWindow(u8 taskId)
 {
     u32 i;
     struct BattleDebugMenu *data = GetStructPtr(taskId);
@@ -936,7 +936,7 @@ static void CleanUpAiInfoWindow(u8 taskId)
     RemoveWindow(data->aiMovesWindowId);
 }
 
-static void Task_ShowAiPoints(u8 taskId)
+static void Task_ShowAIPoints(u8 taskId)
 {
     u32 i, count;
     struct WindowTemplate winTemplate;
@@ -994,7 +994,7 @@ static void Task_ShowAiPoints(u8 taskId)
     case 2:
         if (JOY_NEW(R_BUTTON) && EsContraEntrenador())
         {
-            CleanUpAiInfoWindow(taskId);
+            CleanUpAIInfoWindow(taskId);
             do {
                 data->battlerId++;
                 data->battlerId %= gBattlersCount;
@@ -1003,7 +1003,7 @@ static void Task_ShowAiPoints(u8 taskId)
         }
         else if (JOY_NEW(L_BUTTON) && EsContraEntrenador())
         {
-            CleanUpAiInfoWindow(taskId);
+            CleanUpAIInfoWindow(taskId);
             do {
                 if (data->battlerId == 0)
                     data->battlerId = gBattlersCount - 1;
@@ -1023,30 +1023,30 @@ static void Task_ShowAiPoints(u8 taskId)
     }
 }
 
-static void SwitchToAiPointsView(u8 taskId)
+static void SwitchToAIPointsView(u8 taskId)
 {
-    gTasks[taskId].func = Task_ShowAiPoints;
+    gTasks[taskId].func = Task_ShowAIPoints;
     GetStructPtr(taskId)->aiViewState = 0;
 }
 
-static const u8 *const sAiInfoItemNames[] =
+static const u8 *const sAIInfoItemNames[] =
 {
     sText_Ability,
     sText_HeldItem,
     sText_HoldEffect,
 };
 
-static void PutAiInfoText(struct BattleDebugMenu *data)
+static void PutAIInfoText(struct BattleDebugMenu *data)
 {
     u32 i;
-    u8 *text = Alloc(0x50);
+    u8 *text = Alloc(80);
 
-    FillWindowPixelBuffer(data->aiMovesWindowId, 0x11);
+    FillWindowPixelBuffer(data->aiMovesWindowId, 17);
 
     // item names
-    for (i = 0; i < ARRAY_COUNT(sAiInfoItemNames); i++)
+    for (i = 0; i < ARRAY_COUNT(sAIInfoItemNames); i++)
     {
-        AddTextPrinterParameterized(data->aiMovesWindowId, FONT_NORMAL, sAiInfoItemNames[i], 3, i * 15, 0, NULL);
+        AddTextPrinterParameterized(data->aiMovesWindowId, FONT_NORMAL, sAIInfoItemNames[i], 3, i * 15, 0, NULL);
     }
 
     // items info
@@ -1054,10 +1054,10 @@ static void PutAiInfoText(struct BattleDebugMenu *data)
     {
         if (GetBattlerSide(i) == B_SIDE_PLAYER && IsBattlerAlive(i))
         {
-            u16 ability = AI_DATA->abilities[i];
-            u16 holdEffect = AI_DATA->holdEffects[i];
-            u16 item = AI_DATA->items[i];
-            u8 x = (i == B_POSITION_PLAYER_LEFT) ? 83 + (i) * 75 : 83 + (i-1) * 75;
+            u32 ability = AI_DATA->abilities[i];
+            u32 holdEffect = AI_DATA->holdEffects[i];
+            u32 item = AI_DATA->items[i];
+            u32 x = (i == B_POSITION_PLAYER_LEFT) ? 83 + (i) * 75 : 83 + (i - 1) * 75;
             AddTextPrinterParameterized(data->aiMovesWindowId, FONT_SMALL, gAbilitiesInfo[ability].name, x, 0, 0, NULL);
             AddTextPrinterParameterized(data->aiMovesWindowId, FONT_SMALL, ItemId_GetName(item), x, 15, 0, NULL);
             AddTextPrinterParameterized(data->aiMovesWindowId, FONT_SMALL, GetHoldEffectName(holdEffect), x, 30, 0, NULL);
@@ -1068,11 +1068,11 @@ static void PutAiInfoText(struct BattleDebugMenu *data)
     Free(text);
 }
 
-static void PutAiPartyText(struct BattleDebugMenu *data)
+static void PutAIPartyText(struct BattleDebugMenu *data)
 {
     u32 i, j, count;
     u8 *text = Alloc(0x50), *txtPtr;
-    struct AiPartyMon *aiMons = AI_PARTY->mons[GetBattlerSide(data->aiBattlerId)];
+    struct AIPartyMon *aiMons = AI_PARTY->mons[GetBattlerSide(data->aiBattlerId)];
 
     FillWindowPixelBuffer(data->aiMovesWindowId, 0x11);
     count = AI_PARTY->count[GetBattlerSide(data->aiBattlerId)];
@@ -1115,7 +1115,7 @@ static void PutAiPartyText(struct BattleDebugMenu *data)
     Free(text);
 }
 
-static void Task_ShowAiKnowledge(u8 taskId)
+static void Task_ShowAIKnowledge(u8 taskId)
 {
     u32 i, count;
     struct WindowTemplate winTemplate;
@@ -1164,7 +1164,7 @@ static void Task_ShowAiKnowledge(u8 taskId)
         winTemplate = CreateWindowTemplate(1, 0, 4, 27, 14, 15, 0x200);
         data->aiMovesWindowId = AddWindow(&winTemplate);
         PutWindowTilemap(data->aiMovesWindowId);
-        PutAiInfoText(data);
+        PutAIInfoText(data);
         data->aiViewState++;
         break;
     // Input
@@ -1182,11 +1182,11 @@ static void Task_ShowAiKnowledge(u8 taskId)
 
 #define sConditionSpriteId data[1]
 
-static void Task_ShowAiParty(u8 taskId)
+static void Task_ShowAIParty(u8 taskId)
 {
     u32 i, ailment;
     struct WindowTemplate winTemplate;
-    struct AiPartyMon *aiMons;
+    struct AIPartyMon *aiMons;
     struct BattleDebugMenu *data = GetStructPtr(taskId);
 
     switch (data->aiViewState)
@@ -1227,14 +1227,14 @@ static void Task_ShowAiParty(u8 taskId)
         winTemplate = CreateWindowTemplate(1, 0, 3, 29, 16, 15, 0x150);
         data->aiMovesWindowId = AddWindow(&winTemplate);
         PutWindowTilemap(data->aiMovesWindowId);
-        PutAiPartyText(data);
+        PutAIPartyText(data);
         data->aiViewState++;
         break;
     // Input
     case 2:
         if (JOY_NEW(SELECT_BUTTON | B_BUTTON))
         {
-            SwitchToDebugViewFromAiParty(taskId);
+            SwitchToDebugViewFromAIParty(taskId);
             HideBg(1);
             ShowBg(0);
             return;
@@ -1243,19 +1243,19 @@ static void Task_ShowAiParty(u8 taskId)
     }
 }
 
-static void SwitchToAiInfoView(u8 taskId)
+static void SwitchToAIInfoView(u8 taskId)
 {
-    gTasks[taskId].func = Task_ShowAiKnowledge;
+    gTasks[taskId].func = Task_ShowAIKnowledge;
     GetStructPtr(taskId)->aiViewState = 0;
 }
 
-static void SwitchToAiPartyView(u8 taskId)
+static void SwitchToAIPartyView(u8 taskId)
 {
-    gTasks[taskId].func = Task_ShowAiParty;
+    gTasks[taskId].func = Task_ShowAIParty;
     GetStructPtr(taskId)->aiViewState = 0;
 }
 
-static void SwitchToDebugViewFromAiParty(u8 taskId)
+static void SwitchToDebugViewFromAIParty(u8 taskId)
 {
     u32 i;
     struct BattleDebugMenu *data = GetStructPtr(taskId);
@@ -1279,7 +1279,7 @@ static void SwitchToDebugViewFromAiParty(u8 taskId)
 
 static void SwitchToDebugView(u8 taskId)
 {
-    CleanUpAiInfoWindow(taskId);
+    CleanUpAIInfoWindow(taskId);
     gTasks[taskId].func = Task_DebugMenuProcessInput;
 }
 
@@ -1324,17 +1324,17 @@ static void Task_DebugMenuProcessInput(u8 taskId)
         {
             if (listItemId == LIST_ITEM_AI_MOVES_PTS && JOY_NEW(A_BUTTON))
             {
-                SwitchToAiPointsView(taskId);
+                SwitchToAIPointsView(taskId);
                 return;
             }
             else if (listItemId == LIST_ITEM_AI_INFO && JOY_NEW(A_BUTTON))
             {
-                SwitchToAiInfoView(taskId);
+                SwitchToAIInfoView(taskId);
                 return;
             }
             else if (listItemId == LIST_ITEM_AI_PARTY && JOY_NEW(A_BUTTON))
             {
-                SwitchToAiPartyView(taskId);
+                SwitchToAIPartyView(taskId);
                 return;
             }
             data->currentMainListItemId = listItemId;

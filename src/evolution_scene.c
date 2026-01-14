@@ -365,45 +365,23 @@ static void CB2_EvolutionSceneUpdate(void)
     RunTasks();
 }
 
-static void CreateShedinja(u16 preEvoSpecies, struct Pokemon *mon)
+static void CreaShedinja(struct Pokemon *nincada)
 {
-    u32 data = 0;
-    u16 ball = ITEM_POKE_BALL;
-    const struct Evolution *evolutions = GetSpeciesEvolutions(preEvoSpecies);
-
-    if (evolutions == NULL)
+    if (gPlayerPartyCount >= PARTY_SIZE)
         return;
 
-    if (evolutions[0].method == EVO_NIVEL_NINJASK && gPlayerPartyCount < PARTY_SIZE && (P_SHEDINJA_BALL < GEN_4 || CheckBagHasItem(ball, 1)))
-    {
-        s32 i;
+    struct Pokemon *shedinja = &gPlayerParty[gPlayerPartyCount];
 
-        CopyMon(&gPlayerParty[gPlayerPartyCount], mon, sizeof(struct Pokemon));
-        SetMonData(&gPlayerParty[gPlayerPartyCount], MON_DATA_SPECIES, &evolutions[1].targetSpecies);
-        SetMonData(&gPlayerParty[gPlayerPartyCount], MON_DATA_NICKNAME, GetSpeciesName(evolutions[1].targetSpecies));
-        SetMonData(&gPlayerParty[gPlayerPartyCount], MON_DATA_HELD_ITEM, &data);
-        SetMonData(&gPlayerParty[gPlayerPartyCount], MON_DATA_MARKINGS, &data);
-        if (P_SHEDINJA_BALL >= GEN_4)
-        {
-            SetMonData(&gPlayerParty[gPlayerPartyCount], MON_DATA_POKEBALL, &ball);
-            RemoveBagItem(ball, 1);
-        }
+    CopyMon(shedinja, nincada, sizeof(struct Pokemon));
 
-        for (i = MON_DATA_COOL_RIBBON; i < MON_DATA_COOL_RIBBON + CONTEST_CATEGORIES_COUNT; i++)
-            SetMonData(&gPlayerParty[gPlayerPartyCount], i, &data);
-        for (i = MON_DATA_CHAMPION_RIBBON; i <= MON_DATA_WORLD_RIBBON; i++)
-            SetMonData(&gPlayerParty[gPlayerPartyCount], i, &data);
+    SetMonData(shedinja, MON_DATA_SPECIES, &SPECIES_SHEDINJA);
+    SetMonData(shedinja, MON_DATA_NICKNAME, GetSpeciesName(SPECIES_SHEDINJA));
 
-        SetMonData(&gPlayerParty[gPlayerPartyCount], MON_DATA_STATUS, &data);
-        data = MAIL_NONE;
-        SetMonData(&gPlayerParty[gPlayerPartyCount], MON_DATA_MAIL, &data);
+    CalculateMonStats(shedinja);
+    CalculatePlayerPartyCount();
 
-        CalculateMonStats(&gPlayerParty[gPlayerPartyCount]);
-        CalculatePlayerPartyCount();
-
-        GetSetPokedexFlag(SpeciesToNationalPokedexNum(evolutions[1].targetSpecies), FLAG_SET_SEEN);
-        GetSetPokedexFlag(SpeciesToNationalPokedexNum(evolutions[1].targetSpecies), FLAG_SET_CAUGHT);
-    }
+    GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_SHEDINJA), FLAG_SET_SEEN);
+    GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_SHEDINJA), FLAG_SET_CAUGHT);
 }
 
 // States for the main switch in Task_EvolutionScene
@@ -634,8 +612,8 @@ static void Task_EvolutionScene(u8 taskId)
                 StopMapMusic();
                 Overworld_PlaySpecialMapMusic();
             }
-            if (!gTasks[taskId].tEvoWasStopped)
-                CreateShedinja(gTasks[taskId].tPreEvoSpecies, mon);
+            if (!gTasks[taskId].tEvoWasStopped && gTasks[taskId].tPreEvoSpecies == SPECIES_NINCADA)
+                CreaShedinja(mon);
 
             DestroyTask(taskId);
             FreeMonSpritesGfx();

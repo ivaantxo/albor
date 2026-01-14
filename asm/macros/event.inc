@@ -1821,7 +1821,7 @@
 	.endm
 
 	.macro setdynamicaifunc func:req
-	callnative ScriptSetDynamicAiFunc
+	callnative ScriptSetDynamicAIFunc
 	.4byte \func
 	.endm
 

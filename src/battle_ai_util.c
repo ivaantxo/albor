@@ -67,7 +67,7 @@ bool32 BattlerHasAi(u32 battlerId)
     }
 }
 
-bool32 IsAiBattlerAware(u32 battlerId)
+bool32 IsAIBattlerAware(u32 battlerId)
 {
     if (AI_THINKING_STRUCT->aiFlags[B_POSITION_OPPONENT_LEFT] & AI_FLAG_OMNISCIENT
      || AI_THINKING_STRUCT->aiFlags[B_POSITION_OPPONENT_RIGHT] & AI_FLAG_OMNISCIENT)
@@ -113,10 +113,10 @@ void RecordAllMoves(u32 battler)
     memcpy(AI_PARTY->mons[GetBattlerSide(battler)][gBattlerPartyIndexes[battler]].moves, gBattleMons[battler].moves, MAX_MON_MOVES * sizeof(u16));
 }
 
-void RecordAbilityBattle(u32 battlerId, u32 abilityId)
+void RecuerdaHabilidadCombate(u32 combatiente, u32 habilidad)
 {
-    BATTLE_HISTORY->abilities[battlerId] = abilityId;
-    AI_PARTY->mons[GetBattlerSide(battlerId)][gBattlerPartyIndexes[battlerId]].ability = abilityId;
+    BATTLE_HISTORY->abilities[combatiente] = habilidad;
+    AI_PARTY->mons[GetBattlerSide(combatiente)][gBattlerPartyIndexes[combatiente]].ability = habilidad;
 }
 
 void ClearBattlerAbilityHistory(u32 battlerId)
@@ -348,7 +348,7 @@ bool32 MovesWithCategoryUnusable(u32 attacker, u32 target, u32 category)
 
 bool32 IsDamageMoveUnusable(u32 battlerAtk, u32 battlerDef, u32 move, u32 moveType)
 {
-    struct AiLogicData *aiData = AI_DATA;
+    struct AILogicData *aiData = AI_DATA;
     u32 battlerDefAbility;
     u32 partnerBattlerDefAbility;
 
@@ -423,7 +423,7 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
     u32 moveEffect = gMovesInfo[move].effect;
     uq4_12_t effectivenessMultiplier;
     bool32 isDamageMoveUnusable = FALSE;
-    struct AiLogicData *aiData = AI_DATA;
+    struct AILogicData *aiData = AI_DATA;
     AI_DATA->aiCalcInProgress = TRUE;
 
     if (moveEffect == EFFECT_NATURE_POWER)
@@ -539,9 +539,6 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
             break;
         case EFFECT_PSYWAVE:
             simulatedDmg = gBattleMons[battlerAtk].level * (aiData->abilities[battlerAtk] == ABILITY_PARENTAL_BOND ? 2 : 1);
-            break;
-        case EFFECT_FIXED_DAMAGE_ARG:
-            simulatedDmg = gMovesInfo[move].argument * (aiData->abilities[battlerAtk] == ABILITY_PARENTAL_BOND ? 2 : 1);
             break;
         case EFFECT_MULTI_HIT:
             if (move == MOVE_WATER_SHURIKEN && gBattleMons[battlerAtk].species == SPECIES_GRENINJA)
@@ -1134,7 +1131,7 @@ bool32 CanTargetMoveFaintAi(u32 move, u32 battlerDef, u32 battlerAtk, u32 nHits)
 }
 
 // Check if target has means to faint ai mon after modding hp/dmg
-bool32 CanTargetFaintAiWithMod(u32 battlerDef, u32 battlerAtk, s32 hpMod, s32 dmgMod)
+bool32 CanTargetFaintAIWithMod(u32 battlerDef, u32 battlerAtk, s32 hpMod, s32 dmgMod)
 {
     u32 i;
     u32 unusable = AI_DATA->moveLimitations[battlerDef];
@@ -1198,7 +1195,7 @@ s32 AI_DecideKnownAbilityForTurn(u32 battlerId)
         return gBattleStruct->overwrittenAbilities[battlerId];
 
     // The AI knows its own ability.
-    if (IsAiBattlerAware(battlerId))
+    if (IsAIBattlerAware(battlerId))
         return knownAbility;
 
     // Check neutralizing gas, gastro acid
@@ -1228,7 +1225,7 @@ u32 AI_DecideHoldEffectForTurn(u32 battlerId)
 {
     u32 holdEffect;
 
-    if (!IsAiBattlerAware(battlerId))
+    if (!IsAIBattlerAware(battlerId))
         holdEffect = AI_PARTY->mons[GetBattlerSide(battlerId)][gBattlerPartyIndexes[battlerId]].heldEffect;
     else
         holdEffect = GetBattlerHoldEffect(battlerId, FALSE);
@@ -1257,7 +1254,7 @@ bool32 DoesBattlerIgnoreAbilityChecks(u32 atkAbility, u32 move)
     return FALSE;
 }
 
-static inline bool32 AI_WeatherHasEffect(struct AiLogicData *aiData)
+static inline bool32 AI_WeatherHasEffect(struct AILogicData *aiData)
 {
     if (AI_THINKING_STRUCT->aiFlags[sBattler_AI] & AI_FLAG_NEGATE_UNAWARE)
         return TRUE;   // AI doesn't understand weather supression (handicap)
@@ -1265,7 +1262,7 @@ static inline bool32 AI_WeatherHasEffect(struct AiLogicData *aiData)
     return aiData->weatherHasEffect;  // weather damping abilities are announced
 }
 
-u32 AI_GetWeather(struct AiLogicData *aiData)
+u32 AI_GetWeather(struct AILogicData *aiData)
 {
     if (gBattleWeather == B_WEATHER_NONE)
         return B_WEATHER_NONE;
@@ -1805,7 +1802,7 @@ bool32 CanIndexMoveFaintTarget(u32 battlerAtk, u32 battlerDef, u32 index, u32 nu
 
 u16 *GetMovesArray(u32 battler)
 {
-    if (IsAiBattlerAware(battler) || IsAiBattlerAware(BATTLE_PARTNER(battler)))
+    if (IsAIBattlerAware(battler) || IsAIBattlerAware(BATTLE_PARTNER(battler)))
         return gBattleMons[battler].moves;
     else
         return gBattleResources->battleHistory->usedMoves[battler];
@@ -2640,7 +2637,7 @@ enum AIPivot ShouldPivot(u32 battlerAtk, u32 battlerDef, u32 defAbility, u32 mov
                 else
                     return CAN_TRY_PIVOT; // You're probably going to faint anyways so if for some reason you don't, better switch
             }
-            else if (CanTargetFaintAiWithMod(battlerDef, battlerAtk, 0, 2)) // Foe can 2HKO AI
+            else if (CanTargetFaintAIWithMod(battlerDef, battlerAtk, 0, 2)) // Foe can 2HKO AI
             {
                 if (CanAIFaintTarget(battlerAtk, battlerDef, 0))
                 {
@@ -3025,7 +3022,7 @@ bool32 ShouldAbsorb(u32 battlerAtk, u32 battlerDef, u32 move, s32 damage)
             healDmg = 0;
 
         if (CanTargetFaintAi(battlerDef, battlerAtk)
-          && !CanTargetFaintAiWithMod(battlerDef, battlerAtk, healDmg, 0))
+          && !CanTargetFaintAIWithMod(battlerDef, battlerAtk, healDmg, 0))
             return TRUE;    // target can faint attacker unless they heal
         else if (!CanTargetFaintAi(battlerDef, battlerAtk) && AI_DATA->hpPercents[battlerAtk] < 60 && (Random() % 3))
             return TRUE;    // target can't faint attacker at all, attacker health is about half, 2/3rds rate of encouraging healing
@@ -3051,7 +3048,7 @@ bool32 ShouldRecover(u32 battlerAtk, u32 battlerDef, u32 move, u32 healPercent)
             healAmount = 0;
 
         if (CanTargetFaintAi(battlerDef, battlerAtk)
-          && !CanTargetFaintAiWithMod(battlerDef, battlerAtk, healAmount, 0))
+          && !CanTargetFaintAIWithMod(battlerDef, battlerAtk, healAmount, 0))
             return TRUE;    // target can faint attacker unless they heal
         else if (!CanTargetFaintAi(battlerDef, battlerAtk) && AI_DATA->hpPercents[battlerAtk] < 60 && (Random() % 3))
             return TRUE;    // target can't faint attacker at all, attacker health is about half, 2/3rds rate of encouraging healing
@@ -3106,7 +3103,7 @@ u32 GetAllyChosenMove(u32 battlerId)
 {
     u32 partnerBattler = BATTLE_PARTNER(battlerId);
 
-    if (!IsBattlerAlive(partnerBattler) || !IsAiBattlerAware(partnerBattler))
+    if (!IsBattlerAlive(partnerBattler) || !IsAIBattlerAware(partnerBattler))
         return MOVE_NONE;
     else if (partnerBattler > battlerId) // Battler with the lower id chooses the move first.
         return gLastMoves[partnerBattler];
@@ -3304,14 +3301,14 @@ s32 AI_CalcPartyMonDamage(u32 move, u32 battlerAtk, u32 battlerDef, struct Battl
     {
         gBattleMons[battlerAtk] = switchinCandidate;
         AI_THINKING_STRUCT->saved[battlerDef].saved = TRUE;
-        SetBattlerAiData(battlerDef, AI_DATA); // set known opposing battler data
+        SetBattlerAIData(battlerDef, AI_DATA); // set known opposing battler data
         AI_THINKING_STRUCT->saved[battlerDef].saved = FALSE;
     }
     else
     {
         gBattleMons[battlerDef] = switchinCandidate;
         AI_THINKING_STRUCT->saved[battlerAtk].saved = TRUE;
-        SetBattlerAiData(battlerAtk, AI_DATA); // set known opposing battler data
+        SetBattlerAIData(battlerAtk, AI_DATA); // set known opposing battler data
         AI_THINKING_STRUCT->saved[battlerAtk].saved = FALSE;
     }
 
@@ -3320,9 +3317,9 @@ s32 AI_CalcPartyMonDamage(u32 move, u32 battlerAtk, u32 battlerDef, struct Battl
     FreeRestoreBattleMons(savedBattleMons);
 
     if (isPartyMonAttacker)
-        SetBattlerAiData(battlerAtk, AI_DATA);
+        SetBattlerAIData(battlerAtk, AI_DATA);
     else
-        SetBattlerAiData(battlerDef, AI_DATA);
+        SetBattlerAIData(battlerDef, AI_DATA);
 
     return simulatedDmg;
 }
@@ -3332,7 +3329,7 @@ u32 AI_WhoStrikesFirstPartyMon(u32 battlerAtk, u32 battlerDef, struct BattlePoke
     struct BattlePokemon *savedBattleMons = AllocSaveBattleMons();
     gBattleMons[battlerAtk] = switchinCandidate;
 
-    SetBattlerAiData(battlerAtk, AI_DATA);
+    SetBattlerAIData(battlerAtk, AI_DATA);
     u32 aiMonFaster = AI_IsFaster(battlerAtk, battlerDef, moveConsidered);
     FreeRestoreBattleMons(savedBattleMons);
 
@@ -3797,7 +3794,7 @@ bool32 AI_ShouldCopyStatChanges(u32 battlerAtk, u32 battlerDef)
 }
 
 //TODO - track entire opponent party data to determine hazard effectiveness
-bool32 AI_ShouldSetUpHazards(u32 battlerAtk, u32 battlerDef, struct AiLogicData *aiData)
+bool32 AI_ShouldSetUpHazards(u32 battlerAtk, u32 battlerDef, struct AILogicData *aiData)
 {
     if (aiData->abilities[battlerDef] == ABILITY_MAGIC_BOUNCE
      || CountUsablePartyMons(battlerDef) == 0
@@ -3826,7 +3823,7 @@ void IncreaseTidyUpScore(u32 battlerAtk, u32 battlerDef, u32 move, s32 *score)
         ADJUST_SCORE_PTR(-2);
 }
 
-bool32 AI_ShouldSpicyExtract(u32 battlerAtk, u32 battlerAtkPartner, u32 move, struct AiLogicData *aiData)
+bool32 AI_ShouldSpicyExtract(u32 battlerAtk, u32 battlerAtkPartner, u32 move, struct AILogicData *aiData)
 {
     u32 preventsStatLoss;
     u32 partnerAbility;
@@ -3839,7 +3836,7 @@ bool32 AI_ShouldSpicyExtract(u32 battlerAtk, u32 battlerAtkPartner, u32 move, st
 
     if (gBattleMons[battlerAtkPartner].statStages[ESTADISTICA_ATAQUE] == ESTADISTICA_MAS_6
      || partnerAbility == ABILITY_CONTRARY
-     || partnerAbility == ABILITY_GOOD_AS_GOLD
+     || partnerAbility == ABILITY_EXUVIA
      || HasMoveEffect(BATTLE_OPPOSITE(battlerAtk), EFFECT_FOUL_PLAY)
      || HasMoveEffect(BATTLE_OPPOSITE(battlerAtkPartner), EFFECT_FOUL_PLAY))
         return FALSE;

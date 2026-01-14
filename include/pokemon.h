@@ -435,7 +435,7 @@ extern const u16 gMultiplicadoresEstadisticas[NUMERO_CAMBIOS_ESTADISTICAS];
 extern const struct SpriteTemplate gBattlerSpriteTemplates[];
 extern const u32 sExpCandyExperienceTable[];
 extern const struct Ability gAbilitiesInfo[];
-extern const struct NatureInfo gNaturesInfo[];
+extern const struct NatureInfo gInfoNaturalezas[];
 
 void ZeroBoxMonData(struct BoxPokemon *boxMon);
 void ZeroMonData(struct Pokemon *mon);
@@ -516,7 +516,7 @@ u16 NationalPokedexNumToSpecies(u16 nationalNum);
 u16 SpeciesToNationalPokedexNum(u16 species);
 void EvolutionRenameMon(struct Pokemon *mon, u16 oldSpecies, u16 newSpecies);
 u8 GetTrainerEncounterMusicId(u16 trainerOpponentId);
-u16 ModifyStatByNature(u8 nature, u16 n, u8 statIndex);
+u32 ModificaEstadisticaPorNaturaleza(u32 naturaleza, u32 estadistica, u32 indiceEstadistica);
 void AdjustFriendship(struct Pokemon *mon, u8 event);
 void MonGainEVs(struct Pokemon *mon, u16 defeatedSpecies);
 u16 GetMonEVCount(struct Pokemon *mon);

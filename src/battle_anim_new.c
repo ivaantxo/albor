@@ -598,10 +598,10 @@ const struct SpriteTemplate gFrostBreathBlueRageTemplate =
     .tileTag = ANIM_TAG_FIRE_PLUME,
     .paletteTag = ANIM_TAG_ICE_CHUNK,
     .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gAnims_DragonRageFirePlume,
+    .anims = gAnims_FuriaDragonFirePlume,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimDragonRageFirePlume
+    .callback = AnimFuriaDragonFirePlume
 };
 
 const struct SpriteTemplate gFrostBreathBlueBreathTemplate =
@@ -609,9 +609,9 @@ const struct SpriteTemplate gFrostBreathBlueBreathTemplate =
     .tileTag = ANIM_TAG_SMALL_EMBER,
     .paletteTag = ANIM_TAG_ICE_CHUNK,
     .oam = &gOamData_AffineDouble_ObjNormal_32x32,
-    .anims = gAnims_DragonRageFire,
+    .anims = gAnims_FuriaDragonFire,
     .images = NULL,
-    .affineAnims = gAffineAnims_DragonRageFire,
+    .affineAnims = gAffineAnims_FuriaDragonFire,
     .callback = AnimDragonFireToTarget
 };
 
@@ -1608,10 +1608,10 @@ const struct SpriteTemplate gGeomancyYellowRageTemplate =
     .tileTag = ANIM_TAG_FIRE_PLUME,
     .paletteTag = ANIM_TAG_PAW_PRINT,
     .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gAnims_DragonRageFirePlume,
+    .anims = gAnims_FuriaDragonFirePlume,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimDragonRageFirePlume
+    .callback = AnimFuriaDragonFirePlume
 };
 
 const struct SpriteTemplate gGeomancyRedCellVortexTemplate =
@@ -2069,7 +2069,7 @@ const struct SpriteTemplate gPrecipiceBladesPlumeTemplate =
     .tileTag = ANIM_TAG_FIRE_PLUME,
     .paletteTag = ANIM_TAG_FIRE_PLUME,
     .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gAnims_DragonRageFirePlume,
+    .anims = gAnims_FuriaDragonFirePlume,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCB_AnimSpriteOnSelectedMonPos

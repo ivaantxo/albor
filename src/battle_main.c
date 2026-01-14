@@ -1816,7 +1816,7 @@ static void TryDoEventsBeforeFirstTurn(void)
 
         memset(gQueuedStatBoosts, 0, sizeof(gQueuedStatBoosts));
         SetShellSideArmCategory();
-        SetAiLogicDataForTurn(AI_DATA); // get assumed abilities, hold effects, etc of all battlers
+        SetAILogicDataForTurn(AI_DATA); // get assumed abilities, hold effects, etc of all battlers
 
         if ((i = ShouldDoTrainerSlide(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT), TRAINER_SLIDE_BEFORE_FIRST_TURN)))
             BattleScriptExecute(BattleScript_TrainerSlideMsgRet);
@@ -1907,7 +1907,7 @@ void BattleTurnPassed(void)
     *(&gBattleStruct->absentBattlerFlags) = gAbsentBattlerFlags;
     BattlePutTextOnWindow(gText_EmptyString, B_WIN_MSG);
     SetShellSideArmCategory();
-    SetAiLogicDataForTurn(AI_DATA); // get assumed abilities, hold effects, etc of all battlers
+    SetAILogicDataForTurn(AI_DATA); // get assumed abilities, hold effects, etc of all battlers
     gBattleMainFunc = HandleTurnActionSelectionState;
 
     if (gSideTimers[B_SIDE_PLAYER].retaliateTimer > 0)
@@ -2033,7 +2033,7 @@ static void HandleTurnActionSelectionState(void)
         {
         case STATE_TURN_START_RECORD: // Recorded battle related action on start of every turn.
             gBattleCommunication[battler] = STATE_BEFORE_ACTION_CHOSEN;
-            u32 isAiRisky = AI_THINKING_STRUCT->aiFlags[battler] & AI_FLAG_RISKY; // Risky AI switches aggressively even mid battle
+            u32 isAIRisky = AI_THINKING_STRUCT->aiFlags[battler] & AI_FLAG_RISKY; // Risky AI switches aggressively even mid battle
 
             // Do AI score computations here so we can use them in AI_TrySwitchOrUseItem
             if (EsContraEntrenador())
@@ -2045,7 +2045,7 @@ static void HandleTurnActionSelectionState(void)
                 BattleAI_SetupAIData(0xF, sBattler_AI);
 
                 // Setup switching data
-                AI_DATA->mostSuitableMonId[battler] = GetMostSuitableMonToSwitchInto(battler, isAiRisky);
+                AI_DATA->mostSuitableMonId[battler] = GetMostSuitableMonToSwitchInto(battler, isAIRisky);
                 if (ShouldSwitch(battler))
                     AI_DATA->shouldSwitch |= (1u << battler);
 
@@ -2459,7 +2459,7 @@ s8 GetMovePriority(u32 battler, u16 move)
     s8 priority;
     u16 ability = GetBattlerAbility(battler);
 
-    if (ability == ABILITY_GALE_WINGS && gMovesInfo[move].type == TIPO_VOLADOR)
+    if (ability == ABILITY_ALAS_VENDAVAL && gMovesInfo[move].type == TIPO_VOLADOR)
         priority++;
     else if (ability == ABILITY_TIERRA_SUELTA && gMovesInfo[move].type == TIPO_TIERRA)
         priority++;
@@ -2468,6 +2468,8 @@ s8 GetMovePriority(u32 battler, u16 move)
     else if (ability == ABILITY_SUPERORDENADOR && gMovesInfo[move].type == TIPO_PSIQUICO)
         priority++;
     else if (ability == ABILITY_ENVIO_EXPRESS  && gMovesInfo[move].type == TIPO_HADA)
+        priority++;
+    else if (ability == ABILITY_ZUMBANDO && gMovesInfo[move].type == TIPO_BICHO)
         priority++;
     else if (ability == ABILITY_BAILARIN && gMovesInfo[move].danceMove)
         priority++;
@@ -2871,7 +2873,7 @@ static void CheckChangingTurnOrderEffects(void)
                     gBattlerAbility = battler;
                     gLastUsedAbility = gBattleMons[battler].ability;
                     PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
-                    RecordAbilityBattle(battler, gLastUsedAbility);
+                    RecuerdaHabilidadCombate(battler, gLastUsedAbility);
                     BattleScriptExecute(BattleScript_QuickDrawActivation);
                 }
                 return;
@@ -3087,7 +3089,7 @@ static void FreeResetData_ReturnToOvOrDoEvolutions(void)
 
     FreeAllWindowBuffers();
     ZeroEnemyPartyMons();
-    ResetDynamicAiFunc();
+    ResetDynamicAIFunc();
     FreeMonSpritesGfx();
     FreeBattleResources();
     FreeBattleSpritesData();

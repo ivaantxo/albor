@@ -1742,21 +1742,21 @@ gBattleAnimMove_EarthPower::
 	delay 40
 	loopsewithpan 145, SOUND_PAN_TARGET 11, 3
 	createvisualtask AnimTask_ShakeMon, 5, 5, ANIM_TARGET, 0, 3, 25, 1
-	createsprite gDragonRageFirePlumeSpriteTemplate, 194, 3, 1, 5, 0
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, 194, 3, 1, 5, 0
 	delay 1
-	createsprite gDragonRageFirePlumeSpriteTemplate, 194, 3, 1, -10, -15
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, 194, 3, 1, -10, -15
 	delay 1
-	createsprite gDragonRageFirePlumeSpriteTemplate, 130, 3, 1, 0, 25
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, 130, 3, 1, 0, 25
 	delay 1
-	createsprite gDragonRageFirePlumeSpriteTemplate, 194, 3, 1, 15, 5
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, 194, 3, 1, 15, 5
 	delay 1
-	createsprite gDragonRageFirePlumeSpriteTemplate, 194, 3, 1, -25, 0
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, 194, 3, 1, -25, 0
 	delay 1
-	createsprite gDragonRageFirePlumeSpriteTemplate, 130, 3, 1, 30, 30
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, 130, 3, 1, 30, 30
 	delay 1
-	createsprite gDragonRageFirePlumeSpriteTemplate, 130, 3, 1, -27, 25
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, 130, 3, 1, -27, 25
 	delay 1
-	createsprite gDragonRageFirePlumeSpriteTemplate, 194, 3, 1, 0, 8
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, 194, 3, 1, 0, 8
 	waitforvisualfinish
 	createsprite gSlideMonToOriginalPosSpriteTemplate, 194, 3, 0, 0, 4
 	waitforvisualfinish
@@ -2427,38 +2427,38 @@ gBattleAnimMove_DracoMeteor::
 	call DracoMeteor2
 	playsewithpan SE_M_ROCK_THROW, SOUND_PAN_TARGET
 	createvisualtask AnimTask_ShakeMon, 5, ANIM_TARGET, 0, 7, 4, 2
-	createsprite gDragonRageFirePlumeSpriteTemplate, ANIM_ATTACKER, 2, ANIM_TARGET, 0x28, 0x20 @; For Meteor 1
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, ANIM_ATTACKER, 2, ANIM_TARGET, 0x28, 0x20 @; For Meteor 1
 	createvisualtask AnimTask_HorizontalShake, 5, 3, 5, 2, 0x1
 	delay 7
 	call DracoMeteor3
 	playsewithpan SE_M_ROCK_THROW, SOUND_PAN_TARGET
 	createvisualtask AnimTask_ShakeMon, 5, ANIM_TARGET, 0, 7, 4, 2
-	createsprite gDragonRageFirePlumeSpriteTemplate, ANIM_ATTACKER, 2, ANIM_TARGET, 0xFFF8, 0x20 @; For Meteor 2
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, ANIM_ATTACKER, 2, ANIM_TARGET, 0xFFF8, 0x20 @; For Meteor 2
 	delay 7
 	call DracoMeteor4
 	playsewithpan SE_M_ROCK_THROW, SOUND_PAN_TARGET
 	createvisualtask AnimTask_ShakeMon, 5, ANIM_TARGET, 0, 7, 4, 2
-	createsprite gDragonRageFirePlumeSpriteTemplate, ANIM_ATTACKER, 2, ANIM_TARGET, 0x15, 0x20  @; For Meteor 3
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, ANIM_ATTACKER, 2, ANIM_TARGET, 0x15, 0x20  @; For Meteor 3
 	delay 7
 	call DracoMeteor1
 	playsewithpan SE_M_ROCK_THROW, SOUND_PAN_TARGET
 	createvisualtask AnimTask_ShakeMon, 5, ANIM_TARGET, 0, 7, 4, 2
-	createsprite gDragonRageFirePlumeSpriteTemplate, ANIM_ATTACKER, 2, ANIM_TARGET, 0xFFF8, 0x20  @; For Meteor 4
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, ANIM_ATTACKER, 2, ANIM_TARGET, 0xFFF8, 0x20  @; For Meteor 4
 	createvisualtask AnimTask_HorizontalShake, 5, 3, 5, 2, 0x1
 	delay 7
 	call DracoMeteor2
 	playsewithpan SE_M_ROCK_THROW, SOUND_PAN_TARGET
 	createvisualtask AnimTask_ShakeMon, 5, ANIM_TARGET, 0, 7, 4, 2
-	createsprite gDragonRageFirePlumeSpriteTemplate, ANIM_ATTACKER, 2, ANIM_TARGET, 0x28, 0x20 @; For Meteor 1
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, ANIM_ATTACKER, 2, ANIM_TARGET, 0x28, 0x20 @; For Meteor 1
 	delay 7
 	call DracoMeteor3
 	playsewithpan SE_M_ROCK_THROW, SOUND_PAN_TARGET
 	createvisualtask AnimTask_ShakeMon, 5, ANIM_TARGET, 0, 7, 4, 2
-	createsprite gDragonRageFirePlumeSpriteTemplate, ANIM_ATTACKER, 2, ANIM_TARGET, 0x15, 0x20  @; For Meteor 3
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, ANIM_ATTACKER, 2, ANIM_TARGET, 0x15, 0x20  @; For Meteor 3
 	delay 15
 	playsewithpan SE_M_ROCK_THROW, SOUND_PAN_TARGET
 	createvisualtask AnimTask_ShakeMon, 5, ANIM_TARGET, 0, 7, 4, 2
-	createsprite gDragonRageFirePlumeSpriteTemplate, ANIM_ATTACKER, 2, ANIM_TARGET, 0x15, 0x20  @; For Meteor 3
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, ANIM_ATTACKER, 2, ANIM_TARGET, 0x15, 0x20  @; For Meteor 3
 	createvisualtask AnimTask_HorizontalShake, 5, ANIM_TARGET, 2, 1
 	delay 7
 	createvisualtask AnimTask_BlendBattleAnimPal, 10, F_PAL_BG, 1, 12, 0, 0x2C41
@@ -20522,7 +20522,7 @@ UnsetHighSpeedBg:
 	waitbgfadein
 	return
 
-gBattleAnimMove_MachPunch::
+gBattleAnimMove_UltraPunio::
 	loadspritegfx ANIM_TAG_IMPACT
 	loadspritegfx ANIM_TAG_HANDS_AND_FEET
 	monbg ANIM_ATK_PARTNER
@@ -22592,7 +22592,7 @@ MudSlapMud:
 	delay 2
 	return
 
-gBattleAnimMove_DragonRage::
+gBattleAnimMove_FuriaDragon::
 	loadspritegfx ANIM_TAG_SMALL_EMBER
 	loadspritegfx ANIM_TAG_FIRE_PLUME
 	playsewithpan SE_M_DRAGON_RAGE, SOUND_PAN_ATTACKER
@@ -22600,25 +22600,25 @@ gBattleAnimMove_DragonRage::
 	waitforvisualfinish
 	createsprite gSlideMonToOffsetSpriteTemplate, ANIM_TARGET, 2, 0, 15, 0, 0, 4
 	waitforvisualfinish
-	createsprite gDragonRageFireSpitSpriteTemplate, ANIM_TARGET, 2, 30, 15, 0, 10, 10
+	createsprite gFuriaDragonFireSpitSpriteTemplate, ANIM_TARGET, 2, 30, 15, 0, 10, 10
 	waitforvisualfinish
 	loopsewithpan SE_M_FLAME_WHEEL2, SOUND_PAN_TARGET, 11, 3
 	createvisualtask AnimTask_ShakeMon, 5, ANIM_TARGET, 0, 3, 25, 1
-	createsprite gDragonRageFirePlumeSpriteTemplate, ANIM_TARGET, 66, 1, 5, 0
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, ANIM_TARGET, 66, 1, 5, 0
 	delay 1
-	createsprite gDragonRageFirePlumeSpriteTemplate, ANIM_TARGET, 66, 1, -10, -15
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, ANIM_TARGET, 66, 1, -10, -15
 	delay 1
-	createsprite gDragonRageFirePlumeSpriteTemplate, ANIM_TARGET, 2, 1, 0, 25
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, ANIM_TARGET, 2, 1, 0, 25
 	delay 1
-	createsprite gDragonRageFirePlumeSpriteTemplate, ANIM_TARGET, 66, 1, 15, 5
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, ANIM_TARGET, 66, 1, 15, 5
 	delay 1
-	createsprite gDragonRageFirePlumeSpriteTemplate, ANIM_TARGET, 66, 1, -25, 0
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, ANIM_TARGET, 66, 1, -25, 0
 	delay 1
-	createsprite gDragonRageFirePlumeSpriteTemplate, ANIM_TARGET, 2, 1, 30, 30
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, ANIM_TARGET, 2, 1, 30, 30
 	delay 1
-	createsprite gDragonRageFirePlumeSpriteTemplate, ANIM_TARGET, 2, 1, -27, 25
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, ANIM_TARGET, 2, 1, -27, 25
 	delay 1
-	createsprite gDragonRageFirePlumeSpriteTemplate, ANIM_TARGET, 66, 1, 0, 8
+	createsprite gFuriaDragonFirePlumeSpriteTemplate, ANIM_TARGET, 66, 1, 0, 8
 	waitforvisualfinish
 	createsprite gSlideMonToOriginalPosSpriteTemplate, ANIM_TARGET, 66, 0, 0, 4
 	waitforvisualfinish

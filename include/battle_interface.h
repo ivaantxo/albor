@@ -94,7 +94,7 @@ void TryRestoreLastUsedBall(void);
 void TryAddLastUsedBallItemSprites(void);
 void SwapBallToDisplay(bool32 sameBall);
 void ArrowsChangeColorLastBallCycle(bool32 showArrows);
-void UpdateAbilityPopup(u8 battlerId);
+void ActualizaVentanaHabilidad(u32 combatiente);
 void MoveSelectionCreateCursorAt(u8 cursorPos);
 void MoveSelectionDestroyCursor(void);
 void CategoryIcons_LoadSpritesGfx(void);

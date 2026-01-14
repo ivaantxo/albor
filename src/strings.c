@@ -1128,7 +1128,6 @@ const u8 gDaycareText_GetAlongVeryWell[] = _("The two seem to get along\nvery we
 const u8 gDaycareText_GetAlong[] = _("The two seem to get along.");
 const u8 gDaycareText_DontLikeOther[] = _("The two don't seem to like\neach other much.");
 const u8 gDaycareText_PlayOther[] = _("The two prefer to play with other\nPOKéMON than each other.");
-const u8 gText_NewLine2[] = _("\n");
 const u8 gText_Lv[] = _("{LV}");
 const u8 gText_TimeBoard[] = _("TIME BOARD");
 const u8 gText_TimeCleared[] = _("TIME CLEARED ");

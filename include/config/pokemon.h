@@ -10,9 +10,6 @@
 #define P_MOTHER_EGG_MOVE_INHERITANCE   GEN_LATEST  // Since Gen 6, the mother can also pass down Egg Moves.
 #define P_EGG_MOVE_TRANSFER             GEN_8       // Starting in Gen 8, if two Pokémon of the same species are together in the Daycare, one knows an Egg Move, and the other has an empty slot, the other Pokémon will receive the Egg Move in the empty slot. In Gen 9, if a Pokémon holds a Mirror Herb, it will receive Egg Moves from the other regardless of species.
 
-// Species-specific settings
-#define P_SHEDINJA_BALL             GEN_LATEST  // Since Gen 4, Shedinja requires a Poké Ball for its evolution. In Gen 3, Shedinja inherits Nincada's Ball.
-
 // Other settings
 #define P_CAN_FORGET_HIDDEN_MOVE         FALSE       // If TRUE, Pokémon can forget any move, even if it is a Hidden Move.
 #define P_SHOW_DYNAMIC_TYPES             FALSE       // If TRUE, moves with dynamic type changes will be reflected as their current type in battle/summary screens.

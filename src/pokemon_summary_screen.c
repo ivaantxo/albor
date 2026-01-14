@@ -3104,7 +3104,7 @@ static void PrintMonTrainerMemo(void)
 static void BufferNatureString(void)
 {
     struct PokemonSummaryScreenData *sumStruct = sMonSummaryScreen;
-    DynamicPlaceholderTextUtil_SetPlaceholderPtr(2, gNaturesInfo[sumStruct->summary.nature].name);
+    DynamicPlaceholderTextUtil_SetPlaceholderPtr(2, gInfoNaturalezas[sumStruct->summary.nature].name);
     DynamicPlaceholderTextUtil_SetPlaceholderPtr(5, gText_EmptyString);
 }
 
@@ -3243,7 +3243,7 @@ static void BufferStat(u8 *dst, u8 statIndex, u32 stat, u32 strId, u32 n)
 
     if (statIndex == 0 || !SUMMARY_SCREEN_NATURE_COLORS)
         txtPtr = StringCopy(dst, sTextNatureNeutral);
-    else if (statIndex == gNaturesInfo[sMonSummaryScreen->summary.nature].statUp)
+    else if (statIndex == gInfoNaturalezas[sMonSummaryScreen->summary.nature].statUp)
         txtPtr = StringCopy(dst, sTextNatureUp);
     else
         txtPtr = StringCopy(dst, sTextNatureNeutral);

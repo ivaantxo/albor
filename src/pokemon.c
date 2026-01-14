@@ -73,7 +73,7 @@ EWRAM_DATA u16 gFollowerSteps = 0;
 #include "data/moves_info.h"
 #include "data/abilities.h"
 
-const struct NatureInfo gNaturesInfo[NUMERO_NATURALEZAS] =
+const struct NatureInfo gInfoNaturalezas[NUMERO_NATURALEZAS] =
 {
     [NATURALEZA_OFENSIVA] =
     {
@@ -503,12 +503,12 @@ void CreaPokemonConGeneroNaturaleza(struct Pokemon *mon, u32 species, u32 level,
     CreaPokemon(mon, species, level, fixedIV, TRUE, personality);
 }
 
-#define CALC_STAT(base, iv, ev, statIndex, field)               \
-{                                                               \
-    u8 baseStat = gSpeciesInfo[species].base;                   \
-    s32 n = (((2 * baseStat + iv + ev / 4) * level) / 100) + 5; \
-    n = ModifyStatByNature(naturaleza, n, statIndex);           \
-    SetMonData(mon, field, &n);                                 \
+#define CALCULA_ESTADISTICA(base, iv, ev, indiceEstadistica, field)                   \
+{                                                                           \
+    u32 baseStat = gSpeciesInfo[species].base;                              \
+    s32 n = (((2 * baseStat + iv + ev / 4) * level) / 100) + 5;             \
+    n = ModificaEstadisticaPorNaturaleza(naturaleza, n, indiceEstadistica); \
+    SetMonData(mon, field, &n);                                             \
 }
 
 void CalculateMonStats(struct Pokemon *mon)
@@ -534,13 +534,8 @@ void CalculateMonStats(struct Pokemon *mon)
 
     SetMonData(mon, MON_DATA_LEVEL, &level);
 
-    if (species == SPECIES_SHEDINJA)
-        newMaxHP = 1;
-    else
-    {
-        s32 n = 2 * gSpeciesInfo[species].baseHP + hpIV;
-        newMaxHP = (((n + hpEV / 4) * level) / 100) + level + 10;
-    }
+    s32 n = 2 * gSpeciesInfo[species].baseHP + hpIV;
+    newMaxHP = (((n + hpEV / 4) * level) / 100) + level + 10;
 
     gBattleScripting.levelUpHP = newMaxHP - oldMaxHP;
     if (gBattleScripting.levelUpHP == 0)
@@ -548,11 +543,11 @@ void CalculateMonStats(struct Pokemon *mon)
 
     SetMonData(mon, MON_DATA_MAX_HP, &newMaxHP);
 
-    CALC_STAT(baseAttack, attackIV, attackEV, ESTADISTICA_ATAQUE, MON_DATA_ATK)
-    CALC_STAT(baseDefense, defenseIV, defenseEV, ESTADISTICA_DEFENSA, MON_DATA_DEF)
-    CALC_STAT(baseSpeed, speedIV, speedEV, ESTADISTICA_VELOCIDAD, MON_DATA_SPEED)
-    CALC_STAT(baseSpAttack, spAttackIV, spAttackEV, ESTADISTICA_ATAQUE_ESPECIAL, MON_DATA_SPATK)
-    CALC_STAT(baseSpDefense, spDefenseIV, spDefenseEV, ESTADISTICA_DEFENSA_ESPECIAL, MON_DATA_SPDEF)
+    CALCULA_ESTADISTICA(baseAttack, attackIV, attackEV, ESTADISTICA_ATAQUE, MON_DATA_ATK)
+    CALCULA_ESTADISTICA(baseDefense, defenseIV, defenseEV, ESTADISTICA_DEFENSA, MON_DATA_DEF)
+    CALCULA_ESTADISTICA(baseSpeed, speedIV, speedEV, ESTADISTICA_VELOCIDAD, MON_DATA_SPEED)
+    CALCULA_ESTADISTICA(baseSpAttack, spAttackIV, spAttackEV, ESTADISTICA_ATAQUE_ESPECIAL, MON_DATA_SPATK)
+    CALCULA_ESTADISTICA(baseSpDefense, spDefenseIV, spDefenseEV, ESTADISTICA_DEFENSA_ESPECIAL, MON_DATA_SPDEF)
 
     // Since a pokemon's maxHP data could either not have
     // been initialized at this point or this pokemon is
@@ -2416,7 +2411,16 @@ u8 *UseStatIncreaseItem(u16 itemId)
 
 u32 ObtenNaturaleza(struct Pokemon *pokemon)
 {
-    return GetMonData(pokemon, MON_DATA_PERSONALITY, 0) % NUMERO_NATURALEZAS;
+    u32 personalidad = GetMonData(pokemon, MON_DATA_PERSONALITY);
+    u32 naturaleza = personalidad % NUMERO_NATURALEZAS;
+
+    if (GetMonData(pokemon, MON_DATA_SPECIES) == SPECIES_SHEDINJA)
+    {
+        if (naturaleza == NATURALEZA_OFENSIVA)
+            return NATURALEZA_OFENSIVA_ESPECIAL;
+    }
+
+    return naturaleza;
 }
 
 u32 ObtenNaturalezaDePersonalidad(u32 personalidad)
@@ -2604,12 +2608,12 @@ u8 GetTrainerEncounterMusicId(u16 trainerOpponentId)
     return gTrainers[SanitizeTrainerId(trainerOpponentId)].encounterMusic_gender & (F_TRAINER_FEMALE - 1);
 }
 
-u16 ModifyStatByNature(u8 nature, u16 stat, u8 statIndex)
+u32 ModificaEstadisticaPorNaturaleza(u32 naturaleza, u32 estadistica, u32 indiceEstadistica)
 {
-    if (statIndex == gNaturesInfo[nature].statUp)
-        return stat * 110 / 100;
+    if (indiceEstadistica == gInfoNaturalezas[naturaleza].statUp)
+        return estadistica * 110 / 100;
     else
-        return stat;
+        return estadistica;
 }
 
 void AdjustFriendship(struct Pokemon *mon, u8 event)

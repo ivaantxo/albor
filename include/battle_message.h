@@ -245,8 +245,6 @@ extern struct BattleMsgData *gBattleMsgDataPtr;
 extern const u8 *const gBattleStringsTable[];
 extern const u8 *const gStatNamesTable[];
 extern const u8 *const gPokeblockWasTooXStringTable[];
-extern const u8 *const gRefereeStringsTable[];
-extern const u8 *const gRoundsStringTable[];
 
 extern const u8 gText_PkmnIsEvolving[];
 extern const u8 gText_CongratsPkmnEvolved[];
@@ -269,39 +267,7 @@ extern const u8 gText_Love[];
 extern const u8 gText_SpaceAndSpace[];
 extern const u8 gText_CommaSpace[];
 extern const u8 gText_LineBreak[];
-extern const u8 gText_NewLine[];
-extern const u8 gText_Are[];
-extern const u8 gText_Are2[];
-extern const u8 gText_BattleWallyName[];
-extern const u8 gText_Win[];
-extern const u8 gText_Loss[];
-extern const u8 gText_Draw[];
-extern const u8 gText_StatSharply[];
-extern const u8 gText_StatRose[];
-extern const u8 sText_StatFell[];
-extern const u8 sText_drastically[];
-extern const u8 sText_severely[];
-extern const u8 gText_DefendersStatRose[];
-extern const u8 gText_PkmnGettingPumped[];
-extern const u8 gText_PkmnShroudedInMist[];
-extern const u8 gText_PkmnsXPreventsSwitching[];
-extern const u8 gText_TheGreatNewHope[];
-extern const u8 gText_WillChampionshipDreamComeTrue[];
-extern const u8 gText_AFormerChampion[];
-extern const u8 gText_ThePreviousChampion[];
-extern const u8 gText_TheUnbeatenChampion[];
-extern const u8 gText_PlayerMon1Name[];
-extern const u8 gText_Vs[];
-extern const u8 gText_OpponentMon1Name[];
-extern const u8 gText_Mind[];
-extern const u8 gText_Skill[];
-extern const u8 gText_Body[];
-extern const u8 gText_Judgment[];
-extern const u8 gText_RecordBattleToPass[];
-extern const u8 gText_BattleRecordedOnPass[];
-extern const u8 gText_BattleTourney[];
 
-extern const u16 gMissStringIds[];
 extern const u16 gStatUpStringIds[];
 
 #endif // GUARD_BATTLE_MESSAGE_H

@@ -923,7 +923,6 @@ extern const u8 gText_Time[];
 // daycare
 extern const u8 gText_MaleSymbol4[];
 extern const u8 gText_FemaleSymbol4[];
-extern const u8 gText_NewLine2[];
 extern const u8 gText_Lv[];
 extern const u8 gExpandedPlaceholder_Empty[];
 extern const u8 gDaycareText_GetAlongVeryWell[];

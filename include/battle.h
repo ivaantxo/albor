@@ -309,7 +309,7 @@ struct AI_SavedBattleMon
     u8 types[3];
 };
 
-struct AiPartyMon
+struct AIPartyMon
 {
     u16 species;
     u16 item;
@@ -326,7 +326,7 @@ struct AiPartyMon
 
 struct AIPartyData // Opposing battlers - party mons.
 {
-    struct AiPartyMon mons[NUM_BATTLE_SIDES][PARTY_SIZE]; // 2 parties(player, opponent). Used to save information on opposing party.
+    struct AIPartyMon mons[NUM_BATTLE_SIDES][PARTY_SIZE]; // 2 parties(player, opponent). Used to save information on opposing party.
     u8 count[NUM_BATTLE_SIDES];
 };
 
@@ -337,7 +337,7 @@ struct SwitchinCandidate
 };
 
 // Ai Data used when deciding which move to use, computed only once before each turn's start.
-struct AiLogicData
+struct AILogicData
 {
     u16 abilities[MAX_BATTLERS_COUNT];
     u16 items[MAX_BATTLERS_COUNT];
@@ -414,7 +414,7 @@ struct BattleResources
     struct BattleCallbacksStack* battleCallbackStack;
     struct StatsArray* beforeLvlUp;
     struct AI_ThinkingStruct *ai;
-    struct AiLogicData *aiData;
+    struct AILogicData *aiData;
     struct AIPartyData *aiParty;
     struct BattleHistory *battleHistory;
     u8 bufferA[MAX_BATTLERS_COUNT][0x200];
@@ -423,7 +423,7 @@ struct BattleResources
 };
 
 #define AI_THINKING_STRUCT ((struct AI_ThinkingStruct *)(gBattleResources->ai))
-#define AI_DATA ((struct AiLogicData *)(gBattleResources->aiData))
+#define AI_DATA ((struct AILogicData *)(gBattleResources->aiData))
 #define AI_PARTY ((struct AIPartyData *)(gBattleResources->aiParty))
 #define BATTLE_HISTORY ((struct BattleHistory *)(gBattleResources->battleHistory))
 

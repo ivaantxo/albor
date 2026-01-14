@@ -25,9 +25,9 @@
 static bool32 HasSuperEffectiveMoveAgainstOpponents(u32 battler, bool32 noRng);
 static bool32 FindMonWithFlagsAndSuperEffective(u32 battler, u16 flags, u32 moduloPercent);
 static bool32 ShouldUseItem(u32 battler);
-static bool32 AiExpectsToFaintPlayer(u32 battler);
+static bool32 AIExpectsToFaintPlayer(u32 battler);
 static bool32 AI_ShouldHeal(u32 battler, u32 healAmount);
-static bool32 AI_OpponentCanFaintAiWithMod(u32 battler, u32 healAmount);
+static bool32 AI_OpponentCanFaintAIWithMod(u32 battler, u32 healAmount);
 static u32 GetSwitchinHazardsDamage(u32 battler, struct BattlePokemon *battleMon);
 static bool32 CanAbilityTrapOpponent(u16 ability, u32 opponent);
 
@@ -255,61 +255,6 @@ static bool32 ShouldSwitchIfAllMovesBad(u32 battler)
     return SetSwitchinAndSwitch(battler, PARTY_SIZE);
 }
 
-static bool32 FindMonThatHitsWonderGuard(u32 battler)
-{
-    u32 opposingBattler = GetBattlerAtPosition(BATTLE_OPPOSITE(GetBattlerPosition(battler)));
-    s32 i, j;
-    s32 firstId;
-    s32 lastId; // + 1
-    struct Pokemon *party = NULL;
-    u16 move;
-
-    if (EsContraEntrenador())
-        return FALSE;
-
-    if (AI_DATA->abilities[opposingBattler] != ABILITY_WONDER_GUARD)
-        return FALSE;
-
-    // Check if Pokémon has a super effective move.
-    for (i = 0; i < MAX_MON_MOVES; i++)
-    {
-        move = gBattleMons[battler].moves[i];
-        if (move != MOVE_NONE)
-        {
-            if (AI_GetMoveEffectiveness(move, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
-                return FALSE;
-        }
-    }
-
-    // Get party information.
-    GetAIPartyIndexes(battler, &firstId, &lastId);
-    party = GetBattlerParty(battler);
-
-    // Find a Pokémon in the party that has a super effective move.
-    for (i = firstId; i < lastId; i++)
-    {
-        if (!IsValidForBattle(&party[i]))
-            continue;
-        if (i == gBattlerPartyIndexes[battler])
-            continue;
-        if (IsAceMon(battler, i))
-            continue;
-
-        for (j = 0; j < MAX_MON_MOVES; j++)
-        {
-            move = GetMonData(&party[i], MON_DATA_MOVE1 + j);
-            if (move != MOVE_NONE)
-            {
-                // Found a mon
-                if (AI_GetMoveEffectiveness(move, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
-                    return SetSwitchinAndSwitch(battler, i);
-            }
-        }
-    }
-
-    return FALSE; // There is not a single Pokémon in the party that has a super effective move against a mon with Wonder Guard.
-}
-
 static bool32 FindMonThatAbsorbsOpponentsMove(u32 battler)
 {
     u8 battlerIn1, battlerIn2;
@@ -498,7 +443,7 @@ static bool32 ShouldSwitchIfBadlyStatused(u32 battler)
 
             // Check if Active Pokemon can KO opponent instead of switching
             // Will still fall asleep, but take out opposing Pokemon first
-            if (AiExpectsToFaintPlayer(battler))
+            if (AIExpectsToFaintPlayer(battler))
                 switchMon = FALSE;
 
             // Checks to see if active Pokemon can do something against sleep
@@ -524,7 +469,7 @@ static bool32 ShouldSwitchIfBadlyStatused(u32 battler)
 
         // Secondary Damage
         if (monAbility != ABILITY_MAGIC_GUARD
-            && !AiExpectsToFaintPlayer(battler))
+            && !AIExpectsToFaintPlayer(battler))
         {
             //Toxic
             if (((gBattleMons[battler].status1 & STATUS1_TOXIC_COUNTER) >= STATUS1_TOXIC_TURN(2))
@@ -551,7 +496,7 @@ static bool32 ShouldSwitchIfBadlyStatused(u32 battler)
 
         // Infatuation
         if (gBattleMons[battler].status2 & STATUS2_INFATUATION
-            && !AiExpectsToFaintPlayer(battler))
+            && !AIExpectsToFaintPlayer(battler))
             switchMon = TRUE;
     }
 
@@ -973,8 +918,6 @@ bool32 ShouldSwitch(u32 battler)
     // Since the order is sequencial, and some of these functions prompt switch to specific party members.
 
     // These Functions can prompt switch to specific party members that override GetMostSuitableMonToSwitchInto
-    if (FindMonThatHitsWonderGuard(battler))
-        return TRUE;
     if (FindMonThatAbsorbsOpponentsMove(battler))
         return TRUE;
 
@@ -2050,7 +1993,7 @@ u32 GetMostSuitableMonToSwitchInto(u32 battler, bool32 switchAfterMonKOd)
     }
 }
 
-static bool32 AiExpectsToFaintPlayer(u32 battler)
+static bool32 AIExpectsToFaintPlayer(u32 battler)
 {
     u8 target = gBattleStruct->aiChosenTarget[battler];
 
@@ -2082,7 +2025,7 @@ static bool32 ShouldUseItem(u32 battler)
     if (gStatuses3[battler] & STATUS3_EMBARGO)
         return FALSE;
 
-    if (AiExpectsToFaintPlayer(battler))
+    if (AIExpectsToFaintPlayer(battler))
         return FALSE;
 
     party = GetBattlerParty(battler);
@@ -2134,14 +2077,14 @@ static bool32 ShouldUseItem(u32 battler)
         case EFFECT_ITEM_INCREASE_STAT:
         case EFFECT_ITEM_INCREASE_ALL_STATS:
             if (!gDisableStructs[battler].isFirstTurn
-                || AI_OpponentCanFaintAiWithMod(battler, 0))
+                || AI_OpponentCanFaintAIWithMod(battler, 0))
                 break;
             shouldUse = TRUE;
             break;
         case EFFECT_ITEM_SET_FOCUS_ENERGY:
             if (!gDisableStructs[battler].isFirstTurn
                 || gBattleMons[battler].status2 & STATUS2_FOCUS_ENERGY_ANY
-                || AI_OpponentCanFaintAiWithMod(battler, 0))
+                || AI_OpponentCanFaintAIWithMod(battler, 0))
                 break;
             shouldUse = TRUE;
             break;
@@ -2186,19 +2129,19 @@ static bool32 AI_ShouldHeal(u32 battler, u32 healAmount)
      || (healAmount != 0 && gBattleMons[battler].maxHP - gBattleMons[battler].hp > healAmount))
     {
         // We have low enough HP to consider healing
-        shouldHeal = !AI_OpponentCanFaintAiWithMod(battler, healAmount); // if target can kill us even after we heal, why bother
+        shouldHeal = !AI_OpponentCanFaintAIWithMod(battler, healAmount); // if target can kill us even after we heal, why bother
     }
 
     return shouldHeal;
 }
 
-static bool32 AI_OpponentCanFaintAiWithMod(u32 battler, u32 healAmount)
+static bool32 AI_OpponentCanFaintAIWithMod(u32 battler, u32 healAmount)
 {
     u32 i;
     // Check special cases to NOT heal
     for (i = 0; i < gBattlersCount; i++)
     {
-        if (GetBattlerSide(i) == B_SIDE_PLAYER && CanTargetFaintAiWithMod(i, battler, healAmount, 0))
+        if (GetBattlerSide(i) == B_SIDE_PLAYER && CanTargetFaintAIWithMod(i, battler, healAmount, 0))
         {
             // Target is expected to faint us
             return TRUE;

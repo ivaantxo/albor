@@ -67,7 +67,7 @@ Es un hackrom en castellano que está en desarrollo, que usa la pokeemerald-expa
     *Las posibilidades de encontrar un Pokémon shiny son de 1/4096.
     *Los EVs máximos son 504 en total, y 252 por stat.
     *Los ataques de pulsos/auras y balas se han unificado, por lo que las habilidades Megadisparador y Antibalas funcionan con todos.
-    *Se han cambiado muchas habilidades y se han añadido muchas otras. No hay habilidades inútiles en el juego, y todos los Pokémon tienen 3 habilidades (excepto Pokémon con habilidades intrínsecas, como Shedinja, Aegislash).
+    *Se han cambiado muchas habilidades y se han añadido muchas otras. No hay habilidades inútiles en el juego, y todos los Pokémon tienen 3 habilidades (excepto Pokémon con habilidades intrínsecas).
     *Forcejeo tiene STAB de tipo Normal.
     *Se ha cambiado cómo funciona el STAB: Pokémon con 1 solo tipo tienen 50% de STAB, mientras que Pokémon con 2 tipos tienen 25% de STAB con cada uno de sus tipos.
     *Clima soleado y lluvioso potencian un 25% los ataques de fuego y agua (aunque siguen reduciéndose 50% la potencia de sus contrapartes).

@@ -4237,17 +4237,6 @@ BattleScript_EffectBatonPass::
 	switchineffects BS_ATTACKER
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectFixedDamageArg::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	typecalc
-	bichalfword gMoveResultFlags, MOVE_RESULT_SUPER_EFFECTIVE | MOVE_RESULT_NOT_VERY_EFFECTIVE
-	setargtobattledamage
-	adjustdamage
-	goto BattleScript_HitFromAtkAnimation
-
 BattleScript_EffectMorningSun::
 BattleScript_EffectSynthesis::
 BattleScript_EffectMoonlight::
@@ -4565,7 +4554,7 @@ BattleScript_StockpileStatChangeDown_Ret:
 
 BattleScript_EffectSpitUp::
 	attackcanceler
-	jumpifbyte COMPARACION_IGUAL, cMISS_TYPE, B_MSG_PROTECTED, BattleScript_SpitUpFailProtect
+	jumpifword COMPARACION_IGUAL, gMensajeBatalla, TEXTO_BATALLA_PROTECCION, BattleScript_SpitUpFailProtect
 	attackstring
 	ppreduce
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
@@ -4687,7 +4676,7 @@ BattleScript_AlreadyBurned::
 
 BattleScript_EffectMemento::
 	attackcanceler
-	jumpifbyte COMPARACION_IGUAL, cMISS_TYPE, B_MSG_PROTECTED, BattleScript_MementoTargetProtect
+	jumpifword COMPARACION_IGUAL, gMensajeBatalla, TEXTO_BATALLA_PROTECCION, BattleScript_MementoTargetProtect
 	attackstring
 	ppreduce
 	trymemento BattleScript_ButItFailed

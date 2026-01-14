@@ -184,13 +184,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 6,
     },
 
-    [ABILITY_WONDER_GUARD] =
+    [ABILITY_GUARDA] =
     {
-        .name = _("Wonder Guard"),
-        .description = COMPOUND_STRING("“Supereffective” hits."),
-        .aiRating = 10,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
+        .name = _("Guarda"),
+        .description = COMPOUND_STRING("Resiste golpes neutros."),
+        .aiRating = 8,
         .breakable = TRUE,
     },
 
@@ -1040,10 +1038,10 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 5,
     },
 
-    [ABILITY_TELEPATHY] =
+    [ABILITY_TELEPATA] =
     {
-        .name = _("Telepathy"),
-        .description = COMPOUND_STRING("Can't be damaged by an ally."),
+        .name = _("Telépata"),
+        .description = COMPOUND_STRING("Evita daño de aliado."),
         .aiRating = 0,
         .breakable = TRUE,
     },
@@ -1126,10 +1124,10 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .cantBeTraced = TRUE,
     },
 
-    [ABILITY_INFILTRATOR] =
+    [ABILITY_SIGILOSO] =
     {
-        .name = _("Infiltrator"),
-        .description = COMPOUND_STRING("Passes through barriers."),
+        .name = _("Sigiloso"),
+        .description = COMPOUND_STRING("Golpea a través de barreras y ."),
         .aiRating = 6,
     },
 
@@ -1315,10 +1313,17 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .cantBeOverwritten = TRUE,
     },
 
-    [ABILITY_GALE_WINGS] =
+    [ABILITY_ALAS_VENDAVAL] =
     {
         .name = _("Alas vendaval"),
         .description = COMPOUND_STRING("Volador +1 prioridad."),
+        .aiRating = 6,
+    },
+
+    [ABILITY_ZUMBANDO] =
+    {
+        .name = _("Zumbando"),
+        .description = COMPOUND_STRING("Bicho +1 prioridad."),
         .aiRating = 6,
     },
 
@@ -1738,13 +1743,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 6,
     },
 
-    [ABILITY_NEUROFORCE] =
-    {
-        .name = _("Neuroforce"),
-        .description = COMPOUND_STRING("Ups “supereffective”."),
-        .aiRating = 6,
-    },
-
     [ABILITY_INTREPID_SWORD] =
     {
         .name = _("Intrepid Sword"),
@@ -2114,10 +2112,10 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .failsOnImposter = TRUE,
     },
 
-    [ABILITY_GOOD_AS_GOLD] =
+    [ABILITY_EXUVIA] =
     {
-        .name = _("Good as Gold"),
-        .description = COMPOUND_STRING("Avoids status problems."),
+        .name = _("Exuvia"),
+        .description = COMPOUND_STRING("Inmune a ataques de estado."),
         .aiRating = 8,
         .breakable = TRUE,
     },
