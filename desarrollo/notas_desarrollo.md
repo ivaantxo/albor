@@ -63,6 +63,7 @@
 - Revisar crianza/ia/creación de Shedinja.
 - Furia dragón y Bomba sónica ahora son Escaldar de sus tipos respectivos.
 - Chequear Sombra trampa que no la haya roto.
+- eliminar 0xF << 28
 
 -Lista de moves hechos:
 *Bomba huevo.
