@@ -174,9 +174,9 @@ static const struct DoorGraphics sDoorAnimGraphicsTable[] =
 static void CopyDoorTilesToVram(const struct DoorGraphics *gfx, const struct DoorAnimFrame *frame)
 {
     if (gfx->size == 2)
-        CopiaRapidaCpu(gfx->tiles + frame->offset, (void *)(VRAM + TILE_OFFSET_4BPP(DOOR_TILE_START_SIZE2)), 16 * TILE_SIZE_4BPP);
+        CopiaRapidaCpu(gfx->tiles + frame->offset, (void *)(VRAM + POSICION_TILE_4BPP(DOOR_TILE_START_SIZE2)), 16 * TILE_4BPP);
     else
-        CopiaRapidaCpu(gfx->tiles + frame->offset, (void *)(VRAM + TILE_OFFSET_4BPP(DOOR_TILE_START_SIZE1)), 8 * TILE_SIZE_4BPP);
+        CopiaRapidaCpu(gfx->tiles + frame->offset, (void *)(VRAM + POSICION_TILE_4BPP(DOOR_TILE_START_SIZE1)), 8 * TILE_4BPP);
 }
 
 static void BuildDoorTiles(u16 *tiles, u16 tileNum, const u8 *paletteNums)

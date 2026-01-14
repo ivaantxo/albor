@@ -145,9 +145,9 @@ void FillWindowTilesByRow(int windowId, int columnStart, int rowStart, int numFi
     int fillSize, windowRowSize, i;
     struct Window *window = &gWindows[windowId];
 
-    fillSize = numFillTiles * TILE_SIZE_4BPP;
-    windowRowSize = window->window.width * TILE_SIZE_4BPP;
-    windowTileData = window->tileData + (rowStart * windowRowSize) + (columnStart * TILE_SIZE_4BPP);
+    fillSize = numFillTiles * TILE_4BPP;
+    windowRowSize = window->window.width * TILE_4BPP;
+    windowTileData = window->tileData + (rowStart * windowRowSize) + (columnStart * TILE_4BPP);
     if (numRows > 0)
     {
         for (i = numRows; i != 0; i--)

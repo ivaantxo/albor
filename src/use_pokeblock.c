@@ -500,7 +500,7 @@ static void LoadUsePokeblockMenu(void)
         break;
     case 3:
         ResetBgsAndClearDma3BusyFlags();
-        InitBgsFromTemplates(0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
+        IniciaFondosDesdePlantillas(MODO_0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
         InitWindows(sWindowTemplates);
         DeactivateAllTextPrinters();
         LoadUserWindowBorderGfx(0, 0x97, BG_PLTT_ID(14));
@@ -1329,7 +1329,7 @@ static bool8 LoadUsePokeblockMenuGfx(void)
         LZ77UnCompVram(sMonFrame_Tilemap, sMonFrame_TilemapPtr);
         break;
     case 3:
-        LoadBgTiles(3, sMonFrame_Gfx, 224, 0);
+        CargaTilesFondo(3, sMonFrame_Gfx, 224, 0);
         break;
     case 4:
          LoadBgTilemap(3, sMonFrame_TilemapPtr, 1280, 0);
@@ -1346,7 +1346,7 @@ static bool8 LoadUsePokeblockMenuGfx(void)
         LoadPalette(gUsePokeblockGraph_Pal, BG_PLTT_ID(2), PLTT_SIZE_4BPP);
         break;
     case 8:
-        LoadBgTiles(1, sGraph_Gfx, 6656, 160 << 2);
+        CargaTilesFondo(1, sGraph_Gfx, 6656, 160 << 2);
         break;
     case 9:
         SetBgTilemapBuffer(1, sGraph_Tilemap);

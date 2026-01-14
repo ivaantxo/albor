@@ -464,7 +464,7 @@ static void CB2_LoadEggHatch(void)
 
         ResetTempTileDataBuffers();
         ResetBgsAndClearDma3BusyFlags();
-        InitBgsFromTemplates(0, sBgTemplates_EggHatch, ARRAY_COUNT(sBgTemplates_EggHatch));
+        IniciaFondosDesdePlantillas(MODO_0, sBgTemplates_EggHatch, ARRAY_COUNT(sBgTemplates_EggHatch));
 
         ChangeBgX(1, 0, BG_COORD_SET);
         ChangeBgY(1, 0, BG_COORD_SET);
@@ -519,7 +519,7 @@ static void CB2_LoadEggHatch(void)
     case 7:
         SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
         //LoadPalette(gTradeGba2_Pal, BG_PLTT_ID(1), 5 * PLTT_SIZE_4BPP);
-        //LoadBgTiles(1, gTradeGba_Gfx, 0x1420, 0);
+        //CargaTilesFondo(1, gTradeGba_Gfx, 0x1420, 0);
         //CopyToBgTilemapBuffer(1, gTradePlatform_Tilemap, 0x1000, 0);
         CopyBgTilemapBufferToVram(1);
         gMain.state++;

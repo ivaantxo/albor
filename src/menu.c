@@ -1608,7 +1608,7 @@ u16 CopyDecompressedTileDataToVram(u8 bgId, const void *src, u16 size, u16 offse
     switch (mode)
     {
         case 0:
-            return LoadBgTiles(bgId, src, size, offset);
+            return CargaTilesFondo(bgId, src, size, offset);
         case 1:
             return LoadBgTilemap(bgId, src, size, offset);
         default:

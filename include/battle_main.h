@@ -68,7 +68,7 @@ void BeginBattleIntro(void);
 void SwitchInClearSetData(u32 battler);
 const u8* FaintClearSetData(u32 battler);
 void BattleTurnPassed(void);
-u8 IsRunningFromBattleImpossible(u32 battler);
+u32 IntentaEscaparBatalla(u32 combatiente);
 void SwitchTwoBattlersInParty(u32 battler, u32 battler2);
 void SwitchPartyOrder(u32 battlerId);
 void SwapTurnOrder(u8 id1, u8 id2);

@@ -858,7 +858,7 @@ bool32 ShouldSwitch(u32 battler)
         return FALSE;
     if (gStatuses3[battler] & STATUS3_ROOTED)
         return FALSE;
-    if (IsAbilityPreventingEscape(battler))
+    if (HabilidadRivalImpideEscapar(battler) == TRUE)
         return FALSE;
 
     // Sequence Switching AI never switches mid-battle
@@ -1232,7 +1232,7 @@ static u32 GetSwitchinHazardsDamage(u32 battler, struct BattlePokemon *battleMon
             && ability != ABILITY_IMMUNITY && ability != ABILITY_POISON_HEAL && ability != ABILITY_COMATOSE
             && status == 0
             && !(hazardFlags & SIDE_STATUS_SAFEGUARD)
-            && !(IsAbilityOnSide(battler, ABILITY_PASTEL_VEIL))
+            && !(EstaHabilidadEnElLadoDeCombatiente(battler, ABILITY_PASTEL_VEIL))
             && !(IsBattlerTerrainAffected(battler, STATUS_FIELD_MISTY_TERRAIN))
             && !(IsAbilityStatusProtected(battler))
             && heldItemEffect != HOLD_EFFECT_CURE_PSN && heldItemEffect != HOLD_EFFECT_CURE_STATUS
@@ -1644,10 +1644,7 @@ static bool32 CanAbilityTrapOpponent(u16 ability, u32 opponent)
         return FALSE;
     else if (ability == ABILITY_SHADOW_TAG)
     {
-        if (B_SHADOW_TAG_ESCAPE >= GEN_4 && AI_DATA->abilities[opponent] == ABILITY_SHADOW_TAG) // Check if ability exists in species
-            return FALSE;
-        else
-            return TRUE;
+        return TRUE;
     }
     else if (ability == ABILITY_ARENA_TRAP && IsBattlerGrounded(opponent))
         return TRUE;

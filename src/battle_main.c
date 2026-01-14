@@ -197,7 +197,7 @@ EWRAM_DATA u16 gBattleMovePower = 0;
 EWRAM_DATA u16 gMoveToLearn = 0;
 EWRAM_DATA u32 gFieldStatuses = 0;
 EWRAM_DATA struct FieldTimer gFieldTimers = {0};
-EWRAM_DATA u8 gBattlerAbility = 0;
+EWRAM_DATA u32 gBattlerAbility = 0;
 EWRAM_DATA struct QueuedStatBoost gQueuedStatBoosts[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA u8 gLastUsedBall = 0;
 EWRAM_DATA u16 gLastThrownBall = 0;
@@ -1929,34 +1929,27 @@ void BattleTurnPassed(void)
         BattleScriptExecute(BattleScript_TrainerSlideMsgRet);
 }
 
-u8 IsRunningFromBattleImpossible(u32 battler)
+u32 IntentaEscaparBatalla(u32 combatiente)
 {
-    u32 holdEffect, i;
-
-    holdEffect = ItemId_GetHoldEffect(gBattleMons[battler].item);
-
-    gPotentialItemEffectBattler = battler;
+    u32 holdEffect = ItemId_GetHoldEffect(gBattleMons[combatiente].item);
+    gPotentialItemEffectBattler = combatiente;
 
     if (holdEffect == HOLD_EFFECT_CAN_ALWAYS_RUN)
         return BATTLE_RUN_SUCCESS;
-    if (B_GHOSTS_ESCAPE >= GEN_6 && IS_BATTLER_OF_TYPE(battler, TIPO_FANTASMA))
-        return BATTLE_RUN_SUCCESS;
-    if (GetBattlerAbility(battler) == ABILITY_HUIDIZO)
-        return BATTLE_RUN_SUCCESS;
 
-    if ((i = IsAbilityPreventingEscape(battler)))
+    if (HabilidadRivalImpideEscapar(combatiente) == TRUE)
     {
-        gBattleScripting.battler = i - 1;
-        gLastUsedAbility = gBattleMons[i - 1].ability;
+        gLastUsedAbility = gBattleMons[combatiente].ability;
         gMensajeBatalla = B_MSG_PREVENTS_ESCAPE;
         return BATTLE_RUN_FAILURE;
     }
 
-    if (!CanBattlerEscape(battler))
+    if (PuedeCombatienteEscapar(combatiente) == FALSE)
     {
         gMensajeBatalla = B_MSG_CANT_ESCAPE;
         return BATTLE_RUN_FORBIDDEN;
     }
+
     return BATTLE_RUN_SUCCESS;
 }
 
@@ -2145,9 +2138,9 @@ static void HandleTurnActionSelectionState(void)
                 case B_ACTION_SWITCH:
                     *(gBattleStruct->battlerPartyIndexes + battler) = gBattlerPartyIndexes[battler];
                     if (ItemId_GetHoldEffect(gBattleMons[battler].item) != HOLD_EFFECT_SHED_SHELL
-                      && (i = IsAbilityPreventingEscape(battler)))   // must be last to keep i value integrity
+                        && HabilidadRivalImpideEscapar(battler))
                     {
-                        BtlController_EmitChoosePokemon(battler, BUFFER_A, ((i - 1) << 4) | PARTY_ACTION_ABILITY_PREVENTS, PARTY_SIZE, gBattleMons[i - 1].ability, gBattleStruct->battlerPartyOrders[battler]);
+                        BtlController_EmitChoosePokemon(battler, BUFFER_A, PARTY_ACTION_ABILITY_PREVENTS, PARTY_SIZE, ABILITY_NONE, gBattleStruct->battlerPartyOrders[battler]); // Comprobar que no se haya roto.
                     }
                     else
                     {
@@ -2185,7 +2178,7 @@ static void HandleTurnActionSelectionState(void)
                     BattleScriptExecute(BattleScript_PrintCantRunFromTrainer);
                     gBattleCommunication[battler] = STATE_BEFORE_ACTION_CHOSEN;
                 }
-                else if ((IsRunningFromBattleImpossible(battler) != BATTLE_RUN_SUCCESS
+                else if ((IntentaEscaparBatalla(battler) != BATTLE_RUN_SUCCESS
                          && gBattleResources->bufferB[battler][1] == B_ACTION_RUN)
                          || (FlagGet(B_FLAG_NO_RUNNING) == TRUE && gBattleResources->bufferB[battler][1] == B_ACTION_RUN))
                 {

@@ -39,6 +39,13 @@ struct BgTemplate
     u16 baseTile:10;
 };
 
+enum ModosFondos
+{
+    MODO_0, // 4 fondos normales
+    MODO_1, // Fondos 0 y 1 normales, fondo 2 afín
+    MODO_2, // Fondos 2 y 3 afines
+};
+
 enum Fondos
 {
     FONDO_0,
@@ -73,14 +80,14 @@ enum DimensionesFondoAfin
 void ResetBgs(void);
 u32 GetBgMode(void);
 void ResetBgControlStructs(void);
-u32 LoadBgVram(u32 bg, const void *src, u32 size, u32 destOffset, u32 mode);
+u32 CargaFondoVram(u32 bg, const void *src, u32 size, u32 destOffset, enum ModosFondos modo);
 void SetTextModeAndHideBgs(void);
 bool32 IsInvalidBg(u32 bg);
 void ResetBgsAndClearDma3BusyFlags(void);
-void InitBgsFromTemplates(u32 bgMode, const struct BgTemplate *templates, u32 numTemplates);
+void IniciaFondosDesdePlantillas(enum ModosFondos modo, const struct BgTemplate *plantillas, u32 numeroPlantillas);
 void InitBgFromTemplate(const struct BgTemplate *template);
-void SetBgMode(u32 bgMode);
-u32 LoadBgTiles(u32 bg, const void *src, u32 size, u32 destOffset);
+void SetBgMode(enum ModosFondos modo);
+u32 CargaTilesFondo(u32 fondo, const void *ubicacionTiles, u32 tamanio, u32 posicionDestino);
 u32 LoadBgTilemap(u32 bg, const void *src, u32 size, u32 destOffset);
 bool32 IsDma3ManagerBusyWithBgCopy(void);
 void ShowBg(u32 bg);

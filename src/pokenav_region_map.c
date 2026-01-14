@@ -275,7 +275,7 @@ void FreeRegionMapSubstruct2(void)
     FreePokenavSubstruct(POKENAV_SUBSTRUCT_REGION_MAP);
     FreePokenavSubstruct(POKENAV_SUBSTRUCT_REGION_MAP_ZOOM);
     SetPokenavVBlankCallback();
-    SetBgMode(0);
+    SetBgMode(MODO_0);
 }
 
 static void VBlankCB_RegionMap(void)
@@ -312,7 +312,7 @@ static u32 LoopedTask_OpenRegionMap(s32 taskState)
         HideBg(1);
         HideBg(2);
         HideBg(3);
-        SetBgMode(1);
+        SetBgMode(MODO_1);
         InitBgTemplates(sRegionMapBgTemplates, ARRAY_COUNT(sRegionMapBgTemplates) - 1);
         regionMap = GetSubstructPtr(POKENAV_SUBSTRUCT_REGION_MAP);
         InitRegionMapData(regionMap, &sRegionMapBgTemplates[1], ShouldOpenRegionMapZoomed());

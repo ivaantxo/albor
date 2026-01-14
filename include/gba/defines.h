@@ -65,17 +65,15 @@
 #define ANCHO_PANTALLA  240
 #define ALTURA_PANTALLA 160
 
-#define TILES_ANCHO_PANTALLA     (ANCHO_PANTALLA / LADO_TILE)
-#define TILES_ALTURA_PANTALLA   (ALTURA_PANTALLA / LADO_TILE)
+#define TILES_ANCHO_PANTALLA        (ANCHO_PANTALLA / LADO_TILE)
+#define TILES_ALTURA_PANTALLA       (ALTURA_PANTALLA / LADO_TILE)
 
-// Size of different tile formats in bytes
-#define TILE_SIZE(bpp) ((bpp) * LADO_TILE * LADO_TILE / 8)
-#define TILE_SIZE_1BPP TILE_SIZE(1) // 8
-#define TILE_SIZE_4BPP TILE_SIZE(4) // 32
-#define TILE_SIZE_8BPP TILE_SIZE(8) // 64
+#define TILE(bpp) ((bpp) * LADO_TILE * LADO_TILE / 8)
+#define TILE_4BPP TILE(4) // 32
+#define TILE_8BPP TILE(8) // 64
 
-#define TILE_OFFSET_4BPP(n) ((n) * TILE_SIZE_4BPP)
-#define TILE_OFFSET_8BPP(n) ((n) * TILE_SIZE_8BPP)
+#define POSICION_TILE_4BPP(n) ((n) * TILE_4BPP)
+#define POSICION_TILE_8BPP(n) ((n) * TILE_8BPP)
 
 #define NUMERO_TILES_SPRITES 1024
 

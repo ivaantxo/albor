@@ -988,7 +988,7 @@ void DrawTextWindowAndBufferTiles(const u8 *string, void *dst, u8 zero1, u8 zero
     windowId = AddWindow(&winTemplate);
     FillWindowPixelBuffer(windowId, PIXEL_FILL(zero2));
     tileData1 = (u8 *) GetWindowAttribute(windowId, WINDOW_TILE_DATA);
-    tileData2 = (winTemplate.width * TILE_SIZE_4BPP) + tileData1;
+    tileData2 = (winTemplate.width * TILE_4BPP) + tileData1;
 
     if (!zero1)
         txtColor[0] = TEXT_COLOR_TRANSPARENT;
@@ -3192,7 +3192,7 @@ static void TintBackground(void)
 
 static void LoadPokeStorageMenuGfx(void)
 {
-    InitBgsFromTemplates(0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
+    IniciaFondosDesdePlantillas(MODO_0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
     DecompressAndLoadBgGfxUsingHeap(1, gStorageSystemMenu_Gfx, 0, 0, 0);
     LZ77UnCompWram(sDisplayMenu_Tilemap, sStorage->displayMenuTilemapBuffer);
     SetBgTilemapBuffer(1, sStorage->displayMenuTilemapBuffer);
@@ -3293,7 +3293,7 @@ static void CreateDisplayMonSprite(void)
 
         sStorage->displayMonSprite = &gSprites[spriteId];
         sStorage->displayMonPalOffset = OBJ_PLTT_ID(palSlot);
-        sStorage->displayMonTilePtr = (void *) OBJ_VRAM0 + tileStart * TILE_SIZE_4BPP;
+        sStorage->displayMonTilePtr = (void *) OBJ_VRAM0 + tileStart * TILE_4BPP;
     } while(0);
 
     if (sStorage->displayMonSprite == NULL)
@@ -4395,7 +4395,7 @@ static u16 TryLoadMonIconTiles(u16 species, u32 personality)
     sStorage->numIconsPerSpecies[i]++;
     offset = PLTT_ID(i);
     species &= GENDER_MASK;
-    CopiaRapidaCpu(ObtenGraficosIconoPokemon(species, personality), (void *)(OBJ_VRAM0) + offset * TILE_SIZE_4BPP, 512);
+    CopiaRapidaCpu(ObtenGraficosIconoPokemon(species, personality), (void *)(OBJ_VRAM0) + offset * TILE_4BPP, 512);
 
     return offset;
 }
@@ -6667,7 +6667,7 @@ static void CreateItemIconSprites(void)
         {
             spriteSheet.tag = GFXTAG_ITEM_ICON_0 + i;
             LoadCompressedSpriteSheet(&spriteSheet);
-            sStorage->itemIcons[i].tiles = GetSpriteTileStartByTag(spriteSheet.tag) * TILE_SIZE_4BPP + (void*)(OBJ_VRAM0);
+            sStorage->itemIcons[i].tiles = GetSpriteTileStartByTag(spriteSheet.tag) * TILE_4BPP + (void*)(OBJ_VRAM0);
             // No longer allocated; item icons use palettes 14 & 15 now
             spriteTemplate.tileTag = GFXTAG_ITEM_ICON_0 + i;
             spriteTemplate.paletteTag = PALTAG_ITEM_ICON_0 + i;
@@ -7123,7 +7123,7 @@ static void PrintItemDescription(void)
 static void InitItemInfoWindow(void)
 {
     sStorage->itemInfoWindowOffset = 21;
-    LoadBgTiles(0, sItemInfoFrame_Gfx, 128, 311);
+    CargaTilesFondo(0, sItemInfoFrame_Gfx, 128, 311);
     DrawItemInfoWindow(0);
 }
 

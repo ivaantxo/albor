@@ -779,7 +779,7 @@ void ClearBattleAnimBg(u32 bgId)
 
     GetBattleAnimBgData(&bgAnimData, bgId);
     CpuFill32(0, bgAnimData.bgTiles, 0x2000);
-    LoadBgTiles(bgAnimData.bgId, bgAnimData.bgTiles, 0x2000, bgAnimData.tilesOffset);
+    CargaTilesFondo(bgAnimData.bgId, bgAnimData.bgTiles, 0x2000, bgAnimData.tilesOffset);
     FillBgTilemapBufferRect(bgAnimData.bgId, 0, 0, 0, 32, 64, 17);
     CopyBgTilemapBufferToVram(bgAnimData.bgId);
 }
@@ -788,7 +788,7 @@ void AnimLoadCompressedBgGfx(u32 bgId, const u32 *src, u32 tilesOffset)
 {
     CpuFill32(0, gBattleAnimBgTileBuffer, 0x2000);
     LZDecompressWram(src, gBattleAnimBgTileBuffer);
-    LoadBgTiles(bgId, gBattleAnimBgTileBuffer, 0x2000, tilesOffset);
+    CargaTilesFondo(bgId, gBattleAnimBgTileBuffer, 0x2000, tilesOffset);
 }
 
 static void InitAnimBgTilemapBuffer(u32 bgId, const void *src)
@@ -1800,7 +1800,7 @@ u8 CreateAdditionalMonSpriteForMoveAnim(u16 species, bool8 isBackpic, u8 id, s16
                            FALSE);
     }
 
-    RequestDma3Copy(gMonSpritesGfxPtr->buffer, (void *)(OBJ_VRAM0 + (sheet * TILE_SIZE_4BPP)), MON_PIC_SIZE, DMA_REQUEST_COPY32);
+    RequestDma3Copy(gMonSpritesGfxPtr->buffer, (void *)(OBJ_VRAM0 + (sheet * TILE_4BPP)), MON_PIC_SIZE, DMA_REQUEST_COPY32);
     FREE_AND_SET_NULL(gMonSpritesGfxPtr->buffer);
 
     if (!isBackpic)

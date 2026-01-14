@@ -17,6 +17,7 @@ POKEDEXGFXDIR := graphics/pokedex
 STARTERGFXDIR := graphics/starter_choose
 NAMINGGFXDIR := graphics/naming_screen
 TITLESCREENGFXDIR := graphics/title_screen
+DIR_MAPAREGION := graphics/mapa_region
 
 types := none normal fight flying poison ground rock bug ghost steel mystery fire water grass electric psychic ice dragon dark fairy
 contest_types := cool beauty cute smart tough
@@ -178,6 +179,74 @@ $(FONTGFXDIR)/small_narrower.latfont: $(FONTGFXDIR)/latin_small_narrower.png
 $(FONTGFXDIR)/short_narrow.latfont: $(FONTGFXDIR)/latin_short_narrow.png
 	$(GFX) $< $@
 
+### Mapa de Región ###
+
+$(DIR_MAPAREGION)/%_base.gbapal: $(DIR_MAPAREGION)/%.png
+	$(FAMICONV) palette \
+		--mode gba_affine \
+		--palettes 1 \
+		--colors 48 \
+		--in-image $< \
+		--out-data $@
+
+$(DIR_MAPAREGION)/empty_112.gbapal:
+	dd if=/dev/zero of=$@ bs=1 count=224 status=none
+
+$(DIR_MAPAREGION)/%_padded.gbapal: \
+		$(DIR_MAPAREGION)/empty_112.gbapal \
+		$(DIR_MAPAREGION)/%_base.gbapal
+	cat $^ > $@
+
+$(DIR_MAPAREGION)/%_text.8bpp: \
+		$(DIR_MAPAREGION)/%_padded.gbapal \
+		$(DIR_MAPAREGION)/%.png
+	$(FAMICONV) tiles \
+		--mode gba \
+		--bpp 8 \
+		--in-image $(DIR_MAPAREGION)/$*.png \
+		--in-palette $(DIR_MAPAREGION)/$*_padded.gbapal \
+		--out-image $(DIR_MAPAREGION)/$*_text_tiles.png \
+		--out-data $@
+
+$(DIR_MAPAREGION)/%_affine.8bpp: \
+		$(DIR_MAPAREGION)/%_padded.gbapal \
+		$(DIR_MAPAREGION)/%.png
+	$(FAMICONV) tiles \
+		--mode gba_affine \
+		--in-image $(DIR_MAPAREGION)/$*.png \
+		--in-palette $(DIR_MAPAREGION)/$*_padded.gbapal \
+		--out-image $(DIR_MAPAREGION)/$*_affine_tiles.png \
+		--out-data $@
+
+$(DIR_MAPAREGION)/%_text.tilemap: \
+		$(DIR_MAPAREGION)/%_padded.gbapal \
+		$(DIR_MAPAREGION)/%_text.8bpp \
+		$(DIR_MAPAREGION)/%.png
+	$(FAMICONV) map \
+		--mode gba \
+		--bpp 8 \
+		--map-width 32 \
+		--map-height 32 \
+		--in-image $(DIR_MAPAREGION)/$*.png \
+		--in-palette $(DIR_MAPAREGION)/$*_padded.gbapal \
+		--in-tiles $(DIR_MAPAREGION)/$*_text.8bpp \
+		--out-data $@
+
+$(DIR_MAPAREGION)/%_affine.tilemap: \
+		$(DIR_MAPAREGION)/%_padded.gbapal \
+		$(DIR_MAPAREGION)/%_affine.8bpp \
+		$(DIR_MAPAREGION)/%.png
+	$(FAMICONV) map \
+		--mode gba_affine \
+		--map-width 64 \
+		--map-height 64 \
+		--split-width 64 \
+		--split-height 64 \
+		--in-image $(DIR_MAPAREGION)/$*.png \
+		--in-palette $(DIR_MAPAREGION)/$*_padded.gbapal \
+		--in-tiles $(DIR_MAPAREGION)/$*_affine.8bpp \
+		--out-data $@
+
 ### Miscellaneous ###
 
 $(TITLESCREENGFXDIR)/pokemon_logo.gbapal: %.gbapal: %.pal
@@ -185,9 +254,6 @@ $(TITLESCREENGFXDIR)/pokemon_logo.gbapal: %.gbapal: %.pal
 
 $(TITLESCREENGFXDIR)/emerald_version.8bpp: %.8bpp: %.png
 	$(GFX) $< $@ -mwidth 8 -mheight 4
-
-graphics/pokenav/region_map/map.8bpp: %.8bpp: %.png
-	$(GFX) $< $@ -num_tiles 233 -Wnum_tiles
 
 $(BTLANMSPRGFXDIR)/ice_cube.4bpp: $(BTLANMSPRGFXDIR)/ice_cube_0.4bpp \
                                   $(BTLANMSPRGFXDIR)/ice_cube_1.4bpp \
@@ -309,12 +375,6 @@ $(PKNAVGFXDIR)/device_outline.4bpp: %.4bpp: %.png
 
 $(PKNAVGFXDIR)/match_call/ui.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 13 -Wnum_tiles
-
-$(POKEDEXGFXDIR)/region_map.8bpp: %.8bpp: %.png
-	$(GFX) $< $@ -num_tiles 232 -Wnum_tiles
-
-$(POKEDEXGFXDIR)/region_map_affine.8bpp: %.8bpp: %.png
-	$(GFX) $< $@ -num_tiles 233 -Wnum_tiles
 
 $(NAMINGGFXDIR)/cursor.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 5 -Wnum_tiles
