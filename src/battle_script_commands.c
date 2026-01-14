@@ -13402,6 +13402,7 @@ static void Cmd_displaydexinfo(void)
     CMD_ARGS();
 
     u16 species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[GetCatchingBattler()]], MON_DATA_SPECIES, NULL);
+    u8 taskId;
 
     switch (gBattleCommunication[MULTIUSE_STATE])
     {
@@ -13414,16 +13415,14 @@ static void Cmd_displaydexinfo(void)
         {
             struct Pokemon *mon = &gEnemyParty[gBattlerPartyIndexes[GetCatchingBattler()]];
             FreeAllWindowBuffers();
-            gBattleCommunication[TASK_ID] = DisplayCaughtMonDexPage(species,
-                                                                    GetMonData(mon, MON_DATA_IS_SHINY),
-                                                                    GetMonData(mon, MON_DATA_PERSONALITY));
+            taskId = DisplayCaughtMonDexPage(species, GetMonData(mon, MON_DATA_IS_SHINY), GetMonData(mon, MON_DATA_PERSONALITY));
             gBattleCommunication[MULTIUSE_STATE]++;
         }
         break;
     case 2:
         if (!gFundidoPaletas.activo
             && gMain.callback2 == BattleMainCB2
-            && !gTasks[gBattleCommunication[TASK_ID]].isActive)
+            && !gTasks[taskId].isActive)
         {
             SetVBlankCallback(VBlankCB_Battle);
             gBattleCommunication[MULTIUSE_STATE]++;

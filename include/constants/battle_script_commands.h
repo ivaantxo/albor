@@ -34,7 +34,6 @@
 #define sSTICKY_WEB_STAT_DROP        (sBERRY_OVERRIDE + 1)              // stickyWebStatDrop (u8) -> 1 byte
 
 #define MULTIUSE_STATE          0
-#define TASK_ID                 1 // task Id and cursor position share the same field
 #define SPRITES_INIT_STATE1     1 // shares the Id as well
 #define ACTIONS_CONFIRMED_COUNT 4
 #define BATTLE_COMMUNICATION_ENTRIES_COUNT  8
