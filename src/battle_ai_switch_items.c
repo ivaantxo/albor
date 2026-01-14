@@ -1640,7 +1640,7 @@ static s32 GetMaxDamagePlayerCouldDealToSwitchin(u32 battler, u32 opposingBattle
 
 static bool32 CanAbilityTrapOpponent(u16 ability, u32 opponent)
 {
-    if ((B_GHOSTS_ESCAPE >= GEN_6 && IS_BATTLER_OF_TYPE(opponent, TIPO_FANTASMA)))
+    if ((B_GHOSTS_ESCAPE >= GEN_6 && ES_COMBATIENTE_DE_TIPO(opponent, TIPO_FANTASMA)))
         return FALSE;
     else if (ability == ABILITY_SHADOW_TAG)
     {
@@ -1648,9 +1648,9 @@ static bool32 CanAbilityTrapOpponent(u16 ability, u32 opponent)
     }
     else if (ability == ABILITY_ARENA_TRAP && IsBattlerGrounded(opponent))
         return TRUE;
-    else if (ability == ABILITY_MAGNET_PULL && IS_BATTLER_OF_TYPE(opponent, TIPO_ACERO))
+    else if (ability == ABILITY_MAGNET_PULL && ES_COMBATIENTE_DE_TIPO(opponent, TIPO_ACERO))
         return TRUE;
-    else if (ability == ABILITY_MATAMOSCAS && IS_BATTLER_OF_TYPE(opponent, TIPO_BICHO))
+    else if (ability == ABILITY_MATAMOSCAS && ES_COMBATIENTE_DE_TIPO(opponent, TIPO_BICHO))
         return TRUE;
     else
         return FALSE;

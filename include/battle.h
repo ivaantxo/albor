@@ -646,9 +646,7 @@ struct BattleStruct
 
 #define IS_MOVE_RECOIL(move) (gMovesInfo[move].recoil > 0 || gMovesInfo[move].effect == EFFECT_RECOIL_IF_MISS)
 
-#define IS_BATTLER_OF_TYPE(battlerId, type)((GetBattlerType(battlerId, 0) == type || GetBattlerType(battlerId, 1) == type || (GetBattlerType(battlerId, 2) != TIPO_MISTERIO && GetBattlerType(battlerId, 2) == type)))
-#define IS_BATTLER_OF_BASE_TYPE(battlerId, type)((GetBattlerType(battlerId, 0) == type || GetBattlerType(battlerId, 1) == type || (GetBattlerType(battlerId, 2) != TIPO_MISTERIO && GetBattlerType(battlerId, 2) == type)))
-#define IS_BATTLER_TYPELESS(battlerId)(GetBattlerType(battlerId, 0) == TIPO_MISTERIO && GetBattlerType(battlerId, 1) == TIPO_MISTERIO && GetBattlerType(battlerId, 2) == TIPO_MISTERIO)
+#define ES_COMBATIENTE_DE_TIPO(combatiente, tipo)((GetBattlerType(combatiente, 0) == tipo || GetBattlerType(combatiente, 1) == tipo))
 
 #define SET_BATTLER_TYPE(battlerId, type)              \
 {                                                      \
