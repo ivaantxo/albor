@@ -3782,7 +3782,7 @@ static u8 LoadMonGfxAndSprite(struct Pokemon *mon, s16 *state)
         if (gMain.inBattle)
         {
             HandleLoadSpecialPokePic(TRUE,
-                                     gMonSpritesGfxPtr->spritesGfx[B_POSITION_OPPONENT_LEFT],
+                                     gMonSpritesGfxPtr->spritesGfx[OPONENTE_IZQUIERDA],
                                      summary->species2,
                                      summary->pid);
         }
@@ -3791,7 +3791,7 @@ static u8 LoadMonGfxAndSprite(struct Pokemon *mon, s16 *state)
             if (gMonSpritesGfxPtr != NULL)
             {
                 HandleLoadSpecialPokePic(TRUE,
-                                         gMonSpritesGfxPtr->spritesGfx[B_POSITION_OPPONENT_LEFT],
+                                         gMonSpritesGfxPtr->spritesGfx[OPONENTE_IZQUIERDA],
                                          summary->species2,
                                          summary->pid);
             }
@@ -3809,14 +3809,14 @@ static u8 LoadMonGfxAndSprite(struct Pokemon *mon, s16 *state)
         if (!summary->isEgg)
         {
             LoadCompressedSpritePaletteWithTagHueShifted(GetMonSpritePalFromSpeciesAndPersonality(summary->species2, summary->isShiny, summary->pid), summary->species2, summary->pid);
-            SetMultiuseSpriteTemplateToPokemon(summary->species2, B_POSITION_OPPONENT_LEFT);
+            SetMultiuseSpriteTemplateToPokemon(summary->species2, OPONENTE_IZQUIERDA);
         }
         else
         {
             pal1 = &gEgg1PaletteTable[gSpeciesInfo[summary->species].types[0]];
             pal2 = &gEgg2PaletteTable[gSpeciesInfo[summary->species].types[1]];
             LoadCompressedEggSpritePalette(pal1, pal2);
-            SetMultiuseSpriteTemplateToPokemon(pal1->tag, B_POSITION_OPPONENT_LEFT);
+            SetMultiuseSpriteTemplateToPokemon(pal1->tag, OPONENTE_IZQUIERDA);
         }
         (*state)++;
         return 0xFF;

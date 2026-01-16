@@ -151,9 +151,9 @@ const u16 gMultiplicadoresEstadisticas[NUMERO_CAMBIOS_ESTADISTICAS] =
     [ESTADISTICA_MAS_6]     = 640   //  250%
 };
 
-const struct SpriteTemplate gBattlerSpriteTemplates[MAX_BATTLERS_COUNT] =
+const struct SpriteTemplate gBattlerSpriteTemplates[NUMERO_COMBATIENTES] =
 {
-    [B_POSITION_PLAYER_LEFT] = {
+    [JUGADOR_IZQUIERDA] = {
         .tileTag = TAG_NONE,
         .paletteTag = 0,
         .oam = &gOamData_BattleSpritePlayerSide,
@@ -162,7 +162,7 @@ const struct SpriteTemplate gBattlerSpriteTemplates[MAX_BATTLERS_COUNT] =
         .affineAnims = gAffineAnims_BattleSpritePlayerSide,
         .callback = SpriteCB_BattleSpriteStartSlideLeft,
     },
-    [B_POSITION_OPPONENT_LEFT] = {
+    [OPONENTE_IZQUIERDA] = {
         .tileTag = TAG_NONE,
         .paletteTag = 0,
         .oam = &gOamData_BattleSpriteOpponentSide,
@@ -171,7 +171,7 @@ const struct SpriteTemplate gBattlerSpriteTemplates[MAX_BATTLERS_COUNT] =
         .affineAnims = gAffineAnims_BattleSpriteOpponentSide,
         .callback = SpriteCB_WildMon,
     },
-    [B_POSITION_PLAYER_RIGHT] = {
+    [JUGADOR_DERECHA] = {
         .tileTag = TAG_NONE,
         .paletteTag = 0,
         .oam = &gOamData_BattleSpritePlayerSide,
@@ -180,7 +180,7 @@ const struct SpriteTemplate gBattlerSpriteTemplates[MAX_BATTLERS_COUNT] =
         .affineAnims = gAffineAnims_BattleSpritePlayerSide,
         .callback = SpriteCB_BattleSpriteStartSlideLeft,
     },
-    [B_POSITION_OPPONENT_RIGHT] = {
+    [OPONENTE_DERECHA] = {
         .tileTag = TAG_NONE,
         .paletteTag = 0,
         .oam = &gOamData_BattleSpriteOpponentSide,
@@ -815,14 +815,14 @@ u8 CountAliveMonsInBattle(u8 caseId, u32 battler)
     switch (caseId)
     {
     case BATTLE_ALIVE_EXCEPT_BATTLER:
-        for (i = 0; i < MAX_BATTLERS_COUNT; i++)
+        for (i = 0; i < NUMERO_COMBATIENTES; i++)
         {
             if (i != battler && !(gAbsentBattlerFlags & (1u << i)))
                 retVal++;
         }
         break;
     case BATTLE_ALIVE_SIDE:
-        for (i = 0; i < MAX_BATTLERS_COUNT; i++)
+        for (i = 0; i < NUMERO_COMBATIENTES; i++)
         {
             if (GetBattlerSide(i) == GetBattlerSide(battler) && !(gAbsentBattlerFlags & (1u << i)))
                 retVal++;
@@ -835,27 +835,27 @@ u8 CountAliveMonsInBattle(u8 caseId, u32 battler)
 
 u8 GetDefaultMoveTarget(u8 battlerId)
 {
-    u8 opposing = BATTLE_OPPOSITE(GetBattlerSide(battlerId));
+    u8 opposing = OPONENTE(GetBattlerSide(battlerId));
 
     if (!EsContraEntrenador())
-        return GetBattlerAtPosition(opposing);
+        return opposing;
     if (CountAliveMonsInBattle(BATTLE_ALIVE_EXCEPT_BATTLER, battlerId) > 1)
     {
         u8 position;
 
         if ((Random() & 1) == 0)
-            position = BATTLE_PARTNER(opposing);
+            position = ALIADO(opposing);
         else
             position = opposing;
 
-        return GetBattlerAtPosition(position);
+        return position;
     }
     else
     {
         if ((gAbsentBattlerFlags & (1u << opposing)))
-            return GetBattlerAtPosition(BATTLE_PARTNER(opposing));
+            return ALIADO(opposing);
         else
-            return GetBattlerAtPosition(opposing);
+            return opposing;
     }
 }
 
@@ -914,7 +914,7 @@ void SetMultiuseSpriteTemplateToPokemon(u16 speciesTag, u8 battlerPosition)
         gMultiuseSpriteTemplate = gBattlerSpriteTemplates[battlerPosition];
 
     gMultiuseSpriteTemplate.paletteTag = speciesTag;
-    if (battlerPosition == B_POSITION_PLAYER_LEFT || battlerPosition == B_POSITION_PLAYER_RIGHT)
+    if (battlerPosition == JUGADOR_IZQUIERDA || battlerPosition == JUGADOR_DERECHA)
         gMultiuseSpriteTemplate.anims = gAnims_MonPic;
     else
     {
@@ -932,7 +932,7 @@ void SetMultiuseSpriteTemplateToPokemon(u16 speciesTag, u8 battlerPosition)
 void SetMultiuseSpriteTemplateToTrainer(u16 trainerPicId, u8 battlerPosition)
 {
     gMultiuseSpriteTemplate.paletteTag = trainerPicId;
-    if (battlerPosition == B_POSITION_PLAYER_LEFT || battlerPosition == B_POSITION_PLAYER_RIGHT)
+    if (battlerPosition == JUGADOR_IZQUIERDA || battlerPosition == JUGADOR_DERECHA)
     {
         gMultiuseSpriteTemplate = sTrainerBackSpriteTemplates[trainerPicId];
         gMultiuseSpriteTemplate.anims = gTrainerBacksprites[trainerPicId].animation;
@@ -1101,9 +1101,6 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
             break;
         case MON_DATA_MET_LEVEL:
             retVal = boxMon->metLevel;
-            break;
-        case MON_DATA_MET_GAME:
-            retVal = 0;
             break;
         case MON_DATA_POKEBALL:
             retVal = boxMon->pokeball;
@@ -1366,8 +1363,6 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
             boxMon->metLevel = metLevel;
             break;
         }
-        case MON_DATA_MET_GAME:
-            break;
         case MON_DATA_POKEBALL:
         {
             u8 pokeball = *data;
@@ -1802,7 +1797,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
     u32 temp1, temp2;
     s8 friendshipChange = 0;
     u8 holdEffect;
-    u8 battlerId = MAX_BATTLERS_COUNT;
+    u8 battlerId = NUMERO_COMBATIENTES;
     u32 friendshipOnly = FALSE;
     u16 heldItem;
     u8 effectFlags;
@@ -2229,7 +2224,7 @@ bool8 HealStatusConditions(struct Pokemon *mon, u32 healMask, u8 battlerId)
     {
         status &= ~healMask;
         SetMonData(mon, MON_DATA_STATUS, &status);
-        if (gMain.inBattle && battlerId != MAX_BATTLERS_COUNT)
+        if (gMain.inBattle && battlerId != NUMERO_COMBATIENTES)
             gBattleMons[battlerId].status1 &= ~healMask;
         return FALSE;
     }
@@ -2960,7 +2955,6 @@ static const u16 sUniversalMoves[] =
     MOVE_RETURN,
     MOVE_SECRET_POWER,
     MOVE_SUBSTITUTE,
-    MOVE_TERA_BLAST,
 };
 
 u8 CanLearnTeachableMove(u16 species, u16 move)
@@ -3123,7 +3117,7 @@ u16 SpeciesToPokedexNum(u16 species)
 
 u16 GetBattleBGM(void)
 {
-    if (gBattleTypeFlags & TIPO_BATALLA_LEGENDARIO)
+    if (gBattleTypeFlags & COMBATE_LEGENDARIO)
     {
         switch (GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL))
         {
@@ -3352,7 +3346,7 @@ void SetMonPreventsSwitchingString(void)
     gBattleTextBuff1[2] = gBattleStruct->battlerPreventingSwitchout;
     gBattleTextBuff1[4] = B_BUFF_EOS;
 
-    if (GetBattlerSide(gBattleStruct->battlerPreventingSwitchout) == B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleStruct->battlerPreventingSwitchout) == LADO_JUGADOR)
         gBattleTextBuff1[3] = GetPartyIdFromBattlePartyId(gBattlerPartyIndexes[gBattleStruct->battlerPreventingSwitchout]);
     else
         gBattleTextBuff1[3] = gBattlerPartyIndexes[gBattleStruct->battlerPreventingSwitchout];
@@ -3378,7 +3372,7 @@ static inline bool32 CanFirstMonBoostHeldItemRarity(void)
 
 void SetWildMonHeldItem(void)
 {
-    if (!(gBattleTypeFlags & (TIPO_BATALLA_LEGENDARIO | TIPO_BATALLA_ENTRENADOR)))
+    if (!(gBattleTypeFlags & (COMBATE_LEGENDARIO | COMBATE_ENTRENADOR)))
     {
         u16 rnd;
         u16 species;
@@ -3588,31 +3582,31 @@ struct MonSpritesGfxManager *CreateMonSpritesGfxManager(void)
         return NULL;
 
     // Set up sprite / sprite pointer buffers
-    gfx->spriteBuffer = AllocZeroed(MON_PIC_SIZE * MAX_MON_PIC_FRAMES * MAX_BATTLERS_COUNT);
-    gfx->spritePointers = AllocZeroed(MAX_BATTLERS_COUNT * 32);
+    gfx->spriteBuffer = AllocZeroed(MON_PIC_SIZE * MAX_MON_PIC_FRAMES * NUMERO_COMBATIENTES);
+    gfx->spritePointers = AllocZeroed(NUMERO_COMBATIENTES * 32);
     if (gfx->spriteBuffer == NULL || gfx->spritePointers == NULL)
     {
         failureFlags |= ALLOC_FAIL_BUFFER;
     }
     else
     {
-        for (i = 0; i < MAX_BATTLERS_COUNT; i++)
+        for (i = 0; i < NUMERO_COMBATIENTES; i++)
             gfx->spritePointers[i] = gfx->spriteBuffer + (MON_PIC_SIZE * MAX_MON_PIC_FRAMES * i);
     }
 
     // Set up sprite structs
-    gfx->templates = AllocZeroed(sizeof(struct SpriteTemplate) * MAX_BATTLERS_COUNT);
-    gfx->frameImages = AllocZeroed(sizeof(struct SpriteFrameImage) * MAX_BATTLERS_COUNT * MAX_MON_PIC_FRAMES);
+    gfx->templates = AllocZeroed(sizeof(struct SpriteTemplate) * NUMERO_COMBATIENTES);
+    gfx->frameImages = AllocZeroed(sizeof(struct SpriteFrameImage) * NUMERO_COMBATIENTES * MAX_MON_PIC_FRAMES);
     if (gfx->templates == NULL || gfx->frameImages == NULL)
     {
         failureFlags |= ALLOC_FAIL_STRUCT;
     }
     else
     {
-        for (i = 0; i < MAX_MON_PIC_FRAMES * MAX_BATTLERS_COUNT; i++)
+        for (i = 0; i < MAX_MON_PIC_FRAMES * NUMERO_COMBATIENTES; i++)
             gfx->frameImages[i].size = MON_PIC_SIZE;
 
-        for (i = 0; i < MAX_BATTLERS_COUNT; i++)
+        for (i = 0; i < NUMERO_COMBATIENTES; i++)
         {
             gfx->templates[i] = gBattlerSpriteTemplates[i];
             for (j = 0; j < MAX_MON_PIC_FRAMES; j++)
@@ -3681,7 +3675,7 @@ u8 *MonSpritesGfxManager_GetSpritePtr(void)
     }
     else
     {
-        return gfx->spritePointers[B_POSITION_OPPONENT_LEFT];
+        return gfx->spritePointers[OPONENTE_IZQUIERDA];
     }
 }
 
@@ -3813,7 +3807,7 @@ bool32 SpeciesHasGenderDifferences(u16 species)
 
 bool32 TryFormChange(u32 monId, u32 side, u16 method)
 {
-    struct Pokemon *party = (side == B_SIDE_PLAYER) ? gPlayerParty : gEnemyParty;
+    struct Pokemon *party = (side == LADO_JUGADOR) ? gPlayerParty : gEnemyParty;
     u16 targetSpecies;
 
     if (GetMonData(&party[monId], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_NONE

@@ -800,7 +800,7 @@ const struct ContestPokemon gContestOpponents[] =
         .aiPool_Tough = FALSE,
         .moves =
         {
-            MOVE_BATON_PASS,
+            MOVE_RELEVO,
             MOVE_AGILITY,
             MOVE_SWIFT,
             MOVE_ATTRACT
@@ -1586,7 +1586,7 @@ const struct ContestPokemon gContestOpponents[] =
             MOVE_SCREECH,
             MOVE_FURY_SWIPES,
             MOVE_SAND_ATTACK,
-            MOVE_BATON_PASS
+            MOVE_RELEVO
         },
         .cool = 30,
         .beauty = 50,
@@ -2124,7 +2124,7 @@ const struct ContestPokemon gContestOpponents[] =
         .moves =
         {
             MOVE_ROAR,
-            MOVE_FLAMETHROWER,
+            MOVE_LANZALLAMAS,
             MOVE_FEINT_ATTACK,
             MOVE_SUNNY_DAY
         },

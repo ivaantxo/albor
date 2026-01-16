@@ -192,7 +192,7 @@ const struct SpriteTemplate gTailGlowOrbSpriteTemplate =
 
 static void AnimMegahornHorn(struct Sprite *sprite)
 {
-    if (GetBattlerSide(gBattleAnimTarget) == B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimTarget) == LADO_JUGADOR)
     {
         StartSpriteAffineAnim(sprite, 1);
         gBattleAnimArgs[1] = -gBattleAnimArgs[1];
@@ -214,7 +214,7 @@ static void AnimMegahornHorn(struct Sprite *sprite)
 
 static void AnimLeechLifeNeedle(struct Sprite *sprite)
 {
-    if (GetBattlerSide(gBattleAnimTarget) == B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimTarget) == LADO_JUGADOR)
     {
         gBattleAnimArgs[1] = -gBattleAnimArgs[1];
         gBattleAnimArgs[0] = -gBattleAnimArgs[0];
@@ -282,7 +282,7 @@ static void AnimStringWrap(struct Sprite *sprite)
         sprite->x += gBattleAnimArgs[0];
 
     sprite->y += gBattleAnimArgs[1];
-    if (GetBattlerSide(gBattleAnimTarget) == B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimTarget) == LADO_JUGADOR)
         sprite->y += 8;
 
     sprite->callback = AnimStringWrap_Step;
@@ -313,7 +313,7 @@ void AnimSpiderWeb(struct Sprite *sprite)
     if (gBattleAnimArgs[2])
         SetAverageBattlerPositions(gBattleAnimTarget, FALSE, &sprite->x, &sprite->y);
 
-    if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_OPPONENT)
+    if (GetBattlerSide(gBattleAnimAttacker) == LADO_OPONENTE)
         sprite->x -= gBattleAnimArgs[0];
     else
         sprite->x += gBattleAnimArgs[0];
@@ -370,8 +370,8 @@ void AnimTranslateStinger(struct Sprite *sprite)
 
     if (GetBattlerSide(gBattleAnimAttacker) == GetBattlerSide(gBattleAnimTarget))
     {
-        if (GetBattlerPosition(gBattleAnimTarget) == B_POSITION_PLAYER_LEFT
-         || GetBattlerPosition(gBattleAnimTarget) == B_POSITION_OPPONENT_LEFT)
+        if (gBattleAnimTarget == JUGADOR_IZQUIERDA
+         || gBattleAnimTarget == OPONENTE_IZQUIERDA)
         {
             gBattleAnimArgs[2] *= -1;
             gBattleAnimArgs[0] *= -1;

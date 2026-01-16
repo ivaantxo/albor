@@ -1380,22 +1380,6 @@ const u32 gBattleAnimBgImage_NeverendingNightmare[] = INCBIN_U32("graphics/battl
 const u32 gBattleAnimBgPalette_NeverendingNightmare[] = INCBIN_U32("graphics/battle_anims/backgrounds/neverending_nightmare.gbapal.lz");
 const u32 gBattleAnimBgTilemap_NeverendingNightmare[] = INCBIN_U32("graphics/battle_anims/backgrounds/neverending_nightmare.bin.lz");
 
-const u32 gBattleAnimBgImage_PsychicTerrain[] = INCBIN_U32("graphics/battle_anims/backgrounds/psychic_terrain.4bpp.lz");
-const u32 gBattleAnimBgPalette_PsychicTerrain[] = INCBIN_U32("graphics/battle_anims/backgrounds/psychic_terrain.gbapal.lz");
-const u32 gBattleAnimBgTilemap_PsychicTerrain[] = INCBIN_U32("graphics/battle_anims/backgrounds/psychic_terrain.bin.lz");
-
-const u32 gBattleAnimBgImage_ElectricTerrain[] = INCBIN_U32("graphics/battle_anims/backgrounds/electric_terrain.4bpp.lz");
-const u32 gBattleAnimBgPalette_ElectricTerrain[] = INCBIN_U32("graphics/battle_anims/backgrounds/electric_terrain.gbapal.lz");
-const u32 gBattleAnimBgTilemap_ElectricTerrain[] = INCBIN_U32("graphics/battle_anims/backgrounds/electric_terrain.bin.lz");
-
-const u32 gBattleAnimBgImage_GrassyTerrain[] = INCBIN_U32("graphics/battle_anims/backgrounds/grassy_terrain.4bpp.lz");
-const u32 gBattleAnimBgPalette_GrassyTerrain[] = INCBIN_U32("graphics/battle_anims/backgrounds/grassy_terrain.gbapal.lz");
-const u32 gBattleAnimBgTilemap_GrassyTerrain[] = INCBIN_U32("graphics/battle_anims/backgrounds/grassy_terrain.bin.lz");
-
-const u32 gBattleAnimBgImage_MistyTerrain[] = INCBIN_U32("graphics/battle_anims/backgrounds/misty_terrain.4bpp.lz");
-const u32 gBattleAnimBgPalette_MistyTerrain[] = INCBIN_U32("graphics/battle_anims/backgrounds/misty_terrain.gbapal.lz");
-const u32 gBattleAnimBgTilemap_MistyTerrain[] = INCBIN_U32("graphics/battle_anims/backgrounds/misty_terrain.bin.lz");
-
 const u32 gBattleAnimBgImage_Nightmare[] = INCBIN_U32("graphics/battle_anims/backgrounds/nightmare.4bpp.lz");
 const u32 gBattleAnimBgPalette_Nightmare[] = INCBIN_U32("graphics/battle_anims/backgrounds/nightmare.gbapal.lz");
 const u32 gBattleAnimBgTilemap_Nightmare[] = INCBIN_U32("graphics/battle_anims/backgrounds/nightmare.bin.lz");

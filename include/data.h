@@ -120,10 +120,6 @@ struct TypeInfo
     //u16 enhanceItem;
     //u16 berry;
     //u16 gem;
-    //u16 plate;
-    //u16 memory;
-    //u16 teraShard;
-    //u16 arceusForm;
 };
 
 // Egg palette tables

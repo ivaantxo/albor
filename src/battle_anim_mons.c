@@ -34,21 +34,21 @@ static void CreateBattlerTrace(struct Task *task, u8 taskId);
 EWRAM_DATA static union AffineAnimCmd *sAnimTaskAffineAnim = NULL;
 
 //Donde se definen las coordenadas base de los Pokémon
-const struct UCoords8 sBattlerCoords[NUMERO_DE_MODOS][MAX_BATTLERS_COUNT] =
+const struct UCoords8 sBattlerCoords[NUMERO_DE_MODOS][NUMERO_COMBATIENTES] =
 {
-    [MODO_INDIVIDUAL] =
+    [INDIVIDUAL] =
     {                                //x    y
-        [B_POSITION_PLAYER_LEFT]    = {72,  80},
-        [B_POSITION_OPPONENT_LEFT]  = {176, 40},
-        [B_POSITION_PLAYER_RIGHT]   = {48,  40},
-        [B_POSITION_OPPONENT_RIGHT] = {112, 80},
+        [JUGADOR_IZQUIERDA]    = {72,  80},
+        [OPONENTE(_IZQUIERDA]  = {176, 40},
+        [JUGADOR_DERECHA]   = {48,  40},
+        [OPONENTE(_DERECHA] = {112, 80},
     },
-    [MODO_DOBLES] =
+    [DOBLES] =
     {                                //x    y
-        [B_POSITION_PLAYER_LEFT]    = {32,  80},
-        [B_POSITION_OPPONENT_LEFT]  = {200, 40},
-        [B_POSITION_PLAYER_RIGHT]   = {90,  88},
-        [B_POSITION_OPPONENT_RIGHT] = {152, 32},
+        [JUGADOR_IZQUIERDA]    = {32,  80},
+        [OPONENTE(_IZQUIERDA]  = {200, 40},
+        [JUGADOR_DERECHA]   = {90,  88},
+        [OPONENTE(_DERECHA] = {152, 32},
     },
 };
 
@@ -95,10 +95,10 @@ u8 GetBattlerSpriteCoord(u8 battlerId, u8 coordType)
     {
     case BATTLER_COORD_X:
     case BATTLER_COORD_X_2:
-        retVal = sBattlerCoords[WhichBattleCoords(battlerId)][GetBattlerPosition(battlerId)].x;
+        retVal = sBattlerCoords[WhichBattleCoords(battlerId)][battlerId].x;
         break;
     case BATTLER_COORD_Y:
-        retVal = sBattlerCoords[WhichBattleCoords(battlerId)][GetBattlerPosition(battlerId)].y;
+        retVal = sBattlerCoords[WhichBattleCoords(battlerId)][battlerId].y;
         break;
     case BATTLER_COORD_Y_PIC_OFFSET:
     case BATTLER_COORD_Y_PIC_OFFSET_DEFAULT:
@@ -157,7 +157,7 @@ u8 GetBattlerSpriteFinal_Y(u8 battlerId, u16 species, bool8 a3)
         offset = GetBattlerYDelta(battlerId, species);
         offset -= GetBattlerElevation(battlerId, species);
     }
-    y = offset + sBattlerCoords[WhichBattleCoords(battlerId)][GetBattlerPosition(battlerId)].y;
+    y = offset + sBattlerCoords[WhichBattleCoords(battlerId)][battlerId].y;
     if (a3)
     {
         if (GetBattlerSide(battlerId) == B_SIDE_PLAYER)
@@ -272,7 +272,7 @@ u8 GetAnimBattlerSpriteId(u8 animBattler)
             return SPRITE_NONE;
         break;
     case ANIM_PLAYER_LEFT ... ANIM_OPPONENT_RIGHT:
-        partner = animBattler - MAX_BATTLERS_COUNT;
+        partner = animBattler - NUMERO_COMBATIENTES;
         if (IsBattlerSpriteVisible(partner))
             return gBattlerSpriteIds[partner];
         else
@@ -693,21 +693,9 @@ bool32 InitSpritePosToAnimBattler(u32 animBattlerId, struct Sprite *sprite, bool
     return TRUE;
 }
 
-u8 GetBattlerAtPosition(u8 position)
-{
-    u32 i;
-
-    for (i = 0; i < gBattlersCount; i++)
-    {
-        if (GetBattlerPosition(i) == position)
-            break;
-    }
-    return i;
-}
-
 bool8 IsBattlerSpritePresent(u8 battlerId)
 {
-    if (GetBattlerPosition(battlerId) == 0xff)
+    if (battlerId == 0xff)
         return FALSE;
 
     if (!gBattleStruct->spriteIgnore0Hp)
@@ -728,7 +716,6 @@ bool8 IsBattlerSpritePresent(u8 battlerId)
 
 #define BG_ANIM_PAL_1        8
 #define BG_ANIM_PAL_2        9
-#define BG_ANIM_PAL_CONTEST 14
 
 void GetBattleAnimBg1Data(struct BattleAnimBgData *out)
 {
@@ -1199,32 +1186,32 @@ u32 GetBattleMonSpritePalettesMask(u8 playerLeft, u8 playerRight, u8 opponentLef
 
     if (playerLeft)
     {
-        if (IsBattlerSpriteVisible(GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)))
+        if (IsBattlerSpriteVisible(JUGADOR_IZQUIERDA))
         {
-            selectedPalettes |= 1 << (GetBattlerAtPosition(B_POSITION_PLAYER_LEFT) + 16);
+            selectedPalettes |= 1 << (JUGADOR_IZQUIERDA + 16);
         }
     }
     if (playerRight)
     {
-        if (IsBattlerSpriteVisible(GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT)))
+        if (IsBattlerSpriteVisible(JUGADOR_DERECHA))
         {
-            shift = GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT) + 16;
+            shift = JUGADOR_DERECHA + 16;
             selectedPalettes |= 1 << shift;
         }
     }
     if (opponentLeft)
     {
-        if (IsBattlerSpriteVisible(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)))
+        if (IsBattlerSpriteVisible(OPONENTE(_IZQUIERDA))
         {
-            shift = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT) + 16;
+            shift = OPONENTE(_IZQUIERDA + 16;
             selectedPalettes |= 1 << shift;
         }
     }
     if (opponentRight)
     {
-        if (IsBattlerSpriteVisible(GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT)))
+        if (IsBattlerSpriteVisible(OPONENTE(_DERECHA))
         {
-            shift = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT) + 16;
+            shift = OPONENTE(_DERECHA + 16;
             selectedPalettes |= 1 << shift;
         }
     }
@@ -1629,7 +1616,7 @@ static u16 GetBattlerYDeltaFromSpriteId(u32 spriteId)
     u16 species;
     u32 i;
 
-    for (i = 0; i < MAX_BATTLERS_COUNT; i++)
+    for (i = 0; i < NUMERO_COMBATIENTES; i++)
     {
         if (gBattlerSpriteIds[i] == spriteId)
         {
@@ -1739,12 +1726,12 @@ u8 GetBattlerSpriteSubpriority(u8 battlerId)
     u8 position;
     u8 subpriority;
 
-    position = GetBattlerPosition(battlerId);
-    if (position == B_POSITION_PLAYER_LEFT)
+    position = battlerId;
+    if (position == JUGADOR_IZQUIERDA)
         subpriority = 30;
-    else if (position == B_POSITION_PLAYER_RIGHT)
+    else if (position == JUGADOR_DERECHA)
         subpriority = 20;
-    else if (position == B_POSITION_OPPONENT_LEFT)
+    else if (position == OPONENTE(_IZQUIERDA)
         subpriority = 40;
     else
         subpriority = 50;
@@ -1754,9 +1741,9 @@ u8 GetBattlerSpriteSubpriority(u8 battlerId)
 
 u8 GetBattlerSpriteBGPriority(u8 battlerId)
 {
-    u8 position = GetBattlerPosition(battlerId);
+    u8 position = battlerId;
 
-    if (position == B_POSITION_PLAYER_LEFT || position == B_POSITION_OPPONENT_RIGHT)
+    if (position == JUGADOR_IZQUIERDA || position == OPONENTE(_DERECHA)
         return GetAnimBgAttribute(2, BG_ANIM_PRIORITY);
     else
         return GetAnimBgAttribute(1, BG_ANIM_PRIORITY);
@@ -1764,8 +1751,8 @@ u8 GetBattlerSpriteBGPriority(u8 battlerId)
 
 u8 GetBattlerSpriteBGPriorityRank(u8 battlerId)
 {
-    u8 position = GetBattlerPosition(battlerId);
-    if (position == B_POSITION_PLAYER_LEFT || position == B_POSITION_OPPONENT_RIGHT)
+    u8 position = battlerId;
+    if (position == JUGADOR_IZQUIERDA || position == OPONENTE(_DERECHA)
         return 2;
     else
         return 1;

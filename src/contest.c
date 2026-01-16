@@ -911,27 +911,6 @@ static const struct CompressedSpriteSheet sSpriteSheets_ContestantsTurnBlinkEffe
     }
 };
 
-// Yup this is super dangerous but that's how it is here
-static const struct SpritePalette sSpritePalettes_ContestantsTurnBlinkEffect[CONTESTANT_COUNT] =
-{
-    {
-        .data = (u16 *)(gHeap + 0x1A0A4),
-        .tag = TAG_BLINK_EFFECT_CONTESTANT0
-    },
-    {
-        .data = (u16 *)(gHeap + 0x1A0C4),
-        .tag = TAG_BLINK_EFFECT_CONTESTANT1
-    },
-    {
-        .data = (u16 *)(gHeap + 0x1A0E4),
-        .tag = TAG_BLINK_EFFECT_CONTESTANT2
-    },
-    {
-        .data = (u16 *)(gHeap + 0x1A104),
-        .tag = TAG_BLINK_EFFECT_CONTESTANT3
-    }
-};
-
 static const struct OamData sOam_ContestantsTurnBlinkEffect =
 {
     .y = 0,
@@ -966,46 +945,6 @@ static const union AffineAnimCmd *const sAffineAnims_ContestantsTurnBlinkEffect[
 {
     sAffineAnim_ContestantsTurnBlinkEffect_0,
     sAffineAnim_ContestantsTurnBlinkEffect_1
-};
-
-static const struct SpriteTemplate sSpriteTemplates_ContestantsTurnBlinkEffect[CONTESTANT_COUNT] =
-{
-    {
-        .tileTag = TAG_BLINK_EFFECT_CONTESTANT0,
-        .paletteTag = TAG_BLINK_EFFECT_CONTESTANT0,
-        .oam = &sOam_ContestantsTurnBlinkEffect,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = sAffineAnims_ContestantsTurnBlinkEffect,
-        .callback = SpriteCallbackDummy
-    },
-    {
-        .tileTag = TAG_BLINK_EFFECT_CONTESTANT1,
-        .paletteTag = TAG_BLINK_EFFECT_CONTESTANT1,
-        .oam = &sOam_ContestantsTurnBlinkEffect,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = sAffineAnims_ContestantsTurnBlinkEffect,
-        .callback = SpriteCallbackDummy
-    },
-    {
-        .tileTag = TAG_BLINK_EFFECT_CONTESTANT2,
-        .paletteTag = TAG_BLINK_EFFECT_CONTESTANT2,
-        .oam = &sOam_ContestantsTurnBlinkEffect,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = sAffineAnims_ContestantsTurnBlinkEffect,
-        .callback = SpriteCallbackDummy
-    },
-    {
-        .tileTag = TAG_BLINK_EFFECT_CONTESTANT3,
-        .paletteTag = TAG_BLINK_EFFECT_CONTESTANT3,
-        .oam = &sOam_ContestantsTurnBlinkEffect,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = sAffineAnims_ContestantsTurnBlinkEffect,
-        .callback = SpriteCallbackDummy
-    }
 };
 
 static const s8 sContestExcitementTable[CONTEST_CATEGORIES_COUNT][CONTEST_CATEGORIES_COUNT] =
@@ -1314,13 +1253,9 @@ static bool8 SetupContestGraphics(u8 *stateVar)
         CreateApplauseMeterSprite();
         CreateJudgeAttentionEyeTask();
         CreateUnusedBlendTask();
-        gBattlerPositions[0] = B_POSITION_PLAYER_LEFT;
-        gBattlerPositions[1] = B_POSITION_OPPONENT_LEFT;
-        gBattlerPositions[2] = B_POSITION_OPPONENT_RIGHT;
-        gBattlerPositions[3] = B_POSITION_PLAYER_RIGHT;
-        gBattleTypeFlags = TIPO_BATALLA_SALVAJE;
-        gBattlerAttacker = B_POSITION_PLAYER_RIGHT;
-        gBattlerTarget = B_POSITION_OPPONENT_RIGHT;
+        gBattleTypeFlags = COMBATE_SALVAJE;
+        gBattlerAttacker = JUGADOR_DERECHA;
+        gBattlerTarget = OPONENTE_DERECHA;
         // Unclear why judge sprite is assigned here
         // Overwritten in APPEALSTATE_SLIDE_MON_IN with the attacking contest mon
         gBattlerSpriteIds[gBattlerAttacker] = CreateJudgeSprite();
@@ -2843,10 +2778,10 @@ static u8 CreateContestantSprite(u16 species, bool8 isShiny, u32 personality, u3
     u32 spriteId;
     species = SanitizeSpecies(species);
 
-    HandleLoadSpecialPokePic(FALSE, gMonSpritesGfxPtr->spritesGfx[B_POSITION_PLAYER_LEFT], species, personality);
+    HandleLoadSpecialPokePic(FALSE, gMonSpritesGfxPtr->spritesGfx[JUGADOR_IZQUIERDA], species, personality);
 
     LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality), OBJ_PLTT_ID(2), PLTT_SIZE_4BPP);
-    SetMultiuseSpriteTemplateToPokemon(species, B_POSITION_PLAYER_LEFT);
+    SetMultiuseSpriteTemplateToPokemon(species, JUGADOR_IZQUIERDA);
 
     spriteId = CreateSprite(&gMultiuseSpriteTemplate, 0x70, GetBattlerSpriteFinal_Y(2, species, FALSE), 30);
     gSprites[spriteId].oam.paletteNum = 2;
@@ -4807,19 +4742,19 @@ static void SetMoveAnimAttackerData(u8 contestant)
 
 static void CreateInvisibleBattleTargetSprite(void)
 {
-    gBattlerSpriteIds[B_POSITION_OPPONENT_RIGHT] = CreateInvisibleSpriteWithCallback(SpriteCallbackDummy);
+    gBattlerSpriteIds[OPONENTE_DERECHA] = CreateInvisibleSpriteWithCallback(SpriteCallbackDummy);
     InitSpriteAffineAnim(&gSprites[gBattlerSpriteIds[gBattlerTarget]]);
     SetBattleTargetSpritePosition();
 }
 
 static void SetBattleTargetSpritePosition(void)
 {
-    struct Sprite *sprite = &gSprites[gBattlerSpriteIds[B_POSITION_OPPONENT_RIGHT]];
+    struct Sprite *sprite = &gSprites[gBattlerSpriteIds[OPONENTE_DERECHA]];
 
     sprite->x2 = 0;
     sprite->y2 = 0;
-    sprite->x = GetBattlerSpriteCoord(B_POSITION_OPPONENT_RIGHT, BATTLER_COORD_X);
-    sprite->y = GetBattlerSpriteCoord(B_POSITION_OPPONENT_RIGHT, BATTLER_COORD_Y);
+    sprite->x = GetBattlerSpriteCoord(OPONENTE_DERECHA, BATTLER_COORD_X);
+    sprite->y = GetBattlerSpriteCoord(OPONENTE_DERECHA, BATTLER_COORD_Y);
     sprite->invisible = TRUE;
 }
 
@@ -4829,14 +4764,14 @@ static void SetMoveTargetPosition(u16 move)
     {
     case MOVE_TARGET_USER_OR_SELECTED:
     case MOVE_TARGET_USER:
-        gBattlerTarget = B_POSITION_PLAYER_RIGHT;
+        gBattlerTarget = JUGADOR_DERECHA;
         break;
     case MOVE_TARGET_SELECTED:
     case MOVE_TARGET_RANDOM:
     case MOVE_TARGET_BOTH:
     case MOVE_TARGET_FOES_AND_ALLY:
     default:
-        gBattlerTarget = B_POSITION_OPPONENT_RIGHT;
+        gBattlerTarget = OPONENTE_DERECHA;
         break;
     }
 }

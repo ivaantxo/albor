@@ -143,9 +143,9 @@ void SoundTask_PlayCryHighPitch(u8 taskId)
     else if (gBattleAnimArgs[0] == ANIM_TARGET)
         battlerId = gBattleAnimTarget;
     else if (gBattleAnimArgs[0] == ANIM_ATK_PARTNER)
-        battlerId = BATTLE_PARTNER(gBattleAnimAttacker);
+        battlerId = ALIADO(gBattleAnimAttacker);
     else
-        battlerId = BATTLE_PARTNER(gBattleAnimTarget);
+        battlerId = ALIADO(gBattleAnimTarget);
 
     // Check if battler is visible.
     if ((gBattleAnimArgs[0] == ANIM_TARGET || gBattleAnimArgs[0] == ANIM_DEF_PARTNER) && !IsBattlerSpriteVisible(battlerId))
@@ -174,9 +174,9 @@ void SoundTask_PlayDoubleCry(u8 taskId)
     else if (gBattleAnimArgs[0] == ANIM_TARGET)
         battlerId = gBattleAnimTarget;
     else if (gBattleAnimArgs[0] == ANIM_ATK_PARTNER)
-        battlerId = BATTLE_PARTNER(gBattleAnimAttacker);
+        battlerId = ALIADO(gBattleAnimAttacker);
     else
-        battlerId = BATTLE_PARTNER(gBattleAnimTarget);
+        battlerId = ALIADO(gBattleAnimTarget);
 
     // Check if battler is visible.
     if ((gBattleAnimArgs[0] == ANIM_TARGET || gBattleAnimArgs[0] == ANIM_DEF_PARTNER) && !IsBattlerSpriteVisible(battlerId))

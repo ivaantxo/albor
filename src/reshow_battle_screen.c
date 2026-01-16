@@ -75,7 +75,7 @@ static void CB2_ReshowBattleScreenAfterMenu(void)
         break;
     case 4:
         FreeAllSpritePalettes();
-        gReservedSpritePaletteCount = MAX_BATTLERS_COUNT;
+        gReservedSpritePaletteCount = NUMERO_COMBATIENTES;
         sEstadoVueltaBatalla++;
         break;
     case 5:
@@ -142,12 +142,12 @@ static void CB2_ReshowBattleScreenAfterMenu(void)
     {
         u32 opponentBattler, species;
         LoadAndCreateEnemyShadowSprites();
-        opponentBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+        opponentBattler = OPONENTE_IZQUIERDA;
         species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[opponentBattler]], MON_DATA_SPECIES);
         SetBattlerShadowSpriteCallback(opponentBattler, species);
         if (EsContraEntrenador())
         {
-            opponentBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
+            opponentBattler = OPONENTE_DERECHA;
             species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[opponentBattler]], MON_DATA_SPECIES);
             SetBattlerShadowSpriteCallback(opponentBattler, species);
         }
@@ -181,7 +181,7 @@ static bool8 LoadBattlerSpriteGfx(u32 battler)
 {
     if (battler < gBattlersCount)
     {
-        if (GetBattlerSide(battler) != B_SIDE_PLAYER)
+        if (GetBattlerSide(battler) != LADO_JUGADOR)
         {
             if (!gBattleSpritesDataPtr->battlerData[battler].behindSubstitute)
                 BattleLoadMonSpriteGfx(&gEnemyParty[gBattlerPartyIndexes[battler]], battler);
@@ -207,14 +207,14 @@ void CreateBattlerSprite(u32 battler)
         else
             posY = GetBattlerSpriteDefault_Y(battler);
 
-        if (GetBattlerSide(battler) != B_SIDE_PLAYER)
+        if (GetBattlerSide(battler) != LADO_JUGADOR)
         {
             if (GetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_HP) == 0)
                 return;
             if (gBattleScripting.monCaught) // Don't create opponent sprite if it has been caught.
                 return;
 
-            SetMultiuseSpriteTemplateToPokemon(GetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES), GetBattlerPosition(battler));
+            SetMultiuseSpriteTemplateToPokemon(GetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES), battler);
             gBattlerSpriteIds[battler] = CreateSprite(&gMultiuseSpriteTemplate, GetBattlerSpriteCoord(battler, BATTLER_COORD_X_2), posY, GetBattlerSpriteSubpriority(battler));
             gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = battler;
             gSprites[gBattlerSpriteIds[battler]].callback = SpriteCallbackDummy;
@@ -228,7 +228,7 @@ void CreateBattlerSprite(u32 battler)
             if (!IsValidForBattle(&gPlayerParty[gBattlerPartyIndexes[battler]]))
                 return;
 
-            SetMultiuseSpriteTemplateToPokemon(GetMonData(&gPlayerParty[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES), GetBattlerPosition(battler));
+            SetMultiuseSpriteTemplateToPokemon(GetMonData(&gPlayerParty[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES), battler);
             gBattlerSpriteIds[battler] = CreateSprite(&gMultiuseSpriteTemplate, GetBattlerSpriteCoord(battler, BATTLER_COORD_X_2), posY, GetBattlerSpriteSubpriority(battler));
             gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = battler;
             gSprites[gBattlerSpriteIds[battler]].callback = SpriteCallbackDummy;
@@ -252,12 +252,12 @@ static void CreateHealthboxSprite(u32 battler)
         InitBattlerHealthboxCoords(battler);
         SetHealthboxSpriteVisible(healthboxSpriteId);
 
-        if (GetBattlerSide(battler) != B_SIDE_PLAYER)
+        if (GetBattlerSide(battler) != LADO_JUGADOR)
             UpdateHealthboxAttribute(gHealthboxSpriteIds[battler], &gEnemyParty[gBattlerPartyIndexes[battler]], HEALTHBOX_ALL);
         else
             UpdateHealthboxAttribute(gHealthboxSpriteIds[battler], &gPlayerParty[gBattlerPartyIndexes[battler]], HEALTHBOX_ALL);
 
-        if (GetBattlerSide(battler) != B_SIDE_PLAYER)
+        if (GetBattlerSide(battler) != LADO_JUGADOR)
         {
             if (GetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_HP) == 0)
                 SetHealthboxSpriteInvisible(healthboxSpriteId);

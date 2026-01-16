@@ -56,7 +56,7 @@ extern s16 gBattleAnimArgs[ANIM_ARGS_COUNT];
 extern u8 gAnimMoveTurn;
 extern u8 gBattleAnimAttacker;
 extern u8 gBattleAnimTarget;
-extern u16 gAnimBattlerSpecies[MAX_BATTLERS_COUNT];
+extern u16 gAnimBattlerSpecies[NUMERO_COMBATIENTES];
 extern u8 gAnimCustomPanning;
 extern u16 gAnimMoveIndex;
 
@@ -161,7 +161,6 @@ void ResetSpriteRotScale_PreserveAffine(struct Sprite *sprite);
 void Trade_MoveSelectedMonToTarget(struct Sprite *sprite);
 void DestroyAnimVisualTaskAndDisableBlend(u8 taskId);
 void SetBattlerSpriteYOffsetFromOtherYScale(u32 spriteId, u8 otherSpriteId);
-u8 GetBattlerAtPosition(u8 position);
 void ConvertPosDataToTranslateLinearData(struct Sprite *sprite);
 void InitAnimFastLinearTranslationWithSpeedAndPos(struct Sprite *sprite);
 

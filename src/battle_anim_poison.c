@@ -354,12 +354,12 @@ static void AnimGunkShotParticlesStep(struct Sprite *sprite)
 
 static void AnimSuckerPunch(struct Sprite *sprite)
 {
-    if (BATTLE_PARTNER(gBattleAnimAttacker) == gBattleAnimTarget && GetBattlerPosition(gBattleAnimTarget) < B_POSITION_PLAYER_RIGHT)
+    if (ALIADO(gBattleAnimAttacker) == gBattleAnimTarget && gBattleAnimTarget < JUGADOR_DERECHA)
         gBattleAnimArgs[0] *= -1;
 
     InitSpritePosToAnimTarget(sprite, TRUE);
 
-    if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
         gBattleAnimArgs[2] = -gBattleAnimArgs[2];
 
     sprite->data[0] = gBattleAnimArgs[3];
@@ -476,7 +476,7 @@ static void AnimAcidPoisonDroplet(struct Sprite *sprite)
     if (gBattleAnimArgs[5])
         SetAverageBattlerPositions(gBattleAnimTarget, TRUE, &sprite->x, &sprite->y);
 
-    if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
         gBattleAnimArgs[0] = -gBattleAnimArgs[0];
 
     sprite->x += gBattleAnimArgs[0];
@@ -506,7 +506,7 @@ void AnimBubbleEffect(struct Sprite *sprite)
     {
         SetAverageBattlerPositions(gBattleAnimTarget, TRUE, &sprite->x, &sprite->y);
 
-        if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+        if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
             gBattleAnimArgs[0] = -gBattleAnimArgs[0];
 
         sprite->x += gBattleAnimArgs[0];

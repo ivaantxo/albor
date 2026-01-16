@@ -1,7 +1,7 @@
 #ifndef GUARD_BATTLE_AI_UTIL_H
 #define GUARD_BATTLE_AI_UTIL_H
 
-#define FOE(battler) ((BATTLE_OPPOSITE(battler)) & BIT_SIDE)
+#define FOE(combatiente) ((OPONENTE(combatiente)) & BIT_SIDE)
 
 enum AIPivot
 {
@@ -10,11 +10,14 @@ enum AIPivot
     SHOULD_PIVOT,
 };
 
-bool32 AI_IsFaster(u32 battlerAi, u32 battlerDef, u32 move);
-bool32 AI_IsSlower(u32 battlerAi, u32 battlerDef, u32 move);
+bool32 AI_IsFaster(u32 battlerAI, u32 battlerDef, u32 move);
+bool32 AI_IsSlower(u32 battlerAI, u32 battlerDef, u32 move);
 bool32 AI_RandLessThan(u32 val);
-u32 GetDmgRollType(u32 battlerAtk);
-bool32 BattlerHasAi(u32 battlerId);
+static inline bool32 CombatienteEsIA(u32 combatiente)
+{
+    return EsContraEntrenador()
+        && ((combatiente & BIT_SIDE) == LADO_OPONENTE);
+};
 bool32 IsAIBattlerAware(u32 battlerId);
 void ClearBattlerMoveHistory(u32 battlerId);
 void RecordLastUsedMoveBy(u32 battlerId, u32 move);
@@ -30,16 +33,15 @@ void SetBattlerAIData(u32 battlerId, struct AILogicData *aiData);
 void RestoreBattlerData(u32 battlerId);
 u32 GetAIChosenMove(u32 battlerId);
 u32 GetTotalBaseStat(u32 species);
-bool32 IsTruantMonVulnerable(u32 battlerAI, u32 opposingBattler);
 bool32 AI_BattlerAtMaxHp(u32 battler);
 u32 GetHealthPercentage(u32 battler);
 bool32 IsBattlerTrapped(u32 battler, bool32 switching);
 s32 AI_WhoStrikesFirst(u32 battlerAI, u32 battler2, u32 moveConsidered);
-bool32 CanTargetFaintAi(u32 battlerDef, u32 battlerAtk);
+bool32 CanTargetFaintAI(u32 battlerDef, u32 battlerAtk);
 u32 NoOfHitsForTargetToFaintAI(u32 battlerDef, u32 battlerAtk);
 u32 GetBestDmgMoveFromBattler(u32 battlerAtk, u32 battlerDef);
 u32 GetBestDmgFromBattler(u32 battler, u32 battlerTarget);
-bool32 CanTargetMoveFaintAi(u32 move, u32 battlerDef, u32 battlerAtk, u32 nHits);
+bool32 CanTargetMoveFaintAI(u32 move, u32 battlerDef, u32 battlerAtk, u32 nHits);
 bool32 CanTargetFaintAIWithMod(u32 battlerDef, u32 battlerAtk, s32 hpMod, s32 dmgMod);
 s32 AI_DecideKnownAbilityForTurn(u32 battlerId);
 u32 AI_DecideHoldEffectForTurn(u32 battlerId);
@@ -166,7 +168,6 @@ bool32 DoesPartnerHaveSameMoveEffect(u32 battlerAtkPartner, u32 battlerDef, u32 
 bool32 PartnerHasSameMoveEffectWithoutTarget(u32 battlerAtkPartner, u32 move, u32 partnerMove);
 bool32 PartnerMoveEffectIsStatusSameTarget(u32 battlerAtkPartner, u32 battlerDef, u32 partnerMove);
 bool32 IsMoveEffectWeather(u32 move);
-bool32 PartnerMoveEffectIsTerrain(u32 battlerAtkPartner, u32 partnerMove);
 bool32 PartnerMoveIs(u32 battlerAtkPartner, u32 partnerMove, u32 moveCheck);
 bool32 PartnerMoveIsSameAsAttacker(u32 battlerAtkPartner, u32 battlerDef, u32 move, u32 partnerMove);
 bool32 PartnerMoveIsSameNoTarget(u32 battlerAtkPartner, u32 move, u32 partnerMove);

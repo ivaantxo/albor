@@ -49,8 +49,7 @@
 - Crear Barrera eléctrica (baneful búnker pero paraliza): Dárselo a Electivire.
 - Check move_target_all_battlers de lightning rod vs storm drain.
 - Hueso quemado (objeto raro en Cubone que lo hace evolucionar a Marowak Alolan).
-- Usar viejas partículas: ANIM_TAG_ASCUAS
-- Crear habilidad exclusiva de Beedrill (Empalador o algo así).
+- Usar viejas partículas: ANIM_TAG_ASCUAS.
 - Arreglar tiendas.
 - Arreglar icono de guardado que cambia con el día.
 - Huevos heredan 50% de las veces habilidad de la madre.
@@ -63,7 +62,11 @@
 - Revisar crianza/ia/creación de Shedinja.
 - Furia dragón y Bomba sónica ahora son Escaldar de sus tipos respectivos.
 - Chequear Sombra trampa que no la haya roto.
-- eliminar 0xF << 28
+- gHitMarker voy a por ti.
+- Teletransporte un Relevo psíquico (siempre puede escapar de trapping? prioridad?)
+- Triataque 3 golpes de diferente tipo (10% cada uno?)
+- case ESPERA_ACCION revisar
+- isFirstTurn modificar
 
 -Lista de moves hechos:
 *Bomba huevo.
@@ -93,7 +96,6 @@ porytiles compile-primary -Wall -o /Users/ivanmartinez/proyectos/albor/data/tile
 *Recordatorio de deserializar las pokeballs.
 *Recordatorio de revisar learnsets (encanto, especialmente).
 *Recordatorio de limpiar species_info (traducir, solo lo necesario y usar constantes).
-*Habilidad exclusiva de Floatzel: flotador. En lluvia, no toca suelo. Además, x2 vel en lluvia.
 *Arreglar .pal de Charmander (y de charmeleon?) No de Charizard.
 *Añadir caso de crianza para Latios/Latias y Nidoran.
 *¿Cómo criar a Tauros?
@@ -110,10 +112,6 @@ find . -name "* 2.inc" -delete
 
 //para limpiar defines a enum
 \s+[0-9]+
-
-muy probable que RAMSCRGEN se pueda eliminar
-limpiar y documentar estados de intro batalla.
-static void CB2_HandleStartBattle(void) es una locura sin sentido --> MULTIUSE_STATE dividirlo en 2, y documentar
 
 //revisar animación y crear efecto de Triataque
 //unificar frozen/frostbite

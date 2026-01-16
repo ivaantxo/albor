@@ -33,11 +33,6 @@
 #define sBERRY_OVERRIDE              (sSWITCH_CASE + 1)                 // overrideBerryRequirements (u8) -> 1 byte
 #define sSTICKY_WEB_STAT_DROP        (sBERRY_OVERRIDE + 1)              // stickyWebStatDrop (u8) -> 1 byte
 
-#define MULTIUSE_STATE          0
-#define SPRITES_INIT_STATE1     1 // shares the Id as well
-#define ACTIONS_CONFIRMED_COUNT 4
-#define BATTLE_COMMUNICATION_ENTRIES_COUNT  8
-
 enum ScriptsBatallaCombatientes
 {
     BS_TARGET,
@@ -73,7 +68,6 @@ enum Various
 {
     VARIOUS_CANCEL_MULTI_TURN_MOVES,
     VARIOUS_SET_MAGIC_COAT_TARGET,
-    VARIOUS_IS_RUNNING_IMPOSSIBLE,
     VARIOUS_GET_MOVE_TARGET,
     VARIOUS_GET_BATTLER_FAINTED,
     VARIOUS_RESET_SWITCH_IN_ABILITY_BITS,
@@ -130,7 +124,6 @@ enum Various
     VARIOUS_SET_POWDER,
     VARIOUS_SPECTRAL_THIEF,
     VARIOUS_GRAVITY_ON_AIRBORNE_MONS,
-    VARIOUS_CHECK_IF_GRASSY_TERRAIN_HEALS,
     VARIOUS_JUMP_IF_ROAR_FAILS,
     VARIOUS_TRY_INSTRUCT,
     VARIOUS_JUMP_IF_NOT_BERRY,
@@ -158,13 +151,11 @@ enum Various
     VARIOUS_DESTROY_ABILITY_POPUP,
     VARIOUS_TRY_ACTIVATE_GRIM_NEIGH,
     VARIOUS_MOVEEND_ITEM_EFFECTS,
-    VARIOUS_TERRAIN_SEED,
     VARIOUS_MAKE_INVISIBLE,
     VARIOUS_ROOM_SERVICE,
     VARIOUS_EERIE_SPELL_PP_REDUCE,
     VARIOUS_JUMP_IF_TEAM_HEALTHY,
     VARIOUS_TRY_HEAL_QUARTER_HP,
-    VARIOUS_REMOVE_TERRAIN,
     VARIOUS_JUMP_IF_PRANKSTER_BLOCKED,
     VARIOUS_JUMP_IF_FLOWER_VEIL_PROTECTED,
     VARIOUS_GET_ROTOTILLER_TARGETS,
@@ -307,7 +298,6 @@ enum BattleScriptCommands
     BATTLE_CMD_printselectionstring,
     BATTLE_CMD_waitmessage,
     BATTLE_CMD_printfromtable,
-    BATTLE_CMD_printselectionstringfromtable,
     BATTLE_CMD_setadditionaleffects,
     BATTLE_CMD_seteffectprimary,
     BATTLE_CMD_seteffectsecondary,
@@ -399,7 +389,6 @@ enum BattleScriptCommands
     BATTLE_CMD_makevisible,
     BATTLE_CMD_recordability,
     BATTLE_CMD_buffermovetolearn,
-    BATTLE_CMD_jumpifplayerran,
     BATTLE_CMD_hpthresholds,
     BATTLE_CMD_hpthresholds2,
     BATTLE_CMD_useitemonopponent,
@@ -482,7 +471,6 @@ enum BattleScriptCommands
     BATTLE_CMD_trymemento,
     BATTLE_CMD_setforcedtarget,
     BATTLE_CMD_setcharge,
-    BATTLE_CMD_callterrainattack,
     BATTLE_CMD_cureifburnedparalysedorpoisoned,
     BATTLE_CMD_settorment,
     BATTLE_CMD_jumpifnodamage,
@@ -509,7 +497,6 @@ enum BattleScriptCommands
     BATTLE_CMD_settypebasedhalvers,
     BATTLE_CMD_jumpifsubstituteblocks,
     BATTLE_CMD_tryrecycleitem,
-    BATTLE_CMD_settypetoterrain,
     BATTLE_CMD_snatchsetbattlers,
     BATTLE_CMD_removelightscreenreflect,
     BATTLE_CMD_handleballthrow,

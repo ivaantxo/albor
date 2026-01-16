@@ -17,7 +17,6 @@ bool32 ShouldDoRivalRayquazaCall(void);
 bool32 CountSSTidalStep(u16 delta);
 u8 GetSSTidalLocation(s8 *mapGroup, s8 *mapNum, s16 *x, s16 *y);
 void ShowScrollableMultichoice(void);
-u8 TryGainNewFanFromCounter(u8 incrementId);
 bool8 InPokemonCenter(void);
 void SetShoalItemFlag(u16 unused);
 bool8 UsedPokemonCenterWarp(void);

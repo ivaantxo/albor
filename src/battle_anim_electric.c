@@ -536,7 +536,7 @@ const struct SpriteTemplate gIonSpriteTemplate =
 // functions
 static void AnimLightning(struct Sprite *sprite)
 {
-    if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
         sprite->x -= gBattleAnimArgs[0];
     else
         sprite->x += gBattleAnimArgs[0];
@@ -567,14 +567,14 @@ void AnimSparkElectricity(struct Sprite *sprite)
         battler = gBattleAnimTarget;
         break;
     case ANIM_ATK_PARTNER:
-        if (!IsBattlerSpriteVisible(BATTLE_PARTNER(gBattleAnimAttacker)))
+        if (!IsBattlerSpriteVisible(ALIADO(gBattleAnimAttacker)))
             battler = gBattleAnimAttacker;
         else
-            battler = BATTLE_PARTNER(gBattleAnimAttacker);
+            battler = ALIADO(gBattleAnimAttacker);
         break;
     case ANIM_DEF_PARTNER:
-        if (IsBattlerSpriteVisible(BATTLE_PARTNER(gBattleAnimAttacker)))
-            battler = BATTLE_PARTNER(gBattleAnimTarget);
+        if (IsBattlerSpriteVisible(ALIADO(gBattleAnimAttacker)))
+            battler = ALIADO(gBattleAnimTarget);
         else
             battler = gBattleAnimTarget;
         break;
@@ -652,7 +652,7 @@ static void AnimThunderboltOrb_Step(struct Sprite *sprite)
 
 static void AnimThunderboltOrb(struct Sprite *sprite)
 {
-    if (GetBattlerSide(gBattleAnimTarget) == B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimTarget) == LADO_JUGADOR)
         gBattleAnimArgs[1] = -gBattleAnimArgs[1];
 
     sprite->x = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X_2) + gBattleAnimArgs[1];
@@ -673,7 +673,7 @@ void AnimSparkElectricityFlashing(struct Sprite *sprite)
     else
         battler = gBattleAnimAttacker;
 
-    if (GetBattlerSide(battler) == B_SIDE_PLAYER)
+    if (GetBattlerSide(battler) == LADO_JUGADOR)
         gBattleAnimArgs[0] = -gBattleAnimArgs[0];
 
     sprite->x = GetBattlerSpriteCoord(battler, BATTLER_COORD_X_2) + gBattleAnimArgs[0];
@@ -982,7 +982,7 @@ static void AnimVoltTackleOrbSlide(struct Sprite *sprite)
     sprite->data[6] = GetAnimBattlerSpriteId(ANIM_ATTACKER);
     sprite->data[7] = 16;
 
-    if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_OPPONENT)
+    if (GetBattlerSide(gBattleAnimAttacker) == LADO_OPONENTE)
         sprite->data[7] *= -1;
 
     sprite->callback = AnimVoltTackleOrbSlide_Step;
@@ -1013,7 +1013,7 @@ void AnimTask_VoltTackleAttackerReappear(u8 taskId)
     case 0:
         task->data[15] = GetAnimBattlerSpriteId(ANIM_ATTACKER);
         task->data[14] = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_X_2);
-        if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
+        if (GetBattlerSide(gBattleAnimAttacker) == LADO_JUGADOR)
         {
             task->data[14] = -32;
             task->data[13] = 2;
@@ -1067,7 +1067,7 @@ void AnimTask_VoltTackleBolt(u8 taskId)
     switch(task->data[0])
     {
     case 0:
-        task->data[1] = GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER ? 1 : -1;
+        task->data[1] = GetBattlerSide(gBattleAnimAttacker) == LADO_JUGADOR ? 1 : -1;
 
         switch (gBattleAnimArgs[0])
         {

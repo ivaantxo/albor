@@ -63,10 +63,6 @@ const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS] =
         //.enhanceItem = ITEM_BLACK_BELT,
         //.berry = ITEM_CHOPLE_BERRY,
         //.gem = ITEM_FIGHTING_GEM,
-        //.plate = ITEM_FIST_PLATE,
-        //.memory = ITEM_FIGHTING_MEMORY,
-        //.teraShard = ITEM_FIGHTING_TERA_SHARD,
-        //.arceusForm = SPECIES_ARCEUS_FIGHTING,
     },
     [TIPO_VOLADOR] =
     {

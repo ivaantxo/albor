@@ -202,7 +202,7 @@ static void AnimBonemerangProjectile_End(struct Sprite *sprite)
 static void AnimBoneHitProjectile(struct Sprite *sprite)
 {
     InitSpritePosToAnimTarget(sprite, TRUE);
-    if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
         gBattleAnimArgs[2] = -gBattleAnimArgs[2];
 
     sprite->data[0] = gBattleAnimArgs[4];
@@ -585,7 +585,7 @@ static void AnimDigDirtMound(struct Sprite *sprite)
 #define tInitHorizOffset     data[15]
 
 // Shakes battler(s) or the battle terrain back and forth horizontally. Used by e.g. Earthquake, Eruption
-// arg0: What to shake. 0-3 for any specific battler, MAX_BATTLERS_COUNT for all battlers, MAX_BATTLERS_COUNT + 1 for the terrain
+// arg0: What to shake. 0-3 for any specific battler, NUMERO_COMBATIENTES for all battlers, NUMERO_COMBATIENTES + 1 for the terrain
 // arg1: Shake intensity, used to calculate horizontal pixel offset (if 0, use move power instead)
 // arg2: Length of time to shake for
 void AnimTask_HorizontalShake(u8 taskId)
@@ -601,13 +601,13 @@ void AnimTask_HorizontalShake(u8 taskId)
     task->tMaxTime = gBattleAnimArgs[2];
     switch (gBattleAnimArgs[0])
     {
-    case MAX_BATTLERS_COUNT + 1: // Shake terrain
+    case NUMERO_COMBATIENTES + 1: // Shake terrain
         task->tInitialX = gBattle_BG3_X;
         task->func = AnimTask_ShakeTerrain;
         break;
-    case MAX_BATTLERS_COUNT: // Shake all battlers
+    case NUMERO_COMBATIENTES: // Shake all battlers
         task->tNumBattlers = 0;
-        for (i = 0; i < MAX_BATTLERS_COUNT; i++)
+        for (i = 0; i < NUMERO_COMBATIENTES; i++)
         {
             if (IsBattlerSpriteVisible(i))
             {
@@ -759,7 +759,7 @@ void AnimTask_PositionFissureBgOnBattler(u8 taskId)
     u8 battler = (gBattleAnimArgs[0] & ANIM_TARGET) ? gBattleAnimTarget : gBattleAnimAttacker;
 
     if (gBattleAnimArgs[0] > ANIM_TARGET)
-        battler = BATTLE_PARTNER(battler);
+        battler = ALIADO(battler);
 
     newTask = &gTasks[CreateTask(WaitForFissureCompletion, gBattleAnimArgs[1])];
     newTask->data[1] = (32 - GetBattlerSpriteCoord(battler, BATTLER_COORD_X_2)) & 0x1FF;

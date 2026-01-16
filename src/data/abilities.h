@@ -313,10 +313,10 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .breakable = TRUE,
     },
 
-    [ABILITY_MAGNET_PULL] =
+    [ABILITY_IMAN] =
     {
-        .name = _("Magnet Pull"),
-        .description = COMPOUND_STRING("Traps Steel-type Pokémon."),
+        .name = _("Imán"),
+        .description = COMPOUND_STRING("Atrapa Pokémon de Acero."),
         .aiRating = 9,
     },
 
@@ -391,14 +391,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Prevents Attack reduction."),
         .aiRating = 3,
         .breakable = TRUE,
-    },
-
-    [ABILITY_TRUANT] =
-    {
-        .name = _("Truant"),
-        .description = COMPOUND_STRING("Moves only every two turns."),
-        .aiRating = -2,
-        .cantBeOverwritten = TRUE,
     },
 
     [ABILITY_HUSTLE] =
@@ -2118,45 +2110,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Inmune a ataques de estado."),
         .aiRating = 8,
         .breakable = TRUE,
-    },
-
-    [ABILITY_VESSEL_OF_RUIN] =
-    {
-        .name = _("Vessel of Ruin"),
-        .description = COMPOUND_STRING("Lowers foes' sp. damage."),
-        .aiRating = 5,
-        .breakable = TRUE,
-    },
-
-    [ABILITY_SWORD_OF_RUIN] =
-    {
-        .name = _("Sword of Ruin"),
-        .description = COMPOUND_STRING("Lowers foes' Defense."),
-        .aiRating = 5,
-        .breakable = TRUE,
-    },
-
-    [ABILITY_TABLETS_OF_RUIN] =
-    {
-        .name = _("Tablets of Ruin"),
-        .description = COMPOUND_STRING("Lowers foes' damage."),
-        .aiRating = 5,
-        .breakable = TRUE,
-    },
-
-    [ABILITY_BEADS_OF_RUIN] =
-    {
-        .name = _("Beads of Ruin"),
-        .description = COMPOUND_STRING("Lowers foes' Sp. Defense."),
-        .aiRating = 5,
-        .breakable = TRUE,
-    },
-
-    [ABILITY_ORICHALCUM_PULSE] =
-    {
-        .name = _("Orichalcum Pulse"),
-        .description = COMPOUND_STRING("Summons sunlight in battle."),
-        .aiRating = 8,
     },
 
     [ABILITY_HADRON_ENGINE] =

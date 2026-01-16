@@ -23,53 +23,53 @@
  *   +---------------------------+
  */
 
-enum BattlersPositions
+enum PosicionesCombate
 {
-    B_POSITION_PLAYER_LEFT,
-    B_POSITION_OPPONENT_LEFT,
-    B_POSITION_PLAYER_RIGHT,
-    B_POSITION_OPPONENT_RIGHT,
-    MAX_BATTLERS_COUNT
+    JUGADOR_IZQUIERDA,
+    OPONENTE_IZQUIERDA,
+    JUGADOR_DERECHA,
+    OPONENTE_DERECHA,
+    NUMERO_COMBATIENTES
 };
 
 // These macros can be used with either battler ID or positions to get the partner or the opposite mon
-#define BATTLE_OPPOSITE(id) ((id) ^ BIT_SIDE)
-#define BATTLE_PARTNER(id) ((id) ^ BIT_FLANK)
+#define OPONENTE(combatiente) ((combatiente) ^ BIT_SIDE)
+#define ALIADO(combatiente) ((combatiente) ^ BIT_FLANK)
 
-enum BattlersSides
+enum LadosCombate
 {
-    B_SIDE_PLAYER,
-    B_SIDE_OPPONENT,
-    NUM_BATTLE_SIDES
+    LADO_JUGADOR,
+    LADO_OPONENTE,
+    NUMERO_LADOS
 };
 
-enum FlancosBatalla
+enum FlancosCombate
 {
-    B_FLANK_LEFT,
-    B_FLANK_RIGHT,
+    FLANCO_IZQUIERDO,
+    FLANCO_DERECHO,
 };
 
-enum BitesLadosBatalla
+enum BitesLadosCombate
 {
     BIT_SIDE = 1,
     BIT_FLANK,
 };
 
-enum ModosBatalla
+enum ModosCombate
 {
-    MODO_INDIVIDUAL,
-    MODO_DOBLES,
+    INDIVIDUAL,
+    DOBLES,
     NUMERO_DE_MODOS
 };
 
-enum TiposBatalla
+enum TiposCombate
 {
-    TIPO_BATALLA_SALVAJE,
-    TIPO_BATALLA_ENTRENADOR,
-    TIPO_BATALLA_LEGENDARIO,
+    COMBATE_SALVAJE,
+    COMBATE_ENTRENADOR,
+    COMBATE_LEGENDARIO,
 };
 
-enum ResultadosBatalla
+enum ResultadosCombate
 {
     B_OUTCOME_WON = 1,
     B_OUTCOME_LOST,
@@ -171,7 +171,6 @@ enum ResultadosBatalla
 #define STATUS4_SALT_CURE               (1 << 4)
 #define STATUS4_GLAIVE_RUSH             (1 << 5)
 
-#define HITMARKER_WAKE_UP_CLEAR         (1 << 4) // Cleared when waking up. Never set or checked.
 #define HITMARKER_IGNORE_BIDE           (1 << 5)
 #define HITMARKER_DESTINYBOND           (1 << 6)
 #define HITMARKER_NO_ANIMATIONS         (1 << 7)   // set from battleSceneOff. Never changed during battle
@@ -188,12 +187,9 @@ enum ResultadosBatalla
 // 3 free spots because of change in handling of UNDERGROUND/UNDERWATER/ON AIR
 #define HITMARKER_UNABLE_TO_USE_MOVE    (1 << 19)
 #define HITMARKER_PASSIVE_DAMAGE        (1 << 20)
-#define HITMARKER_UNUSED_21      (1 << 21)
 #define HITMARKER_PLAYER_FAINTED        (1 << 22)
 #define HITMARKER_ALLOW_NO_PP           (1 << 23)
 #define HITMARKER_GRUDGE                (1 << 24)
-#define HITMARKER_UNUSED_25                 (1 << 25)
-#define HITMARKER_NEVER_SET             (1 << 26) // Cleared as part of a large group. Never set or checked
 #define HITMARKER_CHARGING              (1 << 27)
 #define HITMARKER_FAINTED(battler)      (1u << (battler + 28))
 #define HITMARKER_FAINTED2(battler)     HITMARKER_FAINTED(battler)
@@ -235,15 +231,9 @@ enum ResultadosBatalla
 #define STATUS_FIELD_MUDSPORT                       (1 << 3)
 #define STATUS_FIELD_WATERSPORT                     (1 << 4)
 #define STATUS_FIELD_GRAVITY                        (1 << 5)
-#define STATUS_FIELD_GRASSY_TERRAIN                 (1 << 6)
-#define STATUS_FIELD_MISTY_TERRAIN                  (1 << 7)
-#define STATUS_FIELD_ELECTRIC_TERRAIN               (1 << 8)
-#define STATUS_FIELD_PSYCHIC_TERRAIN                (1 << 9)
+
 #define STATUS_FIELD_ION_DELUGE                     (1 << 10)
 #define STATUS_FIELD_FAIRY_LOCK                     (1 << 11)
-#define STATUS_FIELD_TERRAIN_PERMANENT              (1 << 12)   // Overworld thunderstorm generates electric terrain
-
-#define STATUS_FIELD_TERRAIN_ANY        (STATUS_FIELD_GRASSY_TERRAIN | STATUS_FIELD_MISTY_TERRAIN | STATUS_FIELD_ELECTRIC_TERRAIN | STATUS_FIELD_PSYCHIC_TERRAIN)
 
 // Flags describing move's result
 #define MOVE_RESULT_MISSED                (1 << 0)
@@ -377,10 +367,8 @@ enum ResultadosBatalla
 #define MOVE_EFFECT_UNUSED_75          75
 #define MOVE_EFFECT_FLORAL_HEALING      76
 #define MOVE_EFFECT_SECRET_POWER        77
-#define MOVE_EFFECT_UNUSED_78       78
-#define MOVE_EFFECT_TERA_BLAST          79
 
-#define NUM_MOVE_EFFECTS                80
+#define NUM_MOVE_EFFECTS                78
 
 #define MOVE_EFFECT_AFFECTS_USER        0x2000
 #define MOVE_EFFECT_CERTAIN             0x4000
@@ -421,11 +409,11 @@ enum ResultadosBatalla
 #define FLEE_ITEM    1
 #define FLEE_ABILITY 2
 
-// Return value for IntentaEscaparBatalla.
-#define BATTLE_RUN_SUCCESS        0
-#define BATTLE_RUN_FORBIDDEN      1
-#define BATTLE_RUN_FAILURE        2
-
+enum ResultadosEscapeBatalla
+{
+    PUEDE_ESCAPAR,
+    NO_PUEDE_ESCAPAR_POR
+}
 // Window Ids for sBattleWindowTemplates
 #define B_WIN_MSG                 0
 #define B_WIN_MOVE_NAME_1         1 // Top left
@@ -481,10 +469,6 @@ enum ResultadosBatalla
 // Constants for B_VAR_STARTING_STATUS
 // Timer value controlled by B_VAR_STARTING_STATUS_TIMER
 #define STARTING_STATUS_NONE                0
-#define STARTING_STATUS_ELECTRIC_TERRAIN    1
-#define STARTING_STATUS_MISTY_TERRAIN       2
-#define STARTING_STATUS_GRASSY_TERRAIN      3
-#define STARTING_STATUS_PSYCHIC_TERRAIN     4
 #define STARTING_STATUS_TRICK_ROOM          5
 #define STARTING_STATUS_MAGIC_ROOM          6
 #define STARTING_STATUS_WONDER_ROOM         7

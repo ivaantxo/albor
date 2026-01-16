@@ -91,11 +91,6 @@
 	.4byte \ptr
 	.endm
 
-	.macro printselectionstringfromtable ptr:req
-	.byte BATTLE_CMD_printselectionstringfromtable
-	.4byte \ptr
-	.endm
-
 	.macro setadditionaleffects
 	1:
 	.byte BATTLE_CMD_setadditionaleffects
@@ -654,11 +649,6 @@
 	.byte BATTLE_CMD_buffermovetolearn
 	.endm
 
-	.macro jumpifplayerran jumpInstr:req
-	.byte BATTLE_CMD_jumpifplayerran
-	.4byte \jumpInstr
-	.endm
-
 	.macro hpthresholds battler:req
 	.byte BATTLE_CMD_hpthresholds
 	.byte \battler
@@ -1064,10 +1054,6 @@
 	.byte \battler
 	.endm
 
-	.macro callterrainattack
-	.byte BATTLE_CMD_callterrainattack
-	.endm
-
 	.macro cureifburnedparalysedorpoisoned failInstr:req
 	.byte BATTLE_CMD_cureifburnedparalysedorpoisoned
 	.4byte \failInstr
@@ -1199,11 +1185,6 @@
 
 	.macro tryrecycleitem failInstr:req
 	.byte BATTLE_CMD_tryrecycleitem
-	.4byte \failInstr
-	.endm
-
-	.macro settypetoterrain failInstr:req
-	.byte BATTLE_CMD_settypetoterrain
 	.4byte \failInstr
 	.endm
 
@@ -1399,12 +1380,6 @@
 	callnative BS_TrySymbiosis
 	.endm
 
-	@ returns B_SIDE_x to gBattleCommunication[MULTIUSE_STATE]
-	.macro getbattlerside battler:req
-	callnative BS_GetBattlerSide
-	.byte \battler
-	.endm
-
 	.macro checkparentalbondcounter counter:req, ptr:req
 	callnative BS_CheckParentalBondCounter
 	.byte \counter
@@ -1433,18 +1408,6 @@
 	.macro jumpifargument argument:req, jumpInstr:req
 	callnative BS_JumpIfArgument
 	.byte \argument
-	.4byte \jumpInstr
-	.endm
-
-	.macro setremoveterrain failInstr:req
-	callnative BS_SetRemoveTerrain
-	.4byte \failInstr
-	.endm
-
-	.macro jumpifterrainaffected battler:req, terrainFlags:req, jumpInstr:req
-	callnative BS_JumpIfTerrainAffected
-	.byte \battler
-	.4byte \terrainFlags
 	.4byte \jumpInstr
 	.endm
 
@@ -1531,10 +1494,6 @@
 	callnative BS_RemoveWeather
 	.endm
 
-	.macro applyterastallization
-	callnative BS_ApplyTerastallization
-	.endm
-
 	.macro damagetoquartertargethp
 	callnative BS_DamageToQuarterTargetHP
 	.endm
@@ -1570,11 +1529,6 @@
 	.byte \battler
 	.endm
 
-	.macro activateterrainchangeabilities battler:req
-	callnative BS_ActivateTerrainChangeAbilities
-	.byte \battler
-	.endm
-
 	@ Stores Healing Wish effect.
 	.macro storehealingwish battler:req
 	callnative BS_StoreHealingWish
@@ -1607,10 +1561,6 @@
 @ various command changed to more readable macros
 	.macro cancelmultiturnmoves battler:req
 	various \battler, VARIOUS_CANCEL_MULTI_TURN_MOVES
-	.endm
-
-	.macro getifcantrunfrombattle battler:req
-	various \battler, VARIOUS_IS_RUNNING_IMPOSSIBLE
 	.endm
 
 	.macro getmovetarget battler:req
@@ -1866,11 +1816,6 @@
 	various \battler, VARIOUS_GRAVITY_ON_AIRBORNE_MONS
 	.endm
 
-	.macro checkgrassyterrainheal battler:req, failInstr:req
-	various \battler, VARIOUS_CHECK_IF_GRASSY_TERRAIN_HEALS
-	.4byte \failInstr
-	.endm
-
 	.macro jumpifnotberry battler:req, jumpInstr:req
 	various \battler, VARIOUS_JUMP_IF_NOT_BERRY
 	.4byte \jumpInstr
@@ -1995,11 +1940,6 @@
 	various 0, VARIOUS_PICKPOCKET
 	.endm
 
-	.macro doterrainseed battler:req, failInstr:req
-	various \battler, VARIOUS_TERRAIN_SEED
-	.4byte \failInstr
-	.endm
-
 	.macro makeinvisible battler:req
 	various \battler, VARIOUS_MAKE_INVISIBLE
 	.endm
@@ -2027,10 +1967,6 @@
 	.macro tryhealquarterhealth battler:req, failInstr:req
 	various \battler, VARIOUS_TRY_HEAL_QUARTER_HP
 	.4byte \failInstr
-	.endm
-
-	.macro removeterrain
-	various BS_ATTACKER, VARIOUS_REMOVE_TERRAIN
 	.endm
 
 	.macro setattackertostickywebuser
@@ -2208,11 +2144,6 @@
 
 	.macro jumpifmovehadnoeffect jumpInstr:req
 	jumpifbyte COMPARACION_BITS_COMUNES, gMoveResultFlags, MOVE_RESULT_NO_EFFECT, \jumpInstr
-	.endm
-
-	.macro jumpifside battler:req, side:req, equalJumpInstr:req
-	getbattlerside \battler
-	jumpifbyte COMPARACION_IGUAL, gBattleCommunication, \side, \equalJumpInstr
 	.endm
 
 	.macro jumpifbattletype flags:req, jumpInstr:req

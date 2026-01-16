@@ -1425,7 +1425,6 @@ static void OpenContextMenu(u8 taskId)
     switch (gBagPosition.location)
     {
     case ITEMMENULOCATION_BATTLE:
-    case ITEMMENULOCATION_WALLY:
         if (ItemId_GetBattleUsage(gSpecialVar_ItemId))
         {
             gBagMenu->contextMenuItemsPtr = sContextMenuItems_BattleUse;
@@ -1436,10 +1435,6 @@ static void OpenContextMenu(u8 taskId)
             gBagMenu->contextMenuItemsPtr = sContextMenuItems_Cancel;
             gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_Cancel);
         }
-        break;
-    case ITEMMENULOCATION_BERRY_BLENDER_CRUSH:
-        gBagMenu->contextMenuItemsPtr = sContextMenuItems_BerryBlenderCrush;
-        gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_BerryBlenderCrush);
         break;
     case ITEMMENULOCATION_PARTY:
     case ITEMMENULOCATION_SHOP:
@@ -1809,18 +1804,7 @@ static void ItemMenu_Cancel(u8 taskId)
 
 static void ItemMenu_UseInBattle(u8 taskId)
 {
-    // Safety check
-    u16 type = ItemId_GetType(gSpecialVar_ItemId);
-    if (!ItemId_GetBattleUsage(gSpecialVar_ItemId))
-        return;
 
-    RemoveContextWindow();
-    if (type == ITEM_USE_BAG_MENU)
-        ItemUseInBattle_BagMenu(taskId);
-    else if (type == ITEM_USE_PARTY_MENU)
-        ItemUseInBattle_PartyMenu(taskId);
-    else if (type == ITEM_USE_PARTY_MENU_MOVES)
-        ItemUseInBattle_PartyMenuChooseMove(taskId);
 }
 
 void CB2_ReturnToBagMenuPocket(void)

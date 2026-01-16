@@ -620,7 +620,7 @@ static void AnimAquaTail(struct Sprite *sprite)
 
 static void AnimKnockOffAquaTail(struct Sprite *sprite)
 {
-    if (GetBattlerSide(gBattleAnimTarget) == B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimTarget) == LADO_JUGADOR)
     {
         sprite->x -= gBattleAnimArgs[0];
         sprite->y += gBattleAnimArgs[1];
@@ -693,7 +693,7 @@ static void AnimWaterBubbleProjectile(struct Sprite *sprite)
 {
     u32 spriteId;
 
-    if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
     {
         sprite->x = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_X_2) - gBattleAnimArgs[0];
         sprite->y = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_Y_PIC_OFFSET) + gBattleAnimArgs[1];
@@ -705,7 +705,7 @@ static void AnimWaterBubbleProjectile(struct Sprite *sprite)
         sprite->y = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_Y_PIC_OFFSET) + gBattleAnimArgs[1];
         sprite->animPaused = TRUE;
     }
-    if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
         gBattleAnimArgs[2] = -gBattleAnimArgs[2];
     sprite->data[0] = gBattleAnimArgs[6];
     sprite->data[1] = sprite->x;
@@ -767,7 +767,7 @@ static void AnimAuroraBeamRings(struct Sprite *sprite)
     s16 unkArg;
 
     InitSpritePosToAnimAttacker(sprite, TRUE);
-    if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
         unkArg = -gBattleAnimArgs[2];
     else
         unkArg = gBattleAnimArgs[2];
@@ -908,7 +908,7 @@ static void AnimHydroCannonCharge(struct Sprite *sprite)
     sprite->y = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_Y);
     sprite->y2 = -10;
     priority = GetBattlerSpriteSubpriority(gBattleAnimAttacker);
-    if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) == LADO_JUGADOR)
     {
         sprite->x2 = 10;
         sprite->subpriority = priority + 2;
@@ -935,7 +935,7 @@ static void AnimHydroCannonBeam(struct Sprite *sprite)
     if (GetBattlerSide(gBattleAnimAttacker) == GetBattlerSide(gBattleAnimTarget))
     {
         gBattleAnimArgs[0] *= -1;
-        if (GetBattlerPosition(gBattleAnimAttacker) == B_POSITION_PLAYER_LEFT || GetBattlerPosition(gBattleAnimAttacker) == B_POSITION_OPPONENT_LEFT)
+        if (gBattleAnimAttacker == JUGADOR_IZQUIERDA || gBattleAnimAttacker == OPONENTE_IZQUIERDA)
             gBattleAnimArgs[0] *= -1;
     }
     if ((gBattleAnimArgs[5] & 0xFF00) == 0)
@@ -947,7 +947,7 @@ static void AnimHydroCannonBeam(struct Sprite *sprite)
     else
         coordType = BATTLER_COORD_Y;
     InitSpritePosToAnimAttacker(sprite, animType);
-    if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
         gBattleAnimArgs[2] = -gBattleAnimArgs[2];
     sprite->data[0] = gBattleAnimArgs[4];
     sprite->data[2] = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X_2) + gBattleAnimArgs[2];
@@ -1003,7 +1003,7 @@ void AnimTask_CreateSurfWave(u8 taskId)
     SetAnimBgAttribute(1, BG_ANIM_SCREEN_SIZE, 1);
     GetBattleAnimBg1Data(&animBg);
     SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 1);
-    if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_OPPONENT)
+    if (GetBattlerSide(gBattleAnimAttacker) == LADO_OPONENTE)
         AnimLoadCompressedBgTilemap(animBg.bgId, gBattleAnimBgTilemap_SurfOpponent);
     else
         AnimLoadCompressedBgTilemap(animBg.bgId, gBattleAnimBgTilemap_SurfPlayer);
@@ -1027,7 +1027,7 @@ void AnimTask_CreateSurfWave(u8 taskId)
     gTasks[taskId2].data[0] = 0;
     gTasks[taskId2].data[1] = 0x1000;
     gTasks[taskId2].data[2] = 0x1000;
-    if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_OPPONENT)
+    if (GetBattlerSide(gBattleAnimAttacker) == LADO_OPONENTE)
     {
         *x = -224;
         *y = 256;
@@ -1323,7 +1323,7 @@ static u8 GetWaterSpoutPowerForAnim(void)
     u16 partyIndex;
     struct Pokemon *slot;
 
-    if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) == LADO_JUGADOR)
     {
         partyIndex = gBattlerPartyIndexes[gBattleAnimAttacker];
         slot =  &gPlayerParty[partyIndex];
@@ -1407,7 +1407,7 @@ void AnimTask_WaterSpoutRain(u8 taskId)
     struct Task *task = &gTasks[taskId];
 
     task->data[1] = GetWaterSpoutPowerForAnim();
-    if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) == LADO_JUGADOR)
     {
         task->data[4] = 136;
         task->data[6] = 40;
@@ -1526,7 +1526,7 @@ void AnimTask_WaterSport(u8 taskId)
 
     task->data[3] = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_X_2);
     task->data[4] = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_Y_PIC_OFFSET);
-    task->data[7] = (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER) ? 1 : -1;
+    task->data[7] = (GetBattlerSide(gBattleAnimAttacker) == LADO_JUGADOR) ? 1 : -1;
     task->data[5] = task->data[3] + task->data[7] * 8;
     task->data[6] = task->data[4] - task->data[7] * 8;
     task->data[9] = -32;

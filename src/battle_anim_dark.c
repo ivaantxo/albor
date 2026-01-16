@@ -440,7 +440,7 @@ void AnimTask_MoveAttackerMementoShadow(u8 taskId)
     task->data[14] = pos - 32;
     task->data[15] = pos + 32;
 
-    if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) == LADO_JUGADOR)
         task->data[8] = -12;
     else
         task->data[8] = -64;
@@ -596,7 +596,7 @@ void AnimTask_MoveTargetMementoShadow(u8 taskId)
         task->data[14] = x - 4;
         task->data[15] = x + 4;
 
-        if (GetBattlerSide(gBattleAnimTarget) == B_SIDE_PLAYER)
+        if (GetBattlerSide(gBattleAnimTarget) == LADO_JUGADOR)
             task->data[8] = -12;
         else
             task->data[8] = -64;
@@ -771,7 +771,7 @@ static void SetAllBattlersSpritePriority(u8 priority)
 {
     u32 i;
 
-    for (i = 0; i < MAX_BATTLERS_COUNT; i++)
+    for (i = 0; i < NUMERO_COMBATIENTES; i++)
     {
         u32 spriteId = GetAnimBattlerSpriteId(i);
         if (spriteId != SPRITE_NONE)
@@ -785,10 +785,10 @@ void AnimTask_InitMementoShadow(u8 taskId)
     MoveBattlerSpriteToBG(gBattleAnimAttacker, toBG2, TRUE);
     gSprites[gBattlerSpriteIds[gBattleAnimAttacker]].invisible = FALSE;
 
-    if (IsBattlerSpriteVisible(BATTLE_PARTNER(gBattleAnimAttacker)))
+    if (IsBattlerSpriteVisible(ALIADO(gBattleAnimAttacker)))
     {
-        MoveBattlerSpriteToBG(BATTLE_PARTNER(gBattleAnimAttacker), toBG2 ^ 1, TRUE);
-        gSprites[gBattlerSpriteIds[BATTLE_PARTNER(gBattleAnimAttacker)]].invisible = FALSE;
+        MoveBattlerSpriteToBG(ALIADO(gBattleAnimAttacker), toBG2 ^ 1, TRUE);
+        gSprites[gBattlerSpriteIds[ALIADO(gBattleAnimAttacker)]].invisible = FALSE;
     }
 
     DestroyAnimVisualTask(taskId);
@@ -799,7 +799,7 @@ void AnimTask_MementoHandleBg(u8 taskId)
     bool8 toBG2 = GetBattlerSpriteBGPriorityRank(gBattleAnimAttacker) ^ 1 ? TRUE : FALSE;
     ResetBattleAnimBg(toBG2);
 
-    if (IsBattlerSpriteVisible(BATTLE_PARTNER(gBattleAnimAttacker)))
+    if (IsBattlerSpriteVisible(ALIADO(gBattleAnimAttacker)))
         ResetBattleAnimBg(toBG2 ^ 1);
 
     DestroyAnimVisualTask(taskId);
@@ -843,18 +843,18 @@ void AnimTask_MetallicShine(u8 taskId)
 
     if (EsContraEntrenador())
     {
-        if (GetBattlerPosition(gBattleAnimAttacker) == B_POSITION_OPPONENT_RIGHT || GetBattlerPosition(gBattleAnimAttacker) == B_POSITION_PLAYER_LEFT)
+        if (gBattleAnimAttacker == OPONENTE_DERECHA || gBattleAnimAttacker == JUGADOR_IZQUIERDA)
         {
-            if (IsBattlerSpriteVisible(BATTLE_PARTNER(gBattleAnimAttacker)) == TRUE)
+            if (IsBattlerSpriteVisible(ALIADO(gBattleAnimAttacker)) == TRUE)
             {
-                gSprites[gBattlerSpriteIds[BATTLE_PARTNER(gBattleAnimAttacker)]].oam.priority--;
+                gSprites[gBattlerSpriteIds[ALIADO(gBattleAnimAttacker)]].oam.priority--;
                 SetAnimBgAttribute(1, BG_ANIM_PRIORITY, 1);
                 priorityChanged = TRUE;
             }
         }
     }
 
-    if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
         species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattleAnimAttacker]], MON_DATA_SPECIES);
     else
         species = GetMonData(&gPlayerParty[gBattlerPartyIndexes[gBattleAnimAttacker]], MON_DATA_SPECIES);
@@ -908,7 +908,7 @@ static void AnimTask_MetallicShine_Step(u8 taskId)
             GetBattleAnimBg1Data(&animBg);
             ClearBattleAnimBg(animBg.bgId);
             if (gTasks[taskId].data[6] == 1)
-                gSprites[gBattlerSpriteIds[BATTLE_PARTNER(gBattleAnimAttacker)]].oam.priority++;
+                gSprites[gBattlerSpriteIds[ALIADO(gBattleAnimAttacker)]].oam.priority++;
         }
         else if (gTasks[taskId].data[11] == 3)
         {
@@ -934,7 +934,7 @@ void AnimTask_SetGrayscaleOrOriginalPal(u8 taskId)
     u32 spriteId;
     u8 battler;
     bool8 calcSpriteId = FALSE;
-    u8 position = B_POSITION_PLAYER_LEFT;
+    u8 position = JUGADOR_IZQUIERDA;
 
     switch (gBattleAnimArgs[0])
     {
@@ -945,19 +945,19 @@ void AnimTask_SetGrayscaleOrOriginalPal(u8 taskId)
         spriteId = GetAnimBattlerSpriteId(gBattleAnimArgs[0]);
         break;
     case ANIM_PLAYER_LEFT:
-        position = B_POSITION_PLAYER_LEFT;
+        position = JUGADOR_IZQUIERDA;
         calcSpriteId = TRUE;
         break;
     case ANIM_PLAYER_RIGHT:
-        position = B_POSITION_PLAYER_RIGHT;
+        position = JUGADOR_DERECHA;
         calcSpriteId = TRUE;
         break;
     case ANIM_OPPONENT_LEFT:
-        position = B_POSITION_OPPONENT_LEFT;
+        position = OPONENTE_IZQUIERDA;
         calcSpriteId = TRUE;
         break;
     case ANIM_OPPONENT_RIGHT:
-        position = B_POSITION_OPPONENT_RIGHT;
+        position = OPONENTE_DERECHA;
         calcSpriteId = TRUE;
         break;
     default:
@@ -967,7 +967,7 @@ void AnimTask_SetGrayscaleOrOriginalPal(u8 taskId)
 
     if (calcSpriteId)
     {
-        battler = GetBattlerAtPosition(position);
+        battler = position;
         if (IsBattlerSpriteVisible(battler))
             spriteId = gBattlerSpriteIds[battler];
         else

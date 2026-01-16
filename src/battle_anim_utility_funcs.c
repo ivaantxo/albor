@@ -85,15 +85,15 @@ void AnimTask_BlendBattleAnimPalExclude(u8 taskId)
         break;
     case 6:
         selectedPalettes = 0;
-        animBattlers[0] = BATTLE_PARTNER(gBattleAnimAttacker);
+        animBattlers[0] = ALIADO(gBattleAnimAttacker);
         break;
     case 7:
         selectedPalettes = 0;
-        animBattlers[0] = BATTLE_PARTNER(gBattleAnimTarget);
+        animBattlers[0] = ALIADO(gBattleAnimTarget);
         break;
     }
 
-    for (battler = 0; battler < MAX_BATTLERS_COUNT; battler++)
+    for (battler = 0; battler < NUMERO_COMBATIENTES; battler++)
     {
         if (battler != animBattlers[0] && battler != animBattlers[1] && IsBattlerSpriteVisible(battler))
             selectedPalettes |= 0x10000 << GetSpritePalIdxByBattler(battler);
@@ -260,12 +260,12 @@ void AnimTask_DrawFallingWhiteLinesOnAttacker(u8 taskId)
 
     if (EsContraEntrenador())
     {
-        if (GetBattlerPosition(gBattleAnimAttacker) == B_POSITION_OPPONENT_RIGHT
-         || GetBattlerPosition(gBattleAnimAttacker) == B_POSITION_PLAYER_LEFT)
+        if (gBattleAnimAttacker == OPONENTE_DERECHA
+         || gBattleAnimAttacker == JUGADOR_IZQUIERDA)
         {
-            if (IsBattlerSpriteVisible(BATTLE_PARTNER(gBattleAnimAttacker)) == TRUE)
+            if (IsBattlerSpriteVisible(ALIADO(gBattleAnimAttacker)) == TRUE)
             {
-                gSprites[gBattlerSpriteIds[BATTLE_PARTNER(gBattleAnimAttacker)]].oam.priority -= 1;
+                gSprites[gBattlerSpriteIds[ALIADO(gBattleAnimAttacker)]].oam.priority -= 1;
 
                 bg1CntStruct->priority = 1; // Cambiar la prioridad
                 SetGpuReg(REG_OFFSET_BG1CNT, bg1Cnt); // Guardar el valor actualizado
@@ -276,7 +276,7 @@ void AnimTask_DrawFallingWhiteLinesOnAttacker(u8 taskId)
     }
 
     // Obtención de especies
-    if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
         species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattleAnimAttacker]], MON_DATA_SPECIES);
     else
         species = GetMonData(&gPlayerParty[gBattlerPartyIndexes[gBattleAnimAttacker]], MON_DATA_SPECIES);
@@ -334,7 +334,7 @@ static void AnimTask_DrawFallingWhiteLinesOnAttacker_Step(u8 taskId)
             GetBattleAnimBg1Data(&animBgData);
             ClearBattleAnimBg(animBgData.bgId);
             if (gTasks[taskId].data[6] == 1)
-                gSprites[gBattlerSpriteIds[BATTLE_PARTNER(gBattleAnimAttacker)]].oam.priority++;
+                gSprites[gBattlerSpriteIds[ALIADO(gBattleAnimAttacker)]].oam.priority++;
 
             gBattle_BG1_Y = 0;
             DestroyAnimVisualTask(taskId);
@@ -382,7 +382,7 @@ static void StatsChangeAnimation_Step1(u8 taskId)
     else
         sAnimStatsChangeData->battler1 = gBattleAnimTarget;
 
-    sAnimStatsChangeData->battler2 = BATTLE_PARTNER(sAnimStatsChangeData->battler1);
+    sAnimStatsChangeData->battler2 = ALIADO(sAnimStatsChangeData->battler1);
     if (sAnimStatsChangeData->aMultipleBattlers && !IsBattlerSpriteVisible(sAnimStatsChangeData->battler2))
         sAnimStatsChangeData->aMultipleBattlers = FALSE;
 
@@ -399,8 +399,8 @@ static void StatsChangeAnimation_Step1(u8 taskId)
 
     if (EsContraEntrenador() && !sAnimStatsChangeData->aMultipleBattlers)
     {
-        if (GetBattlerPosition(sAnimStatsChangeData->battler1) == B_POSITION_OPPONENT_RIGHT
-         || GetBattlerPosition(sAnimStatsChangeData->battler1) == B_POSITION_PLAYER_LEFT)
+        if (sAnimStatsChangeData->battler1 == OPONENTE_DERECHA
+         || sAnimStatsChangeData->battler1 == JUGADOR_IZQUIERDA)
         {
             if (IsBattlerSpriteVisible(sAnimStatsChangeData->battler2) == TRUE)
             {
@@ -412,7 +412,7 @@ static void StatsChangeAnimation_Step1(u8 taskId)
         }
     }
 
-    if (GetBattlerSide(sAnimStatsChangeData->battler1) != B_SIDE_PLAYER)
+    if (GetBattlerSide(sAnimStatsChangeData->battler1) != LADO_JUGADOR)
         sAnimStatsChangeData->species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[sAnimStatsChangeData->battler1]], MON_DATA_SPECIES);
     else
         sAnimStatsChangeData->species = GetMonData(&gPlayerParty[gBattlerPartyIndexes[sAnimStatsChangeData->battler1]], MON_DATA_SPECIES);
@@ -671,7 +671,7 @@ void AnimTask_BlendNonAttackerPalettes(u8 taskId)
     u32 j;
     u32 selectedPalettes = 0;
 
-    for (battler = 0; battler < MAX_BATTLERS_COUNT; battler++)
+    for (battler = 0; battler < NUMERO_COMBATIENTES; battler++)
     {
         if (gBattleAnimAttacker != battler)
             selectedPalettes |= 1 << (battler + 16);
@@ -689,7 +689,7 @@ void AnimTask_StartSlidingBg(u8 taskId)
 
     UpdateAnimBg3ScreenSize(FALSE);
     newTaskId = CreateTask(AnimTask_UpdateSlidingBg, 5);
-    if (gBattleAnimArgs[2] && GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+    if (gBattleAnimArgs[2] && GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
     {
         gBattleAnimArgs[0] = -gBattleAnimArgs[0];
         gBattleAnimArgs[1] = -gBattleAnimArgs[1];
@@ -734,7 +734,7 @@ void AnimTask_GetTargetSide(u8 taskId)
 
 void AnimTask_GetTargetIsAttackerPartner(u8 taskId)
 {
-    gBattleAnimArgs[ARG_RET_ID] = BATTLE_PARTNER(gBattleAnimAttacker) == gBattleAnimTarget;
+    gBattleAnimArgs[ARG_RET_ID] = ALIADO(gBattleAnimAttacker) == gBattleAnimTarget;
     DestroyAnimVisualTask(taskId);
 }
 
@@ -743,7 +743,7 @@ void AnimTask_SetAllNonAttackersInvisiblity(u8 taskId)
 {
     u16 battler;
 
-    for (battler = 0; battler < MAX_BATTLERS_COUNT; battler++)
+    for (battler = 0; battler < NUMERO_COMBATIENTES; battler++)
     {
         if (battler != gBattleAnimAttacker && IsBattlerSpriteVisible(battler))
             gSprites[gBattlerSpriteIds[battler]].invisible = gBattleAnimArgs[0];
@@ -761,7 +761,7 @@ void StartMonScrollingBgMask(u8 taskId, u16 scrollSpeed, u8 battler, bool8 inclu
     u8 battler2;
 
     spriteId2 = 0;
-    battler2 = BATTLE_PARTNER(battler);
+    battler2 = ALIADO(battler);
 
     if (includePartner && !IsBattlerSpriteVisible(battler2))
         includePartner = FALSE;
@@ -785,7 +785,7 @@ void StartMonScrollingBgMask(u8 taskId, u16 scrollSpeed, u8 battler, bool8 inclu
 
     SetGpuReg(REG_OFFSET_BG1CNT, bg1CntValue);
 
-    if (GetBattlerSide(battler) != B_SIDE_PLAYER)
+    if (GetBattlerSide(battler) != LADO_JUGADOR)
         species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES);
     else
         species = GetMonData(&gPlayerParty[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES);
@@ -868,18 +868,6 @@ static void UpdateMonScrollingBgMask(u8 taskId)
         }
         break;
     }
-}
-
-void AnimTask_GetBattleTerrain(u8 taskId)
-{
-    gBattleAnimArgs[0] = gBattleTerrain;
-    DestroyAnimVisualTask(taskId);
-}
-
-void AnimTask_GetFieldTerrain(u8 taskId)
-{
-    gBattleAnimArgs[0] = gFieldStatuses & STATUS_FIELD_TERRAIN_ANY;
-    DestroyAnimVisualTask(taskId);
 }
 
 void AnimTask_AllocBackupPalBuffer(u8 taskId)
@@ -1051,6 +1039,6 @@ void AnimTask_SetInvisible(u8 taskId)
 
 void AnimTask_SetAnimTargetToAttackerOpposite(u8 taskId)
 {
-    gBattleAnimTarget = BATTLE_OPPOSITE(gBattleAnimAttacker);
+    gBattleAnimTarget = OPONENTE(gBattleAnimAttacker);
     DestroyAnimVisualTask(taskId);
 }

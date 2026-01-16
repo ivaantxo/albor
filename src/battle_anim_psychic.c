@@ -496,8 +496,8 @@ static void AnimPsychoCut(struct Sprite *sprite)
 
     if (GetBattlerSide(gBattleAnimAttacker) == GetBattlerSide(gBattleAnimTarget))
     {
-        if (GetBattlerPosition(gBattleAnimTarget) == B_POSITION_PLAYER_LEFT
-         || GetBattlerPosition(gBattleAnimTarget) == B_POSITION_OPPONENT_LEFT)
+        if (gBattleAnimTarget == JUGADOR_IZQUIERDA
+         || gBattleAnimTarget == OPONENTE_IZQUIERDA)
         {
             s16 temp1, temp2;
 
@@ -545,14 +545,14 @@ static void AnimateZenHeadbutt(struct Sprite *sprite)
 // For the rectangular wall sprite used by Reflect, Mirror Coat, etc
 static void AnimDefensiveWall(struct Sprite *sprite)
 {
-    if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) == LADO_JUGADOR)
     {
         sprite->oam.priority = 2;
         sprite->subpriority = 200;
     }
 
     u8 battlerCopy;
-    u8 battler = battlerCopy = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+    u8 battler = battlerCopy = OPONENTE_IZQUIERDA;
     u8 rank = GetBattlerSpriteBGPriorityRank(battler);
     int var0 = 1;
     u8 toBG_2 = (rank ^ var0) != 0;
@@ -560,13 +560,13 @@ static void AnimDefensiveWall(struct Sprite *sprite)
     if (IsBattlerSpriteVisible(battler))
         MoveBattlerSpriteToBG(battler, toBG_2, FALSE);
 
-    battler = BATTLE_PARTNER(battlerCopy);
+    battler = ALIADO(battlerCopy);
     if (IsBattlerSpriteVisible(battler))
         MoveBattlerSpriteToBG(battler, toBG_2 ^ var0, FALSE);
 
     if (EsContraEntrenador())
     {
-        if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
+        if (GetBattlerSide(gBattleAnimAttacker) == LADO_JUGADOR)
         {
             sprite->x = 72;
             sprite->y = 80;
@@ -579,7 +579,7 @@ static void AnimDefensiveWall(struct Sprite *sprite)
     }
     else
     {
-        if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+        if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
             gBattleAnimArgs[0] = -gBattleAnimArgs[0];
 
         sprite->x = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_X) + gBattleAnimArgs[0];
@@ -593,7 +593,7 @@ static void AnimDefensiveWall(struct Sprite *sprite)
 
 static void AnimDefensiveWall_Step1(struct Sprite *sprite)
 {
-    u8 battler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+    u8 battler = OPONENTE_IZQUIERDA;
     if (!sprite->data[7])
     {
         sprite->data[7] = 1;
@@ -603,7 +603,7 @@ static void AnimDefensiveWall_Step1(struct Sprite *sprite)
     if (IsBattlerSpriteVisible(battler))
         gSprites[gBattlerSpriteIds[battler]].invisible = TRUE;
 
-    battler = BATTLE_PARTNER(battler);
+    battler = ALIADO(battler);
     if (IsBattlerSpriteVisible(battler))
         gSprites[gBattlerSpriteIds[battler]].invisible = TRUE;
 
@@ -649,12 +649,12 @@ static void AnimDefensiveWall_Step4(struct Sprite *sprite)
     if (--sprite->data[3] == -1)
     {
         u8 battlerCopy;
-        u8 battler = battlerCopy = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+        u8 battler = battlerCopy = OPONENTE_IZQUIERDA;
 
         if (IsBattlerSpriteVisible(battler))
             gSprites[gBattlerSpriteIds[battler]].invisible = FALSE;
 
-        battler = BATTLE_PARTNER(battlerCopy);
+        battler = ALIADO(battlerCopy);
         if (IsBattlerSpriteVisible(battler))
             gSprites[gBattlerSpriteIds[battler]].invisible = FALSE;
 
@@ -666,7 +666,7 @@ static void AnimDefensiveWall_Step4(struct Sprite *sprite)
 static void AnimDefensiveWall_Step5(struct Sprite *sprite)
 {
     u8 battlerCopy;
-    u8 battler = battlerCopy = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+    u8 battler = battlerCopy = OPONENTE_IZQUIERDA;
     u8 rank = GetBattlerSpriteBGPriorityRank(battler);
     int var0 = 1;
     bool8 toBG2 = (rank ^ var0) != 0;
@@ -674,7 +674,7 @@ static void AnimDefensiveWall_Step5(struct Sprite *sprite)
     if (IsBattlerSpriteVisible(battler))
         ResetBattleAnimBg(toBG2);
 
-    battler = BATTLE_PARTNER(battlerCopy);
+    battler = ALIADO(battlerCopy);
     if (IsBattlerSpriteVisible(battler))
         ResetBattleAnimBg(toBG2 ^ var0);
 
@@ -693,7 +693,7 @@ static void AnimWallSparkle(struct Sprite *sprite)
 
         if (EsContraEntrenador())
         {
-            if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
+            if (GetBattlerSide(gBattleAnimAttacker) == LADO_JUGADOR)
             {
                 sprite->x = 72 - gBattleAnimArgs[0];
                 sprite->y = gBattleAnimArgs[1] + 80;
@@ -726,7 +726,7 @@ static void AnimBentSpoon(struct Sprite *sprite)
     sprite->x = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_X_2);
     sprite->y = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_Y_PIC_OFFSET);
 
-    if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
     {
         StartSpriteAnim(sprite, 1);
         sprite->x -= 40;
@@ -750,7 +750,7 @@ static void AnimQuestionMark(struct Sprite *sprite)
     s16 x = GetBattlerSpriteCoordAttr(gBattleAnimAttacker, BATTLER_COORD_ATTR_WIDTH) /  2;
     s16 y = GetBattlerSpriteCoordAttr(gBattleAnimAttacker, BATTLER_COORD_ATTR_HEIGHT) / -2;
 
-    if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_OPPONENT)
+    if (GetBattlerSide(gBattleAnimAttacker) == LADO_OPONENTE)
         x = -x;
 
     sprite->x = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_X_2) + x;
@@ -814,7 +814,7 @@ void AnimTask_Teleport(u8 taskId)
     task->data[0] = spriteId;
     task->data[1] = 0;
     task->data[2] = 0;
-    task->data[3] = GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER ? 4 : 8;
+    task->data[3] = GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR ? 4 : 8;
 
     PrepareAffineAnimInTaskData(task, task->data[0], sAffineAnim_Teleport);
     task->func = AnimTask_Teleport_Step;

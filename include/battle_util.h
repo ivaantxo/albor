@@ -53,8 +53,6 @@ enum {
     ABILITYEFFECT_NEUTRALIZINGGAS,
     ABILITYEFFECT_FIELD_SPORT,         // Only used if B_SPORT_TURNS >= GEN_6
     ABILITYEFFECT_ON_WEATHER,
-    ABILITYEFFECT_ON_TERRAIN,
-    ABILITYEFFECT_SWITCH_IN_TERRAIN,
     ABILITYEFFECT_SWITCH_IN_WEATHER,
     ABILITYEFFECT_OPPORTUNIST,
     ABILITYEFFECT_SWITCH_IN_STATUSES,
@@ -78,7 +76,7 @@ enum {
 
 #define WEATHER_HAS_EFFECT ((!EstaHabilidadEnCampo(ABILITY_CLOUD_NINE) && !EstaHabilidadEnCampo(ABILITY_AIR_LOCK)))
 
-#define IS_WHOLE_SIDE_ALIVE(battler)    ((IsBattlerAlive(battler) && IsBattlerAlive(BATTLE_PARTNER(battler))))
+#define IS_WHOLE_SIDE_ALIVE(battler)    ((IsBattlerAlive(battler) && IsBattlerAlive(ALIADO(battler))))
 #define IS_ALIVE_AND_PRESENT(battler)   (IsBattlerAlive(battler) && IsBattlerSpritePresent(battler))
 
 // for Natural Gift and Fling
@@ -95,7 +93,6 @@ enum
     CANCELLER_SKY_DROP,
     CANCELLER_ASLEEP,
     CANCELLER_FROZEN,
-    CANCELLER_TRUANT,
     CANCELLER_RECHARGE,
     CANCELLER_FLINCH,
     CANCELLER_DISABLED,
@@ -114,7 +111,6 @@ enum
     CANCELLER_EXPLODING_DAMP,
     CANCELLER_MULTIHIT_MOVES,
     CANCELLER_END,
-    CANCELLER_PSYCHIC_TERRAIN,
     CANCELLER_END2,
 };
 
@@ -135,15 +131,16 @@ void HandleAction_ThrowBall(void);
 bool32 IsAffectedByFollowMe(u32 battlerAtk, u32 defSide, u32 move);
 void HandleAction_UseMove(void);
 void HandleAction_Switch(void);
-void HandleAction_UseItem(void);
 bool32 TryRunFromBattle(u32 battler);
 void HandleAction_Run(void);
 void HandleAction_TryFinish(void);
 void HandleAction_NothingIsFainted(void);
 void HandleAction_ActionFinished(void);
 u8 GetBattlerForBattleScript(u8 caseId);
-bool32 IsBattlerMarkedForControllerExec(u32 battler);
-void MarkBattlerForControllerExec(u32 battler);
+void MarcaCombatienteOcupado(u32 combatiente);
+void DesmarcaCombatienteOcupado(u32 combatiente);
+bool32 EstaCombatienteOcupado(u32 combatiente);
+bool32 HayAlgunCombatienteOcupado(void);
 const u8* CancelMultiTurnMoves(u32 battler);
 bool32 WasUnableToUseMove(u32 battler);
 void PrepareStringBattle(u16 stringId, u32 battler);
@@ -179,9 +176,9 @@ bool32 EstaHabilidadEnElLadoDeCombatiente(u32 battler, u32 ability);
 u32 QueCombatienteTieneHabilidad(u32 habilidad);
 bool32 EstaHabilidadEnCampoContrario(u32 combatiente, u32 habilidad);
 bool32 EstaHabilidadEnCampo(u32 habilidad);
-bool32 HabilidadRivalImpideEscapar(u32 combatiente);
+bool32 HabilidadImpideCambiar(u32 combatiente);
 bool32 IsBattlerProtected(u32 battlerAtk, u32 battlerDef, u32 move);
-bool32 PuedeCombatienteEscapar(u32 combatiente);
+bool32 PuedeCambiar(u32 combatiente);
 void BattleScriptExecute(const u8 *BS_ptr);
 void BattleScriptPushCursorAndCallback(const u8 *BS_ptr);
 u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn);
@@ -209,10 +206,6 @@ uq4_12_t GetTypeModifier(u32 atkType, u32 defType);
 uq4_12_t GetTypeEffectiveness(struct Pokemon *mon, u8 moveType);
 s32 GetStealthHazardDamage(u8 hazardType, u32 battler);
 s32 GetStealthHazardDamageByTypesAndHP(u8 hazardType, u8 type1, u8 type2, u32 maxHp);
-bool32 CanMegaEvolve(u32 battler);
-bool32 CanUltraBurst(u32 battler);
-void ActivateMegaEvolution(u32 battler);
-void ActivateUltraBurst(u32 battler);
 u16 GetBattleFormChangeTargetSpecies(u32 battler, u16 method);
 bool32 TryBattleFormChange(u32 battler, u32 method);
 bool32 DoBattlersShareType(u32 battler1, u32 battler2);
@@ -227,7 +220,6 @@ bool32 IsTelekinesisBannedSpecies(u16 species);
 bool32 IsHealBlockPreventingMove(u32 battler, u32 move);
 bool32 IsBelchPreventingMove(u32 battler, u32 move);
 bool32 HasEnoughHpToEatBerry(u32 battler, u32 hpFraction, u32 itemId);
-bool32 IsPartnerMonFromSameTrainer(u32 battler);
 u8 GetCategoryBasedOnStats(u32 battler);
 void SetShellSideArmCategory(void);
 bool32 MoveIsAffectedBySheerForce(u32 move);
@@ -235,7 +227,6 @@ bool32 TestIfSheerForceAffected(u32 battler, u16 move);
 void TryRestoreHeldItems(void);
 bool32 CanStealItem(u32 battlerStealing, u32 battlerItem, u16 item);
 void TrySaveExchangedItem(u32 battler, u16 stolenItem);
-bool32 IsPartnerMonFromSameTrainer(u32 battler);
 u8 TryHandleSeed(u32 battler, u32 terrainFlag, u8 statId, u16 itemId, bool32 execute);
 bool32 IsBattlerAffectedByHazards(u32 battler, bool32 toxicSpikes);
 void SortBattlersBySpeed(u8 *battlers, bool32 slowToFast);
@@ -267,10 +258,8 @@ bool32 CanBeParalyzed(u32 battler, u32 ability);
 bool32 CanBeFrozen(u32 battler, u32 ability);
 bool32 CanGetFrostbite(u32 battler);
 bool32 CanBeConfused(u32 battler);
-bool32 IsBattlerTerrainAffected(u32 battler, u32 terrainFlag);
 u32 GetBattlerAffectionHearts(u32 battler);
 u32 CountBattlerStatIncreases(u32 battler, bool32 countEvasionAcc);
-bool32 ChangeTypeBasedOnTerrain(u32 battler);
 void RemoveConfusionStatus(u32 battler);
 u8 GetBattlerGender(u32 battler);
 bool32 AreBattlersOfOppositeGender(u32 battler1, u32 battler2);

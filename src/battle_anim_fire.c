@@ -597,7 +597,7 @@ static void AnimSunlight(struct Sprite *sprite)
     StoreSpriteCallbackInData6(sprite, DestroyAnimSprite);
 }
 
-// Animates the secondary effect of MOVE_EMBER, where the flames grow and slide
+// Animates the secondary effect of MOVE_ASCUAS, where the flames grow and slide
 // horizontally a bit.
 // arg 0: initial x pixel offset
 // arg 1: initial y pixel offset
@@ -609,8 +609,8 @@ static void AnimSunlight(struct Sprite *sprite)
 static void AnimEmberFlare(struct Sprite *sprite)
 {
     if (GetBattlerSide(gBattleAnimAttacker) == GetBattlerSide(gBattleAnimTarget)
-        && (gBattleAnimAttacker == GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT)
-            || gBattleAnimAttacker == GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT)))
+        && (gBattleAnimAttacker == JUGADOR_DERECHA
+            || gBattleAnimAttacker == OPONENTE_DERECHA))
             gBattleAnimArgs[2] = -gBattleAnimArgs[2];
 
     sprite->callback = AnimTravelDiagonally;
@@ -817,7 +817,7 @@ static void AnimTask_EruptionLaunchRocks_Step(u8 taskId)
                 gSprites[task->tAttackerSpriteId].x2 = -3;
         }
 
-        if (task->tAttackerSide != B_SIDE_PLAYER)
+        if (task->tAttackerSide != LADO_JUGADOR)
         {
             if (++task->tTimer3 > 4)
             {
@@ -840,7 +840,7 @@ static void AnimTask_EruptionLaunchRocks_Step(u8 taskId)
     case 2:
         if (++task->tTimer1 > 4)
         {
-            if (task->tAttackerSide != B_SIDE_PLAYER)
+            if (task->tAttackerSide != LADO_JUGADOR)
                 PrepareEruptAnimTaskData(task, task->tAttackerSpriteId, 0xE0, 0x200, 0x180, 0xF0, 6);
             else
                 PrepareEruptAnimTaskData(task, task->tAttackerSpriteId, 0xE0, 0x200, 0x180, 0xC0, 6);
@@ -869,7 +869,7 @@ static void AnimTask_EruptionLaunchRocks_Step(u8 taskId)
 
         if (++task->tTimer3 > 24)
         {
-            if (task->tAttackerSide != B_SIDE_PLAYER)
+            if (task->tAttackerSide != LADO_JUGADOR)
                 PrepareEruptAnimTaskData(task, task->tAttackerSpriteId, 0x180, 0xF0, 0x100, 0x100, 8);
             else
                 PrepareEruptAnimTaskData(task, task->tAttackerSpriteId, 0x180, 0xC0, 0x100, 0x100, 8);
@@ -884,7 +884,7 @@ static void AnimTask_EruptionLaunchRocks_Step(u8 taskId)
         }
         break;
     case 5:
-        if (task->tAttackerSide != B_SIDE_PLAYER)
+        if (task->tAttackerSide != LADO_JUGADOR)
             gSprites[task->tAttackerSpriteId].y--;
 
         if (!UpdateEruptAnimTask(task))
@@ -912,7 +912,7 @@ static void CreateEruptionLaunchRocks(u32 spriteId, u8 taskId, u8 activeSpritesI
     u16 y = GetEruptionLaunchRockInitialYPos(spriteId);
     u16 x = gSprites[spriteId].x;
 
-    if(GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
+    if(GetBattlerSide(gBattleAnimAttacker) == LADO_JUGADOR)
     {
         x -= 12;
         sign = 1;
@@ -958,7 +958,7 @@ static u16 GetEruptionLaunchRockInitialYPos(u32 spriteId)
 {
     s16 y = gSprites[spriteId].y + gSprites[spriteId].y2 + gSprites[spriteId].centerToCornerVecY;
 
-    if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) == LADO_JUGADOR)
         y += 74;
     else
         y += 44;
@@ -1092,7 +1092,7 @@ void AnimWillOWispOrb(struct Sprite *sprite)
         StartSpriteAnim(sprite, gBattleAnimArgs[2]);
         sprite->data[7] = gBattleAnimArgs[2];
 
-        if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+        if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
         {
             sprite->data[4] = 4;
         }
@@ -1106,7 +1106,7 @@ void AnimWillOWispOrb(struct Sprite *sprite)
         break;
     case 1:
         sprite->data[1] += 192;
-        if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+        if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
         {
             sprite->y2 = -(sprite->data[1] >> 8);
         }
@@ -1203,8 +1203,8 @@ void AnimTask_MoveHeatWaveTargets(u8 taskId)
 {
     struct Task *task = &gTasks[taskId];
 
-    task->data[12] = GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER ? 1 : -1;
-    task->data[13] = IsBattlerSpriteVisible(BATTLE_PARTNER(gBattleAnimTarget)) + 1;
+    task->data[12] = GetBattlerSide(gBattleAnimAttacker) == LADO_JUGADOR ? 1 : -1;
+    task->data[13] = IsBattlerSpriteVisible(ALIADO(gBattleAnimTarget)) + 1;
     task->data[14] = GetAnimBattlerSpriteId(ANIM_TARGET);
     task->data[15] = GetAnimBattlerSpriteId(ANIM_DEF_PARTNER);
 

@@ -548,9 +548,9 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectMagnitude,
     },
 
-    [EFFECT_BATON_PASS] =
+    [EFECTO_RELEVO] =
     {
-        .battleScript = BattleScript_EffectBatonPass,
+        .battleScript = BattleScript_EffectRelevo,
     },
 
     [EFFECT_PURSUIT] =
@@ -641,11 +641,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_THUNDER] =
     {
         .battleScript = BattleScript_EffectHit,
-    },
-
-    [EFFECT_TELEPORT] =
-    {
-        .battleScript = BattleScript_EffectTeleport,
     },
 
     [EFECTO_ATAQUE_EQUIPO] =
@@ -1188,26 +1183,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectTopsyTurvy,
     },
 
-    [EFFECT_MISTY_TERRAIN] =
-    {
-        .battleScript = BattleScript_EffectMistyTerrain,
-    },
-
-    [EFFECT_GRASSY_TERRAIN] =
-    {
-        .battleScript = BattleScript_EffectGrassyTerrain,
-    },
-
-    [EFFECT_ELECTRIC_TERRAIN] =
-    {
-        .battleScript = BattleScript_EffectElectricTerrain,
-    },
-
-    [EFFECT_PSYCHIC_TERRAIN] =
-    {
-        .battleScript = BattleScript_EffectPsychicTerrain,
-    },
-
     [EFFECT_ATTACK_ACCURACY_UP] =
     {
         .battleScript = BattleScript_EffectAttackAccUp,
@@ -1603,11 +1578,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectPhotonGeyser,
     },
 
-    [EFFECT_TERRAIN_PULSE] =
-    {
-        .battleScript = BattleScript_EffectHit,
-    },
-
     [EFFECT_NO_RETREAT] =
     {
         .battleScript = BattleScript_EffectNoRetreat,
@@ -1826,16 +1796,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     {
         .battleScript = BattleScript_EffectSpicyExtract,
         .encourageEncore = TRUE,
-    },
-
-    [EFFECT_TERA_BLAST] =
-    {
-        .battleScript = BattleScript_EffectPhotonGeyser,
-    },
-
-    [EFFECT_TERA_STARSTORM] =
-    {
-        .battleScript = BattleScript_EffectPhotonGeyser,
     },
 
     [EFFECT_DRAGON_DARTS] =

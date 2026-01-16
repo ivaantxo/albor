@@ -314,7 +314,7 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 ar
     switch (area)
     {
     case WILD_AREA_LAND:
-        if (TRY_GET_ABILITY_INFLUENCED_WILD_MON_INDEX(wildMonInfo->wildPokemon, TIPO_ACERO, ABILITY_MAGNET_PULL, &wildMonIndex, LAND_WILD_COUNT))
+        if (TRY_GET_ABILITY_INFLUENCED_WILD_MON_INDEX(wildMonInfo->wildPokemon, TIPO_ACERO, ABILITY_IMAN, &wildMonIndex, LAND_WILD_COUNT))
             break;
         if (TRY_GET_ABILITY_INFLUENCED_WILD_MON_INDEX(wildMonInfo->wildPokemon, TIPO_ELECTRICO, ABILITY_STATIC, &wildMonIndex, LAND_WILD_COUNT))
             break;
@@ -332,7 +332,7 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 ar
         wildMonIndex = ChooseWildMonIndex_Land();
         break;
     case WILD_AREA_WATER:
-        if (TRY_GET_ABILITY_INFLUENCED_WILD_MON_INDEX(wildMonInfo->wildPokemon, TIPO_ACERO, ABILITY_MAGNET_PULL, &wildMonIndex, WATER_WILD_COUNT))
+        if (TRY_GET_ABILITY_INFLUENCED_WILD_MON_INDEX(wildMonInfo->wildPokemon, TIPO_ACERO, ABILITY_IMAN, &wildMonIndex, WATER_WILD_COUNT))
             break;
         if (TRY_GET_ABILITY_INFLUENCED_WILD_MON_INDEX(wildMonInfo->wildPokemon, TIPO_ELECTRICO, ABILITY_STATIC, &wildMonIndex, WATER_WILD_COUNT))
             break;

@@ -154,7 +154,7 @@ void AnimTask_CentredFrozenIceCube(u8 taskId)
     s16 x, y;
     u32 spriteId;
     u8 battler1 = gBattleAnimTarget;
-    u8 battler2 = BATTLE_PARTNER(battler1);
+    u8 battler2 = ALIADO(battler1);
 
     if (!EsContraEntrenador() || IsAlly(gBattleAnimAttacker, gBattleAnimTarget))
     {

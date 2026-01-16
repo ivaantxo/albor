@@ -104,7 +104,7 @@ EWRAM_DATA static u8 sAnimBackgroundFadeState = 0;
 EWRAM_DATA u16 gAnimMoveIndex = 0;
 EWRAM_DATA u8 gBattleAnimAttacker = 0;
 EWRAM_DATA u8 gBattleAnimTarget = 0;
-EWRAM_DATA u16 gAnimBattlerSpecies[MAX_BATTLERS_COUNT] = {0};
+EWRAM_DATA u16 gAnimBattlerSpecies[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u8 gAnimCustomPanning = 0;
 EWRAM_DATA static bool8 sAnimHideHpBoxes = FALSE;
 
@@ -225,8 +225,6 @@ static const u8* const sBattleAnims_General[NUM_B_ANIMS_GENERAL] =
     [B_ANIM_MAGIC_ROOM]             = gBattleAnimGeneral_MagicRoom,
     [B_ANIM_TAILWIND]               = gBattleAnimGeneral_Tailwind,
     [B_ANIM_FOG_CONTINUES]          = gBattleAnimGeneral_Fog,
-    [B_ANIM_TERA_CHARGE]            = gBattleAnimGeneral_TeraCharge,
-    [B_ANIM_TERA_ACTIVATE]          = gBattleAnimGeneral_TeraActivate,
     [B_ANIM_SIMPLE_HEAL]            = gBattleAnimGeneral_SimpleHeal,
 };
 
@@ -281,7 +279,7 @@ void DoMoveAnim(u16 move)
     {
         while (GetBattlerSide(gBattleAnimAttacker) == GetBattlerSide(gBattleAnimTarget))
         {
-            if (++gBattleAnimTarget >= MAX_BATTLERS_COUNT)
+            if (++gBattleAnimTarget >= NUMERO_COMBATIENTES)
                 gBattleAnimTarget = 0;
         }
     }
@@ -310,7 +308,6 @@ void LaunchBattleAnimation(u32 animType, u32 animId)
         case B_ANIM_GULP_MISSILE:
         case B_ANIM_RAINBOW:
         case B_ANIM_SEA_OF_FIRE:
-        case B_ANIM_TERA_CHARGE:
             sAnimHideHpBoxes = TRUE;
             break;
         default:
@@ -321,9 +318,9 @@ void LaunchBattleAnimation(u32 animType, u32 animId)
 
     InitPrioritiesForVisibleBattlers();
     UpdateOamPriorityInAllHealthboxes(0, sAnimHideHpBoxes);
-    for (i = 0; i < MAX_BATTLERS_COUNT; i++)
+    for (i = 0; i < NUMERO_COMBATIENTES; i++)
     {
-        if (GetBattlerSide(i) != B_SIDE_PLAYER)
+        if (GetBattlerSide(i) != LADO_JUGADOR)
             gAnimBattlerSpecies[i] = GetMonData(&gEnemyParty[gBattlerPartyIndexes[i]], MON_DATA_SPECIES);
         else
             gAnimBattlerSpecies[i] = GetMonData(&gPlayerParty[gBattlerPartyIndexes[i]], MON_DATA_SPECIES);
@@ -506,7 +503,7 @@ static u8 GetBattleAnimMoveTargets(u8 battlerArgIndex, u8 *targets)
             for (i = 0; i < gBattlersCount; i++)
             {
                 if (i != gBattleAnimAttacker && IS_ALIVE_AND_PRESENT(i))
-                    targets[numTargets++] = i + MAX_BATTLERS_COUNT; // anim ids for battler ids
+                    targets[numTargets++] = i + NUMERO_COMBATIENTES; // anim ids for battler ids
             }
         }
         break;
@@ -514,7 +511,7 @@ static u8 GetBattleAnimMoveTargets(u8 battlerArgIndex, u8 *targets)
         for (i = 0; i < gBattlersCount; i++)
         {
             if (i != ignoredTgt && !IsAlly(i, ignoredTgt) && IS_ALIVE_AND_PRESENT(i))
-                targets[numTargets++] = i + MAX_BATTLERS_COUNT;
+                targets[numTargets++] = i + NUMERO_COMBATIENTES;
         }
         break;
     default:
@@ -593,7 +590,7 @@ static void Cmd_createsprite(void)
 static void CreateSpriteOnTargets(const struct SpriteTemplate *template, u8 argVar, u8 battlerArgIndex, u8 argsCount, bool32 overwriteAnimTgt)
 {
     u32 i, battler;
-    u8 targets[MAX_BATTLERS_COUNT];
+    u8 targets[NUMERO_COMBATIENTES];
     int ntargets;
     s16 subpriority;
 
@@ -711,7 +708,7 @@ static void Cmd_createvisualtaskontargets(void)
     u8 numArgs;
     u8 battlerArgIndex; // index in gBattleAnimArgs that has the battlerId
     s32 i;
-    u8 targets[MAX_BATTLERS_COUNT] = {0};
+    u8 targets[NUMERO_COMBATIENTES] = {0};
 
     sBattleAnimScriptPtr++;
 
@@ -903,8 +900,8 @@ static void Cmd_monbg(void)
     // Move designated battler to background
     if (IsBattlerSpriteVisible(battlerId))
     {
-        u8 position = GetBattlerPosition(battlerId);
-        if (position == B_POSITION_OPPONENT_LEFT || position == B_POSITION_PLAYER_RIGHT)
+        u8 position = battlerId;
+        if (position == OPONENTE_IZQUIERDA || position == JUGADOR_DERECHA)
             toBG_2 = FALSE;
         else
             toBG_2 = TRUE;
@@ -923,8 +920,8 @@ static void Cmd_monbg(void)
     battlerId ^= BIT_FLANK;
     if (IsBattlerSpriteVisible(battlerId))
     {
-        u8 position = GetBattlerPosition(battlerId);
-        if (position == B_POSITION_OPPONENT_LEFT || position == B_POSITION_PLAYER_RIGHT)
+        u8 position = battlerId;
+        if (position == OPONENTE_IZQUIERDA || position == JUGADOR_DERECHA)
             toBG_2 = FALSE;
         else
             toBG_2 = TRUE;
@@ -953,11 +950,11 @@ u8 GetAnimBattlerId(u8 wantedBattler)
     case ANIM_TARGET:
         return gBattleAnimTarget;
     case ANIM_ATK_PARTNER:
-        return BATTLE_PARTNER(gBattleAnimAttacker);
+        return ALIADO(gBattleAnimAttacker);
     case ANIM_DEF_PARTNER:
-        return BATTLE_PARTNER(gBattleAnimTarget);
+        return ALIADO(gBattleAnimTarget);
     case ANIM_PLAYER_LEFT ... ANIM_OPPONENT_RIGHT:
-        return wantedBattler - MAX_BATTLERS_COUNT;
+        return wantedBattler - NUMERO_COMBATIENTES;
     }
 }
 
@@ -1004,7 +1001,7 @@ void MoveBattlerSpriteToBG(u8 battlerId, bool8 toBG_2, bool8 setSpriteInvisible)
         LoadPalette(&gPlttBufferUnfaded[OBJ_PLTT_ID(battlerId)], BG_PLTT_ID(animBg.paletteId), PLTT_SIZE_4BPP);
         CopiaCpu32(&gPlttBufferUnfaded[OBJ_PLTT_ID(battlerId)], (void *)(BG_PLTT + PLTT_OFFSET_4BPP(animBg.paletteId)), PLTT_SIZE_4BPP);
 
-        battlerPosition = GetBattlerPosition(battlerId);
+        battlerPosition = battlerId;
 
         DrawBattlerOnBg(1, 0, 0, battlerPosition, animBg.paletteId, animBg.bgTiles, animBg.bgTilemap, animBg.tilesOffset);
     }
@@ -1033,7 +1030,7 @@ void MoveBattlerSpriteToBG(u8 battlerId, bool8 toBG_2, bool8 setSpriteInvisible)
         LoadPalette(&gPlttBufferUnfaded[OBJ_PLTT_ID(battlerId)], BG_PLTT_ID(9), PLTT_SIZE_4BPP);
         CopiaCpu32(&gPlttBufferUnfaded[OBJ_PLTT_ID(battlerId)], (void *)(BG_PLTT + PLTT_OFFSET_4BPP(9)), PLTT_SIZE_4BPP);
 
-        DrawBattlerOnBg(2, 0, 0, GetBattlerPosition(battlerId), animBg.paletteId, animBg.bgTiles + 0x1000, animBg.bgTilemap + 0x400, animBg.tilesOffset);
+        DrawBattlerOnBg(2, 0, 0, battlerId, animBg.paletteId, animBg.bgTiles + 0x1000, animBg.bgTilemap + 0x400, animBg.tilesOffset);
     }
 }
 
@@ -1134,7 +1131,7 @@ static void Cmd_clearmonbg(void)
     if (sMonAnimTaskIdArray[0] != TASK_NONE)
         gSprites[gBattlerSpriteIds[battlerId]].invisible = FALSE;
     if (animBattlerId > 1 && sMonAnimTaskIdArray[1] != TASK_NONE)
-        gSprites[gBattlerSpriteIds[BATTLE_PARTNER(battlerId)]].invisible = FALSE;
+        gSprites[gBattlerSpriteIds[ALIADO(battlerId)]].invisible = FALSE;
     else
         animBattlerId = 0;
 
@@ -1151,8 +1148,8 @@ static void Task_ClearMonBg(u8 taskId)
     if (gTasks[taskId].data[1] != 1)
     {
         u8 to_BG2;
-        u8 position = GetBattlerPosition(gTasks[taskId].data[2]);
-        if (position == B_POSITION_OPPONENT_LEFT || position == B_POSITION_PLAYER_RIGHT)
+        u32 position = gTasks[taskId].data[2];
+        if (position == OPONENTE_IZQUIERDA || position == JUGADOR_DERECHA)
             to_BG2 = FALSE;
         else
             to_BG2 = TRUE;
@@ -1196,8 +1193,8 @@ static void Cmd_monbg_static(void)
 
     if (IsBattlerSpriteVisible(battlerId))
     {
-        u8 position = GetBattlerPosition(battlerId);
-        if (position == B_POSITION_OPPONENT_LEFT || position == B_POSITION_PLAYER_RIGHT)
+        u8 position = battlerId;
+        if (position == OPONENTE_IZQUIERDA || position == JUGADOR_DERECHA)
             toBG_2 = FALSE;
         else
             toBG_2 = TRUE;
@@ -1208,8 +1205,8 @@ static void Cmd_monbg_static(void)
     battlerId ^= BIT_FLANK;
     if (animBattlerId > 1 && IsBattlerSpriteVisible(battlerId))
     {
-        u8 position = GetBattlerPosition(battlerId);
-        if (position == B_POSITION_OPPONENT_LEFT || position == B_POSITION_PLAYER_RIGHT)
+        u8 position = battlerId;
+        if (position == OPONENTE_IZQUIERDA || position == JUGADOR_DERECHA)
             toBG_2 = FALSE;
         else
             toBG_2 = TRUE;
@@ -1241,8 +1238,8 @@ static void Cmd_clearmonbg_static(void)
 
     if (IsBattlerSpriteVisible(battlerId))
         gSprites[gBattlerSpriteIds[battlerId]].invisible = FALSE;
-    if (animBattlerId > 1 && IsBattlerSpriteVisible(BATTLE_PARTNER(battlerId)))
-        gSprites[gBattlerSpriteIds[BATTLE_PARTNER(battlerId)]].invisible = FALSE;
+    if (animBattlerId > 1 && IsBattlerSpriteVisible(ALIADO(battlerId)))
+        gSprites[gBattlerSpriteIds[ALIADO(battlerId)]].invisible = FALSE;
     else
         animBattlerId = 0;
 
@@ -1260,15 +1257,15 @@ static void Task_ClearMonBgStatic(u8 taskId)
     {
         bool8 toBG_2;
         u8 battlerId = gTasks[taskId].data[2];
-        u8 position = GetBattlerPosition(battlerId);
-        if (position == B_POSITION_OPPONENT_LEFT || position == B_POSITION_PLAYER_RIGHT)
+        u8 position = battlerId;
+        if (position == OPONENTE_IZQUIERDA || position == JUGADOR_DERECHA)
             toBG_2 = FALSE;
         else
             toBG_2 = TRUE;
 
         if (IsBattlerSpriteVisible(battlerId))
             ResetBattleAnimBg(toBG_2);
-        if (gTasks[taskId].data[0] > 1 && IsBattlerSpriteVisible(BATTLE_PARTNER(battlerId)))
+        if (gTasks[taskId].data[0] > 1 && IsBattlerSpriteVisible(ALIADO(battlerId)))
             ResetBattleAnimBg(toBG_2 ^ 1);
 
         DestroyTask(taskId);
@@ -1377,7 +1374,7 @@ static void Cmd_fadetobgfromset(void)
     sBattleAnimScriptPtr += 3;
     taskId = CreateTask(Task_FadeToBg, 5);
 
-    if (GetBattlerSide(gBattleAnimTarget) == B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimTarget) == LADO_JUGADOR)
         gTasks[taskId].tBackgroundId = bg2;
     else
         gTasks[taskId].tBackgroundId = bg1;
@@ -1479,14 +1476,14 @@ s8 BattleAnimAdjustPanning(s8 pan)
 {
     if (gBattleSpritesDataPtr->healthBoxesData[gBattleAnimAttacker].statusAnimActive)
     {
-        if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+        if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
             pan = SOUND_PAN_TARGET;
         else
             pan = SOUND_PAN_ATTACKER;
     }
-    else if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
+    else if (GetBattlerSide(gBattleAnimAttacker) == LADO_JUGADOR)
     {
-        if (GetBattlerSide(gBattleAnimTarget) == B_SIDE_PLAYER)
+        if (GetBattlerSide(gBattleAnimTarget) == LADO_JUGADOR)
         {
             if (pan == SOUND_PAN_TARGET)
                 pan = SOUND_PAN_ATTACKER;
@@ -1494,7 +1491,7 @@ s8 BattleAnimAdjustPanning(s8 pan)
                 pan *= -1;
         }
     }
-    else if (GetBattlerSide(gBattleAnimTarget) == B_SIDE_OPPONENT)
+    else if (GetBattlerSide(gBattleAnimTarget) == LADO_OPONENTE)
     {
         if (pan == SOUND_PAN_ATTACKER)
             pan = SOUND_PAN_TARGET;
@@ -1516,14 +1513,14 @@ s8 BattleAnimAdjustPanning2(s8 pan)
 {
     if (gBattleSpritesDataPtr->healthBoxesData[gBattleAnimAttacker].statusAnimActive)
     {
-        if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+        if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
             pan = SOUND_PAN_TARGET;
         else
             pan = SOUND_PAN_ATTACKER;
     }
     else
     {
-        if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+        if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
             pan = -pan;
     }
     return pan;
@@ -1900,8 +1897,8 @@ static void Cmd_splitbgprio(void)
         battlerId = gBattleAnimAttacker;
 
     // Apply only if the given battler is the lead (on left from team's perspective)
-    battlerPosition = GetBattlerPosition(battlerId);
-    if (battlerPosition == B_POSITION_PLAYER_LEFT || battlerPosition == B_POSITION_OPPONENT_RIGHT)
+    battlerPosition = battlerId;
+    if (battlerPosition == JUGADOR_IZQUIERDA || battlerPosition == OPONENTE_DERECHA)
     {
         SetAnimBgAttribute(1, BG_ANIM_PRIORITY, 1);
         SetAnimBgAttribute(2, BG_ANIM_PRIORITY, 2);
@@ -1933,8 +1930,8 @@ static void Cmd_splitbgprio_foes(void)
             battlerId = gBattleAnimAttacker;
 
         // Apply only if the given battler is the lead (on left from team's perspective)
-        battlerPosition = GetBattlerPosition(battlerId);
-        if (battlerPosition == B_POSITION_PLAYER_LEFT || battlerPosition == B_POSITION_OPPONENT_RIGHT)
+        battlerPosition = battlerId;
+        if (battlerPosition == JUGADOR_IZQUIERDA || battlerPosition == OPONENTE_DERECHA)
         {
             SetAnimBgAttribute(1, BG_ANIM_PRIORITY, 1);
             SetAnimBgAttribute(2, BG_ANIM_PRIORITY, 2);
@@ -2003,7 +2000,7 @@ static void Cmd_createdragondartsprite(void)
         else
             template.paletteTag = ANIM_TAG_DREEPY;
         template.oam = &gOamData_AffineOff_ObjNormal_32x32;
-        if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_OPPONENT)
+        if (GetBattlerSide(gBattleAnimAttacker) == LADO_OPONENTE)
             template.anims = gAnims_DreepyMissileOpponent;
         else
             template.anims = gAnims_DreepyMissilePlayer;
@@ -2013,7 +2010,7 @@ static void Cmd_createdragondartsprite(void)
         template.tileTag = ANIM_TAG_AIR_WAVE;
         template.paletteTag = ANIM_TAG_DREEPY;
         template.oam = &gOamData_AffineOff_ObjNormal_32x16;
-        if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_OPPONENT)
+        if (GetBattlerSide(gBattleAnimAttacker) == LADO_OPONENTE)
             template.anims = gAnims_DreepyMissileOpponentNotDrag;
         else
             template.anims = gAnims_DreepyMissilePlayer;

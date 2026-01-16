@@ -74,7 +74,7 @@ struct BattleDebugMenu
 
     struct BattleDebugModifyArrows modifyArrows;
     const struct BitfieldInfo *bitfield;
-    bool8 battlerWasChanged[MAX_BATTLERS_COUNT];
+    bool8 battlerWasChanged[NUMERO_COMBATIENTES];
 
     u8 aiViewState;
 
@@ -83,7 +83,7 @@ struct BattleDebugMenu
 
     union
     {
-        u8 aiIconSpriteIds[MAX_BATTLERS_COUNT];
+        u8 aiIconSpriteIds[NUMERO_COMBATIENTES];
         u8 aiPartyIcons[PARTY_SIZE];
     } spriteIds;
 };
@@ -359,7 +359,7 @@ static const u8 sText_CheckViability[] = _("Check Viability");
 static const u8 sText_SetUpFirstTurn[] = _("Setup First Turn");
 static const u8 sText_Risky[] = _("Risky");
 static const u8 sText_PreferStrongestMove[] = _("Prefer Strongest Move");
-static const u8 sText_PreferBatonPass[] = _("Prefer Baton Pass");
+static const u8 sText_PreferRelevo[] = _("Prefer Baton Pass");
 static const u8 sText_DoubleBattle[] = _("Double Battle");
 static const u8 sText_HpAware[] = _("HP Aware");
 static const u8 sText_PowerfulStatus[] = _("Powerful Status");
@@ -593,7 +593,7 @@ static const struct ListMenuItem sAIListItems[] =
     {sText_SetUpFirstTurn, LIST_AI_SETUP_FIRST_TURN},
     {sText_Risky, LIST_AI_RISKY},
     {sText_PreferStrongestMove, LIST_AI_PREFER_STRONGEST_MOVE},
-    {sText_PreferBatonPass, LIST_AI_PREFER_BATON_PASS},
+    {sText_PreferRelevo, LIST_AI_PREFER_BATON_PASS},
     {sText_DoubleBattle, LIST_AI_DOUBLE_BATTLE},
     {sText_HpAware, LIST_AI_HP_AWARE},
     {sText_PowerfulStatus, LIST_AI_POWERFUL_STATUS},
@@ -897,7 +897,7 @@ static void PutMovesPointsText(struct BattleDebugMenu *data)
         text[0] = CHAR_SPACE;
         StringCopy(text + 1, GetMoveName(gBattleMons[data->aiBattlerId].moves[i]));
         AddTextPrinterParameterized(data->aiMovesWindowId, FONT_NORMAL, text, 0, i * 15, 0, NULL);
-        for (count = 0, j = 0; j < MAX_BATTLERS_COUNT; j++)
+        for (count = 0, j = 0; j < NUMERO_COMBATIENTES; j++)
         {
             if (data->spriteIds.aiIconSpriteIds[j] == 0xFF)
                 continue;
@@ -926,7 +926,7 @@ static void CleanUpAIInfoWindow(u8 taskId)
     struct BattleDebugMenu *data = GetStructPtr(taskId);
 
     //FreeMonIconPalettes();
-    for (i = 0; i < MAX_BATTLERS_COUNT; i++)
+    for (i = 0; i < NUMERO_COMBATIENTES; i++)
     {
         if (data->spriteIds.aiIconSpriteIds[i] != 0xFF)
             BorraIconoPokemon(&gSprites[data->spriteIds.aiIconSpriteIds[i]]);
@@ -951,14 +951,14 @@ static void Task_ShowAIPoints(u8 taskId)
 
         // Swap battler if it's player mon
         data->aiBattlerId = data->battlerId;
-        while (!BattlerHasAi(data->aiBattlerId))
+        while (!CombatienteEsIA(data->aiBattlerId))
         {
             if (++data->aiBattlerId >= gBattlersCount)
                 data->aiBattlerId = 0;
         }
         data->battlerId = data->aiBattlerId;
 
-        for (count = 0, i = 0; i < MAX_BATTLERS_COUNT; i++)
+        for (count = 0, i = 0; i < NUMERO_COMBATIENTES; i++)
         {
             if (i != data->aiBattlerId && IsBattlerAlive(i))
             {
@@ -1009,7 +1009,7 @@ static void Task_ShowAIPoints(u8 taskId)
                     data->battlerId = gBattlersCount - 1;
                 else
                     data->battlerId--;
-            } while (!IsBattlerAlive(data->battlerId) || !BattlerHasAi(data->battlerId));
+            } while (!IsBattlerAlive(data->battlerId) || !CombatienteEsIA(data->battlerId));
             data->aiViewState = 0;
         }
         else if (JOY_NEW(SELECT_BUTTON | B_BUTTON))
@@ -1052,12 +1052,12 @@ static void PutAIInfoText(struct BattleDebugMenu *data)
     // items info
     for (i = 0; i < gBattlersCount; i++)
     {
-        if (GetBattlerSide(i) == B_SIDE_PLAYER && IsBattlerAlive(i))
+        if (GetBattlerSide(i) == LADO_JUGADOR && IsBattlerAlive(i))
         {
             u32 ability = AI_DATA->abilities[i];
             u32 holdEffect = AI_DATA->holdEffects[i];
             u32 item = AI_DATA->items[i];
-            u32 x = (i == B_POSITION_PLAYER_LEFT) ? 83 + (i) * 75 : 83 + (i - 1) * 75;
+            u32 x = (i == JUGADOR_IZQUIERDA) ? 83 + (i) * 75 : 83 + (i - 1) * 75;
             AddTextPrinterParameterized(data->aiMovesWindowId, FONT_SMALL, gAbilitiesInfo[ability].name, x, 0, 0, NULL);
             AddTextPrinterParameterized(data->aiMovesWindowId, FONT_SMALL, ItemId_GetName(item), x, 15, 0, NULL);
             AddTextPrinterParameterized(data->aiMovesWindowId, FONT_SMALL, GetHoldEffectName(holdEffect), x, 30, 0, NULL);
@@ -1130,15 +1130,15 @@ static void Task_ShowAIKnowledge(u8 taskId)
 
         // Swap battler if it's player mon
         data->aiBattlerId = data->battlerId;
-        while (!BattlerHasAi(data->aiBattlerId))
+        while (!CombatienteEsIA(data->aiBattlerId))
         {
             if (++data->aiBattlerId >= gBattlersCount)
                 data->aiBattlerId = 0;
         }
 
-        for (count = 0, i = 0; i < MAX_BATTLERS_COUNT; i++)
+        for (count = 0, i = 0; i < NUMERO_COMBATIENTES; i++)
         {
-            if (GetBattlerSide(i) == B_SIDE_PLAYER && IsBattlerAlive(i))
+            if (GetBattlerSide(i) == LADO_JUGADOR && IsBattlerAlive(i))
             {
                 data->spriteIds.aiIconSpriteIds[i] = CreaIconoPokemon(gBattleMons[i].species, 95 + (count * 80), 17, 0, 0);
                 gSprites[data->spriteIds.aiIconSpriteIds[i]].data[0] = i; // battler id
@@ -1751,10 +1751,10 @@ static void UpdateBattlerValue(struct BattleDebugMenu *data)
     case VAR_IN_LOVE:
         if (data->modifyArrows.currValue)
         {
-            if (IsBattlerAlive(BATTLE_OPPOSITE(data->battlerId)))
-                gBattleMons[data->battlerId].status2 |= STATUS2_INFATUATED_WITH(BATTLE_OPPOSITE(data->battlerId));
+            if (IsBattlerAlive(OPONENTE(data->battlerId)))
+                gBattleMons[data->battlerId].status2 |= STATUS2_INFATUATED_WITH(OPONENTE(data->battlerId));
             else
-                gBattleMons[data->battlerId].status2 |= STATUS2_INFATUATED_WITH(BATTLE_PARTNER(BATTLE_OPPOSITE(data->battlerId)));
+                gBattleMons[data->battlerId].status2 |= STATUS2_INFATUATED_WITH(ALIADO(OPONENTE(data->battlerId)));
         }
         else
         {
@@ -2219,7 +2219,7 @@ static void UpdateMonData(struct BattleDebugMenu *data)
 {
     s32 i, j;
 
-    for (i = 0; i < MAX_BATTLERS_COUNT; i++)
+    for (i = 0; i < NUMERO_COMBATIENTES; i++)
     {
         if (data->battlerWasChanged[i])
         {
@@ -2365,7 +2365,6 @@ static const u8 sText_HoldEffectSnowball[] = _("Snowball");
 static const u8 sText_HoldEffectWeaknessPolicy[] = _("Weakness Policy");
 static const u8 sText_HoldEffectPrimalOrb[] = _("Primal Orb");
 static const u8 sText_HoldEffectProtectivePads[] = _("Protective Pads");
-static const u8 sText_HoldEffectTerrainExtender[] = _("Terrain Extender");
 static const u8 sText_HoldEffectSeeds[] = _("Seeds");
 static const u8 sText_HoldEffectAdrenalineOrb[] = _("Adrenaline Orb");
 static const u8 sText_HoldEffectMemory[] = _("Memory");
@@ -2516,7 +2515,6 @@ static const u8 *const sHoldEffectNames[] =
     [HOLD_EFFECT_WEAKNESS_POLICY] = sText_HoldEffectWeaknessPolicy,
     [HOLD_EFFECT_PRIMAL_ORB] = sText_HoldEffectPrimalOrb,
     [HOLD_EFFECT_PROTECTIVE_PADS] = sText_HoldEffectProtectivePads,
-    [HOLD_EFFECT_TERRAIN_EXTENDER] = sText_HoldEffectTerrainExtender,
     [HOLD_EFFECT_SEEDS] = sText_HoldEffectSeeds,
     [HOLD_EFFECT_ADRENALINE_ORB] = sText_HoldEffectAdrenalineOrb,
     [HOLD_EFFECT_MEMORY] = sText_HoldEffectMemory,

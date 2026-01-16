@@ -104,33 +104,6 @@ u16 RtcGetDayCount(struct SiiRtcInfo *rtc)
     return ConvertDateToDayCount(year, month, day);
 }
 
-void RtcInit(void)
-{
-    if (OW_USE_FAKE_RTC)
-        return;
-
-    sErrorStatus = 0;
-
-    RtcDisableInterrupts();
-    SiiRtcUnprotect();
-    sProbeResult = SiiRtcProbe();
-    RtcRestoreInterrupts();
-
-    if ((sProbeResult & 0xF) != 1)
-    {
-        sErrorStatus = RTC_INIT_ERROR;
-        return;
-    }
-
-    if (sProbeResult & 0xF0)
-        sErrorStatus = RTC_INIT_WARNING;
-    else
-        sErrorStatus = 0;
-
-    RtcGetRawInfo(&sRtc);
-    sErrorStatus = RtcCheckInfo(&sRtc);
-}
-
 u16 RtcGetErrorStatus(void)
 {
     return (OW_USE_FAKE_RTC) ? 0 : sErrorStatus;

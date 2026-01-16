@@ -44,7 +44,6 @@ u32 ConvertBcdToBinary(u8 bcd);
 bool8 IsLeapYear(u32 year);
 u16 ConvertDateToDayCount(u8 year, u8 month, u8 day);
 u16 RtcGetDayCount(struct SiiRtcInfo *rtc);
-void RtcInit(void);
 u16 RtcGetErrorStatus(void);
 void RtcGetInfo(struct SiiRtcInfo *rtc);
 void RtcGetDateTime(struct SiiRtcInfo *rtc);

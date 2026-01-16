@@ -20,6 +20,9 @@ EFFECT_SEMI_INVULNERABLE/EFFECT_SKY_DROP: semi-invulnerable STATUS3 to apply to 
 EFFECT_TWO_TURNS_ATTACK/EFFECT_SOLAR_BEAM: weather in which to skip charge turn */
 #define TWO_TURN_ARG(stringid, ...) (stringid) __VA_OPT__(| ((__VA_ARGS__) << 16))
 
+#define PP_MOVIMIENTO_ESTADO 10
+#define PP_MOVIMIENTO_OFENSIVO 20
+
 // Shared Move Description entries
 
 const u8 gNotDoneYetDescription[] = _(
@@ -219,10 +222,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .punchingMove = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY, COMBO_STARTER_MIND_READER},
         .battleAnimScript = gBattleAnimMove_MegaPunch,
     },
 
@@ -266,10 +265,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 10,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_ICE_PUNCH, COMBO_STARTER_SUNNY_DAY, COMBO_STARTER_THUNDER_PUNCH},
         .battleAnimScript = gBattleAnimMove_FirePunch,
     },
 
@@ -297,10 +292,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_FREEZE_OR_FROSTBITE,
             .chance = 10,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_FIRE_PUNCH, COMBO_STARTER_THUNDER_PUNCH},
         .battleAnimScript = gBattleAnimMove_IcePunch,
     },
 
@@ -324,10 +315,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 10,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_CHARGE, COMBO_STARTER_FIRE_PUNCH, COMBO_STARTER_ICE_PUNCH},
         .battleAnimScript = gBattleAnimMove_ThunderPunch,
     },
 
@@ -652,10 +639,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY, COMBO_STARTER_MIND_READER},
         .battleAnimScript = gBattleAnimMove_MegaKick,
     },
 
@@ -722,10 +705,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .magicCoatAffected = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_MUD_SLAP, COMBO_STARTER_SANDSTORM},
         .battleAnimScript = gBattleAnimMove_SandAttack,
     },
 
@@ -786,10 +765,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_HORN_ATTACK, COMBO_STARTER_PECK},
         .battleAnimScript = gBattleAnimMove_FuryAttack,
     },
 
@@ -833,10 +808,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_DEFENSE_CURL, COMBO_STARTER_HARDEN, COMBO_STARTER_LEER},
         .battleAnimScript = gBattleAnimMove_Tackle,
     },
 
@@ -901,10 +872,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY, COMBO_STARTER_HARDEN},
         .battleAnimScript = gBattleAnimMove_TakeDown,
     },
 
@@ -947,10 +914,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY, COMBO_STARTER_HARDEN},
         .battleAnimScript = gBattleAnimMove_DoubleEdge,
     },
 
@@ -1052,10 +1015,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_ESTADO,
         .eyesMove = TRUE,
         .magicCoatAffected = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_RAGE, COMBO_STARTER_SCARY_FACE},
         .battleAnimScript = gBattleAnimMove_Leer,
     },
 
@@ -1079,10 +1038,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_FLINCH,
             .chance = 30,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_LEER, COMBO_STARTER_SCARY_FACE},
         .battleAnimScript = gBattleAnimMove_Bite,
     },
 
@@ -1221,59 +1176,55 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
     {
         .name = COMPOUND_STRING("Ácido"),
         .description = COMPOUND_STRING(
-            "Sprays a hide-melting acid.\n"
-        #if B_UPDATED_MOVE_DATA >= GEN_4
-            "May lower Sp. Def."),
-        #else
-            "May lower Defense."),
-        #endif
+            "Dispara veneno con 50%\n"
+            "de bajar la defensa."),
         .effect = EFFECT_HIT,
-        .power = 40,
+        .power = 50,
         .type = TIPO_VENENO,
         .accuracy = 100,
-        .pp = 30,
-        .target = MOVE_TARGET_BOTH,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
+        .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
             .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_DEF_MINUS_1,
-            .chance = 100,
+            .chance = 50,
         }),
         .battleAnimScript = gBattleAnimMove_Acid,
     },
 
-    [MOVE_EMBER] =
+    [MOVE_ASCUAS] =
     {
         .name = COMPOUND_STRING("Ascuas"),
         .description = COMPOUND_STRING(
-            "A weak fire attack that may\n"
-            "inflict a burn."),
+            "Golpe débil, pero con 50%\n"
+            "de quemar al rival."),
         .effect = EFFECT_HIT,
-        .power = 40,
+        .power = 50,
         .type = TIPO_FUEGO,
         .accuracy = 100,
-        .pp = 25,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
-            .chance = 10,
+            .chance = 50,
         }),
         .battleAnimScript = gBattleAnimMove_Ember,
     },
 
-    [MOVE_FLAMETHROWER] =
+    [MOVE_LANZALLAMAS] =
     {
         .name = COMPOUND_STRING("Lanzallamas"),
         .description = COMPOUND_STRING(
-            "A powerful fire attack that\n"
-            "may inflict a burn."),
+            "Ataque poderoso que tiene\n"
+            "10% de quemar al rival."),
         .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 90 : 95,
+        .power = 90,
         .type = TIPO_FUEGO,
         .accuracy = 100,
-        .pp = 15,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
@@ -1318,10 +1269,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_MUD_SPORT, COMBO_STARTER_RAIN_DANCE, COMBO_STARTER_WATER_SPORT},
         .battleAnimScript = gBattleAnimMove_WaterGun,
     },
 
@@ -1359,10 +1306,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_ESPECIAL,
         .damagesUnderwater = TRUE,
         .skyBattleBanned = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_DIVE, COMBO_STARTER_RAIN_DANCE},
         .battleAnimScript = gBattleAnimMove_Surf,
     },
 
@@ -1416,10 +1359,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_FREEZE_OR_FROSTBITE,
             .chance = 10,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_HAIL, COMBO_STARTER_POWDER_SNOW},
         .battleAnimScript = gBattleAnimMove_Blizzard,
     },
 
@@ -1691,10 +1630,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .magicCoatAffected = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_GROWTH, COMBO_STARTER_WORRY_SEED},
         .battleAnimScript = gBattleAnimMove_LeechSeed,
     },
 
@@ -1759,10 +1694,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .sleepTalkBanned = TRUE,
         .instructBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKSUNLIGHT, B_WEATHER_SUN),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_GROWTH, COMBO_STARTER_SUNNY_DAY},
         .battleAnimScript = gBattleAnimMove_SolarBeam,
     },
 
@@ -1994,10 +1925,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 30,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_CHARGE, COMBO_STARTER_LOCK_ON, COMBO_STARTER_RAIN_DANCE},
         .battleAnimScript = gBattleAnimMove_Thunder,
     },
 
@@ -2116,10 +2043,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_CONFUSION,
             .chance = 10,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_CALM_MIND, COMBO_STARTER_KINESIS, COMBO_STARTER_PSYCHIC},
         .battleAnimScript = gBattleAnimMove_Confusion,
     },
 
@@ -2141,10 +2064,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_SP_DEF_MINUS_1,
             .chance = 10,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_CALM_MIND, COMBO_STARTER_CONFUSION, COMBO_STARTER_KINESIS},
         .battleAnimScript = gBattleAnimMove_Psychic,
     },
 
@@ -2242,27 +2161,23 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_Rage,
     },
 
-    [MOVE_TELEPORT] =
+    [MOVE_TELETRANSPORTE] =
     {
         .name = COMPOUND_STRING("Teletransporte"),
         .description = COMPOUND_STRING(
-            "A psychic move for fleeing\n"
-            "from battle instantly."),
-        .effect = EFFECT_TELEPORT,
+            "Cambia por compañero con prioridad,\n"
+            "manteniendo cambios de estadísticas."),
+        .effect = EFECTO_RELEVO,
         .power = 0,
         .type = TIPO_PSIQUICO,
         .accuracy = 0,
-        .pp = 20,
+        .pp = PP_MOVIMIENTOS_ESTADO,
         .target = MOVE_TARGET_USER,
-        .priority = -6,
+        .priority = 1,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_CONFUSION, COMBO_STARTER_DOUBLE_TEAM, COMBO_STARTER_KINESIS, COMBO_STARTER_PSYCHIC},
-        .battleAnimScript = gBattleAnimMove_Teleport,
+        .battleAnimScript = gBattleAnimMove_Teletransporte,
     },
 
     [MOVE_NIGHT_SHADE] =
@@ -2757,10 +2672,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_FLINCH,
             .chance = 10,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_BONEMERANG, COMBO_STARTER_BONE_RUSH, COMBO_STARTER_SHADOW_BONE},
         .battleAnimScript = gBattleAnimMove_BoneClub,
     },
 
@@ -2950,10 +2861,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .magicCoatAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_CONFUSION, COMBO_STARTER_PSYCHIC},
         .battleAnimScript = gBattleAnimMove_Kinesis,
     },
 
@@ -3042,11 +2949,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .healingMove = B_HEAL_BLOCKING >= GEN_6,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_CALM_MIND, COMBO_STARTER_HYPNOSIS},
+        .healingMove = TRUE,
         .battleAnimScript = gBattleAnimMove_DreamEater,
     },
 
@@ -3337,10 +3240,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .hammerMove = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_RAIN_DANCE, COMBO_STARTER_SWORDS_DANCE},
         .battleAnimScript = gBattleAnimMove_Crabhammer,
     },
 
@@ -3395,10 +3294,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .strikeCount = 2,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_BONE_CLUB, COMBO_STARTER_BONE_RUSH, COMBO_STARTER_SHADOW_BONE},
         .battleAnimScript = gBattleAnimMove_Bonemerang,
     },
 
@@ -3420,10 +3315,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .healingMove = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_BELLY_DRUM, COMBO_STARTER_CHARM, COMBO_STARTER_YAWN},
         .battleAnimScript = gBattleAnimMove_Rest,
     },
 
@@ -3565,10 +3456,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .slicingMove = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_SCRATCH, COMBO_STARTER_SWORDS_DANCE},
         .battleAnimScript = gBattleAnimMove_Slash,
     },
 
@@ -4013,10 +3900,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_ESTADO,
         .magicCoatAffected = TRUE,
         .eyesMove = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_LEER, COMBO_STARTER_RAGE},
         .battleAnimScript = gBattleAnimMove_ScaryFace,
     },
 
@@ -4035,10 +3918,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = B_UPDATED_MOVE_DATA >= GEN_4,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_FAKE_OUT, COMBO_STARTER_LEER, COMBO_STARTER_POUND},
         .battleAnimScript = gBattleAnimMove_FeintAttack,
     },
 
@@ -4120,10 +3999,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_ACC_MINUS_1,
             .chance = 100,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_MUD_SPORT, COMBO_STARTER_SAND_ATTACK, COMBO_STARTER_SANDSTORM},
         .battleAnimScript = gBattleAnimMove_MudSlap,
     },
 
@@ -4146,10 +4021,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_ACC_MINUS_1,
             .chance = 50,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_LOCK_ON, COMBO_STARTER_RAIN_DANCE},
         .battleAnimScript = gBattleAnimMove_Octazooka,
     },
 
@@ -4194,10 +4065,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 100,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_CHARGE, COMBO_STARTER_LOCK_ON},
         .battleAnimScript = gBattleAnimMove_ZapCannon,
     },
 
@@ -4239,10 +4106,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .mirrorMoveBanned = TRUE,
         .copycatBanned = TRUE,
         .assistBanned = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_CURSE, COMBO_STARTER_ENDURE, COMBO_STARTER_MEAN_LOOK},
         .battleAnimScript = gBattleAnimMove_DestinyBond,
     },
 
@@ -4264,10 +4127,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .mirrorMoveBanned = TRUE,
         .soundMove = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_MEAN_LOOK, COMBO_STARTER_SING},
         .battleAnimScript = gBattleAnimMove_PerishSong,
     },
 
@@ -4328,10 +4187,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_BONE_CLUB, COMBO_STARTER_BONEMERANG, COMBO_STARTER_FOCUS_ENERGY, COMBO_STARTER_SHADOW_BONE},
         .battleAnimScript = gBattleAnimMove_BoneRush,
     },
 
@@ -4470,10 +4325,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .makesContact = TRUE,
         .instructBanned = TRUE,
         .parentalBondBanned = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_DEFENSE_CURL, COMBO_STARTER_HARDEN},
         .battleAnimScript = gBattleAnimMove_Rollout,
     },
 
@@ -4839,10 +4690,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_CONFUSION,
             .chance = 100,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY, COMBO_STARTER_MIND_READER},
         .battleAnimScript = gBattleAnimMove_DynamicPunch,
     },
 
@@ -4869,10 +4716,10 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
     {
         .name = COMPOUND_STRING("Dragoaliento"),
         .description = COMPOUND_STRING(
-            "Strikes the foe with an\n"
-            "incredible blast of breath."),
+            "Lanza su aliento de dragón\n"
+            "al rival, con 30% de paralizar."),
         .effect = EFFECT_HIT,
-        .power = 60,
+        .power = 70,
         .type = TIPO_DRAGON,
         .accuracy = 100,
         .pp = 20,
@@ -4884,30 +4731,26 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 30,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_DRAGON_DANCE, COMBO_STARTER_DRAGON_RAGE, COMBO_STARTER_DRAGON_RUSH, COMBO_STARTER_DRAGON_TAIL},
         .battleAnimScript = gBattleAnimMove_DragonBreath,
     },
 
-    [MOVE_BATON_PASS] =
+    [MOVE_RELEVO] =
     {
         .name = COMPOUND_STRING("Relevo"),
         .description = COMPOUND_STRING(
             "Switches out the user while\n"
             "keeping effects in play."),
-        .effect = EFFECT_BATON_PASS,
+        .effect = EFECTO_RELEVO,
         .power = 0,
         .type = TIPO_NORMAL,
         .accuracy = 0,
-        .pp = 40,
+        .pp = PP_MOVIMIENTOS_ESTADO,
         .target = MOVE_TARGET_USER,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_BatonPass,
+        .battleAnimScript = gBattleAnimMove_Relevo,
     },
 
     [MOVE_ENCORE] =
@@ -4920,7 +4763,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .power = 0,
         .type = TIPO_NORMAL,
         .accuracy = 100,
-        .pp = 5,
+        .pp = PP_MOVIMIENTOS_ESTADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
@@ -5377,10 +5220,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_ESPECIAL,
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_CALM_MIND, COMBO_STARTER_CONFUSION, COMBO_STARTER_KINESIS, COMBO_STARTER_PSYCHIC},
         .battleAnimScript = gBattleAnimMove_FutureSight,
     },
 
@@ -5962,10 +5801,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_ATK_DEF_DOWN,
             .self = TRUE,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_LOCK_ON, COMBO_STARTER_MIND_READER},
         .battleAnimScript = gBattleAnimMove_Superpower,
     },
 
@@ -6114,10 +5949,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_EARTHQUAKE, COMBO_STARTER_ENDURE, COMBO_STARTER_SUNNY_DAY},
         .battleAnimScript = gBattleAnimMove_Eruption,
     },
 
@@ -6178,10 +6009,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_SING, COMBO_STARTER_WATER_SPORT},
         .battleAnimScript = gBattleAnimMove_Refresh,
     },
 
@@ -6267,10 +6094,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .assistBanned = TRUE,
         .skyBattleBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_PKMNHIDUNDERWATER, COMPRESS_BITS(STATUS3_UNDERWATER)),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_RAIN_DANCE, COMBO_STARTER_SURF},
         .battleAnimScript = gBattleAnimMove_Dive,
     },
 
@@ -6289,10 +6112,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_FAKE_OUT, COMBO_STARTER_FOCUS_ENERGY},
         .battleAnimScript = gBattleAnimMove_ArmThrust,
     },
 
@@ -6437,10 +6256,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .skyBattleBanned = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_MUD_SLAP, COMBO_STARTER_SANDSTORM, COMBO_STARTER_WATER_SPORT},
         .battleAnimScript = gBattleAnimMove_MudSport,
     },
 
@@ -6678,10 +6493,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .balistico = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_HAIL, COMBO_STARTER_RAIN_DANCE, COMBO_STARTER_SANDSTORM, COMBO_STARTER_SUNNY_DAY},
         .battleAnimScript = gBattleAnimMove_WeatherBall,
     },
 
@@ -7039,10 +6850,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_HAIL, COMBO_STARTER_MIND_READER},
         .battleAnimScript = gBattleAnimMove_SheerCold,
     },
 
@@ -7197,10 +7004,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_DRAGON_BREATH, COMBO_STARTER_DRAGON_DANCE, COMBO_STARTER_DRAGON_RAGE, COMBO_STARTER_DRAGON_RUSH, COMBO_STARTER_DRAGON_TAIL},
         .battleAnimScript = gBattleAnimMove_DragonClaw,
     },
 
@@ -7402,10 +7205,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .skyBattleBanned = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_MUD_SPORT, COMBO_STARTER_RAIN_DANCE},
         .battleAnimScript = gBattleAnimMove_WaterSport,
     },
 
@@ -7467,10 +7266,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_DRAGON_BREATH, COMBO_STARTER_DRAGON_RAGE, COMBO_STARTER_DRAGON_RUSH, COMBO_STARTER_DRAGON_TAIL},
         .battleAnimScript = gBattleAnimMove_DragonDance,
     },
 
@@ -7886,10 +7681,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_DEF_SPDEF_DOWN,
             .self = TRUE,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY, COMBO_STARTER_MIND_READER},
         .battleAnimScript = gBattleAnimMove_CloseCombat,
     },
 
@@ -7926,10 +7717,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_PAYBACK, COMBO_STARTER_REVENGE},
         .battleAnimScript = gBattleAnimMove_Assurance,
     },
 
@@ -8621,10 +8408,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_FLINCH,
             .chance = 20,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_DRAGON_BREATH, COMBO_STARTER_DRAGON_DANCE, COMBO_STARTER_DRAGON_RAGE, COMBO_STARTER_DRAGON_TAIL},
         .battleAnimScript = gBattleAnimMove_DragonRush,
     },
 
@@ -8919,10 +8702,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_FLINCH,
             .chance = 10,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_CHARGE, COMBO_STARTER_FIRE_FANG, COMBO_STARTER_ICE_FANG},
         .battleAnimScript = gBattleAnimMove_ThunderFang,
     },
 
@@ -8954,10 +8733,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_FLINCH,
             .chance = 10,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_FIRE_FANG, COMBO_STARTER_THUNDER_FANG},
         .battleAnimScript = gBattleAnimMove_IceFang,
     },
 
@@ -8985,10 +8760,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_FLINCH,
             .chance = 10,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_ICE_FANG, COMBO_STARTER_THUNDER_FANG},
         .battleAnimScript = gBattleAnimMove_FireFang,
     },
 
@@ -9600,10 +9371,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_DEFEND_ORDER, COMBO_STARTER_HEAL_ORDER},
         .battleAnimScript = gBattleAnimMove_AttackOrder,
     },
 
@@ -9624,10 +9391,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_ATTACK_ORDER, COMBO_STARTER_HEAL_ORDER},
         .battleAnimScript = gBattleAnimMove_DefendOrder,
     },
 
@@ -9649,10 +9412,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_ATTACK_ORDER, COMBO_STARTER_DEFEND_ORDER},
         .battleAnimScript = gBattleAnimMove_HealOrder,
     },
 
@@ -10970,10 +10729,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .makesContact = TRUE,
         .copycatBanned = TRUE,
         .assistBanned = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_DRAGON_BREATH, COMBO_STARTER_DRAGON_DANCE, COMBO_STARTER_DRAGON_RAGE, COMBO_STARTER_DRAGON_RUSH},
         .battleAnimScript = gBattleAnimMove_DragonTail,
     },
 
@@ -12079,46 +11834,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_FlowerShield,
     },
 
-    [MOVE_GRASSY_TERRAIN] =
-    {
-        .name = COMPOUND_STRING("Grassy Terrain"),
-        .description = COMPOUND_STRING(
-            "The ground turns to grass\n"
-            "for 5 turns. Restores HP."),
-        .effect = EFFECT_GRASSY_TERRAIN,
-        .power = 0,
-        .type = TIPO_PLANTA,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_ALL_BATTLERS,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .skyBattleBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_GrassyTerrain,
-    },
-
-    [MOVE_MISTY_TERRAIN] =
-    {
-        .name = COMPOUND_STRING("Misty Terrain"),
-        .description = COMPOUND_STRING(
-            "Covers the ground with mist\n"
-            "for 5 turns. Blocks status."),
-        .effect = EFFECT_MISTY_TERRAIN,
-        .power = 0,
-        .type = TIPO_HADA,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_ALL_BATTLERS,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .skyBattleBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_MistyTerrain,
-    },
-
     [MOVE_ELECTRIFY] =
     {
         .name = COMPOUND_STRING("Electrify"),
@@ -12555,26 +12270,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_HappyHour,
-    },
-
-    [MOVE_ELECTRIC_TERRAIN] =
-    {
-        .name = COMPOUND_STRING("Electric Terrain"),
-        .description = COMPOUND_STRING(
-            "Electrifies the ground for\n"
-            "5 turns. Prevents sleep."),
-        .effect = EFFECT_ELECTRIC_TERRAIN,
-        .power = 0,
-        .type = TIPO_ELECTRICO,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_ALL_BATTLERS,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .skyBattleBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_ElectricTerrain,
     },
 
     [MOVE_DAZZLING_GLEAM] =
@@ -13306,25 +13001,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_AnchorShot,
     },
 
-    [MOVE_PSYCHIC_TERRAIN] =
-    {
-        .name = COMPOUND_STRING("Psychic Terrain"),
-        .description = COMPOUND_STRING(
-            "The ground turns weird for\n"
-            "5 turns. Blocks priority."),
-        .effect = EFFECT_PSYCHIC_TERRAIN,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_ALL_BATTLERS,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_PsychicTerrain,
-    },
-
     [MOVE_LUNGE] =
     {
         .name = COMPOUND_STRING("Lunge"),
@@ -13611,10 +13287,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .hammerMove = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_DRAGON_BREATH, COMBO_STARTER_DRAGON_DANCE, COMBO_STARTER_DRAGON_RAGE, COMBO_STARTER_DRAGON_RUSH, COMBO_STARTER_DRAGON_TAIL},
         .battleAnimScript = gBattleAnimMove_DragonHammer,
     },
 
@@ -13757,10 +13429,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .moveEffect = MOVE_EFFECT_DEF_MINUS_1,
             .chance = 20,
         }),
-
-
-
-        .contestComboMoves = {COMBO_STARTER_BONE_CLUB, COMBO_STARTER_BONEMERANG, COMBO_STARTER_BONE_RUSH},
         .battleAnimScript = gBattleAnimMove_ShadowBone,
     },
 
@@ -15128,28 +14796,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_RisingVoltage,
     },
 
-    [MOVE_TERRAIN_PULSE] =
-    {
-        .name = COMPOUND_STRING("Terrain Pulse"),
-        .description = COMPOUND_STRING(
-            "Type and power changes\n"
-            "depending on the terrain."),
-        .effect = EFFECT_TERRAIN_PULSE,
-        .power = 50,
-        .type = TIPO_NORMAL,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .balistico = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_ELECTRIC_TERRAIN, COMBO_STARTER_MISTY_TERRAIN, COMBO_STARTER_GRASSY_TERRAIN, COMBO_STARTER_PSYCHIC_TERRAIN},
-        .battleAnimScript = gBattleAnimMove_TerrainPulse,
-    },
-
     [MOVE_SKITTER_SMACK] =
     {
         .name = COMPOUND_STRING("Skitter Smack"),
@@ -16064,28 +15710,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_TakeHeart,
-    },
-
-    [MOVE_TERA_BLAST] =
-    {
-        .name = COMPOUND_STRING("Tera Blast"),
-        .description = COMPOUND_STRING(
-            "If the user's Terastallized,\n"
-            "it hits with its Tera-type."),
-        .effect = EFFECT_TERA_BLAST,
-        .power = 80,
-        .type = TIPO_NORMAL,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .forcePressure = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_TERA_BLAST,
-            .self = TRUE,
-        }),
-        .battleAnimScript = gBattleAnimMove_TeraBlast,
     },
 
     [MOVE_SILK_TRAP] =
@@ -17185,27 +16809,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_ElectroShot,
     },
 
-    [MOVE_TERA_STARSTORM] =
-    {
-        .name = COMPOUND_STRING("Tera Starstorm"),
-        .description = COMPOUND_STRING(
-            "In Terapagos's Stellar\n"
-            "Form, it hits all foes."),
-        .effect = EFFECT_TERA_STARSTORM,
-        .power = 120,
-        .type = TIPO_NORMAL,
-        .accuracy = 100,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .assistBanned = TRUE,
-        .copycatBanned = TRUE,
-        .mimicBanned = TRUE,
-        .sketchBanned = (B_SKETCH_BANS >= GEN_9),
-        .battleAnimScript = gBattleAnimMove_TeraStarstorm,
-    },
-
     [MOVE_FICKLE_BEAM] =
     {
         .name = COMPOUND_STRING("Fickle Beam"),
@@ -17483,10 +17086,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-
-
-
-        .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY, COMBO_STARTER_HARDEN},
         .battleAnimScript = gBattleAnimMove_CargaJabato,
     },
 

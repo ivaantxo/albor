@@ -118,7 +118,7 @@ enum {
     FIELD_MOVE_FLY,         // FLAG_BADGE06_GET
     FIELD_MOVE_DIVE,        // FLAG_BADGE07_GET
     FIELD_MOVE_WATERFALL,   // FLAG_BADGE08_GET
-    FIELD_MOVE_TELEPORT,
+    FIELD_MOVE_TELETRANSPORTE,
     FIELD_MOVE_DIG,
     FIELD_MOVE_SECRET_POWER,
     FIELD_MOVE_MILK_DRINK,
@@ -3063,7 +3063,7 @@ static void CursorCb_FieldMove(u8 taskId)
         case FIELD_MOVE_SOFT_BOILED:
             ChooseMonForSoftboiled(taskId);
             break;
-        case FIELD_MOVE_TELEPORT:
+        case FIELD_MOVE_TELETRANSPORTE:
             mapHeader = Overworld_GetMapHeaderByGroupAndId(gSaveBlockPtr->lastHealLocation.mapGroup, gSaveBlockPtr->lastHealLocation.mapNum);
             GetMapNameGeneric(gVariableTexto1, mapHeader->regionMapSectionId);
             StringExpandPlaceholders(gVariableTextoAmpliada, gText_ReturnToHealingSpot);
@@ -3615,37 +3615,6 @@ static void GetMedicineItemEffectMessage(u16 item, u32 statusCured)
         StringExpandPlaceholders(gVariableTextoAmpliada, gText_WontHaveEffect);
         break;
     }
-}
-
-// Battle scripts called in HandleAction_UseItem
-void ItemUseCB_BattleScript(u8 taskId, TaskFunc task)
-{
-    struct Pokemon *mon = &gPlayerParty[gPartyMenu.slotId];
-    if (CannotUseItemsInBattle(gSpecialVar_ItemId, mon))
-    {
-        gPartyMenuUseExitCallback = FALSE;
-        PlaySE(SE_SELECT);
-        DisplayPartyMenuMessage(gText_WontHaveEffect, TRUE);
-        ScheduleBgCopyTilemapToVram(2);
-        gTasks[taskId].func = task;
-    }
-    else
-    {
-        gBattleStruct->itemPartyIndex[gBattlerInMenuId] = GetPartyIdFromBattleSlot(gPartyMenu.slotId);
-        gPartyMenuUseExitCallback = TRUE;
-        PlaySE(SE_SELECT);
-        RemoveBagItem(gSpecialVar_ItemId, 1);
-        ScheduleBgCopyTilemapToVram(2);
-        gTasks[taskId].func = task;
-    }
-}
-
-void ItemUseCB_BattleChooseMove(u8 taskId, TaskFunc task)
-{
-    PlaySE(SE_SELECT);
-    DisplayPartyMenuStdMessage(PARTY_MSG_RESTORE_WHICH_MOVE);
-    ShowMoveSelectWindow(gPartyMenu.slotId);
-    gTasks[taskId].func = Task_HandleWhichMoveInput;
 }
 
 void ItemUseCB_Medicine(u8 taskId, TaskFunc task)
@@ -5499,7 +5468,7 @@ static bool8 TrySwitchInPokemon(void)
     }
     for (i = 0; i < gBattlersCount; i++)
     {
-        if (GetBattlerSide(i) == B_SIDE_PLAYER && GetPartyIdFromBattleSlot(slot) == gBattlerPartyIndexes[i])
+        if (GetBattlerSide(i) == LADO_JUGADOR && GetPartyIdFromBattleSlot(slot) == gBattlerPartyIndexes[i])
         {
             GetMonNickname(&gPlayerParty[slot], gVariableTexto1);
             StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnAlreadyInBattle);
@@ -5550,7 +5519,7 @@ static void BufferBattlePartyOrder(u8 *partyBattleOrder)
     if (EsContraEntrenador() == FALSE)
     {
         j = 1;
-        partyIds[0] = gBattlerPartyIndexes[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)];
+        partyIds[0] = gBattlerPartyIndexes[JUGADOR_IZQUIERDA];
         for (i = 0; i < PARTY_SIZE; i++)
         {
             if (i != partyIds[0])
@@ -5563,8 +5532,8 @@ static void BufferBattlePartyOrder(u8 *partyBattleOrder)
     else
     {
         j = 2;
-        partyIds[0] = gBattlerPartyIndexes[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)];
-        partyIds[1] = gBattlerPartyIndexes[GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT)];
+        partyIds[0] = gBattlerPartyIndexes[JUGADOR_IZQUIERDA];
+        partyIds[1] = gBattlerPartyIndexes[JUGADOR_DERECHA];
         for (i = 0; i < PARTY_SIZE; i++)
         {
             if (i != partyIds[0] && i != partyIds[1])
@@ -5583,7 +5552,7 @@ void BufferBattlePartyCurrentOrderBySide(u8 battlerId)
     BufferBattlePartyOrderBySide(gBattleStruct->battlerPartyOrders[battlerId], battlerId);
 }
 
-// when GetBattlerSide(battlerId) == B_SIDE_PLAYER, this function is identical the one above
+// when GetBattlerSide(battlerId) == LADO_JUGADOR, this function is identical the one above
 static void BufferBattlePartyOrderBySide(u8 *partyBattleOrder, u8 battlerId)
 {
     u8 partyIndexes[PARTY_SIZE];
@@ -5591,15 +5560,15 @@ static void BufferBattlePartyOrderBySide(u8 *partyBattleOrder, u8 battlerId)
     u8 leftBattler;
     u8 rightBattler;
 
-    if (GetBattlerSide(battlerId) == B_SIDE_PLAYER)
+    if (GetBattlerSide(battlerId) == LADO_JUGADOR)
     {
-        leftBattler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
-        rightBattler = GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT);
+        leftBattler = JUGADOR_IZQUIERDA;
+        rightBattler = JUGADOR_DERECHA;
     }
     else
     {
-        leftBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
-        rightBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
+        leftBattler = OPONENTE_IZQUIERDA;
+        rightBattler = OPONENTE_DERECHA;
     }
 
     if (EsContraEntrenador() == FALSE)

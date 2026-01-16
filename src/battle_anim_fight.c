@@ -470,7 +470,7 @@ static void AnimForcePalm(struct Sprite *sprite)
 
 static void AnimSlideHandOrFootToTarget(struct Sprite *sprite)
 {
-    if (gBattleAnimArgs[7] == 1 && GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+    if (gBattleAnimArgs[7] == 1 && GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
     {
         gBattleAnimArgs[1] = -gBattleAnimArgs[1];
         gBattleAnimArgs[3] = -gBattleAnimArgs[3];
@@ -535,7 +535,7 @@ static void AnimFistOrFootRandomPos(struct Sprite *sprite)
     if (Random() & 1)
         y *= -1;
 
-    if (GetBattlerSide(battler) == B_SIDE_PLAYER)
+    if (GetBattlerSide(battler) == LADO_JUGADOR)
         y -= 16;
 
     sprite->x += x;
@@ -610,12 +610,12 @@ static void AnimCrossChopHand_Step(struct Sprite *sprite)
 // Rolling Kick / Low Kick
 static void AnimSlidingKick(struct Sprite *sprite)
 {
-    if (BATTLE_PARTNER(gBattleAnimAttacker) == gBattleAnimTarget && GetBattlerPosition(gBattleAnimTarget) < B_POSITION_PLAYER_RIGHT)
+    if (ALIADO(gBattleAnimAttacker) == gBattleAnimTarget && gBattleAnimTarget < JUGADOR_DERECHA)
         gBattleAnimArgs[0] *= -1;
 
     InitSpritePosToAnimTarget(sprite, TRUE);
 
-    if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
         gBattleAnimArgs[2] = -gBattleAnimArgs[2];
 
     sprite->data[0] = gBattleAnimArgs[3];
@@ -953,7 +953,7 @@ void AnimSuperpowerFireball(struct Sprite *sprite)
         sprite->oam.priority = GetBattlerSpriteBGPriority(gBattleAnimTarget);
     }
 
-    if (GetBattlerSide(battler) == B_SIDE_PLAYER)
+    if (GetBattlerSide(battler) == LADO_JUGADOR)
         sprite->oam.matrixNum |= (ST_OAM_HFLIP | ST_OAM_VFLIP);
 
     sprite->data[0] = 16;
@@ -987,7 +987,7 @@ static void AnimArmThrustHit(struct Sprite *sprite)
     sprite->data[4] = gBattleAnimArgs[2];
 
     turn = gAnimMoveTurn;
-    if (GetBattlerSide(gBattleAnimTarget) == B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimTarget) == LADO_JUGADOR)
         turn++;
 
     if (turn & 1)
@@ -1009,7 +1009,7 @@ void AnimRevengeScratch(struct Sprite *sprite)
     else
         InitSpritePosToAnimTarget(sprite, FALSE);
 
-    if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
     {
         StartSpriteAnim(sprite, 1);
     }
@@ -1053,7 +1053,7 @@ void AnimTask_MoveSkyUppercutBg(u8 taskId)
 
     task->data[10] += 2816;
 
-    if (GetBattlerSide(gBattleAnimTarget) == B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimTarget) == LADO_JUGADOR)
         gBattle_BG3_X += task->data[9] >> 8;
     else
         gBattle_BG3_X -= task->data[9] >> 8;

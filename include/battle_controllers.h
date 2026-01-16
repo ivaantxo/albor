@@ -26,7 +26,6 @@ enum {
     REQUEST_POKERUS_BATTLE,
     REQUEST_MET_LOCATION_BATTLE,
     REQUEST_MET_LEVEL_BATTLE,
-    REQUEST_MET_GAME_BATTLE,
     REQUEST_POKEBALL_BATTLE,
     REQUEST_ALL_IVS_BATTLE,
     REQUEST_HP_IV_BATTLE,
@@ -161,12 +160,12 @@ enum
     CONTROLLER_CMDS_COUNT
 };
 
-extern void (*gBattlerControllerFuncs[MAX_BATTLERS_COUNT])(u32 battler);
-extern void (*gBattlerControllerEndFuncs[MAX_BATTLERS_COUNT])(u32 battler);
-extern u8 gBattleControllerData[MAX_BATTLERS_COUNT];
+extern void (*gBattlerControllerFuncs[NUMERO_COMBATIENTES])(u32 battler);
+extern void (*gBattlerControllerEndFuncs[NUMERO_COMBATIENTES])(u32 battler);
+extern u8 gBattleControllerData[NUMERO_COMBATIENTES];
 
 // general functions
-void SetUpBattleVarsAndBirchZigzagoon(void);
+void PreparaVarsBatalla(void);
 void InitBattleControllers(void);
 bool32 IsValidForBattle(struct Pokemon *mon);
 

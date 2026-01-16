@@ -214,7 +214,7 @@ struct BattleMsgData
     u8 hpScale;
     u8 itemEffectBattler;
     u8 moveType;
-    u16 abilities[MAX_BATTLERS_COUNT];
+    u16 abilities[NUMERO_COMBATIENTES];
     u8 textBuffs[3][TEXT_BUFF_ARRAY_COUNT];
 };
 
@@ -264,9 +264,6 @@ extern const u8 gText_Paralysis[];
 extern const u8 gText_Ice[];
 extern const u8 gText_Confusion[];
 extern const u8 gText_Love[];
-extern const u8 gText_SpaceAndSpace[];
-extern const u8 gText_CommaSpace[];
-extern const u8 gText_LineBreak[];
 
 extern const u16 gStatUpStringIds[];
 

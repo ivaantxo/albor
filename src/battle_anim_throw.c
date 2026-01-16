@@ -870,7 +870,7 @@ void AnimTask_SwitchOutBallEffect(u8 taskId)
     u32 selectedPalettes;
 
     spriteId = gBattlerSpriteIds[gBattleAnimAttacker];
-    if (GetBattlerSide(gBattleAnimAttacker) == B_SIDE_PLAYER)
+    if (GetBattlerSide(gBattleAnimAttacker) == LADO_JUGADOR)
         ball = GetMonData(&gPlayerParty[gBattlerPartyIndexes[gBattleAnimAttacker]], MON_DATA_POKEBALL);
     else
         ball = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattleAnimAttacker]], MON_DATA_POKEBALL);
@@ -1021,20 +1021,20 @@ void AnimTask_ThrowBall_StandingTrainer(u8 taskId)
     u32 spriteId;
 
     ballId = ItemIdToBallId(gLastUsedItem);
-    subpriority = GetBattlerSpriteSubpriority(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)) + 1;
+    subpriority = GetBattlerSpriteSubpriority(OPONENTE_IZQUIERDA) + 1;
     spriteId = CreateSprite(&gBallSpriteTemplates[ballId], x + 32, y | 80, subpriority);
     gSprites[spriteId].sDuration = 34;
     gSprites[spriteId].sTargetX = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X);
     gSprites[spriteId].sTargetY = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y) - 16;
     gSprites[spriteId].callback = SpriteCallbackDummy;
-    gSprites[gBattlerSpriteIds[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)]].callback = SpriteCB_TrainerThrowObject;
+    gSprites[gBattlerSpriteIds[JUGADOR_IZQUIERDA]].callback = SpriteCB_TrainerThrowObject;
     gTasks[taskId].tSpriteId = spriteId;
     gTasks[taskId].func = AnimTask_ThrowBall_StandingTrainer_Step;
 }
 
 static void AnimTask_ThrowBall_StandingTrainer_Step(u8 taskId)
 {
-    if (gSprites[gBattlerSpriteIds[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)]].animCmdIndex == 1)
+    if (gSprites[gBattlerSpriteIds[JUGADOR_IZQUIERDA]].animCmdIndex == 1)
     {
         PlaySE12WithPanning(SE_BALL_THROW, 0);
         gSprites[gTasks[taskId].tSpriteId].callback = SpriteCB_Ball_Throw;
@@ -1051,9 +1051,9 @@ static void AnimTask_ThrowBall_StandingTrainer_Step(u8 taskId)
 
 static void Task_PlayerThrow_Wait(u8 taskId)
 {
-    if (gSprites[gBattlerSpriteIds[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)]].animEnded)
+    if (gSprites[gBattlerSpriteIds[JUGADOR_IZQUIERDA]].animEnded)
     {
-        StartSpriteAnim(&gSprites[gBattlerSpriteIds[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)]], 0);
+        StartSpriteAnim(&gSprites[gBattlerSpriteIds[JUGADOR_IZQUIERDA]], 0);
         DestroyTask(taskId);
     }
 }
@@ -2322,7 +2322,7 @@ void AnimTask_SwapMonSpriteToFromSubstitute(u8 taskId)
     case 0:
         gTasks[taskId].data[11] = gBattleAnimArgs[0];
         gTasks[taskId].data[0] += 0x500;
-        if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+        if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
             gSprites[spriteId].x2 += gTasks[taskId].data[0] >> 8;
         else
             gSprites[spriteId].x2 -= gTasks[taskId].data[0] >> 8;
@@ -2338,13 +2338,13 @@ void AnimTask_SwapMonSpriteToFromSubstitute(u8 taskId)
         break;
     case 2:
         gTasks[taskId].data[0] += 0x500;
-        if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+        if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
             gSprites[spriteId].x2 -= gTasks[taskId].data[0] >> 8;
         else
             gSprites[spriteId].x2 += gTasks[taskId].data[0] >> 8;
 
         gTasks[taskId].data[0] &= 0xFF;
-        if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
+        if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
         {
             if (gSprites[spriteId].x2 <= 0)
             {
@@ -2375,7 +2375,7 @@ void AnimTask_SubstituteFadeToInvisible(u8 taskId)
     switch (gTasks[taskId].data[15])
     {
     case 0:
-        if (GetBattlerSpriteBGPriorityRank(gBattleAnimAttacker) == B_POSITION_OPPONENT_LEFT)
+        if (GetBattlerSpriteBGPriorityRank(gBattleAnimAttacker) == OPONENTE_IZQUIERDA)
             SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_BG1 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_ALL);
         else
             SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_BG2 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_ALL);
@@ -2514,7 +2514,7 @@ static void Task_ShinyStars(u8 taskId)
         gSprites[spriteId].invisible = TRUE;
         if (gTasks[taskId].tStarIdx == 0)
         {
-            if (GetBattlerSide(battler) == B_SIDE_PLAYER)
+            if (GetBattlerSide(battler) == LADO_JUGADOR)
                 pan = -64;
             else
                 pan = 63;
@@ -2612,8 +2612,8 @@ static void SpriteCB_PokeBlock_Throw(struct Sprite *sprite)
 {
     InitSpritePosToAnimAttacker(sprite, FALSE);
     sprite->sDuration = 30;
-    sprite->sTargetX = GetBattlerSpriteCoord(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT), BATTLER_COORD_X) + gBattleAnimArgs[2];
-    sprite->sTargetY = GetBattlerSpriteCoord(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT), BATTLER_COORD_Y) + gBattleAnimArgs[3];
+    sprite->sTargetX = GetBattlerSpriteCoord(OPONENTE_IZQUIERDA, BATTLER_COORD_X) + gBattleAnimArgs[2];
+    sprite->sTargetY = GetBattlerSpriteCoord(OPONENTE_IZQUIERDA, BATTLER_COORD_Y) + gBattleAnimArgs[3];
     sprite->sAmplitude = -32;
     InitAnimArcTranslation(sprite);
     gSprites[gBattlerSpriteIds[gBattleAnimAttacker]].callback = SpriteCB_TrainerThrowObject;
@@ -2659,12 +2659,12 @@ void AnimTask_SetAttackerTargetLeftPos(u8 taskId)
     switch (gBattleAnimArgs[0])
     {
     case 0:
-        gBattleAnimAttacker = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
-        gBattleAnimTarget = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+        gBattleAnimAttacker = JUGADOR_IZQUIERDA;
+        gBattleAnimTarget = OPONENTE_IZQUIERDA;
         break;
     case 1:
-        gBattleAnimAttacker = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
-        gBattleAnimTarget = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
+        gBattleAnimAttacker = OPONENTE_IZQUIERDA;
+        gBattleAnimTarget = JUGADOR_IZQUIERDA;
         break;
     }
 

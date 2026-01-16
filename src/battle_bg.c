@@ -471,7 +471,7 @@ void LoadBattleMenuWindowGfx(void)
 
 void DrawMainBattleBackground(void)
 {
-    if (gBattleTypeFlags & TIPO_BATALLA_LEGENDARIO)
+    if (gBattleTypeFlags & COMBATE_LEGENDARIO)
     {
         switch (GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL))
         {
@@ -573,15 +573,12 @@ void LoadBattleTextboxAndBackground(void)
     LoadCompressedPalette(gBattleTextboxPalette, BG_PLTT_ID(0), PLTT_SIZE_4BPP);
     LoadCompressedPalette(gBattleActionsPalFight, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
     LoadBattleMenuWindowGfx();
-    if (B_TERRAIN_BG_CHANGE == TRUE)
-        DrawTerrainTypeBattleBackground();
-    else
-        DrawMainBattleBackground();
+    DrawMainBattleBackground();
 }
 
 void DrawBattleEntryBackground(void)
 {
-    if (gBattleTypeFlags & TIPO_BATALLA_LEGENDARIO)
+    if (gBattleTypeFlags & COMBATE_LEGENDARIO)
     {
         switch (GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL))
         {
@@ -653,7 +650,7 @@ bool8 LoadChosenBattleElement(u8 caseId)
         LoadCompressedPalette(gBattleActionsPalFight, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
         break;
     case 3:
-        if (gBattleTypeFlags & TIPO_BATALLA_LEGENDARIO)
+        if (gBattleTypeFlags & COMBATE_LEGENDARIO)
         {
             switch (GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL))
             {
@@ -713,7 +710,7 @@ bool8 LoadChosenBattleElement(u8 caseId)
         }
         break;
     case 4:
-        if (gBattleTypeFlags & TIPO_BATALLA_LEGENDARIO)
+        if (gBattleTypeFlags & COMBATE_LEGENDARIO)
         {
             if (GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL) == SPECIES_GROUDON)
                 LZDecompressVram(gBattleTerrainTilemap_Cave, (void*)(BG_SCREEN_ADDR(26)));
@@ -768,7 +765,7 @@ bool8 LoadChosenBattleElement(u8 caseId)
         }
         break;
     case 5:
-        if (gBattleTypeFlags & TIPO_BATALLA_LEGENDARIO)
+        if (gBattleTypeFlags & COMBATE_LEGENDARIO)
         {
             if (GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL) == SPECIES_GROUDON)
                 LoadCompressedPalette(gBattleTerrainPalette_Groudon, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
@@ -832,26 +829,3 @@ bool8 LoadChosenBattleElement(u8 caseId)
 
     return ret;
 }
-
-void DrawTerrainTypeBattleBackground(void)
-{
-    switch (gFieldStatuses & STATUS_FIELD_TERRAIN_ANY)
-    {
-    case STATUS_FIELD_GRASSY_TERRAIN:
-        LoadMoveBg(BG_GRASSY_TERRAIN);
-        break;
-    case STATUS_FIELD_MISTY_TERRAIN:
-        LoadMoveBg(BG_MISTY_TERRAIN);
-        break;
-    case STATUS_FIELD_ELECTRIC_TERRAIN:
-        LoadMoveBg(BG_ELECTRIC_TERRAIN);
-        break;
-    case STATUS_FIELD_PSYCHIC_TERRAIN:
-        LoadMoveBg(BG_PSYCHIC_TERRAIN);
-        break;
-    default:
-        DrawMainBattleBackground();
-        break;
-    }
-}
-

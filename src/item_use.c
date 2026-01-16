@@ -973,8 +973,8 @@ void ItemUseOutOfBattle_EvolutionStone(u8 taskId)
 
 static u32 GetBallThrowableState(void)
 {
-    if (IsBattlerAlive(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT))
-     && IsBattlerAlive(GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT)))
+    if (IsBattlerAlive(OPONENTE_IZQUIERDA)
+     && IsBattlerAlive(OPONENTE_DERECHA))
         return BALL_THROW_UNABLE_TWO_MONS;
     else if (IsPlayerPartyAndPokemonStorageFull() == TRUE)
         return BALL_THROW_UNABLE_NO_ROOM;
@@ -1024,18 +1024,6 @@ static void ItemUseInBattle_ShowPartyMenu(u8 taskId)
     Task_FadeAndCloseBagMenu(taskId);
 }
 
-void ItemUseInBattle_PartyMenu(u8 taskId)
-{
-    gItemUseCB = ItemUseCB_BattleScript;
-    ItemUseInBattle_ShowPartyMenu(taskId);
-}
-
-void ItemUseInBattle_PartyMenuChooseMove(u8 taskId)
-{
-    gItemUseCB = ItemUseCB_BattleChooseMove;
-    ItemUseInBattle_ShowPartyMenu(taskId);
-}
-
 // Returns whether an item can be used in battle and sets the fail text.
 bool32 CannotUseItemsInBattle(u16 itemId, struct Pokemon *mon)
 {
@@ -1046,8 +1034,8 @@ bool32 CannotUseItemsInBattle(u16 itemId, struct Pokemon *mon)
     u16 hp = GetMonData(mon, MON_DATA_HP);
 
     // Embargo Check
-    if ((gPartyMenu.slotId == 0 && gStatuses3[B_POSITION_PLAYER_LEFT] & STATUS3_EMBARGO)
-        || (gPartyMenu.slotId == 1 && gStatuses3[B_POSITION_PLAYER_RIGHT] & STATUS3_EMBARGO))
+    if ((gPartyMenu.slotId == 0 && gStatuses3[JUGADOR_IZQUIERDA] & STATUS3_EMBARGO)
+        || (gPartyMenu.slotId == 1 && gStatuses3[JUGADOR_DERECHA] & STATUS3_EMBARGO))
     {
         return TRUE;
     }
@@ -1145,22 +1133,6 @@ bool32 CannotUseItemsInBattle(u16 itemId, struct Pokemon *mon)
         StringExpandPlaceholders(gVariableTextoAmpliada, gText_WontHaveEffect);
 
     return cannotUse;
-}
-
-void ItemUseInBattle_BagMenu(u8 taskId)
-{
-    if (CannotUseItemsInBattle(gSpecialVar_ItemId, NULL))
-    {
-        DisplayItemMessage(taskId, FONT_NORMAL, gVariableTextoAmpliada, CloseItemMessage);
-    }
-    else
-    {
-        PlaySE(SE_SELECT);
-        if (!ItemId_GetImportance(gSpecialVar_ItemId) && !(B_TRY_CATCH_TRAINER_BALL >= GEN_4 && (ItemId_GetBattleUsage(gSpecialVar_ItemId) == EFFECT_ITEM_THROW_BALL) && (EsContraEntrenador())))
-            RemoveUsedItem();
-        ScheduleBgCopyTilemapToVram(2);
-        gTasks[taskId].func = Task_FadeAndCloseBagMenu;
-    }
 }
 
 void ItemUseOutOfBattle_FormChange(u8 taskId)

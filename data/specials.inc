@@ -72,7 +72,6 @@ gSpecials::
 	def_special GetPlayerBigGuyGirlString
 	def_special GetRivalSonDaughterString
 	def_special SetHiddenItemFlag
-	def_special CableCarWarp
 	def_special CableCar
 	def_special Overworld_PlaySpecialMapMusic
 	def_special StartWallClock
@@ -90,9 +89,7 @@ gSpecials::
 	def_special TryLoseFansFromPlayTime
 	def_special SetPlayerGotFirstFans
 	def_special UpdateTrainerFanClubGameClear
-	def_special Script_TryGainNewFanFromCounter
 	def_special RockSmashWildEncounter
-	def_special GetBattleOutcome
 	def_special GetDaycareMonNicknames
 	def_special GetDaycareState
 	def_special RejectEggFromDayCare
@@ -123,7 +120,6 @@ gSpecials::
 	def_special IsMirageIslandPresent
 	def_special UpdateShoalTideFlag
 	def_special InitBirchState
-	def_special ScriptGetPokedexInfo
 	def_special ShowPokedexRatingMessage
 	def_special DoPCTurnOnEffect
 	def_special DoPCTurnOffEffect

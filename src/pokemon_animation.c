@@ -207,7 +207,7 @@ static void Anim_ShakeGlowPurple_Slow(struct Sprite *sprite);
 
 static void WaitAnimEnd(struct Sprite *sprite);
 
-static struct PokemonAnimData sAnims[MAX_BATTLERS_COUNT];
+static struct PokemonAnimData sAnims[NUMERO_COMBATIENTES];
 static u8 sAnimIdx;
 static bool32 sIsSummaryAnim;
 
@@ -617,7 +617,7 @@ static void TryFlipX(struct Sprite *sprite)
 
 static bool32 InitAnimData(u8 id)
 {
-    if (id >= MAX_BATTLERS_COUNT)
+    if (id >= NUMERO_COMBATIENTES)
     {
         return FALSE;
     }
@@ -634,7 +634,7 @@ static bool32 InitAnimData(u8 id)
 
 static u8 AddNewAnim(void)
 {
-    sAnimIdx = (sAnimIdx + 1) % MAX_BATTLERS_COUNT;
+    sAnimIdx = (sAnimIdx + 1) % NUMERO_COMBATIENTES;
     InitAnimData(sAnimIdx);
     return sAnimIdx;
 }

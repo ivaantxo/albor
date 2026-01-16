@@ -592,7 +592,7 @@ static void Task_DoPokeballSendOutAnim(u8 taskId)
         DoPokeballSendOutSoundEffect(battlerId);
         break;
     default:
-        gBattlerTarget = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+        gBattlerTarget = OPONENTE_IZQUIERDA;
         notSendOut = TRUE;
         break;
     }
@@ -979,7 +979,7 @@ static void SpriteCB_ReleaseMonFromBall(struct Sprite *sprite)
         u16 wantedCryCase;
         u8 taskId;
 
-        if (GetBattlerSide(battlerId) != B_SIDE_PLAYER)
+        if (GetBattlerSide(battlerId) != LADO_JUGADOR)
         {
             mon = &gEnemyParty[gBattlerPartyIndexes[battlerId]];
             pan = 25;
@@ -990,7 +990,7 @@ static void SpriteCB_ReleaseMonFromBall(struct Sprite *sprite)
             pan = -25;
         }
 
-        if ((battlerId == GetBattlerAtPosition(B_POSITION_PLAYER_LEFT) || battlerId == GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT))
+        if ((battlerId == JUGADOR_IZQUIERDA || battlerId == OPONENTE_IZQUIERDA)
          && EsContraEntrenador() && gBattleSpritesDataPtr->animationData->introAnimActive)
         {
             m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, VOLUMEN_MEDIO);
@@ -998,7 +998,7 @@ static void SpriteCB_ReleaseMonFromBall(struct Sprite *sprite)
 
         if (!EsContraEntrenador() || !gBattleSpritesDataPtr->animationData->introAnimActive)
             wantedCryCase = 0;
-        else if (battlerId == GetBattlerAtPosition(B_POSITION_PLAYER_LEFT) || battlerId == GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT))
+        else if (battlerId == JUGADOR_IZQUIERDA || battlerId == OPONENTE_IZQUIERDA)
             wantedCryCase = 1;
         else
             wantedCryCase = 2;
@@ -1024,7 +1024,7 @@ static void SpriteCB_ReleaseMonFromBall(struct Sprite *sprite)
 
     StartSpriteAffineAnim(&gSprites[gBattlerSpriteIds[sprite->sBattler]], BATTLER_AFFINE_EMERGE);
 
-    if (GetBattlerSide(sprite->sBattler) == B_SIDE_OPPONENT)
+    if (GetBattlerSide(sprite->sBattler) == LADO_OPONENTE)
         gSprites[gBattlerSpriteIds[sprite->sBattler]].callback = SpriteCB_OpponentMonFromBall;
     else
         gSprites[gBattlerSpriteIds[sprite->sBattler]].callback = SpriteCB_PlayerMonFromBall;
@@ -1087,12 +1087,12 @@ static void HandleBallAnimEnd(struct Sprite *sprite)
         FreeSpriteOamMatrix(sprite);
         DestroySprite(sprite);
 
-        for (doneBattlers = 0, i = 0; i < MAX_BATTLERS_COUNT; i++)
+        for (doneBattlers = 0, i = 0; i < NUMERO_COMBATIENTES; i++)
         {
             if (gBattleSpritesDataPtr->healthBoxesData[i].ballAnimActive == FALSE)
                 doneBattlers++;
         }
-        if (doneBattlers == MAX_BATTLERS_COUNT)
+        if (doneBattlers == NUMERO_COMBATIENTES)
         {
             for (i = 0; i < POKEBALL_COUNT; i++)
                 FreeBallGfx(i);
@@ -1127,7 +1127,7 @@ static void SpriteCB_BallThrow_CaptureMon(struct Sprite *sprite)
 
 static inline bool32 IsBattlerPlayer(u32 battler)
 {
-    return (battler % B_POSITION_PLAYER_RIGHT) ? FALSE : TRUE;
+    return (battler % JUGADOR_DERECHA) ? FALSE : TRUE;
 }
 
 static void SpriteCB_MonSendOut_1(struct Sprite *sprite)
@@ -1151,7 +1151,7 @@ static void SpriteCB_MonSendOut_2(struct Sprite *sprite)
 {
     u32 r6;
     u32 r7;
-    bool32 rightPosition = (IsBattlerPlayer(sprite->sBattler)) ? B_POSITION_PLAYER_RIGHT : B_POSITION_OPPONENT_RIGHT;
+    bool32 rightPosition = (IsBattlerPlayer(sprite->sBattler)) ? JUGADOR_DERECHA : OPONENTE_DERECHA;
 
     if (HIBYTE(sprite->data[7]) >= 35 && HIBYTE(sprite->data[7]) < 80)
     {
@@ -1194,7 +1194,7 @@ static void SpriteCB_MonSendOut_2(struct Sprite *sprite)
             sprite->data[0] = 0;
 
             if (EsContraEntrenador() && gBattleSpritesDataPtr->animationData->introAnimActive
-             && sprite->sBattler == GetBattlerAtPosition(rightPosition))
+             && sprite->sBattler == rightPosition)
                 sprite->callback = SpriteCB_ReleaseMon2FromBall;
             else
                 sprite->callback = SpriteCB_ReleaseMonFromBall;
@@ -1222,7 +1222,7 @@ static void SpriteCB_OpponentMonSendOut(struct Sprite *sprite)
     {
         sprite->data[0] = 0;
         if (EsContraEntrenador() && gBattleSpritesDataPtr->animationData->introAnimActive
-         && sprite->sBattler == GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT))
+         && sprite->sBattler == OPONENTE_DERECHA)
             sprite->callback = SpriteCB_ReleaseMon2FromBall;
         else
             sprite->callback = SpriteCB_ReleaseMonFromBall;
@@ -1468,7 +1468,7 @@ void StartHealthboxSlideIn(u8 battlerId)
     healthboxSprite->x2 = 0x73;
     healthboxSprite->y2 = 0;
     healthboxSprite->callback = SpriteCB_HealthboxSlideIn;
-    if (GetBattlerSide(battlerId) != B_SIDE_PLAYER)
+    if (GetBattlerSide(battlerId) != LADO_JUGADOR)
     {
         healthboxSprite->sSpeedX = -healthboxSprite->sSpeedX;
         healthboxSprite->sSpeedY = -healthboxSprite->sSpeedY;
@@ -1476,7 +1476,7 @@ void StartHealthboxSlideIn(u8 battlerId)
         healthboxSprite->y2 = -healthboxSprite->y2;
     }
     gSprites[healthboxSprite->data[5]].callback(&gSprites[healthboxSprite->data[5]]);
-    if (GetBattlerPosition(battlerId) == B_POSITION_PLAYER_RIGHT)
+    if (battlerId == JUGADOR_DERECHA)
         healthboxSprite->callback = SpriteCB_HealthboxSlideInDelayed;
 }
 

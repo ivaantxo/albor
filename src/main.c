@@ -78,7 +78,6 @@ void AgbMain(void)
     InitIntrHandlers();
     m4aSoundInit();
     EnableVCountIntrAtLine150();
-    RtcInit();
     CheckForFlashMemory();
     InitMainCallbacks();
     InitMapMusic();

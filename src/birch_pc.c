@@ -4,14 +4,6 @@
 #include "pokedex.h"
 #include "strings.h"
 
-bool16 ScriptGetPokedexInfo(void)
-{
-    gSpecialVar_0x8005 = GetNationalPokedexCount(FLAG_GET_SEEN);
-    gSpecialVar_0x8006 = GetNationalPokedexCount(FLAG_GET_CAUGHT);
-
-    return TRUE;
-}
-
 #define BIRCH_DEX_STRINGS 21
 
 static const u8 *const sBirchDexRatingTexts[BIRCH_DEX_STRINGS] =

@@ -653,16 +653,6 @@ void GetRivalSonDaughterString(void)
         StringCopy(gVariableTexto1, gText_Son);
 }
 
-u8 GetBattleOutcome(void)
-{
-    return gBattleOutcome;
-}
-
-void CableCarWarp(void)
-{
-
-}
-
 void SetHiddenItemFlag(void)
 {
     FlagSet(gSpecialVar_0x8004);
@@ -2125,42 +2115,6 @@ void UpdateTrainerFanClubGameClear(void)
     }
 }
 
-// If the player has < 3 fans, gain a new fan whenever the counter reaches 20+
-// Defeating Drake or participating in a Contest increments the counter by 2
-// Participating at Battle Tower or in a Secret Base battle increments the counter by 1
-u8 TryGainNewFanFromCounter(u8 incrementId)
-{
-    static const u8 sCounterIncrements[] =
-    {
-        [FANCOUNTER_DEFEATED_DRAKE]    = 2,
-        [FANCOUNTER_BATTLED_AT_BASE]   = 1,
-        [FANCOUNTER_FINISHED_CONTEST]  = 2,
-    };
-
-    if (VarGet(VAR_LILYCOVE_FAN_CLUB_STATE) == 2)
-    {
-        if (GET_TRAINER_FAN_CLUB_COUNTER + sCounterIncrements[incrementId] > 19)
-        {
-            if (GetNumFansOfPlayerInTrainerFanClub() < 3)
-            {
-                PlayerGainRandomTrainerFan();
-                CLEAR_TRAINER_FAN_CLUB_COUNTER;
-            }
-            else
-            {
-                SET_TRAINER_FAN_CLUB_COUNTER(20);
-            }
-        }
-        else
-        {
-            INCR_TRAINER_FAN_CLUB_COUNTER(sCounterIncrements[incrementId]);
-        }
-    }
-
-    return GET_TRAINER_FAN_CLUB_COUNTER;
-}
-
-
 // Loop through the fan club members, and if theyre not a fan of the player there is a 50% chance for them to become a fan
 // Stops when a fan is gained
 // If no new fan was gained while looping, the last non-fan in the list becomes a fan
@@ -2302,12 +2256,6 @@ void BufferFanClubTrainerName(void)
 void SetPlayerGotFirstFans(void)
 {
     SET_TRAINER_FAN_CLUB_FLAG(FANCLUB_GOT_FIRST_FANS);
-}
-
-// return value is always ignored
-u8 Script_TryGainNewFanFromCounter(void)
-{
-    return TryGainNewFanFromCounter(gSpecialVar_0x8004);
 }
 
 void TrySkyBattle(void)

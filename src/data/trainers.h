@@ -3560,7 +3560,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 1541
-                MOVE_BATON_PASS,
+                MOVE_RELEVO,
                 MOVE_FEINT_ATTACK,
                 MOVE_FAKE_TEARS,
                 MOVE_BITE,
@@ -10551,7 +10551,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 4405
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
                 MOVE_CRUNCH,
                 MOVE_DRAGON_BREATH,
                 MOVE_EARTHQUAKE,
@@ -10570,7 +10570,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 4413
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
                 MOVE_DRAGON_CLAW,
                 MOVE_ROCK_SLIDE,
                 MOVE_CRUNCH,
@@ -11201,7 +11201,7 @@ F_TRAINER_FEMALE |
                 MOVE_SUNNY_DAY,
                 MOVE_SOLAR_BEAM,
                 MOVE_PSYCHIC,
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
             },
             },
         },
@@ -13486,7 +13486,7 @@ F_TRAINER_FEMALE |
                 MOVE_ATTRACT,
                 MOVE_ICE_BEAM,
                 MOVE_THUNDERBOLT,
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
             },
             },
             {
@@ -16346,7 +16346,7 @@ F_TRAINER_FEMALE |
                 MOVE_DRAGON_BREATH,
                 MOVE_HEADBUTT,
                 MOVE_FOCUS_ENERGY,
-                MOVE_EMBER,
+                MOVE_ASCUAS,
             },
             },
         },
@@ -17924,7 +17924,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 7440
-                MOVE_EMBER,
+                MOVE_ASCUAS,
                 MOVE_TACKLE,
                 MOVE_MAGNITUDE,
                 MOVE_SUNNY_DAY,
@@ -18041,7 +18041,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 7488
-                MOVE_EMBER,
+                MOVE_ASCUAS,
                 MOVE_TACKLE,
                 MOVE_MAGNITUDE,
                 MOVE_SUNNY_DAY,
@@ -18079,7 +18079,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 7504
-                MOVE_EMBER,
+                MOVE_ASCUAS,
                 MOVE_TAKE_DOWN,
                 MOVE_MAGNITUDE,
                 MOVE_SUNNY_DAY,
@@ -18134,7 +18134,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 7528
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
                 MOVE_TAKE_DOWN,
                 MOVE_MAGNITUDE,
                 MOVE_SUNNY_DAY,
@@ -18189,7 +18189,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 7552
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
                 MOVE_TAKE_DOWN,
                 MOVE_EARTHQUAKE,
                 MOVE_SUNNY_DAY,
@@ -20827,7 +20827,7 @@ F_TRAINER_FEMALE |
 #line 8613
                 MOVE_SUNNY_DAY,
                 MOVE_WEATHER_BALL,
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
                 MOVE_SOLAR_BEAM,
             },
             },
@@ -27003,7 +27003,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 11118
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
                 MOVE_FURY_SWIPES,
                 MOVE_FEINT_ATTACK,
                 MOVE_BIND,
@@ -28665,7 +28665,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 11824
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
                 MOVE_TAKE_DOWN,
                 MOVE_REST,
                 MOVE_EARTHQUAKE,
@@ -33588,7 +33588,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 13878
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
                 MOVE_ATTRACT,
                 MOVE_SOLAR_BEAM,
                 MOVE_BOUNCE,
@@ -33667,7 +33667,7 @@ F_TRAINER_FEMALE |
             .moves = {
 #line 13911
                 MOVE_HELPING_HAND,
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
                 MOVE_ROAR,
                 MOVE_SUNNY_DAY,
             },
@@ -33702,7 +33702,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 13927
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
                 MOVE_ATTRACT,
                 MOVE_SOLAR_BEAM,
                 MOVE_BOUNCE,
@@ -33798,7 +33798,7 @@ F_TRAINER_FEMALE |
             .moves = {
 #line 13968
                 MOVE_HELPING_HAND,
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
                 MOVE_SUNNY_DAY,
                 MOVE_ROAR,
             },
@@ -33833,7 +33833,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 13984
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
                 MOVE_ATTRACT,
                 MOVE_SOLAR_BEAM,
                 MOVE_BOUNCE,
@@ -33912,7 +33912,7 @@ F_TRAINER_FEMALE |
             .moves = {
 #line 14017
                 MOVE_HELPING_HAND,
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
                 MOVE_SUNNY_DAY,
                 MOVE_ROAR,
             },
@@ -33964,7 +33964,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 14041
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
                 MOVE_ATTRACT,
                 MOVE_SOLAR_BEAM,
                 MOVE_BOUNCE,
@@ -34096,7 +34096,7 @@ F_TRAINER_FEMALE |
             .moves = {
 #line 14098
                 MOVE_HYPER_BEAM,
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
                 MOVE_THUNDERBOLT,
                 MOVE_SHADOW_BALL,
             },
@@ -34206,7 +34206,7 @@ F_TRAINER_FEMALE |
             .moves = {
 #line 14147
                 MOVE_HYPER_BEAM,
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
                 MOVE_THUNDERBOLT,
                 MOVE_SHADOW_BALL,
             },
@@ -34316,7 +34316,7 @@ F_TRAINER_FEMALE |
             .moves = {
 #line 14196
                 MOVE_HYPER_BEAM,
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
                 MOVE_THUNDERBOLT,
                 MOVE_SHADOW_BALL,
             },
@@ -34443,7 +34443,7 @@ F_TRAINER_FEMALE |
             .moves = {
 #line 14253
                 MOVE_HYPER_BEAM,
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
                 MOVE_THUNDERBOLT,
                 MOVE_SHADOW_BALL,
             },
@@ -35056,7 +35056,7 @@ F_TRAINER_FEMALE |
                 MOVE_SUNNY_DAY,
                 MOVE_SOLAR_BEAM,
                 MOVE_PSYCHIC,
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
             },
             },
         },
@@ -35185,7 +35185,7 @@ F_TRAINER_FEMALE |
                 MOVE_SUNNY_DAY,
                 MOVE_SOLAR_BEAM,
                 MOVE_PSYCHIC,
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
             },
             },
         },
@@ -35314,7 +35314,7 @@ F_TRAINER_FEMALE |
                 MOVE_SUNNY_DAY,
                 MOVE_SOLAR_BEAM,
                 MOVE_PSYCHIC,
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
             },
             },
         },
@@ -35443,7 +35443,7 @@ F_TRAINER_FEMALE |
                 MOVE_SUNNY_DAY,
                 MOVE_SOLAR_BEAM,
                 MOVE_PSYCHIC,
-                MOVE_FLAMETHROWER,
+                MOVE_LANZALLAMAS,
             },
             },
         },
