@@ -937,12 +937,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_NATURAL_GIFT] =
-    {
-        .battleScript = BattleScript_EffectNaturalGift,
-        .encourageEncore = TRUE,
-    },
-
     [EFFECT_POWER_BASED_ON_TARGET_HP] =
     {
         .battleScript = BattleScript_EffectHit,

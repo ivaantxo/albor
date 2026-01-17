@@ -1441,10 +1441,6 @@
 	.4byte \ptr
 	.endm
 
-	.macro trytrainerslidemegaevolutionmsg
-	callnative BS_TryTrainerSlideMegaEvolutionMsg
-	.endm
-
 	.macro tryhealpulse failInstr:req
 	callnative BS_TryHealPulse
 	.4byte \failInstr
@@ -1985,11 +1981,6 @@
 
 	.macro tryactivatebattlebond battler:req
 	various \battler, VARIOUS_TRY_ACTIVATE_BATTLE_BOND
-	.endm
-
-	.macro jumpifcantreverttoprimal jumpInstr:req
-	various BS_ATTACKER, VARIOUS_JUMP_IF_CANT_REVERT_TO_PRIMAL
-	.4byte \jumpInstr
 	.endm
 
 	.macro jumpifweatheraffected battler:req, flags:req, jumpInstr:req

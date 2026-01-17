@@ -531,14 +531,11 @@ struct BattleStruct
     u16 lastTakenMoveFrom[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES]; // a 2-D array [target][attacker]
     u8 wishPerishSongState;
     u8 wishPerishSongBattlerId;
-    u8 startingStatus:6; // status to apply at battle start. defined in constants/battle.h
-    u8 startingStatusDone:1;
     u8 overworldWeatherDone:1;
     u8 isAtkCancelerForCalledMove:1; // Certain cases in atk canceler should only be checked once, when the original move is called, however others need to be checked the twice.
     u8 friskedAbility:1; // If identifies two mons, show the ability pop-up only once.
     u8 fickleBeamBoosted:1;
     u8 poisonPuppeteerConfusion:1;
-    u8 startingStatusTimer;
     u8 atkCancellerTracker;
     u8 AI_monToSwitchIntoId[NUMERO_COMBATIENTES];
     u8 alreadyStatusedMoveAttempt; // As bits for battlers; For example when using Thunder Wave on an already paralyzed Pokémon.
@@ -603,7 +600,6 @@ struct BattleStruct
     u8 trainerSlideFirstSTABMoveMsgState:2;
     u8 trainerSlidePlayerMonUnaffectedMsgState:2;
     u8 trainerSlideHalfHpMsgDone:1;
-    u8 trainerSlideMegaEvolutionMsgDone:1;
     u8 trainerSlideBeforeFirstTurnMsgDone:1;
     u8 trainerSlideLowHpMsgDone:1;
     u8 pledgeMove:1;

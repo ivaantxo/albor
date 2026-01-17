@@ -21,21 +21,6 @@ const u32 gBattleAnimSpritePal_ToxicSpikes[] = INCBIN_U32("graphics/battle_anims
 const u32 gBattleAnimSpriteGfx_EnergyBall[] = INCBIN_U32("graphics/battle_anims/sprites/energy_ball.4bpp.lz");
 const u32 gBattleAnimSpritePal_EnergyBall[] = INCBIN_U32("graphics/battle_anims/sprites/energy_ball.gbapal.lz");
 
-const u32 gBattleAnimSpriteGfx_MegaStone[] = INCBIN_U32("graphics/battle_anims/sprites/mega_stone.4bpp.lz");
-const u32 gBattleAnimSpritePal_MegaStone[] = INCBIN_U32("graphics/battle_anims/sprites/mega_stone.gbapal.lz");
-
-const u32 gBattleAnimSpriteGfx_MegaParticles[] = INCBIN_U32("graphics/battle_anims/sprites/mega_particles.4bpp.lz");
-const u32 gBattleAnimSpritePal_MegaParticles[] = INCBIN_U32("graphics/battle_anims/sprites/mega_particles.gbapal.lz");
-
-const u32 gBattleAnimSpriteGfx_MegaSymbol[] = INCBIN_U32("graphics/battle_anims/sprites/mega_symbol.4bpp.lz");
-const u32 gBattleAnimSpritePal_MegaSymbol[] = INCBIN_U32("graphics/battle_anims/sprites/mega_symbol.gbapal.lz");
-
-const u32 gBattleAnimSpriteGfx_AlphaSymbol[] = INCBIN_U32("graphics/battle_anims/sprites/alpha_symbol.4bpp.lz");
-const u32 gBattleAnimSpritePal_AlphaSymbol[] = INCBIN_U32("graphics/battle_anims/sprites/alpha_symbol.gbapal.lz");
-
-const u32 gBattleAnimSpriteGfx_OmegaSymbol[] = INCBIN_U32("graphics/battle_anims/sprites/omega_symbol.4bpp.lz");
-const u32 gBattleAnimSpritePal_OmegaSymbol[] = INCBIN_U32("graphics/battle_anims/sprites/omega_symbol.gbapal.lz");
-
 const u32 gBattleAnimSpriteGfx_FlashCannonBall[] = INCBIN_U32("graphics/battle_anims/sprites/flash_cannon_ball.4bpp.lz");
 const u32 gBattleAnimSpritePal_FlashCannonBall[] = INCBIN_U32("graphics/battle_anims/sprites/flash_cannon_ball.gbapal.lz");
 
@@ -48,10 +33,8 @@ const u32 gBattleAnimSpritePal_Punishment[] = INCBIN_U32("graphics/battle_anims/
 const u32 gBattleAnimSpriteGfx_QuickGuard[] = INCBIN_U32("graphics/battle_anims/sprites/quick_guard.4bpp.lz");
 const u32 gBattleAnimSpritePal_QuickGuard[] = INCBIN_U32("graphics/battle_anims/sprites/quick_guard.gbapal.lz");
 
-const u32 gBattleAnimSpriteGfx_AlphaStone[] = INCBIN_U32("graphics/battle_anims/sprites/alpha_stone.4bpp.lz");
-const u32 gBattleAnimSpritePal_AlphaStone[] = INCBIN_U32("graphics/battle_anims/sprites/alpha_stone.gbapal.lz");
-
 const u32 gBattleAnimSpriteGfx_Anchor[] = INCBIN_U32("graphics/battle_anims/sprites/anchor.4bpp.lz");
+const u32 gBattleAnimSpritePal_Anchor[] = INCBIN_U32("graphics/battle_anims/sprites/anchor.gbapal.lz");
 
 const u32 gBattleAnimSpriteGfx_Apple[] = INCBIN_U32("graphics/battle_anims/sprites/apple.4bpp.lz");
 const u32 gBattleAnimSpritePal_Apple[] = INCBIN_U32("graphics/battle_anims/sprites/apple.gbapal.lz");
@@ -205,18 +188,10 @@ const u32 gBattleAnimSpritePal_MudBomb[] = INCBIN_U32("graphics/battle_anims/spr
 const u32 gBattleAnimSpriteGfx_Mushroom[] = INCBIN_U32("graphics/battle_anims/sprites/mushroom.4bpp.lz");
 const u32 gBattleAnimSpritePal_Mushroom[] = INCBIN_U32("graphics/battle_anims/sprites/mushroom.gbapal.lz");
 
-const u32 gBattleAnimSpritePal_NaturalGiftRing[] = INCBIN_U32("graphics/battle_anims/sprites/natural_gift_ring.gbapal.lz");
-
-const u32 gBattleAnimSpriteGfx_NecrozmaStar[] = INCBIN_U32("graphics/battle_anims/sprites/necrozma_star.4bpp.lz");
-const u32 gBattleAnimSpritePal_NecrozmaStar[] = INCBIN_U32("graphics/battle_anims/sprites/necrozma_star.gbapal.lz");
-
 const u32 gBattleAnimSpritePal_NewImpact[] = INCBIN_U32("graphics/battle_anims/sprites/impact_new.gbapal.lz");
 
 const u32 gBattleAnimSpriteGfx_Obstruct[] = INCBIN_U32("graphics/battle_anims/sprites/obstruct.4bpp.lz");
 const u32 gBattleAnimSpritePal_Obstruct[] = INCBIN_U32("graphics/battle_anims/sprites/obstruct.gbapal.lz");
-
-const u32 gBattleAnimSpriteGfx_OmegaStone[] = INCBIN_U32("graphics/battle_anims/sprites/omega_stone.4bpp.lz");
-const u32 gBattleAnimSpritePal_OmegaStone[] = INCBIN_U32("graphics/battle_anims/sprites/omega_stone.gbapal.lz");
 
 const u32 gBattleAnimSpriteGfx_PinkDiamond[] = INCBIN_U32("graphics/battle_anims/sprites/pink_diamond.4bpp.lz");
 const u32 gBattleAnimSpritePal_PinkDiamond[] = INCBIN_U32("graphics/battle_anims/sprites/pink_diamond.gbapal.lz");

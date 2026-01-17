@@ -202,20 +202,16 @@ static const u8* const sBattleAnims_General[NUM_B_ANIMS_GENERAL] =
     [B_ANIM_FOCUS_PUNCH_SETUP]      = gBattleAnimGeneral_FocusPunchSetUp,
     [B_ANIM_INGRAIN_HEAL]           = gBattleAnimGeneral_IngrainHeal,
     [B_ANIM_WISH_HEAL]              = gBattleAnimGeneral_WishHeal,
-    [B_ANIM_MEGA_EVOLUTION]         = gBattleAnimGeneral_MegaEvolution,
     [B_ANIM_ILLUSION_OFF]           = gBattleAnimGeneral_IllusionOff,
     [B_ANIM_FORM_CHANGE]            = gBattleAnimGeneral_FormChange,
     [B_ANIM_SLIDE_OFFSCREEN]        = gBattleAnimGeneral_SlideOffScreen,
     [B_ANIM_RESTORE_BG]             = gBattleAnimGeneral_RestoreBg,
     [B_ANIM_TOTEM_FLARE]            = gBattleAnimGeneral_TotemFlare,
     [B_ANIM_GULP_MISSILE]           = gBattleAnimGeneral_GulpMissile,
-    [B_ANIM_STRONG_WINDS]           = gBattleAnimGeneral_StrongWinds,
-    [B_ANIM_PRIMAL_REVERSION]       = gBattleAnimGeneral_PrimalReversion,
     [B_ANIM_AQUA_RING_HEAL]         = gBattleAnimGeneral_AquaRingHeal,
     [B_ANIM_BEAK_BLAST_SETUP]       = gBattleAnimGeneral_BeakBlastSetUp,
     [B_ANIM_SHELL_TRAP_SETUP]       = gBattleAnimGeneral_ShellTrapSetUp,
     [B_ANIM_SNOW_CONTINUES]         = gBattleAnimGeneral_Snow,
-    [B_ANIM_ULTRA_BURST]            = gBattleAnimGeneral_UltraBurst,
     [B_ANIM_SALT_CURE_DAMAGE]       = gBattleAnimGeneral_SaltCureDamage,
     [B_ANIM_MAX_SET_WEATHER]        = gBattleAnimGeneral_SetWeather,
     [B_ANIM_RAINBOW]                = gBattleAnimGeneral_Rainbow,
@@ -302,9 +298,6 @@ void LaunchBattleAnimation(u32 animType, u32 animId)
         case B_ANIM_FUTURE_SIGHT_HIT:
         case B_ANIM_DOOM_DESIRE_HIT:
         case B_ANIM_WISH_HEAL:
-        case B_ANIM_MEGA_EVOLUTION:
-        case B_ANIM_PRIMAL_REVERSION:
-        case B_ANIM_ULTRA_BURST:
         case B_ANIM_GULP_MISSILE:
         case B_ANIM_RAINBOW:
         case B_ANIM_SEA_OF_FIRE:

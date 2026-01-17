@@ -7528,23 +7528,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_Brine,
     },
 
-    [MOVE_NATURAL_GIFT] =
-    {
-        .name = COMPOUND_STRING("Don natural"),
-        .description = COMPOUND_STRING(
-            "The effectiveness varies\n"
-            "with the held Berry."),
-        .effect = EFFECT_NATURAL_GIFT,
-        .power = 1,
-        .type = TIPO_NORMAL,
-        .accuracy = 100,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .battleAnimScript = gBattleAnimMove_NaturalGift,
-    },
-
     [MOVE_FEINT] =
     {
         .name = COMPOUND_STRING("Amago"),

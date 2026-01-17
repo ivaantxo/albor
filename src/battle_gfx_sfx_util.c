@@ -511,31 +511,31 @@ void CopyBattleSpriteInvisibility(u8 battler)
     gBattleSpritesDataPtr->battlerData[battler].invisible = gSprites[gBattlerSpriteIds[battler]].invisible;
 }
 
-void HandleSpeciesGfxDataChange(u8 battlerAtk, u8 battlerDef, bool32 megaEvo, bool8 trackEnemyPersonality)
+void GestionaCambioGraficoEspecie(u32 atacante, u32 defensor, bool32 usarPersonalidadEnemigo)
 {
     u32 personalityValue, position, paletteOffset, targetSpecies;
     bool32 isShiny;
     const void *lzPaletteData, *src;
     void *dst;
 
-    position = battlerAtk;
+    position = atacante;
 
-    if (GetBattlerSide(battlerDef) == LADO_OPONENTE)
-        targetSpecies = GetMonData(&gEnemyParty[gBattlerPartyIndexes[battlerDef]], MON_DATA_SPECIES);
+    if (GetBattlerSide(defensor) == LADO_OPONENTE)
+        targetSpecies = GetMonData(&gEnemyParty[gBattlerPartyIndexes[defensor]], MON_DATA_SPECIES);
     else
-        targetSpecies = GetMonData(&gPlayerParty[gBattlerPartyIndexes[battlerDef]], MON_DATA_SPECIES);
+        targetSpecies = GetMonData(&gPlayerParty[gBattlerPartyIndexes[defensor]], MON_DATA_SPECIES);
 
-    if (GetBattlerSide(battlerAtk) == LADO_JUGADOR)
+    if (GetBattlerSide(atacante) == LADO_JUGADOR)
     {
-        if (B_TRANSFORM_SHINY >= GEN_4 && trackEnemyPersonality)
+        if (B_TRANSFORM_SHINY >= GEN_4 && usarPersonalidadEnemigo)
         {
-            personalityValue = GetMonData(&gEnemyParty[gBattlerPartyIndexes[battlerDef]], MON_DATA_PERSONALITY);
-            isShiny = GetMonData(&gEnemyParty[gBattlerPartyIndexes[battlerDef]], MON_DATA_IS_SHINY);
+            personalityValue = GetMonData(&gEnemyParty[gBattlerPartyIndexes[defensor]], MON_DATA_PERSONALITY);
+            isShiny = GetMonData(&gEnemyParty[gBattlerPartyIndexes[defensor]], MON_DATA_IS_SHINY);
         }
         else
         {
-            personalityValue = GetMonData(&gPlayerParty[gBattlerPartyIndexes[battlerAtk]], MON_DATA_PERSONALITY);
-            isShiny = GetMonData(&gPlayerParty[gBattlerPartyIndexes[battlerAtk]], MON_DATA_IS_SHINY);
+            personalityValue = GetMonData(&gPlayerParty[gBattlerPartyIndexes[atacante]], MON_DATA_PERSONALITY);
+            isShiny = GetMonData(&gPlayerParty[gBattlerPartyIndexes[atacante]], MON_DATA_IS_SHINY);
         }
 
         HandleLoadSpecialPokePic(FALSE,
@@ -545,15 +545,15 @@ void HandleSpeciesGfxDataChange(u8 battlerAtk, u8 battlerDef, bool32 megaEvo, bo
     }
     else
     {
-        if (B_TRANSFORM_SHINY >= GEN_4 && trackEnemyPersonality)
+        if (B_TRANSFORM_SHINY >= GEN_4 && usarPersonalidadEnemigo)
         {
-            personalityValue = GetMonData(&gPlayerParty[gBattlerPartyIndexes[battlerDef]], MON_DATA_PERSONALITY);
-            isShiny = GetMonData(&gPlayerParty[gBattlerPartyIndexes[battlerDef]], MON_DATA_IS_SHINY);
+            personalityValue = GetMonData(&gPlayerParty[gBattlerPartyIndexes[defensor]], MON_DATA_PERSONALITY);
+            isShiny = GetMonData(&gPlayerParty[gBattlerPartyIndexes[defensor]], MON_DATA_IS_SHINY);
         }
         else
         {
-            personalityValue = GetMonData(&gEnemyParty[gBattlerPartyIndexes[battlerAtk]], MON_DATA_PERSONALITY);
-            isShiny = GetMonData(&gEnemyParty[gBattlerPartyIndexes[battlerAtk]], MON_DATA_IS_SHINY);
+            personalityValue = GetMonData(&gEnemyParty[gBattlerPartyIndexes[atacante]], MON_DATA_PERSONALITY);
+            isShiny = GetMonData(&gEnemyParty[gBattlerPartyIndexes[atacante]], MON_DATA_IS_SHINY);
         }
 
         HandleLoadSpecialPokePic(TRUE,
@@ -562,7 +562,7 @@ void HandleSpeciesGfxDataChange(u8 battlerAtk, u8 battlerDef, bool32 megaEvo, bo
                                     personalityValue);
     }
     src = gMonSpritesGfxPtr->spritesGfx[position];
-    dst = (void *)(OBJ_VRAM0 + gSprites[gBattlerSpriteIds[battlerAtk]].oam.tileNum * 32);
+    dst = (void *)(OBJ_VRAM0 + gSprites[gBattlerSpriteIds[battlerAtk]].oam.tileNum * TILE_4BPP);
     DmaCopy32(3, src, dst, MON_PIC_SIZE);
     paletteOffset = OBJ_PLTT_ID(battlerAtk);
     lzPaletteData = GetMonSpritePalFromSpeciesAndPersonality(targetSpecies, isShiny, personalityValue);

@@ -1677,7 +1677,7 @@ static void FadeOutAtEndOfEscalator(void)
 
 static void WarpAtEndOfEscalator(void)
 {
-    if (!gFundidoPaletas.activo&& BGMusicStopped() == TRUE)
+    if (!gFundidoPaletas.activo && BGMusicStopped() == TRUE)
     {
         StopEscalator();
         WarpIntoMap();
@@ -2051,7 +2051,7 @@ static bool8 LavaridgeGymB1FWarpEffect_FadeOut(struct Task *task, struct ObjectE
 
 static bool8 LavaridgeGymB1FWarpEffect_Warp(struct Task *task, struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
-    if (!gFundidoPaletas.activo&& BGMusicStopped() == TRUE)
+    if (!gFundidoPaletas.activo && BGMusicStopped() == TRUE)
     {
         WarpIntoMap();
         gFieldCallback = FieldCB_LavaridgeGymB1FWarpExit;
@@ -2209,7 +2209,7 @@ static bool8 LavaridgeGym1FWarpEffect_FadeOut(struct Task *task, struct ObjectEv
 
 static bool8 LavaridgeGym1FWarpEffect_Warp(struct Task *task, struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
-    if (!gFundidoPaletas.activo&& BGMusicStopped() == TRUE)
+    if (!gFundidoPaletas.activo && BGMusicStopped() == TRUE)
     {
         WarpIntoMap();
         gFieldCallback = FieldCB_FallWarpExit;
@@ -2274,7 +2274,7 @@ static void EscapeRopeWarpOutEffect_Spin(struct Task *task)
     objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
     if (!ObjectEventIsMovementOverridden(objectEvent) || ObjectEventClearHeldMovementIfFinished(objectEvent))
     {
-        if (task->tTimer == 0 && !gFundidoPaletas.activo&& BGMusicStopped() == TRUE)
+        if (task->tTimer == 0 && !gFundidoPaletas.activo && BGMusicStopped() == TRUE)
         {
             SetObjectEventDirection(objectEvent, task->tStartDir);
             SetWarpDestinationToEscapeWarp();
@@ -3733,7 +3733,7 @@ static void DestroyDeoxysRockEffect_RockFragments(s16 *data, u8 taskId)
 
 static void DestroyDeoxysRockEffect_WaitAndEnd(s16 *data, u8 taskId)
 {
-    if (!gFundidoPaletas.activo&& !FuncIsActiveTask(Task_DeoxysRockCameraShake))
+    if (!gFundidoPaletas.activo && !FuncIsActiveTask(Task_DeoxysRockCameraShake))
     {
         InstallCameraPanAheadCallback();
         RemoveObjectEventByLocalIdAndMap(tLocalId, tMapNum, tMapGroup);

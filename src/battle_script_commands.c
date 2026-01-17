@@ -997,24 +997,6 @@ static void Cmd_attackcanceler(void)
     if (AtkCanceller_UnableToUseMove(moveType))
         return;
 
-    if (WEATHER_HAS_EFFECT && gMovesInfo[gCurrentMove].power)
-    {
-        if (moveType == TIPO_FUEGO && (gBattleWeather & B_WEATHER_RAIN_PRIMAL))
-        {
-            gMensajeBatalla = B_MSG_PRIMAL_WEATHER_FIZZLED_BY_RAIN;
-            BattleScriptPushCursor();
-            gBattlescriptCurrInstr = BattleScript_PrimalWeatherBlocksMove;
-            return;
-        }
-        else if (moveType == TIPO_AGUA && (gBattleWeather & B_WEATHER_SUN_PRIMAL))
-        {
-            gMensajeBatalla = B_MSG_PRIMAL_WEATHER_EVAPORATED_IN_SUN;
-            BattleScriptPushCursor();
-            gBattlescriptCurrInstr = BattleScript_PrimalWeatherBlocksMove;
-            return;
-        }
-    }
-
     if (gSpecialStatuses[gBattlerAttacker].parentalBondState == PARENTAL_BOND_OFF
     && GetBattlerAbility(gBattlerAttacker) == ABILITY_PARENTAL_BOND
     && IsMoveAffectedByParentalBond(gCurrentMove, gBattlerAttacker)
@@ -1812,23 +1794,6 @@ END:
         BattleScriptPushCursor();
         gBattlescriptCurrInstr = BattleScript_GemActivates;
         gLastUsedItem = gBattleMons[gBattlerAttacker].item;
-    }
-
-    // B_WEATHER_STRONG_WINDS prints a string when it's about to reduce the power
-    // of a move that is Super Effective against a Flying-type Pokémon.
-    if (gBattleWeather & B_WEATHER_STRONG_WINDS)
-    {
-        if ((GetBattlerType(gBattlerTarget, 0) == TIPO_VOLADOR
-         && GetTypeModifier(moveType, GetBattlerType(gBattlerTarget, 0)) >= UQ_4_12(2.0))
-         || (GetBattlerType(gBattlerTarget, 1) == TIPO_VOLADOR
-         && GetTypeModifier(moveType, GetBattlerType(gBattlerTarget, 1)) >= UQ_4_12(2.0))
-         || (GetBattlerType(gBattlerTarget, 2) == TIPO_VOLADOR
-         && GetTypeModifier(moveType, GetBattlerType(gBattlerTarget, 2)) >= UQ_4_12(2.0)))
-        {
-            gBattlerAbility = gBattlerTarget;
-            BattleScriptPushCursor();
-            gBattlescriptCurrInstr = BattleScript_AttackWeakenedByStrongWinds;
-        }
     }
 }
 
@@ -6074,33 +6039,33 @@ static void Cmd_switchhandleorder(void)
 {
     CMD_ARGS(u8 battler, u8 state);
 
-    u32 battler, i;
+    u32 combatiente;
     if (HayAlgunCombatienteOcupado())
         return;
 
-    battler = GetBattlerForBattleScript(cmd->battler);
+    combatiente = GetBattlerForBattleScript(cmd->battler);
 
     switch (cmd->state)
     {
     case 0:
-        for (i = 0; i < gBattlersCount; i++)
+        for (u32 indiceCombatiente = 0; indiceCombatiente < gBattlersCount; indiceCombatiente++)
         {
-            if (gBattleResources->bufferB[i][0] == CONTROLLER_CHOSENMONRETURNVALUE)
+            if (gBattleResources->bufferB[indiceCombatiente][0] == CONTROLLER_CHOSENMONRETURNVALUE)
             {
-                *(gBattleStruct->monToSwitchIntoId + i) = gBattleResources->bufferB[i][1];
+                *(gBattleStruct->monToSwitchIntoId + indiceCombatiente) = gBattleResources->bufferB[indiceCombatiente][1];
             }
         }
         break;
     case 1:
-        SwitchPartyOrder(battler);
+        SwitchPartyOrder(combatiente);
         break;
     case 2:
-        gBattleCommunication[MULTIUSE_STATE] = gBattleResources->bufferB[battler][1];
-        *(gBattleStruct->monToSwitchIntoId + battler) = gBattleResources->bufferB[battler][1];
-        SwitchPartyOrder(battler);
+        gBattleCommunication[MULTIUSE_STATE] = gBattleResources->bufferB[combatiente][1];
+        *(gBattleStruct->monToSwitchIntoId + combatiente) = gBattleResources->bufferB[combatiente][1];
+        SwitchPartyOrder(combatiente);
 
         PREPARE_SPECIES_BUFFER(gBattleTextBuff1, gBattleMons[gBattlerAttacker].species)
-        PREPARE_MON_NICK_BUFFER(gBattleTextBuff2, battler, gBattleResources->bufferB[battler][1])
+        PREPARE_MON_NICK_BUFFER(gBattleTextBuff2, battler, gBattleResources->bufferB[combatiente][1])
         break;
     }
 
@@ -6497,13 +6462,13 @@ static void Cmd_yesnoboxlearnmove(void)
         }
         break;
     case 3:
-        if (!gFundidoPaletas.activo&& gMain.callback2 == BattleMainCB2)
+        if (!gFundidoPaletas.activo && gMain.callback2 == BattleMainCB2)
         {
             gBattleScripting.learnMoveState++;
         }
         break;
     case 4:
-        if (!gFundidoPaletas.activo&& gMain.callback2 == BattleMainCB2)
+        if (!gFundidoPaletas.activo && gMain.callback2 == BattleMainCB2)
         {
             u8 movePosition = GetMoveSlotToReplace();
             if (movePosition == MAX_MON_MOVES)
@@ -7429,8 +7394,6 @@ static void RemoveAllWeather(void)
         gMensajeBatalla = B_MSG_WEATHER_END_SUN;
     else if(gBattleWeather & B_WEATHER_HAIL)
         gMensajeBatalla = B_MSG_WEATHER_END_HAIL;
-    else if(gBattleWeather & B_WEATHER_STRONG_WINDS)
-        gMensajeBatalla = B_MSG_WEATHER_END_STRONG_WINDS;
     else if(gBattleWeather & B_WEATHER_SNOW)
         gMensajeBatalla = B_MSG_WEATHER_END_SNOW;
     else if(gBattleWeather & B_WEATHER_FOG)
@@ -13985,21 +13948,6 @@ void BS_SetPledgeStatus(void)
     }
     else
         gBattlescriptCurrInstr = BattleScript_MoveEnd;
-}
-
-void BS_TryTrainerSlideMegaEvolutionMsg(void)
-{
-    NATIVE_ARGS();
-    s32 shouldSlide;
-
-    if ((shouldSlide = ShouldDoTrainerSlide(gBattlerAttacker, TRAINER_SLIDE_MEGA_EVOLUTION)))
-    {
-        gBattleScripting.battler = gBattlerAttacker;
-        BattleScriptPush(cmd->nextInstr);
-        gBattlescriptCurrInstr = BattleScript_TrainerASlideMsgRe);
-    }
-    else
-        gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
 void BS_TryHealPulse(void)

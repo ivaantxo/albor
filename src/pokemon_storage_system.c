@@ -1504,7 +1504,7 @@ static void VBlankCB_PokeStorage(void)
     LoadOam();
     ProcessSpriteCopyRequests();
     // Instead of transferring the entire palette buffer, transfer bg and non-dynamic palettes
-    if (sPaletteSwapBuffer && !gFundidoPaletas.transferenciaBufferDeshabilitada && !gFundidoPaletas.activo&& !sStorage->transferWholePlttFrames)
+    if (sPaletteSwapBuffer && !gFundidoPaletas.transferenciaBufferDeshabilitada && !gFundidoPaletas.activo && !sStorage->transferWholePlttFrames)
     {
         RequestDma3Copy(gPlttBufferFaded, (void*)PLTT, 32*17, DMA_REQUEST_COPY16);
         // Skip the 12-1 palettes that are being dynamically swapped anyway
@@ -1636,7 +1636,7 @@ static void HBlankCB_PokeStorage(void)
 {
     u8 vCount = REG_VCOUNT;
     u32 i;
-    if (vCount >= ALTURA_PANTALLA || !sPaletteSwapBuffer || (gFundidoPaletas.activo&& gFundidoPaletas.y == 16 && gFundidoPaletas.modo == 2)) // FUNDIDO_HARDWARE
+    if (vCount >= ALTURA_PANTALLA || !sPaletteSwapBuffer || (gFundidoPaletas.activo && gFundidoPaletas.y == 16 && gFundidoPaletas.modo == 2)) // FUNDIDO_HARDWARE
         return;
     // For each row in the pc box
     for (i = 0; i < IN_BOX_ROWS; i++)

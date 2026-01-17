@@ -1719,16 +1719,6 @@ static void TryDoEventsBeforeFirstTurn(void)
         }
         gBattleStruct->eventsBeforeFirstTurnState++;
         break;
-    case FIRST_TURN_EVENTS_STARTING_STATUS:
-        if (!gBattleStruct->startingStatusDone
-         && gBattleStruct->startingStatus
-         && AbilityBattleEffects(ABILITYEFFECT_SWITCH_IN_STATUSES, 0, 0, ABILITYEFFECT_SWITCH_IN_STATUSES, 0) != 0)
-        {
-            gBattleStruct->startingStatusDone = TRUE;
-            return;
-        }
-        gBattleStruct->eventsBeforeFirstTurnState++;
-        break;
     case FIRST_TURN_EVENTS_NEUTRALIZING_GAS:
         if (AbilityBattleEffects(ABILITYEFFECT_NEUTRALIZINGGAS, 0, 0, 0, 0) != 0)
             return;
@@ -3093,12 +3083,6 @@ u32 GetDynamicMoveType(struct Pokemon *mon, u32 move, u32 battler, u8 *ateBoost)
         if (holdEffect == gMovesInfo[move].argument)
             return ItemId_GetSecondaryId(heldItem);
         break;
-    case EFFECT_REVELATION_DANCE:
-    case EFFECT_RAGING_BULL:
-    case EFFECT_IVY_CUDGEL:
-    case EFFECT_NATURAL_GIFT:
-        break;
-    }
 
     if (moveType == TIPO_NORMAL
      && ((!gMain.inBattle)))

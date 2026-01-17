@@ -1638,17 +1638,8 @@ const u32 gItemIconPalette_ZygardeCube[] = INCBIN_U32("graphics/items/icon_palet
 const u32 gItemIcon_PrisonBottle[] = INCBIN_U32("graphics/items/icons/prison_bottle.4bpp.lz");
 const u32 gItemIconPalette_PrisonBottle[] = INCBIN_U32("graphics/items/icon_palettes/prison_bottle.gbapal.lz");
 
-const u32 gItemIcon_NecrozmaFuser[] = INCBIN_U32("graphics/items/icons/necrozma_fuser.4bpp.lz");
-const u32 gItemIconPalette_NSolarizer[] = INCBIN_U32("graphics/items/icon_palettes/n_solarizer.gbapal.lz");
-const u32 gItemIconPalette_NLunarizer[] = INCBIN_U32("graphics/items/icon_palettes/n_lunarizer.gbapal.lz");
-
 const u32 gItemIcon_ReinsOfUnity[] = INCBIN_U32("graphics/items/icons/reins_of_unity.4bpp.lz");
 const u32 gItemIconPalette_ReinsOfUnity[] = INCBIN_U32("graphics/items/icon_palettes/reins_of_unity.gbapal.lz");
-
-// Battle Mechanic Key Items
-
-const u32 gItemIcon_MegaRing[] = INCBIN_U32("graphics/items/icons/mega_ring.4bpp.lz");
-const u32 gItemIconPalette_MegaRing[] = INCBIN_U32("graphics/items/icon_palettes/mega_ring.gbapal.lz");
 
 // Misc. Key Items
 

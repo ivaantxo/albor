@@ -1098,7 +1098,7 @@ static void Task_NewGameBirchSpeech_WaitForSpriteFadeInWelcome(u8 taskId)
 
 static void Task_NewGameBirchSpeech_ThisIsAPokemon(u8 taskId)
 {
-    if (!gFundidoPaletas.activo&& !RunTextPrintersAndIsPrinter0Active())
+    if (!gFundidoPaletas.activo && !RunTextPrintersAndIsPrinter0Active())
     {
         gTasks[taskId].func = Task_NewGameBirchSpeech_MainSpeech;
         StringExpandPlaceholders(gVariableTextoAmpliada, gText_ThisIsAPokemon);

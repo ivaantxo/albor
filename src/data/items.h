@@ -5194,7 +5194,7 @@ const struct Item gItemsInfo[] =
     {
         .name = _("Red Orb"),
         .price = 0,
-        .holdEffect = HOLD_EFFECT_PRIMAL_ORB,
+        .holdEffect = HOLD_EFFECT_MEGA_STONE,
         .description = COMPOUND_STRING(
             "A red, glowing orb\n"
             "said to contain an\n"
@@ -5210,7 +5210,7 @@ const struct Item gItemsInfo[] =
     {
         .name = _("Blue Orb"),
         .price = 0,
-        .holdEffect = HOLD_EFFECT_PRIMAL_ORB,
+        .holdEffect = HOLD_EFFECT_MEGA_STONE,
         .description = COMPOUND_STRING(
             "A blue, glowing orb\n"
             "said to contain an\n"
@@ -11424,38 +11424,6 @@ const struct Item gItemsInfo[] =
         .iconPalette = gItemIconPalette_PrisonBottle,
     },
 
-    [ITEM_N_SOLARIZER] =
-    {
-        .name = _("N-Solarizer"),
-        .price = 0,
-        .importance = 1,
-        .description = COMPOUND_STRING(
-            "A device to fuse\n"
-            "and split Necrozma\n"
-            "using a Solgaleo."),
-        .pocket = POCKET_KEY_ITEMS,
-        .type = ITEM_USE_PARTY_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .iconPic = gItemIcon_NecrozmaFuser,
-        .iconPalette = gItemIconPalette_NSolarizer,
-    },
-
-    [ITEM_N_LUNARIZER] =
-    {
-        .name = _("N-Lunarizer"),
-        .price = 0,
-        .importance = 1,
-        .description = COMPOUND_STRING(
-            "A device to fuse\n"
-            "and split Necrozma\n"
-            "using a Lunala."),
-        .pocket = POCKET_KEY_ITEMS,
-        .type = ITEM_USE_PARTY_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .iconPic = gItemIcon_NecrozmaFuser,
-        .iconPalette = gItemIconPalette_NLunarizer,
-    },
-
     [ITEM_REINS_OF_UNITY] =
     {
         .name = _("Reins of Unity"),
@@ -11472,26 +11440,6 @@ const struct Item gItemsInfo[] =
         .iconPic = gItemIcon_ReinsOfUnity,
         .iconPalette = gItemIconPalette_ReinsOfUnity,
     },
-
-// Battle Mechanic Key Items
-
-    [ITEM_MEGA_RING] =
-    {
-        .name = _("Mega Ring"),
-        .price = 0,
-        .importance = 1,
-        .description = COMPOUND_STRING(
-            "Enables {PKMN} holding\n"
-            "their Mega Stone to\n"
-            "Mega Evolve."),
-        .pocket = POCKET_KEY_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .iconPic = gItemIcon_MegaRing,
-        .iconPalette = gItemIconPalette_MegaRing,
-    },
-
-// Misc. Key Items
 
     [ITEM_BICYCLE] =
     {

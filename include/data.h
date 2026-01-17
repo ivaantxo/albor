@@ -82,7 +82,6 @@ struct Trainer
     u8 trainerPic;
     u8 trainerName[TRAINER_NAME_LENGTH + 1];
     bool8 mugshotEnabled;
-    u8 startingStatus;    // this trainer starts a battle with a given status. see include/constants/battle.h for values
     u8 mugshotColor;
     u8 partySize;
 };
@@ -198,11 +197,6 @@ static inline const u8 *GetTrainerNameFromId(u16 trainerId)
 static inline const u8 GetTrainerPicFromId(u16 trainerId)
 {
     return gTrainers[SanitizeTrainerId(trainerId)].trainerPic;
-}
-
-static inline const u8 GetTrainerStartingStatusFromId(u16 trainerId)
-{
-    return gTrainers[SanitizeTrainerId(trainerId)].startingStatus;
 }
 
 static inline const u8 GetTrainerPartySizeFromId(u16 trainerId)

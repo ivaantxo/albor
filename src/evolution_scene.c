@@ -762,7 +762,7 @@ static void Task_EvolutionScene(u8 taskId)
             }
             break;
         case MVSTATE_HANDLE_MOVE_SELECT:
-            if (!gFundidoPaletas.activo&& gMain.callback2 == CB2_EvolutionSceneUpdate)
+            if (!gFundidoPaletas.activo && gMain.callback2 == CB2_EvolutionSceneUpdate)
             {
                 var = GetMoveSlotToReplace();
                 if (var == MAX_MON_MOVES)

@@ -322,9 +322,7 @@ static const u8 sText_ButItFailed[] = _("¡Pero falló!");
 static const u8 sText_ItHurtConfusion[] = _("It hurt itself in its\nconfusion!");
 static const u8 sText_MirrorMoveFailed[] = _("The Mirror Move failed!");
 static const u8 sText_StartedToRain[] = _("¡Ha empezado a llover!");
-static const u8 sText_DownpourStarted[] = _("A downpour started!"); // corresponds to DownpourText in pokegold and pokecrystal and is used by Rain Dance in GSC
 static const u8 sText_RainContinues[] = _("Sigue lloviendo…");
-static const u8 sText_DownpourContinues[] = _("The downpour continues."); // unused
 static const u8 sText_RainStopped[] = _("The rain stopped.");
 static const u8 sText_SandstormBrewed[] = _("A sandstorm kicked up!");
 static const u8 sText_SandstormRages[] = _("The sandstorm is raging.");
@@ -584,9 +582,6 @@ static const u8 sText_TargetElectrified[] = _("{B_DEF_NAME_WITH_PREFIX}'s moves\
 static const u8 sText_AssaultVestDoesntAllow[] = _("{B_LAST_ITEM} impide el uso\nde ataques de estado.\p");
 static const u8 sText_GravityPreventsUsage[] = _("{B_ATK_NAME_WITH_PREFIX} can't use {B_CURRENT_MOVE}\nbecause of gravity!\p");
 static const u8 sText_HealBlockPreventsUsage[] = _("{B_ATK_NAME_WITH_PREFIX} was\nprevented from healing!\p");
-static const u8 sText_MegaEvoReacting[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_LAST_ITEM} is\nreacting to {B_ATK_TRAINER_NAME}'s Mega Ring!");
-static const u8 sText_FerventWishReached[] = _("{B_ATK_TRAINER_NAME}'s fervent wish\nhas reached {B_ATK_NAME_WITH_PREFIX}!");
-static const u8 sText_MegaEvoEvolved[] = _("{B_ATK_NAME_WITH_PREFIX} has Mega Evolved into\nMega {B_BUFF1}!");
 const u8 sText_drastically[] = _("drastically ");
 const u8 sText_severely[] = _("severely ");
 static const u8 sText_Infestation[] = _("{B_DEF_NAME_WITH_PREFIX} has been afflicted\nwith an infestation by {B_ATK_NAME_WITH_PREFIX}!");
@@ -663,14 +658,8 @@ static const u8 sText_MoveEvaporatedInTheHarshSunlight[] = _("The Water-type att
 static const u8 sText_ExtremelyHarshSunlightWasNotLessened[] = _("The extremely harsh sunlight was not lessened at all!");
 static const u8 sText_HeavyRain[] = _("A heavy rain began to fall!");
 static const u8 sText_HeavyRainLifted[] = _("The heavy rain has lifted!");
-static const u8 sText_MoveFizzledOutInTheHeavyRain[] = _("The Fire-type attack fizzled out in the heavy rain!");
 static const u8 sText_NoReliefFromHeavyRain[] = _("There is no relief from this heavy rain!");
-static const u8 sText_MysteriousAirCurrent[] = _("Mysterious strong winds are protecting Flying-type Pokémon!");
-static const u8 sText_StrongWindsDissipated[] = _("The mysterious strong winds have dissipated!");
-static const u8 sText_MysteriousAirCurrentBlowsOn[] = _("The mysterious strong winds blow on regardless!");
-static const u8 sText_AttackWeakenedByStrongWinds[] = _("The mysterious strong winds weakened the attack!");
 static const u8 sText_StuffCheeksCantSelect[] = _("It can't use the move because it doesn't have a Berry!\p");
-static const u8 sText_PkmnRevertedToPrimal[] = _("{B_ATK_NAME_WITH_PREFIX}’s Primal Reversion! It reverted to its primal state!");
 static const u8 sText_ButPokemonCantUseTheMove[] = _("But {B_ATK_NAME_WITH_PREFIX} can't use the move!");
 static const u8 sText_ButHoopaCantUseIt[] = _("But {B_ATK_NAME_WITH_PREFIX} can't use it the way it is now!");
 static const u8 sText_BrokeThroughProtection[] = _("It broke through {B_DEF_NAME_WITH_PREFIX}'s protection!");
@@ -716,8 +705,6 @@ static const u8 sText_ItemRestoredSpeciesPP[] = _("{B_BUFF1} had its PP restored
 static const u8 sText_AtkTrappedDef[] = _("{B_ATK_NAME_WITH_PREFIX} trapped {B_DEF_NAME_WITH_PREFIX}!");
 static const u8 sText_MirrorHerbCopied[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} used its Mirror Herb to mirror its opponent's stat changes!");
 static const u8 sText_PkmnItemMelted[] = _("{B_ATK_NAME_WITH_PREFIX} corroded {B_DEF_NAME_WITH_PREFIX}'s {B_LAST_ITEM}!");
-static const u8 sText_UltraBurstReacting[] = _("Bright light is about to burst out of {B_ATK_NAME_WITH_PREFIX}!");
-static const u8 sText_UltraBurstCompleted[] = _("{B_ATK_NAME_WITH_PREFIX} regained its true power through Ultra Burst!");
 static const u8 sText_TeamGainedEXP[] = _("The rest of your team gained Exp. Points thanks to the Exp. Share!\p");
 static const u8 sText_CurrentMoveCantSelect[] = _("{B_BUFF1} cannot be used!\p");
 static const u8 sText_TargetIsBeingSaltCured[] = _("{B_DEF_NAME_WITH_PREFIX} is being salt cured!");
@@ -802,14 +789,8 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_BROKETHROUGHPROTECTION] = sText_BrokeThroughProtection,
     [STRINGID_BUTPOKEMONCANTUSETHEMOVE] = sText_ButPokemonCantUseTheMove,
     [STRINGID_BUTHOOPACANTUSEIT] = sText_ButHoopaCantUseIt,
-    [STRINGID_PKMNREVERTEDTOPRIMAL] = sText_PkmnRevertedToPrimal,
     [STRINGID_STUFFCHEEKSCANTSELECT] = sText_StuffCheeksCantSelect,
-    [STRINGID_ATTACKWEAKENEDBSTRONGWINDS] = sText_AttackWeakenedByStrongWinds,
-    [STRINGID_MYSTERIOUSAIRCURRENTBLOWSON] = sText_MysteriousAirCurrentBlowsOn,
-    [STRINGID_STRONGWINDSDISSIPATED] = sText_StrongWindsDissipated,
-    [STRINGID_MYSTERIOUSAIRCURRENT] = sText_MysteriousAirCurrent,
     [STRINGID_NORELIEFROMHEAVYRAIN] = sText_NoReliefFromHeavyRain,
-    [STRINGID_MOVEFIZZLEDOUTINTHEHEAVYRAIN] = sText_MoveFizzledOutInTheHeavyRain,
     [STRINGID_HEAVYRAINLIFTED] = sText_HeavyRainLifted,
     [STRINGID_HEAVYRAIN] = sText_HeavyRain,
     [STRINGID_EXTREMELYHARSHSUNLIGHTWASNOTLESSENED] = sText_ExtremelyHarshSunlightWasNotLessened,
@@ -1085,9 +1066,7 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_ITHURTCONFUSION] = sText_ItHurtConfusion,
     [STRINGID_MIRRORMOVEFAILED] = sText_MirrorMoveFailed,
     [STRINGID_STARTEDTORAIN] = sText_StartedToRain,
-    [STRINGID_DOWNPOURSTARTED] = sText_DownpourStarted,
     [STRINGID_RAINCONTINUES] = sText_RainContinues,
-    [STRINGID_DOWNPOURCONTINUES] = sText_DownpourContinues,
     [STRINGID_RAINSTOPPED] = sText_RainStopped,
     [STRINGID_SANDSTORMBREWED] = sText_SandstormBrewed,
     [STRINGID_SANDSTORMRAGES] = sText_SandstormRages,
@@ -1339,9 +1318,7 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_IONDELUGEON] = sText_IonDelugeOn,
     [STRINGID_TOPSYTURVYSWITCHEDSTATS] = sText_TopsyTurvySwitchedStats,
     [STRINGID_TARGETELECTRIFIED] = sText_TargetElectrified,
-    [STRINGID_MEGAEVOREACTING] = sText_MegaEvoReacting,
     [STRINGID_FERVENTWISHREACHED] = sText_FerventWishReached,
-    [STRINGID_MEGAEVOEVOLVED] = sText_MegaEvoEvolved,
     [STRINGID_DRASTICALLY] = sText_drastically,
     [STRINGID_SEVERELY] = sText_severely,
     [STRINGID_INFESTATION] = sText_Infestation,
@@ -1380,8 +1357,6 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_PKMNFROSTBITEHEALED] = sText_PkmnFrostbiteHealed,
     [STRINGID_PKMNFROSTBITEHEALED2] = sText_PkmnFrostbiteHealed2,
     [STRINGID_PKMNFROSTBITEHEALEDBY] = sText_PkmnFrostbiteHealedBy,
-    [STRINGID_ULTRABURSTREACTING] = sText_UltraBurstReacting,
-    [STRINGID_ULTRABURSTCOMPLETED] = sText_UltraBurstCompleted,
     [STRINGID_TEAMGAINEDEXP] = sText_TeamGainedEXP,
     [STRINGID_ITEMWASUSEDUP] = sText_ItemWasUsedUp,
     [STRINGID_ATTACKERLOSTITSTYPE] = sText_AttackerLostItsType,
@@ -1400,31 +1375,12 @@ const u32 gMentalHerbCureStringIds[] =
     [B_MSG_MENTALHERBCURE_DISABLE]     = STRINGID_PKMNMOVEDISABLEDNOMORE,
 };
 
-const u32 gStartingStatusStringIds[B_MSG_STARTING_STATUS_COUNT] =
-{
-    [B_MSG_SET_TRICK_ROOM]          = STRINGID_DIMENSIONSWERETWISTED,
-    [B_MSG_SET_MAGIC_ROOM]          = STRINGID_BIZARREARENACREATED,
-    [B_MSG_SET_WONDER_ROOM]         = STRINGID_BIZARREAREACREATED,
-    [B_MSG_SET_TAILWIND_PLAYER]     = STRINGID_TAILWINDBLEW,
-    [B_MSG_SET_TAILWIND_OPPONENT]   = STRINGID_TAILWINDBLEW,
-};
-
 const u32 gHealingWishStringIds[] =
 {
     STRINGID_HEALINGWISHCAMETRUE, STRINGID_LUNARDANCECAMETRUE
 };
 
 const u32 gDmgHazardsStringIds[] =
-{
-    [B_MSG_PKMNHURTBYSPIKES]   = STRINGID_PKMNHURTBYSPIKES,
-    [B_MSG_STEALTHROCKDMG]     = STRINGID_STEALTHROCKDMG,
-    [B_MSG_SHARPSTEELDMG]      = STRINGID_SHARPSTEELDMG,
-    [B_MSG_POINTEDSTONESFLOAT] = STRINGID_POINTEDSTONESFLOAT,
-    [B_MSG_SPIKESSCATTERED]    = STRINGID_SPIKESSCATTERED,
-    [B_MSG_SHARPSTEELFLOATS]   = STRINGID_SHARPSTEELFLOATS,
-};
-
-const u32 gTextoTrampas[] =
 {
     [B_MSG_PKMNHURTBYSPIKES]   = STRINGID_PKMNHURTBYSPIKES,
     [B_MSG_STEALTHROCKDMG]     = STRINGID_STEALTHROCKDMG,
@@ -1459,7 +1415,6 @@ const u32 gSwitchInAbilityStringIds[] =
 const u32 gMoveWeatherChangeStringIds[] =
 {
     [B_MSG_STARTED_RAIN]      = STRINGID_STARTEDTORAIN,
-    [B_MSG_STARTED_DOWNPOUR]  = STRINGID_DOWNPOURSTARTED, // Unused
     [B_MSG_WEATHER_FAILED]    = STRINGID_BUTITFAILED,
     [B_MSG_STARTED_SANDSTORM] = STRINGID_SANDSTORMBREWED,
     [B_MSG_STARTED_SUNLIGHT]  = STRINGID_SUNLIGHTGOTBRIGHT,
@@ -1474,7 +1429,6 @@ const u32 gWeatherEndsStringIds[B_MSG_WEATHER_END_COUNT] =
     [B_MSG_WEATHER_END_SANDSTORM] = STRINGID_SANDSTORMSUBSIDED,
     [B_MSG_WEATHER_END_SUN] = STRINGID_SUNLIGHTFADED,
     [B_MSG_WEATHER_END_HAIL] = STRINGID_HAILSTOPPED,
-    [B_MSG_WEATHER_END_STRONG_WINDS] = STRINGID_STRONGWINDSDISSIPATED,
     [B_MSG_WEATHER_END_SNOW] = STRINGID_SNOWSTOPPED,
     [B_MSG_WEATHER_END_FOG] = STRINGID_FOGLIFTED,
 };
@@ -1502,7 +1456,6 @@ const u32 gSandStormHailSnowEndStringIds[] =
 const u32 gRainContinuesStringIds[] =
 {
     [B_MSG_RAIN_CONTINUES]     = STRINGID_RAINCONTINUES,
-    [B_MSG_DOWNPOUR_CONTINUES] = STRINGID_DOWNPOURCONTINUES,
     [B_MSG_RAIN_STOPPED]       = STRINGID_RAINSTOPPED
 };
 
@@ -1739,12 +1692,6 @@ const u32 gWeatherStartsStringIds[] =
     [WEATHER_DOWNPOUR]           = STRINGID_ITISRAINING,
     [WEATHER_UNDERWATER_BUBBLES] = STRINGID_ITISRAINING,
     [WEATHER_ABNORMAL]           = STRINGID_ITISRAINING
-};
-
-const u32 gPrimalWeatherBlocksStringIds[] =
-{
-    [B_MSG_PRIMAL_WEATHER_FIZZLED_BY_RAIN]      = STRINGID_MOVEFIZZLEDOUTINTHEHEAVYRAIN,
-    [B_MSG_PRIMAL_WEATHER_EVAPORATED_IN_SUN]    = STRINGID_MOVEEVAPORATEDINTHEHARSHSUNLIGHT,
 };
 
 const u32 gBerryEffectStringIds[] =
@@ -2853,7 +2800,6 @@ struct TrainerSlide
     const u8 *msgFirstSuperEffectiveHit;
     const u8 *msgFirstSTABMove;
     const u8 *msgPlayerMonUnaffected;
-    const u8 *msgMegaEvolution;
     const u8 *msgBeforeFirstTurn;
 };
 
@@ -2871,7 +2817,6 @@ static const struct TrainerSlide sTrainerSlides[] =
         .msgFirstSuperEffectiveHit = sText_SuperEffective,
         .msgFirstSTABMove = sText_ABoosted,
         .msgPlayerMonUnaffected = sText_ButNoEffect,
-        .msgMegaEvolution = sText_PowderExplodes,
         .msgBeforeFirstTurn = sText_GravityIntensified,
     },
     */
@@ -3011,14 +2956,6 @@ bool32 ShouldDoTrainerSlide(u32 battler, u32 which)
                 {
                     gBattleStruct->trainerSlidePlayerMonUnaffectedMsgState = 2;
                     gBattleStruct->trainerSlideMsg = sTrainerSlides[i].msgPlayerMonUnaffected;
-                    return TRUE;
-                }
-                break;
-            case TRAINER_SLIDE_MEGA_EVOLUTION:
-                if (sTrainerSlides[i].msgMegaEvolution != NULL && !gBattleStruct->trainerSlideMegaEvolutionMsgDone)
-                {
-                    gBattleStruct->trainerSlideMegaEvolutionMsgDone = TRUE;
-                    gBattleStruct->trainerSlideMsg = sTrainerSlides[i].msgMegaEvolution;
                     return TRUE;
                 }
                 break;

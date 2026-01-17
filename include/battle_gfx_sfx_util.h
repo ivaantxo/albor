@@ -19,7 +19,7 @@ void IniciaSpritesBatalla(void);
 void ClearSpritesHealthboxAnimData(void);
 void CopyAllBattleSpritesInvisibilities(void);
 void CopyBattleSpriteInvisibility(u8 battler);
-void HandleSpeciesGfxDataChange(u8 attacker, u8 target, bool32 megaEvo, bool8 trackEnemyPersonality);
+void GestionaCambioGraficoEspecie(u32 atacante, u32 defensor, bool32 usarPersonalidadEnemigo);
 void BattleLoadSubstituteOrMonSpriteGfx(u8 battler, bool8 loadMonSprite);
 void LoadBattleMonGfxAndAnimate(u8 battler, bool8 loadMonSprite, u32 spriteId);
 void TrySetBehindSubstituteSpriteBit(u8 battler, u16 move);

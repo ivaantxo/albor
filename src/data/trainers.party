@@ -25,7 +25,6 @@ Optional (but still recommended) fields for trainers:
           see "constants/battle_ai.h" for all flags)
     - Mugshot (enable Mugshots during battle transition
                set to one of Purple, Green, Pink, Blue or Yellow)
-    - Starting Status (see include/constants/battle.h for values)
 
 Pokemon are then specified using the Showdown Export format.
 If a field is not specified, it will use it's default value.

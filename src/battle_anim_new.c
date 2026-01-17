@@ -4628,18 +4628,6 @@ const struct SpriteTemplate gSpriteTemplate_BitterMaliceRing = {
     .callback = AnimParticleInVortex
 };
 
-//ultra burst
-const struct SpriteTemplate gUltraBurstSymbolSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_ULTRA_BURST_SYMBOL,
-    .paletteTag = ANIM_TAG_ULTRA_BURST_SYMBOL,
-    .oam = &gOamData_AffineDouble_ObjBlend_32x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gAffineAnims_LusterPurgeCircle,
-    .callback = AnimSpriteOnMonPos
-};
-
 const struct SpriteTemplate gAxeKickSpriteTemplate =
 {
     .tileTag = ANIM_TAG_HANDS_AND_FEET,
@@ -8466,15 +8454,6 @@ static void SpriteCB_TwinkleOnBattler(struct Sprite *sprite)
     sprite->y2 = monSprite->y2;
     sprite->callback = RunStoredCallbackWhenAnimEnds;
     StoreSpriteCallbackInData6(sprite, DestroyAnimSprite);
-}
-
-void AnimTask_PrimalReversion(u8 taskId)
-{
-    if (gBattleMons[gBattleAnimAttacker].item == ITEM_RED_ORB || gBattleMons[gBattleAnimAttacker].item == ITEM_BLUE_ORB)
-        gBattleAnimArgs[0] = gBattleMons[gBattleAnimAttacker].item;
-    else
-        gBattleAnimArgs[0] = 0;
-    DestroyAnimVisualTask(taskId);
 }
 
 void AnimTask_ShellSideArm(u8 taskId)

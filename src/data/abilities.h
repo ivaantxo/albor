@@ -1397,27 +1397,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 3,
     },
 
-    [ABILITY_PRIMORDIAL_SEA] =
-    {
-        .name = _("Primordial Sea"),
-        .description = COMPOUND_STRING("Summons heavy rain."),
-        .aiRating = 10,
-    },
-
-    [ABILITY_DESOLATE_LAND] =
-    {
-        .name = _("Desolate Land"),
-        .description = COMPOUND_STRING("Summons intense sunlight."),
-        .aiRating = 10,
-    },
-
-    [ABILITY_DELTA_STREAM] =
-    {
-        .name = _("Delta Stream"),
-        .description = COMPOUND_STRING("Summons strong winds."),
-        .aiRating = 10,
-    },
-
     [ABILITY_STAMINA] =
     {
         .name = _("Stamina"),

@@ -111,9 +111,6 @@ struct Trainer
 
     struct String mugshot;
     int mugshot_line;
-
-    struct String starting_status;
-    int starting_status_line;
 };
 
 static bool is_empty_string(struct String s)
@@ -1171,13 +1168,6 @@ static bool parse_trainer(struct Parser *p, const struct Parsed *parsed, struct 
             trainer->mugshot_line = value.location.line;
             trainer->mugshot = token_string(&value);
         }
-        else if (is_literal_token(&key, "Starting Status"))
-        {
-            if (trainer->starting_status_line)
-                any_error = !set_show_parse_error(p, key.location, "duplicate 'Starting Status'");
-            trainer->starting_status_line = value.location.line;
-            trainer->starting_status = token_string(&value);
-        }
         else
         {
             any_error = !set_show_parse_error(p, key.location, "expected one of 'Name', 'Class', 'Pic', 'Gender', 'Music', 'Items', 'Double Battle', or 'AI'");
@@ -1667,14 +1657,6 @@ static void fprint_trainers(const char *output_path, FILE *f, struct Parsed *par
             fprintf(f, "        .mugshotEnabled = TRUE,\n");
             fprintf(f, "        .mugshotColor = ");
             fprint_constant(f, "MUGSHOT_COLOR", trainer->mugshot);
-            fprintf(f, ",\n");
-        }
-
-        if (!is_empty_string(trainer->starting_status))
-        {
-            fprintf(f, "#line %d\n", trainer->starting_status_line);
-            fprintf(f, "        .startingStatus = ");
-            fprint_constant(f, "STARTING_STATUS", trainer->starting_status);
             fprintf(f, ",\n");
         }
 

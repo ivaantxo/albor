@@ -1403,23 +1403,15 @@ u8 DoFieldEndTurnEffects(void)
         case ENDTURN_RAIN:
             if (gBattleWeather & B_WEATHER_RAIN)
             {
-                if (!(gBattleWeather & B_WEATHER_RAIN_PERMANENT)
-                 && !(gBattleWeather & B_WEATHER_RAIN_PRIMAL))
+                if (!(gBattleWeather & B_WEATHER_RAIN_PERMANENT))
                 {
                     if (--gWishFutureKnock.weatherDuration == 0)
                     {
                         gBattleWeather &= ~B_WEATHER_RAIN_TEMPORARY;
-                        gBattleWeather &= ~B_WEATHER_RAIN_DOWNPOUR;
                         gMensajeBatalla = B_MSG_RAIN_STOPPED;
                     }
-                    else if (gBattleWeather & B_WEATHER_RAIN_DOWNPOUR)
-                        gMensajeBatalla = B_MSG_DOWNPOUR_CONTINUES;
                     else
                         gMensajeBatalla = B_MSG_RAIN_CONTINUES;
-                }
-                else if (gBattleWeather & B_WEATHER_RAIN_DOWNPOUR)
-                {
-                    gMensajeBatalla = B_MSG_DOWNPOUR_CONTINUES;
                 }
                 else
                 {
@@ -1455,7 +1447,6 @@ u8 DoFieldEndTurnEffects(void)
             if (gBattleWeather & B_WEATHER_SUN)
             {
                 if (!(gBattleWeather & B_WEATHER_SUN_PERMANENT)
-                 && !(gBattleWeather & B_WEATHER_SUN_PRIMAL)
                  && --gWishFutureKnock.weatherDuration == 0)
                 {
                     gBattleWeather &= ~B_WEATHER_SUN_TEMPORARY;
@@ -2917,25 +2908,6 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
             }
             gBattleStruct->atkCancellerTracker++;
             break;
-        case CANCELLER_POWDER_STATUS:
-            if (gBattleMons[gBattlerAttacker].status2 & STATUS2_POWDER)
-            {
-                u32 partnerMove = gBattleMons[ALIADO(gBattlerAttacker)].moves[gBattleStruct->chosenMovePositions[ALIADO(gBattlerAttacker)]];
-                if ((moveType == TIPO_FUEGO && !gBattleStruct->pledgeMove)
-                 || (gCurrentMove == MOVE_FIRE_PLEDGE && partnerMove == MOVE_GRASS_PLEDGE)
-                 || (gCurrentMove == MOVE_GRASS_PLEDGE && partnerMove == MOVE_FIRE_PLEDGE && gBattleStruct->pledgeMove))
-                {
-                    gProtectStructs[gBattlerAttacker].powderSelfDmg = TRUE;
-                    if (GetBattlerAbility(gBattlerAttacker) != ABILITY_MAGIC_GUARD
-                    && (B_POWDER_RAIN < GEN_7 || !IsBattlerWeatherAffected(gBattlerAttacker, B_WEATHER_RAIN_PRIMAL)))
-                        gBattleMoveDamage = CuantosPSMaximos(gBattlerAttacker) / 4;
-
-                    gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
-                    effect = 1;
-                }
-            }
-            gBattleStruct->atkCancellerTracker++;
-            break;
         case CANCELLER_THROAT_CHOP:
             if (gDisableStructs[gBattlerAttacker].throatChopTimer && gMovesInfo[gCurrentMove].soundMove)
             {
@@ -3106,27 +3078,16 @@ bool32 HasNoMonsToSwitch(u32 battler, u8 partyIdBattlerOn1, u8 partyIdBattlerOn2
 static const u16 sWeatherFlagsInfo[][3] =
 {
     [ENUM_WEATHER_RAIN] = {B_WEATHER_RAIN_TEMPORARY, B_WEATHER_RAIN_PERMANENT, HOLD_EFFECT_DAMP_ROCK},
-    [ENUM_WEATHER_RAIN_PRIMAL] = {B_WEATHER_RAIN_PRIMAL, B_WEATHER_RAIN_PRIMAL, HOLD_EFFECT_DAMP_ROCK},
     [ENUM_WEATHER_SUN] = {B_WEATHER_SUN_TEMPORARY, B_WEATHER_SUN_PERMANENT, HOLD_EFFECT_HEAT_ROCK},
-    [ENUM_WEATHER_SUN_PRIMAL] = {B_WEATHER_SUN_PRIMAL, B_WEATHER_SUN_PRIMAL, HOLD_EFFECT_HEAT_ROCK},
     [ENUM_WEATHER_SANDSTORM] = {B_WEATHER_SANDSTORM_TEMPORARY, B_WEATHER_SANDSTORM_PERMANENT, HOLD_EFFECT_SMOOTH_ROCK},
     [ENUM_WEATHER_HAIL] = {B_WEATHER_HAIL_TEMPORARY, B_WEATHER_HAIL_PERMANENT, HOLD_EFFECT_ICY_ROCK},
-    [ENUM_WEATHER_STRONG_WINDS] = {B_WEATHER_STRONG_WINDS, B_WEATHER_STRONG_WINDS, HOLD_EFFECT_NONE},
     [ENUM_WEATHER_SNOW] = {B_WEATHER_SNOW_TEMPORARY, B_WEATHER_SNOW_PERMANENT, HOLD_EFFECT_ICY_ROCK},
     [ENUM_WEATHER_FOG] = {B_WEATHER_FOG_TEMPORARY, B_WEATHER_FOG_PERMANENT, HOLD_EFFECT_NONE},
 };
 
 bool32 TryChangeBattleWeather(u32 battler, u32 weatherEnumId, bool32 viaAbility)
 {
-    u16 battlerAbility = GetBattlerAbility(battler);
-    if (gBattleWeather & B_WEATHER_PRIMAL_ANY
-        && battlerAbility != ABILITY_DESOLATE_LAND
-        && battlerAbility != ABILITY_PRIMORDIAL_SEA
-        && battlerAbility != ABILITY_DELTA_STREAM)
-    {
-        return FALSE;
-    }
-    else if (B_ABILITY_WEATHER < GEN_6 && viaAbility && !(gBattleWeather & sWeatherFlagsInfo[weatherEnumId][1]))
+    if (B_ABILITY_WEATHER < GEN_6 && viaAbility && !(gBattleWeather & sWeatherFlagsInfo[weatherEnumId][1]))
     {
         gBattleWeather = (sWeatherFlagsInfo[weatherEnumId][0] | sWeatherFlagsInfo[weatherEnumId][1]);
         return TRUE;
@@ -3410,86 +3371,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
 
     switch (caseID)
     {
-    case ABILITYEFFECT_SWITCH_IN_STATUSES:  // starting field/side/etc statuses with a variable
-        {
-            u8 timerVal = gBattleStruct->startingStatusTimer;
-
-            gBattleScripting.battler = battler;
-            switch (gBattleStruct->startingStatus)
-            {
-            case STARTING_STATUS_TRICK_ROOM:
-                if (!(gFieldStatuses & STATUS_FIELD_TRICK_ROOM))
-                {
-                    gMensajeBatalla = B_MSG_SET_TRICK_ROOM;
-                    gFieldStatuses |= STATUS_FIELD_TRICK_ROOM;
-                    gBattleScripting.animArg1 = B_ANIM_TRICK_ROOM;
-                    if (timerVal == 0)
-                        gFieldTimers.trickRoomTimer = 0;    // infinite
-                    else
-                        gFieldTimers.trickRoomTimer = 5;
-                    effect = 1;
-                }
-                break;
-            case STARTING_STATUS_MAGIC_ROOM:
-                if (!(gFieldStatuses & STATUS_FIELD_MAGIC_ROOM))
-                {
-                    gMensajeBatalla = B_MSG_SET_MAGIC_ROOM;
-                    gFieldStatuses |= STATUS_FIELD_MAGIC_ROOM;
-                    gBattleScripting.animArg1 = B_ANIM_MAGIC_ROOM;
-                    if (timerVal == 0)
-                        gFieldTimers.magicRoomTimer = 0;    // infinite
-                    else
-                        gFieldTimers.magicRoomTimer = 5;
-                    effect = 1;
-                }
-                break;
-            case STARTING_STATUS_WONDER_ROOM:
-                if (!(gFieldStatuses & STATUS_FIELD_WONDER_ROOM))
-                {
-                    gMensajeBatalla = B_MSG_SET_WONDER_ROOM;
-                    gFieldStatuses |= STATUS_FIELD_WONDER_ROOM;
-                    gBattleScripting.animArg1 = B_ANIM_WONDER_ROOM;
-                    if (timerVal == 0)
-                        gFieldTimers.wonderRoomTimer = 0;    // infinite
-                    else
-                        gFieldTimers.wonderRoomTimer = 5;
-                    effect = 1;
-                }
-                break;
-            case STARTING_STATUS_TAILWIND_PLAYER:
-                if (!(gSideStatuses[LADO_JUGADOR] & SIDE_STATUS_TAILWIND))
-                {
-                    gBattlerAttacker = JUGADOR_IZQUIERDA;
-                    gMensajeBatalla = B_MSG_SET_TAILWIND_PLAYER;
-                    gSideStatuses[LADO_JUGADOR] |= SIDE_STATUS_TAILWIND;
-                    gBattleScripting.animArg1 = B_ANIM_TAILWIND;
-                    if (timerVal == 0)
-                        gSideTimers[LADO_JUGADOR].tailwindTimer = 0; // infinite
-                    else
-                        gSideTimers[LADO_JUGADOR].tailwindTimer = 5;
-                    effect = 1;
-                }
-                break;
-            case STARTING_STATUS_TAILWIND_OPPONENT:
-                if (!(gSideStatuses[LADO_OPONENTE] & SIDE_STATUS_TAILWIND))
-                {
-                    gBattlerAttacker = OPONENTE_IZQUIERDA;
-                    gMensajeBatalla = B_MSG_SET_TAILWIND_OPPONENT;
-                    gSideStatuses[LADO_OPONENTE] |= SIDE_STATUS_TAILWIND;
-                    gBattleScripting.animArg1 = B_ANIM_TAILWIND;
-                    if (timerVal == 0)
-                        gSideTimers[LADO_OPONENTE].tailwindTimer = 0; // infinite
-                    else
-                        gSideTimers[LADO_OPONENTE].tailwindTimer = 5;
-                    effect = 1;
-                }
-                break;
-            }
-
-            if (effect == 1)
-                BattleScriptPushCursorAndCallback(BattleScript_OverworldStatusStarts);
-        }
-        break;
     case ABILITYEFFECT_SWITCH_IN_WEATHER:
         gBattleScripting.battler = battler;
         switch (GetCurrentWeather())
@@ -3939,12 +3820,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 BattleScriptPushCursorAndCallback(BattleScript_DrizzleActivates);
                 effect++;
             }
-            else if (gBattleWeather & B_WEATHER_PRIMAL_ANY && WEATHER_HAS_EFFECT && !gSpecialStatuses[battler].switchInAbilityDone)
-            {
-                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
-                BattleScriptPushCursorAndCallback(BattleScript_BlockedByPrimalWeatherEnd3);
-                effect++;
-            }
             break;
         case ABILITY_SAND_STREAM:
             if (TryChangeBattleWeather(battler, ENUM_WEATHER_SANDSTORM, TRUE))
@@ -3952,23 +3827,11 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 BattleScriptPushCursorAndCallback(BattleScript_SandstreamActivates);
                 effect++;
             }
-            else if (gBattleWeather & B_WEATHER_PRIMAL_ANY && WEATHER_HAS_EFFECT && !gSpecialStatuses[battler].switchInAbilityDone)
-            {
-                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
-                BattleScriptPushCursorAndCallback(BattleScript_BlockedByPrimalWeatherEnd3);
-                effect++;
-            }
             break;
         case ABILITY_DROUGHT:
             if (TryChangeBattleWeather(battler, ENUM_WEATHER_SUN, TRUE))
             {
                 BattleScriptPushCursorAndCallback(BattleScript_DroughtActivates);
-                effect++;
-            }
-            else if (gBattleWeather & B_WEATHER_PRIMAL_ANY && WEATHER_HAS_EFFECT && !gSpecialStatuses[battler].switchInAbilityDone)
-            {
-                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
-                BattleScriptPushCursorAndCallback(BattleScript_BlockedByPrimalWeatherEnd3);
                 effect++;
             }
             break;
@@ -3981,12 +3844,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             else if (B_SNOW_WARNING < GEN_9 && TryChangeBattleWeather(battler, ENUM_WEATHER_HAIL, TRUE))
             {
                 BattleScriptPushCursorAndCallback(BattleScript_SnowWarningActivatesHail);
-                effect++;
-            }
-            else if (gBattleWeather & B_WEATHER_PRIMAL_ANY && WEATHER_HAS_EFFECT && !gSpecialStatuses[battler].switchInAbilityDone)
-            {
-                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
-                BattleScriptPushCursorAndCallback(BattleScript_BlockedByPrimalWeatherEnd3);
                 effect++;
             }
             break;
@@ -4062,10 +3919,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 BattleScriptPushCursorAndCallback(BattleScript_BattlerAbilityStatRaiseOnSwitchIn);
                 effect++;
             }
-            break;
-        case ABILITY_DESOLATE_LAND:
-        case ABILITY_PRIMORDIAL_SEA:
-        case ABILITY_DELTA_STREAM:
             break;
         case ABILITY_COSTAR:
         case ABILITY_REY_DEL_MAR:
@@ -4829,25 +4682,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             }
             break;
         case ABILITY_SAND_SPIT:
-            if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
-             && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
-             && IsBattlerTurnDamaged(battler)
-             && !(gBattleWeather & B_WEATHER_SANDSTORM && WEATHER_HAS_EFFECT))
-            {
-                if (gBattleWeather & B_WEATHER_PRIMAL_ANY && WEATHER_HAS_EFFECT)
-                {
-                    BattleScriptPushCursor();
-                    gBattlescriptCurrInstr = BattleScript_BlockedByPrimalWeatherRet;
-                    effect++;
-                }
-                else if (TryChangeBattleWeather(battler, ENUM_WEATHER_SANDSTORM, TRUE))
-                {
-                    gBattleScripting.battler = battler;
-                    BattleScriptPushCursor();
-                    gBattlescriptCurrInstr = BattleScript_SandSpitActivates;
-                    effect++;
-                }
-            }
             break;
         case ABILITY_PERISH_BODY:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
@@ -7426,77 +7260,6 @@ static const u8 sSpeedDiffPowerTable[] = {40, 60, 80, 120, 150};
 static const u8 sHeatCrashPowerTable[] = {40, 40, 60, 80, 100, 120};
 static const u8 sTrumpCardPowerTable[] = {200, 80, 60, 50, 40};
 
-const struct TypePower gNaturalGiftTable[] =
-{
-    [ITEM_TO_BERRY(ITEM_CHERI_BERRY)] = {TIPO_FUEGO, 80},
-    [ITEM_TO_BERRY(ITEM_CHESTO_BERRY)] = {TIPO_AGUA, 80},
-    [ITEM_TO_BERRY(ITEM_PECHA_BERRY)] = {TIPO_ELECTRICO, 80},
-    [ITEM_TO_BERRY(ITEM_RAWST_BERRY)] = {TIPO_PLANTA, 80},
-    [ITEM_TO_BERRY(ITEM_ASPEAR_BERRY)] = {TIPO_HIELO, 80},
-    [ITEM_TO_BERRY(ITEM_LEPPA_BERRY)] = {TIPO_LUCHA, 80},
-    [ITEM_TO_BERRY(ITEM_ORAN_BERRY)] = {TIPO_VENENO, 80},
-    [ITEM_TO_BERRY(ITEM_PERSIM_BERRY)] = {TIPO_TIERRA, 80},
-    [ITEM_TO_BERRY(ITEM_LUM_BERRY)] = {TIPO_VOLADOR, 80},
-    [ITEM_TO_BERRY(ITEM_SITRUS_BERRY)] = {TIPO_PSIQUICO, 80},
-    [ITEM_TO_BERRY(ITEM_FIGY_BERRY)] = {TIPO_BICHO, 80},
-    [ITEM_TO_BERRY(ITEM_WIKI_BERRY)] = {TIPO_ROCA, 80},
-    [ITEM_TO_BERRY(ITEM_MAGO_BERRY)] = {TIPO_FANTASMA, 80},
-    [ITEM_TO_BERRY(ITEM_AGUAV_BERRY)] = {TIPO_DRAGON, 80},
-    [ITEM_TO_BERRY(ITEM_IAPAPA_BERRY)] = {TIPO_SINIESTRO, 80},
-    [ITEM_TO_BERRY(ITEM_RAZZ_BERRY)] = {TIPO_ACERO, 80},
-    [ITEM_TO_BERRY(ITEM_OCCA_BERRY)] = {TIPO_FUEGO, 80},
-    [ITEM_TO_BERRY(ITEM_PASSHO_BERRY)] = {TIPO_AGUA, 80},
-    [ITEM_TO_BERRY(ITEM_WACAN_BERRY)] = {TIPO_ELECTRICO, 80},
-    [ITEM_TO_BERRY(ITEM_RINDO_BERRY)] = {TIPO_PLANTA, 80},
-    [ITEM_TO_BERRY(ITEM_YACHE_BERRY)] = {TIPO_HIELO, 80},
-    [ITEM_TO_BERRY(ITEM_CHOPLE_BERRY)] = {TIPO_LUCHA, 80},
-    [ITEM_TO_BERRY(ITEM_KEBIA_BERRY)] = {TIPO_VENENO, 80},
-    [ITEM_TO_BERRY(ITEM_SHUCA_BERRY)] = {TIPO_TIERRA, 80},
-    [ITEM_TO_BERRY(ITEM_COBA_BERRY)] = {TIPO_VOLADOR, 80},
-    [ITEM_TO_BERRY(ITEM_PAYAPA_BERRY)] = {TIPO_PSIQUICO, 80},
-    [ITEM_TO_BERRY(ITEM_TANGA_BERRY)] = {TIPO_BICHO, 80},
-    [ITEM_TO_BERRY(ITEM_CHARTI_BERRY)] = {TIPO_ROCA, 80},
-    [ITEM_TO_BERRY(ITEM_KASIB_BERRY)] = {TIPO_FANTASMA, 80},
-    [ITEM_TO_BERRY(ITEM_HABAN_BERRY)] = {TIPO_DRAGON, 80},
-    [ITEM_TO_BERRY(ITEM_COLBUR_BERRY)] = {TIPO_SINIESTRO, 80},
-    [ITEM_TO_BERRY(ITEM_BABIRI_BERRY)] = {TIPO_ACERO, 80},
-    [ITEM_TO_BERRY(ITEM_CHILAN_BERRY)] = {TIPO_NORMAL, 80},
-    [ITEM_TO_BERRY(ITEM_ROSELI_BERRY)] = {TIPO_HADA, 80},
-    [ITEM_TO_BERRY(ITEM_BLUK_BERRY)] = {TIPO_FUEGO, 90},
-    [ITEM_TO_BERRY(ITEM_NANAB_BERRY)] = {TIPO_AGUA, 90},
-    [ITEM_TO_BERRY(ITEM_WEPEAR_BERRY)] = {TIPO_ELECTRICO, 90},
-    [ITEM_TO_BERRY(ITEM_PINAP_BERRY)] = {TIPO_PLANTA, 90},
-    [ITEM_TO_BERRY(ITEM_POMEG_BERRY)] = {TIPO_HIELO, 90},
-    [ITEM_TO_BERRY(ITEM_KELPSY_BERRY)] = {TIPO_LUCHA, 90},
-    [ITEM_TO_BERRY(ITEM_QUALOT_BERRY)] = {TIPO_VENENO, 90},
-    [ITEM_TO_BERRY(ITEM_HONDEW_BERRY)] = {TIPO_TIERRA, 90},
-    [ITEM_TO_BERRY(ITEM_GREPA_BERRY)] = {TIPO_VOLADOR, 90},
-    [ITEM_TO_BERRY(ITEM_TAMATO_BERRY)] = {TIPO_PSIQUICO, 90},
-    [ITEM_TO_BERRY(ITEM_CORNN_BERRY)] = {TIPO_BICHO, 90},
-    [ITEM_TO_BERRY(ITEM_MAGOST_BERRY)] = {TIPO_ROCA, 90},
-    [ITEM_TO_BERRY(ITEM_RABUTA_BERRY)] = {TIPO_FANTASMA, 90},
-    [ITEM_TO_BERRY(ITEM_NOMEL_BERRY)] = {TIPO_DRAGON, 90},
-    [ITEM_TO_BERRY(ITEM_SPELON_BERRY)] = {TIPO_SINIESTRO, 90},
-    [ITEM_TO_BERRY(ITEM_PAMTRE_BERRY)] = {TIPO_ACERO, 90},
-    [ITEM_TO_BERRY(ITEM_WATMEL_BERRY)] = {TIPO_FUEGO, 100},
-    [ITEM_TO_BERRY(ITEM_DURIN_BERRY)] = {TIPO_AGUA, 100},
-    [ITEM_TO_BERRY(ITEM_BELUE_BERRY)] = {TIPO_ELECTRICO, 100},
-    [ITEM_TO_BERRY(ITEM_LIECHI_BERRY)] = {TIPO_PLANTA, 100},
-    [ITEM_TO_BERRY(ITEM_GANLON_BERRY)] = {TIPO_HIELO, 100},
-    [ITEM_TO_BERRY(ITEM_SALAC_BERRY)] = {TIPO_LUCHA, 100},
-    [ITEM_TO_BERRY(ITEM_PETAYA_BERRY)] = {TIPO_VENENO, 100},
-    [ITEM_TO_BERRY(ITEM_APICOT_BERRY)] = {TIPO_TIERRA, 100},
-    [ITEM_TO_BERRY(ITEM_LANSAT_BERRY)] = {TIPO_VOLADOR, 100},
-    [ITEM_TO_BERRY(ITEM_STARF_BERRY)] = {TIPO_PSIQUICO, 100},
-    [ITEM_TO_BERRY(ITEM_ENIGMA_BERRY)] = {TIPO_BICHO, 100},
-    [ITEM_TO_BERRY(ITEM_MICLE_BERRY)] = {TIPO_ROCA, 100},
-    [ITEM_TO_BERRY(ITEM_CUSTAP_BERRY)] = {TIPO_FANTASMA, 100},
-    [ITEM_TO_BERRY(ITEM_JABOCA_BERRY)] = {TIPO_DRAGON, 100},
-    [ITEM_TO_BERRY(ITEM_ROWAP_BERRY)] = {TIPO_SINIESTRO, 100},
-    [ITEM_TO_BERRY(ITEM_KEE_BERRY)] = {TIPO_HADA, 100},
-    [ITEM_TO_BERRY(ITEM_MARANGA_BERRY)] = {TIPO_SINIESTRO, 100},
-};
-
 u32 CalcRolloutBasePower(u32 battlerAtk, u32 basePower, u32 rolloutTimer)
 {
     u32 i;
@@ -7582,9 +7345,6 @@ static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData
         if (gActionsByTurnOrder[GetBattlerTurnOrderNum(battlerDef)] == B_ACTION_SWITCH)
             basePower *= 2;
         break;        
-    case EFFECT_NATURAL_GIFT:
-        basePower = gNaturalGiftTable[ITEM_TO_BERRY(gBattleMons[battlerAtk].item)].power;
-        break;
     case EFFECT_DOUBLE_POWER_ON_ARG_STATUS:
         // Comatose targets treated as if asleep
         if ((gBattleMons[battlerDef].status1 | (STATUS1_SLEEP * (abilityDef == ABILITY_COMATOSE))) & gMovesInfo[move].argument
@@ -8951,13 +8711,6 @@ static inline void MulByTypeEffectiveness(uq4_12_t *modifier, u32 move, u32 move
         mod = UQ_4_12(2.0);
     if (moveType == TIPO_TIERRA && defType == TIPO_VOLADOR && IsBattlerGrounded(battlerDef) && mod == UQ_4_12(0.0))
         mod = UQ_4_12(1.0);
-
-    // B_WEATHER_STRONG_WINDS weakens Super Effective moves against Flying-type Pokémon
-    if (gBattleWeather & B_WEATHER_STRONG_WINDS && WEATHER_HAS_EFFECT)
-    {
-        if (defType == TIPO_VOLADOR && mod >= UQ_4_12(2.0))
-            mod = UQ_4_12(1.0);
-    }
 
     if (gBattleStruct->distortedTypeMatchups & (1u << battlerDef))
     {

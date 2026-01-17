@@ -836,34 +836,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     if (gStatuses3[battlerAtk] & STATUS3_HEAL_BLOCK && IsHealBlockPreventingMove(battlerAtk, move))
         return 0; // Can't even select heal blocked move
 
-    // primal weather check
-    weather = AI_GetWeather(aiData);
-    if (weather & B_WEATHER_PRIMAL_ANY)
-    {
-        switch (move)
-        {
-            case MOVE_SUNNY_DAY:
-            case MOVE_RAIN_DANCE:
-            case MOVE_HAIL:
-            case MOVE_SANDSTORM:
-                RETURN_SCORE_MINUS(30);
-        }
-
-        if (!IS_MOVE_STATUS(move))
-        {
-            if (weather & B_WEATHER_SUN_PRIMAL)
-            {
-                if (moveType == TIPO_AGUA)
-                    RETURN_SCORE_MINUS(30);
-            }
-            else if (weather & B_WEATHER_RAIN_PRIMAL)
-            {
-                if (moveType == TIPO_FUEGO)
-                    RETURN_SCORE_MINUS(30);
-            }
-        }
-    }
-
     // check move effects
     switch (moveEffect)
     {
@@ -1454,29 +1426,29 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             }
             break;
         case EFFECT_SANDSTORM:
-            if (weather & (B_WEATHER_SANDSTORM | B_WEATHER_PRIMAL_ANY)
+            if (weather & (B_WEATHER_SANDSTORM)
              || IsMoveEffectWeather(aiData->partnerMove))
                 ADJUST_SCORE(-8);
             break;
         case EFFECT_SUNNY_DAY:
-            if (weather & (B_WEATHER_SUN | B_WEATHER_PRIMAL_ANY)
+            if (weather & (B_WEATHER_SUN)
              || IsMoveEffectWeather(aiData->partnerMove))
                 ADJUST_SCORE(-8);
             break;
         case EFFECT_RAIN_DANCE:
-            if (weather & (B_WEATHER_RAIN | B_WEATHER_PRIMAL_ANY)
+            if (weather & (B_WEATHER_RAIN)
              || IsMoveEffectWeather(aiData->partnerMove))
                 ADJUST_SCORE(-8);
             break;
         case EFFECT_HAIL:
-            if (weather & (B_WEATHER_HAIL | B_WEATHER_PRIMAL_ANY)
+            if (weather & (B_WEATHER_HAIL)
              || IsMoveEffectWeather(aiData->partnerMove))
                 ADJUST_SCORE(-8);
             else if (weather & B_WEATHER_SNOW)
                 ADJUST_SCORE(-2); // mainly to prevent looping between hail and snow
             break;
         case EFFECT_SNOWSCAPE:
-            if (weather & (B_WEATHER_SNOW | B_WEATHER_PRIMAL_ANY)
+            if (weather & (B_WEATHER_SNOW)
              || IsMoveEffectWeather(aiData->partnerMove))
                 ADJUST_SCORE(-8);
             else if (weather & B_WEATHER_HAIL)
@@ -1514,7 +1486,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         case EFFECT_CHILLY_RECEPTION:
             if (CountUsablePartyMons(battlerAtk) == 0)
                 ADJUST_SCORE(-10);
-            else if (weather & (B_WEATHER_SNOW | B_WEATHER_PRIMAL_ANY) || IsMoveEffectWeather(aiData->partnerMove))
+            else if (weather & (B_WEATHER_SNOW) || IsMoveEffectWeather(aiData->partnerMove))
                 ADJUST_SCORE(-8);
             else if (weather & B_WEATHER_HAIL)
                 ADJUST_SCORE(-2); // mainly to prevent looping between hail and snow
@@ -2090,12 +2062,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             {
                 ADJUST_SCORE(-10); //Target is predicted to switch most likely
             }
-            break;
-        case EFFECT_NATURAL_GIFT:
-            if (aiData->abilities[battlerAtk] == ABILITY_KLUTZ
-              || gFieldStatuses & STATUS_FIELD_MAGIC_ROOM
-              || GetPocketByItemId(gBattleMons[battlerAtk].item) != POCKET_BERRIES)
-                ADJUST_SCORE(-10);
             break;
         case EFFECT_PLEDGE:
             if (isDoubleBattle && gBattleMons[ALIADO(battlerAtk)].hp > 0)
@@ -5006,23 +4972,23 @@ static s32 AI_PowerfulStatus(u32 battlerAtk, u32 battlerDef, u32 move, s32 score
             ADJUST_SCORE(POWERFUL_STATUS_MOVE);
         break;
     case EFFECT_SANDSTORM:
-        if (!(AI_GetWeather(AI_DATA) & (B_WEATHER_SANDSTORM | B_WEATHER_PRIMAL_ANY)))
+        if (!(AI_GetWeather(AI_DATA) & (B_WEATHER_SANDSTORM)))
             ADJUST_SCORE(POWERFUL_STATUS_MOVE);
         break;
     case EFFECT_SUNNY_DAY:
-        if (!(AI_GetWeather(AI_DATA) & (B_WEATHER_SUN | B_WEATHER_PRIMAL_ANY)))
+        if (!(AI_GetWeather(AI_DATA) & (B_WEATHER_SUN)))
             ADJUST_SCORE(POWERFUL_STATUS_MOVE);
         break;
     case EFFECT_RAIN_DANCE:
-        if (!(AI_GetWeather(AI_DATA) & (B_WEATHER_RAIN | B_WEATHER_PRIMAL_ANY)))
+        if (!(AI_GetWeather(AI_DATA) & (B_WEATHER_RAIN)))
             ADJUST_SCORE(POWERFUL_STATUS_MOVE);
         break;
     case EFFECT_HAIL:
-        if (!(AI_GetWeather(AI_DATA) & (B_WEATHER_HAIL | B_WEATHER_PRIMAL_ANY)))
+        if (!(AI_GetWeather(AI_DATA) & (B_WEATHER_HAIL)))
             ADJUST_SCORE(POWERFUL_STATUS_MOVE);
         break;
     case EFFECT_SNOWSCAPE:
-        if (!(AI_GetWeather(AI_DATA) & (B_WEATHER_SNOW | B_WEATHER_PRIMAL_ANY)))
+        if (!(AI_GetWeather(AI_DATA) & (B_WEATHER_SNOW)))
             ADJUST_SCORE(POWERFUL_STATUS_MOVE);
     }
 
