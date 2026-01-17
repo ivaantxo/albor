@@ -29,7 +29,7 @@
     }                                                                                                           \
     return FALSE
 
-static u32 AI_GetEffectiveness(uq4_12_t multiplier);
+static u32 IA_ObtenEfectividad(uq4_12_t multiplicador);
 
 bool32 AI_IsFaster(u32 battlerAI, u32 battlerDef, u32 move)
 {
@@ -579,7 +579,7 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
     }
 
     // convert multiper to AI_EFFECTIVENESS_xX
-    *typeEffectiveness = AI_GetEffectiveness(effectivenessMultiplier);
+    *typeEffectiveness = IA_ObtenEfectividad(effectivenessMultiplier);
 
     // Undo temporary settings
     gBattleStruct->dynamicMoveType = 0;
@@ -855,10 +855,10 @@ u32 GetCurrDamageHpPercent(u32 battlerAtk, u32 battlerDef)
     return (bestDmg * 100) / gBattleMons[battlerDef].maxHP;
 }
 
-uq4_12_t AI_GetTypeEffectiveness(u32 move, u32 battlerAtk, u32 battlerDef)
+uq4_12_t IA_ObtenEfectividadTipo(u32 movimiento, u32 atacante, u32 defensor)
 {
-    uq4_12_t typeEffectiveness;
-    u32 moveType;
+    uq4_12_t efectividad;
+    u32 tipoMovimiento = GetMoveType(movimiento);
 
     SaveBattlerData(battlerAtk);
     SaveBattlerData(battlerDef);
@@ -866,26 +866,25 @@ uq4_12_t AI_GetTypeEffectiveness(u32 move, u32 battlerAtk, u32 battlerDef)
     SetBattlerData(battlerAtk);
     SetBattlerData(battlerDef);
 
-    gBattleStruct->dynamicMoveType = 0;
-    SetTypeBeforeUsingMove(move, battlerAtk);
-    moveType = GetMoveType(move);
-    typeEffectiveness = CalcTypeEffectivenessMultiplier(move, moveType, battlerAtk, battlerDef, AI_DATA->abilities[battlerDef], FALSE);
+    gBattleStruct->dynamicMoveType = FALSE;
+    SetTypeBeforeUsingMove(movimiento, atacante);
+    tipoMovimiento = GetMoveType(movimiento);
+    efectividad = CalcTypeEffectivenessMultiplier(movimiento, tipoMovimiento, atacante, defensor, AI_DATA->abilities[defensor], FALSE);
 
-    RestoreBattlerData(battlerAtk);
-    RestoreBattlerData(battlerDef);
-
-    return typeEffectiveness;
+    RestoreBattlerData(atacante);
+    RestoreBattlerData(defensor);
+    return efectividad;
 }
 
-u32 AI_GetMoveEffectiveness(u32 move, u32 battlerAtk, u32 battlerDef)
+u32 IA_ObtenEfectividadMovimiento(u32 movimiento, u32 atacante, u32 defensor)
 {
     gMoveResultFlags = 0;
-    return AI_GetEffectiveness(AI_GetTypeEffectiveness(move, battlerAtk, battlerDef));
+    return IA_ObtenEfectividad(IA_ObtenEfectividadTipo(movimiento, atacante, defensor));
 }
 
-static u32 AI_GetEffectiveness(uq4_12_t multiplier)
+static u32 IA_ObtenEfectividad(uq4_12_t multiplicador)
 {
-    switch (multiplier)
+    switch (multiplicador)
     {
     case UQ_4_12(0.0):
         return AI_EFFECTIVENESS_x0;
@@ -2498,7 +2497,7 @@ static bool32 PartyBattlerShouldAvoidHazards(u32 currBattler, u32 switchBattler)
         return FALSE;
 
     if (flags & SIDE_STATUS_STEALTH_ROCK)
-        hazardDamage += GetStealthHazardDamageByTypesAndHP(gMovesInfo[MOVE_STEALTH_ROCK].type, type1, type2, maxHp);
+        hazardDamage += ObtenDanioTrampa(gMovesInfo[MOVE_STEALTH_ROCK].type, currBattler);
 
     if (flags & SIDE_STATUS_SPIKES && ((type1 != TIPO_VOLADOR && type2 != TIPO_VOLADOR
         && ability != ABILITY_LEVITATE && holdEffect != HOLD_EFFECT_AIR_BALLOON)

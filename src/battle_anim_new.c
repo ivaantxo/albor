@@ -8465,12 +8465,6 @@ void AnimTask_ShellSideArm(u8 taskId)
     DestroyAnimVisualTask(taskId);
 }
 
-void AnimTask_AffectionHangedOn(u8 taskId)
-{
-    gBattleAnimArgs[0] = GetBattlerAffectionHearts(gBattleAnimTarget);
-    DestroyAnimVisualTask(taskId);
-}
-
 //Launches the stat ball for Power Shift
 //arg 0: X starting offset
 //arg 1: Y starting offset

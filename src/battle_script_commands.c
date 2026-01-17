@@ -960,11 +960,6 @@ bool32 ProteanTryChangeType(u32 battler, u32 ability, u32 move, u32 moveType)
     return FALSE;
 }
 
-bool32 IsMoveNotAllowedInSkyBattles(u32 move)
-{
-    return ((gBattleStruct->isSkyBattle) && (gMovesInfo[gCurrentMove].skyBattleBanned));
-}
-
 static void Cmd_attackcanceler(void)
 {
     CMD_ARGS();
@@ -1026,11 +1021,11 @@ static void Cmd_attackcanceler(void)
     {
         u32 currentType;
         u32 bestType = gBattleMons[gBattlerTarget].types[0];
-        u16 bestModifier = GetTypeModifier(moveType, bestType);
+        u16 bestModifier = ObtenModificadorTipo(moveType, bestType);
 
-        for (currentType = TIPO_NORMAL; currentType < NUMERO_DE_TIPOS; ++currentType) 
+        for (currentType = TIPO_NORMAL; currentType < NUMERO_TIPOS; ++currentType) 
         {
-            u16 currentModifier = GetTypeModifier(moveType, currentType);
+            u16 currentModifier = ObtenModificadorTipo(moveType, currentType);
             if (currentModifier < bestModifier) 
             {
                 bestModifier = currentModifier;
@@ -1070,8 +1065,7 @@ static void Cmd_attackcanceler(void)
 
     // Check if no available target present on the field or if Sky Battles ban the move
     if ((NoTargetPresent(gBattlerAttacker, gCurrentMove)
-        && (!gBattleMoveEffects[gMovesInfo[gCurrentMove].effect].twoTurnEffect || (gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS)))
-        || (IsMoveNotAllowedInSkyBattles(gCurrentMove)))
+        && (!gBattleMoveEffects[gMovesInfo[gCurrentMove].effect].twoTurnEffect || (gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS))))
     {
         if (gMovesInfo[gCurrentMove].effect == EFFECT_FLING) // Edge case for removing a mon's item when there is no target available after using Fling.
             gBattlescriptCurrInstr = BattleScript_FlingFailConsumeItem;
@@ -3262,11 +3256,7 @@ void SetMoveEffect(bool32 primary, bool32 certain)
                 {
                     gMensajeBatalla = B_MSG_SPIKESSCATTERED;
                     BattleScriptPush(gBattlescriptCurrInstr + 1);
-
-                    if (gBattleStruct->isSkyBattle)
-                        gBattlescriptCurrInstr++;
-                    else
-                        gBattlescriptCurrInstr = BattleScript_SpikesActivates;
+                    gBattlescriptCurrInstr = BattleScript_SpikesActivates;
                 }
                 break;
             case MOVE_EFFECT_SECRET_POWER:
@@ -6154,7 +6144,7 @@ static bool32 DoSwitchInEffectsForBattler(u32 battler)
         && GetBattlerAbility(battler) != ABILITY_MAGIC_GUARD)
     {
         gDisableStructs[battler].stealthRockDone = TRUE;
-        gBattleMoveDamage = GetStealthHazardDamage(gMovesInfo[MOVE_STEALTH_ROCK].type, battler);
+        gBattleMoveDamage = ObtenDanioTrampa(gMovesInfo[MOVE_STEALTH_ROCK].type, battler);
 
         if (gBattleMoveDamage != 0)
             SetDmgHazardsBattlescript(battler, B_MSG_STEALTHROCKDMG);
@@ -6233,7 +6223,6 @@ static bool32 DoSwitchInEffectsForBattler(u32 battler)
         gDisableStructs[battler].spikesDone = FALSE;
         gDisableStructs[battler].toxicSpikesDone = FALSE;
         gDisableStructs[battler].stealthRockDone = FALSE;
-        gDisableStructs[battler].steelSurgeDone = FALSE;
 
         for (i = 0; i < gBattlersCount; i++)
         {
@@ -7427,42 +7416,31 @@ static void RemoveAllWeather(void)
 
 static bool32 TryDefogClear(u32 battlerAtk, bool32 clear)
 {
-    s32 i;
-    u8 saveBattler = gBattlerAttacker;
+    u32 lado;
+    u32 combatientePrevio = gBattlerAttacker;
 
-    for (i = 0; i < 2; i++)
+    for (lado = 0; lado < NUMERO_LADOS; lado++)
     {
-        struct SideTimer *sideTimer = &gSideTimers[i];
-        u32 *sideStatuses = &gSideStatuses[i];
+        struct SideTimer *sideTimer = &gSideTimers[lado];
+        u32 *sideStatuses = &gSideStatuses[lado];
 
-        if (GetBattlerSide(battlerAtk) != i)
+        if (GetBattlerSide(battlerAtk) != lado)
         {
-            gBattlerAttacker = i; // For correct battle string. Ally's / Foe's
+            gBattlerAttacker = lado; // For correct battle string. Ally's / Foe's
             DEFOG_CLEAR(SIDE_STATUS_REFLECT, reflectTimer, BattleScript_SideStatusWoreOffReturn, MOVE_REFLECT);
             DEFOG_CLEAR(SIDE_STATUS_LIGHTSCREEN, lightscreenTimer, BattleScript_SideStatusWoreOffReturn, MOVE_LIGHT_SCREEN);
             DEFOG_CLEAR(SIDE_STATUS_MIST, mistTimer, BattleScript_SideStatusWoreOffReturn, MOVE_MIST);
             DEFOG_CLEAR(SIDE_STATUS_AURORA_VEIL, auroraVeilTimer, BattleScript_SideStatusWoreOffReturn, MOVE_AURORA_VEIL);
             DEFOG_CLEAR(SIDE_STATUS_SAFEGUARD, safeguardTimer, BattleScript_SideStatusWoreOffReturn, MOVE_SAFEGUARD);
         }
-        if (B_DEFOG_EFFECT_CLEARING >= GEN_6)
-        {
-            gBattlerAttacker = i; // For correct battle string. Ally's / Foe's
-            DEFOG_CLEAR(SIDE_STATUS_SPIKES, spikesAmount, BattleScript_SpikesDefog, 0);
-            DEFOG_CLEAR(SIDE_STATUS_STEALTH_ROCK, stealthRockAmount, BattleScript_StealthRockDefog, 0);
-            DEFOG_CLEAR(SIDE_STATUS_TOXIC_SPIKES, toxicSpikesAmount, BattleScript_ToxicSpikesDefog, 0);
-            DEFOG_CLEAR(SIDE_STATUS_STICKY_WEB, stickyWebAmount, BattleScript_StickyWebDefog, 0);
-            DEFOG_CLEAR(SIDE_STATUS_STEELSURGE, steelsurgeAmount, BattleScript_SteelsurgeDefog, 0);
-        }
-        if (gBattleWeather & B_WEATHER_FOG)
-        {
-            gBattleWeather &= ~B_WEATHER_FOG;
-            BattleScriptPushCursor();
-            gBattlescriptCurrInstr = BattleScript_FogEnded_Ret;
-            return TRUE;
-        }
+        gBattlerAttacker = lado; // For correct battle string. Ally's / Foe's
+        DEFOG_CLEAR(SIDE_STATUS_SPIKES, spikesAmount, BattleScript_SpikesDefog, 0);
+        DEFOG_CLEAR(SIDE_STATUS_STEALTH_ROCK, stealthRockAmount, BattleScript_StealthRockDefog, 0);
+        DEFOG_CLEAR(SIDE_STATUS_TOXIC_SPIKES, toxicSpikesAmount, BattleScript_ToxicSpikesDefog, 0);
+        DEFOG_CLEAR(SIDE_STATUS_STICKY_WEB, stickyWebAmount, BattleScript_StickyWebDefog, 0);
     }
 
-    gBattlerAttacker = saveBattler;
+    gBattlerAttacker = combatientePrevio;
 
     return FALSE;
 }
@@ -7587,71 +7565,6 @@ static bool32 IsTeatimeAffected(u32 battler)
     if (gStatuses3[battler] & STATUS3_SEMI_INVULNERABLE)
         return FALSE;   // Teatime doesn't affected semi-invulnerable battlers
     return TRUE;
-}
-
-#define COURTCHANGE_SWAP(status, structField, temp)                     \
-{                                                                       \
-    temp = gSideStatuses[LADO_JUGADOR];                                \
-    if (gSideStatuses[LADO_OPONENTE] & status)                        \
-        gSideStatuses[LADO_JUGADOR] |= status;                         \
-    else                                                                \
-        gSideStatuses[LADO_JUGADOR] &= ~(status);                      \
-    if (temp & status)                                                  \
-        gSideStatuses[LADO_OPONENTE] |= status;                       \
-    else                                                                \
-        gSideStatuses[LADO_OPONENTE] &= ~(status);                    \
-    SWAP(sideTimerPlayer->structField, sideTimerOpp->structField, temp);\
-}                                                                       \
-
-#define UPDATE_COURTCHANGED_BATTLER(structField)\
-{                                               \
-    temp = sideTimerPlayer->structField;        \
-    sideTimerPlayer->structField = OPONENTE(sideTimerOpp->structField);        \
-    sideTimerOpp->structField = OPONENTE(temp);        \
-}                                               \
-
-static void CourtChangeSwapSideStatuses(void)
-{
-    struct SideTimer *sideTimerPlayer = &gSideTimers[LADO_JUGADOR];
-    struct SideTimer *sideTimerOpp = &gSideTimers[LADO_OPONENTE];
-    u32 temp;
-
-    // Swap timers and statuses
-    COURTCHANGE_SWAP(SIDE_STATUS_REFLECT, reflectTimer, temp)
-    COURTCHANGE_SWAP(SIDE_STATUS_LIGHTSCREEN, lightscreenTimer, temp)
-    COURTCHANGE_SWAP(SIDE_STATUS_MIST, mistTimer, temp);
-    COURTCHANGE_SWAP(SIDE_STATUS_SAFEGUARD, safeguardTimer, temp);
-    COURTCHANGE_SWAP(SIDE_STATUS_AURORA_VEIL, auroraVeilTimer, temp);
-    COURTCHANGE_SWAP(SIDE_STATUS_TAILWIND, tailwindTimer, temp);
-    // Lucky Chant doesn't exist in gen 8, but seems like it should be affected by Court Change
-    COURTCHANGE_SWAP(SIDE_STATUS_LUCKY_CHANT, luckyChantTimer, temp);
-    COURTCHANGE_SWAP(SIDE_STATUS_SPIKES, spikesAmount, temp);
-    COURTCHANGE_SWAP(SIDE_STATUS_STEALTH_ROCK, stealthRockAmount, temp);
-    COURTCHANGE_SWAP(SIDE_STATUS_TOXIC_SPIKES, toxicSpikesAmount, temp);
-    COURTCHANGE_SWAP(SIDE_STATUS_STICKY_WEB, stickyWebAmount, temp);
-    COURTCHANGE_SWAP(SIDE_STATUS_STEELSURGE, steelsurgeAmount, temp);
-    COURTCHANGE_SWAP(SIDE_STATUS_DAMAGE_NON_TYPES, damageNonTypesTimer, temp);
-    // Track Pledge effect side
-    COURTCHANGE_SWAP(SIDE_STATUS_RAINBOW, rainbowTimer, temp);
-    COURTCHANGE_SWAP(SIDE_STATUS_SEA_OF_FIRE, seaOfFireTimer, temp);
-    COURTCHANGE_SWAP(SIDE_STATUS_SWAMP, swampTimer, temp);
-
-    // Change battler IDs of swapped effects. Needed for the correct string when they expire
-    // E.g. "Foe's Reflect wore off!"
-    UPDATE_COURTCHANGED_BATTLER(reflectBattlerId);
-    UPDATE_COURTCHANGED_BATTLER(lightscreenBattlerId);
-    UPDATE_COURTCHANGED_BATTLER(mistBattlerId);
-    UPDATE_COURTCHANGED_BATTLER(safeguardBattlerId);
-    UPDATE_COURTCHANGED_BATTLER(auroraVeilBattlerId);
-    UPDATE_COURTCHANGED_BATTLER(tailwindBattlerId);
-    UPDATE_COURTCHANGED_BATTLER(luckyChantBattlerId);
-    UPDATE_COURTCHANGED_BATTLER(stickyWebBattlerId);
-
-    // Track which side originally set the Sticky Web
-    SWAP(sideTimerPlayer->stickyWebBattlerSide, sideTimerOpp->stickyWebBattlerSide, temp);
-
-    // Swap what type set the Gigantamax damage over time effect
-    SWAP(sideTimerPlayer->damageNonTypesType, sideTimerOpp->damageNonTypesType, temp);
 }
 
 // Return True if the order was changed, and false if the order was not changed(for example because the target would move after the attacker anyway).
@@ -9277,12 +9190,6 @@ static void Cmd_various(void)
     {
         VARIOUS_ARGS();
         gProtectStructs[battler].beakBlastCharge = TRUE;
-        break;
-    }
-    case VARIOUS_SWAP_SIDE_STATUSES:
-    {
-        VARIOUS_ARGS();
-        CourtChangeSwapSideStatuses();
         break;
     }
     case VARIOUS_SWAP_STATS:
@@ -11005,9 +10912,9 @@ static void Cmd_settypetorandomresistance(void)
             u32 i, resistTypes = 0;
             u32 hitByType = gLastHitByType[gBattlerAttacker];
 
-            for (i = 0; i < NUMERO_DE_TIPOS; i++) // Find all types that resist.
+            for (i = 0; i < NUMERO_TIPOS; i++) // Find all types that resist.
             {
-                switch (GetTypeModifier(hitByType, i))
+                switch (ObtenModificadorTipo(hitByType, i))
                 {
                 case UQ_4_12(0):
                 case UQ_4_12(0.5):
@@ -11018,7 +10925,7 @@ static void Cmd_settypetorandomresistance(void)
 
             while (resistTypes != 0)
             {
-                i = Random() % NUMERO_DE_TIPOS;
+                i = Random() % NUMERO_TIPOS;
                 if (resistTypes & 1u << i)
                 {
                     if (ES_COMBATIENTE_TIPO(gBattlerAttacker, i))
@@ -11057,9 +10964,9 @@ static void Cmd_settypetorandomresistance(void)
         {
             u32 i, resistTypes = 0;
 
-            for (i = 0; i < NUMERO_DE_TIPOS; i++) // Find all types that resist.
+            for (i = 0; i < NUMERO_TIPOS; i++) // Find all types that resist.
             {
-                switch (GetTypeModifier(gLastUsedMoveType[gBattlerTarget], i))
+                switch (ObtenModificadorTipo(gLastUsedMoveType[gBattlerTarget], i))
                 {
                 case UQ_4_12(0):
                 case UQ_4_12(0.5):
@@ -11070,7 +10977,7 @@ static void Cmd_settypetorandomresistance(void)
 
             while (resistTypes != 0)
             {
-                i = Random() % NUMERO_DE_TIPOS;
+                i = Random() % NUMERO_TIPOS;
                 if (resistTypes & 1u << i)
                 {
                     if (ES_COMBATIENTE_TIPO(gBattlerAttacker, i))
@@ -11805,13 +11712,6 @@ static void Cmd_rapidspinfree(void)
         gSideTimers[atkSide].stealthRockAmount = 0;
         BattleScriptPushCursor();
         gBattlescriptCurrInstr = BattleScript_StealthRockFree;
-    }
-    else if (gSideStatuses[atkSide] & SIDE_STATUS_STEELSURGE)
-    {
-        gSideStatuses[atkSide] &= ~SIDE_STATUS_STEELSURGE;
-        gSideTimers[atkSide].steelsurgeAmount = 0;
-        BattleScriptPushCursor();
-        gBattlescriptCurrInstr = BattleScript_SteelsurgeFree;
     }
     else
     {

@@ -2482,7 +2482,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 6,
     },
 
-    [ABILITY_BANO_DE_BARRO] =
+    [ABILITY_BANO_BARRO] =
     {
         .name = _("Baño de barro"),
         .description = COMPOUND_STRING("+PS si recibe Tierra."),

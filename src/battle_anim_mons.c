@@ -34,7 +34,7 @@ static void CreateBattlerTrace(struct Task *task, u8 taskId);
 EWRAM_DATA static union AffineAnimCmd *sAnimTaskAffineAnim = NULL;
 
 //Donde se definen las coordenadas base de los Pokémon
-const struct UCoords8 sBattlerCoords[NUMERO_DE_MODOS][NUMERO_COMBATIENTES] =
+const struct UCoords8 sBattlerCoords[NUMERO_MODOS][NUMERO_COMBATIENTES] =
 {
     [INDIVIDUAL] =
     {                                //x    y

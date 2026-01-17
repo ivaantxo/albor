@@ -553,7 +553,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Slam,
     },
 
@@ -597,7 +596,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .minimizeDoubleDamage = TRUE,
-        .skyBattleBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_FLINCH,
             .chance = 30,
@@ -827,7 +825,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .minimizeDoubleDamage = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        .skyBattleBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 30,
@@ -1305,7 +1302,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .damagesUnderwater = TRUE,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Surf,
     },
 
@@ -1557,7 +1553,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_SeismicToss,
     },
 
@@ -1961,7 +1956,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_FISICA,
         .ignoresKingsRock = B_UPDATED_MOVE_FLAGS < GEN_3,
         .damagesUnderground = TRUE,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Earthquake,
     },
 
@@ -1980,7 +1974,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .damagesUnderground = TRUE,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Fissure,
     },
 
@@ -2002,7 +1995,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .sleepTalkBanned = TRUE,
         .instructBanned = TRUE,
         .assistBanned = TRUE,
-        .skyBattleBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_PKMNDUGHOLE, COMPRESS_BITS(STATUS3_UNDERGROUND)),
         .battleAnimScript = gBattleAnimMove_Dig,
     },
@@ -3476,7 +3468,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Substitute,
     },
 
@@ -3486,19 +3477,13 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .description = COMPOUND_STRING(
             "Used only if all PP are gone.\n"
             "Also hurts the user a little."),
-        #if B_UPDATED_MOVE_DATA >= GEN_4
-            .effect = EFFECT_RECOIL_HP_25,
-            .accuracy = 0,
-            .mirrorMoveBanned = TRUE,
-            .additionalEffects = ADDITIONAL_EFFECTS({
-                .moveEffect = MOVE_EFFECT_RECOIL_HP_25,
-                .self = TRUE,
-            }),
-        #else
-            .effect = EFFECT_HIT,
-            .accuracy = 100,
-            .recoil = 25,
-        #endif
+        .effect = EFFECT_RECOIL_HP_25,
+        .accuracy = 0,
+        .mirrorMoveBanned = TRUE,
+        .additionalEffects = ADDITIONAL_EFFECTS({
+            .moveEffect = MOVE_EFFECT_RECOIL_HP_25,
+            .self = TRUE,
+        }),
         .power = 50,
         .type = TIPO_NORMAL,
         .pp = 1,
@@ -4042,7 +4027,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .mirrorMoveBanned = TRUE,
         .magicCoatAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .forcePressure = TRUE,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Spikes,
     },
 
@@ -4666,7 +4650,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .damagesUnderground = TRUE,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Magnitude,
     },
 
@@ -5778,7 +5761,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Ingrain,
     },
 
@@ -6092,7 +6074,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .sleepTalkBanned = TRUE,
         .instructBanned = TRUE,
         .assistBanned = TRUE,
-        .skyBattleBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_PKMNHIDUNDERWATER, COMPRESS_BITS(STATUS3_UNDERWATER)),
         .battleAnimScript = gBattleAnimMove_Dive,
     },
@@ -6255,7 +6236,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_MudSport,
     },
 
@@ -6867,7 +6847,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .skyBattleBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_ACC_MINUS_1,
             .chance = 30,
@@ -7021,7 +7000,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .skyBattleBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_RECHARGE,
             .self = TRUE,
@@ -7204,7 +7182,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_WaterSport,
     },
 
@@ -7403,7 +7380,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Gravity,
     },
 
@@ -8041,7 +8017,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .mirrorMoveBanned = TRUE,
         .magicCoatAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .forcePressure = TRUE,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_ToxicSpikes,
     },
 
@@ -8523,7 +8498,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .skyBattleBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SP_DEF_MINUS_1,
             .chance = 10,
@@ -9209,7 +9183,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .makesContact = TRUE,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_GrassKnot,
     },
 
@@ -9842,7 +9815,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .damagesAirborne = TRUE,
-        .skyBattleBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SMACK_DOWN,
         }),
@@ -9943,7 +9915,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .minimizeDoubleDamage = B_UPDATED_MOVE_FLAGS >= GEN_7,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_HeavySlam,
     },
 
@@ -10582,7 +10553,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_WaterPledge,
     },
 
@@ -10600,7 +10570,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_FirePledge,
     },
 
@@ -10618,7 +10587,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_GrassPledge,
     },
 
@@ -10672,7 +10640,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .target = MOVE_TARGET_FOES_AND_ALLY,
         .priority = 0,
         .category = CATEGORIA_FISICA,
-        .skyBattleBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
             .chance = 100,
@@ -11427,7 +11394,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .makesContact = TRUE,
         .minimizeDoubleDamage = TRUE,
         .gravityBanned = TRUE,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_FlyingPress,
     },
 
@@ -11451,7 +11417,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .mirrorMoveBanned = TRUE,
         .copycatBanned = TRUE,
         .assistBanned = TRUE,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_MatBlock,
     },
 
@@ -11495,7 +11460,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Rototiller,
     },
 
@@ -11516,7 +11480,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .magicCoatAffected = TRUE,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_StickyWeb,
     },
 
@@ -12210,7 +12173,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_ESTADO,
         .sleepTalkBanned = TRUE,
         .instructBanned = TRUE,
-        .skyBattleBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_PKNMABSORBINGPOWER),
         .battleAnimScript = gBattleAnimMove_Geomancy,
     },
@@ -12455,7 +12417,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .category = CATEGORIA_FISICA,
         .damagesAirborne = TRUE,
         .ignoreTypeIfFlyingAndUngrounded = TRUE,
-        .skyBattleBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SMACK_DOWN,
         }),
@@ -12476,7 +12437,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_FISICA,
-        .skyBattleBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PREVENT_ESCAPE,
         }),
@@ -12497,7 +12457,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_FISICA,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_LandsWrath,
     },
 
@@ -13390,7 +13349,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .skyBattleBanned = B_EXTRAPOLATED_MOVE_FLAGS,
         .battleAnimScript = gBattleAnimMove_StompingTantrum,
     },
 
@@ -14174,24 +14132,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_FishiousRend,
     },
 
-    [MOVE_COURT_CHANGE] =
-    {
-        .name = COMPOUND_STRING("Court Change"),
-        .description = COMPOUND_STRING(
-            "The user swaps effects on\n"
-            "either side of the field."),
-        .effect = EFFECT_COURT_CHANGE,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_ALL_BATTLERS,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_CourtChange,
-    },
-
     [MOVE_BODY_PRESS] =
     {
         .name = COMPOUND_STRING("Body Press"),
@@ -14207,7 +14147,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .skyBattleBanned = B_EXTRAPOLATED_MOVE_FLAGS,
         .battleAnimScript = gBattleAnimMove_BodyPress,
     },
 
@@ -14266,7 +14205,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .skyBattleBanned = B_EXTRAPOLATED_MOVE_FLAGS,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_WRAP,
         }),
@@ -14658,7 +14596,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .skyBattleBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_SteelRoller,
     },
 
@@ -14758,7 +14695,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .skyBattleBanned = B_EXTRAPOLATED_MOVE_FLAGS,
         .battleAnimScript = gBattleAnimMove_GrassyGlide,
     },
 
@@ -15364,7 +15300,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .skyBattleBanned = B_EXTRAPOLATED_MOVE_FLAGS,
         .battleAnimScript = gBattleAnimMove_WaveCrash,
     },
 
@@ -15844,7 +15779,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .skyBattleBanned = B_EXTRAPOLATED_MOVE_FLAGS,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SPD_MINUS_2,
             .self = TRUE,
@@ -15887,7 +15821,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .skyBattleBanned = B_EXTRAPOLATED_MOVE_FLAGS,
         .battleAnimScript = gBattleAnimMove_IceSpinner,
     },
 

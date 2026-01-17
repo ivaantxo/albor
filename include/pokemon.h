@@ -336,20 +336,13 @@ struct MoveInfo
     u32 instructBanned:1;
     u32 encoreBanned:1;
     u32 parentalBondBanned:1;
-    u32 skyBattleBanned:1;
     u32 sketchBanned:1;
-    u32 padding:5; // end of word
 
     u32 argument;
 
     // primary/secondary effects
     const struct AdditionalEffect *additionalEffects;
 
-    // contest parameters
-    u8 contestEffect;
-    u8 contestCategory:3;
-    u8 contestComboStarterId;
-    u8 contestComboMoves[MAX_COMBO_MOVES];
     const u8 *battleAnimScript;
 };
 
@@ -426,7 +419,7 @@ extern u16 gFollowerSteps;
 
 extern const struct MoveInfo gMovesInfo[];
 extern const struct SpeciesInfo gSpeciesInfo[];
-extern const u32 gExperienceTables[TIPOS_DE_CRECIMIENTO][MAX_LEVEL + 1];
+extern const u32 gExperienceTables[TIPOS_CRECIMIENTO][MAX_LEVEL + 1];
 extern const u8 gPPUpGetMask[];
 extern const u8 gPPUpClearMask[];
 extern const u8 gPPUpAddValues[];
@@ -575,6 +568,5 @@ void HealPokemon(struct Pokemon *mon);
 void HealBoxPokemon(struct BoxPokemon *boxMon);
 const u8 *GetMoveName(u16 moveId);
 const u8 *GetMoveAnimationScript(u16 moveId);
-u32 CheckDynamicMoveType(struct Pokemon *mon, u32 move, u32 battler);
 
 #endif // GUARD_POKEMON_H

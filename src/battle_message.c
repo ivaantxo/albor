@@ -679,7 +679,6 @@ static const u8 sText_PkmnTookTargetHigh[] = _("{B_ATK_NAME_WITH_PREFIX} took {B
 static const u8 sText_TargetTooHeavy[] = _("{B_DEF_NAME_WITH_PREFIX} is too heavy to be lifted!");
 static const u8 sText_MeteorBeamCharging[] = _("{B_ATK_NAME_WITH_PREFIX} is overflowing with space power!");
 static const u8 sText_HeatingUpBeak[] = _("{B_ATK_NAME_WITH_PREFIX} started heating up its beak!");
-static const u8 sText_CourtChange[] = _("{B_ATK_NAME_WITH_PREFIX} swapped the battle effects affecting each side of the field!");
 static const u8 sText_AttackerExpelledThePoison[] = _("{B_ATK_NAME_WITH_PREFIX} managed to expel the poison so you wouldn't worry!");
 static const u8 sText_AttackerShookItselfAwake[] = _("{B_ATK_NAME_WITH_PREFIX} shook itself awake so you wouldn't worry!");
 static const u8 sText_AttackerBrokeThroughParalysis[] = _("{B_ATK_NAME_WITH_PREFIX} gathered all its energy to break through its paralysis so you wouldn't worry!");
@@ -775,7 +774,6 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_PLAYERPAIDPRIZEMONEY] = sText_PlayerPaidPrizeMoney,
     [STRINGID_SHELLTRAPDIDNTWORK] = sText_ShellTrapDidntWork,
     [STRINGID_PREPARESHELLTRAP] = sText_PrepareShellTrap,
-    [STRINGID_COURTCHANGE] = sText_CourtChange,
     [STRINGID_HEATUPBEAK] = sText_HeatingUpBeak,
     [STRINGID_METEORBEAMCHARGING] = sText_MeteorBeamCharging,
     [STRINGID_PKMNINSNAPTRAP] = sText_PkmnInSnapTrap,
@@ -1362,7 +1360,7 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_ATTACKERLOSTITSTYPE] = sText_AttackerLostItsType,
     [STRINGID_CLOAKEDINAHARSHLIGHT] = sText_PkmnIsCloakedInAHarshLight,
     [STRINGID_AMOLADORAS] = sText_Amoladoras,
-    [TEXTO_COMBATE_HABILIDAD_PROTEGE_EQUIPO_DE_PRIORIDAD] = COMPOUND_STRING("{B_DEF_ABILITY} de {B_DEF_NAME_WITH_PREFIX} protege al equipo\nde ataques de prioridad\p"),
+    [TEXTO_COMBATE_HABILIDAD_PROTEGE_EQUIPO_PRIORIDAD] = COMPOUND_STRING("{B_DEF_ABILITY} de {B_DEF_NAME_WITH_PREFIX} protege al equipo\nde ataques de prioridad\p"),
 };
 
 const u32 gMentalHerbCureStringIds[] =

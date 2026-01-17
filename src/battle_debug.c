@@ -205,7 +205,6 @@ enum
     LIST_SIDE_LUCKY_CHANT,
     LIST_SIDE_TOXIC_SPIKES,
     LIST_SIDE_STEALTH_ROCK,
-    LIST_SIDE_STEELSURGE,
     LIST_SIDE_DAMAGE_NON_TYPES,
     LIST_SIDE_RAINBOW,
     LIST_SIDE_SEA_OF_FIRE,
@@ -348,7 +347,6 @@ static const u8 sText_AuroraVeil[] = _("Aurora Veil");
 static const u8 sText_LuckyChant[] = _("Lucky Chant");
 static const u8 sText_ToxicSpikes[] = _("Toxic Spikes");
 static const u8 sText_StealthRock[] = _("Stealth Rock");
-static const u8 sText_Steelsurge[] = _("Steelsurge");
 static const u8 sText_DamageNonTypes[] = _("Damage Non-Types");
 static const u8 sText_Rainbow[] = _("Rainbow");
 static const u8 sText_SeaOfFire[] = _("Sea of Fire");
@@ -578,7 +576,6 @@ static const struct ListMenuItem sSideStatusListItems[] =
     {sText_LuckyChant, LIST_SIDE_LUCKY_CHANT},
     {sText_ToxicSpikes, LIST_SIDE_TOXIC_SPIKES},
     {sText_StealthRock, LIST_SIDE_STEALTH_ROCK},
-    {sText_Steelsurge, LIST_SIDE_STEELSURGE},
     {sText_DamageNonTypes, LIST_SIDE_DAMAGE_NON_TYPES},
     {sText_Rainbow, LIST_SIDE_RAINBOW},
     {sText_SeaOfFire, LIST_SIDE_SEA_OF_FIRE},
@@ -1920,15 +1917,6 @@ static u8 *GetSideStatusValue(struct BattleDebugMenu *data, bool32 changeStatus,
                 *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_STEALTH_ROCK;
         }
         return &sideTimer->stealthRockAmount;
-    case LIST_SIDE_STEELSURGE:
-        if (changeStatus)
-        {
-            if (statusTrue)
-                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_STEELSURGE;
-            else
-                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_STEELSURGE;
-        }
-        return &sideTimer->steelsurgeAmount;
     case LIST_SIDE_DAMAGE_NON_TYPES:
         if (changeStatus)
         {
@@ -2022,7 +2010,7 @@ static void SetUpModifyArrows(struct BattleDebugMenu *data)
         break;
     case LIST_ITEM_TYPES:
         data->modifyArrows.minValue = 0;
-        data->modifyArrows.maxValue = NUMERO_DE_TIPOS - 1;
+        data->modifyArrows.maxValue = NUMERO_TIPOS - 1;
         data->modifyArrows.maxDigits = 2;
         data->modifyArrows.modifiedValPtr = (u8 *)((&gBattleMons[data->battlerId].types[0]) + data->currentSecondaryListItemId);
         data->modifyArrows.typeOfVal = VAL_U8;

@@ -12,7 +12,7 @@
 #include "constants/songs.h"
 #include "constants/weather.h"
 
-#define TYPE_NOT_TYPE1 NUMERO_DE_TIPOS
+#define TYPE_NOT_TYPE1 NUMERO_TIPOS
 
 // difficult conditional messages follow
 static const u8 sCondMsg00[] = _("{VAR_TEXTO_1} danza feliz.");

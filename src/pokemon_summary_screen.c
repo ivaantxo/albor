@@ -872,26 +872,26 @@ static const union AnimCmd sSpriteAnim_TypeFairy[] = {
     ANIMCMD_END
 };
 static const union AnimCmd sSpriteAnim_CategoryCool[] = {
-    ANIMCMD_FRAME((CONTEST_CATEGORY_COOL + NUMERO_DE_TIPOS) * 8, 0, FALSE, FALSE),
+    ANIMCMD_FRAME((CONTEST_CATEGORY_COOL + NUMERO_TIPOS) * 8, 0, FALSE, FALSE),
     ANIMCMD_END
 };
 static const union AnimCmd sSpriteAnim_CategoryBeauty[] = {
-    ANIMCMD_FRAME((CONTEST_CATEGORY_BEAUTY + NUMERO_DE_TIPOS) * 8, 0, FALSE, FALSE),
+    ANIMCMD_FRAME((CONTEST_CATEGORY_BEAUTY + NUMERO_TIPOS) * 8, 0, FALSE, FALSE),
     ANIMCMD_END
 };
 static const union AnimCmd sSpriteAnim_CategoryCute[] = {
-    ANIMCMD_FRAME((CONTEST_CATEGORY_CUTE + NUMERO_DE_TIPOS) * 8, 0, FALSE, FALSE),
+    ANIMCMD_FRAME((CONTEST_CATEGORY_CUTE + NUMERO_TIPOS) * 8, 0, FALSE, FALSE),
     ANIMCMD_END
 };
 static const union AnimCmd sSpriteAnim_CategorySmart[] = {
-    ANIMCMD_FRAME((CONTEST_CATEGORY_SMART + NUMERO_DE_TIPOS) * 8, 0, FALSE, FALSE),
+    ANIMCMD_FRAME((CONTEST_CATEGORY_SMART + NUMERO_TIPOS) * 8, 0, FALSE, FALSE),
     ANIMCMD_END
 };
 static const union AnimCmd sSpriteAnim_CategoryTough[] = {
-    ANIMCMD_FRAME((CONTEST_CATEGORY_TOUGH + NUMERO_DE_TIPOS) * 8, 0, FALSE, FALSE),
+    ANIMCMD_FRAME((CONTEST_CATEGORY_TOUGH + NUMERO_TIPOS) * 8, 0, FALSE, FALSE),
     ANIMCMD_END
 };
-static const union AnimCmd *const sSpriteAnimTable_MoveTypes[NUMERO_DE_TIPOS + CONTEST_CATEGORIES_COUNT] = {
+static const union AnimCmd *const sSpriteAnimTable_MoveTypes[NUMERO_TIPOS + CONTEST_CATEGORIES_COUNT] = {
     [TIPO_NINGUNO] = sSpriteAnim_TypeNone,
     [TIPO_NORMAL] = sSpriteAnim_TypeNormal,
     [TIPO_LUCHA] = sSpriteAnim_TypeFighting,
@@ -912,17 +912,17 @@ static const union AnimCmd *const sSpriteAnimTable_MoveTypes[NUMERO_DE_TIPOS + C
     [TIPO_DRAGON] = sSpriteAnim_TypeDragon,
     [TIPO_SINIESTRO] = sSpriteAnim_TypeDark,
     [TIPO_HADA] = sSpriteAnim_TypeFairy,
-    [NUMERO_DE_TIPOS + CONTEST_CATEGORY_COOL] = sSpriteAnim_CategoryCool,
-    [NUMERO_DE_TIPOS + CONTEST_CATEGORY_BEAUTY] = sSpriteAnim_CategoryBeauty,
-    [NUMERO_DE_TIPOS + CONTEST_CATEGORY_CUTE] = sSpriteAnim_CategoryCute,
-    [NUMERO_DE_TIPOS + CONTEST_CATEGORY_SMART] = sSpriteAnim_CategorySmart,
-    [NUMERO_DE_TIPOS + CONTEST_CATEGORY_TOUGH] = sSpriteAnim_CategoryTough,
+    [NUMERO_TIPOS + CONTEST_CATEGORY_COOL] = sSpriteAnim_CategoryCool,
+    [NUMERO_TIPOS + CONTEST_CATEGORY_BEAUTY] = sSpriteAnim_CategoryBeauty,
+    [NUMERO_TIPOS + CONTEST_CATEGORY_CUTE] = sSpriteAnim_CategoryCute,
+    [NUMERO_TIPOS + CONTEST_CATEGORY_SMART] = sSpriteAnim_CategorySmart,
+    [NUMERO_TIPOS + CONTEST_CATEGORY_TOUGH] = sSpriteAnim_CategoryTough,
 };
 
 const struct CompressedSpriteSheet gSpriteSheet_MoveTypes =
 {
     .data = gMoveTypes_Gfx,
-    .size = (NUMERO_DE_TIPOS + CONTEST_CATEGORIES_COUNT) * 256,
+    .size = (NUMERO_TIPOS + CONTEST_CATEGORIES_COUNT) * 256,
     .tag = TAG_MOVE_TYPES
 };
 const struct SpriteTemplate gSpriteTemplate_MoveTypes =
@@ -3664,10 +3664,10 @@ void SetTypeSpritePosAndPal(u8 typeId, u8 x, u8 y, u8 spriteArrayId)
 {
     struct Sprite *sprite = &gSprites[sMonSummaryScreen->spriteIds[spriteArrayId]];
     StartSpriteAnim(sprite, typeId);
-    if (typeId < NUMERO_DE_TIPOS)
+    if (typeId < NUMERO_TIPOS)
         sprite->oam.paletteNum = gTypesInfo[typeId].palette;
     else
-        sprite->oam.paletteNum = sContestCategoryToOamPaletteNum[typeId - NUMERO_DE_TIPOS];
+        sprite->oam.paletteNum = sContestCategoryToOamPaletteNum[typeId - NUMERO_TIPOS];
     sprite->x = x + 16;
     sprite->y = y + 8;
     SetSpriteInvisibility(spriteArrayId, FALSE);
@@ -3702,7 +3702,7 @@ static void SetMoveTypeIcons(void)
         {
             type = gMovesInfo[summary->moves[i]].type;
             if (P_SHOW_DYNAMIC_TYPES)
-                type = CheckDynamicMoveType(mon, summary->moves[i], 0);
+                type = ObtenTipoDinamicoMovimiento(mon, summary->moves[i], JUGADOR_IZQUIERDA);
             SetTypeSpritePosAndPal(type, 85, 32 + (i * 16), i + SPRITE_ARR_ID_TYPE);
         }
         else
@@ -3714,15 +3714,7 @@ static void SetMoveTypeIcons(void)
 
 static void SetContestMoveTypeIcons(void)
 {
-    u32 i;
-    struct PokeSummary *summary = &sMonSummaryScreen->summary;
-    for (i = 0; i < MAX_MON_MOVES; i++)
-    {
-        if (summary->moves[i] != MOVE_NONE)
-            SetTypeSpritePosAndPal(NUMERO_DE_TIPOS + gMovesInfo[summary->moves[i]].contestCategory, 85, 32 + (i * 16), i + SPRITE_ARR_ID_TYPE);
-        else
-            SetSpriteInvisibility(i + SPRITE_ARR_ID_TYPE, TRUE);
-    }
+
 }
 
 static void SetNewMoveTypeIcon(void)
@@ -3731,7 +3723,7 @@ static void SetNewMoveTypeIcon(void)
     struct Pokemon *mon = &sMonSummaryScreen->currentMon;
 
     if (P_SHOW_DYNAMIC_TYPES)
-        type = CheckDynamicMoveType(mon, sMonSummaryScreen->newMove, 0);
+        type = ObtenTipoDinamicoMovimiento(mon, sMonSummaryScreen->newMove, JUGADOR_IZQUIERDA);
 
     if (sMonSummaryScreen->newMove == MOVE_NONE)
     {
@@ -3742,10 +3734,6 @@ static void SetNewMoveTypeIcon(void)
         if (sMonSummaryScreen->currPageIndex == PSS_PAGE_BATTLE_MOVES)
         {
             SetTypeSpritePosAndPal(type, 85, 96, SPRITE_ARR_ID_TYPE + 4);
-        }
-        else
-        {
-            SetTypeSpritePosAndPal(NUMERO_DE_TIPOS + gMovesInfo[sMonSummaryScreen->newMove].contestCategory, 85, 96, SPRITE_ARR_ID_TYPE + 4);
         }
     }
 }

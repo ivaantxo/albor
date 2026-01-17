@@ -48,7 +48,7 @@ extern const struct CompressedSpriteSheet gSpriteSheet_EnemyShadow;
 extern const struct CompressedSpriteSheet gSpriteSheet_EnemyShadowsSized;
 extern const struct SpriteTemplate gSpriteTemplate_EnemyShadow;
 extern const struct SpritePalette sSpritePalettes_HealthBoxHealthBar[2];
-extern const struct UCoords8 sBattlerCoords[NUMERO_DE_MODOS][NUMERO_COMBATIENTES] ;
+extern const struct UCoords8 sBattlerCoords[NUMERO_MODOS][NUMERO_COMBATIENTES] ;
 static const u16 sBgColor[] = {RGB_WHITE};
 
 static struct PokemonSpriteVisualizer *GetStructPtr(u8 taskId)

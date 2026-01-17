@@ -1125,16 +1125,6 @@ u8 GetImprisonedMovesCount(u32 battler, u16 move)
     return imprisonedMoves;
 }
 
-u32 GetBattlerAffectionHearts(u32 battler)
-{
-    return 0;
-}
-
-static void TryToRevertMimicryAndFlags(void)
-{
-
-}
-
 enum
 {
     ENDTURN_ORDER,
@@ -4751,7 +4741,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             break;
         case ABILITY_TOXIC_DEBRIS:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
-             && (!gBattleStruct->isSkyBattle)
              && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
              && IS_MOVE_PHYSICAL(gCurrentMove)
              && IsBattlerTurnDamaged(gBattlerTarget)
@@ -4765,7 +4754,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             break;
         case ABILITY_PUNZON:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
-             && (!gBattleStruct->isSkyBattle)
              && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
              && IS_MOVE_PHYSICAL(gCurrentMove)
              && IsBattlerTurnDamaged(gBattlerTarget)
@@ -8666,7 +8654,7 @@ s32 CalculateMoveDamageVars(struct DamageCalculationData *damageCalcData, u32 fi
 
 static inline void MulByTypeEffectiveness(uq4_12_t *modifier, u32 move, u32 moveType, u32 battlerDef, u32 defType, u32 battlerAtk, bool32 recordAbilities)
 {
-    uq4_12_t mod = GetTypeModifier(moveType, defType);
+    uq4_12_t mod = ObtenModificadorTipo(moveType, defType);
     u32 abilityAtk = GetBattlerAbility(battlerAtk);
 
     if (mod == UQ_4_12(0.0) && GetBattlerHoldEffect(battlerDef, TRUE) == HOLD_EFFECT_RING_TARGET)
@@ -8861,102 +8849,44 @@ static uq4_12_t GetInverseTypeMultiplier(uq4_12_t multiplier)
     }
 }
 
-uq4_12_t GetTypeEffectiveness(struct Pokemon *mon, u8 moveType)
+uq4_12_t ObtenModificadorTipo(u32 tipoAtacante, u32 tipoDefensor)
 {
-    uq4_12_t modifier = UQ_4_12(1.0);
-    u16 abilityDef = GetMonAbility(mon);
-    u16 speciesDef = GetMonData(mon, MON_DATA_SPECIES);
-    u8 type1 = gSpeciesInfo[speciesDef].types[0];
-    u8 type2 = gSpeciesInfo[speciesDef].types[1];
-
-    if (moveType != TIPO_MISTERIO)
-    {
-        MulByTypeEffectiveness(&modifier, MOVE_POUND, moveType, 0, type1, 0, FALSE);
-        if (type2 != type1)
-            MulByTypeEffectiveness(&modifier, MOVE_POUND, moveType, 0, type2, 0, FALSE);
-
-        if ((moveType == TIPO_FUEGO     &&  abilityDef == ABILITY_FLASH_FIRE)
-         || (moveType == TIPO_FUEGO     &&  abilityDef == ABILITY_CERO_ABSOLUTO)
-         || (moveType == TIPO_PLANTA    &&  abilityDef == ABILITY_SAP_SIPPER)
-         || (moveType == TIPO_TIERRA   && (abilityDef == ABILITY_LEVITATE
-                                       ||  abilityDef == ABILITY_EARTH_EATER
-                                       ||  abilityDef == ABILITY_BANO_DE_BARRO))
-         || (moveType == TIPO_AGUA    && (abilityDef == ABILITY_WATER_ABSORB
-                                       || abilityDef == ABILITY_DRY_SKIN
-                                       || abilityDef == ABILITY_STORM_DRAIN))
-         || (moveType == TIPO_ELECTRICO && (abilityDef == ABILITY_LIGHTNING_ROD // TODO: Add Gen 3/4 config check
-                                       || abilityDef == ABILITY_VOLT_ABSORB
-                                       || abilityDef == ABILITY_MOTOR_DRIVE)))
-        {
-            modifier = UQ_4_12(0.0);
-        }
-    }
-    return modifier;
+    return gTablaEfectividadTipos[tipoAtacante][tipoDefensor];
 }
 
-uq4_12_t GetTypeModifier(u32 atkType, u32 defType)
+s32 ObtenDanioTrampa(u32 tipoTrampa, u32 combatiente)
 {
-    if (B_FLAG_INVERSE_BATTLE != 0 && FlagGet(B_FLAG_INVERSE_BATTLE))
-        return GetInverseTypeMultiplier(gTypeEffectivenessTable[atkType][defType]);
-    return gTypeEffectivenessTable[atkType][defType];
-}
+    s32 danio = 0;
+    uq4_12_t modificador = UQ_4_12(1.0);
+    u32 tipo1 = gBattleMons[combatiente].types[0];
+    u32 tipo2 = gBattleMons[combatiente].types[1];
+    u32 PSMaximos = gBattleMons[combatiente].maxHP;
 
-s32 GetStealthHazardDamageByTypesAndHP(u8 hazardType, u8 type1, u8 type2, u32 maxHp)
-{
-    s32 dmg = 0;
-    uq4_12_t modifier = UQ_4_12(1.0);
+    modificador = uq4_12_multiply(modificador, ObtenModificadorTipo(tipoTrampa, tipo1));
+    if (tipo2 != tipo1)
+        modificador = uq4_12_multiply(modificador, ObtenModificadorTipo(tipoTrampa, tipo2));
 
-    modifier = uq4_12_multiply(modifier, GetTypeModifier(hazardType, type1));
-    if (type2 != type1)
-        modifier = uq4_12_multiply(modifier, GetTypeModifier(hazardType, type2));
-
-    switch (modifier)
+    switch (modificador)
     {
     case UQ_4_12(0.0):
-        dmg = 0;
         break;
     case UQ_4_12(0.25):
-        dmg = maxHp / 32;
-        if (dmg == 0)
-            dmg = 1;
+        danio = PSMaximos / 64;
         break;
     case UQ_4_12(0.5):
-        dmg = maxHp / 16;
-        if (dmg == 0)
-            dmg = 1;
+        danio = PSMaximos / 32;
         break;
     case UQ_4_12(1.0):
-        dmg = maxHp / 8;
-        if (dmg == 0)
-            dmg = 1;
+        danio = PSMaximos / 16;
         break;
     case UQ_4_12(2.0):
-        dmg = maxHp / 4;
-        if (dmg == 0)
-            dmg = 1;
+        danio = PSMaximos / 8;
         break;
     case UQ_4_12(4.0):
-        dmg = maxHp / 2;
-        if (dmg == 0)
-            dmg = 1;
+        danio = PSMaximos / 4;
         break;
     }
-
-    return dmg;
-}
-
-s32 GetStealthHazardDamage(u8 hazardType, u32 battler)
-{
-    u32 tipo1 = gBattleMons[battler].types[0];
-    u32 tipo2 = gBattleMons[battler].types[1];
-    u32 maxHp = gBattleMons[battler].maxHP;
-
-    return GetStealthHazardDamageByTypesAndHP(hazardType, tipo1, tipo2, maxHp);
-}
-
-bool32 DoesSpeciesUseHoldItemToChangeForm(u16 species, u16 heldItemId)
-{
-    return FALSE;
+    return danio;
 }
 
 // Returns SPECIES_NONE if no form change is possible
@@ -9192,12 +9122,8 @@ u8 GetBattleMoveCategory(u32 moveId)
 {
     if (gBattleStruct != NULL && gBattleStruct->swapDamageCategory) // Photon Geyser, Shell Side Arm, Light That Burns the Sky, Tera Blast
         return SwapMoveDamageCategory(moveId);
-    if (B_PHYSICAL_SPECIAL_SPLIT >= GEN_4)
-        return gMovesInfo[moveId].category;
 
-    if (IS_MOVE_STATUS(moveId))
-        return CATEGORIA_ESTADO;
-    return gTypesInfo[GetMoveType(gCurrentMove)].damageCategory;
+    return gMovesInfo[moveId].category;
 }
 
 static bool32 TryRemoveScreens(u32 battler)
@@ -9712,28 +9638,6 @@ bool32 MoveIsAffectedBySheerForce(u32 move)
             return TRUE;
     }
     return FALSE;
-}
-
-bool8 CanMonParticipateInSkyBattle(struct Pokemon *mon)
-{
-    u16 species = GetMonData(mon, MON_DATA_SPECIES);
-    u16 monAbilityNum = GetMonData(mon, MON_DATA_ABILITY_NUM, NULL);
-
-    bool8 hasLevitateAbility = gSpeciesInfo[species].abilities[monAbilityNum] == ABILITY_LEVITATE;
-    bool8 isFlyingType = gSpeciesInfo[species].types[0] == TIPO_VOLADOR || gSpeciesInfo[species].types[1] == TIPO_VOLADOR;
-    bool8 monIsValidAndNotEgg = GetMonData(mon, MON_DATA_SPECIES) && !GetMonData(mon, MON_DATA_IS_EGG);
-
-    if (monIsValidAndNotEgg)
-    {
-        if ((hasLevitateAbility || isFlyingType) && !IsMonBannedFromSkyBattles(species))
-            return TRUE;
-    }
-    return FALSE;
-}
-
-bool8 IsMonBannedFromSkyBattles(u16 species)
-{
-    return TRUE;
 }
 
 u8 GetBattlerType(u32 battler, u8 typeIndex)

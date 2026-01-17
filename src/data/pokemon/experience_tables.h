@@ -6,7 +6,7 @@
 #define EXP_LEGENDARIO_MENOR(n) ((11 * CUBE(n)) / 10) //1.100.000
 #define EXP_LEGENDARIO_MAYOR(n) ((12 * CUBE(n)) / 10) //1.200.000
 
-const u32 gExperienceTables[TIPOS_DE_CRECIMIENTO][MAX_LEVEL + 1] =
+const u32 gExperienceTables[TIPOS_CRECIMIENTO][MAX_LEVEL + 1] =
 {
     [CRECIMIENTO_NORMAL] = //800.000
     {

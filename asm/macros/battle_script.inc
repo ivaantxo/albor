@@ -1416,11 +1416,6 @@
 	.4byte \failInstr
 	.endm
 
-	.macro setsteelsurge, failInstr:req
-	callnative BS_SetSteelsurge
-	.4byte \failInstr
-	.endm
-
 	.macro trysetstatus1, ptr:req
 	callnative BS_TrySetStatus1
 	.4byte \ptr
@@ -2052,10 +2047,6 @@
 
 	.macro setbeakblast battler:req
 	various \battler, VARIOUS_SET_BEAK_BLAST
-	.endm
-
-	.macro swapsidestatuses
-	various BS_ATTACKER, VARIOUS_SWAP_SIDE_STATUSES
 	.endm
 
 	.macro swapstats stat:req

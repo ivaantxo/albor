@@ -1444,7 +1444,7 @@ static const union AnimCmd sSpriteAnim_IconTypeFairy[] = {
     ANIMCMD_END
 };
 
-static const union AnimCmd *const sSpriteAnimTable_IconTypes[NUMERO_DE_TIPOS] = {
+static const union AnimCmd *const sSpriteAnimTable_IconTypes[NUMERO_TIPOS] = {
     sSpriteAnim_IconTypeNone,
     sSpriteAnim_IconTypeNormal,
     sSpriteAnim_IconTypeFighting,
@@ -1470,7 +1470,7 @@ static const union AnimCmd *const sSpriteAnimTable_IconTypes[NUMERO_DE_TIPOS] = 
 const struct CompressedSpriteSheet sSpriteSheet_IconTypes =
 {
     .data = gIconTypes_Gfx,
-    .size = (NUMERO_DE_TIPOS) * 128,
+    .size = (NUMERO_TIPOS) * 128,
     .tag = TAG_ICON_TYPES
 };
 const struct SpriteTemplate sSpriteTemplate_IconTypes =
@@ -1483,7 +1483,7 @@ const struct SpriteTemplate sSpriteTemplate_IconTypes =
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCallbackDummy
 };
-static const u8 sMoveTypeToOamPaletteNum[NUMERO_DE_TIPOS] =
+static const u8 sMoveTypeToOamPaletteNum[NUMERO_TIPOS] =
 {
     [TIPO_NINGUNO] = 14,
     [TIPO_NORMAL] = 14,

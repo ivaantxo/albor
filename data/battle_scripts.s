@@ -468,18 +468,6 @@ BattleScript_EffectShellTrap::
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectCourtChange::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	swapsidestatuses
-	attackanimation
-	waitanimation
-	printstring STRINGID_COURTCHANGE
-	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_MoveEnd
-
 BattleScript_BeakBlastSetUp::
 	setbeakblast BS_ATTACKER
 	flushtextbox
@@ -5764,11 +5752,6 @@ BattleScript_StealthRockFree::
 	waitmessage B_WAIT_TIME_LONG
 	return
 
-BattleScript_SteelsurgeFree::
-	printstring STRINGID_PKMNBLEWAWAYSHARPSTEEL
-	waitmessage B_WAIT_TIME_LONG
-	return
-
 BattleScript_SpikesDefog::
 	printstring STRINGID_SPIKESDISAPPEAREDFROMTEAM
 	waitmessage B_WAIT_TIME_LONG
@@ -5786,11 +5769,6 @@ BattleScript_StickyWebDefog::
 
 BattleScript_StealthRockDefog::
 	printstring STRINGID_STEALTHROCKDISAPPEAREDFROMTEAM
-	waitmessage B_WAIT_TIME_LONG
-	return
-
-BattleScript_SteelsurgeDefog::
-	printstring STRINGID_SHARPSTEELDISAPPEAREDFROMTEAM
 	waitmessage B_WAIT_TIME_LONG
 	return
 
@@ -7253,7 +7231,7 @@ BattleScript_HabilidadProtegeEquipoDePrioridad::
 	ppreduce
 	pause B_WAIT_TIME_SHORT
 	call BattleScript_AbilityPopUpScripting
-	printstring TEXTO_COMBATE_HABILIDAD_PROTEGE_EQUIPO_DE_PRIORIDAD
+	printstring TEXTO_COMBATE_HABILIDAD_PROTEGE_EQUIPO_PRIORIDAD
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 

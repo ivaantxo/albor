@@ -134,7 +134,6 @@ struct DisableStruct
     u8 toxicSpikesDone:1;
     u8 stickyWebDone:1;
     u8 stealthRockDone:1;
-    u8 steelSurgeDone:1;
     u8 weatherAbilityDone:1;
     u8 usedProteanLibero:1;
 };
@@ -259,7 +258,6 @@ struct SideTimer
     u8 tailwindBattlerId;
     u8 luckyChantTimer;
     u8 luckyChantBattlerId;
-    u8 steelsurgeAmount;
     // Timers below this point are not swapped by Court Change
     u8 followmeTimer;
     u8 followmeTarget:3;
@@ -603,7 +601,6 @@ struct BattleStruct
     u8 trainerSlideBeforeFirstTurnMsgDone:1;
     u8 trainerSlideLowHpMsgDone:1;
     u8 pledgeMove:1;
-    u8 isSkyBattle:1;
     u32 aiDelayTimer; // Counts number of frames AI takes to choose an action.
     u32 aiDelayFrames; // Number of frames it took to choose an action.
     u8 timesGotHit[NUMERO_LADOS][PARTY_SIZE];

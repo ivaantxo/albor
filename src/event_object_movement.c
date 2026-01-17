@@ -1921,7 +1921,7 @@ void GetFollowerAction(struct ScriptContext *ctx) // Essentially a big switch fo
         emotion_weight[FOLLOWER_EMOTION_SAD] = 30;
         condEmotes[condCount++] = (struct SpecialEmote) {.emotion = FOLLOWER_EMOTION_SAD, .index = 6};
     }
-    // Gym type advantage/disadvantage
+    // Gym type advantage/disadvantage, revisar
     if (GetCurrentMapMusic() == MUS_GYM || GetCurrentMapMusic() == MUS_RG_GYM)
     {
         /*switch (gMapHeader.regionMapSectionId)
@@ -1965,9 +1965,9 @@ void GetFollowerAction(struct ScriptContext *ctx) // Essentially a big switch fo
             multi = TIPO_TIERRA;
             break;
         default:
-            multi = NUMERO_DE_TIPOS;
+            multi = NUMERO_TIPOS;
         }
-        if (multi < NUMERO_DE_TIPOS)
+        if (multi < NUMERO_TIPOS)
         {
             multi = GetTypeEffectiveness(mon, multi);
             if (multi <= UQ_4_12(0.5))

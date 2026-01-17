@@ -59,22 +59,7 @@ static s16 RoundUp(s16);
 
 bool8 AreMovesContestCombo(u16 lastMove, u16 nextMove)
 {
-    u32 i;
-    u8 lastMoveComboStarterId = gMovesInfo[lastMove].contestComboStarterId;
-
-    if (lastMoveComboStarterId == 0)
-    {
-        return FALSE;
-    }
-    else
-    {
-        for (i = 0; i < MAX_COMBO_MOVES; i++)
-        {
-            if (lastMoveComboStarterId == gMovesInfo[nextMove].contestComboMoves[i])
-                return TRUE;
-        }
-        return FALSE;
-    }
+    return FALSE;
 }
 
 // A highly appealing move.
@@ -314,9 +299,7 @@ static void ContestEffect_JamsOthersButMissOneTurn(void)
 // Startles POK�MON that made a same-type appeal.
 static void ContestEffect_StartleMonsSameTypeAppeal(void)
 {
-    u16 move = eContestantStatus[eContestAppealResults.contestant].currMove;
-    JamByMoveCategory(gMovesInfo[move].contestCategory);
-    SetContestantEffectStringID(eContestAppealResults.contestant, CONTEST_STRING_ATTEMPT_STARTLE);
+
 }
 
 // Badly startles POK�MON that made COOL appeals.
@@ -389,84 +372,7 @@ static void ContestEffect_MakeFollowingMonNervous(void)
 // Makes all POK�MON after the user nervous.
 static void ContestEffect_MakeFollowingMonsNervous(void)
 {
-    u8 numUnnerved = 0;
-    bool32 contestantUnnerved = FALSE;
-    u8 contestantIds[5];
-    u32 i;
-    int numAfter;
-    s16 oddsMod[CONTESTANT_COUNT];
-    s16 odds[CONTESTANT_COUNT];
 
-    memset(contestantIds, CONTESTANT_NONE, ARRAY_COUNT(contestantIds));
-    for (i = 0, numAfter = 0; i < CONTESTANT_COUNT; i++)
-    {
-        if (eContestAppealResults.turnOrder[eContestAppealResults.contestant] < eContestAppealResults.turnOrder[i] &&
-            !eContestantStatus[i].nervous && !Contest_IsMonsTurnDisabled(i))
-            contestantIds[numAfter++] = i;
-    }
-
-    if (numAfter == 1)
-    {
-        odds[0] = 60;
-    }
-    else if (numAfter == 2)
-    {
-        odds[0] = 30;
-        odds[1] = 30;
-    }
-    else if (numAfter == 3)
-    {
-        odds[0] = 20;
-        odds[1] = 20;
-        odds[2] = 20;
-    }
-    else
-    {
-        for (i = 0; i < CONTESTANT_COUNT; i++)
-            odds[i] = 0;
-    }
-    for (i = 0; i < CONTESTANT_COUNT; i++)
-    {
-        if (eContestantStatus[i].hasJudgesAttention && IsContestantAllowedToCombo(i))
-            oddsMod[i] = gMovesInfo[eContestantStatus[i].prevMove].contestComboStarterId == 0 ? 0 : 10;
-        else
-            oddsMod[i] = 0;
-        oddsMod[i] -= (eContestantStatus[i].condition / 10) * 10;
-    }
-    if (odds[0] != 0)
-    {
-        for (i = 0; contestantIds[i] != CONTESTANT_NONE; i++)
-        {
-            if (Random() % 100 < odds[i] + oddsMod[contestantIds[i]])
-            {
-                if (CanUnnerveContestant(contestantIds[i]))
-                {
-                    MakeContestantNervous(contestantIds[i]);
-                    SetContestantEffectStringID(contestantIds[i], CONTEST_STRING_NERVOUS);
-                    numUnnerved++;
-                }
-                else
-                {
-                    contestantUnnerved = TRUE;
-                }
-            }
-            else
-            {
-                contestantUnnerved = TRUE;
-            }
-
-            if (contestantUnnerved)
-            {
-                contestantUnnerved = FALSE;
-                SetContestantEffectStringID(contestantIds[i], CONTEST_STRING_UNAFFECTED);
-                numUnnerved++;
-            }
-            eContestAppealResults.unnervedPokes[contestantIds[i]] = 1;
-        }
-    }
-    SetContestantEffectStringID(eContestAppealResults.contestant, CONTEST_STRING_UNNERVE_WAITING);
-    if (numUnnerved == 0)
-        SetContestantEffectStringID2(eContestAppealResults.contestant, CONTEST_STRING_MESSED_UP2);
 }
 
 // Worsens the condition of those that made appeals.
@@ -521,23 +427,13 @@ static void ContestEffect_BadlyStartlesMonsInGoodCondition(void)
 // The appeal works great if performed first.
 static void ContestEffect_BetterIfFirst(void)
 {
-    if (gContestantTurnOrder[eContestAppealResults.contestant] == 0)
-    {
-        u16 move = eContestantStatus[eContestAppealResults.contestant].currMove;
-        eContestantStatus[eContestAppealResults.contestant].appeal += 2 * gContestEffects[gMovesInfo[move].contestEffect].appeal;
-        SetContestantEffectStringID(eContestAppealResults.contestant, CONTEST_STRING_HUSTLE_STANDOUT);
-    }
+
 }
 
 // The appeal works great if performed last.
 static void ContestEffect_BetterIfLast(void)
 {
-    if (gContestantTurnOrder[eContestAppealResults.contestant] == 3)
-    {
-        u16 move = eContestantStatus[eContestAppealResults.contestant].currMove;
-        eContestantStatus[eContestAppealResults.contestant].appeal += 2 * gContestEffects[gMovesInfo[move].contestEffect].appeal;
-        SetContestantEffectStringID(eContestAppealResults.contestant, CONTEST_STRING_WORK_HARD_UNNOTICED);
-    }
+
 }
 
 // Makes the appeal as good as those before it.
@@ -642,58 +538,13 @@ static void ContestEffect_QualityDependsOnTiming(void)
 
 static void ContestEffect_BetterIfSameType(void)
 {
-    s8 turnOrder = eContestAppealResults.turnOrder[eContestAppealResults.contestant];
-    s8 i = turnOrder - 1, j;
-    u16 move;
 
-    if (turnOrder == 0)
-        return;
-
-    while(1)
-    {
-        for (j = 0; j < CONTESTANT_COUNT; j++)
-        {
-            if (eContestAppealResults.turnOrder[j] == i)
-                break;
-        }
-        if (eContestantStatus[j].noMoreTurns || eContestantStatus[j].nervous || eContestantStatus[j].numTurnsSkipped)
-        {
-            if (--i < 0)
-                return;
-        }
-        else
-        {
-            break;
-        }
-    }
-
-    move = eContestantStatus[eContestAppealResults.contestant].currMove;
-    if (gMovesInfo[move].contestCategory == gMovesInfo[eContestantStatus[j].currMove].contestCategory)
-    {
-        eContestantStatus[eContestAppealResults.contestant].appeal += gContestEffects[gMovesInfo[move].contestEffect].appeal * 2;
-        SetContestantEffectStringID(eContestAppealResults.contestant, CONTEST_STRING_SAME_TYPE_GOOD);
-    }
 }
 
 // Works well if different in type than the one before.
 static void ContestEffect_BetterIfDiffType(void)
 {
-    if (eContestAppealResults.turnOrder[eContestAppealResults.contestant] != 0)
-    {
-        u16 move = eContestantStatus[eContestAppealResults.contestant].currMove;
-        u32 i;
 
-        for (i = 0; i < CONTESTANT_COUNT; i++)
-        {
-            if (eContestAppealResults.turnOrder[eContestAppealResults.contestant] - 1 == eContestAppealResults.turnOrder[i] &&
-                gMovesInfo[move].contestCategory != gMovesInfo[eContestantStatus[i].currMove].contestCategory)
-            {
-                eContestantStatus[eContestAppealResults.contestant].appeal += gContestEffects[gMovesInfo[move].contestEffect].appeal * 2;
-                SetContestantEffectStringID(eContestAppealResults.contestant, CONTEST_STRING_DIFF_TYPE_GOOD);
-                break;
-            }
-        }
-    }
 }
 
 // Affected by how well the appeal in front goes.
@@ -886,10 +737,7 @@ static void ContestEffect_ScrambleNextTurnOrder(void)
 // An appeal that excites the audience in any CONTEST.
 static void ContestEffect_ExciteAudienceInAnyContest(void)
 {
-    if (gMovesInfo[eContestantStatus[eContestAppealResults.contestant].currMove].contestCategory != gSpecialVar_ContestCategory)
-    {
-        eContestantStatus[eContestAppealResults.contestant].overrideCategoryExcitementMod = TRUE;
-    }
+
 }
 
 // Badly startles all POK�MON that made good appeals.
@@ -966,26 +814,7 @@ static void ContestEffect_DontExciteAudience(void)
 
 static void JamByMoveCategory(u8 category)
 {
-    u32 i;
-    int numJammed = 0;
 
-    for (i = 0; i < CONTESTANT_COUNT; i++)
-    {
-        if (eContestAppealResults.turnOrder[eContestAppealResults.contestant] > eContestAppealResults.turnOrder[i])
-        {
-            if (category == gMovesInfo[eContestantStatus[i].currMove].contestCategory)
-                eContestAppealResults.jam = 40;
-            else
-                eContestAppealResults.jam = 10;
-            eContestAppealResults.jamQueue[0] = i;
-            eContestAppealResults.jamQueue[1] = CONTESTANT_NONE;
-            if (WasAtLeastOneOpponentJammed())
-                numJammed++;
-        }
-    }
-
-    if (numJammed == 0)
-        SetContestantEffectStringID2(eContestAppealResults.contestant, CONTEST_STRING_MESSED_UP2);
 }
 
 static bool8 CanUnnerveContestant(u8 i)

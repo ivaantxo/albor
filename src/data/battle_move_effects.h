@@ -1620,11 +1620,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectHit,
     },
 
-    [EFFECT_COURT_CHANGE] =
-    {
-        .battleScript = BattleScript_EffectCourtChange,
-    },
-
     [EFFECT_MAX_HP_50_RECOIL] =
     {
         .battleScript = BattleScript_EffectHit,

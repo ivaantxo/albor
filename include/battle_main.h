@@ -79,7 +79,7 @@ s32 GetWhichBattlerFaster(u32 battler1, u32 battler2, bool32 ignoreChosenMoves);
 void RunBattleScriptCommands_PopCallbacksStack(void);
 void RunBattleScriptCommands(void);
 void SpecialStatusesClear(void);
-u32 GetDynamicMoveType(struct Pokemon *mon, u32 move, u32 battler, u8 *ateBoost);
+u32 ObtenTipoDinamicoMovimiento(struct Pokemon *pokemon, u32 movimiento, u32 combatiente);
 void SetTypeBeforeUsingMove(u32 move, u32 battlerAtk);
 bool32 IsWildMonSmart(void);
 u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer *trainer, bool32 firstTrainer, u32 battleTypeFlags);
@@ -89,8 +89,8 @@ void CustomTrainerPartyAssignMoves(struct Pokemon *mon, const struct TrainerMon 
 
 extern const struct OamData gOamData_BattleSpriteOpponentSide;
 extern const struct OamData gOamData_BattleSpritePlayerSide;
-extern const struct TypeInfo gTypesInfo[NUMERO_DE_TIPOS];
-extern const uq4_12_t gTypeEffectivenessTable[NUMERO_DE_TIPOS][NUMERO_DE_TIPOS];
+extern const struct Tipos gTipos[NUMERO_TIPOS];
+extern const uq4_12_t gTablaEfectividadTipos[NUMERO_TIPOS][NUMERO_TIPOS];
 
 extern const u8 *const gStatusConditionStringsTable[7];
 

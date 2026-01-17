@@ -2988,123 +2988,61 @@ void RunBattleScriptCommands(void)
     if (!HayAlgunCombatienteOcupado())
         gBattleScriptingCommandsTable[gBattlescriptCurrInstr[0]]();
 }
-// Returns TYPE_NONE if type doesn't change.
-// NULL can be passed to ateBoost to avoid applying ate-ability boosts when opening the summary screen in-battle.
-u32 GetDynamicMoveType(struct Pokemon *mon, u32 move, u32 battler, u8 *ateBoost)
-{
-    u32 moveType = gMovesInfo[move].type;
-    u32 moveEffect = gMovesInfo[move].effect;
-    u32 heldItem, holdEffect, ability;
 
-    if (move == MOVE_STRUGGLE)
-        return TIPO_NORMAL;
+u32 ObtenTipoDinamicoMovimiento(struct Pokemon *pokemon, u32 movimiento, u32 combatiente)
+{
+    u32 tipoMovimiento = gMovesInfo[movimiento].type;
+    u32 efectoMovimiento = gMovesInfo[movimiento].effect;
+    u32 objetoEquipado, efectoObjeto, habilidad;
 
     if (gMain.inBattle)
     {
-        heldItem = gBattleMons[battler].item;
-        holdEffect = GetBattlerHoldEffect(battler, TRUE);
-        ability = GetBattlerAbility(battler);
+        objetoEquipado = gBattleMons[combatiente].item;
+        efectoObjeto = GetBattlerHoldEffect(combatiente, TRUE);
+        habilidad = GetBattlerAbility(combatiente);
     }
     else
     {
-        heldItem = GetMonData(mon, MON_DATA_HELD_ITEM, 0);
-        holdEffect = ItemId_GetHoldEffect(heldItem);
-        ability = GetMonAbility(mon);
+        objetoEquipado = GetMonData(pokemon, MON_DATA_HELD_ITEM, 0);
+        efectoObjeto = ItemId_GetHoldEffect(objetoEquipado);
+        habilidad = GetMonAbility(pokemon);
     }
 
-    switch (moveEffect)
+    if (efectoMovimiento == EFFECT_WEATHER_BALL)
     {
-    case EFFECT_WEATHER_BALL:
         if (gMain.inBattle && WEATHER_HAS_EFFECT)
         {
-            if (gBattleWeather & B_WEATHER_RAIN && holdEffect != HOLD_EFFECT_UTILITY_UMBRELLA)
+            if (gBattleWeather & B_WEATHER_RAIN)
                 return TIPO_AGUA;
             else if (gBattleWeather & B_WEATHER_SANDSTORM)
                 return TIPO_ROCA;
-            else if (gBattleWeather & B_WEATHER_SUN && holdEffect != HOLD_EFFECT_UTILITY_UMBRELLA)
+            else if (gBattleWeather & B_WEATHER_SUN)
                 return TIPO_FUEGO;
             else if (gBattleWeather & (B_WEATHER_SNOW | B_WEATHER_HAIL))
                 return TIPO_HIELO;
             else
-                return moveType;
+                return tipoMovimiento;
         }
         else
         {
             switch (gWeatherPtr->currWeather)
             {
             case WEATHER_DROUGHT:
-                if (holdEffect != HOLD_EFFECT_UTILITY_UMBRELLA)
-                    return TIPO_FUEGO;
+                return TIPO_FUEGO;
                 break;
             case WEATHER_RAIN:
             case WEATHER_RAIN_THUNDERSTORM:
-                if (holdEffect != HOLD_EFFECT_UTILITY_UMBRELLA)
-                    return TIPO_AGUA;
+                return TIPO_AGUA;
                 break;
             case WEATHER_SNOW:
                 return TIPO_HIELO;
             case WEATHER_SANDSTORM:
                 return TIPO_ROCA;
             }
-            return moveType;
+            return tipoMovimiento;
         }
-        break;
-    case EFFECT_HIDDEN_POWER:
-        {
-            u32 typeBits = 0;
-            if (gMain.inBattle)
-            {
-                typeBits = ((gBattleMons[battler].hpIV & 1) << 0)
-                        | ((gBattleMons[battler].attackIV & 1) << 1)
-                        | ((gBattleMons[battler].defenseIV & 1) << 2)
-                        | ((gBattleMons[battler].speedIV & 1) << 3)
-                        | ((gBattleMons[battler].spAttackIV & 1) << 4)
-                        | ((gBattleMons[battler].spDefenseIV & 1) << 5);
-            }
-            else
-            {
-                typeBits = ((GetMonData(mon, MON_DATA_HP_IV) & 1) << 0)
-                        | ((GetMonData(mon, MON_DATA_ATK_IV) & 1) << 1)
-                        | ((GetMonData(mon, MON_DATA_DEF_IV) & 1) << 2)
-                        | ((GetMonData(mon, MON_DATA_SPEED_IV) & 1) << 3)
-                        | ((GetMonData(mon, MON_DATA_SPATK_IV) & 1) << 4)
-                        | ((GetMonData(mon, MON_DATA_SPDEF_IV) & 1) << 5);
-            }
-
-            // Subtract 6 instead of 1 below because 5 types are excluded (TYPE_NONE, TIPO_NORMAL, TIPO_MISTERIO & TIPO_HADA)
-            // The final + 2 skips past TYPE_NONE and Normal.
-            moveType = ((NUMERO_DE_TIPOS - 6) * typeBits) / 63 + 2;
-            if (moveType >= TIPO_MISTERIO)
-                moveType++;
-            return ((moveType | F_DYNAMIC_TYPE_IGNORE_PHYSICALITY) & 0x3F);
-        }
-        break;
-    case EFFECT_CHANGE_TYPE_ON_ITEM:
-        if (holdEffect == gMovesInfo[move].argument)
-            return ItemId_GetSecondaryId(heldItem);
-        break;
-
-    if (moveType == TIPO_NORMAL
-     && ((!gMain.inBattle)))
-    {
-        if (gMain.inBattle && ateBoost != NULL)
-            *ateBoost = TRUE;
     }
-    else if (moveType != TIPO_NORMAL
-          && moveEffect != EFFECT_HIDDEN_POWER
-          && moveEffect != EFFECT_WEATHER_BALL
-          && ability == ABILITY_NORMALIDAD)
-    {
-        if (gMain.inBattle && ateBoost != NULL)
-            *ateBoost = TRUE;
-        return TIPO_NORMAL;
-    }
-    else if (gMovesInfo[move].soundMove && ability == ABILITY_LIQUID_VOICE)
-    {
-        return TIPO_AGUA;
-    }
-
-    return TIPO_NINGUNO;
+    return tipoMovimiento;
 }
 
 void SetTypeBeforeUsingMove(u32 move, u32 battler)
@@ -3117,11 +3055,10 @@ void SetTypeBeforeUsingMove(u32 move, u32 battler)
     gBattleStruct->ateBoost[battler] = FALSE;
     gSpecialStatuses[battler].gemBoost = FALSE;
 
-    moveType = GetDynamicMoveType(&GetBattlerParty(battler)[gBattlerPartyIndexes[battler]],
+    moveType = ObtenTipoDinamicoMovimiento(&GetBattlerParty(battler)[gBattlerPartyIndexes[battler]],
                                   move,
-                                  battler,
-                                  &gBattleStruct->ateBoost[battler]);
-    if (moveType != TIPO_NINGUNO)
+                                  battler);
+    if (moveType != GetMoveType(move))
         gBattleStruct->dynamicMoveType = moveType | F_DYNAMIC_TYPE_SET;
 
     moveType = GetMoveType(move);

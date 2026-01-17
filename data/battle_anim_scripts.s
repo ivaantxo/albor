@@ -13280,9 +13280,6 @@ FishousRendBubbles:
 	createsprite gSmallDriftingBubblesSpriteTemplate, ANIM_ATTACKER, 4, 0xA, 0x0
 	return
 
-gBattleAnimMove_CourtChange::
-	goto gBattleAnimMove_TrickRoom
-
 gBattleAnimMove_BodyPress::
 	loadspritegfx ANIM_TAG_ROUND_SHADOW @fly and bounce animation
 	loadspritegfx ANIM_TAG_GRAY_SMOKE @smoke

@@ -2950,10 +2950,10 @@ static void SetTypeIconPosAndPal(u8 typeId, u8 x, u8 y, u8 spriteArrayId)
 
     sprite = &gSprites[sPokedexView->typeIconSpriteIds[spriteArrayId]];
     StartSpriteAnim(sprite, typeId);
-    if (typeId < NUMERO_DE_TIPOS)
+    if (typeId < NUMERO_TIPOS)
         sprite->oam.paletteNum = gTypesInfo[typeId].palette;
     else
-        sprite->oam.paletteNum = sContestCategoryToOamPaletteNum[typeId - NUMERO_DE_TIPOS];
+        sprite->oam.paletteNum = sContestCategoryToOamPaletteNum[typeId - NUMERO_TIPOS];
     sprite->x = x + 16;
     sprite->y = y + 8;
     SetSpriteInvisibility(spriteArrayId, FALSE);
@@ -3609,11 +3609,6 @@ static void PrintStatsScreen_Moves_Top(u8 taskId)
     {
         SetTypeIconPosAndPal(gMovesInfo[move].type, moves_x + 146, moves_y + 17, 0);
         SetSpriteInvisibility(1, TRUE);
-    }
-    else
-    {
-        SetTypeIconPosAndPal(NUMERO_DE_TIPOS + gMovesInfo[move].contestCategory, moves_x + 146, moves_y + 17, 1);
-        SetSpriteInvisibility(0, TRUE);
     }
 
     //Calculate and retrieve correct move from the arrays
