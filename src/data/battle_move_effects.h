@@ -921,12 +921,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_FLING] =
-    {
-        .battleScript = BattleScript_EffectFling,
-        .encourageEncore = TRUE,
-    },
-
     [EFFECT_POWER_BASED_ON_TARGET_HP] =
     {
         .battleScript = BattleScript_EffectHit,
@@ -1139,11 +1133,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     {
         .battleScript = BattleScript_EffectHealPulse,
         .encourageEncore = TRUE,
-    },
-
-    [EFFECT_ION_DELUGE] =
-    {
-        .battleScript = BattleScript_EffectIonDeluge,
     },
 
     [EFFECT_SUPER_EFFECTIVE_ON_ARG] =
@@ -1619,11 +1608,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_HYDRO_STEAM] =
     {
         .battleScript = BattleScript_EffectHit,
-    },
-
-    [EFFECT_REVIVAL_BLESSING] =
-    {
-        .battleScript = BattleScript_EffectRevivalBlessing,
     },
 
     [EFFECT_SNOWSCAPE] =

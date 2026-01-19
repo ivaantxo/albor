@@ -2083,49 +2083,8 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
               || PartnerMoveIsSameNoTarget(ALIADO(battlerAtk), move, aiData->partnerMove))
                 ADJUST_SCORE(-10);
             break;
-        case EFFECT_ION_DELUGE:
-            if (gFieldStatuses & STATUS_FIELD_ION_DELUGE
-              || PartnerMoveIsSameNoTarget(ALIADO(battlerAtk), move, aiData->partnerMove))
-                ADJUST_SCORE(-10);
-            break;
-        case EFFECT_FLING:
-            if (!CanFling(battlerAtk))
-            {
-                ADJUST_SCORE(-10);
-            }
-            else
-            {
-                /* TODO Fling
-                u8 effect = gFlingTable[gBattleMons[battlerAtk].item].effect;
-                switch (effect)
-                {
-                case MOVE_EFFECT_BURN:
-                    if (!AI_CanBurn(battlerAtk, battlerDef, ALIADO(battlerAtk), move, aiData->partnerMove))
-                        ADJUST_SCORE(-10);
-                    break;
-                case MOVE_EFFECT_PARALYSIS:
-                    if (!AI_CanParalyze(battlerAtk, battlerDef, aiData->abilities[battlerDef], move, aiData->partnerMove))
-                        ADJUST_SCORE(-10);
-                    break;
-                case MOVE_EFFECT_POISON:
-                    if (!AI_CanPoison(battlerAtk, battlerDef, move, aiData->partnerMove))
-                        ADJUST_SCORE(-10);
-                    break;
-                case MOVE_EFFECT_TOXIC:
-                    if (!AI_CanPoison(battlerAtk, battlerDef, move, aiData->partnerMove))
-                        ADJUST_SCORE(-10);
-                    break;
-                case MOVE_EFFECT_FREEZE:
-                    if (!CanBeFrozen(battlerDef, TRUE)
-                     || MoveBlockedBySubstitute(move, battlerAtk, battlerDef))
-                        ADJUST_SCORE(-10);
-                    break;
-                }*/
-            }
-            break;
         case EFFECT_EMBARGO:
-            if (aiData->abilities[battlerDef] == ABILITY_KLUTZ
-              || gFieldStatuses & STATUS_FIELD_MAGIC_ROOM
+            if (gFieldStatuses & STATUS_FIELD_MAGIC_ROOM
               || gDisableStructs[battlerDef].embargoTimer != 0
               || PartnerMoveIsSameAsAttacker(ALIADO(battlerAtk), battlerDef, move, aiData->partnerMove))
                 ADJUST_SCORE(-10);
@@ -2297,15 +2256,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             ||  GetBattlerWeight(battlerDef) >= 2000) //200.0 kg
                 ADJUST_SCORE(-10);
             break;
-        case EFFECT_REVIVAL_BLESSING:
-            if (GetFirstFaintedPartyIndex(battlerAtk) == PARTY_SIZE)
-                ADJUST_SCORE(-10);
-            else if (CanAIFaintTarget(battlerAtk, battlerDef, 0))
-                ADJUST_SCORE(-10);
-            else if (CanTargetFaintAI(battlerDef, battlerAtk)
-             && AI_IsSlower(battlerAtk, battlerDef, move))
-                ADJUST_SCORE(-10);
-            break;
         case EFFECT_JUNGLE_HEALING:
            if (AI_BattlerAtMaxHp(battlerAtk)
             && AI_BattlerAtMaxHp(ALIADO(battlerAtk))
@@ -2331,7 +2281,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     } // move effect checks
 
     // Choice items
-    if (HOLD_EFFECT_CHOICE(aiData->holdEffects[battlerAtk]) && gBattleMons[battlerAtk].ability != ABILITY_KLUTZ)
+    if (HOLD_EFFECT_CHOICE(aiData->holdEffects[battlerAtk]))
     {
         // Don't use user-target moves ie. Swords Dance, with exceptions
         if ((moveTarget & MOVE_TARGET_USER)
@@ -3652,7 +3602,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
                 ADJUST_SCORE(DECENT_EFFECT);
             break;
         case HOLD_EFFECT_IRON_BALL:
-            if (!HasMoveEffect(battlerDef, EFFECT_FLING) || !IsBattlerGrounded(battlerDef))
+            if (!IsBattlerGrounded(battlerDef))
                 ADJUST_SCORE(DECENT_EFFECT);
             break;
         case HOLD_EFFECT_LAGGING_TAIL:
@@ -3702,9 +3652,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
                         ADJUST_SCORE(DECENT_EFFECT);
                     break;
                 case HOLD_EFFECT_IRON_BALL:
-                    if (HasMoveEffect(battlerAtk, EFFECT_FLING))
-                        ADJUST_SCORE(DECENT_EFFECT);
-                    break;
                 case HOLD_EFFECT_LAGGING_TAIL:
                 case HOLD_EFFECT_STICKY_BARB:
                     break;
@@ -3721,9 +3668,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
             switch (aiData->holdEffects[battlerDef])
             {
             case HOLD_EFFECT_IRON_BALL:
-                if (HasMoveEffect(battlerDef, EFFECT_FLING))
-                    ADJUST_SCORE(DECENT_EFFECT);
-                break;
             case HOLD_EFFECT_LAGGING_TAIL:
             case HOLD_EFFECT_STICKY_BARB:
                 break;
@@ -3962,36 +3906,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
                 ADJUST_SCORE(DECENT_EFFECT);
         }
         break;
-    case EFFECT_ION_DELUGE:
-        if ((aiData->abilities[battlerAtk] == ABILITY_VOLT_ABSORB
-          || aiData->abilities[battlerAtk] == ABILITY_MOTOR_DRIVE
-          || (B_REDIRECT_ABILITY_IMMUNITY >= GEN_5 && aiData->abilities[battlerAtk] == ABILITY_LIGHTNING_ROD))
-          && gMovesInfo[predictedMove].type == TIPO_NORMAL)
-            ADJUST_SCORE(DECENT_EFFECT);
-        break;
-    case EFFECT_FLING:
-        /* TODO
-        switch (gFlingTable[aiData->items[battlerAtk]].effect)
-        {
-        case MOVE_EFFECT_BURN:
-            IncreaseBurnScore(battlerAtk, battlerDef, move, &score);
-            break;
-        case MOVE_EFFECT_FLINCH:
-            score += ShouldTryToFlinch(battlerAtk, battlerDef, aiData->abilities[battlerAtk], aiData->abilities[battlerDef], move);
-            break;
-        case MOVE_EFFECT_PARALYSIS:
-            IncreaseParalyzeScore(battlerAtk, battlerDef, move, &score);
-            break;
-        case MOVE_EFFECT_POISON:
-        case MOVE_EFFECT_TOXIC:
-            IncreasePoisonScore(battlerAtk, battlerDef, move, &score);
-            break;
-        case MOVE_EFFECT_FREEZE:
-            if (AI_CanFreeze(battlerAtk, battlerDef))
-                ADJUST_SCORE(GOOD_EFFECT);
-            break;
-        }*/
-        break;
     case EFFECT_EMBARGO:
         if (aiData->holdEffects[battlerDef] != HOLD_EFFECT_NONE)
             ADJUST_SCORE(DECENT_EFFECT);
@@ -4081,10 +3995,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         break;
     case EFFECT_ENDEAVOR:
         if (AI_IsSlower(battlerAtk, battlerDef, move) && !CanTargetFaintAI(battlerDef, battlerAtk))
-            ADJUST_SCORE(DECENT_EFFECT);
-        break;
-    case EFFECT_REVIVAL_BLESSING:
-        if (GetFirstFaintedPartyIndex(battlerAtk) != PARTY_SIZE)
             ADJUST_SCORE(DECENT_EFFECT);
         break;
     case EFFECT_JUNGLE_HEALING:
@@ -4251,9 +4161,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
                         switch (aiData->holdEffects[battlerDef])
                         {
                         case HOLD_EFFECT_IRON_BALL:
-                            if (HasMoveEffect(battlerDef, EFFECT_FLING))
-                                ADJUST_SCORE(DECENT_EFFECT);
-                            break;
                         case HOLD_EFFECT_LAGGING_TAIL:
                         case HOLD_EFFECT_STICKY_BARB:
                             break;
@@ -4300,9 +4207,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
                                     ADJUST_SCORE(DECENT_EFFECT);
                                 break;
                             case HOLD_EFFECT_IRON_BALL:
-                                if (HasMoveEffect(battlerAtk, EFFECT_FLING))
-                                    ADJUST_SCORE(DECENT_EFFECT);
-                                break;
                             case HOLD_EFFECT_LAGGING_TAIL:
                             case HOLD_EFFECT_STICKY_BARB:
                                 break;

@@ -7697,24 +7697,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Embargo,
     },
 
-    [MOVE_FLING] =
-    {
-        .name = COMPOUND_STRING("Lanzamiento"),
-        .description = COMPOUND_STRING(
-            "The effectiveness varies\n"
-            "with the held item."),
-        .effect = EFFECT_FLING,
-        .power = 1,
-        .type = TIPO_SINIESTRO,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .parentalBondBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Fling,
-    },
-
     [MOVE_PSYCHO_SHIFT] =
     {
         .name = COMPOUND_STRING("Psicocambio"),
@@ -11460,25 +11442,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .magicCoatAffected = TRUE,
         .soundMove = TRUE,
         .battleAnimScript = gBattleAnimMove_RugidoNoble,
-    },
-
-    [MOVE_ION_DELUGE] =
-    {
-        .name = COMPOUND_STRING("Ion Deluge"),
-        .description = COMPOUND_STRING(
-            "Electrifies Normal-type\n"
-            "moves with charged atoms."),
-        .effect = EFFECT_ION_DELUGE,
-        .power = 0,
-        .type = TIPO_ELECTRICO,
-        .accuracy = 0,
-        .pp = 25,
-        .target = MOVE_TARGET_ALL_BATTLERS,
-        .priority = 1,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_IonDeluge,
     },
 
     [MOVE_PARABOLIC_CHARGE] =
@@ -15595,27 +15558,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .battleAnimScript = gBattleAnimMove_GlaiveRush,
-    },
-
-    [MOVE_REVIVAL_BLESSING] =
-    {
-        .name = COMPOUND_STRING("Revival Blessing"),
-        .description = COMPOUND_STRING(
-            "Revives a fainted party {PKMN}\n"
-            "and restores half of its HP."),
-        .effect = EFFECT_REVIVAL_BLESSING,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 0,
-        .pp = 1,
-        .target = MOVE_TARGET_USER,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .healingMove = TRUE,
-        .sketchBanned = (B_SKETCH_BANS >= GEN_9),
-        .battleAnimScript = gBattleAnimMove_RevivalBlessing,
     },
 
     [MOVE_SALT_CURE] =

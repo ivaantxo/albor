@@ -736,13 +736,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .breakable = TRUE,
     },
 
-    [ABILITY_KLUTZ] =
-    {
-        .name = _("Klutz"),
-        .description = COMPOUND_STRING("Can't use hold items."),
-        .aiRating = -1,
-    },
-
     [ABILITY_MOLD_BREAKER] =
     {
         .name = _("Rompemoldes"),

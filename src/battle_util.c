@@ -51,7 +51,6 @@ functions instead of at the top of the file with the other declarations.
 */
 
 static bool32 TryRemoveScreens(u32 battler);
-static u32 GetFlingPowerFromItemId(u32 itemId);
 static void SetRandomMultiHitCounter();
 static u32 GetBattlerItemHoldEffectParam(u32 battler, u32 item);
 static bool32 CanBeInfinitelyConfused(u32 battler);
@@ -1144,7 +1143,6 @@ enum
     ENDTURN_TRICK_ROOM,
     ENDTURN_WONDER_ROOM,
     ENDTURN_MAGIC_ROOM,
-    ENDTURN_ION_DELUGE,
     ENDTURN_FAIRY_LOCK,
     ENDTURN_STATUS_HEAL,
     ENDTURN_FIELD_COUNT,
@@ -1574,10 +1572,6 @@ u8 DoFieldEndTurnEffects(void)
                 BattleScriptExecute(BattleScript_GravityEnds);
                 effect++;
             }
-            gBattleStruct->turnCountersTracker++;
-            break;
-        case ENDTURN_ION_DELUGE:
-            gFieldStatuses &= ~STATUS_FIELD_ION_DELUGE;
             gBattleStruct->turnCountersTracker++;
             break;
         case ENDTURN_FAIRY_LOCK:
@@ -6848,8 +6842,6 @@ u32 GetBattlerHoldEffectInternal(u32 battler, bool32 checkNegating, bool32 check
             return HOLD_EFFECT_NONE;
         if (gFieldStatuses & STATUS_FIELD_MAGIC_ROOM)
             return HOLD_EFFECT_NONE;
-        if (checkAbility && GetBattlerAbility(battler) == ABILITY_KLUTZ)
-            return HOLD_EFFECT_NONE;
     }
 
     gPotentialItemEffectBattler = battler;
@@ -6901,10 +6893,6 @@ bool32 IsBattlerProtected(u32 battlerAtk, u32 battlerDef, u32 move)
             return FALSE;
     }
 
-    // Max Guard is silly about the moves it blocks, including Teatime.
-    if (gProtectStructs[battlerDef].maxGuarded && IsMoveBlockedByMaxGuard(move))
-        return TRUE;
-
     if (gSideStatuses[GetBattlerSide(battlerDef)] & SIDE_STATUS_CRAFTY_SHIELD
              && IS_MOVE_STATUS(move))
         return TRUE;
@@ -6924,8 +6912,6 @@ bool32 IsBattlerProtected(u32 battlerAtk, u32 battlerDef, u32 move)
     else if (gProtectStructs[battlerDef].spikyShielded)
         return TRUE;
     else if (gProtectStructs[battlerDef].kingsShielded && !IS_MOVE_STATUS(move))
-        return TRUE;
-    else if (gProtectStructs[battlerDef].maxGuarded)
         return TRUE;
     else if (gSideStatuses[GetBattlerSide(battlerDef)] & SIDE_STATUS_QUICK_GUARD
              && GetChosenMovePriority(gBattlerAttacker) > 0)
@@ -7097,9 +7083,6 @@ static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData
 
     switch (gMovesInfo[move].effect)
     {
-    case EFFECT_FLING:
-        basePower = GetFlingPowerFromItemId(gBattleMons[battlerAtk].item);
-        break;
     case EFFECT_POWER_BASED_ON_USER_HP:
         basePower = gBattleMons[battlerAtk].hp * basePower / gBattleMons[battlerAtk].maxHP;
         break;
@@ -8955,33 +8938,6 @@ u8 GetCategoryBasedOnStats(u32 battler)
     spAttack = (spAttack * gMultiplicadoresEstadisticas[gBattleMons[battler].statStages[ESTADISTICA_ATAQUE_ESPECIAL]]) >> 8;
 
     return (spAttack >= attack) ? CATEGORIA_ESPECIAL : CATEGORIA_FISICA;
-}
-
-static u32 GetFlingPowerFromItemId(u32 itemId)
-{
-    if (itemId >= ITEM_TM01 && itemId <= ITEM_HM08)
-    {
-        u32 power = gMovesInfo[ItemIdToBattleMoveId(itemId)].power;
-        if (power > 1)
-            return power;
-        return 10; // Status moves and moves with variable power always return 10 power.
-    }
-    else
-        return ItemId_GetFlingPower(itemId);
-}
-
-bool32 CanFling(u32 battler)
-{
-    u16 item = gBattleMons[battler].item;
-
-    if (item == ITEM_NONE
-      || (B_KLUTZ_FLING_INTERACTION >= GEN_5 && GetBattlerAbility(battler) == ABILITY_KLUTZ)
-      || gFieldStatuses & STATUS_FIELD_MAGIC_ROOM
-      || gDisableStructs[battler].embargoTimer != 0
-      || GetFlingPowerFromItemId(item) == 0)
-        return FALSE;
-
-    return TRUE;
 }
 
 // Sort an array of battlers by speed

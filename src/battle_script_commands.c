@@ -1065,10 +1065,7 @@ static void Cmd_attackcanceler(void)
     if ((NoTargetPresent(gBattlerAttacker, gCurrentMove)
         && (!gBattleMoveEffects[gMovesInfo[gCurrentMove].effect].twoTurnEffect || (gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS))))
     {
-        if (gMovesInfo[gCurrentMove].effect == EFFECT_FLING) // Edge case for removing a mon's item when there is no target available after using Fling.
-            gBattlescriptCurrInstr = BattleScript_FlingFailConsumeItem;
-        else
-            gBattlescriptCurrInstr = BattleScript_FailedFromAtkString;
+        gBattlescriptCurrInstr = BattleScript_FailedFromAtkString;
 
         if (!gBattleMoveEffects[gMovesInfo[gCurrentMove].effect].twoTurnEffect || (gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS))
             CancelMultiTurnMoves(gBattlerAttacker);
@@ -6859,7 +6856,6 @@ static bool32 TrySymbiosis(u32 battler, u32 itemId)
         && GetBattlerHoldEffect(battler, TRUE) != HOLD_EFFECT_EJECT_BUTTON
         && GetBattlerHoldEffect(battler, TRUE) != HOLD_EFFECT_EJECT_PACK
         && (B_SYMBIOSIS_GEMS < GEN_7 || !(gSpecialStatuses[battler].gemBoost))
-        && gCurrentMove != MOVE_FLING //Fling and damage-reducing berries are handled separately.
         && !gSpecialStatuses[battler].berryReduced
         && SYMBIOSIS_CHECK(battler, ALIADO(battler)))
     {
@@ -8920,8 +8916,7 @@ static void Cmd_various(void)
     {
         VARIOUS_ARGS(const u8 *failInstr);
         if (gBattleMons[battler].item == ITEM_NONE
-           || gFieldStatuses & STATUS_FIELD_MAGIC_ROOM
-           || GetBattlerAbility(battler) == ABILITY_KLUTZ)
+           || gFieldStatuses & STATUS_FIELD_MAGIC_ROOM)
         {
             gBattlescriptCurrInstr = cmd->failInstr;
         }
@@ -13108,17 +13103,6 @@ void BS_CalcMetalBurstDmg(void)
     }
 }
 
-void BS_JumpIfCantFling(void)
-{
-    NATIVE_ARGS(u8 battler, const u8 *jumpInstr);
-
-    u32 battler = GetBattlerForBattleScript(cmd->battler);
-    if (!CanFling(battler))
-        gBattlescriptCurrInstr = cmd->jumpInstr;
-    else
-        gBattlescriptCurrInstr = cmd->nextInstr;
-}
-
 void BS_JumpIfMoreThanHalfHP(void)
 {
     NATIVE_ARGS(u8 battler, const u8 *jumpInstr);
@@ -13251,7 +13235,7 @@ void BS_JumpIfCantLoseItem(void)
 void BS_TrySymbiosis(void)
 {
     NATIVE_ARGS();
-    //called by Bestow, Fling, and Bug Bite, which don't work with Cmd_removeitem.
+    //called by Bestow, and Bug Bite, which don't work with Cmd_removeitem.
     u32 partner = ALIADO(gBattlerAttacker);
     if (SYMBIOSIS_CHECK(gBattlerAttacker, partner))
     {

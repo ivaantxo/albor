@@ -227,9 +227,7 @@ enum ResultadosCombate
 #define STATUS_FIELD_MUDSPORT                       (1 << 3)
 #define STATUS_FIELD_WATERSPORT                     (1 << 4)
 #define STATUS_FIELD_GRAVITY                        (1 << 5)
-
-#define STATUS_FIELD_ION_DELUGE                     (1 << 10)
-#define STATUS_FIELD_FAIRY_LOCK                     (1 << 11)
+#define STATUS_FIELD_FAIRY_LOCK                     (1 << 6)
 
 // Flags describing move's result
 #define MOVE_RESULT_MISSED                (1 << 0)

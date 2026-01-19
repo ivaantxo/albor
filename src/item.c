@@ -572,12 +572,6 @@ u8 ItemId_GetSecondaryId(u16 itemId)
     return gItemsInfo[SanitizeItemId(itemId)].secondaryId;
 }
 
-u32 ItemId_GetFlingPower(u32 itemId)
-{
-    return gItemsInfo[SanitizeItemId(itemId)].flingPower;
-}
-
-
 u32 GetItemStatus1Mask(u16 itemId)
 {
     const u8 *effect = ItemId_GetEffect(itemId);

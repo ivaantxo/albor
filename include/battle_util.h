@@ -78,7 +78,6 @@ enum {
 #define IS_WHOLE_SIDE_ALIVE(battler)    ((IsBattlerAlive(battler) && IsBattlerAlive(ALIADO(battler))))
 #define IS_ALIVE_AND_PRESENT(battler)   (IsBattlerAlive(battler) && IsBattlerSpritePresent(battler))
 
-// for Natural Gift and Fling
 struct TypePower
 {
     u8 type;
@@ -209,7 +208,6 @@ void ClearIllusionMon(u32 battler);
 bool32 SetIllusionMon(struct Pokemon *mon, u32 battler);
 bool32 ShouldGetStatBadgeBoost(u16 flagId, u32 battler);
 u8 GetBattleMoveCategory(u32 moveId);
-bool32 CanFling(u32 battler);
 bool32 IsTelekinesisBannedSpecies(u16 species);
 bool32 IsHealBlockPreventingMove(u32 battler, u32 move);
 bool32 IsBelchPreventingMove(u32 battler, u32 move);

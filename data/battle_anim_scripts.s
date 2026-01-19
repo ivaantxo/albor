@@ -459,22 +459,6 @@ EmbargoOrbs1:
 	delay 12
 	return
 
-gBattleAnimMove_Fling::
-	loadspritegfx ANIM_TAG_IMPACT
-	loadspritegfx ANIM_TAG_BLACK_BALL
-	monbg ANIM_DEF_PARTNER
-	splitbgprio ANIM_TARGET
-	setalpha 12, 8
-	createsprite gBlackBallSpriteTemplate, ANIM_TARGET, 2, 20, 0, 0, 0, 35, -25
-	playsewithpan SE_M_SWAGGER, -64
-	waitforvisualfinish
-	createsprite gBasicHitSplatSpriteTemplate, ANIM_ATTACKER, 2, 0, 0, 1, 2
-	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 3, 0, 6, 1
-	playsewithpan SE_M_VITAL_THROW, +63
-	clearmonbg ANIM_DEF_PARTNER
-	blendoff
-	end
-
 gBattleAnimMove_PsychoShift::
 	loadspritegfx ANIM_TAG_ELECTRIC_ORBS
 	loadspritegfx ANIM_TAG_HOLLOW_ORB
@@ -7345,20 +7329,6 @@ gBattleAnimMove_RugidoNoble::
 	blendoff
 	waitforvisualfinish
 	delay 20
-	end
-
-gBattleAnimMove_IonDeluge::
-	loadspritegfx ANIM_TAG_IONS
-	loopsewithpan SE_M_THUNDERBOLT2, SOUND_PAN_ATTACKER, 10, 12
-	createvisualtask AnimTask_BlendBattleAnimPal, 10, (F_PAL_BG | F_PAL_BATTLERS_2), 2, 0, 4, RGB_YELLOW
-	waitforvisualfinish
-	createvisualtask AnimTask_CreateIons, 2, 0, 3, 120
-	createvisualtask AnimTask_CreateIons, 2, 0, 3, 120
-	delay 120
-	delay 30
-	waitforvisualfinish
-	createvisualtask AnimTask_BlendBattleAnimPal, 10, (F_PAL_BG | F_PAL_BATTLERS_2), 2, 4, 0, RGB_YELLOW
-	waitforvisualfinish
 	end
 
 gBattleAnimMove_ParabolicCharge::
@@ -16801,9 +16771,6 @@ PopulationBombContinue:
 	blendoff
 	waitforvisualfinish
 	end
-
-gBattleAnimMove_RevivalBlessing::
-	goto gBattleAnimMove_LunarBlessing
 
 gBattleAnimMove_OrderUp::
 gBattleAnimMove_GlaiveRush::

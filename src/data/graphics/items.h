@@ -651,9 +651,6 @@ const u32 gItemIconPalette_LinkingCord[] = INCBIN_U32("graphics/items/icon_palet
 const u32 gItemIcon_PeatBlock[] = INCBIN_U32("graphics/items/icons/peat_block.4bpp.lz");
 const u32 gItemIconPalette_PeatBlock[] = INCBIN_U32("graphics/items/icon_palettes/peat_block.gbapal.lz");
 
-const u32 gItemIcon_SyrupyApple[] = INCBIN_U32("graphics/items/icons/syrupy_apple.4bpp.lz");
-const u32 gItemIconPalette_SyrupyApple[] = INCBIN_U32("graphics/items/icon_palettes/syrupy_apple.gbapal.lz");
-
 const u32 gItemIcon_UnremarkableTeacup[] = INCBIN_U32("graphics/items/icons/unremarkable_teacup.4bpp.lz");
 const u32 gItemIconPalette_UnremarkableTeacup[] = INCBIN_U32("graphics/items/icon_palettes/unremarkable_teacup.gbapal.lz");
 

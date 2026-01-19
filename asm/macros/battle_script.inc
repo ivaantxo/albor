@@ -1280,12 +1280,6 @@
 	.4byte \failInstr
 	.endm
 
-	.macro jumpifcantfling battler:req, jumpInstr:req
-	callnative BS_JumpIfCantFling
-	.byte \battler
-	.4byte \jumpInstr
-	.endm
-
 	.macro itemstatchangeeffects battler:req
 	callnative BS_RunStatChangeItems
 	.byte \battler

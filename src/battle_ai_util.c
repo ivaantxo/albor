@@ -365,7 +365,7 @@ bool32 IsDamageMoveUnusable(u32 battlerAtk, u32 battlerDef, u32 move, u32 moveTy
             return TRUE;
         break;
     case EFFECT_POLTERGEIST:
-        if (AI_DATA->items[battlerDef] == ITEM_NONE || gFieldStatuses & STATUS_FIELD_MAGIC_ROOM || battlerDefAbility == ABILITY_KLUTZ)
+        if (AI_DATA->items[battlerDef] == ITEM_NONE || gFieldStatuses & STATUS_FIELD_MAGIC_ROOM)
             return TRUE;
         break;
     case EFFECT_FIRST_TURN_ONLY:
@@ -1203,8 +1203,6 @@ u32 AI_DecideHoldEffectForTurn(u32 battlerId)
     if (gStatuses3[battlerId] & STATUS3_EMBARGO)
         return HOLD_EFFECT_NONE;
     if (gFieldStatuses & STATUS_FIELD_MAGIC_ROOM)
-        return HOLD_EFFECT_NONE;
-    if (AI_DATA->abilities[battlerId] == ABILITY_KLUTZ && !(gStatuses3[battlerId] & STATUS3_GASTRO_ACID))
         return HOLD_EFFECT_NONE;
 
     return holdEffect;
@@ -2489,7 +2487,7 @@ static bool32 PartyBattlerShouldAvoidHazards(u32 currBattler, u32 switchBattler)
 
     if (ability == ABILITY_MAGIC_GUARD)
         return FALSE;
-    if (gFieldStatuses & STATUS_FIELD_MAGIC_ROOM || ability == ABILITY_KLUTZ)
+    if (gFieldStatuses & STATUS_FIELD_MAGIC_ROOM)
         holdEffect = HOLD_EFFECT_NONE;
     else
         holdEffect = gItemsInfo[GetMonData(mon, MON_DATA_HELD_ITEM)].holdEffect;

@@ -3258,6 +3258,7 @@ void BoxMonRestorePP(struct BoxPokemon *boxMon)
 
 void SetMonPreventsSwitchingString(void)
 {
+    const u8 gText_PkmnsXPreventsSwitching[] = _("{B_BUFF1} is preventing switching out with its {B_LAST_ABILITY} Ability!");
     gLastUsedAbility = gBattleStruct->abilityPreventingSwitchout;
 
     gBattleTextBuff1[0] = B_BUFF_PLACEHOLDER_BEGIN;

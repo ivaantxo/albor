@@ -746,7 +746,7 @@ static bool32 ShouldSwitchIfBadChoiceLock(u32 battler)
 {
     u32 holdEffect = GetBattlerHoldEffect(battler, FALSE);
 
-    if (HOLD_EFFECT_CHOICE(holdEffect) && gBattleMons[battler].ability != ABILITY_KLUTZ)
+    if (HOLD_EFFECT_CHOICE(holdEffect))
     {
         if (gMovesInfo[gLastUsedMove].category == CATEGORIA_ESTADO)
             return SetSwitchinAndSwitch(battler, PARTY_SIZE);
@@ -1139,10 +1139,10 @@ bool32 IsMonGrounded(u16 heldItemEffect, u32 ability, u8 type1, u8 type2)
 {
     // List that makes mon not grounded
     if (type1 == TIPO_VOLADOR || type2 == TIPO_VOLADOR || ability == ABILITY_LEVITATE
-         || (heldItemEffect == HOLD_EFFECT_AIR_BALLOON && ability != ABILITY_KLUTZ))
+         || (heldItemEffect == HOLD_EFFECT_AIR_BALLOON)
     {
         // List that overrides being off the ground
-        if ((heldItemEffect == HOLD_EFFECT_IRON_BALL && ability != ABILITY_KLUTZ) || (gFieldStatuses & STATUS_FIELD_GRAVITY) || (gFieldStatuses & STATUS_FIELD_MAGIC_ROOM))
+        if ((heldItemEffect == HOLD_EFFECT_IRON_BALL) || (gFieldStatuses & STATUS_FIELD_GRAVITY) || (gFieldStatuses & STATUS_FIELD_MAGIC_ROOM))
             return TRUE;
         else
             return FALSE;
@@ -1162,7 +1162,7 @@ static u32 GetSwitchinHazardsDamage(u32 battler, struct BattlePokemon *battleMon
 
     // Check ways mon might avoid all hazards
     if (ability != ABILITY_MAGIC_GUARD || (heldItemEffect == HOLD_EFFECT_HEAVY_DUTY_BOOTS &&
-        !((gFieldStatuses & STATUS_FIELD_MAGIC_ROOM) || ability == ABILITY_KLUTZ)))
+        !((gFieldStatuses & STATUS_FIELD_MAGIC_ROOM))))
     {
         // Stealth Rock
         if ((hazardFlags & SIDE_STATUS_STEALTH_ROCK) && heldItemEffect != HOLD_EFFECT_HEAVY_DUTY_BOOTS)
@@ -1279,20 +1279,18 @@ static u32 GetSwitchinRecurringHealing(void)
     u32 holdEffect = ItemId_GetHoldEffect(AI_DATA->switchinCandidate.battleMon.item);
 
     // Items
-    if (ability != ABILITY_KLUTZ)
+
+    if (holdEffect == HOLD_EFFECT_BLACK_SLUDGE && (AI_DATA->switchinCandidate.battleMon.types[0] == TIPO_VENENO || AI_DATA->switchinCandidate.battleMon.types[1] == TIPO_VENENO))
     {
-        if (holdEffect == HOLD_EFFECT_BLACK_SLUDGE && (AI_DATA->switchinCandidate.battleMon.types[0] == TIPO_VENENO || AI_DATA->switchinCandidate.battleMon.types[1] == TIPO_VENENO))
-        {
-            recurringHealing = maxHP / 16;
-            if (recurringHealing == 0)
-                recurringHealing = 1;
-        }
-        else if (holdEffect == HOLD_EFFECT_LEFTOVERS)
-        {
-            recurringHealing = maxHP / 16;
-            if (recurringHealing == 0)
-                recurringHealing = 1;
-        }
+        recurringHealing = maxHP / 16;
+        if (recurringHealing == 0)
+            recurringHealing = 1;
+    }
+    else if (holdEffect == HOLD_EFFECT_LEFTOVERS)
+    {
+        recurringHealing = maxHP / 16;
+        if (recurringHealing == 0)
+            recurringHealing = 1;
     } // Intentionally omitting Shell Bell for its inconsistency
 
     // Abilities
@@ -1313,7 +1311,7 @@ static u32 GetSwitchinRecurringDamage(void)
     u32 holdEffect = ItemId_GetHoldEffect(AI_DATA->switchinCandidate.battleMon.item);
 
     // Items
-    if (ability != ABILITY_MAGIC_GUARD && ability != ABILITY_KLUTZ)
+    if (ability != ABILITY_MAGIC_GUARD)
     {
         if (holdEffect == HOLD_EFFECT_BLACK_SLUDGE && AI_DATA->switchinCandidate.battleMon.types[0] != TIPO_VENENO && AI_DATA->switchinCandidate.battleMon.types[1] != TIPO_VENENO)
         {
@@ -1396,7 +1394,7 @@ static u32 GetSwitchinStatusDamage(u32 battler)
         && ability != ABILITY_IMMUNITY && ability != ABILITY_POISON_HEAL
         && status == 0
         && !(heldItemEffect == HOLD_EFFECT_HEAVY_DUTY_BOOTS
-            && (((gFieldStatuses & STATUS_FIELD_MAGIC_ROOM) || ability == ABILITY_KLUTZ)))
+            && (((gFieldStatuses & STATUS_FIELD_MAGIC_ROOM))))
         && heldItemEffect != HOLD_EFFECT_CURE_PSN && heldItemEffect != HOLD_EFFECT_CURE_STATUS
         && IsMonGrounded(heldItemEffect, ability, defType1, defType2)))
     {
@@ -1458,7 +1456,7 @@ static u32 GetSwitchinHitsToKO(s32 damageTaken, u32 battler)
             currentHP = currentHP - weatherImpact;
 
         // Check if we're at a single use healing item threshold
-        if (AI_DATA->switchinCandidate.battleMon.ability != ABILITY_KLUTZ && usedSingleUseHealingItem == FALSE
+        if (usedSingleUseHealingItem == FALSE
          && !(opposingAbility == ABILITY_UNNERVE && GetPocketByItemId(item) == POCKET_BERRIES))
         {
             switch (heldItemEffect)

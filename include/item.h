@@ -24,7 +24,6 @@ struct Item
     u8 pocket;
     u8 type;
     u8 battleUsage;
-    u8 flingPower;
     const u32 *iconPic;
     const u32 *iconPalette;
 };
@@ -76,7 +75,6 @@ u8 ItemId_GetType(u16 itemId);
 ItemUseFunc ItemId_GetFieldFunc(u16 itemId);
 u8 ItemId_GetBattleUsage(u16 itemId);
 u8 ItemId_GetSecondaryId(u16 itemId);
-u32 ItemId_GetFlingPower(u32 itemId);
 u32 GetItemStatus1Mask(u16 itemId);
 u32 GetItemStatus2Mask(u16 itemId);
 
