@@ -2343,64 +2343,8 @@ u8 GetItemEffectParamOffset(u32 battler, u16 itemId, u8 effectByte, u8 effectBit
     return offset;
 }
 
-static void BufferStatRoseMessage(s32 statIdx)
-{
-    gBattlerTarget = gBattlerInMenuId;
-    StringCopy(gBattleTextBuff1, gStatNamesTable[sStatsToRaise[statIdx]]);
-    if (B_X_ITEMS_BUFF >= GEN_7)
-    {
-        StringCopy(gBattleTextBuff2, gText_StatSharply);
-        StringAppend(gBattleTextBuff2, gText_StatRose);
-    }
-    else
-    {
-        StringCopy(gBattleTextBuff2, gText_StatRose);
-    }
-    BattleStringExpandPlaceholdersToDisplayedString(gText_DefendersStatRose);
-}
-
 u8 *UseStatIncreaseItem(u16 itemId)
 {
-    const u8 *itemEffect;
-
-    itemEffect = ItemId_GetEffect(itemId);
-
-    gPotentialItemEffectBattler = gBattlerInMenuId;
-
-    if (itemEffect[0] & ITEM0_DIRE_HIT)
-    {
-        gBattlerAttacker = gBattlerInMenuId;
-        BattleStringExpandPlaceholdersToDisplayedString(gText_PkmnGettingPumped);
-    }
-
-    switch (itemEffect[1])
-    {
-        case ITEM1_X_ATTACK:
-            BufferStatRoseMessage(ESTADISTICA_ATAQUE);
-            break;
-        case ITEM1_X_DEFENSE:
-            BufferStatRoseMessage(ESTADISTICA_DEFENSA);
-            break;
-        case ITEM1_X_SPEED:
-            BufferStatRoseMessage(ESTADISTICA_VELOCIDAD);
-            break;
-        case ITEM1_X_SPATK:
-            BufferStatRoseMessage(ESTADISTICA_ATAQUE_ESPECIAL);
-            break;
-        case ITEM1_X_SPDEF:
-            BufferStatRoseMessage(ESTADISTICA_DEFENSA_ESPECIAL);
-            break;
-        case ITEM1_X_ACCURACY:
-            BufferStatRoseMessage(ESTADISTICA_PRECISION);
-            break;
-    }
-
-    if (itemEffect[3] & ITEM3_GUARD_SPEC)
-    {
-        gBattlerAttacker = gBattlerInMenuId;
-        BattleStringExpandPlaceholdersToDisplayedString(gText_PkmnShroudedInMist);
-    }
-
     return gDisplayedStringBattle;
 }
 
@@ -2961,30 +2905,6 @@ u8 CanLearnTeachableMove(u16 species, u16 move)
     if (species == SPECIES_EGG)
     {
         return FALSE;
-    }
-    else if (species == SPECIES_MEW)
-    {
-        switch (move)
-        {
-        case MOVE_BADDY_BAD:
-        case MOVE_BOUNCY_BUBBLE:
-        case MOVE_BUZZY_BUZZ:
-        case MOVE_DRAGON_ASCENT:
-        case MOVE_FLOATY_FALL:
-        case MOVE_FREEZY_FROST:
-        case MOVE_GLITZY_GLOW:
-        case MOVE_RELIC_SONG:
-        case MOVE_SAPPY_SEED:
-        case MOVE_SECRET_SWORD:
-        case MOVE_SIZZLY_SLIDE:
-        case MOVE_SPARKLY_SWIRL:
-        case MOVE_SPLISHY_SPLASH:
-        case MOVE_VOLT_TACKLE:
-        case MOVE_ZIPPY_ZAP:
-            return FALSE;
-        default:
-            return TRUE;
-        }
     }
     else
     {

@@ -1135,20 +1135,9 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectSimpleBeam,
     },
 
-    [EFFECT_ENTRAINMENT] =
-    {
-        .battleScript = BattleScript_EffectEntrainment,
-    },
-
     [EFFECT_HEAL_PULSE] =
     {
         .battleScript = BattleScript_EffectHealPulse,
-        .encourageEncore = TRUE,
-    },
-
-    [EFFECT_QUASH] =
-    {
-        .battleScript = BattleScript_EffectQuash,
         .encourageEncore = TRUE,
     },
 
@@ -1209,11 +1198,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     {
         .battleScript = BattleScript_EffectReflectType,
         .encourageEncore = TRUE,
-    },
-
-    [EFFECT_SOAK] =
-    {
-        .battleScript = BattleScript_EffectSoak,
     },
 
     [EFFECT_GROWTH] =
@@ -1512,21 +1496,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_GRAV_APPLE] =
-    {
-        .battleScript = BattleScript_EffectHit,
-    },
-
-    [EFFECT_GLITZY_GLOW] =
-    {
-        .battleScript = BattleScript_EffectGlitzyGlow,
-    },
-
-    [EFFECT_BADDY_BAD] =
-    {
-        .battleScript = BattleScript_EffectBaddyBad,
-    },
-
     [EFFECT_SAPPY_SEED] =
     {
         .battleScript = BattleScript_EffectSappySeed,
@@ -1601,11 +1570,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     },
 
     [EFFECT_RISING_VOLTAGE] =
-    {
-        .battleScript = BattleScript_EffectHit,
-    },
-
-    [EFFECT_BEAK_BLAST] =
     {
         .battleScript = BattleScript_EffectHit,
     },
@@ -1748,12 +1712,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_LAST_RESPECTS] =
     {
         .battleScript = BattleScript_EffectHit,
-    },
-
-    [EFFECT_TIDY_UP] =
-    {
-        .battleScript = BattleScript_EffectTidyUp,
-        .encourageEncore = TRUE,
     },
 
     [EFFECT_DRAGON_DARTS] =

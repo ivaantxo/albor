@@ -502,18 +502,6 @@ const struct SpriteTemplate gCircleThrowRingTemplate =
     .callback = AnimSpriteOnMonPos
 };
 
-//quash
-const struct SpriteTemplate gQuashArmHitTemplate =
-{
-    .tileTag = ANIM_TAG_ASSURANCE_HAND,
-    .paletteTag = ANIM_TAG_ASSURANCE_HAND,
-    .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gAnims_HandsAndFeet,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimStompFoot
-};
-
 //reflect type
 const struct SpriteTemplate gReflectTypeBlueStringTemplate =
 {

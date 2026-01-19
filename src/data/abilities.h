@@ -275,13 +275,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .cantBeTraced = TRUE,
     },
 
-    [ABILITY_HUGE_POWER] =
-    {
-        .name = _("Huge Power"),
-        .description = COMPOUND_STRING("Raises Attack."),
-        .aiRating = 10,
-    },
-
     [ABILITY_POISON_POINT] =
     {
         .name = _("Punto tóxico"),
@@ -530,13 +523,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Prevents ability reduction."),
         .aiRating = 4,
         .breakable = TRUE,
-    },
-
-    [ABILITY_PURE_POWER] =
-    {
-        .name = _("Pure Power"),
-        .description = COMPOUND_STRING("Raises Attack."),
-        .aiRating = 10,
     },
 
     [ABILITY_SHELL_ARMOR] =
@@ -813,13 +799,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Weakens “supereffective”."),
         .aiRating = 6,
         .breakable = TRUE,
-    },
-
-    [ABILITY_SLOW_START] =
-    {
-        .name = _("Slow Start"),
-        .description = COMPOUND_STRING("Takes a while to get going."),
-        .aiRating = -2,
     },
 
     [ABILITY_SCRAPPY] =
@@ -1804,31 +1783,10 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 4,
     },
 
-    [ABILITY_ICE_FACE] =
-    {
-        .name = _("Ice Face"),
-        .description = COMPOUND_STRING("Hail or Snow renew free hit."),
-        .aiRating = 4,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .cantBeSuppressed = TRUE,
-        .cantBeOverwritten = TRUE,
-        .breakable = TRUE,
-        .failsOnImposter = TRUE,
-    },
-
     [ABILITY_POWER_SPOT] =
     {
         .name = _("Power Spot"),
         .description = COMPOUND_STRING("Powers up ally moves."),
-        .aiRating = 2,
-    },
-
-    [ABILITY_MIMICRY] =
-    {
-        .name = _("Mimicry"),
-        .description = COMPOUND_STRING("Changes type on terrain."),
         .aiRating = 2,
     },
 

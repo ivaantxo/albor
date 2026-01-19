@@ -370,7 +370,7 @@ struct Ability
     u8 cantBeSwapped:1; // cannot be swapped with Skill Swap or Wandering Spirit
     u8 cantBeTraced:1; // cannot be copied by Trace - same as cantBeCopied except for Wonder Guard
     u8 cantBeSuppressed:1; // cannot be negated by Gastro Acid or Neutralizing Gas
-    u8 cantBeOverwritten:1; // cannot be overwritten by Entrainment, Worry Seed or Simple Beam (but can be by Mummy) - same as cantBeSuppressed
+    u8 cantBeOverwritten:1; // cannot be overwritten by Worry Seed or Simple Beam (but can be by Mummy) - same as cantBeSuppressed
     u8 breakable:1; // can be bypassed by Mold Breaker and clones
     u8 failsOnImposter:1; // doesn't work on an Imposter mon; when can we actually use this?
 };

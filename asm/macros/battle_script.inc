@@ -1440,23 +1440,12 @@
 	.4byte \failInstr
 	.endm
 
-	.macro trytidyup clear:req, jumpInstr:req
-	callnative BS_TryTidyUp
-	.byte \clear
-	.4byte \jumpInstr
-	.endm
-
 	.macro trygulpmissile
 	callnative BS_TryGulpMissile
 	.endm
 
 	.macro tryactivategulpmissile
 	callnative BS_TryActivateGulpMissile
-	.endm
-
-	.macro tryquash failInstr:req
-	callnative BS_TryQuash
-	.4byte \failInstr
 	.endm
 
 	.macro copyfoesstatincrease battler:req, failInstr:req
@@ -1650,11 +1639,6 @@
 	.4byte \failInstr
 	.endm
 
-	.macro tryentrainment failInstr:req
-	various BS_ATTACKER, VARIOUS_TRY_ENTRAINMENT
-	.4byte \failInstr
-	.endm
-
 	.macro setlastusedability battler:req
 	various \battler, VARIOUS_SET_LAST_USED_ABILITY
 	.endm
@@ -1685,11 +1669,6 @@
 
 	.macro tryelectrify failInstr:req
 	various BS_ATTACKER, VARIOUS_TRY_ELECTRIFY
-	.4byte \failInstr
-	.endm
-
-	.macro trysoak failInstr:req
-	various BS_ATTACKER, VARIOUS_TRY_SOAK
 	.4byte \failInstr
 	.endm
 
@@ -2019,10 +1998,6 @@
 
 	.macro battleritemtolastuseditem battler:req
 	various \battler, VARIOUS_BATTLER_ITEM_TO_LAST_USED_ITEM
-	.endm
-
-	.macro setbeakblast battler:req
-	various \battler, VARIOUS_SET_BEAK_BLAST
 	.endm
 
 	.macro swapstats stat:req

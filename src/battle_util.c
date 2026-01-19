@@ -424,10 +424,6 @@ void HandleAction_ActionFinished(void)
                 u32 battler1 = gBattlerByTurnOrder[i];
                 u32 battler2 = gBattlerByTurnOrder[j];
 
-                if (gProtectStructs[battler1].quash || gProtectStructs[battler2].quash
-                    || gProtectStructs[battler1].shellTrap || gProtectStructs[battler2].shellTrap)
-                    continue;
-
                 // We recalculate order only for action of the same priority. If any action other than switch/move has been taken, they should
                 // have been executed before. The only recalculation needed is for moves/switch. Mega evolution is handled in src/battle_main.c/TryChangeOrder
                 if((gActionsByTurnOrder[i] == B_ACTION_USE_MOVE && gActionsByTurnOrder[j] == B_ACTION_USE_MOVE))
@@ -1182,9 +1178,7 @@ u8 DoFieldEndTurnEffects(void)
                 s32 j;
                 for (j = i + 1; j < gBattlersCount; j++)
                 {
-                    if (!gProtectStructs[i].quash
-                            && !gProtectStructs[j].quash
-                            && GetWhichBattlerFaster(gBattlerByTurnOrder[i], gBattlerByTurnOrder[j], FALSE) == -1)
+                    if (GetWhichBattlerFaster(gBattlerByTurnOrder[i], gBattlerByTurnOrder[j], FALSE) == -1)
                         SwapTurnOrder(i, j);
                 }
             }
@@ -1641,7 +1635,6 @@ enum
     ENDTURN_ELECTRIFY,
     ENDTURN_POWDER,
     ENDTURN_THROAT_CHOP,
-    ENDTURN_SLOW_START,
     ENDTURN_CUD_CHEW,
     ENDTURN_TORMENT, // supposedly this goes after Taunt, before Encore, but Encore is first right now?
     ENDTURN_SALT_CURE,
@@ -2224,16 +2217,6 @@ u8 DoBattlerEndTurnEffects(void)
             if (gDisableStructs[battler].throatChopTimer && --gDisableStructs[battler].throatChopTimer == 0)
             {
                 BattleScriptExecute(BattleScript_ThroatChopEndTurn);
-                effect++;
-            }
-            gBattleStruct->turnEffectsTracker++;
-            break;
-        case ENDTURN_SLOW_START:
-            if (gDisableStructs[battler].slowStartTimer
-                && --gDisableStructs[battler].slowStartTimer == 0
-                && ability == ABILITY_SLOW_START)
-            {
-                BattleScriptExecute(BattleScript_SlowStartEnds);
                 effect++;
             }
             gBattleStruct->turnEffectsTracker++;
@@ -3464,16 +3447,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             if (!gSpecialStatuses[battler].switchInAbilityDone)
             {
                 gMensajeBatalla = B_MSG_SWITCHIN_MOLDBREAKER;
-                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
-                BattleScriptPushCursorAndCallback(BattleScript_SwitchInAbilityMsg);
-                effect++;
-            }
-            break;
-        case ABILITY_SLOW_START:
-            if (!gSpecialStatuses[battler].switchInAbilityDone)
-            {
-                gDisableStructs[battler].slowStartTimer = 5;
-                gMensajeBatalla = B_MSG_SWITCHIN_SLOWSTART;
                 gSpecialStatuses[battler].switchInAbilityDone = TRUE;
                 BattleScriptPushCursorAndCallback(BattleScript_SwitchInAbilityMsg);
                 effect++;
@@ -7277,10 +7250,6 @@ static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData
         break;
     case EFFECT_HIDDEN_POWER:
         break;
-    case EFFECT_GRAV_APPLE:
-        if (gFieldStatuses & STATUS_FIELD_GRAVITY)
-            basePower = uq4_12_multiply(basePower, UQ_4_12(1.5));
-        break;
     case EFFECT_EXPANDING_FORCE:
         break;
     case EFFECT_RISING_VOLTAGE:
@@ -7711,15 +7680,6 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
     // attacker's abilities
     switch (atkAbility)
     {
-    case ABILITY_HUGE_POWER:
-    case ABILITY_PURE_POWER:
-        if (IS_MOVE_PHYSICAL(move))
-            modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(2.0));
-        break;
-    case ABILITY_SLOW_START:
-        if (gDisableStructs[battlerAtk].slowStartTimer != 0)
-            modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(0.5));
-        break;
     case ABILITY_PODER_SOLAR:
         if (IsBattlerWeatherAffected(battlerAtk, B_WEATHER_SUN))
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.25));

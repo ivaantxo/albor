@@ -3750,24 +3750,6 @@ bool32 AI_ShouldSetUpHazards(u32 battlerAtk, u32 battlerDef, struct AILogicData 
     return TRUE;
 }
 
-void IncreaseTidyUpScore(u32 battlerAtk, u32 battlerDef, u32 move, s32 *score)
-{
-    if (gSideStatuses[GetBattlerSide(battlerAtk)] & SIDE_STATUS_HAZARDS_ANY && CountUsablePartyMons(battlerAtk) != 0)
-        ADJUST_SCORE_PTR(GOOD_EFFECT);
-    if (gSideStatuses[GetBattlerSide(battlerDef)] & SIDE_STATUS_HAZARDS_ANY && CountUsablePartyMons(battlerDef) != 0)
-        ADJUST_SCORE_PTR(-2);
-
-    if (gBattleMons[battlerAtk].status2 & STATUS2_SUBSTITUTE && AI_IsFaster(battlerAtk, battlerDef, move))
-        ADJUST_SCORE_PTR(-10);
-    if (gBattleMons[battlerDef].status2 & STATUS2_SUBSTITUTE)
-        ADJUST_SCORE_PTR(GOOD_EFFECT);
-
-    if (gStatuses3[battlerAtk] & STATUS3_LEECHSEED)
-        ADJUST_SCORE_PTR(DECENT_EFFECT);
-    if (gStatuses3[battlerDef] & STATUS3_LEECHSEED)
-        ADJUST_SCORE_PTR(-2);
-}
-
 void IncreaseSubstituteMoveScore(u32 battlerAtk, u32 battlerDef, u32 move, s32 *score)
 {
     if (gMovesInfo[move].effect == EFFECT_SUBSTITUTE) // Substitute specific

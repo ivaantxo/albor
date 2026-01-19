@@ -701,8 +701,7 @@ static bool32 CanMonSurviveHazardSwitchin(u32 battler)
             {
                 aiMove = GetMonData(&party[i], MON_DATA_MOVE1 + j, NULL);
                 if (MoveHasAdditionalEffectSelf(aiMove, MOVE_EFFECT_RAPID_SPIN)
-                 || (B_DEFOG_EFFECT_CLEARING >= GEN_6 && gMovesInfo[aiMove].effect == EFFECT_DEFOG)
-                 || gMovesInfo[aiMove].effect == EFFECT_TIDY_UP)
+                 || (gMovesInfo[aiMove].effect == EFFECT_DEFOG))
                 {
                     // Have a mon that can clear the hazards, so switching out is okay
                     return TRUE;

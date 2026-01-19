@@ -535,7 +535,6 @@ enum AnimacionesGeneralesBatalla //(sBattleAnims_General)
     B_ANIM_TOTEM_FLARE, // Totem boosts aura flare
     B_ANIM_GULP_MISSILE,
     B_ANIM_AQUA_RING_HEAL,
-    B_ANIM_BEAK_BLAST_SETUP,
     B_ANIM_SHELL_TRAP_SETUP,
     B_ANIM_SNOW_CONTINUES,
     B_ANIM_SALT_CURE_DAMAGE,

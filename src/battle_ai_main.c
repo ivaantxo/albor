@@ -1941,13 +1941,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
               || gAbilitiesInfo[aiData->abilities[battlerDef]].cantBeSuppressed)
                 ADJUST_SCORE(-10);
             break;
-        case EFFECT_ENTRAINMENT:
-            if (aiData->abilities[battlerAtk] == ABILITY_NONE
-              || gAbilitiesInfo[aiData->abilities[battlerAtk]].cantBeCopied
-              || gAbilitiesInfo[aiData->abilities[battlerDef]].cantBeOverwritten
-              || aiData->holdEffects[battlerAtk] == HOLD_EFFECT_ABILITY_SHIELD)
-                ADJUST_SCORE(-10);
-            break;
         case EFFECT_SIMPLE_BEAM:
             if (aiData->abilities[battlerDef] == ABILITY_SIMPLE
               || gAbilitiesInfo[aiData->abilities[battlerDef]].cantBeOverwritten
@@ -2155,13 +2148,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
               || PartnerMoveIsSameAsAttacker(ALIADO(battlerAtk), battlerDef, move, aiData->partnerMove))
                 ADJUST_SCORE(-10);
             break;
-        case EFFECT_SOAK:
-            if (PartnerMoveIsSameAsAttacker(ALIADO(battlerAtk), battlerDef, move, aiData->partnerMove)
-              || (GetBattlerType(battlerDef, 0) == TIPO_AGUA
-              && GetBattlerType(battlerDef, 1) == TIPO_AGUA
-              && GetBattlerType(battlerDef, 2) == TIPO_MISTERIO))
-                ADJUST_SCORE(-10);    // target is already water-only
-            break;
         case EFFECT_THIRD_TYPE:
             switch (move)
             {
@@ -2256,12 +2242,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                         ADJUST_SCORE(-5); //Do something better
                 }
             }
-            break;
-        case EFFECT_QUASH:
-            if (!isDoubleBattle
-            || AI_IsSlower(battlerAtk, battlerDef, move)
-            || PartnerMoveIsSameAsAttacker(ALIADO(battlerAtk), battlerDef, move, aiData->partnerMove))
-                ADJUST_SCORE(-10);
             break;
         case EFFECT_AFTER_YOU:
             if (!IS_TARGETING_PARTNER(battlerAtk, battlerDef)
@@ -2727,14 +2707,6 @@ static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                 {
                     RETURN_SCORE_PLUS(DECENT_EFFECT);
                 }
-                break;
-            case EFFECT_ENTRAINMENT:
-                if (partnerHasBadAbility && IsAbilityOfRating(aiData->abilities[battlerAtk], 0))
-                {
-                    RETURN_SCORE_PLUS(WEAK_EFFECT);
-                }
-                break;
-            case EFFECT_SOAK:
                 break;
             case EFFECT_INSTRUCT:
                 {
@@ -3812,11 +3784,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         if (IsAbilityOfRating(aiData->abilities[battlerDef], 5))
             ADJUST_SCORE(DECENT_EFFECT);
         break;
-    case EFFECT_ENTRAINMENT:
-        if ((IsAbilityOfRating(aiData->abilities[battlerDef], 5) || gAbilitiesInfo[aiData->abilities[battlerAtk]].aiRating <= 0)
-        && (aiData->abilities[battlerDef] != aiData->abilities[battlerAtk] && !(gStatuses3[battlerDef] & STATUS3_GASTRO_ACID)))
-            ADJUST_SCORE(DECENT_EFFECT);
-        break;
     case EFFECT_IMPRISON:
         if (predictedMove != MOVE_NONE && HasMove(battlerAtk, predictedMove))
             ADJUST_SCORE(DECENT_EFFECT);
@@ -3899,8 +3866,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         ADJUST_SCORE(IncreaseStatUpScore(battlerAtk, battlerDef, STAT_CHANGE_SPATK));
         ADJUST_SCORE(IncreaseStatUpScore(battlerAtk, battlerDef, STAT_CHANGE_ATK));
         break;
-    case EFFECT_TIDY_UP:
-        IncreaseTidyUpScore(battlerAtk, battlerDef, move, &score);
     case EFFECT_DRAGON_DANCE:
     case EFFECT_SHIFT_GEAR:
         ADJUST_SCORE(IncreaseStatUpScore(battlerAtk, battlerDef, STAT_CHANGE_SPEED));
@@ -4047,10 +4012,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
           || (aiData->holdEffects[battlerDef] == HOLD_EFFECT_BLACK_SLUDGE && ES_COMBATIENTE_TIPO(battlerDef, TIPO_VENENO)))
             ADJUST_SCORE(DECENT_EFFECT);
         break;
-    case EFFECT_SOAK:
-        if (HasMoveWithType(battlerAtk, TIPO_ELECTRICO) || HasMoveWithType(battlerAtk, TIPO_PLANTA) || (HasMoveEffect(battlerAtk, EFFECT_SUPER_EFFECTIVE_ON_ARG) && gMovesInfo[move].argument == TIPO_AGUA) )
-            ADJUST_SCORE(DECENT_EFFECT); // Get some super effective moves
-        break;
     case EFFECT_THIRD_TYPE:
         break;
     case EFFECT_ELECTRIFY:
@@ -4069,10 +4030,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
     case EFFECT_FAIRY_LOCK:
         if (ShouldTrap(battlerAtk, battlerDef, move))
             ADJUST_SCORE(BEST_EFFECT);
-        break;
-    case EFFECT_QUASH:
-        if (isDoubleBattle && AI_IsSlower(ALIADO(battlerAtk), battlerDef, aiData->partnerMove))
-            ADJUST_SCORE(DECENT_EFFECT); // Attacker partner wouldn't go before target
         break;
     case EFFECT_TAILWIND:
         if (GetBattlerSideSpeedAverage(battlerAtk) < GetBattlerSideSpeedAverage(battlerDef))
@@ -4505,7 +4462,6 @@ static s32 AI_ForceSetupFirstTurn(u32 battlerAtk, u32 battlerDef, u32 move, s32 
     case EFFECT_MAGIC_ROOM:
     case EFFECT_TAILWIND:
     case EFFECT_DRAGON_DANCE:
-    case EFFECT_TIDY_UP:
     case EFFECT_STICKY_WEB:
     case EFFECT_RAIN_DANCE:
     case EFFECT_SUNNY_DAY:

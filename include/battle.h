@@ -84,9 +84,8 @@ struct ResourceFlags
 #define RESOURCE_FLAG_FLASH_FIRE        1
 #define RESOURCE_FLAG_ROOST             2
 #define RESOURCE_FLAG_UNBURDEN          3
-#define RESOURCE_FLAG_NEUTRALIZING_GAS  5
-#define RESOURCE_FLAG_ICE_FACE          6
-#define RESOURCE_FLAG_MAGO              7
+#define RESOURCE_FLAG_NEUTRALIZING_GAS  4
+#define RESOURCE_FLAG_MAGO              5
 
 struct DisableStruct
 {
@@ -116,7 +115,6 @@ struct DisableStruct
     u8 chargeTimer:4;
     u8 rechargeTimer;
     u8 autotomizeCount;
-    u8 slowStartTimer;
     u8 embargoTimer;
     u8 magnetRiseTimer;
     u8 telekinesisTimer;
@@ -176,8 +174,6 @@ struct ProtectStruct
     u16 statFell:1;
     u16 pranksterElevated:1;
     u16 quickDraw:1;
-    u16 beakBlastCharge:1;
-    u16 quash:1;
     u16 shellTrap:1;
     u16 maxGuarded:1;
     u16 silkTrapped:1;

@@ -9953,24 +9953,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_ElectroBall,
     },
 
-    [MOVE_SOAK] =
-    {
-        .name = COMPOUND_STRING("Empapar"),
-        .description = COMPOUND_STRING(
-            "Sprays water at the foe\n"
-            "making it Water-type."),
-        .effect = EFFECT_SOAK,
-        .power = 0,
-        .type = TIPO_AGUA,
-        .accuracy = 100,
-        .pp = 20,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .magicCoatAffected = TRUE,
-        .battleAnimScript = gBattleAnimMove_Soak,
-    },
-
     [MOVE_FLAME_CHARGE] =
     {
         .name = COMPOUND_STRING("Nitrocarga"),
@@ -10091,24 +10073,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESTADO,
         .magicCoatAffected = TRUE,
         .battleAnimScript = gBattleAnimMove_SimpleBeam,
-    },
-
-    [MOVE_ENTRAINMENT] =
-    {
-        .name = COMPOUND_STRING("Danza amiga"),
-        .description = COMPOUND_STRING(
-            "Makes the foe mimic the\n"
-            "user, gaining its ability."),
-        .effect = EFFECT_ENTRAINMENT,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 100,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .magicCoatAffected = TRUE,
-        .battleAnimScript = gBattleAnimMove_Entrainment,
     },
 
     [MOVE_AFTER_YOU] =
@@ -10404,23 +10368,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             .moveEffect = MOVE_EFFECT_INCINERATE,
         }),
         .battleAnimScript = gBattleAnimMove_Incinerate,
-    },
-
-    [MOVE_QUASH] =
-    {
-        .name = COMPOUND_STRING("Último lugar"),
-        .description = COMPOUND_STRING(
-            "Suppresses the foe, making\n"
-            "it move last."),
-        .effect = EFFECT_QUASH,
-        .power = 0,
-        .type = TIPO_SINIESTRO,
-        .accuracy = 100,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .battleAnimScript = gBattleAnimMove_Quash,
     },
 
     [MOVE_ACROBATICS] =
@@ -13114,31 +13061,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Instruct,
     },
 
-    [MOVE_BEAK_BLAST] =
-    {
-        .name = COMPOUND_STRING("Pico cañón"),
-        .description = COMPOUND_STRING(
-            "Heats up beak to attack.\n"
-            "Burns foe on contact."),
-        .effect = EFFECT_BEAK_BLAST,
-        .power = 100,
-        .type = TIPO_VOLADOR,
-        .accuracy = 100,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = -3,
-        .category = CATEGORIA_FISICA,
-        .mirrorMoveBanned = TRUE,
-        .balistico = TRUE,
-        .movimientoPunzante = TRUE,
-        .meFirstBanned = TRUE,
-        .copycatBanned = TRUE,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .assistBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_BeakBlast,
-    },
-
     [MOVE_CLANGING_SCALES] =
     {
         .name = COMPOUND_STRING("Clanging Scales"),
@@ -13733,42 +13655,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_SizzlySlide,
     },
 
-    [MOVE_GLITZY_GLOW] =
-    {
-        .name = COMPOUND_STRING("Glitzy Glow"),
-        .description = COMPOUND_STRING(
-            "Telekinetic force that sets\n"
-            "wall, lowering Sp. Atk damage."),
-        .effect = EFFECT_GLITZY_GLOW,
-        .power = B_UPDATED_MOVE_DATA >= GEN_8 ? 80 : 90,
-        .type = TIPO_PSIQUICO,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_8 ? 95 : 100,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS < GEN_8,
-        .battleAnimScript = gBattleAnimMove_GlitzyGlow,
-    },
-
-    [MOVE_BADDY_BAD] =
-    {
-        .name = COMPOUND_STRING("Baddy Bad"),
-        .description = COMPOUND_STRING(
-            "Acting badly, attacks. Sets\n"
-            "wall, lowering Attack damage."),
-        .effect = EFFECT_BADDY_BAD,
-        .power = B_UPDATED_MOVE_DATA >= GEN_8 ? 80 : 90,
-        .type = TIPO_SINIESTRO,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_8 ? 95 : 100,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS < GEN_8,
-        .battleAnimScript = gBattleAnimMove_BaddyBad,
-    },
-
     [MOVE_SAPPY_SEED] =
     {
         .name = COMPOUND_STRING("Sappy Seed"),
@@ -13965,26 +13851,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESTADO,
         .magicCoatAffected = TRUE,
         .battleAnimScript = gBattleAnimMove_TarShot,
-    },
-
-    [MOVE_MAGIC_POWDER] =
-    {
-        .name = COMPOUND_STRING("Magic Powder"),
-        .description = COMPOUND_STRING(
-            "Magic powder changes the\n"
-            "target into a Psychic-type."),
-        .effect = EFFECT_SOAK,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = 100,
-        .pp = 20,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .argument = TIPO_PSIQUICO,
-        .magicCoatAffected = TRUE,
-        .powderMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_MagicPowder,
     },
 
     [MOVE_DRAGON_DARTS] =
@@ -14306,48 +14172,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .soundMove = TRUE,
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .battleAnimScript = gBattleAnimMove_Overdrive,
-    },
-
-    [MOVE_APPLE_ACID] = //eliminar
-    {
-        .name = COMPOUND_STRING("Apple Acid"),
-        .description = COMPOUND_STRING(
-            "Attacks with tart apple acid\n"
-            "to lower the foe's Sp. Def."),
-        .effect = EFFECT_HIT,
-        .power = 80,
-        .type = TIPO_PLANTA,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SP_DEF_MINUS_1,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_AppleAcid,
-    },
-
-    [MOVE_GRAV_APPLE] = //eliminar
-    {
-        .name = COMPOUND_STRING("Grav Apple"),
-        .description = COMPOUND_STRING(
-            "Drops an apple from above.\n"
-            "Lowers the foe's Defense."),
-        .effect = EFFECT_GRAV_APPLE,
-        .power = 80,
-        .type = TIPO_PLANTA,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_DEF_MINUS_1,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_GravApple,
     },
 
     [MOVE_SPIRIT_BREAK] =
@@ -16075,25 +15899,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_ChillyReception,
-    },
-
-    [MOVE_TIDY_UP] =
-    {
-        .name = COMPOUND_STRING("Tidy Up"),
-        .description = COMPOUND_STRING(
-            "User tidies up hazards and\n"
-            "raises its Attack and Speed."),
-        .effect = EFFECT_TIDY_UP,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_TidyUp,
     },
 
     [MOVE_SNOWSCAPE] =

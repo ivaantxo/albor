@@ -1366,7 +1366,6 @@ const u8 *FaintClearSetData(u32 battler)
     gProtectStructs[battler].spikyShielded = FALSE;
     gProtectStructs[battler].kingsShielded = FALSE;
     gProtectStructs[battler].banefulBunkered = FALSE;
-    gProtectStructs[battler].quash = FALSE;
     gProtectStructs[battler].obstructed = FALSE;
     gProtectStructs[battler].silkTrapped = FALSE;
     gProtectStructs[battler].burningBulwarked = FALSE;
@@ -2258,8 +2257,6 @@ u32 GetBattlerTotalSpeedStatArgs(u32 battler, u32 ability, u32 holdEffect)
 
     if (ability == ABILITY_QUICK_FEET && gBattleMons[battler].status1 & STATUS1_ANY)
         speed = (speed * 150) / 100;
-    else if (ability == ABILITY_SLOW_START && gDisableStructs[battler].slowStartTimer != 0)
-        speed /= 2;
 
     speed = (speed * gMultiplicadoresEstadisticas[gBattleMons[battler].statStages[ESTADISTICA_VELOCIDAD]]) >> 8;
 
@@ -2333,8 +2330,6 @@ s8 GetMovePriority(u32 battler, u16 move)
         priority++;
     else if (ability == ABILITY_VOZ_CANTANTE && gMovesInfo[move].soundMove)
         priority++;
-    if (gProtectStructs[battler].quash)
-        priority = -8;
 
     return priority;
 }
@@ -2555,7 +2550,6 @@ static void TurnValuesCleanUp(bool8 var0)
             gProtectStructs[i].spikyShielded = FALSE;
             gProtectStructs[i].kingsShielded = FALSE;
             gProtectStructs[i].banefulBunkered = FALSE;
-            gProtectStructs[i].quash = FALSE;
             gProtectStructs[i].usedCustapBerry = FALSE;
             gProtectStructs[i].quickDraw = FALSE;
             memset(&gQueuedStatBoosts[i], 0, sizeof(struct QueuedStatBoost));
@@ -2622,9 +2616,6 @@ static bool32 TryDoMoveEffectsBeforeMoves(void)
                 {
                 case EFFECT_FOCUS_PUNCH:
                     BattleScriptExecute(BattleScript_FocusPunchSetUp);
-                    return TRUE;
-                case EFFECT_BEAK_BLAST:
-                    BattleScriptExecute(BattleScript_BeakBlastSetUp);
                     return TRUE;
                 case EFFECT_SHELL_TRAP:
                     BattleScriptExecute(BattleScript_ShellTrapSetUp);

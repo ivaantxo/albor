@@ -49,23 +49,6 @@ BattleScript_LowerAtkSpAtkTrySpAtk::
 BattleScript_LowerAtkSpAtkEnd:
 	return
 
-BattleScript_EffectTidyUp::
-	attackcanceler
-	attackstring
-	pause B_WAIT_TIME_MED
-	ppreduce
-	waitstate
-	trytidyup FALSE, BattleScript_EffectTidyUpDoMoveAnimation
-	goto BattleScript_EffectDragonDanceFromStatUp
-
-BattleScript_EffectTidyUpDoMoveAnimation::
-	attackanimation
-	waitanimation
-	trytidyup TRUE, NULL
-	printstring STRINGID_TIDYINGUPCOMPLETE
-	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_EffectDragonDanceFromStatUp
-
 BattleScript_EffectUpperHand::
 	attackcanceler
 	tryupperhand BattleScript_FailedFromAtkString
@@ -391,20 +374,6 @@ BattleScript_EffectShellTrap::
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
-BattleScript_BeakBlastSetUp::
-	setbeakblast BS_ATTACKER
-	flushtextbox
-	playanimation BS_ATTACKER, B_ANIM_BEAK_BLAST_SETUP, NULL
-	printstring STRINGID_HEATUPBEAK
-	waitmessage B_WAIT_TIME_LONG
-	end3
-
-BattleScript_BeakBlastBurn::
-	setword gMensajeBatalla, 0
-	copybyte gEffectBattler, gBattlerAttacker
-	call BattleScript_MoveEffectBurn
-	return
-
 BattleScript_EffectSkyDrop::
 	attackcanceler
 	jumpifstatus2 BS_ATTACKER, STATUS2_MULTIPLETURNS, BattleScript_SkyDropTurn2
@@ -634,24 +603,6 @@ BattleScript_EffectSappySeed::
 	jumpifhasnohp BS_TARGET, BattleScript_MoveEnd
 	setseeded
 	printfromtable gLeechSeedStringIds
-	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectBaddyBad::
-	jumpifsideaffecting BS_ATTACKER, SIDE_STATUS_REFLECT, BattleScript_EffectHit
-	call BattleScript_EffectHit_Ret
-	tryfaintmon BS_TARGET
-	setreflect
-	printfromtable gReflectLightScreenSafeguardStringIds
-	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectGlitzyGlow::
-	jumpifsideaffecting BS_ATTACKER, SIDE_STATUS_LIGHTSCREEN, BattleScript_EffectHit
-	call BattleScript_EffectHit_Ret
-	tryfaintmon BS_TARGET
-	setlightscreen
-	printfromtable gReflectLightScreenSafeguardStringIds
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
@@ -1570,21 +1521,6 @@ BattleScript_GrowthSpAtk:
 BattleScript_GrowthEnd:
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectSoak::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	jumpifability BS_TARGET, ABILITY_MULTITYPE, BattleScript_ButItFailed
-	jumpifability BS_TARGET, ABILITY_RKS_SYSTEM, BattleScript_ButItFailed
-	jumpifsubstituteblocks BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	trysoak BattleScript_ButItFailed
-	printstring STRINGID_TARGETCHANGEDTYPE
-	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectReflectType::
 	attackcanceler
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
@@ -1828,18 +1764,6 @@ BattleScript_EffectIonDeluge::
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectQuash::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	tryquash BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	printstring STRINGID_QUASHSUCCESS
-	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectHealPulse::
 	attackcanceler
 	attackstring
@@ -1854,19 +1778,6 @@ BattleScript_EffectHealPulse::
 	healthbarupdate BS_TARGET
 	datahpupdate BS_TARGET
 	printstring STRINGID_PKMNREGAINEDHEALTH
-	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectEntrainment::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	tryentrainment BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	setlastusedability BS_TARGET
-	printstring STRINGID_PKMNACQUIREDABILITY
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
@@ -4853,7 +4764,7 @@ BattleScript_HandleFaintedMonMultipleEnd::
 	end2
 
 BattleScript_LocalTrainerBattleWon::
-	printstring STRINGID_PLAYERDEFEATEDTRAINER
+	printstring ("¡Has vencido a {B_TRAINER_CLASS} {B_TRAINER_NAME}!")
 	goto BattleScript_LocalBattleWonLoseTexts
 
 BattleScript_LocalBattleWonLoseTexts::
@@ -4884,7 +4795,7 @@ BattleScript_LocalBattleLostPrintWhiteOut::
 	end2
 
 BattleScript_LocalBattleLostEnd::
-	printstring STRINGID_PLAYERLOSTTOENEMYTRAINER
+	printstring ("{B_PLAYER_NAME} is out of usable POKéMON! Player lost against {B_TRAINER_CLASS} {B_TRAINER_NAME}!{PAUSE_UNTIL_PRESS}")
 	waitmessage B_WAIT_TIME_LONG
 	getmoneyreward
 	printstring STRINGID_PLAYERPAIDPRIZEMONEY
@@ -5749,14 +5660,6 @@ BattleScript_MoveUsedIsThroatChopPrevented::
 
 BattleScript_ThroatChopEndTurn::
 	printstring STRINGID_THROATCHOPENDS
-	waitmessage B_WAIT_TIME_LONG
-	end2
-
-BattleScript_SlowStartEnds::
-	pause 5
-	copybyte gBattlerAbility, gBattlerAttacker
-	call BattleScript_AbilityPopUp
-	printstring STRINGID_SLOWSTARTEND
 	waitmessage B_WAIT_TIME_LONG
 	end2
 
@@ -6866,13 +6769,6 @@ BattleScript_CostarActivates::
 	restoretarget
 	end3
 
-BattleScript_MimicryActivates_End3::
-	pause B_WAIT_TIME_SHORT
-	call BattleScript_AbilityPopUp
-	printstring STRINGID_BATTLERTYPECHANGEDTO
-	waitmessage B_WAIT_TIME_SHORT
-	end3
-
 BattleScript_SnowWarningActivatesHail::
 	pause B_WAIT_TIME_SHORT
 	call BattleScript_AbilityPopUp
@@ -7075,10 +6971,6 @@ BattleScript_SoundproofProtected::
 	waitmessage B_WAIT_TIME_LONG
 	orhalfword gMoveResultFlags, MOVE_RESULT_DOESNT_AFFECT_FOE
 	goto BattleScript_MoveEnd
-
-BattleScript_IceFaceNullsDamage::
-	call BattleScript_TargetFormChangeWithString
-	return
 
 BattleScript_HabilidadProtegeEquipoDePrioridad::
 	attackstring
@@ -7686,7 +7578,7 @@ BattleScript_ItemHurtRet::
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE | HITMARKER_IGNORE_DISGUISE
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
-	printstring STRINGID_HURTBYITEM
+	printstring ("{B_ATK_NAME_WITH_PREFIX} was hurt by the {B_LAST_ITEM}!")
 	waitmessage B_WAIT_TIME_LONG
 	tryfaintmon BS_ATTACKER
 	return
@@ -7818,7 +7710,7 @@ BattleScript_AskIfWantsToForfeitMatch::
 	endselectionscript
 
 BattleScript_PrintPlayerForfeited::
-	printstring STRINGID_FORFEITEDMATCH
+	printstring ("The match was forfeited.")
 	waitmessage B_WAIT_TIME_LONG
 	end2
 
