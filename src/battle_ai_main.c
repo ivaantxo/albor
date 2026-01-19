@@ -665,7 +665,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         {
         case EFFECT_LEVEL_DAMAGE:
         case EFFECT_PSYWAVE:
-        case EFFECT_OHKO:
         case EFFECT_BIDE:
         case EFFECT_SUPER_FANG:
         case EFFECT_ENDEAVOR:
@@ -1234,12 +1233,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             if (gSideStatuses[GetBattlerSide(battlerAtk)] & SIDE_STATUS_AURORA_VEIL
               || PartnerHasSameMoveEffectWithoutTarget(ALIADO(battlerAtk), move, aiData->partnerMove)
               || !(weather & (B_WEATHER_HAIL | B_WEATHER_SNOW)))
-                ADJUST_SCORE(-10);
-            break;
-        case EFFECT_OHKO:
-            if (B_SHEER_COLD_IMMUNITY >= GEN_7 && move == MOVE_SHEER_COLD && ES_COMBATIENTE_TIPO(battlerDef, TIPO_HIELO))
-                RETURN_SCORE_MINUS(20);
-            if (!ShouldTryOHKO(battlerAtk, battlerDef, aiData->abilities[battlerAtk], aiData->abilities[battlerDef], move))
                 ADJUST_SCORE(-10);
             break;
         case EFFECT_MIST:
@@ -2061,19 +2054,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             else
             {
                 ADJUST_SCORE(-10); //Target is predicted to switch most likely
-            }
-            break;
-        case EFFECT_PLEDGE:
-            if (isDoubleBattle && gBattleMons[ALIADO(battlerAtk)].hp > 0)
-            {
-                if (aiData->partnerMove != MOVE_NONE
-                  && gMovesInfo[aiData->partnerMove].effect == EFFECT_PLEDGE
-                  && move != aiData->partnerMove) // Different pledge moves
-                {
-                    if (gBattleMons[ALIADO(battlerAtk)].status1 & (STATUS1_SLEEP | STATUS1_FREEZE))
-                    // && gBattleMons[ALIADO(battlerAtk)].status1 != 1) // Will wake up this turn - how would AI know
-                        ADJUST_SCORE(-10); // Don't use combo move if your partner will cause failure
-                }
             }
             break;
         case EFFECT_TRICK_ROOM:
@@ -3264,10 +3244,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
                 ADJUST_SCORE(GOOD_EFFECT);
         }
         break;
-    case EFFECT_OHKO:
-        if (gStatuses3[battlerAtk] & STATUS3_ALWAYS_HITS)
-            ADJUST_SCORE(BEST_EFFECT);
-        break;
     case EFFECT_MEAN_LOOK:
         if (ShouldTrap(battlerAtk, battlerDef, move))
             ADJUST_SCORE(GOOD_EFFECT);
@@ -3377,9 +3353,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
             ADJUST_SCORE(BEST_EFFECT);
         break;
     case EFFECT_LOCK_ON:
-        if (HasMoveEffect(battlerAtk, EFFECT_OHKO))
-            ADJUST_SCORE(GOOD_EFFECT);
-        else if (HasMoveWithLowAccuracy(battlerAtk, battlerDef, 85, TRUE, aiData->abilities[battlerAtk], aiData->abilities[battlerDef], aiData->holdEffects[battlerAtk], aiData->holdEffects[battlerDef]))
+        if (HasMoveWithLowAccuracy(battlerAtk, battlerDef, 85, TRUE, aiData->abilities[battlerAtk], aiData->abilities[battlerDef], aiData->holdEffects[battlerAtk], aiData->holdEffects[battlerDef]))
             ADJUST_SCORE(GOOD_EFFECT);
         break;
     case EFFECT_DESTINY_BOND:
@@ -4010,10 +3984,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
                 ADJUST_SCORE(DECENT_EFFECT);
         }
         break;
-    case EFFECT_PLEDGE:
-        if (isDoubleBattle && HasMoveEffect(ALIADO(battlerAtk), EFFECT_PLEDGE))
-            ADJUST_SCORE(GOOD_EFFECT); // Partner might use pledge move
-        break;
     case EFFECT_TRICK_ROOM:
         if (!(AI_THINKING_STRUCT->aiFlags[battlerAtk] & AI_FLAG_POWERFUL_STATUS))
         {
@@ -4633,7 +4603,6 @@ static s32 AI_Risky(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     case EFFECT_SWAGGER:
     case EFFECT_FLATTER:
     case EFFECT_ATTRACT:
-    case EFFECT_OHKO:
         ADJUST_SCORE(AVERAGE_RISKY_EFFECT);
         break;
     case EFFECT_HIT:

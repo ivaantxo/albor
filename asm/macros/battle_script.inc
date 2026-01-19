@@ -802,11 +802,6 @@
 	.byte BATTLE_CMD_setlightscreen
 	.endm
 
-	.macro tryKO failInstr:req
-	.byte BATTLE_CMD_tryKO
-	.4byte \failInstr
-	.endm
-
 	.macro damagetohalftargethp
 	.byte BATTLE_CMD_damagetohalftargethp
 	.endm
@@ -1357,17 +1352,6 @@
 
 	.macro tryrelicsong
 	callnative BS_TryRelicSong
-	.endm
-
-	.macro setpledge jumpInstr:req
-	callnative BS_SetPledge
-	.4byte \jumpInstr
-	.endm
-
-	.macro setpledgestatus battler:req sidestatus:req
-	callnative BS_SetPledgeStatus
-	.byte \battler
-	.4byte \sidestatus
 	.endm
 
 	.macro trycopycat failInstr:req

@@ -265,9 +265,6 @@ struct SideTimer
     u8 retaliateTimer;
     u8 damageNonTypesTimer;
     u8 damageNonTypesType;
-    u8 rainbowTimer;
-    u8 seaOfFireTimer;
-    u8 swampTimer;
 };
 
 struct FieldTimer
@@ -600,12 +597,10 @@ struct BattleStruct
     u8 trainerSlideHalfHpMsgDone:1;
     u8 trainerSlideBeforeFirstTurnMsgDone:1;
     u8 trainerSlideLowHpMsgDone:1;
-    u8 pledgeMove:1;
     u32 aiDelayTimer; // Counts number of frames AI takes to choose an action.
     u32 aiDelayFrames; // Number of frames it took to choose an action.
     u8 timesGotHit[NUMERO_LADOS][PARTY_SIZE];
     u8 enduredDamage;
-    u8 transformZeroToHero[NUMERO_LADOS];
     u8 intrepidSwordBoost[NUMERO_LADOS];
     u8 dauntlessShieldBoost[NUMERO_LADOS];
     u8 quickClawRandom[NUMERO_COMBATIENTES];

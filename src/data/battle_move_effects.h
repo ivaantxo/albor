@@ -173,11 +173,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_OHKO] =
-    {
-        .battleScript = BattleScript_EffectOHKO,
-    },
-
     [EFFECT_FUSION_COMBO] =
     {
         .battleScript = BattleScript_EffectHit,
@@ -924,11 +919,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     {
         .battleScript = BattleScript_EffectDragonDance,
         .encourageEncore = TRUE,
-    },
-
-    [EFFECT_PLEDGE] =
-    {
-        .battleScript = BattleScript_EffectPledge,
     },
 
     [EFFECT_FLING] =
@@ -1794,7 +1784,7 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
 
     [EFFECT_AMOLADORAS] =
     {
-        .battleScript = BattleScript_EffectAmoladoras,
+        .battleScript = Script_Amoladoras,
         .encourageEncore = TRUE,
     },
 

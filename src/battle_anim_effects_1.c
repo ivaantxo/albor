@@ -767,17 +767,6 @@ const struct SpriteTemplate gRazorLeafParticleSpriteTemplate =
     .callback = AnimRazorLeafParticle,
 };
 
-const struct SpriteTemplate gGrassPledgeSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_LEAF,
-    .paletteTag = ANIM_TAG_LEAF,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = gRazorLeafParticleAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimFlyUpTarget,
-};
-
 const struct SpriteTemplate gTwisterLeafSpriteTemplate =
 {
     .tileTag = ANIM_TAG_LEAF,

@@ -206,9 +206,6 @@ enum
     LIST_SIDE_TOXIC_SPIKES,
     LIST_SIDE_STEALTH_ROCK,
     LIST_SIDE_DAMAGE_NON_TYPES,
-    LIST_SIDE_RAINBOW,
-    LIST_SIDE_SEA_OF_FIRE,
-    LIST_SIDE_SWAMP,
 };
 
 enum
@@ -348,9 +345,6 @@ static const u8 sText_LuckyChant[] = _("Lucky Chant");
 static const u8 sText_ToxicSpikes[] = _("Toxic Spikes");
 static const u8 sText_StealthRock[] = _("Stealth Rock");
 static const u8 sText_DamageNonTypes[] = _("Damage Non-Types");
-static const u8 sText_Rainbow[] = _("Rainbow");
-static const u8 sText_SeaOfFire[] = _("Sea of Fire");
-static const u8 sText_Swamp[] = _("Swamp");
 static const u8 sText_CheckBadMove[] = _("Check Bad Move");
 static const u8 sText_TryToFaint[] = _("Try to Faint");
 static const u8 sText_CheckViability[] = _("Check Viability");
@@ -577,9 +571,6 @@ static const struct ListMenuItem sSideStatusListItems[] =
     {sText_ToxicSpikes, LIST_SIDE_TOXIC_SPIKES},
     {sText_StealthRock, LIST_SIDE_STEALTH_ROCK},
     {sText_DamageNonTypes, LIST_SIDE_DAMAGE_NON_TYPES},
-    {sText_Rainbow, LIST_SIDE_RAINBOW},
-    {sText_SeaOfFire, LIST_SIDE_SEA_OF_FIRE},
-    {sText_Swamp, LIST_SIDE_SWAMP},
 };
 
 static const struct ListMenuItem sAIListItems[] =
@@ -1927,33 +1918,6 @@ static u8 *GetSideStatusValue(struct BattleDebugMenu *data, bool32 changeStatus,
             sideTimer->damageNonTypesType = gMovesInfo[gCurrentMove].type;
         }
         return &sideTimer->damageNonTypesTimer;
-    case LIST_SIDE_RAINBOW:
-        if (changeStatus)
-        {
-            if (statusTrue)
-                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_RAINBOW;
-            else
-                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_RAINBOW;
-        }
-        return &sideTimer->rainbowTimer;
-    case LIST_SIDE_SEA_OF_FIRE:
-        if (changeStatus)
-        {
-            if (statusTrue)
-                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_SEA_OF_FIRE;
-            else
-                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_SEA_OF_FIRE;
-        }
-        return &sideTimer->seaOfFireTimer;
-    case LIST_SIDE_SWAMP:
-        if (changeStatus)
-        {
-            if (statusTrue)
-                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_SWAMP;
-            else
-                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_SWAMP;
-        }
-        return &sideTimer->swampTimer;
     default:
         return NULL;
     }

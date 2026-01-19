@@ -416,7 +416,6 @@ enum BattleScriptCommands
     BATTLE_CMD_tryconversiontypechange,
     BATTLE_CMD_givepaydaymoney,
     BATTLE_CMD_setlightscreen,
-    BATTLE_CMD_tryKO,
     BATTLE_CMD_damagetohalftargethp,
     BATTLE_CMD_tryinfatuating,
     BATTLE_CMD_updatestatusicon,

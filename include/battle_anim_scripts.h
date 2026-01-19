@@ -516,9 +516,6 @@ extern const u8 gBattleAnimMove_Retaliate[];
 extern const u8 gBattleAnimMove_FinalGambit[];
 extern const u8 gBattleAnimMove_Bestow[];
 extern const u8 gBattleAnimMove_Inferno[];
-extern const u8 gBattleAnimMove_WaterPledge[];
-extern const u8 gBattleAnimMove_FirePledge[];
-extern const u8 gBattleAnimMove_GrassPledge[];
 extern const u8 gBattleAnimMove_VoltSwitch[];
 extern const u8 gBattleAnimMove_StruggleBug[];
 extern const u8 gBattleAnimMove_Bulldoze[];
@@ -836,7 +833,7 @@ extern const u8 gBattleAnimMove_UpperHand[];
 extern const u8 gBattleAnimMove_MalignantChain[];
 extern const u8 gBattleAnimMove_Colmena[];
 extern const u8 gBattleAnimMove_CargaJabato[];
-extern const u8 gBattleAnimMove_Amoladoras[];
+extern const u8 gAnimacion_Amoladoras[];
 extern const u8 gBattleAnimMove_Chupasangre[];
 
 // status animations
@@ -885,8 +882,6 @@ extern const u8 gBattleAnimGeneral_ShellTrapSetUp[];
 extern const u8 gBattleAnimGeneral_Snow[];
 extern const u8 gBattleAnimGeneral_SaltCureDamage[];
 extern const u8 gBattleAnimGeneral_SetWeather[];
-extern const u8 gBattleAnimGeneral_Rainbow[];
-extern const u8 gBattleAnimGeneral_SeaOfFire[];
 extern const u8 gBattleAnimGeneral_TrickRoom[];
 extern const u8 gBattleAnimGeneral_WonderRoom[];
 extern const u8 gBattleAnimGeneral_MagicRoom[];

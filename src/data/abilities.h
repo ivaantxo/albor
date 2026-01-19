@@ -1206,20 +1206,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 6,
     },
 
-    [ABILITY_TURBOBLAZE] =
-    {
-        .name = _("Turboblaze"),
-        .description = COMPOUND_STRING("Moves hit through abilities."),
-        .aiRating = 7,
-    },
-
-    [ABILITY_TERAVOLT] =
-    {
-        .name = _("Teravolt"),
-        .description = COMPOUND_STRING("Moves hit through abilities."),
-        .aiRating = 7,
-    },
-
     [ABILITY_AROMA_VEIL] =
     {
         .name = _("Aroma Veil"),
@@ -2052,35 +2038,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 4,
     },
 
-    [ABILITY_ZERO_TO_HERO] =
-    {
-        .name = _("Zero to Hero"),
-        .description = COMPOUND_STRING("Changes form on switch out."),
-        .aiRating = 10,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .cantBeSuppressed = TRUE,
-        .cantBeOverwritten = TRUE,
-        .failsOnImposter = TRUE,
-    },
-
     [ABILITY_ELECTROMORPHOSIS] =
     {
         .name = _("Electromorphosis"),
         .description = COMPOUND_STRING("Gets Charged when hit."),
         .aiRating = 5,
-    },
-
-    [ABILITY_QUARK_DRIVE] =
-    {
-        .name = _("Quark Drive"),
-        .description = COMPOUND_STRING("Elec. field ups best stat."),
-        .aiRating = 7,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .failsOnImposter = TRUE,
     },
 
     [ABILITY_EXUVIA] =
@@ -2147,20 +2109,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Eats ground to heal HP."),
         .aiRating = 7,
         .breakable = TRUE,
-    },
-
-    [ABILITY_MYCELIUM_MIGHT] =
-    {
-        .name = _("Mycelium Might"),
-        .description = COMPOUND_STRING("Status moves never fail."),
-        .aiRating = 2,
-    },
-
-    [ABILITY_HOSPITALITY] =
-    {
-        .name = _("Hospitality"),
-        .description = COMPOUND_STRING("Restores ally's HP."),
-        .aiRating = 5,
     },
 
     [ABILITY_MINDS_EYE] =

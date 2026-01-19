@@ -221,8 +221,6 @@ static const struct ParametrosDistorsionFondo sFlashEffectParams =
 void DoWhiteOut(void)
 {
     RunScriptImmediately(EventScript_WhiteOut);
-    if (B_WHITEOUT_MONEY == GEN_3)
-        SetMoney(&gSaveBlockPtr->money, GetMoney(&gSaveBlockPtr->money) / 2);
     HealPlayerParty();
     Overworld_ResetStateAfterWhiteOut();
     SetWarpDestinationToLastHealLocation();

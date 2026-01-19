@@ -214,8 +214,6 @@ static const u8* const sBattleAnims_General[NUM_B_ANIMS_GENERAL] =
     [B_ANIM_SNOW_CONTINUES]         = gBattleAnimGeneral_Snow,
     [B_ANIM_SALT_CURE_DAMAGE]       = gBattleAnimGeneral_SaltCureDamage,
     [B_ANIM_MAX_SET_WEATHER]        = gBattleAnimGeneral_SetWeather,
-    [B_ANIM_RAINBOW]                = gBattleAnimGeneral_Rainbow,
-    [B_ANIM_SEA_OF_FIRE]            = gBattleAnimGeneral_SeaOfFire,
     [B_ANIM_TRICK_ROOM]             = gBattleAnimGeneral_TrickRoom,
     [B_ANIM_WONDER_ROOM]            = gBattleAnimGeneral_WonderRoom,
     [B_ANIM_MAGIC_ROOM]             = gBattleAnimGeneral_MagicRoom,
@@ -299,8 +297,6 @@ void LaunchBattleAnimation(u32 animType, u32 animId)
         case B_ANIM_DOOM_DESIRE_HIT:
         case B_ANIM_WISH_HEAL:
         case B_ANIM_GULP_MISSILE:
-        case B_ANIM_RAINBOW:
-        case B_ANIM_SEA_OF_FIRE:
             sAnimHideHpBoxes = TRUE;
             break;
         default:

@@ -196,67 +196,6 @@ BattleScript_MoveSwitchOpenPartyScreen:
 BattleScript_MoveSwitchEnd:
 	end
 
-BattleScript_EffectPledge::
-	attackcanceler
-	setpledge BattleScript_HitFromAccCheck
-	attackstring
-	pause B_WAIT_TIME_MED
-	ppreduce
-	printstring STRINGID_WAITINGFORPARTNERSMOVE
-	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectCombinedPledge_Water::
-	call BattleScript_EffectHit_Pledge
-	setpledgestatus BS_ATTACKER, SIDE_STATUS_RAINBOW
-	pause B_WAIT_TIME_SHORTEST
-	printstring STRINGID_ARAINBOWAPPEAREDONSIDE
-	waitmessage B_WAIT_TIME_LONG
-	playanimation BS_ATTACKER, B_ANIM_RAINBOW
-	waitanimation
-	goto BattleScript_MoveEnd
-
-BattleScript_TheRainbowDisappeared::
-	printstring STRINGID_THERAINBOWDISAPPEARED
-	waitmessage B_WAIT_TIME_LONG
-	end2
-
-BattleScript_EffectCombinedPledge_Fire::
-	call BattleScript_EffectHit_Pledge
-	setpledgestatus BS_TARGET, SIDE_STATUS_SEA_OF_FIRE
-	pause B_WAIT_TIME_SHORTEST
-	printstring STRINGID_SEAOFFIREENVELOPEDSIDE
-	waitmessage B_WAIT_TIME_LONG
-	playanimation BS_TARGET, B_ANIM_SEA_OF_FIRE
-	waitanimation
-	goto BattleScript_MoveEnd
-
-BattleScript_HurtByTheSeaOfFire::
-	printstring STRINGID_HURTBYTHESEAOFFIRE
-	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_DoTurnDmg
-
-BattleScript_TheSeaOfFireDisappeared::
-	printstring STRINGID_THESEAOFFIREDISAPPEARED
-	waitmessage B_WAIT_TIME_LONG
-	end2
-
-BattleScript_EffectCombinedPledge_Grass::
-	goto BattleScript_MoveEnd
-
-BattleScript_TheSwampDisappeared::
-	printstring STRINGID_THESWAMPDISAPPEARED
-	waitmessage B_WAIT_TIME_LONG
-	end2
-
-BattleScript_EffectHit_Pledge::
-	pause B_WAIT_TIME_MED
-	printstring STRINGID_THETWOMOVESBECOMEONE
-	waitmessage B_WAIT_TIME_LONG
-	call BattleScript_EffectHit_RetFromAccCheck
-	tryfaintmon BS_TARGET
-	return
-
 BattleScript_EffectSaltCure::
 	goto BattleScript_MoveEnd
 
@@ -2850,7 +2789,7 @@ BattleScript_MultiHitPrintStrings::
 	resultmessage
 	waitmessage B_WAIT_TIME_LONG
 	copyarray gBattleTextBuff1, sMULTIHIT_STRING, 6
-	printstring STRINGID_HITXTIMES
+	printstring ("¡Golpeó {B_BUFF1} veces!")
 	waitmessage B_WAIT_TIME_LONG
 	return
 
@@ -2973,22 +2912,6 @@ BattleScript_RestIsAlreadyAsleep::
 BattleScript_LeafGuardPreventsRest::
 	pause B_WAIT_TIME_SHORT
 	printstring STRINGID_BUTITFAILED
-	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectOHKO::
-	attackcanceler
-	attackstring
-	ppreduce
-	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
-	typecalc
-	jumpifmovehadnoeffect BattleScript_HitFromAtkAnimation
-	tryKO BattleScript_KOFail
-	trysetdestinybondtohappen
-	goto BattleScript_HitFromAtkAnimation
-BattleScript_KOFail::
-	pause B_WAIT_TIME_LONG
-	printfromtable gKOFailedStringIds
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
@@ -3398,7 +3321,7 @@ BattleScript_EffectMimic::
 	mimicattackcopy BattleScript_ButItFailed
 	attackanimation
 	waitanimation
-	printstring STRINGID_PKMNLEARNEDMOVE2
+	printstring ("{B_ATK_NAME_WITH_PREFIX} learned {B_BUFF1}!")
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
@@ -4857,7 +4780,7 @@ BattleScript_FaintAttacker::
 	playfaintcry BS_ATTACKER
 	pause B_WAIT_TIME_LONG
 	dofaintanimation BS_ATTACKER
-	printstring STRINGID_ATTACKERFAINTED
+	printstring ("¡{B_ATK_NAME_WITH_PREFIX} se debilitó!")
 	cleareffectsonfaint BS_ATTACKER
 	tryactivatesoulheart
 	tryactivatereceiver BS_ATTACKER
@@ -4869,7 +4792,7 @@ BattleScript_FaintTarget::
 	playfaintcry BS_TARGET
 	pause B_WAIT_TIME_LONG
 	dofaintanimation BS_TARGET
-	printstring STRINGID_TARGETFAINTED
+	printstring ("¡{B_DEF_NAME_WITH_PREFIX} cayó debilitado!")
 	cleareffectsonfaint BS_TARGET
 	tryactivatefellstinger BS_ATTACKER
 	tryactivatesoulheart
@@ -4963,30 +4886,34 @@ BattleScript_HandleFaintedMonMultipleEnd::
 BattleScript_LocalTrainerBattleWon::
 	printstring STRINGID_PLAYERDEFEATEDTRAINER
 	goto BattleScript_LocalBattleWonLoseTexts
+
 BattleScript_LocalBattleWonLoseTexts::
 	trainerslidein BS_OPPONENT
 	waitstate
-	printstring STRINGID_TRAINERLOSETEXT
+	printstring ("{B_TRAINER_LOSE_TEXT}")
 	goto BattleScript_LocalBattleWonReward
+
 BattleScript_LocalBattleWonReward::
 	getmoneyreward
-	printstring STRINGID_PLAYERGOTMONEY
+	printstring ("{B_PLAYER_NAME} got ¥{B_BUFF1} for winning!")
 	waitmessage B_WAIT_TIME_LONG
+
 BattleScript_PayDayMoney::
 	givepaydaymoney
 	end2
 
 BattleScript_LocalBattleLost::
 	goto BattleScript_LocalBattleLostPrintWhiteOut
+
 BattleScript_LocalBattleLostPrintWhiteOut::
-.if B_WHITEOUT_MONEY >= GEN_4
 	jumpifbattletype COMBATE_ENTRENADOR, BattleScript_LocalBattleLostEnd
-	printstring STRINGID_PLAYERWHITEOUT
+	printstring ("{B_PLAYER_NAME} is out of usable POKéMON!")
 	waitmessage B_WAIT_TIME_LONG
 	getmoneyreward
-	printstring STRINGID_PLAYERWHITEOUT2
+	printstring ("You panicked and dropped ¥{B_BUFF1}… You were overwhelmed by your defeat!{PAUSE_UNTIL_PRESS}")
 	waitmessage B_WAIT_TIME_LONG
 	end2
+
 BattleScript_LocalBattleLostEnd::
 	printstring STRINGID_PLAYERLOSTTOENEMYTRAINER
 	waitmessage B_WAIT_TIME_LONG
@@ -4994,14 +4921,6 @@ BattleScript_LocalBattleLostEnd::
 	printstring STRINGID_PLAYERPAIDPRIZEMONEY
 	waitmessage B_WAIT_TIME_LONG
 	end2
-.else
-	printstring STRINGID_PLAYERWHITEOUT
-	waitmessage B_WAIT_TIME_LONG
-	printstring STRINGID_PLAYERWHITEOUT2
-	waitmessage B_WAIT_TIME_LONG
-BattleScript_LocalBattleLostEnd::
-	end2
-.endif
 
 BattleScript_LocalBattleLostPrintTrainersWinText::
 	jumpifnotbattletype COMBATE_ENTRENADOR, BattleScript_LocalBattleLostPrintWhiteOut
@@ -5114,7 +5033,7 @@ BattleScript_Pausex20::
 
 BattleScript_LevelUp::
 	fanfare MUS_LEVEL_UP
-	printstring STRINGID_PKMNGREWTOLV
+	printstring ("¡{B_BUFF1} subió al nivel {B_BUFF2}!{WAIT_SE}")
 	setbyte sLVLBOX_STATE, 0
 	drawlvlupbox
 	handlelearnnewmove BattleScript_LearnedNewMove, BattleScript_LearnMoveReturn, TRUE
@@ -6968,15 +6887,6 @@ BattleScript_ProtosynthesisActivates::
 	waitmessage B_WAIT_TIME_MED
 	end3
 
-BattleScript_QuarkDriveActivates::
-	end3
-
-BattleScript_RuinAbilityActivates::
-	call BattleScript_AbilityPopUp
-	printstring STRINGID_ABILITYWEAKENEDSURROUNDINGMONSSTAT
-	waitmessage B_WAIT_TIME_LONG
-	end3
-
 BattleScript_CostarActivates::
 	pause B_WAIT_TIME_SHORT
 	savetarget
@@ -6985,19 +6895,6 @@ BattleScript_CostarActivates::
 	printstring STRINGID_PKMNCOPIEDSTATCHANGES
 	waitmessage B_WAIT_TIME_LONG
 	restoretarget
-	end3
-
-BattleScript_ZeroToHeroActivates::
-	end3
-
-BattleScript_HospitalityActivates::
-	pause B_WAIT_TIME_SHORT
-	call BattleScript_AbilityPopUp
-	printstring STRINGID_HOSPITALITYRESTORATION
-	waitmessage B_WAIT_TIME_LONG
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
-	healthbarupdate BS_TARGET
-	datahpupdate BS_TARGET
 	end3
 
 BattleScript_MimicryActivates_End3::
@@ -7023,18 +6920,6 @@ BattleScript_SnowWarningActivatesSnow::
 	waitstate
 	playanimation BS_BATTLER_0, B_ANIM_SNOW_CONTINUES
 	call BattleScript_ActivateWeatherAbilities
-	end3
-
-BattleScript_ElectricSurgeActivates::
-	end3
-
-BattleScript_MistySurgeActivates::
-	end3
-
-BattleScript_GrassySurgeActivates::
-	end3
-
-BattleScript_PsychicSurgeActivates::
 	end3
 
 BattleScript_BadDreamsActivates::
@@ -7231,7 +7116,7 @@ BattleScript_HabilidadProtegeEquipoDePrioridad::
 	ppreduce
 	pause B_WAIT_TIME_SHORT
 	call BattleScript_AbilityPopUpScripting
-	printstring TEXTO_COMBATE_HABILIDAD_PROTEGE_EQUIPO_PRIORIDAD
+	printstring ("{B_DEF_ABILITY} de {B_DEF_NAME_WITH_PREFIX} protege al equipo de ataques de prioridad.")
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
@@ -8300,28 +8185,27 @@ BattleScript_EffectSnow::
 	setfieldweather ENUM_WEATHER_SNOW
 	goto BattleScript_MoveWeatherChange
 
-BattleScript_EffectAmoladoras::
+Script_Amoladoras::
 	setstatchanger ESTADISTICA_ATAQUE, 1, FALSE
 	attackcanceler
 	attackstring
 	ppreduce
 	jumpifstat BS_ATTACKER, COMPARACION_IGUAL, ESTADISTICA_ATAQUE, ESTADISTICA_MAS_6, BattleScript_CantRaiseMultipleStats
-	jumpifstatus2 BS_ATTACKER, STATUS2_FOCUS_ENERGY_ANY, BattleScript_EffectAmoladorasAtaque
+	jumpifstatus2 BS_ATTACKER, STATUS2_FOCUS_ENERGY_ANY, Script_AmoladorasAtaque
 	setfocusenergy BS_TARGET
-BattleScript_EffectAmoladorasAtaque::
+Script_AmoladorasAtaque::
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_StatUpEnd
-	jumpifword COMPARACION_DESIGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_EffectAmoladorasAnimacion
+	jumpifword COMPARACION_DESIGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, Script_AmoladorasAnimacion
 	pause B_WAIT_TIME_SHORT
-	goto BattleScript_EffectAmoladorasString
-BattleScript_EffectAmoladorasAnimacion::
+	printstring ("¡{B_ATK_NAME_WITH_PREFIX} afiló comillos para subir ataque y críticos!")
+	waitmessage B_WAIT_TIME_LONG
+	goto BattleScript_MoveEnd
+	
+Script_AmoladorasAnimacion::
 	attackanimation
 	waitanimation
 	setgraphicalstatchangevalues
 	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-BattleScript_EffectAmoladorasString::
-	printstring STRINGID_AMOLADORAS
-	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_MoveEnd
 
 ScriptBatalla_LanzaPokeball::
 	printstring TEXTO_COMBATE_LANZA_POKEBALL

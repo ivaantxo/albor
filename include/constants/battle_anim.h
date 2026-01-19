@@ -503,8 +503,6 @@ enum BgMovimientos
     BG_STEEL_BEAM_OPPONENT,
     BG_STEEL_BEAM_PLAYER,
     BG_CHLOROBLAST,
-    BG_RAINBOW,
-    BG_SWAMP,
 };
 
 enum AnimacionesGeneralesBatalla //(sBattleAnims_General)
@@ -544,8 +542,6 @@ enum AnimacionesGeneralesBatalla //(sBattleAnims_General)
     B_ANIM_SALT_CURE_DAMAGE,
     B_ANIM_MAX_SET_WEATHER,
     B_ANIM_SYRUP_BOMB_SPEED_DROP,
-    B_ANIM_RAINBOW,
-    B_ANIM_SEA_OF_FIRE,
     B_ANIM_TRICK_ROOM,
     B_ANIM_WONDER_ROOM,
     B_ANIM_MAGIC_ROOM,

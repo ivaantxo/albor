@@ -2348,12 +2348,9 @@ s32 GetWhichBattlerFasterArgs(u32 battler1, u32 battler2, bool32 ignoreChosenMov
     if (priority1 == priority2)
     {
         // Quick Claw / Quick Draw / Custap Berry - always first
-        // Stall / Mycelium Might - last but before Lagging Tail
         // Lagging Tail - always last
         bool32 battler1HasQuickEffect = gProtectStructs[battler1].quickDraw || gProtectStructs[battler1].usedCustapBerry;
         bool32 battler2HasQuickEffect = gProtectStructs[battler2].quickDraw || gProtectStructs[battler2].usedCustapBerry;
-        bool32 battler1HasStallingAbility = ability1 == ABILITY_STALL || (ability1 == ABILITY_MYCELIUM_MIGHT && IS_MOVE_STATUS(gMovimientoElegido[battler1]));
-        bool32 battler2HasStallingAbility = ability2 == ABILITY_STALL || (ability2 == ABILITY_MYCELIUM_MIGHT && IS_MOVE_STATUS(gMovimientoElegido[battler2]));
 
         if (battler1HasQuickEffect && !battler2HasQuickEffect)
             strikesFirst = 1;
@@ -2362,10 +2359,6 @@ s32 GetWhichBattlerFasterArgs(u32 battler1, u32 battler2, bool32 ignoreChosenMov
         else if (holdEffectBattler1 == HOLD_EFFECT_LAGGING_TAIL && holdEffectBattler2 != HOLD_EFFECT_LAGGING_TAIL)
             strikesFirst = -1;
         else if (holdEffectBattler2 == HOLD_EFFECT_LAGGING_TAIL && holdEffectBattler1 != HOLD_EFFECT_LAGGING_TAIL)
-            strikesFirst = 1;
-        else if (battler1HasStallingAbility && !battler2HasStallingAbility)
-            strikesFirst = -1;
-        else if (battler2HasStallingAbility && !battler1HasStallingAbility)
             strikesFirst = 1;
         else
         {
@@ -2594,7 +2587,6 @@ static void TurnValuesCleanUp(bool8 var0)
     gSideTimers[LADO_OPONENTE].followmeTimer = 0;
 
     gBattleStruct->usedEjectItem = 0;
-    gBattleStruct->pledgeMove = FALSE; // combined pledge move may not have been used due to a canceller
 }
 
 void SpecialStatusesClear(void)

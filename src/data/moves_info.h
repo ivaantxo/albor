@@ -360,7 +360,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .description = COMPOUND_STRING(
             "A powerful pincer attack\n"
             "that may cause fainting."),
-        .effect = EFFECT_OHKO,
+        .effect = EFFECT_HIT,
         .power = 1,
         .type = TIPO_NORMAL,
         .accuracy = 30,
@@ -772,7 +772,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .description = COMPOUND_STRING(
             "A one-hit KO attack that\n"
             "uses a horn like a drill."),
-        .effect = EFFECT_OHKO,
+        .effect = EFFECT_HIT,
         .power = 1,
         .type = TIPO_NORMAL,
         .accuracy = 30,
@@ -1965,7 +1965,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .description = COMPOUND_STRING(
             "A one-hit KO move that\n"
             "drops the foe in a fissure."),
-        .effect = EFFECT_OHKO,
+        .effect = EFFECT_HIT,
         .power = 1,
         .type = TIPO_TIERRA,
         .accuracy = 30,
@@ -6822,7 +6822,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .description = COMPOUND_STRING(
             "A chilling attack that\n"
             "causes fainting if it hits."),
-        .effect = EFFECT_OHKO,
+        .effect = EFFECT_HIT,
         .power = 1,
         .type = TIPO_HIELO,
         .accuracy = 30,
@@ -10537,57 +10537,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .chance = 100,
         }),
         .battleAnimScript = gBattleAnimMove_Inferno,
-    },
-
-    [MOVE_WATER_PLEDGE] =
-    {
-        .name = COMPOUND_STRING("Voto agua"),
-        .description = COMPOUND_STRING(
-            "Attacks with a column of\n"
-            "water. May make a rainbow."),
-        .effect = EFFECT_PLEDGE,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 80 : 50,
-        .type = TIPO_AGUA,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .battleAnimScript = gBattleAnimMove_WaterPledge,
-    },
-
-    [MOVE_FIRE_PLEDGE] =
-    {
-        .name = COMPOUND_STRING("Voto fuego"),
-        .description = COMPOUND_STRING(
-            "Attacks with a column of\n"
-            "fire. May burn the grass."),
-        .effect = EFFECT_PLEDGE,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 80 : 50,
-        .type = TIPO_FUEGO,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .battleAnimScript = gBattleAnimMove_FirePledge,
-    },
-
-    [MOVE_GRASS_PLEDGE] =
-    {
-        .name = COMPOUND_STRING("Voto planta"),
-        .description = COMPOUND_STRING(
-            "Attacks with a column of\n"
-            "grass. May create a swamp."),
-        .effect = EFFECT_PLEDGE,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 80 : 50,
-        .type = TIPO_PLANTA,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .battleAnimScript = gBattleAnimMove_GrassPledge,
     },
 
     [MOVE_VOLT_SWITCH] =
@@ -17022,7 +16971,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Amoladoras,
+        .battleAnimScript = gAnimacion_Amoladoras,
     },
 
     [MOVE_CHUPASANGRE] =
