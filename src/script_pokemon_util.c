@@ -191,7 +191,7 @@ static u32 ScriptGiveMonParameterized(u8 side, u8 slot, u16 species, u8 level, u
     {
         if (moves[0] == MOVE_NONE)
             break;
-        if (moves[i] >= MOVES_COUNT)
+        if (moves[i] >= NUMERO_MOVIMIENTOS)
             continue;
         SetMonMoveSlot(&mon, moves[i], i);
     }

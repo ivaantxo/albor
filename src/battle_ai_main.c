@@ -2342,14 +2342,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
              && !BattlerStatCanRise(battlerAtk, aiData->abilities[battlerAtk], ESTADISTICA_DEFENSA_ESPECIAL))
                 ADJUST_SCORE(-10);
             break;
-        case EFFECT_SPICY_EXTRACT:
-            if (battlerAtk != ALIADO(battlerDef)
-             && (HasMoveWithCategory(battlerDef, CATEGORIA_FISICA)
-              || aiData->abilities[battlerDef] == ABILITY_CLEAR_BODY
-              || aiData->abilities[battlerDef] == ABILITY_EXUVIA
-              || aiData->holdEffects[battlerDef] == HOLD_EFFECT_CLEAR_AMULET))
-                ADJUST_SCORE(-10);
-            break;
         case EFFECT_UPPER_HAND:
             if (predictedMove == MOVE_NONE || IS_MOVE_STATUS(predictedMove) || AI_IsSlower(battlerAtk, battlerDef, move) || GetMovePriority(battlerDef, predictedMove) < 1 || GetMovePriority(battlerDef, predictedMove) > 3) // Opponent going first or not using priority move
                 ADJUST_SCORE(-10);
@@ -2659,12 +2651,6 @@ static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         {
             switch (effect)
             {
-            case EFFECT_SPICY_EXTRACT:
-                if (AI_ShouldSpicyExtract(battlerAtk, battlerAtkPartner, move, aiData))
-                {
-                    RETURN_SCORE_PLUS(GOOD_EFFECT);
-                }
-                break;
             case EFFECT_PURIFY:
                 if (gBattleMons[battlerAtkPartner].status1 & STATUS1_ANY)
                 {
@@ -3133,9 +3119,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
             ADJUST_SCORE(WEAK_EFFECT);
         if (gBattleMons[battlerDef].statStages[ESTADISTICA_EVASION] < 7 || aiData->abilities[battlerAtk] == ABILITY_NO_GUARD)
             ADJUST_SCORE(-2);
-        break;
-    case EFFECT_SPICY_EXTRACT:
-        // TODO: Make IncreaseStatDownScore function, just like IncreaseStatUpScore
         break;
     case EFFECT_BIDE:
         if (aiData->hpPercents[battlerAtk] < 90)

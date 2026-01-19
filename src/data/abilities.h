@@ -1878,25 +1878,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .failsOnImposter = TRUE,
     },
 
-    [ABILITY_PASTEL_VEIL] =
-    {
-        .name = _("Pastel Veil"),
-        .description = COMPOUND_STRING("Protects team from poison."),
-        .aiRating = 4,
-        .breakable = TRUE,
-    },
-
-    [ABILITY_HUNGER_SWITCH] =
-    {
-        .name = _("Hunger Switch"),
-        .description = COMPOUND_STRING("Changes form each turn."),
-        .aiRating = 2,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .failsOnImposter = TRUE,
-    },
-
     [ABILITY_QUICK_DRAW] =
     {
         .name = _("Quick Draw"),
@@ -1930,44 +1911,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Dragon's Maw"),
         .description = COMPOUND_STRING("Ups Dragon-type moves."),
         .aiRating = 6,
-    },
-
-    [ABILITY_CHILLING_NEIGH] =
-    {
-        .name = _("Chilling Neigh"),
-        .description = COMPOUND_STRING("KOs boost Attack stat."),
-        .aiRating = 7,
-    },
-
-    [ABILITY_GRIM_NEIGH] =
-    {
-        .name = _("Grim Neigh"),
-        .description = COMPOUND_STRING("KOs boost Sp. Atk stat."),
-        .aiRating = 7,
-    },
-
-    [ABILITY_AS_ONE_ICE_RIDER] =
-    {
-        .name = _("As One"),
-        .description = COMPOUND_STRING("Unnerve and Chilling Neigh."),
-        .aiRating = 10,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .cantBeSuppressed = TRUE,
-        .cantBeOverwritten = TRUE,
-    },
-
-    [ABILITY_AS_ONE_SHADOW_RIDER] =
-    {
-        .name = _("As One"),
-        .description = COMPOUND_STRING("Unnerve and Grim Neigh."),
-        .aiRating = 10,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .cantBeSuppressed = TRUE,
-        .cantBeOverwritten = TRUE,
     },
 
     [ABILITY_LINGERING_AROMA] =

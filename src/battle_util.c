@@ -3488,10 +3488,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 effect++;
             }
             break;
-        case ABILITY_AS_ONE_ICE_RIDER:
-        case ABILITY_AS_ONE_SHADOW_RIDER:
         case ABILITY_CURIOUS_MEDICINE:
-        case ABILITY_PASTEL_VEIL:
             break;
         case ABILITY_ANTICIPATION:
             if (!gSpecialStatuses[battler].switchInAbilityDone)
@@ -4812,7 +4809,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             switch (GetBattlerAbility(battler))
             {
             case ABILITY_IMMUNITY:
-            case ABILITY_PASTEL_VEIL:
                 if (gBattleMons[battler].status1 & (STATUS1_POISON | STATUS1_TOXIC_POISON | STATUS1_TOXIC_COUNTER))
                 {
                     StringCopy(gBattleTextBuff1, gText_Poison);
@@ -5197,7 +5193,6 @@ bool32 CanBePoisoned(u32 battler, u32 ability)
      || ability == ABILITY_IMMUNITY
      || ability == ABILITY_COMATOSE
      || ability == ABILITY_PURIFYING_SALT
-     || EstaHabilidadEnElLadoDeCombatiente(battler, ABILITY_PASTEL_VEIL)
      || IsAbilityStatusProtected(battler))
         return FALSE;
     return TRUE;
@@ -7296,10 +7291,6 @@ static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData
         basePower += 25 * gBattleStruct->timesGotHit[GetBattlerSide(battlerAtk)][gBattlerPartyIndexes[battlerAtk]];
         basePower = (basePower > 200) ? 200 : basePower;
         break;
-    case EFFECT_FICKLE_BEAM:
-        if (gBattleStruct->fickleBeamBoosted)
-            basePower *= 2;
-        break;
     case EFFECT_LAST_RESPECTS:
         basePower += (basePower * min(100, GetBattlerSideFaintCounter(battlerAtk)));
         break;
@@ -8194,13 +8185,6 @@ static inline uq4_12_t GetScreensModifier(u32 move, u32 battlerAtk, u32 battlerD
     return UQ_4_12(1.0);
 }
 
-static inline uq4_12_t GetCollisionCourseElectroDriftModifier(u32 move, uq4_12_t typeEffectivenessModifier)
-{
-    if (gMovesInfo[move].effect == EFFECT_COLLISION_COURSE && typeEffectivenessModifier >= UQ_4_12(2.0))
-        return UQ_4_12(1.3333);
-    return UQ_4_12(1.0);
-}
-
 static inline uq4_12_t GetAttackerAbilitiesModifier(u32 battlerAtk, uq4_12_t typeEffectivenessModifier, bool32 isCrit, u32 abilityAtk)
 {
     switch (abilityAtk)
@@ -8316,7 +8300,6 @@ static inline uq4_12_t GetOtherModifiers(struct DamageCalculationData *damageCal
     DAMAGE_MULTIPLY_MODIFIER(GetDiveModifier(move, battlerDef));
     DAMAGE_MULTIPLY_MODIFIER(GetAirborneModifier(move, battlerDef));
     DAMAGE_MULTIPLY_MODIFIER(GetScreensModifier(move, battlerAtk, battlerDef, isCrit, abilityAtk));
-    DAMAGE_MULTIPLY_MODIFIER(GetCollisionCourseElectroDriftModifier(move, typeEffectivenessModifier));
 
     if (unmodifiedAttackerSpeed >= unmodifiedDefenderSpeed)
     {

@@ -5385,7 +5385,7 @@ static void GetRestrictedReleaseMoves(u16 *moves)
             moves++;
         }
     }
-    *moves = MOVES_COUNT;
+    *moves = NUMERO_MOVIMIENTOS;
 }
 
 static void InitCanReleaseMonVars(void)
@@ -7486,7 +7486,7 @@ u32 CountAllStorageMons(void)
 
 bool32 AnyStorageMonWithMove(u16 moveId)
 {
-    u16 moves[] = {moveId, MOVES_COUNT};
+    u16 moves[] = {moveId, NUMERO_MOVIMIENTOS};
     s32 i, j;
 
     for (i = 0; i < TOTAL_BOXES_COUNT; i++)

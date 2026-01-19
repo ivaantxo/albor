@@ -2483,7 +2483,7 @@ void SetMoveEffect(bool32 primary, bool32 certain)
             statusChanged = TRUE;
             break;
         case STATUS1_POISON:
-            if ((battlerAbility == ABILITY_IMMUNITY || battlerAbility == ABILITY_PASTEL_VEIL)
+            if ((battlerAbility == ABILITY_IMMUNITY)
                 && (primary == TRUE || certain == TRUE))
             {
                 gLastUsedAbility = battlerAbility;
@@ -2625,7 +2625,7 @@ void SetMoveEffect(bool32 primary, bool32 certain)
             statusChanged = TRUE;
             break;
         case STATUS1_TOXIC_POISON:
-            if ((battlerAbility == ABILITY_IMMUNITY || battlerAbility == ABILITY_PASTEL_VEIL)
+            if ((battlerAbility == ABILITY_IMMUNITY)
              && (primary == TRUE || certain == TRUE))
             {
                 gLastUsedAbility = battlerAbility;
@@ -5616,7 +5616,6 @@ static void Cmd_moveend(void)
             gBattleStruct->enduredDamage = 0;
             gBattleStruct->additionalEffectsCounter = 0;
             gBattleStruct->poisonPuppeteerConfusion = FALSE;
-            gBattleStruct->fickleBeamBoosted = FALSE;
             gBattleStruct->distortedTypeMatchups = 0;
             gBattleStruct->usedMicleBerry &= ~(1u << gBattlerAttacker);
             if (B_CHARGE <= GEN_8 || moveType == TIPO_ELECTRICO)
@@ -6161,7 +6160,6 @@ static bool32 DoSwitchInEffectsForBattler(u32 battler)
             i = GetBattlerAbility(battler);
             if (!(gBattleMons[battler].status1 & STATUS1_ANY)
                 && i != ABILITY_IMMUNITY
-                && !EstaHabilidadEnElLadoDeCombatiente(battler, ABILITY_PASTEL_VEIL)
                 && !(gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_SAFEGUARD))
             {
                 if (gSideTimers[GetBattlerSide(battler)].toxicSpikesAmount >= 2)
@@ -8072,9 +8070,7 @@ static void Cmd_various(void)
 
         u16 battlerAbility = GetBattlerAbility(battler);
 
-        if ((battlerAbility == ABILITY_AUTOESTIMA
-         || battlerAbility == ABILITY_CHILLING_NEIGH
-         || battlerAbility == ABILITY_AS_ONE_ICE_RIDER)
+        if ((battlerAbility == ABILITY_AUTOESTIMA)
           && HasAttackerFaintedTarget()
           && !NoAliveMonsForEitherParty()
           && CompareStat(gBattlerAttacker, ESTADISTICA_ATAQUE, ESTADISTICA_MAS_6, COMPARACION_MENOR))
@@ -8083,8 +8079,6 @@ static void Cmd_various(void)
             PREPARE_STAT_BUFFER(gBattleTextBuff1, ESTADISTICA_ATAQUE);
             BattleScriptPush(cmd->nextInstr);
             gLastUsedAbility = battlerAbility;
-            if (battlerAbility == ABILITY_AS_ONE_ICE_RIDER)
-                gBattleScripting.abilityPopupOverwrite = gLastUsedAbility = ABILITY_CHILLING_NEIGH;
             gBattlescriptCurrInstr = BattleScript_RaiseStatOnFaintingTarget;
             return;
         }
@@ -8112,29 +8106,6 @@ static void Cmd_various(void)
             BattleScriptPush(cmd->nextInstr);
             gLastUsedAbility = battlerAbility;
             gBattlescriptCurrInstr = BattleScript_Carnivoro;
-            return;
-        }
-        break;
-    }
-    case VARIOUS_TRY_ACTIVATE_GRIM_NEIGH:   // and as one shadow rider
-    {
-        VARIOUS_ARGS();
-
-        u16 battlerAbility = GetBattlerAbility(battler);
-
-        if ((battlerAbility == ABILITY_GRIM_NEIGH
-         || battlerAbility == ABILITY_AS_ONE_SHADOW_RIDER)
-          && HasAttackerFaintedTarget()
-          && !NoAliveMonsForEitherParty()
-          && CompareStat(gBattlerAttacker, ESTADISTICA_ATAQUE_ESPECIAL, ESTADISTICA_MAS_6, COMPARACION_MENOR))
-        {
-            SET_STATCHANGER(ESTADISTICA_ATAQUE_ESPECIAL, 1, FALSE);
-            PREPARE_STAT_BUFFER(gBattleTextBuff1, ESTADISTICA_ATAQUE_ESPECIAL);
-            BattleScriptPush(cmd->nextInstr);
-            gLastUsedAbility = battlerAbility;
-            if (battlerAbility == ABILITY_AS_ONE_SHADOW_RIDER)
-                gBattleScripting.abilityPopupOverwrite = gLastUsedAbility = ABILITY_GRIM_NEIGH;
-            gBattlescriptCurrInstr = BattleScript_RaiseStatOnFaintingTarget;
             return;
         }
         break;
@@ -12774,7 +12745,6 @@ static void Cmd_givecaughtmon(void)
 
     if (GiveMonToPlayer(&gEnemyParty[gBattlerPartyIndexes[GetCatchingBattler()]]) != MON_GIVEN_TO_PARTY)
     {
-        gMensajeBatalla = B_MSG_SENT_SOMEONES_PC;
         StringCopy(gVariableTexto1, GetBoxNamePtr(VarGet(VAR_PC_BOX_TO_SEND_MON)));
         GetMonData(&gEnemyParty[gBattlerPartyIndexes[GetCatchingBattler()]], MON_DATA_NICKNAME, gVariableTexto2);
     }
@@ -13882,22 +13852,6 @@ void BS_DamageToQuarterTargetHP(void)
         gBattleMoveDamage = 1;
 
     gBattlescriptCurrInstr = cmd->nextInstr;
-}
-
-void BS_FickleBeamDamageCalculation(void)
-{
-    NATIVE_ARGS();
-    gBattleStruct->fickleBeamBoosted = FALSE;
-
-    if (PorcentajeAleatorio(30))
-    {
-        gBattleStruct->fickleBeamBoosted = TRUE;
-        gBattlescriptCurrInstr = BattleScript_FickleBeamDoubled;
-    }
-    else
-    {
-        gBattlescriptCurrInstr = cmd->nextInstr;
-    }
 }
 
 void BS_TryTarShot(void)

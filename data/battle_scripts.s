@@ -29,19 +29,6 @@ BattleScript_DamageToQuarterTargetHP::
 	damagetoquartertargethp
 	goto BattleScript_HitFromAtkAnimation
 
-BattleScript_EffectFickleBeam::
-	attackcanceler
-	attackstring
-	ppreduce
-	accuracycheck BattleScript_MoveMissedPause, ACC_CURR_MOVE
-	ficklebeamdamagecalculation
-	goto BattleScript_HitFromCritCalc
-BattleScript_FickleBeamDoubled::
-	pause B_WAIT_TIME_SHORTEST
-	printstring STRINGID_FICKLEBEAMDOUBLED
-	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_HitFromCritCalc
-
 BattleScript_LowerAtkSpAtk::
 	jumpifstat BS_EFFECT_BATTLER, COMPARACION_MAYOR, ESTADISTICA_ATAQUE, ESTADISTICA_MENOS_6, BattleScript_LowerAtkSpAtkDoAnim
 	jumpifstat BS_EFFECT_BATTLER, COMPARACION_IGUAL, ESTADISTICA_ATAQUE_ESPECIAL, ESTADISTICA_MENOS_6, BattleScript_LowerAtkSpAtkEnd
@@ -61,9 +48,6 @@ BattleScript_LowerAtkSpAtkTrySpAtk::
 	waitmessage B_WAIT_TIME_LONG
 BattleScript_LowerAtkSpAtkEnd:
 	return
-
-BattleScript_EffectSpicyExtract::
-	goto BattleScript_MoveEnd
 
 BattleScript_EffectTidyUp::
 	attackcanceler
@@ -2459,18 +2443,6 @@ BattleScript_AromaVeilProtects:
 	orhalfword gMoveResultFlags, MOVE_RESULT_FAILED
 	goto BattleScript_MoveEnd
 
-BattleScript_PastelVeilProtectsRet::
-	pause B_WAIT_TIME_SHORT
-	call BattleScript_AbilityPopUp
-	printstring STRINGID_PASTELVEILPROTECTED
-	waitmessage B_WAIT_TIME_LONG
-	return
-
-BattleScript_PastelVeilProtects:
-	call BattleScript_PastelVeilProtectsRet
-	orhalfword gMoveResultFlags, MOVE_RESULT_FAILED
-	goto BattleScript_MoveEnd
-
 BattleScript_AbilityProtectsDoesntAffectRet::
 	pause B_WAIT_TIME_SHORT
 	call BattleScript_AbilityPopUp
@@ -2830,7 +2802,6 @@ BattleScript_EffectToxic::
 	jumpifability BS_TARGET, ABILITY_IMMUNITY, BattleScript_ImmunityProtected
 	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_AbilityProtectsDoesntAffect
 	jumpifability BS_TARGET, ABILITY_PURIFYING_SALT, BattleScript_AbilityProtectsDoesntAffect
-	jumpifability BS_TARGET_SIDE, ABILITY_PASTEL_VEIL, BattleScript_PastelVeilProtects
 	jumpifflowerveil BS_TARGET_SIDE, BattleScript_FlowerVeilProtects
 	jumpifleafguardprotected BS_TARGET, BattleScript_AbilityProtectsDoesntAffect
 	jumpifshieldsdown BS_TARGET, BattleScript_AbilityProtectsDoesntAffect
@@ -3113,7 +3084,6 @@ BattleScript_EffectPoison::
 	jumpifability BS_TARGET, ABILITY_IMMUNITY, BattleScript_ImmunityProtected
 	jumpifability BS_TARGET, ABILITY_COMATOSE, BattleScript_AbilityProtectsDoesntAffect
 	jumpifability BS_TARGET, ABILITY_PURIFYING_SALT, BattleScript_AbilityProtectsDoesntAffect
-	jumpifability BS_TARGET_SIDE, ABILITY_PASTEL_VEIL, BattleScript_PastelVeilProtects
 	jumpifflowerveil BS_TARGET_SIDE, BattleScript_FlowerVeilProtects
 	jumpifleafguardprotected BS_TARGET, BattleScript_AbilityProtectsDoesntAffect
 	jumpifshieldsdown BS_TARGET, BattleScript_AbilityProtectsDoesntAffect
@@ -4800,7 +4770,6 @@ BattleScript_FaintTarget::
 	intentaactivarautoestima BS_ATTACKER        @ and chilling neigh, as one ice rider
 	tryactivatecarnivoro BS_ATTACKER
 	tryactivatebeastboost BS_ATTACKER
-	tryactivategrimneigh BS_ATTACKER    @ and as one shadow rider
 	tryactivatebattlebond BS_ATTACKER
 	trytrainerslidefirstdownmsg BS_TARGET
 	return
@@ -5641,7 +5610,7 @@ BattleScript_RapidSpinAway::
 	return
 
 BattleScript_WrapFree::
-	printstring STRINGID_PKMNGOTFREE
+	printstring ("{B_ATK_NAME_WITH_PREFIX} got free of {B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}!")
 	waitmessage B_WAIT_TIME_LONG
 	copybyte gBattlerTarget, sBATTLER
 	return
@@ -6457,7 +6426,7 @@ BattleScript_TargetBurnHeal::
 	return
 
 BattleScript_TargetPoisonHealed::
-	printstring STRINGID_PASTELVEILENTERS
+	printstring ("Se curó del veneno.") @ revisar
 	waitmessage B_WAIT_TIME_LONG
 	updatestatusicon BS_TARGET
 	return
@@ -7316,18 +7285,6 @@ BattleScript_SwitchInAbilityMsgRet::
 	waitmessage B_WAIT_TIME_LONG
 	return
 
-BattleScript_ActivateAsOne::
-	call BattleScript_AbilityPopUp
-	printfromtable gSwitchInAbilityStringIds
-	waitmessage B_WAIT_TIME_LONG
-	@ show unnerve
-	sethword sABILITY_OVERWRITE, ABILITY_UNNERVE
-	setword gMensajeBatalla, B_MSG_SWITCHIN_UNNERVE
-	call BattleScript_AbilityPopUp
-	printfromtable gSwitchInAbilityStringIds
-	waitmessage B_WAIT_TIME_LONG
-	end3
-
 BattleScript_FriskMsgWithPopup::
 	copybyte gBattlerAbility, gBattlerAttacker
 	call BattleScript_AbilityPopUp
@@ -8093,9 +8050,6 @@ BattleScript_GoodAsGoldActivates::
 	waitmessage B_WAIT_TIME_MED
 	goto BattleScript_MoveEnd
 
-BattleScript_PastelVeilActivates::
-	end3
-
 BattleScript_NeutralizingGasExits::
 	savetarget
 	pause B_WAIT_TIME_SHORT
@@ -8208,7 +8162,7 @@ Script_AmoladorasAnimacion::
 	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 
 ScriptBatalla_LanzaPokeball::
-	printstring TEXTO_COMBATE_LANZA_POKEBALL
+	printstring ("¡Ahí va la Pokéball!")
 	handleballthrow
 
 BattleScript_SuccessBallThrow::
@@ -8230,7 +8184,7 @@ BattleScript_TryNicknameCaughtMon::
 	setbyte gBattleCommunication, 0
 	trygivecaughtmonnick BattleScript_GiveCaughtMonEnd
 	givecaughtmon
-	printfromtable gCaughtMonStringIds
+	printstring ("Se mandó a {VAR_TEXTO_2} a\n{VAR_TEXTO_1} del PC.")
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_SuccessBallThrowEnd
 BattleScript_GiveCaughtMonEnd::

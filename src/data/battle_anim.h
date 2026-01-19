@@ -1404,8 +1404,7 @@ const struct BattleAnimBackground gBattleAnimBackgroundTable[] =
     [BG_GHOST]                     = {gBattleAnimBgImage_Ghost,                   gBattleAnimBgPalette_Ghost,                   gBattleAnimBgTilemap_Ghost},
     [BG_PSYCHIC]                   = {gBattleAnimBgImage_Psychic,                 gBattleAnimBgPalette_Psychic,                 gBattleAnimBgTilemap_Psychic},
     [BG_IMPACT_OPPONENT]           = {gBattleAnimBgImage_Impact,                  gBattleAnimBgPalette_Impact,                  gBattleAnimBgTilemap_ImpactOpponent},
-    [BG_IMPACT_PLAYER]             = {gBattleAnimBgImage_Impact,                  gBattleAnimBgPalette_Impact,                  gBattleAnimBgTilemap_ImpactPlayer},
-    [BG_IMPACT_CONTESTS]           = {gBattleAnimBgImage_Impact,                  gBattleAnimBgPalette_Impact,                  gBattleAnimBgTilemap_ImpactContests},
+    [BG_IMPACT_PLAYER]             = {gBattleAnimBgImage_Impact,                  gBattleAnimBgPalette_Impact,                  gBattleAnimBgTilemap_ImpactPlayer},},
     [BG_DRILL]                     = {gBattleAnimBgImage_Drill,                   gBattleAnimBgPalette_Drill,                   gBattleAnimBgTilemap_Drill},
     [BG_DRILL_CONTESTS]            = {gBattleAnimBgImage_Drill,                   gBattleAnimBgPalette_Drill,                   gBattleAnimBgTilemap_DrillContests},
     [BG_HIGHSPEED_OPPONENT]        = {gBattleAnimBgImage_Highspeed,               gBattleAnimBgPalette_Highspeed,               gBattleAnimBgTilemap_HighspeedOpponent},
@@ -1472,5 +1471,4 @@ const struct BattleAnimBackground gBattleAnimBackgroundTable[] =
     [BG_STEEL_BEAM_OPPONENT]       = {gBattleAnimBgImage_Highspeed,               gBattleAnimBgPalette_SteelBeam,               gBattleAnimBgTilemap_HighspeedOpponent},
     [BG_STEEL_BEAM_PLAYER]         = {gBattleAnimBgImage_Highspeed,               gBattleAnimBgPalette_SteelBeam,               gBattleAnimBgTilemap_HighspeedPlayer},
     [BG_CHLOROBLAST]               = {gBattleAnimBgImage_HydroCannon,             gBattleAnimBgPalette_Chloroblast,             gBattleAnimBgTilemap_HydroCannon},
-    [BG_RAINBOW]                   = {gBattleAnimBgImage_Rainbow,                 gBattleAnimBGPalette_Rainbow,                 gBattleAnimBgTilemap_Rainbow},
 };

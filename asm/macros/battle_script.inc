@@ -1473,10 +1473,6 @@
 	callnative BS_DamageToQuarterTargetHP
 	.endm
 
-	.macro ficklebeamdamagecalculation
-	callnative BS_FickleBeamDamageCalculation
-	.endm
-
 	.macro trytarshot failInstr:req
 	callnative BS_TryTarShot
 	.4byte \failInstr
@@ -1896,10 +1892,6 @@
 
 	.macro destroyabilitypopup
 	various BS_ABILITY_BATTLER, VARIOUS_DESTROY_ABILITY_POPUP
-	.endm
-
-	.macro tryactivategrimneigh, battler:req
-	various \battler, VARIOUS_TRY_ACTIVATE_GRIM_NEIGH
 	.endm
 
 	.macro consumeberry battler:req, fromBattler:req

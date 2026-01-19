@@ -1672,11 +1672,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectTakeHeart,
     },
 
-    [EFFECT_COLLISION_COURSE] =
-    {
-        .battleScript = BattleScript_EffectHit,
-    },
-
     [EFFECT_CORROSIVE_GAS] =
     {
         .battleScript = BattleScript_EffectCorrosiveGas,
@@ -1722,16 +1717,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectFilletAway,
     },
 
-    [EFFECT_IVY_CUDGEL] =
-    {
-        .battleScript = BattleScript_EffectHit,
-    },
-
-    [EFFECT_FICKLE_BEAM] =
-    {
-        .battleScript = BattleScript_EffectFickleBeam,
-    },
-
     [EFFECT_BLIZZARD] =
     {
         .battleScript = BattleScript_EffectHit,
@@ -1768,12 +1753,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_TIDY_UP] =
     {
         .battleScript = BattleScript_EffectTidyUp,
-        .encourageEncore = TRUE,
-    },
-
-    [EFFECT_SPICY_EXTRACT] =
-    {
-        .battleScript = BattleScript_EffectSpicyExtract,
         .encourageEncore = TRUE,
     },
 

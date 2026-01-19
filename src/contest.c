@@ -1556,7 +1556,7 @@ static void Task_DoAppeals(u8 taskId)
         {
             ContestClearGeneralTextWindow();
             CopyNicknameToFit(gVariableTexto1, contestant);
-            if (eContestantStatus[contestant].currMove < MOVES_COUNT)
+            if (eContestantStatus[contestant].currMove < NUMERO_MOVIMIENTOS)
                 StringCopy(gVariableTexto2, GetMoveName(eContestantStatus[contestant].currMove));
             else
                 StringCopy(gVariableTexto2, sInvalidContestMoveNames[eContestantStatus[contestant].moveCategory]);
@@ -4417,7 +4417,7 @@ static void Task_WaitForSliderHeartAnim(u8 taskId)
 
 static u16 SanitizeMove(u16 move)
 {
-    if (move >= MOVES_COUNT)
+    if (move >= NUMERO_MOVIMIENTOS)
         move = MOVE_POUND;
     return move;
 }

@@ -2737,8 +2737,6 @@ bool32 AI_CanPoison(u32 battlerAtk, u32 battlerDef, u32 move, u32 partnerMove)
         return FALSE;
     else if ((ES_COMBATIENTE_TIPO(battlerDef, TIPO_VENENO)))
         return FALSE;
-    else if (IsValidDoubleBattle(battlerAtk) && AI_DATA->abilities[ALIADO(battlerDef)] == ABILITY_PASTEL_VEIL)
-        return FALSE;
 
     return TRUE;
 }
@@ -3768,45 +3766,6 @@ void IncreaseTidyUpScore(u32 battlerAtk, u32 battlerDef, u32 move, s32 *score)
         ADJUST_SCORE_PTR(DECENT_EFFECT);
     if (gStatuses3[battlerDef] & STATUS3_LEECHSEED)
         ADJUST_SCORE_PTR(-2);
-}
-
-bool32 AI_ShouldSpicyExtract(u32 battlerAtk, u32 battlerAtkPartner, u32 move, struct AILogicData *aiData)
-{
-    u32 preventsStatLoss;
-    u32 partnerAbility;
-    u32 partnerHoldEffect = aiData->holdEffects[battlerAtkPartner];
-
-    if (DoesBattlerIgnoreAbilityChecks(aiData->abilities[battlerAtk], move))
-        partnerAbility = ABILITY_NONE;
-    else
-        partnerAbility = aiData->abilities[battlerAtkPartner];
-
-    if (gBattleMons[battlerAtkPartner].statStages[ESTADISTICA_ATAQUE] == ESTADISTICA_MAS_6
-     || partnerAbility == ABILITY_CONTRARY
-     || partnerAbility == ABILITY_EXUVIA
-     || HasMoveEffect(OPONENTE(battlerAtk), EFFECT_FOUL_PLAY)
-     || HasMoveEffect(OPONENTE(battlerAtkPartner), EFFECT_FOUL_PLAY))
-        return FALSE;
-
-    preventsStatLoss = (partnerAbility == ABILITY_CLEAR_BODY
-                     || partnerAbility == ABILITY_FULL_METAL_BODY
-                     || partnerAbility == ABILITY_WHITE_SMOKE
-                     || partnerHoldEffect == HOLD_EFFECT_CLEAR_AMULET);
-
-    switch (gMovesInfo[aiData->partnerMove].effect)
-    {
-    case EFFECT_DEFENSE_UP:
-    case EFFECT_DEFENSE_UP_2:
-    case EFFECT_DEFENSE_UP_3:
-    case EFFECT_BULK_UP:
-    case EFFECT_STOCKPILE:
-        if (!preventsStatLoss)
-            return FALSE;
-    }
-
-    return (preventsStatLoss
-         && AI_IsFaster(battlerAtk, battlerAtkPartner, TRUE)
-         && HasMoveWithCategory(battlerAtkPartner, CATEGORIA_FISICA));
 }
 
 void IncreaseSubstituteMoveScore(u32 battlerAtk, u32 battlerDef, u32 move, s32 *score)

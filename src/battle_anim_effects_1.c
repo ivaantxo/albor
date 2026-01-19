@@ -2693,50 +2693,6 @@ const struct SpriteTemplate gWoodHammerHammerSpriteTemplate =
     .callback = AnimWoodHammerHammer,
 };
 
-const struct SpriteTemplate gIvyCudgelSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_WOOD_HAMMER_HAMMER,
-    .paletteTag = ANIM_TAG_WOOD_HAMMER_HAMMER,
-    .oam = &gOamData_AffineDouble_ObjNormal_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gWoodHammerHammerAffineAnims,
-    .callback = AnimWoodHammerHammer,
-};
-
-const struct SpriteTemplate gIvyCudgelFireSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_WOOD_HAMMER_HAMMER,
-    .paletteTag = ANIM_TAG_WOOD_HAMMER_HAMMER,
-    .oam = &gOamData_AffineDouble_ObjNormal_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gWoodHammerHammerAffineAnims,
-    .callback = AnimWoodHammerHammer,
-};
-
-const struct SpriteTemplate gIvyCudgelRockSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_WOOD_HAMMER_HAMMER,
-    .paletteTag = ANIM_TAG_WOOD_HAMMER_HAMMER,
-    .oam = &gOamData_AffineDouble_ObjNormal_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gWoodHammerHammerAffineAnims,
-    .callback = AnimWoodHammerHammer,
-};
-
-const struct SpriteTemplate gIvyCudgelWaterSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_WOOD_HAMMER_HAMMER,
-    .paletteTag = ANIM_TAG_WOOD_HAMMER_HAMMER,
-    .oam = &gOamData_AffineDouble_ObjNormal_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gWoodHammerHammerAffineAnims,
-    .callback = AnimWoodHammerHammer,
-};
-
 const struct SpriteTemplate gJudgmentGrayOutwardSpikesTemplate =
 {
     .tileTag = ANIM_TAG_GREEN_SPIKE,

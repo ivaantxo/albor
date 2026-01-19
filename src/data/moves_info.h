@@ -111,7 +111,7 @@ static const u8 sFeintDescription[] = _(
     "An attack that hits foes\n"
     "using moves like Protect.");
 
-const struct MoveInfo gMovesInfo[MOVES_COUNT] =
+const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
 {
     [MOVE_NONE] =
     {
@@ -15695,24 +15695,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_JetPunch,
     },
 
-    [MOVE_SPICY_EXTRACT] =
-    {
-        .name = COMPOUND_STRING("Spicy Extract"),
-        .description = COMPOUND_STRING(
-            "Sharply ups target's Attack,\n"
-            "harshly lowers its Defense."),
-        .effect = EFFECT_SPICY_EXTRACT,
-        .power = 0,
-        .type = TIPO_PLANTA,
-        .accuracy = 0,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .magicCoatAffected = TRUE,
-        .battleAnimScript = gBattleAnimMove_SpicyExtract,
-    },
-
     [MOVE_SPIN_OUT] =
     {
         .name = COMPOUND_STRING("Spin Out"),
@@ -16055,42 +16037,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .battleAnimScript = gBattleAnimMove_Ruination,
-    },
-
-    [MOVE_COLLISION_COURSE] =
-    {
-        .name = COMPOUND_STRING("Collision Course"),
-        .description = COMPOUND_STRING(
-            "Prehistoric explosion that's\n"
-            "stronger if super effective."),
-        .effect = EFFECT_COLLISION_COURSE,
-        .power = 100,
-        .type = TIPO_LUCHA,
-        .accuracy = 100,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_CollisionCourse,
-    },
-
-    [MOVE_ELECTRO_DRIFT] =
-    {
-        .name = COMPOUND_STRING("Electro Drift"),
-        .description = COMPOUND_STRING(
-            "Futuristic electricity. It's\n"
-            "stronger if super effective."),
-        .effect = EFFECT_COLLISION_COURSE,
-        .power = 100,
-        .type = TIPO_ELECTRICO,
-        .accuracy = 100,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_ElectroDrift,
     },
 
     [MOVE_SHED_TAIL] =
@@ -16609,47 +16555,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
         .battleAnimScript = gBattleAnimMove_BloodMoon,
     },
 
-    [MOVE_MATCHA_GOTCHA] =
-    {
-        .name = COMPOUND_STRING("Matcha Gotcha"),
-        .description = COMPOUND_STRING(
-            "Absorbs half the damage\n"
-            "inflicted. May cause a burn."),
-        .effect = EFFECT_ABSORB,
-        .power = 80,
-        .type = TIPO_PLANTA,
-        .accuracy = 90,
-        .pp = 15,
-        .target = MOVE_TARGET_BOTH,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .thawsUser = TRUE,
-        .healingMove = B_EXTRAPOLATED_MOVE_FLAGS,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_BURN,
-            .chance = 20,
-        }),
-        .battleAnimScript = gBattleAnimMove_MatchaGotcha,
-    },
-
-    [MOVE_IVY_CUDGEL] =
-    {
-        .name = COMPOUND_STRING("Ivy Cudgel"),
-        .description = COMPOUND_STRING(
-            "Type changes with held mask.\n"
-            "High critical-hit ratio."),
-        .effect = EFFECT_IVY_CUDGEL,
-        .power = 100,
-        .type = TIPO_PLANTA,
-        .accuracy = 100,
-        .pp = 10,
-        .criticalHitStage = 1,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .battleAnimScript = gBattleAnimMove_IvyCudgel,
-    },
-
     [MOVE_ELECTRO_SHOT] =
     {
         .name = COMPOUND_STRING("Electrodisparo"),
@@ -16672,23 +16577,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT] =
             .onChargeTurnOnly = TRUE,
         }, SHEER_FORCE_HACK),
         .battleAnimScript = gBattleAnimMove_ElectroShot,
-    },
-
-    [MOVE_FICKLE_BEAM] =
-    {
-        .name = COMPOUND_STRING("Fickle Beam"),
-        .description = COMPOUND_STRING(
-            "Shoots a beam of light.\n"
-            "Sometimes twice as strong."),
-        .effect = EFFECT_FICKLE_BEAM,
-        .power = 80,
-        .type = TIPO_DRAGON,
-        .accuracy = 100,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .battleAnimScript = gBattleAnimMove_FickleBeam,
     },
 
     [MOVE_BURNING_BULWARK] =

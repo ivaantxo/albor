@@ -1769,20 +1769,19 @@ gBattleAnimMove_GigaImpact::
 	loadspritegfx ANIM_TAG_IMPACT
 	monbg ANIM_DEF_PARTNER
 	setalpha 12, 8
-	createvisualtask AnimTask_IsContest, 2
-	jumprettrue SetGigaImpactContestsBG
+	createvisualtask DestroyAnimVisualTask, 2
 	createvisualtask AnimTask_IsTargetPlayerSide, 2
 	jumpretfalse SetGigaImpactOpponentBG
 	goto SetGigaImpactPlayerBG
+
 SetGigaImpactOpponentBG:
 	fadetobg BG_GIGA_IMPACT_OPPONENT
 	goto GigaImpactContinuity
+
 SetGigaImpactPlayerBG:
 	fadetobg BG_GIGA_IMPACT_PLAYER
 	goto GigaImpactContinuity
-SetGigaImpactContestsBG:
-	fadetobg BG_GIGA_IMPACT_CONTEST
-	goto GigaImpactContinuity
+
 GigaImpactContinuity:
 	playsewithpan SE_M_TAKE_DOWN, SOUND_PAN_ATTACKER
 	createsprite gVerticalDipSpriteTemplate, ANIM_ATTACKER, 2, 6, 1, ANIM_ATTACKER
@@ -16564,18 +16563,6 @@ ElectroShotUnleash:
 	blendoff
 	end
 
-gBattleAnimMove_IvyCudgel::
-	end
-IvyCudgelFire:
-        end
-IvyCudgelRock:
-        end
-IvyCudgelWater:
-        end
-
-gBattleAnimMove_SpicyExtract::
-	end
-
 gBattleAnimMove_AxeKick::
 	loadspritegfx ANIM_TAG_HANDS_AND_FEET
 	loadspritegfx ANIM_TAG_IMPACT
@@ -16977,74 +16964,6 @@ BloodMoonOnslaughtPlayer:
 	delay 0
 	return
 
-gBattleAnimMove_FickleBeam::
-	createvisualtask AnimTask_IsPowerOver99, 2
-	waitforvisualfinish
-	jumpreteq FALSE, FickleBeamRegular
-	jumpreteq TRUE, FickleBeamIntense
-FickleBeamRegular:
-	loadspritegfx ANIM_TAG_GOLD_RING
-	playsewithpan SE_M_PSYBEAM, SOUND_PAN_ATTACKER
-	createsoundtask SoundTask_LoopSEAdjustPanning, SE_M_PSYBEAM2, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 3, 4, 0, 15
-	call PsybeamRings
-	call PsybeamRings
-	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 0, 4, 25, 1
-	createvisualtask AnimTask_BlendColorCycle, 2, F_PAL_TARGET, 2, 2, 0, 12, RGB(15, 8, 30)
-	call PsybeamRings
-	call PsybeamRings
-	call PsybeamRings
-	call PsybeamRings
-	call PsybeamRings
-	call PsybeamRings
-	call PsybeamRings
-	call PsybeamRings
-	call PsybeamRings
-	waitforvisualfinish
-	end
-FickleBeamIntense:
-	loadspritegfx ANIM_TAG_ORBS
-	fadetobgfromset BG_SPACIAL_REND_ON_OPPONENT BG_SPACIAL_REND_ON_PLAYER BG_SPACIAL_REND_ON_OPPONENT
-	waitbgfadein
-	delay 10
-	playsewithpan SE_M_HYPER_BEAM, SOUND_PAN_ATTACKER
-	createvisualtask AnimTask_ShakeMon2, 2, ANIM_ATTACKER, 1, 0, 4, 1
-	waitforvisualfinish
-	delay 30
-	createsoundtask SoundTask_LoopSEAdjustPanning, SE_M_HYPER_BEAM2, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 1, 15, 0, 5
-	createvisualtask AnimTask_ShakeMon, 2, ANIM_ATTACKER, 0, 4, 50, 1
-	createvisualtask AnimTask_FlashAnimTagWithColor, 2, ANIM_TAG_ORBS, 1, 12, RGB_RED, 16, 0, 0
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 4, 0, 50, 1
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	call HyperBeamOrbs
-	waitforvisualfinish
-	restorebg
-	waitbgfadein
-	end
-
 gBattleAnimMove_Thunderclap::
 	loadspritegfx ANIM_TAG_LIGHTNING
 	monbg ANIM_ATK_PARTNER
@@ -17190,8 +17109,6 @@ gBattleAnimMove_SaltCure::
 gBattleAnimMove_TripleDive::
 gBattleAnimMove_Doodle::
 gBattleAnimMove_Ruination::
-gBattleAnimMove_CollisionCourse::
-gBattleAnimMove_ElectroDrift::
 gBattleAnimMove_ArmorCannon::
 gBattleAnimMove_BlazingTorque::
 gBattleAnimMove_WickedTorque::
@@ -17199,7 +17116,6 @@ gBattleAnimMove_NoxiousTorque::
 gBattleAnimMove_CombatTorque::
 gBattleAnimMove_MagicalTorque::
 gBattleAnimMove_Psyblade::
-gBattleAnimMove_MatchaGotcha::
 gBattleAnimMove_MightyCleave::
 gBattleAnimMove_TachyonCutter::
 gBattleAnimMove_SupercellSlam::
@@ -17723,21 +17639,20 @@ EmberFireHit:
 
 SetImpactBackground:
 	delay 2
-	createvisualtask AnimTask_IsContest, 2
-	jumprettrue SetImpactContestsBG
+	createvisualtask DestroyAnimVisualTask, 2
 	createvisualtask AnimTask_IsTargetPlayerSide, 2
 	jumpretfalse SetImpactOpponentBG
 	jumprettrue SetImpactPlayerBG
+
 SetImpactBackgroundRet:
 	return
+
 SetImpactOpponentBG:
 	changebg BG_IMPACT_OPPONENT
 	goto SetImpactBackgroundRet
+
 SetImpactPlayerBG:
 	changebg BG_IMPACT_PLAYER
-	goto SetImpactBackgroundRet
-SetImpactContestsBG:
-	changebg BG_IMPACT_CONTESTS
 	goto SetImpactBackgroundRet
 
 gBattleAnimMove_MegaPunch::
@@ -24722,11 +24637,11 @@ gBattleAnimMove_HyperFang::
 	playsewithpan SE_M_BITE, SOUND_PAN_TARGET
 	delay 1
 	delay 2
-	createvisualtask AnimTask_IsContest, 2
-	jumprettrue HyperFangInContest
+	createvisualtask DestroyAnimVisualTask, 2
 	createvisualtask AnimTask_IsTargetPlayerSide, 2
 	jumpretfalse HyperFangOnOpponent
 	goto HyperFangOnPlayer
+
 HyperFangContinue:
 	waitbgfadeout
 	createsprite gFangSpriteTemplate, ANIM_TARGET, 2
@@ -24738,14 +24653,13 @@ HyperFangContinue:
 	waitbgfadein
 	waitforvisualfinish
 	end
+
 HyperFangOnOpponent:
 	fadetobg BG_IMPACT_OPPONENT
 	goto HyperFangContinue
+
 HyperFangOnPlayer:
 	fadetobg BG_IMPACT_PLAYER
-	goto HyperFangContinue
-HyperFangInContest:
-	fadetobg BG_IMPACT_CONTESTS
 	goto HyperFangContinue
 
 gBattleAnimMove_TriAttack::
@@ -25606,11 +25520,11 @@ FocusPunch:
 	loadspritegfx ANIM_TAG_IMPACT
 	loadspritegfx ANIM_TAG_HANDS_AND_FEET
 	delay 1
-	createvisualtask AnimTask_IsContest, 2
-	jumprettrue FocusPunchInContest
+	createvisualtask DestroyAnimVisualTask, 2
 	createvisualtask AnimTask_IsTargetPlayerSide, 2
 	jumpretfalse FocusPunchOnOpponent
 	jumprettrue FocusPunchOnPlayer
+
 FocusPunchContinue:
 	waitbgfadein
 	monbg ANIM_DEF_PARTNER
@@ -25635,14 +25549,13 @@ FocusPunchContinue:
 	clearmonbg ANIM_DEF_PARTNER
 	blendoff
 	goto FocusPunchEnd
+
 FocusPunchOnOpponent:
 	fadetobg BG_IMPACT_OPPONENT
 	goto FocusPunchContinue
+
 FocusPunchOnPlayer:
 	fadetobg BG_IMPACT_PLAYER
-	goto FocusPunchContinue
-FocusPunchInContest:
-	fadetobg BG_IMPACT_CONTESTS
 	goto FocusPunchContinue
 
 gBattleAnimMove_Return::
@@ -26936,20 +26849,19 @@ UnsetSkyBg:
 	return
 
 SetSolarBeamBg:
-	createvisualtask AnimTask_IsContest, 2
-	jumprettrue SetSolarBeamBgContest
+	createvisualtask DestroyAnimVisualTask, 2
 	createvisualtask AnimTask_IsTargetPlayerSide, 2
 	jumpretfalse SetSolarBeamBgOpponent
 	goto SetSolarBeamBgPlayer
+
 SetSolarBeamBgContinue:
 	waitbgfadein
 	return
-SetSolarBeamBgContest:
-	fadetobg BG_SOLAR_BEAM_CONTESTS
-	goto SetSolarBeamBgContinue
+
 SetSolarBeamBgPlayer:
 	fadetobg BG_SOLAR_BEAM_PLAYER
 	goto SetSolarBeamBgContinue
+
 SetSolarBeamBgOpponent:
 	fadetobg BG_SOLAR_BEAM_OPPONENT
 	goto SetSolarBeamBgContinue

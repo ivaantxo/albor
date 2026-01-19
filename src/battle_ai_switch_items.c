@@ -1180,8 +1180,7 @@ static u32 GetSwitchinHazardsDamage(u32 battler, struct BattlePokemon *battleMon
         if ((hazardFlags & SIDE_STATUS_TOXIC_SPIKES) && (defType1 != TIPO_VENENO && defType2 != TIPO_VENENO
             && ability != ABILITY_IMMUNITY && ability != ABILITY_POISON_HEAL && ability != ABILITY_COMATOSE
             && status == 0
-            && !(hazardFlags & SIDE_STATUS_SAFEGUARD)
-            && !(EstaHabilidadEnElLadoDeCombatiente(battler, ABILITY_PASTEL_VEIL)))
+            && !(hazardFlags & SIDE_STATUS_SAFEGUARD))
             && !(IsAbilityStatusProtected(battler))
             && heldItemEffect != HOLD_EFFECT_CURE_PSN && heldItemEffect != HOLD_EFFECT_CURE_STATUS
             && IsMonGrounded(heldItemEffect, ability, defType1, defType2))

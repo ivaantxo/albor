@@ -711,7 +711,7 @@ static const u8 sPartyMenuActionCounts[] =
     [ACTIONS_ZYGARDE_CUBE]  = ARRAY_COUNT(sPartyMenuAction_ZygardeCube),
 };
 
-static const u16 sFieldMoves[FIELD_MOVES_COUNT + 1] =
+static const u16 sFieldMoves[FIELD_NUMERO_MOVIMIENTOS + 1] =
 {
     [FIELD_MOVE_CUT]          = MOVE_CUT,
     [FIELD_MOVE_FLASH]        = MOVE_FLASH,
@@ -729,14 +729,14 @@ static const u16 sFieldMoves[FIELD_MOVES_COUNT + 1] =
     [FIELD_MOVE_SWEET_SCENT]  = MOVE_SWEET_SCENT,
     // NOTE: This value is used as the terminal value for the table. There's no reason to do this, as the size of the table is known.
     //       Whichever move shares this value (MOVE_SWORDS_DANCE by default) if present will be treated as the end of the array rather than a field move.
-    [FIELD_MOVES_COUNT]       = FIELD_MOVES_COUNT
+    [FIELD_NUMERO_MOVIMIENTOS]       = FIELD_NUMERO_MOVIMIENTOS
 };
 
 struct
 {
     bool8 (*fieldMoveFunc)(void);
     u8 msgId;
-} static const sFieldMoveCursorCallbacks[FIELD_MOVES_COUNT] =
+} static const sFieldMoveCursorCallbacks[FIELD_NUMERO_MOVIMIENTOS] =
 {
     [FIELD_MOVE_CUT]          = {SetUpFieldMove_Cut,         PARTY_MSG_NOTHING_TO_CUT},
     [FIELD_MOVE_FLASH]        = {SetUpFieldMove_Flash,       PARTY_MSG_CANT_USE_HERE},
