@@ -12962,26 +12962,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_RevelationDance,
     },
 
-    [MOVE_CORE_ENFORCER] =
-    {
-        .name = COMPOUND_STRING("Core Enforcer"),
-        .description = COMPOUND_STRING(
-            "Hits with a ray that\n"
-            "nullifies the foe's ability."),
-        .effect = EFFECT_HIT,
-        .power = 100,
-        .type = TIPO_DRAGON,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_CORE_ENFORCER,
-        }),
-        .battleAnimScript = gBattleAnimMove_CoreEnforcer,
-    },
-
     [MOVE_TROP_KICK] =
     {
         .name = COMPOUND_STRING("Trop Kick"),
@@ -13102,29 +13082,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_AuroraVeil,
-    },
-
-    [MOVE_SHELL_TRAP] =
-    {
-        .name = COMPOUND_STRING("Shell Trap"),
-        .description = COMPOUND_STRING(
-            "Sets a shell trap that\n"
-            "damages on contact."),
-        .effect = EFFECT_SHELL_TRAP,
-        .power = 150,
-        .type = TIPO_FUEGO,
-        .accuracy = 100,
-        .pp = 5,
-        .target = MOVE_TARGET_BOTH,
-        .priority = -3,
-        .category = CATEGORIA_ESPECIAL,
-        .mirrorMoveBanned = TRUE,
-        .meFirstBanned = TRUE,
-        .copycatBanned = TRUE,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .assistBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_ShellTrap,
     },
 
     [MOVE_FLEUR_CANNON] =

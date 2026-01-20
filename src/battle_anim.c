@@ -209,7 +209,6 @@ static const u8* const sBattleAnims_General[NUM_B_ANIMS_GENERAL] =
     [B_ANIM_TOTEM_FLARE]            = gBattleAnimGeneral_TotemFlare,
     [B_ANIM_GULP_MISSILE]           = gBattleAnimGeneral_GulpMissile,
     [B_ANIM_AQUA_RING_HEAL]         = gBattleAnimGeneral_AquaRingHeal,
-    [B_ANIM_SHELL_TRAP_SETUP]       = gBattleAnimGeneral_ShellTrapSetUp,
     [B_ANIM_SNOW_CONTINUES]         = gBattleAnimGeneral_Snow,
     [B_ANIM_SALT_CURE_DAMAGE]       = gBattleAnimGeneral_SaltCureDamage,
     [B_ANIM_MAX_SET_WEATHER]        = gBattleAnimGeneral_SetWeather,

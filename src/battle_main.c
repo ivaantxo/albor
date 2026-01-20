@@ -2617,9 +2617,6 @@ static bool32 TryDoMoveEffectsBeforeMoves(void)
                 case EFFECT_FOCUS_PUNCH:
                     BattleScriptExecute(BattleScript_FocusPunchSetUp);
                     return TRUE;
-                case EFFECT_SHELL_TRAP:
-                    BattleScriptExecute(BattleScript_ShellTrapSetUp);
-                    return TRUE;
                 }
             }
         }

@@ -346,22 +346,6 @@ BattleScript_TeatimeBuffer:
 	moveendcase MOVEEND_CLEAR_BITS
 	goto BattleScript_MoveEnd
 
-BattleScript_ShellTrapSetUp::
-	flushtextbox
-	playanimation BS_ATTACKER, B_ANIM_SHELL_TRAP_SETUP, NULL
-	printstring STRINGID_PREPARESHELLTRAP
-	waitmessage B_WAIT_TIME_LONG
-	end3
-
-BattleScript_EffectShellTrap::
-	attackcanceler
-	jumpifshelltrap BS_ATTACKER, BattleScript_HitFromAccCheck
-	jumpifword COMPARACION_BITS_COMUNES, gHitMarker, HITMARKER_NO_ATTACKSTRING | HITMARKER_NO_PPDEDUCT, BattleScript_MoveEnd
-	ppreduce
-	printstring STRINGID_SHELLTRAPDIDNTWORK
-	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectSkyDrop::
 	attackcanceler
 	jumpifstatus2 BS_ATTACKER, STATUS2_MULTIPLETURNS, BattleScript_SkyDropTurn2
@@ -767,15 +751,6 @@ BattleScript_MoveEffectBugBite::
 	setbyte sBERRY_OVERRIDE, 0
 	trysymbiosis
 	restoretarget
-	return
-
-BattleScript_MoveEffectCoreEnforcer::
-	setgastroacid BattleScript_CoreEnforcerRet
-	printstring STRINGID_PKMNSABILITYSUPPRESSED
-	waitmessage B_WAIT_TIME_LONG
-	tryrevertweatherform
-	flushtextbox
-BattleScript_CoreEnforcerRet:
 	return
 
 BattleScript_EffectLaserFocus::
@@ -4116,7 +4091,7 @@ BattleScript_EffectFocusPunch::
 	attackcanceler
 	jumpifnodamage BattleScript_HitFromAccCheck
 	ppreduce
-	printstring STRINGID_PKMNLOSTFOCUS
+	printstring ("{B_ATK_NAME_WITH_PREFIX} lost its focus and couldn't move!")
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
@@ -4616,14 +4591,10 @@ BattleScript_HandleFaintedMon::
 	jumpifbyte COMPARACION_DESIGUAL, gBattleOutcome, 0, BattleScript_FaintedMonEnd
 	jumpifbattletype COMBATE_ENTRENADOR, BattleScript_FaintedMonTryChoose
 	jumpifword COMPARACION_BITS_DISTINTOS, gHitMarker, HITMARKER_PLAYER_FAINTED, BattleScript_FaintedMonTryChoose
-
-@ Combate salvaje: ¿usar siguiente Pokémon?
-	printstring STRINGID_USENEXTPKMN
+	printstring ("¿Quieres usar otro Pokémon?")
 	setbyte gBattleCommunication, 0
 	yesnobox
 	jumpifbyte COMPARACION_IGUAL, gBattleCommunication + 1, 0, BattleScript_FaintedMonTryChoose
-
-@ Jugador ha dicho NO → huye (siempre)
 	goto BattleScript_FaintedMonEnd
 
 BattleScript_FaintedMonTryChoose:
@@ -4737,7 +4708,7 @@ BattleScript_LocalBattleLostEnd_::
 
 BattleScript_SmokeBallEscape::
 	playanimation BS_ATTACKER, B_ANIM_SMOKEBALL_ESCAPE
-	printstring STRINGID_PKMNFLEDUSINGITS
+	printstring ("{PLAY_SE SE_FLEE}{B_ATK_NAME_WITH_PREFIX} fled using its {B_LAST_ITEM}!")
 	waitmessage B_WAIT_TIME_LONG
 	end2
 
@@ -7986,7 +7957,7 @@ BattleScript_SuccessBallThrow::
 	sethword gBattle_BG2_X, 0
 BattleScript_TryPrintCaughtMonInfo:
 	trysetcaughtmondexflags BattleScript_TryNicknameCaughtMon
-	printstring STRINGID_PKMNDATAADDEDTODEX
+	printstring ("Los datos de {B_DEF_NAME} se añadieron a la Pokédex.")
 	waitstate
 	setbyte gBattleCommunication, 0
 	displaydexinfo
@@ -8002,11 +7973,6 @@ BattleScript_TryNicknameCaughtMon::
 BattleScript_GiveCaughtMonEnd::
 	givecaughtmon
 BattleScript_SuccessBallThrowEnd::
-	setbyte gBattleOutcome, B_OUTCOME_CAUGHT
-	finishturn
-
-BattleScript_WallyBallThrow::
-	printstring STRINGID_GOTCHAPKMNCAUGHTWALLY
 	setbyte gBattleOutcome, B_OUTCOME_CAUGHT
 	finishturn
 

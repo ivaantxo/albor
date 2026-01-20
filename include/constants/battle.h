@@ -339,7 +339,6 @@ enum ResultadosCombate
 #define MOVE_EFFECT_SPECTRAL_THIEF      61
 #define MOVE_EFFECT_V_CREATE            62
 #define MOVE_EFFECT_HAPPY_HOUR          63
-#define MOVE_EFFECT_CORE_ENFORCER       64
 #define MOVE_EFFECT_THROAT_CHOP         65
 #define MOVE_EFFECT_INCINERATE          66
 #define MOVE_EFFECT_BUG_BITE            67

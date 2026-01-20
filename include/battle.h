@@ -174,7 +174,6 @@ struct ProtectStruct
     u16 statFell:1;
     u16 pranksterElevated:1;
     u16 quickDraw:1;
-    u16 shellTrap:1;
     u16 silkTrapped:1;
     u16 burningBulwarked:1;
     u16 eatMirrorHerb:1;

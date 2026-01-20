@@ -28,8 +28,6 @@ static void SpriteCB_SpriteOnMonForDuration(struct Sprite *sprite);
 static void SpriteCB_ToxicThreadWrap(struct Sprite *sprite);
 static void SpriteCB_GrowingSuperpower(struct Sprite *sprite);
 static void SpriteCB_CentredSpiderWeb(struct Sprite *sprite);
-static void SpriteCB_CoreEnforcerHits(struct Sprite *sprite);
-static void SpriteCB_CoreEnforcerBeam(struct Sprite *sprite);
 static void SpriteCB_TranslateAnimSpriteToTargetMonLocationDoubles(struct Sprite *sprite);
 static void SpriteCB_FallingObject(struct Sprite *sprite);
 static void SpriteCB_FallingObjectStep(struct Sprite *sprite);
@@ -2658,117 +2656,6 @@ const struct SpriteTemplate gRevelationDanceYellowDispersalTemplate =
     .callback = AnimFireSpread
 };
 
-//core enforcer
-const struct SpriteTemplate gCoreEnforcerBlueRingTemplate =
-{
-    .tileTag = ANIM_TAG_THIN_RING,
-    .paletteTag = ANIM_TAG_WATER_ORB,
-    .oam = &gOamData_AffineDouble_ObjBlend_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gThinRingShrinkingAffineAnimTable,
-    .callback = AnimSpriteOnMonPos
-};
-
-const struct SpriteTemplate gCoreEnforcerYellowRingTemplate =
-{
-    .tileTag = ANIM_TAG_THIN_RING,
-    .paletteTag = ANIM_TAG_SPARK_2,
-    .oam = &gOamData_AffineDouble_ObjBlend_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gThinRingShrinkingAffineAnimTable,
-    .callback = AnimSpriteOnMonPos
-};
-
-const struct SpriteTemplate gCoreEnforcerGreenRingTemplate =
-{
-    .tileTag = ANIM_TAG_THIN_RING,
-    .paletteTag = ANIM_TAG_LEAF,
-    .oam = &gOamData_AffineDouble_ObjBlend_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gThinRingShrinkingAffineAnimTable,
-    .callback = AnimSpriteOnMonPos
-};
-
-const struct SpriteTemplate gCoreEnforcerCircleChargeTemplate =
-{
-    .tileTag = ANIM_TAG_SHOCK_3,
-    .paletteTag = ANIM_TAG_SHOCK_3,
-    .oam = &gOamData_AffineNormal_ObjNormal_32x32,
-    .anims = gAnims_ThunderboltOrb,
-    .images = NULL,
-    .affineAnims = gAffineAnims_HitSplat,
-    .callback = AnimFlashingHitSplat
-};
-
-const struct SpriteTemplate gCoreEnforcerBlueSparkTemplate =
-{
-    .tileTag = ANIM_TAG_SPARK_2,
-    .paletteTag = ANIM_TAG_WATER_ORB,
-    .oam = &gOamData_AffineNormal_ObjNormal_16x16,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimSparkElectricity
-};
-
-const struct SpriteTemplate gCoreEnforcerGreenChargeTemplate =
-{
-    .tileTag = ANIM_TAG_SPARK_2,
-    .paletteTag = ANIM_TAG_LEAF,
-    .oam = &gOamData_AffineNormal_ObjNormal_16x16,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimSparkElectricity
-};
-
-const struct SpriteTemplate gCoreEnforcerSnoreTemplate =
-{
-    .tileTag = ANIM_TAG_SNORE_Z,
-    .paletteTag = ANIM_TAG_SNORE_Z,
-    .oam = &gOamData_AffineOff_ObjBlend_32x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_CentredSpiderWeb
-};
-
-const struct SpriteTemplate gCoreEnforcerImpactTemplate =
-{
-    .tileTag = ANIM_TAG_IMPACT,
-    .paletteTag = ANIM_TAG_IMPACT,
-    .oam = &gOamData_AffineNormal_ObjNormal_32x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gAffineAnims_HitSplat,
-    .callback = SpriteCB_CoreEnforcerHits
-};
-
-const struct SpriteTemplate gCoreEnforcerBeamTemplate =
-{
-    .tileTag = ANIM_TAG_ORBS,
-    .paletteTag = ANIM_TAG_ORBS,
-    .oam = &gOamData_AffineOff_ObjNormal_8x8,
-    .anims = gSolarBeamBigOrbAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_CoreEnforcerBeam
-};
-
-const struct SpriteTemplate gCoreEnforcerExplosionTemplate =
-{
-    .tileTag = ANIM_TAG_EXPLOSION,
-    .paletteTag = ANIM_TAG_EXPLOSION,
-    .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gExplosionAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_SpriteToCentreOfSide
-};
-
 //trop kick
 const struct SpriteTemplate gTropKickGreenFootTemplate =
 {
@@ -2848,40 +2735,6 @@ const struct SpriteTemplate gAuroraVeilRingTemplate =
     .images = NULL,
     .affineAnims = gGuardRingAffineAnimTable,
     .callback = SpriteCB_SurroundingRing
-};
-
-//shell trap
-const struct SpriteTemplate gShellTrapYellowImpactTemplate =
-{
-    .tileTag = ANIM_TAG_IMPACT,
-    .paletteTag = ANIM_TAG_SMALL_EMBER,
-    .oam = &gOamData_AffineNormal_ObjBlend_32x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gAffineAnims_HitSplat,
-    .callback = AnimHitSplatBasic
-};
-
-const struct SpriteTemplate gShellTrapRedImpactTemplate =
-{
-    .tileTag = ANIM_TAG_IMPACT,
-    .paletteTag = ANIM_TAG_SMALL_RED_EYE,
-    .oam = &gOamData_AffineNormal_ObjBlend_32x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gAffineAnims_HitSplat,
-    .callback = AnimHitSplatBasic
-};
-
-const struct SpriteTemplate gShellTrapFireHitsTemplate =
-{
-    .tileTag = ANIM_TAG_ICE_CRYSTALS,
-    .paletteTag = ANIM_TAG_SMALL_EMBER,
-    .oam = &gOamData_AffineOff_ObjNormal_8x8,
-    .anims = gAnims_Snowball,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimMoveParticleBeyondTarget
 };
 
 //fleur cannon
@@ -7406,54 +7259,6 @@ static void SpriteCB_CentredSpiderWeb(struct Sprite *sprite)
     sprite->callback = AnimSpiderWeb;
 }
 
-static void SpriteCB_CoreEnforcerHits(struct Sprite *sprite)
-{
-    StartSpriteAffineAnim(sprite, gBattleAnimArgs[3]);
-
-    if (gBattleAnimArgs[2] == 0)
-    {
-        if (EsContraEntrenador())
-            InitSpritePosToAnimAttackersCentre(sprite, FALSE);
-        else
-            InitSpritePosToAnimAttacker(sprite, FALSE);
-    }
-    else
-    {
-        if (EsContraEntrenador())
-            InitSpritePosToAnimTargetsCentre(sprite, FALSE);
-        else
-            InitSpritePosToAnimTarget(sprite, FALSE);
-    }
-
-    sprite->y += 20;
-    sprite->callback = AnimFlashingHitSplat_Step;
-}
-
-static void SpriteCB_CoreEnforcerBeam(struct Sprite *sprite)
-{
-    if (!EsContraEntrenador())
-    {
-        AnimSolarBeamBigOrb(sprite);
-    }
-    else
-    {
-        InitSpritePosToAnimAttacker(sprite, TRUE);
-        StartSpriteAnim(sprite, gBattleAnimArgs[3]);
-
-        sprite->data[0] = gBattleAnimArgs[2];
-
-        sprite->data[2] = (GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X_2)
-                        +  GetBattlerSpriteCoord(ALIADO(gBattleAnimTarget), BATTLER_COORD_X_2)) / 2;
-
-
-        sprite->data[4] = (GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y_PIC_OFFSET)
-                        +  GetBattlerSpriteCoord(ALIADO(gBattleAnimTarget), BATTLER_COORD_Y_PIC_OFFSET)) / 2;
-
-        sprite->callback = StartAnimLinearTranslation;
-        StoreSpriteCallbackInData6(sprite, DestroyAnimSprite);
-    }
-}
-
 static void SpriteCB_TranslateAnimSpriteToTargetMonLocationDoubles(struct Sprite *sprite)
 {
     bool8 v1;
@@ -8368,17 +8173,6 @@ void AnimTask_SquishTargetShort(u8 taskId)
 
     PrepareAffineAnimInTaskData(task, spriteId, sSquishTargetShortAffineAnimCmds);
     task->func = AnimTask_WaitAffineAnim;
-}
-
-void CoreEnforcerLoadBeamTarget(struct Sprite *sprite)
-{
-    sprite->data[0] = gBattleAnimArgs[2];
-    sprite->data[1] = sprite->x;
-    sprite->data[2] = (GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X_2)
-                    +  GetBattlerSpriteCoord(ALIADO(gBattleAnimTarget), BATTLER_COORD_X_2)) / 2;
-    sprite->data[3] = sprite->y;
-    sprite->data[4] = (GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y_PIC_OFFSET)
-                    +  GetBattlerSpriteCoord(ALIADO(gBattleAnimTarget), BATTLER_COORD_Y_PIC_OFFSET)) / 2;
 }
 
 void AnimTask_CreateBestowItem(u8 taskId)

@@ -1595,11 +1595,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectAttackUpUserAlly,
     },
 
-    [EFFECT_SHELL_TRAP] =
-    {
-        .battleScript = BattleScript_EffectShellTrap,
-    },
-
     [EFFECT_PSYBLADE] =
     {
         .battleScript = BattleScript_EffectHit,
