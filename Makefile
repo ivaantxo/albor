@@ -11,7 +11,7 @@ BUILD_DIR := build
 # Default make rule
 all: rom
 
-TOOLCHAIN := /usr/local/Cellar/arm-none-eabi-gcc
+TOOLCHAIN := $(DEVKITARM)
 
 PREFIX := arm-none-eabi-
 OBJCOPY := $(PREFIX)objcopy
@@ -58,7 +58,7 @@ INCLUDE_CPP_ARGS := $(INCLUDE_DIRS:%=-iquote %)
 INCLUDE_SCANINC_ARGS := $(INCLUDE_DIRS:%=-I %)
 
 O_LEVEL ?= 2
-CPPFLAGS := $(INCLUDE_CPP_ARGS) -Wno-trigraphs -DMODERN=1
+CPPFLAGS := $(INCLUDE_CPP_ARGS) -Wno-trigraphs -DMODERN=1 -std=gnu17
 ARMCC := $(PREFIX)gcc
 PATH_ARMCC := PATH="$(PATH)" $(ARMCC)
 CC1 := $(shell $(PATH_ARMCC) --print-prog-name=cc1) -quiet
