@@ -2029,11 +2029,6 @@ bool32 HasTrappingMoveEffect(u32 battler)
     return FALSE;
 }
 
-bool32 HasThawingMove(u32 battler)
-{
-    CHECK_MOVE_FLAG(thawsUser);
-}
-
 bool32 IsUngroundingEffect(u32 effect)
 {
     switch (effect)
@@ -2687,9 +2682,6 @@ bool32 CanKnockOffItem(u32 battler, u32 item)
 // status checks
 bool32 IsBattlerIncapacitated(u32 battler, u32 ability)
 {
-    if ((gBattleMons[battler].status1 & STATUS1_FREEZE) && !HasThawingMove(battler))
-        return TRUE;    // if battler has thawing move we assume they will definitely use it, and thus being frozen should be neglected
-
     if (gBattleMons[battler].status2 & STATUS2_RECHARGE)
         return TRUE;
 

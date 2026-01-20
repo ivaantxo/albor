@@ -1306,7 +1306,6 @@ const struct CompressedSpriteSheetAndPalette gBattleAnimTable[] =
     [ANIM_TAG_ACUPRESSURE]                                          = {gBattleAnimSpriteGfx_Acupressure       , gBattleAnimSpritePal_Acupressure        , 512  , ANIM_TAG_ACUPRESSURE          },
     [ANIM_TAG_WRING_OUT]                                            = {gBattleAnimSpriteGfx_WringOut          , gBattleAnimSpritePal_WringOut           , 512  , ANIM_TAG_WRING_OUT            },
     [ANIM_TAG_COLORED_ORBS]                                         = {gBattleAnimSpriteGfx_ColoredOrbs       , gBattleAnimSpritePal_ColoredOrbs        , 768  , ANIM_TAG_COLORED_ORBS         },
-    [ANIM_TAG_WORRY_SEED]                                           = {gBattleAnimSpriteGfx_WorrySeed         , gBattleAnimSpritePal_WorrySeed          , 128  , ANIM_TAG_WORRY_SEED           },
     [ANIM_TAG_SMALL_CLOUD]                                          = {gBattleAnimSpriteGfx_SmallCloud        , gBattleAnimSpritePal_SmallCloud         , 128  , ANIM_TAG_SMALL_CLOUD          },
     [ANIM_TAG_ATTACK_ORDER]                                         = {gBattleAnimSpriteGfx_AttackOrder       , gBattleAnimSpritePal_AttackOrder        , 1152 , ANIM_TAG_ATTACK_ORDER         },
     [ANIM_TAG_DRAGON_PULSE]                                         = {gBattleAnimSpriteGfx_DragonPulse       , gBattleAnimSpritePal_DragonPulse        , 256  , ANIM_TAG_DRAGON_PULSE         },

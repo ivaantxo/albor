@@ -116,7 +116,6 @@ find . -name "* 2.inc" -delete
 \s+[0-9]+
 
 //revisar animación y crear efecto de Triataque
-//unificar frozen/frostbite
 //solucionar: problema de que se envían 2 pokémon 2 veces + problema iconos al debilitarse un pokémon (quizá también con 2)
 
 // revisar el bug rarísimo: si haces x (entras a cualquier pantalla) y hablas con pokémon, invalid address

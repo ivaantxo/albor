@@ -386,7 +386,6 @@ extern const u8 gBattleAnimMove_PowerSwap[];
 extern const u8 gBattleAnimMove_GuardSwap[];
 extern const u8 gBattleAnimMove_Punishment[];
 extern const u8 gBattleAnimMove_LastResort[];
-extern const u8 gBattleAnimMove_WorrySeed[];
 extern const u8 gBattleAnimMove_SuckerPunch[];
 extern const u8 gBattleAnimMove_ToxicSpikes[];
 extern const u8 gBattleAnimMove_HeartSwap[];

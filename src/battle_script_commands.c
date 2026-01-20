@@ -326,7 +326,6 @@ static bool32 ChangeOrderTargetAfterAttacker(void);
 void ApplyExperienceMultipliers(s32 *expAmount, u8 expGetterMonId, u8 faintedBattler);
 static void RemoveAllWeather(void);
 static bool8 CanAbilityPreventStatLoss(u16 abilityDef);
-static bool8 CanBurnHitThaw(u16 move);
 static u32 GetNextTarget(u32 moveTarget, bool32 excludeCurrent);
 static void AccuracyCheck(bool32 recalcDragonDarts, const u8 *nextInstr, const u8 *failInstr, u16 move);
 
@@ -563,9 +562,7 @@ static void Cmd_settelekinesis(void);
 static void Cmd_swapstatstages(void);
 static void Cmd_averagestats(void);
 static void Cmd_jumpifoppositegenders(void);
-static void Cmd_tryworryseed(void);
 static void Cmd_callnative(void);
-static void Cmd_preparaatacanteequipo(void);
 
 #define BATTLE_CMD(name) [BATTLE_CMD_##name] = Cmd_##name
 
@@ -805,8 +802,6 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     BATTLE_CMD(swapstatstages),
     BATTLE_CMD(averagestats),
     BATTLE_CMD(jumpifoppositegenders),
-    BATTLE_CMD(tryworryseed),
-    BATTLE_CMD(preparaatacanteequipo),
 };
 
 static const u32 sStatusFlagsForMoveEffects[NUM_MOVE_EFFECTS] =
@@ -4786,35 +4781,6 @@ static void Cmd_moveend(void)
             }
             gBattleScripting.moveendState++;
             break;
-        case MOVEEND_DEFROST: // defrosting check
-            if (gBattleMons[gBattlerTarget].status1 & STATUS1_FREEZE
-                && IsBattlerAlive(gBattlerTarget)
-                && gBattlerAttacker != gBattlerTarget
-                && (moveType == TIPO_FUEGO || CanBurnHitThaw(gCurrentMove))
-                && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT))
-            {
-                gBattleMons[gBattlerTarget].status1 &= ~STATUS1_FREEZE;
-                BtlController_EmitSetMonData(gBattlerTarget, BUFFER_A, REQUEST_STATUS_BATTLE, 0, sizeof(gBattleMons[gBattlerTarget].status1), &gBattleMons[gBattlerTarget].status1);
-                MarcaCombatienteOcupado(gBattlerTarget);
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_DefrostedViaFireMove;
-                effect = TRUE;
-            }
-            if (gBattleMons[gBattlerTarget].status1 & STATUS1_FROSTBITE
-                && IsBattlerAlive(gBattlerTarget)
-                && gBattlerAttacker != gBattlerTarget
-                && gMovesInfo[originallyUsedMove].thawsUser
-                && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT))
-            {
-                gBattleMons[gBattlerTarget].status1 &= ~STATUS1_FROSTBITE;
-                BtlController_EmitSetMonData(gBattlerTarget, BUFFER_A, REQUEST_STATUS_BATTLE, 0, sizeof(gBattleMons[gBattlerTarget].status1), &gBattleMons[gBattlerTarget].status1);
-                MarcaCombatienteOcupado(gBattlerTarget);
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_FrostbiteHealedViaFireMove;
-                effect = TRUE;
-            }
-            gBattleScripting.moveendState++;
-            break;
         case MOVEEND_RECOIL:
             if (gHitMarker & HITMARKER_UNABLE_TO_USE_MOVE)
             {
@@ -4986,10 +4952,7 @@ static void Cmd_moveend(void)
                         gBattlescriptCurrInstr = BattleScript_TargetBurnHeal;
                         break;
                     case STATUS1_FREEZE:
-                        gBattlescriptCurrInstr = BattleScript_DefrostedViaFireMove;
-                        break;
                     case STATUS1_FROSTBITE:
-                        gBattlescriptCurrInstr = BattleScript_FrostbiteHealedViaFireMove;
                         break;
                     case STATUS1_POISON:
                     case STATUS1_TOXIC_POISON:
@@ -12958,30 +12921,6 @@ static void Cmd_jumpifoppositegenders(void)
         gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
-static void Cmd_tryworryseed(void)
-{
-    CMD_ARGS(const u8 *failInstr);
-
-    if (gAbilitiesInfo[gBattleMons[gBattlerTarget].ability].cantBeOverwritten
-      || gBattleMons[gBattlerTarget].ability == ABILITY_INSOMNIA)
-    {
-        RecuerdaHabilidadCombate(gBattlerTarget, gBattleMons[gBattlerTarget].ability);
-        gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
-        gBattlescriptCurrInstr = cmd->failInstr;
-    }
-    else if (GetBattlerHoldEffect(gBattlerTarget, TRUE) == HOLD_EFFECT_ABILITY_SHIELD)
-    {
-        RecordItemEffectBattle(gBattlerTarget, HOLD_EFFECT_ABILITY_SHIELD);
-        gBattlescriptCurrInstr = cmd->failInstr;
-    }
-    else
-    {
-        gBattleScripting.abilityPopupOverwrite = gBattleMons[gBattlerTarget].ability;
-        gBattleMons[gBattlerTarget].ability = gBattleStruct->overwrittenAbilities[gBattlerTarget] = ABILITY_INSOMNIA;
-        gBattlescriptCurrInstr = cmd->nextInstr;
-    }
-}
-
 static void Cmd_callnative(void)
 {
     CMD_ARGS(void (*func)(void));
@@ -13165,21 +13104,6 @@ static bool8 CanAbilityPreventStatLoss(u16 abilityDef)
     case ABILITY_FULL_METAL_BODY:
     case ABILITY_WHITE_SMOKE:
         return TRUE;
-    }
-    return FALSE;
-}
-
-static bool8 CanBurnHitThaw(u16 move)
-{
-    u32 i;
-
-    if (B_BURN_HIT_THAW >= GEN_6)
-    {
-        for (i = 0; i < gMovesInfo[move].numAdditionalEffects; i++)
-        {
-            if (gMovesInfo[move].additionalEffects[i].moveEffect == MOVE_EFFECT_BURN)
-                return TRUE;
-        }
     }
     return FALSE;
 }
@@ -13787,23 +13711,3 @@ void BS_SetMagicCoatTarget(void)
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
-static void Cmd_preparaatacanteequipo(void)
-{
-    CMD_ARGS(u8 indiceEquipo);
-
-    struct Pokemon *equipo;
-
-    if (GetBattlerSide(gBattlerAttacker) == LADO_JUGADOR)
-        equipo = gPlayerParty;
-    else
-        equipo = gEnemyParty;
-
-    struct Pokemon *pokemon = &equipo[cmd->indiceEquipo];
-
-    gBattleStruct->estadisticaAtaqueEquipo =
-        GetMonData(pokemon, MON_DATA_ATTACK, NULL);
-
-    gBattleStruct->ataqueEquipoActivo = TRUE;
-
-    gBattlescriptCurrInstr = cmd->nextInstr;
-}

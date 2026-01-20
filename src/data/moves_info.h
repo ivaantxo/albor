@@ -272,12 +272,8 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
     {
         .name = COMPOUND_STRING("Puño hielo"),
         .description = COMPOUND_STRING(
-            "An icy punch that may\n"
-        #if B_USE_FROSTBITE == TRUE
-            "leave the foe with frostbite."),
-        #else
-            "freeze the foe."),
-        #endif
+            "Golpea con su puño helado\n"
+            "heado qlue puede congelar."),
         .effect = EFFECT_HIT,
         .power = 75,
         .type = TIPO_HIELO,
@@ -1310,16 +1306,12 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .name = COMPOUND_STRING("Rayo hielo"),
         .description = COMPOUND_STRING(
             "Blasts the foe with an icy\n"
-        #if B_USE_FROSTBITE == TRUE
-            "beam. May cause frostbite."),
-        #else
             "beam that may freeze it."),
-        #endif
         .effect = EFFECT_HIT,
         .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 90 : 95,
         .type = TIPO_HIELO,
         .accuracy = 100,
-        .pp = 10,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
@@ -1337,11 +1329,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .name = COMPOUND_STRING("Ventisca"),
         .description = COMPOUND_STRING(
             "Hits the foe with an icy\n"
-        #if B_USE_FROSTBITE == TRUE
             "storm. May cause frostbite."),
-        #else
-            "storm that may freeze it."),
-        #endif
         .effect = B_BLIZZARD_HAIL >= GEN_4 ? EFFECT_BLIZZARD : EFFECT_HIT,
         .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 110 : 120,
         .type = TIPO_HIELO,
@@ -1812,7 +1800,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .thawsUser = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 30,
@@ -3642,7 +3629,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .thawsUser = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 10,
@@ -3811,11 +3797,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .name = COMPOUND_STRING("Nieve polvo"),
         .description = COMPOUND_STRING(
             "Blasts the foe with a snowy\n"
-        #if B_USE_FROSTBITE == TRUE
             "gust. May cause frostbite."),
-        #else
-            "gust. May cause freezing."),
-        #endif
         .effect = EFFECT_HIT,
         .power = 40,
         .type = TIPO_HIELO,
@@ -4627,7 +4609,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
-        .thawsUser = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 50,
@@ -7947,24 +7928,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_LastResort,
     },
 
-    [MOVE_WORRY_SEED] =
-    {
-        .name = COMPOUND_STRING("Abatidoras"),
-        .description = COMPOUND_STRING(
-            "Plants a seed on the foe\n"
-            "giving it Insomnia."),
-        .effect = EFFECT_WORRY_SEED,
-        .power = 0,
-        .type = TIPO_PLANTA,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .magicCoatAffected = TRUE,
-        .battleAnimScript = gBattleAnimMove_WorrySeed,
-    },
-
     [MOVE_SUCKER_PUNCH] =
     {
         .name = COMPOUND_STRING("Golpe bajo"),
@@ -8077,7 +8040,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .thawsUser = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 10,
@@ -8649,11 +8611,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .name = COMPOUND_STRING("Colmillo hielo"),
         .description = COMPOUND_STRING(
             "May cause flinching or\n"
-        #if B_USE_FROSTBITE == TRUE
             "leave the foe with frostbite."),
-        #else
-            "leave the foe frozen."),
-        #endif
         .effect = EFFECT_HIT,
         .power = 65,
         .type = TIPO_HIELO,
@@ -10204,7 +10162,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .thawsUser = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 30,
@@ -11233,7 +11190,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .thawsUser = TRUE,
         .battleAnimScript = gBattleAnimMove_FusionFlare,
     },
 
@@ -11504,11 +11460,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .name = COMPOUND_STRING("Freeze-Dry"),
         .description = COMPOUND_STRING(
             "Super effective on Water-\n"
-        #if B_USE_FROSTBITE == TRUE
             "types. May cause frostbite."),
-        #else
-            "types. May cause freezing."),
-        #endif
         .effect = EFFECT_SUPER_EFFECTIVE_ON_ARG,
         .power = 70,
         .type = TIPO_HIELO,
@@ -11854,7 +11806,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .thawsUser = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 30,
@@ -12878,7 +12829,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .thawsUser = TRUE,
         .argument = TIPO_FUEGO,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_REMOVE_ARG_TYPE,
@@ -13567,7 +13517,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS < GEN_8,
-        .thawsUser = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 100,
@@ -13960,7 +13909,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
-        .thawsUser = TRUE,
         .balistico = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
@@ -14595,7 +14543,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .thawsUser = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 30,
@@ -14707,11 +14654,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .name = COMPOUND_STRING("Freezing Glare"),
         .description = COMPOUND_STRING(
             "Shoots psychic power from\n"
-        #if B_USE_FROSTBITE == TRUE
             "the eyes. May frostbite."),
-        #else
-            "the eyes. May freeze the foe."),
-        #endif
         .power = 90,
         .effect = EFFECT_HIT,
         .type = TIPO_PSIQUICO,
@@ -16237,7 +16180,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .thawsUser = TRUE,
         .battleAnimScript = gBattleAnimMove_HydroSteam,
     },
 

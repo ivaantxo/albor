@@ -841,20 +841,6 @@ gBattleAnimMove_LastResort::
 	call UnsetHighSpeedBg
 	end
 
-gBattleAnimMove_WorrySeed::
-	loadspritegfx ANIM_TAG_WORRY_SEED
-	loadspritegfx ANIM_TAG_SMALL_CLOUD
-	playsewithpan SE_M_POISON_POWDER, SOUND_PAN_ATTACKER
-	createsprite gWorrySeedSpriteTemplate, ANIM_ATTACKER, 3, 0, 0, 32, -32
-	waitforvisualfinish
-	playsewithpan SE_M_SAND_ATTACK, SOUND_PAN_TARGET
-	createsprite gSmallCloudTemplate, ANIM_ATTACKER, 3, -2, -1, 0, -1, -1
-	createsprite gSmallCloudTemplate, ANIM_ATTACKER, 3,  3,  1, 1, 2, -1
-	createsprite gSmallCloudTemplate, ANIM_ATTACKER, 3, -2,  1, 2, 1, -2
-	createsprite gSmallCloudTemplate, ANIM_ATTACKER, 3,  3, -2, 1, -1, -2
-	waitforvisualfinish
-	end
-
 gBattleAnimMove_SuckerPunch::
 	loadspritegfx ANIM_TAG_POISON_JAB
 	loadspritegfx ANIM_TAG_IMPACT

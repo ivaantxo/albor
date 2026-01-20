@@ -317,7 +317,6 @@ struct MoveInfo
     u32 damagesAirborne:1;
     u32 damagesAirborneDoubleDamage:1;
     u32 ignoreTypeIfFlyingAndUngrounded:1;
-    u32 thawsUser:1;
     u32 ignoresSubstitute:1;
     u32 forcePressure:1;
     u32 cantUseTwice:1;

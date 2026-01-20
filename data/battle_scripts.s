@@ -1775,24 +1775,6 @@ BattleScript_EffectHealingWishRestore:
 	waitmessage B_WAIT_TIME_LONG
 	return
 
-BattleScript_EffectWorrySeed::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	tryworryseed BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	copybyte gBattlerAbility, gBattlerTarget
-	call BattleScript_AbilityPopUpOverwriteThenNormal
-	recordability BS_TARGET
-	printstring STRINGID_PKMNACQUIREDABILITY
-	waitmessage B_WAIT_TIME_LONG
-	tryrevertweatherform
-	flushtextbox
-	tryendneutralizinggas BS_TARGET
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectPowerSplit::
 	attackcanceler
 	attackstring
@@ -2272,7 +2254,7 @@ BattleScript_InsomniaProtects:
 BattleScript_AlreadyAsleep::
 	setalreadystatusedmoveattempt BS_ATTACKER
 	pause B_WAIT_TIME_SHORT
-	printstring STRINGID_PKMNALREADYASLEEP
+	printstring ("¡{B_DEF_NAME_WITH_PREFIX} ya está durmiendo!")
 	waitmessage B_WAIT_TIME_LONG
 	orhalfword gMoveResultFlags, MOVE_RESULT_FAILED
 	goto BattleScript_MoveEnd
@@ -2682,7 +2664,7 @@ BattleScript_RestCantSleep::
 BattleScript_RestIsAlreadyAsleep::
 	setalreadystatusedmoveattempt BS_ATTACKER
 	pause B_WAIT_TIME_SHORT
-	printstring STRINGID_PKMNALREADYASLEEP2
+	printstring ("¡{B_ATK_NAME_WITH_PREFIX} ya está durmiendo!")
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
@@ -6012,7 +5994,7 @@ BattleScript_PoisonHealActivates::
 	end2
 
 BattleScript_BurnTurnDmg::
-	printstring STRINGID_PKMNHURTBYBURN
+	printstring ("¡{B_ATK_NAME_WITH_PREFIX} está dolido por su quemadura!")
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_DoStatusTurnDmg
 
@@ -6022,34 +6004,10 @@ BattleScript_FrostbiteTurnDmg::
 	goto BattleScript_DoStatusTurnDmg
 
 BattleScript_MoveUsedIsFrozen::
-	printstring STRINGID_PKMNISFROZEN
+	printstring ("¡{B_ATK_NAME_WITH_PREFIX} se ha congelado!")
 	waitmessage B_WAIT_TIME_LONG
 	statusanimation BS_ATTACKER
 	goto BattleScript_MoveEnd
-
-BattleScript_MoveUsedUnfroze::
-	printfromtable gGotDefrostedStringIds
-	waitmessage B_WAIT_TIME_LONG
-	updatestatusicon BS_ATTACKER
-	return
-
-BattleScript_MoveUsedUnfrostbite::
-	printfromtable gFrostbiteHealedStringIds
-	waitmessage B_WAIT_TIME_LONG
-	updatestatusicon BS_ATTACKER
-	return
-
-BattleScript_DefrostedViaFireMove::
-	printstring STRINGID_PKMNWASDEFROSTED
-	waitmessage B_WAIT_TIME_LONG
-	updatestatusicon BS_TARGET
-	return
-
-BattleScript_FrostbiteHealedViaFireMove::
-	printstring STRINGID_PKMNFROSTBITEHEALED
-	waitmessage B_WAIT_TIME_LONG
-	updatestatusicon BS_TARGET
-	return
 
 BattleScript_MoveUsedIsParalyzed::
 	printstring STRINGID_PKMNISPARALYZED
@@ -7303,7 +7261,7 @@ BattleScript_BerryCureFrzEnd2::
 
 BattleScript_BerryCureFrzRet::
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT
-	printstring STRINGID_PKMNSITEMDEFROSTEDIT
+	printstring ("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM} defrosted it!")
 	waitmessage B_WAIT_TIME_LONG
 	updatestatusicon BS_SCRIPTING
 	removeitem BS_SCRIPTING

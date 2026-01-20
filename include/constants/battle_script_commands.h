@@ -247,7 +247,6 @@ enum MoveEndEffects
     MOVEEND_MIRROR_MOVE,
     MOVEEND_NEXT_TARGET, // Everything up until here is handled for each strike of a multi-hit move
     MOVEEND_MULTIHIT_MOVE,
-    MOVEEND_DEFROST,
     MOVEEND_RECOIL,
     MOVEEND_ITEM_EFFECTS_ATTACKER,
     MOVEEND_EJECT_ITEMS,
@@ -505,8 +504,6 @@ enum BattleScriptCommands
     BATTLE_CMD_swapstatstages,
     BATTLE_CMD_averagestats,
     BATTLE_CMD_jumpifoppositegenders,
-    BATTLE_CMD_tryworryseed,
-    BATTLE_CMD_preparaatacanteequipo,
 };
 
 #endif // GUARD_CONSTANTS_BATTLE_SCRIPT_COMMANDS_H

@@ -11,7 +11,6 @@
 #define AILMENT_BRN   5
 #define AILMENT_PKRS  6
 #define AILMENT_FNT   7
-#define AILMENT_FRB   8
 
 enum TiposDePantallaDeEquipo
 {
@@ -31,7 +30,6 @@ enum PartyMenuTypes
     PARTY_MENU_TYPE_DAYCARE,
     PARTY_MENU_TYPE_MOVE_RELEARNER,
     PARTY_MENU_TYPE_UNION_ROOM_REGISTER,
-    PARTY_MENU_TYPE_MINIGAME,
 };
 
 #define PARTY_ACTION_CHOOSE_MON         0
@@ -45,8 +43,7 @@ enum PartyMenuTypes
 #define PARTY_ACTION_SOFTBOILED         8
 #define PARTY_ACTION_CHOOSE_AND_CLOSE   9
 #define PARTY_ACTION_MOVE_TUTOR         10
-#define PARTY_ACTION_MINIGAME           11
-#define PARTY_ACTION_CHOOSE_FAINTED_MON 12
+#define PARTY_ACTION_CHOOSE_FAINTED_MON 11
 
 // IDs for DisplayPartyMenuStdMessage, to display the message at the bottom of the party menu
 #define PARTY_MSG_CHOOSE_MON                0

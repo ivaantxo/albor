@@ -691,12 +691,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_WORRY_SEED] =
-    {
-        .battleScript = BattleScript_EffectWorrySeed,
-        .encourageEncore = TRUE,
-    },
-
     [EFFECT_HAIL] =
     {
         .battleScript = BattleScript_EffectHail,

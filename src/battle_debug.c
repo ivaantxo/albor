@@ -136,7 +136,6 @@ enum
     LIST_STATUS1_PARALYSIS,
     LIST_STATUS1_TOXIC_POISON,
     LIST_STATUS1_TOXIC_COUNTER,
-    LIST_STATUS1_FROSTBITE,
 };
 
 enum
@@ -287,7 +286,6 @@ static const u8 sText_Various[] = _("Various");
 static const u8 sText_Sleep[] = _("Sleep");
 static const u8 sText_Poison[] = _("Poison");
 static const u8 sText_Burn[] = _("Burn");
-static const u8 sText_Freeze[] = _("Freeze");
 static const u8 sText_Paralysis[] = _("Paralysis");
 static const u8 sText_ToxicPoison[] = _("Toxic Poison");
 static const u8 sText_ToxicCounter[] = _("Toxic Counter");
@@ -497,11 +495,10 @@ static const struct ListMenuItem sStatus1ListItems[] =
     {sText_Sleep, LIST_STATUS1_SLEEP},
     {sText_Poison, LIST_STATUS1_POISON},
     {sText_Burn, LIST_STATUS1_BURN},
-    {sText_Freeze, LIST_STATUS1_FREEZE},
+    {COMPOUND_STRING("Congelamiento");, LIST_STATUS1_FREEZE},
     {sText_Paralysis, LIST_STATUS1_PARALYSIS},
     {sText_ToxicPoison, LIST_STATUS1_TOXIC_POISON},
     {sText_ToxicCounter, LIST_STATUS1_TOXIC_COUNTER},
-    {sText_Frostbite, LIST_STATUS1_FROSTBITE},
 };
 
 static const struct ListMenuItem sStatus2ListItems[] =

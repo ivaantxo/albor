@@ -15,10 +15,10 @@ extern const struct CompressedSpriteSheetAndPalette gBattleAnimTable[];
 extern const struct OamData gOamData_AffineOff_ObjNormal_8x8;
 extern const struct OamData gOamData_AffineOff_ObjBlend_64x64;
 
-static void AnimTask_FrozenIceCube_Step1(u8 taskId);
-static void AnimTask_FrozenIceCube_Step2(u8 taskId);
-static void AnimTask_FrozenIceCube_Step3(u8 taskId);
-static void AnimTask_FrozenIceCube_Step4(u8 taskId);
+static void AnimTask_IceCube_Step1(u8 taskId);
+static void AnimTask_IceCube_Step2(u8 taskId);
+static void AnimTask_IceCube_Step3(u8 taskId);
+static void AnimTask_IceCube_Step4(u8 taskId);
 static void Task_DoStatusAnimation(u8 taskId);
 
 static const union AnimCmd sAnim_WeatherBallNormal[] =
@@ -80,7 +80,7 @@ const struct SpriteTemplate gSpinningSparkleSpriteTemplate =
     .callback = AnimSpinningSparkle,
 };
 
-static const struct Subsprite sFrozenIceCubeSubsprites[] =
+static const struct Subsprite sIceCubeSubsprites[] =
 {
     {
         .x = -16,
@@ -116,12 +116,12 @@ static const struct Subsprite sFrozenIceCubeSubsprites[] =
     },
 };
 
-static const struct SubspriteTable sFrozenIceCubeSubspriteTable[] =
+static const struct SubspriteTable sIceCubeSubspriteTable[] =
 {
-    {ARRAY_COUNT(sFrozenIceCubeSubsprites), sFrozenIceCubeSubsprites},
+    {ARRAY_COUNT(sIceCubeSubsprites), sIceCubeSubsprites},
 };
 
-static const struct SpriteTemplate sFrozenIceCubeSpriteTemplate =
+static const struct SpriteTemplate sIceCubeSpriteTemplate =
 {
     .tileTag = ANIM_TAG_ICE_CUBE,
     .paletteTag = ANIM_TAG_ICE_CUBE,
@@ -132,7 +132,7 @@ static const struct SpriteTemplate sFrozenIceCubeSpriteTemplate =
     .callback = SpriteCallbackDummy,
 };
 
-void AnimTask_FrozenIceCubeAttacker(u8 taskId)
+void AnimTask_IceCubeAttacker(u8 taskId)
 {
     s16 x = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_X_2) - 32;
     s16 y = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_Y_PIC_OFFSET) - 36;
@@ -140,17 +140,17 @@ void AnimTask_FrozenIceCubeAttacker(u8 taskId)
 
     SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_ALL);
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 16));
-    spriteId = CreateSprite(&sFrozenIceCubeSpriteTemplate, x, y, 4);
+    spriteId = CreateSprite(&sIceCubeSpriteTemplate, x, y, 4);
     if (GetSpriteTileStartByTag(ANIM_TAG_ICE_CUBE) == 0xFFFF)
         gSprites[spriteId].invisible = TRUE;
-    SetSubspriteTables(&gSprites[spriteId], sFrozenIceCubeSubspriteTable);
+    SetSubspriteTables(&gSprites[spriteId], sIceCubeSubspriteTable);
     gTasks[taskId].data[15] = spriteId;
-    gTasks[taskId].func = AnimTask_FrozenIceCube_Step1;
+    gTasks[taskId].func = AnimTask_IceCube_Step1;
 }
 
-void AnimTask_CentredFrozenIceCube(u8 taskId)
+void AnimTask_CentredIceCube(u8 taskId)
 {
-    // same as AnimTask_FrozenIceCube but center position on target(s)
+    // same as AnimTask_IceCube but center position on target(s)
     s16 x, y;
     u32 spriteId;
     u8 battler1 = gBattleAnimTarget;
@@ -170,16 +170,16 @@ void AnimTask_CentredFrozenIceCube(u8 taskId)
     x -= 32;
     y -= 36;
 
-    spriteId = CreateSprite(&sFrozenIceCubeSpriteTemplate, x, y, 4);
+    spriteId = CreateSprite(&sIceCubeSpriteTemplate, x, y, 4);
     if (GetSpriteTileStartByTag(ANIM_TAG_ICE_CUBE) == 0xFFFF)
         gSprites[spriteId].invisible = TRUE;
 
-    SetSubspriteTables(&gSprites[spriteId], sFrozenIceCubeSubspriteTable);
+    SetSubspriteTables(&gSprites[spriteId], sIceCubeSubspriteTable);
     gTasks[taskId].data[15] = spriteId;
-    gTasks[taskId].func = AnimTask_FrozenIceCube_Step1;
+    gTasks[taskId].func = AnimTask_IceCube_Step1;
 }
 
-void AnimTask_FrozenIceCube(u8 taskId)
+void AnimTask_IceCube(u8 taskId)
 {
     s16 x = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X_2) - 32;
     s16 y = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y_PIC_OFFSET) - 36;
@@ -187,20 +187,20 @@ void AnimTask_FrozenIceCube(u8 taskId)
 
     SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_ALL);
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 16));
-    spriteId = CreateSprite(&sFrozenIceCubeSpriteTemplate, x, y, 4);
+    spriteId = CreateSprite(&sIceCubeSpriteTemplate, x, y, 4);
     if (GetSpriteTileStartByTag(ANIM_TAG_ICE_CUBE) == 0xFFFF)
         gSprites[spriteId].invisible = TRUE;
-    SetSubspriteTables(&gSprites[spriteId], sFrozenIceCubeSubspriteTable);
+    SetSubspriteTables(&gSprites[spriteId], sIceCubeSubspriteTable);
     gTasks[taskId].data[15] = spriteId;
-    gTasks[taskId].func = AnimTask_FrozenIceCube_Step1;
+    gTasks[taskId].func = AnimTask_IceCube_Step1;
 }
 
-static void AnimTask_FrozenIceCube_Step1(u8 taskId)
+static void AnimTask_IceCube_Step1(u8 taskId)
 {
     gTasks[taskId].data[1]++;
     if (gTasks[taskId].data[1] == 10)
     {
-        gTasks[taskId].func = AnimTask_FrozenIceCube_Step2;
+        gTasks[taskId].func = AnimTask_IceCube_Step2;
         gTasks[taskId].data[1] = 0;
     }
     else
@@ -211,7 +211,7 @@ static void AnimTask_FrozenIceCube_Step1(u8 taskId)
     }
 }
 
-static void AnimTask_FrozenIceCube_Step2(u8 taskId)
+static void AnimTask_IceCube_Step2(u8 taskId)
 {
     u32 palIndex = IndexOfSpritePaletteTag(ANIM_TAG_ICE_CUBE);
 
@@ -237,19 +237,19 @@ static void AnimTask_FrozenIceCube_Step2(u8 taskId)
                 if (gTasks[taskId].data[4] == 2)
                 {
                     gTasks[taskId].data[1] = 9;
-                    gTasks[taskId].func = AnimTask_FrozenIceCube_Step3;
+                    gTasks[taskId].func = AnimTask_IceCube_Step3;
                 }
             }
         }
     }
 }
 
-static void AnimTask_FrozenIceCube_Step3(u8 taskId)
+static void AnimTask_IceCube_Step3(u8 taskId)
 {
     gTasks[taskId].data[1]--;
     if (gTasks[taskId].data[1] == -1)
     {
-        gTasks[taskId].func = AnimTask_FrozenIceCube_Step4;
+        gTasks[taskId].func = AnimTask_IceCube_Step4;
         gTasks[taskId].data[1] = 0;
     }
     else
@@ -260,7 +260,7 @@ static void AnimTask_FrozenIceCube_Step3(u8 taskId)
     }
 }
 
-static void AnimTask_FrozenIceCube_Step4(u8 taskId)
+static void AnimTask_IceCube_Step4(u8 taskId)
 {
     gTasks[taskId].data[1]++;
     if (gTasks[taskId].data[1] == 37)

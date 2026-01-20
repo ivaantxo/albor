@@ -128,7 +128,6 @@ static void AnimMoveTrumpCard(struct Sprite *);
 static void AnimMoveTrumpCardParticle(struct Sprite *);
 static void AnimMoveAccupressure(struct Sprite *);
 static void AnimMoveWringOut(struct Sprite *);
-static void AnimMoveWorrySeed(struct Sprite *);
 static void AnimMoveSmallCloud(struct Sprite *);
 static void AnimGrassKnotStep(struct Sprite *);
 static void AnimGrassKnot(struct Sprite *);
@@ -319,17 +318,6 @@ static const union AffineAnimCmd * const sSmallCloudSpriteAffineAnimTable[] =
     sSmallCloudsVariant0,
     sSmallCloudsVariant1,
     sSmallCloudsVariant2,
-};
-
-const struct SpriteTemplate gWorrySeedSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_WORRY_SEED,
-    .paletteTag = ANIM_TAG_WORRY_SEED,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimMoveWorrySeed
 };
 
 const struct SpriteTemplate gSmallCloudTemplate =
@@ -3137,28 +3125,6 @@ static void AnimHyperBeamOrb_Step(struct Sprite *sprite)
         sprite->data[5] += 24;
         sprite->data[5] &= 0xFF;
     }
-}
-
-static void AnimMoveWorrySeedWait(struct Sprite *sprite)
-{
-    if (TranslateAnimHorizontalArc(sprite))
-        DestroyAnimSprite(sprite);
-}
-
-// arg 0: initial x pixel offset
-// arg 1: initial y pixel offset
-// arg 2: wave period
-// arg 3: wave amplitude
-static void AnimMoveWorrySeed(struct Sprite *sprite)
-{
-    InitSpritePosToAnimAttacker(sprite, TRUE);
-    sprite->data[2] = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X);
-    sprite->data[4] = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y);
-
-    sprite->data[0] = gBattleAnimArgs[2];
-    sprite->data[5] = gBattleAnimArgs[3];
-    InitAnimArcTranslation(sprite);
-    sprite->callback = AnimMoveWorrySeedWait;
 }
 
 static void AnimMoveSmallCloudAnimate(struct Sprite *sprite)

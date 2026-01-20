@@ -1254,11 +1254,6 @@
 	.4byte \jumpInstr
 	.endm
 
-	.macro tryworryseed failInstr:req
-	.byte BATTLE_CMD_tryworryseed
-	.4byte \failInstr
-	.endm
-
 	.macro savetarget
 	callnative BS_SaveTarget
 	.endm

@@ -1139,15 +1139,6 @@ u8 GetSpriteMatrixNum(struct Sprite *sprite)
     return matrixNum;
 }
 
-// Used to shift a sprite's position as it scales.
-// Only used by the minigame countdown, so that for instance the numbers don't slide up as they squish down before jumping.
-void SetSpriteMatrixAnchor(struct Sprite *sprite, s16 x, s16 y)
-{
-    sprite->sAnchorX = x;
-    sprite->sAnchorY = y;
-    sprite->anchored = TRUE;
-}
-
 static s32 GetAnchorCoord(s32 a0, s32 a1, s32 coord)
 {
     s32 subResult, var1;
