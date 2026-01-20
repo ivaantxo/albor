@@ -1614,7 +1614,7 @@ static void PrintSecondaryEntries(struct BattleDebugMenu *data)
         {
             u8 *types = &gBattleMons[data->battlerId].types[0];
 
-            PadString(gTypesInfo[types[i]].name, text);
+            PadString(gTipos[types[i]].name, text);
             printer.currentY = printer.y = (i * yMultiplier) + sSecondaryListTemplate.upText_Y;
             AddTextPrinter(&printer, 0, NULL);
         }

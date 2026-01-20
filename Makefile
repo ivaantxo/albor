@@ -227,43 +227,47 @@ $(C_BUILDDIR)/data.o: CFLAGS += -fno-show-column -fno-diagnostics-show-caret
 # As a side effect, they're evaluated immediately instead of when the rule is invoked.
 # It doesn't look like $(shell) can be deferred so there might not be a better way (Icedude_907: there is soon).
 
-$(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.c
-	@echo "$(CC1) <flags> -o $@ $<"
-	@$(CPP) $(CPPFLAGS) $< | $(PREPROC) -i $< charmap.txt | $(CC1) $(CFLAGS) -o - - | cat - <(echo -e ".text\n\t.align\t2, 0") | $(AS) $(ASFLAGS) -o $@ -
+# Archivos C normales y C++ (que usan nullptr)
+CXX_SRCS := src/agb_flash_le.c src/agb_flash_1m.c src/agb_flash_mx.c
 
+# Regla general para compilar C/C++ a .o
+$(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.c
+	@mkdir -p $(dir $@)
+ifeq ($(filter $<,$(CXX_SRCS)),)
+	@echo "CC $<"
+	@$(ARMCC) $(CFLAGS) $(CPPFLAGS) -Iinclude -c $< -o $@
+else
+	@echo "CXX $<"
+	@$(CXX) $(CXXFLAGS) -Iinclude -c $< -o $@
+endif
+
+# Dependencias
 $(C_BUILDDIR)/%.d: $(C_SUBDIR)/%.c
+	@mkdir -p $(dir $@)
 	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) -I "" $<
 
 ifneq ($(NODEP),1)
 -include $(addprefix $(OBJ_DIR)/,$(C_SRCS:.c=.d))
 endif
 
+# Regla para los archivos ASM
 $(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s
+	@mkdir -p $(dir $@)
 	$(AS) $(ASFLAGS) -o $@ $<
 
 $(ASM_BUILDDIR)/%.d: $(ASM_SUBDIR)/%.s
+	@mkdir -p $(dir $@)
 	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) -I "" $<
 
-ifneq ($(NODEP),1)
--include $(addprefix $(OBJ_DIR)/,$(ASM_SRCS:.s=.d))
-endif
-
+# Archivos .s dentro de C
 $(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.s
-	$(PREPROC) $< charmap.txt | $(CPP) $(INCLUDE_SCANINC_ARGS) - | $(PREPROC) -ie $< charmap.txt | $(AS) $(ASFLAGS) -o $@
-
-$(C_BUILDDIR)/%.d: $(C_SUBDIR)/%.s
-	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) -I "" $<
-
-ifneq ($(NODEP),1)
--include $(addprefix $(OBJ_DIR)/,$(C_ASM_SRCS:.s=.d))
-endif
+	@mkdir -p $(dir $@)
+	$(PREPROC) $< charmap.txt | $(AS) $(ASFLAGS) -o $@
 
 $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s
-	$(PREPROC) $< charmap.txt | $(CPP) $(INCLUDE_SCANINC_ARGS) - | $(PREPROC) -ie $< charmap.txt | $(AS) $(ASFLAGS) -o $@
-
-$(DATA_ASM_BUILDDIR)/%.d: $(DATA_ASM_SUBDIR)/%.s
-	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) -I "" $<
-
+	@mkdir -p $(dir $@)
+	$(PREPROC) $< charmap.txt | $(AS) $(ASFLAGS) -o $@
+	
 ifneq ($(NODEP),1)
 -include $(addprefix $(OBJ_DIR)/,$(REGULAR_DATA_ASM_SRCS:.s=.d))
 endif

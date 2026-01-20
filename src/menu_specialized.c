@@ -631,7 +631,7 @@ static void MoveRelearnerLoadBattleMoveDescription(u32 chosenMove)
         return;
     }
     move = &gMovesInfo[chosenMove];
-    str = gTypesInfo[move->type].name;
+    str = gTipos[move->type].name;
     AddTextPrinterParameterized(RELEARNERWIN_DESC_BATTLE, FONT_NORMAL, str, 4, 25, TEXT_SKIP_DRAW, NULL);
 
     x = 4 + GetStringWidth(FONT_NORMAL, gText_MoveRelearnerPP, 0);

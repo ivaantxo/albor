@@ -23,8 +23,8 @@
 #include "constants/items.h"
 #include "constants/trainers.h"
 
-static u32 ChooseMoveOrAction_Singles(u32 battlerAi);
-static u32 ChooseMoveOrAction_Doubles(u32 battlerAi);
+static u32 ChooseMoveOrAction_Singles(u32 battlerAI);
+static u32 ChooseMoveOrAction_Doubles(u32 battlerAI);
 static inline void BattleAI_DoAIProcessing(struct AI_ThinkingStruct *aiThink, u32 battlerAI, u32 battlerDef);
 static bool32 IsPinchBerryItemEffect(u32 holdEffect);
 
@@ -425,13 +425,13 @@ void SetAILogicDataForTurn(struct AILogicData *aiData)
     AI_DATA->aiCalcInProgress = FALSE;
 }
 
-static u32 ChooseMoveOrAction_Singles(u32 battlerAi)
+static u32 ChooseMoveOrAction_Singles(u32 battlerAI)
 {
     u8 currentMoveArray[MAX_MON_MOVES];
     u8 consideredMoveArray[MAX_MON_MOVES];
     u32 numOfBestMoves;
     s32 i;
-    u32 flags = AI_THINKING_STRUCT->aiFlags[battlerAi];
+    u32 flags = AI_THINKING_STRUCT->aiFlags[battlerAI];
 
     AI_DATA->partnerMove = 0;   // no ally
     while (flags != 0)
@@ -446,7 +446,7 @@ static u32 ChooseMoveOrAction_Singles(u32 battlerAi)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        gBattleStruct->aiFinalScore[battlerAi][gBattlerTarget][i] = AI_THINKING_STRUCT->score[i];
+        gBattleStruct->aiFinalScore[battlerAI][gBattlerTarget][i] = AI_THINKING_STRUCT->score[i];
     }
 
     numOfBestMoves = 1;
@@ -455,7 +455,7 @@ static u32 ChooseMoveOrAction_Singles(u32 battlerAi)
 
     for (i = 1; i < MAX_MON_MOVES; i++)
     {
-        if (gBattleMons[battlerAi].moves[i] != MOVE_NONE)
+        if (gBattleMons[battlerAI].moves[i] != MOVE_NONE)
         {
             // In ruby, the order of these if statements is reversed.
             if (currentMoveArray[0] == AI_THINKING_STRUCT->score[i])
@@ -474,7 +474,7 @@ static u32 ChooseMoveOrAction_Singles(u32 battlerAi)
     return consideredMoveArray[Random() % numOfBestMoves];
 }
 
-static u32 ChooseMoveOrAction_Doubles(u32 battlerAi)
+static u32 ChooseMoveOrAction_Doubles(u32 battlerAI)
 {
     s32 i, j;
     u32 flags;
@@ -489,16 +489,16 @@ static u32 ChooseMoveOrAction_Doubles(u32 battlerAi)
 
     for (i = 0; i < NUMERO_COMBATIENTES; i++)
     {
-        if (i == battlerAi || gBattleMons[i].hp == 0)
+        if (i == battlerAI || gBattleMons[i].hp == 0)
         {
             actionOrMoveIndex[i] = 0xFF;
             bestMovePointsForTarget[i] = -1;
         }
         else
         {
-            BattleAI_SetupAIData(0xF, battlerAi);
+            BattleAI_SetupAIData(0xF, battlerAI);
             gBattlerTarget = i;
-            AI_DATA->partnerMove = GetAllyChosenMove(battlerAi);
+            AI_DATA->partnerMove = GetAllyChosenMove(battlerAI);
             AI_THINKING_STRUCT->aiLogicId = 0;
             AI_THINKING_STRUCT->movesetIndex = 0;
             flags = AI_THINKING_STRUCT->aiFlags[sBattler_AI];
@@ -518,9 +518,9 @@ static u32 ChooseMoveOrAction_Doubles(u32 battlerAi)
             mostViableMovesNo = 1;
             for (j = 1; j < MAX_MON_MOVES; j++)
             {
-                if (gBattleMons[battlerAi].moves[j] != 0)
+                if (gBattleMons[battlerAI].moves[j] != 0)
                 {
-                    if (!CanTargetBattler(battlerAI, i, gBattleMons[battlerAi].moves[j]))
+                    if (!CanTargetBattler(battlerAI, i, gBattleMons[battlerAI].moves[j]))
                         continue;
 
                     if (mostViableMovesScores[0] == AI_THINKING_STRUCT->score[j])
@@ -541,14 +541,14 @@ static u32 ChooseMoveOrAction_Doubles(u32 battlerAi)
             bestMovePointsForTarget[i] = mostViableMovesScores[0];
 
             // Don't use a move against ally if it has less than 100 points.
-            if (i == ALIADO(battlerAi) && bestMovePointsForTarget[i] < AI_SCORE_DEFAULT)
+            if (i == ALIADO(battlerAI) && bestMovePointsForTarget[i] < AI_SCORE_DEFAULT)
             {
                 bestMovePointsForTarget[i] = -1;
             }
 
             for (j = 0; j < MAX_MON_MOVES; j++)
             {
-                gBattleStruct->aiFinalScore[battlerAi][gBattlerTarget][j] = AI_THINKING_STRUCT->score[j];
+                gBattleStruct->aiFinalScore[battlerAI][gBattlerTarget][j] = AI_THINKING_STRUCT->score[j];
             }
         }
     }
@@ -573,13 +573,13 @@ static u32 ChooseMoveOrAction_Doubles(u32 battlerAi)
     }
 
     gBattlerTarget = mostViableTargetsArray[Random() % mostViableTargetsNo];
-    gBattleStruct->aiChosenTarget[battlerAi] = gBattlerTarget;
+    gBattleStruct->aiChosenTarget[battlerAI] = gBattlerTarget;
     return actionOrMoveIndex[gBattlerTarget];
 }
 
 static inline bool32 ShouldConsiderMoveForBattler(u32 battlerAI, u32 battlerDef, u32 move)
 {
-    if (battlerAi == ALIADO(battlerDef))
+    if (battlerAI == ALIADO(battlerDef))
     {
         if (gMovesInfo[move].target == MOVE_TARGET_BOTH || gMovesInfo[move].target == MOVE_TARGET_OPPONENTS_FIELD)
             return FALSE;
@@ -591,10 +591,10 @@ static inline void BattleAI_DoAIProcessing(struct AI_ThinkingStruct *aiThink, u3
 {
     do
     {
-        if (gBattleMons[battlerAi].pp[aiThink->movesetIndex] == 0)
+        if (gBattleMons[battlerAI].pp[aiThink->movesetIndex] == 0)
             aiThink->moveConsidered = MOVE_NONE;
         else
-            aiThink->moveConsidered = gBattleMons[battlerAi].moves[aiThink->movesetIndex];
+            aiThink->moveConsidered = gBattleMons[battlerAI].moves[aiThink->movesetIndex];
 
         // There is no point in calculating scores for all 3 battlers(2 opponents + 1 ally) with certain moves.
         if (aiThink->moveConsidered != MOVE_NONE
@@ -627,7 +627,6 @@ static inline void BattleAI_DoAIProcessing(struct AI_ThinkingStruct *aiThink, u3
 static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
 {
     // move data
-    s8 atkPriority = GetMovePriority(battlerAtk, move);
     u32 moveEffect = gMovesInfo[move].effect;
     s32 moveType;
     u32 moveTarget = GetBattlerMoveTargetType(battlerAtk, move);

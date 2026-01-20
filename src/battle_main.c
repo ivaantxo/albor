@@ -1379,7 +1379,6 @@ const u8 *FaintClearSetData(u32 battler)
     gProtectStructs[battler].confusionSelfDmg = FALSE;
     gProtectStructs[battler].targetAffected = FALSE;
     gProtectStructs[battler].chargingTurn = FALSE;
-    gProtectStructs[battler].fleeType = 0;
     gProtectStructs[battler].usedImprisonedMove = FALSE;
     gProtectStructs[battler].loveImmobility = FALSE;
     gProtectStructs[battler].usedDisabledMove = FALSE;
@@ -2793,20 +2792,7 @@ static void HandleEndTurn_BattleLost(void)
 static void HandleEndTurn_RanFromBattle(void)
 {
     gCurrentActionFuncId = 0;
-
-    switch (gProtectStructs[gBattlerAttacker].fleeType)
-    {
-    default:
-        gBattlescriptCurrInstr = BattleScript_GotAwaySafely;
-        break;
-    case FLEE_ITEM:
-        gBattlescriptCurrInstr = BattleScript_SmokeBallEscape;
-        break;
-    case FLEE_ABILITY:
-        gBattlescriptCurrInstr = BattleScript_RanAwayUsingMonAbility;
-        break;
-    }
-
+    gBattlescriptCurrInstr = BattleScript_GotAwaySafely;
     gBattleMainFunc = HandleEndTurn_FinishBattle;
 }
 

@@ -32,7 +32,7 @@ const uq4_12_t gTablaEfectividadTipos[NUMERO_TIPOS][NUMERO_TIPOS] =
 #undef ______
 #undef X
 
-const struct TypeInfo gTypesInfo[NUMERO_TIPOS] =
+const struct Tipos gTipos[NUMERO_TIPOS] =
 {
     [TIPO_NINGUNO] =
     {

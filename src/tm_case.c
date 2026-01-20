@@ -558,7 +558,7 @@ static void PrintMoveInfo(u16 itemId)
 		    sTMCaseDynamicResources->typeIconSpriteId = CreateSpriteAtEnd(&gSpriteTemplate_MoveTypes, 16, 152, 0);
 		    sprite = &gSprites[sTMCaseDynamicResources->typeIconSpriteId];
 		    StartSpriteAnim(sprite, gMovesInfo[move].type);
-		    sprite->oam.paletteNum = gTypesInfo[gMovesInfo[move].type].palette;
+		    sprite->oam.paletteNum = gTipos[gMovesInfo[move].type].palette;
         }
         // Draw category icon
         LoadCompressedSpriteSheet(&gSpriteSheet_CategoryIcons);

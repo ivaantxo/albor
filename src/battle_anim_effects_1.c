@@ -6042,7 +6042,6 @@ static void ReloadBattlerSprites(u32 battler, struct Pokemon *party)
     BattleLoadMonSpriteGfx(mon, battler);
     CreateBattlerSprite(battler);
     UpdateHealthboxAttribute(gHealthboxSpriteIds[battler], mon, HEALTHBOX_ALL);
-    UpdateIndicatorVisibilityAndType(gHealthboxSpriteIds[battler], TRUE);
 
     // Try to recreate shadow sprite
     // Both of these *should* be true, but use an OR just to be certain

@@ -284,7 +284,6 @@ static const u8 sText_123Poof[] = _("{PAUSE 32}1, {PAUSE 15}2, y{PAUSE 15}… {P
 static const u8 sText_AndEllipsis[] = _("Y…");
 static const u8 sText_NotVeryEffective[] = _("No es muy efectivo…");
 static const u8 sText_SuperEffective[] = _("¡Es super efectivo!");
-static const u8 sText_GotAwaySafely[] = _("{PLAY_SE SE_FLEE}¡Lograste huir!");
 static const u8 sText_PkmnFledUsing[] = _("¡{PLAY_SE SE_FLEE}La {B_ATK_ABILITY} de {B_ATK_NAME_WITH_PREFIX}\le permite huir!");
 static const u8 sText_WildPkmnFled[] = _("¡{PLAY_SE SE_FLEE}El {B_BUFF1} salvaje huyó!");
 static const u8 sText_NoRunningFromTrainers[] = _("No! There's no running from a TRAINER battle!");
@@ -939,7 +938,6 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_ANDELLIPSIS] = sText_AndEllipsis,
     [STRINGID_NOTVERYEFFECTIVE] = sText_NotVeryEffective,
     [STRINGID_SUPEREFFECTIVE] = sText_SuperEffective,
-    [STRINGID_GOTAWAYSAFELY] = sText_GotAwaySafely,
     [STRINGID_WILDPKMNFLED] = sText_WildPkmnFled,
     [STRINGID_NORUNNINGFROMTRAINERS] = sText_NoRunningFromTrainers,
     [STRINGID_BUTNOTHINGHAPPENED] = sText_ButNothingHappened,
@@ -2424,7 +2422,7 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
             srcID += 3;
             break;
         case B_BUFF_TYPE: // type name
-            StringAppend(dst, gTypesInfo[src[srcID + 1]].name);
+            StringAppend(dst, gTipos[src[srcID + 1]].name);
             srcID += 2;
             break;
         case B_BUFF_MON_NICK_WITH_PREFIX: // poke nick with prefix

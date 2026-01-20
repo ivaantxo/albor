@@ -107,7 +107,7 @@ struct FollowerMessagePool
     u16 length;
 };
 
-struct TypeInfo
+struct Tipos
 {
     u8 name[TYPE_NAME_LENGTH + 1];
     u8 palette;

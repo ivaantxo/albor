@@ -320,22 +320,16 @@ bool32 MovesWithCategoryUnusable(u32 attacker, u32 target, u32 category)
 bool32 IsDamageMoveUnusable(u32 battlerAtk, u32 battlerDef, u32 move, u32 moveType)
 {
     struct AILogicData *aiData = AI_DATA;
-    u32 battlerDefAbility;
     u32 partnerBattlerDefAbility;
 
     if (DoesBattlerIgnoreAbilityChecks(aiData->abilities[battlerAtk], move))
     {
-        battlerDefAbility = ABILITY_NONE;
         partnerBattlerDefAbility = ABILITY_NONE;
     }
     else
     {
-        battlerDefAbility = aiData->abilities[battlerDef];
         partnerBattlerDefAbility = aiData->abilities[ALIADO(battlerDef)];
     }
-
-    if (battlerDef == ALIADO(battlerAtk))
-        battlerDefAbility = aiData->abilities[battlerDef];
 
     if (CanAbilityBlockMove(battlerAtk, battlerDef, move, aiData->abilities[battlerDef]))
         return TRUE;
@@ -860,11 +854,11 @@ uq4_12_t IA_ObtenEfectividadTipo(u32 movimiento, u32 atacante, u32 defensor)
     uq4_12_t efectividad;
     u32 tipoMovimiento = GetMoveType(movimiento);
 
-    SaveBattlerData(battlerAtk);
-    SaveBattlerData(battlerDef);
+    SaveBattlerData(atacante);
+    SaveBattlerData(defensor);
 
-    SetBattlerData(battlerAtk);
-    SetBattlerData(battlerDef);
+    SetBattlerData(atacante);
+    SetBattlerData(defensor);
 
     gBattleStruct->dynamicMoveType = FALSE;
     SetTypeBeforeUsingMove(movimiento, atacante);

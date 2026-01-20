@@ -2283,7 +2283,7 @@ void AnimTask_TransformMon(u8 taskId)
         }
         break;
     case 2:
-        GestionaCambioGraficoEspecie(gBattleAnimAttacker, gBattleAnimTarget, gTasks[taskId].data[10], gTasks[taskId].data[11]);
+        GestionaCambioGraficoEspecie(gBattleAnimAttacker, gBattleAnimTarget, gTasks[taskId].data[11]);
         GetBgDataForTransform(&animBg, gBattleAnimAttacker);
         position = gBattleAnimAttacker;
         src = gMonSpritesGfxPtr->spritesGfx[position];

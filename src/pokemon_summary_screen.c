@@ -3665,7 +3665,7 @@ void SetTypeSpritePosAndPal(u8 typeId, u8 x, u8 y, u8 spriteArrayId)
     struct Sprite *sprite = &gSprites[sMonSummaryScreen->spriteIds[spriteArrayId]];
     StartSpriteAnim(sprite, typeId);
     if (typeId < NUMERO_TIPOS)
-        sprite->oam.paletteNum = gTypesInfo[typeId].palette;
+        sprite->oam.paletteNum = gTipos[typeId].palette;
     else
         sprite->oam.paletteNum = sContestCategoryToOamPaletteNum[typeId - NUMERO_TIPOS];
     sprite->x = x + 16;

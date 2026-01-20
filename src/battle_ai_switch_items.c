@@ -1135,14 +1135,13 @@ static u32 GetBestMonDmg(struct Pokemon *party, int firstId, int lastId, u8 inva
     return bestMonId;
 }
 
-bool32 IsMonGrounded(u16 heldItemEffect, u32 ability, u8 type1, u8 type2)
+bool32 EstaPokemonEnSuelo(u32 efectoObjeto, u32 habilidad, u32 tipo1, u32 tipo2)
 {
     // List that makes mon not grounded
-    if (type1 == TIPO_VOLADOR || type2 == TIPO_VOLADOR || ability == ABILITY_LEVITATE
-         || (heldItemEffect == HOLD_EFFECT_AIR_BALLOON)
-    {
+    if (tipo1 == TIPO_VOLADOR || tipo2 == TIPO_VOLADOR || habilidad == ABILITY_LEVITATE || (efectoObjeto == HOLD_EFFECT_AIR_BALLOON))
+             {
         // List that overrides being off the ground
-        if ((heldItemEffect == HOLD_EFFECT_IRON_BALL) || (gFieldStatuses & STATUS_FIELD_GRAVITY) || (gFieldStatuses & STATUS_FIELD_MAGIC_ROOM))
+        if ((efectoObjeto == HOLD_EFFECT_IRON_BALL) || (gFieldStatuses & STATUS_FIELD_GRAVITY) || (gFieldStatuses & STATUS_FIELD_MAGIC_ROOM))
             return TRUE;
         else
             return FALSE;
@@ -1168,7 +1167,7 @@ static u32 GetSwitchinHazardsDamage(u32 battler, struct BattlePokemon *battleMon
         if ((hazardFlags & SIDE_STATUS_STEALTH_ROCK) && heldItemEffect != HOLD_EFFECT_HEAVY_DUTY_BOOTS)
             hazardDamage += ObtenDanioTrampa(gMovesInfo[MOVE_STEALTH_ROCK].type, battler);
         // Spikes
-        if ((hazardFlags & SIDE_STATUS_SPIKES) && IsMonGrounded(heldItemEffect, ability, defType1, defType2))
+        if ((hazardFlags & SIDE_STATUS_SPIKES) && EstaPokemonEnSuelo(heldItemEffect, ability, defType1, defType2))
         {
             spikesDamage = maxHP / ((5 - gSideTimers[GetBattlerSide(battler)].spikesAmount) * 2);
             if (spikesDamage == 0)
@@ -1182,7 +1181,7 @@ static u32 GetSwitchinHazardsDamage(u32 battler, struct BattlePokemon *battleMon
             && !(hazardFlags & SIDE_STATUS_SAFEGUARD))
             && !(IsAbilityStatusProtected(battler))
             && heldItemEffect != HOLD_EFFECT_CURE_PSN && heldItemEffect != HOLD_EFFECT_CURE_STATUS
-            && IsMonGrounded(heldItemEffect, ability, defType1, defType2))
+            && EstaPokemonEnSuelo(heldItemEffect, ability, defType1, defType2))
         {
             tSpikesLayers = gSideTimers[GetBattlerSide(battler)].toxicSpikesAmount;
             if (tSpikesLayers == 1)
@@ -1396,7 +1395,7 @@ static u32 GetSwitchinStatusDamage(u32 battler)
         && !(heldItemEffect == HOLD_EFFECT_HEAVY_DUTY_BOOTS
             && (((gFieldStatuses & STATUS_FIELD_MAGIC_ROOM))))
         && heldItemEffect != HOLD_EFFECT_CURE_PSN && heldItemEffect != HOLD_EFFECT_CURE_STATUS
-        && IsMonGrounded(heldItemEffect, ability, defType1, defType2)))
+        && EstaPokemonEnSuelo(heldItemEffect, ability, defType1, defType2)))
     {
         if (tSpikesLayers == 1)
         {

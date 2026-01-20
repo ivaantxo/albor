@@ -391,14 +391,6 @@ enum ResultadosCombate
 #define B_WAIT_TIME_SHORT       (B_WAIT_TIME_MULTIPLIER * 2)
 #define B_WAIT_TIME_SHORTEST    (B_WAIT_TIME_MULTIPLIER)
 
-#define FLEE_ITEM    1
-#define FLEE_ABILITY 2
-
-enum ResultadosEscapeBatalla
-{
-    PUEDE_ESCAPAR,
-    NO_PUEDE_ESCAPAR_POR
-}
 // Window Ids for sBattleWindowTemplates
 #define B_WIN_MSG                 0
 #define B_WIN_MOVE_NAME_1         1 // Top left

@@ -262,7 +262,8 @@ void RemoveBattlerType(u32 battler, u8 type);
 void AllocateBattleResources(void);
 void FreeBattleResources(void);
 void AdjustFriendshipOnBattleFaint(u8 battler);
-void SwitchPartyOrderInGameMulti(u8 battler, u8 arg1);
 u32 GetMoveType(u32 move);
+u32 CuantosPSLeQuedan(u32 combatiente);
+u32 CuantosPSMaximos(u32 combatiente);
 
 #endif // GUARD_BATTLE_UTIL_H

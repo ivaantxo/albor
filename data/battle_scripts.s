@@ -4718,7 +4718,7 @@ BattleScript_RanAwayUsingMonAbility::
 	end2
 
 BattleScript_GotAwaySafely::
-	printstring STRINGID_GOTAWAYSAFELY
+	printstring ("{PLAY_SE SE_FLEE}¡Lograste huir!")
 	waitmessage B_WAIT_TIME_LONG
 	end2
 
