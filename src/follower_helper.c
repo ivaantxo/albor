@@ -279,7 +279,7 @@ const struct FollowerMsgInfoExtended gFollowerConditionalMessages[COND_MSG_COUNT
             MATCH_WEATHER(WEATHER_RAIN, WEATHER_RAIN_THUNDERSTORM),
         },
     },
-    [COND_MSG_FROZEN] =
+    [MENSAJE_CONGELADO] =
     {
         .text = sCondMsg32,
         .emotion = FOLLOWER_EMOTION_UPSET,

@@ -495,7 +495,7 @@ static const struct ListMenuItem sStatus1ListItems[] =
     {sText_Sleep, LIST_STATUS1_SLEEP},
     {sText_Poison, LIST_STATUS1_POISON},
     {sText_Burn, LIST_STATUS1_BURN},
-    {COMPOUND_STRING("Congelamiento");, LIST_STATUS1_FREEZE},
+    {COMPOUND_STRING("Congelación");, LIST_STATUS1_FREEZE},
     {sText_Paralysis, LIST_STATUS1_PARALYSIS},
     {sText_ToxicPoison, LIST_STATUS1_TOXIC_POISON},
     {sText_ToxicCounter, LIST_STATUS1_TOXIC_COUNTER},

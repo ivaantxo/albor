@@ -275,77 +275,6 @@ BattleScript_EffectAttackUpUserAlly_TryAllyBlocked:
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectTeatime::
-	attackcanceler
-	attackstring
-	ppreduce
-	jumpifteanoberry BattleScript_ButItFailed
-@ at least one battler is affected
-	attackanimation
-	waitanimation
-	setbyte gBattlerTarget, 0
-BattleScript_TeatimeLoop:
-	jumpifelectricabilityaffected BS_TARGET, ABILITY_LIGHTNING_ROD, BattleScript_Teatimerod
-	jumpifelectricabilityaffected BS_TARGET, ABILITY_VOLT_ABSORB, BattleScript_Teatimesorb
-	jumpifelectricabilityaffected BS_TARGET, ABILITY_MOTOR_DRIVE, BattleScript_Teatimemotor
-	jumpifteainvulnerable BS_TARGET, BattleScript_Teatimevul @ in semi-invulnerable state OR held item is not a Berry
-	orword gHitMarker, HITMARKER_DISABLE_ANIMATION | HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_IGNORE_DISGUISE
-	setbyte sBERRY_OVERRIDE, TRUE   @ override the requirements for eating berries
-	consumeberry BS_TARGET, TRUE  @ consume the berry, then restore the item from changedItems
-	bicword gHitMarker, HITMARKER_DISABLE_ANIMATION | HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_IGNORE_DISGUISE
-	setbyte sBERRY_OVERRIDE, FALSE
-	removeitem BS_TARGET
-	moveendto MOVEEND_NEXT_TARGET
-	jumpifnexttargetvalid BattleScript_TeatimeLoop
-	moveendcase MOVEEND_CLEAR_BITS
-	goto BattleScript_MoveEnd
-BattleScript_Teatimevul:
-	moveendto MOVEEND_NEXT_TARGET
-	jumpifnexttargetvalid BattleScript_TeatimeLoop
-	moveendcase MOVEEND_CLEAR_BITS
-	goto BattleScript_MoveEnd
-BattleScript_Teatimesorb:
-	call BattleScript_AbilityPopUpTarget
-	tryhealquarterhealth BS_TARGET BattleScript_Teatimesorb_end
-	healthbarupdate BS_TARGET
-	datahpupdate BS_TARGET
-	printstring STRINGID_PKMNREGAINEDHEALTH
-	waitmessage B_WAIT_TIME_LONG
-BattleScript_Teatimesorb_end:
-	moveendto MOVEEND_NEXT_TARGET
-	jumpifnexttargetvalid BattleScript_TeatimeLoop
-	moveendcase MOVEEND_CLEAR_BITS
-	goto BattleScript_MoveEnd
-BattleScript_Teatimerod:
-	call BattleScript_AbilityPopUpTarget
-	playstatchangeanimation BS_TARGET, BIT_SPATK, STAT_CHANGE_BY_TWO
-	setstatchanger ESTADISTICA_ATAQUE_ESPECIAL, 1, FALSE
-	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_TeatimeBuffer
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, 0x2, BattleScript_TeatimeBuffer
-	printfromtable gStatUpStringIds
-	waitmessage B_WAIT_TIME_LONG
-	moveendto MOVEEND_NEXT_TARGET
-	jumpifnexttargetvalid BattleScript_TeatimeLoop
-	moveendcase MOVEEND_CLEAR_BITS
-	goto BattleScript_MoveEnd
-BattleScript_Teatimemotor:
-	call BattleScript_AbilityPopUpTarget
-	playstatchangeanimation BS_TARGET, BIT_SPEED, STAT_CHANGE_BY_TWO
-	setstatchanger ESTADISTICA_VELOCIDAD, 1, FALSE
-	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_TeatimeBuffer
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, 0x2, BattleScript_TeatimeBuffer
-	printfromtable gStatUpStringIds
-	waitmessage B_WAIT_TIME_LONG
-	moveendto MOVEEND_NEXT_TARGET
-	jumpifnexttargetvalid BattleScript_TeatimeLoop
-	moveendcase MOVEEND_CLEAR_BITS
-	goto BattleScript_MoveEnd
-BattleScript_TeatimeBuffer:
-	moveendto MOVEEND_NEXT_TARGET
-	jumpifnexttargetvalid BattleScript_TeatimeLoop
-	moveendcase MOVEEND_CLEAR_BITS
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectSkyDrop::
 	attackcanceler
 	jumpifstatus2 BS_ATTACKER, STATUS2_MULTIPLETURNS, BattleScript_SkyDropTurn2
@@ -5998,16 +5927,10 @@ BattleScript_BurnTurnDmg::
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_DoStatusTurnDmg
 
-BattleScript_FrostbiteTurnDmg::
-	printstring STRINGID_PKMNHURTBYFROSTBITE
+ScriptCombate_DanioCongelacion::
+	printstring ("¡A {B_ATK_NAME_WITH_PREFIX} le duele su congelación!")
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_DoStatusTurnDmg
-
-BattleScript_MoveUsedIsFrozen::
-	printstring ("¡{B_ATK_NAME_WITH_PREFIX} se ha congelado!")
-	waitmessage B_WAIT_TIME_LONG
-	statusanimation BS_ATTACKER
-	goto BattleScript_MoveEnd
 
 BattleScript_MoveUsedIsParalyzed::
 	printstring STRINGID_PKMNISPARALYZED
@@ -6244,13 +6167,7 @@ BattleScript_MoveEffectBurn::
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_UpdateEffectStatusIconRet
 
-BattleScript_MoveEffectFrostbite::
-	statusanimation BS_EFFECT_BATTLER
-	printfromtable gGotFrostbiteStringIds
-	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_UpdateEffectStatusIconRet
-
-BattleScript_MoveEffectFreeze::
+ScriptCombate_EfectoMovimientoCongelacion::
 	statusanimation BS_EFFECT_BATTLER
 	printfromtable gGotFrozenStringIds
 	waitmessage B_WAIT_TIME_LONG
@@ -7262,18 +7179,6 @@ BattleScript_BerryCureFrzEnd2::
 BattleScript_BerryCureFrzRet::
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT
 	printstring ("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM} defrosted it!")
-	waitmessage B_WAIT_TIME_LONG
-	updatestatusicon BS_SCRIPTING
-	removeitem BS_SCRIPTING
-	return
-
-BattleScript_BerryCureFrbEnd2::
-	call BattleScript_BerryCureFrzRet
-	end2
-
-BattleScript_BerryCureFrbRet::
-	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT
-	printstring STRINGID_PKMNSITEMHEALEDFROSTBITE
 	waitmessage B_WAIT_TIME_LONG
 	updatestatusicon BS_SCRIPTING
 	removeitem BS_SCRIPTING

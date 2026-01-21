@@ -676,7 +676,6 @@ extern const u8 gBattleAnimMove_StuffCheeks[];
 extern const u8 gBattleAnimMove_NoRetreat[];
 extern const u8 gBattleAnimMove_TarShot[];
 extern const u8 gBattleAnimMove_DragonDarts[];
-extern const u8 gBattleAnimMove_Teatime[];
 extern const u8 gBattleAnimMove_Octolock[];
 extern const u8 gBattleAnimMove_BoltBeak[];
 extern const u8 gBattleAnimMove_FishiousRend[];

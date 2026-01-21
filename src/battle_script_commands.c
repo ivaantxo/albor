@@ -812,7 +812,6 @@ static const u32 sStatusFlagsForMoveEffects[NUM_MOVE_EFFECTS] =
     [MOVE_EFFECT_FREEZE]         = STATUS1_FREEZE,
     [MOVE_EFFECT_PARALYSIS]      = STATUS1_PARALYSIS,
     [MOVE_EFFECT_TOXIC]          = STATUS1_TOXIC_POISON,
-    [MOVE_EFFECT_FROSTBITE]      = STATUS1_FROSTBITE,
     [MOVE_EFFECT_CONFUSION]      = STATUS2_CONFUSION,
     [MOVE_EFFECT_FLINCH]         = STATUS2_FLINCHED,
     [MOVE_EFFECT_UPROAR]         = STATUS2_UPROAR,
@@ -829,14 +828,13 @@ static const u8 *const sMoveEffectBS_Ptrs[] =
     [MOVE_EFFECT_SLEEP]            = BattleScript_MoveEffectSleep,
     [MOVE_EFFECT_POISON]           = BattleScript_MoveEffectPoison,
     [MOVE_EFFECT_BURN]             = BattleScript_MoveEffectBurn,
-    [MOVE_EFFECT_FREEZE]           = BattleScript_MoveEffectFreeze,
+    [MOVE_EFFECT_FREEZE]           = ScriptCombate_EfectoMovimientoCongelacion,
     [MOVE_EFFECT_PARALYSIS]        = BattleScript_MoveEffectParalysis,
     [MOVE_EFFECT_TOXIC]            = BattleScript_MoveEffectToxic,
     [MOVE_EFFECT_CONFUSION]        = BattleScript_MoveEffectConfusion,
     [MOVE_EFFECT_UPROAR]           = BattleScript_MoveEffectUproar,
     [MOVE_EFFECT_PAYDAY]           = BattleScript_MoveEffectPayDay,
     [MOVE_EFFECT_WRAP]             = BattleScript_MoveEffectWrap,
-    [MOVE_EFFECT_FROSTBITE]        = BattleScript_MoveEffectFrostbite,
 };
 
 static const u16 sLevelUpBanner_Pal[] = INCBIN_U16("graphics/battle_interface/level_up_banner.gbapal");
@@ -2549,13 +2547,7 @@ void SetMoveEffect(bool32 primary, bool32 certain)
             statusChanged = TRUE;
             break;
         case STATUS1_FREEZE:
-            if (B_STATUS_TYPE_IMMUNITY == GEN_1)
-            {
-                u32 moveType = GetMoveType(gCurrentMove);
-                if (primary == FALSE && certain == FALSE && ES_COMBATIENTE_TIPO(gEffectBattler, moveType))
-                    break;
-            }
-            if (!CanBeFrozen(gEffectBattler, GetBattlerAbility(gEffectBattler)))
+            if (!PuedeSerCongelado(gEffectBattler, GetBattlerAbility(gEffectBattler)))
                 break;
 
             cancelMultiTurnMovesResult = CancelMultiTurnMoves(gEffectBattler);
@@ -3278,7 +3270,7 @@ static void Cmd_setadditionaleffects(void)
             // Various checks for if this move effect can be applied this turn
             if (CanApplyAdditionalEffect(additionalEffect))
             {
-                percentChance = CalcSecondaryEffectChance(gBattlerAttacker, GetBattlerAbility(gBattlerAttacker), additionalEffect);
+                percentChance = CalculaProbabilidadEfectoSecundario(GetBattlerAbility(gBattlerAttacker), additionalEffect);
 
                 // Activate effect if it's primary (chance == 0) or if RNGesus says so
                 if ((percentChance == 0) || PorcentajeAleatorio(percentChance))
@@ -7426,15 +7418,6 @@ static bool32 IsElectricAbilityAffected(u32 battler, u32 ability)
         return TRUE;
     else
         return FALSE;
-}
-
-static bool32 IsTeatimeAffected(u32 battler)
-{
-    if (ItemId_GetPocket(gBattleMons[battler].item) != POCKET_BERRIES)
-        return FALSE;   // Only berries
-    if (gStatuses3[battler] & STATUS3_SEMI_INVULNERABLE)
-        return FALSE;   // Teatime doesn't affected semi-invulnerable battlers
-    return TRUE;
 }
 
 // Return True if the order was changed, and false if the order was not changed(for example because the target would move after the attacker anyway).
@@ -13599,33 +13582,6 @@ void BS_JumpIfBlockedBySoundproof(void)
     {
         gBattlescriptCurrInstr = cmd->nextInstr;
     }
-}
-
-void BS_TeatimeInvul(void)
-{
-    NATIVE_ARGS(u8 battler, const u8 *jumpInstr);
-
-    u32 battler = GetBattlerForBattleScript(cmd->battler);
-    if (ItemId_GetPocket(gBattleMons[battler].item) == POCKET_BERRIES && !(gStatuses3[gBattlerTarget] & (STATUS3_SEMI_INVULNERABLE)))
-        gBattlescriptCurrInstr = cmd->nextInstr;
-    else
-        gBattlescriptCurrInstr = cmd->jumpInstr;
-}
-
-void BS_TeatimeTargets(void)
-{
-    NATIVE_ARGS(const u8 *failInstr);
-    u32 count = 0, i;
-
-    for (i = 0; i < gBattlersCount; i++)
-    {
-        if (IsTeatimeAffected(i))
-            count++;
-    }
-    if (count == 0)
-        gBattlescriptCurrInstr = cmd->failInstr;
-    else
-        gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
 void BS_TryWindRiderPower(void)

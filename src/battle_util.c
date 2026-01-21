@@ -74,32 +74,6 @@ extern const u8 *const gBattlescriptsForRunningByItem[];
         effect++;                                                                        \
     }
 
-static const u8 sPkblToEscapeFactor[][3] = {
-    {
-        [B_MSG_MON_CURIOUS]    = 0,
-        [B_MSG_MON_ENTHRALLED] = 0,
-        [B_MSG_MON_IGNORED]    = 0
-    },{
-        [B_MSG_MON_CURIOUS]    = 3,
-        [B_MSG_MON_ENTHRALLED] = 5,
-        [B_MSG_MON_IGNORED]    = 0
-    },{
-        [B_MSG_MON_CURIOUS]    = 2,
-        [B_MSG_MON_ENTHRALLED] = 3,
-        [B_MSG_MON_IGNORED]    = 0
-    },{
-        [B_MSG_MON_CURIOUS]    = 1,
-        [B_MSG_MON_ENTHRALLED] = 2,
-        [B_MSG_MON_IGNORED]    = 0
-    },{
-        [B_MSG_MON_CURIOUS]    = 1,
-        [B_MSG_MON_ENTHRALLED] = 1,
-        [B_MSG_MON_IGNORED]    = 0
-    }
-};
-static const u8 sGoNearCounterToCatchFactor[] = {4, 3, 2, 1};
-static const u8 sGoNearCounterToEscapeFactor[] = {4, 4, 4, 4};
-
 static void CheckSetUnburden(u8 battler)
 {
     if (GetBattlerAbility(battler) == ABILITY_UNBURDEN)
@@ -266,7 +240,7 @@ void HandleAction_UseMove(void)
             battlerAbility = GetBattlerAbility(battler);
 
             RecuerdaHabilidadCombate(battler, gBattleMons[battler].ability);
-            if (battlerAbility == ABILITY_LIGHTNING_ROD && gCurrentMove != MOVE_TEATIME)
+            if (battlerAbility == ABILITY_LIGHTNING_ROD)
                 gSpecialStatuses[battler].lightningRodRedirected = TRUE;
             else if (battlerAbility == ABILITY_STORM_DRAIN)
                 gSpecialStatuses[battler].stormDrainRedirected = TRUE;
@@ -1604,7 +1578,7 @@ enum
     ENDTURN_POISON,
     ENDTURN_BAD_POISON,
     ENDTURN_BURN,
-    ENDTURN_FROSTBITE,
+    FINAL_TURNO_CONGELACION,
     ENDTURN_NIGHTMARES,
     ENDTURN_CURSE,
     ENDTURN_WRAP,
@@ -1863,44 +1837,30 @@ u8 DoBattlerEndTurnEffects(void)
                 && IsBattlerAlive(battler))
             {
                 MAGIC_GUARD_CHECK;
-                if (gBattleWeather & B_WEATHER_RAIN)
+                gBattleMoveDamage = CuantosPSMaximos(battler) / 16;
+                if (ability == ABILITY_HEATPROOF)
                 {
-                    gBattleMoveDamage = 0;
+                    if (gBattleMoveDamage > (gBattleMoveDamage / 2) + 1) // Record ability if the burn takes less damage than it normally would.
+                        RecuerdaHabilidadCombate(battler, ABILITY_HEATPROOF);
+                    gBattleMoveDamage /= 2;
                 }
-                else
-                {
-                    gBattleMoveDamage = CuantosPSMaximos(battler) / (B_BURN_DAMAGE >= GEN_7 ? 16 : 8);
-                    if (ability == ABILITY_HEATPROOF)
-                    {
-                        if (gBattleMoveDamage > (gBattleMoveDamage / 2) + 1) // Record ability if the burn takes less damage than it normally would.
-                            RecuerdaHabilidadCombate(battler, ABILITY_HEATPROOF);
-                        gBattleMoveDamage /= 2;
-                    }
-                    if (gBattleMoveDamage == 0)
-                        gBattleMoveDamage = 1;
-                    BattleScriptExecute(BattleScript_BurnTurnDmg);
-                    effect++;
-                }
+                if (gBattleMoveDamage == 0)
+                    gBattleMoveDamage = 1;
+                BattleScriptExecute(BattleScript_BurnTurnDmg);
+                effect++;
             }
             gBattleStruct->turnEffectsTracker++;
             break;
-        case ENDTURN_FROSTBITE:  // burn
-            if ((gBattleMons[battler].status1 & STATUS1_FROSTBITE)
+        case FINAL_TURNO_CONGELACION: 
+            if ((gBattleMons[battler].status1 & STATUS1_FREEZE)
                 && IsBattlerAlive(battler))
             {
                 MAGIC_GUARD_CHECK;
-                if (gBattleWeather & B_WEATHER_SUN)
-                {
-                    gBattleMoveDamage = 0;
-                }
-                else
-                {
-                    gBattleMoveDamage = CuantosPSMaximos(battler) / (B_BURN_DAMAGE >= GEN_7 ? 16 : 8);
-                    if (gBattleMoveDamage == 0)
-                        gBattleMoveDamage = 1;
-                    BattleScriptExecute(BattleScript_FrostbiteTurnDmg);
-                    effect++;
-                }
+                gBattleMoveDamage = CuantosPSMaximos(battler) / 16;
+                if (gBattleMoveDamage == 0)
+                    gBattleMoveDamage = 1;
+                BattleScriptExecute(ScriptCombate_DanioCongelacion);
+                effect++;
             }
             gBattleStruct->turnEffectsTracker++;
             break;
@@ -3153,7 +3113,7 @@ u32 CanAbilityAbsorbMove(u32 battlerAtk, u32 battlerDef, u32 abilityDef, u32 mov
             effect = MOVE_ABSORBED_BY_STAT_INCREASE_ABILITY;
         break;
     case ABILITY_FLASH_FIRE:
-        if (moveType == TIPO_FUEGO && (B_FLASH_FIRE_FROZEN >= GEN_5 || !(gBattleMons[battlerDef].status1 & STATUS1_FREEZE)))
+        if (moveType == TIPO_FUEGO)
             effect = MOVE_ABSORBED_BY_BOOST_FLASH_FIRE;
         break;
     }
@@ -3786,7 +3746,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                         StringCopy(gBattleTextBuff1, gText_Paralysis);
                     if (gBattleMons[battler].status1 & STATUS1_BURN)
                         StringCopy(gBattleTextBuff1, gText_Burn);
-                    if (gBattleMons[battler].status1 & (STATUS1_FREEZE | STATUS1_FROSTBITE))
+                    if (gBattleMons[battler].status1 & (STATUS1_FREEZE))
                         StringCopy(gBattleTextBuff1, gText_Ice);
 
                     gBattleMons[battler].status1 = 0;
@@ -4315,7 +4275,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                         HABILIDAD_CAUSA_ESTADO_SI_CONTACTA(CanBeParalyzed, MOVE_EFFECT_PARALYSIS);
                         break;
                     case ESTADO_PSICODELICO_CONGELADO:
-                        HABILIDAD_CAUSA_ESTADO_SI_CONTACTA(CanBeFrozen, MOVE_EFFECT_FROSTBITE);
+                        HABILIDAD_CAUSA_ESTADO_SI_CONTACTA(PuedeSerCongelado, MOVE_EFFECT_FREEZE);
                         break;
                     case ESTADO_PSICODELICO_ENVENENADO:
                         HABILIDAD_CAUSA_ESTADO_SI_CONTACTA(CanBePoisoned, MOVE_EFFECT_POISON);
@@ -4637,12 +4597,12 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && gBattleMons[gBattlerTarget].hp != 0
              && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
-             && CanGetFrostbite(gBattlerTarget)
+             && PuedeSerCongelado(gBattlerTarget)
              && (gMovesInfo[move].soundMove)
              && IsBattlerTurnDamaged(gBattlerTarget)
             && PorcentajeAleatorio(50))
             {
-                gBattleScripting.moveEffect = MOVE_EFFECT_FROSTBITE;
+                gBattleScripting.moveEffect = MOVE_EFFECT_FREEZE;
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
@@ -4771,7 +4731,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 }
                 break;
             case ABILITY_MAGMA_ARMOR:
-                if (gBattleMons[battler].status1 & (STATUS1_FREEZE | STATUS1_FROSTBITE))
+                if (gBattleMons[battler].status1 & STATUS1_FREEZE)
                 {
                     StringCopy(gBattleTextBuff1, gText_Ice);
                     effect = 1;
@@ -5150,30 +5110,13 @@ bool32 CanBeParalyzed(u32 battler, u32 ability)
     return TRUE;
 }
 
-bool32 CanBeFrozen(u32 battler, u32 ability)
+bool32 PuedeSerCongelado(u32 combatiente, u32 habilidad)
 {
-    if (ES_COMBATIENTE_TIPO(battler, TIPO_HIELO)
-     || IsBattlerWeatherAffected(battler, B_WEATHER_SUN)
-     || gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_SAFEGUARD
-     || ability == ABILITY_MAGMA_ARMOR
-     || ability == ABILITY_COMATOSE
-     || ability == ABILITY_PURIFYING_SALT
-     || gBattleMons[battler].status1 & STATUS1_ANY
-     || IsAbilityStatusProtected(battler))
-        return FALSE;
-    return TRUE;
-}
-
-bool32 CanGetFrostbite(u32 battler)
-{
-    u16 ability = GetBattlerAbility(battler);
-    if (ES_COMBATIENTE_TIPO(battler, TIPO_HIELO)
-      || gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_SAFEGUARD
-      || ability == ABILITY_MAGMA_ARMOR
-      || ability == ABILITY_COMATOSE
-      || ability == ABILITY_PURIFYING_SALT
-      || gBattleMons[battler].status1 & STATUS1_ANY
-      || IsAbilityStatusProtected(battler))
+    if (ES_COMBATIENTE_TIPO(combatiente, TIPO_HIELO)
+     || gSideStatuses[GetBattlerSide(combatiente)] & SIDE_STATUS_SAFEGUARD
+     || habilidad == ABILITY_MAGMA_ARMOR
+     || gBattleMons[combatiente].status1 & STATUS1_ANY
+     || IsAbilityStatusProtected(combatiente))
         return FALSE;
     return TRUE;
 }
@@ -5679,13 +5622,6 @@ static u8 ItemEffectMoveEnd(u32 battler, u16 holdEffect)
             gBattlescriptCurrInstr = BattleScript_BerryCureFrzRet;
             effect = ITEM_STATUS_CHANGE;
         }
-        if (gBattleMons[battler].status1 & STATUS1_FROSTBITE && !UnnerveOn(battler, gLastUsedItem))
-        {
-            gBattleMons[battler].status1 &= ~STATUS1_FROSTBITE;
-            BattleScriptPushCursor();
-            gBattlescriptCurrInstr = BattleScript_BerryCureFrbRet;
-            effect = ITEM_STATUS_CHANGE;
-        }
         break;
     case HOLD_EFFECT_CURE_SLP:
         if (gBattleMons[battler].status1 & STATUS1_SLEEP && !UnnerveOn(battler, gLastUsedItem))
@@ -5916,14 +5852,6 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
                 {
                     gBattleMons[battler].status1 &= ~STATUS1_FREEZE;
                     BattleScriptExecute(BattleScript_BerryCureFrzEnd2);
-                    effect = ITEM_STATUS_CHANGE;
-                }
-                if (B_BERRIES_INSTANT >= GEN_4
-                    && (gBattleMons[battler].status1 & STATUS1_FROSTBITE)
-                    && !UnnerveOn(battler, gLastUsedItem))
-                {
-                    gBattleMons[battler].status1 &= ~STATUS1_FROSTBITE;
-                    BattleScriptExecute(BattleScript_BerryCureFrbEnd2);
                     effect = ITEM_STATUS_CHANGE;
                 }
                 break;
@@ -6201,12 +6129,6 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
                 {
                     gBattleMons[battler].status1 &= ~STATUS1_FREEZE;
                     BattleScriptExecute(BattleScript_BerryCureFrzEnd2);
-                    effect = ITEM_STATUS_CHANGE;
-                }
-                if (gBattleMons[battler].status1 & STATUS1_FROSTBITE && !UnnerveOn(battler, gLastUsedItem))
-                {
-                    gBattleMons[battler].status1 &= ~STATUS1_FROSTBITE;
-                    BattleScriptExecute(BattleScript_BerryCureFrbEnd2);
                     effect = ITEM_STATUS_CHANGE;
                 }
                 break;
@@ -9238,35 +9160,29 @@ bool32 AreBattlersOfSameGender(u32 battler1, u32 battler2)
     return (gender1 != MON_GENDERLESS && gender2 != MON_GENDERLESS && gender1 == gender2);
 }
 
-u32 CalcSecondaryEffectChance(u32 battler, u32 battlerAbility, const struct AdditionalEffect *additionalEffect)
+u32 CalculaProbabilidadEfectoSecundario(u32 habilidad, const struct AdditionalEffect *efectoSecundario)
 {
-    bool8 hasSereneGrace = (battlerAbility == ABILITY_SERENE_GRACE);
-    u16 secondaryEffectChance = additionalEffect->chance;
+    u32 probabilidad = efectoSecundario->chance;
 
-    if (hasSereneGrace && additionalEffect->moveEffect == MOVE_EFFECT_FLINCH)
-        return secondaryEffectChance * 2;
-
-    if (hasSereneGrace)
-        secondaryEffectChance *= 2;
-    if (additionalEffect->moveEffect != MOVE_EFFECT_SECRET_POWER)
-        secondaryEffectChance *= 2;
-    if (gBattleWeather & B_WEATHER_HAIL && additionalEffect->moveEffect == MOVE_EFFECT_FREEZE_OR_FROSTBITE)
-        secondaryEffectChance *= 2;
-    if (gBattleWeather & B_WEATHER_RAIN && additionalEffect->moveEffect == MOVE_EFFECT_FREEZE_OR_FROSTBITE && battlerAbility == ABILITY_HUMEDAD_RELATIVA)
-        secondaryEffectChance *= 2;
-    if (gBattleWeather & B_WEATHER_SUN && additionalEffect->moveEffect == MOVE_EFFECT_BURN)
-        secondaryEffectChance *= 2;
-    return secondaryEffectChance;
+    if (habilidad == ABILITY_SERENE_GRACE)
+        probabilidad *= 2;
+    if (gBattleWeather & B_WEATHER_HAIL && efectoSecundario->moveEffect == MOVE_EFFECT_FREEZE)
+        probabilidad *= 2;
+    if (gBattleWeather & B_WEATHER_RAIN && efectoSecundario->moveEffect == MOVE_EFFECT_FREEZE && habilidad == ABILITY_HUMEDAD_RELATIVA)
+        probabilidad *= 2;
+    if (gBattleWeather & B_WEATHER_SUN && efectoSecundario->moveEffect == MOVE_EFFECT_BURN)
+        probabilidad *= 2;
+    return probabilidad;
 }
 
-bool32 MoveEffectIsGuaranteed(u32 battler, u32 battlerAbility, const struct AdditionalEffect *additionalEffect)
+bool32 EfectoSecundarioGarantizado(u32 habilidad, const struct AdditionalEffect *efectoSecundario)
 {
-    return additionalEffect->chance == 0 || CalcSecondaryEffectChance(battler, battlerAbility, additionalEffect) >= 100;
+    return efectoSecundario->chance == 0 || CalculaProbabilidadEfectoSecundario(habilidad, efectoSecundario) >= 100;
 }
 
-bool32 IsAlly(u32 battlerAtk, u32 battlerDef)
+bool32 EsAliado(u32 atacante, u32 defensor)
 {
-    return (GetBattlerSide(battlerAtk) == GetBattlerSide(battlerDef));
+    return (GetBattlerSide(atacante) == GetBattlerSide(defensor));
 }
 
 bool32 IsGen6ExpShareEnabled(void)

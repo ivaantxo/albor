@@ -64,12 +64,8 @@ static const u8 sText_PkmnPoisonedBy[] = _("¡{B_EFF_NAME_WITH_PREFIX} fue enven
 static const u8 sText_PkmnBadlyPoisoned[] = _("¡{B_EFF_NAME_WITH_PREFIX} está gravemente envenenado!");
 static const u8 sText_PkmnEnergyDrained[] = _("¡{B_DEF_NAME_WITH_PREFIX} fue drenado!");
 static const u8 sText_PkmnWasBurned[] = _("¡{B_EFF_NAME_WITH_PREFIX} fue quemado!");
-static const u8 sText_PkmnGotFrostbite[] = _("¡{B_EFF_NAME_WITH_PREFIX} fue congelado!");
 static const u8 sText_PkmnBurnedBy[] = _("¡{B_SCR_ACTIVE_ABILITY} de {B_SCR_ACTIVE_NAME_WITH_PREFIX} ha quemado a {B_EFF_NAME_WITH_PREFIX}!");
-static const u8 sText_PkmnHurtByFrostbite[] = _("{B_ATK_NAME_WITH_PREFIX} está dolido por su congelación!");
 static const u8 sText_PkmnAlreadyHasBurn[] = _("{B_DEF_NAME_WITH_PREFIX} already has a burn.");
-static const u8 sText_PkmnWasFrozen[] = _("{B_EFF_NAME_WITH_PREFIX} was frozen solid!");
-static const u8 sText_PkmnFrozenBy[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_BUFF1} froze {B_EFF_NAME_WITH_PREFIX} solid!");
 static const u8 sText_PkmnWasParalyzed[] = _("{B_EFF_NAME_WITH_PREFIX} is paralyzed! It may be unable to move!");
 static const u8 sText_PkmnWasParalyzedBy[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_BUFF1} paralyzed {B_EFF_NAME_WITH_PREFIX}!\lIt may be unable to move!");
 static const u8 sText_PkmnIsParalyzed[] = _("{B_ATK_NAME_WITH_PREFIX} is paralyzed! It can't move!");
@@ -390,7 +386,6 @@ static const u8 sText_BerrySuffix[] = _(" BERRY");
 static const u8 sText_PkmnsItemCuredParalysis[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM} cured paralysis!");
 static const u8 sText_PkmnsItemCuredPoison[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM} cured poison!");
 static const u8 sText_PkmnsItemHealedBurn[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM} healed its burn!");
-static const u8 sText_PkmnsItemHealedFrostbite[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM} healed its frostbite!");
 static const u8 sText_PkmnsItemWokeIt[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM} woke it from its sleep!");
 static const u8 sText_PkmnsItemSnappedOut[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM} snapped it out of confusion!");
 static const u8 sText_PkmnsItemCuredProblem[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM} cured its {B_BUFF1} problem!");
@@ -611,7 +606,6 @@ static const u8 sText_AttackerExpelledThePoison[] = _("{B_ATK_NAME_WITH_PREFIX} 
 static const u8 sText_AttackerShookItselfAwake[] = _("{B_ATK_NAME_WITH_PREFIX} shook itself awake so you wouldn't worry!");
 static const u8 sText_AttackerBrokeThroughParalysis[] = _("{B_ATK_NAME_WITH_PREFIX} gathered all its energy to break through its paralysis so you wouldn't worry!");
 static const u8 sText_AttackerHealedItsBurn[] = _("{B_ATK_NAME_WITH_PREFIX} cured its burn through sheer determination so you wouldn't worry!");
-static const u8 sText_AttackerHealedItsFrostbite[] = _("{B_ATK_NAME_WITH_PREFIX} cured its frostbite through sheer determination so you wouldn't worry!");
 static const u8 sText_TargetToughedItOut[] = _("{B_DEF_NAME_WITH_PREFIX} toughed it out so you wouldn't feel sad!");
 static const u8 sText_AttackerLostElectricType[] = _("{B_ATK_NAME_WITH_PREFIX} used up all its electricity!");
 static const u8 sText_AttackerSwitchedStatWithTarget[] = _("{B_ATK_NAME_WITH_PREFIX} switched {B_BUFF1} with its target!");
@@ -757,8 +751,8 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_PKMNENERGYDRAINED] = sText_PkmnEnergyDrained,
     [STRINGID_PKMNWASBURNED] = sText_PkmnWasBurned,
     [STRINGID_PKMNBURNEDBY] = sText_PkmnBurnedBy,
-    [STRINGID_PKMNWASFROZEN] = sText_PkmnWasFrozen,
-    [STRINGID_PKMNFROZENBY] = sText_PkmnFrozenBy,
+    [STRINGID_PKMNWASFROZEN] = ("{B_EFF_NAME_WITH_PREFIX} was frozen solid!"),
+    [STRINGID_PKMNFROZENBY] = ("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_BUFF1} froze {B_EFF_NAME_WITH_PREFIX} solid!"),
     [STRINGID_PKMNWASPARALYZED] = sText_PkmnWasParalyzed,
     [STRINGID_PKMNWASPARALYZEDBY] = sText_PkmnWasParalyzedBy,
     [STRINGID_PKMNISPARALYZED] = sText_PkmnIsParalyzed,
@@ -1177,10 +1171,6 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_TARGETTOOHEAVY] = sText_TargetTooHeavy,
     [STRINGID_ATTACKERLOSTELECTRICTYPE] = sText_AttackerLostElectricType,
     [STRINGID_PKMNSABILITYPREVENTSABILITY] = sText_PkmnsAbilityPreventsAbility,
-    [STRINGID_PKMNHURTBYFROSTBITE] = sText_PkmnHurtByFrostbite,
-    [STRINGID_PKMNGOTFROSTBITE] = sText_PkmnGotFrostbite,
-    [STRINGID_PKMNSITEMHEALEDFROSTBITE] = sText_PkmnsItemHealedFrostbite,
-    [STRINGID_ATTACKERHEALEDITSFROSTBITE] = sText_AttackerHealedItsFrostbite,
     [STRINGID_TEAMGAINEDEXP] = sText_TeamGainedEXP,
     [STRINGID_CLOAKEDINAHARSHLIGHT] = sText_PkmnIsCloakedInAHarshLight,
 };
@@ -1421,12 +1411,6 @@ const u32 gGotBurnedStringIds[] =
 const u32 gGotFrostbiteStringIds[] =
 {
     [B_MSG_STATUSED]            = STRINGID_PKMNGOTFROSTBITE
-};
-
-const u32 gGotFrozenStringIds[] =
-{
-    [B_MSG_STATUSED]            = STRINGID_PKMNWASFROZEN,
-    [B_MSG_STATUSED_BY_ABILITY] = STRINGID_PKMNFROZENBY
 };
 
 const u32 gAttractUsedStringIds[] =

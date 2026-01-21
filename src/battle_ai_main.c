@@ -4001,7 +4001,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
     for (i = 0; i < gMovesInfo[move].numAdditionalEffects; i++)
     {
         // Only consider effects with a guaranteed chance to happen
-        if (!MoveEffectIsGuaranteed(battlerAtk, aiData->abilities[battlerAtk], &gMovesInfo[move].additionalEffects[i]))
+        if (!EfectoSecundarioGarantizado(battlerAtk, aiData->abilities[battlerAtk], &gMovesInfo[move].additionalEffects[i]))
             continue;
 
         // Consider move effects that target self

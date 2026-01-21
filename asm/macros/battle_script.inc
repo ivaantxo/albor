@@ -1450,17 +1450,6 @@
 	.4byte \failInstr
 	.endm
 
-	.macro jumpifteainvulnerable battler:req, jumpInstr:req
-	callnative BS_TeatimeInvul
-	.byte \battler
-	.4byte \jumpInstr
-	.endm
-
-	.macro jumpifteanoberry failInstr:req
-	callnative BS_TeatimeTargets
-	.4byte \failInstr
-	.endm
-
 	.macro trywindriderpower battler:req, failInstr:req
 	callnative BS_TryWindRiderPower
 	.byte \battler

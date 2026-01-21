@@ -285,7 +285,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .punchingMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FREEZE_OR_FROSTBITE,
+            .moveEffect = MOVE_EFFECT_FREEZE,
             .chance = 10,
         }),
         .battleAnimScript = gBattleAnimMove_IcePunch,
@@ -1318,7 +1318,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .additionalEffects = ADDITIONAL_EFFECTS({
             // The following effect is also relevant in battle_Pike.c
             // If you cherry-pick this to use something other than the config, make sure to update it there too
-            .moveEffect = MOVE_EFFECT_FREEZE_OR_FROSTBITE,
+            .moveEffect = MOVE_EFFECT_FREEZE,
             .chance = 10,
         }),
         .battleAnimScript = gBattleAnimMove_IceBeam,
@@ -1340,7 +1340,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .windMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FREEZE_OR_FROSTBITE,
+            .moveEffect = MOVE_EFFECT_FREEZE,
             .chance = 10,
         }),
         .battleAnimScript = gBattleAnimMove_Blizzard,
@@ -3807,7 +3807,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FREEZE_OR_FROSTBITE,
+            .moveEffect = MOVE_EFFECT_FREEZE,
             .chance = 10,
         }),
         .battleAnimScript = gBattleAnimMove_PowderSnow,
@@ -8623,7 +8623,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .bitingMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FREEZE_OR_FROSTBITE,
+            .moveEffect = MOVE_EFFECT_FREEZE,
             .chance = 10,
         },
         {
@@ -10990,7 +10990,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FREEZE_OR_FROSTBITE,
+            .moveEffect = MOVE_EFFECT_FREEZE,
             .chance = 50,
         }),
         .battleAnimScript = gBattleAnimMove_Glaciate,
@@ -11471,7 +11471,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .argument = TIPO_AGUA,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FREEZE_OR_FROSTBITE,
+            .moveEffect = MOVE_EFFECT_FREEZE,
             .chance = 10,
         }),
         .battleAnimScript = gBattleAnimMove_FreezeDry,
@@ -13741,26 +13741,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_DragonDarts,
     },
 
-    [MOVE_TEATIME] =
-    {
-        .name = COMPOUND_STRING("Teatime"),
-        .description = COMPOUND_STRING(
-            "All Pokémon have teatime\n"
-            "and eat their Berries."),
-        .effect = EFFECT_TEATIME,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_ALL_BATTLERS,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .ignoresSubstitute = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Teatime,
-    },
-
     [MOVE_OCTOLOCK] =
     {
         .name = COMPOUND_STRING("Octolock"),
@@ -14665,7 +14645,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .eyesMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FREEZE_OR_FROSTBITE,
+            .moveEffect = MOVE_EFFECT_FREEZE,
             .chance = 10,
         }),
         .battleAnimScript = gBattleAnimMove_FreezingGlare,

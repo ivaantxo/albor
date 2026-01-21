@@ -1578,12 +1578,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_TEATIME] =
-    {
-        .battleScript = BattleScript_EffectTeatime,
-        .encourageEncore = TRUE,
-    },
-
     [EFFECT_ATTACK_UP_USER_ALLY] =
     {
         .battleScript = BattleScript_EffectAttackUpUserAlly,

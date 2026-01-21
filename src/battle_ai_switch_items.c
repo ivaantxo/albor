@@ -1337,7 +1337,7 @@ static u32 GetSwitchinRecurringDamage(void)
 // Gets one turn of status damage
 static u32 GetSwitchinStatusDamage(u32 battler)
 {
-    u8 defType1 = AI_DATA->switchinCandidate.battleMon.types[0], defType2 = AI_DATA->switchinCandidate.battleMon.types[1];
+    u32 defType1 = AI_DATA->switchinCandidate.battleMon.types[0], defType2 = AI_DATA->switchinCandidate.battleMon.types[1];
     u8 tSpikesLayers = gSideTimers[GetBattlerSide(battler)].toxicSpikesAmount;
     u16 heldItemEffect = ItemId_GetHoldEffect(AI_DATA->switchinCandidate.battleMon.item);
     u32 status = AI_DATA->switchinCandidate.battleMon.status1, ability = AI_DATA->switchinCandidate.battleMon.ability, maxHP = AI_DATA->switchinCandidate.battleMon.maxHP;
@@ -1348,25 +1348,15 @@ static u32 GetSwitchinStatusDamage(u32 battler)
     {
         if (status & STATUS1_BURN)
         {
-            if (B_BURN_DAMAGE >= GEN_7)
-                statusDamage = maxHP / 16;
-            else
-                statusDamage = maxHP / 8;
-            if(ability == ABILITY_HEATPROOF)
+            statusDamage = maxHP / 16;
+            if (ability == ABILITY_HEATPROOF) // revisar
                 statusDamage = statusDamage / 2;
-            if (gBattleWeather & B_WEATHER_RAIN)
-                statusDamage = 0;
             if (statusDamage == 0)
                 statusDamage = 1;
         }
         else if (status & STATUS1_FROSTBITE)
         {
-            if (B_BURN_DAMAGE >= GEN_7)
-                statusDamage = maxHP / 16;
-            else
-                statusDamage = maxHP / 8;
-            if (gBattleWeather & B_WEATHER_SUN)
-                statusDamage = 0;
+            statusDamage = maxHP / 16;
             if (statusDamage == 0)
                 statusDamage = 1;
         }

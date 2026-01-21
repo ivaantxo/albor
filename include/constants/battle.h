@@ -279,7 +279,6 @@ enum ResultadosCombate
 #define MOVE_EFFECT_FREEZE              4
 #define MOVE_EFFECT_PARALYSIS           5
 #define MOVE_EFFECT_TOXIC               6
-#define MOVE_EFFECT_FROSTBITE           7
 #define PRIMARY_STATUS_MOVE_EFFECT      MOVE_EFFECT_FROSTBITE // All above move effects apply primary status
 #define MOVE_EFFECT_CONFUSION           8
 #define MOVE_EFFECT_FLINCH              9

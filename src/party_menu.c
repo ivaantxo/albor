@@ -3516,7 +3516,8 @@ static void GetMedicineItemEffectMessage(u16 item, u32 statusCured)
     case ITEM_EFFECT_CURE_BURN:
         StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnBurnHealed);
         break;
-    case ITEM_EFFECT_CURE_FREEZE_FROSTBITE:
+    case EFECTO_OBJETO_CURA_CONGELACION:
+        StringExpandPlaceholders(gVariableTextoAmpliada, COMPOUND_STRING("{VAR_TEXTO_1} se curó de su congelación.{PAUSE_UNTIL_PRESS}")):
         break;
     case ITEM_EFFECT_CURE_PARALYSIS:
         StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnCuredOfParalysis);
@@ -5157,7 +5158,7 @@ u8 GetItemEffectType(u16 item)
         else if (statusCure == ITEM3_BURN)
             return ITEM_EFFECT_CURE_BURN;
         else if (statusCure == ITEM3_FREEZE)
-            return ITEM_EFFECT_CURE_FREEZE_FROSTBITE;
+            return EFECTO_OBJETO_CURA_CONGELACION;
         else if (statusCure == ITEM3_PARALYSIS)
             return ITEM_EFFECT_CURE_PARALYSIS;
         else if (statusCure == ITEM3_CONFUSION)

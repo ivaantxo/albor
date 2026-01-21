@@ -669,7 +669,7 @@ static bool32 AI_IsMoveEffectInPlus(u32 battlerAtk, u32 battlerDef, u32 move, s3
                     if (AI_CanBurn(battlerAtk, battlerDef, abilityDef, ALIADO(battlerAtk), move, MOVE_NONE))
                         return TRUE;
                     break;
-                case MOVE_EFFECT_FREEZE_OR_FROSTBITE:
+                case MOVE_EFFECT_FREEZE:
                     if (AI_CanGetFrostbite(battlerDef, abilityDef))
                         return TRUE;
                     break;
