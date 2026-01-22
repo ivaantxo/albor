@@ -570,7 +570,6 @@ static const u8 sText_PkmnShookOffTheTaunt[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX
 static const u8 sText_PkmnGotOverItsInfatuation[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} got over its infatuation!");
 static const u8 sText_ItemCannotBeRemoved[] = _("{B_ATK_NAME_WITH_PREFIX}'s item cannot be removed!");
 static const u8 sText_StickyBarbTransfer[] = _("The {B_LAST_ITEM} attached itself to {B_ATK_NAME_WITH_PREFIX}!");
-static const u8 sText_PkmnBurnHealed[] = _("{B_DEF_NAME_WITH_PREFIX}'s burn was cured!");
 static const u8 sText_RedCardActivate[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} held up its Red Card against {B_ATK_NAME_WITH_PREFIX}!");
 static const u8 sText_EjectButtonActivate[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} is switched out with the {B_LAST_ITEM}!");
 static const u8 sText_AttackerGotOverInfatuation[] =_("{B_ATK_NAME_WITH_PREFIX} got over its infatuation!");
@@ -685,7 +684,6 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_ATKGOTOVERINFATUATION] = sText_AttackerGotOverInfatuation,
     [STRINGID_EJECTBUTTONACTIVATE] = sText_EjectButtonActivate,
     [STRINGID_REDCARDACTIVATE] = sText_RedCardActivate,
-    [STRINGID_PKMNBURNHEALED] = sText_PkmnBurnHealed,
     [STRINGID_STICKYBARBTRANSFER] = sText_StickyBarbTransfer,
     [STRINGID_ITEMCANNOTBEREMOVED] = sText_ItemCannotBeRemoved,
     [STRINGID_PKMNGOTOVERITSINFATUATION] = sText_PkmnGotOverItsInfatuation,
@@ -1408,11 +1406,6 @@ const u32 gGotBurnedStringIds[] =
     [B_MSG_STATUSED_BY_ABILITY] = STRINGID_PKMNBURNEDBY
 };
 
-const u32 gGotFrostbiteStringIds[] =
-{
-    [B_MSG_STATUSED]            = STRINGID_PKMNGOTFROSTBITE
-};
-
 const u32 gAttractUsedStringIds[] =
 {
     [B_MSG_STATUSED]            = STRINGID_PKMNFELLINLOVE,
@@ -1524,7 +1517,7 @@ const u32 gRoomsStringIds[] =
 
 const u32 gStatusConditionsStringIds[] =
 {
-    STRINGID_PKMNWASPOISONED, STRINGID_PKMNBADLYPOISONED, STRINGID_PKMNWASBURNED, STRINGID_PKMNWASPARALYZED, STRINGID_PKMNFELLASLEEP, STRINGID_PKMNGOTFROSTBITE
+    STRINGID_PKMNWASPOISONED, STRINGID_PKMNBADLYPOISONED, STRINGID_PKMNWASBURNED, STRINGID_PKMNWASPARALYZED, STRINGID_PKMNFELLASLEEP
 };
 
 const u32 gStatus2StringIds[] =

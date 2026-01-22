@@ -188,15 +188,15 @@ static u8 DoJumpSpriteMovement(struct Sprite *);
 static u8 DoJumpSpecialSpriteMovement(struct Sprite *);
 static void CreateLevitateMovementTask(struct ObjectEvent *);
 static void DestroyLevitateMovementTask(u8);
-static bool32 ObtenInformacionFollower(u32 *especie, bool32 *shiny, bool32 *hembra);
-static u32 CargaPaletaDinamicaFollower(u32 especie, bool32 shiny, bool32 hembra);
+static bool32 InformacionFollower(u32 *especie, bool32 *shiny, bool32 *hembra);
+static u32 CargaPaletaFollower(u32 especie, bool32 shiny, bool32 hembra);
 static const struct ObjectEventGraphicsInfo *InformacionGraficaDesdeEspecie(u32 especie, bool32 shiny, bool32 hembra);
 static bool8 NpcTakeStep(struct Sprite *);
 static bool8 IsElevationMismatchAt(u8, s16, s16);
 static bool8 AreElevationsCompatible(u8, u8);
 static void CopyObjectGraphicsInfoToSpriteTemplate_WithMovementType(u16 graphicsId, u16 movementType, struct SpriteTemplate *spriteTemplate, const struct SubspriteTable **subspriteTables);
 
-static u16 ObtenIDGraficosParaPokemon(u32 especie, bool32 shiny, bool32 hembra);
+static u16 IDGraficosPokemon(u32 especie, bool32 shiny, bool32 hembra);
 
 static const struct SpriteFrameImage sPicTable_PechaBerryTree[];
 
@@ -1291,7 +1291,7 @@ static u8 TrySetupObjectEventSprite(const struct ObjectEventTemplate *objectEven
 
     sprite = &gSprites[spriteId];
     if (spriteTemplate->paletteTag == OBJ_EVENT_PAL_TAG_DYNAMIC)
-        sprite->oam.paletteNum = CargaPaletaDinamicaFollower(OW_SPECIES(objectEvent), OW_SHINY(objectEvent), OW_FEMALE(objectEvent));
+        sprite->oam.paletteNum = CargaPaletaFollower(OW_SPECIES(objectEvent), OW_SHINY(objectEvent), OW_FEMALE(objectEvent));
     GetMapCoordsFromSpritePos(objectEvent->currentCoords.x + cameraX, objectEvent->currentCoords.y + cameraY, &sprite->x, &sprite->y);
     sprite->centerToCornerVecX = -(graphicsInfo->width >> 1);
     sprite->centerToCornerVecY = -(graphicsInfo->height >> 1);
@@ -1394,12 +1394,12 @@ static void CopyObjectGraphicsInfoToSpriteTemplate_WithMovementType(u16 graphics
     CopyObjectGraphicsInfoToSpriteTemplate(graphicsId, sMovementTypeCallbacks[movementType], spriteTemplate, subspriteTables);
 }
 
-static u32 CargaPaletaDinamicaFollowerDesdePlantilla(u16 graphicsId, struct SpriteTemplate *plantilla)
+static u32 CargaPaletaFollowerDesdePlantilla(u16 graphicsId, struct SpriteTemplate *plantilla)
 {
     u16 especie = graphicsId & OBJ_EVENT_MON_SPECIES_MASK;
     bool32 shiny = graphicsId & OBJ_EVENT_MON_SHINY;
     bool32 hembra = graphicsId & OBJ_EVENT_MON_FEMALE;
-    u32 numeroPaleta = CargaPaletaDinamicaFollower(especie, shiny, hembra);
+    u32 numeroPaleta = CargaPaletaFollower(especie, shiny, hembra);
     if (plantilla)
     {
         plantilla->paletteTag = especie + OBJ_EVENT_MON;
@@ -1411,7 +1411,7 @@ static u32 CargaPaletaDinamicaFollowerDesdePlantilla(u16 graphicsId, struct Spri
     return numeroPaleta;
 }
 
-static u32 CargaPaletaDinamicaFollower(u32 especie, bool32 shiny, bool32 hembra)
+static u32 CargaPaletaFollower(u32 especie, bool32 shiny, bool32 hembra)
 {
     u32 numeroPaleta;
     const u32 *paleta = GetMonSpritePalFromSpecies(especie, shiny, hembra);
@@ -1437,7 +1437,7 @@ u8 CreateObjectGraphicsSprite(u16 graphicsId, void (*callback)(struct Sprite *),
 
     if (spriteTemplate->paletteTag == OBJ_EVENT_PAL_TAG_DYNAMIC)
     {
-        u32 paletteNum = CargaPaletaDinamicaFollowerDesdePlantilla(graphicsId, spriteTemplate);
+        u32 paletteNum = CargaPaletaFollowerDesdePlantilla(graphicsId, spriteTemplate);
         spriteTemplate->paletteTag = GetSpritePaletteTagByPaletteNum(paletteNum);
     }
     else if (spriteTemplate->paletteTag != TAG_NONE)
@@ -1551,7 +1551,7 @@ static void PreparaGraficosFollower(struct ObjectEvent *objEvent, u32 especie, b
 {
     const struct ObjectEventGraphicsInfo *graphicsInfo = InformacionGraficaDesdeEspecie(especie, shiny, hembra);
     ObjectEventSetGraphics(objEvent, graphicsInfo);
-    objEvent->graphicsId = ObtenIDGraficosParaPokemon(especie, shiny, hembra);
+    objEvent->graphicsId = IDGraficosPokemon(especie, shiny, hembra);
     if (graphicsInfo->paletteTag == OBJ_EVENT_PAL_TAG_DYNAMIC)
     {
         struct Sprite *sprite = &gSprites[objEvent->spriteId];
@@ -1559,7 +1559,7 @@ static void PreparaGraficosFollower(struct ObjectEvent *objEvent, u32 especie, b
         sprite->inUse = FALSE;
         FieldEffectFreePaletteIfUnused(sprite->oam.paletteNum);
         sprite->inUse = TRUE;
-        sprite->oam.paletteNum = CargaPaletaDinamicaFollower(especie, shiny, hembra);
+        sprite->oam.paletteNum = CargaPaletaFollower(especie, shiny, hembra);
     }
 }
 
@@ -1592,7 +1592,7 @@ static void RefreshFollowerGraphics(struct ObjectEvent *objEvent)
         sprite->inUse = FALSE;
         FieldEffectFreePaletteIfUnused(sprite->oam.paletteNum);
         sprite->inUse = TRUE;
-        sprite->oam.paletteNum = CargaPaletaDinamicaFollower(especie, shiny, hembra);
+        sprite->oam.paletteNum = CargaPaletaFollower(especie, shiny, hembra);
     }
     else if (i != 0xFF)
     {
@@ -1617,7 +1617,7 @@ static u16 GetOverworldCastformForm(void)
     return SPECIES_CASTFORM_NORMAL;
 }
 
-static bool32 ObtenInformacionPokemon(struct Pokemon *mon, u32 *especie, bool32 *shiny, bool32 *hembra)
+static bool32 InformacionPokemon(struct Pokemon *mon, u32 *especie, bool32 *shiny, bool32 *hembra)
 {
     if (!mon)
     {
@@ -1644,9 +1644,9 @@ static bool32 ObtenInformacionPokemon(struct Pokemon *mon, u32 *especie, bool32 
     return TRUE;
 }
 
-static bool32 ObtenInformacionFollower(u32 *especie, bool32 *shiny, bool32 *hembra)
+static bool32 InformacionFollower(u32 *especie, bool32 *shiny, bool32 *hembra)
 {
-    return ObtenInformacionPokemon(GetFirstLiveMon(), especie, shiny, hembra);
+    return InformacionPokemon(GetFirstLiveMon(), especie, shiny, hembra);
 }
 
 void UpdateFollowingPokemon(void)
@@ -1657,7 +1657,7 @@ void UpdateFollowingPokemon(void)
     bool32 shiny;
     bool32 hembra;
 
-    if (!ObtenInformacionFollower(&especie, &shiny, &hembra)
+    if (!InformacionFollower(&especie, &shiny, &hembra)
      || InformacionGraficaDesdeEspecie(especie, shiny, hembra) == NULL
      || FlagGet(FLAG_TEMP_HIDE_FOLLOWER)
      )
@@ -1672,7 +1672,7 @@ void UpdateFollowingPokemon(void)
         struct ObjectEventTemplate template =
         {
             .localId = LOCALID_FOLLOWER,
-            .graphicsId = ObtenIDGraficosParaPokemon(especie, shiny, hembra),
+            .graphicsId = IDGraficosPokemon(especie, shiny, hembra),
             .flagId = 0,
             .x = gSaveBlockPtr->pos.x,
             .y = gSaveBlockPtr->pos.y,
@@ -2256,7 +2256,7 @@ static void SpawnObjectEventOnReturnToField(u32 objectEventId, s16 x, s16 y)
 
     if (spriteTemplate.paletteTag == OBJ_EVENT_PAL_TAG_DYNAMIC)
     {
-        u32 numeroPaleta = CargaPaletaDinamicaFollower(OW_SPECIES(objectEvent), OW_SHINY(objectEvent), OW_FEMALE(objectEvent));
+        u32 numeroPaleta = CargaPaletaFollower(OW_SPECIES(objectEvent), OW_SHINY(objectEvent), OW_FEMALE(objectEvent));
         spriteTemplate.paletteTag = GetSpritePaletteTagByPaletteNum(numeroPaleta);
     }
     else if (spriteTemplate.paletteTag != TAG_NONE)
@@ -10248,7 +10248,7 @@ void GetDaycareGraphics(struct ScriptContext *ctx)
     s32 i;
     for (i = 0; i < 2; i++)
     {
-        ObtenInformacionPokemon((struct Pokemon *) &gSaveBlockPtr->daycare.mons[i].mon, &specGfx, &shiny, &hembra);
+        InformacionPokemon((struct Pokemon *) &gSaveBlockPtr->daycare.mons[i].mon, &specGfx, &shiny, &hembra);
         if (specGfx == SPECIES_NONE)
             break;
         specGfx = specGfx + OBJ_EVENT_MON;
@@ -10309,7 +10309,7 @@ bool8 MovementActionFunc_RunSlow_Step1(struct ObjectEvent *objectEvent, struct S
     return FALSE;
 }
 
-static u16 ObtenIDGraficosParaPokemon(u32 species, bool32 shiny, bool32 hembra)
+static u16 IDGraficosPokemon(u32 species, bool32 shiny, bool32 hembra)
 {
     u16 graphicsId = species + OBJ_EVENT_MON;
     if (shiny)

@@ -40,7 +40,7 @@ static const struct ContestWinner sContestWinnerPicDummy =
     .trainerName = _("")
 };
 
-u32 ObtenPersonalidadJugador(void)
+u32 PersonalidadJugador(void)
 {
     return gSaveBlockPtr->personalidadJugador;
 }

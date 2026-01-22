@@ -102,10 +102,10 @@ static bool32 ShouldSwitchIfHasBadOdds(u32 battler)
             }
 
             // Only check damage if move has power
-            if (!IS_MOVE_STATUS(aiMove))
+            if (!ES_MOVIMIENTO_ESTADO(aiMove))
             {
                 // Check if mon has a super effective move
-                if (IA_ObtenEfectividadMovimiento(aiMove, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
+                if (IA_EfectividadMovimiento(aiMove, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
                     hasSuperEffectiveMove = TRUE;
 
                 // Get maximum damage mon can deal
@@ -121,21 +121,21 @@ static bool32 ShouldSwitchIfHasBadOdds(u32 battler)
     }
 
     // Calculate type advantage
-    typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ObtenModificadorTipo(atkType1, defType1)));
+    typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType1, defType1)));
     if (atkType2 != atkType1)
-        typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ObtenModificadorTipo(atkType2, defType1)));
+        typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType2, defType1)));
     if (defType2 != defType1)
     {
-        typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ObtenModificadorTipo(atkType1, defType2)));
+        typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType1, defType2)));
         if (atkType2 != atkType1)
-            typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ObtenModificadorTipo(atkType2, defType2)));
+            typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType2, defType2)));
     }
 
     // Get max damage mon could take
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         playerMove = gBattleMons[opposingBattler].moves[i];
-        if (playerMove != MOVE_NONE && !IS_MOVE_STATUS(playerMove))
+        if (playerMove != MOVE_NONE && !ES_MOVIMIENTO_ESTADO(playerMove))
         {
             damageTaken = AI_CalcDamage(playerMove, opposingBattler, battler, &effectiveness, weather);
             if (damageTaken > maxDamageTaken)
@@ -206,8 +206,8 @@ static bool32 ShouldSwitchIfAllMovesBad(u32 battler)
         u32 opposingBattler = OPONENTE(battler);
         u32 opposingPartner = ALIADO(opposingBattler);
         u32 movimientoIA = gBattleMons[battler].moves[indiceMovimiento];
-        if ((IA_ObtenEfectividadMovimiento(movimientoIA, battler, opposingBattler) > AI_EFFECTIVENESS_x0
-                || IA_ObtenEfectividadMovimiento(movimientoIA, battler, opposingPartner) > AI_EFFECTIVENESS_x0)
+        if ((IA_EfectividadMovimiento(movimientoIA, battler, opposingBattler) > AI_EFFECTIVENESS_x0
+                || IA_EfectividadMovimiento(movimientoIA, battler, opposingPartner) > AI_EFFECTIVENESS_x0)
                 && movimientoIA != MOVE_NONE)
             return FALSE;
     }
@@ -412,7 +412,7 @@ static bool32 ShouldSwitchIfBadlyStatused(u32 battler)
                 || monAbility == ABILITY_EARLY_BIRD)
                 || holdEffect == (HOLD_EFFECT_CURE_SLP | HOLD_EFFECT_CURE_STATUS)
                 || HasMove(battler, MOVE_SLEEP_TALK)
-                || (HasMoveEffect(battler, MOVE_SNORE) && IA_ObtenEfectividadMovimiento(MOVE_SNORE, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
+                || (HasMoveEffect(battler, MOVE_SNORE) && IA_EfectividadMovimiento(MOVE_SNORE, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
                 )
                 switchMon = FALSE;
 
@@ -524,7 +524,7 @@ static bool32 HasSuperEffectiveMoveAgainstOpponents(u32 battler, bool32 noRng)
             if (move == MOVE_NONE)
                 continue;
 
-            if (IA_ObtenEfectividadMovimiento(move, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
+            if (IA_EfectividadMovimiento(move, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
             {
                 if (noRng)
                     return TRUE;
@@ -546,7 +546,7 @@ static bool32 HasSuperEffectiveMoveAgainstOpponents(u32 battler, bool32 noRng)
             if (move == MOVE_NONE)
                 continue;
 
-            if (IA_ObtenEfectividadMovimiento(move, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
+            if (IA_EfectividadMovimiento(move, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
             {
                 if (noRng)
                     return TRUE;
@@ -590,7 +590,7 @@ static bool32 FindMonWithFlagsAndSuperEffective(u32 battler, u16 flags, u32 perc
         return FALSE;
     if (gLastHitBy[battler] == 0xFF)
         return FALSE;
-    if (IS_MOVE_STATUS(gLastLandedMoves[battler]))
+    if (ES_MOVIMIENTO_ESTADO(gLastLandedMoves[battler]))
         return FALSE;
 
     if (EsContraEntrenador())
@@ -640,7 +640,7 @@ static bool32 FindMonWithFlagsAndSuperEffective(u32 battler, u16 flags, u32 perc
                 if (move == 0)
                     continue;
 
-                if (IA_ObtenEfectividadMovimiento(move, battler, battlerIn1) >= AI_EFFECTIVENESS_x2 && PorcentajeAleatorio(percentChance))
+                if (IA_EfectividadMovimiento(move, battler, battlerIn1) >= AI_EFFECTIVENESS_x2 && PorcentajeAleatorio(percentChance))
                     return SetSwitchinAndSwitch(battler, i);
             }
         }
@@ -732,7 +732,7 @@ static bool32 ShouldSwitchIfEncored(u32 battler)
         return SetSwitchinAndSwitch(battler, PARTY_SIZE);
 
     // Stay in if effective move
-    else if (IA_ObtenEfectividadMovimiento(encoredMove, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
+    else if (IA_EfectividadMovimiento(encoredMove, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
         return FALSE;
 
     // Switch out 50% of the time otherwise
@@ -1060,14 +1060,14 @@ static u32 GetBestMonTypeMatchup(struct Pokemon *party, int firstId, int lastId,
                 u8 defType1 = gSpeciesInfo[species].types[0];
                 u8 defType2 = gSpeciesInfo[species].types[1];
 
-                typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ObtenModificadorTipo(atkType1, defType1)));
+                typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType1, defType1)));
                 if (atkType2 != atkType1)
-                    typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ObtenModificadorTipo(atkType2, defType1)));
+                    typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType2, defType1)));
                 if (defType2 != defType1)
                 {
-                    typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ObtenModificadorTipo(atkType1, defType2)));
+                    typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType1, defType2)));
                     if (atkType2 != atkType1)
-                        typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ObtenModificadorTipo(atkType2, defType2)));
+                        typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType2, defType2)));
                 }
                 if (typeEffectiveness < bestResist)
                 {
@@ -1083,7 +1083,7 @@ static u32 GetBestMonTypeMatchup(struct Pokemon *party, int firstId, int lastId,
             for (i = 0; i < MAX_MON_MOVES; i++)
             {
                 u32 move = GetMonData(&party[bestMonId], MON_DATA_MOVE1 + i);
-                if (move != MOVE_NONE && IA_ObtenEfectividadMovimiento(move, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
+                if (move != MOVE_NONE && IA_EfectividadMovimiento(move, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
                     break;
             }
 
@@ -1119,7 +1119,7 @@ static u32 GetBestMonDmg(struct Pokemon *party, int firstId, int lastId, u8 inva
         for (j = 0; j < MAX_MON_MOVES; j++)
         {
             aiMove = AI_DATA->switchinCandidate.battleMon.moves[j];
-            if (aiMove != MOVE_NONE && !IS_MOVE_STATUS(aiMove))
+            if (aiMove != MOVE_NONE && !ES_MOVIMIENTO_ESTADO(aiMove))
             {
                 aiMove = GetMonData(&party[i], MON_DATA_MOVE1 + j);
                 dmg = AI_CalcPartyMonDamage(aiMove, battler, opposingBattler, AI_DATA->switchinCandidate.battleMon, TRUE);
@@ -1165,7 +1165,7 @@ static u32 GetSwitchinHazardsDamage(u32 battler, struct BattlePokemon *battleMon
     {
         // Stealth Rock
         if ((hazardFlags & SIDE_STATUS_STEALTH_ROCK) && heldItemEffect != HOLD_EFFECT_HEAVY_DUTY_BOOTS)
-            hazardDamage += ObtenDanioTrampa(gMovesInfo[MOVE_STEALTH_ROCK].type, battler);
+            hazardDamage += DanioTrampa(gMovesInfo[MOVE_STEALTH_ROCK].type, battler);
         // Spikes
         if ((hazardFlags & SIDE_STATUS_SPIKES) && EstaPokemonEnSuelo(heldItemEffect, ability, defType1, defType2))
         {
@@ -1349,12 +1349,10 @@ static u32 GetSwitchinStatusDamage(u32 battler)
         if (status & STATUS1_BURN)
         {
             statusDamage = maxHP / 16;
-            if (ability == ABILITY_HEATPROOF) // revisar
-                statusDamage = statusDamage / 2;
             if (statusDamage == 0)
                 statusDamage = 1;
         }
-        else if (status & STATUS1_FROSTBITE)
+        else if (status & STATUS1_FREEZE)
         {
             statusDamage = maxHP / 16;
             if (statusDamage == 0)
@@ -1520,14 +1518,14 @@ static u16 GetSwitchinTypeMatchup(u32 opposingBattler, struct BattlePokemon batt
     defType1 = battleMon.types[0], defType2 = battleMon.types[1];
 
     // Multiply type effectiveness by a factor depending on type matchup
-    typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ObtenModificadorTipo(atkType1, defType1)));
+    typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType1, defType1)));
     if (atkType2 != atkType1)
-        typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ObtenModificadorTipo(atkType2, defType1)));
+        typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType2, defType1)));
     if (defType2 != defType1)
     {
-        typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ObtenModificadorTipo(atkType1, defType2)));
+        typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType1, defType2)));
         if (atkType2 != atkType1)
-            typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ObtenModificadorTipo(atkType2, defType2)));
+            typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType2, defType2)));
     }
     return typeEffectiveness;
 }
@@ -1561,7 +1559,7 @@ static s32 GetMaxDamagePlayerCouldDealToSwitchin(u32 battler, u32 opposingBattle
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         playerMove = gBattleMons[opposingBattler].moves[i];
-        if (playerMove != MOVE_NONE && !IS_MOVE_STATUS(playerMove))
+        if (playerMove != MOVE_NONE && !ES_MOVIMIENTO_ESTADO(playerMove))
         {
             damageTaken = AI_CalcPartyMonDamage(playerMove, opposingBattler, battler, battleMon, FALSE);
             if (damageTaken > maxDamageTaken)
@@ -1684,7 +1682,7 @@ static u32 GetBestMonIntegrated(struct Pokemon *party, int firstId, int lastId, 
         {
             aiMove = AI_DATA->switchinCandidate.battleMon.moves[j];
 
-            if (aiMove != MOVE_NONE && !IS_MOVE_STATUS(aiMove))
+            if (aiMove != MOVE_NONE && !ES_MOVIMIENTO_ESTADO(aiMove))
             {
                 damageDealt = AI_CalcPartyMonDamage(aiMove, battler, opposingBattler, AI_DATA->switchinCandidate.battleMon, TRUE);
             }
@@ -1711,11 +1709,11 @@ static u32 GetBestMonIntegrated(struct Pokemon *party, int firstId, int lastId, 
             }
 
             // Check for mon with resistance and super effective move for best type matchup mon with effective move
-            if (aiMove != MOVE_NONE && !IS_MOVE_STATUS(aiMove))
+            if (aiMove != MOVE_NONE && !ES_MOVIMIENTO_ESTADO(aiMove))
             {
                 if (typeMatchup < bestResistEffective)
                 {
-                    if (IA_ObtenEfectividadMovimiento(aiMove, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
+                    if (IA_EfectividadMovimiento(aiMove, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
                     {
                         if (canSwitchinWin1v1)
                         {

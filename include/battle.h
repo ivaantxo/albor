@@ -600,9 +600,7 @@ struct BattleStruct
     u8 shellSideArmCategory[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES];
     u8 speedTieBreaks; // NUMERO_COMBATIENTES! values.
     u8 boosterEnergyActivates;
-    u8 distortedTypeMatchups;
     u8 categoryOverride; // for Z-Moves and Max Moves
-    u32 stellarBoostFlags[NUMERO_LADOS]; // stored as a bitfield of flags for all types for each side
     u8 usedEjectItem;
     u8 usedMicleBerry;
     u32 posicionPokemonEquipo;
@@ -614,9 +612,9 @@ struct BattleStruct
 #define F_DYNAMIC_TYPE_IGNORE_PHYSICALITY  (1 << 6) // If set, the dynamic type's physicality won't be used for certain move effects.
 #define F_DYNAMIC_TYPE_SET                 (1 << 7) // Set for all dynamic types to distinguish a dynamic type of Normal (0) from no dynamic type.
 
-#define IS_MOVE_PHYSICAL(move) (GetBattleMoveCategory(move) == CATEGORIA_FISICA)
-#define IS_MOVE_SPECIAL(move) (GetBattleMoveCategory(move) == CATEGORIA_ESPECIAL)
-#define IS_MOVE_STATUS(move) (gMovesInfo[move].category == CATEGORIA_ESTADO)
+#define ES_MOVIMIENTO_FISICO(move)      (CategoriaMovimiento(move) == CATEGORIA_FISICA)
+#define ES_MOVIMIENTO_ESPECIAL(move)    (CategoriaMovimiento(move) == CATEGORIA_ESPECIAL)
+#define ES_MOVIMIENTO_ESTADO(move)      (CategoriaMovimiento(move) == CATEGORIA_ESTADO)
 
 #define IS_MOVE_RECOIL(move) (gMovesInfo[move].recoil > 0 || gMovesInfo[move].effect == EFFECT_RECOIL_IF_MISS)
 

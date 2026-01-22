@@ -532,7 +532,7 @@ static u32 GeneratePartyHash(const struct Trainer *trainer, u32 i)
 
 void ModifyPersonalityForNature(u32 *personality, u32 newNature)
 {
-    u32 nature = ObtenNaturalezaDePersonalidad(*personality);
+    u32 nature = NaturalezaDePersonalidad(*personality);
     s32 diff = abs((s32)nature - (s32)newNature);
     s32 sign = (nature > newNature) ? 1 : -1;
     if (diff > NUMERO_NATURALEZAS / 2)
@@ -2314,7 +2314,7 @@ s8 GetMovePriority(u32 battler, u16 move)
         priority++;
     else if (ability == ABILITY_BAILARIN && gMovesInfo[move].danceMove)
         priority++;
-    else if (ability == ABILITY_PRANKSTER && IS_MOVE_STATUS(move))
+    else if (ability == ABILITY_PRANKSTER && ES_MOVIMIENTO_ESTADO(move))
     {
         gProtectStructs[battler].pranksterElevated = 1;
         priority++;
@@ -2633,7 +2633,7 @@ static void TryChangingTurnOrderEffects(u32 battler1, u32 battler2)
 
     // Battler 1
     // Quick Draw
-    if (ability1 == ABILITY_QUICK_DRAW && !IS_MOVE_STATUS(gMovimientoElegido[battler1]) && gBattleStruct->quickDrawRandom[battler1])
+    if (ability1 == ABILITY_QUICK_DRAW && !ES_MOVIMIENTO_ESTADO(gMovimientoElegido[battler1]) && gBattleStruct->quickDrawRandom[battler1])
         gProtectStructs[battler1].quickDraw = TRUE;
     // Quick Claw and Custap Berry
     if (!gProtectStructs[battler1].quickDraw
@@ -2643,7 +2643,7 @@ static void TryChangingTurnOrderEffects(u32 battler1, u32 battler2)
 
     // Battler 2
     // Quick Draw
-    if (ability2 == ABILITY_QUICK_DRAW && !IS_MOVE_STATUS(gMovimientoElegido[battler2]) && gBattleStruct->quickDrawRandom[battler2])
+    if (ability2 == ABILITY_QUICK_DRAW && !ES_MOVIMIENTO_ESTADO(gMovimientoElegido[battler2]) && gBattleStruct->quickDrawRandom[battler2])
         gProtectStructs[battler2].quickDraw = TRUE;
     // Quick Claw and Custap Berry
     if (!gProtectStructs[battler2].quickDraw
@@ -2955,7 +2955,7 @@ void RunBattleScriptCommands(void)
         gBattleScriptingCommandsTable[gBattlescriptCurrInstr[0]]();
 }
 
-u32 ObtenTipoDinamicoMovimiento(struct Pokemon *pokemon, u32 movimiento, u32 combatiente)
+u32 MovimientoTipoDinamico(struct Pokemon *pokemon, u32 movimiento, u32 combatiente)
 {
     u32 tipoMovimiento = gMovesInfo[movimiento].type;
     u32 efectoMovimiento = gMovesInfo[movimiento].effect;
@@ -3021,7 +3021,7 @@ void SetTypeBeforeUsingMove(u32 move, u32 battler)
     gBattleStruct->ateBoost[battler] = FALSE;
     gSpecialStatuses[battler].gemBoost = FALSE;
 
-    moveType = ObtenTipoDinamicoMovimiento(&GetBattlerParty(battler)[gBattlerPartyIndexes[battler]],
+    moveType = MovimientoTipoDinamico(&GetBattlerParty(battler)[gBattlerPartyIndexes[battler]],
                                   move,
                                   battler);
     if (moveType != GetMoveType(move))

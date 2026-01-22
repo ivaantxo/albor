@@ -37,7 +37,6 @@ enum
 
 #define TAG_HEALTHBOX_PALS_1            0xD709
 #define TAG_HEALTHBOX_PALS_2            0xD70A
-#define TAG_HEALTHBOX_SAFARI_TILE       0xD70B
 #define TAG_STATUS_SUMMARY_BAR_TILE     0xD70C
 
 #define TAG_STATUS_SUMMARY_BAR_PAL      0xD710
@@ -62,16 +61,11 @@ enum
     HEALTHBOX_NICK,
     HEALTHBOX_HEALTH_BAR,
     HEALTHBOX_EXP_BAR,
-    HEALTHBOX_UNUSED_7,
-    HEALTHBOX_UNUSED_8,
     HEALTHBOX_STATUS_ICON,
-    HEALTHBOX_SAFARI_ALL_TEXT,
-    HEALTHBOX_SAFARI_BALLS_TEXT
 };
 
 u32 WhichBattleCoords(u32 battlerId);
 u8 CreateBattlerHealthboxSprites(u8 battler);
-u8 CreateSafariPlayerHealthboxSprites(void);
 void SetBattleBarStruct(u8 battler, u8 healthboxSpriteId, s32 maxVal, s32 currVal, s32 receivedValue);
 void SetHealthboxSpriteInvisible(u8 healthboxSpriteId);
 void SetHealthboxSpriteVisible(u8 healthboxSpriteId);

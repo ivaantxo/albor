@@ -401,13 +401,13 @@ void CreaPokemonCaja(struct BoxPokemon *boxMon, u32 especie, u32 nivel, u32 ivFi
     if (CheckBagHasItem(ITEM_SHINY_CHARM, 1))
         rerollsExtra += I_SHINY_CHARM_ADDITIONAL_ROLLS;
 
-    while (OBTEN_VALOR_SHINY(personalidad) >= SHINY_ODDS && rerollsExtra > 0)
+    while (VALOR_SHINY(personalidad) >= SHINY_ODDS && rerollsExtra > 0)
     {
         personalidad = Random();
         rerollsExtra--;
     }
 
-    esVariocolor = OBTEN_VALOR_SHINY(personalidad) < SHINY_ODDS;
+    esVariocolor = VALOR_SHINY(personalidad) < SHINY_ODDS;
 
     SetBoxMonData(boxMon, MON_DATA_PERSONALITY, &personalidad);
     SetBoxMonData(boxMon, MON_DATA_IS_SHINY, &esVariocolor);
@@ -484,7 +484,7 @@ void CreaPokemonConNaturaleza(struct Pokemon *mon, u32 species, u32 level, u32 f
     {
         personality = Random();
     }
-    while (nature != ObtenNaturalezaDePersonalidad(personality));
+    while (nature != NaturalezaDePersonalidad(personality));
 
     CreaPokemon(mon, species, level, fixedIV, TRUE, personality);
 }
@@ -497,7 +497,7 @@ void CreaPokemonConGeneroNaturaleza(struct Pokemon *mon, u32 species, u32 level,
     {
         personality = Random();
     }
-    while (nature != ObtenNaturalezaDePersonalidad(personality)
+    while (nature != NaturalezaDePersonalidad(personality)
         || gender != GetGenderFromSpeciesAndPersonality(species, personality));
 
     CreaPokemon(mon, species, level, fixedIV, TRUE, personality);
@@ -530,7 +530,7 @@ void CalculateMonStats(struct Pokemon *mon)
     u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
     s32 level = GetLevelFromMonExp(mon);
     s32 newMaxHP;
-    u32 naturaleza = ObtenNaturaleza(mon);
+    u32 naturaleza = Naturaleza(mon);
 
     SetMonData(mon, MON_DATA_LEVEL, &level);
 
@@ -1213,7 +1213,7 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
             break;
         case MON_DATA_IS_SHINY:
         {
-            u32 shinyValue = OBTEN_VALOR_SHINY(boxMon->personality);
+            u32 shinyValue = VALOR_SHINY(boxMon->personality);
             retVal = (shinyValue < SHINY_ODDS) ^ boxMon->esShiny;
             break;
         }
@@ -1443,7 +1443,7 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         if (data) 
         {
             bool32 forceShiny = *(bool32*)data;
-            u32 shinyValue = OBTEN_VALOR_SHINY(boxMon->personality);
+            u32 shinyValue = VALOR_SHINY(boxMon->personality);
             boxMon->esShiny = (shinyValue < SHINY_ODDS) ^ forceShiny;
         }
         break;
@@ -2348,7 +2348,7 @@ u8 *UseStatIncreaseItem(u16 itemId)
     return gDisplayedStringBattle;
 }
 
-u32 ObtenNaturaleza(struct Pokemon *pokemon)
+u32 Naturaleza(struct Pokemon *pokemon)
 {
     u32 personalidad = GetMonData(pokemon, MON_DATA_PERSONALITY);
     u32 naturaleza = personalidad % NUMERO_NATURALEZAS;
@@ -2362,7 +2362,7 @@ u32 ObtenNaturaleza(struct Pokemon *pokemon)
     return naturaleza;
 }
 
-u32 ObtenNaturalezaDePersonalidad(u32 personalidad)
+u32 NaturalezaDePersonalidad(u32 personalidad)
 {
     return personalidad % NUMERO_NATURALEZAS;
 }
@@ -3225,13 +3225,13 @@ bool8 IsMonSpriteNotFlipped(u16 species)
 
 s8 GetMonFlavorRelation(struct Pokemon *mon, u8 flavor)
 {
-    u8 nature = ObtenNaturaleza(mon);
+    u8 nature = Naturaleza(mon);
     return gPokeblockFlavorCompatibilityTable[nature * FLAVOR_COUNT + flavor];
 }
 
 s8 GetFlavorRelationByPersonality(u32 personality, u8 flavor)
 {
-    u8 nature = ObtenNaturalezaDePersonalidad(personality);
+    u8 nature = NaturalezaDePersonalidad(personality);
     return gPokeblockFlavorCompatibilityTable[nature * FLAVOR_COUNT + flavor];
 }
 

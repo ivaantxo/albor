@@ -407,7 +407,7 @@ struct FormChange
     u16 param3;
 };
 
-#define OBTEN_VALOR_SHINY(personalidadPokemon) (HIHALF(ObtenPersonalidadJugador()) ^ LOHALF(ObtenPersonalidadJugador()) ^ HIHALF(personalidadPokemon) ^ LOHALF(personalidadPokemon))
+#define VALOR_SHINY(personalidadPokemon) (HIHALF(PersonalidadJugador()) ^ LOHALF(PersonalidadJugador()) ^ HIHALF(personalidadPokemon) ^ LOHALF(personalidadPokemon))
 
 extern u8 gPlayerPartyCount;
 extern struct Pokemon gPlayerParty[PARTY_SIZE];
@@ -500,8 +500,8 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
 bool8 HealStatusConditions(struct Pokemon *mon, u32 healMask, u8 battlerId);
 u8 GetItemEffectParamOffset(u32 battler, u16 itemId, u8 effectByte, u8 effectBit);
 u8 *UseStatIncreaseItem(u16 itemId);
-u32 ObtenNaturaleza(struct Pokemon *pokemon);
-u32 ObtenNaturalezaDePersonalidad(u32 personalidad);
+u32 Naturaleza(struct Pokemon *pokemon);
+u32 NaturalezaDePersonalidad(u32 personalidad);
 u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u16 evolutionItem);
 u16 NationalPokedexNumToSpecies(u16 nationalNum);
 u16 SpeciesToNationalPokedexNum(u16 species);

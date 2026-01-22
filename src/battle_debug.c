@@ -289,7 +289,6 @@ static const u8 sText_Burn[] = _("Burn");
 static const u8 sText_Paralysis[] = _("Paralysis");
 static const u8 sText_ToxicPoison[] = _("Toxic Poison");
 static const u8 sText_ToxicCounter[] = _("Toxic Counter");
-static const u8 sText_Frostbite[] = _("Frostbite");
 static const u8 sText_Confusion[] = _("Confusion");
 static const u8 sText_Flinched[] = _("Flinched");
 static const u8 sText_Torment[] = _("Torment");
@@ -376,7 +375,6 @@ static const struct BitfieldInfo sStatus1Bitfield[] =
     {/*Paralysis*/1, 6},
     {/*Toxic Poison*/ 1, 7},
     {/*Toxic Counter*/ 4, 8},
-    {/*Frostbite*/ 1, 12},
 };
 
 static const struct BitfieldInfo sStatus2Bitfield[] =

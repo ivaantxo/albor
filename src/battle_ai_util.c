@@ -29,7 +29,7 @@
     }                                                                                                           \
     return FALSE
 
-static u32 IA_ObtenEfectividad(uq4_12_t multiplicador);
+static u32 IA_Efectividad(uq4_12_t multiplicador);
 
 bool32 AI_IsFaster(u32 battlerAI, u32 battlerDef, u32 move)
 {
@@ -304,7 +304,7 @@ bool32 MovesWithCategoryUnusable(u32 attacker, u32 target, u32 category)
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         if (moves[i] != MOVE_NONE
-            && GetBattleMoveCategory(moves[i]) == category
+            && CategoriaMovimiento(moves[i]) == category
             && !(unusable & (1u << i)))
         {
             SetTypeBeforeUsingMove(moves[i], attacker);
@@ -573,7 +573,7 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
     }
 
     // convert multiper to AI_EFFECTIVENESS_xX
-    *typeEffectiveness = IA_ObtenEfectividad(effectivenessMultiplier);
+    *typeEffectiveness = IA_Efectividad(effectivenessMultiplier);
 
     // Undo temporary settings
     gBattleStruct->dynamicMoveType = 0;
@@ -670,7 +670,7 @@ static bool32 AI_IsMoveEffectInPlus(u32 battlerAtk, u32 battlerDef, u32 move, s3
                         return TRUE;
                     break;
                 case MOVE_EFFECT_FREEZE:
-                    if (AI_CanGetFrostbite(battlerDef, abilityDef))
+                    if (AI_PuedeSerCongelado(battlerDef, abilityDef))
                         return TRUE;
                     break;
                 case MOVE_EFFECT_PARALYSIS:
@@ -849,7 +849,7 @@ u32 GetCurrDamageHpPercent(u32 battlerAtk, u32 battlerDef)
     return (bestDmg * 100) / gBattleMons[battlerDef].maxHP;
 }
 
-uq4_12_t IA_ObtenEfectividadTipo(u32 movimiento, u32 atacante, u32 defensor)
+uq4_12_t IA_EfectividadTipo(u32 movimiento, u32 atacante, u32 defensor)
 {
     uq4_12_t efectividad;
     u32 tipoMovimiento = GetMoveType(movimiento);
@@ -870,13 +870,13 @@ uq4_12_t IA_ObtenEfectividadTipo(u32 movimiento, u32 atacante, u32 defensor)
     return efectividad;
 }
 
-u32 IA_ObtenEfectividadMovimiento(u32 movimiento, u32 atacante, u32 defensor)
+u32 IA_EfectividadMovimiento(u32 movimiento, u32 atacante, u32 defensor)
 {
     gMoveResultFlags = 0;
-    return IA_ObtenEfectividad(IA_ObtenEfectividadTipo(movimiento, atacante, defensor));
+    return IA_Efectividad(IA_EfectividadTipo(movimiento, atacante, defensor));
 }
 
-static u32 IA_ObtenEfectividad(uq4_12_t multiplicador)
+static u32 IA_Efectividad(uq4_12_t multiplicador)
 {
     switch (multiplicador)
     {
@@ -1512,7 +1512,7 @@ void ProtectChecks(u32 battlerAtk, u32 battlerDef, u32 move, u32 predictedMove, 
 
     if (uses == 0)
     {
-        if (predictedMove != MOVE_NONE && predictedMove != 0xFFFF && !IS_MOVE_STATUS(predictedMove))
+        if (predictedMove != MOVE_NONE && predictedMove != 0xFFFF && !ES_MOVIMIENTO_ESTADO(predictedMove))
             ADJUST_SCORE_PTR(DECENT_EFFECT);
         else if (Random() % 256 < 100)
             ADJUST_SCORE_PTR(WEAK_EFFECT);
@@ -1774,9 +1774,9 @@ bool32 HasOnlyMovesWithCategory(u32 battlerId, u32 category, bool32 onlyOffensiv
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (onlyOffensive && IS_MOVE_STATUS(moves[i]))
+        if (onlyOffensive && ES_MOVIMIENTO_ESTADO(moves[i]))
             continue;
-        if (moves[i] != MOVE_NONE && GetBattleMoveCategory(moves[i]) != category)
+        if (moves[i] != MOVE_NONE && CategoriaMovimiento(moves[i]) != category)
             return FALSE;
     }
 
@@ -1790,7 +1790,7 @@ bool32 HasMoveWithCategory(u32 battler, u32 category)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && GetBattleMoveCategory(moves[i]) == category)
+        if (moves[i] != MOVE_NONE && CategoriaMovimiento(moves[i]) == category)
             return TRUE;
     }
     return FALSE;
@@ -1948,9 +1948,9 @@ bool32 HasMoveWithLowAccuracy(u32 battlerAtk, u32 battlerDef, u32 accCheck, bool
 
         if (!((1u << i) & moveLimitations))
         {
-            if (ignoreStatus && IS_MOVE_STATUS(moves[i]))
+            if (ignoreStatus && ES_MOVIMIENTO_ESTADO(moves[i]))
                 continue;
-            else if ((!IS_MOVE_STATUS(moves[i]) && gMovesInfo[moves[i]].accuracy == 0)
+            else if ((!ES_MOVIMIENTO_ESTADO(moves[i]) && gMovesInfo[moves[i]].accuracy == 0)
                   || GetBattlerMoveTargetType(battlerAtk, moves[i]) & (MOVE_TARGET_USER | MOVE_TARGET_OPPONENTS_FIELD))
                 continue;
 
@@ -2188,7 +2188,7 @@ bool32 HasDamagingMove(u32 battlerId)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && !IS_MOVE_STATUS(moves[i]))
+        if (moves[i] != MOVE_NONE && !ES_MOVIMIENTO_ESTADO(moves[i]))
             return TRUE;
     }
 
@@ -2203,7 +2203,7 @@ bool32 HasDamagingMoveOfType(u32 battlerId, u32 type)
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         if (moves[i] != MOVE_NONE
-          && gMovesInfo[moves[i]].type == type && !IS_MOVE_STATUS(moves[i]))
+          && gMovesInfo[moves[i]].type == type && !ES_MOVIMIENTO_ESTADO(moves[i]))
             return TRUE;
     }
 
@@ -2484,7 +2484,7 @@ static bool32 PartyBattlerShouldAvoidHazards(u32 currBattler, u32 switchBattler)
         return FALSE;
 
     if (flags & SIDE_STATUS_STEALTH_ROCK)
-        hazardDamage += ObtenDanioTrampa(gMovesInfo[MOVE_STEALTH_ROCK].type, currBattler);
+        hazardDamage += DanioTrampa(gMovesInfo[MOVE_STEALTH_ROCK].type, currBattler);
 
     if (flags & SIDE_STATUS_SPIKES && ((type1 != TIPO_VOLADOR && type2 != TIPO_VOLADOR
         && ability != ABILITY_LEVITATE && holdEffect != HOLD_EFFECT_AIR_BALLOON)
@@ -2530,7 +2530,7 @@ enum AIPivot ShouldPivot(u32 battlerAtk, u32 battlerDef, u32 defAbility, u32 mov
                     if (CanTargetFaintAI(battlerDef, battlerAtk))
                         return SHOULD_PIVOT;   // Won't get the two turns, pivot
 
-                    if (!IS_MOVE_STATUS(move) && ((AI_DATA->shouldSwitch & (1u << battlerAtk))
+                    if (!ES_MOVIMIENTO_ESTADO(move) && ((AI_DATA->shouldSwitch & (1u << battlerAtk))
                         || (AI_BattlerAtMaxHp(battlerDef) && (AI_DATA->holdEffects[battlerDef] == HOLD_EFFECT_FOCUS_SASH
                         || (B_STURDY >= GEN_5 && defAbility == ABILITY_STURDY)
                         || defAbility == ABILITY_MULTISCALE
@@ -2539,7 +2539,7 @@ enum AIPivot ShouldPivot(u32 battlerAtk, u32 battlerDef, u32 defAbility, u32 mov
                 }
                 else if (!hasStatBoost)
                 {
-                    if (!IS_MOVE_STATUS(move) && (AI_BattlerAtMaxHp(battlerDef) && (AI_DATA->holdEffects[battlerDef] == HOLD_EFFECT_FOCUS_SASH
+                    if (!ES_MOVIMIENTO_ESTADO(move) && (AI_BattlerAtMaxHp(battlerDef) && (AI_DATA->holdEffects[battlerDef] == HOLD_EFFECT_FOCUS_SASH
                         || (B_STURDY >= GEN_5 && defAbility == ABILITY_STURDY)
                         || defAbility == ABILITY_MULTISCALE
                         || defAbility == ABILITY_SHADOW_SHIELD)))
@@ -2613,7 +2613,7 @@ enum AIPivot ShouldPivot(u32 battlerAtk, u32 battlerDef, u32 defAbility, u32 mov
                 else if (CanAIFaintTarget(battlerAtk, battlerDef, 2))
                 {
                     // can knock out foe in 2 hits
-                    if (IS_MOVE_STATUS(move) && ((AI_DATA->shouldSwitch & (1u << battlerAtk)) //Damaging move
+                    if (ES_MOVIMIENTO_ESTADO(move) && ((AI_DATA->shouldSwitch & (1u << battlerAtk)) //Damaging move
                       //&& (switchScore >= SWITCHING_INCREASE_RESIST_ALL_MOVES + SWITCHING_INCREASE_KO_FOE //remove hazards
                      || (AI_DATA->holdEffects[battlerDef] == HOLD_EFFECT_FOCUS_SASH && AI_BattlerAtMaxHp(battlerDef))))
                         return DONT_PIVOT; // Pivot to break the sash
@@ -2705,7 +2705,7 @@ bool32 ShouldPoisonSelf(u32 battler, u32 ability)
       || ability == ABILITY_QUICK_FEET
       || ability == ABILITY_MAGIC_GUARD
       || (ability == ABILITY_TOXIC_BOOST && HasMoveWithCategory(battler, CATEGORIA_FISICA))
-      || (ability == ABILITY_GUTS && HasMoveWithCategory(battler, CATEGORIA_FISICA))
+      || (ability == ABILITY_AGALLAS)
       || HasMoveEffect(battler, EFFECT_FACADE)
       || HasMoveEffect(battler, EFFECT_PSYCHO_SHIFT)))
         return TRUE;    // battler can be poisoned and has move/ability that synergizes with being poisoned
@@ -2760,14 +2760,13 @@ bool32 AI_CanConfuse(u32 battlerAtk, u32 battlerDef, u32 defAbility, u32 battler
     return TRUE;
 }
 
-bool32 AI_CanGetFrostbite(u32 battler, u32 ability)
+bool32 AI_PuedeSerCongelado(u32 combatiente, u32 habilidad)
 {
-    if (ability == ABILITY_MAGMA_ARMOR
-      || ability == ABILITY_COMATOSE
-      || ES_COMBATIENTE_TIPO(battler, TIPO_HIELO)
-      || gBattleMons[battler].status1 & STATUS1_ANY
-      || IsAbilityStatusProtected(battler)
-      || gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_SAFEGUARD)
+    if (habilidad == ABILITY_MAGMA_ARMOR
+      || ES_COMBATIENTE_TIPO(combatiente, TIPO_HIELO)
+      || gBattleMons[combatiente].status1 & STATUS1_ANY
+      || IsAbilityStatusProtected(combatiente)
+      || gSideStatuses[GetBattlerSide(combatiente)] & SIDE_STATUS_SAFEGUARD)
         return FALSE;
     return TRUE;
 }
@@ -2775,11 +2774,10 @@ bool32 AI_CanGetFrostbite(u32 battler, u32 ability)
 bool32 ShouldBurnSelf(u32 battler, u32 ability)
 {
     if (CanBeBurned(battler, ability) && (
-     ability == ABILITY_QUICK_FEET
-      || ability == ABILITY_HEATPROOF
+         ability == ABILITY_QUICK_FEET
       || ability == ABILITY_MAGIC_GUARD
       || (ability == ABILITY_FLARE_BOOST && HasMoveWithCategory(battler, CATEGORIA_ESPECIAL))
-      || (ability == ABILITY_GUTS && HasMoveWithCategory(battler, CATEGORIA_FISICA))
+      || (ability == ABILITY_AGALLAS)
       || HasMoveEffect(battler, EFFECT_FACADE)
       || HasMoveEffect(battler, EFFECT_PSYCHO_SHIFT)))
         return TRUE;
@@ -2800,7 +2798,7 @@ bool32 AI_CanBurn(u32 battlerAtk, u32 battlerDef, u32 defAbility, u32 battlerAtk
 
 bool32 AI_CanGiveFrostbite(u32 battlerAtk, u32 battlerDef, u32 defAbility, u32 battlerAtkPartner, u32 move, u32 partnerMove)
 {
-    if (!AI_CanGetFrostbite(battlerDef, defAbility)
+    if (!AI_PuedeSerCongelado(battlerDef, defAbility)
       || AI_DATA->effectiveness[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex] == AI_EFFECTIVENESS_x0
       || DoesSubstituteBlockMove(battlerAtk, battlerDef, move)
       || PartnerMoveEffectIsStatusSameTarget(battlerAtkPartner, battlerDef, partnerMove))

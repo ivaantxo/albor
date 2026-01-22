@@ -6095,13 +6095,19 @@ BattleScript_TargetWokeUp::
 	return
 
 BattleScript_TargetBurnHeal::
-	printstring STRINGID_PKMNBURNHEALED
+	printstring ("¡{B_DEF_NAME_WITH_PREFIX} se curó de su quemadura!")
 	waitmessage B_WAIT_TIME_LONG
 	updatestatusicon BS_TARGET
 	return
 
 BattleScript_TargetPoisonHealed::
-	printstring ("Se curó del veneno.") @ revisar
+	printstring ("¡{B_DEF_NAME_WITH_PREFIX} se curó de su envenamiento!")
+	waitmessage B_WAIT_TIME_LONG
+	updatestatusicon BS_TARGET
+	return
+
+ScriptCombate_SeCuroCongelacion::
+	printstring ("¡{B_DEF_NAME_WITH_PREFIX} se curó de su congelación!")
 	waitmessage B_WAIT_TIME_LONG
 	updatestatusicon BS_TARGET
 	return

@@ -40,7 +40,7 @@ u32 CreaIconoPokemon(u32 especie, s32 x, s32 y, u32 subprioridad, u32 personalid
     u32 spriteId;
 
     spriteId = CreateSprite(&gPlantillaIconoPokemon, x, y, subprioridad);
-    CopiaCpu32(ObtenGraficosIconoPokemon(especie, personalidad),(void *)(OBJ_VRAM0 + gSprites[spriteId].oam.tileNum * TILE_4BPP), sPrimerFrameIconoPokemon.size);
+    CopiaCpu32(GraficosIconoPokemon(especie, personalidad),(void *)(OBJ_VRAM0 + gSprites[spriteId].oam.tileNum * TILE_4BPP), sPrimerFrameIconoPokemon.size);
 
     return spriteId;
 }
@@ -51,7 +51,7 @@ void BorraIconoPokemon(struct Sprite *sprite)
     DestroySprite(sprite);
 }
 
-const struct SpriteFrameImage *ObtenGraficosIconoPokemon(u32 especie, u32 personalidad)
+const struct SpriteFrameImage *GraficosIconoPokemon(u32 especie, u32 personalidad)
 {
     const struct SpriteFrameImage *frameIconoPokemon;
 

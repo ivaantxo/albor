@@ -4395,7 +4395,7 @@ static u16 TryLoadMonIconTiles(u16 species, u32 personality)
     sStorage->numIconsPerSpecies[i]++;
     offset = PLTT_ID(i);
     species &= GENDER_MASK;
-    CopiaRapidaCpu(ObtenGraficosIconoPokemon(species, personality), (void *)(OBJ_VRAM0) + offset * TILE_4BPP, 512);
+    CopiaRapidaCpu(GraficosIconoPokemon(species, personality), (void *)(OBJ_VRAM0) + offset * TILE_4BPP, 512);
 
     return offset;
 }

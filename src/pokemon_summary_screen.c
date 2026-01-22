@@ -1466,7 +1466,7 @@ static bool8 ExtractMonDataToSummaryStruct(struct Pokemon *mon)
         sum->ppBonuses = GetMonData(mon, MON_DATA_PP_BONUSES);
         break;
     case 2:
-        sum->nature = ObtenNaturaleza(mon);
+        sum->nature = Naturaleza(mon);
         sum->currentHP = GetMonData(mon, MON_DATA_HP);
         sum->maxHP = GetMonData(mon, MON_DATA_MAX_HP);
         sum->atk = GetMonData(mon, MON_DATA_ATK);
@@ -3519,7 +3519,7 @@ static void PrintMoveDetails(u16 move)
         {
             moveEffect = gMovesInfo[move].effect;
             if (B_SHOW_CATEGORY_ICON == TRUE)
-                ShowCategoryIcon(GetBattleMoveCategory(move));
+                ShowCategoryIcon(CategoriaMovimiento(move));
             PrintMovePowerAndAccuracy(move);
 
             if (moveEffect != SIN_EFECTO)
@@ -3697,7 +3697,7 @@ static void SetMoveTypeIcons(void)
         {
             type = gMovesInfo[summary->moves[i]].type;
             if (P_SHOW_DYNAMIC_TYPES)
-                type = ObtenTipoDinamicoMovimiento(mon, summary->moves[i], JUGADOR_IZQUIERDA);
+                type = MovimientoTipoDinamico(mon, summary->moves[i], JUGADOR_IZQUIERDA);
             SetTypeSpritePosAndPal(type, 85, 32 + (i * 16), i + SPRITE_ARR_ID_TYPE);
         }
         else
@@ -3718,7 +3718,7 @@ static void SetNewMoveTypeIcon(void)
     struct Pokemon *mon = &sMonSummaryScreen->currentMon;
 
     if (P_SHOW_DYNAMIC_TYPES)
-        type = ObtenTipoDinamicoMovimiento(mon, sMonSummaryScreen->newMove, JUGADOR_IZQUIERDA);
+        type = MovimientoTipoDinamico(mon, sMonSummaryScreen->newMove, JUGADOR_IZQUIERDA);
 
     if (sMonSummaryScreen->newMove == MOVE_NONE)
     {

@@ -1222,7 +1222,7 @@ static void CloseTossPokeblockWindow(u8 taskId)
 
 static void PokeblockAction_UseInBattle(u8 taskId)
 {
-    u8 nature = ObtenNaturaleza(&gEnemyParty[0]);
+    u8 nature = Naturaleza(&gEnemyParty[0]);
     s16 gain = PokeblockGetGain(nature, &gSaveBlockPtr->pokeblocks[gSpecialVar_ItemId]);
     StringCopy(gBattleTextBuff1, gPokeblockNames[gSaveBlockPtr->pokeblocks[gSpecialVar_ItemId].color]);
     TryClearPokeblock(gSpecialVar_ItemId);

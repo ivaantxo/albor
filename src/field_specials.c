@@ -987,7 +987,7 @@ void RemoveCameraObject(void)
 
 u8 GetPokeblockNameByMonNature(void)
 {
-    return CopyMonFavoritePokeblockName(ObtenNaturaleza(&gPlayerParty[GetLeadMonIndex()]), gVariableTexto1);
+    return CopyMonFavoritePokeblockName(Naturaleza(&gPlayerParty[GetLeadMonIndex()]), gVariableTexto1);
 }
 
 void GetSecretBaseNearbyMapName(void)

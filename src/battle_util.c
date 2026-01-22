@@ -188,7 +188,7 @@ void HandleAction_UseMove(void)
     }
     else if (EsContraEntrenador()
            && gSideTimers[side].followmeTimer == 0
-           && (!IS_MOVE_STATUS(gCurrentMove) || (moveTarget != MOVE_TARGET_USER && moveTarget != MOVE_TARGET_ALL_BATTLERS))
+           && (!ES_MOVIMIENTO_ESTADO(gCurrentMove) || (moveTarget != MOVE_TARGET_USER && moveTarget != MOVE_TARGET_ALL_BATTLERS))
            && ((GetBattlerAbility(*(gBattleStruct->moveTarget + gBattlerAttacker)) != ABILITY_LIGHTNING_ROD && moveType == TIPO_ELECTRICO)
             || (GetBattlerAbility(*(gBattleStruct->moveTarget + gBattlerAttacker)) != ABILITY_STORM_DRAIN && moveType == TIPO_AGUA)))
     {
@@ -889,7 +889,7 @@ u32 TrySetCantSelectMoveBattleScript(u32 battler)
         limitations++;
     }
 
-    if (gDisableStructs[battler].tauntTimer != 0 && IS_MOVE_STATUS(move))
+    if (gDisableStructs[battler].tauntTimer != 0 && ES_MOVIMIENTO_ESTADO(move))
     {
         gCurrentMove = move;
         gSelectionBattleScripts[battler] = BattleScript_SelectingNotAllowedMoveTaunt;
@@ -957,7 +957,7 @@ u32 TrySetCantSelectMoveBattleScript(u32 battler)
     }
 
     else if ((holdEffect == HOLD_EFFECT_ASSAULT_VEST || holdEffect == HOLD_EFFECT_CHALECO_TACTICO) 
-            && IS_MOVE_STATUS(move) && gMovesInfo[move].effect != EFFECT_ME_FIRST)
+            && ES_MOVIMIENTO_ESTADO(move) && gMovesInfo[move].effect != EFFECT_ME_FIRST)
     {
         gCurrentMove = move;
         gLastUsedItem = gBattleMons[battler].item;
@@ -1009,7 +1009,7 @@ u8 CheckMoveLimitations(u32 battler, u8 unusableMoves, u16 check)
         else if (check & MOVE_LIMITATION_TORMENTED && move == gLastMoves[battler] && gBattleMons[battler].status2 & STATUS2_TORMENT)
             unusableMoves |= 1u << i;
         // Taunt
-        else if (check & MOVE_LIMITATION_TAUNT && gDisableStructs[battler].tauntTimer && IS_MOVE_STATUS(move))
+        else if (check & MOVE_LIMITATION_TAUNT && gDisableStructs[battler].tauntTimer && ES_MOVIMIENTO_ESTADO(move))
             unusableMoves |= 1u << i;
         // Imprison
         else if (check & MOVE_LIMITATION_IMPRISON && GetImprisonedMovesCount(battler, move))
@@ -1021,10 +1021,10 @@ u8 CheckMoveLimitations(u32 battler, u8 unusableMoves, u16 check)
         else if (check & MOVE_LIMITATION_CHOICE_ITEM && HOLD_EFFECT_CHOICE(holdEffect) && *choicedMove != MOVE_NONE && *choicedMove != move)
             unusableMoves |= 1u << i;
         // Assault Vest
-        else if (check & MOVE_LIMITATION_ASSAULT_VEST && holdEffect == HOLD_EFFECT_ASSAULT_VEST && IS_MOVE_STATUS(move) && gMovesInfo[move].effect != EFFECT_ME_FIRST)
+        else if (check & MOVE_LIMITATION_ASSAULT_VEST && holdEffect == HOLD_EFFECT_ASSAULT_VEST && ES_MOVIMIENTO_ESTADO(move) && gMovesInfo[move].effect != EFFECT_ME_FIRST)
             unusableMoves |= 1u << i;
         // Chaleco Táctico
-        else if (check & MOVE_LIMITATION_ASSAULT_VEST && holdEffect == HOLD_EFFECT_CHALECO_TACTICO && IS_MOVE_STATUS(move) && gMovesInfo[move].effect != EFFECT_ME_FIRST)
+        else if (check & MOVE_LIMITATION_ASSAULT_VEST && holdEffect == HOLD_EFFECT_CHALECO_TACTICO && ES_MOVIMIENTO_ESTADO(move) && gMovesInfo[move].effect != EFFECT_ME_FIRST)
             unusableMoves |= 1u << i;
         // Gravity
         else if (check & MOVE_LIMITATION_GRAVITY && IsGravityPreventingMove(move))
@@ -1838,12 +1838,6 @@ u8 DoBattlerEndTurnEffects(void)
             {
                 MAGIC_GUARD_CHECK;
                 gBattleMoveDamage = CuantosPSMaximos(battler) / 16;
-                if (ability == ABILITY_HEATPROOF)
-                {
-                    if (gBattleMoveDamage > (gBattleMoveDamage / 2) + 1) // Record ability if the burn takes less damage than it normally would.
-                        RecuerdaHabilidadCombate(battler, ABILITY_HEATPROOF);
-                    gBattleMoveDamage /= 2;
-                }
                 if (gBattleMoveDamage == 0)
                     gBattleMoveDamage = 1;
                 BattleScriptExecute(BattleScript_BurnTurnDmg);
@@ -2547,7 +2541,7 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
             gBattleStruct->atkCancellerTracker++;
             break;
         case CANCELLER_TAUNTED: // taunt
-            if (gDisableStructs[gBattlerAttacker].tauntTimer && IS_MOVE_STATUS(gCurrentMove))
+            if (gDisableStructs[gBattlerAttacker].tauntTimer && ES_MOVIMIENTO_ESTADO(gCurrentMove))
             {
                 gProtectStructs[gBattlerAttacker].usedTauntedMove = TRUE;
                 CancelMultiTurnMoves(gBattlerAttacker);
@@ -3032,7 +3026,7 @@ u32 CanAbilityBlockMove(u32 battlerAtk, u32 battlerDef, u32 move, u32 abilityDef
         }
         break;
     case ABILITY_EXUVIA:
-        if (IS_MOVE_STATUS(move))
+        if (ES_MOVIMIENTO_ESTADO(move))
         {
             u32 moveTarget = GetBattlerMoveTargetType(battlerAtk, move);
             if (!(moveTarget & MOVE_TARGET_OPPONENTS_FIELD) && !(moveTarget & MOVE_TARGET_ALL_BATTLERS))
@@ -3864,7 +3858,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             default:
                 if (GetChosenMovePriority(gBattlerAttacker) > 0
                  && BlocksPrankster(move, gBattlerAttacker, gBattlerTarget, TRUE)
-                 && !(IS_MOVE_STATUS(move) && (gLastUsedAbility == ABILITY_MAGIC_BOUNCE || gProtectStructs[gBattlerTarget].bounceMove)))
+                 && !(ES_MOVIMIENTO_ESTADO(move) && (gLastUsedAbility == ABILITY_MAGIC_BOUNCE || gProtectStructs[gBattlerTarget].bounceMove)))
                 {
                     if (!EsContraEntrenador()
                     || !(GetBattlerMoveTargetType(gBattlerAttacker, move) & (MOVE_TARGET_BOTH | MOVE_TARGET_FOES_AND_ALLY)))
@@ -4086,7 +4080,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && IsBattlerTurnDamaged(battler)
              && IsBattlerAlive(battler)
-             && IS_MOVE_PHYSICAL(gCurrentMove)
+             && ES_MOVIMIENTO_FISICO(gCurrentMove)
              && (CompareStat(battler, ESTADISTICA_VELOCIDAD, ESTADISTICA_MAS_6, COMPARACION_MENOR) // Don't activate if both Speed and Defense cannot be raised.
                || CompareStat(battler, ESTADISTICA_DEFENSA, ESTADISTICA_MENOS_6, COMPARACION_MAYOR)))
             {
@@ -4476,7 +4470,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
         case ABILITY_TOXIC_DEBRIS:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
-             && IS_MOVE_PHYSICAL(gCurrentMove)
+             && ES_MOVIMIENTO_FISICO(gCurrentMove)
              && IsBattlerTurnDamaged(gBattlerTarget)
              && (gSideTimers[GetBattlerSide(gBattlerAttacker)].toxicSpikesAmount != 2))
             {
@@ -4489,7 +4483,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
         case ABILITY_PUNZON:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
              && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
-             && IS_MOVE_PHYSICAL(gCurrentMove)
+             && ES_MOVIMIENTO_FISICO(gCurrentMove)
              && IsBattlerTurnDamaged(gBattlerTarget)
              && (gSideTimers[gBattlerAttacker].spikesAmount != 2))
             {
@@ -5297,7 +5291,7 @@ static u8 DamagedStatBoostBerryEffect(u32 battler, u8 statId, u8 category)
      && CompareStat(battler, statId, ESTADISTICA_MAS_6, COMPARACION_MENOR)
      && (gBattleScripting.overrideBerryRequirements
          || (!DoesSubstituteBlockMove(gBattlerAttacker, battler, gCurrentMove)
-             && GetBattleMoveCategory(gCurrentMove) == category
+             && CategoriaMovimiento(gCurrentMove) == category
              && battler != gBattlerAttacker
              && IsBattlerTurnDamaged(battler)))
         )
@@ -5670,7 +5664,7 @@ static u8 ItemEffectMoveEnd(u32 battler, u16 holdEffect)
             if (gBattleMons[battler].status1 & STATUS1_BURN)
                 StringCopy(gBattleTextBuff1, gText_Burn);
 
-            if (gBattleMons[battler].status1 & STATUS1_FREEZE || gBattleMons[battler].status1 & STATUS1_FROSTBITE)
+            if (gBattleMons[battler].status1 & STATUS1_FREEZE)
                 StringCopy(gBattleTextBuff1, gText_Ice);
 
             if (gBattleMons[battler].status2 & STATUS2_CONFUSION)
@@ -5893,7 +5887,7 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
                         StringCopy(gBattleTextBuff1, gText_Burn);
                         i++;
                     }
-                    if (gBattleMons[battler].status1 & STATUS1_FREEZE || gBattleMons[battler].status1 & STATUS1_FROSTBITE)
+                    if (gBattleMons[battler].status1 & STATUS1_FREEZE)
                     {
                         StringCopy(gBattleTextBuff1, gText_Ice);
                         i++;
@@ -6174,7 +6168,7 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
                         StringCopy(gBattleTextBuff1, gText_Burn);
                         i++;
                     }
-                    if (gBattleMons[battler].status1 & STATUS1_FREEZE || gBattleMons[battler].status1 & STATUS1_FROSTBITE)
+                    if (gBattleMons[battler].status1 & STATUS1_FREEZE)
                     {
                         StringCopy(gBattleTextBuff1, gText_Ice);
                         i++;
@@ -6459,7 +6453,7 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
                 if (IsBattlerAlive(battler)
                  && IsBattlerTurnDamaged(battler)
                  && !DoesSubstituteBlockMove(gBattlerAttacker, battler, gCurrentMove)
-                 && IS_MOVE_PHYSICAL(gCurrentMove)
+                 && ES_MOVIMIENTO_FISICO(gCurrentMove)
                  && GetBattlerAbility(gBattlerAttacker) != ABILITY_MAGIC_GUARD)
                 {
                     gBattleMoveDamage = CuantosPSMaximos(gBattlerAttacker) / 8;
@@ -6479,7 +6473,7 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
                 if (IsBattlerAlive(battler)
                  && IsBattlerTurnDamaged(battler)
                  && !DoesSubstituteBlockMove(gBattlerAttacker, battler, gCurrentMove)
-                 && IS_MOVE_SPECIAL(gCurrentMove)
+                 && ES_MOVIMIENTO_ESPECIAL(gCurrentMove)
                  && GetBattlerAbility(gBattlerAttacker) != ABILITY_MAGIC_GUARD)
                 {
                     gBattleMoveDamage = CuantosPSMaximos(gBattlerAttacker) / 8;
@@ -6772,7 +6766,7 @@ bool32 IsBattlerProtected(u32 battlerAtk, u32 battlerDef, u32 move)
     }
 
     if (gSideStatuses[GetBattlerSide(battlerDef)] & SIDE_STATUS_CRAFTY_SHIELD
-             && IS_MOVE_STATUS(move))
+             && ES_MOVIMIENTO_ESTADO(move))
         return TRUE;
     else if (gMovesInfo[move].ignoresProtect)
         return FALSE;
@@ -6785,17 +6779,17 @@ bool32 IsBattlerProtected(u32 battlerAtk, u32 battlerDef, u32 move)
         return TRUE;
     else if (gProtectStructs[battlerDef].burningBulwarked)
         return TRUE;
-    else if ((gProtectStructs[battlerDef].obstructed || gProtectStructs[battlerDef].silkTrapped) && !IS_MOVE_STATUS(move))
+    else if ((gProtectStructs[battlerDef].obstructed || gProtectStructs[battlerDef].silkTrapped) && !ES_MOVIMIENTO_ESTADO(move))
         return TRUE;
     else if (gProtectStructs[battlerDef].spikyShielded)
         return TRUE;
-    else if (gProtectStructs[battlerDef].kingsShielded && !IS_MOVE_STATUS(move))
+    else if (gProtectStructs[battlerDef].kingsShielded && !ES_MOVIMIENTO_ESTADO(move))
         return TRUE;
     else if (gSideStatuses[GetBattlerSide(battlerDef)] & SIDE_STATUS_QUICK_GUARD
              && GetChosenMovePriority(gBattlerAttacker) > 0)
         return TRUE;
     else if (gSideStatuses[GetBattlerSide(battlerDef)] & SIDE_STATUS_MAT_BLOCK
-             && !IS_MOVE_STATUS(move))
+             && !ES_MOVIMIENTO_ESTADO(move))
         return TRUE;
     else
         return FALSE;
@@ -7158,7 +7152,7 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
     switch (gMovesInfo[move].effect)
     {
     case EFFECT_FACADE:
-        if (gBattleMons[battlerAtk].status1 & (STATUS1_BURN | STATUS1_PSN_ANY | STATUS1_PARALYSIS | STATUS1_FROSTBITE))
+        if (gBattleMons[battlerAtk].status1 & (STATUS1_BURN | STATUS1_PSN_ANY | STATUS1_PARALYSIS | STATUS1_FREEZE))
             modifier = uq4_12_multiply(modifier, UQ_4_12(2.0));
         break;
     case EFFECT_BRINE:
@@ -7203,11 +7197,11 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
            modifier = uq4_12_multiply(modifier, UQ_4_12(1.5));
         break;
     case ABILITY_FLARE_BOOST:
-        if (gBattleMons[battlerAtk].status1 & STATUS1_BURN && IS_MOVE_SPECIAL(move))
+        if (gBattleMons[battlerAtk].status1 & STATUS1_BURN && ES_MOVIMIENTO_ESPECIAL(move))
            modifier = uq4_12_multiply(modifier, UQ_4_12(1.5));
         break;
     case ABILITY_TOXIC_BOOST:
-        if (gBattleMons[battlerAtk].status1 & STATUS1_PSN_ANY && IS_MOVE_PHYSICAL(move))
+        if (gBattleMons[battlerAtk].status1 & STATUS1_PSN_ANY && ES_MOVIMIENTO_FISICO(move))
            modifier = uq4_12_multiply(modifier, UQ_4_12(1.5));
         break;
     case ABILITY_RECKLESS:
@@ -7356,7 +7350,7 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
             modifier = uq4_12_multiply(modifier, UQ_4_12(1.5));
         break;
     case ABILITY_GORILLA_TACTICS:
-        if (IS_MOVE_PHYSICAL(move))
+        if (ES_MOVIMIENTO_FISICO(move))
             modifier = uq4_12_multiply(modifier, UQ_4_12(1.5));
         break;
     case ABILITY_TERRESTRE:
@@ -7379,7 +7373,7 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
         switch (GetBattlerAbility(ALIADO(battlerAtk)))
         {
         case ABILITY_BATTERY:
-            if (IS_MOVE_SPECIAL(move))
+            if (ES_MOVIMIENTO_ESPECIAL(move))
                 modifier = uq4_12_multiply(modifier, UQ_4_12(1.3));
             break;
         case ABILITY_POWER_SPOT:
@@ -7395,7 +7389,6 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
     // target's abilities
     switch (defAbility)
     {
-    case ABILITY_HEATPROOF:
     case ABILITY_WATER_BUBBLE:
         if (moveType == TIPO_FUEGO)
         {
@@ -7420,11 +7413,11 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
     switch (holdEffectAtk)
     {
     case HOLD_EFFECT_MUSCLE_BAND:
-        if (IS_MOVE_PHYSICAL(move))
+        if (ES_MOVIMIENTO_FISICO(move))
             modifier = uq4_12_multiply(modifier, holdEffectModifier);
         break;
     case HOLD_EFFECT_WISE_GLASSES:
-        if (IS_MOVE_SPECIAL(move))
+        if (ES_MOVIMIENTO_ESPECIAL(move))
             modifier = uq4_12_multiply(modifier, holdEffectModifier);
         break;
     case HOLD_EFFECT_SOUL_DEW:
@@ -7485,7 +7478,7 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
 
     if (gMovesInfo[move].effect == EFFECT_FOUL_PLAY)
     {
-        if (IS_MOVE_PHYSICAL(move))
+        if (ES_MOVIMIENTO_FISICO(move))
         {
             atkStat = gBattleMons[battlerDef].attack;
             atkStage = gBattleMons[battlerDef].statStages[ESTADISTICA_ATAQUE];
@@ -7498,7 +7491,7 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
     }
     else if (gMovesInfo[move].effect == EFFECT_BODY_PRESS)
     {
-        if (IS_MOVE_PHYSICAL(move))
+        if (ES_MOVIMIENTO_FISICO(move))
         {
             atkStat = gBattleMons[battlerAtk].defense;
             // Edge case: Body Press used during Wonder Room. For some reason, it still uses Defense over Sp.Def, but uses Sp.Def stat changes
@@ -7515,7 +7508,7 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
     }
     else
     {
-        if (IS_MOVE_PHYSICAL(move))
+        if (ES_MOVIMIENTO_FISICO(move))
         {
             atkStat = gBattleMons[battlerAtk].attack;
             atkStage = gBattleMons[battlerAtk].statStages[ESTADISTICA_ATAQUE];
@@ -7570,7 +7563,7 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.5));
         break;
     case ABILITY_PLUS:
-        if (IS_MOVE_SPECIAL(move) && IsBattlerAlive(ALIADO(battlerAtk)))
+        if (ES_MOVIMIENTO_ESPECIAL(move) && IsBattlerAlive(ALIADO(battlerAtk)))
         {
             u32 partnerAbility = GetBattlerAbility(ALIADO(battlerAtk));
             if (partnerAbility == ABILITY_MINUS
@@ -7579,7 +7572,7 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
         }
         break;
     case ABILITY_MINUS:
-        if (IS_MOVE_SPECIAL(move) && IsBattlerAlive(ALIADO(battlerAtk)))
+        if (ES_MOVIMIENTO_ESPECIAL(move) && IsBattlerAlive(ALIADO(battlerAtk)))
         {
             u32 partnerAbility = GetBattlerAbility(ALIADO(battlerAtk));
             if (partnerAbility == ABILITY_PLUS
@@ -7592,15 +7585,15 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.25));
         break;
     case ABILITY_HUSTLE:
-        if (IS_MOVE_PHYSICAL(move))
+        if (ES_MOVIMIENTO_FISICO(move))
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.5));
         break;
     case ABILITY_STAKEOUT:
         if (gDisableStructs[battlerDef].isFirstTurn == 2) // just switched in
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(2.0));
         break;
-    case ABILITY_GUTS:
-        if (gBattleMons[battlerAtk].status1 & STATUS1_ANY && IS_MOVE_PHYSICAL(move))
+    case ABILITY_AGALLAS:
+        if (gBattleMons[battlerAtk].status1 & STATUS1_ANY)
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.5));
         break;
     }
@@ -7658,11 +7651,11 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
     switch (holdEffectAtk)
     {
     case HOLD_EFFECT_THICK_CLUB:
-        if ((atkBaseSpeciesId == SPECIES_CUBONE || atkBaseSpeciesId == SPECIES_MAROWAK) && IS_MOVE_PHYSICAL(move))
+        if ((atkBaseSpeciesId == SPECIES_CUBONE || atkBaseSpeciesId == SPECIES_MAROWAK) && ES_MOVIMIENTO_FISICO(move))
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(2.0));
         break;
     case HOLD_EFFECT_DEEP_SEA_TOOTH:
-        if (gBattleMons[battlerAtk].species == SPECIES_CLAMPERL && IS_MOVE_SPECIAL(move))
+        if (gBattleMons[battlerAtk].species == SPECIES_CLAMPERL && ES_MOVIMIENTO_ESPECIAL(move))
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(2.0));
         break;
     case HOLD_EFFECT_LIGHT_BALL:
@@ -7690,21 +7683,14 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.25));
         break;
     case HOLD_EFFECT_CHOICE_BAND:
-        if (IS_MOVE_PHYSICAL(move))
+        if (ES_MOVIMIENTO_FISICO(move))
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.5));
         break;
     case HOLD_EFFECT_CHOICE_SPECS:
-        if (IS_MOVE_SPECIAL(move))
+        if (ES_MOVIMIENTO_ESPECIAL(move))
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.5));
         break;
     }
-
-    // The offensive stats of a Player's Pokémon are boosted by x1.1 (+10%) if they have the 1st badge and 7th badges.
-    // Having the 1st badge boosts physical attack while having the 7th badge boosts special attack.
-    if (ShouldGetStatBadgeBoost(FLAG_BADGE01_GET, battlerAtk) && IS_MOVE_PHYSICAL(move))
-        modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.1));
-    if (ShouldGetStatBadgeBoost(FLAG_BADGE07_GET, battlerAtk) && IS_MOVE_SPECIAL(move))
-        modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.1));
 
     return uq4_12_multiply_by_int_half_down(modifier, atkStat);
 }
@@ -7747,7 +7733,7 @@ static inline u32 CalcDefenseStat(struct DamageCalculationData *damageCalcData, 
         spDef = gBattleMons[battlerDef].spDefense;
     }
 
-    if (gMovesInfo[move].effect == EFFECT_PSYSHOCK || IS_MOVE_PHYSICAL(move))
+    if (gMovesInfo[move].effect == EFFECT_PSYSHOCK || ES_MOVIMIENTO_FISICO(move))
     {
         defStat = def;
         defStage = gBattleMons[battlerDef].statStages[ESTADISTICA_DEFENSA];
@@ -7851,12 +7837,6 @@ static inline u32 CalcDefenseStat(struct DamageCalculationData *damageCalcData, 
     // somnolientos -25% defensa
     if (gBattleMons[battlerDef].status1 & STATUS1_BURN && usesDefStat)
         modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(0.75));
-    // The defensive stats of a Player's Pokémon are boosted by x1.1 (+10%) if they have the 5th badge and 7th badges.
-    // Having the 5th badge boosts physical defense while having the 7th badge boosts special defense.
-    if (ShouldGetStatBadgeBoost(FLAG_BADGE05_GET, battlerDef) && IS_MOVE_PHYSICAL(move))
-        modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.1));
-    if (ShouldGetStatBadgeBoost(FLAG_BADGE07_GET, battlerDef) && IS_MOVE_SPECIAL(move))
-        modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.1));
 
     return uq4_12_multiply_by_int_half_down(modifier, defStat);
 }
@@ -7925,29 +7905,27 @@ static uq4_12_t GetWeatherDamageModifier(struct DamageCalculationData *damageCal
     return UQ_4_12(1.0);
 }
 
-static inline uq4_12_t GetBurnOrFrostBiteModifier(struct DamageCalculationData *damageCalcData, u32 abilityAtk)
+static inline uq4_12_t ModificadorQuemaduraCongelacion(const struct DamageCalculationData *datosMovimiento, u32 habilidad)
 {
-    u32 battlerAtk = damageCalcData->battlerAtk;
-    u32 move = damageCalcData->move;
+    u32 atacante   = datosMovimiento->battlerAtk;
+    u32 movimiento = datosMovimiento->move;
 
-    if (gBattleMons[battlerAtk].status1 & STATUS1_BURN
-        && IS_MOVE_PHYSICAL(move)
-        && (B_BURN_FACADE_DMG < GEN_6 || gMovesInfo[move].effect != EFFECT_FACADE)
-        && abilityAtk != ABILITY_GUTS)
-    {
-        return UQ_4_12(0.75);        
-    }
-    if (gBattleMons[battlerAtk].status1 & STATUS1_FROSTBITE
-        && IS_MOVE_SPECIAL(move)
-        && (B_BURN_FACADE_DMG < GEN_6 || gMovesInfo[move].effect != EFFECT_FACADE))
-    {
-        return UQ_4_12(0.75);
-    }
-    else 
+    if (habilidad == ABILITY_AGALLAS || gMovesInfo[movimiento].effect == EFFECT_FACADE)
     {
         return UQ_4_12(1.0);
     }
 
+    if ((gBattleMons[atacante].status1 & STATUS1_BURN) && ES_MOVIMIENTO_FISICO(movimiento))
+    {
+        return UQ_4_12(0.75);
+    }
+
+    if ((gBattleMons[atacante].status1 & STATUS1_FREEZE) && ES_MOVIMIENTO_ESPECIAL(movimiento))
+    {
+        return UQ_4_12(0.75);
+    }
+
+    return UQ_4_12(1.0);
 }
 
 static inline uq4_12_t GetCriticalModifier(bool32 isCrit)
@@ -7995,8 +7973,8 @@ static inline uq4_12_t GetAirborneModifier(u32 move, u32 battlerDef)
 static inline uq4_12_t GetScreensModifier(u32 move, u32 battlerAtk, u32 battlerDef, bool32 isCrit, u32 abilityAtk)
 {
     u32 sideStatus = gSideStatuses[GetBattlerSide(battlerDef)];
-    bool32 lightScreen = (sideStatus & SIDE_STATUS_LIGHTSCREEN) && IS_MOVE_SPECIAL(move);
-    bool32 reflect = (sideStatus & SIDE_STATUS_REFLECT) && IS_MOVE_PHYSICAL(move);
+    bool32 lightScreen = (sideStatus & SIDE_STATUS_LIGHTSCREEN) && ES_MOVIMIENTO_ESPECIAL(move);
+    bool32 reflect = (sideStatus & SIDE_STATUS_REFLECT) && ES_MOVIMIENTO_FISICO(move);
     bool32 auroraVeil = sideStatus & SIDE_STATUS_AURORA_VEIL;
 
     if (isCrit || abilityAtk == ABILITY_SIGILOSO || gProtectStructs[battlerAtk].confusionSelfDmg)
@@ -8182,7 +8160,7 @@ static inline s32 DoMoveDamageCalcVars(struct DamageCalculationData *damageCalcD
 
     DAMAGE_APPLY_MODIFIER(GetSameTypeAttackBonusModifier(damageCalcData, abilityAtk));
     DAMAGE_APPLY_MODIFIER(typeEffectivenessModifier);
-    DAMAGE_APPLY_MODIFIER(GetBurnOrFrostBiteModifier(damageCalcData, abilityAtk));
+    DAMAGE_APPLY_MODIFIER(ModificadorQuemaduraCongelacion(damageCalcData, abilityAtk));
     DAMAGE_APPLY_MODIFIER(GetOtherModifiers(damageCalcData, typeEffectivenessModifier, abilityAtk, abilityDef, holdEffectAtk, holdEffectDef));
 
     if (dmg == 0)
@@ -8222,7 +8200,7 @@ static inline s32 DoFutureSightAttackDamageCalcVars(struct DamageCalculationData
     u32 partyMonSpecies = GetMonData(partyMon, MON_DATA_SPECIES, NULL);
     gBattleMovePower = gMovesInfo[move].power;
 
-    if (IS_MOVE_PHYSICAL(move))
+    if (ES_MOVIMIENTO_FISICO(move))
         userFinalAttack = GetMonData(partyMon, MON_DATA_ATK, NULL);
     else
         userFinalAttack = GetMonData(partyMon, MON_DATA_SPATK, NULL);
@@ -8305,7 +8283,7 @@ s32 CalculateMoveDamageVars(struct DamageCalculationData *damageCalcData, u32 fi
 
 static inline void MulByTypeEffectiveness(uq4_12_t *modifier, u32 move, u32 moveType, u32 battlerDef, u32 defType, u32 battlerAtk, bool32 recordAbilities)
 {
-    uq4_12_t mod = ObtenModificadorTipo(moveType, defType);
+    uq4_12_t mod = ModificadorTipo(moveType, defType);
     u32 abilityAtk = GetBattlerAbility(battlerAtk);
 
     if (mod == UQ_4_12(0.0) && GetBattlerHoldEffect(battlerDef, TRUE) == HOLD_EFFECT_RING_TARGET)
@@ -8350,13 +8328,6 @@ static inline void MulByTypeEffectiveness(uq4_12_t *modifier, u32 move, u32 move
         mod = UQ_4_12(2.0);
     if (moveType == TIPO_TIERRA && defType == TIPO_VOLADOR && IsBattlerGrounded(battlerDef) && mod == UQ_4_12(0.0))
         mod = UQ_4_12(1.0);
-
-    if (gBattleStruct->distortedTypeMatchups & (1u << battlerDef))
-    {
-        mod = UQ_4_12(0.5);
-        if (recordAbilities)
-            RecuerdaHabilidadCombate(battlerDef, GetBattlerAbility(battlerDef));
-    }
 
     *modifier = uq4_12_multiply(*modifier, mod);
 }
@@ -8500,12 +8471,12 @@ static uq4_12_t GetInverseTypeMultiplier(uq4_12_t multiplier)
     }
 }
 
-uq4_12_t ObtenModificadorTipo(u32 tipoAtacante, u32 tipoDefensor)
+uq4_12_t ModificadorTipo(u32 tipoAtacante, u32 tipoDefensor)
 {
     return gTablaEfectividadTipos[tipoAtacante][tipoDefensor];
 }
 
-s32 ObtenDanioTrampa(u32 tipoTrampa, u32 combatiente)
+s32 DanioTrampa(u32 tipoTrampa, u32 combatiente)
 {
     s32 danio = 0;
     uq4_12_t modificador = UQ_4_12(1.0);
@@ -8513,9 +8484,9 @@ s32 ObtenDanioTrampa(u32 tipoTrampa, u32 combatiente)
     u32 tipo2 = gBattleMons[combatiente].types[1];
     u32 PSMaximos = gBattleMons[combatiente].maxHP;
 
-    modificador = uq4_12_multiply(modificador, ObtenModificadorTipo(tipoTrampa, tipo1));
+    modificador = uq4_12_multiply(modificador, ModificadorTipo(tipoTrampa, tipo1));
     if (tipo2 != tipo1)
-        modificador = uq4_12_multiply(modificador, ObtenModificadorTipo(tipoTrampa, tipo2));
+        modificador = uq4_12_multiply(modificador, ModificadorTipo(tipoTrampa, tipo2));
 
     switch (modificador)
     {
@@ -8757,11 +8728,6 @@ bool32 SetIllusionMon(struct Pokemon *mon, u32 battler)
     return FALSE;
 }
 
-bool32 ShouldGetStatBadgeBoost(u16 badgeFlag, u32 battler)
-{
-    return FALSE;
-}
-
 static u32 SwapMoveDamageCategory(u32 move)
 {
     if (gMovesInfo[move].category == CATEGORIA_FISICA)
@@ -8769,12 +8735,12 @@ static u32 SwapMoveDamageCategory(u32 move)
     return CATEGORIA_FISICA;
 }
 
-u8 GetBattleMoveCategory(u32 moveId)
+u32 CategoriaMovimiento(u32 movimiento)
 {
     if (gBattleStruct != NULL && gBattleStruct->swapDamageCategory) // Photon Geyser, Shell Side Arm, Light That Burns the Sky, Tera Blast
-        return SwapMoveDamageCategory(moveId);
+        return SwapMoveDamageCategory(movimiento);
 
-    return gMovesInfo[moveId].category;
+    return gMovesInfo[movimiento].category;
 }
 
 static bool32 TryRemoveScreens(u32 battler)

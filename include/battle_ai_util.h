@@ -94,8 +94,8 @@ u32 GetNoOfHitsToKO(u32 dmg, s32 hp);
 u32 GetNoOfHitsToKOBattlerDmg(u32 dmg, u32 battlerDef);
 u32 GetNoOfHitsToKOBattler(u32 battlerAtk, u32 battlerDef, u32 moveIndex);
 u32 GetCurrDamageHpPercent(u32 battlerAtk, u32 battlerDef);
-uq4_12_t IA_ObtenEfectividadTipo(u32 movimiento, u32 atacante, u32 defensor);
-u32 IA_ObtenEfectividadMovimiento(u32 movimiento, u32 atacante, u32 defensor);
+uq4_12_t IA_EfectividadTipo(u32 movimiento, u32 atacante, u32 defensor);
+u32 IA_EfectividadMovimiento(u32 movimiento, u32 atacante, u32 defensor);
 u16 *GetMovesArray(u32 battler);
 bool32 IsConfusionMoveEffect(u32 moveEffect);
 bool32 HasMove(u32 battlerId, u32 move);
@@ -141,7 +141,7 @@ bool32 HasMagicCoatAffectedMove(u32 battler);
 bool32 HasSnatchAffectedMove(u32 battler);
 
 // status checks
-bool32 AI_CanGetFrostbite(u32 battler, u32 ability);
+bool32 AI_PuedeSerCongelado(u32 combatiente, u32 habilidad);
 bool32 AI_CanBeConfused(u32 battlerAtk, u32 battlerDef, u32 move, u32 ability);
 bool32 IsBattlerIncapacitated(u32 battler, u32 ability);
 bool32 AI_CanPutToSleep(u32 battlerAtk, u32 battlerDef, u32 defAbility, u32 move, u32 partnerMove);

@@ -411,8 +411,8 @@ static u16 GetEggSpecies(u16 species)
 
 static u32 GeneraPersonalidadConNaturaleza(struct DayCare *daycare)
 {
-    u32 naturalezaMadre = ObtenNaturalezaDePersonalidad(GetBoxMonData(&daycare->mons[0].mon, MON_DATA_PERSONALITY));
-    u32 naturalezaPadre = ObtenNaturalezaDePersonalidad(GetBoxMonData(&daycare->mons[1].mon, MON_DATA_PERSONALITY));
+    u32 naturalezaMadre = NaturalezaDePersonalidad(GetBoxMonData(&daycare->mons[0].mon, MON_DATA_PERSONALITY));
+    u32 naturalezaPadre = NaturalezaDePersonalidad(GetBoxMonData(&daycare->mons[1].mon, MON_DATA_PERSONALITY));
 
     u32 naturalezaDeseada = PorcentajeAleatorio(50) ? naturalezaMadre : naturalezaPadre;
     u32 r = Random();

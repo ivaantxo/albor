@@ -43,7 +43,7 @@ bool32 JugadorHaDadoUnPaso(void)
     return gPlayerAvatar.tileTransitionState == T_TILE_TRANSITION;
 }
 
-static const struct WildPokemonHeader *ObtenHeaderPokemonSalvajeDeMapa(void)
+static const struct WildPokemonHeader *PokemonSalvajesMapa(void)
 {
     u32 i;
 
@@ -64,7 +64,7 @@ static const struct WildPokemonHeader *ObtenHeaderPokemonSalvajeDeMapa(void)
 
 static bool32 GeneraEspeciePokemonOw(u16 *especie, u8 *nivel)
 {
-    const struct WildPokemonHeader *header = ObtenHeaderPokemonSalvajeDeMapa();
+    const struct WildPokemonHeader *header = PokemonSalvajesMapa();
     if (header == NULL || header->landMonsInfo == NULL)
         return FALSE;
 

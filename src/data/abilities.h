@@ -438,10 +438,10 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 7,
     },
 
-    [ABILITY_GUTS] =
+    [ABILITY_AGALLAS] =
     {
-        .name = _("Guts"),
-        .description = COMPOUND_STRING("Ups Attack if suffering."),
+        .name = _("Agallas"),
+        .description = COMPOUND_STRING("Sube ataques 50% si estado."),
         .aiRating = 6,
     },
 
@@ -597,14 +597,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Unburden"),
         .description = COMPOUND_STRING("Using a hold item ups Speed."),
         .aiRating = 7,
-    },
-
-    [ABILITY_HEATPROOF] =
-    {
-        .name = _("Heatproof"),
-        .description = COMPOUND_STRING("Heat and burn protection."),
-        .aiRating = 5,
-        .breakable = TRUE,
     },
 
     [ABILITY_SIMPLE] =

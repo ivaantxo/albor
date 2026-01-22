@@ -2858,7 +2858,7 @@ static void Task_ExitCaughtMonPage(u8 taskId)
         species = gTasks[taskId].tSpecies;
         personality = ((u16)gTasks[taskId].tPersonalityHi << 16) | (u16)gTasks[taskId].tPersonalityLo;
         paletteNum = gSprites[gTasks[taskId].tMonSpriteId].oam.paletteNum;
-        lzPaletteData = GetMonSpritePalFromSpeciesAndPersonality(species, OBTEN_VALOR_SHINY(personality), personality);
+        lzPaletteData = GetMonSpritePalFromSpeciesAndPersonality(species, VALOR_SHINY(personality), personality);
         LoadCompressedPalette(lzPaletteData, OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
         DestroyTask(taskId);
     }
@@ -3714,7 +3714,7 @@ static void PrintStatsScreen_Moves_Bottom(u8 taskId)
         PrintStatsScreenTextSmall(WIN_STATS_MOVES_BOTTOM, gVariableTexto1, moves_x + 45, moves_y);
         //Physical/Special/Status Category
         DestroyCategoryIcon();
-        ShowCategoryIcon(GetBattleMoveCategory(move));
+        ShowCategoryIcon(CategoriaMovimiento(move));
         //Accuracy
         if (gMovesInfo[move].accuracy == 0)
             StringCopy(gVariableTexto1, gText_ThreeDashes);
