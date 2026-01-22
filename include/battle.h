@@ -610,21 +610,21 @@ struct BattleStruct
 
 #define DYNAMIC_TYPE_MASK                 ((1 << 6) - 1)
 #define F_DYNAMIC_TYPE_IGNORE_PHYSICALITY  (1 << 6) // If set, the dynamic type's physicality won't be used for certain move effects.
-#define F_DYNAMIC_TYPE_SET                 (1 << 7) // Set for all dynamic types to distinguish a dynamic type of Normal (0) from no dynamic type.
 
-#define ES_MOVIMIENTO_FISICO(move)      (CategoriaMovimiento(move) == CATEGORIA_FISICA)
-#define ES_MOVIMIENTO_ESPECIAL(move)    (CategoriaMovimiento(move) == CATEGORIA_ESPECIAL)
-#define ES_MOVIMIENTO_ESTADO(move)      (CategoriaMovimiento(move) == CATEGORIA_ESTADO)
+#define ES_MOVIMIENTO_FISICO(movimiento)      (CategoriaMovimiento(movimiento) == CATEGORIA_FISICA)
+#define ES_MOVIMIENTO_ESPECIAL(movimiento)    (CategoriaMovimiento(movimiento) == CATEGORIA_ESPECIAL)
+#define ES_MOVIMIENTO_ESTADO(movimiento)      (CategoriaMovimiento(movimiento) == CATEGORIA_ESTADO)
+
+#define ES_TIPO(combatiente, tipo)      ((GetBattlerType(combatiente, 0) == tipo || GetBattlerType(combatiente, 1) == tipo))
+#define ESTA_DORMIDO(combatiente)       (gBattleMons[combatiente].status1 & STATUS1_SLEEP)
 
 #define IS_MOVE_RECOIL(move) (gMovesInfo[move].recoil > 0 || gMovesInfo[move].effect == EFFECT_RECOIL_IF_MISS)
-
-#define ES_COMBATIENTE_TIPO(combatiente, tipo)((GetBattlerType(combatiente, 0) == tipo || GetBattlerType(combatiente, 1) == tipo))
 
 #define SET_BATTLER_TYPE(battlerId, type)              \
 {                                                      \
     gBattleMons[battlerId].types[0] = type;            \
     gBattleMons[battlerId].types[1] = type;            \
-    gBattleMons[battlerId].types[2] = TIPO_MISTERIO;    \
+    gBattleMons[battlerId].types[2] = TIPO_MISTERIO;   \
 }
 
 #define RESTORE_BATTLER_TYPE(battlerId)                                                        \
@@ -857,7 +857,6 @@ extern u8 gBideTarget[NUMERO_COMBATIENTES];
 extern u32 gSideStatuses[NUMERO_LADOS];
 extern struct SideTimer gSideTimers[NUMERO_LADOS];
 extern u32 gStatuses3[NUMERO_COMBATIENTES];
-extern u32 gStatuses4[NUMERO_COMBATIENTES];
 extern struct DisableStruct gDisableStructs[NUMERO_COMBATIENTES];
 extern u16 gPauseCounterBattle;
 extern u16 gPaydayMoney;

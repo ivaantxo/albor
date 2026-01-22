@@ -1613,11 +1613,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectHit,
     },
 
-    [EFFECT_SALT_CURE] =
-    {
-        .battleScript = BattleScript_EffectSaltCure,
-    },
-
     [EFFECT_CHILLY_RECEPTION] =
     {
         .battleScript = BattleScript_EffectChillyReception,

@@ -1507,31 +1507,12 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 5,
     },
 
-    [ABILITY_COMATOSE] =
-    {
-        .name = _("Comatose"),
-        .description = COMPOUND_STRING("Always drowsing."),
-        .aiRating = 6,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .cantBeSuppressed = TRUE,
-        .cantBeOverwritten = TRUE,
-    },
-
     [ABILITY_QUEENLY_MAJESTY] =
     {
         .name = _("Queenly Majesty"),
         .description = COMPOUND_STRING("Protects from priority."),
         .aiRating = 6,
         .breakable = TRUE,
-    },
-
-    [ABILITY_INNARDS_OUT] =
-    {
-        .name = _("Innards Out"),
-        .description = COMPOUND_STRING("Hurts foe when defeated."),
-        .aiRating = 5,
     },
 
     [ABILITY_DANCER] =

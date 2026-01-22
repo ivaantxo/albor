@@ -1143,7 +1143,7 @@ static void Cmd_attackcanceler(void)
         RecuerdaHabilidadCombate(gBattlerTarget, gLastUsedAbility);
     }
     else if (IsBattlerProtected(gBattlerAttacker, gBattlerTarget, gCurrentMove)
-     && (gCurrentMove != MOVE_CURSE || ES_COMBATIENTE_TIPO(gBattlerAttacker, TIPO_FANTASMA))
+     && (gCurrentMove != MOVE_CURSE || ES_TIPO(gBattlerAttacker, TIPO_FANTASMA))
      && (!gBattleMoveEffects[gMovesInfo[gCurrentMove].effect].twoTurnEffect || (gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS))
      && gMovesInfo[gCurrentMove].effect != EFFECT_SUCKER_PUNCH
      && gMovesInfo[gCurrentMove].effect != EFFECT_UPPER_HAND)
@@ -1205,8 +1205,7 @@ static bool8 JumpIfMoveAffectedByProtect(u16 move)
 static bool32 AccuracyCalcHelper(u16 move)
 {
     if ((gStatuses3[gBattlerTarget] & STATUS3_ALWAYS_HITS && gDisableStructs[gBattlerTarget].battlerWithSureHit == gBattlerAttacker)
-     || (B_TOXIC_NEVER_MISS >= GEN_6 && gMovesInfo[move].effect == EFFECT_TOXIC && ES_COMBATIENTE_TIPO(gBattlerAttacker, TIPO_VENENO))
-     || gStatuses4[gBattlerTarget] & STATUS4_GLAIVE_RUSH)
+     || (B_TOXIC_NEVER_MISS >= GEN_6 && gMovesInfo[move].effect == EFFECT_TOXIC && ES_TIPO(gBattlerAttacker, TIPO_VENENO)))
     {
         JumpIfMoveFailed(move);
         return TRUE;
@@ -1823,7 +1822,7 @@ static void Cmd_attackanimation(void)
     if (HayAlgunCombatienteOcupado())
         return;
 
-    if ((gHitMarker & (HITMARKER_NO_ANIMATIONS | HITMARKER_DISABLE_ANIMATION))
+    if ((gHitMarker & (HITMARKER_DISABLE_ANIMATION))
         && gCurrentMove != MOVE_TRANSFORM
         && gCurrentMove != MOVE_SUBSTITUTE
         && gCurrentMove != MOVE_ALLY_SWITCH)
@@ -2523,7 +2522,7 @@ void SetMoveEffect(bool32 primary, bool32 certain)
                 }
                 RESET_RETURN
             }
-            if (ES_COMBATIENTE_TIPO(gEffectBattler, TIPO_FUEGO)
+            if (ES_TIPO(gEffectBattler, TIPO_FUEGO)
                 && (gHitMarker & HITMARKER_STATUS_ABILITY_EFFECT)
                 && (primary == TRUE || certain == TRUE))
             {
@@ -2537,7 +2536,7 @@ void SetMoveEffect(bool32 primary, bool32 certain)
             if (B_STATUS_TYPE_IMMUNITY == GEN_1)
             {
                 u32 moveType = GetMoveType(gCurrentMove);
-                if (primary == FALSE && certain == FALSE && ES_COMBATIENTE_TIPO(gEffectBattler, moveType))
+                if (primary == FALSE && certain == FALSE && ES_TIPO(gEffectBattler, moveType))
                     break;
             }
 
@@ -2583,7 +2582,7 @@ void SetMoveEffect(bool32 primary, bool32 certain)
             if (B_STATUS_TYPE_IMMUNITY == GEN_1)
             {
                 u32 moveType = GetMoveType(gCurrentMove);
-                if (primary == FALSE && certain == FALSE && ES_COMBATIENTE_TIPO(gEffectBattler, moveType))
+                if (primary == FALSE && certain == FALSE && ES_TIPO(gEffectBattler, moveType))
                     break;
             }
             if (!CanParalyzeType(gEffectBattler)
@@ -3596,7 +3595,7 @@ static void Cmd_jumpbasedontype(void)
     // jumpiftype
     if (cmd->jumpIfType)
     {
-        if (ES_COMBATIENTE_TIPO(battler, type))
+        if (ES_TIPO(battler, type))
             gBattlescriptCurrInstr = jumpInstr;
         else
             gBattlescriptCurrInstr = cmd->nextInstr;
@@ -3604,7 +3603,7 @@ static void Cmd_jumpbasedontype(void)
     // jumpifnottype
     else
     {
-        if (!ES_COMBATIENTE_TIPO(battler, type))
+        if (!ES_TIPO(battler, type))
             gBattlescriptCurrInstr = jumpInstr;
         else
             gBattlescriptCurrInstr = cmd->nextInstr;
@@ -4386,7 +4385,7 @@ static void PlayAnimation(u32 battler, u8 animId, const u16 *argPtr, const u8 *n
         MarcaCombatienteOcupado(battler);
         gBattlescriptCurrInstr = nextInstr;
     }
-    else if (gHitMarker & (HITMARKER_NO_ANIMATIONS | HITMARKER_DISABLE_ANIMATION) && animId != B_ANIM_RESTORE_BG)
+    else if (gHitMarker & (HITMARKER_DISABLE_ANIMATION) && animId != B_ANIM_RESTORE_BG)
     {
         BattleScriptPush(nextInstr);
         gBattlescriptCurrInstr = BattleScript_Pausex20;
@@ -4961,7 +4960,7 @@ static void Cmd_moveend(void)
             break;
         case MOVEEND_ATTACKER_INVISIBLE: // make attacker sprite invisible
             if (gStatuses3[gBattlerAttacker] & (STATUS3_SEMI_INVULNERABLE)
-                && gHitMarker & (HITMARKER_NO_ANIMATIONS | HITMARKER_DISABLE_ANIMATION))
+                && gHitMarker & (HITMARKER_DISABLE_ANIMATION))
             {
                 BtlController_EmitSpriteInvisibility(gBattlerAttacker, BUFFER_A, TRUE);
                 MarcaCombatienteOcupado(gBattlerAttacker);
@@ -6043,7 +6042,7 @@ static bool32 DoSwitchInEffectsForBattler(u32 battler)
         && IsBattlerGrounded(battler))
     {
         gDisableStructs[battler].toxicSpikesDone = TRUE;
-        if (ES_COMBATIENTE_TIPO(battler, TIPO_VENENO)) // Absorb the toxic spikes.
+        if (ES_TIPO(battler, TIPO_VENENO)) // Absorb the toxic spikes.
         {
             gSideStatuses[GetBattlerSide(battler)] &= ~SIDE_STATUS_TOXIC_SPIKES;
             gSideTimers[GetBattlerSide(battler)].toxicSpikesAmount = 0;
@@ -6609,7 +6608,7 @@ static void Cmd_statusanimation(void)
         u32 battler = GetBattlerForBattleScript(cmd->battler);
         if (!(gStatuses3[battler] & STATUS3_SEMI_INVULNERABLE)
             && gDisableStructs[battler].substituteHP == 0
-            && !(gHitMarker & (HITMARKER_NO_ANIMATIONS | HITMARKER_DISABLE_ANIMATION)))
+            && !(gHitMarker & (HITMARKER_DISABLE_ANIMATION)))
         {
             BtlController_EmitStatusAnimation(battler, BUFFER_A, FALSE, gBattleMons[battler].status1);
             MarcaCombatienteOcupado(battler);
@@ -6628,7 +6627,7 @@ static void Cmd_status2animation(void)
         u32 status2ToAnim = cmd->status2;
         if (!(gStatuses3[battler] & STATUS3_SEMI_INVULNERABLE)
             && gDisableStructs[battler].substituteHP == 0
-            && !(gHitMarker & (HITMARKER_NO_ANIMATIONS | HITMARKER_DISABLE_ANIMATION)))
+            && !(gHitMarker & (HITMARKER_DISABLE_ANIMATION)))
         {
             BtlController_EmitStatusAnimation(battler, BUFFER_A, TRUE, gBattleMons[battler].status2 & status2ToAnim);
             MarcaCombatienteOcupado(battler);
@@ -6647,7 +6646,7 @@ static void Cmd_chosenstatusanimation(void)
         u32 wantedStatus = cmd->status;
         if (!(gStatuses3[battler] & STATUS3_SEMI_INVULNERABLE)
             && gDisableStructs[battler].substituteHP == 0
-            && !(gHitMarker & (HITMARKER_NO_ANIMATIONS | HITMARKER_DISABLE_ANIMATION)))
+            && !(gHitMarker & (HITMARKER_DISABLE_ANIMATION)))
         {
             BtlController_EmitStatusAnimation(battler, BUFFER_A, cmd->isStatus2, wantedStatus);
             MarcaCombatienteOcupado(battler);
@@ -7234,12 +7233,12 @@ static bool32 HasAttackerFaintedTarget(void)
 
 bool32 CanPoisonType(u8 battlerTarget)
 {
-    return (!ES_COMBATIENTE_TIPO(battlerTarget, TIPO_VENENO));
+    return (!ES_TIPO(battlerTarget, TIPO_VENENO));
 }
 
 bool32 CanParalyzeType(u8 battlerTarget)
 {
-    return !(B_PARALYZE_ELECTRIC >= GEN_6 && ES_COMBATIENTE_TIPO(battlerTarget, TIPO_ELECTRICO));
+    return !(B_PARALYZE_ELECTRIC >= GEN_6 && ES_TIPO(battlerTarget, TIPO_ELECTRICO));
 }
 
 bool32 CanUseLastResort(u8 battler)
@@ -7379,32 +7378,13 @@ static bool32 IsRototillerAffected(u32 battler)
         return FALSE;
     if (!IsBattlerGrounded(battler))
         return FALSE;   // Only grounded battlers affected
-    if (!ES_COMBATIENTE_TIPO(battler, TIPO_PLANTA))
+    if (!ES_TIPO(battler, TIPO_PLANTA))
         return FALSE;   // Only grass types affected
     if (gStatuses3[battler] & STATUS3_SEMI_INVULNERABLE)
         return FALSE;   // Rototiller doesn't affected semi-invulnerable battlers
     if (BlocksPrankster(MOVE_ROTOTILLER, gBattlerAttacker, battler, FALSE))
         return FALSE;
     return TRUE;
-}
-
-static bool32 IsElectricAbilityAffected(u32 battler, u32 ability)
-{
-    u32 moveType;
-
-    if (gBattleStruct->dynamicMoveType == 0)
-        moveType = gMovesInfo[gCurrentMove].type;
-    else if (!(gBattleStruct->dynamicMoveType & F_DYNAMIC_TYPE_IGNORE_PHYSICALITY))
-        moveType = gBattleStruct->dynamicMoveType & DYNAMIC_TYPE_MASK;
-    else
-        moveType = gMovesInfo[gCurrentMove].type;
-
-    if (moveType == TIPO_ELECTRICO
-     && (ability != ABILITY_LIGHTNING_ROD || B_REDIRECT_ABILITY_IMMUNITY >= GEN_5)
-     && GetBattlerAbility(battler) == ability)
-        return TRUE;
-    else
-        return FALSE;
 }
 
 // Return True if the order was changed, and false if the order was not changed(for example because the target would move after the attacker anyway).
@@ -8448,7 +8428,7 @@ static void Cmd_various(void)
     case VARIOUS_TRY_THIRD_TYPE:
     {
         VARIOUS_ARGS(const u8 *failInstr);
-        if (ES_COMBATIENTE_TIPO(battler, gMovesInfo[gCurrentMove].argument))
+        if (ES_TIPO(battler, gMovesInfo[gCurrentMove].argument))
         {
             gBattlescriptCurrInstr = cmd->failInstr;
         }
@@ -9252,7 +9232,7 @@ static void Cmd_setseeded(void)
         gMoveResultFlags |= MOVE_RESULT_MISSED;
         gMensajeBatalla = B_MSG_LEECH_SEED_MISS;
     }
-    else if (ES_COMBATIENTE_TIPO(gBattlerTarget, TIPO_PLANTA))
+    else if (ES_TIPO(gBattlerTarget, TIPO_PLANTA))
     {
         gMoveResultFlags |= MOVE_RESULT_MISSED;
         gMensajeBatalla = B_MSG_LEECH_SEED_FAIL;
@@ -10037,7 +10017,7 @@ static void Cmd_tryconversiontypechange(void)
                 break;
             }
         }
-        if (ES_COMBATIENTE_TIPO(gBattlerAttacker, moveType))
+        if (ES_TIPO(gBattlerAttacker, moveType))
         {
             gBattlescriptCurrInstr = cmd->failInstr;
         }
@@ -10065,7 +10045,7 @@ static void Cmd_tryconversiontypechange(void)
 
             if (moveType == TIPO_MISTERIO)
             {
-                if (ES_COMBATIENTE_TIPO(gBattlerAttacker, TIPO_FANTASMA))
+                if (ES_TIPO(gBattlerAttacker, TIPO_FANTASMA))
                     moveType = TIPO_FANTASMA;
                 else
                     moveType = TIPO_NORMAL;
@@ -10092,7 +10072,7 @@ static void Cmd_tryconversiontypechange(void)
 
                 if (moveType == TIPO_MISTERIO)
                 {
-                    if (ES_COMBATIENTE_TIPO(gBattlerAttacker, TIPO_FANTASMA))
+                    if (ES_TIPO(gBattlerAttacker, TIPO_FANTASMA))
                         moveType = TIPO_FANTASMA;
                     else
                         moveType = TIPO_NORMAL;
@@ -10258,7 +10238,7 @@ static void Cmd_setfocusenergy(void)
         gMoveResultFlags |= MOVE_RESULT_FAILED;
         gMensajeBatalla = B_MSG_FOCUS_ENERGY_FAILED;
     }
-    else if (gMovesInfo[gCurrentMove].effect == EFFECT_DRAGON_CHEER && !ES_COMBATIENTE_TIPO(battler, TIPO_DRAGON))
+    else if (gMovesInfo[gCurrentMove].effect == EFFECT_DRAGON_CHEER && !ES_TIPO(battler, TIPO_DRAGON))
     {
         gBattleMons[battler].status2 |= STATUS2_DRAGON_CHEER;
         gMensajeBatalla = B_MSG_GETTING_PUMPED;
@@ -10611,7 +10591,7 @@ static void Cmd_settypetorandomresistance(void)
                 i = Random() % NUMERO_TIPOS;
                 if (resistTypes & 1u << i)
                 {
-                    if (ES_COMBATIENTE_TIPO(gBattlerAttacker, i))
+                    if (ES_TIPO(gBattlerAttacker, i))
                     {
                         resistTypes &= ~(1u << i); // Type resists, but the user is already of this type.
                     }
@@ -10663,7 +10643,7 @@ static void Cmd_settypetorandomresistance(void)
                 i = Random() % NUMERO_TIPOS;
                 if (resistTypes & 1u << i)
                 {
-                    if (ES_COMBATIENTE_TIPO(gBattlerAttacker, i))
+                    if (ES_TIPO(gBattlerAttacker, i))
                     {
                         resistTypes &= ~(1u << i); // Type resists, but the user is already of this type.
                     }
@@ -12245,7 +12225,7 @@ static void Cmd_jumpifnotcurrentmoveargtype(void)
     u8 battler = GetBattlerForBattleScript(cmd->battler);
     const u8 *failInstr = cmd->failInstr;
 
-    if (!ES_COMBATIENTE_TIPO(battler, gMovesInfo[gCurrentMove].argument))
+    if (!ES_TIPO(battler, gMovesInfo[gCurrentMove].argument))
         gBattlescriptCurrInstr = failInstr;
     else
         gBattlescriptCurrInstr = cmd->nextInstr;
@@ -13200,8 +13180,6 @@ void BS_ItemCureStatus(void)
         statusChanged = TRUE;
         if (GetItemStatus1Mask(gLastUsedItem) & STATUS1_SLEEP)
             gBattleMons[battler].status2 &= ~STATUS2_NIGHTMARE;
-        if (GetItemStatus2Mask(gLastUsedItem) & STATUS2_CONFUSION)
-            gStatuses4[battler] &= ~STATUS4_INFINITE_CONFUSION;
     }
 
     if (statusChanged)
@@ -13289,26 +13267,6 @@ void BS_TryRevertWeatherForm(void)
         gBattlescriptCurrInstr = BattleScript_TargetFormChangeWithStringNoPopup;
         return;
     }
-    gBattlescriptCurrInstr = cmd->nextInstr;
-}
-
-void BS_JumpIfElectricAbilityAffected(void)
-{
-    NATIVE_ARGS(u8 battler, u16 ability, const u8 *jumpInstr);
-    u32 battler = GetBattlerForBattleScript(cmd->battler);
-
-    if (IsElectricAbilityAffected(battler, cmd->ability))
-        gBattlescriptCurrInstr = cmd->jumpInstr;
-    else
-        gBattlescriptCurrInstr = cmd->nextInstr;
-}
-
-void BS_ApplySaltCure(void)
-{
-    NATIVE_ARGS(u8 battler);
-
-    u8 battler = GetBattlerForBattleScript(cmd->battler);
-    gStatuses4[battler] |= STATUS4_SALT_CURE;
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 

@@ -1176,7 +1176,7 @@ static u32 GetSwitchinHazardsDamage(u32 battler, struct BattlePokemon *battleMon
         }
 
         if ((hazardFlags & SIDE_STATUS_TOXIC_SPIKES) && (defType1 != TIPO_VENENO && defType2 != TIPO_VENENO
-            && ability != ABILITY_IMMUNITY && ability != ABILITY_POISON_HEAL && ability != ABILITY_COMATOSE
+            && ability != ABILITY_IMMUNITY && ability != ABILITY_POISON_HEAL
             && status == 0
             && !(hazardFlags & SIDE_STATUS_SAFEGUARD))
             && !(IsAbilityStatusProtected(battler))
@@ -1571,7 +1571,7 @@ static s32 GetMaxDamagePlayerCouldDealToSwitchin(u32 battler, u32 opposingBattle
 
 static bool32 CanAbilityTrapOpponent(u16 ability, u32 opponent)
 {
-    if ((B_GHOSTS_ESCAPE >= GEN_6 && ES_COMBATIENTE_TIPO(opponent, TIPO_FANTASMA)))
+    if ((B_GHOSTS_ESCAPE >= GEN_6 && ES_TIPO(opponent, TIPO_FANTASMA)))
         return FALSE;
     else if (ability == ABILITY_SHADOW_TAG)
     {
@@ -1579,9 +1579,9 @@ static bool32 CanAbilityTrapOpponent(u16 ability, u32 opponent)
     }
     else if (ability == ABILITY_ARENA_TRAP && IsBattlerGrounded(opponent))
         return TRUE;
-    else if (ability == ABILITY_IMAN && ES_COMBATIENTE_TIPO(opponent, TIPO_ACERO))
+    else if (ability == ABILITY_IMAN && ES_TIPO(opponent, TIPO_ACERO))
         return TRUE;
-    else if (ability == ABILITY_MATAMOSCAS && ES_COMBATIENTE_TIPO(opponent, TIPO_BICHO))
+    else if (ability == ABILITY_MATAMOSCAS && ES_TIPO(opponent, TIPO_BICHO))
         return TRUE;
     else
         return FALSE;

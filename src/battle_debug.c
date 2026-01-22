@@ -187,7 +187,6 @@ enum
     LIST_STATUS4_ELECTRIFIED,
     LIST_STATUS4_MUD_SPORT,
     LIST_STATUS4_WATER_SPORT,
-    LIST_STATUS4_SALT_CURE,
     LIST_STATUS4_GLAIVE_RUSH,
 };
 
@@ -328,7 +327,6 @@ static const u8 sText_PowerTrick[] = _("Power Trick");
 static const u8 sText_Electrified[] = _("Electrified");
 static const u8 sText_MudSport[] = _("Mud Sport");
 static const u8 sText_WaterSport[] = _("Water Sport");
-static const u8 sText_SaltCure[] = _("Salt Cure");
 static const u8 sText_GlaiveRush[] = _("Glaive Rush");
 static const u8 sText_Reflect[] = _("Reflect");
 static const u8 sText_LightScreen[] = _("Light Screen");
@@ -548,7 +546,6 @@ static const struct ListMenuItem sStatus4ListItems[] =
     {sText_Electrified, LIST_STATUS4_ELECTRIFIED},
     {sText_MudSport, LIST_STATUS4_MUD_SPORT},
     {sText_WaterSport, LIST_STATUS4_WATER_SPORT},
-    {sText_SaltCure, LIST_STATUS4_SALT_CURE},
     {sText_GlaiveRush, LIST_STATUS4_GLAIVE_RUSH},
 };
 
@@ -2060,11 +2057,6 @@ static void SetUpModifyArrows(struct BattleDebugMenu *data)
         data->modifyArrows.currValue = GetBitfieldValue(gStatuses3[data->battlerId], data->bitfield[data->currentSecondaryListItemId].currBit, data->bitfield[data->currentSecondaryListItemId].bitsCount);
         data->modifyArrows.typeOfVal = VAL_BITFIELD_32;
         goto CASE_ITEM_STATUS;
-    case LIST_ITEM_STATUS4:
-        data->modifyArrows.modifiedValPtr = &gStatuses4[data->battlerId];
-        data->modifyArrows.currValue = GetBitfieldValue(gStatuses4[data->battlerId], data->bitfield[data->currentSecondaryListItemId].currBit, data->bitfield[data->currentSecondaryListItemId].bitsCount);
-        data->modifyArrows.typeOfVal = VAL_BITFIELD_32;
-        goto CASE_ITEM_STATUS;
     case LIST_ITEM_AI:
         data->modifyArrows.modifiedValPtr = &gBattleResources->ai->aiFlags[data->battlerId];
         data->modifyArrows.currValue = GetBitfieldValue(gBattleResources->ai->aiFlags[data->battlerId], data->bitfield[data->currentSecondaryListItemId].currBit, data->bitfield[data->currentSecondaryListItemId].bitsCount);
@@ -2328,7 +2320,6 @@ static const u8 sText_HoldEffectPunchingGlove[] = _("Punching Glove");
 static const u8 sText_HoldEffectCovertCloak[] = _("Covert Cloak");
 static const u8 sText_HoldEffectLoadedDice[] = _("Loaded Dice");
 static const u8 sText_HoldEffectBoosterEnergy[] = _("Booster Energy");
-static const u8 sText_HoldEffectBerserkGene[] = _("Berserk Gene");
 static const u8 sText_HoldEffectOgerponMask[] = _("Ogerpon Mask");
 static const u8 *const sHoldEffectNames[] =
 {
@@ -2477,7 +2468,6 @@ static const u8 *const sHoldEffectNames[] =
     [HOLD_EFFECT_COVERT_CLOAK] = sText_HoldEffectCovertCloak,
     [HOLD_EFFECT_LOADED_DICE] = sText_HoldEffectLoadedDice,
     [HOLD_EFFECT_BOOSTER_ENERGY] = sText_HoldEffectBoosterEnergy,
-    [HOLD_EFFECT_BERSERK_GENE] = sText_HoldEffectBerserkGene,
     [HOLD_EFFECT_OGERPON_MASK] = sText_HoldEffectOgerponMask,
 };
 static const u8 *GetHoldEffectName(u16 holdEffect)

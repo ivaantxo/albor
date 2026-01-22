@@ -12137,22 +12137,6 @@ const struct Item gItemsInfo[] =
         .iconPalette = gItemIconPalette_PeatBlock,
     },
 
-    [ITEM_BERSERK_GENE] =
-    {
-        .name = _("Berserk Gene"),
-        .price = 20,
-        .holdEffect = HOLD_EFFECT_BERSERK_GENE,
-        .description = COMPOUND_STRING(
-            "Sharply boosts\n"
-            "Attack, but causes\n"
-            "lasting confusion."),
-        .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .iconPic = gItemIcon_BerserkGene,
-        .iconPalette = gItemIconPalette_BerserkGene,
-    },
-
     [ITEM_FAIRY_FEATHER] =
     {
         .name = _("Fairy Feather"),

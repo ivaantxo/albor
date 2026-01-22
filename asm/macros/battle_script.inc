@@ -1324,11 +1324,6 @@
 	callnative BS_TryRevertWeatherForm
 	.endm
 
-	.macro applysaltcure battler:req
-	callnative BS_ApplySaltCure
-	.byte \battler
-	.endm
-
 	.macro trysetoctolock battler:req, failInstr:req
 	callnative BS_TrySetOctolock
 	.byte \battler
@@ -1363,13 +1358,6 @@
 	callnative BS_JumpIfCantLoseItem
 	.byte \battler
 	.4byte \ptr
-	.endm
-
-	.macro jumpifelectricabilityaffected battler:req, ability:req, jumpInstr:req
-	callnative BS_JumpIfElectricAbilityAffected
-	.byte \battler
-	.2byte \ability
-	.4byte \jumpInstr
 	.endm
 
 	.macro jumpifargument argument:req, jumpInstr:req

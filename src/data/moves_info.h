@@ -15440,23 +15440,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_GlaiveRush,
     },
 
-    [MOVE_SALT_CURE] =
-    {
-        .name = COMPOUND_STRING("Salt Cure"),
-        .description = COMPOUND_STRING(
-            "Hurts foe every turn. Double\n"
-            "damage to Steel and Water."),
-        .effect = EFFECT_SALT_CURE,
-        .power = 40,
-        .type = TIPO_ROCA,
-        .accuracy = 100,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .battleAnimScript = gBattleAnimMove_SaltCure,
-    },
-
     [MOVE_TRIPLE_DIVE] =
     {
         .name = COMPOUND_STRING("Triple Dive"),

@@ -529,7 +529,6 @@ enum AnimacionesGeneralesBatalla //(sBattleAnims_General)
     B_ANIM_GULP_MISSILE,
     B_ANIM_AQUA_RING_HEAL,
     B_ANIM_SNOW_CONTINUES,
-    B_ANIM_SALT_CURE_DAMAGE,
     B_ANIM_MAX_SET_WEATHER,
     B_ANIM_TRICK_ROOM,
     B_ANIM_WONDER_ROOM,

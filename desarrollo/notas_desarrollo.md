@@ -70,6 +70,8 @@
 - Trampas: Ahora hay 6 trampas tipo Trampa rocas: Espinas (planta), Trampa rocas (roca), Púas (acero), Brasas (fuego), Esquirlas heladas (hielo), Púas tóxicas (veneno). Todas funcionan como trampa rocas, hacen daño a Pokémon que estén en el suelo (no causan estados). Trampa rocas ahora no hace efecto a Pokémon voladores o que leviten. Además, no hay "cantidad" de trampa rocas, y el daño se establece según la efectividad del tipo de la trampa con el defensor:
 x0 --> 0; x0,25 --> PS máximos / 64; x0,5 --> PS máximos / 32; x1 --> PS máximos / 16; x2 --> PS máximos / 8; x4 --> PS máximos / 4.
 
+- Chequear Volt absorb
+
 -Lista de moves hechos:
 *Bomba huevo.
 *Amoladoras.

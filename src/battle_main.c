@@ -164,7 +164,6 @@ EWRAM_DATA u8 gBideTarget[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u32 gSideStatuses[NUMERO_LADOS] = {0};
 EWRAM_DATA struct SideTimer gSideTimers[NUMERO_LADOS] = {0};
 EWRAM_DATA u32 gStatuses3[NUMERO_COMBATIENTES] = {0};
-EWRAM_DATA u32 gStatuses4[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA struct DisableStruct gDisableStructs[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u16 gPauseCounterBattle = 0;
 EWRAM_DATA u16 gPaydayMoney = 0;
@@ -871,8 +870,7 @@ void SpriteCB_OpponentMonFromBall(struct Sprite *sprite)
 {
     if (sprite->affineAnimEnded)
     {
-        if (!(gHitMarker & HITMARKER_NO_ANIMATIONS))
-            StartSpriteAnim(sprite, 1);
+        StartSpriteAnim(sprite, 1);
         BattleAnimateFrontSprite(sprite, sprite->sSpeciesId, TRUE, 1);
     }
 }
@@ -1107,7 +1105,6 @@ static void BattleStartClearSetData(void)
     for (u32 combatiente = JUGADOR_IZQUIERDA; combatiente < NUMERO_COMBATIENTES; combatiente++)
     {
         gStatuses3[combatiente] = 0;
-        gStatuses4[combatiente] = 0;
         gDisableStructs[combatiente].isFirstTurn = 2;
         gLastMoves[combatiente] = MOVE_NONE;
         gLastLandedMoves[combatiente] = MOVE_NONE;
@@ -1142,10 +1139,6 @@ static void BattleStartClearSetData(void)
     gBattlerAbility = 0;
     gBattleWeather = 0;
     gHitMarker = 0;
-
-    if (gSaveBlockPtr->optionsBattleSceneOff == TRUE)
-        gHitMarker |= HITMARKER_NO_ANIMATIONS;
-
     gMultiHitCounter = 0;
     gBattleOutcome = 0;
     gPaydayMoney = 0;
@@ -1228,7 +1221,6 @@ void SwitchInClearSetData(u32 battler)
         gStatuses3[battler] &= (STATUS3_LEECHSEED_BATTLER | STATUS3_LEECHSEED | STATUS3_ALWAYS_HITS | STATUS3_PERISH_SONG | STATUS3_ROOTED
                                        | STATUS3_GASTRO_ACID | STATUS3_EMBARGO | STATUS3_TELEKINESIS | STATUS3_MAGNET_RISE | STATUS3_HEAL_BLOCK
                                        | STATUS3_AQUA_RING | STATUS3_POWER_TRICK);
-        gStatuses4[battler] &= (STATUS4_MUD_SPORT | STATUS4_WATER_SPORT | STATUS4_INFINITE_CONFUSION);
         for (i = 0; i < gBattlersCount; i++)
         {
             if (GetBattlerSide(battler) != GetBattlerSide(i)
@@ -1246,7 +1238,6 @@ void SwitchInClearSetData(u32 battler)
     {
         gBattleMons[battler].status2 = 0;
         gStatuses3[battler] = 0;
-        gStatuses4[battler] = 0;
     }
 
     for (i = 0; i < gBattlersCount; i++)
@@ -1345,7 +1336,6 @@ const u8 *FaintClearSetData(u32 battler)
 
     gBattleMons[battler].status2 = 0;
     gStatuses3[battler] &= STATUS3_GASTRO_ACID; // Edge case: Keep Gastro Acid if pokemon's ability can have effect after fainting, for example Innards Out.
-    gStatuses4[battler] = 0;
 
     for (i = 0; i < gBattlersCount; i++)
     {
@@ -3025,11 +3015,9 @@ void SetTypeBeforeUsingMove(u32 move, u32 battler)
                                   move,
                                   battler);
     if (moveType != GetMoveType(move))
-        gBattleStruct->dynamicMoveType = moveType | F_DYNAMIC_TYPE_SET;
+        gBattleStruct->dynamicMoveType = moveType;
 
     moveType = GetMoveType(move);
-    if (gStatuses4[battler] & STATUS4_ELECTRIFIED)
-        gBattleStruct->dynamicMoveType = TIPO_ELECTRICO | F_DYNAMIC_TYPE_SET;
 
     // Check if a gem should activate.
     if (holdEffect == HOLD_EFFECT_GEMS && GetMoveType(move) == ItemId_GetSecondaryId(heldItem))

@@ -6047,7 +6047,6 @@ static void AnimTask_AllySwitchDataSwap(u8 taskId)
     SWAP(gTransformedPersonalities[battlerAtk], gTransformedPersonalities[battlerPartner], temp);
     SWAP(gTransformedShininess[battlerAtk], gTransformedShininess[battlerPartner], temp);
     SWAP(gStatuses3[battlerAtk], gStatuses3[battlerPartner], temp);
-    SWAP(gStatuses4[battlerAtk], gStatuses4[battlerPartner], temp);
     SWAP(gBattleStruct->chosenMovePositions[battlerAtk], gBattleStruct->chosenMovePositions[battlerPartner], temp);
     SWAP(gMovimientoElegido[battlerAtk], gMovimientoElegido[battlerPartner], temp);
     SWAP(gLockedMoves[battlerAtk], gLockedMoves[battlerPartner], temp);

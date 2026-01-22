@@ -16335,7 +16335,6 @@ PopulationBombContinue:
 
 gBattleAnimMove_OrderUp::
 gBattleAnimMove_GlaiveRush::
-gBattleAnimMove_SaltCure::
 gBattleAnimMove_TripleDive::
 gBattleAnimMove_Doodle::
 gBattleAnimMove_Ruination::
@@ -26680,9 +26679,6 @@ gBattleAnimGeneral_GulpMissile:: @ Tackle anim (placeholder)
 	clearmonbg ANIM_ATTACKER
 	blendoff
 	end
-
-gBattleAnimGeneral_SaltCureDamage::
-	goto gBattleAnimStatus_Freeze
 
 SnatchMoveTrySwapFromSubstitute:
 	createvisualtask AnimTask_IsAttackerBehindSubstitute, 2
