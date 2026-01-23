@@ -1345,29 +1345,6 @@ const struct SpriteTemplate gCraftyShieldPinkConversionTemplate =
     .callback = AnimConversion
 };
 
-//electrify
-const struct SpriteTemplate gElectrifyRingTemplate =
-{
-    .tileTag = ANIM_TAG_GUARD_RING,
-    .paletteTag = ANIM_TAG_SPARK_2,
-    .oam = &gOamData_AffineDouble_ObjBlend_64x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gGuardRingAffineAnimTable,
-    .callback = SpriteCB_SurroundingRing
-};
-
-const struct SpriteTemplate gElectrifyYellowRingTemplate =
-{
-    .tileTag = ANIM_TAG_THIN_RING,
-    .paletteTag = ANIM_TAG_SMALL_EMBER,
-    .oam = &gOamData_AffineDouble_ObjBlend_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gThinRingExpandingAffineAnimTable,
-    .callback = AnimUproarRing
-};
-
 //fairy wind
 const struct SpriteTemplate gFairyWindCloudTemplate =
 {

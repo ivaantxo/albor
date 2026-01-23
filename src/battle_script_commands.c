@@ -1589,7 +1589,6 @@ s32 CalcCritChanceStageArgs(u32 battlerAtk, u32 battlerDef, u32 move, bool32 rec
     else
     {
         critChance  = 2 * ((gBattleMons[battlerAtk].status2 & STATUS2_FOCUS_ENERGY) != 0)
-                    + 1 * ((gBattleMons[battlerAtk].status2 & STATUS2_DRAGON_CHEER) != 0)
                     + gMovesInfo[move].criticalHitStage
                     + (holdEffectAtk == HOLD_EFFECT_SCOPE_LENS)
                     + 2 * (abilityAtk == ABILITY_SUPER_LUCK)
@@ -5497,7 +5496,6 @@ static void Cmd_moveend(void)
             gBattleStruct->targetsDone[gBattlerAttacker] = 0;
             gProtectStructs[gBattlerAttacker].targetAffected = FALSE;
             gBattleStruct->ateBoost[gBattlerAttacker] = FALSE;
-            gStatuses3[gBattlerAttacker] &= ~STATUS3_ME_FIRST;
             gSpecialStatuses[gBattlerAttacker].gemBoost = FALSE;
             gSpecialStatuses[gBattlerAttacker].damagedMons = 0;
             gSpecialStatuses[gBattlerAttacker].preventLifeOrbDamage = 0;
@@ -8091,23 +8089,6 @@ static void Cmd_various(void)
         }
         break;
     }
-    case VARIOUS_TRY_ME_FIRST:
-    {
-        VARIOUS_ARGS(const u8 *failInstr);
-        u16 move = gBattleMons[gBattlerTarget].moves[gBattleStruct->chosenMovePositions[gBattlerTarget]];
-        if (ES_MOVIMIENTO_ESTADO(move) || gMovesInfo[move].meFirstBanned
-            || GetBattlerTurnOrderNum(gBattlerAttacker) > GetBattlerTurnOrderNum(gBattlerTarget))
-            gBattlescriptCurrInstr = cmd->failInstr;
-        else
-        {
-            gCalledMove = move;
-            gHitMarker &= ~HITMARKER_ATTACKSTRING_PRINTED;
-            gBattlerTarget = GetMoveTarget(gCalledMove, NO_TARGET_OVERRIDE);
-            gStatuses3[gBattlerAttacker] |= STATUS3_ME_FIRST;
-            gBattlescriptCurrInstr = cmd->nextInstr;
-        }
-        return;
-    }
     case VARIOUS_JUMP_IF_BATTLE_END:
     {
         VARIOUS_ARGS(const u8 *jumpInstr);
@@ -8115,20 +8096,6 @@ static void Cmd_various(void)
             gBattlescriptCurrInstr = cmd->jumpInstr;
         else
             gBattlescriptCurrInstr = cmd->nextInstr;
-        return;
-    }
-    case VARIOUS_TRY_ELECTRIFY:
-    {
-        VARIOUS_ARGS(const u8 *failInstr);
-        if (GetBattlerTurnOrderNum(gBattlerAttacker) > GetBattlerTurnOrderNum(gBattlerTarget))
-        {
-            gBattlescriptCurrInstr = cmd->failInstr;
-        }
-        else
-        {
-            gStatuses4[gBattlerTarget] |= STATUS4_ELECTRIFIED;
-            gBattlescriptCurrInstr = cmd->nextInstr;
-        }
         return;
     }
     case VARIOUS_HANDLE_FORM_CHANGE:
@@ -10232,16 +10199,10 @@ static void Cmd_setfocusenergy(void)
     CMD_ARGS(u8 battler);
     u8 battler = GetBattlerForBattleScript(cmd->battler);
 
-    if ((gMovesInfo[gCurrentMove].effect == EFFECT_DRAGON_CHEER && (!(EsContraEntrenador()) || (gAbsentBattlerFlags & (1u << battler))))
-         || gBattleMons[battler].status2 & STATUS2_FOCUS_ENERGY_ANY)
+    if ((gAbsentBattlerFlags & (1u << battler)) || gBattleMons[battler].status2 & STATUS2_FOCUS_ENERGY)
     {
         gMoveResultFlags |= MOVE_RESULT_FAILED;
         gMensajeBatalla = B_MSG_FOCUS_ENERGY_FAILED;
-    }
-    else if (gMovesInfo[gCurrentMove].effect == EFFECT_DRAGON_CHEER && !ES_TIPO(battler, TIPO_DRAGON))
-    {
-        gBattleMons[battler].status2 |= STATUS2_DRAGON_CHEER;
-        gMensajeBatalla = B_MSG_GETTING_PUMPED;
     }
     else
     {
@@ -13301,13 +13262,6 @@ void BS_TrySetOctolock(void)
         gDisableStructs[battler].battlerPreventingEscape = gBattlerAttacker;
         gBattlescriptCurrInstr = cmd->nextInstr;
     }
-}
-
-void BS_SetGlaiveRush(void)
-{
-    NATIVE_ARGS();
-    gStatuses4[gBattlerAttacker] |= STATUS4_GLAIVE_RUSH;
-    gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
 void BS_TryRelicSong(void)

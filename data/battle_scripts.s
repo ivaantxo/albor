@@ -116,12 +116,6 @@ BattleScript_FilletAwayEnd::
 BattleScript_EffectDoodle::
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectGlaiveRush::
-	call BattleScript_EffectHit_Ret
-	jumpifhalfword COMPARACION_BITS_COMUNES, gMoveResultFlags, MOVE_RESULT_DOESNT_AFFECT_FOE, BattleScript_TryFaintMon
-	setglaiverush
-	goto BattleScript_TryFaintMon
-
 BattleScript_EffectChillyReception::
 	printstring STRINGID_PKMNTELLCHILLINGRECEPTIONJOKE
 	waitmessage B_WAIT_TIME_LONG
@@ -1358,18 +1352,6 @@ BattleScript_EffectReflectType::
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectElectrify::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	tryelectrify BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	printstring STRINGID_TARGETELECTRIFIED
-	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectShiftGear::
 	attackcanceler
 	attackstring
@@ -1496,16 +1478,6 @@ BattleScript_VictoryDanceTrySpeed::
 	waitmessage B_WAIT_TIME_LONG
 BattleScript_VictoryDanceEnd::
 	goto BattleScript_MoveEnd
-
-BattleScript_EffectMeFirst::
-	attackcanceler
-	attackstring
-	trymefirst BattleScript_FailedFromPpReduce
-	attackanimation
-	waitanimation
-	setbyte sB_ANIM_TURN, 0
-	setbyte sB_ANIM_TARGETS_HIT, 0
-	jumptocalledmove TRUE
 
 BattleScript_EffectAttackSpAttackUp::
 	attackcanceler
@@ -2658,7 +2630,7 @@ BattleScript_EffectFocusEnergy::
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifstatus2 BS_ATTACKER, STATUS2_FOCUS_ENERGY_ANY, BattleScript_ButItFailed
+	jumpifstatus2 BS_ATTACKER, STATUS2_FOCUS_ENERGY, BattleScript_ButItFailed
 	setfocusenergy BS_TARGET
 	attackanimation
 	waitanimation
@@ -7741,7 +7713,7 @@ Script_Amoladoras::
 	attackstring
 	ppreduce
 	jumpifstat BS_ATTACKER, COMPARACION_IGUAL, ESTADISTICA_ATAQUE, ESTADISTICA_MAS_6, BattleScript_CantRaiseMultipleStats
-	jumpifstatus2 BS_ATTACKER, STATUS2_FOCUS_ENERGY_ANY, Script_AmoladorasAtaque
+	jumpifstatus2 BS_ATTACKER, STATUS2_FOCUS_ENERGY, Script_AmoladorasAtaque
 	setfocusenergy BS_TARGET
 Script_AmoladorasAtaque::
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_StatUpEnd

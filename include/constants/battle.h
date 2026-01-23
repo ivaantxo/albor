@@ -78,7 +78,6 @@ enum ResultadosCombate
     B_OUTCOME_PLAYER_TELEPORTED,
     B_OUTCOME_MON_FLED,
     B_OUTCOME_CAUGHT,
-    B_OUTCOME_NO_SAFARI_BALLS,
     B_OUTCOME_FORFEITED,
     B_OUTCOME_MON_TELEPORTED,
 };
@@ -127,9 +126,7 @@ enum ResultadosCombate
 #define STATUS2_NIGHTMARE             (1 << 27)
 #define STATUS2_CURSED                (1 << 28)
 #define STATUS2_FORESIGHT             (1 << 29)
-#define STATUS2_DRAGON_CHEER          (1 << 30)
 #define STATUS2_FOCUS_ENERGY          (1 << 31)
-#define STATUS2_FOCUS_ENERGY_ANY      (STATUS2_DRAGON_CHEER | STATUS2_FOCUS_ENERGY)
 
 #define STATUS3_LEECHSEED_BATTLER       (1 << 0 | 1 << 1) // The battler to receive HP from Leech Seed
 #define STATUS3_LEECHSEED               (1 << 2)
@@ -148,10 +145,8 @@ enum ResultadosCombate
 #define STATUS3_GASTRO_ACID             (1 << 16)
 #define STATUS3_EMBARGO                 (1 << 17)
 #define STATUS3_UNDERWATER              (1 << 18)
-#define STATUS3_INTIMIDATE_POKES        (1 << 19)
 #define STATUS3_TRACE                   (1 << 20)
 #define STATUS3_SMACKED_DOWN            (1 << 21)
-#define STATUS3_ME_FIRST                (1 << 22)
 #define STATUS3_TELEKINESIS             (1 << 23)
 #define STATUS3_PHANTOM_FORCE           (1 << 24)
 #define STATUS3_MIRACLE_EYED            (1 << 25)
@@ -163,10 +158,8 @@ enum ResultadosCombate
 #define STATUS3_SKY_DROPPED             (1 << 31) // Target of Sky Drop
 #define STATUS3_SEMI_INVULNERABLE       (STATUS3_UNDERGROUND | STATUS3_ON_AIR | STATUS3_UNDERWATER | STATUS3_PHANTOM_FORCE) // Exception for Transform / Imposter
 
-#define STATUS4_ELECTRIFIED             (1 << 0)    
 #define STATUS4_MUD_SPORT               (1 << 1)    // Only used if B_SPORT_TURNS < GEN_6
 #define STATUS4_WATER_SPORT             (1 << 2)    // Only used if B_SPORT_TURNS < GEN_6
-#define STATUS4_GLAIVE_RUSH             (1 << 5)
 
 #define HITMARKER_IGNORE_BIDE           (1 << 5)
 #define HITMARKER_DESTINYBOND           (1 << 6)

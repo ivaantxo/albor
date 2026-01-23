@@ -1520,7 +1520,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
-        .meFirstBanned = TRUE,
         .copycatBanned = TRUE,
         .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Counter,
@@ -3478,7 +3477,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .meFirstBanned = TRUE,
         .mimicBanned = TRUE,
         .sleepTalkBanned = TRUE,
         .copycatBanned = TRUE,
@@ -3551,7 +3549,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
-        .meFirstBanned = TRUE,
         .copycatBanned = TRUE,
         .assistBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
@@ -5073,7 +5070,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = -5,
         .category = CATEGORIA_ESPECIAL,
         .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS >= GEN_4,
-        .meFirstBanned = TRUE,
         .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_MirrorCoat,
     },
@@ -5505,7 +5501,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .mirrorMoveBanned = TRUE,
         .punchingMove = TRUE,
-        .meFirstBanned = TRUE,
         .sleepTalkBanned = TRUE,
         .copycatBanned = TRUE,
         .instructBanned = TRUE,
@@ -7096,7 +7091,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = B_UPDATED_MOVE_DATA >= GEN_4,
-        .meFirstBanned = TRUE,
         .copycatBanned = TRUE,
         .assistBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
@@ -7584,7 +7578,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_DEPENDS,
         .priority = 0,
         .category = CATEGORIA_FISICA,
-        .meFirstBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_MetalBurst,
     },
 
@@ -7803,32 +7796,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_LuckyChant,
-    },
-
-    [MOVE_ME_FIRST] =
-    {
-        .name = COMPOUND_STRING("Yo primero"),
-        .description = COMPOUND_STRING(
-            "Executes the foe's attack\n"
-            "with greater power."),
-        .effect = EFFECT_ME_FIRST,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 0,
-        .pp = 20,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresSubstitute = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .meFirstBanned = TRUE,
-        .copycatBanned = TRUE,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .encoreBanned = TRUE,
-        .assistBanned = TRUE,
-        .mimicBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_MeFirst,
     },
 
     [MOVE_COPYCAT] =
@@ -11269,7 +11236,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .mirrorMoveBanned = TRUE,
-        .meFirstBanned = TRUE,
         .mimicBanned = TRUE,
         .copycatBanned = TRUE,
         .sleepTalkBanned = TRUE,
@@ -11589,23 +11555,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_FlowerShield,
-    },
-
-    [MOVE_ELECTRIFY] =
-    {
-        .name = COMPOUND_STRING("Electrify"),
-        .description = COMPOUND_STRING(
-            "Electrifies the foe, making\n"
-            "its next move Electric-type."),
-        .effect = EFFECT_ELECTRIFY,
-        .power = 0,
-        .type = TIPO_ELECTRICO,
-        .accuracy = 0,
-        .pp = 20,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .battleAnimScript = gBattleAnimMove_Electrify,
     },
 
     [MOVE_PLAY_ROUGH] =
@@ -15422,24 +15371,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_IceSpinner,
     },
 
-    [MOVE_GLAIVE_RUSH] =
-    {
-        .name = COMPOUND_STRING("Glaive Rush"),
-        .description = COMPOUND_STRING(
-            "Foe attacks next turn can't\n"
-            "miss and do double damage."),
-        .effect = EFFECT_GLAIVE_RUSH,
-        .power = 120,
-        .type = TIPO_DRAGON,
-        .accuracy = 100,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_GlaiveRush,
-    },
-
     [MOVE_TRIPLE_DIVE] =
     {
         .name = COMPOUND_STRING("Triple Dive"),
@@ -15947,7 +15878,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .meFirstBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Comeuppance,
     },
 
@@ -15983,7 +15913,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .mirrorMoveBanned = TRUE,
-        .meFirstBanned = TRUE,
         .mimicBanned = TRUE,
         .copycatBanned = TRUE,
         .sleepTalkBanned = TRUE,
@@ -16011,7 +15940,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .mirrorMoveBanned = TRUE,
-        .meFirstBanned = TRUE,
         .mimicBanned = TRUE,
         .copycatBanned = TRUE,
         .sleepTalkBanned = TRUE,
@@ -16039,7 +15967,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .mirrorMoveBanned = TRUE,
-        .meFirstBanned = TRUE,
         .mimicBanned = TRUE,
         .copycatBanned = TRUE,
         .sleepTalkBanned = TRUE,
@@ -16067,7 +15994,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .mirrorMoveBanned = TRUE,
-        .meFirstBanned = TRUE,
         .mimicBanned = TRUE,
         .copycatBanned = TRUE,
         .sleepTalkBanned = TRUE,
@@ -16095,7 +16021,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .mirrorMoveBanned = TRUE,
-        .meFirstBanned = TRUE,
         .mimicBanned = TRUE,
         .copycatBanned = TRUE,
         .sleepTalkBanned = TRUE,
@@ -16282,8 +16207,8 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .name = COMPOUND_STRING("Dragon Cheer"),
         .description = COMPOUND_STRING(
             "Increases allies' critical hit\n"
-            "ratio, especially if Dragons."),
-        .effect = EFFECT_DRAGON_CHEER,
+            "ratio."),
+        .effect = EFFECT_FOCUS_ENERGY,
         .power = 0,
         .type = TIPO_DRAGON,
         .accuracy = 0,

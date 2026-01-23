@@ -873,7 +873,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         case EFFECT_AMOLADORAS:
             if (!BattlerStatCanRise(battlerAtk, aiData->abilities[battlerAtk], ESTADISTICA_ATAQUE) || !HasMoveWithCategory(battlerAtk, CATEGORIA_FISICA))
                 ADJUST_SCORE(-10);
-            if (gBattleMons[battlerAtk].status2 & STATUS2_FOCUS_ENERGY_ANY)
+            if (gBattleMons[battlerAtk].status2 & STATUS2_FOCUS_ENERGY)
                 ADJUST_SCORE(-10);
             break;
         case EFFECT_STUFF_CHEEKS:
@@ -1236,7 +1236,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                 ADJUST_SCORE(-10);
             break;
         case EFFECT_FOCUS_ENERGY:
-            if (gBattleMons[battlerAtk].status2 & STATUS2_FOCUS_ENERGY_ANY)
+            if (gBattleMons[battlerAtk].status2 & STATUS2_FOCUS_ENERGY)
                 ADJUST_SCORE(-10);
             break;
         case EFFECT_CONFUSE:
@@ -2025,19 +2025,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                 break;
             }
             break;
-        case EFFECT_ME_FIRST:
-            if (predictedMove != MOVE_NONE)
-            {
-                if (AI_IsSlower(battlerAtk, battlerDef, move))
-                    ADJUST_SCORE(-10);    // Target is predicted to go first, Me First will fail
-                else
-                    return AI_CheckBadMove(battlerAtk, battlerDef, predictedMove, score);
-            }
-            else
-            {
-                ADJUST_SCORE(-10); //Target is predicted to switch most likely
-            }
-            break;
         case EFFECT_TRICK_ROOM:
             if (PartnerMoveIs(ALIADO(battlerAtk), aiData->partnerMove, MOVE_TRICK_ROOM))
             {
@@ -2126,12 +2113,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                 else if (gBattleMons[battlerDef].hp > gBattleMons[battlerDef].maxHP / 2)
                     ADJUST_SCORE(-5);
             }
-            break;
-        case EFFECT_ELECTRIFY:
-            if (AI_IsSlower(battlerAtk, battlerDef, move)
-              //|| GetMoveTypeSpecial(battlerDef, predictedMove) == TIPO_ELECTRICO // Move will already be electric type
-              || PartnerMoveIsSameAsAttacker(ALIADO(battlerAtk), battlerDef, move, aiData->partnerMove))
-                ADJUST_SCORE(-10);
             break;
         case EFFECT_TOPSY_TURVY:
             if (!IS_TARGETING_PARTNER(battlerAtk, battlerDef))
@@ -2399,15 +2380,6 @@ static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         {
             RETURN_SCORE_PLUS(DECENT_EFFECT);   // partner has earthquake or magnitude -> good idea to use magnet rise
         }
-        break;
-    case EFFECT_DRAGON_CHEER:
-        if (gBattleMons[battlerAtkPartner].status2 & STATUS2_FOCUS_ENERGY_ANY || !HasDamagingMove(battlerAtkPartner))
-            ADJUST_SCORE(-5);
-        else if (atkPartnerHoldEffect == HOLD_EFFECT_SCOPE_LENS
-              || ES_TIPO(battlerAtkPartner, TIPO_DRAGON)
-              || gMovesInfo[aiData->partnerMove].criticalHitStage > 0
-              || HasMoveWithCriticalHitChance(battlerAtkPartner))
-            ADJUST_SCORE(GOOD_EFFECT);
         break;
     } // our effect relative to partner
 
@@ -3910,15 +3882,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
             ADJUST_SCORE(DECENT_EFFECT);
         break;
     case EFFECT_THIRD_TYPE:
-        break;
-    case EFFECT_ELECTRIFY:
-        if (predictedMove != MOVE_NONE
-         && (aiData->abilities[battlerAtk] == ABILITY_VOLT_ABSORB
-          || aiData->abilities[battlerAtk] == ABILITY_MOTOR_DRIVE
-          || (B_REDIRECT_ABILITY_IMMUNITY >= GEN_5 && aiData->abilities[battlerAtk] == ABILITY_LIGHTNING_ROD)))
-        {
-            ADJUST_SCORE(DECENT_EFFECT);
-        }
         break;
     case EFFECT_TOPSY_TURVY:
         if (CountPositiveStatStages(battlerDef) > CountNegativeStatStages(battlerDef))

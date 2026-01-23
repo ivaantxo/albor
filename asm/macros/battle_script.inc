@@ -1330,10 +1330,6 @@
 	.4byte \failInstr
 	.endm
 
-	.macro setglaiverush
-	callnative BS_SetGlaiveRush
-	.endm
-
 	.macro tryrelicsong
 	callnative BS_TryRelicSong
 	.endm
@@ -1617,19 +1613,9 @@
 	various \battler, VARIOUS_INVERT_STAT_STAGES
 	.endm
 
-	.macro trymefirst failInstr:req
-	various BS_ATTACKER, VARIOUS_TRY_ME_FIRST
-	.4byte \failInstr
-	.endm
-
 	.macro jumpifbattleend jumpInstr:req
 	various BS_ATTACKER, VARIOUS_JUMP_IF_BATTLE_END
 	.4byte \jumpInstr
-	.endm
-
-	.macro tryelectrify failInstr:req
-	various BS_ATTACKER, VARIOUS_TRY_ELECTRIFY
-	.4byte \failInstr
 	.endm
 
 	.macro handleformchange battler:req, case:req

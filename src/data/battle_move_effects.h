@@ -1156,11 +1156,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectHit,
     },
 
-    [EFFECT_ME_FIRST] =
-    {
-        .battleScript = BattleScript_EffectMeFirst,
-    },
-
     [EFFECT_QUIVER_DANCE] =
     {
         .battleScript = BattleScript_EffectQuiverDance,
@@ -1170,11 +1165,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     {
         .battleScript = BattleScript_EffectCoil,
         .encourageEncore = TRUE,
-    },
-
-    [EFFECT_ELECTRIFY] =
-    {
-        .battleScript = BattleScript_EffectElectrify,
     },
 
     [EFFECT_REFLECT_TYPE] =
@@ -1618,11 +1608,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectChillyReception,
     },
 
-    [EFFECT_GLAIVE_RUSH] =
-    {
-        .battleScript = BattleScript_EffectGlaiveRush,
-    },
-
     [EFFECT_RAGING_BULL] =
     {
         .battleScript = BattleScript_EffectBrickBreak,
@@ -1662,12 +1647,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_UPPER_HAND] =
     {
         .battleScript = BattleScript_EffectUpperHand,
-        .encourageEncore = TRUE,
-    },
-
-    [EFFECT_DRAGON_CHEER] =
-    {
-        .battleScript = BattleScript_EffectFocusEnergy,
         .encourageEncore = TRUE,
     },
 

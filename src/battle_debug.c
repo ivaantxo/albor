@@ -151,7 +151,6 @@ enum
     LIST_STATUS2_ESCAPE_PREVENTION,
     LIST_STATUS2_CURSED,
     LIST_STATUS2_FORESIGHT,
-    LIST_STATUS2_DRAGON_CHEER,
     LIST_STATUS2_FOCUS_ENERGY
 };
 
@@ -184,10 +183,8 @@ enum
 
 enum
 {
-    LIST_STATUS4_ELECTRIFIED,
     LIST_STATUS4_MUD_SPORT,
     LIST_STATUS4_WATER_SPORT,
-    LIST_STATUS4_GLAIVE_RUSH,
 };
 
 enum
@@ -324,10 +321,8 @@ static const u8 sText_HealBlock[] = _("Heal Block");
 static const u8 sText_AquaRing[] = _("Aqua Ring");
 static const u8 sText_LaserFocus[] = _("Laser Focus");
 static const u8 sText_PowerTrick[] = _("Power Trick");
-static const u8 sText_Electrified[] = _("Electrified");
 static const u8 sText_MudSport[] = _("Mud Sport");
 static const u8 sText_WaterSport[] = _("Water Sport");
-static const u8 sText_GlaiveRush[] = _("Glaive Rush");
 static const u8 sText_Reflect[] = _("Reflect");
 static const u8 sText_LightScreen[] = _("Light Screen");
 static const u8 sText_StickyWeb[] = _("Sticky Web");
@@ -421,11 +416,8 @@ static const struct BitfieldInfo sStatus3Bitfield[] =
 
 static const struct BitfieldInfo sStatus4Bitfield[] =
 {
-    {/*Electrified*/ 1, 0},
     {/*Mud Sport*/ 1, 1},
     {/*Water Sport*/ 1, 2},
-    {/*Salt Cure*/ 1, 4},
-    {/*Glaive Rush*/ 1, 6},
 };
 
 static const struct BitfieldInfo sAIBitfield[] =
@@ -510,7 +502,6 @@ static const struct ListMenuItem sStatus2ListItems[] =
     {sText_EscapePrevention, LIST_STATUS2_ESCAPE_PREVENTION},
     {sText_Cursed, LIST_STATUS2_CURSED},
     {sText_Foresight, LIST_STATUS2_FORESIGHT},
-    {sText_DragonCheer, LIST_STATUS2_DRAGON_CHEER},
     {sText_FocusEnergy, LIST_STATUS2_FOCUS_ENERGY},
 };
 
@@ -543,10 +534,8 @@ static const struct ListMenuItem sStatus3ListItems[] =
 
 static const struct ListMenuItem sStatus4ListItems[] =
 {
-    {sText_Electrified, LIST_STATUS4_ELECTRIFIED},
     {sText_MudSport, LIST_STATUS4_MUD_SPORT},
     {sText_WaterSport, LIST_STATUS4_WATER_SPORT},
-    {sText_GlaiveRush, LIST_STATUS4_GLAIVE_RUSH},
 };
 
 static const struct ListMenuItem sSideStatusListItems[] =

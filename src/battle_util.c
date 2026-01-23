@@ -956,7 +956,7 @@ u32 TrySetCantSelectMoveBattleScript(u32 battler)
     }
 
     else if ((holdEffect == HOLD_EFFECT_ASSAULT_VEST || holdEffect == HOLD_EFFECT_CHALECO_TACTICO) 
-            && ES_MOVIMIENTO_ESTADO(move) && gMovesInfo[move].effect != EFFECT_ME_FIRST)
+            && ES_MOVIMIENTO_ESTADO(move))
     {
         gCurrentMove = move;
         gLastUsedItem = gBattleMons[battler].item;
@@ -1020,10 +1020,10 @@ u8 CheckMoveLimitations(u32 battler, u8 unusableMoves, u16 check)
         else if (check & MOVE_LIMITATION_CHOICE_ITEM && HOLD_EFFECT_CHOICE(holdEffect) && *choicedMove != MOVE_NONE && *choicedMove != move)
             unusableMoves |= 1u << i;
         // Assault Vest
-        else if (check & MOVE_LIMITATION_ASSAULT_VEST && holdEffect == HOLD_EFFECT_ASSAULT_VEST && ES_MOVIMIENTO_ESTADO(move) && gMovesInfo[move].effect != EFFECT_ME_FIRST)
+        else if (check & MOVE_LIMITATION_ASSAULT_VEST && holdEffect == HOLD_EFFECT_ASSAULT_VEST && ES_MOVIMIENTO_ESTADO(move))
             unusableMoves |= 1u << i;
         // Chaleco Táctico
-        else if (check & MOVE_LIMITATION_ASSAULT_VEST && holdEffect == HOLD_EFFECT_CHALECO_TACTICO && ES_MOVIMIENTO_ESTADO(move) && gMovesInfo[move].effect != EFFECT_ME_FIRST)
+        else if (check & MOVE_LIMITATION_ASSAULT_VEST && holdEffect == HOLD_EFFECT_CHALECO_TACTICO && ES_MOVIMIENTO_ESTADO(move))
             unusableMoves |= 1u << i;
         // Gravity
         else if (check & MOVE_LIMITATION_GRAVITY && IsGravityPreventingMove(move))
@@ -1599,7 +1599,6 @@ enum
     ENDTURN_ITEMS2,
     ENDTURN_ORBS,
     ENDTURN_ROOST,
-    ENDTURN_ELECTRIFY,
     ENDTURN_POWDER,
     ENDTURN_THROAT_CHOP,
     ENDTURN_CUD_CHEW,
@@ -2151,10 +2150,6 @@ u8 DoBattlerEndTurnEffects(void)
                 gBattleResources->flags->flags[battler] &= ~RESOURCE_FLAG_ROOST;
             gBattleStruct->turnEffectsTracker++;
             break;
-        case ENDTURN_ELECTRIFY:
-            gStatuses4[battler] &= ~STATUS4_ELECTRIFIED;
-            gBattleStruct->turnEffectsTracker++;
-            break;
         case ENDTURN_POWDER:
             gBattleMons[battler].status2 &= ~STATUS2_POWDER;
             gBattleStruct->turnEffectsTracker++;
@@ -2413,7 +2408,6 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
         case CANCELLER_FLAGS: // flags clear
             gBattleMons[gBattlerAttacker].status2 &= ~STATUS2_DESTINY_BOND;
             gStatuses3[gBattlerAttacker] &= ~STATUS3_GRUDGE;
-            gStatuses4[gBattlerAttacker] &= ~STATUS4_GLAIVE_RUSH;
             gBattleStruct->atkCancellerTracker++;
             break;
         case CANCELLER_SKY_DROP:
@@ -5628,7 +5622,7 @@ static u8 ItemEffectMoveEnd(u32 battler, u16 holdEffect)
         break;
     case HOLD_EFFECT_CRITICAL_UP: // lansat berry
         if (B_BERRIES_INSTANT >= GEN_4
-            && !(gBattleMons[battler].status2 & STATUS2_FOCUS_ENERGY_ANY)
+            && !(gBattleMons[battler].status2 & STATUS2_FOCUS_ENERGY)
             && HasEnoughHpToEatBerry(battler, GetBattlerItemHoldEffectParam(battler, gLastUsedItem), gLastUsedItem))
         {
             gBattleMons[battler].status2 |= STATUS2_FOCUS_ENERGY;
@@ -5729,7 +5723,7 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
                 break;
             case HOLD_EFFECT_CRITICAL_UP:
                 if (B_BERRIES_INSTANT >= GEN_4
-                    && !(gBattleMons[battler].status2 & STATUS2_FOCUS_ENERGY_ANY)
+                    && !(gBattleMons[battler].status2 & STATUS2_FOCUS_ENERGY)
                     && HasEnoughHpToEatBerry(battler, GetBattlerItemHoldEffectParam(battler, gLastUsedItem), gLastUsedItem))
                 {
                     gBattleMons[battler].status2 |= STATUS2_FOCUS_ENERGY;
@@ -5999,7 +5993,7 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
                     effect = StatRaiseBerry(battler, gLastUsedItem, ESTADISTICA_DEFENSA_ESPECIAL, TRUE);
                 break;
             case HOLD_EFFECT_CRITICAL_UP:
-                if (!moveTurn && !(gBattleMons[battler].status2 & STATUS2_FOCUS_ENERGY_ANY)
+                if (!moveTurn && !(gBattleMons[battler].status2 & STATUS2_FOCUS_ENERGY)
                     && HasEnoughHpToEatBerry(battler, GetBattlerItemHoldEffectParam(battler, gLastUsedItem), gLastUsedItem))
                 {
                     gBattleMons[battler].status2 |= STATUS2_FOCUS_ENERGY;
@@ -6490,7 +6484,6 @@ void ClearVariousBattlerFlags(u32 battler)
     gDisableStructs[battler].furyCutterCounter = 0;
     gBattleMons[battler].status2 &= ~STATUS2_DESTINY_BOND;
     gStatuses3[battler] &= ~STATUS3_GRUDGE;
-    gStatuses4[battler] &= ~ STATUS4_GLAIVE_RUSH;
 }
 
 void HandleAction_RunBattleScript(void) // identical to RunBattleScriptCommands
@@ -7083,8 +7076,6 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
         modifier = uq4_12_multiply(modifier, UQ_4_12(1.0) + sPercentToModifier[gSpecialStatuses[battlerAtk].gemParam]);
     if (gStatuses3[battlerAtk] & STATUS3_CHARGED_UP && moveType == TIPO_ELECTRICO)
         modifier = uq4_12_multiply(modifier, UQ_4_12(2.0));
-    if (gStatuses3[battlerAtk] & STATUS3_ME_FIRST)
-        modifier = uq4_12_multiply(modifier, UQ_4_12(1.5));
     if (moveType == TIPO_ELECTRICO && ((gFieldStatuses & STATUS_FIELD_MUDSPORT)
     || AbilityBattleEffects(ABILITYEFFECT_FIELD_SPORT, 0, 0, ABILITYEFFECT_MUD_SPORT, 0)))
         modifier = uq4_12_multiply(modifier, UQ_4_12(B_SPORT_DMG_REDUCTION >= GEN_5 ? 0.33 : 0.5));
@@ -7838,13 +7829,6 @@ static inline uq4_12_t GetCriticalModifier(bool32 isCrit)
     return UQ_4_12(1.0);
 }
 
-static inline uq4_12_t GetGlaiveRushModifier(u32 battlerDef)
-{
-    if (gStatuses4[battlerDef] & STATUS4_GLAIVE_RUSH)
-        return UQ_4_12(2.0);
-    return UQ_4_12(1.0);
-}
-
 static inline uq4_12_t GetMinimizeModifier(u32 move, u32 battlerDef)
 {
     if (gMovesInfo[move].minimizeDoubleDamage && gStatuses3[battlerDef] & STATUS3_MINIMIZED)
@@ -8059,8 +8043,6 @@ static inline s32 DoMoveDamageCalcVars(struct DamageCalculationData *damageCalcD
     DAMAGE_APPLY_MODIFIER(GetParentalBondModifier(battlerAtk));
     DAMAGE_APPLY_MODIFIER(GetWeatherDamageModifier(damageCalcData, holdEffectAtk, holdEffectDef, weather));
     DAMAGE_APPLY_MODIFIER(GetCriticalModifier(damageCalcData->isCrit));
-    DAMAGE_APPLY_MODIFIER(GetGlaiveRushModifier(battlerDef));
-
     DAMAGE_APPLY_MODIFIER(GetSameTypeAttackBonusModifier(damageCalcData, abilityAtk));
     DAMAGE_APPLY_MODIFIER(typeEffectivenessModifier);
     DAMAGE_APPLY_MODIFIER(ModificadorQuemaduraCongelacion(damageCalcData, abilityAtk));
