@@ -1691,22 +1691,6 @@ u8 UpdateEruptAnimTask(struct Task *task)
     return task->data[8];
 }
 
-void AnimTask_GetFrustrationPowerLevel(u8 taskId)
-{
-    u16 powerLevel;
-
-    if (gAnimFriendship <= 30)
-        powerLevel = 0;
-    else if (gAnimFriendship <= 100)
-        powerLevel = 1;
-    else if (gAnimFriendship <= 200)
-        powerLevel = 2;
-    else
-        powerLevel = 3;
-    gBattleAnimArgs[ARG_RET_ID] = powerLevel;
-    DestroyAnimVisualTask(taskId);
-}
-
 void InitPrioritiesForVisibleBattlers(void)
 {
     u32 i;

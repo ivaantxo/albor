@@ -463,7 +463,6 @@ static void Cmd_stockpiletohpheal(void);
 static void Cmd_setdrainedhp(void);
 static void Cmd_statbuffchange(void);
 static void Cmd_normalisebuffs(void);
-static void Cmd_setbide(void);
 static void Cmd_twoturnmoveschargestringandanimation(void);
 static void Cmd_forcerandomswitch(void);
 static void Cmd_tryconversiontypechange(void);
@@ -543,7 +542,6 @@ static void Cmd_trysetsnatch(void);
 static void Cmd_switchoutabilities(void);
 static void Cmd_jumpifhasnohp(void);
 static void Cmd_jumpifnotcurrentmoveargtype(void);
-static void Cmd_settypebasedhalvers(void);
 static void Cmd_jumpifsubstituteblocks(void);
 static void Cmd_tryrecycleitem(void);
 static void Cmd_snatchsetbattlers(void);
@@ -703,7 +701,6 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     BATTLE_CMD(setdrainedhp),
     BATTLE_CMD(statbuffchange),
     BATTLE_CMD(normalisebuffs),
-    BATTLE_CMD(setbide),
     BATTLE_CMD(twoturnmoveschargestringandanimation),
     BATTLE_CMD(forcerandomswitch),
     BATTLE_CMD(tryconversiontypechange),
@@ -783,7 +780,6 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     BATTLE_CMD(switchoutabilities),
     BATTLE_CMD(jumpifhasnohp),
     BATTLE_CMD(jumpifnotcurrentmoveargtype),
-    BATTLE_CMD(settypebasedhalvers),
     BATTLE_CMD(jumpifsubstituteblocks),
     BATTLE_CMD(tryrecycleitem),
     BATTLE_CMD(snatchsetbattlers),
@@ -809,7 +805,7 @@ static const u32 sStatusFlagsForMoveEffects[NUM_MOVE_EFFECTS] =
     [MOVE_EFFECT_SLEEP]          = STATUS1_SLEEP,
     [MOVE_EFFECT_POISON]         = STATUS1_POISON,
     [MOVE_EFFECT_BURN]           = STATUS1_BURN,
-    [MOVE_EFFECT_FREEZE]         = STATUS1_FREEZE,
+    [EFECTO_MOVIMIENTO_CONGELACION]         = STATUS1_CONGELACION,
     [MOVE_EFFECT_PARALYSIS]      = STATUS1_PARALYSIS,
     [MOVE_EFFECT_TOXIC]          = STATUS1_TOXIC_POISON,
     [MOVE_EFFECT_CONFUSION]      = STATUS2_CONFUSION,
@@ -828,7 +824,7 @@ static const u8 *const sMoveEffectBS_Ptrs[] =
     [MOVE_EFFECT_SLEEP]            = BattleScript_MoveEffectSleep,
     [MOVE_EFFECT_POISON]           = BattleScript_MoveEffectPoison,
     [MOVE_EFFECT_BURN]             = BattleScript_MoveEffectBurn,
-    [MOVE_EFFECT_FREEZE]           = ScriptCombate_EfectoMovimientoCongelacion,
+    [EFECTO_MOVIMIENTO_CONGELACION]           = ScriptCombate_EfectoMovimientoCongelacion,
     [MOVE_EFFECT_PARALYSIS]        = BattleScript_MoveEffectParalysis,
     [MOVE_EFFECT_TOXIC]            = BattleScript_MoveEffectToxic,
     [MOVE_EFFECT_CONFUSION]        = BattleScript_MoveEffectConfusion,
@@ -1915,7 +1911,7 @@ static void Cmd_healthbarupdate(void)
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
-// Update the active battler's HP and various HP trackers (Substitute, Bide, etc.)
+// Update the active battler's HP and various HP trackers (Substitute, etc.)
 static void Cmd_datahpupdate(void)
 {
     CMD_ARGS(u8 battler);
@@ -1965,19 +1961,6 @@ static void Cmd_datahpupdate(void)
             }
             else
             {
-                if (gHitMarker & HITMARKER_IGNORE_BIDE)
-                {
-                    gHitMarker &= ~HITMARKER_IGNORE_BIDE;
-                }
-                else
-                {
-                    gBideDmg[battler] += gBattleMoveDamage;
-                    if (cmd->battler == BS_TARGET)
-                        gBideTarget[battler] = gBattlerAttacker;
-                    else
-                        gBideTarget[battler] = gBattlerTarget;
-                }
-
                 // Deal damage to the battler
                 if (gBattleMons[battler].hp > gBattleMoveDamage)
                 {
@@ -2544,7 +2527,7 @@ void SetMoveEffect(bool32 primary, bool32 certain)
 
             statusChanged = TRUE;
             break;
-        case STATUS1_FREEZE:
+        case STATUS1_CONGELACION:
             if (!PuedeSerCongelado(gEffectBattler, GetBattlerAbility(gEffectBattler)))
                 break;
 
@@ -3389,22 +3372,6 @@ static void Cmd_tryfaintmon(void)
                 gBattleMoveDamage = gBattleMons[destinyBondBattler].hp;
                 gBattlescriptCurrInstr = BattleScript_DestinyBondTakesLife;
             }
-            if ((gStatuses3[gBattlerTarget] & STATUS3_GRUDGE)
-             && !(gHitMarker & HITMARKER_GRUDGE)
-             && GetBattlerSide(gBattlerAttacker) != GetBattlerSide(gBattlerTarget)
-             && IsBattlerAlive(gBattlerAttacker)
-             && gCurrentMove != MOVE_STRUGGLE)
-            {
-                u8 moveIndex = *(gBattleStruct->chosenMovePositions + gBattlerAttacker);
-
-                gBattleMons[gBattlerAttacker].pp[moveIndex] = 0;
-                BattleScriptPush(gBattlescriptCurrInstr);
-                gBattlescriptCurrInstr = BattleScript_GrudgeTakesPp;
-                BtlController_EmitSetMonData(gBattlerAttacker, BUFFER_A, moveIndex + REQUEST_PPMOVE1_BATTLE, 0, sizeof(gBattleMons[gBattlerAttacker].pp[moveIndex]), &gBattleMons[gBattlerAttacker].pp[moveIndex]);
-                MarcaCombatienteOcupado(gBattlerAttacker);
-
-                PREPARE_MOVE_BUFFER(gBattleTextBuff1, gBattleMons[gBattlerAttacker].moves[moveIndex])
-            }
         }
         else
         {
@@ -3906,14 +3873,14 @@ static void Cmd_checkteamslost(void)
 
         for (emptyPlayerSpots = 0, i = 0; i < gBattlersCount; i += 2)
         {
-            if ((gHitMarker & HITMARKER_FAINTED2(i)) && (!gSpecialStatuses[i].faintedHasReplacement))
+            if ((gHitMarker & HITMARKER_FAINTED(i)) && (!gSpecialStatuses[i].faintedHasReplacement))
                 emptyPlayerSpots++;
         }
 
         emptyOpponentSpots = 0;
         for (i = 1; i < gBattlersCount; i += 2)
         {
-            if ((gHitMarker & HITMARKER_FAINTED2(i)) && (!gSpecialStatuses[i].faintedHasReplacement))
+            if ((gHitMarker & HITMARKER_FAINTED(i)) && (!gSpecialStatuses[i].faintedHasReplacement))
                 emptyOpponentSpots++;
         }
 
@@ -4929,7 +4896,7 @@ static void Cmd_moveend(void)
                     case STATUS1_BURN:
                         gBattlescriptCurrInstr = BattleScript_TargetBurnHeal;
                         break;
-                    case STATUS1_FREEZE:
+                    case STATUS1_CONGELACION:
                         gBattlescriptCurrInstr = ScriptCombate_SeCuroCongelacion;
                         break;
                     case STATUS1_POISON:
@@ -5207,7 +5174,7 @@ static void Cmd_moveend(void)
                     if (gBattleMons[gBattlerAttacker].hp
                      && gBattleMons[gBattlerTarget].hp
                      && (gChosenMove == MOVE_SLEEP_TALK || (gChosenMove == MOVE_SNORE) || !(gBattleMons[gBattlerAttacker].status1 & STATUS1_SLEEP))
-                     && !(gBattleMons[gBattlerAttacker].status1 & STATUS1_FREEZE))
+                     && !(gBattleMons[gBattlerAttacker].status1 & STATUS1_CONGELACION))
                     {
                         if (gSpecialStatuses[gBattlerAttacker].parentalBondState)
                             gSpecialStatuses[gBattlerAttacker].parentalBondState--;
@@ -8243,7 +8210,7 @@ static void Cmd_various(void)
                 gBattleCommunication[MULTISTRING_CHOOSER] = 3;
             else if ((gBattleMons[gBattlerAttacker].status1 & STATUS1_SLEEP) && CanBeSlept(gBattlerTarget, targetAbility))
                 gBattleCommunication[MULTISTRING_CHOOSER] = 4;
-            else if ((gBattleMons[gBattlerAttacker].status1 & STATUS1_FREEZE) && PuedeSerCongelado(gBattlerTarget, targetAbility))
+            else if ((gBattleMons[gBattlerAttacker].status1 & STATUS1_CONGELACION) && PuedeSerCongelado(gBattlerTarget, targetAbility))
                 gBattleCommunication[MULTISTRING_CHOOSER] = 5;
             else
             {
@@ -8549,7 +8516,6 @@ static void Cmd_various(void)
         // End any multiturn effects caused by the target except STATUS2_LOCK_CONFUSE
         gBattleMons[gBattlerTarget].status2 &= ~(STATUS2_MULTIPLETURNS);
         gBattleMons[gBattlerTarget].status2 &= ~(STATUS2_UPROAR);
-        gBattleMons[gBattlerTarget].status2 &= ~(STATUS2_BIDE);
         gDisableStructs[gBattlerTarget].rolloutTimer = 0;
         gDisableStructs[gBattlerTarget].furyCutterCounter = 0;
 
@@ -9860,18 +9826,6 @@ static void Cmd_normalisebuffs(void)
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
-static void Cmd_setbide(void)
-{
-    CMD_ARGS();
-
-    gBattleMons[gBattlerAttacker].status2 |= STATUS2_MULTIPLETURNS;
-    gLockedMoves[gBattlerAttacker] = gCurrentMove;
-    gBideDmg[gBattlerAttacker] = 0;
-    gBattleMons[gBattlerAttacker].status2 |= STATUS2_BIDE_TURN(2);
-
-    gBattlescriptCurrInstr = cmd->nextInstr;
-}
-
 static void Cmd_twoturnmoveschargestringandanimation(void)
 {
     CMD_ARGS(const u8 *animationThenStringPtr);
@@ -10736,8 +10690,7 @@ static void TrySetDestinyBondToHappen(void)
     u8 sideAttacker = GetBattlerSide(gBattlerAttacker);
     u8 sideTarget = GetBattlerSide(gBattlerTarget);
     if (gBattleMons[gBattlerTarget].status2 & STATUS2_DESTINY_BOND
-        && sideAttacker != sideTarget
-        && !(gHitMarker & HITMARKER_GRUDGE))
+        && sideAttacker != sideTarget)
     {
         gHitMarker |= HITMARKER_DESTINYBOND;
     }
@@ -11226,7 +11179,7 @@ static void Cmd_jumpifnopursuitswitchdmg(void)
 
     if (gAccionElegida[gBattlerTarget] == B_ACTION_USE_MOVE
         && gBattlerAttacker == *(gBattleStruct->moveTarget + gBattlerTarget)
-        && !(gBattleMons[gBattlerTarget].status1 & (STATUS1_SLEEP | STATUS1_FREEZE))
+        && !(gBattleMons[gBattlerTarget].status1 & (STATUS1_SLEEP | STATUS1_CONGELACION))
         && gBattleMons[gBattlerAttacker].hp
         && gMovesInfo[gMovimientoElegido[gBattlerTarget]].effect == EFFECT_PURSUIT)
     {
@@ -11577,7 +11530,7 @@ static void Cmd_cureifburnedparalysedorpoisoned(void)
 {
     CMD_ARGS(const u8 *failInstr);
 
-    if (gBattleMons[gBattlerAttacker].status1 & (STATUS1_POISON | STATUS1_BURN | STATUS1_PARALYSIS | STATUS1_TOXIC_POISON | STATUS1_FREEZE))
+    if (gBattleMons[gBattlerAttacker].status1 & (STATUS1_POISON | STATUS1_BURN | STATUS1_PARALYSIS | STATUS1_TOXIC_POISON | STATUS1_CONGELACION))
     {
         gBattleMons[gBattlerAttacker].status1 = 0;
         gBattlescriptCurrInstr = cmd->nextInstr;
@@ -12190,64 +12143,6 @@ static void Cmd_jumpifnotcurrentmoveargtype(void)
         gBattlescriptCurrInstr = failInstr;
     else
         gBattlescriptCurrInstr = cmd->nextInstr;
-}
-
-// Water and Mud Sport
-static void Cmd_settypebasedhalvers(void)
-{
-    CMD_ARGS(const u8 *failInstr);
-
-    bool8 worked = FALSE;
-
-    if (gMovesInfo[gCurrentMove].effect == EFFECT_MUD_SPORT)
-    {
-        if (B_SPORT_TURNS >= GEN_6)
-        {
-            if (!(gFieldStatuses & STATUS_FIELD_MUDSPORT))
-            {
-                gFieldStatuses |= STATUS_FIELD_MUDSPORT;
-                gFieldTimers.mudSportTimer = 5;
-                gMensajeBatalla = B_MSG_WEAKEN_ELECTRIC;
-                worked = TRUE;
-            }
-        }
-        else
-        {
-            if (!(gStatuses4[gBattlerAttacker] & STATUS4_MUD_SPORT))
-            {
-                gStatuses4[gBattlerAttacker] |= STATUS4_MUD_SPORT;
-                gMensajeBatalla = B_MSG_WEAKEN_ELECTRIC;
-                worked = TRUE;
-            }
-        }
-    }
-    else // Water Sport
-    {
-        if (B_SPORT_TURNS >= GEN_6)
-        {
-            if (!(gFieldStatuses & STATUS_FIELD_WATERSPORT))
-            {
-                gFieldStatuses |= STATUS_FIELD_WATERSPORT;
-                gFieldTimers.waterSportTimer = 5;
-                gMensajeBatalla = B_MSG_WEAKEN_FIRE;
-                worked = TRUE;
-            }
-        }
-        else
-        {
-            if (!(gStatuses4[gBattlerAttacker] & STATUS4_WATER_SPORT))
-            {
-                gStatuses4[gBattlerAttacker] |= STATUS4_WATER_SPORT;
-                gMensajeBatalla = B_MSG_WEAKEN_FIRE;
-                worked = TRUE;
-            }
-        }
-    }
-
-    if (worked)
-        gBattlescriptCurrInstr = cmd->nextInstr;
-    else
-        gBattlescriptCurrInstr = cmd->failInstr;
 }
 
 bool32 DoesSubstituteBlockMove(u32 battlerAtk, u32 battlerDef, u32 move)

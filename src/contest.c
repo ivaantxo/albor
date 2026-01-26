@@ -4452,12 +4452,6 @@ static void SetMoveSpecificAnimData(u8 contestant)
         gContestResources->moveAnim->targetPersonality = gContestMons[targetContestant].personality;
         gContestResources->moveAnim->hasTargetAnim = TRUE;
         break;
-    case MOVE_RETURN:
-        gAnimFriendship = MAX_FRIENDSHIP;
-        break;
-    case MOVE_FRUSTRATION:
-        gAnimFriendship = 0;
-        break;
     case MOVE_SOLAR_BEAM:
     case MOVE_RAZOR_WIND:
     case MOVE_SKULL_BASH:

@@ -221,9 +221,7 @@ extern const union AnimCmd *const gAnims_SpinningSparkle[];
 
 // battle_anim_ground.c
 void AnimTask_HorizontalShake(u8 taskId);
-void AnimMudSportDirt(struct Sprite *sprite);
 void AnimDirtScatter(struct Sprite *sprite);
-void AnimMudSportDirtRising(struct Sprite *sprite);
 void AnimDirtPlumeParticle(struct Sprite *);
 extern const union AffineAnimCmd *const gAffineAnims_SpinningBone[];
 
@@ -308,7 +306,7 @@ extern const union AffineAnimCmd *const gAngerMarkAffineAnimTable[];
 extern const union AffineAnimCmd *const gWaterPulseRingAffineAnimTable[];
 extern const union AffineAnimCmd *const gHyperVoiceRingAffineAnimTable[];
 extern const union AnimCmd *const gCoinAnimTable[];
-extern const union AffineAnimCmd *const gHiddenPowerOrbAffineAnimTable[];
+extern const union AffineAnimCmd *const gOrbAffineAnimTable[];
 extern const union AffineAnimCmd *const gBulletSeedAffineAnimTable[];
 
 // battle_anim_effects_3.c
@@ -364,9 +362,7 @@ extern const union AffineAnimCmd *const gAffineAnims_Bubble[];
 // battle_anim_ghost.c
 void AnimGhostStatusSprite(struct Sprite *sprite);
 void AnimShadowBall(struct Sprite *sprite);
-void AnimTask_GrudgeFlames_Step(u8 taskId);
 extern const union AffineAnimCmd *const gAffineAnims_ShadowBall[];
-extern const union AnimCmd *const gAnims_GrudgeFlame[];
 
 // battle_anim_psychic.c
 extern const union AffineAnimCmd *const gAffineAnims_PsychoBoostOrb[];

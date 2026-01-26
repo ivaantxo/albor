@@ -669,7 +669,7 @@ static bool32 AI_IsMoveEffectInPlus(u32 battlerAtk, u32 battlerDef, u32 move, s3
                     if (AI_CanBurn(battlerAtk, battlerDef, abilityDef, ALIADO(battlerAtk), move, MOVE_NONE))
                         return TRUE;
                     break;
-                case MOVE_EFFECT_FREEZE:
+                case EFECTO_MOVIMIENTO_CONGELACION:
                     if (PuedeSerCongelado(battlerDef, abilityDef))
                         return TRUE;
                     break;
@@ -1525,7 +1525,7 @@ void ProtectChecks(u32 battlerAtk, u32 battlerDef, u32 move, u32 predictedMove, 
             ADJUST_SCORE_PTR(-(min(uses, 3)));
     }
 
-    if (gBattleMons[battlerAtk].status1 & (STATUS1_PSN_ANY | STATUS1_BURN | STATUS1_FREEZE)
+    if (gBattleMons[battlerAtk].status1 & (STATUS1_PSN_ANY | STATUS1_BURN | STATUS1_CONGELACION)
      || gBattleMons[battlerAtk].status2 & (STATUS2_CURSED | STATUS2_INFATUATION)
      || gStatuses3[battlerAtk] & (STATUS3_PERISH_SONG | STATUS3_LEECHSEED | STATUS3_YAWN))
     {
@@ -3651,8 +3651,8 @@ void AumentaPuntuacionCongelacion(u32 atacante, u32 defensor, u32 movimiento, s3
                 ADJUST_SCORE_PTR(WEAK_EFFECT);
         }
 
-        if (HasMoveEffectANDArg(atacante, EFFECT_DOUBLE_POWER_ON_ARG_STATUS, STATUS1_FREEZE)
-          || HasMoveEffectANDArg(ALIADO(atacante), EFFECT_DOUBLE_POWER_ON_ARG_STATUS, STATUS1_FREEZE))
+        if (HasMoveEffectANDArg(atacante, EFFECT_DOUBLE_POWER_ON_ARG_STATUS, STATUS1_CONGELACION)
+          || HasMoveEffectANDArg(ALIADO(atacante), EFFECT_DOUBLE_POWER_ON_ARG_STATUS, STATUS1_CONGELACION))
             ADJUST_SCORE_PTR(WEAK_EFFECT);
     }
 }
@@ -3734,7 +3734,7 @@ void IncreaseSubstituteMoveScore(u32 battlerAtk, u32 battlerDef, u32 move, s32 *
 
     if (gBattleMons[battlerDef].status1 & STATUS1_SLEEP)
         ADJUST_SCORE_PTR(GOOD_EFFECT);
-    else if (gBattleMons[battlerDef].status1 & (STATUS1_BURN | STATUS1_PSN_ANY | STATUS1_FREEZE))
+    else if (gBattleMons[battlerDef].status1 & (STATUS1_BURN | STATUS1_PSN_ANY | STATUS1_CONGELACION))
         ADJUST_SCORE_PTR(DECENT_EFFECT);
 
     // TODO:

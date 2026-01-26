@@ -664,7 +664,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         {
         case EFFECT_LEVEL_DAMAGE:
         case EFFECT_PSYWAVE:
-        case EFFECT_BIDE:
         case EFFECT_SUPER_FANG:
         case EFFECT_ENDEAVOR:
         case EFFECT_COUNTER:
@@ -1566,7 +1565,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                 ADJUST_SCORE(-10);
             break;
         case EFFECT_REFRESH:
-            if (!(gBattleMons[battlerDef].status1 & (STATUS1_PSN_ANY | STATUS1_BURN | STATUS1_PARALYSIS | STATUS1_FREEZE)))
+            if (!(gBattleMons[battlerDef].status1 & (STATUS1_PSN_ANY | STATUS1_BURN | STATUS1_PARALYSIS | STATUS1_CONGELACION)))
                 ADJUST_SCORE(-10);
             break;
         case EFFECT_PSYCHO_SHIFT:
@@ -1575,7 +1574,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             else if (gBattleMons[battlerAtk].status1 & STATUS1_BURN && !AI_CanBurn(battlerAtk, battlerDef,
               aiData->abilities[battlerDef], ALIADO(battlerAtk), move, aiData->partnerMove))
                 ADJUST_SCORE(-10);
-            else if (gBattleMons[battlerAtk].status1 & STATUS1_FREEZE && !IA_PuedeCongelar(battlerAtk, battlerDef,
+            else if (gBattleMons[battlerAtk].status1 & STATUS1_CONGELACION && !IA_PuedeCongelar(battlerAtk, battlerDef,
               aiData->abilities[battlerDef], ALIADO(battlerAtk), move, aiData->partnerMove))
                 ADJUST_SCORE(-10);
             else if (gBattleMons[battlerAtk].status1 & STATUS1_PARALYSIS && !AI_CanParalyze(battlerAtk, battlerDef, aiData->abilities[battlerDef], move, aiData->partnerMove))
@@ -1584,18 +1583,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                 ADJUST_SCORE(-10);
             else
                 ADJUST_SCORE(-10);    // attacker has no status to transmit
-            break;
-        case EFFECT_MUD_SPORT:
-            if (gFieldStatuses & STATUS_FIELD_MUDSPORT
-              || gStatuses4[battlerAtk] & STATUS4_MUD_SPORT
-              || PartnerHasSameMoveEffectWithoutTarget(ALIADO(battlerAtk), move, aiData->partnerMove))
-                ADJUST_SCORE(-10);
-            break;
-        case EFFECT_WATER_SPORT:
-            if (gFieldStatuses & STATUS_FIELD_WATERSPORT
-              || gStatuses4[battlerAtk] & STATUS4_WATER_SPORT
-              || PartnerHasSameMoveEffectWithoutTarget(ALIADO(battlerAtk), move, aiData->partnerMove))
-                ADJUST_SCORE(-10);
             break;
         case EFFECT_ABSORB:
             if (aiData->abilities[battlerDef] == ABILITY_LIQUID_OOZE)
@@ -1617,12 +1604,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             break;
         case EFFECT_AROMATIC_MIST:
             if (!isDoubleBattle || gBattleMons[ALIADO(battlerAtk)].hp == 0 || !BattlerStatCanRise(ALIADO(battlerAtk), aiData->abilities[ALIADO(battlerAtk)], ESTADISTICA_DEFENSA_ESPECIAL))
-                ADJUST_SCORE(-10);
-            break;
-        case EFFECT_BIDE:
-            if (!HasDamagingMove(battlerDef)
-              || aiData->hpPercents[battlerAtk] < 30 //Close to death
-              || gBattleMons[battlerDef].status1 & (STATUS1_SLEEP | STATUS1_FREEZE)) //No point in biding if can't take damage
                 ADJUST_SCORE(-10);
             break;
         case EFFECT_HIT_SWITCH_TARGET:
@@ -2840,7 +2821,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
     if (AI_THINKING_STRUCT->aiFlags[battlerAtk] & AI_FLAG_SMART_SWITCHING && AI_DATA->abilities[battlerAtk] == ABILITY_NATURAL_CURE)
     {
         if ((gBattleMons[battlerAtk].status1 & STATUS1_BURN && HasOnlyMovesWithCategory(battlerAtk, CATEGORIA_FISICA, TRUE))
-        || (gBattleMons[battlerAtk].status1 & STATUS1_FREEZE && HasOnlyMovesWithCategory(battlerAtk, CATEGORIA_ESPECIAL, TRUE)))
+        || (gBattleMons[battlerAtk].status1 & STATUS1_CONGELACION && HasOnlyMovesWithCategory(battlerAtk, CATEGORIA_ESPECIAL, TRUE)))
             ADJUST_SCORE(-20); // Force switch if all your attacking moves are physical and you have Natural Cure.
     }
 
@@ -2998,9 +2979,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         if (gBattleMons[battlerDef].statStages[ESTADISTICA_EVASION] < 7 || aiData->abilities[battlerAtk] == ABILITY_NO_GUARD)
             ADJUST_SCORE(-2);
         break;
-    case EFFECT_BIDE:
-        if (aiData->hpPercents[battlerAtk] < 90)
-            ADJUST_SCORE(-2); // Should be either removed or turned into increasing score
     case EFFECT_ACUPRESSURE:
         break;
     case EFFECT_ATTACK_ACCURACY_UP: // hone claws
@@ -3708,22 +3686,12 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
             IncreaseParalyzeScore(battlerAtk, battlerDef, move, &score);
         else if (gBattleMons[battlerAtk].status1 & STATUS1_SLEEP)
             IncreaseSleepScore(battlerAtk, battlerDef, move, &score);
-        else if (gBattleMons[battlerAtk].status1 & STATUS1_FREEZE)
+        else if (gBattleMons[battlerAtk].status1 & STATUS1_CONGELACION)
             AumentaPuntuacionCongelacion(battlerAtk, battlerDef, move, &score);
-        break;
-    case EFFECT_GRUDGE:
         break;
     case EFFECT_SNATCH:
         if (predictedMove != MOVE_NONE && gMovesInfo[predictedMove].snatchAffected)
             ADJUST_SCORE(GOOD_EFFECT); // Steal move
-        break;
-    case EFFECT_MUD_SPORT:
-        if (!HasMoveWithType(battlerAtk, TIPO_ELECTRICO) && HasMoveWithType(battlerDef, TIPO_ELECTRICO))
-            ADJUST_SCORE(WEAK_EFFECT);
-        break;
-    case EFFECT_WATER_SPORT:
-        if (!HasMoveWithType(battlerAtk, TIPO_FUEGO) && (HasMoveWithType(battlerDef, TIPO_FUEGO)))
-            ADJUST_SCORE(WEAK_EFFECT);
         break;
     case EFFECT_TICKLE:
         if (gBattleMons[battlerDef].statStages[ESTADISTICA_DEFENSA] > 4 && HasMoveWithCategory(battlerAtk, CATEGORIA_FISICA)
@@ -4527,7 +4495,6 @@ static s32 AI_HPAware(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             case EFFECT_SOFTBOILED:
             case EFFECT_ROOST:
             case EFFECT_MEMENTO:
-            case EFFECT_GRUDGE:
                 ADJUST_SCORE(-2);
                 break;
             default:
@@ -4543,7 +4510,6 @@ static s32 AI_HPAware(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             switch (effect)
             {
             case EFFECT_EXPLOSION:
-            case EFFECT_BIDE:
             case EFFECT_CONVERSION:
             case EFFECT_LIGHT_SCREEN:
             case EFFECT_REFLECT:
@@ -4569,7 +4535,6 @@ static s32 AI_HPAware(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             // check other discouraged low hp effects
             switch (effect)
             {
-            case EFFECT_BIDE:
             case EFFECT_CONVERSION:
             case EFFECT_REFLECT:
             case EFFECT_LIGHT_SCREEN:

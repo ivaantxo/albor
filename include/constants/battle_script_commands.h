@@ -3,8 +3,7 @@
 
 // The following correspond to the struct members of BattleScripting by adding their offset
 #define sPAINSPLIT_HP                (gBattleScripting)                 // painSplitHp (s32) -> 4 bytes
-#define sBIDE_DMG                    (sPAINSPLIT_HP + 4)                // bideDmg (s32) -> 4 bytes
-#define sMULTIHIT_STRING             (sBIDE_DMG + 4)                    // multihitString (u8[6]) -> 6 bytes
+#define sMULTIHIT_STRING             (sPAINSPLIT_HP + 4)                // multihitString (u8[6]) -> 6 bytes
 #define sB_ANIM_ARG1                 (sMULTIHIT_STRING + 6)             // animArg1 (u8) -> 1 byte
 #define sB_ANIM_ARG2                 (sB_ANIM_ARG1 + 1)                 // animArg2 (u8) -> 1 byte
 #define sSAVED_STRING_ID             (sB_ANIM_ARG2 + 1)                 // savedStringId (u16) -> 2 bytes
@@ -403,7 +402,6 @@ enum BattleScriptCommands
     BATTLE_CMD_setdrainedhp,
     BATTLE_CMD_statbuffchange,
     BATTLE_CMD_normalisebuffs,
-    BATTLE_CMD_setbide,
     BATTLE_CMD_twoturnmoveschargestringandanimation,
     BATTLE_CMD_forcerandomswitch,
     BATTLE_CMD_tryconversiontypechange,
@@ -483,7 +481,6 @@ enum BattleScriptCommands
     BATTLE_CMD_switchoutabilities,
     BATTLE_CMD_jumpifhasnohp,
     BATTLE_CMD_jumpifnotcurrentmoveargtype,
-    BATTLE_CMD_settypebasedhalvers,
     BATTLE_CMD_jumpifsubstituteblocks,
     BATTLE_CMD_tryrecycleitem,
     BATTLE_CMD_snatchsetbattlers,

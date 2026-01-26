@@ -460,24 +460,10 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 3,
     },
 
-    [ABILITY_OVERGROW] =
-    {
-        .name = _("Overgrow"),
-        .description = COMPOUND_STRING("Ups Grass moves in a pinch."),
-        .aiRating = 5,
-    },
-
     [ABILITY_BLAZE] =
     {
         .name = _("Blaze"),
         .description = COMPOUND_STRING("Ups Fire moves in a pinch."),
-        .aiRating = 5,
-    },
-
-    [ABILITY_TORRENT] =
-    {
-        .name = _("Torrent"),
-        .description = COMPOUND_STRING("Ups Water moves in a pinch."),
         .aiRating = 5,
     },
 

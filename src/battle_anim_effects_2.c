@@ -860,37 +860,37 @@ const struct SpriteTemplate gRedHeartCharmSpriteTemplate =
     .callback = AnimMagentaHeart,
 };
 
-const union AffineAnimCmd gHiddenPowerOrbAffineAnimCmds[] =
+const union AffineAnimCmd gOrbAffineAnimCmds[] =
 {
     AFFINEANIMCMD_FRAME(0x80, 0x80, 0, 0),
     AFFINEANIMCMD_FRAME(0x8, 0x8, 0, 1),
     AFFINEANIMCMD_JUMP(1),
 };
 
-const union AffineAnimCmd *const gHiddenPowerOrbAffineAnimTable[] =
+const union AffineAnimCmd *const gOrbAffineAnimTable[] =
 {
-    gHiddenPowerOrbAffineAnimCmds,
+    gOrbAffineAnimCmds,
 };
 
-const struct SpriteTemplate gHiddenPowerOrbSpriteTemplate =
+const struct SpriteTemplate gOrbSpriteTemplate =
 {
     .tileTag = ANIM_TAG_RED_ORB,
     .paletteTag = ANIM_TAG_RED_ORB,
     .oam = &gOamData_AffineNormal_ObjNormal_16x16,
     .anims = gDummySpriteAnimTable,
     .images = NULL,
-    .affineAnims = gHiddenPowerOrbAffineAnimTable,
+    .affineAnims = gOrbAffineAnimTable,
     .callback = AnimOrbitFast,
 };
 
-const struct SpriteTemplate gHiddenPowerOrbScatterSpriteTemplate =
+const struct SpriteTemplate gOrbScatterSpriteTemplate =
 {
     .tileTag = ANIM_TAG_RED_ORB,
     .paletteTag = ANIM_TAG_RED_ORB,
     .oam = &gOamData_AffineDouble_ObjNormal_16x16,
     .anims = gDummySpriteAnimTable,
     .images = NULL,
-    .affineAnims = gHiddenPowerOrbAffineAnimTable,
+    .affineAnims = gOrbAffineAnimTable,
     .callback = AnimOrbitScatter,
 };
 
@@ -901,7 +901,7 @@ const struct SpriteTemplate gPowerGemOrbSpriteTemplate =
     .oam = &gOamData_AffineNormal_ObjNormal_16x16,
     .anims = gDummySpriteAnimTable,
     .images = NULL,
-    .affineAnims = gHiddenPowerOrbAffineAnimTable,
+    .affineAnims = gOrbAffineAnimTable,
     .callback = AnimOrbitFast,
 };
 
@@ -912,7 +912,7 @@ const struct SpriteTemplate gPowerGemOrbScatterSpriteTemplate =
     .oam = &gOamData_AffineDouble_ObjNormal_16x16,
     .anims = gDummySpriteAnimTable,
     .images = NULL,
-    .affineAnims = gHiddenPowerOrbAffineAnimTable,
+    .affineAnims = gOrbAffineAnimTable,
     .callback = AnimOrbitScatter,
 };
 
@@ -3228,7 +3228,6 @@ static void AnimTask_ScaryFace_Step(u8 taskId)
 }
 
 // Orbits a sphere in an ellipse around the mon.
-// Used by MOVE_HIDDEN_POWER
 // arg 0: duration
 // arg 1: initial wave offset
 void AnimOrbitFast(struct Sprite *sprite)
@@ -3280,7 +3279,6 @@ static void AnimOrbitFast_Step(struct Sprite *sprite)
 }
 
 // Moves orbs away from the mon, based on where they are in their orbit.
-// Used in MOVE_HIDDEN_POWER.
 // arg 0: initial wave offset
 void AnimOrbitScatter(struct Sprite *sprite)
 {

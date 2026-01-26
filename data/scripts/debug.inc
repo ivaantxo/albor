@@ -474,7 +474,7 @@ Debug_EventScript_InflictStatus1_Single_Burn:
 	end
 
 Debug_EventScript_InflictStatus1_Single_Freeze:
-	setstatus1 STATUS1_FREEZE, VAR_0x8004
+	setstatus1 STATUS1_CONGELACION, VAR_0x8004
 	releaseall
 	end
 
@@ -518,7 +518,7 @@ Debug_EventScript_InflictStatus1_Party_Burn:
 	end
 
 Debug_EventScript_InflictStatus1_Party_Freeze:
-	setstatus1 STATUS1_FREEZE, PARTY_SIZE
+	setstatus1 STATUS1_CONGELACION, PARTY_SIZE
 	releaseall
 	end
 

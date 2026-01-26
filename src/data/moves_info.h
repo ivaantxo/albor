@@ -285,7 +285,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .punchingMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FREEZE,
+            .moveEffect = EFECTO_MOVIMIENTO_CONGELACION,
             .chance = 10,
         }),
         .battleAnimScript = gBattleAnimMove_IcePunch,
@@ -1318,7 +1318,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .additionalEffects = ADDITIONAL_EFFECTS({
             // The following effect is also relevant in battle_Pike.c
             // If you cherry-pick this to use something other than the config, make sure to update it there too
-            .moveEffect = MOVE_EFFECT_FREEZE,
+            .moveEffect = EFECTO_MOVIMIENTO_CONGELACION,
             .chance = 10,
         }),
         .battleAnimScript = gBattleAnimMove_IceBeam,
@@ -1340,7 +1340,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .windMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FREEZE,
+            .moveEffect = EFECTO_MOVIMIENTO_CONGELACION,
             .chance = 10,
         }),
         .battleAnimScript = gBattleAnimMove_Blizzard,
@@ -2481,27 +2481,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .mirrorMoveBanned = TRUE,
         .snatchAffected = TRUE,
         .battleAnimScript = gBattleAnimMove_FocusEnergy,
-    },
-
-    [MOVE_BIDE] =
-    {
-        .name = COMPOUND_STRING("Venganza"),
-        .description = COMPOUND_STRING(
-            "Endures attack for 2\n"
-            "turns to retaliate double."),
-        .effect = EFFECT_BIDE,
-        .power = 1,
-        .type = TIPO_NORMAL,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_4 ? 0 : 100,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        .priority = B_UPDATED_MOVE_DATA >= GEN_4 ? 1 : 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Bide,
     },
 
     [MOVE_MIRROR_MOVE] =
@@ -3804,7 +3783,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FREEZE,
+            .moveEffect = EFECTO_MOVIMIENTO_CONGELACION,
             .chance = 10,
         }),
         .battleAnimScript = gBattleAnimMove_PowderSnow,
@@ -4501,24 +4480,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_HealBell,
     },
 
-    [MOVE_RETURN] =
-    {
-        .name = COMPOUND_STRING("Retribución"),
-        .description = COMPOUND_STRING(
-            "An attack that increases\n"
-            "in power with friendship."),
-        .effect = EFFECT_RETURN,
-        .power = 1,
-        .type = TIPO_NORMAL,
-        .accuracy = 100,
-        .pp = 20,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_Return,
-    },
-
     [MOVE_PRESENT] =
     {
         .name = COMPOUND_STRING("Presente"),
@@ -4535,24 +4496,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
         .battleAnimScript = gBattleAnimMove_Present,
-    },
-
-    [MOVE_FRUSTRATION] =
-    {
-        .name = COMPOUND_STRING("Frustración"),
-        .description = COMPOUND_STRING(
-            "An attack that is stronger\n"
-            "if the Trainer is disliked."),
-        .effect = EFFECT_RETURN,
-        .power = 1,
-        .type = TIPO_SINIESTRO,
-        .accuracy = 100,
-        .pp = 20,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_Frustration,
     },
 
     [MOVE_SAFEGUARD] =
@@ -4927,23 +4870,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .mirrorMoveBanned = TRUE,
         .danceMove = TRUE,
         .battleAnimScript = gBattleAnimMove_Moonlight,
-    },
-
-    [MOVE_HIDDEN_POWER] =
-    {
-        .name = COMPOUND_STRING("Poder oculto"),
-        .description = COMPOUND_STRING(
-            "The effectiveness varies\n"
-            "with the user."),
-        .power = 60,
-        .effect = EFFECT_HIDDEN_POWER,
-        .type = TIPO_NORMAL,
-        .accuracy = 100,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .battleAnimScript = gBattleAnimMove_HiddenPower,
     },
 
     [MOVE_CROSS_CHOP] =
@@ -5970,26 +5896,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Refresh,
     },
 
-    [MOVE_GRUDGE] =
-    {
-        .name = COMPOUND_STRING("Rabia"),
-        .description = COMPOUND_STRING(
-            "If the user faints, deletes\n"
-            "all PP of foe's last move."),
-        .effect = EFFECT_GRUDGE,
-        .power = 0,
-        .type = TIPO_FANTASMA,
-        .accuracy = 100,
-        .pp = 5,
-        .target = MOVE_TARGET_USER,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .ignoresSubstitute = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Grudge,
-    },
-
     [MOVE_SNATCH] =
     {
         .name = COMPOUND_STRING("Robo"),
@@ -6194,25 +6100,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             .chance = 10,
         }),
         .battleAnimScript = gBattleAnimMove_BlazeKick,
-    },
-
-    [MOVE_MUD_SPORT] =
-    {
-        .name = COMPOUND_STRING("Chapoteo"),
-        .description = COMPOUND_STRING(
-            "Covers the user in mud to\n"
-            "raise electrical resistance."),
-        .effect = EFFECT_MUD_SPORT,
-        .power = 0,
-        .type = TIPO_TIERRA,
-        .accuracy = 100,
-        .pp = 15,
-        .target = MOVE_TARGET_ALL_BATTLERS,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_MudSport,
     },
 
     [MOVE_ICE_BALL] =
@@ -7139,25 +7026,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .battleAnimScript = gBattleAnimMove_MagicalLeaf,
-    },
-
-    [MOVE_WATER_SPORT] =
-    {
-        .name = COMPOUND_STRING("Remojo"),
-        .description = COMPOUND_STRING(
-            "The user becomes soaked to\n"
-            "raise resistance to fire."),
-        .effect = EFFECT_WATER_SPORT,
-        .power = 0,
-        .type = TIPO_AGUA,
-        .accuracy = 100,
-        .pp = 15,
-        .target = MOVE_TARGET_ALL_BATTLERS,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_WaterSport,
     },
 
     [MOVE_CALM_MIND] =
@@ -8590,7 +8458,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .bitingMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FREEZE,
+            .moveEffect = EFECTO_MOVIMIENTO_CONGELACION,
             .chance = 10,
         },
         {
@@ -10957,7 +10825,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FREEZE,
+            .moveEffect = EFECTO_MOVIMIENTO_CONGELACION,
             .chance = 50,
         }),
         .battleAnimScript = gBattleAnimMove_Glaciate,
@@ -11437,7 +11305,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .argument = TIPO_AGUA,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FREEZE,
+            .moveEffect = EFECTO_MOVIMIENTO_CONGELACION,
             .chance = 10,
         }),
         .battleAnimScript = gBattleAnimMove_FreezeDry,
@@ -13386,24 +13254,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_FloatyFall,
     },
 
-    [MOVE_PIKA_PAPOW] =
-    {
-        .name = COMPOUND_STRING("Pika Papow"),
-        .description = COMPOUND_STRING(
-            "Pikachu's love increases its\n"
-            "power. It never misses."),
-        .effect = EFFECT_RETURN,
-        .power = 1,
-        .type = TIPO_ELECTRICO,
-        .accuracy = 0,
-        .pp = 20,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS < GEN_8,
-        .battleAnimScript = gBattleAnimMove_PikaPapow,
-    },
-
     [MOVE_BOUNCY_BUBBLE] =
     {
         .name = COMPOUND_STRING("Bouncy Bubble"),
@@ -13526,25 +13376,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS < GEN_8,
         .battleAnimScript = gBattleAnimMove_SparklySwirl,
-    },
-
-    [MOVE_VEEVEE_VOLLEY] =
-    {
-        .name = COMPOUND_STRING("Veevee Volley"),
-        .description = COMPOUND_STRING(
-            "Eevee's love increases its\n"
-            "power. It never misses."),
-        .effect = EFFECT_RETURN,
-        .power = 1,
-        .type = TIPO_NORMAL,
-        .accuracy = 0,
-        .pp = 20,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS < GEN_8,
-        .battleAnimScript = gBattleAnimMove_VeeveeVolley,
     },
 
     [MOVE_DOUBLE_IRON_BASH] =
@@ -14594,7 +14425,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .eyesMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FREEZE,
+            .moveEffect = EFECTO_MOVIMIENTO_CONGELACION,
             .chance = 10,
         }),
         .battleAnimScript = gBattleAnimMove_FreezingGlare,

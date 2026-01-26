@@ -314,7 +314,7 @@ const struct ContestPokemon gContestOpponents[] =
         .aiPool_Tough = TRUE,
         .moves =
         {
-            MOVE_BIDE,
+            MOVE_QUICK_ATTACK,
             MOVE_SYNTHESIS,
             MOVE_BULLET_SEED,
             MOVE_GROWTH
@@ -830,7 +830,7 @@ const struct ContestPokemon gContestOpponents[] =
             MOVE_PRESENT,
             MOVE_FACADE,
             MOVE_FOCUS_PUNCH,
-            MOVE_RETURN
+            MOVE_QUICK_ATTACK
         },
         .cool = 4,
         .beauty = 3,
@@ -910,7 +910,7 @@ const struct ContestPokemon gContestOpponents[] =
         {
             MOVE_PECK,
             MOVE_FURY_ATTACK,
-            MOVE_RETURN,
+            MOVE_QUICK_ATTACK,
             MOVE_GROWL
         },
         .cool = 15,
@@ -1205,8 +1205,8 @@ const struct ContestPokemon gContestOpponents[] =
         .aiPool_Tough = TRUE,
         .moves =
         {
-            MOVE_MUD_SPORT,
-            MOVE_WATER_SPORT,
+            MOVE_GROWL,
+            MOVE_QUICK_ATTACK,
             MOVE_EARTHQUAKE,
             MOVE_FUTURE_SIGHT
         },
@@ -1316,7 +1316,7 @@ const struct ContestPokemon gContestOpponents[] =
             MOVE_FACADE,
             MOVE_FURY_CUTTER,
             MOVE_FLY,
-            MOVE_RETURN
+            MOVE_QUICK_ATTACK
         },
         .cool = 40,
         .beauty = 10,
@@ -1369,8 +1369,8 @@ const struct ContestPokemon gContestOpponents[] =
         {
             MOVE_DISABLE,
             MOVE_FUTURE_SIGHT,
-            MOVE_HIDDEN_POWER,
-            MOVE_RETURN
+            MOVE_GROWL,
+            MOVE_QUICK_ATTACK
         },
         .cool = 10,
         .beauty = 40,
@@ -1721,7 +1721,7 @@ const struct ContestPokemon gContestOpponents[] =
             MOVE_SUNNY_DAY,
             MOVE_WEATHER_BALL,
             MOVE_SANDSTORM,
-            MOVE_RETURN
+            MOVE_QUICK_ATTACK
         },
         .cool = 70,
         .beauty = 80,
@@ -2315,7 +2315,7 @@ const struct ContestPokemon gContestOpponents[] =
             MOVE_SHOCK_WAVE,
             MOVE_SHADOW_BALL,
             MOVE_SKILL_SWAP,
-            MOVE_RETURN
+            MOVE_QUICK_ATTACK
         },
         .cool = 230,
         .beauty = 60,
@@ -2611,7 +2611,7 @@ const struct ContestPokemon gContestOpponents[] =
         {
             MOVE_CONVERSION_2,
             MOVE_CONVERSION,
-            MOVE_RETURN,
+            MOVE_QUICK_ATTACK,
             MOVE_RECYCLE
         },
         .cool = 130,

@@ -525,11 +525,9 @@ enum AnimacionesGeneralesBatalla //(sBattleAnims_General)
     B_ANIM_FORM_CHANGE,
     B_ANIM_SLIDE_OFFSCREEN, // Sin usar
     B_ANIM_RESTORE_BG, // for Terrain Endings
-    B_ANIM_TOTEM_FLARE, // Totem boosts aura flare
     B_ANIM_GULP_MISSILE,
     B_ANIM_AQUA_RING_HEAL,
     B_ANIM_SNOW_CONTINUES,
-    B_ANIM_MAX_SET_WEATHER,
     B_ANIM_TRICK_ROOM,
     B_ANIM_WONDER_ROOM,
     B_ANIM_MAGIC_ROOM,

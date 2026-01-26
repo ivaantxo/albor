@@ -106,7 +106,6 @@ enum
     LIST_ITEM_STATUS1,
     LIST_ITEM_STATUS2,
     LIST_ITEM_STATUS3,
-    LIST_ITEM_STATUS4,
     LIST_ITEM_SIDE_STATUS,
     LIST_ITEM_AI,
     LIST_ITEM_AI_MOVES_PTS,
@@ -132,7 +131,7 @@ enum
     LIST_STATUS1_SLEEP,
     LIST_STATUS1_POISON,
     LIST_STATUS1_BURN,
-    LIST_STATUS1_FREEZE,
+    LIST_STATUS1_CONGELACION,
     LIST_STATUS1_PARALYSIS,
     LIST_STATUS1_TOXIC_POISON,
     LIST_STATUS1_TOXIC_COUNTER,
@@ -167,7 +166,6 @@ enum
     LIST_STATUS3_ROOTED,
     LIST_STATUS3_YAWN,
     LIST_STATUS3_IMPRISONED_OTHERS,
-    LIST_STATUS3_GRUDGE,
     LIST_STATUS3_GASTRO_ACID,
     LIST_STATUS3_EMBARGO,
     LIST_STATUS3_UNDERWATER,
@@ -179,12 +177,6 @@ enum
     LIST_STATUS3_AQUA_RING,
     LIST_STATUS3_LASER_FOCUS,
     LIST_STATUS3_POWER_TRICK,
-};
-
-enum
-{
-    LIST_STATUS4_MUD_SPORT,
-    LIST_STATUS4_WATER_SPORT,
 };
 
 enum
@@ -272,7 +264,6 @@ static const u8 sText_StatStages[] = _("Stat Stages");
 static const u8 sText_Status1[] = _("Status1");
 static const u8 sText_Status2[] = _("Status2");
 static const u8 sText_Status3[] = _("Status3");
-static const u8 sText_Status4[] = _("Status4");
 static const u8 sText_SideStatus[] = _("Side Status");
 static const u8 sText_AI[] = _("AI");
 static const u8 sText_AIMovePts[] = _("AI Pts/Dmg");
@@ -309,7 +300,6 @@ static const u8 sText_ChargedUp[] = _("Charged Up");
 static const u8 sText_Rooted[] = _("Rooted");
 static const u8 sText_Yawn[] = _("Yawn");
 static const u8 sText_ImprisonedOthers[] = _("Imprisoned Others");
-static const u8 sText_Grudge[] = _("Grudge");
 static const u8 sText_GastroAcid[] = _("Gastro Acid");
 static const u8 sText_Embargo[] = _("Embargo");
 static const u8 sText_Underwater[] = _("Underwater");
@@ -321,8 +311,6 @@ static const u8 sText_HealBlock[] = _("Heal Block");
 static const u8 sText_AquaRing[] = _("Aqua Ring");
 static const u8 sText_LaserFocus[] = _("Laser Focus");
 static const u8 sText_PowerTrick[] = _("Power Trick");
-static const u8 sText_MudSport[] = _("Mud Sport");
-static const u8 sText_WaterSport[] = _("Water Sport");
 static const u8 sText_Reflect[] = _("Reflect");
 static const u8 sText_LightScreen[] = _("Light Screen");
 static const u8 sText_StickyWeb[] = _("Sticky Web");
@@ -400,7 +388,6 @@ static const struct BitfieldInfo sStatus3Bitfield[] =
     {/*Rooted*/ 1, 10},
     {/*Yawn*/ 2, 11},
     {/*Imprisoned Others*/ 1, 13},
-    {/*Grudge*/ 1, 14},
     {/*Gastro Acid*/ 1, 16},
     {/*Embargo*/ 1, 17},
     {/*Underwater*/ 1, 18},
@@ -412,12 +399,6 @@ static const struct BitfieldInfo sStatus3Bitfield[] =
     {/*Aqua Ring*/ 1, 28},
     {/*Laser Focus*/ 1, 29},
     {/*Power Trick*/ 1, 30},
-};
-
-static const struct BitfieldInfo sStatus4Bitfield[] =
-{
-    {/*Mud Sport*/ 1, 1},
-    {/*Water Sport*/ 1, 2},
 };
 
 static const struct BitfieldInfo sAIBitfield[] =
@@ -458,7 +439,6 @@ static const struct ListMenuItem sMainListItems[] =
     {sText_Status1, LIST_ITEM_STATUS1},
     {sText_Status2, LIST_ITEM_STATUS2},
     {sText_Status3, LIST_ITEM_STATUS3},
-    {sText_Status4, LIST_ITEM_STATUS4},
     {sText_SideStatus, LIST_ITEM_SIDE_STATUS},
     {sText_AI, LIST_ITEM_AI},
     {sText_AIMovePts, LIST_ITEM_AI_MOVES_PTS},
@@ -483,7 +463,7 @@ static const struct ListMenuItem sStatus1ListItems[] =
     {sText_Sleep, LIST_STATUS1_SLEEP},
     {sText_Poison, LIST_STATUS1_POISON},
     {sText_Burn, LIST_STATUS1_BURN},
-    {COMPOUND_STRING("Congelación");, LIST_STATUS1_FREEZE},
+    {COMPOUND_STRING("Congelación");, LIST_STATUS1_CONGELACION},
     {sText_Paralysis, LIST_STATUS1_PARALYSIS},
     {sText_ToxicPoison, LIST_STATUS1_TOXIC_POISON},
     {sText_ToxicCounter, LIST_STATUS1_TOXIC_COUNTER},
@@ -518,7 +498,6 @@ static const struct ListMenuItem sStatus3ListItems[] =
     {sText_Rooted, LIST_STATUS3_ROOTED},
     {sText_Yawn, LIST_STATUS3_YAWN},
     {sText_ImprisonedOthers, LIST_STATUS3_IMPRISONED_OTHERS},
-    {sText_Grudge, LIST_STATUS3_GRUDGE},
     {sText_GastroAcid, LIST_STATUS3_GASTRO_ACID},
     {sText_Embargo, LIST_STATUS3_EMBARGO},
     {sText_Underwater, LIST_STATUS3_UNDERWATER},
@@ -530,12 +509,6 @@ static const struct ListMenuItem sStatus3ListItems[] =
     {sText_AquaRing, LIST_STATUS3_AQUA_RING},
     {sText_LaserFocus, LIST_STATUS3_LASER_FOCUS},
     {sText_PowerTrick, LIST_STATUS3_POWER_TRICK},
-};
-
-static const struct ListMenuItem sStatus4ListItems[] =
-{
-    {sText_MudSport, LIST_STATUS4_MUD_SPORT},
-    {sText_WaterSport, LIST_STATUS4_WATER_SPORT},
 };
 
 static const struct ListMenuItem sSideStatusListItems[] =
@@ -1486,11 +1459,6 @@ static void CreateSecondaryListMenu(struct BattleDebugMenu *data)
         listTemplate.items = sStatus3ListItems;
         itemsCount = ARRAY_COUNT(sStatus3ListItems);
         data->bitfield = sStatus3Bitfield;
-        break;
-    case LIST_ITEM_STATUS4:
-        listTemplate.items = sStatus4ListItems;
-        itemsCount = ARRAY_COUNT(sStatus4ListItems);
-        data->bitfield = sStatus4Bitfield;
         break;
     case LIST_ITEM_AI:
         listTemplate.items = sAIListItems;

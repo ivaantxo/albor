@@ -51,15 +51,10 @@ enum {
     ABILITYEFFECT_ATK_SYNCHRONIZE,
     ABILITYEFFECT_MOVE_END_OTHER,
     ABILITYEFFECT_NEUTRALIZINGGAS,
-    ABILITYEFFECT_FIELD_SPORT,         // Only used if B_SPORT_TURNS >= GEN_6
     ABILITYEFFECT_ON_WEATHER,
     ABILITYEFFECT_SWITCH_IN_WEATHER,
     ABILITYEFFECT_OPPORTUNIST,
 };
-
-// Special cases
-#define ABILITYEFFECT_MUD_SPORT                  252 // Only used if B_SPORT_TURNS >= GEN_6
-#define ABILITYEFFECT_WATER_SPORT                253 // Only used if B_SPORT_TURNS >= GEN_6
 
 // For the first argument of ItemBattleEffects, to deteremine which block of item effects to try
 #define ITEMEFFECT_ON_SWITCH_IN                 0
@@ -100,7 +95,6 @@ enum
     CANCELLER_CONFUSED,
     CANCELLER_PARALYSED,
     CANCELLER_IN_LOVE,
-    CANCELLER_BIDE,
     CANCELLER_POWDER_MOVE,
     CANCELLER_THROAT_CHOP,
     CANCELLER_EXPLODING_DAMP,

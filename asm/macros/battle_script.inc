@@ -763,10 +763,6 @@
 	.byte BATTLE_CMD_normalisebuffs
 	.endm
 
-	.macro setbide
-	.byte BATTLE_CMD_setbide
-	.endm
-
 	.macro twoturnmoveschargestringandanimation
 	.byte BATTLE_CMD_twoturnmoveschargestringandanimation
 	.4byte 1f @animation then attack string
@@ -1165,11 +1161,6 @@
 	.macro jumpifnotcurrentmoveargtype battler:req, failInstr:req
 	.byte BATTLE_CMD_jumpifnotcurrentmoveargtype
 	.byte \battler
-	.4byte \failInstr
-	.endm
-
-	.macro settypebasedhalvers failInstr:req
-	.byte BATTLE_CMD_settypebasedhalvers
 	.4byte \failInstr
 	.endm
 

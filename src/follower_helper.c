@@ -285,7 +285,7 @@ const struct FollowerMsgInfoExtended gFollowerConditionalMessages[COND_MSG_COUNT
         .emotion = FOLLOWER_EMOTION_UPSET,
         .conditions =
         {
-           MATCH_STATUS(STATUS1_FREEZE),
+           MATCH_STATUS(STATUS1_CONGELACION),
         },
     },
     [COND_MSG_SEASIDE] =

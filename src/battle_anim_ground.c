@@ -12,7 +12,6 @@ static void AnimDirtPlumeParticle_Step(struct Sprite *);
 static void AnimDigDirtMound(struct Sprite *);
 static void AnimBonemerangProjectile_Step(struct Sprite *);
 static void AnimBonemerangProjectile_End(struct Sprite *);
-static void AnimMudSportDirtFalling(struct Sprite *);
 static void AnimTask_DigBounceMovement(u8);
 static void AnimTask_DigEndBounceMovementSetInvisible(u8);
 static void AnimTask_DigSetVisibleUnderground(u8);
@@ -98,17 +97,6 @@ const struct SpriteTemplate gMudSlapMudSpriteTemplate =
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = AnimDirtScatter,
-};
-
-const struct SpriteTemplate gMudsportMudSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_MUD_SAND,
-    .paletteTag = ANIM_TAG_MUD_SAND,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimMudSportDirt,
 };
 
 const struct SpriteTemplate gDirtPlumeSpriteTemplate =
@@ -247,7 +235,7 @@ void AnimDirtScatter(struct Sprite *sprite)
 // arg 0: 0 = dirt is rising into the air, 1 = dirt is falling down
 // arg 1: initial x pixel offset
 // arg 2: initial y pixel offset
-void AnimMudSportDirt(struct Sprite *sprite)
+void AnimSalpicaTierraDirt(struct Sprite *sprite)
 {
     sprite->oam.tileNum++;
     if (gBattleAnimArgs[0] == 0)
@@ -255,18 +243,18 @@ void AnimMudSportDirt(struct Sprite *sprite)
         sprite->x = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_X_2) + gBattleAnimArgs[1];
         sprite->y = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_Y_PIC_OFFSET) + gBattleAnimArgs[2];
         sprite->data[0] = gBattleAnimArgs[1] > 0 ? 1 : -1;
-        sprite->callback = AnimMudSportDirtRising;
+        sprite->callback = AnimSalpicaTierraDirtRising;
     }
     else
     {
         sprite->x = gBattleAnimArgs[1];
         sprite->y = gBattleAnimArgs[2];
         sprite->y2 = -gBattleAnimArgs[2];
-        sprite->callback = AnimMudSportDirtFalling;
+        sprite->callback = AnimSalpicaTierraDirtFalling;
     }
 }
 
-void AnimMudSportDirtRising(struct Sprite *sprite)
+void AnimSalpicaTierraDirtRising(struct Sprite *sprite)
 {
     if (++sprite->data[1] > 1)
     {
@@ -279,7 +267,7 @@ void AnimMudSportDirtRising(struct Sprite *sprite)
         DestroyAnimSprite(sprite);
 }
 
-static void AnimMudSportDirtFalling(struct Sprite *sprite)
+static void AnimSalpicaTierraDirtFalling(struct Sprite *sprite)
 {
     switch (sprite->data[0])
     {

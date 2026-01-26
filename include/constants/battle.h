@@ -91,13 +91,13 @@ enum ResultadosCombate
 #define STATUS1_SLEEP            (1 << 0 | 1 << 1 | 1 << 2) // First 3 bits (Number of turns to sleep)
 #define STATUS1_POISON           (1 << 3)
 #define STATUS1_BURN             (1 << 4)
-#define STATUS1_FREEZE           (1 << 5)
+#define STATUS1_CONGELACION           (1 << 5)
 #define STATUS1_PARALYSIS        (1 << 6)
 #define STATUS1_TOXIC_POISON     (1 << 7)
 #define STATUS1_TOXIC_COUNTER    (1 << 8 | 1 << 9 | 1 << 10 | 1 << 11)
 #define STATUS1_TOXIC_TURN(num)  ((num) << 8)
 #define STATUS1_PSN_ANY          (STATUS1_POISON | STATUS1_TOXIC_POISON)
-#define STATUS1_ANY              (STATUS1_SLEEP | STATUS1_POISON | STATUS1_BURN | STATUS1_FREEZE | STATUS1_PARALYSIS | STATUS1_TOXIC_POISON)
+#define STATUS1_ANY              (STATUS1_SLEEP | STATUS1_POISON | STATUS1_BURN | STATUS1_CONGELACION | STATUS1_PARALYSIS | STATUS1_TOXIC_POISON)
 
 // Volatile status ailments
 // These are removed after exiting the battle or switching out
@@ -107,8 +107,6 @@ enum ResultadosCombate
 #define STATUS2_UPROAR                (1 << 4 | 1 << 5 | 1 << 6)
 #define STATUS2_UPROAR_TURN(num)      ((num) << 4)
 #define STATUS2_TORMENT               (1 << 7)
-#define STATUS2_BIDE                  (1 << 8 | 1 << 9)
-#define STATUS2_BIDE_TURN(num)        (((num) << 8) & STATUS2_BIDE)
 #define STATUS2_LOCK_CONFUSE          (1 << 10 | 1 << 11) // e.g. Thrash
 #define STATUS2_LOCK_CONFUSE_TURN(num)((num) << 10)
 #define STATUS2_MULTIPLETURNS         (1 << 12)
@@ -141,7 +139,6 @@ enum ResultadosCombate
 #define STATUS3_YAWN                    (1 << 11 | 1 << 12) // Number of turns to sleep
 #define STATUS3_YAWN_TURN(num)          (((num) << 11) & STATUS3_YAWN)
 #define STATUS3_IMPRISONED_OTHERS       (1 << 13)
-#define STATUS3_GRUDGE                  (1 << 14)
 #define STATUS3_GASTRO_ACID             (1 << 16)
 #define STATUS3_EMBARGO                 (1 << 17)
 #define STATUS3_UNDERWATER              (1 << 18)
@@ -158,10 +155,6 @@ enum ResultadosCombate
 #define STATUS3_SKY_DROPPED             (1 << 31) // Target of Sky Drop
 #define STATUS3_SEMI_INVULNERABLE       (STATUS3_UNDERGROUND | STATUS3_ON_AIR | STATUS3_UNDERWATER | STATUS3_PHANTOM_FORCE) // Exception for Transform / Imposter
 
-#define STATUS4_MUD_SPORT               (1 << 1)    // Only used if B_SPORT_TURNS < GEN_6
-#define STATUS4_WATER_SPORT             (1 << 2)    // Only used if B_SPORT_TURNS < GEN_6
-
-#define HITMARKER_IGNORE_BIDE           (1 << 5)
 #define HITMARKER_DESTINYBOND           (1 << 6)
 #define HITMARKER_IGNORE_SUBSTITUTE     (1 << 8)
 #define HITMARKER_NO_ATTACKSTRING       (1 << 9)
@@ -178,10 +171,8 @@ enum ResultadosCombate
 #define HITMARKER_PASSIVE_DAMAGE        (1 << 20)
 #define HITMARKER_PLAYER_FAINTED        (1 << 22)
 #define HITMARKER_ALLOW_NO_PP           (1 << 23)
-#define HITMARKER_GRUDGE                (1 << 24)
 #define HITMARKER_CHARGING              (1 << 27)
 #define HITMARKER_FAINTED(battler)      (1u << (battler + 28))
-#define HITMARKER_FAINTED2(battler)     HITMARKER_FAINTED(battler)
 #define HITMARKER_STRING_PRINTED        (1 << 29)
 
 // Per-side statuses that affect an entire party
@@ -213,8 +204,6 @@ enum ResultadosCombate
 #define STATUS_FIELD_MAGIC_ROOM                     (1 << 0)
 #define STATUS_FIELD_TRICK_ROOM                     (1 << 1)
 #define STATUS_FIELD_WONDER_ROOM                    (1 << 2)
-#define STATUS_FIELD_MUDSPORT                       (1 << 3)
-#define STATUS_FIELD_WATERSPORT                     (1 << 4)
 #define STATUS_FIELD_GRAVITY                        (1 << 5)
 #define STATUS_FIELD_FAIRY_LOCK                     (1 << 6)
 
@@ -266,7 +255,7 @@ enum ResultadosCombate
 #define MOVE_EFFECT_SLEEP               1
 #define MOVE_EFFECT_POISON              2
 #define MOVE_EFFECT_BURN                3
-#define MOVE_EFFECT_FREEZE              4
+#define EFECTO_MOVIMIENTO_CONGELACION              4
 #define MOVE_EFFECT_PARALYSIS           5
 #define MOVE_EFFECT_TOXIC               6
 #define PRIMARY_STATUS_MOVE_EFFECT      MOVE_EFFECT_FROSTBITE // All above move effects apply primary status

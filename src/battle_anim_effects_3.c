@@ -60,7 +60,6 @@ static void AnimGreenStar(struct Sprite *);
 static void AnimGreenStar_Step1(struct Sprite *);
 static void AnimGreenStar_Step2(struct Sprite *);
 static void AnimGreenStar_Callback(struct Sprite *);
-static void AnimWeakFrustrationAngerMark(struct Sprite *);
 static void AnimSweetScentPetal_Step(struct Sprite *);
 static void AnimPainSplitProjectile(struct Sprite *);
 static void AnimFlatterConfetti(struct Sprite *);
@@ -651,23 +650,12 @@ const u8 gDoomDesireLightBeamDelayTable[] =
     50,
 };
 
-const union AffineAnimCmd gStrongFrustrationAffineAnimCmds[] =
+const union AffineAnimCmd gRageFistAffineAnimCmds[] =
 {
     AFFINEANIMCMD_FRAME(0, -15, 0, 7),
     AFFINEANIMCMD_FRAME(0, 15, 0, 7),
     AFFINEANIMCMD_LOOP(2),
     AFFINEANIMCMD_END,
-};
-
-const struct SpriteTemplate gWeakFrustrationAngerMarkSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_ANGER,
-    .paletteTag = ANIM_TAG_ANGER,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimWeakFrustrationAngerMark,
 };
 
 const union AnimCmd gSweetScentPetalAnimCmds1[] =
@@ -2586,43 +2574,17 @@ void AnimTask_DoomDesireLightBeam(u8 taskId)
 
 // Briefly vertically grows and shrinks the attacking mon's sprite.
 // No args.
-void AnimTask_StrongFrustrationGrowAndShrink(u8 taskId)
+void AnimTask_RageFistGrowAndShrink(u8 taskId)
 {
     if (gTasks[taskId].data[0] == 0)
     {
-        PrepareAffineAnimInTaskData(&gTasks[taskId], GetAnimBattlerSpriteId(ANIM_ATTACKER), gStrongFrustrationAffineAnimCmds);
+        PrepareAffineAnimInTaskData(&gTasks[taskId], GetAnimBattlerSpriteId(ANIM_ATTACKER), gRageFistAffineAnimCmds);
         gTasks[taskId].data[0]++;
     }
     else
     {
         if (!RunAffineAnimFromTaskData(&gTasks[taskId]))
             DestroyAnimVisualTask(taskId);
-    }
-}
-
-// Animates an anger mark near the mon's head.
-// arg 0: initial x pixel offset
-// arg 1: initial y pixel offset
-static void AnimWeakFrustrationAngerMark(struct Sprite *sprite)
-{
-    if (sprite->data[0] == 0)
-    {
-        InitSpritePosToAnimAttacker(sprite, FALSE);
-        sprite->data[0]++;
-    }
-    else if (sprite->data[0]++ > 20)
-    {
-        sprite->data[1] += 160;
-        sprite->data[2] += 128;
-
-        if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
-            sprite->x2 = -(sprite->data[1] >> 8);
-        else
-            sprite->x2 = sprite->data[1] >> 8;
-
-        sprite->y2 += sprite->data[2] >> 8;
-        if (sprite->y2 > 64)
-            DestroyAnimSprite(sprite);
     }
 }
 

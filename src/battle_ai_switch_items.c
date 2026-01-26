@@ -477,7 +477,7 @@ static bool32 ShouldSwitchIfAbilityBenefit(u32 battler)
     {
         case ABILITY_NATURAL_CURE:
             //Attempt to cure bad ailment
-            if (gBattleMons[battler].status1 & (STATUS1_SLEEP | STATUS1_FREEZE | STATUS1_TOXIC_POISON)
+            if (gBattleMons[battler].status1 & (STATUS1_SLEEP | STATUS1_CONGELACION | STATUS1_TOXIC_POISON)
                 && AI_DATA->mostSuitableMonId[battler] != PARTY_SIZE
                 && (hasStatRaised ? PorcentajeAleatorio(10) : PorcentajeAleatorio(66)))
                 break;
@@ -1352,7 +1352,7 @@ static u32 GetSwitchinStatusDamage(u32 battler)
             if (statusDamage == 0)
                 statusDamage = 1;
         }
-        else if (status & STATUS1_FREEZE)
+        else if (status & STATUS1_CONGELACION)
         {
             statusDamage = maxHP / 16;
             if (statusDamage == 0)

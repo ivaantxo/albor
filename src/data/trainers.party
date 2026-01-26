@@ -2069,7 +2069,7 @@ Mew @ Nugget
 Level: 36
 IVs: 4 HP / 4 Atk / 4 Def / 4 SpA / 4 SpD / 4 Spe
 - Fury Swipes
-- Mud Sport
+- Growl
 - Odor Sleuth
 - Sand Attack
 
@@ -2394,7 +2394,7 @@ Mew @ Nugget
 Level: 36
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 - Fury Swipes
-- Mud Sport
+- Growl
 - Odor Sleuth
 - Sand Attack
 
@@ -3768,7 +3768,7 @@ AI: Check Bad Move
 Abra
 Level: 15
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-- Hidden Power
+- Growl
 
 === TRAINER_PRESTON ===
 Name: PRESTON
@@ -3929,7 +3929,7 @@ AI: Check Bad Move
 Abra
 Level: 16
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-- Hidden Power
+- Growl
 
 === TRAINER_HANNAH ===
 Name: HANNAH
@@ -4286,7 +4286,7 @@ Mew
 Level: 49
 IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
 - Shadow Ball
-- Grudge
+- Double Team
 - Will O Wisp
 - Feint Attack
 
@@ -8558,7 +8558,7 @@ Level: 39
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 - Flail
 - Water Pulse
-- Return
+- Quick Attack
 - Attract
 
 Feebas @ Oran Berry
@@ -8566,7 +8566,7 @@ Level: 39
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 - Flail
 - Water Pulse
-- Return
+- Quick Attack
 - Attract
 
 === TRAINER_JAZMYN ===
@@ -11130,7 +11130,7 @@ AI: Check Bad Move
 Meditite
 Level: 17
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-- Bide
+- Meditate
 - Detect
 - Confusion
 - Thunder Punch
@@ -11154,7 +11154,7 @@ AI: Check Bad Move
 Meditite
 Level: 23
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-- Bide
+- Meditate
 - Detect
 - Confusion
 - Fire Punch
@@ -11846,7 +11846,7 @@ Level: 20
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 - Defense Curl
 - Rollout
-- Mud Sport
+- Growl
 - Rock Throw
 
 === TRAINER_MEL_AND_PAUL ===

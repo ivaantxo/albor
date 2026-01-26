@@ -262,8 +262,6 @@ struct SideTimer
 
 struct FieldTimer
 {
-    u8 mudSportTimer;
-    u8 waterSportTimer;
     u8 wonderRoomTimer;
     u8 magicRoomTimer;
     u8 trickRoomTimer;
@@ -661,7 +659,6 @@ struct BattleStruct
 struct BattleScripting
 {
     s32 painSplitHp;
-    s32 bideDmg;
     u8 multihitString[6];
     u8 animArg1;
     u8 animArg2;
@@ -827,7 +824,6 @@ extern u16 gChosenMove;
 extern u16 gCalledMove;
 extern s32 gBattleMoveDamage;
 extern s32 gHpDealt;
-extern s32 gBideDmg[NUMERO_COMBATIENTES];
 extern u16 gLastUsedItem;
 extern u16 gLastUsedAbility;
 extern u8 gBattlerAttacker;
@@ -853,7 +849,6 @@ extern u8 gLastHitBy[NUMERO_COMBATIENTES];
 extern u16 gMovimientoElegido[NUMERO_COMBATIENTES];
 extern u16 gMoveResultFlags;
 extern u32 gHitMarker;
-extern u8 gBideTarget[NUMERO_COMBATIENTES];
 extern u32 gSideStatuses[NUMERO_LADOS];
 extern struct SideTimer gSideTimers[NUMERO_LADOS];
 extern u32 gStatuses3[NUMERO_COMBATIENTES];

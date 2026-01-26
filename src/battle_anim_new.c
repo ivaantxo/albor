@@ -89,15 +89,13 @@ static void SpriteCB_SteelRoller_LeftRight(struct Sprite* sprite);
 static void SpriteCB_SteelRoller(struct Sprite* sprite);
 static void SpriteCB_FlippableSlash(struct Sprite* sprite);
 static void SpriteCB_DragonEnergyShot(struct Sprite* sprite);
-static void SpriteCB_MaxFlutterbyStep1(struct Sprite* sprite);
-static void SpriteCB_MaxFlutterbyStep2(struct Sprite* sprite);
-static void SpriteCB_MaxFlutterby(struct Sprite* sprite);
 static void SpriteCB_GlacialLance_Step1(struct Sprite* sprite);
 static void SpriteCB_GlacialLance_Step2(struct Sprite* sprite);
 static void SpriteCB_GlacialLance(struct Sprite* sprite);
 static void SpriteCB_TripleArrowKick(struct Sprite* sprite);
 static void AnimEmboarCarga(struct Sprite *);
 static void AnimEmboarCarga_Step(struct Sprite *);
+static void AnimLlama(struct Sprite *);
 
 // const data
 // general
@@ -727,7 +725,7 @@ const struct SpriteTemplate gNightDazeVioletCirclesTemplate =
     .oam = &gOamData_AffineDouble_ObjNormal_16x16,
     .anims = gDummySpriteAnimTable,
     .images = NULL,
-    .affineAnims = gHiddenPowerOrbAffineAnimTable,
+    .affineAnims = gOrbAffineAnimTable,
     .callback = AnimOrbitScatter
 };
 
@@ -1743,7 +1741,7 @@ const struct SpriteTemplate gThousandArrowsGreenArrowTemplate =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimMudSportDirt
+    .callback = AnimSalpicaTierraDirt
 };
 
 const struct SpriteTemplate gThousandArrowsGreenDischargeTemplate =
@@ -2105,7 +2103,7 @@ const struct SpriteTemplate gSparklingAriaRainTemplate =
     .anims = gAnims_WaterBubbleProjectile,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimMudSportDirt
+    .callback = AnimSalpicaTierraDirt
 };
 
 const struct SpriteTemplate gSparklingAriaBubbleRainTemplate =
@@ -2116,7 +2114,7 @@ const struct SpriteTemplate gSparklingAriaBubbleRainTemplate =
     .anims = gAnims_WaterBubbleProjectile,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimMudSportDirt
+    .callback = AnimSalpicaTierraDirt
 };
 
 const struct SpriteTemplate gSparklingAriaBubblesTemplate =
@@ -4153,6 +4151,32 @@ const struct SpriteTemplate gSpriteTemplate_GlacialLance = {
 };
 
 // eerie spell
+
+static const union AnimCmd sAnim_Llama[] =
+{
+    ANIMCMD_FRAME(0, 4),
+    ANIMCMD_FRAME(8, 4),
+    ANIMCMD_FRAME(16, 4),
+    ANIMCMD_FRAME(24, 4),
+    ANIMCMD_JUMP(0),
+};
+
+const union AnimCmd *const gAnims_Llama[] =
+{
+    sAnim_Llama,
+};
+
+const struct SpriteTemplate gLlamaSpriteTemplate =
+{
+    .tileTag = ANIM_TAG_PURPLE_FLAME,
+    .paletteTag = ANIM_TAG_PURPLE_FLAME,
+    .oam = &gOamData_AffineOff_ObjBlend_16x32,
+    .anims = gAnims_Llama,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = AnimLlama,
+};
+
 static const struct OamData sOamData_EerieSpellFlame = {
     .y = 0,
     .affineMode = ST_OAM_AFFINE_NORMAL,
@@ -4169,12 +4193,11 @@ const struct SpriteTemplate gSpriteTemplate_EerieSpellFlame = {
     .tileTag = ANIM_TAG_PURPLE_FLAME,
     .paletteTag = ANIM_TAG_PURPLE_FLAME,
     .oam = &sOamData_EerieSpellFlame,
-    .anims = gAnims_GrudgeFlame,
+    .anims = gAnims_Llama,
     .images = NULL,
     .affineAnims = gAffineAnims_ShadowBall,
     .callback = AnimNeedleArmSpike
 };
-
 
 //// GEN 9
 // Psyshield bash
@@ -4304,7 +4327,7 @@ const struct SpriteTemplate gSpriteTemplate_MaxQuakeDirtGeyser = {
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimMudSportDirt
+    .callback = AnimSalpicaTierraDirt
 };
 const struct SpriteTemplate gSpriteTemplate_MaxQuakeRockGeyser = {
     .tileTag = ANIM_TAG_ROCKS,
@@ -4367,7 +4390,7 @@ const struct SpriteTemplate gSpriteTemplate_InfernalParadeFlame = {
     .tileTag = ANIM_TAG_PURPLE_FLAME,
     .paletteTag = ANIM_TAG_PURPLE_FLAME,
     .oam = &gOamData_AffineDouble_ObjBlend_32x16,
-    .anims = gAnims_GrudgeFlame,
+    .anims = gAnims_Llama,
     .images = NULL,
     .affineAnims = sSpriteAffineAnimTable_Flutterby,
     .callback = SpriteCB_MaxFlutterby
@@ -6449,7 +6472,7 @@ const struct SpriteTemplate gGuardianOfAlolaDirtGeyserSpriteTemplate =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimMudSportDirt
+    .callback = AnimSalpicaTierraDirt
 };
 
 // seering sunraze smash
@@ -7871,7 +7894,7 @@ static void SpriteCB_Geyser(struct Sprite *sprite)
     sprite->y = GetBattlerSpriteCoord(gBattleAnimAttacker, 3) + gBattleAnimArgs[2];
 
     sprite->data[0] = gBattleAnimArgs[1] > 0 ? 1 : -1;
-    sprite->callback = AnimMudSportDirtRising;
+    sprite->callback = AnimSalpicaTierraDirtRising;
 }
 
 //Launches an object upwards like they were being shot from a geyser
@@ -7884,7 +7907,7 @@ static void SpriteCB_GeyserTarget(struct Sprite *sprite)
     sprite->y = GetBattlerSpriteCoord(gBattleAnimTarget, 3) + gBattleAnimArgs[2];
 
     sprite->data[0] = gBattleAnimArgs[1] > 0 ? 1 : -1;
-    sprite->callback = AnimMudSportDirtRising;
+    sprite->callback = AnimSalpicaTierraDirtRising;
 }
 
 //// Anim Tasks Functions
@@ -8165,6 +8188,139 @@ void AnimTask_CreateBestowItem(u8 taskId)
     DestroyAnimVisualTask(taskId);
 }
 
+void AnimTask_Llamas(u8 taskId)
+{
+    struct Task *task = &gTasks[taskId];
+
+    task->data[0] = 0;
+    task->data[1] = 16;
+    task->data[9] = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_X_2);
+    task->data[10] = GetBattlerYCoordWithElevation(gBattleAnimAttacker);
+    task->data[11] = (GetBattlerSpriteCoordAttr(gBattleAnimAttacker, BATTLER_COORD_ATTR_WIDTH) / 2) + 8;
+    task->data[7] = 0;
+    task->data[5] = GetBattlerSpriteBGPriority(gBattleAnimAttacker);
+    task->data[6] = GetBattlerSpriteSubpriority(gBattleAnimAttacker) - 2;
+    task->data[3] = 0;
+    task->data[4] = 16;
+    SetGpuReg(REG_OFFSET_BLDCNT, (BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_ALL));
+    SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 0x10));
+    task->data[8] = 0;
+    task->func = AnimTask_Llamas_Step;
+}
+
+void AnimTask_Llamas_Step(u8 taskId)
+{
+    u32 i;
+    u32 spriteId;
+    struct Task *task = &gTasks[taskId];
+
+    switch (task->data[0])
+    {
+    case 0:
+        for (i = 0; i < 6; i++)
+        {
+            spriteId = CreateSprite(&gLlamaSpriteTemplate, task->data[9], task->data[10], task->data[6]);
+            if (spriteId != MAX_SPRITES)
+            {
+                gSprites[spriteId].data[0] = taskId;
+                gSprites[spriteId].data[1] = GetBattlerSide(gBattleAnimAttacker) == LADO_JUGADOR;
+
+                gSprites[spriteId].data[2] = (i * 42) & 0xFF;
+                gSprites[spriteId].data[3] = task->data[11];
+                gSprites[spriteId].data[5] = i * 6;
+                task->data[7]++;
+            }
+        }
+
+        task->data[0]++;
+        break;
+    case 1:
+        if (++task->data[1] & 1)
+        {
+            if (task->data[3] < 14)
+                task->data[3]++;
+        }
+        else
+        {
+            if (task->data[4] > 4)
+                task->data[4]--;
+        }
+
+        if (task->data[3] == 14 && task->data[4] == 4)
+        {
+            task->data[1] = 0;
+            task->data[0]++;
+        }
+
+        SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(task->data[3], task->data[4]));
+        break;
+    case 2:
+        if (++task->data[1] > 30)
+        {
+            task->data[1] = 0;
+            task->data[0]++;
+        }
+        break;
+    case 3:
+        if (++task->data[1] & 1)
+        {
+            if (task->data[3] > 0)
+                task->data[3]--;
+        }
+        else
+        {
+            if (task->data[4] < 16)
+                task->data[4]++;
+        }
+
+        if (task->data[3] == 0 && task->data[4] == 16)
+        {
+            task->data[8] = 1;
+            task->data[0]++;
+        }
+
+        SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(task->data[3], task->data[4]));
+        break;
+    case 4:
+        if (task->data[7] == 0)
+            task->data[0]++;
+        break;
+    case 5:
+        SetGpuReg(REG_OFFSET_BLDCNT, 0);
+        SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+        DestroyAnimVisualTask(taskId);
+        break;
+    }
+}
+
+static void AnimLlama(struct Sprite *sprite)
+{
+    u16 index;
+
+    if (sprite->data[1] == 0)
+        sprite->data[2] += 2;
+    else
+        sprite->data[2] -= 2;
+
+    sprite->data[2] &= 0xFF;
+    sprite->x2 = Sin(sprite->data[2], sprite->data[3]);
+
+    index = sprite->data[2] - 65;
+    if (index < 127)
+        sprite->oam.priority = gTasks[sprite->data[0]].data[5] + 1;
+    else
+        sprite->oam.priority = gTasks[sprite->data[0]].data[5];
+
+    sprite->data[5]++;
+    sprite->data[6] = (sprite->data[5] * 8) & 0xFF;
+    sprite->y2 = Sin(sprite->data[6], 7);
+    if (gTasks[sprite->data[0]].data[8])
+    {
+        gTasks[sprite->data[0]].data[7]--;
+        DestroySprite(sprite);
+    }
+}
+
 //Creates purple flames that surround the target.
 //No args.
 void AnimTask_PurpleFlamesOnTarget(u8 taskId)
@@ -8184,7 +8340,7 @@ void AnimTask_PurpleFlamesOnTarget(u8 taskId)
     SetGpuReg(REG_OFFSET_BLDCNT, (BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_ALL));
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 0x10));
     task->data[8] = 0;
-    task->func = AnimTask_GrudgeFlames_Step;
+    task->func = AnimTask_Llamas_Step;
 }
 
 void AnimTask_TechnoBlast(u8 taskId)

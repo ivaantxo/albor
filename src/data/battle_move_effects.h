@@ -127,11 +127,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_BIDE] =
-    {
-        .battleScript = BattleScript_EffectBide,
-    },
-
     [EFFECT_ROAR] =
     {
         .battleScript = BattleScript_EffectRoar,
@@ -522,11 +517,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_RETURN] =
-    {
-        .battleScript = BattleScript_EffectHit,
-    },
-
     [EFFECT_PRESENT] =
     {
         .battleScript = BattleScript_EffectPresent,
@@ -574,11 +564,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     {
         .battleScript = BattleScript_EffectMoonlight,
         .encourageEncore = TRUE,
-    },
-
-    [EFFECT_HIDDEN_POWER] =
-    {
-        .battleScript = BattleScript_EffectHit,
     },
 
     [EFFECT_RAIN_DANCE] =
@@ -848,12 +833,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_GRUDGE] =
-    {
-        .battleScript = BattleScript_EffectGrudge,
-        .encourageEncore = TRUE,
-    },
-
     [EFFECT_SNATCH] =
     {
         .battleScript = BattleScript_EffectSnatch,
@@ -867,12 +846,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_HIT_ESCAPE] =
     {
         .battleScript = BattleScript_EffectHitEscape,
-    },
-
-    [EFFECT_MUD_SPORT] =
-    {
-        .battleScript = BattleScript_EffectMudSport,
-        .encourageEncore = TRUE,
     },
 
     [EFFECT_WEATHER_BALL] =
@@ -894,12 +867,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_BULK_UP] =
     {
         .battleScript = BattleScript_EffectBulkUp,
-        .encourageEncore = TRUE,
-    },
-
-    [EFFECT_WATER_SPORT] =
-    {
-        .battleScript = BattleScript_EffectWaterSport,
         .encourageEncore = TRUE,
     },
 

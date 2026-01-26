@@ -198,8 +198,6 @@ static const u8 sText_PkmnWasMadeDrowsy[] = _("{B_ATK_NAME_WITH_PREFIX} made {B_
 static const u8 sText_PkmnKnockedOff[] = _("{B_ATK_NAME_WITH_PREFIX} knocked off {B_DEF_NAME_WITH_PREFIX}'s {B_LAST_ITEM}!");
 static const u8 sText_PkmnSwappedAbilities[] = _("{B_ATK_NAME_WITH_PREFIX} swapped abilities with its opponent!");
 static const u8 sText_PkmnSealedOpponentMove[] = _("{B_ATK_NAME_WITH_PREFIX} sealed the opponent's move(s)!");
-static const u8 sText_PkmnWantsGrudge[] = _("{B_ATK_NAME_WITH_PREFIX} wants the opponent to bear a GRUDGE!");
-static const u8 sText_PkmnLostPPGrudge[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1} lost all its PP due to the GRUDGE!");
 static const u8 sText_PkmnShroudedItself[] = _("{B_ATK_NAME_WITH_PREFIX} shrouded itself in {B_CURRENT_MOVE}!");
 static const u8 sText_PkmnMoveBounced[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_CURRENT_MOVE} was bounced back by MAGIC COAT!");
 static const u8 sText_PkmnWaitsForTarget[] = _("{B_ATK_NAME_WITH_PREFIX} waits for a target to make a move!");
@@ -456,8 +454,6 @@ static const u8 sText_LuckyChantEnds[] = _("{B_ATK_TEAM1} team's Lucky Chant wor
 static const u8 sText_TrickRoomEnds[] = _("The twisted dimensions returned to normal!");
 static const u8 sText_WonderRoomEnds[] = _("Wonder Room wore off, and Defense and Sp. Def stats returned to normal!");
 static const u8 sText_MagicRoomEnds[] = _("Magic Room wore off, and held items' effects returned to normal!");
-static const u8 sText_MudSportEnds[] = _("The effects of Mud Sport have faded.");
-static const u8 sText_WaterSportEnds[] = _("The effects of Water Sport have faded.");
 static const u8 sText_GravityEnds[] = _("Gravity returned to normal!");
 static const u8 sText_AquaRingHeal[] = _("Aqua Ring restored {B_ATK_NAME_WITH_PREFIX}'s HP!");
 static const u8 sText_TargetAbilityRaisedStat[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} raised its {B_BUFF1}!");
@@ -743,8 +739,6 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_PKMNENERGYDRAINED] = sText_PkmnEnergyDrained,
     [STRINGID_PKMNWASBURNED] = sText_PkmnWasBurned,
     [STRINGID_PKMNBURNEDBY] = sText_PkmnBurnedBy,
-    [STRINGID_PKMNWASFROZEN] = ("{B_EFF_NAME_WITH_PREFIX} was frozen solid!"),
-    [STRINGID_PKMNFROZENBY] = ("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_BUFF1} froze {B_EFF_NAME_WITH_PREFIX} solid!"),
     [STRINGID_PKMNWASPARALYZED] = sText_PkmnWasParalyzed,
     [STRINGID_PKMNWASPARALYZEDBY] = sText_PkmnWasParalyzedBy,
     [STRINGID_PKMNISPARALYZED] = sText_PkmnIsParalyzed,
@@ -870,8 +864,6 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_PKMNSWAPPEDABILITIES] = sText_PkmnSwappedAbilities,
     [STRINGID_PKMNSEALEDOPPONENTMOVE] = sText_PkmnSealedOpponentMove,
     [STRINGID_PKMNCANTUSEMOVESEALED] = sText_PkmnCantUseMoveSealed,
-    [STRINGID_PKMNWANTSGRUDGE] = sText_PkmnWantsGrudge,
-    [STRINGID_PKMNLOSTPPGRUDGE] = sText_PkmnLostPPGrudge,
     [STRINGID_PKMNSHROUDEDITSELF] = sText_PkmnShroudedItself,
     [STRINGID_PKMNMOVEBOUNCED] = sText_PkmnMoveBounced,
     [STRINGID_PKMNWAITSFORTARGET] = sText_PkmnWaitsForTarget,
@@ -1078,8 +1070,6 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_TRICKROOMENDS] = sText_TrickRoomEnds,
     [STRINGID_WONDERROOMENDS] = sText_WonderRoomEnds,
     [STRINGID_MAGICROOMENDS] = sText_MagicRoomEnds,
-    [STRINGID_MUDSPORTENDS] = sText_MudSportEnds,
-    [STRINGID_WATERSPORTENDS] = sText_WaterSportEnds,
     [STRINGID_GRAVITYENDS] = sText_GravityEnds,
     [STRINGID_AQUARINGHEAL] = sText_AquaRingHeal,
     [STRINGID_TARGETABILITYSTATRAISE] = sText_TargetAbilityRaisedStat,
@@ -1407,12 +1397,6 @@ const u32 gAbsorbDrainStringIds[] =
 {
     [B_MSG_ABSORB]      = STRINGID_PKMNENERGYDRAINED,
     [B_MSG_ABSORB_OOZE] = STRINGID_ITSUCKEDLIQUIDOOZE
-};
-
-const u32 gSportsUsedStringIds[] =
-{
-    [B_MSG_WEAKEN_ELECTRIC] = STRINGID_ELECTRICITYWEAKENED,
-    [B_MSG_WEAKEN_FIRE]     = STRINGID_FIREWEAKENED
 };
 
 const u32 gPartyStatusHealStringIds[] =
