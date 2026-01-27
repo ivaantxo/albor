@@ -16,7 +16,7 @@
 #endif
 
 /* First arg is the charge turn string id, second arg depends on effect
-EFFECT_SEMI_INVULNERABLE/EFFECT_SKY_DROP: semi-invulnerable STATUS3 to apply to battler
+EFFECT_SEMI_INVULNERABLE: semi-invulnerable STATUS3 to apply to battler
 EFFECT_TWO_TURNS_ATTACK/EFFECT_SOLAR_BEAM: weather in which to skip charge turn */
 #define TWO_TURN_ARG(stringid, ...) (stringid) __VA_OPT__(| ((__VA_ARGS__) << 16))
 
@@ -10061,29 +10061,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .argument = STATUS1_ANY,
         .battleAnimScript = gBattleAnimMove_Hex,
-    },
-
-    [MOVE_SKY_DROP] =
-    {
-        .name = COMPOUND_STRING("Caída libre"),
-        .description = COMPOUND_STRING(
-            "Takes the foe into the sky\n"
-            "then drops it the next turn."),
-        .effect = EFFECT_SKY_DROP,
-        .power = 60,
-        .type = TIPO_VOLADOR,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .gravityBanned = TRUE,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .assistBanned = TRUE,
-        .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKTARGETHIGH, COMPRESS_BITS(STATUS3_ON_AIR)),
-        .battleAnimScript = gBattleAnimMove_SkyDrop,
     },
 
     [MOVE_SHIFT_GEAR] =

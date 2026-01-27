@@ -1120,7 +1120,6 @@ static void BattleStartClearSetData(void)
         gBattleStruct->lastTakenMoveFrom[combatiente][2] = MOVE_NONE;
         gBattleStruct->lastTakenMoveFrom[combatiente][3] = MOVE_NONE;
         gBattleStruct->AI_monToSwitchIntoId[combatiente] = PARTY_SIZE;
-        gBattleStruct->skyDropTargets[combatiente] = 0xFF;
         gBattleStruct->overwrittenAbilities[combatiente] = ABILITY_NONE;
         DesmarcaCombatienteOcupado[combatiente];
     }
@@ -1426,44 +1425,6 @@ const u8 *FaintClearSetData(u32 battler)
 
     gBattleStruct->overwrittenAbilities[battler] = ABILITY_NONE;
 
-    // If the fainted mon was involved in a Sky Drop
-    if (gBattleStruct->skyDropTargets[battler] != 0xFF)
-    {
-        // Get battler id of the other Pokemon involved in this Sky Drop
-        u8 otherSkyDropper = gBattleStruct->skyDropTargets[battler];
-
-        // Clear Sky Drop data
-        gBattleStruct->skyDropTargets[battler] = 0xFF;
-        gBattleStruct->skyDropTargets[otherSkyDropper] = 0xFF;
-
-        // If the other Pokemon involved in this Sky Drop was the target, not the attacker
-        if (gStatuses3[otherSkyDropper] & STATUS3_SKY_DROPPED)
-        {
-            // Release the target and take them out of the semi-invulnerable state
-            gStatuses3[otherSkyDropper] &= ~(STATUS3_SKY_DROPPED | STATUS3_ON_AIR);
-
-            // Make the target's sprite visible
-            gSprites[gBattlerSpriteIds[otherSkyDropper]].invisible = FALSE;
-
-            // If the target was sky dropped in the middle of using Outrage/Petal Dance/Thrash,
-            // confuse them upon release and print "confused via fatigue" message and animation.
-            if (gBattleMons[otherSkyDropper].status2 & STATUS2_LOCK_CONFUSE)
-            {
-                gBattleMons[otherSkyDropper].status2 &= ~(STATUS2_LOCK_CONFUSE);
-
-                // If the released mon can be confused, do so.
-                // Don't use CanBeConfused here, since it can cause issues in edge cases.
-                if (!(GetBattlerAbility(otherSkyDropper) == ABILITY_OWN_TEMPO
-                    || gBattleMons[otherSkyDropper].status2 & STATUS2_CONFUSION
-                    || IsBattlerTerrainAffected(otherSkyDropper, STATUS_FIELD_MISTY_TERRAIN)))
-                {
-                    gBattleMons[otherSkyDropper].status2 |= STATUS2_CONFUSION_TURN(((Random()) % 4) + 2);
-                    gBattlerAttacker = otherSkyDropper;
-                    result = BattleScript_ThrashConfuses;
-                }
-            }
-        }
-    }
     return result;
 }
 

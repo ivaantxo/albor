@@ -148,8 +148,6 @@ BattleScript_MoveSwitchOpenPartyScreen:
 	getswitchedmondata BS_ATTACKER
 	switchindataupdate BS_ATTACKER
 	hpthresholds BS_ATTACKER
-	printstring STRINGID_EMPTYSTRING3
-	waitmessage 1
 	printstring STRINGID_SWITCHINMON
 	switchinanim BS_ATTACKER, TRUE
 	waitstate
@@ -258,54 +256,6 @@ BattleScript_EffectAttackUpUserAlly_TryAllyBlocked:
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectSkyDrop::
-	attackcanceler
-	jumpifstatus2 BS_ATTACKER, STATUS2_MULTIPLETURNS, BattleScript_SkyDropTurn2
-	ppreduce
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	jumpifsubstituteblocks BattleScript_ButItFailed
-	jumpiftargetally BattleScript_ButItFailed
-	jumpifunder200 BS_TARGET, BattleScript_SkyDropWork
-	pause B_WAIT_TIME_SHORT
-	printstring STRINGID_TARGETTOOHEAVY
-	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_MoveEnd
-
-BattleScript_SkyDropWork:
-	setskydrop
-	call BattleScript_FirstChargingTurnAfterAttackString
-	goto BattleScript_MoveEnd
-BattleScript_SkyDropTurn2:
-	call BattleScript_TwoTurnMovesSecondTurnRet
-	attackstring
-	clearskydrop BattleScript_SkyDropChangedTarget
-	jumpiftype BS_TARGET, TIPO_VOLADOR, BattleScript_SkyDropFlyingType
-	goto BattleScript_HitFromCritCalc
-BattleScript_SkyDropFlyingType:
-	makevisible BS_TARGET
-	printstring STRINGID_ITDOESNTAFFECT
-	waitmessage B_WAIT_TIME_LONG
-	makevisible BS_ATTACKER
-	jumpifstatus2 BS_TARGET, STATUS2_CONFUSION, BattleScript_SkyDropFlyingAlreadyConfused
-	jumpifstatus2 BS_TARGET, STATUS2_LOCK_CONFUSE, BattleScript_SkyDropFlyingConfuseLock
-	goto BattleScript_MoveEnd
-BattleScript_SkyDropChangedTarget:
-	pause B_WAIT_TIME_SHORT
-	orhalfword gMoveResultFlags, MOVE_RESULT_FAILED
-	resultmessage
-	waitmessage B_WAIT_TIME_LONG
-	makevisible BS_ATTACKER
-	goto BattleScript_MoveEnd
-
-BattleScript_SkyDropFlyingConfuseLock:
-	seteffectprimary MOVE_EFFECT_CONFUSION
-BattleScript_SkyDropFlyingAlreadyConfused:
-	clearstatusfromeffect BS_TARGET, MOVE_EFFECT_THRASH
-	jumpifstatus2 BS_TARGET, STATUS2_CONFUSION, BattleScript_MoveEnd
-	setbyte BS_ATTACKER, BS_TARGET
-	goto BattleScript_ThrashConfuses
-
 BattleScript_EffectPhotonGeyser::
 	setphotongeysercategory
 	goto BattleScript_EffectHit
@@ -346,7 +296,7 @@ BattleScript_EffectPoltergeist::
 	attackstring
 	ppreduce
 	checkpoltergeist BS_TARGET, BattleScript_ButItFailed
-	printstring STRINGID_ABOUTTOUSEPOLTERGEIST
+	printstring ("{B_DEF_NAME_WITH_PREFIX} is about to be attacked by its {B_BUFF1}!")
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_HitFromCritCalc
 
@@ -997,7 +947,6 @@ BattleScript_SynchronoiseLoop:
 	waitmessage B_WAIT_TIME_LONG
 	resultmessage
 	waitmessage B_WAIT_TIME_LONG
-	flushtextbox
 	tryfaintmon BS_TARGET
 BattleScript_SynchronoiseMoveTargetEnd:
 	moveendto MOVEEND_NEXT_TARGET
@@ -1580,7 +1529,6 @@ BattleScript_EffectSimpleBeam::
 	printstring STRINGID_PKMNACQUIREDSIMPLE
 	waitmessage B_WAIT_TIME_LONG
 	tryrevertweatherform
-	flushtextbox
 	tryendneutralizinggas BS_TARGET
 	goto BattleScript_MoveEnd
 
@@ -1632,7 +1580,6 @@ BattleScript_EffectHealingWish::
 	getswitchedmondata BS_ATTACKER
 	switchindataupdate BS_ATTACKER
 	hpthresholds BS_ATTACKER
-	flushtextbox
 	printstring STRINGID_SWITCHINMON
 	switchinanim BS_ATTACKER, TRUE
 	waitstate
@@ -1792,7 +1739,6 @@ BattleScript_EffectGastroAcid::
 	printstring STRINGID_PKMNSABILITYSUPPRESSED
 	waitmessage B_WAIT_TIME_LONG
 	tryrevertweatherform
-	flushtextbox
 	tryendneutralizinggas BS_TARGET
 	goto BattleScript_MoveEnd
 
@@ -2647,7 +2593,7 @@ BattleScript_EffectConfuse::
 BattleScript_AlreadyConfused::
 	setalreadystatusedmoveattempt BS_ATTACKER
 	pause B_WAIT_TIME_SHORT
-	printstring STRINGID_PKMNALREADYCONFUSED
+	printstring ("{B_DEF_NAME_WITH_PREFIX} is already confused!")
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
@@ -2691,7 +2637,6 @@ BattleScript_EffectTransform::
 	attackcanceler
 	attackstring
 	ppreduce
-	flushtextbox
 	transformdataexecution
 	attackanimation
 	waitanimation
@@ -2864,18 +2809,10 @@ BattleScript_FirstChargingTurn::
 	attackcanceler
 @ before Gen 5, charge moves did not print an attack string on the charge turn
 .if B_UPDATED_MOVE_DATA >= GEN_5
-	flushtextbox
 	attackstring
 	waitmessage B_WAIT_TIME_LONG
 .endif
 	ppreduce
-BattleScript_FirstChargingTurnAfterAttackString:
-	setsemiinvulnerablebit @ only for moves with EFFECT_SEMI_INVULNERABLE/EFFECT_SKY_DROP
-	orword gHitMarker, HITMARKER_CHARGING
-	seteffectprimary MOVE_EFFECT_CHARGING | MOVE_EFFECT_AFFECTS_USER
-	twoturnmoveschargestringandanimation
-	setadditionaleffects @ only onChargeTurnOnly effects will work here
-	return
 
 BattleScript_TwoTurnMovesSecondPowerHerbActivates:
 	call BattleScript_PowerHerbActivation
@@ -2898,7 +2835,7 @@ BattleScript_TwoTurnMovesSecondTurn::
 BattleScript_TwoTurnMovesSecondTurnRet:
 	setbyte sB_ANIM_TURN, 1
 	clearstatusfromeffect BS_ATTACKER, MOVE_EFFECT_CHARGING
-	clearsemiinvulnerablebit @ only for moves with EFFECT_SEMI_INVULNERABLE/EFFECT_SKY_DROP
+	clearsemiinvulnerablebit @ only for moves with EFFECT_SEMI_INVULNERABLE
 	return
 
 BattleScript_EffectSubstitute::
@@ -3501,7 +3438,6 @@ BattleScript_EffectRelevo::
 	getswitchedmondata BS_ATTACKER
 	switchindataupdate BS_ATTACKER
 	hpthresholds BS_ATTACKER
-	flushtextbox
 	printstring STRINGID_SWITCHINMON
 	switchinanim BS_ATTACKER, TRUE
 	waitstate
@@ -4083,7 +4019,7 @@ BattleScript_EffectRecycle::
 	tryrecycleitem BattleScript_ButItFailed
 	attackanimation
 	waitanimation
-	printstring STRINGID_XFOUNDONEY
+	printstring ("{B_ATK_NAME_WITH_PREFIX} found one {B_LAST_ITEM}!")
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
@@ -4430,7 +4366,6 @@ BattleScript_FaintedMonSendOutNew:
 	getswitchedmondata BS_FAINTED
 	switchindataupdate BS_FAINTED
 	hpthresholds BS_FAINTED
-	flushtextbox
 	printstring STRINGID_SWITCHINMON
 	hidepartystatussummary BS_FAINTED
 	switchinanim BS_FAINTED, FALSE
@@ -4466,7 +4401,6 @@ BattleScript_HandleFaintedMonLoop::
 	getswitchedmondata BS_FAINTED
 	switchindataupdate BS_FAINTED
 	hpthresholds BS_FAINTED
-	flushtextbox
 	printstring STRINGID_SWITCHINMON
 	hidepartystatussummary BS_FAINTED
 	switchinanim BS_FAINTED, FALSE
@@ -4585,7 +4519,6 @@ BattleScript_DoSwitchOut::
 	getswitchedmondata BS_ATTACKER
 	switchindataupdate BS_ATTACKER
 	hpthresholds BS_ATTACKER
-	flushtextbox
 	printstring STRINGID_SWITCHINMON
 	hidepartystatussummary BS_ATTACKER
 	switchinanim BS_ATTACKER, FALSE
@@ -4618,6 +4551,7 @@ BattleScript_PursuitDmgOnSwitchOut::
 	jumpiffainted BS_TARGET, FALSE, BattleScript_PursuitDmgOnSwitchOutRet
 	setbyte sGIVEEXP_STATE, 0
 	getexp BS_TARGET
+
 BattleScript_PursuitDmgOnSwitchOutRet:
 	return
 
@@ -4690,7 +4624,7 @@ BattleScript_IceBodyHeal::
 	playanimation BS_SCRIPTING, B_ANIM_SIMPLE_HEAL
 	healthbarupdate BS_SCRIPTING
 	datahpupdate BS_SCRIPTING
-	printstring STRINGID_ICEBODYHPGAIN
+	printstring ("{B_ATK_NAME_WITH_PREFIX}'s {B_ATK_ABILITY} healed it a little bit!")
 	waitmessage B_WAIT_TIME_LONG
 	end2
 
@@ -4821,7 +4755,6 @@ BattleScript_RoarSuccessSwitch::
 	call BattleScript_RoarSuccessRet
 	getswitchedmondata BS_TARGET
 	switchindataupdate BS_TARGET
-	flushtextbox
 	switchinanim BS_TARGET, FALSE
 	waitstate
 	printstring STRINGID_PKMNWASDRAGGEDOUT
@@ -5544,7 +5477,6 @@ BattleScript_MoveEffectClearSmog::
 	return
 
 BattleScript_FocusPunchSetUp::
-	flushtextbox
 	playanimation BS_ATTACKER, B_ANIM_FOCUS_PUNCH_SETUP
 	printstring STRINGID_PKMNTIGHTENINGFOCUS
 	waitmessage B_WAIT_TIME_LONG
@@ -5558,7 +5490,6 @@ BattleScript_AttackerFormChange::
 	pause 5
 	copybyte gBattlerAbility, gBattlerAttacker
 	call BattleScript_AbilityPopUp
-	flushtextbox
 BattleScript_AttackerFormChangeNoPopup::
 	handleformchange BS_ATTACKER, 0
 	handleformchange BS_ATTACKER, 1
@@ -5579,7 +5510,7 @@ BattleScript_AttackerFormChangeWithString::
 	pause 5
 	copybyte gBattlerAbility, gBattlerAttacker
 	call BattleScript_AbilityPopUp
-	flushtextbox
+
 BattleScript_AttackerFormChangeWithStringNoPopup::
 	handleformchange BS_ATTACKER, 0
 	handleformchange BS_ATTACKER, 1
@@ -5632,7 +5563,6 @@ BattleScript_ApplyDisguiseFormChangeHPLoss::
 	return
 
 BattleScript_TargetFormChangeNoPopup:
-	flushtextbox
 	handleformchange BS_SCRIPTING, 0
 	handleformchange BS_SCRIPTING, 1
 	playanimation BS_TARGET, B_ANIM_FORM_CHANGE
@@ -5664,7 +5594,6 @@ BattleScript_TargetFormChangeWithStringNoPopup::
 BattleScript_BattlerFormChangeWithStringEnd3::
 	pause 5
 	call BattleScript_AbilityPopUpScripting
-	flushtextbox
 	handleformchange BS_SCRIPTING, 0
 	handleformchange BS_SCRIPTING, 1
 	playanimation BS_SCRIPTING, B_ANIM_FORM_CHANGE, NULL
@@ -5978,10 +5907,10 @@ BattleScript_MoveEffectSleep::
 	statusanimation BS_EFFECT_BATTLER
 	printfromtable gFellAsleepStringIds
 	waitmessage B_WAIT_TIME_LONG
+
 BattleScript_UpdateEffectStatusIconRet::
 	updatestatusicon BS_EFFECT_BATTLER
 	waitstate
-	flushtextbox
 	return
 
 BattleScript_YawnMakesAsleep::
@@ -5990,9 +5919,7 @@ BattleScript_YawnMakesAsleep::
 	waitmessage B_WAIT_TIME_LONG
 	updatestatusicon BS_EFFECT_BATTLER
 	waitstate
-	jumpifstatus3 BS_EFFECT_BATTLER, STATUS3_SKY_DROPPED, BattleScript_YawnEnd
 	makevisible BS_EFFECT_BATTLER
-	skydropyawn
 BattleScript_YawnEnd:
 	end2
 
@@ -6904,7 +6831,7 @@ BattleScript_NueveColas::
 
 BattleScript_Parasito::
 	call BattleScript_AbilityPopUp
-	printstring STRINGID_PARASITO
+	printstring ("¡{B_DEF_NAME_WITH_PREFIX} le ha pasado su {B_DEF_ABILITY} a {B_ATK_NAME_WITH_PREFIX}!")
 	waitmessage B_WAIT_TIME_LONG
 	return
 
@@ -7321,10 +7248,6 @@ BattleScript_ActionSelectionItemsCantBeUsed::
 	printselectionstring STRINGID_ITEMSCANTBEUSEDNOW
 	endselectionscript
 
-BattleScript_FlushMessageBox::
-	flushtextbox
-	return
-
 BattleScript_AskIfWantsToForfeitMatch::
 	printselectionstring STRINGID_QUESTIONFORFEITMATCH
 	forfeityesnobox BS_ATTACKER
@@ -7372,7 +7295,6 @@ BattleScript_AnnounceAirLockCloudNine::
 	end3
 
 BattleScript_QuickClawActivation::
-	flushtextbox
 	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT
 	waitanimation
 	printstring STRINGID_CANACTFASTERTHANKSTO
@@ -7380,14 +7302,12 @@ BattleScript_QuickClawActivation::
 	end2
 
 BattleScript_QuickDrawActivation::
-	flushtextbox
 	call BattleScript_AbilityPopUp
 	printstring STRINGID_CANACTFASTERTHANKSTO
 	waitmessage B_WAIT_TIME_LONG
 	end2
 
 BattleScript_CustapBerryActivation::
-	flushtextbox
 	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT
 	waitanimation
 	printstring STRINGID_CANACTFASTERTHANKSTO
@@ -7506,8 +7426,7 @@ BattleScript_EjectButtonActivates::
 	getswitchedmondata BS_SCRIPTING
 	switchindataupdate BS_SCRIPTING
 	hpthresholds BS_SCRIPTING
-	flushtextbox
-	printstring 0x3
+	printstring ("Qué")
 	switchinanim BS_SCRIPTING 0x1
 	waitstate
 	switchineffects BS_SCRIPTING

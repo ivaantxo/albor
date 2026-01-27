@@ -2199,14 +2199,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
              || aiData->hpPercents[battlerAtk] > 50)
                 ADJUST_SCORE(-4);
             break;
-        case EFFECT_SKY_DROP:
-            if (ES_TIPO(battlerDef, TIPO_VOLADOR))
-                ADJUST_SCORE(-10);
-            if (BattlerWillFaintFromWeather(battlerAtk, aiData->abilities[battlerAtk])
-            ||  DoesSubstituteBlockMove(battlerAtk, battlerDef, move)
-            ||  GetBattlerWeight(battlerDef) >= 2000) //200.0 kg
-                ADJUST_SCORE(-10);
-            break;
         case EFFECT_JUNGLE_HEALING:
            if (AI_BattlerAtMaxHp(battlerAtk)
             && AI_BattlerAtMaxHp(ALIADO(battlerAtk))

@@ -4817,39 +4817,6 @@ gBattleAnimMove_Hex::
 	waitforvisualfinish
 	end
 
-gBattleAnimMove_SkyDrop::
-	loadspritegfx ANIM_TAG_ROUND_SHADOW
-	loadspritegfx ANIM_TAG_IMPACT
-	choosetwoturnanim SkyDropSetup SkyDropUnleash
-	end
-SkyDropSetup:
-	invisible ANIM_ATTACKER
-	loadspritegfx ANIM_TAG_SMALL_BUBBLES @mist ball
-	loadspritegfx ANIM_TAG_WHITE_FEATHER
-	loadspritegfx ANIM_TAG_ROUND_SHADOW @fly
-	delay 0x0
-	playsewithpan SE_M_STRING_SHOT, SOUND_PAN_ATTACKER
-	createsprite gSkyDropFlyBallTemplate, ANIM_TARGET, 0, 0x0, 0x0, 0x0, 0x0, 0x1e, 0x0
-	waitforvisualfinish
-	invisible ANIM_TARGET
-	playsewithpan SE_M_FLY, SOUND_PAN_ATTACKER
-	createsprite gSkyDropTargetFlyingTemplate, ANIM_ATTACKER, 2, 0x0, 0x0, 0xd, 0x150
-	end
-SkyDropUnleash:
-	visible ANIM_TARGET
-	monbg ANIM_DEF_PARTNER
-	setalpha 12, 8
-	playsewithpan SE_M_SWAGGER, SOUND_PAN_TARGET
-	createsprite gBounceBallLandSpriteTemplate, ANIM_TARGET, 3
-	delay 0x7
-	playsewithpan SE_M_MEGA_KICK2, SOUND_PAN_TARGET
-	createsprite gBasicHitSplatSpriteTemplate, ANIM_TARGET, 2, 0x0, 0x0, 0x1, 0x0
-	createvisualtask AnimTask_ShakeMon, 5, ANIM_TARGET, 0, 5, 11, 1
-	waitforvisualfinish
-	clearmonbg ANIM_DEF_PARTNER
-	blendoff
-	end
-
 gBattleAnimMove_ShiftGear::
 	loadspritegfx ANIM_TAG_GEAR @Gear
 	monbg ANIM_ATTACKER

@@ -167,9 +167,6 @@ enum Various
     VARIOUS_CUT_1_3_HP_RAISE_STATS,
     VARIOUS_TRY_END_NEUTRALIZING_GAS,
     VARIOUS_JUMP_IF_UNDER_200,
-    VARIOUS_SET_SKY_DROP,
-    VARIOUS_CLEAR_SKY_DROP,
-    VARIOUS_SKY_DROP_YAWN,
     VARIOUS_CURE_CERTAIN_STATUSES,
     VARIOUS_TRY_RESET_NEGATIVE_STAT_STAGES,
     VARIOUS_JUMP_IF_LAST_USED_ITEM_BERRY,
@@ -239,7 +236,6 @@ enum MoveEndEffects
     MOVEEND_KINGSROCK, // These item effects will occur each strike of a multi-hit move
     MOVEEND_NUM_HITS,
     MOVEEND_SUBSTITUTE,
-    MOVEEND_SKY_DROP_CONFUSE,
     MOVEEND_UPDATE_LAST_MOVES,
     MOVEEND_MIRROR_MOVE,
     MOVEEND_NEXT_TARGET, // Everything up until here is handled for each strike of a multi-hit move
@@ -402,7 +398,6 @@ enum BattleScriptCommands
     BATTLE_CMD_setdrainedhp,
     BATTLE_CMD_statbuffchange,
     BATTLE_CMD_normalisebuffs,
-    BATTLE_CMD_twoturnmoveschargestringandanimation,
     BATTLE_CMD_forcerandomswitch,
     BATTLE_CMD_tryconversiontypechange,
     BATTLE_CMD_givepaydaymoney,

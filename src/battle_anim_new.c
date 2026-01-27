@@ -54,7 +54,6 @@ static void SpriteCB_SurroundingRing(struct Sprite *sprite);
 static void SpriteCB_PhotonGeyserBeam(struct Sprite *sprite);
 static void SpriteCB_BeamUpStep(struct Sprite *sprite);
 static void SpriteCB_CentredElectricity(struct Sprite *sprite);
-static void AnimSkyDropBallUp(struct Sprite *sprite);
 static void SpriteCB_SearingShotRock(struct Sprite *sprite);
 static void AnimHappyHourCoinShower(struct Sprite *sprite);
 static void SpriteCB_Geyser(struct Sprite *sprite);
@@ -440,38 +439,6 @@ const struct SpriteTemplate gQuickGuardArmImpactTemplate =
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = AnimBasicFistOrFoot
-};
-
-//sky drop
-static const union AffineAnimCmd sSkyDropFlyBallAffineAnimCmd_0[] =
-{
-    AFFINEANIMCMD_FRAME(0xa0, 0x100, 0x50, 0x0),
-    AFFINEANIMCMD_END
-};
-static const union AffineAnimCmd *const sSkyDropFlyBallAffineAnimCmds[] =
-{
-    sSkyDropFlyBallAffineAnimCmd_0
-};
-const struct SpriteTemplate gSkyDropFlyBallTemplate =
-{
-    .tileTag = ANIM_TAG_ROUND_SHADOW,
-    .paletteTag = ANIM_TAG_ROUND_SHADOW,
-    .oam = &gOamData_AffineDouble_ObjNormal_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = sSkyDropFlyBallAffineAnimCmds,
-    .callback = AnimThrowMistBall
-};
-
-const struct SpriteTemplate gSkyDropTargetFlyingTemplate =
-{
-    .tileTag = ANIM_TAG_ROUND_SHADOW,
-    .paletteTag = ANIM_TAG_ROUND_SHADOW,
-    .oam = &gOamData_AffineDouble_ObjNormal_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gAffineAnims_FlyBallUp,
-    .callback = AnimSkyDropBallUp
 };
 
 //shift gear
@@ -7835,15 +7802,6 @@ static void SpriteCB_CentredElectricity(struct Sprite *sprite)
     sprite->data[0] = gBattleAnimArgs[2];
     sprite->callback = WaitAnimForDuration;
     StoreSpriteCallbackInData6(sprite, DestroyAnimSprite);
-}
-
-static void AnimSkyDropBallUp(struct Sprite *sprite)
-{
-    InitSpritePosToAnimTarget(sprite, TRUE);
-    sprite->data[0] = gBattleAnimArgs[2];
-    sprite->data[1] = gBattleAnimArgs[3];
-    sprite->callback = AnimFlyBallUp_Step;
-    gSprites[GetAnimBattlerSpriteId(ANIM_ATTACKER)].invisible = TRUE;
 }
 
 static void SpriteCB_SearingShotRock(struct Sprite *sprite)

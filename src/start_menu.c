@@ -216,7 +216,6 @@ static void BuildStartMenuActions(void);
 static void AddStartMenuAction(u8 action);
 static void BuildNormalStartMenu(void);
 static void BuildDebugStartMenu(void);
-static void ShowSafariBallsWindow(void);
 static void RemoveExtraStartMenuWindows(void);
 static bool32 PrintStartMenuActions(s8 *pIndex, u32 count);
 static bool32 InitStartMenuStep(void);
@@ -285,17 +284,6 @@ static void BuildDebugStartMenu(void)
     AddStartMenuAction(MENU_ACTION_OPTION);
 }
 
-static void ShowSafariBallsWindow(void)
-{
-    sSafariBallsWindowId = AddWindow(&sWindowTemplate_SafariBalls);
-    PutWindowTilemap(sSafariBallsWindowId);
-    DrawStdWindowFrame(sSafariBallsWindowId, FALSE);
-    ConvertIntToDecimalStringN(gVariableTexto1, gNumSafariBalls, STR_CONV_MODE_RIGHT_ALIGN, 2);
-    StringExpandPlaceholders(gVariableTextoAmpliada, gText_SafariBallStock);
-    AddTextPrinterParameterized(sSafariBallsWindowId, FONT_NORMAL, gVariableTextoAmpliada, 0, 1, TEXT_SKIP_DRAW, NULL);
-    CopyWindowToVram(sSafariBallsWindowId, COPYWIN_GFX);
-}
-
 static void RemoveExtraStartMenuWindows(void)
 {
 
@@ -352,8 +340,6 @@ static bool32 InitStartMenuStep(void)
         sInitStartMenuData[0]++;
         break;
     case 3:
-        if (GetSafariZoneFlag())
-            ShowSafariBallsWindow();
         sInitStartMenuData[0]++;
         break;
     case 4:

@@ -196,7 +196,6 @@ extern const u8 gText_MenuExit[];
 extern const u8 gText_MenuRetire[];
 extern const u8 gText_MenuRest[];
 extern const u8 gText_Peak[];
-extern const u8 gText_SafariBallStock[];
 
 extern const u8 gText_MenuOptionPokedex[];
 extern const u8 gText_MenuOptionPokemon[];
@@ -835,9 +834,6 @@ extern const u8 gText_Symbols2[];
 extern const u8 gText_Record3[];
 extern const u8 gText_BattlePts[];
 extern const u8 gText_BattleRules[];
-extern const u8 gText_JudgeMind[];
-extern const u8 gText_JudgeSkill[];
-extern const u8 gText_JudgeBody[];
 extern const u8 gText_TowerInfo[];
 extern const u8 gText_BattleMon[];
 extern const u8 gText_BattleSalon[];
@@ -1246,7 +1242,6 @@ extern const u8 gText_NumBP[];
 extern const u8 gText_BattlePtsWon[];
 
 // Easy Chat Entry
-extern const u8 gText_StopGivingPkmnMail[];
 extern const u8 gText_LikeToQuitQuiz[];
 extern const u8 gText_ChallengeQuestionMark[];
 extern const u8 gText_QuitEditing[];
@@ -1472,5 +1467,4 @@ extern const u8 gText_PlayerScurriedBackHome[];
 extern const u8 gText_Relearn[]; // move relearner from summary screen
 extern const u8 gText_Rename[]; // change nickname from summary screen
 
-extern const u8 gText_Space[];
 #endif // GUARD_STRINGS_H

@@ -262,7 +262,7 @@ bool32 IsBattlerTrapped(u32 battler, bool32 checkSwitch)
         return FALSE;
     else if (gBattleMons[battler].status2 & (STATUS2_ESCAPE_PREVENTION | STATUS2_WRAPPED))
         return TRUE;
-    else if (gStatuses3[battler] & (STATUS3_ROOTED | STATUS3_SKY_DROPPED))
+    else if (gStatuses3[battler] & (STATUS3_ROOTED))
         return TRUE;
     else if (gFieldStatuses & STATUS_FIELD_FAIRY_LOCK)
         return TRUE;
@@ -1294,8 +1294,7 @@ bool32 IsMoveRedirectionPrevented(u32 move, u32 atkAbility)
     if (AI_THINKING_STRUCT->aiFlags[sBattler_AI] & AI_FLAG_NEGATE_UNAWARE)
         return FALSE;
 
-    if (move == MOVE_SKY_DROP
-      || move == MOVE_SNIPE_SHOT
+    if (move == MOVE_SNIPE_SHOT
       || atkAbility == ABILITY_PROPELLER_TAIL
       || atkAbility == ABILITY_STALWART)
         return TRUE;

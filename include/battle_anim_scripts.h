@@ -493,7 +493,6 @@ extern const u8 gBattleAnimMove_Scald[];
 extern const u8 gBattleAnimMove_ShellSmash[];
 extern const u8 gBattleAnimMove_HealPulse[];
 extern const u8 gBattleAnimMove_Hex[];
-extern const u8 gBattleAnimMove_SkyDrop[];
 extern const u8 gBattleAnimMove_ShiftGear[];
 extern const u8 gBattleAnimMove_CircleThrow[];
 extern const u8 gBattleAnimMove_Incinerate[];

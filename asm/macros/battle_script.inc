@@ -72,10 +72,6 @@
 	.2byte \id
 	.endm
 
-	.macro printsavedstring
-	printstring 0
-	.endm
-
 	.macro printselectionstring id:req
 	.byte BATTLE_CMD_printselectionstring
 	.2byte \id
@@ -761,23 +757,6 @@
 
 	.macro normalisebuffs
 	.byte BATTLE_CMD_normalisebuffs
-	.endm
-
-	.macro twoturnmoveschargestringandanimation
-	.byte BATTLE_CMD_twoturnmoveschargestringandanimation
-	.4byte 1f @animation then attack string
-	@default - attack string then animation
-	printsavedstring
-	waitmessage B_WAIT_TIME_LONG
-	attackanimation
-	waitanimation
-	goto 2f
-	1:
-	attackanimation
-	waitanimation
-	printsavedstring
-	waitmessage B_WAIT_TIME_LONG
-	2:
 	.endm
 
 	.macro forcerandomswitch failInstr:req
@@ -2082,23 +2061,6 @@
 	.4byte \failInstr
 	.endm
 
-	@ Sets the sky drop status and does all other necessary operations
-	.macro setskydrop
-	various 0, VARIOUS_SET_SKY_DROP
-	.endm
-
-	@ Clears the sky drop status and does all other necessary operations.
-	@ If the target fainted in before this script is called, it goes to the given script.
-	.macro clearskydrop failInstr:req
-	various 0, VARIOUS_CLEAR_SKY_DROP
-	.4byte \failInstr
-	.endm
-
-	@ Accounts for if the target of Sky Drop was in confuse_lock when the attacker falls asleep due to Yawn.
-	.macro skydropyawn
-	various 0, VARIOUS_SKY_DROP_YAWN
-	.endm
-
 	@ Tries to increase or decrease a battler's stat's stat stage by a specified amount. If impossible, jumps to \script.
 	.macro modifybattlerstatstage battler:req, stat:req, mode:req, amount:req, script:req, animation:req, customString
 
@@ -2134,11 +2096,6 @@
 	.macro jumpiffainted battler:req, value:req, ptr:req
 	getbattlerfainted \battler
 	jumpifbyte COMPARACION_IGUAL, gBattleCommunication, \value, \ptr
-	.endm
-
-	.macro flushtextbox
-	printstring STRINGID_EMPTYSTRING3
-	waitmessage 1
 	.endm
 
 	.macro tryactivatecarnivoro battler:req

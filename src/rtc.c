@@ -381,7 +381,7 @@ void FormatDecimalTimeWithoutSeconds(u8 *txtPtr, s8 hour, s8 minute, bool32 is24
 
         *txtPtr++ = CHAR_COLON;
         txtPtr = ConvertIntToDecimalStringN(txtPtr, minute, STR_CONV_MODE_LEADING_ZEROS, 2);
-        txtPtr = StringAppend(txtPtr, gText_Space);
+        txtPtr = StringAppend(txtPtr, COMPOUND_STRING(" "));
         if (hour < 12)
             txtPtr = StringAppend(txtPtr, gText_AM);
         else

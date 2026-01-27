@@ -1497,13 +1497,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectHit,
     },
 
-    [EFFECT_SKY_DROP] =
-    {
-        .battleScript = BattleScript_EffectSkyDrop,
-        .twoTurnEffect = TRUE,
-        .semiInvulnerableEffect = TRUE,
-    },
-
     [EFFECT_EXPANDING_FORCE] =
     {
         .battleScript = BattleScript_EffectHit,
