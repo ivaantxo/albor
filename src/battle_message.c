@@ -307,9 +307,6 @@ static const u8 sText_PkmnTurnedAway[] = _("{B_ATK_NAME_WITH_PREFIX} turned away
 static const u8 sText_PkmnPretendNotNotice[] = _("{B_ATK_NAME_WITH_PREFIX} pretended not to notice!");
 static const u8 sText_EnemyAboutToSwitchPkmn[] = _("{B_TRAINER_CLASS} {B_TRAINER_NAME} is about to send out {B_BUFF2}. Will you switch your Pokémon?");
 static const u8 sText_OpponentMon1Appeared[] = _("{B_OPPONENT_MON1_NAME} appeared!");
-static const u8 sText_UnPokemonSalvaje[] = _("¡Un {B_OPPONENT_MON1_NAME} salvaje!");
-static const u8 sText_ElLegendario[] = _("¡El Legendario {B_OPPONENT_MON1_NAME}!");
-static const u8 sText_EntrenadorQuiereLuchar[] = _("¡{B_TRAINER_CLASS} {B_TRAINER_NAME} quiere luchar!");
 static const u8 sText_TrainerSentOutPkmn[] = _("{B_TRAINER_CLASS} {B_TRAINER_NAME} sent out {B_OPPONENT_MON1_NAME}!");
 static const u8 sText_TrainerSentOutTwoPkmn[] = _("{B_TRAINER_CLASS} {B_TRAINER_NAME} sent out {B_OPPONENT_MON1_NAME} and {B_OPPONENT_MON2_NAME}!");
 static const u8 sText_TrainerSentOutPkmn2[] = _("{B_TRAINER_CLASS} {B_TRAINER_NAME} sent out {B_BUFF1}!");
@@ -396,7 +393,6 @@ static const u8 sText_BurnedByItem[] = _("{B_EFF_NAME_WITH_PREFIX} was burned by
 static const u8 sText_TargetAbilityActivates[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} activates!");
 static const u8 sText_GravityIntensified[] = _("Gravity intensified!");
 static const u8 sText_TargetIdentified[] = _("{B_DEF_NAME_WITH_PREFIX} was identified!");
-static const u8 sText_TargetWokeUp[] = _("{B_DEF_NAME_WITH_PREFIX} woke up!");
 static const u8 sText_PkmnStoleAndAteItem[] = _("{B_ATK_NAME_WITH_PREFIX} stole and ate {B_DEF_NAME_WITH_PREFIX}'s {B_LAST_ITEM}!");
 static const u8 sText_PkmnWentBack[] = _("{B_ATK_NAME_WITH_PREFIX} went back to {B_ATK_TRAINER_NAME}!");
 static const u8 sText_PkmnCantUseItemsAnymore[] = _("{B_DEF_NAME_WITH_PREFIX} can't use items anymore!");
@@ -996,7 +992,6 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_DEFABILITYIN] = sText_TargetAbilityActivates,
     [STRINGID_GRAVITYINTENSIFIED] = sText_GravityIntensified,
     [STRINGID_TARGETIDENTIFIED] = sText_TargetIdentified,
-    [STRINGID_TARGETWOKEUP] = sText_TargetWokeUp,
     [STRINGID_PKMNSTOLEANDATEITEM] = sText_PkmnStoleAndAteItem,
     [STRINGID_PKMNWENTBACK] = sText_PkmnWentBack,
     [STRINGID_PKMNCANTUSEITEMSANYMORE] = sText_PkmnCantUseItemsAnymore,
@@ -1757,14 +1752,14 @@ void BufferStringBattle(u16 stringID, u32 battler)
     case TEXTO_COMBATE_INTRO:
         if (EsContraEntrenador())
         {
-            stringPtr = sText_EntrenadorQuiereLuchar;
+            stringPtr = COMPOUND_STRING("¡{B_TRAINER_CLASS} {B_TRAINER_NAME} quiere luchar!");
         }
         else
         {
             if (gBattleTypeFlags & COMBATE_LEGENDARIO)
-                stringPtr = sText_ElLegendario;
+                stringPtr = COMPOUND_STRING("¡El Legendario {B_OPPONENT_MON1_NAME}!");;
             else
-                stringPtr = sText_UnPokemonSalvaje;
+                stringPtr = COMPOUND_STRING("¡Un {B_OPPONENT_MON1_NAME} salvaje!");;
         }
         break;
     case TEXTO_COMBATE_ENVIAR_POKEMON:

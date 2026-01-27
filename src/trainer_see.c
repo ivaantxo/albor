@@ -346,7 +346,7 @@ static const struct SpriteTemplate sSpriteTemplate_Emote =
     .callback = SpriteCB_TrainerIcons
 };
 
-bool32 ChequeaSiEntrenadorQuiereLuchar(void)
+bool32 EntrenadorQuierLuchar(void)
 {
     for (u32 i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {

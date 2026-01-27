@@ -13,7 +13,7 @@ extern u8 gPostBattleMovementScript[4];
 extern struct ApproachingTrainer gApproachingTrainer;
 extern bool32 gEntrenadorSeHaAcercadoAJugador;
 
-bool32 ChequeaSiEntrenadorQuiereLuchar(void);
+bool32 EntrenadorQuierLuchar(void);
 void SetBuriedTrainerMovement(struct ObjectEvent *var);
 void DoTrainerApproach(void);
 u8 FldEff_ExclamationMarkIcon(void);

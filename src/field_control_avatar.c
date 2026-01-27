@@ -162,7 +162,7 @@ bool32 ProcessPlayerFieldInput(struct FieldInput *input)
     GetPlayerPosition(&position);
     metatileBehavior = MapGridGetMetatileBehaviorAt(position.x, position.y);
 
-    if (ChequeaSiEntrenadorQuiereLuchar() == TRUE)
+    if (EntrenadorQuierLuchar())
         return TRUE;
 
     if (TryRunOnFrameMapScript() == TRUE)

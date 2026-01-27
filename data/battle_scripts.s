@@ -5880,7 +5880,7 @@ BattleScript_TargetPRLZHeal::
 	return
 
 BattleScript_TargetWokeUp::
-	printstring STRINGID_TARGETWOKEUP
+	printstring ("{B_DEF_NAME_WITH_PREFIX} woke up!")
 	waitmessage B_WAIT_TIME_LONG
 	updatestatusicon BS_TARGET
 	return
