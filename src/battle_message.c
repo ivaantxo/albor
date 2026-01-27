@@ -603,12 +603,9 @@ static const u8 sText_CurrentMoveCantSelect[] = _("{B_BUFF1} cannot be used!");
 static const u8 sText_PkmnTellChillingReceptionJoke[] = _("{B_ATK_NAME_WITH_PREFIX} is preparing to tell a chillingly bad joke!");
 static const u8 sText_ElectroShotCharging[] = _("{B_ATK_NAME_WITH_PREFIX} absorbed electricity!");
 static const u8 sText_ShedItsTail[] = _("{B_ATK_NAME_WITH_PREFIX} shed its tail to create a decoy!");
-static const u8 sText_TidyingUpComplete[] = _("Tidying up complete!");
-static const u8 sText_WagglingAFinger[] = _("Waggling a finger let it use {B_CURRENT_MOVE}!");
 
 const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
 {
-    [STRINGID_TIDYINGUPCOMPLETE] = sText_TidyingUpComplete,
     [STRINGID_SHEDITSTAIL] = sText_ShedItsTail,
     [STRINGID_ELECTROSHOTCHARGING] = sText_ElectroShotCharging,
     [STRINGID_PKMNTELLCHILLINGRECEPTIONJOKE] = sText_PkmnTellChillingReceptionJoke,
