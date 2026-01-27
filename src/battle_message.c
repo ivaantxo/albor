@@ -329,7 +329,6 @@ static const u8 sText_FoePkmnPrefix3[] = _("Opposing");
 static const u8 sText_AllyPkmnPrefix2[] = _("Ally");
 static const u8 sText_FoePkmnPrefix4[] = _("Opposing");
 static const u8 sText_AllyPkmnPrefix3[] = _("Ally");
-static const u8 sText_AttackerUsedX[] = _("¡{B_ATK_NAME_WITH_PREFIX} usó {B_BUFF3}!");
 
 const u8 *const gStatNamesTable[NUMERO_ESTADISTICAS_BATALLA] =
 {
@@ -1465,9 +1464,6 @@ const u8 gText_PkmnIsEvolving[] = _("What? {VAR_TEXTO_1} is evolving!");
 const u8 gText_CongratsPkmnEvolved[] = _("Congratulations! Your {VAR_TEXTO_1} evolved into {VAR_TEXTO_2}!{WAIT_SE}");
 const u8 gText_PkmnStoppedEvolving[] = _("Huh? {VAR_TEXTO_1} stopped evolving!");
 const u8 gText_EllipsisQuestionMark[] = _("……?");
-const u8 gText_MoveInterfacePP[] = _("PP ");
-const u8 gText_MoveInterfaceDynamicColors[] = _("{PALETTE 5}{COLOR_HIGHLIGHT_SHADOW DYNAMIC_COLOR4 DYNAMIC_COLOR5 DYNAMIC_COLOR6}");
-const u8 gText_WhichMoveToForget4[] = _("{PALETTE 5}{COLOR_HIGHLIGHT_SHADOW DYNAMIC_COLOR4 DYNAMIC_COLOR5 DYNAMIC_COLOR6}Which move should be forgotten?");
 const u8 gText_BattleYesNoChoice[] = _("{PALETTE 5}{COLOR_HIGHLIGHT_SHADOW DYNAMIC_COLOR4 DYNAMIC_COLOR5 DYNAMIC_COLOR6}Yes No");
 
 const u8 gText_Sleep[] = _("sleep");
@@ -1754,9 +1750,9 @@ void BufferStringBattle(u16 stringID, u32 battler)
         else
         {
             if (gBattleTypeFlags & COMBATE_LEGENDARIO)
-                stringPtr = COMPOUND_STRING("¡El Legendario {B_OPPONENT_MON1_NAME}!");;
+                stringPtr = COMPOUND_STRING("¡El Legendario {B_OPPONENT_MON1_NAME}!");
             else
-                stringPtr = COMPOUND_STRING("¡Un {B_OPPONENT_MON1_NAME} salvaje!");;
+                stringPtr = COMPOUND_STRING("¡Un {B_OPPONENT_MON1_NAME} salvaje!");
         }
         break;
     case TEXTO_COMBATE_ENVIAR_POKEMON:
@@ -1819,7 +1815,7 @@ void BufferStringBattle(u16 stringID, u32 battler)
         break;
     case STRINGID_USEDMOVE:
         StringCopy(gBattleTextBuff3, GetMoveName(gBattleMsgDataPtr->currentMove));
-        stringPtr = sText_AttackerUsedX;
+        stringPtr = COMPOUND_STRING("¡{B_ATK_NAME_WITH_PREFIX} usó {B_BUFF3}!");
         break;
     case STRINGID_TRAINERSLIDE:
         stringPtr = gBattleStruct->trainerSlideMsg;
