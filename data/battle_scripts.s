@@ -762,7 +762,7 @@ BattleScript_EffectThirdType::
 	trysetthirdtype BS_TARGET, BattleScript_ButItFailed
 	attackanimation
 	waitanimation
-	printstring STRINGID_THIRDTYPEADDED
+	printstring ("{B_BUFF1} type was added to {B_DEF_NAME_WITH_PREFIX}!")
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
@@ -2388,7 +2388,7 @@ BattleScript_EffectConversion::
 	tryconversiontypechange BattleScript_ButItFailed
 	attackanimation
 	waitanimation
-	printstring STRINGID_PKMNCHANGEDTYPE
+	printstring ("{B_ATK_NAME_WITH_PREFIX} transformed into the {B_BUFF1} type!")
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
@@ -3033,7 +3033,7 @@ BattleScript_EffectConversion2::
 	settypetorandomresistance BattleScript_ButItFailed
 	attackanimation
 	waitanimation
-	printstring STRINGID_PKMNCHANGEDTYPE
+	printstring ("{B_ATK_NAME_WITH_PREFIX} transformed into the {B_BUFF1} type!")
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
@@ -6559,14 +6559,14 @@ BattleScript_StickyHoldActivates::
 
 BattleScript_ColorChangeActivates::
 	call BattleScript_AbilityPopUp
-	printstring STRINGID_PKMNCHANGEDTYPEWITH
+	printstring ("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} made it the {B_BUFF1} type!")
 	waitmessage B_WAIT_TIME_LONG
 	return
 
 BattleScript_ProteanActivates::
 	pause B_WAIT_TIME_SHORTEST
 	call BattleScript_AbilityPopUp
-	printstring STRINGID_PKMNCHANGEDTYPE
+	printstring ("{B_ATK_NAME_WITH_PREFIX} transformed into the {B_BUFF1} type!")
 	waitmessage B_WAIT_TIME_LONG
 	return
 
@@ -7572,7 +7572,7 @@ ScriptBatalla_LanzaPokeball::
 BattleScript_SuccessBallThrow::
 	setbyte sMON_CAUGHT, TRUE
 	incrementgamestat GAME_STAT_POKEMON_CAPTURES
-	printstring STRINGID_GOTCHAPKMNCAUGHTPLAYER
+	printstring ("¡Lo tienes! ¡Capturaste a {B_DEF_NAME}!{WAIT_SE}{PLAY_BGM MUS_CAUGHT}")
 	setbyte sGIVEEXP_STATE, 0
 	getexp BS_TARGET
 	sethword gBattle_BG2_X, 0

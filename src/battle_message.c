@@ -74,7 +74,6 @@ static const u8 sText_PkmnHealedParalysis[] = _("{B_DEF_NAME_WITH_PREFIX} was he
 static const u8 sText_PkmnDreamEaten[] = _("{B_DEF_NAME_WITH_PREFIX}'s dream was eaten!");
 static const u8 sText_StatsWontIncrease[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1} won't go higher!");
 static const u8 sText_StatsWontDecrease[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} won't go lower!");
-static const u8 sText_TeamStoppedWorking[] = _("Your team's {B_BUFF1} stopped working!");
 static const u8 sText_FoeStoppedWorking[] = _("The foe's {B_BUFF1} stopped working!");
 static const u8 sText_PkmnIsConfused[] = _("{B_ATK_NAME_WITH_PREFIX} is confused!");
 static const u8 sText_PkmnHealedConfusion[] = _("{B_ATK_NAME_WITH_PREFIX} snapped out of confusion!");
@@ -83,7 +82,6 @@ static const u8 sText_PkmnFellInLove[] = _("{B_DEF_NAME_WITH_PREFIX} fell in lov
 static const u8 sText_PkmnInLove[] = _("{B_ATK_NAME_WITH_PREFIX} is in love with {B_SCR_ACTIVE_NAME_WITH_PREFIX}!");
 static const u8 sText_PkmnImmobilizedByLove[] = _("{B_ATK_NAME_WITH_PREFIX} is immobilized by love!");
 static const u8 sText_PkmnBlownAway[] = _("{B_DEF_NAME_WITH_PREFIX} was blown away!");
-static const u8 sText_PkmnChangedType[] = _("{B_ATK_NAME_WITH_PREFIX} transformed into the {B_BUFF1} type!");
 static const u8 sText_PkmnFlinched[] = _("{B_ATK_NAME_WITH_PREFIX} flinched!");
 static const u8 sText_PkmnRegainedHealth[] = _("{B_DEF_NAME_WITH_PREFIX} regained health!");
 static const u8 sText_PkmnHPFull[] = _("{B_DEF_NAME_WITH_PREFIX}'s HP is full!");
@@ -216,7 +214,6 @@ static const u8 sText_PkmnRaisedSpeed[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {
 static const u8 sText_PkmnProtectedBy[] = _("{B_DEF_NAME_WITH_PREFIX} was protected by {B_DEF_ABILITY}!");
 static const u8 sText_PkmnPreventsUsage[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} prevents {B_ATK_NAME_WITH_PREFIX}\lfrom using {B_CURRENT_MOVE}!");
 static const u8 sText_PkmnRestoredHPUsing[] = _("{B_DEF_NAME_WITH_PREFIX} restored HP using its {B_DEF_ABILITY}!");
-static const u8 sText_PkmnChangedTypeWith[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} made it the {B_BUFF1} type!");
 static const u8 sText_PkmnPreventsParalysisWith[] = _("{B_EFF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} prevents paralysis!");
 static const u8 sText_PkmnPreventsRomanceWith[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} prevents romance!");
 static const u8 sText_PkmnPreventsPoisoningWith[] = _("{B_EFF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} prevents poisoning!");
@@ -359,12 +356,8 @@ static const u8 sText_YouMissedPkmn[] = _("You missed the POKéMON!");
 static const u8 sText_PkmnBrokeFree[] = _("Oh, no! The POKéMON broke free!");
 static const u8 sText_ItAppearedCaught[] = _("Aww! It appeared to be caught!");
 static const u8 sText_AarghAlmostHadIt[] = _("Aargh! Almost had it!");
-static const u8 sText_ShootSoClose[] = _("Shoot! It was so close, too!");
-static const u8 sText_GotchaPkmnCaughtPlayer[] = _("¡Lo tienes! ¡Capturaste a {B_DEF_NAME}!{WAIT_SE}{PLAY_BGM MUS_CAUGHT}");
 static const u8 sText_GotchaPkmnCaughtWally[] = _("Gotcha! {B_DEF_NAME} was caught!{WAIT_SE}{PLAY_BGM MUS_CAUGHT}{PAUSE 127}");
 static const u8 sText_GiveNicknameCaptured[] = _("¿Quieres ponerle un mote a {B_DEF_NAME}?");
-static const u8 sText_Someones[] = _("someone's");
-static const u8 sText_Lanettes[] = _("LANETTE's");
 static const u8 sText_ItIsRaining[] = _("Está lloviendo.");
 static const u8 sText_ItIsSnowing[] = _("Está nevando.");
 static const u8 sText_HaceMuchoCalor[] = _("Hace mucho calor.");
@@ -384,7 +377,6 @@ static const u8 sText_PkmnsItemRestoredStatus[] = _("{B_SCR_ACTIVE_NAME_WITH_PRE
 static const u8 sText_PkmnsItemRestoredHPALittle[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM} restored its HP a little!");
 static const u8 sText_ItemAllowsOnlyYMove[] = _("{B_LAST_ITEM} allows the use of only {B_CURRENT_MOVE}!");
 static const u8 sText_PkmnHungOnWithX[] = _("{B_DEF_NAME_WITH_PREFIX} hung on using its {B_LAST_ITEM}!");
-static const u8 sText_YouThrowABallNowRight[] = _("You throw a BALL now, right? I… I'll do my best!");
 
 // New battle strings.
 static const u8 sText_PowerHerbActivation[] = _("{B_ATK_NAME_WITH_PREFIX} became fully charged due to its {B_LAST_ITEM}!");
@@ -726,8 +718,6 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_PKMNDREAMEATEN] = sText_PkmnDreamEaten,
     [STRINGID_STATSWONTINCREASE] = sText_StatsWontIncrease,
     [STRINGID_STATSWONTDECREASE] = sText_StatsWontDecrease,
-    [STRINGID_TEAMSTOPPEDWORKING] = sText_TeamStoppedWorking,
-    [STRINGID_FOESTOPPEDWORKING] = sText_FoeStoppedWorking,
     [STRINGID_PKMNISCONFUSED] = sText_PkmnIsConfused,
     [STRINGID_PKMNHEALEDCONFUSION] = sText_PkmnHealedConfusion,
     [STRINGID_PKMNWASCONFUSED] = sText_PkmnWasConfused,
@@ -735,7 +725,6 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_PKMNINLOVE] = sText_PkmnInLove,
     [STRINGID_PKMNIMMOBILIZEDBYLOVE] = sText_PkmnImmobilizedByLove,
     [STRINGID_PKMNBLOWNAWAY] = sText_PkmnBlownAway,
-    [STRINGID_PKMNCHANGEDTYPE] = sText_PkmnChangedType,
     [STRINGID_PKMNFLINCHED] = sText_PkmnFlinched,
     [STRINGID_PKMNREGAINEDHEALTH] = sText_PkmnRegainedHealth,
     [STRINGID_PKMNHPFULL] = sText_PkmnHPFull,
@@ -851,7 +840,6 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_PKMNPROTECTEDBY] = sText_PkmnProtectedBy,
     [STRINGID_PKMNPREVENTSUSAGE] = sText_PkmnPreventsUsage,
     [STRINGID_PKMNRESTOREDHPUSING] = sText_PkmnRestoredHPUsing,
-    [STRINGID_PKMNCHANGEDTYPEWITH] = sText_PkmnChangedTypeWith,
     [STRINGID_PKMNPREVENTSPARALYSISWITH] = sText_PkmnPreventsParalysisWith,
     [STRINGID_PKMNPREVENTSROMANCEWITH] = sText_PkmnPreventsRomanceWith,
     [STRINGID_PKMNPREVENTSPOISONINGWITH] = sText_PkmnPreventsPoisoningWith,
@@ -918,8 +906,6 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_PKMNBROKEFREE] = sText_PkmnBrokeFree,
     [STRINGID_ITAPPEAREDCAUGHT] = sText_ItAppearedCaught,
     [STRINGID_AARGHALMOSTHADIT] = sText_AarghAlmostHadIt,
-    [STRINGID_SHOOTSOCLOSE] = sText_ShootSoClose,
-    [STRINGID_GOTCHAPKMNCAUGHTPLAYER] = sText_GotchaPkmnCaughtPlayer,
     [STRINGID_GOTCHAPKMNCAUGHTWALLY] = sText_GotchaPkmnCaughtWally,
     [STRINGID_GIVENICKNAMECAPTURED] = sText_GiveNicknameCaptured,
     [STRINGID_ITISRAINING] = sText_ItIsRaining,
@@ -962,7 +948,6 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_PKMNTRAPPEDBYSANDTOMB] = sText_PkmnTrappedBySandTomb,
     [STRINGID_PKMNSXINTENSIFIEDSUN] = sText_PkmnsXIntensifiedSun,
     [TEXTO_COMBATE_LEVITACION] = COMPOUND_STRING("¡{B_DEF_NAME_WITH_PREFIX} es inmune a Tierra!"),
-    [STRINGID_YOUTHROWABALLNOWRIGHT] = sText_YouThrowABallNowRight,
     [STRINGID_PKMNSXTOOKATTACK] = sText_PkmnsXTookAttack,
     [STRINGID_PKMNCHOSEXASDESTINY] = sText_PkmnChoseXAsDestiny,
     [STRINGID_PKMNFLEDUSING] = sText_PkmnFledUsing,
@@ -1090,7 +1075,6 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_NOEFFECTONTARGET] = sText_NoEffectOnTarget,
     [STRINGID_BURSTINGFLAMESHIT] = sText_BurstingFlames,
     [STRINGID_BESTOWITEMGIVING] = sText_BestowItemGiving,
-    [STRINGID_THIRDTYPEADDED] = sText_ThirdTypeAdded,
     [STRINGID_FELLFORFEINT] = sText_FellForFeint,
     [STRINGID_POKEMONCANNOTUSEMOVE] = sText_PokemonCannotUseMove,
     [STRINGID_COVEREDINPOWDER] = sText_CoveredInPowder,
@@ -1380,7 +1364,7 @@ const u32 gBallEscapeStringIds[] =
     [BALL_NO_SHAKES]     = STRINGID_PKMNBROKEFREE,
     [BALL_1_SHAKE]       = STRINGID_ITAPPEAREDCAUGHT,
     [BALL_2_SHAKES]      = STRINGID_AARGHALMOSTHADIT,
-    [BALL_3_SHAKES_FAIL] = STRINGID_SHOOTSOCLOSE
+    [BALL_3_SHAKES_FAIL] = 
 };
 
 // Overworld weathers that don't have an associated battle weather default to "It is raining."
@@ -1481,15 +1465,6 @@ const u8 gText_Loss[] = _("{HIGHLIGHT TRANSPARENT}Loss");
 const u8 gText_Draw[] = _("{HIGHLIGHT TRANSPARENT}Draw");
 
 static const u8 sText_QuestionForfeitMatch[] = _("Would you like to forfeit the match and quit now?");
-static const u8 sText_TrainerFled[] = _( "{PLAY_SE SE_FLEE}{B_TRAINER_CLASS} {B_TRAINER_NAME} fled!");
-static const u8 sText_PlayerLostAgainstTrainer[] = _("You lost to {B_TRAINER_CLASS} {B_TRAINER_NAME}!");
-static const u8 sText_PlayerBattledToDrawTrainer[] = _("You battled to a draw against {B_TRAINER_CLASS} {B_TRAINER_NAME}!");
-const u8 gText_RecordBattleToPass[] = _("Would you like to record your battle on your Frontier Pass?");
-const u8 gText_BattleRecordedOnPass[] = _("{B_PLAYER_NAME}'s battle result was recorded on the Frontier Pass.");
-static const u8 sText_Your1[] = _("Your");
-static const u8 sText_Opposing1[] = _("The opposing");
-static const u8 sText_Your2[] = _("your");
-static const u8 sText_Opposing2[] = _("the opposing");
 
 static const u8 sText_EmptyStatus[] = _("$$$$$$$");
 
@@ -2080,11 +2055,8 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
             case B_TXT_TRAINER_LOSE_TEXT: // trainerA lose text
                 toCpy = GetTrainerLoseText();
                 break;
-            case B_TXT_PC_CREATOR_NAME: // lanette pc
-                if (FlagGet(FLAG_SYS_PC_LANETTE))
-                    toCpy = sText_Lanettes;
-                else
-                    toCpy = sText_Someones;
+            case B_TXT_PC_CREATOR_NAME:
+                toCpy = COMPOUND_STRING("PC de Bill.}");
                 break;
             case B_TXT_ATK_PREFIX2:
                 if (GetBattlerSide(gBattlerAttacker) == LADO_JUGADOR)
@@ -2141,27 +2113,27 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
                 break;
             case B_TXT_ATK_TEAM1:
                 if (GetBattlerSide(gBattlerAttacker) == LADO_JUGADOR)
-                    toCpy = sText_Your1;
+                    toCpy = COMPOUND_STRING("Tu");
                 else
-                    toCpy = sText_Opposing1;
+                    toCpy = COMPOUND_STRING("Rival");
                 break;
             case B_TXT_ATK_TEAM2:
                 if (GetBattlerSide(gBattlerAttacker) == LADO_JUGADOR)
-                    toCpy = sText_Your2;
+                    toCpy = COMPOUND_STRING("tu");
                 else
-                    toCpy = sText_Opposing2;
+                    toCpy = COMPOUND_STRING("rival");
                 break;
             case B_TXT_DEF_TEAM1:
                 if (GetBattlerSide(gBattlerTarget) == LADO_JUGADOR)
-                    toCpy = sText_Your1;
+                    toCpy =COMPOUND_STRING("Tu");
                 else
-                    toCpy = sText_Opposing1;
+                    toCpy = COMPOUND_STRING("Rival");
                 break;
             case B_TXT_DEF_TEAM2:
                 if (GetBattlerSide(gBattlerTarget) == LADO_JUGADOR)
-                    toCpy = sText_Your2;
+                    toCpy = COMPOUND_STRING("tu");
                 else
-                    toCpy = sText_Opposing2;
+                    toCpy = COMPOUND_STRING("rival");
                 break;
             }
 
