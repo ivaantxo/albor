@@ -3,7 +3,6 @@
 
 enum EfectosAtaques
 {
-    SIN_EFECTO,
     EFFECT_HIT,
     EFFECT_SLEEP,
     EFFECT_ABSORB,

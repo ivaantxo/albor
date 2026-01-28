@@ -481,22 +481,13 @@ struct BattleStruct
     u8 battlerPartyIndexes[NUMERO_COMBATIENTES];
     u8 monToSwitchIntoId[NUMERO_COMBATIENTES];
     u8 battlerPartyOrders[NUMERO_COMBATIENTES][PARTY_SIZE / 2];
-    u8 runTries;
     u8 caughtMonNick[POKEMON_NAME_LENGTH + 1];
-    u8 safariGoNearCounter;
-    u8 safariPkblThrowCounter;
-    u8 safariEscapeFactor;
-    u8 safariCatchFactor;
     u8 formToChangeInto;
     u8 chosenMovePositions[NUMERO_COMBATIENTES];
     u8 stateIdAfterSelScript[NUMERO_COMBATIENTES];
     u8 prevSelectedPartySlot;
     u8 stringMoveType;
     u8 absentBattlerFlags;
-    u8 wallyBattleState;
-    u8 wallyMovesState;
-    u8 wallyWaitFrames;
-    u8 wallyMoveFrames;
     u16 lastTakenMove[NUMERO_COMBATIENTES]; // Last move that a battler was hit with.
     u16 hpOnSwitchout[NUMERO_LADOS];
     u32 savedBattleTypeFlags;
@@ -545,7 +536,7 @@ struct BattleStruct
     u16 hpBefore[NUMERO_COMBATIENTES]; // Hp of battlers before using a move. For Berserk and Anger Shell.
     struct Illusion illusion[NUMERO_COMBATIENTES];
     s32 aiFinalScore[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES][MAX_MON_MOVES]; // AI, target, moves to make debugging easier
-    u8 aiMoveOrAction[NUMERO_COMBATIENTES];
+    u8 IA_Eleccion[NUMERO_COMBATIENTES];
     u8 aiChosenTarget[NUMERO_COMBATIENTES];
     u8 soulheartBattlerId;
     u8 friskedBattler; // Frisk needs to identify 2 battlers in double battles.
@@ -586,12 +577,9 @@ struct BattleStruct
     u8 trainerSlideHalfHpMsgDone:1;
     u8 trainerSlideBeforeFirstTurnMsgDone:1;
     u8 trainerSlideLowHpMsgDone:1;
-    u32 aiDelayTimer; // Counts number of frames AI takes to choose an action.
     u32 aiDelayFrames; // Number of frames it took to choose an action.
     u8 timesGotHit[NUMERO_LADOS][PARTY_SIZE];
     u8 enduredDamage;
-    u8 intrepidSwordBoost[NUMERO_LADOS];
-    u8 dauntlessShieldBoost[NUMERO_LADOS];
     u8 quickClawRandom[NUMERO_COMBATIENTES];
     u8 quickDrawRandom[NUMERO_COMBATIENTES];
     u8 shellSideArmCategory[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES];

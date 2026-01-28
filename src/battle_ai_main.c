@@ -397,9 +397,6 @@ void SetAILogicDataForTurn(struct AILogicData *aiData)
     if (!(EsContraEntrenador()) && !IsWildMonSmart())
         return;
 
-    // Set delay timer to count how long it takes for AI to choose action/move
-    gBattleStruct->aiDelayTimer = gMain.vblankCounter;
-
     aiData->weatherHasEffect = WEATHER_HAS_EFFECT;
     weather = AI_GetWeather(aiData);
 
@@ -2219,8 +2216,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             if (predictedMove == MOVE_NONE || ES_MOVIMIENTO_ESTADO(predictedMove) || AI_IsSlower(battlerAtk, battlerDef, move) || GetMovePriority(battlerDef, predictedMove) < 1 || GetMovePriority(battlerDef, predictedMove) > 3) // Opponent going first or not using priority move
                 ADJUST_SCORE(-10);
             break;
-        case SIN_EFECTO:
-            return 0;   // cannot even select
     } // move effect checks
 
     // Choice items

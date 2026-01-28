@@ -1631,20 +1631,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 6,
     },
 
-    [ABILITY_INTREPID_SWORD] =
-    {
-        .name = _("Intrepid Sword"),
-        .description = COMPOUND_STRING("Ups Attack on entry."),
-        .aiRating = 3,
-    },
-
-    [ABILITY_DAUNTLESS_SHIELD] =
-    {
-        .name = _("Dauntless Shield"),
-        .description = COMPOUND_STRING("Ups Defense on entry."),
-        .aiRating = 3,
-    },
-
     [ABILITY_LIBERO] =
     {
         .name = _("Libero"),

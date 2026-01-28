@@ -4,11 +4,6 @@
 
 const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
 {
-    [SIN_EFECTO] =
-    {
-        .battleScript = BattleScript_EffectPlaceholder,
-    },
-
     [EFFECT_HIT] =
     {
         .battleScript = BattleScript_EffectHit,

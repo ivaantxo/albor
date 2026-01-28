@@ -3521,11 +3521,7 @@ static void PrintMoveDetails(u16 move)
             if (B_SHOW_CATEGORY_ICON == TRUE)
                 ShowCategoryIcon(CategoriaMovimiento(move));
             PrintMovePowerAndAccuracy(move);
-
-            if (moveEffect != SIN_EFECTO)
-                PrintTextOnWindow(windowId, gMovesInfo[move].description, 6, 1, 0, 0);
-            else
-                PrintTextOnWindow(windowId, gNotDoneYetDescription, 6, 1, 0, 0);
+            PrintTextOnWindow(windowId, gMovesInfo[move].description, 6, 1, 0, 0);
         }
         else
         {

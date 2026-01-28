@@ -1149,11 +1149,6 @@ static void BattleStartClearSetData(void)
     gIntroSlideFlags = 0;
     gLeveledUpInBattle = 0;
     gAbsentBattlerFlags = 0;
-    gBattleStruct->runTries = 0;
-    gBattleStruct->safariGoNearCounter = 0;
-    gBattleStruct->safariPkblThrowCounter = 0;
-    gBattleStruct->safariCatchFactor = gSpeciesInfo[GetMonData(&gEnemyParty[0], MON_DATA_SPECIES)].catchRate * 100 / 1275;
-    gBattleStruct->safariEscapeFactor = 3;
     gBattleStruct->wildVictorySong = 0;
     gBattleStruct->moneyMultiplier = 1;
 
@@ -1922,7 +1917,7 @@ static void HazCalculosIA(u32 combatiente)
         AI_DATA->shouldSwitch |= (1u << combatiente);
 
     // Do scoring
-    gBattleStruct->aiMoveOrAction[combatiente] = BattleAI_ChooseMoveOrAction();
+    gBattleStruct->IA_Eleccion[combatiente] = BattleAI_ChooseMoveOrAction();
     AI_DATA->aiCalcInProgress = FALSE;
 }
 

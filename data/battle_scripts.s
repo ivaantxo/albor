@@ -218,6 +218,7 @@ BattleScript_EffectAttackUpUserAlly::
 	ppreduce
 	jumpifstat BS_ATTACKER, COMPARACION_DESIGUAL, ESTADISTICA_ATAQUE, ESTADISTICA_MAS_6, BattleScript_EffectAttackUpUserAlly_Works
 	jumpifstat BS_ATTACKER_PARTNER, COMPARACION_IGUAL, ESTADISTICA_ATAQUE, ESTADISTICA_MAS_6, BattleScript_ButItFailed
+
 BattleScript_EffectAttackUpUserAlly_Works:
 	attackanimation
 	waitanimation
@@ -225,23 +226,28 @@ BattleScript_EffectAttackUpUserAlly_Works:
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_EffectAttackUpUserAlly_TryAlly
 	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_EffectAttackUpUserAllyUser_PrintString
 	setgraphicalstatchangevalues
+
 	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 BattleScript_EffectAttackUpUserAllyUser_PrintString:
 	printfromtable gStatUpStringIds
 	waitmessage B_WAIT_TIME_LONG
+
 BattleScript_EffectAttackUpUserAlly_TryAlly:
 	setallytonexttarget BattleScript_EffectAttackUpUserAlly_TryAlly_
+
 BattleScript_EffectAttackUpUserAlly_End:
 	goto BattleScript_MoveEnd
+
 BattleScript_EffectAttackUpUserAlly_TryAlly_:
 	jumpifblockedbysoundproof BS_ATTACKER_PARTNER, BattleScript_EffectAttackUpUserAlly_TryAllyBlocked
 	setstatchanger ESTADISTICA_ATAQUE, 1, FALSE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_EffectAttackUpUserAlly_End
 	jumpifword COMPARACION_DESIGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_EffectAttackUpUserAlly_AllyAnim
 	pause B_WAIT_TIME_SHORTEST
-	printstring STRINGID_TARGETSTATWONTGOHIGHER
+	printstring ("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} won't go any higher!")
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_EffectAttackUpUserAlly_End
+
 BattleScript_EffectAttackUpUserAlly_AllyAnim:
 	setgraphicalstatchangevalues
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
@@ -622,7 +628,7 @@ BattleScript_EffectLaserFocus::
 	setuserstatus3 STATUS3_LASER_FOCUS, BattleScript_ButItFailed
 	attackanimation
 	waitanimation
-	printstring STRINGID_LASERFOCUS
+	printstring ("{B_ATK_NAME_WITH_PREFIX} concentrated intensely!")
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
@@ -697,7 +703,7 @@ BattleScript_EffectPowder::
 	setpowder BS_TARGET
 	attackanimation
 	waitanimation
-	printstring STRINGID_COVEREDINPOWDER
+	printstring ("{B_DEF_NAME_WITH_PREFIX} is covered in powder!")
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
@@ -713,9 +719,10 @@ BattleScript_EffectAromaticMistWorks:
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_EffectAromaticMistEnd
 	jumpifword COMPARACION_DESIGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_AromaticMistAnim
 	pause B_WAIT_TIME_SHORTEST
-	printstring STRINGID_TARGETSTATWONTGOHIGHER
+	printstring ("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} won't go any higher!")
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_EffectAromaticMistEnd
+
 BattleScript_AromaticMistAnim:
 	attackanimation
 	waitanimation
@@ -723,6 +730,7 @@ BattleScript_AromaticMistAnim:
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 	printfromtable gStatUpStringIds
 	waitmessage B_WAIT_TIME_LONG
+
 BattleScript_EffectAromaticMistEnd:
 	goto BattleScript_MoveEnd
 
@@ -1939,16 +1947,9 @@ BattleScript_EffectHitEscape::
 	jumpifbattleend BattleScript_HitEscapeEnd
 	jumpifbyte COMPARACION_DESIGUAL, gBattleOutcome, 0, BattleScript_HitEscapeEnd
 	goto BattleScript_MoveSwitch
+
 BattleScript_HitEscapeEnd:
 	end
-
-BattleScript_EffectPlaceholder::
-	attackcanceler
-	attackstring
-	ppreduce
-	pause 5
-	printstring STRINGID_NOTDONEYET
-	goto BattleScript_MoveEnd
 
 BattleScript_EffectHit::
 	attackcanceler
@@ -2739,7 +2740,7 @@ BattleScript_VoltAbsorbHeal:
 BattleScript_AlreadyParalyzed:
 	setalreadystatusedmoveattempt BS_ATTACKER
 	pause B_WAIT_TIME_SHORT
-	printstring STRINGID_PKMNISALREADYPARALYZED
+	printstring ("{B_DEF_NAME_WITH_PREFIX} is already paralyzed!")
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
@@ -3966,7 +3967,7 @@ BattleScript_EffectRolePlay::
 	copybyte gBattlerAbility, gBattlerAttacker
 	call BattleScript_AbilityPopUpOverwriteThenNormal
 	recordability BS_ATTACKER
-	printstring STRINGID_PKMNCOPIEDFOE
+	printstring ("{B_ATK_NAME_WITH_PREFIX} copied {B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}!")
 	waitmessage B_WAIT_TIME_LONG
 	switchinabilities BS_ATTACKER
 	goto BattleScript_MoveEnd
@@ -4842,13 +4843,13 @@ BattleScript_AttackerItemStatRaiseRet:
 
 BattleScript_MistProtected::
 	pause B_WAIT_TIME_SHORT
-	printstring STRINGID_PKMNPROTECTEDBYMIST
+	printstring ("{B_SCR_ACTIVE_NAME_WITH_PREFIX} is protected by MIST!")
 	waitmessage B_WAIT_TIME_LONG
 	return
 
 BattleScript_RageIsBuilding::
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_RageIsBuildingEnd
-	printstring STRINGID_PKMNRAGEBUILDING
+	printstring ("{B_DEF_NAME_WITH_PREFIX}'s RAGE is building!")
 	waitmessage B_WAIT_TIME_LONG
 BattleScript_RageIsBuildingEnd:
 	return
@@ -5414,7 +5415,7 @@ BattleScript_MagicBounce::
 	ppreduce
 	pause B_WAIT_TIME_SHORT
 	call BattleScript_AbilityPopUp
-	printstring STRINGID_PKMNMOVEBOUNCEDABILITY
+	printstring ("{B_ATK_NAME_WITH_PREFIX}'s {B_CURRENT_MOVE} was bounced back by {B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}!")
 	waitmessage B_WAIT_TIME_LONG
 	setmagiccoattarget
 	orword gHitMarker, HITMARKER_ATTACKSTRING_PRINTED | HITMARKER_NO_PPDEDUCT | HITMARKER_ALLOW_NO_PP
@@ -5724,7 +5725,7 @@ ScriptCombate_DanioCongelacion::
 	goto BattleScript_DoStatusTurnDmg
 
 BattleScript_MoveUsedIsParalyzed::
-	printstring STRINGID_PKMNISPARALYZED
+	printstring ("{B_ATK_NAME_WITH_PREFIX} is paralyzed! It can't move!")
 	waitmessage B_WAIT_TIME_LONG
 	statusanimation BS_ATTACKER
 	cancelmultiturnmoves BS_ATTACKER
@@ -6024,7 +6025,7 @@ BattleScript_ItemSteal::
 BattleScript_DrizzleActivates::
 	pause B_WAIT_TIME_SHORT
 	call BattleScript_AbilityPopUp
-	printstring STRINGID_PKMNMADEITRAIN
+	printstring "{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY} made it rain!")
 	waitstate
 	playanimation BS_BATTLER_0, B_ANIM_RAIN_CONTINUES
 	call BattleScript_ActivateWeatherAbilities
@@ -6291,8 +6292,9 @@ BattleScript_IntimidateContrary:
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 	printfromtable gStatUpStringIds
 	goto BattleScript_IntimidateEffect_WaitString
+
 BattleScript_IntimidateContrary_WontIncrease:
-	printstring STRINGID_TARGETSTATWONTGOHIGHER
+	printstring ("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} won't go any higher!")
 	goto BattleScript_IntimidateEffect_WaitString
 
 BattleScript_IntimidateInReverse:
@@ -6394,7 +6396,7 @@ BattleScript_TookAttack::
 BattleScript_SturdyPreventsOHKO::
 	pause B_WAIT_TIME_SHORT
 	call BattleScript_AbilityPopUp
-	printstring STRINGID_PKMNPROTECTEDBY
+	printstring ("{B_DEF_NAME_WITH_PREFIX} was protected by {B_DEF_ABILITY}!")
 	pause B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 
@@ -6664,7 +6666,7 @@ BattleScript_WeakArmorActivatesSpeed:
 	jumpifword COMPARACION_MENOR, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_WeakArmorSpeedAnim
 	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_ROSE_EMPTY, BattleScript_WeakArmorActivatesEnd
 	pause B_WAIT_TIME_SHORTEST
-	printstring STRINGID_TARGETSTATWONTGOHIGHER
+	printstring ("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} won't go any higher!")
 	bichalfword gMoveResultFlags, MOVE_RESULT_MISSED
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_WeakArmorActivatesEnd
@@ -7158,13 +7160,9 @@ BattleScript_SelectingNotAllowedMoveAssaultVest::
 	printselectionstring STRINGID_ASSAULTVESTDOESNTALLOW
 	endselectionscript
 
-BattleScript_SelectingNotAllowedPlaceholder::
-	printselectionstring STRINGID_NOTDONEYET
-	endselectionscript
-
 BattleScript_HangedOnMsg::
 	playanimation BS_TARGET, B_ANIM_HANGED_ON
-	printstring STRINGID_PKMNHUNGONWITHX
+	printstring ("{B_DEF_NAME_WITH_PREFIX} hung on using its {B_LAST_ITEM}!")
 	waitmessage B_WAIT_TIME_LONG
 	jumpifnoholdeffect BS_TARGET, HOLD_EFFECT_FOCUS_SASH, BattleScript_HangedOnMsgRet
 	removeitem BS_TARGET
