@@ -5194,7 +5194,7 @@ F_TRAINER_FEMALE |
 #line 2187
                 MOVE_UPROAR,
                 MOVE_FURY_SWIPES,
-                MOVE_FAKE_OUT,
+                MOVE_SORPRESA,
                 MOVE_WATER_PULSE,
             },
             },
@@ -8154,7 +8154,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 3408
-                MOVE_RAPID_SPIN,
+                MOVE_GIRO_RAPIDO,
                 MOVE_MUD_SLAP,
                 MOVE_PSYBEAM,
                 MOVE_ROCK_TOMB,
@@ -8188,7 +8188,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 3424
-                MOVE_RAPID_SPIN,
+                MOVE_GIRO_RAPIDO,
                 MOVE_MUD_SLAP,
                 MOVE_PSYBEAM,
                 MOVE_ROCK_TOMB,
@@ -19252,7 +19252,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 7968
-                MOVE_RAPID_SPIN,
+                MOVE_GIRO_RAPIDO,
                 MOVE_MUD_SLAP,
                 MOVE_PSYBEAM,
                 MOVE_ROCK_TOMB,
@@ -32759,7 +32759,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 13510
-                MOVE_FAKE_OUT,
+                MOVE_SORPRESA,
                 MOVE_FOCUS_PUNCH,
                 MOVE_BELLY_DRUM,
                 MOVE_EARTHQUAKE,
@@ -32852,7 +32852,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 13551
-                MOVE_FAKE_OUT,
+                MOVE_SORPRESA,
                 MOVE_FOCUS_PUNCH,
                 MOVE_BELLY_DRUM,
                 MOVE_EARTHQUAKE,
@@ -32962,7 +32962,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 13600
-                MOVE_FAKE_OUT,
+                MOVE_SORPRESA,
                 MOVE_FOCUS_PUNCH,
                 MOVE_BELLY_DRUM,
                 MOVE_EARTHQUAKE,
@@ -33089,7 +33089,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 13657
-                MOVE_FAKE_OUT,
+                MOVE_SORPRESA,
                 MOVE_FOCUS_PUNCH,
                 MOVE_BELLY_DRUM,
                 MOVE_EARTHQUAKE,
@@ -34169,7 +34169,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 14131
-                MOVE_FAKE_OUT,
+                MOVE_SORPRESA,
                 MOVE_DIZZY_PUNCH,
                 MOVE_ENDURE,
                 MOVE_REVERSAL,
@@ -34279,7 +34279,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 14180
-                MOVE_FAKE_OUT,
+                MOVE_SORPRESA,
                 MOVE_DIZZY_PUNCH,
                 MOVE_ENDURE,
                 MOVE_REVERSAL,
@@ -34389,7 +34389,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 14229
-                MOVE_FAKE_OUT,
+                MOVE_SORPRESA,
                 MOVE_DIZZY_PUNCH,
                 MOVE_ENDURE,
                 MOVE_REVERSAL,

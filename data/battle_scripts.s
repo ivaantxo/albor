@@ -49,9 +49,9 @@ BattleScript_LowerAtkSpAtkTrySpAtk::
 BattleScript_LowerAtkSpAtkEnd:
 	return
 
-BattleScript_EffectUpperHand::
+BattleScript_EffectPalmaRauda::
 	attackcanceler
-	tryupperhand BattleScript_FailedFromAtkString
+	trypalmarauda BattleScript_FailedFromAtkString
 	goto BattleScript_HitFromAccCheck
 
 BattleScript_EffectShedTail::
@@ -1540,9 +1540,9 @@ BattleScript_EffectSimpleBeam::
 	tryendneutralizinggas BS_TARGET
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectSuckerPunch::
+BattleScript_EffectGolpeBajo::
 	attackcanceler
-	suckerpunchcheck BattleScript_FailedFromAtkString
+	golpebajocheck BattleScript_FailedFromAtkString
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
 	goto BattleScript_HitFromAtkString
 
@@ -4304,7 +4304,6 @@ BattleScript_DragonDanceEnd::
 	goto BattleScript_MoveEnd
 
 BattleScript_FaintAttacker::
-	tryillusionoff BS_ATTACKER
 	tryactivategulpmissile
 	playfaintcry BS_ATTACKER
 	pause B_WAIT_TIME_LONG
@@ -4317,7 +4316,6 @@ BattleScript_FaintAttacker::
 	return
 
 BattleScript_FaintTarget::
-	tryillusionoff BS_TARGET
 	playfaintcry BS_TARGET
 	pause B_WAIT_TIME_LONG
 	dofaintanimation BS_TARGET
@@ -4326,7 +4324,7 @@ BattleScript_FaintTarget::
 	tryactivatefellstinger BS_ATTACKER
 	tryactivatesoulheart
 	tryactivatereceiver BS_TARGET
-	intentaactivarautoestima BS_ATTACKER        @ and chilling neigh, as one ice rider
+	intentaactivarautoestima BS_ATTACKER
 	tryactivatecarnivoro BS_ATTACKER
 	tryactivatebeastboost BS_ATTACKER
 	tryactivatebattlebond BS_ATTACKER
@@ -5112,8 +5110,8 @@ BattleScript_AllStatsUpSpDef::
 BattleScript_AllStatsUpRet::
 	return
 
-BattleScript_RapidSpinAway::
-	rapidspinfree
+BattleScript_GiroRapidoAway::
+	girorapidofree
 	return
 
 BattleScript_WrapFree::
@@ -5597,17 +5595,6 @@ BattleScript_BattlerFormChangeWithStringEnd3::
 	waitmessage B_WAIT_TIME_LONG
 	end3
 
-BattleScript_IllusionOff::
-	spriteignore0hp TRUE
-	playanimation BS_TARGET, B_ANIM_ILLUSION_OFF
-	waitanimation
-	updatenick BS_TARGET
-	waitstate
-	spriteignore0hp FALSE
-	printstring STRINGID_ILLUSIONWOREOFF
-	waitmessage B_WAIT_TIME_LONG
-	return
-
 BattleScript_CottonDownActivates::
 	copybyte sSAVED_BATTLER, gBattlerAttacker
 	call BattleScript_AbilityPopUpTarget
@@ -5750,24 +5737,8 @@ BattleScript_PowderMoveNoEffectWaitMsg:
 	goto BattleScript_MoveEnd
 
 BattleScript_MoveUsedFlinched::
-	printstring STRINGID_PKMNFLINCHED
+	printstring ("¡{B_ATK_NAME_WITH_PREFIX} retrocedió!")
 	waitmessage B_WAIT_TIME_LONG
-	jumpifability BS_ATTACKER ABILITY_STEADFAST BattleScript_TryActivateSteadFast
-BattleScript_MoveUsedFlinchedEnd:
-	goto BattleScript_MoveEnd
-BattleScript_TryActivateSteadFast:
-	setstatchanger ESTADISTICA_VELOCIDAD, 1, FALSE
-	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_MoveUsedFlinchedEnd
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_MoveUsedFlinchedEnd
-	copybyte gBattlerAbility, gBattlerAttacker
-	call BattleScript_AbilityPopUp
-	setgraphicalstatchangevalues
-	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	setbyte gBattleCommunication ESTADISTICA_VELOCIDAD
-	stattextbuffer BS_ATTACKER
-	printstring STRINGID_ATTACKERABILITYSTATRAISE
-	waitmessage B_WAIT_TIME_LONG
-	goto BattleScript_MoveUsedFlinchedEnd
 
 BattleScript_PrintUproarOverTurns::
 	printfromtable gUproarOverTurnStringIds
@@ -6241,7 +6212,7 @@ BattleScript_IntimidateLoop:
 	jumpifabsent BS_TARGET, BattleScript_IntimidateLoopIncrement
 	jumpifstatus2 BS_TARGET, STATUS2_SUBSTITUTE, BattleScript_IntimidateLoopIncrement
 .if B_UPDATED_INTIMIDATE >= GEN_8 @These abilties specifically prevent just intimidate, without blocking stat decreases
-	jumpifability BS_TARGET, ABILITY_INNER_FOCUS, BattleScript_IntimidatePrevented
+	jumpifability BS_TARGET, ABILITY_FUERZA_MENTAL, BattleScript_IntimidatePrevented
 	jumpifability BS_TARGET, ABILITY_SCRAPPY, BattleScript_IntimidatePrevented
 	jumpifability BS_TARGET, ABILITY_OWN_TEMPO, BattleScript_IntimidatePrevented
 	jumpifability BS_TARGET, ABILITY_OBLIVIOUS, BattleScript_IntimidatePrevented

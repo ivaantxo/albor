@@ -83,9 +83,9 @@ static void SpriteCB_MoveSpriteUpwardsForDurationStep(struct Sprite* sprite);
 static void SpriteCB_MoveSpriteUpwardsForDuration(struct Sprite* sprite);
 static void SpriteCB_SpriteOnMonForDurationUseY(struct Sprite *sprite);
 static void SpriteCB_SurgingStrikes(struct Sprite* sprite);
-static void SpriteCB_SteelRoller_Down(struct Sprite *sprite);
-static void SpriteCB_SteelRoller_LeftRight(struct Sprite* sprite);
-static void SpriteCB_SteelRoller(struct Sprite* sprite);
+static void SpriteCB_Rodillo_Down(struct Sprite *sprite);
+static void SpriteCB_Rodillo_LeftRight(struct Sprite* sprite);
+static void SpriteCB_Rodillo(struct Sprite* sprite);
 static void SpriteCB_FlippableSlash(struct Sprite* sprite);
 static void SpriteCB_DragonEnergyShot(struct Sprite* sprite);
 static void SpriteCB_GlacialLance_Step1(struct Sprite* sprite);
@@ -249,7 +249,7 @@ const struct SpriteTemplate gAutotomizeMetalShardsTemplate =
 const struct SpriteTemplate gRagePowderRedPowderTemplate =
 {
     .tileTag = ANIM_TAG_SPORE,
-    .paletteTag = ANIM_TAG_HEART_STAMP,
+    .paletteTag = ANIM_TAG_SPORE,
     .oam = &gOamData_AffineOff_ObjNormal_16x16,
     .anims = gSporeParticleAnimTable,
     .images = NULL,
@@ -564,18 +564,6 @@ const struct SpriteTemplate gFrostBreathBlueBreathTemplate =
     .images = NULL,
     .affineAnims = gAffineAnims_FuriaDragonFire,
     .callback = AnimDragonFireToTarget
-};
-
-//heart stamp
-const struct SpriteTemplate gHeartStampSpinningHeartTemplate =
-{
-    .tileTag = ANIM_TAG_HEART_STAMP,
-    .paletteTag = ANIM_TAG_HEART_STAMP,
-    .oam = &gOamData_AffineDouble_ObjNormal_32x32,
-    .anims = gAnims_HandsAndFeet,
-    .images = NULL,
-    .affineAnims = gAffineAnims_SpinningHandOrFoot,
-    .callback = AnimSpinningKickOrPunch
 };
 
 //horn leech
@@ -2001,20 +1989,6 @@ const struct SpriteTemplate gHyperspaceFuryImpactTemplate =
     .callback = AnimHitSplatRandom
 };
 
-// GEN 7
-//first impression
-const struct SpriteTemplate gFirstImpressionPoundTemplate =
-{
-    .tileTag = ANIM_TAG_IMPACT,
-    .paletteTag = ANIM_TAG_RAZOR_LEAF,
-    .oam = &gOamData_AffineNormal_ObjBlend_32x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gAffineAnims_HitSplat,
-    .callback = AnimHitSplatBasic
-};
-
-//baneful bunker
 const struct SpriteTemplate gBanefulBunkerPoisonBubbleTemplate =
 {
     .tileTag = ANIM_TAG_POISON_BUBBLE,
@@ -3031,74 +3005,6 @@ const struct SpriteTemplate gMoongeistBeamChargeTemplate =
     .callback = SpriteCB_MoongeistCharge
 };
 
-//zing zap
-const struct SpriteTemplate gZingZapYellowBallTemplate =
-{
-    .tileTag = ANIM_TAG_YELLOW_BALL,
-    .paletteTag = ANIM_TAG_SPARK_H,
-    .oam = &gOamData_AffineDouble_ObjNormal_16x16,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gAffineAnims_ShadowBall,
-    .callback = AnimShadowBall
-};
-
-const struct SpriteTemplate gZingZapRingTemplate =
-{
-    .tileTag = ANIM_TAG_THIN_RING,
-    .paletteTag = ANIM_TAG_SMALL_EMBER,
-    .oam = &gOamData_AffineDouble_ObjBlend_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gThinRingExpandingAffineAnimTable,
-    .callback = AnimUproarRing
-};
-
-//nature's madness
-const struct SpriteTemplate gNaturesMadnessPinkStarsTemplate =
-{
-    .tileTag = ANIM_TAG_SPARKLE_2,
-    .paletteTag = ANIM_TAG_PINK_PETAL,
-    .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gGrantingStarsAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimSmallBubblePair
-};
-
-const struct SpriteTemplate gNaturesMadnessCrystalsTemplate =
-{
-    .tileTag = ANIM_TAG_ICE_CRYSTALS,
-    .paletteTag = ANIM_TAG_ICE_CHUNK,
-    .oam = &gOamData_AffineOff_ObjNormal_8x8,
-    .anims = gAnims_SmallBubblePair,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimSmallBubblePair
-};
-
-const struct SpriteTemplate gNaturesMadnessPinkRingTemplate =
-{
-    .tileTag = ANIM_TAG_THIN_RING,
-    .paletteTag = ANIM_TAG_PINK_PETAL,
-    .oam = &gOamData_AffineDouble_ObjBlend_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gThinRingExpandingAffineAnimTable,
-    .callback = AnimUproarRing
-};
-
-const struct SpriteTemplate gNaturesMadnessGrayRingTemplate =
-{
-    .tileTag = ANIM_TAG_THIN_RING,
-    .paletteTag = ANIM_TAG_ECLIPSING_ORB,
-    .oam = &gOamData_AffineDouble_ObjBlend_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gThinRingShrinkingAffineAnimTable,
-    .callback = AnimSpriteOnMonPos
-};
-
 //mind blown
 const struct SpriteTemplate gMindBlownHeadTemplate =
 {
@@ -3911,14 +3817,14 @@ const struct SpriteTemplate gSpriteTemplate_ChloroblastShot = {
 };
 
 // steel roller
-const struct SpriteTemplate gSpriteTemplate_SteelRoller = {
-    .tileTag = ANIM_TAG_STEAMROLLER,
-    .paletteTag = ANIM_TAG_STEAMROLLER,
+const struct SpriteTemplate gSpriteTemplate_Rodillo = {
+    .tileTag = ANIM_TAG_RODILLO,
+    .paletteTag = ANIM_TAG_RODILLO,
     .oam = &gOamData_AffineOff_ObjNormal_64x64,
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_SteelRoller
+    .callback = SpriteCB_Rodillo
 };
 
 // scale shot
@@ -4253,17 +4159,6 @@ const struct SpriteTemplate gSpriteTemplate_MysticalPowerRing = {
     .images = NULL,
     .affineAnims = sSpriteAffineAnimTable_MysticalPowerRing,
     .callback = AnimHitSplatBasic
-};
-
-// mountain gale
-const struct SpriteTemplate gSpriteTemplate_MountainGaleRock = {
-    .tileTag = ANIM_TAG_ROCKS,
-    .paletteTag = ANIM_TAG_DRAGON_ASCENT_FOE,
-    .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gAnims_FlyingRock,
-    .images = NULL,
-    .affineAnims = gBulletSeedAffineAnimTable,
-    .callback = AnimMissileArc
 };
 
 // bleakwind storm
@@ -8579,7 +8474,7 @@ static void SpriteCB_SurgingStrikes(struct Sprite* sprite)
 //arg 2: falling speed
 //arg 3: horizontal distance
 //arg 4: horizontal speed
-static void SpriteCB_SteelRoller(struct Sprite* sprite)
+static void SpriteCB_Rodillo(struct Sprite* sprite)
 {
     sprite->x = GetBattlerSpriteCoord2(gBattleAnimTarget, BATTLER_COORD_X);
     sprite->y = GetBattlerSpriteCoord2(gBattleAnimTarget, BATTLER_COORD_Y);
@@ -8591,20 +8486,20 @@ static void SpriteCB_SteelRoller(struct Sprite* sprite)
     sprite->data[5] = gBattleAnimArgs[4]; //Left/Right speed
 
     sprite->data[3] = gBattleAnimArgs[2]; //Falling Speed
-    sprite->callback = SpriteCB_SteelRoller_Down;
+    sprite->callback = SpriteCB_Rodillo_Down;
 }
 
-static void SpriteCB_SteelRoller_Down(struct Sprite *sprite)
+static void SpriteCB_Rodillo_Down(struct Sprite *sprite)
 {
     sprite->y2 += sprite->data[3];
     if (sprite->y2 >= 0)
     {
         sprite->y2 = 0;
-        sprite->callback = SpriteCB_SteelRoller_LeftRight;
+        sprite->callback = SpriteCB_Rodillo_LeftRight;
     }
 }
 
-static void SpriteCB_SteelRoller_LeftRight(struct Sprite* sprite)
+static void SpriteCB_Rodillo_LeftRight(struct Sprite* sprite)
 {
     sprite->data[0] = -sprite->data[4]; //Slice distance
     sprite->data[1] = sprite->data[5]; //Slice speed

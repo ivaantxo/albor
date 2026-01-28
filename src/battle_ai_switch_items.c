@@ -700,7 +700,7 @@ static bool32 CanMonSurviveHazardSwitchin(u32 battler)
             for (j = 0; j < MAX_MON_MOVES; j++)
             {
                 aiMove = GetMonData(&party[i], MON_DATA_MOVE1 + j, NULL);
-                if (MoveHasAdditionalEffectSelf(aiMove, MOVE_EFFECT_RAPID_SPIN)
+                if (MoveHasAdditionalEffectSelf(aiMove, MOVE_EFFECT_GIRO_RAPIDO)
                  || (gMovesInfo[aiMove].effect == EFFECT_DEFOG))
                 {
                     // Have a mon that can clear the hazards, so switching out is okay
@@ -1918,7 +1918,7 @@ u32 GetMostSuitableMonToSwitchInto(u32 battler, bool32 switchAfterMonKOd)
 
 static bool32 AIExpectsToFaintPlayer(u32 battler)
 {
-    u8 target = gBattleStruct->aiChosenTarget[battler];
+    u8 target = gBattleStruct->IA_Objetivo[battler];
 
     if (gBattleStruct->IA_Eleccion[battler] > 3)
         return FALSE; // AI not planning to use move

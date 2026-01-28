@@ -282,9 +282,9 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 4,
     },
 
-    [ABILITY_INNER_FOCUS] =
+    [ABILITY_FUERZA_MENTAL] =
     {
-        .name = _("Inner Focus"),
+        .name = _("Fuerza mental"),
         .description = COMPOUND_STRING("Prevents flinching."),
         .aiRating = 2,
         .breakable = TRUE,
@@ -547,13 +547,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Rivalidad"),
         .description = COMPOUND_STRING("Mismo género +25%."),
         .aiRating = 1,
-    },
-
-    [ABILITY_STEADFAST] =
-    {
-        .name = _("Steadfast"),
-        .description = COMPOUND_STRING("Flinching raises Speed."),
-        .aiRating = 2,
     },
 
     [ABILITY_SNOW_CLOAK] =
@@ -1045,16 +1038,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Agresividad"),
         .description = COMPOUND_STRING("Potencia 50% si ataca después."),
         .aiRating = 5,
-    },
-
-    [ABILITY_ILLUSION] =
-    {
-        .name = _("Illusion"),
-        .description = COMPOUND_STRING("Appears as a partner."),
-        .aiRating = 8,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
     },
 
     [ABILITY_IMPOSTER] =

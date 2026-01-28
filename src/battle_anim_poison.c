@@ -9,8 +9,8 @@ static void AnimAcidPoisonBubble(struct Sprite *);
 static void AnimSludgeBombHitParticle_Step(struct Sprite *);
 static void AnimAcidPoisonDroplet(struct Sprite *);
 static void AnimBubbleEffect_Step(struct Sprite *);
-static void AnimSuckerPunchStep(struct Sprite *sprite);
-static void AnimSuckerPunch(struct Sprite *sprite);
+static void AnimGolpeBajoStep(struct Sprite *sprite);
+static void AnimGolpeBajo(struct Sprite *sprite);
 static void AnimGunkShotParticlesStep(struct Sprite *sprite);
 static void AnimGunkShotParticles(struct Sprite *sprite);
 static void AnimGunkShotImpact(struct Sprite *sprite);
@@ -201,7 +201,7 @@ const struct SpriteTemplate gGreenPoisonBubble =
     .callback = AnimAcidPoisonBubble,
 };
 
-const union AnimCmd gSuckerPunchAnimCmd[] =
+const union AnimCmd gGolpeBajoAnimCmd[] =
 {
     ANIMCMD_FRAME(0, 3),
     ANIMCMD_FRAME(0, 3, .hFlip = TRUE),
@@ -210,9 +210,9 @@ const union AnimCmd gSuckerPunchAnimCmd[] =
     ANIMCMD_JUMP(0),
 };
 
-const union AnimCmd *const gSuckerPunchAnim[] =
+const union AnimCmd *const gGolpeBajoAnim[] =
 {
-    gSuckerPunchAnimCmd,
+    gGolpeBajoAnimCmd,
 };
 
 const union AnimCmd gGunkShotParticlesAnimCmd[] =
@@ -229,50 +229,50 @@ const union AnimCmd *const gGunkShotParticlesAnims[] =
     gGunkShotParticlesAnimCmd,
 };
 
-const union AffineAnimCmd gSuckerPunchImpactAffineAnimCmd_1[] =
+const union AffineAnimCmd gGolpeBajoImpactAffineAnimCmd_1[] =
 {
     AFFINEANIMCMD_FRAME(0x0, 0x0, 0, 8),
     AFFINEANIMCMD_END,
 };
 
-const union AffineAnimCmd gSuckerPunchImpactAffineAnimCmd_2[] =
+const union AffineAnimCmd gGolpeBajoImpactAffineAnimCmd_2[] =
 {
     AFFINEANIMCMD_FRAME(0xD8, 0xD8, 0, 0),
     AFFINEANIMCMD_FRAME(0x0, 0x0, 0, 8),
     AFFINEANIMCMD_END,
 };
 
-const union AffineAnimCmd gSuckerPunchImpactAffineAnimCmd_3[] =
+const union AffineAnimCmd gGolpeBajoImpactAffineAnimCmd_3[] =
 {
     AFFINEANIMCMD_FRAME(0xB0, 0xB0, 0, 0),
     AFFINEANIMCMD_FRAME(0x0, 0x0, 0, 8),
     AFFINEANIMCMD_END,
 };
 
-const union AffineAnimCmd gSuckerPunchImpactAffineAnimCmd_4[] =
+const union AffineAnimCmd gGolpeBajoImpactAffineAnimCmd_4[] =
 {
     AFFINEANIMCMD_FRAME(0x80, 0x80, 0, 0),
     AFFINEANIMCMD_FRAME(0x0, 0x0, 0, 8),
     AFFINEANIMCMD_END,
 };
 
-const union AffineAnimCmd *const gSuckerPunchImpactAffineAnim[] =
+const union AffineAnimCmd *const gGolpeBajoImpactAffineAnim[] =
 {
-    gSuckerPunchImpactAffineAnimCmd_1,
-    gSuckerPunchImpactAffineAnimCmd_2,
-    gSuckerPunchImpactAffineAnimCmd_3,
-    gSuckerPunchImpactAffineAnimCmd_4,
+    gGolpeBajoImpactAffineAnimCmd_1,
+    gGolpeBajoImpactAffineAnimCmd_2,
+    gGolpeBajoImpactAffineAnimCmd_3,
+    gGolpeBajoImpactAffineAnimCmd_4,
 };
 
-const struct SpriteTemplate gSuckerPunchSpriteTemplate =
+const struct SpriteTemplate gGolpeBajoSpriteTemplate =
 {
     .tileTag = ANIM_TAG_POISON_JAB,
     .paletteTag = ANIM_TAG_POISON_JAB,
     .oam = &gOamData_AffineNormal_ObjNormal_16x16,
-    .anims = gSuckerPunchAnim,
+    .anims = gGolpeBajoAnim,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimSuckerPunch,
+    .callback = AnimGolpeBajo,
 };
 
 const struct SpriteTemplate gGunkShoParticlesSpriteTemplate =
@@ -293,7 +293,7 @@ const struct SpriteTemplate gGunkShotImpactSpriteTemplate =
     .oam = &gOamData_AffineNormal_ObjBlend_32x32,
     .anims = gDummySpriteAnimTable,
     .images = NULL,
-    .affineAnims = gSuckerPunchImpactAffineAnim,
+    .affineAnims = gGolpeBajoImpactAffineAnim,
     .callback = AnimGunkShotImpact,
 };
 
@@ -352,7 +352,7 @@ static void AnimGunkShotParticlesStep(struct Sprite *sprite)
     }
 }
 
-static void AnimSuckerPunch(struct Sprite *sprite)
+static void AnimGolpeBajo(struct Sprite *sprite)
 {
     if (ALIADO(gBattleAnimAttacker) == gBattleAnimTarget && gBattleAnimTarget < JUGADOR_DERECHA)
         gBattleAnimArgs[0] *= -1;
@@ -374,10 +374,10 @@ static void AnimSuckerPunch(struct Sprite *sprite)
     sprite->data[6] = gBattleAnimArgs[4];
     sprite->data[7] = 0;
 
-    sprite->callback = AnimSuckerPunchStep;
+    sprite->callback = AnimGolpeBajoStep;
 }
 
-static void AnimSuckerPunchStep(struct Sprite *sprite)
+static void AnimGolpeBajoStep(struct Sprite *sprite)
 {
     if (!AnimTranslateLinear(sprite))
     {

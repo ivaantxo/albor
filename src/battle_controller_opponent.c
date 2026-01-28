@@ -424,7 +424,7 @@ static void OpponentHandleChooseMove(u32 battler)
     u32 chosenMoveId = gBattleStruct->IA_Eleccion[battler];
     struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct *)(&gBattleResources->bufferA[battler][4]);
     u32 chosenMove = moveInfo->moves[chosenMoveId];
-    gBattlerTarget = gBattleStruct->aiChosenTarget[battler];
+    gBattlerTarget = gBattleStruct->IA_Objetivo[battler];
 
     if (GetBattlerMoveTargetType(battler, chosenMove) & (MOVE_TARGET_USER_OR_SELECTED | MOVE_TARGET_USER))
         gBattlerTarget = battler;

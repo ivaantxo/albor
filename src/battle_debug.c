@@ -845,7 +845,7 @@ static void PutMovesPointsText(struct BattleDebugMenu *data)
                 continue;
             battlerDef = gSprites[data->spriteIds.aiIconSpriteIds[j]].data[0];
             ConvertIntToDecimalStringN(text,
-                                       gBattleStruct->aiFinalScore[data->aiBattlerId][battlerDef][i],
+                                       gBattleStruct->IA_Puntuacion[data->aiBattlerId][battlerDef][i],
                                        STR_CONV_MODE_RIGHT_ALIGN, 3);
             AddTextPrinterParameterized(data->aiMovesWindowId, FONT_NORMAL, text, 83 + count * 54, i * 15, 0, NULL);
 
@@ -2162,7 +2162,6 @@ static const u8 sText_HoldEffectQuickClaw[] = _("Quick Claw");
 static const u8 sText_HoldEffectFriendshipUp[] = _("Friendship Up");
 static const u8 sText_HoldEffectMentalHerb[] = _("Mental Herb");
 static const u8 sText_HoldEffectChoiceBand[] = _("Choice Band");
-static const u8 sText_HoldEffectFlinch[] = _("Flinch");
 static const u8 sText_HoldEffectBugPower[] = _("Bug Power");
 static const u8 sText_HoldEffectDoublePrize[] = _("Double Prize");
 static const u8 sText_HoldEffectRepel[] = _("Repel");
@@ -2267,7 +2266,6 @@ static const u8 sText_HoldEffectPlate[] = _("Plate");
 static const u8 sText_HoldEffectUtilityUmbrella[] = _("Utility Umbrella");
 static const u8 sText_HoldEffectEjectPack[] = _("Eject Pack");
 static const u8 sText_HoldEffectRoomService[] = _("Room Service");
-static const u8 sText_HoldEffectBlunderPolicy[] = _("Blunder Policy");
 static const u8 sText_HoldEffectHeavyDutyBoots[] = _("Heavy Duty Boots");
 static const u8 sText_HoldEffectThroatSpray[] = _("Throat Spray");
 static const u8 sText_HoldEffectAbilityShield[] = _("Ability Shield");
@@ -2310,7 +2308,6 @@ static const u8 *const sHoldEffectNames[] =
     [HOLD_EFFECT_FRIENDSHIP_UP] = sText_HoldEffectFriendshipUp,
     [HOLD_EFFECT_MENTAL_HERB] = sText_HoldEffectMentalHerb,
     [HOLD_EFFECT_CHOICE_BAND] = sText_HoldEffectChoiceBand,
-    [HOLD_EFFECT_FLINCH] = sText_HoldEffectFlinch,
     [HOLD_EFFECT_BUG_POWER] = sText_HoldEffectBugPower,
     [HOLD_EFFECT_DOUBLE_PRIZE] = sText_HoldEffectDoublePrize,
     [HOLD_EFFECT_REPEL] = sText_HoldEffectRepel,
@@ -2414,7 +2411,6 @@ static const u8 *const sHoldEffectNames[] =
     [HOLD_EFFECT_UTILITY_UMBRELLA] = sText_HoldEffectUtilityUmbrella,
     [HOLD_EFFECT_EJECT_PACK] = sText_HoldEffectEjectPack,
     [HOLD_EFFECT_ROOM_SERVICE] = sText_HoldEffectRoomService,
-    [HOLD_EFFECT_BLUNDER_POLICY] = sText_HoldEffectBlunderPolicy,
     [HOLD_EFFECT_HEAVY_DUTY_BOOTS] = sText_HoldEffectHeavyDutyBoots,
     [HOLD_EFFECT_THROAT_SPRAY] = sText_HoldEffectThroatSpray,
     [HOLD_EFFECT_CHALECO_TACTICO] = sText_HoldEffectChalecoTactico,

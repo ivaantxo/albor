@@ -139,64 +139,14 @@ void SaveBattlerData(u32 battlerId)
     AI_THINKING_STRUCT->saved[battlerId].types[1] = gBattleMons[battlerId].types[1];
 }
 
-static bool32 ShouldFailForIllusion(u32 illusionSpecies, u32 battlerId)
-{
-    u32 i, j;
-    const struct LevelUpMove *learnset;
-
-    if (BATTLE_HISTORY->abilities[battlerId] == ABILITY_ILLUSION)
-        return FALSE;
-
-    // Don't fall for Illusion if the mon used a move it cannot know.
-    for (i = 0; i < MAX_MON_MOVES; i++)
-    {
-        u32 move = BATTLE_HISTORY->usedMoves[battlerId][i];
-        if (move == MOVE_NONE)
-            continue;
-
-        learnset = GetSpeciesLevelUpLearnset(illusionSpecies);
-        for (j = 0; learnset[j].move != MOVE_NONE; j++)
-        {
-            if (learnset[j].move == move)
-                break;
-        }
-        // The used move is in the learnsets of the fake species.
-        if (learnset[j].move != MOVE_NONE)
-            continue;
-
-        // The used move can be learned from Tm/Hm or Move Tutors.
-        if (CanLearnTeachableMove(illusionSpecies, move))
-            continue;
-
-        // 'Illegal move', AI won't fail for the illusion.
-        return FALSE;
-    }
-
-    return TRUE;
-}
-
 void SetBattlerData(u32 battlerId)
 {
     if (!CombatienteEsIA(battlerId) && AI_THINKING_STRUCT->saved[battlerId].saved)
     {
-        u32 i, species, illusionSpecies, side;
+        u32 i, species, side;
         side = GetBattlerSide(battlerId);
 
-        // Simulate Illusion
         species = gBattleMons[battlerId].species;
-        illusionSpecies = GetIllusionMonSpecies(battlerId);
-        if (illusionSpecies != SPECIES_NONE && ShouldFailForIllusion(illusionSpecies, battlerId))
-        {
-            // If the battler's type has not been changed, AI assumes the types of the illusion mon.
-            if (gBattleMons[battlerId].types[0] == gSpeciesInfo[species].types[0]
-                && gBattleMons[battlerId].types[1] == gSpeciesInfo[species].types[1])
-            {
-                gBattleMons[battlerId].types[0] = gSpeciesInfo[illusionSpecies].types[0];
-                gBattleMons[battlerId].types[1] = gSpeciesInfo[illusionSpecies].types[1];
-            }
-            species = illusionSpecies;
-        }
-
         // Use the known battler's ability.
         if (AI_PARTY->mons[side][gBattlerPartyIndexes[battlerId]].ability != ABILITY_NONE)
             gBattleMons[battlerId].ability = AI_PARTY->mons[side][gBattlerPartyIndexes[battlerId]].ability;
@@ -2809,7 +2759,7 @@ bool32 AI_CanBeInfatuated(u32 battlerAtk, u32 battlerDef, u32 defAbility)
 
 u32 ShouldTryToFlinch(u32 battlerAtk, u32 battlerDef, u32 atkAbility, u32 defAbility, u32 move)
 {
-    if (((!IsMoldBreakerTypeAbility(battlerAtk, AI_DATA->abilities[battlerAtk]) && (defAbility == ABILITY_SHIELD_DUST || defAbility == ABILITY_INNER_FOCUS))
+    if (((!IsMoldBreakerTypeAbility(battlerAtk, AI_DATA->abilities[battlerAtk]) && (defAbility == ABILITY_SHIELD_DUST || defAbility == ABILITY_FUERZA_MENTAL))
       || AI_DATA->holdEffects[battlerDef] == HOLD_EFFECT_COVERT_CLOAK
       || DoesSubstituteBlockMove(battlerAtk, battlerDef, move)
       || AI_IsSlower(battlerAtk, battlerDef, move))) // Opponent goes first
@@ -2845,7 +2795,7 @@ bool32 ShouldTrap(u32 battlerAtk, u32 battlerDef, u32 move)
     return FALSE;
 }
 
-bool32 ShouldFakeOut(u32 battlerAtk, u32 battlerDef, u32 move)
+bool32 DeberiaUsarSorpresa(u32 battlerAtk, u32 battlerDef, u32 move)
 {
     if ((!gDisableStructs[battlerAtk].isFirstTurn && MoveHasAdditionalEffectWithChance(move, MOVE_EFFECT_FLINCH, 100))
     || AI_DATA->abilities[battlerAtk] == ABILITY_GORILLA_TACTICS
@@ -2853,7 +2803,7 @@ bool32 ShouldFakeOut(u32 battlerAtk, u32 battlerDef, u32 move)
     || AI_DATA->holdEffects[battlerDef] == HOLD_EFFECT_COVERT_CLOAK
     || DoesSubstituteBlockMove(battlerAtk, battlerDef, move)
     || (!IsMoldBreakerTypeAbility(battlerAtk, AI_DATA->abilities[battlerAtk])
-    && (AI_DATA->abilities[battlerDef] == ABILITY_SHIELD_DUST || AI_DATA->abilities[battlerDef] == ABILITY_INNER_FOCUS)))
+    && (AI_DATA->abilities[battlerDef] == ABILITY_SHIELD_DUST || AI_DATA->abilities[battlerDef] == ABILITY_FUERZA_MENTAL)))
         return FALSE;
 
     return TRUE;
@@ -3586,7 +3536,7 @@ void IncreaseParalyzeScore(u32 battlerAtk, u32 battlerDef, u32 move, s32 *score)
 
         if ((defSpeed >= atkSpeed && defSpeed / 2 < atkSpeed) // You'll go first after paralyzing foe
           || HasMoveEffectANDArg(battlerAtk, EFFECT_DOUBLE_POWER_ON_ARG_STATUS, STATUS1_PARALYSIS)
-          || (HasMoveWithMoveEffectExcept(battlerAtk, MOVE_EFFECT_FLINCH, EFFECT_FIRST_TURN_ONLY)) // filter out Fake Out
+          || (HasMoveWithMoveEffectExcept(battlerAtk, MOVE_EFFECT_FLINCH, EFFECT_FIRST_TURN_ONLY)) // filter out Sorpresa
           || gBattleMons[battlerDef].status2 & STATUS2_INFATUATION
           || gBattleMons[battlerDef].status2 & STATUS2_CONFUSION)
             ADJUST_SCORE_PTR(GOOD_EFFECT);
@@ -3707,7 +3657,7 @@ bool32 AI_ShouldSetUpHazards(u32 battlerAtk, u32 battlerDef, struct AILogicData 
 {
     if (aiData->abilities[battlerDef] == ABILITY_MAGIC_BOUNCE
      || CountUsablePartyMons(battlerDef) == 0
-     || HasMoveWithAdditionalEffect(battlerDef, MOVE_EFFECT_RAPID_SPIN)
+     || HasMoveWithAdditionalEffect(battlerDef, MOVE_EFFECT_GIRO_RAPIDO)
      || HasMoveEffect(battlerDef, EFFECT_DEFOG))
         return FALSE;
 

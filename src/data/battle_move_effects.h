@@ -1075,9 +1075,9 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_SUCKER_PUNCH] =
+    [EFFECT_GOLPE_BAJO] =
     {
-        .battleScript = BattleScript_EffectSuckerPunch,
+        .battleScript = BattleScript_EffectGolpeBajo,
     },
 
     [EFFECT_SIMPLE_BEAM] =
@@ -1599,9 +1599,9 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_UPPER_HAND] =
+    [EFFECT_PALMA_RAUDA] =
     {
-        .battleScript = BattleScript_EffectUpperHand,
+        .battleScript = BattleScript_EffectPalmaRauda,
         .encourageEncore = TRUE,
     },
 

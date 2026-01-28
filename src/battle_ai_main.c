@@ -218,7 +218,7 @@ void BattleAI_SetupAIData(u8 defaultScoreMoves, u32 battler)
 
     //sBattler_AI = battler;
     gBattlerTarget = SetRandomTarget(sBattler_AI);
-    gBattleStruct->aiChosenTarget[sBattler_AI] = gBattlerTarget;
+    gBattleStruct->IA_Objetivo[sBattler_AI] = gBattlerTarget;
 }
 
 u32 BattleAI_ChooseMoveOrAction(void)
@@ -443,7 +443,7 @@ static u32 ChooseMoveOrAction_Singles(u32 battlerAI)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        gBattleStruct->aiFinalScore[battlerAI][gBattlerTarget][i] = AI_THINKING_STRUCT->score[i];
+        gBattleStruct->IA_Puntuacion[battlerAI][gBattlerTarget][i] = AI_THINKING_STRUCT->score[i];
     }
 
     numOfBestMoves = 1;
@@ -545,7 +545,7 @@ static u32 ChooseMoveOrAction_Doubles(u32 battlerAI)
 
             for (j = 0; j < MAX_MON_MOVES; j++)
             {
-                gBattleStruct->aiFinalScore[battlerAI][gBattlerTarget][j] = AI_THINKING_STRUCT->score[j];
+                gBattleStruct->IA_Puntuacion[battlerAI][gBattlerTarget][j] = AI_THINKING_STRUCT->score[j];
             }
         }
     }
@@ -570,7 +570,7 @@ static u32 ChooseMoveOrAction_Doubles(u32 battlerAI)
     }
 
     gBattlerTarget = mostViableTargetsArray[Random() % mostViableTargetsNo];
-    gBattleStruct->aiChosenTarget[battlerAI] = gBattlerTarget;
+    gBattleStruct->IA_Objetivo[battlerAI] = gBattlerTarget;
     return actionOrMoveIndex[gBattlerTarget];
 }
 
@@ -1655,7 +1655,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             break;
         case EFFECT_TRANSFORM:
             if (gBattleMons[battlerAtk].status2 & STATUS2_TRANSFORMED
-              || (gBattleMons[battlerDef].status2 & (STATUS2_TRANSFORMED | STATUS2_SUBSTITUTE))) //Leave out Illusion b/c AI is supposed to be fooled
+              || (gBattleMons[battlerDef].status2 & (STATUS2_TRANSFORMED | STATUS2_SUBSTITUTE)))
                 ADJUST_SCORE(-10);
             break;
         case EFFECT_SPITE:
@@ -2157,7 +2157,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
               || PartnerMoveIsSameAsAttacker(ALIADO(battlerAtk), battlerDef, move, aiData->partnerMove))
                 ADJUST_SCORE(-10);
             break;
-        case EFFECT_SUCKER_PUNCH:
+        case EFFECT_GOLPE_BAJO:
             if (predictedMove != MOVE_NONE)
             {
                 if (ES_MOVIMIENTO_ESTADO(predictedMove) || AI_IsSlower(battlerAtk, battlerDef, move)) // Opponent going first
@@ -2212,7 +2212,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
              && !BattlerStatCanRise(battlerAtk, aiData->abilities[battlerAtk], ESTADISTICA_DEFENSA_ESPECIAL))
                 ADJUST_SCORE(-10);
             break;
-        case EFFECT_UPPER_HAND:
+        case EFFECT_PALMA_RAUDA:
             if (predictedMove == MOVE_NONE || ES_MOVIMIENTO_ESTADO(predictedMove) || AI_IsSlower(battlerAtk, battlerDef, move) || GetMovePriority(battlerDef, predictedMove) < 1 || GetMovePriority(battlerDef, predictedMove) > 3) // Opponent going first or not using priority move
                 ADJUST_SCORE(-10);
             break;
@@ -3113,7 +3113,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
     case EFFECT_LEECH_SEED:
         if (ES_TIPO(battlerDef, TIPO_PLANTA)
           || gStatuses3[battlerDef] & STATUS3_LEECHSEED
-          || HasMoveWithAdditionalEffect(battlerDef, MOVE_EFFECT_RAPID_SPIN)
+          || HasMoveWithAdditionalEffect(battlerDef, MOVE_EFFECT_GIRO_RAPIDO)
           || aiData->abilities[battlerDef] == ABILITY_LIQUID_OOZE
           || aiData->abilities[battlerDef] == ABILITY_MAGIC_GUARD)
             break;
@@ -3396,7 +3396,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         ADJUST_SCORE(IncreaseStatUpScore(battlerAtk, battlerDef, STAT_CHANGE_DEF));
         break;
     case EFFECT_FIRST_TURN_ONLY:
-        if (ShouldFakeOut(battlerAtk, battlerDef, move) && MoveHasAdditionalEffectWithChance(move, MOVE_EFFECT_FLINCH, 100))
+        if (DeberiaUsarSorpresa(battlerAtk, battlerDef, move))
             ADJUST_SCORE(GOOD_EFFECT);
         else if (gDisableStructs[battlerAtk].isFirstTurn && GetBestDmgMoveFromBattler(battlerAtk, battlerDef) == move)
             ADJUST_SCORE(BEST_EFFECT);
@@ -3947,7 +3947,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
                 case MOVE_EFFECT_EVS_PLUS_2:
                     ADJUST_SCORE(IncreaseStatUpScore(battlerAtk, battlerDef, STAT_CHANGE_EVASION));
                     break;
-                case MOVE_EFFECT_RAPID_SPIN:
+                case MOVE_EFFECT_GIRO_RAPIDO:
                     if ((gSideStatuses[GetBattlerSide(battlerAtk)] & SIDE_STATUS_HAZARDS_ANY && CountUsablePartyMons(battlerAtk) != 0)
                     || (gStatuses3[battlerAtk] & STATUS3_LEECHSEED || gBattleMons[battlerAtk].status2 & STATUS2_WRAPPED))
                         ADJUST_SCORE(GOOD_EFFECT);
@@ -4139,7 +4139,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
                     }
                     break;
                 case MOVE_EFFECT_WRAP:
-                    if (!HasMoveWithAdditionalEffect(battlerDef, MOVE_EFFECT_RAPID_SPIN) && ShouldTrap(battlerAtk, battlerDef, move))
+                    if (!HasMoveWithAdditionalEffect(battlerDef, MOVE_EFFECT_GIRO_RAPIDO) && ShouldTrap(battlerAtk, battlerDef, move))
                         ADJUST_SCORE(BEST_EFFECT);
                     break;
             }

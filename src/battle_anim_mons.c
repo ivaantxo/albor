@@ -88,7 +88,7 @@ u8 GetBattlerSpriteCoord(u8 battlerId, u8 coordType)
 {
     u8 retVal;
     u16 species;
-    struct Pokemon *mon, *illusionMon;
+    struct Pokemon *mon;
     struct BattleSpriteInfo *spriteInfo;
 
     switch (coordType)
@@ -104,9 +104,6 @@ u8 GetBattlerSpriteCoord(u8 battlerId, u8 coordType)
     case BATTLER_COORD_Y_PIC_OFFSET_DEFAULT:
     default:
         mon = GetPartyBattlerData(battlerId);
-        illusionMon = GetIllusionMonPtr(battlerId);
-        if (illusionMon != NULL)
-            mon = illusionMon;
         spriteInfo = gBattleSpritesDataPtr->battlerData;
         if (!spriteInfo[battlerId].transformSpecies)
             species = GetMonData(mon, MON_DATA_SPECIES);
@@ -695,22 +692,20 @@ bool32 InitSpritePosToAnimBattler(u32 animBattlerId, struct Sprite *sprite, bool
 
 bool8 IsBattlerSpritePresent(u8 battlerId)
 {
-    if (battlerId == 0xff)
+    if (battlerId == 0xFF)
         return FALSE;
 
-    if (!gBattleStruct->spriteIgnore0Hp)
+    if (GetBattlerSide(battlerId) == B_SIDE_OPPONENT)
     {
-        if (GetBattlerSide(battlerId) == B_SIDE_OPPONENT)
-        {
-            if (GetMonData(&gEnemyParty[gBattlerPartyIndexes[battlerId]], MON_DATA_HP) == 0)
-                return FALSE;
-        }
-        else
-        {
-            if (GetMonData(&gPlayerParty[gBattlerPartyIndexes[battlerId]], MON_DATA_HP) == 0)
-                return FALSE;
-        }
+        if (GetMonData(&gEnemyParty[gBattlerPartyIndexes[battlerId]], MON_DATA_HP) == 0)
+            return FALSE;
     }
+    else
+    {
+        if (GetMonData(&gPlayerParty[gBattlerPartyIndexes[battlerId]], MON_DATA_HP) == 0)
+            return FALSE;
+    }
+
     return TRUE;
 }
 

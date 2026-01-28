@@ -25,8 +25,7 @@
 #define sSAVED_MOVE_EFFECT           (sSAVED_DMG + 4)                   // savedMoveEffect (u16) -> 2 bytes
 #define sMOVE_EFFECT                 (sSAVED_MOVE_EFFECT + 2)           // moveEffect (u16) -> 2 bytes
 #define sMULTIHIT_EFFECT             (sMOVE_EFFECT + 2)                 // multihitMoveEffect (u16) -> 2 bytes
-#define sILLUSION_NICK_HACK          (sMULTIHIT_EFFECT + 2)             // illusionNickHack (u8) -> 1 byte
-#define sFIXED_ABILITY_POPUP         (sILLUSION_NICK_HACK + 1)          // fixedPopup (bool8) -> 1 byte
+#define sFIXED_ABILITY_POPUP         (sMULTIHIT_EFFECT + 2)             // fixedPopup (bool8) -> 1 byte
 #define sABILITY_OVERWRITE           (sFIXED_ABILITY_POPUP + 1)         // abilityPopupOverwrite (u16) -> 2 bytes
 #define sSWITCH_CASE                 (sABILITY_OVERWRITE + 2)           // switchCase (u8) -> 1 byte
 #define sBERRY_OVERRIDE              (sSWITCH_CASE + 1)                 // overrideBerryRequirements (u8) -> 1 byte
@@ -89,7 +88,7 @@ enum Various
     VARIOUS_TRY_ACTIVATE_FELL_STINGER,
     VARIOUS_PLAY_MOVE_ANIMATION,
     VARIOUS_SET_LUCKY_CHANT,
-    VARIOUS_SUCKER_PUNCH_CHECK,
+    VARIOUS_GOLPE_BAJO_CHECK,
     VARIOUS_SET_SIMPLE_BEAM,
     VARIOUS_SET_LAST_USED_ABILITY,
     VARIOUS_INVERT_STAT_STAGES,
@@ -122,8 +121,6 @@ enum Various
     VARIOUS_JUMP_IF_NOT_BERRY,
     VARIOUS_TRACE_ABILITY,
     VARIOUS_UPDATE_NICK,
-    VARIOUS_TRY_ILLUSION_OFF,
-    VARIOUS_SET_SPRITEIGNORE0HP,
     VARIOUS_HANDLE_FORM_CHANGE,
     VARIOUS_GET_STAT_VALUE,
     VARIOUS_JUMP_IF_FULL_HP,
@@ -232,7 +229,6 @@ enum MoveEndEffects
     MOVEEND_ITEM_EFFECTS_TARGET,
     MOVEEND_MOVE_EFFECTS2,
     MOVEEND_ITEM_EFFECTS_ALL,
-    MOVEEND_KINGSROCK, // These item effects will occur each strike of a multi-hit move
     MOVEEND_NUM_HITS,
     MOVEEND_SUBSTITUTE,
     MOVEEND_UPDATE_LAST_MOVES,
@@ -439,7 +435,7 @@ enum BattleScriptCommands
     BATTLE_CMD_jumpifnopursuitswitchdmg,
     BATTLE_CMD_halvehp,
     BATTLE_CMD_copyfoestats,
-    BATTLE_CMD_rapidspinfree,
+    BATTLE_CMD_girorapidofree,
     BATTLE_CMD_setdefensecurlbit,
     BATTLE_CMD_recoverbasedonsunlight,
     BATTLE_CMD_setstickyweb,

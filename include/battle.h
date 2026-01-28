@@ -433,15 +433,6 @@ struct BattleResults
     u8 catchAttempts[POKEBALL_COUNT];     // 0x36
 };
 
-struct Illusion
-{
-    u8 on;
-    u8 set;
-    u8 broken;
-    u8 partyId;
-    struct Pokemon *mon;
-};
-
 struct LostItem
 {
     u16 originalItem:15;
@@ -515,17 +506,16 @@ struct BattleStruct
     u8 activeAbilityPopUps; // as bits for each battler
     u8 abilityPopUpSpriteIds[NUMERO_COMBATIENTES][2];    // two per battler
     const u8 *trainerSlideMsg;
-    enum EstadosIntroBatalla estadoIntro; // por aquí
+    enum EstadosIntroBatalla estadoIntro;
     u8 ateBerry[2]; // array id determined by side, each party pokemon as bit
     u8 stolenStats[NUMERO_ESTADISTICAS_BATALLA]; // hp byte is used for which stats to raise, other inform about by how many stages
     u8 lastMoveFailed; // as bits for each battler, for the sake of Stomping Tantrum
     u8 lastMoveTarget[NUMERO_COMBATIENTES]; // The last target on which each mon used a move, for the sake of Instruct
     u16 tracedAbility[NUMERO_COMBATIENTES];
     u16 hpBefore[NUMERO_COMBATIENTES]; // Hp of battlers before using a move. For Berserk and Anger Shell.
-    struct Illusion illusion[NUMERO_COMBATIENTES];
-    s32 aiFinalScore[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES][MAX_MON_MOVES]; // AI, target, moves to make debugging easier
+    s32 IA_Puntuacion[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES][MAX_MON_MOVES]; // AI, target, moves to make debugging easier
     u8 IA_Eleccion[NUMERO_COMBATIENTES];
-    u8 aiChosenTarget[NUMERO_COMBATIENTES];
+    u8 IA_Objetivo[NUMERO_COMBATIENTES];
     u8 soulheartBattlerId;
     u8 sameMoveTurns[NUMERO_COMBATIENTES]; // For ECHOED VOICE, number of times the same moves has been SUCCESFULLY used.
     u16 moveEffect2; // For Knock Off
@@ -534,26 +524,20 @@ struct BattleStruct
     struct LostItem itemLost[NUMERO_LADOS][PARTY_SIZE];  // Pokemon that had items consumed or stolen (two bytes per party member per side)
     u8 forcedSwitch:4; // For each battler
     u8 additionalEffectsCounter:4; // A counter for the additionalEffects applied by the current move in Cmd_setadditionaleffects
-    u8 blunderPolicy:1; // should blunder policy activate
     u8 swapDamageCategory:1; // Photon Geyser, Shell Side Arm, Light That Burns the Sky
     u8 bouncedMoveIsUsed:1;
     u8 snatchedMoveIsUsed:1;
     u8 ackBallUseBtn:1; // Used for the last used ball feature
     u8 ballSwapped:1; // Used for the last used ball feature
-    u8 throwingPokeBall:1;
     u8 ballSpriteIds[2];    // item gfx, window gfx
-    u8 appearedInBattle; // Bitfield to track which Pokemon appeared in battle. Used for Burmy's form change
     // When using a move which hits multiple opponents which is then bounced by a target, we need to make sure, the move hits both opponents, the one with bounce, and the one without.
     u8 attackerBeforeBounce:2;
     u8 hitSwitchTargetFailed:1;
     u8 effectsBeforeUsingMoveDone:1; // Mega Evo and Focus Punch/Shell Trap effects.
-    u8 spriteIgnore0Hp:1;
     u8 targetsDone[NUMERO_COMBATIENTES]; // Each battler as a bit.
     u16 overwrittenAbilities[NUMERO_COMBATIENTES];    // abilities overwritten during battle (keep separate from battle history in case of switching)
-    u8 battleBondTransformed[NUMERO_LADOS]; // Bitfield for each party.
     u8 storedHealingWish:4; // Each battler as a bit.
     u8 storedLunarDance:4; // Each battler as a bit.
-    u8 bonusCritStages[NUMERO_COMBATIENTES]; // G-Max Chi Strike boosts crit stages of allies.
     u8 itemPartyIndex[NUMERO_COMBATIENTES];
     u8 itemMoveIndex[NUMERO_COMBATIENTES];
     u8 trainerSlideFirstCriticalHitMsgState:2;
@@ -570,11 +554,9 @@ struct BattleStruct
     u8 shellSideArmCategory[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES];
     u8 speedTieBreaks; // NUMERO_COMBATIENTES! values.
     u8 boosterEnergyActivates;
-    u8 categoryOverride; // for Z-Moves and Max Moves
     u8 usedEjectItem;
     u8 usedMicleBerry;
     u32 posicionPokemonEquipo;
-    bool32 ataqueEquipoActivo;
     u32 estadisticaAtaqueEquipo;
 };
 
@@ -652,7 +634,6 @@ struct BattleScripting
     u16 savedMoveEffect; // For moves hitting multiple targets.
     u16 moveEffect;
     u16 multihitMoveEffect;
-    u8 illusionNickHack; // To properly display nick in STRINGID_ENEMYABOUTTOSWITCHPKMN.
     bool8 fixedPopup;   // Force ability popup to stick until manually called back
     u16 abilityPopupOverwrite;
     u8 switchCase;  // Special switching conditions, eg. red card

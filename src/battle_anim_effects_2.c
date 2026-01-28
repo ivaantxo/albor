@@ -89,8 +89,8 @@ static void AnimTask_AttackerStretchAndDisappear_Step(u8);
 static void AnimTask_ExtremeSpeedImpact_Step(u8);
 static void AnimTask_ExtremeSpeedMonReappear_Step(u8);
 static void AnimTask_SpeedDust_Step(u8);
-static void AnimTask_FakeOut_Step1(u8);
-static void AnimTask_FakeOut_Step2(u8);
+static void AnimTask_Sorpresa_Step1(u8);
+static void AnimTask_Sorpresa_Step2(u8);
 static void AnimTask_HeartsBackground_Step(u8);
 static void AnimTask_ScaryFace_Step(u8);
 static void AnimTask_UproarDistortion_Step(u8);
@@ -2900,7 +2900,7 @@ void AnimMagentaHeart(struct Sprite *sprite)
         DestroyAnimSprite(sprite);
 }
 
-void AnimTask_FakeOut(u8 taskId)
+void AnimTask_Sorpresa(u8 taskId)
 {
     u16 win0h = ANCHO_PANTALLA;
     u16 win0v = 0;
@@ -2915,17 +2915,17 @@ void AnimTask_FakeOut(u8 taskId)
     SetGpuReg(REG_OFFSET_BLDY, 16);
     gTasks[taskId].data[0] = win0v;
     gTasks[taskId].data[1] = win0h;
-    gTasks[taskId].func = AnimTask_FakeOut_Step1;
+    gTasks[taskId].func = AnimTask_Sorpresa_Step1;
 }
 
-static void AnimTask_FakeOut_Step1(u8 taskId)
+static void AnimTask_Sorpresa_Step1(u8 taskId)
 {
     gTasks[taskId].data[0] += 13;
     gTasks[taskId].data[1] -= 13;
     if (gTasks[taskId].data[0] >= gTasks[taskId].data[1])
     {
         gBattle_WIN0H = 0;
-        gTasks[taskId].func = AnimTask_FakeOut_Step2;
+        gTasks[taskId].func = AnimTask_Sorpresa_Step2;
     }
     else
     {
@@ -2933,7 +2933,7 @@ static void AnimTask_FakeOut_Step1(u8 taskId)
     }
 }
 
-static void AnimTask_FakeOut_Step2(u8 taskId)
+static void AnimTask_Sorpresa_Step2(u8 taskId)
 {
     if (++gTasks[taskId].data[10] == 5)
     {

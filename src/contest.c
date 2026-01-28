@@ -4455,7 +4455,6 @@ static void SetMoveSpecificAnimData(u8 contestant)
     case MOVE_SOLAR_BEAM:
     case MOVE_RAZOR_WIND:
     case MOVE_SKULL_BASH:
-    case MOVE_SKY_ATTACK:
         if (eContest.moveAnimTurnCount == 0)
         {
             eContest.moveAnimTurnCount = 2;

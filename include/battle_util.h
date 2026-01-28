@@ -56,16 +56,17 @@ enum {
 };
 
 // For the first argument of ItemBattleEffects, to deteremine which block of item effects to try
-#define ITEMEFFECT_ON_SWITCH_IN                 0
-#define ITEMEFFECT_NORMAL                       1
-#define ITEMEFFECT_DUMMY                        2 // Unused, empty
-#define ITEMEFFECT_MOVE_END                     3
-#define ITEMEFFECT_KINGSROCK                    4
-#define ITEMEFFECT_TARGET                       5
-#define ITEMEFFECT_ORBS                         6
-#define ITEMEFFECT_LIFEORB_SHELLBELL            7
-#define ITEMEFFECT_USE_LAST_ITEM                8 // move end effects for just the battler, not whole field
-#define ITEMEFFECT_STATS_CHANGED                9 // For White Herb and Eject Pack
+enum ItemEffectsBattle
+{
+    ITEMEFFECT_ON_SWITCH_IN,
+    ITEMEFFECT_NORMAL,
+    ITEMEFFECT_MOVE_END,
+    ITEMEFFECT_TARGET,
+    ITEMEFFECT_ORBS,
+    ITEMEFFECT_LIFEORB_SHELLBELL,
+    ITEMEFFECT_USE_LAST_ITEM,
+    ITEMEFFECT_STATS_CHANGED,
+};
 
 #define WEATHER_HAS_EFFECT ((!EstaHabilidadEnCampo(ABILITY_CLOUD_NINE) && !EstaHabilidadEnCampo(ABILITY_AIR_LOCK)))
 
@@ -192,10 +193,6 @@ s32 DanioTrampa(u32 tipoTrampa, u32 combatiente);
 u16 GetBattleFormChangeTargetSpecies(u32 battler, u16 method);
 bool32 TryBattleFormChange(u32 battler, u32 method);
 bool32 DoBattlersShareType(u32 battler1, u32 battler2);
-u32 GetIllusionMonSpecies(u32 battler);
-struct Pokemon *GetIllusionMonPtr(u32 battler);
-void ClearIllusionMon(u32 battler);
-bool32 SetIllusionMon(struct Pokemon *mon, u32 battler);
 u32 CategoriaMovimiento(u32 movimiento);
 bool32 IsTelekinesisBannedSpecies(u16 species);
 bool32 IsHealBlockPreventingMove(u32 battler, u32 move);

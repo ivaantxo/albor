@@ -2429,13 +2429,9 @@ void TryShinyAnimation(u8 battler, struct Pokemon *mon)
 {
     bool8 isShiny;
     u8 taskCirc, taskDgnl;
-    struct Pokemon* illusionMon;
 
     isShiny = GetMonData(mon, MON_DATA_IS_SHINY);
     gBattleSpritesDataPtr->healthBoxesData[battler].triedShinyMonAnim = TRUE;
-    illusionMon = GetIllusionMonPtr(battler);
-    if (illusionMon != NULL)
-        mon = illusionMon;
 
     if (IsBattlerSpriteVisible(battler) && IsValidForBattle(mon))
     {

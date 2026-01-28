@@ -202,7 +202,6 @@ static const u8* const sBattleAnims_General[NUM_B_ANIMS_GENERAL] =
     [B_ANIM_FOCUS_PUNCH_SETUP]      = gBattleAnimGeneral_FocusPunchSetUp,
     [B_ANIM_INGRAIN_HEAL]           = gBattleAnimGeneral_IngrainHeal,
     [B_ANIM_WISH_HEAL]              = gBattleAnimGeneral_WishHeal,
-    [B_ANIM_ILLUSION_OFF]           = gBattleAnimGeneral_IllusionOff,
     [B_ANIM_FORM_CHANGE]            = gBattleAnimGeneral_FormChange,
     [B_ANIM_SLIDE_OFFSCREEN]        = gBattleAnimGeneral_SlideOffScreen,
     [B_ANIM_RESTORE_BG]             = gBattleAnimGeneral_RestoreBg,

@@ -1132,9 +1132,7 @@ void StartSendOutAnim(u32 battler, bool32 dontClearSubstituteBit, bool32 doSlide
 
     ClearTemporarySpeciesSpriteData(battler, dontClearSubstituteBit);
     gBattlerPartyIndexes[battler] = gBattleResources->bufferA[battler][1];
-    species = GetIllusionMonSpecies(battler);
-    if (species == SPECIES_NONE)
-        species = GetMonData(&party[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES);
+    species = GetMonData(&party[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES);
     gBattleControllerData[battler] = CreateInvisibleSpriteWithCallback(SpriteCB_WaitForBattlerBallReleaseAnim);
     // Load sprite for opponent only, player sprite is expected to be already loaded.
     if (side == LADO_OPONENTE)

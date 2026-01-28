@@ -138,9 +138,6 @@ const u32 gBattleAnimSpritePal_GreenDrake[] = INCBIN_U32("graphics/battle_anims/
 const u32 gBattleAnimSpriteGfx_NewGreenStar[] = INCBIN_U32("graphics/battle_anims/sprites/green_star_new.4bpp.lz");
 const u32 gBattleAnimSpritePal_NewGreenStar[] = INCBIN_U32("graphics/battle_anims/sprites/green_star_new.gbapal.lz");
 
-const u32 gBattleAnimSpriteGfx_HeartStamp[] = INCBIN_U32("graphics/battle_anims/sprites/heart_stamp.4bpp.lz");
-const u32 gBattleAnimSpritePal_HeartStamp[] = INCBIN_U32("graphics/battle_anims/sprites/heart_stamp.gbapal.lz");
-
 const u32 gBattleAnimSpriteGfx_ZygardeHexes[] = INCBIN_U32("graphics/battle_anims/sprites/hexes.4bpp.lz");
 const u32 gBattleAnimSpritePal_ZygardeHexes[] = INCBIN_U32("graphics/battle_anims/sprites/hexes.gbapal.lz");
 
@@ -235,8 +232,8 @@ const u32 gBattleAnimSpritePal_SpiritShackleArrow[] = INCBIN_U32("graphics/battl
 const u32 gBattleAnimSpriteGfx_SteamEruption[] = INCBIN_U32("graphics/battle_anims/sprites/steam_eruption.4bpp.lz");
 const u32 gBattleAnimSpritePal_SteamEruption[] = INCBIN_U32("graphics/battle_anims/sprites/steam_eruption.gbapal.lz");
 
-const u32 gBattleAnimSpriteGfx_Steamroller[] = INCBIN_U32("graphics/battle_anims/sprites/steamroller.4bpp.lz");
-const u32 gBattleAnimSpritePal_Steamroller[] = INCBIN_U32("graphics/battle_anims/sprites/steamroller.gbapal.lz");
+const u32 gBattleAnimSpriteGfx_Rodillo[] = INCBIN_U32("graphics/battle_anims/sprites/steamroller.4bpp.lz");
+const u32 gBattleAnimSpritePal_Rodillo[] = INCBIN_U32("graphics/battle_anims/sprites/steamroller.gbapal.lz");
 
 const u32 gBattleAnimSpriteGfx_StonePillar[] = INCBIN_U32("graphics/battle_anims/sprites/stone_pillar.4bpp.lz");
 const u32 gBattleAnimSpritePal_StonePillar[] = INCBIN_U32("graphics/battle_anims/sprites/stone_pillar.gbapal.lz");
@@ -996,8 +993,8 @@ const u32 gBattleAnimSpriteGfx_Spotlight[] = INCBIN_U32("graphics/battle_anims/s
 const u32 gBattleAnimSpriteGfx_Pokeball[] = INCBIN_U32("graphics/battle_anims/sprites/pokeball.4bpp.lz");
 const u32 gBattleAnimSpritePal_Pokeball[] = INCBIN_U32("graphics/battle_anims/sprites/pokeball.gbapal.lz");
 
-const u32 gBattleAnimSpriteGfx_RapidSpin[] = INCBIN_U32("graphics/battle_anims/sprites/rapid_spin.4bpp.lz");
-const u32 gBattleAnimSpritePal_RapidSpin[] = INCBIN_U32("graphics/battle_anims/sprites/rapid_spin.gbapal.lz");
+const u32 gBattleAnimSpriteGfx_GiroRapido[] = INCBIN_U32("graphics/battle_anims/sprites/GIRO_RAPIDO.4bpp.lz");
+const u32 gBattleAnimSpritePal_GiroRapido[] = INCBIN_U32("graphics/battle_anims/sprites/GIRO_RAPIDO.gbapal.lz");
 
 const u32 gBattleAnimSpriteGfx_MilkBottle[] = INCBIN_U32("graphics/battle_anims/sprites/milk_bottle.4bpp.lz");
 const u32 gBattleAnimSpritePal_MilkBottle[] = INCBIN_U32("graphics/battle_anims/sprites/milk_bottle.gbapal.lz");

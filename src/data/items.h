@@ -7306,8 +7306,6 @@ const struct Item gItemsInfo[] =
     {
         .name = _("King's Rock"),
         .price = (I_PRICE >= GEN_9) ? 10000 : ((I_PRICE >= GEN_7) ? 5000 : 100),
-        .holdEffect = HOLD_EFFECT_FLINCH,
-        .holdEffectParam = 10,
         .description = sKingsRockDesc,
         .pocket = POCKET_ITEMS,
         .type = EVO_HELD_ITEM_TYPE,
@@ -7763,8 +7761,6 @@ const struct Item gItemsInfo[] =
     {
         .name = _("Razor Fang"),
         .price = (I_PRICE >= GEN_9) ? 15000 : ((I_PRICE >= GEN_7) ? 5000 : 2100),
-        .holdEffect = HOLD_EFFECT_FLINCH,
-        .holdEffectParam = 10,
         .description = sKingsRockDesc,
         .pocket = POCKET_ITEMS,
         .type = EVO_HELD_ITEM_TYPE,
@@ -8073,23 +8069,6 @@ const struct Item gItemsInfo[] =
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
         .iconPic = gItemIcon_HeavyDutyBoots,
         .iconPalette = gItemIconPalette_HeavyDutyBoots,
-    },
-
-    [ITEM_BLUNDER_POLICY] =
-    {
-        .name = _("Blunder Policy"),
-        .pluralName = _("Blunder Policies"),
-        .price = (I_PRICE >= GEN_9) ? 30000 : 4000,
-        .holdEffect = HOLD_EFFECT_BLUNDER_POLICY,
-        .description = COMPOUND_STRING(
-            "Raises Speed if\n"
-            "the user misses\n"
-            "due to Accuracy."),
-        .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .iconPic = gItemIcon_BlunderPolicy,
-        .iconPalette = gItemIconPalette_BlunderPolicy,
     },
 
     [ITEM_ROOM_SERVICE] =

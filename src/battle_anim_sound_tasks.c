@@ -154,7 +154,7 @@ void SoundTask_PlayCryHighPitch(u8 taskId)
         return;
     }
 
-    species = (GetIllusionMonSpecies(battlerId) != SPECIES_NONE) ? GetIllusionMonSpecies(battlerId) : gAnimBattlerSpecies[battlerId];
+    species = gAnimBattlerSpecies[battlerId];
 
     if (species != SPECIES_NONE)
         PlayCry_ByMode(species, pan, CRY_MODE_HIGH_PITCH);
@@ -185,7 +185,7 @@ void SoundTask_PlayDoubleCry(u8 taskId)
         return;
     }
 
-    species = (GetIllusionMonSpecies(battlerId) != SPECIES_NONE) ? GetIllusionMonSpecies(battlerId) : gAnimBattlerSpecies[battlerId];
+    species = gAnimBattlerSpecies[battlerId];
 
     gTasks[taskId].data[0] = gBattleAnimArgs[1];
     gTasks[taskId].data[1] = species;
@@ -251,7 +251,7 @@ void SoundTask_WaitForCry(u8 taskId)
 
 void SoundTask_PlayNormalCry(u8 taskId)
 {
-    u16 species = (GetIllusionMonSpecies(gBattleAnimAttacker) != SPECIES_NONE) ? GetIllusionMonSpecies(gBattleAnimAttacker) : gAnimBattlerSpecies[gBattleAnimAttacker];
+    u16 species = gAnimBattlerSpecies[gBattleAnimAttacker];
     PlayCry_ByMode(species, BattleAnimAdjustPanning(SOUND_PAN_ATTACKER), CRY_MODE_NORMAL);
     gTasks[taskId].func = SoundTask_WaitForCry;
 }
@@ -269,7 +269,7 @@ void SoundTask_PlayCryWithEcho(u8 taskId)
     gTasks[taskId].tLastCry = gBattleAnimArgs[0];
     pan = BattleAnimAdjustPanning(SOUND_PAN_ATTACKER);
 
-    species = (GetIllusionMonSpecies(gBattleAnimAttacker) != SPECIES_NONE) ? GetIllusionMonSpecies(gBattleAnimAttacker) : gAnimBattlerSpecies[gBattleAnimAttacker];
+    species = gAnimBattlerSpecies[gBattleAnimAttacker];
 
     gTasks[taskId].tSpecies = species;
     gTasks[taskId].tPan = pan;

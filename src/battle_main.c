@@ -1159,7 +1159,6 @@ static void BattleStartClearSetData(void)
     {
         gSideTimers[i].stickyWebBattlerId = 0xFF;
     }
-    gBattleStruct->appearedInBattle = 0;
     gBattleStruct->posicionPokemonEquipo = 0;
 
     for (i = 0; i < PARTY_SIZE; i++)
@@ -1170,8 +1169,7 @@ static void BattleStartClearSetData(void)
         gBattleStruct->itemLost[LADO_OPONENTE][i].originalItem = GetMonData(&gEnemyParty[i], MON_DATA_HELD_ITEM);
     }
 
-    gBattleStruct->swapDamageCategory = FALSE; // Photon Geyser, Shell Side Arm, Light That Burns the Sky
-    gBattleStruct->categoryOverride = FALSE; // used for Z-Moves and Max Moves
+    gBattleStruct->swapDamageCategory = FALSE;
 
     gSelectedMonPartyId = PARTY_SIZE; // Revival Blessing
     gCategoryIconSpriteId = 0xFF;
@@ -1189,7 +1187,6 @@ void SwitchInClearSetData(u32 battler)
     s32 i;
     struct DisableStruct disableStructCopy = gDisableStructs[battler];
 
-    ClearIllusionMon(battler);
     if (gMovesInfo[gCurrentMove].effect != EFECTO_RELEVO)
     {
         for (i = 0; i < NUMERO_ESTADISTICAS_BATALLA; i++)
@@ -1303,9 +1300,6 @@ void SwitchInClearSetData(u32 battler)
     // Reset Eject Button / Eject Pack switch detection
     AI_DATA->ejectButtonSwitch = FALSE;
     AI_DATA->ejectPackSwitch = FALSE;
-
-    // Reset G-Max Chi Strike boosts.
-    gBattleStruct->bonusCritStages[battler] = 0;
 
     gBattleStruct->overwrittenAbilities[battler] = ABILITY_NONE;
 
@@ -1713,9 +1707,6 @@ static void TryDoEventsBeforeFirstTurn(void)
         for (i = 0; i < gBattlersCount; i++)
         {
             gBattleMons[i].status2 &= ~STATUS2_FLINCHED;
-            // Record party slots of player's mons that appeared in battle
-            if (!CombatienteEsIA(i))
-                gBattleStruct->appearedInBattle |= 1u << gBattlerPartyIndexes[i];
         }
 
         *(&gBattleStruct->turnEffectsTracker) = 0;
@@ -2130,7 +2121,6 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                     gEstadoAccion[combatiente] = EJECUTA_ACCION;
                     break;
                 case B_ACTION_THROW_BALL:
-                    gBattleStruct->throwingPokeBall = TRUE;
                     gEstadoAccion[combatiente] = EJECUTA_ACCION;
                     break;
                 case B_ACTION_DEBUG:

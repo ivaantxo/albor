@@ -296,7 +296,6 @@ struct MoveInfo
     u32 ignoresProtect:1;
     u32 magicCoatAffected:1;
     u32 snatchAffected:1;
-    u32 ignoresKingsRock:1;
     u32 punchingMove:1;
     u32 bitingMove:1;
     u32 soundMove:1;
@@ -307,7 +306,7 @@ struct MoveInfo
     u32 powderMove:1;
     u32 danceMove:1;
     u32 windMove:1;
-    u32 slicingMove:1; // end of word
+    u32 slicingMove:1;
     u32 healingMove:1;
     u32 minimizeDoubleDamage:1;
     u32 ignoresTargetAbility:1;

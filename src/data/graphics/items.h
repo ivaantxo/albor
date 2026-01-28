@@ -1344,9 +1344,6 @@ const u32 gItemIconPalette_EjectPack[] = INCBIN_U32("graphics/items/icon_palette
 const u32 gItemIcon_HeavyDutyBoots[] = INCBIN_U32("graphics/items/icons/heavy_duty_boots.4bpp.lz");
 const u32 gItemIconPalette_HeavyDutyBoots[] = INCBIN_U32("graphics/items/icon_palettes/heavy_duty_boots.gbapal.lz");
 
-const u32 gItemIcon_BlunderPolicy[] = INCBIN_U32("graphics/items/icons/blunder_policy.4bpp.lz");
-const u32 gItemIconPalette_BlunderPolicy[] = INCBIN_U32("graphics/items/icon_palettes/blunder_policy.gbapal.lz");
-
 const u32 gItemIcon_RoomService[] = INCBIN_U32("graphics/items/icons/room_service.4bpp.lz");
 const u32 gItemIconPalette_RoomService[] = INCBIN_U32("graphics/items/icon_palettes/room_service.gbapal.lz");
 

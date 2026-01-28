@@ -243,12 +243,6 @@ bool8 TryHandleLaunchBattleTableAnimation(u8 activeBattler, u8 atkBattler, u8 de
         return TRUE;
     }
 
-    if (tableId == B_ANIM_ILLUSION_OFF)
-    {
-        gBattleStruct->illusion[activeBattler].broken = 1;
-        gBattleStruct->illusion[activeBattler].on = 0;
-    }
-
     gBattleAnimAttacker = atkBattler;
     gBattleAnimTarget = defBattler;
     gBattleSpritesDataPtr->animationData->animArg = argument;
@@ -344,9 +338,6 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
 {
     u32 monsPersonality, currentPersonality, isShiny, species, paletteOffset, position;
     const void *lzPaletteData;
-    struct Pokemon *illusionMon = GetIllusionMonPtr(battler);
-    if (illusionMon != NULL)
-        mon = illusionMon;
 
     if (GetMonData(mon, MON_DATA_IS_EGG) || GetMonData(mon, MON_DATA_SPECIES) == SPECIES_NONE) // Don't load GFX of egg pokemon.
         return;

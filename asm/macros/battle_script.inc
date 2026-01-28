@@ -951,8 +951,8 @@
 	.byte BATTLE_CMD_copyfoestats
 	.endm
 
-	.macro rapidspinfree
-	.byte BATTLE_CMD_rapidspinfree
+	.macro girorapidofree
+	.byte BATTLE_CMD_girorapidofree
 	.endm
 
 	.macro setdefensecurlbit
@@ -1372,8 +1372,8 @@
 	callnative BS_SetPhotonGeyserCategory
 	.endm
 
-	.macro tryupperhand failInstr:req
-	callnative BS_TryUpperHand
+	.macro trypalmarauda failInstr:req
+	callnative BS_TryPalmaRauda
 	.4byte \failInstr
 	.endm
 
@@ -1551,8 +1551,8 @@
 	.4byte \failInstr
 	.endm
 
-	.macro suckerpunchcheck failInstr:req
-	various BS_ATTACKER, VARIOUS_SUCKER_PUNCH_CHECK
+	.macro golpebajocheck failInstr:req
+	various BS_ATTACKER, VARIOUS_GOLPE_BAJO_CHECK
 	.4byte \failInstr
 	.endm
 
@@ -1699,15 +1699,6 @@
 
 	.macro updatenick battler:req
 	various \battler, VARIOUS_UPDATE_NICK
-	.endm
-
-	.macro tryillusionoff battler:req
-	various \battler, VARIOUS_TRY_ILLUSION_OFF
-	.endm
-
-	.macro spriteignore0hp value:req
-	various BS_ATTACKER, VARIOUS_SET_SPRITEIGNORE0HP
-	.byte \value
 	.endm
 
 	.macro getstatvalue battler:req, stat:req

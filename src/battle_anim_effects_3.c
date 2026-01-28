@@ -47,8 +47,8 @@ static void AnimSpotlight_Step2(struct Sprite *);
 static void AnimClappingHand(struct Sprite *);
 static void AnimClappingHand_Step(struct Sprite *);
 static void AnimClappingHand2(struct Sprite *);
-static void AnimRapidSpin(struct Sprite *);
-static void AnimRapidSpin_Step(struct Sprite *);
+static void AnimGiroRapido(struct Sprite *);
+static void AnimGiroRapido_Step(struct Sprite *);
 static void AnimTriAttackTriangle(struct Sprite *);
 static void AnimRelevoPokeball(struct Sprite *);
 static void AnimWishStar(struct Sprite *);
@@ -409,7 +409,7 @@ const struct SpriteTemplate gClappingHand2SpriteTemplate =
     .callback = AnimClappingHand2,
 };
 
-const union AnimCmd gRapidSpinAnimCmds[] =
+const union AnimCmd gGiroRapidoAnimCmds[] =
 {
     ANIMCMD_FRAME(0, 2),
     ANIMCMD_FRAME(8, 2),
@@ -417,20 +417,20 @@ const union AnimCmd gRapidSpinAnimCmds[] =
     ANIMCMD_JUMP(0),
 };
 
-const union AnimCmd *const gRapidSpinAnimTable[] =
+const union AnimCmd *const gGiroRapidoAnimTable[] =
 {
-    gRapidSpinAnimCmds,
+    gGiroRapidoAnimCmds,
 };
 
-const struct SpriteTemplate gRapidSpinSpriteTemplate =
+const struct SpriteTemplate gGiroRapidoSpriteTemplate =
 {
-    .tileTag = ANIM_TAG_RAPID_SPIN,
-    .paletteTag = ANIM_TAG_RAPID_SPIN,
+    .tileTag = ANIM_TAG_GIRO_RAPIDO,
+    .paletteTag = ANIM_TAG_GIRO_RAPIDO,
     .oam = &gOamData_AffineOff_ObjNormal_32x16,
-    .anims = gRapidSpinAnimTable,
+    .anims = gGiroRapidoAnimTable,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimRapidSpin,
+    .callback = AnimGiroRapido,
 };
 
 static const union AffineAnimCmd sAffineAnims_Torment[] =
@@ -1658,7 +1658,7 @@ void AnimTask_RemoveSpotlight(u8 taskId)
     DestroyAnimVisualTask(taskId);
 }
 
-static void AnimRapidSpin(struct Sprite *sprite)
+static void AnimGiroRapido(struct Sprite *sprite)
 {
     if (gBattleAnimArgs[0] == 0)
     {
@@ -1678,10 +1678,10 @@ static void AnimRapidSpin(struct Sprite *sprite)
     sprite->data[2] = gBattleAnimArgs[4];
     sprite->data[3] = gBattleAnimArgs[5];
     sprite->data[4] = gBattleAnimArgs[3];
-    sprite->callback = AnimRapidSpin_Step;
+    sprite->callback = AnimGiroRapido_Step;
 }
 
-static void AnimRapidSpin_Step(struct Sprite *sprite)
+static void AnimGiroRapido_Step(struct Sprite *sprite)
 {
     sprite->data[1] = (sprite->data[1] + sprite->data[2]) & 0xFF;
     sprite->x2 = gSineTable[sprite->data[1]] >> 4;

@@ -20,16 +20,10 @@ EFFECT_SEMI_INVULNERABLE: semi-invulnerable STATUS3 to apply to battler
 EFFECT_TWO_TURNS_ATTACK/EFFECT_SOLAR_BEAM: weather in which to skip charge turn */
 #define TWO_TURN_ARG(stringid, ...) (stringid) __VA_OPT__(| ((__VA_ARGS__) << 16))
 
+#define PP_MOVIMIENTO_OFENSIVO_LIMITADO 5
 #define PP_MOVIMIENTO_ESTADO 10
 #define PP_MOVIMIENTO_OFENSIVO 20
-
-// Shared Move Description entries
-
-const u8 gNotDoneYetDescription[] = _(
-    "This move can't be used. Its\n"
-    "effect is in development.");
-
-static const u8 sNullDescription[] = _("");
+#define PP_MOVIMIENTO_OFENSIVO_AMPLIO 30
 
 static const u8 sMegaDrainDescription[] = _(
     "An attack that absorbs\n"
@@ -103,10 +97,6 @@ static const u8 sHyperspaceHoleDescription[] = _(
     "Uses a warp hole to attack.\n"
     "Can't be evaded.");
 
-static const u8 sSuckerPunchDescription[] = _(
-    "Strikes first if the foe\n"
-    "is preparing an attack.");
-
 static const u8 sFeintDescription[] = _(
     "An attack that hits foes\n"
     "using moves like Protect.");
@@ -146,7 +136,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .ignoresKingsRock = B_UPDATED_MOVE_FLAGS == GEN_4,
         .battleAnimScript = gBattleAnimMove_Pound,
     },
 
@@ -442,7 +431,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_4) || (B_UPDATED_MOVE_FLAGS < GEN_3),
         .damagesAirborneDoubleDamage = TRUE,
         .windMove = TRUE,
         .battleAnimScript = gBattleAnimMove_Gust,
@@ -527,7 +515,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .ignoresKingsRock = B_UPDATED_MOVE_FLAGS < GEN_3,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_WRAP,
         }),
@@ -583,17 +570,17 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "Stomps the enemy with a big\n"
             "foot. May cause flinching."),
         .effect = EFFECT_HIT,
-        .power = 65,
+        .power = 70,
         .type = TIPO_NORMAL,
         .accuracy = 100,
-        .pp = 20,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .minimizeDoubleDamage = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
+            .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
             .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_Stomp,
@@ -661,25 +648,25 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_JumpKick,
     },
 
-    [MOVE_ROLLING_KICK] =
+    [MOVE_PATADA_GIRO] =
     {
         .name = COMPOUND_STRING("Patada giro"),
         .description = COMPOUND_STRING(
             "A fast kick delivered from\n"
             "a rapid spin."),
         .effect = EFFECT_HIT,
-        .power = 60,
+        .power = 40,
         .type = TIPO_LUCHA,
-        .accuracy = 85,
-        .pp = 15,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .ignoresKingsRock = B_UPDATED_MOVE_FLAGS < GEN_3,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 30,
+            .moveEffect = MOVE_EFFECT_SPD_PLUS_1
+            .self = TRUE,
+            .chance = 100,
         }),
         .battleAnimScript = gBattleAnimMove_RollingKick,
     },
@@ -712,14 +699,14 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .power = 70,
         .type = TIPO_NORMAL,
         .accuracy = 100,
-        .pp = 15,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .headMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
+            .moveEffect = MOVE_EFFECT_CONFUSION,
             .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_Headbutt,
@@ -965,7 +952,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .movimientoPunzante = TRUE,
-        .ignoresKingsRock = FALSE,
         .strikeCount = 2,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_POISON,
@@ -1018,17 +1004,17 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "Bites with vicious fangs.\n"
             "May cause flinching."),
         .effect = EFFECT_HIT,
-        .power = 60,
+        .power = 70,
         .type = TIPO_SINIESTRO,
         .accuracy = 100,
-        .pp = 25,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .bitingMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
+            .moveEffect = MOVE_EFFECT_ATK_MINUS_1
             .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_Bite,
@@ -1421,7 +1407,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .ignoresKingsRock = B_UPDATED_MOVE_FLAGS < GEN_3,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_RECHARGE,
             .self = TRUE,
@@ -1519,7 +1504,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = -5,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
         .copycatBanned = TRUE,
         .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Counter,
@@ -1575,7 +1559,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
         .healingMove = B_HEAL_BLOCKING >= GEN_6,
         .battleAnimScript = gBattleAnimMove_Absorb,
     },
@@ -1592,7 +1575,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
         .healingMove = B_HEAL_BLOCKING >= GEN_6,
         .battleAnimScript = gBattleAnimMove_MegaDrain,
     },
@@ -1820,7 +1802,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .ignoresKingsRock = B_UPDATED_MOVE_FLAGS < GEN_3,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_WRAP,
         }),
@@ -1855,10 +1836,10 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "A strong electrical attack\n"
             "that may paralyze the foe."),
         .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 90 : 95,
+        .power = 90,
         .type = TIPO_ELECTRICO,
         .accuracy = 100,
-        .pp = 15,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
@@ -1940,7 +1921,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_FOES_AND_ALLY,
         .priority = 0,
         .category = CATEGORIA_FISICA,
-        .ignoresKingsRock = B_UPDATED_MOVE_FLAGS < GEN_3,
         .damagesUnderground = TRUE,
         .battleAnimScript = gBattleAnimMove_Earthquake,
     },
@@ -2618,16 +2598,16 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "Clubs the foe with a bone.\n"
             "May cause flinching."),
         .effect = EFFECT_HIT,
-        .power = 65,
+        .power = 70,
         .type = TIPO_TIERRA,
-        .accuracy = 85,
-        .pp = 20,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 10,
+            .moveEffect = MOVE_EFFECT_CONFUSION,
+            .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_BoneClub,
     },
@@ -2660,18 +2640,18 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "Charges the foe with speed\n"
             "to climb waterfalls."),
         .effect = EFFECT_HIT,
-        .power = 80,
+        .power = 90,
         .type = TIPO_AGUA,
         .accuracy = 100,
-        .pp = 15,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         #if B_UPDATED_MOVE_DATA >= GEN_4
             .additionalEffects = ADDITIONAL_EFFECTS({
-                .moveEffect = MOVE_EFFECT_FLINCH,
-                .chance = 20,
+                .moveEffect = MOVE_EFFECT_DEF_MINUS_1,
+                .chance = 10,
             }),
         #endif
         .battleAnimScript = gBattleAnimMove_Waterfall,
@@ -2692,7 +2672,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .ignoresKingsRock = B_UPDATED_MOVE_FLAGS < GEN_3,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_WRAP,
         }),
@@ -2968,7 +2947,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
         .healingMove = B_HEAL_BLOCKING >= GEN_6,
         .battleAnimScript = gBattleAnimMove_LeechLife,
     },
@@ -2989,33 +2967,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESTADO,
         .magicCoatAffected = TRUE,
         .battleAnimScript = gBattleAnimMove_LovelyKiss,
-    },
-
-    [MOVE_SKY_ATTACK] =
-    {
-        .name = COMPOUND_STRING("Ataque aéreo"),
-        .description = COMPOUND_STRING(
-            "Searches out weak spots,\n"
-            "then strikes the next turn."),
-        .effect = EFFECT_TWO_TURNS_ATTACK,
-        .power = 140,
-        .type = TIPO_VOLADOR,
-        .accuracy = 90,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .criticalHitStage = B_UPDATED_MOVE_DATA >= GEN_3,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .argument = TWO_TURN_ARG(B_UPDATED_MOVE_DATA >= GEN_4 ? STRINGID_CLOAKEDINAHARSHLIGHT : STRINGID_PKMNISGLOWING),
-    #if B_UPDATED_MOVE_DATA >= GEN_3
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 30,
-        }),
-    #endif
-        .battleAnimScript = gBattleAnimMove_SkyAttack,
     },
 
     [MOVE_TRANSFORM] =
@@ -3282,15 +3233,15 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "Large boulders are hurled.\n"
             "May cause flinching."),
         .effect = EFFECT_HIT,
-        .power = 75,
+        .power = 70,
         .type = TIPO_ROCA,
-        .accuracy = 90,
-        .pp = 10,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
+            .moveEffect = MOVE_EFFECT_DEF_MINUS_1,
             .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_RockSlide,
@@ -3303,17 +3254,17 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "Attacks with sharp fangs.\n"
             "May cause flinching."),
         .effect = EFFECT_HIT,
-        .power = 80,
+        .power = 90,
         .type = TIPO_NORMAL,
-        .accuracy = 90,
-        .pp = 15,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .bitingMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
+            .moveEffect = MOVE_EFFECT_DEF_MINUS_1,
             .chance = 10,
         }),
         .battleAnimScript = gBattleAnimMove_HyperFang,
@@ -3392,7 +3343,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
         .battleAnimScript = gBattleAnimMove_SuperFang,
     },
 
@@ -3527,7 +3477,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
         .copycatBanned = TRUE,
         .assistBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
@@ -3619,19 +3568,15 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "A loud attack that can be\n"
             "used only while asleep."),
         .effect = EFFECT_SNORE,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 50 : 40,
+        .power = 100,
         .type = TIPO_NORMAL,
         .accuracy = 100,
-        .pp = 15,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
+        .ignoresSubstitute = TRUE,
         .soundMove = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 30,
-        }),
         .battleAnimScript = gBattleAnimMove_Snore,
     },
 
@@ -4206,7 +4151,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
         .healingMove = B_HEAL_BLOCKING >= GEN_6,
         .battleAnimScript = gBattleAnimMove_GigaDrain,
     },
@@ -4494,7 +4438,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
         .battleAnimScript = gBattleAnimMove_Present,
     },
 
@@ -4630,7 +4573,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .ignoresKingsRock = B_UPDATED_MOVE_FLAGS < GEN_3,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 30,
@@ -4692,38 +4634,29 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
         .battleAnimScript = gBattleAnimMove_Pursuit,
     },
 
-    [MOVE_RAPID_SPIN] =
+    [MOVE_GIRO_RAPIDO] =
     {
         .name = COMPOUND_STRING("Giro rápido"),
         .description = COMPOUND_STRING(
             "Spins the body at high\n"
             "speed to strike the foe."),
         .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_8 ? 50 : 20,
+        .power = 50,
         .type = TIPO_NORMAL,
         .accuracy = 100,
-        .pp = 40,
+        .pp = PP_MOVIMIENTO_OFENSIVO_AMPLIO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_RAPID_SPIN,
+            .moveEffect = MOVE_EFFECT_GIRO_RAPIDO,
             .self = TRUE,
-        }
-        #if B_SPEED_BUFFING_RAPID_SPIN >= GEN_8
-            ,{
-                .moveEffect = MOVE_EFFECT_SPD_PLUS_1,
-                .self = TRUE,
-                .chance = 100,
-            }
-        #endif
-        ),
-        .battleAnimScript = gBattleAnimMove_RapidSpin,
+        }),
+        .battleAnimScript = gBattleAnimMove_GiroRapido,
     },
 
     [MOVE_SWEET_SCENT] =
@@ -4898,18 +4831,18 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "Whips up a vicious twister\n"
             "to tear at the foe."),
         .effect = EFFECT_HIT,
-        .power = 40,
+        .power = 70,
         .type = TIPO_DRAGON,
         .accuracy = 100,
-        .pp = 20,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .damagesAirborneDoubleDamage = TRUE,
         .windMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 20,
+            .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
+            .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_Twister,
     },
@@ -4959,16 +4892,12 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .name = COMPOUND_STRING("Triturar"),
         .description = COMPOUND_STRING(
             "Crunches with sharp fangs.\n"
-        #if B_UPDATED_MOVE_DATA >= GEN_4
             "May lower Defense."),
-        #else
-            "May lower Sp. Def."),
-        #endif
         .effect = EFFECT_HIT,
-        .power = 80,
+        .power = 90,
         .type = TIPO_SINIESTRO,
         .accuracy = 100,
-        .pp = 15,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
@@ -4976,7 +4905,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .bitingMove = TRUE,
             .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_DEF_MINUS_1,
-            .chance = 20,
+            .chance = 10,
         }),
         .battleAnimScript = gBattleAnimMove_Crunch,
     },
@@ -5169,14 +5098,14 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Paliza,
     },
 
-    [MOVE_FAKE_OUT] =
+    [MOVE_SORPRESA] =
     {
         .name = COMPOUND_STRING("Sorpresa"),
         .description = COMPOUND_STRING(
             "A 1st-turn, 1st-strike move\n"
             "that causes flinching."),
-        .priority = B_UPDATED_MOVE_DATA >= GEN_5 ? 3 : 1,
-        .makesContact = B_UPDATED_MOVE_DATA >= GEN_4,
+        .priority = 1,
+        .makesContact = TRUE,
         .effect = EFFECT_FIRST_TURN_ONLY,
         .power = 40,
         .type = TIPO_NORMAL,
@@ -5188,7 +5117,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             .moveEffect = MOVE_EFFECT_FLINCH,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_FakeOut,
+        .battleAnimScript = gBattleAnimMove_Sorpresa,
     },
 
     [MOVE_UPROAR] =
@@ -6130,17 +6059,17 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "Attacks with thorny arms.\n"
             "May cause flinching."),
         .effect = EFFECT_HIT,
-        .power = 60,
+        .power = 70,
         .type = TIPO_PLANTA,
         .accuracy = 100,
-        .pp = 15,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .minimizeDoubleDamage = B_UPDATED_MOVE_FLAGS < GEN_4,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
+            .moveEffect = MOVE_EFFECT_ATK_MINUS_1,
             .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_NeedleArm,
@@ -6305,17 +6234,17 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "An attack that may shock\n"
             "the foe into flinching."),
         .effect = EFFECT_HIT,
-        .power = 30,
+        .power = 70,
         .type = TIPO_FANTASMA,
         .accuracy = 100,
-        .pp = 15,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .minimizeDoubleDamage = B_UPDATED_MOVE_FLAGS < GEN_4,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
+            .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
             .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_Astonish,
@@ -6624,17 +6553,16 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "Attacks with a peculiar\n"
             "power. May cause flinching."),
         .effect = EFFECT_HIT,
-        .power = 80,
+        .power = 70,
         .type = TIPO_PSIQUICO,
         .accuracy = 100,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_6 ? 20 : 30,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .minimizeDoubleDamage = B_UPDATED_MOVE_FLAGS < GEN_4,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 10,
+            .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
+            .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_Extrasensory,
     },
@@ -7763,20 +7691,22 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_LastResort,
     },
 
-    [MOVE_SUCKER_PUNCH] =
+    [MOVE_GOLPE_BAJO] =
     {
         .name = COMPOUND_STRING("Golpe bajo"),
-        .description = sSuckerPunchDescription,
-        .effect = EFFECT_SUCKER_PUNCH,
-        .power = B_UPDATED_MOVE_DATA >= GEN_7 ? 70 : 80,
+        .description = COMPOUND_STRING(
+            "Strikes first if the foe\n"
+            "is preparing an attack."),
+        .effect = EFFECT_GOLPE_BAJO,
+        .power = 60,
         .type = TIPO_SINIESTRO,
         .accuracy = 100,
-        .pp = 5,
+        .pp = PP_MOVIMIENTO_OFENSIVO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 1,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_SuckerPunch,
+        .battleAnimScript = gBattleAnimMove_GolpeBajo,
     },
 
     [MOVE_TOXIC_SPIKES] =
@@ -7971,17 +7901,17 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "Attacks with a horrible\n"
             "aura. May cause flinching."),
         .effect = EFFECT_HIT,
-        .power = 80,
+        .power = 70,
         .type = TIPO_SINIESTRO,
         .accuracy = 100,
-        .pp = 15,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .balistico = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 20,
+            .moveEffect = MOVE_EFFECT_SP_DEF_MINUS_1,
+            .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_DarkPulse,
     },
@@ -8050,16 +7980,16 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "Attacks with a blade of\n"
             "air. May cause flinching."),
         .effect = EFFECT_HIT,
-        .power = 75,
+        .power = 70,
         .type = TIPO_VOLADOR,
-        .accuracy = 95,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_6 ? 15 : 20,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .slicingMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
+            .moveEffect = MOVE_EFFECT_SP_DEF_MINUS_1,
             .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_AirSlash,
@@ -8132,18 +8062,18 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "Tackles the foe with menace.\n"
             "May cause flinching."),
         .effect = EFFECT_HIT,
-        .power = 100,
+        .power = 90,
         .type = TIPO_DRAGON,
-        .accuracy = 75,
-        .pp = 10,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .minimizeDoubleDamage = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 20,
+            .moveEffect = MOVE_EFFECT_ATK_MINUS_1,
+            .chance = 10,
         }),
         .battleAnimScript = gBattleAnimMove_DragonRush,
     },
@@ -8414,17 +8344,17 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_ShadowClaw,
     },
 
-    [MOVE_THUNDER_FANG] =
+    [MOVE_COLMILLO_ELECTRICO] =
     {
-        .name = COMPOUND_STRING("Colmillo rayo"),
+        .name = COMPOUND_STRING("Colmillo eléctrico"),
         .description = COMPOUND_STRING(
-            "May cause flinching or\n"
+            "May\n"
             "leave the foe paralyzed."),
         .effect = EFFECT_HIT,
-        .power = 65,
+        .power = 90,
         .type = TIPO_ELECTRICO,
-        .accuracy = 95,
-        .pp = 15,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
@@ -8433,25 +8363,21 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 10,
-        },
-        {
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 10,
         }),
         .battleAnimScript = gBattleAnimMove_ThunderFang,
     },
 
-    [MOVE_ICE_FANG] =
+    [MOVE_COLMILLO_HELADO] =
     {
-        .name = COMPOUND_STRING("Colmillo hielo"),
+        .name = COMPOUND_STRING("Colmillo helado"),
         .description = COMPOUND_STRING(
-            "May cause flinching or\n"
+            "May\n"
             "leave the foe with frostbite."),
         .effect = EFFECT_HIT,
-        .power = 65,
+        .power = 90,
         .type = TIPO_HIELO,
-        .accuracy = 95,
-        .pp = 15,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
@@ -8460,25 +8386,21 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = EFECTO_MOVIMIENTO_CONGELACION,
             .chance = 10,
-        },
-        {
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 10,
         }),
         .battleAnimScript = gBattleAnimMove_IceFang,
     },
 
-    [MOVE_FIRE_FANG] =
+    [MOVE_COLMILLO_IGNEO] =
     {
         .name = COMPOUND_STRING("Colmillo ígneo"),
         .description = COMPOUND_STRING(
-            "May cause flinching or\n"
+            "May\n"
             "leave the foe with a burn."),
         .effect = EFFECT_HIT,
-        .power = 65,
+        .power = 90,
         .type = TIPO_FUEGO,
-        .accuracy = 95,
-        .pp = 15,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
@@ -8486,10 +8408,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .bitingMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
-            .chance = 10,
-        },
-        {
-            .moveEffect = MOVE_EFFECT_FLINCH,
             .chance = 10,
         }),
         .battleAnimScript = gBattleAnimMove_FireFang,
@@ -8554,25 +8472,25 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_PsychoCut,
     },
 
-    [MOVE_ZEN_HEADBUTT] =
+    [MOVE_CABEZAZO_ZEN] =
     {
         .name = COMPOUND_STRING("Cabezazo zen"),
         .description = COMPOUND_STRING(
             "Hits with a strong head-\n"
-            "butt. May cause flinching."),
+            "butt."),
         .effect = EFFECT_HIT,
-        .power = 80,
+        .power = 70,
         .type = TIPO_PSIQUICO,
-        .accuracy = 90,
-        .pp = 15,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .headMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 20,
+            .moveEffect = MOVE_EFFECT_DEF_MINUS_1,
+            .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_ZenHeadbutt,
     },
@@ -8852,17 +8770,17 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "Slams the foe with a hard\n"
             "head. May cause flinching."),
         .effect = EFFECT_HIT,
-        .power = 80,
+        .power = 70,
         .type = TIPO_ACERO,
         .accuracy = 100,
-        .pp = 15,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .headMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
+            .moveEffect = MOVE_EFFECT_DEF_MINUS_1,
             .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_IronHead,
@@ -10427,28 +10345,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_DualChop,
     },
 
-    [MOVE_HEART_STAMP] =
-    {
-        .name = COMPOUND_STRING("Arrumaco"),
-        .description = COMPOUND_STRING(
-            "A sudden blow after a cute\n"
-            "act. May cause flinching."),
-        .effect = EFFECT_HIT,
-        .power = 60,
-        .type = TIPO_PSIQUICO,
-        .accuracy = 100,
-        .pp = 25,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 30,
-        }),
-        .battleAnimScript = gBattleAnimMove_HeartStamp,
-    },
-
     [MOVE_HORN_LEECH] =
     {
         .name = COMPOUND_STRING("Asta drenaje"),
@@ -10545,29 +10441,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             .chance = 50,
         }),
         .battleAnimScript = gBattleAnimMove_LeafTornado,
-    },
-
-    [MOVE_STEAMROLLER] =
-    {
-        .name = COMPOUND_STRING("Rodillo púas"),
-        .description = COMPOUND_STRING(
-            "Crushes the foe with its\n"
-            "body. May cause flinching."),
-        .effect = EFFECT_HIT,
-        .power = 65,
-        .type = TIPO_BICHO,
-        .accuracy = 100,
-        .pp = 20,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .minimizeDoubleDamage = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 30,
-        }),
-        .battleAnimScript = gBattleAnimMove_Steamroller,
     },
 
     [MOVE_COTTON_GUARD] =
@@ -10952,15 +10825,15 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "Drops large icicles on the\n"
             "foe. May cause flinching."),
         .effect = EFFECT_HIT,
-        .power = 85,
+        .power = 70,
         .type = TIPO_HIELO,
-        .accuracy = 90,
-        .pp = 10,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
+            .moveEffect = MOVE_EFFECT_DEF_MINUS_1,
             .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_IcicleCrash,
@@ -12181,25 +12054,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_ShoreUp,
     },
 
-    [MOVE_FIRST_IMPRESSION] =
-    {
-        .name = COMPOUND_STRING("First Impression"),
-        .description = COMPOUND_STRING(
-            "Hits hard and first.\n"
-            "Only works first turn."),
-        .effect = EFFECT_FIRST_TURN_ONLY,
-        .power = 90,
-        .type = TIPO_BICHO,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 2,
-        .category = CATEGORIA_FISICA,
-        .argument = MOVE_FIRST_IMPRESSION,
-        .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_FirstImpression,
-    },
-
     [MOVE_BANEFUL_BUNKER] =
     {
         .name = COMPOUND_STRING("Baneful Bunker"),
@@ -13047,45 +12901,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_TearfulLook,
     },
 
-    [MOVE_ZING_ZAP] =
-    {
-        .name = COMPOUND_STRING("Zing Zap"),
-        .description = COMPOUND_STRING(
-            "An electrified impact that\n"
-            "can cause flinching."),
-        .effect = EFFECT_HIT,
-        .power = 80,
-        .type = TIPO_ELECTRICO,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 30,
-        }),
-        .battleAnimScript = gBattleAnimMove_ZingZap,
-    },
-
-    [MOVE_NATURES_MADNESS] =
-    {
-        .name = COMPOUND_STRING("Nature's Madness"),
-        .description = COMPOUND_STRING(
-            "Halves the foe's HP with\n"
-            "the power of nature."),
-        .effect = EFFECT_SUPER_FANG,
-        .power = 1,
-        .type = TIPO_HADA,
-        .accuracy = 90,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .battleAnimScript = gBattleAnimMove_NaturesMadness,
-    },
-
     [MOVE_MULTI_ATTACK] =
     {
         .name = COMPOUND_STRING("Multi-Attack"),
@@ -13207,30 +13022,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_SplishySplash,
     },
 
-    [MOVE_FLOATY_FALL] =
-    {
-        .name = COMPOUND_STRING("Floaty Fall"),
-        .description = COMPOUND_STRING(
-            "Floats in air and dives at\n"
-            "angle. May cause flinching."),
-        .effect = EFFECT_HIT,
-        .power = 90,
-        .type = TIPO_VOLADOR,
-        .accuracy = 95,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS < GEN_8,
-        .gravityBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 30,
-        }),
-        .battleAnimScript = gBattleAnimMove_FloatyFall,
-    },
-
     [MOVE_BOUNCY_BUBBLE] =
     {
         .name = COMPOUND_STRING("Bouncy Bubble"),
@@ -13253,28 +13044,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS < GEN_8,
         .healingMove = B_HEAL_BLOCKING >= GEN_6,
         .battleAnimScript = gBattleAnimMove_BouncyBubble,
-    },
-
-    [MOVE_BUZZY_BUZZ] =
-    {
-        .name = COMPOUND_STRING("Buzzy Buzz"),
-        .description = COMPOUND_STRING(
-            "Shoots a jolt of electricity\n"
-            "that always paralyzes."),
-        .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_8 ? 60 : 90,
-        .type = TIPO_ELECTRICO,
-        .accuracy = 100,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_8 ? 20 : 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS < GEN_8,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_PARALYSIS,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_BuzzyBuzz,
     },
 
     [MOVE_SIZZLY_SLIDE] =
@@ -13353,31 +13122,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS < GEN_8,
         .battleAnimScript = gBattleAnimMove_SparklySwirl,
-    },
-
-    [MOVE_DOUBLE_IRON_BASH] =
-    {
-        .name = COMPOUND_STRING("Double Iron Bash"),
-        .description = COMPOUND_STRING(
-            "The user spins and hits with\n"
-            "its arms. May cause flinch."),
-        .effect = EFFECT_HIT,
-        .power = 60,
-        .type = TIPO_ACERO,
-        .accuracy = 100,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .punchingMove = TRUE,
-        .strikeCount = 2,
-        .minimizeDoubleDamage = B_UPDATED_MOVE_FLAGS < GEN_8,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 30,
-        }),
-        .battleAnimScript = gBattleAnimMove_DoubleIronBash,
     },
 
     [MOVE_SNIPE_SHOT] =
@@ -13959,22 +13703,26 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_ExpandingForce,
     },
 
-    [MOVE_STEEL_ROLLER] =
+    [MOVE_RODILLO] =
     {
-        .name = COMPOUND_STRING("Steel Roller"), //Quitar trampas?
+        .name = COMPOUND_STRING("Rodillo"),
         .description = COMPOUND_STRING(
-            "Destroys terrain. Fails if\n"
-            "ground isn't terrain."),
+            "Spins the body at high\n"
+            "speed to strike the foe."),
         .effect = EFFECT_HIT,
-        .power = 130,
-        .type = TIPO_ACERO,
-        .accuracy = 100,
-        .pp = 5,
+        .power = 70,
+        .type = TIPO_ROCA,
+        .accuracy = 90,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_SteelRoller,
+        .additionalEffects = ADDITIONAL_EFFECTS({
+            .moveEffect = MOVE_EFFECT_GIRO_RAPIDO,
+            .self = TRUE,
+        }),
+        .battleAnimScript = gBattleAnimMove_Rodillo,
     },
 
     [MOVE_SCALE_SHOT] =
@@ -14415,16 +14163,16 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "An attack fueled by your\n"
             "wrath. May cause flinching."),
         .effect = EFFECT_HIT,
-        .power = 90,
+        .power = 70,
         .type = TIPO_SINIESTRO,
         .accuracy = 100,
-        .pp = 10,
+        .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 20,
+            .moveEffect = MOVE_EFFECT_BURN,
+            .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_FieryWrath,
     },
@@ -14693,27 +14441,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Chloroblast,
     },
 
-    [MOVE_MOUNTAIN_GALE] =
-    {
-        .name = COMPOUND_STRING("Mountain Gale"),
-        .description = COMPOUND_STRING(
-            "Giant chunks of ice damage\n"
-            "the foe. It may flinch."),
-        .effect = EFFECT_HIT,
-        .power = 100,
-        .type = TIPO_HIELO,
-        .accuracy = 85,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 30,
-        }),
-        .battleAnimScript = gBattleAnimMove_MountainGale,
-    },
-
     [MOVE_VICTORY_DANCE] =
     {
         .name = COMPOUND_STRING("Victory Dance"),
@@ -14823,32 +14550,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             .chance = 100,
         }),
         .battleAnimScript = gBattleAnimMove_BitterMalice,
-    },
-
-    [MOVE_TRIPLE_ARROWS] =
-    {
-        .name = COMPOUND_STRING("Triple Arrows"), // Esto está demasiado roto
-        .description = COMPOUND_STRING(
-            "High critical hit ratio.\n"
-            "May lower Defense or flinch."),
-        .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_9 ? 90 : 50,
-        .type = TIPO_LUCHA,
-        .accuracy = 100,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_9 ? 10 : 15,
-        .criticalHitStage = 1,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_DEF_MINUS_1,
-            .chance = 50,
-        },
-        {
-            .moveEffect = MOVE_EFFECT_FLINCH,
-            .chance = 30,
-        }),
-        .battleAnimScript = gBattleAnimMove_TripleArrows,
     },
 
     [MOVE_INFERNAL_PARADE] =
@@ -15196,32 +14897,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .strikeCount = 3,
         .battleAnimScript = gBattleAnimMove_TripleDive,
-    },
-
-    [MOVE_MORTAL_SPIN] =
-    {
-        .name = COMPOUND_STRING("Mortal Spin"),
-        .description = COMPOUND_STRING(
-            "Erases trap moves and Leech\n"
-            "Seed. Poisons adjacent foes."),
-        .effect = EFFECT_HIT,
-        .power = 30,
-        .type = TIPO_VENENO,
-        .accuracy = 100,
-        .pp = 15,
-        .target = MOVE_TARGET_BOTH,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_RAPID_SPIN,
-            .self = TRUE,
-        },
-        {
-            .moveEffect = MOVE_EFFECT_POISON,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_MortalSpin,
     },
 
     [MOVE_DOODLE] =
@@ -15942,21 +15617,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_BurningBulwark,
     },
 
-    [MOVE_THUNDERCLAP] =
-    {
-        .name = COMPOUND_STRING("Thunderclap"),
-        .description = sSuckerPunchDescription,
-        .effect = EFFECT_SUCKER_PUNCH,
-        .power = 70,
-        .type = TIPO_ELECTRICO,
-        .accuracy = 100,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 1,
-        .category = CATEGORIA_ESPECIAL,
-        .battleAnimScript = gBattleAnimMove_Thunderclap,
-    },
-
     [MOVE_MIGHTY_CLEAVE] =
     {
         .name = COMPOUND_STRING("Mighty Cleave"),
@@ -16105,26 +15765,26 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_PsychicNoise,
     },
 
-    [MOVE_UPPER_HAND] =
+    [MOVE_PALMA_RAUDA] =
     {
-        .effect = EFFECT_UPPER_HAND,
-        .name = COMPOUND_STRING("Upper Hand"),
+        .effect = EFFECT_PALMA_RAUDA,
+        .name = COMPOUND_STRING("Palma rauda"),
         .description = COMPOUND_STRING(
             "Makes the target flinch if\n"
             "readying a priority move."),
-        .power = 65,
+        .power = 70,
         .type = TIPO_LUCHA,
         .accuracy = 100,
-        .pp = 15,
+        .pp = PP_MOVIMIENTO_OFENSIVO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
-        .priority = 3,
+        .priority = 2,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_FLINCH,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_UpperHand,
+        .battleAnimScript = gBattleAnimMove_PalmaRauda,
     },
 
     [MOVE_MALIGNANT_CHAIN] =
@@ -16218,7 +15878,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
-        .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
         .healingMove = B_HEAL_BLOCKING >= GEN_6,
         .bitingMove = TRUE,
         .battleAnimScript = gBattleAnimMove_Chupasangre,

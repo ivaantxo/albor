@@ -505,7 +505,7 @@ static void Cmd_magnitudedamagecalculation(void);
 static void Cmd_jumpifnopursuitswitchdmg(void);
 static void Cmd_halvehp(void);
 static void Cmd_copyfoestats(void);
-static void Cmd_rapidspinfree(void);
+static void Cmd_girorapidofree(void);
 static void Cmd_setdefensecurlbit(void);
 static void Cmd_recoverbasedonsunlight(void);
 static void Cmd_setstickyweb(void);
@@ -742,7 +742,7 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     BATTLE_CMD(jumpifnopursuitswitchdmg),
     BATTLE_CMD(halvehp),
     BATTLE_CMD(copyfoestats),
-    BATTLE_CMD(rapidspinfree),
+    BATTLE_CMD(girorapidofree),
     BATTLE_CMD(setdefensecurlbit),
     BATTLE_CMD(recoverbasedonsunlight),
     BATTLE_CMD(setstickyweb),
@@ -1139,8 +1139,8 @@ static void Cmd_attackcanceler(void)
     else if (IsBattlerProtected(gBattlerAttacker, gBattlerTarget, gCurrentMove)
      && (gCurrentMove != MOVE_CURSE || ES_TIPO(gBattlerAttacker, TIPO_FANTASMA))
      && (!gBattleMoveEffects[gMovesInfo[gCurrentMove].effect].twoTurnEffect || (gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS))
-     && gMovesInfo[gCurrentMove].effect != EFFECT_SUCKER_PUNCH
-     && gMovesInfo[gCurrentMove].effect != EFFECT_UPPER_HAND)
+     && gMovesInfo[gCurrentMove].effect != EFFECT_GOLPE_BAJO
+     && gMovesInfo[gCurrentMove].effect != EFFECT_PALMA_RAUDA)
     {
         if (IsMoveMakingContact(gCurrentMove, gBattlerAttacker))
             gProtectStructs[gBattlerAttacker].touchedProtectLike = TRUE;
@@ -1423,9 +1423,6 @@ static void AccuracyCheck(bool32 recalcDragonDarts, const u8 *nextInstr, const u
         if (!PorcentajeAleatorio(accuracy))
         {
             gMoveResultFlags |= MOVE_RESULT_MISSED;
-            if (holdEffectAtk == HOLD_EFFECT_BLUNDER_POLICY)
-                gBattleStruct->blunderPolicy = TRUE;    // Only activates from missing through acc/evasion checks
-
             if (gMovesInfo[gCurrentMove].effect == EFFECT_DRAGON_DARTS
                 && !recalcDragonDarts // So we don't jump back and forth between targets
                 && CanTargetPartner(gBattlerAttacker, gBattlerTarget)
@@ -1584,8 +1581,7 @@ s32 CalcCritChanceStageArgs(u32 battlerAtk, u32 battlerDef, u32 move, bool32 rec
                     + gMovesInfo[move].criticalHitStage
                     + (holdEffectAtk == HOLD_EFFECT_SCOPE_LENS)
                     + 2 * (abilityAtk == ABILITY_SUPER_LUCK)
-                    + 2 * (abilityAtk == ABILITY_DISPARO_CERTERO)
-                    + gBattleStruct->bonusCritStages[gBattlerAttacker];
+                    + 2 * (abilityAtk == ABILITY_DISPARO_CERTERO);
 
         if (gMovesInfo[gCurrentMove].soundMove && (abilityAtk == ABILITY_PERCUSIONISTA))
         critChance = +1;
@@ -2690,15 +2686,15 @@ void SetMoveEffect(bool32 primary, bool32 certain)
                 }
                 break;
             case MOVE_EFFECT_FLINCH:
-                if (battlerAbility == ABILITY_INNER_FOCUS)
+                if (battlerAbility == ABILITY_FUERZA_MENTAL)
                 {
                     // Inner Focus ALWAYS prevents flinching but only activates
-                    // on a move that's supposed to flinch, like Fake Out
+                    // on a move that's supposed to flinch, like Sorpresa
                     if (primary == TRUE || certain == TRUE)
                     {
-                        gLastUsedAbility = ABILITY_INNER_FOCUS;
+                        gLastUsedAbility = ABILITY_FUERZA_MENTAL;
                         gBattlerAbility = gEffectBattler;
-                        RecuerdaHabilidadCombate(gEffectBattler, ABILITY_INNER_FOCUS);
+                        RecuerdaHabilidadCombate(gEffectBattler, ABILITY_FUERZA_MENTAL);
                         gBattlescriptCurrInstr = BattleScript_FlinchPrevention;
                     }
                     else
@@ -2946,9 +2942,9 @@ void SetMoveEffect(bool32 primary, bool32 certain)
                     gBattlescriptCurrInstr = BattleScript_AllStatsUp;
                 }
                 break;
-            case MOVE_EFFECT_RAPID_SPIN:
+            case MOVE_EFFECT_GIRO_RAPIDO:
                 BattleScriptPush(gBattlescriptCurrInstr + 1);
-                gBattlescriptCurrInstr = BattleScript_RapidSpinAway;
+                gBattlescriptCurrInstr = BattleScript_GiroRapidoAway;
                 break;
             case MOVE_EFFECT_ATK_DEF_DOWN: // SuperPower
                 if (!NoAliveMonsForEitherParty())
@@ -4311,7 +4307,6 @@ static void PlayAnimation(u32 battler, u8 animId, const u16 *argPtr, const u8 *n
 {
     if (animId == B_ANIM_STATS_CHANGE
      || animId == B_ANIM_SNATCH_MOVE
-     || animId == B_ANIM_ILLUSION_OFF
      || animId == B_ANIM_FORM_CHANGE
      || animId == B_ANIM_SUBSTITUTE_FADE)
     {
@@ -4643,7 +4638,7 @@ static void Cmd_moveend(void)
                     gBattlescriptCurrInstr = BattleScript_BanefulBunkerEffect;
                     effect = 1;
                 }
-                else if (gProtectStructs[gBattlerTarget].obstructed && gMovesInfo[gCurrentMove].effect != EFFECT_SUCKER_PUNCH && gMovesInfo[gCurrentMove].effect != EFFECT_UPPER_HAND)
+                else if (gProtectStructs[gBattlerTarget].obstructed && gMovesInfo[gCurrentMove].effect != EFFECT_GOLPE_BAJO && gMovesInfo[gCurrentMove].effect != EFFECT_PALMA_RAUDA)
                 {
                     gProtectStructs[gBattlerAttacker].touchedProtectLike = FALSE;
                     i = gBattlerAttacker;
@@ -4885,12 +4880,6 @@ static void Cmd_moveend(void)
                 effect = TRUE;
             else
                 gBattleScripting.moveendState++;
-            break;
-        case MOVEEND_KINGSROCK: // King's rock
-            // These effects will occur at each hit in a multi-strike move
-            if (ItemBattleEffects(ITEMEFFECT_KINGSROCK, 0, FALSE))
-                effect = TRUE;
-            gBattleScripting.moveendState++;
             break;
         case MOVEEND_ATTACKER_INVISIBLE: // make attacker sprite invisible
             if (gStatuses3[gBattlerAttacker] & (STATUS3_SEMI_INVULNERABLE)
@@ -5408,7 +5397,6 @@ static void Cmd_moveend(void)
             gBattleStruct->hitSwitchTargetFailed = FALSE;
             gBattleStruct->isAtkCancelerForCalledMove = FALSE;
             gBattleStruct->swapDamageCategory = FALSE;
-            gBattleStruct->categoryOverride = FALSE;
             gBattleStruct->bouncedMoveIsUsed = FALSE;
             gBattleStruct->snatchedMoveIsUsed = FALSE;
             gBattleStruct->enduredDamage = 0;
@@ -7498,25 +7486,6 @@ static void Cmd_various(void)
         gBattleMons[battler].ability = gBattleStruct->overwrittenAbilities[battler] = gBattleStruct->tracedAbility[battler];
         break;
     }
-    case VARIOUS_TRY_ILLUSION_OFF:
-    {
-        VARIOUS_ARGS();
-        if (GetIllusionMonPtr(battler) != NULL)
-        {
-            gBattlescriptCurrInstr = cmd->nextInstr;
-            BattleScriptPushCursor();
-            gBattlescriptCurrInstr = BattleScript_IllusionOff;
-            return;
-        }
-        break;
-    }
-    case VARIOUS_SET_SPRITEIGNORE0HP:
-    {
-        VARIOUS_ARGS(bool8 ignore0HP);
-        gBattleStruct->spriteIgnore0Hp = cmd->ignore0HP;
-        gBattlescriptCurrInstr = cmd->nextInstr;
-        return;
-    }
     case VARIOUS_UPDATE_NICK:
     {
         VARIOUS_ARGS();
@@ -7930,7 +7899,7 @@ static void Cmd_various(void)
         }
         return;
     }
-    case VARIOUS_SUCKER_PUNCH_CHECK:
+    case VARIOUS_GOLPE_BAJO_CHECK:
     {
         VARIOUS_ARGS(const u8 *failInstr);
         if (gProtectStructs[gBattlerTarget].obstructed)
@@ -10026,7 +9995,6 @@ static void Cmd_transformdataexecution(void)
     gChosenMove = MOVE_NONE;
     gBattlescriptCurrInstr = cmd->nextInstr;
     if (gBattleMons[gBattlerTarget].status2 & STATUS2_TRANSFORMED
-        || gBattleStruct->illusion[gBattlerTarget].on
         || gStatuses3[gBattlerTarget] & STATUS3_SEMI_INVULNERABLE)
     {
         gMoveResultFlags |= MOVE_RESULT_FAILED;
@@ -11093,7 +11061,7 @@ static void Cmd_copyfoestats(void)
     }
 }
 
-static void Cmd_rapidspinfree(void)
+static void Cmd_girorapidofree(void)
 {
     CMD_ARGS();
 
@@ -13076,14 +13044,13 @@ void BS_TryDefog(void)
     }
 }
 
-void BS_TryUpperHand(void)
+void BS_TryPalmaRauda(void)
 {
     NATIVE_ARGS(const u8 *failInstr);
 
     if (GetBattlerTurnOrderNum(gBattlerAttacker) > GetBattlerTurnOrderNum(gBattlerTarget)
      || gMovimientoElegido[gBattlerTarget] == MOVE_NONE
-     || ES_MOVIMIENTO_ESTADO(gMovimientoElegido[gBattlerTarget])
-     || GetChosenMovePriority(gBattlerTarget) < 1 || GetChosenMovePriority(gBattlerTarget) > 3) // Fails if priority is less than 1 or greater than 3, if target already moved, or if using a status
+     || ES_MOVIMIENTO_ESTADO(gMovimientoElegido[gBattlerTarget]))
         gBattlescriptCurrInstr = cmd->failInstr;
     else
         gBattlescriptCurrInstr = cmd->nextInstr;

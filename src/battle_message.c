@@ -80,7 +80,6 @@ static const u8 sText_PkmnFellInLove[] = _("{B_DEF_NAME_WITH_PREFIX} fell in lov
 static const u8 sText_PkmnInLove[] = _("{B_ATK_NAME_WITH_PREFIX} is in love with {B_SCR_ACTIVE_NAME_WITH_PREFIX}!");
 static const u8 sText_PkmnImmobilizedByLove[] = _("{B_ATK_NAME_WITH_PREFIX} is immobilized by love!");
 static const u8 sText_PkmnBlownAway[] = _("{B_DEF_NAME_WITH_PREFIX} was blown away!");
-static const u8 sText_PkmnFlinched[] = _("{B_ATK_NAME_WITH_PREFIX} flinched!");
 static const u8 sText_PkmnRegainedHealth[] = _("{B_DEF_NAME_WITH_PREFIX} regained health!");
 static const u8 sText_PkmnHPFull[] = _("{B_DEF_NAME_WITH_PREFIX}'s HP is full!");
 static const u8 sText_PkmnRaisedSpDef[] = _("{B_ATK_PREFIX2}'s {B_CURRENT_MOVE} raised SP. DEF!");
@@ -494,7 +493,6 @@ static const u8 sText_AirBalloonFloat[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} flo
 static const u8 sText_AirBalloonPop[] = _("{B_DEF_NAME_WITH_PREFIX}'s Air Balloon popped!");
 static const u8 sText_IncinerateBurn[] = _("{B_EFF_NAME_WITH_PREFIX}'s {B_LAST_ITEM} was burnt up!");
 static const u8 sText_BugBite[] = _("{B_ATK_NAME_WITH_PREFIX} stole and ate its target's {B_LAST_ITEM}!");
-static const u8 sText_IllusionWoreOff[] = _("{B_DEF_NAME_WITH_PREFIX}'s illusion wore off!");
 static const u8 sText_AttackerCuredTargetStatus[] = _("{B_ATK_NAME_WITH_PREFIX} cured {B_DEF_NAME_WITH_PREFIX}'s problem!");
 static const u8 sText_AttackerLostFireType[] = _("{B_ATK_NAME_WITH_PREFIX} burned itself out!");
 static const u8 sText_HealerCure[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_LAST_ABILITY} cured {B_SCR_ACTIVE_NAME_WITH_PREFIX}'s problem!");
@@ -654,7 +652,6 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_HEALERCURE] = sText_HealerCure,
     [STRINGID_ATTACKERLOSTFIRETYPE] = sText_AttackerLostFireType,
     [STRINGID_ATTACKERCUREDTARGETSTATUS] = sText_AttackerCuredTargetStatus,
-    [STRINGID_ILLUSIONWOREOFF] = sText_IllusionWoreOff,
     [STRINGID_BUGBITE] = sText_BugBite,
     [STRINGID_INCINERATEBURN] = sText_IncinerateBurn,
     [STRINGID_AIRBALLOONPOP] = sText_AirBalloonPop,
@@ -708,7 +705,6 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_PKMNINLOVE] = sText_PkmnInLove,
     [STRINGID_PKMNIMMOBILIZEDBYLOVE] = sText_PkmnImmobilizedByLove,
     [STRINGID_PKMNBLOWNAWAY] = sText_PkmnBlownAway,
-    [STRINGID_PKMNFLINCHED] = sText_PkmnFlinched,
     [STRINGID_PKMNREGAINEDHEALTH] = sText_PkmnRegainedHealth,
     [STRINGID_PKMNHPFULL] = sText_PkmnHPFull,
     [STRINGID_PKMNRAISEDSPDEF] = sText_PkmnRaisedSpDef,
@@ -1819,11 +1815,8 @@ static const u8 *TryGetStatusString(u8 *src)
 
 static void GetBattlerNick(u32 battler, u8 *dst)
 {
-    struct Pokemon *illusionMon = GetIllusionMonPtr(battler);
     struct Pokemon *mon = GetPartyBattlerData(battler);
 
-    if (illusionMon != NULL)
-        mon = illusionMon;
     GetMonData(mon, MON_DATA_NICKNAME, dst);
     StringGet_Nickname(dst);
 }
@@ -2168,37 +2161,6 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
     return dstID;
 }
 
-static void IllusionNickHack(u32 battler, u32 partyId, u8 *dst)
-{
-    s32 id, i;
-    // we know it's gEnemyParty
-    struct Pokemon *mon = &gEnemyParty[partyId], *partnerMon;
-
-    if (GetMonAbility(mon) == ABILITY_ILLUSION)
-    {
-        if (IsBattlerAlive(ALIADO(battler)))
-            partnerMon = &gEnemyParty[gBattlerPartyIndexes[ALIADO(battler)]];
-        else
-            partnerMon = mon;
-
-        // Find last alive non-egg pokemon.
-        for (i = PARTY_SIZE - 1; i >= 0; i--)
-        {
-            id = i;
-            if (GetMonData(&gEnemyParty[id], MON_DATA_SPECIES)
-                && GetMonData(&gEnemyParty[id], MON_DATA_HP)
-                && &gEnemyParty[id] != mon
-                && &gEnemyParty[id] != partnerMon)
-            {
-                GetMonData(&gEnemyParty[id], MON_DATA_NICKNAME, dst);
-                return;
-            }
-        }
-    }
-
-    GetMonData(mon, MON_DATA_NICKNAME, dst);
-}
-
 void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
 {
     u32 srcID = 1;
@@ -2271,12 +2233,6 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
             if (src[srcID + 2] == gBattlerPartyIndexes[src[srcID + 1]])
             {
                 GetBattlerNick(src[srcID + 1], dst);
-            }
-            else if (gBattleScripting.illusionNickHack) // for STRINGID_ENEMYABOUTTOSWITCHPKMN
-            {
-                gBattleScripting.illusionNickHack = 0;
-                IllusionNickHack(src[srcID + 1], src[srcID + 2], dst);
-                StringGet_Nickname(dst);
             }
             else
             {

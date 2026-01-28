@@ -2356,7 +2356,7 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
             }
             gBattleStruct->atkCancellerTracker++;
             break;
-        case CANCELLER_FLINCH: // flinch
+        case CANCELLER_FLINCH:
             if (gBattleMons[gBattlerAttacker].status2 & STATUS2_FLINCHED)
             {
                 gProtectStructs[gBattlerAttacker].flinchImmobility = TRUE;
@@ -2367,7 +2367,7 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
             }
             gBattleStruct->atkCancellerTracker++;
             break;
-        case CANCELLER_DISABLED: // disabled move
+        case CANCELLER_DISABLED:
             if (gDisableStructs[gBattlerAttacker].disabledMove == gCurrentMove && gDisableStructs[gBattlerAttacker].disabledMove != MOVE_NONE)
             {
                 gProtectStructs[gBattlerAttacker].usedDisabledMove = TRUE;
@@ -3170,7 +3170,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             if (IsBattlerAlive(OPONENTE(battler))
                 && !(gBattleMons[OPONENTE(battler)].status2 & (STATUS2_TRANSFORMED | STATUS2_SUBSTITUTE))
                 && !(gBattleMons[battler].status2 & STATUS2_TRANSFORMED)
-                && !(gBattleStruct->illusion[OPONENTE(battler)].on)
                 && !(gStatuses3[OPONENTE(battler)] & STATUS3_SEMI_INVULNERABLE))
             {
                 gBattlerAttacker = battler;
@@ -4146,14 +4145,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 gStatuses3[gBattlerAttacker] |= STATUS3_LEECHSEED;
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_Parasito;
-                effect++;
-            }
-            break;
-        case ABILITY_ILLUSION:
-            if (gBattleStruct->illusion[gBattlerTarget].on && !gBattleStruct->illusion[gBattlerTarget].broken && IsBattlerTurnDamaged(gBattlerTarget))
-            {
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_IllusionOff;
                 effect++;
             }
             break;
@@ -5961,44 +5952,6 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
                 }
                 break;
             }
-        }
-        break;
-    case ITEMEFFECT_KINGSROCK:
-        // Occur on each hit of a multi-strike move
-        switch (atkHoldEffect)
-        {
-        case HOLD_EFFECT_FLINCH:
-            {
-                u16 ability = GetBattlerAbility(gBattlerAttacker);
-                if (B_SERENE_GRACE_BOOST >= GEN_5 && ability == ABILITY_SERENE_GRACE)
-                    atkHoldEffectParam *= 2;
-                if (gBattleMoveDamage != 0  // Need to have done damage
-                    && !(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
-                    && IsBattlerTurnDamaged(gBattlerTarget)
-                    && !gMovesInfo[gCurrentMove].ignoresKingsRock
-                    && gBattleMons[gBattlerTarget].hp
-                    && PorcentajeAleatorio(atkHoldEffectParam))
-                {
-                    gBattleScripting.moveEffect = MOVE_EFFECT_FLINCH;
-                    BattleScriptPushCursor();
-                    SetMoveEffect(FALSE, FALSE);
-                    BattleScriptPop();
-                }
-            }
-            break;
-        case HOLD_EFFECT_BLUNDER_POLICY:
-            if (gBattleStruct->blunderPolicy
-             && IsBattlerAlive(gBattlerAttacker)
-             && CompareStat(gBattlerAttacker, ESTADISTICA_VELOCIDAD, ESTADISTICA_MAS_6, COMPARACION_MENOR))
-            {
-                gBattleStruct->blunderPolicy = FALSE;
-                gLastUsedItem = atkItem;
-                SET_STATCHANGER(ESTADISTICA_VELOCIDAD, 2, FALSE);
-                effect = ITEM_STATS_CHANGE;
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_AttackerItemStatRaise;
-            }
-            break;
         }
         break;
     case ITEMEFFECT_LIFEORB_SHELLBELL:
@@ -7996,18 +7949,6 @@ static inline void MulByTypeEffectiveness(uq4_12_t *modifier, u32 move, u32 move
     *modifier = uq4_12_multiply(*modifier, mod);
 }
 
-static inline void TryNoticeIllusionInTypeEffectiveness(u32 move, u32 moveType, u32 battlerAtk, u32 battlerDef, uq4_12_t resultingModifier, u32 illusionSpecies)
-{
-    // Check if the type effectiveness would've been different if the pokemon really had the types as the disguise.
-    uq4_12_t presumedModifier = UQ_4_12(1.0);
-    MulByTypeEffectiveness(&presumedModifier, move, moveType, battlerDef, gSpeciesInfo[illusionSpecies].types[0], battlerAtk, FALSE);
-    if (gSpeciesInfo[illusionSpecies].types[1] != gSpeciesInfo[illusionSpecies].types[0])
-        MulByTypeEffectiveness(&presumedModifier, move, moveType, battlerDef, gSpeciesInfo[illusionSpecies].types[1], battlerAtk, FALSE);
-
-    if (presumedModifier != resultingModifier)
-        RecuerdaHabilidadCombate(battlerDef, ABILITY_ILLUSION);
-}
-
 static void ActualizaFlagsResultadosMovimiento(uq4_12_t modificador)
 {
     if (modificador == UQ_4_12(0.0))
@@ -8033,8 +7974,6 @@ static void ActualizaFlagsResultadosMovimiento(uq4_12_t modificador)
 
 static inline uq4_12_t CalcTypeEffectivenessMultiplierInternal(u32 move, u32 moveType, u32 battlerAtk, u32 battlerDef, bool32 recordAbilities, uq4_12_t modifier, u32 defAbility)
 {
-    u32 illusionSpecies;
-
     MulByTypeEffectiveness(&modifier, move, moveType, battlerDef, GetBattlerType(battlerDef, 0), battlerAtk, recordAbilities);
     if (GetBattlerType(battlerDef, 1) != GetBattlerType(battlerDef, 0))
         MulByTypeEffectiveness(&modifier, move, moveType, battlerDef, GetBattlerType(battlerDef, 1), battlerAtk, recordAbilities);
@@ -8043,9 +7982,6 @@ static inline uq4_12_t CalcTypeEffectivenessMultiplierInternal(u32 move, u32 mov
         MulByTypeEffectiveness(&modifier, move, moveType, battlerDef, GetBattlerType(battlerDef, 2), battlerAtk, recordAbilities);
     if (moveType == TIPO_FUEGO && gDisableStructs[battlerDef].tarShot)
         modifier = uq4_12_multiply(modifier, UQ_4_12(2.0));
-
-    if (recordAbilities && (illusionSpecies = GetIllusionMonSpecies(battlerDef)))
-        TryNoticeIllusionInTypeEffectiveness(move, moveType, battlerAtk, battlerDef, modifier, illusionSpecies);
 
     if (gMovesInfo[move].category == CATEGORIA_ESTADO && move != MOVE_THUNDER_WAVE)
     {
@@ -8313,80 +8249,6 @@ bool32 DoBattlersShareType(u32 battler1, u32 battler2)
     {
         if (types1[i] == types2[0] || types1[i] == types2[1] || types1[i] == types2[2])
             return TRUE;
-    }
-
-    return FALSE;
-}
-
-struct Pokemon *GetIllusionMonPtr(u32 battler)
-{
-    if (gBattleStruct->illusion[battler].broken)
-        return NULL;
-    if (!gBattleStruct->illusion[battler].set)
-    {
-        if (GetBattlerSide(battler) == LADO_JUGADOR)
-            SetIllusionMon(&gPlayerParty[gBattlerPartyIndexes[battler]], battler);
-        else
-            SetIllusionMon(&gEnemyParty[gBattlerPartyIndexes[battler]], battler);
-    }
-    if (!gBattleStruct->illusion[battler].on)
-        return NULL;
-
-    return gBattleStruct->illusion[battler].mon;
-}
-
-void ClearIllusionMon(u32 battler)
-{
-    memset(&gBattleStruct->illusion[battler], 0, sizeof(gBattleStruct->illusion[battler]));
-}
-
-u32 GetIllusionMonSpecies(u32 battler)
-{
-    struct Pokemon *illusionMon = GetIllusionMonPtr(battler);
-    if (illusionMon != NULL)
-        return GetMonData(illusionMon, MON_DATA_SPECIES);
-    return SPECIES_NONE;
-}
-
-bool32 SetIllusionMon(struct Pokemon *mon, u32 battler)
-{
-    struct Pokemon *party, *partnerMon;
-    s32 i, id;
-    u8 side, partyCount;
-
-    gBattleStruct->illusion[battler].set = 1;
-    if (GetMonAbility(mon) != ABILITY_ILLUSION)
-        return FALSE;
-
-    party = GetBattlerParty(battler);
-    side = GetBattlerSide(battler);
-    partyCount = side == LADO_JUGADOR ? gPlayerPartyCount : gEnemyPartyCount;
-
-    // If this pokemon is last in the party, ignore Illusion.
-    if (&party[partyCount - 1] == mon)
-        return FALSE;
-
-    if (IsBattlerAlive(ALIADO(battler)))
-        partnerMon = &party[gBattlerPartyIndexes[ALIADO(battler)]];
-    else
-        partnerMon = mon;
-
-    // Find last alive non-egg pokemon.
-    for (i = PARTY_SIZE - 1; i >= 0; i--)
-    {
-        id = i;
-        if (GetMonData(&party[id], MON_DATA_SPECIES)
-            && GetMonData(&party[id], MON_DATA_HP)
-            && !GetMonData(&party[id], MON_DATA_IS_EGG)
-            && &party[id] != mon
-            && &party[id] != partnerMon)
-        {
-            gBattleStruct->illusion[battler].on = 1;
-            gBattleStruct->illusion[battler].broken = 0;
-            gBattleStruct->illusion[battler].partyId = id;
-            gBattleStruct->illusion[battler].mon = &party[id];
-            return TRUE;
-        }
     }
 
     return FALSE;

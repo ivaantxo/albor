@@ -1630,9 +1630,6 @@ static void UpdateNickInHealthbox(u8 healthboxSpriteId, struct Pokemon *mon)
     u32 windowId, spriteTileNum, species;
     u8 *windowTileData;
     u8 gender;
-    struct Pokemon *illusionMon = GetIllusionMonPtr(gSprites[healthboxSpriteId].hMain_Battler);
-    if (illusionMon != NULL)
-        mon = illusionMon;
 
     StringCopy(gDisplayedStringBattle, gText_HealthboxNickname);
     GetMonData(mon, MON_DATA_NICKNAME, nickname);
@@ -2391,7 +2388,7 @@ static void PrintBattlerOnAbilityPopUp(u8 battlerId, u32 spriteId1, u32 spriteId
     u32 i;
     u8* textPtr;
     u8 monName[POKEMON_NAME_LENGTH + 3] = {0};
-    u8* nick = gBattleMons[battlerId].nickname; // This needs to be updated for Illusion support
+    u8* nick = gBattleMons[battlerId].nickname;
 
     for (i = 0; i < POKEMON_NAME_LENGTH; ++i)
     {
