@@ -1531,7 +1531,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                 ADJUST_SCORE(-10);
             break;
         case EFFECT_FOLLOW_ME:
-        case EFFECT_HELPING_HAND:
             if (!isDoubleBattle
               || !IsBattlerAlive(ALIADO(battlerAtk))
               || PartnerHasSameMoveEffectWithoutTarget(ALIADO(battlerAtk), move, aiData->partnerMove)
@@ -2110,9 +2109,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             if ((gFieldStatuses & STATUS_FIELD_FAIRY_LOCK) || PartnerMoveIsSameNoTarget(ALIADO(battlerAtk), move, aiData->partnerMove))
                 ADJUST_SCORE(-10);
             break;
-        case EFFECT_DO_NOTHING:
-            ADJUST_SCORE(-10);
-            break;
         case EFFECT_INSTRUCT:
             {
                 u16 instructedMove;
@@ -2292,10 +2288,6 @@ static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     {
         switch (gMovesInfo[aiData->partnerMove].effect)
         {
-        case EFFECT_HELPING_HAND:
-            if (ES_MOVIMIENTO_ESTADO(move))
-                ADJUST_SCORE(-7);
-            break;
         case EFFECT_PERISH_SONG:
             if (!(gBattleMons[battlerDef].status2 & (STATUS2_ESCAPE_PREVENTION | STATUS2_WRAPPED)))
             {
@@ -2333,10 +2325,6 @@ static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     // consider our move effect relative to partner state
     switch (effect)
     {
-    case EFFECT_HELPING_HAND:
-        if (!IsBattlerAlive(battlerAtkPartner) || !HasDamagingMove(battlerAtkPartner))
-            ADJUST_SCORE(-5);
-        break;
     case EFFECT_PERISH_SONG:
         if (aiData->partnerMove != 0 && HasTrappingMoveEffect(battlerAtkPartner))
             ADJUST_SCORE(WEAK_EFFECT);
@@ -3120,9 +3108,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         ADJUST_SCORE(GOOD_EFFECT);
         if (!HasDamagingMove(battlerDef) || IsBattlerTrapped(battlerDef, FALSE))
             ADJUST_SCORE(DECENT_EFFECT);
-        break;
-    case EFFECT_DO_NOTHING:
-        //todo - check z splash, z celebrate, z happy hour (lol)
         break;
     case EFFECT_HIT_ESCAPE:
     case EFFECT_PARTING_SHOT:

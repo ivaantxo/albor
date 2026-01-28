@@ -8304,42 +8304,6 @@ MagneticFluxSparks2:
 	createsprite gSparkElectricitySpriteTemplate, ANIM_ATTACKER, 0, 0xee, 0x18, 0xa5, 0xa, 0x0, 0x1, 0x1
 	return
 
-gBattleAnimMove_HappyHour::
-	loadspritegfx ANIM_TAG_COIN
-	monbg ANIM_ATTACKER
-	loopsewithpan SE_M_PAY_DAY, SOUND_PAN_TARGET, 0x8, 10
-	createsprite gHappyHourCoinShowerTemplate, ANIM_TARGET, 2, 0xfffb, 0x0, 0xfffb, 0x1
-	delay 0x2
-	createsprite gHappyHourCoinShowerTemplate, ANIM_TARGET, 2, 0x5, 0x0, 0x6, 0x1
-	delay 0x2
-	createsprite gHappyHourCoinShowerTemplate, ANIM_TARGET, 2, 0x13, 0x0, 0xa, 0x1
-	delay 0x2
-	createsprite gHappyHourCoinShowerTemplate, ANIM_TARGET, 2, 0xffe9, 0x0, 0xfff6, 0x1
-	delay 0x2
-	call CoinShower
-	call CoinShower
-	waitforvisualfinish
-	clearmonbg ANIM_ATTACKER
-	end
-CoinShower:
-	createsprite gHappyHourCoinShowerTemplate, ANIM_TARGET, 2, 0xffec, 0x0, 0xfff6, 0x1
-	delay 0x2
-	createsprite gHappyHourCoinShowerTemplate, ANIM_TARGET, 2, 0x1c, 0x0, 0xa, 0x1
-	delay 0x2
-	createsprite gHappyHourCoinShowerTemplate, ANIM_TARGET, 2, 0xfff6, 0x0, 0xfffb, 0x1
-	delay 0x2
-	createsprite gHappyHourCoinShowerTemplate, ANIM_TARGET, 2, 0xa, 0x0, 0x6, 0x1
-	delay 0x2
-	createsprite gHappyHourCoinShowerTemplate, ANIM_TARGET, 2, 0x18, 0x0, 0xa, 0x1
-	delay 0x2
-	createsprite gHappyHourCoinShowerTemplate, ANIM_TARGET, 2, 0xffe0, 0x0, 0xfff6, 0x1
-	delay 0x2
-	createsprite gHappyHourCoinShowerTemplate, ANIM_TARGET, 2, 0xffec, 0x0, 0xfff6, 0x1
-	delay 0x2
-	createsprite gHappyHourCoinShowerTemplate, ANIM_TARGET, 2, 0x1e, 0x0, 0xa, 0x1
-	delay 0x2
-	return
-
 gBattleAnimMove_DazzlingGleam::
 	loadspritegfx ANIM_TAG_SPARKLE_2
 	loadspritegfx ANIM_TAG_BLUE_STAR
@@ -8357,57 +8321,6 @@ gBattleAnimMove_DazzlingGleam::
 	waitforvisualfinish
 	clearmonbg 0x0
 	blendoff
-	end
-
-gBattleAnimMove_Celebrate::
-	loadspritegfx ANIM_TAG_ITEM_BAG
-	createsprite gCelebrateBagTemplate, ANIM_ATTACKER, 2, 0x0
-	playsewithpan SE_M_TAIL_WHIP, SOUND_PAN_ATTACKER
-	delay 0x12
-	playsewithpan SE_M_ATTRACT, SOUND_PAN_ATTACKER
-	delay 0x47
-	loopsewithpan SE_M_TAIL_WHIP, SOUND_PAN_ATTACKER 0x16 0x3
-	end
-
-gBattleAnimMove_HoldHands::
-	loadspritegfx ANIM_TAG_TAG_HAND @hand
-	loadspritegfx ANIM_TAG_MAGENTA_HEART @charm
-	loadspritegfx ANIM_TAG_VERTICAL_HEX @red
-	playsewithpan SE_M_PETAL_DANCE, SOUND_PAN_ATTACKER
-	createvisualtask AnimTask_TranslateMonEllipticalRespectSide, 2, ANIM_ATTACKER, 12, 6, 6, 3
-	createsprite gHoldHandsHeartTemplate, ANIM_ATTACKER, 2, 0x0, 0xffe8, 0x8, 0x8c
-	delay 0x8
-	createsprite gHoldHandsHeartTemplate, ANIM_ATTACKER, 2, 0x0, 0xffe8, 0x8, 0x8c
-	delay 0x8
-	createsprite gHoldHandsHeartTemplate, ANIM_ATTACKER, 2, 0x0, 0xffe8, 0x8, 0x8c
-	delay 0x8
-	createsprite gHoldHandsHeartTemplate, ANIM_ATTACKER, 2, 0x0, 0xffe8, 0x8, 0x8c
-	delay 0x8
-	createsprite gHoldHandsHeartTemplate, ANIM_ATTACKER, 2, 0x0, 0xffe8, 0x8, 0x8c
-	delay 0x8
-	createsprite gHoldHandsHeartTemplate, ANIM_ATTACKER, 2, 0x0, 0xffe8, 0x8, 0x8c
-	delay 0x8
-	createsprite gHoldHandsHeartTemplate, ANIM_ATTACKER, 2, 0x0, 0xffe8, 0x8, 0x8c
-	delay 0x8
-	createsprite gHoldHandsHeartTemplate, ANIM_ATTACKER, 2, 0x0, 0xffe8, 0x8, 0x8c
-	delay 0x8
-	createsprite gHoldHandsHeartTemplate, ANIM_ATTACKER, 2, 0x0, 0xffe8, 0x8, 0x8c
-	delay 0x8
-	createsprite gHoldHandsHeartTemplate, ANIM_ATTACKER, 2, 0x0, 0xffe8, 0x8, 0x8c
-	waitforvisualfinish
-	createvisualtask AnimTask_HelpingHandAttackerMovement, 0x5
-	createsprite gHelpingHandClapSpriteTemplate, ANIM_ATTACKER, 40, 0x0
-	createsprite gHelpingHandClapSpriteTemplate, ANIM_ATTACKER, 40, 0x1
-	delay 0x13
-	playsewithpan SE_M_ENCORE, 0x0
-	createvisualtask AnimTask_ShakeMon2, 2, ANIM_ATK_PARTNER, 2, 0, 5, 1
-	delay 0xe
-	playsewithpan SE_M_ENCORE, 0x0
-	createvisualtask AnimTask_ShakeMon2, 2, ANIM_ATK_PARTNER, 2, 0, 5, 1
-	delay 0x14
-	playsewithpan SE_M_ENCORE, 0x0
-	createvisualtask AnimTask_ShakeMon2, 2, ANIM_ATK_PARTNER, 3, 0, 10, 1
-	createvisualtask AnimTask_BlendMonInAndOut, 2, ANIM_ATK_PARTNER, RGB_YELLOW, 12, 1, 1
 	end
 
 gBattleAnimMove_BabyDollEyes::
@@ -11394,16 +11307,6 @@ gBattleAnimMove_ZippyZap::
 	clearmonbg ANIM_ATK_PARTNER
 	blendoff
 	waitforvisualfinish
-	end
-
-gBattleAnimMove_SplishySplash::
-	loadspritegfx ANIM_TAG_SPARK_2
-	createvisualtask AnimTask_CreateSurfWave, 2, ANIM_SURF_PAL_SURF
-	delay 24
-	panse SE_M_SURF, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, +2, 0
-	waitforvisualfinish
-	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 1, 0, 10, 1
-	call ElectricityEffect
 	end
 
 gBattleAnimMove_BouncyBubble::
@@ -18176,13 +18079,6 @@ gBattleAnimMove_Flash::
 	waitforvisualfinish
 	end
 
-gBattleAnimMove_Splash::
-	createvisualtask AnimTask_Splash, 2, ANIM_ATTACKER, 3
-	delay 8
-	loopsewithpan SE_M_TAIL_WHIP, SOUND_PAN_ATTACKER, 38, 3
-	waitforvisualfinish
-	end
-
 gBattleAnimMove_AcidArmor::
 	monbg ANIM_ATTACKER
 	setalpha 15, 0
@@ -18790,23 +18686,6 @@ gBattleAnimMove_Taunt::
 	delay 12
 	createsprite gAngerMarkSpriteTemplate, ANIM_TARGET, 2, 1, 20, -28
 	playsewithpan SE_M_SWAGGER2, SOUND_PAN_TARGET
-	end
-
-gBattleAnimMove_HelpingHand::
-	loadspritegfx ANIM_TAG_TAG_HAND
-	createvisualtask AnimTask_HelpingHandAttackerMovement, 5
-	createsprite gHelpingHandClapSpriteTemplate, ANIM_ATTACKER, 40, 0
-	createsprite gHelpingHandClapSpriteTemplate, ANIM_ATTACKER, 40, 1
-	delay 19
-	playsewithpan SE_M_ENCORE, 0
-	createvisualtask AnimTask_ShakeMon2, 2, ANIM_ATK_PARTNER, 2, 0, 5, 1
-	delay 14
-	playsewithpan SE_M_ENCORE, 0
-	createvisualtask AnimTask_ShakeMon2, 2, ANIM_ATK_PARTNER, 2, 0, 5, 1
-	delay 20
-	playsewithpan SE_M_ENCORE, 0
-	createvisualtask AnimTask_ShakeMon2, 2, ANIM_ATK_PARTNER, 3, 0, 10, 1
-	createvisualtask AnimTask_BlendMonInAndOut, 2, ANIM_ATK_PARTNER, RGB_YELLOW, 12, 1, 1
 	end
 
 gBattleAnimMove_Assist::

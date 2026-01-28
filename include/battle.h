@@ -145,7 +145,6 @@ struct ProtectStruct
     u32 obstructed:1;
     u32 endured:1;
     u32 noValidMoves:1;
-    u32 helpingHand:1;
     u32 bounceMove:1;
     u32 stealMove:1;
     u32 prlzImmobility:1;
@@ -617,7 +616,6 @@ struct BattleScripting
     u8 animArg2;
     u16 savedStringId;
     u8 moveendState;
-    u8 savedStatChanger; // For further use, if attempting to change stat two times(ex. Moody)
     u8 shiftSwitched; // When the game tells you the next enemy's pokemon and you switch. Option for noobs but oh well.
     u8 battler;
     u8 animTurn;

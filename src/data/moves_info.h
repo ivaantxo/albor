@@ -3091,26 +3091,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Psywave,
     },
 
-    [MOVE_SPLASH] =
-    {
-        .name = COMPOUND_STRING("Salpicadura"),
-        .description = COMPOUND_STRING(
-            "It's just a splash...\n"
-            "Has no effect whatsoever."),
-        .effect = EFFECT_DO_NOTHING,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 0,
-        .pp = 40,
-        .target = MOVE_TARGET_USER,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .gravityBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Splash,
-    },
-
     [MOVE_ACID_ARMOR] =
     {
         .name = COMPOUND_STRING("Armadura ácida"),
@@ -5466,28 +5446,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .ignoresSubstitute = TRUE,
         .magicCoatAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .battleAnimScript = gBattleAnimMove_Taunt,
-    },
-
-    [MOVE_HELPING_HAND] =
-    {
-        .name = COMPOUND_STRING("Refuerzo"),
-        .description = COMPOUND_STRING(
-            "Boosts the power of the\n"
-            "recipient's moves."),
-        .effect = EFFECT_HELPING_HAND,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 100,
-        .pp = 20,
-        .target = B_UPDATED_MOVE_DATA >= GEN_4 ? MOVE_TARGET_ALLY : MOVE_TARGET_USER,
-        .priority = 5,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .ignoresSubstitute = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_HelpingHand,
     },
 
     [MOVE_TRICK] =
@@ -11675,25 +11633,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_MagneticFlux,
     },
 
-    [MOVE_HAPPY_HOUR] =
-    {
-        .name = COMPOUND_STRING("Happy Hour"),
-        .description = COMPOUND_STRING(
-            "Doubles the amount of\n"
-            "Prize Money received."),
-        .effect = EFFECT_DO_NOTHING,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 0,
-        .pp = 30,
-        .target = MOVE_TARGET_USER,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_HappyHour,
-    },
-
     [MOVE_DAZZLING_GLEAM] =
     {
         .name = COMPOUND_STRING("Dazzling Gleam"),
@@ -11709,54 +11648,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .battleAnimScript = gBattleAnimMove_DazzlingGleam,
-    },
-
-    [MOVE_CELEBRATE] =
-    {
-        .name = COMPOUND_STRING("Celebrate"),
-        .description = COMPOUND_STRING(
-            "Congratulates you on your\n"
-            "special day."),
-        .effect = EFFECT_DO_NOTHING,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 0,
-        .pp = 40,
-        .target = MOVE_TARGET_USER,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .mimicBanned = TRUE,
-        .copycatBanned = TRUE,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .assistBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Celebrate,
-    },
-
-    [MOVE_HOLD_HANDS] =
-    {
-        .name = COMPOUND_STRING("Hold Hands"),
-        .description = COMPOUND_STRING(
-            "The user and ally hold hands\n"
-            "making them happy."),
-        .effect = EFFECT_DO_NOTHING,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 0,
-        .pp = 40,
-        .target = MOVE_TARGET_ALLY,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .ignoresSubstitute = TRUE,
-        .mimicBanned = TRUE,
-        .copycatBanned = TRUE,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .assistBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_HoldHands,
     },
 
     [MOVE_BABY_DOLL_EYES] =
@@ -12998,28 +12889,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         }),
         #endif
         .battleAnimScript = gBattleAnimMove_ZippyZap,
-    },
-
-    [MOVE_SPLISHY_SPLASH] =
-    {
-        .name = COMPOUND_STRING("Splishy Splash"),
-        .description = COMPOUND_STRING(
-            "A huge electrified wave that\n"
-            "may paralyze the foe."),
-        .effect = EFFECT_HIT,
-        .power = 90,
-        .type = TIPO_AGUA,
-        .accuracy = 100,
-        .pp = 15,
-        .target = MOVE_TARGET_BOTH,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS < GEN_8,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_PARALYSIS,
-            .chance = 30,
-        }),
-        .battleAnimScript = gBattleAnimMove_SplishySplash,
     },
 
     [MOVE_BOUNCY_BUBBLE] =

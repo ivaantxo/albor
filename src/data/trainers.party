@@ -8303,7 +8303,7 @@ IVs: 3 HP / 3 Atk / 3 Def / 3 SpA / 3 SpD / 3 Spe
 - Spark
 - Charge
 - Fake Tears
-- Helping Hand
+- Pound
 
 Mew
 Level: 33
@@ -8311,7 +8311,7 @@ IVs: 3 HP / 3 Atk / 3 Def / 3 SpA / 3 SpD / 3 Spe
 - Spark
 - Charge
 - Charm
-- Helping Hand
+- Pound
 
 === TRAINER_AMY_AND_LIV_6 ===
 Name: AMY & LIV
@@ -8327,7 +8327,7 @@ IVs: 4 HP / 4 Atk / 4 Def / 4 SpA / 4 SpD / 4 Spe
 - Thunder
 - Charge
 - Fake Tears
-- Helping Hand
+- Pound
 
 Mew
 Level: 36
@@ -8335,7 +8335,7 @@ IVs: 4 HP / 4 Atk / 4 Def / 4 SpA / 4 SpD / 4 Spe
 - Thunder
 - Charge
 - Charm
-- Helping Hand
+- Pound
 
 === TRAINER_HUEY ===
 Name: HUEY
@@ -10839,7 +10839,6 @@ AI: Check Bad Move
 Wailmer
 Level: 9
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-- Splash
 - Water Gun
 
 === TRAINER_MIKE_1 ===
@@ -13907,7 +13906,7 @@ AI: Basic Trainer
 Growlithe
 Level: 41
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Helping Hand
+- Pound
 - Lanzallamas
 - Roar
 - Sunny Day
@@ -13964,7 +13963,7 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Growlithe
 Level: 46
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Helping Hand
+- Pound
 - Lanzallamas
 - Sunny Day
 - Roar
@@ -14013,7 +14012,7 @@ AI: Basic Trainer
 Arcanine
 Level: 51
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Helping Hand
+- Pound
 - Lanzallamas
 - Sunny Day
 - Roar

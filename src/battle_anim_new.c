@@ -55,7 +55,6 @@ static void SpriteCB_PhotonGeyserBeam(struct Sprite *sprite);
 static void SpriteCB_BeamUpStep(struct Sprite *sprite);
 static void SpriteCB_CentredElectricity(struct Sprite *sprite);
 static void SpriteCB_SearingShotRock(struct Sprite *sprite);
-static void AnimHappyHourCoinShower(struct Sprite *sprite);
 static void SpriteCB_Geyser(struct Sprite *sprite);
 static void SpriteCB_GeyserTarget(struct Sprite *sprite);
 static void SpriteCB_TwinkleOnBattler(struct Sprite *sprite);
@@ -1562,42 +1561,6 @@ const struct SpriteTemplate gMagneticFluxUproarTemplate =
     .callback = AnimUproarRing
 };
 
-//happy hour
-const struct SpriteTemplate gHappyHourCoinShowerTemplate =
-{
-    .tileTag = ANIM_TAG_COIN,
-    .paletteTag = ANIM_TAG_COIN,
-    .oam = &gOamData_AffineNormal_ObjNormal_16x16,
-    .anims = gCoinAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimHappyHourCoinShower
-};
-
-//celebrate
-const struct SpriteTemplate gCelebrateBagTemplate =
-{
-    .tileTag = ANIM_TAG_ITEM_BAG,
-    .paletteTag = ANIM_TAG_ITEM_BAG,
-    .oam = &gOamData_AffineNormal_ObjNormal_32x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gMetronomeFingerAffineAnimTable,
-    .callback = AnimFollowMeFinger
-};
-
-//hold hands
-const struct SpriteTemplate gHoldHandsHeartTemplate =
-{
-    .tileTag = ANIM_TAG_MAGENTA_HEART,
-    .paletteTag = ANIM_TAG_VERTICAL_HEX,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimPetalDanceBigFlower
-};
-
 //hold back
 const struct SpriteTemplate gHoldBackSwipeTemplate =
 {
@@ -3095,11 +3058,7 @@ static const union AnimCmd *const sAnimCmdTable_PhotonGeyserBeam[] =
     sAnimCmdSmiteBeam,
     sAnimCmdPhotonGeyserBeam2,
 };
-static const union AffineAnimCmd sSpriteAffineAnim_DoNothing[] =
-{
-    AFFINEANIMCMD_FRAME(0, 0, 0, 1), //Do nothing
-    AFFINEANIMCMD_END
-};
+
 static const union AffineAnimCmd sSpriteAffineAnim_PhotonGeyserBeam[] =
 {
     AFFINEANIMCMD_FRAME(0, 0, 0, 16), //Delay
@@ -3111,7 +3070,6 @@ static const union AffineAnimCmd sSpriteAffineAnim_PhotonGeyserBeam[] =
 };
 static const union AffineAnimCmd* const sSpriteAffineAnimTable_PhotonGeyserBeam[] =
 {
-    sSpriteAffineAnim_DoNothing,
     sSpriteAffineAnim_PhotonGeyserBeam,
 };
 const struct SpriteTemplate gPhotonGeyserBeam =
@@ -7715,26 +7673,6 @@ static void SpriteCB_SearingShotRock(struct Sprite *sprite)
         sprite->callback = WaitAnimForDuration;
         StoreSpriteCallbackInData6(sprite, AnimSpinningKickOrPunchFinish);
     }
-}
-
-static void AnimHappyHourCoinShower(struct Sprite *sprite)
-{
-    if (gBattleAnimArgs[3] != 0)
-        SetAverageBattlerPositions(gBattleAnimAttacker, 0, &sprite->x, &sprite->y);   //coin shower on attacker
-
-    sprite->x += gBattleAnimArgs[0];
-    sprite->y += 14;
-    StartSpriteAnim(sprite, gBattleAnimArgs[1]);
-    AnimateSprite(sprite);
-    sprite->data[0] = 0;
-    sprite->data[1] = 0;
-    sprite->data[2] = 4;
-    sprite->data[3] = 16;
-    sprite->data[4] = -70;
-    sprite->data[5] = gBattleAnimArgs[2];
-    StoreSpriteCallbackInData6(sprite, AnimFallingRock_Step);
-    sprite->callback = TranslateSpriteInEllipse;
-    sprite->callback(sprite);
 }
 
 //Launches an object upwards like they were being shot from a geyser

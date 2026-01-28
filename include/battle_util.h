@@ -68,7 +68,7 @@ enum ItemEffectsBattle
     ITEMEFFECT_STATS_CHANGED,
 };
 
-#define WEATHER_HAS_EFFECT ((!EstaHabilidadEnCampo(ABILITY_CLOUD_NINE) && !EstaHabilidadEnCampo(ABILITY_AIR_LOCK)))
+#define WEATHER_HAS_EFFECT ((!EstaHabilidadEnCampo(ABILITY_SEPTIMO_CIELO)))
 
 #define IS_WHOLE_SIDE_ALIVE(battler)    ((IsBattlerAlive(battler) && IsBattlerAlive(ALIADO(battler))))
 #define IS_ALIVE_AND_PRESENT(battler)   (IsBattlerAlive(battler) && IsBattlerSpritePresent(battler))

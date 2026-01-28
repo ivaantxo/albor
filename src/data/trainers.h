@@ -26329,7 +26329,6 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 10843
-                MOVE_SPLASH,
                 MOVE_WATER_GUN,
             },
             },

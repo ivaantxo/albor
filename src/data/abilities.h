@@ -94,7 +94,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .breakable = TRUE,
     },
 
-    [ABILITY_CLOUD_NINE] =
+    [ABILITY_SEPTIMO_CIELO] =
     {
         .name = _("Cloud Nine"),
         .description = COMPOUND_STRING("Negates weather effects."),
@@ -519,13 +519,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .breakable = TRUE,
     },
 
-    [ABILITY_AIR_LOCK] =
-    {
-        .name = _("Air Lock"),
-        .description = COMPOUND_STRING("Negates weather effects."),
-        .aiRating = 5,
-    },
-
     [ABILITY_TANGLED_FEET] =
     {
         .name = _("Tangled Feet"),
@@ -795,14 +788,10 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .breakable = TRUE,
     },
 
-    [ABILITY_SNOW_WARNING] =
+    [ABILITY_NEVADA] =
     {
-        .name = _("Snow Warning"),
-    #if B_SNOW_WARNING >= GEN_9
+        .name = _("Nevada"),
         .description = COMPOUND_STRING("Summons snow in battle."),
-    #else
-        .description = COMPOUND_STRING("Summons hail in battle."),
-    #endif
         .aiRating = 8,
     },
 
@@ -979,13 +968,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Evita daño de aliado."),
         .aiRating = 0,
         .breakable = TRUE,
-    },
-
-    [ABILITY_MOODY] =
-    {
-        .name = _("Moody"),
-        .description = COMPOUND_STRING("Stats change gradually."),
-        .aiRating = 10,
     },
 
     [ABILITY_OVERCOAT] =
@@ -1293,27 +1275,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Parental Bond"),
         .description = COMPOUND_STRING("Moves hit twice."),
         .aiRating = 10,
-    },
-
-    [ABILITY_DARK_AURA] =
-    {
-        .name = _("Dark Aura"),
-        .description = COMPOUND_STRING("Boosts Dark moves."),
-        .aiRating = 6,
-    },
-
-    [ABILITY_FAIRY_AURA] =
-    {
-        .name = _("Fairy Aura"),
-        .description = COMPOUND_STRING("Boosts Fairy moves."),
-        .aiRating = 6,
-    },
-
-    [ABILITY_AURA_BREAK] =
-    {
-        .name = _("Aura Break"),
-        .description = COMPOUND_STRING("Reverse aura abilities."),
-        .aiRating = 3,
     },
 
     [ABILITY_STAMINA] =

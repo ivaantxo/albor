@@ -1124,7 +1124,7 @@ const struct ContestPokemon gContestOpponents[] =
         .aiPool_Tough = FALSE,
         .moves =
         {
-            MOVE_SPLASH,
+            MOVE_POUND,
             MOVE_CONFUSE_RAY,
             MOVE_SNORE,
             MOVE_REST
@@ -1829,7 +1829,7 @@ const struct ContestPokemon gContestOpponents[] =
             MOVE_WATER_PULSE,
             MOVE_REST,
             MOVE_WATER_SPOUT,
-            MOVE_SPLASH
+            MOVE_POUND
         },
         .cool = 30,
         .beauty = 100,
@@ -1854,7 +1854,7 @@ const struct ContestPokemon gContestOpponents[] =
         .moves =
         {
             MOVE_TACKLE,
-            MOVE_SPLASH,
+            MOVE_POUND,
             MOVE_FLAIL,
             MOVE_TACKLE
         },

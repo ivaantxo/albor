@@ -317,14 +317,8 @@ static const union AffineAnimCmd sSpriteAffineAnim_CrushGripHandEnemyAttack[] =
     AFFINEANIMCMD_FRAME(0, 0, 96, 1), //180 degree turn
     AFFINEANIMCMD_END
 };
-static const union AffineAnimCmd sSpriteAffineAnim_DoNothing[] =
-{
-    AFFINEANIMCMD_FRAME(0, 0, 0, 1), //Do nothing
-    AFFINEANIMCMD_END
-};
 static const union AffineAnimCmd* const sSpriteAffineAnimTable_CrushGripHand[] =
 {
-    sSpriteAffineAnim_DoNothing,
     sSpriteAffineAnim_CrushGripHandEnemyAttack,
 };
 const struct SpriteTemplate gCrushGripHandTemplate =

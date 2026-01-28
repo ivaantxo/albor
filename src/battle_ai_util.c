@@ -202,7 +202,7 @@ bool32 IsBattlerTrapped(u32 battler, bool32 checkSwitch)
 {
     u32 holdEffect = AI_DATA->holdEffects[battler];
 
-    if (B_GHOSTS_ESCAPE >= GEN_6 && ES_TIPO(battler, TIPO_FANTASMA))
+    if (ES_TIPO(battler, TIPO_FANTASMA))
         return FALSE;
     if (checkSwitch && holdEffect == HOLD_EFFECT_SHED_SHELL)
         return FALSE;

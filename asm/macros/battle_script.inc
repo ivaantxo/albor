@@ -1044,11 +1044,6 @@
 	.4byte \failInstr
 	.endm
 
-	.macro trysethelpinghand failInstr:req
-	.byte BATTLE_CMD_trysethelpinghand
-	.4byte \failInstr
-	.endm
-
 	.macro tryswapitems failInstr:req
 	.byte BATTLE_CMD_tryswapitems
 	.4byte \failInstr
@@ -2076,7 +2071,7 @@
 		.endif
 		.endif
 	.endif
-	waitmessage B_WAIT_TIME_LONG
+	waitmessage PAUSA_LARGA
 	.endm
 
 	@ Will jump to script pointer if the specified battler has or has not fainted.

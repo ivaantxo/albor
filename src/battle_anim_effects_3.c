@@ -76,8 +76,6 @@ static void AnimSmellingSaltsHand(struct Sprite *);
 static void AnimSmellingSaltsHand_Step(struct Sprite *);
 static void AnimSmellingSaltExclamation(struct Sprite *);
 static void AnimSmellingSaltExclamation_Step(struct Sprite *);
-static void AnimHelpingHandClap(struct Sprite *);
-static void AnimHelpingHandClap_Step(struct Sprite *);
 static void AnimForesightMagnifyingGlass(struct Sprite *);
 static void AnimForesightMagnifyingGlass_Step(struct Sprite *);
 static void AnimMeteorMashStar(struct Sprite *);
@@ -104,7 +102,6 @@ static void AnimTask_GlareEyeDots_Step(u8);
 static void GetGlareEyeDotCoords(s16, s16, s16, s16, u8, u8, s16 *, s16 *);
 static void AnimTask_BarrageBall_Step(u8);
 static void AnimTask_SmellingSaltsSquish_Step(u8);
-static void AnimTask_HelpingHandAttackerMovement_Step(u8);
 static void AnimTask_MonToSubstituteDoll(u8);
 static void AnimTask_OdorSleuthMovementWaitFinish(u8);
 static void MoveOdorSleuthClone(struct Sprite *);
@@ -1024,17 +1021,6 @@ const struct SpriteTemplate gSmellingSaltExclamationSpriteTemplate =
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = AnimSmellingSaltExclamation,
-};
-
-const struct SpriteTemplate gHelpingHandClapSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_TAG_HAND,
-    .paletteTag = ANIM_TAG_TAG_HAND,
-    .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimHelpingHandClap,
 };
 
 const struct SpriteTemplate gForesightMagnifyingGlassSpriteTemplate =
@@ -4232,219 +4218,6 @@ static void AnimSmellingSaltExclamation_Step(struct Sprite *sprite)
         sprite->invisible = sprite->data[2];
         if (sprite->data[2] && --sprite->data[3] == 0)
             DestroyAnimSprite(sprite);
-    }
-}
-
-// Claps a hand several times.
-// arg 0: which hand
-// arg 1:
-static void AnimHelpingHandClap(struct Sprite *sprite)
-{
-    if (gBattleAnimArgs[0] == 0)
-    {
-        sprite->oam.matrixNum |= ST_OAM_HFLIP;
-        sprite->x = 100;
-        sprite->data[7] = 1;
-    }
-    else
-    {
-        sprite->x = 140;
-        sprite->data[7] = -1;
-    }
-
-    sprite->y = 56;
-    sprite->callback = AnimHelpingHandClap_Step;
-}
-
-static void AnimHelpingHandClap_Step(struct Sprite *sprite)
-{
-    switch (sprite->data[0])
-    {
-    case 0:
-        sprite->y -= sprite->data[7] * 2;
-        if (sprite->data[1] & 1)
-            sprite->x -= sprite->data[7] * 2;
-
-        if (++sprite->data[1] == 9)
-        {
-            sprite->data[1] = 0;
-            sprite->data[0]++;
-        }
-        break;
-    case 1:
-        if (++sprite->data[1] == 4)
-        {
-            sprite->data[1] = 0;
-            sprite->data[0]++;
-        }
-        break;
-    case 2:
-        sprite->data[1]++;
-        sprite->y += sprite->data[7] * 3;
-        sprite->x2 = sprite->data[7] * (gSineTable[sprite->data[1] * 10] >> 3);
-        if (sprite->data[1] == 12)
-        {
-            sprite->data[1] = 0;
-            sprite->data[0]++;
-        }
-        break;
-    case 3:
-        if (++sprite->data[1] == 2)
-        {
-            sprite->data[1] = 0;
-            sprite->data[0]++;
-        }
-        break;
-    case 4:
-        sprite->data[1]++;
-        sprite->y -= sprite->data[7] * 3;
-        sprite->x2 = sprite->data[7] * (gSineTable[sprite->data[1] * 10] >> 3);
-        if (sprite->data[1] == 12)
-            sprite->data[0]++;
-        break;
-    case 5:
-        sprite->data[1]++;
-        sprite->y += sprite->data[7] * 3;
-        sprite->x2 = sprite->data[7] * (gSineTable[sprite->data[1] * 10] >> 3);
-        if (sprite->data[1] == 15)
-            sprite->oam.tileNum += 16;
-
-        if (sprite->data[1] == 18)
-        {
-            sprite->data[1] = 0;
-            sprite->data[0]++;
-        }
-        break;
-    case 6:
-        sprite->x += sprite->data[7] * 6;
-        if (++sprite->data[1] == 9)
-        {
-            sprite->data[1] = 0;
-            sprite->data[0]++;
-        }
-        break;
-    case 7:
-        sprite->x += sprite->data[7] * 2;
-        if (++sprite->data[1] == 1)
-        {
-            sprite->data[1] = 0;
-            sprite->data[0]++;
-        }
-        break;
-    case 8:
-        sprite->x -= sprite->data[7] * 3;
-        if (++sprite->data[1] == 5)
-            DestroyAnimSprite(sprite);
-        break;
-    }
-}
-
-// Repeatedly moves the attacking mon in a horizontal lunging motion.
-// No args.
-void AnimTask_HelpingHandAttackerMovement(u8 taskId)
-{
-    struct Task *task = &gTasks[taskId];
-
-    task->data[15] = GetAnimBattlerSpriteId(ANIM_ATTACKER);
-    if (EsContraEntrenador() == TRUE)
-    {
-        int attackerX = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_X);
-        int partnerX = GetBattlerSpriteCoord(ALIADO(gBattleAnimAttacker), BATTLER_COORD_X);
-        if (attackerX > partnerX)
-            task->data[14] = 1;
-        else
-            task->data[14] = -1;
-    }
-    else
-    {
-        if (GetBattlerSide(gBattleAnimAttacker) == LADO_JUGADOR)
-            task->data[14] = -1;
-        else
-            task->data[14] = 1;
-    }
-
-    task->func = AnimTask_HelpingHandAttackerMovement_Step;
-}
-
-static void AnimTask_HelpingHandAttackerMovement_Step(u8 taskId)
-{
-    struct Task *task = &gTasks[taskId];
-
-    switch (task->data[0])
-    {
-    case 0:
-        if (++task->data[1] == 13)
-        {
-            task->data[1] = 0;
-            task->data[0]++;
-        }
-        break;
-    case 1:
-        gSprites[task->data[15]].x2 -= task->data[14] * 3;
-        if (++task->data[1] == 6)
-        {
-            task->data[1] = 0;
-            task->data[0]++;
-        }
-        break;
-    case 2:
-        gSprites[task->data[15]].x2 += task->data[14] * 3;
-        if (++task->data[1] == 6)
-        {
-            task->data[1] = 0;
-            task->data[0]++;
-        }
-        break;
-    case 3:
-        if (++task->data[1] == 2)
-        {
-            task->data[1] = 0;
-            if (task->data[2] == 0)
-            {
-                task->data[2]++;
-                task->data[0] = 1;
-            }
-            else
-            {
-                task->data[0]++;
-            }
-        }
-        break;
-    case 4:
-        gSprites[task->data[15]].x2 += task->data[14];
-        if (++task->data[1] == 3)
-        {
-            task->data[1] = 0;
-            task->data[0]++;
-        }
-        break;
-    case 5:
-        if (++task->data[1] == 6)
-        {
-            task->data[1] = 0;
-            task->data[0]++;
-        }
-        break;
-    case 6:
-        gSprites[task->data[15]].x2 -= task->data[14] * 4;
-        if (++task->data[1] == 5)
-        {
-            task->data[1] = 0;
-            task->data[0]++;
-        }
-        break;
-    case 7:
-        gSprites[task->data[15]].x2 += task->data[14] * 4;
-        if (++task->data[1] == 5)
-        {
-            task->data[1] = 0;
-            task->data[0]++;
-        }
-        break;
-    case 8:
-        gSprites[task->data[15]].x2 = 0;
-        DestroyAnimVisualTask(taskId);
-        break;
     }
 }
 

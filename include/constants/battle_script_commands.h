@@ -8,8 +8,7 @@
 #define sB_ANIM_ARG2                 (sB_ANIM_ARG1 + 1)                 // animArg2 (u8) -> 1 byte
 #define sSAVED_STRING_ID             (sB_ANIM_ARG2 + 1)                 // savedStringId (u16) -> 2 bytes
 #define sMOVEEND_STATE               (sSAVED_STRING_ID + 2)             // moveendState (u8) -> 1 byte
-#define sSAVED_STAT_CHANGER          (sMOVEEND_STATE + 1)               // savedStatChanger (u8) -> 1 byte
-#define sSHIFT_SWITCHED              (sSAVED_STAT_CHANGER + 1)          // shiftSwitched (u8) -> 1 byte
+#define sSHIFT_SWITCHED              (sMOVEEND_STATE + 1)               // shiftSwitched (u8) -> 1 byte
 #define sBATTLER                     (sSHIFT_SWITCHED + 1)              // battler (u8) -> 1 byte
 #define sB_ANIM_TURN                 (sBATTLER + 1)                     // animTurn (u8) -> 1 byte
 #define sB_ANIM_TARGETS_HIT          (sB_ANIM_TURN + 1)                 // animTargetsHit (u8) -> 1 byte
@@ -452,7 +451,6 @@ enum BattleScriptCommands
     BATTLE_CMD_settorment,
     BATTLE_CMD_jumpifnodamage,
     BATTLE_CMD_settaunt,
-    BATTLE_CMD_trysethelpinghand,
     BATTLE_CMD_tryswapitems,
     BATTLE_CMD_trycopyability,
     BATTLE_CMD_trywish,

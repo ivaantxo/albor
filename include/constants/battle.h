@@ -313,7 +313,6 @@ enum ResultadosCombate
 #define MOVE_EFFECT_FEINT               60
 #define MOVE_EFFECT_SPECTRAL_THIEF      61
 #define MOVE_EFFECT_V_CREATE            62
-#define MOVE_EFFECT_HAPPY_HOUR          63
 #define MOVE_EFFECT_THROAT_CHOP         65
 #define MOVE_EFFECT_INCINERATE          66
 #define MOVE_EFFECT_BUG_BITE            67
@@ -367,10 +366,10 @@ enum EfectosMovimientos
 
 #define BATTLE_TERRAIN_COUNT            22
 
-#define B_WAIT_TIME_LONG        (B_WAIT_TIME_MULTIPLIER * 4)
-#define B_WAIT_TIME_MED         (B_WAIT_TIME_MULTIPLIER * 3)
-#define B_WAIT_TIME_SHORT       (B_WAIT_TIME_MULTIPLIER * 2)
-#define B_WAIT_TIME_SHORTEST    (B_WAIT_TIME_MULTIPLIER)
+#define PAUSA_LARGA         (PAUSA_MUY_CORTA * 4)
+#define PAUSA_MEDIA         (PAUSA_MUY_CORTA * 3)
+#define PAUSA_CORTA         (PAUSA_MUY_CORTA * 2)
+#define PAUSA_MUY_CORTA     10
 
 // Window Ids for sBattleWindowTemplates
 #define B_WIN_MSG                 0
@@ -395,9 +394,6 @@ enum EfectosMovimientos
 #define B_WIN_VS_OUTCOME_LEFT     19
 #define B_WIN_VS_OUTCOME_RIGHT    20
 #define B_WIN_MOVE_DESCRIPTION    21
-
-// Flag for BattlePutTextOnWindow. Never set
-#define B_WIN_COPYTOVRAM (1 << 7)
 
 // Indicator for the party summary bar to display an empty slot.
 #define HP_EMPTY_SLOT 0xFFFF

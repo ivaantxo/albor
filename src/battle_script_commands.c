@@ -522,7 +522,6 @@ static void Cmd_cureifburnedparalysedorpoisoned(void);
 static void Cmd_settorment(void);
 static void Cmd_jumpifnodamage(void);
 static void Cmd_settaunt(void);
-static void Cmd_trysethelpinghand(void);
 static void Cmd_tryswapitems(void);
 static void Cmd_trycopyability(void);
 static void Cmd_trywish(void);
@@ -759,7 +758,6 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     BATTLE_CMD(settorment),
     BATTLE_CMD(jumpifnodamage),
     BATTLE_CMD(settaunt),
-    BATTLE_CMD(trysethelpinghand),
     BATTLE_CMD(tryswapitems),
     BATTLE_CMD(trycopyability),
     BATTLE_CMD(trywish),
@@ -2752,8 +2750,6 @@ void SetMoveEffect(bool32 primary, bool32 certain)
                 {
                     gBattlescriptCurrInstr++;
                 }
-                break;
-            case MOVE_EFFECT_HAPPY_HOUR:
                 break;
             case MOVE_EFFECT_CHARGING:
                 gBattleMons[gEffectBattler].status2 |= STATUS2_MULTIPLETURNS;
@@ -11419,26 +11415,6 @@ static void Cmd_settaunt(void)
         }
 
         gDisableStructs[gBattlerTarget].tauntTimer = turns;
-        gBattlescriptCurrInstr = cmd->nextInstr;
-    }
-    else
-    {
-        gBattlescriptCurrInstr = cmd->failInstr;
-    }
-}
-
-static void Cmd_trysethelpinghand(void)
-{
-    CMD_ARGS(const u8 *failInstr);
-
-    gBattlerTarget = ALIADO(gBattlerAttacker);
-
-    if (EsContraEntrenador()
-        && !(gAbsentBattlerFlags & (1u << gBattlerTarget))
-        && !gProtectStructs[gBattlerAttacker].helpingHand
-        && !gProtectStructs[gBattlerTarget].helpingHand)
-    {
-        gProtectStructs[gBattlerTarget].helpingHand = TRUE;
         gBattlescriptCurrInstr = cmd->nextInstr;
     }
     else

@@ -329,12 +329,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_DO_NOTHING] =
-    {
-        .battleScript = BattleScript_EffectDoNothing,
-        .encourageEncore = TRUE,
-    },
-
     [EFFECT_DISABLE] =
     {
         .battleScript = BattleScript_EffectDisable,
@@ -734,11 +728,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_TAUNT] =
     {
         .battleScript = BattleScript_EffectTaunt,
-    },
-
-    [EFFECT_HELPING_HAND] =
-    {
-        .battleScript = BattleScript_EffectHelpingHand,
     },
 
     [EFFECT_TRICK] =
