@@ -2657,10 +2657,6 @@ void SetMoveEffect(bool32 primary, bool32 certain)
                 gBattleStruct->synchronizeMoveEffect = gBattleScripting.moveEffect;
                 gHitMarker |= HITMARKER_SYNCHRONISE_EFFECT;
              }
-
-            if (gBattleScripting.moveEffect == MOVE_EFFECT_POISON || gBattleScripting.moveEffect == MOVE_EFFECT_TOXIC)
-                gBattleStruct->poisonPuppeteerConfusion = TRUE;
-
             return;
         }
         else if (statusChanged == FALSE)
@@ -2762,12 +2758,6 @@ void SetMoveEffect(bool32 primary, bool32 certain)
                 }
                 break;
             case MOVE_EFFECT_HAPPY_HOUR:
-                if (GetBattlerSide(gBattlerAttacker) == LADO_JUGADOR && !gBattleStruct->moneyMultiplierMove)
-                {
-                    gBattleStruct->moneyMultiplier *= 2;
-                    gBattleStruct->moneyMultiplierMove = 1;
-                }
-                gBattlescriptCurrInstr++;
                 break;
             case MOVE_EFFECT_CHARGING:
                 gBattleMons[gEffectBattler].status2 |= STATUS2_MULTIPLETURNS;
@@ -3649,12 +3639,10 @@ static void Cmd_getexp(void)
                 if (!(EsContraEntrenador())
                     && (gBattleMons[0].hp || (EsContraEntrenador() && gBattleMons[2].hp))
                     && !IsBattlerAlive(OPONENTE_IZQUIERDA)
-                    && !IsBattlerAlive(OPONENTE_DERECHA)
-                    && !gBattleStruct->wildVictorySong)
+                    && !IsBattlerAlive(OPONENTE_DERECHA))
                 {
                     BattleStopLowHpSound();
                     PlayBGM(MUS_VICTORY_WILD);
-                    gBattleStruct->wildVictorySong++;
                 }
 
                 if (IsValidForBattle(&gPlayerParty[*expMonId]))
@@ -3784,7 +3772,6 @@ static void Cmd_getexp(void)
         {
             // not sure why gf clears the item and ability here
             gBattleStruct->expOrderId = 0;
-            gBattleStruct->teamGotExpMsgPrinted = FALSE;
             gBattleMons[gBattlerFainted].item = ITEM_NONE;
             gBattleMons[gBattlerFainted].ability = ABILITY_NONE;
             gBattlescriptCurrInstr = cmd->nextInstr;
@@ -4293,9 +4280,6 @@ static void Cmd_setroost(void)
     CMD_ARGS();
 
     gBattleResources->flags->flags[gBattlerAttacker] |= RESOURCE_FLAG_ROOST;
-    gBattleStruct->roostTypes[gBattlerAttacker][0] = gBattleMons[gBattlerAttacker].types[0];
-    gBattleStruct->roostTypes[gBattlerAttacker][1] = gBattleMons[gBattlerAttacker].types[1];
-
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
@@ -5416,7 +5400,6 @@ static void Cmd_moveend(void)
 
             gBattleStruct->targetsDone[gBattlerAttacker] = 0;
             gProtectStructs[gBattlerAttacker].targetAffected = FALSE;
-            gBattleStruct->ateBoost[gBattlerAttacker] = FALSE;
             gSpecialStatuses[gBattlerAttacker].gemBoost = FALSE;
             gSpecialStatuses[gBattlerAttacker].damagedMons = 0;
             gSpecialStatuses[gBattlerAttacker].preventLifeOrbDamage = 0;
@@ -5430,7 +5413,6 @@ static void Cmd_moveend(void)
             gBattleStruct->snatchedMoveIsUsed = FALSE;
             gBattleStruct->enduredDamage = 0;
             gBattleStruct->additionalEffectsCounter = 0;
-            gBattleStruct->poisonPuppeteerConfusion = FALSE;
             gBattleStruct->usedMicleBerry &= ~(1u << gBattlerAttacker);
             if (B_CHARGE <= GEN_8 || moveType == TIPO_ELECTRICO)
                 gStatuses3[gBattlerAttacker] &= ~(STATUS3_CHARGED_UP);
@@ -7729,12 +7711,6 @@ static void Cmd_various(void)
     {
         VARIOUS_ARGS();
         m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, VOLUMEN_MAXIMO);
-        break;
-    }
-    case VARIOUS_SET_ALREADY_STATUS_MOVE_ATTEMPT:
-    {
-        VARIOUS_ARGS();
-        gBattleStruct->alreadyStatusedMoveAttempt |= 1u << battler;
         break;
     }
     case VARIOUS_SET_TELEPORT_OUTCOME:

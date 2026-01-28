@@ -2088,7 +2088,6 @@ BattleScript_InsomniaProtects:
 	goto BattleScript_MoveEnd
 
 BattleScript_AlreadyAsleep::
-	setalreadystatusedmoveattempt BS_ATTACKER
 	pause B_WAIT_TIME_SHORT
 	printstring ("¡{B_DEF_NAME_WITH_PREFIX} ya está durmiendo!")
 	waitmessage B_WAIT_TIME_LONG
@@ -2430,7 +2429,6 @@ BattleScript_EffectToxic::
 	goto BattleScript_MoveEnd
 
 BattleScript_AlreadyPoisoned::
-	setalreadystatusedmoveattempt BS_ATTACKER
 	pause B_WAIT_TIME_LONG
 	printstring ("{B_DEF_NAME_WITH_PREFIX} ya está envenenado.")
 	waitmessage B_WAIT_TIME_LONG
@@ -2484,7 +2482,6 @@ BattleScript_RestCantSleep::
 	goto BattleScript_MoveEnd
 
 BattleScript_RestIsAlreadyAsleep::
-	setalreadystatusedmoveattempt BS_ATTACKER
 	pause B_WAIT_TIME_SHORT
 	printstring ("¡{B_ATK_NAME_WITH_PREFIX} ya está durmiendo!")
 	waitmessage B_WAIT_TIME_LONG
@@ -2592,7 +2589,6 @@ BattleScript_EffectConfuse::
 	goto BattleScript_MoveEnd
 
 BattleScript_AlreadyConfused::
-	setalreadystatusedmoveattempt BS_ATTACKER
 	pause B_WAIT_TIME_SHORT
 	printstring ("{B_DEF_NAME_WITH_PREFIX} is already confused!")
 	waitmessage B_WAIT_TIME_LONG
@@ -2738,7 +2734,6 @@ BattleScript_VoltAbsorbHeal:
 	goto BattleScript_MoveHPDrain
 
 BattleScript_AlreadyParalyzed:
-	setalreadystatusedmoveattempt BS_ATTACKER
 	pause B_WAIT_TIME_SHORT
 	printstring ("{B_DEF_NAME_WITH_PREFIX} is already paralyzed!")
 	waitmessage B_WAIT_TIME_LONG
@@ -2858,7 +2853,6 @@ BattleScript_SubstituteString::
 	waitmessage B_WAIT_TIME_LONG
 	goto BattleScript_MoveEnd
 BattleScript_AlreadyHasSubstitute::
-	setalreadystatusedmoveattempt BS_ATTACKER
 	pause B_WAIT_TIME_SHORT
 	printstring STRINGID_PKMNHASSUBSTITUTE
 	waitmessage B_WAIT_TIME_LONG
@@ -3817,7 +3811,6 @@ BattleScript_AbilityPreventsBurn::
 	goto BattleScript_MoveEnd
 
 BattleScript_AlreadyBurned::
-	setalreadystatusedmoveattempt BS_ATTACKER
 	pause B_WAIT_TIME_SHORT
 	printstring STRINGID_PKMNALREADYHASBURN
 	waitmessage B_WAIT_TIME_LONG

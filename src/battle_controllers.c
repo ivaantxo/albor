@@ -378,16 +378,6 @@ void BtlController_EmitChooseMove(u32 battler, u32 bufferId, bool8 isDoubleBattl
     PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, sizeof(*movePpData) + 4);
 }
 
-void BtlController_EmitChooseItem(u32 battler, u32 bufferId, u8 *battlePartyOrder)
-{
-    s32 i;
-
-    gBattleResources->transferBuffer[0] = CONTROLLER_OPENBAG;
-    for (i = 0; i < PARTY_SIZE / 2; i++)
-        gBattleResources->transferBuffer[1 + i] = battlePartyOrder[i];
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
-}
-
 void BtlController_EmitChoosePokemon(u32 battler, u32 bufferId, u8 caseId, u8 slotId, u16 abilityId, u8 *data)
 {
     s32 i;

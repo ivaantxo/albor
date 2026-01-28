@@ -1958,16 +1958,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .breakable = TRUE,
     },
 
-    [ABILITY_POISON_PUPPETEER] =
-    {
-        .name = _("Poison Puppeteer"),
-        .description = COMPOUND_STRING("Confuses poisoned foes."),
-        .aiRating = 8,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-    },
-
     [ABILITY_OLOR_FLUVIAL] =
     {
         .name = _("Olor fluvial"),

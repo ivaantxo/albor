@@ -1493,10 +1493,6 @@
 	various BS_ATTACKER, VARIOUS_VOLUME_UP
 	.endm
 
-	.macro setalreadystatusedmoveattempt battler:req
-	various \battler, VARIOUS_SET_ALREADY_STATUS_MOVE_ATTEMPT
-	.endm
-
 	.macro setoutcomeonteleport battler:req
 	various \battler, VARIOUS_SET_TELEPORT_OUTCOME
 	.endm

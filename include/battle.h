@@ -455,23 +455,19 @@ struct BattleStruct
     u8 turnCountersTracker;
     u16 wrappedMove[NUMERO_COMBATIENTES];
     u16 moveTarget[NUMERO_COMBATIENTES];
-    u32 expShareExpValue;
     u32 expValue;
     u8 expGettersOrder[PARTY_SIZE]; // First battlers which were sent out, then via exp-share
     u8 expGetterMonId;
     u8 expOrderId:3;
     u8 expGetterBattlerId:2;
-    u8 teamGotExpMsgPrinted:1; // The 'Rest of your team got msg' has been printed.
     u8 givenExpMons; // Bits for enemy party's pokemon that gave exp to player's party.
     u8 expSentInMons; // As bits for player party mons - not including exp share mons.
-    u8 wildVictorySong;
     u8 dynamicMoveType;
     u8 wrappedBy[NUMERO_COMBATIENTES];
     u8 focusPunchBattlers; // as bits
     u8 battlerPreventingSwitchout;
     u8 moneyMultiplier:6;
     u8 moneyMultiplierItem:1;
-    u8 moneyMultiplierMove:1;
     u8 savedTurnActionNumber;
     u8 eventsBeforeFirstTurnState;
     u8 faintedActionsState;
@@ -482,15 +478,13 @@ struct BattleStruct
     u8 monToSwitchIntoId[NUMERO_COMBATIENTES];
     u8 battlerPartyOrders[NUMERO_COMBATIENTES][PARTY_SIZE / 2];
     u8 caughtMonNick[POKEMON_NAME_LENGTH + 1];
-    u8 formToChangeInto;
     u8 chosenMovePositions[NUMERO_COMBATIENTES];
     u8 stateIdAfterSelScript[NUMERO_COMBATIENTES];
     u8 prevSelectedPartySlot;
-    u8 stringMoveType;
     u8 absentBattlerFlags;
-    u16 lastTakenMove[NUMERO_COMBATIENTES]; // Last move that a battler was hit with.
+    u16 lastTakenMove[NUMERO_COMBATIENTES]; // Probablemente estos no se lean
+    u16 lastTakenMoveFrom[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES];
     u16 hpOnSwitchout[NUMERO_LADOS];
-    u32 savedBattleTypeFlags;
     u16 abilityPreventingSwitchout;
     u8 hpScale;
     u16 synchronizeMoveEffect;
@@ -498,36 +492,30 @@ struct BattleStruct
     u8 multipleSwitchInState:2;
     u8 multipleSwitchInCursor:3;
     u8 multipleSwitchInSortedBattlers[NUMERO_COMBATIENTES];
-    void (*savedCallback)(void);
     u16 usedHeldItems[PARTY_SIZE][NUMERO_LADOS]; // For each party member and side. For harvest, recycle
-    u16 chosenItem[NUMERO_COMBATIENTES];
     u16 choicedMove[NUMERO_COMBATIENTES];
     u16 changedItems[NUMERO_COMBATIENTES];
     u8 switchInBattlerCounter;
     u8 turnSideTracker;
-    u16 lastTakenMoveFrom[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES]; // a 2-D array [target][attacker]
     u8 wishPerishSongState;
     u8 wishPerishSongBattlerId;
     u8 overworldWeatherDone:1;
     u8 isAtkCancelerForCalledMove:1; // Certain cases in atk canceler should only be checked once, when the original move is called, however others need to be checked the twice.
-    u8 friskedAbility:1; // If identifies two mons, show the ability pop-up only once.
-    u8 poisonPuppeteerConfusion:1;
+    bool32 friskedAbility; // Revisar, para que muestre habilidad y objeto
+    u32 friskedBattler;
     u8 atkCancellerTracker;
     u8 AI_monToSwitchIntoId[NUMERO_COMBATIENTES];
-    u8 alreadyStatusedMoveAttempt; // As bits for battlers; For example when using Thunder Wave on an already paralyzed Pokémon.
     u8 debugBattler;
     u8 magnitudeBasePower;
     u8 presentBasePower;
-    u8 roostTypes[NUMERO_COMBATIENTES][2];
     u8 savedBattlerTarget[5];
     u8 savedBattlerAttacker[5];
     u8 savedTargetCount:4;
     u8 savedAttackerCount:4;
-    bool8 ateBoost[NUMERO_COMBATIENTES];
     u8 activeAbilityPopUps; // as bits for each battler
     u8 abilityPopUpSpriteIds[NUMERO_COMBATIENTES][2];    // two per battler
     const u8 *trainerSlideMsg;
-    enum EstadosIntroBatalla estadoIntro;
+    enum EstadosIntroBatalla estadoIntro; // por aquí
     u8 ateBerry[2]; // array id determined by side, each party pokemon as bit
     u8 stolenStats[NUMERO_ESTADISTICAS_BATALLA]; // hp byte is used for which stats to raise, other inform about by how many stages
     u8 lastMoveFailed; // as bits for each battler, for the sake of Stomping Tantrum
@@ -539,7 +527,6 @@ struct BattleStruct
     u8 IA_Eleccion[NUMERO_COMBATIENTES];
     u8 aiChosenTarget[NUMERO_COMBATIENTES];
     u8 soulheartBattlerId;
-    u8 friskedBattler; // Frisk needs to identify 2 battlers in double battles.
     u8 sameMoveTurns[NUMERO_COMBATIENTES]; // For ECHOED VOICE, number of times the same moves has been SUCCESFULLY used.
     u16 moveEffect2; // For Knock Off
     u16 changedSpecies[NUMERO_LADOS][PARTY_SIZE]; // For forms when multiple mons can change into the same pokemon.
@@ -551,7 +538,6 @@ struct BattleStruct
     u8 swapDamageCategory:1; // Photon Geyser, Shell Side Arm, Light That Burns the Sky
     u8 bouncedMoveIsUsed:1;
     u8 snatchedMoveIsUsed:1;
-    u8 descriptionSubmenu:1; // For Move Description window in move selection screen
     u8 ackBallUseBtn:1; // Used for the last used ball feature
     u8 ballSwapped:1; // Used for the last used ball feature
     u8 throwingPokeBall:1;
@@ -577,7 +563,6 @@ struct BattleStruct
     u8 trainerSlideHalfHpMsgDone:1;
     u8 trainerSlideBeforeFirstTurnMsgDone:1;
     u8 trainerSlideLowHpMsgDone:1;
-    u32 aiDelayFrames; // Number of frames it took to choose an action.
     u8 timesGotHit[NUMERO_LADOS][PARTY_SIZE];
     u8 enduredDamage;
     u8 quickClawRandom[NUMERO_COMBATIENTES];
@@ -594,7 +579,6 @@ struct BattleStruct
 };
 
 #define DYNAMIC_TYPE_MASK                 ((1 << 6) - 1)
-#define F_DYNAMIC_TYPE_IGNORE_PHYSICALITY  (1 << 6) // If set, the dynamic type's physicality won't be used for certain move effects.
 
 #define ES_MOVIMIENTO_FISICO(movimiento)      (CategoriaMovimiento(movimiento) == CATEGORIA_FISICA)
 #define ES_MOVIMIENTO_ESPECIAL(movimiento)    (CategoriaMovimiento(movimiento) == CATEGORIA_ESPECIAL)

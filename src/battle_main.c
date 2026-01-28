@@ -1149,7 +1149,6 @@ static void BattleStartClearSetData(void)
     gIntroSlideFlags = 0;
     gLeveledUpInBattle = 0;
     gAbsentBattlerFlags = 0;
-    gBattleStruct->wildVictorySong = 0;
     gBattleStruct->moneyMultiplier = 1;
 
     gBattleStruct->givenExpMons = 0;
@@ -2647,7 +2646,6 @@ static void CheckChangingTurnOrderEffects(void)
     gBattleStruct->focusPunchBattlers = 0;
     for (i = 0; i < NUMERO_COMBATIENTES; i++)
     {
-        gBattleStruct->ateBoost[i] = FALSE;
         gSpecialStatuses[i].gemBoost = FALSE;
     }
 
@@ -2961,7 +2959,6 @@ void SetTypeBeforeUsingMove(u32 move, u32 battler)
     u32 holdEffect = GetBattlerHoldEffect(battler, TRUE);
 
     gBattleStruct->dynamicMoveType = 0;
-    gBattleStruct->ateBoost[battler] = FALSE;
     gSpecialStatuses[battler].gemBoost = FALSE;
 
     moveType = MovimientoTipoDinamico(&GetBattlerParty(battler)[gBattlerPartyIndexes[battler]],
