@@ -128,7 +128,6 @@ extern const u8 gText_StoreChosenDecorInPC[];
 extern const u8 gText_ThrowAwayUnwantedDecors[];
 extern const u8 gText_Doll[];
 extern const u8 gText_Cushion[];
-extern const u8 gText_Decorate[];
 extern const u8 gText_PutAway[];
 extern const u8 gText_Toss2[];
 extern const u8 gText_Hoenn[];

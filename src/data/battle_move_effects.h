@@ -1238,11 +1238,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectRototiller,
     },
 
-    [EFFECT_FLOWER_SHIELD] =
-    {
-        .battleScript = BattleScript_EffectFlowerShield,
-    },
-
     [EFFECT_SPEED_SWAP] =
     {
         .battleScript = BattleScript_EffectSpeedSwap,
@@ -1396,12 +1391,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_GRASSY_GLIDE] =
     {
         .battleScript = BattleScript_EffectHit,
-    },
-
-    [EFFECT_DECORATE] =
-    {
-        .battleScript = BattleScript_EffectDecorate,
-        .encourageEncore = TRUE,
     },
 
     [EFFECT_SNIPE_SHOT] =

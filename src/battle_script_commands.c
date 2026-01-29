@@ -3072,13 +3072,6 @@ void SetMoveEffect(bool32 primary, bool32 certain)
                     }
                 }
                 break;
-            case MOVE_EFFECT_V_CREATE:
-                if (!NoAliveMonsForEitherParty())
-                {
-                    BattleScriptPush(gBattlescriptCurrInstr + 1);
-                    gBattlescriptCurrInstr = BattleScript_VCreateStatLoss;
-                }
-                break;
             case MOVE_EFFECT_THROAT_CHOP:
                 gDisableStructs[gEffectBattler].throatChopTimer = 2;
                 gBattlescriptCurrInstr++;
@@ -4440,11 +4433,9 @@ static void Cmd_playstatchangeanimation(void)
                 else if (!gSideTimers[GetBattlerSide(battler)].mistTimer
                         && GetBattlerHoldEffect(battler, TRUE) != HOLD_EFFECT_CLEAR_AMULET
                         && ability != ABILITY_CLEAR_BODY
-                        && ability != ABILITY_FULL_METAL_BODY
                         && ability != ABILITY_WHITE_SMOKE
                         && !((ability == ABILITY_MINDS_EYE) && currStat == ESTADISTICA_PRECISION)
-                        && !(ability == ABILITY_HYPER_CUTTER && currStat == ESTADISTICA_ATAQUE)
-                        && !(ability == ABILITY_BIG_PECKS && currStat == ESTADISTICA_DEFENSA))
+                        && !(ability == ABILITY_HYPER_CUTTER && currStat == ESTADISTICA_ATAQUE))
                 {
                     if (gBattleMons[battler].statStages[currStat] > ESTADISTICA_MENOS_6)
                     {
@@ -6613,26 +6604,6 @@ static void Cmd_setgravity(void)
     }
 }
 
-static bool32 TryCheekPouch(u32 battler, u32 itemId)
-{
-    if (ItemId_GetPocket(itemId) == POCKET_BERRIES
-        && GetBattlerAbility(battler) == ABILITY_CHEEK_POUCH
-        && !(gStatuses3[battler] & STATUS3_HEAL_BLOCK)
-        && gBattleStruct->ateBerry[GetBattlerSide(battler)] & (1u << gBattlerPartyIndexes[battler])
-        && !IsBattlerAtMaxHp(battler))
-    {
-        gBattleMoveDamage = CuantosPSMaximos(battler) / 3;
-        if (gBattleMoveDamage == 0)
-            gBattleMoveDamage = 1;
-        gBattleMoveDamage *= -1;
-        gBattlerAbility = battler;
-        BattleScriptPush(gBattlescriptCurrInstr + 2);
-        gBattlescriptCurrInstr = BattleScript_CheekPouchActivates;
-        return TRUE;
-    }
-    return FALSE;
-}
-
 // Used by Bestow and Symbiosis to take an item from one battler and give to another.
 static void BestowItem(u32 battlerAtk, u32 battlerDef)
 {
@@ -6701,7 +6672,7 @@ static void Cmd_removeitem(void)
     MarcaCombatienteOcupado(battler);
 
     ClearBattlerItemEffectHistory(battler);
-    if (!TryCheekPouch(battler, itemId) && !TrySymbiosis(battler, itemId))
+    if (!TrySymbiosis(battler, itemId))
         gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
@@ -7216,28 +7187,6 @@ static bool32 TryDefogClear(u32 battlerAtk, bool32 clear)
     return FALSE;
 }
 
-u32 IsFlowerVeilProtected(u32 battler)
-{
-    if (IsBattlerWeatherAffected(battler, B_WEATHER_SUN))
-        return EstaHabilidadEnElLadoDeCombatiente(battler, ABILITY_FLOWER_VEIL);
-    else
-        return 0;
-}
-
-u32 IsLeafGuardProtected(u32 battler)
-{
-    if (IsBattlerWeatherAffected(battler, B_WEATHER_SUN))
-        return GetBattlerAbility(battler) == ABILITY_LEAF_GUARD;
-    else
-        return 0;
-}
-
-u32 IsAbilityStatusProtected(u32 battler)
-{
-    return IsFlowerVeilProtected(battler)
-        || IsLeafGuardProtected(battler);
-}
-
 u32 GetHighestStatId(u32 battler)
 {
     u32 i, highestId = ESTADISTICA_ATAQUE, highestStat = gBattleMons[battler].attack;
@@ -7347,12 +7296,6 @@ static void Cmd_various(void)
             gBattlescriptCurrInstr = cmd->jumpInstr;
         else
             gBattlescriptCurrInstr = cmd->nextInstr;
-        return;
-    }
-    case VARIOUS_JUMP_IF_SHIELDS_DOWN_PROTECTED:
-    {
-        VARIOUS_ARGS(const u8 *jumpInstr);
-        gBattlescriptCurrInstr = cmd->nextInstr;
         return;
     }
     case VARIOUS_JUMP_IF_HOLD_EFFECT:
@@ -8452,13 +8395,10 @@ static void Cmd_various(void)
         }
         else
         {
-            gBattlescriptCurrInstr = cmd->jumpInstr;   // Unaffected by rototiller - print STRINGID_NOEFFECTONTARGET
+            gBattlescriptCurrInstr = cmd->jumpInstr;   // Unaffected by rototiller
         }
         return;
     }
-    // TODO: Convert this to a proper FORM_CHANGE type.
-    case VARIOUS_TRY_ACTIVATE_BATTLE_BOND:
-        break;
     case VARIOUS_CONSUME_BERRY:
     {
         VARIOUS_ARGS(bool8 fromBattler);
@@ -8495,34 +8435,6 @@ static void Cmd_various(void)
             gBattlescriptCurrInstr = cmd->jumpInstr;
         else
             gBattlescriptCurrInstr = cmd->nextInstr;
-        return;
-    }
-    case VARIOUS_JUMP_IF_LEAF_GUARD_PROTECTED:
-    {
-        VARIOUS_ARGS(const u8 *jumpInstr);
-        if (IsLeafGuardProtected(battler))
-        {
-            gBattlerAbility = battler;
-            gBattlescriptCurrInstr = cmd->jumpInstr;
-        }
-        else
-        {
-            gBattlescriptCurrInstr = cmd->nextInstr;
-        }
-        return;
-    }
-    case VARIOUS_JUMP_IF_FLOWER_VEIL_PROTECTED:
-    {
-        VARIOUS_ARGS(const u8 *jumpInstr);
-        if (IsFlowerVeilProtected(battler))
-        {
-            gBattlerAbility = battler;
-            gBattlescriptCurrInstr = cmd->jumpInstr;
-        }
-        else
-        {
-            gBattlescriptCurrInstr = cmd->nextInstr;
-        }
         return;
     }
     case VARIOUS_SET_ATTACKER_STICKY_WEB_USER:
@@ -9440,30 +9352,9 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
             }
             return STAT_CHANGE_DIDNT_WORK;
         }
-        else if ((index = IsFlowerVeilProtected(battler)) && !certain)
-        {
-            if (flags == STAT_CHANGE_ALLOW_PTR)
-            {
-                if (gSpecialStatuses[battler].statLowered)
-                {
-                    gBattlescriptCurrInstr = BS_ptr;
-                }
-                else
-                {
-                    BattleScriptPush(BS_ptr);
-                    gBattleScripting.battler = battler;
-                    gBattlerAbility = index - 1;
-                    gBattlescriptCurrInstr = BattleScript_FlowerVeilProtectsRet;
-                    gLastUsedAbility = ABILITY_FLOWER_VEIL;
-                    gSpecialStatuses[battler].statLowered = TRUE;
-                }
-            }
-            return STAT_CHANGE_DIDNT_WORK;
-        }
         else if (!certain
                 && (((battlerAbility == ABILITY_MINDS_EYE) && statId == ESTADISTICA_PRECISION)
-                || (battlerAbility == ABILITY_HYPER_CUTTER && statId == ESTADISTICA_ATAQUE)
-                || (battlerAbility == ABILITY_BIG_PECKS && statId == ESTADISTICA_DEFENSA)))
+                || (battlerAbility == ABILITY_HYPER_CUTTER && statId == ESTADISTICA_ATAQUE)))
         {
             if (flags == STAT_CHANGE_ALLOW_PTR)
             {
@@ -12704,7 +12595,6 @@ static bool8 CanAbilityPreventStatLoss(u16 abilityDef)
     switch (abilityDef)
     {
     case ABILITY_CLEAR_BODY:
-    case ABILITY_FULL_METAL_BODY:
     case ABILITY_WHITE_SMOKE:
         return TRUE;
     }

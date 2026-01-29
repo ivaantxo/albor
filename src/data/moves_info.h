@@ -10797,28 +10797,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_IcicleCrash,
     },
 
-    [MOVE_V_CREATE] =
-    {
-        .name = COMPOUND_STRING("V de fuego"),
-        .description = COMPOUND_STRING(
-            "Very powerful, but lowers\n"
-            "Defense, Sp. Def and Speed."),
-        .effect = EFFECT_HIT,
-        .power = 180,
-        .type = TIPO_FUEGO,
-        .accuracy = 95,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_V_CREATE,
-            .self = TRUE,
-        }),
-        .battleAnimScript = gBattleAnimMove_VCreate,
-    },
-
     [MOVE_FUSION_FLARE] =
     {
         .name = COMPOUND_STRING("Llama fusión"),
@@ -11212,25 +11190,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_CraftyShield,
-    },
-
-    [MOVE_FLOWER_SHIELD] =
-    {
-        .name = COMPOUND_STRING("Flower Shield"),
-        .description = COMPOUND_STRING(
-            "Raises the Defense of\n"
-            "Grass-type Pokémon."),
-        .effect = EFFECT_FLOWER_SHIELD,
-        .power = 0,
-        .type = TIPO_HADA,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_ALL_BATTLERS,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_FlowerShield,
     },
 
     [MOVE_PLAY_ROUGH] =
@@ -13182,25 +13141,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .battleAnimScript = gBattleAnimMove_BodyPress,
-    },
-
-    [MOVE_DECORATE] =
-    {
-        .name = COMPOUND_STRING("Decorate"),
-        .description = COMPOUND_STRING(
-            "The user sharply raises\n"
-            "the target's Atk and Sp.Atk."),
-        .effect = EFFECT_DECORATE,
-        .power = 0,
-        .type = TIPO_HADA,
-        .accuracy = 0,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Decorate,
     },
 
     [MOVE_DRUM_BEATING] =

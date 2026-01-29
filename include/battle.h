@@ -552,7 +552,6 @@ struct BattleStruct
     u8 quickDrawRandom[NUMERO_COMBATIENTES];
     u8 shellSideArmCategory[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES];
     u8 speedTieBreaks; // NUMERO_COMBATIENTES! values.
-    u8 boosterEnergyActivates;
     u8 usedEjectItem;
     u8 usedMicleBerry;
     u32 posicionPokemonEquipo;

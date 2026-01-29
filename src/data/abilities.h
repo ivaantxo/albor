@@ -692,14 +692,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 8,
     },
 
-    [ABILITY_LEAF_GUARD] =
-    {
-        .name = _("Leaf Guard"),
-        .description = COMPOUND_STRING("Blocks status in sunshine."),
-        .aiRating = 2,
-        .breakable = TRUE,
-    },
-
     [ABILITY_MOLD_BREAKER] =
     {
         .name = _("Rompemoldes"),
@@ -719,13 +711,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Resquicio"),
         .description = COMPOUND_STRING("Fainting damages the foe."),
         .aiRating = 5,
-    },
-
-    [ABILITY_ANTICIPATION] =
-    {
-        .name = _("Anticipation"),
-        .description = COMPOUND_STRING("Senses dangerous moves."),
-        .aiRating = 2,
     },
 
     [ABILITY_FOREWARN] =
@@ -748,14 +733,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Cromolente"),
         .description = COMPOUND_STRING("Pega x1 en vez de poco efectivo."),
         .aiRating = 7,
-    },
-
-    [ABILITY_FILTER] =
-    {
-        .name = _("Filter"),
-        .description = COMPOUND_STRING("Weakens “supereffective”."),
-        .aiRating = 6,
-        .breakable = TRUE,
     },
 
     [ABILITY_SCRAPPY] =
@@ -985,14 +962,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 8,
     },
 
-    [ABILITY_BIG_PECKS] =
-    {
-        .name = _("Big Pecks"),
-        .description = COMPOUND_STRING("Prevents Defense loss."),
-        .aiRating = 1,
-        .breakable = TRUE,
-    },
-
     [ABILITY_SAND_RUSH] =
     {
         .name = _("Sand Rush"),
@@ -1121,41 +1090,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 6,
     },
 
-    [ABILITY_AROMA_VEIL] =
-    {
-        .name = _("Aroma Veil"),
-        .description = COMPOUND_STRING("Prevents limiting of moves."),
-        .aiRating = 3,
-        .breakable = TRUE,
-    },
-
-    [ABILITY_FLOWER_VEIL] =
-    {
-        .name = _("Velo floral"),
-        .description = COMPOUND_STRING("Protege equipo en Sol."),
-        .aiRating = 8,
-    },
-
-    [ABILITY_CHEEK_POUCH] =
-    {
-        .name = _("Cheek Pouch"),
-        .description = COMPOUND_STRING("Eating Berries restores HP."),
-        .aiRating = 4,
-    },
-
     [ABILITY_PROTEAN] =
     {
         .name = _("Protean"),
         .description = COMPOUND_STRING("Changes type to used move."),
         .aiRating = 8,
-    },
-
-    [ABILITY_FUR_COAT] =
-    {
-        .name = _("Fur Coat"),
-        .description = COMPOUND_STRING("Raises Defense."),
-        .aiRating = 7,
-        .breakable = TRUE,
     },
 
     [ABILITY_BULLETPROOF] =
@@ -1184,14 +1123,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Refrigerate"),
         .description = COMPOUND_STRING("Normal moves become Ice."),
         .aiRating = 8,
-    },
-
-    [ABILITY_SWEET_VEIL] =
-    {
-        .name = _("Sweet Veil"),
-        .description = COMPOUND_STRING("Prevents party from sleep."),
-        .aiRating = 4,
-        .breakable = TRUE,
     },
 
     [ABILITY_STANCE_CHANGE] =
@@ -1225,14 +1156,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Megadisparador"),
         .description = COMPOUND_STRING("+25% balísticos."),
         .aiRating = 7,
-    },
-
-    [ABILITY_GRASS_PELT] =
-    {
-        .name = _("Grass Pelt"),
-        .description = COMPOUND_STRING("Ups Defense in grass."),
-        .aiRating = 2,
-        .breakable = TRUE,
     },
 
     [ABILITY_SYMBIOSIS] =
@@ -1296,18 +1219,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Merciless"),
         .description = COMPOUND_STRING("Criticals poisoned foes."),
         .aiRating = 4,
-    },
-
-    [ABILITY_SHIELDS_DOWN] =
-    {
-        .name = _("Shields Down"),
-        .description = COMPOUND_STRING("Shell breaks at half HP."),
-        .aiRating = 6,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .cantBeSuppressed = TRUE,
-        .cantBeOverwritten = TRUE,
     },
 
     [ABILITY_STAKEOUT] =
@@ -1406,30 +1317,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .failsOnImposter = TRUE,
     },
 
-    [ABILITY_BATTLE_BOND] =
-    {
-        .name = _("Battle Bond"),
-        .description = COMPOUND_STRING("Changes form after a KO."),
-        .aiRating = 6,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .cantBeSuppressed = TRUE,
-        .cantBeOverwritten = TRUE,
-    },
-
-    [ABILITY_POWER_CONSTRUCT] =
-    {
-        .name = _("Power Construct"),
-        .description = COMPOUND_STRING("Cells aid it when weakened."),
-        .aiRating = 10,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .cantBeSuppressed = TRUE,
-        .cantBeOverwritten = TRUE,
-    },
-
     [ABILITY_CORROSION] =
     {
         .name = _("Corrosión"),
@@ -1514,53 +1401,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 7,
     },
 
-    [ABILITY_RKS_SYSTEM] =
-    {
-        .name = _("RKS System"),
-        .description = COMPOUND_STRING("Memories change its type."),
-        .aiRating = 8,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .cantBeSuppressed = TRUE,
-        .cantBeOverwritten = TRUE,
-    },
-
-    [ABILITY_ELECTRIC_SURGE] =
-    {
-        .name = _("Electric Surge"),
-        .description = COMPOUND_STRING("Field becomes Electric."),
-        .aiRating = 8,
-    },
-
-    [ABILITY_PSYCHIC_SURGE] =
-    {
-        .name = _("Psychic Surge"),
-        .description = COMPOUND_STRING("Field becomes weird."),
-        .aiRating = 8,
-    },
-
-    [ABILITY_MISTY_SURGE] =
-    {
-        .name = _("Misty Surge"),
-        .description = COMPOUND_STRING("Field becomes misty."),
-        .aiRating = 8,
-    },
-
-    [ABILITY_GRASSY_SURGE] =
-    {
-        .name = _("Grassy Surge"),
-        .description = COMPOUND_STRING("Field becomes grassy."),
-        .aiRating = 8,
-    },
-
-    [ABILITY_FULL_METAL_BODY] =
-    {
-        .name = _("Full Metal Body"),
-        .description = COMPOUND_STRING("Prevents stat reduction."),
-        .aiRating = 4,
-    },
-
     [ABILITY_SHADOW_SHIELD] =
     {
         .name = _("Shadow Shield"),
@@ -1579,13 +1419,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Libero"),
         .description = COMPOUND_STRING("Changes type to move's."),
-    },
-
-    [ABILITY_BALL_FETCH] =
-    {
-        .name = _("Ball Fetch"),
-        .description = COMPOUND_STRING("Fetches failed Poké Ball."),
-        .aiRating = 0,
     },
 
     [ABILITY_COTTON_DOWN] =
@@ -1718,27 +1551,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .failsOnImposter = TRUE,
     },
 
-    [ABILITY_QUICK_DRAW] =
-    {
-        .name = _("Quick Draw"),
-        .description = COMPOUND_STRING("Moves first occasionally."),
-        .aiRating = 4,
-    },
-
-    [ABILITY_UNSEEN_FIST] =
-    {
-        .name = _("Unseen Fist"),
-        .description = COMPOUND_STRING("Contact evades protection."),
-        .aiRating = 6,
-    },
-
-    [ABILITY_CURIOUS_MEDICINE] =
-    {
-        .name = _("Curious Medicine"),
-        .description = COMPOUND_STRING("Remove ally's stat changes."),
-        .aiRating = 3,
-    },
-
     [ABILITY_TRANSISTOR] =
     {
         .name = _("Transistor"),
@@ -1780,14 +1592,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Anger Shell"),
         .description = COMPOUND_STRING("Gets angry at half HP."),
         .aiRating = 3,
-    },
-
-    [ABILITY_PURIFYING_SALT] =
-    {
-        .name = _("Purifying Salt"),
-        .description = COMPOUND_STRING("Protected by pure salts."),
-        .aiRating = 6,
-        .breakable = TRUE,
     },
 
     [ABILITY_WELL_BAKED_BODY] =

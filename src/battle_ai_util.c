@@ -703,7 +703,6 @@ static bool32 AI_IsMoveEffectInMinus(u32 battlerAtk, u32 battlerDef, u32 move, s
                 case MOVE_EFFECT_SP_DEF_MINUS_2:
                 case MOVE_EFFECT_EVS_MINUS_2:
                 case MOVE_EFFECT_ACC_MINUS_2:
-                case MOVE_EFFECT_V_CREATE:
                 case MOVE_EFFECT_ATK_DEF_DOWN:
                 case MOVE_EFFECT_DEF_SPDEF_DOWN:
                     if ((gMovesInfo[move].additionalEffects[i].self && abilityAtk != ABILITY_CONTRARY)
@@ -1180,22 +1179,6 @@ u32 AI_GetWeather(struct AILogicData *aiData)
     return gBattleWeather;
 }
 
-bool32 IsAromaVeilProtectedMove(u32 move)
-{
-    switch (move)
-    {
-    case MOVE_DISABLE:
-    case MOVE_ATTRACT:
-    case MOVE_ENCORE:
-    case MOVE_TORMENT:
-    case MOVE_TAUNT:
-    case MOVE_HEAL_BLOCK:
-        return TRUE;
-    default:
-        return FALSE;
-    }
-}
-
 bool32 IsNonVolatileStatusMoveEffect(u32 moveEffect)
 {
     switch (moveEffect)
@@ -1411,7 +1394,6 @@ bool32 ShouldSetSun(u32 battlerAtk, u32 atkAbility, u32 holdEffect)
      && (atkAbility == ABILITY_CHLOROPHYLL
       || atkAbility == ABILITY_FLOWER_GIFT
       || atkAbility == ABILITY_FORECAST
-      || atkAbility == ABILITY_LEAF_GUARD
       || atkAbility == ABILITY_PODER_SOLAR
       || atkAbility == ABILITY_HARVEST
       || atkAbility == ABILITY_FOTOSINTESIS
@@ -1494,8 +1476,7 @@ bool32 ShouldLowerStat(u32 battler, u32 battlerAbility, u32 stat)
     {
         if (AI_DATA->holdEffects[battler] == HOLD_EFFECT_CLEAR_AMULET
          || battlerAbility == ABILITY_CLEAR_BODY
-         || battlerAbility == ABILITY_WHITE_SMOKE
-         || battlerAbility == ABILITY_FULL_METAL_BODY)
+         || battlerAbility == ABILITY_WHITE_SMOKE)
             return FALSE;
 
         switch (stat)
@@ -1503,7 +1484,7 @@ bool32 ShouldLowerStat(u32 battler, u32 battlerAbility, u32 stat)
             case ESTADISTICA_ATAQUE:
                 return !(battlerAbility == ABILITY_HYPER_CUTTER);
             case ESTADISTICA_DEFENSA:
-                return !(battlerAbility == ABILITY_BIG_PECKS);
+                return TRUE; //REVISAR, idealmente chequear si se tienen ataques físicos (propios o compañero)
             case ESTADISTICA_VELOCIDAD:
                 // If AI is faster and doesn't have any mons left, lowering speed doesn't give any
                 return !(AI_IsFaster(sBattler_AI, battler, AI_THINKING_STRUCT->moveConsidered)
@@ -1585,7 +1566,6 @@ bool32 ShouldLowerAttack(u32 battlerAtk, u32 battlerDef, u32 defAbility)
       && defAbility != ABILITY_CONTRARY
       && defAbility != ABILITY_CLEAR_BODY
       && defAbility != ABILITY_WHITE_SMOKE
-      && defAbility != ABILITY_FULL_METAL_BODY
       && defAbility != ABILITY_HYPER_CUTTER
       && AI_DATA->holdEffects[battlerDef] != HOLD_EFFECT_CLEAR_AMULET)
         return TRUE;
@@ -1604,8 +1584,6 @@ bool32 ShouldLowerDefense(u32 battlerAtk, u32 battlerDef, u32 defAbility)
       && defAbility != ABILITY_CONTRARY
       && defAbility != ABILITY_CLEAR_BODY
       && defAbility != ABILITY_WHITE_SMOKE
-      && defAbility != ABILITY_FULL_METAL_BODY
-      && defAbility != ABILITY_BIG_PECKS
       && AI_DATA->holdEffects[battlerDef] != HOLD_EFFECT_CLEAR_AMULET)
         return TRUE;
     return FALSE;
@@ -1615,7 +1593,6 @@ bool32 ShouldLowerSpeed(u32 battlerAtk, u32 battlerDef, u32 defAbility)
 {
     if (defAbility == ABILITY_CONTRARY
      || defAbility == ABILITY_CLEAR_BODY
-     || defAbility == ABILITY_FULL_METAL_BODY
      || defAbility == ABILITY_WHITE_SMOKE
      || AI_DATA->holdEffects[battlerDef] == HOLD_EFFECT_CLEAR_AMULET)
         return FALSE;
@@ -1634,7 +1611,6 @@ bool32 ShouldLowerSpAtk(u32 battlerAtk, u32 battlerDef, u32 defAbility)
       && HasMoveWithCategory(battlerDef, CATEGORIA_ESPECIAL)
       && defAbility != ABILITY_CONTRARY
       && defAbility != ABILITY_CLEAR_BODY
-      && defAbility != ABILITY_FULL_METAL_BODY
       && defAbility != ABILITY_WHITE_SMOKE
       && AI_DATA->holdEffects[battlerDef] != HOLD_EFFECT_CLEAR_AMULET)
         return TRUE;
@@ -1652,7 +1628,6 @@ bool32 ShouldLowerSpDef(u32 battlerAtk, u32 battlerDef, u32 defAbility)
       && HasMoveWithCategory(battlerAtk, CATEGORIA_ESPECIAL)
       && defAbility != ABILITY_CONTRARY
       && defAbility != ABILITY_CLEAR_BODY
-      && defAbility != ABILITY_FULL_METAL_BODY
       && defAbility != ABILITY_WHITE_SMOKE
       && AI_DATA->holdEffects[battlerDef] != HOLD_EFFECT_CLEAR_AMULET)
         return TRUE;
@@ -1669,7 +1644,6 @@ bool32 ShouldLowerAccuracy(u32 battlerAtk, u32 battlerDef, u32 defAbility)
     if (defAbility != ABILITY_CONTRARY
       && defAbility != ABILITY_CLEAR_BODY
       && defAbility != ABILITY_WHITE_SMOKE
-      && defAbility != ABILITY_FULL_METAL_BODY
       && defAbility != ABILITY_MINDS_EYE
       && AI_DATA->holdEffects[battlerDef] != HOLD_EFFECT_CLEAR_AMULET)
         return TRUE;
@@ -1686,7 +1660,6 @@ bool32 ShouldLowerEvasion(u32 battlerAtk, u32 battlerDef, u32 defAbility)
     if (gBattleMons[battlerDef].statStages[ESTADISTICA_EVASION] > ESTADISTICA_NEUTRA
       && defAbility != ABILITY_CONTRARY
       && defAbility != ABILITY_CLEAR_BODY
-      && defAbility != ABILITY_FULL_METAL_BODY
       && defAbility != ABILITY_WHITE_SMOKE
       && AI_DATA->holdEffects[battlerDef] != HOLD_EFFECT_CLEAR_AMULET)
         return TRUE;
@@ -2105,7 +2078,6 @@ bool32 IsSelfStatLoweringEffect(u32 effect)
     case MOVE_EFFECT_SP_DEF_MINUS_2:
     case MOVE_EFFECT_EVS_MINUS_2:
     case MOVE_EFFECT_ACC_MINUS_2:
-    case MOVE_EFFECT_V_CREATE:
     case MOVE_EFFECT_ATK_DEF_DOWN:
     case MOVE_EFFECT_DEF_SPDEF_DOWN:
         return TRUE;
@@ -2751,8 +2723,7 @@ bool32 AI_CanBeInfatuated(u32 battlerAtk, u32 battlerDef, u32 defAbility)
     if ((gBattleMons[battlerDef].status2 & STATUS2_INFATUATION)
       || AI_DATA->effectiveness[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex] == AI_EFFECTIVENESS_x0
       || defAbility == ABILITY_OBLIVIOUS
-      || !AreBattlersOfOppositeGender(battlerAtk, battlerDef)
-      || AI_IsAbilityOnSide(battlerDef, ABILITY_AROMA_VEIL))
+      || !AreBattlersOfOppositeGender(battlerAtk, battlerDef))
         return FALSE;
     return TRUE;
 }

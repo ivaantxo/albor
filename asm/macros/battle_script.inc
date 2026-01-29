@@ -1715,11 +1715,6 @@
 	various \battler, VARIOUS_TRY_FRISK
 	.endm
 
-	.macro jumpifshieldsdown battler:req, jumpInstr:req
-	various \battler, VARIOUS_JUMP_IF_SHIELDS_DOWN_PROTECTED
-	.4byte \jumpInstr
-	.endm
-
 	.macro trypoisontype attacker:req, target:req, failInstr:req
 	various \attacker, VARIOUS_POISON_TYPE_IMMUNITY
 	.byte \target
@@ -1825,10 +1820,6 @@
 	.macro jumpifnotrototilleraffected battler:req, jumpInstr:req
 	various \battler, VARIOUS_JUMP_IF_NOT_ROTOTILLER_AFFECTED
 	.4byte \jumpInstr
-	.endm
-
-	.macro tryactivatebattlebond battler:req
-	various \battler, VARIOUS_TRY_ACTIVATE_BATTLE_BOND
 	.endm
 
 	.macro jumpifweatheraffected battler:req, flags:req, jumpInstr:req
@@ -1997,17 +1988,6 @@
 	manipulatedamage DMG_CURR_ATTACKER_HP
 	.endm
 
-	.macro jumpifflowerveil battler:req, jumpInstr:req
-	various \battler, VARIOUS_JUMP_IF_FLOWER_VEIL_PROTECTED
-	.4byte \jumpInstr
-	.endm
-
-	.macro jumpifflowerveilattacker jumpInstr:req
-	jumpifnottype BS_ATTACKER, TIPO_PLANTA, 1f
-	jumpifability BS_ATTACKER_SIDE, ABILITY_FLOWER_VEIL, \jumpInstr
-	1:
-	.endm
-
 	.macro setallytonexttarget jumpInstr:req
 	jumpifbyte COMPARACION_MAYOR, gBattlerTarget, 0x1, 1f
 	addbyte gBattlerTarget, 0x2
@@ -2024,11 +2004,6 @@
 	1:
 	subbyte gBattlerAttacker, 0x2
 	goto \jumpInstr
-	.endm
-
-	.macro jumpifleafguardprotected battler:req, jumpInstr:req
-	various \battler, VARIOUS_JUMP_IF_LEAF_GUARD_PROTECTED
-	.4byte \jumpInstr
 	.endm
 
 	.macro jumpifsafeguard jumpInstr:req

@@ -1453,7 +1453,6 @@ const struct BattleAnimBackground gBattleAnimBackgroundTable[] =
     [BG_SHATTERED_PSYCHE]          = {gBattleAnimBgImage_ShatteredPsyche,         gBattleAnimBgPalette_ShatteredPsyche,         gBattleAnimBgTilemap_ShatteredPsyche},
     [BG_TWINKLE_TACKLE]            = {gBattleAnimBgImage_TwinkleTackle,           gBattleAnimBgPalette_TwinkleTackle,           gBattleAnimBgTilemap_TwinkleTackle},
     [BG_BLACKHOLE_ECLIPSE]         = {gBattleAnimBgImage_BlackholeEclipse,        gBattleAnimBgPalette_BlackholeEclipse,        gBattleAnimBgTilemap_BlackholeEclipse},
-    [BG_SOULSTEALING_7STAR_STRIKE] = {gBattleAnimBgImage_SoulStealing7StarStrike, gBattleAnimBgPalette_SoulStealing7StarStrike, gBattleAnimBgTilemap_SoulStealing7StarStrike},
     [BG_MALICIOUS_MOONSAULT]       = {gBattleAnimBgImage_MaliciousMoonsault,      gBattleAnimBgPalette_MaliciousMoonsault,      gBattleAnimBgTilemap_MaliciousMoonsault},
     [BG_SNUGGLE_FOREVER]           = {gBattleAnimBgImage_SnuggleForever,          gBattleAnimBgPalette_SnuggleForever,          gBattleAnimBgTilemap_SnuggleForever},
     [BG_MAX_LIGHTNING]             = {gBattleAnimBgImage_MaxLightning,            gBattleAnimBgPalette_MaxLightning,            gBattleAnimBgTilemap_MaxLightning},

@@ -1975,8 +1975,7 @@ u8 DoBattlerEndTurnEffects(void)
                 gStatuses3[battler] -= STATUS3_YAWN_TURN(1);
                 if (!(gStatuses3[battler] & STATUS3_YAWN) && !(gBattleMons[battler].status1 & STATUS1_ANY)
                  && battlerAbility != ABILITY_VITAL_SPIRIT
-                 && battlerAbility != ABILITY_INSOMNIA && !UproarWakeUpCheck(battler)
-                 && !IsLeafGuardProtected(battler))
+                 && battlerAbility != ABILITY_INSOMNIA && !UproarWakeUpCheck(battler))
                 {
                     CancelMultiTurnMoves(battler);
                     gEffectBattler = battler;
@@ -2540,19 +2539,9 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
         case CANCELLER_MULTIHIT_MOVES:
             if (gMovesInfo[gCurrentMove].effect == EFFECT_MULTI_HIT)
             {
-                if (ability == ABILITY_SKILL_LINK)
+                if (ability == ABILITY_SKILL_LINK || ability == ABILITY_ENJAMBRE)
                 {
                     gMultiHitCounter = 5;
-                }
-                else if (ability == ABILITY_ENJAMBRE)
-                {
-                    gMultiHitCounter = 5;
-                }
-                else if (ability == ABILITY_BATTLE_BOND
-                && gCurrentMove == MOVE_WATER_SHURIKEN
-                && gBattleMons[gBattlerAttacker].species == SPECIES_GRENINJA)
-                {
-                    gMultiHitCounter = 3;
                 }
                 else
                 {
@@ -3196,38 +3185,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 effect++;
             }
             break;
-        case ABILITY_CURIOUS_MEDICINE:
-            break;
-        case ABILITY_ANTICIPATION:
-            if (!gSpecialStatuses[battler].switchInAbilityDone)
-            {
-                u32 side = GetBattlerSide(battler);
-
-                for (i = 0; i < NUMERO_COMBATIENTES; i++)
-                {
-                    if (IsBattlerAlive(i) && side != GetBattlerSide(i))
-                    {
-                        for (j = 0; j < MAX_MON_MOVES; j++)
-                        {
-                            move = gBattleMons[i].moves[j];
-                            moveType = GetMoveType(move);
-                            if (CalcTypeEffectivenessMultiplier(move, moveType, i, battler, ABILITY_ANTICIPATION, FALSE) >= UQ_4_12(2.0))
-                            {
-                                effect++;
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                if (effect != 0)
-                {
-                    gMensajeBatalla = B_MSG_SWITCHIN_ANTICIPATION;
-                    gSpecialStatuses[battler].switchInAbilityDone = TRUE;
-                    BattleScriptPushCursorAndCallback(BattleScript_SwitchInAbilityMsg);
-                }
-            }
-            break;
         case ABILITY_FRISK:
             if (!gSpecialStatuses[battler].switchInAbilityDone)
             {
@@ -3398,7 +3355,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 break;
         // Fallthrough
         case ABILITY_ZEN_MODE:
-        case ABILITY_SHIELDS_DOWN:
             if (TryBattleFormChange(battler, FORM_CHANGE_BATTLE_HP_PERCENT))
             {
                 gBattlerAttacker = battler;
@@ -3819,7 +3775,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
              && IsBattlerTurnDamaged(gBattlerAttacker)
              && gDisableStructs[gBattlerAttacker].disabledMove == MOVE_NONE
              && IsBattlerAlive(gBattlerAttacker)
-             && !EstaHabilidadEnElLadoDeCombatiente(gBattlerAttacker, ABILITY_AROMA_VEIL)
              && gBattleMons[gBattlerAttacker].pp[gChosenMovePos] != 0
              && PorcentajeAleatorio(50))
             {
@@ -4035,8 +3990,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
              && AreBattlersOfOppositeGender(gBattlerAttacker, gBattlerTarget)
              && GetBattlerAbility(gBattlerAttacker) != ABILITY_OBLIVIOUS
              && GetBattlerHoldEffect(gBattlerAttacker, TRUE) != HOLD_EFFECT_PROTECTIVE_PADS
-             && IsMoveMakingContact(move, gBattlerAttacker)
-             && !EstaHabilidadEnElLadoDeCombatiente(gBattlerAttacker, ABILITY_AROMA_VEIL))
+             && IsMoveMakingContact(move, gBattlerAttacker))
             {
                 gBattleMons[gBattlerAttacker].status2 |= STATUS2_INFATUATED_WITH(gBattlerTarget);
                 BattleScriptPushCursor();
@@ -4720,8 +4674,7 @@ bool32 CanBeSlept(u32 battler, u32 ability)
     if (ability == ABILITY_INSOMNIA
      || ability == ABILITY_VITAL_SPIRIT
      || gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_SAFEGUARD
-     || gBattleMons[battler].status1 & STATUS1_ANY
-     || IsAbilityStatusProtected(battler))
+     || gBattleMons[battler].status1 & STATUS1_ANY)
         return FALSE;
     return TRUE;
 }
@@ -4731,8 +4684,7 @@ bool32 CanBePoisoned(u32 battler, u32 ability)
     if (!(CanPoisonType(battler))
      || gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_SAFEGUARD
      || gBattleMons[battler].status1 & STATUS1_ANY
-     || ability == ABILITY_IMMUNITY
-     || IsAbilityStatusProtected(battler))
+     || ability == ABILITY_IMMUNITY)
         return FALSE;
     return TRUE;
 }
@@ -4745,9 +4697,7 @@ bool32 CanBeBurned(u32 battler, u32 ability)
      || ability == ABILITY_WATER_VEIL
      || ability == ABILITY_WATER_BUBBLE
      || ability == ABILITY_THERMAL_EXCHANGE
-     || ability == ABILITY_PURIFYING_SALT
-     || ability == ABILITY_TIERRA_HUMEDA
-     || IsAbilityStatusProtected(battler))
+     || ability == ABILITY_TIERRA_HUMEDA)
         return FALSE;
     return TRUE;
 }
@@ -4757,9 +4707,7 @@ bool32 CanBeParalyzed(u32 battler, u32 ability)
     if ((ES_TIPO(battler, TIPO_ELECTRICO))
       || gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_SAFEGUARD
       || ability == ABILITY_LIMBER
-      || ability == ABILITY_PURIFYING_SALT
-      || gBattleMons[battler].status1 & STATUS1_ANY
-      || IsAbilityStatusProtected(battler))
+      || gBattleMons[battler].status1 & STATUS1_ANY)
         return FALSE;
     return TRUE;
 }
@@ -4769,8 +4717,7 @@ bool32 PuedeSerCongelado(u32 combatiente, u32 habilidad)
     if (ES_TIPO(combatiente, TIPO_HIELO)
      || gSideStatuses[GetBattlerSide(combatiente)] & SIDE_STATUS_SAFEGUARD
      || habilidad == ABILITY_MAGMA_ARMOR
-     || gBattleMons[combatiente].status1 & STATUS1_ANY
-     || IsAbilityStatusProtected(combatiente))
+     || gBattleMons[combatiente].status1 & STATUS1_ANY)
         return FALSE;
     return TRUE;
 }
@@ -5598,8 +5545,6 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
             case HOLD_EFFECT_MIRROR_HERB:
                 effect = TryConsumeMirrorHerb(battler, TRUE);
                 break;
-            case HOLD_EFFECT_BOOSTER_ENERGY:
-                break;
             }
             if (effect != 0)
             {
@@ -5833,8 +5778,6 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
                 break;
             case HOLD_EFFECT_MIRROR_HERB:
                 effect = TryConsumeMirrorHerb(battler, TRUE);
-                break;
-            case HOLD_EFFECT_BOOSTER_ENERGY:
                 break;
             }
 
@@ -6331,15 +6274,6 @@ bool32 IsMoveMakingContact(u32 move, u32 battlerAtk)
 
 bool32 IsBattlerProtected(u32 battlerAtk, u32 battlerDef, u32 move)
 {
-    // Decorate bypasses protect and detect, but not crafty shield
-    if (move == MOVE_DECORATE)
-    {
-        if (gSideStatuses[GetBattlerSide(battlerDef)] & SIDE_STATUS_CRAFTY_SHIELD)
-            return TRUE;
-        else if (gProtectStructs[battlerDef].protected)
-            return FALSE;
-    }
-
     if (gSideStatuses[GetBattlerSide(battlerDef)] & SIDE_STATUS_CRAFTY_SHIELD
              && ES_MOVIMIENTO_ESTADO(move))
         return TRUE;
@@ -7323,21 +7257,7 @@ static inline u32 CalcDefenseStat(struct DamageCalculationData *damageCalcData, 
                 RecuerdaHabilidadCombate(battlerDef, ABILITY_MARVEL_SCALE);
         }
         break;
-    case ABILITY_FUR_COAT:
-        if (usesDefStat)
-        {
-            modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(2.0));
-            if (damageCalcData->updateFlags)
-                RecuerdaHabilidadCombate(battlerDef, ABILITY_FUR_COAT);
-        }
-        break;
-    case ABILITY_GRASS_PELT:
-        break;
     case ABILITY_FLOWER_GIFT:
-        break;
-    case ABILITY_PURIFYING_SALT:
-        if (moveType == TIPO_FANTASMA)
-            modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(2.0));
         break;
     }
 

@@ -1179,7 +1179,6 @@ static u32 GetSwitchinHazardsDamage(u32 battler, struct BattlePokemon *battleMon
             && ability != ABILITY_IMMUNITY && ability != ABILITY_POISON_HEAL
             && status == 0
             && !(hazardFlags & SIDE_STATUS_SAFEGUARD))
-            && !(IsAbilityStatusProtected(battler))
             && heldItemEffect != HOLD_EFFECT_CURE_PSN && heldItemEffect != HOLD_EFFECT_CURE_STATUS
             && EstaPokemonEnSuelo(heldItemEffect, ability, defType1, defType2))
         {

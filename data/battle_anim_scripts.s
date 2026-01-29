@@ -6744,84 +6744,6 @@ LaunchIcicleCrashSpear:
 	delay 0x2
 	return
 
-gBattleAnimMove_VCreate::
-	loadspritegfx ANIM_TAG_SMALL_EMBER @fire blast flame
-	loadspritegfx ANIM_TAG_THIN_RING @calm mind animation
-	loadspritegfx ANIM_TAG_JAGGED_MUSIC_NOTE @red color
-	loadspritegfx ANIM_TAG_ECLIPSING_ORB @defense curl animation
-	monbg ANIM_ATK_PARTNER
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x0, 0xC, 0x0 @Darken
-	createsprite gVCreateRedOrbTemplate, ANIM_ATTACKER, 2, 0x0, 0x11, 0x0, 0x1
-	playsewithpan SE_M_MEGA_KICK, SOUND_PAN_ATTACKER
-	delay 0x2
-	createsprite gVCreateRedRingTemplate, ANIM_ATTACKER, 40, 0x0, 0x0, 0x0, 0x0
-	waitforvisualfinish
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_ATTACKER, 0x2, 0x0, 0x9, 0x1f
-	playsewithpan SE_M_FLAME_WHEEL2, SOUND_PAN_TARGET
-	call VCreateFlames
-	call VCreateFlames
-	call VCreateFlames
-	call VCreateFlames
-	call VCreateFlames
-	call VCreateFlames
-	call VCreateFlames
-	call VCreateFlames
-	call VCreateFlames
-	call VCreateFlames
-	waitforvisualfinish
-	unloadspritegfx ANIM_TAG_SMALL_EMBER
-	unloadspritegfx ANIM_TAG_THIN_RING
-	unloadspritegfx ANIM_TAG_JAGGED_MUSIC_NOTE
-	unloadspritegfx ANIM_TAG_ECLIPSING_ORB
-	loadspritegfx ANIM_TAG_EXPLOSION @explosion animation
-	loadspritegfx ANIM_TAG_CLAW_SLASH @dragon claw animation
-	clearmonbg ANIM_ATK_PARTNER
-	fadetobg BG_FIRE                   @Mr. DS Fire
-	waitbgfadeout
-	createvisualtask AnimTask_StartSlidingBg, 0x5, 0xA00, 0x0, 0x1, 0xffff
-	waitbgfadein
-	playsewithpan SE_M_TAKE_DOWN, SOUND_PAN_ATTACKER
-	createvisualtask AnimTask_WindUpLunge, 5, ANIM_ATTACKER, -24, 8, 23, 10, 40, 10
-	delay 0x23
-	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 0, 5, 50, 1
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_TARGET, 0x2, 0x0, 0x9, 0x1f
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x0, 0x0, 0x1, 0x1
-	delay 0x6
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x18, 0xffe8, 0x1, 0x1
-	delay 0x6
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0xfff0, 0x10, 0x1, 0x1
-	delay 0x6
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0xffe8, 0xfff4, 0x1, 0x1
-	delay 0x6
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0x10, 0x10, 0x1, 0x1
-	waitforvisualfinish
-	createsprite gHorizontalLungeSpriteTemplate, ANIM_ATTACKER, 2, 0x4, 0x4
-	createsprite gClawSlashSpriteTemplate, ANIM_TARGET, 2, 0xfff6, 0xfff6, 0x0
-	createsprite gClawSlashSpriteTemplate, ANIM_TARGET, 2, 0xa, 0xfff6, 0x1
-	waitforvisualfinish
-	createvisualtask AnimTask_ShakeMonInPlace, 2, ANIM_TARGET, 4, 0, 12, 1
-	waitforvisualfinish
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_ATTACKER, 0x2, 0x9, 0x0, 0x1f
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_TARGET, 0x2, 0x9, 0x0, 0x1f
-	delay 0x2
-	createsprite gSlideMonToOriginalPosSpriteTemplate, ANIM_ATTACKER, 2, ANIM_ATTACKER, 0x0, 0x5
-	waitforvisualfinish
-	clearmonbg ANIM_DEF_PARTNER
-	call UnsetPsychicBg
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x0, 0x0, 0xffff
-	waitforvisualfinish
-	end
-VCreateFlames:
-	createsprite gVCreateFlameTemplate, ANIM_TARGET, 2, 0x0, 0x1, 0x16, 0xFFEA, 0x10 @upperright
-	createsprite gVCreateFlameTemplate, ANIM_TARGET, 2, 0x0, 0x1, 0xFFEE, 0xFFEE, 0x10 @upperleft
-	delay 0x3
-	return
-
 gBattleAnimMove_FusionFlare::
 	loadspritegfx ANIM_TAG_FOCUS_ENERGY @focus energy
 	loadspritegfx ANIM_TAG_CIRCLE_OF_LIGHT @ball
@@ -7526,36 +7448,6 @@ gBattleAnimMove_CraftyShield::
 	waitforvisualfinish
 	delay 0x1
 	clearmonbg ANIM_ATK_PARTNER
-	blendoff
-	end
-
-gBattleAnimMove_FlowerShield::
-	loadspritegfx ANIM_TAG_FLOWER
-	loadspritegfx ANIM_TAG_IMPACT
-	setalpha 12, 8
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x0, 0x8, 0x6e7d
-	waitforvisualfinish
-	playsewithpan SE_M_PETAL_DANCE, SOUND_PAN_ATTACKER
-	createsprite gPetalDanceBigFlowerSpriteTemplate, ANIM_ATTACKER, 2, 0x0, 0xffe8, 0x8, 0x8c
-	createsprite gPetalDanceSmallFlowerSpriteTemplate, ANIM_ATTACKER, 2, 0x10, 0xffe8, 0x8, 0x64
-	createsprite gPetalDanceSmallFlowerSpriteTemplate, ANIM_ATTACKER, 2, 0xfff0, 0xffe8, 0x8, 0x64
-	delay 0xf
-	createsprite gPetalDanceBigFlowerSpriteTemplate, ANIM_ATTACKER, 2, 0x0, 0xffe8, 0x8, 0x8c
-	createsprite gPetalDanceSmallFlowerSpriteTemplate, ANIM_ATTACKER, 2, 0x20, 0xffe8, 0x8, 0x64
-	createsprite gPetalDanceSmallFlowerSpriteTemplate, ANIM_ATTACKER, 2, 0xffe0, 0xffe8, 0x8, 0x64
-	delay 0xf
-	createsprite gPetalDanceBigFlowerSpriteTemplate, ANIM_ATTACKER, 2, 0x0, 0xffe8, 0x8, 0x8c
-	createsprite gPetalDanceSmallFlowerSpriteTemplate, ANIM_ATTACKER, 2, 0x18, 0xffe8, 0x8, 0x64
-	createsprite gPetalDanceSmallFlowerSpriteTemplate, ANIM_ATTACKER, 2, 0xffe8, 0xffe8, 0x8, 0x64
-	delay 0x1e
-	createsprite gPetalDanceSmallFlowerSpriteTemplate, ANIM_ATTACKER, 2, 0x10, 0xffe8, 0x0, 0x64
-	createsprite gPetalDanceSmallFlowerSpriteTemplate, ANIM_ATTACKER, 2, 0xfff0, 0xffe8, 0x0, 0x64
-	delay 0x1e
-	createsprite gPetalDanceSmallFlowerSpriteTemplate, ANIM_ATTACKER, 2, 0x14, 0xfff0, 0xe, 0x50
-	createsprite gPetalDanceSmallFlowerSpriteTemplate, ANIM_ATTACKER, 2, 0xffec, 0xfff2, 0x10, 0x50
-	waitforvisualfinish
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x8, 0x0, 0x6e7d
-	waitforvisualfinish
 	blendoff
 	end
 
@@ -11787,9 +11679,6 @@ gBattleAnimMove_BodyPress::
 	createvisualtask AnimTask_SquishTarget, 0x2
 	waitforvisualfinish
 	end
-
-gBattleAnimMove_Decorate::
-	goto gBattleAnimMove_FlowerShield
 
 gBattleAnimMove_DrumBeating::
 	loadspritegfx ANIM_TAG_MUSIC_NOTES

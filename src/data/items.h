@@ -11833,23 +11833,6 @@ const struct Item gItemsInfo[] =
         .iconPalette = gItemIconPalette_AuspiciousArmor,
     },
 
-    [ITEM_BOOSTER_ENERGY] =
-    {
-        .name = _("Booster Energy"),
-        .pluralName = _("Booster Energies"),
-        .price = 0,
-        .holdEffect = HOLD_EFFECT_BOOSTER_ENERGY,
-        .description = COMPOUND_STRING(
-            "Encapsuled energy\n"
-            "ups Pokémon with\n"
-            "certain Abilities."),
-        .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .iconPic = gItemIcon_BoosterEnergy,
-        .iconPalette = gItemIconPalette_BoosterEnergy,
-    },
-
     [ITEM_BIG_BAMBOO_SHOOT] =
     {
         .name = _("Big Bamboo Shoot"),

@@ -312,7 +312,6 @@ enum ResultadosCombate
 #define MOVE_EFFECT_FLAME_BURST         59
 #define MOVE_EFFECT_FEINT               60
 #define MOVE_EFFECT_SPECTRAL_THIEF      61
-#define MOVE_EFFECT_V_CREATE            62
 #define MOVE_EFFECT_THROAT_CHOP         65
 #define MOVE_EFFECT_INCINERATE          66
 #define MOVE_EFFECT_BUG_BITE            67

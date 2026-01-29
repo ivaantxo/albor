@@ -1808,9 +1808,6 @@ const u32 gItemIconPalette_AuspiciousArmor[] = INCBIN_U32("graphics/items/icon_p
 const u32 gItemIcon_BigBambooShoot[] = INCBIN_U32("graphics/items/icons/big_bamboo_shoot.4bpp.lz");
 const u32 gItemIconPalette_BigBambooShoot[] = INCBIN_U32("graphics/items/icon_palettes/big_bamboo_shoot.gbapal.lz");
 
-const u32 gItemIcon_BoosterEnergy[] = INCBIN_U32("graphics/items/icons/booster_energy.4bpp.lz");
-const u32 gItemIconPalette_BoosterEnergy[] = INCBIN_U32("graphics/items/icon_palettes/booster_energy.gbapal.lz");
-
 const u32 gItemIcon_GimmighoulCoin[] = INCBIN_U32("graphics/items/icons/gimmighoul_coin.4bpp.lz");
 const u32 gItemIconPalette_GimmighoulCoin[] = INCBIN_U32("graphics/items/icon_palettes/gimmighoul_coin.gbapal.lz");
 
