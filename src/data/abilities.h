@@ -793,18 +793,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 6,
     },
 
-    [ABILITY_MULTITYPE] =
-    {
-        .name = _("Multitype"),
-        .description = COMPOUND_STRING("Changes type to its Plate."),
-        .aiRating = 8,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .cantBeSuppressed = TRUE,
-        .cantBeOverwritten = TRUE,
-    },
-
     [ABILITY_FLOWER_GIFT] =
     {
         .name = _("Flower Gift"),
@@ -858,13 +846,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 5,
     },
 
-    [ABILITY_DEFEATIST] =
-    {
-        .name = _("Defeatist"),
-        .description = COMPOUND_STRING("Gives up at half HP."),
-        .aiRating = -1,
-    },
-
     [ABILITY_CURSED_BODY] =
     {
         .name = _("Cuerpo maldito"),
@@ -879,35 +860,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 0,
     },
 
-    [ABILITY_FRIEND_GUARD] =
-    {
-        .name = _("Friend Guard"),
-        .description = COMPOUND_STRING("Lowers damage to partner."),
-        .aiRating = 0,
-        .breakable = TRUE,
-    },
-
     [ABILITY_WEAK_ARMOR] =
     {
         .name = _("Weak Armor"),
         .description = COMPOUND_STRING("Its stats change when hit."),
         .aiRating = 2,
-    },
-
-    [ABILITY_HEAVY_METAL] =
-    {
-        .name = _("Heavy Metal"),
-        .description = COMPOUND_STRING("Doubles weight."),
-        .aiRating = -1,
-        .breakable = TRUE,
-    },
-
-    [ABILITY_LIGHT_METAL] =
-    {
-        .name = _("Light Metal"),
-        .description = COMPOUND_STRING("Halves weight."),
-        .aiRating = 2,
-        .breakable = TRUE,
     },
 
     [ABILITY_MULTISCALE] =
@@ -1221,13 +1178,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 4,
     },
 
-    [ABILITY_STAKEOUT] =
-    {
-        .name = _("Stakeout"),
-        .description = COMPOUND_STRING("Stronger as foes switch in."),
-        .aiRating = 6,
-    },
-
     [ABILITY_WATER_BUBBLE] =
     {
         .name = _("Water Bubble"),
@@ -1443,17 +1393,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .breakable = TRUE,
     },
 
-    [ABILITY_GULP_MISSILE] =
-    {
-        .name = _("Gulp Missile"),
-        .description = COMPOUND_STRING("If hit, spits prey from sea."),
-        .aiRating = 3,
-        .cantBeCopied = TRUE,
-        .cantBeSuppressed = TRUE,
-        .cantBeOverwritten = TRUE,
-        .failsOnImposter = TRUE,
-    },
-
     [ABILITY_STALWART] =
     {
         .name = _("Stalwart"),
@@ -1592,14 +1531,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Anger Shell"),
         .description = COMPOUND_STRING("Gets angry at half HP."),
         .aiRating = 3,
-    },
-
-    [ABILITY_WELL_BAKED_BODY] =
-    {
-        .name = _("Well-Baked Body"),
-        .description = COMPOUND_STRING("Strengthened by Fire."),
-        .aiRating = 5,
-        .breakable = TRUE,
     },
 
     [ABILITY_WIND_RIDER] =

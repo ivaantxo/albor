@@ -484,7 +484,6 @@ static void Cmd_trysetencore(void);
 static void Cmd_painsplitdmgcalc(void);
 static void Cmd_settypetorandomresistance(void);
 static void Cmd_setalwayshitflag(void);
-static void Cmd_copymovepermanently(void);
 static void Cmd_trychoosesleeptalkmove(void);
 static void Cmd_setdestinybond(void);
 static void Cmd_trysetdestinybondtohappen(void);
@@ -720,7 +719,6 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     BATTLE_CMD(painsplitdmgcalc),
     BATTLE_CMD(settypetorandomresistance),
     BATTLE_CMD(setalwayshitflag),
-    BATTLE_CMD(copymovepermanently),
     BATTLE_CMD(trychoosesleeptalkmove),
     BATTLE_CMD(setdestinybond),
     BATTLE_CMD(trysetdestinybondtohappen),
@@ -866,7 +864,6 @@ static const u16 sFinalStrikeOnlyEffects[] =
 {
     MOVE_EFFECT_BUG_BITE,
     MOVE_EFFECT_STEAL_ITEM,
-    MOVE_EFFECT_REMOVE_ARG_TYPE,
     MOVE_EFFECT_SMACK_DOWN,
     MOVE_EFFECT_REMOVE_STATUS,
     MOVE_EFFECT_RECOIL_HP_25,
@@ -1701,8 +1698,7 @@ static void Cmd_adjustdamage(void)
         gSpecialStatuses[gBattlerTarget].focusSashed = TRUE;
     }
 
-    if (gMovesInfo[gCurrentMove].effect != EFFECT_FALSE_SWIPE
-        && !gProtectStructs[gBattlerTarget].endured
+    if (!gProtectStructs[gBattlerTarget].endured
         && !gSpecialStatuses[gBattlerTarget].focusBanded
         && !gSpecialStatuses[gBattlerTarget].focusSashed
         && !gSpecialStatuses[gBattlerTarget].sturdied)
@@ -3119,23 +3115,6 @@ void SetMoveEffect(bool32 primary, bool32 certain)
 
                 gBattleMons[gBattlerTarget].status2 |= STATUS2_ESCAPE_PREVENTION;
                 gBattleMons[gBattlerAttacker].status2 |= STATUS2_ESCAPE_PREVENTION;
-                break;
-            case MOVE_EFFECT_REMOVE_ARG_TYPE:
-                // This seems unnecessary but is done to make it work properly with Parental Bond
-                BattleScriptPush(gBattlescriptCurrInstr + 1);
-                switch (gMovesInfo[gCurrentMove].argument)
-                {
-                    case TIPO_FUEGO: // Burn Up
-                        gBattlescriptCurrInstr = BattleScript_RemoveFireType;
-                        break;
-                    case TIPO_ELECTRICO: // Double Shot
-                        gBattlescriptCurrInstr = BattleScript_RemoveElectricType;
-                        break;
-                    default:
-                        gBattlescriptCurrInstr = BattleScript_RemoveGenericType;
-                        break;
-                }
-                RemoveBattlerType(gEffectBattler, gMovesInfo[gCurrentMove].argument);
                 break;
             case MOVE_EFFECT_DIRE_CLAW:
                 break;
@@ -9935,13 +9914,7 @@ static void Cmd_setsubstitute(void)
 {
     CMD_ARGS();
 
-    u32 factor = gMovesInfo[gCurrentMove].effect == EFFECT_SHED_TAIL ? 2 : 4;
-    u32 hp;
-
-    if (factor == 2)
-        hp = (CuantosPSMaximos(gBattlerAttacker)+1) / factor; // shed tail rounds up
-    else
-        hp = CuantosPSMaximos(gBattlerAttacker) / factor; // one bit value will only work for Pokémon which max hp can go to 1020(which is more than possible in games)
+    u32 hp = CuantosPSMaximos(gBattlerAttacker) / 4; // one bit value will only work for Pokémon which max hp can go to 1020(which is more than possible in games)
 
     if (hp == 0)
         hp = 1;
@@ -10293,59 +10266,6 @@ static void Cmd_setalwayshitflag(void)
     gStatuses3[gBattlerTarget] |= STATUS3_ALWAYS_HITS_TURN(2);
     gDisableStructs[gBattlerTarget].battlerWithSureHit = gBattlerAttacker;
     gBattlescriptCurrInstr = cmd->nextInstr;
-}
-
-// Sketch
-static void Cmd_copymovepermanently(void)
-{
-    CMD_ARGS(const u8 *failInstr);
-
-    gChosenMove = MOVE_NONE;
-
-    if (!(gBattleMons[gBattlerAttacker].status2 & STATUS2_TRANSFORMED)
-        && gLastPrintedMoves[gBattlerTarget] != MOVE_NONE
-        && !gMovesInfo[gLastPrintedMoves[gBattlerTarget]].sketchBanned)
-    {
-        s32 i;
-
-        for (i = 0; i < MAX_MON_MOVES; i++)
-        {
-            if (gBattleMons[gBattlerAttacker].moves[i] == MOVE_SKETCH)
-                continue;
-            if (gBattleMons[gBattlerAttacker].moves[i] == gLastPrintedMoves[gBattlerTarget])
-                break;
-        }
-
-        if (i != MAX_MON_MOVES)
-        {
-            gBattlescriptCurrInstr = cmd->failInstr;
-        }
-        else // sketch worked
-        {
-            struct MovePpInfo movePpData;
-
-            gBattleMons[gBattlerAttacker].moves[gCurrMovePos] = gLastPrintedMoves[gBattlerTarget];
-            gBattleMons[gBattlerAttacker].pp[gCurrMovePos] = gMovesInfo[gLastPrintedMoves[gBattlerTarget]].pp;
-
-            for (i = 0; i < MAX_MON_MOVES; i++)
-            {
-                movePpData.moves[i] = gBattleMons[gBattlerAttacker].moves[i];
-                movePpData.pp[i] = gBattleMons[gBattlerAttacker].pp[i];
-            }
-            movePpData.ppBonuses = gBattleMons[gBattlerAttacker].ppBonuses;
-
-            BtlController_EmitSetMonData(gBattlerAttacker, BUFFER_A, REQUEST_MOVES_PP_BATTLE, 0, sizeof(movePpData), &movePpData);
-            MarcaCombatienteOcupado(gBattlerAttacker);
-
-            PREPARE_MOVE_BUFFER(gBattleTextBuff1, gLastPrintedMoves[gBattlerTarget])
-
-            gBattlescriptCurrInstr = cmd->nextInstr;
-        }
-    }
-    else
-    {
-        gBattlescriptCurrInstr = cmd->failInstr;
-    }
 }
 
 static void Cmd_trychoosesleeptalkmove(void)
@@ -11396,7 +11316,7 @@ static void Cmd_tryswapitems(void)
     }
 }
 
-// Role Play, Doodle
+// Role Play
 static void Cmd_trycopyability(void)
 {
     CMD_ARGS(u8 battler, const u8 *failInstr);
@@ -11407,7 +11327,6 @@ static void Cmd_trycopyability(void)
     if (gBattleMons[battler].ability == defAbility
       || defAbility == ABILITY_NONE
       || gAbilitiesInfo[gBattleMons[battler].ability].cantBeSuppressed
-      || (IsBattlerAlive(ALIADO(battler)) && gAbilitiesInfo[gBattleMons[ALIADO(battler)].ability].cantBeSuppressed && gMovesInfo[gCurrentMove].effect == EFFECT_DOODLE)
       || gAbilitiesInfo[defAbility].cantBeCopied)
     {
         gBattlescriptCurrInstr = cmd->failInstr;
@@ -12967,18 +12886,6 @@ void BS_RunStatChangeItems(void)
     // Change instruction before calling ItemBattleEffects.
     gBattlescriptCurrInstr = cmd->nextInstr;
     ItemBattleEffects(ITEMEFFECT_STATS_CHANGED, GetBattlerForBattleScript(cmd->battler), FALSE);
-}
-
-void BS_TryGulpMissile(void)
-{
-    NATIVE_ARGS();
-    gBattlescriptCurrInstr = cmd->nextInstr;
-}
-
-void BS_TryActivateGulpMissile(void)
-{
-    NATIVE_ARGS();
-    gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
 void BS_CopyFoesStatIncrease(void)

@@ -401,17 +401,15 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
 
 void DecompressTrainerFrontPic(u16 frontPicId, u8 battler)
 {
-    u8 position = battler;
     DecompressPicFromTable(&gTrainerSprites[frontPicId].frontPic,
-                           gMonSpritesGfxPtr->spritesGfx[position]);
+                           gMonSpritesGfxPtr->spritesGfx[battler]);
     LoadCompressedSpritePalette(&gTrainerSprites[frontPicId].palette);
 }
 
 void DecompressTrainerBackPic(u16 backPicId, u8 battler)
 {
-    u8 position = battler;
     DecompressPicFromTable(&gTrainerBacksprites[backPicId].backPic,
-                           gMonSpritesGfxPtr->spritesGfx[position]);
+                           gMonSpritesGfxPtr->spritesGfx[battler]);
     LoadCompressedPalette(gTrainerBacksprites[backPicId].palette.data,
                           OBJ_PLTT_ID(battler), PLTT_SIZE_4BPP);
 }
@@ -444,11 +442,6 @@ void CargaBarrasSalud(void)
         LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[0]);
         LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[1]);
     }
-}
-
-void LoadBattleBarGfx(void)
-{
-    LZDecompressWram(gBattleInterfaceGfx_BattleBar, gMonSpritesGfxPtr->barFontGfx);
 }
 
 void IniciaSpritesBatalla(void)
@@ -602,7 +595,7 @@ void LoadBattleMonGfxAndAnimate(u8 battler, bool8 loadMonSprite, u32 spriteId)
 
 void TrySetBehindSubstituteSpriteBit(u8 battler, u16 move)
 {
-    if (gMovesInfo[move].effect == EFFECT_SUBSTITUTE || gMovesInfo[move].effect == EFFECT_SHED_TAIL)
+    if (gMovesInfo[move].effect == EFFECT_SUBSTITUTE)
         gBattleSpritesDataPtr->battlerData[battler].behindSubstitute = 1;
 }
 
@@ -879,30 +872,26 @@ void ClearTemporarySpeciesSpriteData(u8 battler, bool8 dontClearSubstitute)
 
 void AllocateMonSpritesGfx(void)
 {
-    u8 i = 0, j;
-
     gMonSpritesGfxPtr = NULL;
     gMonSpritesGfxPtr = AllocZeroed(sizeof(*gMonSpritesGfxPtr));
-    gMonSpritesGfxPtr->firstDecompressed = AllocZeroed(MON_PIC_SIZE * 4 * NUMERO_COMBATIENTES);
+    gMonSpritesGfxPtr->firstDecompressed = AllocZeroed(MON_PIC_SIZE * NUMERO_FRAMES_POKEMON * NUMERO_COMBATIENTES);
 
-    for (i = 0; i < NUMERO_COMBATIENTES; i++)
+    for (u32 indiceCombatiente = 0; indiceCombatiente < NUMERO_COMBATIENTES; indiceCombatiente++)
     {
-        gMonSpritesGfxPtr->spritesGfx[i] = gMonSpritesGfxPtr->firstDecompressed + (i * MON_PIC_SIZE * 4);
-        gMonSpritesGfxPtr->templates[i] = gBattlerSpriteTemplates[i];
+        gMonSpritesGfxPtr->spritesGfx[indiceCombatiente] = gMonSpritesGfxPtr->firstDecompressed + (indiceCombatiente * MON_PIC_SIZE * NUMERO_FRAMES_POKEMON);
+        gMonSpritesGfxPtr->templates[indiceCombatiente] = gBattlerSpriteTemplates[indiceCombatiente];
 
-        for (j = 0; j < MAX_MON_PIC_FRAMES; j++)
+        for (u32 frameCombatiente = 0; frameCombatiente < NUMERO_FRAMES_POKEMON; frameCombatiente++)
         {
-            if (gMonSpritesGfxPtr->spritesGfx[i])
+            if (gMonSpritesGfxPtr->spritesGfx[indiceCombatiente])
             {
-                gMonSpritesGfxPtr->frameImages[i][j].data = gMonSpritesGfxPtr->spritesGfx[i] + (j * MON_PIC_SIZE);
-                gMonSpritesGfxPtr->frameImages[i][j].size = MON_PIC_SIZE;
+                gMonSpritesGfxPtr->frameImages[indiceCombatiente][frameCombatiente].data = gMonSpritesGfxPtr->spritesGfx[indiceCombatiente] + (frameCombatiente * MON_PIC_SIZE);
+                gMonSpritesGfxPtr->frameImages[indiceCombatiente][frameCombatiente].size = MON_PIC_SIZE;
             }
         }
-
-        gMonSpritesGfxPtr->templates[i].images = gMonSpritesGfxPtr->frameImages[i];
+        
+        gMonSpritesGfxPtr->templates[indiceCombatiente].images = gMonSpritesGfxPtr->frameImages[indiceCombatiente];
     }
-
-    gMonSpritesGfxPtr->barFontGfx = AllocZeroed(0x1000);
 }
 
 void FreeMonSpritesGfx(void)
@@ -911,7 +900,6 @@ void FreeMonSpritesGfx(void)
         return;
 
     TRY_FREE_AND_SET_NULL(gMonSpritesGfxPtr->buffer);
-    FREE_AND_SET_NULL(gMonSpritesGfxPtr->barFontGfx);
     FREE_AND_SET_NULL(gMonSpritesGfxPtr->firstDecompressed);
     gMonSpritesGfxPtr->spritesGfx[JUGADOR_IZQUIERDA] = NULL;
     gMonSpritesGfxPtr->spritesGfx[OPONENTE_IZQUIERDA] = NULL;

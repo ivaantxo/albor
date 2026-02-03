@@ -1247,11 +1247,6 @@ void SwitchInClearSetData(u32 battler)
         gDisableStructs[battler].battlerPreventingEscape = disableStructCopy.battlerPreventingEscape;
         gDisableStructs[battler].embargoTimer = disableStructCopy.embargoTimer;
     }
-    else if (gMovesInfo[gCurrentMove].effect == EFFECT_SHED_TAIL)
-    {
-        gBattleMons[battler].status2 |= STATUS2_SUBSTITUTE;
-        gDisableStructs[battler].substituteHP = disableStructCopy.substituteHP;
-    }
 
     gMoveResultFlags = 0;
     gDisableStructs[battler].isFirstTurn = 2;

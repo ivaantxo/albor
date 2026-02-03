@@ -377,11 +377,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_SKETCH] =
-    {
-        .battleScript = BattleScript_EffectSketch,
-    },
-
     [EFFECT_SLEEP_TALK] =
     {
         .battleScript = BattleScript_EffectSleepTalk,
@@ -401,11 +396,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_SPITE] =
     {
         .battleScript = BattleScript_EffectSpite,
-    },
-
-    [EFFECT_FALSE_SWIPE] =
-    {
-        .battleScript = BattleScript_EffectHit,
     },
 
     [EFFECT_HEAL_BELL] =
@@ -1107,9 +1097,9 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectHit,
     },
 
-    [EFFECT_QUIVER_DANCE] =
+    [EFECTO_SUBE_ATAQUE_ESPECIAL_VELOCIDAD] =
     {
-        .battleScript = BattleScript_EffectQuiverDance,
+        .battleScript = ScriptCombate_EfectoSubeAtaqueEspecialVelocidad,
     },
 
     [EFFECT_COIL] =
@@ -1307,12 +1297,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_MAGNETIC_FLUX] =
-    {
-        .battleScript = BattleScript_EffectMagneticFlux,
-        .encourageEncore = TRUE,
-    },
-
     [EFFECT_GEAR_UP] =
     {
         .battleScript = BattleScript_EffectGearUp,
@@ -1339,12 +1323,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     {
         .battleScript = BattleScript_EffectShoreUp,
         .encourageEncore = TRUE,
-    },
-
-    [EFFECT_GEOMANCY] =
-    {
-        .battleScript = BattleScript_EffectGeomancy,
-        .twoTurnEffect = TRUE,
     },
 
     [EFFECT_FAIRY_LOCK] =
@@ -1388,11 +1366,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectHit,
     },
 
-    [EFFECT_GRASSY_GLIDE] =
-    {
-        .battleScript = BattleScript_EffectHit,
-    },
-
     [EFFECT_SNIPE_SHOT] =
     {
         .battleScript = BattleScript_EffectHit,
@@ -1407,16 +1380,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     {
         .battleScript = BattleScript_EffectStuffCheeks,
         .encourageEncore = TRUE,
-    },
-
-    [EFFECT_SAPPY_SEED] =
-    {
-        .battleScript = BattleScript_EffectSappySeed,
-    },
-
-    [EFFECT_FREEZY_FROST] =
-    {
-        .battleScript = BattleScript_EffectFreezyFrost,
     },
 
     [EFFECT_SPARKLY_SWIRL] =
@@ -1463,21 +1426,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_OCTOLOCK] =
     {
         .battleScript = BattleScript_EffectOctolock,
-    },
-
-    [EFFECT_BOLT_BEAK] =
-    {
-        .battleScript = BattleScript_EffectHit,
-    },
-
-    [EFFECT_EXPANDING_FORCE] =
-    {
-        .battleScript = BattleScript_EffectHit,
-    },
-
-    [EFFECT_RISING_VOLTAGE] =
-    {
-        .battleScript = BattleScript_EffectHit,
     },
 
     [EFFECT_MAX_HP_50_RECOIL] =
@@ -1536,11 +1484,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectHit,
     },
 
-    [EFFECT_CHILLY_RECEPTION] =
-    {
-        .battleScript = BattleScript_EffectChillyReception,
-    },
-
     [EFFECT_RAGING_BULL] =
     {
         .battleScript = BattleScript_EffectBrickBreak,
@@ -1551,16 +1494,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectHit,
     },
 
-    [EFFECT_DOODLE] =
-    {
-        .battleScript = BattleScript_EffectDoodle,
-    },
-
-    [EFFECT_FILLET_AWAY] =
-    {
-        .battleScript = BattleScript_EffectFilletAway,
-    },
-
     [EFFECT_BLIZZARD] =
     {
         .battleScript = BattleScript_EffectHit,
@@ -1569,12 +1502,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_RAIN_ALWAYS_HIT] =
     {
         .battleScript = BattleScript_EffectHit,
-    },
-
-    [EFFECT_SHED_TAIL] =
-    {
-        .battleScript = BattleScript_EffectShedTail,
-        .encourageEncore = TRUE,
     },
 
     [EFFECT_PALMA_RAUDA] =
@@ -1597,11 +1524,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     {
         .battleScript = Script_Amoladoras,
         .encourageEncore = TRUE,
-    },
-
-    [EFFECT_GUARDIAN_OF_ALOLA] =
-    {
-        .battleScript = BattleScript_DamageToQuarterTargetHP,
     },
 
     [EFFECT_SHELL_SIDE_ARM] =

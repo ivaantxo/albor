@@ -2169,7 +2169,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                         dataUnsigned = (GetMonData(mon, MON_DATA_PP_BONUSES, NULL) & gPPUpGetMask[moveIndex]) >> (moveIndex * 2);
                         temp2 = CalculatePPWithBonus(GetMonData(mon, MON_DATA_MOVE1 + moveIndex, NULL), GetMonData(mon, MON_DATA_PP_BONUSES, NULL), moveIndex);
 
-                        // Check if 3 PP Ups have been applied already, and that the move has a total PP of at least 5 (excludes Sketch)
+                        // Check if 3 PP Ups have been applied already, and that the move has a total PP of at least 5
                         if (dataUnsigned < 3 && temp2 >= 5)
                         {
                             dataUnsigned = GetMonData(mon, MON_DATA_PP_BONUSES, NULL);
@@ -3488,7 +3488,7 @@ struct MonSpritesGfxManager *CreateMonSpritesGfxManager(void)
         return NULL;
 
     // Set up sprite / sprite pointer buffers
-    gfx->spriteBuffer = AllocZeroed(MON_PIC_SIZE * MAX_MON_PIC_FRAMES * NUMERO_COMBATIENTES);
+    gfx->spriteBuffer = AllocZeroed(MON_PIC_SIZE * NUMERO_FRAMES_POKEMON * NUMERO_COMBATIENTES);
     gfx->spritePointers = AllocZeroed(NUMERO_COMBATIENTES * 32);
     if (gfx->spriteBuffer == NULL || gfx->spritePointers == NULL)
     {
@@ -3497,28 +3497,28 @@ struct MonSpritesGfxManager *CreateMonSpritesGfxManager(void)
     else
     {
         for (i = 0; i < NUMERO_COMBATIENTES; i++)
-            gfx->spritePointers[i] = gfx->spriteBuffer + (MON_PIC_SIZE * MAX_MON_PIC_FRAMES * i);
+            gfx->spritePointers[i] = gfx->spriteBuffer + (MON_PIC_SIZE * NUMERO_FRAMES_POKEMON * i);
     }
 
     // Set up sprite structs
     gfx->templates = AllocZeroed(sizeof(struct SpriteTemplate) * NUMERO_COMBATIENTES);
-    gfx->frameImages = AllocZeroed(sizeof(struct SpriteFrameImage) * NUMERO_COMBATIENTES * MAX_MON_PIC_FRAMES);
+    gfx->frameImages = AllocZeroed(sizeof(struct SpriteFrameImage) * NUMERO_COMBATIENTES * NUMERO_FRAMES_POKEMON);
     if (gfx->templates == NULL || gfx->frameImages == NULL)
     {
         failureFlags |= ALLOC_FAIL_STRUCT;
     }
     else
     {
-        for (i = 0; i < MAX_MON_PIC_FRAMES * NUMERO_COMBATIENTES; i++)
+        for (i = 0; i < NUMERO_FRAMES_POKEMON * NUMERO_COMBATIENTES; i++)
             gfx->frameImages[i].size = MON_PIC_SIZE;
 
         for (i = 0; i < NUMERO_COMBATIENTES; i++)
         {
             gfx->templates[i] = gBattlerSpriteTemplates[i];
-            for (j = 0; j < MAX_MON_PIC_FRAMES; j++)
-                gfx->frameImages[i * MAX_MON_PIC_FRAMES + j].data = &gfx->spritePointers[i][j * MON_PIC_SIZE];
+            for (j = 0; j < NUMERO_FRAMES_POKEMON; j++)
+                gfx->frameImages[i * NUMERO_FRAMES_POKEMON + j].data = &gfx->spritePointers[i][j * MON_PIC_SIZE];
 
-            gfx->templates[i].images = &gfx->frameImages[i * MAX_MON_PIC_FRAMES];
+            gfx->templates[i].images = &gfx->frameImages[i * NUMERO_FRAMES_POKEMON];
         }
     }
 

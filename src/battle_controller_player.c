@@ -2000,7 +2000,6 @@ void PlayerHandleExpUpdate(u32 battler)
     }
     else
     {
-        LoadBattleBarGfx();
         expPointsToGive = T1_READ_32(&gBattleResources->bufferA[battler][2]);
         taskId = CreateTask(Task_GiveExpToMon, 10);
         gTasks[taskId].tExpTask_monId = monId;

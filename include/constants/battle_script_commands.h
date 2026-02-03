@@ -409,7 +409,6 @@ enum BattleScriptCommands
     BATTLE_CMD_painsplitdmgcalc,
     BATTLE_CMD_settypetorandomresistance,
     BATTLE_CMD_setalwayshitflag,
-    BATTLE_CMD_copymovepermanently,
     BATTLE_CMD_trychoosesleeptalkmove,
     BATTLE_CMD_setdestinybond,
     BATTLE_CMD_trysetdestinybondtohappen,

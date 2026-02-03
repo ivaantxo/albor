@@ -84,7 +84,6 @@ static void AnimTask_Splash_Step(u8);
 static void AnimTask_GrowAndShrink_Step(u8);
 static void AnimTask_ThrashMoveMonHorizontal_Step(u8);
 static void AnimTask_ThrashMoveMonVertical_Step(u8);
-static void AnimTask_SketchDrawMon_Step(u8);
 static void AnimTask_AttackerStretchAndDisappear_Step(u8);
 static void AnimTask_ExtremeSpeedImpact_Step(u8);
 static void AnimTask_ExtremeSpeedMonReappear_Step(u8);
@@ -2211,93 +2210,6 @@ static void AnimTask_ThrashMoveMonVertical_Step(u8 taskId)
     }
 }
 
-void AnimTask_SketchDrawMon(u8 taskId)
-{
-    struct Task *task = &gTasks[taskId];
-    struct ParametrosDistorsionFondo parametros;
-
-    s16 i;
-    task->data[0] = GetBattlerYCoordWithElevation(gBattleAnimTarget) + 32;
-    task->data[1] = 4;
-    task->data[2] = 0;
-    task->data[3] = 0;
-    task->data[4] = 0;
-    task->data[5] = 0;
-    task->data[15] = GetBattlerSpriteCoordAttr(gBattleAnimTarget, BATTLER_COORD_ATTR_HEIGHT);
-
-    if (GetBattlerSpriteBGPriorityRank(gBattleAnimTarget) == 1)
-    {
-        task->data[6] = gBattle_BG1_X;
-        parametros.dmaDest = &REG_BG1HOFS;
-    }
-    else
-    {
-        task->data[6] = gBattle_BG2_X;
-        parametros.dmaDest = &REG_BG2HOFS;
-    }
-
-    for (i = task->data[0] - 0x40; i <= task->data[0]; i++)
-    {
-        if (i >= 0)
-        {
-            gRegistrosBuffersDistorsionFondo[0][i] = task->data[6] + 0xF0;
-            gRegistrosBuffersDistorsionFondo[1][i] = task->data[6] + 0xF0;
-        }
-    }
-
-    parametros.bitsDMA = DISTORSION_FONDO_DMA_16;
-    parametros.estado = ESTADO_DISTORSION_FONDO_ACTIVO;
-    EscribeParametrosDistorsionFondo(parametros);
-    task->func = AnimTask_SketchDrawMon_Step;
-}
-
-static void AnimTask_SketchDrawMon_Step(u8 taskId)
-{
-    struct Task *task = &gTasks[taskId];
-
-    switch (task->data[4])
-    {
-    case 0:
-        if (++task->data[5] > 20)
-            task->data[4]++;
-        break;
-    case 1:
-        if (++task->data[1] > 3)
-        {
-            task->data[1] = 0;
-            task->data[2] = task->data[3] & 3;
-            task->data[5] = task->data[0] - task->data[3];
-            switch (task->data[2])
-            {
-            case 0:
-                break;
-            case 1:
-                task->data[5] -= 2;
-                break;
-            case 2:
-                task->data[5] += 1;
-                break;
-            case 3:
-                task->data[5] += 1;
-                break;
-            }
-
-            if (task->data[5] >= 0)
-            {
-                gRegistrosBuffersDistorsionFondo[0][task->data[5]] = task->data[6];
-                gRegistrosBuffersDistorsionFondo[1][task->data[5]] = task->data[6];
-            }
-
-            if (++task->data[3] >= task->data[15])
-            {
-                gDistorsionFondo.estado = ESTADO_DISTORSION_FONDO_PARAR;
-                DestroyAnimVisualTask(taskId);
-            }
-        }
-        break;
-    }
-}
-
 static void AnimPencil(struct Sprite *sprite)
 {
     sprite->x = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X) - 16;
@@ -2847,7 +2759,7 @@ void AnimTask_LoadMusicNotesPals(u8 taskId)
     for (i = 1; i < NUM_MUSIC_NOTE_PAL_TAGS; i++)
         paletteNums[i] = AllocSpritePalette(TAG_MUSIC_NOTES_TEMP_BASE + (i - 1));
 
-    gMonSpritesGfxPtr->buffer = AllocZeroed(MON_PIC_SIZE * MAX_MON_PIC_FRAMES);
+    gMonSpritesGfxPtr->buffer = AllocZeroed(MON_PIC_SIZE * NUMERO_FRAMES_POKEMON);
     LZDecompressWram(gBattleAnimSpritePal_MusicNotes2, gMonSpritesGfxPtr->buffer);
 
     for (i = 0; i < NUM_MUSIC_NOTE_PAL_TAGS; i++)

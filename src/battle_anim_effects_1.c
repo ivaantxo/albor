@@ -81,10 +81,10 @@ static void AnimBowMon_Step3(struct Sprite *);
 static void AnimBowMon_Step4(struct Sprite *);
 static void AnimBowMon_Step3_Callback(struct Sprite *);
 static void AnimSlashSlice(struct Sprite *);
-static void AnimFalseSwipeSlice(struct Sprite *);
-static void AnimFalseSwipeSlice_Step1(struct Sprite *);
-static void AnimFalseSwipeSlice_Step2(struct Sprite *);
-static void AnimFalseSwipePositionedSlice(struct Sprite *);
+static void AnimCorteAcuaticoSlice(struct Sprite *);
+static void AnimCorteAcuaticoSlice_Step1(struct Sprite *);
+static void AnimCorteAcuaticoSlice_Step2(struct Sprite *);
+static void AnimCorteAcuaticoPositionedSlice(struct Sprite *);
 static void AnimEndureEnergy_Step(struct Sprite *);
 static void AnimSharpenSphere(struct Sprite *);
 static void AnimSharpenSphere_Step(struct Sprite *);
@@ -1606,7 +1606,7 @@ const struct SpriteTemplate gSlashSliceSpriteTemplate =
     .callback = AnimSlashSlice,
 };
 
-const struct SpriteTemplate gFalseSwipeSliceSpriteTemplate =
+const struct SpriteTemplate gCorteAcuaticoSliceSpriteTemplate =
 {
     .tileTag = ANIM_TAG_SLASH_2,
     .paletteTag = ANIM_TAG_SLASH_2,
@@ -1614,10 +1614,10 @@ const struct SpriteTemplate gFalseSwipeSliceSpriteTemplate =
     .anims = gSlashSliceAnimTable,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimFalseSwipeSlice,
+    .callback = AnimCorteAcuaticoSlice,
 };
 
-const struct SpriteTemplate gFalseSwipePositionedSliceSpriteTemplate =
+const struct SpriteTemplate gCorteAcuaticoPositionedSliceSpriteTemplate =
 {
     .tileTag = ANIM_TAG_SLASH_2,
     .paletteTag = ANIM_TAG_SLASH_2,
@@ -1625,7 +1625,7 @@ const struct SpriteTemplate gFalseSwipePositionedSliceSpriteTemplate =
     .anims = gSlashSliceAnimTable,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimFalseSwipePositionedSlice,
+    .callback = AnimCorteAcuaticoPositionedSlice,
 };
 
 const union AnimCmd gEndureEnergyAnimCmds[] =
@@ -5534,48 +5534,48 @@ static void AnimSlashSlice(struct Sprite *sprite)
 
     sprite->data[0] = 0;
     sprite->data[1] = 0;
-    StoreSpriteCallbackInData6(sprite, AnimFalseSwipeSlice_Step3);
+    StoreSpriteCallbackInData6(sprite, AnimCorteAcuaticoSlice_Step3);
     sprite->callback = RunStoredCallbackWhenAnimEnds;
 }
 
-static void AnimFalseSwipeSlice(struct Sprite *sprite)
+static void AnimCorteAcuaticoSlice(struct Sprite *sprite)
 {
     sprite->x = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X_2) + 0xFFD0;
     sprite->y = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y_PIC_OFFSET);
-    StoreSpriteCallbackInData6(sprite, AnimFalseSwipeSlice_Step1);
+    StoreSpriteCallbackInData6(sprite, AnimCorteAcuaticoSlice_Step1);
     sprite->callback = RunStoredCallbackWhenAnimEnds;
 }
 
-static void AnimFalseSwipePositionedSlice(struct Sprite *sprite)
+static void AnimCorteAcuaticoPositionedSlice(struct Sprite *sprite)
 {
     sprite->x = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X_2) - 48 + gBattleAnimArgs[0];
     sprite->y = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y_PIC_OFFSET);
     StartSpriteAnim(sprite, 1);
     sprite->data[0] = 0;
     sprite->data[1] = 0;
-    sprite->callback = AnimFalseSwipeSlice_Step3;
+    sprite->callback = AnimCorteAcuaticoSlice_Step3;
 }
 
-static void AnimFalseSwipeSlice_Step1(struct Sprite *sprite)
+static void AnimCorteAcuaticoSlice_Step1(struct Sprite *sprite)
 {
     if (++sprite->data[0] > 8)
     {
         sprite->data[0] = 12;
         sprite->data[1] = 8;
         sprite->data[2] = 0;
-        StoreSpriteCallbackInData6(sprite, AnimFalseSwipeSlice_Step2);
+        StoreSpriteCallbackInData6(sprite, AnimCorteAcuaticoSlice_Step2);
         sprite->callback = TranslateSpriteLinear;
     }
 }
 
-static void AnimFalseSwipeSlice_Step2(struct Sprite *sprite)
+static void AnimCorteAcuaticoSlice_Step2(struct Sprite *sprite)
 {
     sprite->data[0] = 0;
     sprite->data[1] = 0;
-    sprite->callback = AnimFalseSwipeSlice_Step3;
+    sprite->callback = AnimCorteAcuaticoSlice_Step3;
 }
 
-void AnimFalseSwipeSlice_Step3(struct Sprite *sprite)
+void AnimCorteAcuaticoSlice_Step3(struct Sprite *sprite)
 {
     if (++sprite->data[0] > 1)
     {

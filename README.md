@@ -101,6 +101,7 @@ Es un hackrom en castellano que está en desarrollo, que usa la pokeemerald-expa
     *Sorpresa solo tiene 1 de prioridad, por lo que puede ser superado por otros ataques "normales" de prioridad.
     *Todos los movimientos de prioridad se establecen en 3 niveles: prioridad 1, para ataques de prioridad "normales", incluyendo Sorpresa; prioridad 2, para movimientos de prioridad "especiales", como Velocidad extrema o Palma rauda; y prioridad 3, para Protección.
     *Se han reducido muchísimo todos los posibles efectos de amedrentar/retroceder, tanto por objetos como por movimientos: Solo es posible mediante Sorpresa (nerfeada su prioridad) y por Palma rauda.
+    *Danza aleteo ahora solo sube ataque especial y velocidad, no defensa especial. Además, algunos Pokémon tipo Volador/Dragón pueden aprenderlo (Charizard, Pidgeot).
 
 ## Cambios a mecánicas distintas de batalla:
     *El juego cuenta con un sistema de avance del tiempo que no es a partir del tiempo del sistema, sino por la cantidad de frames que pasan en el juego: Cada segundo de tiempo real en el juego equivalen a 20 segundos, es decir, 3 minutos son 1 hora. 

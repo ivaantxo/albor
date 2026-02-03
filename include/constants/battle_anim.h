@@ -522,7 +522,6 @@ enum AnimacionesGeneralesBatalla //(sBattleAnims_General)
     B_ANIM_FORM_CHANGE,
     B_ANIM_SLIDE_OFFSCREEN, // Sin usar
     B_ANIM_RESTORE_BG, // for Terrain Endings
-    B_ANIM_GULP_MISSILE,
     B_ANIM_AQUA_RING_HEAL,
     B_ANIM_SNOW_CONTINUES,
     B_ANIM_TRICK_ROOM,

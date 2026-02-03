@@ -261,10 +261,6 @@ $(BTLANMSPRGFXDIR)/ice_cube.4bpp: $(BTLANMSPRGFXDIR)/ice_cube_0.4bpp \
                                   $(BTLANMSPRGFXDIR)/ice_cube_3.4bpp
 	@cat $^ >$@
 
-$(BATINTGFXDIR)/battle_bar.4bpp: $(BATINTGFXDIR)/numbers1.4bpp \
-                                 $(BATINTGFXDIR)/numbers2.4bpp
-	@cat $^ >$@
-
 $(BTLANMSPRGFXDIR)/ice_crystals.4bpp: $(BTLANMSPRGFXDIR)/ice_crystals_0.4bpp \
                                       $(BTLANMSPRGFXDIR)/ice_crystals_1.4bpp \
                                       $(BTLANMSPRGFXDIR)/ice_crystals_2.4bpp \

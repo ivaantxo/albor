@@ -403,7 +403,7 @@ struct PokemonStorageSystemData
     u16 *displayMonTilePtr;
     struct Sprite *displayMonSprite;
     u16 displayMonPalBuffer[64];
-    u8 ALIGNED(4) tileBuffer[MON_PIC_SIZE * MAX_MON_PIC_FRAMES];
+    u8 ALIGNED(4) tileBuffer[MON_PIC_SIZE * NUMERO_FRAMES_POKEMON];
     u8 ALIGNED(4) itemIconBuffer[2048];
     u8 ALIGNED(4) displayMenuTilemapBuffer[4096];
     u8 ALIGNED(4) eggPalette[2];

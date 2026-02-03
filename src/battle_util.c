@@ -2919,10 +2919,6 @@ u32 CanAbilityAbsorbMove(u32 battlerAtk, u32 battlerDef, u32 abilityDef, u32 mov
         if (moveType == TIPO_PLANTA)
             effect = MOVE_ABSORBED_BY_STAT_INCREASE_ABILITY;
         break;
-    case ABILITY_WELL_BAKED_BODY:
-        if (moveType == TIPO_FUEGO)
-            effect = MOVE_ABSORBED_BY_STAT_INCREASE_ABILITY;
-        break;
     case ABILITY_WIND_RIDER:
         if (gMovesInfo[move].windMove && !(GetBattlerMoveTargetType(battlerAtk, move) & MOVE_TARGET_USER))
             effect = MOVE_ABSORBED_BY_STAT_INCREASE_ABILITY;
@@ -3574,10 +3570,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 case ABILITY_SAP_SIPPER:
                 case ABILITY_WIND_RIDER:
                     statId = ESTADISTICA_ATAQUE;
-                    break;
-                case ABILITY_WELL_BAKED_BODY:
-                    statAmount = 2;
-                    statId = ESTADISTICA_DEFENSA;
                     break;
                 }
             }
@@ -6594,11 +6586,6 @@ static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData
             basePower *= 2;
         }
         break;
-    case EFFECT_BOLT_BEAK:
-        if (GetBattlerTurnOrderNum(battlerAtk) < GetBattlerTurnOrderNum(battlerDef)
-            || gDisableStructs[battlerDef].isFirstTurn == 2)
-            basePower *= 2;
-        break;
     case EFFECT_FUSION_COMBO:
         if (gMovesInfo[gLastUsedMove].effect == EFFECT_FUSION_COMBO && move != gLastUsedMove)
             basePower *= 2;
@@ -6608,10 +6595,6 @@ static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData
             basePower *= 2;
         break;
     case EFFECT_EXPLOSION:
-        break;
-    case EFFECT_EXPANDING_FORCE:
-        break;
-    case EFFECT_RISING_VOLTAGE:
         break;
     case EFFECT_PSYBLADE:
         break;
@@ -7032,10 +7015,6 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
         if (IsBattlerWeatherAffected(battlerAtk, B_WEATHER_SUN))
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.25));
         break;
-    case ABILITY_DEFEATIST:
-        if (gBattleMons[battlerAtk].hp <= (gBattleMons[battlerAtk].maxHP / 2))
-            modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(0.5));
-        break;
     case ABILITY_FLASH_FIRE:
         if (moveType == TIPO_FUEGO && gBattleResources->flags->flags[battlerAtk] & RESOURCE_FLAG_FLASH_FIRE)
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.5));
@@ -7073,10 +7052,6 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
     case ABILITY_HUSTLE:
         if (ES_MOVIMIENTO_FISICO(move))
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.5));
-        break;
-    case ABILITY_STAKEOUT:
-        if (gDisableStructs[battlerDef].isFirstTurn == 2) // just switched in
-            modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(2.0));
         break;
     case ABILITY_AGALLAS:
         if (gBattleMons[battlerAtk].status1 & STATUS1_ANY)
@@ -7477,20 +7452,6 @@ static inline uq4_12_t GetDefenderAbilitiesModifier(u32 move, u32 moveType, u32 
     return UQ_4_12(1.0);
 }
 
-static inline uq4_12_t GetDefenderPartnerAbilitiesModifier(u32 battlerPartnerDef)
-{
-    if (!IsBattlerAlive(battlerPartnerDef))
-        return UQ_4_12(1.0);
-
-    switch (GetBattlerAbility(battlerPartnerDef))
-    {
-    case ABILITY_FRIEND_GUARD:
-        return UQ_4_12(0.75);
-        break;
-    }
-    return UQ_4_12(1.0);
-}
-
 static inline uq4_12_t GetAttackerItemsModifier(u32 battlerAtk, uq4_12_t typeEffectivenessModifier, u32 holdEffectAtk)
 {
     u32 percentBoost;
@@ -7569,14 +7530,12 @@ static inline uq4_12_t GetOtherModifiers(struct DamageCalculationData *damageCal
     {
         DAMAGE_MULTIPLY_MODIFIER(GetAttackerAbilitiesModifier(battlerAtk, typeEffectivenessModifier, isCrit, abilityAtk));
         DAMAGE_MULTIPLY_MODIFIER(GetDefenderAbilitiesModifier(move, moveType, battlerAtk, battlerDef, typeEffectivenessModifier, abilityDef));
-        DAMAGE_MULTIPLY_MODIFIER(GetDefenderPartnerAbilitiesModifier(battlerDefPartner));
         DAMAGE_MULTIPLY_MODIFIER(GetAttackerItemsModifier(battlerAtk, typeEffectivenessModifier, holdEffectAtk));
         DAMAGE_MULTIPLY_MODIFIER(GetDefenderItemsModifier(damageCalcData, typeEffectivenessModifier, abilityDef, holdEffectDef));
     }
     else
     {
         DAMAGE_MULTIPLY_MODIFIER(GetDefenderAbilitiesModifier(move, moveType, battlerAtk, battlerDef, typeEffectivenessModifier, abilityDef));
-        DAMAGE_MULTIPLY_MODIFIER(GetDefenderPartnerAbilitiesModifier(battlerDefPartner));
         DAMAGE_MULTIPLY_MODIFIER(GetAttackerAbilitiesModifier(battlerAtk, typeEffectivenessModifier, isCrit, abilityAtk));
         DAMAGE_MULTIPLY_MODIFIER(GetDefenderItemsModifier(damageCalcData, typeEffectivenessModifier, abilityDef, holdEffectDef));
         DAMAGE_MULTIPLY_MODIFIER(GetAttackerItemsModifier(battlerAtk, typeEffectivenessModifier, holdEffectAtk));

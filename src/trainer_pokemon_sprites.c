@@ -14,7 +14,7 @@
 
 // Needs to be large enough to store either a decompressed Pokémon pic or trainer pic
 #define PIC_SPRITE_SIZE max(MON_PIC_SIZE, TRAINER_PIC_SIZE)
-#define MAX_PIC_FRAMES  max(MAX_MON_PIC_FRAMES, MAX_TRAINER_PIC_FRAMES)
+#define MAX_PIC_FRAMES  max(NUMERO_FRAMES_POKEMON, MAX_TRAINER_PIC_FRAMES)
 
 struct PicData
 {
@@ -198,7 +198,7 @@ u16 CreateMonPicSprite_Affine(u16 species, bool8 isShiny, u32 personality, u8 fl
     if (i == PICS_COUNT)
         return 0xFFFF;
 
-    framePics = Alloc(MON_PIC_SIZE * MAX_MON_PIC_FRAMES);
+    framePics = Alloc(MON_PIC_SIZE * NUMERO_FRAMES_POKEMON);
     if (!framePics)
         return 0xFFFF;
 
@@ -211,7 +211,7 @@ u16 CreateMonPicSprite_Affine(u16 species, bool8 isShiny, u32 personality, u8 fl
     {
         type = flags;
     }
-    images = Alloc(sizeof(struct SpriteFrameImage) * MAX_MON_PIC_FRAMES);
+    images = Alloc(sizeof(struct SpriteFrameImage) * NUMERO_FRAMES_POKEMON);
     if (!images)
     {
         Free(framePics);
@@ -222,7 +222,7 @@ u16 CreateMonPicSprite_Affine(u16 species, bool8 isShiny, u32 personality, u8 fl
         // debug trap?
         return 0xFFFF;
     }
-    for (j = 0; j < MAX_MON_PIC_FRAMES; j ++)
+    for (j = 0; j < NUMERO_FRAMES_POKEMON; j ++)
     {
         images[j].data = framePics + MON_PIC_SIZE * j;
         images[j].size = MON_PIC_SIZE;

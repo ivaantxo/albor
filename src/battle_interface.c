@@ -1061,27 +1061,8 @@ static void UpdateOpponentHpTextDoubles(u32 healthboxSpriteId, u32 barSpriteId, 
         if (!maxOrCurrent)
             StringCopy(txtPtr, gText_Slash);
 
-        for (i = var; i < var + 3; i++)
-        {
-            if (i < 3)
-            {
-                CopiaCpu32(&gMonSpritesGfxPtr->barFontGfx[((i - var) * 64) + 32],
-                      (void *)((OBJ_VRAM0) + 32 * (1 + gSprites[barSpriteId].oam.tileNum + i)),
-                      0x20);
-            }
-            else
-            {
-                CopiaCpu32(&gMonSpritesGfxPtr->barFontGfx[((i - var) * 64) + 32],
-                      (void *)((OBJ_VRAM0 + 0x20) + 32 * (i + gSprites[barSpriteId].oam.tileNum)),
-                      0x20);
-            }
-        }
-
         if (maxOrCurrent == HP_CURRENT)
         {
-            CopiaCpu32(&gMonSpritesGfxPtr->barFontGfx[224],
-                      (void *)((OBJ_VRAM0) + ((gSprites[barSpriteId].oam.tileNum + 4) * TILE_4BPP)),
-                      0x20);
             CpuFill32(0, (void *)((OBJ_VRAM0) + (gSprites[barSpriteId].oam.tileNum * TILE_4BPP)), 0x20);
         }
     }
@@ -1103,13 +1084,6 @@ static void UpdateOpponentHpTextSingles(u32 healthboxSpriteId, s16 value, u32 ma
             var = 49;
 
         ConvertIntToDecimalStringN(text + 6, value, STR_CONV_MODE_LEADING_ZEROS, 3);
-
-        for (i = 0; i < 3; i++)
-        {
-            CopiaCpu32(&gMonSpritesGfxPtr->barFontGfx[i * 64 + 32],
-                      (void *)((OBJ_VRAM0) + TILE_4BPP * (gSprites[healthboxSpriteId].oam.tileNum + var + i)),
-                      0x20);
-        }
     }
 }
 
@@ -1859,7 +1833,6 @@ void UpdateHealthboxAttribute(u8 healthboxSpriteId, struct Pokemon *mon, u8 elem
 
         if (elementId == HEALTHBOX_HEALTH_BAR || elementId == HEALTHBOX_ALL)
         {
-            LoadBattleBarGfx();
             SetBattleBarStruct(battlerId, healthboxSpriteId, maxHp, currHp, 0);
             MoveBattleBar(battlerId, healthboxSpriteId, HEALTH_BAR);
         }
@@ -1871,7 +1844,6 @@ void UpdateHealthboxAttribute(u8 healthboxSpriteId, struct Pokemon *mon, u8 elem
             s32 currExpBarValue, maxExpBarValue;
             u8 level;
 
-            LoadBattleBarGfx();
             species = GetMonData(mon, MON_DATA_SPECIES);
             level = GetMonData(mon, MON_DATA_LEVEL);
             exp = GetMonData(mon, MON_DATA_EXP);
@@ -1901,7 +1873,6 @@ void UpdateHealthboxAttribute(u8 healthboxSpriteId, struct Pokemon *mon, u8 elem
         }
         if (elementId == HEALTHBOX_HEALTH_BAR || elementId == HEALTHBOX_ALL)
         {
-            LoadBattleBarGfx();
             SetBattleBarStruct(battlerId, healthboxSpriteId, maxHp, currHp, 0);
             MoveBattleBar(battlerId, healthboxSpriteId, HEALTH_BAR);
         }

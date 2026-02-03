@@ -333,7 +333,6 @@ struct MoveInfo
     u32 instructBanned:1;
     u32 encoreBanned:1;
     u32 parentalBondBanned:1;
-    u32 sketchBanned:1;
 
     u32 argument;
 
@@ -363,7 +362,7 @@ struct Ability
     u8 name[ABILITY_NAME_LENGTH + 1];
     const u8 *description;
     s8 aiRating;
-    u8 cantBeCopied:1; // cannot be copied by Role Play or Doodle
+    u8 cantBeCopied:1; // cannot be copied by Role Play
     u8 cantBeSwapped:1; // cannot be swapped with Skill Swap or Wandering Spirit
     u8 cantBeTraced:1; // cannot be copied by Trace - same as cantBeCopied except for Wonder Guard
     u8 cantBeSuppressed:1; // cannot be negated by Gastro Acid or Neutralizing Gas

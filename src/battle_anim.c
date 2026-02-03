@@ -205,7 +205,6 @@ static const u8* const sBattleAnims_General[NUM_B_ANIMS_GENERAL] =
     [B_ANIM_FORM_CHANGE]            = gBattleAnimGeneral_FormChange,
     [B_ANIM_SLIDE_OFFSCREEN]        = gBattleAnimGeneral_SlideOffScreen,
     [B_ANIM_RESTORE_BG]             = gBattleAnimGeneral_RestoreBg,
-    [B_ANIM_GULP_MISSILE]           = gBattleAnimGeneral_GulpMissile,
     [B_ANIM_AQUA_RING_HEAL]         = gBattleAnimGeneral_AquaRingHeal,
     [B_ANIM_SNOW_CONTINUES]         = gBattleAnimGeneral_Snow,
     [B_ANIM_TRICK_ROOM]             = gBattleAnimGeneral_TrickRoom,
@@ -290,7 +289,6 @@ void LaunchBattleAnimation(u32 animType, u32 animId)
         case B_ANIM_FUTURE_SIGHT_HIT:
         case B_ANIM_DOOM_DESIRE_HIT:
         case B_ANIM_WISH_HEAL:
-        case B_ANIM_GULP_MISSILE:
             sAnimHideHpBoxes = TRUE;
             break;
         default:

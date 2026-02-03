@@ -1701,7 +1701,6 @@ void BtlController_HandleHealthBarUpdate(u32 battler, bool32 updateHpText)
     s16 hpVal;
     struct Pokemon *party = GetBattlerParty(battler);
 
-    LoadBattleBarGfx();
     hpVal = gBattleResources->bufferA[battler][2] | (gBattleResources->bufferA[battler][3] << 8);
     maxHP = GetMonData(&party[gBattlerPartyIndexes[battler]], MON_DATA_MAX_HP);
     curHP = GetMonData(&party[gBattlerPartyIndexes[battler]], MON_DATA_HP);

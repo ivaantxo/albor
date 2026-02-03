@@ -279,7 +279,6 @@ enum ResultadosCombate
 #define MOVE_EFFECT_SP_DEF_MINUS_1      26
 #define MOVE_EFFECT_ACC_MINUS_1         27
 #define MOVE_EFFECT_EVS_MINUS_1         28
-#define MOVE_EFFECT_REMOVE_ARG_TYPE     29
 #define MOVE_EFFECT_RECHARGE            30
 #define MOVE_EFFECT_RAGE                31
 #define MOVE_EFFECT_STEAL_ITEM          32

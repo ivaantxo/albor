@@ -236,7 +236,7 @@ void InitStatsChangeAnimation(u8);
 void StartMonScrollingBgMask(u8 taskId, u16 scrollSpeed, u8 battler, bool8 includePartner, u8 numFadeSteps, u8 fadeStepDelay, u8 duration, const u32 *gfx, const u32 *tilemap, const u32 *palette);
 
 // battle_anim_effects_1.c
-void AnimFalseSwipeSlice_Step3(struct Sprite *);
+void AnimCorteAcuaticoSlice_Step3(struct Sprite *);
 void SetSpriteNextToMonHead(u8 battler, struct Sprite *sprite);
 void AnimMoveTwisterParticle(struct Sprite *sprite);
 void AnimParticleBurst(struct Sprite *);

@@ -4989,7 +4989,7 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
     X(SE_M_GUST2) \
     X(SE_M_DOUBLE_SLAP) \
     X(SE_M_DOUBLE_TEAM) \
-    X(SE_M_RAZOR_WIND) \
+    X(SE_M_VIENTO_CORTANTE) \
     X(SE_M_ICY_WIND) \
     X(SE_M_THUNDER_WAVE) \
     X(SE_M_COMET_PUNCH) \
@@ -5013,7 +5013,7 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
     X(SE_M_WING_ATTACK) \
     X(SE_M_FLY) \
     X(SE_M_SAND_ATTACK) \
-    X(SE_M_RAZOR_WIND2) \
+    X(SE_M_VIENTO_CORTANTE2) \
     X(SE_M_BITE) \
     X(SE_M_HEADBUTT) \
     X(SE_M_SURF) \

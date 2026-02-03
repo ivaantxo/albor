@@ -855,11 +855,6 @@
 	.byte BATTLE_CMD_setalwayshitflag
 	.endm
 
-	.macro copymovepermanently failInstr:req
-	.byte BATTLE_CMD_copymovepermanently
-	.4byte \failInstr
-	.endm
-
 	.macro trychoosesleeptalkmove failInstr:req
 	.byte BATTLE_CMD_trychoosesleeptalkmove
 	.4byte \failInstr
@@ -1370,14 +1365,6 @@
 	.macro trypalmarauda failInstr:req
 	callnative BS_TryPalmaRauda
 	.4byte \failInstr
-	.endm
-
-	.macro trygulpmissile
-	callnative BS_TryGulpMissile
-	.endm
-
-	.macro tryactivategulpmissile
-	callnative BS_TryActivateGulpMissile
 	.endm
 
 	.macro copyfoesstatincrease battler:req, failInstr:req

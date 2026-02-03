@@ -4453,7 +4453,7 @@ static void SetMoveSpecificAnimData(u8 contestant)
         gContestResources->moveAnim->hasTargetAnim = TRUE;
         break;
     case MOVE_SOLAR_BEAM:
-    case MOVE_RAZOR_WIND:
+    case MOVE_VIENTO_CORTANTE:
     case MOVE_SKULL_BASH:
         if (eContest.moveAnimTurnCount == 0)
         {

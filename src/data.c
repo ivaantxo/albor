@@ -209,7 +209,7 @@ static const union AnimCmd sAnim_MonPic_1[] =
     ANIMCMD_END,
 };
 
-const union AnimCmd *const gAnims_MonPic[MAX_MON_PIC_FRAMES] =
+const union AnimCmd *const gAnims_MonPic[NUMERO_FRAMES_POKEMON] =
 {
     sAnim_MonPic_0,
     sAnim_MonPic_1,

@@ -1976,7 +1976,6 @@ bool32 IsAttackBoostMoveEffect(u32 effect)
     case EFFECT_BELLY_DRUM:
     case EFFECT_BULK_UP:
     case EFFECT_GROWTH:
-    case EFFECT_FILLET_AWAY:
     case EFFECT_AMOLADORAS:
         return TRUE;
     default:
@@ -2016,9 +2015,8 @@ bool32 IsStatRaisingEffect(u32 effect)
     case EFFECT_ATTACK_SPATK_UP:
     case EFFECT_GROWTH:
     case EFFECT_COIL:
-    case EFFECT_QUIVER_DANCE:
+    case EFECTO_SUBE_ATAQUE_ESPECIAL_VELOCIDAD:
     case EFFECT_BULK_UP:
-    case EFFECT_GEOMANCY:
     case EFFECT_STOCKPILE:
     case EFFECT_VICTORY_DANCE:
     case EFFECT_AMOLADORAS:
@@ -2094,8 +2092,6 @@ bool32 IsSwitchOutEffect(u32 effect)
     case EFFECT_HIT_ESCAPE:
     case EFFECT_PARTING_SHOT:
     case EFECTO_RELEVO:
-    case EFFECT_CHILLY_RECEPTION:
-    case EFFECT_SHED_TAIL:
         return TRUE;
     default:
         return FALSE;
@@ -3015,8 +3011,7 @@ bool32 IsMoveEffectWeather(u32 move)
       || gMovesInfo[move].effect == EFFECT_RAIN_DANCE
       || gMovesInfo[move].effect == EFFECT_SANDSTORM
       || gMovesInfo[move].effect == EFFECT_HAIL
-      || gMovesInfo[move].effect == EFFECT_SNOWSCAPE
-      || gMovesInfo[move].effect == EFFECT_CHILLY_RECEPTION))
+      || gMovesInfo[move].effect == EFFECT_SNOWSCAPE))
         return TRUE;
     return FALSE;
 }
@@ -3641,12 +3636,6 @@ void IncreaseSubstituteMoveScore(u32 battlerAtk, u32 battlerDef, u32 move, s32 *
     {
         if (HasAnyKnownMove(battlerDef) && GetBestDmgFromBattler(battlerDef, battlerAtk) < gBattleMons[battlerAtk].maxHP / 4)
             ADJUST_SCORE_PTR(GOOD_EFFECT);
-    }
-    else if (gMovesInfo[move].effect == EFFECT_SHED_TAIL) // Shed Tail specific
-    {
-        if ((ShouldPivot(battlerAtk, battlerDef, AI_DATA->abilities[battlerDef], move, AI_THINKING_STRUCT->movesetIndex))
-        && (HasAnyKnownMove(battlerDef) && (GetBestDmgFromBattler(battlerDef, battlerAtk) < gBattleMons[battlerAtk].maxHP / 2)))
-            ADJUST_SCORE_PTR(BEST_EFFECT);
     }
 
     if (gStatuses3[battlerDef] & STATUS3_PERISH_SONG)

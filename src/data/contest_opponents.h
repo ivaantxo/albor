@@ -369,7 +369,7 @@ const struct ContestPokemon gContestOpponents[] =
         .moves =
         {
             MOVE_LEECH_LIFE,
-            MOVE_FALSE_SWIPE,
+            MOVE_POUND,
             MOVE_FURY_SWIPES,
             MOVE_MIND_READER
         },
@@ -1557,7 +1557,7 @@ const struct ContestPokemon gContestOpponents[] =
         .moves =
         {
             MOVE_GROWTH,
-            MOVE_RAZOR_WIND,
+            MOVE_VIENTO_CORTANTE,
             MOVE_EXPLOSION,
             MOVE_EXTRASENSORY
         },
