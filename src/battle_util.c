@@ -3273,15 +3273,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 }
             }
             break;
-        case ABILITY_PRESSURE:
-            if (!gSpecialStatuses[battler].switchInAbilityDone)
-            {
-                gMensajeBatalla = B_MSG_SWITCHIN_PRESSURE;
-                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
-                BattleScriptPushCursorAndCallback(BattleScript_SwitchInAbilityMsg);
-                effect++;
-            }
-            break;
         case ABILITY_GENERADOR:
             if (!gSpecialStatuses[battler].switchInAbilityDone)
             {
@@ -4171,7 +4162,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             && gBattleMons[gBattlerTarget].hp != 0
             && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
             && CanBePoisoned(gBattlerTarget, GetBattlerAbility(gBattlerTarget))
-            && (gMovesInfo[move].movimientoPunzante)
+            && (gMovesInfo[move].punzante)
             && GetBattlerHoldEffect(gBattlerAttacker, TRUE) != HOLD_EFFECT_PROTECTIVE_PADS
             && IsMoveMakingContact(move, gBattlerAttacker)
              && IsBattlerTurnDamaged(gBattlerTarget)
@@ -6721,7 +6712,7 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
            modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
         break;
     case ABILITY_CARPINTERO:
-        if (gMovesInfo[move].movimientoPunzante)
+        if (gMovesInfo[move].punzante)
            modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
         break;
     case ABILITY_MARTILLADOR:
@@ -6733,7 +6724,7 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
            modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
         break;
     case ABILITY_CORNAMENTA:
-        if (gMovesInfo[move].movimientoPunzante)
+        if (gMovesInfo[move].punzante)
            modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
         break;
     case ABILITY_LENGUALARGA:

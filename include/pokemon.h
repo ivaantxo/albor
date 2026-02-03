@@ -300,7 +300,7 @@ struct MoveInfo
     u32 bitingMove:1;
     u32 soundMove:1;
     u32 balistico:1;
-    u32 movimientoPunzante:1;
+    u32 punzante:1;
     u32 hammerMove:1;
     u32 tailMove:1;
     u32 powderMove:1;
@@ -317,7 +317,6 @@ struct MoveInfo
     u32 damagesAirborneDoubleDamage:1;
     u32 ignoreTypeIfFlyingAndUngrounded:1;
     u32 ignoresSubstitute:1;
-    u32 forcePressure:1;
     u32 cantUseTwice:1;
     u32 headMove:1;
     u32 eyesMove:1;

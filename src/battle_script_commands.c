@@ -1482,23 +1482,6 @@ static void Cmd_ppreduce(void)
     if (gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS)
         gHitMarker |= HITMARKER_NO_PPDEDUCT;
 
-    if (moveTarget == MOVE_TARGET_BOTH
-        || moveTarget == MOVE_TARGET_FOES_AND_ALLY
-        || moveTarget == MOVE_TARGET_ALL_BATTLERS
-        || gMovesInfo[gCurrentMove].forcePressure)
-    {
-        for (i = 0; i < gBattlersCount; i++)
-        {
-            if (GetBattlerSide(i) != GetBattlerSide(gBattlerAttacker) && IsBattlerAlive(i))
-                ppToDeduct += (GetBattlerAbility(i) == ABILITY_PRESSURE);
-        }
-    }
-    else if (moveTarget != MOVE_TARGET_OPPONENTS_FIELD)
-    {
-        if (gBattlerAttacker != gBattlerTarget && GetBattlerAbility(gBattlerTarget) == ABILITY_PRESSURE)
-             ppToDeduct++;
-    }
-
     if (!(gHitMarker & (HITMARKER_NO_PPDEDUCT | HITMARKER_NO_ATTACKSTRING)) && gBattleMons[gBattlerAttacker].pp[gCurrMovePos])
     {
         gProtectStructs[gBattlerAttacker].notFirstStrike = TRUE;

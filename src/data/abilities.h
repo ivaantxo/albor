@@ -335,13 +335,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 9,
     },
 
-    [ABILITY_PRESSURE] =
-    {
-        .name = _("Pressure"),
-        .description = COMPOUND_STRING("Raises foe's PP usage."),
-        .aiRating = 5,
-    },
-
     [ABILITY_SEBO] =
     {
         .name = _("Sebo"),
