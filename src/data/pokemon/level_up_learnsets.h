@@ -1998,18 +1998,6 @@ static const struct LevelUpMove sPangoroLevelUpLearnset[] = {
     LEVEL_UP_END
 };
 
-static const struct LevelUpMove sHonedgeLevelUpLearnset[] = {
-    LEVEL_UP_END
-};
-
-static const struct LevelUpMove sDoubladeLevelUpLearnset[] = {
-    LEVEL_UP_END
-};
-
-static const struct LevelUpMove sAegislashLevelUpLearnset[] = {
-    LEVEL_UP_END
-};
-
 static const struct LevelUpMove sTyruntLevelUpLearnset[] = {
     LEVEL_UP_END
 };

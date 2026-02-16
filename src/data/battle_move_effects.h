@@ -772,11 +772,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectHit,
     },
 
-    [EFFECT_ENDEAVOR] =
-    {
-        .battleScript = BattleScript_EffectEndeavor,
-    },
-
     [EFFECT_POWER_BASED_ON_USER_HP] =
     {
         .battleScript = BattleScript_EffectHit,
@@ -1036,11 +1031,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_METAL_BURST] =
-    {
-        .battleScript = BattleScript_EffectMetalBurst,
-    },
-
     [EFFECT_LUCKY_CHANT] =
     {
         .battleScript = BattleScript_EffectLuckyChant,
@@ -1154,11 +1144,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_HIT_SWITCH_TARGET] =
     {
         .battleScript = BattleScript_EffectHitSwitchTarget,
-    },
-
-    [EFFECT_FINAL_GAMBIT] =
-    {
-        .battleScript = BattleScript_EffectFinalGambit,
     },
 
     [EFFECT_CHANGE_TYPE_ON_ITEM] =

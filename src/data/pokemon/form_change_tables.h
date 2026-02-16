@@ -39,10 +39,3 @@ static const struct FormChange sDarmanitanGalarFormChangeTable[] = {
     {FORM_CHANGE_END_BATTLE,        SPECIES_DARMANITAN_GALAR_STANDARD},
     {FORM_CHANGE_TERMINATOR},
 };
-
-static const struct FormChange sAegislashFormChangeTable[] = {
-    {FORM_CHANGE_BATTLE_SWITCH, SPECIES_AEGISLASH_SHIELD},
-    {FORM_CHANGE_FAINT,         SPECIES_AEGISLASH_SHIELD},
-    {FORM_CHANGE_END_BATTLE,    SPECIES_AEGISLASH_SHIELD},
-    {FORM_CHANGE_TERMINATOR},
-};

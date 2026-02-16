@@ -1230,11 +1230,6 @@
 	callnative BS_RestoreAttacker
 	.endm
 
-	.macro metalburstdamagecalculator failInstr:req
-	callnative BS_CalcMetalBurstDmg
-	.4byte \failInstr
-	.endm
-
 	.macro itemstatchangeeffects battler:req
 	callnative BS_RunStatChangeItems
 	.byte \battler

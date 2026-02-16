@@ -2202,18 +2202,6 @@ Cry_Pangoro::
 	.incbin "sound/direct_sound_samples/cries/pangoro.bin"
 
 	.align 2
-Cry_Honedge::
-	.incbin "sound/direct_sound_samples/cries/honedge.bin"
-
-	.align 2
-Cry_Doublade::
-	.incbin "sound/direct_sound_samples/cries/doublade.bin"
-
-	.align 2
-Cry_Aegislash::
-	.incbin "sound/direct_sound_samples/cries/aegislash.bin"
-
-	.align 2
 Cry_Tyrunt::
 	.incbin "sound/direct_sound_samples/cries/tyrunt.bin"
 

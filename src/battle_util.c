@@ -2722,7 +2722,6 @@ static void ForewarnChooseMove(u32 battler)
                 {
                 case EFFECT_COUNTER:
                 case EFFECT_MIRROR_COAT:
-                case EFFECT_METAL_BURST:
                     data[count].power = 120;
                     break;
                 default:

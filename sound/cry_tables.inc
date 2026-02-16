@@ -454,9 +454,6 @@ gCryTable::
 	cry Cry_Talonflame
 	cry Cry_Pancham
 	cry Cry_Pangoro
-	cry Cry_Honedge
-	cry Cry_Doublade
-	cry Cry_Aegislash
 	cry Cry_Tyrunt
 	cry Cry_Tyrantrum
 	cry Cry_Amaura
@@ -946,9 +943,6 @@ gCryTable_Reverse::
 	cry_reverse Cry_Talonflame
 	cry_reverse Cry_Pancham
 	cry_reverse Cry_Pangoro
-	cry_reverse Cry_Honedge
-	cry_reverse Cry_Doublade
-	cry_reverse Cry_Aegislash
 	cry_reverse Cry_Tyrunt
 	cry_reverse Cry_Tyrantrum
 	cry_reverse Cry_Amaura

@@ -4762,44 +4762,6 @@ static const union AnimCmd sAnim_Pangoro[] =
     ANIMCMD_END,
 };
 
-static const union AnimCmd sAnim_Honedge[] =
-{
-    ANIMCMD_FRAME(1, 50),
-    ANIMCMD_FRAME(1, 40),
-    ANIMCMD_FRAME(0, 10),
-    ANIMCMD_END,
-};
-
-static const union AnimCmd sAnim_Doublade[] =
-{
-    ANIMCMD_FRAME(0, 10),
-    ANIMCMD_FRAME(1, 10),
-    ANIMCMD_FRAME(0, 10),
-    ANIMCMD_FRAME(1, 10),
-    ANIMCMD_FRAME(0, 10),
-    ANIMCMD_END,
-};
-
-static const union AnimCmd sAnim_AegislashShield[] =
-{
-    ANIMCMD_FRAME(0, 18),
-    ANIMCMD_FRAME(1, 18),
-    ANIMCMD_FRAME(0, 18),
-    ANIMCMD_FRAME(1, 18),
-    ANIMCMD_FRAME(0, 10),
-    ANIMCMD_END,
-};
-
-static const union AnimCmd sAnim_AegislashBlade[] =
-{
-    ANIMCMD_FRAME(0, 18),
-    ANIMCMD_FRAME(1, 18),
-    ANIMCMD_FRAME(0, 18),
-    ANIMCMD_FRAME(1, 18),
-    ANIMCMD_FRAME(0, 10),
-    ANIMCMD_END,
-};
-
 static const union AnimCmd sAnim_Tyrunt[] =
 {
     ANIMCMD_FRAME(1, 10),
@@ -5476,10 +5438,6 @@ SINGLE_ANIMATION(Fletchinder);
 SINGLE_ANIMATION(Talonflame);
 SINGLE_ANIMATION(Pancham);
 SINGLE_ANIMATION(Pangoro);
-SINGLE_ANIMATION(Honedge);
-SINGLE_ANIMATION(Doublade);
-SINGLE_ANIMATION(AegislashShield);
-SINGLE_ANIMATION(AegislashBlade);
 SINGLE_ANIMATION(Tyrunt);
 SINGLE_ANIMATION(Tyrantrum);
 SINGLE_ANIMATION(Amaura);

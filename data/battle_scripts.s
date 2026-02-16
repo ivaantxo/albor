@@ -876,34 +876,6 @@ BattleScript_AutotomizeWeightLoss::
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectFinalGambit::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	critcalc
-	typecalc
-	bichalfword gMoveResultFlags, MOVE_RESULT_SUPER_EFFECTIVE | MOVE_RESULT_NOT_VERY_EFFECTIVE
-	dmgtocurrattackerhp
-	adjustdamage
-	attackanimation
-	waitanimation
-	effectivenesssound
-	hitanimation BS_TARGET
-	waitstate
-	healthbarupdate BS_TARGET
-	datahpupdate BS_TARGET
-	resultmessage
-	waitmessage PAUSA_LARGA
-	dmgtocurrattackerhp
-	healthbarupdate BS_ATTACKER
-	datahpupdate BS_ATTACKER
-	setadditionaleffects
-	tryfaintmon BS_ATTACKER
-	tryfaintmon BS_TARGET
-	jumpifmovehadnoeffect BattleScript_MoveEnd
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectHitSwitchTarget::
 	call BattleScript_EffectHit_Ret
 	tryfaintmon BS_TARGET
@@ -1351,17 +1323,6 @@ BattleScript_EffectLuckyChant::
 	printstring STRINGID_SHIELDEDFROMCRITICALHITS
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
-
-BattleScript_EffectMetalBurst::
-	attackcanceler
-	metalburstdamagecalculator BattleScript_FailedFromAtkString
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	typecalc
-	bichalfword gMoveResultFlags, MOVE_RESULT_NOT_VERY_EFFECTIVE | MOVE_RESULT_SUPER_EFFECTIVE
-	adjustdamage
-	goto BattleScript_HitFromAtkAnimation
 
 BattleScript_EffectHealingWish::
 	attackcanceler
@@ -3695,20 +3656,6 @@ BattleScript_PrintAbilityMadeIneffective::
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectEndeavor::
-	attackcanceler
-	attackstring
-	ppreduce
-	setdamagetohealthdifference BattleScript_ButItFailed
-	copyword gHpDealt, gBattleMoveDamage
-	accuracycheck BattleScript_MoveMissedPause, ACC_CURR_MOVE
-	typecalc
-	jumpifmovehadnoeffect BattleScript_HitFromAtkAnimation
-	bichalfword gMoveResultFlags, MOVE_RESULT_SUPER_EFFECTIVE | MOVE_RESULT_NOT_VERY_EFFECTIVE
-	copyword gBattleMoveDamage, gHpDealt
-	adjustdamage
-	goto BattleScript_HitFromAtkAnimation
-
 BattleScript_EffectSkillSwap::
 	attackcanceler
 	attackstring
@@ -5071,13 +5018,6 @@ BattleScript_SnatchedMove::
 	swapattackerwithtarget
 	return
 
-BattleScript_SturdiedMsg::
-	pause PAUSA_MUY_CORTA
-	call BattleScript_AbilityPopUpTarget
-	printstring ("{B_DEF_NAME_WITH_PREFIX} endured the hit using {B_DEF_ABILITY}!")
-	waitmessage PAUSA_LARGA
-	return
-
 BattleScript_OneHitKOMsg::
 	printstring STRINGID_ONEHITKO
 	waitmessage PAUSA_LARGA
@@ -5927,13 +5867,6 @@ BattleScript_TookAttack::
 	waitmessage PAUSA_LARGA
 	orword gHitMarker, HITMARKER_ATTACKSTRING_PRINTED
 	return
-
-BattleScript_SturdyPreventsOHKO::
-	pause PAUSA_CORTA
-	call BattleScript_AbilityPopUp
-	printstring ("{B_DEF_NAME_WITH_PREFIX} was protected by {B_DEF_ABILITY}!")
-	pause PAUSA_LARGA
-	goto BattleScript_MoveEnd
 
 BattleScript_DampStopsExplosion::
 	pause PAUSA_CORTA

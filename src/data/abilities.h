@@ -31,14 +31,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .breakable = TRUE,
     },
 
-    [ABILITY_STURDY] =
-    {
-        .name = _("Sturdy"),
-        .description = COMPOUND_STRING("Negates 1-hit KO attacks."),
-        .aiRating = 6,
-        .breakable = TRUE,
-    },
-
     [ABILITY_DAMP] =
     {
         .name = _("Damp"),
@@ -1073,18 +1065,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Refrigerate"),
         .description = COMPOUND_STRING("Normal moves become Ice."),
         .aiRating = 8,
-    },
-
-    [ABILITY_STANCE_CHANGE] =
-    {
-        .name = _("Cambio táctico"),
-        .description = COMPOUND_STRING("Cambia al luchar."),
-        .aiRating = 10,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .cantBeSuppressed = TRUE,
-        .cantBeOverwritten = TRUE,
     },
 
     [ABILITY_ALAS_VENDAVAL] =

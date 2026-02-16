@@ -1637,9 +1637,6 @@ static bool32 InformacionPokemon(struct Pokemon *mon, u32 *especie, bool32 *shin
         //case SPECIES_DARMANITAN:
         //    *species = GetOverworldDarmanitanForm();
         //    break;
-        //case SPECIES_AEGISLASH:
-        //    *species = GetOverworldAegislashForm();
-        //    break;
     }
     return TRUE;
 }

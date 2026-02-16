@@ -263,29 +263,6 @@ const struct SpriteTemplate gFlameChargeEmberTemplate =
     .callback = AnimPetalDanceBigFlower
 };
 
-//final gambit
-const struct SpriteTemplate gFinalGambitBlueYawnTemplate =
-{
-    .tileTag = ANIM_TAG_PINK_CLOUD,
-    .paletteTag = ANIM_TAG_WATER_IMPACT,
-    .oam = &gOamData_AffineNormal_ObjNormal_32x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gAffineAnims_ShadowBall,
-    .callback = AnimShadowBall
-};
-
-const struct SpriteTemplate gFinalGambitExplosionTemplate =
-{
-    .tileTag = ANIM_TAG_EXPLOSION,
-    .paletteTag = ANIM_TAG_WATER_IMPACT,
-    .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gExplosionAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimSpriteOnMonPos
-};
-
 //synchronoise
 const struct SpriteTemplate gSynchronoiseVioletRingTemplate =
 {

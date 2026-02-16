@@ -5616,25 +5616,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_KnockOff,
     },
 
-    [MOVE_ENDEAVOR] =
-    {
-        .name = COMPOUND_STRING("Esfuerzo"),
-        .description = COMPOUND_STRING(
-            "Gains power if the user's HP\n"
-            "is lower than the foe's HP."),
-        .effect = EFFECT_ENDEAVOR,
-        .power = 1,
-        .type = TIPO_NORMAL,
-        .accuracy = 100,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .parentalBondBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Endeavor,
-    },
-
     [MOVE_ERUPTION] =
     {
         .name = COMPOUND_STRING("Erupción"),
@@ -7243,23 +7224,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .mirrorMoveBanned = TRUE,
         .snatchAffected = B_UPDATED_MOVE_FLAGS < GEN_5,
         .battleAnimScript = gBattleAnimMove_Acupressure,
-    },
-
-    [MOVE_METAL_BURST] =
-    {
-        .name = COMPOUND_STRING("Represión metal"),
-        .description = COMPOUND_STRING(
-            "Retaliates any hit with\n"
-            "greater power."),
-        .effect = EFFECT_METAL_BURST,
-        .power = 1,
-        .type = TIPO_ACERO,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_DEPENDS,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .battleAnimScript = gBattleAnimMove_MetalBurst,
     },
 
     [MOVE_U_TURN] =
@@ -9974,25 +9938,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .battleAnimScript = gBattleAnimMove_Retaliate,
-    },
-
-    [MOVE_FINAL_GAMBIT] =
-    {
-        .name = COMPOUND_STRING("Sacrificio"),
-        .description = COMPOUND_STRING(
-            "The user faints to damage\n"
-            "the foe equal to its HP."),
-        .effect = EFFECT_FINAL_GAMBIT,
-        .power = 1,
-        .type = TIPO_LUCHA,
-        .accuracy = 100,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .mirrorMoveBanned = TRUE,
-        .parentalBondBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_FinalGambit,
     },
 
     [MOVE_BESTOW] =
@@ -14729,24 +14674,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .cantUseTwice = TRUE,
         .battleAnimScript = gBattleAnimMove_GigatonHammer,
-    },
-
-    [MOVE_COMEUPPANCE] =
-    {
-        .name = COMPOUND_STRING("Comeuppance"),
-        .description = COMPOUND_STRING(
-            "Retaliates strongly against\n"
-            "who last hurt the user."),
-        .effect = EFFECT_METAL_BURST,
-        .power = 1,
-        .type = TIPO_SINIESTRO,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_DEPENDS,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_Comeuppance,
     },
 
     [MOVE_CORTE_ACUATICO] =

@@ -475,17 +475,10 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
                 simulatedDmg *= 3;
             }
             break;
-        case EFFECT_ENDEAVOR:
-            // If target has less HP than user, Endeavor does no damage
-            simulatedDmg = max(0, gBattleMons[battlerDef].hp - gBattleMons[battlerAtk].hp);
-            break;
         case EFFECT_SUPER_FANG:
             simulatedDmg = (aiData->abilities[battlerAtk] == ABILITY_PARENTAL_BOND
                 ? max(2, gBattleMons[battlerDef].hp * 3 / 4)
                 : max(1, gBattleMons[battlerDef].hp / 2));
-            break;
-        case EFFECT_FINAL_GAMBIT:
-            simulatedDmg = gBattleMons[battlerAtk].hp;
             break;
         case EFECTO_ATAQUE_EQUIPO:
             u32 partyCount = CalculatePartyCount(GetBattlerParty(battlerAtk));
@@ -677,7 +670,6 @@ static bool32 AI_IsMoveEffectInMinus(u32 battlerAtk, u32 battlerDef, u32 move, s
     case EFFECT_MAX_HP_50_RECOIL:
     case EFFECT_MIND_BLOWN:
     case EFFECT_EXPLOSION:
-    case EFFECT_FINAL_GAMBIT:
         return TRUE;
     case EFFECT_RECOIL_IF_MISS:
         if (AI_IsDamagedByRecoil(battlerAtk))
@@ -907,14 +899,6 @@ static bool32 CanEndureHit(u32 battler, u32 battlerTarget, u32 move)
         return FALSE;
     if (gMovesInfo[move].strikeCount > 1 && !(gMovesInfo[move].effect == EFFECT_DRAGON_DARTS && IsValidDoubleBattle(battlerTarget)))
         return FALSE;
-    if (AI_DATA->holdEffects[battlerTarget] == HOLD_EFFECT_FOCUS_SASH)
-        return TRUE;
-
-    if (!DoesBattlerIgnoreAbilityChecks(AI_DATA->abilities[battler], move))
-    {
-        if (B_STURDY >= GEN_5 && AI_DATA->abilities[battlerTarget] == ABILITY_STURDY)
-            return TRUE;
-    }
 
     return FALSE;
 }
@@ -1293,9 +1277,6 @@ bool32 ShouldTryOHKO(u32 battlerAtk, u32 battlerDef, u32 atkAbility, u32 defAbil
     if (holdEffect == HOLD_EFFECT_FOCUS_BAND && (Random() % 100) < AI_DATA->holdEffectParams[battlerDef])
         return FALSE;   //probabilistically speaking, focus band should activate so dont OHKO
     else if (holdEffect == HOLD_EFFECT_FOCUS_SASH && AI_BattlerAtMaxHp(battlerDef))
-        return FALSE;
-
-    if (!DoesBattlerIgnoreAbilityChecks(atkAbility, move) && defAbility == ABILITY_STURDY)
         return FALSE;
 
     if ((((gStatuses3[battlerDef] & STATUS3_ALWAYS_HITS)
@@ -2445,22 +2426,9 @@ enum AIPivot ShouldPivot(u32 battlerAtk, u32 battlerDef, u32 defAbility, u32 mov
                     // attacker can kill target in two hits (theoretically)
                     if (CanTargetFaintAI(battlerDef, battlerAtk))
                         return SHOULD_PIVOT;   // Won't get the two turns, pivot
-
-                    if (!ES_MOVIMIENTO_ESTADO(move) && ((AI_DATA->shouldSwitch & (1u << battlerAtk))
-                        || (AI_BattlerAtMaxHp(battlerDef) && (AI_DATA->holdEffects[battlerDef] == HOLD_EFFECT_FOCUS_SASH
-                        || (B_STURDY >= GEN_5 && defAbility == ABILITY_STURDY)
-                        || defAbility == ABILITY_MULTISCALE
-                        || defAbility == ABILITY_SHADOW_SHIELD))))
-                        return SHOULD_PIVOT;   // pivot to break sash/sturdy/multiscale
                 }
                 else if (!hasStatBoost)
                 {
-                    if (!ES_MOVIMIENTO_ESTADO(move) && (AI_BattlerAtMaxHp(battlerDef) && (AI_DATA->holdEffects[battlerDef] == HOLD_EFFECT_FOCUS_SASH
-                        || (B_STURDY >= GEN_5 && defAbility == ABILITY_STURDY)
-                        || defAbility == ABILITY_MULTISCALE
-                        || defAbility == ABILITY_SHADOW_SHIELD)))
-                        return SHOULD_PIVOT;   // pivot to break sash/sturdy/multiscale
-
                     if (AI_DATA->shouldSwitch & (1u << battlerAtk))
                         return SHOULD_PIVOT;
 

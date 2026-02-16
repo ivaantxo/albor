@@ -35,9 +35,3 @@ static const u16 sDarmanitanGalarFormSpeciesIdTable[] = {
     SPECIES_DARMANITAN_GALAR_ZEN,
     FORM_SPECIES_END,
 };
-
-static const u16 sAegislashFormSpeciesIdTable[] = {
-    SPECIES_AEGISLASH_SHIELD,
-    SPECIES_AEGISLASH_BLADE,
-    FORM_SPECIES_END,
-};

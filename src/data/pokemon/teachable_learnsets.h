@@ -2019,21 +2019,6 @@ static const u16 sPangoroTeachableLearnset[] = {
     MOVE_NONE,
 };
 
-static const u16 sHonedgeTeachableLearnset[] = {
-    MOVE_CHARM,
-    MOVE_NONE,
-};
-
-static const u16 sDoubladeTeachableLearnset[] = {
-    MOVE_CHARM,
-    MOVE_NONE,
-};
-
-static const u16 sAegislashTeachableLearnset[] = {
-    MOVE_CHARM,
-    MOVE_NONE,
-};
-
 static const u16 sTyruntTeachableLearnset[] = {
     MOVE_NONE,
 };

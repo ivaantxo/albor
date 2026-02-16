@@ -298,29 +298,6 @@ gBattleAnimMove_Acupressure::
 	call ElectricityEffect
 	end
 
-gBattleAnimMove_MetalBurst::
-	loadspritegfx ANIM_TAG_ECLIPSING_ORB
-	loadspritegfx ANIM_TAG_RED_ORB
-	loopsewithpan SE_M_TRI_ATTACK, -64, 18, 3
-	createvisualtask AnimTask_SetGrayscaleOrOriginalPal, 5, ANIM_ATTACKER, FALSE
-	createvisualtask AnimTask_DefenseCurlDeformMon, 5
-	waitforvisualfinish
-	setarg 7, -1
-	playsewithpan SE_M_REFLECT, -64
-	createvisualtask AnimTask_ScaleMonAndRestore, 5, -7, -7, 11, ANIM_ATTACKER, 0
-	createsprite gOrbScatterSpriteTemplate, ANIM_TARGET, 2, 0
-	createsprite gOrbScatterSpriteTemplate, ANIM_TARGET, 2, 32
-	createsprite gOrbScatterSpriteTemplate, ANIM_TARGET, 2, 64
-	createsprite gOrbScatterSpriteTemplate, ANIM_TARGET, 2, 96
-	createsprite gOrbScatterSpriteTemplate, ANIM_TARGET, 2, 128
-	createsprite gOrbScatterSpriteTemplate, ANIM_TARGET, 2, 160
-	createsprite gOrbScatterSpriteTemplate, ANIM_TARGET, 20, 192
-	createsprite gOrbScatterSpriteTemplate, ANIM_TARGET, 2, 224
-	waitforvisualfinish
-	createvisualtask AnimTask_SetGrayscaleOrOriginalPal, 5, ANIM_ATTACKER, TRUE
-	waitforvisualfinish
-	end
-
 gBattleAnimMove_UTurn::
 	loadspritegfx ANIM_TAG_ROUND_SHADOW
 	loadspritegfx ANIM_TAG_IMPACT
@@ -5025,33 +5002,6 @@ gBattleAnimMove_Retaliate::
 	waitforvisualfinish
 	clearmonbg ANIM_DEF_PARTNER
 	blendoff
-	end
-
-gBattleAnimMove_FinalGambit::
-	loadspritegfx ANIM_TAG_PINK_CLOUD @yawn animation
-	loadspritegfx ANIM_TAG_WATER_IMPACT @blue colour
-	loadspritegfx ANIM_TAG_EXPLOSION @explosion animation
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x0, 0xC, 0x0 @Darken
-	waitforvisualfinish
-	createvisualtask AnimTask_ShakeMon2, 2, ANIM_ATTACKER, 1, 0, 10, 1
-	createvisualtask AnimTask_BlendColorCycle, 2, F_PAL_ATTACKER, 0, 2, 0, 8, RGB_WHITE
-	waitforvisualfinish
-	playsewithpan SE_M_SAND_ATTACK, SOUND_PAN_ATTACKER
-	createsprite gFinalGambitBlueYawnTemplate, ANIM_ATTACKER, 2, 0x0, 0x0, 0x25
-	delay 0x4
-	waitforvisualfinish
-	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 3, 0, 15, 1
-	createvisualtask AnimTask_ScaleMonAndRestore, 5, -4, -4, 15, ANIM_TARGET, 1
-	waitforvisualfinish
-	monbg ANIM_TARGET
-	delay 0x1
-	playsewithpan SE_M_EXPLOSION, SOUND_PAN_ATTACKER
-	createsprite gFinalGambitExplosionTemplate, ANIM_ATTACKER, 3, 0x0, 0x0, 0x1, 0x1
-	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 0, 3, 15, 1
-	waitforvisualfinish
-	clearmonbg ANIM_TARGET
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0xC, 0x0, 0x0
-	waitforvisualfinish
 	end
 
 gBattleAnimMove_Bestow::
@@ -14613,48 +14563,6 @@ gBattleAnimMove_TwinBeam::
 	call UnsetPsychicBg
 	end
 
-gBattleAnimMove_Comeuppance::
-	loadspritegfx ANIM_TAG_IMPACT
-	monbg ANIM_TARGET
-	fadetobg BG_DARK
-	waitbgfadein
-	delay 0
-	playsewithpan SE_M_DRAGON_RAGE, SOUND_PAN_ATTACKER
-	createvisualtask AnimTask_ShakeMon2, 5, ANIM_ATTACKER, 1, 0, 15, 1
-	createvisualtask AnimTask_BlendBattleAnimPal, 10, F_PAL_ATTACKER, 3, 0, 9, RGB_RED
-	waitforvisualfinish
-	delay 10
-	createvisualtask AnimTask_SwayMon, 5, 0, 16, 6144, 8, ANIM_ATTACKER
-	delay 5
-	setalpha 12, 8
-	createvisualtask AnimTask_ShakeMon2, 5, ANIM_TARGET, 4, 0, 30, 1
-	createsprite gBasicHitSplatSpriteTemplate, ANIM_ATTACKER, 3, 0, 0, 1, 0
-	playsewithpan SE_M_COMET_PUNCH, +63
-	delay 5
-	createsprite gBasicHitSplatSpriteTemplate, ANIM_ATTACKER, 3, 24, 8, 1, 0
-	playsewithpan SE_M_COMET_PUNCH, +63
-	delay 5
-	createsprite gBasicHitSplatSpriteTemplate, ANIM_ATTACKER, 3, -24, -16, 1, 0
-	playsewithpan SE_M_COMET_PUNCH, +63
-	delay 5
-	createsprite gBasicHitSplatSpriteTemplate, ANIM_ATTACKER, 3, 8, 4, 1, 0
-	playsewithpan SE_M_COMET_PUNCH, +63
-	delay 5
-	createsprite gBasicHitSplatSpriteTemplate, ANIM_ATTACKER, 3, -16, 19, 1, 0
-	playsewithpan SE_M_COMET_PUNCH, +63
-	delay 5
-	createsprite gBasicHitSplatSpriteTemplate, ANIM_ATTACKER, 3, 18, -18, 1, 0
-	playsewithpan SE_M_COMET_PUNCH, +63
-	waitforvisualfinish
-	clearmonbg ANIM_TARGET
-	blendoff
-	restorebg
-	waitbgfadein
-	createvisualtask AnimTask_BlendBattleAnimPal, 10, F_PAL_ATTACKER, 3, 9, 0, RGB_RED
-	waitforvisualfinish
-	clearmonbg ANIM_DEF_PARTNER
-	end
-
 gBattleAnimMove_BloodMoon::
 	loadspritegfx ANIM_TAG_BLOOD_MOON
 	loadspritegfx ANIM_TAG_BEAM
@@ -17935,22 +17843,6 @@ gBattleAnimMove_Yawn::
 	waitforvisualfinish
 	createvisualtask AnimTask_DeepInhale, 2, ANIM_TARGET
 	playsewithpan SE_M_YAWN, SOUND_PAN_TARGET
-	end
-
-gBattleAnimMove_Endeavor::
-	loadspritegfx ANIM_TAG_SWEAT_DROP
-	loadspritegfx ANIM_TAG_IMPACT
-	createvisualtask AnimTask_SquishAndSweatDroplets, 2, ANIM_ATTACKER, 2
-	loopsewithpan SE_M_TAIL_WHIP, SOUND_PAN_ATTACKER, 24, 2
-	createvisualtask AnimTask_BlendMonInAndOut, 5, ANIM_ATTACKER, RGB(31, 21, 0), 12, 1, 2
-	delay 6
-	createvisualtask AnimTask_ShakeTargetBasedOnMovePowerOrDmg, 5, FALSE, 1, 8, 1, 0
-	createsprite gBasicHitSplatSpriteTemplate, ANIM_TARGET, 2, 12, -12, ANIM_TARGET, 2
-	playsewithpan SE_M_DOUBLE_SLAP, SOUND_PAN_TARGET
-	delay 24
-	createvisualtask AnimTask_ShakeTargetBasedOnMovePowerOrDmg, 5, FALSE, 1, 8, 1, 0
-	createsprite gBasicHitSplatSpriteTemplate, ANIM_TARGET, 2, -12, 12, ANIM_TARGET, 2
-	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
 	end
 
 gBattleAnimMove_Eruption::
