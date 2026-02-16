@@ -2018,7 +2018,6 @@ bool32 IsStatRaisingEffect(u32 effect)
     case EFECTO_SUBE_ATAQUE_ESPECIAL_VELOCIDAD:
     case EFFECT_BULK_UP:
     case EFFECT_STOCKPILE:
-    case EFFECT_VICTORY_DANCE:
     case EFFECT_AMOLADORAS:
         return TRUE;
     case EFFECT_CHARGE:

@@ -143,7 +143,6 @@ struct ProtectStruct
     u32 kingsShielded:1;
     u32 banefulBunkered:1;
     u32 obstructed:1;
-    u32 endured:1;
     u32 noValidMoves:1;
     u32 bounceMove:1;
     u32 stealMove:1;
@@ -217,7 +216,6 @@ struct SpecialStatus
     u8 multiHitOn:1;
     u8 announceNeutralizingGas:1;   // See Cmd_switchineffects
     u8 neutralizingGasRemoved:1;    // See VARIOUS_TRY_END_NEUTRALIZING_GAS
-    u8 affectionEndured:1;
     // End of byte
     u8 damagedMons:4; // Mons that have been damaged directly by using a move, includes substitute.
     u8 dancerUsedMove:1;
@@ -547,7 +545,6 @@ struct BattleStruct
     u8 trainerSlideBeforeFirstTurnMsgDone:1;
     u8 trainerSlideLowHpMsgDone:1;
     u8 timesGotHit[NUMERO_LADOS][PARTY_SIZE];
-    u8 enduredDamage;
     u8 quickClawRandom[NUMERO_COMBATIENTES];
     u8 quickDrawRandom[NUMERO_COMBATIENTES];
     u8 shellSideArmCategory[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES];
@@ -850,8 +847,7 @@ extern u8 gCategoryIconSpriteId;
 static inline bool32 IsBattlerTurnDamaged(u32 battler)
 {
     return gSpecialStatuses[battler].physicalDmg != 0
-        || gSpecialStatuses[battler].specialDmg != 0
-        || gBattleStruct->enduredDamage & (1u << battler);
+        || gSpecialStatuses[battler].specialDmg != 0;
 }
 
 static inline bool32 IsBattlerAtMaxHp(u32 battler)

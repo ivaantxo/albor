@@ -1652,11 +1652,6 @@ static void Cmd_adjustdamage(void)
 
     if (DoesSubstituteBlockMove(gBattlerAttacker, gBattlerTarget, gCurrentMove))
         goto END;
-    if (DoesDisguiseBlockMove(gBattlerTarget, gCurrentMove))
-    {
-        gBattleStruct->enduredDamage |= 1u << gBattlerTarget;
-        goto END;
-    }
     if (gBattleMons[gBattlerTarget].hp > gBattleMoveDamage)
         goto END;
 
@@ -1681,21 +1676,15 @@ static void Cmd_adjustdamage(void)
         gSpecialStatuses[gBattlerTarget].focusSashed = TRUE;
     }
 
-    if (!gProtectStructs[gBattlerTarget].endured
-        && !gSpecialStatuses[gBattlerTarget].focusBanded
+    if (!gSpecialStatuses[gBattlerTarget].focusBanded
         && !gSpecialStatuses[gBattlerTarget].focusSashed
         && !gSpecialStatuses[gBattlerTarget].sturdied)
         goto END;
 
     // Handle reducing the dmg to 1 hp.
     gBattleMoveDamage = gBattleMons[gBattlerTarget].hp - 1;
-    gBattleStruct->enduredDamage |= 1u << gBattlerTarget;
 
-    if (gProtectStructs[gBattlerTarget].endured)
-    {
-        gMoveResultFlags |= MOVE_RESULT_FOE_ENDURED;
-    }
-    else if (gSpecialStatuses[gBattlerTarget].focusBanded || gSpecialStatuses[gBattlerTarget].focusSashed)
+    if (gSpecialStatuses[gBattlerTarget].focusBanded || gSpecialStatuses[gBattlerTarget].focusSashed)
     {
         gMoveResultFlags |= MOVE_RESULT_FOE_HUNG_ON;
         gLastUsedItem = gBattleMons[gBattlerTarget].item;
@@ -1865,16 +1854,13 @@ static void Cmd_healthbarupdate(void)
         {
             PrepareStringBattle(STRINGID_SUBSTITUTEDAMAGED, battler);
         }
-        else if (!DoesDisguiseBlockMove(battler, gCurrentMove))
-        {
-            s16 healthValue = min(gBattleMoveDamage, 10000); // Max damage (10000) not present in R/S, ensures that huge damage values don't change sign
+        s16 healthValue = min(gBattleMoveDamage, 10000); // Max damage (10000) not present in R/S, ensures that huge damage values don't change sign
 
-            BtlController_EmitHealthBarUpdate(battler, BUFFER_A, healthValue);
-            MarcaCombatienteOcupado(battler);
+        BtlController_EmitHealthBarUpdate(battler, BUFFER_A, healthValue);
+        MarcaCombatienteOcupado(battler);
 
-            if (GetBattlerSide(battler) == LADO_JUGADOR && gBattleMoveDamage > 0)
-                gBattleResults.playerMonWasDamaged = TRUE;
-        }
+        if (GetBattlerSide(battler) == LADO_JUGADOR && gBattleMoveDamage > 0)
+            gBattleResults.playerMonWasDamaged = TRUE;
     }
 
     gBattlescriptCurrInstr = cmd->nextInstr;
@@ -2104,9 +2090,6 @@ static void Cmd_resultmessage(void)
             break;
         case MOVE_RESULT_ONE_HIT_KO:
             stringId = STRINGID_ONEHITKO;
-            break;
-        case MOVE_RESULT_FOE_ENDURED:
-            stringId = STRINGID_PKMNENDUREDHIT;
             break;
         case MOVE_RESULT_FAILED:
             stringId = STRINGID_BUTITFAILED;
@@ -5348,7 +5331,6 @@ static void Cmd_moveend(void)
             gBattleStruct->swapDamageCategory = FALSE;
             gBattleStruct->bouncedMoveIsUsed = FALSE;
             gBattleStruct->snatchedMoveIsUsed = FALSE;
-            gBattleStruct->enduredDamage = 0;
             gBattleStruct->additionalEffectsCounter = 0;
             gBattleStruct->usedMicleBerry &= ~(1u << gBattlerAttacker);
             if (B_CHARGE <= GEN_8 || moveType == TIPO_ELECTRICO)
@@ -11745,11 +11727,6 @@ bool32 DoesSubstituteBlockMove(u32 battlerAtk, u32 battlerDef, u32 move)
         return FALSE;
     else
         return TRUE;
-}
-
-bool32 DoesDisguiseBlockMove(u32 battler, u32 move)
-{
-    return FALSE;
 }
 
 static void Cmd_jumpifsubstituteblocks(void)

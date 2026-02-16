@@ -4101,27 +4101,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_GigaDrain,
     },
 
-    [MOVE_ENDURE] =
-    {
-        .name = COMPOUND_STRING("Aguante"),
-        .description = COMPOUND_STRING(
-            "Endures any attack for\n"
-            "1 turn, leaving at least 1HP."),
-        .effect = EFFECT_ENDURE,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        .priority = B_UPDATED_MOVE_DATA >= GEN_5 ? 4 : 3,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Endure,
-    },
-
     [MOVE_CHARM] =
     {
         .name = COMPOUND_STRING("Encanto"),
@@ -4130,7 +4109,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "reduces its Attack."),
         .effect = EFFECT_ATTACK_DOWN_2,
         .power = 0,
-        .type = B_UPDATED_MOVE_TYPES >= GEN_6 ? TIPO_HADA : TIPO_NORMAL,
+        .type = TIPO_HADA,
         .accuracy = 100,
         .pp = 20,
         .target = MOVE_TARGET_SELECTED,
@@ -13966,27 +13945,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .battleAnimScript = gBattleAnimMove_Chloroblast,
-    },
-
-    [MOVE_VICTORY_DANCE] =
-    {
-        .name = COMPOUND_STRING("Victory Dance"),
-        .description = COMPOUND_STRING(
-            "Dances to raise Attack,\n"
-            "Defense and Speed."),
-        .effect = EFFECT_VICTORY_DANCE,
-        .power = 0,
-        .type = TIPO_LUCHA,
-        .accuracy = 0,
-        .pp = 20,
-        .target = MOVE_TARGET_USER,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .danceMove = TRUE,
-        .snatchAffected = TRUE,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_VictoryDance,
     },
 
     [MOVE_HEADLONG_RUSH] =

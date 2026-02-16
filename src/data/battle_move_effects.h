@@ -467,13 +467,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_ENDURE] =
-    {
-        .battleScript = BattleScript_EffectEndure,
-        .encourageEncore = TRUE,
-        .usesProtectCounter = TRUE,
-    },
-
     [EFFECT_ROLLOUT] =
     {
         .battleScript = BattleScript_EffectRollout,
@@ -1441,12 +1434,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_DARK_VOID] =
     {
         .battleScript = BattleScript_EffectDarkVoid,
-    },
-
-    [EFFECT_VICTORY_DANCE] =
-    {
-        .battleScript = BattleScript_EffectVictoryDance,
-        .encourageEncore = TRUE,
     },
 
     [EFFECT_ATTACK_UP_USER_ALLY] =

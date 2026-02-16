@@ -1227,39 +1227,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 8,
     },
 
-    [ABILITY_SURGE_SURFER] =
-    {
-        .name = _("Surge Surfer"),
-        .description = COMPOUND_STRING("Faster on electricity."),
-        .aiRating = 4,
-    },
-
-    [ABILITY_SCHOOLING] =
-    {
-        .name = _("Schooling"),
-        .description = COMPOUND_STRING("Forms a school when strong."),
-        .aiRating = 6,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .cantBeSuppressed = TRUE,
-        .cantBeOverwritten = TRUE,
-    },
-
-    [ABILITY_DISGUISE] =
-    {
-        .name = _("Disguise"),
-        .description = COMPOUND_STRING("Decoy protects it once."),
-        .aiRating = 8,
-        .breakable = TRUE,
-        .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
-        .cantBeTraced = TRUE,
-        .cantBeSuppressed = TRUE,
-        .cantBeOverwritten = TRUE,
-        .failsOnImposter = TRUE,
-    },
-
     [ABILITY_CORROSION] =
     {
         .name = _("Corrosión"),
