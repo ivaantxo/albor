@@ -374,7 +374,7 @@ static void OpponentHandleLoadMonSprite(u32 battler)
 
 static void OpponentHandleSwitchInAnim(u32 battler)
 {
-    gBattleStruct->monToSwitchIntoId[battler] = PARTY_SIZE;
+    gCombate->monToSwitchIntoId[battler] = PARTY_SIZE;
     BtlController_HandleSwitchInAnim(battler, FALSE, SwitchIn_TryShinyAnim);
 }
 
@@ -421,10 +421,10 @@ static void OpponentHandleChooseAction(u32 battler)
 
 static void OpponentHandleChooseMove(u32 battler)
 {
-    u32 chosenMoveId = gBattleStruct->IA_Eleccion[battler];
+    u32 chosenMoveId = gCombate->IA_Eleccion[battler];
     struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct *)(&gBattleResources->bufferA[battler][4]);
     u32 chosenMove = moveInfo->moves[chosenMoveId];
-    gBattlerTarget = gBattleStruct->IA_Objetivo[battler];
+    gBattlerTarget = gCombate->IA_Objetivo[battler];
 
     if (GetBattlerMoveTargetType(battler, chosenMove) & (MOVE_TARGET_USER_OR_SELECTED | MOVE_TARGET_USER))
         gBattlerTarget = battler;
@@ -449,7 +449,7 @@ static void OpponentHandleChoosePokemon(u32 battler)
         chosenMonId = gSelectedMonPartyId = GetFirstFaintedPartyIndex(battler);
     }
     // Switching out
-    else if (gBattleStruct->AI_monToSwitchIntoId[battler] == PARTY_SIZE)
+    else if (gCombate->AI_monToSwitchIntoId[battler] == PARTY_SIZE)
     {
         chosenMonId = GetMostSuitableMonToSwitchInto(battler, TRUE);
         if (chosenMonId == PARTY_SIZE)
@@ -482,13 +482,13 @@ static void OpponentHandleChoosePokemon(u32 battler)
                 break;
             }
         }
-        gBattleStruct->monToSwitchIntoId[battler] = chosenMonId;
+        gCombate->monToSwitchIntoId[battler] = chosenMonId;
     }
     else
     {
-        chosenMonId = gBattleStruct->AI_monToSwitchIntoId[battler];
-        gBattleStruct->AI_monToSwitchIntoId[battler] = PARTY_SIZE;
-        gBattleStruct->monToSwitchIntoId[battler] = chosenMonId;
+        chosenMonId = gCombate->AI_monToSwitchIntoId[battler];
+        gCombate->AI_monToSwitchIntoId[battler] = PARTY_SIZE;
+        gCombate->monToSwitchIntoId[battler] = chosenMonId;
     }
     BtlController_EmitChosenMonReturnValue(battler, BUFFER_B, chosenMonId, NULL);
     OpponentBufferExecCompleted(battler);

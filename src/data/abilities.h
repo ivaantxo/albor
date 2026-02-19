@@ -1222,13 +1222,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .breakable = TRUE,
     },
 
-    [ABILITY_DANCER] =
-    {
-        .name = _("Dancer"),
-        .description = COMPOUND_STRING("Dances along with others."),
-        .aiRating = 5,
-    },
-
     [ABILITY_BATTERY] =
     {
         .name = _("Battery"),

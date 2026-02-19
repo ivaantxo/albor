@@ -82,6 +82,15 @@ enum ResultadosCombate
     B_OUTCOME_MON_TELEPORTED,
 };
 
+enum ResultadosMovimiento
+{
+    MOVIMIENTO_NEUTRO,
+    MOVIMIENTO_SUPER_EFECTIVO,
+    MOVIMIENTO_POCO_EFECTIVO,
+    MOVIMIENTO_NO_AFECTA,
+    MOVIMIENTO_FALLO,
+};
+
 // Non-volatile status conditions
 // These remain outside of battle and after switching out.
 // If a new STATUS1 is added here, it should also be added to
@@ -210,11 +219,7 @@ enum ResultadosCombate
 #define MOVE_RESULT_SUPER_EFFECTIVE       (1 << 1)
 #define MOVE_RESULT_NOT_VERY_EFFECTIVE    (1 << 2)
 #define MOVE_RESULT_DOESNT_AFFECT_FOE     (1 << 3)
-#define MOVE_RESULT_ONE_HIT_KO            (1 << 4)
 #define MOVE_RESULT_FAILED                (1 << 5)
-#define MOVE_RESULT_FOE_ENDURED           (1 << 6)
-#define MOVE_RESULT_FOE_HUNG_ON           (1 << 7)
-#define MOVE_RESULT_NO_EFFECT             (MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE | MOVE_RESULT_FAILED)
 
 // Battle Weather flags
 #define B_WEATHER_NONE                0
@@ -257,7 +262,6 @@ enum ResultadosCombate
 #define PRIMARY_STATUS_MOVE_EFFECT      MOVE_EFFECT_FROSTBITE // All above move effects apply primary status
 #define MOVE_EFFECT_CONFUSION           8
 #define MOVE_EFFECT_FLINCH              9
-#define MOVE_EFFECT_UNUSED_10           10
 #define MOVE_EFFECT_UPROAR              11
 #define MOVE_EFFECT_PAYDAY              12
 #define MOVE_EFFECT_CHARGING            13
@@ -313,23 +317,15 @@ enum ResultadosCombate
 #define MOVE_EFFECT_BUG_BITE            67
 #define MOVE_EFFECT_RECOIL_HP_25        68
 #define MOVE_EFFECT_TRAP_BOTH           69
-#define MOVE_EFFECT_UNUSED_70               70
 #define MOVE_EFFECT_STOCKPILE_WORE_OFF  71
 #define MOVE_EFFECT_DIRE_CLAW           72
 #define MOVE_EFFECT_STEALTH_ROCK        73
 #define MOVE_EFFECT_SPIKES              74
-#define MOVE_EFFECT_UNUSED_75          75
 #define MOVE_EFFECT_FLORAL_HEALING      76
 #define MOVE_EFFECT_SECRET_POWER        77
 
 #define NUM_MOVE_EFFECTS                78
 
-enum EfectosMovimientos
-{
-    EFECTO_MOVIDO_NORMAL,
-    EFECTO_MOVIDO_CRITICO,
-    EFECTO_MOVIDO_FALLO,
-};
 #define MOVE_EFFECT_AFFECTS_USER        0x2000
 #define MOVE_EFFECT_CERTAIN             0x4000
 #define MOVE_EFFECT_CONTINUE            0x8000

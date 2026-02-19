@@ -238,7 +238,6 @@ enum MoveEndEffects
     MOVEEND_LIFEORB_SHELLBELL, // Includes shell bell, throat spray, etc
     MOVEEND_CHANGED_ITEMS,
     MOVEEND_PICKPOCKET,
-    MOVEEND_DANCER,
     MOVEEND_SYMBIOSIS,
     MOVEEND_OPPORTUNIST, // Occurs after other stat change items/abilities to try and copy the boosts
     MOVEEND_SAME_MOVE_TURNS,
@@ -267,7 +266,7 @@ enum BattleScriptCommands
     BATTLE_CMD_healthbarupdate,
     BATTLE_CMD_datahpupdate,
     BATTLE_CMD_critmessage,
-    BATTLE_CMD_effectivenesssound,
+    BATTLE_CMD_HazSonidoEfectividad,
     BATTLE_CMD_resultmessage,
     BATTLE_CMD_printstring,
     BATTLE_CMD_printselectionstring,
@@ -401,7 +400,6 @@ enum BattleScriptCommands
     BATTLE_CMD_setsubstitute,
     BATTLE_CMD_mimicattackcopy,
     BATTLE_CMD_dmgtolevel,
-    BATTLE_CMD_psywavedamageeffect,
     BATTLE_CMD_counterdamagecalculator,
     BATTLE_CMD_mirrorcoatdamagecalculator,
     BATTLE_CMD_disablelastusedattack,
@@ -467,7 +465,7 @@ enum BattleScriptCommands
     BATTLE_CMD_jumpifsubstituteblocks,
     BATTLE_CMD_tryrecycleitem,
     BATTLE_CMD_snatchsetbattlers,
-    BATTLE_CMD_removelightscreenreflect,
+    BATTLE_CMD_EliminaPantallas,
     BATTLE_CMD_handleballthrow,
     BATTLE_CMD_givecaughtmon,
     BATTLE_CMD_trysetcaughtmondexflags,

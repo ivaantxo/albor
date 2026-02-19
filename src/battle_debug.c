@@ -803,7 +803,7 @@ void CB2_BattleDebugMenu(void)
         data = AllocZeroed(sizeof(struct BattleDebugMenu));
         SetStructPtr(taskId, data);
 
-        data->battlerId = gBattleStruct->debugBattler;
+        data->battlerId = gCombate->debugBattler;
         data->battlerWindowId = AddWindow(&sBattlerWindowTemplate);
         PutWindowTilemap(data->battlerWindowId);
         PrintOnBattlerWindow(data->battlerWindowId, data->battlerId);
@@ -845,7 +845,7 @@ static void PutMovesPointsText(struct BattleDebugMenu *data)
                 continue;
             battlerDef = gSprites[data->spriteIds.aiIconSpriteIds[j]].data[0];
             ConvertIntToDecimalStringN(text,
-                                       gBattleStruct->IA_Puntuacion[data->aiBattlerId][battlerDef][i],
+                                       gCombate->IA_Puntuacion[data->aiBattlerId][battlerDef][i],
                                        STR_CONV_MODE_RIGHT_ALIGN, 3);
             AddTextPrinterParameterized(data->aiMovesWindowId, FONT_NORMAL, text, 83 + count * 54, i * 15, 0, NULL);
 
@@ -1370,7 +1370,7 @@ static void Task_DebugMenuFadeOut(u8 taskId)
 
         FreeAllWindowBuffers();
         UpdateMonData(data);
-        gBattleStruct->debugBattler = data->battlerId;
+        gCombate->debugBattler = data->battlerId;
         Free(data);
         DestroyTask(taskId);
         SetMainCallback2(ReshowBattleScreenAfterMenu);
@@ -2170,7 +2170,6 @@ static const u8 sText_HoldEffectDeepSeaTooth[] = _("Deep Sea Tooth");
 static const u8 sText_HoldEffectDeepSeaScale[] = _("Deep Sea Scale");
 static const u8 sText_HoldEffectCanAlwaysRun[] = _("Can Always Run");
 static const u8 sText_HoldEffectPreventEvolve[] = _("Prevent Evolve");
-static const u8 sText_HoldEffectFocusBand[] = _("Focus Band");
 static const u8 sText_HoldEffectLuckyEgg[] = _("Lucky Egg");
 static const u8 sText_HoldEffectScopeLens[] = _("Scope Lens");
 static const u8 sText_HoldEffectSteelPower[] = _("Steel Power");
@@ -2216,7 +2215,6 @@ static const u8 sText_HoldEffectWideLens[] = _("Wide Lens");
 static const u8 sText_HoldEffectWiseGlasses[] = _("Wise Glasses");
 static const u8 sText_HoldEffectZoomLens[] = _("Zoom Lens");
 static const u8 sText_HoldEffectLaggingTail[] = _("Lagging Tail");
-static const u8 sText_HoldEffectFocusSash[] = _("Focus Sash");
 static const u8 sText_HoldEffectFlameOrb[] = _("Flame Orb");
 static const u8 sText_HoldEffectToxicOrb[] = _("Toxic Orb");
 static const u8 sText_HoldEffectStickyBarb[] = _("Sticky Barb");
@@ -2315,7 +2313,6 @@ static const u8 *const sHoldEffectNames[] =
     [HOLD_EFFECT_DEEP_SEA_SCALE] = sText_HoldEffectDeepSeaScale,
     [HOLD_EFFECT_CAN_ALWAYS_RUN] = sText_HoldEffectCanAlwaysRun,
     [HOLD_EFFECT_PREVENT_EVOLVE] = sText_HoldEffectPreventEvolve,
-    [HOLD_EFFECT_FOCUS_BAND] = sText_HoldEffectFocusBand,
     [HOLD_EFFECT_LUCKY_EGG] = sText_HoldEffectLuckyEgg,
     [HOLD_EFFECT_SCOPE_LENS] = sText_HoldEffectScopeLens,
     [HOLD_EFFECT_STEEL_POWER] = sText_HoldEffectSteelPower,
@@ -2361,7 +2358,6 @@ static const u8 *const sHoldEffectNames[] =
     [HOLD_EFFECT_WISE_GLASSES] = sText_HoldEffectWiseGlasses,
     [HOLD_EFFECT_ZOOM_LENS] = sText_HoldEffectZoomLens,
     [HOLD_EFFECT_LAGGING_TAIL] = sText_HoldEffectLaggingTail,
-    [HOLD_EFFECT_FOCUS_SASH] = sText_HoldEffectFocusSash,
     [HOLD_EFFECT_FLAME_ORB] = sText_HoldEffectFlameOrb,
     [HOLD_EFFECT_TOXIC_ORB] = sText_HoldEffectToxicOrb,
     [HOLD_EFFECT_STICKY_BARB] = sText_HoldEffectStickyBarb,

@@ -168,12 +168,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectHit,
     },
 
-    [EFFECT_SUPER_FANG] =
-    {
-        .battleScript = BattleScript_EffectSuperFang,
-        .encourageEncore = TRUE,
-    },
-
     [EFFECT_HEAL_BLOCK] =
     {
         .battleScript = BattleScript_EffectHealBlock,
@@ -337,11 +331,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_LEVEL_DAMAGE] =
     {
         .battleScript = BattleScript_EffectLevelDamage,
-    },
-
-    [EFFECT_PSYWAVE] =
-    {
-        .battleScript = BattleScript_EffectPsywave,
     },
 
     [EFFECT_COUNTER] =

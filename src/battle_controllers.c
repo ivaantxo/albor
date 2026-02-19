@@ -285,36 +285,36 @@ void BtlController_EmitMoveAnimation(u32 battler, u32 bufferId, u16 move, u8 tur
     PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 16 + sizeof(struct DisableStruct));
 }
 
-void BtlController_EmitPrintString(u32 battler, u32 bufferId, u16 stringID)
+void ControladorCombate_EscribeTexto(u32 combatiente, u32 buffer, const u8 *texto)
 {
-    s32 i;
+    u32 indiceCombatiente;
     struct BattleMsgData *stringInfo;
 
     gBattleResources->transferBuffer[0] = CONTROLLER_PRINTSTRING;
     gBattleResources->transferBuffer[1] = gBattleOutcome;
-    gBattleResources->transferBuffer[2] = stringID;
-    gBattleResources->transferBuffer[3] = (stringID & 0xFF00) >> 8;
+    *(const u8 **)&gBattleResources->transferBuffer[2] = texto;
 
-    stringInfo = (struct BattleMsgData *)(&gBattleResources->transferBuffer[4]);
+    stringInfo = (struct BattleMsgData *)(&gBattleResources->transferBuffer[6]);
     stringInfo->currentMove = gCurrentMove;
     stringInfo->originallyUsedMove = gChosenMove;
     stringInfo->lastItem = gLastUsedItem;
     stringInfo->lastAbility = gLastUsedAbility;
     stringInfo->scrActive = gBattleScripting.battler;
-    stringInfo->bakScriptPartyIdx = gBattleStruct->scriptPartyIdx;
-    stringInfo->hpScale = gBattleStruct->hpScale;
+    stringInfo->bakScriptPartyIdx = gCombate->scriptPartyIdx;
+    stringInfo->hpScale = gCombate->hpScale;
     stringInfo->itemEffectBattler = gPotentialItemEffectBattler;
     stringInfo->moveType = gMovesInfo[gCurrentMove].type;
 
-    for (i = 0; i < NUMERO_COMBATIENTES; i++)
-        stringInfo->abilities[i] = gBattleMons[i].ability;
-    for (i = 0; i < TEXT_BUFF_ARRAY_COUNT; i++)
+    for (indiceCombatiente = 0; indiceCombatiente < NUMERO_COMBATIENTES; indiceCombatiente++)
+        stringInfo->abilities[indiceCombatiente] = gBattleMons[indiceCombatiente].ability;
+
+    for (indiceCombatiente = 0; indiceCombatiente < TEXT_BUFF_ARRAY_COUNT; indiceCombatiente++)
     {
-        stringInfo->textBuffs[0][i] = gBattleTextBuff1[i];
-        stringInfo->textBuffs[1][i] = gBattleTextBuff2[i];
-        stringInfo->textBuffs[2][i] = gBattleTextBuff3[i];
+        stringInfo->textBuffs[0][indiceCombatiente] = gBattleTextBuff1[indiceCombatiente];
+        stringInfo->textBuffs[1][indiceCombatiente] = gBattleTextBuff2[indiceCombatiente];
+        stringInfo->textBuffs[2][indiceCombatiente] = gBattleTextBuff3[indiceCombatiente];
     }
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, sizeof(struct BattleMsgData) + 4);
+    PrepareBufferDataTransfer(combatiente, buffer, gBattleResources->transferBuffer, sizeof(struct BattleMsgData) + 6);
 }
 
 void BtlController_EmitPrintSelectionString(u32 battler, u32 bufferId, u16 stringID)
@@ -333,7 +333,7 @@ void BtlController_EmitPrintSelectionString(u32 battler, u32 bufferId, u16 strin
     stringInfo->lastItem = gLastUsedItem;
     stringInfo->lastAbility = gLastUsedAbility;
     stringInfo->scrActive = gBattleScripting.battler;
-    stringInfo->bakScriptPartyIdx = gBattleStruct->scriptPartyIdx;
+    stringInfo->bakScriptPartyIdx = gCombate->scriptPartyIdx;
 
     for (i = 0; i < NUMERO_COMBATIENTES; i++)
         stringInfo->abilities[i] = gBattleMons[i].ability;

@@ -7357,23 +7357,6 @@ const struct Item gItemsInfo[] =
         .iconPalette = gItemIconPalette_SmokeBall,
     },
 
-    [ITEM_FOCUS_BAND] =
-    {
-        .name = _("Focus Band"),
-        .price = (I_PRICE >= GEN_9) ? 10000 : ((I_PRICE >= GEN_7) ? 4000 : 200),
-        .holdEffect = HOLD_EFFECT_FOCUS_BAND,
-        .holdEffectParam = 10,
-        .description = COMPOUND_STRING(
-            "A hold item that\n"
-            "occasionally\n"
-            "prevents fainting."),
-        .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .iconPic = gItemIcon_FocusBand,
-        .iconPalette = gItemIconPalette_FocusBand,
-    },
-
     [ITEM_LUCKY_EGG] =
     {
         .name = _("Lucky Egg"),
@@ -7559,23 +7542,6 @@ const struct Item gItemsInfo[] =
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
         .iconPic = gItemIcon_PowerHerb,
         .iconPalette = gItemIconPalette_PowerHerb,
-    },
-
-    [ITEM_FOCUS_SASH] =
-    {
-        .name = _("Focus Sash"),
-        .pluralName = _("Focus Sashes"),
-        .price = (I_PRICE >= GEN_9) ? 50000 : ((I_PRICE >= GEN_7) ? 4000 : 200),
-        .holdEffect = HOLD_EFFECT_FOCUS_SASH,
-        .description = COMPOUND_STRING(
-            "If the holder has\n"
-            "full HP, it endures\n"
-            "KO hits with 1 HP."),
-        .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .iconPic = gItemIcon_FocusSash,
-        .iconPalette = gItemIconPalette_FocusSash,
     },
 
     [ITEM_ZOOM_LENS] =

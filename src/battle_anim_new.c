@@ -1431,51 +1431,6 @@ const struct SpriteTemplate gOblivionWingBeamTemplate =
     .callback = TranslateAnimSpriteToTargetMonLocation
 };
 
-//thousand arrows
-const struct SpriteTemplate gThousandArrowsGreenChargeTemplate =
-{
-    .tileTag = ANIM_TAG_CIRCLE_OF_LIGHT,
-    .paletteTag = ANIM_TAG_LEAF,
-    .oam = &gOamData_AffineNormal_ObjBlend_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gAffineAnims_GrowingElectricOrb,
-    .callback = AnimGrowingChargeOrb
-};
-
-const struct SpriteTemplate gThousandArrowsGreenHexTemplate =
-{
-    .tileTag = ANIM_TAG_VERTICAL_HEX,
-    .paletteTag = ANIM_TAG_ZYGARDE_HEXES,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = gRazorLeafParticleAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_Geyser
-};
-
-const struct SpriteTemplate gThousandArrowsGreenArrowTemplate =
-{
-    .tileTag = ANIM_TAG_NEEDLE,
-    .paletteTag = ANIM_TAG_LEAF,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimSalpicaTierraDirt
-};
-
-const struct SpriteTemplate gThousandArrowsGreenDischargeTemplate =
-{
-    .tileTag = ANIM_TAG_ELECTRICITY,
-    .paletteTag = ANIM_TAG_RAZOR_LEAF,
-    .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gAnims_ElectricPuff,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimElectricPuff
-};
-
 //thousand waves
 const struct SpriteTemplate gThousandWavesGreenWaveTemplate =
 {
@@ -7528,7 +7483,7 @@ static void SpriteCB_TwinkleOnBattler(struct Sprite *sprite)
 
 void AnimTask_ShellSideArm(u8 taskId)
 {
-    if (gBattleStruct->swapDamageCategory)
+    if (gCombate->swapDamageCategory)
         gBattleAnimArgs[0] = TRUE;
     else
         gBattleAnimArgs[0] = FALSE;

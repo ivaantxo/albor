@@ -251,22 +251,22 @@ static void HandleInputChooseAction(u32 battler)
     {
         if (!gLastUsedBallMenuPresent)
         {
-            gBattleStruct->ackBallUseBtn = FALSE;
+            gCombate->ackBallUseBtn = FALSE;
         }
         else if (JOY_NEW(B_LAST_USED_BALL_BUTTON))
         {
-            gBattleStruct->ackBallUseBtn = TRUE;
-            gBattleStruct->ballSwapped = FALSE;
+            gCombate->ackBallUseBtn = TRUE;
+            gCombate->ballSwapped = FALSE;
             ArrowsChangeColorLastBallCycle(TRUE);
         }
 
-        if (gBattleStruct->ackBallUseBtn)
+        if (gCombate->ackBallUseBtn)
         {
             if (JOY_HELD(B_LAST_USED_BALL_BUTTON) && (JOY_NEW(DPAD_DOWN) || JOY_NEW(DPAD_RIGHT)))
             {
                 bool32 sameBall = FALSE;
                 u32 nextBall = GetNextBall(gBallToDisplay);
-                gBattleStruct->ballSwapped = TRUE;
+                gCombate->ballSwapped = TRUE;
                 if (gBallToDisplay == nextBall)
                     sameBall = TRUE;
                 else
@@ -278,7 +278,7 @@ static void HandleInputChooseAction(u32 battler)
             {
                 bool32 sameBall = FALSE;
                 u32 prevBall = GetPrevBall(gBallToDisplay);
-                gBattleStruct->ballSwapped = TRUE;
+                gCombate->ballSwapped = TRUE;
                 if (gBallToDisplay == prevBall)
                     sameBall = TRUE;
                 else
@@ -286,15 +286,15 @@ static void HandleInputChooseAction(u32 battler)
                 SwapBallToDisplay(sameBall);
                 PlaySE(SE_SELECT);
             }
-            else if (JOY_NEW(B_BUTTON) || (!JOY_HELD(B_LAST_USED_BALL_BUTTON) && gBattleStruct->ballSwapped))
+            else if (JOY_NEW(B_BUTTON) || (!JOY_HELD(B_LAST_USED_BALL_BUTTON) && gCombate->ballSwapped))
             {
-                gBattleStruct->ackBallUseBtn = FALSE;
-                gBattleStruct->ballSwapped = FALSE;
+                gCombate->ackBallUseBtn = FALSE;
+                gCombate->ballSwapped = FALSE;
                 ArrowsChangeColorLastBallCycle(FALSE);
             }
             else if (!JOY_HELD(B_LAST_USED_BALL_BUTTON) && CanThrowLastUsedBall())
             {
-                gBattleStruct->ackBallUseBtn = FALSE;
+                gCombate->ackBallUseBtn = FALSE;
                 PlaySE(SE_SELECT);
                 ArrowsChangeColorLastBallCycle(FALSE);
                 TryHideLastUsedBall();
@@ -1083,7 +1083,7 @@ static void Task_GiveExpToMon(u8 taskId)
             gainedExp -= nextLvlExp - currExp;
             BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_SUBIO_NIVEL, gainedExp);
 
-            if (EsContraEntrenador() == TRUE
+            if (EsContraEntrenador()
              && (monId == gBattlerPartyIndexes[battler] || monId == gBattlerPartyIndexes[ALIADO(battler)]))
                 gTasks[taskId].func = Task_LaunchLvlUpAnim;
             else
@@ -1173,7 +1173,7 @@ static void Task_LaunchLvlUpAnim(u8 taskId)
     u8 battler = gTasks[taskId].tExpTask_battler;
     u8 monIndex = gTasks[taskId].tExpTask_monId;
 
-    if (EsContraEntrenador() == TRUE && monIndex == gBattlerPartyIndexes[ALIADO(battler)])
+    if (EsContraEntrenador() && monIndex == gBattlerPartyIndexes[ALIADO(battler)])
         battler ^= BIT_FLANK;
 
     InitAndLaunchSpecialAnimation(battler, battler, battler, B_ANIM_LVL_UP);
@@ -1188,7 +1188,7 @@ static void Task_UpdateLvlInHealthbox(u8 taskId)
     {
         u8 monIndex = gTasks[taskId].tExpTask_monId;
 
-        if (EsContraEntrenador() == TRUE && monIndex == gBattlerPartyIndexes[ALIADO(battler)])
+        if (EsContraEntrenador() && monIndex == gBattlerPartyIndexes[ALIADO(battler)])
             UpdateHealthboxAttribute(gHealthboxSpriteIds[ALIADO(battler)], &gPlayerParty[monIndex], HEALTHBOX_ALL);
         else
             UpdateHealthboxAttribute(gHealthboxSpriteIds[battler], &gPlayerParty[monIndex], HEALTHBOX_ALL);
@@ -1976,9 +1976,9 @@ static void PlayerHandleChoosePokemon(u32 battler)
 
     gBattleControllerData[battler] = CreateTask(TaskDummy, 0xFF);
     gTasks[gBattleControllerData[battler]].data[0] = gBattleResources->bufferA[battler][1] & 0xF;
-    *(&gBattleStruct->battlerPreventingSwitchout) = gBattleResources->bufferA[battler][1] >> 4;
-    *(&gBattleStruct->prevSelectedPartySlot) = gBattleResources->bufferA[battler][2];
-    *(&gBattleStruct->abilityPreventingSwitchout) = (gBattleResources->bufferA[battler][3] & 0xFF) | (gBattleResources->bufferA[battler][7] << 8);
+    *(&gCombate->battlerPreventingSwitchout) = gBattleResources->bufferA[battler][1] >> 4;
+    *(&gCombate->prevSelectedPartySlot) = gBattleResources->bufferA[battler][2];
+    *(&gCombate->abilityPreventingSwitchout) = (gBattleResources->bufferA[battler][3] & 0xFF) | (gBattleResources->bufferA[battler][7] << 8);
     BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
     gBattlerControllerFuncs[battler] = OpenPartyMenuToChooseMon;
     gBattlerInMenuId = battler;

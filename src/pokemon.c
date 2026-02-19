@@ -1739,7 +1739,7 @@ void CopyPartyMonToBattleData(u32 battlerId, u32 partyIndex)
     u32 side = GetBattlerSide(battlerId);
     struct Pokemon *party = GetSideParty(side);
     PokemonToBattleMon(&party[partyIndex], &gBattleMons[battlerId]);
-    gBattleStruct->hpOnSwitchout[side] = gBattleMons[battlerId].hp;
+    gCombate->hpOnSwitchout[side] = gBattleMons[battlerId].hp;
     UpdateSentPokesToOpponentValue(battlerId);
     ClearTemporarySpeciesSpriteData(battlerId, FALSE);
 }
@@ -3255,17 +3255,17 @@ void BoxMonRestorePP(struct BoxPokemon *boxMon)
 void SetMonPreventsSwitchingString(void)
 {
     const u8 gText_PkmnsXPreventsSwitching[] = _("{B_BUFF1} is preventing switching out with its {B_LAST_ABILITY} Ability!");
-    gLastUsedAbility = gBattleStruct->abilityPreventingSwitchout;
+    gLastUsedAbility = gCombate->abilityPreventingSwitchout;
 
     gBattleTextBuff1[0] = B_BUFF_PLACEHOLDER_BEGIN;
     gBattleTextBuff1[1] = B_BUFF_MON_NICK_WITH_PREFIX;
-    gBattleTextBuff1[2] = gBattleStruct->battlerPreventingSwitchout;
+    gBattleTextBuff1[2] = gCombate->battlerPreventingSwitchout;
     gBattleTextBuff1[4] = B_BUFF_EOS;
 
-    if (GetBattlerSide(gBattleStruct->battlerPreventingSwitchout) == LADO_JUGADOR)
-        gBattleTextBuff1[3] = GetPartyIdFromBattlePartyId(gBattlerPartyIndexes[gBattleStruct->battlerPreventingSwitchout]);
+    if (GetBattlerSide(gCombate->battlerPreventingSwitchout) == LADO_JUGADOR)
+        gBattleTextBuff1[3] = GetPartyIdFromBattlePartyId(gBattlerPartyIndexes[gCombate->battlerPreventingSwitchout]);
     else
-        gBattleTextBuff1[3] = gBattlerPartyIndexes[gBattleStruct->battlerPreventingSwitchout];
+        gBattleTextBuff1[3] = gBattlerPartyIndexes[gCombate->battlerPreventingSwitchout];
 
     PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff2, gBattlerInMenuId, GetPartyIdFromBattlePartyId(gBattlerPartyIndexes[gBattlerInMenuId]))
 
@@ -3722,8 +3722,8 @@ bool32 TryFormChange(u32 monId, u32 side, u16 method)
 
     targetSpecies = GetFormChangeTargetSpecies(&party[monId], method, 0);
 
-    if (targetSpecies == SPECIES_NONE && gBattleStruct != NULL)
-        targetSpecies = gBattleStruct->changedSpecies[side][monId];
+    if (targetSpecies == SPECIES_NONE && gCombate != NULL)
+        targetSpecies = gCombate->changedSpecies[side][monId];
 
     if (targetSpecies != SPECIES_NONE)
     {

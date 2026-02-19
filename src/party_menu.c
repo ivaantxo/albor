@@ -4133,8 +4133,8 @@ static void TryUseItemOnMove(u8 taskId)
         }
         else
         {
-            gBattleStruct->itemPartyIndex[gBattlerInMenuId] = GetPartyIdFromBattleSlot(gPartyMenu.slotId);
-            gBattleStruct->itemMoveIndex[gBattlerInMenuId] = ptr->data1;
+            gCombate->itemPartyIndex[gBattlerInMenuId] = GetPartyIdFromBattleSlot(gPartyMenu.slotId);
+            gCombate->itemMoveIndex[gBattlerInMenuId] = ptr->data1;
             gPartyMenuUseExitCallback = TRUE;
             RemoveBagItem(gSpecialVar_ItemId, 1);
             ScheduleBgCopyTilemapToVram(2);
@@ -5431,7 +5431,7 @@ static bool8 TrySwitchInPokemon(void)
         StringExpandPlaceholders(gVariableTextoAmpliada, gText_EggCantBattle);
         return FALSE;
     }
-    if (GetPartyIdFromBattleSlot(slot) == gBattleStruct->prevSelectedPartySlot)
+    if (GetPartyIdFromBattleSlot(slot) == gCombate->prevSelectedPartySlot)
     {
         GetMonNickname(&gPlayerParty[slot], gVariableTexto1);
         StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnAlreadySelected);
@@ -5467,20 +5467,7 @@ static void BufferBattlePartyOrder(u8 *partyBattleOrder)
     u8 partyIds[PARTY_SIZE];
     u32 i, j;
 
-    if (EsContraEntrenador() == FALSE)
-    {
-        j = 1;
-        partyIds[0] = gBattlerPartyIndexes[JUGADOR_IZQUIERDA];
-        for (i = 0; i < PARTY_SIZE; i++)
-        {
-            if (i != partyIds[0])
-            {
-                partyIds[j] = i;
-                j++;
-            }
-        }
-    }
-    else
+    if (EsContraEntrenador())
     {
         j = 2;
         partyIds[0] = gBattlerPartyIndexes[JUGADOR_IZQUIERDA];
@@ -5494,13 +5481,26 @@ static void BufferBattlePartyOrder(u8 *partyBattleOrder)
             }
         }
     }
+    else
+    {
+        j = 1;
+        partyIds[0] = gBattlerPartyIndexes[JUGADOR_IZQUIERDA];
+        for (i = 0; i < PARTY_SIZE; i++)
+        {
+            if (i != partyIds[0])
+            {
+                partyIds[j] = i;
+                j++;
+            }
+        }
+    }
     for (i = 0; i < (int)ARRAY_COUNT(gBattlePartyCurrentOrder); i++)
         partyBattleOrder[i] = (partyIds[0 + (i * 2)] << 4) | partyIds[1 + (i * 2)];
 }
 
 void BufferBattlePartyCurrentOrderBySide(u8 battlerId)
 {
-    BufferBattlePartyOrderBySide(gBattleStruct->battlerPartyOrders[battlerId], battlerId);
+    BufferBattlePartyOrderBySide(gCombate->battlerPartyOrders[battlerId], battlerId);
 }
 
 // when GetBattlerSide(battlerId) == LADO_JUGADOR, this function is identical the one above
@@ -5522,13 +5522,14 @@ static void BufferBattlePartyOrderBySide(u8 *partyBattleOrder, u8 battlerId)
         rightBattler = OPONENTE_DERECHA;
     }
 
-    if (EsContraEntrenador() == FALSE)
+    if (EsContraEntrenador())
     {
-        j = 1;
+        j = 2;
         partyIndexes[0] = gBattlerPartyIndexes[leftBattler];
+        partyIndexes[1] = gBattlerPartyIndexes[rightBattler];
         for (i = 0; i < PARTY_SIZE; i++)
         {
-            if (i != partyIndexes[0])
+            if (i != partyIndexes[0] && i != partyIndexes[1])
             {
                 partyIndexes[j] = i;
                 j++;
@@ -5537,12 +5538,11 @@ static void BufferBattlePartyOrderBySide(u8 *partyBattleOrder, u8 battlerId)
     }
     else
     {
-        j = 2;
+        j = 1;
         partyIndexes[0] = gBattlerPartyIndexes[leftBattler];
-        partyIndexes[1] = gBattlerPartyIndexes[rightBattler];
         for (i = 0; i < PARTY_SIZE; i++)
         {
-            if (i != partyIndexes[0] && i != partyIndexes[1])
+            if (i != partyIndexes[0])
             {
                 partyIndexes[j] = i;
                 j++;

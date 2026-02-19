@@ -6047,10 +6047,10 @@ static void AnimTask_AllySwitchDataSwap(u8 taskId)
     SWAP(gTransformedPersonalities[battlerAtk], gTransformedPersonalities[battlerPartner], temp);
     SWAP(gTransformedShininess[battlerAtk], gTransformedShininess[battlerPartner], temp);
     SWAP(gStatuses3[battlerAtk], gStatuses3[battlerPartner], temp);
-    SWAP(gBattleStruct->chosenMovePositions[battlerAtk], gBattleStruct->chosenMovePositions[battlerPartner], temp);
+    SWAP(gCombate->chosenMovePositions[battlerAtk], gCombate->chosenMovePositions[battlerPartner], temp);
     SWAP(gMovimientoElegido[battlerAtk], gMovimientoElegido[battlerPartner], temp);
     SWAP(gLockedMoves[battlerAtk], gLockedMoves[battlerPartner], temp);
-    SWAP(gBattleStruct->moveTarget[battlerAtk], gBattleStruct->moveTarget[battlerPartner], temp);
+    SWAP(gCombate->moveTarget[battlerAtk], gCombate->moveTarget[battlerPartner], temp);
     SWAP(gMoveSelectionCursor[battlerAtk], gMoveSelectionCursor[battlerPartner], temp);
     // Swap turn order, so that all the battlers take action
     SWAP(gAccionElegida[battlerAtk], gAccionElegida[battlerPartner], temp);
@@ -6077,7 +6077,7 @@ static void AnimTask_AllySwitchDataSwap(u8 taskId)
     {
         u16 ability = GetBattlerAbility(i);
         if (gMovimientoElegido[i] == MOVE_SNIPE_SHOT || ability == ABILITY_PROPELLER_TAIL || ability == ABILITY_STALWART)
-            gBattleStruct->moveTarget[i] ^= BIT_FLANK;
+            gCombate->moveTarget[i] ^= BIT_FLANK;
     }
 
     // For some reason the order in which the sprites are created matters. Looks like an issue with the sprite system, potentially with the Sprite Template.

@@ -3075,7 +3075,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Attacks with a psychic\n"
             "wave of varying intensity."),
-        .effect = EFFECT_PSYWAVE,
+        .effect = EFFECT_HIT,
         .power = 1,
         .type = TIPO_PSIQUICO,
         .accuracy = B_UPDATED_MOVE_DATA >= GEN_6 ? 100 : 80,
@@ -3309,7 +3309,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Attacks with sharp fangs\n"
             "and cuts half the foe's HP."),
-        .effect = EFFECT_SUPER_FANG,
+        .effect = EFFECT_HIT,
         .power = 1,
         .type = TIPO_NORMAL,
         .accuracy = 90,
@@ -11540,28 +11540,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_OblivionWing,
     },
 
-    [MOVE_THOUSAND_ARROWS] =
-    {
-        .name = COMPOUND_STRING("Thousand Arrows"),
-        .description = COMPOUND_STRING(
-            "Can hit Flying foes, then\n"
-            "knocks them to the ground."),
-        .effect = EFFECT_HIT,
-        .power = 90,
-        .type = TIPO_TIERRA,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_BOTH,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .damagesAirborne = TRUE,
-        .ignoreTypeIfFlyingAndUngrounded = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SMACK_DOWN,
-        }),
-        .battleAnimScript = gBattleAnimMove_ThousandArrows,
-    },
-
     [MOVE_THOUSAND_WAVES] =
     {
         .name = COMPOUND_STRING("Thousand Waves"),
@@ -14462,7 +14440,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Summons a ruinous disaster\n"
             "and cuts half the foe's HP."),
-        .effect = EFFECT_SUPER_FANG,
+        .effect = EFFECT_HIT,
         .power = 1,
         .type = TIPO_SINIESTRO,
         .accuracy = 90,

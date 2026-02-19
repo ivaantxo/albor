@@ -155,7 +155,6 @@ struct ProtectStruct
     u32 loveImmobility:1;
     u32 usedDisabledMove:1;
     u32 usedTauntedMove:1;
-    u32 flag2Unknown:1; // Only set to 0 once. Checked in 'WasUnableToUseMove' function.
     u32 flinchImmobility:1;
     u32 notFirstStrike:1;
     u32 usedHealBlockedMove:1;
@@ -182,7 +181,6 @@ struct ProtectStruct
     u32 specialDmg;
     u8 physicalBattlerId;
     u8 specialBattlerId;
-
 };
 
 struct SpecialStatus
@@ -197,8 +195,6 @@ struct SpecialStatus
     u8 lightningRodRedirected:1;
     u8 restoredBattlerSprite: 1;
     u8 faintedHasReplacement:1;
-    u8 focusBanded:1;
-    u8 focusSashed:1;
     // End of byte
     u8 stormDrainRedirected:1;
     u8 switchInAbilityDone:1;
@@ -216,9 +212,6 @@ struct SpecialStatus
     u8 neutralizingGasRemoved:1;    // See VARIOUS_TRY_END_NEUTRALIZING_GAS
     // End of byte
     u8 damagedMons:4; // Mons that have been damaged directly by using a move, includes substitute.
-    u8 dancerUsedMove:1;
-    u8 dancerOriginalTarget:3;
-    // End of byte
     u8 afterYou:1;
     u8 preventLifeOrbDamage:1; // So that Life Orb doesn't activate various effects.
     u8 mago:1;
@@ -434,7 +427,7 @@ struct LostItem
     u16 stolen:1;
 };
 
-struct BattleStruct
+struct Combate
 {
     u8 turnEffectsTracker;
     u8 turnEffectsBattlerId;
@@ -551,13 +544,10 @@ struct BattleStruct
     u8 usedMicleBerry;
     u32 posicionPokemonEquipo;
     u32 estadisticaAtaqueEquipo;
+    enum ResultadosMovimiento resultadoMovimiento;
 };
 
 #define DYNAMIC_TYPE_MASK                 ((1 << 6) - 1)
-
-#define ES_MOVIMIENTO_FISICO(movimiento)      (CategoriaMovimiento(movimiento) == CATEGORIA_FISICA)
-#define ES_MOVIMIENTO_ESPECIAL(movimiento)    (CategoriaMovimiento(movimiento) == CATEGORIA_ESPECIAL)
-#define ES_MOVIMIENTO_ESTADO(movimiento)      (CategoriaMovimiento(movimiento) == CATEGORIA_ESTADO)
 
 #define ES_TIPO(combatiente, tipo)      ((GetBattlerType(combatiente, 0) == tipo || GetBattlerType(combatiente, 1) == tipo))
 #define ESTA_DORMIDO(combatiente)       (gBattleMons[combatiente].status1 & STATUS1_SLEEP)
@@ -776,7 +766,7 @@ extern u8 gEffectBattler;
 extern u8 gPotentialItemEffectBattler;
 extern u8 gAbsentBattlerFlags;
 extern u32 gEsGolpeCritico;
-extern u8 gMultiHitCounter;
+extern u8 gContadorMultigolpes;
 extern const u8 *gBattlescriptCurrInstr;
 extern u32 gAccionElegida[NUMERO_COMBATIENTES];
 extern const u8 *gSelectionBattleScripts[NUMERO_COMBATIENTES];
@@ -790,7 +780,6 @@ extern u16 gLockedMoves[NUMERO_COMBATIENTES];
 extern u16 gLastUsedMove;
 extern u8 gLastHitBy[NUMERO_COMBATIENTES];
 extern u16 gMovimientoElegido[NUMERO_COMBATIENTES];
-extern u16 gMoveResultFlags;
 extern u32 gHitMarker;
 extern u32 gSideStatuses[NUMERO_LADOS];
 extern struct SideTimer gSideTimers[NUMERO_LADOS];
@@ -810,7 +799,7 @@ extern struct WishFutureKnock gWishFutureKnock;
 extern u16 gIntroSlideFlags;
 extern u8 gSentPokesToOpponent[2];
 extern struct BattleScripting gBattleScripting;
-extern struct BattleStruct *gBattleStruct;
+extern struct Combate *gCombate;
 extern struct BattleResources *gBattleResources;
 extern u8 gActionSelectionCursor[NUMERO_COMBATIENTES];
 extern u8 gMoveSelectionCursor[NUMERO_COMBATIENTES];
@@ -876,7 +865,34 @@ static inline struct Pokemon *GetBattlerParty(u32 battler)
 
 static inline bool32 EsContraEntrenador(void)
 {
-    return gBattleTypeFlags & COMBATE_ENTRENADOR;
+    return (gBattleTypeFlags & COMBATE_ENTRENADOR);
+}
+
+static inline bool32 MovimientoEsEfectivo(enum ResultadosMovimiento resultadoMovimiento)
+{
+    return (resultadoMovimiento == MOVIMIENTO_POCO_EFECTIVO
+        || resultadoMovimiento == MOVIMIENTO_NEUTRO
+        || resultadoMovimiento == MOVIMIENTO_SUPER_EFECTIVO);
+}
+
+static inline bool32 EsMovimientoFisico(u32 movimiento)
+{
+    return (CategoriaMovimiento(movimiento) == CATEGORIA_FISICA);
+}
+
+static inline bool32 EsMovimientoEspecial(u32 movimiento)
+{
+    return (CategoriaMovimiento(movimiento) == CATEGORIA_ESPECIAL);
+}
+
+static inline bool32 EsMovimientoDeEstado(u32 movimiento)
+{
+    return (CategoriaMovimiento(movimiento) == CATEGORIA_ESTADO);
+}
+
+static inline bool32 EsPrimerGolpe(void)
+{
+    return (gContadorMultigolpes == 0);
 }
 
 #endif // GUARD_BATTLE_H

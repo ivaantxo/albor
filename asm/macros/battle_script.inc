@@ -59,8 +59,8 @@
 	.byte BATTLE_CMD_critmessage
 	.endm
 
-	.macro effectivenesssound
-	.byte BATTLE_CMD_effectivenesssound
+	.macro HazSonidoEfectividad
+	.byte BATTLE_CMD_HazSonidoEfectividad
 	.endm
 
 	.macro resultmessage
@@ -817,10 +817,6 @@
 	.byte BATTLE_CMD_dmgtolevel
 	.endm
 
-	.macro psywavedamageeffect
-	.byte BATTLE_CMD_psywavedamageeffect
-	.endm
-
 	.macro counterdamagecalculator failInstr:req
 	.byte BATTLE_CMD_counterdamagecalculator
 	.4byte \failInstr
@@ -1147,8 +1143,8 @@
 	.byte BATTLE_CMD_snatchsetbattlers
 	.endm
 
-	.macro removelightscreenreflect
-	.byte BATTLE_CMD_removelightscreenreflect
+	.macro EliminaPantallas
+	.byte BATTLE_CMD_EliminaPantallas
 	.endm
 
 	.macro handleballthrow
@@ -1744,7 +1740,7 @@
 	.4byte \jumpInstr
 	.endm
 
-	.macro destroyabilitypopup
+	.macro DestruyeMensajeHabilidad
 	various BS_ABILITY_BATTLER, VARIOUS_DESTROY_ABILITY_POPUP
 	.endm
 

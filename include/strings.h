@@ -518,7 +518,6 @@ extern const u8 gText_MentalHerb48BP[];
 extern const u8 gText_BrightPowder64BP[];
 extern const u8 gText_ChoiceBand64BP[];
 extern const u8 gText_KingsRock64BP[];
-extern const u8 gText_FocusBand64BP[];
 extern const u8 gText_ScopeLens64BP[];
 
 extern const u8 gText_EnergyPowder50[];

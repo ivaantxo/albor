@@ -191,34 +191,17 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_SPIKESSCATTERED] = COMPOUND_STRING("¡Han caído púas en el campo de {B_DEF_TEAM2}!"),
     [STRINGID_PKMNHURTBYSPIKES] = COMPOUND_STRING("¡{B_SCR_ACTIVE_NAME_WITH_PREFIX} se ha pinchado con las púas!"),
     [STRINGID_PKMNBRACEDITSELF] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} braced itself!"),
-    [STRINGID_MAGNITUDESTRENGTH] = COMPOUND_STRING("MAGNITUDE {B_BUFF1}!"),
-    [STRINGID_PKMNCUTHPMAXEDATTACK] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} cut its own HP and maximized ATTACK!"),
-    [STRINGID_PKMNSHEDLEECHSEED] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} shed LEECH SEED!"),
-    [STRINGID_PKMNFLEDFROMBATTLE] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} fled from battle!"),
     [STRINGID_PKMNFORESAWATTACK] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} foresaw an attack!"),
     [STRINGID_PKMNHASNOMOVESLEFT] = COMPOUND_STRING("¡A {B_ATK_NAME_WITH_PREFIX} no le quedan PPs!"), // printselectionstring
     [STRINGID_PKMNSUBJECTEDTOTORMENT] = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} was subjected to torment!"),
     [STRINGID_PKMNCANTUSEMOVETORMENT] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} can't use the same move in a row due to the Torment!"),
     [STRINGID_PKMNCANTUSEMOVETAUNT] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} can't use {B_CURRENT_MOVE} after the Taunt!"),
-    [STRINGID_PKMNWISHCAMETRUE] = COMPOUND_STRING("{B_BUFF1}'s WISH came true!"),
-    [STRINGID_PKMNABSORBEDNUTRIENTS] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} absorbed nutrients with its roots!"),
-    [STRINGID_PKMNANCHOREDITSELF] = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} anchored itself with its roots!"),
-    [STRINGID_PKMNKNOCKEDOFF] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} knocked off {B_DEF_NAME_WITH_PREFIX}'s {B_LAST_ITEM}!"),
-    [STRINGID_PKMNSWAPPEDABILITIES] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} swapped abilities with its opponent!"),
-    [STRINGID_PKMNSEALEDOPPONENTMOVE] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} sealed the opponent's move(s)!"),
     [STRINGID_PKMNCANTUSEMOVESEALED] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} can't use the sealed {B_CURRENT_MOVE}!"),
-    [STRINGID_PKMNWAITSFORTARGET] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} waits for a target to make a move!"),
-    [STRINGID_PKMNSNATCHEDMOVE] = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} snatched {B_SCR_ACTIVE_NAME_WITH_PREFIX}'s move!"),
-    [STRINGID_PKMNRAISEDSPEED] = COMPOUND_STRING("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY} raised its SPEED!"),
-    [STRINGID_PKMNPREVENTSUSAGE] = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} prevents {B_ATK_NAME_WITH_PREFIX}\lfrom using {B_CURRENT_MOVE}!"),
-    [STRINGID_PKMNRESTOREDHPUSING] = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} restored HP using its {B_DEF_ABILITY}!"),
     [STRINGID_PKMNPREVENTSPARALYSISWITH] = COMPOUND_STRING("{B_EFF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} prevents paralysis!"),
-    [STRINGID_PKMNPREVENTSROMANCEWITH] = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} prevents romance!"),
     [STRINGID_PKMNPREVENTSPOISONINGWITH] = COMPOUND_STRING("{B_EFF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} prevents poisoning!"),
     [STRINGID_PKMNRAISEDFIREPOWERWITH] = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} raised its FIRE power!"),
     [STRINGID_PKMNCUTSATTACKWITH] = COMPOUND_STRING("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY} cuts {B_DEF_NAME_WITH_PREFIX}'s attack!"),
     [STRINGID_PKMNPREVENTSSTATLOSSWITH] = COMPOUND_STRING("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY} prevents stat loss!"),
-    [STRINGID_PKMNTRACED] = COMPOUND_STRING("¡{B_SCR_ACTIVE_NAME_WITH_PREFIX} rastreó {B_BUFF2} de {B_BUFF1}!"),
     [STRINGID_STATSHARPLY] = COMPOUND_STRING("sharply "),
     [STRINGID_STATROSE] = COMPOUND_STRING("{B_BUFF1} rose!"),
     [STRINGID_STATHARSHLY] = COMPOUND_STRING("harshly "),
@@ -344,7 +327,6 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_WONDERROOMENDS] = COMPOUND_STRING("Wonder Room wore off, and Defense and Sp. Def stats returned to normal!"),
     [STRINGID_MAGICROOMENDS] = COMPOUND_STRING("Magic Room wore off, and held items' effects returned to normal!"),
     [STRINGID_GRAVITYENDS] = COMPOUND_STRING("Gravity returned to normal!"),
-    [STRINGID_AQUARINGHEAL] = COMPOUND_STRING("Aqua Ring restored {B_ATK_NAME_WITH_PREFIX}'s HP!"),
     [STRINGID_TARGETSSTATWASMAXEDOUT] = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} maxed its {B_BUFF1}!"),
     [STRINGID_MOLDBREAKERENTERS] = COMPOUND_STRING("{B_SCR_ACTIVE_NAME_WITH_PREFIX} breaks the mold!"),
     [STRINGID_FOREWARNACTIVATES] = COMPOUND_STRING("{B_SCR_ACTIVE_ABILITY} alerted {B_SCR_ACTIVE_NAME_WITH_PREFIX} to {B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}!"),
@@ -368,7 +350,6 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_HEALBLOCKPREVENTSUSAGE] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} was prevented from healing!"),
     [STRINGID_SPIKESDISAPPEAREDFROMTEAM] = COMPOUND_STRING("The spikes disappeared from the ground around {B_ATK_TEAM2} team!"),
     [STRINGID_TOXICSPIKESDISAPPEAREDFROMTEAM] = COMPOUND_STRING("The poison spikes disappeared from the ground around {B_ATK_TEAM2} team!"),
-    [STRINGID_STEALTHROCKDISAPPEAREDFROMTEAM] = COMPOUND_STRING("The pointed stones disappeared from around {B_ATK_TEAM2} team!"),
     [STRINGID_STICKYWEBDISAPPEAREDFROMTEAM] = COMPOUND_STRING("The sticky web has disappeared from the ground around {B_ATK_TEAM2} team!"),
     [STRINGID_SHARPSTEELDISAPPEAREDFROMTEAM] = sText_SharpSteelDisappearedFromTeam,
     [STRINGID_DRASTICALLY] = sText_drastically,
@@ -976,8 +957,8 @@ void BufferStringBattle(u16 stringID, u32 battler)
     gLastUsedItem = gBattleMsgDataPtr->lastItem;
     gLastUsedAbility = gBattleMsgDataPtr->lastAbility;
     gBattleScripting.battler = gBattleMsgDataPtr->scrActive;
-    gBattleStruct->scriptPartyIdx = gBattleMsgDataPtr->bakScriptPartyIdx;
-    gBattleStruct->hpScale = gBattleMsgDataPtr->hpScale;
+    gCombate->scriptPartyIdx = gBattleMsgDataPtr->bakScriptPartyIdx;
+    gCombate->hpScale = gBattleMsgDataPtr->hpScale;
     gPotentialItemEffectBattler = gBattleMsgDataPtr->itemEffectBattler;
 
     for (i = 0; i < NUMERO_COMBATIENTES; i++)
@@ -1033,11 +1014,11 @@ void BufferStringBattle(u16 stringID, u32 battler)
     case STRINGID_RETURNMON:
         if (GetBattlerSide(battler) == LADO_JUGADOR)
         {
-            if (*(&gBattleStruct->hpScale) == 0)
+            if (*(&gCombate->hpScale) == 0)
                 stringPtr = COMPOUND_STRING("¡{B_BUFF1}, ya es suficiente! ¡Vuelve!");
-            else if (*(&gBattleStruct->hpScale) == 1 || EsContraEntrenador())
+            else if (*(&gCombate->hpScale) == 1 || EsContraEntrenador())
                 stringPtr = COMPOUND_STRING("¡{B_BUFF1}, ven conmigo!");
-            else if (*(&gBattleStruct->hpScale) == 2)
+            else if (*(&gCombate->hpScale) == 2)
                 stringPtr = COMPOUND_STRING("¡{B_BUFF1}, bien! ¡Cambio!");
             else
                 stringPtr = COMPOUND_STRING("¡Lo has hecho bien, {B_BUFF1}! ¡Descansa!");
@@ -1050,11 +1031,11 @@ void BufferStringBattle(u16 stringID, u32 battler)
     case STRINGID_SWITCHINMON:
         if (GetBattlerSide(gBattleScripting.battler) == LADO_JUGADOR)
         {
-            if (*(&gBattleStruct->hpScale) == 0 || EsContraEntrenador())
+            if (*(&gCombate->hpScale) == 0 || EsContraEntrenador())
                 stringPtr = COMPOUND_STRING("¡A luchar, {B_BUFF1}!");
-            else if (*(&gBattleStruct->hpScale) == 1)
+            else if (*(&gCombate->hpScale) == 1)
                 stringPtr = COMPOUND_STRING("¡Hazlo, {B_BUFF1}!");
-            else if (*(&gBattleStruct->hpScale) == 2)
+            else if (*(&gCombate->hpScale) == 2)
                 stringPtr = COMPOUND_STRING("¡A por ello, {B_BUFF1}!");
             else
                 stringPtr = COMPOUND_STRING("¡Tu rival está débil! ¡Tú puedes, {B_BUFF1}!");
@@ -1069,7 +1050,7 @@ void BufferStringBattle(u16 stringID, u32 battler)
         stringPtr = COMPOUND_STRING("¡{B_ATK_NAME_WITH_PREFIX} usó {B_BUFF3}!");
         break;
     case STRINGID_TRAINERSLIDE:
-        stringPtr = gBattleStruct->trainerSlideMsg;
+        stringPtr = gCombate->trainerSlideMsg;
         break;
     default:
         if (stringID >= NUMERO_TEXTOS_COMBATE)
@@ -1755,7 +1736,7 @@ bool32 ShouldDoTrainerSlide(u32 battler, u32 which)
             case TRAINER_SLIDE_LAST_SWITCHIN:
                 if (sTrainerSlides[i].msgLastSwitchIn != NULL && !CanBattlerSwitch(battler))
                 {
-                    gBattleStruct->trainerSlideMsg = sTrainerSlides[i].msgLastSwitchIn;
+                    gCombate->trainerSlideMsg = sTrainerSlides[i].msgLastSwitchIn;
                     return retValue;
                 }
                 break;
@@ -1763,17 +1744,17 @@ bool32 ShouldDoTrainerSlide(u32 battler, u32 which)
                 if (sTrainerSlides[i].msgLastLowHp != NULL
                     && GetEnemyMonCount(firstId, lastId, TRUE) == 1
                     && BattlerHPPercentage(battler, LESS_THAN_OR_EQUAL, 4)
-                    && !gBattleStruct->trainerSlideLowHpMsgDone)
+                    && !gCombate->trainerSlideLowHpMsgDone)
                 {
-                    gBattleStruct->trainerSlideLowHpMsgDone = TRUE;
-                    gBattleStruct->trainerSlideMsg = sTrainerSlides[i].msgLastLowHp;
+                    gCombate->trainerSlideLowHpMsgDone = TRUE;
+                    gCombate->trainerSlideMsg = sTrainerSlides[i].msgLastLowHp;
                     return retValue;
                 }
                 break;
             case TRAINER_SLIDE_FIRST_DOWN:
                 if (sTrainerSlides[i].msgFirstDown != NULL && GetEnemyMonCount(firstId, lastId, TRUE) == GetEnemyMonCount(firstId, lastId, FALSE) - 1)
                 {
-                    gBattleStruct->trainerSlideMsg = sTrainerSlides[i].msgFirstDown;
+                    gCombate->trainerSlideMsg = sTrainerSlides[i].msgFirstDown;
                     return retValue;
                 }
                 break;
@@ -1781,56 +1762,56 @@ bool32 ShouldDoTrainerSlide(u32 battler, u32 which)
                 if (sTrainerSlides[i].msgLastHalfHp != NULL
                  && GetEnemyMonCount(firstId, lastId, TRUE) == GetEnemyMonCount(firstId, lastId, FALSE) - 1
                  && BattlerHPPercentage(battler, LESS_THAN_OR_EQUAL, 2) && BattlerHPPercentage(battler, GREATER_THAN, 4)
-                 && !gBattleStruct->trainerSlideHalfHpMsgDone)
+                 && !gCombate->trainerSlideHalfHpMsgDone)
                 {
-                    gBattleStruct->trainerSlideHalfHpMsgDone = TRUE;
-                    gBattleStruct->trainerSlideMsg = sTrainerSlides[i].msgLastHalfHp;
+                    gCombate->trainerSlideHalfHpMsgDone = TRUE;
+                    gCombate->trainerSlideMsg = sTrainerSlides[i].msgLastHalfHp;
                     return TRUE;
                 }
                 break;
             case TRAINER_SLIDE_FIRST_CRITICAL_HIT:
-                if (sTrainerSlides[i].msgFirstCriticalHit != NULL && gBattleStruct->trainerSlideFirstCriticalHitMsgState == 1)
+                if (sTrainerSlides[i].msgFirstCriticalHit != NULL && gCombate->trainerSlideFirstCriticalHitMsgState == 1)
                 {
-                    gBattleStruct->trainerSlideFirstCriticalHitMsgState = 2;
-                    gBattleStruct->trainerSlideMsg = sTrainerSlides[i].msgFirstCriticalHit;
+                    gCombate->trainerSlideFirstCriticalHitMsgState = 2;
+                    gCombate->trainerSlideMsg = sTrainerSlides[i].msgFirstCriticalHit;
                     return TRUE;
                 }
                 break;
             case TRAINER_SLIDE_FIRST_SUPER_EFFECTIVE_HIT:
                 if (sTrainerSlides[i].msgFirstSuperEffectiveHit != NULL
-                    && gBattleStruct->trainerSlideFirstSuperEffectiveHitMsgState == 1
+                    && gCombate->trainerSlideFirstSuperEffectiveHitMsgState == 1
                     && gBattleMons[battler].hp)
                 {
-                    gBattleStruct->trainerSlideFirstSuperEffectiveHitMsgState = 2;
-                    gBattleStruct->trainerSlideMsg = sTrainerSlides[i].msgFirstSuperEffectiveHit;
+                    gCombate->trainerSlideFirstSuperEffectiveHitMsgState = 2;
+                    gCombate->trainerSlideMsg = sTrainerSlides[i].msgFirstSuperEffectiveHit;
                     return TRUE;
                 }
                 break;
             case TRAINER_SLIDE_FIRST_STAB_MOVE:
                 if (sTrainerSlides[i].msgFirstSTABMove != NULL
-                 && gBattleStruct->trainerSlideFirstSTABMoveMsgState == 1
+                 && gCombate->trainerSlideFirstSTABMoveMsgState == 1
                  && GetEnemyMonCount(firstId, lastId, TRUE) == GetEnemyMonCount(firstId, lastId, FALSE))
                 {
-                    gBattleStruct->trainerSlideFirstSTABMoveMsgState = 2;
-                    gBattleStruct->trainerSlideMsg = sTrainerSlides[i].msgFirstSTABMove;
+                    gCombate->trainerSlideFirstSTABMoveMsgState = 2;
+                    gCombate->trainerSlideMsg = sTrainerSlides[i].msgFirstSTABMove;
                     return TRUE;
                 }
                 break;
             case TRAINER_SLIDE_PLAYER_MON_UNAFFECTED:
                 if (sTrainerSlides[i].msgPlayerMonUnaffected != NULL
-                 && gBattleStruct->trainerSlidePlayerMonUnaffectedMsgState == 1
+                 && gCombate->trainerSlidePlayerMonUnaffectedMsgState == 1
                  && GetEnemyMonCount(firstId, lastId, TRUE) == GetEnemyMonCount(firstId, lastId, FALSE))
                 {
-                    gBattleStruct->trainerSlidePlayerMonUnaffectedMsgState = 2;
-                    gBattleStruct->trainerSlideMsg = sTrainerSlides[i].msgPlayerMonUnaffected;
+                    gCombate->trainerSlidePlayerMonUnaffectedMsgState = 2;
+                    gCombate->trainerSlideMsg = sTrainerSlides[i].msgPlayerMonUnaffected;
                     return TRUE;
                 }
                 break;
             case TRAINER_SLIDE_BEFORE_FIRST_TURN:
-                if (sTrainerSlides[i].msgBeforeFirstTurn != NULL && !gBattleStruct->trainerSlideBeforeFirstTurnMsgDone)
+                if (sTrainerSlides[i].msgBeforeFirstTurn != NULL && !gCombate->trainerSlideBeforeFirstTurnMsgDone)
                 {
-                    gBattleStruct->trainerSlideBeforeFirstTurnMsgDone = TRUE;
-                    gBattleStruct->trainerSlideMsg = sTrainerSlides[i].msgBeforeFirstTurn;
+                    gCombate->trainerSlideBeforeFirstTurnMsgDone = TRUE;
+                    gCombate->trainerSlideMsg = sTrainerSlides[i].msgBeforeFirstTurn;
                     return TRUE;
                 }
                 break;

@@ -8136,94 +8136,6 @@ OblivionWingBeam:
 	delay 0x2
 	return
 
-gBattleAnimMove_ThousandArrows::
-	loadspritegfx ANIM_TAG_CIRCLE_OF_LIGHT @charge animation
-	loadspritegfx ANIM_TAG_ELECTRICITY @charge animation
-	loadspritegfx ANIM_TAG_LEAF @green color
-	loadspritegfx ANIM_TAG_RAZOR_LEAF @green color 2
-	loadspritegfx ANIM_TAG_ZYGARDE_HEXES @hexagon
-	loadspritegfx ANIM_TAG_VERTICAL_HEX @arrow
-	loadspritegfx ANIM_TAG_NEEDLE @sting
-	monbg ANIM_ATTACKER
-	setalpha 14, 8
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x0, 0xC, 0x0
-	waitforvisualfinish
-	createsprite gThousandArrowsGreenChargeTemplate, ANIM_ATTACKER, 2, 0x0
-	playsewithpan SE_M_CHARGE, SOUND_PAN_ATTACKER
-	delay 0x18
-	playsewithpan SE_M_CHARGE, SOUND_PAN_ATTACKER
-	delay 0x18
-	call ThousandArrowsHexes
-	call ThousandArrowsHexes
-	call ThousandArrowsHexes
-	call ThousandArrowsHexes
-	call ThousandArrowsHexes
-	call ThousandArrowsHexes
-	call ThousandArrowsHexes
-	createsprite gThousandArrowsGreenDischargeTemplate, ANIM_ATTACKER, 2, 0x0, 0x10, 0x10
-	delay 0x2
-	createsprite gThousandArrowsGreenDischargeTemplate, ANIM_ATTACKER, 2, 0x0, 0xfff0, 0xfff0
-	playsewithpan SE_M_THUNDERBOLT2, SOUND_PAN_ATTACKER
-	waitforvisualfinish
-	delay 0x30
-	createvisualtask AnimTask_HorizontalShake, 5, (NUMERO_COMBATIENTES + 1), 10, 0x32
-	createvisualtask AnimTask_HorizontalShake, 5, NUMERO_COMBATIENTES, 10, 0x32
-	call ThousandArrowsDown
-	call ThousandArrowsDown
-	call ThousandArrowsDown
-	call ThousandArrowsDown
-	waitforvisualfinish
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0xC, 0x0, 0xffff
-	waitforvisualfinish
-	clearmonbg ANIM_ATTACKER
-	blendoff
-	end
-ThousandArrowsHexes:
-	createsprite gThousandArrowsGreenHexTemplate, ANIM_TARGET, 2, 0x0, 0xfffc, 0xfff0
-	playsewithpan SE_M_DIG, SOUND_PAN_ATTACKER
-	delay 0x2
-	createsprite gThousandArrowsGreenHexTemplate, ANIM_TARGET, 2, 0x0, 0x100D, 0xfff0
-	playsewithpan SE_M_DIG, SOUND_PAN_ATTACKER
-	delay 0x2
-	createsprite gThousandArrowsGreenHexTemplate, ANIM_TARGET, 2, 0x0, 0x4, 0xfff4
-	playsewithpan SE_M_DIG, SOUND_PAN_ATTACKER
-	delay 0x2
-	createsprite gThousandArrowsGreenHexTemplate, ANIM_TARGET, 2, 0x0, 0xfff0, 0xfff0
-	playsewithpan SE_M_DIG, SOUND_PAN_ATTACKER
-	delay 0x2
-	return
-ThousandArrowsDown:
-	createsprite gThousandArrowsGreenArrowTemplate, ANIM_TARGET, 2, 0x1, 0xdc, 0x3c
-	playsewithpan SE_M_DIG, SOUND_PAN_ATTACKER
-	delay 0x2
-	createsprite gThousandArrowsGreenArrowTemplate, ANIM_TARGET, 2, 0x1, 0x3c, 0x64
-	playsewithpan SE_M_DIG, SOUND_PAN_ATTACKER
-	delay 0x2
-	createsprite gThousandArrowsGreenArrowTemplate, ANIM_TARGET, 2, 0x1, 0x8c, 0x37
-	playsewithpan SE_M_DIG, SOUND_PAN_ATTACKER
-	delay 0x2
-	createsprite gThousandArrowsGreenArrowTemplate, ANIM_TARGET, 2, 0x1, 0xb4, 0x32
-	playsewithpan SE_M_DIG, SOUND_PAN_ATTACKER
-	delay 0x2
-	createsprite gThousandArrowsGreenArrowTemplate, ANIM_TARGET, 2, 0x1, 0x14, 0x5a
-	playsewithpan SE_M_DIG, SOUND_PAN_ATTACKER
-	delay 0x2
-	createsprite gThousandArrowsGreenArrowTemplate, ANIM_TARGET, 2, 0x1, 0x5a, 0x5a
-	playsewithpan SE_M_DIG, SOUND_PAN_ATTACKER
-	delay 0x2
-	createsprite gThousandArrowsGreenArrowTemplate, ANIM_TARGET, 2, 0x1, 0xa0, 0x3c
-	playsewithpan SE_M_DIG, SOUND_PAN_ATTACKER
-	delay 0x2
-	createsprite gThousandArrowsGreenArrowTemplate, ANIM_TARGET, 2, 0x1, 0x1e, 0x5a
-	playsewithpan SE_M_DIG, SOUND_PAN_ATTACKER
-	delay 0x2
-	createsprite gThousandArrowsGreenArrowTemplate, ANIM_TARGET, 2, 0x1, 0x78, 0x3c
-	playsewithpan SE_M_DIG, SOUND_PAN_ATTACKER
-	delay 0x2
-	createsprite gThousandArrowsGreenArrowTemplate, ANIM_TARGET, 2, 0x1, 0xc8, 0x28
-	playsewithpan SE_M_DIG, SOUND_PAN_ATTACKER
-	return
-
 gBattleAnimMove_ThousandWaves::
 	loadspritegfx ANIM_TAG_ZYGARDE_HEXES @Hex
 	loadspritegfx ANIM_TAG_FLYING_DIRT @heat wave animation
@@ -24291,17 +24203,6 @@ gBattleAnimGeneral_SmokeballEscape::
 	invisible ANIM_ATTACKER
 	delay 0
 	blendoff
-	end
-
-gBattleAnimGeneral_HangedOn::
-	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 0, F_PAL_ATTACKER, 7, 0, 9, RGB_RED
-	playsewithpan SE_M_DRAGON_RAGE, SOUND_PAN_ATTACKER
-	createvisualtask AnimTask_SlideMonForFocusBand, 5, 30, 128, 0, 1, 2, 0, 1
-	waitforvisualfinish
-	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 0, F_PAL_ATTACKER, 4, 9, 0, RGB_RED
-	waitforvisualfinish
-	delay 6
-	createsprite gSlideMonToOriginalPosSpriteTemplate, ANIM_ATTACKER, 0, 0, 0, 15
 	end
 
 gBattleAnimGeneral_Rain::

@@ -1519,7 +1519,6 @@ static const u8 *const sScrollableMultichoiceOptions[][MAX_SCROLL_MULTI_LENGTH] 
         gText_BrightPowder64BP,
         gText_ChoiceBand64BP,
         gText_KingsRock64BP,
-        gText_FocusBand64BP,
         gText_ScopeLens64BP,
         gText_Salir
     },
