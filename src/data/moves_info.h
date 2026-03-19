@@ -9728,25 +9728,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_QuickGuard,
     },
 
-    [MOVE_ALLY_SWITCH] =
-    {
-        .name = COMPOUND_STRING("Cambio banda"),
-        .description = COMPOUND_STRING(
-            "The user switches places\n"
-            "with its partner."),
-        .effect = EFFECT_ALLY_SWITCH,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = 0,
-        .pp = 15,
-        .target = MOVE_TARGET_USER,
-        .priority = B_UPDATED_MOVE_DATA >= GEN_7 ? 2 : 1,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_AllySwitch,
-    },
-
     [MOVE_ESCALDAR] =
     {
         .name = COMPOUND_STRING("Escaldar"),
@@ -10850,25 +10831,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_PhantomForce,
     },
 
-    [MOVE_TRICK_OR_TREAT] =
-    {
-        .name = COMPOUND_STRING("Trick-or-Treat"),
-        .description = COMPOUND_STRING(
-            "Goes trick-or-treating\n"
-            "making the foe Ghost-type."),
-        .effect = EFFECT_THIRD_TYPE,
-        .power = 0,
-        .type = TIPO_FANTASMA,
-        .accuracy = 100,
-        .pp = 20,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .argument = TIPO_FANTASMA,
-        .magicCoatAffected = TRUE,
-        .battleAnimScript = gBattleAnimMove_TrickOrTreat,
-    },
-
     [MOVE_RUGIDO_NOBLE] =
     {
         .name = COMPOUND_STRING("Rugido noble"),
@@ -10905,25 +10867,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .healingMove = B_HEAL_BLOCKING >= GEN_6,
         .battleAnimScript = gBattleAnimMove_ParabolicCharge,
-    },
-
-    [MOVE_FORESTS_CURSE] =
-    {
-        .name = COMPOUND_STRING("Forest's Curse"),
-        .description = COMPOUND_STRING(
-            "Puts a curse on the foe\n"
-            "making the foe Grass-type."),
-        .effect = EFFECT_THIRD_TYPE,
-        .power = 0,
-        .type = TIPO_PLANTA,
-        .accuracy = 100,
-        .pp = 20,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .argument = TIPO_PLANTA,
-        .magicCoatAffected = TRUE,
-        .battleAnimScript = gBattleAnimMove_ForestsCurse,
     },
 
     [MOVE_PETAL_BLIZZARD] =
@@ -15050,7 +14993,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             .moveEffect = MOVE_EFFECT_FLINCH,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_PalmaRauda,
+        .battleAnimScript = gAnimacionCombate_PalmaRauda,
     },
 
     [MOVE_MALIGNANT_CHAIN] =
@@ -15089,45 +15032,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .battleAnimScript = gBattleAnimMove_Colmena,
-    },
-
-    [MOVE_CARGA_JABATO] =
-    {
-        .name = COMPOUND_STRING("Carga jabato"),
-        .description = COMPOUND_STRING(
-            "Quita al usuario 1/3\n"
-            "de daño causado."),
-        .effect = EFFECT_HIT,
-        .power = 120,
-        .type = TIPO_TIERRA,
-        .accuracy = 100,
-        .recoil = 33,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_CargaJabato,
-    },
-
-    [MOVE_AMOLADORAS] =
-    {
-        .name = COMPOUND_STRING("Amoladoras"),
-        .description = COMPOUND_STRING(
-            "Afila sus colmillos para\n"
-            "subir críticos y ataque."),
-        .effect = EFFECT_AMOLADORAS,
-        .power = 0,
-        .type = TIPO_LUCHA,
-        .accuracy = 0,
-        .pp = 15,
-        .target = MOVE_TARGET_USER,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gAnimacion_Amoladoras,
     },
 
     [MOVE_CHUPASANGRE] =

@@ -1390,9 +1390,8 @@ const u8 *FaintClearSetData(u32 battler)
 
     gBattleResources->flags->flags[battler] = 0;
 
-    gBattleMons[battler].types[0] = gSpeciesInfo[gBattleMons[battler].species].types[0];
-    gBattleMons[battler].types[1] = gSpeciesInfo[gBattleMons[battler].species].types[1];
-    gBattleMons[battler].types[2] = TIPO_MISTERIO;
+    gBattleMons[battler].types[TIPO_1] = gSpeciesInfo[gBattleMons[battler].species].types[TIPO_1];
+    gBattleMons[battler].types[TIPO_2] = gSpeciesInfo[gBattleMons[battler].species].types[TIPO_2];
 
     Ai_UpdateFaintData(battler);
     TryBattleFormChange(battler, FORM_CHANGE_FAINT);
@@ -1434,9 +1433,8 @@ static void DoBattleIntro(void)
         for (battler = 0; battler < gBattlersCount; battler++)
         {
             memcpy(&gBattleMons[battler], &gBattleResources->bufferB[battler][4], sizeof(struct BattlePokemon));
-            gBattleMons[battler].types[0] = gSpeciesInfo[gBattleMons[battler].species].types[0];
-            gBattleMons[battler].types[1] = gSpeciesInfo[gBattleMons[battler].species].types[1];
-            gBattleMons[battler].types[2] = TIPO_MISTERIO;
+            gBattleMons[battler].types[TIPO_1] = gSpeciesInfo[gBattleMons[battler].species].types[TIPO_1];
+            gBattleMons[battler].types[TIPO_2] = gSpeciesInfo[gBattleMons[battler].species].types[TIPO_2];
             gBattleMons[battler].ability = GetAbilityBySpecies(gBattleMons[battler].species, gBattleMons[battler].abilityNum);
             gCombate->hpOnSwitchout[GetBattlerSide(battler)] = gBattleMons[battler].hp;
             gBattleMons[battler].status2 = 0; // AQUÍ SE REINICIA STATUS 2 AL ENTRAR EN COMBATE
@@ -1960,9 +1958,8 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                         struct ChooseMoveStruct moveInfo;
 
                         moveInfo.species = gBattleMons[combatiente].species;
-                        moveInfo.monTypes[0] = gBattleMons[combatiente].types[0];
-                        moveInfo.monTypes[1] = gBattleMons[combatiente].types[1];
-                        moveInfo.monTypes[2] = gBattleMons[combatiente].types[2];
+                        moveInfo.monTypes[TIPO_1] = gBattleMons[combatiente].types[TIPO_1];
+                        moveInfo.monTypes[TIPO_2] = gBattleMons[combatiente].types[TIPO_2];
 
                         for (u32 indiceMovimiento = 0; indiceMovimiento < MAX_MON_MOVES; indiceMovimiento++)
                         {

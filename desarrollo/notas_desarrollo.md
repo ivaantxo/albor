@@ -74,8 +74,6 @@ x0 --> 0; x0,25 --> PS máximos / 64; x0,5 --> PS máximos / 32; x1 --> PS máxi
 
 -Lista de moves hechos:
 *Bomba huevo.
-*Amoladoras.
-*Carga jabato.
 *Colmena.
 *Llama azul.
 *Canto encantador.

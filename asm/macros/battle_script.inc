@@ -1231,15 +1231,6 @@
 	.byte \battler
 	.endm
 
-	.macro allyswitchswapbattlers
-	callnative BS_AllySwitchSwapBattler
-	.endm
-
-	.macro allyswitchfailchance jumpInstr:req
-	callnative BS_AllySwitchFailChance
-	.4byte \jumpInstr
-	.endm
-
 	.macro dostockpilestatchangeswearoff, battler:req, statChangeInstr:req
 	callnative BS_DoStockpileStatChangesWearOff
 	.byte \battler
@@ -1353,8 +1344,8 @@
 	callnative BS_SetPhotonGeyserCategory
 	.endm
 
-	.macro trypalmarauda failInstr:req
-	callnative BS_TryPalmaRauda
+	.macro IntentaPalmaRauda failInstr:req
+	callnative ScriptCombate_PalmaRauda
 	.4byte \failInstr
 	.endm
 
@@ -1627,11 +1618,6 @@
 
 	.macro setauroraveil battler:req
 	various \battler, VARIOUS_SET_AURORA_VEIL
-	.endm
-
-	.macro trysetthirdtype battler:req, failInstr:req
-	various \battler, VARIOUS_TRY_THIRD_TYPE
-	.4byte \failInstr
 	.endm
 
 	.macro tryaccupressure battler:req, failInstr:req

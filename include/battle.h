@@ -164,8 +164,6 @@ struct ProtectStruct
     u32 statRaised:1;
     u32 usedCustapBerry:1;    // also quick claw
     u32 touchedProtectLike:1;
-    u32 unused:1;
-    // End of 32-bit bitfield
     u16 disableEjectPack:1;
     u16 statFell:1;
     u16 pranksterElevated:1;
@@ -174,9 +172,6 @@ struct ProtectStruct
     u16 burningBulwarked:1;
     u16 eatMirrorHerb:1;
     u16 activateOpportunist:2; // 2 - to copy stats. 1 - stats copied (do not repeat). 0 - no stats to copy
-    u16 usedAllySwitch:1;
-    u16 padding:2;
-    // End of 16-bit bitfield
     u32 physicalDmg;
     u32 specialDmg;
     u8 physicalBattlerId;
@@ -276,7 +271,7 @@ struct AI_SavedBattleMon
     u16 heldItem;
     u16 species:15;
     u16 saved:1;
-    u8 types[3];
+    u8 types[NUMERO_TIPOS_POR_POKEMON];
 };
 
 struct AIPartyMon
@@ -556,16 +551,14 @@ struct Combate
 
 #define SET_BATTLER_TYPE(battlerId, type)              \
 {                                                      \
-    gBattleMons[battlerId].types[0] = type;            \
-    gBattleMons[battlerId].types[1] = type;            \
-    gBattleMons[battlerId].types[2] = TIPO_MISTERIO;   \
+    gBattleMons[battlerId].types[TIPO_1] = type;       \
+    gBattleMons[battlerId].types[TIPO_2] = type;       \
 }
 
-#define RESTORE_BATTLER_TYPE(battlerId)                                                        \
-{                                                                                              \
-    gBattleMons[battlerId].types[0] = gSpeciesInfo[gBattleMons[battlerId].species].types[0];   \
-    gBattleMons[battlerId].types[1] = gSpeciesInfo[gBattleMons[battlerId].species].types[1];   \
-    gBattleMons[battlerId].types[2] = TIPO_MISTERIO;                                            \
+#define RESTORE_BATTLER_TYPE(battlerId)                                                                 \
+{                                                                                                       \
+    gBattleMons[battlerId].types[TIPO_1] = gSpeciesInfo[gBattleMons[battlerId].species].types[TIPO_1];  \
+    gBattleMons[battlerId].types[TIPO_2] = gSpeciesInfo[gBattleMons[battlerId].species].types[TIPO_2];  \
 }
 
 #define IS_BATTLER_PROTECTED(battlerId)(gProtectStructs[battlerId].protected                                           \

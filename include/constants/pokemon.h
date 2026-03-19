@@ -3,7 +3,6 @@
 
 enum TiposPokemon
 {
-    TIPO_NINGUNO,
     TIPO_NORMAL,
     TIPO_LUCHA,
     TIPO_VOLADOR,
@@ -111,6 +110,7 @@ enum Estadisticas
     ESTADISTICA_EVASION,
     NUMERO_ESTADISTICAS_BATALLA
 };
+
 enum CambiosEstadisticas
 {
     ESTADISTICA_MENOS_6,
@@ -313,6 +313,13 @@ enum SlotsHabilidades
     SLOT_HABILIDAD_2,
     SLOT_HABILIDAD_OCULTA,
     SLOTS_HABILIDADES
+};
+
+enum NumeroTiposPorPokemon
+{
+    TIPO_1,
+    TIPO_2,
+    NUMERO_TIPOS_POR_POKEMON
 };
 
 // Used as a signal for givemon to generate a default ability by personality.

@@ -1342,11 +1342,6 @@ static const struct OamData sOamData_IconTypes =
     .affineParam = 0,
 };
 
-static const union AnimCmd sSpriteAnim_IconTypeNone[] = {
-    ANIMCMD_FRAME(TIPO_NINGUNO * 4, 0, FALSE, FALSE),
-    ANIMCMD_END
-};
-
 static const union AnimCmd sSpriteAnim_IconTypeNormal[] = {
     ANIMCMD_FRAME(TIPO_NORMAL * 4, 0, FALSE, FALSE),
     ANIMCMD_END
@@ -1443,7 +1438,6 @@ static const union AnimCmd sSpriteAnim_IconTypeFairy[] = {
 };
 
 static const union AnimCmd *const sSpriteAnimTable_IconTypes[NUMERO_TIPOS] = {
-    sSpriteAnim_IconTypeNone,
     sSpriteAnim_IconTypeNormal,
     sSpriteAnim_IconTypeFighting,
     sSpriteAnim_IconTypeFlying,
@@ -1483,7 +1477,6 @@ const struct SpriteTemplate sSpriteTemplate_IconTypes =
 };
 static const u8 sMoveTypeToOamPaletteNum[NUMERO_TIPOS] =
 {
-    [TIPO_NINGUNO] = 14,
     [TIPO_NORMAL] = 14,
     [TIPO_LUCHA] = 13,
     [TIPO_VOLADOR] = 14,

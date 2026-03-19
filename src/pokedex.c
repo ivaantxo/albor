@@ -2968,8 +2968,8 @@ static void PrintCurrentSpeciesTypeInfo(u8 newEntry, u16 species)
         species = NationalPokedexNumToSpeciesHGSS(sPokedexListItem->dexNum);
     }
     //type icon(s)
-    type1 = gSpeciesInfo[species].types[0];
-    type2 = gSpeciesInfo[species].types[1];
+    type1 = gSpeciesInfo[species].types[TIPO_1];
+    type2 = gSpeciesInfo[species].types[TIPO_2];
     if (species == SPECIES_NONE)
         type1 = type2 = TIPO_MISTERIO;
 

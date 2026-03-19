@@ -791,10 +791,6 @@ static const struct OamData sOamData_MoveTypes =
     .paletteNum = 0,
     .affineParam = 0,
 };
-static const union AnimCmd sSpriteAnim_TypeNone[] = {
-    ANIMCMD_FRAME(TIPO_NINGUNO * 8, 0, FALSE, FALSE),
-    ANIMCMD_END
-};
 static const union AnimCmd sSpriteAnim_TypeNormal[] = {
     ANIMCMD_FRAME(TIPO_NORMAL * 8, 0, FALSE, FALSE),
     ANIMCMD_END
@@ -892,7 +888,6 @@ static const union AnimCmd sSpriteAnim_CategoryTough[] = {
     ANIMCMD_END
 };
 static const union AnimCmd *const sSpriteAnimTable_MoveTypes[NUMERO_TIPOS + CONTEST_CATEGORIES_COUNT] = {
-    [TIPO_NINGUNO] = sSpriteAnim_TypeNone,
     [TIPO_NORMAL] = sSpriteAnim_TypeNormal,
     [TIPO_LUCHA] = sSpriteAnim_TypeFighting,
     [TIPO_VOLADOR] = sSpriteAnim_TypeFlying,
@@ -3668,10 +3663,10 @@ static void SetMonTypeIcons(void)
 {
     struct PokeSummary *summary = &sMonSummaryScreen->summary;
 
-    SetTypeSpritePosAndPal(gSpeciesInfo[summary->species].types[0], 120, 48, SPRITE_ARR_ID_TYPE);
-    if (gSpeciesInfo[summary->species].types[0] != gSpeciesInfo[summary->species].types[1])
+    SetTypeSpritePosAndPal(gSpeciesInfo[summary->species].types[TIPO_1], 120, 48, SPRITE_ARR_ID_TYPE);
+    if (gSpeciesInfo[summary->species].types[TIPO_1] != gSpeciesInfo[summary->species].types[TIPO_2])
     {
-        SetTypeSpritePosAndPal(gSpeciesInfo[summary->species].types[1], 160, 48, SPRITE_ARR_ID_TYPE + 1);
+        SetTypeSpritePosAndPal(gSpeciesInfo[summary->species].types[TIPO_2], 160, 48, SPRITE_ARR_ID_TYPE + 1);
         SetSpriteInvisibility(SPRITE_ARR_ID_TYPE + 1, FALSE);
     }
     else
@@ -3792,8 +3787,8 @@ static u8 LoadMonGfxAndSprite(struct Pokemon *mon, s16 *state)
         }
         else
         {
-            pal1 = &gEgg1PaletteTable[gSpeciesInfo[summary->species].types[0]];
-            pal2 = &gEgg2PaletteTable[gSpeciesInfo[summary->species].types[1]];
+            pal1 = &gEgg1PaletteTable[gSpeciesInfo[summary->species].types[TIPO_1]];
+            pal2 = &gEgg2PaletteTable[gSpeciesInfo[summary->species].types[TIPO_2]];
             LoadCompressedEggSpritePalette(pal1, pal2);
             SetMultiuseSpriteTemplateToPokemon(pal1->tag, OPONENTE_IZQUIERDA);
         }

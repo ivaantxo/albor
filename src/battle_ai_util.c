@@ -135,8 +135,8 @@ void SaveBattlerData(u32 battlerId)
             AI_THINKING_STRUCT->saved[battlerId].moves[i] = gBattleMons[battlerId].moves[i];
     }
     // Save and restore types even for AI controlled battlers in case it gets changed during move evaluation process.
-    AI_THINKING_STRUCT->saved[battlerId].types[0] = gBattleMons[battlerId].types[0];
-    AI_THINKING_STRUCT->saved[battlerId].types[1] = gBattleMons[battlerId].types[1];
+    AI_THINKING_STRUCT->saved[battlerId].types[TIPO_1] = gBattleMons[battlerId].types[TIPO_1];
+    AI_THINKING_STRUCT->saved[battlerId].types[TIPO_2] = gBattleMons[battlerId].types[TIPO_2];
 }
 
 void SetBattlerData(u32 battlerId)
@@ -182,8 +182,8 @@ void RestoreBattlerData(u32 battlerId)
         for (i = 0; i < 4; i++)
             gBattleMons[battlerId].moves[i] = AI_THINKING_STRUCT->saved[battlerId].moves[i];
     }
-    gBattleMons[battlerId].types[0] = AI_THINKING_STRUCT->saved[battlerId].types[0];
-    gBattleMons[battlerId].types[1] = AI_THINKING_STRUCT->saved[battlerId].types[1];
+    gBattleMons[battlerId].types[TIPO_1] = AI_THINKING_STRUCT->saved[battlerId].types[TIPO_1];
+    gBattleMons[battlerId].types[TIPO_2] = AI_THINKING_STRUCT->saved[battlerId].types[TIPO_2];
 }
 
 u32 GetHealthPercentage(u32 battlerId)
@@ -1938,7 +1938,6 @@ bool32 IsAttackBoostMoveEffect(u32 effect)
     case EFFECT_BELLY_DRUM:
     case EFFECT_BULK_UP:
     case EFFECT_GROWTH:
-    case EFFECT_AMOLADORAS:
         return TRUE;
     default:
         return FALSE;
@@ -1980,7 +1979,6 @@ bool32 IsStatRaisingEffect(u32 effect)
     case EFECTO_SUBE_ATAQUE_ESPECIAL_VELOCIDAD:
     case EFFECT_BULK_UP:
     case EFFECT_STOCKPILE:
-    case EFFECT_AMOLADORAS:
         return TRUE;
     case EFFECT_CHARGE:
         return B_CHARGE_SPDEF_RAISE >= GEN_5;
@@ -2345,8 +2343,8 @@ static bool32 PartyBattlerShouldAvoidHazards(u32 currBattler, u32 switchBattler)
     u32 species = GetMonData(mon, MON_DATA_SPECIES);
     u32 flags = gSideStatuses[GetBattlerSide(currBattler)] & (SIDE_STATUS_SPIKES | SIDE_STATUS_STEALTH_ROCK | SIDE_STATUS_STICKY_WEB | SIDE_STATUS_TOXIC_SPIKES);
     s32 hazardDamage = 0;
-    u32 type1 = gSpeciesInfo[species].types[0];
-    u32 type2 = gSpeciesInfo[species].types[1];
+    u32 type1 = gSpeciesInfo[species].types[TIPO_1];
+    u32 type2 = gSpeciesInfo[species].types[TIPO_2];
     u32 maxHp = GetMonData(mon, MON_DATA_MAX_HP);
 
     if (flags == 0)

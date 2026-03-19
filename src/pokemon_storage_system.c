@@ -3692,8 +3692,8 @@ static void SetBoxMonDynamicPalette(u32 boxId, u32 position)
 
     if (GetMonData(mon, MON_DATA_IS_EGG))
     {
-        pal1 = &gEgg1PaletteTable[gSpeciesInfo[GetMonData(mon, MON_DATA_SPECIES)].types[0]];
-        pal2 = &gEgg2PaletteTable[gSpeciesInfo[GetMonData(mon, MON_DATA_SPECIES)].types[1]];
+        pal1 = &gEgg1PaletteTable[gSpeciesInfo[GetMonData(mon, MON_DATA_SPECIES)].types[TIPO_1]];
+        pal2 = &gEgg2PaletteTable[gSpeciesInfo[GetMonData(mon, MON_DATA_SPECIES)].types[TIPO_2]];
 
         LZ77UnCompWram(pal1->data, gDecompressionBuffer);
         CopiaCpu16(gDecompressionBuffer, &sPaletteSwapBuffer[PLTT_ID(position)], PLTT_SIZE_4BPP);
@@ -3917,8 +3917,8 @@ static void CreatePartyMonsSprites(bool8 visible)
     
     if (GetMonData(&gPlayerParty[0], MON_DATA_IS_EGG))
     {
-        pal1 = &gEgg1PaletteTable[gSpeciesInfo[GetMonData(&gPlayerParty[0], MON_DATA_SPECIES)].types[0]];
-        pal2 = &gEgg2PaletteTable[gSpeciesInfo[GetMonData(&gPlayerParty[0], MON_DATA_SPECIES)].types[1]];
+        pal1 = &gEgg1PaletteTable[gSpeciesInfo[GetMonData(&gPlayerParty[0], MON_DATA_SPECIES)].types[TIPO_1]];
+        pal2 = &gEgg2PaletteTable[gSpeciesInfo[GetMonData(&gPlayerParty[0], MON_DATA_SPECIES)].types[TIPO_2]];
 
         LZ77UnCompWram(pal1->data, gDecompressionBuffer);
         CopiaCpu16(gDecompressionBuffer, &gPlttBufferUnfaded[OBJ_PLTT_ID(1)], PLTT_SIZE_4BPP);
@@ -3944,8 +3944,8 @@ static void CreatePartyMonsSprites(bool8 visible)
         
         if (GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG))
         {
-            pal1 = &gEgg1PaletteTable[gSpeciesInfo[GetMonData(&gPlayerParty[i], MON_DATA_SPECIES)].types[0]];
-            pal2 = &gEgg2PaletteTable[gSpeciesInfo[GetMonData(&gPlayerParty[i], MON_DATA_SPECIES)].types[1]];
+            pal1 = &gEgg1PaletteTable[gSpeciesInfo[GetMonData(&gPlayerParty[i], MON_DATA_SPECIES)].types[TIPO_1]];
+            pal2 = &gEgg2PaletteTable[gSpeciesInfo[GetMonData(&gPlayerParty[i], MON_DATA_SPECIES)].types[TIPO_2]];
             personality = GetMonData(&gPlayerParty[i], MON_DATA_PERSONALITY);
 
             sStorage->partySprites[i] = CreateMonIconSprite(species, personality, 152, 8 * (3 * (i - 1)) + 16, 1, 12);
@@ -4199,8 +4199,8 @@ static void SetPlacedMonSprite(u8 boxId, u8 position)
         if (GetMonData(&gPlayerParty[position], MON_DATA_IS_EGG))
         {
             paletteNum = FindFreePartyPaletteSlot();
-            pal1 = &gEgg1PaletteTable[gSpeciesInfo[GetMonData(&gPlayerParty[position], MON_DATA_SPECIES)].types[0]];
-            pal2 = &gEgg2PaletteTable[gSpeciesInfo[GetMonData(&gPlayerParty[position], MON_DATA_SPECIES)].types[1]];
+            pal1 = &gEgg1PaletteTable[gSpeciesInfo[GetMonData(&gPlayerParty[position], MON_DATA_SPECIES)].types[TIPO_1]];
+            pal2 = &gEgg2PaletteTable[gSpeciesInfo[GetMonData(&gPlayerParty[position], MON_DATA_SPECIES)].types[TIPO_2]];
 
             LZ77UnCompWram(pal1->data, gDecompressionBuffer);
             CopiaCpu16(gDecompressionBuffer, &gPlttBufferUnfaded[OBJ_PLTT_ID(paletteNum)], PLTT_SIZE_4BPP);
@@ -5733,8 +5733,8 @@ static void SetDisplayMonData(void *pokemon, u8 mode)
             sStorage->displayMonPalette = GetMonFrontSpritePal(mon);
             gender = GetMonGender(mon);
             sStorage->displayMonItemId = GetMonData(mon, MON_DATA_HELD_ITEM);
-            sStorage->eggPalette[0] = gSpeciesInfo[GetMonData(mon, MON_DATA_SPECIES)].types[0];
-            sStorage->eggPalette[1] = gSpeciesInfo[GetMonData(mon, MON_DATA_SPECIES)].types[1];
+            sStorage->eggPalette[0] = gSpeciesInfo[GetMonData(mon, MON_DATA_SPECIES)].types[TIPO_1];
+            sStorage->eggPalette[1] = gSpeciesInfo[GetMonData(mon, MON_DATA_SPECIES)].types[TIPO_2];
         }
     }
     else if (mode == MODE_BOX)
@@ -5754,8 +5754,8 @@ static void SetDisplayMonData(void *pokemon, u8 mode)
             sStorage->displayMonPalette = GetMonSpritePalFromSpeciesAndPersonality(sStorage->displayMonSpecies, isShiny, sStorage->displayMonPersonality);
             gender = GetGenderFromSpeciesAndPersonality(sStorage->displayMonSpecies, sStorage->displayMonPersonality);
             sStorage->displayMonItemId = GetBoxMonData(boxMon, MON_DATA_HELD_ITEM);
-            sStorage->eggPalette[0] = gSpeciesInfo[GetBoxMonData(pokemon, MON_DATA_SPECIES)].types[0];
-            sStorage->eggPalette[1] = gSpeciesInfo[GetBoxMonData(pokemon, MON_DATA_SPECIES)].types[1];
+            sStorage->eggPalette[0] = gSpeciesInfo[GetBoxMonData(pokemon, MON_DATA_SPECIES)].types[TIPO_1];
+            sStorage->eggPalette[1] = gSpeciesInfo[GetBoxMonData(pokemon, MON_DATA_SPECIES)].types[TIPO_2];
         }
     }
     else

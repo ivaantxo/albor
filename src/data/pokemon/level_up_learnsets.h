@@ -1760,20 +1760,14 @@ static const struct LevelUpMove sSerperiorLevelUpLearnset[] = {
 };
 
 static const struct LevelUpMove sTepigLevelUpLearnset[] = {
-    LEVEL_UP_MOVE( 1, MOVE_AMOLADORAS),
-    LEVEL_UP_MOVE( 1, MOVE_CARGA_JABATO),
     LEVEL_UP_END
 };
 
 static const struct LevelUpMove sPigniteLevelUpLearnset[] = {
-    LEVEL_UP_MOVE( 1, MOVE_AMOLADORAS),
-    LEVEL_UP_MOVE( 1, MOVE_CARGA_JABATO),
     LEVEL_UP_END
 };
 
 static const struct LevelUpMove sEmboarLevelUpLearnset[] = {
-    LEVEL_UP_MOVE( 1, MOVE_AMOLADORAS),
-    LEVEL_UP_MOVE( 1, MOVE_CARGA_JABATO),
     LEVEL_UP_END
 };
 

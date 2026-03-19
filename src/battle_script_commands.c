@@ -899,8 +899,7 @@ bool32 ProteanTryChangeType(u32 battler, u32 ability, u32 move, u32 moveType)
 {
       if ((ability == ABILITY_PROTEAN || ability == ABILITY_LIBERO)
          && !gDisableStructs[gBattlerAttacker].usedProteanLibero
-         && (gBattleMons[battler].types[0] != moveType || gBattleMons[battler].types[1] != moveType
-             || (gBattleMons[battler].types[2] != moveType && gBattleMons[battler].types[2] != TIPO_MISTERIO))
+         && (gBattleMons[battler].types[TIPO_1] != moveType || gBattleMons[battler].types[TIPO_2] != moveType)
          && move != MOVE_STRUGGLE)
     {
         SET_BATTLER_TYPE(battler, moveType);
@@ -967,7 +966,7 @@ static void Cmd_attackcanceler(void)
     if ((GetBattlerAbility(gBattlerTarget) == ABILITY_COLOR_CHANGE) && (gBattlerAttacker != gBattlerTarget)) 
     {
         u32 currentType;
-        u32 bestType = gBattleMons[gBattlerTarget].types[0];
+        u32 bestType = gBattleMons[gBattlerTarget].types[TIPO_1];
         u16 bestModifier = ModificadorTipo(moveType, bestType);
 
         for (currentType = TIPO_NORMAL; currentType < NUMERO_TIPOS; ++currentType) 
@@ -982,7 +981,7 @@ static void Cmd_attackcanceler(void)
                 break;
         }
 
-        if (gBattleMons[gBattlerTarget].types[0] != bestType) 
+        if (gBattleMons[gBattlerTarget].types[TIPO_1] != bestType) 
         {
             SET_BATTLER_TYPE(gBattlerTarget, bestType);
             PREPARE_TYPE_BUFFER(gBattleTextBuff1, bestType);
@@ -1667,8 +1666,7 @@ static void Cmd_attackanimation(void)
 
     if ((gHitMarker & (HITMARKER_DISABLE_ANIMATION))
         && gCurrentMove != MOVE_TRANSFORM
-        && gCurrentMove != MOVE_SUBSTITUTE
-        && gCurrentMove != MOVE_ALLY_SWITCH)
+        && gCurrentMove != MOVE_SUBSTITUTE)
     {
         BattleScriptPush(cmd->nextInstr);
         gBattlescriptCurrInstr = BattleScript_Pausex20;
@@ -2131,7 +2129,7 @@ void StealTargetItem(u8 battlerStealer, u8 battlerItem)
     return;                                     \
 }
 
-void SetMoveEffect(bool32 primary, bool32 certain)
+void SetMoveEffect(bool32 primary)
 {
     s32 i, affectsUser = 0;
     bool32 statusChanged = FALSE;
@@ -2244,7 +2242,7 @@ void SetMoveEffect(bool32 primary, bool32 certain)
             break;
         case STATUS1_POISON:
             if ((battlerAbility == ABILITY_IMMUNITY)
-                && (primary == TRUE || certain == TRUE))
+                && (primary == TRUE))
             {
                 gLastUsedAbility = battlerAbility;
                 RecuerdaHabilidadCombate(gEffectBattler, battlerAbility);
@@ -2265,7 +2263,7 @@ void SetMoveEffect(bool32 primary, bool32 certain)
             }
             if (!CanPoisonType(gEffectBattler)
                 && (gHitMarker & HITMARKER_STATUS_ABILITY_EFFECT)
-                && (primary == TRUE || certain == TRUE))
+                && (primary == TRUE))
             {
                 BattleScriptPush(gBattlescriptCurrInstr + 1);
                 gBattlescriptCurrInstr = BattleScript_PSNPrevention;
@@ -2280,7 +2278,7 @@ void SetMoveEffect(bool32 primary, bool32 certain)
             break;
         case STATUS1_BURN:
             if ((battlerAbility == ABILITY_WATER_VEIL || battlerAbility == ABILITY_WATER_BUBBLE || battlerAbility == ABILITY_TIERRA_HUMEDA)
-              && (primary == TRUE || certain == TRUE))
+              && (primary == TRUE))
             {
                 gLastUsedAbility = battlerAbility;
                 RecuerdaHabilidadCombate(gEffectBattler, battlerAbility);
@@ -2300,7 +2298,7 @@ void SetMoveEffect(bool32 primary, bool32 certain)
             }
             if (ES_TIPO(gEffectBattler, TIPO_FUEGO)
                 && (gHitMarker & HITMARKER_STATUS_ABILITY_EFFECT)
-                && (primary == TRUE || certain == TRUE))
+                && (primary == TRUE))
             {
                 BattleScriptPush(gBattlescriptCurrInstr + 1);
                 gBattlescriptCurrInstr = BattleScript_BRNPrevention;
@@ -2312,7 +2310,7 @@ void SetMoveEffect(bool32 primary, bool32 certain)
             if (B_STATUS_TYPE_IMMUNITY == GEN_1)
             {
                 u32 moveType = GetMoveType(gCurrentMove);
-                if (primary == FALSE && certain == FALSE && ES_TIPO(gEffectBattler, moveType))
+                if (primary == FALSE && ES_TIPO(gEffectBattler, moveType))
                     break;
             }
 
@@ -2333,7 +2331,7 @@ void SetMoveEffect(bool32 primary, bool32 certain)
         case STATUS1_PARALYSIS:
             if (battlerAbility == ABILITY_LIMBER)
             {
-                if (primary == TRUE || certain == TRUE)
+                if (primary == TRUE)
                 {
                     gLastUsedAbility = ABILITY_LIMBER;
                     RecuerdaHabilidadCombate(gEffectBattler, ABILITY_LIMBER);
@@ -2358,12 +2356,12 @@ void SetMoveEffect(bool32 primary, bool32 certain)
             if (B_STATUS_TYPE_IMMUNITY == GEN_1)
             {
                 u32 moveType = GetMoveType(gCurrentMove);
-                if (primary == FALSE && certain == FALSE && ES_TIPO(gEffectBattler, moveType))
+                if (primary == FALSE && ES_TIPO(gEffectBattler, moveType))
                     break;
             }
             if (!CanParalyzeType(gEffectBattler)
                 && (gHitMarker & HITMARKER_STATUS_ABILITY_EFFECT)
-                && (primary == TRUE || certain == TRUE))
+                && (primary == TRUE))
             {
                 BattleScriptPush(gBattlescriptCurrInstr + 1);
                 gBattlescriptCurrInstr = BattleScript_PRLZPrevention;
@@ -2380,7 +2378,7 @@ void SetMoveEffect(bool32 primary, bool32 certain)
             break;
         case STATUS1_TOXIC_POISON:
             if ((battlerAbility == ABILITY_IMMUNITY)
-             && (primary == TRUE || certain == TRUE))
+             && (primary == TRUE))
             {
                 gLastUsedAbility = battlerAbility;
                 RecuerdaHabilidadCombate(gEffectBattler, battlerAbility);
@@ -2401,7 +2399,7 @@ void SetMoveEffect(bool32 primary, bool32 certain)
             }
             if (!CanPoisonType(gEffectBattler)
                 && (gHitMarker & HITMARKER_STATUS_ABILITY_EFFECT)
-                && (primary == TRUE || certain == TRUE))
+                && (primary == TRUE))
             {
                 BattleScriptPush(gBattlescriptCurrInstr + 1);
                 gBattlescriptCurrInstr = BattleScript_PSNPrevention;
@@ -2492,7 +2490,7 @@ void SetMoveEffect(bool32 primary, bool32 certain)
                 {
                     // Inner Focus ALWAYS prevents flinching but only activates
                     // on a move that's supposed to flinch, like Sorpresa
-                    if (primary == TRUE || certain == TRUE)
+                    if (primary == TRUE)
                     {
                         gLastUsedAbility = ABILITY_FUERZA_MENTAL;
                         gBattlerAbility = gEffectBattler;
@@ -2983,11 +2981,7 @@ static void Cmd_setadditionaleffects(void)
                 if ((percentChance == 0) || PorcentajeAleatorio(percentChance))
                 {
                     gBattleScripting.moveEffect = additionalEffect->moveEffect | (MOVE_EFFECT_AFFECTS_USER * (additionalEffect->self));
-
-                    SetMoveEffect(
-                        percentChance == 0, // a primary effect
-                        percentChance >= 100 // certain to happen
-                    );
+                    SetMoveEffect(percentChance == 0);
                 }
             }
 
@@ -3021,14 +3015,14 @@ static void Cmd_seteffectprimary(void)
 {
     CMD_ARGS();
 
-    SetMoveEffect(TRUE, FALSE);
+    SetMoveEffect(TRUE);
 }
 
 static void Cmd_seteffectsecondary(void)
 {
     CMD_ARGS();
 
-    SetMoveEffect(FALSE, FALSE);
+    SetMoveEffect(FALSE);
 }
 
 static void Cmd_clearstatusfromeffect(void)
@@ -5217,9 +5211,8 @@ static void Cmd_switchindataupdate(void)
         }
     }
 
-    gBattleMons[battler].types[0] = gSpeciesInfo[gBattleMons[battler].species].types[0];
-    gBattleMons[battler].types[1] = gSpeciesInfo[gBattleMons[battler].species].types[1];
-    gBattleMons[battler].types[2] = TIPO_MISTERIO;
+    gBattleMons[battler].types[TIPO_1] = gSpeciesInfo[gBattleMons[battler].species].types[TIPO_1];
+    gBattleMons[battler].types[TIPO_2] = gSpeciesInfo[gBattleMons[battler].species].types[TIPO_2];
     gBattleMons[battler].ability = GetAbilityBySpecies(gBattleMons[battler].species, gBattleMons[battler].abilityNum);
 
     // check knocked off item
@@ -7923,21 +7916,6 @@ static void Cmd_various(void)
         }
         break;
     }
-    case VARIOUS_TRY_THIRD_TYPE:
-    {
-        VARIOUS_ARGS(const u8 *failInstr);
-        if (ES_TIPO(battler, gMovesInfo[gCurrentMove].argument))
-        {
-            gBattlescriptCurrInstr = cmd->failInstr;
-        }
-        else
-        {
-            gBattleMons[battler].types[2] = gMovesInfo[gCurrentMove].argument;
-            PREPARE_TYPE_BUFFER(gBattleTextBuff1, gMovesInfo[gCurrentMove].argument);
-            gBattlescriptCurrInstr = cmd->nextInstr;
-        }
-        return;
-    }
     case VARIOUS_DESTROY_ABILITY_POPUP:
     {
         VARIOUS_ARGS();
@@ -8375,8 +8353,7 @@ static void TryResetProtectUseCounter(u32 battler)
 {
     u32 lastMove = gLastResultingMoves[battler];
     if (lastMove == MOVE_NONE
-        || (!gBattleMoveEffects[gMovesInfo[lastMove].effect].usesProtectCounter
-          && (B_ALLY_SWITCH_FAIL_CHANCE >= GEN_9 && gMovesInfo[lastMove].effect != EFFECT_ALLY_SWITCH)))
+        || !gBattleMoveEffects[gMovesInfo[lastMove].effect].usesProtectCounter)
         gDisableStructs[battler].protectUses = 0;
 }
 
@@ -9406,9 +9383,8 @@ static void Cmd_tryconversiontypechange(void)
                 else
                     moveType = TIPO_NORMAL;
             }
-            if (moveType != gBattleMons[gBattlerAttacker].types[0]
-                && moveType != gBattleMons[gBattlerAttacker].types[1]
-                && moveType != gBattleMons[gBattlerAttacker].types[2])
+            if (moveType != gBattleMons[gBattlerAttacker].types[TIPO_1]
+                && moveType != gBattleMons[gBattlerAttacker].types[TIPO_2])
             {
                 break;
             }
@@ -9434,7 +9410,7 @@ static void Cmd_tryconversiontypechange(void)
                         moveType = TIPO_NORMAL;
                 }
             }
-            while (moveType == gBattleMons[gBattlerAttacker].types[0] || moveType == gBattleMons[gBattlerAttacker].types[1] || moveType == gBattleMons[gBattlerAttacker].types[2]);
+            while (moveType == gBattleMons[gBattlerAttacker].types[TIPO_1] || moveType == gBattleMons[gBattlerAttacker].types[TIPO_2]);
 
             SET_BATTLER_TYPE(gBattlerAttacker, moveType);
             PREPARE_TYPE_BUFFER(gBattleTextBuff1, moveType);
@@ -9953,7 +9929,7 @@ static void Cmd_settypetorandomresistance(void)
         {
             gBattlescriptCurrInstr = cmd->failInstr;
         }
-        else if (gLastUsedMoveType[gBattlerTarget] == TIPO_NINGUNO || gLastUsedMoveType[gBattlerTarget] == TIPO_MISTERIO)
+        else if (gLastUsedMoveType[gBattlerTarget] == TIPO_MISTERIO)
         {
             gBattlescriptCurrInstr = cmd->failInstr;
         }
@@ -12511,7 +12487,7 @@ void BS_TryDefog(void)
     }
 }
 
-void BS_TryPalmaRauda(void)
+void ScriptCombate_PalmaRauda(void)
 {
     NATIVE_ARGS(const u8 *failInstr);
 
@@ -12521,37 +12497,6 @@ void BS_TryPalmaRauda(void)
         gBattlescriptCurrInstr = cmd->failInstr;
     else
         gBattlescriptCurrInstr = cmd->nextInstr;
-}
-
-void BS_AllySwitchSwapBattler(void)
-{
-    NATIVE_ARGS();
-
-    gBattleScripting.battler = gBattlerAttacker;
-    gBattlerAttacker ^= BIT_FLANK;
-    gProtectStructs[gBattlerAttacker].usedAllySwitch = TRUE;
-    gBattlescriptCurrInstr = cmd->nextInstr;
-}
-
-void BS_AllySwitchFailChance(void)
-{
-    NATIVE_ARGS(const u8 *failInstr);
-
-    if (B_ALLY_SWITCH_FAIL_CHANCE >= GEN_9)
-    {
-        TryResetProtectUseCounter(gBattlerAttacker);
-        if (sProtectSuccessRates[gDisableStructs[gBattlerAttacker].protectUses] < Random())
-        {
-            gDisableStructs[gBattlerAttacker].protectUses = 0;
-            gBattlescriptCurrInstr = cmd->failInstr;
-            return;
-        }
-        else
-        {
-            gDisableStructs[gBattlerAttacker].protectUses++;
-        }
-    }
-    gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
 void BS_SetPhotonGeyserCategory(void)

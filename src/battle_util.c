@@ -274,7 +274,7 @@ void HandleAction_UseMove(void)
     }
 
     if ((GetBattlerSide(gBattlerAttacker) == GetBattlerSide(gBattlerTarget))
-     && (!IsBattlerAlive(gBattlerTarget) || gProtectStructs[ALIADO(gBattlerAttacker)].usedAllySwitch))
+     && (!IsBattlerAlive(gBattlerTarget)))
     {
         gBattlescriptCurrInstr = BattleScript_FailedFromAtkCanceler;
     }
@@ -1885,7 +1885,7 @@ u8 DoBattlerEndTurnEffects(void)
                     if (!(gBattleMons[battler].status2 & STATUS2_CONFUSION))
                     {
                         gBattleScripting.moveEffect = MOVE_EFFECT_CONFUSION | MOVE_EFFECT_AFFECTS_USER;
-                        SetMoveEffect(TRUE, FALSE);
+                        SetMoveEffect(TRUE);
                         if (gBattleMons[battler].status2 & STATUS2_CONFUSION)
                             BattleScriptExecute(BattleScript_ThrashConfuses);
                         effect++;
@@ -4731,80 +4731,11 @@ static u8 HealConfuseBerry(u32 battler, u32 itemId, u32 flavorId, bool32 end2)
 
 static u8 StatRaiseBerry(u32 battler, u32 itemId, u32 statId, bool32 end2)
 {
-    if (CompareStat(battler, statId, ESTADISTICA_MAS_6, COMPARACION_MENOR) && HasEnoughHpToEatBerry(battler, GetBattlerItemHoldEffectParam(battler, itemId), itemId))
-    {
-        BufferStatChange(battler, statId, STRINGID_STATROSE);
-        gEffectBattler = battler;
-        if (GetBattlerAbility(battler) == ABILITY_RIPEN)
-            SET_STATCHANGER(statId, 2, FALSE);
-        else
-            SET_STATCHANGER(statId, 1, FALSE);
-
-        gBattleScripting.animArg1 = STAT_ANIM_PLUS1 + statId;
-        gBattleScripting.animArg2 = 0;
-
-        if (end2)
-        {
-            BattleScriptExecute(BattleScript_BerryStatRaiseEnd2);
-        }
-        else
-        {
-            BattleScriptPushCursor();
-            gBattlescriptCurrInstr = BattleScript_BerryStatRaiseRet;
-        }
-        return ITEM_STATS_CHANGE;
-    }
     return 0;
 }
 
 static u8 RandomStatRaiseBerry(u32 battler, u32 itemId, bool32 end2)
 {
-    s32 i;
-    u16 stringId;
-
-    for (i = 0; i < NUMERO_ESTADISTICAS - 1; i++)
-    {
-        if (CompareStat(battler, ESTADISTICA_ATAQUE + i, ESTADISTICA_MAS_6, COMPARACION_MENOR))
-            break;
-    }
-    if (i != NUMERO_ESTADISTICAS - 1 && HasEnoughHpToEatBerry(battler, GetBattlerItemHoldEffectParam(battler, itemId), itemId))
-    {
-        u16 battlerAbility = GetBattlerAbility(battler);
-        do
-        {
-            i = Random() % (NUMERO_ESTADISTICAS - 1);
-        } while (!CompareStat(battler, ESTADISTICA_ATAQUE + i, ESTADISTICA_MAS_6, COMPARACION_MENOR));
-
-        PREPARE_STAT_BUFFER(gBattleTextBuff1, i + 1);
-        stringId = (battlerAbility == ABILITY_CONTRARY) ? STRINGID_STATFELL : STRINGID_STATROSE;
-        gBattleTextBuff2[0] = B_BUFF_PLACEHOLDER_BEGIN;
-        gBattleTextBuff2[1] = B_BUFF_STRING;
-        gBattleTextBuff2[2] = STRINGID_STATSHARPLY;
-        gBattleTextBuff2[3] = STRINGID_STATSHARPLY >> 8;
-        gBattleTextBuff2[4] = B_BUFF_STRING;
-        gBattleTextBuff2[5] = stringId;
-        gBattleTextBuff2[6] = stringId >> 8;
-        gBattleTextBuff2[7] = EOS;
-        gEffectBattler = battler;
-        if (battlerAbility == ABILITY_RIPEN)
-            SET_STATCHANGER(i + 1, 4, FALSE);
-        else
-            SET_STATCHANGER(i + 1, 2, FALSE);
-
-        gBattleScripting.animArg1 = STAT_ANIM_PLUS2 + i + 1;
-        gBattleScripting.animArg2 = 0;
-        if (end2)
-        {
-            BattleScriptExecute(BattleScript_BerryStatRaiseEnd2);
-        }
-        else
-        {
-            BattleScriptPushCursor();
-            gBattlescriptCurrInstr = BattleScript_BerryStatRaiseRet;
-        }
-
-        return ITEM_STATS_CHANGE;
-    }
     return 0;
 }
 
@@ -7570,7 +7501,7 @@ static inline s32 DoFutureSightAttackDamageCalcVars(struct DamageCalculationData
     DAMAGE_APPLY_MODIFIER(GetCriticalModifier(damageCalcData->isCrit));
 
     // Same type attack bonus
-    if (gSpeciesInfo[partyMonSpecies].types[0] == moveType || gSpeciesInfo[partyMonSpecies].types[1] == moveType)
+    if (gSpeciesInfo[partyMonSpecies].types[TIPO_1] == moveType || gSpeciesInfo[partyMonSpecies].types[TIPO_2] == moveType)
         DAMAGE_APPLY_MODIFIER(UQ_4_12(1.5));
     else
         DAMAGE_APPLY_MODIFIER(UQ_4_12(1.0));
@@ -7771,9 +7702,9 @@ uq4_12_t CalcPartyMonTypeEffectivenessMultiplier(u16 move, u16 speciesDef, u16 a
     uq4_12_t modifier = UQ_4_12(1.0);
     u32 moveType = GetMoveType(move);
 
-    MulByTypeEffectiveness(&modifier, move, moveType, 0, gSpeciesInfo[speciesDef].types[0], 0, FALSE);
-    if (gSpeciesInfo[speciesDef].types[1] != gSpeciesInfo[speciesDef].types[0])
-        MulByTypeEffectiveness(&modifier, move, moveType, 0, gSpeciesInfo[speciesDef].types[1], 0, FALSE);
+    MulByTypeEffectiveness(&modifier, move, moveType, 0, gSpeciesInfo[speciesDef].types[TIPO_1], 0, FALSE);
+    if (gSpeciesInfo[speciesDef].types[TIPO_2] != gSpeciesInfo[speciesDef].types[TIPO_1])
+        MulByTypeEffectiveness(&modifier, move, moveType, 0, gSpeciesInfo[speciesDef].types[TIPO_2], 0, FALSE);
 
     if (moveType == TIPO_TIERRA && abilityDef == ABILITY_LEVITATE && !(gFieldStatuses & STATUS_FIELD_GRAVITY))
         modifier = UQ_4_12(0.0);
@@ -7792,8 +7723,8 @@ s32 DanioTrampa(u32 tipoTrampa, u32 combatiente)
 {
     s32 danio = 0;
     uq4_12_t modificador = UQ_4_12(1.0);
-    u32 tipo1 = gBattleMons[combatiente].types[0];
-    u32 tipo2 = gBattleMons[combatiente].types[1];
+    u32 tipo1 = gBattleMons[combatiente].types[TIPO_1];
+    u32 tipo2 = gBattleMons[combatiente].types[TIPO_2];
     u32 PSMaximos = gBattleMons[combatiente].maxHP;
 
     modificador = uq4_12_multiply(modificador, ModificadorTipo(tipoTrampa, tipo1));
@@ -8314,9 +8245,8 @@ void CopyMonLevelAndBaseStatsToBattleMon(u32 battler, struct Pokemon *mon)
 void CopyMonAbilityAndTypesToBattleMon(u32 battler, struct Pokemon *mon)
 {
     gBattleMons[battler].ability = GetMonAbility(mon);
-    gBattleMons[battler].types[0] = gSpeciesInfo[gBattleMons[battler].species].types[0];
-    gBattleMons[battler].types[1] = gSpeciesInfo[gBattleMons[battler].species].types[1];
-    gBattleMons[battler].types[2] = TIPO_MISTERIO;
+    gBattleMons[battler].types[TIPO_1] = gSpeciesInfo[gBattleMons[battler].species].types[TIPO_1];
+    gBattleMons[battler].types[TIPO_2] = gSpeciesInfo[gBattleMons[battler].species].types[TIPO_2];
 }
 
 void RecalcBattlerStats(u32 battler, struct Pokemon *mon)
@@ -8452,20 +8382,23 @@ bool32 MoveIsAffectedBySheerForce(u32 move)
 
 u8 GetBattlerType(u32 battler, u8 typeIndex)
 {
-    u16 types[3] = {0};
-    types[0] = gBattleMons[battler].types[0];
-    types[1] = gBattleMons[battler].types[1];
-    types[2] = gBattleMons[battler].types[2];
+    u16 types[NUMERO_TIPOS_POR_POKEMON] = {0};
+    types[TIPO_1] = gBattleMons[battler].types[TIPO_1];
+    types[TIPO_2] = gBattleMons[battler].types[TIPO_2];
 
     // Handle Roost's Flying-type suppression
-    if (typeIndex == 0 || typeIndex == 1)
+    if (typeIndex == TIPO_1 || typeIndex == TIPO_2)
     {
         if (gBattleResources->flags->flags[battler] & RESOURCE_FLAG_ROOST)
         {
-            if (types[0] == TIPO_VOLADOR && types[1] == TIPO_VOLADOR)
-                return B_ROOST_PURE_FLYING >= GEN_5 ? TIPO_NORMAL : TIPO_MISTERIO;
-            else
-                return types[typeIndex] == TIPO_VOLADOR ? TIPO_MISTERIO : types[typeIndex];
+            if (types[TIPO_1] == TIPO_VOLADOR && types[TIPO_2] == TIPO_VOLADOR)
+            {
+                return TIPO_NORMAL;
+            }
+            if (types[typeIndex] == TIPO_VOLADOR)
+            {
+                return (typeIndex == TIPO_1) ? types[TIPO_2] : types[TIPO_1];
+            }
         }
     }
 
@@ -8477,8 +8410,8 @@ void RemoveBattlerType(u32 battler, u8 type)
     u32 i;
     for (i = 0; i < 3; i++)
     {
-        if (*(u8 *)(&gBattleMons[battler].types[0] + i) == type)
-            *(u8 *)(&gBattleMons[battler].types[0] + i) = TIPO_MISTERIO;
+        if (*(u8 *)(&gBattleMons[battler].types[TIPO_1] + i) == type)
+            *(u8 *)(&gBattleMons[battler].types[TIPO_1] + i) = TIPO_MISTERIO;
     }
 }
 

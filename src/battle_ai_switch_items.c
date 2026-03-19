@@ -78,10 +78,10 @@ static bool32 ShouldSwitchIfHasBadOdds(u32 battler)
     opposingBattler = opposingPosition;
 
     // Gets types of player (opposingBattler) and computer (battler)
-    atkType1 = gBattleMons[opposingBattler].types[0];
-    atkType2 = gBattleMons[opposingBattler].types[1];
-    defType1 = gBattleMons[battler].types[0];
-    defType2 = gBattleMons[battler].types[1];
+    atkType1 = gBattleMons[opposingBattler].types[TIPO_1];
+    atkType2 = gBattleMons[opposingBattler].types[TIPO_2];
+    defType1 = gBattleMons[battler].types[TIPO_1];
+    defType2 = gBattleMons[battler].types[TIPO_2];
 
     // Check AI moves for damage dealt
     for (i = 0; i < MAX_MON_MOVES; i++)
@@ -1047,10 +1047,10 @@ static u32 GetBestMonTypeMatchup(struct Pokemon *party, int firstId, int lastId,
                 u16 species = GetMonData(&party[i], MON_DATA_SPECIES);
                 uq4_12_t typeEffectiveness = UQ_4_12(1.0);
 
-                u8 atkType1 = gBattleMons[opposingBattler].types[0];
-                u8 atkType2 = gBattleMons[opposingBattler].types[1];
-                u8 defType1 = gSpeciesInfo[species].types[0];
-                u8 defType2 = gSpeciesInfo[species].types[1];
+                u8 atkType1 = gBattleMons[opposingBattler].types[TIPO_1];
+                u8 atkType2 = gBattleMons[opposingBattler].types[TIPO_2];
+                u8 defType1 = gSpeciesInfo[species].types[TIPO_1];
+                u8 defType2 = gSpeciesInfo[species].types[TIPO_2];
 
                 typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType1, defType1)));
                 if (atkType2 != atkType1)
@@ -1145,7 +1145,7 @@ bool32 EstaPokemonEnSuelo(u32 efectoObjeto, u32 habilidad, u32 tipo1, u32 tipo2)
 // Gets hazard damage
 static u32 GetSwitchinHazardsDamage(u32 battler, struct BattlePokemon *battleMon)
 {
-    u8 defType1 = battleMon->types[0], defType2 = battleMon->types[1], tSpikesLayers;
+    u8 defType1 = battleMon->types[TIPO_1], defType2 = battleMon->types[TIPO_2], tSpikesLayers;
     u16 heldItemEffect = ItemId_GetHoldEffect(battleMon->item);
     u32 maxHP = battleMon->maxHP, ability = battleMon->ability, status = battleMon->status1;
     u32 spikesDamage = 0, tSpikesDamage = 0, hazardDamage = 0;
@@ -1205,7 +1205,7 @@ static s32 GetSwitchinWeatherImpact(void)
         if (holdEffect != HOLD_EFFECT_SAFETY_GOGGLES && ability != ABILITY_MAGIC_GUARD && ability != ABILITY_OVERCOAT)
         {
             if ((gBattleWeather & B_WEATHER_HAIL)
-             && (AI_DATA->switchinCandidate.battleMon.types[0] != TIPO_HIELO || AI_DATA->switchinCandidate.battleMon.types[1] != TIPO_HIELO)
+             && (AI_DATA->switchinCandidate.battleMon.types[TIPO_1] != TIPO_HIELO || AI_DATA->switchinCandidate.battleMon.types[TIPO_2] != TIPO_HIELO)
              && ability != ABILITY_SNOW_CLOAK && ability != ABILITY_ICE_BODY)
             {
                 weatherImpact = maxHP / 16;
@@ -1213,8 +1213,8 @@ static s32 GetSwitchinWeatherImpact(void)
                     weatherImpact = 1;
             }
             else if ((gBattleWeather & B_WEATHER_SANDSTORM)
-                && (AI_DATA->switchinCandidate.battleMon.types[0] != TIPO_TIERRA && AI_DATA->switchinCandidate.battleMon.types[1] != TIPO_TIERRA
-                && AI_DATA->switchinCandidate.battleMon.types[0] != TIPO_ROCA && AI_DATA->switchinCandidate.battleMon.types[1] != TIPO_ROCA
+                && (AI_DATA->switchinCandidate.battleMon.types[TIPO_1] != TIPO_TIERRA && AI_DATA->switchinCandidate.battleMon.types[TIPO_2] != TIPO_TIERRA
+                && AI_DATA->switchinCandidate.battleMon.types[TIPO_1] != TIPO_ROCA && AI_DATA->switchinCandidate.battleMon.types[TIPO_2] != TIPO_ROCA
                 && ability != ABILITY_SAND_VEIL && ability != ABILITY_SAND_RUSH && ability != ABILITY_SAND_FORCE))
             {
                 weatherImpact = maxHP / 16;
@@ -1270,7 +1270,7 @@ static u32 GetSwitchinRecurringHealing(void)
 
     // Items
 
-    if (holdEffect == HOLD_EFFECT_BLACK_SLUDGE && (AI_DATA->switchinCandidate.battleMon.types[0] == TIPO_VENENO || AI_DATA->switchinCandidate.battleMon.types[1] == TIPO_VENENO))
+    if (holdEffect == HOLD_EFFECT_BLACK_SLUDGE && (AI_DATA->switchinCandidate.battleMon.types[TIPO_1] == TIPO_VENENO || AI_DATA->switchinCandidate.battleMon.types[TIPO_2] == TIPO_VENENO))
     {
         recurringHealing = maxHP / 16;
         if (recurringHealing == 0)
@@ -1303,7 +1303,7 @@ static u32 GetSwitchinRecurringDamage(void)
     // Items
     if (ability != ABILITY_MAGIC_GUARD)
     {
-        if (holdEffect == HOLD_EFFECT_BLACK_SLUDGE && AI_DATA->switchinCandidate.battleMon.types[0] != TIPO_VENENO && AI_DATA->switchinCandidate.battleMon.types[1] != TIPO_VENENO)
+        if (holdEffect == HOLD_EFFECT_BLACK_SLUDGE && AI_DATA->switchinCandidate.battleMon.types[TIPO_1] != TIPO_VENENO && AI_DATA->switchinCandidate.battleMon.types[TIPO_2] != TIPO_VENENO)
         {
             passiveDamage = maxHP / 16;
             if (passiveDamage == 0)
@@ -1328,7 +1328,7 @@ static u32 GetSwitchinRecurringDamage(void)
 // Gets one turn of status damage
 static u32 GetSwitchinStatusDamage(u32 battler)
 {
-    u32 defType1 = AI_DATA->switchinCandidate.battleMon.types[0], defType2 = AI_DATA->switchinCandidate.battleMon.types[1];
+    u32 defType1 = AI_DATA->switchinCandidate.battleMon.types[TIPO_1], defType2 = AI_DATA->switchinCandidate.battleMon.types[TIPO_2];
     u8 tSpikesLayers = gSideTimers[GetBattlerSide(battler)].toxicSpikesAmount;
     u16 heldItemEffect = ItemId_GetHoldEffect(AI_DATA->switchinCandidate.battleMon.item);
     u32 status = AI_DATA->switchinCandidate.battleMon.status1, ability = AI_DATA->switchinCandidate.battleMon.ability, maxHP = AI_DATA->switchinCandidate.battleMon.maxHP;
@@ -1501,8 +1501,8 @@ static u16 GetSwitchinTypeMatchup(u32 opposingBattler, struct BattlePokemon batt
 
     // Check type matchup
     u16 typeEffectiveness = UQ_4_12(1.0);
-    u8 atkType1 = gSpeciesInfo[gBattleMons[opposingBattler].species].types[0], atkType2 = gSpeciesInfo[gBattleMons[opposingBattler].species].types[1],
-    defType1 = battleMon.types[0], defType2 = battleMon.types[1];
+    u8 atkType1 = gSpeciesInfo[gBattleMons[opposingBattler].species].types[TIPO_1], atkType2 = gSpeciesInfo[gBattleMons[opposingBattler].species].types[TIPO_2],
+    defType1 = battleMon.types[TIPO_1], defType2 = battleMon.types[TIPO_2];
 
     // Multiply type effectiveness by a factor depending on type matchup
     typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType1, defType1)));

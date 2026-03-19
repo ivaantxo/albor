@@ -1597,31 +1597,6 @@ gBattleAnimMove_BraveBird::
 	call UnsetSkyBg
 	end
 
-gBattleAnimMove_CargaJabato::
-	loadspritegfx ANIM_TAG_IMPACT
-	loadspritegfx ANIM_TAG_EMBOAR
-	createvisualtask AnimTask_SkullBashPosition, 2, 0
-	playsewithpan SE_M_TAKE_DOWN, SOUND_PAN_ATTACKER
-	waitforvisualfinish
-	playse SE_BANG
-	call SetImpactBackground
-	createvisualtask AnimTask_ShakeMonInPlace, 2, ANIM_ATTACKER, 2, 0, 40, 1
-	createvisualtask AnimTask_ShakeMonInPlace, 2, ANIM_TARGET, 10, 0, 40, 1
-	createsprite gEmboarCargaSpriteTemplate, ANIM_TARGET, 4, 0, 0, ANIM_TARGET, 0
-	playsewithpan SE_M_ROCK_THROW, SOUND_PAN_TARGET
-	delay 14
-	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 10, 0, 18, 1
-	createvisualtask SoundTask_PlaySE1WithPanning, 5, 141, SOUND_PAN_TARGET
-	delay 20
-	createvisualtask AnimTask_AttackerFadeFromInvisible, 5, 1
-	delay 2
-	createvisualtask AnimTask_BlendBattleAnimPal, 10, 2, 0, 15, 0, RGB_WHITE
-	waitforvisualfinish
-	createvisualtask AnimTask_SkullBashPosition, 2, 1
-	restorebg
-	waitbgfadein
-	end
-
 gBattleAnimMove_EarthPower::
 	loadspritegfx ANIM_TAG_SMALL_EMBER
 	loadspritegfx ANIM_TAG_FIRE_PLUME
@@ -3834,23 +3809,6 @@ HoneClawsAnim:
 	delay 10
 	return
 
-gAnimacion_Amoladoras::
-	loadspritegfx ANIM_TAG_SHARP_TEETH
-	call AmoladorasAnim
-	createvisualtask AnimTask_BlendParticle, 5, ANIM_TAG_SHARP_TEETH, 0, 6, 6, RGB_BLACK
-	call AmoladorasAnim
-	createvisualtask AnimTask_BlendParticle, 5, ANIM_TAG_SHARP_TEETH, 0, 10, 10, RGB_BLACK
-	call AmoladorasAnim
-	end
-AmoladorasAnim:
-	playsewithpan SE_M_BITE, SOUND_PAN_TARGET
-	createsprite gSharpTeethSpriteTemplate, ANIM_ATTACKER, 2, 0, -16, 0, -400, -400, 10
-	delay 10
-	playsewithpan SE_M_SCRATCH, SOUND_PAN_TARGET
-	createsprite gSharpTeethSpriteTemplate, ANIM_ATTACKER, 2, 0, 16, 4, -400, -400, 10
-	delay 10
-	return
-
 gBattleAnimMove_Chupasangre::
 	loadspritegfx ANIM_TAG_SHARP_TEETH
 	loadspritegfx ANIM_TAG_POISON_BUBBLE
@@ -4657,14 +4615,6 @@ gBattleAnimMove_QuickGuard::
 	waitforvisualfinish
 	blendoff
 	clearmonbg ANIM_ATTACKER
-	end
-
-gBattleAnimMove_AllySwitch::
-	call SetPsychicBackground
-	createvisualtask AnimTask_AllySwitchAttacker, 2
-	createvisualtask AnimTask_AllySwitchPartner, 2
-	call DoubleTeamAnimRet
-	call UnsetPsychicBg
 	end
 
 gBattleAnimMove_Escaldar::
@@ -7044,30 +6994,6 @@ PhantomForceBg:
 	waitbgfadein
 	return
 
-gBattleAnimMove_TrickOrTreat::
-	loadspritegfx ANIM_TAG_EYE_SPARKLE
-	loadspritegfx ANIM_TAG_GHOSTLY_SPIRIT
-	fadetobg BG_NIGHTMARE
-	waitbgfadein
-	delay 10
-	playsewithpan SE_M_PSYBEAM, SOUND_PAN_ATTACKER
-	createvisualtask AnimTask_ShakeMon2, 2, ANIM_ATTACKER, 1, 0, 10, 1
-	createvisualtask AnimTask_BlendColorCycle, 2, F_PAL_ATTACKER, 0, 2, 0, 8, RGB(10, 2, 19)
-	waitforvisualfinish
-	playsewithpan SE_M_LEER, SOUND_PAN_ATTACKER
-	createvisualtask AnimTask_ScaryFace, 5
-	delay 13
-	waitforvisualfinish
-	createvisualtask AnimTask_BlendColorCycle, 2, F_PAL_TARGET, 2, 2, 0, 12, RGB(10, 2, 19) @;Deep purple
-	playsewithpan SE_M_NIGHTMARE, SOUND_PAN_TARGET
-	createsprite gCurseGhostSpriteTemplate, ANIM_TARGET, 2
-	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 2, 0, 14, 1
-	waitforvisualfinish
-	clearmonbg ANIM_TARGET
-	restorebg
-	waitbgfadein
-	end
-
 gBattleAnimMove_RugidoNoble::
 	loadspritegfx ANIM_TAG_NOISE_LINE
 	monbg ANIM_ATTACKER
@@ -7143,44 +7069,6 @@ ParabolicChargeDouble:
 	delay 4
 	createvisualtask AnimTask_BlendBattleAnimPal, 5, 4 | 8 | 0x10, 0, 0, 0, RGB_BLACK
 	goto ParabolicChargeHeal;
-
-gBattleAnimMove_ForestsCurse::
-	loadspritegfx ANIM_TAG_ROOTS @frenzy plant
-	loadspritegfx ANIM_TAG_GHOSTLY_SPIRIT @curse
-	monbg ANIM_ATTACKER
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x0, 0x10, 0x0
-	waitforvisualfinish
-	playsewithpan SE_M_SCRATCH, SOUND_PAN_ATTACKER
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_TARGET, 0x2, 0x0, 0x8, 0x02E3
-	createsprite gForestsCurseIngrainTemplate, ANIM_ATTACKER, 66, 0x64, 0x64, 0x8, 0x1, 0x14, 0x28, 0x0
-	createsprite gForestsCurseIngrainTemplate, ANIM_ATTACKER, 66, 0x14, 0x64, 0x10, 0x2, 0xa, 0x23, 0x1
-	createsprite gForestsCurseIngrainTemplate, ANIM_ATTACKER, 66, 0xc8, 0x50, 0x8, 0x1, 0x28, 0x14, 0x0
-	createsprite gForestsCurseIngrainTemplate, ANIM_ATTACKER, 66, 0x50, 0x3c, 0xa, 0x3, 0x14, 0x32, 0x0
-	createsprite gForestsCurseIngrainTemplate, ANIM_ATTACKER, 66, 0x8c, 0x64, 0x10, 0x1, 0x14, 0x1e, 0x1
-	waitforvisualfinish
-	playsewithpan SE_M_SCRATCH, SOUND_PAN_ATTACKER
-	createsprite gForestsCurseIngrainTemplate, ANIM_ATTACKER, 66, 0x64, 0x64, 0x8, 0x1, 0x14, 0x28, 0x0
-	createsprite gForestsCurseIngrainTemplate, ANIM_ATTACKER, 66, 0x14, 0x64, 0x10, 0x2, 0xa, 0x23, 0x1
-	createsprite gForestsCurseIngrainTemplate, ANIM_ATTACKER, 66, 0xc8, 0x50, 0x8, 0x1, 0x28, 0x14, 0x0
-	createsprite gForestsCurseIngrainTemplate, ANIM_ATTACKER, 66, 0x50, 0x3c, 0xa, 0x3, 0x14, 0x32, 0x0
-	createsprite gForestsCurseIngrainTemplate, ANIM_ATTACKER, 66, 0x8c, 0x64, 0x10, 0x1, 0x14, 0x1e, 0x1
-	waitforvisualfinish
-	playsewithpan SE_M_SCRATCH, SOUND_PAN_ATTACKER
-	createsprite gForestsCurseIngrainTemplate, ANIM_ATTACKER, 66, 0x64, 0x64, 0x8, 0x1, 0x14, 0x28, 0x0
-	createsprite gForestsCurseIngrainTemplate, ANIM_ATTACKER, 66, 0x14, 0x64, 0x10, 0x2, 0xa, 0x23, 0x1
-	createsprite gForestsCurseIngrainTemplate, ANIM_ATTACKER, 66, 0xc8, 0x50, 0x8, 0x1, 0x28, 0x14, 0x0
-	createsprite gForestsCurseIngrainTemplate, ANIM_ATTACKER, 66, 0x50, 0x3c, 0xa, 0x3, 0x14, 0x32, 0x0
-	createsprite gForestsCurseIngrainTemplate, ANIM_ATTACKER, 66, 0x8c, 0x64, 0x10, 0x1, 0x14, 0x1e, 0x1
-	waitforvisualfinish
-	createsprite gCurseGhostSpriteTemplate, ANIM_TARGET, 2
-	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 2, 0, 14, 1
-	waitforvisualfinish
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_TARGET, 0x2, 0x8, 0x0, 0x02E3
-	delay 0x3
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x10, 0x0, 0x0
-	waitforvisualfinish
-	clearmonbg ANIM_ATTACKER
-	end
 
 gBattleAnimMove_PetalBlizzard::
 	loadspritegfx ANIM_TAG_LEAF
@@ -13662,7 +13550,7 @@ RagingBullShatteredWall:
 	end
 
 @ Credits to Z-nogyroP. Simple anim that combines Force Palm + Sorpresa
-gBattleAnimMove_PalmaRauda::
+gAnimacionCombate_PalmaRauda::
 	loadspritegfx ANIM_TAG_SHADOW_BALL
 	loadspritegfx ANIM_TAG_HANDS_AND_FEET
 	loadspritegfx ANIM_TAG_IMPACT

@@ -1431,9 +1431,6 @@ const u32 gBattleAnimBgTilemap_Fissure[] = INCBIN_U32("graphics/battle_anims/bac
 const u32 gBattleAnimSpriteGfx_Bird[] = INCBIN_U32("graphics/battle_anims/sprites/bird.4bpp.lz");
 const u32 gBattleAnimSpritePal_Bird[] = INCBIN_U32("graphics/battle_anims/sprites/bird.gbapal.lz");
 
-const u32 gBattleAnimSpriteGfx_EmboarCarga[] = INCBIN_U32("graphics/battle_anims/sprites/emboar_carga.4bpp.lz");
-const u32 gBattleAnimSpritePal_Emboar[] = INCBIN_U32("graphics/battle_anims/sprites/emboar_carga.gbapal.lz");
-
 const u32 gBattleAnimSpriteGfx_CrossImpact[] = INCBIN_U32("graphics/battle_anims/sprites/cross_impact.4bpp.lz");
 const u32 gBattleAnimSpritePal_CrossImpact[] = INCBIN_U32("graphics/battle_anims/sprites/cross_impact.gbapal.lz");
 

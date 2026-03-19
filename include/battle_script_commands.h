@@ -17,9 +17,9 @@ u32 GetTotalAccuracy(u32 battlerAtk, u32 battlerDef, u32 move, u32 atkAbility, u
 u8 GetBattlerTurnOrderNum(u8 battlerId);
 bool32 NoAliveMonsForPlayer(void);
 bool32 NoAliveMonsForEitherParty(void);
-void SetMoveEffect(bool32 primary, bool32 certain);
+void SetMoveEffect(bool32 primary);
 bool32 CanBattlerSwitch(u32 battlerId);
-void BattleDestroyYesNoCursorAt(void);
+void BattleDestroyYesNoCursorAt(u8 cursorPosition);
 void CreaCursorBatallaSiNo(void);
 void BufferMoveToLearnIntoBattleTextBuff2(void);
 void HandleBattleWindow(u8 xStart, u8 yStart, u8 xEnd, u8 yEnd, u8 flags);

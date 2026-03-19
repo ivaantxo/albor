@@ -181,7 +181,7 @@ struct BattlePokemon
     u32 abilityNum:2;
     s8 statStages[NUMERO_ESTADISTICAS_BATALLA];
     u16 ability;
-    u8 types[3];
+    u8 types[NUMERO_TIPOS_POR_POKEMON];
     u8 pp[MAX_MON_MOVES];
     u16 hp;
     u8 level;
@@ -214,7 +214,7 @@ struct SpeciesInfo
     u8 baseSpeed;
     u8 baseSpAttack;
     u8 baseSpDefense;
-    u8 types[2];
+    u8 types[NUMERO_TIPOS_POR_POKEMON];
     u8 catchRate;
     u8 expYield;
     u16 evYield_HP:2;

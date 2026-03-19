@@ -1383,7 +1383,6 @@ const struct CompressedSpriteSheetAndPalette gBattleAnimTable[] =
     [ANIM_TAG_WOOD_HAMMER_HAMMER]                                   = {gBattleAnimSpriteGfx_WoodHammerHammer  , gBattleAnimSpritePal_WoodHammerHammer   , 2048 , ANIM_TAG_WOOD_HAMMER_HAMMER   },
     [ANIM_TAG_SNOWFLAKES]                                           = {gBattleAnimSpriteGfx_Snowflakes        , gBattleAnimSpritePal_RainDrops          , 1792 , ANIM_TAG_SNOWFLAKES           },
     [ANIM_TAG_DREEPY_SHINY]                                         = {gBattleAnimSpriteGfx_DreepyMissile     , gBattleAnimSpritePal_DreepyMissileShiny , 512  , ANIM_TAG_DREEPY_SHINY         },
-    [ANIM_TAG_EMBOAR]                                               = {gBattleAnimSpriteGfx_EmboarCarga       , gBattleAnimSpritePal_Emboar             , 2048 , ANIM_TAG_EMBOAR               },
     [ANIM_TAG_BLOOD_MOON]                                           = {gBattleAnimSpriteGfx_BloodMoon         , gBattleAnimSpritePal_BloodMoon          , 2048 , ANIM_TAG_BLOOD_MOON           },
     [ANIM_TAG_RED_EXPLOSION]                                        = {gBattleAnimSpriteGfx_RedExplosion      , gBattleAnimSpritePal_RedExplosion       , 2048 , ANIM_TAG_RED_EXPLOSION        },
     [ANIM_TAG_BEAM]                                                 = {gBattleAnimSpriteGfx_Beam              , gBattleAnimSpritePal_Beam               , 2048 , ANIM_TAG_BEAM                 },

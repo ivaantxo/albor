@@ -5933,7 +5933,6 @@ static void AnimHornHit_Step(struct Sprite *sprite)
 #define tSpoonPal           data[1]
 #define tBlendSpritesCount  data[3]
 #define tBattlerId          data[4]
-#define tIsAllySwitch       data[5]
 
 #define sCounter            data[0]
 #define sSinIndex           data[1]
@@ -5943,7 +5942,7 @@ static void AnimHornHit_Step(struct Sprite *sprite)
 #define sSinIndexMod        data[5]
 #define sBattlerFlank       data[6]
 
-void PrepareDoubleTeamAnim(u32 taskId, u32 animBattler, bool32 forAllySwitch)
+void PrepareDoubleTeamAnim(u32 taskId, u32 animBattler)
 {
     s32 i, spriteId;
     u16 palOffsetBattler, palOffsetSpoon;
@@ -5952,7 +5951,6 @@ void PrepareDoubleTeamAnim(u32 taskId, u32 animBattler, bool32 forAllySwitch)
     task->tBattlerSpriteId = GetAnimBattlerSpriteId(animBattler);
     task->tSpoonPal = AllocSpritePalette(ANIM_TAG_BENT_SPOON);
     task->tBattlerId = GetAnimBattlerId(animBattler);
-    task->tIsAllySwitch = forAllySwitch;
     palOffsetSpoon = OBJ_PLTT_ID(task->tSpoonPal);
     palOffsetBattler = OBJ_PLTT_ID2(gSprites[task->tBattlerSpriteId].oam.paletteNum);
     for (i = 1; i < 16; i++)
@@ -5960,7 +5958,7 @@ void PrepareDoubleTeamAnim(u32 taskId, u32 animBattler, bool32 forAllySwitch)
 
     BlendPalette(palOffsetSpoon, 16, 11, RGB_BLACK);
     task->tBlendSpritesCount = 0;
-    for (i = 0; i < ((forAllySwitch == TRUE) ? 1 : 2); i++)
+    for (i = 0; i < 2; i++)
     {
         spriteId = CloneBattlerSpriteWithBlend(animBattler);
         if (spriteId < 0)
@@ -5992,7 +5990,7 @@ void PrepareDoubleTeamAnim(u32 taskId, u32 animBattler, bool32 forAllySwitch)
 
 void AnimTask_DoubleTeam(u8 taskId)
 {
-    PrepareDoubleTeamAnim(taskId, ANIM_ATTACKER, FALSE);
+    PrepareDoubleTeamAnim(taskId, ANIM_ATTACKER);
 }
 
 static inline void SwapStructData(void *s1, void *s2, void *data, u32 size)
@@ -6023,81 +6021,6 @@ static void ReloadBattlerSprites(u32 battler, struct Pokemon *party)
     }
 }
 
-static void AnimTask_AllySwitchDataSwap(u8 taskId)
-{
-    s32 i, j;
-    struct Pokemon *party;
-    u32 temp;
-    u32 battlerAtk = gBattlerAttacker;
-    u32 battlerPartner = ALIADO(battlerAtk);
-
-    void *data = Alloc(0x200);
-    if (data == NULL)
-    {
-        SoftReset(1);
-    }
-
-    SwapStructData(&gBattleMons[battlerAtk], &gBattleMons[battlerPartner], data, sizeof(struct BattlePokemon));
-    SwapStructData(&gDisableStructs[battlerAtk], &gDisableStructs[battlerPartner], data, sizeof(struct DisableStruct));
-    SwapStructData(&gSpecialStatuses[battlerAtk], &gSpecialStatuses[battlerPartner], data, sizeof(struct SpecialStatus));
-    SwapStructData(&gProtectStructs[battlerAtk], &gProtectStructs[battlerPartner], data, sizeof(struct ProtectStruct));
-    SwapStructData(&gBattleSpritesDataPtr->battlerData[battlerAtk], &gBattleSpritesDataPtr->battlerData[battlerPartner], data, sizeof(struct BattleSpriteInfo));
-
-    SWAP(gBattleSpritesDataPtr->battlerData[battlerAtk].invisible, gBattleSpritesDataPtr->battlerData[battlerPartner].invisible, temp);
-    SWAP(gTransformedPersonalities[battlerAtk], gTransformedPersonalities[battlerPartner], temp);
-    SWAP(gTransformedShininess[battlerAtk], gTransformedShininess[battlerPartner], temp);
-    SWAP(gStatuses3[battlerAtk], gStatuses3[battlerPartner], temp);
-    SWAP(gCombate->chosenMovePositions[battlerAtk], gCombate->chosenMovePositions[battlerPartner], temp);
-    SWAP(gMovimientoElegido[battlerAtk], gMovimientoElegido[battlerPartner], temp);
-    SWAP(gLockedMoves[battlerAtk], gLockedMoves[battlerPartner], temp);
-    SWAP(gCombate->moveTarget[battlerAtk], gCombate->moveTarget[battlerPartner], temp);
-    SWAP(gMoveSelectionCursor[battlerAtk], gMoveSelectionCursor[battlerPartner], temp);
-    // Swap turn order, so that all the battlers take action
-    SWAP(gAccionElegida[battlerAtk], gAccionElegida[battlerPartner], temp);
-    for (i = 0; i < NUMERO_COMBATIENTES; i++)
-    {
-        if (gBattlerByTurnOrder[i] == battlerAtk || gBattlerByTurnOrder[i] == battlerPartner)
-        {
-            for (j = i + 1; j < NUMERO_COMBATIENTES; j++)
-            {
-                if (gBattlerByTurnOrder[j] == battlerAtk || gBattlerByTurnOrder[j] == battlerPartner)
-                    break;
-            }
-            SWAP(gBattlerByTurnOrder[i], gBattlerByTurnOrder[j], temp);
-            break;
-        }
-    }
-
-    party = GetBattlerParty(battlerAtk);
-    SwitchTwoBattlersInParty(battlerAtk, battlerPartner);
-    SWAP(gBattlerPartyIndexes[battlerAtk], gBattlerPartyIndexes[battlerPartner], temp);
-
-    // For Snipe Shot and abilities Stalwart/Propeller Tail - keep the original target.
-    for (i = 0; i < NUMERO_COMBATIENTES; i++)
-    {
-        u16 ability = GetBattlerAbility(i);
-        if (gMovimientoElegido[i] == MOVE_SNIPE_SHOT || ability == ABILITY_PROPELLER_TAIL || ability == ABILITY_STALWART)
-            gCombate->moveTarget[i] ^= BIT_FLANK;
-    }
-
-    // For some reason the order in which the sprites are created matters. Looks like an issue with the sprite system, potentially with the Sprite Template.
-    if ((battlerAtk & BIT_FLANK) != 0)
-    {
-        ReloadBattlerSprites(battlerAtk, party);
-        ReloadBattlerSprites(battlerPartner, party);
-    }
-    else
-    {
-        ReloadBattlerSprites(battlerPartner, party);
-        ReloadBattlerSprites(battlerAtk, party);
-    }
-
-    Free(data);
-
-    gBattleScripting.battler = battlerPartner;
-    DestroyAnimVisualTask(taskId);
-}
-
 static void AnimTask_DoubleTeam_Step(u8 taskId)
 {
     struct Task *task = &gTasks[taskId];
@@ -6109,11 +6032,7 @@ static void AnimTask_DoubleTeam_Step(u8 taskId)
             SetGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_BG2_ON);
 
         FreeSpritePaletteByTag(ANIM_TAG_BENT_SPOON);
-        // Swap attacker and partner data-wise and visually
-        if (task->tIsAllySwitch && task->tBattlerId == ALIADO(gBattlerAttacker))
-            gTasks[taskId].func = AnimTask_AllySwitchDataSwap;
-        else
-            DestroyAnimVisualTask(taskId);
+        DestroyAnimVisualTask(taskId);
     }
 }
 
@@ -6128,12 +6047,6 @@ static void AnimDoubleTeam(struct Sprite *sprite)
     if (sprite->sCounter > 64)
     {
         gTasks[sprite->sTaskId].tBlendSpritesCount--;
-        // If Ally Switch - destroy the mon sprites, they'll be created again later.
-        if (gTasks[sprite->sTaskId].tIsAllySwitch && gTasks[sprite->sTaskId].tBattlerId == ALIADO(gBattlerAttacker))
-        {
-            DestroySprite(&gSprites[gBattlerSpriteIds[gBattlerAttacker]]);
-            DestroySprite(&gSprites[gBattlerSpriteIds[ALIADO(gBattlerAttacker)]]);
-        }
         DestroySpriteWithActiveSheet(sprite);
     }
     else
@@ -6142,39 +6055,13 @@ static void AnimDoubleTeam(struct Sprite *sprite)
         sprite->sSinIndexMod = gSineTable[sprite->sCounter] / 13;
         sprite->sSinIndex = (sprite->sSinIndex + sprite->sSinIndexMod) & 0xFF;
         sprite->x2 = Sin(sprite->sSinIndex, sprite->sSinAmplitude);
-        if (gTasks[sprite->sTaskId].tIsAllySwitch)
-        {
-            if (sprite->sBattlerFlank)
-                sprite->x2 = abs(sprite->x2);
-            else
-                sprite->x2 = -(abs(sprite->x2));
-        }
     }
-}
-
-void AnimTask_AllySwitchAttacker(u8 taskId)
-{
-    PrepareDoubleTeamAnim(taskId, ANIM_ATTACKER, TRUE);
-    gSprites[gBattlerSpriteIds[gBattlerAttacker]].invisible = TRUE;
-    gSprites[gBattlerSpriteIds[ALIADO(gBattlerAttacker)]].invisible = TRUE;
-    // Edge case: Partner's sprite is invisible(i.e. after using Dig).
-    if (gBattleSpritesDataPtr->battlerData[ALIADO(gBattlerAttacker)].invisible)
-    {
-        gBattleSpritesDataPtr->battlerData[ALIADO(gBattlerAttacker)].invisible = FALSE;
-        gBattleSpritesDataPtr->battlerData[gBattlerAttacker].invisible = TRUE;
-    }
-}
-
-void AnimTask_AllySwitchPartner(u8 taskId)
-{
-    PrepareDoubleTeamAnim(taskId, ANIM_ATK_PARTNER, TRUE);
 }
 
 #undef tBattlerSpriteId
 #undef tSpoonPal
 #undef tBlendSpritesCount
 #undef tBattlerId
-#undef tIsAllySwitch
 
 #undef sCounter
 #undef sSinIndex

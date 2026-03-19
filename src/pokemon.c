@@ -1719,9 +1719,8 @@ void PokemonToBattleMon(struct Pokemon *src, struct BattlePokemon *dst)
     dst->spAttack = GetMonData(src, MON_DATA_SPATK, NULL);
     dst->spDefense = GetMonData(src, MON_DATA_SPDEF, NULL);
     dst->abilityNum = GetMonData(src, MON_DATA_ABILITY_NUM, NULL);
-    dst->types[0] = gSpeciesInfo[dst->species].types[0];
-    dst->types[1] = gSpeciesInfo[dst->species].types[1];
-    dst->types[2] = TIPO_MISTERIO;
+    dst->types[TIPO_1] = gSpeciesInfo[dst->species].types[TIPO_1];
+    dst->types[TIPO_2] = gSpeciesInfo[dst->species].types[TIPO_2];
     dst->isShiny = IsMonShiny(src);
     dst->ability = GetAbilityBySpecies(dst->species, dst->abilityNum);
     GetMonData(src, MON_DATA_NICKNAME, nickname);
@@ -2460,8 +2459,8 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u16 evolutionItem)
                 for (j = 0; j < PARTY_SIZE; j++)
                 {
                     u16 currSpecies = GetMonData(&gPlayerParty[j], MON_DATA_SPECIES, NULL);
-                    if (gSpeciesInfo[currSpecies].types[0] == TIPO_SINIESTRO
-                        || gSpeciesInfo[currSpecies].types[1] == TIPO_SINIESTRO)
+                    if (gSpeciesInfo[currSpecies].types[TIPO_1] == TIPO_SINIESTRO
+                        || gSpeciesInfo[currSpecies].types[TIPO_2] == TIPO_SINIESTRO)
                     {
                         targetSpecies = evolutions[i].targetSpecies;
                         break;

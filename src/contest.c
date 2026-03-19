@@ -4440,7 +4440,7 @@ static void SetMoveSpecificAnimData(u8 contestant)
     switch (move)
     {
     case MOVE_CURSE:
-        if (gSpeciesInfo[species].types[0] == TIPO_FANTASMA || gSpeciesInfo[species].types[1] == TIPO_FANTASMA)
+        if (gSpeciesInfo[species].types[TIPO_1] == TIPO_FANTASMA || gSpeciesInfo[species].types[TIPO_2] == TIPO_FANTASMA)
             gAnimMoveTurn = 0;
         else
             gAnimMoveTurn = 1;

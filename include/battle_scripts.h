@@ -562,7 +562,6 @@ extern const u8 BattleScript_EffectBestow[];
 extern const u8 BattleScript_EffectRototiller[];
 extern const u8 BattleScript_EffectSpeedSwap[];
 extern const u8 BattleScript_EffectAuroraVeil[];
-extern const u8 BattleScript_EffectThirdType[];
 extern const u8 BattleScript_EffectAcupressure[];
 extern const u8 BattleScript_EffectAromaticMist[];
 extern const u8 BattleScript_EffectPowder[];
@@ -576,7 +575,6 @@ extern const u8 BattleScript_EffectPurify[];
 extern const u8 BattleScript_FailIfNotArgType[];
 extern const u8 BattleScript_EffectShoreUp[];
 extern const u8 BattleScript_EffectFairyLock[];
-extern const u8 BattleScript_EffectAllySwitch[];
 extern const u8 BattleScript_EffectRelicSong[];
 extern const u8 BattleScript_EffectEerieSpell[];
 extern const u8 BattleScript_EffectJungleHealing[];
@@ -599,7 +597,6 @@ extern const u8 BattleScript_EffectSnow[];
 extern const u8 BattleScript_EffectTakeHeart[];
 extern const u8 BattleScript_EffectCorrosiveGas[];
 extern const u8 BattleScript_EffectBrickBreak[];
-extern const u8 BattleScript_EffectPalmaRauda[];
-extern const u8 Script_Amoladoras[];
+extern const u8 ScriptCombate_EfectoPalmaRauda[];
 
 #endif // GUARD_BATTLE_SCRIPTS_H

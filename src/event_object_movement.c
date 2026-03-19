@@ -1714,7 +1714,7 @@ bool32 IsFollowerVisible(void)
 
 static bool8 SpeciesHasType(u16 species, u8 type)
 {
-    return gSpeciesInfo[species].types[0] == type || gSpeciesInfo[species].types[1] == type;
+    return gSpeciesInfo[species].types[TIPO_1] == type || gSpeciesInfo[species].types[TIPO_2] == type;
 }
 
 // Display an emote above an object event

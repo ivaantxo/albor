@@ -1211,11 +1211,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_THIRD_TYPE] =
-    {
-        .battleScript = BattleScript_EffectThirdType,
-    },
-
     [EFFECT_ACUPRESSURE] =
     {
         .battleScript = BattleScript_EffectAcupressure,
@@ -1295,11 +1290,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_FAIRY_LOCK] =
     {
         .battleScript = BattleScript_EffectFairyLock,
-    },
-
-    [EFFECT_ALLY_SWITCH] =
-    {
-        .battleScript = BattleScript_EffectAllySwitch,
     },
 
     [EFFECT_RELIC_SONG] =
@@ -1467,7 +1457,7 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
 
     [EFFECT_PALMA_RAUDA] =
     {
-        .battleScript = BattleScript_EffectPalmaRauda,
+        .battleScript = ScriptCombate_EfectoPalmaRauda,
         .encourageEncore = TRUE,
     },
 
@@ -1479,12 +1469,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_DRAGON_DARTS] =
     {
         .battleScript = BattleScript_EffectHit,
-    },
-
-    [EFFECT_AMOLADORAS] =
-    {
-        .battleScript = Script_Amoladoras,
-        .encourageEncore = TRUE,
     },
 
     [EFFECT_SHELL_SIDE_ARM] =
