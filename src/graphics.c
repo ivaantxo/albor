@@ -141,12 +141,6 @@ const u32 gBattleAnimSpritePal_NewGreenStar[] = INCBIN_U32("graphics/battle_anim
 const u32 gBattleAnimSpriteGfx_ZygardeHexes[] = INCBIN_U32("graphics/battle_anims/sprites/hexes.4bpp.lz");
 const u32 gBattleAnimSpritePal_ZygardeHexes[] = INCBIN_U32("graphics/battle_anims/sprites/hexes.gbapal.lz");
 
-const u32 gBattleAnimSpriteGfx_HoopaHand[] = INCBIN_U32("graphics/battle_anims/sprites/hoopa_hand.4bpp.lz");
-const u32 gBattleAnimSpritePal_HoopaHand[] = INCBIN_U32("graphics/battle_anims/sprites/hoopa_hand.gbapal.lz");
-
-const u32 gBattleAnimSpriteGfx_HoopaRing[] = INCBIN_U32("graphics/battle_anims/sprites/hoopa_ring.4bpp.lz");
-const u32 gBattleAnimSpritePal_HoopaRing[] = INCBIN_U32("graphics/battle_anims/sprites/hoopa_ring.gbapal.lz");
-
 const u32 gBattleAnimSpriteGfx_NewHornHit[] = INCBIN_U32("graphics/battle_anims/sprites/horn_hit_new.4bpp.lz");
 const u32 gBattleAnimSpritePal_NewHornHit[] = INCBIN_U32("graphics/battle_anims/sprites/horn_hit_new.gbapal.lz");
 
@@ -1317,8 +1311,6 @@ const u32 gBattleAnimBgPalette_HydroPump[] = INCBIN_U32("graphics/battle_anims/b
 const u32 gBattleAnimBgTilemap_HydroPump[] = INCBIN_U32("graphics/battle_anims/backgrounds/hydro_pump.bin.lz");
 
 const u32 gBattleAnimBgPalette_HyperBeam[] = INCBIN_U32("graphics/battle_anims/backgrounds/hyper_beam.gbapal.lz");
-
-const u32 gBattleAnimBgPalette_HyperspaceFury[] = INCBIN_U32("graphics/battle_anims/backgrounds/hyperspace_fury.gbapal.lz");
 
 const u32 gBattleAnimBgImage_InfernoOverdrive[] = INCBIN_U32("graphics/battle_anims/backgrounds/inferno_overdrive.4bpp.lz");
 const u32 gBattleAnimBgPalette_InfernoOverdrive[] = INCBIN_U32("graphics/battle_anims/backgrounds/inferno_overdrive.gbapal.lz");

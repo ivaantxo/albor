@@ -1291,18 +1291,6 @@ const struct SpriteTemplate gSteamEruptionBreathTemplate =
     .callback = AnimDragonFireToTarget
 };
 
-//hyperspace hole
-const struct SpriteTemplate gHyperspaceHoleImpactTemplate =
-{
-    .tileTag = ANIM_TAG_IMPACT,
-    .paletteTag = ANIM_TAG_POISON_BUBBLE,
-    .oam = &gOamData_AffineNormal_ObjBlend_32x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gAffineAnims_IceCrystalHit,
-    .callback = AnimIceEffectParticle
-};
-
 //water shuriken
 const struct SpriteTemplate gWaterShurikenStarTemplate =
 {
@@ -1660,40 +1648,6 @@ const struct SpriteTemplate gDragonAscentDrakeTemplate =
     .images = NULL,
     .affineAnims = sAffineAnimCmdTable_DrakeStriking,
     .callback = AnimFlyBallAttack
-};
-
-//hyperspace fury
-const struct SpriteTemplate gHyperspaceFuryRingTemplate =
-{
-    .tileTag = ANIM_TAG_HOOPA_RING,
-    .paletteTag = ANIM_TAG_HOOPA_RING,
-    .oam = &gOamData_AffineNormal_ObjNormal_32x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gAffineAnims_ShadowBall,
-    .callback = AnimFireSpiralOutward
-};
-
-const struct SpriteTemplate gHyperspaceFuryHandTemplate =
-{
-    .tileTag = ANIM_TAG_HOOPA_HAND,
-    .paletteTag = ANIM_TAG_HOOPA_HAND,
-    .oam = &gOamData_AffineNormal_ObjNormal_16x16,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimNeedleArmSpike
-};
-
-const struct SpriteTemplate gHyperspaceFuryImpactTemplate =
-{
-    .tileTag = ANIM_TAG_IMPACT,
-    .paletteTag = ANIM_TAG_POISON_BUBBLE,
-    .oam = &gOamData_AffineNormal_ObjBlend_32x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gAffineAnims_HitSplat,
-    .callback = AnimHitSplatRandom
 };
 
 const struct SpriteTemplate gBanefulBunkerPoisonBubbleTemplate =
@@ -2754,18 +2708,6 @@ const struct SpriteTemplate gMindBlownPinkImpactTemplate =
     .images = NULL,
     .affineAnims = gAffineAnims_HitSplat,
     .callback = SpriteCB_RandomCentredHits
-};
-
-//plasma fists
-const struct SpriteTemplate gPlasmaFistsChargeTemplate =
-{
-    .tileTag = ANIM_TAG_SHOCK_3,
-    .paletteTag = ANIM_TAG_SHOCK_3,
-    .oam = &gOamData_AffineNormal_ObjNormal_32x32,
-    .anims = gAnims_ThunderboltOrb,
-    .images = NULL,
-    .affineAnims = gAffineAnims_GrowingElectricOrb,
-    .callback = AnimGrowingChargeOrb
 };
 
 //photon geyser

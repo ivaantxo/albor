@@ -4026,29 +4026,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             break;
         case ABILITY_SAND_SPIT:
             break;
-        case ABILITY_PERISH_BODY:
-            if (MovimientoEsEfectivo(gCombate->resultadoMovimiento)
-             && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
-             && IsBattlerTurnDamaged(battler)
-             && IsBattlerAlive(battler)
-             && GetBattlerHoldEffect(gBattlerAttacker, TRUE) != HOLD_EFFECT_PROTECTIVE_PADS
-             && (IsMoveMakingContact(move, gBattlerAttacker))
-             && !(gStatuses3[gBattlerAttacker] & STATUS3_PERISH_SONG))
-            {
-                if (!(gStatuses3[battler] & STATUS3_PERISH_SONG))
-                {
-                    gStatuses3[battler] |= STATUS3_PERISH_SONG;
-                    gDisableStructs[battler].perishSongTimer = 3;
-                }
-                gStatuses3[gBattlerAttacker] |= STATUS3_PERISH_SONG;
-                gDisableStructs[gBattlerAttacker].perishSongTimer = 3;
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_PerishBodyActivates;
-                effect++;
-            }
-            break;
-        case ABILITY_SEED_SOWER:
-            break;
         case ABILITY_THERMAL_EXCHANGE:
             if (MovimientoEsEfectivo(gCombate->resultadoMovimiento)
              && IsBattlerTurnDamaged(gBattlerTarget)
@@ -6517,10 +6494,6 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
     case EFFECT_RETALIATE:
         if (gSideTimers[atkSide].retaliateTimer == 1)
             modifier = uq4_12_multiply(modifier, UQ_4_12(2.0));
-        break;
-    case EFFECT_SOLAR_BEAM:
-        if (IsBattlerWeatherAffected(battlerAtk, (B_WEATHER_HAIL | B_WEATHER_SANDSTORM | B_WEATHER_RAIN | B_WEATHER_SNOW | B_WEATHER_FOG)))
-            modifier = uq4_12_multiply(modifier, UQ_4_12(0.5));
         break;
     case EFFECT_STOMPING_TANTRUM:
         if (gCombate->lastMoveFailed & (1u << battlerAtk))

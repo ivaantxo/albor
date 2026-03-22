@@ -17,7 +17,7 @@
 
 /* First arg is the charge turn string id, second arg depends on effect
 EFFECT_SEMI_INVULNERABLE: semi-invulnerable STATUS3 to apply to battler
-EFFECT_TWO_TURNS_ATTACK/EFFECT_SOLAR_BEAM: weather in which to skip charge turn */
+EFFECT_TWO_TURNS_ATTACK: weather in which to skip charge turn */
 #define TWO_TURN_ARG(stringid, ...) (stringid) __VA_OPT__(| ((__VA_ARGS__) << 16))
 
 #define PP_MOVIMIENTO_OFENSIVO_LIMITADO 5
@@ -88,10 +88,6 @@ static const u8 sDrainingKissDescription[] = _(
 static const u8 sCloseCombatDescription[] = _(
     "A strong attack but lowers\n"
     "the defensive stats.");
-
-static const u8 sHyperspaceHoleDescription[] = _(
-    "Uses a warp hole to attack.\n"
-    "Can't be evaded.");
 
 static const u8 sFeintDescription[] = _(
     "An attack that hits foes\n"
@@ -1642,7 +1638,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Absorbs light in one turn,\n"
             "then attacks next turn."),
-        .effect = EFFECT_SOLAR_BEAM,
+        .effect = EFFECT_TWO_TURNS_ATTACK,
         .power = 120,
         .type = TIPO_PLANTA,
         .accuracy = 100,
@@ -11209,26 +11205,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_SteamEruption,
     },
 
-    [MOVE_HYPERSPACE_HOLE] =
-    {
-        .name = COMPOUND_STRING("Hyperspace Hole"),
-        .description = sHyperspaceHoleDescription,
-        .effect = EFFECT_HIT,
-        .power = 80,
-        .type = TIPO_PSIQUICO,
-        .accuracy = 0,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .ignoresProtect = TRUE,
-        .ignoresSubstitute = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_FEINT,
-        }),
-        .battleAnimScript = gBattleAnimMove_HyperspaceHole,
-    },
-
     [MOVE_WATER_SHURIKEN] =
     {
         .name = COMPOUND_STRING("Shuriken de agua"),
@@ -11593,28 +11569,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_DragonAscent,
     },
 
-    [MOVE_HYPERSPACE_FURY] = //eliminar?
-    {
-        .name = COMPOUND_STRING("Hyperspace Fury"),
-        .description = sHyperspaceHoleDescription,
-        .effect = EFFECT_HYPERSPACE_FURY,
-        .power = 100,
-        .type = TIPO_SINIESTRO,
-        .accuracy = 0,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .ignoresProtect = TRUE,
-        .ignoresSubstitute = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            // Feint move effect handled in script as it goes before animation
-            .moveEffect = MOVE_EFFECT_DEF_MINUS_1,
-            .self = TRUE,
-        }),
-        .battleAnimScript = gBattleAnimMove_HyperspaceFury,
-    },
-
     [MOVE_SHORE_UP] =
     {
         .name = COMPOUND_STRING("Shore Up"),
@@ -11809,7 +11763,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Charges first turn, then\n"
             "chops with a blade of light."),
-        .effect = EFFECT_SOLAR_BEAM,
+        .effect = EFFECT_TWO_TURNS_ATTACK,
         .power = 125,
         .type = TIPO_PLANTA,
         .accuracy = 100,
@@ -12497,25 +12451,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_MindBlown,
     },
 
-    [MOVE_PLASMA_FISTS] =
-    {
-        .name = COMPOUND_STRING("Plasma Fists"),
-        .description = COMPOUND_STRING(
-            "Hits with electrical fists.\n"
-            "Normal moves turn Electric."),
-        .effect = EFFECT_PLASMA_FISTS,
-        .power = 100,
-        .type = TIPO_ELECTRICO,
-        .accuracy = 100,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .punchingMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_PlasmaFists,
-    },
-
     [MOVE_PHOTON_GEYSER] =
     {
         .name = COMPOUND_STRING("Photon Geyser"),
@@ -13170,25 +13105,21 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
 
     [MOVE_METEOR_BEAM] =
     {
-        .name = COMPOUND_STRING("Meteor Beam"),
+        .name = COMPOUND_STRING("Rayo meteoro"),
         .description = COMPOUND_STRING(
-            "A 2-turn move that raises\n"
-            "Sp. Attack before attacking."),
+            "Absorbs light in one turn,\n"
+            "then attacks next turn."),
         .effect = EFFECT_TWO_TURNS_ATTACK,
         .power = 120,
         .type = TIPO_ROCA,
-        .accuracy = 90,
+        .accuracy = 100,
         .pp = 10,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
+        .sleepTalkBanned = TRUE,
         .instructBanned = TRUE,
-        .argument = TWO_TURN_ARG(STRINGID_METEORBEAMCHARGING),
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SP_ATK_PLUS_1,
-            .self = TRUE,
-            .onChargeTurnOnly = TRUE,
-        }),
+        .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKSUNLIGHT, B_WEATHER_SAND),
         .battleAnimScript = gBattleAnimMove_MeteorBeam,
     },
 

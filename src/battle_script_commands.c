@@ -2814,10 +2814,7 @@ void SetMoveEffect(bool32 primary)
                     gProtectStructs[gBattlerTarget].silkTrapped = FALSE;
                     gProtectStructs[gBattlerAttacker].burningBulwarked = FALSE;
                     BattleScriptPush(gBattlescriptCurrInstr + 1);
-                    if (gCurrentMove == MOVE_HYPERSPACE_FURY)
-                        gBattlescriptCurrInstr = BattleScript_HyperspaceFuryRemoveProtect;
-                    else
-                        gBattlescriptCurrInstr = BattleScript_MoveEffectFeint;
+                    gBattlescriptCurrInstr = BattleScript_MoveEffectFeint;
                 }
                 break;
             case MOVE_EFFECT_SPECTRAL_THIEF:
