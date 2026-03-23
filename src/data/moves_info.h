@@ -41,10 +41,6 @@ static const u8 sPluckDescription[] = _(
     "Eats the foe's held Berry\n"
     "gaining its effect.");
 
-static const u8 sHealingWishDescription[] = _(
-    "The user faints to heal up\n"
-    "the recipient.");
-
 static const u8 sWringOutDescription[] = _(
     "The higher the foe's HP\n"
     "the more damage caused.");
@@ -7101,25 +7097,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_GyroBall,
     },
 
-    [MOVE_HEALING_WISH] =
-    {
-        .name = COMPOUND_STRING("Deseo cura"),
-        .description = sHealingWishDescription,
-        .effect = EFFECT_HEALING_WISH,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .healingMove = TRUE,
-        .snatchAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_HealingWish,
-    },
-
     [MOVE_BRINE] =
     {
         .name = COMPOUND_STRING("Salmuera"),
@@ -7310,23 +7287,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESTADO,
         .magicCoatAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .battleAnimScript = gBattleAnimMove_Embargo,
-    },
-
-    [MOVE_PSYCHO_SHIFT] =
-    {
-        .name = COMPOUND_STRING("Psicocambio"),
-        .description = COMPOUND_STRING(
-            "Transfers status problems\n"
-            "to the foe."),
-        .effect = EFFECT_PSYCHO_SHIFT,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_6 ? 100 : 90,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .battleAnimScript = gBattleAnimMove_PsychoShift,
     },
 
     [MOVE_TRUMP_CARD] =
@@ -8983,26 +8943,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .battleAnimScript = gBattleAnimMove_SpacialRend,
-    },
-
-    [MOVE_LUNAR_DANCE] =
-    {
-        .name = COMPOUND_STRING("Danza lunar"),
-        .description = sHealingWishDescription,
-        .effect = EFFECT_HEALING_WISH,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .snatchAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
-        .ignoresProtect = TRUE,
-        .mirrorMoveBanned = TRUE,
-        .healingMove = TRUE,
-        .danceMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_LunarDance,
     },
 
     [MOVE_CRUSH_GRIP] =
@@ -13119,7 +13059,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .sleepTalkBanned = TRUE,
         .instructBanned = TRUE,
-        .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKSUNLIGHT, B_WEATHER_SAND),
+        .argument = TWO_TURN_ARG(STRINGID_METEORBEAMCHARGING, B_WEATHER_SAND), // Sol?
         .battleAnimScript = gBattleAnimMove_MeteorBeam,
     },
 

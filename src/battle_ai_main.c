@@ -1460,22 +1460,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             if (!(gBattleMons[battlerDef].status1 & (STATUS1_PSN_ANY | STATUS1_BURN | STATUS1_PARALYSIS | STATUS1_CONGELACION)))
                 ADJUST_SCORE(-10);
             break;
-        case EFFECT_PSYCHO_SHIFT:
-            if (gBattleMons[battlerAtk].status1 & STATUS1_PSN_ANY && !AI_CanPoison(battlerAtk, battlerDef, move, aiData->partnerMove))
-                ADJUST_SCORE(-10);
-            else if (gBattleMons[battlerAtk].status1 & STATUS1_BURN && !AI_CanBurn(battlerAtk, battlerDef,
-              aiData->abilities[battlerDef], ALIADO(battlerAtk), move, aiData->partnerMove))
-                ADJUST_SCORE(-10);
-            else if (gBattleMons[battlerAtk].status1 & STATUS1_CONGELACION && !IA_PuedeCongelar(battlerAtk, battlerDef,
-              aiData->abilities[battlerDef], ALIADO(battlerAtk), move, aiData->partnerMove))
-                ADJUST_SCORE(-10);
-            else if (gBattleMons[battlerAtk].status1 & STATUS1_PARALYSIS && !AI_CanParalyze(battlerAtk, battlerDef, aiData->abilities[battlerDef], move, aiData->partnerMove))
-                ADJUST_SCORE(-10);
-            else if (gBattleMons[battlerAtk].status1 & STATUS1_SLEEP && !AI_CanPutToSleep(battlerAtk, battlerDef, aiData->abilities[battlerDef], move, aiData->partnerMove))
-                ADJUST_SCORE(-10);
-            else
-                ADJUST_SCORE(-10);    // attacker has no status to transmit
-            break;
         case EFFECT_ABSORB:
             if (aiData->abilities[battlerDef] == ABILITY_LIQUID_OOZE)
                 ADJUST_SCORE(-6);
@@ -1718,12 +1702,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             if (BattlerWillFaintFromWeather(battlerAtk, aiData->abilities[battlerAtk])
               && (move == MOVE_FLY || move == MOVE_BOUNCE))
                 ADJUST_SCORE(-10); // Attacker will faint while in the air
-            break;
-        case EFFECT_HEALING_WISH:   //healing wish, lunar dance
-            if (CountUsablePartyMons(battlerAtk) == 0 || DoesPartnerHaveSameMoveEffect(ALIADO(battlerAtk), battlerDef, move, aiData->partnerMove))
-                ADJUST_SCORE(-10);
-            else if (IsPartyFullyHealedExceptBattler(battlerAtk))
-                ADJUST_SCORE(-10);
             break;
         case EFFECT_NATURE_POWER:
             return AI_CheckBadMove(battlerAtk, battlerDef, GetNaturePowerMove(battlerAtk), score);
@@ -2074,7 +2052,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     {
         // Don't use user-target moves ie. Swords Dance, with exceptions
         if ((moveTarget & MOVE_TARGET_USER)
-        && moveEffect != EFFECT_DESTINY_BOND && moveEffect != EFFECT_WISH && moveEffect != EFFECT_HEALING_WISH
+        && moveEffect != EFFECT_DESTINY_BOND && moveEffect != EFFECT_WISH
         && !(moveEffect == EFFECT_AURORA_VEIL && (AI_GetWeather(aiData) & (B_WEATHER_SNOW | B_WEATHER_HAIL))))
             ADJUST_SCORE(-30);
         // Don't use a status move if the mon is the last one in the party, has no good switchin, or is trapped
@@ -3463,18 +3441,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
          || BattlerStatCanRise(battlerAtk, aiData->abilities[battlerAtk], ESTADISTICA_ATAQUE_ESPECIAL)
          || BattlerStatCanRise(battlerAtk, aiData->abilities[battlerAtk], ESTADISTICA_DEFENSA_ESPECIAL))
             ADJUST_SCORE(DECENT_EFFECT);
-        break;
-    case EFFECT_PSYCHO_SHIFT:
-        if (gBattleMons[battlerAtk].status1 & STATUS1_PSN_ANY)
-            IncreasePoisonScore(battlerAtk, battlerDef, move, &score);
-        else if (gBattleMons[battlerAtk].status1 & STATUS1_BURN)
-            IncreaseBurnScore(battlerAtk, battlerDef, move, &score);
-        else if (gBattleMons[battlerAtk].status1 & STATUS1_PARALYSIS)
-            IncreaseParalyzeScore(battlerAtk, battlerDef, move, &score);
-        else if (gBattleMons[battlerAtk].status1 & STATUS1_SLEEP)
-            IncreaseSleepScore(battlerAtk, battlerDef, move, &score);
-        else if (gBattleMons[battlerAtk].status1 & STATUS1_CONGELACION)
-            AumentaPuntuacionCongelacion(battlerAtk, battlerDef, move, &score);
         break;
     case EFFECT_SNATCH:
         if (predictedMove != MOVE_NONE && gMovesInfo[predictedMove].snatchAffected)

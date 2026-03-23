@@ -421,11 +421,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_HEALING_WISH] =
-    {
-        .battleScript = BattleScript_EffectHealingWish,
-    },
-
     [EFFECT_PROTECT] =
     {
         .battleScript = BattleScript_EffectProtect,
@@ -1159,11 +1154,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_SYNCHRONOISE] =
     {
         .battleScript = BattleScript_EffectSynchronoise,
-    },
-
-    [EFFECT_PSYCHO_SHIFT] =
-    {
-        .battleScript = BattleScript_EffectPsychoShift,
     },
 
     [EFFECT_POWER_TRICK] =

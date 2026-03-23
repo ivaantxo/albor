@@ -4526,8 +4526,7 @@ static void Cmd_moveend(void)
                  && gChosenMove != MOVE_STRUGGLE
                  && (*choicedMoveAtk == MOVE_NONE))
                 {
-                    if ((gMovesInfo[gChosenMove].effect == EFECTO_RELEVO
-                     || gMovesInfo[gChosenMove].effect == EFFECT_HEALING_WISH)
+                    if ((gMovesInfo[gChosenMove].effect == EFECTO_RELEVO)
                      && !(gMoveResultFlags & MOVE_RESULT_FAILED))
                     {
                         gBattleScripting.moveendState++;
@@ -4716,8 +4715,7 @@ static void Cmd_moveend(void)
             }
             if (!(gAbsentBattlerFlags & (1u << gBattlerAttacker))
                 && !(gBattleStruct->absentBattlerFlags & (1u << gBattlerAttacker))
-                && gMovesInfo[originallyUsedMove].effect != EFECTO_RELEVO
-                && gMovesInfo[originallyUsedMove].effect != EFFECT_HEALING_WISH)
+                && gMovesInfo[originallyUsedMove].effect != EFECTO_RELEVO)
             {
                 gLastMoves[gBattlerAttacker] = gChosenMove;
                 RecordKnownMove(gBattlerAttacker, gChosenMove);
@@ -5585,24 +5583,6 @@ static bool32 DoSwitchInEffectsForBattler(u32 battler)
         gBattlerAbility = battler;
         BattleScriptPushCursor();
         gBattlescriptCurrInstr = BattleScript_SwitchInAbilityMsgRet;
-    }
-    // Healing Wish activates before hazards.
-    // Starting from Gen8 - it heals only pokemon which can be healed. In gens 5,6,7 the effect activates anyways.
-    else if (((gBattleStruct->storedHealingWish & (1u << battler)) || (gBattleStruct->storedLunarDance & (1u << battler)))
-        && (gBattleMons[battler].hp != gBattleMons[battler].maxHP || gBattleMons[battler].status1 != 0 || B_HEALING_WISH_SWITCH < GEN_8))
-    {
-        if (gBattleStruct->storedHealingWish & (1u << battler))
-        {
-            BattleScriptPushCursor();
-            gBattlescriptCurrInstr = BattleScript_HealingWishActivates;
-            gBattleStruct->storedHealingWish  &= ~(1u << battler);
-        }
-        else // Lunar Dance
-        {
-            BattleScriptPushCursor();
-            gBattlescriptCurrInstr = BattleScript_LunarDanceActivates;
-            gBattleStruct->storedLunarDance  &= ~(1u << battler);
-        }
     }
     else if (!(gDisableStructs[battler].spikesDone)
         && (gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_SPIKES)
@@ -7749,35 +7729,6 @@ static void Cmd_various(void)
         gBattlescriptCurrInstr = cmd->nextInstr;
         return;
     }
-    case VARIOUS_PSYCHO_SHIFT:
-        {
-            VARIOUS_ARGS(const u8 *failInstr);
-            u32 targetAbility = GetBattlerAbility(gBattlerTarget);
-            // Psycho shift works
-            if ((gBattleMons[gBattlerAttacker].status1 & STATUS1_POISON) && CanBePoisoned(gBattlerTarget, targetAbility))
-                gBattleCommunication[MULTISTRING_CHOOSER] = 0;
-            else if ((gBattleMons[gBattlerAttacker].status1 & STATUS1_TOXIC_POISON) && CanBePoisoned(gBattlerTarget, targetAbility))
-                gBattleCommunication[MULTISTRING_CHOOSER] = 1;
-            else if ((gBattleMons[gBattlerAttacker].status1 & STATUS1_BURN) && CanBeBurned(gBattlerTarget, targetAbility))
-                gBattleCommunication[MULTISTRING_CHOOSER] = 2;
-            else if ((gBattleMons[gBattlerAttacker].status1 & STATUS1_PARALYSIS) && CanBeParalyzed(gBattlerTarget, targetAbility))
-                gBattleCommunication[MULTISTRING_CHOOSER] = 3;
-            else if ((gBattleMons[gBattlerAttacker].status1 & STATUS1_SLEEP) && CanBeSlept(gBattlerTarget, targetAbility))
-                gBattleCommunication[MULTISTRING_CHOOSER] = 4;
-            else if ((gBattleMons[gBattlerAttacker].status1 & STATUS1_CONGELACION) && PuedeSerCongelado(gBattlerTarget, targetAbility))
-                gBattleCommunication[MULTISTRING_CHOOSER] = 5;
-            else
-            {
-                gBattlescriptCurrInstr = cmd->failInstr;
-                return;
-            }
-            gBattleMons[gBattlerTarget].status1 = gBattleMons[gBattlerAttacker].status1 & STATUS1_ANY;
-            battler = gBattlerTarget;
-            BtlController_EmitSetMonData(battler, BUFFER_A, REQUEST_STATUS_BATTLE, 0, sizeof(gBattleMons[battler].status1), &gBattleMons[battler].status1);
-            MarcaCombatienteOcupado(battler);
-            gBattlescriptCurrInstr = cmd->nextInstr;
-            return;
-        }
     case VARIOUS_CURE_STATUS:
     {
         VARIOUS_ARGS();
@@ -12642,18 +12593,6 @@ void BS_ActivateWeatherChangeAbilities(void)
     u32 battler = GetBattlerForBattleScript(cmd->battler);
     gBattlescriptCurrInstr = cmd->nextInstr;
     AbilityBattleEffects(ABILITYEFFECT_ON_WEATHER, battler, 0, 0, 0);
-}
-
-void BS_StoreHealingWish(void)
-{
-    NATIVE_ARGS(u8 battler);
-
-    u32 battler = GetBattlerForBattleScript(cmd->battler);
-    if (gCurrentMove == MOVE_LUNAR_DANCE)
-        gBattleStruct->storedLunarDance |= 1u << battler;
-    else
-        gBattleStruct->storedHealingWish |= 1u << battler;
-    gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
 void BS_HitSwitchTargetFailed(void)

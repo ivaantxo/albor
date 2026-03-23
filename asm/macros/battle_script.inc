@@ -1379,12 +1379,6 @@
 	.byte \battler
 	.endm
 
-	@ Stores Healing Wish effect.
-	.macro storehealingwish battler:req
-	callnative BS_StoreHealingWish
-	.byte \battler
-	.endm
-
 	.macro hitswitchtargetfailed
 	callnative BS_HitSwitchTargetFailed
 	.endm
@@ -1583,11 +1577,6 @@
 	.macro jumpiftargetally jumpInstr:req
 	various BS_ATTACKER, VARIOUS_JUMP_IF_TARGET_ALLY
 	.4byte \jumpInstr
-	.endm
-
-	.macro trypsychoshift failInstr:req
-	various BS_ATTACKER, VARIOUS_PSYCHO_SHIFT
-	.4byte \failInstr
 	.endm
 
 	.macro curestatus battler:req

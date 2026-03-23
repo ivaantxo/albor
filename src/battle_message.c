@@ -59,25 +59,11 @@ const u8 *const gPokeblockWasTooXStringTable[FLAVOR_COUNT] =
     [FLAVOR_SOUR]   = COMPOUND_STRING("was too sour!")
 };
 
-static const u8 sText_PointedStonesFloat[] =_("Pointed stones float in the air around {B_DEF_TEAM2} team!");
-static const u8 sText_TrappedBySwirlingMagma[] =_("{B_DEF_NAME_WITH_PREFIX} became trapped by swirling magma!");
-static const u8 sText_VanishedInstantly[] =_("{B_ATK_NAME_WITH_PREFIX} vanished instantly!");
-static const u8 sText_ProtectedTeam[] =_("¡{B_CURRENT_MOVE} protegió {B_ATK_TEAM2} equipo!");
-static const u8 sText_SwapsDefAndSpDefOfAllPkmn[] =_("It created a bizarre area in which the Defense and Sp. Def stats are swapped!");
-static const u8 sText_HeldItemsLoseEffects[] =_("It created a bizarre area in which Pokémon's held items lose their effects!");
-const u8 sText_drastically[] = _("drastically ");
-const u8 sText_severely[] = _("severely ");
-
 const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
 {
     [STRINGID_ELECTROSHOTCHARGING] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} absorbed electricity!"),
     [STRINGID_CURRENTMOVECANTSELECT] = COMPOUND_STRING("{B_BUFF1} cannot be used!"),
     [STRINGID_THUNDERCAGETRAPPED] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} trapped {B_DEF_NAME_WITH_PREFIX}!"),
-    [STRINGID_ATTACKERGAINEDSTRENGTHFROMTHEFALLEN] = COMPOUND_STRING("{B_SCR_ACTIVE_NAME_WITH_PREFIX} gained strength from the fallen!"),
-    [STRINGID_BEINGHITCHARGEDPKMNWITHPOWER] = COMPOUND_STRING("Being hit by {B_CURRENT_MOVE} charged {B_DEF_NAME_WITH_PREFIX} with power!"),
-    [STRINGID_ATTACKERSHOOKITSELFAWAKE] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} shook itself awake so you wouldn't worry!"),
-    [STRINGID_ATTACKEREXPELLEDTHEPOISON] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} managed to expel the poison so you wouldn't worry!"),
-    [STRINGID_PLAYERPAIDPRIZEMONEY] = COMPOUND_STRING("{B_PLAYER_NAME} paid ¥{B_BUFF1} as the prize money… … … … {B_PLAYER_NAME} whited out!{PAUSE_UNTIL_PRESS}"),
     [STRINGID_METEORBEAMCHARGING] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} is overflowing with space power!"),
     [STRINGID_PKMNINSNAPTRAP] = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} got trapped by a snap trap!"),
     [STRINGID_NEUTRALIZINGGASENTERS] = COMPOUND_STRING("Neutralizing gas filled the area!"),
@@ -237,12 +223,12 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_PKMNSXHADNOEFFECTONY] = COMPOUND_STRING("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY} had no effect on {B_EFF_NAME_WITH_PREFIX}!"),
     [STRINGID_QUESTIONFORFEITMATCH] = COMPOUND_STRING("Would you like to forfeit the match and quit now?"),
     [STRINGID_PKMNTWISTEDDIMENSIONS] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} twisted the dimensions!"),
-    [STRINGID_POINTEDSTONESFLOAT] = sText_PointedStonesFloat,
-    [STRINGID_TRAPPEDBYSWIRLINGMAGMA] = sText_TrappedBySwirlingMagma,
-    [STRINGID_VANISHEDINSTANTLY] = sText_VanishedInstantly,
-    [STRINGID_PROTECTEDTEAM] = sText_ProtectedTeam,
-    [STRINGID_SWAPSDEFANDSPDEFOFALLPOKEMON] = sText_SwapsDefAndSpDefOfAllPkmn,
-    [STRINGID_HELDITEMSLOSEEFFECTS] = sText_HeldItemsLoseEffects,
+    [STRINGID_POINTEDSTONESFLOAT] = COMPOUND_STRING("Pointed stones float in the air around {B_DEF_TEAM2} team!"),
+    [STRINGID_TRAPPEDBYSWIRLINGMAGMA] = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} became trapped by swirling magma!"),
+    [STRINGID_VANISHEDINSTANTLY] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} vanished instantly!"),
+    [STRINGID_PROTECTEDTEAM] = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} protected its team!"),
+    [STRINGID_SWAPSDEFANDSPDEFOFALLPOKEMON] = COMPOUND_STRING("All Pokémon's Defense and Sp. Def stats were swapped!"),
+    [STRINGID_HELDITEMSLOSEEFFECTS] = COMPOUND_STRING("The held items lost their effects!"),
     [STRINGID_ELECTROMAGNETISM] = COMPOUND_STRING("electromagnetism"),
     [STRINGID_BUFFERENDS] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1} wore off!"),
     [STRINGID_TRICKROOMENDS] = COMPOUND_STRING("The twisted dimensions returned to normal!"),
@@ -252,15 +238,11 @@ const u8 *const gBattleStringsTable[NUMERO_TEXTOS_COMBATE] =
     [STRINGID_FOREWARNACTIVATES] = COMPOUND_STRING("{B_SCR_ACTIVE_ABILITY} alerted {B_SCR_ACTIVE_NAME_WITH_PREFIX} to {B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}!"),
     [STRINGID_UNNERVEENTERS] = COMPOUND_STRING("The opposing team is too nervous to eat Berries!"),
     [STRINGID_STEALTHROCKDMG] = COMPOUND_STRING("Pointed stones dug into {B_SCR_ACTIVE_NAME_WITH_PREFIX}!"),
-    [STRINGID_HEALINGWISHCAMETRUE] = COMPOUND_STRING("The healing wish came true for {B_ATK_NAME_WITH_PREFIX}!"),
-    [STRINGID_LUNARDANCECAMETRUE] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} became cloaked in mystical moonlight!"),
     [STRINGID_ASSAULTVESTDOESNTALLOW] = COMPOUND_STRING("{B_LAST_ITEM} impide el uso de ataques de estado."),
     [STRINGID_GRAVITYPREVENTSUSAGE] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} can't use {B_CURRENT_MOVE} because of gravity!"),
     [STRINGID_HEALBLOCKPREVENTSUSAGE] = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} was prevented from healing!"),
-    [STRINGID_SPIKESDISAPPEAREDFROMTEAM] = COMPOUND_STRING("The spikes disappeared from the ground around {B_ATK_TEAM2} team!"),
-    [STRINGID_SHARPSTEELDISAPPEAREDFROMTEAM] = sText_SharpSteelDisappearedFromTeam,
-    [STRINGID_DRASTICALLY] = sText_drastically,
-    [STRINGID_SEVERELY] = sText_severely,
+    [STRINGID_DRASTICALLY] = COMPOUND_STRING("drastically "),
+    [STRINGID_SEVERELY] = COMPOUND_STRING("severely "),
     [STRINGID_INFESTATION] = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} has been afflicted with an infestation by {B_ATK_NAME_WITH_PREFIX}!"),
     [STRINGID_GENERADOR] = COMPOUND_STRING("¡{B_SCR_ACTIVE_NAME_WITH_PREFIX} genera energía y potencia ataques eléctricos de su equipo!"),
     [STRINGID_SCREENCLEANERENTERS] = COMPOUND_STRING("All screens on the field were cleansed!"),
@@ -274,11 +256,6 @@ const u32 gMentalHerbCureStringIds[] =
     [B_MSG_MENTALHERBCURE_TORMENT]     = STRINGID_TORMENTEDNOMORE,
     [B_MSG_MENTALHERBCURE_HEALBLOCK]   = STRINGID_HEALBLOCKEDNOMORE,
     [B_MSG_MENTALHERBCURE_DISABLE]     = STRINGID_PKMNMOVEDISABLEDNOMORE,
-};
-
-const u32 gHealingWishStringIds[] =
-{
-    STRINGID_HEALINGWISHCAMETRUE, STRINGID_LUNARDANCECAMETRUE
 };
 
 #define B_MSG_PKMNHURTBYSPIKES   0
@@ -606,11 +583,6 @@ const u32 gStatusConditionsStringIds[] =
     STRINGID_PKMNWASPOISONED, STRINGID_PKMNBADLYPOISONED, STRINGID_PKMNWASBURNED, STRINGID_PKMNWASPARALYZED, STRINGID_PKMNFELLASLEEP
 };
 
-const u32 gStatus2StringIds[] =
-{
-    STRINGID_PKMNWASCONFUSED, STRINGID_PKMNFELLINLOVE, STRINGID_TARGETCANTESCAPENOW, STRINGID_PKMNSUBJECTEDTOTORMENT
-};
-
 const u8 gText_PkmnIsEvolving[] = _("What? {VAR_TEXTO_1} is evolving!");
 const u8 gText_CongratsPkmnEvolved[] = _("Congratulations! Your {VAR_TEXTO_1} evolved into {VAR_TEXTO_2}!{WAIT_SE}");
 const u8 gText_PkmnStoppedEvolving[] = _("Huh? {VAR_TEXTO_1} stopped evolving!");
@@ -625,8 +597,6 @@ const u8 gText_Ice[] = _("ice");
 const u8 gText_Confusion[] = _("confusion");
 const u8 gText_Love[] = _("love");
 const u8 gText_Are[] = _("are");
-const u8 gText_Are2[] = _("are");
-const u8 gText_BattleWallyName[] = _("WALLY");
 const u8 gText_Win[] = _("{HIGHLIGHT TRANSPARENT}Win");
 const u8 gText_Loss[] = _("{HIGHLIGHT TRANSPARENT}Loss");
 const u8 gText_Draw[] = _("{HIGHLIGHT TRANSPARENT}Draw");

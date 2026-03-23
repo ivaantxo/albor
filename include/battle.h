@@ -519,8 +519,6 @@ struct Combate
     u8 effectsBeforeUsingMoveDone:1; // Mega Evo and Focus Punch/Shell Trap effects.
     u8 targetsDone[NUMERO_COMBATIENTES]; // Each battler as a bit.
     u16 overwrittenAbilities[NUMERO_COMBATIENTES];    // abilities overwritten during battle (keep separate from battle history in case of switching)
-    u8 storedHealingWish:4; // Each battler as a bit.
-    u8 storedLunarDance:4; // Each battler as a bit.
     u8 itemPartyIndex[NUMERO_COMBATIENTES];
     u8 itemMoveIndex[NUMERO_COMBATIENTES];
     u8 trainerSlideFirstCriticalHitMsgState:2;

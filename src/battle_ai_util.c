@@ -2567,8 +2567,7 @@ bool32 ShouldPoisonSelf(u32 battler, u32 ability)
       || ability == ABILITY_MAGIC_GUARD
       || (ability == ABILITY_TOXIC_BOOST && HasMoveWithCategory(battler, CATEGORIA_FISICA))
       || (ability == ABILITY_AGALLAS)
-      || HasMoveEffect(battler, EFFECT_FACADE)
-      || HasMoveEffect(battler, EFFECT_PSYCHO_SHIFT)))
+      || HasMoveEffect(battler, EFFECT_FACADE)))
         return TRUE;    // battler can be poisoned and has move/ability that synergizes with being poisoned
     return FALSE;
 }
@@ -2628,8 +2627,7 @@ bool32 ShouldBurnSelf(u32 battler, u32 ability)
       || ability == ABILITY_MAGIC_GUARD
       || (ability == ABILITY_FLARE_BOOST && HasMoveWithCategory(battler, CATEGORIA_ESPECIAL))
       || (ability == ABILITY_AGALLAS)
-      || HasMoveEffect(battler, EFFECT_FACADE)
-      || HasMoveEffect(battler, EFFECT_PSYCHO_SHIFT)))
+      || HasMoveEffect(battler, EFFECT_FACADE)))
         return TRUE;
     return FALSE;
 }

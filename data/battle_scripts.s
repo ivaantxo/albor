@@ -687,31 +687,6 @@ BattleScript_EffectPowerTrick::
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectPsychoShift::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	jumpifstatus BS_ATTACKER, STATUS1_ANY, BattleScript_EffectPsychoShiftCanWork
-	goto BattleScript_ButItFailed
-
-BattleScript_EffectPsychoShiftCanWork:
-	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
-	jumpifsafeguard BattleScript_SafeguardProtected
-	trypsychoshift BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	copybyte gEffectBattler, gBattlerTarget
-	printfromtable gStatusConditionsStringIds
-	waitmessage PAUSA_LARGA
-	statusanimation BS_TARGET
-	updatestatusicon BS_TARGET
-	curestatus BS_ATTACKER
-	printstring ("{B_ATK_NAME_WITH_PREFIX}'s status returned to normal!")
-	waitmessage PAUSA_LARGA
-	updatestatusicon BS_ATTACKER
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectSynchronoise::
 	attackcanceler
 	attackstring
@@ -1328,61 +1303,6 @@ BattleScript_EffectLuckyChant::
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectHealingWish::
-	attackcanceler
-	jumpifcantswitch SWITCH_IGNORE_ESCAPE_PREVENTION | BS_ATTACKER, BattleScript_FailedFromAtkString
-	attackstring
-	ppreduce
-	attackanimation
-	waitanimation
-	instanthpdrop BS_ATTACKER
-	setatkhptozero
-	tryfaintmon BS_ATTACKER
-	storehealingwish BS_ATTACKER
-.if B_HEALING_WISH_SWITCH <= GEN_4
-	openpartyscreen BS_ATTACKER, BattleScript_EffectHealingWishEnd
-	switchoutabilities BS_ATTACKER
-	waitstate
-	switchhandleorder BS_ATTACKER, 2
-	returnatktoball
-	getswitchedmondata BS_ATTACKER
-	switchindataupdate BS_ATTACKER
-	hpthresholds BS_ATTACKER
-	printstring STRINGID_SWITCHINMON
-	switchinanim BS_ATTACKER, TRUE
-	waitstate
-	switchineffects BS_ATTACKER
-.endif
-
-BattleScript_EffectHealingWishEnd:
-	moveendall
-	end
-
-BattleScript_HealingWishActivates::
-	setword gMensajeBatalla, 0
-	goto BattleScript_EffectHealingWishRestore
-
-BattleScript_LunarDanceActivates::
-	setword gMensajeBatalla, 1
-	restorepp BS_ATTACKER
-
-BattleScript_EffectHealingWishRestore:
-	printfromtable gHealingWishStringIds
-	waitmessage PAUSA_LARGA
-	playanimation BS_ATTACKER, B_ANIM_WISH_HEAL
-	waitanimation
-	dmgtomaxattackerhp
-	manipulatedamage DMG_CHANGE_SIGN
-	healthbarupdate BS_ATTACKER
-	datahpupdate BS_ATTACKER
-	clearstatus BS_ATTACKER
-	waitstate
-	updatestatusicon BS_ATTACKER
-	waitstate
-	printstring ("{B_ATK_NAME_WITH_PREFIX} regained health!")
-	waitmessage PAUSA_LARGA
-	return
-
 BattleScript_EffectPowerSplit::
 	attackcanceler
 	attackstring
@@ -1633,7 +1553,7 @@ BattleScript_TryTailwindAbilitiesLoop_WindRider:
 BattleScript_TryTailwindAbilitiesLoop_WindPower:
 	call BattleScript_AbilityPopUp
 	setcharge BS_TARGET
-	printstring STRINGID_BEINGHITCHARGEDPKMNWITHPOWER
+	printstring ("Being hit by {B_CURRENT_MOVE} charged {B_DEF_NAME_WITH_PREFIX} with power!")
 	waitmessage PAUSA_LARGA
 	goto BattleScript_TryTailwindAbilitiesLoop_Increment
 
@@ -1739,9 +1659,6 @@ BattleScript_HitFromCritCalc::
 
 BattleScript_HitFromAtkAnimation::
 	call BattleScript_Hit_RetFromAtkAnimation
-
-BattleScript_TryFaintMon::
-	tryfaintmon BS_TARGET
 
 BattleScript_MoveEnd::
 	moveendall
@@ -4022,7 +3939,7 @@ BattleScript_LocalBattleLostEnd::
 	printstring ("{B_PLAYER_NAME} is out of usable POKéMON! Player lost against {B_TRAINER_CLASS} {B_TRAINER_NAME}!{PAUSE_UNTIL_PRESS}")
 	waitmessage PAUSA_LARGA
 	getmoneyreward
-	printstring STRINGID_PLAYERPAIDPRIZEMONEY
+	printstring ("{B_PLAYER_NAME} paid ¥{B_BUFF1} as the prize money… … … … {B_PLAYER_NAME} whited out!{PAUSE_UNTIL_PRESS}")
 	waitmessage PAUSA_LARGA
 	end2
 
@@ -4035,8 +3952,6 @@ BattleScript_LocalBattleLostPrintTrainersWinText::
 	trainerslidein BS_OPPONENT
 	waitstate
 	printstring ("{B_TRAINER_WIN_TEXT}")
-	goto BattleScript_LocalBattleLostEnd_
-BattleScript_LocalBattleLostEnd_::
 	end2
 
 BattleScript_GotAwaySafely::
@@ -4570,18 +4485,24 @@ BattleScript_AngerShellActivates::
 	jumpifstat BS_TARGET, COMPARACION_MENOR, ESTADISTICA_VELOCIDAD, ESTADISTICA_MAS_6, BattleScript_AngerShellTryDef
 	jumpifstat BS_TARGET, COMPARACION_MAYOR, ESTADISTICA_DEFENSA, ESTADISTICA_MENOS_6, BattleScript_AngerShellTryDef
 	jumpifstat BS_TARGET, COMPARACION_IGUAL, ESTADISTICA_DEFENSA_ESPECIAL, ESTADISTICA_MENOS_6, BattleScript_RestoreAttackerButItFailed
+
 BattleScript_AngerShellTryDef::
 	setbyte sSTAT_ANIM_PLAYED, FALSE
 	modifybattlerstatstage BS_ATTACKER, ESTADISTICA_DEFENSA, DECREASE, 1, BattleScript_AngerShellTrySpDef, ANIM_ON
+
 BattleScript_AngerShellTrySpDef:
 	modifybattlerstatstage BS_ATTACKER, ESTADISTICA_DEFENSA_ESPECIAL, DECREASE, 1, BattleScript_AngerShellTryAttack, ANIM_ON
+
 BattleScript_AngerShellTryAttack:
 	setbyte sSTAT_ANIM_PLAYED, FALSE
 	modifybattlerstatstage BS_ATTACKER, ESTADISTICA_ATAQUE, INCREASE, 1, BattleScript_AngerShellTrySpAtk, ANIM_ON
+
 BattleScript_AngerShellTrySpAtk:
+
 	modifybattlerstatstage BS_ATTACKER, ESTADISTICA_ATAQUE_ESPECIAL, INCREASE, 1, BattleScript_AngerShellTrySpeed, ANIM_ON
 BattleScript_AngerShellTrySpeed:
 	modifybattlerstatstage BS_ATTACKER, ESTADISTICA_VELOCIDAD, INCREASE, 1, BattleScript_AngerShellRet, ANIM_ON
+
 BattleScript_AngerShellRet:
 	restoreattacker
 	return
@@ -4589,7 +4510,7 @@ BattleScript_AngerShellRet:
 BattleScript_WindPowerActivates::
 	call BattleScript_AbilityPopUp
 	setcharge BS_TARGET
-	printstring STRINGID_BEINGHITCHARGEDPKMNWITHPOWER
+	printstring ("Being hit by {B_CURRENT_MOVE} charged {B_DEF_NAME_WITH_PREFIX} with power!")
 	waitmessage PAUSA_LARGA
 	return
 
@@ -4707,7 +4628,7 @@ BattleScript_StealthRockFree::
 	return
 
 BattleScript_SpikesDefog::
-	printstring STRINGID_SPIKESDISAPPEAREDFROMTEAM
+	printstring ("The spikes disappeared from the ground around {B_ATK_TEAM2} team!")
 	waitmessage PAUSA_LARGA
 	return
 

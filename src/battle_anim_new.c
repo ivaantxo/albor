@@ -3902,8 +3902,8 @@ const struct SpriteTemplate gSpriteTemplate_WildboltStormSpark = {
     .callback = AnimParticleInVortex
 };
 
-// lunar blessing/dance
-const struct SpriteTemplate gSpriteTemplate_LunarDanceRing = {
+// lunar blessing
+const struct SpriteTemplate gSpriteTemplate_LunarRing = {
     .tileTag = ANIM_TAG_GUARD_RING,
     .paletteTag = ANIM_TAG_SMALL_EMBER,
     .oam = &gOamData_AffineDouble_ObjBlend_64x32,

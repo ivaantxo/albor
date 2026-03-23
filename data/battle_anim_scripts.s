@@ -153,26 +153,6 @@ gBattleAnimMove_GyroBall::
 	waitforvisualfinish
 	end
 
-gBattleAnimMove_HealingWish::
-	loadspritegfx ANIM_TAG_GREEN_SPARKLE
-	setalpha 0, 16
-	createvisualtask AnimTask_AlphaFadeIn, 3, 0, 16, 16, 0, 1
-	playsewithpan SE_M_MOONLIGHT, 0
-	delay 30
-	createsprite gMoonlightSparkleSpriteTemplate, ANIM_ATTACKER, 40, -12, 0
-	delay 30
-	createsprite gMoonlightSparkleSpriteTemplate, ANIM_ATTACKER, 40, -24, 0
-	delay 30
-	createsprite gMoonlightSparkleSpriteTemplate, ANIM_ATTACKER, 40, 21, 0
-	delay 30
-	createsprite gMoonlightSparkleSpriteTemplate, ANIM_ATTACKER, 40, 0, 0
-	delay 30
-	createsprite gMoonlightSparkleSpriteTemplate, ANIM_ATTACKER, 40, 10, 0
-	delay 20
-	createvisualtask AnimTask_MoonlightEndFade, 2
-	waitforvisualfinish
-	end
-
 gBattleAnimMove_Brine::
 	loadspritegfx ANIM_TAG_GLOWY_BLUE_ORB
 	loadspritegfx ANIM_TAG_WATER_IMPACT
@@ -435,32 +415,6 @@ EmbargoOrbs1:
 	createsprite gPowerOrbs_Float, ANIM_ATTACKER, 2, 0, -15, 0, 80, 0
 	delay 12
 	return
-
-gBattleAnimMove_PsychoShift::
-	loadspritegfx ANIM_TAG_ELECTRIC_ORBS
-	loadspritegfx ANIM_TAG_HOLLOW_ORB
-	loadspritegfx ANIM_TAG_CIRCLE_OF_LIGHT
-	loadspritegfx ANIM_TAG_THIN_RING
-	monbg ANIM_ATTACKER
-	setalpha 12, 8
-	playsewithpan SE_M_MEGA_KICK, -64
-	createsprite gDragonDanceOrbSpriteTemplate, ANIM_ATTACKER, 2, 0
-	delay 30
-	waitforvisualfinish
-	createsprite gThinRingShrinkingSpriteTemplate, ANIM_ATTACKER, 40, 0, 0, 1, 0
-	playsewithpan SE_M_SUPERSONIC, -64
-	delay 14
-	createsprite gThinRingShrinkingSpriteTemplate, ANIM_ATTACKER, 40, 0, 0, 1, 0
-	playsewithpan SE_M_SUPERSONIC, -64
-	delay 14
-	createsprite gThinRingShrinkingSpriteTemplate, ANIM_ATTACKER, 40, 0, 0, 1, 0
-	playsewithpan SE_M_SUPERSONIC, -64
-	waitforvisualfinish
-	clearmonbg ANIM_ATK_PARTNER
-	end
-	clearmonbg ANIM_ATTACKER
-	blendoff
-	end
 
 gBattleAnimMove_TrumpCard::
 	loadspritegfx ANIM_TAG_TRUMP_CARD
@@ -3469,47 +3423,6 @@ gBattleAnimMove_SpacialRend::
 	createvisualtask AnimTask_BlendBattleAnimPal, 10, 1, 1, 0, 0, 0
 	clearmonbg ANIM_ATK_PARTNER
 	blendoff
-	end
-
-gBattleAnimMove_LunarDance::
-	loadspritegfx ANIM_TAG_MOON
-	loadspritegfx ANIM_TAG_GREEN_SPARKLE
-	loadspritegfx ANIM_TAG_HOLLOW_ORB
-	setalpha 0, 16
-	createsprite gSimplePaletteBlendSpriteTemplate, 2, 5, 1, 1, 0, 16, 0
-	waitforvisualfinish
-	createsprite gMoonSpriteTemplate, 2, 2, 120, 56
-	createvisualtask AnimTask_AlphaFadeIn, 3, 5, 0, 16, 16, 0, 1
-	playsewithpan 211, 0
-	delay 30
-	createsprite gMoonlightSparkleSpriteTemplate, 40, 2, -12, 0
-	delay 30
-	createsprite gMoonlightSparkleSpriteTemplate, 40, 2, -18, 0
-	delay 30
-	createsprite gMoonlightSparkleSpriteTemplate, 40, 2, 21, 0
-	delay 30
-	createsprite gMoonlightSparkleSpriteTemplate, 40, 2, 0, 0
-	delay 30
-	createsprite gMoonlightSparkleSpriteTemplate, 40, 2, 10, 0
-	delay 20
-	createvisualtask AnimTask_MoonlightEndFade, 2, 0
-	createvisualtask AnimTask_DragonDanceWaver, 5, 0
-	playsewithpan 203, SOUND_PAN_ATTACKER
-	delay 8
-	createvisualtask AnimTask_BlendPalInAndOutByTag, 5, 5, ANIM_TAG_HOLLOW_ORB, RGB(0, 0, 19), 14, 0, 3
-	createsprite gDragonDanceOrbSpriteTemplate, 2, 1, 0
-	createsprite gDragonDanceOrbSpriteTemplate, 2, 1, 43
-	createsprite gDragonDanceOrbSpriteTemplate, 2, 1, 85
-	createsprite gDragonDanceOrbSpriteTemplate, 2, 1, 128
-	createsprite gDragonDanceOrbSpriteTemplate, 2, 1, 170
-	createsprite gDragonDanceOrbSpriteTemplate, 2, 1, 213
-	delay 30
-	playsewithpan 203, SOUND_PAN_ATTACKER
-	delay 30
-	playsewithpan 203, SOUND_PAN_ATTACKER
-	waitforvisualfinish
-	clearmonbg ANIM_ATTACKER
-	delay 1
 	end
 
 gBattleAnimMove_CrushGrip::
@@ -12953,11 +12866,11 @@ gBattleAnimMove_LunarBlessing::
 	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_ATTACKER, 0x7, 0x0, 0x10, 0x0
 	loopsewithpan SE_M_HEAL_BELL, SOUND_PAN_ATTACKER, 0x10, 0x3
 	call HealingEffect2
-	createsprite gSpriteTemplate_LunarDanceRing, ANIM_ATTACKER, 2,
+	createsprite gSpriteTemplate_LunarRing, ANIM_ATTACKER, 2,
 	delay 0x4
-	createsprite gSpriteTemplate_LunarDanceRing, ANIM_ATTACKER, 2,
+	createsprite gSpriteTemplate_LunarRing, ANIM_ATTACKER, 2,
 	delay 0x4
-	createsprite gSpriteTemplate_LunarDanceRing, ANIM_ATTACKER, 2,
+	createsprite gSpriteTemplate_LunarRing, ANIM_ATTACKER, 2,
 	delay 0x24
 	clearmonbg ANIM_ATK_PARTNER
 	call HealingEffect
