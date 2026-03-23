@@ -1146,10 +1146,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
               || PartnerHasSameMoveEffectWithoutTarget(ALIADO(battlerAtk), move, aiData->partnerMove))
                 ADJUST_SCORE(-10);
             break;
-        case EFFECT_FOCUS_ENERGY:
-            if (gBattleMons[battlerAtk].status2 & STATUS2_FOCUS_ENERGY)
-                ADJUST_SCORE(-10);
-            break;
         case EFFECT_CONFUSE:
         case EFFECT_SWAGGER:
         case EFFECT_FLATTER:
@@ -1471,7 +1467,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                 ADJUST_SCORE(-10);
             break;
         case EFFECT_COPYCAT:
-        case EFFECT_MIRROR_MOVE:
             return AI_CheckBadMove(battlerAtk, battlerDef, predictedMove, score);
         case EFFECT_AROMATIC_MIST:
             if (!isDoubleBattle || gBattleMons[ALIADO(battlerAtk)].hp == 0 || !BattlerStatCanRise(ALIADO(battlerAtk), aiData->abilities[ALIADO(battlerAtk)], ESTADISTICA_DEFENSA_ESPECIAL))
@@ -2468,7 +2463,6 @@ static bool32 IsPinchBerryItemEffect(u32 holdEffect)
     case HOLD_EFFECT_SPEED_UP:
     case HOLD_EFFECT_SP_ATTACK_UP:
     case HOLD_EFFECT_SP_DEFENSE_UP:
-    case HOLD_EFFECT_CRITICAL_UP:
     case HOLD_EFFECT_RANDOM_STAT_UP:
     case HOLD_EFFECT_CUSTAP_BERRY:
     case HOLD_EFFECT_MICLE_BERRY:
@@ -2649,10 +2643,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
             if (aiData->hpPercents[battlerAtk] < 50 && AI_RandLessThan(128))
                 ADJUST_SCORE(DECENT_EFFECT);
         }
-        break;
-    case EFFECT_MIRROR_MOVE:
-        if (predictedMove != MOVE_NONE)
-            return AI_CheckViability(battlerAtk, battlerDef, predictedMove, score);
         break;
     case EFFECT_ATTACK_UP:
     case EFFECT_ATTACK_UP_USER_ALLY:
@@ -2889,7 +2879,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         if (ShouldTrap(battlerAtk, battlerDef, move))
             ADJUST_SCORE(GOOD_EFFECT);
         break;
-    case EFFECT_FOCUS_ENERGY:
     case EFFECT_LASER_FOCUS:
         if (aiData->abilities[battlerAtk] == ABILITY_SUPER_LUCK
           || aiData->abilities[battlerAtk] == ABILITY_DISPARO_CERTERO
@@ -3956,7 +3945,6 @@ static s32 AI_ForceSetupFirstTurn(u32 battlerAtk, u32 battlerDef, u32 move, s32 
     case EFFECT_EVASION_DOWN:
     case EFFECT_CONVERSION:
     case EFFECT_LIGHT_SCREEN:
-    case EFFECT_FOCUS_ENERGY:
     case EFFECT_CONFUSE:
     case EFFECT_ATTACK_UP_2:
     case EFFECT_DEFENSE_UP_2:
@@ -4242,7 +4230,6 @@ static s32 AI_HPAware(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             case EFFECT_LIGHT_SCREEN:
             case EFFECT_REFLECT:
             case EFFECT_MIST:
-            case EFFECT_FOCUS_ENERGY:
             case EFFECT_CONVERSION_2:
             case EFFECT_SAFEGUARD:
             case EFFECT_BELLY_DRUM:
@@ -4265,7 +4252,6 @@ static s32 AI_HPAware(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             case EFFECT_REFLECT:
             case EFFECT_LIGHT_SCREEN:
             case EFFECT_MIST:
-            case EFFECT_FOCUS_ENERGY:
             case EFFECT_RAGE:
             case EFFECT_CONVERSION_2:
             case EFFECT_LOCK_ON:
@@ -4320,7 +4306,6 @@ static s32 AI_HPAware(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             case EFFECT_ACCURACY_DOWN:
             case EFFECT_EVASION_DOWN:
             case EFFECT_MIST:
-            case EFFECT_FOCUS_ENERGY:
             case EFFECT_ATTACK_UP_2:
             case EFFECT_DEFENSE_UP_2:
             case EFFECT_SPEED_UP_2:

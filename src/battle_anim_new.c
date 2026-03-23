@@ -1405,62 +1405,6 @@ const struct SpriteTemplate gOblivionWingBeamTemplate =
     .callback = TranslateAnimSpriteToTargetMonLocation
 };
 
-//thousand waves
-const struct SpriteTemplate gThousandWavesGreenWaveTemplate =
-{
-    .tileTag = ANIM_TAG_FLYING_DIRT,
-    .paletteTag = ANIM_TAG_LEAF,
-    .oam = &gOamData_AffineOff_ObjNormal_32x16,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimFlyingSandCrescent
-};
-
-const struct SpriteTemplate gThousandWavesGreenRecoverTemplate =
-{
-    .tileTag = ANIM_TAG_ZYGARDE_HEXES,
-    .paletteTag = ANIM_TAG_ZYGARDE_HEXES,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = gRazorLeafParticleAnimTable,
-    .images = NULL,
-    .affineAnims = gPowerAbsorptionOrbAffineAnimTable,
-    .callback = AnimPowerAbsorptionOrb
-};
-
-const struct SpriteTemplate gThousandWavesGreenWheelTemplate =
-{
-    .tileTag = ANIM_TAG_ZYGARDE_HEXES,
-    .paletteTag = ANIM_TAG_ZYGARDE_HEXES,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = gRazorLeafParticleAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimDragonDanceOrb
-};
-
-const struct SpriteTemplate gThousandWavesRotatingImpactTemplate =
-{
-    .tileTag = ANIM_TAG_ZYGARDE_HEXES,
-    .paletteTag = ANIM_TAG_ZYGARDE_HEXES,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = gRazorLeafParticleAnimTable,
-    .images = NULL,
-    .affineAnims = gAffineAnims_Whirlpool,
-    .callback = AnimParticleInVortex
-};
-
-const struct SpriteTemplate gThousandWavesPoundImpactTemplate =
-{
-    .tileTag = ANIM_TAG_IMPACT,
-    .paletteTag = ANIM_TAG_LEAF,
-    .oam = &gOamData_AffineNormal_ObjBlend_32x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gAffineAnims_HitSplat,
-    .callback = AnimHitSplatOnMonEdge
-};
-
 //lands wrath
 const struct SpriteTemplate gLandsWrathVortexTemplate =
 {
@@ -4075,16 +4019,6 @@ const struct SpriteTemplate gContinentalCrushBigRockStompSpriteTemplate =
     .affineAnims = sSpriteAffineAnimTable_LargeHailRock,
     .callback = SpriteCB_FallingObject
 };
-const struct SpriteTemplate gContinentalCrushFocusEnergySpriteTemplate =
-{
-    .tileTag = ANIM_TAG_FOCUS_ENERGY,
-    .paletteTag = ANIM_TAG_ROCKS,
-    .oam = &gOamData_AffineOff_ObjNormal_16x32,
-    .anims = gEndureEnergyAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimEndureEnergy
-};
 const struct SpriteTemplate gContinentalCrushGrowingRockSpriteTemplate =
 {
     .tileTag = ANIM_TAG_REALLY_BIG_ROCK,
@@ -4151,78 +4085,6 @@ const struct SpriteTemplate gSavageSpinOutWhiteExplosionSpriteTemplate =
 {
     .tileTag = ANIM_TAG_EXPLOSION_2,
     .paletteTag = ANIM_TAG_AIR_WAVE_2,
-    .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gExplosionAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimSpriteOnMonPos
-};
-
-// never ending nightmare
-const struct SpriteTemplate gNeverEndingNightmareRingAttackerSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_THIN_RING,
-    .paletteTag = ANIM_TAG_POISON_BUBBLE,
-    .oam = &gOamData_AffineDouble_ObjNormal_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gThinRingExpandingAffineAnimTable,
-    .callback = AnimSpriteOnMonPos
-};
-const struct SpriteTemplate gNeverEndingNightmareRingTargetSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_THIN_RING,
-    .paletteTag = ANIM_TAG_POISON_BUBBLE,
-    .oam = &gOamData_AffineDouble_ObjBlend_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gThinRingShrinkingAffineAnimTable,
-    .callback = AnimSpriteOnMonPos
-};
-const struct SpriteTemplate gNeverEndingNightmareFocusEnergySpriteTemplate =
-{
-    .tileTag = ANIM_TAG_FOCUS_ENERGY,
-    .paletteTag = ANIM_TAG_POISON_BUBBLE,
-    .oam = &gOamData_AffineOff_ObjNormal_16x32,
-    .anims = gEndureEnergyAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimEndureEnergy
-};
-const struct SpriteTemplate gNeverEndingNightmareHandSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_ASSURANCE_HAND,
-    .paletteTag = ANIM_TAG_ASSURANCE_HAND,
-    .oam = &gOamData_AffineNormal_ObjNormal_32x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimNeedleArmSpike
-};
-const struct SpriteTemplate gNeverEndingNightmareBlastBurnSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_FIRE_PLUME,
-    .paletteTag = ANIM_TAG_POISON_BUBBLE,
-    .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gAnims_FirePlume,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimBlastBurnTargetPlume
-};
-const struct SpriteTemplate gNeverEndingNightmareGeyserHexSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_VERTICAL_HEX,
-    .paletteTag = ANIM_TAG_VERTICAL_HEX,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = gRazorLeafParticleAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_GeyserTarget
-};
-const struct SpriteTemplate gNeverEndingNightmareExplosionSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_EXPLOSION_2,
-    .paletteTag = ANIM_TAG_VERTICAL_HEX,
     .oam = &gOamData_AffineOff_ObjNormal_32x32,
     .anims = gExplosionAnimTable,
     .images = NULL,

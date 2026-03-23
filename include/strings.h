@@ -875,10 +875,6 @@ extern const u8 gText_Refrigerator[];
 extern const u8 gText_ElectricFan[];
 extern const u8 gText_LawnMower[];
 
-// Zygarde Cube text
-extern const u8 gText_ChangeForm[];
-extern const u8 gText_ChangeAbility[];
-
 // PC strings
 extern const u8 gText_YourPartysFull[];
 

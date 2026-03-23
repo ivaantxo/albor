@@ -708,7 +708,6 @@ enum Items
     ITEM_GRACIDEA,
     ITEM_REVEAL_GLASS,
     ITEM_DNA_SPLICERS,
-    ITEM_ZYGARDE_CUBE,
     ITEM_PRISON_BOTTLE,
     ITEM_REINS_OF_UNITY,
 
@@ -908,7 +907,6 @@ enum Items
 #define EFFECT_ITEM_HEAL_AND_CURE_STATUS    3
 #define EFFECT_ITEM_INCREASE_STAT           4
 #define EFFECT_ITEM_SET_MIST                5
-#define EFFECT_ITEM_SET_FOCUS_ENERGY        6
 #define EFFECT_ITEM_ESCAPE                  7
 #define EFFECT_ITEM_THROW_BALL              8
 #define EFFECT_ITEM_REVIVE                  9

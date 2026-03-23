@@ -1166,7 +1166,7 @@ AI: Basic Trainer
 Vigoroth
 Level: 26
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Focus Energy
+- Destructor
 - Slash
 
 === TRAINER_BRAXTON ===
@@ -1181,7 +1181,7 @@ AI: Basic Trainer
 Swellow
 Level: 28
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-- Focus Energy
+- Destructor
 - Quick Attack
 - Wing Attack
 
@@ -4615,7 +4615,7 @@ Swablu
 Level: 29
 IVs: 25 HP / 25 Atk / 25 Def / 25 SpA / 25 SpD / 25 Spe
 - Perish Song
-- Mirror Move
+- Destructor
 - Safeguard
 - Aerial Ace
 
@@ -4989,7 +4989,7 @@ Makuhita
 Level: 17
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 - Tackle
-- Focus Energy
+- Destructor
 - Arm Thrust
 
 === TRAINER_ANNA_AND_MEG_2 ===
@@ -5012,7 +5012,7 @@ Makuhita
 Level: 30
 IVs: 1 HP / 1 Atk / 1 Def / 1 SpA / 1 SpD / 1 Spe
 - Tackle
-- Focus Energy
+- Destructor
 - Arm Thrust
 
 === TRAINER_ANNA_AND_MEG_3 ===
@@ -5035,7 +5035,7 @@ Makuhita
 Level: 33
 IVs: 2 HP / 2 Atk / 2 Def / 2 SpA / 2 SpD / 2 Spe
 - Tackle
-- Focus Energy
+- Destructor
 - Arm Thrust
 
 === TRAINER_ANNA_AND_MEG_4 ===
@@ -5058,7 +5058,7 @@ Makuhita
 Level: 36
 IVs: 3 HP / 3 Atk / 3 Def / 3 SpA / 3 SpD / 3 Spe
 - Tackle
-- Focus Energy
+- Destructor
 - Arm Thrust
 
 === TRAINER_ANNA_AND_MEG_5 ===
@@ -5081,7 +5081,7 @@ Hariyama
 Level: 38
 IVs: 4 HP / 4 Atk / 4 Def / 4 SpA / 4 SpD / 4 Spe
 - Tackle
-- Focus Energy
+- Destructor
 - Arm Thrust
 
 === TRAINER_VICTOR ===
@@ -5603,7 +5603,7 @@ IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
 - Amnesia
 - Sludge
 - Yawn
-- Pound
+- Destructor
 
 === TRAINER_QUINCY ===
 Name: QUINCY
@@ -6786,7 +6786,7 @@ Level: 34
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Dragon Breath
 - Headbutt
-- Focus Energy
+- Destructor
 - Ascuas
 
 === TRAINER_PERRY ===
@@ -8302,7 +8302,7 @@ IVs: 3 HP / 3 Atk / 3 Def / 3 SpA / 3 SpD / 3 Spe
 - Spark
 - Charge
 - Fake Tears
-- Pound
+- Destructor
 
 Mew
 Level: 33
@@ -8310,7 +8310,7 @@ IVs: 3 HP / 3 Atk / 3 Def / 3 SpA / 3 SpD / 3 Spe
 - Spark
 - Charge
 - Charm
-- Pound
+- Destructor
 
 === TRAINER_AMY_AND_LIV_6 ===
 Name: AMY & LIV
@@ -8326,7 +8326,7 @@ IVs: 4 HP / 4 Atk / 4 Def / 4 SpA / 4 SpD / 4 Spe
 - Thunder
 - Charge
 - Fake Tears
-- Pound
+- Destructor
 
 Mew
 Level: 36
@@ -8334,7 +8334,7 @@ IVs: 4 HP / 4 Atk / 4 Def / 4 SpA / 4 SpD / 4 Spe
 - Thunder
 - Charge
 - Charm
-- Pound
+- Destructor
 
 === TRAINER_HUEY ===
 Name: HUEY
@@ -13905,7 +13905,7 @@ AI: Basic Trainer
 Growlithe
 Level: 41
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Pound
+- Destructor
 - Lanzallamas
 - Roar
 - Sunny Day
@@ -13962,7 +13962,7 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Growlithe
 Level: 46
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Pound
+- Destructor
 - Lanzallamas
 - Sunny Day
 - Roar
@@ -14011,7 +14011,7 @@ AI: Basic Trainer
 Arcanine
 Level: 51
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Pound
+- Destructor
 - Lanzallamas
 - Sunny Day
 - Roar
@@ -14127,7 +14127,7 @@ Level: 45
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Sorpresa
 - Dizzy Punch
-- Pound
+- Destructor
 - Reversal
 
 Mew
@@ -14176,7 +14176,7 @@ Level: 50
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Sorpresa
 - Dizzy Punch
-- Pound
+- Destructor
 - Reversal
 
 Mew
@@ -14225,7 +14225,7 @@ Level: 55
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Sorpresa
 - Dizzy Punch
-- Pound
+- Destructor
 - Reversal
 
 Tauros
@@ -14467,7 +14467,7 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Altaria @ Chesto Berry
 Level: 60
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Pound
+- Destructor
 - Rest
 - Dragon Dance
 - Earthquake

@@ -53,7 +53,6 @@ enum TextosCombate
     STRINGID_PKMNWRAPPEDBY,//printfromtable
     STRINGID_PKMNCLAMPED,//printfromtable
     STRINGID_PKMNSHROUDEDINMIST, //printstring + printfromtable
-    STRINGID_PKMNGETTINGPUMPED,//printstring + printfromtable
     STRINGID_PKMNBUFFETEDBYSANDSTORM,//printstring + printfromtable
     STRINGID_PKMNPELTEDBYHAIL,//printstring + printfromtable
     STRINGID_PKMNSEEDED,//printstring + printfromtable
@@ -192,7 +191,6 @@ enum TextosCombate
     STRINGID_STUFFCHEEKSCANTSELECT, //printselectionstring
     STRINGID_ABILITYALLOWSONLYMOVE, //printselectionstring
     STRINGID_NEUTRALIZINGGASENTERS, //printfromtable
-    STRINGID_PKMNINSNAPTRAP, //printfromtable
     STRINGID_METEORBEAMCHARGING, //two_turn_arg
 
     NUMERO_TEXTOS_COMBATE,
@@ -298,10 +296,6 @@ enum TextosCombate
 #define B_MSG_SET_MIST    0
 #define B_MSG_MIST_FAILED 1
 
-// gFocusEnergyUsedStringIds
-#define B_MSG_GETTING_PUMPED      0
-#define B_MSG_FOCUS_ENERGY_FAILED 1
-
 // gTransformUsedStringIds
 #define B_MSG_TRANSFORMED      0
 #define B_MSG_TRANSFORM_FAILED 1
@@ -370,8 +364,7 @@ enum TextosCombate
 #define B_MSG_WRAPPED_SAND_TOMB    5
 #define B_MSG_WRAPPED_MAGMA_STORM  6
 #define B_MSG_WRAPPED_INFESTATION  7
-#define B_MSG_WRAPPED_SNAP_TRAP    8
-#define B_MSG_WRAPPED_THUNDER_CAGE 9
-#define NUM_TRAPPING_MOVES         10
+#define B_MSG_WRAPPED_THUNDER_CAGE 8
+#define NUM_TRAPPING_MOVES         9
 
 #endif // GUARD_CONSTANTS_BATTLE_STRING_IDS_H

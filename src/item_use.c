@@ -1047,10 +1047,6 @@ bool32 CannotUseItemsInBattle(u16 itemId, struct Pokemon *mon)
         if (gBattleMons[gBattlerInMenuId].statStages[ItemId_GetEffect(itemId)[1]] == ESTADISTICA_MAS_6)
             cannotUse = TRUE;
         break;
-    case EFFECT_ITEM_SET_FOCUS_ENERGY:
-        if (gBattleMons[gBattlerInMenuId].status2 & STATUS2_FOCUS_ENERGY)
-            cannotUse = TRUE;
-        break;
     case EFFECT_ITEM_SET_MIST:
         if (gSideStatuses[GetBattlerSide(gBattlerInMenuId)] & SIDE_STATUS_MIST)
             cannotUse = TRUE;
@@ -1170,21 +1166,6 @@ void ItemUseOutOfBattle_RotomCatalog(u8 taskId)
     if (!gTasks[taskId].tUsingRegisteredKeyItem)
     {
         gItemUseCB = ItemUseCB_RotomCatalog;
-        gTasks[taskId].data[0] = TRUE;
-        SetUpItemUseOnFieldCallback(taskId);
-    }
-    else
-    {
-        // TODO: handle key items with callbacks to menus allow to be used by registering them.
-        DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem);
-    }
-}
-
-void ItemUseOutOfBattle_ZygardeCube(u8 taskId)
-{
-    if (!gTasks[taskId].tUsingRegisteredKeyItem)
-    {
-        gItemUseCB = ItemUseCB_ZygardeCube;
         gTasks[taskId].data[0] = TRUE;
         SetUpItemUseOnFieldCallback(taskId);
     }

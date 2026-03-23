@@ -323,7 +323,6 @@ struct MoveInfo
 
     // Ban flags
     u32 gravityBanned:1;
-    u32 mirrorMoveBanned:1;
     u32 mimicBanned:1;
     u32 copycatBanned:1;
     u32 assistBanned:1; // Matches same moves as copycatBanned + semi-invulnerable moves and Mirror Coat.

@@ -2689,9 +2689,6 @@ void AnimTask_GetTrappedMoveAnimId(u8 taskId)
     case MOVE_INFESTATION:
         gBattleAnimArgs[0] = TRAP_ANIM_INFESTATION;
         break;
-    case MOVE_SNAP_TRAP:
-        gBattleAnimArgs[0] = TRAP_ANIM_SNAP_TRAP;
-        break;
     case MOVE_THUNDER_CAGE:
         gBattleAnimArgs[0] = TRAP_ANIM_THUNDER_CAGE;
         break;

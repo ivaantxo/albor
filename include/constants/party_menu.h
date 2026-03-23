@@ -97,6 +97,5 @@ enum PartyMenuTypes
 #define SELECTWINDOW_MAIL        2
 #define SELECTWINDOW_MOVES       3
 #define SELECTWINDOW_CATALOG     4
-#define SELECTWINDOW_ZYGARDECUBE 5
 
 #endif // GUARD_CONSTANTS_PARTY_MENU_H

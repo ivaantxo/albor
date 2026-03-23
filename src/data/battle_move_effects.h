@@ -30,11 +30,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_MIRROR_MOVE] =
-    {
-        .battleScript = BattleScript_EffectMirrorMove,
-    },
-
     [EFFECT_ATTACK_UP] =
     {
         .battleScript = BattleScript_EffectAttackUp,
@@ -182,12 +177,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_MIST] =
     {
         .battleScript = BattleScript_EffectMist,
-        .encourageEncore = TRUE,
-    },
-
-    [EFFECT_FOCUS_ENERGY] =
-    {
-        .battleScript = BattleScript_EffectFocusEnergy,
         .encourageEncore = TRUE,
     },
 

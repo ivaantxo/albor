@@ -62,8 +62,8 @@ static const struct LevelUpMove sKakunaLevelUpLearnset[] = {
     LEVEL_UP_END
 };
 
-static const struct LevelUpMove sBeedrillLevelUpLearnset[] = { //AÑADIR ATAQUES MULTIHIT PARA ENJAMBRE
-    LEVEL_UP_MOVE( 1, MOVE_POUND), //MOVE_COLMENA
+static const struct LevelUpMove sBeedrillLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_COLMENA),
     LEVEL_UP_MOVE( 1, MOVE_PAYBACK), //POR HABILIDAD AGRESIVIDAD
     LEVEL_UP_END
 };

@@ -2298,7 +2298,7 @@ const struct Item gItemsInfo[] =
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .battleUsage = EFFECT_ITEM_SET_FOCUS_ENERGY,
+        .battleUsage = EFFECT_ITEM_SET_MIST,
         .effect = gItemEffect_DireHit,
         .iconPic = gItemIcon_BattleStatItem,
         .iconPalette = gItemIconPalette_DireHit,
@@ -9093,7 +9093,7 @@ const struct Item gItemsInfo[] =
         .name = _("Lansat Berry"),
         .pluralName = _("Lansat Berries"),
         .price = (I_BERRY_PRICE >= GEN_8) ? 80 : 20,
-        .holdEffect = HOLD_EFFECT_CRITICAL_UP,
+        .holdEffect = HOLD_EFFECT_NONE,
         .holdEffectParam = 4,
         .description = COMPOUND_STRING(
             "A hold item that\n"
@@ -10805,22 +10805,6 @@ const struct Item gItemsInfo[] =
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
         .iconPic = gItemIcon_DNASplicers,
         .iconPalette = gItemIconPalette_DNASplicers,
-    },
-
-    [ITEM_ZYGARDE_CUBE] =
-    {
-        .name = _("Zygarde Cube"),
-        .price = 0,
-        .importance = 1,
-        .description = COMPOUND_STRING(
-            "An item to store\n"
-            "Zygarde Cores and\n"
-            "Cells."),
-        .pocket = POCKET_KEY_ITEMS,
-        .type = ITEM_USE_PARTY_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_ZygardeCube,
-        .iconPic = gItemIcon_ZygardeCube,
-        .iconPalette = gItemIconPalette_ZygardeCube,
     },
 
     [ITEM_PRISON_BOTTLE] =

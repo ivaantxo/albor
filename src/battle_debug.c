@@ -150,7 +150,6 @@ enum
     LIST_STATUS2_ESCAPE_PREVENTION,
     LIST_STATUS2_CURSED,
     LIST_STATUS2_FORESIGHT,
-    LIST_STATUS2_FOCUS_ENERGY
 };
 
 enum
@@ -287,8 +286,6 @@ static const u8 sText_DestinyBond[] = _("Destiny Bond");
 static const u8 sText_EscapePrevention[] = _("Escape Prevention");
 static const u8 sText_Cursed[] = _("Cursed");
 static const u8 sText_Foresight[] = _("Foresight");
-static const u8 sText_DragonCheer[] = _("Dragon Cheer");
-static const u8 sText_FocusEnergy[] = _("Focus Energy");
 static const u8 sText_LeechSeedHealer[] = _("Leech Seed Healer");
 static const u8 sText_LeechSeeded[] = _("Leech Seeded");
 static const u8 sText_AlwaysHits[] = _("Always Hits");
@@ -371,8 +368,6 @@ static const struct BitfieldInfo sStatus2Bitfield[] =
     {/*Escape Prevention*/ 1, 26},
     {/*Cursed*/ 1, 28},
     {/*Foresight*/ 1, 29},
-    {/*Dragon Cheer*/ 1, 30},
-    {/*Focus Energy*/ 1, 31},
 };
 
 static const struct BitfieldInfo sStatus3Bitfield[] =
@@ -482,7 +477,6 @@ static const struct ListMenuItem sStatus2ListItems[] =
     {sText_EscapePrevention, LIST_STATUS2_ESCAPE_PREVENTION},
     {sText_Cursed, LIST_STATUS2_CURSED},
     {sText_Foresight, LIST_STATUS2_FORESIGHT},
-    {sText_FocusEnergy, LIST_STATUS2_FOCUS_ENERGY},
 };
 
 static const struct ListMenuItem sStatus3ListItems[] =
@@ -2152,7 +2146,6 @@ static const u8 sText_HoldEffectDefenseUp[] = _("Defense Up");
 static const u8 sText_HoldEffectSpeedUp[] = _("Speed Up");
 static const u8 sText_HoldEffectSpAttackUp[] = _("Sp Attack Up");
 static const u8 sText_HoldEffectSpDefenseUp[] = _("Sp Defense Up");
-static const u8 sText_HoldEffectCriticalUp[] = _("Critical Up");
 static const u8 sText_HoldEffectRandomStatUp[] = _("Random Stat Up");
 static const u8 sText_HoldEffectEvasionUp[] = _("Evasion Up");
 static const u8 sText_HoldEffectRestoreStats[] = _("Restore Stats");
@@ -2295,7 +2288,6 @@ static const u8 *const sHoldEffectNames[] =
     [HOLD_EFFECT_SPEED_UP] = sText_HoldEffectSpeedUp,
     [HOLD_EFFECT_SP_ATTACK_UP] = sText_HoldEffectSpAttackUp,
     [HOLD_EFFECT_SP_DEFENSE_UP] = sText_HoldEffectSpDefenseUp,
-    [HOLD_EFFECT_CRITICAL_UP] = sText_HoldEffectCriticalUp,
     [HOLD_EFFECT_RANDOM_STAT_UP] = sText_HoldEffectRandomStatUp,
     [HOLD_EFFECT_EVASION_UP] = sText_HoldEffectEvasionUp,
     [HOLD_EFFECT_RESTORE_STATS] = sText_HoldEffectRestoreStats,

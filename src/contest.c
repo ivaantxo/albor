@@ -885,8 +885,6 @@ static const struct WindowTemplate sContestWindowTemplates[] =
     DUMMY_WIN_TEMPLATE
 };
 
-#include "data/contest_opponents.h"
-
 static const struct CompressedSpriteSheet sSpriteSheets_ContestantsTurnBlinkEffect[CONTESTANT_COUNT] =
 {
     {
@@ -2474,60 +2472,7 @@ void CreateContestMonFromParty(u8 partyIndex)
 
 void SetContestants(u8 contestType, u8 rank)
 {
-    s32 i;
-    u8 opponentsCount = 0;
-    u8 opponents[100];
-    bool8 allowPostgameContestants = FALSE;
-    const u8 *filter;
 
-    TryPutPlayerLast();
-
-    if (FlagGet(FLAG_SYS_GAME_CLEAR))
-        allowPostgameContestants = TRUE;
-
-    // Find all suitable opponents
-    filter = gPostgameContestOpponentFilter;
-    for (i = 0; i < ARRAY_COUNT(gContestOpponents); i++)
-    {
-        if (rank == gContestOpponents[i].whichRank)
-        {
-            if (allowPostgameContestants == TRUE)
-            {
-                if (filter[i] == CONTEST_FILTER_NO_POSTGAME)
-                    continue;
-            }
-            else
-            {
-                if (filter[i] == CONTEST_FILTER_ONLY_POSTGAME)
-                    continue;
-            }
-            if      (contestType == CONTEST_CATEGORY_COOL && gContestOpponents[i].aiPool_Cool)
-                opponents[opponentsCount++] = i;
-            else if (contestType == CONTEST_CATEGORY_BEAUTY && gContestOpponents[i].aiPool_Beauty)
-                opponents[opponentsCount++] = i;
-            else if (contestType == CONTEST_CATEGORY_CUTE && gContestOpponents[i].aiPool_Cute)
-                opponents[opponentsCount++] = i;
-            else if (contestType == CONTEST_CATEGORY_SMART && gContestOpponents[i].aiPool_Smart)
-                opponents[opponentsCount++] = i;
-            else if (contestType == CONTEST_CATEGORY_TOUGH && gContestOpponents[i].aiPool_Tough)
-                opponents[opponentsCount++] = i;
-        }
-    }
-    opponents[opponentsCount] = CONTESTANT_NONE;
-
-    // Choose three random opponents from the list
-    for (i = 0; i < CONTESTANT_COUNT - 1; i++)
-    {
-        u16 rnd = Random() % opponentsCount;
-        s32 j;
-
-        gContestMons[i] = gContestOpponents[opponents[rnd]];
-        for (j = rnd; opponents[j] != CONTESTANT_NONE; j++)
-            opponents[j] = opponents[j + 1];
-        opponentsCount--;
-    }
-
-    CreateContestMonFromParty(gContestMonPartyIndex);
 }
 
 u8 GetContestEntryEligibility(struct Pokemon *pkmn)
@@ -4417,8 +4362,6 @@ static void Task_WaitForSliderHeartAnim(u8 taskId)
 
 static u16 SanitizeMove(u16 move)
 {
-    if (move >= NUMERO_MOVIMIENTOS)
-        move = MOVE_POUND;
     return move;
 }
 
@@ -4724,10 +4667,7 @@ u8 GetContestWinnerSaveIdx(u8 rank, bool8 shift)
 
 void ClearContestWinnerPicsInContestHall(void)
 {
-    s32 i;
 
-    for (i = 0; i < MUSEUM_CONTEST_WINNERS_START; i++)
-        gSaveBlockPtr->contestWinners[i] = gDefaultContestWinners[i];
 }
 
 #define APPEAL_MOVES_END 0xFFFF

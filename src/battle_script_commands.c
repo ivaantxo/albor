@@ -290,7 +290,6 @@ static const u16 sTrappingMoves[NUM_TRAPPING_MOVES] =
     MOVE_SAND_TOMB,
     MOVE_MAGMA_STORM,
     MOVE_INFESTATION,
-    MOVE_SNAP_TRAP,
     MOVE_THUNDER_CAGE
 };
 
@@ -448,7 +447,6 @@ static void Cmd_tryexplosion(void);
 static void Cmd_setatkhptozero(void);
 static void Cmd_jumpifnexttargetvalid(void);
 static void Cmd_tryhealhalfhealth(void);
-static void Cmd_trymirrormove(void);
 static void Cmd_setfieldweather(void);
 static void Cmd_setreflect(void);
 static void Cmd_setseeded(void);
@@ -471,7 +469,6 @@ static void Cmd_damagetohalftargethp(void);
 static void Cmd_tryinfatuating(void);
 static void Cmd_updatestatusicon(void);
 static void Cmd_setmist(void);
-static void Cmd_setfocusenergy(void);
 static void Cmd_transformdataexecution(void);
 static void Cmd_setsubstitute(void);
 static void Cmd_mimicattackcopy(void);
@@ -682,7 +679,6 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     BATTLE_CMD(setatkhptozero),
     BATTLE_CMD(jumpifnexttargetvalid),
     BATTLE_CMD(tryhealhalfhealth),
-    BATTLE_CMD(trymirrormove),
     BATTLE_CMD(setfieldweather),
     BATTLE_CMD(setreflect),
     BATTLE_CMD(setseeded),
@@ -705,7 +701,6 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     BATTLE_CMD(tryinfatuating),
     BATTLE_CMD(updatestatusicon),
     BATTLE_CMD(setmist),
-    BATTLE_CMD(setfocusenergy),
     BATTLE_CMD(transformdataexecution),
     BATTLE_CMD(setsubstitute),
     BATTLE_CMD(mimicattackcopy),
@@ -1519,14 +1514,13 @@ s32 CalcCritChanceStageArgs(u32 battlerAtk, u32 battlerDef, u32 move, bool32 rec
     }
     else
     {
-        critChance  = 2 * ((gBattleMons[battlerAtk].status2 & STATUS2_FOCUS_ENERGY) != 0)
-                    + gMovesInfo[move].criticalHitStage
+        critChance  = gMovesInfo[move].criticalHitStage
                     + (holdEffectAtk == HOLD_EFFECT_SCOPE_LENS)
                     + 2 * (abilityAtk == ABILITY_SUPER_LUCK)
                     + 2 * (abilityAtk == ABILITY_DISPARO_CERTERO);
 
         if (gMovesInfo[gCurrentMove].soundMove && (abilityAtk == ABILITY_PERCUSIONISTA))
-        critChance = +1;
+        critChance = +1; // REVISAR
     
         if (critChance >= ARRAY_COUNT(sPosibilidadesGolpeCritico))
             critChance = ARRAY_COUNT(sPosibilidadesGolpeCritico) - 1;
@@ -4741,19 +4735,6 @@ static void Cmd_moveend(void)
                 {
                     gLastLandedMoves[gBattlerTarget] = MOVE_NONE;
                 }
-            }
-            gBattleScripting.moveendState++;
-            break;
-        case MOVEEND_MIRROR_MOVE: // mirror move
-            if (!(gAbsentBattlerFlags & (1u << gBattlerAttacker))
-                && !(gBattleStruct->absentBattlerFlags & (1u << gBattlerAttacker))
-                && !gMovesInfo[originallyUsedMove].mirrorMoveBanned
-                && gBattlerAttacker != gBattlerTarget
-                && !(gHitMarker & HITMARKER_FAINTED(gBattlerTarget))
-                && MovimientoEsEfectivo(gCombate->resultadoMovimiento))
-            {
-                gBattleStruct->lastTakenMove[gBattlerTarget] = gChosenMove;
-                gBattleStruct->lastTakenMoveFrom[gBattlerTarget][gBattlerAttacker] = gChosenMove;
             }
             gBattleScripting.moveendState++;
             break;
@@ -8441,51 +8422,6 @@ static void Cmd_tryhealhalfhealth(void)
         gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
-static void SetMoveForMirrorMove(u32 move)
-{
-    gHitMarker &= ~HITMARKER_ATTACKSTRING_PRINTED;
-    gCurrentMove = move;
-    SetAtkCancellerForCalledMove();
-    gBattlerTarget = GetMoveTarget(gCurrentMove, NO_TARGET_OVERRIDE);
-    gBattlescriptCurrInstr = GET_MOVE_BATTLESCRIPT(gCurrentMove);
-}
-
-static void Cmd_trymirrormove(void)
-{
-    CMD_ARGS();
-
-    s32 i, validMovesCount;
-    u16 move;
-    u16 validMoves[NUMERO_COMBATIENTES] = {0};
-
-    for (validMovesCount = 0, i = 0; i < gBattlersCount; i++)
-    {
-        if (i != gBattlerAttacker)
-        {
-            move = gBattleStruct->lastTakenMoveFrom[gBattlerAttacker][i];
-            if (move != MOVE_NONE)
-            {
-                validMoves[validMovesCount] = move;
-                validMovesCount++;
-            }
-        }
-    }
-
-    move = gBattleStruct->lastTakenMove[gBattlerAttacker];
-    if (move != MOVE_NONE)
-    {
-        SetMoveForMirrorMove(move);
-    }
-    else if (validMovesCount != 0)
-    {
-        SetMoveForMirrorMove(validMoves[Random() % validMovesCount]);
-    }
-    else // no valid moves found
-    {
-        gBattlescriptCurrInstr = cmd->nextInstr;
-    }
-}
-
 static void Cmd_setfieldweather(void)
 {
     CMD_ARGS(u8 weather);
@@ -9503,24 +9439,6 @@ static void Cmd_setmist(void)
         gSideTimers[GetBattlerSide(gBattlerAttacker)].mistBattlerId = gBattlerAttacker;
         gSideStatuses[GetBattlerSide(gBattlerAttacker)] |= SIDE_STATUS_MIST;
         gMensajeBatalla = B_MSG_SET_MIST;
-    }
-    gBattlescriptCurrInstr = cmd->nextInstr;
-}
-
-static void Cmd_setfocusenergy(void)
-{
-    CMD_ARGS(u8 battler);
-    u8 battler = GetBattlerForBattleScript(cmd->battler);
-
-    if ((gAbsentBattlerFlags & (1u << battler)) || gBattleMons[battler].status2 & STATUS2_FOCUS_ENERGY)
-    {
-        gMoveResultFlags |= MOVE_RESULT_FAILED;
-        gMensajeBatalla = B_MSG_FOCUS_ENERGY_FAILED;
-    }
-    else
-    {
-        gBattleMons[battler].status2 |= STATUS2_FOCUS_ENERGY;
-        gMensajeBatalla = B_MSG_GETTING_PUMPED;
     }
     gBattlescriptCurrInstr = cmd->nextInstr;
 }

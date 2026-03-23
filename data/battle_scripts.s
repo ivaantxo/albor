@@ -1854,17 +1854,6 @@ BattleScript_DreamEaterTryFaintEnd:
 	tryfaintmon BS_TARGET
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectMirrorMove::
-	attackcanceler
-	attackstring
-	pause PAUSA_LARGA
-	trymirrormove
-	ppreduce
-	orhalfword gMoveResultFlags, MOVE_RESULT_FAILED
-	printstring ("The Mirror Move failed!")
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectAttackUp::
 	setstatchanger ESTADISTICA_ATAQUE, 1, FALSE
 	goto BattleScript_EffectStatUp
@@ -2204,18 +2193,6 @@ BattleScript_EffectMist::
 	attackanimation
 	waitanimation
 	printfromtable gMistUsedStringIds
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectFocusEnergy::
-	attackcanceler
-	attackstring
-	ppreduce
-	jumpifstatus2 BS_ATTACKER, STATUS2_FOCUS_ENERGY, BattleScript_ButItFailed
-	setfocusenergy BS_TARGET
-	attackanimation
-	waitanimation
-	printfromtable gFocusEnergyUsedStringIds
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -3979,14 +3956,17 @@ BattleScript_ActionSwitch::
 	jumpifbattletype COMBATE_ENTRENADOR, BattleScript_PursuitSwitchDmgSetMultihit
 	setmultihit 1
 	goto BattleScript_PursuitSwitchDmgLoop
+
 BattleScript_PursuitSwitchDmgSetMultihit::
 	setmultihit 2
+
 BattleScript_PursuitSwitchDmgLoop::
 	jumpifnopursuitswitchdmg BattleScript_DoSwitchOut
 	swapattackerwithtarget
 	trysetdestinybondtohappen
 	call BattleScript_PursuitDmgOnSwitchOut
 	swapattackerwithtarget
+
 BattleScript_DoSwitchOut::
 	decrementmultihit BattleScript_PursuitSwitchDmgLoop
 	switchoutabilities BS_ATTACKER
@@ -4005,7 +3985,6 @@ BattleScript_DoSwitchOut::
 	waitstate
 	switchineffects BS_ATTACKER
 	moveendcase MOVEEND_STATUS_IMMUNITY_ABILITIES
-	moveendcase MOVEEND_MIRROR_MOVE
 	end2
 
 BattleScript_PursuitDmgOnSwitchOut::
@@ -6600,17 +6579,6 @@ BattleScript_BerryStatRaiseRet_Anim:
 
 BattleScript_BerryStatRaiseRet_End:
 	return
-
-BattleScript_BerryFocusEnergyRet::
-	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT
-	printstring STRINGID_PKMNUSEDXTOGETPUMPED
-	waitmessage PAUSA_LARGA
-	removeitem BS_SCRIPTING
-	return
-
-BattleScript_BerryFocusEnergyEnd2::
-	call BattleScript_BerryFocusEnergyRet
-	end2
 
 BattleScript_ActionSelectionItemsCantBeUsed::
 	printselectionstring STRINGID_ITEMSCANTBEUSEDNOW

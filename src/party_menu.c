@@ -104,7 +104,6 @@ enum {
     ACTIONS_REGISTER,
     ACTIONS_TAKEITEM_TOSS,
     ACTIONS_ROTOM_CATALOG,
-    ACTIONS_ZYGARDE_CUBE,
 };
 
 // In CursorCb_FieldMove, field moves <= FIELD_MOVE_WATERFALL are assumed to line up with the badge flags.
@@ -2172,9 +2171,6 @@ static u8 DisplaySelectionWindow(u8 windowType)
         break;
     case SELECTWINDOW_CATALOG:
         window = sCatalogSelectWindowTemplate;
-        break;
-    case SELECTWINDOW_ZYGARDECUBE:
-        window = sZygardeCubeSelectWindowTemplate;
         break;
     default: // SELECTWINDOW_MOVES
         window = sMoveSelectWindowTemplate;
@@ -5104,16 +5100,6 @@ static void CursorCb_CatalogMower(u8 taskId)
     gSpecialVar_Result = 5;
     gSpecialVar_0x8000 = ROTOM_MOW_MOVE;
     TryMultichoiceFormChange(taskId);
-}
-
-void ItemUseCB_ZygardeCube(u8 taskId, TaskFunc task)
-{
-    PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[0]);
-    PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[1]);
-    SetPartyMonSelectionActions(gPlayerParty, gPartyMenu.slotId, ACTIONS_ZYGARDE_CUBE);
-    DisplaySelectionWindow(SELECTWINDOW_ZYGARDECUBE);
-    gTasks[taskId].data[0] = 0xFF;
-    gTasks[taskId].func = Task_HandleSelectionMenuInput;
 }
 
 static void CursorCb_ChangeForm(u8 taskId)

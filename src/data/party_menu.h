@@ -519,17 +519,6 @@ static const struct WindowTemplate sCatalogSelectWindowTemplate =
     .baseBlock = 0x2E9,
 };
 
-static const struct WindowTemplate sZygardeCubeSelectWindowTemplate =
-{
-    .bg = FONDO_2,
-    .tilemapLeft = 18,
-    .tilemapTop = 13,
-    .width = 11,
-    .height = 6,
-    .paletteNum = 14,
-    .baseBlock = 0x2E9,
-};
-
 static const struct WindowTemplate sPartyMenuYesNoWindowTemplate =
 {
     .bg = FONDO_2,
@@ -677,9 +666,6 @@ static const u8 sPartyMenuAction_GiveTakeItemCancel[] = {MENU_GIVE, MENU_TAKE_IT
 static const u8 sPartyMenuAction_RegisterSummaryCancel[] = {MENU_REGISTER, MENU_SUMMARY, MENU_CANCEL1};
 static const u8 sPartyMenuAction_TakeItemTossCancel[] = {MENU_TAKE_ITEM, MENU_TOSS, MENU_CANCEL1};
 static const u8 sPartyMenuAction_RotomCatalog[] = {MENU_CATALOG_BULB, MENU_CATALOG_OVEN, MENU_CATALOG_WASHING, MENU_CATALOG_FRIDGE, MENU_CATALOG_FAN, MENU_CATALOG_MOWER, MENU_CANCEL1};
-static const u8 sPartyMenuAction_ZygardeCube[] = {MENU_CHANGE_FORM, MENU_CHANGE_ABILITY, MENU_CANCEL1};
-
-
 
 static const u8 *const sPartyMenuActions[] =
 {
@@ -693,7 +679,6 @@ static const u8 *const sPartyMenuActions[] =
     [ACTIONS_REGISTER]      = sPartyMenuAction_RegisterSummaryCancel,
     [ACTIONS_TAKEITEM_TOSS] = sPartyMenuAction_TakeItemTossCancel,
     [ACTIONS_ROTOM_CATALOG] = sPartyMenuAction_RotomCatalog,
-    [ACTIONS_ZYGARDE_CUBE]  = sPartyMenuAction_ZygardeCube,
 };
 
 static const u8 sPartyMenuActionCounts[] =
@@ -708,7 +693,6 @@ static const u8 sPartyMenuActionCounts[] =
     [ACTIONS_REGISTER]      = ARRAY_COUNT(sPartyMenuAction_RegisterSummaryCancel),
     [ACTIONS_TAKEITEM_TOSS] = ARRAY_COUNT(sPartyMenuAction_TakeItemTossCancel),
     [ACTIONS_ROTOM_CATALOG] = ARRAY_COUNT(sPartyMenuAction_RotomCatalog),
-    [ACTIONS_ZYGARDE_CUBE]  = ARRAY_COUNT(sPartyMenuAction_ZygardeCube),
 };
 
 static const u16 sFieldMoves[FIELD_NUMERO_MOVIMIENTOS + 1] =

@@ -225,7 +225,6 @@ enum MoveEndEffects
     MOVEEND_NUM_HITS,
     MOVEEND_SUBSTITUTE,
     MOVEEND_UPDATE_LAST_MOVES,
-    MOVEEND_MIRROR_MOVE,
     MOVEEND_NEXT_TARGET, // Everything up until here is handled for each strike of a multi-hit move
     MOVEEND_MULTIHIT_MOVE,
     MOVEEND_RECOIL,
@@ -370,7 +369,6 @@ enum BattleScriptCommands
     BATTLE_CMD_setatkhptozero,
     BATTLE_CMD_jumpifnexttargetvalid,
     BATTLE_CMD_tryhealhalfhealth,
-    BATTLE_CMD_trymirrormove,
     BATTLE_CMD_setfieldweather,
     BATTLE_CMD_setreflect,
     BATTLE_CMD_setseeded,
@@ -393,7 +391,6 @@ enum BattleScriptCommands
     BATTLE_CMD_tryinfatuating,
     BATTLE_CMD_updatestatusicon,
     BATTLE_CMD_setmist,
-    BATTLE_CMD_setfocusenergy,
     BATTLE_CMD_transformdataexecution,
     BATTLE_CMD_setsubstitute,
     BATTLE_CMD_mimicattackcopy,

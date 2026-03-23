@@ -126,7 +126,6 @@ Es un hackrom en castellano que está en desarrollo, que usa la pokeemerald-expa
 
 ## Cambios a Pokémon:
     *Se han cambiado las paletas shiny de muchos Pokémon.
-    *Cosmog y Cosmoem ahora evolucionan a Lunatone y Solrock.
     *Los stats de los Pokémon siguen un sistema por escalones, donde cada escalón tiene un stat asignado para el ataque que no se usa (No en el caso de atacantes mixtos):
         - 480 -> 40
         - 500 -> 45

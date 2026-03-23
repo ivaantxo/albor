@@ -1620,9 +1620,6 @@ const u32 gItemIconPalette_RevealGlass[] = INCBIN_U32("graphics/items/icon_palet
 const u32 gItemIcon_DNASplicers[] = INCBIN_U32("graphics/items/icons/dna_splicers.4bpp.lz");
 const u32 gItemIconPalette_DNASplicers[] = INCBIN_U32("graphics/items/icon_palettes/dna_splicers.gbapal.lz");
 
-const u32 gItemIcon_ZygardeCube[] = INCBIN_U32("graphics/items/icons/zygarde_cube.4bpp.lz");
-const u32 gItemIconPalette_ZygardeCube[] = INCBIN_U32("graphics/items/icon_palettes/zygarde_cube.gbapal.lz");
-
 const u32 gItemIcon_PrisonBottle[] = INCBIN_U32("graphics/items/icons/prison_bottle.4bpp.lz");
 const u32 gItemIconPalette_PrisonBottle[] = INCBIN_U32("graphics/items/icon_palettes/prison_bottle.gbapal.lz");
 

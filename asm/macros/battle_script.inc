@@ -688,10 +688,6 @@
 	.byte \battler
 	.endm
 
-	.macro trymirrormove
-	.byte BATTLE_CMD_trymirrormove
-	.endm
-
 	.macro setfieldweather weather:req
 	.byte BATTLE_CMD_setfieldweather
 	.byte \weather
@@ -793,11 +789,6 @@
 
 	.macro setmist
 	.byte BATTLE_CMD_setmist
-	.endm
-
-	.macro setfocusenergy battler:req
-	.byte BATTLE_CMD_setfocusenergy
-	.byte \battler
 	.endm
 
 	.macro transformdataexecution
