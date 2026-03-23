@@ -1366,7 +1366,8 @@ bool32 ShouldSetSun(u32 battlerAtk, u32 atkAbility, u32 holdEffect)
       || atkAbility == ABILITY_PODER_SOLAR
       || atkAbility == ABILITY_HARVEST
       || atkAbility == ABILITY_FOTOSINTESIS
-      || HasMoveEffect(battlerAtk, EFFECT_SOLAR_BEAM)
+      || HasMove(battlerAtk, MOVE_SOLAR_BEAM)
+      || HasMove(battlerAtk, MOVE_SOLAR_BLADE)
       || HasMoveEffect(battlerAtk, EFFECT_MORNING_SUN)
       || HasMoveEffect(battlerAtk, EFFECT_SYNTHESIS)
       || HasMoveEffect(battlerAtk, EFFECT_MOONLIGHT)
@@ -2119,7 +2120,6 @@ bool32 IsTwoTurnNotSemiInvulnerableMove(u32 battlerAtk, u32 move)
 {
     switch (gMovesInfo[move].effect)
     {
-    case EFFECT_SOLAR_BEAM:
     case EFFECT_TWO_TURNS_ATTACK:
         return !(AI_DATA->holdEffects[battlerAtk] == HOLD_EFFECT_POWER_HERB
           || (AI_GetWeather(AI_DATA) & gMovesInfo[move].argument));

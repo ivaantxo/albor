@@ -7601,59 +7601,6 @@ SteamEruptionBreath:
 	delay 0x1
 	return
 
-gBattleAnimMove_HyperspaceHole::
-	loadspritegfx ANIM_TAG_IMPACT @Hits
-	loadspritegfx ANIM_TAG_WHITE_SHADOW @Destiny Bond
-	loadspritegfx ANIM_TAG_QUICK_GUARD_HAND @Black Colour
-	loadspritegfx ANIM_TAG_POISON_BUBBLE @Poison Colour
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x0, 0x10, 0x7FFF
-	waitforvisualfinish
-	playsewithpan SE_M_FAINT_ATTACK, SOUND_PAN_ATTACKER
-	invisible ANIM_ATTACKER
-	delay 0x1
-	visible ANIM_ATTACKER
-	delay 0x1
-	invisible ANIM_ATTACKER
-	delay 0x1
-	visible ANIM_ATTACKER
-	delay 0x1
-	invisible ANIM_ATTACKER
-	waitsound
-	createvisualtask AnimTask_DestinyBondWhiteShadow, 0x5, 0x0, 0x30
-	delay 0x17
-	createvisualtask AnimTask_IsTargetSameSide, 0x2
-	createvisualtask AnimTask_SnatchOpposingMonMove, 0x2
-	delay 0x19
-	visible ANIM_ATTACKER
-	invisible ANIM_ATTACKER
-	delay 0x5
-	createsprite gHyperspaceHoleImpactTemplate, ANIM_TARGET, 2, 0xfff6, 0xfff6, 0x0
-	call HyperspaceHoleMovement
-	createsprite gHyperspaceHoleImpactTemplate, ANIM_TARGET, 2, 0xa, 0x14, 0x0
-	call HyperspaceHoleMovement
-	createsprite gHyperspaceHoleImpactTemplate, ANIM_TARGET, 2, 0xfffb, 0xa, 0x0
-	call HyperspaceHoleMovement
-	createsprite gHyperspaceHoleImpactTemplate, ANIM_TARGET, 2, 0x11, 0xfff4, 0x0
-	call HyperspaceHoleMovement
-	waitforvisualfinish
-	visible ANIM_ATTACKER
-	delay 0x1
-	invisible ANIM_ATTACKER
-	delay 0x1
-	visible ANIM_ATTACKER
-	delay 0x1
-	invisible ANIM_ATTACKER
-	delay 0x1
-	visible ANIM_ATTACKER
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x10, 0x0, 0x7FFF
-	waitforvisualfinish
-	end
-HyperspaceHoleMovement:
-	playsewithpan SE_M_DOUBLE_SLAP, SOUND_PAN_TARGET
-	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 3, 0, 15, 1
-	delay 0x4
-	return
-
 gBattleAnimMove_WaterShuriken::
 	loadspritegfx ANIM_TAG_WATER_ORB @blue color
 	loadspritegfx ANIM_TAG_YELLOW_STAR @swift
@@ -8420,92 +8367,6 @@ gBattleAnimMove_DragonAscent::
 	clearmonbg ANIM_DEF_PARTNER
 	call UnsetPsychicBg
 	end
-
-gBattleAnimMove_HyperspaceFury::
-	loadspritegfx ANIM_TAG_HOOPA_HAND @Hoopa Hand
-	loadspritegfx ANIM_TAG_HOOPA_RING @Hoopa Ring
-	loadspritegfx ANIM_TAG_IMPACT
-	loadspritegfx ANIM_TAG_POISON_BUBBLE
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x0, 0xA, 0x0
-	waitforvisualfinish
-	playsewithpan SE_M_NIGHTMARE, SOUND_PAN_ATTACKER
-	createsprite gHyperspaceFuryRingTemplate, ANIM_ATTACKER, 3, 0x0, 0x0, 0x38, 0x0
-	delay 0x5
-	createsprite gHyperspaceFuryRingTemplate, ANIM_ATTACKER, 3, 0x0, 0x0, 0x38, 0x4
-	delay 0x5
-	createsprite gHyperspaceFuryRingTemplate, ANIM_ATTACKER, 3, 0x0, 0x0, 0x38, 0x8
-	delay 0x5
-	createsprite gHyperspaceFuryRingTemplate, ANIM_ATTACKER, 3, 0x0, 0x0, 0x38, 0xc
-	delay 0x5
-	createsprite gHyperspaceFuryRingTemplate, ANIM_ATTACKER, 3, 0x0, 0x0, 0x38, 0x10
-	delay 0x15
-	invisible ANIM_ATTACKER
-	waitforvisualfinish
-	fadetobg BG_HYPERSPACE_FURY
-	waitbgfadeout
-	createvisualtask AnimTask_SetPsychicBackground, 0x5
-	waitbgfadein
-	loopsewithpan SE_M_DOUBLE_SLAP, SOUND_PAN_TARGET, 0x2, 0x10
-	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 0, 3, 32, 1
-	createsprite gHyperspaceFuryHandTemplate, ANIM_TARGET, 2, 0x1, 0x0, 0x0, 0xffe0, 0x10
-	call HyperspaceFuryRandomImpact
-	delay 0x2
-	createsprite gHyperspaceFuryHandTemplate, ANIM_TARGET, 2, 0x1, 0x0, 0x16, 0xffea, 0x10
-	call HyperspaceFuryRandomImpact
-	delay 0x2
-	createsprite gHyperspaceFuryHandTemplate, ANIM_TARGET, 2, 0x1, 0x0, 0x1e, 0x0, 0x10
-	call HyperspaceFuryRandomImpact
-	delay 0x2
-	createvisualtask AnimTask_IsTargetSameSide, 0x2
-	createvisualtask AnimTask_SnatchOpposingMonMove, 0x2
-	createsprite gHyperspaceFuryHandTemplate, ANIM_TARGET, 2, 0x1, 0x0, 0x14, 0x14, 0x10
-	call HyperspaceFuryRandomImpact
-	delay 0x2
-	createsprite gHyperspaceFuryHandTemplate, ANIM_TARGET, 2, 0x1, 0x0, 0x0, 0x1c, 0x10
-	call HyperspaceFuryRandomImpact
-	delay 0x2
-	createsprite gHyperspaceFuryHandTemplate, ANIM_TARGET, 2, 0x1, 0x0, 0xffed, 0x13, 0x10
-	call HyperspaceFuryRandomImpact
-	delay 0x2
-	createsprite gHyperspaceFuryHandTemplate, ANIM_TARGET, 2, 0x1, 0x0, 0xffe5, 0x0, 0x10
-	call HyperspaceFuryRandomImpact
-	delay 0x2
-	createsprite gHyperspaceFuryHandTemplate, ANIM_TARGET, 2, 0x1, 0x0, 0xffee, 0xffee, 0x10
-	call HyperspaceFuryRandomImpact
-	delay 0x2
-	createsprite gHyperspaceFuryHandTemplate, ANIM_TARGET, 2, 0x1, 0x0, 0x0, 0xffe7, 0x10
-	call HyperspaceFuryRandomImpact
-	delay 0x2
-	createsprite gHyperspaceFuryHandTemplate, ANIM_TARGET, 2, 0x1, 0x0, 0x11, 0xffef, 0x10
-	call HyperspaceFuryRandomImpact
-	delay 0x2
-	createsprite gHyperspaceFuryHandTemplate, ANIM_TARGET, 2, 0x1, 0x0, 0x17, 0x0, 0x10
-	call HyperspaceFuryRandomImpact
-	delay 0x2
-	createsprite gHyperspaceFuryHandTemplate, ANIM_TARGET, 2, 0x1, 0x0, 0x10, 0x10, 0x10
-	call HyperspaceFuryRandomImpact
-	delay 0x7
-	createvisualtask SoundTask_PlayDoubleCry, 2, ANIM_ATTACKER, DOUBLE_CRY_GROWL
-	visible ANIM_ATTACKER
-	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 0, 3, 32, 1
-	playsewithpan SE_M_FIRE_PUNCH, SOUND_PAN_TARGET
-	invisible ANIM_ATTACKER
-	call UnsetPsychicBg
-	waitforvisualfinish
-	visible ANIM_ATTACKER
-	delay 0x1
-	invisible ANIM_ATTACKER
-	delay 0x1
-	visible ANIM_ATTACKER
-	delay 0x1
-	invisible ANIM_ATTACKER
-	delay 0x1
-	visible ANIM_ATTACKER
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x0, 0x0, 0x0
-	end
-HyperspaceFuryRandomImpact:
-	createsprite gHyperspaceFuryImpactTemplate, ANIM_TARGET, 3, 0x1, 0x1
-	return
 
 @@@@@@@@@@@@@@@@@@@@@@@ GEN 7 @@@@@@@@@@@@@@@@@@@@@@@
 gBattleAnimMove_ShoreUp::
@@ -10484,91 +10345,6 @@ MindBlownPinkOrbs:
 	createsprite gMindBlownPinkOrbsTemplate, ANIM_TARGET, 2, 0x1, 0x1, 0xFFDA, 0xFF94, 0x8 @between up and upper left
 	return
 
-gBattleAnimMove_PlasmaFists::
-	loadspritegfx ANIM_TAG_SHOCK_3 @charge
-	loadspritegfx ANIM_TAG_SPARK_2 @ElectricityEffect
-	loadspritegfx ANIM_TAG_SPARK @shock wave
-	loadspritegfx ANIM_TAG_IMPACT @thunder punch
-	loadspritegfx ANIM_TAG_HANDS_AND_FEET @thunder punch
-	loadspritegfx ANIM_TAG_LIGHTNING @thunder punch
-	monbg ANIM_ATTACKER
-	setalpha 12, 8
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x0, 0x10, 0x0
-	waitforvisualfinish
-	createsprite gPlasmaFistsChargeTemplate, ANIM_ATTACKER, 2, 0x0
-	createvisualtask AnimTask_ShakeMon, 2, ANIM_ATTACKER, 0, 3, 92, 1
-	call PlasmaFistSpark1
-	delay 0xA
-	call PlasmaFistSpark2
-	delay 0xA
-	call PlasmaFistSpark1
-	delay 0xA
-	call PlasmaFistSpark2
-	delay 0xA
-	call PlasmaFistSpark1
-	delay 0xA
-	call PlasmaFistSpark2
-	delay 0xA
-	call PlasmaFistSpark1
-	delay 0xA
-	call PlasmaFistSpark2
-	delay 0xA
-	call PlasmaFistSpark1
-	delay 0xA
-	call PlasmaFistSpark2
-	delay 0xA
-	call PlasmaFistSpark1
-	delay 0xA
-	call PlasmaFistSpark2
-	waitforvisualfinish
-	clearmonbg ANIM_ATTACKER
-	createvisualtask AnimTask_ShockWaveProgressingBolt, 5, ANIM_ATTACKER
-	waitforvisualfinish
-	monbg ANIM_TARGET
-	call PlasmaFistsImpact
-	waitforvisualfinish
-	call PlasmaFistsImpact
-	waitforvisualfinish
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0xC, 0x0, 0x0
-	waitforvisualfinish
-	clearmonbg ANIM_TARGET
-	blendoff
-	end
-PlasmaFistSpark1:
-	playsewithpan SE_M_CHARGE, SOUND_PAN_ATTACKER
-	createvisualtask AnimTask_BlendColorCycle, 2, F_PAL_ATTACKER, 0, 2, 0, 11, RGB(31, 31, 22)
-	createsprite gSparkElectricitySpriteTemplate, ANIM_ATTACKER, 0, 0x20, 0x18, 0xbe, 0xc, 0x0, 0x1, 0x0
-	delay 0x0
-	createsprite gSparkElectricitySpriteTemplate, ANIM_ATTACKER, 0, 0x50, 0x18, 0x16, 0xc, 0x0, 0x1, 0x0
-	createsprite gSparkElectricitySpriteTemplate, ANIM_ATTACKER, 0, 0x9c, 0x18, 0x79, 0xd, 0x0, 0x1, 0x1
-	return
-PlasmaFistSpark2:
-	playsewithpan SE_M_CHARGE, SOUND_PAN_ATTACKER
-	createsprite gSparkElectricitySpriteTemplate, ANIM_ATTACKER, 0, 0x64, 0x18, 0x3c, 0xa, 0x0, 0x1, 0x0
-	createsprite gSparkElectricitySpriteTemplate, ANIM_ATTACKER, 0, 0xaa, 0x18, 0x2a, 0xb, 0x0, 0x1, 0x1
-	delay 0x0
-	createsprite gSparkElectricitySpriteTemplate, ANIM_ATTACKER, 0, 0xee, 0x18, 0xa5, 0xa, 0x0, 0x1, 0x1
-	return
-PlasmaFistsImpact:
-	playsewithpan SE_M_COMET_PUNCH, SOUND_PAN_TARGET
-	createsprite gFistFootSpriteTemplate, ANIM_TARGET, 4, 0x0, 0x0, 0x8, 0x1, 0x0
-	createsprite gBasicHitSplatSpriteTemplate, ANIM_TARGET, 3, 0x0, 0x0, 0x1, 0x1
-	delay 0x1
-	createvisualtask AnimTask_InvertScreenColor, 0x2, 0x101, 0x101, 0x101
-	delay 0x1
-	createsprite gLightningSpriteTemplate, ANIM_TARGET, 2, 0x0, 0xffd0
-	delay 0x1
-	createsprite gLightningSpriteTemplate, ANIM_ATTACKER, 2, 0x0, 0xfff0
-	delay 0x1
-	createsprite gLightningSpriteTemplate, ANIM_ATTACKER, 2, 0x0, 0x10
-	delay 0x1
-	playsewithpan SE_M_TRI_ATTACK2, SOUND_PAN_TARGET
-	createvisualtask AnimTask_InvertScreenColor, 0x2, 0x101, 0x101, 0x101
-	delay 0x2
-	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 0, 3, 15, 1
-	createsprite gBasicHitSplatSpriteTemplate, ANIM_ATTACKER, 3, 0x0, 0x0, 0x1, 0x2
-	return
-
 gBattleAnimMove_PhotonGeyser::
 	loadspritegfx ANIM_TAG_SHOCK_3 @charge
 	loadspritegfx ANIM_TAG_SPARK_2 @ElectricityEffect
@@ -11626,52 +11402,8 @@ gBattleAnimMove_ShellSideArmSpecial:: @ Modified Snipe Shot, placeholder
 	waitforvisualfinish
 	end
 
+@Por hacer
 gBattleAnimMove_SkitterSmack::
-	loadspritegfx ANIM_TAG_IMPACT @Hits
-	loadspritegfx ANIM_TAG_WHITE_SHADOW @Destiny Bond
-	loadspritegfx ANIM_TAG_QUICK_GUARD_HAND @Black Colour
-	loadspritegfx ANIM_TAG_RAZOR_LEAF
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x0, 0x10, 0x7FFF
-	waitforvisualfinish
-	playsewithpan SE_M_FAINT_ATTACK, SOUND_PAN_ATTACKER
-	invisible ANIM_ATTACKER
-	delay 1
-	visible ANIM_ATTACKER
-	delay 1
-	invisible ANIM_ATTACKER
-	delay 1
-	visible ANIM_ATTACKER
-	delay 1
-	invisible ANIM_ATTACKER
-	waitsound
-	createvisualtask AnimTask_DestinyBondWhiteShadow, 0x5, 0x0, 0x30
-	delay 0x17
-	createvisualtask AnimTask_IsTargetSameSide, 0x2,
-	createvisualtask AnimTask_SnatchOpposingMonMove, 0x2,
-	delay 0x19
-	visible ANIM_ATTACKER
-	invisible ANIM_ATTACKER
-	delay 5
-	createsprite gSkitterSmackImpactTemplate, ANIM_TARGET, 2, 0xfff6, 0xfff6, 0x0
-	call HyperspaceHoleMovement
-	createsprite gSkitterSmackImpactTemplate, ANIM_TARGET, 2, 0xa, 0x14, 0x0
-	call HyperspaceHoleMovement
-	createsprite gSkitterSmackImpactTemplate, ANIM_TARGET, 2, 0xfffb, 0xa, 0x0
-	call HyperspaceHoleMovement
-	createsprite gSkitterSmackImpactTemplate, ANIM_TARGET, 2, 0x11, 0xfff4, 0x0
-	call HyperspaceHoleMovement
-	waitforvisualfinish
-	visible ANIM_ATTACKER
-	delay 1
-	invisible ANIM_ATTACKER
-	delay 1
-	visible ANIM_ATTACKER
-	delay 1
-	invisible ANIM_ATTACKER
-	delay 1
-	visible ANIM_ATTACKER
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x10, 0x0, 0x7FFF
-	waitforvisualfinish
 	end
 
 @Credits to Skeli

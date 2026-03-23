@@ -573,12 +573,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_SOLAR_BEAM] =
-    {
-        .battleScript = BattleScript_EffectTwoTurnsAttack,
-        .twoTurnEffect = TRUE,
-    },
-
     [EFFECT_THUNDER] =
     {
         .battleScript = BattleScript_EffectHit,
@@ -1342,16 +1336,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_SPARKLY_SWIRL] =
     {
         .battleScript = BattleScript_EffectSparklySwirl,
-    },
-
-    [EFFECT_PLASMA_FISTS] =
-    {
-        .battleScript = BattleScript_EffectPlasmaFists,
-    },
-
-    [EFFECT_HYPERSPACE_FURY] =
-    {
-        .battleScript = BattleScript_EffectHyperspaceFury,
     },
 
     [EFFECT_AURA_WHEEL] =

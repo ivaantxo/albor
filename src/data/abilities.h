@@ -1391,13 +1391,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 2,
     },
 
-    [ABILITY_PERISH_BODY] =
-    {
-        .name = _("Perish Body"),
-        .description = COMPOUND_STRING("Foe faints in 3 turns if hit."),
-        .aiRating = -1,
-    },
-
     [ABILITY_WANDERING_SPIRIT] =
     {
         .name = _("Wandering Spirit"),
@@ -1441,13 +1434,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Lingering Aroma"),
         .description = COMPOUND_STRING("Spreads with contact."),
-        .aiRating = 5,
-    },
-
-    [ABILITY_SEED_SOWER] =
-    {
-        .name = _("Seed Sower"),
-        .description = COMPOUND_STRING("Affects terrain when hit."),
         .aiRating = 5,
     },
 
