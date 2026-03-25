@@ -227,11 +227,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectEvasionUp2,
     },
 
-    [EFFECT_TRANSFORM] =
-    {
-        .battleScript = BattleScript_EffectTransform,
-    },
-
     [EFFECT_ATTACK_DOWN_2] =
     {
         .battleScript = BattleScript_EffectAttackDown2,
@@ -657,11 +652,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     {
         .battleScript = BattleScript_EffectFollowMe,
         .encourageEncore = TRUE,
-    },
-
-    [EFFECT_NATURE_POWER] =
-    {
-        .battleScript = BattleScript_EffectNaturePower,
     },
 
     [EFFECT_CHARGE] =

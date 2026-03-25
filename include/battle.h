@@ -35,11 +35,6 @@
 #define VARIOUS_ARGS(...) CMD_ARGS(u8 battler, u8 id, ##__VA_ARGS__)
 #define NATIVE_ARGS(...) CMD_ARGS(void (*func)(void), ##__VA_ARGS__)
 
-// Used to exclude moves learned temporarily by Transform or Mimic
-#define MOVE_IS_PERMANENT(battler, moveSlot)                        \
-   (!(gBattleMons[battler].status2 & STATUS2_TRANSFORMED)           \
- && !(gDisableStructs[battler].mimickedMoves & (1u << moveSlot)))
-
 // Battle Actions
 // These determine what each battler will do in a turn
 #define B_ACTION_USE_MOVE               0
@@ -89,8 +84,6 @@ struct ResourceFlags
 
 struct DisableStruct
 {
-    u32 transformedMonPersonality;
-    bool8 transformedMonShininess;
     u16 disabledMove;
     u16 encoredMove;
     u8 protectUses:4;
@@ -609,9 +602,8 @@ struct BattleSpriteInfo
     u16 invisible:1; // 0x1
     u16 lowHpSong:1; // 0x2
     u16 behindSubstitute:1; // 0x4
-    u16 flag_x8:1; // 0x8
+    u16 flag_x8:1; // Marcador de que el sprite del pokemon esta siendo usado para mostrar el HP, para que no se muestre el HP en la barra de HP
     u16 hpNumbersNoBars:1; // 0x10
-    u16 transformSpecies;
 };
 
 struct BattleAnimationInfo
@@ -787,8 +779,6 @@ extern u8 gMoveSelectionCursor[NUMERO_COMBATIENTES];
 extern u8 gBattlerStatusSummaryTaskId[NUMERO_COMBATIENTES];
 extern u8 gBattlerInMenuId;
 extern bool8 gDoingBattleAnim;
-extern u32 gTransformedPersonalities[NUMERO_COMBATIENTES];
-extern bool8 gTransformedShininess[NUMERO_COMBATIENTES];
 extern u8 gPlayerDpadHoldFrames;
 extern struct BattleSpriteData *gBattleSpritesDataPtr;
 extern struct MonSpritesGfx *gMonSpritesGfxPtr;

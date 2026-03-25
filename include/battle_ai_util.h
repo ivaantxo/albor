@@ -23,7 +23,7 @@ void ClearBattlerMoveHistory(u32 battlerId);
 void RecordLastUsedMoveBy(u32 battlerId, u32 move);
 void RecordAllMoves(u32 battler);
 void RecordKnownMove(u32 battlerId, u32 move);
-void RecuerdaHabilidadCombate(u32 combatiente, u32 habilidad);
+void RecuerdaHabilidad(u32 combatiente, u32 habilidad);
 void ClearBattlerAbilityHistory(u32 battlerId);
 void RecordItemEffectBattle(u32 battlerId, u32 itemEffect);
 void ClearBattlerItemEffectHistory(u32 battlerId);

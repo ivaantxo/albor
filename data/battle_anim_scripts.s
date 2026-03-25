@@ -19668,9 +19668,6 @@ gBattleAnimMove_RazorLeaf::
 	blendoff
 	end
 
-gBattleAnimMove_NaturePower::
-	@ No actual animation, uses the animation of a move from sNaturePowerMoves instead
-
 gBattleAnimMove_AncientPower::
 	loadspritegfx ANIM_TAG_ROCKS
 	loadspritegfx ANIM_TAG_IMPACT
@@ -21020,15 +21017,6 @@ SwallowBest:
 	call SwallowEffect
 	call SwallowEffect
 	goto SwallowContinue
-
-gBattleAnimMove_Transform::
-	monbg ANIM_ATTACKER
-	playsewithpan SE_M_TELEPORT, SOUND_PAN_ATTACKER
-	waitplaysewithpan SE_M_MINIMIZE, SOUND_PAN_ATTACKER, 48
-	createvisualtask AnimTask_TransformMon, 2, 0, 1
-	waitforvisualfinish
-	clearmonbg ANIM_ATTACKER
-	end
 
 gBattleAnimMove_MorningSun::
 	loadspritegfx ANIM_TAG_GREEN_STAR

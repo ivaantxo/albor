@@ -29,7 +29,6 @@ bool32 CanPoisonType(u8 battlerTarget);
 bool32 CanParalyzeType(u8 battlerTarget);
 bool32 CanUseLastResort(u8 battlerId);
 bool32 TryResetBattlerStatChanges(u8 battler);
-u32 GetNaturePowerMove(u32 battler);
 void StealTargetItem(u8 battlerStealer, u8 battlerItem);
 u8 GetCatchingBattler(void);
 u32 GetHighestStatId(u32 battlerId);

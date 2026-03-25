@@ -63,7 +63,6 @@ enum TextosCombate
     STRINGID_PKMNCANTSTOCKPILE, //printfromtable
     STRINGID_PKMNCANTSLEEPINUPROAR2, //printfromtable
     STRINGID_UPROARKEPTPKMNAWAKE, //printfromtable
-    STRINGID_PKMNTRANSFORMEDINTO, //printfromtable
     STRINGID_PKMNMADESUBSTITUTE, // printfromtable
     STRINGID_SUBSTITUTEDAMAGED, // PrepareStringBattle
     STRINGID_PKMNMOVEISDISABLED, //printstring + printselectionstring
@@ -288,10 +287,6 @@ enum TextosCombate
 // gMistUsedStringIds
 #define B_MSG_SET_MIST    0
 #define B_MSG_MIST_FAILED 1
-
-// gTransformUsedStringIds
-#define B_MSG_TRANSFORMED      0
-#define B_MSG_TRANSFORM_FAILED 1
 
 // gSubstituteUsedStringIds
 #define B_MSG_SET_SUBSTITUTE    0

@@ -344,25 +344,8 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
 
     monsPersonality = GetMonData(mon, MON_DATA_PERSONALITY);
     isShiny = GetMonData(mon, MON_DATA_IS_SHINY);
-
-    if (gBattleSpritesDataPtr->battlerData[battler].transformSpecies == SPECIES_NONE)
-    {
-        species = GetMonData(mon, MON_DATA_SPECIES);
-        currentPersonality = monsPersonality;
-    }
-    else
-    {
-        species = gBattleSpritesDataPtr->battlerData[battler].transformSpecies;
-        if (B_TRANSFORM_SHINY >= GEN_4)
-        {
-            currentPersonality = gTransformedPersonalities[battler];
-            isShiny = gTransformedShininess[battler];
-        }
-        else
-        {
-            currentPersonality = monsPersonality;
-        }
-    }
+    species = GetMonData(mon, MON_DATA_SPECIES);
+    currentPersonality = monsPersonality;
 
     position = battler;
     if (GetBattlerSide(battler) == LADO_OPONENTE)
@@ -380,23 +363,13 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
 
     paletteOffset = OBJ_PLTT_ID(battler);
 
-    if (gBattleSpritesDataPtr->battlerData[battler].transformSpecies == SPECIES_NONE)
-        lzPaletteData = GetMonFrontSpritePal(mon);
-    else
-        lzPaletteData = GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, currentPersonality);
+    lzPaletteData = GetMonFrontSpritePal(mon);
 
     LZDecompressWram(lzPaletteData, gDecompressionBuffer);
     LoadPalette(gDecompressionBuffer, paletteOffset, PLTT_SIZE_4BPP);
     LoadPalette(gDecompressionBuffer, BG_PLTT_ID(8) + BG_PLTT_ID(battler), PLTT_SIZE_4BPP);
     DesplazaTonoPaleta(paletteOffset, currentPersonality);
     DesplazaTonoPaleta(BG_PLTT_ID(8) + BG_PLTT_ID(battler), currentPersonality);
-
-    // transform's pink color
-    if (gBattleSpritesDataPtr->battlerData[battler].transformSpecies != SPECIES_NONE)
-    {
-        BlendPalette(paletteOffset, 16, 6, RGB_WHITE);
-        CopiaCpu32(&gPlttBufferFaded[paletteOffset], &gPlttBufferUnfaded[paletteOffset], PLTT_SIZE_4BPP);
-    }
 }
 
 void DecompressTrainerFrontPic(u16 frontPicId, u8 battler)
@@ -551,7 +524,6 @@ void GestionaCambioGraficoEspecie(u32 atacante, u32 defensor, bool32 usarPersona
     DesplazaTonoPaleta(paletteOffset, personalityValue);
     BlendPalette(paletteOffset, 16, 6, RGB_WHITE);
     CopiaCpu32(&gPlttBufferFaded[paletteOffset], &gPlttBufferUnfaded[paletteOffset], PLTT_SIZE_4BPP);
-    gBattleSpritesDataPtr->battlerData[battlerAtk].transformSpecies = targetSpecies;
 
     gSprites[gBattlerSpriteIds[battlerAtk]].y = GetBattlerSpriteDefault_Y(battlerAtk);
     StartSpriteAnim(&gSprites[gBattlerSpriteIds[battlerAtk]], 0);
@@ -761,7 +733,6 @@ void SpriteCB_EnemyShadow(struct Sprite *shadowSprite)
     bool8 invisible = FALSE;
     u8 battler = shadowSprite->tBattlerId;
     struct Sprite *battlerSprite = &gSprites[gBattlerSpriteIds[battler]];
-    u16 transformSpecies = SanitizeSpeciesId(gBattleSpritesDataPtr->battlerData[battler].transformSpecies);
 
     if (!battlerSprite->inUse || !IsBattlerSpritePresent(battler))
     {
@@ -773,13 +744,6 @@ void SpriteCB_EnemyShadow(struct Sprite *shadowSprite)
 
     if (gAnimScriptActive || battlerSprite->invisible)
         invisible = TRUE;
-    else if (transformSpecies != SPECIES_NONE)
-    {
-        xOffset = gSpeciesInfo[transformSpecies].enemyShadowXOffset;
-        yOffset = gSpeciesInfo[transformSpecies].enemyShadowYOffset;
-        size = gSpeciesInfo[transformSpecies].enemyShadowSize;
-        invisible = gSpeciesInfo[transformSpecies].suppressEnemyShadow;
-    }
     else
     {
         u16 species = SanitizeSpeciesId(gBattleMons[battler].species);
@@ -817,9 +781,6 @@ void SetBattlerShadowSpriteCallback(u8 battler, u16 species)
     if (gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary >= MAX_SPRITES
         || gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdSecondary >= MAX_SPRITES)
         return;
-
-    if (gBattleSpritesDataPtr->battlerData[battler].transformSpecies != SPECIES_NONE)
-        species = gBattleSpritesDataPtr->battlerData[battler].transformSpecies;
 
     if (gSpeciesInfo[SanitizeSpeciesId(species)].suppressEnemyShadow == FALSE)
     {
@@ -865,7 +826,6 @@ void FillAroundBattleWindows(void)
 
 void ClearTemporarySpeciesSpriteData(u8 battler, bool8 dontClearSubstitute)
 {
-    gBattleSpritesDataPtr->battlerData[battler].transformSpecies = SPECIES_NONE;
     if (!dontClearSubstitute)
         ClearBehindSubstituteBit(battler);
 }

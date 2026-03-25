@@ -69,7 +69,7 @@ static void CheckSetUnburden(u8 battler)
     if (GetBattlerAbility(battler) == ABILITY_UNBURDEN)
     {
         gBattleResources->flags->flags[battler] |= RESOURCE_FLAG_UNBURDEN;
-        RecuerdaHabilidadCombate(battler, ABILITY_UNBURDEN);
+        RecuerdaHabilidad(battler, ABILITY_UNBURDEN);
     }
 }
 
@@ -108,7 +108,6 @@ void HandleAction_UseMove(void)
     gCombate->resultadoMovimiento = MOVIMIENTO_NEUTRO;
     gContadorMultigolpes = 0;
     gBattleScripting.savedDmg = 0;
-    gMensajeBatalla = 0;
     gBattleScripting.savedMoveEffect = 0;
     gCurrMovePos = gChosenMovePos = *(gCombate->chosenMovePositions + gBattlerAttacker);
 
@@ -228,7 +227,7 @@ void HandleAction_UseMove(void)
             battler = gBattlerByTurnOrder[var];
             battlerAbility = GetBattlerAbility(battler);
 
-            RecuerdaHabilidadCombate(battler, gBattleMons[battler].ability);
+            RecuerdaHabilidad(battler, gBattleMons[battler].ability);
             if (battlerAbility == ABILITY_LIGHTNING_ROD)
                 gSpecialStatuses[battler].lightningRodRedirected = TRUE;
             else if (battlerAbility == ABILITY_STORM_DRAIN)
@@ -1524,7 +1523,7 @@ s32 GetDrainedBigRootHp(u32 battler, s32 hp)
 #define MAGIC_GUARD_CHECK \
 if (ability == ABILITY_MAGIC_GUARD) \
 {\
-    RecuerdaHabilidadCombate(battler, ability);\
+    RecuerdaHabilidad(battler, ability);\
     gCombate->turnEffectsTracker++;\
             break;\
 }
@@ -3039,7 +3038,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 {
                     BattleScriptPushCursorAndCallback(BattleScript_TraceActivates);
                     gCombate->tracedAbility[battler] = gLastUsedAbility = gBattleMons[chosenTarget].ability;
-                    RecuerdaHabilidadCombate(chosenTarget, gLastUsedAbility); // Record the opposing battler has this ability
+                    RecuerdaHabilidad(chosenTarget, gLastUsedAbility); // Record the opposing battler has this ability
                     gBattlerAbility = battler;
 
                     PREPARE_MON_NICK_WITH_PREFIX_LOWER_BUFFER(gBattleTextBuff1, chosenTarget, gBattlerPartyIndexes[chosenTarget])
@@ -3092,7 +3091,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                     {
                         gBattlescriptCurrInstr = BattleScript_StickyHoldActivates;
                         gLastUsedAbility = gBattleMons[chosenTarget].ability;
-                        RecuerdaHabilidadCombate(chosenTarget, gLastUsedAbility);
+                        RecuerdaHabilidad(chosenTarget, gLastUsedAbility);
                     }
                     else
                     {
@@ -3142,18 +3141,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                         effect++;
                     }
                 }
-            }
-            break;
-        case ABILITY_IMPOSTER:
-            if (IsBattlerAlive(OPONENTE(battler))
-                && !(gBattleMons[OPONENTE(battler)].status2 & (STATUS2_TRANSFORMED | STATUS2_SUBSTITUTE))
-                && !(gBattleMons[battler].status2 & STATUS2_TRANSFORMED)
-                && !(gStatuses3[OPONENTE(battler)] & STATUS3_SEMI_INVULNERABLE))
-            {
-                gBattlerAttacker = battler;
-                gBattlerTarget = OPONENTE(battler);
-                BattleScriptPushCursorAndCallback(BattleScript_ImposterActivates);
-                effect++;
             }
             break;
         case ABILITY_MOLD_BREAKER:
@@ -3308,7 +3295,12 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
         case ABILITY_NEVADA:
             if (TryChangeBattleWeather(battler, ENUM_WEATHER_SNOW, TRUE))
             {
-                BattleScriptPushCursorAndCallback(ScriptCombate_Nevada);
+                Pausa(PAUSA_CORTA);
+                CreaMensajeHabilidad(battler, gBattleMons[battler].ability);
+                Pausa(PAUSA_MEDIA);
+                RecuerdaHabilidad(battler, gBattleMons[battler].ability);
+                EscribeTextoCombate(battler, "¡Ha empezado a nevar!");
+                PlayAnimation(battler, B_ANIM_SNOW_CONTINUES); //Habría que convertirla de algún modo.
                 effect++;
             }
             break;
@@ -3466,7 +3458,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
     case ABILITYEFFECT_WOULD_BLOCK:
         effect = CanAbilityBlockMove(gBattlerAttacker, battler, move, gLastUsedAbility);
         if (effect && gLastUsedAbility != 0xFFFF)
-            RecuerdaHabilidadCombate(battler, gLastUsedAbility);
+            RecuerdaHabilidad(battler, gLastUsedAbility);
         break;
     case ABILITYEFFECT_MOVES_BLOCK:
         {
@@ -3512,7 +3504,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
     case ABILITYEFFECT_WOULD_ABSORB:
         effect = CanAbilityAbsorbMove(gBattlerAttacker, battler, gLastUsedAbility, move, moveType);
         if (effect && gLastUsedAbility != 0xFFFF)
-            RecuerdaHabilidadCombate(battler, gLastUsedAbility);
+            RecuerdaHabilidad(battler, gLastUsedAbility);
         return effect;
     case ABILITYEFFECT_ABSORBING:
         {
@@ -4313,7 +4305,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
     }
 
     if (effect && gLastUsedAbility != 0xFFFF)
-        RecuerdaHabilidadCombate(battler, gLastUsedAbility);
+        RecuerdaHabilidad(battler, gLastUsedAbility);
     if (effect && caseID <= ABILITYEFFECT_MOVE_END)
         gBattlerAbility = battler;
 
@@ -4551,7 +4543,7 @@ bool32 HasEnoughHpToEatBerry(u32 battler, u32 hpFraction, u32 itemId)
     if (hpFraction <= 4 && GetBattlerAbility(battler) == ABILITY_GLUTTONY && isBerry
          && gBattleMons[battler].hp <= gBattleMons[battler].maxHP / 2)
     {
-        RecuerdaHabilidadCombate(battler, ABILITY_GLUTTONY);
+        RecuerdaHabilidad(battler, ABILITY_GLUTTONY);
         return TRUE;
     }
 
@@ -4686,8 +4678,7 @@ static u32 ItemRestorePp(u32 battler, u32 itemId, bool32 execute)
             }
             BtlController_EmitSetMonData(battler, BUFFER_A, i + REQUEST_PPMOVE1_BATTLE, 0, 1, &changedPP);
             MarcaCombatienteOcupado(battler);
-            if (MOVE_IS_PERMANENT(battler, i))
-                gBattleMons[battler].pp[i] = changedPP;
+            gBattleMons[battler].pp[i] = changedPP;
             return ITEM_PP_CHANGE;
         }
     }
@@ -5843,7 +5834,7 @@ u32 GetMoveTarget(u16 move, u8 setTarget)
                 && GetBattlerAbility(targetBattler) != ABILITY_LIGHTNING_ROD)
             {
                 targetBattler ^= BIT_FLANK;
-                RecuerdaHabilidadCombate(targetBattler, gBattleMons[targetBattler].ability);
+                RecuerdaHabilidad(targetBattler, gBattleMons[targetBattler].ability);
                 gSpecialStatuses[targetBattler].lightningRodRedirected = TRUE;
             }
             else if (moveType == TIPO_AGUA
@@ -5851,7 +5842,7 @@ u32 GetMoveTarget(u16 move, u8 setTarget)
                 && GetBattlerAbility(targetBattler) != ABILITY_STORM_DRAIN)
             {
                 targetBattler ^= BIT_FLANK;
-                RecuerdaHabilidadCombate(targetBattler, gBattleMons[targetBattler].ability);
+                RecuerdaHabilidad(targetBattler, gBattleMons[targetBattler].ability);
                 gSpecialStatuses[targetBattler].stormDrainRedirected = TRUE;
             }
         }
@@ -6724,7 +6715,7 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
         {
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(0.5));
             if (damageCalcData->updateFlags)
-                RecuerdaHabilidadCombate(battlerDef, ABILITY_SEBO);
+                RecuerdaHabilidad(battlerDef, ABILITY_SEBO);
         }
         break;
     case ABILITY_ILLUMINATE:
@@ -6732,7 +6723,7 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
         {
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(0.5));
             if (damageCalcData->updateFlags)
-                RecuerdaHabilidadCombate(battlerDef, ABILITY_ILLUMINATE);
+                RecuerdaHabilidad(battlerDef, ABILITY_ILLUMINATE);
         }
         break;
     case ABILITY_GUARDIAN:
@@ -6740,7 +6731,7 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
         {
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(0.5));
             if (damageCalcData->updateFlags)
-                RecuerdaHabilidadCombate(battlerDef, ABILITY_GUARDIAN);
+                RecuerdaHabilidad(battlerDef, ABILITY_GUARDIAN);
         }
         break;
     case ABILITY_TIERRA_HUMEDA:
@@ -6748,7 +6739,7 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
         {
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(0.5));
             if (damageCalcData->updateFlags)
-                RecuerdaHabilidadCombate(battlerDef, ABILITY_TIERRA_HUMEDA);
+                RecuerdaHabilidad(battlerDef, ABILITY_TIERRA_HUMEDA);
         }
         break;
     }
@@ -6886,7 +6877,7 @@ static inline u32 CalcDefenseStat(struct DamageCalculationData *damageCalcData, 
         {
             modifier = uq4_12_multiply_half_down(modifier, UQ_4_12(1.5));
             if (damageCalcData->updateFlags)
-                RecuerdaHabilidadCombate(battlerDef, ABILITY_MARVEL_SCALE);
+                RecuerdaHabilidad(battlerDef, ABILITY_MARVEL_SCALE);
         }
         break;
     }
@@ -7369,25 +7360,25 @@ static inline void MulByTypeEffectiveness(uq4_12_t *modifier, u32 move, u32 move
     {
         mod = UQ_4_12(1.0);
         if (recordAbilities)
-            RecuerdaHabilidadCombate(battlerAtk, abilityAtk);
+            RecuerdaHabilidad(battlerAtk, abilityAtk);
     }
     else if (moveType == TIPO_VENENO && defType == TIPO_ACERO && abilityAtk == ABILITY_CORROSION && mod == UQ_4_12(0.0))
     {
         mod = UQ_4_12(2.0);
         if (recordAbilities)
-            RecuerdaHabilidadCombate(battlerAtk, abilityAtk);
+            RecuerdaHabilidad(battlerAtk, abilityAtk);
     }
     else if (moveType == TIPO_FUEGO && defType == TIPO_ROCA && abilityAtk == ABILITY_AVE_RAPAZ && mod == UQ_4_12(0.5))
     {
         mod = UQ_4_12(2.0);
         if (recordAbilities)
-            RecuerdaHabilidadCombate(battlerAtk, abilityAtk);
+            RecuerdaHabilidad(battlerAtk, abilityAtk);
     }
     else if (moveType == TIPO_VOLADOR && defType == TIPO_NORMAL && abilityAtk == ABILITY_AVE_RAPAZ && mod == UQ_4_12(1.0))
     {
         mod = UQ_4_12(2.0);
         if (recordAbilities)
-            RecuerdaHabilidadCombate(battlerAtk, abilityAtk);
+            RecuerdaHabilidad(battlerAtk, abilityAtk);
     }
     if (moveType == TIPO_PSIQUICO && defType == TIPO_SINIESTRO && gStatuses3[battlerDef] & STATUS3_MIRACLE_EYED && mod == UQ_4_12(0.0))
         mod = UQ_4_12(1.0);
@@ -7438,7 +7429,7 @@ static inline uq4_12_t CalcTypeEffectivenessMultiplierInternal(u32 move, u32 mov
             gMoveResultFlags |= (MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE);
             gLastLandedMoves[battlerDef] = MOVE_NONE;
             gMensajeBatalla = TEXTO_COMBATE_LEVITACION;
-            RecuerdaHabilidadCombate(battlerDef, ABILITY_LEVITATE);
+            RecuerdaHabilidad(battlerDef, ABILITY_LEVITATE);
         }
     }
 
@@ -7451,7 +7442,7 @@ static inline uq4_12_t CalcTypeEffectivenessMultiplierInternal(u32 move, u32 mov
             gMoveResultFlags |= MOVE_RESULT_MISSED;
             gLastLandedMoves[battlerDef] = MOVE_NONE;
             gMensajeBatalla = TEXTO_COMBATE_TELEPATA;
-            RecuerdaHabilidadCombate(battlerDef, gBattleMons[battlerDef].ability);
+            RecuerdaHabilidad(battlerDef, gBattleMons[battlerDef].ability);
         }
     }
 
@@ -7599,10 +7590,6 @@ u16 GetBattleFormChangeTargetSpecies(u32 battler, u16 method)
 
 bool32 CanBattlerFormChange(u32 battler, u16 method)
 {
-    // Can't change form if transformed.
-    if (gBattleMons[battler].status2 & STATUS2_TRANSFORMED
-        && B_TRANSFORM_FORM_CHANGES >= GEN_5)
-        return FALSE;
     return DoesSpeciesHaveFormChangeMethod(gBattleMons[battler].species, method);
 }
 

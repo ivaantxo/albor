@@ -182,8 +182,6 @@ EWRAM_DATA u8 gMoveSelectionCursor[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u8 gBattlerStatusSummaryTaskId[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u8 gBattlerInMenuId = 0;
 EWRAM_DATA bool8 gDoingBattleAnim = FALSE;
-EWRAM_DATA u32 gTransformedPersonalities[NUMERO_COMBATIENTES] = {0};
-EWRAM_DATA bool8 gTransformedShininess[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u8 gPlayerDpadHoldFrames = 0;
 EWRAM_DATA struct BattleSpriteData *gBattleSpritesDataPtr = NULL;
 EWRAM_DATA struct MonSpritesGfx *gMonSpritesGfxPtr = NULL;
@@ -796,13 +794,8 @@ static void SpriteCB_WildMonAnimate(struct Sprite *sprite)
 void SpriteCB_FaintOpponentMon(struct Sprite *sprite)
 {
     u8 battler = sprite->sBattler;
-    u16 species;
+    u16 species = sprite->sSpeciesId;
     u8 yOffset;
-
-    if (gBattleSpritesDataPtr->battlerData[battler].transformSpecies != 0)
-        species = gBattleSpritesDataPtr->battlerData[battler].transformSpecies;
-    else
-        species = sprite->sSpeciesId;
 
     species = SanitizeSpeciesId(species);
     yOffset = gSpeciesInfo[species].frontPicYOffset;
@@ -2567,7 +2560,7 @@ static void CheckChangingTurnOrderEffects(void)
                     gBattlerAbility = battler;
                     gLastUsedAbility = gBattleMons[battler].ability;
                     PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
-                    RecuerdaHabilidadCombate(battler, gLastUsedAbility);
+                    RecuerdaHabilidad(battler, gLastUsedAbility);
                     BattleScriptExecute(BattleScript_QuickDrawActivation);
                 }
                 return;

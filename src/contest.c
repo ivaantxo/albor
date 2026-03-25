@@ -4388,7 +4388,6 @@ static void SetMoveSpecificAnimData(u8 contestant)
         else
             gAnimMoveTurn = 1;
         break;
-    case MOVE_TRANSFORM:
     case MOVE_ROLE_PLAY:
         targetContestant = eContestantStatus[contestant].contestantAnimTarget;
         gContestResources->moveAnim->targetSpecies = SanitizeSpecies(gContestMons[targetContestant].species);

@@ -365,7 +365,6 @@ struct Ability
     u8 cantBeSuppressed:1; // cannot be negated by Gastro Acid or Neutralizing Gas
     u8 cantBeOverwritten:1; // cannot be overwritten by Worry Seed or Simple Beam - same as cantBeSuppressed
     u8 breakable:1; // can be bypassed by Mold Breaker and clones
-    u8 failsOnImposter:1; // doesn't work on an Imposter mon; when can we actually use this?
 };
 
 enum {

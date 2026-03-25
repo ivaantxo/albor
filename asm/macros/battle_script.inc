@@ -791,10 +791,6 @@
 	.byte BATTLE_CMD_setmist
 	.endm
 
-	.macro transformdataexecution
-	.byte BATTLE_CMD_transformdataexecution
-	.endm
-
 	.macro setsubstitute
 	.byte BATTLE_CMD_setsubstitute
 	.endm

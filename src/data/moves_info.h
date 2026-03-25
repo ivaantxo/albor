@@ -2898,29 +2898,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_LovelyKiss,
     },
 
-    [MOVE_TRANSFORM] =
-    {
-        .name = COMPOUND_STRING("Transformación"),
-        .description = COMPOUND_STRING(
-            "Alters the user's cells to\n"
-            "become a copy of the foe."),
-        .effect = EFFECT_TRANSFORM,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .mimicBanned = TRUE,
-        .copycatBanned = TRUE,
-        .instructBanned = TRUE,
-        .encoreBanned = TRUE,
-        .assistBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Transform,
-    },
-
     [MOVE_BUBBLE] =
     {
         .name = COMPOUND_STRING("Burbuja"),
@@ -5176,29 +5153,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .copycatBanned = TRUE,
         .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_FollowMe,
-    },
-
-    [MOVE_NATURE_POWER] =
-    {
-        .name = COMPOUND_STRING("Adaptación"),
-        .description = COMPOUND_STRING(
-            "The type of attack varies\n"
-            "depending on the location."),
-        .effect = EFFECT_NATURE_POWER,
-        .power = 1,
-        .type = TIPO_NORMAL,
-        .accuracy = 0,
-        .pp = 20,
-        .target = MOVE_TARGET_DEPENDS,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .copycatBanned = TRUE,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .encoreBanned = TRUE,
-        .assistBanned = TRUE,
-        .mimicBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_NaturePower,
     },
 
     [MOVE_CHARGE] =

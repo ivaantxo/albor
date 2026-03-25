@@ -899,15 +899,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 5,
     },
 
-    [ABILITY_IMPOSTER] =
-    {
-        .name = _("Imposter"),
-        .description = COMPOUND_STRING("Transforms into the foe."),
-        .aiRating = 9,
-        .cantBeCopied = TRUE,
-        .cantBeTraced = TRUE,
-    },
-
     [ABILITY_SIGILOSO] =
     {
         .name = _("Sigiloso"),
@@ -1312,7 +1303,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .cantBeCopied = TRUE,
         .cantBeSwapped = TRUE,
         .cantBeTraced = TRUE,
-        .failsOnImposter = TRUE,
     },
 
     [ABILITY_TRANSISTOR] =

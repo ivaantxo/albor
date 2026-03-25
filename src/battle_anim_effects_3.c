@@ -2160,45 +2160,6 @@ void AnimTask_SwallowDeformMon(u8 taskId)
     }
 }
 
-void AnimTask_HideSwapSprite(u8 taskId)
-{
-    u8 position;
-    struct BattleAnimBgData animBg;
-    u8 *dest;
-    u8 *src;
-    u32 spriteId = gBattlerSpriteIds[gBattleAnimAttacker];
-
-    switch (gTasks[taskId].data[0])
-    {
-    case 0:
-        gTasks[taskId].data[11] = gSprites[spriteId].x; // Save battler position
-        gSprites[spriteId].x = -64; // hide it from screen to avoid the blip/glitch effect when swapping the sprite.
-        gTasks[taskId].data[10] = gBattleAnimArgs[0];
-        gTasks[taskId].data[0]++;
-        break;
-    case 1:
-        GestionaCambioGraficoEspecie(gBattleAnimAttacker, gBattleAnimTarget, gBattleAnimArgs[1]);
-        GetBgDataForTransform(&animBg, gBattleAnimAttacker);
-        position = gBattleAnimAttacker;
-        src = gMonSpritesGfxPtr->spritesGfx[position];
-        dest = animBg.bgTiles;
-        CopiaCpu32(src, dest, MON_PIC_SIZE);
-        CargaTilesFondo(1, animBg.bgTiles, 2048, animBg.tilesOffset);
-        gTasks[taskId].data[0]++;
-        break;
-    case 2:
-        gSprites[spriteId].x = gTasks[taskId].data[11]; // restores battler position
-        if (GetBattlerSide(gBattleAnimAttacker) == LADO_OPONENTE)
-        {
-            if (gTasks[taskId].data[10] == 0)
-                SetBattlerShadowSpriteCallback(gBattleAnimAttacker, gBattleSpritesDataPtr->battlerData[gBattleAnimAttacker].transformSpecies);
-        }
-
-        DestroyAnimVisualTask(taskId);
-        break;
-    }
-}
-
 void AnimTask_TransformMon(u8 taskId)
 {
     u8 position;
@@ -2950,17 +2911,10 @@ void AnimTask_RolePlaySilhouette(u8 taskId)
         isBackPic = FALSE;
         personality = GetMonData(&gPlayerParty[gBattlerPartyIndexes[gBattleAnimTarget]], MON_DATA_PERSONALITY);
         isShiny = GetMonData(&gPlayerParty[gBattlerPartyIndexes[gBattleAnimTarget]], MON_DATA_IS_SHINY);
-        if (gBattleSpritesDataPtr->battlerData[gBattleAnimTarget].transformSpecies == SPECIES_NONE)
-        {
-            if (GetBattlerSide(gBattleAnimTarget) == LADO_JUGADOR)
-                species = GetMonData(&gPlayerParty[gBattlerPartyIndexes[gBattleAnimTarget]], MON_DATA_SPECIES);
-            else
-                species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattleAnimTarget]], MON_DATA_SPECIES);
-        }
+        if (GetBattlerSide(gBattleAnimTarget) == LADO_JUGADOR)
+            species = GetMonData(&gPlayerParty[gBattlerPartyIndexes[gBattleAnimTarget]], MON_DATA_SPECIES);
         else
-        {
-            species = gBattleSpritesDataPtr->battlerData[gBattleAnimTarget].transformSpecies;
-        }
+            species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattleAnimTarget]], MON_DATA_SPECIES);
 
         xOffset = 20;
         priority = GetBattlerSpriteBGPriority(gBattleAnimAttacker);
@@ -2970,17 +2924,10 @@ void AnimTask_RolePlaySilhouette(u8 taskId)
         isBackPic = TRUE;
         personality = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattleAnimTarget]], MON_DATA_PERSONALITY);
         isShiny = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattleAnimTarget]], MON_DATA_IS_SHINY);
-        if (gBattleSpritesDataPtr->battlerData[gBattleAnimTarget].transformSpecies == SPECIES_NONE)
-        {
-            if (GetBattlerSide(gBattleAnimTarget) == LADO_JUGADOR)
-                species = GetMonData(&gPlayerParty[gBattlerPartyIndexes[gBattleAnimTarget]], MON_DATA_SPECIES);
-            else
-                species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattleAnimTarget]], MON_DATA_SPECIES);
-        }
+        if (GetBattlerSide(gBattleAnimTarget) == LADO_JUGADOR)
+            species = GetMonData(&gPlayerParty[gBattlerPartyIndexes[gBattleAnimTarget]], MON_DATA_SPECIES);
         else
-        {
-            species = gBattleSpritesDataPtr->battlerData[gBattleAnimTarget].transformSpecies;
-        }
+            species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattleAnimTarget]], MON_DATA_SPECIES);
 
         xOffset = -20;
         priority = GetBattlerSpriteBGPriority(gBattleAnimAttacker);
@@ -4446,11 +4393,7 @@ void AnimTask_SnatchOpposingMonMove(u8 taskId)
         {
             personality = GetMonData(&gPlayerParty[gBattlerPartyIndexes[gBattleAnimAttacker]], MON_DATA_PERSONALITY);
             isShiny = GetMonData(&gPlayerParty[gBattlerPartyIndexes[gBattleAnimAttacker]], MON_DATA_IS_SHINY);
-            if (gBattleSpritesDataPtr->battlerData[gBattleAnimAttacker].transformSpecies == SPECIES_NONE)
-                species = GetMonData(&gPlayerParty[gBattlerPartyIndexes[gBattleAnimAttacker]], MON_DATA_SPECIES);
-            else
-                species = gBattleSpritesDataPtr->battlerData[gBattleAnimAttacker].transformSpecies;
-
+            species = GetMonData(&gPlayerParty[gBattlerPartyIndexes[gBattleAnimAttacker]], MON_DATA_SPECIES);
             subpriority = gSprites[GetAnimBattlerSpriteId(ANIM_TARGET)].subpriority + 1;
             isBackPic = FALSE;
             x = ANCHO_PANTALLA + 32;
@@ -4459,19 +4402,13 @@ void AnimTask_SnatchOpposingMonMove(u8 taskId)
         {
             personality = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattleAnimAttacker]], MON_DATA_PERSONALITY);
             isShiny = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattleAnimAttacker]], MON_DATA_IS_SHINY);
-            if (gBattleSpritesDataPtr->battlerData[gBattleAnimAttacker].transformSpecies == SPECIES_NONE)
-                species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattleAnimAttacker]], MON_DATA_SPECIES);
-            else
-                species = gBattleSpritesDataPtr->battlerData[gBattleAnimAttacker].transformSpecies;
-
+            species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattleAnimAttacker]], MON_DATA_SPECIES);
             subpriority = gSprites[GetAnimBattlerSpriteId(ANIM_TARGET)].subpriority - 1;
             isBackPic = TRUE;
             x = -32;
         }
 
         spriteId2 = CreateAdditionalMonSpriteForMoveAnim(species, isBackPic, 0, x, GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y), subpriority, personality, isShiny, gBattleAnimAttacker);
-        if (gBattleSpritesDataPtr->battlerData[gBattleAnimAttacker].transformSpecies != SPECIES_NONE)
-            BlendPalette(OBJ_PLTT_ID(gSprites[spriteId2].oam.paletteNum), 16, 6, RGB_WHITE);
 
         gTasks[taskId].data[15] = spriteId2;
         gTasks[taskId].data[0]++;

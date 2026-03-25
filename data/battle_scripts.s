@@ -2233,17 +2233,6 @@ BattleScript_EffectEvasionUp2::
 	setstatchanger ESTADISTICA_EVASION, 2, FALSE
 	goto BattleScript_EffectStatUp
 
-BattleScript_EffectTransform::
-	attackcanceler
-	attackstring
-	ppreduce
-	transformdataexecution
-	attackanimation
-	waitanimation
-	printfromtable gTransformUsedStringIds
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectAttackDown2::
 	setstatchanger ESTADISTICA_ATAQUE, 2, TRUE
 	goto BattleScript_EffectStatDown
@@ -3332,9 +3321,6 @@ BattleScript_EffectFollowMe::
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectNaturePower::
-	return
-
 BattleScript_EffectCharge::
 	attackcanceler
 	attackstring
@@ -3527,6 +3513,7 @@ BattleScript_EffectSkillSwap::
 	copybyte gBattlerAbility, gBattlerTarget
 	copyhword sABILITY_OVERWRITE, gLastUsedAbility
 	call BattleScript_AbilityPopUpOverwriteThenNormal
+
 BattleScript_EffectSkillSwap_AfterAbilityPopUp:
 	recordability BS_ATTACKER
 	recordability BS_TARGET
@@ -5004,7 +4991,7 @@ BattleScript_AftermathDmgRet:
 BattleScript_DampPreventsAftermath::
 	pause PAUSA_CORTA
 	call BattleScript_AbilityPopUp
-	PAUSA_MEDIA
+	pause PAUSA_MEDIA
 	copybyte gBattlerAbility, sBATTLER
 	call BattleScript_AbilityPopUp
 	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY} prevents {B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} from working!"
@@ -5379,14 +5366,14 @@ BattleScript_AbilityPopUpTarget:
 
 BattleScript_AbilityPopUp:
 	showabilitypopup BS_ABILITY_BATTLER
-	PAUSA_MEDIA
+	pause PAUSA_MEDIA
 	recordability BS_ABILITY_BATTLER
 	sethword sABILITY_OVERWRITE, 0
 	return
 
 BattleScript_AbilityPopUpScripting:
 	showabilitypopup BS_SCRIPTING
-	PAUSA_MEDIA
+	pause PAUSA_MEDIA
 	recordability BS_SCRIPTING
 	sethword sABILITY_OVERWRITE, 0
 	return
@@ -5394,13 +5381,13 @@ BattleScript_AbilityPopUpScripting:
 BattleScript_AbilityPopUpOverwriteThenNormal:
 	setbyte sFIXED_ABILITY_POPUP, TRUE
 	showabilitypopup BS_ABILITY_BATTLER
-	PAUSA_LARGA
+	pause PAUSA_LARGA
 	sethword sABILITY_OVERWRITE, 0
 	updateabilitypopup BS_ABILITY_BATTLER
 	pause PAUSA_CORTA
 	recordability BS_ABILITY_BATTLER
 	DestruyeMensajeHabilidad
-	PAUSA_MEDIA
+	pause PAUSA_MEDIA
 	return
 
 BattleScript_SpeedBoostActivates::
@@ -5557,10 +5544,12 @@ BattleScript_IntimidateEffect:
 	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_IntimidateWontDecrease
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 	printstring STRINGID_PKMNCUTSATTACKWITH
+
 BattleScript_IntimidateEffect_WaitString:
 	waitmessage PAUSA_LARGA
 	copybyte sBATTLER, gBattlerTarget
 	call BattleScript_TryIntimidateHoldEffects
+
 BattleScript_IntimidateLoopIncrement:
 	addbyte gBattlerTarget, 1
 	jumpifbytenotequal gBattlerTarget, gBattlersCount, BattleScript_IntimidateLoop
@@ -6004,15 +5993,6 @@ BattleScript_FriskActivates::
 	copybyte gBattlerAttacker, sBATTLER
 	tryfriskmsg BS_SCRIPTING
 	restoreattacker
-	end3
-
-BattleScript_ImposterActivates::
-	call BattleScript_AbilityPopUp
-	transformdataexecution
-	playmoveanimation BS_ATTACKER, MOVE_TRANSFORM
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} transformed into {B_DEF_NAME_WITH_PREFIX} using {B_LAST_ABILITY}!"
-	waitmessage PAUSA_LARGA
 	end3
 
 BattleScript_HurtAttacker:

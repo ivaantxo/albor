@@ -99,7 +99,7 @@ void RecordAllMoves(u32 battler)
     memcpy(AI_PARTY->mons[GetBattlerSide(battler)][gBattlerPartyIndexes[battler]].moves, gBattleMons[battler].moves, MAX_MON_MOVES * sizeof(u16));
 }
 
-void RecuerdaHabilidadCombate(u32 combatiente, u32 habilidad)
+void RecuerdaHabilidad(u32 combatiente, u32 habilidad)
 {
     BATTLE_HISTORY->abilities[combatiente] = habilidad;
     AI_PARTY->mons[GetBattlerSide(combatiente)][gBattlerPartyIndexes[combatiente]].ability = habilidad;
@@ -340,9 +340,6 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
     bool32 isDamageMoveUnusable = FALSE;
     struct AILogicData *aiData = AI_DATA;
     AI_DATA->aiCalcInProgress = TRUE;
-
-    if (moveEffect == EFFECT_NATURE_POWER)
-        move = GetNaturePowerMove(battlerAtk);
 
     switch (moveEffect)
     {

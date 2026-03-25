@@ -276,7 +276,6 @@ void LaunchBattleAnimation(u32 animType, u32 animId)
 {
     s32 i;
 
-    sAnimHideHpBoxes = !(animType == ANIM_TYPE_MOVE && animId == MOVE_TRANSFORM);
     if (animType != ANIM_TYPE_MOVE)
     {
         switch (animId)

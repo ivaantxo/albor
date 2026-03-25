@@ -388,7 +388,6 @@ enum BattleScriptCommands
     BATTLE_CMD_tryinfatuating,
     BATTLE_CMD_updatestatusicon,
     BATTLE_CMD_setmist,
-    BATTLE_CMD_transformdataexecution,
     BATTLE_CMD_setsubstitute,
     BATTLE_CMD_mimicattackcopy,
     BATTLE_CMD_dmgtolevel,
