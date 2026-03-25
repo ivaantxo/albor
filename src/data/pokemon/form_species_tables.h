@@ -23,15 +23,3 @@ static const u16 sRotomFormSpeciesIdTable[] = {
     SPECIES_ROTOM_MOW,
     FORM_SPECIES_END,
 };
-
-static const u16 sDarmanitanFormSpeciesIdTable[] = {
-    SPECIES_DARMANITAN_STANDARD,
-    SPECIES_DARMANITAN_ZEN,
-    FORM_SPECIES_END,
-};
-
-static const u16 sDarmanitanGalarFormSpeciesIdTable[] = {
-    SPECIES_DARMANITAN_GALAR_STANDARD,
-    SPECIES_DARMANITAN_GALAR_ZEN,
-    FORM_SPECIES_END,
-};

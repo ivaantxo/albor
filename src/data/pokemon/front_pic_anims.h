@@ -4334,34 +4334,6 @@ static const union AnimCmd sAnim_Excadrill[] =
     ANIMCMD_END,
 };
 
-static const union AnimCmd sAnim_Darumaka[] =
-{
-    ANIMCMD_FRAME(1, 50),
-    ANIMCMD_FRAME(1, 50),
-    ANIMCMD_FRAME(0, 10),
-    ANIMCMD_END,
-};
-
-static const union AnimCmd sAnim_DarmanitanStandard[] =
-{
-    ANIMCMD_FRAME(1, 10),
-    ANIMCMD_FRAME(0, 10),
-    ANIMCMD_FRAME(1, 10),
-    ANIMCMD_FRAME(0, 20),
-    ANIMCMD_END,
-};
-
-static const union AnimCmd sAnim_DarmanitanZen[] =
-{
-    ANIMCMD_FRAME(1, 15),
-    ANIMCMD_FRAME(0, 20),
-    ANIMCMD_END,
-};
-
-PLACEHOLDER_ANIM_SINGLE_FRAME(DarumakaGalar);
-PLACEHOLDER_ANIM_SINGLE_FRAME(DarmanitanGalarStandard);
-PLACEHOLDER_ANIM_SINGLE_FRAME(DarmanitanGalarZen);
-
 static const union AnimCmd sAnim_Yamask[] =
 {
     ANIMCMD_FRAME(0, 10),
@@ -5389,12 +5361,6 @@ SINGLE_ANIMATION(Dewott);
 SINGLE_ANIMATION(Samurott);
 SINGLE_ANIMATION(Drilbur);
 SINGLE_ANIMATION(Excadrill);
-SINGLE_ANIMATION(Darumaka);
-SINGLE_ANIMATION(DarmanitanStandard);
-SINGLE_ANIMATION(DarmanitanZen);
-SINGLE_ANIMATION(DarumakaGalar);
-SINGLE_ANIMATION(DarmanitanGalarStandard);
-SINGLE_ANIMATION(DarmanitanGalarZen);
 SINGLE_ANIMATION(Yamask);
 SINGLE_ANIMATION(Cofagrigus);
 SINGLE_ANIMATION(Zorua);

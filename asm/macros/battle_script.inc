@@ -67,8 +67,8 @@
 	.byte BATTLE_CMD_resultmessage
 	.endm
 
-	.macro printstring id:req
-	.byte BATTLE_CMD_printstring
+	.macro EscribeTextoCombate id:req
+	.byte BATTLE_CMD_EscribeTextoCombate
 	.2byte \id
 	.endm
 
@@ -828,11 +828,6 @@
 	.4byte \failInstr
 	.endm
 
-	.macro painsplitdmgcalc failInstr:req
-	.byte BATTLE_CMD_painsplitdmgcalc
-	.4byte \failInstr
-	.endm
-
 	.macro settypetorandomresistance failInstr:req
 	.byte BATTLE_CMD_settypetorandomresistance
 	.4byte \failInstr
@@ -1354,11 +1349,6 @@
 	callnative BS_DamageToQuarterTargetHP
 	.endm
 
-	.macro trytarshot failInstr:req
-	callnative BS_TryTarShot
-	.4byte \failInstr
-	.endm
-
 	.macro trywindriderpower battler:req, failInstr:req
 	callnative BS_TryWindRiderPower
 	.byte \battler
@@ -1787,11 +1777,6 @@
 	.4byte \failInstr
 	.endm
 
-	.macro cantarshotwork battler:req, failInstr:req
-	various \battler, VARIOUS_CAN_TAR_SHOT_WORK
-	.4byte \failInstr
-	.endm
-
 	.macro checkpoltergeist battler:req, failInstr:req
 	various \battler, VARIOUS_CHECK_POLTERGEIST
 	.4byte \failInstr
@@ -1980,7 +1965,7 @@
 		playanimation \battler, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 	.endif
 	.ifnb \customString
-		printstring \customString
+		EscribeTextoCombate \customString
 	.else
 		.if \mode == DECREASE
 			printfromtable gStatDownStringIds

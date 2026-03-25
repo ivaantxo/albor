@@ -3763,38 +3763,6 @@ const struct Item gItemsInfo[] =
         .iconPalette = gItemIconPalette_DawnStone,
     },
 
-    [ITEM_SWEET_APPLE] =
-    {
-        .name = _("Sweet Apple"),
-        .price = 2200,
-        .description = COMPOUND_STRING(
-            "A very sweet apple\n"
-            "that makes certain\n"
-            "Pokémon evolve."),
-        .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_PARTY_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
-        .effect = gItemEffect_EvoItem,
-        .iconPic = gItemIcon_SweetApple,
-        .iconPalette = gItemIconPalette_SweetApple,
-    },
-
-    [ITEM_TART_APPLE] =
-    {
-        .name = _("Tart Apple"),
-        .price = 2200,
-        .description = COMPOUND_STRING(
-            "A very tart apple\n"
-            "that makes certain\n"
-            "Pokémon evolve."),
-        .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_PARTY_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_EvolutionStone,
-        .effect = gItemEffect_EvoItem,
-        .iconPic = gItemIcon_TartApple,
-        .iconPalette = gItemIconPalette_TartApple,
-    },
-
     [ITEM_CRACKED_POT] =
     {
         .name = _("Cracked Pot"),

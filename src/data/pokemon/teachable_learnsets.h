@@ -1814,22 +1814,6 @@ static const u16 sExcadrillTeachableLearnset[] = {
     MOVE_NONE,
 };
 
-static const u16 sDarumakaTeachableLearnset[] = {
-    MOVE_NONE,
-};
-
-static const u16 sDarmanitanTeachableLearnset[] = {
-    MOVE_NONE,
-};
-
-static const u16 sDarumakaGalarTeachableLearnset[] = {
-    MOVE_NONE,
-};
-
-static const u16 sDarmanitanGalarTeachableLearnset[] = {
-    MOVE_NONE,
-};
-
 static const u16 sYamaskTeachableLearnset[] = {
     MOVE_CHARM,
     MOVE_NONE,

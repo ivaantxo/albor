@@ -61,7 +61,6 @@ static void AnimGreenStar_Step1(struct Sprite *);
 static void AnimGreenStar_Step2(struct Sprite *);
 static void AnimGreenStar_Callback(struct Sprite *);
 static void AnimSweetScentPetal_Step(struct Sprite *);
-static void AnimPainSplitProjectile(struct Sprite *);
 static void AnimFlatterConfetti(struct Sprite *);
 static void AnimFlatterConfetti_Step(struct Sprite *);
 static void AnimFlatterSpotlight(struct Sprite *);
@@ -703,30 +702,6 @@ const struct SpriteTemplate gSweetScentPetalSpriteTemplate =
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = AnimSweetScentPetal,
-};
-
-const union AnimCmd gPainSplitAnimCmds[] =
-{
-    ANIMCMD_FRAME(0, 5),
-    ANIMCMD_FRAME(4, 9),
-    ANIMCMD_FRAME(8, 5),
-    ANIMCMD_END,
-};
-
-const union AnimCmd *const gPainSplitAnimCmdTable[] =
-{
-    gPainSplitAnimCmds,
-};
-
-const struct SpriteTemplate gPainSplitProjectileSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_PAIN_SPLIT,
-    .paletteTag = ANIM_TAG_PAIN_SPLIT,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = gPainSplitAnimCmdTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimPainSplitProjectile,
 };
 
 const struct SpriteTemplate gFlatterConfettiSpriteTemplate =
@@ -2805,104 +2780,6 @@ static void AnimTask_FlailMovement_Step(u8 taskId)
         else
         {
             task->data[0] = 2;
-        }
-    }
-}
-
-// Makes a spark-like projectile fall on top of the mon.
-// arg 0: initial x pixel offset
-// arg 1: initial y pixel offset
-// arg 2: which battler
-static void AnimPainSplitProjectile(struct Sprite *sprite)
-{
-    if (!sprite->data[0])
-    {
-        if (gBattleAnimArgs[2] == ANIM_ATTACKER)
-        {
-            sprite->x = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_X_2);
-            sprite->y = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_Y_PIC_OFFSET);
-        }
-
-        sprite->x += gBattleAnimArgs[0];
-        sprite->y += gBattleAnimArgs[1];
-        sprite->data[1] = 0x80;
-        sprite->data[2] = 0x300;
-        sprite->data[3] = gBattleAnimArgs[1];
-        sprite->data[0]++;
-    }
-    else
-    {
-        sprite->x2 = sprite->data[1] >> 8;
-        sprite->y2 += sprite->data[2] >> 8;
-        if (sprite->data[4] == 0 && sprite->y2 > -sprite->data[3])
-        {
-            sprite->data[4] = 1;
-            sprite->data[2] = (-sprite->data[2] / 3) * 2;
-        }
-
-        sprite->data[1] += 192;
-        sprite->data[2] += 128;
-        if (sprite->animEnded)
-            DestroyAnimSprite(sprite);
-    }
-}
-
-// Performs one of several affine transformations on the mon sprite.
-// arg 0: which battler
-// arg 1: which transformation
-void AnimTask_PainSplitMovement(u8 taskId)
-{
-    u32 spriteId;
-
-    if (gTasks[taskId].data[0] == 0)
-    {
-        if (gBattleAnimArgs[0] == ANIM_ATTACKER)
-            gTasks[taskId].data[11] = gBattleAnimAttacker;
-        else
-            gTasks[taskId].data[11] = gBattleAnimTarget;
-
-        spriteId = GetAnimBattlerSpriteId(gBattleAnimArgs[0]);
-        gTasks[taskId].data[10] = spriteId;
-        PrepareBattlerSpriteForRotScale(spriteId, ST_OAM_OBJ_NORMAL);
-
-        switch (gBattleAnimArgs[1])
-        {
-        case 0:
-            SetSpriteRotScale(spriteId, 0xE0, 0x140, 0);
-            SetBattlerSpriteYOffsetFromYScale(spriteId);
-            break;
-        case 1:
-            SetSpriteRotScale(spriteId, 0xD0, 0x130, 0xF00);
-            SetBattlerSpriteYOffsetFromYScale(spriteId);
-            if (GetBattlerSide(gTasks[taskId].data[11]) == LADO_JUGADOR)
-                gSprites[spriteId].y2 += 16;
-            break;
-        case 2:
-            SetSpriteRotScale(spriteId, 0xD0, 0x130, 0xF100);
-            SetBattlerSpriteYOffsetFromYScale(spriteId);
-            if (GetBattlerSide(gTasks[taskId].data[11]) == LADO_JUGADOR)
-                gSprites[spriteId].y2 += 16;
-            break;
-        }
-
-        gSprites[spriteId].x2 = 2;
-        gTasks[taskId].data[0]++;
-    }
-    else
-    {
-        spriteId = gTasks[taskId].data[10];
-        if (++gTasks[taskId].data[2] == 3)
-        {
-            gTasks[taskId].data[2] = 0;
-            gSprites[spriteId].x2 = -gSprites[spriteId].x2;
-        }
-
-        if (++gTasks[taskId].data[1] == 13)
-        {
-            ResetSpriteRotScale(spriteId);
-            gSprites[spriteId].x2 = 0;
-            gSprites[spriteId].y2 = 0;
-            DestroyAnimVisualTask(taskId);
         }
     }
 }

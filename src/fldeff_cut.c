@@ -153,7 +153,7 @@ bool8 SetUpFieldMove_Cut(void)
     {
         PlayerGetDestCoords(&gPlayerFacingPosition.x, &gPlayerFacingPosition.y);
         userAbility = GetMonAbility(&gPlayerParty[GetCursorSelectionMonId()]);
-        if (userAbility == ABILITY_HYPER_CUTTER || userAbility == ABILITY_SHARPNESS)
+        if (userAbility == ABILITY_SHARPNESS)
         {
             sCutSquareSide = CUT_HYPER_SIDE;
             sTileCountFromPlayer_X = 2;
@@ -189,12 +189,7 @@ bool8 SetUpFieldMove_Cut(void)
                         sHyperCutTiles[6 + (i * 5) + j] = TRUE;
                         ret = TRUE;
                     }
-                #ifdef BUGFIX
-                    // Collision has a range 0-3, any value != 0 is impassable
                     if (MapGridGetCollisionAt(x, y))
-                #else
-                    if (MapGridGetCollisionAt(x, y) == 1)
-                #endif
                     {
                         cutTiles[i * 3 + j] = FALSE;
                     }
@@ -212,7 +207,7 @@ bool8 SetUpFieldMove_Cut(void)
             }
         }
 
-        if (userAbility != ABILITY_HYPER_CUTTER)
+        if (userAbility != ABILITY_SHARPNESS)
         {
             if (ret == TRUE)
             {

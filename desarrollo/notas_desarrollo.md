@@ -46,7 +46,6 @@
 - Testear Mago.
 - Arreglar animación al subir de nivel (incorporar la no usada como indicador de evo).
 - Cambiar animación de Chupasangre usando como referencia Colmillo Veneno.
-- Crear Barrera eléctrica (baneful búnker pero paraliza): Dárselo a Electivire.
 - Check move_target_all_battlers de lightning rod vs storm drain.
 - Hueso quemado (objeto raro en Cubone que lo hace evolucionar a Marowak Alolan).
 - Usar viejas partículas: ANIM_TAG_ASCUAS.

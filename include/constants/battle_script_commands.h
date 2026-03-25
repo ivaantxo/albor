@@ -2,8 +2,7 @@
 #define GUARD_CONSTANTS_BATTLE_SCRIPT_COMMANDS_H
 
 // The following correspond to the struct members of BattleScripting by adding their offset
-#define sPAINSPLIT_HP                (gBattleScripting)                 // painSplitHp (s32) -> 4 bytes
-#define sMULTIHIT_STRING             (sPAINSPLIT_HP + 4)                // multihitString (u8[6]) -> 6 bytes
+#define sMULTIHIT_STRING             (gBattleScripting)                 // multihitString (u8[6]) -> 6 bytes
 #define sB_ANIM_ARG1                 (sMULTIHIT_STRING + 6)             // animArg1 (u8) -> 1 byte
 #define sB_ANIM_ARG2                 (sB_ANIM_ARG1 + 1)                 // animArg2 (u8) -> 1 byte
 #define sSAVED_STRING_ID             (sB_ANIM_ARG2 + 1)                 // savedStringId (u16) -> 2 bytes
@@ -150,8 +149,6 @@ enum Various
     VARIOUS_JUMP_IF_WEATHER_AFFECTED,
     VARIOUS_SET_ATTACKER_STICKY_WEB_USER,
     VARIOUS_TRY_NO_RETREAT,
-    VARIOUS_TRY_TAR_SHOT,
-    VARIOUS_CAN_TAR_SHOT_WORK,
     VARIOUS_CHECK_POLTERGEIST,
     VARIOUS_CUT_1_3_HP_RAISE_STATS,
     VARIOUS_TRY_END_NEUTRALIZING_GAS,
@@ -399,7 +396,6 @@ enum BattleScriptCommands
     BATTLE_CMD_mirrorcoatdamagecalculator,
     BATTLE_CMD_disablelastusedattack,
     BATTLE_CMD_trysetencore,
-    BATTLE_CMD_painsplitdmgcalc,
     BATTLE_CMD_settypetorandomresistance,
     BATTLE_CMD_setalwayshitflag,
     BATTLE_CMD_trychoosesleeptalkmove,

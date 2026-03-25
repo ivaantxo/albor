@@ -3906,26 +3906,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_IcyWind,
     },
 
-    [MOVE_DETECT] =
-    {
-        .name = COMPOUND_STRING("Detección"),
-        .description = COMPOUND_STRING(
-            "Evades attack, but may fail\n"
-            "if used in succession."),
-        .effect = EFFECT_PROTECT,
-        .power = 0,
-        .type = TIPO_LUCHA,
-        .accuracy = 0,
-        .pp = 5,
-        .target = MOVE_TARGET_USER,
-        .priority = B_UPDATED_MOVE_DATA >= GEN_5 ? 4 : 3,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Detect,
-    },
-
     [MOVE_BONE_RUSH] =
     {
         .name = COMPOUND_STRING("Ataque óseo"),
@@ -4283,23 +4263,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_Safeguard,
-    },
-
-    [MOVE_PAIN_SPLIT] =
-    {
-        .name = COMPOUND_STRING("Divide dolor"),
-        .description = COMPOUND_STRING(
-            "Adds the user and foe's HP,\n"
-            "then shares them equally."),
-        .effect = EFFECT_PAIN_SPLIT,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 0,
-        .pp = 20,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .battleAnimScript = gBattleAnimMove_PainSplit,
     },
 
     [MOVE_SACRED_FIRE] =
@@ -10889,27 +10852,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_FairyLock,
     },
 
-    [MOVE_KINGS_SHIELD] =
-    {
-        .name = COMPOUND_STRING("King's Shield"),
-        .description = COMPOUND_STRING(
-            "Evades damage, and sharply\n"
-            "reduces Attack if struck."),
-        .effect = EFFECT_PROTECT,
-        .power = 0,
-        .type = TIPO_ACERO,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        .priority = 4,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .copycatBanned = TRUE,
-        .instructBanned = TRUE,
-        .assistBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_KingsShield,
-    },
-
     [MOVE_PLAY_NICE] =
     {
         .name = COMPOUND_STRING("Play Nice"),
@@ -11354,26 +11296,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_ShoreUp,
-    },
-
-    [MOVE_BANEFUL_BUNKER] =
-    {
-        .name = COMPOUND_STRING("Baneful Bunker"),
-        .description = COMPOUND_STRING(
-            "Protects user and poisons\n"
-            "foes on contact."),
-        .effect = EFFECT_PROTECT,
-        .power = 0,
-        .type = TIPO_VENENO,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        .priority = 4,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_BanefulBunker,
     },
 
     [MOVE_SPIRIT_SHACKLE] =
@@ -12370,24 +12292,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_NoRetreat,
     },
 
-    [MOVE_TAR_SHOT] =
-    {
-        .name = COMPOUND_STRING("Alquitranazo"),
-        .description = COMPOUND_STRING(
-            "Lowers the foe's Speed and\n"
-            "makes it weak to Fire."),
-        .effect = EFFECT_TAR_SHOT,
-        .power = 0,
-        .type = TIPO_ROCA,
-        .accuracy = 100,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .magicCoatAffected = TRUE,
-        .battleAnimScript = gBattleAnimMove_TarShot,
-    },
-
     [MOVE_DRAGON_DARTS] =
     {
         .name = COMPOUND_STRING("Dragon Darts"),
@@ -12524,49 +12428,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_PyroBall,
     },
 
-    [MOVE_BEHEMOTH_BLADE] =
-    {
-        .name = COMPOUND_STRING("Behemoth Blade"),
-        .description = COMPOUND_STRING(
-            "Strikes as a sword. Deals 2x\n"
-            "damage to Dynamaxed foes."),
-        .effect = EFFECT_HIT,
-        .power = 100,
-        .type = TIPO_ACERO,
-        .accuracy = 100,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .slicingMove = TRUE,
-        .copycatBanned = TRUE,
-        .mimicBanned = TRUE,
-        .assistBanned = B_EXTRAPOLATED_MOVE_FLAGS,
-        .battleAnimScript = gBattleAnimMove_BehemothBlade,
-    },
-
-    [MOVE_BEHEMOTH_BASH] =
-    {
-        .name = COMPOUND_STRING("Behemoth Bash"),
-        .description = COMPOUND_STRING(
-            "Attacks as a shield. Deals 2x\n"
-            "damage to Dynamaxed foes."),
-        .effect = EFFECT_HIT,
-        .power = 100,
-        .type = TIPO_ACERO,
-        .accuracy = 100,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .copycatBanned = TRUE,
-        .mimicBanned = TRUE,
-        .assistBanned = B_EXTRAPOLATED_MOVE_FLAGS,
-        .battleAnimScript = gBattleAnimMove_BehemothBash,
-    },
-
     [MOVE_AURA_WHEEL] =
     {
         .name = COMPOUND_STRING("Aura Wheel"),
@@ -12692,46 +12553,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_StrangeSteam,
     },
 
-    [MOVE_LIFE_DEW] =
-    {
-        .name = COMPOUND_STRING("Life Dew"),
-        .description = COMPOUND_STRING(
-            "Scatters water to restore\n"
-            "the HP of itself and allies."),
-        .effect = EFFECT_JUNGLE_HEALING,
-        .power = 0,
-        .type = TIPO_AGUA,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_ALL_BATTLERS,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
-        .ignoresProtect = TRUE,
-        .ignoresSubstitute = TRUE,
-        .healingMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_LifeDew,
-    },
-
-    [MOVE_OBSTRUCT] =
-    {
-        .name = COMPOUND_STRING("Obstruct"),
-        .description = COMPOUND_STRING(
-            "Protects itself, harshly\n"
-            "lowering Def on contact."),
-        .effect = EFFECT_PROTECT,
-        .power = 0,
-        .type = TIPO_SINIESTRO,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        .priority = 4,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .instructBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Obstruct,
-    },
-
     [MOVE_METEOR_ASSAULT] =
     {
         .name = COMPOUND_STRING("Meteor Assault"),
@@ -12752,27 +12573,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             .self = TRUE,
         }),
         .battleAnimScript = gBattleAnimMove_MeteorAssault,
-    },
-
-    [MOVE_ETERNABEAM] =
-    {
-        .name = COMPOUND_STRING("Eternabeam"),
-        .description = COMPOUND_STRING(
-            "Eternatus' strongest move.\n"
-            "The user rests next turn."),
-        .effect = EFFECT_HIT,
-        .power = 160,
-        .type = TIPO_DRAGON,
-        .accuracy = 90,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_RECHARGE,
-            .self = TRUE,
-        }),
-        .battleAnimScript = gBattleAnimMove_Eternabeam,
     },
 
     [MOVE_STEEL_BEAM] =
@@ -13065,26 +12865,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_ScorchingSands,
-    },
-
-    [MOVE_JUNGLE_HEALING] =
-    {
-        .name = COMPOUND_STRING("Jungle Healing"),
-        .description = COMPOUND_STRING(
-            "Heals HP and status of\n"
-            "itself and allies in battle."),
-        .effect = EFFECT_JUNGLE_HEALING,
-        .power = 0,
-        .type = TIPO_PLANTA,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .ignoresSubstitute = TRUE,
-        .healingMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_JungleHealing,
     },
 
     [MOVE_WICKED_BLOW] =
@@ -13670,26 +13450,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             .chance = 20,
         }),
         .battleAnimScript = gBattleAnimMove_SandsearStorm,
-    },
-
-    [MOVE_LUNAR_BLESSING] =
-    {
-        .name = COMPOUND_STRING("Lunar Blessing"),
-        .description = COMPOUND_STRING(
-            "The user heals and cures\n"
-            "itself and its ally."),
-        .effect = EFFECT_JUNGLE_HEALING,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
-        .ignoresProtect = TRUE,
-        .healingMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_LunarBlessing,
     },
 
     [MOVE_TAKE_HEART] =
@@ -14470,26 +14230,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             .onChargeTurnOnly = TRUE,
         }, SHEER_FORCE_HACK),
         .battleAnimScript = gBattleAnimMove_ElectroShot,
-    },
-
-    [MOVE_BURNING_BULWARK] =
-    {
-        .name = COMPOUND_STRING("Burning Bulwark"),
-        .description = COMPOUND_STRING(
-            "Evades attack, and burns\n"
-            "the foe if struck."),
-        .effect = EFFECT_PROTECT,
-        .power = 0,
-        .type = TIPO_FUEGO,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        .priority = 4,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_BurningBulwark,
     },
 
     [MOVE_HARD_PRESS] =

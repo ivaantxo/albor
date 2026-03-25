@@ -333,11 +333,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectEncore,
     },
 
-    [EFFECT_PAIN_SPLIT] =
-    {
-        .battleScript = BattleScript_EffectPainSplit,
-    },
-
     [EFFECT_SNORE] =
     {
         .battleScript = BattleScript_EffectSnore,
@@ -1280,12 +1275,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectEerieSpell,
     },
 
-    [EFFECT_JUNGLE_HEALING] =
-    {
-        .battleScript = BattleScript_EffectJungleHealing,
-        .encourageEncore = TRUE,
-    },
-
     [EFFECT_COACHING] =
     {
         .battleScript = BattleScript_EffectCoaching,
@@ -1331,11 +1320,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     {
         .battleScript = BattleScript_EffectNoRetreat,
         .encourageEncore = TRUE,
-    },
-
-    [EFFECT_TAR_SHOT] =
-    {
-        .battleScript = BattleScript_EffectTarShot,
     },
 
     [EFFECT_POLTERGEIST] =

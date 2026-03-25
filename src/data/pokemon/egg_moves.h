@@ -785,13 +785,6 @@ static const u16 sSandileEggMoveLearnset[] = {
     MOVE_NONE,
 };
 
-static const u16 sDarumakaEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-static const u16 sDarumakaGalarEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-
 static const u16 sYamaskEggMoveLearnset[] = {
     MOVE_NONE,
 };

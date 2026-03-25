@@ -1791,22 +1791,6 @@ static const struct LevelUpMove sExcadrillLevelUpLearnset[] = {
     LEVEL_UP_END
 };
 
-static const struct LevelUpMove sDarumakaLevelUpLearnset[] = {
-    LEVEL_UP_END
-};
-
-static const struct LevelUpMove sDarmanitanLevelUpLearnset[] = {
-    LEVEL_UP_END
-};
-
-static const struct LevelUpMove sDarumakaGalarLevelUpLearnset[] = {
-    LEVEL_UP_END
-};
-
-static const struct LevelUpMove sDarmanitanGalarLevelUpLearnset[] = {
-    LEVEL_UP_END
-};
-
 static const struct LevelUpMove sYamaskLevelUpLearnset[] = {
     LEVEL_UP_END
 };

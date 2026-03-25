@@ -411,8 +411,6 @@ gCryTable::
 	cry Cry_Samurott
 	cry Cry_Drilbur
 	cry Cry_Excadrill
-	cry Cry_Darumaka
-	cry Cry_Darmanitan
 	cry Cry_Yamask
 	cry Cry_Cofagrigus
 	cry Cry_Zorua
@@ -900,8 +898,6 @@ gCryTable_Reverse::
 	cry_reverse Cry_Samurott
 	cry_reverse Cry_Drilbur
 	cry_reverse Cry_Excadrill
-	cry_reverse Cry_Darumaka
-	cry_reverse Cry_Darmanitan
 	cry_reverse Cry_Yamask
 	cry_reverse Cry_Cofagrigus
 	cry_reverse Cry_Zorua

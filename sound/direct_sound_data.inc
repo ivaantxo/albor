@@ -2030,14 +2030,6 @@ Cry_Excadrill::
 	.incbin "sound/direct_sound_samples/cries/excadrill.bin"
 
 	.align 2
-Cry_Darumaka::
-	.incbin "sound/direct_sound_samples/cries/darumaka.bin"
-
-	.align 2
-Cry_Darmanitan::
-	.incbin "sound/direct_sound_samples/cries/darmanitan.bin"
-
-	.align 2
 Cry_Yamask::
 	.incbin "sound/direct_sound_samples/cries/yamask.bin"
 

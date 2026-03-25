@@ -51,15 +51,12 @@ enum TextosCombate
     STRINGID_PKMNSQUEEZEDBYBIND, //printfromtable
     STRINGID_PKMNTRAPPEDINVORTEX, //printfromtable
     STRINGID_PKMNWRAPPEDBY,//printfromtable
-    STRINGID_PKMNCLAMPED,//printfromtable
     STRINGID_PKMNSHROUDEDINMIST, //printstring + printfromtable
     STRINGID_PKMNBUFFETEDBYSANDSTORM,//printstring + printfromtable
     STRINGID_PKMNPELTEDBYHAIL,//printstring + printfromtable
     STRINGID_PKMNSEEDED,//printstring + printfromtable
     STRINGID_PKMNEVADEDATTACK,//printstring + printfromtable
     STRINGID_PKMNSAPPEDBYLEECHSEED,//printstring + printfromtable
-    STRINGID_PKMNWOKEUP, //printstring + printfromtable
-    STRINGID_PKMNWOKEUPINUPROAR, //printfromtable
     STRINGID_PKMNMAKINGUPROAR, //printfromtable
     STRINGID_PKMNCALMEDDOWN, //printfromtable
     STRINGID_PKMNSTOCKPILED, //printfromtable
@@ -272,10 +269,6 @@ enum TextosCombate
 #define B_MSG_REST           0
 #define B_MSG_REST_STATUSED  1
 
-// gWokeUpStringIds
-#define B_MSG_WOKE_UP        0
-#define B_MSG_WOKE_UP_UPROAR 1
-
 // gUproarAwakeStringIds
 #define B_MSG_CANT_SLEEP_UPROAR  0
 #define B_MSG_UPROAR_KEPT_AWAKE  1
@@ -359,7 +352,6 @@ enum TextosCombate
 #define B_MSG_WRAPPED_BIND         0
 #define B_MSG_WRAPPED_WRAP         1
 #define B_MSG_WRAPPED_FIRE_SPIN    2
-#define B_MSG_WRAPPED_CLAMP        3
 #define B_MSG_WRAPPED_WHIRLPOOL    4
 #define B_MSG_WRAPPED_SAND_TOMB    5
 #define B_MSG_WRAPPED_MAGMA_STORM  6

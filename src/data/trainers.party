@@ -5430,7 +5430,7 @@ IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
 - High Jump Kick
 - Meditate
 - Confusion
-- Detect
+- Protect
 
 === TRAINER_SHELBY_1 ===
 Name: SHELBY
@@ -11129,7 +11129,7 @@ Meditite
 Level: 17
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 - Meditate
-- Detect
+- Protect
 - Confusion
 - Thunder Punch
 
@@ -11137,7 +11137,7 @@ Meditite
 Level: 17
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 - Thunder Punch
-- Detect
+- Protect
 - Confusion
 - Meditate
 
@@ -11153,7 +11153,7 @@ Meditite
 Level: 23
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 - Meditate
-- Detect
+- Protect
 - Confusion
 - Fire Punch
 

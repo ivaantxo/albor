@@ -2740,42 +2740,6 @@ const u32 gMonBackPic_Excadrill[] = INCBIN_U32("graphics/pokemon/excadrill/back.
 const u32 gMonShinyPalette_Excadrill[] = INCBIN_U32("graphics/pokemon/excadrill/shiny.gbapal.lz");
 const u32 gObjectEventPic_Excadrill[] = INCBIN_U32("graphics/pokemon/excadrill/follower.4bpp");
 
-const u32 gMonFrontPic_Darumaka[] = INCBIN_U32("graphics/pokemon/darumaka/anim_front.4bpp.lz");
-const u32 gMonPalette_Darumaka[] = INCBIN_U32("graphics/pokemon/darumaka/normal.gbapal.lz");
-const u32 gMonBackPic_Darumaka[] = INCBIN_U32("graphics/pokemon/darumaka/back.4bpp.lz");
-const u32 gMonShinyPalette_Darumaka[] = INCBIN_U32("graphics/pokemon/darumaka/shiny.gbapal.lz");
-const u32 gObjectEventPic_Darumaka[] = INCBIN_U32("graphics/pokemon/darumaka/follower.4bpp");
-
-const u32 gMonFrontPic_DarmanitanStandard[] = INCBIN_U32("graphics/pokemon/darmanitan/anim_front.4bpp.lz");
-const u32 gMonPalette_DarmanitanStandard[] = INCBIN_U32("graphics/pokemon/darmanitan/normal.gbapal.lz");
-const u32 gMonBackPic_DarmanitanStandard[] = INCBIN_U32("graphics/pokemon/darmanitan/back.4bpp.lz");
-const u32 gMonShinyPalette_DarmanitanStandard[] = INCBIN_U32("graphics/pokemon/darmanitan/shiny.gbapal.lz");
-const u32 gObjectEventPic_DarmanitanStandard[] = INCBIN_U32("graphics/pokemon/darmanitan/follower.4bpp");
-
-const u32 gMonFrontPic_DarmanitanZen[] = INCBIN_U32("graphics/pokemon/darmanitan/zen/anim_front.4bpp.lz");
-const u32 gMonPalette_DarmanitanZen[] = INCBIN_U32("graphics/pokemon/darmanitan/zen/normal.gbapal.lz");
-const u32 gMonBackPic_DarmanitanZen[] = INCBIN_U32("graphics/pokemon/darmanitan/zen/back.4bpp.lz");
-const u32 gMonShinyPalette_DarmanitanZen[] = INCBIN_U32("graphics/pokemon/darmanitan/zen/shiny.gbapal.lz");
-const u32 gObjectEventPic_DarmanitanZen[] = INCBIN_U32("graphics/pokemon/darmanitan/zen/follower.4bpp");
-
-const u32 gMonFrontPic_DarumakaGalar[] = INCBIN_U32("graphics/pokemon/darumaka/galar/front.4bpp.lz");
-const u32 gMonPalette_DarumakaGalar[] = INCBIN_U32("graphics/pokemon/darumaka/galar/normal.gbapal.lz");
-const u32 gMonBackPic_DarumakaGalar[] = INCBIN_U32("graphics/pokemon/darumaka/galar/back.4bpp.lz");
-const u32 gMonShinyPalette_DarumakaGalar[] = INCBIN_U32("graphics/pokemon/darumaka/galar/shiny.gbapal.lz");
-const u32 gObjectEventPic_DarumakaGalar[] = INCBIN_U32("graphics/pokemon/darumaka/galar/follower.4bpp");
-
-const u32 gMonFrontPic_DarmanitanGalarStandard[] = INCBIN_U32("graphics/pokemon/darmanitan/galar/front.4bpp.lz");
-const u32 gMonPalette_DarmanitanGalarStandard[] = INCBIN_U32("graphics/pokemon/darmanitan/galar/normal.gbapal.lz");
-const u32 gMonBackPic_DarmanitanGalarStandard[] = INCBIN_U32("graphics/pokemon/darmanitan/galar/back.4bpp.lz");
-const u32 gMonShinyPalette_DarmanitanGalarStandard[] = INCBIN_U32("graphics/pokemon/darmanitan/galar/shiny.gbapal.lz");
-const u32 gObjectEventPic_DarmanitanGalarStandard[] = INCBIN_U32("graphics/pokemon/darmanitan/galar/follower.4bpp");
-
-const u32 gMonFrontPic_DarmanitanGalarZen[] = INCBIN_U32("graphics/pokemon/darmanitan/galar/zen/front.4bpp.lz");
-const u32 gMonPalette_DarmanitanGalarZen[] = INCBIN_U32("graphics/pokemon/darmanitan/galar/zen/normal.gbapal.lz");
-const u32 gMonBackPic_DarmanitanGalarZen[] = INCBIN_U32("graphics/pokemon/darmanitan/galar/zen/back.4bpp.lz");
-const u32 gMonShinyPalette_DarmanitanGalarZen[] = INCBIN_U32("graphics/pokemon/darmanitan/galar/zen/shiny.gbapal.lz");
-const u32 gObjectEventPic_DarmanitanGalarZen[] = INCBIN_U32("graphics/pokemon/darmanitan/galar/zen/follower.4bpp");
-
 const u32 gMonFrontPic_Yamask[] = INCBIN_U32("graphics/pokemon/yamask/anim_front.4bpp.lz");
 const u32 gMonPalette_Yamask[] = INCBIN_U32("graphics/pokemon/yamask/normal.gbapal.lz");
 const u32 gMonBackPic_Yamask[] = INCBIN_U32("graphics/pokemon/yamask/back.4bpp.lz");

@@ -1941,7 +1941,7 @@ void AnimTranslateLinearAndFlicker(struct Sprite *sprite)
     sprite->callback = TranslateSpriteLinearAndFlicker;
 }
 
-// Used by Detect/Disable
+// Used by Disable
 void AnimSpinningSparkle(struct Sprite *sprite)
 {
     SetSpriteCoordsToAnimAttackerCoords(sprite);
