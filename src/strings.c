@@ -1098,7 +1098,6 @@ const u8 *const gTextTable_Players[] = {
     gText_F703Players
 };
 
-const u8 gText_PlayersBattleResults[] = _("{JUGADOR}'s BATTLE RESULTS");
 const u8 gText_TotalRecordWLD[] = _("TOTAL RECORD W:{VAR_TEXTO_1} L:{VAR_TEXTO_2} D:{VAR_TEXTO_3}");
 const u8 gText_WinLoseDraw[] = _("{CLEAR_TO 0x53}WIN{CLEAR_TO 0x80}LOSE{CLEAR_TO 0xB0}DRAW");
 const u8 gText_CommunicationStandby5[] = _("Communication standby…");

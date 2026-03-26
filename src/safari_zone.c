@@ -30,7 +30,6 @@ extern const u8 SafariZone_EventScript_OutOfBalls[];
 EWRAM_DATA u8 gNumSafariBalls = 0;
 EWRAM_DATA static u16 sSafariZoneStepCounter = 0;
 EWRAM_DATA static u8 sSafariZoneCaughtMons = 0;
-EWRAM_DATA static u8 sSafariZonePkblkUses = 0;
 EWRAM_DATA static struct PokeblockFeeder sPokeblockFeeders[NUM_POKEBLOCK_FEEDERS] = {0};
 
 static void ClearAllPokeblockFeeders(void);
@@ -59,7 +58,6 @@ void EnterSafariMode(void)
     gNumSafariBalls = 30;
     sSafariZoneStepCounter = 500;
     sSafariZoneCaughtMons = 0;
-    sSafariZonePkblkUses = 0;
 }
 
 void ExitSafariMode(void)
@@ -94,7 +92,6 @@ void SafariZoneRetirePrompt(void)
 
 void CB2_EndSafariBattle(void)
 {
-    sSafariZonePkblkUses += gBattleResults.pokeblockThrows;
     if (gBattleOutcome == B_OUTCOME_CAUGHT)
         sSafariZoneCaughtMons++;
     if (gNumSafariBalls != 0)

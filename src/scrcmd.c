@@ -881,9 +881,9 @@ bool8 ScrCmd_fadeoutbgm(struct ScriptContext *ctx)
     u8 speed = ScriptReadByte(ctx);
 
     if (speed != 0)
-        FadeOutBGMTemporarily(4 * speed);
+        FadeOutBGMTemporarily(VELOCIDAD_ACELERADA_MUSICA * speed);
     else
-        FadeOutBGMTemporarily(4);
+        FadeOutBGMTemporarily(VELOCIDAD_ACELERADA_MUSICA);
     SetupNativeScript(ctx, IsBGMPausedOrStopped);
     return TRUE;
 }
@@ -893,9 +893,9 @@ bool8 ScrCmd_fadeinbgm(struct ScriptContext *ctx)
     u8 speed = ScriptReadByte(ctx);
 
     if (speed != 0)
-        FadeInBGM(4 * speed);
+        FadeInBGM(VELOCIDAD_ACELERADA_MUSICA * speed);
     else
-        FadeInBGM(4);
+        FadeInBGM(VELOCIDAD_ACELERADA_MUSICA);
     return FALSE;
 }
 

@@ -76,17 +76,6 @@ const struct SpriteTemplate gReflectWallSpriteTemplate =
     .callback = AnimDefensiveWall,
 };
 
-const struct SpriteTemplate gMirrorCoatWallSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_RED_LIGHT_WALL,
-    .paletteTag = ANIM_TAG_RED_LIGHT_WALL,
-    .oam = &gOamData_AffineOff_ObjBlend_64x64,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimDefensiveWall,
-};
-
 const struct SpriteTemplate gBarrierWallSpriteTemplate =
 {
     .tileTag = ANIM_TAG_GRAY_LIGHT_WALL,
@@ -542,7 +531,7 @@ static void AnimateZenHeadbutt(struct Sprite *sprite)
     sprite->callback = RunStoredCallbackWhenAffineAnimEnds;
 }
 
-// For the rectangular wall sprite used by Reflect, Mirror Coat, etc
+// For the rectangular wall sprite used by Reflect
 static void AnimDefensiveWall(struct Sprite *sprite)
 {
     if (GetBattlerSide(gBattleAnimAttacker) == LADO_JUGADOR)
@@ -681,7 +670,7 @@ static void AnimDefensiveWall_Step5(struct Sprite *sprite)
     sprite->callback = DestroyAnimSprite;
 }
 
-// Animates the sparkle that appears during Reflect or Light Screen/Mirror Coat
+// Animates the sparkle that appears during Reflect or Light Screen
 static void AnimWallSparkle(struct Sprite *sprite)
 {
     if (sprite->data[0] == 0)

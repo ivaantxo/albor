@@ -3290,9 +3290,9 @@ const struct SpriteTemplate gSpriteTemplate_LashOutStrike = {
     .tileTag = ANIM_TAG_SLAM_HIT_2,
     .paletteTag = ANIM_TAG_SLAM_HIT_2,
     .oam = &gOamData_AffineNormal_ObjNormal_64x64,
-    .anims = gKnockOffStrikeAnimTable,
+    .anims = gDesarmeStrikeAnimTable,
     .images = NULL,
-    .affineAnims = gKnockOffStrikeAffineAnimTable,
+    .affineAnims = gDesarmeStrikeAffineAnimTable,
     .callback = SpriteCB_LashOutStrike
 };
 
@@ -4008,7 +4008,7 @@ const struct SpriteTemplate gCorkscrewCrashLeftUpSpriteTemplate =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = sCorkscrewCrashLeftAffineAnimTable,
-    .callback = AnimAssistPawprint
+    .callback = AnimacionHuella
 };
 const struct SpriteTemplate gCorkscrewCrashLeftDownSpriteTemplate =
 {
@@ -4018,7 +4018,7 @@ const struct SpriteTemplate gCorkscrewCrashLeftDownSpriteTemplate =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = sCorkscrewCrashLeftAffineAnimTable,
-    .callback = AnimAssistPawprint
+    .callback = AnimacionHuella
 };
 static const union AffineAnimCmd sCorkscrewCrashRightUpAffineAnims[] = {
     AFFINEANIMCMD_FRAME(0, 0, 0xc2, 1),
@@ -4035,7 +4035,7 @@ const struct SpriteTemplate gCorkscrewCrashRightUpSpriteTemplate =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = sCorkscrewCrashRightUpAffineAnimTable,
-    .callback = AnimAssistPawprint
+    .callback = AnimacionHuella
 };
 static const union AffineAnimCmd sCorkscrewCrashRightDownAffineAnims[] = {
     AFFINEANIMCMD_FRAME(0, 0, 0xba, 1),
@@ -4052,7 +4052,7 @@ const struct SpriteTemplate gCorkscrewCrashRightDownSpriteTemplate =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = sCorkscrewCrashRightDownAffineAnimTable,
-    .callback = AnimAssistPawprint
+    .callback = AnimacionHuella
 };
 
 // inferno overdrive
@@ -4330,7 +4330,7 @@ const struct SpriteTemplate gDevastatingDrakeRightSpriteTemplate =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = sDevastatingDrakeRightAffineAnimTable,
-    .callback = AnimAssistPawprint
+    .callback = AnimacionHuella
 };
 const struct SpriteTemplate gDevastatingDrakeLeftSpriteTemplate =
 {
@@ -4340,7 +4340,7 @@ const struct SpriteTemplate gDevastatingDrakeLeftSpriteTemplate =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = sDevastatingDrakeLeftAffineAnimTable,
-    .callback = AnimAssistPawprint
+    .callback = AnimacionHuella
 };
 const struct SpriteTemplate gDevastatingDrakeStrikeSpriteTemplate =
 {
@@ -4772,7 +4772,7 @@ const struct SpriteTemplate gGenesisSupernovaOrbRiseSpriteTemplate =
     .anims = gAnims_PoisonProjectile,
     .images = NULL,
     .affineAnims = gAffineAnims_Bubble,
-    .callback = AnimAssistPawprint
+    .callback = AnimacionHuella
 };
 const struct SpriteTemplate gGenesisSupernovaReversalSpriteTemplate =
 {
@@ -4892,7 +4892,7 @@ const struct SpriteTemplate gArrowRaidFlyRightSpriteTemplate =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = sArrowRaidFlyRightAffineAnimTable,
-    .callback = AnimAssistPawprint
+    .callback = AnimacionHuella
 };
 const struct SpriteTemplate gArrowRaidFlyLeftSpriteTemplate =
 {
@@ -4902,7 +4902,7 @@ const struct SpriteTemplate gArrowRaidFlyLeftSpriteTemplate =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = sArrowRaidFlyLeftAffineAnimTable,
-    .callback = AnimAssistPawprint
+    .callback = AnimacionHuella
 };
 const struct SpriteTemplate gArrowRaidFlyStrikeSpriteTemplate =
 {
@@ -4949,7 +4949,7 @@ const struct SpriteTemplate gArrowRaidRightUpSpriteTemplate =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = sArrowRaidArrowRightUpAffineAnimTable,
-    .callback = AnimAssistPawprint
+    .callback = AnimacionHuella
 };
 static const union AffineAnimCmd sArrowRaidRightDownAffineAnims[] = {
     AFFINEANIMCMD_FRAME(0, 0, 0x60, 1),
@@ -4966,7 +4966,7 @@ const struct SpriteTemplate gArrowRaidRightDownSpriteTemplate =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = sArrowRaidRightDownAffineAnimTable,
-    .callback = AnimAssistPawprint
+    .callback = AnimacionHuella
 };
 static const union AffineAnimCmd sArrowRaidArrowLeftUpAffineAnims[] = {
     AFFINEANIMCMD_FRAME(0, 0, 0xe0, 1),
@@ -4983,7 +4983,7 @@ const struct SpriteTemplate gArrowRaidLeftUpSpriteTemplate =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = sArrowRaidLeftUpAffineAnimTable,
-    .callback = AnimAssistPawprint
+    .callback = AnimacionHuella
 };
 static const union AffineAnimCmd sArrowRaidFaceUpLeftAffineAnims[] = {
     AFFINEANIMCMD_FRAME(0, 0, 0xe0, 1),
@@ -5000,7 +5000,7 @@ const struct SpriteTemplate gArrowRaidFaceUpLeftSpriteTemplate =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = sArrowRaidFaceUpLeftAffineAnimTable,
-    .callback = AnimAssistPawprint
+    .callback = AnimacionHuella
 };
 static const union AffineAnimCmd sArrowRaidArrowFaceRightAffineAnims[] = {
     AFFINEANIMCMD_FRAME(0, 0, 0x60, 1),
@@ -5017,7 +5017,7 @@ const struct SpriteTemplate gArrowRaidRightSpriteTemplate =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = sArrowRaidArrowFaceRightAffineAnimTable,
-    .callback = AnimAssistPawprint
+    .callback = AnimacionHuella
 };
 static const union AffineAnimCmd sArrowRaidLeftDownAffineAnims[] = {
     AFFINEANIMCMD_FRAME(0, 0, 0xd0, 1),
@@ -5034,7 +5034,7 @@ const struct SpriteTemplate gArrowRaidLeftDownSpriteTemplate =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = sArrowRaidLeftDownAffineAnimTable,
-    .callback = AnimAssistPawprint
+    .callback = AnimacionHuella
 };
 static const union AffineAnimCmd sArrowRaidOnslaughtAffineAnims[] = {
     AFFINEANIMCMD_FRAME(0, 0, 0x30, 1),
@@ -5051,7 +5051,7 @@ const struct SpriteTemplate gArrowRaidArrowOnslaughtSpriteTemplate =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = sArrowRaidOnslaughtAffineAnimTable,
-    .callback = AnimAssistPawprint
+    .callback = AnimacionHuella
 };
 
 // malicious moonsault
@@ -5227,7 +5227,7 @@ const struct SpriteTemplate gSplinteredShardsRisingSpearSpriteTemplate =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimAssistPawprint
+    .callback = AnimacionHuella
 };
 static const union AffineAnimCmd sSplinteredShardsOpponentSteepAffineAnims[] = {
     AFFINEANIMCMD_FRAME(0, 0, 0xca, 1),
@@ -5581,7 +5581,7 @@ const struct SpriteTemplate gBloodMoonOnslaughtSpriteTemplate =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = sArrowRaidOnslaughtAffineAnimTable,
-    .callback = AnimAssistPawprint
+    .callback = AnimacionHuella
 };
 
 const struct SpriteTemplate gMoonUpSpriteTemplate =
@@ -7070,7 +7070,7 @@ static void SpriteCB_LashOutStrike(struct Sprite* sprite)
 
     sprite->y += gBattleAnimArgs[1];
     sprite->data[1] = 192;
-    sprite->callback = AnimKnockOffStrike_Step;
+    sprite->callback = AnimDesarmeStrike_Step;
 }
 
 /* TODO - Use the ShellSmash Anim

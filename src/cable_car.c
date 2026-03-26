@@ -455,7 +455,7 @@ static void Task_CableCar(u8 taskId)
         {
             sCableCar->state = 3;
             BeginNormalPaletteFade(PALETTES_ALL, 3, 0, 16, RGB_BLACK);
-            FadeOutBGM(4);
+            FadeOutBGM(VELOCIDAD_ACELERADA_MUSICA);
         }
         break;
     case 3:

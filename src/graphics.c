@@ -44,7 +44,7 @@ const u32 gBattleAnimSpritePal_AssuranceHand[] = INCBIN_U32("graphics/battle_ani
 const u32 gBattleAnimSpriteGfx_AuraSphere[] = INCBIN_U32("graphics/battle_anims/sprites/aura_sphere.4bpp.lz");
 const u32 gBattleAnimSpritePal_AuraSphere[] = INCBIN_U32("graphics/battle_anims/sprites/aura_sphere.gbapal.lz");
 
-const u32 gBattleAnimSpritePal_AvalancheRocks[] = INCBIN_U32("graphics/battle_anims/sprites/avalanche_rocks.gbapal.lz");
+const u32 gBattleAnimSpritePal_AludRocks[] = INCBIN_U32("graphics/battle_anims/sprites/avalanche_rocks.gbapal.lz");
 
 const u32 gBattleAnimSpriteGfx_NewPokeball[] = INCBIN_U32("graphics/battle_anims/sprites/baton_pass_ball.4bpp.lz");
 const u32 gBattleAnimSpritePal_NewPokeball[] = INCBIN_U32("graphics/battle_anims/sprites/baton_pass_ball.gbapal.lz");

@@ -167,6 +167,7 @@ void SoundTask_PlayDoubleCry(u8 taskId)
     u16 species = 0;
     s8 pan = BattleAnimAdjustPanning(SOUND_PAN_ATTACKER);
     u8 battlerId;
+    u32 modoGrito = gBattleAnimArgs[1];
 
     // Get wanted battler.
     if (gBattleAnimArgs[0] == ANIM_ATTACKER)
@@ -187,17 +188,13 @@ void SoundTask_PlayDoubleCry(u8 taskId)
 
     species = gAnimBattlerSpecies[battlerId];
 
-    gTasks[taskId].data[0] = gBattleAnimArgs[1];
+    gTasks[taskId].data[0] = modoGrito;
     gTasks[taskId].data[1] = species;
     gTasks[taskId].data[2] = pan;
 
     if (species != SPECIES_NONE)
     {
-        if (gBattleAnimArgs[1] == DOUBLE_CRY_GROWL)
-            PlayCry_ByMode(species, pan, CRY_MODE_GROWL_1);
-        else // DOUBLE_CRY_ROAR
-            PlayCry_ByMode(species, pan, CRY_MODE_ROAR_1);
-
+        PlayCry_ByMode(species, pan, modoGrito);
         gTasks[taskId].func = SoundTask_PlayDoubleCry_Step;
     }
     else
@@ -210,6 +207,9 @@ static void SoundTask_PlayDoubleCry_Step(u8 taskId)
 {
     u16 species = gTasks[taskId].data[1];
     s8 pan = gTasks[taskId].data[2];
+    u32 modoGrito = gTasks[taskId].data[0];
+
+     // Note the cases are not in order of execution
 
     if (gTasks[taskId].data[9] < 2)
     {
@@ -217,21 +217,10 @@ static void SoundTask_PlayDoubleCry_Step(u8 taskId)
     }
     else
     {
-        if (gTasks[taskId].data[0] == DOUBLE_CRY_GROWL)
+        if (!IsCryPlaying())
         {
-            if (!IsCryPlaying())
-            {
-                PlayCry_ByMode(species, pan, CRY_MODE_GROWL_2);
-                DestroyAnimVisualTask(taskId);
-            }
-        }
-        else // DOUBLE_CRY_ROAR
-        {
-            if (!IsCryPlaying())
-            {
-                PlayCry_ByMode(species, pan, CRY_MODE_ROAR_2);
-                DestroyAnimVisualTask(taskId);
-            }
+            PlayCry_ByMode(species, pan, modoGrito);
+            DestroyAnimVisualTask(taskId);
         }
     }
 }

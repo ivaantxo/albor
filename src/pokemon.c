@@ -2887,14 +2887,6 @@ bool8 TryIncrementMonLevel(struct Pokemon *mon)
     }
 }
 
-static const u16 sUniversalMoves[] =
-{
-    MOVE_MIMIC,
-    MOVE_RAGE,
-    MOVE_SECRET_POWER,
-    MOVE_SUBSTITUTE,
-};
-
 u8 CanLearnTeachableMove(u16 species, u16 move)
 {
     if (species == SPECIES_EGG)
@@ -2905,20 +2897,7 @@ u8 CanLearnTeachableMove(u16 species, u16 move)
     {
         u32 i, j;
         const u16 *teachableLearnset = GetSpeciesTeachableLearnset(species);
-        for (i = 0; i < ARRAY_COUNT(sUniversalMoves); i++)
-        {
-            if (sUniversalMoves[i] == move)
-            {
-                const struct LevelUpMove *learnset = GetSpeciesLevelUpLearnset(species);
 
-                for (j = 0; j < MAX_LEVEL_UP_MOVES && learnset[j].move != LEVEL_UP_MOVE_END; j++)
-                {
-                    if (learnset[j].move == move)
-                        return TRUE;
-                }
-                return FALSE;
-            }
-        }
         for (i = 0; teachableLearnset[i] != MOVE_NONE; i++)
         {
             if (teachableLearnset[i] == move)

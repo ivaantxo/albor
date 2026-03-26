@@ -55,9 +55,6 @@
 //
 //},
 
-// Special indicator value for shellBellDmg in SpecialStatus
-#define IGNORE_SHELL_BELL 0xFFFF
-
 // For defining EFFECT_HIT etc. with battle TV scores and flags etc.
 struct __attribute__((packed, aligned(2))) BattleMoveEffect
 {
@@ -70,11 +67,6 @@ struct __attribute__((packed, aligned(2))) BattleMoveEffect
 };
 
 #define GET_MOVE_BATTLESCRIPT(move) gBattleMoveEffects[gMovesInfo[move].effect].battleScript
-
-struct ResourceFlags
-{
-    u32 flags[NUMERO_COMBATIENTES];
-};
 
 #define RESOURCE_FLAG_FLASH_FIRE        1
 #define RESOURCE_FLAG_ROOST             2
@@ -103,8 +95,6 @@ struct DisableStruct
     u8 furyCutterCounter;
     u8 battlerPreventingEscape;
     u8 battlerWithSureHit;
-    u8 isFirstTurn;
-    u8 mimickedMoves:4;
     u8 chargeTimer:4;
     u8 rechargeTimer;
     u8 autotomizeCount;
@@ -115,7 +105,7 @@ struct DisableStruct
     u8 laserFocusTimer;
     u8 throatChopTimer;
     u8 wrapTurns;
-    u8 tormentTimer:4; // used for G-Max Meltdown
+    u8 tormentTimer:4;
     u8 usedMoves:4;
     u8 noRetreat:1;
     u8 octolock:1;
@@ -126,6 +116,7 @@ struct DisableStruct
     u8 stealthRockDone:1;
     u8 weatherAbilityDone:1;
     u8 usedProteanLibero:1;
+    bool32 esPrimerTurno;
 };
 
 struct ProtectStruct
@@ -158,21 +149,10 @@ struct ProtectStruct
     u16 pranksterElevated:1;
     u16 quickDraw:1;
     u16 silkTrapped:1;
-    u16 eatMirrorHerb:1;
-    u16 activateOpportunist:2; // 2 - to copy stats. 1 - stats copied (do not repeat). 0 - no stats to copy
-    u32 physicalDmg;
-    u32 specialDmg;
-    u8 physicalBattlerId;
-    u8 specialBattlerId;
 };
 
 struct SpecialStatus
 {
-    s32 shellBellDmg;
-    s32 physicalDmg;
-    s32 specialDmg;
-    u8 physicalBattlerId;
-    u8 specialBattlerId;
     u8 changedStatsBattlerId; // Battler that was responsible for the latest stat change. Can be self.
     u8 statLowered:1;
     u8 lightningRodRedirected:1;
@@ -182,7 +162,6 @@ struct SpecialStatus
     u8 stormDrainRedirected:1;
     u8 switchInAbilityDone:1;
     u8 switchInItemDone:1;
-    u8 instructedChosenTarget:3;
     u8 berryReduced:1;
     // End of byte
     u8 gemParam;
@@ -249,7 +228,6 @@ struct WishFutureKnock
     u8 wishCounter[NUMERO_COMBATIENTES];
     u8 wishPartyId[NUMERO_COMBATIENTES];
     u8 weatherDuration;
-    u8 knockedOffMons[NUMERO_LADOS]; // Each battler is represented by a bit.
 };
 
 struct AI_SavedBattleMon
@@ -362,7 +340,6 @@ struct StatsArray
 struct BattleResources
 {
     struct SecretBase* secretBase;
-    struct ResourceFlags *flags;
     struct BattleScriptsStack* battleScriptsStack;
     struct BattleCallbacksStack* battleCallbackStack;
     struct StatsArray* beforeLvlUp;
@@ -373,6 +350,7 @@ struct BattleResources
     u8 bufferA[NUMERO_COMBATIENTES][512];
     u8 bufferB[NUMERO_COMBATIENTES][512];
     u8 transferBuffer[256];
+    u32 flags[NUMERO_COMBATIENTES];
 };
 
 #define AI_THINKING_STRUCT ((struct AI_ThinkingStruct *)(gBattleResources->ai))
@@ -380,41 +358,21 @@ struct BattleResources
 #define AI_PARTY ((struct AIPartyData *)(gBattleResources->aiParty))
 #define BATTLE_HISTORY ((struct BattleHistory *)(gBattleResources->battleHistory))
 
-struct BattleResults
+struct EfectosFinTurno
 {
-    u8 playerFaintCounter;    // 0x0
-    u8 opponentFaintCounter;  // 0x1
-    u8 playerSwitchesCounter; // 0x2
-    u8 numHealingItemsUsed;   // 0x3
-    u8 numRevivesUsed;        // 0x4
-    u8 playerMonWasDamaged:1; // 0x5
-    u8 caughtMonBall:4;       // 0x5
-    u8 shinyWildMon:1;        // 0x5
-    u16 playerMon1Species;    // 0x6
-    u8 playerMon1Name[POKEMON_NAME_LENGTH + 1];    // 0x8
-    u8 battleTurnCounter;     // 0x13
-    u8 playerMon2Name[POKEMON_NAME_LENGTH + 1];    // 0x14
-    u8 pokeblockThrows;       // 0x1F
-    u16 lastOpponentSpecies;  // 0x20
-    u16 lastUsedMovePlayer;   // 0x22
-    u16 lastUsedMoveOpponent; // 0x24
-    u16 playerMon2Species;    // 0x26
-    u16 caughtMonSpecies;     // 0x28
-    u8 caughtMonNick[POKEMON_NAME_LENGTH + 1];     // 0x2A
-    u8 catchAttempts[POKEBALL_COUNT];     // 0x36
-};
-
-struct LostItem
-{
-    u16 originalItem:15;
-    u16 stolen:1;
+    enum EfectosFinTurnoCampo campo;
+    enum EfectosFinTurnoIndividuales individual;
+    enum PosicionesCombate  indiceCombatiente;
 };
 
 struct Combate
 {
-    u8 turnEffectsTracker;
-    u8 turnEffectsBattlerId;
-    u8 turnCountersTracker;
+    u32 contadorTurnos;
+    u32 contadorDebilitadosJugador;
+    u32 contadorDebilitadosRival;
+    u32 numeroCambiosJugador;
+    u32 danioRecibido[NUMERO_COMBATIENTES];
+    u32 contadorMultigolpes;
     u16 wrappedMove[NUMERO_COMBATIENTES];
     u16 moveTarget[NUMERO_COMBATIENTES];
     u32 expValue;
@@ -444,8 +402,6 @@ struct Combate
     u8 stateIdAfterSelScript[NUMERO_COMBATIENTES];
     u8 prevSelectedPartySlot;
     u8 absentBattlerFlags;
-    u16 lastTakenMove[NUMERO_COMBATIENTES]; // Probablemente estos no se lean
-    u16 lastTakenMoveFrom[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES];
     u16 hpOnSwitchout[NUMERO_LADOS];
     u16 abilityPreventingSwitchout;
     u8 hpScale;
@@ -481,7 +437,6 @@ struct Combate
     u8 ateBerry[2]; // array id determined by side, each party pokemon as bit
     u8 stolenStats[NUMERO_ESTADISTICAS_BATALLA]; // hp byte is used for which stats to raise, other inform about by how many stages
     u8 lastMoveFailed; // as bits for each battler, for the sake of Stomping Tantrum
-    u8 lastMoveTarget[NUMERO_COMBATIENTES]; // The last target on which each mon used a move, for the sake of Instruct
     u16 tracedAbility[NUMERO_COMBATIENTES];
     u16 hpBefore[NUMERO_COMBATIENTES]; // Hp of battlers before using a move. For Berserk and Anger Shell.
     s32 IA_Puntuacion[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES][MAX_MON_MOVES]; // AI, target, moves to make debugging easier
@@ -489,10 +444,10 @@ struct Combate
     u8 IA_Objetivo[NUMERO_COMBATIENTES];
     u8 soulheartBattlerId;
     u8 sameMoveTurns[NUMERO_COMBATIENTES]; // For ECHOED VOICE, number of times the same moves has been SUCCESFULLY used.
-    u16 moveEffect2; // For Knock Off
+    u16 moveEffect2; // For Desarme
     u16 changedSpecies[NUMERO_LADOS][PARTY_SIZE]; // For forms when multiple mons can change into the same pokemon.
     u8 quickClawBattlerId;
-    struct LostItem itemLost[NUMERO_LADOS][PARTY_SIZE];  // Pokemon that had items consumed or stolen (two bytes per party member per side)
+    u32 objetoPerdido[NUMERO_LADOS][PARTY_SIZE];
     u8 forcedSwitch:4; // For each battler
     u8 additionalEffectsCounter:4; // A counter for the additionalEffects applied by the current move in Cmd_setadditionaleffects
     u8 swapDamageCategory:1; // Photon Geyser, Shell Side Arm, Light That Burns the Sky
@@ -526,12 +481,10 @@ struct Combate
     u32 posicionPokemonEquipo;
     u32 estadisticaAtaqueEquipo;
     enum ResultadosMovimiento resultadoMovimiento;
+    struct EfectosFinTurno efectoFinTurno
 };
 
 #define DYNAMIC_TYPE_MASK                 ((1 << 6) - 1)
-
-#define ES_TIPO(combatiente, tipo)      ((GetBattlerType(combatiente, 0) == tipo || GetBattlerType(combatiente, 1) == tipo))
-#define ESTA_DORMIDO(combatiente)       (gBattleMons[combatiente].status1 & STATUS1_SLEEP)
 
 #define IS_MOVE_RECOIL(move) (gMovesInfo[move].recoil > 0 || gMovesInfo[move].effect == EFFECT_RECOIL_IF_MISS)
 
@@ -687,12 +640,6 @@ struct MonSpritesGfx
     u16 *buffer;
 };
 
-struct QueuedStatBoost
-{
-    u8 stats;   // bitfield for each battle stat that is set if the stat changes
-    s8 statChanges[NUMERO_ESTADISTICAS_BATALLA - 1];    // highest bit being set decreases the stat
-}; /* size = 8 */
-
 // All battle variables are declared in battle_main.c
 extern u16 gBattle_BG0_X;
 extern u16 gBattle_BG0_Y;
@@ -739,7 +686,6 @@ extern u8 gEffectBattler;
 extern u8 gPotentialItemEffectBattler;
 extern u8 gAbsentBattlerFlags;
 extern u32 gEsGolpeCritico;
-extern u8 gContadorMultigolpes;
 extern const u8 *gBattlescriptCurrInstr;
 extern u32 gAccionElegida[NUMERO_COMBATIENTES];
 extern const u8 *gSelectionBattleScripts[NUMERO_COMBATIENTES];
@@ -787,12 +733,10 @@ extern u16 gMoveToLearn;
 extern u32 gFieldStatuses;
 extern struct FieldTimer gFieldTimers;
 extern u32 gBattlerAbility;
-extern struct QueuedStatBoost gQueuedStatBoosts[NUMERO_COMBATIENTES];
 extern const struct BattleMoveEffect gBattleMoveEffects[];
 
 extern void (*gPreBattleCallback1)(void);
 extern void (*gBattleMainFunc)(void);
-extern struct BattleResults gBattleResults;
 extern u8 gLeveledUpInBattle;
 extern u8 gHealthboxSpriteIds[NUMERO_COMBATIENTES];
 extern u8 gNumberOfMovesToChoose;
@@ -802,10 +746,24 @@ extern u16 gBallToDisplay;
 extern bool8 gLastUsedBallMenuPresent;
 extern u8 gCategoryIconSpriteId;
 
-static inline bool32 IsBattlerTurnDamaged(u32 battler)
+static inline bool32 EsTipo(u32 combatiente, u32 tipo)
 {
-    return gSpecialStatuses[battler].physicalDmg != 0
-        || gSpecialStatuses[battler].specialDmg != 0;
+    return (gBattleMons[combatiente].types[TIPO_1] == tipo || gBattleMons[combatiente].types[TIPO_2] == tipo);
+}
+
+static inline bool32 EsPrimerTurno(u32 combatiente)
+{
+    return (gDisableStructs[combatiente].esPrimerTurno);
+}
+
+static inline bool32 EstaDormido(u32 combatiente)
+{
+    return (gBattleMons[combatiente].status1 & STATUS1_SLEEP);
+}
+
+static inline bool32 HaSidoDaniado(u32 combatiente)
+{
+    return gCombate[combatiente].danioRecibido != 0; // Solo por movimientos, no por confusión/retroceso.
 }
 
 static inline bool32 IsBattlerAtMaxHp(u32 battler)
@@ -863,7 +821,7 @@ static inline bool32 EsMovimientoDeEstado(u32 movimiento)
 
 static inline bool32 EsPrimerGolpe(void)
 {
-    return (gContadorMultigolpes == 0);
+    return (gCombate.contadorMultigolpes == 0);
 }
 
 #endif // GUARD_BATTLE_H

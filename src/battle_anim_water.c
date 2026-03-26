@@ -54,8 +54,8 @@ static void AnimTask_Salpicadura_Step(u8);
 static void CreateSalpicaduraDroplet(struct Task *);
 static void CreateWaterPulseRingBubbles(struct Sprite *, int, int);
 static void AnimAquaTail(struct Sprite *sprite);
-static void AnimKnockOffAquaTail(struct Sprite *sprite);
-static void AnimKnockOffAquaTailStep(struct Sprite *sprite);
+static void AnimDesarmeAquaTail(struct Sprite *sprite);
+static void AnimDesarmeAquaTailStep(struct Sprite *sprite);
 
 static const union AnimCmd sAnim_RainDrop[] =
 {
@@ -508,47 +508,47 @@ const union AffineAnimCmd *const gAquaTailHitAffineAnims[] =
     gAquaTailHitAffineAnimCmd_4,
 };
 
-const union AnimCmd gKnockOffAquaTailAnimCmd[] =
+const union AnimCmd gDesarmeAquaTailAnimCmd[] =
 {
     ANIMCMD_FRAME(0, 4),
     ANIMCMD_FRAME(64, 4),
     ANIMCMD_END,
 };
 
-const union AnimCmd *const gKnockOffAquaTailAnim[] =
+const union AnimCmd *const gDesarmeAquaTailAnim[] =
 {
-    gKnockOffAquaTailAnimCmd,
+    gDesarmeAquaTailAnimCmd,
 };
 
-const union AffineAnimCmd gKnockOffAquaTailAffineanimCmd_1[] =
+const union AffineAnimCmd gDesarmeAquaTailAffineanimCmd_1[] =
 {
     AFFINEANIMCMD_FRAME(0x100, 0x100, 0, 0),
     AFFINEANIMCMD_FRAME(0, 0, -4, 8),
     AFFINEANIMCMD_END,
 };
 
-const union AffineAnimCmd gKnockOffAquaTailAffineanimCmd_2[] =
+const union AffineAnimCmd gDesarmeAquaTailAffineanimCmd_2[] =
 {
     AFFINEANIMCMD_FRAME(-0x100, 0x100, 0, 0),
     AFFINEANIMCMD_FRAME(0, 0, 4, 8),
     AFFINEANIMCMD_END,
 };
 
-const union AffineAnimCmd *const gKnockOffAquaTailAffineAnim[] =
+const union AffineAnimCmd *const gDesarmeAquaTailAffineAnim[] =
 {
-    gKnockOffAquaTailAffineanimCmd_1,
-    gKnockOffAquaTailAffineanimCmd_2,
+    gDesarmeAquaTailAffineanimCmd_1,
+    gDesarmeAquaTailAffineanimCmd_2,
 };
 
-const struct SpriteTemplate gAquaTailKnockOffSpriteTemplate =
+const struct SpriteTemplate gAquaTailDesarmeSpriteTemplate =
 {
     .tileTag = ANIM_TAG_SLAM_HIT_2,
     .paletteTag = ANIM_TAG_WATER_IMPACT,
     .oam = &gOamData_AffineNormal_ObjNormal_64x64,
-    .anims = gKnockOffAquaTailAnim,
+    .anims = gDesarmeAquaTailAnim,
     .images = NULL,
-    .affineAnims = gKnockOffAquaTailAffineAnim,
-    .callback = AnimKnockOffAquaTail,
+    .affineAnims = gDesarmeAquaTailAffineAnim,
+    .callback = AnimDesarmeAquaTail,
 };
 
 const struct SpriteTemplate gAquaTailHitSpriteTemplate =
@@ -596,7 +596,7 @@ static void AnimAquaTail(struct Sprite *sprite)
     StoreSpriteCallbackInData6(sprite, DestroyAnimSprite);
 }
 
-static void AnimKnockOffAquaTail(struct Sprite *sprite)
+static void AnimDesarmeAquaTail(struct Sprite *sprite)
 {
     if (GetBattlerSide(gBattleAnimTarget) == LADO_JUGADOR)
     {
@@ -614,10 +614,10 @@ static void AnimKnockOffAquaTail(struct Sprite *sprite)
         sprite->y += gBattleAnimArgs[1];
     }
 
-    sprite->callback = AnimKnockOffAquaTailStep;
+    sprite->callback = AnimDesarmeAquaTailStep;
 }
 
-static void AnimKnockOffAquaTailStep(struct Sprite *sprite)
+static void AnimDesarmeAquaTailStep(struct Sprite *sprite)
 {
     sprite->data[1] += sprite->data[0];
     sprite->data[1] &= 0xFF;

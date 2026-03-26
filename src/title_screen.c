@@ -778,7 +778,7 @@ static void Task_TitleScreenPhase3(u8 taskId)
 {
     if (JOY_NEW(A_BUTTON) || JOY_NEW(START_BUTTON))
     {
-        FadeOutBGM(4);
+        FadeOutBGM(VELOCIDAD_ACELERADA_MUSICA);
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_WHITEALPHA);
         SetMainCallback2(CB2_GoToMainMenu);
     }
@@ -789,7 +789,7 @@ static void Task_TitleScreenPhase3(u8 taskId)
     else if (JOY_HELD(RESET_RTC_BUTTON_COMBO) == RESET_RTC_BUTTON_COMBO
       && CanResetRTC() == TRUE)
     {
-        FadeOutBGM(4);
+        FadeOutBGM(VELOCIDAD_ACELERADA_MUSICA);
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
         SetMainCallback2(CB2_GoToResetRtcScreen);
     }

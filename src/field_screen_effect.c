@@ -1044,9 +1044,9 @@ void FadeOutOrbEffect(void)
 #undef tWinIn
 #undef tWinOut
 
-void Script_FadeOutMapMusic(void)
+void Script_DesvaneceMusicaMapa(void)
 {
-    Overworld_FadeOutMapMusic();
+    Overworld_DesvaneceMusicaMapa();
     CreateTask(Task_EnableScriptAfterMusicFade, 80);
 }
 

@@ -1221,8 +1221,6 @@ const u32 gItemIconPalette_ScopeLens[] = INCBIN_U32("graphics/items/icon_palette
 const u32 gItemIcon_Leftovers[] = INCBIN_U32("graphics/items/icons/leftovers.4bpp.lz");
 const u32 gItemIconPalette_Leftovers[] = INCBIN_U32("graphics/items/icon_palettes/leftovers.gbapal.lz");
 
-const u32 gItemIcon_ShellBell[] = INCBIN_U32("graphics/items/icons/shell_bell.4bpp.lz");
-
 const u32 gItemIcon_WideLens[] = INCBIN_U32("graphics/items/icons/wide_lens.4bpp.lz");
 const u32 gItemIconPalette_WideLens[] = INCBIN_U32("graphics/items/icon_palettes/wide_lens.gbapal.lz");
 
@@ -1801,9 +1799,6 @@ const u32 gItemIconPalette_LeadersCrest[] = INCBIN_U32("graphics/items/icon_pale
 
 const u32 gItemIcon_MaliciousArmor[] = INCBIN_U32("graphics/items/icons/malicious_armor.4bpp.lz");
 const u32 gItemIconPalette_MaliciousArmor[] = INCBIN_U32("graphics/items/icon_palettes/malicious_armor.gbapal.lz");
-
-const u32 gItemIcon_MirrorHerb[] = INCBIN_U32("graphics/items/icons/mirror_herb.4bpp.lz");
-const u32 gItemIconPalette_MirrorHerb[] = INCBIN_U32("graphics/items/icon_palettes/mirror_herb.gbapal.lz");
 
 const u32 gItemIcon_ScrollOfDarkness[] = INCBIN_U32("graphics/items/icons/scroll_of_darkness.4bpp.lz");
 const u32 gItemIconPalette_ScrollOfDarkness[] = INCBIN_U32("graphics/items/icon_palettes/scroll_of_darkness.gbapal.lz");

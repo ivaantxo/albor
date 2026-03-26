@@ -863,11 +863,11 @@ void BufferStringBattle(u16 stringID, u32 battler)
     case STRINGID_RETURNMON:
         if (GetBattlerSide(battler) == LADO_JUGADOR)
         {
-            if (*(&gCombate->hpScale) == 0)
+            if (gCombate->hpScale == 0)
                 stringPtr = COMPOUND_STRING("¡{B_BUFF1}, ya es suficiente! ¡Vuelve!");
-            else if (*(&gCombate->hpScale) == 1 || EsContraEntrenador())
+            else if (gCombate->hpScale == 1 || EsContraEntrenador())
                 stringPtr = COMPOUND_STRING("¡{B_BUFF1}, ven conmigo!");
-            else if (*(&gCombate->hpScale) == 2)
+            else if (gCombate->hpScale == 2)
                 stringPtr = COMPOUND_STRING("¡{B_BUFF1}, bien! ¡Cambio!");
             else
                 stringPtr = COMPOUND_STRING("¡Lo has hecho bien, {B_BUFF1}! ¡Descansa!");
@@ -880,11 +880,11 @@ void BufferStringBattle(u16 stringID, u32 battler)
     case STRINGID_SWITCHINMON:
         if (GetBattlerSide(gBattleScripting.battler) == LADO_JUGADOR)
         {
-            if (*(&gCombate->hpScale) == 0 || EsContraEntrenador())
+            if (gCombate->hpScale == 0 || EsContraEntrenador())
                 stringPtr = COMPOUND_STRING("¡A luchar, {B_BUFF1}!");
-            else if (*(&gCombate->hpScale) == 1)
+            else if (gCombate->hpScale == 1)
                 stringPtr = COMPOUND_STRING("¡Hazlo, {B_BUFF1}!");
-            else if (*(&gCombate->hpScale) == 2)
+            else if (gCombate->hpScale == 2)
                 stringPtr = COMPOUND_STRING("¡A por ello, {B_BUFF1}!");
             else
                 stringPtr = COMPOUND_STRING("¡Tu rival está débil! ¡Tú puedes, {B_BUFF1}!");

@@ -42,8 +42,8 @@ static void AnimTask_HazeScrollingFog_Step(u8);
 static void AnimTask_MistBallFog_Step(u8);
 static void AnimTask_Hail2(u8);
 static bool8 GenerateHailParticle(u8 hailStructId, u8 affineAnimNum, u8 taskId, u8 c);
-static void AvalancheAnim_Step(struct Sprite *sprite);
-static void AvalancheAnim_Step2(struct Sprite *sprite);
+static void AludAnim_Step(struct Sprite *sprite);
+static void AludAnim_Step2(struct Sprite *sprite);
 static void AnimSnowflakes(struct Sprite *sprite);
 static void AnimSnowflakes_Step(struct Sprite *sprite);
 
@@ -496,40 +496,40 @@ const struct SpriteTemplate gIceBallImpactShardSpriteTemplate =
     .callback = InitIceBallParticle,
 };
 
-const union AnimCmd gAvalancheAnimTable_1[] =
+const union AnimCmd gAludAnimTable_1[] =
 {
     ANIMCMD_FRAME(32, 1),
     ANIMCMD_END,
 };
 
-const union AnimCmd gAvalancheAnimTable_2[] =
+const union AnimCmd gAludAnimTable_2[] =
 {
     ANIMCMD_FRAME(48, 1),
     ANIMCMD_END,
 };
 
-const union AnimCmd gAvalancheAnimTable_3[] =
+const union AnimCmd gAludAnimTable_3[] =
 {
     ANIMCMD_FRAME(64, 1),
     ANIMCMD_END,
 };
 
-const union AnimCmd *const gAvalancheAnimCmd[] =
+const union AnimCmd *const gAludAnimCmd[] =
 {
-    gAvalancheAnimTable_1,
-    gAvalancheAnimTable_2,
-    gAvalancheAnimTable_3,
+    gAludAnimTable_1,
+    gAludAnimTable_2,
+    gAludAnimTable_3,
 };
 
-const struct SpriteTemplate gAvalancheSpriteTemplate =
+const struct SpriteTemplate gAludSpriteTemplate =
 {
     .tileTag = ANIM_TAG_ROCKS,
     .paletteTag = ANIM_TAG_ICE_CHUNK,
     .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gAvalancheAnimCmd,
+    .anims = gAludAnimCmd,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AvalancheAnim_Step,
+    .callback = AludAnim_Step,
 };
 
 const struct SpriteTemplate gChatterSingNotesTemplate =
@@ -543,7 +543,7 @@ const struct SpriteTemplate gChatterSingNotesTemplate =
     .callback = AnimIceEffectParticle
 };
 
-static void AvalancheAnim_Step(struct Sprite *sprite)
+static void AludAnim_Step(struct Sprite *sprite)
 {
     if (gBattleAnimArgs[3] != 0)
         SetAverageBattlerPositions(gBattleAnimTarget, 0, &sprite->x, &sprite->y);
@@ -561,12 +561,12 @@ static void AvalancheAnim_Step(struct Sprite *sprite)
     sprite->data[4] = -70;
     sprite->data[5] = gBattleAnimArgs[2];
 
-    StoreSpriteCallbackInData6(sprite, AvalancheAnim_Step2);
+    StoreSpriteCallbackInData6(sprite, AludAnim_Step2);
     sprite->callback = TranslateSpriteInEllipse;
     sprite->callback(sprite);
 }
 
-static void AvalancheAnim_Step2(struct Sprite *sprite)
+static void AludAnim_Step2(struct Sprite *sprite)
 {
     sprite->x += sprite->data[5];
 

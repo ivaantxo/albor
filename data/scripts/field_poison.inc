@@ -10,7 +10,7 @@ EventScript_FieldWhiteOut::
 	message gText_PlayerWhitedOut
 	waitmessage
 	waitbuttonpress
-	special Script_FadeOutMapMusic
+	special Script_DesvaneceMusicaMapa
 	waitstate
 	fadescreen FADE_TO_BLACK
 	call_if_set FLAG_WHITEOUT_TO_LAVARIDGE, EventScript_SetRespawnLavaridgePkmnCenter

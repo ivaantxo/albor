@@ -795,23 +795,8 @@
 	.byte BATTLE_CMD_setsubstitute
 	.endm
 
-	.macro mimicattackcopy failInstr:req
-	.byte BATTLE_CMD_mimicattackcopy
-	.4byte \failInstr
-	.endm
-
 	.macro dmgtolevel
 	.byte BATTLE_CMD_dmgtolevel
-	.endm
-
-	.macro counterdamagecalculator failInstr:req
-	.byte BATTLE_CMD_counterdamagecalculator
-	.4byte \failInstr
-	.endm
-
-	.macro mirrorcoatdamagecalculator failInstr:req
-	.byte BATTLE_CMD_mirrorcoatdamagecalculator
-	.4byte \failInstr
 	.endm
 
 	.macro disablelastusedattack failInstr:req
@@ -848,11 +833,6 @@
 
 	.macro settailwind failInstr:req
 	.byte BATTLE_CMD_settailwind
-	.4byte \failInstr
-	.endm
-
-	.macro tryspiteppreduce failInstr:req
-	.byte BATTLE_CMD_tryspiteppreduce
 	.4byte \failInstr
 	.endm
 
@@ -983,11 +963,6 @@
 	.byte BATTLE_CMD_setminimize
 	.endm
 
-	.macro trymemento failInstr:req
-	.byte BATTLE_CMD_trymemento
-	.4byte \failInstr
-	.endm
-
 	.macro setforcedtarget
 	.byte BATTLE_CMD_setforcedtarget
 	.endm
@@ -1044,11 +1019,6 @@
 	.4byte \failInstr
 	.endm
 
-	.macro setyawn failInstr:req
-	.byte BATTLE_CMD_setyawn
-	.4byte \failInstr
-	.endm
-
 	.macro setdamagetohealthdifference failInstr:req
 	.byte BATTLE_CMD_setdamagetohealthdifference
 	.4byte \failInstr
@@ -1076,11 +1046,6 @@
 	.macro setuserstatus3 flags:req, failInstr:req
 	.byte BATTLE_CMD_setuserstatus3
 	.4byte \flags
-	.4byte \failInstr
-	.endm
-
-	.macro assistattackselect failInstr:req
-	.byte BATTLE_CMD_assistattackselect
 	.4byte \failInstr
 	.endm
 
@@ -1258,11 +1223,6 @@
 	callnative BS_TryRelicSong
 	.endm
 
-	.macro trycopycat failInstr:req
-	callnative BS_TryCopycat
-	.4byte \failInstr
-	.endm
-
 	@ Used by effects that may proc Symbiosis but do not call removeitem.
 	.macro trysymbiosis
 	callnative BS_TrySymbiosis
@@ -1328,12 +1288,6 @@
 
 	.macro IntentaPalmaRauda failInstr:req
 	callnative ScriptCombate_PalmaRauda
-	.4byte \failInstr
-	.endm
-
-	.macro copyfoesstatincrease battler:req, failInstr:req
-	callnative BS_CopyFoesStatIncrease
-	.byte \battler
 	.4byte \failInstr
 	.endm
 
@@ -1611,11 +1565,6 @@
 	.macro jumpifroarfails jumpInstr:req
 	various BS_ATTACKER, VARIOUS_JUMP_IF_ROAR_FAILS
 	.4byte \jumpInstr
-	.endm
-
-	.macro tryinstruct failInstr:req
-	various BS_ATTACKER, VARIOUS_TRY_INSTRUCT
-	.4byte \failInstr
 	.endm
 
 	.macro settracedability battler:req

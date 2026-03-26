@@ -271,7 +271,7 @@ void InitTMCase(u8 type, void (* exitCallback)(void), bool8 allowSelectClose)
         sTMCaseStaticResources.allowSelectClose = allowSelectClose;
     gTextFlags.autoScroll = FALSE;
     SetMainCallback2(CB2_SetUpTMCaseUI_Blocking);
-    FadeOutAndPlayNewMapMusic(MUS_DP_TV_STATION, 4);
+    FadeOutAndPlayNewMapMusic(MUS_DP_TV_STATION, VELOCIDAD_ACELERADA_MUSICA);
 }
 
 static void CB2_Idle(void)
@@ -723,7 +723,7 @@ static void Task_FadeOutAndCloseTMCase(u8 taskId)
         RemoveScrollArrows();
         DestroyTMCaseBuffers();
         DestroyTask(taskId);
-        FadeOutAndPlayNewMapMusic(music, 8);
+        FadeOutAndPlayNewMapMusic(music, VELOCIDAD_LENTA_MUSICA);
     }
 }
 

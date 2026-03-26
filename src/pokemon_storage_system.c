@@ -1687,7 +1687,7 @@ static void Task_InitPokeStorage(u8 taskId)
         SetVBlankCallback(NULL);
         SetGpuReg(REG_OFFSET_DISPCNT, 0);
         ResetForPokeStorage();
-        FadeOutAndPlayNewMapMusic(MUS_HG_POKEWALKER, 4);
+        FadeOutAndPlayNewMapMusic(MUS_HG_POKEWALKER, VELOCIDAD_ACELERADA_MUSICA);
         if (sStorage->isReopening)
         {
             switch (sWhichToReshow)
@@ -3062,7 +3062,7 @@ static void Task_OnBPressed(u8 taskId)
             break;
         case 1:
         case MENU_B_PRESSED:
-            FadeOutAndPlayNewMapMusic(music, 8);
+            FadeOutAndPlayNewMapMusic(music, VELOCIDAD_LENTA_MUSICA);
             PlaySE(SE_PC_OFF);
             ClearBottomWindow();
             sStorage->state++;

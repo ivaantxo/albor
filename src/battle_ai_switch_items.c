@@ -94,7 +94,7 @@ static bool32 ShouldSwitchIfHasBadOdds(u32 battler)
             if (aiMoveEffect == EFFECT_REFLECT || aiMoveEffect == EFFECT_LIGHT_SCREEN
             || aiMoveEffect == EFFECT_SPIKES || aiMoveEffect == EFFECT_TOXIC_SPIKES || aiMoveEffect == EFFECT_STEALTH_ROCK || aiMoveEffect == EFFECT_STICKY_WEB || aiMoveEffect == EFFECT_LEECH_SEED
             || aiMoveEffect == EFFECT_EXPLOSION
-            || aiMoveEffect == EFFECT_SLEEP || aiMoveEffect == EFFECT_YAWN || aiMoveEffect == EFFECT_TOXIC || aiMoveEffect == EFFECT_WILL_O_WISP || aiMoveEffect == EFFECT_PARALYZE
+            || aiMoveEffect == EFFECT_SLEEP || aiMoveEffect == EFFECT_TOXIC || aiMoveEffect == EFFECT_WILL_O_WISP || aiMoveEffect == EFFECT_PARALYZE
             || aiMoveEffect == EFFECT_TRICK || aiMoveEffect == EFFECT_TRICK_ROOM || aiMoveEffect== EFFECT_WONDER_ROOM || aiMoveEffect == EFFECT_FIRST_TURN_ONLY
             )
             {
@@ -389,36 +389,6 @@ static bool32 ShouldSwitchIfBadlyStatused(u32 battler)
 
     if (AI_THINKING_STRUCT->aiFlags[battler] & AI_FLAG_SMART_SWITCHING)
     {
-        //Yawn
-        if (gStatuses3[battler] & STATUS3_YAWN
-            && CanBeSlept(battler, monAbility)
-            && gBattleMons[battler].hp > gBattleMons[battler].maxHP / 3)
-        {
-            switchMon = TRUE;
-
-            // Check if Active Pokemon can KO opponent instead of switching
-            // Will still fall asleep, but take out opposing Pokemon first
-            if (AIExpectsToFaintPlayer(battler))
-                switchMon = FALSE;
-
-            // Checks to see if active Pokemon can do something against sleep
-            if ((monAbility == ABILITY_NATURAL_CURE
-                || monAbility == ABILITY_MUDAR
-                || monAbility == ABILITY_EARLY_BIRD)
-                || holdEffect == (HOLD_EFFECT_CURE_SLP | HOLD_EFFECT_CURE_STATUS)
-                || HasMove(battler, MOVE_SLEEP_TALK)
-                || (HasMoveEffect(battler, MOVE_SNORE) && IA_EfectividadMovimiento(MOVE_SNORE, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
-                )
-                switchMon = FALSE;
-
-            // Check if Active Pokemon evasion boosted and might be able to dodge until awake
-            if (gBattleMons[battler].statStages[ESTADISTICA_EVASION] > (ESTADISTICA_NEUTRA + 3)
-                && AI_DATA->abilities[opposingBattler] != ABILITY_UNAWARE
-                && !(gBattleMons[battler].status2 & STATUS2_FORESIGHT)
-                && !(gStatuses3[battler] & STATUS3_MIRACLE_EYED))
-                switchMon = FALSE;
-        }
-
         // Secondary Damage
         if (monAbility != ABILITY_MAGIC_GUARD
             && !AIExpectsToFaintPlayer(battler))
@@ -1552,15 +1522,15 @@ static s32 GetMaxDamagePlayerCouldDealToSwitchin(u32 battler, u32 opposingBattle
 
 static bool32 CanAbilityTrapOpponent(u16 ability, u32 opponent)
 {
-    if (ES_TIPO(opponent, TIPO_FANTASMA))
+    if (EsTipo(opponent, TIPO_FANTASMA))
         return FALSE;
     else if (ability == ABILITY_SHADOW_TAG)
         return TRUE;
     else if (ability == ABILITY_ARENA_TRAP && EstaCombatienteEnSuelo(opponent))
         return TRUE;
-    else if (ability == ABILITY_IMAN && ES_TIPO(opponent, TIPO_ACERO))
+    else if (ability == ABILITY_IMAN && EsTipo(opponent, TIPO_ACERO))
         return TRUE;
-    else if (ability == ABILITY_MATAMOSCAS && ES_TIPO(opponent, TIPO_BICHO))
+    else if (ability == ABILITY_MATAMOSCAS && EsTipo(opponent, TIPO_BICHO))
         return TRUE;
     else
         return FALSE;

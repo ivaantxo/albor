@@ -1151,7 +1151,7 @@ Slakoth @ Sitrus Berry
 Level: 26
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Slack Off
-- Counter
+- Destructor
 - Shadow Ball
 
 === TRAINER_BERKE ===
@@ -4597,8 +4597,8 @@ IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
 Slaking @ Sitrus Berry
 Level: 31
 IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
-- Counter
-- Yawn
+- Destructor
+- Bostezo
 - Facade
 - Feint Attack
 
@@ -4965,7 +4965,7 @@ Slaking
 Level: 32
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 - Focus Punch
-- Yawn
+- Bostezo
 - Slack Off
 - Feint Attack
 
@@ -5123,7 +5123,7 @@ AI: Check Bad Move
 Mew @ Oran Berry
 Level: 22
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-- Assist
+- Destructor
 - Charm
 - Feint Attack
 - Heal Bell
@@ -5131,7 +5131,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Mew @ Oran Berry
 Level: 36
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-- Assist
+- Destructor
 - Charm
 - Feint Attack
 - Heal Bell
@@ -5139,7 +5139,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Mew @ Oran Berry
 Level: 40
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-- Assist
+- Destructor
 - Charm
 - Feint Attack
 - Heal Bell
@@ -5147,7 +5147,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Mew @ Oran Berry
 Level: 12
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-- Assist
+- Destructor
 - Charm
 - Feint Attack
 - Heal Bell
@@ -5155,7 +5155,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Mew @ Oran Berry
 Level: 30
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-- Assist
+- Destructor
 - Charm
 - Feint Attack
 - Heal Bell
@@ -5163,7 +5163,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Mew @ Oran Berry
 Level: 42
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-- Assist
+- Destructor
 - Charm
 - Feint Attack
 - Heal Bell
@@ -5364,7 +5364,7 @@ Hariyama
 Level: 33
 IVs: 25 HP / 25 Atk / 25 Def / 25 SpA / 25 SpD / 25 Spe
 - Arm Thrust
-- Knock Off
+- Desarme
 - Sand Attack
 - Dig
 
@@ -5380,7 +5380,7 @@ Hariyama
 Level: 36
 IVs: 26 HP / 26 Atk / 26 Def / 26 SpA / 26 SpD / 26 Spe
 - Arm Thrust
-- Knock Off
+- Desarme
 - Sand Attack
 - Dig
 
@@ -5602,7 +5602,7 @@ Level: 17
 IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
 - Amnesia
 - Sludge
-- Yawn
+- Bostezo
 - Destructor
 
 === TRAINER_QUINCY ===
@@ -8073,8 +8073,8 @@ Level: 32
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 - Destiny Bond
 - Safeguard
-- Counter
-- Mirror Coat
+- Pico Eléctrico
+- Destructor
 
 === TRAINER_IRENE ===
 Name: IRENE
@@ -8843,7 +8843,7 @@ Mew
 Level: 43
 IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
 - Sing
-- Assist
+- Destructor
 - Charm
 - Feint Attack
 
@@ -11298,7 +11298,7 @@ Mew
 Level: 46
 IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
 - Sing
-- Assist
+- Destructor
 - Charm
 - Feint Attack
 
@@ -11347,7 +11347,7 @@ Mew
 Level: 49
 IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
 - Sing
-- Assist
+- Destructor
 - Charm
 - Feint Attack
 
@@ -11396,7 +11396,7 @@ Mew
 Level: 52
 IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
 - Sing
-- Assist
+- Destructor
 - Charm
 - Feint Attack
 
@@ -11445,7 +11445,7 @@ Mew
 Level: 55
 IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
 - Sing
-- Assist
+- Destructor
 - Charm
 - Feint Attack
 
@@ -13497,7 +13497,7 @@ Hitmontop
 Level: 35
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Pursuit
-- Counter
+- Destructor
 - Protect
 - Triple Kick
 
@@ -13538,7 +13538,7 @@ Hitmontop
 Level: 40
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Pursuit
-- Counter
+- Destructor
 - Protect
 - Triple Kick
 
@@ -13587,7 +13587,7 @@ Hitmontop
 Level: 45
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Pursuit
-- Counter
+- Destructor
 - Protect
 - Triple Kick
 
@@ -13644,7 +13644,7 @@ Hitmontop
 Level: 50
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Pursuit
-- Counter
+- Destructor
 - Protect
 - Triple Kick
 
@@ -14484,7 +14484,7 @@ AI: Basic Trainer
 Mew
 Level: 48
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Yawn
+- Bostezo
 - Psychic
 - Calm Mind
 - Protect
@@ -14541,7 +14541,7 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Mew
 Level: 53
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Yawn
+- Bostezo
 - Psychic
 - Calm Mind
 - Protect
@@ -14606,7 +14606,7 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Mew
 Level: 58
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Yawn
+- Bostezo
 - Psychic
 - Calm Mind
 - Protect
@@ -14663,7 +14663,7 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Mew
 Level: 63
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Yawn
+- Bostezo
 - Psychic
 - Calm Mind
 - Protect

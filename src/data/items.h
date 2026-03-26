@@ -7376,23 +7376,6 @@ const struct Item gItemsInfo[] =
         .iconPalette = gItemIconPalette_Leftovers,
     },
 
-    [ITEM_SHELL_BELL] =
-    {
-        .name = _("Shell Bell"),
-        .price = (I_PRICE >= GEN_9) ? 20000 : ((I_PRICE >= GEN_7) ? 4000 : 200),
-        .holdEffect = HOLD_EFFECT_SHELL_BELL,
-        .holdEffectParam = 8,
-        .description = COMPOUND_STRING(
-            "A hold item that\n"
-            "restores HP upon\n"
-            "striking the foe."),
-        .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .iconPic = gItemIcon_ShellBell,
-        .iconPalette = gItemIconPalette_Shell,
-    },
-
     [ITEM_WIDE_LENS] =
     {
         .name = _("Wide Lens"),
@@ -7962,9 +7945,9 @@ const struct Item gItemsInfo[] =
         .price = (I_PRICE >= GEN_9) ? 20000 : 4000,
         .holdEffect = HOLD_EFFECT_THROAT_SPRAY,
         .description = COMPOUND_STRING(
-            "Raises Sp. Atk. if\n"
-            "the holder uses a\n"
-            "sound-based move."),
+            "Potencia 25%\n"
+            "movimientos de\n"
+            "sonido."),
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
@@ -11810,22 +11793,6 @@ const struct Item gItemsInfo[] =
         .effect = gItemEffect_EvoItem,
         .iconPic = gItemIcon_MaliciousArmor,
         .iconPalette = gItemIconPalette_MaliciousArmor,
-    },
-
-    [ITEM_MIRROR_HERB] =
-    {
-        .name = _("Mirror Herb"),
-        .price = 30000,
-        .holdEffect = HOLD_EFFECT_MIRROR_HERB,
-        .description = COMPOUND_STRING(
-            "Mirrors an enemy's\n"
-            "stat increases\n"
-            "but only once."),
-        .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-        .iconPic = gItemIcon_MirrorHerb,
-        .iconPalette = gItemIconPalette_MirrorHerb,
     },
 
     [ITEM_SCROLL_OF_DARKNESS] =

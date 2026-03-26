@@ -697,14 +697,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 2,
     },
 
-    [ABILITY_UNAWARE] =
-    {
-        .name = _("Ignorante"),
-        .description = COMPOUND_STRING("Ignora cambios de estadísticas."),
-        .aiRating = 6,
-        .breakable = TRUE,
-    },
-
     [ABILITY_CROMOLENTE] =
     {
         .name = _("Cromolente"),
@@ -1357,13 +1349,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .breakable = TRUE,
     },
 
-    [ABILITY_OPPORTUNIST] =
-    {
-        .name = _("Opportunist"),
-        .description = COMPOUND_STRING("Copies foe's stat change."),
-        .aiRating = 5,
-    },
-
     [ABILITY_CUD_CHEW] =
     {
         .name = _("Cud Chew"),
@@ -1376,13 +1361,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Cortante"),
         .description = COMPOUND_STRING("Cortantes +25%."),
         .aiRating = 7,
-    },
-
-    [ABILITY_COSTAR] =
-    {
-        .name = _("Costar"),
-        .description = COMPOUND_STRING("Copies ally's stat changes."),
-        .aiRating = 5,
     },
 
     [ABILITY_OLOR_FLUVIAL] =
@@ -1662,13 +1640,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .name = _("Ninja"),
         .description = COMPOUND_STRING("No hace contacto."),
         .aiRating = 3,
-    },
-
-    [ABILITY_REY_DEL_MAR] =
-    {
-        .name = _("Rey del mar"),
-        .description = COMPOUND_STRING("Copia cambios de stats."),
-        .aiRating = 5,
     },
 
     [ABILITY_FUNDICION] =

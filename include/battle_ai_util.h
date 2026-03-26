@@ -13,11 +13,13 @@ enum AIPivot
 bool32 AI_IsFaster(u32 battlerAI, u32 battlerDef, u32 move);
 bool32 AI_IsSlower(u32 battlerAI, u32 battlerDef, u32 move);
 bool32 AI_RandLessThan(u32 val);
+
 static inline bool32 CombatienteEsIA(u32 combatiente)
 {
     return EsContraEntrenador()
         && ((combatiente & BIT_SIDE) == LADO_OPONENTE);
 };
+
 bool32 IsAIBattlerAware(u32 battlerId);
 void ClearBattlerMoveHistory(u32 battlerId);
 void RecordLastUsedMoveBy(u32 battlerId, u32 move);
@@ -64,7 +66,7 @@ enum AIPivot ShouldPivot(u32 battlerAtk, u32 battlerDef, u32 defAbility, u32 mov
 bool32 IsRecycleEncouragedItem(u32 item);
 bool32 ShouldRestoreHpBerry(u32 battlerAtk, u32 item);
 bool32 IsStatBoostingBerry(u32 item);
-bool32 CanKnockOffItem(u32 battler, u32 item);
+bool32 CanDesarmeItem(u32 battler, u32 item);
 bool32 IsAbilityOfRating(u32 ability, s8 rating);
 bool32 AI_IsAbilityOnSide(u32 battlerId, u32 ability);
 bool32 AI_MoveMakesContact(u32 ability, u32 holdEffect, u32 move);

@@ -34,7 +34,6 @@
 - Indicar que Breaking Swipe tiene boost de Dinocola.
 - Indicar que Poison Sting, Smart Strike tienen boost de Cornamenta.
 - Campo magnético
-- Indicar que Rey del mar es una copia de Costar + Oportunista.
 - Indicar y comprobar que Ditto ya no está en el juego, pero que la mayoría de Pokémon que antes no podían criar, ahora sí lo hacen: Los Pokémon legendarios son género neutro y se les ha añadido grupos huevo acordes, para criar solo hay que juntar 2 Pokémon sin género del mismo grupo huevo. 
 - Last Respects como una versión de paliza fantasma.
 - Darle bunker a Tentacruel.
@@ -65,7 +64,6 @@
 - Teletransporte un Relevo psíquico (siempre puede escapar de trapping? prioridad?)
 - Triataque 3 golpes de diferente tipo (10% cada uno?)
 - case ESPERA_ACCION revisar
-- isFirstTurn modificar
 - Trampas: Ahora hay 6 trampas tipo Trampa rocas: Espinas (planta), Trampa rocas (roca), Púas (acero), Brasas (fuego), Esquirlas heladas (hielo), Púas tóxicas (veneno). Todas funcionan como trampa rocas, hacen daño a Pokémon que estén en el suelo (no causan estados). Trampa rocas ahora no hace efecto a Pokémon voladores o que leviten. Además, no hay "cantidad" de trampa rocas, y el daño se establece según la efectividad del tipo de la trampa con el defensor:
 x0 --> 0; x0,25 --> PS máximos / 64; x0,5 --> PS máximos / 32; x1 --> PS máximos / 16; x2 --> PS máximos / 8; x4 --> PS máximos / 4.
 

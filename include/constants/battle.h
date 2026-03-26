@@ -143,8 +143,6 @@ enum ResultadosMovimiento
 #define STATUS3_MINIMIZED               (1 << 8)
 #define STATUS3_CHARGED_UP              (1 << 9)
 #define STATUS3_ROOTED                  (1 << 10)
-#define STATUS3_YAWN                    (1 << 11 | 1 << 12) // Number of turns to sleep
-#define STATUS3_YAWN_TURN(num)          (((num) << 11) & STATUS3_YAWN)
 #define STATUS3_IMPRISONED_OTHERS       (1 << 13)
 #define STATUS3_GASTRO_ACID             (1 << 16)
 #define STATUS3_EMBARGO                 (1 << 17)
@@ -303,7 +301,7 @@ enum ResultadosMovimiento
 #define MOVE_EFFECT_EVS_MINUS_2         52
 #define MOVE_EFFECT_SCALE_SHOT          53
 #define MOVE_EFFECT_THRASH              54
-#define MOVE_EFFECT_KNOCK_OFF           55
+#define MOVE_EFFECT_DESARME           55
 #define MOVE_EFFECT_DEF_SPDEF_DOWN      56
 #define MOVE_EFFECT_CLEAR_SMOG          57
 #define MOVE_EFFECT_SMACK_DOWN          58
@@ -413,6 +411,74 @@ enum PosicionesCursorSiNo
 {
     CURSOR_SI,
     CURSOR_NO,
+};
+
+
+enum EfectosFinTurnoCampo
+{
+    FIN_TURNO_ORDEN,
+    ENDTURN_REFLECT,
+    ENDTURN_LIGHT_SCREEN,
+    ENDTURN_AURORA_VEIL,
+    ENDTURN_MIST,
+    ENDTURN_LUCKY_CHANT,
+    ENDTURN_SAFEGUARD,
+    ENDTURN_TAILWIND,
+    ENDTURN_WISH,
+    ENDTURN_RAIN,
+    ENDTURN_SANDSTORM,
+    ENDTURN_SUN,
+    ENDTURN_HAIL,
+    ENDTURN_SNOW,
+    ENDTURN_FOG,
+    ENDTURN_DAMAGE_NON_TYPES,
+    ENDTURN_GRAVITY,
+    ENDTURN_TRICK_ROOM,
+    ENDTURN_WONDER_ROOM,
+    ENDTURN_MAGIC_ROOM,
+    ENDTURN_FAIRY_LOCK,
+    ENDTURN_STATUS_HEAL,
+    ENDTURN_FIELD_COUNT,
+};
+
+enum EfectosFinTurnoIndividuales
+{
+    ENDTURN_WEATHER_DAMAGE,
+    ENDTURN_INGRAIN,
+    ENDTURN_AQUA_RING,
+    ENDTURN_ABILITIES,
+    ENDTURN_ITEMS1,
+    ENDTURN_LEECH_SEED,
+    ENDTURN_POISON,
+    ENDTURN_BAD_POISON,
+    ENDTURN_BURN,
+    FIN_TURNO_CONGELACION,
+    ENDTURN_NIGHTMARES,
+    ENDTURN_CURSE,
+    ENDTURN_WRAP,
+    ENDTURN_OCTOLOCK,
+    ENDTURN_UPROAR,
+    ENDTURN_THRASH,
+    ENDTURN_FLINCH,
+    ENDTURN_DISABLE,
+    ENDTURN_ENCORE,
+    ENDTURN_MAGNET_RISE,
+    ENDTURN_TELEKINESIS,
+    ENDTURN_HEALBLOCK,
+    ENDTURN_EMBARGO,
+    ENDTURN_LOCK_ON,
+    ENDTURN_LASER_FOCUS,
+    ENDTURN_CHARGE,
+    ENDTURN_TAUNT,
+    ENDTURN_ITEMS2,
+    ENDTURN_ORBS,
+    ENDTURN_ROOST,
+    ENDTURN_POWDER,
+    ENDTURN_THROAT_CHOP,
+    ENDTURN_CUD_CHEW,
+    ENDTURN_TORMENT, // supposedly this goes after Taunt, before Encore, but Encore is first right now?
+    ENDTURN_ITEMS3,
+    ENDTURN_BATTLER_COUNT
 };
 
 #endif // GUARD_CONSTANTS_BATTLE_H

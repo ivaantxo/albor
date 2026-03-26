@@ -33,10 +33,6 @@ static const u8 sHyperBeamDescription[] = _(
     "Powerful, but leaves the\n"
     "user immobile the next turn.");
 
-static const u8 sRevengeDescription[] = _(
-    "An attack that gains power\n"
-    "if injured by the foe.");
-
 static const u8 sPluckDescription[] = _(
     "Eats the foe's held Berry\n"
     "gaining its effect.");
@@ -103,7 +99,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
-        .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_None,
     },
 
@@ -462,8 +457,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .ignoresProtect = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .ignoresSubstitute = TRUE,
         .magicCoatAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Whirlwind,
     },
 
@@ -484,8 +477,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .gravityBanned = TRUE,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .assistBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_PKMNFLEWHIGH, COMPRESS_BITS(STATUS3_ON_AIR)),
         .battleAnimScript = gBattleAnimMove_Fly,
     },
@@ -860,7 +851,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .instructBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_THRASH,
             .self = TRUE,
@@ -1048,8 +1038,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .magicCoatAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .soundMove = TRUE,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Roar,
     },
 
@@ -1478,41 +1466,24 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_LowKick,
     },
 
-    [MOVE_COUNTER] =
-    {
-        .name = COMPOUND_STRING("Contraataque"),
-        .description = COMPOUND_STRING(
-            "Retaliates any physical hit\n"
-            "with double the power."),
-        .effect = EFFECT_COUNTER,
-        .power = 1,
-        .type = TIPO_LUCHA,
-        .accuracy = 100,
-        .pp = 20,
-        .target = MOVE_TARGET_DEPENDS,
-        .priority = -5,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Counter,
-    },
-
     [MOVE_SEISMIC_TOSS] =
     {
-        .name = COMPOUND_STRING("Sísmico"),
+        .name = COMPOUND_STRING("Alud"),
         .description = COMPOUND_STRING(
-            "Inflicts damage identical\n"
-            "to the user's level."),
-        .effect = EFFECT_LEVEL_DAMAGE,
-        .power = 1,
+            "Desplaza el campo bajando\n"
+            "la velocidad de rivales."),
+        .effect = EFFECT_HIT,
+        .power = 40,
         .type = TIPO_LUCHA,
         .accuracy = 100,
-        .pp = 20,
-        .target = MOVE_TARGET_SELECTED,
+        .pp = PP_MOVIMIENTO_OFENSIVO_LIMITADO,
+        .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
+        .additionalEffects = ADDITIONAL_EFFECTS({
+            .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
+            .chance = 100,
+        }),
         .battleAnimScript = gBattleAnimMove_SeismicToss,
     },
 
@@ -1644,7 +1615,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKSUNLIGHT, B_WEATHER_SUN),
         .battleAnimScript = gBattleAnimMove_SolarBeam,
     },
@@ -1728,7 +1698,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .makesContact = TRUE,
         .danceMove = TRUE,
-        .instructBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_THRASH,
             .self = TRUE,
@@ -1947,8 +1916,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .assistBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_PKMNDUGHOLE, COMPRESS_BITS(STATUS3_UNDERGROUND)),
         .battleAnimScript = gBattleAnimMove_Dig,
     },
@@ -2125,43 +2092,24 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
 
     [MOVE_NIGHT_SHADE] =
     {
-        .name = COMPOUND_STRING("Tinieblas"),
+        .name = COMPOUND_STRING("Pesadilla"),
         .description = COMPOUND_STRING(
-            "Inflicts damage identical\n"
-            "to the user's level."),
-        .effect = EFFECT_LEVEL_DAMAGE,
-        .power = 1,
+            "Doble de daño en dormidos,\n"
+            "pero los despierta."),
+        .effect = EFFECT_DOUBLE_POWER_ON_ARG_STATUS,
+        .power = 60,
         .type = TIPO_FANTASMA,
         .accuracy = 100,
-        .pp = 15,
+        .pp = PP_MOVIMIENTO_ESTADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
+        .argument = STATUS1_SLEEP,
+        .makesContact = TRUE,
+        .additionalEffects = ADDITIONAL_EFFECTS({
+            .moveEffect = MOVE_EFFECT_REMOVE_STATUS,
+        }),
         .battleAnimScript = gBattleAnimMove_NightShade,
-    },
-
-    [MOVE_MIMIC] =
-    {
-        .name = COMPOUND_STRING("Mimético"),
-        .description = COMPOUND_STRING(
-            "Copies a move used by the\n"
-            "foe during one battle."),
-        .effect = EFFECT_MIMIC,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresSubstitute = TRUE,
-        .mimicBanned = TRUE,
-        .copycatBanned = TRUE,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .encoreBanned = TRUE,
-        .assistBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Mimic,
     },
 
     [MOVE_SCREECH] =
@@ -2643,7 +2591,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .headMove = TRUE,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_PKMNLOWEREDHEAD),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_DEF_PLUS_1,
@@ -3285,12 +3232,8 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .mimicBanned = TRUE,
         .sleepTalkBanned = TRUE,
-        .copycatBanned = TRUE,
-        .instructBanned = TRUE,
         .encoreBanned = TRUE,
-        .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Struggle,
     },
 
@@ -3328,8 +3271,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_STEAL_ITEM,
         }),
@@ -3543,25 +3484,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Reversal,
     },
 
-    [MOVE_SPITE] =
-    {
-        .name = COMPOUND_STRING("Rencor"),
-        .description = COMPOUND_STRING(
-            "Spitefully cuts the PP\n"
-            "of the foe's last move."),
-        .effect = EFFECT_SPITE,
-        .power = 0,
-        .type = TIPO_FANTASMA,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .magicCoatAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
-        .ignoresSubstitute = TRUE,
-        .battleAnimScript = gBattleAnimMove_Spite,
-    },
-
     [MOVE_POWDER_SNOW] =
     {
         .name = COMPOUND_STRING("Nieve polvo"),
@@ -3597,8 +3519,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         .priority = B_UPDATED_MOVE_DATA >= GEN_5 ? 4 : 3,
         .category = CATEGORIA_ESTADO,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Protect,
     },
 
@@ -3836,8 +3756,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
         .ignoresSubstitute = TRUE,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_DestinyBond,
     },
 
@@ -3932,7 +3850,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .instructBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_THRASH,
             .self = TRUE,
@@ -4010,7 +3927,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .instructBanned = TRUE,
         .parentalBondBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Rollout,
     },
@@ -4176,12 +4092,8 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        .copycatBanned = TRUE,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .mimicBanned = TRUE,
         .encoreBanned = TRUE,
-        .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_SleepTalk,
     },
 
@@ -4668,24 +4580,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Crunch,
     },
 
-    [MOVE_MIRROR_COAT] =
-    {
-        .name = COMPOUND_STRING("Manto espejo"),
-        .description = COMPOUND_STRING(
-            "Counters the foe's special\n"
-            "attack at double the power."),
-        .effect = EFFECT_MIRROR_COAT,
-        .power = 1,
-        .type = TIPO_PSIQUICO,
-        .accuracy = 100,
-        .pp = 20,
-        .target = MOVE_TARGET_DEPENDS,
-        .priority = -5,
-        .category = CATEGORIA_ESPECIAL,
-        .assistBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_MirrorCoat,
-    },
-
     [MOVE_PSYCH_UP] =
     {
         .name = COMPOUND_STRING("Autosugestión"),
@@ -4896,7 +4790,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .soundMove = TRUE,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_UPROAR,
             .self = TRUE,
@@ -5055,23 +4948,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_WillOWisp,
     },
 
-    [MOVE_MEMENTO] =
-    {
-        .name = COMPOUND_STRING("Memento"),
-        .description = COMPOUND_STRING(
-            "The user faints and lowers\n"
-            "the foe's abilities."),
-        .effect = EFFECT_MEMENTO,
-        .power = 0,
-        .type = TIPO_SINIESTRO,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .battleAnimScript = gBattleAnimMove_Memento,
-    },
-
     [MOVE_FACADE] =
     {
         .name = COMPOUND_STRING("Imagen"),
@@ -5107,9 +4983,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .punchingMove = TRUE,
         .sleepTalkBanned = TRUE,
-        .copycatBanned = TRUE,
-        .instructBanned = TRUE,
-        .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_FocusPunch,
     },
 
@@ -5150,8 +5023,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = B_UPDATED_MOVE_DATA >= GEN_6 ? 2 : 3,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_FollowMe,
     },
 
@@ -5207,28 +5078,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Trick,
-    },
-
-    [MOVE_ROLE_PLAY] =
-    {
-        .name = COMPOUND_STRING("Imitación"),
-        .description = COMPOUND_STRING(
-            "Mimics the target and\n"
-            "copies its special ability."),
-        .effect = EFFECT_ROLE_PLAY,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .ignoresSubstitute = TRUE,
-        .battleAnimScript = gBattleAnimMove_RolePlay,
     },
 
     [MOVE_WISH] =
@@ -5249,30 +5099,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .snatchAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_Wish,
-    },
-
-    [MOVE_ASSIST] =
-    {
-        .name = COMPOUND_STRING("Ayuda"),
-        .description = COMPOUND_STRING(
-            "Attacks randomly with one\n"
-            "of the partner's moves."),
-        .effect = EFFECT_ASSIST,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 100,
-        .pp = 20,
-        .target = MOVE_TARGET_DEPENDS,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .copycatBanned = TRUE,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .encoreBanned = TRUE,
-        .assistBanned = TRUE,
-        .mimicBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Assist,
     },
 
     [MOVE_INGRAIN] =
@@ -5353,22 +5179,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Recycle,
     },
 
-    [MOVE_REVENGE] =
-    {
-        .name = COMPOUND_STRING("Desquite"),
-        .description = sRevengeDescription,
-        .effect = EFFECT_REVENGE,
-        .power = 60,
-        .type = TIPO_LUCHA,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = -4,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_Revenge,
-    },
-
     [MOVE_BRICK_BREAK] =
     {
         .name = COMPOUND_STRING("Demolición"),
@@ -5387,43 +5197,43 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_BrickBreak,
     },
 
-    [MOVE_YAWN] =
+    [MOVE_BOSTEZO] =
     {
         .name = COMPOUND_STRING("Bostezo"),
         .description = COMPOUND_STRING(
             "Lulls the foe into yawning,\n"
             "then sleeping next turn."),
-        .effect = EFFECT_YAWN,
+        .effect = EFFECT_SLEEP,
         .power = 0,
         .type = TIPO_NORMAL,
-        .accuracy = 0,
-        .pp = 10,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_ESTADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .magicCoatAffected = TRUE,
-        .battleAnimScript = gBattleAnimMove_Yawn,
+        .battleAnimScript = gAnimacionMovimiento_Bostezo,
     },
 
-    [MOVE_KNOCK_OFF] =
+    [MOVE_DESARME] =
     {
         .name = COMPOUND_STRING("Desarme"),
         .description = COMPOUND_STRING(
             "Knocks down the foe's held\n"
             "item to prevent its use."),
-        .effect = EFFECT_KNOCK_OFF,
+        .effect = EFFECT_DESARME,
         .power = 70,
         .type = TIPO_SINIESTRO,
         .accuracy = 100,
-        .pp = 20,
+        .pp = PP_MOVIMIENTO_OFENSIVO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_KNOCK_OFF,
+            .moveEffect = MOVE_EFFECT_DESARME,
         }),
-        .battleAnimScript = gBattleAnimMove_KnockOff,
+        .battleAnimScript = gBattleAnimMove_Desarme,
     },
 
     [MOVE_ERUPTION] =
@@ -5515,8 +5325,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 4,
         .category = CATEGORIA_ESTADO,
         .ignoresSubstitute = TRUE,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Snatch,
     },
 
@@ -5557,8 +5365,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .assistBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_PKMNHIDUNDERWATER, COMPRESS_BITS(STATUS3_UNDERWATER)),
         .battleAnimScript = gBattleAnimMove_Dive,
     },
@@ -5719,7 +5525,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .balistico = TRUE,
-        .instructBanned = TRUE,
         .parentalBondBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_IceBall,
     },
@@ -6228,7 +6033,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .pp = PP_MOVIMIENTO_OFENSIVO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
+        .category = CATEGORIA_FISICA,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
             .chance = 30,
@@ -6501,8 +6306,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .gravityBanned = TRUE,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .assistBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_PKMNSPRANGUP, COMPRESS_BITS(STATUS3_ON_AIR)),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
@@ -6572,8 +6375,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = B_UPDATED_MOVE_DATA >= GEN_4,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_STEAL_ITEM,
         }),
@@ -6932,8 +6733,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 2,
         .category = CATEGORIA_FISICA,
         .ignoresProtect = TRUE,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_FEINT,
         }),
@@ -7195,30 +6994,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .snatchAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_LuckyChant,
-    },
-
-    [MOVE_COPYCAT] =
-    {
-        .name = COMPOUND_STRING("Copión"),
-        .description = COMPOUND_STRING(
-            "The user mimics the last\n"
-            "move used by a foe."),
-        .effect = EFFECT_COPYCAT,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 0,
-        .pp = 20,
-        .target = MOVE_TARGET_DEPENDS,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .copycatBanned = TRUE,
-        .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .encoreBanned = TRUE,
-        .assistBanned = TRUE,
-        .mimicBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Copycat,
     },
 
     [MOVE_POWER_SWAP] =
@@ -7825,8 +7600,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Switcheroo,
     },
 
@@ -7888,20 +7661,25 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_BulletPunch,
     },
 
-    [MOVE_AVALANCHE] =
+    [MOVE_ALUD] =
     {
         .name = COMPOUND_STRING("Alud"),
-        .description = sRevengeDescription,
-        .effect = EFFECT_REVENGE,
-        .power = 60,
+        .description = COMPOUND_STRING(
+            "Provoca avalancha que\n"
+            "baja velocidad de rivales."),
+        .effect = EFFECT_HIT,
+        .power = 40,
         .type = TIPO_HIELO,
         .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = -4,
+        .pp = PP_MOVIMIENTO_OFENSIVO_LIMITADO,
+        .target = MOVE_TARGET_BOTH,
+        .priority = 0,
         .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_Avalanche,
+        .additionalEffects = ADDITIONAL_EFFECTS({
+            .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
+            .chance = 100,
+        }),
+        .battleAnimScript = gBattleAnimMove_Alud,
     },
 
     [MOVE_ICE_SHARD] =
@@ -8489,11 +8267,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .soundMove = TRUE,
-        .mimicBanned = TRUE,
-        .copycatBanned = TRUE,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .assistBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_CONFUSION,
             .chance = 100,
@@ -8847,8 +8621,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .ignoresProtect = TRUE,
         .minimizeDoubleDamage = B_UPDATED_MOVE_FLAGS == GEN_6,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .assistBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_VANISHEDINSTANTLY, COMPRESS_BITS(STATUS3_PHANTOM_FORCE)),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_FEINT,
@@ -9015,8 +8787,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESTADO,
         .powderMove = TRUE,
         .ignoresProtect = TRUE,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_RagePowder,
     },
 
@@ -9552,8 +9322,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = -6,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_CircleThrow,
     },
 
@@ -9647,8 +9415,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .ignoresSubstitute = TRUE,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Bestow,
     },
 
@@ -9760,8 +9526,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .tailMove = TRUE,
         .makesContact = TRUE,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_DragonTail,
     },
 
@@ -10278,7 +10042,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_CLOAKEDINAFREEZINGLIGHT),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
@@ -10302,7 +10065,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_CLOAKEDINAFREEZINGLIGHT),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
@@ -10427,8 +10189,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .argument = TRUE, // Protects the whole side.
         .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_MatBlock,
     },
 
@@ -10446,11 +10206,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .mimicBanned = TRUE,
-        .copycatBanned = TRUE,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Belch,
     },
 
@@ -10526,8 +10282,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .minimizeDoubleDamage = B_UPDATED_MOVE_FLAGS == GEN_6,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
-        .assistBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_VANISHEDINSTANTLY, COMPRESS_BITS(STATUS3_PHANTOM_FORCE)),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_FEINT,
@@ -10943,8 +10697,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 4,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_SpikyShield,
     },
 
@@ -11414,7 +11166,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .slicingMove = TRUE,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKSUNLIGHT, B_WEATHER_SUN),
         .battleAnimScript = gBattleAnimMove_SolarBlade,
     },
@@ -11451,8 +11202,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 3,
         .category = CATEGORIA_ESTADO,
         .magicCoatAffected = TRUE,
-        .copycatBanned = TRUE,
-        .assistBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Spotlight,
     },
 
@@ -11730,25 +11479,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             .chance = 100,
         }),
         .battleAnimScript = gBattleAnimMove_TropKick,
-    },
-
-    [MOVE_INSTRUCT] =
-    {
-        .name = COMPOUND_STRING("Instruct"),
-        .description = COMPOUND_STRING(
-            "Orders the target to use\n"
-            "its last move again."),
-        .effect = EFFECT_INSTRUCT,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = 0,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresSubstitute = TRUE,
-        .instructBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Instruct,
     },
 
     [MOVE_CLANGING_SCALES] =
@@ -12283,6 +12013,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
     },
 
     [MOVE_PICO_ELECTRICO] =
+    {
         .name = COMPOUND_STRING("Pico eléctrico"),
         .description = COMPOUND_STRING(
             "Shoots boiling water at the\n"
@@ -12521,7 +12252,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
-        .instructBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_RECHARGE,
             .self = TRUE,
@@ -12602,7 +12332,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_METEORBEAMCHARGING, B_WEATHER_SAND), // Sol?
         .battleAnimScript = gBattleAnimMove_MeteorBeam,
     },
@@ -13995,12 +13724,8 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
-        .mimicBanned = TRUE,
-        .copycatBanned = TRUE,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
         .encoreBanned = TRUE,
-        .assistBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 30,
@@ -14020,12 +13745,8 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
-        .mimicBanned = TRUE,
-        .copycatBanned = TRUE,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
         .encoreBanned = TRUE,
-        .assistBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SLEEP,
             .chance = 10,
@@ -14045,12 +13766,8 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
-        .mimicBanned = TRUE,
-        .copycatBanned = TRUE,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
         .encoreBanned = TRUE,
-        .assistBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_POISON,
             .chance = 30,
@@ -14070,12 +13787,8 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
-        .mimicBanned = TRUE,
-        .copycatBanned = TRUE,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
         .encoreBanned = TRUE,
-        .assistBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 30,
@@ -14095,12 +13808,8 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
-        .mimicBanned = TRUE,
-        .copycatBanned = TRUE,
         .sleepTalkBanned = TRUE,
-        .instructBanned = TRUE,
         .encoreBanned = TRUE,
-        .assistBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_CONFUSION,
             .chance = 30,

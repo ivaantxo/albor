@@ -296,11 +296,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectRage,
     },
 
-    [EFFECT_MIMIC] =
-    {
-        .battleScript = BattleScript_EffectMimic,
-    },
-
     [EFFECT_LEECH_SEED] =
     {
         .battleScript = BattleScript_EffectLeechSeed,
@@ -310,17 +305,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_DISABLE] =
     {
         .battleScript = BattleScript_EffectDisable,
-    },
-
-    [EFFECT_LEVEL_DAMAGE] =
-    {
-        .battleScript = BattleScript_EffectLevelDamage,
-    },
-
-    [EFFECT_COUNTER] =
-    {
-        .battleScript = BattleScript_EffectCounter,
-        .encourageEncore = TRUE,
     },
 
     [EFFECT_ENCORE] =
@@ -359,11 +343,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_FLAIL] =
     {
         .battleScript = BattleScript_EffectHit,
-    },
-
-    [EFFECT_SPITE] =
-    {
-        .battleScript = BattleScript_EffectSpite,
     },
 
     [EFFECT_HEAL_BELL] =
@@ -530,12 +509,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_MIRROR_COAT] =
-    {
-        .battleScript = BattleScript_EffectMirrorCoat,
-        .encourageEncore = TRUE,
-    },
-
     [EFFECT_EARTHQUAKE] =
     {
         .battleScript = BattleScript_EffectHit,
@@ -628,11 +601,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_MEMENTO] =
-    {
-        .battleScript = BattleScript_EffectMemento,
-    },
-
     [EFFECT_FACADE] =
     {
         .battleScript = BattleScript_EffectHit,
@@ -671,20 +639,9 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_ROLE_PLAY] =
-    {
-        .battleScript = BattleScript_EffectRolePlay,
-        .encourageEncore = TRUE,
-    },
-
     [EFFECT_WISH] =
     {
         .battleScript = BattleScript_EffectWish,
-    },
-
-    [EFFECT_ASSIST] =
-    {
-        .battleScript = BattleScript_EffectAssist,
     },
 
     [EFFECT_INGRAIN] =
@@ -704,22 +661,12 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_REVENGE] =
-    {
-        .battleScript = BattleScript_EffectHit,
-    },
-
     [EFFECT_BRICK_BREAK] =
     {
         .battleScript = BattleScript_EffectBrickBreak,
     },
 
-    [EFFECT_YAWN] =
-    {
-        .battleScript = BattleScript_EffectYawn,
-    },
-
-    [EFFECT_KNOCK_OFF] =
+    [EFFECT_DESARME] =
     {
         .battleScript = BattleScript_EffectHit,
     },
@@ -1109,11 +1056,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
-    [EFFECT_COPYCAT] =
-    {
-        .battleScript = BattleScript_EffectCopycat,
-    },
-
     [EFFECT_DEFOG] =
     {
         .battleScript = BattleScript_EffectDefog,
@@ -1204,11 +1146,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_STOMPING_TANTRUM] =
     {
         .battleScript = BattleScript_EffectHit,
-    },
-
-    [EFFECT_INSTRUCT] =
-    {
-        .battleScript = BattleScript_EffectInstruct,
     },
 
     [EFFECT_LASER_FOCUS] =

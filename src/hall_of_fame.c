@@ -709,7 +709,7 @@ static void Task_Hof_ExitOnKeyPressed(u8 taskId)
 {
     if (JOY_NEW(A_BUTTON))
     {
-        FadeOutBGM(4);
+        FadeOutBGM(VELOCIDAD_ACELERADA_MUSICA);
         gTasks[taskId].func = Task_Hof_HandlePaletteOnExit;
     }
 }

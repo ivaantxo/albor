@@ -4388,12 +4388,6 @@ static void SetMoveSpecificAnimData(u8 contestant)
         else
             gAnimMoveTurn = 1;
         break;
-    case MOVE_ROLE_PLAY:
-        targetContestant = eContestantStatus[contestant].contestantAnimTarget;
-        gContestResources->moveAnim->targetSpecies = SanitizeSpecies(gContestMons[targetContestant].species);
-        gContestResources->moveAnim->targetPersonality = gContestMons[targetContestant].personality;
-        gContestResources->moveAnim->hasTargetAnim = TRUE;
-        break;
     case MOVE_SOLAR_BEAM:
     case MOVE_VIENTO_CORTANTE:
     case MOVE_SKULL_BASH:

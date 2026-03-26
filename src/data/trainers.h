@@ -12873,7 +12873,7 @@ F_TRAINER_FEMALE |
             .moves = {
 #line 5368
                 MOVE_ARM_THRUST,
-                MOVE_KNOCK_OFF,
+                MOVE_DESARME,
                 MOVE_SAND_ATTACK,
                 MOVE_DIG,
             },
@@ -12909,7 +12909,7 @@ F_TRAINER_FEMALE |
             .moves = {
 #line 5384
                 MOVE_ARM_THRUST,
-                MOVE_KNOCK_OFF,
+                MOVE_DESARME,
                 MOVE_SAND_ATTACK,
                 MOVE_DIG,
             },

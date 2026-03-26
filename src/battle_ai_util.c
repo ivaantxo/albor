@@ -202,7 +202,7 @@ bool32 IsBattlerTrapped(u32 battler, bool32 checkSwitch)
 {
     u32 holdEffect = AI_DATA->holdEffects[battler];
 
-    if (ES_TIPO(battler, TIPO_FANTASMA))
+    if (EsTipo(battler, TIPO_FANTASMA))
         return FALSE;
     if (checkSwitch && holdEffect == HOLD_EFFECT_SHED_SHELL)
         return FALSE;
@@ -236,7 +236,7 @@ u32 GetTotalBaseStat(u32 species)
 bool32 IsAffectedByPowder(u32 battler, u32 ability, u32 holdEffect)
 {
     if (ability == ABILITY_OVERCOAT
-        || ES_TIPO(battler, TIPO_PLANTA)
+        || EsTipo(battler, TIPO_PLANTA)
         || holdEffect == HOLD_EFFECT_SAFETY_GOGGLES)
         return FALSE;
     return TRUE;
@@ -293,7 +293,7 @@ bool32 IsDamageMoveUnusable(u32 battlerAtk, u32 battlerDef, u32 move, u32 moveTy
     switch (gMovesInfo[move].effect)
     {
     case EFFECT_DREAM_EATER:
-        if (!ESTA_DORMIDO(battlerDef))
+        if (!EstaDormido(battlerDef))
             return TRUE;
         break;
     case EFFECT_BELCH:
@@ -305,7 +305,7 @@ bool32 IsDamageMoveUnusable(u32 battlerAtk, u32 battlerDef, u32 move, u32 moveTy
             return TRUE;
         break;
     case EFFECT_FAIL_IF_NOT_ARG_TYPE:
-        if (!ES_TIPO(battlerAtk, gMovesInfo[move].argument))
+        if (!EsTipo(battlerAtk, gMovesInfo[move].argument))
             return TRUE;
         break;
     case EFFECT_POLTERGEIST:
@@ -313,7 +313,7 @@ bool32 IsDamageMoveUnusable(u32 battlerAtk, u32 battlerDef, u32 move, u32 moveTy
             return TRUE;
         break;
     case EFFECT_FIRST_TURN_ONLY:
-        if (!gDisableStructs[battlerAtk].isFirstTurn)
+        if (!EsPrimerTurno(battlerAtk))
             return TRUE;
         break;
     case EFFECT_FOCUS_PUNCH:
@@ -422,7 +422,7 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
             s32 nonCritDmg = 0;
             if (moveEffect == EFFECT_TRIPLE_KICK)
             {
-                for (gContadorMultigolpes = gMovesInfo[move].strikeCount; gContadorMultigolpes > 0; gContadorMultigolpes--) // The global is used to simulate actual damage done
+                for (gCombate.contadorMultigolpes = gMovesInfo[move].strikeCount; gCombate.contadorMultigolpes > 0; gCombate.contadorMultigolpes--) // The global is used to simulate actual damage done
                 {
                     nonCritDmg += CalculateMoveDamageVars(&damageCalcData, fixedBasePower,
                                                           effectivenessMultiplier, weather,
@@ -443,9 +443,6 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
         // Handle dynamic move damage
         switch (moveEffect)
         {
-        case EFFECT_LEVEL_DAMAGE:
-            simulatedDmg = gBattleMons[battlerAtk].level * (aiData->abilities[battlerAtk] == ABILITY_PARENTAL_BOND ? 2 : 1);
-            break;
         case EFFECT_MULTI_HIT:
             if (move == MOVE_WATER_SHURIKEN && gBattleMons[battlerAtk].species == SPECIES_GRENINJA)
             {
@@ -1156,7 +1153,6 @@ bool32 IsNonVolatileStatusMoveEffect(u32 moveEffect)
     case EFFECT_POISON:
     case EFFECT_PARALYZE:
     case EFFECT_WILL_O_WISP:
-    case EFFECT_YAWN:
         return TRUE;
     default:
         return FALSE;
@@ -1231,7 +1227,7 @@ bool32 IsMoveEncouragedToHit(u32 battlerAtk, u32 battlerDef, u32 move)
     if (AI_DATA->abilities[battlerDef] == ABILITY_NO_GUARD || AI_DATA->abilities[battlerAtk] == ABILITY_NO_GUARD)
         return TRUE;
 
-    if (B_TOXIC_NEVER_MISS >= GEN_6 && gMovesInfo[move].effect == EFFECT_TOXIC && ES_TIPO(battlerAtk, TIPO_VENENO))
+    if (B_TOXIC_NEVER_MISS >= GEN_6 && gMovesInfo[move].effect == EFFECT_TOXIC && EsTipo(battlerAtk, TIPO_VENENO))
         return TRUE;
 
     // discouraged from hitting
@@ -1269,7 +1265,7 @@ bool32 ShouldTryOHKO(u32 battlerAtk, u32 battlerDef, u32 atkAbility, u32 defAbil
     else    // test the odds
     {
         u32 odds = accuracy + (gBattleMons[battlerAtk].level - gBattleMons[battlerDef].level);
-        if (B_SHEER_COLD_ACC >= GEN_7 && move == MOVE_SHEER_COLD && !ES_TIPO(gBattlerAttacker, TIPO_HIELO))
+        if (B_SHEER_COLD_ACC >= GEN_7 && move == MOVE_SHEER_COLD && !EsTipo(gBattlerAttacker, TIPO_HIELO))
             odds -= 10;
         if (Random() % 100 + 1 < odds && gBattleMons[battlerAtk].level >= gBattleMons[battlerDef].level)
             return TRUE;
@@ -1289,8 +1285,8 @@ bool32 ShouldSetSandstorm(u32 battler, u32 ability, u32 holdEffect)
       || ability == ABILITY_OVERCOAT
       || ability == ABILITY_MAGIC_GUARD
       || holdEffect == HOLD_EFFECT_SAFETY_GOGGLES
-      || ES_TIPO(battler, TIPO_ROCA)
-      || ES_TIPO(battler, TIPO_TIERRA)
+      || EsTipo(battler, TIPO_ROCA)
+      || EsTipo(battler, TIPO_TIERRA)
       || HasMoveEffect(battler, EFFECT_SHORE_UP)
       || HasMoveEffect(battler, EFFECT_WEATHER_BALL))
     {
@@ -1312,7 +1308,7 @@ bool32 ShouldSetHail(u32 battler, u32 ability, u32 holdEffect)
       || ability == ABILITY_MAGIC_GUARD
       || ability == ABILITY_OVERCOAT
       || holdEffect == HOLD_EFFECT_SAFETY_GOGGLES
-      || ES_TIPO(battler, TIPO_HIELO)
+      || EsTipo(battler, TIPO_HIELO)
       || HasMoveEffect(battler, EFFECT_BLIZZARD)
       || HasMoveEffect(battler, EFFECT_AURORA_VEIL)
       || HasMoveEffect(battler, EFFECT_WEATHER_BALL))
@@ -1381,7 +1377,7 @@ bool32 ShouldSetSnow(u32 battler, u32 ability, u32 holdEffect)
       || ability == ABILITY_ICE_BODY
       || ability == ABILITY_FORECAST
       || ability == ABILITY_SLUSH_RUSH
-      || ES_TIPO(battler, TIPO_HIELO)
+      || EsTipo(battler, TIPO_HIELO)
       || HasMoveEffect(battler, EFFECT_BLIZZARD)
       || HasMoveEffect(battler, EFFECT_AURORA_VEIL)
       || HasMoveEffect(battler, EFFECT_WEATHER_BALL))
@@ -1412,14 +1408,14 @@ void ProtectChecks(u32 battlerAtk, u32 battlerDef, u32 move, u32 predictedMove, 
 
     if (gBattleMons[battlerAtk].status1 & (STATUS1_PSN_ANY | STATUS1_BURN | STATUS1_CONGELACION)
      || gBattleMons[battlerAtk].status2 & (STATUS2_CURSED | STATUS2_INFATUATION)
-     || gStatuses3[battlerAtk] & (STATUS3_PERISH_SONG | STATUS3_LEECHSEED | STATUS3_YAWN))
+     || gStatuses3[battlerAtk] & (STATUS3_PERISH_SONG | STATUS3_LEECHSEED))
     {
         ADJUST_SCORE_PTR(-1);
     }
 
     if (gBattleMons[battlerDef].status1 & STATUS1_TOXIC_POISON
       || gBattleMons[battlerDef].status2 & (STATUS2_CURSED | STATUS2_INFATUATION)
-      || gStatuses3[battlerDef] & (STATUS3_PERISH_SONG | STATUS3_LEECHSEED | STATUS3_YAWN))
+      || gStatuses3[battlerDef] & (STATUS3_PERISH_SONG | STATUS3_LEECHSEED))
         ADJUST_SCORE_PTR(DECENT_EFFECT);
 }
 
@@ -1991,7 +1987,6 @@ bool32 IsStatLoweringEffect(u32 effect)
     case EFFECT_TICKLE:
     case EFFECT_CAPTIVATE:
     case EFFECT_RUGIDO_NOBLE:
-    case EFFECT_MEMENTO:
         return TRUE;
     default:
         return FALSE;
@@ -2191,8 +2186,8 @@ static u32 GetPoisonDamage(u32 battlerId)
 
 static bool32 BattlerAffectedBySandstorm(u32 battlerId, u32 ability)
 {
-    if (!ES_TIPO(battlerId, TIPO_ROCA)
-      && !ES_TIPO(battlerId, TIPO_TIERRA)
+    if (!EsTipo(battlerId, TIPO_ROCA)
+      && !EsTipo(battlerId, TIPO_TIERRA)
       && ability != ABILITY_SAND_VEIL
       && ability != ABILITY_SAND_FORCE
       && ability != ABILITY_SAND_RUSH
@@ -2203,7 +2198,7 @@ static bool32 BattlerAffectedBySandstorm(u32 battlerId, u32 ability)
 
 static bool32 BattlerAffectedByHail(u32 battlerId, u32 ability)
 {
-    if (!ES_TIPO(battlerId, TIPO_HIELO)
+    if (!EsTipo(battlerId, TIPO_HIELO)
       && ability != ABILITY_SNOW_CLOAK
       && ability != ABILITY_OVERCOAT
       && ability != ABILITY_ICE_BODY)
@@ -2510,7 +2505,7 @@ enum AIPivot ShouldPivot(u32 battlerAtk, u32 battlerDef, u32 defAbility, u32 mov
     return DONT_PIVOT;
 }
 
-bool32 CanKnockOffItem(u32 battler, u32 item)
+bool32 CanDesarmeItem(u32 battler, u32 item)
 {
     if (item == ITEM_NONE)
         return FALSE;
@@ -2560,7 +2555,7 @@ bool32 AI_CanPoison(u32 battlerAtk, u32 battlerDef, u32 move, u32 partnerMove)
       || DoesSubstituteBlockMove(battlerAtk, battlerDef, move)
       || PartnerMoveEffectIsStatusSameTarget(ALIADO(battlerAtk), battlerDef, partnerMove))
         return FALSE;
-    else if ((ES_TIPO(battlerDef, TIPO_VENENO)))
+    else if ((EsTipo(battlerDef, TIPO_VENENO)))
         return FALSE;
 
     return TRUE;
@@ -2687,7 +2682,7 @@ bool32 ShouldTrap(u32 battlerAtk, u32 battlerDef, u32 move)
 
 bool32 DeberiaUsarSorpresa(u32 battlerAtk, u32 battlerDef, u32 move)
 {
-    if ((!gDisableStructs[battlerAtk].isFirstTurn && MoveHasAdditionalEffectWithChance(move, MOVE_EFFECT_FLINCH, 100))
+    if ((!EsPrimerTurno(battlerAtk) && MoveHasAdditionalEffectWithChance(move, MOVE_EFFECT_FLINCH, 100))
     || AI_DATA->abilities[battlerAtk] == ABILITY_GORILLA_TACTICS
     || AI_DATA->holdEffects[battlerAtk] == HOLD_EFFECT_CHOICE_BAND
     || AI_DATA->holdEffects[battlerDef] == HOLD_EFFECT_COVERT_CLOAK
@@ -2921,8 +2916,7 @@ bool32 PartnerMoveEffectIsStatusSameTarget(u32 battlerAtkPartner, u32 battlerDef
        || gMovesInfo[partnerMove].effect == EFFECT_POISON
        || gMovesInfo[partnerMove].effect == EFFECT_TOXIC
        || gMovesInfo[partnerMove].effect == EFFECT_PARALYZE
-       || gMovesInfo[partnerMove].effect == EFFECT_WILL_O_WISP
-       || gMovesInfo[partnerMove].effect == EFFECT_YAWN))
+       || gMovesInfo[partnerMove].effect == EFFECT_WILL_O_WISP)
         return TRUE;
     return FALSE;
 }
@@ -3267,10 +3261,6 @@ u32 IncreaseStatUpScore(u32 battlerAtk, u32 battlerDef, u32 statId)
 
     // Don't set up if AI is dead to residual damage from weather
     if (GetBattlerSecondaryDamage(battlerAtk) >= gBattleMons[battlerAtk].hp)
-        return NO_INCREASE;
-
-    // Don't increase stats if opposing battler has Opportunist
-    if (AI_DATA->abilities[battlerDef] == ABILITY_OPPORTUNIST || AI_DATA->abilities[battlerDef] == ABILITY_REY_DEL_MAR)
         return NO_INCREASE;
 
     switch (statId)

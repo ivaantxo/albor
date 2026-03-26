@@ -1141,7 +1141,7 @@ void CB2_OpenPokedexPlusHGSS(void)
         EnableInterrupts(1);
         SetVBlankCallback(VBlankCB_Pokedex);
         SetMainCallback2(CB2_Pokedex);
-        FadeOutAndPlayNewMapMusic(MUS_HG_RADIO_VARIETY, 4);
+        FadeOutAndPlayNewMapMusic(MUS_HG_RADIO_VARIETY, VELOCIDAD_ACELERADA_MUSICA);
         break;
     }
 }
@@ -1322,7 +1322,7 @@ static void Task_ClosePokedex(u8 taskId)
         FreeWindowAndBgBuffers();
         DestroyTask(taskId);
         SetMainCallback2(CB2_ReturnToFieldWithOpenMenu);
-        FadeOutAndPlayNewMapMusic(music, 8);
+        FadeOutAndPlayNewMapMusic(music, VELOCIDAD_LENTA_MUSICA);
         Free(sPokedexView);
     }
 }

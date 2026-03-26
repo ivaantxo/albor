@@ -310,13 +310,13 @@ extern const union AffineAnimCmd *const gOrbAffineAnimTable[];
 extern const union AffineAnimCmd *const gBulletSeedAffineAnimTable[];
 
 // battle_anim_effects_3.c
-void AnimKnockOffStrike_Step(struct Sprite *sprite);
+void AnimDesarmeStrike_Step(struct Sprite *sprite);
 void AnimBlackSmoke(struct Sprite *sprite);
 void AnimSweetScentPetal(struct Sprite *sprite);
 void AnimTealAlert(struct Sprite *sprite);
 void AnimBlockX(struct Sprite *sprite);
 void AnimFlatterSpotlight_Step(struct Sprite *);
-void AnimAssistPawprint(struct Sprite *);
+void AnimacionHuella(struct Sprite *);
 void AnimReversalOrb(struct Sprite *);
 void AnimFlatterSpotlight_Step(struct Sprite *sprite);
 extern const union AnimCmd *const gOpeningEyeAnimTable[];
@@ -324,8 +324,8 @@ extern const union AnimCmd *const gEclipsingOrbAnimTable[];
 extern const union AffineAnimCmd *const gSpotlightAffineAnimTable[];
 extern const union AffineAnimCmd *const gSmokeBallEscapeCloudAffineAnimTable[];
 extern void AnimSmokeBallEscapeCloud(struct Sprite *sprite);
-extern const union AffineAnimCmd *const gKnockOffStrikeAffineAnimTable[];
-extern const union AnimCmd *const gKnockOffStrikeAnimTable[];
+extern const union AffineAnimCmd *const gDesarmeStrikeAffineAnimTable[];
+extern const union AnimCmd *const gDesarmeStrikeAnimTable[];
 
 // battle_anim_water.c
 void AnimWaterPulseRing(struct Sprite *sprite);

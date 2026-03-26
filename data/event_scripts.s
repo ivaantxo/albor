@@ -526,8 +526,6 @@ EventScript_VsSeekerChargingDone::
 	.include "data/text/match_call.inc"
 	.include "data/text/blend_master.inc"
 	.include "data/text/event_ticket_2.inc"
-	.include "data/text/move_tutors.inc"
-	.include "data/scripts/move_tutors.inc"
 	.include "data/scripts/test_signpost.inc"
 	.include "data/scripts/follower.inc"
 	.include "data/text/save.inc"

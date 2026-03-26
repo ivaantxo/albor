@@ -748,36 +748,6 @@ BattleScript_DefogTryHazardsWithAnim:
 	waitanimation
 	goto BattleScript_DefogTryHazards
 
-BattleScript_EffectCopycat::
-	attackcanceler
-	attackstring
-	pause PAUSA_MUY_CORTA
-	trycopycat BattleScript_CopycatFail
-	attackanimation
-	waitanimation
-	setbyte sB_ANIM_TURN, 0
-	setbyte sB_ANIM_TARGETS_HIT, 0
-	jumptocalledmove TRUE
-BattleScript_CopycatFail:
-	ppreduce
-	goto BattleScript_ButItFailed
-
-BattleScript_EffectInstruct::
-	attackcanceler
-	attackstring
-	ppreduce
-	pause PAUSA_MUY_CORTA
-	tryinstruct BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	copybyte gBattlerAttacker, gBattlerTarget
-	copybyte gBattlerTarget, gEffectBattler
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} followed  {B_BUFF1}'s instructions!"
-	waitmessage PAUSA_LARGA
-	setbyte sB_ANIM_TURN, 0
-	setbyte sB_ANIM_TARGETS_HIT, 0
-	jumptocalledmove TRUE
-
 BattleScript_EffectAutotomize::
 	setstatchanger ESTADISTICA_VELOCIDAD, 2, FALSE
 	attackcanceler
@@ -2422,19 +2392,6 @@ BattleScript_RageMiss::
 	clearstatusfromeffect BS_ATTACKER, MOVE_EFFECT_RAGE
 	goto BattleScript_PrintMoveMissed
 
-BattleScript_EffectMimic::
-	attackcanceler
-	attackstring
-	ppreduce
-	jumpifsubstituteblocks BattleScript_ButItFailed
-	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
-	mimicattackcopy BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} learned {B_BUFF1}!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectLeechSeed::
 	attackcanceler
 	attackstring
@@ -2442,6 +2399,7 @@ BattleScript_EffectLeechSeed::
 	ppreduce
 	jumpifsubstituteblocks BattleScript_ButItFailed
 	accuracycheck BattleScript_DoLeechSeed, ACC_CURR_MOVE
+
 BattleScript_DoLeechSeed::
 	setseeded
 	attackanimation
@@ -2461,12 +2419,6 @@ BattleScript_EffectDisable::
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} was disabled!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
-
-BattleScript_EffectLevelDamage::
-	return
-
-BattleScript_EffectCounter::
-	return
 
 BattleScript_EffectEncore::
 	attackcanceler
@@ -2563,18 +2515,6 @@ BattleScript_EffectEerieSpell::
 	call BattleScript_EffectHit_Ret
 	tryfaintmon BS_TARGET
 	eeriespellppreduce BattleScript_MoveEnd
-	EscribeTextoCombate "Reduced {B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} by {B_BUFF2}!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectSpite::
-	attackcanceler
-	attackstring
-	ppreduce
-	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
-	tryspiteppreduce BattleScript_ButItFailed
-	attackanimation
-	waitanimation
 	EscribeTextoCombate "Reduced {B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} by {B_BUFF2}!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
@@ -2982,9 +2922,6 @@ BattleScript_EffectPsychUp::
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectMirrorCoat::
-	return
-
 BattleScript_EffectFutureSight::
 	attackcanceler
 	attackstring
@@ -3251,54 +3188,6 @@ BattleScript_AlreadyBurned::
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectMemento::
-	attackcanceler
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, TEXTO_COMBATE_PROTECCION, BattleScript_MementoTargetProtect
-	attackstring
-	ppreduce
-	trymemento BattleScript_ButItFailed
-	setatkhptozero
-	attackanimation
-	waitanimation
-	jumpifsubstituteblocks BattleScript_EffectMementoPrintNoEffect
-	setbyte sSTAT_ANIM_PLAYED, FALSE
-	playstatchangeanimation BS_TARGET, BIT_ATK | BIT_SPATK, STAT_CHANGE_NEGATIVE | STAT_CHANGE_BY_TWO | STAT_CHANGE_MULTIPLE_STATS
-	playstatchangeanimation BS_TARGET, BIT_ATK, STAT_CHANGE_NEGATIVE | STAT_CHANGE_BY_TWO
-	setstatchanger ESTADISTICA_ATAQUE, 2, TRUE
-	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_EffectMementoTrySpAtk
-@ Greater than B_MSG_DEFENDER_STAT_FELL is checking if the stat cannot decrease
-	jumpifword COMPARACION_MAYOR, gMensajeBatalla, B_MSG_DEFENDER_STAT_FELL, BattleScript_EffectMementoTrySpAtk
-	printfromtable gStatDownStringIds
-	waitmessage PAUSA_LARGA
-BattleScript_EffectMementoTrySpAtk:
-	playstatchangeanimation BS_TARGET, BIT_SPATK, STAT_CHANGE_NEGATIVE | STAT_CHANGE_BY_TWO
-	setstatchanger ESTADISTICA_ATAQUE_ESPECIAL, 2, TRUE
-	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_EffectMementoTryFaint
-@ Greater than B_MSG_DEFENDER_STAT_FELL is checking if the stat cannot decrease
-	jumpifword COMPARACION_MAYOR, gMensajeBatalla, B_MSG_DEFENDER_STAT_FELL, BattleScript_EffectMementoTryFaint
-	printfromtable gStatDownStringIds
-	waitmessage PAUSA_LARGA
-BattleScript_EffectMementoTryFaint:
-	tryfaintmon BS_ATTACKER
-	goto BattleScript_MoveEnd
-BattleScript_EffectMementoPrintNoEffect:
-	EscribeTextoCombate "But it had no effect!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_EffectMementoTryFaint
-@ If the target is protected there's no need to check the target's stats or animate, the user will just faint
-BattleScript_MementoTargetProtect:
-	attackstring
-	ppreduce
-	trymemento BattleScript_MementoTargetProtectEnd
-BattleScript_MementoTargetProtectEnd:
-	setatkhptozero
-	pause PAUSA_LARGA
-	HazSonidoEfectividad
-	resultmessage
-	waitmessage PAUSA_LARGA
-	tryfaintmon BS_ATTACKER
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectFocusPunch::
 	attackcanceler
 	jumpifnodamage BattleScript_HitFromAccCheck
@@ -3368,22 +3257,6 @@ BattleScript_EffectTrick::
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectRolePlay::
-	attackcanceler
-	attackstring
-	ppreduce
-	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
-	trycopyability BS_ATTACKER, BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	copybyte gBattlerAbility, gBattlerAttacker
-	call BattleScript_AbilityPopUpOverwriteThenNormal
-	recordability BS_ATTACKER
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} copied {B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}!"
-	waitmessage PAUSA_LARGA
-	switchinabilities BS_ATTACKER
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectWish::
 	attackcanceler
 	attackstring
@@ -3393,15 +3266,6 @@ BattleScript_EffectWish::
 	waitanimation
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectAssist::
-	attackcanceler
-	attackstring
-	assistattackselect BattleScript_FailedFromPpReduce
-	attackanimation
-	waitanimation
-	setbyte sB_ANIM_TURN, 0
-	setbyte sB_ANIM_TARGETS_HIT, 0
-	jumptocalledmove TRUE
 
 BattleScript_EffectIngrain::
 	attackcanceler
@@ -3468,25 +3332,6 @@ BattleScript_BrickBreakDoHit::
 	waitmessage PAUSA_LARGA
 	setadditionaleffects
 	tryfaintmon BS_TARGET
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectYawn::
-	attackcanceler
-	attackstring
-	ppreduce
-	jumpifability BS_TARGET, ABILITY_VITAL_SPIRIT, BattleScript_PrintBattlerAbilityMadeIneffective
-	jumpifability BS_TARGET, ABILITY_INSOMNIA, BattleScript_PrintBattlerAbilityMadeIneffective
-	jumpifsubstituteblocks BattleScript_ButItFailed
-	jumpifsafeguard BattleScript_SafeguardProtected
-	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
-	jumpifuproarwakes BattleScript_ButItFailed
-	setyawn BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-
-BattleScript_EffectYawnSuccess::
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} made {B_DEF_NAME_WITH_PREFIX} drowsy!"
-	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
 BattleScript_PrintBattlerAbilityMadeIneffective::
@@ -5232,16 +5077,6 @@ BattleScript_UpdateEffectStatusIconRet::
 	waitstate
 	return
 
-BattleScript_YawnMakesAsleep::
-	statusanimation BS_EFFECT_BATTLER
-	printstring STRINGID_PKMNFELLASLEEP
-	waitmessage PAUSA_LARGA
-	updatestatusicon BS_EFFECT_BATTLER
-	waitstate
-	makevisible BS_EFFECT_BATTLER
-BattleScript_YawnEnd:
-	end2
-
 BattleScript_EmbargoEndTurn::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} can use items again!"
 	waitmessage PAUSA_LARGA
@@ -5584,16 +5419,6 @@ BattleScript_DroughtActivates::
 	waitstate
 	playanimation BS_BATTLER_0, B_ANIM_SUN_CONTINUES
 	call BattleScript_ActivateWeatherAbilities
-	end3
-
-BattleScript_CostarActivates::
-	pause PAUSA_CORTA
-	savetarget
-	copybyte gBattlerTarget, sBATTLER
-	call BattleScript_AbilityPopUp
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} copied {B_DEF_NAME_WITH_PREFIX}'s stat changes!"
-	waitmessage PAUSA_LARGA
-	restoretarget
 	end3
 
 ScriptCombate_Nevada::
@@ -6416,39 +6241,6 @@ BattleScript_PrintPlayerForfeited::
 	EscribeTextoCombate "The match was forfeited."
 	waitmessage PAUSA_LARGA
 	end2
-
-BattleScript_MirrorHerbCopyStatChangeEnd2::
-	call BattleScript_MirrorHerbCopyStatChange
-	end2
-
-BattleScript_MirrorHerbCopyStatChange::
-	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT, NULL
-	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX} used its Mirror Herb to mirror its opponent's stat changes!"
-	waitmessage PAUSA_LARGA
-	removeitem BS_SCRIPTING
-	playanimation BS_SCRIPTING, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-
-BattleScript_MirrorHerbStartCopyStats:
-	copyfoesstatincrease BS_SCRIPTING, BattleScript_MirrorHerbStartReturn
-	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_MirrorHerbStartReturn
-	goto BattleScript_MirrorHerbStartCopyStats
-
-BattleScript_MirrorHerbStartReturn:
-	return
-
-BattleScript_OpportunistCopyStatChange::
-	call BattleScript_AbilityPopUpScripting
-	playanimation BS_SCRIPTING, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-
-BattleScript_OpportunistStartCopyStats:
-	copyfoesstatincrease BS_SCRIPTING, BattleScript_OpportunistCopyStatChangeEnd
-	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_OpportunistCopyStatChangeEnd
-	printfromtable gStatUpStringIds
-	waitmessage PAUSA_LARGA
-	goto BattleScript_OpportunistStartCopyStats
-
-BattleScript_OpportunistCopyStatChangeEnd:
-	end3
 
 ScriptCombate_SeptimoCielo::
 	call BattleScript_AbilityPopUp

@@ -142,7 +142,6 @@ EWRAM_DATA u8 gEffectBattler = 0;
 EWRAM_DATA u8 gPotentialItemEffectBattler = 0;
 EWRAM_DATA u8 gAbsentBattlerFlags = 0;
 EWRAM_DATA u32 gEsGolpeCritico = FALSE;
-EWRAM_DATA u8 gContadorMultigolpes = 0;
 EWRAM_DATA const u8 *gBattlescriptCurrInstr = NULL;
 EWRAM_DATA u32 gAccionElegida[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA const u8 *gSelectionBattleScripts[NUMERO_COMBATIENTES] = {NULL};
@@ -190,7 +189,6 @@ EWRAM_DATA u16 gMoveToLearn = 0;
 EWRAM_DATA u32 gFieldStatuses = 0;
 EWRAM_DATA struct FieldTimer gFieldTimers = {0};
 EWRAM_DATA u32 gBattlerAbility = 0;
-EWRAM_DATA struct QueuedStatBoost gQueuedStatBoosts[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u8 gLastUsedBall = 0;
 EWRAM_DATA u16 gLastThrownBall = 0;
 EWRAM_DATA u16 gBallToDisplay = 0;
@@ -200,7 +198,6 @@ EWRAM_DATA u8 gCategoryIconSpriteId = 0;
 
 COMMON_DATA void (*gPreBattleCallback1)(void) = NULL;
 COMMON_DATA void (*gBattleMainFunc)(void) = NULL;
-COMMON_DATA struct BattleResults gBattleResults = {0};
 COMMON_DATA u8 gLeveledUpInBattle = 0;
 COMMON_DATA u8 gHealthboxSpriteIds[NUMERO_COMBATIENTES] = {0};
 COMMON_DATA u8 gNumberOfMovesToChoose = 0;
@@ -1087,13 +1084,12 @@ static void BattleStartClearSetData(void)
     memset(&gSideStatuses, 0, sizeof(gSideStatuses));
     memset(&gSideTimers, 0, sizeof(gSideTimers));
     memset(&gWishFutureKnock, 0, sizeof(gWishFutureKnock));
-    memset(&gBattleResults, 0, sizeof(gBattleResults));
     ClearSetBScriptingStruct();
 
     for (u32 combatiente = JUGADOR_IZQUIERDA; combatiente < NUMERO_COMBATIENTES; combatiente++)
     {
         gStatuses3[combatiente] = 0;
-        gDisableStructs[combatiente].isFirstTurn = 2;
+        gDisableStructs[combatiente].esPrimerTurno = TRUE;
         gLastMoves[combatiente] = MOVE_NONE;
         gLastLandedMoves[combatiente] = MOVE_NONE;
         gLastHitByType[combatiente] = 0;
@@ -1102,14 +1098,9 @@ static void BattleStartClearSetData(void)
         gLastHitBy[combatiente] = 0xFF;
         gLockedMoves[combatiente] = MOVE_NONE;
         gLastPrintedMoves[combatiente] = MOVE_NONE;
-        gBattleResources->flags->flags[combatiente] = 0;
-        gCombate->lastTakenMove[combatiente] = MOVE_NONE;
+        gBattleResources->flags[combatiente] = 0;
         gCombate->choicedMove[combatiente] = MOVE_NONE;
         gCombate->changedItems[combatiente] = 0;
-        gCombate->lastTakenMoveFrom[combatiente][0] = MOVE_NONE;
-        gCombate->lastTakenMoveFrom[combatiente][1] = MOVE_NONE;
-        gCombate->lastTakenMoveFrom[combatiente][2] = MOVE_NONE;
-        gCombate->lastTakenMoveFrom[combatiente][3] = MOVE_NONE;
         gCombate->AI_monToSwitchIntoId[combatiente] = PARTY_SIZE;
         gCombate->overwrittenAbilities[combatiente] = ABILITY_NONE;
         DesmarcaCombatienteOcupado[combatiente];
@@ -1126,7 +1117,7 @@ static void BattleStartClearSetData(void)
     gBattlerAbility = 0;
     gBattleWeather = 0;
     gHitMarker = 0;
-    gContadorMultigolpes = 0;
+    gCombate.contadorMultigolpes = 0;
     gBattleOutcome = 0;
     gPaydayMoney = 0;
     gBattleResources->battleScriptsStack->size = 0;
@@ -1144,8 +1135,6 @@ static void BattleStartClearSetData(void)
 
     gCombate->givenExpMons = 0;
 
-    gBattleResults.shinyWildMon = IsMonShiny(&gEnemyParty[0]);
-
     for (i = 0; i < ARRAY_COUNT(gSideTimers); i++)
     {
         gSideTimers[i].stickyWebBattlerId = 0xFF;
@@ -1156,8 +1145,8 @@ static void BattleStartClearSetData(void)
     {
         gCombate->usedHeldItems[i][LADO_JUGADOR] = 0;
         gCombate->usedHeldItems[i][LADO_OPONENTE] = 0;
-        gCombate->itemLost[LADO_JUGADOR][i].originalItem = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
-        gCombate->itemLost[LADO_OPONENTE][i].originalItem = GetMonData(&gEnemyParty[i], MON_DATA_HELD_ITEM);
+        gCombate->objetoPerdido[LADO_JUGADOR][i] = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
+        gCombate->objetoPerdido[LADO_OPONENTE][i] = GetMonData(&gEnemyParty[i], MON_DATA_HELD_ITEM);
     }
 
     gCombate->swapDamageCategory = FALSE;
@@ -1241,7 +1230,7 @@ void SwitchInClearSetData(u32 battler)
     }
 
     gCombate->resultadoMovimiento = MOVIMIENTO_NEUTRO;
-    gDisableStructs[battler].isFirstTurn = 2;
+    gDisableStructs[battler].esPrimerTurno = TRUE;
     gLastMoves[battler] = MOVE_NONE;
     gLastLandedMoves[battler] = MOVE_NONE;
     gLastHitByType[battler] = 0;
@@ -1249,13 +1238,7 @@ void SwitchInClearSetData(u32 battler)
     gLastResultingMoves[battler] = MOVE_NONE;
     gLastPrintedMoves[battler] = MOVE_NONE;
     gLastHitBy[battler] = 0xFF;
-
-    gCombate->lastTakenMove[battler] = 0;
     gCombate->sameMoveTurns[battler] = 0;
-    gCombate->lastTakenMoveFrom[battler][0] = 0;
-    gCombate->lastTakenMoveFrom[battler][1] = 0;
-    gCombate->lastTakenMoveFrom[battler][2] = 0;
-    gCombate->lastTakenMoveFrom[battler][3] = 0;
     gCombate->lastMoveFailed &= ~(1u << battler);
 
     for (i = 0; i < ARRAY_COUNT(gSideTimers); i++)
@@ -1265,21 +1248,12 @@ void SwitchInClearSetData(u32 battler)
             gSideTimers[i].stickyWebBattlerId = 0xFF;
     }
 
-    for (i = 0; i < gBattlersCount; i++)
-    {
-        if (i != battler && GetBattlerSide(i) != GetBattlerSide(battler))
-            gCombate->lastTakenMove[i] = MOVE_NONE;
-
-        gCombate->lastTakenMoveFrom[i][battler] = 0;
-    }
-
     gCombate->choicedMove[battler] = MOVE_NONE;
-    gBattleResources->flags->flags[battler] = 0;
+    gBattleResources->flags[battler] = 0;
     gCurrentMove = MOVE_NONE;
 
     // Reset damage to prevent things like red card activating if the switched-in mon is holding it
-    gSpecialStatuses[battler].physicalDmg = 0;
-    gSpecialStatuses[battler].specialDmg = 0;
+    gCombate[battler].danioRecibido = 0;
 
     // Reset Eject Button / Eject Pack switch detection
     AI_DATA->ejectButtonSwitch = FALSE;
@@ -1293,99 +1267,87 @@ void SwitchInClearSetData(u32 battler)
     Ai_UpdateSwitchInData(battler);
 }
 
-const u8 *FaintClearSetData(u32 battler)
+const u8 *FaintClearSetData(u32 combatiente)
 {
-    s32 i;
     const u8 *result = NULL;
-    u8 battlerSide = GetBattlerSide(battler);
+    u32 ladoCombatiente = GetBattlerSide(combatiente);
 
-    for (i = 0; i < NUMERO_ESTADISTICAS_BATALLA; i++)
-        gBattleMons[battler].statStages[i] = ESTADISTICA_NEUTRA;
+    for (u32 indiceEstadistica = 0; indiceEstadistica < NUMERO_ESTADISTICAS_BATALLA; indiceEstadistica++)
+        gBattleMons[combatiente].statStages[indiceEstadistica] = ESTADISTICA_NEUTRA;
 
-    gBattleMons[battler].status2 = 0;
-    gStatuses3[battler] &= STATUS3_GASTRO_ACID; // Edge case: Keep Gastro Acid if pokemon's ability can have effect after fainting, for example Innards Out.
+    gBattleMons[combatiente].status2 = 0;
+    gStatuses3[combatiente] &= STATUS3_GASTRO_ACID; // Edge case: Keep Gastro Acid if pokemon's ability can have effect after fainting, for example Innards Out.
 
-    for (i = 0; i < gBattlersCount; i++)
+    for (u32 indiceCombatiente = JUGADOR_IZQUIERDA; indiceCombatiente < gBattlersCount; indiceCombatiente++)
     {
-        if ((gBattleMons[i].status2 & STATUS2_ESCAPE_PREVENTION) && gDisableStructs[i].battlerPreventingEscape == battler)
-            gBattleMons[i].status2 &= ~STATUS2_ESCAPE_PREVENTION;
-        if (gBattleMons[i].status2 & STATUS2_INFATUATED_WITH(battler))
-            gBattleMons[i].status2 &= ~STATUS2_INFATUATED_WITH(battler);
-        if ((gBattleMons[i].status2 & STATUS2_WRAPPED) && *(gCombate->wrappedBy + i) == battler)
-            gBattleMons[i].status2 &= ~STATUS2_WRAPPED;
+        if ((gBattleMons[indiceCombatiente].status2 & STATUS2_ESCAPE_PREVENTION) && gDisableStructs[indiceCombatiente].battlerPreventingEscape == combatiente)
+            gBattleMons[indiceCombatiente].status2 &= ~STATUS2_ESCAPE_PREVENTION;
+
+        if (gBattleMons[indiceCombatiente].status2 & STATUS2_INFATUATED_WITH(combatiente))
+            gBattleMons[indiceCombatiente].status2 &= ~STATUS2_INFATUATED_WITH(combatiente);
+
+        if ((gBattleMons[indiceCombatiente].status2 & STATUS2_WRAPPED) && gCombate->wrappedBy[indiceCombatiente] == combatiente)
+            gBattleMons[indiceCombatiente].status2 &= ~STATUS2_WRAPPED;
     }
 
-    gActionSelectionCursor[battler] = 0;
-    gMoveSelectionCursor[battler] = 0;
+    gActionSelectionCursor[combatiente] = 0;
+    gMoveSelectionCursor[combatiente] = 0;
 
-    memset(&gDisableStructs[battler], 0, sizeof(struct DisableStruct));
+    memset(&gDisableStructs[combatiente], 0, sizeof(struct DisableStruct));
 
-    gProtectStructs[battler].protected = FALSE;
-    gProtectStructs[battler].spikyShielded = FALSE;
-    gProtectStructs[battler].silkTrapped = FALSE;
-    gProtectStructs[battler].noValidMoves = FALSE;
-    gProtectStructs[battler].bounceMove = FALSE;
-    gProtectStructs[battler].stealMove = FALSE;
-    gProtectStructs[battler].prlzImmobility = FALSE;
-    gProtectStructs[battler].sleepImmobility = FALSE;
-    gProtectStructs[battler].confusionSelfDmg = FALSE;
-    gProtectStructs[battler].targetAffected = FALSE;
-    gProtectStructs[battler].chargingTurn = FALSE;
-    gProtectStructs[battler].usedImprisonedMove = FALSE;
-    gProtectStructs[battler].loveImmobility = FALSE;
-    gProtectStructs[battler].usedDisabledMove = FALSE;
-    gProtectStructs[battler].usedTauntedMove = FALSE;
-    gProtectStructs[battler].flinchImmobility = FALSE;
-    gProtectStructs[battler].notFirstStrike = FALSE;
-    gProtectStructs[battler].usedHealBlockedMove = FALSE;
-    gProtectStructs[battler].usedGravityPreventedMove = FALSE;
-    gProtectStructs[battler].usedThroatChopPreventedMove = FALSE;
-    gProtectStructs[battler].statRaised = FALSE;
-    gProtectStructs[battler].statFell = FALSE;
-    gProtectStructs[battler].pranksterElevated = FALSE;
+    gProtectStructs[combatiente].protected = FALSE;
+    gProtectStructs[combatiente].spikyShielded = FALSE;
+    gProtectStructs[combatiente].silkTrapped = FALSE;
+    gProtectStructs[combatiente].noValidMoves = FALSE;
+    gProtectStructs[combatiente].bounceMove = FALSE;
+    gProtectStructs[combatiente].stealMove = FALSE;
+    gProtectStructs[combatiente].prlzImmobility = FALSE;
+    gProtectStructs[combatiente].sleepImmobility = FALSE;
+    gProtectStructs[combatiente].confusionSelfDmg = FALSE;
+    gProtectStructs[combatiente].targetAffected = FALSE;
+    gProtectStructs[combatiente].chargingTurn = FALSE;
+    gProtectStructs[combatiente].usedImprisonedMove = FALSE;
+    gProtectStructs[combatiente].loveImmobility = FALSE;
+    gProtectStructs[combatiente].usedDisabledMove = FALSE;
+    gProtectStructs[combatiente].usedTauntedMove = FALSE;
+    gProtectStructs[combatiente].flinchImmobility = FALSE;
+    gProtectStructs[combatiente].notFirstStrike = FALSE;
+    gProtectStructs[combatiente].usedHealBlockedMove = FALSE;
+    gProtectStructs[combatiente].usedGravityPreventedMove = FALSE;
+    gProtectStructs[combatiente].usedThroatChopPreventedMove = FALSE;
+    gProtectStructs[combatiente].statRaised = FALSE;
+    gProtectStructs[combatiente].statFell = FALSE;
+    gProtectStructs[combatiente].pranksterElevated = FALSE;
 
-    gDisableStructs[battler].isFirstTurn = 2;
+    gDisableStructs[combatiente].esPrimerTurno = TRUE;
 
-    gLastMoves[battler] = MOVE_NONE;
-    gLastLandedMoves[battler] = MOVE_NONE;
-    gLastHitByType[battler] = 0;
-    gLastUsedMoveType[battler] = 0;
-    gLastResultingMoves[battler] = MOVE_NONE;
-    gLastPrintedMoves[battler] = MOVE_NONE;
-    gLastHitBy[battler] = 0xFF;
+    gLastMoves[combatiente] = MOVE_NONE;
+    gLastLandedMoves[combatiente] = MOVE_NONE;
+    gLastHitByType[combatiente] = 0;
+    gLastUsedMoveType[combatiente] = 0;
+    gLastResultingMoves[combatiente] = MOVE_NONE;
+    gLastPrintedMoves[combatiente] = MOVE_NONE;
+    gLastHitBy[combatiente] = 0xFF;
 
-    gCombate->choicedMove[battler] = MOVE_NONE;
-    gCombate->sameMoveTurns[battler] = 0;
-    gCombate->lastTakenMove[battler] = MOVE_NONE;
-    gCombate->lastTakenMoveFrom[battler][0] = 0;
-    gCombate->lastTakenMoveFrom[battler][1] = 0;
-    gCombate->lastTakenMoveFrom[battler][2] = 0;
-    gCombate->lastTakenMoveFrom[battler][3] = 0;
+    gCombate->choicedMove[combatiente] = MOVE_NONE;
+    gCombate->sameMoveTurns[combatiente] = 0;
 
-    for (i = 0; i < ARRAY_COUNT(gSideTimers); i++)
+    for (u32 indiceLado = 0; indiceLado < ARRAY_COUNT(gSideTimers); indiceLado++)
     {
         // User of sticky web fainted, so reset the stored battler ID
-        if (gSideTimers[i].stickyWebBattlerId == battler)
-            gSideTimers[i].stickyWebBattlerId = 0xFF;
+        if (gSideTimers[indiceLado].stickyWebBattlerId == combatiente)
+            gSideTimers[indiceLado].stickyWebBattlerId = 0xFF;
     }
 
-    for (i = 0; i < gBattlersCount; i++)
-    {
-        if (i != battler && GetBattlerSide(i) != battlerSide)
-            gCombate->lastTakenMove[i] = MOVE_NONE;
+    gBattleResources->flags[combatiente] = 0;
 
-        gCombate->lastTakenMoveFrom[i][battler] = 0;
-    }
+    gBattleMons[combatiente].types[TIPO_1] = gSpeciesInfo[gBattleMons[combatiente].species].types[TIPO_1];
+    gBattleMons[combatiente].types[TIPO_2] = gSpeciesInfo[gBattleMons[combatiente].species].types[TIPO_2];
 
-    gBattleResources->flags->flags[battler] = 0;
+    Ai_UpdateFaintData(combatiente);
+    TryBattleFormChange(combatiente, FORM_CHANGE_FAINT);
 
-    gBattleMons[battler].types[TIPO_1] = gSpeciesInfo[gBattleMons[battler].species].types[TIPO_1];
-    gBattleMons[battler].types[TIPO_2] = gSpeciesInfo[gBattleMons[battler].species].types[TIPO_2];
-
-    Ai_UpdateFaintData(battler);
-    TryBattleFormChange(battler, FORM_CHANGE_FAINT);
-
-    gCombate->overwrittenAbilities[battler] = ABILITY_NONE;
+    gCombate->overwrittenAbilities[combatiente] = ABILITY_NONE;
 
     return result;
 }
@@ -1447,7 +1409,6 @@ static void DoBattleIntro(void)
                 {
                     BtlController_EmitLoadMonSprite(battler, BUFFER_A);
                     MarcaCombatienteOcupado(battler);
-                    gBattleResults.lastOpponentSpecies = GetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES, NULL);
                 }
                 break;
             case JUGADOR_DERECHA:
@@ -1642,11 +1603,6 @@ static void TryDoEventsBeforeFirstTurn(void)
         gCombate->switchInBattlerCounter = 0;
         gCombate->eventsBeforeFirstTurnState++;
         break;
-    case FIRST_TURN_EVENTS_OPPORTUNIST_1:
-        if (AbilityBattleEffects(ABILITYEFFECT_OPPORTUNIST, 0, 0, 0, 0))
-            return;
-        gCombate->eventsBeforeFirstTurnState++;
-        break;
     case FIRST_TURN_EVENTS_ITEM_EFFECTS:
         while (gCombate->switchInBattlerCounter < gBattlersCount) // From fastest to slowest
         {
@@ -1654,11 +1610,6 @@ static void TryDoEventsBeforeFirstTurn(void)
                 return;
         }
         gCombate->switchInBattlerCounter = 0;
-        gCombate->eventsBeforeFirstTurnState++;
-        break;
-    case FIRST_TURN_EVENTS_OPPORTUNIST_2:
-        if (AbilityBattleEffects(ABILITYEFFECT_OPPORTUNIST, 0, 0, 0, 0))
-            return;
         gCombate->eventsBeforeFirstTurnState++;
         break;
     case FIRST_TURN_EVENTS_END:
@@ -1669,7 +1620,7 @@ static void TryDoEventsBeforeFirstTurn(void)
         }
         TurnValuesCleanUp(FALSE);
         SpecialStatusesClear();
-        *(&gCombate->absentBattlerFlags) = gAbsentBattlerFlags;
+        gCombate->absentBattlerFlags = gAbsentBattlerFlags;
         BattlePutTextOnWindow(gText_EmptyString, B_WIN_MSG);
         gBattleMainFunc = GestionaEstadoSeleccionAccionesTurno;
         ResetSentPokesToOpponentValue();
@@ -1682,16 +1633,15 @@ static void TryDoEventsBeforeFirstTurn(void)
             gBattleMons[i].status2 &= ~STATUS2_FLINCHED;
         }
 
-        *(&gCombate->turnEffectsTracker) = 0;
-        *(&gCombate->turnEffectsBattlerId) = 0;
-        *(&gCombate->wishPerishSongState) = 0;
-        *(&gCombate->wishPerishSongBattlerId) = 0;
+        gCombate->efectoFinTurno.individual = ENDTURN_WEATHER_DAMAGE;
+        gCombate->gCombate->efectoFinTurno.indiceCombatiente = JUGADOR_IZQUIERDA;
+        gCombate->wishPerishSongState = 0;
+        gCombate->wishPerishSongBattlerId = 0;
         gBattleScripting.moveendState = 0;
         gCombate->faintedActionsState = 0;
-        gCombate->turnCountersTracker = 0;
+        gCombate->efectoFinTurno.campo = FIN_TURNO_ORDEN;
         gCombate->resultadoMovimiento = MOVIMIENTO_NEUTRO;
 
-        memset(gQueuedStatBoosts, 0, sizeof(gQueuedStatBoosts));
         SetShellSideArmCategory();
         SetAILogicDataForTurn(AI_DATA); // get assumed abilities, hold effects, etc of all battlers
 
@@ -1717,11 +1667,11 @@ static void HandleEndTurn_ContinueBattle(void)
             if ((gBattleMons[i].status1 & STATUS1_SLEEP) && (gBattleMons[i].status2 & STATUS2_MULTIPLETURNS))
                 CancelMultiTurnMoves(i);
         }
-        gCombate->turnEffectsTracker = 0;
-        gCombate->turnEffectsBattlerId = 0;
+        gCombate->efectoFinTurno.individual = ENDTURN_WEATHER_DAMAGE;
+        gCombate->gCombate->efectoFinTurno.indiceCombatiente = JUGADOR_IZQUIERDA;
         gCombate->wishPerishSongState = 0;
         gCombate->wishPerishSongBattlerId = 0;
-        gCombate->turnCountersTracker = 0;
+        gCombate->efectoFinTurno.campo = FIN_TURNO_ORDEN;
         gCombate->resultadoMovimiento = MOVIMIENTO_NEUTRO;
     }
 }
@@ -1767,10 +1717,7 @@ void BattleTurnPassed(void)
         return;
     }
 
-    if (gBattleResults.battleTurnCounter < 0xFF)
-    {
-        gBattleResults.battleTurnCounter++;
-    }
+    gCombate.contadorTurnos++;
 
     for (i = 0; i < gBattlersCount; i++)
     {
@@ -1780,7 +1727,7 @@ void BattleTurnPassed(void)
     for (i = 0; i < NUMERO_COMBATIENTES; i++)
         *(gCombate->monToSwitchIntoId + i) = PARTY_SIZE;
 
-    *(&gCombate->absentBattlerFlags) = gAbsentBattlerFlags;
+    gCombate->absentBattlerFlags = gAbsentBattlerFlags;
     BattlePutTextOnWindow(gText_EmptyString, B_WIN_MSG);
     SetShellSideArmCategory();
     SetAILogicDataForTurn(AI_DATA); // get assumed abilities, hold effects, etc of all battlers
@@ -2170,7 +2117,7 @@ u32 GetBattlerTotalSpeedStatArgs(u32 battler, u32 ability, u32 holdEffect)
 
     if (gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_TAILWIND)
         speed *= 2;
-    if (gBattleResources->flags->flags[battler] & RESOURCE_FLAG_UNBURDEN)
+    if (gBattleResources->flags[battler] & RESOURCE_FLAG_UNBURDEN)
         speed *= 2;
 
     if (gBattleMons[battler].status1 & STATUS1_PARALYSIS && ability != ABILITY_QUICK_FEET)
@@ -2452,14 +2399,13 @@ static void TurnValuesCleanUp(bool8 var0)
             gProtectStructs[i].spikyShielded = FALSE;
             gProtectStructs[i].usedCustapBerry = FALSE;
             gProtectStructs[i].quickDraw = FALSE;
-            memset(&gQueuedStatBoosts[i], 0, sizeof(struct QueuedStatBoost));
         }
         else
         {
             memset(&gProtectStructs[i], 0, sizeof(struct ProtectStruct));
 
-            if (gDisableStructs[i].isFirstTurn)
-                gDisableStructs[i].isFirstTurn--;
+            if (EsPrimerTurno(i))
+                gDisableStructs[i].esPrimerTurno = FALSE;
 
             if (gDisableStructs[i].rechargeTimer)
             {
@@ -2474,11 +2420,11 @@ static void TurnValuesCleanUp(bool8 var0)
 
         gSpecialStatuses[i].parentalBondState = PARENTAL_BOND_OFF;
     }
-
-    gSideStatuses[LADO_JUGADOR] &= ~(SIDE_STATUS_QUICK_GUARD | SIDE_STATUS_WIDE_GUARD | SIDE_STATUS_CRAFTY_SHIELD | SIDE_STATUS_MAT_BLOCK);
-    gSideStatuses[LADO_OPONENTE] &= ~(SIDE_STATUS_QUICK_GUARD | SIDE_STATUS_WIDE_GUARD | SIDE_STATUS_CRAFTY_SHIELD | SIDE_STATUS_MAT_BLOCK);
-    gSideTimers[LADO_JUGADOR].followmeTimer = 0;
-    gSideTimers[LADO_OPONENTE].followmeTimer = 0;
+    for (u32 lado = LADO_JUGADOR; lado < NUMERO_LADOS; lado++)
+    {
+        gSideStatuses[lado] &= ~(SIDE_STATUS_QUICK_GUARD | SIDE_STATUS_WIDE_GUARD | SIDE_STATUS_CRAFTY_SHIELD | SIDE_STATUS_MAT_BLOCK);
+        gSideTimers[lado].followmeTimer = 0;
+    }
 
     gCombate->usedEjectItem = 0;
 }
@@ -2597,7 +2543,7 @@ static void RunTurnActionsFunctions(void)
         gCombate->effectsBeforeUsingMoveDone = TRUE;
     }
 
-    *(&gCombate->savedTurnActionNumber) = gCurrentTurnActionNumber;
+    gCombate->savedTurnActionNumber = gCurrentTurnActionNumber;
     sTurnActionsFuncsTable[gCurrentActionFuncId]();
 
     if (gCurrentTurnActionNumber >= gBattlersCount) // everyone did their actions, turn finished
@@ -2684,30 +2630,9 @@ static void HandleEndTurn_FinishBattle(void)
 
     if (gCurrentActionFuncId == B_ACTION_TRY_FINISH || gCurrentActionFuncId == B_ACTION_FINISHED)
     {
-        for (battler = 0; battler < gBattlersCount; battler++)
-        {
-            if (GetBattlerSide(battler) == LADO_JUGADOR)
-            {
-                if (gBattleResults.playerMon1Species == SPECIES_NONE)
-                {
-                    gBattleResults.playerMon1Species = GetMonData(&gPlayerParty[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES, NULL);
-                    GetMonData(&gPlayerParty[gBattlerPartyIndexes[battler]], MON_DATA_NICKNAME, gBattleResults.playerMon1Name);
-                }
-                else
-                {
-                    gBattleResults.playerMon2Species = GetMonData(&gPlayerParty[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES, NULL);
-                    GetMonData(&gPlayerParty[gBattlerPartyIndexes[battler]], MON_DATA_NICKNAME, gBattleResults.playerMon2Name);
-                }
-            }
-        }
-
-        if (!EsContraEntrenador()
-            && gBattleResults.shinyWildMon)
-
         EmpiezaFundidoPaletasRapido(FUNDIDO_A_NEGRO);
-        FadeOutMapMusic(5);
-        if (B_TRAINERS_KNOCK_OFF_ITEMS == TRUE || B_RESTORE_HELD_BATTLE_ITEMS >= GEN_9)
-            TryRestoreHeldItems();
+        DesvaneceMusicaMapa(VELOCIDAD_LENTA_MUSICA);
+        RecuperaObjetoPerdido();
 
         for (i = 0; i < PARTY_SIZE; i++)
         {

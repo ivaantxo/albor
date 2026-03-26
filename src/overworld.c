@@ -898,9 +898,9 @@ static void TransitionMapMusic(void)
         if (newMusic != currentMusic)
         {
             if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE))
-                FadeOutAndFadeInNewMapMusic(newMusic, 4, 4);
+                FadeOutAndFadeInNewMapMusic(newMusic, VELOCIDAD_ACELERADA_MUSICA, VELOCIDAD_ACELERADA_MUSICA);
             else
-                FadeOutAndPlayNewMapMusic(newMusic, 8);
+                FadeOutAndPlayNewMapMusic(newMusic, VELOCIDAD_LENTA_MUSICA);
         }
     }
 }
@@ -909,23 +909,23 @@ void Overworld_ChangeMusicToDefault(void)
 {
     u16 currentMusic = GetCurrentMapMusic();
     if (currentMusic != GetCurrLocationDefaultMusic())
-        FadeOutAndPlayNewMapMusic(GetCurrLocationDefaultMusic(), 8);
+        FadeOutAndPlayNewMapMusic(GetCurrLocationDefaultMusic(), VELOCIDAD_LENTA_MUSICA);
 }
 
 void Overworld_ChangeMusicTo(u16 newMusic)
 {
     u16 currentMusic = GetCurrentMapMusic();
     if (currentMusic != newMusic && currentMusic != MUS_ABNORMAL_WEATHER)
-        FadeOutAndPlayNewMapMusic(newMusic, 8);
+        FadeOutAndPlayNewMapMusic(newMusic, VELOCIDAD_LENTA_MUSICA);
 }
 
 u8 GetMapMusicFadeoutSpeed(void)
 {
     const struct MapHeader *mapHeader = GetDestinationWarpMapHeader();
     if (IsMapTypeIndoors(mapHeader->mapType) == TRUE)
-        return 2;
+        return VELOCIDAD_ACELERADA_MUSICA;
     else
-        return 4;
+        return VELOCIDAD_LENTA_MUSICA;
 }
 
 void TryFadeOutOldMapMusic(void)
@@ -933,7 +933,7 @@ void TryFadeOutOldMapMusic(void)
     u16 warpMusic = GetWarpDestinationMusic();
     if (FlagGet(FLAG_DONT_TRANSITION_MUSIC) != TRUE && warpMusic != GetCurrentMapMusic())
     {
-        FadeOutMapMusic(GetMapMusicFadeoutSpeed());
+        DesvaneceMusicaMapa(GetMapMusicFadeoutSpeed());
     }
 }
 
@@ -942,9 +942,9 @@ bool8 BGMusicStopped(void)
     return IsNotWaitingForBGMStop();
 }
 
-void Overworld_FadeOutMapMusic(void)
+void Overworld_DesvaneceMusicaMapa(void)
 {
-    FadeOutMapMusic(4);
+    DesvaneceMusicaMapa(VELOCIDAD_ACELERADA_MUSICA);
 }
 
 static void PlayAmbientCry(void)

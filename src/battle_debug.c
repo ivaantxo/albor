@@ -163,7 +163,6 @@ enum
     LIST_STATUS3_MINIMIZED,
     LIST_STATUS3_CHARGED_UP,
     LIST_STATUS3_ROOTED,
-    LIST_STATUS3_YAWN,
     LIST_STATUS3_IMPRISONED_OTHERS,
     LIST_STATUS3_GASTRO_ACID,
     LIST_STATUS3_EMBARGO,
@@ -295,7 +294,6 @@ static const u8 sText_Underground[] = _("Underground");
 static const u8 sText_Minimized[] = _("Minimized");
 static const u8 sText_ChargedUp[] = _("Charged Up");
 static const u8 sText_Rooted[] = _("Rooted");
-static const u8 sText_Yawn[] = _("Yawn");
 static const u8 sText_ImprisonedOthers[] = _("Imprisoned Others");
 static const u8 sText_GastroAcid[] = _("Gastro Acid");
 static const u8 sText_Embargo[] = _("Embargo");
@@ -381,7 +379,6 @@ static const struct BitfieldInfo sStatus3Bitfield[] =
     {/*Minimized*/ 1, 8},
     {/*Charged Up*/ 1, 9},
     {/*Rooted*/ 1, 10},
-    {/*Yawn*/ 2, 11},
     {/*Imprisoned Others*/ 1, 13},
     {/*Gastro Acid*/ 1, 16},
     {/*Embargo*/ 1, 17},
@@ -490,7 +487,6 @@ static const struct ListMenuItem sStatus3ListItems[] =
     {sText_Minimized, LIST_STATUS3_MINIMIZED},
     {sText_ChargedUp, LIST_STATUS3_CHARGED_UP},
     {sText_Rooted, LIST_STATUS3_ROOTED},
-    {sText_Yawn, LIST_STATUS3_YAWN},
     {sText_ImprisonedOthers, LIST_STATUS3_IMPRISONED_OTHERS},
     {sText_GastroAcid, LIST_STATUS3_GASTRO_ACID},
     {sText_Embargo, LIST_STATUS3_EMBARGO},
@@ -2185,7 +2181,6 @@ static const u8 sText_HoldEffectFirePower[] = _("Fire Power");
 static const u8 sText_HoldEffectDragonPower[] = _("Dragon Power");
 static const u8 sText_HoldEffectNormalPower[] = _("Normal Power");
 static const u8 sText_HoldEffectUpgrade[] = _("Upgrade");
-static const u8 sText_HoldEffectShellBell[] = _("Shell Bell");
 static const u8 sText_HoldEffectLuckyPunch[] = _("Lucky Punch");
 static const u8 sText_HoldEffectMetalPowder[] = _("Metal Powder");
 static const u8 sText_HoldEffectThickClub[] = _("Thick Club");
@@ -2261,7 +2256,6 @@ static const u8 sText_HoldEffectHeavyDutyBoots[] = _("Heavy Duty Boots");
 static const u8 sText_HoldEffectThroatSpray[] = _("Throat Spray");
 static const u8 sText_HoldEffectAbilityShield[] = _("Ability Shield");
 static const u8 sText_HoldEffectClearAmulet[] = _("Clear Amulet");
-static const u8 sText_HoldEffectMirrorHerb[] = _("Mirror Herb");
 static const u8 sText_HoldEffectPunchingGlove[] = _("Punching Glove");
 static const u8 sText_HoldEffectCovertCloak[] = _("Covert Cloak");
 static const u8 sText_HoldEffectLoadedDice[] = _("Loaded Dice");
@@ -2327,7 +2321,6 @@ static const u8 *const sHoldEffectNames[] =
     [HOLD_EFFECT_DRAGON_POWER] = sText_HoldEffectDragonPower,
     [HOLD_EFFECT_NORMAL_POWER] = sText_HoldEffectNormalPower,
     [HOLD_EFFECT_UPGRADE] = sText_HoldEffectUpgrade,
-    [HOLD_EFFECT_SHELL_BELL] = sText_HoldEffectShellBell,
     [HOLD_EFFECT_LUCKY_PUNCH] = sText_HoldEffectLuckyPunch,
     [HOLD_EFFECT_METAL_POWDER] = sText_HoldEffectMetalPowder,
     [HOLD_EFFECT_THICK_CLUB] = sText_HoldEffectThickClub,
@@ -2403,7 +2396,6 @@ static const u8 *const sHoldEffectNames[] =
     [HOLD_EFFECT_CHALECO_TACTICO] = sText_HoldEffectChalecoTactico,
     [HOLD_EFFECT_ABILITY_SHIELD] = sText_HoldEffectAbilityShield,
     [HOLD_EFFECT_CLEAR_AMULET] = sText_HoldEffectClearAmulet,
-    [HOLD_EFFECT_MIRROR_HERB] = sText_HoldEffectMirrorHerb,
     [HOLD_EFFECT_PUNCHING_GLOVE] = sText_HoldEffectPunchingGlove,
     [HOLD_EFFECT_COVERT_CLOAK] = sText_HoldEffectCovertCloak,
     [HOLD_EFFECT_LOADED_DICE] = sText_HoldEffectLoadedDice,

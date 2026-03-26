@@ -183,30 +183,30 @@ void StopMapMusic(void)
     sMapMusicState = 1;
 }
 
-void FadeOutMapMusic(u8 speed)
+void DesvaneceMusicaMapa(u32 velocidad)
 {
     if (IsNotWaitingForBGMStop())
-        FadeOutBGM(speed);
+        FadeOutBGM(velocidad);
     sCurrentMapMusic = 0;
     sNextMapMusic = 0;
     sMapMusicState = 5;
 }
 
-void FadeOutAndPlayNewMapMusic(u16 songNum, u8 speed)
+void FadeOutAndPlayNewMapMusic(u16 songNum, u32 velocidad)
 {
-    FadeOutMapMusic(speed);
+    DesvaneceMusicaMapa(velocidad);
     sCurrentMapMusic = 0;
     sNextMapMusic = songNum;
     sMapMusicState = 6;
 }
 
-void FadeOutAndFadeInNewMapMusic(u16 songNum, u8 fadeOutSpeed, u8 fadeInSpeed)
+void FadeOutAndFadeInNewMapMusic(u16 songNum, u32 velocidadSalida, u32 velocidadEntrada)
 {
-    FadeOutMapMusic(fadeOutSpeed);
+    DesvaneceMusicaMapa(velocidadSalida);
     sCurrentMapMusic = 0;
     sNextMapMusic = songNum;
     sMapMusicState = 7;
-    sMapMusicFadeInSpeed = fadeInSpeed;
+    sMapMusicFadeInSpeed = velocidadEntrada;
 }
 
 bool8 IsNotWaitingForBGMStop(void)
@@ -298,7 +298,7 @@ static void CreateFanfareTask(void)
         CreateTask(Task_Fanfare, 80);
 }
 
-void FadeInNewBGM(u16 songNum, u8 speed)
+void FadeInNewBGM(u16 songNum, u32 velocidad)
 {
     if (gDisableMusic)
         songNum = 0;
@@ -308,12 +308,12 @@ void FadeInNewBGM(u16 songNum, u8 speed)
     m4aMPlayImmInit(&gMPlayInfo_BGM);
     m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, SIN_VOLUMEN);
     m4aSongNumStop(songNum);
-    m4aMPlayFadeIn(&gMPlayInfo_BGM, speed);
+    m4aMPlayFadeIn(&gMPlayInfo_BGM, velocidad);
 }
 
-void FadeOutBGMTemporarily(u8 speed)
+void FadeOutBGMTemporarily(u32 velocidad)
 {
-    m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM, speed);
+    m4aMPlayFadeOutTemporarily(&gMPlayInfo_BGM, velocidad);
 }
 
 bool8 IsBGMPausedOrStopped(void)
@@ -325,14 +325,14 @@ bool8 IsBGMPausedOrStopped(void)
     return FALSE;
 }
 
-void FadeInBGM(u8 speed)
+void FadeInBGM(u32 velocidad)
 {
-    m4aMPlayFadeIn(&gMPlayInfo_BGM, speed);
+    m4aMPlayFadeIn(&gMPlayInfo_BGM, velocidad);
 }
 
-void FadeOutBGM(u8 speed)
+void FadeOutBGM(u32 velocidad)
 {
-    m4aMPlayFadeOut(&gMPlayInfo_BGM, speed);
+    m4aMPlayFadeOut(&gMPlayInfo_BGM, velocidad);
 }
 
 bool8 IsBGMStopped(void)

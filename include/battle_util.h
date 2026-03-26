@@ -51,7 +51,6 @@ enum {
     ABILITYEFFECT_NEUTRALIZINGGAS,
     ABILITYEFFECT_ON_WEATHER,
     ABILITYEFFECT_SWITCH_IN_WEATHER,
-    ABILITYEFFECT_OPPORTUNIST,
 };
 
 // For the first argument of ItemBattleEffects, to deteremine which block of item effects to try
@@ -62,7 +61,7 @@ enum ItemEffectsBattle
     ITEMEFFECT_MOVE_END,
     ITEMEFFECT_TARGET,
     ITEMEFFECT_ORBS,
-    ITEMEFFECT_LIFEORB_SHELLBELL,
+    ITEMEFFECT_LIFEORB,
     ITEMEFFECT_USE_LAST_ITEM,
     ITEMEFFECT_STATS_CHANGED,
 };
@@ -201,9 +200,7 @@ u8 GetCategoryBasedOnStats(u32 battler);
 void SetShellSideArmCategory(void);
 bool32 MoveIsAffectedBySheerForce(u32 move);
 bool32 TestIfSheerForceAffected(u32 battler, u16 move);
-void TryRestoreHeldItems(void);
-bool32 CanStealItem(u32 battlerStealing, u32 battlerItem, u16 item);
-void TrySaveExchangedItem(u32 battler, u16 stolenItem);
+void RecuperaObjetoPerdido(void);
 u8 TryHandleSeed(u32 battler, u32 terrainFlag, u8 statId, u16 itemId, bool32 execute);
 bool32 IsBattlerAffectedByHazards(u32 battler, bool32 toxicSpikes);
 void SortBattlersBySpeed(u8 *battlers, bool32 slowToFast);

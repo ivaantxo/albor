@@ -42,7 +42,7 @@ static void AnimFrenzyPlantRoot(struct Sprite *);
 static void AnimRootFlickerOut(struct Sprite *);
 static void AnimIngrainOrb(struct Sprite *);
 static void AnimPresent(struct Sprite *);
-static void AnimKnockOffItem(struct Sprite *);
+static void AnimDesarmeItem(struct Sprite *);
 static void AnimPresentHealParticle(struct Sprite *);
 static void AnimItemSteal(struct Sprite *);
 static void AnimItemSteal_Step1(struct Sprite *);
@@ -1034,7 +1034,7 @@ const struct SpriteTemplate gPresentSpriteTemplate =
     .callback = AnimPresent,
 };
 
-const struct SpriteTemplate gKnockOffItemSpriteTemplate =
+const struct SpriteTemplate gDesarmeItemSpriteTemplate =
 {
     .tileTag = ANIM_TAG_ITEM_BAG,
     .paletteTag = ANIM_TAG_ITEM_BAG,
@@ -1042,7 +1042,7 @@ const struct SpriteTemplate gKnockOffItemSpriteTemplate =
     .anims = gFallingBagAnimTable,
     .images = NULL,
     .affineAnims = gFallingBagAffineAnimTable,
-    .callback = AnimKnockOffItem,
+    .callback = AnimDesarmeItem,
 };
 
 const union AnimCmd gPresentHealParticleAnimCmds[] =
@@ -4082,7 +4082,7 @@ static void AnimPresent(struct Sprite *sprite)
     sprite->callback = AnimItemSteal_Step1;
 }
 
-static void AnimKnockOffOpponentsItem(struct Sprite *sprite)
+static void AnimDesarmeOpponentsItem(struct Sprite *sprite)
 {
     sprite->data[0] += ((sprite->data[3] * 128) / sprite->data[4]);
     if (sprite->data[0] > 0x7F)
@@ -4100,7 +4100,7 @@ static void AnimKnockOffOpponentsItem(struct Sprite *sprite)
     }
 }
 
-static void AnimKnockOffItem(struct Sprite *sprite)
+static void AnimDesarmeItem(struct Sprite *sprite)
 {
     s16 targetY = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y);
     if (GetBattlerSide(gBattleAnimTarget) == LADO_JUGADOR)
@@ -4120,7 +4120,7 @@ static void AnimKnockOffItem(struct Sprite *sprite)
         InitItemBagData(sprite, 40);
         sprite->data[3] = 3;
         sprite->data[4] = 60;
-        sprite->callback = AnimKnockOffOpponentsItem;
+        sprite->callback = AnimDesarmeOpponentsItem;
     }
 }
 
