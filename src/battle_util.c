@@ -625,7 +625,6 @@ bool32 WasUnableToUseMove(u32 battler)
         || gProtectStructs[battler].usedDisabledMove
         || gProtectStructs[battler].usedTauntedMove
         || gProtectStructs[battler].usedGravityPreventedMove
-        || gProtectStructs[battler].usedHealBlockedMove
         || gProtectStructs[battler].flinchImmobility
         || gProtectStructs[battler].confusionSelfDmg
         || gProtectStructs[battler].powderSelfDmg
@@ -771,14 +770,6 @@ static bool32 IsGravityPreventingMove(u32 move)
     return gMovesInfo[move].gravityBanned;
 }
 
-bool32 IsHealBlockPreventingMove(u32 battler, u32 move)
-{
-    if (!(gStatuses3[battler] & STATUS3_HEAL_BLOCK))
-        return FALSE;
-
-    return gMovesInfo[move].healingMove;
-}
-
 bool32 IsBelchPreventingMove(u32 battler, u32 move)
 {
     if (gMovesInfo[move].effect != EFFECT_BELCH)
@@ -835,13 +826,6 @@ u32 TrySetCantSelectMoveBattleScript(u32 battler)
     {
         gCurrentMove = move;
         gSelectionBattleScripts[battler] = BattleScript_SelectingNotAllowedMoveGravity;
-        limitations++;
-    }
-
-    if (IsHealBlockPreventingMove(battler, move))
-    {
-        gCurrentMove = move;
-        gSelectionBattleScripts[battler] = BattleScript_SelectingNotAllowedMoveHealBlock;
         limitations++;
     }
 
@@ -941,17 +925,11 @@ u8 CheckMoveLimitations(u32 battler, u8 unusableMoves, u16 check)
         // Gravity
         else if (check & MOVE_LIMITATION_GRAVITY && IsGravityPreventingMove(move))
             unusableMoves |= 1u << i;
-        // Heal Block
-        else if (check & MOVE_LIMITATION_HEAL_BLOCK && IsHealBlockPreventingMove(battler, move))
-            unusableMoves |= 1u << i;
         // Belch
         else if (check & MOVE_LIMITATION_BELCH && IsBelchPreventingMove(battler, move))
             unusableMoves |= 1u << i;
         // Throat Chop
         else if (check & MOVE_LIMITATION_THROAT_CHOP && gDisableStructs[battler].throatChopTimer && gMovesInfo[move].soundMove)
-            unusableMoves |= 1u << i;
-        // Stuff Cheeks
-        else if (check & MOVE_LIMITATION_STUFF_CHEEKS && moveEffect == EFFECT_STUFF_CHEEKS && ItemId_GetPocket(gBattleMons[battler].item) != POCKET_BERRIES)
             unusableMoves |= 1u << i;
         // Gorilla Tactics
         else if (check & MOVE_LIMITATION_CHOICE_ITEM && GetBattlerAbility(battler) == ABILITY_GORILLA_TACTICS && *choicedMove != MOVE_NONE && *choicedMove != move)
@@ -1496,8 +1474,7 @@ u8 DoBattlerEndTurnEffects(void)
             else if (gBattleWeather & (B_WEATHER_HAIL | B_WEATHER_SNOW)
                   && ability == ABILITY_ICE_BODY
                   && !(gStatuses3[battler] & (STATUS3_UNDERGROUND | STATUS3_UNDERWATER))
-                  && !IsBattlerAtMaxHp(battler)
-                  && !(gStatuses3[battler] & STATUS3_HEAL_BLOCK))
+                  && !IsBattlerAtMaxHp(battler))
             {
                 gBattleScripting.battler = battler;
                 gBattleMoveDamage = -1 * max(1, CuantosPSMaximos(battler) / 16);
@@ -1524,7 +1501,6 @@ u8 DoBattlerEndTurnEffects(void)
         case ENDTURN_INGRAIN:  // ingrain
             if ((gStatuses3[battler] & STATUS3_ROOTED)
              && !IsBattlerAtMaxHp(battler)
-             && !(gStatuses3[battler] & STATUS3_HEAL_BLOCK)
              && IsBattlerAlive(battler))
             {
                 gBattleMoveDamage = GetDrainedBigRootHp(battler, CuantosPSMaximos(battler) / 16);
@@ -1536,7 +1512,6 @@ u8 DoBattlerEndTurnEffects(void)
         case ENDTURN_AQUA_RING:  // aqua ring
             if ((gStatuses3[battler] & STATUS3_AQUA_RING)
              && !IsBattlerAtMaxHp(battler)
-             && !(gStatuses3[battler] & STATUS3_HEAL_BLOCK)
              && IsBattlerAlive(battler))
             {
                 gBattleMoveDamage = GetDrainedBigRootHp(battler, CuantosPSMaximos(battler) / 16);
@@ -1600,7 +1575,7 @@ u8 DoBattlerEndTurnEffects(void)
 
                 if (ability == ABILITY_POISON_HEAL)
                 {
-                    if (!IsBattlerAtMaxHp(battler) && !(gStatuses3[battler] & STATUS3_HEAL_BLOCK))
+                    if (!IsBattlerAtMaxHp(battler))
                     {
                         gBattleMoveDamage = CuantosPSMaximos(battler) / 8;
                         if (gBattleMoveDamage == 0)
@@ -1629,7 +1604,7 @@ u8 DoBattlerEndTurnEffects(void)
 
                 if (ability == ABILITY_POISON_HEAL)
                 {
-                    if (!IsBattlerAtMaxHp(battler) && !(gStatuses3[battler] & STATUS3_HEAL_BLOCK))
+                    if (!IsBattlerAtMaxHp(battler))
                     {
                         gBattleMoveDamage = CuantosPSMaximos(battler) / 8;
                         if (gBattleMoveDamage == 0)
@@ -1890,14 +1865,6 @@ u8 DoBattlerEndTurnEffects(void)
             }
             gCombate->efectoFinTurno.individual++;
             break;
-        case ENDTURN_LASER_FOCUS:
-            if (gStatuses3[battler] & STATUS3_LASER_FOCUS)
-            {
-                if (gDisableStructs[battler].laserFocusTimer == 0 || --gDisableStructs[battler].laserFocusTimer == 0)
-                    gStatuses3[battler] &= ~STATUS3_LASER_FOCUS;
-            }
-            gCombate->efectoFinTurno.individual++;
-            break;
         case ENDTURN_EMBARGO:
             if (gStatuses3[battler] & STATUS3_EMBARGO)
             {
@@ -1930,19 +1897,6 @@ u8 DoBattlerEndTurnEffects(void)
                 {
                     gStatuses3[battler] &= ~STATUS3_TELEKINESIS;
                     BattleScriptExecute(BattleScript_TelekinesisEndTurn);
-                    effect++;
-                }
-            }
-            gCombate->efectoFinTurno.individual++;
-            break;
-        case ENDTURN_HEALBLOCK:
-            if (gStatuses3[battler] & STATUS3_HEAL_BLOCK)
-            {
-                if (gDisableStructs[battler].healBlockTimer == 0 || --gDisableStructs[battler].healBlockTimer == 0)
-                {
-                    gStatuses3[battler] &= ~STATUS3_HEAL_BLOCK;
-                    BattleScriptExecute(BattleScript_BufferEndTurn);
-                    PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_HEAL_BLOCK);
                     effect++;
                 }
             }
@@ -2190,7 +2144,6 @@ void TryClearRageAndFuryCutter(void)
 
 void SetAtkCancellerForCalledMove(void)
 {
-    gCombate->atkCancellerTracker = CANCELLER_HEAL_BLOCKED;
     gCombate->isAtkCancelerForCalledMove = TRUE;
 }
 
@@ -2221,15 +2174,10 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
                 }
                 else
                 {
-                    u8 toSub;
-                    if (GetBattlerAbility(gBattlerAttacker) == ABILITY_EARLY_BIRD)
-                        toSub = 2;
-                    else
-                        toSub = 1;
-                    if ((gBattleMons[gBattlerAttacker].status1 & STATUS1_SLEEP) < toSub)
+                    if ((gBattleMons[gBattlerAttacker].status1 & STATUS1_SLEEP) < 1)
                         gBattleMons[gBattlerAttacker].status1 &= ~STATUS1_SLEEP;
                     else
-                        gBattleMons[gBattlerAttacker].status1 -= toSub;
+                        gBattleMons[gBattlerAttacker].status1 -= 1;
                     if (gBattleMons[gBattlerAttacker].status1 & STATUS1_SLEEP)
                     {
                         if (gChosenMove != MOVE_SNORE && gChosenMove != MOVE_SLEEP_TALK)
@@ -2274,18 +2222,6 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
                 gBattleScripting.battler = gBattlerAttacker;
                 CancelMultiTurnMoves(gBattlerAttacker);
                 gBattlescriptCurrInstr = BattleScript_MoveUsedIsDisabled;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
-                effect = 1;
-            }
-            gCombate->atkCancellerTracker++;
-            break;
-        case CANCELLER_HEAL_BLOCKED:
-            if (gStatuses3[gBattlerAttacker] & STATUS3_HEAL_BLOCK && IsHealBlockPreventingMove(gBattlerAttacker, gCurrentMove))
-            {
-                gProtectStructs[gBattlerAttacker].usedHealBlockedMove = TRUE;
-                gBattleScripting.battler = gBattlerAttacker;
-                CancelMultiTurnMoves(gBattlerAttacker);
-                gBattlescriptCurrInstr = BattleScript_MoveUsedHealBlockPrevents;
                 gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
                 effect = 1;
             }
@@ -2500,34 +2436,13 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
             break;
         }
 
-    } while (gCombate->atkCancellerTracker != CANCELLER_END && gCombate->atkCancellerTracker != CANCELLER_END2 && effect == 0);
+    } while (gCombate->atkCancellerTracker != CANCELLER_END && effect == 0);
 
     if (effect == 2)
     {
         BtlController_EmitSetMonData(gBattlerAttacker, BUFFER_A, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[gBattlerAttacker].status1);
         MarcaCombatienteOcupado(gBattlerAttacker);
     }
-    return effect;
-}
-
-// After Protean Activation.
-u8 AtkCanceller_UnableToUseMove2(void)
-{
-    u8 effect = 0;
-
-    do
-    {
-        switch (gCombate->atkCancellerTracker)
-        {
-        case CANCELLER_END:
-            gCombate->atkCancellerTracker++;
-            break;
-        case CANCELLER_END2:
-            break;
-        }
-
-    } while (gCombate->atkCancellerTracker != CANCELLER_END2 && effect == 0);
-
     return effect;
 }
 
@@ -3211,8 +3126,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             // Dry Skin works similarly to Rain Dish in Rain
             case ABILITY_RAIN_DISH:
                 if (IsBattlerWeatherAffected(battler, B_WEATHER_RAIN)
-                 && !IsBattlerAtMaxHp(battler)
-                 && !(gStatuses3[battler] & STATUS3_HEAL_BLOCK))
+                 && !IsBattlerAtMaxHp(battler))
                 {
                     BattleScriptPushCursorAndCallback(BattleScript_RainDishActivates);
                     gBattleMoveDamage = CuantosPSMaximos(battler) / 8;
@@ -3224,8 +3138,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 break;
             case ABILITY_FOTOSINTESIS:
                 if (IsBattlerWeatherAffected(battler, B_WEATHER_SUN)
-                 && !IsBattlerAtMaxHp(battler)
-                 && !(gStatuses3[battler] & STATUS3_HEAL_BLOCK))
+                 && !IsBattlerAtMaxHp(battler))
                 {
                     BattleScriptPushCursorAndCallback(BattleScript_RainDishActivates);
                     gBattleMoveDamage = CuantosPSMaximos(battler) / 8;
@@ -3369,7 +3282,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             switch (effect)
             {
             case MOVE_ABSORBED_BY_DRAIN_HP_ABILITY:
-                if (IsBattlerAtMaxHp(battler) || (B_HEAL_BLOCKING >= GEN_5 && gStatuses3[battler] & STATUS3_HEAL_BLOCK))
+                if (IsBattlerAtMaxHp(battler))
                 {
                     if ((gProtectStructs[gBattlerAttacker].notFirstStrike))
                         gBattlescriptCurrInstr = BattleScript_MonMadeMoveUseless;
@@ -4367,8 +4280,7 @@ bool32 HasEnoughHpToEatBerry(u32 battler, u32 hpFraction, u32 itemId)
 
 static u8 HealConfuseBerry(u32 battler, u32 itemId, u32 flavorId, bool32 end2)
 {
-    if (HasEnoughHpToEatBerry(battler, (B_CONFUSE_BERRIES_HEAL >= GEN_7 ? 4 : 2), itemId)
-     && (B_HEAL_BLOCKING < GEN_5 || !(gStatuses3[battler] & STATUS3_HEAL_BLOCK)))
+    if (HasEnoughHpToEatBerry(battler, (B_CONFUSE_BERRIES_HEAL >= GEN_7 ? 4 : 2), itemId))
     {
         PREPARE_FLAVOR_BUFFER(gBattleTextBuff1, flavorId);
 
@@ -4503,7 +4415,6 @@ static u32 ItemRestorePp(u32 battler, u32 itemId, bool32 execute)
 static u8 ItemHealHp(u32 battler, u32 itemId, bool32 end2, bool32 percentHeal)
 {
     if (!(gBattleScripting.overrideBerryRequirements && gBattleMons[battler].hp == gBattleMons[battler].maxHP)
-        && (B_HEAL_BLOCKING < GEN_5 || !(gStatuses3[battler] & STATUS3_HEAL_BLOCK))
         && HasEnoughHpToEatBerry(battler, 2, itemId))
     {
         if (percentHeal)
@@ -4569,13 +4480,6 @@ static bool32 GetMentalHerbEffect(u32 battler)
         {
             gBattleMons[battler].status2 &= ~STATUS2_TORMENT;
             gMensajeBatalla = B_MSG_MENTALHERBCURE_TORMENT;
-            ret = TRUE;
-        }
-        // Check heal block
-        if (gStatuses3[battler] & STATUS3_HEAL_BLOCK)
-        {
-            gStatuses3[battler] &= ~STATUS3_HEAL_BLOCK;
-            gMensajeBatalla = B_MSG_MENTALHERBCURE_HEALBLOCK;
             ret = TRUE;
         }
         // Check disable
@@ -5071,8 +4975,7 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
                 break;
             case HOLD_EFFECT_LEFTOVERS:
             LEFTOVERS:
-                if (gBattleMons[battler].hp < gBattleMons[battler].maxHP && !moveTurn
-                  && (B_HEAL_BLOCKING < GEN_5 || !(gStatuses3[battler] & STATUS3_HEAL_BLOCK)))
+                if (gBattleMons[battler].hp < gBattleMons[battler].maxHP && !moveTurn)
                 {
                     gBattleMoveDamage = CuantosPSMaximos(battler) / 16;
                     if (gBattleMoveDamage == 0)
@@ -5830,7 +5733,6 @@ static const u16 sWeightToDamageTable[] =
 
 static const u8 sSpeedDiffPowerTable[] = {40, 60, 80, 120, 150};
 static const u8 sHeatCrashPowerTable[] = {40, 40, 60, 80, 100, 120};
-static const u8 sTrumpCardPowerTable[] = {200, 80, 60, 50, 40};
 
 u32 CalcRolloutBasePower(u32 battlerAtk, u32 basePower, u32 rolloutTimer)
 {
@@ -5914,16 +5816,6 @@ static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData
     case EFFECT_ASSURANCE:
         if (HaSidoDaniado(battlerDef) != 0)
             basePower *= 2;
-        break;
-    case EFFECT_TRUMP_CARD:
-        i = GetMoveSlot(gBattleMons[battlerAtk].moves, move);
-        if (i != MAX_MON_MOVES)
-        {
-            if (gBattleMons[battlerAtk].pp[i] >= ARRAY_COUNT(sTrumpCardPowerTable))
-                basePower = sTrumpCardPowerTable[ARRAY_COUNT(sTrumpCardPowerTable) - 1];
-            else
-                basePower = sTrumpCardPowerTable[gBattleMons[battlerAtk].pp[i]];
-        }
         break;
     case EFFECT_ACROBATICS:
         if (gBattleMons[battlerAtk].item == ITEM_NONE
@@ -7645,15 +7537,6 @@ u32 GetBattlerMoveTargetType(u32 battler, u32 move)
         return MOVE_TARGET_USER;
 
     return gMovesInfo[move].target;
-}
-
-bool32 CanTargetBattler(u32 battlerAtk, u32 battlerDef, u16 move)
-{
-    if (gMovesInfo[move].effect == EFFECT_HIT_ENEMY_HEAL_ALLY
-      && GetBattlerSide(battlerAtk) == GetBattlerSide(battlerDef)
-      && gStatuses3[battlerAtk] & STATUS3_HEAL_BLOCK)
-        return FALSE;   // Pokémon affected by Heal Block cannot target allies with Pollen Puff
-    return TRUE;
 }
 
 static void SetRandomMultiHitCounter(void)

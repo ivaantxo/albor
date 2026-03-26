@@ -407,6 +407,7 @@ gBattleAnimMove_Embargo::
 	playsewithpan SE_M_NIGHTMARE, +63
 	clearmonbg ANIM_DEF_PARTNER
 	end
+
 EmbargoOrbs1:
 	createsprite gPowerOrbs_Float, ANIM_ATTACKER, 2, 0, -20, 85, 80, 0
 	delay 12
@@ -415,74 +416,6 @@ EmbargoOrbs1:
 	createsprite gPowerOrbs_Float, ANIM_ATTACKER, 2, 0, -15, 0, 80, 0
 	delay 12
 	return
-
-gBattleAnimMove_TrumpCard::
-	loadspritegfx ANIM_TAG_TRUMP_CARD
-	loadspritegfx ANIM_TAG_CUT
-	loadspritegfx ANIM_TAG_TRUMP_CARD_PARTICLES
-	monbg ANIM_TARGET
-	setalpha 12, 8
-	playsewithpan SE_M_VIENTO_CORTANTE2, SOUND_PAN_TARGET
-	createsprite gTrumpCardSpriteTemplate, ANIM_ATTACKER, 40, 40, 0, 0, 32
-	delay 2
-	createsprite gTrumpCardSpriteTemplate, ANIM_ATTACKER, 40, 40, 0, 1, 32
-	delay 2
-	playsewithpan SE_M_VIENTO_CORTANTE2, SOUND_PAN_TARGET
-	createsprite gTrumpCardSpriteTemplate, ANIM_ATTACKER, 40, 40, 0, 0, 32
-	delay 2
-	createsprite gTrumpCardSpriteTemplate, ANIM_ATTACKER, 40, 40, 0, 2, 32
-	delay 2
-	playsewithpan SE_M_VIENTO_CORTANTE2, SOUND_PAN_TARGET
-	createsprite gTrumpCardSpriteTemplate, ANIM_ATTACKER, 40, 40, 0, 2, 32
-	delay 2
-	createsprite gTrumpCardSpriteTemplate, ANIM_ATTACKER, 40, 40, 0, 2, 32
-	delay 2
-	playsewithpan SE_M_VIENTO_CORTANTE2, SOUND_PAN_TARGET
-	playsewithpan SE_M_CUT, SOUND_PAN_TARGET
-	createsprite gCuttingSliceSpriteTemplate, ANIM_ATTACKER, 2, 40, -32, 0
-	createsprite gTrumpCardSpriteTemplate, ANIM_ATTACKER, 40, 40, 0, 1, 32
-	delay 2
-	createsprite gTrumpCardSpriteTemplate, ANIM_ATTACKER, 40, 40, 0, 1, 32
-	delay 3
-	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 0, 3, 10, 1
-	createsprite gTrumpCardParticleSpriteTempalte, ANIM_ATTACKER, 40, 0, 0, 1, 12, -5, -4, 0
-	createsprite gTrumpCardParticleSpriteTempalte, ANIM_ATTACKER, 40, 0, 0, 0, 13, 5, 4, 1
-	createsprite gTrumpCardParticleSpriteTempalte, ANIM_ATTACKER, 40, 0, 0, 1, 8, -3, 0, 2
-	createsprite gTrumpCardParticleSpriteTempalte, ANIM_ATTACKER, 40, 0, 0, 2, 12, -5, 4, 3
-	delay 2
-	createsprite gTrumpCardParticleSpriteTempalte, ANIM_ATTACKER, 40, 0, 0, 1, 10, 1, -4, 4
-	createsprite gTrumpCardParticleSpriteTempalte, ANIM_ATTACKER, 40, 0, 0, 0, 13, 5, 6, 1
-	createsprite gTrumpCardParticleSpriteTempalte, ANIM_ATTACKER, 40, 0, 0, 1, 12, -2, 1, 3
-	createsprite gTrumpCardParticleSpriteTempalte, ANIM_ATTACKER, 40, 0, 0, 2, 13, -2, 1, 2
-	waitforvisualfinish
-	clearmonbg ANIM_TARGET
-	blendoff
-	waitforvisualfinish
-	end
-
-gBattleAnimMove_HealBlock::
-	loadspritegfx ANIM_TAG_BLUE_STAR
-	monbg ANIM_TARGET
-	createsoundtask SoundTask_PlaySeChangingVolume, SE_M_ABSORB_2, SOUND_PAN_TARGET, 256, -16, 0, 2
-	createspriteontargets_onpos gHealingBlueStarSpriteTemplate, ANIM_TARGET, 2, 2, 0, -5, ANIM_TARGET, 0
-	delay 7
-	createspriteontargets_onpos gHealingBlueStarSpriteTemplate, ANIM_TARGET, 2, 2, -15, 10, ANIM_TARGET, 0
-	delay 7
-	createvisualtask AnimTask_BlendBattleAnimPal, 10, F_PAL_DEF_SIDE, 4, 2, 12, 0, RGB_BLACK
-	createspriteontargets_onpos gHealingBlueStarSpriteTemplate, ANIM_TARGET, 2, 2, 0, -5, ANIM_TARGET, 0
-	delay 7
-	createspriteontargets_onpos gHealingBlueStarSpriteTemplate, ANIM_TARGET, 2, 2, -15, 10, ANIM_TARGET, 0
-	delay 7
-	createspriteontargets_onpos gHealingBlueStarSpriteTemplate, ANIM_TARGET, 2, 2, -15, -15, ANIM_TARGET, 0
-	delay 7
-	createspriteontargets_onpos gHealingBlueStarSpriteTemplate, ANIM_TARGET, 2, 2, 10, -5, ANIM_TARGET, 0
-	delay 7
-	waitforvisualfinish
-	delay 11
-	createvisualtask AnimTask_BlendBattleAnimPal, 10, F_PAL_DEF_SIDE, 4, 2, 0, 12, RGB_BLACK
-	waitforvisualfinish
-	clearmonbg ANIM_TARGET
-	end
 
 gBattleAnimMove_WringOut::
 	loadspritegfx ANIM_TAG_WRING_OUT
@@ -8641,23 +8574,6 @@ gBattleAnimMove_ToxicThread::
 	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x9, 0x0, 0x0
 	end
 
-gBattleAnimMove_LaserFocus::
-	loadspritegfx ANIM_TAG_EYE_SPARKLE @red
-	loadspritegfx ANIM_TAG_OPENING_EYE @eyes
-	loadspritegfx ANIM_TAG_LEER @leer
-	monbg ANIM_ATTACKER
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x0, 0xC, 0x0
-	waitforvisualfinish
-	createsprite gLaserFocusRedEyesTemplate, ANIM_ATTACKER, 5, 0x0, 0x0, 0x0, 0x0
-	waitforvisualfinish
-	playsewithpan SE_M_LEER, SOUND_PAN_ATTACKER
-	createsprite gLeerSpriteTemplate, ANIM_ATTACKER, 2, 0x18, 0xfff4
-	waitforvisualfinish
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0xC, 0x0, 0x0
-	waitforvisualfinish
-	clearmonbg ANIM_ATTACKER
-	end
-
 gBattleAnimMove_GearUp::
 	loadspritegfx ANIM_TAG_GEAR
 	loadspritegfx ANIM_TAG_SPARK_2 @sparks
@@ -10292,57 +10208,10 @@ gBattleAnimMove_JawLock::
 	delay 0x1
 	end
 
-gBattleAnimMove_StuffCheeks::
-	loadspritegfx ANIM_TAG_BERRY_NORMAL
-	loadspritegfx ANIM_TAG_SHARP_TEETH
-	loadspritegfx ANIM_TAG_THIN_RING
-	loadspritegfx ANIM_TAG_SPARKLE_2
-	playsewithpan SE_M_METRONOME, 0xc0
-	createsprite gFloatingBerryTemplate, ANIM_ATTACKER, 1, 0x0
-	delay 0x45
-	createvisualtask AnimTask_IsTargetPlayerSide, 0x2
-	jumpargeq 0x7 0x1 BERRYEAT_ON_PLAYER
-BerryEatingOpponent:
-	call BiteOpponent
-	delay 0x10
-	call BiteOpponent
-	delay 0xA
-	goto POST_BERRY_EAT
-BERRYEAT_ON_PLAYER:
-	call BitePlayer
-	delay 0x10
-	call BitePlayer
-	delay 0xA
-POST_BERRY_EAT:
-	playsewithpan SE_SHINY, 0xc0
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, 0x2, 0x3, 0x7, 0x0, 0x67f1
-	createsprite gThinRingExpandingSpriteTemplate, ANIM_ATTACKER, 3, 0x0, 0x0, 0x0, 0x0
-	waitforvisualfinish
-	end
-BitePlayer:
-	playsewithpan SE_M_BITE, 0x3f
-	createsprite gSharpTeethSpriteTemplate, ANIM_ATTACKER, 2, 0x27, 0xffD0, 0x0, 0x0, 0x333, 0xa
-	createsprite gSharpTeethSpriteTemplate, ANIM_ATTACKER, 2, 0x27, 0x10, 0x4, 0x0, 0xfccd, 0xa
-	return
-BiteOpponent:
-	playsewithpan SE_M_BITE, 0x3f
-	createsprite gSharpTeethSpriteTemplate, ANIM_ATTACKER, 2, 0xffDF, 0xffD0, 0x0, 0x0, 0x333, 0xa
-	createsprite gSharpTeethSpriteTemplate, ANIM_ATTACKER, 2, 0xffDF, 0x10, 0x4, 0x0, 0xfccd, 0xa
-	return
-
-gBattleAnimMove_NoRetreat::
-	loadspritegfx ANIM_TAG_SMALL_EMBER
-	loopsewithpan SE_M_FLAME_WHEEL, SOUND_PAN_ATTACKER 0x7 0x12
-	createsprite gNoRetreatFlameTemplate, ANIM_ATTACKER, 2, ANIM_ATTACKER, 20, 10, 0xA0, 0
-	createsprite gNoRetreatFlameTemplate, ANIM_ATTACKER, 2, ANIM_ATTACKER, -20, 10, 0xA0, 0
-	createvisualtask AnimTask_TeeterDanceMovement, 0x5
-	waitforvisualfinish
-	end
-
 gBattleAnimMove_DragonDarts::
 	loadspritegfx ANIM_TAG_DREEPY_SHINY
 	loadspritegfx ANIM_TAG_DREEPY
-        loadspritegfx ANIM_TAG_AIR_WAVE
+    loadspritegfx ANIM_TAG_AIR_WAVE
 	loadspritegfx ANIM_TAG_EXPLOSION
 	playsewithpan SE_FALL, SOUND_PAN_ATTACKER
 	createdragondartsprite ANIM_TARGET, 2, 0x0, 0x0, 0x19

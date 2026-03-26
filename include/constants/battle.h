@@ -153,9 +153,7 @@ enum ResultadosMovimiento
 #define STATUS3_PHANTOM_FORCE           (1 << 24)
 #define STATUS3_MIRACLE_EYED            (1 << 25)
 #define STATUS3_MAGNET_RISE             (1 << 26)
-#define STATUS3_HEAL_BLOCK              (1 << 27)
 #define STATUS3_AQUA_RING               (1 << 28)
-#define STATUS3_LASER_FOCUS             (1 << 29)
 #define STATUS3_POWER_TRICK             (1 << 30)
 #define STATUS3_SEMI_INVULNERABLE       (STATUS3_UNDERGROUND | STATUS3_ON_AIR | STATUS3_UNDERWATER | STATUS3_PHANTOM_FORCE)
 
@@ -464,10 +462,8 @@ enum EfectosFinTurnoIndividuales
     ENDTURN_ENCORE,
     ENDTURN_MAGNET_RISE,
     ENDTURN_TELEKINESIS,
-    ENDTURN_HEALBLOCK,
     ENDTURN_EMBARGO,
     ENDTURN_LOCK_ON,
-    ENDTURN_LASER_FOCUS,
     ENDTURN_CHARGE,
     ENDTURN_TAUNT,
     ENDTURN_ITEMS2,

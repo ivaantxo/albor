@@ -124,7 +124,6 @@ enum TextosCombate
     STRINGID_MOLDBREAKERENTERS, //printfromtable
     STRINGID_ASSAULTVESTDOESNTALLOW, //printselectionstring
     STRINGID_GRAVITYPREVENTSUSAGE, //printstring + printselectionstring
-    STRINGID_HEALBLOCKPREVENTSUSAGE,//printstring + printselectionstring
     STRINGID_DRASTICALLY, // ChangeStatBuffs
     STRINGID_SEVERELY, // ChangeStatBuffs
     STRINGID_INFESTATION, //printfromtable
@@ -183,8 +182,6 @@ enum TextosCombate
     STRINGID_CURIOUSMEDICINEENTERS, //printfromtable
     STRINGID_ATKGOTOVERINFATUATION, //printfromtable
     STRINGID_TORMENTEDNOMORE, //printfromtable
-    STRINGID_HEALBLOCKEDNOMORE, //printstring + printfromtable
-    STRINGID_STUFFCHEEKSCANTSELECT, //printselectionstring
     STRINGID_ABILITYALLOWSONLYMOVE, //printselectionstring
     STRINGID_NEUTRALIZINGGASENTERS, //printfromtable
     STRINGID_METEORBEAMCHARGING, //two_turn_arg
@@ -340,8 +337,7 @@ enum TextosCombate
 #define B_MSG_MENTALHERBCURE_TAUNT             1
 #define B_MSG_MENTALHERBCURE_ENCORE            2
 #define B_MSG_MENTALHERBCURE_TORMENT           3
-#define B_MSG_MENTALHERBCURE_HEALBLOCK         4
-#define B_MSG_MENTALHERBCURE_DISABLE           5
+#define B_MSG_MENTALHERBCURE_DISABLE           4
 
 // gWrappedStringIds
 #define B_MSG_WRAPPED_BIND         0

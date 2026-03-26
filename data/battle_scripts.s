@@ -252,30 +252,6 @@ BattleScript_EffectSparklySwirl::
 	waitstate
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectStuffCheeks::
-	attackcanceler
-	attackstring
-	ppreduce
-	jumpifnotberry BS_ATTACKER, BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	setbyte sBERRY_OVERRIDE, 1
-	orword gHitMarker, HITMARKER_DISABLE_ANIMATION
-	consumeberry BS_ATTACKER, TRUE
-	bicword gHitMarker, HITMARKER_DISABLE_ANIMATION
-	setbyte sBERRY_OVERRIDE, 0
-	removeitem BS_ATTACKER
-	setstatchanger ESTADISTICA_DEFENSA, 2, FALSE
-	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_StuffCheeksEnd
-	setgraphicalstatchangevalues
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_StuffCheeksEnd @ cant raise def
-	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	printfromtable gStatUpStringIds
-	waitmessage PAUSA_LARGA
-
-BattleScript_StuffCheeksEnd:
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectCoaching::
 	attackcanceler
 	attackstring
@@ -395,7 +371,6 @@ BattleScript_StrengthSapLower:
 @ Drain HP without lowering a stat
 BattleScript_StrengthSapHp:
 	jumpifability BS_TARGET, ABILITY_LIQUID_OOZE, BattleScript_StrengthSapManipulateDmg
-	jumpifstatus3 BS_ATTACKER, STATUS3_HEAL_BLOCK, BattleScript_MoveEnd
 	jumpiffullhp BS_ATTACKER, BattleScript_MoveEnd
 
 BattleScript_StrengthSapManipulateDmg:
@@ -443,17 +418,6 @@ BattleScript_MoveEffectBugBite::
 	trysymbiosis
 	restoretarget
 	return
-
-BattleScript_EffectLaserFocus::
-	attackcanceler
-	attackstring
-	ppreduce
-	setuserstatus3 STATUS3_LASER_FOCUS, BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} concentrated intensely!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
 
 BattleScript_SpectralThiefSteal::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} stole the target's boosted stats!"
@@ -1201,8 +1165,6 @@ BattleScript_EffectHealPulse::
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifstatus3 BS_ATTACKER, STATUS3_HEAL_BLOCK, BattleScript_MoveUsedHealBlockPrevents @ stops pollen puff
-	jumpifstatus3 BS_TARGET, STATUS3_HEAL_BLOCK, BattleScript_MoveUsedHealBlockPrevents
 	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
 	jumpifsubstituteblocks BattleScript_ButItFailed
 	tryhealpulse BattleScript_AlreadyAtFullHp
@@ -1562,18 +1524,6 @@ BattleScript_CaptivateCheckAcc:
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
 	goto BattleScript_StatDownFromAttackString
 
-BattleScript_EffectHealBlock::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	sethealblock BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} was prevented from healing!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectHitEscape::
 	call BattleScript_EffectHit_Ret
 	jumpifmovehadnoeffect BattleScript_MoveEnd
@@ -1714,7 +1664,6 @@ BattleScript_CantMakeAsleep::
 
 BattleScript_EffectAbsorb::
 	call BattleScript_EffectHit_Ret
-	jumpifstatus3 BS_ATTACKER, STATUS3_HEAL_BLOCK, BattleScript_AbsorbHealBlock
 	setdrainedhp
 	manipulatedamage DMG_BIG_ROOT
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
@@ -1736,10 +1685,6 @@ BattleScript_AbsorbUpdateHp::
 
 BattleScript_AbsorbTryFainting::
 	tryfaintmon BS_ATTACKER
-
-BattleScript_AbsorbHealBlock::
-	tryfaintmon BS_TARGET
-	goto BattleScript_MoveEnd
 
 BattleScript_EffectExplosion::
 	attackcanceler
@@ -1790,7 +1735,6 @@ BattleScript_DreamEaterWorked:
 	waitmessage PAUSA_LARGA
 	resultmessage
 	waitmessage PAUSA_LARGA
-	jumpifstatus3 BS_ATTACKER, STATUS3_HEAL_BLOCK, BattleScript_DreamEaterTryFaintEnd
 	setdrainedhp
 	manipulatedamage DMG_BIG_ROOT
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
@@ -1799,6 +1743,7 @@ BattleScript_DreamEaterWorked:
 	jumpifmovehadnoeffect BattleScript_DreamEaterTryFaintEnd
 	printstring STRINGID_PKMNENERGYDRAINED
 	waitmessage PAUSA_LARGA
+
 BattleScript_DreamEaterTryFaintEnd:
 	tryfaintmon BS_TARGET
 	goto BattleScript_MoveEnd
@@ -3987,13 +3932,14 @@ BattleScript_LeechSeedTurnDrain::
 	copyword gBattleMoveDamage, gHpDealt
 	jumpifability BS_ATTACKER, ABILITY_LIQUID_OOZE, BattleScript_LeechSeedTurnPrintLiquidOoze
 	setword gMensajeBatalla, B_MSG_LEECH_SEED_DRAIN
-	jumpifstatus3 BS_TARGET, STATUS3_HEAL_BLOCK, BattleScript_LeechSeedHealBlock
 	manipulatedamage DMG_BIG_ROOT
 	goto BattleScript_LeechSeedTurnPrintAndUpdateHp
+
 BattleScript_LeechSeedTurnPrintLiquidOoze::
 	copybyte gBattlerAbility, gBattlerAttacker
 	call BattleScript_AbilityPopUp
 	setword gMensajeBatalla, B_MSG_LEECH_SEED_OOZE
+
 BattleScript_LeechSeedTurnPrintAndUpdateHp::
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
 	healthbarupdate BS_TARGET
@@ -4003,9 +3949,6 @@ BattleScript_LeechSeedTurnPrintAndUpdateHp::
 	tryfaintmon BS_ATTACKER
 	tryfaintmon BS_TARGET
 	end2
-BattleScript_LeechSeedHealBlock:
-	setword gBattleMoveDamage, 0
-	goto BattleScript_LeechSeedTurnPrintAndUpdateHp
 
 BattleScript_RoarSuccessSwitch::
 	call BattleScript_RoarSuccessRet
@@ -4018,6 +3961,7 @@ BattleScript_RoarSuccessSwitch::
 	jumpifbyte COMPARACION_IGUAL, sSWITCH_CASE, B_SWITCH_RED_CARD, BattleScript_RoarSuccessSwitch_Ret
 	setbyte sSWITCH_CASE, B_SWITCH_NORMAL
 	goto BattleScript_MoveEnd
+
 BattleScript_RoarSuccessSwitch_Ret:
 	swapattackerwithtarget  @ continuation of RedCardActivates
 	restoretarget
@@ -4477,25 +4421,12 @@ BattleScript_SelectingNotAllowedMoveGravity::
 	printselectionstring STRINGID_GRAVITYPREVENTSUSAGE
 	endselectionscript
 
-BattleScript_SelectingNotAllowedStuffCheeks::
-	printselectionstring STRINGID_STUFFCHEEKSCANTSELECT
-	endselectionscript
-
 BattleScript_SelectingNotAllowedBelch::
 	printselectionstring STRINGID_BELCHCANTSELECT
 	endselectionscript
 
 BattleScript_MoveUsedGravityPrevents::
 	printstring STRINGID_GRAVITYPREVENTSUSAGE
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
-BattleScript_SelectingNotAllowedMoveHealBlock::
-	printselectionstring STRINGID_HEALBLOCKPREVENTSUSAGE
-	endselectionscript
-
-BattleScript_MoveUsedHealBlockPrevents::
-	printstring STRINGID_HEALBLOCKPREVENTSUSAGE
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 

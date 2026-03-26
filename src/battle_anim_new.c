@@ -1813,18 +1813,6 @@ const struct SpriteTemplate gToxicThreadString =
     .callback = SpriteCB_ToxicThreadWrap
 };
 
-//laser focus
-const struct SpriteTemplate gLaserFocusRedEyesTemplate =
-{
-    .tileTag = ANIM_TAG_OPENING_EYE,
-    .paletteTag = ANIM_TAG_EYE_SPARKLE,
-    .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gOpeningEyeAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimSpriteOnMonPos
-};
-
 //gear up
 const struct SpriteTemplate gGearUpGearsTemplate =
 {

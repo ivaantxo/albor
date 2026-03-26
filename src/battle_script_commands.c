@@ -387,7 +387,6 @@ static void Cmd_playanimation_var(void);
 static void Cmd_setgraphicalstatchangevalues(void);
 static void Cmd_playstatchangeanimation(void);
 static void Cmd_moveend(void);
-static void Cmd_sethealblock(void);
 static void Cmd_returnatktoball(void);
 static void Cmd_getswitchedmondata(void);
 static void Cmd_switchindataupdate(void);
@@ -609,7 +608,6 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     BATTLE_CMD(setgraphicalstatchangevalues),
     BATTLE_CMD(playstatchangeanimation),
     BATTLE_CMD(moveend),
-    BATTLE_CMD(sethealblock),
     BATTLE_CMD(returnatktoball),
     BATTLE_CMD(getswitchedmondata),
     BATTLE_CMD(switchindataupdate),
@@ -956,10 +954,9 @@ static void Cmd_attackcanceler(void)
         }
     }
 
-    if (AtkCanceller_UnableToUseMove2())
-        return;
     if (AbilityBattleEffects(ABILITYEFFECT_MOVES_BLOCK, gBattlerTarget, 0, 0, 0))
         return;
+
     if (!gBattleMons[gBattlerAttacker].pp[gCurrMovePos] && gCurrentMove != MOVE_STRUGGLE
      && !(gHitMarker & (HITMARKER_ALLOW_NO_PP | HITMARKER_NO_ATTACKSTRING | HITMARKER_NO_PPDEDUCT))
      && !(gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS))
@@ -1461,8 +1458,7 @@ s32 CalcCritChanceStageArgs(u32 battlerAtk, u32 battlerDef, u32 move, bool32 rec
     {
         critChance = -1;
     }
-    else if (gStatuses3[battlerAtk] & STATUS3_LASER_FOCUS
-        || gMovesInfo[move].alwaysCriticalHit
+    else if (gMovesInfo[move].alwaysCriticalHit
         || (abilityAtk == ABILITY_MERCILESS && gBattleMons[battlerDef].status1 & STATUS1_PSN_ANY))
     {
         critChance = -2;
@@ -4892,22 +4888,6 @@ static void Cmd_moveend(void)
         gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
-static void Cmd_sethealblock(void)
-{
-    CMD_ARGS(const u8 *failInstr);
-
-    if (gStatuses3[gBattlerTarget] & STATUS3_HEAL_BLOCK)
-    {
-        gBattlescriptCurrInstr = cmd->failInstr;
-    }
-    else
-    {
-        gStatuses3[gBattlerTarget] |= STATUS3_HEAL_BLOCK;
-        gDisableStructs[gBattlerTarget].healBlockTimer = 5;
-        gBattlescriptCurrInstr = cmd->nextInstr;
-    }
-}
-
 static void Cmd_returnatktoball(void)
 {
     CMD_ARGS();
@@ -7896,12 +7876,6 @@ static void Cmd_various(void)
             gBattleMons[battler].status2 &= ~(STATUS2_TORMENT);
             gMensajeBatalla = B_MSG_MENTALHERBCURE_TORMENT;
         }
-        // Check heal block
-        if (gStatuses3[battler] & STATUS3_HEAL_BLOCK)
-        {
-            gStatuses3[battler] &= ~(STATUS3_HEAL_BLOCK);
-            gMensajeBatalla = B_MSG_MENTALHERBCURE_HEALBLOCK;
-        }
         // Check disable
         if (gDisableStructs[battler].disableTimer != 0)
         {
@@ -10553,8 +10527,6 @@ static void Cmd_setuserstatus3(void)
         gStatuses3[gBattlerAttacker] |= flags;
         if (flags & STATUS3_MAGNET_RISE)
             gDisableStructs[gBattlerAttacker].magnetRiseTimer = 5;
-        if (flags & STATUS3_LASER_FOCUS)
-            gDisableStructs[gBattlerAttacker].laserFocusTimer = 2;
         gBattlescriptCurrInstr = cmd->nextInstr;
     }
 }
@@ -11661,12 +11633,34 @@ void ScriptCombate_PalmaRauda(void)
 {
     NATIVE_ARGS(const u8 *failInstr);
 
-    if (GetBattlerTurnOrderNum(gBattlerAttacker) > GetBattlerTurnOrderNum(gBattlerTarget)
-     || gMovimientoElegido[gBattlerTarget] == MOVE_NONE
-     || EsMovimientoDeEstado(gMovimientoElegido[gBattlerTarget]))
+    u32 objetivo = gBattlerTarget;
+    u32 movimiento = gMovimientoElegido[objetivo];
+    u32 prioridad = gMovesInfo[movimiento].priority;
+
+    if (movimiento == MOVE_NONE
+     || EsMovimientoDeEstado(movimiento))
+    {
         gBattlescriptCurrInstr = cmd->failInstr;
-    else
-        gBattlescriptCurrInstr = cmd->nextInstr;
+        return;
+    }
+
+    switch (prioridad)
+    {
+        case 1:
+            gBattlescriptCurrInstr = cmd->nextInstr;
+            break;
+
+        case 2:
+            if (GetBattlerSpeed(gBattlerAttacker) > GetBattlerSpeed(objetivo))
+                gBattlescriptCurrInstr = cmd->nextInstr;
+            else
+                gBattlescriptCurrInstr = cmd->failInstr;
+            break;
+
+        default:
+            gBattlescriptCurrInstr = cmd->failInstr;
+            break;
+    }
 }
 
 void BS_SetPhotonGeyserCategory(void)

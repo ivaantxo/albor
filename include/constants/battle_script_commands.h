@@ -316,7 +316,6 @@ enum BattleScriptCommands
     BATTLE_CMD_setgraphicalstatchangevalues,
     BATTLE_CMD_playstatchangeanimation,
     BATTLE_CMD_moveend,
-    BATTLE_CMD_sethealblock,
     BATTLE_CMD_returnatktoball,
     BATTLE_CMD_getswitchedmondata,
     BATTLE_CMD_switchindataupdate,

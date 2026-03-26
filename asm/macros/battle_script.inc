@@ -450,11 +450,6 @@
 	moveend 2, \to
 	.endm
 
-	.macro sethealblock failInstr:req
-	.byte BATTLE_CMD_sethealblock
-	.4byte \failInstr
-	.endm
-
 	.macro returnatktoball
 	.byte BATTLE_CMD_returnatktoball
 	.endm

@@ -2784,9 +2784,6 @@ bool32 ShouldAbsorb(u32 battlerAtk, u32 battlerDef, u32 move, s32 damage)
         u32 healPercent = (gMovesInfo[move].argument == 0) ? 50 : gMovesInfo[move].argument;
         s32 healDmg = (healPercent * damage) / 100;
 
-        if (gStatuses3[battlerAtk] & STATUS3_HEAL_BLOCK)
-            healDmg = 0;
-
         if (CanTargetFaintAI(battlerDef, battlerAtk)
           && !CanTargetFaintAIWithMod(battlerDef, battlerAtk, healDmg, 0))
             return TRUE;    // target can faint attacker unless they heal
@@ -2810,8 +2807,6 @@ bool32 ShouldRecover(u32 battlerAtk, u32 battlerDef, u32 move, u32 healPercent)
         // using item or user going first
         s32 damage = AI_DATA->simulatedDmg[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex];
         s32 healAmount = (healPercent * damage) / 100;
-        if (gStatuses3[battlerAtk] & STATUS3_HEAL_BLOCK)
-            healAmount = 0;
 
         if (CanTargetFaintAI(battlerDef, battlerAtk)
           && !CanTargetFaintAIWithMod(battlerDef, battlerAtk, healAmount, 0))

@@ -101,8 +101,6 @@ struct DisableStruct
     u8 embargoTimer;
     u8 magnetRiseTimer;
     u8 telekinesisTimer;
-    u8 healBlockTimer;
-    u8 laserFocusTimer;
     u8 throatChopTimer;
     u8 wrapTurns;
     u8 tormentTimer:4;
@@ -137,7 +135,6 @@ struct ProtectStruct
     u32 usedTauntedMove:1;
     u32 flinchImmobility:1;
     u32 notFirstStrike:1;
-    u32 usedHealBlockedMove:1;
     u32 usedGravityPreventedMove:1;
     u32 powderSelfDmg:1;
     u32 usedThroatChopPreventedMove:1;

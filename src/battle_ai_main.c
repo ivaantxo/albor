@@ -517,9 +517,6 @@ static u32 ChooseMoveOrAction_Doubles(u32 battlerAI)
             {
                 if (gBattleMons[battlerAI].moves[j] != 0)
                 {
-                    if (!CanTargetBattler(battlerAI, i, gBattleMons[battlerAI].moves[j]))
-                        continue;
-
                     if (mostViableMovesScores[0] == AI_THINKING_STRUCT->score[j])
                     {
                         mostViableMovesScores[mostViableMovesNo] = AI_THINKING_STRUCT->score[j];
@@ -761,9 +758,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     // throat chop check
     if (gDisableStructs[battlerAtk].throatChopTimer && gMovesInfo[move].soundMove)
         return 0; // Can't even select move at all
-    // heal block check
-    if (gStatuses3[battlerAtk] & STATUS3_HEAL_BLOCK && IsHealBlockPreventingMove(battlerAtk, move))
-        return 0; // Can't even select heal blocked move
 
     // check move effects
     switch (moveEffect)
@@ -805,10 +799,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             if (!BattlerStatCanRise(battlerAtk, aiData->abilities[battlerAtk], ESTADISTICA_ATAQUE) || !HasMoveWithCategory(battlerAtk, CATEGORIA_FISICA))
                 ADJUST_SCORE(-10);
             break;
-        case EFFECT_STUFF_CHEEKS:
-            if (ItemId_GetPocket(gBattleMons[battlerAtk].item) != POCKET_BERRIES)
-                return 0;   // cannot even select
-            //fallthrough
         case EFFECT_DEFENSE_UP:
         case EFFECT_DEFENSE_UP_2:
         case EFFECT_DEFENSE_UP_3:
@@ -1468,12 +1458,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
               || DoesPartnerHaveSameMoveEffect(ALIADO(battlerAtk), battlerDef, move, aiData->partnerMove))
                 ADJUST_SCORE(-10);
             break;
-        case EFFECT_LASER_FOCUS:
-            if (gStatuses3[battlerAtk] & STATUS3_LASER_FOCUS)
-                ADJUST_SCORE(-10);
-            else if (aiData->abilities[battlerDef] == ABILITY_SHELL_ARMOR || aiData->abilities[battlerDef] == ABILITY_BATTLE_ARMOR)
-                ADJUST_SCORE(-8);
-            break;
         case EFFECT_DESTINY_BOND:
             if (gBattleMons[battlerDef].status2 & STATUS2_DESTINY_BOND)
                 ADJUST_SCORE(-10);
@@ -1790,11 +1774,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
               || PartnerMoveIsSameAsAttacker(ALIADO(battlerAtk), battlerDef, move, aiData->partnerMove))
                 ADJUST_SCORE(-10);
             break;
-        case EFFECT_HEAL_BLOCK:
-            if (gDisableStructs[battlerDef].healBlockTimer != 0
-              || PartnerMoveIsSameAsAttacker(ALIADO(battlerAtk), battlerDef, move, aiData->partnerMove))
-                ADJUST_SCORE(-10);
-            break;
         case EFFECT_HEAL_PULSE: // and floral healing
             if (!IS_TARGETING_PARTNER(battlerAtk, battlerDef)) // Don't heal enemies
             {
@@ -1805,8 +1784,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         case EFFECT_HIT_ENEMY_HEAL_ALLY:    // pollen puff
             if (IS_TARGETING_PARTNER(battlerAtk, battlerDef))
             {
-                if (gStatuses3[battlerDef] & STATUS3_HEAL_BLOCK)
-                    return 0; // cannot even select
                 if (AI_BattlerAtMaxHp(battlerDef))
                     ADJUST_SCORE(-10);
                 else if (gBattleMons[battlerDef].hp > gBattleMons[battlerDef].maxHP / 2)
@@ -1886,9 +1863,34 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                 ADJUST_SCORE(-10);
             break;
         case EFFECT_PALMA_RAUDA:
-            if (predictedMove == MOVE_NONE || EsMovimientoDeEstado(predictedMove) || AI_IsSlower(battlerAtk, battlerDef, move) || GetMovePriority(battlerDef, predictedMove) < 1 || GetMovePriority(battlerDef, predictedMove) > 3) // Opponent going first or not using priority move
+        {
+            u32 prioridad = GetMovePriority(battlerDef, predictedMove);
+
+            if (predictedMove == MOVE_NONE
+            || EsMovimientoDeEstado(predictedMove))
+            {
                 ADJUST_SCORE(-10);
+                break;
+            }
+
+            if (prioridad == 1)
+            {
+
+                ADJUST_SCORE(10);
+            }
+            else if (prioridad == 2)
+            {
+                if (AI_IsFaster(battlerAtk, battlerDef))
+                    ADJUST_SCORE(10);
+                else
+                    ADJUST_SCORE(-10);
+            }
+            else
+            {
+                ADJUST_SCORE(-10);
+            }
             break;
+        }
     } // move effect checks
 
     // Choice items
@@ -2677,22 +2679,12 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
               || HasMoveEffect(EFFECT_SLEEP_TALK, battlerAtk)
               || HasMoveEffect(EFFECT_SNORE, battlerAtk)
               || aiData->abilities[battlerAtk] == ABILITY_MUDAR
-              || aiData->abilities[battlerAtk] == ABILITY_EARLY_BIRD
               || (AI_GetWeather(aiData) & B_WEATHER_RAIN && gWishFutureKnock.weatherDuration != 1 && aiData->abilities[battlerAtk] == ABILITY_HYDRATION && aiData->holdEffects[battlerAtk] != HOLD_EFFECT_UTILITY_UMBRELLA))
                 ADJUST_SCORE(GOOD_EFFECT);
         }
         break;
     case EFFECT_MEAN_LOOK:
         if (ShouldTrap(battlerAtk, battlerDef, move))
-            ADJUST_SCORE(GOOD_EFFECT);
-        break;
-    case EFFECT_LASER_FOCUS:
-        if (aiData->abilities[battlerAtk] == ABILITY_SUPER_LUCK
-          || aiData->abilities[battlerAtk] == ABILITY_DISPARO_CERTERO
-          || aiData->abilities[battlerAtk] == ABILITY_SNIPER
-          || aiData->abilities[battlerAtk] == ABILITY_PERCUSIONISTA
-          || aiData->holdEffects[battlerAtk] == HOLD_EFFECT_SCOPE_LENS
-          || HasHighCritRatioMove(battlerAtk))
             ADJUST_SCORE(GOOD_EFFECT);
         break;
     case EFFECT_CONFUSE:
@@ -3349,13 +3341,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
           || !EstaCombatienteEnSuelo(battlerDef))
             ADJUST_SCORE(DECENT_EFFECT);
         break;
-    case EFFECT_HEAL_BLOCK:
-        if (AI_IsFaster(battlerAtk, battlerDef, move) && predictedMove != MOVE_NONE && IsHealingMove(predictedMove))
-            ADJUST_SCORE(DECENT_EFFECT); // Try to cancel healing move
-        else if (HasHealingEffect(battlerDef) || aiData->holdEffects[battlerDef] == HOLD_EFFECT_LEFTOVERS
-          || (aiData->holdEffects[battlerDef] == HOLD_EFFECT_BLACK_SLUDGE && EsTipo(battlerDef, TIPO_VENENO)))
-            ADJUST_SCORE(DECENT_EFFECT);
-        break;
     case EFFECT_TOPSY_TURVY:
         if (CountPositiveStatStages(battlerDef) > CountNegativeStatStages(battlerDef))
             ADJUST_SCORE(DECENT_EFFECT);
@@ -3870,9 +3855,6 @@ static s32 AI_HPAware(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
          || (moveType == TIPO_TIERRA && AI_DATA->abilities[ALIADO(battlerAtk)] == ABILITY_BANO_BARRO)
          || (moveType == TIPO_AGUA && (AI_DATA->abilities[ALIADO(battlerAtk)] == ABILITY_DRY_SKIN || AI_DATA->abilities[ALIADO(battlerAtk)] == ABILITY_WATER_ABSORB)))
         {
-            if (gStatuses3[battlerDef] & STATUS3_HEAL_BLOCK)
-                return 0;
-
             if (CanTargetFaintAI(FOE(battlerAtk), ALIADO(battlerAtk))
               || (CanTargetFaintAI(ALIADO(FOE(battlerAtk)), ALIADO(battlerAtk))))
                 ADJUST_SCORE(-1);

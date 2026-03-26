@@ -163,12 +163,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectHit,
     },
 
-    [EFFECT_HEAL_BLOCK] =
-    {
-        .battleScript = BattleScript_EffectHealBlock,
-        .encourageEncore = TRUE,
-    },
-
     [EFFECT_RECOIL_IF_MISS] =
     {
         .battleScript = BattleScript_EffectRecoilIfMiss,
@@ -753,11 +747,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectHit,
     },
 
-    [EFFECT_TRUMP_CARD] =
-    {
-        .battleScript = BattleScript_EffectHit,
-    },
-
     [EFFECT_ACROBATICS] =
     {
         .battleScript = BattleScript_EffectHit,
@@ -1148,12 +1137,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectHit,
     },
 
-    [EFFECT_LASER_FOCUS] =
-    {
-        .battleScript = BattleScript_EffectLaserFocus,
-        .encourageEncore = TRUE,
-    },
-
     [EFFECT_GEAR_UP] =
     {
         .battleScript = BattleScript_EffectGearUp,
@@ -1220,12 +1203,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_RECOIL_HP_25] =
     {
         .battleScript = BattleScript_EffectRecoilHP25,
-    },
-
-    [EFFECT_STUFF_CHEEKS] =
-    {
-        .battleScript = BattleScript_EffectStuffCheeks,
-        .encourageEncore = TRUE,
     },
 
     [EFFECT_SPARKLY_SWIRL] =

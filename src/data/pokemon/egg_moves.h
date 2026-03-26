@@ -85,6 +85,7 @@ static const u16 sMeowthAlolaEggMoveLearnset[] = {
 };
 
 static const u16 sPsyduckEggMoveLearnset[] = {
+    MOVE_PALMA_RAUDA,
     MOVE_NONE,
 };
 
@@ -123,6 +124,7 @@ static const u16 sTentacoolEggMoveLearnset[] = {
 };
 
 static const u16 sGeodudeEggMoveLearnset[] = {
+    MOVE_PALMA_RAUDA,
     MOVE_NONE,
 };
 
@@ -207,6 +209,7 @@ static const u16 sTangelaEggMoveLearnset[] = {
 };
 
 static const u16 sKangaskhanEggMoveLearnset[] = {
+    MOVE_PALMA_RAUDA,
     MOVE_NONE,
 };
 
@@ -307,6 +310,7 @@ static const u16 sHoothootEggMoveLearnset[] = {
 };
 
 static const u16 sLedybaEggMoveLearnset[] = {
+    MOVE_PALMA_RAUDA,
     MOVE_NONE,
 };
 
@@ -335,6 +339,7 @@ static const u16 sAzurillEggMoveLearnset[] = {
 };
 
 static const u16 sBonslyEggMoveLearnset[] = {
+    MOVE_PALMA_RAUDA,
     MOVE_NONE,
 };
 
@@ -383,6 +388,7 @@ static const u16 sSneaselEggMoveLearnset[] = {
 };
 
 static const u16 sTeddiursaEggMoveLearnset[] = {
+    MOVE_PALMA_RAUDA,
     MOVE_NONE,
 };
 
@@ -451,6 +457,7 @@ static const u16 sTorchicEggMoveLearnset[] = {
 };
 
 static const u16 sMudkipEggMoveLearnset[] = {
+    MOVE_PALMA_RAUDA,
     MOVE_NONE,
 };
 
@@ -515,6 +522,7 @@ static const u16 sMawileEggMoveLearnset[] = {
 };
 
 static const u16 sAronEggMoveLearnset[] = {
+    MOVE_PALMA_RAUDA,
     MOVE_NONE,
 };
 
@@ -557,6 +565,7 @@ static const u16 sTrapinchEggMoveLearnset[] = {
 };
 
 static const u16 sCacneaEggMoveLearnset[] = {
+    MOVE_PALMA_RAUDA,
     MOVE_NONE,
 };
 

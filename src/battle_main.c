@@ -1186,7 +1186,7 @@ void SwitchInClearSetData(u32 battler)
     {
         gBattleMons[battler].status2 &= (STATUS2_CONFUSION | STATUS2_SUBSTITUTE | STATUS2_ESCAPE_PREVENTION | STATUS2_CURSED);
         gStatuses3[battler] &= (STATUS3_LEECHSEED_BATTLER | STATUS3_LEECHSEED | STATUS3_ALWAYS_HITS | STATUS3_PERISH_SONG | STATUS3_ROOTED
-                                       | STATUS3_GASTRO_ACID | STATUS3_EMBARGO | STATUS3_TELEKINESIS | STATUS3_MAGNET_RISE | STATUS3_HEAL_BLOCK
+                                       | STATUS3_GASTRO_ACID | STATUS3_EMBARGO | STATUS3_TELEKINESIS | STATUS3_MAGNET_RISE
                                        | STATUS3_AQUA_RING | STATUS3_POWER_TRICK);
         for (i = 0; i < gBattlersCount; i++)
         {
@@ -1312,7 +1312,6 @@ const u8 *FaintClearSetData(u32 combatiente)
     gProtectStructs[combatiente].usedTauntedMove = FALSE;
     gProtectStructs[combatiente].flinchImmobility = FALSE;
     gProtectStructs[combatiente].notFirstStrike = FALSE;
-    gProtectStructs[combatiente].usedHealBlockedMove = FALSE;
     gProtectStructs[combatiente].usedGravityPreventedMove = FALSE;
     gProtectStructs[combatiente].usedThroatChopPreventedMove = FALSE;
     gProtectStructs[combatiente].statRaised = FALSE;

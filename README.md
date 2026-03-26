@@ -101,6 +101,7 @@ Es un hackrom en castellano que está en desarrollo, que usa la pokeemerald-expa
     *Sorpresa solo tiene 1 de prioridad, por lo que puede ser superado por otros ataques "normales" de prioridad.
     *Todos los movimientos de prioridad se establecen en 3 niveles: prioridad 1, para ataques de prioridad "normales", incluyendo Sorpresa; prioridad 2, para movimientos de prioridad "especiales", como Velocidad extrema o Palma rauda; y prioridad 3, para Protección.
     *Se han reducido muchísimo todos los posibles efectos de amedrentar/retroceder, tanto por objetos como por movimientos: Solo es posible mediante Sorpresa (nerfeada su prioridad) y por Palma rauda.
+    *Ligero rework de Palma rauda: solo golpea (y hace retroceder) si objetivo va a hacer movimiento de prioridad + 1, o de + 2 si usuario de Palma rauda es más rápido. En el resto de casos, falla. 70 de potencia.
     *Danza aleteo ahora solo sube ataque especial y velocidad, no defensa especial. Además, algunos Pokémon tipo Volador/Dragón pueden aprenderlo (Charizard, Pidgeot).
     *Rayo solar y Cuchilla solar ya no reducen su potencia en climas diferentes de Sol. Además, Rayo meteoro es una copia de Rayo solar pero para Tormenta de Arena.
     *Buena baza hace doble de daño si el oponente ha recibido daño ese turno, pero solo tiene en cuenta el daño por ataques, no por confusión.

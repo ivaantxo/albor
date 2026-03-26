@@ -124,8 +124,6 @@ static void AnimTask_SkullBashPositionSet(u8);
 static void AnimTask_SkullBashPositionReset(u8);
 static void AnimMoveFeintSwipe(struct Sprite *);
 static void AnimMoveFeintZoom(struct Sprite *);
-static void AnimMoveTrumpCard(struct Sprite *);
-static void AnimMoveTrumpCardParticle(struct Sprite *);
 static void AnimMoveAccupressure(struct Sprite *);
 static void AnimMoveWringOut(struct Sprite *);
 static void AnimMoveSmallCloud(struct Sprite *);
@@ -169,100 +167,6 @@ static const union AffineAnimCmd sFeintAffineZoom[] =
     AFFINEANIMCMD_FRAME(0x200, 0x200, 0, 0),
     AFFINEANIMCMD_FRAME(-30, -30, 0, 10),
     AFFINEANIMCMD_END,
-};
-
-static const union AffineAnimCmd sTrumpCardAffine0[] =
-{
-    AFFINEANIMCMD_FRAME(0xC0, 0xC0, 30, 0),
-    AFFINEANIMCMD_END,
-};
-
-static const union AffineAnimCmd sTrumpCardAffine1[] =
-{
-    AFFINEANIMCMD_FRAME(0xA0, 0xA0, 40, 0),
-    AFFINEANIMCMD_END,
-};
-
-static const union AffineAnimCmd sTrumpCardAffine2[] =
-{
-    AFFINEANIMCMD_FRAME(0xD0, 0xD0, -20, 0),
-    AFFINEANIMCMD_END,
-};
-
-static const union AffineAnimCmd sTrumpCardAffine3[] =
-{
-    AFFINEANIMCMD_FRAME(0xE0, 0xE0, 40, 0),
-    AFFINEANIMCMD_END,
-};
-
-static const union AffineAnimCmd sTrumpCardAffine4[] =
-{
-    AFFINEANIMCMD_FRAME(0xF0, 0xF0, 60, 0),
-    AFFINEANIMCMD_END,
-};
-
-static const union AffineAnimCmd * const sTrumpCardAffineAnims[] =
-{
-    sTrumpCardAffine0,
-    sTrumpCardAffine1,
-    sTrumpCardAffine2,
-    sTrumpCardAffine3,
-    sTrumpCardAffine4
-};
-
-static const union AffineAnimCmd * const sFeintAffineAnims[] =
-{
-    sFeintAffineZoom,
-};
-
-static const union AnimCmd sTrumpCardFrame0[] =
-{
-    ANIMCMD_FRAME(0, 0),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sTrumpCardFrame1[] =
-{
-    ANIMCMD_FRAME(4, 0),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sTrumpCardFrame2[] =
-{
-    ANIMCMD_FRAME(8, 0),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sTrumpCardParticleFrame0[] =
-{
-    ANIMCMD_FRAME(0, 0),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sTrumpCardParticleFrame1[] =
-{
-    ANIMCMD_FRAME(1, 0),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sTrumpCardParticleFrame2[] =
-{
-    ANIMCMD_FRAME(2, 0),
-    ANIMCMD_END
-};
-
-static const union AnimCmd * const sTrumpCardAnims[] =
-{
-    sTrumpCardFrame0,
-    sTrumpCardFrame1,
-    sTrumpCardFrame2
-};
-
-static const union AnimCmd * const sTrumpCardParticleAnims[] =
-{
-    sTrumpCardParticleFrame0,
-    sTrumpCardParticleFrame1,
-    sTrumpCardParticleFrame2,
 };
 
 static const union AffineAnimCmd sAccupressureTurn[] =
@@ -351,28 +255,6 @@ const struct SpriteTemplate gWringOutHandSpriteTemplate =
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = AnimMoveWringOut,
-};
-
-const struct SpriteTemplate gTrumpCardParticleSpriteTempalte =
-{
-    .tileTag = ANIM_TAG_TRUMP_CARD_PARTICLES,
-    .paletteTag = ANIM_TAG_TRUMP_CARD_PARTICLES,
-    .oam = &gOamData_AffineDouble_ObjNormal_8x8,
-    .anims = sTrumpCardParticleAnims,
-    .images = NULL,
-    .affineAnims = sTrumpCardAffineAnims,
-    .callback = AnimMoveTrumpCardParticle
-};
-
-const struct SpriteTemplate gTrumpCardSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_TRUMP_CARD,
-    .paletteTag = ANIM_TAG_TRUMP_CARD,
-    .oam = &gOamData_AffineDouble_ObjNormal_16x16,
-    .anims = sTrumpCardAnims,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimMoveTrumpCard
 };
 
 const struct SpriteTemplate gFeintSwipeSpriteTemplate =
@@ -3246,84 +3128,6 @@ static void AnimMoveFeintZoom(struct Sprite *sprite)
     InitSpritePosToAnimTarget(sprite, TRUE);
     StoreSpriteCallbackInData6(sprite, DestroySpriteAndMatrix);
     sprite->callback = RunStoredCallbackWhenAffineAnimEnds;
-}
-
-static void AnimMoveTrumpCardArc(struct Sprite *sprite)
-{
-    if(AnimTranslateLinear(sprite))
-    {
-        DestroyAnimSprite(sprite);
-    }
-    else
-    {
-        sprite->y2 = Sin(sprite->data[5], -20);
-        sprite->data[5] -= sprite->data[6];
-    }
-
-}
-
-static void AnimMoveTrumpCard(struct Sprite *sprite)
-{
-    if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
-    {
-        gBattleAnimArgs[0] = -gBattleAnimArgs[0];
-    }
-    InitSpritePosToAnimTarget(sprite, TRUE);
-    StartSpriteAnim(sprite, gBattleAnimArgs[2]);
-    sprite->data[0] = gBattleAnimArgs[3];
-    sprite->data[1] = sprite->x;
-    sprite->data[2] = sprite->x - 80;
-    sprite->data[3] = sprite->y;
-    sprite->data[4] = sprite->y;
-    sprite->data[5] = 128;
-    sprite->data[6] = 128 / sprite->data[0];
-    InitAnimLinearTranslation(sprite);
-    sprite->callback = AnimMoveTrumpCardArc;
-}
-
-static void AnimMoveTrumpCardParticleAlive(struct Sprite *sprite)
-{
-    if(sprite->data[0] > 0)
-    {
-        s16 yVelocity = sprite->data[2];
-        s16 xVelocity = sprite->data[1];
-        sprite->y -= yVelocity;
-        sprite->x += xVelocity;
-        if((sprite->data[0] % 2) == 0)
-        {
-            if(xVelocity > 0)
-                xVelocity--;
-            else if(xVelocity < 0)
-                xVelocity++;
-
-            if(yVelocity > 0)
-                yVelocity--;
-            else if(yVelocity < 0)
-                yVelocity++;
-            sprite->data[1] = xVelocity;
-            sprite->data[2] = yVelocity;
-        }
-        sprite->data[0]--;
-    }
-    else
-    {
-        sprite->callback = DestroyAnimSprite;
-    }
-}
-
-static void AnimMoveTrumpCardParticle(struct Sprite *sprite)
-{
-    if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
-    {
-        gBattleAnimArgs[0] = -gBattleAnimArgs[0];
-    }
-    InitSpritePosToAnimTarget(sprite, TRUE);
-    StartSpriteAnim(sprite, gBattleAnimArgs[2]);
-    StartSpriteAffineAnim(sprite, gBattleAnimArgs[6]);
-    sprite->data[0] = gBattleAnimArgs[3]; //lifespan
-    sprite->data[1] = gBattleAnimArgs[4]; //horizontal velocity, decaying
-    sprite->data[2] = gBattleAnimArgs[5]; //vertical velocity, decaying
-    sprite->callback = AnimMoveTrumpCardParticleAlive;
 }
 
 static void AnimMoveAccupressureTransition(struct Sprite *sprite)

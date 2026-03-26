@@ -171,9 +171,7 @@ enum
     LIST_STATUS3_TELEKINESIS,
     LIST_STATUS3_MIRACLE_EYED,
     LIST_STATUS3_MAGNET_RISE,
-    LIST_STATUS3_HEAL_BLOCK,
     LIST_STATUS3_AQUA_RING,
-    LIST_STATUS3_LASER_FOCUS,
     LIST_STATUS3_POWER_TRICK,
 };
 
@@ -302,9 +300,7 @@ static const u8 sText_SmackedDown[] = _("Smacked Down");
 static const u8 sText_Telekinesis[] = _("Telekinesis");
 static const u8 sText_MiracleEyed[] = _("Miracle Eyed");
 static const u8 sText_MagnetRise[] = _("Magnet Rise");
-static const u8 sText_HealBlock[] = _("Heal Block");
 static const u8 sText_AquaRing[] = _("Aqua Ring");
-static const u8 sText_LaserFocus[] = _("Laser Focus");
 static const u8 sText_PowerTrick[] = _("Power Trick");
 static const u8 sText_Reflect[] = _("Reflect");
 static const u8 sText_LightScreen[] = _("Light Screen");
@@ -387,7 +383,6 @@ static const struct BitfieldInfo sStatus3Bitfield[] =
     {/*Telekinesis*/ 1, 23},
     {/*Miracle Eyed*/ 1, 25},
     {/*Magnet Rise*/ 1, 26},
-    {/*Heal Blocked*/ 1, 27},
     {/*Aqua Ring*/ 1, 28},
     {/*Laser Focus*/ 1, 29},
     {/*Power Trick*/ 1, 30},
@@ -495,9 +490,7 @@ static const struct ListMenuItem sStatus3ListItems[] =
     {sText_Telekinesis, LIST_STATUS3_TELEKINESIS},
     {sText_MiracleEyed, LIST_STATUS3_MIRACLE_EYED},
     {sText_MagnetRise, LIST_STATUS3_MAGNET_RISE},
-    {sText_HealBlock, LIST_STATUS3_HEAL_BLOCK},
     {sText_AquaRing, LIST_STATUS3_AQUA_RING},
-    {sText_LaserFocus, LIST_STATUS3_LASER_FOCUS},
     {sText_PowerTrick, LIST_STATUS3_POWER_TRICK},
 };
 

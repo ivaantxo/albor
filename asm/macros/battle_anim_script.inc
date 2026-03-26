@@ -271,7 +271,7 @@
 .Lsprite_\@_2:
 	.endm
 
-	@ does not overwrite gBattleAnimArgs[battlerargindex], some sprite templates are too dependent on the value (e.g. heal block)
+	@ does not overwrite gBattleAnimArgs[battlerargindex], some sprite templates are too dependent on the value
 	.macro createspriteontargets_onpos template:req, anim_battler:req, subpriority_offset:req, battlerargindex:req, argv:vararg
 	.byte 44
 	.4byte \template

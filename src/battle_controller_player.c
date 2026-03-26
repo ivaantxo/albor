@@ -506,8 +506,7 @@ void HandleInputChooseTarget(u32 battler)
                     break;
                 }
 
-                if (gAbsentBattlerFlags & (1u << gPosicionCursorSiNo) // REVISAR
-                 || !CanTargetBattler(battler, gPosicionCursorSiNo, move)) // REVISAR
+                if (gAbsentBattlerFlags & (1u << gPosicionCursorSiNo)) // REVISAR
                     i = 0;
             } while (i == 0);
         }
@@ -556,8 +555,7 @@ void HandleInputChooseTarget(u32 battler)
                     break;
                 }
 
-                if (gAbsentBattlerFlags & (1u << gPosicionCursorSiNo) // REVISAR
-                 || !CanTargetBattler(battler, gPosicionCursorSiNo, move)) // REVISAR
+                if (gAbsentBattlerFlags & (1u << gPosicionCursorSiNo)) // REVISAR
                     i = 0;
             } while (i == 0);
         }

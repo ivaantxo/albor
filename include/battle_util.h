@@ -11,11 +11,9 @@
 #define MOVE_LIMITATION_CHOICE_ITEM             (1 << 7)
 #define MOVE_LIMITATION_ASSAULT_VEST            (1 << 8)
 #define MOVE_LIMITATION_GRAVITY                 (1 << 9)
-#define MOVE_LIMITATION_HEAL_BLOCK              (1 << 10)
-#define MOVE_LIMITATION_BELCH                   (1 << 11)
-#define MOVE_LIMITATION_THROAT_CHOP             (1 << 12)
-#define MOVE_LIMITATION_STUFF_CHEEKS            (1 << 13)
-#define MOVE_LIMITATION_CANT_USE_TWICE          (1 << 14)
+#define MOVE_LIMITATION_BELCH                   (1 << 10)
+#define MOVE_LIMITATION_THROAT_CHOP             (1 << 11)
+#define MOVE_LIMITATION_CANT_USE_TWICE          (1 << 12)
 
 #define MOVE_LIMITATIONS_ALL                    0xFFFF
 
@@ -86,7 +84,6 @@ enum
     CANCELLER_FLINCH,
     CANCELLER_DISABLED,
     CANCELLER_GRAVITY,
-    CANCELLER_HEAL_BLOCKED,
     CANCELLER_TAUNTED,
     CANCELLER_IMPRISONED,
     CANCELLER_CONFUSED,
@@ -97,7 +94,6 @@ enum
     CANCELLER_EXPLODING_DAMP,
     CANCELLER_MULTIHIT_MOVES,
     CANCELLER_END,
-    CANCELLER_END2,
 };
 
 struct DamageCalculationData
@@ -146,7 +142,6 @@ bool32 HandleFaintedMonActions(void);
 void TryClearRageAndFuryCutter(void);
 u8 AtkCanceller_UnableToUseMove(u32 moveType);
 void SetAtkCancellerForCalledMove(void);
-u8 AtkCanceller_UnableToUseMove2(void);
 bool32 HasNoMonsToSwitch(u32 battler, u8 r1, u8 r2);
 bool32 TryChangeBattleWeather(u32 battler, u32 weatherEnumId, bool32 viaAbility);
 u32 CanAbilityBlockMove(u32 battlerAtk, u32 battlerDef, u32 move, u32 abilityDef);
@@ -193,7 +188,6 @@ bool32 TryBattleFormChange(u32 battler, u32 method);
 bool32 DoBattlersShareType(u32 battler1, u32 battler2);
 u32 CategoriaMovimiento(u32 movimiento);
 bool32 IsTelekinesisBannedSpecies(u16 species);
-bool32 IsHealBlockPreventingMove(u32 battler, u32 move);
 bool32 IsBelchPreventingMove(u32 battler, u32 move);
 bool32 HasEnoughHpToEatBerry(u32 battler, u32 hpFraction, u32 itemId);
 u8 GetCategoryBasedOnStats(u32 battler);
@@ -211,7 +205,6 @@ bool32 BlocksPrankster(u16 move, u32 battlerPrankster, u32 battlerDef, bool32 ch
 u16 GetUsedHeldItem(u32 battler);
 bool32 IsBattlerWeatherAffected(u32 battler, u32 weatherFlags);
 u32 GetBattlerMoveTargetType(u32 battler, u32 move);
-bool32 CanTargetBattler(u32 battlerAtk, u32 battlerDef, u16 move);
 void CopyMonLevelAndBaseStatsToBattleMon(u32 battler, struct Pokemon *mon);
 void CopyMonAbilityAndTypesToBattleMon(u32 battler, struct Pokemon *mon);
 void RecalcBattlerStats(u32 battler, struct Pokemon *mon);

@@ -335,13 +335,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .breakable = TRUE,
     },
 
-    [ABILITY_EARLY_BIRD] =
-    {
-        .name = _("Early Bird"),
-        .description = COMPOUND_STRING("Awakens quickly from sleep."),
-        .aiRating = 4,
-    },
-
     [ABILITY_FLAME_BODY] =
     {
         .name = _("Cuerpo llama"),
