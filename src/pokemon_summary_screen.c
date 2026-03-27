@@ -277,7 +277,6 @@ static void SetTypeIcons(void);
 static void CreateMoveTypeIcons(void);
 static void SetMonTypeIcons(void);
 static void SetMoveTypeIcons(void);
-static void SetContestMoveTypeIcons(void);
 static void SetNewMoveTypeIcon(void);
 static void SwapMovesTypeSprites(u8, u8);
 static u8 LoadMonGfxAndSprite(struct Pokemon *, s16 *);
@@ -3627,7 +3626,6 @@ static void SetTypeIcons(void)
         SetNewMoveTypeIcon();
         break;
     case PSS_PAGE_CONTEST_MOVES:
-        SetContestMoveTypeIcons();
         SetNewMoveTypeIcon();
         break;
     }
@@ -3679,16 +3677,13 @@ static void SetMoveTypeIcons(void)
 {
     u32 i;
     struct PokeSummary *summary = &sMonSummaryScreen->summary;
-    struct Pokemon *mon = &sMonSummaryScreen->currentMon;
     u32 type;
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         if (summary->moves[i] != MOVE_NONE)
         {
-            type = gMovesInfo[summary->moves[i]].type;
-            if (P_SHOW_DYNAMIC_TYPES)
-                type = MovimientoTipoDinamico(mon, summary->moves[i], JUGADOR_IZQUIERDA);
+            TipoMovimiento(summary->moves[i], JUGADOR_IZQUIERDA);
             SetTypeSpritePosAndPal(type, 85, 32 + (i * 16), i + SPRITE_ARR_ID_TYPE);
         }
         else
@@ -3698,18 +3693,9 @@ static void SetMoveTypeIcons(void)
     }
 }
 
-static void SetContestMoveTypeIcons(void)
-{
-
-}
-
 static void SetNewMoveTypeIcon(void)
 {
-    u32 type = gMovesInfo[sMonSummaryScreen->newMove].type;
-    struct Pokemon *mon = &sMonSummaryScreen->currentMon;
-
-    if (P_SHOW_DYNAMIC_TYPES)
-        type = MovimientoTipoDinamico(mon, sMonSummaryScreen->newMove, JUGADOR_IZQUIERDA);
+    u32 type = TipoMovimiento(sMonSummaryScreen->newMove, JUGADOR_IZQUIERDA);
 
     if (sMonSummaryScreen->newMove == MOVE_NONE)
     {

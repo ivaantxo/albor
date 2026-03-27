@@ -190,11 +190,10 @@
 	.byte \battler
 	.endm
 
-	.macro fadetobgfromset bgOpponent:req, bgPlayer:req, bgContest:req
+	.macro fadetobgfromset bgOpponent:req, bgPlayer:req
 	.byte 33
 	.byte \bgOpponent
 	.byte \bgPlayer
-	.byte \bgContest
 	.endm
 
 	.macro panse_adjustnone se:req, currentPan:req, targetPan:req, incrementPan:req, delay:req

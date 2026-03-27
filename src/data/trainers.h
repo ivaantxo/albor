@@ -10684,7 +10684,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 4463
-                MOVE_KARATE_CHOP,
+                MOVE_GOLPE_KARATE,
                 MOVE_LOW_KICK,
                 MOVE_SEISMIC_TOSS,
                 MOVE_BULK_UP,
@@ -32705,7 +32705,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 13486
-                MOVE_KARATE_CHOP,
+                MOVE_GOLPE_KARATE,
                 MOVE_ROCK_SLIDE,
                 MOVE_FOCUS_PUNCH,
                 MOVE_BULK_UP,
@@ -32798,7 +32798,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 13527
-                MOVE_KARATE_CHOP,
+                MOVE_GOLPE_KARATE,
                 MOVE_ROCK_SLIDE,
                 MOVE_FOCUS_PUNCH,
                 MOVE_BULK_UP,
@@ -32892,7 +32892,7 @@ F_TRAINER_FEMALE |
                 MOVE_SKY_UPPERCUT,
                 MOVE_PROTECT,
                 MOVE_FIRE_PUNCH,
-                MOVE_ICE_PUNCH,
+                MOVE_PUNIO_HIELO,
             },
             },
             {
@@ -32908,7 +32908,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 13576
-                MOVE_KARATE_CHOP,
+                MOVE_GOLPE_KARATE,
                 MOVE_ROCK_SLIDE,
                 MOVE_FOCUS_PUNCH,
                 MOVE_BULK_UP,
@@ -33019,7 +33019,7 @@ F_TRAINER_FEMALE |
                 MOVE_SKY_UPPERCUT,
                 MOVE_PROTECT,
                 MOVE_FIRE_PUNCH,
-                MOVE_ICE_PUNCH,
+                MOVE_PUNIO_HIELO,
             },
             },
             {

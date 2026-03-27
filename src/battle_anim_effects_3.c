@@ -102,8 +102,6 @@ static void GetGlareEyeDotCoords(s16, s16, s16, s16, u8, u8, s16 *, s16 *);
 static void AnimTask_BarrageBall_Step(u8);
 static void AnimTask_SmellingSaltsSquish_Step(u8);
 static void AnimTask_MonToSubstituteDoll(u8);
-static void AnimTask_OdorSleuthMovementWaitFinish(u8);
-static void MoveOdorSleuthClone(struct Sprite *);
 static void AnimTask_TeeterDanceMovement_Step(u8);
 static void AnimTask_SlackOffSquish_Step(u8);
 
@@ -4241,122 +4239,6 @@ static void AnimBlockX_Step(struct Sprite *sprite)
         }
         break;
     }
-}
-
-// Quickly moves two clones of the target mon back and forth.
-// No args.
-void AnimTask_OdorSleuthMovement(u8 taskId)
-{
-    s16 spriteId1, spriteId2;
-
-    spriteId1 = CloneBattlerSpriteWithBlend(ANIM_TARGET);
-    if (spriteId1 < 0)
-    {
-        DestroyAnimVisualTask(taskId);
-        return;
-    }
-
-    spriteId2 = CloneBattlerSpriteWithBlend(ANIM_TARGET);
-    if (spriteId2 < 0)
-    {
-        DestroySpriteWithActiveSheet(&gSprites[spriteId1]);
-        DestroyAnimVisualTask(taskId);
-        return;
-    }
-
-    gSprites[spriteId2].x2 += 24;
-    gSprites[spriteId1].x2 -= 24;
-    gSprites[spriteId2].data[0] = 0;
-    gSprites[spriteId1].data[0] = 0;
-    gSprites[spriteId2].data[1] = 0;
-    gSprites[spriteId1].data[1] = 0;
-    gSprites[spriteId2].data[2] = 0;
-    gSprites[spriteId1].data[2] = 0;
-    gSprites[spriteId2].data[3] = 16;
-    gSprites[spriteId1].data[3] = -16;
-    gSprites[spriteId2].data[4] = 0;
-    gSprites[spriteId1].data[4] = 128;
-    gSprites[spriteId2].data[5] = 24;
-    gSprites[spriteId1].data[5] = 24;
-    gSprites[spriteId2].data[6] = taskId;
-    gSprites[spriteId1].data[6] = taskId;
-    gSprites[spriteId2].data[7] = 0;
-    gSprites[spriteId1].data[7] = 0;
-    gTasks[taskId].data[0] = 2;
-
-    if (!gBattleSpritesDataPtr->battlerData[gBattleAnimTarget].invisible)
-    {
-        gSprites[spriteId2].invisible = FALSE;
-        gSprites[spriteId1].invisible = TRUE;
-    }
-    else
-    {
-        gSprites[spriteId2].invisible = TRUE;
-        gSprites[spriteId1].invisible = TRUE;
-    }
-
-    gSprites[spriteId2].oam.objMode = ST_OAM_OBJ_NORMAL;
-    gSprites[spriteId1].oam.objMode = ST_OAM_OBJ_NORMAL;
-    gSprites[spriteId2].callback = MoveOdorSleuthClone;
-    gSprites[spriteId1].callback = MoveOdorSleuthClone;
-    gTasks[taskId].func = AnimTask_OdorSleuthMovementWaitFinish;
-}
-
-static void AnimTask_OdorSleuthMovementWaitFinish(u8 taskId)
-{
-    if (gTasks[taskId].data[0] == 0)
-        DestroyAnimVisualTask(taskId);
-}
-
-static void MoveOdorSleuthClone(struct Sprite *sprite)
-{
-    if (++sprite->data[1] > 1)
-    {
-        sprite->data[1] = 0;
-        if (!gBattleSpritesDataPtr->battlerData[gBattleAnimTarget].invisible)
-            sprite->invisible ^= 1;
-    }
-
-    sprite->data[4] = sprite->data[4] + sprite->data[3];
-    sprite->data[4] &= 0xFF;
-    sprite->x2 = Cos(sprite->data[4], sprite->data[5]);
-    switch (sprite->data[0])
-    {
-    case 0:
-        if (++sprite->data[2] == 60)
-        {
-            sprite->data[2] = 0;
-            sprite->data[0]++;
-        }
-        break;
-    case 1:
-        if (++sprite->data[2] > 0)
-        {
-            sprite->data[2] = 0;
-            sprite->data[5] -= 2;
-            if (sprite->data[5] < 0)
-            {
-                gTasks[sprite->data[6]].data[sprite->data[7]]--;
-                DestroySpriteWithActiveSheet(sprite);
-            }
-        }
-        break;
-    }
-}
-
-void AnimTask_GetReturnPowerLevel(u8 taskId)
-{
-    gBattleAnimArgs[ARG_RET_ID] = 0;
-    if (gAnimFriendship < 60)
-        gBattleAnimArgs[ARG_RET_ID] = 0;
-    if (gAnimFriendship > 60 && gAnimFriendship < 92)
-        gBattleAnimArgs[ARG_RET_ID] = 1;
-    if (gAnimFriendship > 91 && gAnimFriendship < 201)
-        gBattleAnimArgs[ARG_RET_ID] = 2;
-    if (gAnimFriendship > 200)
-        gBattleAnimArgs[ARG_RET_ID] = 3;
-
-    DestroyAnimVisualTask(taskId);
 }
 
 // Makes the mon run out of screen, run past the opposing mon, and return to its original position.

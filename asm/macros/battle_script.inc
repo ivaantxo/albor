@@ -1044,11 +1044,6 @@
 	.4byte \failInstr
 	.endm
 
-	.macro trysetmagiccoat failInstr:req
-	.byte BATTLE_CMD_trysetmagiccoat
-	.4byte \failInstr
-	.endm
-
 	.macro trysetsnatch failInstr:req
 	.byte BATTLE_CMD_trysetsnatch
 	.4byte \failInstr
@@ -1185,12 +1180,6 @@
 	.4byte \jumpInstr
 	.endm
 
-	.macro itemrestorehp jumpInstr:req, restoreBattlerInstr:req
-	callnative BS_ItemRestoreHP
-	.4byte \jumpInstr
-	.4byte \restoreBattlerInstr
-	.endm
-
 	.macro itemcurestatus jumpInstr:req
 	callnative BS_ItemCureStatus
 	.4byte \jumpInstr
@@ -1206,12 +1195,6 @@
 
 	.macro tryrevertweatherform
 	callnative BS_TryRevertWeatherForm
-	.endm
-
-	.macro trysetoctolock battler:req, failInstr:req
-	callnative BS_TrySetOctolock
-	.byte \battler
-	.4byte \failInstr
 	.endm
 
 	.macro tryrelicsong
@@ -1239,11 +1222,6 @@
 	callnative BS_JumpIfArgument
 	.byte \argument
 	.4byte \jumpInstr
-	.endm
-
-	.macro tryreflecttype failInstr:req
-	callnative BS_TryReflectType
-	.4byte \failInstr
 	.endm
 
 	.macro trysetstatus1, ptr:req
@@ -1275,10 +1253,6 @@
 	callnative BS_TryDefog
 	.byte \clear
 	.4byte \failInstr
-	.endm
-
-	.macro setphotongeysercategory
-	callnative BS_SetPhotonGeyserCategory
 	.endm
 
 	.macro IntentaPalmaRauda failInstr:req
@@ -1324,8 +1298,8 @@
 	.4byte \failInstr
 	.endm
 
-	.macro setmagiccoattarget
-	callnative BS_SetMagicCoatTarget
+	.macro ObjetivoEspejoMagico
+	callnative BS_ObjetivoEspejoMagico
 	.endm
 
 @ various command changed to more readable macros
@@ -1667,11 +1641,6 @@
 	.4byte \jumpInstr
 	.endm
 
-	.macro eeriespellppreduce failInstr:req
-	various BS_TARGET, VARIOUS_EERIE_SPELL_PP_REDUCE
-	.4byte \failInstr
-	.endm
-
 	.macro jumpifteamhealthy battler:req, jumpInstr:req
 	various \battler, VARIOUS_JUMP_IF_TEAM_HEALTHY
 	.4byte \jumpInstr
@@ -1710,16 +1679,6 @@
 
 	.macro tryendneutralizinggas battler:req
 	various \battler, VARIOUS_TRY_END_NEUTRALIZING_GAS
-	.endm
-
-	.macro trynoretreat battler:req, failInstr:req
-	various \battler, VARIOUS_TRY_NO_RETREAT
-	.4byte \failInstr
-	.endm
-
-	.macro checkpoltergeist battler:req, failInstr:req
-	various \battler, VARIOUS_CHECK_POLTERGEIST
-	.4byte \failInstr
 	.endm
 
 	.macro cutonethirdhpraisestats failInstr:req
@@ -1879,12 +1838,6 @@
 	jumpifability BS_ATTACKER, ABILITY_SIGILOSO, 1f
 	jumpifsideaffecting BS_TARGET, SIDE_STATUS_SAFEGUARD, \jumpInstr
 	1:
-	.endm
-
-	@ Will jump to script pointer if the target weighs less than 200 kg, or 441 lbs.
-	.macro jumpifunder200 battler:req, failInstr:req
-	various \battler, VARIOUS_JUMP_IF_UNDER_200
-	.4byte \failInstr
 	.endm
 
 	@ Tries to increase or decrease a battler's stat's stat stage by a specified amount. If impossible, jumps to \script.

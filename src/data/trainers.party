@@ -2069,7 +2069,7 @@ Level: 36
 IVs: 4 HP / 4 Atk / 4 Def / 4 SpA / 4 SpD / 4 Spe
 - Fury Swipes
 - Growl
-- Odor Sleuth
+- Destructor
 - Sand Attack
 
 === TRAINER_MELISSA ===
@@ -2394,7 +2394,7 @@ Level: 36
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 - Fury Swipes
 - Growl
-- Odor Sleuth
+- Destructor
 - Sand Attack
 
 === TRAINER_STEVE_1 ===
@@ -4147,7 +4147,7 @@ Level: 36
 IVs: 2 HP / 2 Atk / 2 Def / 2 SpA / 2 SpD / 2 Spe
 - Headbutt
 - Sand Attack
-- Odor Sleuth
+- Destructor
 - Fury Swipes
 
 Manectric
@@ -4155,7 +4155,7 @@ Level: 36
 IVs: 2 HP / 2 Atk / 2 Def / 2 SpA / 2 SpD / 2 Spe
 - Quick Attack
 - Spark
-- Odor Sleuth
+- Destructor
 - Roar
 
 === TRAINER_WALTER_4 ===
@@ -4171,7 +4171,7 @@ Level: 39
 IVs: 3 HP / 3 Atk / 3 Def / 3 SpA / 3 SpD / 3 Spe
 - Headbutt
 - Sand Attack
-- Odor Sleuth
+- Destructor
 - Fury Swipes
 
 Manectric
@@ -4179,7 +4179,7 @@ Level: 39
 IVs: 3 HP / 3 Atk / 3 Def / 3 SpA / 3 SpD / 3 Spe
 - Quick Attack
 - Spark
-- Odor Sleuth
+- Destructor
 
 === TRAINER_WALTER_5 ===
 Name: WALTER
@@ -4194,7 +4194,7 @@ Level: 41
 IVs: 4 HP / 4 Atk / 4 Def / 4 SpA / 4 SpD / 4 Spe
 - Headbutt
 - Sand Attack
-- Odor Sleuth
+- Destructor
 - Fury Swipes
 
 Golduck
@@ -4210,7 +4210,7 @@ Level: 41
 IVs: 4 HP / 4 Atk / 4 Def / 4 SpA / 4 SpD / 4 Spe
 - Quick Attack
 - Spark
-- Odor Sleuth
+- Destructor
 - Roar
 
 === TRAINER_SIDNEY ===
@@ -4458,7 +4458,7 @@ AI: Basic Trainer
 Machop
 Level: 16
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-- Karate Chop
+- Golpe karate
 - Low Kick
 - Seismic Toss
 - Bulk Up
@@ -4983,7 +4983,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 - Growl
 - Tail Whip
 - Headbutt
-- Odor Sleuth
+- Destructor
 
 Makuhita
 Level: 17
@@ -5006,7 +5006,7 @@ IVs: 1 HP / 1 Atk / 1 Def / 1 SpA / 1 SpD / 1 Spe
 - Growl
 - Tail Whip
 - Headbutt
-- Odor Sleuth
+- Destructor
 
 Makuhita
 Level: 30
@@ -5029,7 +5029,7 @@ IVs: 2 HP / 2 Atk / 2 Def / 2 SpA / 2 SpD / 2 Spe
 - Growl
 - Tail Whip
 - Headbutt
-- Odor Sleuth
+- Destructor
 
 Makuhita
 Level: 33
@@ -5052,7 +5052,7 @@ IVs: 3 HP / 3 Atk / 3 Def / 3 SpA / 3 SpD / 3 Spe
 - Growl
 - Tail Whip
 - Headbutt
-- Odor Sleuth
+- Destructor
 
 Makuhita
 Level: 36
@@ -5075,7 +5075,7 @@ IVs: 4 HP / 4 Atk / 4 Def / 4 SpA / 4 SpD / 4 Spe
 - Growl
 - Tail Whip
 - Headbutt
-- Odor Sleuth
+- Destructor
 
 Hariyama
 Level: 38
@@ -11131,12 +11131,12 @@ IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 - Meditate
 - Protect
 - Confusion
-- Thunder Punch
+- Punio Trueno
 
 Meditite
 Level: 17
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-- Thunder Punch
+- Punio Trueno
 - Protect
 - Confusion
 - Meditate
@@ -11155,7 +11155,7 @@ IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 - Meditate
 - Protect
 - Confusion
-- Fire Punch
+- Punio Fuego
 
 === TRAINER_HIDEO ===
 Name: HIDEO
@@ -11883,7 +11883,7 @@ Medicham
 Level: 39
 IVs: 24 HP / 24 Atk / 24 Def / 24 SpA / 24 SpD / 24 Spe
 - Psychic
-- Fire Punch
+- Punio Fuego
 - Psych Up
 - Protect
 
@@ -11907,7 +11907,7 @@ Medicham
 Level: 43
 IVs: 25 HP / 25 Atk / 25 Def / 25 SpA / 25 SpD / 25 Spe
 - Psychic
-- Fire Punch
+- Punio Fuego
 - Psych Up
 - Protect
 
@@ -11931,7 +11931,7 @@ Medicham
 Level: 46
 IVs: 26 HP / 26 Atk / 26 Def / 26 SpA / 26 SpD / 26 Spe
 - Psychic
-- Fire Punch
+- Punio Fuego
 - Psych Up
 - Protect
 
@@ -11955,7 +11955,7 @@ Medicham
 Level: 49
 IVs: 27 HP / 27 Atk / 27 Def / 27 SpA / 27 SpD / 27 Spe
 - Psychic
-- Fire Punch
+- Punio Fuego
 - Psych Up
 - Protect
 
@@ -11979,7 +11979,7 @@ Medicham
 Level: 52
 IVs: 29 HP / 29 Atk / 29 Def / 29 SpA / 29 SpD / 29 Spe
 - Psychic
-- Fire Punch
+- Punio Fuego
 - Psych Up
 - Protect
 
@@ -13480,7 +13480,7 @@ AI: Basic Trainer
 Machamp @ Sitrus Berry
 Level: 33
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Karate Chop
+- Golpe karate
 - Rock Slide
 - Focus Punch
 - Bulk Up
@@ -13521,7 +13521,7 @@ AI: Basic Trainer
 Machamp @ Sitrus Berry
 Level: 38
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Karate Chop
+- Golpe karate
 - Rock Slide
 - Focus Punch
 - Bulk Up
@@ -13564,13 +13564,13 @@ Level: 40
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Sky Uppercut
 - Protect
-- Fire Punch
-- Ice Punch
+- Punio Fuego
+- Punio Hielo
 
 Machamp @ Sitrus Berry
 Level: 43
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Karate Chop
+- Golpe karate
 - Rock Slide
 - Focus Punch
 - Bulk Up
@@ -13621,8 +13621,8 @@ Level: 46
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Sky Uppercut
 - Protect
-- Fire Punch
-- Ice Punch
+- Punio Fuego
+- Punio Hielo
 
 Machamp @ Sitrus Berry
 Level: 48
@@ -13809,7 +13809,7 @@ Level: 50
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Swift
 - Focus Punch
-- Thunder Punch
+- Punio Trueno
 - Light Screen
 
 Raichu

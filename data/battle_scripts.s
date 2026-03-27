@@ -177,67 +177,6 @@ BattleScript_EffectAttackUpUserAlly_TryAllyBlocked:
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectPhotonGeyser::
-	setphotongeysercategory
-	goto BattleScript_EffectHit
-
-BattleScript_EffectAuraWheel:: @ Aura Wheel can only be used by Morpeko
-	goto BattleScript_PokemonCantUseTheMove
-
-BattleScript_EffectOctolock::
-	attackcanceler
-	jumpifsubstituteblocks BattleScript_FailedFromAtkString
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	trysetoctolock BS_TARGET, BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} can no longer escape because of Octolock!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
-BattleScript_OctolockEndTurn::
-	playstatchangeanimation BS_ATTACKER, BIT_DEF | BIT_SPDEF, STAT_CHANGE_NEGATIVE
-	setstatchanger ESTADISTICA_DEFENSA, 1, TRUE
-	statbuffchange STAT_CHANGE_ALLOW_PTR | STAT_CHANGE_NOT_PROTECT_AFFECTED, BattleScript_OctolockTryLowerSpDef
-	printfromtable gStatDownStringIds
-	waitmessage PAUSA_LARGA
-
-BattleScript_OctolockTryLowerSpDef:
-	setstatchanger ESTADISTICA_DEFENSA_ESPECIAL, 1, TRUE
-	statbuffchange STAT_CHANGE_ALLOW_PTR | STAT_CHANGE_NOT_PROTECT_AFFECTED, BattleScript_OctlockTurnDmgEnd
-	printfromtable gStatDownStringIds
-	waitmessage PAUSA_LARGA
-
-BattleScript_OctlockTurnDmgEnd:
-	end2
-
-BattleScript_EffectPoltergeist::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	checkpoltergeist BS_TARGET, BattleScript_ButItFailed
-	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} is about to be attacked by its {B_BUFF1}!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_HitFromCritCalc
-
-BattleScript_EffectNoRetreat::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	trynoretreat BS_TARGET, BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	call BattleScript_AllStatsUp
-	jumpifstatus2 BS_TARGET, STATUS2_ESCAPE_PREVENTION, BattleScript_MoveEnd
-	seteffectprimary MOVE_EFFECT_PREVENT_ESCAPE | MOVE_EFFECT_AFFECTS_USER
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} can no longer escape because it used No Retreat!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
 BattleScript_BothCanNoLongerEscape::
 	EscribeTextoCombate "Neither Pokémon can run away!"
 	waitmessage PAUSA_LARGA
@@ -963,18 +902,6 @@ BattleScript_GrowthSpAtk:
 	waitmessage PAUSA_LARGA
 
 BattleScript_GrowthEnd:
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectReflectType::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	tryreflecttype BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} became the same type as {B_DEF_NAME_WITH_PREFIX}!"
-	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectShiftGear::
@@ -2456,14 +2383,6 @@ BattleScript_EffectDestinyBond::
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectEerieSpell::
-	call BattleScript_EffectHit_Ret
-	tryfaintmon BS_TARGET
-	eeriespellppreduce BattleScript_MoveEnd
-	EscribeTextoCombate "Reduced {B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} by {B_BUFF2}!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectHealBell::
 	attackcanceler
 	attackstring
@@ -3223,17 +3142,6 @@ BattleScript_EffectIngrain::
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectMagicCoat::
-	attackcanceler
-	trysetmagiccoat BattleScript_FailedFromAtkString
-	attackstring
-	ppreduce
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} shrouded itself in {B_CURRENT_MOVE}!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectRecycle::
 	attackcanceler
 	attackstring
@@ -3634,7 +3542,7 @@ BattleScript_LocalBattleWonReward::
 	EscribeTextoCombate "{B_PLAYER_NAME} got ¥{B_BUFF1} for winning!"
 	waitmessage PAUSA_LARGA
 
-BattleScript_PayDayMoney::
+BattleScript_DiaDePagoMoney::
 	givepaydaymoney
 	end2
 
@@ -4563,32 +4471,10 @@ BattleScript_MagicBounce::
 	call BattleScript_AbilityPopUp
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX}'s {B_CURRENT_MOVE} was bounced back by {B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}!"
 	waitmessage PAUSA_LARGA
-	setmagiccoattarget
+	ObjetivoEspejoMagico
 	orword gHitMarker, HITMARKER_ATTACKSTRING_PRINTED | HITMARKER_NO_PPDEDUCT | HITMARKER_ALLOW_NO_PP
 	bicword gHitMarker, HITMARKER_NO_ATTACKSTRING
 	return
-
-BattleScript_MagicCoat::
-	attackstring
-	ppreduce
-	pause PAUSA_CORTA
-	setmagiccoattarget
-	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_CURRENT_MOVE} was bounced back by MAGIC COAT!"
-	waitmessage PAUSA_LARGA
-	orword gHitMarker, HITMARKER_ATTACKSTRING_PRINTED | HITMARKER_NO_PPDEDUCT | HITMARKER_ALLOW_NO_PP
-	bicword gHitMarker, HITMARKER_NO_ATTACKSTRING
-	return
-
-BattleScript_MagicCoatPrankster::
-	attackstring
-	ppreduce
-	pause PAUSA_CORTA
-	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_CURRENT_MOVE} was bounced back by MAGIC COAT!"
-	waitmessage PAUSA_LARGA
-	printstring STRINGID_ITDOESNTAFFECT
-	waitmessage PAUSA_LARGA
-	orhalfword gMoveResultFlags, MOVE_RESULT_NO_EFFECT
-	goto BattleScript_MoveEnd
 
 BattleScript_SnatchedMove::
 	attackstring
@@ -4928,7 +4814,7 @@ BattleScript_MoveUsedIsConfusedNoMore::
 	waitmessage PAUSA_LARGA
 	return
 
-BattleScript_PrintPayDayMoneyString::
+BattleScript_PrintDiaDePagoMoneyString::
 	EscribeTextoCombate "{B_PLAYER_NAME} picked up ¥{B_BUFF1}!"
 	waitmessage PAUSA_LARGA
 	return
@@ -5070,7 +4956,7 @@ BattleScript_MoveEffectToxic::
 	waitmessage PAUSA_LARGA
 	goto BattleScript_UpdateEffectStatusIconRet
 
-BattleScript_MoveEffectPayDay::
+BattleScript_MoveEffectDiaDePago::
 	EscribeTextoCombate "Coins were scattered everywhere!"
 	waitmessage PAUSA_LARGA
 	return

@@ -5,11 +5,12 @@
 #include "gpu_regs.h"
 #include "palette.h"
 
-#define DISPCNT_ALL_BG_AND_MODE_BITS    (DISPCNT_BG_ALL_ON | 7)
+#define DISPCNT_ALL_BG_AND_MODE_BITS (DISPCNT_BG_ALL_ON | 7)
 
 struct BgControl
 {
-    struct BgConfig {
+    struct BgConfig
+    {
         bool32 visible;
         u32 screenSize;
         u32 priority;
@@ -38,7 +39,7 @@ static struct BgControl sGpuBgConfigs;
 static struct BgConfig2 sGpuBgConfigs2[NUMERO_FONDOS];
 static u32 sDmaBusyBitfield[NUMERO_FONDOS];
 
-static const struct BgConfig sZeroedBgControlStruct = { 0 };
+static const struct BgConfig sZeroedBgControlStruct = {0};
 
 static u32 GetBgType(u32 bg);
 
@@ -659,7 +660,6 @@ s32 ChangeBgY_ScreenOff(u32 bg, s32 value, u32 op)
         {
             temp1 = sGpuBgConfigs2[2].bg_y >> 8;
             SetGpuReg_ForcedBlank(REG_OFFSET_BG2VOFS, temp1);
-
         }
         else
         {
@@ -1045,7 +1045,7 @@ void CopyTileMapEntry(const u16 *src, u16 *dest, s32 palette1, s32 tileOffset, s
         var |= (*src + tileOffset) & 1023;
         break;
     default:
-    case 17 ... INT_MAX:
+    case 17:
         var = *src + tileOffset + (palette2 << 12);
         break;
     }

@@ -808,8 +808,8 @@ const u8 gText_IcyWind24BP[] = _("ICY WIND{CLEAR_TO 0x4E}24BP");
 const u8 gText_Endure48BP[] = _("ENDURE{CLEAR_TO 0x4E}48BP");
 const u8 gText_PsychUp48BP[] = _("PSYCH UP{CLEAR_TO 0x4E}48BP");
 const u8 gText_IcePunch48BP[] = _("ICE PUNCH{CLEAR_TO 0x4E}48BP");
-const u8 gText_ThunderPunch48BP[] = _("THUNDERPUNCH{CLEAR_TO 0x4E}48BP");
-const u8 gText_FirePunch48BP[] = _("FIRE PUNCH{CLEAR_TO 0x4E}48BP");
+const u8 gText_PunioTrueno48BP[] = _("PunioTrueno{CLEAR_TO 0x4E}48BP");
+const u8 gText_PunioFuego48BP[] = _("FIRE PUNCH{CLEAR_TO 0x4E}48BP");
 #if OW_POISON_DAMAGE < GEN_4
 const u8 gText_PkmnFainted_FldPsn[] = _("{VAR_TEXTO_1} fainted…\p\n");
 #else

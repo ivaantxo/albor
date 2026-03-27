@@ -191,7 +191,6 @@ bool32 IsTelekinesisBannedSpecies(u16 species);
 bool32 IsBelchPreventingMove(u32 battler, u32 move);
 bool32 HasEnoughHpToEatBerry(u32 battler, u32 hpFraction, u32 itemId);
 u8 GetCategoryBasedOnStats(u32 battler);
-void SetShellSideArmCategory(void);
 bool32 MoveIsAffectedBySheerForce(u32 move);
 bool32 TestIfSheerForceAffected(u32 battler, u16 move);
 void RecuperaObjetoPerdido(void);
@@ -236,7 +235,6 @@ void RemoveBattlerType(u32 battler, u8 type);
 void AllocateBattleResources(void);
 void FreeBattleResources(void);
 void AdjustFriendshipOnBattleFaint(u8 battler);
-u32 GetMoveType(u32 move);
 u32 CuantosPSLeQuedan(u32 combatiente);
 u32 CuantosPSMaximos(u32 combatiente);
 

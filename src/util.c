@@ -6,14 +6,14 @@
 #include "constants/rgb.h"
 
 static const struct SpriteTemplate sInvisibleSpriteTemplate =
-{
-    .tileTag = 0,
-    .paletteTag = 0,
-    .oam = &gDummyOamData,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy,
+    {
+        .tileTag = 0,
+        .paletteTag = 0,
+        .oam = &gDummyOamData,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy,
 };
 
 u8 CreateInvisibleSpriteWithCallback(void (*callback)(struct Sprite *))
@@ -66,7 +66,7 @@ void BlendPalette(u32 palOffset, u32 numEntries, u32 coeff, u32 blendColor)
     }
 }
 
-#define LIMITADOR_VARIACION_PALETAS 80  // Rango total en grados en HSL (que van desde 0 a 360º). 80 = ± 40
+#define LIMITADOR_VARIACION_PALETAS 80 // Rango total en grados en HSL (que van desde 0 a 360º). 80 = ± 40
 
 static s32 CalcularDesplazamientoDesdePersonalidad(u32 personalidad)
 {
@@ -123,7 +123,8 @@ static void DesplazaTonoPaletaBase(const u16 *src, u16 *dst, s32 desplazamiento)
 
         // Aplica desplazamiento (solo tono)
         h = (h + desplazamiento) % 360;
-        if (h < 0) h += 360;
+        if (h < 0)
+            h += 360;
 
         // Conserva saturación y valor originales
         s32 s = (maxc == 0) ? 0 : (delta * 255) / maxc;
@@ -136,12 +137,42 @@ static void DesplazaTonoPaletaBase(const u16 *src, u16 *dst, s32 desplazamiento)
         s32 m = v - C;
 
         s32 r1, g1, b1;
-        if (h < 60)          { r1 = C; g1 = X; b1 = 0; }
-        else if (h < 120)    { r1 = X; g1 = C; b1 = 0; }
-        else if (h < 180)    { r1 = 0; g1 = C; b1 = X; }
-        else if (h < 240)    { r1 = 0; g1 = X; b1 = C; }
-        else if (h < 300)    { r1 = X; g1 = 0; b1 = C; }
-        else                 { r1 = C; g1 = 0; b1 = X; }
+        if (h < 60)
+        {
+            r1 = C;
+            g1 = X;
+            b1 = 0;
+        }
+        else if (h < 120)
+        {
+            r1 = X;
+            g1 = C;
+            b1 = 0;
+        }
+        else if (h < 180)
+        {
+            r1 = 0;
+            g1 = C;
+            b1 = X;
+        }
+        else if (h < 240)
+        {
+            r1 = 0;
+            g1 = X;
+            b1 = C;
+        }
+        else if (h < 300)
+        {
+            r1 = X;
+            g1 = 0;
+            b1 = C;
+        }
+        else
+        {
+            r1 = C;
+            g1 = 0;
+            b1 = X;
+        }
 
         // Ajusta brillo base (m)
         s32 R8 = r1 + m;

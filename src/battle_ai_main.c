@@ -133,8 +133,6 @@ static u32 GetAIFlags(u16 trainerId)
 {
     u32 flags = 0;
 
-    if (!(EsContraEntrenador()) && !IsWildMonSmart())
-        return 0;
     if (trainerId == 0xFFFF)
     {
         flags = GetWildAIFlags();
@@ -162,6 +160,7 @@ static u32 GetAIFlags(u16 trainerId)
 void BattleAI_SetupFlags(void)
 {
     AI_THINKING_STRUCT->aiFlags[JUGADOR_IZQUIERDA] = 0; // player has no AI
+    AI_THINKING_STRUCT->aiFlags[JUGADOR_DERECHA] = 0; // player
 
     if (DEBUG_OVERWORLD_MENU && gIsDebugBattle)
     {
@@ -170,19 +169,8 @@ void BattleAI_SetupFlags(void)
         return;
     }
 
-    if (IsWildMonSmart() && !(EsContraEntrenador()))
-    {
-        // smart wild AI
-        AI_THINKING_STRUCT->aiFlags[OPONENTE_IZQUIERDA] = GetAIFlags(0xFFFF);
-        AI_THINKING_STRUCT->aiFlags[OPONENTE_DERECHA] = GetAIFlags(0xFFFF);
-    }
-    else
-    {
-        AI_THINKING_STRUCT->aiFlags[OPONENTE_IZQUIERDA] = GetAIFlags(gTrainerBattleOpponent);
-        AI_THINKING_STRUCT->aiFlags[OPONENTE_DERECHA] = AI_THINKING_STRUCT->aiFlags[OPONENTE_IZQUIERDA];
-    }
-
-    AI_THINKING_STRUCT->aiFlags[JUGADOR_DERECHA] = 0; // player
+    AI_THINKING_STRUCT->aiFlags[OPONENTE_IZQUIERDA] = GetAIFlags(gTrainerBattleOpponent);
+    AI_THINKING_STRUCT->aiFlags[OPONENTE_DERECHA] = AI_THINKING_STRUCT->aiFlags[OPONENTE_IZQUIERDA];
 }
 
 void BattleAI_SetupAIData(u8 defaultScoreMoves, u32 battler)
@@ -394,8 +382,6 @@ void SetAILogicDataForTurn(struct AILogicData *aiData)
     u32 battlerAtk, battlersCount, weather;
 
     memset(aiData, 0, sizeof(struct AILogicData));
-    if (!(EsContraEntrenador()) && !IsWildMonSmart())
-        return;
 
     aiData->weatherHasEffect = WEATHER_HAS_EFFECT;
     weather = AI_GetWeather(aiData);
@@ -635,7 +621,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         return score;
 
     SetTypeBeforeUsingMove(move, battlerAtk);
-    moveType = GetMoveType(move);
+    moveType = TipoMovimiento(move, battlerAtk);
 
     if (gMovesInfo[move].powderMove && !IsAffectedByPowder(battlerDef, aiData->abilities[battlerDef], aiData->holdEffects[battlerDef]))
         RETURN_SCORE_MINUS(10);
@@ -706,10 +692,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                   && (moveType == TIPO_AGUA))
                     RETURN_SCORE_MINUS(10);
                 break;    
-            case ABILITY_MAGIC_BOUNCE:
-                if (gMovesInfo[move].magicCoatAffected)
-                    RETURN_SCORE_MINUS(20);
-                break;
             case ABILITY_CLEAR_BODY:
             case ABILITY_WHITE_SMOKE:
                 if (IsStatLoweringEffect(moveEffect))
@@ -736,10 +718,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                     break;
                 case ABILITY_STORM_DRAIN:
                     if (moveType == TIPO_AGUA && !IsMoveRedirectionPrevented(move, aiData->abilities[battlerAtk]))
-                        RETURN_SCORE_MINUS(20);
-                    break;
-                case ABILITY_MAGIC_BOUNCE:
-                    if (gMovesInfo[move].magicCoatAffected && moveTarget & (MOVE_TARGET_BOTH | MOVE_TARGET_FOES_AND_ALLY | MOVE_TARGET_OPPONENTS_FIELD))
                         RETURN_SCORE_MINUS(20);
                     break;
                 }
@@ -1610,10 +1588,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             if (gWishFutureKnock.wishCounter[battlerAtk] != 0)
                 ADJUST_SCORE(-10);
             break;
-        case EFFECT_MAGIC_COAT:
-            if (!HasMagicCoatAffectedMove(battlerDef))
-                ADJUST_SCORE(-10);
-            break;
         case EFFECT_SKILL_SWAP:
             if (aiData->abilities[battlerAtk] == ABILITY_NONE || aiData->abilities[battlerDef] == ABILITY_NONE
               || gAbilitiesInfo[aiData->abilities[battlerAtk]].cantBeSwapped
@@ -1960,7 +1934,7 @@ static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     u32 predictedMove = aiData->lastUsedMove[battlerDef];
 
     SetTypeBeforeUsingMove(move, battlerAtk);
-    moveType = GetMoveType(move);
+    moveType = TipoMovimiento(move, battlerAtk);
 
     // check what effect partner is using
     if (aiData->partnerMove != 0)
@@ -2605,7 +2579,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         break;
     case EFFECT_MULTI_HIT:
     case EFFECT_TRIPLE_KICK:
-    case EFFECT_POPULATION_BOMB:
         if (AI_MoveMakesContact(aiData->abilities[battlerAtk], aiData->holdEffects[battlerAtk], move)
           && aiData->abilities[battlerAtk] != ABILITY_MAGIC_GUARD
           && aiData->holdEffects[battlerDef] == HOLD_EFFECT_ROCKY_HELMET)
@@ -3151,10 +3124,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
     case EFFECT_INGRAIN:
         ADJUST_SCORE(WEAK_EFFECT);
         if (aiData->holdEffects[battlerAtk] == HOLD_EFFECT_BIG_ROOT)
-            ADJUST_SCORE(GOOD_EFFECT);
-        break;
-    case EFFECT_MAGIC_COAT:
-        if (EsMovimientoDeEstado(predictedMove) && GetBattlerMoveTargetType(battlerDef, predictedMove) & (MOVE_TARGET_SELECTED | MOVE_TARGET_OPPONENTS_FIELD | MOVE_TARGET_BOTH))
             ADJUST_SCORE(GOOD_EFFECT);
         break;
     case EFFECT_RECYCLE:
@@ -3846,7 +3815,7 @@ static s32 AI_HPAware(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     u32 moveType = 0;
 
     SetTypeBeforeUsingMove(move, battlerAtk);
-    moveType = GetMoveType(move);
+    moveType = TipoMovimiento(move, battlerAtk);
 
     if (IS_TARGETING_PARTNER(battlerAtk, battlerDef))
     {

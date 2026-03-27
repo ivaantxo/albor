@@ -69,7 +69,7 @@ const union AnimCmd *const gAnims_HandsAndFeet[] =
     sAnim_HandRight,
 };
 
-const struct SpriteTemplate gKarateChopSpriteTemplate =
+const struct SpriteTemplate gGolpeKarateSpriteTemplate =
 {
     .tileTag = ANIM_TAG_HANDS_AND_FEET,
     .paletteTag = ANIM_TAG_HANDS_AND_FEET,

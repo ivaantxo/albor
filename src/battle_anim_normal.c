@@ -1029,7 +1029,7 @@ static void AnimHitSplatPersistent(struct Sprite *sprite)
 }
 
 // For paired hit splats whose position is inverted when used by the opponent on the player.
-// Used by Twineedle and Spike Cannon
+// Used by DobleAguijon and Spike Cannon
 static void AnimHitSplatHandleInvert(struct Sprite *sprite)
 {
     if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
