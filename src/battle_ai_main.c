@@ -1415,11 +1415,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             else if (aiData->hpPercents[battlerAtk] >= 90)
                 ADJUST_SCORE(-8); //No point in healing, but should at least do it if nothing better
             break;
-        case EFFECT_RECOIL_IF_MISS:
-            if (aiData->abilities[battlerAtk] != ABILITY_MAGIC_GUARD && AI_DATA->moveAccuracy[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex] < 75
-            && !(AI_THINKING_STRUCT->aiFlags[battlerAtk] & AI_FLAG_RISKY))
-                ADJUST_SCORE(-6);
-            break;
         case EFFECT_LOCK_ON:
             if (gStatuses3[battlerDef] & STATUS3_ALWAYS_HITS
               || aiData->abilities[battlerAtk] == ABILITY_NO_GUARD
@@ -2568,7 +2563,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         score += AI_TryToClearStats(battlerAtk, battlerDef, isDoubleBattle);
         break;
     case EFFECT_MULTI_HIT:
-    case EFFECT_TRIPLE_KICK:
         if (AI_MoveMakesContact(aiData->abilities[battlerAtk], aiData->holdEffects[battlerAtk], move)
           && aiData->abilities[battlerAtk] != ABILITY_MAGIC_GUARD
           && aiData->holdEffects[battlerDef] == HOLD_EFFECT_ROCKY_HELMET)
@@ -3118,7 +3112,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         if (IsRecycleEncouragedItem(GetUsedHeldItem(battlerAtk)))
             ADJUST_SCORE(WEAK_EFFECT);
         break;
-    case EFFECT_RAGING_BULL:
     case EFFECT_BRICK_BREAK:
         if (gSideStatuses[GetBattlerSide(battlerDef)] & SIDE_STATUS_REFLECT)
             ADJUST_SCORE(DECENT_EFFECT);
@@ -3698,8 +3691,6 @@ static s32 AI_Risky(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         if (aiData->hpPercents[battlerAtk] >= 90)
             ADJUST_SCORE(AVERAGE_RISKY_EFFECT);
         break;
-    case EFFECT_MAX_HP_50_RECOIL:
-    case EFFECT_MIND_BLOWN:
     case EFFECT_SWAGGER:
     case EFFECT_FLATTER:
     case EFFECT_ATTRACT:

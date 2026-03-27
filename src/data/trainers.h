@@ -2003,7 +2003,7 @@ F_TRAINER_FEMALE |
             .moves = {
 #line 893
                 MOVE_ASTONISH,
-                MOVE_STOMP,
+                MOVE_PISOTON,
                 MOVE_SUPERSONIC,
                 MOVE_HYPER_VOICE,
             },
@@ -13018,7 +13018,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 5432
-                MOVE_HIGH_JUMP_KICK,
+                MOVE_PATADA_VOLADORA,
                 MOVE_MEDITATE,
                 MOVE_CONFUSION,
                 MOVE_DETECT,
@@ -32742,7 +32742,7 @@ F_TRAINER_FEMALE |
                 MOVE_PURSUIT,
                 MOVE_COUNTER,
                 MOVE_PROTECT,
-                MOVE_TRIPLE_KICK,
+                MOVE_PATADA_TRIPLE,
             },
             },
             {
@@ -32835,7 +32835,7 @@ F_TRAINER_FEMALE |
                 MOVE_PURSUIT,
                 MOVE_COUNTER,
                 MOVE_PROTECT,
-                MOVE_TRIPLE_KICK,
+                MOVE_PATADA_TRIPLE,
             },
             },
             {
@@ -32945,7 +32945,7 @@ F_TRAINER_FEMALE |
                 MOVE_PURSUIT,
                 MOVE_COUNTER,
                 MOVE_PROTECT,
-                MOVE_TRIPLE_KICK,
+                MOVE_PATADA_TRIPLE,
             },
             },
             {
@@ -32999,7 +32999,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 13617
-                MOVE_MEGA_KICK,
+                MOVE_MEGA_PATADA,
                 MOVE_FOCUS_PUNCH,
                 MOVE_EARTHQUAKE,
                 MOVE_BULK_UP,
@@ -33072,7 +33072,7 @@ F_TRAINER_FEMALE |
                 MOVE_PURSUIT,
                 MOVE_COUNTER,
                 MOVE_PROTECT,
-                MOVE_TRIPLE_KICK,
+                MOVE_PATADA_TRIPLE,
             },
             },
             {

@@ -389,24 +389,10 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
         }
         else
         {
-            s32 nonCritDmg = 0;
-            if (moveEffect == EFFECT_TRIPLE_KICK)
-            {
-                for (gCombate.contadorMultigolpes = gMovesInfo[move].strikeCount; gCombate.contadorMultigolpes > 0; gCombate.contadorMultigolpes--) // The global is used to simulate actual damage done
-                {
-                    nonCritDmg += CalculateMoveDamageVars(&damageCalcData, fixedBasePower,
-                                                          effectivenessMultiplier, weather,
-                                                          aiData->holdEffects[battlerAtk], aiData->holdEffects[battlerDef],
-                                                          aiData->abilities[battlerAtk], aiData->abilities[battlerDef]);
-                }
-            }
-            else
-            {
-                nonCritDmg = CalculateMoveDamageVars(&damageCalcData, fixedBasePower,
+            s32 nonCritDmg = CalculateMoveDamageVars(&damageCalcData, fixedBasePower,
                                                      effectivenessMultiplier, weather,
                                                      aiData->holdEffects[battlerAtk], aiData->holdEffects[battlerDef],
                                                      aiData->abilities[battlerAtk], aiData->abilities[battlerDef]);
-            }
             simulatedDmg = nonCritDmg;
         }
 
@@ -451,7 +437,7 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
         }
 
         // Handle other multi-strike moves
-        if (gMovesInfo[move].strikeCount > 1 && gMovesInfo[move].effect != EFFECT_TRIPLE_KICK)
+        if (gMovesInfo[move].strikeCount > 1)
         {
             if (gMovesInfo[move].strikeCount == 2 && aiData->abilities[battlerAtk] == ABILITY_HAZLO_TRIPLE)
             {
@@ -616,19 +602,13 @@ static bool32 AI_IsMoveEffectInMinus(u32 battlerAtk, u32 battlerDef, u32 move, s
     u32 abilityDef = AI_DATA->abilities[battlerDef];
     u32 i;
 
-    // recoil
-    if (gMovesInfo[move].recoil > 0 && AI_IsDamagedByRecoil(battlerAtk))
+    if (HaceDanioRetroceso(move) && AI_IsDamagedByRecoil(battlerAtk))
         return TRUE;
 
     switch (gMovesInfo[move].effect)
     {
-    case EFFECT_MAX_HP_50_RECOIL:
-    case EFFECT_MIND_BLOWN:
     case EFFECT_EXPLOSION:
         return TRUE;
-    case EFFECT_RECOIL_IF_MISS:
-        if (AI_IsDamagedByRecoil(battlerAtk))
-            return TRUE;
         break;
     default:
     {
@@ -2588,7 +2568,7 @@ bool32 ShouldSetScreen(u32 battlerAtk, u32 battlerDef, u32 moveEffect)
     u32 atkSide = GetBattlerSide(battlerAtk);
 
     // Don't waste a turn if screens will be broken
-    if (HasMoveEffect(battlerDef, EFFECT_BRICK_BREAK) || HasMoveEffect(battlerDef, EFFECT_RAGING_BULL))
+    if (HasMoveEffect(battlerDef, EFFECT_BRICK_BREAK))
         return FALSE;
 
     switch (moveEffect)

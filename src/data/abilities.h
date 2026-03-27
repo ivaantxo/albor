@@ -571,6 +571,13 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 6,
     },
 
+    [ABILITY_PATADA_FEROZ] =
+    {
+        .name = _("Patada Feroz"),
+        .description = COMPOUND_STRING("Patada +25%."),
+        .aiRating = 6,
+    },
+
     [ABILITY_POISON_HEAL] =
     {
         .name = _("Poison Heal"),
@@ -748,9 +755,9 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .aiRating = 3,
     },
 
-    [ABILITY_RECKLESS] =
+    [ABILITY_AUDAZ] =
     {
-        .name = _("Reckless"),
+        .name = _("Audaz"),
         .description = COMPOUND_STRING("Boosts moves with recoil."),
         .aiRating = 6,
     },

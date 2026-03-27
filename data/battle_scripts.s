@@ -1628,22 +1628,17 @@ BattleScript_FaintAttackerForExplosion::
 	tryfaintmon BS_ATTACKER
 	return
 
-BattleScript_MaxHp50Recoil::
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
-	healthbarupdate BS_ATTACKER
-	datahpupdate BS_ATTACKER
-	tryfaintmon BS_ATTACKER
-	return
-
 BattleScript_EffectDreamEater::
 	attackcanceler
 	jumpifsubstituteblocks BattleScript_DreamEaterNoEffect
 	jumpifstatus BS_TARGET, STATUS1_SLEEP, BattleScript_DreamEaterWorked
+
 BattleScript_DreamEaterNoEffect:
 	attackstring
 	ppreduce
 	waitmessage PAUSA_LARGA
 	goto BattleScript_WasntAffected
+
 BattleScript_DreamEaterWorked:
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
 	attackstring
@@ -1947,52 +1942,6 @@ BattleScript_RestIsAlreadyAsleep::
 	pause PAUSA_CORTA
 	EscribeTextoCombate "¡{B_ATK_NAME_WITH_PREFIX} ya está durmiendo!"
 	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectRecoilIfMiss::
-	attackcanceler
-	accuracycheck BattleScript_MoveMissedDoDamage, ACC_CURR_MOVE
-.if B_CRASH_IF_TARGET_IMMUNE >= GEN_4
-	typecalc
-	jumpifhalfword COMPARACION_BITS_COMUNES, gMoveResultFlags, MOVE_RESULT_DOESNT_AFFECT_FOE, BattleScript_MoveMissedDoDamage
-.endif
-	goto BattleScript_HitFromAtkString
-BattleScript_MoveMissedDoDamage::
-	jumpifability BS_ATTACKER, ABILITY_MAGIC_GUARD, BattleScript_PrintMoveMissed
-	attackstring
-	ppreduce
-	pause PAUSA_LARGA
-	resultmessage
-	waitmessage PAUSA_LARGA
-.if B_CRASH_IF_TARGET_IMMUNE < GEN_4
-	jumpifhalfword COMPARACION_BITS_COMUNES, gMoveResultFlags, MOVE_RESULT_DOESNT_AFFECT_FOE, BattleScript_MoveEnd
-.endif
-	moveendcase MOVEEND_PROTECT_LIKE_EFFECT @ Spiky Shield's damage happens before recoil.
-	jumpifhasnohp BS_ATTACKER, BattleScript_MoveEnd
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} kept going and crashed!"
-	waitmessage PAUSA_LARGA
-	damagecalc
-	typecalc
-	adjustdamage
-.if B_CRASH_IF_TARGET_IMMUNE == GEN_4
-	manipulatedamage DMG_RECOIL_FROM_IMMUNE
-.else
-	manipulatedamage DMG_RECOIL_FROM_MISS
-.endif
-.if B_CRASH_IF_TARGET_IMMUNE >= GEN_4
-	bichalfword gMoveResultFlags, MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE
-.else
-	bichalfword gMoveResultFlags, MOVE_RESULT_MISSED
-.endif
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
-	healthbarupdate BS_ATTACKER
-	datahpupdate BS_ATTACKER
-	tryfaintmon BS_ATTACKER
-.if B_CRASH_IF_TARGET_IMMUNE >= GEN_4
-	orhalfword gMoveResultFlags, MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE
-.else
-	orhalfword gMoveResultFlags, MOVE_RESULT_MISSED
-.endif
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectMist::
@@ -3235,11 +3184,6 @@ BattleScript_EffectSnatch::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} waits for a target to make a move!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
-
-BattleScript_EffectRecoilHP25::
-	jumpifnotmove MOVE_STRUGGLE, BattleScript_EffectHit
-	incrementgamestat GAME_STAT_USED_STRUGGLE
-	goto BattleScript_EffectHit
 
 BattleScript_EffectTickle::
 	attackcanceler

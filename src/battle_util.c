@@ -105,6 +105,7 @@ void HandleAction_UseMove(void)
     {
         gProtectStructs[gBattlerAttacker].noValidMoves = FALSE;
         gCurrentMove = gChosenMove = MOVE_STRUGGLE;
+        IncrementGameStat(GAME_STAT_USED_STRUGGLE);
         gHitMarker |= HITMARKER_NO_PPDEDUCT;
         *(gCombate->moveTarget + gBattlerAttacker) = GetMoveTarget(MOVE_STRUGGLE, NO_TARGET_OVERRIDE);
     }
@@ -2239,7 +2240,7 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
         case CANCELLER_EXPLODING_DAMP:
         {
             u32 dampBattler = QueCombatienteTieneHabilidad(ABILITY_DAMP);
-            if (dampBattler && (gMovesInfo[gCurrentMove].effect == EFFECT_EXPLOSION || gMovesInfo[gCurrentMove].effect == EFFECT_MIND_BLOWN))
+            if (dampBattler && (gMovesInfo[gCurrentMove].effect == EFFECT_EXPLOSION))
             {
                 gBattleScripting.battler = dampBattler - 1;
                 gBattlescriptCurrInstr = BattleScript_DampStopsExplosion;
@@ -5376,9 +5377,6 @@ static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData
     case EFFECT_PRESENT:
         basePower = gCombate->presentBasePower;
         break;
-    case EFFECT_TRIPLE_KICK:
-        basePower *= 1 + gMovesInfo[move].strikeCount - gCombate.contadorMultigolpes;
-        break;
     case EFFECT_SPIT_UP:
         basePower = 100 * gDisableStructs[battlerAtk].stockpileCounter;
         break;
@@ -5408,18 +5406,6 @@ static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData
             // Edge case, because removal of items happens after damage calculation.
             || (gSpecialStatuses[battlerAtk].gemBoost && GetBattlerHoldEffect(battlerAtk, FALSE) == HOLD_EFFECT_GEMS))
             basePower *= 2;
-        break;
-    case EFFECT_LOW_KICK:
-        weight = GetBattlerWeight(battlerDef);
-        for (i = 0; sWeightToDamageTable[i] != 0xFFFF; i += 2)
-        {
-            if (sWeightToDamageTable[i] > weight)
-                break;
-        }
-        if (sWeightToDamageTable[i] != 0xFFFF)
-            basePower = sWeightToDamageTable[i + 1];
-        else
-            basePower = 120;
         break;
     case EFFECT_HEAT_CRASH:
         weight = GetBattlerWeight(battlerAtk) / GetBattlerWeight(battlerDef);
@@ -5520,10 +5506,6 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
         if (gSideTimers[atkSide].retaliateTimer == 1)
             modifier = uq4_12_multiply(modifier, UQ_4_12(2.0));
         break;
-    case EFFECT_STOMPING_TANTRUM:
-        if (gCombate->lastMoveFailed & (1u << battlerAtk))
-            modifier = uq4_12_multiply(modifier, UQ_4_12(2.0));
-        break;
     }
 
     // various effects
@@ -5547,13 +5529,17 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
         if (gBattleMons[battlerAtk].status1 & STATUS1_PSN_ANY && EsMovimientoFisico(move))
             modifier = uq4_12_multiply(modifier, UQ_4_12(1.5));
         break;
-    case ABILITY_RECKLESS:
-        if (IS_MOVE_RECOIL(move))
-            modifier = uq4_12_multiply(modifier, UQ_4_12(1.2));
+    case ABILITY_AUDAZ:
+        if (HaceDanioRetroceso(move))
+            modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
         break;
     case ABILITY_IRON_FIST:
         if (gMovesInfo[move].punchingMove)
             modifier = uq4_12_multiply(modifier, UQ_4_12(1.2));
+        break;
+    case ABILITY_PATADA_FEROZ:
+        if (gMovesInfo[move].patada)
+            modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
         break;
     case ABILITY_SHEER_FORCE:
         if (MoveIsAffectedBySheerForce(move))

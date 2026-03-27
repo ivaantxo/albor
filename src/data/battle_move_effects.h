@@ -152,11 +152,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .encourageEncore = TRUE,
             },
 
-        [EFFECT_RECOIL_IF_MISS] =
-            {
-                .battleScript = BattleScript_EffectRecoilIfMiss,
-            },
-
         [EFFECT_MIST] =
             {
                 .battleScript = BattleScript_EffectMist,
@@ -326,11 +321,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
             {
                 .battleScript = BattleScript_EffectHealBell,
                 .encourageEncore = TRUE,
-            },
-
-        [EFFECT_TRIPLE_KICK] =
-            {
-                .battleScript = BattleScript_EffectHit,
             },
 
         [EFFECT_MEAN_LOOK] =
@@ -669,11 +659,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         [EFFECT_SNATCH] =
             {
                 .battleScript = BattleScript_EffectSnatch,
-            },
-
-        [EFFECT_LOW_KICK] =
-            {
-                .battleScript = BattleScript_EffectHit,
             },
 
         [EFFECT_HIT_ESCAPE] =
@@ -1104,11 +1089,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .encourageEncore = TRUE,
             },
 
-        [EFFECT_STOMPING_TANTRUM] =
-            {
-                .battleScript = BattleScript_EffectHit,
-            },
-
         [EFFECT_GEAR_UP] =
             {
                 .battleScript = BattleScript_EffectGearUp,
@@ -1167,24 +1147,9 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .battleScript = BattleScript_EffectHit,
             },
 
-        [EFFECT_RECOIL_HP_25] =
-            {
-                .battleScript = BattleScript_EffectRecoilHP25,
-            },
-
         [EFFECT_SPARKLY_SWIRL] =
             {
                 .battleScript = BattleScript_EffectSparklySwirl,
-            },
-
-        [EFFECT_MAX_HP_50_RECOIL] =
-            {
-                .battleScript = BattleScript_EffectHit,
-            },
-
-        [EFFECT_MIND_BLOWN] =
-            {
-                .battleScript = BattleScript_EffectHit,
             },
 
         [EFFECT_DARK_VOID] =
@@ -1215,11 +1180,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         [EFFECT_CORROSIVE_GAS] =
             {
                 .battleScript = BattleScript_EffectCorrosiveGas,
-            },
-
-        [EFFECT_RAGING_BULL] =
-            {
-                .battleScript = BattleScript_EffectBrickBreak,
             },
 
         [EFFECT_RAGE_FIST] =

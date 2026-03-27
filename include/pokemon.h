@@ -284,7 +284,7 @@ struct MoveInfo
     u8 pp;
 
     s32 priority:4;
-    u32 recoil:7;
+    u32 retroceso:7;
     u32 strikeCount:4; // Max 15 hits. Defaults to 1 if not set. May apply its effect on each hit.
     u32 criticalHitStage:2;
     u32 alwaysCriticalHit:1;
@@ -320,6 +320,7 @@ struct MoveInfo
     u32 headMove:1;
     u32 eyesMove:1;
     u32 lickMove:1;
+    u32 patada;1;
 
     // Ban flags
     u32 gravityBanned:1;
@@ -485,7 +486,7 @@ void RemoveBattleMonPPBonus(struct BattlePokemon *mon, u8 moveIndex);
 void PokemonToBattleMon(struct Pokemon *src, struct BattlePokemon *dst);
 void CopyPartyMonToBattleData(u32 battlerId, u32 partyIndex);
 bool8 ExecuteTableBasedItemEffect(struct Pokemon *mon, u16 item, u8 partyIndex, u8 moveIndex);
-bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 moveIndex, u8 e);
+bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 moveIndex, bool8 usedByAI);
 bool8 HealStatusConditions(struct Pokemon *mon, u32 healMask, u8 battlerId);
 u8 GetItemEffectParamOffset(u32 battler, u16 itemId, u8 effectByte, u8 effectBit);
 u8 *UseStatIncreaseItem(u16 itemId);

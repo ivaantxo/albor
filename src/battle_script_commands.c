@@ -823,7 +823,6 @@ static const u16 sFinalStrikeOnlyEffects[] =
         MOVE_EFFECT_STEAL_ITEM,
         MOVE_EFFECT_SMACK_DOWN,
         MOVE_EFFECT_REMOVE_STATUS,
-        MOVE_EFFECT_RECOIL_HP_25,
         MOVE_EFFECT_PREVENT_ESCAPE,
         MOVE_EFFECT_WRAP,
 };
@@ -1255,9 +1254,9 @@ static void AccuracyCheck(bool32 recalcDragonDarts, const u8 *nextInstr, const u
         else if (!JumpIfMoveAffectedByProtect(gCurrentMove))
             gBattlescriptCurrInstr = nextInstr;
     }
-    else if (gSpecialStatuses[gBattlerAttacker].parentalBondState == PARENTAL_BOND_2ND_HIT || (gSpecialStatuses[gBattlerAttacker].multiHitOn && (abilityAtk == ABILITY_SKILL_LINK || abilityAtk == ABILITY_ENJAMBRE || holdEffectAtk == HOLD_EFFECT_LOADED_DICE || !(gMovesInfo[move].effect == EFFECT_TRIPLE_KICK))))
+    else if (gSpecialStatuses[gBattlerAttacker].parentalBondState == PARENTAL_BOND_2ND_HIT || (gSpecialStatuses[gBattlerAttacker].multiHitOn && (abilityAtk == ABILITY_SKILL_LINK || abilityAtk == ABILITY_ENJAMBRE || holdEffectAtk == HOLD_EFFECT_LOADED_DICE)))
     {
-        // No acc checks for second hit of Parental Bond or multi hit moves, except Triple Kick/Triple Axel/Population Bomb
+        // No acc checks for second hit of Parental Bond or multi hit moves, except Patada Triple/Triple Axel/Population Bomb
         gBattlescriptCurrInstr = nextInstr;
     }
     else
@@ -2550,16 +2549,6 @@ void SetMoveEffect(bool32 primary)
                     BattleScriptPush(gBattlescriptCurrInstr + 1);
                     gBattlescriptCurrInstr = BattleScript_DefSpDefDown;
                 }
-                break;
-            case MOVE_EFFECT_RECOIL_HP_25: // Struggle
-                gBattleMoveDamage = (gBattleMons[gEffectBattler].maxHP) / 4;
-                if (gBattleMoveDamage == 0)
-                    gBattleMoveDamage = 1;
-                if (GetBattlerAbility(gEffectBattler) == ABILITY_PARENTAL_BOND)
-                    gBattleMoveDamage *= 2;
-
-                BattleScriptPush(gBattlescriptCurrInstr + 1);
-                gBattlescriptCurrInstr = BattleScript_MoveEffectRecoil;
                 break;
             case MOVE_EFFECT_THRASH:
                 gBattleMons[gEffectBattler].status2 |= STATUS2_MULTIPLETURNS;
@@ -4031,6 +4020,18 @@ static u32 GetNextTarget(u32 moveTarget, bool32 excludeCurrent)
     return battler;
 }
 
+static void CalculaDanioRetroceso(u32 movimiento)
+{
+    u32 retroceso = gMovesInfo[movimiento].retroceso;
+
+    if (retroceso == 0)
+        return;
+
+    u32 danio = gBattleScripting.savedDmg;
+
+    gBattleMoveDamage = max(1, (danio * retroceso) / 100);
+}
+
 static void Cmd_moveend(void)
 {
     CMD_ARGS(u8 endMode, u8 endState);
@@ -4089,9 +4090,9 @@ static void Cmd_moveend(void)
                 gBattleScripting.moveendState++;
                 break;
             }
-            else if (gMovesInfo[gCurrentMove].recoil > 0 && MovimientoEsEfectivo(gCombate->resultadoMovimiento) && IsBattlerAlive(gBattlerAttacker) && gBattleScripting.savedDmg != 0) // Some checks may be redundant alongside this one
+            else if (HaceDanioRetroceso(gCurrentMove) && MovimientoEsEfectivo(gCombate->resultadoMovimiento) && IsBattlerAlive(gBattlerAttacker) && gBattleScripting.savedDmg != 0) // Some checks may be redundant alongside this one
             {
-                gBattleMoveDamage = max(1, gBattleScripting.savedDmg * max(1, gMovesInfo[gCurrentMove].recoil) / 100);
+                CalculaDanioRetroceso(gCurrentMove);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_MoveEffectRecoil;
                 effect = TRUE;
@@ -4103,15 +4104,6 @@ static void Cmd_moveend(void)
                 gBattlescriptCurrInstr = BattleScript_FaintAttackerForExplosion;
                 effect = TRUE;
             }
-            else if ((gMovesInfo[gCurrentMove].effect == EFFECT_MAX_HP_50_RECOIL || gMovesInfo[gCurrentMove].effect == EFFECT_MIND_BLOWN) && IsBattlerAlive(gBattlerAttacker) && !(gMoveResultFlags & MOVE_RESULT_FAILED) && GetBattlerAbility(gBattlerAttacker) != ABILITY_MAGIC_GUARD)
-            {
-                gBattleMoveDamage = (CuantosPSMaximos(gBattlerAttacker) + 1) / 2; // Half of Max HP Rounded UP
-                BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_MaxHp50Recoil;
-                effect = TRUE;
-            }
-            gBattleScripting.moveendState++;
-            break;
         case MOVEEND_ITEM_EFFECTS_ATTACKER:
             if (ItemBattleEffects(ITEMEFFECT_MOVE_END, gBattlerAttacker, FALSE))
                 effect = TRUE;
@@ -4303,11 +4295,6 @@ static void Cmd_moveend(void)
             gBattleScripting.moveendState++;
             break;
         case MOVEEND_UPDATE_LAST_MOVES:
-            if ((gMoveResultFlags & (MOVE_RESULT_FAILED | MOVE_RESULT_DOESNT_AFFECT_FOE)) || (gBattleMons[gBattlerAttacker].status2 & (STATUS2_FLINCHED)) || gProtectStructs[gBattlerAttacker].prlzImmobility)
-                gBattleStruct->lastMoveFailed |= 1u << gBattlerAttacker;
-            else
-                gBattleStruct->lastMoveFailed &= ~(1u << gBattlerAttacker);
-
             if (gHitMarker & HITMARKER_SWAP_ATTACKER_TARGET)
             {
                 u8 temp;
@@ -4498,7 +4485,7 @@ static void Cmd_moveend(void)
                     }
 
                     if (IsBattlerAlive(battler) && CountUsablePartyMons(battler) > 0 // Has mon to switch into
-                        // Does not activate if attacker used Parting Shot and can switch out
+                                                                                     // Does not activate if attacker used Parting Shot and can switch out
                         && !(gMovesInfo[gCurrentMove].effect == EFFECT_HIT_SWITCH_TARGET && CanBattlerSwitch(gBattlerAttacker)))
                     {
                         gBattleScripting.battler = battler;
@@ -7847,26 +7834,6 @@ static void Cmd_manipulatedamage(void)
     case DMG_CHANGE_SIGN:
         gBattleMoveDamage *= -1;
         break;
-    case DMG_RECOIL_FROM_MISS:
-        if (B_RECOIL_IF_MISS_DMG >= GEN_5)
-        {
-            gBattleMoveDamage = CuantosPSMaximos(gBattlerAttacker) / 2;
-        }
-        else if (B_RECOIL_IF_MISS_DMG == GEN_4)
-        {
-            if ((gBattleMons[gBattlerTarget].maxHP / 2) < gBattleMoveDamage)
-                gBattleMoveDamage = CuantosPSMaximos(gBattlerTarget) / 2;
-        }
-        else
-        {
-            gBattleMoveDamage /= 2;
-        }
-        if (gBattleMoveDamage == 0)
-            gBattleMoveDamage = 1;
-        break;
-    case DMG_DOUBLED:
-        gBattleMoveDamage *= 2;
-        break;
     case DMG_1_8_TARGET_HP:
         gBattleMoveDamage = CuantosPSMaximos(gBattlerTarget) / 8;
         if (gBattleMoveDamage == 0)
@@ -7880,9 +7847,6 @@ static void Cmd_manipulatedamage(void)
         break;
     case DMG_BIG_ROOT:
         gBattleMoveDamage = GetDrainedBigRootHp(gBattlerAttacker, gBattleMoveDamage);
-        break;
-    case DMG_RECOIL_FROM_IMMUNE:
-        gBattleMoveDamage = CuantosPSMaximos(gBattlerTarget) / 2;
         break;
     }
 

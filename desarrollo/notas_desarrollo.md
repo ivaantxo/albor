@@ -116,3 +116,5 @@ find . -name "* 2.inc" -delete
 //solucionar: problema de que se envían 2 pokémon 2 veces + problema iconos al debilitarse un pokémon (quizá también con 2)
 
 // revisar el bug rarísimo: si haces x (entras a cualquier pantalla) y hablas con pokémon, invalid address
+
+// terminar confusión: "añade" daño por retroceso (durante x turnos? al cambiar se limpia?), no posibilidad de no atacar.

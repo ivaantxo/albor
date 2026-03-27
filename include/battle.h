@@ -436,7 +436,6 @@ struct Combate
     enum EstadosIntroBatalla estadoIntro;
     u8 ateBerry[2];                              // array id determined by side, each party pokemon as bit
     u8 stolenStats[NUMERO_ESTADISTICAS_BATALLA]; // hp byte is used for which stats to raise, other inform about by how many stages
-    u8 lastMoveFailed;                           // as bits for each battler, for the sake of Stomping Tantrum
     u16 tracedAbility[NUMERO_COMBATIENTES];
     u16 hpBefore[NUMERO_COMBATIENTES];                                          // Hp of battlers before using a move. For Berserk and Anger Shell.
     s32 IA_Puntuacion[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES][MAX_MON_MOVES]; // AI, target, moves to make debugging easier
@@ -481,8 +480,6 @@ struct Combate
     enum ResultadosMovimiento resultadoMovimiento;
     struct EfectosFinTurno efectoFinTurno;
 };
-
-#define IS_MOVE_RECOIL(move) (gMovesInfo[move].recoil > 0 || gMovesInfo[move].effect == EFFECT_RECOIL_IF_MISS)
 
 #define SET_BATTLER_TYPE(battlerId, type)            \
     {                                                \
@@ -810,6 +807,11 @@ static inline bool32 EsMovimientoDeEstado(u32 movimiento)
 static inline bool32 EsPrimerGolpe(void)
 {
     return (gCombate.contadorMultigolpes == 0);
+}
+
+static inline bool32 HaceDanioRetroceso(u32 movimiento)
+{
+    return (gMovesInfo[movimiento].retroceso > 0);
 }
 
 #endif // GUARD_BATTLE_H

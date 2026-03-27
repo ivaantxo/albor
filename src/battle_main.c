@@ -1229,7 +1229,6 @@ void SwitchInClearSetData(u32 battler)
     gLastPrintedMoves[battler] = MOVE_NONE;
     gLastHitBy[battler] = 0xFF;
     gCombate->sameMoveTurns[battler] = 0;
-    gCombate->lastMoveFailed &= ~(1u << battler);
 
     for (i = 0; i < ARRAY_COUNT(gSideTimers); i++)
     {

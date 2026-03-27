@@ -24,6 +24,9 @@ EFFECT_TWO_TURNS_ATTACK: weather in which to skip charge turn */
 #define PP_MOVIMIENTO_NORMAL 16
 #define PP_MOVIMIENTO_AMPLIO 24
 
+#define RETROCESO_BAJO 15
+#define RETROCESO_ALTO 30
+
 static const u8 sMegaDrainDescription[] = _(
     "An attack that absorbs\n"
     "half the damage inflicted.");
@@ -190,11 +193,11 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "A strong punch thrown with\n"
             "incredible power."),
         .effect = EFFECT_HIT,
-        .power = 120,
+        .power = 130,
         .type = TIPO_LUCHA,
         .accuracy = 100,
         .pp = PP_MOVIMIENTO_LIMITADO,
-        .recoil = 33,
+        .retroceso = RETROCESO_ALTO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
@@ -548,7 +551,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_VineWhip,
     },
 
-    [MOVE_STOMP] =
+    [MOVE_PISOTON] =
     {
         .name = COMPOUND_STRING("Pisotón"),
         .description = COMPOUND_STRING(
@@ -564,6 +567,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .minimizeDoubleDamage = TRUE,
+        .patada = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
             .chance = 30,
@@ -571,63 +575,62 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Stomp,
     },
 
-    [MOVE_DOUBLE_KICK] =
+    [MOVE_DOBLE_PATADA] =
     {
         .name = COMPOUND_STRING("Doble patada"),
         .description = COMPOUND_STRING(
             "A double-kicking attack\n"
             "that strikes the foe twice."),
         .effect = EFFECT_HIT,
-        .power = 30,
+        .power = 50,
         .type = TIPO_LUCHA,
         .accuracy = 100,
-        .pp = 30,
+        .pp = PP_MOVIMIENTO_NORMAL,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
+        .patada = TRUE,
         .makesContact = TRUE,
         .strikeCount = 2,
         .battleAnimScript = gBattleAnimMove_DoubleKick,
     },
 
-    [MOVE_MEGA_KICK] =
+    [MOVE_MEGA_PATADA] =
     {
         .name = COMPOUND_STRING("Megapatada"),
         .description = COMPOUND_STRING(
             "An extremely powerful kick\n"
             "with intense force."),
         .effect = EFFECT_HIT,
-        .power = 120,
-        .type = TIPO_NORMAL,
-        .accuracy = 75,
-        .pp = 5,
+        .power = 130,
+        .type = TIPO_LUCHA,
+        .accuracy = 100,
+        .retroceso = RETROCESO_ALTO,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
+        .patada = TRUE,
         .battleAnimScript = gBattleAnimMove_MegaKick,
     },
 
-    [MOVE_JUMP_KICK] =
+    [MOVE_PATADA_SALTO] =
     {
         .name = COMPOUND_STRING("Patada salto"),
         .description = COMPOUND_STRING(
             "A strong jumping kick. May\n"
             "miss and hurt the kicker."),
-        #if B_UPDATED_MOVE_DATA >= GEN_5
-            .power = 100,
-        #elif B_UPDATED_MOVE_DATA >= GEN_4
-            .power = 85,
-        #else
-            .power = 70,
-        #endif
-        .effect = EFFECT_RECOIL_IF_MISS,
+        .power = 110,
+        .retroceso = RETROCESO_BAJO,
+        .effect = EFFECT_HIT,
         .type = TIPO_LUCHA,
-        .accuracy = 95,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_5 ? 10 : 25,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
+        .patada = TRUE,
         .makesContact = TRUE,
         .gravityBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_JumpKick,
@@ -640,7 +643,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "A fast kick delivered from\n"
             "a rapid spin."),
         .effect = EFFECT_HIT,
-        .power = 40,
+        .power = 50,
         .type = TIPO_LUCHA,
         .accuracy = 100,
         .pp = PP_MOVIMIENTO_NORMAL,
@@ -648,6 +651,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
+        .patada = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SPD_PLUS_1
             .self = TRUE,
@@ -828,10 +832,10 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "A reckless charge attack\n"
             "that also hurts the user."),
         .effect = EFFECT_HIT,
-        .power = 90,
+        .power = 110,
         .type = TIPO_NORMAL,
         .accuracy = 85,
-        .recoil = 25,
+        .retroceso = RETROCESO_BAJO,
         .pp = 20,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -869,10 +873,10 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "A life-risking tackle that\n"
             "also hurts the user."),
         .effect = EFFECT_HIT,
-        .power = 120,
+        .power = 130,
         .type = TIPO_NORMAL,
         .accuracy = 100,
-        .recoil = 33,
+        .retroceso = RETROCESO_ALTO,
         .pp = 15,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -1440,11 +1444,11 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "A reckless body slam that\n"
             "also hurts the user."),
         .effect = EFFECT_HIT,
-        .power = 80,
+        .power = 110,
         .type = TIPO_LUCHA,
         .accuracy = 80,
         .pp = B_UPDATED_MOVE_DATA >= GEN_6 ? 20 : 25,
-        .recoil = 25,
+        .retroceso = RETROCESO_BAJO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
@@ -1452,21 +1456,26 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Submission,
     },
 
-    [MOVE_LOW_KICK] =
+    [MOVE_PATADA_BAJA] =
     {
         .name = COMPOUND_STRING("Patada baja"),
         .description = COMPOUND_STRING(
             "A kick that inflicts more\n"
             "damage on heavier foes."),
-        .effect = EFFECT_LOW_KICK,
-        .power = 1,
+        .effect = EFFECT_HIT,
+        .power = 70,
         .type = TIPO_LUCHA,
         .accuracy = 100,
-        .pp = 20,
+        .pp = PP_MOVIMIENTO_NORMAL,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
+        .patada = TRUE,
+        .additionalEffects = ADDITIONAL_EFFECTS({
+            .moveEffect = MOVE_EFFECT_DEF_MINUS_1,
+            .chance = 30,
+        }),
         .battleAnimScript = gBattleAnimMove_LowKick,
     },
 
@@ -2701,27 +2710,23 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_SoftBoiled,
     },
 
-    [MOVE_HIGH_JUMP_KICK] =
+    [MOVE_PATADA_VOLADORA] =
     {
-        .name = COMPOUND_STRING("Patada salto alta"),
+        .name = COMPOUND_STRING("Patada voladora"),
         .description = COMPOUND_STRING(
             "A jumping knee kick. If it\n"
             "misses, the user is hurt."),
-        #if B_UPDATED_MOVE_DATA >= GEN_5
-            .power = 130,
-        #elif B_UPDATED_MOVE_DATA == GEN_4
-            .power = 100,
-        #else
-            .power = 85,
-        #endif
-        .effect = EFFECT_RECOIL_IF_MISS,
+        .power = 130,
+        .retroceso = RETROCESO_ALTO,
+        .effect = EFFECT_HIT,
         .type = TIPO_LUCHA,
-        .accuracy = 90,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_5 ? 10 : 20,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
+        .patada = TRUE,
         .gravityBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_HighJumpKick,
     },
@@ -3204,12 +3209,9 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Used only if all PP are gone.\n"
             "Also hurts the user a little."),
-        .effect = EFFECT_RECOIL_HP_25,
+        .effect = EFFECT_HIT,
+        .retroceso = RETROCESO_ALTO,
         .accuracy = 0,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_RECOIL_HP_25,
-            .self = TRUE,
-        }),
         .power = 50,
         .type = TIPO_NORMAL,
         .pp = 1,
@@ -3222,21 +3224,22 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Struggle,
     },
 
-    [MOVE_TRIPLE_KICK] =
+    [MOVE_PATADA_TRIPLE] =
     {
         .name = COMPOUND_STRING("Triple patada"),
         .description = COMPOUND_STRING(
             "Kicks the foe 3 times in a\n"
             "row with rising intensity."),
-        .effect = EFFECT_TRIPLE_KICK,
-        .power = 10,
+        .effect = EFFECT_HIT,
+        .power = 30,
         .type = TIPO_LUCHA,
-        .accuracy = 90,
-        .pp = 10,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
+        .patada = TRUE,
         .strikeCount = 3,
         .battleAnimScript = gBattleAnimMove_TripleKick,
     },
@@ -5134,10 +5137,10 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "Destroys barriers such as\n"
             "REFLECT and causes damage."),
         .effect = EFFECT_BRICK_BREAK,
-        .power = 75,
+        .power = 70,
         .type = TIPO_LUCHA,
         .accuracy = 100,
-        .pp = 15,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
@@ -5434,22 +5437,23 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_TeeterDance,
     },
 
-    [MOVE_BLAZE_KICK] =
+    [MOVE_PATADA_IGNEA] =
     {
         .name = COMPOUND_STRING("Patada ígnea"),
         .description = COMPOUND_STRING(
             "A kick with a high critical-\n"
             "hit ratio. May cause a burn."),
         .effect = EFFECT_HIT,
-        .power = 85,
+        .power = 70,
         .type = TIPO_FUEGO,
-        .accuracy = 90,
+        .accuracy = 100,
         .criticalHitStage = 1,
-        .pp = 10,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
+        .patada = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 10,
@@ -6317,10 +6321,10 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "A life-risking tackle that\n"
             "slightly hurts the user."),
         .effect = EFFECT_HIT,
-        .power = 120,
+        .power = 130,
         .type = TIPO_ELECTRICO,
         .accuracy = 100,
-        .recoil = 33,
+        .retroceso = RETROCESO_ALTO,
         .pp = 15,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -6770,7 +6774,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "An attack that gains power\n"
             "if the user moves last."),
         .effect = EFFECT_PAYBACK,
-        .power = 50,
+        .power = 60,
         .type = TIPO_SINIESTRO,
         .accuracy = 100,
         .pp = 10,
@@ -7062,10 +7066,10 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "A charge that may burn the\n"
             "foe. Also hurts the user."),
         .effect = EFFECT_HIT,
-        .power = 120,
+        .power = 130,
         .type = TIPO_FUEGO,
         .accuracy = 100,
-        .recoil = 33,
+        .retroceso = RETROCESO_ALTO,
         .pp = 15,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -7446,10 +7450,10 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "A low altitude charge that\n"
             "also hurts the user."),
         .effect = EFFECT_HIT,
-        .power = 120,
+        .power = 130,
         .type = TIPO_VOLADOR,
         .accuracy = 100,
-        .recoil = 33,
+        .retroceso = RETROCESO_ALTO,
         .pp = 15,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -7618,7 +7622,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "May\n"
             "leave the foe paralyzed."),
         .effect = EFFECT_HIT,
-        .power = 90,
+        .power = 70,
         .type = TIPO_ELECTRICO,
         .accuracy = 100,
         .pp = PP_MOVIMIENTO_NORMAL,
@@ -7629,7 +7633,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .bitingMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
-            .chance = 10,
+            .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_ThunderFang,
     },
@@ -7641,7 +7645,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "May\n"
             "leave the foe with frostbite."),
         .effect = EFFECT_HIT,
-        .power = 90,
+        .power = 70,
         .type = TIPO_HIELO,
         .accuracy = 100,
         .pp = PP_MOVIMIENTO_NORMAL,
@@ -7652,7 +7656,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .bitingMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = EFECTO_MOVIMIENTO_CONGELACION,
-            .chance = 10,
+            .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_IceFang,
     },
@@ -7664,7 +7668,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "May\n"
             "leave the foe with a burn."),
         .effect = EFFECT_HIT,
-        .power = 90,
+        .power = 70,
         .type = TIPO_FUEGO,
         .accuracy = 100,
         .pp = PP_MOVIMIENTO_NORMAL,
@@ -7675,7 +7679,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .bitingMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
-            .chance = 10,
+            .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_FireFang,
     },
@@ -8132,7 +8136,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "A snare attack that does\n"
             "more damage to heavier foes."),
-        .effect = EFFECT_LOW_KICK,
+        .effect = EFFECT_HIT,
         .power = 1,
         .type = TIPO_PLANTA,
         .accuracy = 100,
@@ -8234,10 +8238,10 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "Slams the body into a foe.\n"
             "The user gets hurt too."),
         .effect = EFFECT_HIT,
-        .power = 120,
+        .power = 130,
         .type = TIPO_PLANTA,
         .accuracy = 100,
-        .recoil = 33,
+        .retroceso = RETROCESO_ALTO,
         .pp = 15,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -8329,10 +8333,10 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "A life-risking headbutt that\n"
             "seriously hurts the user."),
         .effect = EFFECT_HIT,
-        .power = 150,
+        .power = 130,
         .type = TIPO_ROCA,
         .accuracy = 80,
-        .recoil = 50,
+        .retroceso = RETROCESO_ALTO,
         .pp = 5,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -8914,24 +8918,25 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Coil,
     },
 
-    [MOVE_LOW_SWEEP] =
+    [MOVE_PUNTAPIE] =
     {
         .name = COMPOUND_STRING("Puntapié"),
         .description = COMPOUND_STRING(
             "Attacks the foe's legs\n"
             "lowering its Speed."),
         .effect = EFFECT_HIT,
-        .power = 50,
-        .type = TIPO_LUCHA,
+        .power = 70,
+        .type = TIPO_SINIESTRO,
         .accuracy = 100,
-        .pp = 20,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
+        .patada = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
-            .chance = 100,
+            .moveEffect = MOVE_EFFECT_CONFUSION,
+            .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_LowSweep,
     },
@@ -9451,10 +9456,10 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "An electrical tackle that\n"
             "also hurts the user."),
         .effect = EFFECT_HIT,
-        .power = 90,
+        .power = 110,
         .type = TIPO_ELECTRICO,
         .accuracy = 100,
-        .recoil = 25,
+        .retroceso = RETROCESO_BAJO,
         .pp = 15,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -9703,10 +9708,10 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "A charge using guard hair.\n"
             "It hurts the user a little."),
         .effect = EFFECT_HIT,
-        .power = 120,
+        .power = 110,
         .type = TIPO_NORMAL,
         .accuracy = 100,
-        .recoil = 25,
+        .retroceso = RETROCESO_BAJO,
         .pp = 15,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -10683,7 +10688,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "A hard punch that raises\n"
             "the user's Attack."),
         .effect = EFFECT_HIT,
-        .power = 40,
+        .power = 50,
         .type = TIPO_LUCHA,
         .accuracy = 100,
         .pp = 20,
@@ -10741,10 +10746,10 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "Fires a great beam of light\n"
             "that also hurts the user."),
         .effect = EFFECT_HIT,
-        .power = 140,
+        .power = 130,
         .type = TIPO_HADA,
         .accuracy = 90,
-        .recoil = 50,
+        .retroceso = RETROCESO_ALTO,
         .pp = 5,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -10935,21 +10940,22 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_FloralHealing,
     },
 
-    [MOVE_HIGH_HORSEPOWER] =
+    [MOVE_FUERZA_EQUINA] =
     {
-        .name = COMPOUND_STRING("High Horsepower"),
+        .name = COMPOUND_STRING("Fuerza equina"),
         .description = COMPOUND_STRING(
             "Slams hard into the foe with\n"
             "its entire body."),
         .effect = EFFECT_HIT,
-        .power = 95,
+        .power = 100,
         .type = TIPO_TIERRA,
-        .accuracy = 95,
-        .pp = 10,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
+        .patada = TRUE,
         .battleAnimScript = gBattleAnimMove_HighHorsepower,
     },
 
@@ -11263,9 +11269,9 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_RevelationDance,
     },
 
-    [MOVE_TROP_KICK] =
+    [MOVE_PATADA_TROPICAL] =
     {
-        .name = COMPOUND_STRING("Trop Kick"),
+        .name = COMPOUND_STRING("Patada tropical"),
         .description = COMPOUND_STRING(
             "An intense kick from the\n"
             "tropics. Lowers Attack."),
@@ -11273,13 +11279,14 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .power = 50,
         .type = TIPO_PLANTA,
         .accuracy = 100,
-        .pp = 15,
+        .pp = PP_MOVIMIENTO_NORMAL,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
+        .patada = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_ATK_MINUS_1,
+            .moveEffect = MOVE_EFFECT_ACC_MINUS_1
             .chance = 100,
         }),
         .battleAnimScript = gBattleAnimMove_TropKick,
@@ -11405,21 +11412,22 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_PsychicFangs,
     },
 
-    [MOVE_STOMPING_TANTRUM] =
+    [MOVE_PATALETA] =
     {
-        .name = COMPOUND_STRING("Stomping Tantrum"),
+        .name = COMPOUND_STRING("Pataleta"),
         .description = COMPOUND_STRING(
             "Stomps around angrily.\n"
             "Stronger after a failure."),
-        .effect = EFFECT_STOMPING_TANTRUM,
-        .power = 75,
-        .type = TIPO_TIERRA,
+        .effect = EFFECT_PAYBACK,
+        .power = 60,
+        .type = TIPO_HADA,
         .accuracy = 100,
-        .pp = 10,
+        .pp = PP_MOVIMIENTO_AMPLIO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
+        .patada = TRUE,
         .battleAnimScript = gBattleAnimMove_StompingTantrum,
     },
 
@@ -11608,7 +11616,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "It explodes the user's head\n"
             "to damage everything around."),
-        .effect = EFFECT_MIND_BLOWN,
+        .effect = EFFECT_HIT,
         .power = 150,
         .type = TIPO_FUEGO,
         .accuracy = 100,
@@ -11974,7 +11982,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Fires a beam of steel from\n"
             "its body. It hurts the user."),
-        .effect = EFFECT_MAX_HP_50_RECOIL,
+        .effect = EFFECT_HIT,
         .power = 140,
         .type = TIPO_ACERO,
         .accuracy = 95,
@@ -12164,20 +12172,21 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
 
     [MOVE_TRIPLE_AXEL] =
     {
-        .name = COMPOUND_STRING("Triple Axel"),
+        .name = COMPOUND_STRING("Triple axel"),
         .description = COMPOUND_STRING(
             "A 3-kick attack that gets\n"
             "more powerful with each hit."),
-        .effect = EFFECT_TRIPLE_KICK,
-        .power = 20,
+        .effect = EFFECT_HIT,
+        .power = 30,
         .type = TIPO_HIELO,
-        .accuracy = 90,
-        .pp = 10,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .strikeCount = 3,
+        .patada = TRUE,
         .battleAnimScript = gBattleAnimMove_TripleAxel,
     },
 
@@ -12342,21 +12351,22 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_FieryWrath,
     },
 
-    [MOVE_THUNDEROUS_KICK] =
+    [MOVE_PATADA_RELAMPAGO] =
     {
-        .name = COMPOUND_STRING("Thunderous Kick"),
+        .name = COMPOUND_STRING("Patada relámpago"),
         .description = COMPOUND_STRING(
             "Uses a lightning-like kick\n"
             "to hit. Lowers foe's Defense."),
         .effect = EFFECT_HIT,
         .power = 50,
-        .type = TIPO_LUCHA,
+        .type = TIPO_ELECTRICO,
         .accuracy = 100,
-        .pp = 10,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
+        .patada = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_DEF_MINUS_1,
             .chance = 100,
@@ -12557,10 +12567,10 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "A slam shrouded in water.\n"
             "It also hurts the user."),
         .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_9 ? 120 : 75,
+        .power = 130,
         .type = TIPO_AGUA,
         .accuracy = 100,
-        .recoil = 33,
+        .retroceso = RETROCESO_ALTO,
         .pp = 10,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
@@ -12575,7 +12585,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "A user-hurting blast of\n"
             "amassed chlorophyll."),
-        .effect = EFFECT_MAX_HP_50_RECOIL,
+        .effect = EFFECT_HIT,
         .power = B_UPDATED_MOVE_DATA >= GEN_9 ? 150 : 120,
         .type = TIPO_PLANTA,
         .accuracy = 95,
@@ -12824,21 +12834,22 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_SilkTrap,
     },
 
-    [MOVE_AXE_KICK] =
+    [MOVE_PATADA_HACHA] =
     {
-        .name = COMPOUND_STRING("Axe Kick"),
+        .name = COMPOUND_STRING("Patada hacha"),
         .description = COMPOUND_STRING(
             "May miss and hurt the kicker.\n"
             "May cause confusion."),
-        .effect = EFFECT_RECOIL_IF_MISS,
-        .power = 120,
+        .effect = EFFECT_HIT,
+        .power = 70,
         .type = TIPO_LUCHA,
-        .accuracy = 90,
-        .pp = 10,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
+        .patada = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_CONFUSION,
             .chance = 30,
@@ -13028,21 +13039,22 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_AquaStep,
     },
 
-    [MOVE_RAGING_BULL] =
+    [MOVE_FURIA_TAURINA] =
     {
-        .name = COMPOUND_STRING("Raging Bull"),
+        .name = COMPOUND_STRING("Furia taurina"),
         .description = COMPOUND_STRING(
             "Tackle that breaks barriers.\n"
             "User's form determines type."),
-        .effect = EFFECT_RAGING_BULL,
-        .power = 90,
-        .type = TIPO_NORMAL,
+        .effect = EFFECT_BRICK_BREAK,
+        .power = 70,
+        .type = TIPO_TIERRA,
         .accuracy = 100,
-        .pp = 10,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
+        .patada = TRUE,
         .battleAnimScript = gBattleAnimMove_RagingBull,
     },
 
@@ -13329,7 +13341,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "A desperation attack. Power\n"
             "doubles if last move failed."),
-        .effect = EFFECT_STOMPING_TANTRUM,
+        .effect = EFFECT_HIT,
         .power = 75,
         .type = TIPO_FUEGO,
         .accuracy = 100,
