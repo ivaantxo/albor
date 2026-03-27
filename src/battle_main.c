@@ -2722,14 +2722,6 @@ void RunBattleScriptCommands(void)
         gBattleScriptingCommandsTable[gBattlescriptCurrInstr[0]]();
 }
 
-u32 GetMoveType(u32 move)
-{
-    if (gMain.inBattle && gCombate->dynamicMoveType)
-        return gCombate->dynamicMoveType & DYNAMIC_TYPE_MASK;
-
-    return gMovesInfo[move].type;
-}
-
 u32 TipoMovimiento(u32 movimiento, u32 combatiente)
 {
     u32 tipoMovimiento = gMovesInfo[movimiento].type;
@@ -2756,27 +2748,19 @@ u32 TipoMovimiento(u32 movimiento, u32 combatiente)
     return tipoMovimiento;
 }
 
-void SetTypeBeforeUsingMove(u32 move, u32 battler)
+static void IntentaActivarGema(u32 combatiente, u32 movimiento)
 {
-    u32 moveType;
-    u32 heldItem = gBattleMons[battler].item;
-    u32 holdEffect = GetBattlerHoldEffect(battler, TRUE);
+    u32 objetoEquipado = gBattleMons[combatiente].item;
+    u32 efectoObjeto = GetBattlerHoldEffect(combatiente, TRUE);
+    u32 tipoMovimiento = TipoMovimiento(movimiento, combatiente);
 
-    gCombate->dynamicMoveType = 0;
-    gSpecialStatuses[battler].gemBoost = FALSE;
+    gSpecialStatuses[combatiente].gemBoost = FALSE;
 
-    moveType = TipoMovimiento(move,
-                                      battler);
-    if (moveType != GetMoveType(move))
-        gCombate->dynamicMoveType = moveType;
-
-    moveType = GetMoveType(move);
-
-    // Check if a gem should activate.
-    if (holdEffect == HOLD_EFFECT_GEMS && GetMoveType(move) == ItemId_GetSecondaryId(heldItem))
+    if (efectoObjeto == HOLD_EFFECT_GEMS
+     && tipoMovimiento == ItemId_GetSecondaryId(objetoEquipado))
     {
-        gSpecialStatuses[battler].gemParam = GetBattlerHoldEffectParam(battler);
-        gSpecialStatuses[battler].gemBoost = TRUE;
+        gSpecialStatuses[combatiente].gemParam = GetBattlerHoldEffectParam(combatiente);
+        gSpecialStatuses[combatiente].gemBoost = TRUE;
     }
 }
 

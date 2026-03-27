@@ -647,7 +647,7 @@ static void AnimSlidingKick_Step(struct Sprite *sprite)
 }
 
 // Animates the spinning, shrinking kick or punch, which then
-// reappears at full size. Used by moves such as MOVE_MEGA_PUNCH and MOVE_MEGA_KICK.
+// reappears at full size. Used by moves such as MOVE_MEGA_PUNIO and MOVE_MEGA_KICK.
 // arg 0: initial x pixel offset
 // arg 1: initial y pixel offset
 // arg 2: anim num

@@ -620,7 +620,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     if (IS_TARGETING_PARTNER(battlerAtk, battlerDef))
         return score;
 
-    SetTypeBeforeUsingMove(move, battlerAtk);
     moveType = TipoMovimiento(move, battlerAtk);
 
     if (gMovesInfo[move].powderMove && !IsAffectedByPowder(battlerDef, aiData->abilities[battlerDef], aiData->holdEffects[battlerDef]))
@@ -1384,11 +1383,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             else if (gStatuses3[battlerDef] & STATUS3_PERISH_SONG)
                 ADJUST_SCORE(-10);
             break;
-        case EFFECT_CONVERSION:
-            //Check first move type
-            if (EsTipo(battlerAtk, gMovesInfo[gBattleMons[battlerAtk].moves[0]].type))
-                ADJUST_SCORE(-10);
-            break;
         case EFFECT_REST:
             if (!CanBeSlept(battlerAtk, aiData->abilities[battlerAtk]))
                 ADJUST_SCORE(-10);
@@ -1425,9 +1419,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             if (aiData->abilities[battlerAtk] != ABILITY_MAGIC_GUARD && AI_DATA->moveAccuracy[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex] < 75
             && !(AI_THINKING_STRUCT->aiFlags[battlerAtk] & AI_FLAG_RISKY))
                 ADJUST_SCORE(-6);
-            break;
-        case EFFECT_CONVERSION_2:
-            //TODO
             break;
         case EFFECT_LOCK_ON:
             if (gStatuses3[battlerDef] & STATUS3_ALWAYS_HITS
@@ -1933,7 +1924,6 @@ static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     bool32 partnerHasBadAbility = (gAbilitiesInfo[atkPartnerAbility].aiRating < 0);
     u32 predictedMove = aiData->lastUsedMove[battlerDef];
 
-    SetTypeBeforeUsingMove(move, battlerAtk);
     moveType = TipoMovimiento(move, battlerAtk);
 
     // check what effect partner is using
@@ -2583,10 +2573,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
           && aiData->abilities[battlerAtk] != ABILITY_MAGIC_GUARD
           && aiData->holdEffects[battlerDef] == HOLD_EFFECT_ROCKY_HELMET)
             ADJUST_SCORE(-2);
-        break;
-    case EFFECT_CONVERSION:
-        if (!EsTipo(battlerAtk, gMovesInfo[gBattleMons[battlerAtk].moves[0]].type))
-            ADJUST_SCORE(WEAK_EFFECT);
         break;
     case EFFECT_SWALLOW:
         if (gDisableStructs[battlerAtk].stockpileCounter == 0)
@@ -3607,7 +3593,6 @@ static s32 AI_ForceSetupFirstTurn(u32 battlerAtk, u32 battlerDef, u32 move, s32 
     case EFFECT_SPECIAL_DEFENSE_DOWN:
     case EFFECT_ACCURACY_DOWN:
     case EFFECT_EVASION_DOWN:
-    case EFFECT_CONVERSION:
     case EFFECT_LIGHT_SCREEN:
     case EFFECT_CONFUSE:
     case EFFECT_ATTACK_UP_2:
@@ -3814,7 +3799,6 @@ static s32 AI_HPAware(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     u32 effect = gMovesInfo[move].effect;
     u32 moveType = 0;
 
-    SetTypeBeforeUsingMove(move, battlerAtk);
     moveType = TipoMovimiento(move, battlerAtk);
 
     if (IS_TARGETING_PARTNER(battlerAtk, battlerDef))
@@ -3866,11 +3850,9 @@ static s32 AI_HPAware(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             switch (effect)
             {
             case EFFECT_EXPLOSION:
-            case EFFECT_CONVERSION:
             case EFFECT_LIGHT_SCREEN:
             case EFFECT_REFLECT:
             case EFFECT_MIST:
-            case EFFECT_CONVERSION_2:
             case EFFECT_SAFEGUARD:
             case EFFECT_BELLY_DRUM:
                 ADJUST_SCORE(-2);
@@ -3888,12 +3870,10 @@ static s32 AI_HPAware(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             // check other discouraged low hp effects
             switch (effect)
             {
-            case EFFECT_CONVERSION:
             case EFFECT_REFLECT:
             case EFFECT_LIGHT_SCREEN:
             case EFFECT_MIST:
             case EFFECT_RAGE:
-            case EFFECT_CONVERSION_2:
             case EFFECT_LOCK_ON:
             case EFFECT_SAFEGUARD:
             case EFFECT_BELLY_DRUM:

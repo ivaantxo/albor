@@ -755,11 +755,6 @@
 	.4byte \failInstr
 	.endm
 
-	.macro tryconversiontypechange failInstr:req
-	.byte BATTLE_CMD_tryconversiontypechange
-	.4byte \failInstr
-	.endm
-
 	.macro givepaydaymoney
 	.byte BATTLE_CMD_givepaydaymoney
 	.endm
@@ -790,10 +785,6 @@
 	.byte BATTLE_CMD_setsubstitute
 	.endm
 
-	.macro dmgtolevel
-	.byte BATTLE_CMD_dmgtolevel
-	.endm
-
 	.macro disablelastusedattack failInstr:req
 	.byte BATTLE_CMD_disablelastusedattack
 	.4byte \failInstr
@@ -801,11 +792,6 @@
 
 	.macro trysetencore failInstr:req
 	.byte BATTLE_CMD_trysetencore
-	.4byte \failInstr
-	.endm
-
-	.macro settypetorandomresistance failInstr:req
-	.byte BATTLE_CMD_settypetorandomresistance
 	.4byte \failInstr
 	.endm
 

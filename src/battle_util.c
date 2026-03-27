@@ -80,7 +80,6 @@ bool32 IsAffectedByFollowMe(u32 battlerAtk, u32 defSide, u32 move)
     return TRUE;
 }
 
-// Functions
 void HandleAction_UseMove(void)
 {
     u32 battler, i, side, moveType, var = 4;
@@ -140,10 +139,8 @@ void HandleAction_UseMove(void)
         gCurrentMove = gChosenMove = gBattleMons[gBattlerAttacker].moves[gCurrMovePos];
     }
 
-    // Set dynamic move type.
-    SetTypeBeforeUsingMove(gChosenMove, gBattlerAttacker);
-    moveType = GetMoveType(gCurrentMove);
-
+    moveType = TipoMovimiento(gCurrentMove, gBattlerAttacker);
+    IntentaActivarGema(gBattlerAttacker, gCurrentMove);
     moveTarget = GetBattlerMoveTargetType(gBattlerAttacker, gCurrentMove);
 
     // choose target
@@ -1877,7 +1874,7 @@ bool32 HandleWishPerishSongOnTurnEnd(void)
 
                 party = GetSideParty(GetBattlerSide(gBattlerAttacker));
                 if (&party[gWishFutureKnock.futureSightPartyIndex[gBattlerTarget]] == &party[gBattlerPartyIndexes[gBattlerAttacker]])
-                    SetTypeBeforeUsingMove(gCurrentMove, gBattlerAttacker);
+                    IntentaActivarGema(gBattlerAttacker, gCurrentMove);
 
                 BattleScriptExecute(BattleScript_MonTookFutureAttack);
 
@@ -2587,7 +2584,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
     else
         move = gCurrentMove;
 
-    moveType = GetMoveType(move);
+    moveType = TipoMovimiento(move, gBattlerAttacker);
 
     switch (caseID)
     {
@@ -4842,7 +4839,7 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
     case ITEMEFFECT_TARGET:
         if (MovimientoEsEfectivo(gCombate->resultadoMovimiento))
         {
-            moveType = GetMoveType(gCurrentMove);
+            moveType = TipoMovimiento(gCurrentMove, gBattlerAttacker);
             switch (battlerHoldEffect)
             {
             case HOLD_EFFECT_AIR_BALLOON:
@@ -5065,7 +5062,7 @@ u32 GetMoveTarget(u16 move, u8 setTarget)
 {
     u8 targetBattler = 0;
     u32 moveTarget, side;
-    u32 moveType = GetMoveType(move);
+    u32 moveType = TipoMovimiento(move, gBattlerAttacker);
 
     if (setTarget != NO_TARGET_OVERRIDE)
         moveTarget = setTarget - 1;
@@ -5470,8 +5467,6 @@ static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData
             basePower *= 2;
         break;
     case EFFECT_EXPLOSION:
-        break;
-    case EFFECT_PSYBLADE:
         break;
     case EFFECT_RAGE_FIST:
         basePower += 25 * gCombate->timesGotHit[GetBattlerSide(battlerAtk)][gBattlerPartyIndexes[battlerAtk]];
@@ -6668,7 +6663,7 @@ uq4_12_t CalcTypeEffectivenessMultiplier(u32 move, u32 moveType, u32 battlerAtk,
 uq4_12_t CalcPartyMonTypeEffectivenessMultiplier(u16 move, u16 speciesDef, u16 abilityDef)
 {
     uq4_12_t modifier = UQ_4_12(1.0);
-    u32 moveType = GetMoveType(move);
+    u32 moveType = TipoMovimiento(move);
 
     MulByTypeEffectiveness(&modifier, move, moveType, 0, gSpeciesInfo[speciesDef].types[TIPO_1], 0, FALSE);
     if (gSpeciesInfo[speciesDef].types[TIPO_2] != gSpeciesInfo[speciesDef].types[TIPO_1])
@@ -7381,7 +7376,7 @@ static inline bool32 DoesBattlerHaveAbilityImmunity(u32 battlerDef)
 
 bool32 TargetFullyImmuneToCurrMove(u32 battlerAtk, u32 battlerDef)
 {
-    return ((CalcTypeEffectivenessMultiplier(gCurrentMove, GetMoveType(gCurrentMove), battlerAtk, battlerDef, GetBattlerAbility(battlerDef), FALSE) == UQ_4_12(0.0)) || IsBattlerProtected(battlerAtk, battlerDef, gCurrentMove) || IsSemiInvulnerable(battlerDef, gCurrentMove) || DoesBattlerHaveAbilityImmunity(battlerDef));
+    return ((CalcTypeEffectivenessMultiplier(gCurrentMove, TipoMovimiento(gCurrentMove, battlerAtk), battlerAtk, battlerDef, GetBattlerAbility(battlerDef), FALSE) == UQ_4_12(0.0)) || IsBattlerProtected(battlerAtk, battlerDef, gCurrentMove) || IsSemiInvulnerable(battlerDef, gCurrentMove) || DoesBattlerHaveAbilityImmunity(battlerDef));
 }
 
 u32 CuantosPSLeQuedan(u32 combatiente)

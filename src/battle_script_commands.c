@@ -454,7 +454,6 @@ static void Cmd_setdrainedhp(void);
 static void Cmd_statbuffchange(void);
 static void Cmd_normalisebuffs(void);
 static void Cmd_forcerandomswitch(void);
-static void Cmd_tryconversiontypechange(void);
 static void Cmd_givepaydaymoney(void);
 static void Cmd_setlightscreen(void);
 static void Cmd_damagetohalftargethp(void);
@@ -462,10 +461,8 @@ static void Cmd_tryinfatuating(void);
 static void Cmd_updatestatusicon(void);
 static void Cmd_setmist(void);
 static void Cmd_setsubstitute(void);
-static void Cmd_dmgtolevel(void);
 static void Cmd_disablelastusedattack(void);
 static void Cmd_trysetencore(void);
-static void Cmd_settypetorandomresistance(void);
 static void Cmd_setalwayshitflag(void);
 static void Cmd_trychoosesleeptalkmove(void);
 static void Cmd_setdestinybond(void);
@@ -675,7 +672,6 @@ void (*const gBattleScriptingCommandsTable[])(void) =
         BATTLE_CMD(statbuffchange),
         BATTLE_CMD(normalisebuffs),
         BATTLE_CMD(forcerandomswitch),
-        BATTLE_CMD(tryconversiontypechange),
         BATTLE_CMD(givepaydaymoney),
         BATTLE_CMD(setlightscreen),
         BATTLE_CMD(damagetohalftargethp),
@@ -683,10 +679,8 @@ void (*const gBattleScriptingCommandsTable[])(void) =
         BATTLE_CMD(updatestatusicon),
         BATTLE_CMD(setmist),
         BATTLE_CMD(setsubstitute),
-        BATTLE_CMD(dmgtolevel),
         BATTLE_CMD(disablelastusedattack),
         BATTLE_CMD(trysetencore),
-        BATTLE_CMD(settypetorandomresistance),
         BATTLE_CMD(setalwayshitflag),
         BATTLE_CMD(trychoosesleeptalkmove),
         BATTLE_CMD(setdestinybond),
@@ -876,7 +870,7 @@ static void Cmd_attackcanceler(void)
 
     s32 i;
     u16 attackerAbility = GetBattlerAbility(gBattlerAttacker);
-    u32 moveType = GetMoveType(gCurrentMove);
+    u32 moveType = TipoMovimiento(gCurrentMove, gBattlerAttacker);
 
     if (gBattleStruct->usedEjectItem & (1u << gBattlerAttacker))
     {
@@ -1269,7 +1263,7 @@ static void AccuracyCheck(bool32 recalcDragonDarts, const u8 *nextInstr, const u
     else
     {
         u32 accuracy;
-        u32 type = GetMoveType(move);
+        u32 type = TipoMovimiento(move, gBattlerAttacker);
 
         if (JumpIfMoveAffectedByProtect(move))
             return;
@@ -1480,7 +1474,7 @@ static void Cmd_damagecalc(void)
     damageCalcData.battlerAtk = gBattlerAttacker;
     damageCalcData.battlerDef = gBattlerTarget;
     damageCalcData.move = gCurrentMove;
-    damageCalcData.moveType = GetMoveType(gCurrentMove);
+    damageCalcData.moveType = TipoMovimiento(gCurrentMove, gBattlerAttacker);
     damageCalcData.isCrit = gEsGolpeCritico;
     damageCalcData.updateFlags = TRUE;
 
@@ -1492,7 +1486,7 @@ static void Cmd_typecalc(void)
 {
     CMD_ARGS();
 
-    u32 moveType = GetMoveType(gCurrentMove);
+    u32 moveType = TipoMovimiento(gCurrentMove, gBattlerAttacker);
     CalcTypeEffectivenessMultiplier(gCurrentMove, moveType, gBattlerAttacker, gBattlerTarget, GetBattlerAbility(gBattlerTarget), TRUE);
 
     gBattlescriptCurrInstr = cmd->nextInstr;
@@ -1514,7 +1508,7 @@ static void Cmd_adjustdamage(void)
         gBattlescriptCurrInstr = BattleScript_BerryReduceDmg;
         gLastUsedItem = gBattleMons[gBattlerTarget].item;
     }
-    if (gSpecialStatuses[gBattlerAttacker].gemBoost && MovimientoEsEfectivo(gCombate->resultadoMovimiento) && gBattleMons[gBattlerAttacker].item && gCurrentMove != MOVE_STRUGGLE)
+    if (gSpecialStatuses[gBattlerAttacker].gemBoost && MovimientoEsEfectivo(gCombate->resultadoMovimiento) && gBattleMons[gBattlerAttacker].item)
     {
         BattleScriptPushCursor();
         gBattlescriptCurrInstr = BattleScript_GemActivates;
@@ -2122,13 +2116,6 @@ void SetMoveEffect(bool32 primary)
                 RESET_RETURN
             }
 
-            if (B_STATUS_TYPE_IMMUNITY == GEN_1)
-            {
-                u32 moveType = GetMoveType(gCurrentMove);
-                if (primary == FALSE && EsTipo(gEffectBattler, moveType))
-                    break;
-            }
-
             if (!CanBeBurned(gEffectBattler, GetBattlerAbility(gEffectBattler)))
                 break;
 
@@ -2166,12 +2153,6 @@ void SetMoveEffect(bool32 primary)
                     RESET_RETURN
                 }
                 else
-                    break;
-            }
-            if (B_STATUS_TYPE_IMMUNITY == GEN_1)
-            {
-                u32 moveType = GetMoveType(gCurrentMove);
-                if (primary == FALSE && EsTipo(gEffectBattler, moveType))
                     break;
             }
             if (!CanParalyzeType(gEffectBattler) && (gHitMarker & HITMARKER_STATUS_ABILITY_EFFECT) && (primary == TRUE))
@@ -4065,7 +4046,7 @@ static void Cmd_moveend(void)
     endState = cmd->endState;
 
     holdEffectAtk = GetBattlerHoldEffect(gBattlerAttacker, TRUE);
-    moveType = GetMoveType(gCurrentMove);
+    moveType = TipoMovimiento(gCurrentMove, gBattlerAttacker);
 
     do
     {
@@ -4344,7 +4325,7 @@ static void Cmd_moveend(void)
                 gLastMoves[gBattlerAttacker] = gChosenMove;
                 RecordKnownMove(gBattlerAttacker, gChosenMove);
                 gLastResultingMoves[gBattlerAttacker] = gCurrentMove;
-                gLastUsedMoveType[gBattlerAttacker] = GetMoveType(gCurrentMove);
+                gLastUsedMoveType[gBattlerAttacker] = TipoMovimiento(gCurrentMove, gBattlerAttacker);
 
                 if (!(gHitMarker & HITMARKER_FAINTED(gBattlerTarget)))
                     gLastHitBy[gBattlerTarget] = gBattlerAttacker;
@@ -4358,7 +4339,7 @@ static void Cmd_moveend(void)
                     else
                     {
                         gLastLandedMoves[gBattlerTarget] = gCurrentMove;
-                        gLastHitByType[gBattlerTarget] = GetMoveType(gCurrentMove);
+                        gLastHitByType[gBattlerTarget] = TipoMovimiento(gCurrentMove, gBattlerAttacker);
                     }
                 }
                 else
@@ -8506,94 +8487,6 @@ static void Cmd_forcerandomswitch(void)
     }
 }
 
-static void Cmd_tryconversiontypechange(void)
-{
-    CMD_ARGS(const u8 *failInstr);
-
-    u8 validMoves = 0;
-    u8 moveChecked = 0;
-    u8 moveType = 0;
-
-    if (B_UPDATED_CONVERSION >= GEN_6)
-    {
-        // Changes user's type to its first move's type
-        for (moveChecked = 0; moveChecked < MAX_MON_MOVES; moveChecked++)
-        {
-            if (gBattleMons[gBattlerAttacker].moves[moveChecked] != MOVE_NONE)
-            {
-                moveType = gMovesInfo[gBattleMons[gBattlerAttacker].moves[moveChecked]].type;
-                break;
-            }
-        }
-        if (EsTipo(gBattlerAttacker, moveType))
-        {
-            gBattlescriptCurrInstr = cmd->failInstr;
-        }
-        else
-        {
-            SET_BATTLER_TYPE(gBattlerAttacker, moveType);
-            PREPARE_TYPE_BUFFER(gBattleTextBuff1, moveType);
-            gBattlescriptCurrInstr = cmd->nextInstr;
-        }
-    }
-    else
-    {
-        // Randomly changes user's type to one of its moves' type
-        while (validMoves < MAX_MON_MOVES)
-        {
-            if (gBattleMons[gBattlerAttacker].moves[validMoves] == MOVE_NONE)
-                break;
-
-            validMoves++;
-        }
-
-        for (moveChecked = 0; moveChecked < validMoves; moveChecked++)
-        {
-            moveType = gMovesInfo[gBattleMons[gBattlerAttacker].moves[moveChecked]].type;
-
-            if (moveType == TIPO_MISTERIO)
-            {
-                if (EsTipo(gBattlerAttacker, TIPO_FANTASMA))
-                    moveType = TIPO_FANTASMA;
-                else
-                    moveType = TIPO_NORMAL;
-            }
-            if (moveType != gBattleMons[gBattlerAttacker].types[TIPO_1] && moveType != gBattleMons[gBattlerAttacker].types[TIPO_2])
-            {
-                break;
-            }
-        }
-
-        if (moveChecked == validMoves)
-        {
-            gBattlescriptCurrInstr = cmd->failInstr;
-        }
-        else
-        {
-            do
-            {
-                while ((moveChecked = MOD(Random(), MAX_MON_MOVES)) >= validMoves)
-                    ;
-
-                moveType = gMovesInfo[gBattleMons[gBattlerAttacker].moves[moveChecked]].type;
-
-                if (moveType == TIPO_MISTERIO)
-                {
-                    if (EsTipo(gBattlerAttacker, TIPO_FANTASMA))
-                        moveType = TIPO_FANTASMA;
-                    else
-                        moveType = TIPO_NORMAL;
-                }
-            } while (moveType == gBattleMons[gBattlerAttacker].types[TIPO_1] || moveType == gBattleMons[gBattlerAttacker].types[TIPO_2]);
-
-            SET_BATTLER_TYPE(gBattlerAttacker, moveType);
-            PREPARE_TYPE_BUFFER(gBattleTextBuff1, moveType);
-
-            gBattlescriptCurrInstr = cmd->nextInstr;
-        }
-    }
-}
-
 static void Cmd_givepaydaymoney(void)
 {
     CMD_ARGS();
@@ -8762,14 +8655,6 @@ static void Cmd_setsubstitute(void)
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
-static void Cmd_dmgtolevel(void)
-{
-    CMD_ARGS();
-
-    gBattleMoveDamage = gBattleMons[gBattlerAttacker].level;
-    gBattlescriptCurrInstr = cmd->nextInstr;
-}
-
 static void Cmd_disablelastusedattack(void)
 {
     CMD_ARGS(const u8 *failInstr);
@@ -8831,118 +8716,6 @@ static void Cmd_trysetencore(void)
     else
     {
         gBattlescriptCurrInstr = cmd->failInstr;
-    }
-}
-
-// Conversion 2
-static void Cmd_settypetorandomresistance(void)
-{
-    CMD_ARGS(const u8 *failInstr);
-
-    // Before Gen 5 Conversion 2 only worked on a move the attacker was actually hit by.
-    // This changed later to the last move used by the selected target.
-    if (B_UPDATED_CONVERSION_2 < GEN_5)
-    {
-        if (gLastLandedMoves[gBattlerAttacker] == MOVE_NONE)
-        {
-            gBattlescriptCurrInstr = cmd->failInstr;
-        }
-        else if (gBattleMoveEffects[gMovesInfo[gLastLandedMoves[gBattlerAttacker]].effect].twoTurnEffect && gBattleMons[gLastHitBy[gBattlerAttacker]].status2 & STATUS2_MULTIPLETURNS)
-        {
-            gBattlescriptCurrInstr = cmd->failInstr;
-        }
-        else if (gLastHitByType[gBattlerAttacker] == TIPO_MISTERIO)
-        {
-            gBattlescriptCurrInstr = cmd->failInstr;
-        }
-        else
-        {
-            u32 i, resistTypes = 0;
-            u32 hitByType = gLastHitByType[gBattlerAttacker];
-
-            for (i = 0; i < NUMERO_TIPOS; i++) // Find all types that resist.
-            {
-                switch (ModificadorTipo(hitByType, i))
-                {
-                case UQ_4_12(0):
-                case UQ_4_12(0.5):
-                    resistTypes |= 1u << i;
-                    break;
-                }
-            }
-
-            while (resistTypes != 0)
-            {
-                i = Random() % NUMERO_TIPOS;
-                if (resistTypes & 1u << i)
-                {
-                    if (EsTipo(gBattlerAttacker, i))
-                    {
-                        resistTypes &= ~(1u << i); // Type resists, but the user is already of this type.
-                    }
-                    else
-                    {
-                        SET_BATTLER_TYPE(gBattlerAttacker, i);
-                        PREPARE_TYPE_BUFFER(gBattleTextBuff1, i);
-                        gBattlescriptCurrInstr = cmd->nextInstr;
-                        return;
-                    }
-                }
-            }
-
-            gBattlescriptCurrInstr = cmd->failInstr;
-        }
-    }
-    else
-    {
-        if (gLastResultingMoves[gBattlerTarget] == MOVE_NONE || gLastResultingMoves[gBattlerTarget] == MOVE_STRUGGLE)
-        {
-            gBattlescriptCurrInstr = cmd->failInstr;
-        }
-        else if (IsSemiInvulnerable(gBattlerTarget, gCurrentMove))
-        {
-            gBattlescriptCurrInstr = cmd->failInstr;
-        }
-        else if (gLastUsedMoveType[gBattlerTarget] == TIPO_MISTERIO)
-        {
-            gBattlescriptCurrInstr = cmd->failInstr;
-        }
-        else
-        {
-            u32 i, resistTypes = 0;
-
-            for (i = 0; i < NUMERO_TIPOS; i++) // Find all types that resist.
-            {
-                switch (ModificadorTipo(gLastUsedMoveType[gBattlerTarget], i))
-                {
-                case UQ_4_12(0):
-                case UQ_4_12(0.5):
-                    resistTypes |= 1u << i;
-                    break;
-                }
-            }
-
-            while (resistTypes != 0)
-            {
-                i = Random() % NUMERO_TIPOS;
-                if (resistTypes & 1u << i)
-                {
-                    if (EsTipo(gBattlerAttacker, i))
-                    {
-                        resistTypes &= ~(1u << i); // Type resists, but the user is already of this type.
-                    }
-                    else
-                    {
-                        SET_BATTLER_TYPE(gBattlerAttacker, i);
-                        PREPARE_TYPE_BUFFER(gBattleTextBuff1, i);
-                        gBattlescriptCurrInstr = cmd->nextInstr;
-                        return;
-                    }
-                }
-            }
-
-            gBattlescriptCurrInstr = cmd->failInstr;
-        }
     }
 }
 

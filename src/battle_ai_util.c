@@ -246,8 +246,7 @@ bool32 MovesWithCategoryUnusable(u32 attacker, u32 target, u32 category)
     {
         if (moves[i] != MOVE_NONE && CategoriaMovimiento(moves[i]) == category && !(unusable & (1u << i)))
         {
-            SetTypeBeforeUsingMove(moves[i], attacker);
-            moveType = GetMoveType(moves[i]);
+            moveType = TipoMovimiento(moves[i], attacker);
             if (CalcTypeEffectivenessMultiplier(moves[i], moveType, attacker, target, AI_DATA->abilities[target], FALSE) != 0)
                 usable |= 1u << i;
         }
@@ -324,8 +323,7 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
     struct AILogicData *aiData = AI_DATA;
     AI_DATA->aiCalcInProgress = TRUE;
 
-    SetTypeBeforeUsingMove(move, battlerAtk);
-    moveType = GetMoveType(move);
+    moveType = TipoMovimiento(move, battlerAtk);
     effectivenessMultiplier = CalcTypeEffectivenessMultiplier(move, moveType, battlerAtk, battlerDef, aiData->abilities[battlerDef], FALSE);
 
     if (gMovesInfo[move].power)
@@ -743,7 +741,7 @@ u32 GetCurrDamageHpPercent(u32 battlerAtk, u32 battlerDef)
 uq4_12_t IA_EfectividadTipo(u32 movimiento, u32 atacante, u32 defensor)
 {
     uq4_12_t efectividad;
-    u32 tipoMovimiento = GetMoveType(movimiento);
+    u32 tipoMovimiento = TipoMovimiento(movimiento, atacante);
 
     SaveBattlerData(atacante);
     SaveBattlerData(defensor);
@@ -751,9 +749,6 @@ uq4_12_t IA_EfectividadTipo(u32 movimiento, u32 atacante, u32 defensor)
     SetBattlerData(atacante);
     SetBattlerData(defensor);
 
-    gCombate->dynamicMoveType = FALSE;
-    SetTypeBeforeUsingMove(movimiento, atacante);
-    tipoMovimiento = GetMoveType(movimiento);
     efectividad = CalcTypeEffectivenessMultiplier(movimiento, tipoMovimiento, atacante, defensor, AI_DATA->abilities[defensor], FALSE);
 
     RestoreBattlerData(atacante);

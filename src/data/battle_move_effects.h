@@ -128,12 +128,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .battleScript = BattleScript_EffectHit,
             },
 
-        [EFFECT_CONVERSION] =
-            {
-                .battleScript = BattleScript_EffectConversion,
-                .encourageEncore = TRUE,
-            },
-
         [EFFECT_RESTORE_HP] =
             {
                 .battleScript = BattleScript_EffectRestoreHp,
@@ -304,12 +298,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         [EFFECT_SNORE] =
             {
                 .battleScript = BattleScript_EffectSnore,
-            },
-
-        [EFFECT_CONVERSION_2] =
-            {
-                .battleScript = BattleScript_EffectConversion2,
-                .encourageEncore = TRUE,
             },
 
         [EFFECT_LOCK_ON] =
@@ -1207,11 +1195,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         [EFFECT_ATTACK_UP_USER_ALLY] =
             {
                 .battleScript = BattleScript_EffectAttackUpUserAlly,
-            },
-
-        [EFFECT_PSYBLADE] =
-            {
-                .battleScript = BattleScript_EffectHit,
             },
 
         [EFFECT_HYDRO_STEAM] =

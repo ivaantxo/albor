@@ -78,7 +78,7 @@ void RunBattleScriptCommands_PopCallbacksStack(void);
 void RunBattleScriptCommands(void);
 void SpecialStatusesClear(void);
 u32 TipoMovimiento(u32 movimiento, u32 combatiente);
-void SetTypeBeforeUsingMove(u32 move, u32 battlerAtk);
+void IntentaActivarGema(u32 combatiente, u32 movimiento);
 u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer *trainer, bool32 firstTrainer, u32 battleTypeFlags);
 void ModifyPersonalityForNature(u32 *personality, u32 newNature);
 u32 GeneratePersonalityForGender(u32 gender, u32 species);

@@ -1861,17 +1861,6 @@ BattleScript_ScaleShot::
 	call BattleScript_MultiHitPrintStrings
 	goto BattleScript_DefDownSpeedUp
 
-BattleScript_EffectConversion::
-	attackcanceler
-	attackstring
-	ppreduce
-	tryconversiontypechange BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} transformed into the {B_BUFF1} type!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectRestoreHp::
 	attackcanceler
 	attackstring
@@ -2322,17 +2311,6 @@ BattleScript_DoSnore::
 	ppreduce
 	accuracycheck BattleScript_MoveMissedPause, ACC_CURR_MOVE
 	goto BattleScript_HitFromCritCalc
-
-BattleScript_EffectConversion2::
-	attackcanceler
-	attackstring
-	ppreduce
-	settypetorandomresistance BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} transformed into the {B_BUFF1} type!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
 
 BattleScript_EffectLockOn::
 	attackcanceler

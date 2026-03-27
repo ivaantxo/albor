@@ -482,8 +482,6 @@ struct Combate
     struct EfectosFinTurno efectoFinTurno;
 };
 
-#define DYNAMIC_TYPE_MASK ((1 << 6) - 1)
-
 #define IS_MOVE_RECOIL(move) (gMovesInfo[move].recoil > 0 || gMovesInfo[move].effect == EFFECT_RECOIL_IF_MISS)
 
 #define SET_BATTLER_TYPE(battlerId, type)            \

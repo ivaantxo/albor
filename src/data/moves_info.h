@@ -164,36 +164,37 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_DobleBofeton,
     },
 
-    [MOVE_COMET_PUNCH] =
+    [MOVE_PUNIO_COMETA] =
     {
         .name = COMPOUND_STRING("Puño cometa"),
         .description = COMPOUND_STRING(
             "Repeatedly punches the foe\n"
             "2 to 5 times."),
         .effect = EFFECT_MULTI_HIT,
-        .power = 18,
-        .type = TIPO_NORMAL,
-        .accuracy = 85,
-        .pp = 15,
+        .power = 15,
+        .type = TIPO_HADA,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
+        .priority = 1,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .punchingMove = TRUE,
         .battleAnimScript = gBattleAnimMove_CometPunch,
     },
 
-    [MOVE_MEGA_PUNCH] =
+    [MOVE_MEGA_PUNIO] =
     {
         .name = COMPOUND_STRING("Megapuño"),
         .description = COMPOUND_STRING(
             "A strong punch thrown with\n"
             "incredible power."),
         .effect = EFFECT_HIT,
-        .power = 80,
-        .type = TIPO_NORMAL,
-        .accuracy = 85,
-        .pp = 20,
+        .power = 120,
+        .type = TIPO_LUCHA,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_LIMITADO,
+        .recoil = 33,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
@@ -3122,25 +3123,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Sharpen,
     },
 
-    [MOVE_CONVERSION] =
-    {
-        .name = COMPOUND_STRING("Conversión"),
-        .description = COMPOUND_STRING(
-            "Changes the user's type\n"
-            "into a known move's type."),
-        .effect = EFFECT_CONVERSION,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 0,
-        .pp = 30,
-        .target = MOVE_TARGET_USER,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .snatchAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_Conversion,
-    },
-
     [MOVE_TRIATAQUE] =
     {
         .name = COMPOUND_STRING("Triataque"),
@@ -3410,25 +3392,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .battleAnimScript = gBattleAnimMove_Flail,
-    },
-
-    [MOVE_CONVERSION_2] =
-    {
-        .name = COMPOUND_STRING("Conversión 2"),
-        .description = COMPOUND_STRING(
-            "Makes the user resistant\n"
-            "to the last attack's type."),
-        .effect = EFFECT_CONVERSION_2,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 0,
-        .pp = 30,
-        .target = B_UPDATED_MOVE_DATA >= GEN_5 ? MOVE_TARGET_SELECTED : MOVE_TARGET_USER,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = B_UPDATED_MOVE_FLAGS >= GEN_5,
-        .ignoresSubstitute = TRUE,
-        .battleAnimScript = gBattleAnimMove_Conversion2,
     },
 
     [MOVE_AEROBLAST] =
@@ -12980,25 +12943,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_IceSpinner,
     },
 
-    [MOVE_TRIPLE_DIVE] =
-    {
-        .name = COMPOUND_STRING("Triple Dive"),
-        .description = COMPOUND_STRING(
-            "Hits target with splashes\n"
-            "of water 3 times in a row."),
-        .effect = EFFECT_HIT,
-        .power = 30,
-        .type = TIPO_AGUA,
-        .accuracy = 95,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .strikeCount = 3,
-        .battleAnimScript = gBattleAnimMove_TripleDive,
-    },
-
     [MOVE_KOWTOW_CLEAVE] =
     {
         .name = COMPOUND_STRING("Kowtow Cleave"),
@@ -13102,47 +13046,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_RagingBull,
     },
 
-    [MOVE_MAKE_IT_RAIN] = //eliminar
-    {
-        .name = COMPOUND_STRING("Make It Rain"),
-        .description = COMPOUND_STRING(
-            "Lowers the user's Sp. Atk.\n"
-            "Money is recovered after."),
-        .effect = EFFECT_HIT,
-        .power = 120,
-        .type = TIPO_ACERO,
-        .accuracy = 100,
-        .pp = 5,
-        .target = MOVE_TARGET_BOTH,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_PAYDAY,
-        },
-        {
-            .moveEffect = MOVE_EFFECT_SP_ATK_MINUS_1,
-            .self = TRUE,
-        }),
-        .battleAnimScript = gBattleAnimMove_MakeItRain,
-    },
-
-    [MOVE_RUINATION] =
-    {
-        .name = COMPOUND_STRING("Ruination"),
-        .description = COMPOUND_STRING(
-            "Summons a ruinous disaster\n"
-            "and cuts half the foe's HP."),
-        .effect = EFFECT_HIT,
-        .power = 1,
-        .type = TIPO_SINIESTRO,
-        .accuracy = 90,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .battleAnimScript = gBattleAnimMove_Ruination,
-    },
-
     [MOVE_SNOWSCAPE] =
     {
         .name = COMPOUND_STRING("Snowscape"),
@@ -13228,25 +13131,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_ChillingWater,
     },
 
-    [MOVE_HYPER_DRILL] =
-    {
-        .name = COMPOUND_STRING("Hyper Drill"),
-        .description = COMPOUND_STRING(
-            "A spinning pointed part\n"
-            "bypasses a foe's Protect."),
-        .effect = EFFECT_HIT,
-        .power = 100,
-        .type = TIPO_NORMAL,
-        .accuracy = 100,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_HyperDrill,
-    },
-
     [MOVE_TWIN_BEAM] =
     {
         .name = COMPOUND_STRING("Twin Beam"),
@@ -13282,28 +13166,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .punchingMove = TRUE,
         .battleAnimScript = gBattleAnimMove_RageFist,
-    },
-
-    [MOVE_ARMOR_CANNON] =
-    {
-        .name = COMPOUND_STRING("Cañón armadura"),
-        .description = COMPOUND_STRING(
-            "A strong attack but lowers\n"
-            "the defensive stats."),
-        .effect = EFFECT_HIT,
-        .power = 120,
-        .type = TIPO_FUEGO,
-        .accuracy = 100,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .balistico = TRUE,
-        .category = CATEGORIA_ESPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_DEF_SPDEF_DOWN,
-            .self = TRUE,
-        }),
-        .battleAnimScript = gBattleAnimMove_ArmorCannon,
     },
 
     [MOVE_BITTER_BLADE] =
@@ -13362,130 +13224,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .slicingMove = TRUE,
         .battleAnimScript = gBattleAnimMove_CorteAcuatico,
-    },
-
-    [MOVE_BLAZING_TORQUE] =
-    {
-        .name = COMPOUND_STRING("Blazing Torque"),
-        .description = COMPOUND_STRING("---"),
-        .effect = EFFECT_HIT,
-        .power = 80,
-        .type = TIPO_FUEGO,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .sleepTalkBanned = TRUE,
-        .encoreBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_BURN,
-            .chance = 30,
-        }),
-        .battleAnimScript = gBattleAnimMove_BlazingTorque,
-    },
-
-    [MOVE_WICKED_TORQUE] =
-    {
-        .name = COMPOUND_STRING("Wicked Torque"),
-        .description = COMPOUND_STRING("---"),
-        .effect = EFFECT_HIT,
-        .power = 80,
-        .type = TIPO_SINIESTRO,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .sleepTalkBanned = TRUE,
-        .encoreBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SLEEP,
-            .chance = 10,
-        }),
-        .battleAnimScript = gBattleAnimMove_WickedTorque,
-    },
-
-    [MOVE_NOXIOUS_TORQUE] =
-    {
-        .name = COMPOUND_STRING("Noxious Torque"),
-        .description = COMPOUND_STRING("---"),
-        .effect = EFFECT_HIT,
-        .power = 100,
-        .type = TIPO_VENENO,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .sleepTalkBanned = TRUE,
-        .encoreBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_POISON,
-            .chance = 30,
-        }),
-        .battleAnimScript = gBattleAnimMove_NoxiousTorque,
-    },
-
-    [MOVE_COMBAT_TORQUE] =
-    {
-        .name = COMPOUND_STRING("Combat Torque"),
-        .description = COMPOUND_STRING("---"),
-        .effect = EFFECT_HIT,
-        .power = 100,
-        .type = TIPO_LUCHA,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .sleepTalkBanned = TRUE,
-        .encoreBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_PARALYSIS,
-            .chance = 30,
-        }),
-        .battleAnimScript = gBattleAnimMove_CombatTorque,
-    },
-
-    [MOVE_MAGICAL_TORQUE] =
-    {
-        .name = COMPOUND_STRING("Magical Torque"),
-        .description = COMPOUND_STRING("---"),
-        .effect = EFFECT_HIT,
-        .power = 100,
-        .type = TIPO_HADA,
-        .accuracy = 100,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .sleepTalkBanned = TRUE,
-        .encoreBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_CONFUSION,
-            .chance = 30,
-        }),
-        .battleAnimScript = gBattleAnimMove_MagicalTorque,
-    },
-
-    [MOVE_PSYBLADE] =
-    {
-        .name = COMPOUND_STRING("Psyblade"),
-        .description = COMPOUND_STRING(
-            "This move's power increases\n"
-            "when on Electric Terrain."),
-        .effect = EFFECT_PSYBLADE,
-        .power = 80,
-        .type = TIPO_PSIQUICO,
-        .accuracy = 100,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .slicingMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_Psyblade,
     },
 
     [MOVE_HYDRO_STEAM] =
@@ -13623,27 +13361,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             .chance = 100,
         }),
         .battleAnimScript = gAnimacionMovimiento_PalmaRauda,
-    },
-
-    [MOVE_MALIGNANT_CHAIN] =
-    {
-        .name = COMPOUND_STRING("Malignant Chain"),
-        .description = COMPOUND_STRING(
-            "A corrosive chain attack\n"
-            "that may badly poison."),
-        .effect = EFFECT_HIT,
-        .power = 100,
-        .type = TIPO_VENENO,
-        .accuracy = 100,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_TOXIC,
-            .chance = 50,
-        }),
-        .battleAnimScript = gBattleAnimMove_MalignantChain,
     },
 
     [MOVE_COLMENA] =
