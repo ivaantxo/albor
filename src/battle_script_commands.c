@@ -5347,7 +5347,7 @@ static void Cmd_handlelearnnewmove(void)
     }
 }
 
-static void Cmd_yesnoboxlearnmove(void)
+static void Cmd_yesnoboxlearnmove(void) //revisar, aquí no hace falta un global seguramente
 {
     CMD_ARGS(const u8 *forgotMovePtr);
 
@@ -5453,7 +5453,7 @@ static void Cmd_yesnoboxlearnmove(void)
     }
 }
 
-static void Cmd_yesnoboxstoplearningmove(void)
+static void Cmd_yesnoboxstoplearningmove(void) --> posiblemente no haga falta un global aquí, revisar 
 {
     CMD_ARGS(const u8 *noInstr);
 
