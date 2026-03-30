@@ -32,7 +32,6 @@ enum {
     MON_DATA_PP2,
     MON_DATA_PP3,
     MON_DATA_PP4,
-    MON_DATA_PP_BONUSES,
     MON_DATA_COOL,
     MON_DATA_BEAUTY,
     MON_DATA_CUTE,
@@ -103,7 +102,6 @@ struct BoxPokemon
 
     u32 heldItem:10;
     u32 pokeball:6;
-    u32 ppBonuses:8;
     u32 friendship:8;
 
     u8 hpEV;
@@ -189,7 +187,6 @@ struct BattlePokemon
     u16 maxHP;
     u16 item;
     u8 nickname[POKEMON_NAME_LENGTH + 1];
-    u8 ppBonuses;
     u8 otName[MAXIMO_CARACTERES_NOMBRE_JUGADOR + 1];
     u32 experience;
     u32 personality;
@@ -355,9 +352,7 @@ struct Ability
 {
     u8 name[ABILITY_NAME_LENGTH + 1];
     const u8 *description;
-    s8 aiRating;
     u8 cantBeCopied:1; // cannot be copied by Role Play
-    u8 cantBeSwapped:1; // cannot be swapped with Skill Swap
     u8 cantBeTraced:1; // cannot be copied by Trace - same as cantBeCopied except for Wonder Guard
     u8 cantBeSuppressed:1; // cannot be negated by Gastro Acid or Neutralizing Gas
     u8 cantBeOverwritten:1; // cannot be overwritten by Worry Seed or Simple Beam - same as cantBeSuppressed
@@ -409,10 +404,7 @@ extern u16 gFollowerSteps;
 extern const struct MoveInfo gMovesInfo[];
 extern const struct SpeciesInfo gSpeciesInfo[];
 extern const u32 gExperienceTables[TIPOS_CRECIMIENTO][MAX_LEVEL + 1];
-extern const u8 gPPUpGetMask[];
-extern const u8 gPPUpClearMask[];
-extern const u8 gPPUpAddValues[];
-extern const u16 gMultiplicadoresEstadisticas[NUMERO_CAMBIOS_ESTADISTICAS];
+extern const u32 gMultiplicadoresEstadisticas[NUMERO_CAMBIOS_ESTADISTICAS];
 extern const struct SpriteTemplate gBattlerSpriteTemplates[];
 extern const u32 sExpCandyExperienceTable[];
 extern const struct Ability gAbilitiesInfo[];
@@ -480,9 +472,7 @@ const u16 *GetSpeciesEggMoves(u16 species);
 const struct Evolution *GetSpeciesEvolutions(u16 species);
 const u16 *GetSpeciesFormTable(u16 species);
 const struct FormChange *GetSpeciesFormChanges(u16 species);
-u8 CalculatePPWithBonus(u16 move, u8 ppBonuses, u8 moveIndex);
-void RemoveMonPPBonus(struct Pokemon *mon, u8 moveIndex);
-void RemoveBattleMonPPBonus(struct BattlePokemon *mon, u8 moveIndex);
+u8 PPMovimiento(u32 movimiento);
 void PokemonToBattleMon(struct Pokemon *src, struct BattlePokemon *dst);
 void CopyPartyMonToBattleData(u32 battlerId, u32 partyIndex);
 bool8 ExecuteTableBasedItemEffect(struct Pokemon *mon, u16 item, u8 partyIndex, u8 moveIndex);

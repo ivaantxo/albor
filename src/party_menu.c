@@ -3551,10 +3551,6 @@ static void GetMedicineItemEffectMessage(u16 item, u32 statusCured)
         StringCopy(gVariableTexto2, gText_DefEsp);
         StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnBaseVar2StatIncreased);
         break;
-    case ITEM_EFFECT_PP_UP:
-    case ITEM_EFFECT_PP_MAX:
-        StringExpandPlaceholders(gVariableTextoAmpliada, gText_MovesPPIncreased);
-        break;
     case ITEM_EFFECT_HEAL_PP:
         StringExpandPlaceholders(gVariableTextoAmpliada, gText_PPWasRestored);
         break;
@@ -4167,14 +4163,6 @@ static void TryUseItemOnMove(u8 taskId)
     }
 }
 
-void ItemUseCB_PPUp(u8 taskId, TaskFunc task)
-{
-    PlaySE(SE_SELECT);
-    DisplayPartyMenuStdMessage(PARTY_MSG_BOOST_PP_WHICH_MOVE);
-    ShowMoveSelectWindow(gPartyMenu.slotId);
-    gTasks[taskId].func = Task_HandleWhichMoveInput;
-}
-
 u16 ItemIdToBattleMoveId(u16 item)
 {
     return (ItemId_GetPocket(item) == POCKET_TM_HM) ? gItemsInfo[item].secondaryId : MOVE_NONE;
@@ -4379,7 +4367,6 @@ static void Task_PartyMenuReplaceMove(u8 taskId)
     if (IsPartyMenuTextPrinterActive() != TRUE)
     {
         mon = &gPlayerParty[gPartyMenu.slotId];
-        RemoveMonPPBonus(mon, GetMoveSlotToReplace());
         move = gPartyMenu.data1;
         SetMonMoveSlot(mon, move, GetMoveSlotToReplace());
         Task_LearnedMove(taskId);
@@ -4871,7 +4858,6 @@ void DeleteMove(struct Pokemon *mon, u32 move)
             if (existingMove == move)
             {
                 SetMonMoveSlot(mon, MOVE_NONE, i);
-                RemoveMonPPBonus(mon, i);
                 for (j = i; j < MAX_MON_MOVES - 1; j++)
                     ShiftMoveSlot(mon, j, j + 1);
                 break;
@@ -5171,10 +5157,6 @@ u8 GetItemEffectType(u16 item)
         return ITEM_EFFECT_DEF_EV;
     else if (itemEffect[4] & ITEM4_EVO_STONE)
         return ITEM_EFFECT_EVO_STONE;
-    else if (itemEffect[4] & ITEM4_PP_UP)
-        return ITEM_EFFECT_PP_UP;
-    else if (itemEffect[5] & ITEM5_PP_MAX)
-        return ITEM_EFFECT_PP_MAX;
     else if (itemEffect[4] & (ITEM4_HEAL_PP | ITEM4_HEAL_PP_ONE))
         return ITEM_EFFECT_HEAL_PP;
     else
@@ -5754,7 +5736,6 @@ void MoveDeleterForgetMove(void)
     u32 i;
 
     SetMonMoveSlot(&gPlayerParty[gSpecialVar_0x8004], MOVE_NONE, gSpecialVar_0x8005);
-    RemoveMonPPBonus(&gPlayerParty[gSpecialVar_0x8004], gSpecialVar_0x8005);
     for (i = gSpecialVar_0x8005; i < MAX_MON_MOVES - 1; i++)
         ShiftMoveSlot(&gPlayerParty[gSpecialVar_0x8004], i, i + 1);
 }
@@ -5765,19 +5746,10 @@ static void ShiftMoveSlot(struct Pokemon *mon, u8 slotTo, u8 slotFrom)
     u16 move0 = GetMonData(mon, MON_DATA_MOVE1 + slotFrom);
     u8 pp1 = GetMonData(mon, MON_DATA_PP1 + slotTo);
     u8 pp0 = GetMonData(mon, MON_DATA_PP1 + slotFrom);
-    u8 ppBonuses = GetMonData(mon, MON_DATA_PP_BONUSES);
-    u8 ppBonusMask1 = gPPUpGetMask[slotTo];
-    u8 ppBonusMove1 = (ppBonuses & ppBonusMask1) >> (slotTo * 2);
-    u8 ppBonusMask2 = gPPUpGetMask[slotFrom];
-    u8 ppBonusMove2 = (ppBonuses & ppBonusMask2) >> (slotFrom * 2);
-    ppBonuses &= ~ppBonusMask1;
-    ppBonuses &= ~ppBonusMask2;
-    ppBonuses |= (ppBonusMove1 << (slotFrom * 2)) + (ppBonusMove2 << (slotTo * 2));
     SetMonData(mon, MON_DATA_MOVE1 + slotTo, &move0);
     SetMonData(mon, MON_DATA_MOVE1 + slotFrom, &move1);
     SetMonData(mon, MON_DATA_PP1 + slotTo, &pp0);
     SetMonData(mon, MON_DATA_PP1 + slotFrom, &pp1);
-    SetMonData(mon, MON_DATA_PP_BONUSES, &ppBonuses);
 }
 
 void IsSelectedMonEgg(void)

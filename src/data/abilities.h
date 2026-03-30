@@ -4,8 +4,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("-------"),
         .description = COMPOUND_STRING("No special ability."),
-        .aiRating = 0,
-        .cantBeSwapped = TRUE,
         .cantBeTraced = TRUE,
     },
 
@@ -13,21 +11,18 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Llovizna"),
         .description = COMPOUND_STRING("Summons rain in battle."),
-        .aiRating = 9,
     },
 
     [ABILITY_SPEED_BOOST] =
     {
         .name = _("Speed Boost"),
         .description = COMPOUND_STRING("Gradually boosts Speed."),
-        .aiRating = 9,
     },
 
     [ABILITY_BATTLE_ARMOR] =
     {
         .name = _("Battle Armor"),
         .description = COMPOUND_STRING("Blocks critical hits."),
-        .aiRating = 2,
         .breakable = TRUE,
     },
 
@@ -35,7 +30,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Damp"),
         .description = COMPOUND_STRING("Prevents self-destruction."),
-        .aiRating = 2,
         .breakable = TRUE,
     },
 
@@ -43,7 +37,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Limber"),
         .description = COMPOUND_STRING("Prevents paralysis."),
-        .aiRating = 3,
         .breakable = TRUE,
     },
 
@@ -51,7 +44,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Velo arena"),
         .description = COMPOUND_STRING("Sube evasión en Arena."),
-        .aiRating = 3,
         .breakable = TRUE,
     },
 
@@ -59,14 +51,12 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Static"),
         .description = COMPOUND_STRING("Paralyzes on contact."),
-        .aiRating = 4,
     },
 
     [ABILITY_VOLT_ABSORB] =
     {
         .name = _("Volt Absorb"),
         .description = COMPOUND_STRING("Turns electricity into HP."),
-        .aiRating = 7,
         .breakable = TRUE,
     },
 
@@ -74,7 +64,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Water Absorb"),
         .description = COMPOUND_STRING("Changes water into HP."),
-        .aiRating = 7,
         .breakable = TRUE,
     },
 
@@ -82,7 +71,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Oblivious"),
         .description = COMPOUND_STRING("Prevents attraction."),
-        .aiRating = 2,
         .breakable = TRUE,
     },
 
@@ -90,21 +78,18 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Cloud Nine"),
         .description = COMPOUND_STRING("Negates weather effects."),
-        .aiRating = 5,
     },
 
     [ABILITY_OJO_COMPUESTO] =
     {
         .name = _("Ojo compuesto"),
         .description = COMPOUND_STRING("+25% precisión."),
-        .aiRating = 7,
     },
 
     [ABILITY_INSOMNIA] =
     {
         .name = _("Insomnia"),
         .description = COMPOUND_STRING("Prevents sleep."),
-        .aiRating = 4,
         .breakable = TRUE,
     },
 
@@ -112,14 +97,12 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Mimetismo"),
         .description = COMPOUND_STRING("Cambia tipo antes de defender."),
-        .aiRating = 8,
     },
 
     [ABILITY_IMMUNITY] =
     {
         .name = _("Immunity"),
         .description = COMPOUND_STRING("Prevents poisoning."),
-        .aiRating = 4,
         .breakable = TRUE,
     },
 
@@ -127,7 +110,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Flash Fire"),
         .description = COMPOUND_STRING("Powers up if hit by fire."),
-        .aiRating = 6,
         .breakable = TRUE,
     },
 
@@ -135,7 +117,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Polvo escudo"),
         .description = COMPOUND_STRING("Previene efectos secundarios."),
-        .aiRating = 5,
         .breakable = TRUE,
     },
 
@@ -143,7 +124,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Own Tempo"),
         .description = COMPOUND_STRING("Prevents confusion."),
-        .aiRating = 3,
         .breakable = TRUE,
     },
 
@@ -151,7 +131,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Suction Cups"),
         .description = COMPOUND_STRING("Firmly anchors the body."),
-        .aiRating = 2,
         .breakable = TRUE,
     },
 
@@ -159,28 +138,24 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Intimidación"),
         .description = COMPOUND_STRING("Baja el ataque rival."),
-        .aiRating = 7,
     },
 
     [ABILITY_SHADOW_TAG] =
     {
         .name = _("Shadow Tag"),
         .description = COMPOUND_STRING("Prevents the foe's escape."),
-        .aiRating = 10,
     },
 
     [ABILITY_ROUGH_SKIN] =
     {
         .name = _("Piel tosca"),
         .description = COMPOUND_STRING("Daña 12,5% al contacto."),
-        .aiRating = 6,
     },
 
     [ABILITY_GUARDA] =
     {
         .name = _("Guarda"),
         .description = COMPOUND_STRING("Resiste golpes neutros."),
-        .aiRating = 8,
         .breakable = TRUE,
     },
 
@@ -188,7 +163,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Levitación"),
         .description = COMPOUND_STRING("Inmunidad a Tierra."),
-        .aiRating = 7,
         .breakable = TRUE,
     },
 
@@ -196,21 +170,18 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Psicodélico"),
         .description = COMPOUND_STRING("50% de causar estado aleatorio."),
-        .aiRating = 5,
     },
 
     [ABILITY_SYNCHRONIZE] =
     {
         .name = _("Synchronize"),
         .description = COMPOUND_STRING("Passes on status problems."),
-        .aiRating = 4,
     },
 
     [ABILITY_CLEAR_BODY] =
     {
         .name = _("Clear Body"),
         .description = COMPOUND_STRING("Prevents ability reduction."),
-        .aiRating = 4,
         .breakable = TRUE,
     },
 
@@ -218,14 +189,12 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Natural Cure"),
         .description = COMPOUND_STRING("Heals upon switching out."),
-        .aiRating = 7,
     },
 
     [ABILITY_LIGHTNING_ROD] =
     {
         .name = _("Lightning Rod"),
         .description = COMPOUND_STRING("Draws electrical moves."),
-        .aiRating = 7,
         .breakable = TRUE,
     },
 
@@ -233,28 +202,24 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Dicha"),
         .description = COMPOUND_STRING("x2% efectos secundarios."),
-        .aiRating = 8,
     },
 
     [ABILITY_SWIFT_SWIM] =
     {
         .name = _("Nado rápido"),
         .description = COMPOUND_STRING("+2 velocidad en lluvia."),
-        .aiRating = 6,
     },
 
     [ABILITY_CHLOROPHYLL] =
     {
         .name = _("Clorofila"),
         .description = COMPOUND_STRING("+2 velocidad en Sol."),
-        .aiRating = 6,
     },
 
     [ABILITY_ILLUMINATE] =
     {
         .name = _("Iluminación"),
         .description = COMPOUND_STRING("Resiste fantasma y siniestro."),
-        .aiRating = 7,
         .breakable = TRUE,
     },
 
@@ -262,7 +227,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Trace"),
         .description = COMPOUND_STRING("Copies special ability."),
-        .aiRating = 6,
         .cantBeCopied = TRUE,
         .cantBeTraced = TRUE,
     },
@@ -271,14 +235,12 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Punto tóxico"),
         .description = COMPOUND_STRING("50% de envenenar si contacto def."),
-        .aiRating = 4,
     },
 
     [ABILITY_FUERZA_MENTAL] =
     {
         .name = _("Fuerza mental"),
         .description = COMPOUND_STRING("Prevents flinching."),
-        .aiRating = 2,
         .breakable = TRUE,
     },
 
@@ -286,7 +248,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Magma Armor"),
         .description = COMPOUND_STRING("Prevents freezing."),
-        .aiRating = 1,
         .breakable = TRUE,
     },
 
@@ -294,7 +255,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Water Veil"),
         .description = COMPOUND_STRING("Prevents burns."),
-        .aiRating = 4,
         .breakable = TRUE,
     },
 
@@ -302,14 +262,12 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Imán"),
         .description = COMPOUND_STRING("Atrapa Pokémon de Acero."),
-        .aiRating = 9,
     },
 
     [ABILITY_SOUNDPROOF] =
     {
         .name = _("Insonorizar"),
         .description = COMPOUND_STRING("Inmune a sonido."),
-        .aiRating = 4,
         .breakable = TRUE,
     },
 
@@ -317,21 +275,18 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Rain Dish"),
         .description = COMPOUND_STRING("Recupera 1/8 PS en lluvia."),
-        .aiRating = 3,
     },
 
     [ABILITY_SAND_STREAM] =
     {
         .name = _("Sand Stream"),
         .description = COMPOUND_STRING("Summons a sandstorm."),
-        .aiRating = 9,
     },
 
     [ABILITY_SEBO] =
     {
         .name = _("Sebo"),
         .description = COMPOUND_STRING("Resiste hielo y fuego."),
-        .aiRating = 7,
         .breakable = TRUE,
     },
 
@@ -339,56 +294,48 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Cuerpo llama"),
         .description = COMPOUND_STRING("50% de quemar si contacto."),
-        .aiRating = 4,
     },
 
     [ABILITY_HUIDIZO] =
     {
         .name = _("Huidizo"),
         .description = COMPOUND_STRING("+1 prioridad cambio."),
-        .aiRating = 6,
     },
 
     [ABILITY_VISTA_LINCE] =
     {
         .name = _("Vista lince"),
         .description = COMPOUND_STRING("+25% precisión."),
-        .aiRating = 7,
     },
 
     [ABILITY_HUSTLE] =
     {
         .name = _("Hustle"),
         .description = COMPOUND_STRING("Trades accuracy for power."),
-        .aiRating = 7,
     },
 
     [ABILITY_CUTE_CHARM] =
     {
         .name = _("Gran encanto"),
         .description = COMPOUND_STRING("50% de enamorar si contacto."),
-        .aiRating = 2,
     },
 
     [ABILITY_PLUS] =
     {
         .name = _("Plus"),
         .description = COMPOUND_STRING("Powers up with Minus."),
-        .aiRating = 0,
     },
 
     [ABILITY_MINUS] =
     {
         .name = _("Minus"),
         .description = COMPOUND_STRING("Powers up with Plus."),
-        .aiRating = 0,
     },
 
     [ABILITY_FORECAST] =
     {
         .name = _("Forecast"),
         .description = COMPOUND_STRING("Changes with the weather."),
-        .aiRating = 6,
         .cantBeCopied = TRUE,
         .cantBeTraced = TRUE,
     },
@@ -397,7 +344,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Sticky Hold"),
         .description = COMPOUND_STRING("Prevents item theft."),
-        .aiRating = 3,
         .breakable = TRUE,
     },
 
@@ -405,21 +351,18 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Mudar"),
         .description = COMPOUND_STRING("Heals the body by shedding."),
-        .aiRating = 7,
     },
 
     [ABILITY_AGALLAS] =
     {
         .name = _("Agallas"),
         .description = COMPOUND_STRING("Sube ataques 50% si estado."),
-        .aiRating = 6,
     },
 
     [ABILITY_MARVEL_SCALE] =
     {
         .name = _("Marvel Scale"),
         .description = COMPOUND_STRING("Ups Defense if suffering."),
-        .aiRating = 5,
         .breakable = TRUE,
     },
 
@@ -427,49 +370,42 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Liquid Ooze"),
         .description = COMPOUND_STRING("Draining causes injury."),
-        .aiRating = 3,
     },
 
     [ABILITY_BLAZE] =
     {
         .name = _("Blaze"),
         .description = COMPOUND_STRING("Ups Fire moves in a pinch."),
-        .aiRating = 5,
     },
 
     [ABILITY_SWARM] =
     {
         .name = _("Swarm"),
         .description = COMPOUND_STRING("Ups Bug moves in a pinch."),
-        .aiRating = 5,
     },
 
     [ABILITY_ROCK_HEAD] =
     {
         .name = _("Cabeza roca"),
         .description = COMPOUND_STRING("No daño de retroceso."),
-        .aiRating = 5,
     },
 
     [ABILITY_DROUGHT] =
     {
         .name = _("Drought"),
         .description = COMPOUND_STRING("Summons sunlight in battle."),
-        .aiRating = 9,
     },
 
     [ABILITY_ARENA_TRAP] =
     {
         .name = _("Arena Trap"),
         .description = COMPOUND_STRING("Prevents fleeing."),
-        .aiRating = 9,
     },
 
     [ABILITY_VITAL_SPIRIT] =
     {
         .name = _("Vital Spirit"),
         .description = COMPOUND_STRING("Prevents sleep."),
-        .aiRating = 4,
         .breakable = TRUE,
     },
 
@@ -477,7 +413,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("White Smoke"),
         .description = COMPOUND_STRING("Prevents ability reduction."),
-        .aiRating = 4,
         .breakable = TRUE,
     },
 
@@ -485,7 +420,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Shell Armor"),
         .description = COMPOUND_STRING("Blocks critical hits."),
-        .aiRating = 2,
         .breakable = TRUE,
     },
 
@@ -493,7 +427,13 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Tangled Feet"),
         .description = COMPOUND_STRING("Ups evasion if confused."),
-        .aiRating = 2,
+        .breakable = TRUE,
+    },
+
+    [ABILITY_ESQUIVO] =
+    {
+        .name = _("Esquivo"),
+        .description = COMPOUND_STRING("Ataques recibidos tienen -2 de precisión."),
         .breakable = TRUE,
     },
 
@@ -501,7 +441,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Electromotor"),
         .description = COMPOUND_STRING("Eléctrico sube +2 vel."),
-        .aiRating = 6,
         .breakable = TRUE,
     },
 
@@ -509,14 +448,12 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Rivalidad"),
         .description = COMPOUND_STRING("Mismo género +25%."),
-        .aiRating = 1,
     },
 
     [ABILITY_SNOW_CLOAK] =
     {
         .name = _("Manto níveo"),
         .description = COMPOUND_STRING("+25% evasión en nieve."),
-        .aiRating = 3,
         .breakable = TRUE,
     },
 
@@ -524,36 +461,24 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Gula"),
         .description = COMPOUND_STRING("Come bayas 50% PS."),
-        .aiRating = 3,
     },
 
     [ABILITY_ANGER_POINT] =
     {
         .name = _("Irascible"),
         .description = COMPOUND_STRING("+6 At. si crítico."),
-        .aiRating = 4,
     },
 
     [ABILITY_UNBURDEN] =
     {
         .name = _("Unburden"),
         .description = COMPOUND_STRING("Using a hold item ups Speed."),
-        .aiRating = 7,
     },
 
     [ABILITY_SIMPLE] =
     {
         .name = _("Simple"),
         .description = COMPOUND_STRING("Prone to wild stat changes."),
-        .aiRating = 8,
-        .breakable = TRUE,
-    },
-
-    [ABILITY_DRY_SKIN] =
-    {
-        .name = _("Dry Skin"),
-        .description = COMPOUND_STRING("Prefers moisture to heat."),
-        .aiRating = 6,
         .breakable = TRUE,
     },
 
@@ -561,161 +486,132 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Download"),
         .description = COMPOUND_STRING("Adjusts power favorably."),
-        .aiRating = 7,
     },
 
     [ABILITY_IRON_FIST] =
     {
         .name = _("Iron Fist"),
         .description = COMPOUND_STRING("Boosts punching moves."),
-        .aiRating = 6,
     },
 
     [ABILITY_PATADA_FEROZ] =
     {
         .name = _("Patada Feroz"),
         .description = COMPOUND_STRING("Patada +25%."),
-        .aiRating = 6,
     },
 
     [ABILITY_POISON_HEAL] =
     {
         .name = _("Poison Heal"),
         .description = COMPOUND_STRING("Restores HP if poisoned."),
-        .aiRating = 8,
     },
 
     [ABILITY_ADAPTABILITY] =
     {
         .name = _("Adaptability"),
         .description = COMPOUND_STRING("Boosts same type attacks."),
-        .aiRating = 8,
     },
 
     [ABILITY_SKILL_LINK] =
     {
         .name = _("Encadenado"),
         .description = COMPOUND_STRING("Multigolpes siempre 5."),
-        .aiRating = 7,
     },
 
     [ABILITY_ENJAMBRE] =
     {
         .name = _("Enjambre"),
         .description = COMPOUND_STRING("Multigolpes siempre 5."),
-        .aiRating = 7,
     },
 
     [ABILITY_HYDRATION] =
     {
         .name = _("Hydration"),
         .description = COMPOUND_STRING("Cures status in rain."),
-        .aiRating = 4,
     },
 
     [ABILITY_PODER_SOLAR] =
     {
         .name = _("Poder solar"),
         .description = COMPOUND_STRING("+25% de potencia en sol."),
-        .aiRating = 3,
     },
 
     [ABILITY_QUICK_FEET] =
     {
         .name = _("Quick Feet"),
         .description = COMPOUND_STRING("Ups Speed if suffering."),
-        .aiRating = 5,
     },
 
     [ABILITY_NORMALIDAD] =
     {
         .name = _("Normalidad"),
         .description = COMPOUND_STRING("Normal +25%."),
-        .aiRating = 8,
     },
 
     [ABILITY_SNIPER] =
     {
         .name = _("Francotirador"),
         .description = COMPOUND_STRING("Críticos +50% de daño."),
-        .aiRating = 3,
     },
 
     [ABILITY_MAGIC_GUARD] =
     {
         .name = _("Magic Guard"),
         .description = COMPOUND_STRING("Only damaged by attacks."),
-        .aiRating = 9,
     },
 
     [ABILITY_NO_GUARD] =
     {
         .name = _("No Guard"),
         .description = COMPOUND_STRING("Ensures that all moves hit."),
-        .aiRating = 8,
-    },
-
-    [ABILITY_STALL] =
-    {
-        .name = _("Stall"),
-        .description = COMPOUND_STRING("Always moves last."),
-        .aiRating = -1,
     },
 
     [ABILITY_TECHNICIAN] =
     {
         .name = _("Technician"),
         .description = COMPOUND_STRING("Boosts weaker moves."),
-        .aiRating = 8,
     },
 
     [ABILITY_MOLD_BREAKER] =
     {
         .name = _("Rompemoldes"),
         .description = COMPOUND_STRING("Moves hit through abilities."),
-        .aiRating = 7,
     },
 
     [ABILITY_SUPER_LUCK] =
     {
         .name = _("Afortunado"),
         .description = COMPOUND_STRING("+2 índice crítico."),
-        .aiRating = 3,
     },
 
     [ABILITY_AFTERMATH] =
     {
         .name = _("Resquicio"),
         .description = COMPOUND_STRING("Fainting damages the foe."),
-        .aiRating = 5,
     },
 
     [ABILITY_FOREWARN] =
     {
         .name = _("Forewarn"),
         .description = COMPOUND_STRING("Determines a foe's move."),
-        .aiRating = 2,
     },
 
     [ABILITY_CROMOLENTE] =
     {
         .name = _("Cromolente"),
         .description = COMPOUND_STRING("Pega x1 en vez de poco efectivo."),
-        .aiRating = 7,
     },
 
     [ABILITY_SCRAPPY] =
     {
         .name = _("Scrappy"),
         .description = COMPOUND_STRING("Hits Ghost-type Pokémon."),
-        .aiRating = 6,
     },
 
     [ABILITY_STORM_DRAIN] =
     {
         .name = _("Storm Drain"),
         .description = COMPOUND_STRING("Draws in Water moves."),
-        .aiRating = 7,
         .breakable = TRUE,
     },
 
@@ -723,14 +619,12 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Gélido"),
         .description = COMPOUND_STRING("Recupera 1/8 PS en nieve."),
-        .aiRating = 3,
     },
 
     [ABILITY_SOLID_ROCK] =
     {
         .name = _("Solid Rock"),
         .description = COMPOUND_STRING("Weakens “supereffective”."),
-        .aiRating = 6,
         .breakable = TRUE,
     },
 
@@ -738,91 +632,78 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Nevada"),
         .description = COMPOUND_STRING("Summons snow in battle."),
-        .aiRating = 8,
     },
 
     [ABILITY_HONEY_GATHER] =
     {
         .name = _("Honey Gather"),
         .description = COMPOUND_STRING("May gather Honey."),
-        .aiRating = 0,
     },
 
     [ABILITY_FRISK] =
     {
         .name = _("Frisk"),
         .description = COMPOUND_STRING("Checks a foe's item."),
-        .aiRating = 3,
     },
 
     [ABILITY_AUDAZ] =
     {
         .name = _("Audaz"),
         .description = COMPOUND_STRING("Boosts moves with recoil."),
-        .aiRating = 6,
     },
 
     [ABILITY_BAD_DREAMS] =
     {
         .name = _("Bad Dreams"),
         .description = COMPOUND_STRING("Damages sleeping Pokémon."),
-        .aiRating = 4,
     },
 
     [ABILITY_PICKPOCKET] =
     {
         .name = _("Pickpocket"),
         .description = COMPOUND_STRING("Steals the foe's held item."),
-        .aiRating = 3,
     },
 
     [ABILITY_SHEER_FORCE] =
     {
         .name = _("Sheer Force"),
         .description = COMPOUND_STRING("Trades effects for power."),
-        .aiRating = 8,
     },
 
     [ABILITY_UNNERVE] =
     {
         .name = _("Unnerve"),
         .description = COMPOUND_STRING("Foes can't eat Berries."),
-        .aiRating = 3,
     },
 
     [ABILITY_DEFIANT] =
     {
         .name = _("Competitivo"),
         .description = COMPOUND_STRING("+2 At. si bajan estadísticas."),
-        .aiRating = 5,
     },
 
     [ABILITY_CURSED_BODY] =
     {
         .name = _("Cuerpo maldito"),
         .description = COMPOUND_STRING("50% de anular ataque recibido."),
-        .aiRating = 4,
     },
 
     [ABILITY_HEALER] =
     {
         .name = _("Healer"),
         .description = COMPOUND_STRING("Heals partner Pokémon."),
-        .aiRating = 0,
     },
 
     [ABILITY_WEAK_ARMOR] =
     {
         .name = _("Weak Armor"),
         .description = COMPOUND_STRING("Its stats change when hit."),
-        .aiRating = 2,
     },
 
     [ABILITY_MULTISCALE] =
     {
         .name = _("Multiscale"),
         .description = COMPOUND_STRING("Halves damage at full HP."),
-        .aiRating = 8,
         .breakable = TRUE,
     },
 
@@ -830,28 +711,24 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Toxic Boost"),
         .description = COMPOUND_STRING("Ups Attack if poisoned."),
-        .aiRating = 6,
     },
 
     [ABILITY_FLARE_BOOST] =
     {
         .name = _("Flare Boost"),
         .description = COMPOUND_STRING("Ups Sp. Atk if burned."),
-        .aiRating = 5,
     },
 
     [ABILITY_HARVEST] =
     {
         .name = _("Harvest"),
         .description = COMPOUND_STRING("May recycle a used Berry."),
-        .aiRating = 5,
     },
 
     [ABILITY_TELEPATA] =
     {
         .name = _("Telépata"),
         .description = COMPOUND_STRING("Evita daño de aliado."),
-        .aiRating = 0,
         .breakable = TRUE,
     },
 
@@ -859,7 +736,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Overcoat"),
         .description = COMPOUND_STRING("Blocks weather and powder."),
-        .aiRating = 5,
         .breakable = TRUE,
     },
 
@@ -867,63 +743,54 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Regeneración"),
         .description = COMPOUND_STRING("Cura 1/3 al cambiar."),
-        .aiRating = 8,
     },
 
     [ABILITY_SAND_RUSH] =
     {
         .name = _("Sand Rush"),
         .description = COMPOUND_STRING("Ups Speed in a sandstorm."),
-        .aiRating = 6,
     },
 
     [ABILITY_ANALYTIC] =
     {
         .name = _("Analítico"),
         .description = COMPOUND_STRING("Potencia 50% si ataca después."),
-        .aiRating = 5,
     },
 
     [ABILITY_AGRESIVIDAD] =
     {
         .name = _("Agresividad"),
         .description = COMPOUND_STRING("Potencia 50% si ataca después."),
-        .aiRating = 5,
     },
 
     [ABILITY_SIGILOSO] =
     {
         .name = _("Sigiloso"),
         .description = COMPOUND_STRING("Golpea a través de barreras y ."),
-        .aiRating = 6,
     },
 
     [ABILITY_AUTOESTIMA] =
     {
         .name = _("Autoestima"),
         .description = COMPOUND_STRING("KOs suben ataque."),
-        .aiRating = 7,
     },
 
     [ABILITY_JUSTIFIED] =
     {
         .name = _("Justiciero"),
         .description = COMPOUND_STRING("Dragón/Sin./Fant. suben ataque."),
-        .aiRating = 4,
     },
 
     [ABILITY_RATTLED] =
     {
         .name = _("Cobardía"),
         .description = COMPOUND_STRING("Bicho/Sin./Fant. +1 vel."),
-        .aiRating = 3,
     },
 
     [ABILITY_MAGIC_BOUNCE] =
     {
         .name = _("Magic Bounce"),
         .description = COMPOUND_STRING("Reflects status moves."),
-        .aiRating = 9,
         .breakable = TRUE,
     },
 
@@ -931,7 +798,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Sap Sipper"),
         .description = COMPOUND_STRING("Grass increases Attack."),
-        .aiRating = 7,
         .breakable = TRUE,
     },
 
@@ -939,203 +805,174 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Prankster"),
         .description = COMPOUND_STRING("Status moves go first."),
-        .aiRating = 8,
     },
 
     [ABILITY_SAND_FORCE] =
     {
         .name = _("Sand Force"),
         .description = COMPOUND_STRING("Powers up in a sandstorm."),
-        .aiRating = 4,
     },
 
     [ABILITY_IRON_BARBS] =
     {
         .name = _("Puntiagudo"),
         .description = COMPOUND_STRING("Daña 12,5% al contacto."),
-        .aiRating = 6,
     },
 
     [ABILITY_PROTEAN] =
     {
         .name = _("Protean"),
         .description = COMPOUND_STRING("Changes type to used move."),
-        .aiRating = 8,
     },
 
     [ABILITY_BULLETPROOF] =
     {
         .name = _("Bulletproof"),
         .description = COMPOUND_STRING("Avoids some projectiles."),
-        .aiRating = 7,
     },
 
     [ABILITY_COMPETITIVE] =
     {
         .name = _("Competitive"),
         .description = COMPOUND_STRING("Lowered stats up Sp. Atk."),
-        .aiRating = 5,
     },
 
     [ABILITY_STRONG_JAW] =
     {
         .name = _("Mandíbula fuerte"),
         .description = COMPOUND_STRING("+25% mordiscos."),
-        .aiRating = 6,
     },
 
     [ABILITY_REFRIGERATE] =
     {
         .name = _("Refrigerate"),
         .description = COMPOUND_STRING("Normal moves become Ice."),
-        .aiRating = 8,
     },
 
     [ABILITY_ALAS_VENDAVAL] =
     {
         .name = _("Alas vendaval"),
         .description = COMPOUND_STRING("Volador +1 prioridad."),
-        .aiRating = 6,
     },
 
     [ABILITY_ZUMBANDO] =
     {
         .name = _("Zumbando"),
         .description = COMPOUND_STRING("Bicho +1 prioridad."),
-        .aiRating = 6,
     },
 
     [ABILITY_MEGADISPARADOR] =
     {
         .name = _("Megadisparador"),
         .description = COMPOUND_STRING("+25% balísticos."),
-        .aiRating = 7,
     },
 
     [ABILITY_SYMBIOSIS] =
     {
         .name = _("Symbiosis"),
         .description = COMPOUND_STRING("Passes its item to an ally."),
-        .aiRating = 0,
     },
 
     [ABILITY_TOUGH_CLAWS] =
     {
         .name = _("Tough Claws"),
         .description = COMPOUND_STRING("Boosts contact moves."),
-        .aiRating = 7,
     },
 
     [ABILITY_PIXILATE] =
     {
         .name = _("Pixilate"),
         .description = COMPOUND_STRING("Normal moves become Fairy."),
-        .aiRating = 8,
     },
 
     [ABILITY_GOOEY] =
     {
         .name = _("Gooey"),
         .description = COMPOUND_STRING("Lowers Speed on contact."),
-        .aiRating = 5,
     },
 
     [ABILITY_CELESTE] =
     {
         .name = _("Celeste"),
         .description = COMPOUND_STRING("Volador +25%."),
-        .aiRating = 8,
     },
 
     [ABILITY_PARENTAL_BOND] =
     {
         .name = _("Parental Bond"),
         .description = COMPOUND_STRING("Moves hit twice."),
-        .aiRating = 10,
     },
 
     [ABILITY_STAMINA] =
     {
         .name = _("Stamina"),
         .description = COMPOUND_STRING("Boosts Defense when hit."),
-        .aiRating = 6,
     },
 
     [ABILITY_WATER_COMPACTION] =
     {
         .name = _("Water Compaction"),
         .description = COMPOUND_STRING("Water boosts Defense."),
-        .aiRating = 4,
     },
 
     [ABILITY_MERCILESS] =
     {
         .name = _("Merciless"),
         .description = COMPOUND_STRING("Criticals poisoned foes."),
-        .aiRating = 4,
     },
 
     [ABILITY_STEELWORKER] =
     {
         .name = _("Steelworker"),
         .description = COMPOUND_STRING("Powers up Steel moves."),
-        .aiRating = 6,
     },
 
     [ABILITY_COLERA] =
     {
         .name = _("Cólera"),
         .description = COMPOUND_STRING("+1 At. esp. si PS -50%."),
-        .aiRating = 5,
     },
 
     [ABILITY_SLUSH_RUSH] =
     {
         .name = _("Quitanieves"),
         .description = COMPOUND_STRING("x2 Velocidad en granizo."),
-        .aiRating = 5,
     },
 
     [ABILITY_LONG_REACH] =
     {
         .name = _("Remoto"),
         .description = COMPOUND_STRING("No hace contacto."),
-        .aiRating = 3,
     },
 
     [ABILITY_LIQUID_VOICE] =
     {
         .name = _("Liquid Voice"),
         .description = COMPOUND_STRING("Makes sound moves Water."),
-        .aiRating = 5,
     },
 
     [ABILITY_TRIAGE] =
     {
         .name = _("Triage"),
         .description = COMPOUND_STRING("Healing moves go first."),
-        .aiRating = 7,
     },
 
     [ABILITY_GALVANIZE] =
     {
         .name = _("Galvanize"),
         .description = COMPOUND_STRING("Normal moves turn Electric."),
-        .aiRating = 8,
     },
 
     [ABILITY_CORROSION] =
     {
         .name = _("Corrosión"),
         .description = COMPOUND_STRING("Veneno x2 contra acero."),
-        .aiRating = 5,
     },
 
     [ABILITY_QUEENLY_MAJESTY] =
     {
         .name = _("Queenly Majesty"),
         .description = COMPOUND_STRING("Protects from priority."),
-        .aiRating = 6,
         .breakable = TRUE,
     },
 
@@ -1143,14 +980,12 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Battery"),
         .description = COMPOUND_STRING("Boosts ally's Sp. Atk."),
-        .aiRating = 0,
     },
 
     [ABILITY_FLUFFY] =
     {
         .name = _("Fluffy"),
         .description = COMPOUND_STRING("Tougher but flammable."),
-        .aiRating = 5,
         .breakable = TRUE,
     },
 
@@ -1158,7 +993,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Dazzling"),
         .description = COMPOUND_STRING("Protects from priority."),
-        .aiRating = 5,
         .breakable = TRUE,
     },
 
@@ -1166,21 +1000,18 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Soul-Heart"),
         .description = COMPOUND_STRING("KOs raise Sp. Atk."),
-        .aiRating = 7,
     },
 
     [ABILITY_TANGLING_HAIR] =
     {
         .name = _("Rizos rebeldes"),
         .description = COMPOUND_STRING("Baja velocidad al contacto."),
-        .aiRating = 5,
     },
 
     [ABILITY_RECEIVER] =
     {
         .name = _("Receiver"),
         .description = COMPOUND_STRING("Copies ally's ability."),
-        .aiRating = 0,
         .cantBeCopied = TRUE,
         .cantBeTraced = TRUE,
     },
@@ -1189,7 +1020,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Power Of Alchemy"),
         .description = COMPOUND_STRING("Copies ally's ability."),
-        .aiRating = 0,
         .cantBeCopied = TRUE,
         .cantBeTraced = TRUE,
     },
@@ -1198,7 +1028,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Beast Boost"),
         .description = COMPOUND_STRING("KOs boost best stat."),
-        .aiRating = 7,
     },
 
     [ABILITY_LIBERO] =
@@ -1211,21 +1040,18 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Cotton Down"),
         .description = COMPOUND_STRING("Lower Speed of all when hit."),
-        .aiRating = 3,
     },
 
     [ABILITY_PROPELLER_TAIL] =
     {
         .name = _("Propeller Tail"),
         .description = COMPOUND_STRING("Ignores foe's redirection."),
-        .aiRating = 2,
     },
 
     [ABILITY_MIRROR_ARMOR] =
     {
         .name = _("Mirror Armor"),
         .description = COMPOUND_STRING("Reflect stat decreases."),
-        .aiRating = 6,
         .breakable = TRUE,
     },
 
@@ -1233,21 +1059,18 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Stalwart"),
         .description = COMPOUND_STRING("Ignores foe's redirection."),
-        .aiRating = 2,
     },
 
     [ABILITY_STEAM_ENGINE] =
     {
         .name = _("Steam Engine"),
         .description = COMPOUND_STRING("Fire or Water hits up Speed."),
-        .aiRating = 3,
     },
 
     [ABILITY_PUNK_ROCK] =
     {
         .name = _("Punk Rock"),
         .description = COMPOUND_STRING("Ups and resists sound."),
-        .aiRating = 2,
         .breakable = TRUE,
     },
 
@@ -1255,7 +1078,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Ice Scales"),
         .description = COMPOUND_STRING("Halves special damage."),
-        .aiRating = 7,
         .breakable = TRUE,
     },
 
@@ -1263,37 +1085,31 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Power Spot"),
         .description = COMPOUND_STRING("Powers up ally moves."),
-        .aiRating = 2,
     },
 
     [ABILITY_SCREEN_CLEANER] =
     {
         .name = _("Screen Cleaner"),
         .description = COMPOUND_STRING("Removes walls of light."),
-        .aiRating = 3,
     },
 
     [ABILITY_STEELY_SPIRIT] =
     {
         .name = _("Steely Spirit"),
         .description = COMPOUND_STRING("Boosts ally's Steel moves."),
-        .aiRating = 2,
     },
 
     [ABILITY_GORILLA_TACTICS] =
     {
         .name = _("Gorilla Tactics"),
         .description = COMPOUND_STRING("Ups Attack and locks move."),
-        .aiRating = 4,
     },
 
     [ABILITY_NEUTRALIZING_GAS] =
     {
         .name = _("Neutralizing Gas"),
         .description = COMPOUND_STRING("All Abilities are nullified."),
-        .aiRating = 5,
         .cantBeCopied = TRUE,
-        .cantBeSwapped = TRUE,
         .cantBeTraced = TRUE,
     },
 
@@ -1301,21 +1117,18 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Transistor"),
         .description = COMPOUND_STRING("Ups Electric-type moves."),
-        .aiRating = 6,
     },
 
     [ABILITY_DRAGONS_MAW] =
     {
         .name = _("Dragon's Maw"),
         .description = COMPOUND_STRING("Ups Dragon-type moves."),
-        .aiRating = 6,
     },
 
     [ABILITY_WIND_RIDER] =
     {
         .name = _("Wind Rider"),
         .description = COMPOUND_STRING("Ups Attack if hit by wind."),
-        .aiRating = 4,
         .breakable = TRUE,
     },
 
@@ -1323,7 +1136,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Guard Dog"),
         .description = COMPOUND_STRING("Cannot be intimidated."),
-        .aiRating = 5,
         .breakable = TRUE,
     },
 
@@ -1331,21 +1143,18 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Wind Power"),
         .description = COMPOUND_STRING("Gets charged by wind."),
-        .aiRating = 4,
     },
 
     [ABILITY_ELECTROMORPHOSIS] =
     {
         .name = _("Electromorphosis"),
         .description = COMPOUND_STRING("Gets Charged when hit."),
-        .aiRating = 5,
     },
 
     [ABILITY_EXUVIA] =
     {
         .name = _("Exuvia"),
         .description = COMPOUND_STRING("Inmune a ataques de estado."),
-        .aiRating = 8,
         .breakable = TRUE,
     },
 
@@ -1353,21 +1162,18 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Cud Chew"),
         .description = COMPOUND_STRING("Eats a used berry again."),
-        .aiRating = 4,
     },
 
     [ABILITY_SHARPNESS] =
     {
         .name = _("Cortante"),
         .description = COMPOUND_STRING("Cortantes +25%."),
-        .aiRating = 7,
     },
 
     [ABILITY_OLOR_FLUVIAL] =
     {
         .name = _("Olor fluvial"),
         .description = COMPOUND_STRING("+25% evasión si llueve."),
-        .aiRating = 2,
         .breakable = TRUE,
     },
 
@@ -1375,21 +1181,18 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Disparo certero"),
         .description = COMPOUND_STRING("+2 índice crítico."),
-        .aiRating = 7,
     },
 
     [ABILITY_ATAQUE_RELAMPAGO] =
     {
         .name = _("Ataque relámpago"),
         .description = COMPOUND_STRING("+1 prioridad balísticos."),
-        .aiRating = 7,
     },
 
     [ABILITY_ALAS_HIDROFOBAS] =
     {
         .name = _("Alas hidrófobas"),
         .description = COMPOUND_STRING("+1 velocidad si recibe agua."), // + Nado rápido
-        .aiRating = 7,
         .breakable = TRUE,
     },
 
@@ -1397,7 +1200,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Bello plumaje"),
         .description = COMPOUND_STRING("Protege de prioridad."),
-        .aiRating = 5,
         .breakable = TRUE,
     },
 
@@ -1405,126 +1207,108 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Ojos prestos"),
         .description = COMPOUND_STRING("+1 prioridad miradas."),
-        .aiRating = 6,
     },
 
     [ABILITY_CARA_DURA] =
     {
         .name = _("Cara dura"),
         .description = COMPOUND_STRING("+25% cabezazos."),
-        .aiRating = 7,
     },
 
     [ABILITY_PESTE_BUBONICA] =
     {
         .name = _("Peste bubónica"),
         .description = COMPOUND_STRING("Mordiscos 50% de envenenar."),
-        .aiRating = 4,
     },
 
     [ABILITY_AGUJA_ENVENENADA] =
     {
         .name = _("Aguja envenenada"),
         .description = COMPOUND_STRING("Punzantes 50% de envenenar."),
-        .aiRating = 4,
     },
 
     [ABILITY_AVE_RAPAZ] =
     {
         .name = _("Ave rapaz"),
         .description = COMPOUND_STRING("Volador x2 a Normal."),
-        .aiRating = 4,
     },
 
     [ABILITY_CARPINTERO] =
     {
         .name = _("Carpintero"),
         .description = COMPOUND_STRING("Punzantes +25%."),
-        .aiRating = 7,
     },
 
     [ABILITY_SURFERO] =
     {
         .name = _("Surfero"),
         .description = COMPOUND_STRING("Agua +25%."),
-        .aiRating = 8,
     },
 
     [ABILITY_GENERADOR] =
     {
         .name = _("Generador"),
         .description = COMPOUND_STRING("+25% Eléctricos de equipo."),
-        .aiRating = 6,
     },
 
     [ABILITY_SUENO_ELECTRICO] =
     {
         .name = _("Sueño eléctrico"),
         .description = COMPOUND_STRING("Paraliza si atacan dormido."),
-        .aiRating = 4,
     },
 
     [ABILITY_VOZ_HELADA] =
     {
         .name = _("Voz helada"),
         .description = COMPOUND_STRING("Sonido 50% de helar."),
-        .aiRating = 4,
     },
 
     [ABILITY_IRA_PRIMATE] =
     {
         .name = _("Ira primate"),
         .description = COMPOUND_STRING("+1 At. cada golpe recibido."),
-        .aiRating = 6,
     },
 
     [ABILITY_LUNA_MENGUANTE] =
     {
         .name = _("Luna menguante"),
         .description = COMPOUND_STRING("Siniestro +25%."),
-        .aiRating = 8,
     },
 
     [ABILITY_NUEVE_COLAS] =
     {
         .name = _("Nueve colas"),
         .description = COMPOUND_STRING("50% de maldecir al contacto."),
-        .aiRating = 3,
     },
 
     [ABILITY_VIDAS_PASADAS] =
     {
         .name = _("Vidas pasadas"),
         .description = COMPOUND_STRING("Fantasma +25%."),
-        .aiRating = 8,
     },
 
     [ABILITY_EXTRASENSORIAL] =
     {
         .name = _("Extrasensorial"),
         .description = COMPOUND_STRING("Psíquico +25%."),
-        .aiRating = 8,
     },
 
     [ABILITY_PARASITO] =
     {
         .name = _("Parásito"),
         .description = COMPOUND_STRING("50% de drenadoras al contacto."),
-        .aiRating = 3,
     },
 
     [ABILITY_TIERRA_HUMEDA] =
     {
         .name = _("Tierra húmeda"),
         .description = COMPOUND_STRING("Resiste fuego, inmune quemaduras."),
-        .aiRating = 3,
     },
 
     [ABILITY_HIBERNADOR] =
     {
         .name = _("Hibernador"),
         .description = COMPOUND_STRING("+50% evasión si duerme."),
-        .aiRating = 2,
         .breakable = TRUE,
     },
 
@@ -1532,7 +1316,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Territorial"),
         .description = COMPOUND_STRING("Impide que le quiten objeto."),
-        .aiRating = 3,
         .breakable = TRUE,
     },
 
@@ -1540,21 +1323,18 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Humedad relativa"),
         .description = COMPOUND_STRING("Beneficios de granizo en lluvia."),
-        .aiRating = 3,
     },
 
     [ABILITY_VOZ_CANTANTE] =
     {
         .name = _("Voz cantante"),
         .description = COMPOUND_STRING("+1 prioridad sonido."),
-        .aiRating = 6,
     },
 
     [ABILITY_GLOBO] =
     {
         .name = _("Globo"),
         .description = COMPOUND_STRING("+1 defensa si recibe viento."),
-        .aiRating = 4,
         .breakable = TRUE,
     },
 
@@ -1562,105 +1342,90 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Voz dulce"),
         .description = COMPOUND_STRING("Sonido 50% de adormecer."),
-        .aiRating = 4,
     },
 
     [ABILITY_ULTRASONIDO] =
     {
         .name = _("Ultrasonido"),
         .description = COMPOUND_STRING("Sonido 50% de confundir."),
-        .aiRating = 4,
     },
 
     [ABILITY_CARNIVORO] =
     {
         .name = _("Carnívoro"),
         .description = COMPOUND_STRING("Recupera 1/3 de PS al vencer."),
-        .aiRating = 7,
     },
 
     [ABILITY_PERCUSIONISTA] =
     {
         .name = _("Percusionista"),
         .description = COMPOUND_STRING("Sonido +1 crítico + 25% pot."),
-        .aiRating = 6,
     },
 
     [ABILITY_MARTILLADOR] =
     {
         .name = _("Martillador"),
         .description = COMPOUND_STRING("Martillos +25%."),
-        .aiRating = 8,
     },
 
     [ABILITY_TIERRA_SUELTA] =
     {
         .name = _("Tierra suelta"),
         .description = COMPOUND_STRING("Tierra +1 prioridad ."),
-        .aiRating = 6,
     },
 
     [ABILITY_PUNZON] =
     {
         .name = _("Punzón"),
         .description = COMPOUND_STRING("Lanza púas al contacto."),
-        .aiRating = 4,
     },
 
     [ABILITY_IMPENETRABLE] =
     {
         .name = _("Impenetrable"),
         .description = COMPOUND_STRING("Ajusta defensas favorablemente."),
-        .aiRating = 7,
     },
 
     [ABILITY_RESERVA_NATURAL] =
     {
         .name = _("Reserva natural"),
         .description = COMPOUND_STRING("Ajusta defensas favorablemente."),
-        .aiRating = 7,
     },
 
     [ABILITY_DINOCOLA] =
     {
         .name = _("Dinocola"),
         .description = COMPOUND_STRING("Colas +25%."),
-        .aiRating = 8,
     },
 
     [ABILITY_CORNAMENTA] =
     {
         .name = _("Cornamenta"),
         .description = COMPOUND_STRING("Punzantes +25%."),
-        .aiRating = 8,
     },
 
     [ABILITY_NINJA] =
     {
         .name = _("Ninja"),
         .description = COMPOUND_STRING("No hace contacto."),
-        .aiRating = 3,
     },
 
     [ABILITY_FUNDICION] =
     {
         .name = _("Fundición"),
         .description = COMPOUND_STRING("Fuego x2 contra roca."),
-        .aiRating = 5,
     },
 
     [ABILITY_NAVAJAS] =
     {
         .name = _("Navajas"),
         .description = COMPOUND_STRING("+25% mordiscos."),
-        .aiRating = 6,
     },
 
     [ABILITY_BANO_BARRO] =
     {
         .name = _("Baño de barro"),
         .description = COMPOUND_STRING("+PS si recibe Tierra."),
-        .aiRating = 7,
         .breakable = TRUE,
     },
 
@@ -1668,14 +1433,12 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Escalofrío"),
         .description = COMPOUND_STRING("+25% hielo."),
-        .aiRating = 6,
     },
 
     [ABILITY_CERO_ABSOLUTO] =
     {
         .name = _("Cero absoluto"),
         .description = COMPOUND_STRING("Inmune a fuego."),
-        .aiRating = 7,
         .breakable = TRUE,
     },
 
@@ -1683,84 +1446,72 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Lengualarga"),
         .description = COMPOUND_STRING("Lenguas +25%."),
-        .aiRating = 8,
     },
 
     [ABILITY_MATAMOSCAS] =
     {
         .name = _("Matamoscas"),
         .description = COMPOUND_STRING("Atrapa bichos."),
-        .aiRating = 9,
     },
 
     [ABILITY_ENVIO_EXPRESS] =
     {
         .name = _("Envío express"),
         .description = COMPOUND_STRING("Regalos +1 prioridad."),
-        .aiRating = 6,
     },
 
     [ABILITY_FOTOSINTESIS] =
     {
         .name = _("Fotosíntesis"),
         .description = COMPOUND_STRING("Recupera 1/8 PS en sol."),
-        .aiRating = 3,
     },
 
     [ABILITY_PACIFICADOR] =
     {
         .name = _("Pacificador"),
         .description = COMPOUND_STRING("Hada +1 prioridad."),
-        .aiRating = 6,
     },
 
     [ABILITY_ARTES_OSCURAS] =
     {
         .name = _("Artes oscuras"),
         .description = COMPOUND_STRING("Siniestro +25%."),
-        .aiRating = 8,
     },
 
     [ABILITY_VENENOSO] =
     {
         .name = _("Venenoso"),
         .description = COMPOUND_STRING("Veneno +25%."),
-        .aiRating = 8,
     },
 
     [ABILITY_BAILARIN] =
     {
         .name = _("Bailarín"),
         .description = COMPOUND_STRING("+1 prioridad baile."),
-        .aiRating = 6,
     },
 
     [ABILITY_HAZLO_TRIPLE] =
     {
         .name = _("Hazlo triple"),
         .description = COMPOUND_STRING("Ataques dobles golpean 3 veces."),
-        .aiRating = 7,
     },
 
     [ABILITY_EN_METALICO] =
     {
         .name = _("En metálico"),
         .description = COMPOUND_STRING("Acero +25%."),
-        .aiRating = 8,
     },
 
     [ABILITY_TERRESTRE] =
     {
         .name = _("Terrestre"),
         .description = COMPOUND_STRING("Tierra +25%."),
-        .aiRating = 8,
     },
 
     [ABILITY_GUARDIAN] =
     {
         .name = _("Guardián"),
         .description = COMPOUND_STRING("Resiste siniestro/fantasma."),
-        .aiRating = 7,
         .breakable = TRUE,
     },
 
@@ -1768,21 +1519,18 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Nocturno"),
         .description = COMPOUND_STRING("Siniestro +25%."),
-        .aiRating = 8,
     },
 
     [ABILITY_VAMPIRO] =
     {
         .name = _("Vampiro"),
         .description = COMPOUND_STRING("Recupera 1/3 de PS al vencer."),
-        .aiRating = 7,
     },
 
     [ABILITY_ADIVINO] =
     {
         .name = _("Adivino"),
         .description = COMPOUND_STRING("Inmune a prioridad."),
-        .aiRating = 5,
         .breakable = TRUE,
     },
 
@@ -1790,34 +1538,29 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Superordenador"),
         .description = COMPOUND_STRING("Psíquico +1 prioridad."),
-        .aiRating = 6,
     },
 
     [ABILITY_MAGO] =
     {
         .name = _("Mago"),
         .description = COMPOUND_STRING("Intercambia objeto."),
-        .aiRating = 3,
     },
 
     [ABILITY_HECHICERO] =
     {
         .name = _("Hechicero"),
         .description = COMPOUND_STRING("Psíquico 50% de quemar."),
-        .aiRating = 4,
     },
 
     [ABILITY_ALTO_VOLTAJE] =
     {
         .name = _("Alto voltaje"),
         .description = COMPOUND_STRING("Lucha 50% de paralizar."),
-        .aiRating = 4,
     },
 
     [ABILITY_CABLE_PELADO] =
     {
         .name = _("Cable pelado"),
         .description = COMPOUND_STRING("+1 At. si PS -50%."),
-        .aiRating = 6,
     },
 };

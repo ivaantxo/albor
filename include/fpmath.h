@@ -78,4 +78,9 @@ static inline u32 uq4_12_multiply_by_int_half_up(uq4_12_t modifier, u32 value)
     return UQ_4_12_TO_INT((modifier * value) + UQ_4_12_ROUND);
 }
 
+static inline uq4_12_t PorcentajeUQ4_12(u32 porcentaje)
+{
+    return (4096 * porcentaje + 50) / 100;
+}
+
 #endif // FPMATH_H_

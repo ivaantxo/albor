@@ -478,4 +478,6 @@ enum EfectosFinTurnoIndividuales
 #define MINIMO_MULTIGOLPES 2
 #define MAXIMO_MULTIGOLPES 5
 
+#define POTENCIACION_GEMA   UQ_4_12(1.5) // 50%
+
 #endif // GUARD_CONSTANTS_BATTLE_H

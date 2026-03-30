@@ -529,7 +529,6 @@ extern const u8 gText_Carbos1000[];
 extern const u8 gText_Calcium1000[];
 extern const u8 gText_Zinc1000[];
 extern const u8 gText_HPUp1000[];
-extern const u8 gText_PPUp3000[];
 
 extern const u8 gText_SlateportCity[];
 extern const u8 gText_SouthernIsland[];

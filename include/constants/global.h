@@ -118,4 +118,6 @@ enum Generos
 #define CONNECTION_DIVE     5
 #define CONNECTION_EMERGE   6
 
+#define PORCENTAJE(x) ((x * 256) / 100)
+
 #endif // GUARD_CONSTANTS_GLOBAL_H

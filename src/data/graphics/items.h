@@ -205,12 +205,6 @@ const u32 gItemIconPalette_Zinc[] = INCBIN_U32("graphics/items/icon_palettes/zin
 
 const u32 gItemIconPalette_Carbos[] = INCBIN_U32("graphics/items/icon_palettes/carbos.gbapal.lz");
 
-const u32 gItemIcon_PPUp[] = INCBIN_U32("graphics/items/icons/pp_up.4bpp.lz");
-const u32 gItemIconPalette_PPUp[] = INCBIN_U32("graphics/items/icon_palettes/pp_up.gbapal.lz");
-
-const u32 gItemIcon_PPMax[] = INCBIN_U32("graphics/items/icons/pp_max.4bpp.lz");
-const u32 gItemIconPalette_PPMax[] = INCBIN_U32("graphics/items/icon_palettes/pp_max.gbapal.lz");
-
 // EV Feathers
 
 const u32 gItemIcon_HealthFeather[] = INCBIN_U32("graphics/items/icons/health_feather.4bpp.lz");

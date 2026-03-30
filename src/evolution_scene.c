@@ -777,7 +777,6 @@ static void Task_EvolutionScene(u8 taskId)
                     // Forget move
                     PREPARE_MOVE_BUFFER(gBattleTextBuff2, move)
 
-                    RemoveMonPPBonus(mon, var);
                     SetMonMoveSlot(mon, gMoveToLearn, var);
                     gTasks[taskId].tLearnMoveState++;
                 }

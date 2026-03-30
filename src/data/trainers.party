@@ -559,7 +559,7 @@ IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 Claydol
 Level: 43
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-- Skill Swap
+- Destructor
 - Earthquake
 
 === TRAINER_VIOLET ===
@@ -5625,7 +5625,7 @@ IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 Dusclops
 Level: 43
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-- Skill Swap
+- Destructor
 - Protect
 - Will O Wisp
 - Toxic
@@ -5642,7 +5642,7 @@ AI: Basic Trainer
 Gardevoir
 Level: 43
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
-- Skill Swap
+- Destructor
 - Psychic
 - Thunderbolt
 - Calm Mind
@@ -7088,7 +7088,7 @@ Items: Full Restore
 Claydol
 Level: 43
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-- Skill Swap
+- Destructor
 - Earthquake
 
 Lanturn
@@ -14070,7 +14070,7 @@ Level: 42
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Light Screen
 - Sing
-- Skill Swap
+- Destructor
 - Focus Punch
 
 Slaking @ Sitrus Berry
@@ -14085,7 +14085,7 @@ Mew
 Level: 43
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Teeter Dance
-- Skill Swap
+- Destructor
 - Facade
 - Hypnosis
 
@@ -14119,7 +14119,7 @@ Level: 47
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Light Screen
 - Sing
-- Skill Swap
+- Destructor
 - Focus Punch
 
 Kangaskhan
@@ -14134,7 +14134,7 @@ Mew
 Level: 48
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Teeter Dance
-- Skill Swap
+- Destructor
 - Facade
 - Hypnosis
 
@@ -14168,7 +14168,7 @@ Level: 52
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Light Screen
 - Sing
-- Skill Swap
+- Destructor
 - Focus Punch
 
 Kangaskhan
@@ -14183,7 +14183,7 @@ Mew
 Level: 53
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Teeter Dance
-- Skill Swap
+- Destructor
 - Facade
 - Hypnosis
 
@@ -14217,7 +14217,7 @@ Level: 57
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Protect
 - Sing
-- Skill Swap
+- Destructor
 - Focus Punch
 
 Kangaskhan
@@ -14240,7 +14240,7 @@ Mew
 Level: 58
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Teeter Dance
-- Skill Swap
+- Destructor
 - Facade
 - Hypnosis
 

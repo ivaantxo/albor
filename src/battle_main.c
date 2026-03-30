@@ -1880,10 +1880,7 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                         {
                             moveInfo.moves[indiceMovimiento] = gBattleMons[combatiente].moves[indiceMovimiento];
                             moveInfo.currentPp[indiceMovimiento] = gBattleMons[combatiente].pp[indiceMovimiento];
-                            moveInfo.maxPp[indiceMovimiento] = CalculatePPWithBonus(
-                                gBattleMons[combatiente].moves[indiceMovimiento],
-                                gBattleMons[combatiente].ppBonuses,
-                                indiceMovimiento);
+                            moveInfo.maxPp[indiceMovimiento] = PPMovimiento(gBattleMons[combatiente].moves[indiceMovimiento]);
                         }
 
                         BtlController_EmitChooseMove(combatiente, BUFFER_A, EsContraEntrenador(), FALSE, &moveInfo);
@@ -2492,7 +2489,7 @@ static void CheckChangingTurnOrderEffects(void)
     gCombate->focusPunchBattlers = 0;
     for (i = 0; i < NUMERO_COMBATIENTES; i++)
     {
-        gSpecialStatuses[i].gemBoost = FALSE;
+        gSpecialStatuses[i].potenciadoGema = FALSE;
     }
 
     gBattleMainFunc = RunTurnActionsFunctions;
@@ -2753,13 +2750,12 @@ static void IntentaActivarGema(u32 combatiente, u32 movimiento)
     u32 efectoObjeto = GetBattlerHoldEffect(combatiente, TRUE);
     u32 tipoMovimiento = TipoMovimiento(movimiento, combatiente);
 
-    gSpecialStatuses[combatiente].gemBoost = FALSE;
+    gSpecialStatuses[combatiente].potenciadoGema = FALSE;
 
     if (efectoObjeto == HOLD_EFFECT_GEMS
      && tipoMovimiento == ItemId_GetSecondaryId(objetoEquipado))
     {
-        gSpecialStatuses[combatiente].gemParam = GetBattlerHoldEffectParam(combatiente);
-        gSpecialStatuses[combatiente].gemBoost = TRUE;
+        gSpecialStatuses[combatiente].potenciadoGema = TRUE;
     }
 }
 

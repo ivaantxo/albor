@@ -120,35 +120,21 @@ const struct NatureInfo gInfoNaturalezas[NUMERO_NATURALEZAS] =
 
 #include "data/pokemon/species_info.h"
 
-#define PP_UP_SHIFTS(val)           val,        (val) << 2,        (val) << 4,        (val) << 6
-#define PP_UP_SHIFTS_INV(val) (u8)~(val), (u8)~((val) << 2), (u8)~((val) << 4), (u8)~((val) << 6)
-
-// PP Up bonuses are stored for a Pokémon as a single byte.
-// There are 2 bits (a value 0-3) for each move slot that
-// represent how many PP Ups have been applied.
-// The following arrays take a move slot id and return:
-// gPPUpGetMask - A mask to get the number of PP Ups applied to that move slot
-// gPPUpClearMask - A mask to clear the number of PP Ups applied to that move slot
-// gPPUpAddValues - A value to add to the PP Bonuses byte to apply 1 PP Up to that move slot
-const u8 gPPUpGetMask[MAX_MON_MOVES]   = {PP_UP_SHIFTS(3)};
-const u8 gPPUpClearMask[MAX_MON_MOVES] = {PP_UP_SHIFTS_INV(3)};
-const u8 gPPUpAddValues[MAX_MON_MOVES] = {PP_UP_SHIFTS(1)};
-
-const u16 gMultiplicadoresEstadisticas[NUMERO_CAMBIOS_ESTADISTICAS] =
+const u32 gMultiplicadoresEstadisticas[NUMERO_CAMBIOS_ESTADISTICAS] =
 {
-    [ESTADISTICA_MENOS_6]   = 64,   //  25%
-    [ESTADISTICA_MENOS_5]   = 96,   //  37,5%
-    [ESTADISTICA_MENOS_4]   = 128,  //  50%
-    [ESTADISTICA_MENOS_3]   = 160,  //  62,5%
-    [ESTADISTICA_MENOS_2]   = 192,  //  75%
-    [ESTADISTICA_MENOS_1]   = 224,  //  87,5%
-    [ESTADISTICA_NEUTRA]    = 256,  //  100%
-    [ESTADISTICA_MAS_1]     = 320,  //  125%
-    [ESTADISTICA_MAS_2]     = 384,  //  150%
-    [ESTADISTICA_MAS_3]     = 448,  //  175%
-    [ESTADISTICA_MAS_4]     = 512,  //  200%
-    [ESTADISTICA_MAS_5]     = 576,  //  225%
-    [ESTADISTICA_MAS_6]     = 640   //  250%
+    [ESTADISTICA_MENOS_6]   = PORCENTAJE(25),
+    [ESTADISTICA_MENOS_5]   = PORCENTAJE(37.5),
+    [ESTADISTICA_MENOS_4]   = PORCENTAJE(50),
+    [ESTADISTICA_MENOS_3]   = PORCENTAJE(62.5),
+    [ESTADISTICA_MENOS_2]   = PORCENTAJE(75),
+    [ESTADISTICA_MENOS_1]   = PORCENTAJE(87.5),
+    [ESTADISTICA_NEUTRA]    = PORCENTAJE(100),
+    [ESTADISTICA_MAS_1]     = PORCENTAJE(125),
+    [ESTADISTICA_MAS_2]     = PORCENTAJE(150),
+    [ESTADISTICA_MAS_3]     = PORCENTAJE(175),
+    [ESTADISTICA_MAS_4]     = PORCENTAJE(200),
+    [ESTADISTICA_MAS_5]     = PORCENTAJE(225),
+    [ESTADISTICA_MAS_6]     = PORCENTAJE(250)
 };
 
 const struct SpriteTemplate gBattlerSpriteTemplates[NUMERO_COMBATIENTES] =
@@ -650,13 +636,10 @@ void SetMonMoveSlot(struct Pokemon *mon, u16 move, u8 slot)
 
 static void SetMonMoveSlot_KeepPP(struct Pokemon *mon, u16 move, u8 slot)
 {
-    u8 ppBonuses = GetMonData(mon, MON_DATA_PP_BONUSES, NULL);
     u8 currPP = GetMonData(mon, MON_DATA_PP1 + slot, NULL);
-    u8 newPP = CalculatePPWithBonus(move, ppBonuses, slot);
-    u16 finalPP = min(currPP, newPP);
 
     SetMonData(mon, MON_DATA_MOVE1 + slot, &move);
-    SetMonData(mon, MON_DATA_PP1 + slot, &finalPP);
+    SetMonData(mon, MON_DATA_PP1 + slot, &currPP);
 }
 
 void SetBattleMonMoveSlot(struct BattlePokemon *mon, u16 move, u8 slot)
@@ -758,7 +741,6 @@ void DeleteFirstMoveAndGiveMoveToMon(struct Pokemon *mon, u16 move)
     s32 i;
     u16 moves[MAX_MON_MOVES];
     u8 pp[MAX_MON_MOVES];
-    u8 ppBonuses;
 
     for (i = 0; i < MAX_MON_MOVES - 1; i++)
     {
@@ -766,8 +748,6 @@ void DeleteFirstMoveAndGiveMoveToMon(struct Pokemon *mon, u16 move)
         pp[i] = GetMonData(mon, MON_DATA_PP2 + i, NULL);
     }
 
-    ppBonuses = GetMonData(mon, MON_DATA_PP_BONUSES, NULL);
-    ppBonuses >>= 2;
     moves[MAX_MON_MOVES - 1] = move;
     pp[MAX_MON_MOVES - 1] = gMovesInfo[move].pp;
 
@@ -776,8 +756,6 @@ void DeleteFirstMoveAndGiveMoveToMon(struct Pokemon *mon, u16 move)
         SetMonData(mon, MON_DATA_MOVE1 + i, &moves[i]);
         SetMonData(mon, MON_DATA_PP1 + i, &pp[i]);
     }
-
-    SetMonData(mon, MON_DATA_PP_BONUSES, &ppBonuses);
 }
 
 void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move)
@@ -785,7 +763,6 @@ void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move)
     s32 i;
     u16 moves[MAX_MON_MOVES];
     u8 pp[MAX_MON_MOVES];
-    u8 ppBonuses;
 
     for (i = 0; i < MAX_MON_MOVES - 1; i++)
     {
@@ -793,8 +770,6 @@ void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move)
         pp[i] = GetBoxMonData(boxMon, MON_DATA_PP2 + i, NULL);
     }
 
-    ppBonuses = GetBoxMonData(boxMon, MON_DATA_PP_BONUSES, NULL);
-    ppBonuses >>= 2;
     moves[MAX_MON_MOVES - 1] = move;
     pp[MAX_MON_MOVES - 1] = gMovesInfo[move].pp;
 
@@ -803,8 +778,6 @@ void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move)
         SetBoxMonData(boxMon, MON_DATA_MOVE1 + i, &moves[i]);
         SetBoxMonData(boxMon, MON_DATA_PP1 + i, &pp[i]);
     }
-
-    SetBoxMonData(boxMon, MON_DATA_PP_BONUSES, &ppBonuses);
 }
 
 u8 CountAliveMonsInBattle(u8 caseId, u32 battler)
@@ -1038,9 +1011,6 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
             break;
         case MON_DATA_EXP:
             retVal = boxMon->experience;
-            break;
-        case MON_DATA_PP_BONUSES:
-            retVal = boxMon->ppBonuses;
             break;
         case MON_DATA_FRIENDSHIP:
             retVal = boxMon->friendship;
@@ -1297,9 +1267,6 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
             break;
         case MON_DATA_EXP:
             SET32(boxMon->experience);
-            break;
-        case MON_DATA_PP_BONUSES:
-            SET8(boxMon->ppBonuses);
             break;
         case MON_DATA_FRIENDSHIP:
             SET8(boxMon->friendship);
@@ -1668,22 +1635,9 @@ const struct FormChange *GetSpeciesFormChanges(u16 species)
     return evolutions;
 }
 
-u8 CalculatePPWithBonus(u16 move, u8 ppBonuses, u8 moveIndex)
+u8 PPMovimiento(u32 movimiento)
 {
-    u8 basePP = gMovesInfo[move].pp;
-    return basePP + ((basePP * 20 * ((gPPUpGetMask[moveIndex] & ppBonuses) >> (2 * moveIndex))) / 100);
-}
-
-void RemoveMonPPBonus(struct Pokemon *mon, u8 moveIndex)
-{
-    u8 ppBonuses = GetMonData(mon, MON_DATA_PP_BONUSES, NULL);
-    ppBonuses &= gPPUpClearMask[moveIndex];
-    SetMonData(mon, MON_DATA_PP_BONUSES, &ppBonuses);
-}
-
-void RemoveBattleMonPPBonus(struct BattlePokemon *mon, u8 moveIndex)
-{
-    mon->ppBonuses &= gPPUpClearMask[moveIndex];
+    return (gMovesInfo[movimiento].pp);
 }
 
 void PokemonToBattleMon(struct Pokemon *src, struct BattlePokemon *dst)
@@ -1699,7 +1653,6 @@ void PokemonToBattleMon(struct Pokemon *src, struct BattlePokemon *dst)
 
     dst->species = GetMonData(src, MON_DATA_SPECIES, NULL);
     dst->item = GetMonData(src, MON_DATA_HELD_ITEM, NULL);
-    dst->ppBonuses = GetMonData(src, MON_DATA_PP_BONUSES, NULL);
     dst->friendship = GetMonData(src, MON_DATA_FRIENDSHIP, NULL);
     dst->experience = GetMonData(src, MON_DATA_EXP, NULL);
     dst->hpIV = GetMonData(src, MON_DATA_HP_IV, NULL);
@@ -1885,23 +1838,6 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
         case 4:
             effectFlags = itemEffect[i];
 
-            // PP Up
-            if (effectFlags & ITEM4_PP_UP)
-            {
-                effectFlags &= ~ITEM4_PP_UP;
-                dataUnsigned = (GetMonData(mon, MON_DATA_PP_BONUSES, NULL) & gPPUpGetMask[moveIndex]) >> (moveIndex * 2);
-                temp1 = CalculatePPWithBonus(GetMonData(mon, MON_DATA_MOVE1 + moveIndex, NULL), GetMonData(mon, MON_DATA_PP_BONUSES, NULL), moveIndex);
-                if (dataUnsigned <= 2 && temp1 > 4)
-                {
-                    dataUnsigned = GetMonData(mon, MON_DATA_PP_BONUSES, NULL) + gPPUpAddValues[moveIndex];
-                    SetMonData(mon, MON_DATA_PP_BONUSES, &dataUnsigned);
-
-                    dataUnsigned = CalculatePPWithBonus(GetMonData(mon, MON_DATA_MOVE1 + moveIndex, NULL), dataUnsigned, moveIndex) - temp1;
-                    dataUnsigned = GetMonData(mon, MON_DATA_PP1 + moveIndex, NULL) + dataUnsigned;
-                    SetMonData(mon, MON_DATA_PP1 + moveIndex, &dataUnsigned);
-                    retVal = FALSE;
-                }
-            }
             temp1 = 0;
 
             // Loop through and try each of the remaining ITEM4 effects
@@ -2029,14 +1965,14 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                                 u16 moveId;
                                 dataUnsigned = GetMonData(mon, MON_DATA_PP1 + temp2, NULL);
                                 moveId = GetMonData(mon, MON_DATA_MOVE1 + temp2, NULL);
-                                if (dataUnsigned != CalculatePPWithBonus(moveId, GetMonData(mon, MON_DATA_PP_BONUSES, NULL), temp2))
+                                if (dataUnsigned != PPMovimiento(moveId))
                                 {
                                     dataUnsigned += itemEffect[itemEffectParam];
                                     moveId = GetMonData(mon, MON_DATA_MOVE1 + temp2, NULL); // Redundant
-                                    if (dataUnsigned > CalculatePPWithBonus(moveId, GetMonData(mon, MON_DATA_PP_BONUSES, NULL), temp2))
+                                    if (dataUnsigned > PPMovimiento(moveId))
                                     {
                                         moveId = GetMonData(mon, MON_DATA_MOVE1 + temp2, NULL); // Redundant
-                                        dataUnsigned = CalculatePPWithBonus(moveId, GetMonData(mon, MON_DATA_PP_BONUSES, NULL), temp2);
+                                        dataUnsigned = PPMovimiento(moveId);
                                     }
                                     SetMonData(mon, MON_DATA_PP1 + temp2, &dataUnsigned);
                                     retVal = FALSE;
@@ -2050,14 +1986,12 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                             u16 moveId;
                             dataUnsigned = GetMonData(mon, MON_DATA_PP1 + moveIndex, NULL);
                             moveId = GetMonData(mon, MON_DATA_MOVE1 + moveIndex, NULL);
-                            if (dataUnsigned != CalculatePPWithBonus(moveId, GetMonData(mon, MON_DATA_PP_BONUSES, NULL), moveIndex))
+                            if (dataUnsigned != PPMovimiento(moveId))
                             {
                                 dataUnsigned += itemEffect[itemEffectParam++];
-                                moveId = GetMonData(mon, MON_DATA_MOVE1 + moveIndex, NULL); // Redundant
-                                if (dataUnsigned > CalculatePPWithBonus(moveId, GetMonData(mon, MON_DATA_PP_BONUSES, NULL), moveIndex))
+                                if (dataUnsigned > PPMovimiento(moveId))
                                 {
-                                    moveId = GetMonData(mon, MON_DATA_MOVE1 + moveIndex, NULL); // Redundant
-                                    dataUnsigned = CalculatePPWithBonus(moveId, GetMonData(mon, MON_DATA_PP_BONUSES, NULL), moveIndex);
+                                    dataUnsigned = PPMovimiento(moveId);
                                 }
                                 SetMonData(mon, MON_DATA_PP1 + moveIndex, &dataUnsigned);
                                 retVal = FALSE;
@@ -2065,7 +1999,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                         }
                         break;
 
-                    // cases 4-6 are ITEM4_HEAL_PP_ONE, ITEM4_PP_UP, and ITEM4_REVIVE, which
+                    // cases 4-6 are ITEM4_HEAL_PP_ONE, and ITEM4_REVIVE, which
                     // are already handled above by other cases or before the loop
 
                     case 7: // ITEM4_EVO_STONE
@@ -2164,26 +2098,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                         itemEffectParam++;
                         break;
 
-                    case 4: // ITEM5_PP_MAX
-                        dataUnsigned = (GetMonData(mon, MON_DATA_PP_BONUSES, NULL) & gPPUpGetMask[moveIndex]) >> (moveIndex * 2);
-                        temp2 = CalculatePPWithBonus(GetMonData(mon, MON_DATA_MOVE1 + moveIndex, NULL), GetMonData(mon, MON_DATA_PP_BONUSES, NULL), moveIndex);
-
-                        // Check if 3 PP Ups have been applied already, and that the move has a total PP of at least 5
-                        if (dataUnsigned < 3 && temp2 >= 5)
-                        {
-                            dataUnsigned = GetMonData(mon, MON_DATA_PP_BONUSES, NULL);
-                            dataUnsigned &= gPPUpClearMask[moveIndex];
-                            dataUnsigned += gPPUpAddValues[moveIndex] * 3; // Apply 3 PP Ups (max)
-
-                            SetMonData(mon, MON_DATA_PP_BONUSES, &dataUnsigned);
-                            dataUnsigned = CalculatePPWithBonus(GetMonData(mon, MON_DATA_MOVE1 + moveIndex, NULL), dataUnsigned, moveIndex) - temp2;
-                            dataUnsigned = GetMonData(mon, MON_DATA_PP1 + moveIndex, NULL) + dataUnsigned;
-                            SetMonData(mon, MON_DATA_PP1 + moveIndex, &dataUnsigned);
-                            retVal = FALSE;
-                        }
-                        break;
-
-                    case 5: // ITEM5_FRIENDSHIP_LOW
+                    case 4: // ITEM5_FRIENDSHIP_LOW
                         // Changes to friendship are given differently depending on
                         // how much friendship the Pokémon already has.
                         // In general, Pokémon with lower friendship receive more,
@@ -2193,13 +2108,13 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                         itemEffectParam++;
                         break;
 
-                    case 6: // ITEM5_FRIENDSHIP_MID
+                    case 5: // ITEM5_FRIENDSHIP_MID
                         if (GetMonData(mon, MON_DATA_FRIENDSHIP, NULL) >= 100 && GetMonData(mon, MON_DATA_FRIENDSHIP, NULL) < 200)
                             UPDATE_FRIENDSHIP_FROM_ITEM();
                         itemEffectParam++;
                         break;
 
-                    case 7: // ITEM5_FRIENDSHIP_HIGH
+                    case 6: // ITEM5_FRIENDSHIP_HIGH
                         if (GetMonData(mon, MON_DATA_FRIENDSHIP, NULL) >= 200)
                             UPDATE_FRIENDSHIP_FROM_ITEM();
                         itemEffectParam++;
@@ -2264,8 +2179,6 @@ u8 GetItemEffectParamOffset(u32 battler, u16 itemId, u8 effectByte, u8 effectBit
             break;
         case 4:
             effectFlags = itemEffect[4];
-            if (effectFlags & ITEM4_PP_UP)
-                effectFlags &= ~(ITEM4_PP_UP);
             j = 0;
             while (effectFlags)
             {
@@ -2317,14 +2230,13 @@ u8 GetItemEffectParamOffset(u32 battler, u16 itemId, u8 effectByte, u8 effectBit
                     case 1: // ITEM5_EV_SPEED
                     case 2: // ITEM5_EV_SPDEF
                     case 3: // ITEM5_EV_SPATK
-                    case 4: // ITEM5_PP_MAX
-                    case 5: // ITEM5_FRIENDSHIP_LOW
-                    case 6: // ITEM5_FRIENDSHIP_MID
+                    case 4: // ITEM5_FRIENDSHIP_LOW
+                    case 5: // ITEM5_FRIENDSHIP_MID
                         if (i == effectByte && (effectFlags & effectBit))
                             return offset;
                         offset++;
                         break;
-                    case 7: // ITEM5_FRIENDSHIP_HIGH
+                    case 6: // ITEM5_FRIENDSHIP_HIGH
                         if (i == effectByte)
                             return 0;
                         break;
@@ -3221,8 +3133,7 @@ void BoxMonRestorePP(struct BoxPokemon *boxMon)
         if (GetBoxMonData(boxMon, MON_DATA_MOVE1 + i, 0))
         {
             u16 move = GetBoxMonData(boxMon, MON_DATA_MOVE1 + i, 0);
-            u16 bonus = GetBoxMonData(boxMon, MON_DATA_PP_BONUSES, 0);
-            u8 pp = CalculatePPWithBonus(move, bonus, i);
+            u8 pp = PPMovimiento(move);
             SetBoxMonData(boxMon, MON_DATA_PP1 + i, &pp);
         }
     }

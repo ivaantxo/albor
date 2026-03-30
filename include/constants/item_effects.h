@@ -26,25 +26,24 @@
 
 #define ITEM3_STATUS_ALL        (ITEM3_CONFUSION | ITEM3_PARALYSIS | ITEM3_FREEZE | ITEM3_BURN | ITEM3_POISON | ITEM3_SLEEP)
 
+//revisar field 4 y 5
 // field 4 masks
-#define ITEM4_EV_HP             0x1
-#define ITEM4_EV_ATK            0x2
-#define ITEM4_HEAL_HP           0x4
-#define ITEM4_HEAL_PP           0x8
-#define ITEM4_HEAL_PP_ONE       0x10
-#define ITEM4_PP_UP             0x20
-#define ITEM4_REVIVE            0x40
-#define ITEM4_EVO_STONE         0x80
+#define ITEM4_EV_HP             1
+#define ITEM4_EV_ATK            2
+#define ITEM4_HEAL_HP           4
+#define ITEM4_HEAL_PP           8
+#define ITEM4_HEAL_PP_ONE       16
+#define ITEM4_REVIVE            32
+#define ITEM4_EVO_STONE         64
 
 // field 5 masks
-#define ITEM5_EV_DEF            0x1
-#define ITEM5_EV_SPEED          0x2
-#define ITEM5_EV_SPDEF          0x4
-#define ITEM5_EV_SPATK          0x8
-#define ITEM5_PP_MAX            0x10
-#define ITEM5_FRIENDSHIP_LOW    0x20
-#define ITEM5_FRIENDSHIP_MID    0x40
-#define ITEM5_FRIENDSHIP_HIGH   0x80
+#define ITEM5_EV_DEF            1
+#define ITEM5_EV_SPEED          2
+#define ITEM5_EV_SPDEF          4
+#define ITEM5_EV_SPATK          8
+#define ITEM5_FRIENDSHIP_LOW    16
+#define ITEM5_FRIENDSHIP_MID    32
+#define ITEM5_FRIENDSHIP_HIGH   64
 
 #define ITEM5_FRIENDSHIP_ALL    (ITEM5_FRIENDSHIP_LOW | ITEM5_FRIENDSHIP_MID | ITEM5_FRIENDSHIP_HIGH)
 
@@ -90,8 +89,6 @@ enum EfectosObjetos
     ITEM_EFFECT_SPEED_EV,
     ITEM_EFFECT_DEF_EV,
     ITEM_EFFECT_EVO_STONE,
-    ITEM_EFFECT_PP_UP,
-    ITEM_EFFECT_PP_MAX,
     ITEM_EFFECT_HEAL_PP,
     ITEM_EFFECT_NONE,
 };

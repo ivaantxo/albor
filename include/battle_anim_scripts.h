@@ -256,7 +256,6 @@ extern const u8 gBattleAnimMove_Recycle[];
 extern const u8 gBattleAnimMove_BrickBreak[];
 extern const u8 gBattleAnimMove_Desarme[];
 extern const u8 gBattleAnimMove_Eruption[];
-extern const u8 gBattleAnimMove_SkillSwap[];
 extern const u8 gBattleAnimMove_Imprison[];
 extern const u8 gBattleAnimMove_Refresh[];
 extern const u8 gBattleAnimMove_Snatch[];

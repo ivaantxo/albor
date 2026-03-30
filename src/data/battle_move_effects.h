@@ -638,12 +638,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .battleScript = BattleScript_EffectHit,
             },
 
-        [EFFECT_SKILL_SWAP] =
-            {
-                .battleScript = BattleScript_EffectSkillSwap,
-                .encourageEncore = TRUE,
-            },
-
         [EFFECT_IMPRISON] =
             {
                 .battleScript = BattleScript_EffectImprison,

@@ -15742,19 +15742,6 @@ gBattleAnimMove_Eruption::
 	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 40, F_PAL_BG | F_PAL_BATTLERS, 4, 4, 0, RGB_RED
 	end
 
-gBattleAnimMove_SkillSwap::
-	loadspritegfx ANIM_TAG_BLUEGREEN_ORB
-	call SetPsychicBackground
-	createvisualtask AnimTask_SkillSwap, 3, ANIM_TARGET
-	createvisualtask AnimTask_BlendMonInAndOut, 5, ANIM_TARGET, RGB_WHITE, 12, 3, 1
-	loopsewithpan SE_M_REVERSAL, SOUND_PAN_ATTACKER, 24, 3
-	delay 16
-	createvisualtask AnimTask_SkillSwap, 3, ANIM_ATTACKER
-	createvisualtask AnimTask_BlendMonInAndOut, 5, ANIM_ATTACKER, RGB_WHITE, 12, 3, 1
-	waitforvisualfinish
-	call UnsetPsychicBg
-	end
-
 gBattleAnimMove_Imprison::
 	loadspritegfx ANIM_TAG_HOLLOW_ORB
 	loadspritegfx ANIM_TAG_X_SIGN

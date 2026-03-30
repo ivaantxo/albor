@@ -281,31 +281,7 @@ BattleScript_PurifyWorks:
 	goto BattleScript_RestoreHp
 
 BattleScript_EffectStrengthSap::
-	setstatchanger ESTADISTICA_ATAQUE, 1, TRUE
-	attackcanceler
-	jumpifsubstituteblocks BattleScript_FailedFromAtkString
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	jumpifstat BS_TARGET, COMPARACION_DESIGUAL, ESTADISTICA_ATAQUE, ESTADISTICA_MENOS_6, BattleScript_StrengthSapTryLower
-	pause PAUSA_CORTA
-	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_MoveEnd
-	printfromtable gStatDownStringIds
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-BattleScript_StrengthSapTryLower:
-	getstatvalue BS_TARGET, ESTADISTICA_ATAQUE
-	jumpiffullhp BS_ATTACKER, BattleScript_StrengthSapMustLower
-	attackanimation
-	waitanimation
-	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_StrengthSapHp
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_FELL_EMPTY, BattleScript_StrengthSapHp
-BattleScript_StrengthSapLower:
-	setgraphicalstatchangevalues
-	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	printfromtable gStatDownStringIds
-	waitmessage PAUSA_LARGA
-	goto BattleScript_StrengthSapHp
+	return
 
 @ Drain HP without lowering a stat
 BattleScript_StrengthSapHp:
@@ -3122,32 +3098,6 @@ BattleScript_PrintAbilityMadeIneffective::
 	call BattleScript_AbilityPopUp
 	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY} made it ineffective!"
 	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectSkillSwap::
-	attackcanceler
-	attackstring
-	ppreduce
-	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
-	tryswapabilities BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	jumpiftargetally BattleScript_EffectSkillSwap_AfterAbilityPopUp
-	copybyte gBattlerAbility, gBattlerAttacker
-	call BattleScript_AbilityPopUpOverwriteThenNormal
-	copybyte gBattlerAbility, gBattlerTarget
-	copyhword sABILITY_OVERWRITE, gLastUsedAbility
-	call BattleScript_AbilityPopUpOverwriteThenNormal
-
-BattleScript_EffectSkillSwap_AfterAbilityPopUp:
-	recordability BS_ATTACKER
-	recordability BS_TARGET
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} swapped abilities with its opponent!"
-	waitmessage PAUSA_LARGA
-.if B_SKILL_SWAP >= GEN_4
-	switchinabilities BS_ATTACKER
-	switchinabilities BS_TARGET
-.endif
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectImprison::

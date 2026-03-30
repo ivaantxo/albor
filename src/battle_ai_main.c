@@ -1574,13 +1574,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             if (gWishFutureKnock.wishCounter[battlerAtk] != 0)
                 ADJUST_SCORE(-10);
             break;
-        case EFFECT_SKILL_SWAP:
-            if (aiData->abilities[battlerAtk] == ABILITY_NONE || aiData->abilities[battlerDef] == ABILITY_NONE
-              || gAbilitiesInfo[aiData->abilities[battlerAtk]].cantBeSwapped
-              || gAbilitiesInfo[aiData->abilities[battlerDef]].cantBeSwapped
-              || aiData->holdEffects[battlerDef] == HOLD_EFFECT_ABILITY_SHIELD)
-                ADJUST_SCORE(-10);
-            break;
         case EFFECT_GASTRO_ACID:
             if (gStatuses3[battlerDef] & STATUS3_GASTRO_ACID
               || gAbilitiesInfo[aiData->abilities[battlerDef]].cantBeSuppressed)
@@ -1915,8 +1908,6 @@ static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     u32 atkPartnerAbility = aiData->abilities[ALIADO(battlerAtk)];
     u32 atkPartnerHoldEffect = aiData->holdEffects[ALIADO(battlerAtk)];
     bool32 partnerProtecting = (gMovesInfo[aiData->partnerMove].effect == EFFECT_PROTECT);
-    bool32 attackerHasBadAbility = (gAbilitiesInfo[aiData->abilities[battlerAtk]].aiRating < 0);
-    bool32 partnerHasBadAbility = (gAbilitiesInfo[atkPartnerAbility].aiRating < 0);
     u32 predictedMove = aiData->lastUsedMove[battlerDef];
 
     moveType = TipoMovimiento(move, battlerAtk);
@@ -2052,7 +2043,6 @@ static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                 }
                 break;
             case ABILITY_WATER_ABSORB:
-            case ABILITY_DRY_SKIN:
             case ABILITY_BANO_BARRO:
                 if (!(AI_THINKING_STRUCT->aiFlags[battlerAtk] & AI_FLAG_HP_AWARE))
                 {
@@ -2164,30 +2154,9 @@ static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                     RETURN_SCORE_PLUS(WEAK_EFFECT);
                 }
                 break;
-            case EFFECT_SKILL_SWAP:
-                if (aiData->abilities[battlerAtk] != aiData->abilities[ALIADO(battlerAtk)] && !attackerHasBadAbility)
-                {
-                    // Partner abilities
-                    if (aiData->abilities[ALIADO(battlerAtk)] == ABILITY_INTIMIDATE)
-                    {
-                        ADJUST_SCORE(DECENT_EFFECT);
-                    }
-                    // Active mon abilities
-                    if (aiData->abilities[battlerAtk] == ABILITY_OJO_COMPUESTO || aiData->abilities[battlerAtk] == ABILITY_VISTA_LINCE)
-                        && HasMoveWithLowAccuracy(battlerAtkPartner, FOE(battlerAtkPartner), 90, TRUE, atkPartnerAbility, aiData->abilities[FOE(battlerAtkPartner)], atkPartnerHoldEffect, aiData->holdEffects[FOE(battlerAtkPartner)]))
-                    {
-                        ADJUST_SCORE(GOOD_EFFECT);
-                    }
-                    return score;
-                }
-                break;
             case EFFECT_GASTRO_ACID:
             case EFFECT_SIMPLE_BEAM:
-                if (partnerHasBadAbility)
-                {
-                    RETURN_SCORE_PLUS(DECENT_EFFECT);
-                }
-                break;
+                RETURN_SCORE_PLUS(WEAK_EFFECT);
             case EFFECT_AFTER_YOU:
                 if (AI_IsSlower(battlerAtkPartner, FOE(battlerAtkPartner), aiData->partnerMove)  // Opponent mon 1 goes before partner
                  || AI_IsSlower(battlerAtkPartner, ALIADO(FOE(battlerAtkPartner)), aiData->partnerMove)) // Opponent mon 2 goes before partner
@@ -2206,19 +2175,6 @@ static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         } // check partner protecting
 
         ADJUST_SCORE(-30); // otherwise, don't target partner
-    }
-    else // checking opponent
-    {
-        // these checks mostly handled in AI_CheckBadMove and AI_CheckViability
-        switch (effect)
-        {
-        case EFFECT_SKILL_SWAP:
-            if (IsAbilityOfRating(aiData->abilities[battlerAtk], 0) || IsAbilityOfRating(aiData->abilities[battlerDef], 10))
-                ADJUST_SCORE(DECENT_EFFECT); // we want to transfer our bad ability or take their awesome ability
-            break;
-        }
-
-        // lightning rod, flash fire against enemy handled in AI_CheckBadMove
     }
 
     return score;
@@ -3035,21 +2991,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
             ADJUST_SCORE(DECENT_EFFECT);
             break;
         case HOLD_EFFECT_UTILITY_UMBRELLA:
-            if (aiData->abilities[battlerAtk] != ABILITY_PODER_SOLAR && aiData->abilities[battlerAtk] != ABILITY_DRY_SKIN)
-            {
-                switch (aiData->abilities[battlerDef])
-                {
-                case ABILITY_SWIFT_SWIM:
-                case ABILITY_ALAS_HIDROFOBAS:
-                    if (AI_GetWeather(aiData) & B_WEATHER_RAIN)
-                        ADJUST_SCORE(DECENT_EFFECT); // Slow 'em down
-                    break;
-                case ABILITY_CHLOROPHYLL:
-                    if (AI_GetWeather(aiData) & B_WEATHER_SUN)
-                        ADJUST_SCORE(DECENT_EFFECT); // Slow 'em down
-                    break;
-                }
-            }
             break;
         case HOLD_EFFECT_EJECT_BUTTON:
             if (HasDamagingMove(battlerAtk)
@@ -3120,14 +3061,9 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         if (gSideStatuses[GetBattlerSide(battlerDef)] & SIDE_STATUS_AURORA_VEIL)
             ADJUST_SCORE(DECENT_EFFECT);
         break;
-    case EFFECT_SKILL_SWAP:
-        if (gAbilitiesInfo[aiData->abilities[battlerDef]].aiRating > gAbilitiesInfo[aiData->abilities[battlerAtk]].aiRating)
-            ADJUST_SCORE(DECENT_EFFECT);
-        break;
     case EFFECT_GASTRO_ACID:
     case EFFECT_SIMPLE_BEAM:
-        if (IsAbilityOfRating(aiData->abilities[battlerDef], 5))
-            ADJUST_SCORE(DECENT_EFFECT);
+        ADJUST_SCORE(GOOD_EFFECT);
         break;
     case EFFECT_IMPRISON:
         if (predictedMove != MOVE_NONE && HasMove(battlerAtk, predictedMove))
@@ -3797,7 +3733,7 @@ static s32 AI_HPAware(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         if ((effect == EFFECT_HEAL_PULSE || effect == EFFECT_HIT_ENEMY_HEAL_ALLY)
          || (moveType == TIPO_ELECTRICO && AI_DATA->abilities[ALIADO(battlerAtk)] == ABILITY_VOLT_ABSORB)
          || (moveType == TIPO_TIERRA && AI_DATA->abilities[ALIADO(battlerAtk)] == ABILITY_BANO_BARRO)
-         || (moveType == TIPO_AGUA && (AI_DATA->abilities[ALIADO(battlerAtk)] == ABILITY_DRY_SKIN || AI_DATA->abilities[ALIADO(battlerAtk)] == ABILITY_WATER_ABSORB)))
+         || (moveType == TIPO_AGUA && AI_DATA->abilities[ALIADO(battlerAtk)] == ABILITY_WATER_ABSORB))
         {
             if (CanTargetFaintAI(FOE(battlerAtk), ALIADO(battlerAtk))
               || (CanTargetFaintAI(ALIADO(FOE(battlerAtk)), ALIADO(battlerAtk))))

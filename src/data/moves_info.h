@@ -5204,24 +5204,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Eruption,
     },
 
-    [MOVE_SKILL_SWAP] =
-    {
-        .name = COMPOUND_STRING("Intercambio"),
-        .description = COMPOUND_STRING(
-            "The user swaps special\n"
-            "abilities with the target."),
-        .effect = EFFECT_SKILL_SWAP,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresSubstitute = TRUE,
-        .battleAnimScript = gBattleAnimMove_SkillSwap,
-    },
-
     [MOVE_IMPRISON] =
     {
         .name = COMPOUND_STRING("Sello"),

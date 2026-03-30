@@ -3682,7 +3682,7 @@ static void SetBoxMonDynamicPalette(u32 boxId, u32 position)
     }
     else
     {
-        if (species == SPECIES_CASTFORM_NORMAL)
+        if (species == SPECIES_CASTFORM)
         {
             LZ77UnCompWram(palette, gDecompressionBuffer);
             CopiaRapidaCpu(gDecompressionBuffer, &sPaletteSwapBuffer[PLTT_ID(position)], PLTT_SIZE_4BPP);

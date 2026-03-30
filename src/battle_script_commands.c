@@ -506,7 +506,6 @@ static void Cmd_settoxicspikes(void);
 static void Cmd_setgastroacid(void);
 static void Cmd_setdamagetohealthdifference(void);
 static void Cmd_setroom(void);
-static void Cmd_tryswapabilities(void);
 static void Cmd_tryimprison(void);
 static void Cmd_setstealthrock(void);
 static void Cmd_setuserstatus3(void);
@@ -724,7 +723,6 @@ void (*const gBattleScriptingCommandsTable[])(void) =
         BATTLE_CMD(setgastroacid),
         BATTLE_CMD(setdamagetohealthdifference),
         BATTLE_CMD(setroom),
-        BATTLE_CMD(tryswapabilities),
         BATTLE_CMD(tryimprison),
         BATTLE_CMD(setstealthrock),
         BATTLE_CMD(setuserstatus3),
@@ -1151,8 +1149,7 @@ static bool32 AccuracyCalcHelper(u16 move)
 u32 GetTotalAccuracy(u32 battlerAtk, u32 battlerDef, u32 move, u32 atkAbility, u32 defAbility, u32 atkHoldEffect, u32 defHoldEffect)
 {
     u32 calc, moveAcc;
-    s8 buff, accStage, evasionStage;
-    u32 atkParam = GetBattlerHoldEffectParam(battlerAtk);
+    s32 buff, accStage, evasionStage;
 
     gPotentialItemEffectBattler = battlerDef;
     accStage = gBattleMons[battlerAtk].statStages[ESTADISTICA_PRECISION];
@@ -1160,10 +1157,7 @@ u32 GetTotalAccuracy(u32 battlerAtk, u32 battlerDef, u32 move, u32 atkAbility, u
     if (gMovesInfo[move].ignoresTargetDefenseEvasionStages)
         evasionStage = ESTADISTICA_NEUTRA;
 
-    if (gBattleMons[battlerDef].status2 & STATUS2_FORESIGHT || gStatuses3[battlerDef] & STATUS3_MIRACLE_EYED)
-        buff = accStage;
-    else
-        buff = accStage + ESTADISTICA_NEUTRA - evasionStage;
+    buff = accStage + ESTADISTICA_NEUTRA - evasionStage;
 
     if (buff < ESTADISTICA_MENOS_6)
         buff = ESTADISTICA_MENOS_6;
@@ -1172,16 +1166,13 @@ u32 GetTotalAccuracy(u32 battlerAtk, u32 battlerDef, u32 move, u32 atkAbility, u
 
     moveAcc = gMovesInfo[move].accuracy;
 
-    if (IsBattlerWeatherAffected(battlerDef, B_WEATHER_SUN) && gMovesInfo[move].effect == EFFECT_THUNDER)
-        moveAcc = 50;
-
     calc = (gMultiplicadoresEstadisticas[buff] * moveAcc) >> 8;
 
     switch (atkAbility)
     {
     case ABILITY_OJO_COMPUESTO:
     case ABILITY_VISTA_LINCE:
-        calc = (calc * 125) / 100;
+        calc = (calc * 120) / 100;
         break;
     case ABILITY_HUSTLE:
         if (EsMovimientoFisico(move))
@@ -1193,44 +1184,33 @@ u32 GetTotalAccuracy(u32 battlerAtk, u32 battlerDef, u32 move, u32 atkAbility, u
     {
     case ABILITY_SAND_VEIL:
         if (WEATHER_HAS_EFFECT && gBattleWeather & B_WEATHER_SANDSTORM)
-            calc = (calc * 75) / 100;
+            calc = (calc * 80) / 100;
         break;
     case ABILITY_SNOW_CLOAK:
         if (WEATHER_HAS_EFFECT && (gBattleWeather & (B_WEATHER_HAIL | B_WEATHER_SNOW)))
-            calc = (calc * 75) / 100;
+            calc = (calc * 80) / 100;
         break;
     case ABILITY_OLOR_FLUVIAL:
         if (WEATHER_HAS_EFFECT && (gBattleWeather & (B_WEATHER_RAIN)))
-            calc = (calc * 75) / 100;
+            calc = (calc * 80) / 100;
         break;
     case ABILITY_TANGLED_FEET:
         if (gBattleMons[battlerDef].status2 & STATUS2_CONFUSION)
-            calc = (calc * 50) / 100;
+            calc = (calc * 80) / 100;
         break;
     case ABILITY_HIBERNADOR:
         if (gBattleMons[battlerDef].status1 & STATUS1_SLEEP)
-            calc = (calc * 50) / 100;
+            calc = (calc * 80) / 100;
+        break;
+    case ABILITY_ESQUIVO:
+        calc = (calc * 80) / 100;
         break;
     }
 
-    switch (atkHoldEffect)
-    {
-    case HOLD_EFFECT_WIDE_LENS:
-        calc = (calc * (100 + atkParam)) / 100;
-        break;
-    case HOLD_EFFECT_ZOOM_LENS:
-        if (GetBattlerTurnOrderNum(battlerAtk) > GetBattlerTurnOrderNum(battlerDef))
-            calc = (calc * (100 + atkParam)) / 100;
-        break;
-    }
-
-    if (gBattleStruct->usedMicleBerry & 1u << battlerAtk)
-    {
+    if (atkHoldEffect == HOLD_EFFECT_WIDE_LENS)
         calc = (calc * 120) / 100;
-    }
-
     if (gFieldStatuses & STATUS_FIELD_GRAVITY)
-        calc = (calc * 5) / 3; // 1.66 Gravity acc boost
+        calc = (calc * 120) / 100;
 
     return calc;
 }
@@ -1507,7 +1487,7 @@ static void Cmd_adjustdamage(void)
         gBattlescriptCurrInstr = BattleScript_BerryReduceDmg;
         gLastUsedItem = gBattleMons[gBattlerTarget].item;
     }
-    if (gSpecialStatuses[gBattlerAttacker].gemBoost && MovimientoEsEfectivo(gCombate->resultadoMovimiento) && gBattleMons[gBattlerAttacker].item)
+    if (gSpecialStatuses[gBattlerAttacker].potenciadoGema && MovimientoEsEfectivo(gCombate->resultadoMovimiento) && gBattleMons[gBattlerAttacker].item)
     {
         BattleScriptPushCursor();
         gBattlescriptCurrInstr = BattleScript_GemActivates;
@@ -4609,7 +4589,7 @@ static void Cmd_moveend(void)
         case MOVEEND_SYMBIOSIS:
             for (i = 0; i < gBattlersCount; i++)
             {
-                if ((gSpecialStatuses[i].berryReduced || (B_SYMBIOSIS_GEMS >= GEN_7 && gSpecialStatuses[i].gemBoost)) && SYMBIOSIS_CHECK(i, ALIADO(i)))
+                if ((gSpecialStatuses[i].berryReduced || (B_SYMBIOSIS_GEMS >= GEN_7 && gSpecialStatuses[i].potenciadoGema)) && SYMBIOSIS_CHECK(i, ALIADO(i)))
                 {
                     BestowItem(ALIADO(i), i);
                     gLastUsedAbility = gBattleMons[ALIADO(i)].ability;
@@ -4637,7 +4617,7 @@ static void Cmd_moveend(void)
 
             gBattleStruct->targetsDone[gBattlerAttacker] = 0;
             gProtectStructs[gBattlerAttacker].targetAffected = FALSE;
-            gSpecialStatuses[gBattlerAttacker].gemBoost = FALSE;
+            gSpecialStatuses[gBattlerAttacker].potenciadoGema = FALSE;
             gSpecialStatuses[gBattlerAttacker].damagedMons = 0;
             gSpecialStatuses[gBattlerAttacker].preventLifeOrbDamage = 0;
             gSpecialStatuses[gBattlerTarget].berryReduced = FALSE;
@@ -5424,17 +5404,14 @@ static void Cmd_yesnoboxlearnmove(void) //revisar, aquí no hace falta un global
 
                 PREPARE_MOVE_BUFFER(gBattleTextBuff2, moveId)
 
-                RemoveMonPPBonus(&gPlayerParty[gBattleStruct->expGetterMonId], movePosition);
                 SetMonMoveSlot(&gPlayerParty[gBattleStruct->expGetterMonId], gMoveToLearn, movePosition);
 
                 if (gBattlerPartyIndexes[0] == gBattleStruct->expGetterMonId)
                 {
-                    RemoveBattleMonPPBonus(&gBattleMons[0], movePosition);
                     SetBattleMonMoveSlot(&gBattleMons[0], gMoveToLearn, movePosition);
                 }
                 if (EsContraEntrenador() && gBattlerPartyIndexes[2] == gBattleStruct->expGetterMonId)
                 {
-                    RemoveBattleMonPPBonus(&gBattleMons[2], movePosition);
                     SetBattleMonMoveSlot(&gBattleMons[2], gMoveToLearn, movePosition);
                 }
             }
@@ -5803,7 +5780,7 @@ static void BestowItem(u32 battlerAtk, u32 battlerDef)
 // Called by Cmd_removeitem. itemId represents the item that was removed, not being given.
 static bool32 TrySymbiosis(u32 battler, u32 itemId)
 {
-    if (gBattleStruct->changedItems[battler] == ITEM_NONE && GetBattlerHoldEffect(battler, TRUE) != HOLD_EFFECT_EJECT_BUTTON && GetBattlerHoldEffect(battler, TRUE) != HOLD_EFFECT_EJECT_PACK && (B_SYMBIOSIS_GEMS < GEN_7 || !(gSpecialStatuses[battler].gemBoost)) && !gSpecialStatuses[battler].berryReduced && SYMBIOSIS_CHECK(battler, ALIADO(battler)))
+    if (gBattleStruct->changedItems[battler] == ITEM_NONE && GetBattlerHoldEffect(battler, TRUE) != HOLD_EFFECT_EJECT_BUTTON && GetBattlerHoldEffect(battler, TRUE) != HOLD_EFFECT_EJECT_PACK && (B_SYMBIOSIS_GEMS < GEN_7 || !(gSpecialStatuses[battler].potenciadoGema)) && !gSpecialStatuses[battler].berryReduced && SYMBIOSIS_CHECK(battler, ALIADO(battler)))
     {
         BestowItem(ALIADO(battler), battler);
         gLastUsedAbility = gBattleMons[ALIADO(battler)].ability;
@@ -6520,15 +6497,6 @@ static void Cmd_various(void)
         }
         return;
     }
-    case VARIOUS_GET_STAT_VALUE:
-    {
-        VARIOUS_ARGS(u8 stat);
-        i = cmd->stat;
-        gBattleMoveDamage = *(u16 *)(&gBattleMons[battler].attack) + (i - 1);
-        gBattleMoveDamage = (gBattleMoveDamage * gMultiplicadoresEstadisticas[gBattleMons[battler].statStages[i]]) >> 8;
-        gBattlescriptCurrInstr = cmd->nextInstr;
-        return;
-    }
     case VARIOUS_JUMP_IF_FULL_HP:
     {
         VARIOUS_ARGS(const u8 *jumpInstr);
@@ -6841,19 +6809,6 @@ static void Cmd_various(void)
         VARIOUS_ARGS();
         gBattleMons[battler].status1 = 0;
         BtlController_EmitSetMonData(battler, BUFFER_A, REQUEST_STATUS_BATTLE, 0, sizeof(gBattleMons[battler].status1), &gBattleMons[battler].status1);
-        MarcaCombatienteOcupado(battler);
-        break;
-    }
-    case VARIOUS_RESTORE_PP:
-    {
-        VARIOUS_ARGS();
-        for (i = 0; i < 4; i++)
-        {
-            gBattleMons[battler].pp[i] = CalculatePPWithBonus(gBattleMons[battler].moves[i], gBattleMons[battler].ppBonuses, i);
-            data[i] = gBattleMons[battler].pp[i];
-        }
-        data[i] = gBattleMons[battler].ppBonuses;
-        BtlController_EmitSetMonData(battler, BUFFER_A, REQUEST_PP_DATA_BATTLE, 0, 5, data);
         MarcaCombatienteOcupado(battler);
         break;
     }
@@ -9774,40 +9729,6 @@ static void Cmd_setroom(void)
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
-// Skill Swap
-static void Cmd_tryswapabilities(void)
-{
-    CMD_ARGS(const u8 *failInstr);
-
-    if (gAbilitiesInfo[gBattleMons[gBattlerAttacker].ability].cantBeSwapped || gAbilitiesInfo[gBattleMons[gBattlerTarget].ability].cantBeSwapped)
-    {
-        RecuerdaHabilidad(gBattlerTarget, gBattleMons[gBattlerTarget].ability);
-        gBattlescriptCurrInstr = cmd->failInstr;
-    }
-    else if (GetBattlerHoldEffect(gBattlerTarget, TRUE) == HOLD_EFFECT_ABILITY_SHIELD)
-    {
-        RecordItemEffectBattle(gBattlerTarget, HOLD_EFFECT_ABILITY_SHIELD);
-        gBattlescriptCurrInstr = cmd->failInstr;
-    }
-    else
-    {
-        if (!MovimientoEsEfectivo(gCombate->resultadoMovimiento))
-        {
-            gBattlescriptCurrInstr = cmd->failInstr;
-        }
-        else
-        {
-            if (GetBattlerSide(gBattlerAttacker) != GetBattlerSide(gBattlerTarget))
-                gBattleScripting.abilityPopupOverwrite = gBattleMons[gBattlerAttacker].ability;
-            gLastUsedAbility = gBattleMons[gBattlerTarget].ability;
-            gBattleMons[gBattlerTarget].ability = gBattleStruct->overwrittenAbilities[gBattlerTarget] = gBattleMons[gBattlerAttacker].ability;
-            gBattleMons[gBattlerAttacker].ability = gBattleStruct->overwrittenAbilities[gBattlerAttacker] = gLastUsedAbility;
-
-            gBattlescriptCurrInstr = cmd->nextInstr;
-        }
-    }
-}
-
 static void Cmd_tryimprison(void)
 {
     CMD_ARGS(const u8 *failInstr);
@@ -10811,57 +10732,6 @@ void BS_ItemIncreaseStat(void)
     u16 statId = ItemId_GetEffect(gLastUsedItem)[1];
     u16 stages = ItemId_GetHoldEffectParam(gLastUsedItem);
     SET_STATCHANGER(statId, stages, FALSE);
-    gBattlescriptCurrInstr = cmd->nextInstr;
-}
-
-void BS_ItemRestorePP(void)
-{
-    NATIVE_ARGS();
-    const u8 *effect = ItemId_GetEffect(gLastUsedItem);
-    u32 i, pp, maxPP, moveId, loopEnd;
-    u32 battler = NUMERO_COMBATIENTES;
-    struct Pokemon *mon = (GetBattlerSide(gBattlerAttacker) == LADO_JUGADOR) ? &gPlayerParty[gBattleStruct->itemPartyIndex[gBattlerAttacker]] : &gEnemyParty[gBattleStruct->itemPartyIndex[gBattlerAttacker]];
-
-    // Check whether to apply to all moves.
-    if (effect[4] & ITEM4_HEAL_PP_ONE)
-    {
-        i = gBattleStruct->itemMoveIndex[gBattlerAttacker];
-        loopEnd = i + 1;
-    }
-    else
-    {
-        i = 0;
-        loopEnd = MAX_MON_MOVES;
-    }
-
-    // Check if the recipient is an active battler.
-    if (gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[gBattlerAttacker])
-        battler = gBattlerAttacker;
-    else if (EsContraEntrenador() && gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[ALIADO(gBattlerAttacker)])
-        battler = ALIADO(gBattlerAttacker);
-
-    // Heal PP!
-    for (; i < loopEnd; i++)
-    {
-        pp = GetMonData(mon, MON_DATA_PP1 + i, NULL);
-        moveId = GetMonData(mon, MON_DATA_MOVE1 + i, NULL);
-        maxPP = CalculatePPWithBonus(moveId, GetMonData(mon, MON_DATA_PP_BONUSES, NULL), i);
-        if (pp != maxPP)
-        {
-            pp += effect[6];
-            if (pp > maxPP)
-                pp = maxPP;
-            SetMonData(mon, MON_DATA_PP1 + i, &pp);
-
-            // Update battler PP if needed.
-            if (battler != NUMERO_COMBATIENTES && gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[battler])
-            {
-                gBattleMons[battler].pp[i] = pp;
-            }
-        }
-    }
-    gBattleScripting.battler = battler;
-    PREPARE_SPECIES_BUFFER(gBattleTextBuff1, GetMonData(mon, MON_DATA_SPECIES));
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 

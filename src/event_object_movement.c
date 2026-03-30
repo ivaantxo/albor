@@ -1585,7 +1585,7 @@ static u16 GetOverworldCastformForm(void)
     case WEATHER_SNOW:
         return SPECIES_CASTFORM_SNOWY;
     }
-    return SPECIES_CASTFORM_NORMAL;
+    return SPECIES_CASTFORM;
 }
 
 static bool32 InformacionPokemon(struct Pokemon *mon, u32 *especie, bool32 *shiny, bool32 *hembra)
@@ -1602,7 +1602,7 @@ static bool32 InformacionPokemon(struct Pokemon *mon, u32 *especie, bool32 *shin
     *hembra = GetMonGender(mon) == MON_FEMALE ? OBJ_EVENT_MON_FEMALE : 0;
     switch (*especie)
     {
-    case SPECIES_CASTFORM_NORMAL:
+    case SPECIES_CASTFORM:
         *especie = GetOverworldCastformForm();
         break;
     }
@@ -4683,7 +4683,7 @@ static bool32 TryStartFollowerTransformEffect(struct ObjectEvent *objectEvent, s
     u32 multi;
     u32 species = OW_SPECIES(objectEvent);
 
-    if (GET_BASE_SPECIES_ID(OW_SPECIES(objectEvent)) == SPECIES_CASTFORM_NORMAL && OW_SPECIES(objectEvent) != (multi = GetOverworldCastformForm()))
+    if (GET_BASE_SPECIES_ID(OW_SPECIES(objectEvent)) == SPECIES_CASTFORM && OW_SPECIES(objectEvent) != (multi = GetOverworldCastformForm()))
     {
         sprite->data[7] = TRANSFORM_TYPE_WEATHER << 8;
         return TRUE;

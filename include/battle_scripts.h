@@ -452,7 +452,6 @@ extern const u8 BattleScript_EffectWish[];
 extern const u8 BattleScript_EffectIngrain[];
 extern const u8 BattleScript_EffectRecycle[];
 extern const u8 BattleScript_EffectBrickBreak[];
-extern const u8 BattleScript_EffectSkillSwap[];
 extern const u8 BattleScript_EffectImprison[];
 extern const u8 BattleScript_EffectRefresh[];
 extern const u8 BattleScript_EffectSnatch[];

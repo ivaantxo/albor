@@ -163,10 +163,6 @@ struct SpecialStatus
     u8 switchInAbilityDone : 1;
     u8 switchInItemDone : 1;
     u8 berryReduced : 1;
-    // End of byte
-    u8 gemParam;
-    // End of byte
-    u8 gemBoost : 1;
     u8 rototillerAffected : 1; // to be affected by rototiller
     u8 parentalBondState : 2;
     u8 multiHitOn : 1;
@@ -177,6 +173,7 @@ struct SpecialStatus
     u8 afterYou : 1;
     u8 preventLifeOrbDamage : 1; // So that Life Orb doesn't activate various effects.
     u8 mago : 1;
+    bool32 potenciadoGema;
 };
 
 struct SideTimer

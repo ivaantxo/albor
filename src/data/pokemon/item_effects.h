@@ -323,17 +323,6 @@ const u8 gItemEffect_RareCandy[10] = {
     VITAMIN_FRIENDSHIP_CHANGE(7),
 };
 
-const u8 gItemEffect_PPUp[9] = {
-    [4] = ITEM4_PP_UP,
-    [5] = ITEM5_FRIENDSHIP_ALL,
-    VITAMIN_FRIENDSHIP_CHANGE(6),
-};
-
-const u8 gItemEffect_PPMax[9] = {
-    [5] = ITEM5_PP_MAX | ITEM5_FRIENDSHIP_ALL,
-    VITAMIN_FRIENDSHIP_CHANGE(6),
-};
-
 #define STAT_BOOST_FRIENDSHIP_CHANGE      \
     [6] = 1, /* Friendship change, low */ \
     [7] = 1  /* Friendship change, mid */

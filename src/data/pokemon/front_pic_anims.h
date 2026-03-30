@@ -3283,7 +3283,7 @@ static const union AnimCmd sAnim_Milotic[] =
 };
 
 
-static const union AnimCmd sAnim_CastformNormal[] =
+static const union AnimCmd sAnim_Castform[] =
 {
     ANIMCMD_FRAME(0, 12),
     ANIMCMD_FRAME(1, 24),
@@ -5259,7 +5259,7 @@ SINGLE_ANIMATION(Anorith);
 SINGLE_ANIMATION(Armaldo);
 SINGLE_ANIMATION(Feebas);
 SINGLE_ANIMATION(Milotic);
-SINGLE_ANIMATION(CastformNormal);
+SINGLE_ANIMATION(Castform);
 SINGLE_ANIMATION(CastformSunny);
 SINGLE_ANIMATION(CastformRainy);
 SINGLE_ANIMATION(CastformSnowy);

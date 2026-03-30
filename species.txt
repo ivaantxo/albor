@@ -1,6 +1,3 @@
-#ifndef GUARD_CONSTANTS_SPECIES_H
-#define GUARD_CONSTANTS_SPECIES_H
-
 enum Species
 {
     SPECIES_NONE,
@@ -493,7 +490,3 @@ enum Species
     SPECIES_EGG,
     NUM_SPECIES
 };
-
-#define SPECIES_SHINY_TAG 5000
-
-#endif  // GUARD_CONSTANTS_SPECIES_H

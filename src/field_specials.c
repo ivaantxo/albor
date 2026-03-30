@@ -1534,7 +1534,6 @@ static const u8 *const sScrollableMultichoiceOptions[][MAX_SCROLL_MULTI_LENGTH] 
         gText_Calcium1000,
         gText_Zinc1000,
         gText_HPUp1000,
-        gText_PPUp3000,
         gText_Salir
     },
     [SCROLL_MULTI_SS_TIDAL_DESTINATION] =

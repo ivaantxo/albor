@@ -154,7 +154,6 @@ static EWRAM_DATA struct PokemonSummaryScreenData
         u16 friendship; // 0x30
         u8 OTGender; // 0x32
         u8 nature; // 0x33
-        u8 ppBonuses; // 0x34
         u8 OTName[17]; // 0x36
     } summary;
     u16 bgTilemapBuffers[PSS_PAGE_COUNT][2][0x400];
@@ -1457,7 +1456,6 @@ static bool8 ExtractMonDataToSummaryStruct(struct Pokemon *mon)
             sum->moves[i] = GetMonData(mon, MON_DATA_MOVE1+i);
             sum->pp[i] = GetMonData(mon, MON_DATA_PP1+i);
         }
-        sum->ppBonuses = GetMonData(mon, MON_DATA_PP_BONUSES);
         break;
     case 2:
         sum->nature = Naturaleza(mon);
@@ -2168,31 +2166,18 @@ static void SwapMonMoves(struct Pokemon *mon, u8 moveIndex1, u8 moveIndex2)
     u16 move2 = summary->moves[moveIndex2];
     u8 move1pp = summary->pp[moveIndex1];
     u8 move2pp = summary->pp[moveIndex2];
-    u8 ppBonuses = summary->ppBonuses;
-
-    // Calculate PP bonuses
-    u8 ppUpMask1 = gPPUpGetMask[moveIndex1];
-    u8 ppBonusMove1 = (ppBonuses & ppUpMask1) >> (moveIndex1 * 2);
-    u8 ppUpMask2 = gPPUpGetMask[moveIndex2];
-    u8 ppBonusMove2 = (ppBonuses & ppUpMask2) >> (moveIndex2 * 2);
-    ppBonuses &= ~ppUpMask1;
-    ppBonuses &= ~ppUpMask2;
-    ppBonuses |= (ppBonusMove1 << (moveIndex2 * 2)) + (ppBonusMove2 << (moveIndex1 * 2));
 
     // Swap the moves
     SetMonData(mon, MON_DATA_MOVE1 + moveIndex1, &move2);
     SetMonData(mon, MON_DATA_MOVE1 + moveIndex2, &move1);
     SetMonData(mon, MON_DATA_PP1 + moveIndex1, &move2pp);
     SetMonData(mon, MON_DATA_PP1 + moveIndex2, &move1pp);
-    SetMonData(mon, MON_DATA_PP_BONUSES, &ppBonuses);
 
     summary->moves[moveIndex1] = move2;
     summary->moves[moveIndex2] = move1;
 
     summary->pp[moveIndex1] = move2pp;
     summary->pp[moveIndex2] = move1pp;
-
-    summary->ppBonuses = ppBonuses;
 }
 
 static void SwapBoxMonMoves(struct BoxPokemon *mon, u8 moveIndex1, u8 moveIndex2)
@@ -2203,31 +2188,18 @@ static void SwapBoxMonMoves(struct BoxPokemon *mon, u8 moveIndex1, u8 moveIndex2
     u16 move2 = summary->moves[moveIndex2];
     u8 move1pp = summary->pp[moveIndex1];
     u8 move2pp = summary->pp[moveIndex2];
-    u8 ppBonuses = summary->ppBonuses;
-
-    // Calculate PP bonuses
-    u8 ppUpMask1 = gPPUpGetMask[moveIndex1];
-    u8 ppBonusMove1 = (ppBonuses & ppUpMask1) >> (moveIndex1 * 2);
-    u8 ppUpMask2 = gPPUpGetMask[moveIndex2];
-    u8 ppBonusMove2 = (ppBonuses & ppUpMask2) >> (moveIndex2 * 2);
-    ppBonuses &= ~ppUpMask1;
-    ppBonuses &= ~ppUpMask2;
-    ppBonuses |= (ppBonusMove1 << (moveIndex2 * 2)) + (ppBonusMove2 << (moveIndex1 * 2));
 
     // Swap the moves
     SetBoxMonData(mon, MON_DATA_MOVE1 + moveIndex1, &move2);
     SetBoxMonData(mon, MON_DATA_MOVE1 + moveIndex2, &move1);
     SetBoxMonData(mon, MON_DATA_PP1 + moveIndex1, &move2pp);
     SetBoxMonData(mon, MON_DATA_PP1 + moveIndex2, &move1pp);
-    SetBoxMonData(mon, MON_DATA_PP_BONUSES, &ppBonuses);
 
     summary->moves[moveIndex1] = move2;
     summary->moves[moveIndex2] = move1;
 
     summary->pp[moveIndex1] = move2pp;
     summary->pp[moveIndex2] = move1pp;
-
-    summary->ppBonuses = ppBonuses;
 }
 
 static void Task_SetHandleReplaceMoveInput(u8 taskId)
@@ -3380,7 +3352,7 @@ static void PrintMoveNameAndPP(u8 moveIndex)
 
     if (move != 0)
     {
-        pp = CalculatePPWithBonus(move, summary->ppBonuses, moveIndex);
+        pp = PPMovimiento(move);
         PrintTextOnWindowToFit(moveNameWindowId, GetMoveName(move), 0, moveIndex * 16 + 1, 0, 1);
         ConvertIntToDecimalStringN(gVariableTexto1, summary->pp[moveIndex], STR_CONV_MODE_RIGHT_ALIGN, 2);
         ConvertIntToDecimalStringN(gVariableTexto2, pp, STR_CONV_MODE_RIGHT_ALIGN, 2);

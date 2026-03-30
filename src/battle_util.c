@@ -356,7 +356,7 @@ void HandleAction_ActionFinished(void)
     }
 }
 
-static const u8 sHoldEffectToType[][2] =
+static const u8 sHoldEffectToType[][NUMERO_TIPOS_POR_POKEMON] =
     {
         {HOLD_EFFECT_BUG_POWER, TIPO_BICHO},
         {HOLD_EFFECT_STEEL_POWER, TIPO_ACERO},
@@ -376,112 +376,6 @@ static const u8 sHoldEffectToType[][2] =
         {HOLD_EFFECT_DRAGON_POWER, TIPO_DRAGON},
         {HOLD_EFFECT_NORMAL_POWER, TIPO_NORMAL},
         {HOLD_EFFECT_FAIRY_POWER, TIPO_HADA},
-};
-
-// percent in UQ_4_12 format
-static const uq4_12_t sPercentToModifier[] =
-    {
-        UQ_4_12(0.00), // 0
-        UQ_4_12(0.01), // 1
-        UQ_4_12(0.02), // 2
-        UQ_4_12(0.03), // 3
-        UQ_4_12(0.04), // 4
-        UQ_4_12(0.05), // 5
-        UQ_4_12(0.06), // 6
-        UQ_4_12(0.07), // 7
-        UQ_4_12(0.08), // 8
-        UQ_4_12(0.09), // 9
-        UQ_4_12(0.10), // 10
-        UQ_4_12(0.11), // 11
-        UQ_4_12(0.12), // 12
-        UQ_4_12(0.13), // 13
-        UQ_4_12(0.14), // 14
-        UQ_4_12(0.15), // 15
-        UQ_4_12(0.16), // 16
-        UQ_4_12(0.17), // 17
-        UQ_4_12(0.18), // 18
-        UQ_4_12(0.19), // 19
-        UQ_4_12(0.20), // 20
-        UQ_4_12(0.21), // 21
-        UQ_4_12(0.22), // 22
-        UQ_4_12(0.23), // 23
-        UQ_4_12(0.24), // 24
-        UQ_4_12(0.25), // 25
-        UQ_4_12(0.26), // 26
-        UQ_4_12(0.27), // 27
-        UQ_4_12(0.28), // 28
-        UQ_4_12(0.29), // 29
-        UQ_4_12(0.30), // 30
-        UQ_4_12(0.31), // 31
-        UQ_4_12(0.32), // 32
-        UQ_4_12(0.33), // 33
-        UQ_4_12(0.34), // 34
-        UQ_4_12(0.35), // 35
-        UQ_4_12(0.36), // 36
-        UQ_4_12(0.37), // 37
-        UQ_4_12(0.38), // 38
-        UQ_4_12(0.39), // 39
-        UQ_4_12(0.40), // 40
-        UQ_4_12(0.41), // 41
-        UQ_4_12(0.42), // 42
-        UQ_4_12(0.43), // 43
-        UQ_4_12(0.44), // 44
-        UQ_4_12(0.45), // 45
-        UQ_4_12(0.46), // 46
-        UQ_4_12(0.47), // 47
-        UQ_4_12(0.48), // 48
-        UQ_4_12(0.49), // 49
-        UQ_4_12(0.50), // 50
-        UQ_4_12(0.51), // 51
-        UQ_4_12(0.52), // 52
-        UQ_4_12(0.53), // 53
-        UQ_4_12(0.54), // 54
-        UQ_4_12(0.55), // 55
-        UQ_4_12(0.56), // 56
-        UQ_4_12(0.57), // 57
-        UQ_4_12(0.58), // 58
-        UQ_4_12(0.59), // 59
-        UQ_4_12(0.60), // 60
-        UQ_4_12(0.61), // 61
-        UQ_4_12(0.62), // 62
-        UQ_4_12(0.63), // 63
-        UQ_4_12(0.64), // 64
-        UQ_4_12(0.65), // 65
-        UQ_4_12(0.66), // 66
-        UQ_4_12(0.67), // 67
-        UQ_4_12(0.68), // 68
-        UQ_4_12(0.69), // 69
-        UQ_4_12(0.70), // 70
-        UQ_4_12(0.71), // 71
-        UQ_4_12(0.72), // 72
-        UQ_4_12(0.73), // 73
-        UQ_4_12(0.74), // 74
-        UQ_4_12(0.75), // 75
-        UQ_4_12(0.76), // 76
-        UQ_4_12(0.77), // 77
-        UQ_4_12(0.78), // 78
-        UQ_4_12(0.79), // 79
-        UQ_4_12(0.80), // 80
-        UQ_4_12(0.81), // 81
-        UQ_4_12(0.82), // 82
-        UQ_4_12(0.83), // 83
-        UQ_4_12(0.84), // 84
-        UQ_4_12(0.85), // 85
-        UQ_4_12(0.86), // 86
-        UQ_4_12(0.87), // 87
-        UQ_4_12(0.88), // 88
-        UQ_4_12(0.89), // 89
-        UQ_4_12(0.90), // 90
-        UQ_4_12(0.91), // 91
-        UQ_4_12(0.92), // 92
-        UQ_4_12(0.93), // 93
-        UQ_4_12(0.94), // 94
-        UQ_4_12(0.95), // 95
-        UQ_4_12(0.96), // 96
-        UQ_4_12(0.97), // 97
-        UQ_4_12(0.98), // 98
-        UQ_4_12(0.99), // 99
-        UQ_4_12(1.00), // 100
 };
 
 // code
@@ -2531,7 +2425,6 @@ u32 CanAbilityAbsorbMove(u32 battlerAtk, u32 battlerDef, u32 abilityDef, u32 mov
             effect = MOVE_ABSORBED_BY_DRAIN_HP_ABILITY;
         break;
     case ABILITY_WATER_ABSORB:
-    case ABILITY_DRY_SKIN:
         if (moveType == TIPO_AGUA)
             effect = MOVE_ABSORBED_BY_DRAIN_HP_ABILITY;
         break;
@@ -4038,8 +3931,7 @@ static u32 ItemRestorePp(u32 battler, u32 itemId, bool32 execute)
     {
         u32 move = GetMonData(mon, MON_DATA_MOVE1 + i);
         u32 currentPP = GetMonData(mon, MON_DATA_PP1 + i);
-        u32 ppBonuses = GetMonData(mon, MON_DATA_PP_BONUSES);
-        u32 maxPP = CalculatePPWithBonus(move, ppBonuses, i);
+        u32 maxPP = PPMovimiento(move);
         if (move && (currentPP == 0 || (gBattleScripting.overrideBerryRequirements && currentPP != maxPP)))
         {
             u32 ppRestored = GetBattlerItemHoldEffectParam(battler, itemId);
@@ -5404,7 +5296,7 @@ static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData
     case EFFECT_ACROBATICS:
         if (gBattleMons[battlerAtk].item == ITEM_NONE
             // Edge case, because removal of items happens after damage calculation.
-            || (gSpecialStatuses[battlerAtk].gemBoost && GetBattlerHoldEffect(battlerAtk, FALSE) == HOLD_EFFECT_GEMS))
+            || (gSpecialStatuses[battlerAtk].potenciadoGema && GetBattlerHoldEffect(battlerAtk, FALSE) == HOLD_EFFECT_GEMS))
             basePower *= 2;
         break;
     case EFFECT_HEAT_CRASH:
@@ -5508,9 +5400,9 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
         break;
     }
 
-    // various effects
-    if (gSpecialStatuses[battlerAtk].gemBoost)
-        modifier = uq4_12_multiply(modifier, UQ_4_12(1.0) + sPercentToModifier[gSpecialStatuses[battlerAtk].gemParam]);
+    if (gSpecialStatuses[battlerAtk].potenciadoGema)
+        modifier = uq4_12_multiply(modifier, POTENCIACION_GEMA);
+
     if (gStatuses3[battlerAtk] & STATUS3_CHARGED_UP && moveType == TIPO_ELECTRICO)
         modifier = uq4_12_multiply(modifier, UQ_4_12(2.0));
 
@@ -5710,22 +5602,12 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
         }
     }
 
-    // target's abilities
-    switch (defAbility)
-    {
-    case ABILITY_DRY_SKIN:
-        if (moveType == TIPO_FUEGO)
-            modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
-        break;
-    }
-
     holdEffectParamAtk = GetBattlerHoldEffectParam(battlerAtk);
     if (holdEffectParamAtk > 100)
         holdEffectParamAtk = 100;
 
-    holdEffectModifier = UQ_4_12(1.0) + sPercentToModifier[holdEffectParamAtk];
+    holdEffectModifier = uq4_12_add(UQ_4_12(1.0), PorcentajeUQ4_12(holdEffectParamAtk));
 
-    // attacker's hold effect
     switch (holdEffectAtk)
     {
     case HOLD_EFFECT_MUSCLE_BAND:
@@ -5736,7 +5618,13 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
         if (EsMovimientoEspecial(move))
             modifier = uq4_12_multiply(modifier, holdEffectModifier);
         break;
-    case HOLD_EFFECT_SOUL_DEW:
+    case HOLD_EFFECT_PUNCHING_GLOVE:
+        if (gMovesInfo[move].punchingMove)
+            modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
+        break;
+    case HOLD_EFFECT_THROAT_SPRAY:
+        if (gMovesInfo[move].soundMove)
+            modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
         break;
     case HOLD_EFFECT_BUG_POWER:
     case HOLD_EFFECT_STEEL_POWER:
@@ -5758,25 +5646,13 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
     case HOLD_EFFECT_FAIRY_POWER:
         for (i = 0; i < ARRAY_COUNT(sHoldEffectToType); i++)
         {
-            if (holdEffectAtk == sHoldEffectToType[i][0])
+            if (holdEffectAtk == sHoldEffectToType[i][TIPO_1])
             {
-                if (moveType == sHoldEffectToType[i][1])
+                if (moveType == sHoldEffectToType[i][TIPO_2])
                     modifier = uq4_12_multiply(modifier, holdEffectModifier);
                 break;
             }
         }
-        break;
-    case HOLD_EFFECT_PLATE:
-        if (moveType == ItemId_GetSecondaryId(gBattleMons[battlerAtk].item))
-            modifier = uq4_12_multiply(modifier, holdEffectModifier);
-        break;
-    case HOLD_EFFECT_PUNCHING_GLOVE:
-        if (gMovesInfo[move].punchingMove)
-            modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
-        break;
-    case HOLD_EFFECT_THROAT_SPRAY:
-        if (gMovesInfo[move].soundMove)
-            modifier = uq4_12_multiply(modifier, UQ_4_12(1.25));
         break;
     }
 
@@ -6279,7 +6155,7 @@ static inline uq4_12_t GetAttackerItemsModifier(u32 battlerAtk, uq4_12_t typeEff
     {
     case HOLD_EFFECT_METRONOME:
         percentBoost = min((gCombate->sameMoveTurns[battlerAtk] * GetBattlerHoldEffectParam(battlerAtk)), 100);
-        return uq4_12_add(sPercentToModifier[percentBoost], UQ_4_12(1.0));
+        return uq4_12_add(UQ_4_12(1.0), PorcentajeUQ4_12(percentBoost));
         break;
     case HOLD_EFFECT_EXPERT_BELT:
         if (typeEffectivenessModifier >= UQ_4_12(2.0))
@@ -6871,18 +6747,6 @@ static bool32 TryRemoveScreens(u32 battler)
     }
 
     return removed;
-}
-
-// Photon Geyser, Light That Burns the Sky, Tera Blast
-u8 GetCategoryBasedOnStats(u32 battler)
-{
-    u32 attack = gBattleMons[battler].attack;
-    u32 spAttack = gBattleMons[battler].spAttack;
-
-    attack = (attack * gMultiplicadoresEstadisticas[gBattleMons[battler].statStages[ESTADISTICA_ATAQUE]]) >> 8;
-    spAttack = (spAttack * gMultiplicadoresEstadisticas[gBattleMons[battler].statStages[ESTADISTICA_ATAQUE_ESPECIAL]]) >> 8;
-
-    return (spAttack >= attack) ? CATEGORIA_ESPECIAL : CATEGORIA_FISICA;
 }
 
 // Sort an array of battlers by speed

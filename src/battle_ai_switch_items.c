@@ -257,16 +257,13 @@ static bool32 FindMonThatAbsorbsOpponentsMove(u32 battler)
     else if (gMovesInfo[predictedMove].type == TIPO_AGUA || (isOpposingBattlerChargingOrInvulnerable && gMovesInfo[incomingMove].type == TIPO_AGUA))
     {
         absorbingTypeAbilities[numAbsorbingAbilities++] = ABILITY_WATER_ABSORB;
-        absorbingTypeAbilities[numAbsorbingAbilities++] = ABILITY_DRY_SKIN;
-        if (B_REDIRECT_ABILITY_IMMUNITY >= GEN_5)
-            absorbingTypeAbilities[numAbsorbingAbilities++] = ABILITY_STORM_DRAIN;
+        absorbingTypeAbilities[numAbsorbingAbilities++] = ABILITY_STORM_DRAIN;
     }
     else if (gMovesInfo[predictedMove].type == TIPO_ELECTRICO || (isOpposingBattlerChargingOrInvulnerable && gMovesInfo[incomingMove].type == TIPO_ELECTRICO))
     {
         absorbingTypeAbilities[numAbsorbingAbilities++] = ABILITY_VOLT_ABSORB;
         absorbingTypeAbilities[numAbsorbingAbilities++] = ABILITY_MOTOR_DRIVE;
-        if (B_REDIRECT_ABILITY_IMMUNITY >= GEN_5)
-            absorbingTypeAbilities[numAbsorbingAbilities++] = ABILITY_LIGHTNING_ROD;
+        absorbingTypeAbilities[numAbsorbingAbilities++] = ABILITY_LIGHTNING_ROD;
     }
     else if (gMovesInfo[predictedMove].type == TIPO_PLANTA || (isOpposingBattlerChargingOrInvulnerable && gMovesInfo[incomingMove].type == TIPO_PLANTA))
     {
@@ -1116,13 +1113,11 @@ static u32 GetSwitchinHazardsDamage(u32 battler, struct BattlePokemon *battleMon
     u32 hazardFlags = gSideStatuses[GetBattlerSide(battler)] & (SIDE_STATUS_SPIKES | SIDE_STATUS_STEALTH_ROCK | SIDE_STATUS_STICKY_WEB | SIDE_STATUS_TOXIC_SPIKES | SIDE_STATUS_SAFEGUARD);
 
     // Check ways mon might avoid all hazards
-    if (ability != ABILITY_MAGIC_GUARD || (heldItemEffect == HOLD_EFFECT_HEAVY_DUTY_BOOTS &&
-        !((gFieldStatuses & STATUS_FIELD_MAGIC_ROOM))))
+    if (ability != ABILITY_MAGIC_GUARD || (heldItemEffect == HOLD_EFFECT_HEAVY_DUTY_BOOTS))
     {
-        // Stealth Rock
         if ((hazardFlags & SIDE_STATUS_STEALTH_ROCK) && heldItemEffect != HOLD_EFFECT_HEAVY_DUTY_BOOTS)
             hazardDamage += DanioTrampa(gMovesInfo[MOVE_STEALTH_ROCK].type, battler);
-        // Spikes
+
         if ((hazardFlags & SIDE_STATUS_SPIKES) && EstaPokemonEnSuelo(heldItemEffect, ability, defType1, defType2))
         {
             spikesDamage = maxHP / ((5 - gSideTimers[GetBattlerSide(battler)].spikesAmount) * 2);
@@ -1186,24 +1181,11 @@ static s32 GetSwitchinWeatherImpact(void)
                     weatherImpact = 1;
             }
         }
-        if ((gBattleWeather & B_WEATHER_SUN) && holdEffect != HOLD_EFFECT_UTILITY_UMBRELLA
-         && (ability == ABILITY_DRY_SKIN))
-        {
-            weatherImpact = maxHP / 8;
-            if (weatherImpact == 0)
-                weatherImpact = 1;
-        }
 
         // Healing
         if (gBattleWeather & B_WEATHER_RAIN && holdEffect != HOLD_EFFECT_UTILITY_UMBRELLA)
         {
-            if (ability == ABILITY_DRY_SKIN)
-            {
-                weatherImpact = -(maxHP / 8);
-                if (weatherImpact == 0)
-                    weatherImpact = -1;
-            }
-            else if (ability == ABILITY_RAIN_DISH)
+            if (ability == ABILITY_RAIN_DISH)
             {
                 weatherImpact = -(maxHP / 8);
                 if (weatherImpact == 0)

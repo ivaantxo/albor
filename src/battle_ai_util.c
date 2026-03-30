@@ -748,8 +748,6 @@ static u32 IA_Efectividad(uq4_12_t multiplicador)
     {
     case UQ_4_12(0.0):
         return AI_EFFECTIVENESS_x0;
-    case UQ_4_12(0.125):
-        return AI_EFFECTIVENESS_x0_125;
     case UQ_4_12(0.25):
         return AI_EFFECTIVENESS_x0_25;
     case UQ_4_12(0.5):
@@ -761,8 +759,6 @@ static u32 IA_Efectividad(uq4_12_t multiplicador)
         return AI_EFFECTIVENESS_x2;
     case UQ_4_12(4.0):
         return AI_EFFECTIVENESS_x4;
-    case UQ_4_12(8.0):
-        return AI_EFFECTIVENESS_x8;
     }
 }
 
@@ -791,11 +787,6 @@ s32 AI_WhoStrikesFirst(u32 battlerAI, u32 battler, u32 moveConsidered)
     else if (holdEffectAI != HOLD_EFFECT_LAGGING_TAIL && holdEffectPlayer == HOLD_EFFECT_LAGGING_TAIL)
         return AI_IS_FASTER;
 
-    if (abilityAI == ABILITY_STALL && abilityPlayer != ABILITY_STALL)
-        return AI_IS_SLOWER;
-    else if (abilityAI != ABILITY_STALL && abilityPlayer == ABILITY_STALL)
-        return AI_IS_FASTER;
-
     if (speedBattlerAI > speedBattler)
     {
         if (gFieldStatuses & STATUS_FIELD_TRICK_ROOM)
@@ -818,16 +809,6 @@ s32 AI_WhoStrikesFirst(u32 battlerAI, u32 battler, u32 moveConsidered)
     return AI_IS_SLOWER;
 }
 
-static bool32 CanEndureHit(u32 battler, u32 battlerTarget, u32 move)
-{
-    if (!AI_BattlerAtMaxHp(battlerTarget) || gMovesInfo[move].effect == EFFECT_MULTI_HIT)
-        return FALSE;
-    if (gMovesInfo[move].strikeCount > 1 && !(gMovesInfo[move].effect == EFFECT_DRAGON_DARTS && IsValidDoubleBattle(battlerTarget)))
-        return FALSE;
-
-    return FALSE;
-}
-
 // Check if target has means to faint ai mon.
 bool32 CanTargetFaintAI(u32 battlerDef, u32 battlerAtk)
 {
@@ -837,7 +818,7 @@ bool32 CanTargetFaintAI(u32 battlerDef, u32 battlerAtk)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && !(unusable & (1u << i)) && AI_DATA->simulatedDmg[battlerDef][battlerAtk][i] >= gBattleMons[battlerAtk].hp && !CanEndureHit(battlerDef, battlerAtk, moves[i]))
+        if (moves[i] != MOVE_NONE && !(unusable & (1u << i)) && AI_DATA->simulatedDmg[battlerDef][battlerAtk][i] >= gBattleMons[battlerAtk].hp)
         {
             return TRUE;
         }
@@ -919,13 +900,9 @@ bool32 CanAIFaintTarget(u32 battlerAtk, u32 battlerDef, u32 numHits)
             if (numHits)
                 dmg *= numHits;
 
-            if (gBattleMons[battlerDef].hp <= dmg)
+            if (gBattleMons[battlerDef].hp <= dmg && numHits > 1)
             {
-                if (numHits > 1)
-                    return TRUE;
-
-                if (!CanEndureHit(battlerAtk, battlerDef, moves[i]))
-                    return TRUE;
+                return TRUE;
             }
         }
     }
@@ -1237,7 +1214,7 @@ bool32 ShouldSetRain(u32 battlerAtk, u32 atkAbility, u32 holdEffect)
     if (weather & B_WEATHER_RAIN)
         return FALSE;
 
-    if (holdEffect != HOLD_EFFECT_UTILITY_UMBRELLA && (atkAbility == ABILITY_SWIFT_SWIM || atkAbility == ABILITY_FORECAST || atkAbility == ABILITY_HYDRATION || atkAbility == ABILITY_RAIN_DISH || atkAbility == ABILITY_DRY_SKIN || atkAbility == ABILITY_OLOR_FLUVIAL || atkAbility == ABILITY_ALAS_HIDROFOBAS || HasMoveEffect(battlerAtk, EFFECT_THUNDER) || HasMoveEffect(battlerAtk, EFFECT_WEATHER_BALL) || HasMoveWithType(battlerAtk, TIPO_AGUA)))
+    if (holdEffect != HOLD_EFFECT_UTILITY_UMBRELLA && (atkAbility == ABILITY_SWIFT_SWIM || atkAbility == ABILITY_FORECAST || atkAbility == ABILITY_HYDRATION || atkAbility == ABILITY_RAIN_DISH || atkAbility == ABILITY_OLOR_FLUVIAL || atkAbility == ABILITY_ALAS_HIDROFOBAS || HasMoveEffect(battlerAtk, EFFECT_THUNDER) || HasMoveEffect(battlerAtk, EFFECT_WEATHER_BALL) || HasMoveWithType(battlerAtk, TIPO_AGUA)))
     {
         return TRUE;
     }
@@ -1456,7 +1433,7 @@ bool32 CanIndexMoveFaintTarget(u32 battlerAtk, u32 battlerDef, u32 index, u32 nu
     else
         dmg = AI_DATA->simulatedDmg[battlerAtk][battlerDef][index];
 
-    if (gBattleMons[battlerDef].hp <= dmg && !CanEndureHit(battlerAtk, battlerDef, moves[index]))
+    if (gBattleMons[battlerDef].hp <= dmg)
         return TRUE;
     return FALSE;
 }
@@ -2117,7 +2094,7 @@ static bool32 PartyBattlerShouldAvoidHazards(u32 currBattler, u32 switchBattler)
 {
     struct Pokemon *mon = GetPartyBattlerPartyData(currBattler, switchBattler);
     u32 ability = GetMonAbility(mon); // we know our own party data
-    u32 holdEffect;
+    u32 holdEffect = gItemsInfo[GetMonData(mon, MON_DATA_HELD_ITEM)].holdEffect;
     u32 species = GetMonData(mon, MON_DATA_SPECIES);
     u32 flags = gSideStatuses[GetBattlerSide(currBattler)] & (SIDE_STATUS_SPIKES | SIDE_STATUS_STEALTH_ROCK | SIDE_STATUS_STICKY_WEB | SIDE_STATUS_TOXIC_SPIKES);
     s32 hazardDamage = 0;
@@ -2130,10 +2107,7 @@ static bool32 PartyBattlerShouldAvoidHazards(u32 currBattler, u32 switchBattler)
 
     if (ability == ABILITY_MAGIC_GUARD)
         return FALSE;
-    if (gFieldStatuses & STATUS_FIELD_MAGIC_ROOM)
-        holdEffect = HOLD_EFFECT_NONE;
-    else
-        holdEffect = gItemsInfo[GetMonData(mon, MON_DATA_HELD_ITEM)].holdEffect;
+
     if (holdEffect == HOLD_EFFECT_HEAVY_DUTY_BOOTS)
         return FALSE;
 
@@ -2893,13 +2867,6 @@ bool32 SideHasMoveCategory(u32 battlerId, u32 category)
         if (HasMoveWithCategory(battlerId, category))
             return TRUE;
     }
-    return FALSE;
-}
-
-bool32 IsAbilityOfRating(u32 ability, s8 rating)
-{
-    if (gAbilitiesInfo[ability].aiRating >= rating)
-        return TRUE;
     return FALSE;
 }
 

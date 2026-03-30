@@ -1009,11 +1009,6 @@
 	.byte BATTLE_CMD_setroom
 	.endm
 
-	.macro tryswapabilities failInstr:req
-	.byte BATTLE_CMD_tryswapabilities
-	.4byte \failInstr
-	.endm
-
 	.macro tryimprison failInstr:req
 	.byte BATTLE_CMD_tryimprison
 	.4byte \failInstr
@@ -1173,10 +1168,6 @@
 
 	.macro itemincreasestat
 	callnative BS_ItemIncreaseStat
-	.endm
-
-	.macro itemrestorepp
-	callnative BS_ItemRestorePP
 	.endm
 
 	.macro tryrevertweatherform
@@ -1361,10 +1352,6 @@
 	various \battler, VARIOUS_CLEAR_STATUS
 	.endm
 
-	.macro restorepp battler:req
-	various \battler, VARIOUS_RESTORE_PP
-	.endm
-
 	.macro intentaactivarautoestima battler:req
 	various \battler, VARIOUS_INTENTA_ACTIVAR_AUTOESTIMA
 	.endm
@@ -1528,11 +1515,6 @@
 
 	.macro updatenick battler:req
 	various \battler, VARIOUS_UPDATE_NICK
-	.endm
-
-	.macro getstatvalue battler:req, stat:req
-	various \battler, VARIOUS_GET_STAT_VALUE
-	.byte \stat
 	.endm
 
 	.macro jumpiffullhp battler:req, jumpInstr:req
