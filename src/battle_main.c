@@ -1304,7 +1304,7 @@ const u8 *FaintClearSetData(u32 combatiente)
     gProtectStructs[combatiente].usedThroatChopPreventedMove = FALSE;
     gProtectStructs[combatiente].statRaised = FALSE;
     gProtectStructs[combatiente].statFell = FALSE;
-    gProtectStructs[combatiente].pranksterElevated = FALSE;
+    gProtectStructs[combatiente].prioridadBromista = FALSE;
 
     gDisableStructs[combatiente].esPrimerTurno = TRUE;
 
@@ -2109,7 +2109,7 @@ s8 GetChosenMovePriority(u32 battler)
 {
     u16 move;
 
-    gProtectStructs[battler].pranksterElevated = 0;
+    gProtectStructs[battler].prioridadBromista = FALSE;
     if (gProtectStructs[battler].noValidMoves)
         move = MOVE_STRUGGLE;
     else
@@ -2127,8 +2127,6 @@ s8 GetMovePriority(u32 battler, u16 move)
         priority++;
     else if (ability == ABILITY_TIERRA_SUELTA && gMovesInfo[move].type == TIPO_TIERRA)
         priority++;
-    else if (ability == ABILITY_PACIFICADOR && gMovesInfo[move].type == TIPO_HADA)
-        priority++;
     else if (ability == ABILITY_SUPERORDENADOR && gMovesInfo[move].type == TIPO_PSIQUICO)
         priority++;
     else if (ability == ABILITY_ENVIO_EXPRESS && gMovesInfo[move].type == TIPO_HADA)
@@ -2137,9 +2135,9 @@ s8 GetMovePriority(u32 battler, u16 move)
         priority++;
     else if (ability == ABILITY_BAILARIN && gMovesInfo[move].danceMove)
         priority++;
-    else if (ability == ABILITY_PRANKSTER && EsMovimientoDeEstado(move))
+    else if (ability == ABILITY_BROMISTA && EsMovimientoDeEstado(move))
     {
-        gProtectStructs[battler].pranksterElevated = 1;
+        gProtectStructs[battler].prioridadBromista = TRUE;
         priority++;
     }
     else if (ability == ABILITY_TRIAGE && IsHealingMove(move))
@@ -2151,6 +2149,8 @@ s8 GetMovePriority(u32 battler, u16 move)
     else if (ability == ABILITY_HUIDIZO && gMovesInfo[move].effect == EFFECT_HIT_ESCAPE)
         priority++;
     else if (ability == ABILITY_VOZ_CANTANTE && gMovesInfo[move].soundMove)
+        priority++;
+    else if (ability == ABILITY_PACIFISTA && EsMovimientoDeEstado(move))
         priority++;
 
     return priority;

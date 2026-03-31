@@ -5043,12 +5043,13 @@ BattleScript_TryIntimidateHoldEffects:
 BattleScript_TryIntimidateHoldEffectsRet:
 	return
 
-BattleScript_IntimidateActivates::
+ScriptCombate_ActivacionIntimidacionMalAura::
 	savetarget
 	showabilitypopup BS_ATTACKER
 	pause PAUSA_LARGA
 	DestruyeMensajeHabilidad
 	setbyte gBattlerTarget, 0
+
 BattleScript_IntimidateLoop:
 	jumpifbyteequal gBattlerTarget, gBattlerAttacker, BattleScript_IntimidateLoopIncrement
 	jumpiftargetally BattleScript_IntimidateLoopIncrement
@@ -5518,7 +5519,7 @@ BattleScript_HurtAttacker:
 	tryfaintmon BS_ATTACKER
 	return
 
-BattleScript_RoughSkinActivates::
+ScriptCombate_ActivacionHabilidadDanioAtacante::
 	call BattleScript_AbilityPopUp
 	call BattleScript_HurtAttacker
 	return

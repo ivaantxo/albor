@@ -146,9 +146,9 @@ struct ProtectStruct
     u32 touchedProtectLike : 1;
     u16 disableEjectPack : 1;
     u16 statFell : 1;
-    u16 pranksterElevated : 1;
     u16 quickDraw : 1;
     u16 silkTrapped : 1;
+    bool32 prioridadBromista;
 };
 
 struct SpecialStatus

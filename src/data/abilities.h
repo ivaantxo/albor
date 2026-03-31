@@ -140,6 +140,12 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Baja el ataque rival."),
     },
 
+    [ABILITY_MAL_AURA] =
+    {
+        .name = _("Mal Aura"),
+        .description = COMPOUND_STRING("Baja ataque especial rival."),
+    },
+
     [ABILITY_SHADOW_TAG] =
     {
         .name = _("Shadow Tag"),
@@ -149,7 +155,13 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_ROUGH_SKIN] =
     {
         .name = _("Piel tosca"),
-        .description = COMPOUND_STRING("Daña 12,5% al contacto."),
+        .description = COMPOUND_STRING("Daña 6,25% al contacto."),
+    },
+
+    [ABILITY_RENCOR] =
+    {
+        .name = _("Rencor"),
+        .description = COMPOUND_STRING("Daña 6,25% al ser herido."),
     },
 
     [ABILITY_GUARDA] =
@@ -311,7 +323,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_ENTUSIASMO] =
     {
         .name = _("Entusiasmo"),
-        .description = COMPOUND_STRING("-12,5% precisión, +25% potencia."),
+        .description = COMPOUND_STRING("-12,5% precisión, +50% potencia."),
     },
 
     [ABILITY_CUTE_CHARM] =
@@ -801,7 +813,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .breakable = TRUE,
     },
 
-    [ABILITY_PRANKSTER] =
+    [ABILITY_BROMISTA] =
     {
         .name = _("Prankster"),
         .description = COMPOUND_STRING("Status moves go first."),
@@ -816,7 +828,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_IRON_BARBS] =
     {
         .name = _("Puntiagudo"),
-        .description = COMPOUND_STRING("Daña 12,5% al contacto."),
+        .description = COMPOUND_STRING("Daña 6,25% al contacto."),
     },
 
     [ABILITY_PROTEAN] =
@@ -1331,6 +1343,12 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("+1 prioridad sonido."),
     },
 
+    [ABILITY_PACIFISTA] =
+    {
+        .name = _("Pacifista"),
+        .description = COMPOUND_STRING("Estado +1 prioridad."),
+    },
+
     [ABILITY_GLOBO] =
     {
         .name = _("Globo"),
@@ -1464,12 +1482,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Fotosíntesis"),
         .description = COMPOUND_STRING("Recupera 1/8 PS en sol."),
-    },
-
-    [ABILITY_PACIFICADOR] =
-    {
-        .name = _("Pacificador"),
-        .description = COMPOUND_STRING("Hada +1 prioridad."),
     },
 
     [ABILITY_ARTES_OSCURAS] =

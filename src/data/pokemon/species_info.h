@@ -1,68 +1,69 @@
 #include "constants/abilities.h"
 
-#define EVOLUTION(...) (const struct Evolution[]) { __VA_ARGS__, { EVO_FIN}, }
+#define EVOLUTION(...) \
+    (const struct Evolution[]) { __VA_ARGS__, {EVO_FIN}, }
 
-#define FRONT_PIC(sprite, width, height)    .frontPic = gMonFrontPic_## sprite, .frontPicSize = MON_COORDS_SIZE(width, height)
+#define FRONT_PIC(sprite, width, height) .frontPic = gMonFrontPic_##sprite, .frontPicSize = MON_COORDS_SIZE(width, height)
 
-#define FRONT_PIC_HEMBRA(sprite, width, height) .frontPicFemale = gMonFrontPic_## sprite##F,    .frontPicSizeFemale = MON_COORDS_SIZE(width, height)
+#define FRONT_PIC_HEMBRA(sprite, width, height) .frontPicFemale = gMonFrontPic_##sprite##F, .frontPicSizeFemale = MON_COORDS_SIZE(width, height)
 
-#define ELEVACION_FRONT_PIC(elevacion)  .frontPicYOffset = elevacion
+#define ELEVACION_FRONT_PIC(elevacion) .frontPicYOffset = elevacion
 
-#define SOMBRA(x, y, size)  .enemyShadowXOffset = x,    .enemyShadowYOffset = y,    .enemyShadowSize = SHADOW_SIZE_## size
+#define SOMBRA(x, y, size) .enemyShadowXOffset = x, .enemyShadowYOffset = y, .enemyShadowSize = SHADOW_SIZE_##size
 
-#define SIN_SOMBRA  .suppressEnemyShadow = TRUE
+#define SIN_SOMBRA .suppressEnemyShadow = TRUE
 
-#define BACK_PIC(sprite, width, height) .backPic = gMonBackPic_## sprite,   .backPicSize = MON_COORDS_SIZE(width, height)
+#define BACK_PIC(sprite, width, height) .backPic = gMonBackPic_##sprite, .backPicSize = MON_COORDS_SIZE(width, height)
 
-#define BACK_PIC_HEMBRA(sprite, width, height)  .backPicFemale = gMonBackPic_## sprite##F,  .backPicSizeFemale = MON_COORDS_SIZE(width, height)
+#define BACK_PIC_HEMBRA(sprite, width, height) .backPicFemale = gMonBackPic_##sprite##F, .backPicSizeFemale = MON_COORDS_SIZE(width, height)
 
-#define ELEVACION_BACK_PIC(elevacion)   .backPicYOffset = elevacion
+#define ELEVACION_BACK_PIC(elevacion) .backPicYOffset = elevacion
 
-#define PALETAS(pal)    .palette = gMonPalette_## pal,  .shinyPalette = gMonShinyPalette_## pal
+#define PALETAS(pal) .palette = gMonPalette_##pal, .shinyPalette = gMonShinyPalette_##pal
 
-#define PALETAS_HEMBRA(pal) .paletteFemale = gMonPalette_## pal##F, .shinyPaletteFemale = gMonShinyPalette_## pal##F
+#define PALETAS_HEMBRA(pal) .paletteFemale = gMonPalette_##pal##F, .shinyPaletteFemale = gMonShinyPalette_##pal##F
 
-#define MOVIMIENTOS(learn)  .levelUpLearnset = s ## learn##LevelUpLearnset, .teachableLearnset = s ## learn##TeachableLearnset
+#define MOVIMIENTOS(learn) .levelUpLearnset = s##learn##LevelUpLearnset, .teachableLearnset = s##learn##TeachableLearnset
 
-#define MOVIMIENTOS_HUEVO(species)  .eggMoveLearnset = s ## species##EggMoveLearnset
+#define MOVIMIENTOS_HUEVO(species) .eggMoveLearnset = s##species##EggMoveLearnset
 
-#define ATAQUE(ataque)  .baseAttack     = ataque
+#define ATAQUE(ataque) .baseAttack = ataque
 
-#define PS(ps)  .baseHP         = ps
+#define PS(ps) .baseHP = ps
 
-#define DEFENSA(defensa)    .baseDefense    = defensa
+#define DEFENSA(defensa) .baseDefense = defensa
 
-#define VELOCIDAD(velocidad)    .baseSpeed      = velocidad
+#define VELOCIDAD(velocidad) .baseSpeed = velocidad
 
-#define ATAQUE_ESPECIAL(ataqueEspecial) .baseSpAttack   = ataqueEspecial
+#define ATAQUE_ESPECIAL(ataqueEspecial) .baseSpAttack = ataqueEspecial
 
-#define DEFENSA_ESPECIAL(defensaEspecial)   .baseSpDefense  = defensaEspecial
+#define DEFENSA_ESPECIAL(defensaEspecial) .baseSpDefense = defensaEspecial
 
-#define GRITO(especie)  .cryId = CRY_##especie
+#define GRITO(especie) .cryId = CRY_##especie
 
-#define BRILLA  .brilla = TRUE
+#define BRILLA .brilla = TRUE
 
-#define TRANSPARENTE    .transparente = TRUE
+#define TRANSPARENTE .transparente = TRUE
 
 #define EV_PS(evPS) .evYield_HP = evPS
 
 #define EV_ATAQUE(evAtaque) .evYield_Attack = evAtaque
 
-#define EV_DEFENSA(evDefensa)   .evYield_Defense = evDefensa
+#define EV_DEFENSA(evDefensa) .evYield_Defense = evDefensa
 
-#define EV_ATAQUE_ESPECIAL(evAtaqueEspecial)    .evYield_SpAttack = evAtaqueEspecial
+#define EV_ATAQUE_ESPECIAL(evAtaqueEspecial) .evYield_SpAttack = evAtaqueEspecial
 
-#define EV_DEFENSA_ESPECIAL(evDefensaEspecial)  .evYield_SpDefense = evDefensaEspecial
+#define EV_DEFENSA_ESPECIAL(evDefensaEspecial) .evYield_SpDefense = evDefensaEspecial
 
-#define EV_VELOCIDAD(evVelocidad)   .evYield_Speed = evVelocidad
+#define EV_VELOCIDAD(evVelocidad) .evYield_Speed = evVelocidad
 
-#define LEGENDARIO      .isLegendary = TRUE
+#define LEGENDARIO .isLegendary = TRUE
 
 #define NOMBRE(nombre) .speciesName = _(#nombre)
 
 #define POKEDEX(especie) .dexNum = DEX_##especie
 
-#define NO_VOLTEAR  .noFlip = TRUE
+#define NO_VOLTEAR .noFlip = TRUE
 
 #define TIPOS(tipo1, tipo2) .types = {TIPO_##tipo1, TIPO_##tipo2}
 
@@ -70,9 +71,9 @@
 
 #define GRUPO_HUEVO(grupoHuevo) .eggGroups = {GRUPO_HUEVO_##grupoHuevo, GRUPO_HUEVO_##grupoHuevo}
 
-#define GRUPOS_HUEVO(grupoHuevo1, grupoHuevo2)  .eggGroups = {GRUPO_HUEVO_##grupoHuevo1, GRUPO_HUEVO_##grupoHuevo2}
+#define GRUPOS_HUEVO(grupoHuevo1, grupoHuevo2) .eggGroups = {GRUPO_HUEVO_##grupoHuevo1, GRUPO_HUEVO_##grupoHuevo2}
 
-#define FRONT_ANIM(especie, anim)   .frontAnimFrames = sAnims_##especie,  .frontAnimId = ANIM_##anim
+#define FRONT_ANIM(especie, anim) .frontAnimFrames = sAnims_##especie, .frontAnimId = ANIM_##anim
 
 #define BACK_ANIM(anim) .backAnimId = BACK_ANIM_##anim
 
@@ -82,9 +83,9 @@
 
 #define CICLO_HUEVO(cicloHuevo) .eggCycles = CICLO_HUEVO_##cicloHuevo
 
-#define ELEVACION_COMO_ENEMIGO(elevacion)  .enemyMonElevation = elevacion
+#define ELEVACION_COMO_ENEMIGO(elevacion) .enemyMonElevation = elevacion
 
-#define OBJETO_COMUN(objetoComun)   .itemCommon = ITEM_##objetoComun
+#define OBJETO_COMUN(objetoComun) .itemCommon = ITEM_##objetoComun
 
 #define OBJETO_RARO(objetoRaro) .itemRare = ITEM_##objetoRaro
 
@@ -100,65 +101,65 @@
 // 255 (MON_GENDERLESS) is reserved for genderless Pokémon.
 #define PORCENTAJE_HEMBRA(porcentaje) min(254, ((porcentaje * 255) / 100))
 
-#define GENERO(genero)  .genderRatio = genero
+#define GENERO(genero) .genderRatio = genero
 
-#define FORMAS(especie) .formSpeciesIdTable = s ## especie##FormSpeciesIdTable, .formChangeTable = s ## especie##FormChangeTable
+#define FORMAS(especie) .formSpeciesIdTable = s##especie##FormSpeciesIdTable, .formChangeTable = s##especie##FormChangeTable
 
-//Para indicar que un Follower no es asimétrico (Es decir, tiene dos frames adicionales mirando a la derecha, que no son solo espejados de mirando a la izquierda),
-//añadimos un parámetro extra en FOLLOWER, que es sAnimTable_FollowingAsym.
-#define FOLLOWER(name, _tracks, ...)                                                                            \
-.followerData = {                                                                                               \
-    .tileTag = TAG_NONE,                                                                                        \
-    .paletteTag = OBJ_EVENT_PAL_TAG_DYNAMIC,                                                                    \
-    .size = 512,                                                                                                \
-    .width = 32,                                                                                                \
-    .height = 32,                                                                                               \
-    .shadowSize = SHADOW_SIZE_M,                                                                                \
-    .inanimate = FALSE,                                                                                         \
-    .compressed = FALSE,                                                                                        \
-    .tracks = _tracks,                                                                                          \
-    .oam = &gObjectEventBaseOam_32x32,                                                                          \
-    .subspriteTables = sOamTables_32x32,                                                                        \
-    .anims = DEFAULT(sAnimTable_Following, __VA_ARGS__),                                                        \
-    .images = (const struct SpriteFrameImage[]) { overworld_ascending_frames(gObjectEventPic_##name, 4, 4) },   \
-    .affineAnims = gDummySpriteAffineAnimTable,                                                                 \
-}
+// Para indicar que un Follower no es asimétrico (Es decir, tiene dos frames adicionales mirando a la derecha, que no son solo espejados de mirando a la izquierda),
+// añadimos un parámetro extra en FOLLOWER, que es sAnimTable_FollowingAsym.
+#define FOLLOWER(name, _tracks, ...)                                                                           \
+    .followerData = {                                                                                          \
+        .tileTag = TAG_NONE,                                                                                   \
+        .paletteTag = OBJ_EVENT_PAL_TAG_DYNAMIC,                                                               \
+        .size = 512,                                                                                           \
+        .width = 32,                                                                                           \
+        .height = 32,                                                                                          \
+        .shadowSize = SHADOW_SIZE_M,                                                                           \
+        .inanimate = FALSE,                                                                                    \
+        .compressed = FALSE,                                                                                   \
+        .tracks = _tracks,                                                                                     \
+        .oam = &gObjectEventBaseOam_32x32,                                                                     \
+        .subspriteTables = sOamTables_32x32,                                                                   \
+        .anims = DEFAULT(sAnimTable_Following, __VA_ARGS__),                                                   \
+        .images = (const struct SpriteFrameImage[]){overworld_ascending_frames(gObjectEventPic_##name, 4, 4)}, \
+        .affineAnims = gDummySpriteAffineAnimTable,                                                            \
+    }
 
-#define FOLLOWER_HEMBRA(name, _tracks, ...)                                                                     \
-.followerDataFemale = {                                                                                         \
-    .tileTag = TAG_NONE,                                                                                        \
-    .paletteTag = OBJ_EVENT_PAL_TAG_DYNAMIC,                                                                    \
-    .size = 512,                                                                                                \
-    .width = 32,                                                                                                \
-    .height = 32,                                                                                               \
-    .shadowSize = SHADOW_SIZE_M,                                                                                \
-    .inanimate = FALSE,                                                                                         \
-    .compressed = FALSE,                                                                                        \
-    .tracks = _tracks,                                                                                          \
-    .oam = &gObjectEventBaseOam_32x32,                                                                          \
-    .subspriteTables = sOamTables_32x32,                                                                        \
-    .anims = DEFAULT(sAnimTable_Following, __VA_ARGS__),                                                        \
-    .images = (const struct SpriteFrameImage[]) { overworld_ascending_frames(gObjectEventPic_##name##F, 4, 4) },\
-    .affineAnims = gDummySpriteAffineAnimTable,                                                                 \
-}
+#define FOLLOWER_HEMBRA(name, _tracks, ...)                                                                       \
+    .followerDataFemale = {                                                                                       \
+        .tileTag = TAG_NONE,                                                                                      \
+        .paletteTag = OBJ_EVENT_PAL_TAG_DYNAMIC,                                                                  \
+        .size = 512,                                                                                              \
+        .width = 32,                                                                                              \
+        .height = 32,                                                                                             \
+        .shadowSize = SHADOW_SIZE_M,                                                                              \
+        .inanimate = FALSE,                                                                                       \
+        .compressed = FALSE,                                                                                      \
+        .tracks = _tracks,                                                                                        \
+        .oam = &gObjectEventBaseOam_32x32,                                                                        \
+        .subspriteTables = sOamTables_32x32,                                                                      \
+        .anims = DEFAULT(sAnimTable_Following, __VA_ARGS__),                                                      \
+        .images = (const struct SpriteFrameImage[]){overworld_ascending_frames(gObjectEventPic_##name##F, 4, 4)}, \
+        .affineAnims = gDummySpriteAffineAnimTable,                                                               \
+    }
 
-#define FOLLOWER_GRANDE(name, _tracks, ...)                                                                     \
-.followerData = {                                                                                               \
-    .tileTag = TAG_NONE,                                                                                        \
-    .paletteTag = OBJ_EVENT_PAL_TAG_DYNAMIC,                                                                    \
-    .size = 512,                                                                                                \
-    .width = 32,                                                                                                \
-    .height = 32,                                                                                               \
-    .shadowSize = SHADOW_SIZE_L,                                                                                \
-    .inanimate = FALSE,                                                                                         \
-    .compressed = FALSE,                                                                                        \
-    .tracks = _tracks,                                                                                          \
-    .oam = &gObjectEventBaseOam_32x32,                                                                          \
-    .subspriteTables = sOamTables_32x32,                                                                        \
-    .anims = DEFAULT(sAnimTable_Following, __VA_ARGS__),                                                        \
-    .images = (const struct SpriteFrameImage[]) { overworld_ascending_frames(gObjectEventPic_##name, 4, 4) },   \
-    .affineAnims = gDummySpriteAffineAnimTable,                                                                 \
-}
+#define FOLLOWER_GRANDE(name, _tracks, ...)                                                                    \
+    .followerData = {                                                                                          \
+        .tileTag = TAG_NONE,                                                                                   \
+        .paletteTag = OBJ_EVENT_PAL_TAG_DYNAMIC,                                                               \
+        .size = 512,                                                                                           \
+        .width = 32,                                                                                           \
+        .height = 32,                                                                                          \
+        .shadowSize = SHADOW_SIZE_L,                                                                           \
+        .inanimate = FALSE,                                                                                    \
+        .compressed = FALSE,                                                                                   \
+        .tracks = _tracks,                                                                                     \
+        .oam = &gObjectEventBaseOam_32x32,                                                                     \
+        .subspriteTables = sOamTables_32x32,                                                                   \
+        .anims = DEFAULT(sAnimTable_Following, __VA_ARGS__),                                                   \
+        .images = (const struct SpriteFrameImage[]){overworld_ascending_frames(gObjectEventPic_##name, 4, 4)}, \
+        .affineAnims = gDummySpriteAffineAnimTable,                                                            \
+    }
 
 const struct SpeciesInfo gSpeciesInfo[] =
 {
@@ -844,7 +845,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         GRITO(RATTATA),
         POKEDEX(RATTATA),
         TIPOS(NORMAL, VENENO),
-        HABILIDADES(HUIDIZO, STRONG_JAW, PESTE_BUBONICA),
+        HABILIDADES(HUIDIZO, ENTUSIASMO, PESTE_BUBONICA),
         SOMBRA(1, -1, M),
         FRONT_PIC(Rattata, 40, 40),
         FRONT_PIC_HEMBRA(Rattata, 40, 40),
@@ -882,7 +883,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         DEFENSA_ESPECIAL(70),
         EV_PS(2),
         TIPOS(NORMAL, VENENO),
-        HABILIDADES(HUIDIZO, STRONG_JAW, PESTE_BUBONICA),
+        HABILIDADES(HUIDIZO, ENTUSIASMO, PESTE_BUBONICA),
         SOMBRA(1, 7, M),
         FRONT_PIC(Raticate, 64, 56),
         FRONT_PIC_HEMBRA(Raticate, 64, 56),
@@ -6558,7 +6559,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         EV_ATAQUE(1),
         GENERO(PORCENTAJE_HEMBRA(50)),
         GRUPO_HUEVO(CAMPESTRE),
-        HABILIDADES(HUIDIZO, FRISK, ESQUIVO),
+        HABILIDADES(HUIDIZO, ENTUSIASMO, ESQUIVO),
         SOMBRA(-2, 12, S),
         NOMBRE(Sentret),
         GRITO(SENTRET),
@@ -6593,7 +6594,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         EV_VELOCIDAD(2),
         GENERO(PORCENTAJE_HEMBRA(50)),
         GRUPO_HUEVO(CAMPESTRE),
-        HABILIDADES(HUIDIZO, FRISK, ESQUIVO),
+        HABILIDADES(HUIDIZO, ENTUSIASMO, ESQUIVO),
         SOMBRA(-1, 9, M),
         NOMBRE(Furret),
         GRITO(FURRET),
@@ -6910,7 +6911,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         EV_DEFENSA_ESPECIAL(1),
         GENERO(PORCENTAJE_HEMBRA(75)),
         GRUPO_HUEVO(BEBE),
-        HABILIDADES(SUPER_LUCK, SERENE_GRACE, PACIFICADOR),
+        HABILIDADES(SUPER_LUCK, SERENE_GRACE, PACIFISTA),
         SOMBRA(0, -3, S),
         NOMBRE(Togepi),
         GRITO(TOGEPI),
@@ -6945,7 +6946,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         EV_DEFENSA_ESPECIAL(2),
         GENERO(PORCENTAJE_HEMBRA(75)),
         GRUPOS_HUEVO(PAJARO, HADA),
-        HABILIDADES(SUPER_LUCK, SERENE_GRACE, PACIFICADOR),
+        HABILIDADES(SUPER_LUCK, SERENE_GRACE, PACIFISTA),
         SOMBRA(-1, 7, S),
         NOMBRE(Togetic),
         GRITO(TOGETIC),
@@ -6981,7 +6982,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         EV_DEFENSA_ESPECIAL(1),
         GENERO(PORCENTAJE_HEMBRA(75)),
         GRUPOS_HUEVO(PAJARO, HADA),
-        HABILIDADES(SUPER_LUCK, SERENE_GRACE, PACIFICADOR),
+        HABILIDADES(SUPER_LUCK, SERENE_GRACE, PACIFISTA),
         SOMBRA(5, 18, XL),
         NO_VOLTEAR,
         NOMBRE(Togekiss),
@@ -7695,7 +7696,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         EV_VELOCIDAD(1),
         GENERO(PORCENTAJE_HEMBRA(50)),
         GRUPO_HUEVO(PAJARO),
-        HABILIDADES(INSOMNIA, SUPER_LUCK, PRANKSTER),
+        HABILIDADES(INSOMNIA, SUPER_LUCK, BROMISTA),
         SOMBRA(1, 8, S),
         NOMBRE(Murkrow),
         GRITO(MURKROW),
@@ -10328,6 +10329,30 @@ const struct SpeciesInfo gSpeciesInfo[] =
         MOVIMIENTOS_HUEVO(Nincada),
     },
 
+    [SPECIES_SHUPPET] =
+    {
+        PS(45),
+        ATAQUE(60),
+        DEFENSA(40),
+        ATAQUE_ESPECIAL(20),
+        DEFENSA_ESPECIAL(40),
+        VELOCIDAD(35),
+        TIPOS(FANTASMA, NORMAL),
+        HABILIDADES(RENCOR, BROMISTA, MAL_AURA),
+    },
+
+    [SPECIES_BANETTE] =
+    {
+        PS(90),
+        ATAQUE(120),
+        DEFENSA(80),
+        ATAQUE_ESPECIAL(40),
+        DEFENSA_ESPECIAL(80),
+        VELOCIDAD(70),
+        TIPOS(FANTASMA, NORMAL),
+        HABILIDADES(RENCOR, BROMISTA, MAL_AURA),
+    },
+
     [SPECIES_SHEDINJA] =
     {
         PS(60),
@@ -10635,7 +10660,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         ATAQUE_ESPECIAL(65),
         DEFENSA_ESPECIAL(65),
         OBJETO_RARO(WIDE_LENS),
-        HABILIDADES(VISTA_LINCE, NONE, PRANKSTER),
+        HABILIDADES(VISTA_LINCE, NONE, BROMISTA),
         GRITO(SABLEYE),
         SOMBRA(1, 3, S),
         FRONT_PIC(Sableye, 48, 48),
@@ -14512,7 +14537,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         EV_ATAQUE(1),
         GENERO(PORCENTAJE_HEMBRA(25)),
         GRUPO_HUEVO(BEBE),
-        HABILIDADES(FUERZA_MENTAL, FUERZA_MENTAL, PRANKSTER),
+        HABILIDADES(FUERZA_MENTAL, FUERZA_MENTAL, BROMISTA),
         NOMBRE(Riolu),
         GRITO(RIOLU),
         POKEDEX(RIOLU),
@@ -16820,7 +16845,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         EV_VELOCIDAD(1),
         GENERO(PORCENTAJE_HEMBRA(50)),
         GRUPO_HUEVO(PAJARO),
-        HABILIDADES(NONE, NONE, GALE_WINGS),
+        HABILIDADES(NONE, NONE, ALAS_VENDAVAL),
         NOMBRE(Fletchling),
         GRITO(FLETCHLING),
         POKEDEX(FLETCHLING),
@@ -16854,7 +16879,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         EV_VELOCIDAD(2),
         GENERO(PORCENTAJE_HEMBRA(50)),
         GRUPO_HUEVO(PAJARO),
-        HABILIDADES(FLAME_BODY, NONE, GALE_WINGS),
+        HABILIDADES(FLAME_BODY, NONE, ALAS_VENDAVAL),
         NOMBRE(Fletchinder),
         GRITO(FLETCHINDER),
         POKEDEX(FLETCHINDER),
@@ -16889,7 +16914,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         EV_VELOCIDAD(3),
         GENERO(PORCENTAJE_HEMBRA(50)),
         GRUPO_HUEVO(PAJARO),
-        HABILIDADES(FLAME_BODY, NONE, GALE_WINGS),
+        HABILIDADES(FLAME_BODY, NONE, ALAS_VENDAVAL),
         NOMBRE(Talonflame),
         GRITO(TALONFLAME),
         POKEDEX(TALONFLAME),

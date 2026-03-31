@@ -1605,7 +1605,7 @@
 	.endm
 
 	.macro jumpifpranksterblocked battler:req, jumpInstr:req
-	various \battler, VARIOUS_JUMP_IF_PRANKSTER_BLOCKED
+	various \battler, VARIOUS_JUMP_IF_BROMISTA_BLOCKED
 	.4byte \jumpInstr
 	.endm
 

@@ -219,7 +219,7 @@ u32 BattleAI_ChooseMoveOrAction(void)
         ret = ChooseMoveOrAction_Doubles(sBattler_AI);
 
     // Clear protect structures, some flags may be set during AI calcs
-    // e.g. pranksterElevated from GetMovePriority
+    // e.g. prioridadBromista from GetMovePriority
     memset(&gProtectStructs, 0, NUMERO_COMBATIENTES * sizeof(struct ProtectStruct));
     return ret;
 }
@@ -725,7 +725,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
 
         // gen7+ dark type mons immune to priority->elevated moves from prankster
         if (EsTipo(battlerDef, TIPO_SINIESTRO)
-          && aiData->abilities[battlerAtk] == ABILITY_PRANKSTER && EsMovimientoDeEstado(move)
+          && aiData->abilities[battlerAtk] == ABILITY_BROMISTA && EsMovimientoDeEstado(move)
           && !(moveTarget & (MOVE_TARGET_OPPONENTS_FIELD | MOVE_TARGET_USER)))
             RETURN_SCORE_MINUS(10);
     } // end check MOVE_TARGET_USER
@@ -2636,7 +2636,10 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
             if (CountUsablePartyMons(battlerAtk) == 0)
                 break; // Can't switch
 
-            //if (switchAbility == ABILITY_INTIMIDATE && PartyHasMoveCategory(battlerDef, CATEGORIA_FISICA))
+            //if (switchAbility == ABILITY_INTIMIDATE && PartyHasMoveCategory(battlerDef, CATEGORIA_FISICA)) REVISAR
+                //ADJUST_SCORE(7);
+
+            //if (switchAbility == ABILITY_MAL_AURA && PartyHasMoveCategory(battlerDef, CATEGORIA_ESPECIAL)) REVISAR
                 //ADJUST_SCORE(7);
         }
         break;

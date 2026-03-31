@@ -13162,6 +13162,24 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_RageFist,
     },
 
+    [MOVE_VUDU] =
+    {
+        .name = COMPOUND_STRING("Vudú"),
+        .description = COMPOUND_STRING(
+            "The more the user has been\n"
+            "hit, the stronger the move."),
+        .effect = EFFECT_RAGE_FIST,
+        .power = 50,
+        .type = TIPO_FANTASMA,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_LIMITADO,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .category = CATEGORIA_FISICA,
+        .makesContact = TRUE,
+        .battleAnimScript = gAnimacionMovimiento_Vudu,
+    },
+
     [MOVE_BITTER_BLADE] =
     {
         .name = COMPOUND_STRING("Bitter Blade"),

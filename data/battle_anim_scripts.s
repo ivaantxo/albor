@@ -12456,6 +12456,9 @@ gBattleAnimMove_RageFist::
 	waitbgfadein
 	end
 
+gAnimacionMovimiento_Vudu:: @Hacer
+	end
+
 gBattleAnimMove_ChillingWater::
 	loadspritegfx ANIM_TAG_ICE_CRYSTALS
 	loadspritegfx ANIM_TAG_POISON_BUBBLE

@@ -7231,7 +7231,7 @@ static void Cmd_various(void)
             gBattlescriptCurrInstr = cmd->nextInstr; // can heal
         return;
     }
-    case VARIOUS_JUMP_IF_PRANKSTER_BLOCKED:
+    case VARIOUS_JUMP_IF_BROMISTA_BLOCKED:
     {
         VARIOUS_ARGS(const u8 *jumpInstr);
         if (BlocksPrankster(gCurrentMove, gBattlerAttacker, battler, TRUE))

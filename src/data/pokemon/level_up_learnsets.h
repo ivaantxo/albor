@@ -2100,3 +2100,10 @@ static const struct LevelUpMove sDrakloakLevelUpLearnset[] = {
 static const struct LevelUpMove sDragapultLevelUpLearnset[] = {
     LEVEL_UP_MOVE(1, MOVE_BARRAGE),
     LEVEL_UP_END};
+
+//static const struct LevelUpMove sShuppetLevelUpLearnset[] = {
+//    LEVEL_UP_END};
+
+//static const struct LevelUpMove sBanetteLevelUpLearnset[] = {
+//    LEVEL_UP_MOVE(1, MOVE_VUDU),
+//    LEVEL_UP_END};

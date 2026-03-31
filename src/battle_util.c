@@ -2838,7 +2838,17 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 gBattlerAttacker = battler;
                 gSpecialStatuses[battler].switchInAbilityDone = TRUE;
                 SET_STATCHANGER(ESTADISTICA_ATAQUE, 1, TRUE);
-                BattleScriptPushCursorAndCallback(BattleScript_IntimidateActivates);
+                BattleScriptPushCursorAndCallback(ScriptCombate_ActivacionIntimidacionMalAura);
+                effect++;
+            }
+            break;
+        case ABILITY_MAL_AURA:
+            if (!gSpecialStatuses[battler].switchInAbilityDone)
+            {
+                gBattlerAttacker = battler;
+                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
+                SET_STATCHANGER(ESTADISTICA_ATAQUE_ESPECIAL, 1, TRUE);
+                BattleScriptPushCursorAndCallback(ScriptCombate_ActivacionIntimidacionMalAura);
                 effect++;
             }
             break;
@@ -3092,7 +3102,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             gCombate.contadorMultigolpes = 0; // Prevent multi-hit moves from hitting more than once after move has been absorbed.
     }
     break;
-    case ABILITYEFFECT_MOVE_END: // Think contact abilities.
+    case ABILITYEFFECT_MOVE_END:
         switch (gLastUsedAbility)
         {
         case ABILITY_JUSTIFIED:
@@ -3218,7 +3228,19 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                     gBattleMoveDamage = 1;
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
                 BattleScriptPushCursor();
-                gBattlescriptCurrInstr = BattleScript_RoughSkinActivates;
+                gBattlescriptCurrInstr = ScriptCombate_ActivacionHabilidadDanioAtacante;
+                effect++;
+            }
+            break;
+        case ABILITY_RENCOR:
+            if (MovimientoEsEfectivo(gCombate->resultadoMovimiento) && IsBattlerAlive(gBattlerAttacker) && !gProtectStructs[gBattlerAttacker].confusionSelfDmg && HaSidoDaniado(gBattlerAttacker));
+            {
+                gBattleMoveDamage = CuantosPSMaximos(gBattlerAttacker) / 16;
+                if (gBattleMoveDamage == 0)
+                    gBattleMoveDamage = 1;
+                PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = ScriptCombate_ActivacionHabilidadDanioAtacante;
                 effect++;
             }
             break;
@@ -5703,7 +5725,7 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
             MULTIPLICA(modifier, MAS_25_POR_CIENTO);
         break;
     case ABILITY_ENTUSIASMO:
-        MULTIPLICA(modifier, MAS_25_POR_CIENTO);
+        MULTIPLICA(modifier, MAS_50_POR_CIENTO);
         break;
     case ABILITY_AGALLAS:
         if (gBattleMons[battlerAtk].status1 & STATUS1_ANY)
@@ -6791,7 +6813,7 @@ bool32 TryRoomService(u32 battler)
 
 bool32 BlocksPrankster(u16 move, u32 battlerPrankster, u32 battlerDef, bool32 checkTarget)
 {
-    if (!gProtectStructs[battlerPrankster].pranksterElevated)
+    if (!gProtectStructs[battlerPrankster].prioridadBromista)
         return FALSE;
     if (GetBattlerSide(battlerPrankster) == GetBattlerSide(battlerDef))
         return FALSE;
