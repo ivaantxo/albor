@@ -2061,41 +2061,41 @@ void SwapTurnOrder(u8 id1, u8 id2)
 // For AI, so it doesn't 'cheat' by knowing player's ability
 u32 GetBattlerTotalSpeedStatArgs(u32 battler, u32 ability, u32 holdEffect)
 {
-    u32 speed = gBattleMons[battler].speed;
+    u32 velocidad = gBattleMons[battler].speed;
+    uq4_12_t modificador = NEUTRO;
 
     if (WEATHER_HAS_EFFECT)
     {
-        if (ability == ABILITY_SWIFT_SWIM && gBattleWeather & B_WEATHER_RAIN)
-            speed = (speed * 150) / 100;
-        else if (ability == ABILITY_ALAS_HIDROFOBAS && gBattleWeather & B_WEATHER_RAIN)
-            speed = (speed * 150) / 100;
-        else if (ability == ABILITY_CHLOROPHYLL && gBattleWeather & B_WEATHER_SUN)
-            speed = (speed * 150) / 100;
-        else if (ability == ABILITY_SAND_RUSH && gBattleWeather & B_WEATHER_SANDSTORM)
-            speed = (speed * 150) / 100;
-        else if (ability == ABILITY_SLUSH_RUSH && gBattleWeather & B_WEATHER_SNOW)
-            speed = (speed * 150) / 100;
+        if ((ability == ABILITY_SWIFT_SWIM || ability == ABILITY_ALAS_HIDROFOBAS) && (gBattleWeather & B_WEATHER_RAIN))
+            MULTIPLICA(modificador, MAS_50_POR_CIENTO);
+        else if (ability == ABILITY_CHLOROPHYLL && (gBattleWeather & B_WEATHER_SUN))
+            MULTIPLICA(modificador, MAS_50_POR_CIENTO);
+        else if (ability == ABILITY_SAND_RUSH && (gBattleWeather & B_WEATHER_SANDSTORM))
+            MULTIPLICA(modificador, MAS_50_POR_CIENTO);
+        else if (ability == ABILITY_SLUSH_RUSH && (gBattleWeather & B_WEATHER_SNOW))
+            MULTIPLICA(modificador, MAS_50_POR_CIENTO);
     }
 
-    if (ability == ABILITY_QUICK_FEET && gBattleMons[battler].status1 & STATUS1_ANY)
-        speed = (speed * 150) / 100;
+    if (ability == ABILITY_QUICK_FEET && (gBattleMons[battler].status1 & STATUS1_ANY))
+        MULTIPLICA(modificador, MAS_50_POR_CIENTO);
 
-    speed = (speed * gMultiplicadoresEstadisticas[gBattleMons[battler].statStages[ESTADISTICA_VELOCIDAD]]) >> 8;
+    if (gBattleResources->flags[battler] & RESOURCE_FLAG_UNBURDEN)
+        MULTIPLICA(modificador, MAS_100_POR_CIENTO);
 
     if (holdEffect == HOLD_EFFECT_MACHO_BRACE || holdEffect == HOLD_EFFECT_POWER_ITEM)
-        speed /= 2;
+        MULTIPLICA(modificador, MENOS_50_POR_CIENTO);
     else if (holdEffect == HOLD_EFFECT_CHOICE_SCARF)
-        speed = (speed * 150) / 100;
+        MULTIPLICA(modificador, MAS_50_POR_CIENTO);
 
     if (gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_TAILWIND)
-        speed *= 2;
-    if (gBattleResources->flags[battler] & RESOURCE_FLAG_UNBURDEN)
-        speed *= 2;
+        MULTIPLICA(modificador, MAS_100_POR_CIENTO);
 
-    if (gBattleMons[battler].status1 & STATUS1_PARALYSIS && ability != ABILITY_QUICK_FEET)
-        speed /= 2;
+    if ((gBattleMons[battler].status1 & STATUS1_PARALYSIS) && ability != ABILITY_QUICK_FEET)
+        MULTIPLICA(modificador, MENOS_50_POR_CIENTO);
 
-    return speed;
+    MULTIPLICA(modificador, gMultiplicadorEstadisticas[gBattleMons[battler].statStages[ESTADISTICA_VELOCIDAD]]);
+
+    return uq4_12_multiply_by_int(modificador, velocidad);
 }
 
 u32 GetBattlerTotalSpeedStat(u32 battler)

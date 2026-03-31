@@ -1930,9 +1930,9 @@ void GetFollowerAction(struct ScriptContext *ctx) // Essentially a big switch fo
         if (multi < NUMERO_TIPOS)
         {
             multi = GetTypeEffectiveness(mon, multi);
-            if (multi <= UQ_4_12(0.5))
+            if (multi <= MOVIMIENTO_POCO_EFECTIVO)
                 condEmotes[condCount++] = (struct SpecialEmote) {.emotion = FOLLOWER_EMOTION_HAPPY, .index = 32};
-            else if (multi >= UQ_4_12(2.0))
+            else if (multi >= MOVIMIENTO_SUPER_EFECTIVO)
                 condEmotes[condCount++] = (struct SpecialEmote) {.emotion = FOLLOWER_EMOTION_SAD, .index = 7};
         }*/
     }

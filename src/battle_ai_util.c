@@ -746,18 +746,18 @@ static u32 IA_Efectividad(uq4_12_t multiplicador)
 {
     switch (multiplicador)
     {
-    case UQ_4_12(0.0):
+    case MOVIMIENTO_NO_EFECTIVO:
         return AI_EFFECTIVENESS_x0;
-    case UQ_4_12(0.25):
+    case MOVIMIENTO_MUY_POCO_EFECTIVO:
         return AI_EFFECTIVENESS_x0_25;
-    case UQ_4_12(0.5):
+    case MOVIMIENTO_POCO_EFECTIVO:
         return AI_EFFECTIVENESS_x0_5;
-    case UQ_4_12(1.0):
+    case MOVIMIENTO_NEUTRO:
     default:
         return AI_EFFECTIVENESS_x1;
-    case UQ_4_12(2.0):
+    case MOVIMIENTO_SUPER_EFECTIVO:
         return AI_EFFECTIVENESS_x2;
-    case UQ_4_12(4.0):
+    case MOVIMIENTO_ULTRA_EFECTIVO:
         return AI_EFFECTIVENESS_x4;
     }
 }
@@ -1157,28 +1157,6 @@ bool32 IsMoveEncouragedToHit(u32 battlerAtk, u32 battlerDef, u32 move)
     if (gMovesInfo[move].accuracy == 0)
         return TRUE;
 
-    return FALSE;
-}
-
-bool32 ShouldTryOHKO(u32 battlerAtk, u32 battlerDef, u32 atkAbility, u32 defAbility, u32 move)
-{
-    u32 holdEffect = AI_DATA->holdEffects[battlerDef];
-    u32 accuracy = AI_DATA->moveAccuracy[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex];
-
-    gPotentialItemEffectBattler = battlerDef;
-
-    if ((((gStatuses3[battlerDef] & STATUS3_ALWAYS_HITS) && gDisableStructs[battlerDef].battlerWithSureHit == battlerAtk) || atkAbility == ABILITY_NO_GUARD || defAbility == ABILITY_NO_GUARD) && gBattleMons[battlerAtk].level >= gBattleMons[battlerDef].level)
-    {
-        return TRUE;
-    }
-    else // test the odds
-    {
-        u32 odds = accuracy + (gBattleMons[battlerAtk].level - gBattleMons[battlerDef].level);
-        if (B_SHEER_COLD_ACC >= GEN_7 && move == MOVE_SHEER_COLD && !EsTipo(gBattlerAttacker, TIPO_HIELO))
-            odds -= 10;
-        if (Random() % 100 + 1 < odds && gBattleMons[battlerAtk].level >= gBattleMons[battlerDef].level)
-            return TRUE;
-    }
     return FALSE;
 }
 

@@ -211,7 +211,7 @@ u32 ChooseWildMonLevel(const struct WildPokemon *wildPokemon, u32 wildMonIndex, 
         if (!GetMonData(&gPlayerParty[0], MON_DATA_IS_EGG))
         {
             u16 ability = GetMonAbility(&gPlayerParty[0]);
-            if (ability == ABILITY_HUSTLE || ability == ABILITY_VITAL_SPIRIT)
+            if (ability == ABILITY_ENTUSIASMO || ability == ABILITY_VITAL_SPIRIT)
             {
                 if (Random() % 2 == 0)
                     return max;

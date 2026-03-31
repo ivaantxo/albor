@@ -724,7 +724,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         } // ignore def ability check
 
         // gen7+ dark type mons immune to priority->elevated moves from prankster
-        if (B_PRANKSTER_DARK_TYPES >= GEN_7 && EsTipo(battlerDef, TIPO_SINIESTRO)
+        if (EsTipo(battlerDef, TIPO_SINIESTRO)
           && aiData->abilities[battlerAtk] == ABILITY_PRANKSTER && EsMovimientoDeEstado(move)
           && !(moveTarget & (MOVE_TARGET_OPPONENTS_FIELD | MOVE_TARGET_USER)))
             RETURN_SCORE_MINUS(10);

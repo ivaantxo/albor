@@ -927,7 +927,7 @@ static void Cmd_attackcanceler(void)
                 bestModifier = currentModifier;
                 bestType = currentType;
             }
-            if (bestModifier == UQ_4_12(0.0))
+            if (bestModifier == MOVIMIENTO_NO_EFECTIVO)
                 break;
         }
 
@@ -1146,14 +1146,17 @@ static bool32 AccuracyCalcHelper(u16 move)
     return FALSE;
 }
 
+C
 u32 GetTotalAccuracy(u32 battlerAtk, u32 battlerDef, u32 move, u32 atkAbility, u32 defAbility, u32 atkHoldEffect, u32 defHoldEffect)
 {
-    u32 calc, moveAcc;
+    u32 moveAcc;
     s32 buff, accStage, evasionStage;
+    uq4_12_t modifier = NEUTRO;
 
     gPotentialItemEffectBattler = battlerDef;
     accStage = gBattleMons[battlerAtk].statStages[ESTADISTICA_PRECISION];
     evasionStage = gBattleMons[battlerDef].statStages[ESTADISTICA_EVASION];
+    
     if (gMovesInfo[move].ignoresTargetDefenseEvasionStages)
         evasionStage = ESTADISTICA_NEUTRA;
 
@@ -1166,17 +1169,16 @@ u32 GetTotalAccuracy(u32 battlerAtk, u32 battlerDef, u32 move, u32 atkAbility, u
 
     moveAcc = gMovesInfo[move].accuracy;
 
-    calc = (gMultiplicadoresEstadisticas[buff] * moveAcc) >> 8;
+    MULTIPLICA(modifier, gMultiplicadorEstadisticas[buff]);
 
     switch (atkAbility)
     {
     case ABILITY_OJO_COMPUESTO:
     case ABILITY_VISTA_LINCE:
-        calc = (calc * 120) / 100;
+        MULTIPLICA(modifier, MAS_25_POR_CIENTO);
         break;
-    case ABILITY_HUSTLE:
-        if (EsMovimientoFisico(move))
-            calc = (calc * 80) / 100;
+    case ABILITY_ENTUSIASMO:
+        MULTIPLICA(modifier, MENOS_12_5_POR_CIENTO);
         break;
     }
 
@@ -1184,104 +1186,36 @@ u32 GetTotalAccuracy(u32 battlerAtk, u32 battlerDef, u32 move, u32 atkAbility, u
     {
     case ABILITY_SAND_VEIL:
         if (WEATHER_HAS_EFFECT && gBattleWeather & B_WEATHER_SANDSTORM)
-            calc = (calc * 80) / 100;
+            MULTIPLICA(modifier, MENOS_25_POR_CIENTO);
         break;
     case ABILITY_SNOW_CLOAK:
         if (WEATHER_HAS_EFFECT && (gBattleWeather & (B_WEATHER_HAIL | B_WEATHER_SNOW)))
-            calc = (calc * 80) / 100;
+            MULTIPLICA(modifier, MENOS_25_POR_CIENTO);
         break;
     case ABILITY_OLOR_FLUVIAL:
         if (WEATHER_HAS_EFFECT && (gBattleWeather & (B_WEATHER_RAIN)))
-            calc = (calc * 80) / 100;
+            MULTIPLICA(modifier, MENOS_25_POR_CIENTO);
         break;
     case ABILITY_TANGLED_FEET:
         if (gBattleMons[battlerDef].status2 & STATUS2_CONFUSION)
-            calc = (calc * 80) / 100;
+            MULTIPLICA(modifier, MENOS_25_POR_CIENTO);
         break;
     case ABILITY_HIBERNADOR:
         if (gBattleMons[battlerDef].status1 & STATUS1_SLEEP)
-            calc = (calc * 80) / 100;
+            MULTIPLICA(modifier, MENOS_25_POR_CIENTO);
         break;
     case ABILITY_ESQUIVO:
-        calc = (calc * 80) / 100;
+        MULTIPLICA(modifier, MENOS_25_POR_CIENTO);
         break;
     }
 
     if (atkHoldEffect == HOLD_EFFECT_WIDE_LENS)
-        calc = (calc * 120) / 100;
+        MULTIPLICA(modifier, MAS_25_POR_CIENTO);
+        
     if (gFieldStatuses & STATUS_FIELD_GRAVITY)
-        calc = (calc * 120) / 100;
+        MULTIPLICA(modifier, MAS_25_POR_CIENTO);
 
-    return calc;
-}
-
-static void AccuracyCheck(bool32 recalcDragonDarts, const u8 *nextInstr, const u8 *failInstr, u16 move)
-{
-    u32 moveTarget = GetBattlerMoveTargetType(gBattlerAttacker, move);
-    u32 abilityAtk = GetBattlerAbility(gBattlerAttacker);
-    u32 abilityDef = GetBattlerAbility(gBattlerTarget);
-    u32 holdEffectAtk = GetBattlerHoldEffect(gBattlerAttacker, TRUE);
-
-    if (move == ACC_CURR_MOVE)
-        move = gCurrentMove;
-
-    if (move == NO_ACC_CALC_CHECK_LOCK_ON)
-    {
-        if (gStatuses3[gBattlerTarget] & STATUS3_ALWAYS_HITS && gDisableStructs[gBattlerTarget].battlerWithSureHit == gBattlerAttacker)
-            gBattlescriptCurrInstr = nextInstr;
-        else if (gStatuses3[gBattlerTarget] & (STATUS3_SEMI_INVULNERABLE))
-            gBattlescriptCurrInstr = failInstr;
-        else if (!JumpIfMoveAffectedByProtect(gCurrentMove))
-            gBattlescriptCurrInstr = nextInstr;
-    }
-    else if (gSpecialStatuses[gBattlerAttacker].parentalBondState == PARENTAL_BOND_2ND_HIT || (gSpecialStatuses[gBattlerAttacker].multiHitOn && (abilityAtk == ABILITY_SKILL_LINK || abilityAtk == ABILITY_ENJAMBRE || holdEffectAtk == HOLD_EFFECT_LOADED_DICE)))
-    {
-        // No acc checks for second hit of Parental Bond or multi hit moves, except Patada Triple/Triple Axel/Population Bomb
-        gBattlescriptCurrInstr = nextInstr;
-    }
-    else
-    {
-        u32 accuracy;
-        u32 type = TipoMovimiento(move, gBattlerAttacker);
-
-        if (JumpIfMoveAffectedByProtect(move))
-            return;
-        if (AccuracyCalcHelper(move))
-            return;
-
-        accuracy = GetTotalAccuracy(
-            gBattlerAttacker,
-            gBattlerTarget,
-            move,
-            abilityAtk,
-            abilityDef,
-            holdEffectAtk,
-            GetBattlerHoldEffect(gBattlerTarget, TRUE));
-
-        if (!PorcentajeAleatorio(accuracy))
-        {
-            gMoveResultFlags |= MOVE_RESULT_MISSED;
-            if (gMovesInfo[gCurrentMove].effect == EFFECT_DRAGON_DARTS && !recalcDragonDarts // So we don't jump back and forth between targets
-                && CanTargetPartner(gBattlerAttacker, gBattlerTarget) && !TargetFullyImmuneToCurrMove(gBattlerAttacker, ALIADO(gBattlerTarget)))
-            {
-                // Smart target to partner if miss
-                gBattlerTarget = ALIADO(gBattlerTarget);
-                gMoveResultFlags &= ~MOVE_RESULT_MISSED;
-                AccuracyCheck(TRUE, nextInstr, failInstr, move);
-                return;
-            }
-
-            if (EsContraEntrenador() &&
-                (moveTarget == MOVE_TARGET_BOTH || moveTarget == MOVE_TARGET_FOES_AND_ALLY))
-                gMensajeBatalla = TEXTO_COMBATE_ATAQUE_FALLO_DEFENSOR;
-            else
-                gMensajeBatalla = TEXTO_COMBATE_ATAQUE_FALLO_ATACANTE;
-
-            if (gMovesInfo[move].power)
-                CalcTypeEffectivenessMultiplier(move, type, gBattlerAttacker, gBattlerTarget, abilityDef, TRUE);
-        }
-        JumpIfMoveFailed(move);
-    }
+    return uq4_12_multiply_by_int(modifier, moveAcc);
 }
 
 static void Cmd_accuracycheck(void)

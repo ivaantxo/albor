@@ -474,7 +474,7 @@ struct Combate
     u32 posicionPokemonEquipo;
     u32 estadisticaAtaqueEquipo;
     bool32 movimientoEspejoMagicoRebota;
-    enum ResultadosMovimiento resultadoMovimiento;
+    uq4_12_t resultadoMovimiento;
     struct EfectosFinTurno efectoFinTurno;
 };
 
@@ -781,7 +781,7 @@ static inline bool32 EsContraEntrenador(void)
     return (gBattleTypeFlags & COMBATE_ENTRENADOR);
 }
 
-static inline bool32 MovimientoEsEfectivo(enum ResultadosMovimiento resultadoMovimiento)
+static inline bool32 MovimientoEsEfectivo(uq4_12_t resultadoMovimiento)
 {
     return (resultadoMovimiento == MOVIMIENTO_POCO_EFECTIVO || resultadoMovimiento == MOVIMIENTO_NEUTRO || resultadoMovimiento == MOVIMIENTO_SUPER_EFECTIVO);
 }

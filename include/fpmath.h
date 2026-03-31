@@ -49,12 +49,6 @@ static inline uq4_12_t uq4_12_subtract(uq4_12_t a, uq4_12_t b)
 static inline uq4_12_t uq4_12_multiply(uq4_12_t a, uq4_12_t b)
 {
     u32 product = (u32) a * b;
-    return (product + UQ_4_12_ROUND) >> UQ_4_12_SHIFT;
-}
-
-static inline uq4_12_t uq4_12_multiply_half_down(uq4_12_t a, uq4_12_t b)
-{
-    u32 product = (u32) a * b;
     return (product + UQ_4_12_ROUND - 1) >> UQ_4_12_SHIFT;
 }
 
@@ -66,21 +60,27 @@ static inline uq4_12_t uq4_12_divide(uq4_12_t dividend, uq4_12_t divisor)
 
 // Multiplies value by the UQ_4_12 number modifier.
 // Returns an integer, rounded to nearest (rounding down on n.5)
-static inline u32 uq4_12_multiply_by_int_half_down(uq4_12_t modifier, u32 value)
+static inline u32 uq4_12_multiply_by_int(uq4_12_t modifier, u32 value)
 {
     return UQ_4_12_TO_INT((modifier * value) + UQ_4_12_ROUND - 1);
 }
 
-// Multiplies value by the UQ_4_12 number modifier.
-// Returns an integer, rounded to nearest (rounding up on n.5)
-static inline u32 uq4_12_multiply_by_int_half_up(uq4_12_t modifier, u32 value)
-{
-    return UQ_4_12_TO_INT((modifier * value) + UQ_4_12_ROUND);
-}
+#define MAS_12_5_POR_CIENTO                 UQ_4_12(1.125)
+#define MAS_25_POR_CIENTO                   UQ_4_12(1.25)
+#define MAS_37_5_POR_CIENTO                 UQ_4_12(1.375)
+#define MAS_50_POR_CIENTO                   UQ_4_12(1.5)
+#define MAS_67_5_POR_CIENTO                 UQ_4_12(1.675)
+#define MAS_75_POR_CIENTO                   UQ_4_12(1.75)
+#define MAS_87_5_POR_CIENTO                 UQ_4_12(1.875)
+#define MAS_100_POR_CIENTO                  UQ_4_12(2.0)
 
-static inline uq4_12_t PorcentajeUQ4_12(u32 porcentaje)
-{
-    return (4096 * porcentaje + 50) / 100;
-}
+#define MENOS_12_5_POR_CIENTO               UQ_4_12(0.875)
+#define MENOS_25_POR_CIENTO                 UQ_4_12(0.75)
+#define MENOS_37_5_POR_CIENTO               UQ_4_12(0.625)
+#define MENOS_50_POR_CIENTO                 UQ_4_12(0.5)
+#define MENOS_67_5_POR_CIENTO               UQ_4_12(0.375)
+#define MENOS_75_POR_CIENTO                 UQ_4_12(0.25)
+
+#define MULTIPLICA(modificador, bono) ((modificador) = uq4_12_multiply((modificador), (bono)))
 
 #endif // FPMATH_H_

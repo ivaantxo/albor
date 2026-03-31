@@ -404,7 +404,7 @@ extern u16 gFollowerSteps;
 extern const struct MoveInfo gMovesInfo[];
 extern const struct SpeciesInfo gSpeciesInfo[];
 extern const u32 gExperienceTables[TIPOS_CRECIMIENTO][MAX_LEVEL + 1];
-extern const u32 gMultiplicadoresEstadisticas[NUMERO_CAMBIOS_ESTADISTICAS];
+extern const uq4_12_t gMultiplicadorEstadisticas[NUMERO_CAMBIOS_ESTADISTICAS];
 extern const struct SpriteTemplate gBattlerSpriteTemplates[];
 extern const u32 sExpCandyExperienceTable[];
 extern const struct Ability gAbilitiesInfo[];

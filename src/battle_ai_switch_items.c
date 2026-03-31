@@ -23,7 +23,7 @@
 
 // this file's functions
 static bool32 HasSuperEffectiveMoveAgainstOpponents(u32 battler, bool32 noRng);
-static bool32 FindMonWithFlagsAndSuperEffective(u32 combatiente, enum ResultadosMovimiento resultadoMovimiento, u32 porcentaje); // Revisar, esto es una castaña
+static bool32 FindMonWithFlagsAndSuperEffective(u32 combatiente, uq4_12_t resultadoMovimiento, u32 porcentaje); // Revisar, esto es una castaña
 static bool32 AIExpectsToFaintPlayer(u32 battler);
 static u32 GetSwitchinHazardsDamage(u32 battler, struct BattlePokemon *battleMon);
 static bool32 CanAbilityTrapOpponent(u16 ability, u32 opponent);
@@ -64,7 +64,7 @@ static bool32 ShouldSwitchIfHasBadOdds(u32 battler)
     s32 i, damageDealt = 0, maxDamageDealt = 0, damageTaken = 0, maxDamageTaken = 0;
     u32 aiMove, playerMove, aiBestMove = MOVE_NONE, aiAbility = AI_DATA->abilities[battler], opposingBattler, weather = AI_GetWeather(AI_DATA);
     bool32 getsOneShot = FALSE, hasStatusMove = FALSE, hasSuperEffectiveMove = FALSE;
-    u16 typeEffectiveness = UQ_4_12(1.0), aiMoveEffect; //baseline typing damage
+    u16 typeEffectiveness = MOVIMIENTO_NEUTRO, aiMoveEffect; //baseline typing damage
 
     // Only use this if AI_FLAG_SMART_SWITCHING is set for the trainer
     if (!(AI_THINKING_STRUCT->aiFlags[battler] & AI_FLAG_SMART_SWITCHING))
@@ -177,7 +177,7 @@ static bool32 ShouldSwitchIfHasBadOdds(u32 battler)
     }
 
     // General bad type matchups have more wiggle room
-    if (typeEffectiveness >= UQ_4_12(2.0)) // If the player has at least a 2x type advantage
+    if (typeEffectiveness >= MOVIMIENTO_SUPER_EFECTIVO) // If the player has at least a 2x type advantage
     {
         if (!hasSuperEffectiveMove // If the AI doesn't have a super effective move
         && (gBattleMons[battler].hp >= gBattleMons[battler].maxHP / 2 // And the current mon has at least 1/2 their HP, or 1/4 HP and Regenerator
@@ -534,7 +534,7 @@ static bool32 AreStatsRaised(u32 battler)
     return (buffedStatsValue > 3);
 }
 
-static bool32 FindMonWithFlagsAndSuperEffective(u32 combatiente, enum ResultadosMovimiento resultadoMovimiento, u32 porcentaje)
+static bool32 FindMonWithFlagsAndSuperEffective(u32 combatiente, uq4_12_t resultadoMovimiento, u32 porcentaje)
 {
     u32 battlerIn1, battlerIn2;
     s32 firstId;
@@ -865,7 +865,7 @@ bool32 ShouldSwitch(u32 battler)
 
     // Default Function
     // Can prompt switch if AI has a pokemon in party that resists current opponent & has super effective move
-    if (FindMonWithFlagsAndSuperEffective(battler, MOVIMIENTO_NO_AFECTA, 50)
+    if (FindMonWithFlagsAndSuperEffective(battler, MOVIMIENTO_NO_EFECTIVO, 50)
         || FindMonWithFlagsAndSuperEffective(battler, MOVIMIENTO_POCO_EFECTIVO, 33))
         return TRUE;
 
@@ -998,7 +998,7 @@ static u32 GetBestMonTypeMatchup(struct Pokemon *party, int firstId, int lastId,
 
     while (bits != 0x3F) // All mons were checked.
     {
-        uq4_12_t bestResist = UQ_4_12(1.0);
+        uq4_12_t bestResist = MOVIMIENTO_NEUTRO;
         int bestMonId = PARTY_SIZE;
         // Find the mon whose type is the most suitable defensively.
         for (i = firstId; i < lastId; i++)
@@ -1006,7 +1006,7 @@ static u32 GetBestMonTypeMatchup(struct Pokemon *party, int firstId, int lastId,
             if (!((1u << i) & invalidMons) && !((1u << i) & bits))
             {
                 u16 species = GetMonData(&party[i], MON_DATA_SPECIES);
-                uq4_12_t typeEffectiveness = UQ_4_12(1.0);
+                uq4_12_t typeEffectiveness = MOVIMIENTO_NEUTRO;
 
                 u8 atkType1 = gBattleMons[opposingBattler].types[TIPO_1];
                 u8 atkType2 = gBattleMons[opposingBattler].types[TIPO_2];
@@ -1446,7 +1446,7 @@ static u16 GetSwitchinTypeMatchup(u32 opposingBattler, struct BattlePokemon batt
 {
 
     // Check type matchup
-    u16 typeEffectiveness = UQ_4_12(1.0);
+    u16 typeEffectiveness = MOVIMIENTO_NEUTRO;
     u8 atkType1 = gSpeciesInfo[gBattleMons[opposingBattler].species].types[TIPO_1], atkType2 = gSpeciesInfo[gBattleMons[opposingBattler].species].types[TIPO_2],
     defType1 = battleMon.types[TIPO_1], defType2 = battleMon.types[TIPO_2];
 
@@ -1570,7 +1570,7 @@ static u32 GetBestMonIntegrated(struct Pokemon *party, int firstId, int lastId, 
     s32 defensiveMonHitKOThreshold = 3; // 3HKO threshold that candidate defensive mons must exceed
     s32 playerMonHP = gBattleMons[opposingBattler].hp, maxDamageDealt = 0, damageDealt = 0;
     u32 aiMove, hitsToKOAI, maxHitsToKO = 0;
-    u16 bestResist = UQ_4_12(1.0), bestResistEffective = UQ_4_12(1.0), typeMatchup;
+    u16 bestResist = MOVIMIENTO_NEUTRO, bestResistEffective = MOVIMIENTO_NEUTRO, typeMatchup;
     bool32 isFreeSwitch = IsFreeSwitch(isSwitchAfterKO, battlerIn1, opposingBattler), isSwitchinFirst, canSwitchinWin1v1;
 
     // Iterate through mons

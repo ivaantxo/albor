@@ -82,15 +82,6 @@ enum ResultadosCombate
     B_OUTCOME_MON_TELEPORTED,
 };
 
-enum ResultadosMovimiento
-{
-    MOVIMIENTO_NEUTRO,
-    MOVIMIENTO_SUPER_EFECTIVO,
-    MOVIMIENTO_POCO_EFECTIVO,
-    MOVIMIENTO_NO_AFECTA,
-    MOVIMIENTO_FALLO,
-};
-
 // Non-volatile status conditions
 // These remain outside of battle and after switching out.
 // If a new STATUS1 is added here, it should also be added to
@@ -478,6 +469,11 @@ enum EfectosFinTurnoIndividuales
 #define MINIMO_MULTIGOLPES 2
 #define MAXIMO_MULTIGOLPES 5
 
-#define POTENCIACION_GEMA   UQ_4_12(1.5) // 50%
+#define MOVIMIENTO_NO_EFECTIVO              UQ_4_12(0.0)
+#define MOVIMIENTO_MUY_POCO_EFECTIVO        UQ_4_12(0.25)
+#define MOVIMIENTO_POCO_EFECTIVO            UQ_4_12(0.5)
+#define MOVIMIENTO_NEUTRO                   UQ_4_12(1.0)
+#define MOVIMIENTO_SUPER_EFECTIVO           UQ_4_12(2.0)
+#define MOVIMIENTO_ULTRA_EFECTIVO           UQ_4_12(4.0)
 
 #endif // GUARD_CONSTANTS_BATTLE_H

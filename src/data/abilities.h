@@ -308,10 +308,10 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("+25% precisión."),
     },
 
-    [ABILITY_HUSTLE] =
+    [ABILITY_ENTUSIASMO] =
     {
-        .name = _("Hustle"),
-        .description = COMPOUND_STRING("Trades accuracy for power."),
+        .name = _("Entusiasmo"),
+        .description = COMPOUND_STRING("-12,5% precisión, +25% potencia."),
     },
 
     [ABILITY_CUTE_CHARM] =

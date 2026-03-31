@@ -120,21 +120,37 @@ const struct NatureInfo gInfoNaturalezas[NUMERO_NATURALEZAS] =
 
 #include "data/pokemon/species_info.h"
 
-const u32 gMultiplicadoresEstadisticas[NUMERO_CAMBIOS_ESTADISTICAS] =
+#define MAS_150_POR_CIENTO                  UQ_4_12(2.5)
+#define MAS_125_POR_CIENTO                  UQ_4_12(2.25)
+#define MAS_100_POR_CIENTO                  UQ_4_12(2.0)
+#define MAS_75_POR_CIENTO                   UQ_4_12(1.75)
+#define MAS_50_POR_CIENTO                   UQ_4_12(1.5)
+#define MAS_25_POR_CIENTO                   UQ_4_12(1.25)
+#define MAS_12_5_POR_CIENTO                 UQ_4_12(1.125)
+#define NEUTRO                              UQ_4_12(1.0)
+#define MENOS_12_5_POR_CIENTO               UQ_4_12(0.875)
+#define MENOS_25_POR_CIENTO                 UQ_4_12(0.75)
+#define MENOS_37_5_POR_CIENTO               UQ_4_12(0.625)
+#define MENOS_50_POR_CIENTO                 UQ_4_12(0.5)
+#define MENOS_62_5_POR_CIENTO               UQ_4_12(0.375)
+#define MENOS_75_POR_CIENTO                 UQ_4_12(0.25)
+
+
+const uq4_12_t gMultiplicadorEstadisticas[NUMERO_CAMBIOS_ESTADISTICAS] =
 {
-    [ESTADISTICA_MENOS_6]   = PORCENTAJE(25),
-    [ESTADISTICA_MENOS_5]   = PORCENTAJE(37.5),
-    [ESTADISTICA_MENOS_4]   = PORCENTAJE(50),
-    [ESTADISTICA_MENOS_3]   = PORCENTAJE(62.5),
-    [ESTADISTICA_MENOS_2]   = PORCENTAJE(75),
-    [ESTADISTICA_MENOS_1]   = PORCENTAJE(87.5),
-    [ESTADISTICA_NEUTRA]    = PORCENTAJE(100),
-    [ESTADISTICA_MAS_1]     = PORCENTAJE(125),
-    [ESTADISTICA_MAS_2]     = PORCENTAJE(150),
-    [ESTADISTICA_MAS_3]     = PORCENTAJE(175),
-    [ESTADISTICA_MAS_4]     = PORCENTAJE(200),
-    [ESTADISTICA_MAS_5]     = PORCENTAJE(225),
-    [ESTADISTICA_MAS_6]     = PORCENTAJE(250)
+    [ESTADISTICA_MENOS_6]   = MENOS_75_POR_CIENTO,
+    [ESTADISTICA_MENOS_5]   = MENOS_62_5_POR_CIENTO,
+    [ESTADISTICA_MENOS_4]   = MENOS_50_POR_CIENTO,
+    [ESTADISTICA_MENOS_3]   = MENOS_37_5_POR_CIENTO,
+    [ESTADISTICA_MENOS_2]   = MENOS_25_POR_CIENTO,
+    [ESTADISTICA_MENOS_1]   = MENOS_12_5_POR_CIENTO,
+    [ESTADISTICA_NEUTRA]    = NEUTRO,
+    [ESTADISTICA_MAS_1]     = MAS_25_POR_CIENTO,
+    [ESTADISTICA_MAS_2]     = MAS_50_POR_CIENTO,
+    [ESTADISTICA_MAS_3]     = MAS_75_POR_CIENTO,
+    [ESTADISTICA_MAS_4]     = MAS_100_POR_CIENTO,
+    [ESTADISTICA_MAS_5]     = MAS_125_POR_CIENTO,
+    [ESTADISTICA_MAS_6]     = MAS_150_POR_CIENTO,
 };
 
 const struct SpriteTemplate gBattlerSpriteTemplates[NUMERO_COMBATIENTES] =

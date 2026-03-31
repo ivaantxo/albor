@@ -36,7 +36,6 @@
 - Campo magnético
 - Indicar y comprobar que Ditto ya no está en el juego, pero que la mayoría de Pokémon que antes no podían criar, ahora sí lo hacen: Los Pokémon legendarios son género neutro y se les ha añadido grupos huevo acordes, para criar solo hay que juntar 2 Pokémon sin género del mismo grupo huevo. 
 - Last Respects como una versión de paliza fantasma.
-- Darle bunker a Tentacruel.
 - Cambiar animación de Presente.
 - Crear ataque Abducción (animación otra vez).
 - Crear habilidad Instinto de supervivencia, sube at. y at. esp y vel. si salud debajo de 50% (relicanth)
@@ -68,8 +67,6 @@
 x0 --> 0; x0,25 --> PS máximos / 64; x0,5 --> PS máximos / 32; x1 --> PS máximos / 16; x2 --> PS máximos / 8; x4 --> PS máximos / 4.
 
 - Chequear Volt absorb
-
-- Convertir gMultiplicadoresEstadisticas a uq4_12 (quizás con porcentaje) y en general todos los uq4_12(x) --> EFECTIVO(x)
 
 - Convertir la lista de gSideStatuses relacionados con trampas en variables dentro de gCombate (quizás un enum?) y hacer una tabla, especificar que ya no se "absorben" las trampas, aunque quizá se pueda añadir un número de veces que sea efectivo (número de turnos? número de veces que hace daño?)
 
