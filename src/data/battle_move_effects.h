@@ -776,12 +776,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .encourageEncore = TRUE,
             },
 
-        [EFFECT_MIRACLE_EYE] =
-            {
-                .battleScript = BattleScript_EffectMircleEye,
-                .encourageEncore = TRUE,
-            },
-
         [EFFECT_TAILWIND] =
             {
                 .battleScript = BattleScript_EffectTailwind,
@@ -885,11 +879,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         [EFFECT_GOLPE_BAJO] =
             {
                 .battleScript = BattleScript_EffectGolpeBajo,
-            },
-
-        [EFFECT_SIMPLE_BEAM] =
-            {
-                .battleScript = BattleScript_EffectSimpleBeam,
             },
 
         [EFFECT_HEAL_PULSE] =
@@ -1040,20 +1029,11 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .battleScript = BattleScript_EffectSpeedSwap,
             },
 
-        [EFFECT_REVELATION_DANCE] =
-            {
-                .battleScript = BattleScript_EffectHit,
-            },
 
         [EFFECT_AURORA_VEIL] =
             {
                 .battleScript = BattleScript_EffectAuroraVeil,
                 .encourageEncore = TRUE,
-            },
-
-        [EFFECT_ACUPRESSURE] =
-            {
-                .battleScript = BattleScript_EffectAcupressure,
             },
 
         [EFFECT_AROMATIC_MIST] =
@@ -1109,11 +1089,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
             {
                 .battleScript = BattleScript_EffectShoreUp,
                 .encourageEncore = TRUE,
-            },
-
-        [EFFECT_FAIRY_LOCK] =
-            {
-                .battleScript = BattleScript_EffectFairyLock,
             },
 
         [EFFECT_RELIC_SONG] =

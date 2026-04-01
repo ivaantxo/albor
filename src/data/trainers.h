@@ -35641,7 +35641,7 @@ F_TRAINER_FEMALE |
             .moves = {
 #line 14783
                 MOVE_REST,
-                MOVE_GUILLOTINE,
+                MOVE_GUILLOTINA,
                 MOVE_TAUNT,
                 MOVE_DOUBLE_TEAM,
             },
@@ -35768,7 +35768,7 @@ F_TRAINER_FEMALE |
             .moves = {
 #line 14840
                 MOVE_REST,
-                MOVE_GUILLOTINE,
+                MOVE_GUILLOTINA,
                 MOVE_TAUNT,
                 MOVE_DOUBLE_TEAM,
             },
@@ -35895,7 +35895,7 @@ F_TRAINER_FEMALE |
             .moves = {
 #line 14897
                 MOVE_REST,
-                MOVE_GUILLOTINE,
+                MOVE_GUILLOTINA,
                 MOVE_TAUNT,
                 MOVE_DOUBLE_TEAM,
             },

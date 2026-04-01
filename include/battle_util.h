@@ -150,7 +150,7 @@ u32 CanAbilityAbsorbMove(u32 battlerAtk, u32 battlerDef, u32 abilityDef, u32 mov
 u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 moveArg);
 bool32 IsNeutralizingGasOnField(void);
 bool32 IsMoldBreakerTypeAbility(u32 battler, u32 ability);
-u32 GetBattlerAbility(u32 combatiente);
+u32 HabilidadCombatiente(u32 combatiente);
 bool32 EstaHabilidadEnElLadoDeCombatiente(u32 battler, u32 ability);
 u32 QueCombatienteTieneHabilidad(u32 habilidad);
 bool32 EstaHabilidadEnCampoContrario(u32 combatiente, u32 habilidad);

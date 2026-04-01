@@ -117,7 +117,6 @@ struct DisableStruct
     u8 stickyWebDone : 1;
     u8 stealthRockDone : 1;
     u8 weatherAbilityDone : 1;
-    u8 usedProteanLibero : 1;
     bool32 esPrimerTurno;
 };
 
@@ -213,7 +212,6 @@ struct FieldTimer
     u8 magicRoomTimer;
     u8 trickRoomTimer;
     u8 gravityTimer;
-    u8 fairyLockTimer;
 };
 
 struct WishFutureKnock
@@ -478,10 +476,10 @@ struct Combate
     struct EfectosFinTurno efectoFinTurno;
 };
 
-#define SET_BATTLER_TYPE(battlerId, type)            \
-    {                                                \
-        gBattleMons[battlerId].types[TIPO_1] = type; \
-        gBattleMons[battlerId].types[TIPO_2] = type; \
+#define CAMBIA_TIPO_COMBATIENTE(combatiente, tipo)      \
+    {                                                   \
+        gBattleMons[combatiente].types[TIPO_1] = tipo;  \
+        gBattleMons[combatiente].types[TIPO_2] = tipo;  \
     }
 
 #define RESTORE_BATTLER_TYPE(battlerId)                                                                    \

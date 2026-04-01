@@ -70,18 +70,7 @@ x0 --> 0; x0,25 --> PS máximos / 64; x0,5 --> PS máximos / 32; x1 --> PS máxi
 
 - Convertir la lista de gSideStatuses relacionados con trampas en variables dentro de gCombate (quizás un enum?) y hacer una tabla, especificar que ya no se "absorben" las trampas, aunque quizá se pueda añadir un número de veces que sea efectivo (número de turnos? número de veces que hace daño?)
 
--Lista de moves hechos:
-*Bomba huevo.
-*Colmena.
-*Llama azul.
-*Canto encantador.
-*Niebla aromática.
-*Ojitos tiernos.
-*Bombardeo.
-*Encanto (TM01).
-*Día de pago.
-*Chupasangre.
-*Alarido
+- Revisar Color change vs Growl (y otros). Revisar vs bromista. Revisar vs Toxico (estados), Lanzallamas, etc. Revisar vs moves que pueden fallar, o que Kecleon es inmune ANTES (debería de cambiar tipo SOLO si recibe el ataque).
 
 *limpiar minijuegos y saveblocks
 

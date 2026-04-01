@@ -425,17 +425,6 @@ const struct SpriteTemplate gVoltTackleBoltSpriteTemplate =
     .callback = AnimVoltTackleBolt,
 };
 
-const struct SpriteTemplate gFairyLockChainsSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_FAIRY_LOCK_CHAINS,
-    .paletteTag = ANIM_TAG_FAIRY_LOCK_CHAINS,
-    .oam = &gOamData_AffineOff_ObjNormal_64x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimVoltTackleBolt,
-};
-
 const struct SpriteTemplate gGrowingShockWaveOrbSpriteTemplate =
 {
     .tileTag = ANIM_TAG_CIRCLE_OF_LIGHT,
@@ -1136,20 +1125,14 @@ void AnimTask_VoltTackleBolt(u8 taskId)
 
 static bool8 CreateVoltTackleBolt(struct Task *task, u8 taskId)
 {
-    u32 spriteId;
-    bool32 isFairyLock = (gAnimMoveIndex == MOVE_FAIRY_LOCK);
-
-    if (isFairyLock)
-        spriteId = CreateSprite(&gFairyLockChainsSpriteTemplate, task->data[3], task->data[5] + 10, 35);
-    else
-        spriteId = CreateSprite(&gVoltTackleBoltSpriteTemplate, task->data[3], task->data[5], 35);
+    u32 spriteId = CreateSprite(&gVoltTackleBoltSpriteTemplate, task->data[3], task->data[5], 35);
 
     if (spriteId != MAX_SPRITES)
     {
         gSprites[spriteId].data[6] = taskId;
         gSprites[spriteId].data[7] = 7;
-        gSprites[spriteId].data[1] = isFairyLock ? 25 : 12; // How long the chains / bolts stay on screen.
-        gSprites[spriteId].data[2] = isFairyLock; // Whether to destroy the Oam Matrix.
+        gSprites[spriteId].data[1] = 2; // How long the chains / bolts stay on screen.
+        gSprites[spriteId].data[2] = 0; // Whether to destroy the Oam Matrix.
         task->data[7]++;
     }
 

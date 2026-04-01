@@ -67,7 +67,7 @@ const u32 gBattleAnimSpritePal_BlacephalonHead[] = INCBIN_U32("graphics/battle_a
 const u32 gBattleAnimSpriteGfx_BloodMoon[] = INCBIN_U32("graphics/battle_anims/sprites/blood_moon.4bpp.lz");
 const u32 gBattleAnimSpritePal_BloodMoon[] = INCBIN_U32("graphics/battle_anims/sprites/blood_moon.gbapal.lz");
 
-const u32 gBattleAnimSpritePal_BlueFlare[] = INCBIN_U32("graphics/battle_anims/sprites/blue_flare.gbapal.lz");
+const u32 gBattleAnimSpritePal_BlueFlare[] = INCBIN_U32("graphics/battle_anims/sprites/LLAMA_AZUL.gbapal.lz");
 
 const u32 gBattleAnimSpriteGfx_Branch[] = INCBIN_U32("graphics/battle_anims/sprites/branch.4bpp.lz");
 const u32 gBattleAnimSpritePal_Branch[] = INCBIN_U32("graphics/battle_anims/sprites/branch.gbapal.lz");
@@ -1001,11 +1001,11 @@ const u32 gBattleAnimMaskImage_LightBeam[] = INCBIN_U32("graphics/battle_anims/m
 const u32 gBattleAnimMaskPalette_LightBeam[] = INCBIN_U32("graphics/battle_anims/masks/light_beam.gbapal.lz");
 const u32 gBattleAnimMaskTilemap_LightBeam[] = INCBIN_U32("graphics/battle_anims/masks/light_beam.bin.lz");
 
-const u32 gBattleAnimBgTilemap_GuillotineOpponent[] = INCBIN_U32("graphics/battle_anims/backgrounds/guillotine_opponent.bin.lz");
-const u32 gBattleAnimBgTilemap_GuillotinePlayer[] = INCBIN_U32("graphics/battle_anims/backgrounds/guillotine_player.bin.lz");
+const u32 gBattleAnimBgTilemap_GuillotinaOpponent[] = INCBIN_U32("graphics/battle_anims/backgrounds/guillotine_opponent.bin.lz");
+const u32 gBattleAnimBgTilemap_GuillotinaPlayer[] = INCBIN_U32("graphics/battle_anims/backgrounds/guillotine_player.bin.lz");
 
-const u32 gBattleAnimBgImage_Guillotine[] = INCBIN_U32("graphics/battle_anims/backgrounds/guillotine.4bpp.lz");
-const u32 gBattleAnimBgPalette_Guillotine[] = INCBIN_U32("graphics/battle_anims/backgrounds/guillotine.gbapal.lz");
+const u32 gBattleAnimBgImage_Guillotina[] = INCBIN_U32("graphics/battle_anims/backgrounds/guillotine.4bpp.lz");
+const u32 gBattleAnimBgPalette_Guillotina[] = INCBIN_U32("graphics/battle_anims/backgrounds/guillotine.gbapal.lz");
 
 const u32 gBattleAnimBgImage_Thunder[] = INCBIN_U32("graphics/battle_anims/backgrounds/thunder.4bpp.lz");
 const u32 gBattleAnimBgPalette_Thunder[] = INCBIN_U32("graphics/battle_anims/backgrounds/thunder.gbapal.lz");

@@ -354,8 +354,6 @@ struct Ability
     const u8 *description;
     u8 cantBeCopied:1; // cannot be copied by Role Play
     u8 cantBeTraced:1; // cannot be copied by Trace - same as cantBeCopied except for Wonder Guard
-    u8 cantBeSuppressed:1; // cannot be negated by Gastro Acid or Neutralizing Gas
-    u8 cantBeOverwritten:1; // cannot be overwritten by Worry Seed or Simple Beam - same as cantBeSuppressed
     u8 breakable:1; // can be bypassed by Mold Breaker and clones
 };
 

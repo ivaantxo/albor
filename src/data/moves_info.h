@@ -7,14 +7,6 @@
 #include "constants/moves.h"
 #include "constants/contest.h"
 
-// The Gen. 4+ contest data comes from urpg's contest movedex.
-
-#if B_BINDING_TURNS >= GEN_5
-#define BINDING_TURNS "4 or 5"
-#else
-#define BINDING_TURNS "2 to 5"
-#endif
-
 /* First arg is the charge turn string id, second arg depends on effect
 EFFECT_SEMI_INVULNERABLE: semi-invulnerable STATUS3 to apply to battler
 EFFECT_TWO_TURNS_ATTACK: weather in which to skip charge turn */
@@ -82,10 +74,6 @@ static const u8 sDrainingKissDescription[] = _(
 static const u8 sCloseCombatDescription[] = _(
     "A strong attack but lowers\n"
     "the defensive stats.");
-
-static const u8 sFeintDescription[] = _(
-    "An attack that hits foes\n"
-    "using moves like Protect.");
 
 const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
 {
@@ -331,22 +319,23 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_ViseGrip,
     },
 
-    [MOVE_GUILLOTINE] =
+    [MOVE_GUILLOTINA] =
     {
         .name = COMPOUND_STRING("Guillotina"),
         .description = COMPOUND_STRING(
             "A powerful pincer attack\n"
             "that may cause fainting."),
         .effect = EFFECT_HIT,
-        .power = 1,
-        .type = TIPO_NORMAL,
-        .accuracy = 30,
-        .pp = 5,
+        .power = 70,
+        .type = TIPO_ACERO,
+        .accuracy = 100,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
+        .criticalHitStage = 1,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_Guillotine,
+        .battleAnimScript = gBattleAnimMove_Guillotina,
     },
 
     [MOVE_VIENTO_CORTANTE] =
@@ -463,7 +452,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .windMove = TRUE,
         .ignoresProtect = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .ignoresSubstitute = TRUE,
-        ..espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
+        .espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .battleAnimScript = gBattleAnimMove_Whirlwind,
     },
 
@@ -493,7 +482,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .name = COMPOUND_STRING("Atadura"),
         .description = COMPOUND_STRING(
             "Binds and squeezes the foe\n"
-            "for "BINDING_TURNS" turns."),
+            "for 4 or 5 turns."),
         .effect = EFFECT_HIT,
         .power = 15,
         .type = TIPO_NORMAL,
@@ -674,7 +663,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_SandAttack,
     },
 
@@ -809,7 +798,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .name = COMPOUND_STRING("Constricción"),
         .description = COMPOUND_STRING(
             "Wraps and squeezes the foe\n"
-            BINDING_TURNS" times with vines, etc."),
+            "4 or 5 times with vines, etc."),
         .effect = EFFECT_HIT,
         .power = 15,
         .type = TIPO_NORMAL,
@@ -899,7 +888,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_TailWhip,
     },
 
@@ -981,7 +970,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .eyesMove = TRUE,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_Leer,
     },
 
@@ -1022,7 +1011,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .soundMove = TRUE,
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .battleAnimScript = gBattleAnimMove_Growl,
@@ -1044,7 +1033,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        ..espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
+        .espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .soundMove = TRUE,
         .battleAnimScript = gBattleAnimMove_Roar,
     },
@@ -1064,7 +1053,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .soundMove = TRUE,
         .battleAnimScript = gBattleAnimMove_Sing,
     },
@@ -1084,7 +1073,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .soundMove = TRUE,
         .battleAnimScript = gBattleAnimMove_Supersonic,
     },
@@ -1133,7 +1122,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .ignoresSubstitute = TRUE,
-        ..espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
+        .espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .battleAnimScript = gBattleAnimMove_Disable,
     },
 
@@ -1566,7 +1555,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_LeechSeed,
     },
 
@@ -1646,7 +1635,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .powderMove = TRUE,
         .battleAnimScript = gBattleAnimMove_PoisonPowder,
     },
@@ -1665,7 +1654,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .powderMove = TRUE,
         .battleAnimScript = gBattleAnimMove_StunSpore,
     },
@@ -1684,7 +1673,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .powderMove = TRUE,
         .battleAnimScript = gBattleAnimMove_SleepPowder,
     },
@@ -1732,7 +1721,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .balistico = TRUE,
         .battleAnimScript = gBattleAnimMove_StringShot,
     },
@@ -1763,7 +1752,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .name = COMPOUND_STRING("Giro fuego"),
         .description = COMPOUND_STRING(
             "Traps the foe in a ring of\n"
-            "fire for "BINDING_TURNS" turns."),
+            "fire for 4 or 5 turns."),
         .effect = EFFECT_HIT,
         .power = B_UPDATED_MOVE_DATA >= GEN_5 ? 35 : 15,
         .type = TIPO_FUEGO,
@@ -1834,7 +1823,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_ThunderWave,
     },
 
@@ -1947,7 +1936,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_Toxic,
     },
 
@@ -2007,7 +1996,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_Hypnosis,
     },
 
@@ -2140,7 +2129,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .soundMove = TRUE,
         .battleAnimScript = gBattleAnimMove_Screech,
     },
@@ -2242,7 +2231,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_Smokescreen,
     },
 
@@ -2260,7 +2249,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_ConfuseRay,
     },
 
@@ -2554,7 +2543,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .name = COMPOUND_STRING("Tenaza"),
         .description = COMPOUND_STRING(
             "Traps and squeezes the\n"
-            "foe for "BINDING_TURNS" turns."),
+            "foe for 4 or 5 turns."),
         .effect = EFFECT_HIT,
         .power = 35,
         .type = TIPO_AGUA,
@@ -2686,7 +2675,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
+        .espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .battleAnimScript = gBattleAnimMove_Kinesis,
     },
 
@@ -2752,7 +2741,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .eyesMove = TRUE,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_Glare,
     },
 
@@ -2794,7 +2783,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = B_UPDATED_MOVE_DATA >= GEN_5 ? MOVE_TARGET_BOTH : MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_PoisonGas,
     },
 
@@ -2850,7 +2839,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_LovelyKiss,
     },
 
@@ -2912,7 +2901,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .powderMove = TRUE,
         .battleAnimScript = gBattleAnimMove_Spore,
     },
@@ -2931,7 +2920,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_Flash,
     },
 
@@ -3251,10 +3240,10 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "While attacking, it may\n"
             "steal the foe's held item."),
         .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 60 : 40,
+        .power = 60,
         .type = TIPO_SINIESTRO,
         .accuracy = 100,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_6 ? 25 : 10,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
@@ -3280,7 +3269,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = (B_UPDATED_MOVE_FLAGS >= GEN_6) || (B_UPDATED_MOVE_FLAGS <= GEN_3),
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_SpiderWeb,
     },
 
@@ -3430,7 +3419,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = B_UPDATED_MOVE_DATA >= GEN_6 ? MOVE_TARGET_BOTH : MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .powderMove = TRUE,
         .battleAnimScript = gBattleAnimMove_CottonSpore,
     },
@@ -3524,7 +3513,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .eyesMove = TRUE,
         .battleAnimScript = gBattleAnimMove_ScaryFace,
     },
@@ -3561,7 +3550,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_SweetKiss,
     },
 
@@ -3664,7 +3653,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        ..espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
+        .espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .battleAnimScript = gBattleAnimMove_Spikes,
     },
 
@@ -3704,7 +3693,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
+        .espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .ignoresSubstitute = TRUE,
         .battleAnimScript = gBattleAnimMove_Foresight,
     },
@@ -3877,7 +3866,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_Charm,
     },
 
@@ -3914,7 +3903,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_Swagger,
     },
 
@@ -4023,7 +4012,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = (B_UPDATED_MOVE_FLAGS >= GEN_6) || (B_UPDATED_MOVE_FLAGS <= GEN_3),
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_MeanLook,
     },
 
@@ -4041,7 +4030,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .ignoresSubstitute = TRUE,
         .battleAnimScript = gBattleAnimMove_Attract,
     },
@@ -4257,7 +4246,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
+        .espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .encoreBanned = TRUE,
         .ignoresSubstitute = TRUE,
         .battleAnimScript = gBattleAnimMove_Encore,
@@ -4317,7 +4306,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_SweetScent,
     },
 
@@ -4683,7 +4672,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .name = COMPOUND_STRING("Torbellino"),
         .description = COMPOUND_STRING(
             "Traps and hurts the foe in\n"
-            "a whirlpool for "BINDING_TURNS" turns."),
+            "a whirlpool for 4 or 5 turns."),
         .effect = EFFECT_HIT,
         .power = B_UPDATED_MOVE_DATA >= GEN_5 ? 35 : 15,
         .type = TIPO_AGUA,
@@ -4877,7 +4866,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
+        .espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .battleAnimScript = gBattleAnimMove_Torment,
     },
 
@@ -4895,7 +4884,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_Flatter,
     },
 
@@ -4913,7 +4902,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_WillOWisp,
     },
 
@@ -5029,7 +5018,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .ignoresSubstitute = TRUE,
-        ..espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
+        .espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .battleAnimScript = gBattleAnimMove_Taunt,
     },
 
@@ -5089,7 +5078,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Ingrain,
     },
 
-    [MOVE_SUPERPOWER] =
+    [MOVE_FUERZA_BRUTA] =
     {
         .name = COMPOUND_STRING("Fuerza bruta"),
         .description = COMPOUND_STRING(
@@ -5099,7 +5088,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .power = 120,
         .type = TIPO_LUCHA,
         .accuracy = 100,
-        .pp = 5,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
@@ -5162,7 +5151,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gAnimacionMovimiento_Bostezo,
     },
 
@@ -5173,7 +5162,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             "Knocks down the foe's held\n"
             "item to prevent its use."),
         .effect = EFFECT_DESARME,
-        .power = 70,
+        .power = 60,
         .type = TIPO_SINIESTRO,
         .accuracy = 100,
         .pp = PP_MOVIMIENTO_LIMITADO,
@@ -5396,7 +5385,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .danceMove = TRUE,
         .battleAnimScript = gBattleAnimMove_FeatherDance,
     },
@@ -5711,7 +5700,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_FakeTears,
     },
 
@@ -5816,7 +5805,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .soundMove = TRUE,
         .battleAnimScript = gBattleAnimMove_MetalSound,
     },
@@ -5836,7 +5825,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .soundMove = TRUE,
         .battleAnimScript = gBattleAnimMove_GrassWhistle,
     },
@@ -5855,7 +5844,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_Tickle,
     },
 
@@ -5981,7 +5970,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .name = COMPOUND_STRING("Tumba arena"),
         .description = COMPOUND_STRING(
             "Traps and hurts the foe in\n"
-            "quicksand for "BINDING_TURNS" turns."),
+            "quicksand for 4 or 5 turns."),
         .effect = EFFECT_HIT,
         .power = B_UPDATED_MOVE_DATA >= GEN_5 ? 35 : 15,
         .type = TIPO_TIERRA,
@@ -6122,7 +6111,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = (B_UPDATED_MOVE_FLAGS >= GEN_6) || (B_UPDATED_MOVE_FLAGS <= GEN_3),
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_Block,
     },
 
@@ -6275,25 +6264,25 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_PoisonTail,
     },
 
-    [MOVE_COVET] =
+    [MOVE_ANTOJO] =
     {
         .name = COMPOUND_STRING("Antojo"),
         .description = COMPOUND_STRING(
             "Cutely begs to obtain an\n"
             "item held by the foe."),
         .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_5 ? 60 : 40,
+        .power = 60,
         .type = TIPO_HADA,
         .accuracy = 100,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_6 ? 25 : 40,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
-        .makesContact = B_UPDATED_MOVE_DATA >= GEN_4,
+        .makesContact = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_STEAL_ITEM,
         }),
-        .battleAnimScript = gBattleAnimMove_Covet,
+        .battleAnimScript = gBattleAnimMove_Antojo,
     },
 
     [MOVE_VOLT_TACKLE] =
@@ -6531,26 +6520,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Gravity,
     },
 
-    [MOVE_MIRACLE_EYE] =
-    {
-        .name = COMPOUND_STRING("Gran ojo"),
-        .description = COMPOUND_STRING(
-            "Negate evasiveness and\n"
-            "Dark-type's immunities."),
-        .effect = EFFECT_MIRACLE_EYE,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = 0,
-        .pp = 40,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .eyesMove = TRUE,
-        .ignoresSubstitute = TRUE,
-        ..espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
-        .battleAnimScript = gBattleAnimMove_MiracleEye,
-    },
-
     [MOVE_WAKE_UP_SLAP] =
     {
         .name = COMPOUND_STRING("Espabila"),
@@ -6573,9 +6542,9 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_WakeUpSlap,
     },
 
-    [MOVE_HAMMER_ARM] =
+    [MOVE_PUNIO_MARTILLO] =
     {
-        .name = COMPOUND_STRING("Brazo martillo"),
+        .name = COMPOUND_STRING("Puño martillo"),
         .description = COMPOUND_STRING(
             "A swinging fist attack\n"
             "that also lowers Speed."),
@@ -6583,7 +6552,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .power = 110,
         .type = TIPO_LUCHA,
         .accuracy = 100,
-        .pp = 10,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
@@ -6694,25 +6663,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Tailwind,
     },
 
-    [MOVE_ACUPRESSURE] =
-    {
-        .name = COMPOUND_STRING("Acupresión"),
-        .description = COMPOUND_STRING(
-            "The user sharply raises\n"
-            "one of its stats."),
-        .effect = EFFECT_ACUPRESSURE,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 0,
-        .pp = 30,
-        .target = MOVE_TARGET_USER | MOVE_TARGET_ALLY,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .snatchAffected = B_UPDATED_MOVE_FLAGS < GEN_5,
-        .battleAnimScript = gBattleAnimMove_Acupressure,
-    },
-
     [MOVE_U_TURN] =
     {
         .name = COMPOUND_STRING("Ida y vuelta"),
@@ -6799,7 +6749,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
+        .espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .battleAnimScript = gBattleAnimMove_Embargo,
     },
 
@@ -6852,7 +6802,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_GastroAcid,
     },
 
@@ -6980,7 +6930,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        ..espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
+        .espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .battleAnimScript = gBattleAnimMove_ToxicSpikes,
     },
 
@@ -7537,6 +7487,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .punchingMove = TRUE,
+        .balistico = TRUE,
         .battleAnimScript = gBattleAnimMove_BulletPunch,
     },
 
@@ -7829,7 +7780,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         //.ignoresSubstitute = TRUE,
-        ..espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
+        .espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .battleAnimScript = gBattleAnimMove_Defog,
     },
 
@@ -8089,7 +8040,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_Captivate,
     },
 
@@ -8107,7 +8058,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_OPPONENTS_FIELD,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
+        .espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_StealthRock,
     },
@@ -8407,7 +8358,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .name = COMPOUND_STRING("Lluevemagma"),
         .description = COMPOUND_STRING(
             "Traps the foe in a vortex\n"
-            "of fire for "BINDING_TURNS" turns."),
+            "of fire for 4 or 5 turns."),
         .effect = EFFECT_HIT,
         .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 100 : 120,
         .type = TIPO_FUEGO,
@@ -8436,7 +8387,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_DarkVoid,
     },
 
@@ -8683,7 +8634,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .gravityBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Telekinesis,
     },
@@ -8962,24 +8913,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_FoulPlay,
     },
 
-    [MOVE_SIMPLE_BEAM] =
-    {
-        .name = COMPOUND_STRING("Onda simple"),
-        .description = COMPOUND_STRING(
-            "A beam that changes the\n"
-            "foe's ability to Simple."),
-        .effect = EFFECT_SIMPLE_BEAM,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = 100,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
-        .battleAnimScript = gBattleAnimMove_SimpleBeam,
-    },
-
     [MOVE_AFTER_YOU] =
     {
         .name = COMPOUND_STRING("Cede paso"),
@@ -9146,7 +9079,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .healingMove = TRUE,
         .balistico = TRUE,
         .battleAnimScript = gBattleAnimMove_HealPulse,
@@ -9845,7 +9778,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_BoltStrike,
     },
 
-    [MOVE_BLUE_FLARE] =
+    [MOVE_LLAMA_AZUL] =
     {
         .name = COMPOUND_STRING("Llama azul"),
         .description = COMPOUND_STRING(
@@ -9855,7 +9788,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .power = 70,
         .type = TIPO_FUEGO,
         .accuracy = 100,
-        .pp = 20,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
@@ -10071,7 +10004,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_StickyWeb,
     },
 
@@ -10132,7 +10065,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .ignoresSubstitute = TRUE,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .soundMove = TRUE,
         .battleAnimScript = gBattleAnimMove_RugidoNoble,
     },
@@ -10228,7 +10161,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .soundMove = TRUE,
         .battleAnimScript = gBattleAnimMove_PartingShot,
@@ -10248,7 +10181,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_TopsyTurvy,
     },
 
@@ -10369,25 +10302,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Boomburst,
     },
 
-    [MOVE_FAIRY_LOCK] =
-    {
-        .name = COMPOUND_STRING("Fairy Lock"),
-        .description = COMPOUND_STRING(
-            "Locks down the battlefield\n"
-            "preventing escape next turn."),
-        .effect = EFFECT_FAIRY_LOCK,
-        .power = 0,
-        .type = TIPO_HADA,
-        .accuracy = 0,
-        .pp = 10,
-        .target = MOVE_TARGET_ALL_BATTLERS,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .ignoresSubstitute = TRUE,
-        .battleAnimScript = gBattleAnimMove_FairyLock,
-    },
-
     [MOVE_PLAY_NICE] =
     {
         .name = COMPOUND_STRING("Play Nice"),
@@ -10404,7 +10318,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
         .ignoresSubstitute = TRUE,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_PlayNice,
     },
 
@@ -10423,7 +10337,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .soundMove = TRUE,
         .battleAnimScript = gBattleAnimMove_Confide,
@@ -10561,7 +10475,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_VenomDrench,
     },
 
@@ -10580,7 +10494,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 1,
         .category = CATEGORIA_ESTADO,
         .powderMove = TRUE,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_Powder,
     },
 
@@ -10616,7 +10530,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 1,
         .category = CATEGORIA_ESTADO,
         .eyesMove = TRUE,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_BabyDollEyes,
     },
 
@@ -10647,7 +10561,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .name = COMPOUND_STRING("Infestation"),
         .description = COMPOUND_STRING(
             "The foe is infested and\n"
-            "attacked for "BINDING_TURNS" turns."),
+            "attacked for 4 or 5 turns."),
         .effect = EFFECT_HIT,
         .power = 20,
         .type = TIPO_BICHO,
@@ -10918,7 +10832,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESTADO,
         .argument = MOVE_EFFECT_FLORAL_HEALING,
         .healingMove = TRUE,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_FloralHealing,
     },
 
@@ -10955,7 +10869,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .healingMove = TRUE,
         .battleAnimScript = gBattleAnimMove_StrengthSap,
     },
@@ -11012,7 +10926,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 3,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_Spotlight,
     },
 
@@ -11030,7 +10944,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_ToxicThread,
     },
 
@@ -11229,26 +11143,8 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .healingMove = TRUE,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_Purify,
-    },
-
-    [MOVE_REVELATION_DANCE] =
-    {
-        .name = COMPOUND_STRING("Revelation Dance"),
-        .description = COMPOUND_STRING(
-            "Dances with mystical power.\n"
-            "Matches user's first type."),
-        .effect = EFFECT_REVELATION_DANCE,
-        .power = 90,
-        .type = TIPO_NORMAL,
-        .accuracy = 100,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .danceMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_RevelationDance,
     },
 
     [MOVE_PATADA_TROPICAL] =
@@ -11569,7 +11465,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_TearfulLook,
     },
 
@@ -12111,7 +12007,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_FOES_AND_ALLY,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        ..espejoMagico = TRUE,
+        .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_CorrosiveGas,
     },
 
@@ -12258,7 +12154,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .name = COMPOUND_STRING("Thunder Cage"),
         .description = COMPOUND_STRING(
             "Traps the foe in a cage of\n"
-            "electricity for "BINDING_TURNS" turns."),
+            "electricity for 4 o 5 turns."),
         .effect = EFFECT_HIT,
         .power = 80,
         .type = TIPO_ELECTRICO,

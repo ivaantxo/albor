@@ -169,7 +169,6 @@ enum
     LIST_STATUS3_UNDERWATER,
     LIST_STATUS3_SMACKED_DOWN,
     LIST_STATUS3_TELEKINESIS,
-    LIST_STATUS3_MIRACLE_EYED,
     LIST_STATUS3_MAGNET_RISE,
     LIST_STATUS3_AQUA_RING,
     LIST_STATUS3_POWER_TRICK,
@@ -298,7 +297,6 @@ static const u8 sText_Embargo[] = _("Embargo");
 static const u8 sText_Underwater[] = _("Underwater");
 static const u8 sText_SmackedDown[] = _("Smacked Down");
 static const u8 sText_Telekinesis[] = _("Telekinesis");
-static const u8 sText_MiracleEyed[] = _("Miracle Eyed");
 static const u8 sText_MagnetRise[] = _("Magnet Rise");
 static const u8 sText_AquaRing[] = _("Aqua Ring");
 static const u8 sText_PowerTrick[] = _("Power Trick");
@@ -381,7 +379,6 @@ static const struct BitfieldInfo sStatus3Bitfield[] =
     {/*Underwater*/ 1, 18},
     {/*Smacked Down*/ 1, 21},
     {/*Telekinesis*/ 1, 23},
-    {/*Miracle Eyed*/ 1, 25},
     {/*Magnet Rise*/ 1, 26},
     {/*Aqua Ring*/ 1, 28},
     {/*Laser Focus*/ 1, 29},
@@ -488,7 +485,6 @@ static const struct ListMenuItem sStatus3ListItems[] =
     {sText_Underwater, LIST_STATUS3_UNDERWATER},
     {sText_SmackedDown, LIST_STATUS3_SMACKED_DOWN},
     {sText_Telekinesis, LIST_STATUS3_TELEKINESIS},
-    {sText_MiracleEyed, LIST_STATUS3_MIRACLE_EYED},
     {sText_MagnetRise, LIST_STATUS3_MAGNET_RISE},
     {sText_AquaRing, LIST_STATUS3_AQUA_RING},
     {sText_PowerTrick, LIST_STATUS3_POWER_TRICK},

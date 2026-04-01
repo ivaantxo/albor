@@ -317,47 +317,6 @@ const struct SpriteTemplate gFoulPlayRingTemplate =
         .affineAnims = gThinRingExpandingAffineAnimTable,
         .callback = AnimSpriteOnMonPos};
 
-// simple beam
-const struct SpriteTemplate gSimpleBeamBrownTemplate =
-    {
-        .tileTag = ANIM_TAG_GOLD_RING,
-        .paletteTag = ANIM_TAG_ROCKS,
-        .oam = &gOamData_AffineOff_ObjNormal_16x32,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = TranslateAnimSpriteToTargetMonLocation};
-
-const struct SpriteTemplate gSimpleBeamPinkTemplate =
-    {
-        .tileTag = ANIM_TAG_GOLD_RING,
-        .paletteTag = ANIM_TAG_PINK_PETAL,
-        .oam = &gOamData_AffineOff_ObjNormal_16x32,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = TranslateAnimSpriteToTargetMonLocation};
-
-const struct SpriteTemplate gSimpleBeamBrownRingTemplate =
-    {
-        .tileTag = ANIM_TAG_THIN_RING,
-        .paletteTag = ANIM_TAG_ROCKS,
-        .oam = &gOamData_AffineDouble_ObjBlend_64x64,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = gThinRingExpandingAffineAnimTable,
-        .callback = AnimUproarRing};
-
-const struct SpriteTemplate gSimpleBeamPinkRingTemplate =
-    {
-        .tileTag = ANIM_TAG_THIN_RING,
-        .paletteTag = ANIM_TAG_PINK_PETAL,
-        .oam = &gOamData_AffineDouble_ObjBlend_64x64,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = gThinRingExpandingAffineAnimTable,
-        .callback = AnimUproarRing};
-
 // after you
 const struct SpriteTemplate gAfterYouGreenRageTemplate =
     {
@@ -1746,67 +1705,6 @@ const struct SpriteTemplate gPurifySmokeTemplate =
         .images = NULL,
         .affineAnims = gDummySpriteAffineAnimTable,
         .callback = AnimBlackSmoke};
-
-// revelation dance
-const struct SpriteTemplate gRevelationDanceYellowOrbsTemplate =
-    {
-        .tileTag = ANIM_TAG_ORBS,
-        .paletteTag = ANIM_TAG_ORBS,
-        .oam = &gOamData_AffineNormal_ObjBlend_16x16,
-        .anims = gPowerAbsorptionOrbAnimTable,
-        .images = NULL,
-        .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = AnimPetalDanceBigFlower};
-
-const struct SpriteTemplate gRevelationDanceYellowFlowerTemplate =
-    {
-        .tileTag = ANIM_TAG_FLOWER,
-        .paletteTag = ANIM_TAG_JAGGED_MUSIC_NOTE,
-        .oam = &gOamData_AffineOff_ObjNormal_8x8,
-        .anims = gPetalDanceSmallFlowerAnimTable,
-        .images = NULL,
-        .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = AnimPetalDanceSmallFlower};
-
-const struct SpriteTemplate gRevelationDanceYellowAirWaveTemplate =
-    {
-        .tileTag = ANIM_TAG_AIR_WAVE,
-        .paletteTag = ANIM_TAG_JAGGED_MUSIC_NOTE,
-        .oam = &gOamData_AffineDouble_ObjBlend_32x16,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = AnimSonicBoomProjectile};
-
-const struct SpriteTemplate gRevelationDanceYellowImpactTemplate =
-    {
-        .tileTag = ANIM_TAG_IMPACT,
-        .paletteTag = ANIM_TAG_SMALL_EMBER,
-        .oam = &gOamData_AffineNormal_ObjBlend_32x32,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = gAffineAnims_HitSplat,
-        .callback = AnimHitSplatBasic};
-
-const struct SpriteTemplate gRevelationDanceYellowRingTemplate =
-    {
-        .tileTag = ANIM_TAG_THIN_RING,
-        .paletteTag = ANIM_TAG_SMALL_EMBER,
-        .oam = &gOamData_AffineDouble_ObjBlend_64x64,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = gThinRingExpandingAffineAnimTable,
-        .callback = AnimUproarRing};
-
-const struct SpriteTemplate gRevelationDanceYellowDispersalTemplate =
-    {
-        .tileTag = ANIM_TAG_ORBS,
-        .paletteTag = ANIM_TAG_ORBS,
-        .oam = &gOamData_AffineNormal_ObjBlend_16x16,
-        .anims = gPowerAbsorptionOrbAnimTable,
-        .images = NULL,
-        .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = AnimFireSpread};
 
 // trop kick
 const struct SpriteTemplate gTropKickGreenFootTemplate =

@@ -34,10 +34,10 @@ static void AnimBulletSeed_Step2(struct Sprite *);
 static void AnimRazorWindTornado(struct Sprite *);
 static void AnimViceGripPincer(struct Sprite *);
 static void AnimViceGripPincer_Step(struct Sprite *);
-static void AnimGuillotinePincer(struct Sprite *);
-static void AnimGuillotinePincer_Step1(struct Sprite *);
-static void AnimGuillotinePincer_Step2(struct Sprite *);
-static void AnimGuillotinePincer_Step3(struct Sprite *);
+static void AnimGuillotinaPincer(struct Sprite *);
+static void AnimGuillotinaPincer_Step1(struct Sprite *);
+static void AnimGuillotinaPincer_Step2(struct Sprite *);
+static void AnimGuillotinaPincer_Step3(struct Sprite *);
 static void AnimBreathPuff(struct Sprite *);
 static void AnimPencil(struct Sprite *);
 static void AnimPencil_Step(struct Sprite *);
@@ -387,7 +387,7 @@ const struct SpriteTemplate gViceGripSpriteTemplate =
     .callback = AnimViceGripPincer,
 };
 
-const union AnimCmd gGuillotineAnimCmds1[] =
+const union AnimCmd gGuillotinaAnimCmds1[] =
 {
     ANIMCMD_FRAME(0, 2),
     ANIMCMD_FRAME(16, 2),
@@ -395,7 +395,7 @@ const union AnimCmd gGuillotineAnimCmds1[] =
     ANIMCMD_END,
 };
 
-const union AnimCmd gGuillotineAnimCmds2[] =
+const union AnimCmd gGuillotinaAnimCmds2[] =
 {
     ANIMCMD_FRAME(0, 2, .vFlip = TRUE, .hFlip = TRUE),
     ANIMCMD_FRAME(16, 2, .vFlip = TRUE, .hFlip = TRUE),
@@ -403,21 +403,21 @@ const union AnimCmd gGuillotineAnimCmds2[] =
     ANIMCMD_END,
 };
 
-const union AnimCmd *const gGuillotineAnimTable[] =
+const union AnimCmd *const gGuillotinaAnimTable[] =
 {
-    gGuillotineAnimCmds1,
-    gGuillotineAnimCmds2,
+    gGuillotinaAnimCmds1,
+    gGuillotinaAnimCmds2,
 };
 
-const struct SpriteTemplate gGuillotineSpriteTemplate =
+const struct SpriteTemplate gGuillotinaSpriteTemplate =
 {
     .tileTag = ANIM_TAG_CUT,
     .paletteTag = ANIM_TAG_CUT,
     .oam = &gOamData_AffineOff_ObjBlend_32x32,
-    .anims = gGuillotineAnimTable,
+    .anims = gGuillotinaAnimTable,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimGuillotinePincer,
+    .callback = AnimGuillotinaPincer,
 };
 
 const union AffineAnimCmd gSplashEffectAffineAnimCmds[] =
@@ -1745,7 +1745,7 @@ static void AnimViceGripPincer_Step(struct Sprite *sprite)
 
 // Animates a single pincer line that extends towards the center of the target mon, and then back out.
 // arg 0: animation id
-static void AnimGuillotinePincer(struct Sprite *sprite)
+static void AnimGuillotinaPincer(struct Sprite *sprite)
 {
     s16 startXOffset = 32;
     s16 startYOffset = -32;
@@ -1770,10 +1770,10 @@ static void AnimGuillotinePincer(struct Sprite *sprite)
     InitAnimLinearTranslation(sprite);
     sprite->data[5] = gBattleAnimArgs[0];
     sprite->data[6] = sprite->data[0];
-    sprite->callback = AnimGuillotinePincer_Step1;
+    sprite->callback = AnimGuillotinaPincer_Step1;
 }
 
-static void AnimGuillotinePincer_Step1(struct Sprite *sprite)
+static void AnimGuillotinaPincer_Step1(struct Sprite *sprite)
 {
     if (AnimTranslateLinear(sprite) && sprite->animEnded)
     {
@@ -1788,11 +1788,11 @@ static void AnimGuillotinePincer_Step1(struct Sprite *sprite)
         sprite->data[2] ^= 1;
         sprite->data[4] = 0;
         sprite->data[3] = 0;
-        sprite->callback = AnimGuillotinePincer_Step2;
+        sprite->callback = AnimGuillotinaPincer_Step2;
     }
 }
 
-static void AnimGuillotinePincer_Step2(struct Sprite *sprite)
+static void AnimGuillotinaPincer_Step2(struct Sprite *sprite)
 {
     if (sprite->data[3])
     {
@@ -1809,11 +1809,11 @@ static void AnimGuillotinePincer_Step2(struct Sprite *sprite)
         sprite->data[3] = 0;
         sprite->animPaused = 0;
         StartSpriteAnim(sprite, sprite->data[5] ^ 1);
-        sprite->callback = AnimGuillotinePincer_Step3;
+        sprite->callback = AnimGuillotinaPincer_Step3;
     }
 }
 
-static void AnimGuillotinePincer_Step3(struct Sprite *sprite)
+static void AnimGuillotinaPincer_Step3(struct Sprite *sprite)
 {
     if (AnimTranslateLinear(sprite))
         DestroyAnimSprite(sprite);

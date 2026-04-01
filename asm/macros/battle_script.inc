@@ -711,11 +711,6 @@
 	.4byte \jumpInstr
 	.endm
 
-	.macro setmiracleeye failInstr:req
-	.byte BATTLE_CMD_setmiracleeye
-	.4byte \failInstr
-	.endm
-
 	.macro jumpifuproarwakes jumpInstr:req
 	.byte BATTLE_CMD_jumpifuproarwakes
 	.4byte \jumpInstr
@@ -1387,11 +1382,6 @@
 	.4byte \failInstr
 	.endm
 
-	.macro setabilitysimple battler:req, failInstr:req
-	various \battler VARIOUS_SET_SIMPLE_BEAM
-	.4byte \failInstr
-	.endm
-
 	.macro setlastusedability battler:req
 	various \battler, VARIOUS_SET_LAST_USED_ABILITY
 	.endm
@@ -1482,11 +1472,6 @@
 	various \battler, VARIOUS_SET_AURORA_VEIL
 	.endm
 
-	.macro tryaccupressure battler:req, failInstr:req
-	various \battler, VARIOUS_ACUPRESSURE
-	.4byte \failInstr
-	.endm
-
 	.macro setpowder battler:req
 	various \battler, VARIOUS_SET_POWDER
 	.endm
@@ -1540,11 +1525,6 @@
 	.macro tryparalyzetype attacker:req, target:req, failInstr:req
 	various \attacker, VARIOUS_PARALYZE_TYPE_IMMUNITY
 	.byte \target
-	.4byte \failInstr
-	.endm
-
-	.macro trysetfairylock failInstr:req
-	various BS_ATTACKER, VARIOUS_TRY_FAIRY_LOCK
 	.4byte \failInstr
 	.endm
 

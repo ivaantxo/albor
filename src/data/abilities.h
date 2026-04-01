@@ -93,10 +93,11 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .breakable = TRUE,
     },
 
-    [ABILITY_COLOR_CHANGE] =
+    [ABILITY_CAMUFLAJE] =
     {
-        .name = _("Mimetismo"),
+        .name = _("Camuflaje"),
         .description = COMPOUND_STRING("Cambia tipo antes de defender."),
+        .breakable = TRUE,
     },
 
     [ABILITY_IMMUNITY] =
@@ -815,7 +816,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
 
     [ABILITY_BROMISTA] =
     {
-        .name = _("Prankster"),
+        .name = _("Bromista"),
         .description = COMPOUND_STRING("Status moves go first."),
     },
 
@@ -831,9 +832,9 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Daña 6,25% al contacto."),
     },
 
-    [ABILITY_PROTEAN] =
+    [ABILITY_MUTATIPO] =
     {
-        .name = _("Protean"),
+        .name = _("Mutatipo"),
         .description = COMPOUND_STRING("Changes type to used move."),
     },
 
@@ -841,6 +842,13 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Bulletproof"),
         .description = COMPOUND_STRING("Avoids some projectiles."),
+    },
+
+    [ABILITY_RESPONDON] =
+    {
+        .name = _("Respondón"),
+        .description = COMPOUND_STRING("Inverts stat changes."),
+        .breakable = TRUE,
     },
 
     [ABILITY_COMPETITIVE] =
@@ -1040,12 +1048,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Beast Boost"),
         .description = COMPOUND_STRING("KOs boost best stat."),
-    },
-
-    [ABILITY_LIBERO] =
-    {
-        .name = _("Libero"),
-        .description = COMPOUND_STRING("Changes type to move's."),
     },
 
     [ABILITY_COTTON_DOWN] =
@@ -1469,7 +1471,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_MATAMOSCAS] =
     {
         .name = _("Matamoscas"),
-        .description = COMPOUND_STRING("Atrapa bichos."),
+        .description = COMPOUND_STRING("Atrapa bichos y les pega x2 siempre."),
     },
 
     [ABILITY_ENVIO_EXPRESS] =

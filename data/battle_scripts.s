@@ -231,18 +231,6 @@ BattleScript_EffectRelicSong::
 	tryrelicsong
 	end
 
-BattleScript_EffectFairyLock::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	trysetfairylock BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "No one will be able to run away during the next turn!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
 BattleScript_FailIfNotArgType::
 	attackcanceler
 	attackstring
@@ -415,23 +403,6 @@ BattleScript_EffectAromaticMistEnd:
 
 BattleScript_EffectGearUp::
 	goto BattleScript_ButItFailed
-
-BattleScript_EffectAcupressure::
-	attackcanceler
-	jumpifbyteequal gBattlerTarget, gBattlerAttacker, BattleScript_EffectAcupressureTry
-	jumpifstatus2 BS_TARGET, STATUS2_SUBSTITUTE, BattleScript_PrintMoveMissed
-BattleScript_EffectAcupressureTry:
-	attackstring
-	ppreduce
-	tryaccupressure BS_TARGET, BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	setgraphicalstatchangevalues
-	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	statbuffchange MOVE_EFFECT_CERTAIN, BattleScript_MoveEnd
-	printstring STRINGID_DEFENDERSSTATROSE
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
 
 BattleScript_MoveEffectFeint::
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} fell for the feint!"
@@ -1079,23 +1050,6 @@ BattleScript_EffectHealPulse::
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectSimpleBeam::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	setabilitysimple BS_TARGET, BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	copybyte gBattlerAbility, gBattlerTarget
-	call BattleScript_AbilityPopUpOverwriteThenNormal
-	recordability BS_TARGET
-	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} acquired Simple!"
-	waitmessage PAUSA_LARGA
-	tryrevertweatherform
-	tryendneutralizinggas BS_TARGET
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectGolpeBajo::
 	attackcanceler
 	golpebajocheck BattleScript_FailedFromAtkString
@@ -1371,14 +1325,6 @@ BattleScript_TryTailwindAbilitiesLoop_Globo:
 	call BattleScript_AbilityPopUp
 	modifybattlerstatstage BS_TARGET, ESTADISTICA_DEFENSA, INCREASE, 1, BattleScript_TryTailwindAbilitiesLoop_Increment, ANIM_ON
 	goto BattleScript_TryTailwindAbilitiesLoop_Increment
-
-BattleScript_EffectMircleEye::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	setmiracleeye BattleScript_ButItFailed
-	goto BattleScript_IdentifiedFoe
 
 BattleScript_EffectGravity::
 	attackcanceler
@@ -5066,6 +5012,7 @@ BattleScript_IntimidateEffect:
 	setstatchanger ESTADISTICA_ATAQUE, 1, TRUE
 	statbuffchange STAT_CHANGE_NOT_PROTECT_AFFECTED | STAT_CHANGE_ALLOW_PTR, BattleScript_IntimidateLoopIncrement
 	setgraphicalstatchangevalues
+	jumpifability BS_TARGET, ABILITY_RESPONDON, BattleScript_IntimidateContrary
 	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_IntimidateWontDecrease
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 	printstring STRINGID_PKMNCUTSATTACKWITH
@@ -5092,6 +5039,17 @@ BattleScript_IntimidatePrevented:
 
 BattleScript_IntimidateWontDecrease:
 	printstring STRINGID_STATSWONTDECREASE
+	goto BattleScript_IntimidateEffect_WaitString
+
+BattleScript_IntimidateContrary:
+	call BattleScript_AbilityPopUpTarget
+	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_IntimidateContrary_WontIncrease
+	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatUpStringIds
+	goto BattleScript_IntimidateEffect_WaitString
+
+BattleScript_IntimidateContrary_WontIncrease:
+	printstring ("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} won't go any higher!")
 	goto BattleScript_IntimidateEffect_WaitString
 
 BattleScript_IntimidateInReverse:
@@ -5334,16 +5292,16 @@ BattleScript_StickyHoldActivates::
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
-BattleScript_ColorChangeActivates::
+ScriptCombate_ActivaHabilidadCambioTipoDefensivo::
 	call BattleScript_AbilityPopUp
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} made it the {B_BUFF1} type!"
 	waitmessage PAUSA_LARGA
 	return
 
-BattleScript_ProteanActivates::
+ScriptCombate_ActivaHabilidadCambioTipoOfensivo::
 	pause PAUSA_MUY_CORTA
 	call BattleScript_AbilityPopUp
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} transformed into the {B_BUFF1} type!"
+	EscribeTextoCombate "¡{B_ATK_NAME_WITH_PREFIX} se convirtió al tipo {B_BUFF1}!"
 	waitmessage PAUSA_LARGA
 	return
 

@@ -142,7 +142,6 @@ enum ResultadosCombate
 #define STATUS3_SMACKED_DOWN            (1 << 21)
 #define STATUS3_TELEKINESIS             (1 << 23)
 #define STATUS3_PHANTOM_FORCE           (1 << 24)
-#define STATUS3_MIRACLE_EYED            (1 << 25)
 #define STATUS3_MAGNET_RISE             (1 << 26)
 #define STATUS3_AQUA_RING               (1 << 28)
 #define STATUS3_POWER_TRICK             (1 << 30)
@@ -196,8 +195,7 @@ enum ResultadosCombate
 #define STATUS_FIELD_MAGIC_ROOM                     (1 << 0)
 #define STATUS_FIELD_TRICK_ROOM                     (1 << 1)
 #define STATUS_FIELD_WONDER_ROOM                    (1 << 2)
-#define STATUS_FIELD_GRAVITY                        (1 << 5)
-#define STATUS_FIELD_FAIRY_LOCK                     (1 << 6)
+#define STATUS_FIELD_GRAVITY                        (1 << 3)
 
 // Flags describing move's result
 #define MOVE_RESULT_MISSED                (1 << 0)
@@ -424,7 +422,6 @@ enum EfectosFinTurnoCampo
     ENDTURN_TRICK_ROOM,
     ENDTURN_WONDER_ROOM,
     ENDTURN_MAGIC_ROOM,
-    ENDTURN_FAIRY_LOCK,
     ENDTURN_STATUS_HEAL,
     ENDTURN_FIELD_COUNT,
 };

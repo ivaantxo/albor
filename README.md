@@ -82,7 +82,7 @@ Es un hackrom en castellano que está en desarrollo, que usa la pokeemerald-expa
     *Somnoliento sustituye a la mecánica de dormido: Un Pokémon somnoliento tiene un 25% de posibilidades de no atacar, y se reduce su defensa un 25%. Además, no se cura con el paso de los turnos, excepto si recibe Espabila. El movimiento Descanso autoinflige somnoliento, y los ataques Ronquido y Sonámbulo siguen funcionando como previamente.
     *Algunas especies de Pokémon pueden encontrar objetos si no llevan ningún objeto equipado aunque no tengan la habilidad recogida: Snorlax puede encontrar Restos, Teddiursa puede encontrar Miel...
     *Habilidad Humedad relativa (Glaceon): Beneficios del Granizo también en Lluvia: Ventisca no falla, x2 de posibilidad de congelar, +50% de defensa.
-    *Mimetismo es el antiguo Cambia Color: habilidad característica de Kecleon, cambia de tipo a uno que sea resistente o inmune ANTES de recibir el ataque.
+    *Camuflaje es el antiguo Cambia Color: habilidad característica de Kecleon, cambia al tipo del ataque ANTES de recibir el ataque.
     *Para usar una MO basta con que el Pokémon pueda aprenderla, no hace falta tenerla ni saber el movimiento (Se acabaron los esclavos MO).
     *Nuevo item: Chaleco táctico, sube defensa 50% pero impide uso de movimientos de estado.
     *Presente ahora es una copia de Bola polen de tipo Hada exclusivo de Delibird (ahora Hielo-Hada). Además, cuenta con habilidad oculta Envío express, que le da +1 de prioridad a ataques de tipo Hada.
@@ -94,7 +94,7 @@ Es un hackrom en castellano que está en desarrollo, que usa la pokeemerald-expa
     *Rework de Velo floral: impide cambios de estado y bajadas de stats de equipo si hay Sol (no hace falta que sean tipo Planta).
     *Habilidad exclusiva de Persian: En metálico, potencia ataques de Acero un 25%, y convierte Día de pago en tipo Acero. Además, este es su ataque exclusivo, y ahora tiene 100 de potencia.
     *Objetos exclusivos potenciadores: Objetos como Cuchara torcida potencian un 25% los ataques de una familia concreta (Alakazam).
-    *Desarme ya no aumenta su potencia si quita el objeto, pero se le ha subido la potencia a 70.
+    *Desarme ya no aumenta su potencia si quita el objeto, y tiene potencia de 60, como Robo, y Antojo (Robo, pero de tipo Hada), que además roban el objeto (si no llevan ninguno equipado).
     *Los objetos potenciadores de ataques de un tipo, como Colmillo dragón, potencian un 25% los ataques de ese tipo.
     *Se ha cambiado y simplificado la fórmula de captura de Pokémon. Ahora solo hay Pokéball normal y Pokéball favorables: Las Pokéball favorables duplican las posibilidades de captura de un cierto tipo de Pokémon. El ratio de captura de los Pokémon va desde 255 de Pokémon como Caterpie; a 3, de Pokémon legendarios mayores. Cualquier problema de estado duplica las posibilidades de captura. Además, cada 20% de PS que el Pokémon haya perdido, aumenta en uno el multiplicador de posibilidades: Menos del 20% de PS, multiplica las posibilidades x5. En resumen, intentar capturar a un Caterpie, con Pokéball normal, sin estado y al 100% de PS, tiene un 60% de éxito; intentar capturar a un Rayquaza, con menos del 20% de PS, con Pokéball favorable y con estado, sucede un 11%.
     *Se ha simplificado la lógica evolutiva: Los objetos evolutivos ahora deben estar equipados, y, si el Pokémon cumple el nivel requerido (Que puede ser, 30, 40, 50 o 60), evolucionará, pero sin perder el objeto.
@@ -106,6 +106,7 @@ Es un hackrom en castellano que está en desarrollo, que usa la pokeemerald-expa
     *Rayo solar y Cuchilla solar ya no reducen su potencia en climas diferentes de Sol. Además, Rayo meteoro es una copia de Rayo solar pero para Tormenta de Arena.
     *Buena baza hace doble de daño si el oponente ha recibido daño ese turno, pero solo tiene en cuenta el daño por ataques, no por confusión.
     *Entusiasmo potencia 50% movimientos tanto físicos como especiales, y reduce la precisión a un 87.5%.
+    *Condiciones de apresamiento como Tenaza o Giro fuego duran siempre 4 turnos, que son 8 si llevan Garra garfio. Dañan 1/16 de PS cada turno (6,25%), que son 1/8 (12,5%) con el objeto Banda atadura equipado.
 
 ## Cambios a mecánicas distintas de batalla:
     *El juego cuenta con un sistema de avance del tiempo que no es a partir del tiempo del sistema, sino por la cantidad de frames que pasan en el juego: Cada segundo de tiempo real en el juego equivalen a 20 segundos, es decir, 3 minutos son 1 hora. 

@@ -2100,7 +2100,7 @@ u32 GetBattlerTotalSpeedStatArgs(u32 battler, u32 ability, u32 holdEffect)
 
 u32 GetBattlerTotalSpeedStat(u32 battler)
 {
-    u32 ability = GetBattlerAbility(battler);
+    u32 ability = HabilidadCombatiente(battler);
     u32 holdEffect = GetBattlerHoldEffect(battler, TRUE);
     return GetBattlerTotalSpeedStatArgs(battler, ability, holdEffect);
 }
@@ -2121,7 +2121,7 @@ s8 GetChosenMovePriority(u32 battler)
 s8 GetMovePriority(u32 battler, u16 move)
 {
     s8 priority;
-    u16 ability = GetBattlerAbility(battler);
+    u16 ability = HabilidadCombatiente(battler);
 
     if (ability == ABILITY_ALAS_VENDAVAL && gMovesInfo[move].type == TIPO_VOLADOR)
         priority++;
@@ -2164,44 +2164,28 @@ s32 GetWhichBattlerFasterArgs(u32 battler1, u32 battler2, bool32 ignoreChosenMov
 
     if (priority1 == priority2)
     {
-        // Quick Claw / Quick Draw / Custap Berry - always first
-        // Lagging Tail - always last
-        bool32 battler1HasQuickEffect = gProtectStructs[battler1].quickDraw || gProtectStructs[battler1].usedCustapBerry;
-        bool32 battler2HasQuickEffect = gProtectStructs[battler2].quickDraw || gProtectStructs[battler2].usedCustapBerry;
-
-        if (battler1HasQuickEffect && !battler2HasQuickEffect)
-            strikesFirst = 1;
-        else if (battler2HasQuickEffect && !battler1HasQuickEffect)
-            strikesFirst = -1;
-        else if (holdEffectBattler1 == HOLD_EFFECT_LAGGING_TAIL && holdEffectBattler2 != HOLD_EFFECT_LAGGING_TAIL)
-            strikesFirst = -1;
-        else if (holdEffectBattler2 == HOLD_EFFECT_LAGGING_TAIL && holdEffectBattler1 != HOLD_EFFECT_LAGGING_TAIL)
-            strikesFirst = 1;
+        if (speedBattler1 == speedBattler2)
+        {
+            // same speeds, same priorities
+            strikesFirst = 0;
+        }
+        else if (speedBattler1 < speedBattler2)
+        {
+            // battler2 has more speed
+            if (gFieldStatuses & STATUS_FIELD_TRICK_ROOM)
+                strikesFirst = 1;
+            else
+                strikesFirst = -1;
+        }
         else
         {
-            if (speedBattler1 == speedBattler2)
-            {
-                // same speeds, same priorities
-                strikesFirst = 0;
-            }
-            else if (speedBattler1 < speedBattler2)
-            {
-                // battler2 has more speed
-                if (gFieldStatuses & STATUS_FIELD_TRICK_ROOM)
-                    strikesFirst = 1;
-                else
-                    strikesFirst = -1;
-            }
+            // battler1 has more speed
+            if (gFieldStatuses & STATUS_FIELD_TRICK_ROOM)
+                strikesFirst = -1;
             else
-            {
-                // battler1 has more speed
-                if (gFieldStatuses & STATUS_FIELD_TRICK_ROOM)
-                    strikesFirst = -1;
-                else
-                    strikesFirst = 1;
-            }
+                strikesFirst = 1;
         }
-    }
+}
     else if (priority1 < priority2)
     {
         strikesFirst = -1; // battler2's move has greater priority
@@ -2216,12 +2200,12 @@ s32 GetWhichBattlerFasterArgs(u32 battler1, u32 battler2, bool32 ignoreChosenMov
 s32 GetWhichBattlerFasterOrTies(u32 battler1, u32 battler2, bool32 ignoreChosenMoves)
 {
     s32 priority1 = 0, priority2 = 0;
-    u32 ability1 = GetBattlerAbility(battler1);
+    u32 ability1 = HabilidadCombatiente(battler1);
     u32 speedBattler1 = GetBattlerTotalSpeedStat(battler1);
     u32 holdEffectBattler1 = GetBattlerHoldEffect(battler1, TRUE);
     u32 speedBattler2 = GetBattlerTotalSpeedStat(battler2);
     u32 holdEffectBattler2 = GetBattlerHoldEffect(battler2, TRUE);
-    u32 ability2 = GetBattlerAbility(battler2);
+    u32 ability2 = HabilidadCombatiente(battler2);
 
     if (!ignoreChosenMoves)
     {
@@ -2722,7 +2706,7 @@ u32 TipoMovimiento(u32 movimiento, u32 combatiente)
 {
     u32 tipoMovimiento = gMovesInfo[movimiento].type;
     u32 efectoMovimiento = gMovesInfo[movimiento].effect;
-    u32 habilidad = GetBattlerAbility(combatiente);
+    u32 habilidad = HabilidadCombatiente(combatiente);
 
     if (efectoMovimiento == EFFECT_WEATHER_BALL && WEATHER_HAS_EFFECT)
     {
