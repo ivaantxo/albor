@@ -4881,21 +4881,12 @@ BattleScript_TraceActivates::
 	switchinabilities BS_SCRIPTING
 	end3
 
-BattleScript_MagoActivado::
-	call BattleScript_AbilityPopUp
-	waitmessage PAUSA_LARGA
-	EscribeTextoCombate "¡{B_ATK_NAME_WITH_PREFIX} cambió objetos con el rival!"
-	waitmessage PAUSA_LARGA
-	printfromtable gItemSwapStringIds
-	waitmessage PAUSA_LARGA
-	return
-
-BattleScript_MagoActivadoEnd::
-	call BattleScript_MagoActivado
-	end3
-
-BattleScript_MagoEnd::
-	end3
+ScriptCombate_ActivacionHabilidadCambioObjeto::
+    call BattleScript_AbilityPopUp
+    waitmessage PAUSA_LARGA
+    printfromtable gItemSwapStringIds 
+    waitmessage PAUSA_LARGA
+    end3
 
 BattleScript_ReceiverActivates::
 	call BattleScript_AbilityPopUp

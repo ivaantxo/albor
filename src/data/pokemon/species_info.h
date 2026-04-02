@@ -10639,6 +10639,12 @@ const struct SpeciesInfo gSpeciesInfo[] =
 
     [SPECIES_SABLEYE] =
     {
+        PS(60),
+        ATAQUE(100),
+        DEFENSA(80),
+        ATAQUE_ESPECIAL(40),
+        DEFENSA_ESPECIAL(150),
+        VELOCIDAD(50),
         TIPOS(SINIESTRO, FANTASMA),
         RATIO_CAPTURA(ESPECIAL_2_EVO),
         CAMPO_EXPERIENCIA(ESPECIAL_2_EVO),
@@ -10653,14 +10659,8 @@ const struct SpeciesInfo gSpeciesInfo[] =
         POKEDEX(SABLEYE),
         MOVIMIENTOS(Sableye),
         MOVIMIENTOS_HUEVO(Sableye),
-        PS(50),
-        ATAQUE(75),
-        DEFENSA(75),
-        VELOCIDAD(50),
-        ATAQUE_ESPECIAL(65),
-        DEFENSA_ESPECIAL(65),
         OBJETO_RARO(WIDE_LENS),
-        HABILIDADES(VISTA_LINCE, NONE, BROMISTA),
+        HABILIDADES(BROMISTA, ESPEJO_MAGICO, CAZATESOROS),
         GRITO(SABLEYE),
         SOMBRA(1, 3, S),
         FRONT_PIC(Sableye, 48, 48),

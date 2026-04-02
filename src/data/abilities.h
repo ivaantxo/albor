@@ -806,11 +806,17 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Bicho/Sin./Fant. +1 vel."),
     },
 
-    [ABILITY_MAGIC_BOUNCE] =
+    [ABILITY_ESPEJO_MAGICO] =
     {
-        .name = _("Magic Bounce"),
+        .name = _("Espejo mágico"),
         .description = COMPOUND_STRING("Reflects status moves."),
         .breakable = TRUE,
+    },
+
+    [ABILITY_CAZATESOROS] =
+    {
+        .name = _("Cazatesoros"),
+        .description = COMPOUND_STRING("Cambia objetos al entrar."),
     },
 
     [ABILITY_SAP_SIPPER] =
@@ -1563,7 +1569,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_MAGO] =
     {
         .name = _("Mago"),
-        .description = COMPOUND_STRING("Intercambia objeto."),
+        .description = COMPOUND_STRING("Intercambia objeto al entrar."),
     },
 
     [ABILITY_HECHICERO] =

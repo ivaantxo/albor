@@ -36,9 +36,9 @@ void AvanzaAleatoriedad(void);
 
 extern rng_value_t gRngValue;
 
-bool32 PorcentajeAleatorio(u32 porcentaje);         //  Devuelve TRUE el porcentaje dado.
-u32 ElementoAleatorio(u32 numeroElementos);         //  Random() % número de elementos.
-u32 NumeroAleatorioEnRango(u32 minimo, u32 maximo); //  Da un número aleatorio con un rango desde mínimo a máximo.
+bool32 PorcentajeAleatorio(u32 porcentaje);                         //  Devuelve TRUE el porcentaje dado.
+u32 ElementoAleatorio(u32 numeroElementos);                         //  Random() % número de elementos.
+u32 NumeroAleatorioEnRango(u32 minimo, u32 maximo);                 //  Da un número aleatorio con un rango desde mínimo a máximo.
 u32 ElementoAleatorioPonderado(const u8 *pesos, u32 numElementos);
 
 #endif // GUARD_RANDOM_H

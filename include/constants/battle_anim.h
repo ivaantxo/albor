@@ -31,7 +31,6 @@ enum AnimTags
     ANIM_TAG_BLUE_SHARDS, // unused
     ANIM_TAG_CLOSING_EYE, // unused
     ANIM_TAG_WAVING_HAND, // unused
-    ANIM_TAG_HIT_DUPLICATE, // unused
     ANIM_TAG_LEER,
     ANIM_TAG_BLUE_BURST, // unused
     ANIM_TAG_SMALL_EMBER,

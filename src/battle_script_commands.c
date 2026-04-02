@@ -940,12 +940,12 @@ static void Cmd_attackcanceler(void)
     {
         u32 battler = gBattlerTarget;
 
-        if (HabilidadCombatiente(gBattlerTarget) == ABILITY_MAGIC_BOUNCE)
+        if (HabilidadCombatiente(gBattlerTarget) == ABILITY_ESPEJO_MAGICO)
         {
             battler = gBattlerTarget;
             gBattleStruct->movimientoEspejoMagicoRebota = TRUE;
         }
-        else if (EsContraEntrenador() && gMovesInfo[gCurrentMove].target == MOVE_TARGET_OPPONENTS_FIELD && HabilidadCombatiente(ALIADO(gBattlerTarget)) == ABILITY_MAGIC_BOUNCE)
+        else if (EsContraEntrenador() && gMovesInfo[gCurrentMove].target == MOVE_TARGET_OPPONENTS_FIELD && HabilidadCombatiente(ALIADO(gBattlerTarget)) == ABILITY_ESPEJO_MAGICO)
         {
             gBattlerTarget = battler = ALIADO(gBattlerTarget);
             gBattleStruct->movimientoEspejoMagicoRebota = TRUE;

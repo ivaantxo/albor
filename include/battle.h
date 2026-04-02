@@ -78,7 +78,6 @@ struct __attribute__((packed, aligned(2))) BattleMoveEffect
 #define RESOURCE_FLAG_ROOST 2
 #define RESOURCE_FLAG_UNBURDEN 3
 #define RESOURCE_FLAG_NEUTRALIZING_GAS 4
-#define RESOURCE_FLAG_MAGO 5
 
 struct DisableStruct
 {
@@ -171,7 +170,6 @@ struct SpecialStatus
     u8 damagedMons : 4; // Mons that have been damaged directly by using a move, includes substitute.
     u8 afterYou : 1;
     u8 preventLifeOrbDamage : 1; // So that Life Orb doesn't activate various effects.
-    u8 mago : 1;
     bool32 potenciadoGema;
 };
 

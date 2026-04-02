@@ -47,15 +47,15 @@ static bool32 TryRemoveScreens(u32 battler);
 static void SetRandomMultiHitCounter();
 static u32 GetBattlerItemHoldEffectParam(u32 battler, u32 item);
 
-#define HABILIDAD_CAUSA_ESTADO_SI_CONTACTA(funcionChequeo, estado)                                                                                                                                                                                                                                                                                                                                \
+#define HABILIDAD_CAUSA_ESTADO_SI_CONTACTA(funcionChequeo, estado)                                                                                                                                                                                                                                                                                                                                   \
     if (MovimientoEsEfectivo(gCombate->resultadoMovimiento) && IsBattlerAlive(gBattlerAttacker) && !gProtectStructs[gBattlerAttacker].confusionSelfDmg && HaSidoDaniado(gBattlerAttacker) && funcionChequeo(gBattlerAttacker, HabilidadCombatiente(gBattlerAttacker)) && GetBattlerHoldEffect(gBattlerAttacker, TRUE) != HOLD_EFFECT_PROTECTIVE_PADS && IsMoveMakingContact(move, gBattlerAttacker)) \
-    {                                                                                                                                                                                                                                                                                                                                                                                             \
-        gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | estado;                                                                                                                                                                                                                                                                                                                          \
-        PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);                                                                                                                                                                                                                                                                                                                               \
-        BattleScriptPushCursor();                                                                                                                                                                                                                                                                                                                                                                 \
-        gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;                                                                                                                                                                                                                                                                                                                                \
-        gHitMarker |= HITMARKER_STATUS_ABILITY_EFFECT;                                                                                                                                                                                                                                                                                                                                            \
-        effect++;                                                                                                                                                                                                                                                                                                                                                                                 \
+    {                                                                                                                                                                                                                                                                                                                                                                                                \
+        gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | estado;                                                                                                                                                                                                                                                                                                                             \
+        PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);                                                                                                                                                                                                                                                                                                                                  \
+        BattleScriptPushCursor();                                                                                                                                                                                                                                                                                                                                                                    \
+        gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;                                                                                                                                                                                                                                                                                                                                   \
+        gHitMarker |= HITMARKER_STATUS_ABILITY_EFFECT;                                                                                                                                                                                                                                                                                                                                               \
+        effect++;                                                                                                                                                                                                                                                                                                                                                                                    \
     }
 
 static void CheckSetUnburden(u8 battler)
@@ -2571,60 +2571,64 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             }
         }
         break;
+        case ABILITY_CAZATESOROS:
         case ABILITY_MAGO:
         {
+            u32 target1, target2;
             u32 chosenTarget = 0;
-            u32 target1;
-            u32 target2;
 
             if (gSpecialStatuses[battler].switchInAbilityDone)
-                break;
-            if (gBattleResources->flags[battler] & RESOURCE_FLAG_MAGO)
                 break;
 
             side = (OPONENTE(battler)) & BIT_SIDE;
             target1 = side;
             target2 = side + BIT_FLANK;
-            gSpecialStatuses[battler].switchInAbilityDone = TRUE;
+
             if (EsContraEntrenador())
             {
-                if (gBattleMons[target1].item != ITEM_NONE && gBattleMons[target1].hp != 0 && gBattleMons[target2].item != ITEM_NONE && gBattleMons[target2].hp != 0)
-                    chosenTarget = (PorcentajeAleatorio(50 * 2) | side);
-                else if (gBattleMons[target1].item != ITEM_NONE && gBattleMons[target1].hp != 0)
+                bool32 t1Valido = (gBattleMons[target1].hp != 0);
+                bool32 t2Valido = (gBattleMons[target2].hp != 0);
+
+                if (t1Valido && t2Valido)
+                {
+                    chosenTarget = (ElementoAleatorio(2) == 0) ? target1 : target2;
+                }
+                else if (t1Valido)
+                {
                     chosenTarget = target1;
-                else if (gBattleMons[target2].item != ITEM_NONE && gBattleMons[target2].hp != 0)
+                }
+                else if (t2Valido)
+                {
                     chosenTarget = target2;
+                }
             }
             else
             {
-                if (gBattleMons[target1].item != ITEM_NONE && gBattleMons[target1].hp != 0)
+                if (gBattleMons[target1].hp != 0)
                     chosenTarget = target1;
             }
 
-            if (chosenTarget != 0)
+            if (chosenTarget != 0 || (chosenTarget == 0 && gBattleMons[0].hp != 0))
             {
-                if ((gBattleMons[battler].item == ITEM_NONE && gBattleMons[chosenTarget].item == ITEM_NONE))
+                if (gBattleMons[battler].item == ITEM_NONE && gBattleMons[chosenTarget].item == ITEM_NONE)
                 {
-                    gBattlescriptCurrInstr = BattleScript_MagoEnd;
+                    break;
                 }
-                else if (HabilidadCombatiente(chosenTarget) == ABILITY_STICKY_HOLD || HabilidadCombatiente(chosenTarget) == ABILITY_TERRITORIAL)
+
+                if (HabilidadCombatiente(chosenTarget) == ABILITY_STICKY_HOLD || HabilidadCombatiente(chosenTarget) == ABILITY_TERRITORIAL)
                 {
                     gBattlescriptCurrInstr = BattleScript_StickyHoldActivates;
                     gLastUsedAbility = gBattleMons[chosenTarget].ability;
                     RecuerdaHabilidad(chosenTarget, gLastUsedAbility);
+                    effect++;
                 }
                 else
                 {
-                    u16 oldItemAtk, newItemAtk;
+                    u32 itemUser = gBattleMons[battler].item;
+                    u32 itemTarget = gBattleMons[chosenTarget].item;
 
-                    newItemAtk = gBattleMons[chosenTarget].item;
-                    oldItemAtk = gBattleMons[battler].item;
-
-                    gBattleMons[battler].item = newItemAtk;
-                    gBattleMons[chosenTarget].item = oldItemAtk;
-
-                    RecordItemEffectBattle(battler, ItemId_GetHoldEffect(newItemAtk));
-                    RecordItemEffectBattle(chosenTarget, ItemId_GetHoldEffect(oldItemAtk));
+                    gBattleMons[battler].item = itemTarget;
+                    gBattleMons[chosenTarget].item = itemUser;
 
                     BtlController_EmitSetMonData(battler, BUFFER_A, REQUEST_HELDITEM_BATTLE, 0, sizeof(gBattleMons[battler].item), &gBattleMons[battler].item);
                     MarcaCombatienteOcupado(battler);
@@ -2637,30 +2641,22 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
 
                     gBattlerAttacker = battler;
                     gBattlerTarget = chosenTarget;
-                    PREPARE_ITEM_BUFFER(gBattleTextBuff1, newItemAtk)
-                    PREPARE_ITEM_BUFFER(gBattleTextBuff2, oldItemAtk)
 
-                    if (oldItemAtk != ITEM_NONE && newItemAtk != ITEM_NONE)
-                    {
+                    PREPARE_ITEM_BUFFER(gBattleTextBuff1, itemTarget)
+                    PREPARE_ITEM_BUFFER(gBattleTextBuff2, itemUser)
+
+                    if (itemUser != ITEM_NONE && itemTarget != ITEM_NONE)
                         gMensajeBatalla = B_MSG_ITEM_SWAP_BOTH;
-                    }
-                    else if (oldItemAtk == ITEM_NONE && newItemAtk != ITEM_NONE)
-                    {
-                        if (HabilidadCombatiente(battler) == ABILITY_UNBURDEN && gBattleResources->flags[battler] & RESOURCE_FLAG_UNBURDEN)
-                            gBattleResources->flags[battler] &= ~RESOURCE_FLAG_UNBURDEN;
-
+                    else if (itemUser == ITEM_NONE && itemTarget != ITEM_NONE)
                         gMensajeBatalla = B_MSG_ITEM_SWAP_TAKEN;
-                    }
                     else
-                    {
-                        CheckSetUnburden(battler);
                         gMensajeBatalla = B_MSG_ITEM_SWAP_GIVEN;
-                    }
-                    BattleScriptPushCursorAndCallback(BattleScript_MagoActivadoEnd);
-                    gBattleResources->flags[battler] &= ~RESOURCE_FLAG_MAGO;
+
+                    BattleScriptPushCursorAndCallback(ScriptCombate_ActivacionHabilidadCambioObjeto);
                     effect++;
                 }
             }
+            gSpecialStatuses[battler].switchInAbilityDone = TRUE;
         }
         break;
         case ABILITY_MOLD_BREAKER:
@@ -2998,7 +2994,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             battleScriptBlocksMove = ScriptCombate_ActivacionExuvia;
             break;
         default:
-            if (GetChosenMovePriority(gBattlerAttacker) > 0 && BlocksPrankster(move, gBattlerAttacker, gBattlerTarget, TRUE) && !(EsMovimientoDeEstado(move) && (gLastUsedAbility == ABILITY_MAGIC_BOUNCE)))
+            if (GetChosenMovePriority(gBattlerAttacker) > 0 && BlocksPrankster(move, gBattlerAttacker, gBattlerTarget, TRUE) && !(EsMovimientoDeEstado(move) && (gLastUsedAbility == ABILITY_ESPEJO_MAGICO)))
             {
                 if (!EsContraEntrenador() || !(GetBattlerMoveTargetType(gBattlerAttacker, move) & (MOVE_TARGET_BOTH | MOVE_TARGET_FOES_AND_ALLY)))
                     CancelMultiTurnMoves(gBattlerAttacker); // Don't cancel moves that can hit two targets bc one target might not be protected
@@ -3236,7 +3232,8 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             }
             break;
         case ABILITY_RENCOR:
-            if (MovimientoEsEfectivo(gCombate->resultadoMovimiento) && IsBattlerAlive(gBattlerAttacker) && !gProtectStructs[gBattlerAttacker].confusionSelfDmg && HaSidoDaniado(gBattlerAttacker));
+            if (MovimientoEsEfectivo(gCombate->resultadoMovimiento) && IsBattlerAlive(gBattlerAttacker) && !gProtectStructs[gBattlerAttacker].confusionSelfDmg && HaSidoDaniado(gBattlerAttacker))
+                ;
             {
                 gBattleMoveDamage = CuantosPSMaximos(gBattlerAttacker) / 16;
                 if (gBattleMoveDamage == 0)

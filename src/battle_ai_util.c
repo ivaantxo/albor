@@ -3216,7 +3216,7 @@ bool32 AI_ShouldCopyStatChanges(u32 battlerAtk, u32 battlerDef)
 // TODO - track entire opponent party data to determine hazard effectiveness
 bool32 AI_ShouldSetUpHazards(u32 battlerAtk, u32 battlerDef, struct AILogicData *aiData)
 {
-    if (aiData->abilities[battlerDef] == ABILITY_MAGIC_BOUNCE || CountUsablePartyMons(battlerDef) == 0 || HasMoveWithAdditionalEffect(battlerDef, MOVE_EFFECT_GIRO_RAPIDO) || HasMoveEffect(battlerDef, EFFECT_DEFOG))
+    if (aiData->abilities[battlerDef] == ABILITY_ESPEJO_MAGICO || CountUsablePartyMons(battlerDef) == 0 || HasMoveWithAdditionalEffect(battlerDef, MOVE_EFFECT_GIRO_RAPIDO) || HasMoveEffect(battlerDef, EFFECT_DEFOG))
         return FALSE;
 
     return TRUE;

@@ -13072,7 +13072,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = -1,
         .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
         .battleAnimScript = gAnimacionMovimiento_Vudu,
     },
 
