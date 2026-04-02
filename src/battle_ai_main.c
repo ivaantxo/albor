@@ -3297,7 +3297,7 @@ static s32 AI_CheckViability(u32 battlerAtk, u32 battlerDef, u32 move, s32 score
 static s32 AI_ForceSetupFirstTurn(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
 {
     u32 i;
-    if (IS_TARGETING_PARTNER(battlerAtk, battlerDef) || gCombate.contadorTurnos != 0)
+    if (IS_TARGETING_PARTNER(battlerAtk, battlerDef) || gCombate->contadorTurnos != 0)
         return score;
 
     if (AI_THINKING_STRUCT->aiFlags[battlerAtk] & AI_FLAG_SMART_SWITCHING && AI_IsSlower(battlerAtk, battlerDef, move) && CanTargetFaintAI(battlerDef, battlerAtk) && GetMovePriority(battlerAtk, move) == 0)
@@ -3478,7 +3478,7 @@ static s32 AI_PreferRelevo(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
 
     if (IsStatRaisingEffect(gMovesInfo[move].effect))
     {
-        if (gCombate.contadorTurnos == 0)
+        if (gCombate->contadorTurnos == 0)
             ADJUST_SCORE(GOOD_EFFECT);
         else if (AI_DATA->hpPercents[battlerAtk] < 60)
             ADJUST_SCORE(-10);

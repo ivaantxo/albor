@@ -1615,6 +1615,7 @@ static void TryDoEventsBeforeFirstTurn(void)
         for (i = 0; i < gBattlersCount; i++)
         {
             gBattleMons[i].status2 &= ~STATUS2_FLINCHED;
+            gCombate->potenciaMovimientosRecibidosTurno[i] = 0;
         }
 
         gCombate->efectoFinTurno.individual = ENDTURN_WEATHER_DAMAGE;
@@ -1700,7 +1701,7 @@ void BattleTurnPassed(void)
         return;
     }
 
-    gCombate.contadorTurnos++;
+    gCombate->contadorTurnos++;
 
     for (i = 0; i < gBattlersCount; i++)
     {
@@ -1713,6 +1714,12 @@ void BattleTurnPassed(void)
     gCombate->absentBattlerFlags = gAbsentBattlerFlags;
     BattlePutTextOnWindow(gText_EmptyString, B_WIN_MSG);
     SetAILogicDataForTurn(AI_DATA); // get assumed abilities, hold effects, etc of all battlers
+
+    for (i = 0; i < gBattlersCount; i++)
+        {
+            gCombate->potenciaMovimientosRecibidosTurno[i] = 0;
+        }
+
     gBattleMainFunc = GestionaEstadoSeleccionAccionesTurno;
 
     if (gSideTimers[LADO_JUGADOR].retaliateTimer > 0)

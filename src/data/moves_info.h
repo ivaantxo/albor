@@ -13062,15 +13062,15 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
     {
         .name = COMPOUND_STRING("Vudú"),
         .description = COMPOUND_STRING(
-            "The more the user has been\n"
-            "hit, the stronger the move."),
-        .effect = EFFECT_RAGE_FIST,
-        .power = 50,
+            "Potencia es suma de ataques\n"
+            "recibidos ese turno."),
+        .effect = EFFECT_VUDU,
+        .power = 10,
         .type = TIPO_FANTASMA,
         .accuracy = 100,
         .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
+        .priority = -1,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .battleAnimScript = gAnimacionMovimiento_Vudu,

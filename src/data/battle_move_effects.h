@@ -1156,6 +1156,11 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .battleScript = BattleScript_EffectHit,
             },
 
+        [EFFECT_VUDU] =
+            {
+                .battleScript = BattleScript_EffectHit,
+            },
+
         [EFFECT_BLIZZARD] =
             {
                 .battleScript = BattleScript_EffectHit,

@@ -72,6 +72,9 @@ x0 --> 0; x0,25 --> PS máximos / 64; x0,5 --> PS máximos / 32; x1 --> PS máxi
 
 - Revisar Color change vs Growl (y otros). Revisar vs bromista. Revisar vs Toxico (estados), Lanzallamas, etc. Revisar vs moves que pueden fallar, o que Kecleon es inmune ANTES (debería de cambiar tipo SOLO si recibe el ataque).
 
+- Muy posiblemente BattleScript_Intimidate y sus primos no hagan nada.
+- Revisar Vudú y añadirle IA.
+
 *limpiar minijuegos y saveblocks
 
 *paletas: 0-12 tileset primario 0-9 (es necesario?) secundario 10-12 (chequear SWAP_PAL)

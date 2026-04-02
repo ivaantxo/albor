@@ -473,6 +473,7 @@ struct Combate
     u32 estadisticaAtaqueEquipo;
     bool32 movimientoEspejoMagicoRebota;
     uq4_12_t resultadoMovimiento;
+    u32 potenciaMovimientosRecibidosTurno[NUMERO_COMBATIENTES];
     struct EfectosFinTurno efectoFinTurno;
 };
 

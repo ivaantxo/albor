@@ -2475,6 +2475,7 @@ BattleScript_EffectFuryCutter::
 	attackstring
 	ppreduce
 	accuracycheck BattleScript_FuryCutterHit, ACC_CURR_MOVE
+
 BattleScript_FuryCutterHit:
 	handlefurycutter
 	critcalc
@@ -3265,7 +3266,7 @@ BattleScript_FaintTarget::
 	tryactivatesoulheart
 	tryactivatereceiver BS_TARGET
 	intentaactivarautoestima BS_ATTACKER
-	tryactivatecarnivoro BS_ATTACKER
+	callnative BS_IntentaRecuperarSaludTrasVencer
 	tryactivatebeastboost BS_ATTACKER
 	trytrainerslidefirstdownmsg BS_TARGET
 	return
@@ -5007,16 +5008,6 @@ BattleScript_IntimidateLoop:
 	jumpifability BS_TARGET, ABILITY_OBLIVIOUS, BattleScript_IntimidatePrevented
 	jumpifability BS_TARGET, ABILITY_GUARD_DOG, BattleScript_IntimidateInReverse
 
-BattleScript_IntimidateEffect:
-	copybyte sBATTLER, gBattlerAttacker
-	setstatchanger ESTADISTICA_ATAQUE, 1, TRUE
-	statbuffchange STAT_CHANGE_NOT_PROTECT_AFFECTED | STAT_CHANGE_ALLOW_PTR, BattleScript_IntimidateLoopIncrement
-	setgraphicalstatchangevalues
-	jumpifability BS_TARGET, ABILITY_RESPONDON, BattleScript_IntimidateContrary
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_IntimidateWontDecrease
-	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	printstring STRINGID_PKMNCUTSATTACKWITH
-
 BattleScript_IntimidateEffect_WaitString:
 	waitmessage PAUSA_LARGA
 	copybyte sBATTLER, gBattlerTarget
@@ -5401,8 +5392,9 @@ BattleScript_RaiseStatOnFaintingTarget::
 BattleScript_RaiseStatOnFaintingTarget_End:
 	return
 
-BattleScript_Carnivoro::
-	copybyte gBattlerAbility, gBattlerAttacker
+ScriptCombate_HabilidadRecuperacionSaludTrasVencer::
+	@ copybyte gBattlerAbility, gBattlerAttacker Revisar
+	copybyte gBattlerAbility, gLastUsedAbility
 	call BattleScript_AbilityPopUp
 	EscribeTextoCombate "¡{B_ATK_NAME_WITH_PREFIX} ha usado a {B_DEF_NAME_WITH_PREFIX} para recuperarse!"
 	waitmessage PAUSA_LARGA
@@ -5410,7 +5402,8 @@ BattleScript_Carnivoro::
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
-	end2
+	@ end2
+	return
 
 BattleScript_AttackerAbilityStatRaise::
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_AttackerAbilityStatRaise_End

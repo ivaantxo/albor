@@ -1824,7 +1824,3 @@
 	getbattlerfainted \battler
 	jumpifbyte COMPARACION_IGUAL, gBattleCommunication, \value, \ptr
 	.endm
-
-	.macro tryactivatecarnivoro battler:req
-	various \battler, VARIOUS_TRY_ACTIVATE_CARNIVORO
-	.endm

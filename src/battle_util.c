@@ -2845,6 +2845,16 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 effect++;
             }
             break;
+        case ABILITY_ASPECTO_ENGANIOSO:
+            if (!gSpecialStatuses[battler].switchInAbilityDone)
+            {
+                gBattlerAttacker = battler;
+                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
+                SET_STATCHANGER(ESTADISTICA_DEFENSA, 1, TRUE);
+                BattleScriptPushCursorAndCallback(ScriptCombate_ActivacionAspectoEnganioso);
+                effect++;
+            }
+            break;
         case ABILITY_SEPTIMO_CIELO:
             if (!gSpecialStatuses[battler].switchInAbilityDone)
             {
@@ -5366,6 +5376,11 @@ static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData
     case EFFECT_LAST_RESPECTS:
         basePower += (basePower * min(100, GetBattlerSideFaintCounter(battlerAtk)));
         break;
+    case EFFECT_VUDU:
+        basePower = gCombate->potenciaMovimientosRecibidosTurno[battlerAtk];
+        if (basePower < 10)
+            basePower = 10;
+        break;
     }
 
     // Move-specific base power changes
@@ -5465,7 +5480,7 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
         if (IsMoveMakingContact(move, battlerAtk))
             MULTIPLICA(modifier, MAS_25_POR_CIENTO);
         break;
-    case ABILITY_STRONG_JAW:
+    case ABILITY_MANDIBULA_FUERTE:
     case ABILITY_NAVAJAS:
         if (gMovesInfo[move].bitingMove)
             MULTIPLICA(modifier, MAS_25_POR_CIENTO);
@@ -5920,7 +5935,7 @@ static inline s32 CalculateBaseDamage(u32 power, u32 userFinalAttack, u32 level,
 static inline uq4_12_t GetTargetDamageModifier(struct DamageCalculationData *damageCalcData)
 {
     if (EsContraEntrenador() && GetMoveTargetCount(damageCalcData) >= 2)
-        return MOVIMIENTO_POCO_EFECTIVO;
+        return MENOS_50_POR_CIENTO;
     return MOVIMIENTO_NEUTRO;
 }
 
@@ -6176,34 +6191,29 @@ static inline uq4_12_t GetOtherModifiers(struct DamageCalculationData *damageCal
         dmg = uq4_12_multiply_by_int(modifier, dmg); \
     } while (0)
 
-static inline s32 DoMoveDamageCalcVars(struct DamageCalculationData *damageCalcData, u32 fixedBasePower, uq4_12_t typeEffectivenessModifier, u32 weather,
-                                       u32 holdEffectAtk, u32 holdEffectDef, u32 abilityAtk, u32 abilityDef)
+static inline s32 DoMoveDamageCalcVars(struct DamageCalculationData *damageCalcData, u32 fixedBasePower, uq4_12_t typeEffectivenessModifier, u32 weather, u32 holdEffectAtk, u32 holdEffectDef, u32 abilityAtk, u32 abilityDef)
 {
     s32 dmg;
     u32 userFinalAttack;
     u32 targetFinalDefense;
-    u32 movimiento = gCurrentMove;
-    u32 efectoMovimiento = gMovesInfo[movimiento].effect;
-    u32 battlerAtk;
+    u32 battlerAtk = damageCalcData->battlerAtk;
     u32 battlerDef = damageCalcData->battlerDef;
 
-    if (efectoMovimiento == EFECTO_ATAQUE_EQUIPO)
-    {
-        battleAtk = gCombate->estadisticaAtaqueEquipo // Revisar
-                    else battlerAtk = damageCalcData->battlerAtk
-    }
+    if (gMovesInfo[gCurrentMove].effect == EFECTO_ATAQUE_EQUIPO)
+        userFinalAttack = gCombate->estadisticaAtaqueEquipo;
+    else
+        userFinalAttack = CalcAttackStat(damageCalcData, abilityAtk, abilityDef, holdEffectAtk, weather);
 
     if (fixedBasePower)
         gBattleMovePower = fixedBasePower;
     else
         gBattleMovePower = CalcMoveBasePowerAfterModifiers(damageCalcData, abilityAtk, abilityDef, holdEffectAtk, weather);
 
-    userFinalAttack = CalcAttackStat(damageCalcData, abilityAtk, abilityDef, holdEffectAtk, weather);
     targetFinalDefense = CalcDefenseStat(damageCalcData, abilityAtk, abilityDef, holdEffectDef, weather);
 
     dmg = CalculateBaseDamage(gBattleMovePower, userFinalAttack, gBattleMons[battlerAtk].level, targetFinalDefense);
+
     DAMAGE_APPLY_MODIFIER(GetTargetDamageModifier(damageCalcData));
-    DAMAGE_APPLY_MODIFIER(GetParentalBondModifier(battlerAtk));
     DAMAGE_APPLY_MODIFIER(GetWeatherDamageModifier(damageCalcData, holdEffectAtk, holdEffectDef, weather));
     DAMAGE_APPLY_MODIFIER(GetCriticalModifier(damageCalcData->isCrit));
     DAMAGE_APPLY_MODIFIER(GetSameTypeAttackBonusModifier(damageCalcData, abilityAtk));
@@ -6211,8 +6221,9 @@ static inline s32 DoMoveDamageCalcVars(struct DamageCalculationData *damageCalcD
     DAMAGE_APPLY_MODIFIER(ModificadorQuemaduraCongelacion(damageCalcData, abilityAtk));
     DAMAGE_APPLY_MODIFIER(GetOtherModifiers(damageCalcData, typeEffectivenessModifier, abilityAtk, abilityDef, holdEffectAtk, holdEffectDef));
 
-    if (dmg == 0)
+    if (dmg <= 0)
         dmg = 1;
+
     return dmg;
 }
 

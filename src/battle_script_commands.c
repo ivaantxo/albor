@@ -4172,9 +4172,23 @@ static void Cmd_moveend(void)
             gBattleScripting.moveendState++;
             break;
         case MOVEEND_NUM_HITS:
-            if (gBattlerAttacker != gBattlerTarget && gMovesInfo[gCurrentMove].category != CATEGORIA_ESTADO && MovimientoEsEfectivo(gCombate->resultadoMovimiento) && HaSidoDaniado(gBattlerTarget))
+            if (gBattlerAttacker != gBattlerTarget 
+             && gMovesInfo[gCurrentMove].category != CATEGORIA_ESTADO 
+             && MovimientoEsEfectivo(gCombate->resultadoMovimiento)
+             && HaSidoDaniado(gBattlerTarget))
             {
-                gBattleStruct->timesGotHit[GetBattlerSide(gBattlerTarget)][gBattlerPartyIndexes[gBattlerTarget]]++;
+                u32 potencia = gMovesInfo[gCurrentMove].power;
+                struct DamageCalculationData damageCalcData = {0};
+                damageCalcData.battlerAtk = gBattlerAttacker;
+                damageCalcData.battlerDef = gBattlerTarget;
+                damageCalcData.move = gCurrentMove;
+
+                uq4_12_t modificador = GetTargetDamageModifier(&damageCalcData);
+
+                potencia = uq4_12_multiply_by_int(modificador, potencia);
+                gCombate->potenciaMovimientosRecibidosTurno[gBattlerTarget] += potencia;
+
+                gCombate->timesGotHit[GetBattlerSide(gBattlerTarget)][gBattlerPartyIndexes[gBattlerTarget]]++;
             }
             gBattleScripting.moveendState++;
             break;
@@ -6696,30 +6710,6 @@ static void Cmd_various(void)
             BattleScriptPush(cmd->nextInstr);
             gLastUsedAbility = battlerAbility;
             gBattlescriptCurrInstr = BattleScript_RaiseStatOnFaintingTarget;
-            return;
-        }
-        break;
-    }
-    case VARIOUS_TRY_ACTIVATE_CARNIVORO:
-    {
-        VARIOUS_ARGS();
-
-        u16 battlerAbility = HabilidadCombatiente(battler);
-
-        if ((battlerAbility == ABILITY_CARNIVORO || battlerAbility == ABILITY_VAMPIRO) && HasAttackerFaintedTarget() && !NoAliveMonsForEitherParty())
-        {
-            gBattleMoveDamage = CuantosPSMaximos(gBattlerAttacker) / 3;
-            gBattleMoveDamage += gBattleMons[battler].hp;
-            if (gBattleMoveDamage > gBattleMons[battler].maxHP)
-                gBattleMoveDamage = gBattleMons[battler].maxHP;
-            BtlController_EmitSetMonData(battler, BUFFER_A, REQUEST_HP_BATTLE,
-                                         1u << *(gBattleStruct->battlerPartyIndexes + battler),
-                                         sizeof(gBattleMoveDamage),
-                                         &gBattleMoveDamage);
-            MarcaCombatienteOcupado(battler);
-            BattleScriptPush(cmd->nextInstr);
-            gLastUsedAbility = battlerAbility;
-            gBattlescriptCurrInstr = BattleScript_Carnivoro;
             return;
         }
         break;
@@ -10866,5 +10856,31 @@ static void Cmd_resultmessage(void) // Por terminar
         gSpecialStatuses[gBattlerTarget].berryReduced = FALSE;
         BattleScriptPushCursor();
         gBattlescriptCurrInstr = BattleScript_PrintBerryReduceString;
+    }
+}
+
+void BS_IntentaRecuperarSaludTrasVencer(void)
+{
+    u32 combatiente = gBattlerAttacker; 
+    u32 habilidad = HabilidadCombatiente(combatiente);
+
+    if ((habilidad == ABILITY_CARNIVORO || habilidad == ABILITY_VAMPIRO) 
+        && HasAttackerFaintedTarget() 
+        && !NoAliveMonsForEitherParty())
+    {
+
+        s32 maxHP = CuantosPSMaximos(battler);
+        gBattleMoveDamage = (maxHP / 3) + gBattleMons[battler].hp;
+
+        if (gBattleMoveDamage > maxHP)
+            gBattleMoveDamage = maxHP;
+
+        BtlController_EmitSetMonData(battler, BUFFER_A, REQUEST_HP_BATTLE, 0, sizeof(gBattleMoveDamage), &gBattleMoveDamage);
+        MarcaCombatienteOcupado(battler);
+
+        BattleScriptPushCursor(); 
+        
+        gLastUsedAbility = habilidad;
+        gBattlescriptCurrInstr = ScriptCombate_HabilidadRecuperacionSaludTrasVencer;
     }
 }

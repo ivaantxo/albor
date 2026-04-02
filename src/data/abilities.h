@@ -143,8 +143,14 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
 
     [ABILITY_MAL_AURA] =
     {
-        .name = _("Mal Aura"),
+        .name = _("Mal aura"),
         .description = COMPOUND_STRING("Baja ataque especial rival."),
+    },
+
+    [ABILITY_ASPECTO_ENGANIOSO] =
+    {
+        .name = _("Aspecto engañoso"),
+        .description = COMPOUND_STRING("Baja la defensa rival."),
     },
 
     [ABILITY_SHADOW_TAG] =
@@ -857,7 +863,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Lowered stats up Sp. Atk."),
     },
 
-    [ABILITY_STRONG_JAW] =
+    [ABILITY_MANDIBULA_FUERTE] =
     {
         .name = _("Mandíbula fuerte"),
         .description = COMPOUND_STRING("+25% mordiscos."),

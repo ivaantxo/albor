@@ -286,7 +286,7 @@ extern const u8 BattleScript_BattlerAbilityStatRaiseOnSwitchIn[];
 extern const u8 BattleScript_CottonDownActivates[];
 extern const u8 BattleScript_SandSpitActivates[];
 extern const u8 BattleScript_RaiseStatOnFaintingTarget[];
-extern const u8 BattleScript_Carnivoro[];
+extern const u8 ScriptCombate_HabilidadRecuperacionSaludTrasVencer[];
 extern const u8 BattleScript_QuickClawActivation[];
 extern const u8 BattleScript_QuickDrawActivation[];
 extern const u8 BattleScript_CustapBerryActivation[];

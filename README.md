@@ -77,7 +77,7 @@ Es un hackrom en castellano que está en desarrollo, que usa la pokeemerald-expa
     *Los cambios de Stats se han modificado: Cada cambio positivo es un 25% más, hasta un máximo de 250% (Con +6, un ataque tendrá 2,5 veces la potencia que tendría). Cada cambio negativo es un -12,5%, hasta un mínimo de 25% (Un ataque con -6 tendrá 1/4 de la potencia que tendría). Además, se ha extrapolado para precisión y evasión.
     *Quemado y congelado dañan 1/16 PS y reducen el daño un 25% (en vez de un 50%). Los ataques que tengan como efecto secundario quemar tienen x2 de probabilidades de hacerlo en Sol, igual que los ataques que congelen en Granizo.
     *Granizo potencia la defensa de los tipo Hielo un 50%.
-    *El daño de ataques en dobles que atacan a ambos rivales se divide al 50% (en vez de al 75%).
+    *El daño de ataques en dobles que atacan a ambos rivales o a rivales y compañero se divide al 50% (en vez de al 75%).
     *La parálisis reduce 50% la velocidad, y da un 10% de posibilidades de no atacar.
     *Somnoliento sustituye a la mecánica de dormido: Un Pokémon somnoliento tiene un 25% de posibilidades de no atacar, y se reduce su defensa un 25%. Además, no se cura con el paso de los turnos, excepto si recibe Espabila. El movimiento Descanso autoinflige somnoliento, y los ataques Ronquido y Sonámbulo siguen funcionando como previamente.
     *Algunas especies de Pokémon pueden encontrar objetos si no llevan ningún objeto equipado aunque no tengan la habilidad recogida: Snorlax puede encontrar Restos, Teddiursa puede encontrar Miel...
@@ -107,6 +107,7 @@ Es un hackrom en castellano que está en desarrollo, que usa la pokeemerald-expa
     *Buena baza hace doble de daño si el oponente ha recibido daño ese turno, pero solo tiene en cuenta el daño por ataques, no por confusión.
     *Entusiasmo potencia 50% movimientos tanto físicos como especiales, y reduce la precisión a un 87.5%.
     *Condiciones de apresamiento como Tenaza o Giro fuego duran siempre 4 turnos, que son 8 si llevan Garra garfio. Dañan 1/16 de PS cada turno (6,25%), que son 1/8 (12,5%) con el objeto Banda atadura equipado.
+    *Movimiento característico de Banette: Vudú. Ataque de tipo Fantasma, con prioridad negativa -1, que su potencia es la suma de la potencia base de los movimientos recibidos por Banette ese turno. Si los movimientos son multitarget, la potencia se considera 50%. La potencia mínima del movimiento son 10, en caso de no recibir daño.
 
 ## Cambios a mecánicas distintas de batalla:
     *El juego cuenta con un sistema de avance del tiempo que no es a partir del tiempo del sistema, sino por la cantidad de frames que pasan en el juego: Cada segundo de tiempo real en el juego equivalen a 20 segundos, es decir, 3 minutos son 1 hora. 
