@@ -303,7 +303,7 @@ void ControladorCombate_EscribeTexto(u32 combatiente, u32 buffer, const u8 *text
     stringInfo->bakScriptPartyIdx = gCombate->scriptPartyIdx;
     stringInfo->hpScale = gCombate->hpScale;
     stringInfo->itemEffectBattler = gPotentialItemEffectBattler;
-    stringInfo->moveType = gMovesInfo[gCurrentMove].type;
+    stringInfo->moveType = gMovimientos[gCurrentMove].type;
 
     for (indiceCombatiente = 0; indiceCombatiente < NUMERO_COMBATIENTES; indiceCombatiente++)
         stringInfo->abilities[indiceCombatiente] = gBattleMons[indiceCombatiente].ability;

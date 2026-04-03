@@ -4345,7 +4345,7 @@ IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
 - Attract
 - Double Edge
 - Hail
-- Blizzard
+- Ventisca
 
 Glalie
 Level: 52
@@ -5811,7 +5811,7 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 - Rain Dance
 - Water Spout
 - Double Edge
-- Blizzard
+- Ventisca
 
 Tentacruel
 Level: 55
@@ -14076,7 +14076,7 @@ IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 Slaking @ Sitrus Berry
 Level: 42
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Blizzard
+- Ventisca
 - Shadow Ball
 - Double Edge
 - Fire Blast
@@ -14109,7 +14109,7 @@ AI: Basic Trainer
 Slaking @ Sitrus Berry
 Level: 47
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Blizzard
+- Ventisca
 - Shadow Ball
 - Double Edge
 - Fire Blast
@@ -14158,7 +14158,7 @@ AI: Basic Trainer
 Slaking @ Sitrus Berry
 Level: 52
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Blizzard
+- Ventisca
 - Shadow Ball
 - Double Edge
 - Fire Blast
@@ -14207,7 +14207,7 @@ AI: Basic Trainer
 Slaking @ Sitrus Berry
 Level: 57
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
-- Blizzard
+- Ventisca
 - Shadow Ball
 - Double Edge
 - Fire Blast

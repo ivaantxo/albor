@@ -373,34 +373,6 @@ BattleScript_EffectPowder::
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectAromaticMist::
-	attackcanceler
-	attackstring
-	ppreduce
-	jumpifbyteequal gBattlerTarget, gBattlerAttacker, BattleScript_ButItFailed
-	jumpiftargetally BattleScript_EffectAromaticMistWorks
-	goto BattleScript_ButItFailed
-
-BattleScript_EffectAromaticMistWorks:
-	setstatchanger ESTADISTICA_DEFENSA_ESPECIAL, 2, FALSE
-	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_EffectAromaticMistEnd
-	jumpifword COMPARACION_DESIGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_AromaticMistAnim
-	pause PAUSA_MUY_CORTA
-	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} won't go any higher!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_EffectAromaticMistEnd
-
-BattleScript_AromaticMistAnim:
-	attackanimation
-	waitanimation
-	setgraphicalstatchangevalues
-	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	printfromtable gStatUpStringIds
-	waitmessage PAUSA_LARGA
-
-BattleScript_EffectAromaticMistEnd:
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectGearUp::
 	goto BattleScript_ButItFailed
 

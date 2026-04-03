@@ -9357,7 +9357,7 @@ const struct Item gItemsInfo[] =
                 .pocket = POCKET_TM_HM,
                 .type = ITEM_USE_PARTY_MENU,
                 .fieldUseFunc = ItemUseOutOfBattle_TMHM,
-                .secondaryId = MOVE_BLIZZARD,
+                .secondaryId = MOVE_VENTISCA,
             },
 
         [ITEM_TM_HYPER_BEAM] =

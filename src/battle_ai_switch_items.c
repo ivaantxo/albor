@@ -87,7 +87,7 @@ static bool32 ShouldSwitchIfHasBadOdds(u32 battler)
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
         aiMove = gBattleMons[battler].moves[i];
-        aiMoveEffect = gMovesInfo[aiMove].effect;
+        aiMoveEffect = gMovimientos[aiMove].effect;
         if (aiMove != MOVE_NONE)
         {
             // Check if mon has an "important" status move
@@ -250,26 +250,26 @@ static bool32 FindMonThatAbsorbsOpponentsMove(u32 battler)
     }
 
     // Create an array of possible absorb abilities so the AI considers all of them
-    if (gMovesInfo[predictedMove].type == TIPO_FUEGO)
+    if (gMovimientos[predictedMove].type == TIPO_FUEGO)
     {
         absorbingTypeAbilities[numAbsorbingAbilities++] = ABILITY_FLASH_FIRE;
     }
-    else if (gMovesInfo[predictedMove].type == TIPO_AGUA || (isOpposingBattlerChargingOrInvulnerable && gMovesInfo[incomingMove].type == TIPO_AGUA))
+    else if (gMovimientos[predictedMove].type == TIPO_AGUA || (isOpposingBattlerChargingOrInvulnerable && gMovimientos[incomingMove].type == TIPO_AGUA))
     {
         absorbingTypeAbilities[numAbsorbingAbilities++] = ABILITY_WATER_ABSORB;
         absorbingTypeAbilities[numAbsorbingAbilities++] = ABILITY_STORM_DRAIN;
     }
-    else if (gMovesInfo[predictedMove].type == TIPO_ELECTRICO || (isOpposingBattlerChargingOrInvulnerable && gMovesInfo[incomingMove].type == TIPO_ELECTRICO))
+    else if (gMovimientos[predictedMove].type == TIPO_ELECTRICO || (isOpposingBattlerChargingOrInvulnerable && gMovimientos[incomingMove].type == TIPO_ELECTRICO))
     {
         absorbingTypeAbilities[numAbsorbingAbilities++] = ABILITY_VOLT_ABSORB;
         absorbingTypeAbilities[numAbsorbingAbilities++] = ABILITY_MOTOR_DRIVE;
         absorbingTypeAbilities[numAbsorbingAbilities++] = ABILITY_LIGHTNING_ROD;
     }
-    else if (gMovesInfo[predictedMove].type == TIPO_PLANTA || (isOpposingBattlerChargingOrInvulnerable && gMovesInfo[incomingMove].type == TIPO_PLANTA))
+    else if (gMovimientos[predictedMove].type == TIPO_PLANTA || (isOpposingBattlerChargingOrInvulnerable && gMovimientos[incomingMove].type == TIPO_PLANTA))
     {
         absorbingTypeAbilities[numAbsorbingAbilities++] = ABILITY_SAP_SIPPER;
     }
-    else if (gMovesInfo[predictedMove].type == TIPO_TIERRA || (isOpposingBattlerChargingOrInvulnerable && gMovesInfo[incomingMove].type == TIPO_TIERRA))
+    else if (gMovimientos[predictedMove].type == TIPO_TIERRA || (isOpposingBattlerChargingOrInvulnerable && gMovimientos[incomingMove].type == TIPO_TIERRA))
     {
         absorbingTypeAbilities[numAbsorbingAbilities++] = ABILITY_BANO_BARRO;
     }
@@ -654,7 +654,7 @@ static bool32 CanMonSurviveHazardSwitchin(u32 battler)
             {
                 aiMove = GetMonData(&party[i], MON_DATA_MOVE1 + j, NULL);
                 if (MoveHasAdditionalEffectSelf(aiMove, MOVE_EFFECT_GIRO_RAPIDO)
-                 || (gMovesInfo[aiMove].effect == EFFECT_DEFOG))
+                 || (gMovimientos[aiMove].effect == EFFECT_DEFOG))
                 {
                     // Have a mon that can clear the hazards, so switching out is okay
                     return TRUE;
@@ -681,7 +681,7 @@ static bool32 ShouldSwitchIfEncored(u32 battler)
         return FALSE;
 
     // Switch out if status move
-    if (gMovesInfo[encoredMove].category == CATEGORIA_ESTADO)
+    if (gMovimientos[encoredMove].category == CATEGORIA_ESTADO)
         return SetSwitchinAndSwitch(battler, PARTY_SIZE);
 
     // Stay in if effective move
@@ -701,7 +701,7 @@ static bool32 ShouldSwitchIfBadChoiceLock(u32 battler)
 
     if (HOLD_EFFECT_CHOICE(holdEffect))
     {
-        if (gMovesInfo[gLastUsedMove].category == CATEGORIA_ESTADO)
+        if (gMovimientos[gLastUsedMove].category == CATEGORIA_ESTADO)
             return SetSwitchinAndSwitch(battler, PARTY_SIZE);
     }
 
@@ -972,7 +972,7 @@ static u32 GetBestMonRelevo(struct Pokemon *party, int firstId, int lastId, u8 i
 
         for (u32 indiceMovimiento = 0; indiceMovimiento < MAX_MON_MOVES; indiceMovimiento++)
         {
-            if (gMovesInfo[GetMonData(&party[combatiente], MON_DATA_MOVE1 + indiceMovimiento)].effect == EFECTO_RELEVO)
+            if (gMovimientos[GetMonData(&party[combatiente], MON_DATA_MOVE1 + indiceMovimiento)].effect == EFECTO_RELEVO)
             {
                 bits |= 1u << combatiente;
                 break;
@@ -1116,7 +1116,7 @@ static u32 GetSwitchinHazardsDamage(u32 battler, struct BattlePokemon *battleMon
     if (ability != ABILITY_MAGIC_GUARD || (heldItemEffect == HOLD_EFFECT_HEAVY_DUTY_BOOTS))
     {
         if ((hazardFlags & SIDE_STATUS_STEALTH_ROCK) && heldItemEffect != HOLD_EFFECT_HEAVY_DUTY_BOOTS)
-            hazardDamage += DanioTrampa(gMovesInfo[MOVE_STEALTH_ROCK].type, battler);
+            hazardDamage += DanioTrampa(gMovimientos[MOVE_STEALTH_ROCK].type, battler);
 
         if ((hazardFlags & SIDE_STATUS_SPIKES) && EstaPokemonEnSuelo(heldItemEffect, ability, defType1, defType2))
         {
@@ -1525,7 +1525,7 @@ static inline bool32 IsFreeSwitch(bool32 isSwitchAfterKO, u32 battlerSwitchingOu
     // Switch out effects
     if (!EsContraEntrenador()) // Not handling doubles' additional complexity
     {
-        if (IsSwitchOutEffect(gMovesInfo[gLastUsedMove].effect) && movedSecond)
+        if (IsSwitchOutEffect(gMovimientos[gLastUsedMove].effect) && movedSecond)
             return TRUE;
         if (AI_DATA->ejectButtonSwitch)
             return TRUE;
@@ -1623,7 +1623,7 @@ static u32 GetBestMonIntegrated(struct Pokemon *party, int firstId, int lastId, 
             canSwitchinWin1v1 = CanSwitchinWin1v1(hitsToKOAI, GetNoOfHitsToKOBattlerDmg(damageDealt, opposingBattler), isSwitchinFirst, isFreeSwitch);
 
             // Check for Baton Pass; hitsToKO requirements mean mon can boost and BP without dying whether it's slower or not
-            if (gMovesInfo[aiMove].effect == EFECTO_RELEVO)
+            if (gMovimientos[aiMove].effect == EFECTO_RELEVO)
             {
                 if ((isSwitchinFirst && hitsToKOAI > 1) || hitsToKOAI > 2) // Need to take an extra hit if slower
                     bits |= 1u << i;
@@ -1655,7 +1655,7 @@ static u32 GetBestMonIntegrated(struct Pokemon *party, int firstId, int lastId, 
                 }
 
                 // If a self destruction move doesn't OHKO, don't factor it into revenge killing
-                if (gMovesInfo[aiMove].effect == EFFECT_EXPLOSION && damageDealt < playerMonHP)
+                if (gMovimientos[aiMove].effect == EFFECT_EXPLOSION && damageDealt < playerMonHP)
                     continue;
 
                 // Check that mon isn't one shot and set best damage mon
@@ -1728,7 +1728,7 @@ static u32 GetBestMonIntegrated(struct Pokemon *party, int firstId, int lastId, 
         else if (conRelevo != PARTY_SIZE)             return conRelevo;
     }
     // If ace mon is the last available Pokemon and U-Turn/Volt Switch was used - switch to the mon.
-    if (aceMonId != PARTY_SIZE && IsSwitchOutEffect(gMovesInfo[gLastUsedMove].effect))
+    if (aceMonId != PARTY_SIZE && IsSwitchOutEffect(gMovimientos[gLastUsedMove].effect))
         return aceMonId;
 
     return PARTY_SIZE;

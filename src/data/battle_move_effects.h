@@ -487,11 +487,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .encourageEncore = TRUE,
             },
 
-        [EFFECT_THUNDER] =
-            {
-                .battleScript = BattleScript_EffectHit,
-            },
-
         [EFECTO_ATAQUE_EQUIPO] =
             {
                 .battleScript = ScriptBatalla_EfectoAtaqueEquipo,
@@ -1030,15 +1025,9 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
             },
 
 
-        [EFFECT_AURORA_VEIL] =
+        [EFECTO_VELO_AURORA] =
             {
                 .battleScript = BattleScript_EffectAuroraVeil,
-                .encourageEncore = TRUE,
-            },
-
-        [EFFECT_AROMATIC_MIST] =
-            {
-                .battleScript = BattleScript_EffectAromaticMist,
                 .encourageEncore = TRUE,
             },
 
@@ -1157,16 +1146,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
             },
 
         [EFFECT_VUDU] =
-            {
-                .battleScript = BattleScript_EffectHit,
-            },
-
-        [EFFECT_BLIZZARD] =
-            {
-                .battleScript = BattleScript_EffectHit,
-            },
-
-        [EFFECT_RAIN_ALWAYS_HIT] =
             {
                 .battleScript = BattleScript_EffectHit,
             },

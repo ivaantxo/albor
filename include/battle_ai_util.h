@@ -112,7 +112,6 @@ bool32 HasMoveWithLowAccuracy(u32 battlerAtk, u32 battlerDef, u32 accCheck, bool
 bool32 HasAnyKnownMove(u32 battlerId);
 bool32 IsNonVolatileStatusMoveEffect(u32 moveEffect);
 bool32 IsMoveRedirectionPrevented(u32 move, u32 atkAbility);
-bool32 IsMoveEncouragedToHit(u32 battlerAtk, u32 battlerDef, u32 move);
 bool32 IsHazardMoveEffect(u32 moveEffect);
 bool32 IsTwoTurnNotSemiInvulnerableMove(u32 battlerAtk, u32 move);
 void ProtectChecks(u32 battlerAtk, u32 battlerDef, u32 move, u32 predictedMove, s32 *score);

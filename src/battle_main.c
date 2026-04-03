@@ -560,7 +560,7 @@ void CustomTrainerPartyAssignMoves(struct Pokemon *mon, const struct TrainerMon 
     for (j = 0; j < MAX_MON_MOVES; ++j)
     {
         SetMonData(mon, MON_DATA_MOVE1 + j, &partyEntry->moves[j]);
-        SetMonData(mon, MON_DATA_PP1 + j, &gMovesInfo[partyEntry->moves[j]].pp);
+        SetMonData(mon, MON_DATA_PP1 + j, &gMovimientos[partyEntry->moves[j]].pp);
     }
 }
 
@@ -1161,7 +1161,7 @@ void SwitchInClearSetData(u32 battler)
     s32 i;
     struct DisableStruct disableStructCopy = gDisableStructs[battler];
 
-    if (gMovesInfo[gCurrentMove].effect != EFECTO_RELEVO)
+    if (gMovimientos[gCurrentMove].effect != EFECTO_RELEVO)
     {
         for (i = 0; i < NUMERO_ESTADISTICAS_BATALLA; i++)
             gBattleMons[battler].statStages[i] = ESTADISTICA_NEUTRA;
@@ -1176,7 +1176,7 @@ void SwitchInClearSetData(u32 battler)
             }
         }
     }
-    if (gMovesInfo[gCurrentMove].effect == EFECTO_RELEVO)
+    if (gMovimientos[gCurrentMove].effect == EFECTO_RELEVO)
     {
         gBattleMons[battler].status2 &= (STATUS2_CONFUSION | STATUS2_SUBSTITUTE | STATUS2_ESCAPE_PREVENTION | STATUS2_CURSED);
         gStatuses3[battler] &= (STATUS3_LEECHSEED_BATTLER | STATUS3_LEECHSEED | STATUS3_ALWAYS_HITS | STATUS3_PERISH_SONG | STATUS3_ROOTED | STATUS3_GASTRO_ACID | STATUS3_EMBARGO | STATUS3_TELEKINESIS | STATUS3_MAGNET_RISE | STATUS3_AQUA_RING | STATUS3_POWER_TRICK);
@@ -1210,7 +1210,7 @@ void SwitchInClearSetData(u32 battler)
 
     memset(&gDisableStructs[battler], 0, sizeof(struct DisableStruct));
 
-    if (gMovesInfo[gCurrentMove].effect == EFECTO_RELEVO)
+    if (gMovimientos[gCurrentMove].effect == EFECTO_RELEVO)
     {
         gDisableStructs[battler].substituteHP = disableStructCopy.substituteHP;
         gDisableStructs[battler].battlerWithSureHit = disableStructCopy.battlerWithSureHit;
@@ -2127,20 +2127,20 @@ s8 GetChosenMovePriority(u32 battler)
 
 s8 GetMovePriority(u32 battler, u16 move)
 {
-    s8 priority;
+    s32 priority;
     u16 ability = HabilidadCombatiente(battler);
 
-    if (ability == ABILITY_ALAS_VENDAVAL && gMovesInfo[move].type == TIPO_VOLADOR)
+    if (ability == ABILITY_ALAS_VENDAVAL && gMovimientos[move].type == TIPO_VOLADOR)
         priority++;
-    else if (ability == ABILITY_TIERRA_SUELTA && gMovesInfo[move].type == TIPO_TIERRA)
+    else if (ability == ABILITY_TIERRA_SUELTA && gMovimientos[move].type == TIPO_TIERRA)
         priority++;
-    else if (ability == ABILITY_SUPERORDENADOR && gMovesInfo[move].type == TIPO_PSIQUICO)
+    else if (ability == ABILITY_SUPERORDENADOR && gMovimientos[move].type == TIPO_PSIQUICO)
         priority++;
-    else if (ability == ABILITY_ENVIO_EXPRESS && gMovesInfo[move].type == TIPO_HADA)
+    else if (ability == ABILITY_ENVIO_EXPRESS && gMovimientos[move].type == TIPO_HADA)
         priority++;
-    else if (ability == ABILITY_ZUMBANDO && gMovesInfo[move].type == TIPO_BICHO)
+    else if (ability == ABILITY_ZUMBANDO && gMovimientos[move].type == TIPO_BICHO)
         priority++;
-    else if (ability == ABILITY_BAILARIN && gMovesInfo[move].danceMove)
+    else if (ability == ABILITY_BAILARIN && gMovimientos[move].danceMove)
         priority++;
     else if (ability == ABILITY_BROMISTA && EsMovimientoDeEstado(move))
     {
@@ -2149,17 +2149,18 @@ s8 GetMovePriority(u32 battler, u16 move)
     }
     else if (ability == ABILITY_TRIAGE && IsHealingMove(move))
         priority += 3;
-    else if (ability == ABILITY_ATAQUE_RELAMPAGO && gMovesInfo[move].balistico)
+    else if (ability == ABILITY_ATAQUE_RELAMPAGO && gMovimientos[move].balistico)
         priority++;
-    else if (ability == ABILITY_OJOS_PRESTOS && gMovesInfo[move].eyesMove)
+    else if (ability == ABILITY_OJOS_PRESTOS && gMovimientos[move].eyesMove)
         priority++;
-    else if (ability == ABILITY_HUIDIZO && gMovesInfo[move].effect == EFFECT_HIT_ESCAPE)
+    else if (ability == ABILITY_HUIDIZO && gMovimientos[move].effect == EFFECT_HIT_ESCAPE)
         priority++;
-    else if (ability == ABILITY_VOZ_CANTANTE && gMovesInfo[move].soundMove)
+    else if (ability == ABILITY_VOZ_CANTANTE && EsMovimientoDeSonido(move))
         priority++;
     else if (ability == ABILITY_PACIFISTA && EsMovimientoDeEstado(move))
         priority++;
-
+    else if (ability == ABILITY_FORECAST && EsMovimientoDeClima(move))
+        priority++;
     return priority;
 }
 
@@ -2417,7 +2418,7 @@ static bool32 TryDoMoveEffectsBeforeMoves(void)
             {
                 gCombate->focusPunchBattlers |= 1u << battlers[i];
                 gBattlerAttacker = battlers[i];
-                switch (gMovesInfo[gMovimientoElegido[gBattlerAttacker]].effect)
+                switch (gMovimientos[gMovimientoElegido[gBattlerAttacker]].effect)
                 {
                 case EFFECT_FOCUS_PUNCH:
                     BattleScriptExecute(BattleScript_FocusPunchSetUp);
@@ -2711,8 +2712,8 @@ void RunBattleScriptCommands(void)
 
 u32 TipoMovimiento(u32 movimiento, u32 combatiente)
 {
-    u32 tipoMovimiento = gMovesInfo[movimiento].type;
-    u32 efectoMovimiento = gMovesInfo[movimiento].effect;
+    u32 tipoMovimiento = gMovimientos[movimiento].type;
+    u32 efectoMovimiento = gMovimientos[movimiento].effect;
     u32 habilidad = HabilidadCombatiente(combatiente);
 
     if (efectoMovimiento == EFFECT_WEATHER_BALL && WEATHER_HAS_EFFECT)

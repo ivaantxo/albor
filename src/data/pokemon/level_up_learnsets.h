@@ -498,7 +498,6 @@ static const struct LevelUpMove sWeezingLevelUpLearnset[] = {
     LEVEL_UP_END};
 
 static const struct LevelUpMove sWeezingGalarLevelUpLearnset[] = {
-    LEVEL_UP_MOVE(1, MOVE_AROMATIC_MIST),
     LEVEL_UP_MOVE(1, MOVE_LLAMA_AZUL),
     LEVEL_UP_END};
 
@@ -564,12 +563,10 @@ static const struct LevelUpMove sStarmieLevelUpLearnset[] = {
     LEVEL_UP_END};
 
 static const struct LevelUpMove sMimeJrLevelUpLearnset[] = {
-    LEVEL_UP_MOVE(1, MOVE_AROMATIC_MIST),
     LEVEL_UP_MOVE(1, MOVE_BABY_DOLL_EYES),
     LEVEL_UP_END};
 
 static const struct LevelUpMove sMrMimeLevelUpLearnset[] = {
-    LEVEL_UP_MOVE(1, MOVE_AROMATIC_MIST),
     LEVEL_UP_END};
 
 static const struct LevelUpMove sScytherLevelUpLearnset[] = {
@@ -768,7 +765,6 @@ static const struct LevelUpMove sBayleefLevelUpLearnset[] = {
     LEVEL_UP_END};
 
 static const struct LevelUpMove sMeganiumLevelUpLearnset[] = {
-    LEVEL_UP_MOVE(1, MOVE_AROMATIC_MIST),
     LEVEL_UP_MOVE(1, MOVE_CANTO_ENCANTADOR),
     LEVEL_UP_MOVE(1, MOVE_BABY_DOLL_EYES),
     LEVEL_UP_END};
@@ -1102,7 +1098,6 @@ static const struct LevelUpMove sHoOhLevelUpLearnset[] = {
     LEVEL_UP_END};
 
 static const struct LevelUpMove sCelebiLevelUpLearnset[] = {
-    LEVEL_UP_MOVE(1, MOVE_AROMATIC_MIST),
     LEVEL_UP_END};
 
 static const struct LevelUpMove sTreeckoLevelUpLearnset[] = {
@@ -1366,11 +1361,9 @@ static const struct LevelUpMove sBudewLevelUpLearnset[] = {
     LEVEL_UP_END};
 
 static const struct LevelUpMove sRoseliaLevelUpLearnset[] = {
-    LEVEL_UP_MOVE(1, MOVE_AROMATIC_MIST),
     LEVEL_UP_END};
 
 static const struct LevelUpMove sRoseradeLevelUpLearnset[] = {
-    LEVEL_UP_MOVE(1, MOVE_AROMATIC_MIST),
     LEVEL_UP_END};
 
 static const struct LevelUpMove sCarvanhaLevelUpLearnset[] = {
@@ -1432,7 +1425,6 @@ static const struct LevelUpMove sSwabluLevelUpLearnset[] = {
 
 static const struct LevelUpMove sAltariaLevelUpLearnset[] = {
     LEVEL_UP_MOVE(1, MOVE_CANTO_ENCANTADOR),
-    LEVEL_UP_MOVE(1, MOVE_AROMATIC_MIST),
     LEVEL_UP_END};
 
 static const struct LevelUpMove sLunatoneLevelUpLearnset[] = {
@@ -1731,7 +1723,6 @@ static const struct LevelUpMove sCombeeLevelUpLearnset[] = {
 
 static const struct LevelUpMove sVespiquenLevelUpLearnset[] = { // AÑADIR ATAQUES MULTIHIT PARA ENJAMBRE
     LEVEL_UP_MOVE(1, MOVE_COLMENA),
-    LEVEL_UP_MOVE(1, MOVE_AROMATIC_MIST),
     LEVEL_UP_END};
 
 static const struct LevelUpMove sDrifloonLevelUpLearnset[] = {

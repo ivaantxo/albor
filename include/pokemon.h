@@ -268,27 +268,33 @@ struct SpeciesInfo
     struct ObjectEventGraphicsInfo followerDataFemale;
 };
 
-struct MoveInfo
+struct Movimientos
 {
     const u8 *name;
     const u8 *description;
     u16 effect;
-    u16 type:5;
-    u16 category:2;
-    u16 power:9; // up to 511
-    u16 accuracy:7;
-    u16 target:9;
-    u8 pp;
 
-    s32 priority:4;
-    u32 retroceso:7;
-    u32 strikeCount:4; // Max 15 hits. Defaults to 1 if not set. May apply its effect on each hit.
-    u32 criticalHitStage:2;
-    u32 alwaysCriticalHit:1;
-    u32 numAdditionalEffects:2; // limited to 3 - don't want to get too crazy
-    // 12 bits left to complete this word - continues into flags
+    u16 type;
+    u16 category;
 
-    // Flags
+    u16 power;
+    u16 accuracy;
+
+    u16 target;
+    u16 pp;
+
+    s32 priority;
+
+    u32 retroceso;
+
+    u32 strikeCount;
+
+    u32 criticalHitStage;
+
+    u32 alwaysCriticalHit;
+
+    u32 numAdditionalEffects;
+
     u32 makesContact:1;
     u32 ignoresProtect:1;
     u32 espejoMagico:1;
@@ -313,21 +319,19 @@ struct MoveInfo
     u32 damagesAirborne:1;
     u32 damagesAirborneDoubleDamage:1;
     u32 ignoresSubstitute:1;
-    u32 cantUseTwice:1;
     u32 headMove:1;
     u32 eyesMove:1;
     u32 lickMove:1;
-    u32 patada;1;
-
-    // Ban flags
+    u32 patada:1;
     u32 gravityBanned:1;
     u32 sleepTalkBanned:1;
     u32 encoreBanned:1;
     u32 parentalBondBanned:1;
 
+    bool32 climatico;
+
     u32 argument;
 
-    // primary/secondary effects
     const struct AdditionalEffect *additionalEffects;
 
     const u8 *battleAnimScript;
@@ -335,9 +339,6 @@ struct MoveInfo
 
 #define EFFECTS_ARR(...) (const struct AdditionalEffect[]) {__VA_ARGS__}
 #define ADDITIONAL_EFFECTS(...) EFFECTS_ARR( __VA_ARGS__ ), .numAdditionalEffects = ARRAY_COUNT(EFFECTS_ARR( __VA_ARGS__ ))
-
-// Just a hack to make a move boosted by Sheer Force despite having no secondary effects affected
-#define SHEER_FORCE_HACK { .moveEffect = 0, .chance = 100, }
 
 struct AdditionalEffect
 {
@@ -399,7 +400,7 @@ extern struct Pokemon gEnemyParty[PARTY_SIZE];
 extern struct SpriteTemplate gMultiuseSpriteTemplate;
 extern u16 gFollowerSteps;
 
-extern const struct MoveInfo gMovesInfo[];
+extern const struct Movimientos gMovimientos[];
 extern const struct SpeciesInfo gSpeciesInfo[];
 extern const u32 gExperienceTables[TIPOS_CRECIMIENTO][MAX_LEVEL + 1];
 extern const uq4_12_t gMultiplicadorEstadisticas[NUMERO_CAMBIOS_ESTADISTICAS];

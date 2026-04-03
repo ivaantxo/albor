@@ -567,7 +567,7 @@ void LoadBattleMonGfxAndAnimate(u8 battler, bool8 loadMonSprite, u32 spriteId)
 
 void TrySetBehindSubstituteSpriteBit(u8 battler, u16 move)
 {
-    if (gMovesInfo[move].effect == EFFECT_SUBSTITUTE)
+    if (gMovimientos[move].effect == EFFECT_SUBSTITUTE)
         gBattleSpritesDataPtr->battlerData[battler].behindSubstitute = 1;
 }
 

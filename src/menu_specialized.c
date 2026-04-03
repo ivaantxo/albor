@@ -602,7 +602,7 @@ u8 LoadMoveRelearnerMovesList(const struct ListMenuItem *items, u16 numChoices)
 static void MoveRelearnerLoadBattleMoveDescription(u32 chosenMove)
 {
     s32 x;
-    const struct MoveInfo *move;
+    const struct Movimientos *move;
     u8 buffer[32];
     const u8 *str;
 
@@ -630,7 +630,7 @@ static void MoveRelearnerLoadBattleMoveDescription(u32 chosenMove)
         CopyWindowToVram(RELEARNERWIN_DESC_BATTLE, COPYWIN_GFX);
         return;
     }
-    move = &gMovesInfo[chosenMove];
+    move = &gMovimientos[chosenMove];
     str = gTipos[move->type].name;
     AddTextPrinterParameterized(RELEARNERWIN_DESC_BATTLE, FONT_NORMAL, str, 4, 25, TEXT_SKIP_DRAW, NULL);
 
@@ -660,7 +660,7 @@ static void MoveRelearnerLoadBattleMoveDescription(u32 chosenMove)
     }
     AddTextPrinterParameterized(RELEARNERWIN_DESC_BATTLE, FONT_NORMAL, str, 106, 41, TEXT_SKIP_DRAW, NULL);
 
-    str = gMovesInfo[chosenMove].description;
+    str = gMovimientos[chosenMove].description;
     AddTextPrinterParameterized(RELEARNERWIN_DESC_BATTLE, FONT_NARROW, str, 0, 65, 0, NULL);
 }
 

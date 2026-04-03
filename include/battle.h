@@ -72,7 +72,7 @@ struct __attribute__((packed, aligned(2))) BattleMoveEffect
     u16 padding : 9;
 };
 
-#define GET_MOVE_BATTLESCRIPT(move) gBattleMoveEffects[gMovesInfo[move].effect].battleScript
+#define GET_MOVE_BATTLESCRIPT(move) gBattleMoveEffects[gMovimientos[move].effect].battleScript
 
 #define RESOURCE_FLAG_FLASH_FIRE 1
 #define RESOURCE_FLAG_ROOST 2
@@ -805,7 +805,17 @@ static inline bool32 EsPrimerGolpe(void)
 
 static inline bool32 HaceDanioRetroceso(u32 movimiento)
 {
-    return (gMovesInfo[movimiento].retroceso > 0);
+    return (gMovimientos[movimiento].retroceso > 0);
+}
+
+static inline bool32 EsMovimientoDeSonido(u32 movimiento)
+{
+    return (gMovimientos[movimiento].soundMove);
+}
+
+static inline bool32 EsMovimientoDeClima(u32 movimiento)
+{
+    return (gMovimientos[movimiento].climatico);
 }
 
 #endif // GUARD_BATTLE_H

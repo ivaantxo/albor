@@ -7,17 +7,22 @@
 #include "constants/moves.h"
 #include "constants/contest.h"
 
+#define CLIMATICO .climatico = TRUE
+
 /* First arg is the charge turn string id, second arg depends on effect
 EFFECT_SEMI_INVULNERABLE: semi-invulnerable STATUS3 to apply to battler
 EFFECT_TWO_TURNS_ATTACK: weather in which to skip charge turn */
 #define TWO_TURN_ARG(stringid, ...) (stringid) __VA_OPT__(| ((__VA_ARGS__) << 16))
 
-#define PP_MOVIMIENTO_LIMITADO 8
-#define PP_MOVIMIENTO_NORMAL 16
-#define PP_MOVIMIENTO_AMPLIO 24
+#define PP_MOVIMIENTO_LIMITADO  8
+#define PP_MOVIMIENTO_NORMAL    16
+#define PP_MOVIMIENTO_AMPLIO    24
 
-#define RETROCESO_BAJO 15
-#define RETROCESO_ALTO 30
+#define RETROCESO_BAJO          15
+#define RETROCESO_ALTO          30
+
+#define PRECISION_NORMAL        100
+#define PRECISION_BAJA          75
 
 static const u8 sMegaDrainDescription[] = _(
     "An attack that absorbs\n"
@@ -75,7 +80,7 @@ static const u8 sCloseCombatDescription[] = _(
     "A strong attack but lowers\n"
     "the defensive stats.");
 
-const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
+const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
 {
     [MOVE_NONE] =
     {
@@ -1276,25 +1281,23 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            // The following effect is also relevant in battle_Pike.c
-            // If you cherry-pick this to use something other than the config, make sure to update it there too
             .moveEffect = EFECTO_MOVIMIENTO_CONGELACION,
             .chance = 10,
         }),
         .battleAnimScript = gBattleAnimMove_IceBeam,
     },
 
-    [MOVE_BLIZZARD] =
+    [MOVE_VENTISCA] =
     {
         .name = COMPOUND_STRING("Ventisca"),
         .description = COMPOUND_STRING(
             "Hits the foe with an icy\n"
             "storm. May cause frostbite."),
-        .effect = B_BLIZZARD_HAIL >= GEN_4 ? EFFECT_BLIZZARD : EFFECT_HIT,
+        .effect = EFFECT_HIT,
         .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 110 : 120,
         .type = TIPO_HIELO,
-        .accuracy = 70,
-        .pp = 5,
+        .accuracy = PRECISION_BAJA,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
@@ -1833,7 +1836,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "A lightning attack that may\n"
             "cause paralysis."),
-        .effect = EFFECT_THUNDER,
+        .effect = EFFECT_PRECISION_INCREMENTADA_CLIMA,
         .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 110 : 120,
         .type = TIPO_ELECTRICO,
         .accuracy = 70,
@@ -4493,6 +4496,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
         .danceMove = TRUE,
+        CLIMATICO,
         .battleAnimScript = gBattleAnimMove_RainDance,
     },
 
@@ -4512,6 +4516,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
         .danceMove = TRUE,
+        CLIMATICO,
         .battleAnimScript = gBattleAnimMove_SunnyDay,
     },
 
@@ -4849,6 +4854,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
         .danceMove = TRUE,
+        CLIMATICO,
         .battleAnimScript = gBattleAnimMove_Hail,
     },
 
@@ -5810,7 +5816,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_MetalSound,
     },
 
-    [MOVE_GRASS_WHISTLE] =
+    [MOVE_SILBATO] =
     {
         .name = COMPOUND_STRING("Silbato"),
         .description = COMPOUND_STRING(
@@ -5819,12 +5825,12 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .effect = EFFECT_SLEEP,
         .power = 0,
         .type = TIPO_PLANTA,
-        .accuracy = 55,
+        .accuracy = 100,
         .pp = 15,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
-        .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
+        .ignoresSubstitute = TRUE,
         .espejoMagico = TRUE,
         .soundMove = TRUE,
         .battleAnimScript = gBattleAnimMove_GrassWhistle,
@@ -9599,7 +9605,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Traps the foe in a fierce\n"
             "wind. May cause confusion."),
-        .effect = EFFECT_THUNDER,
+        .effect = EFFECT_PRECISION_INCREMENTADA_CLIMA,
         .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 110 : 120,
         .type = TIPO_VOLADOR,
         .accuracy = 70,
@@ -9613,6 +9619,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             .moveEffect = MOVE_EFFECT_CONFUSION,
             .chance = 30,
         }),
+        CLIMATICO,
         .battleAnimScript = gBattleAnimMove_Hurricane,
     },
 
@@ -10442,25 +10449,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_SpikyShield,
     },
 
-    [MOVE_AROMATIC_MIST] =
-    {
-        .name = COMPOUND_STRING("Niebla aromática"),
-        .description = COMPOUND_STRING(
-            "Sube +2 defensa especial\n"
-            "de aliado."),
-        .effect = EFFECT_AROMATIC_MIST,
-        .power = 0,
-        .type = TIPO_HADA,
-        .accuracy = 0,
-        .pp = 20,
-        .target = MOVE_TARGET_ALLY,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .ignoresSubstitute = TRUE,
-        .battleAnimScript = gBattleAnimMove_AromaticMist,
-    },
-
     [MOVE_VENOM_DRENCH] =
     {
         .name = COMPOUND_STRING("Venom Drench"),
@@ -11230,22 +11218,23 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_BrutalSwing,
     },
 
-    [MOVE_AURORA_VEIL] =
+    [MOVE_VELO_AURORA] =
     {
-        .name = COMPOUND_STRING("Aurora Veil"),
+        .name = COMPOUND_STRING("Velo aurora"),
         .description = COMPOUND_STRING(
             "Weakens all attacks, but\n"
             "only usable with hail."),
-        .effect = EFFECT_AURORA_VEIL,
+        .effect = EFECTO_VELO_AURORA,
         .power = 0,
         .type = TIPO_HIELO,
-        .accuracy = 0,
-        .pp = 20,
+        .accuracy = PRECISION_NORMAL,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_USER,
         .priority = 0,
         .category = CATEGORIA_ESTADO,
         .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
+        CLIMATICO,
         .battleAnimScript = gBattleAnimMove_AuroraVeil,
     },
 
@@ -12609,17 +12598,17 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_CeaselessEdge,
     },
 
-    [MOVE_BLEAKWIND_STORM] = //ajustar
+    [MOVE_VENDAVAL_GELIDO] =
     {
-        .name = COMPOUND_STRING("Bleakwind Storm"),
+        .name = COMPOUND_STRING("Vendaval gélido"),
         .description = COMPOUND_STRING(
             "Hits with brutal, cold winds.\n"
             "May lower the foe's Speed."),
-        .effect = EFFECT_RAIN_ALWAYS_HIT,
-        .power = 90,
-        .type = TIPO_VOLADOR,
-        .accuracy = 85,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_9 ? 10 : 5,
+        .effect = EFFECT_PRECISION_INCREMENTADA_CLIMA,
+        .power = 100,
+        .type = TIPO_HIELO,
+        .accuracy = PRECISION_BAJA,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
@@ -12637,7 +12626,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Hits with a brutal tempest.\n"
             "May inflict paralysis."),
-        .effect = EFFECT_RAIN_ALWAYS_HIT,
+        .effect = EFFECT_PRECISION_INCREMENTADA_CLIMA,
         .power = B_UPDATED_MOVE_DATA >= GEN_9 ? 100 : 95,
         .type = TIPO_ELECTRICO,
         .accuracy = 80,
@@ -12659,7 +12648,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Hits with brutally hot sand.\n"
             "May inflict a burn."),
-        .effect = EFFECT_RAIN_ALWAYS_HIT,
+        .effect = EFFECT_PRECISION_INCREMENTADA_CLIMA,
         .power = B_UPDATED_MOVE_DATA >= GEN_9 ? 100 : 95,
         .type = TIPO_TIERRA,
         .accuracy = 80,
@@ -12952,6 +12941,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
         .danceMove = TRUE,
+        CLIMATICO,
         .battleAnimScript = gBattleAnimMove_Snowscape,
     },
 
@@ -13110,7 +13100,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_FISICA,
-        .cantUseTwice = TRUE,
         .battleAnimScript = gBattleAnimMove_GigatonHammer,
     },
 
@@ -13164,7 +13153,6 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .cantUseTwice = TRUE,
         .battleAnimScript = gBattleAnimMove_BloodMoon,
     },
 
@@ -13188,7 +13176,7 @@ const struct MoveInfo gMovesInfo[NUMERO_MOVIMIENTOS] =
             .moveEffect = MOVE_EFFECT_SP_ATK_PLUS_1,
             .self = TRUE,
             .onChargeTurnOnly = TRUE,
-        }, SHEER_FORCE_HACK),
+        }),
         .battleAnimScript = gBattleAnimMove_ElectroShot,
     },
 

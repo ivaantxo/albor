@@ -2597,7 +2597,7 @@ static void DrawContestMoveHearts(u16 move)
     if (move != MOVE_NONE)
     {
         // Draw appeal hearts
-        u8 effectValue = gContestEffects[gMovesInfo[move].contestEffect].appeal;
+        u8 effectValue = gContestEffects[gMovimientos[move].contestEffect].appeal;
         if (effectValue != 0xFF)
             effectValue /= 10;
 
@@ -2610,7 +2610,7 @@ static void DrawContestMoveHearts(u16 move)
         }
 
         // Draw jam hearts
-        effectValue = gContestEffects[gMovesInfo[move].contestEffect].jam;
+        effectValue = gContestEffects[gMovimientos[move].contestEffect].jam;
         if (effectValue != 0xFF)
             effectValue /= 10;
 
@@ -3382,25 +3382,25 @@ static void PrintMovePowerAndAccuracy(u16 moveIndex)
     {
         FillWindowPixelRect(PSS_LABEL_WINDOW_MOVES_POWER_ACC, PIXEL_FILL(0), 53, 0, 19, 32);
 
-        if (gMovesInfo[moveIndex].power < 2)
+        if (gMovimientos[moveIndex].power < 2)
         {
             text = gText_ThreeDashes;
         }
         else
         {
-            ConvertIntToDecimalStringN(gVariableTexto1, gMovesInfo[moveIndex].power, STR_CONV_MODE_RIGHT_ALIGN, 3);
+            ConvertIntToDecimalStringN(gVariableTexto1, gMovimientos[moveIndex].power, STR_CONV_MODE_RIGHT_ALIGN, 3);
             text = gVariableTexto1;
         }
 
         PrintTextOnWindow(PSS_LABEL_WINDOW_MOVES_POWER_ACC, text, 53, 1, 0, 0);
 
-        if (gMovesInfo[moveIndex].accuracy == 0)
+        if (gMovimientos[moveIndex].accuracy == 0)
         {
             text = gText_ThreeDashes;
         }
         else
         {
-            ConvertIntToDecimalStringN(gVariableTexto1, gMovesInfo[moveIndex].accuracy, STR_CONV_MODE_RIGHT_ALIGN, 3);
+            ConvertIntToDecimalStringN(gVariableTexto1, gMovimientos[moveIndex].accuracy, STR_CONV_MODE_RIGHT_ALIGN, 3);
             text = gVariableTexto1;
         }
 
@@ -3470,7 +3470,7 @@ static void PrintContestMoveDescription(u8 moveSlot)
     if (move != MOVE_NONE)
     {
         u8 windowId = AddWindowFromTemplateList(sPageMovesTemplate, PSS_DATA_WINDOW_MOVE_DESCRIPTION);
-        PrintTextOnWindow(windowId, gContestEffectDescriptionPointers[gMovesInfo[move].contestEffect], 6, 1, 0, 0);
+        PrintTextOnWindow(windowId, gContestEffectDescriptionPointers[gMovimientos[move].contestEffect], 6, 1, 0, 0);
     }
 }
 
@@ -3483,15 +3483,15 @@ static void PrintMoveDetails(u16 move)
     {
         if (sMonSummaryScreen->currPageIndex == PSS_PAGE_BATTLE_MOVES)
         {
-            moveEffect = gMovesInfo[move].effect;
+            moveEffect = gMovimientos[move].effect;
             if (B_SHOW_CATEGORY_ICON == TRUE)
                 ShowCategoryIcon(CategoriaMovimiento(move));
             PrintMovePowerAndAccuracy(move);
-            PrintTextOnWindow(windowId, gMovesInfo[move].description, 6, 1, 0, 0);
+            PrintTextOnWindow(windowId, gMovimientos[move].description, 6, 1, 0, 0);
         }
         else
         {
-            PrintTextOnWindow(windowId, gContestEffectDescriptionPointers[gMovesInfo[move].contestEffect], 6, 1, 0, 0);
+            PrintTextOnWindow(windowId, gContestEffectDescriptionPointers[gMovimientos[move].contestEffect], 6, 1, 0, 0);
         }
         PutWindowTilemap(windowId);
     }
@@ -3521,7 +3521,7 @@ static void PrintNewMoveDetailsOrCancelText(void)
         else
             PrintTextOnWindowToFit(windowId1, GetMoveName(move), 0, 65, 0, 5);
 
-        ConvertIntToDecimalStringN(gVariableTexto1, gMovesInfo[move].pp, STR_CONV_MODE_RIGHT_ALIGN, 2);
+        ConvertIntToDecimalStringN(gVariableTexto1, gMovimientos[move].pp, STR_CONV_MODE_RIGHT_ALIGN, 2);
         DynamicPlaceholderTextUtil_Reset();
         DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gVariableTexto1);
         DynamicPlaceholderTextUtil_SetPlaceholderPtr(1, gVariableTexto1);

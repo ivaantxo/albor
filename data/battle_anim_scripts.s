@@ -7273,23 +7273,6 @@ gBattleAnimMove_SpikyShield::
 	clearmonbg ANIM_ATK_PARTNER
 	end
 
-gBattleAnimMove_AromaticMist::
-	loadspritegfx ANIM_TAG_PINK_PETAL
-	playsewithpan SE_M_SWEET_SCENT, SOUND_PAN_ATTACKER
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x0, 0x8, 0x6E7D
-	createsprite gSweetScentPetalSpriteTemplate, ANIM_ATTACKER, 2, 0x64, 0x0, 0x64
-	delay 0x19
-	setpan 0x0
-	call SweetScentEffect
-	createsprite gSweetScentPetalSpriteTemplate, ANIM_ATTACKER, 2, 0x37, 0x0
-	setpan SOUND_PAN_TARGET
-	createvisualtask AnimTask_BlendColorCycle, 2, F_PAL_DEF_SIDE, 1, 5, 5, 13, RGB(31, 21, 21)
-	call SweetScentEffect
-	waitforvisualfinish
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x8, 0x0, 0x6E7D
-	waitforvisualfinish
-	end
-
 gBattleAnimMove_VenomDrench::
 	loadspritegfx ANIM_TAG_POISON_BUBBLE
 	monbg ANIM_DEF_PARTNER

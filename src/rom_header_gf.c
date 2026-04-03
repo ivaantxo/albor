@@ -47,7 +47,7 @@ struct GFRomHeader
     const u8 (* abilityNames)[];
     const u8 *const * abilityDescriptions;
     const struct Item * items;
-    const struct MoveInfo * moves;
+    const struct Movimientos * moves;
     const struct CompressedSpriteSheet * ballGfx;
     const struct CompressedSpritePalette * ballPalettes;
     u32 gameClearFlag;
@@ -87,7 +87,7 @@ static const struct GFRomHeader sGFRomHeader = {
     .playerGenderOffset = offsetof(struct SaveBlock, playerGender),
     .speciesInfo = gSpeciesInfo,
     .items = gItemsInfo,
-    .moves = gMovesInfo,
+    .moves = gMovimientos,
     .ballGfx = gBallSpriteSheets,
     .ballPalettes = gBallSpritePalettes,
     .gameClearFlag = FLAG_SYS_GAME_CLEAR,

@@ -71,7 +71,6 @@ Es un hackrom en castellano que está en desarrollo, que usa la pokeemerald-expa
     *Forcejeo tiene STAB de tipo Normal.
     *Se ha cambiado cómo funciona el STAB: Pokémon con 1 solo tipo tienen 50% de STAB, mientras que Pokémon con 2 tipos tienen 25% de STAB con cada uno de sus tipos.
     *Clima soleado y lluvioso potencian un 25% los ataques de fuego y agua (aunque siguen reduciéndose 50% la potencia de sus contrapartes).
-    *Pokémon de tipo Acero ya no son inmunes ni a daño climático ni a ser envenenados (Pueden ser envenenados por ataques de estado de tipo Veneno). La habilidad Corrosión se ha modificado: permite golpear x2 a Acero con Veneno.
     *Habilidad Fuga te permite huir siempre (incluido movimientos como Atadura, o habilidades como Sombra Trampa), y +1 de prioridad movimientos de cambio como Ida y Vuelta.
     *Se han modificado las naturalezas: Ahora son 5 (Ofensiva, Defensiva, Ofensiva especial, Defensiva especial y Rápida), y no bajan ninguna estadística, solo suben la correspondiente.
     *Los cambios de Stats se han modificado: Cada cambio positivo es un 25% más, hasta un máximo de 250% (Con +6, un ataque tendrá 2,5 veces la potencia que tendría). Cada cambio negativo es un -12,5%, hasta un mínimo de 25% (Un ataque con -6 tendrá 1/4 de la potencia que tendría). Además, se ha extrapolado para precisión y evasión.

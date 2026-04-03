@@ -1501,10 +1501,10 @@ void LoadPalettesTypes(u32 battler)
     u32 pal1, pal2, pal3, pal4;
     struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct *)(&gBattleResources->bufferA[battler][4]);
 
-    pal1 = gMovesInfo[moveInfo->moves[0]].type;
-    pal2 = gMovesInfo[moveInfo->moves[1]].type;
-    pal3 = gMovesInfo[moveInfo->moves[2]].type;
-    pal4 = gMovesInfo[moveInfo->moves[3]].type;
+    pal1 = gMovimientos[moveInfo->moves[0]].type;
+    pal2 = gMovimientos[moveInfo->moves[1]].type;
+    pal3 = gMovimientos[moveInfo->moves[2]].type;
+    pal4 = gMovimientos[moveInfo->moves[3]].type;
 
     switch (pal1)
     {
@@ -1761,8 +1761,8 @@ static void MoveSelectionDisplayMoveType(u32 battler)
     {
         sIconTypeId[0] = CreateSprite(&sSpriteTemplate_IconTypes, 9, 124, 0);
         sprite1 = &gSprites[sIconTypeId[0]];
-		StartSpriteAnim(sprite1, gMovesInfo[moveInfo->moves[0]].type);
-	    sprite1->oam.paletteNum = sMoveTypeToOamPaletteNum[gMovesInfo[moveInfo->moves[0]].type];
+		StartSpriteAnim(sprite1, gMovimientos[moveInfo->moves[0]].type);
+	    sprite1->oam.paletteNum = sMoveTypeToOamPaletteNum[gMovimientos[moveInfo->moves[0]].type];
 		sprite1->oam.priority = 0;
 		sprite1->subpriority = 1;
     }
@@ -1770,8 +1770,8 @@ static void MoveSelectionDisplayMoveType(u32 battler)
     {
         sIconTypeId[1] = CreateSprite(&sSpriteTemplate_IconTypes, 129, 124, 0);
         sprite2 = &gSprites[sIconTypeId[1]];
-		StartSpriteAnim(sprite2, gMovesInfo[moveInfo->moves[1]].type);
-	    sprite2->oam.paletteNum = sMoveTypeToOamPaletteNum[gMovesInfo[moveInfo->moves[1]].type];
+		StartSpriteAnim(sprite2, gMovimientos[moveInfo->moves[1]].type);
+	    sprite2->oam.paletteNum = sMoveTypeToOamPaletteNum[gMovimientos[moveInfo->moves[1]].type];
 		sprite2->oam.priority = 0;
 		sprite2->subpriority = 1;
     }
@@ -1779,8 +1779,8 @@ static void MoveSelectionDisplayMoveType(u32 battler)
     {
         sIconTypeId[2] = CreateSprite(&sSpriteTemplate_IconTypes, 9, 148, 0);
         sprite3 = &gSprites[sIconTypeId[2]];
-		StartSpriteAnim(sprite3, gMovesInfo[moveInfo->moves[2]].type);
-	    sprite3->oam.paletteNum = sMoveTypeToOamPaletteNum[gMovesInfo[moveInfo->moves[2]].type];
+		StartSpriteAnim(sprite3, gMovimientos[moveInfo->moves[2]].type);
+	    sprite3->oam.paletteNum = sMoveTypeToOamPaletteNum[gMovimientos[moveInfo->moves[2]].type];
 		sprite3->oam.priority = 0;
 		sprite3->subpriority = 1;
     }
@@ -1788,8 +1788,8 @@ static void MoveSelectionDisplayMoveType(u32 battler)
     {
         sIconTypeId[3] = CreateSprite(&sSpriteTemplate_IconTypes, 129, 148, 0);
         sprite4 = &gSprites[sIconTypeId[3]];
-		StartSpriteAnim(sprite4, gMovesInfo[moveInfo->moves[3]].type);
-	    sprite4->oam.paletteNum = sMoveTypeToOamPaletteNum[gMovesInfo[moveInfo->moves[3]].type];
+		StartSpriteAnim(sprite4, gMovimientos[moveInfo->moves[3]].type);
+	    sprite4->oam.paletteNum = sMoveTypeToOamPaletteNum[gMovimientos[moveInfo->moves[3]].type];
 		sprite4->oam.priority = 0;
 		sprite4->subpriority = 1;
     }

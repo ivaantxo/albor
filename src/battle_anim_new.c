@@ -4708,7 +4708,7 @@ static void SpriteCB_TripleArrowKick(struct Sprite *sprite)
 
 void AnimTask_GetWeatherToSet(u8 taskId)
 {
-    switch (gMovesInfo[gCurrentMove].argument)
+    switch (gMovimientos[gCurrentMove].argument)
     {
     case MAX_EFFECT_SUN:
         gBattleAnimArgs[ARG_RET_ID] = 1;

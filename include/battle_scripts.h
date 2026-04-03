@@ -506,7 +506,6 @@ extern const u8 BattleScript_EffectBestow[];
 extern const u8 BattleScript_EffectRototiller[];
 extern const u8 BattleScript_EffectSpeedSwap[];
 extern const u8 BattleScript_EffectAuroraVeil[];
-extern const u8 BattleScript_EffectAromaticMist[];
 extern const u8 BattleScript_EffectPowder[];
 extern const u8 BattleScript_EffectPartingShot[];
 extern const u8 BattleScript_EffectMatBlock[];

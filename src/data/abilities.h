@@ -353,7 +353,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
 
     [ABILITY_FORECAST] =
     {
-        .name = _("Forecast"),
+        .name = _("Forecast"), // Darle + 1 de prioridad a movimientos climáticos (Set weather y movimientos como Heat Wave, Hurricane, Weather ball)
         .description = COMPOUND_STRING("Changes with the weather."),
         .cantBeCopied = TRUE,
         .cantBeTraced = TRUE,
@@ -577,12 +577,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Magic Guard"),
         .description = COMPOUND_STRING("Only damaged by attacks."),
-    },
-
-    [ABILITY_NO_GUARD] =
-    {
-        .name = _("No Guard"),
-        .description = COMPOUND_STRING("Ensures that all moves hit."),
     },
 
     [ABILITY_TECHNICIAN] =

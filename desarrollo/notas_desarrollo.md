@@ -111,3 +111,5 @@ find . -name "* 2.inc" -delete
 // revisar el bug rarísimo: si haces x (entras a cualquier pantalla) y hablas con pokémon, invalid address
 
 // terminar confusión: "añade" daño por retroceso (durante x turnos? al cambiar se limpia?), no posibilidad de no atacar.
+
+// hacer acero otra vez inmune a veneno y envenenamiento.

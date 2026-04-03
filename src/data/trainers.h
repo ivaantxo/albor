@@ -3579,7 +3579,7 @@ F_TRAINER_FEMALE |
 #line 1549
                 MOVE_MEGA_DRAIN,
                 MOVE_MAGICAL_LEAF,
-                MOVE_GRASS_WHISTLE,
+                MOVE_SILBATO,
                 MOVE_LEECH_SEED,
             },
             },
@@ -10426,7 +10426,7 @@ F_TRAINER_FEMALE |
                 MOVE_ATTRACT,
                 MOVE_DOUBLE_EDGE,
                 MOVE_HAIL,
-                MOVE_BLIZZARD,
+                MOVE_VENTISCA,
             },
             },
             {
@@ -13942,7 +13942,7 @@ F_TRAINER_FEMALE |
                 MOVE_RAIN_DANCE,
                 MOVE_WATER_SPOUT,
                 MOVE_DOUBLE_EDGE,
-                MOVE_BLIZZARD,
+                MOVE_VENTISCA,
             },
             },
             {
@@ -18119,7 +18119,7 @@ F_TRAINER_FEMALE |
 #line 7520
                 MOVE_LEECH_SEED,
                 MOVE_MEGA_DRAIN,
-                MOVE_GRASS_WHISTLE,
+                MOVE_SILBATO,
                 MOVE_SUNNY_DAY,
             },
             },
@@ -34058,7 +34058,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 14082
-                MOVE_BLIZZARD,
+                MOVE_VENTISCA,
                 MOVE_SHADOW_BALL,
                 MOVE_DOUBLE_EDGE,
                 MOVE_FIRE_BLAST,
@@ -34134,7 +34134,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 14115
-                MOVE_BLIZZARD,
+                MOVE_VENTISCA,
                 MOVE_SHADOW_BALL,
                 MOVE_DOUBLE_EDGE,
                 MOVE_FIRE_BLAST,
@@ -34244,7 +34244,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 14164
-                MOVE_BLIZZARD,
+                MOVE_VENTISCA,
                 MOVE_SHADOW_BALL,
                 MOVE_DOUBLE_EDGE,
                 MOVE_FIRE_BLAST,
@@ -34354,7 +34354,7 @@ F_TRAINER_FEMALE |
             .nature = NATURALEZA_OFENSIVA,
             .moves = {
 #line 14213
-                MOVE_BLIZZARD,
+                MOVE_VENTISCA,
                 MOVE_SHADOW_BALL,
                 MOVE_DOUBLE_EDGE,
                 MOVE_FIRE_BLAST,

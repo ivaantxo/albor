@@ -522,7 +522,6 @@ extern const u8 gBattleAnimMove_SteamEruption[];
 extern const u8 gBattleAnimMove_WaterShuriken[];
 extern const u8 gBattleAnimMove_MysticalFire[];
 extern const u8 gBattleAnimMove_SpikyShield[];
-extern const u8 gBattleAnimMove_AromaticMist[];
 extern const u8 gBattleAnimMove_VenomDrench[];
 extern const u8 gBattleAnimMove_Powder[];
 extern const u8 gBattleAnimMove_DazzlingGleam[];

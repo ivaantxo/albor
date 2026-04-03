@@ -3607,7 +3607,7 @@ static void PrintStatsScreen_Moves_Top(u8 taskId)
     //Draw move type icon
     if (gTasks[taskId].data[5] == 0)
     {
-        SetTypeIconPosAndPal(gMovesInfo[move].type, moves_x + 146, moves_y + 17, 0);
+        SetTypeIconPosAndPal(gMovimientos[move].type, moves_x + 146, moves_y + 17, 0);
         SetSpriteInvisibility(1, TRUE);
     }
 
@@ -3663,12 +3663,12 @@ static void PrintStatsScreen_Moves_Description(u8 taskId)
     //Move description
     if (gTasks[taskId].data[5] == 0)
     {
-        StringCopy(gVariableTextoAmpliada, gMovesInfo[move].description);
+        StringCopy(gVariableTextoAmpliada, gMovimientos[move].description);
         PrintStatsScreenTextSmall(WIN_STATS_MOVES_DESCRIPTION, gVariableTextoAmpliada, moves_x, moves_y);
     }
     else
     {
-        StringCopy(gVariableTextoAmpliada, gContestEffectDescriptionPointers[gMovesInfo[move].contestEffect]);
+        StringCopy(gVariableTextoAmpliada, gContestEffectDescriptionPointers[gMovimientos[move].contestEffect]);
         PrintStatsScreenTextSmall(WIN_STATS_MOVES_DESCRIPTION, gVariableTextoAmpliada, moves_x, moves_y);
     }
 }
@@ -3707,19 +3707,19 @@ static void PrintStatsScreen_Moves_Bottom(u8 taskId)
     if (gTasks[taskId].data[5] == 0)
     {
         //Power
-        if (gMovesInfo[move].power < 2)
+        if (gMovimientos[move].power < 2)
             StringCopy(gVariableTexto1, gText_ThreeDashes);
         else
-            ConvertIntToDecimalStringN(gVariableTexto1, gMovesInfo[move].power, STR_CONV_MODE_RIGHT_ALIGN, 3);
+            ConvertIntToDecimalStringN(gVariableTexto1, gMovimientos[move].power, STR_CONV_MODE_RIGHT_ALIGN, 3);
         PrintStatsScreenTextSmall(WIN_STATS_MOVES_BOTTOM, gVariableTexto1, moves_x + 45, moves_y);
         //Physical/Special/Status Category
         DestroyCategoryIcon();
         ShowCategoryIcon(CategoriaMovimiento(move));
         //Accuracy
-        if (gMovesInfo[move].accuracy == 0)
+        if (gMovimientos[move].accuracy == 0)
             StringCopy(gVariableTexto1, gText_ThreeDashes);
         else
-            ConvertIntToDecimalStringN(gVariableTexto1, gMovesInfo[move].accuracy, STR_CONV_MODE_RIGHT_ALIGN, 3);
+            ConvertIntToDecimalStringN(gVariableTexto1, gMovimientos[move].accuracy, STR_CONV_MODE_RIGHT_ALIGN, 3);
         PrintStatsScreenTextSmall(WIN_STATS_MOVES_BOTTOM, gVariableTexto1,  moves_x + 114, moves_y);
     }
     else //Appeal + Jam
@@ -3727,7 +3727,7 @@ static void PrintStatsScreen_Moves_Bottom(u8 taskId)
         DestroyCategoryIcon();
         gSprites[sPokedexView->categoryIconSpriteId].invisible = TRUE;
         //Appeal
-        contest_effectValue = gContestEffects[gMovesInfo[move].contestEffect].appeal;
+        contest_effectValue = gContestEffects[gMovimientos[move].contestEffect].appeal;
         if (contest_effectValue != 0xFF)
             contest_appeal = contest_effectValue / 10;
         ConvertIntToDecimalStringN(gVariableTexto1, contest_appeal, STR_CONV_MODE_RIGHT_ALIGN, 1);
@@ -3736,7 +3736,7 @@ static void PrintStatsScreen_Moves_Bottom(u8 taskId)
         PrintStatsScreenTextSmall(WIN_STATS_MOVES_BOTTOM, gVariableTexto2, moves_x + 45, moves_y);
 
         //Jam
-        contest_effectValue = gContestEffects[gMovesInfo[move].contestEffect].jam;
+        contest_effectValue = gContestEffects[gMovimientos[move].contestEffect].jam;
         if (contest_effectValue != 0xFF)
             contest_jam = contest_effectValue / 10;
         ConvertIntToDecimalStringN(gVariableTexto1, contest_jam, STR_CONV_MODE_RIGHT_ALIGN, 1);
