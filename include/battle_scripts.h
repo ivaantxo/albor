@@ -437,7 +437,6 @@ extern const u8 BattleScript_EffectUproar[];
 extern const u8 BattleScript_EffectStockpile[];
 extern const u8 BattleScript_EffectSpitUp[];
 extern const u8 BattleScript_EffectSwallow[];
-extern const u8 BattleScript_EffectHail[];
 extern const u8 BattleScript_EffectTorment[];
 extern const u8 BattleScript_EffectFlatter[];
 extern const u8 BattleScript_EffectWillOWisp[];

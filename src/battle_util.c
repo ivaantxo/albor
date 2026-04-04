@@ -930,7 +930,7 @@ u8 DoFieldEndTurnEffects(void)
                     gSideStatuses[side] &= ~SIDE_STATUS_MIST;
                     BattleScriptExecute(BattleScript_SideStatusWoreOff);
                     gBattleCommunication[MULTISTRING_CHOOSER] = side;
-                    PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_MIST);
+                    PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_NEBLINA);
                     effect++;
                 }
                 gCombate->turnSideTracker++;
@@ -1098,26 +1098,6 @@ u8 DoFieldEndTurnEffects(void)
             }
             gCombate->efectoFinTurno.campo++;
             break;
-        case ENDTURN_HAIL:
-            if (gBattleWeather & B_WEATHER_HAIL)
-            {
-                if (!(gBattleWeather & B_WEATHER_HAIL_PERMANENT) && --gWishFutureKnock.weatherDuration == 0)
-                {
-                    gBattleWeather &= ~B_WEATHER_HAIL_TEMPORARY;
-                    gBattlescriptCurrInstr = BattleScript_SandStormHailSnowEnds;
-                }
-                else
-                {
-                    gBattlescriptCurrInstr = BattleScript_DamagingWeatherContinues;
-                }
-
-                gBattleScripting.animArg1 = B_ANIM_HAIL_CONTINUES;
-                gMensajeBatalla = B_MSG_HAIL;
-                BattleScriptExecute(gBattlescriptCurrInstr);
-                effect++;
-            }
-            gCombate->efectoFinTurno.campo++;
-            break;
         case ENDTURN_SNOW:
             if (gBattleWeather & B_WEATHER_SNOW)
             {
@@ -1133,24 +1113,6 @@ u8 DoFieldEndTurnEffects(void)
 
                 gBattleScripting.animArg1 = B_ANIM_SNOW_CONTINUES;
                 gMensajeBatalla = B_MSG_SNOW;
-                BattleScriptExecute(gBattlescriptCurrInstr);
-                effect++;
-            }
-            gCombate->efectoFinTurno.campo++;
-            break;
-        case ENDTURN_FOG:
-            if (gBattleWeather & B_WEATHER_FOG)
-            {
-                if (!(gBattleWeather & B_WEATHER_FOG_PERMANENT) && --gWishFutureKnock.weatherDuration == 0)
-                {
-                    gBattleWeather &= ~B_WEATHER_FOG_TEMPORARY;
-                    gBattlescriptCurrInstr = BattleScript_FogEnded;
-                }
-                else
-                {
-                    gBattlescriptCurrInstr = BattleScript_FogContinues;
-                }
-
                 BattleScriptExecute(gBattlescriptCurrInstr);
                 effect++;
             }
@@ -1285,7 +1247,7 @@ u8 DoBattlerEndTurnEffects(void)
                 BattleScriptExecute(BattleScript_DamagingWeather);
                 effect++;
             }
-            else if (gBattleWeather & (B_WEATHER_HAIL | B_WEATHER_SNOW)
+            else if (gBattleWeather & B_WEATHER_SNOW
                   && ability == ABILITY_ICE_BODY
                   && !(gStatuses3[battler] & (STATUS3_UNDERGROUND | STATUS3_UNDERWATER))
                   && !IsBattlerAtMaxHp(battler))
@@ -1295,7 +1257,7 @@ u8 DoBattlerEndTurnEffects(void)
                 BattleScriptExecute(BattleScript_IceBodyHeal);
                 effect++;
             }
-            else if (gBattleWeather & B_WEATHER_HAIL
+            else if (gBattleWeather & B_WEATHER_SNOW
                   && !EsTipo(battler, TIPO_HIELO)
                   && !EsTipo(gBattlerAttacker, TIPO_ACERO)
                   && !EsTipo(gBattlerAttacker, TIPO_LUCHA)
@@ -2250,12 +2212,10 @@ bool32 HasNoMonsToSwitch(u32 battler, u8 partyIdBattlerOn1, u8 partyIdBattlerOn2
 
 static const u16 sWeatherFlagsInfo[][3] =
     {
-        [ENUM_WEATHER_RAIN] = {B_WEATHER_RAIN_TEMPORARY, B_WEATHER_RAIN_PERMANENT, HOLD_EFFECT_DAMP_ROCK},
-        [ENUM_WEATHER_SUN] = {B_WEATHER_SUN_TEMPORARY, B_WEATHER_SUN_PERMANENT, HOLD_EFFECT_HEAT_ROCK},
-        [ENUM_WEATHER_SANDSTORM] = {B_WEATHER_SANDSTORM_TEMPORARY, B_WEATHER_SANDSTORM_PERMANENT, HOLD_EFFECT_SMOOTH_ROCK},
-        [ENUM_WEATHER_HAIL] = {B_WEATHER_HAIL_TEMPORARY, B_WEATHER_HAIL_PERMANENT, HOLD_EFFECT_ICY_ROCK},
-        [ENUM_WEATHER_SNOW] = {B_WEATHER_SNOW_TEMPORARY, B_WEATHER_SNOW_PERMANENT, HOLD_EFFECT_ICY_ROCK},
-        [ENUM_WEATHER_FOG] = {B_WEATHER_FOG_TEMPORARY, B_WEATHER_FOG_PERMANENT, HOLD_EFFECT_NONE},
+        [ENUM_WEATHER_RAIN]         = {B_WEATHER_RAIN_TEMPORARY,        B_WEATHER_RAIN_PERMANENT,       HOLD_EFFECT_DAMP_ROCK},
+        [ENUM_WEATHER_SUN]          = {B_WEATHER_SUN_TEMPORARY,         B_WEATHER_SUN_PERMANENT,        HOLD_EFFECT_HEAT_ROCK},
+        [ENUM_WEATHER_SANDSTORM]    = {B_WEATHER_SANDSTORM_TEMPORARY,   B_WEATHER_SANDSTORM_PERMANENT,  HOLD_EFFECT_SMOOTH_ROCK},
+        [ENUM_WEATHER_SNOW]         = {B_WEATHER_SNOW_TEMPORARY,        B_WEATHER_SNOW_PERMANENT,       HOLD_EFFECT_ICY_ROCK},
 };
 
 bool32 TryChangeBattleWeather(u32 battler, u32 weatherEnumId, bool32 viaAbility)
@@ -2516,18 +2476,10 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             }
             break;
         case WEATHER_SNOW:
-            if (!(gBattleWeather & (B_WEATHER_HAIL | B_WEATHER_SNOW)))
+            if (!(gBattleWeather & B_WEATHER_SNOW))
             {
-                if (B_OVERWORLD_SNOW >= GEN_9)
-                {
-                    gBattleWeather = B_WEATHER_SNOW;
-                    gBattleScripting.animArg1 = B_ANIM_SNOW_CONTINUES;
-                }
-                else
-                {
-                    gBattleWeather = B_WEATHER_HAIL;
-                    gBattleScripting.animArg1 = B_ANIM_HAIL_CONTINUES;
-                }
+                gBattleWeather = B_WEATHER_SNOW;
+                gBattleScripting.animArg1 = B_ANIM_SNOW_CONTINUES;
                 effect++;
             }
             break;
@@ -5261,7 +5213,6 @@ static const u16 sWeightToDamageTable[] =
         0xFFFF, 0xFFFF};
 
 static const u8 sSpeedDiffPowerTable[] = {40, 60, 80, 120, 150};
-static const u8 sHeatCrashPowerTable[] = {40, 40, 60, 80, 100, 120};
 
 u32 CalcRolloutBasePower(u32 battlerAtk, u32 basePower, u32 rolloutTimer)
 {
@@ -5320,10 +5271,6 @@ static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData
     case EFFECT_SPIT_UP:
         basePower = 100 * gDisableStructs[battlerAtk].stockpileCounter;
         break;
-    case EFFECT_WEATHER_BALL:
-        if (weather & B_WEATHER_ANY)
-            basePower *= 2;
-        break;
     case EFFECT_PURSUIT:
         if (gActionsByTurnOrder[GetBattlerTurnOrderNum(battlerDef)] == B_ACTION_SWITCH)
             basePower *= 2;
@@ -5346,13 +5293,6 @@ static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData
             // Edge case, because removal of items happens after damage calculation.
             || (gSpecialStatuses[battlerAtk].potenciadoGema && GetBattlerHoldEffect(battlerAtk, FALSE) == HOLD_EFFECT_GEMS))
             basePower *= 2;
-        break;
-    case EFFECT_HEAT_CRASH:
-        weight = GetBattlerWeight(battlerAtk) / GetBattlerWeight(battlerDef);
-        if (weight >= ARRAY_COUNT(sHeatCrashPowerTable))
-            basePower = sHeatCrashPowerTable[ARRAY_COUNT(sHeatCrashPowerTable) - 1];
-        else
-            basePower = sHeatCrashPowerTable[weight];
         break;
     case EFFECT_PUNISHMENT:
         basePower = 60 + (CountBattlerStatIncreases(battlerDef, FALSE) * 20);
@@ -5936,7 +5876,7 @@ static inline u32 CalcDefenseStat(struct DamageCalculationData *damageCalcData, 
     if (EsTipo(battlerDef, TIPO_ROCA) && IsBattlerWeatherAffected(battlerDef, B_WEATHER_SANDSTORM) && !usesDefStat)
         MULTIPLICA(modifier, MAS_50_POR_CIENTO);
 
-    if (EsTipo(battlerDef, TIPO_HIELO) && IsBattlerWeatherAffected(battlerDef, B_WEATHER_HAIL) && usesDefStat)
+    if (EsTipo(battlerDef, TIPO_HIELO) && IsBattlerWeatherAffected(battlerDef, B_WEATHER_SNOW) && usesDefStat)
         MULTIPLICA(modifier, MAS_50_POR_CIENTO);
 
     if (EsTipo(battlerDef, TIPO_HIELO) && IsBattlerWeatherAffected(battlerDef, B_WEATHER_RAIN) && usesDefStat && defAbility == ABILITY_HUMEDAD_RELATIVA)
@@ -6979,7 +6919,7 @@ u32 CalculaProbabilidadEfectoSecundario(u32 habilidad, const struct AdditionalEf
 
     if (habilidad == ABILITY_SERENE_GRACE)
         probabilidad *= 2;
-    if (gBattleWeather & B_WEATHER_HAIL && efectoSecundario->moveEffect == EFECTO_MOVIMIENTO_CONGELACION)
+    if (gBattleWeather & B_WEATHER_SNOW && efectoSecundario->moveEffect == EFECTO_MOVIMIENTO_CONGELACION)
         probabilidad *= 2;
     if (gBattleWeather & B_WEATHER_RAIN && efectoSecundario->moveEffect == EFECTO_MOVIMIENTO_CONGELACION && habilidad == ABILITY_HUMEDAD_RELATIVA)
         probabilidad *= 2;

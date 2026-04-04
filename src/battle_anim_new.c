@@ -4706,26 +4706,6 @@ static void SpriteCB_TripleArrowKick(struct Sprite *sprite)
     sprite->callback = SpriteCB_PowerShiftBallStep; // Arc until complete
 }
 
-void AnimTask_GetWeatherToSet(u8 taskId)
-{
-    switch (gMovimientos[gCurrentMove].argument)
-    {
-    case MAX_EFFECT_SUN:
-        gBattleAnimArgs[ARG_RET_ID] = 1;
-        break;
-    case MAX_EFFECT_RAIN:
-        gBattleAnimArgs[ARG_RET_ID] = 2;
-        break;
-    case MAX_EFFECT_SANDSTORM:
-        gBattleAnimArgs[ARG_RET_ID] = 3;
-        break;
-    case MAX_EFFECT_HAIL:
-        gBattleAnimArgs[ARG_RET_ID] = 4;
-        break;
-    }
-    DestroyAnimVisualTask(taskId);
-}
-
 void AnimTask_RandomBool(u8 taskId)
 {
     if (PorcentajeAleatorio(50))

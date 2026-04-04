@@ -1,9 +1,7 @@
-- Implementar repartir experiencia/buscapelea como opciones de menú.
 - Implementar animación de subir de nivel no usada.
 - Arreglar formas/evos +3 en Pokédex.
 - Indicar que: * No es posible el uso de la mochila en batalla.
                * Para capturar, basta con tener Pokéballs, y para seleccionarla, mantener pulsado B a la vez que R.
-- Crear ataques como Tornado, Vendaval...
 - L/R icons en storage.
 - Crear huevos personalizados en pokédex.
 - Intentar crear animaciones de entrenadores.
@@ -113,3 +111,5 @@ find . -name "* 2.inc" -delete
 // terminar confusión: "añade" daño por retroceso (durante x turnos? al cambiar se limpia?), no posibilidad de no atacar.
 
 // hacer acero otra vez inmune a veneno y envenenamiento.
+
+// CLimáticos: Springtide Storm

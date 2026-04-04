@@ -474,9 +474,9 @@ void AnimParticleInVortex(struct Sprite *sprite)
 {
     if (EsContraEntrenador() //got a little lazy here will fix later
     && (gAnimMoveIndex == MOVE_VENDAVAL_GELIDO
-     || gAnimMoveIndex == MOVE_SANDSEAR_STORM
-     || gAnimMoveIndex == MOVE_SPRINGTIDE_STORM
-     || gAnimMoveIndex == MOVE_WILDBOLT_STORM))
+     || gAnimMoveIndex == MOVE_SIMUN_DE_ARENA
+     || gAnimMoveIndex == MOVE_TORMENTA_PRIMAVERAL
+     || gAnimMoveIndex == MOVE_ELECTORMENTA))
         InitSpritePosToAnimTargetsCentre(sprite, FALSE);
     else
         InitSpritePosToAnimTarget(sprite, FALSE);

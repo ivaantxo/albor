@@ -951,16 +951,6 @@ bool32 CanTargetFaintAIWithMod(u32 battlerDef, u32 battlerAtk, s32 hpMod, s32 dm
     return FALSE;
 }
 
-bool32 AI_IsAbilityOnSide(u32 battlerId, u32 ability)
-{
-    if (IsBattlerAlive(battlerId) && AI_DATA->abilities[battlerId] == ability)
-        return TRUE;
-    else if (IsBattlerAlive(ALIADO(battlerId)) && AI_DATA->abilities[ALIADO(battlerId)] == ability)
-        return TRUE;
-    else
-        return FALSE;
-}
-
 u32 AI_HabilidadCombatiente(u32 battler)
 {
     if (gStatuses3[battler] & STATUS3_GASTRO_ACID)
@@ -1140,33 +1130,9 @@ bool32 ShouldSetSandstorm(u32 battler, u32 ability, u32 holdEffect)
      || EsTipo(battler, TIPO_TIERRA)
      || EsTipo(battler, TIPO_ACERO)
      || EsTipo(battler, TIPO_LUCHA)
-     || HasMoveEffect(battler, EFFECT_SHORE_UP)
-     || HasMoveEffect(battler, EFFECT_WEATHER_BALL))
-    {
-        return TRUE;
-    }
-    return FALSE;
-}
-
-bool32 ShouldSetHail(u32 battler, u32 ability, u32 holdEffect)
-{
-    u32 weather = AI_GetWeather(AI_DATA);
-    if (weather & (B_WEATHER_HAIL | B_WEATHER_SNOW))
-        return FALSE;
-
-    if (ability == ABILITY_SNOW_CLOAK
-     || ability == ABILITY_ICE_BODY
-     || ability == ABILITY_FORECAST
-     || ability == ABILITY_SLUSH_RUSH
-     || ability == ABILITY_MAGIC_GUARD
-     || ability == ABILITY_OVERCOAT
-     || holdEffect == HOLD_EFFECT_SAFETY_GOGGLES
-     || EsTipo(battler, TIPO_HIELO)
-     || EsTipo(battler, TIPO_ACERO)
-     || EsTipo(battler, TIPO_LUCHA)
-     || HasMoveEffectANDArg(battler, EFFECT_PRECISION_INCREMENTADA_CLIMA, B_WEATHER_SNOW)
-     || HasMoveEffect(battler, EFECTO_VELO_AURORA)
-     || HasMoveEffect(battler, EFFECT_WEATHER_BALL))
+     || HasMove(battlerAtk, MOVE_METEOROBOLA)
+     || HasMoveEffectANDArg(battler, EFFECT_PRECISION_INCREMENTADA_CLIMA, B_WEATHER_SANDSTORM)
+     || HasMoveEffect(battler, EFFECT_SHORE_UP))
     {
         return TRUE;
     }
@@ -1185,8 +1151,8 @@ bool32 ShouldSetRain(u32 battlerAtk, u32 atkAbility, u32 holdEffect)
      || atkAbility == ABILITY_RAIN_DISH
      || atkAbility == ABILITY_OLOR_FLUVIAL
      || atkAbility == ABILITY_ALAS_HIDROFOBAS
+     || HasMove(battlerAtk, MOVE_METEOROBOLA)
      || HasMoveEffectANDArg(battler, EFFECT_PRECISION_INCREMENTADA_CLIMA, B_WEATHER_RAIN)
-     || HasMoveEffect(battlerAtk, EFFECT_WEATHER_BALL)
      || HasMoveWithType(battlerAtk, TIPO_AGUA))
     {
         return TRUE;
@@ -1207,11 +1173,11 @@ bool32 ShouldSetSun(u32 battlerAtk, u32 atkAbility, u32 holdEffect)
      || atkAbility == ABILITY_FOTOSINTESIS
      || HasMove(battlerAtk, MOVE_SOLAR_BEAM)
      || HasMove(battlerAtk, MOVE_SOLAR_BLADE)
+     || HasMove(battlerAtk, MOVE_METEOROBOLA)
      || HasMoveEffectANDArg(battler, EFFECT_PRECISION_INCREMENTADA_CLIMA, B_WEATHER_SUN)
      || HasMoveEffect(battlerAtk, EFFECT_MORNING_SUN)
      || HasMoveEffect(battlerAtk, EFFECT_SYNTHESIS)
      || HasMoveEffect(battlerAtk, EFFECT_MOONLIGHT)
-     || HasMoveEffect(battlerAtk, EFFECT_WEATHER_BALL)
      || HasMoveEffect(battlerAtk, EFFECT_GROWTH)
      || HasMoveWithType(battlerAtk, TIPO_FUEGO))
     {
@@ -1223,7 +1189,7 @@ bool32 ShouldSetSun(u32 battlerAtk, u32 atkAbility, u32 holdEffect)
 bool32 ShouldSetSnow(u32 battler, u32 ability, u32 holdEffect)
 {
     u32 weather = AI_GetWeather(AI_DATA);
-    if (weather & (B_WEATHER_SNOW | B_WEATHER_HAIL))
+    if (weather & B_WEATHER_SNOW)
         return FALSE;
 
     if (ability == ABILITY_SNOW_CLOAK
@@ -1231,9 +1197,9 @@ bool32 ShouldSetSnow(u32 battler, u32 ability, u32 holdEffect)
      || ability == ABILITY_FORECAST
      || ability == ABILITY_SLUSH_RUSH
      || EsTipo(battler, TIPO_HIELO)
+     || HasMove(battlerAtk, MOVE_METEOROBOLA)
      || HasMoveEffectANDArg(battler, EFFECT_PRECISION_INCREMENTADA_CLIMA, B_WEATHER_SNOW)
-     || HasMoveEffect(battler, EFECTO_VELO_AURORA)
-     || HasMoveEffect(battler, EFFECT_WEATHER_BALL))
+     || HasMoveEffect(battler, EFECTO_VELO_AURORA))
     {
         return TRUE;
     }
@@ -2022,7 +1988,7 @@ static bool32 BattlerAffectedBySandstorm(u32 battlerId, u32 ability)
     return FALSE;
 }
 
-static bool32 BattlerAffectedByHail(u32 battlerId, u32 ability)
+static bool32 BattlerAffectedBySnow(u32 battlerId, u32 ability)
 {
     if (!EsTipo(battlerId, TIPO_HIELO) && ability != ABILITY_SNOW_CLOAK && ability != ABILITY_OVERCOAT && ability != ABILITY_ICE_BODY)
         return TRUE;
@@ -2047,9 +2013,9 @@ static u32 GetWeatherDamage(u32 battlerId)
                 damage = 1;
         }
     }
-    if ((weather & B_WEATHER_HAIL) && ability != ABILITY_ICE_BODY)
+    if ((weather & B_WEATHER_SNOW) && ability != ABILITY_ICE_BODY)
     {
-        if (BattlerAffectedByHail(battlerId, ability) && !(gStatuses3[battlerId] & (STATUS3_UNDERGROUND | STATUS3_UNDERWATER)) && holdEffect != HOLD_EFFECT_SAFETY_GOGGLES)
+        if (BattlerAffectedBySnow(battlerId, ability) && !(gStatuses3[battlerId] & (STATUS3_UNDERGROUND | STATUS3_UNDERWATER)) && holdEffect != HOLD_EFFECT_SAFETY_GOGGLES)
         {
             damage = CuantosPSMaximos(battlerId) / 16;
             if (damage == 0)
@@ -2073,7 +2039,7 @@ u32 GetBattlerSecondaryDamage(u32 battlerId)
 
 bool32 BattlerWillFaintFromWeather(u32 battler, u32 ability)
 {
-    if ((BattlerAffectedBySandstorm(battler, ability) || BattlerAffectedByHail(battler, ability)) && gBattleMons[battler].hp <= max(1, gBattleMons[battler].maxHP / 16))
+    if ((BattlerAffectedBySandstorm(battler, ability) || BattlerAffectedBySnow(battler, ability)) && gBattleMons[battler].hp <= max(1, gBattleMons[battler].maxHP / 16))
         return TRUE;
 
     return FALSE;
@@ -2581,8 +2547,8 @@ bool32 ShouldSetScreen(u32 battlerAtk, u32 battlerDef, u32 moveEffect)
     switch (moveEffect)
     {
     case EFECTO_VELO_AURORA:
-        // Use only in Hail and only if AI doesn't already have Reflect, Light Screen or Aurora Veil itself active.
-        if ((AI_GetWeather(AI_DATA) & (B_WEATHER_HAIL | B_WEATHER_SNOW)) && !(gSideStatuses[atkSide] & (SIDE_STATUS_REFLECT | SIDE_STATUS_LIGHTSCREEN | SIDE_STATUS_AURORA_VEIL)))
+        // Use only in SNOW and only if AI doesn't already have Reflect, Light Screen or Aurora Veil itself active.
+        if ((AI_GetWeather(AI_DATA) & B_WEATHER_SNOW) && !(gSideStatuses[atkSide] & (SIDE_STATUS_REFLECT | SIDE_STATUS_LIGHTSCREEN | SIDE_STATUS_AURORA_VEIL)))
             return TRUE;
         break;
     case EFFECT_REFLECT:
@@ -2663,7 +2629,7 @@ bool32 PartnerMoveEffectIsStatusSameTarget(u32 battlerAtkPartner, u32 battlerDef
 
 bool32 IsMoveEffectWeather(u32 move)
 {
-    if (move != MOVE_NONE && (gMovimientos[move].effect == EFFECT_SUNNY_DAY || gMovimientos[move].effect == EFFECT_RAIN_DANCE || gMovimientos[move].effect == EFFECT_SANDSTORM || gMovimientos[move].effect == EFFECT_HAIL || gMovimientos[move].effect == EFFECT_SNOWSCAPE))
+    if (move != MOVE_NONE && (gMovimientos[move].effect == EFFECT_DIA_SOLEADO || gMovimientos[move].effect == EFFECT_DANZA_LLUVIA || gMovimientos[move].effect == EFFECT_TORMENTA_ARENA || gMovimientos[move].effect == EFFECT_NEVADA))
         return TRUE;
     return FALSE;
 }

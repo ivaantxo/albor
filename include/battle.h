@@ -260,7 +260,7 @@ struct SwitchinCandidate
     bool8 hypotheticalStatus;
 };
 
-// Ai Data used when deciding which move to use, computed only once before each turn's start.
+// AI Data used when deciding which move to use, computed only once before each turn's start.
 struct AILogicData
 {
     u16 abilities[NUMERO_COMBATIENTES];

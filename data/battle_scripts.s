@@ -2560,6 +2560,7 @@ BattleScript_EffectRainDance::
 	attackstring
 	ppreduce
 	setfieldweather ENUM_WEATHER_RAIN
+
 BattleScript_MoveWeatherChange::
 	attackanimation
 	waitanimation
@@ -2801,13 +2802,6 @@ BattleScript_SwallowFail::
 	printfromtable gSwallowFailStringIds
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
-
-BattleScript_EffectHail::
-	attackcanceler
-	attackstring
-	ppreduce
-	setfieldweather ENUM_WEATHER_HAIL
-	goto BattleScript_MoveWeatherChange
 
 BattleScript_EffectTorment::
 	attackcanceler

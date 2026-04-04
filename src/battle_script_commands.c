@@ -1097,11 +1097,11 @@ u32 GetTotalAccuracy(u32 battlerAtk, u32 battlerDef, u32 move, u32 atkAbility, u
             MULTIPLICA(modifier, MENOS_25_POR_CIENTO);
         break;
     case ABILITY_SNOW_CLOAK:
-        if (WEATHER_HAS_EFFECT && (gBattleWeather & (B_WEATHER_HAIL | B_WEATHER_SNOW)))
+        if (WEATHER_HAS_EFFECT && (gBattleWeather & B_WEATHER_SNOW))
             MULTIPLICA(modifier, MENOS_25_POR_CIENTO);
         break;
     case ABILITY_OLOR_FLUVIAL:
-        if (WEATHER_HAS_EFFECT && (gBattleWeather & (B_WEATHER_RAIN)))
+        if (WEATHER_HAS_EFFECT && (gBattleWeather & B_WEATHER_RAIN))
             MULTIPLICA(modifier, MENOS_25_POR_CIENTO);
         break;
     case ABILITY_TANGLED_FEET:
@@ -3622,7 +3622,7 @@ static void PlayAnimation(u32 battler, u8 animId, const u16 *argPtr, const u8 *n
         BattleScriptPush(nextInstr);
         gBattlescriptCurrInstr = BattleScript_Pausex20;
     }
-    else if (animId == B_ANIM_RAIN_CONTINUES || animId == B_ANIM_SUN_CONTINUES || animId == B_ANIM_SANDSTORM_CONTINUES || animId == B_ANIM_HAIL_CONTINUES || animId == B_ANIM_SNOW_CONTINUES || animId == B_ANIM_FOG_CONTINUES)
+    else if (animId == B_ANIM_RAIN_CONTINUES || animId == B_ANIM_SUN_CONTINUES || animId == B_ANIM_SANDSTORM_CONTINUES || animId == B_ANIM_SNOW_CONTINUES || animId == B_ANIM_FOG_CONTINUES)
     {
         BtlController_EmitBattleAnimation(battler, BUFFER_A, animId, &gDisableStructs[battler], *argPtr);
         MarcaCombatienteOcupado(battler);
@@ -6128,12 +6128,8 @@ static void RemoveAllWeather(void)
         gMensajeBatalla = B_MSG_WEATHER_END_SANDSTORM;
     else if (gBattleWeather & B_WEATHER_SUN)
         gMensajeBatalla = B_MSG_WEATHER_END_SUN;
-    else if (gBattleWeather & B_WEATHER_HAIL)
-        gMensajeBatalla = B_MSG_WEATHER_END_HAIL;
     else if (gBattleWeather & B_WEATHER_SNOW)
         gMensajeBatalla = B_MSG_WEATHER_END_SNOW;
-    else if (gBattleWeather & B_WEATHER_FOG)
-        gMensajeBatalla = B_MSG_WEATHER_END_FOG;
     else
         gMensajeBatalla = B_MSG_WEATHER_END_COUNT; // failsafe
 
@@ -6176,7 +6172,7 @@ static bool32 TryDefogClear(u32 battlerAtk, bool32 clear)
             gBattlerAttacker = lado; // For correct battle string. Ally's / Foe's
             DEFOG_CLEAR(SIDE_STATUS_REFLECT, reflectTimer, BattleScript_SideStatusWoreOffReturn, MOVE_REFLECT);
             DEFOG_CLEAR(SIDE_STATUS_LIGHTSCREEN, lightscreenTimer, BattleScript_SideStatusWoreOffReturn, MOVE_LIGHT_SCREEN);
-            DEFOG_CLEAR(SIDE_STATUS_MIST, mistTimer, BattleScript_SideStatusWoreOffReturn, MOVE_MIST);
+            DEFOG_CLEAR(SIDE_STATUS_MIST, mistTimer, BattleScript_SideStatusWoreOffReturn, MOVE_NEBLINA);
             DEFOG_CLEAR(SIDE_STATUS_AURORA_VEIL, auroraVeilTimer, BattleScript_SideStatusWoreOffReturn, MOVE_VELO_AURORA);
             DEFOG_CLEAR(SIDE_STATUS_SAFEGUARD, safeguardTimer, BattleScript_SideStatusWoreOffReturn, MOVE_SAFEGUARD);
         }
@@ -6977,7 +6973,7 @@ static void Cmd_various(void)
     case VARIOUS_SET_AURORA_VEIL:
     {
         VARIOUS_ARGS();
-        if (gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_AURORA_VEIL || !(WEATHER_HAS_EFFECT && gBattleWeather & (B_WEATHER_HAIL | B_WEATHER_SNOW)))
+        if (gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_AURORA_VEIL || !(WEATHER_HAS_EFFECT && gBattleWeather & B_WEATHER_SNOW))
         {
             gMoveResultFlags |= MOVE_RESULT_MISSED;
             gBattleCommunication[MULTISTRING_CHOOSER] = 0;
@@ -7490,9 +7486,6 @@ static void Cmd_setfieldweather(void)
         break;
     case ENUM_WEATHER_SANDSTORM:
         gMensajeBatalla = B_MSG_STARTED_SANDSTORM;
-        break;
-    case ENUM_WEATHER_HAIL:
-        gMensajeBatalla = B_MSG_STARTED_HAIL;
         break;
     case ENUM_WEATHER_SNOW:
         gMensajeBatalla = B_MSG_STARTED_SNOW;

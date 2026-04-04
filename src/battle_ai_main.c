@@ -238,7 +238,7 @@ static void CopyBattlerDataToAIParty(u32 bPosition, u32 side)
     aiMon->switchInCount++;
 }
 
-void Ai_InitPartyStruct(void)
+void AI_InitPartyStruct(void)
 {
     u32 i;
     bool32 isOmniscient = (AI_THINKING_STRUCT->aiFlags[OPONENTE_IZQUIERDA] & AI_FLAG_OMNISCIENT) || (AI_THINKING_STRUCT->aiFlags[OPONENTE_DERECHA] & AI_FLAG_OMNISCIENT);
@@ -271,7 +271,7 @@ void Ai_InitPartyStruct(void)
     }
 }
 
-void Ai_UpdateSwitchInData(u32 battler)
+void AI_UpdateSwitchInData(u32 battler)
 {
     u32 i;
     u32 side = GetBattlerSide(battler);
@@ -301,7 +301,7 @@ void Ai_UpdateSwitchInData(u32 battler)
     }
 }
 
-void Ai_UpdateFaintData(u32 battler)
+void AI_UpdateFaintData(u32 battler)
 {
     struct AIPartyMon *aiMon = &AI_PARTY->mons[GetBattlerSide(battler)][gBattlerPartyIndexes[battler]];
     ClearBattlerMoveHistory(battler);
@@ -324,7 +324,7 @@ void SetBattlerAIData(u32 battler, struct AILogicData *aiData)
     aiData->speedStats[battler] = GetBattlerTotalSpeedStatArgs(battler, ability, holdEffect);
 }
 
-static u32 Ai_SetMoveAccuracy(struct AILogicData *aiData, u32 battlerAtk, u32 battlerDef, u32 move)
+static u32 AI_SetMoveAccuracy(struct AILogicData *aiData, u32 battlerAtk, u32 battlerDef, u32 move)
 {
     u32 accuracy;
     u32 abilityAtk = aiData->abilities[battlerAtk];
@@ -365,7 +365,7 @@ static void SetBattlerAIMovesData(struct AILogicData *aiData, u32 battlerAtk, u3
                 && !(aiData->moveLimitations[battlerAtk] & (1u << moveIndex)))
             {
                 simulatedDmg = AI_CalcDamage(move, battlerAtk, battlerDef, &effectiveness, weather);
-                aiData->moveAccuracy[battlerAtk][battlerDef][moveIndex] = Ai_SetMoveAccuracy(aiData, battlerAtk, battlerDef, move);
+                aiData->moveAccuracy[battlerAtk][battlerDef][moveIndex] = AI_SetMoveAccuracy(aiData, battlerAtk, battlerDef, move);
             }
             aiData->simulatedDmg[battlerAtk][battlerDef][moveIndex] = simulatedDmg;
             aiData->effectiveness[battlerAtk][battlerDef][moveIndex] = effectiveness;
@@ -1044,10 +1044,10 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             ADJUST_SCORE(-10);
         break;
     case EFECTO_VELO_AURORA:
-        if (gSideStatuses[GetBattlerSide(battlerAtk)] & SIDE_STATUS_AURORA_VEIL || PartnerHasSameMoveEffectWithoutTarget(ALIADO(battlerAtk), move, aiData->partnerMove) || !(weather & (B_WEATHER_HAIL | B_WEATHER_SNOW)))
+        if (gSideStatuses[GetBattlerSide(battlerAtk)] & SIDE_STATUS_AURORA_VEIL || PartnerHasSameMoveEffectWithoutTarget(ALIADO(battlerAtk), move, aiData->partnerMove) || !(weather & B_WEATHER_SNOW))
             ADJUST_SCORE(-10);
         break;
-    case EFFECT_MIST:
+    case EFFECT_NEBLINA:
         if (gSideStatuses[GetBattlerSide(battlerAtk)] & SIDE_STATUS_MIST || PartnerHasSameMoveEffectWithoutTarget(ALIADO(battlerAtk), move, aiData->partnerMove))
             ADJUST_SCORE(-10);
         break;
@@ -1197,29 +1197,21 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                 ADJUST_SCORE(-10);
         }
         break;
-    case EFFECT_SANDSTORM:
-        if (weather & (B_WEATHER_SANDSTORM) || IsMoveEffectWeather(aiData->partnerMove))
+    case EFFECT_TORMENTA_ARENA:
+        if (weather & B_WEATHER_SANDSTORM || IsMoveEffectWeather(aiData->partnerMove))
             ADJUST_SCORE(-8);
         break;
-    case EFFECT_SUNNY_DAY:
-        if (weather & (B_WEATHER_SUN) || IsMoveEffectWeather(aiData->partnerMove))
+    case EFFECT_DIA_SOLEADO:
+        if (weather & B_WEATHER_SUN || IsMoveEffectWeather(aiData->partnerMove))
             ADJUST_SCORE(-8);
         break;
-    case EFFECT_RAIN_DANCE:
-        if (weather & (B_WEATHER_RAIN) || IsMoveEffectWeather(aiData->partnerMove))
+    case EFFECT_DANZA_LLUVIA:
+        if (weather & B_WEATHER_RAIN || IsMoveEffectWeather(aiData->partnerMove))
             ADJUST_SCORE(-8);
         break;
-    case EFFECT_HAIL:
-        if (weather & (B_WEATHER_HAIL) || IsMoveEffectWeather(aiData->partnerMove))
+    case EFFECT_NEVADA:
+        if (weather & B_WEATHER_SNOW || IsMoveEffectWeather(aiData->partnerMove))
             ADJUST_SCORE(-8);
-        else if (weather & B_WEATHER_SNOW)
-            ADJUST_SCORE(-2); // mainly to prevent looping between hail and snow
-        break;
-    case EFFECT_SNOWSCAPE:
-        if (weather & (B_WEATHER_SNOW) || IsMoveEffectWeather(aiData->partnerMove))
-            ADJUST_SCORE(-8);
-        else if (weather & B_WEATHER_HAIL)
-            ADJUST_SCORE(-2); // mainly to prevent looping between hail and snow
         break;
     case EFFECT_ATTRACT:
         if (!AI_CanBeInfatuated(battlerAtk, battlerDef, aiData->abilities[battlerDef]))
@@ -1352,7 +1344,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     case EFFECT_MORNING_SUN:
     case EFFECT_SYNTHESIS:
     case EFFECT_MOONLIGHT:
-        if ((AI_GetWeather(aiData) & (B_WEATHER_RAIN | B_WEATHER_SANDSTORM | B_WEATHER_HAIL | B_WEATHER_SNOW | B_WEATHER_FOG)))
+        if ((AI_GetWeather(aiData) & (B_WEATHER_RAIN | B_WEATHER_SANDSTORM | B_WEATHER_SNOW)))
             ADJUST_SCORE(-3);
         else if (AI_BattlerAtMaxHp(battlerAtk))
             ADJUST_SCORE(-10);
@@ -1679,8 +1671,8 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                 ADJUST_SCORE(-10);
         }
         break;
-    case EFFECT_TAILWIND:
-        if (gSideTimers[GetBattlerSide(battlerAtk)].tailwindTimer != 0 || PartnerMoveIs(ALIADO(battlerAtk), aiData->partnerMove, MOVE_TAILWIND) || (gFieldStatuses & STATUS_FIELD_TRICK_ROOM && gFieldTimers.trickRoomTimer > 1)) // Trick Room active and not ending this turn
+    case EFFECT_VIENTO_AFIN:
+        if (gSideTimers[GetBattlerSide(battlerAtk)].tailwindTimer != 0 || PartnerMoveIs(ALIADO(battlerAtk), aiData->partnerMove, MOVE_VIENTO_AFIN) || (gFieldStatuses & STATUS_FIELD_TRICK_ROOM && gFieldTimers.trickRoomTimer > 1)) // Trick Room active and not ending this turn
             ADJUST_SCORE(-10);
         break;
     case EFFECT_LUCKY_CHANT:
@@ -1741,7 +1733,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     if (HOLD_EFFECT_CHOICE(aiData->holdEffects[battlerAtk]))
     {
         // Don't use user-target moves ie. Swords Dance, with exceptions
-        if ((moveTarget & MOVE_TARGET_USER) && moveEffect != EFFECT_DESTINY_BOND && moveEffect != EFFECT_WISH && !(moveEffect == EFECTO_VELO_AURORA && (AI_GetWeather(aiData) & (B_WEATHER_SNOW | B_WEATHER_HAIL))))
+        if ((moveTarget & MOVE_TARGET_USER) && moveEffect != EFFECT_DESTINY_BOND && moveEffect != EFFECT_WISH && !(moveEffect == EFECTO_VELO_AURORA && (AI_GetWeather(aiData) & B_WEATHER_SNOW)))
             ADJUST_SCORE(-30);
         // Don't use a status move if the mon is the last one in the party, has no good switchin, or is trapped
         else if (CategoriaMovimiento(move) == CATEGORIA_ESTADO && (CountUsablePartyMons(battlerAtk) < 1 || AI_DATA->mostSuitableMonId[battlerAtk] == PARTY_SIZE || IsBattlerTrapped(battlerAtk, TRUE)))
@@ -1809,11 +1801,10 @@ static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             }
             break;
         // Don't change weather if ally already decided to do so.
-        case EFFECT_SUNNY_DAY:
-        case EFFECT_HAIL:
-        case EFFECT_SNOWSCAPE:
-        case EFFECT_RAIN_DANCE:
-        case EFFECT_SANDSTORM:
+        case EFFECT_DIA_SOLEADO:
+        case EFFECT_NEVADA:
+        case EFFECT_DANZA_LLUVIA:
+        case EFFECT_TORMENTA_ARENA:
             if (IsMoveEffectWeather(move))
                 ADJUST_SCORE(-10);
             break;
@@ -1852,31 +1843,25 @@ static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     // consider global move effects
     switch (effect)
     {
-    case EFFECT_SANDSTORM:
+    case EFFECT_TORMENTA_ARENA:
         if (ShouldSetSandstorm(battlerAtkPartner, atkPartnerAbility, atkPartnerHoldEffect))
         {
             RETURN_SCORE_PLUS(WEAK_EFFECT); // our partner benefits from sandstorm
         }
         break;
-    case EFFECT_RAIN_DANCE:
+    case EFFECT_DANZA_LLUVIA:
         if (ShouldSetRain(battlerAtkPartner, atkPartnerAbility, atkPartnerHoldEffect))
         {
             RETURN_SCORE_PLUS(WEAK_EFFECT); // our partner benefits from rain
         }
         break;
-    case EFFECT_SUNNY_DAY:
+    case EFFECT_DIA_SOLEADO:
         if (ShouldSetSun(battlerAtkPartner, atkPartnerAbility, atkPartnerHoldEffect))
         {
             RETURN_SCORE_PLUS(WEAK_EFFECT); // our partner benefits from sun
         }
         break;
-    case EFFECT_HAIL:
-        if (IsBattlerAlive(battlerAtkPartner) && ShouldSetHail(battlerAtkPartner, atkPartnerAbility, atkPartnerHoldEffect))
-        {
-            RETURN_SCORE_PLUS(DECENT_EFFECT); // our partner benefits from hail
-        }
-        break;
-    case EFFECT_SNOWSCAPE:
+    case EFFECT_NEVADA:
         if (IsBattlerAlive(battlerAtkPartner) && ShouldSetSnow(battlerAtkPartner, atkPartnerAbility, atkPartnerHoldEffect))
         {
             RETURN_SCORE_PLUS(DECENT_EFFECT); // our partner benefits from snow
@@ -2572,7 +2557,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         if (IsBattlerTrapped(battlerDef, TRUE))
             ADJUST_SCORE(GOOD_EFFECT);
         break;
-    case EFFECT_SANDSTORM:
+    case EFFECT_TORMENTA_ARENA:
         if (ShouldSetSandstorm(battlerAtk, aiData->abilities[battlerAtk], aiData->holdEffects[battlerAtk]))
         {
             ADJUST_SCORE(DECENT_EFFECT);
@@ -2582,20 +2567,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
                 ADJUST_SCORE(WEAK_EFFECT);
         }
         break;
-    case EFFECT_HAIL:
-        if (ShouldSetHail(battlerAtk, aiData->abilities[battlerAtk], aiData->holdEffects[battlerAtk]))
-        {
-            if ((HasMoveEffect(battlerAtk, EFECTO_VELO_AURORA) || HasMoveEffect(ALIADO(battlerAtk), EFECTO_VELO_AURORA)) && ShouldSetScreen(battlerAtk, battlerDef, EFECTO_VELO_AURORA))
-                ADJUST_SCORE(GOOD_EFFECT);
-
-            ADJUST_SCORE(DECENT_EFFECT);
-            if (aiData->holdEffects[battlerAtk] == HOLD_EFFECT_ICY_ROCK)
-                ADJUST_SCORE(WEAK_EFFECT);
-            if (HasMoveEffect(battlerDef, EFFECT_MORNING_SUN) || HasMoveEffect(battlerDef, EFFECT_SYNTHESIS) || HasMoveEffect(battlerDef, EFFECT_MOONLIGHT))
-                ADJUST_SCORE(WEAK_EFFECT);
-        }
-        break;
-    case EFFECT_SNOWSCAPE:
+    case EFFECT_NEVADA:
         if (ShouldSetSnow(battlerAtk, aiData->abilities[battlerAtk], aiData->holdEffects[battlerAtk]))
         {
             if ((HasMoveEffect(battlerAtk, EFECTO_VELO_AURORA) || HasMoveEffect(ALIADO(battlerAtk), EFECTO_VELO_AURORA)) && ShouldSetScreen(battlerAtk, battlerDef, EFECTO_VELO_AURORA))
@@ -2608,7 +2580,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
                 ADJUST_SCORE(WEAK_EFFECT);
         }
         break;
-    case EFFECT_RAIN_DANCE:
+    case EFFECT_DANZA_LLUVIA:
         if (ShouldSetRain(battlerAtk, aiData->abilities[battlerAtk], aiData->holdEffects[battlerAtk]))
         {
             ADJUST_SCORE(DECENT_EFFECT);
@@ -2620,7 +2592,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
                 ADJUST_SCORE(WEAK_EFFECT);
         }
         break;
-    case EFFECT_SUNNY_DAY:
+    case EFFECT_DIA_SOLEADO:
         if (ShouldSetSun(battlerAtk, aiData->abilities[battlerAtk], aiData->holdEffects[battlerAtk]))
         {
             ADJUST_SCORE(DECENT_EFFECT);
@@ -2998,7 +2970,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         if (CountPositiveStatStages(battlerDef) > CountNegativeStatStages(battlerDef))
             ADJUST_SCORE(DECENT_EFFECT);
         break;
-    case EFFECT_TAILWIND:
+    case EFFECT_VIENTO_AFIN:
         if (GetBattlerSideSpeedAverage(battlerAtk) < GetBattlerSideSpeedAverage(battlerDef))
             ADJUST_SCORE(GOOD_EFFECT);
         break;
@@ -3365,14 +3337,13 @@ static s32 AI_ForceSetupFirstTurn(u32 battlerAtk, u32 battlerDef, u32 move, s32 
     case EFFECT_TRICK_ROOM:
     case EFFECT_WONDER_ROOM:
     case EFFECT_MAGIC_ROOM:
-    case EFFECT_TAILWIND:
+    case EFFECT_VIENTO_AFIN:
     case EFFECT_DRAGON_DANCE:
     case EFFECT_STICKY_WEB:
-    case EFFECT_RAIN_DANCE:
-    case EFFECT_SUNNY_DAY:
-    case EFFECT_SANDSTORM:
-    case EFFECT_HAIL:
-    case EFFECT_SNOWSCAPE:
+    case EFFECT_DANZA_LLUVIA:
+    case EFFECT_DIA_SOLEADO:
+    case EFFECT_TORMENTA_ARENA:
+    case EFFECT_NEVADA:
         ADJUST_SCORE(DECENT_EFFECT);
         break;
     case EFFECT_HIT:
@@ -3565,7 +3536,7 @@ static s32 AI_HPAware(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             case EFFECT_EXPLOSION:
             case EFFECT_LIGHT_SCREEN:
             case EFFECT_REFLECT:
-            case EFFECT_MIST:
+            case EFFECT_NEBLINA:
             case EFFECT_SAFEGUARD:
             case EFFECT_BELLY_DRUM:
                 ADJUST_SCORE(-2);
@@ -3585,18 +3556,17 @@ static s32 AI_HPAware(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             {
             case EFFECT_REFLECT:
             case EFFECT_LIGHT_SCREEN:
-            case EFFECT_MIST:
+            case EFFECT_NEBLINA:
             case EFFECT_RAGE:
             case EFFECT_LOCK_ON:
             case EFFECT_SAFEGUARD:
             case EFFECT_BELLY_DRUM:
             case EFFECT_PSYCH_UP:
             case EFFECT_TICKLE:
-            case EFFECT_SUNNY_DAY:
-            case EFFECT_SANDSTORM:
-            case EFFECT_HAIL:
-            case EFFECT_SNOWSCAPE:
-            case EFFECT_RAIN_DANCE:
+            case EFFECT_DIA_SOLEADO:
+            case EFFECT_TORMENTA_ARENA:
+            case EFFECT_NEVADA:
+            case EFFECT_DANZA_LLUVIA:
                 ADJUST_SCORE(-2);
                 break;
             default:
@@ -3637,7 +3607,7 @@ static s32 AI_HPAware(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             case EFFECT_SPECIAL_DEFENSE_DOWN:
             case EFFECT_ACCURACY_DOWN:
             case EFFECT_EVASION_DOWN:
-            case EFFECT_MIST:
+            case EFFECT_NEBLINA:
             case EFFECT_ATTACK_UP_2:
             case EFFECT_DEFENSE_UP_2:
             case EFFECT_SPEED_UP_2:
@@ -3688,7 +3658,7 @@ static s32 AI_PowerfulStatus(u32 battlerAtk, u32 battlerDef, u32 move, s32 score
 
     switch (moveEffect)
     {
-    case EFFECT_TAILWIND:
+    case EFFECT_VIENTO_AFIN:
         if (!gSideTimers[GetBattlerSide(battlerAtk)].tailwindTimer && !(gFieldStatuses & STATUS_FIELD_TRICK_ROOM && gFieldTimers.trickRoomTimer > 1))
             ADJUST_SCORE(POWERFUL_STATUS_MOVE);
         break;
@@ -3712,7 +3682,7 @@ static s32 AI_PowerfulStatus(u32 battlerAtk, u32 battlerDef, u32 move, s32 score
         if (!(gSideStatuses[GetBattlerSide(battlerAtk)] & SIDE_STATUS_SAFEGUARD))
             ADJUST_SCORE(POWERFUL_STATUS_MOVE);
         break;
-    case EFFECT_MIST:
+    case EFFECT_NEBLINA:
         if (!(gSideStatuses[GetBattlerSide(battlerAtk)] & SIDE_STATUS_MIST))
             ADJUST_SCORE(POWERFUL_STATUS_MOVE);
         break;
@@ -3729,24 +3699,20 @@ static s32 AI_PowerfulStatus(u32 battlerAtk, u32 battlerDef, u32 move, s32 score
         if (AI_ShouldSetUpHazards(battlerAtk, battlerDef, AI_DATA))
             ADJUST_SCORE(POWERFUL_STATUS_MOVE);
         break;
-    case EFFECT_SANDSTORM:
-        if (!(AI_GetWeather(AI_DATA) & (B_WEATHER_SANDSTORM)))
+    case EFFECT_TORMENTA_ARENA:
+        if (!(AI_GetWeather(AI_DATA) & B_WEATHER_SANDSTORM))
             ADJUST_SCORE(POWERFUL_STATUS_MOVE);
         break;
-    case EFFECT_SUNNY_DAY:
-        if (!(AI_GetWeather(AI_DATA) & (B_WEATHER_SUN)))
+    case EFFECT_DIA_SOLEADO:
+        if (!(AI_GetWeather(AI_DATA) & B_WEATHER_SUN))
             ADJUST_SCORE(POWERFUL_STATUS_MOVE);
         break;
-    case EFFECT_RAIN_DANCE:
-        if (!(AI_GetWeather(AI_DATA) & (B_WEATHER_RAIN)))
+    case EFFECT_DANZA_LLUVIA:
+        if (!(AI_GetWeather(AI_DATA) & B_WEATHER_RAIN))
             ADJUST_SCORE(POWERFUL_STATUS_MOVE);
         break;
-    case EFFECT_HAIL:
-        if (!(AI_GetWeather(AI_DATA) & (B_WEATHER_HAIL)))
-            ADJUST_SCORE(POWERFUL_STATUS_MOVE);
-        break;
-    case EFFECT_SNOWSCAPE:
-        if (!(AI_GetWeather(AI_DATA) & (B_WEATHER_SNOW)))
+    case EFFECT_NEVADA:
+        if (!(AI_GetWeather(AI_DATA) & B_WEATHER_SNOW))
             ADJUST_SCORE(POWERFUL_STATUS_MOVE);
     }
 

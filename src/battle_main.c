@@ -1253,7 +1253,7 @@ void SwitchInClearSetData(u32 battler)
     // Clear selected party ID so Revival Blessing doesn't get confused.
     gSelectedMonPartyId = PARTY_SIZE;
 
-    Ai_UpdateSwitchInData(battler);
+    AI_UpdateSwitchInData(battler);
 }
 
 const u8 *FaintClearSetData(u32 combatiente)
@@ -1331,7 +1331,7 @@ const u8 *FaintClearSetData(u32 combatiente)
     gBattleMons[combatiente].types[TIPO_1] = gSpeciesInfo[gBattleMons[combatiente].species].types[TIPO_1];
     gBattleMons[combatiente].types[TIPO_2] = gSpeciesInfo[gBattleMons[combatiente].species].types[TIPO_2];
 
-    Ai_UpdateFaintData(combatiente);
+    AI_UpdateFaintData(combatiente);
     TryBattleFormChange(combatiente, FORM_CHANGE_FAINT);
 
     gCombate->overwrittenAbilities[combatiente] = ABILITY_NONE;
@@ -1523,7 +1523,7 @@ static void DoBattleIntro(void)
             gCombate->eventsBeforeFirstTurnState = 0;
             gCombate->switchInBattlerCounter = 0;
             gCombate->overworldWeatherDone = FALSE;
-            Ai_InitPartyStruct(); // Save mons party counts, and first 2/4 mons on the battlefield.
+            AI_InitPartyStruct(); // Save mons party counts, and first 2/4 mons on the battlefield.
             gBattleMainFunc = TryDoEventsBeforeFirstTurn;
         }
         break;
@@ -2713,10 +2713,10 @@ void RunBattleScriptCommands(void)
 u32 TipoMovimiento(u32 movimiento, u32 combatiente)
 {
     u32 tipoMovimiento = gMovimientos[movimiento].type;
-    u32 efectoMovimiento = gMovimientos[movimiento].effect;
+    // u32 efectoMovimiento = gMovimientos[movimiento].effect;
     u32 habilidad = HabilidadCombatiente(combatiente);
 
-    if (efectoMovimiento == EFFECT_WEATHER_BALL && WEATHER_HAS_EFFECT)
+    if (movimiento == MOVE_METEOROBOLA && WEATHER_HAS_EFFECT)
     {
         if (gBattleWeather & B_WEATHER_RAIN)
             return TIPO_AGUA;
@@ -2724,7 +2724,7 @@ u32 TipoMovimiento(u32 movimiento, u32 combatiente)
             return TIPO_ROCA;
         if (gBattleWeather & B_WEATHER_SUN)
             return TIPO_FUEGO;
-        if (gBattleWeather & (B_WEATHER_SNOW | B_WEATHER_HAIL))
+        if (gBattleWeather & B_WEATHER_SNOW)
             return TIPO_HIELO;
     }
 

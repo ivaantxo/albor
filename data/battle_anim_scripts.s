@@ -10247,13 +10247,6 @@ gBattleAnimMove_MeteorBeam::
 	loadspritegfx ANIM_TAG_ROCKS
 	fadetobg BG_COSMIC
 	waitbgfadeout
-	choosetwoturnanim METEOR_BEAM_CHARGE METEOR_BEAM_BLAST
-
-METEOR_BEAM_CHARGE:
-@todo
-	end
-
-METEOR_BEAM_BLAST:
 	createvisualtask AnimTask_StartSlidingBg, 0x5, 0xf700, 0x0, TRUE, 0xffff @;Scroll right/left
 	waitbgfadein
 	monbg ANIM_TARGET
@@ -15313,18 +15306,6 @@ gBattleAnimMove_HeatWave::
 	createsprite gFlyingSandCrescentSpriteTemplate, ANIM_ATTACKER, 40, 60, 2560, 96, 1
 	end
 
-@ Also used by Hail weather
-gBattleAnimMove_Hail::
-	loadspritegfx ANIM_TAG_HAIL
-	loadspritegfx ANIM_TAG_ICE_CRYSTALS
-	createvisualtask AnimTask_BlendBattleAnimPal, 10, F_PAL_BG, 3, 0, 6, RGB_BLACK
-	waitforvisualfinish
-	createvisualtask AnimTask_Hail, 5
-	loopsewithpan SE_M_HAIL, 0, 8, 10
-	waitforvisualfinish
-	createvisualtask AnimTask_BlendBattleAnimPal, 10, F_PAL_BG, 3, 6, 0, RGB_BLACK
-	end
-
 gBattleAnimMove_Torment::
 	loadspritegfx ANIM_TAG_ANGER
 	loadspritegfx ANIM_TAG_THOUGHT_BUBBLE
@@ -17939,7 +17920,7 @@ FlamethrowerCreateFlames:
 	return
 
 @ Also used by Sandstorm weather
-gBattleAnimMove_Sandstorm::
+gBattleAnimMove_TormentaArena::
 	loadspritegfx ANIM_TAG_FLYING_DIRT
 	playsewithpan SE_M_SANDSTORM, 0
 	createvisualtask AnimTask_LoadSandstormBackground, 5, FALSE
@@ -21030,6 +21011,7 @@ gBattleAnimMove_IceBall::
 	loadspritegfx ANIM_TAG_ICE_CRYSTALS
 	createvisualtask AnimTask_GetIceBallCounter, 5, 0
 	jumpargeq 0, 4, IceBallSetIceBg
+
 IceBallContinue:
 	playsewithpan SE_M_ICY_WIND, SOUND_PAN_ATTACKER
 	createsprite gIceBallChunkSpriteTemplate, ANIM_TARGET, 2, 15, 0, -12, -16, 30, -40
@@ -21041,20 +21023,25 @@ IceBallContinue:
 	jumpargeq 0, 2, IceBallMediun
 	jumpargeq 0, 3, IceBallStrong
 	jumpargeq 0, 4, IceBallStrongest
+
 IceBallContinue2:
 	createvisualtask AnimTask_GetIceBallCounter, 5, 0
 	jumpargeq 0, 4, IceBallUnsetIceBg
+
 IceBallEnd:
 	end
+
 IceBallSetIceBg:
 	fadetobg BG_ICE
 	goto IceBallContinue
+
 IceBallUnsetIceBg:
 	waitbgfadein
 	delay 45
 	restorebg
 	waitbgfadein
 	goto IceBallEnd
+
 IceBallWeakest:
 	createvisualtask AnimTask_ShakeTargetBasedOnMovePowerOrDmg, 2, FALSE, 1, 8, 1, 0
 	call IceBallImpactShard
@@ -21063,6 +21050,7 @@ IceBallWeakest:
 	call IceBallImpactShard
 	call IceBallImpactShard
 	goto IceBallContinue2
+
 IceBallWeak:
 	createvisualtask AnimTask_ShakeTargetBasedOnMovePowerOrDmg, 2, FALSE, 1, 10, 1, 0
 	call IceBallImpactShard
@@ -21073,6 +21061,7 @@ IceBallWeak:
 	call IceBallImpactShard
 	call IceBallImpactShard
 	goto IceBallContinue2
+
 IceBallMediun:
 	createvisualtask AnimTask_ShakeTargetBasedOnMovePowerOrDmg, 2, FALSE, 1, 14, 1, 0
 	call IceBallImpactShard
@@ -21085,6 +21074,7 @@ IceBallMediun:
 	call IceBallImpactShard
 	call IceBallImpactShard
 	goto IceBallContinue2
+
 IceBallStrong:
 	createvisualtask AnimTask_ShakeTargetBasedOnMovePowerOrDmg, 2, FALSE, 1, 18, 1, 0
 	call IceBallImpactShard
@@ -21098,6 +21088,7 @@ IceBallStrong:
 	call IceBallImpactShard
 	call IceBallImpactShard
 	goto IceBallContinue2
+
 IceBallStrongest:
 	createvisualtask AnimTask_ShakeTargetBasedOnMovePowerOrDmg, 2, FALSE, 1, 30, 1, 0
 	call IceBallImpactShard
@@ -21111,6 +21102,7 @@ IceBallStrongest:
 	call IceBallImpactShard
 	call IceBallImpactShard
 	goto IceBallContinue2
+
 IceBallImpactShard:
 	createsprite gIceBallImpactShardSpriteTemplate, ANIM_TARGET, 4, -12, -16
 	return
@@ -21132,9 +21124,8 @@ gBattleAnimMove_WeatherBall::
 	jumpreteq ANIM_WEATHER_SUN, WeatherBallFire
 	jumpreteq ANIM_WEATHER_RAIN, WeatherBallWater
 	jumpreteq ANIM_WEATHER_SANDSTORM, WeatherBallSandstorm
-	jumpreteq ANIM_WEATHER_HAIL, WeatherBallIce
 	jumpreteq ANIM_WEATHER_SNOW, WeatherBallIce
-	jumpreteq ANIM_WEATHER_FOG, WeatherBallNormal
+
 WeatherBallNormal:
 	loadspritegfx ANIM_TAG_IMPACT
 	createsprite gWeatherBallNormalDownSpriteTemplate, ANIM_TARGET, 2, -30, -100, 25, 1, 0, 0
@@ -21144,6 +21135,7 @@ WeatherBallNormal:
 	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 0, 3, 8, 1
 	waitforvisualfinish
 	end
+
 WeatherBallFire:
 	loadspritegfx ANIM_TAG_SMALL_EMBER
 	createsprite gWeatherBallFireDownSpriteTemplate, ANIM_TARGET, 2, -30, -100, 25, 1, 40, 10
@@ -21159,6 +21151,7 @@ WeatherBallFire:
 	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 0, 3, 8, 1
 	waitforvisualfinish
 	end
+
 WeatherBallWater:
 	loadspritegfx ANIM_TAG_SMALL_BUBBLES
 	createsprite gWeatherBallWaterDownSpriteTemplate, ANIM_TARGET, 2, -30, -100, 25, 1, 50, 10
@@ -21174,6 +21167,7 @@ WeatherBallWater:
 	playsewithpan SE_M_GIGA_DRAIN, SOUND_PAN_TARGET
 	waitforvisualfinish
 	end
+
 WeatherBallSandstorm:
 	loadspritegfx ANIM_TAG_ROCKS
 	createsprite gWeatherBallRockDownSpriteTemplate, ANIM_TARGET, 2, -30, -100, 25, 1, 30, 0
@@ -21193,6 +21187,7 @@ WeatherBallSandstorm:
 	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 2, 0, 8, 1
 	waitforvisualfinish
 	end
+
 WeatherBallIce:
 	loadspritegfx ANIM_TAG_HAIL
 	loadspritegfx ANIM_TAG_ICE_CRYSTALS
@@ -21848,10 +21843,7 @@ gBattleAnimGeneral_Sun::
 	goto gBattleAnimMove_SunnyDay
 
 gBattleAnimGeneral_Sandstorm::
-	goto gBattleAnimMove_Sandstorm
-
-gBattleAnimGeneral_Hail::
-	goto gBattleAnimMove_Hail
+	goto gBattleAnimMove_TormentaArena
 
 gBattleAnimGeneral_Snow::
 	goto gBattleAnimMove_Snowscape

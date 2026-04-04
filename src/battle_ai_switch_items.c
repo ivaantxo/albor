@@ -1163,7 +1163,7 @@ static s32 GetSwitchinWeatherImpact(void)
         // Damage
         if (holdEffect != HOLD_EFFECT_SAFETY_GOGGLES && ability != ABILITY_MAGIC_GUARD && ability != ABILITY_OVERCOAT)
         {
-            if ((gBattleWeather & B_WEATHER_HAIL)
+            if ((gBattleWeather & B_WEATHER_SNOW)
              && (AI_DATA->switchinCandidate.battleMon.types[TIPO_1] != TIPO_HIELO || AI_DATA->switchinCandidate.battleMon.types[TIPO_2] != TIPO_HIELO)
              && ability != ABILITY_SNOW_CLOAK && ability != ABILITY_ICE_BODY)
             {
@@ -1192,7 +1192,7 @@ static s32 GetSwitchinWeatherImpact(void)
                     weatherImpact = -1;
             }
         }
-        if (((gBattleWeather & B_WEATHER_HAIL) || (gBattleWeather & B_WEATHER_SNOW)) && ability == ABILITY_ICE_BODY)
+        if ((gBattleWeather & B_WEATHER_SNOW) && ability == ABILITY_ICE_BODY)
         {
             weatherImpact = -(maxHP / 8);
             if (weatherImpact == 0)

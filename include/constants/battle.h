@@ -206,34 +206,31 @@ enum ResultadosCombate
 
 // Battle Weather flags
 #define B_WEATHER_NONE                0
+
 #define B_WEATHER_RAIN_TEMPORARY      (1 << 0)
-#define B_WEATHER_RAIN_PERMANENT      (1 << 2)
+#define B_WEATHER_RAIN_PERMANENT      (1 << 1)
 #define B_WEATHER_RAIN                (B_WEATHER_RAIN_TEMPORARY | B_WEATHER_RAIN_PERMANENT)
-#define B_WEATHER_SANDSTORM_TEMPORARY (1 << 4)
-#define B_WEATHER_SANDSTORM_PERMANENT (1 << 5)
+
+#define B_WEATHER_SANDSTORM_TEMPORARY (1 << 2)
+#define B_WEATHER_SANDSTORM_PERMANENT (1 << 3)
 #define B_WEATHER_SANDSTORM           (B_WEATHER_SANDSTORM_TEMPORARY | B_WEATHER_SANDSTORM_PERMANENT)
-#define B_WEATHER_SUN_TEMPORARY       (1 << 6)
-#define B_WEATHER_SUN_PERMANENT       (1 << 7)
+
+#define B_WEATHER_SUN_TEMPORARY       (1 << 4)
+#define B_WEATHER_SUN_PERMANENT       (1 << 5)
 #define B_WEATHER_SUN                 (B_WEATHER_SUN_TEMPORARY | B_WEATHER_SUN_PERMANENT)
-#define B_WEATHER_HAIL_TEMPORARY      (1 << 9)
-#define B_WEATHER_HAIL_PERMANENT      (1 << 10)
-#define B_WEATHER_HAIL                (B_WEATHER_HAIL_TEMPORARY | B_WEATHER_HAIL_PERMANENT)
-#define B_WEATHER_ANY                 (B_WEATHER_RAIN | B_WEATHER_SANDSTORM | B_WEATHER_SUN | B_WEATHER_HAIL | B_WEATHER_SNOW | B_WEATHER_FOG)
-#define B_WEATHER_SNOW_TEMPORARY      (1 << 12)
-#define B_WEATHER_SNOW_PERMANENT      (1 << 13)
+
+#define B_WEATHER_SNOW_TEMPORARY      (1 << 6)
+#define B_WEATHER_SNOW_PERMANENT      (1 << 7)
 #define B_WEATHER_SNOW                (B_WEATHER_SNOW_TEMPORARY | B_WEATHER_SNOW_PERMANENT)
-#define B_WEATHER_FOG_TEMPORARY       (1 << 14)
-#define B_WEATHER_FOG_PERMANENT       (1 << 15)
-#define B_WEATHER_FOG                 (B_WEATHER_FOG_TEMPORARY | B_WEATHER_FOG_PERMANENT)
+
+#define B_WEATHER_ANY                 (B_WEATHER_RAIN | B_WEATHER_SANDSTORM | B_WEATHER_SUN | B_WEATHER_SNOW)
 
 // Battle Weather as enum
 #define ENUM_WEATHER_NONE                 0
 #define ENUM_WEATHER_RAIN                 1
 #define ENUM_WEATHER_SUN                  2
 #define ENUM_WEATHER_SANDSTORM            3
-#define ENUM_WEATHER_HAIL                 4
-#define ENUM_WEATHER_SNOW                 8
-#define ENUM_WEATHER_FOG                  9
+#define ENUM_WEATHER_SNOW                 4
 
 // Move Effects
 #define MOVE_EFFECT_SLEEP               1
@@ -414,9 +411,7 @@ enum EfectosFinTurnoCampo
     ENDTURN_RAIN,
     ENDTURN_SANDSTORM,
     ENDTURN_SUN,
-    ENDTURN_HAIL,
     ENDTURN_SNOW,
-    ENDTURN_FOG,
     ENDTURN_DAMAGE_NON_TYPES,
     ENDTURN_GRAVITY,
     ENDTURN_TRICK_ROOM,

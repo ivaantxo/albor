@@ -474,7 +474,6 @@ enum AnimacionesGeneralesBatalla //(sBattleAnims_General)
     B_ANIM_RAIN_CONTINUES,
     B_ANIM_SUN_CONTINUES,
     B_ANIM_SANDSTORM_CONTINUES,
-    B_ANIM_HAIL_CONTINUES,
     B_ANIM_LEECH_SEED_DRAIN,
     B_ANIM_MON_HIT,
     B_ANIM_ITEM_STEAL,
@@ -546,9 +545,7 @@ enum AnimacionesEspecialesBatalla //(sBattleAnims_Special)
 #define ANIM_WEATHER_SUN 1
 #define ANIM_WEATHER_RAIN 2
 #define ANIM_WEATHER_SANDSTORM 3
-#define ANIM_WEATHER_HAIL 4
-#define ANIM_WEATHER_SNOW 5
-#define ANIM_WEATHER_FOG 6
+#define ANIM_WEATHER_SNOW 4
 
 // horseshoe/fist frames
 #define ANIM_RIGHT_FIST  0

@@ -66,7 +66,6 @@ bool32 IsRecycleEncouragedItem(u32 item);
 bool32 ShouldRestoreHpBerry(u32 battlerAtk, u32 item);
 bool32 IsStatBoostingBerry(u32 item);
 bool32 CanDesarmeItem(u32 battler, u32 item);
-bool32 AI_IsAbilityOnSide(u32 battlerId, u32 ability);
 bool32 AI_MoveMakesContact(u32 ability, u32 holdEffect, u32 move);
 
 // stat stage checks
@@ -116,7 +115,6 @@ bool32 IsHazardMoveEffect(u32 moveEffect);
 bool32 IsTwoTurnNotSemiInvulnerableMove(u32 battlerAtk, u32 move);
 void ProtectChecks(u32 battlerAtk, u32 battlerDef, u32 move, u32 predictedMove, s32 *score);
 bool32 ShouldSetSandstorm(u32 battler, u32 ability, u32 holdEffect);
-bool32 ShouldSetHail(u32 battler, u32 ability, u32 holdEffect);
 bool32 ShouldSetSnow(u32 battler, u32 ability, u32 holdEffect);
 bool32 ShouldSetRain(u32 battlerAtk, u32 ability, u32 holdEffect);
 bool32 ShouldSetSun(u32 battlerAtk, u32 atkAbility, u32 holdEffect);

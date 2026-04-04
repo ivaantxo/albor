@@ -9267,7 +9267,7 @@ const struct Item gItemsInfo[] =
                 .pocket = POCKET_TM_HM,
                 .type = ITEM_USE_PARTY_MENU,
                 .fieldUseFunc = ItemUseOutOfBattle_TMHM,
-                .secondaryId = MOVE_HAIL,
+                .secondaryId = MOVE_NEVADA,
             },
 
         [ITEM_TM_BULK_UP] =
@@ -9312,7 +9312,7 @@ const struct Item gItemsInfo[] =
                 .pocket = POCKET_TM_HM,
                 .type = ITEM_USE_PARTY_MENU,
                 .fieldUseFunc = ItemUseOutOfBattle_TMHM,
-                .secondaryId = MOVE_SUNNY_DAY,
+                .secondaryId = MOVE_DIA_SOLEADO,
             },
 
         [ITEM_TM_TAUNT] =
@@ -9417,7 +9417,7 @@ const struct Item gItemsInfo[] =
                 .pocket = POCKET_TM_HM,
                 .type = ITEM_USE_PARTY_MENU,
                 .fieldUseFunc = ItemUseOutOfBattle_TMHM,
-                .secondaryId = MOVE_RAIN_DANCE,
+                .secondaryId = MOVE_DANZA_LLUVIA,
             },
 
         [ITEM_TM_GIGA_DRAIN] =
@@ -9507,7 +9507,7 @@ const struct Item gItemsInfo[] =
                 .pocket = POCKET_TM_HM,
                 .type = ITEM_USE_PARTY_MENU,
                 .fieldUseFunc = ItemUseOutOfBattle_TMHM,
-                .secondaryId = MOVE_THUNDER,
+                .secondaryId = MOVE_TRUENO,
             },
 
         [ITEM_TM_EARTHQUAKE] =
@@ -9672,7 +9672,7 @@ const struct Item gItemsInfo[] =
                 .pocket = POCKET_TM_HM,
                 .type = ITEM_USE_PARTY_MENU,
                 .fieldUseFunc = ItemUseOutOfBattle_TMHM,
-                .secondaryId = MOVE_SANDSTORM,
+                .secondaryId = MOVE_TORMENTA_ARENA,
             },
 
         [ITEM_TM_FIRE_BLAST] =
