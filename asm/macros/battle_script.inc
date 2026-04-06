@@ -902,11 +902,6 @@
 	.byte BATTLE_CMD_selectfirstvalidtarget
 	.endm
 
-	.macro trysetfutureattack failInstr:req
-	.byte BATTLE_CMD_trysetfutureattack
-	.4byte \failInstr
-	.endm
-
 	.macro intentaataqueequipo
 	.byte BATTLE_CMD_intentaataqueequipo
 	.endm
@@ -976,12 +971,6 @@
 	.macro trycopyability battler:req, failInstr:req
 	.byte BATTLE_CMD_trycopyability
 	.byte \battler
-	.4byte \failInstr
-	.endm
-
-	.macro trywish turnNumber:req, failInstr:req
-	.byte BATTLE_CMD_trywish
-	.byte \turnNumber
 	.4byte \failInstr
 	.endm
 
@@ -1230,10 +1219,6 @@
 	.macro IntentaPalmaRauda failInstr:req
 	callnative ScriptCombate_PalmaRauda
 	.4byte \failInstr
-	.endm
-
-	.macro removeweather
-	callnative BS_RemoveWeather
 	.endm
 
 	.macro damagetoquartertargethp
@@ -1510,10 +1495,6 @@
 	.macro losetype battler:req, type:req
 	various \battler, VARIOUS_LOSE_TYPE
 	.byte \type
-	.endm
-
-	.macro tryfriskmsg battler:req
-	various \battler, VARIOUS_TRY_FRISK
 	.endm
 
 	.macro trypoisontype attacker:req, target:req, failInstr:req

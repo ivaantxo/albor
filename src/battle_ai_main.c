@@ -337,7 +337,7 @@ static u32 AI_SetMoveAccuracy(struct AILogicData *aiData, u32 battlerAtk, u32 ba
     return accuracy;
 }
 
-static void SetBattlerAIMovesData(struct AILogicData *aiData, u32 battlerAtk, u32 battlersCount, u32 weather)
+static void SetBattlerAIMovesData(struct AILogicData *aiData, u32 battlerAtk, u32 battlersCount, enum ClimasCombate climaCombate)
 {
     u16 *moves;
     u32 battlerDef, moveIndex, move;
@@ -364,7 +364,7 @@ static void SetBattlerAIMovesData(struct AILogicData *aiData, u32 battlerAtk, u3
                 //&& !EsMovimientoDeEstado(gMovimientos[move])  /* we want to get effectiveness and accuracy of status moves */
                 && !(aiData->moveLimitations[battlerAtk] & (1u << moveIndex)))
             {
-                simulatedDmg = AI_CalcDamage(move, battlerAtk, battlerDef, &effectiveness, weather);
+                simulatedDmg = AI_CalcDamage(move, battlerAtk, battlerDef, &effectiveness, climaCombate);
                 aiData->moveAccuracy[battlerAtk][battlerDef][moveIndex] = AI_SetMoveAccuracy(aiData, battlerAtk, battlerDef, move);
             }
             aiData->simulatedDmg[battlerAtk][battlerDef][moveIndex] = simulatedDmg;
@@ -377,12 +377,12 @@ static void SetBattlerAIMovesData(struct AILogicData *aiData, u32 battlerAtk, u3
 
 void SetAILogicDataForTurn(struct AILogicData *aiData)
 {
-    u32 battlerAtk, battlersCount, weather;
+    u32 battlerAtk, battlersCount;
+    enum ClimasCombate climaCombate;
 
     memset(aiData, 0, sizeof(struct AILogicData));
 
-    aiData->weatherHasEffect = WEATHER_HAS_EFFECT;
-    weather = AI_GetWeather(aiData);
+    climaCombate = ObtenClimaCombate();
 
     // get/assume all battler data and simulate AI damage
     battlersCount = gBattlersCount;
@@ -401,7 +401,7 @@ void SetAILogicDataForTurn(struct AILogicData *aiData)
         if (!IsBattlerAlive(battlerAtk))
             continue;
 
-        SetBattlerAIMovesData(aiData, battlerAtk, battlersCount, weather);
+        SetBattlerAIMovesData(aiData, battlerAtk, battlersCount, climaCombate);
     }
     AI_DATA->aiCalcInProgress = FALSE;
 }
@@ -609,7 +609,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     u32 effectiveness = aiData->effectiveness[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex];
     bool32 isDoubleBattle = IsValidDoubleBattle(battlerAtk);
     u32 i;
-    u32 weather;
+    enum ClimasCombate climaCombate = ObtenClimaCombate();
     u32 predictedMove = aiData->lastUsedMove[battlerDef];
 
     if (IS_TARGETING_PARTNER(battlerAtk, battlerDef))
@@ -632,7 +632,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     case AI_EFFECTIVENESS_x0:
         RETURN_SCORE_MINUS(20);
         break;
-    case AI_EFFECTIVENESS_x0_125:
     case AI_EFFECTIVENESS_x0_25:
         RETURN_SCORE_MINUS(10);
         break;
@@ -1044,7 +1043,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             ADJUST_SCORE(-10);
         break;
     case EFECTO_VELO_AURORA:
-        if (gSideStatuses[GetBattlerSide(battlerAtk)] & SIDE_STATUS_AURORA_VEIL || PartnerHasSameMoveEffectWithoutTarget(ALIADO(battlerAtk), move, aiData->partnerMove) || !(weather & B_WEATHER_SNOW))
+        if (gSideStatuses[GetBattlerSide(battlerAtk)] & SIDE_STATUS_AURORA_VEIL || PartnerHasSameMoveEffectWithoutTarget(ALIADO(battlerAtk), move, aiData->partnerMove) || !EsClimaCombateNieve(climaCombate))
             ADJUST_SCORE(-10);
         break;
     case EFFECT_NEBLINA:
@@ -1245,12 +1244,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         else if (aiData->hpPercents[battlerAtk] <= 60)
             ADJUST_SCORE(-10);
         break;
-    case EFFECT_FUTURE_SIGHT:
-        if (gSideStatuses[GetBattlerSide(battlerDef)] & SIDE_STATUS_FUTUREATTACK || gSideStatuses[GetBattlerSide(battlerAtk)] & SIDE_STATUS_FUTUREATTACK)
-            ADJUST_SCORE(-12);
-        else
-            ADJUST_SCORE(GOOD_EFFECT);
-        break;
     case EFFECT_FIRST_TURN_ONLY:
         if (!EsPrimerTurno(battlerAtk))
             ADJUST_SCORE(-10);
@@ -1290,7 +1283,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             ADJUST_SCORE(-10);
         break;
     case EFFECT_TRICK:
-    case EFFECT_DESARME:
     case EFFECT_CORROSIVE_GAS:
         if (aiData->abilities[battlerDef] == ABILITY_STICKY_HOLD || aiData->abilities[battlerDef] == ABILITY_TERRITORIAL)
             ADJUST_SCORE(-10);
@@ -1344,7 +1336,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     case EFFECT_MORNING_SUN:
     case EFFECT_SYNTHESIS:
     case EFFECT_MOONLIGHT:
-        if ((AI_GetWeather(aiData) & (B_WEATHER_RAIN | B_WEATHER_SANDSTORM | B_WEATHER_SNOW)))
+        if (EsClimaCombateLluvia(climaCombate) || EsClimaCombateArena(climaCombate) || EsClimaCombateNieve(climaCombate))
             ADJUST_SCORE(-3);
         else if (AI_BattlerAtMaxHp(battlerAtk))
             ADJUST_SCORE(-10);
@@ -1490,10 +1482,6 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         break;
     case EFFECT_BESTOW:
         if (aiData->holdEffects[battlerAtk] == HOLD_EFFECT_NONE)
-            ADJUST_SCORE(-10);
-        break;
-    case EFFECT_WISH:
-        if (gWishFutureKnock.wishCounter[battlerAtk] != 0)
             ADJUST_SCORE(-10);
         break;
     case EFFECT_GASTRO_ACID:
@@ -1733,7 +1721,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     if (HOLD_EFFECT_CHOICE(aiData->holdEffects[battlerAtk]))
     {
         // Don't use user-target moves ie. Swords Dance, with exceptions
-        if ((moveTarget & MOVE_TARGET_USER) && moveEffect != EFFECT_DESTINY_BOND && moveEffect != EFFECT_WISH && !(moveEffect == EFECTO_VELO_AURORA && (AI_GetWeather(aiData) & B_WEATHER_SNOW)))
+        if ((moveTarget & MOVE_TARGET_USER) && moveEffect != EFFECT_DESTINY_BOND && !(moveEffect == EFECTO_VELO_AURORA && EsClimaCombateNieve(climaCombate)))
             ADJUST_SCORE(-30);
         // Don't use a status move if the mon is the last one in the party, has no good switchin, or is trapped
         else if (CategoriaMovimiento(move) == CATEGORIA_ESTADO && (CountUsablePartyMons(battlerAtk) < 1 || AI_DATA->mostSuitableMonId[battlerAtk] == PARTY_SIZE || IsBattlerTrapped(battlerAtk, TRUE)))
@@ -1862,7 +1850,7 @@ static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         }
         break;
     case EFFECT_NEVADA:
-        if (IsBattlerAlive(battlerAtkPartner) && ShouldSetSnow(battlerAtkPartner, atkPartnerAbility, atkPartnerHoldEffect))
+        if (IsBattlerAlive(battlerAtkPartner) && DeberiaPonerNieve(battlerAtkPartner, atkPartnerAbility, atkPartnerHoldEffect))
         {
             RETURN_SCORE_PLUS(DECENT_EFFECT); // our partner benefits from snow
         }
@@ -2166,6 +2154,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
     u32 predictedMoveSlot = GetMoveSlot(GetMovesArray(battlerDef), predictedMove);
     bool32 isDoubleBattle = IsValidDoubleBattle(battlerAtk);
     u32 i;
+    enum ClimasCombate climaCombate = ObtenClimaCombate();
 
     // check status move preference
     if (AI_THINKING_STRUCT->aiFlags[battlerAtk] & AI_FLAG_PREFER_STATUS_MOVES && EsMovimientoDeEstado(move) && effectiveness != AI_EFFECTIVENESS_x0)
@@ -2403,7 +2392,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         }
         else if (ShouldRecover(battlerAtk, battlerDef, move, 100))
         {
-            if (aiData->holdEffects[battlerAtk] == HOLD_EFFECT_CURE_SLP || aiData->holdEffects[battlerAtk] == HOLD_EFFECT_CURE_STATUS || HasMoveEffect(EFFECT_SLEEP_TALK, battlerAtk) || HasMoveEffect(EFFECT_SNORE, battlerAtk) || aiData->abilities[battlerAtk] == ABILITY_MUDAR || (AI_GetWeather(aiData) & B_WEATHER_RAIN && gWishFutureKnock.weatherDuration != 1 && aiData->abilities[battlerAtk] == ABILITY_HYDRATION && aiData->holdEffects[battlerAtk] != HOLD_EFFECT_UTILITY_UMBRELLA))
+            if (aiData->holdEffects[battlerAtk] == HOLD_EFFECT_CURE_SLP || aiData->holdEffects[battlerAtk] == HOLD_EFFECT_CURE_STATUS || HasMoveEffect(EFFECT_SLEEP_TALK, battlerAtk) || HasMoveEffect(EFFECT_SNORE, battlerAtk) || aiData->abilities[battlerAtk] == ABILITY_MUDAR || EsClimaCombateLluvia(climaCombate) && gCombate->clima.turnos != 1 && aiData->abilities[battlerAtk] == ABILITY_HYDRATION && aiData->holdEffects[battlerAtk] != HOLD_EFFECT_UTILITY_UMBRELLA))
                 ADJUST_SCORE(GOOD_EFFECT);
         }
         break;
@@ -2482,7 +2471,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         if (AI_IsFaster(battlerAtk, battlerDef, move) && CanTargetFaintAI(battlerDef, battlerAtk))
             ADJUST_SCORE(GOOD_EFFECT);
         break;
-    case EFFECT_WISH:
     case EFFECT_HEAL_BELL:
         if (ShouldUseWishAromatherapy(battlerAtk, battlerDef, move))
             ADJUST_SCORE(DECENT_EFFECT);
@@ -2568,7 +2556,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         }
         break;
     case EFFECT_NEVADA:
-        if (ShouldSetSnow(battlerAtk, aiData->abilities[battlerAtk], aiData->holdEffects[battlerAtk]))
+        if (DeberiaPonerNieve(battlerAtk, aiData->abilities[battlerAtk], aiData->holdEffects[battlerAtk]))
         {
             if ((HasMoveEffect(battlerAtk, EFECTO_VELO_AURORA) || HasMoveEffect(ALIADO(battlerAtk), EFECTO_VELO_AURORA)) && ShouldSetScreen(battlerAtk, battlerDef, EFECTO_VELO_AURORA))
                 ADJUST_SCORE(GOOD_EFFECT);
@@ -2783,7 +2771,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         }
         break;
     case EFFECT_CORROSIVE_GAS:
-        if (CanDesarmeItem(battlerDef, aiData->items[battlerDef]))
+        if (PuedeQuitarObjeto(battlerDef, aiData->items[battlerDef]))
         {
             switch (aiData->holdEffects[battlerDef])
             {
@@ -3000,7 +2988,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         ADJUST_SCORE(IncreaseStatUpScore(battlerAtk, battlerDef, STAT_CHANGE_SPEED));
         break;
     case EFFECT_SHORE_UP:
-        if ((AI_GetWeather(aiData) & B_WEATHER_SANDSTORM) && ShouldRecover(battlerAtk, battlerDef, move, 67))
+        if (EsClimaCombateArena(climaCombate) && ShouldRecover(battlerAtk, battlerDef, move, 67))
             ADJUST_SCORE(DECENT_EFFECT);
         else if (ShouldRecover(battlerAtk, battlerDef, move, 50))
             ADJUST_SCORE(DECENT_EFFECT);
@@ -3133,18 +3121,12 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
                 else if (ItemId_GetPocket(aiData->items[battlerDef]) == POCKET_BERRIES)
                     ADJUST_SCORE(DECENT_EFFECT);
                 break;
-            case MOVE_EFFECT_INCINERATE:
-                if (gBattleMons[battlerDef].status2 & STATUS2_SUBSTITUTE || aiData->abilities[battlerDef] == ABILITY_STICKY_HOLD || aiData->abilities[battlerDef] == ABILITY_TERRITORIAL)
-                    break;
-                else if (ItemId_GetPocket(aiData->items[battlerDef]) == POCKET_BERRIES || aiData->holdEffects[battlerDef] == HOLD_EFFECT_GEMS)
-                    ADJUST_SCORE(DECENT_EFFECT);
-                break;
             case MOVE_EFFECT_SMACK_DOWN:
                 if (!EstaCombatienteEnSuelo(battlerDef) && HasDamagingMoveOfType(battlerAtk, TIPO_TIERRA) && !CanTargetFaintAI(battlerDef, battlerAtk))
                     ADJUST_SCORE(DECENT_EFFECT);
                 break;
-            case MOVE_EFFECT_DESARME:
-                if (CanDesarmeItem(battlerDef, aiData->items[battlerDef]))
+            case EFECTO_MOVIMIENTO_QUITAR_OBJETO:
+                if (PuedeQuitarObjeto(battlerDef, aiData->items[battlerDef]))
                 {
                     switch (aiData->holdEffects[battlerDef])
                     {
@@ -3652,6 +3634,7 @@ static s32 AI_HPAware(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
 static s32 AI_PowerfulStatus(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
 {
     u32 moveEffect = gMovimientos[move].effect;
+    enum ClimasCombate climaCombate = ObtenClimaCombate();
 
     if (gMovimientos[move].category != CATEGORIA_ESTADO || gMovimientos[AI_DATA->partnerMove].effect == moveEffect)
         return score;
@@ -3700,19 +3683,19 @@ static s32 AI_PowerfulStatus(u32 battlerAtk, u32 battlerDef, u32 move, s32 score
             ADJUST_SCORE(POWERFUL_STATUS_MOVE);
         break;
     case EFFECT_TORMENTA_ARENA:
-        if (!(AI_GetWeather(AI_DATA) & B_WEATHER_SANDSTORM))
+        if (!EsClimaCombateArena(climaCombate))
             ADJUST_SCORE(POWERFUL_STATUS_MOVE);
         break;
     case EFFECT_DIA_SOLEADO:
-        if (!(AI_GetWeather(AI_DATA) & B_WEATHER_SUN))
+        if (!EsClimaCombateSol(climaCombate))
             ADJUST_SCORE(POWERFUL_STATUS_MOVE);
         break;
     case EFFECT_DANZA_LLUVIA:
-        if (!(AI_GetWeather(AI_DATA) & B_WEATHER_RAIN))
+        if (!EsClimaCombateLluvia(climaCombate))
             ADJUST_SCORE(POWERFUL_STATUS_MOVE);
         break;
     case EFFECT_NEVADA:
-        if (!(AI_GetWeather(AI_DATA) & B_WEATHER_SNOW))
+        if (!EsClimaCombateNieve(climaCombate))
             ADJUST_SCORE(POWERFUL_STATUS_MOVE);
     }
 

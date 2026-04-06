@@ -115,7 +115,6 @@ struct DisableStruct
     u8 toxicSpikesDone : 1;
     u8 stickyWebDone : 1;
     u8 stealthRockDone : 1;
-    u8 weatherAbilityDone : 1;
     bool32 esPrimerTurno;
 };
 
@@ -212,17 +211,6 @@ struct FieldTimer
     u8 gravityTimer;
 };
 
-struct WishFutureKnock
-{
-    u8 futureSightCounter[NUMERO_COMBATIENTES];
-    u8 futureSightBattlerIndex[NUMERO_COMBATIENTES];
-    u8 futureSightPartyIndex[NUMERO_COMBATIENTES];
-    u16 futureSightMove[NUMERO_COMBATIENTES];
-    u8 wishCounter[NUMERO_COMBATIENTES];
-    u8 wishPartyId[NUMERO_COMBATIENTES];
-    u8 weatherDuration;
-};
-
 struct AI_SavedBattleMon
 {
     u16 ability;
@@ -278,7 +266,6 @@ struct AILogicData
     u8 monToSwitchInId[NUMERO_COMBATIENTES];    // ID of the mon to switch in.
     u8 mostSuitableMonId[NUMERO_COMBATIENTES];  // Stores result of GetMostSuitableMonToSwitchInto, which decides which generic mon the AI would switch into if they decide to switch. This can be overruled by specific mons found in ShouldSwitch; the final resulting mon is stored in AI_monToSwitchIntoId.
     struct SwitchinCandidate switchinCandidate; // Struct used for deciding which mon to switch to in battle_ai_switch_items.c
-    u8 weatherHasEffect : 1;                    // The same as WEATHER_HAS_EFFECT. Stored here, so it's called only once.
     u8 ejectButtonSwitch : 1;                   // Tracks whether current switch out was from Eject Button
     u8 ejectPackSwitch : 1;                     // Tracks whether current switch out was from Eject Pack
     u8 padding : 5;
@@ -358,6 +345,13 @@ struct EfectosFinTurno
     enum PosicionesCombate indiceCombatiente;
 };
 
+struct Clima
+{
+    bool32 exteriorHecho;
+    u32 turnos;
+    enum ClimasCombate modo;
+}
+
 struct Combate
 {
     u32 contadorTurnos;
@@ -408,12 +402,9 @@ struct Combate
     u16 changedItems[NUMERO_COMBATIENTES];
     u8 switchInBattlerCounter;
     u8 turnSideTracker;
-    u8 wishPerishSongState;
-    u8 wishPerishSongBattlerId;
-    u8 overworldWeatherDone : 1;
+    u8 perishSongState;
+    u8 perishSongBattlerId;
     u8 isAtkCancelerForCalledMove : 1; // Certain cases in atk canceler should only be checked once, when the original move is called, however others need to be checked the twice.
-    bool32 friskedAbility;             // Revisar, para que muestre habilidad y objeto
-    u32 friskedBattler;
     u8 atkCancellerTracker;
     u8 AI_monToSwitchIntoId[NUMERO_COMBATIENTES];
     u8 debugBattler;
@@ -473,6 +464,7 @@ struct Combate
     uq4_12_t resultadoMovimiento;
     u32 potenciaMovimientosRecibidosTurno[NUMERO_COMBATIENTES];
     struct EfectosFinTurno efectoFinTurno;
+    struct Clima clima;
 };
 
 #define CAMBIA_TIPO_COMBATIENTE(combatiente, tipo)      \
@@ -694,8 +686,6 @@ extern u32 gPosicionCursorSiNo;
 extern u8 gBattleOutcome;
 extern struct ProtectStruct gProtectStructs[NUMERO_COMBATIENTES];
 extern struct SpecialStatus gSpecialStatuses[NUMERO_COMBATIENTES];
-extern u16 gBattleWeather;
-extern struct WishFutureKnock gWishFutureKnock;
 extern u16 gIntroSlideFlags;
 extern u8 gSentPokesToOpponent[2];
 extern struct BattleScripting gBattleScripting;
@@ -816,6 +806,62 @@ static inline bool32 EsMovimientoDeSonido(u32 movimiento)
 static inline bool32 EsMovimientoDeClima(u32 movimiento)
 {
     return (gMovimientos[movimiento].climatico);
+}
+
+static inline bool32 EsClimaCombateSol(enum ClimasCombate clima)
+{
+    return (clima == CLIMA_COMBATE_SOL_HABILIDAD || clima == CLIMA_COMBATE_SOL_MOVIMIENTO);
+}
+
+static inline bool32 EsClimaCombateLluvia(enum ClimasCombate clima)
+{
+    return (clima == CLIMA_COMBATE_LLUVIA_HABILIDAD || clima == CLIMA_COMBATE_LLUVIA_MOVIMIENTO);
+}
+
+static inline bool32 EsClimaCombateArena(enum ClimasCombate clima)
+{
+    return (clima == CLIMA_COMBATE_ARENA_HABILIDAD || clima == CLIMA_COMBATE_ARENA_MOVIMIENTO);
+}
+
+static inline bool32 EsClimaCombateNieve(enum ClimasCombate clima)
+{
+    return (clima == CLIMA_COMBATE_NIEVE_HABILIDAD || clima == CLIMA_COMBATE_NIEVE_MOVIMIENTO);
+}
+
+static inline bool32 EsHabilidadClimatica(enum ClimasCombate clima)
+{
+    return (clima == CLIMA_COMBATE_LLUVIA_HABILIDAD
+         || clima == CLIMA_COMBATE_SOL_HABILIDAD
+         || clima == CLIMA_COMBATE_ARENA_HABILIDAD
+         || clima == CLIMA_COMBATE_NIEVE_HABILIDAD);
+}
+
+static inline bool32 EsClimaPorMovimiento(enum ClimasCombate clima)
+{
+    return (clima != CLIMA_COMBATE_NINGUNO && !EsClimaHabilidad(clima));
+}
+
+static inline bool32 ArgumentoMovimientoCoincideClima(enum ClimasMovimientos climaMovimiento)
+{
+    enum ClimasCombate climaCombate = ObtenClimaCombate();
+
+    switch (climaMovimiento)
+    {
+        case CLIMA_MOVIMIENTO_SOL:
+            return EsClimaCombateSol(climaCombate);
+        case CLIMA_MOVIMIENTO_LLUVIA:
+            return EsClimaCombateLluvia(climaCombate);
+        case CLIMA_MOVIMIENTO_ARENA:
+            return EsClimaCombateArena(climaCombate);
+        case CLIMA_MOVIMIENTO_NIEVE:
+            return EsClimaCombateNieve(climaCombate);
+    }
+    return FALSE;
+}
+
+static inline bool32 ClimaTieneEfecto(void)
+{
+    return !EstaHabilidadEnCampo(ABILITY_SEPTIMO_CIELO);
 }
 
 #endif // GUARD_BATTLE_H

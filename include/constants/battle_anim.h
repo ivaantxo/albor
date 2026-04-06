@@ -478,11 +478,8 @@ enum AnimacionesGeneralesBatalla //(sBattleAnims_General)
     B_ANIM_MON_HIT,
     B_ANIM_ITEM_STEAL,
     B_ANIM_SNATCH_MOVE,
-    B_ANIM_FUTURE_SIGHT_HIT,
-    B_ANIM_DOOM_DESIRE_HIT,
     B_ANIM_FOCUS_PUNCH_SETUP,
     B_ANIM_INGRAIN_HEAL,
-    B_ANIM_WISH_HEAL,
     B_ANIM_FORM_CHANGE,
     B_ANIM_SLIDE_OFFSCREEN, // Sin usar
     B_ANIM_RESTORE_BG, // for Terrain Endings

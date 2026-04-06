@@ -46,7 +46,7 @@ static inline uq4_12_t uq4_12_subtract(uq4_12_t a, uq4_12_t b)
     return a - b;
 }
 
-static inline uq4_12_t uq4_12_multiply(uq4_12_t a, uq4_12_t b)
+static inline uq4_12_t UQ412Multiplica(uq4_12_t a, uq4_12_t b)
 {
     u32 product = (u32) a * b;
     return (product + UQ_4_12_ROUND - 1) >> UQ_4_12_SHIFT;
@@ -60,7 +60,7 @@ static inline uq4_12_t uq4_12_divide(uq4_12_t dividend, uq4_12_t divisor)
 
 // Multiplies value by the UQ_4_12 number modifier.
 // Returns an integer, rounded to nearest (rounding down on n.5)
-static inline u32 uq4_12_multiply_by_int(uq4_12_t modifier, u32 value)
+static inline u32 UQ412MultiplicaPorEntero(uq4_12_t modifier, u32 value)
 {
     return UQ_4_12_TO_INT((modifier * value) + UQ_4_12_ROUND - 1);
 }
@@ -81,6 +81,6 @@ static inline u32 uq4_12_multiply_by_int(uq4_12_t modifier, u32 value)
 #define MENOS_67_5_POR_CIENTO               UQ_4_12(0.375)
 #define MENOS_75_POR_CIENTO                 UQ_4_12(0.25)
 
-#define MULTIPLICA(modificador, bono) ((modificador) = uq4_12_multiply((modificador), (bono)))
+#define MULTIPLICA(modificador, bono) ((modificador) = UQ412Multiplica((modificador), (bono)))
 
 #endif // FPMATH_H_

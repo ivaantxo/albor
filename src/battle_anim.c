@@ -195,11 +195,8 @@ static const u8* const sBattleAnims_General[NUM_B_ANIMS_GENERAL] =
     [B_ANIM_MON_HIT]                = gBattleAnimGeneral_MonHit,
     [B_ANIM_ITEM_STEAL]             = gBattleAnimGeneral_ItemSteal,
     [B_ANIM_SNATCH_MOVE]            = gBattleAnimGeneral_SnatchMove,
-    [B_ANIM_FUTURE_SIGHT_HIT]       = gBattleAnimGeneral_FutureSightHit,
-    [B_ANIM_DOOM_DESIRE_HIT]        = gBattleAnimGeneral_DoomDesireHit,
     [B_ANIM_FOCUS_PUNCH_SETUP]      = gBattleAnimGeneral_FocusPunchSetUp,
     [B_ANIM_INGRAIN_HEAL]           = gBattleAnimGeneral_IngrainHeal,
-    [B_ANIM_WISH_HEAL]              = gBattleAnimGeneral_WishHeal,
     [B_ANIM_FORM_CHANGE]            = gBattleAnimGeneral_FormChange,
     [B_ANIM_SLIDE_OFFSCREEN]        = gBattleAnimGeneral_SlideOffScreen,
     [B_ANIM_RESTORE_BG]             = gBattleAnimGeneral_RestoreBg,
@@ -283,9 +280,6 @@ void LaunchBattleAnimation(u32 animType, u32 animId)
         case B_ANIM_LEECH_SEED_DRAIN:
         case B_ANIM_MON_HIT:
         case B_ANIM_SNATCH_MOVE:
-        case B_ANIM_FUTURE_SIGHT_HIT:
-        case B_ANIM_DOOM_DESIRE_HIT:
-        case B_ANIM_WISH_HEAL:
             sAnimHideHpBoxes = TRUE;
             break;
         default:

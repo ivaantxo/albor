@@ -1015,32 +1015,12 @@ u8 DoFieldEndTurnEffects(void)
                 gCombate->turnSideTracker = 0;
             }
             break;
-        case ENDTURN_WISH:
-            while (gCombate->turnSideTracker < gBattlersCount)
-            {
-                u32 battler = gBattlerByTurnOrder[gCombate->turnSideTracker];
-                if (gWishFutureKnock.wishCounter[battler] != 0 && --gWishFutureKnock.wishCounter[battler] == 0 && IsBattlerAlive(battler))
-                {
-                    gBattlerTarget = battler;
-                    BattleScriptExecute(BattleScript_WishComesTrue);
-                    effect++;
-                }
-                gCombate->turnSideTracker++;
-                if (effect != 0)
-                    break;
-            }
-            if (effect == 0)
-            {
-                gCombate->efectoFinTurno.campo++;
-                gCombate->turnSideTracker = 0;
-            }
-            break;
         case ENDTURN_RAIN:
             if (gBattleWeather & B_WEATHER_RAIN)
             {
                 if (!(gBattleWeather & B_WEATHER_RAIN_PERMANENT))
                 {
-                    if (--gWishFutureKnock.weatherDuration == 0)
+                    if (--gCombate->clima.turnos == 0)
                     {
                         gBattleWeather &= ~B_WEATHER_RAIN_TEMPORARY;
                         gMensajeBatalla = B_MSG_RAIN_STOPPED;
@@ -1061,7 +1041,7 @@ u8 DoFieldEndTurnEffects(void)
         case ENDTURN_SANDSTORM:
             if (gBattleWeather & B_WEATHER_SANDSTORM)
             {
-                if (!(gBattleWeather & B_WEATHER_SANDSTORM_PERMANENT) && --gWishFutureKnock.weatherDuration == 0)
+                if (!(gBattleWeather & B_WEATHER_SANDSTORM_PERMANENT) && --gCombate->clima.turnos == 0)
                 {
                     gBattleWeather &= ~B_WEATHER_SANDSTORM_TEMPORARY;
                     gBattlescriptCurrInstr = BattleScript_SandStormHailSnowEnds;
@@ -1081,11 +1061,9 @@ u8 DoFieldEndTurnEffects(void)
         case ENDTURN_SUN:
             if (gBattleWeather & B_WEATHER_SUN)
             {
-                if (!(gBattleWeather & B_WEATHER_SUN_PERMANENT) && --gWishFutureKnock.weatherDuration == 0)
+                if (!(gBattleWeather & B_WEATHER_SUN_PERMANENT) && --gCombate->clima.turnos == 0)
                 {
                     gBattleWeather &= ~B_WEATHER_SUN_TEMPORARY;
-                    for (i = 0; i < gBattlersCount; i++)
-                        gDisableStructs[i].weatherAbilityDone = FALSE;
                     gBattlescriptCurrInstr = BattleScript_SunlightFaded;
                 }
                 else
@@ -1101,7 +1079,7 @@ u8 DoFieldEndTurnEffects(void)
         case ENDTURN_SNOW:
             if (gBattleWeather & B_WEATHER_SNOW)
             {
-                if (!(gBattleWeather & B_WEATHER_SNOW_PERMANENT) && --gWishFutureKnock.weatherDuration == 0)
+                if (!(gBattleWeather & B_WEATHER_SNOW_PERMANENT) && --gCombate->clima.turnos == 0)
                 {
                     gBattleWeather &= ~B_WEATHER_SNOW_TEMPORARY;
                     gBattlescriptCurrInstr = BattleScript_SandStormHailSnowEnds;
@@ -1117,26 +1095,6 @@ u8 DoFieldEndTurnEffects(void)
                 effect++;
             }
             gCombate->efectoFinTurno.campo++;
-            break;
-        case ENDTURN_DAMAGE_NON_TYPES:
-            while (gCombate->turnSideTracker < 2)
-            {
-                side = gCombate->turnSideTracker;
-                if (gSideStatuses[side] & SIDE_STATUS_DAMAGE_NON_TYPES && --gSideTimers[side].damageNonTypesTimer == 0)
-                {
-                    // There is no in-game message when this side status ends.
-                    gSideStatuses[side] &= ~SIDE_STATUS_DAMAGE_NON_TYPES;
-                    effect++;
-                }
-                gCombate->turnSideTracker++;
-                if (effect != 0)
-                    break;
-            }
-            if (!effect)
-            {
-                gCombate->efectoFinTurno.campo++;
-                gCombate->turnSideTracker = 0;
-            }
             break;
         case ENDTURN_TRICK_ROOM:
             if (gFieldStatuses & STATUS_FIELD_TRICK_ROOM && gFieldTimers.trickRoomTimer > 0 && --gFieldTimers.trickRoomTimer == 0)
@@ -1223,7 +1181,7 @@ u8 DoBattlerEndTurnEffects(void)
         {
         case ENDTURN_WEATHER_DAMAGE:
             ability = HabilidadCombatiente(battler);
-            if (!IsBattlerAlive(battler) || !WEATHER_HAS_EFFECT || ability == ABILITY_MAGIC_GUARD)
+            if (!IsBattlerAlive(battler) || !ClimaTieneEfecto() || ability == ABILITY_MAGIC_GUARD)
             {
                 gCombate->efectoFinTurno.individual++;
                 break;
@@ -1700,60 +1658,27 @@ bool32 HandleWishPerishSongOnTurnEnd(void)
 {
     u32 battler;
 
-    switch (gCombate->wishPerishSongState)
+    switch (gCombate->perishSongState)
     {
     case 0:
-        while (gCombate->wishPerishSongBattlerId < gBattlersCount)
+        while (gCombate->perishSongBattlerId < gBattlersCount)
         {
-            battler = gCombate->wishPerishSongBattlerId;
-
-            gCombate->wishPerishSongBattlerId++;
-
-            if (gWishFutureKnock.futureSightCounter[battler] != 0 && --gWishFutureKnock.futureSightCounter[battler] == 0 && !(gAbsentBattlerFlags & (1u << battler)))
-            {
-                struct Pokemon *party;
-
-                if (gWishFutureKnock.futureSightCounter[battler] == 0 && gWishFutureKnock.futureSightCounter[ALIADO(battler)] == 0)
-                {
-                    gSideStatuses[GetBattlerSide(battler)] &= ~SIDE_STATUS_FUTUREATTACK;
-                }
-
-                if (!IsBattlerAlive(battler))
-                    continue;
-
-                if (gWishFutureKnock.futureSightMove[battler] == MOVE_FUTURE_SIGHT)
-                    gMensajeBatalla = B_MSG_FUTURE_SIGHT;
-                else
-                    gMensajeBatalla = B_MSG_DOOM_DESIRE;
-
-                PREPARE_MOVE_BUFFER(gBattleTextBuff1, gWishFutureKnock.futureSightMove[battler]);
-
-                gBattlerTarget = battler;
-                gBattlerAttacker = gWishFutureKnock.futureSightBattlerIndex[battler];
-                gCurrentMove = gWishFutureKnock.futureSightMove[battler];
-
-                party = GetSideParty(GetBattlerSide(gBattlerAttacker));
-                if (&party[gWishFutureKnock.futureSightPartyIndex[gBattlerTarget]] == &party[gBattlerPartyIndexes[gBattlerAttacker]])
-                    IntentaActivarGema(gBattlerAttacker, gCurrentMove);
-
-                BattleScriptExecute(BattleScript_MonTookFutureAttack);
-
-                return TRUE;
-            }
+            battler = gCombate->perishSongBattlerId;
+            gCombate->perishSongBattlerId++;
         }
-        gCombate->wishPerishSongState = 1;
-        gCombate->wishPerishSongBattlerId = 0;
+        gCombate->perishSongState = 1;
+        gCombate->perishSongBattlerId = 0;
         // fall through
     case 1:
-        while (gCombate->wishPerishSongBattlerId < gBattlersCount)
+        while (gCombate->perishSongBattlerId < gBattlersCount)
         {
-            battler = gBattlerAttacker = gBattlerByTurnOrder[gCombate->wishPerishSongBattlerId];
+            battler = gBattlerAttacker = gBattlerByTurnOrder[gCombate->perishSongBattlerId];
             if (gAbsentBattlerFlags & (1u << battler))
             {
-                gCombate->wishPerishSongBattlerId++;
+                gCombate->perishSongBattlerId++;
                 continue;
             }
-            gCombate->wishPerishSongBattlerId++;
+            gCombate->perishSongBattlerId++;
             if (gStatuses3[battler] & STATUS3_PERISH_SONG)
             {
                 PREPARE_BYTE_NUMBER_BUFFER(gBattleTextBuff1, 1, gDisableStructs[battler].perishSongTimer);
@@ -1772,8 +1697,8 @@ bool32 HandleWishPerishSongOnTurnEnd(void)
                 return TRUE;
             }
         }
-        gCombate->wishPerishSongState = 2;
-        gCombate->wishPerishSongBattlerId = 0;
+        gCombate->perishSongState = 2;
+        gCombate->perishSongBattlerId = 0;
         // fall through
     case 2:
         break;
@@ -2210,82 +2135,35 @@ bool32 HasNoMonsToSwitch(u32 battler, u8 partyIdBattlerOn1, u8 partyIdBattlerOn2
     return (i == PARTY_SIZE);
 }
 
-static const u16 sWeatherFlagsInfo[][3] =
-    {
-        [ENUM_WEATHER_RAIN]         = {B_WEATHER_RAIN_TEMPORARY,        B_WEATHER_RAIN_PERMANENT,       HOLD_EFFECT_DAMP_ROCK},
-        [ENUM_WEATHER_SUN]          = {B_WEATHER_SUN_TEMPORARY,         B_WEATHER_SUN_PERMANENT,        HOLD_EFFECT_HEAT_ROCK},
-        [ENUM_WEATHER_SANDSTORM]    = {B_WEATHER_SANDSTORM_TEMPORARY,   B_WEATHER_SANDSTORM_PERMANENT,  HOLD_EFFECT_SMOOTH_ROCK},
-        [ENUM_WEATHER_SNOW]         = {B_WEATHER_SNOW_TEMPORARY,        B_WEATHER_SNOW_PERMANENT,       HOLD_EFFECT_ICY_ROCK},
-};
-
-bool32 TryChangeBattleWeather(u32 battler, u32 weatherEnumId, bool32 viaAbility)
+static const u32 sRocasClimaticas[NUMERO_CLIMAS_COMBATE] =
 {
-    if (B_ABILITY_WEATHER < GEN_6 && viaAbility && !(gBattleWeather & sWeatherFlagsInfo[weatherEnumId][1]))
-    {
-        gBattleWeather = (sWeatherFlagsInfo[weatherEnumId][0] | sWeatherFlagsInfo[weatherEnumId][1]);
-        return TRUE;
-    }
-    else if (!(gBattleWeather & (sWeatherFlagsInfo[weatherEnumId][0] | sWeatherFlagsInfo[weatherEnumId][1])))
-    {
-        gBattleWeather = (sWeatherFlagsInfo[weatherEnumId][0]);
-        if (GetBattlerHoldEffect(battler, TRUE) == sWeatherFlagsInfo[weatherEnumId][2])
-            gWishFutureKnock.weatherDuration = 8;
-        else
-            gWishFutureKnock.weatherDuration = 5;
-        return TRUE;
-    }
-    return FALSE;
+    [HOLD_EFFECT_HEAT_ROCK]     = CLIMA_COMBATE_SOL_MOVIMIENTO,
+    [HOLD_EFFECT_DAMP_ROCK]     = CLIMA_COMBATE_LLUVIA_MOVIMIENTO,
+    [HOLD_EFFECT_SMOOTH_ROCK]   = CLIMA_COMBATE_ARENA_MOVIMIENTO,
+    [HOLD_EFFECT_ICY_ROCK]      = CLIMA_COMBATE_NIEVE_MOVIMIENTO,
 }
 
-static void ForewarnChooseMove(u32 battler)
+bool32 IntentaCambiarClimaCombate(u32 combatiente, enum ClimasCombate nuevoClima, bool32 porHabilidad)
 {
-    struct Forewarn
-    {
-        u8 battler;
-        u8 power;
-        u16 moveId;
-    };
-    u32 i, j, bestId, count;
-    struct Forewarn *data = Alloc(sizeof(struct Forewarn) * NUMERO_COMBATIENTES * MAX_MON_MOVES);
+    if (porHabilidad && EsClimaMovimiento(gCombate->clima.modo))
+        return FALSE;
 
-    // Put all moves
-    for (count = 0, i = 0; i < NUMERO_COMBATIENTES; i++)
+    if (porHabilidad && GetClimaBase(gCombate->clima.modo) == GetClimaBase(nuevoClima))
+        return FALSE;
+
+    gCombate->clima.modo = nuevoClima;
+
+    if (!porHabilidad)
     {
-        if (IsBattlerAlive(i) && GetBattlerSide(i) != GetBattlerSide(battler))
-        {
-            for (j = 0; j < MAX_MON_MOVES; j++)
-            {
-                if (gBattleMons[i].moves[j] == MOVE_NONE)
-                    continue;
-                data[count].moveId = gBattleMons[i].moves[j];
-                data[count].battler = i;
-                switch (gMovimientos[data[count].moveId].effect)
-                {
-                default:
-                    if (gMovimientos[data[count].moveId].power == 1)
-                        data[count].power = 80;
-                    else
-                        data[count].power = gMovimientos[data[count].moveId].power;
-                    break;
-                }
-                count++;
-            }
-        }
+        u32 efectoObjeto = GetBattlerHoldEffect(combatiente, TRUE);
+        gCombate->clima.turnos = (efectoObjeto == sRocasClimaticas[nuevoClima]) ? (TURNOS_CLIMA * 2) : TURNOS_CLIMA;
+    }
+    else
+    {
+        gCombate->clima.turnos = 0;
     }
 
-    for (bestId = 0, i = 1; i < count; i++)
-    {
-        if (data[i].power > data[bestId].power)
-            bestId = i;
-        else if (data[i].power == data[bestId].power && Random() & 1)
-            bestId = i;
-    }
-
-    gBattlerTarget = data[bestId].battler;
-    PREPARE_MOVE_BUFFER(gBattleTextBuff1, data[bestId].moveId)
-    RecordKnownMove(gBattlerTarget, data[bestId].moveId);
-
-    Free(data);
+    return TRUE;
 }
 
 static inline u8 GetSideFaintCounter(u32 side)
@@ -2639,25 +2517,6 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 effect++;
             }
             break;
-        case ABILITY_FRISK:
-            if (!gSpecialStatuses[battler].switchInAbilityDone)
-            {
-                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
-                gBattleScripting.battler = battler;
-                BattleScriptPushCursorAndCallback(BattleScript_FriskActivates); // Try activate
-                effect++;
-            }
-            return effect; // Note: It returns effect as to not record the ability if Frisk does not activate.
-        case ABILITY_FOREWARN:
-            if (!gSpecialStatuses[battler].switchInAbilityDone)
-            {
-                ForewarnChooseMove(battler);
-                gMensajeBatalla = B_MSG_SWITCHIN_FOREWARN;
-                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
-                BattleScriptPushCursorAndCallback(BattleScript_SwitchInAbilityMsg);
-                effect++;
-            }
-            break;
         case ABILITY_DOWNLOAD:
             if (!gSpecialStatuses[battler].switchInAbilityDone)
             {
@@ -2669,10 +2528,10 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 {
                     if (IsBattlerAlive(opposingBattler))
                     {
-                        opposingDef += uq4_12_multiply_by_int(gMultiplicadorEstadistica[gBattleMons[opposingBattler].statStages[ESTADISTICA_DEFENSA]],
+                        opposingDef += UQ412MultiplicaPorEntero(gMultiplicadorEstadistica[gBattleMons[opposingBattler].statStages[ESTADISTICA_DEFENSA]],
                                                               gBattleMons[opposingBattler].defense);
 
-                        opposingSpDef += uq4_12_multiply_by_int(gMultiplicadorEstadistica[gBattleMons[opposingBattler].statStages[ESTADISTICA_DEFENSA_ESPECIAL]],
+                        opposingSpDef += UQ412MultiplicaPorEntero(gMultiplicadorEstadistica[gBattleMons[opposingBattler].statStages[ESTADISTICA_DEFENSA_ESPECIAL]],
                                                                 gBattleMons[opposingBattler].spDefense);
                     }
                 }
@@ -2707,10 +2566,10 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 {
                     if (IsBattlerAlive(opposingBattler))
                     {
-                        opposingAtk += uq4_12_multiply_by_int(gMultiplicadorEstadistica[gBattleMons[opposingBattler].statStages[ESTADISTICA_ATAQUE]],
+                        opposingAtk += UQ412MultiplicaPorEntero(gMultiplicadorEstadistica[gBattleMons[opposingBattler].statStages[ESTADISTICA_ATAQUE]],
                                                               gBattleMons[opposingBattler].attack);
 
-                        opposingSpAtk += uq4_12_multiply_by_int(gMultiplicadorEstadistica[gBattleMons[opposingBattler].statStages[ESTADISTICA_ATAQUE_ESPECIAL]],
+                        opposingSpAtk += UQ412MultiplicaPorEntero(gMultiplicadorEstadistica[gBattleMons[opposingBattler].statStages[ESTADISTICA_ATAQUE_ESPECIAL]],
                                                                 gBattleMons[opposingBattler].spAttack);
                     }
                 }
@@ -2841,7 +2700,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             switch (gLastUsedAbility)
             {
             case ABILITY_HARVEST:
-                if ((IsBattlerWeatherAffected(battler, B_WEATHER_SUN) || PorcentajeAleatorio(50)) && gBattleMons[battler].item == ITEM_NONE && gCombate->changedItems[battler] == ITEM_NONE // Will not inherit an item
+                if ((EsClimaCombateSol(climaCombate) || PorcentajeAleatorio(50)) && gBattleMons[battler].item == ITEM_NONE && gCombate->changedItems[battler] == ITEM_NONE // Will not inherit an item
                     && ItemId_GetPocket(GetUsedHeldItem(battler)) == POCKET_BERRIES)
                 {
                     gLastUsedItem = GetUsedHeldItem(battler);
@@ -2849,9 +2708,8 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                     effect++;
                 }
                 break;
-            // Dry Skin works similarly to Rain Dish in Rain
             case ABILITY_RAIN_DISH:
-                if (IsBattlerWeatherAffected(battler, B_WEATHER_RAIN) && !IsBattlerAtMaxHp(battler))
+                if (EsClimaCombateLluvia(climaCombate) && !IsBattlerAtMaxHp(battler))
                 {
                     BattleScriptPushCursorAndCallback(BattleScript_RainDishActivates);
                     gBattleMoveDamage = CuantosPSMaximos(battler) / 8;
@@ -2862,7 +2720,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 }
                 break;
             case ABILITY_FOTOSINTESIS:
-                if (IsBattlerWeatherAffected(battler, B_WEATHER_SUN) && !IsBattlerAtMaxHp(battler))
+                if (EsClimaCombateSol(climaCombate) && !IsBattlerAtMaxHp(battler))
                 {
                     BattleScriptPushCursorAndCallback(BattleScript_RainDishActivates);
                     gBattleMoveDamage = CuantosPSMaximos(battler) / 8;
@@ -2873,7 +2731,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 }
                 break;
             case ABILITY_HYDRATION:
-                if (IsBattlerWeatherAffected(battler, B_WEATHER_RAIN) && gBattleMons[battler].status1 & STATUS1_ANY)
+                if (EsClimaCombateLluvia(climaCombate) && gBattleMons[battler].status1 & STATUS1_ANY)
                 {
                     goto ABILITY_HEAL_MON_STATUS;
                 }
@@ -3611,14 +3469,13 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
         switch (gLastUsedAbility)
         {
         case ABILITY_FORECAST:
-            if ((IsBattlerWeatherAffected(battler, gBattleWeather) || gBattleWeather == B_WEATHER_NONE || !WEATHER_HAS_EFFECT) // Air Lock active
-                && TryBattleFormChange(battler, FORM_CHANGE_BATTLE_WEATHER))
-            {
-                gBattleScripting.battler = battler;
-                BattleScriptPushCursorAndCallback(BattleScript_BattlerFormChangeWithStringEnd3);
-                effect++;
-            }
-            break;
+            if (TryBattleFormChange(battler, FORM_CHANGE_BATTLE_WEATHER))
+                {
+                    gBattleScripting.battler = battler;
+                    BattleScriptPushCursorAndCallback(BattleScript_BattlerFormChangeWithStringEnd3);
+                    effect++;
+                }
+                break;
         }
         break;
     }
@@ -5232,7 +5089,7 @@ u32 CalcFuryCutterBasePower(u32 basePower, u32 furyCutterCounter)
     return basePower;
 }
 
-static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData, u32 abilityDef, u32 weather)
+static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData, u32 abilityDef, enum ClimasCombate climaCombate)
 {
     u32 battlerAtk = damageCalcData->battlerAtk;
     u32 battlerDef = damageCalcData->battlerDef;
@@ -5362,10 +5219,10 @@ static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData
     return basePower;
 }
 
-static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *damageCalcData, u32 atkAbility, u32 defAbility, u32 holdEffectAtk, u32 weather)
+static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *damageCalcData, u32 atkAbility, u32 defAbility, u32 holdEffectAtk, enum ClimasCombate climaCombate)
 {
     u32 i;
-    u32 basePower = CalcMoveBasePower(damageCalcData, defAbility, weather);
+    u32 basePower = CalcMoveBasePower(damageCalcData, defAbility, climaCombate);
     u32 battlerAtk = damageCalcData->battlerAtk;
     u32 battlerDef = damageCalcData->battlerDef;
     u32 move = damageCalcData->move;
@@ -5429,7 +5286,7 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
             MULTIPLICA(modifier, MAS_25_POR_CIENTO);
         break;
     case ABILITY_SAND_FORCE:
-        if ((moveType == TIPO_ACERO || moveType == TIPO_ROCA || moveType == TIPO_TIERRA) && weather & B_WEATHER_SANDSTORM)
+        if ((moveType == TIPO_ACERO || moveType == TIPO_ROCA || moveType == TIPO_TIERRA) && EsClimaCombateArena(climaCombate))
             MULTIPLICA(modifier, MAS_25_POR_CIENTO);
         break;
     case ABILITY_RIVALRY:
@@ -5438,7 +5295,7 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
         break;
     case ABILITY_ANALYTIC:
     case ABILITY_AGRESIVIDAD:
-        if (GetBattlerTurnOrderNum(battlerAtk) == gBattlersCount - 1 && move != MOVE_FUTURE_SIGHT && move != MOVE_DOOM_DESIRE)
+        if (GetBattlerTurnOrderNum(battlerAtk) == gBattlersCount - 1)
             MULTIPLICA(modifier, MAS_50_POR_CIENTO);
         break;
     case ABILITY_TOUGH_CLAWS:
@@ -5633,10 +5490,10 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
         break;
     }
 
-    return uq4_12_multiply_by_int(modifier, basePower);
+    return UQ412MultiplicaPorEntero(modifier, basePower);
 }
 
-static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u32 atkAbility, u32 defAbility, u32 holdEffectAtk, u32 weather)
+static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u32 atkAbility, u32 defAbility, u32 holdEffectAtk, enum ClimasCombate climaCombate)
 {
     u32 atkStage, atkStat, atkBaseSpeciesId;
     uq4_12_t modifier = NEUTRO;
@@ -5666,7 +5523,7 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
     switch (atkAbility)
     {
     case ABILITY_PODER_SOLAR:
-        if (IsBattlerWeatherAffected(battlerAtk, B_WEATHER_SUN))
+        if (EsClimaCombateSol(climaCombate))
             MULTIPLICA(modifier, MAS_25_POR_CIENTO);
         break;
     case ABILITY_FLASH_FIRE:
@@ -5778,7 +5635,7 @@ static inline u32 CalcAttackStat(struct DamageCalculationData *damageCalcData, u
         break;
     }
 
-    return uq4_12_multiply_by_int(modifier, atkStat);
+    return UQ412MultiplicaPorEntero(modifier, atkStat);
 }
 
 static bool32 CanEvolve(u32 species)
@@ -5797,7 +5654,7 @@ static bool32 CanEvolve(u32 species)
     return FALSE;
 }
 
-static inline u32 CalcDefenseStat(struct DamageCalculationData *damageCalcData, u32 atkAbility, u32 defAbility, u32 holdEffectDef, u32 weather)
+static inline u32 CalcDefenseStat(struct DamageCalculationData *damageCalcData, u32 atkAbility, u32 defAbility, u32 holdEffectDef, enum ClimasCombate climaCombate)
 {
     bool32 usesDefStat;
     u32 defStage, defStat, def, spDef;
@@ -5873,19 +5730,19 @@ static inline u32 CalcDefenseStat(struct DamageCalculationData *damageCalcData, 
         break;
     }
 
-    if (EsTipo(battlerDef, TIPO_ROCA) && IsBattlerWeatherAffected(battlerDef, B_WEATHER_SANDSTORM) && !usesDefStat)
+    if (EsTipo(battlerDef, TIPO_ROCA) &&  && EsClimaCombateArena(climaCombate) && !usesDefStat)
         MULTIPLICA(modifier, MAS_50_POR_CIENTO);
 
-    if (EsTipo(battlerDef, TIPO_HIELO) && IsBattlerWeatherAffected(battlerDef, B_WEATHER_SNOW) && usesDefStat)
+    if (EsTipo(battlerDef, TIPO_HIELO) &&  && EsClimaCombateNieve(climaCombate) && usesDefStat)
         MULTIPLICA(modifier, MAS_50_POR_CIENTO);
 
-    if (EsTipo(battlerDef, TIPO_HIELO) && IsBattlerWeatherAffected(battlerDef, B_WEATHER_RAIN) && usesDefStat && defAbility == ABILITY_HUMEDAD_RELATIVA)
+    if (EsTipo(battlerDef, TIPO_HIELO) && EsClimaCombateLluvia(climaCombate) && usesDefStat && defAbility == ABILITY_HUMEDAD_RELATIVA)
         MULTIPLICA(modifier, MAS_50_POR_CIENTO);
 
     if (gBattleMons[battlerDef].status1 & STATUS1_BURN && usesDefStat)
         MULTIPLICA(modifier, MENOS_25_POR_CIENTO);
 
-    return uq4_12_multiply_by_int(modifier, defStat);
+    return UQ412MultiplicaPorEntero(modifier, defStat);
 }
 
 // base damage formula before adding any modifiers
@@ -5924,30 +5781,27 @@ static inline uq4_12_t GetSameTypeAttackBonusModifier(struct DamageCalculationDa
         return MOVIMIENTO_NEUTRO;
 }
 
-// Utility Umbrella holders take normal damage from what would be rain- and sun-weakened attacks.
-static uq4_12_t GetWeatherDamageModifier(struct DamageCalculationData *damageCalcData, u32 holdEffectAtk, u32 holdEffectDef, u32 weather)
+static uq4_12_t ObtenModificadorDanioClima(struct DamageCalculationData *datosMovimiento, enum ClimasCombate climaCombate)
 {
-    u32 move = damageCalcData->move;
-    u32 moveType = damageCalcData->moveType;
+    u32 movimiento = datosMovimiento->move;
+    u32 tipoMovimiento = datosMovimiento->moveType;
 
-    if (weather == B_WEATHER_NONE)
-        return MOVIMIENTO_NEUTRO;
-    if (gMovimientos[move].effect == EFFECT_HYDRO_STEAM && (weather & B_WEATHER_SUN) && holdEffectAtk != HOLD_EFFECT_UTILITY_UMBRELLA)
-        return MAS_50_POR_CIENTO;
-    if (holdEffectDef == HOLD_EFFECT_UTILITY_UMBRELLA)
-        return MOVIMIENTO_NEUTRO;
-
-    if (weather & B_WEATHER_RAIN)
+    if (EsClimaCombateLluvia(climaCombate))
     {
-        if (moveType != TIPO_FUEGO && moveType != TIPO_AGUA)
-            return MOVIMIENTO_NEUTRO;
-        return (moveType == TIPO_FUEGO) ? MOVIMIENTO_POCO_EFECTIVO : MAS_25_POR_CIENTO;
+        if (tipoMovimiento == TIPO_FUEGO)
+            return MOVIMIENTO_POCO_EFECTIVO;
+        if (tipoMovimiento == TIPO_AGUA)
+            return MAS_25_POR_CIENTO;
     }
-    if (weather & B_WEATHER_SUN)
+    if (EsClimaCombateSol(climaCombate))
     {
-        if (moveType != TIPO_FUEGO && moveType != TIPO_AGUA)
-            return MOVIMIENTO_NEUTRO;
-        return (moveType == TIPO_AGUA) ? MOVIMIENTO_POCO_EFECTIVO : MAS_25_POR_CIENTO;
+        if (tipoMovimiento == TIPO_AGUA)
+            if (gMovimientos[movimiento].effect == EFFECT_HIDROVAPOR)
+                return MAS_25_POR_CIENTO;
+            else
+                return MOVIMIENTO_POCO_EFECTIVO;
+        if (tipoMovimiento == TIPO_FUEGO)
+            return MAS_25_POR_CIENTO;
     }
     return MOVIMIENTO_NEUTRO;
 }
@@ -6099,7 +5953,7 @@ static inline uq4_12_t GetDefenderItemsModifier(struct DamageCalculationData *da
 #define DAMAGE_MULTIPLY_MODIFIER(modifier)                        \
     do                                                            \
     {                                                             \
-        finalModifier = uq4_12_multiply(modifier, finalModifier); \
+        finalModifier = UQ412Multiplica(modifier, finalModifier); \
     } while (0)
 
 // Calculates the "other" modifier which accounts for held items, abilities,
@@ -6150,10 +6004,10 @@ static inline uq4_12_t GetOtherModifiers(struct DamageCalculationData *damageCal
 #define DAMAGE_APPLY_MODIFIER(modifier)              \
     do                                               \
     {                                                \
-        dmg = uq4_12_multiply_by_int(modifier, dmg); \
+        dmg = UQ412MultiplicaPorEntero(modifier, dmg); \
     } while (0)
 
-static inline s32 DoMoveDamageCalcVars(struct DamageCalculationData *damageCalcData, u32 fixedBasePower, uq4_12_t typeEffectivenessModifier, u32 weather, u32 holdEffectAtk, u32 holdEffectDef, u32 abilityAtk, u32 abilityDef)
+static inline s32 DoMoveDamageCalcVars(struct DamageCalculationData *damageCalcData, u32 fixedBasePower, uq4_12_t typeEffectivenessModifier, enum ClimasCombate climaCombate, u32 holdEffectAtk, u32 holdEffectDef, u32 abilityAtk, u32 abilityDef)
 {
     s32 dmg;
     u32 userFinalAttack;
@@ -6164,19 +6018,19 @@ static inline s32 DoMoveDamageCalcVars(struct DamageCalculationData *damageCalcD
     if (gMovimientos[gCurrentMove].effect == EFECTO_ATAQUE_EQUIPO)
         userFinalAttack = gCombate->estadisticaAtaqueEquipo;
     else
-        userFinalAttack = CalcAttackStat(damageCalcData, abilityAtk, abilityDef, holdEffectAtk, weather);
+        userFinalAttack = CalcAttackStat(damageCalcData, abilityAtk, abilityDef, holdEffectAtk, climaCombate);
 
     if (fixedBasePower)
         gBattleMovePower = fixedBasePower;
     else
-        gBattleMovePower = CalcMoveBasePowerAfterModifiers(damageCalcData, abilityAtk, abilityDef, holdEffectAtk, weather);
+        gBattleMovePower = CalcMoveBasePowerAfterModifiers(damageCalcData, abilityAtk, abilityDef, holdEffectAtk, climaCombate);
 
-    targetFinalDefense = CalcDefenseStat(damageCalcData, abilityAtk, abilityDef, holdEffectDef, weather);
+    targetFinalDefense = CalcDefenseStat(damageCalcData, abilityAtk, abilityDef, holdEffectDef, climaCombate);
 
     dmg = CalculateBaseDamage(gBattleMovePower, userFinalAttack, gBattleMons[battlerAtk].level, targetFinalDefense);
 
     DAMAGE_APPLY_MODIFIER(GetTargetDamageModifier(damageCalcData));
-    DAMAGE_APPLY_MODIFIER(GetWeatherDamageModifier(damageCalcData, holdEffectAtk, holdEffectDef, weather));
+    DAMAGE_APPLY_MODIFIER(ObtenModificadorDanioClima(damageCalcData, climaCombate));
     DAMAGE_APPLY_MODIFIER(GetCriticalModifier(damageCalcData->isCrit));
     DAMAGE_APPLY_MODIFIER(GetSameTypeAttackBonusModifier(damageCalcData, abilityAtk));
     DAMAGE_APPLY_MODIFIER(typeEffectivenessModifier);
@@ -6189,7 +6043,7 @@ static inline s32 DoMoveDamageCalcVars(struct DamageCalculationData *damageCalcD
     return dmg;
 }
 
-static inline s32 DoMoveDamageCalc(struct DamageCalculationData *damageCalcData, u32 fixedBasePower, uq4_12_t typeEffectivenessModifier, u32 weather)
+static inline s32 DoMoveDamageCalc(struct DamageCalculationData *damageCalcData, u32 fixedBasePower, uq4_12_t typeEffectivenessModifier, enum ClimasCombate climaCombate)
 {
     u32 holdEffectAtk, holdEffectDef, abilityAtk, abilityDef;
 
@@ -6201,81 +6055,17 @@ static inline s32 DoMoveDamageCalc(struct DamageCalculationData *damageCalcData,
     abilityAtk = HabilidadCombatiente(damageCalcData->battlerAtk);
     abilityDef = HabilidadCombatiente(damageCalcData->battlerDef);
 
-    return DoMoveDamageCalcVars(damageCalcData, fixedBasePower, typeEffectivenessModifier, weather, holdEffectAtk, holdEffectDef, abilityAtk, abilityDef);
-}
-
-static inline s32 DoFutureSightAttackDamageCalcVars(struct DamageCalculationData *damageCalcData, uq4_12_t typeEffectivenessModifier,
-                                                    u32 weather, u32 holdEffectDef, u32 abilityDef)
-{
-    s32 dmg;
-    u32 userFinalAttack;
-    u32 targetFinalDefense;
-    u32 battlerAtk = damageCalcData->battlerAtk;
-    u32 battlerDef = damageCalcData->battlerDef;
-    u32 move = damageCalcData->move;
-    u32 moveType = damageCalcData->moveType;
-
-    struct Pokemon *party = GetSideParty(GetBattlerSide(battlerAtk));
-    struct Pokemon *partyMon = &party[gWishFutureKnock.futureSightPartyIndex[battlerDef]];
-    u32 partyMonLevel = GetMonData(partyMon, MON_DATA_LEVEL, NULL);
-    u32 partyMonSpecies = GetMonData(partyMon, MON_DATA_SPECIES, NULL);
-    gBattleMovePower = gMovimientos[move].power;
-
-    if (EsMovimientoFisico(move))
-        userFinalAttack = GetMonData(partyMon, MON_DATA_ATK, NULL);
-    else
-        userFinalAttack = GetMonData(partyMon, MON_DATA_SPATK, NULL);
-
-    targetFinalDefense = CalcDefenseStat(damageCalcData, ABILITY_NONE, abilityDef, holdEffectDef, weather);
-    dmg = CalculateBaseDamage(gBattleMovePower, userFinalAttack, partyMonLevel, targetFinalDefense);
-
-    DAMAGE_APPLY_MODIFIER(GetCriticalModifier(damageCalcData->isCrit));
-
-    // STAB
-    if (gSpeciesInfo[partyMonSpecies].types[TIPO_1] == moveType || gSpeciesInfo[partyMonSpecies].types[TIPO_2] == moveType)
-        DAMAGE_APPLY_MODIFIER(MAS_50_POR_CIENTO);
-    else
-        DAMAGE_APPLY_MODIFIER(MOVIMIENTO_NEUTRO);
-    DAMAGE_APPLY_MODIFIER(typeEffectivenessModifier);
-
-    if (dmg == 0)
-        dmg = 1;
-
-    gSpecialStatuses[battlerAtk].preventLifeOrbDamage = TRUE;
-
-    return dmg;
-}
-
-static inline s32 DoFutureSightAttackDamageCalc(struct DamageCalculationData *damageCalcData, uq4_12_t typeEffectivenessModifier, u32 weather)
-{
-    u32 holdEffectDef, abilityDef;
-
-    if (typeEffectivenessModifier == MOVIMIENTO_NO_EFECTIVO)
-        return 0;
-
-    holdEffectDef = GetBattlerHoldEffect(damageCalcData->battlerDef, TRUE);
-    abilityDef = HabilidadCombatiente(damageCalcData->battlerDef);
-
-    return DoFutureSightAttackDamageCalcVars(damageCalcData, typeEffectivenessModifier, weather, holdEffectDef, abilityDef);
+    return DoMoveDamageCalcVars(damageCalcData, fixedBasePower, typeEffectivenessModifier, climaCombate, holdEffectAtk, holdEffectDef, abilityAtk, abilityDef);
 }
 
 #undef DAMAGE_APPLY_MODIFIER
 
-static u32 GetWeather(void)
+enum ClimasCombate ObtenClimaCombate(void)
 {
-    if (gBattleWeather == B_WEATHER_NONE || !WEATHER_HAS_EFFECT)
-        return B_WEATHER_NONE;
+    if (gCombate->clima.modo == CLIMA_COMBATE_NINGUNO || !ClimaTieneEfecto())
+        return CLIMA_COMBATE_NINGUNO;
     else
-        return gBattleWeather;
-}
-
-static inline bool32 IsFutureSightAttackerInParty(struct DamageCalculationData *damageCalcData)
-{
-    if (gMovimientos[damageCalcData->move].effect != EFFECT_FUTURE_SIGHT)
-        return FALSE;
-
-    struct Pokemon *party = GetSideParty(GetBattlerSide(gBattlerAttacker));
-    return &party[gWishFutureKnock.futureSightPartyIndex[damageCalcData->battlerDef]] != &party[gBattlerPartyIndexes[damageCalcData->battlerAtk]];
+        return gCombate->clima.modo;
 }
 
 s32 CalculateMoveDamage(struct DamageCalculationData *damageCalcData, u32 fixedBasePower)
@@ -6287,17 +6077,14 @@ s32 CalculateMoveDamage(struct DamageCalculationData *damageCalcData, u32 fixedB
                                                                       HabilidadCombatiente(damageCalcData->battlerDef),
                                                                       damageCalcData->updateFlags);
 
-    if (IsFutureSightAttackerInParty(damageCalcData))
-        return DoFutureSightAttackDamageCalc(damageCalcData, typeEffectivenessMultiplier, GetWeather());
-
-    return DoMoveDamageCalc(damageCalcData, fixedBasePower, typeEffectivenessMultiplier, GetWeather());
+    return DoMoveDamageCalc(damageCalcData, fixedBasePower, typeEffectivenessMultiplier, ObtenClimaCombate());
 }
 
 // for AI so that typeEffectivenessModifier, weather, abilities and holdEffects are calculated only once
 s32 CalculateMoveDamageVars(struct DamageCalculationData *damageCalcData, u32 fixedBasePower, uq4_12_t typeEffectivenessModifier,
-                            u32 weather, u32 holdEffectAtk, u32 holdEffectDef, u32 abilityAtk, u32 abilityDef)
+                            enum ClimasCombate climaCombate, u32 holdEffectAtk, u32 holdEffectDef, u32 abilityAtk, u32 abilityDef)
 {
-    return DoMoveDamageCalcVars(damageCalcData, fixedBasePower, typeEffectivenessModifier, weather,
+    return DoMoveDamageCalcVars(damageCalcData, fixedBasePower, typeEffectivenessModifier, climaCombate,
                                 holdEffectAtk, holdEffectDef, abilityAtk, abilityDef);
 }
 
@@ -6351,7 +6138,7 @@ static inline void MulByTypeEffectiveness(uq4_12_t *modifier, u32 move, u32 move
     if (moveType == TIPO_TIERRA && defType == TIPO_VOLADOR && EstaCombatienteEnSuelo(battlerDef) && mod == MOVIMIENTO_NO_EFECTIVO)
         mod = MOVIMIENTO_NEUTRO;
 
-    *modifier = uq4_12_multiply(*modifier, mod);
+    *modifier = UQ412Multiplica(*modifier, mod);
 }
 
 static inline uq4_12_t CalcTypeEffectivenessMultiplierInternal(u32 move, u32 moveType, u32 battlerAtk, u32 battlerDef, bool32 recordAbilities, uq4_12_t modifier, u32 defAbility)
@@ -6435,9 +6222,9 @@ s32 DanioTrampa(u32 tipoTrampa, u32 combatiente)
     u32 tipo2 = gBattleMons[combatiente].types[TIPO_2];
     u32 PSMaximos = gBattleMons[combatiente].maxHP;
 
-    modificador = uq4_12_multiply(modificador, ModificadorTipo(tipoTrampa, tipo1));
+    modificador = UQ412Multiplica(modificador, ModificadorTipo(tipoTrampa, tipo1));
     if (tipo2 != tipo1)
-        modificador = uq4_12_multiply(modificador, ModificadorTipo(tipoTrampa, tipo2));
+        modificador = UQ412Multiplica(modificador, ModificadorTipo(tipoTrampa, tipo2));
 
     switch (modificador)
     {
@@ -6498,18 +6285,18 @@ u16 GetBattleFormChangeTargetSpecies(u32 battler, u16 method)
                 case FORM_CHANGE_BATTLE_WEATHER:
                     // Check if there is a required ability and if the battler's ability does not match it
                     // or is suppressed. If so, revert to the no weather form.
-                    if (formChanges[i].param2 && HabilidadCombatiente(battler) != formChanges[i].param2 && formChanges[i].param1 == B_WEATHER_NONE)
+                    if (formChanges[i].param2 && HabilidadCombatiente(battler) != formChanges[i].param2 && formChanges[i].param1 == CLIMA_COMBATE_NINGUNO)
                     {
                         targetSpecies = formChanges[i].targetSpecies;
                     }
                     // We need to revert the weather form if the field is under Air Lock, too.
-                    else if (!WEATHER_HAS_EFFECT && formChanges[i].param1 == B_WEATHER_NONE)
+                    else if (!ClimaTieneEfecto() && formChanges[i].param1 == CLIMA_COMBATE_NINGUNO)
                     {
                         targetSpecies = formChanges[i].targetSpecies;
                     }
                     // Otherwise, just check for a match between the weather and the form change table.
                     // Added a check for whether the weather is in effect to prevent end-of-turn soft locks with Cloud Nine / Air Lock
-                    else if (((gBattleWeather & formChanges[i].param1) && WEATHER_HAS_EFFECT) || (gBattleWeather == B_WEATHER_NONE && formChanges[i].param1 == B_WEATHER_NONE))
+                    else if (((gBattleWeather & formChanges[i].param1) && ClimaTieneEfecto()) || (gBattleWeather == CLIMA_COMBATE_NINGUNO && formChanges[i].param1 == CLIMA_COMBATE_NINGUNO))
                     {
                         targetSpecies = formChanges[i].targetSpecies;
                     }
@@ -6825,19 +6612,6 @@ u16 GetUsedHeldItem(u32 battler)
     return gCombate->usedHeldItems[gBattlerPartyIndexes[battler]][GetBattlerSide(battler)];
 }
 
-bool32 IsBattlerWeatherAffected(u32 battler, u32 weatherFlags)
-{
-    if (gBattleWeather & weatherFlags && WEATHER_HAS_EFFECT)
-    {
-        // given weather is active -> check if its sun, rain against utility umbrella ( since only 1 weather can be active at once)
-        if (gBattleWeather & (B_WEATHER_SUN | B_WEATHER_RAIN) && GetBattlerHoldEffect(battler, TRUE) == HOLD_EFFECT_UTILITY_UMBRELLA)
-            return FALSE; // utility umbrella blocks sun, rain effects
-
-        return TRUE;
-    }
-    return FALSE;
-}
-
 // Gets move target before redirection effects etc. are applied
 // Possible return values are defined in battle.h following MOVE_TARGET_SELECTED
 u32 GetBattlerMoveTargetType(u32 battler, u32 move)
@@ -6916,15 +6690,18 @@ bool32 AreBattlersOfSameGender(u32 battler1, u32 battler2)
 u32 CalculaProbabilidadEfectoSecundario(u32 habilidad, const struct AdditionalEffect *efectoSecundario)
 {
     u32 probabilidad = efectoSecundario->chance;
+    enum ClimasCombate climaCombate = ObtenClimaCombate();
 
     if (habilidad == ABILITY_SERENE_GRACE)
         probabilidad *= 2;
-    if (gBattleWeather & B_WEATHER_SNOW && efectoSecundario->moveEffect == EFECTO_MOVIMIENTO_CONGELACION)
+    if (EsClimaCombateNieve(climaCombate) && efectoSecundario->moveEffect == EFECTO_MOVIMIENTO_CONGELACION)
         probabilidad *= 2;
-    if (gBattleWeather & B_WEATHER_RAIN && efectoSecundario->moveEffect == EFECTO_MOVIMIENTO_CONGELACION && habilidad == ABILITY_HUMEDAD_RELATIVA)
+    if (sClimaCombateLluvia(climaCombate)  && efectoSecundario->moveEffect == EFECTO_MOVIMIENTO_CONGELACION && habilidad == ABILITY_HUMEDAD_RELATIVA)
         probabilidad *= 2;
-    if (gBattleWeather & B_WEATHER_SUN && efectoSecundario->moveEffect == MOVE_EFFECT_BURN)
+    if (sClimaCombateSol(climaCombate)  && efectoSecundario->moveEffect == MOVE_EFFECT_BURN)
         probabilidad *= 2;
+    if (sClimaCombateLluvia(climaCombate)  && efectoSecundario->moveEffect == MOVE_EFFECT_BURN) // Revisar y comprobar.
+        probabilidad == 0;
     return probabilidad;
 }
 

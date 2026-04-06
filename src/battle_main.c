@@ -169,8 +169,6 @@ EWRAM_DATA bool32 gMostrarMensajeBatalla = FALSE;
 EWRAM_DATA u8 gBattleOutcome = 0;
 EWRAM_DATA struct ProtectStruct gProtectStructs[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA struct SpecialStatus gSpecialStatuses[NUMERO_COMBATIENTES] = {0};
-EWRAM_DATA u16 gBattleWeather = 0;
-EWRAM_DATA struct WishFutureKnock gWishFutureKnock = {0};
 EWRAM_DATA u16 gIntroSlideFlags = 0;
 EWRAM_DATA u8 gSentPokesToOpponent[2] = {0};
 EWRAM_DATA struct BattleScripting gBattleScripting = {0};
@@ -1079,7 +1077,6 @@ static void BattleStartClearSetData(void)
     memset(&gFieldTimers, 0, sizeof(gFieldTimers));
     memset(&gSideStatuses, 0, sizeof(gSideStatuses));
     memset(&gSideTimers, 0, sizeof(gSideTimers));
-    memset(&gWishFutureKnock, 0, sizeof(gWishFutureKnock));
     ClearSetBScriptingStruct();
 
     for (u32 combatiente = JUGADOR_IZQUIERDA; combatiente < NUMERO_COMBATIENTES; combatiente++)
@@ -1522,7 +1519,7 @@ static void DoBattleIntro(void)
             }
             gCombate->eventsBeforeFirstTurnState = 0;
             gCombate->switchInBattlerCounter = 0;
-            gCombate->overworldWeatherDone = FALSE;
+            gCombate->clima.exteriorHecho = FALSE;
             AI_InitPartyStruct(); // Save mons party counts, and first 2/4 mons on the battlefield.
             gBattleMainFunc = TryDoEventsBeforeFirstTurn;
         }
@@ -1564,9 +1561,9 @@ static void TryDoEventsBeforeFirstTurn(void)
         gCombate->eventsBeforeFirstTurnState++;
         break;
     case FIRST_TURN_EVENTS_OVERWORLD_WEATHER:
-        if (!gCombate->overworldWeatherDone && AbilityBattleEffects(ABILITYEFFECT_SWITCH_IN_WEATHER, 0, 0, ABILITYEFFECT_SWITCH_IN_WEATHER, 0) != 0)
+        if (!gCombate->clima.exteriorHecho && AbilityBattleEffects(ABILITYEFFECT_SWITCH_IN_WEATHER, 0, 0, ABILITYEFFECT_SWITCH_IN_WEATHER, 0) != 0)
         {
-            gCombate->overworldWeatherDone = TRUE;
+            gCombate->clima.exteriorHecho = TRUE;
             return;
         }
         gCombate->eventsBeforeFirstTurnState++;
@@ -1620,8 +1617,8 @@ static void TryDoEventsBeforeFirstTurn(void)
 
         gCombate->efectoFinTurno.individual = ENDTURN_WEATHER_DAMAGE;
         gCombate->gCombate->efectoFinTurno.indiceCombatiente = JUGADOR_IZQUIERDA;
-        gCombate->wishPerishSongState = 0;
-        gCombate->wishPerishSongBattlerId = 0;
+        gCombate->perishSongState = 0;
+        gCombate->perishSongBattlerId = 0;
         gBattleScripting.moveendState = 0;
         gCombate->faintedActionsState = 0;
         gCombate->efectoFinTurno.campo = FIN_TURNO_ORDEN;
@@ -1653,8 +1650,8 @@ static void HandleEndTurn_ContinueBattle(void)
         }
         gCombate->efectoFinTurno.individual = ENDTURN_WEATHER_DAMAGE;
         gCombate->gCombate->efectoFinTurno.indiceCombatiente = JUGADOR_IZQUIERDA;
-        gCombate->wishPerishSongState = 0;
-        gCombate->wishPerishSongBattlerId = 0;
+        gCombate->perishSongState = 0;
+        gCombate->perishSongBattlerId = 0;
         gCombate->efectoFinTurno.campo = FIN_TURNO_ORDEN;
         gCombate->resultadoMovimiento = MOVIMIENTO_NEUTRO;
     }
@@ -2071,7 +2068,7 @@ u32 GetBattlerTotalSpeedStatArgs(u32 battler, u32 ability, u32 holdEffect)
     u32 velocidad = gBattleMons[battler].speed;
     uq4_12_t modificador = NEUTRO;
 
-    if (WEATHER_HAS_EFFECT)
+    if (ClimaTieneEfecto())
     {
         if ((ability == ABILITY_SWIFT_SWIM || ability == ABILITY_ALAS_HIDROFOBAS) && (gBattleWeather & B_WEATHER_RAIN))
             MULTIPLICA(modificador, MAS_50_POR_CIENTO);
@@ -2102,7 +2099,7 @@ u32 GetBattlerTotalSpeedStatArgs(u32 battler, u32 ability, u32 holdEffect)
 
     MULTIPLICA(modificador, gMultiplicadorEstadisticas[gBattleMons[battler].statStages[ESTADISTICA_VELOCIDAD]]);
 
-    return uq4_12_multiply_by_int(modificador, velocidad);
+    return UQ412MultiplicaPorEntero(modificador, velocidad);
 }
 
 u32 GetBattlerTotalSpeedStat(u32 battler)
@@ -2716,7 +2713,7 @@ u32 TipoMovimiento(u32 movimiento, u32 combatiente)
     // u32 efectoMovimiento = gMovimientos[movimiento].effect;
     u32 habilidad = HabilidadCombatiente(combatiente);
 
-    if (movimiento == MOVE_METEOROBOLA && WEATHER_HAS_EFFECT)
+    if (movimiento == MOVE_METEOROBOLA && ClimaTieneEfecto())
     {
         if (gBattleWeather & B_WEATHER_RAIN)
             return TIPO_AGUA;

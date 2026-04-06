@@ -481,12 +481,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .battleScript = BattleScript_EffectHit,
             },
 
-        [EFFECT_FUTURE_SIGHT] =
-            {
-                .battleScript = BattleScript_EffectFutureSight,
-                .encourageEncore = TRUE,
-            },
-
         [EFECTO_ATAQUE_EQUIPO] =
             {
                 .battleScript = ScriptBatalla_EfectoAtaqueEquipo,
@@ -595,11 +589,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .encourageEncore = TRUE,
             },
 
-        [EFFECT_WISH] =
-            {
-                .battleScript = BattleScript_EffectWish,
-            },
-
         [EFFECT_INGRAIN] =
             {
                 .battleScript = BattleScript_EffectIngrain,
@@ -615,11 +604,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         [EFFECT_BRICK_BREAK] =
             {
                 .battleScript = BattleScript_EffectBrickBreak,
-            },
-
-        [EFFECT_DESARME] =
-            {
-                .battleScript = BattleScript_EffectHit,
             },
 
         [EFFECT_POWER_BASED_ON_USER_HP] =
@@ -1104,7 +1088,7 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .battleScript = BattleScript_EffectAttackUpUserAlly,
             },
 
-        [EFFECT_HYDRO_STEAM] =
+        [EFFECT_HIDROVAPOR] =
             {
                 .battleScript = BattleScript_EffectHit,
             },

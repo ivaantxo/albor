@@ -62,7 +62,8 @@ static bool32 ShouldSwitchIfHasBadOdds(u32 battler)
     //Variable initialization
     u8 opposingPosition, atkType1, atkType2, defType1, defType2, effectiveness;
     s32 i, damageDealt = 0, maxDamageDealt = 0, damageTaken = 0, maxDamageTaken = 0;
-    u32 aiMove, playerMove, aiBestMove = MOVE_NONE, aiAbility = AI_DATA->abilities[battler], opposingBattler, weather = AI_GetWeather(AI_DATA);
+    u32 aiMove, playerMove, aiBestMove = MOVE_NONE, aiAbility = AI_DATA->abilities[battler], opposingBattler;
+    enum ClimasCombate climaCombate = ObtenClimaCombate();
     bool32 getsOneShot = FALSE, hasStatusMove = FALSE, hasSuperEffectiveMove = FALSE;
     u16 typeEffectiveness = MOVIMIENTO_NEUTRO, aiMoveEffect; //baseline typing damage
 
@@ -121,14 +122,14 @@ static bool32 ShouldSwitchIfHasBadOdds(u32 battler)
     }
 
     // Calculate type advantage
-    typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType1, defType1)));
+    typeEffectiveness = UQ412Multiplica(typeEffectiveness, (ModificadorTipo(atkType1, defType1)));
     if (atkType2 != atkType1)
-        typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType2, defType1)));
+        typeEffectiveness = UQ412Multiplica(typeEffectiveness, (ModificadorTipo(atkType2, defType1)));
     if (defType2 != defType1)
     {
-        typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType1, defType2)));
+        typeEffectiveness = UQ412Multiplica(typeEffectiveness, (ModificadorTipo(atkType1, defType2)));
         if (atkType2 != atkType1)
-            typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType2, defType2)));
+            typeEffectiveness = UQ412Multiplica(typeEffectiveness, (ModificadorTipo(atkType2, defType2)));
     }
 
     // Get max damage mon could take
@@ -137,7 +138,7 @@ static bool32 ShouldSwitchIfHasBadOdds(u32 battler)
         playerMove = gBattleMons[opposingBattler].moves[i];
         if (playerMove != MOVE_NONE && !EsMovimientoDeEstado(playerMove))
         {
-            damageTaken = AI_CalcDamage(playerMove, opposingBattler, battler, &effectiveness, weather);
+            damageTaken = AI_CalcDamage(playerMove, opposingBattler, battler, &effectiveness, climaCombate);
             if (damageTaken > maxDamageTaken)
                 maxDamageTaken = damageTaken;
         }
@@ -1013,14 +1014,14 @@ static u32 GetBestMonTypeMatchup(struct Pokemon *party, int firstId, int lastId,
                 u8 defType1 = gSpeciesInfo[species].types[TIPO_1];
                 u8 defType2 = gSpeciesInfo[species].types[TIPO_2];
 
-                typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType1, defType1)));
+                typeEffectiveness = UQ412Multiplica(typeEffectiveness, (ModificadorTipo(atkType1, defType1)));
                 if (atkType2 != atkType1)
-                    typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType2, defType1)));
+                    typeEffectiveness = UQ412Multiplica(typeEffectiveness, (ModificadorTipo(atkType2, defType1)));
                 if (defType2 != defType1)
                 {
-                    typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType1, defType2)));
+                    typeEffectiveness = UQ412Multiplica(typeEffectiveness, (ModificadorTipo(atkType1, defType2)));
                     if (atkType2 != atkType1)
-                        typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType2, defType2)));
+                        typeEffectiveness = UQ412Multiplica(typeEffectiveness, (ModificadorTipo(atkType2, defType2)));
                 }
                 if (typeEffectiveness < bestResist)
                 {
@@ -1157,13 +1158,14 @@ static s32 GetSwitchinWeatherImpact(void)
 {
     s32 weatherImpact = 0, maxHP = AI_DATA->switchinCandidate.battleMon.maxHP, ability = AI_DATA->switchinCandidate.battleMon.ability;
     u32 holdEffect = ItemId_GetHoldEffect(AI_DATA->switchinCandidate.battleMon.item);
+    enum ClimasCombate climaCombate = ObtenClimaCombate();
 
-    if (WEATHER_HAS_EFFECT)
+    if (ClimaTieneEfecto())
     {
         // Damage
         if (holdEffect != HOLD_EFFECT_SAFETY_GOGGLES && ability != ABILITY_MAGIC_GUARD && ability != ABILITY_OVERCOAT)
         {
-            if ((gBattleWeather & B_WEATHER_SNOW)
+            if ((EsClimaCombateNieve(climaCombate))
              && (AI_DATA->switchinCandidate.battleMon.types[TIPO_1] != TIPO_HIELO || AI_DATA->switchinCandidate.battleMon.types[TIPO_2] != TIPO_HIELO)
              && ability != ABILITY_SNOW_CLOAK && ability != ABILITY_ICE_BODY)
             {
@@ -1171,7 +1173,7 @@ static s32 GetSwitchinWeatherImpact(void)
                 if (weatherImpact == 0)
                     weatherImpact = 1;
             }
-            else if ((gBattleWeather & B_WEATHER_SANDSTORM)
+            else if ((EsClimaCombatArena(climaCombate))
                 && (AI_DATA->switchinCandidate.battleMon.types[TIPO_1] != TIPO_TIERRA && AI_DATA->switchinCandidate.battleMon.types[TIPO_2] != TIPO_TIERRA
                 && AI_DATA->switchinCandidate.battleMon.types[TIPO_1] != TIPO_ROCA && AI_DATA->switchinCandidate.battleMon.types[TIPO_2] != TIPO_ROCA
                 && ability != ABILITY_SAND_VEIL && ability != ABILITY_SAND_RUSH && ability != ABILITY_SAND_FORCE))
@@ -1183,7 +1185,7 @@ static s32 GetSwitchinWeatherImpact(void)
         }
 
         // Healing
-        if (gBattleWeather & B_WEATHER_RAIN && holdEffect != HOLD_EFFECT_UTILITY_UMBRELLA)
+        if (EsClimaCombateLluvia(climaCombate))
         {
             if (ability == ABILITY_RAIN_DISH)
             {
@@ -1192,13 +1194,13 @@ static s32 GetSwitchinWeatherImpact(void)
                     weatherImpact = -1;
             }
         }
-        if ((gBattleWeather & B_WEATHER_SNOW) && ability == ABILITY_ICE_BODY)
+        if (EsClimaCombateNieve(climaCombate) && ability == ABILITY_ICE_BODY)
         {
             weatherImpact = -(maxHP / 8);
             if (weatherImpact == 0)
                 weatherImpact = -1;
         }
-        if ((gBattleWeather & B_WEATHER_SUN) && ability == ABILITY_FOTOSINTESIS)
+        if (EsClimaCombateSol(climaCombate) && ability == ABILITY_FOTOSINTESIS)
         {
             weatherImpact = -(maxHP / 8);
             if (weatherImpact == 0)
@@ -1347,7 +1349,7 @@ static u32 GetSwitchinHitsToKO(s32 damageTaken, u32 battler)
     u32 statusDamage = GetSwitchinStatusDamage(battler);
     u32 hitsToKO = 0, singleUseItemHeal = 0;
     u16 maxHP = AI_DATA->switchinCandidate.battleMon.maxHP, item = AI_DATA->switchinCandidate.battleMon.item, heldItemEffect = ItemId_GetHoldEffect(item);
-    u8 weatherDuration = gWishFutureKnock.weatherDuration, holdEffectParam = ItemId_GetHoldEffectParam(item);
+    u32 weatherDuration = gCombate->clima.turnos, holdEffectParam = ItemId_GetHoldEffectParam(item);
     u32 opposingBattler = OPONENTE(battler);
     u32 opposingAbility = gBattleMons[opposingBattler].ability, ability = AI_DATA->switchinCandidate.battleMon.ability;
     bool32 usedSingleUseHealingItem = FALSE, opponentCanBreakMold = IsMoldBreakerTypeAbility(opposingBattler, opposingAbility);
@@ -1451,14 +1453,14 @@ static u16 GetSwitchinTypeMatchup(u32 opposingBattler, struct BattlePokemon batt
     defType1 = battleMon.types[TIPO_1], defType2 = battleMon.types[TIPO_2];
 
     // Multiply type effectiveness by a factor depending on type matchup
-    typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType1, defType1)));
+    typeEffectiveness = UQ412Multiplica(typeEffectiveness, (ModificadorTipo(atkType1, defType1)));
     if (atkType2 != atkType1)
-        typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType2, defType1)));
+        typeEffectiveness = UQ412Multiplica(typeEffectiveness, (ModificadorTipo(atkType2, defType1)));
     if (defType2 != defType1)
     {
-        typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType1, defType2)));
+        typeEffectiveness = UQ412Multiplica(typeEffectiveness, (ModificadorTipo(atkType1, defType2)));
         if (atkType2 != atkType1)
-            typeEffectiveness = uq4_12_multiply(typeEffectiveness, (ModificadorTipo(atkType2, defType2)));
+            typeEffectiveness = UQ412Multiplica(typeEffectiveness, (ModificadorTipo(atkType2, defType2)));
     }
     return typeEffectiveness;
 }

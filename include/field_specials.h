@@ -9,7 +9,6 @@ u8 GetLeadMonIndex(void);
 u8 IsDestinationBoxFull(void);
 u16 GetPCBoxToSendMon(void);
 void IncrementBirthIslandRockStepCount(void);
-bool8 AbnormalWeatherHasExpired(void);
 bool32 ShouldDoWallyCall(void);
 bool32 ShouldDoScottFortreeCall(void);
 bool32 ShouldDoRoxanneCall(void);

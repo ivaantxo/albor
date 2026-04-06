@@ -172,7 +172,6 @@ enum TextosCombate
     STRINGID_TRICKROOMENDS, //printfromtable
     STRINGID_WONDERROOMENDS, //printstring + printfromtable
     STRINGID_MAGICROOMENDS, //printstring + printfromtable
-    STRINGID_FOREWARNACTIVATES, //printfromtable
     STRINGID_UNNERVEENTERS, //printfromtable
     STRINGID_STEALTHROCKDMG, //printfromtable
     STRINGID_BELCHCANTSELECT, //printselectionstring
@@ -296,10 +295,6 @@ enum TextosCombate
 #define B_MSG_BELL_BOTH_SOUNDPROOF     3
 #define B_MSG_SOOTHING_AROMA           4
 
-// gFutureMoveUsedStringIds
-#define B_MSG_FUTURE_SIGHT 0
-#define B_MSG_DOOM_DESIRE  1
-
 // gItemSwapStringIds
 #define B_MSG_ITEM_SWAP_TAKEN 0
 #define B_MSG_ITEM_SWAP_GIVEN 1
@@ -326,7 +321,6 @@ enum TextosCombate
 // gSwitchInAbilityStringIds
 #define B_MSG_SWITCHIN_MOLDBREAKER      0
 #define B_MSG_SWITCHIN_UNNERVE          4
-#define B_MSG_SWITCHIN_FOREWARN         6
 #define B_MSG_SWITCHIN_SCREENCLEANER    12
 #define B_MSG_SWITCHIN_CURIOUS_MEDICINE 14
 #define B_MSG_SWITCHIN_NEUTRALIZING_GAS 16

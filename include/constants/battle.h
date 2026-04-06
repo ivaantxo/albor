@@ -170,23 +170,18 @@ enum ResultadosCombate
 #define SIDE_STATUS_REFLECT                 (1 << 0)
 #define SIDE_STATUS_LIGHTSCREEN             (1 << 1)
 #define SIDE_STATUS_STICKY_WEB              (1 << 2)
-#define SIDE_STATUS_SPIKES                  (1 << 4)
-#define SIDE_STATUS_SAFEGUARD               (1 << 5)
-#define SIDE_STATUS_FUTUREATTACK            (1 << 6)
-#define SIDE_STATUS_MIST                    (1 << 8)
-// (1 << 9) previously was SIDE_STATUS_SPIKES_DAMAGED
-#define SIDE_STATUS_TAILWIND                (1 << 10)
-#define SIDE_STATUS_AURORA_VEIL             (1 << 11)
-#define SIDE_STATUS_LUCKY_CHANT             (1 << 12)
-#define SIDE_STATUS_TOXIC_SPIKES            (1 << 13)
-#define SIDE_STATUS_STEALTH_ROCK            (1 << 14)
-// Missing flags previously were SIDE_STATUS_TOXIC_SPIKES_DAMAGED, SIDE_STATUS_STEALTH_ROCK_DAMAGED, SIDE_STATUS_STICKY_WEB_DAMAGED
-#define SIDE_STATUS_QUICK_GUARD             (1 << 18)
-#define SIDE_STATUS_WIDE_GUARD              (1 << 19)
-#define SIDE_STATUS_CRAFTY_SHIELD           (1 << 20)
-#define SIDE_STATUS_MAT_BLOCK               (1 << 21)
-
-#define SIDE_STATUS_DAMAGE_NON_TYPES        (1 << 23)
+#define SIDE_STATUS_SPIKES                  (1 << 3)
+#define SIDE_STATUS_SAFEGUARD               (1 << 4)
+#define SIDE_STATUS_MIST                    (1 << 5)
+#define SIDE_STATUS_TAILWIND                (1 << 6)
+#define SIDE_STATUS_AURORA_VEIL             (1 << 7)
+#define SIDE_STATUS_LUCKY_CHANT             (1 << 8)
+#define SIDE_STATUS_TOXIC_SPIKES            (1 << 9)
+#define SIDE_STATUS_STEALTH_ROCK            (1 << 10)
+#define SIDE_STATUS_QUICK_GUARD             (1 << 11)
+#define SIDE_STATUS_WIDE_GUARD              (1 << 12)
+#define SIDE_STATUS_CRAFTY_SHIELD           (1 << 13)
+#define SIDE_STATUS_MAT_BLOCK               (1 << 14)
 
 #define SIDE_STATUS_HAZARDS_ANY    (SIDE_STATUS_SPIKES | SIDE_STATUS_STICKY_WEB | SIDE_STATUS_TOXIC_SPIKES | SIDE_STATUS_STEALTH_ROCK)
 #define SIDE_STATUS_SCREEN_ANY     (SIDE_STATUS_REFLECT | SIDE_STATUS_LIGHTSCREEN | SIDE_STATUS_AURORA_VEIL)
@@ -203,34 +198,6 @@ enum ResultadosCombate
 #define MOVE_RESULT_NOT_VERY_EFFECTIVE    (1 << 2)
 #define MOVE_RESULT_DOESNT_AFFECT_FOE     (1 << 3)
 #define MOVE_RESULT_FAILED                (1 << 5)
-
-// Battle Weather flags
-#define B_WEATHER_NONE                0
-
-#define B_WEATHER_RAIN_TEMPORARY      (1 << 0)
-#define B_WEATHER_RAIN_PERMANENT      (1 << 1)
-#define B_WEATHER_RAIN                (B_WEATHER_RAIN_TEMPORARY | B_WEATHER_RAIN_PERMANENT)
-
-#define B_WEATHER_SANDSTORM_TEMPORARY (1 << 2)
-#define B_WEATHER_SANDSTORM_PERMANENT (1 << 3)
-#define B_WEATHER_SANDSTORM           (B_WEATHER_SANDSTORM_TEMPORARY | B_WEATHER_SANDSTORM_PERMANENT)
-
-#define B_WEATHER_SUN_TEMPORARY       (1 << 4)
-#define B_WEATHER_SUN_PERMANENT       (1 << 5)
-#define B_WEATHER_SUN                 (B_WEATHER_SUN_TEMPORARY | B_WEATHER_SUN_PERMANENT)
-
-#define B_WEATHER_SNOW_TEMPORARY      (1 << 6)
-#define B_WEATHER_SNOW_PERMANENT      (1 << 7)
-#define B_WEATHER_SNOW                (B_WEATHER_SNOW_TEMPORARY | B_WEATHER_SNOW_PERMANENT)
-
-#define B_WEATHER_ANY                 (B_WEATHER_RAIN | B_WEATHER_SANDSTORM | B_WEATHER_SUN | B_WEATHER_SNOW)
-
-// Battle Weather as enum
-#define ENUM_WEATHER_NONE                 0
-#define ENUM_WEATHER_RAIN                 1
-#define ENUM_WEATHER_SUN                  2
-#define ENUM_WEATHER_SANDSTORM            3
-#define ENUM_WEATHER_SNOW                 4
 
 // Move Effects
 #define MOVE_EFFECT_SLEEP               1
@@ -285,7 +252,7 @@ enum ResultadosCombate
 #define MOVE_EFFECT_EVS_MINUS_2         52
 #define MOVE_EFFECT_SCALE_SHOT          53
 #define MOVE_EFFECT_THRASH              54
-#define MOVE_EFFECT_DESARME           55
+#define EFECTO_MOVIMIENTO_QUITAR_OBJETO           55
 #define MOVE_EFFECT_DEF_SPDEF_DOWN      56
 #define MOVE_EFFECT_CLEAR_SMOG          57
 #define MOVE_EFFECT_SMACK_DOWN          58
@@ -293,7 +260,6 @@ enum ResultadosCombate
 #define MOVE_EFFECT_FEINT               60
 #define MOVE_EFFECT_SPECTRAL_THIEF      61
 #define MOVE_EFFECT_THROAT_CHOP         65
-#define MOVE_EFFECT_INCINERATE          66
 #define MOVE_EFFECT_BUG_BITE            67
 #define MOVE_EFFECT_TRAP_BOTH           69
 #define MOVE_EFFECT_STOCKPILE_WORE_OFF  71
@@ -407,12 +373,10 @@ enum EfectosFinTurnoCampo
     ENDTURN_LUCKY_CHANT,
     ENDTURN_SAFEGUARD,
     ENDTURN_TAILWIND,
-    ENDTURN_WISH,
     ENDTURN_RAIN,
     ENDTURN_SANDSTORM,
     ENDTURN_SUN,
     ENDTURN_SNOW,
-    ENDTURN_DAMAGE_NON_TYPES,
     ENDTURN_GRAVITY,
     ENDTURN_TRICK_ROOM,
     ENDTURN_WONDER_ROOM,
@@ -467,5 +431,31 @@ enum EfectosFinTurnoIndividuales
 #define MOVIMIENTO_NEUTRO                   UQ_4_12(1.0)
 #define MOVIMIENTO_SUPER_EFECTIVO           UQ_4_12(2.0)
 #define MOVIMIENTO_ULTRA_EFECTIVO           UQ_4_12(4.0)
+
+#define TURNOS_EFECTOS                      5
+#define TURNOS_CLIMA                        5
+
+enum ClimasCombate
+{
+    CLIMA_COMBATE_NINGUNO,
+    CLIMA_COMBATE_LLUVIA_HABILIDAD,
+    CLIMA_COMBATE_LLUVIA_MOVIMIENTO,
+    CLIMA_COMBATE_SOL_HABILIDAD,
+    CLIMA_COMBATE_SOL_MOVIMIENTO,
+    CLIMA_COMBATE_ARENA_HABILIDAD,
+    CLIMA_COMBATE_ARENA_MOVIMIENTO,
+    CLIMA_COMBATE_NIEVE_HABILIDAD,
+    CLIMA_COMBATE_NIEVE_MOVIMIENTO,
+
+    NUMERO_CLIMAS_COMBATE
+};
+
+enum ClimasMovimientos // Solo para argumentos de movimientos
+{
+    CLIMA_MOVIMIENTO_SOL,
+    CLIMA_MOVIMIENTO_LLUVIA,
+    CLIMA_MOVIMIENTO_ARENA,
+    CLIMA_MOVIMIENTO_NIEVE,
+};
 
 #endif // GUARD_CONSTANTS_BATTLE_H

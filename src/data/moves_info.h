@@ -1311,7 +1311,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .windMove = TRUE,
         CLIMATICO,
-        .argument = B_WEATHER_SNOW,
+        .argument = CLIMA_MOVIMIENTO_NIEVE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = EFECTO_MOVIMIENTO_CONGELACION,
             .chance = 30,
@@ -1630,7 +1630,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .sleepTalkBanned = TRUE,
-        .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKSUNLIGHT, B_WEATHER_SUN),
+        .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKSUNLIGHT, CLIMA_MOVIMIENTO_SOL),
         .battleAnimScript = gBattleAnimMove_SolarBeam,
     },
 
@@ -1856,7 +1856,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .damagesAirborne = TRUE,
         CLIMATICO,
-        .argument = B_WEATHER_RAIN,
+        .argument = CLIMA_MOVIMIENTO_LLUVIA,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 30,
@@ -4642,30 +4642,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_ShadowBall,
     },
 
-    [MOVE_FUTURE_SIGHT] =
-    {
-        .name = COMPOUND_STRING("Premonición"),
-        .description = COMPOUND_STRING(
-            "Heightens inner power to\n"
-            "strike 2 turns later."),
-        #if B_UPDATED_MOVE_DATA >= GEN_6
-            .power = 120,
-        #elif B_UPDATED_MOVE_DATA >= GEN_5
-            .power = 100,
-        #else
-            .power = 80,
-        #endif
-        .effect = EFFECT_FUTURE_SIGHT,
-        .type = TIPO_PSIQUICO,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_5 ? 100 : 90,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_5 ? 10 : 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_FutureSight,
-    },
-
     [MOVE_ROCK_SMASH] =
     {
         .name = COMPOUND_STRING("Golpe roca"),
@@ -4839,7 +4815,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
             "Exhales a hot breath on the\n"
             "foe. May inflict a burn."),
         .effect = EFFECT_PRECISION_INCREMENTADA_CLIMA,
-        .argument = B_WEATHER_SUN,
+        .argument = CLIMA_MOVIMIENTO_SOL,
         .power = 100,
         .type = TIPO_FUEGO,
         .accuracy = PRECISION_BAJA,
@@ -5043,26 +5019,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Trick,
     },
 
-    [MOVE_WISH] =
-    {
-        .name = COMPOUND_STRING("Deseo"),
-        .description = COMPOUND_STRING(
-            "A wish that restores HP.\n"
-            "It takes time to work."),
-        .effect = EFFECT_WISH,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .healingMove = TRUE,
-        .snatchAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_Wish,
-    },
-
     [MOVE_INGRAIN] =
     {
         .name = COMPOUND_STRING("Arraigo"),
@@ -5165,7 +5121,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Knocks down the foe's held\n"
             "item to prevent its use."),
-        .effect = EFFECT_DESARME,
+        .effect = EFFECT_HIT,
         .power = 60,
         .type = TIPO_SINIESTRO,
         .accuracy = PRECISION_NORMAL,
@@ -5175,7 +5131,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_DESARME,
+            .moveEffect = EFECTO_MOVIMIENTO_QUITAR_OBJETO,
         }),
         .battleAnimScript = gBattleAnimMove_Desarme,
     },
@@ -6447,41 +6403,23 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_WaterPulse,
     },
 
-    [MOVE_DOOM_DESIRE] =
+    [MOVE_PSICOIMPULSO] =
     {
-        .name = COMPOUND_STRING("Deseo oculto"),
+        .name = COMPOUND_STRING("Psicoimpulso"),
         .description = COMPOUND_STRING(
-            "Summons strong sunlight to\n"
-            "attack 2 turns later."),
-        .effect = EFFECT_FUTURE_SIGHT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_5 ? 140 : 120,
-        .type = TIPO_ACERO,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_5 ? 100 : 85,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_DoomDesire,
-    },
-
-    [MOVE_PSYCHO_BOOST] =
-    {
-        .name = COMPOUND_STRING("Psicoataque"),
-        .description = COMPOUND_STRING(
-            "Allows a full-power attack,\n"
-            "but sharply lowers Sp. Atk."),
+            "Sube +1 ataque especial."),
         .effect = EFFECT_HIT,
-        .power = 140,
+        .power = 50,
         .type = TIPO_PSIQUICO,
-        .accuracy = 90,
-        .pp = 5,
+        .accuracy = PRECISION_NORMAL,
+        .pp = PP_MOVIMIENTO_AMPLIO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SP_ATK_MINUS_2,
+            .moveEffect = MOVE_EFFECT_SP_ATK_PLUS_1,
             .self = TRUE,
+            .chance = 100,
         }),
         .battleAnimScript = gBattleAnimMove_PsychoBoost,
     },
@@ -9143,22 +9081,21 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_CircleThrow,
     },
 
-    [MOVE_INCINERATE] =
+    [MOVE_CALCINACION] =
     {
         .name = COMPOUND_STRING("Calcinación"),
         .description = COMPOUND_STRING(
-            "Burns up Berries and Gems\n"
-            "preventing their use."),
+            "Quita objeto de rival."),
         .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 60 : 30,
+        .power = 60,
         .type = TIPO_FUEGO,
         .accuracy = PRECISION_NORMAL,
-        .pp = 15,
-        .target = MOVE_TARGET_BOTH,
+        .pp = PP_MOVIMIENTO_LIMITADO,
+        .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_INCINERATE,
+            .moveEffect = EFECTO_MOVIMIENTO_QUITAR_OBJETO,
         }),
         .battleAnimScript = gBattleAnimMove_Incinerate,
     },
@@ -9492,7 +9429,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
             "Golpea con 100% de precisión\n"
             "en Sol. Puede confundir."),
         .effect = EFFECT_PRECISION_INCREMENTADA_CLIMA,
-        .argument = B_WEATHER_SUN,
+        .argument = CLIMA_MOVIMIENTO_SOL,
         .power = 110,
         .type = TIPO_FUEGO,
         .accuracy = PRECISION_BAJA,
@@ -9622,7 +9559,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .windMove = TRUE,
         .damagesAirborne = TRUE,
         CLIMATICO,
-        .argument = B_WEATHER_RAIN,
+        .argument = CLIMA_MOVIMIENTO_LLUVIA,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_CONFUSION,
             .chance = 30,
@@ -10886,7 +10823,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .slicingMove = TRUE,
         .sleepTalkBanned = TRUE,
-        .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKSUNLIGHT, B_WEATHER_SUN),
+        .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKSUNLIGHT, CLIMA_MOVIMIENTO_SOL),
         .battleAnimScript = gBattleAnimMove_SolarBlade,
     },
 
@@ -11914,7 +11851,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
             "Absorbs light in one turn,\n"
             "then attacks next turn."),
         .effect = EFFECT_PRECISION_INCREMENTADA_CLIMA,
-        .argument = B_WEATHER_SANDSTORM,
+        .argument = CLIMA_MOVIMIENTO_ARENA,
         .power = 110,
         .type = TIPO_ROCA,
         .accuracy = PRECISION_BAJA,
@@ -12378,7 +12315,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
             "Wraps a foe in fierce winds.\n"
             "Varies with the user's form."),
         .effect = EFFECT_PRECISION_INCREMENTADA_CLIMA,
-        .argument = B_WEATHER_RAIN,
+        .argument = CLIMA_MOVIMIENTO_LLUVIA,
         .power = 100,
         .type = TIPO_HADA,
         .accuracy = PRECISION_NORMAL,
@@ -12625,7 +12562,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .windMove = TRUE,
         CLIMATICO,
-        .argument = B_WEATHER_SNOW,
+        .argument = CLIMA_MOVIMIENTO_NIEVE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
             .chance = 30,
@@ -12649,7 +12586,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .windMove = TRUE,
         CLIMATICO,
-        .argument = B_WEATHER_RAIN,
+        .argument = CLIMA_MOVIMIENTO_LLUVIA,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 30,
@@ -12664,7 +12601,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
             "Hits with brutally hot sand.\n"
             "May inflict a burn."),
         .effect = EFFECT_PRECISION_INCREMENTADA_CLIMA,
-        .argument = B_WEATHER_SANDSTORM,
+        .argument = CLIMA_MOVIMIENTO_ARENA,
         .power = 100,
         .type = TIPO_TIERRA,
         .accuracy = PRECISION_BAJA,
@@ -13139,17 +13076,16 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_CorteAcuatico,
     },
 
-    [MOVE_HYDRO_STEAM] =
+    [MOVE_HIDROVAPOR] =
     {
-        .name = COMPOUND_STRING("Hydro Steam"),
+        .name = COMPOUND_STRING("Hidrovapor"),
         .description = COMPOUND_STRING(
-            "This move's power increases\n"
-            "under harsh sunlight."),
-        .effect = EFFECT_HYDRO_STEAM,
-        .power = 80,
+            "En Sol, +25%."),
+        .effect = EFFECT_HIDROVAPOR,
+        .power = 90,
         .type = TIPO_AGUA,
         .accuracy = PRECISION_NORMAL,
-        .pp = 15,
+        .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
@@ -13188,7 +13124,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .priority = 0,
         .balistico = TRUE,
         .category = CATEGORIA_ESPECIAL,
-        .argument = TWO_TURN_ARG(STRINGID_ELECTROSHOTCHARGING, B_WEATHER_RAIN),
+        .argument = TWO_TURN_ARG(STRINGID_ELECTROSHOTCHARGING, CLIMA_MOVIMIENTO_LLUVIA),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SP_ATK_PLUS_1,
             .self = TRUE,

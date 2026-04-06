@@ -12565,6 +12565,7 @@ gBattleAnimMove_BloodMoon::
 	waitforvisualfinish
 	createvisualtask AnimTask_IsTargetPlayerSide, 2
 	jumpargeq 7 ANIM_TARGET BloodMoonOnPlayer
+
 BloodMoonOnOpponent:
 	createsoundtask SoundTask_LoopSEAdjustPanning, SE_M_HYPER_BEAM2, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 1, 10, 0, 5
 	call BloodMoonOnslaughtOpponent
@@ -12578,6 +12579,7 @@ BloodMoonOnOpponent:
 	delay 0
 	waitforvisualfinish
 	goto BloodMoonFinish
+
 BloodMoonOnPlayer:
 	createsoundtask SoundTask_LoopSEAdjustPanning, SE_M_HYPER_BEAM2, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 1, 10, 0, 5
 	call BloodMoonOnslaughtPlayer
@@ -12589,11 +12591,13 @@ BloodMoonOnPlayer:
 	createvisualtask AnimTask_ShakeMonInPlace, 2, ANIM_TARGET, 4, 0, 12, 1
 	delay 0
 	waitforvisualfinish
+
 BloodMoonFinish:
 	createvisualtask AnimTask_BlendBattleAnimPal, 5, F_PAL_BG, 0, 0, 0, RGB_BLACK
 	waitforvisualfinish
 	clearmonbg ANIM_ATTACKER
 	end
+
 BloodMoonOnslaughtOpponent:
 	createsprite gBloodMoonOnslaughtSpriteTemplate, ANIM_TARGET, 2, 140, -16, 165, 40, 4
 	createvisualtask AnimTask_ShakeMonInPlace, 2, ANIM_TARGET, 4, 0, 12, 1
@@ -12616,6 +12620,7 @@ BloodMoonOnslaughtOpponent:
 	createsprite gRedExplosionSpriteTemplate, ANIM_TARGET, 4, 0, 5, 1, 0
 	delay 0
 	return
+
 BloodMoonOnslaughtPlayer:
 	createsprite gBloodMoonOnslaughtSpriteTemplate, ANIM_TARGET, 2, 40, -16, 75, 80, 4
 	createvisualtask AnimTask_ShakeMonInPlace, 2, ANIM_TARGET, 4, 0, 12, 1
@@ -16356,26 +16361,6 @@ gBattleAnimMove_Psychic::
 	call UnsetPsychicBg
 	end
 
-gBattleAnimMove_FutureSight::
-	goto FutureSight
-FutureSightContinue:
-	waitforvisualfinish
-	delay 1
-	call UnsetPsychicBg
-	end
-FutureSight:
-	monbg ANIM_ATK_PARTNER
-	playsewithpan SE_M_PSYBEAM, SOUND_PAN_ATTACKER
-	call SetPsychicBackground
-	setalpha 8, 8
-	playsewithpan SE_M_SUPERSONIC, SOUND_PAN_ATTACKER
-	createvisualtask AnimTask_BlendColorCycle, 2, F_PAL_ATTACKER, 0, 2, 0, 8, RGB_WHITE
-	createvisualtask AnimTask_ScaleMonAndRestore, 5, -4, -4, 15, ANIM_ATTACKER, 1
-	waitforvisualfinish
-	clearmonbg ANIM_ATK_PARTNER
-	blendoff
-	goto FutureSightContinue
-
 gBattleAnimMove_Thunder::
 	loadspritegfx ANIM_TAG_LIGHTNING
 	fadetobg BG_THUNDER
@@ -19618,22 +19603,6 @@ gBattleAnimMove_Trick::
 	waitforvisualfinish
 	end
 
-gBattleAnimMove_Wish::
-	loadspritegfx ANIM_TAG_GOLD_STARS
-	loadspritegfx ANIM_TAG_SPARKLE_2
-	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, F_PAL_BG, 3, 0, 10, RGB_BLACK
-	waitforvisualfinish
-	panse_adjustall SE_M_REFLECT, SOUND_PAN_TARGET, SOUND_PAN_ATTACKER, -3, 0
-	createsprite gWishStarSpriteTemplate, ANIM_ATTACKER, 40
-	waitforvisualfinish
-	delay 60
-	loopsewithpan SE_M_HEAL_BELL, SOUND_PAN_ATTACKER, 16, 3
-	call GrantingStarsEffect
-	waitforvisualfinish
-	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, F_PAL_BG, 3, 10, 0, RGB_BLACK
-	waitforvisualfinish
-	end
-
 gBattleAnimMove_Stockpile::
 	loadspritegfx ANIM_TAG_GRAY_ORB
 	playsewithpan SE_M_MEGA_KICK, SOUND_PAN_ATTACKER
@@ -20850,25 +20819,6 @@ gBattleAnimMove_Desarme::
 	waitforvisualfinish
 	end
 
-gBattleAnimMove_DoomDesire::
-	createvisualtask GetIsDoomDesireHitTurn, 2
-	delay 1
-	monbg ANIM_ATK_PARTNER
-	createvisualtask AnimTask_SetGrayscaleOrOriginalPal, 5, ANIM_TARGET, FALSE
-	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, F_PAL_BG, 1, 0, 4, RGB_BLACK
-	waitforvisualfinish
-	setalpha 8, 8
-	playsewithpan SE_M_PSYBEAM, SOUND_PAN_ATTACKER
-	createvisualtask AnimTask_ScaleMonAndRestore, 5, -4, -4, 15, ANIM_ATTACKER, 1
-	waitforvisualfinish
-	delay 20
-	createvisualtask AnimTask_SetGrayscaleOrOriginalPal, 5, ANIM_TARGET, TRUE
-	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, F_PAL_BG, 1, 4, 0, RGB_BLACK
-	waitforvisualfinish
-	clearmonbg ANIM_ATK_PARTNER
-	blendoff
-	end
-
 gBattleAnimMove_SkyUppercut::
 	loadspritegfx ANIM_TAG_IMPACT
 	monbg ANIM_DEF_PARTNER
@@ -21886,72 +21836,21 @@ gBattleAnimGeneral_SnatchMove::
 	createvisualtask AnimTask_IsTargetSameSide, 2
 	jumpretfalse SnatchOpposingMonMove
 	goto SnatchPartnerMonMove
+
 SnatchMoveContinue:
 	waitforvisualfinish
 	call SnatchMoveTrySwapToSubstitute
 	end
+
 SnatchOpposingMonMove:
 	playsewithpan SE_M_DOUBLE_TEAM, SOUND_PAN_ATTACKER
 	createvisualtask AnimTask_SnatchOpposingMonMove, 2
 	goto SnatchMoveContinue
+
 SnatchPartnerMonMove:
 	playsewithpan SE_M_DOUBLE_TEAM, SOUND_PAN_ATTACKER
 	createvisualtask AnimTask_SnatchPartnerMove, 2
 	goto SnatchMoveContinue
-
-gBattleAnimGeneral_FutureSightHit::
-	createvisualtask AnimTask_SetAnimTargetToBattlerTarget, 2
-	monbg ANIM_DEF_PARTNER
-	playsewithpan SE_M_PSYBEAM, SOUND_PAN_ATTACKER
-	call SetPsychicBackground
-	setalpha 8, 8
-	playsewithpan SE_M_SUPERSONIC, SOUND_PAN_TARGET
-	waitplaysewithpan SE_M_SUPERSONIC, SOUND_PAN_TARGET, 8
-	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 4, 0, 15, 1
-	createvisualtask AnimTask_ScaleMonAndRestore, 5, -5, -5, 15, ANIM_TARGET, 1
-	waitforvisualfinish
-	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 4, 0, 24, 1
-	waitforvisualfinish
-	clearmonbg ANIM_DEF_PARTNER
-	blendoff
-	waitforvisualfinish
-	delay 1
-	call UnsetPsychicBg
-	end
-
-gBattleAnimGeneral_DoomDesireHit::
-	createvisualtask AnimTask_SetAnimTargetToBattlerTarget, 2
-	loadspritegfx ANIM_TAG_EXPLOSION
-	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, F_PAL_BG, 3, 0, 16, RGB_WHITE
-	waitforvisualfinish
-	delay 10
-	createvisualtask AnimTask_DoomDesireLightBeam, 5
-	delay 9
-	playsewithpan SE_M_CONFUSE_RAY, SOUND_PAN_ATTACKER
-	delay 9
-	playsewithpan SE_M_CONFUSE_RAY, 0
-	delay 9
-	playsewithpan SE_M_CONFUSE_RAY, SOUND_PAN_TARGET
-	delay 25
-	createvisualtask AnimTask_ShakeMonInPlace, 2, ANIM_TARGET, 10, 0, 20, 1
-	playsewithpan SE_M_SELF_DESTRUCT, SOUND_PAN_TARGET
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0, 0, 1, 1
-	delay 6
-	playsewithpan SE_M_SELF_DESTRUCT, SOUND_PAN_TARGET
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 24, -24, 1, 1
-	delay 6
-	playsewithpan SE_M_SELF_DESTRUCT, SOUND_PAN_TARGET
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, -16, 16, 1, 1
-	delay 6
-	playsewithpan SE_M_SELF_DESTRUCT, SOUND_PAN_TARGET
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, -24, -12, 1, 1
-	delay 6
-	playsewithpan SE_M_SELF_DESTRUCT, SOUND_PAN_TARGET
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 16, 16, 1, 1
-	waitforvisualfinish
-	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, F_PAL_BG, 3, 16, 0, RGB_WHITE
-	waitforvisualfinish
-	end
 
 gBattleAnimGeneral_FocusPunchSetUp::
 	loadspritegfx ANIM_TAG_FOCUS_ENERGY
@@ -21983,20 +21882,6 @@ gBattleAnimGeneral_IngrainHeal::
 	waitforvisualfinish
 	clearmonbg ANIM_DEF_PARTNER
 	blendoff
-	end
-
-gBattleAnimGeneral_WishHeal::
-	loadspritegfx ANIM_TAG_SPARKLE_2
-	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, F_PAL_BG, 3, 0, 10, RGB_BLACK
-	waitforvisualfinish
-	playsewithpan SE_M_MEGA_KICK, SOUND_PAN_ATTACKER
-	call GrantingStarsEffect
-	waitforvisualfinish
-	unloadspritegfx ANIM_TAG_SPARKLE_2
-	loadspritegfx ANIM_TAG_BLUE_STAR
-	call HealingEffect
-	waitforvisualfinish
-	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, F_PAL_BG, 3, 10, 0, RGB_BLACK
 	end
 
 gBattleAnimGeneral_SimpleHeal::

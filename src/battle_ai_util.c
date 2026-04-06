@@ -311,7 +311,7 @@ bool32 IsDamageMoveUnusable(u32 battlerAtk, u32 battlerDef, u32 move, u32 moveTy
     return FALSE;
 }
 
-s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectiveness, u32 weather)
+s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectiveness, enum ClimasCombate climaCombate)
 {
     s32 simulatedDmg;
     s32 moveType;
@@ -362,12 +362,12 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
         {
             damageCalcData.isCrit = FALSE;
             s32 nonCritDmg = CalculateMoveDamageVars(&damageCalcData, fixedBasePower,
-                                                     effectivenessMultiplier, weather,
+                                                     effectivenessMultiplier, climaCombate,
                                                      aiData->holdEffects[battlerAtk], aiData->holdEffects[battlerDef],
                                                      aiData->abilities[battlerAtk], aiData->abilities[battlerDef]);
             damageCalcData.isCrit = TRUE;
             s32 critDmg = CalculateMoveDamageVars(&damageCalcData, fixedBasePower,
-                                                  effectivenessMultiplier, weather,
+                                                  effectivenessMultiplier, climaCombate,
                                                   aiData->holdEffects[battlerAtk], aiData->holdEffects[battlerDef],
                                                   aiData->abilities[battlerAtk], aiData->abilities[battlerDef]);
 
@@ -379,7 +379,7 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
         {
             damageCalcData.isCrit = TRUE;
             s32 critDmg = CalculateMoveDamageVars(&damageCalcData, fixedBasePower,
-                                                  effectivenessMultiplier, weather,
+                                                  effectivenessMultiplier, climaCombate,
                                                   aiData->holdEffects[battlerAtk], aiData->holdEffects[battlerDef],
                                                   aiData->abilities[battlerAtk], aiData->abilities[battlerDef]);
 
@@ -388,7 +388,7 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
         else
         {
             s32 nonCritDmg = CalculateMoveDamageVars(&damageCalcData, fixedBasePower,
-                                                     effectivenessMultiplier, weather,
+                                                     effectivenessMultiplier, climaCombate,
                                                      aiData->holdEffects[battlerAtk], aiData->holdEffects[battlerDef],
                                                      aiData->abilities[battlerAtk], aiData->abilities[battlerDef]);
             simulatedDmg = nonCritDmg;
@@ -1031,23 +1031,6 @@ bool32 DoesBattlerIgnoreAbilityChecks(u32 atkAbility, u32 move)
     return FALSE;
 }
 
-static inline bool32 AI_WeatherHasEffect(struct AILogicData *aiData)
-{
-    if (AI_THINKING_STRUCT->aiFlags[sBattler_AI] & AI_FLAG_NEGATE_UNAWARE)
-        return TRUE; // AI doesn't understand weather supression (handicap)
-
-    return aiData->weatherHasEffect; // weather damping abilities are announced
-}
-
-u32 AI_GetWeather(struct AILogicData *aiData)
-{
-    if (gBattleWeather == B_WEATHER_NONE)
-        return B_WEATHER_NONE;
-    if (!AI_WeatherHasEffect(aiData))
-        return B_WEATHER_NONE;
-    return gBattleWeather;
-}
-
 bool32 IsNonVolatileStatusMoveEffect(u32 moveEffect)
 {
     switch (moveEffect)
@@ -1116,8 +1099,9 @@ bool32 IsSemiInvulnerable(u32 battlerDef, u32 move)
 
 bool32 ShouldSetSandstorm(u32 battler, u32 ability, u32 holdEffect)
 {
-    u32 weather = AI_GetWeather(AI_DATA);
-    if (weather & B_WEATHER_SANDSTORM)
+    enum ClimasCombate climaCombate = ObtenClimaCombate();
+
+    if (EsClimaCombateArena(climaCombate))
         return FALSE;
 
     if (ability == ABILITY_SAND_VEIL
@@ -1141,8 +1125,9 @@ bool32 ShouldSetSandstorm(u32 battler, u32 ability, u32 holdEffect)
 
 bool32 ShouldSetRain(u32 battlerAtk, u32 atkAbility, u32 holdEffect)
 {
-    u32 weather = AI_GetWeather(AI_DATA);
-    if (weather & B_WEATHER_RAIN)
+    enum ClimasCombate climaCombate = ObtenClimaCombate();
+
+    if (EsClimaCombateLluvia(climaCombate))
         return FALSE;
 
     if (atkAbility == ABILITY_SWIFT_SWIM
@@ -1162,8 +1147,9 @@ bool32 ShouldSetRain(u32 battlerAtk, u32 atkAbility, u32 holdEffect)
 
 bool32 ShouldSetSun(u32 battlerAtk, u32 atkAbility, u32 holdEffect)
 {
-    u32 weather = AI_GetWeather(AI_DATA);
-    if (weather & B_WEATHER_SUN)
+    enum ClimasCombate climaCombate = ObtenClimaCombate();
+
+    if (EsClimaCombateSol(climaCombate))
         return FALSE;
 
     if (atkAbility == ABILITY_CHLOROPHYLL
@@ -1186,20 +1172,21 @@ bool32 ShouldSetSun(u32 battlerAtk, u32 atkAbility, u32 holdEffect)
     return FALSE;
 }
 
-bool32 ShouldSetSnow(u32 battler, u32 ability, u32 holdEffect)
+bool32 DeberiaPonerNieve(u32 combatiente, u32 habilidad, u32 efectoObjeto)
 {
-    u32 weather = AI_GetWeather(AI_DATA);
-    if (weather & B_WEATHER_SNOW)
+    enum ClimasCombate climaCombate = ObtenClimaCombate();
+
+    if (EsClimaCombateNieve(climaCombate))
         return FALSE;
 
-    if (ability == ABILITY_SNOW_CLOAK
-     || ability == ABILITY_ICE_BODY
-     || ability == ABILITY_FORECAST
-     || ability == ABILITY_SLUSH_RUSH
-     || EsTipo(battler, TIPO_HIELO)
-     || HasMove(battlerAtk, MOVE_METEOROBOLA)
-     || HasMoveEffectANDArg(battler, EFFECT_PRECISION_INCREMENTADA_CLIMA, B_WEATHER_SNOW)
-     || HasMoveEffect(battler, EFECTO_VELO_AURORA))
+    if (habilidad == ABILITY_SNOW_CLOAK
+     || habilidad == ABILITY_ICE_BODY
+     || habilidad == ABILITY_FORECAST
+     || habilidad == ABILITY_SLUSH_RUSH
+     || EsTipo(combatiente, TIPO_HIELO)
+     || HasMove(combatiente, MOVE_METEOROBOLA)
+     || HasMoveEffectANDArg(combatiente, EFFECT_PRECISION_INCREMENTADA_CLIMA, B_WEATHER_SNOW)
+     || HasMoveEffect(combatiente, EFECTO_VELO_AURORA))
     {
         return TRUE;
     }
@@ -1511,7 +1498,9 @@ bool32 HasMoveEffectANDArg(u32 battlerId, u32 effect, u32 argument)
 
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
-        if (moves[i] != MOVE_NONE && gMovimientos[moves[i]].effect == effect && (gMovimientos[moves[i]].argument & argument))
+        if (moves[i] != MOVE_NONE 
+            && gMovimientos[moves[i]].effect == effect 
+            && ArgumentoMovimientoCoincideClima(gMovimientos[moves[i]].argument))
             return TRUE;
     }
 
@@ -1893,10 +1882,16 @@ bool32 HasSnatchAffectedMove(u32 battler)
 
 bool32 IsTwoTurnNotSemiInvulnerableMove(u32 battlerAtk, u32 move)
 {
+    u32 efectoObjeto = AI_DATA->holdEffects[battlerAtk];
+    enum ClimasCombate climaCombate = ObtenClimaCombate();
+
     switch (gMovimientos[move].effect)
     {
     case EFFECT_TWO_TURNS_ATTACK:
-        return !(AI_DATA->holdEffects[battlerAtk] == HOLD_EFFECT_POWER_HERB || (AI_GetWeather(AI_DATA) & gMovimientos[move].argument));
+        if (efectoObjeto == HOLD_EFFECT_POWER_HERB
+         || ArgumentoMovimientoCoincideClima(gMovimientos[move].argument));
+            return FALSE;
+        return TRUE;
     default:
         return FALSE;
     }
@@ -1995,16 +1990,16 @@ static bool32 BattlerAffectedBySnow(u32 battlerId, u32 ability)
     return FALSE;
 }
 
-static u32 GetWeatherDamage(u32 battlerId)
+static u32 ObtenDanioClima(u32 battlerId)
 {
     u32 ability = AI_DATA->abilities[battlerId];
     u32 holdEffect = AI_DATA->holdEffects[battlerId];
     u32 damage = 0;
-    u32 weather = AI_GetWeather(AI_DATA);
-    if (!weather)
+    enum ClimasCombate climaCombate = ObtenClimaCombate;
+    if (climaCombate == CLIMA_COMBATE_NINGUNO)
         return 0;
 
-    if (weather & B_WEATHER_SANDSTORM)
+    if (EsClimaCombateArena(climaCombate))
     {
         if (BattlerAffectedBySandstorm(battlerId, ability) && !(gStatuses3[battlerId] & (STATUS3_UNDERGROUND | STATUS3_UNDERWATER)) && holdEffect != HOLD_EFFECT_SAFETY_GOGGLES)
         {
@@ -2013,7 +2008,7 @@ static u32 GetWeatherDamage(u32 battlerId)
                 damage = 1;
         }
     }
-    if ((weather & B_WEATHER_SNOW) && ability != ABILITY_ICE_BODY)
+    if (EsClimaCombateNieve(climaCombate) && ability != ABILITY_ICE_BODY)
     {
         if (BattlerAffectedBySnow(battlerId, ability) && !(gStatuses3[battlerId] & (STATUS3_UNDERGROUND | STATUS3_UNDERWATER)) && holdEffect != HOLD_EFFECT_SAFETY_GOGGLES)
         {
@@ -2032,7 +2027,7 @@ u32 GetBattlerSecondaryDamage(u32 battlerId)
     if (AI_DATA->abilities[battlerId] == ABILITY_MAGIC_GUARD)
         return FALSE;
 
-    secondaryDamage = GetLeechSeedDamage(battlerId) + GetNightmareDamage(battlerId) + GetCurseDamage(battlerId) + GetTrapDamage(battlerId) + GetPoisonDamage(battlerId) + GetWeatherDamage(battlerId);
+    secondaryDamage = GetLeechSeedDamage(battlerId) + GetNightmareDamage(battlerId) + GetCurseDamage(battlerId) + GetTrapDamage(battlerId) + GetPoisonDamage(battlerId) + ObtenDanioClima(battlerId);
 
     return secondaryDamage;
 }
@@ -2278,12 +2273,12 @@ enum AIPivot ShouldPivot(u32 battlerAtk, u32 battlerDef, u32 defAbility, u32 mov
     return DONT_PIVOT;
 }
 
-bool32 CanDesarmeItem(u32 battler, u32 item)
+bool32 PuedeQuitarObjeto(u32 combatiente, u32 objeto)
 {
-    if (item == ITEM_NONE)
+    if (objeto == ITEM_NONE)
         return FALSE;
 
-    if (AI_DATA->abilities[battler] == ABILITY_STICKY_HOLD || AI_DATA->abilities[battler] == ABILITY_TERRITORIAL)
+    if (AI_DATA->abilities[combatiente] == ABILITY_STICKY_HOLD || AI_DATA->abilities[combatiente] == ABILITY_TERRITORIAL)
         return FALSE;
 
     return TRUE;
@@ -2539,6 +2534,7 @@ bool32 ShouldRecover(u32 battlerAtk, u32 battlerDef, u32 move, u32 healPercent)
 bool32 ShouldSetScreen(u32 battlerAtk, u32 battlerDef, u32 moveEffect)
 {
     u32 atkSide = GetBattlerSide(battlerAtk);
+    enum ClimasCombate climaCombate = ObtenClimaCombate();
 
     // Don't waste a turn if screens will be broken
     if (HasMoveEffect(battlerDef, EFFECT_BRICK_BREAK))
@@ -2548,7 +2544,7 @@ bool32 ShouldSetScreen(u32 battlerAtk, u32 battlerDef, u32 moveEffect)
     {
     case EFECTO_VELO_AURORA:
         // Use only in SNOW and only if AI doesn't already have Reflect, Light Screen or Aurora Veil itself active.
-        if ((AI_GetWeather(AI_DATA) & B_WEATHER_SNOW) && !(gSideStatuses[atkSide] & (SIDE_STATUS_REFLECT | SIDE_STATUS_LIGHTSCREEN | SIDE_STATUS_AURORA_VEIL)))
+        if (EsClimaCombateNieve(climaCombate) && !(gSideStatuses[atkSide] & (SIDE_STATUS_REFLECT | SIDE_STATUS_LIGHTSCREEN | SIDE_STATUS_AURORA_VEIL)))
             return TRUE;
         break;
     case EFFECT_REFLECT:
@@ -2699,10 +2695,6 @@ bool32 ShouldUseWishAromatherapy(u32 battlerAtk, u32 battlerDef, u32 move)
     {
         switch (gMovimientos[move].effect)
         {
-        case EFFECT_WISH:
-            if (needHealing)
-                return TRUE;
-            break;
         case EFFECT_HEAL_BELL:
             if (hasStatus)
                 return TRUE;
@@ -2712,8 +2704,6 @@ bool32 ShouldUseWishAromatherapy(u32 battlerAtk, u32 battlerDef, u32 move)
     {
         switch (gMovimientos[move].effect)
         {
-        case EFFECT_WISH:
-            return ShouldRecover(battlerAtk, battlerDef, move, 50); // Switch recovery isn't good idea in doubles
         case EFFECT_HEAL_BELL:
             if (hasStatus)
                 return TRUE;
@@ -2760,7 +2750,7 @@ s32 AI_CalcPartyMonDamage(u32 move, u32 battlerAtk, u32 battlerDef, struct Battl
         AI_THINKING_STRUCT->saved[battlerAtk].saved = FALSE;
     }
 
-    simulatedDmg = AI_CalcDamage(move, battlerAtk, battlerDef, &effectiveness, AI_GetWeather(AI_DATA));
+    simulatedDmg = AI_CalcDamage(move, battlerAtk, battlerDef, &effectiveness, ObtenClimaCombate());
     // restores original gBattleMon struct
     FreeRestoreBattleMons(savedBattleMons);
 

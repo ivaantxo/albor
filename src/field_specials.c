@@ -1941,11 +1941,6 @@ bool32 GetAbnormalWeatherMapNameAndType(void)
     return FALSE;
 }
 
-bool8 AbnormalWeatherHasExpired(void)
-{
-    return FALSE;
-}
-
 // All mart employees have a local id of 1, so function always returns 1
 u32 GetMartEmployeeObjectEventId(void)
 {

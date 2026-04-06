@@ -64,8 +64,6 @@ enum ItemEffectsBattle
     ITEMEFFECT_STATS_CHANGED,
 };
 
-#define WEATHER_HAS_EFFECT ((!EstaHabilidadEnCampo(ABILITY_SEPTIMO_CIELO)))
-
 #define IS_WHOLE_SIDE_ALIVE(battler)    ((IsBattlerAlive(battler) && IsBattlerAlive(ALIADO(battler))))
 #define IS_ALIVE_AND_PRESENT(battler)   (IsBattlerAlive(battler) && IsBattlerSpritePresent(battler))
 
@@ -137,13 +135,13 @@ u8 GetImprisonedMovesCount(u32 battler, u16 move);
 u8 DoFieldEndTurnEffects(void);
 s32 GetDrainedBigRootHp(u32 battler, s32 hp);
 u8 DoBattlerEndTurnEffects(void);
-bool32 HandleWishPerishSongOnTurnEnd(void);
+bool32 HandlePerishSongOnTurnEnd(void);
 bool32 HandleFaintedMonActions(void);
 void TryClearRageAndFuryCutter(void);
 u8 AtkCanceller_UnableToUseMove(u32 moveType);
 void SetAtkCancellerForCalledMove(void);
 bool32 HasNoMonsToSwitch(u32 battler, u8 r1, u8 r2);
-bool32 TryChangeBattleWeather(u32 battler, u32 weatherEnumId, bool32 viaAbility);
+bool32 IntentaCambiarClimaCombate(u32 combatiente, enum ClimasCombate nuevoClima, bool32 porHabilidad);
 u32 CanAbilityBlockMove(u32 battlerAtk, u32 battlerDef, u32 move, u32 abilityDef);
 u32 CanPartnerAbilityBlockMove(u32 battlerAtk, u32 battlerDef, u32 move, u32 abilityDef);
 u32 CanAbilityAbsorbMove(u32 battlerAtk, u32 battlerDef, u32 abilityDef, u32 move, u32 moveType);
@@ -178,7 +176,7 @@ u32 CalcRolloutBasePower(u32 battlerAtk, u32 basePower, u32 rolloutTimer);
 u32 CalcFuryCutterBasePower(u32 basePower, u32 furyCutterCounter);
 s32 CalculateMoveDamage(struct DamageCalculationData *damageCalcData, u32 fixedBasePower);
 s32 CalculateMoveDamageVars(struct DamageCalculationData *damageCalcData, u32 fixedBasePower, uq4_12_t typeEffectivenessModifier,
-                            u32 weather, u32 holdEffectAtk, u32 holdEffectDef, u32 abilityAtk, u32 abilityDef);
+                            enum ClimasCombate climaCombate, u32 holdEffectAtk, u32 holdEffectDef, u32 abilityAtk, u32 abilityDef);
 uq4_12_t CalcTypeEffectivenessMultiplier(u32 move, u32 moveType, u32 battlerAtk, u32 battlerDef, u32 defAbility, bool32 recordAbilities);
 uq4_12_t CalcPartyMonTypeEffectivenessMultiplier(u16 move, u16 speciesDef, u16 abilityDef);
 uq4_12_t ModificadorTipo(u32 tipoAtacante, u32 tipoDefensor);
@@ -201,7 +199,6 @@ bool32 TryRoomService(u32 battler);
 void BufferStatChange(u32 battler, u8 statId, u8 stringId);
 bool32 BlocksPrankster(u16 move, u32 battlerPrankster, u32 battlerDef, bool32 checkTarget);
 u16 GetUsedHeldItem(u32 battler);
-bool32 IsBattlerWeatherAffected(u32 battler, u32 weatherFlags);
 u32 GetBattlerMoveTargetType(u32 battler, u32 move);
 void CopyMonLevelAndBaseStatsToBattleMon(u32 battler, struct Pokemon *mon);
 void CopyMonAbilityAndTypesToBattleMon(u32 battler, struct Pokemon *mon);
@@ -236,5 +233,6 @@ void FreeBattleResources(void);
 void AdjustFriendshipOnBattleFaint(u8 battler);
 u32 CuantosPSLeQuedan(u32 combatiente);
 u32 CuantosPSMaximos(u32 combatiente);
+enum ClimasCombate ObtenClimaCombate(void);
 
 #endif // GUARD_BATTLE_UTIL_H

@@ -627,23 +627,6 @@ const struct SpriteTemplate gGreenStarSpriteTemplate =
     .callback = AnimGreenStar,
 };
 
-const s8 gDoomDesireLightBeamCoordTable[] =
-{
-    0x78,
-    0x50,
-    0x28,
-    0x00,
-};
-
-const u8 gDoomDesireLightBeamDelayTable[] =
-{
-    0,
-    0,
-    0,
-    0,
-    50,
-};
-
 const union AffineAnimCmd gRageFistAffineAnimCmds[] =
 {
     AFFINEANIMCMD_FRAME(0, -15, 0, 7),
@@ -2401,94 +2384,6 @@ static void AnimGreenStar_Callback(struct Sprite *sprite)
             sprite->invisible = TRUE;
             sprite->callback = SpriteCallbackDummy;
         }
-    }
-}
-
-void AnimTask_DoomDesireLightBeam(u8 taskId)
-{
-    struct BattleAnimBgData animBg;
-
-    switch (gTasks[taskId].data[0])
-    {
-    case 0:
-        SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG1);
-        SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(3, 13));
-        SetAnimBgAttribute(1, BG_ANIM_SCREEN_SIZE, 0);
-        SetAnimBgAttribute(1, BG_ANIM_PRIORITY, 1);
-        SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 1);
-        GetBattleAnimBg1Data(&animBg);
-        AnimLoadCompressedBgTilemap(animBg.bgId, &gBattleAnimMaskTilemap_LightBeam);
-        u32 position = gBattleAnimTarget;
-        if (EsContraEntrenador())
-        {
-            if (position == OPONENTE_IZQUIERDA)
-                gBattle_BG1_X = -155;
-            if (position == OPONENTE_DERECHA)
-                gBattle_BG1_X = -115;
-            if (position == JUGADOR_IZQUIERDA)
-                gBattle_BG1_X = 14;
-            if (position == JUGADOR_DERECHA)
-                gBattle_BG1_X = -20;
-        }
-        else
-        {
-            if (position == OPONENTE_IZQUIERDA)
-                gBattle_BG1_X = -135;
-            if (position == JUGADOR_IZQUIERDA)
-                gBattle_BG1_X = -10;
-        }
-
-        gBattle_BG1_Y = 0;
-        AnimLoadCompressedBgGfx(animBg.bgId, gBattleAnimMaskImage_LightBeam, animBg.tilesOffset);
-        LoadCompressedPalette(gBattleAnimMaskPalette_LightBeam, BG_PLTT_ID(animBg.paletteId), PLTT_SIZE_4BPP);
-        gTasks[taskId].data[10] = gBattle_BG1_X;
-        gTasks[taskId].data[11] = gBattle_BG1_Y;
-        gTasks[taskId].data[0]++;
-        break;
-    case 1:
-        gTasks[taskId].data[3] = 0;
-        if (GetBattlerSide(gBattleAnimTarget) == LADO_OPONENTE)
-            gBattle_BG1_X = gTasks[taskId].data[10] + gDoomDesireLightBeamCoordTable[gTasks[taskId].data[2]];
-        else
-            gBattle_BG1_X = gTasks[taskId].data[10] - gDoomDesireLightBeamCoordTable[gTasks[taskId].data[2]];
-
-        if (++gTasks[taskId].data[2] == 5)
-            gTasks[taskId].data[0] = 5;
-        else
-            gTasks[taskId].data[0]++;
-        break;
-    case 2:
-        if (--gTasks[taskId].data[1] <= 4)
-            gTasks[taskId].data[1] = 5;
-
-        SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(3, gTasks[taskId].data[1]));
-        if (gTasks[taskId].data[1] == 5)
-            gTasks[taskId].data[0]++;
-        break;
-    case 3:
-        if (++gTasks[taskId].data[3] > gDoomDesireLightBeamDelayTable[gTasks[taskId].data[2]])
-            gTasks[taskId].data[0]++;
-        break;
-    case 4:
-        if (++gTasks[taskId].data[1] > 13)
-            gTasks[taskId].data[1] = 13;
-
-        SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(3, gTasks[taskId].data[1]));
-        if (gTasks[taskId].data[1] == 13)
-            gTasks[taskId].data[0] = 1;
-        break;
-    case 5:
-        GetBattleAnimBg1Data(&animBg);
-        ClearBattleAnimBg(animBg.bgId);
-        SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 0);
-
-        SetAnimBgAttribute(1, BG_ANIM_PRIORITY, 1);
-        gBattle_BG1_X = 0;
-        gBattle_BG1_Y = 0;
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
-        SetGpuReg(REG_OFFSET_BLDALPHA, 0);
-        DestroyAnimVisualTask(taskId);
-        break;
     }
 }
 
@@ -4599,12 +4494,10 @@ static void AnimRecycle_Step(struct Sprite *sprite)
 
 void AnimTask_GetWeather(u8 taskId)
 {
-    bool32 utilityUmbrellaAffected = GetBattlerHoldEffect(gBattleAnimAttacker, TRUE) == HOLD_EFFECT_UTILITY_UMBRELLA;
-
     gBattleAnimArgs[ARG_RET_ID] = ANIM_WEATHER_NONE;
-    if (gWeatherMoveAnim & B_WEATHER_SUN && !utilityUmbrellaAffected)
+    if (gWeatherMoveAnim & B_WEATHER_SUN)
         gBattleAnimArgs[ARG_RET_ID] = ANIM_WEATHER_SUN;
-    else if (gWeatherMoveAnim & B_WEATHER_RAIN && !utilityUmbrellaAffected)
+    else if (gWeatherMoveAnim & B_WEATHER_RAIN)
         gBattleAnimArgs[ARG_RET_ID] = ANIM_WEATHER_RAIN;
     else if (gWeatherMoveAnim & B_WEATHER_SANDSTORM)
         gBattleAnimArgs[ARG_RET_ID] = ANIM_WEATHER_SANDSTORM;

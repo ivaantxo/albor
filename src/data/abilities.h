@@ -603,12 +603,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Fainting damages the foe."),
     },
 
-    [ABILITY_FOREWARN] =
-    {
-        .name = _("Forewarn"),
-        .description = COMPOUND_STRING("Determines a foe's move."),
-    },
-
     [ABILITY_CROMOLENTE] =
     {
         .name = _("Cromolente"),
@@ -651,12 +645,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Honey Gather"),
         .description = COMPOUND_STRING("May gather Honey."),
-    },
-
-    [ABILITY_FRISK] =
-    {
-        .name = _("Frisk"),
-        .description = COMPOUND_STRING("Checks a foe's item."),
     },
 
     [ABILITY_AUDAZ] =

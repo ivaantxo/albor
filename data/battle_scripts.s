@@ -304,11 +304,6 @@ BattleScript_StrengthSapMustLower:
 	waitanimation
 	goto BattleScript_StrengthSapLower
 
-BattleScript_MoveEffectIncinerate::
-	EscribeTextoCombate "{B_EFF_NAME_WITH_PREFIX}'s {B_LAST_ITEM} was burnt up!"
-	waitmessage PAUSA_LARGA
-	return
-
 BattleScript_MoveEffectBugBite::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} stole and ate its target's {B_LAST_ITEM}!"
 	waitmessage PAUSA_LARGA
@@ -2413,8 +2408,10 @@ BattleScript_EffectRollout::
 	attackstring
 	jumpifstatus2 BS_ATTACKER, STATUS2_MULTIPLETURNS, BattleScript_RolloutCheckAccuracy
 	ppreduce
+
 BattleScript_RolloutCheckAccuracy::
 	accuracycheck BattleScript_RolloutHit, ACC_CURR_MOVE
+
 BattleScript_RolloutHit::
 	typecalc
 	handlerollout
@@ -2436,6 +2433,7 @@ BattleScript_EffectSwagger::
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 	printfromtable gStatUpStringIds
 	waitmessage PAUSA_LARGA
+
 BattleScript_SwaggerTryConfuse:
 	jumpifability BS_TARGET, ABILITY_OWN_TEMPO, BattleScript_OwnTempoPrevents
 	jumpifsafeguard BattleScript_SafeguardProtected
@@ -2606,17 +2604,6 @@ BattleScript_EffectPsychUp::
 	attackanimation
 	waitanimation
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} copied {B_DEF_NAME_WITH_PREFIX}'s stat changes!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectFutureSight::
-	attackcanceler
-	attackstring
-	ppreduce
-	trysetfutureattack BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	printfromtable gFutureMoveUsedStringIds
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -2935,15 +2922,6 @@ BattleScript_EffectTrick::
 	waitmessage PAUSA_LARGA
 	printfromtable gItemSwapStringIds
 	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectWish::
-	attackcanceler
-	attackstring
-	ppreduce
-	trywish 0, BattleScript_ButItFailed
-	attackanimation
-	waitanimation
 	goto BattleScript_MoveEnd
 
 
@@ -4011,58 +3989,6 @@ BattleScript_StealthRockDefog::
 	waitmessage PAUSA_LARGA
 	return
 
-BattleScript_MonTookFutureAttack::
-	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} took the {B_BUFF1} attack!"
-	waitmessage PAUSA_LARGA
-	jumpifword COMPARACION_DESIGUAL, gMensajeBatalla, B_MSG_FUTURE_SIGHT, BattleScript_CheckDoomDesireMiss
-	accuracycheck BattleScript_FutureAttackMiss, MOVE_FUTURE_SIGHT
-	goto BattleScript_FutureAttackAnimate
-
-BattleScript_CheckDoomDesireMiss::
-	accuracycheck BattleScript_FutureAttackMiss, MOVE_DOOM_DESIRE
-
-BattleScript_FutureAttackAnimate::
-	critcalc
-	damagecalc
-	adjustdamage
-	jumpifmovehadnoeffect BattleScript_DoFutureAttackResult
-	jumpifword COMPARACION_DESIGUAL, gMensajeBatalla, B_MSG_FUTURE_SIGHT, BattleScript_FutureHitAnimDoomDesire
-	playanimation BS_ATTACKER, B_ANIM_FUTURE_SIGHT_HIT
-	goto BattleScript_DoFutureAttackHit
-
-BattleScript_FutureHitAnimDoomDesire::
-	playanimation BS_ATTACKER, B_ANIM_DOOM_DESIRE_HIT
-
-BattleScript_DoFutureAttackHit::
-	HazSonidoEfectividad
-	hitanimation BS_TARGET
-	waitstate
-	healthbarupdate BS_TARGET
-	datahpupdate BS_TARGET
-	critmessage
-	waitmessage PAUSA_LARGA
-
-BattleScript_DoFutureAttackResult:
-	resultmessage
-	waitmessage PAUSA_LARGA
-	tryfaintmon BS_TARGET
-	checkteamslost BattleScript_FutureAttackEnd
-
-BattleScript_FutureAttackEnd::
-	moveendcase MOVEEND_RAGE
-	moveendcase MOVEEND_ABILITIES
-	moveendfromto MOVEEND_ITEM_EFFECTS_ALL, MOVEEND_UPDATE_LAST_MOVES
-	setbyte gMoveResultFlags, 0
-	end2
-
-BattleScript_FutureAttackMiss::
-	pause PAUSA_CORTA
-	sethword gMoveResultFlags, MOVE_RESULT_FAILED
-	resultmessage
-	waitmessage PAUSA_LARGA
-	sethword gMoveResultFlags, 0
-	end2
-
 BattleScript_NoMovesLeft::
 	printselectionstring STRINGID_PKMNHASNOMOVESLEFT
 	endselectionscript
@@ -4126,26 +4052,6 @@ BattleScript_MoveUsedGravityPrevents::
 BattleScript_SelectingNotAllowedCurrentMove::
 	printselectionstring STRINGID_CURRENTMOVECANTSELECT
 	endselectionscript
-
-BattleScript_WishComesTrue::
-	trywish 1, BattleScript_WishButFullHp
-	playanimation BS_TARGET, B_ANIM_WISH_HEAL
-	EscribeTextoCombate "{B_BUFF1}'s WISH came true!"
-	waitmessage PAUSA_LARGA
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
-	healthbarupdate BS_TARGET
-	datahpupdate BS_TARGET
-	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} regained health!"
-	waitmessage PAUSA_LARGA
-	end2
-
-BattleScript_WishButFullHp::
-	EscribeTextoCombate "{B_BUFF1}'s WISH came true!"
-	waitmessage PAUSA_LARGA
-	pause PAUSA_CORTA
-	printstring STRINGID_PKMNHPFULL
-	waitmessage PAUSA_LARGA
-	end2
 
 BattleScript_IngrainTurnHeal::
 	playanimation BS_ATTACKER, B_ANIM_INGRAIN_HEAL
@@ -5401,22 +5307,6 @@ BattleScript_SwitchInAbilityMsgRet::
 	printfromtable gSwitchInAbilityStringIds
 	waitmessage PAUSA_LARGA
 	return
-
-BattleScript_FriskMsgWithPopup::
-	copybyte gBattlerAbility, gBattlerAttacker
-	call BattleScript_AbilityPopUp
-
-BattleScript_FriskMsg::
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} frisked {B_DEF_NAME_WITH_PREFIX} and found its {B_LAST_ITEM}!"
-	waitmessage PAUSA_LARGA
-	return
-
-BattleScript_FriskActivates::
-	saveattacker
-	copybyte gBattlerAttacker, sBATTLER
-	tryfriskmsg BS_SCRIPTING
-	restoreattacker
-	end3
 
 BattleScript_HurtAttacker:
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE

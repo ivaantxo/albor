@@ -187,7 +187,6 @@ enum
     LIST_SIDE_LUCKY_CHANT,
     LIST_SIDE_TOXIC_SPIKES,
     LIST_SIDE_STEALTH_ROCK,
-    LIST_SIDE_DAMAGE_NON_TYPES,
 };
 
 enum
@@ -311,7 +310,6 @@ static const u8 sText_AuroraVeil[] = _("Aurora Veil");
 static const u8 sText_LuckyChant[] = _("Lucky Chant");
 static const u8 sText_ToxicSpikes[] = _("Toxic Spikes");
 static const u8 sText_StealthRock[] = _("Stealth Rock");
-static const u8 sText_DamageNonTypes[] = _("Damage Non-Types");
 static const u8 sText_CheckBadMove[] = _("Check Bad Move");
 static const u8 sText_TryToFaint[] = _("Try to Faint");
 static const u8 sText_CheckViability[] = _("Check Viability");
@@ -503,7 +501,6 @@ static const struct ListMenuItem sSideStatusListItems[] =
     {sText_LuckyChant, LIST_SIDE_LUCKY_CHANT},
     {sText_ToxicSpikes, LIST_SIDE_TOXIC_SPIKES},
     {sText_StealthRock, LIST_SIDE_STEALTH_ROCK},
-    {sText_DamageNonTypes, LIST_SIDE_DAMAGE_NON_TYPES},
 };
 
 static const struct ListMenuItem sAIListItems[] =
@@ -1836,16 +1833,6 @@ static u8 *GetSideStatusValue(struct BattleDebugMenu *data, bool32 changeStatus,
                 *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_STEALTH_ROCK;
         }
         return &sideTimer->stealthRockAmount;
-    case LIST_SIDE_DAMAGE_NON_TYPES:
-        if (changeStatus)
-        {
-            if (statusTrue)
-                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_DAMAGE_NON_TYPES;
-            else
-                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_DAMAGE_NON_TYPES;
-            sideTimer->damageNonTypesType = gMovimientos[gCurrentMove].type;
-        }
-        return &sideTimer->damageNonTypesTimer;
     default:
         return NULL;
     }
