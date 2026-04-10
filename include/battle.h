@@ -160,14 +160,12 @@ struct SpecialStatus
     u8 switchInAbilityDone : 1;
     u8 switchInItemDone : 1;
     u8 berryReduced : 1;
-    u8 rototillerAffected : 1; // to be affected by rototiller
     u8 parentalBondState : 2;
     u8 multiHitOn : 1;
     u8 announceNeutralizingGas : 1; // See Cmd_switchineffects
     u8 neutralizingGasRemoved : 1;  // See VARIOUS_TRY_END_NEUTRALIZING_GAS
     // End of byte
     u8 damagedMons : 4; // Mons that have been damaged directly by using a move, includes substitute.
-    u8 afterYou : 1;
     u8 preventLifeOrbDamage : 1; // So that Life Orb doesn't activate various effects.
     bool32 potenciadoGema;
 };

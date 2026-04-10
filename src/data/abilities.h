@@ -881,18 +881,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("+25% balísticos."),
     },
 
-    [ABILITY_SYMBIOSIS] =
-    {
-        .name = _("Symbiosis"),
-        .description = COMPOUND_STRING("Passes its item to an ally."),
-    },
-
-    [ABILITY_TOUGH_CLAWS] =
-    {
-        .name = _("Tough Claws"),
-        .description = COMPOUND_STRING("Boosts contact moves."),
-    },
-
     [ABILITY_PIXILATE] =
     {
         .name = _("Pixilate"),

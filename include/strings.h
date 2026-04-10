@@ -1273,7 +1273,6 @@ extern const u8 gText_FindWordsThatDescribeYour[];
 extern const u8 gText_FeelingsRightNow[];
 extern const u8 gText_WhatsHipAndHappening[];
 extern const u8 gText_CombineTwoWordsOrPhrases[];
-extern const u8 gText_AfterYouHaveReadTheQuiz[];
 extern const u8 gText_QuestionPressTheAButton[];
 extern const u8 gText_TheQuizAnswerIs[];
 extern const u8 gText_OutOfTheListedChoices[];

@@ -1162,11 +1162,6 @@
 	callnative BS_TryRelicSong
 	.endm
 
-	@ Used by effects that may proc Symbiosis but do not call removeitem.
-	.macro trysymbiosis
-	callnative BS_TrySymbiosis
-	.endm
-
 	.macro checkparentalbondcounter counter:req, ptr:req
 	callnative BS_CheckParentalBondCounter
 	.byte \counter
@@ -1371,16 +1366,6 @@
 	various \battler, VARIOUS_SET_LAST_USED_ABILITY
 	.endm
 
-	.macro tryafteryou failInstr:req
-	various BS_ATTACKER, VARIOUS_AFTER_YOU
-	.4byte \failInstr
-	.endm
-
-	.macro trybestow failInstr:req
-	various BS_ATTACKER, VARIOUS_BESTOW
-	.4byte \failInstr
-	.endm
-
 	.macro invertstatstages battler:req
 	various \battler, VARIOUS_INVERT_STAT_STAGES
 	.endm
@@ -1407,11 +1392,6 @@
 	.macro tryautotomize battler:req, failInstr:req
 	various \battler, VARIOUS_TRY_AUTOTOMIZE
 	.4byte \failInstr
-	.endm
-
-	.macro jumpifcantusesynchronoise jumpInstr:req
-	various BS_ATTACKER, VARIOUS_TRY_SYNCHRONOISE
-	.4byte \jumpInstr
 	.endm
 
 	.macro showabilitypopup battler:req
@@ -1455,10 +1435,6 @@
 
 	.macro setauroraveil battler:req
 	various \battler, VARIOUS_SET_AURORA_VEIL
-	.endm
-
-	.macro setpowder battler:req
-	various \battler, VARIOUS_SET_POWDER
 	.endm
 
 	.macro spectralthiefprintstats
@@ -1582,16 +1558,6 @@
 
 	.macro setattackertostickywebuser
 	various BS_TARGET, VARIOUS_SET_ATTACKER_STICKY_WEB_USER
-	.endm
-
-	.macro getrototillertargets failInstr:req
-	various BS_ATTACKER, VARIOUS_GET_ROTOTILLER_TARGETS
-	.4byte \failInstr
-	.endm
-
-	.macro jumpifnotrototilleraffected battler:req, jumpInstr:req
-	various \battler, VARIOUS_JUMP_IF_NOT_ROTOTILLER_AFFECTED
-	.4byte \jumpInstr
 	.endm
 
 	.macro jumpifweatheraffected battler:req, flags:req, jumpInstr:req

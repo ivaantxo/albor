@@ -111,7 +111,6 @@ enum ResultadosCombate
 #define STATUS2_LOCK_CONFUSE_TURN(num)((num) << 10)
 #define STATUS2_MULTIPLETURNS         (1 << 12)
 #define STATUS2_WRAPPED               (1 << 13)
-#define STATUS2_POWDER                (1 << 14)
 #define STATUS2_INFATUATION           (1 << 16 | 1 << 17 | 1 << 18 | 1 << 19)  // 4 bits, one for every battler
 #define STATUS2_INFATUATED_WITH(battler) (1u << (battler + 16))
 #define STATUS2_DEFENSE_CURL          (1 << 20)
@@ -414,7 +413,6 @@ enum EfectosFinTurnoIndividuales
     ENDTURN_ITEMS2,
     ENDTURN_ORBS,
     ENDTURN_ROOST,
-    ENDTURN_POWDER,
     ENDTURN_THROAT_CHOP,
     ENDTURN_CUD_CHEW,
     ENDTURN_TORMENT, // supposedly this goes after Taunt, before Encore, but Encore is first right now?

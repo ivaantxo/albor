@@ -312,9 +312,7 @@ static void DrawLevelUpWindow2(void);
 static void PutMonIconOnLvlUpBanner(void);
 static void DrawLevelUpBannerText(void);
 static void SpriteCB_MonIconOnLvlUpBanner(struct Sprite *sprite);
-static void BestowItem(u32 battlerAtk, u32 battlerDef);
 static bool8 IsFinalStrikeEffect(u32 moveEffect);
-static bool32 ChangeOrderTargetAfterAttacker(void);
 void ApplyExperienceMultipliers(s32 *expAmount, u8 expGetterMonId, u8 faintedBattler);
 static bool8 CanAbilityPreventStatLoss(u16 abilityDef);
 static u32 GetNextTarget(u32 moveTarget, bool32 excludeCurrent);
@@ -3873,9 +3871,6 @@ static bool32 IntentaScriptCombateQuitarObjeto(u32 defensor)
     return FALSE;
 }
 
-#define SYMBIOSIS_CHECK(battler, ally) \
-    HabilidadCombatiente(ally) == ABILITY_SYMBIOSIS &&gBattleMons[battler].item == ITEM_NONE &&gBattleMons[ally].item != ITEM_NONE &&IsBattlerAlive(battler) && IsBattlerAlive(ally)
-
 static u32 GetNextTarget(u32 moveTarget, bool32 excludeCurrent)
 {
     u32 battler;
@@ -4483,22 +4478,6 @@ static void Cmd_moveend(void)
                         effect = TRUE;
                         break; // Pickpocket activates on fastest mon, so exit loop.
                     }
-                }
-            }
-            gBattleScripting.moveendState++;
-            break;
-        case MOVEEND_SYMBIOSIS:
-            for (i = 0; i < gBattlersCount; i++)
-            {
-                if ((gSpecialStatuses[i].berryReduced || (B_SYMBIOSIS_GEMS >= GEN_7 && gSpecialStatuses[i].potenciadoGema)) && SYMBIOSIS_CHECK(i, ALIADO(i)))
-                {
-                    BestowItem(ALIADO(i), i);
-                    gLastUsedAbility = gBattleMons[ALIADO(i)].ability;
-                    gBattleScripting.battler = gBattlerAbility = ALIADO(i);
-                    gBattlerAttacker = i;
-                    BattleScriptPushCursor();
-                    gBattlescriptCurrInstr = BattleScript_SymbiosisActivates;
-                    effect = TRUE;
                 }
             }
             gBattleScripting.moveendState++;
@@ -5662,38 +5641,6 @@ static void Cmd_setgravity(void)
     }
 }
 
-// Used by Bestow and Symbiosis to take an item from one battler and give to another.
-static void BestowItem(u32 battlerAtk, u32 battlerDef)
-{
-    gLastUsedItem = gBattleMons[battlerAtk].item;
-
-    gBattleMons[battlerAtk].item = ITEM_NONE;
-    BtlController_EmitSetMonData(battlerAtk, BUFFER_A, REQUEST_HELDITEM_BATTLE, 0, sizeof(gBattleMons[battlerAtk].item), &gBattleMons[battlerAtk].item);
-    MarcaCombatienteOcupado(battlerAtk);
-    CheckSetUnburden(battlerAtk);
-
-    gBattleMons[battlerDef].item = gLastUsedItem;
-    BtlController_EmitSetMonData(battlerDef, BUFFER_A, REQUEST_HELDITEM_BATTLE, 0, sizeof(gBattleMons[battlerDef].item), &gBattleMons[battlerDef].item);
-    MarcaCombatienteOcupado(battlerDef);
-    gBattleResources->flags[battlerDef] &= ~RESOURCE_FLAG_UNBURDEN;
-}
-
-// Called by Cmd_removeitem. itemId represents the item that was removed, not being given.
-static bool32 TrySymbiosis(u32 battler, u32 itemId)
-{
-    if (gBattleStruct->changedItems[battler] == ITEM_NONE && GetBattlerHoldEffect(battler, TRUE) != HOLD_EFFECT_EJECT_BUTTON && GetBattlerHoldEffect(battler, TRUE) != HOLD_EFFECT_EJECT_PACK && (B_SYMBIOSIS_GEMS < GEN_7 || !(gSpecialStatuses[battler].potenciadoGema)) && !gSpecialStatuses[battler].berryReduced && SYMBIOSIS_CHECK(battler, ALIADO(battler)))
-    {
-        BestowItem(ALIADO(battler), battler);
-        gLastUsedAbility = gBattleMons[ALIADO(battler)].ability;
-        gBattleScripting.battler = gBattlerAbility = ALIADO(battler);
-        gBattlerAttacker = battler;
-        BattleScriptPush(gBattlescriptCurrInstr + 2);
-        gBattlescriptCurrInstr = BattleScript_SymbiosisActivates;
-        return TRUE;
-    }
-    return FALSE;
-}
-
 static void Cmd_removeitem(void)
 {
     CMD_ARGS(u8 battler);
@@ -5723,8 +5670,7 @@ static void Cmd_removeitem(void)
     MarcaCombatienteOcupado(battler);
 
     ClearBattlerItemEffectHistory(battler);
-    if (!TrySymbiosis(battler, itemId))
-        gBattlescriptCurrInstr = cmd->nextInstr;
+    gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
 static void Cmd_atknameinbuff1(void)
@@ -6229,64 +6175,6 @@ u32 GetHighestStatId(u32 battler)
     return highestId;
 }
 
-static bool32 IsRototillerAffected(u32 battler)
-{
-    if (!IsBattlerAlive(battler))
-        return FALSE;
-    if (!EstaCombatienteEnSuelo(battler))
-        return FALSE; // Only grounded battlers affected
-    if (!EsTipo(battler, TIPO_PLANTA))
-        return FALSE; // Only grass types affected
-    if (gStatuses3[battler] & STATUS3_SEMI_INVULNERABLE)
-        return FALSE; // Rototiller doesn't affected semi-invulnerable battlers
-    if (BlocksPrankster(MOVE_ROTOTILLER, gBattlerAttacker, battler, FALSE))
-        return FALSE;
-    return TRUE;
-}
-
-// Return True if the order was changed, and false if the order was not changed(for example because the target would move after the attacker anyway).
-static bool32 ChangeOrderTargetAfterAttacker(void)
-{
-    u32 i;
-    u8 data[NUMERO_COMBATIENTES];
-    u8 actionsData[NUMERO_COMBATIENTES];
-
-    if (GetBattlerTurnOrderNum(gBattlerAttacker) > GetBattlerTurnOrderNum(gBattlerTarget))
-        return FALSE;
-    if (GetBattlerTurnOrderNum(gBattlerAttacker) + 1 == GetBattlerTurnOrderNum(gBattlerTarget))
-        return B_AFTER_YOU_TURN_ORDER >= GEN_8;
-
-    for (i = 0; i < NUMERO_COMBATIENTES; i++)
-    {
-        data[i] = gBattlerByTurnOrder[i];
-        actionsData[i] = gActionsByTurnOrder[i];
-    }
-    if (GetBattlerTurnOrderNum(gBattlerAttacker) == 0 && GetBattlerTurnOrderNum(gBattlerTarget) == 2)
-    {
-        gBattlerByTurnOrder[1] = gBattlerTarget;
-        gActionsByTurnOrder[1] = actionsData[2];
-        gBattlerByTurnOrder[2] = data[1];
-        gActionsByTurnOrder[2] = actionsData[1];
-    }
-    else if (GetBattlerTurnOrderNum(gBattlerAttacker) == 0 && GetBattlerTurnOrderNum(gBattlerTarget) == 3)
-    {
-        gBattlerByTurnOrder[1] = gBattlerTarget;
-        gActionsByTurnOrder[1] = actionsData[3];
-        gBattlerByTurnOrder[2] = data[1];
-        gActionsByTurnOrder[2] = actionsData[1];
-        gBattlerByTurnOrder[3] = data[2];
-        gActionsByTurnOrder[3] = actionsData[2];
-    }
-    else // Attacker == 1, Target == 3
-    {
-        gBattlerByTurnOrder[2] = gBattlerTarget;
-        gActionsByTurnOrder[2] = actionsData[3];
-        gBattlerByTurnOrder[3] = data[2];
-        gActionsByTurnOrder[3] = actionsData[2];
-    }
-    return TRUE;
-}
-
 static void Cmd_various(void)
 {
     CMD_ARGS(u8 battler, u8 id);
@@ -6441,12 +6329,6 @@ static void Cmd_various(void)
                 }
             }
         }
-        break;
-    }
-    case VARIOUS_SET_POWDER:
-    {
-        VARIOUS_ARGS();
-        gBattleMons[battler].status2 |= STATUS2_POWDER;
         break;
     }
     case VARIOUS_CANCEL_MULTI_TURN_MOVES:
@@ -6840,15 +6722,6 @@ static void Cmd_various(void)
             gBattlescriptCurrInstr = cmd->jumpInstr;
         return;
     }
-    case VARIOUS_TRY_SYNCHRONOISE:
-    {
-        VARIOUS_ARGS(const u8 *failInstr);
-        if (!DoBattlersShareType(gBattlerAttacker, gBattlerTarget))
-            gBattlescriptCurrInstr = cmd->failInstr;
-        else
-            gBattlescriptCurrInstr = cmd->nextInstr;
-        return;
-    }
     case VARIOUS_LOSE_TYPE:
     {
         VARIOUS_ARGS(u8 type);
@@ -6870,34 +6743,6 @@ static void Cmd_various(void)
         gStatuses3[battler] ^= STATUS3_POWER_TRICK;
         SWAP(gBattleMons[battler].attack, gBattleMons[battler].defense, i);
         break;
-    }
-    case VARIOUS_AFTER_YOU:
-    {
-        VARIOUS_ARGS(const u8 *failInstr);
-        if (ChangeOrderTargetAfterAttacker())
-        {
-            gSpecialStatuses[gBattlerTarget].afterYou = 1;
-            gBattlescriptCurrInstr = cmd->nextInstr;
-        }
-        else
-        {
-            gBattlescriptCurrInstr = cmd->failInstr;
-        }
-        return;
-    }
-    case VARIOUS_BESTOW:
-    {
-        VARIOUS_ARGS(const u8 *failInstr);
-        if (gBattleMons[gBattlerAttacker].item == ITEM_NONE || gBattleMons[gBattlerTarget].item != ITEM_NONE)
-        {
-            gBattlescriptCurrInstr = cmd->failInstr;
-        }
-        else
-        {
-            BestowItem(gBattlerAttacker, gBattlerTarget);
-            gBattlescriptCurrInstr = cmd->nextInstr;
-        }
-        return;
     }
     case VARIOUS_JUMP_IF_NOT_GROUNDED:
     {
@@ -7079,43 +6924,6 @@ static void Cmd_various(void)
             return;
         }
         break;
-    }
-    case VARIOUS_GET_ROTOTILLER_TARGETS:
-    {
-        VARIOUS_ARGS(const u8 *failInstr);
-        // Gets the battlers to be affected by rototiller. If there are none, print 'But it failed!'
-        {
-            u32 count = 0;
-            for (i = 0; i < gBattlersCount; i++)
-            {
-                gSpecialStatuses[i].rototillerAffected = FALSE;
-                if (IsRototillerAffected(i))
-                {
-                    gSpecialStatuses[i].rototillerAffected = TRUE;
-                    count++;
-                }
-            }
-
-            if (count == 0)
-                gBattlescriptCurrInstr = cmd->failInstr; // Rototiller fails
-            else
-                gBattlescriptCurrInstr = cmd->nextInstr;
-        }
-        return;
-    }
-    case VARIOUS_JUMP_IF_NOT_ROTOTILLER_AFFECTED:
-    {
-        VARIOUS_ARGS(const u8 *jumpInstr);
-        if (gSpecialStatuses[battler].rototillerAffected)
-        {
-            gSpecialStatuses[battler].rototillerAffected = FALSE;
-            gBattlescriptCurrInstr = cmd->nextInstr;
-        }
-        else
-        {
-            gBattlescriptCurrInstr = cmd->jumpInstr; // Unaffected by rototiller
-        }
-        return;
     }
     case VARIOUS_CONSUME_BERRY:
     {
@@ -10270,24 +10078,6 @@ void BS_JumpIfCantLoseItem(void)
         gBattlescriptCurrInstr = cmd->jumpInstr;
     else
         gBattlescriptCurrInstr = cmd->nextInstr;
-}
-
-void BS_TrySymbiosis(void)
-{
-    NATIVE_ARGS();
-    // called by Bestow, and Bug Bite, which don't work with Cmd_removeitem.
-    u32 partner = ALIADO(gBattlerAttacker);
-    if (SYMBIOSIS_CHECK(gBattlerAttacker, partner))
-    {
-        BestowItem(partner, gBattlerAttacker);
-        gLastUsedAbility = gBattleMons[partner].ability;
-        gBattleScripting.battler = gBattlerAbility = partner;
-        BattleScriptPushCursor();
-        gBattlescriptCurrInstr = BattleScript_SymbiosisActivates;
-        return;
-    }
-
-    gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
 u8 GetFirstFaintedPartyIndex(u8 battler)

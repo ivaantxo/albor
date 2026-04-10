@@ -959,32 +959,10 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .battleScript = BattleScript_EffectHitEnemyHealAlly,
             },
 
-        [EFFECT_SYNCHRONOISE] =
-            {
-                .battleScript = BattleScript_EffectSynchronoise,
-            },
-
         [EFFECT_POWER_TRICK] =
             {
                 .battleScript = BattleScript_EffectPowerTrick,
                 .encourageEncore = TRUE,
-            },
-
-        [EFFECT_AFTER_YOU] =
-            {
-                .battleScript = BattleScript_EffectAfterYou,
-                .encourageEncore = TRUE,
-            },
-
-        [EFFECT_BESTOW] =
-            {
-                .battleScript = BattleScript_EffectBestow,
-                .encourageEncore = TRUE,
-            },
-
-        [EFFECT_ROTOTILLER] =
-            {
-                .battleScript = BattleScript_EffectRototiller,
             },
 
         [EFFECT_SPEED_SWAP] =
@@ -997,11 +975,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
             {
                 .battleScript = BattleScript_EffectAuroraVeil,
                 .encourageEncore = TRUE,
-            },
-
-        [EFFECT_POWDER] =
-            {
-                .battleScript = BattleScript_EffectPowder,
             },
 
         [EFFECT_BELCH] =

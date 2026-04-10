@@ -244,47 +244,6 @@ const struct SpriteTemplate gFlameChargeEmberTemplate =
         .affineAnims = gDummySpriteAffineAnimTable,
         .callback = AnimPetalDanceBigFlower};
 
-// synchronoise
-const struct SpriteTemplate gSynchronoiseVioletRingTemplate =
-    {
-        .tileTag = ANIM_TAG_THIN_RING,
-        .paletteTag = ANIM_TAG_POISON_BUBBLE,
-        .oam = &gOamData_AffineDouble_ObjBlend_64x64,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = gHyperVoiceRingAffineAnimTable,
-        .callback = AnimHyperVoiceRing};
-
-const struct SpriteTemplate gSynchronoiseYellowRingTemplate =
-    {
-        .tileTag = ANIM_TAG_THIN_RING,
-        .paletteTag = ANIM_TAG_SPARK_2,
-        .oam = &gOamData_AffineDouble_ObjBlend_64x64,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = gHyperVoiceRingAffineAnimTable,
-        .callback = AnimHyperVoiceRing};
-
-const struct SpriteTemplate gSynchronoiseBlueRingTemplate =
-    {
-        .tileTag = ANIM_TAG_THIN_RING,
-        .paletteTag = ANIM_TAG_WATER_ORB,
-        .oam = &gOamData_AffineDouble_ObjBlend_64x64,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = gHyperVoiceRingAffineAnimTable,
-        .callback = AnimHyperVoiceRing};
-
-const struct SpriteTemplate gSynchronoiseAeroWheelTemplate =
-    {
-        .tileTag = ANIM_TAG_AIR_WAVE_2,
-        .paletteTag = ANIM_TAG_AIR_WAVE_2,
-        .oam = &gOamData_AffineOff_ObjNormal_32x16,
-        .anims = gAffineAnims_AirWaveCrescent,
-        .images = NULL,
-        .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = AnimFireSpread};
-
 // electro ball
 const struct SpriteTemplate gElectroBallCannonBallTemplate =
     {
@@ -316,17 +275,6 @@ const struct SpriteTemplate gFoulPlayRingTemplate =
         .images = NULL,
         .affineAnims = gThinRingExpandingAffineAnimTable,
         .callback = AnimSpriteOnMonPos};
-
-// after you
-const struct SpriteTemplate gAfterYouGreenRageTemplate =
-    {
-        .tileTag = ANIM_TAG_ANGER,
-        .paletteTag = ANIM_TAG_CIRCLE_OF_LIGHT,
-        .oam = &gOamData_AffineNormal_ObjNormal_16x16,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = gAngerMarkAffineAnimTable,
-        .callback = AnimAngerMark};
 
 // quick guard
 const struct SpriteTemplate gQuickGuardArmImpactTemplate =
@@ -4088,19 +4036,6 @@ void AnimTask_SquishTargetShort(u8 taskId)
 
     PrepareAffineAnimInTaskData(task, spriteId, sSquishTargetShortAffineAnimCmds);
     task->func = AnimTask_WaitAffineAnim;
-}
-
-void AnimTask_CreateBestowItem(u8 taskId)
-{
-    u8 iconSpriteId = AddItemIconSprite(ANIM_TAG_ITEM_BAG, ANIM_TAG_ITEM_BAG, gLastUsedItem);
-
-    if (iconSpriteId != MAX_SPRITES)
-    {
-        gSprites[iconSpriteId].oam.priority = 2;
-        gSprites[iconSpriteId].callback = AnimThrowProjectile;
-        ++gAnimVisualTaskCount;
-    }
-    DestroyAnimVisualTask(taskId);
 }
 
 void AnimTask_Llamas(u8 taskId)

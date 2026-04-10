@@ -4049,45 +4049,6 @@ gBattleAnimMove_HeavySlam::
 	blendoff
 	end
 
-gBattleAnimMove_Synchronoise::
-	loadspritegfx ANIM_TAG_THIN_RING @hypervoice ring
-	loadspritegfx ANIM_TAG_SPARK_2 @yellow color
-	loadspritegfx ANIM_TAG_WATER_ORB @blue color
-	loadspritegfx ANIM_TAG_POISON_BUBBLE @violet color
-	loadspritegfx ANIM_TAG_SMALL_EMBER @flame wheel particle
-	loadspritegfx ANIM_TAG_AIR_WAVE_2 @aero particles
-	monbg ANIM_DEF_PARTNER
-	splitbgprio_foes ANIM_TARGET
-	createvisualtask AnimTask_BlendBattleAnimPal, 10, F_PAL_BG, 0x1, 0x0, 0xC, 0x0 @Darken
-	waitforvisualfinish
-	panse SE_M_SCREECH, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 0x2, 0x0
-	createsprite gSynchronoiseVioletRingTemplate, ANIM_ATTACKER, 0x0, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1
-	delay 0x1
-	createsprite gSynchronoiseBlueRingTemplate, ANIM_ATTACKER, 0x0, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1
-	delay 0x1
-	createsprite gSynchronoiseYellowRingTemplate, ANIM_ATTACKER, 0x0, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1
-	delay 0x25
-	panse SE_M_SCREECH, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 0x2, 0x0
-	createsprite gSynchronoiseBlueRingTemplate, ANIM_ATTACKER, 0x0, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1
-	delay 0x1
-	createsprite gSynchronoiseVioletRingTemplate, ANIM_ATTACKER, 0x0, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1
-	delay 0x1
-	createsprite gSynchronoiseYellowRingTemplate, ANIM_ATTACKER, 0x0, 0x2d, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1
-	waitforvisualfinish
-	loopsewithpan SE_M_VIENTO_CORTANTE, SOUND_PAN_TARGET, 0x3, 0x5
-	createsprite gSynchronoiseAeroWheelTemplate, ANIM_TARGET, 1, 0x0, 0xffef, SOUND_PAN_ATTACKER, 0xb0, 0x28
-	createsprite gSynchronoiseAeroWheelTemplate, ANIM_TARGET, 1, 0x0, 0xffef, 0xff40, 0xf0, 0x28
-	createsprite gSynchronoiseAeroWheelTemplate, ANIM_TARGET, 1, 0x0, 0xffef, SOUND_PAN_ATTACKER, 0xff60, 0x28
-	createsprite gSynchronoiseAeroWheelTemplate, ANIM_TARGET, 1, 0x0, 0xffef, 0xff40, 0xff90, 0x28
-	createsprite gSynchronoiseAeroWheelTemplate, ANIM_TARGET, 1, 0x0, 0xffef, 0xa0, 0x30, 0x28
-	createsprite gSynchronoiseAeroWheelTemplate, ANIM_TARGET, 1, 0x0, 0xffef, 0xff20, 0xffe0, 0x28
-	createsprite gSynchronoiseAeroWheelTemplate, ANIM_TARGET, 1, 0x0, 0xffef, 0x70, 0xff80, 0x28
-	waitforvisualfinish
-	createvisualtask AnimTask_BlendBattleAnimPal, 10, F_PAL_BG, 0x1, 0xC, 0x0, 0x0 @Darken
-	waitforvisualfinish
-	clearmonbg ANIM_DEF_PARTNER
-	end
-
 gBattleAnimMove_ElectroBall::
 	loadspritegfx ANIM_TAG_SPARK_2              @yelow
 	loadspritegfx ANIM_TAG_CIRCLE_OF_LIGHT      @charge
@@ -4226,21 +4187,6 @@ gBattleAnimMove_FoulPlay::
 	waitforvisualfinish
 	clearmonbg ANIM_TARGET
 	blendoff
-	end
-
-gBattleAnimMove_AfterYou::
-	loadspritegfx ANIM_TAG_ANGER @rage
-	loadspritegfx ANIM_TAG_CIRCLE_OF_LIGHT @green color
-	createvisualtask AnimTask_SwayMon, 5, 1, 15, 1536, 2, ANIM_ATTACKER
-	delay 0x1
-	createsprite gAfterYouGreenRageTemplate, ANIM_ATTACKER, 2, 0x0, 0xffec, 0xffe0
-	createsprite gAfterYouGreenRageTemplate, ANIM_ATTACKER, 2, 0x0, 0xfffb, 0xffe5
-	playsewithpan SE_M_SWAGGER2, SOUND_PAN_ATTACKER
-	delay 0x14
-	createsprite gAfterYouGreenRageTemplate, ANIM_ATTACKER, 2, 0x0, 0x14, 0xffe0
-	createsprite gAfterYouGreenRageTemplate, ANIM_ATTACKER, 2, 0x0, 0x23, 0xffe5
-	playsewithpan SE_M_SWAGGER2, SOUND_PAN_ATTACKER
-	waitforvisualfinish
 	end
 
 gBattleAnimMove_EchoedVoice::
@@ -4666,16 +4612,6 @@ gBattleAnimMove_Retaliate::
 	waitforvisualfinish
 	clearmonbg ANIM_DEF_PARTNER
 	blendoff
-	end
-
-gBattleAnimMove_Bestow::
-	monbg ANIM_TARGET
-	splitbgprio ANIM_TARGET
-	panse SE_M_METRONOME, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 0x2, 0x0
-	createvisualtask AnimTask_CreateBestowItem, 0x2, 0x14, 0x0, 0x0, 0x0, 0x28, 0xffe7
-	waitforvisualfinish
-	unloadspritegfx ANIM_TAG_ITEM_BAG @;The generated item sprite uses this tag
-	clearmonbg ANIM_TARGET
 	end
 
 gBattleAnimMove_Inferno::
@@ -6452,25 +6388,6 @@ gBattleAnimMove_Belch::
 	waitforvisualfinish
 	clearmonbg ANIM_TARGET
 	blendoff
-	end
-
-gBattleAnimMove_Rototiller::
-	loadspritegfx ANIM_TAG_MUD_SAND
-	loadspritegfx ANIM_TAG_DIRT_MOUND
-	loadspritegfx ANIM_TAG_GREEN_SPARKLE
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x0, 0x10, 0x112C
-	waitforvisualfinish
-	createsprite gDirtMoundSpriteTemplate, ANIM_ATTACKER, 1, 0x0, 0x0, 0xb4
-	createsprite gDirtMoundSpriteTemplate, ANIM_ATTACKER, 1, 0x0, 0x1, 0xb4
-	createvisualtask AnimTask_TranslateMonEllipticalRespectSide, 2, ANIM_ATTACKER, 6, 4, 2, 4
-	call DigThrowDirt
-	call DigThrowDirt
-	createvisualtask AnimTask_TranslateMonEllipticalRespectSide, 2, ANIM_ATTACKER, 6, 4, 2, 4
-	call DigThrowDirt
-	call DigThrowDirt
-	waitforvisualfinish
-	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x10, 0x0, 0x112C
-	waitforvisualfinish
 	end
 
 gBattleAnimMove_StickyWeb::

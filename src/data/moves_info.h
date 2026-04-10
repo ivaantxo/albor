@@ -8717,23 +8717,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_HeavySlam,
     },
 
-    [MOVE_SYNCHRONOISE] =
-    {
-        .name = COMPOUND_STRING("Sincrorruido"),
-        .description = COMPOUND_STRING(
-            "An odd shock wave that only\n"
-            "damages same-type foes."),
-        .effect = EFFECT_SYNCHRONOISE,
-        .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 120 : 70,
-        .type = TIPO_PSIQUICO,
-        .accuracy = PRECISION_NORMAL,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_6 ? 10 : 15,
-        .target = MOVE_TARGET_FOES_AND_ALLY,
-        .priority = 0,
-        .category = CATEGORIA_ESPECIAL,
-        .battleAnimScript = gBattleAnimMove_Synchronoise,
-    },
-
     [MOVE_ELECTRO_BALL] =
     {
         .name = COMPOUND_STRING("Electrobola"),
@@ -8854,25 +8837,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .battleAnimScript = gBattleAnimMove_FoulPlay,
-    },
-
-    [MOVE_AFTER_YOU] =
-    {
-        .name = COMPOUND_STRING("Cede paso"),
-        .description = COMPOUND_STRING(
-            "Helps out the foe, letting\n"
-            "it move next."),
-        .effect = EFFECT_AFTER_YOU,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .ignoresSubstitute = TRUE,
-        .battleAnimScript = gBattleAnimMove_AfterYou,
     },
 
     [MOVE_ECHOED_VOICE] =
@@ -9134,25 +9098,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .battleAnimScript = gBattleAnimMove_Retaliate,
-    },
-
-    [MOVE_BESTOW] =
-    {
-        .name = COMPOUND_STRING("Ofrenda"),
-        .description = COMPOUND_STRING(
-            "The user gives its held\n"
-            "item to the foe."),
-        .effect = EFFECT_BESTOW,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = B_UPDATED_MOVE_FLAGS >= GEN_6,
-        .ignoresSubstitute = TRUE,
-        .battleAnimScript = gBattleAnimMove_Bestow,
     },
 
     [MOVE_INFERNO] =
@@ -9922,24 +9867,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Belch,
     },
 
-    [MOVE_ROTOTILLER] =
-    {
-        .name = COMPOUND_STRING("Rototiller"),
-        .description = COMPOUND_STRING(
-            "Ups the Attack and Sp. Atk\n"
-            "of Grass-type Pokémon."),
-        .effect = EFFECT_ROTOTILLER,
-        .power = 0,
-        .type = TIPO_TIERRA,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 10,
-        .target = MOVE_TARGET_ALL_BATTLERS,
-        .priority = 0,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_Rototiller,
-    },
-
     [MOVE_STICKY_WEB] =
     {
         .name = COMPOUND_STRING("Sticky Web"),
@@ -10093,7 +10020,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = CATEGORIA_ESPECIAL,
-        .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
+        .ignoresSubstitute = TRUE,
         .soundMove = TRUE,
         .battleAnimScript = gBattleAnimMove_DisarmingVoice,
     },
@@ -10409,25 +10336,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESTADO,
         .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_VenomDrench,
-    },
-
-    [MOVE_POWDER] =
-    {
-        .name = COMPOUND_STRING("Powder"),
-        .description = COMPOUND_STRING(
-            "Damages the foe if it uses\n"
-            "a Fire-type move."),
-        .effect = EFFECT_POWDER,
-        .power = 0,
-        .type = TIPO_BICHO,
-        .accuracy = PRECISION_NORMAL,
-        .pp = 20,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 1,
-        .category = CATEGORIA_ESTADO,
-        .powderMove = TRUE,
-        .espejoMagico = TRUE,
-        .battleAnimScript = gBattleAnimMove_Powder,
     },
 
     [MOVE_DAZZLING_GLEAM] =

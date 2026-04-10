@@ -311,7 +311,6 @@ void HandleAction_NothingIsFainted(void)
 void HandleAction_ActionFinished(void)
 {
     u32 i, j;
-    bool32 afterYouActive = gSpecialStatuses[gBattlerByTurnOrder[gCurrentTurnActionNumber + 1]].afterYou;
     *(gCombate->monToSwitchIntoId + gBattlerByTurnOrder[gCurrentTurnActionNumber]) = gSelectedMonPartyId = PARTY_SIZE;
     gCurrentTurnActionNumber++;
     gCurrentActionFuncId = gActionsByTurnOrder[gCurrentTurnActionNumber];
@@ -328,29 +327,26 @@ void HandleAction_ActionFinished(void)
     gBattleScripting.multihitMoveEffect = 0;
     gBattleResources->battleScriptsStack->size = 0;
 
-    if (B_RECALC_TURN_AFTER_ACTIONS >= GEN_8 && !afterYouActive)
+    // i starts at `gCurrentTurnActionNumber` because we don't want to recalculate turn order for mon that have already
+    // taken action. It's been previously increased, which we want in order to not recalculate the turn of the mon that just finished its action
+    for (i = gCurrentTurnActionNumber; i < gBattlersCount - 1; i++)
     {
-        // i starts at `gCurrentTurnActionNumber` because we don't want to recalculate turn order for mon that have already
-        // taken action. It's been previously increased, which we want in order to not recalculate the turn of the mon that just finished its action
-        for (i = gCurrentTurnActionNumber; i < gBattlersCount - 1; i++)
+        for (j = i + 1; j < gBattlersCount; j++)
         {
-            for (j = i + 1; j < gBattlersCount; j++)
-            {
-                u32 battler1 = gBattlerByTurnOrder[i];
-                u32 battler2 = gBattlerByTurnOrder[j];
+            u32 battler1 = gBattlerByTurnOrder[i];
+            u32 battler2 = gBattlerByTurnOrder[j];
 
-                // We recalculate order only for action of the same priority. If any action other than switch/move has been taken, they should
-                // have been executed before. The only recalculation needed is for moves/switch. Mega evolution is handled in src/battle_main.c/TryChangeOrder
-                if ((gActionsByTurnOrder[i] == B_ACTION_USE_MOVE && gActionsByTurnOrder[j] == B_ACTION_USE_MOVE))
-                {
-                    if (GetWhichBattlerFaster(battler1, battler2, FALSE) == -1)
-                        SwapTurnOrder(i, j);
-                }
-                else if ((gActionsByTurnOrder[i] == B_ACTION_SWITCH && gActionsByTurnOrder[j] == B_ACTION_SWITCH))
-                {
-                    if (GetWhichBattlerFaster(battler1, battler2, TRUE) == -1) // If the actions chosen are switching, we recalc order but ignoring the moves
-                        SwapTurnOrder(i, j);
-                }
+            // We recalculate order only for action of the same priority. If any action other than switch/move has been taken, they should
+            // have been executed before. The only recalculation needed is for moves/switch. Mega evolution is handled in src/battle_main.c/TryChangeOrder
+            if ((gActionsByTurnOrder[i] == B_ACTION_USE_MOVE && gActionsByTurnOrder[j] == B_ACTION_USE_MOVE))
+            {
+                if (GetWhichBattlerFaster(battler1, battler2, FALSE) == -1)
+                    SwapTurnOrder(i, j);
+            }
+            else if ((gActionsByTurnOrder[i] == B_ACTION_SWITCH && gActionsByTurnOrder[j] == B_ACTION_SWITCH))
+            {
+                if (GetWhichBattlerFaster(battler1, battler2, TRUE) == -1) // If the actions chosen are switching, we recalc order but ignoring the moves
+                    SwapTurnOrder(i, j);
             }
         }
     }
@@ -1614,10 +1610,6 @@ u8 DoBattlerEndTurnEffects(void)
         case ENDTURN_ROOST: // Return flying type.
             if (gBattleResources->flags[battler] & RESOURCE_FLAG_ROOST)
                 gBattleResources->flags[battler] &= ~RESOURCE_FLAG_ROOST;
-            gCombate->efectoFinTurno.individual++;
-            break;
-        case ENDTURN_POWDER:
-            gBattleMons[battler].status2 &= ~STATUS2_POWDER;
             gCombate->efectoFinTurno.individual++;
             break;
         case ENDTURN_THROAT_CHOP:
@@ -5297,10 +5289,6 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
     case ABILITY_AGRESIVIDAD:
         if (GetBattlerTurnOrderNum(battlerAtk) == gBattlersCount - 1)
             MULTIPLICA(modifier, MAS_50_POR_CIENTO);
-        break;
-    case ABILITY_TOUGH_CLAWS:
-        if (IsMoveMakingContact(move, battlerAtk))
-            MULTIPLICA(modifier, MAS_25_POR_CIENTO);
         break;
     case ABILITY_MANDIBULA_FUERTE:
     case ABILITY_NAVAJAS:

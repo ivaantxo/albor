@@ -691,7 +691,6 @@ const u8 gText_YouCannotQuitHere[] = _("You cannot quit here.");
 const u8 gText_SectionMustBeCompleted[] = _("This section must be completed.");
 const u8 gText_F700sQuiz[] = _("{DYNAMIC 0}'s quiz");
 const u8 gText_Lady[] = _("Lady");
-const u8 gText_AfterYouHaveReadTheQuiz[] = _("After you have read the quiz");
 const u8 gText_QuestionPressTheAButton[] = _("question, press the A Button.");
 const u8 gText_TheQuizAnswerIs[] = _("The quiz answer is?");
 const u8 gText_LikeToQuitQuiz[] = _("Would you like to quit this quiz");

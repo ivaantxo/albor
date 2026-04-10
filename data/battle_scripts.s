@@ -313,7 +313,6 @@ BattleScript_MoveEffectBugBite::
 	consumeberry BS_ATTACKER, FALSE
 	bicword gHitMarker, HITMARKER_DISABLE_ANIMATION
 	setbyte sBERRY_OVERRIDE, 0
-	trysymbiosis
 	restoretarget
 	return
 
@@ -355,19 +354,6 @@ BattleScript_EffectPartingShotSwitch:
 	moveendall
 	goto BattleScript_MoveSwitch
 
-BattleScript_EffectPowder::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, NO_ACC_CALC_CHECK_LOCK_ON
-	attackstring
-	ppreduce
-	jumpifstatus2 BS_TARGET, STATUS2_POWDER, BattleScript_ButItFailed
-	setpowder BS_TARGET
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} is covered in powder!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectGearUp::
 	goto BattleScript_ButItFailed
 
@@ -375,83 +361,6 @@ BattleScript_MoveEffectFeint::
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} fell for the feint!"
 	waitmessage PAUSA_LARGA
 	return
-
-BattleScript_EffectRototiller::
-	attackcanceler
-	attackstring
-	ppreduce
-	getrototillertargets BattleScript_ButItFailed
-	@ at least one battler is affected
-	attackanimation
-	waitanimation
-	savetarget
-	setbyte gBattlerTarget, 0
-
-BattleScript_RototillerLoop:
-	movevaluescleanup
-	jumpifstat BS_TARGET, COMPARACION_MENOR, ESTADISTICA_ATAQUE, ESTADISTICA_MAS_6, BattleScript_RototillerCheckAffected
-	jumpifstat BS_TARGET, COMPARACION_IGUAL, ESTADISTICA_ATAQUE_ESPECIAL, ESTADISTICA_MAS_6, BattleScript_RototillerCantRaiseMultipleStats
-
-BattleScript_RototillerCheckAffected:
-	jumpifnotrototilleraffected BS_TARGET, BattleScript_RototillerNoEffect
-	setbyte sSTAT_ANIM_PLAYED, FALSE
-	playstatchangeanimation BS_TARGET, BIT_ATK | BIT_SPATK, 0
-	setstatchanger ESTADISTICA_ATAQUE, 1, FALSE
-	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_RototillerTrySpAtk
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_RototillerTrySpAtk
-	printfromtable gStatUpStringIds
-	waitmessage PAUSA_LARGA
-
-BattleScript_RototillerTrySpAtk::
-	setstatchanger ESTADISTICA_ATAQUE_ESPECIAL, 1, FALSE
-	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_RototillerMoveTargetEnd
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_RototillerMoveTargetEnd
-	printfromtable gStatUpStringIds
-	waitmessage PAUSA_LARGA
-
-BattleScript_RototillerMoveTargetEnd:
-	moveendto MOVEEND_NEXT_TARGET
-	addbyte gBattlerTarget, 1
-	jumpifbytenotequal gBattlerTarget, gBattlersCount, BattleScript_RototillerLoop
-	end
-
-BattleScript_RototillerCantRaiseMultipleStats:
-	copybyte gBattlerAttacker, gBattlerTarget
-	printstring STRINGID_STATSWONTINCREASE2
-	waitmessage PAUSA_LARGA
-	goto BattleScript_RototillerMoveTargetEnd
-
-BattleScript_RototillerNoEffect:
-	pause PAUSA_CORTA
-	EscribeTextoCombate "It had no effect on {B_DEF_NAME_WITH_PREFIX}!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_RototillerMoveTargetEnd
-
-BattleScript_EffectBestow::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, NO_ACC_CALC_CHECK_LOCK_ON
-	attackstring
-	ppreduce
-	jumpifsubstituteblocks BattleScript_ButItFailed
-	trybestow BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} received {B_LAST_ITEM} from {B_ATK_NAME_WITH_PREFIX}!"
-	waitmessage PAUSA_LARGA
-	trysymbiosis
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectAfterYou::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	tryafteryou BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} took the kind offer!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
 
 BattleScript_MoveEffectFlameBurst::
 	tryfaintmon BS_TARGET
@@ -478,49 +387,6 @@ BattleScript_EffectPowerTrick::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} switched its Attack and Defense!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
-
-BattleScript_EffectSynchronoise::
-	attackcanceler
-	attackstring
-	ppreduce
-	selectfirstvalidtarget
-
-BattleScript_SynchronoiseLoop:
-	movevaluescleanup
-	jumpifcantusesynchronoise BattleScript_SynchronoiseNoEffect
-	accuracycheck BattleScript_SynchronoiseMissed, ACC_CURR_MOVE
-	critcalc
-	damagecalc
-	adjustdamage
-	attackanimation
-	waitanimation
-	HazSonidoEfectividad
-	hitanimation BS_TARGET
-	waitstate
-	healthbarupdate BS_TARGET
-	datahpupdate BS_TARGET
-	critmessage
-	waitmessage PAUSA_LARGA
-	resultmessage
-	waitmessage PAUSA_LARGA
-	tryfaintmon BS_TARGET
-
-BattleScript_SynchronoiseMoveTargetEnd:
-	moveendto MOVEEND_NEXT_TARGET
-	jumpifnexttargetvalid BattleScript_SynchronoiseLoop
-	end
-
-BattleScript_SynchronoiseMissed:
-	pause PAUSA_CORTA
-	resultmessage
-	waitmessage PAUSA_LARGA
-	goto BattleScript_SynchronoiseMoveTargetEnd
-
-BattleScript_SynchronoiseNoEffect:
-	pause PAUSA_CORTA
-	EscribeTextoCombate "It had no effect on {B_DEF_NAME_WITH_PREFIX}!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_SynchronoiseMoveTargetEnd
 
 BattleScript_MoveEffectSmackDown::
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} fell straight down!"
@@ -4481,25 +4347,6 @@ BattleScript_DoSelfConfusionDmg::
 BattleScript_MoveUsedIsConfusedRet::
 	return
 
-BattleScript_MoveUsedPowder::
-	bicword gHitMarker, HITMARKER_NO_ATTACKSTRING | HITMARKER_ATTACKSTRING_PRINTED
-	attackstring
-	ppreduce
-	pause PAUSA_CORTA
-	cancelmultiturnmoves BS_ATTACKER
-	status2animation BS_ATTACKER, STATUS2_POWDER
-	waitanimation
-	HazSonidoEfectividad
-	hitanimation BS_ATTACKER
-	waitstate
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
-	healthbarupdate BS_ATTACKER
-	datahpupdate BS_ATTACKER
-	EscribeTextoCombate "When the flame touched the powder on the Pokémon, it exploded!"
-	waitmessage PAUSA_LARGA
-	tryfaintmon BS_ATTACKER
-	goto BattleScript_MoveEnd
-
 BattleScript_MoveUsedIsConfusedNoMore::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} snapped out of confusion!"
 	waitmessage PAUSA_LARGA
@@ -5932,12 +5779,6 @@ BattleScript_NeutralizingGasExitsLoop:
 BattleScript_MagicianActivates::
 	call BattleScript_AbilityPopUp
 	call BattleScript_ItemSteal
-	return
-
-BattleScript_SymbiosisActivates::
-	call BattleScript_AbilityPopUp
-	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX} passed its {B_LAST_ITEM} to {B_ATK_NAME_WITH_PREFIX} through {B_LAST_ABILITY}!"
-	waitmessage PAUSA_LARGA
 	return
 
 BattleScript_TargetAbilityStatRaiseRet::
