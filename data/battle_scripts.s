@@ -2416,7 +2416,7 @@ BattleScript_EffectShoreUp::
 	attackcanceler
 	attackstring
 	ppreduce
-	recoverbasedonsunlight BattleScript_AlreadyAtFullHp
+	RecuperaSaludSegunClima BattleScript_AlreadyAtFullHp
 	goto BattleScript_PresentHealTarget
 
 BattleScript_EffectRainDance::
@@ -2473,17 +2473,6 @@ BattleScript_EffectPsychUp::
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
-ScriptBatalla_EfectoAtaqueEquipo::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	critcalc
-	damagecalc
-	adjustdamage
-	intentaataqueequipo
-	goto BattleScript_HitFromAtkAnimation
-
 BattleScript_EffectDefenseCurl::
 	attackcanceler
 	attackstring
@@ -2494,6 +2483,7 @@ BattleScript_EffectDefenseCurl::
 	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_StatUpPrintString
 	attackanimation
 	waitanimation
+
 BattleScript_DefenseCurlDoStatUpAnim::
 	goto BattleScript_StatUpDoAnim
 
@@ -2502,6 +2492,7 @@ BattleScript_EffectSoftboiled::
 	attackstring
 	ppreduce
 	tryhealhalfhealth BattleScript_AlreadyAtFullHp, BS_TARGET
+
 BattleScript_PresentHealTarget::
 	attackanimation
 	waitanimation
@@ -3384,30 +3375,6 @@ BattleScript_SunlightFaded::
 	waitmessage PAUSA_LARGA
 	call BattleScript_ActivateWeatherAbilities
 	end2
-
-BattleScript_FogContinues::
-	printstring STRINGID_FOGISDEEP
-	waitmessage PAUSA_LARGA
-	playanimation BS_ATTACKER, B_ANIM_FOG_CONTINUES
-	call BattleScript_ActivateWeatherAbilities
-	end2
-
-BattleScript_FogEnded_Ret::
-	printstring STRINGID_FOGLIFTED
-	waitmessage PAUSA_LARGA
-	call BattleScript_ActivateWeatherAbilities
-	return
-
-BattleScript_FogEnded::
-	call BattleScript_FogEnded_Ret
-	end2
-
-BattleScript_OverworldWeatherStarts::
-	printfromtable gWeatherStartsStringIds
-	waitmessage PAUSA_LARGA
-	playanimation_var BS_BATTLER_0, sB_ANIM_ARG1
-	call BattleScript_ActivateWeatherAbilities
-	end3
 
 BattleScript_SideStatusWoreOff::
 	EscribeTextoCombate "{B_ATK_PREFIX1}'s {B_BUFF1} wore off!",
@@ -4627,6 +4594,10 @@ BattleScript_RainDishActivates::
 	call BattleScript_AbilityHpHeal
 	end3
 
+ScriptCombate_ActivacionDespensa::
+	call BattleScript_AbilityHpHeal
+	end3
+
 BattleScript_HarvestActivates::
 	pause PAUSA_MUY_CORTA
 	tryrecycleitem BattleScript_HarvestActivatesEnd
@@ -5583,27 +5554,6 @@ ScriptCombate_SeptimoCielo::
 	waitmessage PAUSA_LARGA
 	call BattleScript_ActivateWeatherAbilities
 	end3
-
-BattleScript_QuickClawActivation::
-	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} can act faster than normal, thanks to its {B_BUFF1}!"
-	waitmessage PAUSA_LARGA
-	end2
-
-BattleScript_QuickDrawActivation::
-	call BattleScript_AbilityPopUp
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} can act faster than normal, thanks to its {B_BUFF1}!"
-	waitmessage PAUSA_LARGA
-	end2
-
-BattleScript_CustapBerryActivation::
-	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} can act faster than normal, thanks to its {B_BUFF1}!"
-	waitmessage PAUSA_LARGA
-	removeitem BS_ATTACKER
-	end2
 
 BattleScript_MicleBerryActivateEnd2::
 	goto BattleScript_MicleBerryActivateEnd2_Anim

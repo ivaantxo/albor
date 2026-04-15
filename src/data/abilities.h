@@ -647,6 +647,18 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("May gather Honey."),
     },
 
+    [ABILITY_RUTA_AEREA] =
+    {
+        .name = _("Ruta aérea"),
+        .description = COMPOUND_STRING("+25% volador."),
+    },
+
+    [ABILITY_DESPENSA] =
+    {
+        .name = _("Despensa"),
+        .description = COMPOUND_STRING("Recupera 1/16 PS por turno."),
+    },
+
     [ABILITY_AUDAZ] =
     {
         .name = _("Audaz"),
@@ -1208,7 +1220,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_CARA_DURA] =
     {
         .name = _("Cara dura"),
-        .description = COMPOUND_STRING("+25% cabezazos."),
+        .description = COMPOUND_STRING("+1 prioridad cabezazos."),
     },
 
     [ABILITY_PESTE_BUBONICA] =

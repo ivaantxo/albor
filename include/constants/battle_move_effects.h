@@ -89,7 +89,6 @@ enum EfectosAtaques
     EFFECT_BELLY_DRUM,
     EFFECT_PSYCH_UP,
     EFFECT_EARTHQUAKE,
-    EFECTO_ATAQUE_EQUIPO,
     EFFECT_SEMI_INVULNERABLE,
     EFFECT_DEFENSE_CURL,
     EFFECT_SOFTBOILED, // differences vs Recover - can be used outside of battle to restore HP

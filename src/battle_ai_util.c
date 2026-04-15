@@ -398,11 +398,7 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
         switch (moveEffect)
         {
         case EFFECT_MULTI_HIT:
-            if (move == MOVE_WATER_SHURIKEN && gBattleMons[battlerAtk].species == SPECIES_GRENINJA)
-            {
-                simulatedDmg *= 3;
-            }
-            else if (aiData->abilities[battlerAtk] == ABILITY_SKILL_LINK)
+            if (aiData->abilities[battlerAtk] == ABILITY_SKILL_LINK)
             {
                 simulatedDmg *= 5;
             }
@@ -419,18 +415,6 @@ s32 AI_CalcDamage(u32 move, u32 battlerAtk, u32 battlerDef, u8 *typeEffectivenes
             {
                 simulatedDmg *= 3;
             }
-            break;
-        case EFECTO_ATAQUE_EQUIPO:
-            u32 partyCount = CalculatePartyCount(GetBattlerParty(battlerAtk));
-            u32 i;
-            gCombate->posicionPokemonEquipo = 0;
-            damageCalcData.isCrit = FALSE;
-            simulatedDmg = 0;
-            for (i = 0; i < partyCount; i++)
-            {
-                simulatedDmg += CalculateMoveDamage(&damageCalcData, 0);
-            }
-            gCombate->posicionPokemonEquipo = 0;
             break;
         }
 
@@ -779,7 +763,7 @@ s32 AI_WhoStrikesFirst(u32 battlerAI, u32 battler, u32 moveConsidered)
     u32 abilityAI = AI_DATA->abilities[battlerAI];
     u32 abilityPlayer = AI_DATA->abilities[battler];
 
-    if (GetMovePriority(battlerAI, moveConsidered) > 0)
+    if (PrioridadMovimientoMasHabilidad(battlerAI, moveConsidered) > PRIORIDAD_MOVIMIENTO_NORMAL)
         return AI_IS_FASTER;
 
     speedBattlerAI = GetBattlerTotalSpeedStatArgs(battlerAI, abilityAI, holdEffectAI);
@@ -2866,7 +2850,6 @@ static const u16 sRecycleEncouragedItems[] =
         ITEM_STARF_BERRY,
         ITEM_SITRUS_BERRY,
         ITEM_MICLE_BERRY,
-        ITEM_CUSTAP_BERRY,
         ITEM_MENTAL_HERB,
 };
 

@@ -350,6 +350,7 @@ const u32 *const gMonIconTable[NUM_SPECIES] = {
     [SPECIES_CASTFORM_SUNNY] = gObjectEventPic_CastformSunny,
     [SPECIES_CASTFORM_RAINY] = gObjectEventPic_CastformRainy,
     [SPECIES_CASTFORM_SNOWY] = gObjectEventPic_CastformSnowy,
+    [SPECIES_CASTFORM_SANDY] = gObjectEventPic_CastformSandy,
     [SPECIES_KECLEON] = gObjectEventPic_Kecleon,
     //[[SPECIES_SHUPPET] = gObjectEventPic_Shuppet,
     //[[SPECIES_BANETTE] = gObjectEventPic_Banette,

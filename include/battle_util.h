@@ -48,7 +48,6 @@ enum {
     ABILITYEFFECT_ATK_SYNCHRONIZE,
     ABILITYEFFECT_NEUTRALIZINGGAS,
     ABILITYEFFECT_ON_WEATHER,
-    ABILITYEFFECT_SWITCH_IN_WEATHER,
 };
 
 // For the first argument of ItemBattleEffects, to deteremine which block of item effects to try
@@ -184,7 +183,6 @@ s32 DanioTrampa(u32 tipoTrampa, u32 combatiente);
 u16 GetBattleFormChangeTargetSpecies(u32 battler, u16 method);
 bool32 TryBattleFormChange(u32 battler, u32 method);
 bool32 DoBattlersShareType(u32 battler1, u32 battler2);
-u32 CategoriaMovimiento(u32 movimiento);
 bool32 IsTelekinesisBannedSpecies(u16 species);
 bool32 IsBelchPreventingMove(u32 battler, u32 move);
 bool32 HasEnoughHpToEatBerry(u32 battler, u32 hpFraction, u32 itemId);

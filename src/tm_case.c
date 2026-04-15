@@ -540,6 +540,7 @@ static void PrintMoveInfo(u16 itemId)
     u16 move;
     const u8 * str;
     struct Sprite *sprite;
+    enum PrioridadMovimientos prioridad = PrioridadMovimiento(move);
 
     FillWindowPixelBuffer(WIN_MOVE_INFO, 0);
     if (itemId == ITEM_NONE)
@@ -599,15 +600,15 @@ static void PrintMoveInfo(u16 itemId)
 
         // Print Priority
         TMCase_Print(WIN_MOVE_INFO, FONT_BIG, gText_Pri, 137, 0, 1, 0, 0, COLOR_TITLE);
-        if (gMovimientos[move].priority == 0)
+        if (prioridad == PRIORIDAD_MOVIMIENTO_NORMAL)
         {
             TMCase_Print(WIN_MOVE_INFO, FONT_NORMAL, gText_OneDash, 164, 0, 1, 0, 0, COLOR_LIGHT);
         }
-        if (gMovimientos[move].priority > 0)
+        if (prioridad > PRIORIDAD_MOVIMIENTO_NORMAL)
         {
             TMCase_Print(WIN_MOVE_INFO, FONT_BIG, gText_UpArrow, 164, 0, 1, 0, 0, COLOR_LIGHT);
         }
-        if (gMovimientos[move].priority < 0)
+        if (prioridad == PRIORIDAD_MOVIMIENTO_NEGATIVA)
         {
             TMCase_Print(WIN_MOVE_INFO, FONT_BIG, gText_DownArrow, 164, 0, 1, 0, 0, COLOR_LIGHT);
         }

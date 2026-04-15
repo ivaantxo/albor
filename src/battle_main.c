@@ -82,7 +82,6 @@ static void GestionaEstadoSeleccionAccionesTurno(void);
 static void RunTurnActionsFunctions(void);
 static void SetActionsAndBattlersTurnOrder(void);
 static void UpdateBattlerPartyOrdersOnSwitch(u32 battler);
-static void CheckChangingTurnOrderEffects(void);
 static void FreeResetData_ReturnToOvOrDoEvolutions(void);
 static void ReturnFromBattleToOverworld(void);
 static void TryEvolvePokemon(void);
@@ -1108,7 +1107,7 @@ static void BattleStartClearSetData(void)
     gBattlerTarget = 0;
     gEffectBattler = 0;
     gBattlerAbility = 0;
-    gBattleWeather = 0;
+    gCombate->clima.modo == CLIMA_COMBATE_NINGUNO;
     gHitMarker = 0;
     gCombate.contadorMultigolpes = 0;
     gBattleOutcome = 0;
@@ -1132,7 +1131,6 @@ static void BattleStartClearSetData(void)
     {
         gSideTimers[i].stickyWebBattlerId = 0xFF;
     }
-    gCombate->posicionPokemonEquipo = 0;
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
@@ -1519,7 +1517,6 @@ static void DoBattleIntro(void)
             }
             gCombate->eventsBeforeFirstTurnState = 0;
             gCombate->switchInBattlerCounter = 0;
-            gCombate->clima.exteriorHecho = FALSE;
             AI_InitPartyStruct(); // Save mons party counts, and first 2/4 mons on the battlefield.
             gBattleMainFunc = TryDoEventsBeforeFirstTurn;
         }
@@ -1557,14 +1554,6 @@ static void TryDoEventsBeforeFirstTurn(void)
                 if (GetWhichBattlerFaster(gBattlerByTurnOrder[i], gBattlerByTurnOrder[j], TRUE) == -1)
                     SwapTurnOrder(i, j);
             }
-        }
-        gCombate->eventsBeforeFirstTurnState++;
-        break;
-    case FIRST_TURN_EVENTS_OVERWORLD_WEATHER:
-        if (!gCombate->clima.exteriorHecho && AbilityBattleEffects(ABILITYEFFECT_SWITCH_IN_WEATHER, 0, 0, ABILITYEFFECT_SWITCH_IN_WEATHER, 0) != 0)
-        {
-            gCombate->clima.exteriorHecho = TRUE;
-            return;
         }
         gCombate->eventsBeforeFirstTurnState++;
         break;
@@ -2067,18 +2056,16 @@ u32 GetBattlerTotalSpeedStatArgs(u32 battler, u32 ability, u32 holdEffect)
 {
     u32 velocidad = gBattleMons[battler].speed;
     uq4_12_t modificador = NEUTRO;
+    enum ClimasCombate climaCombate = ObtenClimaCombate();
 
-    if (ClimaTieneEfecto())
-    {
-        if ((ability == ABILITY_SWIFT_SWIM || ability == ABILITY_ALAS_HIDROFOBAS) && (gBattleWeather & B_WEATHER_RAIN))
-            MULTIPLICA(modificador, MAS_50_POR_CIENTO);
-        else if (ability == ABILITY_CHLOROPHYLL && (gBattleWeather & B_WEATHER_SUN))
-            MULTIPLICA(modificador, MAS_50_POR_CIENTO);
-        else if (ability == ABILITY_SAND_RUSH && (gBattleWeather & B_WEATHER_SANDSTORM))
-            MULTIPLICA(modificador, MAS_50_POR_CIENTO);
-        else if (ability == ABILITY_SLUSH_RUSH && (gBattleWeather & B_WEATHER_SNOW))
-            MULTIPLICA(modificador, MAS_50_POR_CIENTO);
-    }
+    if ((ability == ABILITY_SWIFT_SWIM || ability == ABILITY_ALAS_HIDROFOBAS) && EsClimaCombateLluvia(climaCombate))
+        MULTIPLICA(modificador, MAS_50_POR_CIENTO);
+    if (ability == ABILITY_CHLOROPHYLL && EsClimaCombateSol(climaCombate))
+        MULTIPLICA(modificador, MAS_50_POR_CIENTO);
+    if (ability == ABILITY_SAND_RUSH && EsClimaCombateArena(climaCombate))
+        MULTIPLICA(modificador, MAS_50_POR_CIENTO);
+    if (ability == ABILITY_SLUSH_RUSH && EsClimaCombateNieve(climaCombate))
+        MULTIPLICA(modificador, MAS_50_POR_CIENTO);
 
     if (ability == ABILITY_QUICK_FEET && (gBattleMons[battler].status1 & STATUS1_ANY))
         MULTIPLICA(modificador, MAS_50_POR_CIENTO);
@@ -2109,74 +2096,59 @@ u32 GetBattlerTotalSpeedStat(u32 battler)
     return GetBattlerTotalSpeedStatArgs(battler, ability, holdEffect);
 }
 
-s8 GetChosenMovePriority(u32 battler)
+enum PrioridadMovimientos PrioridadMovimientoMasHabilidad(u32 combatiente, u32 movimiento)
 {
-    u16 move;
+    enum PrioridadMovimientos prioridad = PrioridadMovimiento(movimiento);
+    u32 habilidad = HabilidadCombatiente(combatiente);
 
-    gProtectStructs[battler].prioridadBromista = FALSE;
-    if (gProtectStructs[battler].noValidMoves)
-        move = MOVE_STRUGGLE;
-    else
-        move = gBattleMons[battler].moves[*(gCombate->chosenMovePositions + battler)];
+    if (gProtectStructs[combatiente].noValidMoves)
+        movimiento = MOVE_STRUGGLE;
 
-    return GetMovePriority(battler, move);
-}
+    gProtectStructs[combatiente].prioridadBromista = FALSE;
 
-s8 GetMovePriority(u32 battler, u16 move)
-{
-    s32 priority;
-    u16 ability = HabilidadCombatiente(battler);
-
-    if (ability == ABILITY_ALAS_VENDAVAL && gMovimientos[move].type == TIPO_VOLADOR)
-        priority++;
-    else if (ability == ABILITY_TIERRA_SUELTA && gMovimientos[move].type == TIPO_TIERRA)
-        priority++;
-    else if (ability == ABILITY_SUPERORDENADOR && gMovimientos[move].type == TIPO_PSIQUICO)
-        priority++;
-    else if (ability == ABILITY_ENVIO_EXPRESS && gMovimientos[move].type == TIPO_HADA)
-        priority++;
-    else if (ability == ABILITY_ZUMBANDO && gMovimientos[move].type == TIPO_BICHO)
-        priority++;
-    else if (ability == ABILITY_BAILARIN && gMovimientos[move].danceMove)
-        priority++;
-    else if (ability == ABILITY_BROMISTA && EsMovimientoDeEstado(move))
+    if ((habilidad == ABILITY_ALAS_VENDAVAL && gMovimientos[movimiento].type == TIPO_VOLADOR)   ||
+        (habilidad == ABILITY_TIERRA_SUELTA && gMovimientos[movimiento].type == TIPO_TIERRA)    ||
+        (habilidad == ABILITY_SUPERORDENADOR && gMovimientos[movimiento].type == TIPO_PSIQUICO) ||
+        (habilidad == ABILITY_ENVIO_EXPRESS && gMovimientos[movimiento].type == TIPO_HADA)      ||
+        (habilidad == ABILITY_ZUMBANDO && gMovimientos[movimiento].type == TIPO_BICHO)          ||
+        (habilidad == ABILITY_BAILARIN && gMovimientos[movimiento].danceMove)                   ||
+        (habilidad == ABILITY_ATAQUE_RELAMPAGO && gMovimientos[movimiento].balistico)           ||
+        (habilidad == ABILITY_OJOS_PRESTOS && gMovimientos[movimiento].eyesMove)                ||
+        (habilidad == ABILITY_CARA_DURA && EsMovimientoDeCabeza(movimiento))                    ||
+        (habilidad == ABILITY_HUIDIZO && gMovimientos[movimiento].effect == EFFECT_HIT_ESCAPE)  ||
+        (habilidad == ABILITY_VOZ_CANTANTE && EsMovimientoDeSonido(movimiento))                 ||
+        (habilidad == ABILITY_PACIFISTA && EsMovimientoDeEstado(movimiento))                    ||
+        (habilidad == ABILITY_TRIAGE && IsHealingMove(movimiento))                              ||
+        (habilidad == ABILITY_FORECAST && EsMovimientoDeClima(movimiento)))
     {
-        gProtectStructs[battler].prioridadBromista = TRUE;
-        priority++;
+        prioridad++;
     }
-    else if (ability == ABILITY_TRIAGE && IsHealingMove(move))
-        priority += 3;
-    else if (ability == ABILITY_ATAQUE_RELAMPAGO && gMovimientos[move].balistico)
-        priority++;
-    else if (ability == ABILITY_OJOS_PRESTOS && gMovimientos[move].eyesMove)
-        priority++;
-    else if (ability == ABILITY_HUIDIZO && gMovimientos[move].effect == EFFECT_HIT_ESCAPE)
-        priority++;
-    else if (ability == ABILITY_VOZ_CANTANTE && EsMovimientoDeSonido(move))
-        priority++;
-    else if (ability == ABILITY_PACIFISTA && EsMovimientoDeEstado(move))
-        priority++;
-    else if (ability == ABILITY_FORECAST && EsMovimientoDeClima(move))
-        priority++;
-    return priority;
+
+    if (habilidad == ABILITY_BROMISTA && EsMovimientoDeEstado(movimiento))
+    {
+        gProtectStructs[combatiente].prioridadBromista = TRUE;
+        prioridad++;
+    }
+
+    if (prioridad > PRIORIDAD_MOVIMIENTO_MUY_ALTA)
+        prioridad = PRIORIDAD_MOVIMIENTO_MUY_ALTA;
+
+    return prioridad;
 }
 
 // Function for AI with variables provided as arguments to speed the computation time
-s32 GetWhichBattlerFasterArgs(u32 battler1, u32 battler2, bool32 ignoreChosenMoves, u32 ability1, u32 ability2,
-                              u32 holdEffectBattler1, u32 holdEffectBattler2, u32 speedBattler1, u32 speedBattler2, s32 priority1, s32 priority2)
+s32 GetWhichBattlerFasterArgs(u32 battler1, u32 battler2, bool32 ignoreChosenMoves, u32 ability1, u32 ability2, u32 holdEffectBattler1, u32 holdEffectBattler2, u32 speedBattler1, u32 speedBattler2, enum PrioridadMovimientos prioridad1, enum PrioridadMovimientos prioridad2)
 {
     u32 strikesFirst = 0;
 
-    if (priority1 == priority2)
+    if (prioridad1 == prioridad2)
     {
         if (speedBattler1 == speedBattler2)
         {
-            // same speeds, same priorities
             strikesFirst = 0;
         }
         else if (speedBattler1 < speedBattler2)
         {
-            // battler2 has more speed
             if (gFieldStatuses & STATUS_FIELD_TRICK_ROOM)
                 strikesFirst = 1;
             else
@@ -2184,14 +2156,13 @@ s32 GetWhichBattlerFasterArgs(u32 battler1, u32 battler2, bool32 ignoreChosenMov
         }
         else
         {
-            // battler1 has more speed
             if (gFieldStatuses & STATUS_FIELD_TRICK_ROOM)
                 strikesFirst = -1;
             else
                 strikesFirst = 1;
         }
-}
-    else if (priority1 < priority2)
+    }
+    else if (prioridad1 < prioridad2)
     {
         strikesFirst = -1; // battler2's move has greater priority
     }
@@ -2204,29 +2175,29 @@ s32 GetWhichBattlerFasterArgs(u32 battler1, u32 battler2, bool32 ignoreChosenMov
 
 s32 GetWhichBattlerFasterOrTies(u32 battler1, u32 battler2, bool32 ignoreChosenMoves)
 {
-    s32 priority1 = 0, priority2 = 0;
-    u32 ability1 = HabilidadCombatiente(battler1);
+    enum PrioridadMovimientos prioridad1 = PRIORIDAD_MOVIMIENTO_NORMAL;
+    enum PrioridadMovimientos prioridad2 = PRIORIDAD_MOVIMIENTO_NORMAL;
+    u32 movimiento1 = MOVE_NONE;
+    u32 movimiento2 = MOVE_NONE;
+
     u32 speedBattler1 = GetBattlerTotalSpeedStat(battler1);
-    u32 holdEffectBattler1 = GetBattlerHoldEffect(battler1, TRUE);
     u32 speedBattler2 = GetBattlerTotalSpeedStat(battler2);
-    u32 holdEffectBattler2 = GetBattlerHoldEffect(battler2, TRUE);
-    u32 ability2 = HabilidadCombatiente(battler2);
 
     if (!ignoreChosenMoves)
     {
         if (gAccionElegida[battler1] == B_ACTION_USE_MOVE)
-            priority1 = GetChosenMovePriority(battler1);
+        {
+            movimiento1 = gBattleMons[battler1].moves[gBattleStruct->chosenMovePositions[battler1]];
+            prioridad1 = PrioridadMovimientoMasHabilidad(battler1, movimiento1);
+        }
         if (gAccionElegida[battler2] == B_ACTION_USE_MOVE)
-            priority2 = GetChosenMovePriority(battler2);
+        {
+            movimiento2 = gBattleMons[battler2].moves[gBattleStruct->chosenMovePositions[battler2]];
+            prioridad2 = PrioridadMovimientoMasHabilidad(battler2, movimiento2);
+        }
     }
 
-    return GetWhichBattlerFasterArgs(
-        battler1, battler2,
-        ignoreChosenMoves,
-        ability1, ability2,
-        holdEffectBattler1, holdEffectBattler2,
-        speedBattler1, speedBattler2,
-        priority1, priority2);
+    return GetWhichBattlerFasterArgs(battler1, battler2, ignoreChosenMoves, HabilidadCombatiente(battler1), HabilidadCombatiente(battler2), 0, 0, prioridad1, prioridad2);
 }
 
 // 24 == NUMERO_COMBATIENTES!.
@@ -2323,8 +2294,6 @@ static void SetActionsAndBattlersTurnOrder(void)
             {
                 gActionsByTurnOrder[turnOrderId] = gAccionElegida[battler];
                 gBattlerByTurnOrder[turnOrderId] = battler;
-                gCombate->quickClawRandom[battler] = PorcentajeAleatorio(GetBattlerHoldEffectParam(battler));
-                gCombate->quickDrawRandom[battler] = PorcentajeAleatorio(30);
                 turnOrderId++;
             }
         }
@@ -2342,8 +2311,6 @@ static void SetActionsAndBattlersTurnOrder(void)
             }
         }
     }
-    gBattleMainFunc = CheckChangingTurnOrderEffects;
-    gCombate->quickClawBattlerId = 0;
 }
 
 static void TurnValuesCleanUp(bool8 var0)
@@ -2355,9 +2322,6 @@ static void TurnValuesCleanUp(bool8 var0)
         if (var0)
         {
             gProtectStructs[i].protected = FALSE;
-            gProtectStructs[i].spikyShielded = FALSE;
-            gProtectStructs[i].usedCustapBerry = FALSE;
-            gProtectStructs[i].quickDraw = FALSE;
         }
         else
         {
@@ -2426,64 +2390,6 @@ static bool32 TryDoMoveEffectsBeforeMoves(void)
     }
 
     return FALSE;
-}
-
-static void CheckChangingTurnOrderEffects(void)
-{
-    u32 i, battler;
-
-    if (!(gHitMarker & HITMARKER_RUN))
-    {
-        while (gCombate->quickClawBattlerId < gBattlersCount)
-        {
-            battler = gBattlerAttacker = gCombate->quickClawBattlerId;
-            gCombate->quickClawBattlerId++;
-            if (gAccionElegida[battler] == B_ACTION_USE_MOVE && gMovimientoElegido[battler] != MOVE_FOCUS_PUNCH // quick claw message doesn't need to activate here
-                && (gProtectStructs[battler].usedCustapBerry || gProtectStructs[battler].quickDraw) && !(gProtectStructs[battler].noValidMoves))
-            {
-                if (gProtectStructs[battler].usedCustapBerry)
-                {
-                    gLastUsedItem = gBattleMons[battler].item;
-                    PREPARE_ITEM_BUFFER(gBattleTextBuff1, gLastUsedItem);
-                    if (GetBattlerHoldEffect(battler, FALSE) == HOLD_EFFECT_CUSTAP_BERRY)
-                    {
-                        // don't record berry since its gone now
-                        BattleScriptExecute(BattleScript_CustapBerryActivation);
-                    }
-                    else
-                    {
-                        RecordItemEffectBattle(battler, GetBattlerHoldEffect(battler, FALSE));
-                        BattleScriptExecute(BattleScript_QuickClawActivation);
-                    }
-                }
-                else if (gProtectStructs[battler].quickDraw)
-                {
-                    gBattlerAbility = battler;
-                    gLastUsedAbility = gBattleMons[battler].ability;
-                    PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
-                    RecuerdaHabilidad(battler, gLastUsedAbility);
-                    BattleScriptExecute(BattleScript_QuickDrawActivation);
-                }
-                return;
-            }
-        }
-    }
-
-    // setup stuff before turns/actions
-    TryClearRageAndFuryCutter();
-    gCurrentTurnActionNumber = 0;
-    gCurrentActionFuncId = gActionsByTurnOrder[0];
-    gCombate->dynamicMoveType = 0;
-    gCombate->effectsBeforeUsingMoveDone = FALSE;
-    gCombate->focusPunchBattlers = 0;
-    for (i = 0; i < NUMERO_COMBATIENTES; i++)
-    {
-        gSpecialStatuses[i].potenciadoGema = FALSE;
-    }
-
-    gBattleMainFunc = RunTurnActionsFunctions;
-    gBattleScripting.multihitMoveEffect = 0;
-    gBattleResources->battleScriptsStack->size = 0;
 }
 
 static void RunTurnActionsFunctions(void)
@@ -2712,16 +2618,17 @@ u32 TipoMovimiento(u32 movimiento, u32 combatiente)
     u32 tipoMovimiento = gMovimientos[movimiento].type;
     // u32 efectoMovimiento = gMovimientos[movimiento].effect;
     u32 habilidad = HabilidadCombatiente(combatiente);
+    enum ClimasCombate climaCombate = ObtenClimaCombate();
 
-    if (movimiento == MOVE_METEOROBOLA && ClimaTieneEfecto())
+    if (movimiento == MOVE_METEOROBOLA)
     {
-        if (gBattleWeather & B_WEATHER_RAIN)
+        if (EsClimaCombateLluvia(climaCombate))
             return TIPO_AGUA;
-        if (gBattleWeather & B_WEATHER_SANDSTORM)
+        if (EsClimaCombateArena(climaCombate))
             return TIPO_ROCA;
-        if (gBattleWeather & B_WEATHER_SUN)
+        if (EsClimaCombateSol(climaCombate))
             return TIPO_FUEGO;
-        if (gBattleWeather & B_WEATHER_SNOW)
+        if (EsClimaCombateNieve(climaCombate))
             return TIPO_HIELO;
     }
 

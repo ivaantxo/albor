@@ -139,11 +139,9 @@ struct ProtectStruct
     u32 powderSelfDmg : 1;
     u32 usedThroatChopPreventedMove : 1;
     u32 statRaised : 1;
-    u32 usedCustapBerry : 1; // also quick claw
     u32 touchedProtectLike : 1;
     u16 disableEjectPack : 1;
     u16 statFell : 1;
-    u16 quickDraw : 1;
     u16 silkTrapped : 1;
     bool32 prioridadBromista;
 };
@@ -345,7 +343,6 @@ struct EfectosFinTurno
 
 struct Clima
 {
-    bool32 exteriorHecho;
     u32 turnos;
     enum ClimasCombate modo;
 }
@@ -427,7 +424,6 @@ struct Combate
     u8 sameMoveTurns[NUMERO_COMBATIENTES];        // For ECHOED VOICE, number of times the same moves has been SUCCESFULLY used.
     u16 moveEffect2;                              // For Desarme
     u16 changedSpecies[NUMERO_LADOS][PARTY_SIZE]; // For forms when multiple mons can change into the same pokemon.
-    u8 quickClawBattlerId;
     u32 objetoPerdido[NUMERO_LADOS][PARTY_SIZE];
     u8 forcedSwitch : 4;             // For each battler
     u8 additionalEffectsCounter : 4; // A counter for the additionalEffects applied by the current move in Cmd_setadditionaleffects
@@ -451,13 +447,9 @@ struct Combate
     u8 trainerSlideBeforeFirstTurnMsgDone : 1;
     u8 trainerSlideLowHpMsgDone : 1;
     u8 timesGotHit[NUMERO_LADOS][PARTY_SIZE];
-    u8 quickClawRandom[NUMERO_COMBATIENTES];
-    u8 quickDrawRandom[NUMERO_COMBATIENTES];
     u8 speedTieBreaks; // NUMERO_COMBATIENTES! values.
     u8 usedEjectItem;
     u8 usedMicleBerry;
-    u32 posicionPokemonEquipo;
-    u32 estadisticaAtaqueEquipo;
     bool32 movimientoEspejoMagicoRebota;
     uq4_12_t resultadoMovimiento;
     u32 potenciaMovimientosRecibidosTurno[NUMERO_COMBATIENTES];
@@ -806,6 +798,11 @@ static inline bool32 EsMovimientoDeClima(u32 movimiento)
     return (gMovimientos[movimiento].climatico);
 }
 
+static inline bool32 EsMovimientoDeCabeza(u32 movimiento)
+{
+    return (gMovimientos[movimiento].cabezazo);
+}
+
 static inline bool32 EsClimaCombateSol(enum ClimasCombate clima)
 {
     return (clima == CLIMA_COMBATE_SOL_HABILIDAD || clima == CLIMA_COMBATE_SOL_MOVIMIENTO);
@@ -860,6 +857,16 @@ static inline bool32 ArgumentoMovimientoCoincideClima(enum ClimasMovimientos cli
 static inline bool32 ClimaTieneEfecto(void)
 {
     return !EstaHabilidadEnCampo(ABILITY_SEPTIMO_CIELO);
+}
+
+static inline u32 CategoriaMovimiento(u32 movimiento)
+{
+    return gMovimientos[movimiento].category;
+}
+
+static inline enum PrioridadMovimientos PrioridadMovimiento(u32 movimiento)
+{
+    return gMovimientos[movimiento].prioridad;
 }
 
 #endif // GUARD_BATTLE_H

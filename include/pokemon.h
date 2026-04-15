@@ -268,6 +268,14 @@ struct SpeciesInfo
     struct ObjectEventGraphicsInfo followerDataFemale;
 };
 
+enum PrioridadMovimientos
+{
+    PRIORIDAD_MOVIMIENTO_NEGATIVA = -1,
+    PRIORIDAD_MOVIMIENTO_NORMAL,
+    PRIORIDAD_MOVIMIENTO_ALTA,
+    PRIORIDAD_MOVIMIENTO_MUY_ALTA,
+};
+
 struct Movimientos
 {
     const u8 *name;
@@ -282,8 +290,6 @@ struct Movimientos
 
     u16 target;
     u16 pp;
-
-    s32 priority;
 
     u32 retroceso;
 
@@ -319,7 +325,6 @@ struct Movimientos
     u32 damagesAirborne:1;
     u32 damagesAirborneDoubleDamage:1;
     u32 ignoresSubstitute:1;
-    u32 headMove:1;
     u32 eyesMove:1;
     u32 lickMove:1;
     u32 patada:1;
@@ -329,6 +334,9 @@ struct Movimientos
     u32 parentalBondBanned:1;
 
     bool32 climatico;
+    bool32 cabezazo;
+
+    enum PrioridadMovimientos prioridad;
 
     u32 argument;
 

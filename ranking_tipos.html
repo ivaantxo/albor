@@ -1,0 +1,170 @@
+
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Ranking de Tipos - Albor</title>
+        <style>
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f4f9; padding: 20px; }
+            table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+            th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; }
+            th { background-color: #2c3e50; color: white; cursor: pointer; }
+            tr:hover { background-color: #f1f1f1; }
+            .tipo { font-weight: bold; text-transform: uppercase; }
+            .pos { color: green; font-weight: bold; }
+            .neg { color: red; font-weight: bold; }
+            .total { background: #eef2f3; font-weight: bold; }
+        </style>
+    </head>
+    <body>
+        <h2>Ranking de Tipos (Basado en gTablaEfectividadTipos)</h2>
+        <p>Valores: Ofensivo (X2: +1, X0.5: -1, X0: -2) | Defensivo (Res: +1, Inm: +2, Deb: -1)</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Puntos Ofensivos</th>
+                    <th>Puntos Defensivos</th>
+                    <th>Puntaje TOTAL</th>
+                </tr>
+            </thead>
+            <tbody>
+    
+            <tr>
+                <td class="tipo">Acero</td>
+                <td class="neg">-1</td>
+                <td class="pos">4</td>
+                <td class="total">3</td>
+            </tr>
+        
+            <tr>
+                <td class="tipo">Fuego</td>
+                <td class="neg">-1</td>
+                <td class="pos">3</td>
+                <td class="total">2</td>
+            </tr>
+        
+            <tr>
+                <td class="tipo">Volador</td>
+                <td class="neg">-1</td>
+                <td class="pos">2</td>
+                <td class="total">1</td>
+            </tr>
+        
+            <tr>
+                <td class="tipo">Fantasma</td>
+                <td class="neg">-1</td>
+                <td class="pos">2</td>
+                <td class="total">1</td>
+            </tr>
+        
+            <tr>
+                <td class="tipo">Agua</td>
+                <td class="neg">-1</td>
+                <td class="pos">2</td>
+                <td class="total">1</td>
+            </tr>
+        
+            <tr>
+                <td class="tipo">Hada</td>
+                <td class="pos">0</td>
+                <td class="pos">1</td>
+                <td class="total">1</td>
+            </tr>
+        
+            <tr>
+                <td class="tipo">Veneno</td>
+                <td class="neg">-3</td>
+                <td class="pos">3</td>
+                <td class="total">0</td>
+            </tr>
+        
+            <tr>
+                <td class="tipo">Tierra</td>
+                <td class="neg">-1</td>
+                <td class="pos">1</td>
+                <td class="total">0</td>
+            </tr>
+        
+            <tr>
+                <td class="tipo">Roca</td>
+                <td class="pos">0</td>
+                <td class="pos">0</td>
+                <td class="total">0</td>
+            </tr>
+        
+            <tr>
+                <td class="tipo">Misterio</td>
+                <td class="pos">0</td>
+                <td class="pos">0</td>
+                <td class="total">0</td>
+            </tr>
+        
+            <tr>
+                <td class="tipo">Eléctrico</td>
+                <td class="neg">-2</td>
+                <td class="pos">2</td>
+                <td class="total">0</td>
+            </tr>
+        
+            <tr>
+                <td class="tipo">Hielo</td>
+                <td class="pos">0</td>
+                <td class="pos">0</td>
+                <td class="total">0</td>
+            </tr>
+        
+            <tr>
+                <td class="tipo">Siniestro</td>
+                <td class="neg">-1</td>
+                <td class="pos">1</td>
+                <td class="total">0</td>
+            </tr>
+        
+            <tr>
+                <td class="tipo">Normal</td>
+                <td class="neg">-3</td>
+                <td class="pos">2</td>
+                <td class="total">-1</td>
+            </tr>
+        
+            <tr>
+                <td class="tipo">Bicho</td>
+                <td class="pos">0</td>
+                <td class="neg">-1</td>
+                <td class="total">-1</td>
+            </tr>
+        
+            <tr>
+                <td class="tipo">Psíquico</td>
+                <td class="pos">0</td>
+                <td class="neg">-1</td>
+                <td class="total">-1</td>
+            </tr>
+        
+            <tr>
+                <td class="tipo">Dragón</td>
+                <td class="neg">-2</td>
+                <td class="pos">1</td>
+                <td class="total">-1</td>
+            </tr>
+        
+            <tr>
+                <td class="tipo">Lucha</td>
+                <td class="neg">-2</td>
+                <td class="pos">0</td>
+                <td class="total">-2</td>
+            </tr>
+        
+            <tr>
+                <td class="tipo">Planta</td>
+                <td class="neg">-2</td>
+                <td class="neg">-1</td>
+                <td class="total">-3</td>
+            </tr>
+        
+            </tbody>
+        </table>
+    </body>
+    </html>
+    

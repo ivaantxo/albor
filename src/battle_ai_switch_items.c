@@ -1160,53 +1160,51 @@ static s32 GetSwitchinWeatherImpact(void)
     u32 holdEffect = ItemId_GetHoldEffect(AI_DATA->switchinCandidate.battleMon.item);
     enum ClimasCombate climaCombate = ObtenClimaCombate();
 
-    if (ClimaTieneEfecto())
+    // Damage
+    if (holdEffect != HOLD_EFFECT_SAFETY_GOGGLES && ability != ABILITY_MAGIC_GUARD && ability != ABILITY_OVERCOAT)
     {
-        // Damage
-        if (holdEffect != HOLD_EFFECT_SAFETY_GOGGLES && ability != ABILITY_MAGIC_GUARD && ability != ABILITY_OVERCOAT)
+        if ((EsClimaCombateNieve(climaCombate))
+            && (AI_DATA->switchinCandidate.battleMon.types[TIPO_1] != TIPO_HIELO || AI_DATA->switchinCandidate.battleMon.types[TIPO_2] != TIPO_HIELO)
+            && ability != ABILITY_SNOW_CLOAK && ability != ABILITY_ICE_BODY)
         {
-            if ((EsClimaCombateNieve(climaCombate))
-             && (AI_DATA->switchinCandidate.battleMon.types[TIPO_1] != TIPO_HIELO || AI_DATA->switchinCandidate.battleMon.types[TIPO_2] != TIPO_HIELO)
-             && ability != ABILITY_SNOW_CLOAK && ability != ABILITY_ICE_BODY)
-            {
-                weatherImpact = maxHP / 16;
-                if (weatherImpact == 0)
-                    weatherImpact = 1;
-            }
-            else if ((EsClimaCombatArena(climaCombate))
-                && (AI_DATA->switchinCandidate.battleMon.types[TIPO_1] != TIPO_TIERRA && AI_DATA->switchinCandidate.battleMon.types[TIPO_2] != TIPO_TIERRA
-                && AI_DATA->switchinCandidate.battleMon.types[TIPO_1] != TIPO_ROCA && AI_DATA->switchinCandidate.battleMon.types[TIPO_2] != TIPO_ROCA
-                && ability != ABILITY_SAND_VEIL && ability != ABILITY_SAND_RUSH && ability != ABILITY_SAND_FORCE))
-            {
-                weatherImpact = maxHP / 16;
-                if (weatherImpact == 0)
-                    weatherImpact = 1;
-            }
-        }
-
-        // Healing
-        if (EsClimaCombateLluvia(climaCombate))
-        {
-            if (ability == ABILITY_RAIN_DISH)
-            {
-                weatherImpact = -(maxHP / 8);
-                if (weatherImpact == 0)
-                    weatherImpact = -1;
-            }
-        }
-        if (EsClimaCombateNieve(climaCombate) && ability == ABILITY_ICE_BODY)
-        {
-            weatherImpact = -(maxHP / 8);
+            weatherImpact = maxHP / 16;
             if (weatherImpact == 0)
-                weatherImpact = -1;
+                weatherImpact = 1;
         }
-        if (EsClimaCombateSol(climaCombate) && ability == ABILITY_FOTOSINTESIS)
+        else if ((EsClimaCombatArena(climaCombate))
+            && (AI_DATA->switchinCandidate.battleMon.types[TIPO_1] != TIPO_TIERRA && AI_DATA->switchinCandidate.battleMon.types[TIPO_2] != TIPO_TIERRA
+            && AI_DATA->switchinCandidate.battleMon.types[TIPO_1] != TIPO_ROCA && AI_DATA->switchinCandidate.battleMon.types[TIPO_2] != TIPO_ROCA
+            && ability != ABILITY_SAND_VEIL && ability != ABILITY_SAND_RUSH && ability != ABILITY_SAND_FORCE))
+        {
+            weatherImpact = maxHP / 16;
+            if (weatherImpact == 0)
+                weatherImpact = 1;
+        }
+    }
+
+    // Healing
+    if (EsClimaCombateLluvia(climaCombate))
+    {
+        if (ability == ABILITY_RAIN_DISH)
         {
             weatherImpact = -(maxHP / 8);
             if (weatherImpact == 0)
                 weatherImpact = -1;
         }
     }
+    if (EsClimaCombateNieve(climaCombate) && ability == ABILITY_ICE_BODY)
+    {
+        weatherImpact = -(maxHP / 8);
+        if (weatherImpact == 0)
+            weatherImpact = -1;
+    }
+    if (EsClimaCombateSol(climaCombate) && ability == ABILITY_FOTOSINTESIS)
+    {
+        weatherImpact = -(maxHP / 8);
+        if (weatherImpact == 0)
+            weatherImpact = -1;
+    }
+
     return weatherImpact;
 }
 
@@ -1224,12 +1222,12 @@ static u32 GetSwitchinRecurringHealing(void)
         if (recurringHealing == 0)
             recurringHealing = 1;
     }
-    else if (holdEffect == HOLD_EFFECT_LEFTOVERS)
+    else if (holdEffect == HOLD_EFFECT_LEFTOVERS || ability == ABILITY_DESPENSA)
     {
         recurringHealing = maxHP / 16;
         if (recurringHealing == 0)
             recurringHealing = 1;
-    } // Intentionally omitting Shell Bell for its inconsistency
+    }
 
     // Abilities
     if (ability == ABILITY_POISON_HEAL && (AI_DATA->switchinCandidate.battleMon.status1 & STATUS1_POISON))

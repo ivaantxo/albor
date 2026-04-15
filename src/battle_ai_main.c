@@ -218,7 +218,7 @@ u32 BattleAI_ChooseMoveOrAction(void)
         ret = ChooseMoveOrAction_Doubles(sBattler_AI);
 
     // Clear protect structures, some flags may be set during AI calcs
-    // e.g. prioridadBromista from GetMovePriority
+    // e.g. prioridadBromista from PrioridadMovimientoMasHabilidad
     memset(&gProtectStructs, 0, NUMERO_COMBATIENTES * sizeof(struct ProtectStruct));
     return ret;
 }
@@ -733,7 +733,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     switch (moveEffect)
     {
     case EFFECT_HIT: // only applies to Vital Throw
-        if (gMovimientos[move].priority < 0 && AI_IsFaster(battlerAtk, battlerDef, move) && aiData->hpPercents[battlerAtk] < 40)
+        if (PrioridadMovimiento(move) == PRIORIDAD_MOVIMIENTO_NEGATIVA && AI_IsFaster(battlerAtk, battlerDef, move) && aiData->hpPercents[battlerAtk] < 40)
             ADJUST_SCORE(-2); // don't want to move last
         break;
     default:
@@ -1657,7 +1657,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         break;
     case EFFECT_PALMA_RAUDA:
     {
-        u32 prioridad = GetMovePriority(battlerDef, predictedMove);
+        enum PrioridadMovimientos prioridad = PrioridadMovimientoMasHabilidad(battlerDef, predictedMove);
 
         if (predictedMove == MOVE_NONE || EsMovimientoDeEstado(predictedMove))
         {
@@ -1665,12 +1665,12 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             break;
         }
 
-        if (prioridad == 1)
+        if (prioridad == PRIORIDAD_MOVIMIENTO_ALTA)
         {
 
             ADJUST_SCORE(10);
         }
-        else if (prioridad == 2)
+        else if (prioridad == PRIORIDAD_MOVIMIENTO_MUY_ALTA)
         {
             if (AI_IsFaster(battlerAtk, battlerDef))
                 ADJUST_SCORE(10);
@@ -1719,7 +1719,7 @@ static s32 AI_TryToFaint(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         else
             ADJUST_SCORE(SLOW_KILL);
     }
-    else if (CanTargetFaintAI(battlerDef, battlerAtk) && GetWhichBattlerFasterOrTies(battlerAtk, battlerDef, TRUE) != AI_IS_FASTER && GetMovePriority(battlerAtk, move) > 0)
+    else if (CanTargetFaintAI(battlerDef, battlerAtk) && GetWhichBattlerFasterOrTies(battlerAtk, battlerDef, TRUE) != AI_IS_FASTER && PrioridadMovimientoMasHabilidad(battlerAtk, move) > 0)
     {
         ADJUST_SCORE(LAST_CHANCE);
     }
@@ -1939,12 +1939,6 @@ static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
                     RETURN_SCORE_PLUS(WEAK_EFFECT);
                 }
                 break;
-            case EFECTO_ATAQUE_EQUIPO:
-                if (atkPartnerAbility == ABILITY_JUSTIFIED && moveType == TIPO_SINIESTRO && !EsMovimientoDeEstado(move) && HasMoveWithCategory(battlerAtkPartner, CATEGORIA_FISICA) && BattlerStatCanRise(battlerAtkPartner, atkPartnerAbility, ESTADISTICA_ATAQUE) && !CanIndexMoveFaintTarget(battlerAtk, battlerAtkPartner, AI_THINKING_STRUCT->movesetIndex, 0))
-                {
-                    RETURN_SCORE_PLUS(WEAK_EFFECT);
-                }
-                break;
             case EFFECT_GASTRO_ACID:
                 RETURN_SCORE_PLUS(WEAK_EFFECT);
             case EFFECT_HEAL_PULSE:
@@ -1971,7 +1965,6 @@ static bool32 IsPinchBerryItemEffect(u32 holdEffect)
     case HOLD_EFFECT_SP_ATTACK_UP:
     case HOLD_EFFECT_SP_DEFENSE_UP:
     case HOLD_EFFECT_RANDOM_STAT_UP:
-    case HOLD_EFFECT_CUSTAP_BERRY:
     case HOLD_EFFECT_MICLE_BERRY:
         return TRUE;
     }
@@ -2456,7 +2449,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         switch (move)
         {
         case MOVE_QUICK_GUARD:
-            if (predictedMove != MOVE_NONE && gMovimientos[predictedMove].priority > 0)
+            if (predictedMove != MOVE_NONE && PrioridadMovimiento(predictedMove) > PRIORIDAD_MOVIMIENTO_NORMAL)
                 ProtectChecks(battlerAtk, battlerDef, move, predictedMove, &score);
             break;
         case MOVE_WIDE_GUARD:
@@ -3204,7 +3197,7 @@ static s32 AI_ForceSetupFirstTurn(u32 battlerAtk, u32 battlerDef, u32 move, s32 
     if (IS_TARGETING_PARTNER(battlerAtk, battlerDef) || gCombate->contadorTurnos != 0)
         return score;
 
-    if (AI_THINKING_STRUCT->aiFlags[battlerAtk] & AI_FLAG_SMART_SWITCHING && AI_IsSlower(battlerAtk, battlerDef, move) && CanTargetFaintAI(battlerDef, battlerAtk) && GetMovePriority(battlerAtk, move) == 0)
+    if (AI_THINKING_STRUCT->aiFlags[battlerAtk] & AI_FLAG_SMART_SWITCHING && AI_IsSlower(battlerAtk, battlerDef, move) && CanTargetFaintAI(battlerDef, battlerAtk) && PrioridadMovimientoMasHabilidad(battlerAtk, move) == 0)
     {
         RETURN_SCORE_MINUS(20); // No point in setting up if you will faint. Should just switch if possible..
     }

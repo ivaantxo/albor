@@ -1479,29 +1479,6 @@ const struct Berry gBerries[] =
         .pestsBonus = 0,
     },
 
-    [ITEM_CUSTAP_BERRY - FIRST_BERRY_INDEX] =
-    {
-        .name = _("Custap"),
-        .firmness = BERRY_FIRMNESS_SUPER_HARD,
-        .color = BERRY_COLOR_RED,
-        .size = 267,
-        .maxYield = YIELD_RATE(2, 5, 5, 13),
-        .minYield = YIELD_RATE(1, 1, 1, 1),
-        .description1 = COMPOUND_STRING("The flesh underneath the Custap"),
-        .description2 = COMPOUND_STRING("Berry's skin is sweet and creamy soft."),
-        .growthDuration = GROWTH_DURATION(96, 96, 144, 72, 48, 72),
-        .spicy = 0,
-        .dry = 0,
-        .sweet = 40,
-        .bitter = 10,
-        .sour = 0,
-        .smoothness = 60,
-        .drainRate = 7,
-        .waterBonus = 2,
-        .weedsBonus = 0,
-        .pestsBonus = 0,
-    },
-
     [ITEM_JABOCA_BERRY - FIRST_BERRY_INDEX] =
     {
         .name = _("Jaboca"),

@@ -888,8 +888,8 @@
 	.byte BATTLE_CMD_setdefensecurlbit
 	.endm
 
-	.macro recoverbasedonsunlight failInstr:req
-	.byte BATTLE_CMD_recoverbasedonsunlight
+	.macro RecuperaSaludSegunClima failInstr:req
+	.byte BATTLE_CMD_RecuperaSaludSegunClima
 	.4byte \failInstr
 	.endm
 
@@ -900,10 +900,6 @@
 
 	.macro selectfirstvalidtarget
 	.byte BATTLE_CMD_selectfirstvalidtarget
-	.endm
-
-	.macro intentaataqueequipo
-	.byte BATTLE_CMD_intentaataqueequipo
 	.endm
 
 	.macro setsemiinvulnerablebit clear=FALSE

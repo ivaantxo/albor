@@ -1514,7 +1514,6 @@ static const u8 *const sScrollableMultichoiceOptions[][MAX_SCROLL_MULTI_LENGTH] 
     {
         gText_Leftovers48BP,
         gText_WhiteHerb48BP,
-        gText_QuickClaw48BP,
         gText_MentalHerb48BP,
         gText_BrightPowder64BP,
         gText_ChoiceBand64BP,

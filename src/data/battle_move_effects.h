@@ -481,11 +481,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .battleScript = BattleScript_EffectHit,
             },
 
-        [EFECTO_ATAQUE_EQUIPO] =
-            {
-                .battleScript = ScriptBatalla_EfectoAtaqueEquipo,
-            },
-
         [EFFECT_SEMI_INVULNERABLE] =
             {
                 .battleScript = BattleScript_EffectTwoTurnsAttack,

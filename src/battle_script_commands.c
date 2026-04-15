@@ -481,10 +481,9 @@ static void Cmd_halvehp(void);
 static void Cmd_copyfoestats(void);
 static void Cmd_girorapidofree(void);
 static void Cmd_setdefensecurlbit(void);
-static void Cmd_recoverbasedonsunlight(void);
+static void Cmd_RecuperaSaludSegunClima(void);
 static void Cmd_setstickyweb(void);
 static void Cmd_selectfirstvalidtarget(void);
-static void Cmd_intentaataqueequipo(void);
 static void Cmd_setsemiinvulnerablebit(void);
 static void Cmd_tryfiretwoturnmovenowbyeffect(void);
 static void Cmd_setminimize(void);
@@ -695,10 +694,9 @@ void (*const gBattleScriptingCommandsTable[])(void) =
         BATTLE_CMD(copyfoestats),
         BATTLE_CMD(girorapidofree),
         BATTLE_CMD(setdefensecurlbit),
-        BATTLE_CMD(recoverbasedonsunlight),
+        BATTLE_CMD(RecuperaSaludSegunClima),
         BATTLE_CMD(setstickyweb),
         BATTLE_CMD(selectfirstvalidtarget),
-        BATTLE_CMD(intentaataqueequipo),
         BATTLE_CMD(setsemiinvulnerablebit),
         BATTLE_CMD(tryfiretwoturnmovenowbyeffect),
         BATTLE_CMD(setminimize),
@@ -1045,6 +1043,7 @@ u32 GetTotalAccuracy(u32 battlerAtk, u32 battlerDef, u32 move, u32 atkAbility, u
     u32 moveAcc;
     s32 buff, accStage, evasionStage;
     uq4_12_t modifier = NEUTRO;
+    enum ClimasCombate climaCombate = ObtenClimaCombate();
 
     gPotentialItemEffectBattler = battlerDef;
     accStage = gBattleMons[battlerAtk].statStages[ESTADISTICA_PRECISION];
@@ -1086,15 +1085,15 @@ u32 GetTotalAccuracy(u32 battlerAtk, u32 battlerDef, u32 move, u32 atkAbility, u
     switch (defAbility)
     {
     case ABILITY_SAND_VEIL:
-        if (ClimaTieneEfecto() && gBattleWeather & B_WEATHER_SANDSTORM)
+        if (EsClimaCombateArena(climaCombate))
             MULTIPLICA(modifier, MENOS_25_POR_CIENTO);
         break;
     case ABILITY_SNOW_CLOAK:
-        if (ClimaTieneEfecto() && (gBattleWeather & B_WEATHER_SNOW))
+        if (EsClimaCombateNieve(climaCombate))
             MULTIPLICA(modifier, MENOS_25_POR_CIENTO);
         break;
     case ABILITY_OLOR_FLUVIAL:
-        if (ClimaTieneEfecto() && (gBattleWeather & B_WEATHER_RAIN))
+        if (EsClimaCombateLluvia(climaCombate))
             MULTIPLICA(modifier, MENOS_25_POR_CIENTO);
         break;
     case ABILITY_TANGLED_FEET:
@@ -1154,7 +1153,7 @@ static void AccuracyCheck(bool32 recalcDragonDarts, const u8 *nextInstr, const u
         if (!PorcentajeAleatorio(accuracy))
         {
             gMoveResultFlags |= MOVE_RESULT_MISSED;
-            if (gMovesInfo[gCurrentMove].effect == EFFECT_DRAGON_DARTS && !recalcDragonDarts // So we don't jump back and forth between targets
+            if (gMovimientos[gCurrentMove].effect == EFFECT_DRAGON_DARTS && !recalcDragonDarts // So we don't jump back and forth between targets
                 && CanTargetPartner(gBattlerAttacker, gBattlerTarget) && !TargetFullyImmuneToCurrMove(gBattlerAttacker, ALIADO(gBattlerTarget)))
             {
                 // Smart target to partner if miss
@@ -1170,7 +1169,7 @@ static void AccuracyCheck(bool32 recalcDragonDarts, const u8 *nextInstr, const u
             else
                 gMensajeBatalla = TEXTO_COMBATE_ATAQUE_FALLO_ATACANTE;
 
-            if (gMovesInfo[move].power)
+            if (gMovimientos[move].power)
                 CalcTypeEffectivenessMultiplier(move, type, gBattlerAttacker, gBattlerTarget, abilityDef, TRUE);
         }
         JumpIfMoveFailed(move);
@@ -8803,23 +8802,25 @@ static void Cmd_setdefensecurlbit(void)
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
-static void Cmd_recoverbasedonsunlight(void)
+static void Cmd_RecuperaSaludSegunClima(void)
 {
     CMD_ARGS(const u8 *failInstr);
+
+    enum ClimasCombate climaCombate = ObtenClimaCombate();
 
     gBattlerTarget = gBattlerAttacker;
     if (gBattleMons[gBattlerAttacker].hp != gBattleMons[gBattlerAttacker].maxHP)
     {
         if (gCurrentMove == MOVE_SHORE_UP)
         {
-            if (ClimaTieneEfecto() && gBattleWeather & B_WEATHER_SANDSTORM)
+            if (EsClimaCombateArena(climaCombate))
                 gBattleMoveDamage = 20 * CuantosPSMaximos(gBattlerAttacker) / 30;
             else
                 gBattleMoveDamage = CuantosPSMaximos(gBattlerAttacker) / 2;
         }
         else
         {
-            if (!(gBattleWeather & B_WEATHER_ANY) || !ClimaTieneEfecto() || GetBattlerHoldEffect(gBattlerAttacker, TRUE) == HOLD_EFFECT_UTILITY_UMBRELLA)
+            if (!(gBattleWeather & B_WEATHER_ANY) || !ClimaTieneEfecto())
                 gBattleMoveDamage = CuantosPSMaximos(gBattlerAttacker) / 2;
             else if (gBattleWeather & B_WEATHER_SUN)
                 gBattleMoveDamage = 20 * CuantosPSMaximos(gBattlerAttacker) / 30;
@@ -8870,14 +8871,6 @@ static void Cmd_selectfirstvalidtarget(void)
         if (IsBattlerAlive(gBattlerTarget))
             break;
     }
-    gBattlescriptCurrInstr = cmd->nextInstr;
-}
-
-static void Cmd_intentaataqueequipo(void)
-{
-    CMD_ARGS();
-
-    gBattleStruct->posicionPokemonEquipo++;
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
@@ -10252,7 +10245,7 @@ void ScriptCombate_PalmaRauda(void)
 
     u32 objetivo = gBattlerTarget;
     u32 movimiento = gMovimientoElegido[objetivo];
-    u32 prioridad = gMovimientos[movimiento].priority;
+    enum PrioridadMovimientos prioridad = PrioridadMovimiento(movimiento);
 
     if (movimiento == MOVE_NONE || EsMovimientoDeEstado(movimiento))
     {
@@ -10262,17 +10255,19 @@ void ScriptCombate_PalmaRauda(void)
 
     switch (prioridad)
     {
-    case 1:
+    case PRIORIDAD_MOVIMIENTO_ALTA:
         gBattlescriptCurrInstr = cmd->nextInstr;
         break;
 
-    case 2:
+    case PRIORIDAD_MOVIMIENTO_MUY_ALTA:
         if (GetBattlerSpeed(gBattlerAttacker) > GetBattlerSpeed(objetivo))
             gBattlescriptCurrInstr = cmd->nextInstr;
         else
             gBattlescriptCurrInstr = cmd->failInstr;
         break;
 
+    case PRIORIDAD_MOVIMIENTO_NEGATIVA:
+    case PRIORIDAD_MOVIMIENTO_NORMAL:
     default:
         gBattlescriptCurrInstr = cmd->failInstr;
         break;

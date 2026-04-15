@@ -502,18 +502,6 @@ const struct SpriteFrameImage sPicTable_MicleBerryTree[] = {
     overworld_frame(gObjectEventPic_MicleBerryTree, 2, 4, 5),
 };
 
-const struct SpriteFrameImage sPicTable_CustapBerryTree[] = {
-    overworld_frame(gObjectEventPic_BerryTreeDirtPile, 2, 2, 0),
-    overworld_frame(gObjectEventPic_BerryTreeSprout, 2, 2, 0),
-    overworld_frame(gObjectEventPic_BerryTreeSprout, 2, 2, 1),
-    overworld_frame(gObjectEventPic_CustapBerryTree, 2, 4, 0),
-    overworld_frame(gObjectEventPic_CustapBerryTree, 2, 4, 1),
-    overworld_frame(gObjectEventPic_CustapBerryTree, 2, 4, 2),
-    overworld_frame(gObjectEventPic_CustapBerryTree, 2, 4, 3),
-    overworld_frame(gObjectEventPic_CustapBerryTree, 2, 4, 4),
-    overworld_frame(gObjectEventPic_CustapBerryTree, 2, 4, 5),
-};
-
 const struct SpriteFrameImage sPicTable_JabocaBerryTree[] = {
     overworld_frame(gObjectEventPic_BerryTreeDirtPile, 2, 2, 0),
     overworld_frame(gObjectEventPic_BerryTreeSprout, 2, 2, 0),
@@ -603,7 +591,6 @@ const struct SpriteFrameImage *const gBerryTreePicTablePointers[] = {
     [ITEM_STARF_BERRY - FIRST_BERRY_INDEX]            = sPicTable_CornnBerryTree,
     [ITEM_ENIGMA_BERRY - FIRST_BERRY_INDEX]           = sPicTable_DurinBerryTree,
     [ITEM_MICLE_BERRY - FIRST_BERRY_INDEX]            = sPicTable_MicleBerryTree,
-    [ITEM_CUSTAP_BERRY - FIRST_BERRY_INDEX]           = sPicTable_CustapBerryTree,
     [ITEM_JABOCA_BERRY - FIRST_BERRY_INDEX]           = sPicTable_JabocaBerryTree,
     [ITEM_ROWAP_BERRY - FIRST_BERRY_INDEX]            = sPicTable_RowapBerryTree,
     [ITEM_KEE_BERRY - FIRST_BERRY_INDEX]              = sPicTable_PechaBerryTree,
@@ -679,7 +666,6 @@ const u8 gBerryTreePaletteTagTable[] = {
     [ITEM_STARF_BERRY - FIRST_BERRY_INDEX]              = PAL_NPC_1,
     [ITEM_ENIGMA_BERRY - FIRST_BERRY_INDEX]             = PAL_NPC_3,
     [ITEM_MICLE_BERRY - FIRST_BERRY_INDEX]              = PAL_NPC_3,
-    [ITEM_CUSTAP_BERRY - FIRST_BERRY_INDEX]             = PAL_NPC_4,
     [ITEM_JABOCA_BERRY - FIRST_BERRY_INDEX]             = PAL_NPC_4,
     [ITEM_ROWAP_BERRY - FIRST_BERRY_INDEX]              = PAL_NPC_4,
     [ITEM_KEE_BERRY - FIRST_BERRY_INDEX]                = PAL_NPC_3,

@@ -567,7 +567,6 @@ extern const u8 gBattleAnimMove_MoongeistBeam[];
 extern const u8 gBattleAnimMove_TearfulLook[];
 extern const u8 gBattleAnimMove_MultiAttack[];
 extern const u8 gBattleAnimMove_MindBlown[];
-extern const u8 gBattleAnimMove_ZippyZap[];
 extern const u8 gBattleAnimMove_SizzlySlide[];
 extern const u8 gBattleAnimMove_SparklySwirl[];
 extern const u8 gBattleAnimMove_SnipeShot[];

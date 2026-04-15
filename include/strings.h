@@ -512,7 +512,6 @@ extern const u8 gText_HpUp1BP[];
 
 extern const u8 gText_Leftovers48BP[];
 extern const u8 gText_WhiteHerb48BP[];
-extern const u8 gText_QuickClaw48BP[];
 extern const u8 gText_MentalHerb48BP[];
 extern const u8 gText_BrightPowder64BP[];
 extern const u8 gText_ChoiceBand64BP[];

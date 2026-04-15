@@ -7182,23 +7182,6 @@ const struct Item gItemsInfo[] =
                 .iconPalette = gItemIconPalette_ExpShare,
             },
 
-        [ITEM_QUICK_CLAW] =
-            {
-                .name = _("Quick Claw"),
-                .price = (I_PRICE >= GEN_9) ? 8000 : ((I_PRICE >= GEN_7) ? 4000 : 100),
-                .holdEffect = HOLD_EFFECT_QUICK_CLAW,
-                .holdEffectParam = 20,
-                .description = COMPOUND_STRING(
-                    "A hold item that\n"
-                    "occasionally allows\n"
-                    "the first strike."),
-                .pocket = POCKET_ITEMS,
-                .type = ITEM_USE_BAG_MENU,
-                .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-                .iconPic = gItemIcon_QuickClaw,
-                .iconPalette = gItemIconPalette_QuickClaw,
-            },
-
         [ITEM_SOOTHE_BELL] =
             {
                 .name = _("Soothe Bell"),
@@ -9075,24 +9058,6 @@ const struct Item gItemsInfo[] =
                 .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
                 .iconPic = gItemIcon_MicleBerry,
                 .iconPalette = gItemIconPalette_MicleBerry,
-            },
-
-        [ITEM_CUSTAP_BERRY] =
-            {
-                .name = _("Custap Berry"),
-                .pluralName = _("Custap Berries"),
-                .price = (I_BERRY_PRICE >= GEN_8) ? 80 : 20,
-                .holdEffect = HOLD_EFFECT_CUSTAP_BERRY,
-                .holdEffectParam = 4,
-                .description = COMPOUND_STRING(
-                    "It allows a Pokémon\n"
-                    "in a pinch to move\n"
-                    "first just once."),
-                .pocket = POCKET_BERRIES,
-                .type = ITEM_USE_BAG_MENU,
-                .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-                .iconPic = gItemIcon_CustapBerry,
-                .iconPalette = gItemIconPalette_CustapBerry,
             },
 
         [ITEM_JABOCA_BERRY] =

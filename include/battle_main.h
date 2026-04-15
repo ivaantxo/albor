@@ -31,7 +31,6 @@ enum EstadosIntroBatalla
 
 enum {
     FIRST_TURN_EVENTS_START,
-    FIRST_TURN_EVENTS_OVERWORLD_WEATHER,
     FIRST_TURN_EVENTS_NEUTRALIZING_GAS,
     FIRST_TURN_EVENTS_SWITCH_IN_ABILITIES,
     FIRST_TURN_EVENTS_ITEM_EFFECTS,
@@ -68,10 +67,8 @@ void SwitchPartyOrder(u32 battlerId);
 void SwapTurnOrder(u8 id1, u8 id2);
 u32 GetBattlerTotalSpeedStatArgs(u32 battler, u32 ability, u32 holdEffect);
 u32 GetBattlerTotalSpeedStat(u32 battler);
-s8 GetChosenMovePriority(u32 battlerId);
-s8 GetMovePriority(u32 battlerId, u16 move);
-s32 GetWhichBattlerFasterArgs(u32 battler1, u32 battler2, bool32 ignoreChosenMoves, u32 ability1, u32 ability2,
-                              u32 holdEffectBattler1, u32 holdEffectBattler2, u32 speedBattler1, u32 speedBattler2, s32 priority1, s32 priority2);
+enum PrioridadMovimientos PrioridadMovimientoMasHabilidad(u32 combatiente, u32 movimiento);
+s32 GetWhichBattlerFasterArgs(u32 battler1, u32 battler2, bool32 ignoreChosenMoves, u32 ability1, u32 ability2, u32 holdEffectBattler1, u32 holdEffectBattler2, u32 speedBattler1, u32 speedBattler2, enum PrioridadMovimientos prioridad1, enum PrioridadMovimientos prioridad2);
 s32 GetWhichBattlerFasterOrTies(u32 battler1, u32 battler2, bool32 ignoreChosenMoves);
 s32 GetWhichBattlerFaster(u32 battler1, u32 battler2, bool32 ignoreChosenMoves);
 void RunBattleScriptCommands_PopCallbacksStack(void);

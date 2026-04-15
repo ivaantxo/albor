@@ -55,6 +55,7 @@ Es un hackrom en castellano que está en desarrollo, que usa la pokeemerald-expa
         -DeNerdyDude
         -Lennybitao
 
+- El maravilloso sprite de Castform Sand lo hizo Caco, y posteriormente fue destrozado ligeramente por mí.
 
 ## Cambios a ataques/habilidades/mecánicas:
     *Aguijón letal aumenta 2 veces el ataque (en vez de 3).

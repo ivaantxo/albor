@@ -3325,6 +3325,14 @@ static const union AnimCmd sAnim_CastformSnowy[] =
     ANIMCMD_END,
 };
 
+
+static const union AnimCmd sAnim_CastformSandy[] =
+{
+    ANIMCMD_FRAME(0, 5),
+    ANIMCMD_FRAME(1, 12),
+    ANIMCMD_END,
+};
+
 static const union AnimCmd sAnim_Kecleon[] =
 {
     ANIMCMD_FRAME(0, 10),
@@ -5263,6 +5271,7 @@ SINGLE_ANIMATION(Castform);
 SINGLE_ANIMATION(CastformSunny);
 SINGLE_ANIMATION(CastformRainy);
 SINGLE_ANIMATION(CastformSnowy);
+SINGLE_ANIMATION(CastformSandy);
 SINGLE_ANIMATION(Kecleon);
 SINGLE_ANIMATION(Duskull);
 SINGLE_ANIMATION(Dusclops);

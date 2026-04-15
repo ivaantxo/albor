@@ -2111,6 +2111,12 @@ const u32 gMonBackPic_CastformSnowy[] = INCBIN_U32("graphics/pokemon/castform/sn
 const u32 gMonShinyPalette_CastformSnowy[] = INCBIN_U32("graphics/pokemon/castform/snowy/shiny.gbapal.lz");
 const u32 gObjectEventPic_CastformSnowy[] = INCBIN_U32("graphics/pokemon/castform/snowy/follower.4bpp");
 
+const u32 gMonFrontPic_CastformSandy[] = INCBIN_U32("graphics/pokemon/castform/sandy/anim_front.4bpp.lz");
+const u32 gMonPalette_CastformSandy[] = INCBIN_U32("graphics/pokemon/castform/sandy/normal.gbapal.lz");
+const u32 gMonBackPic_CastformSandy[] = INCBIN_U32("graphics/pokemon/castform/sandy/back.4bpp.lz");
+const u32 gMonShinyPalette_CastformSandy[] = INCBIN_U32("graphics/pokemon/castform/sandy/shiny.gbapal.lz");
+const u32 gObjectEventPic_CastformSandy[] = INCBIN_U32("graphics/pokemon/castform/sandy/follower.4bpp");
+
 const u32 gMonFrontPic_Kecleon[] = INCBIN_U32("graphics/pokemon/kecleon/anim_front.4bpp.lz");
 const u32 gMonPalette_Kecleon[] = INCBIN_U32("graphics/pokemon/kecleon/normal.gbapal.lz");
 const u32 gMonBackPic_Kecleon[] = INCBIN_U32("graphics/pokemon/kecleon/back.4bpp.lz");
