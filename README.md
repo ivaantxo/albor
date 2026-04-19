@@ -70,7 +70,7 @@ Es un hackrom en castellano que está en desarrollo, que usa la pokeemerald-expa
     *Los ataques de pulsos/auras y balas se han unificado, por lo que las habilidades Megadisparador y Antibalas funcionan con todos.
     *Se han cambiado muchas habilidades y se han añadido muchas otras. No hay habilidades inútiles en el juego, y todos los Pokémon tienen 3 habilidades (excepto Pokémon con habilidades intrínsecas).
     *Forcejeo tiene STAB de tipo Normal.
-    *Se ha cambiado cómo funciona el STAB: Pokémon con 1 solo tipo tienen 50% de STAB, mientras que Pokémon con 2 tipos tienen 25% de STAB con cada uno de sus tipos.
+    *Se ha cambiado cómo funciona el STAB: Pokémon con 1 solo tipo tienen 50% de STAB, mientras que Pokémon con 2 tipos tienen 25% de STAB con cada uno de sus tipos. Adicionalmente, los tipos Normal tienen como habilidad exclusiva que potencian su STAB un 100% si son monotipos, o un 50% si son tipos duales.
     *Clima soleado y lluvioso potencian un 25% los ataques de fuego y agua (aunque siguen reduciéndose 50% la potencia de sus contrapartes).
     *Habilidad Fuga te permite huir siempre (incluido movimientos como Atadura, o habilidades como Sombra Trampa), y +1 de prioridad movimientos de cambio como Ida y Vuelta.
     *Se han modificado las naturalezas: Ahora son 5 (Ofensiva, Defensiva, Ofensiva especial, Defensiva especial y Rápida), y no bajan ninguna estadística, solo suben la correspondiente.
@@ -116,18 +116,17 @@ Es un hackrom en castellano que está en desarrollo, que usa la pokeemerald-expa
 
 ## Cambios a tabla de tipos:
     * Roca x0,5 a roca.
-    * Normal x1 a acero.
     * Psíquico x2 a acero.
+    * Eléctrico x2 a acero.
+    * Planta x1 a acero.
+    * Planta x1 a dragón.
+    * Fuego x0 a dragón.
     * Bicho x2 a hada.
     * Bicho x2 a fantasma.
     * Veneno x2 a bicho.
-    * Planta x1 a dragón.
-    * Fuego x0 a dragón.
     * Agua x0,5 a hielo.
-    * Eléctrico x2 a acero.
-    * Tierra x0,5 a normal.
-    * Planta x1 a acero.
-    * Volador x0,5 a acero.
+    * Tierra x0,5 a hielo.
+    * Volador x0,5 a hielo.
 
 ## Cambios a Pokémon:
     *Se han cambiado las paletas shiny de muchos Pokémon.

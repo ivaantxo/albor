@@ -1973,7 +1973,6 @@ extern const u32 gMoveTypePalDark[];
 extern const u32 gMoveTypePalElectric[];
 extern const u32 gMoveTypePalPsychic[];
 extern const u32 gMoveTypePalIce[];
-extern const u32 gMoveTypePalMystery[];
 extern const u32 gMoveTypePalPoison[];
 
 extern const u32 gBattleInterfaceSelector[];

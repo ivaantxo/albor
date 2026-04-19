@@ -462,7 +462,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Blows away the foe with\n"
             "wind and ends the battle."),
-        .effect = EFFECT_ROAR,
+        .effect = EFFECT_FUERZA_CAMBIO_OBJETIVO,
         .power = 0,
         .type = TIPO_VOLADOR,
         .accuracy = PRECISION_NORMAL,
@@ -1039,13 +1039,13 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Growl,
     },
 
-    [MOVE_ROAR] =
+    [MOVE_RUGIDO] =
     {
         .name = COMPOUND_STRING("Rugido"),
         .description = COMPOUND_STRING(
             "Makes the foe flee to end\n"
             "the battle."),
-        .effect = EFFECT_ROAR,
+        .effect = EFFECT_FUERZA_CAMBIO_OBJETIVO,
         .power = 0,
         .type = TIPO_NORMAL,
         .accuracy = B_UPDATED_MOVE_DATA >= GEN_6 ? 0 : 100,
@@ -3382,7 +3382,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
             "differently for GHOSTS."),
         .effect = EFFECT_CURSE,
         .power = 0,
-        .type = B_UPDATED_MOVE_TYPES >= GEN_5 ? TIPO_FANTASMA : TIPO_MISTERIO,
+        .type = TIPO_FANTASMA,
         .accuracy = PRECISION_PERFECTA,
         .pp = 10,
         .target = MOVE_TARGET_SELECTED,
@@ -8250,27 +8250,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .strikeCount = 2,
         .battleAnimScript = gBattleAnimMove_DoubleHit,
-    },
-
-    [MOVE_ROAR_OF_TIME] =
-    {
-        .name = COMPOUND_STRING("Distorsión"),
-        .description = COMPOUND_STRING(
-            "Powerful, but leaves the\n"
-            "user immobile the next turn."),
-        .effect = EFFECT_HIT,
-        .power = 150,
-        .type = TIPO_DRAGON,
-        .accuracy = 90,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESPECIAL,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_RECHARGE,
-            .self = TRUE,
-        }),
-        .battleAnimScript = gBattleAnimMove_RoarOfTime,
     },
 
     [MOVE_SPACIAL_REND] =

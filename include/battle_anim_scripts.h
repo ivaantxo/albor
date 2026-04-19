@@ -408,7 +408,6 @@ extern const u8 gBattleAnimMove_DefendOrder[];
 extern const u8 gBattleAnimMove_HealOrder[];
 extern const u8 gBattleAnimMove_HeadSmash[];
 extern const u8 gBattleAnimMove_DoubleHit[];
-extern const u8 gBattleAnimMove_RoarOfTime[];
 extern const u8 gBattleAnimMove_SpacialRend[];
 extern const u8 gBattleAnimMove_CrushGrip[];
 extern const u8 gBattleAnimMove_MagmaStorm[];

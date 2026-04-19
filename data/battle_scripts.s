@@ -1595,9 +1595,13 @@ BattleScript_EffectRoar::
 	jumpifability BS_TARGET, ABILITY_GUARD_DOG, BattleScript_ButItFailed
 	jumpifability BS_TARGET, ABILITY_SUCTION_CUPS, BattleScript_AbilityPreventsPhasingOut
 	jumpifstatus3 BS_TARGET, STATUS3_ROOTED, BattleScript_PrintMonIsRooted
+	jumpiftype BS_TARGET, TIPO_TIERRA, ScriptCombate_TipoTierraNoPuedenSerEchados
 	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
 	accuracycheck BattleScript_MoveMissedPause, ACC_CURR_MOVE
 	forcerandomswitch BattleScript_ButItFailed
+
+ScriptCombate_TipoTierraNoPuedenSerEchados:
+	EscribeTextoCombate ("¡Pokémon de tipo Tierra no pueden ser echados!") @ Revisar, hacer que ponga de quién es la habilidad
 
 BattleScript_MultiHitPrintStrings::
 	resultmessage

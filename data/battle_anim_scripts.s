@@ -3235,47 +3235,6 @@ gBattleAnimMove_DoubleHit::
 	blendoff
 	end
 
-gBattleAnimMove_RoarOfTime::
-	loadspritegfx ANIM_TAG_ORBS
-	loadspritegfx ANIM_TAG_EXPLOSION
-	loadspritegfx ANIM_TAG_WATER_GUN
-	createvisualtask AnimTask_BlendBattleAnimPal, 10, 1, 1, 0, 16, 0
-	delay 0x20
-	monbg ANIM_ATK_PARTNER
-	setalpha 0xc, 0x8
-	loopsewithpan 133, SOUND_PAN_ATTACKER 13 3
-	call RecoverAbsorbEffect
-	waitforvisualfinish
-	clearmonbg ANIM_ATK_PARTNER
-	blendoff
-	createvisualtask AnimTask_BlendBattleAnimPal, 10, 1, 1, 16, 0, 0
-	waitforvisualfinish
-	createvisualtask AnimTask_BlendBattleAnimPal, 10, 1, 1, 0, 16, -1
-	createvisualtask SoundTask_PlayDoubleCry, 2, ANIM_ATTACKER, CRY_MODE_GROWL_1
-	delay 0x20
-	createvisualtask AnimTask_ShakeMonInPlace, 2, ANIM_TARGET, 10, 0, 20, 1
-	playsewithpan 170, SOUND_PAN_TARGET
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0, 0, 1, 1
-	delay 6
-	playsewithpan 170, SOUND_PAN_TARGET
-	createsprite gRoarOfTimeBombTemplate, ANIM_ATTACKER, 3, 0x18, 0xffe8, 1, 1
-	delay 6
-	playsewithpan 170, SOUND_PAN_TARGET
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 0xfff0, 16, 1, 1
-	delay 6
-	playsewithpan 170, SOUND_PAN_TARGET
-	createsprite gRoarOfTimeBombTemplate, ANIM_ATTACKER, 3, 0xffe8, -12, 1, 1
-	delay 6
-	playsewithpan 170, SOUND_PAN_TARGET
-	createsprite gExplosionSpriteTemplate, ANIM_ATTACKER, 3, 16, 16, 1, 1
-	delay 6
-	playsewithpan 170, SOUND_PAN_TARGET
-	createsprite gRoarOfTimeBombTemplate, ANIM_ATTACKER, 3, 0xffe8, 0x18, 1, 1
-	waitforvisualfinish
-	createvisualtask AnimTask_BlendBattleAnimPal, 10, 1, 1, 16, 0, -1
-	waitforvisualfinish
-	end
-
 gBattleAnimMove_SpacialRend::
 	loadspritegfx ANIM_TAG_PUNISHMENT_BLADES
 	loadspritegfx ANIM_TAG_PINK_HEART_2       @ANIM_TAG_BERRY_EATEN

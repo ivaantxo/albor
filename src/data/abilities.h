@@ -482,6 +482,12 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Come bayas 50% PS."),
     },
 
+    [ABILITY_SOBREMESA] =
+    {
+        .name = _("Sobremesa"),
+        .description = COMPOUND_STRING("Sube ataque tras comer baya."),
+    },
+
     [ABILITY_ANGER_POINT] =
     {
         .name = _("Irascible"),
@@ -773,6 +779,12 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     [ABILITY_AGRESIVIDAD] =
     {
         .name = _("Agresividad"),
+        .description = COMPOUND_STRING("Potencia 50% si ataca después."),
+    },
+
+    [ABILITY_PACIENTE] =
+    {
+        .name = _("Paciente"),
         .description = COMPOUND_STRING("Potencia 50% si ataca después."),
     },
 

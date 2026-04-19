@@ -6721,13 +6721,6 @@ static void Cmd_various(void)
             gBattlescriptCurrInstr = cmd->jumpInstr;
         return;
     }
-    case VARIOUS_LOSE_TYPE:
-    {
-        VARIOUS_ARGS(u8 type);
-        RemoveBattlerType(battler, cmd->type);
-        gBattlescriptCurrInstr = cmd->nextInstr;
-        return;
-    }
     case VARIOUS_CURE_STATUS:
     {
         VARIOUS_ARGS();

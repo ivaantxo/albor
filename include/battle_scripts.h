@@ -347,6 +347,7 @@ extern const u8 BattleScript_EffectAccuracyDown[];
 extern const u8 BattleScript_EffectEvasionDown[];
 extern const u8 BattleScript_EffectHaze[];
 extern const u8 BattleScript_EffectRoar[];
+extern const u8 ScriptCombate_TipoTierraNoPuedenSerEchados[];
 extern const u8 BattleScript_EffectHit[];
 extern const u8 BattleScript_EffectConversion[];
 extern const u8 BattleScript_EffectRestoreHp[];

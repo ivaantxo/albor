@@ -869,4 +869,30 @@ static inline enum PrioridadMovimientos PrioridadMovimiento(u32 movimiento)
     return gMovimientos[movimiento].prioridad;
 }
 
+enum TiposPokemon ObtenTipoCombatiente(u32 combatiente, enum IndiceTiposPokemon indiceTipo)
+{
+    enum TiposPokemon tipo1, tipo2;
+    tipo1 = gBattleMons[combatiente].types[TIPO_1];
+    tipo2 = gBattleMons[combatiente].types[TIPO_2];
+
+    if (gBattleResources->flags[combatiente] & RESOURCE_FLAG_ROOST)
+    {
+        if (tipo1 == TIPO_VOLADOR && tipo2 == TIPO_VOLADOR)
+            return TIPO_NORMAL;
+
+        if (tipo1 == TIPO_VOLADOR)
+            return tipo2;
+
+        if (tipo2 == TIPO_VOLADOR)
+            return tipo1;
+    }
+
+    return (indiceTipo == TIPO_1) ? tipo1 : tipo2;
+}
+
+static inline bool32 EsTipoDual(u32 combatiente)
+{
+    return ObtenTipoCombatiente(combatiente, TIPO_1) != ObtenTipoCombatiente(combatiente, TIPO_2);
+}
+
 #endif // GUARD_BATTLE_H

@@ -825,10 +825,6 @@ static const union AnimCmd sSpriteAnim_TypeSteel[] = {
     ANIMCMD_FRAME(TIPO_ACERO * 8, 0, FALSE, FALSE),
     ANIMCMD_END
 };
-static const union AnimCmd sSpriteAnim_TypeMystery[] = {
-    ANIMCMD_FRAME(TIPO_MISTERIO * 8, 0, FALSE, FALSE),
-    ANIMCMD_END
-};
 static const union AnimCmd sSpriteAnim_TypeFire[] = {
     ANIMCMD_FRAME(TIPO_FUEGO * 8, 0, FALSE, FALSE),
     ANIMCMD_END
@@ -895,7 +891,6 @@ static const union AnimCmd *const sSpriteAnimTable_MoveTypes[NUMERO_TIPOS + CONT
     [TIPO_BICHO] = sSpriteAnim_TypeBug,
     [TIPO_FANTASMA] = sSpriteAnim_TypeGhost,
     [TIPO_ACERO] = sSpriteAnim_TypeSteel,
-    [TIPO_MISTERIO] = sSpriteAnim_TypeMystery,
     [TIPO_FUEGO] = sSpriteAnim_TypeFire,
     [TIPO_AGUA] = sSpriteAnim_TypeWater,
     [TIPO_PLANTA] = sSpriteAnim_TypeGrass,

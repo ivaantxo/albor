@@ -10,7 +10,7 @@ OUTPUT_FILE = "pokedex_privada.html"
 TYPE_MAP = {
     "NORMAL": "normal", "LUCHA": "fight", "VOLADOR": "flying", "VENENO": "poison",
     "TIERRA": "ground", "ROCA": "rock", "BICHO": "bug", "FANTASMA": "ghost",
-    "ACERO": "steel", "MISTERIO": "mystery", "FUEGO": "fire", "AGUA": "water",
+    "ACERO": "steel", "FUEGO": "fire", "AGUA": "water",
     "PLANTA": "grass", "ELECTRICO": "electric", "PSIQUICO": "psychic",
     "HIELO": "ice", "DRAGON": "dragon", "SINIESTRO": "dark", "HADA": "fairy"
 }

@@ -1929,7 +1929,7 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
                         struct DamageCalculationData damageCalcData;
                         damageCalcData.battlerAtk = damageCalcData.battlerDef = gBattlerAttacker;
                         damageCalcData.move = MOVE_NONE;
-                        damageCalcData.moveType = TIPO_MISTERIO;
+                        damageCalcData.moveType = TIPO_NORMAL;
                         damageCalcData.isCrit = FALSE;
                         damageCalcData.updateFlags = TRUE;
                         gBattleMoveDamage = CalculateMoveDamage(&damageCalcData, 40);
@@ -5229,6 +5229,7 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
         break;
     case ABILITY_ANALYTIC:
     case ABILITY_AGRESIVIDAD:
+    case ABILITY_PACIENTE:
         if (GetBattlerTurnOrderNum(battlerAtk) == gBattlersCount - 1)
             MULTIPLICA(modifier, MAS_50_POR_CIENTO);
         break;
@@ -5692,20 +5693,30 @@ static inline uq4_12_t GetParentalBondModifier(u32 battlerAtk)
     return MOVIMIENTO_MUY_POCO_EFECTIVO;
 }
 
-static inline uq4_12_t GetSameTypeAttackBonusModifier(struct DamageCalculationData *damageCalcData, u32 abilityAtk)
+static inline uq4_12_t ObtenModificadorAtaqueMismoTipo(struct DamageCalculationData *damageCalcData)
 {
-    u32 battlerAtk = damageCalcData->battlerAtk;
-    u32 moveType = damageCalcData->moveType;
+    u32 atacante = damageCalcData->battlerAtk;
+    u32 tipoMovimiento = damageCalcData->moveType;
 
-    if (EsTipo(battlerAtk, moveType))
-    {
-        if (GetBattlerType(battlerAtk, 0) != GetBattlerType(battlerAtk, 1))
-            return MAS_25_POR_CIENTO;
-        else
-            return MAS_50_POR_CIENTO;
-    }
-    else
+    if (!EsTipo(atacante, tipoMovimiento))
         return MOVIMIENTO_NEUTRO;
+    else
+    {
+        if (EsTipoDual(atacante))
+        {
+            if (tipoMovimiento == TIPO_NORMAL)
+                return MAS_50_POR_CIENTO;
+            else
+                return MAS_25_POR_CIENTO;
+        }
+        else
+        {
+            if (tipoMovimiento == TIPO_NORMAL)
+                return MAS_100_POR_CIENTO;
+            else
+                return MAS_50_POR_CIENTO;
+        }
+    }
 }
 
 static uq4_12_t ObtenModificadorDanioClima(struct DamageCalculationData *datosMovimiento, enum ClimasCombate climaCombate)
@@ -5956,7 +5967,7 @@ static inline s32 DoMoveDamageCalcVars(struct DamageCalculationData *damageCalcD
     DAMAGE_APPLY_MODIFIER(GetTargetDamageModifier(damageCalcData));
     DAMAGE_APPLY_MODIFIER(ObtenModificadorDanioClima(damageCalcData, climaCombate));
     DAMAGE_APPLY_MODIFIER(GetCriticalModifier(damageCalcData->isCrit));
-    DAMAGE_APPLY_MODIFIER(GetSameTypeAttackBonusModifier(damageCalcData, abilityAtk));
+    DAMAGE_APPLY_MODIFIER(ObtenModificadorAtaqueMismoTipo(damageCalcData));
     DAMAGE_APPLY_MODIFIER(typeEffectivenessModifier);
     DAMAGE_APPLY_MODIFIER(ModificadorQuemaduraCongelacion(damageCalcData, abilityAtk));
     DAMAGE_APPLY_MODIFIER(GetOtherModifiers(damageCalcData, typeEffectivenessModifier, abilityAtk, abilityDef, holdEffectAtk, holdEffectDef));
@@ -6067,11 +6078,12 @@ static inline void MulByTypeEffectiveness(uq4_12_t *modifier, u32 move, u32 move
 
 static inline uq4_12_t CalcTypeEffectivenessMultiplierInternal(u32 move, u32 moveType, u32 battlerAtk, u32 battlerDef, bool32 recordAbilities, uq4_12_t modifier, u32 defAbility)
 {
-    MulByTypeEffectiveness(&modifier, move, moveType, battlerDef, GetBattlerType(battlerDef, 0), battlerAtk, recordAbilities);
-    if (GetBattlerType(battlerDef, 1) != GetBattlerType(battlerDef, 0))
-        MulByTypeEffectiveness(&modifier, move, moveType, battlerDef, GetBattlerType(battlerDef, 1), battlerAtk, recordAbilities);
-    if (GetBattlerType(battlerDef, 2) != TIPO_MISTERIO && GetBattlerType(battlerDef, 2) != GetBattlerType(battlerDef, 1) && GetBattlerType(battlerDef, 2) != GetBattlerType(battlerDef, 0))
-        MulByTypeEffectiveness(&modifier, move, moveType, battlerDef, GetBattlerType(battlerDef, 2), battlerAtk, recordAbilities);
+    MulByTypeEffectiveness(&modifier, move, moveType, battlerDef, ObtenTipoCombatiente(battlerDef, TIPO_1), battlerAtk, recordAbilities);
+    
+    if (EsTipoDual(battlerDef))
+    {
+        MulByTypeEffectiveness(&modifier, move, moveType, battlerDef, ObtenTipoCombatiente(battlerDef, TIPO_2), battlerAtk, recordAbilities);
+    }
 
     if (moveType == TIPO_TIERRA && !EstaCombatienteEnSuelo(battlerDef))
     {
@@ -6277,26 +6289,6 @@ bool32 TryBattleFormChange(u32 battler, u32 method)
                 gBattleMons[battler].ability = abilityForm;
             return TRUE;
         }
-    }
-
-    return FALSE;
-}
-
-bool32 DoBattlersShareType(u32 battler1, u32 battler2)
-{
-    s32 i;
-    u8 types1[3] = {GetBattlerType(battler1, 0), GetBattlerType(battler1, 1), GetBattlerType(battler1, 2)};
-    u8 types2[3] = {GetBattlerType(battler2, 0), GetBattlerType(battler2, 1), GetBattlerType(battler2, 2)};
-
-    if (types1[2] == TIPO_MISTERIO)
-        types1[2] = types1[0];
-    if (types2[2] == TIPO_MISTERIO)
-        types2[2] = types2[0];
-
-    for (i = 0; i < 3; i++)
-    {
-        if (types1[i] == types2[0] || types1[i] == types2[1] || types1[i] == types2[2])
-            return TRUE;
     }
 
     return FALSE;
@@ -6703,41 +6695,6 @@ bool32 MoveIsAffectedBySheerForce(u32 move)
             return TRUE;
     }
     return FALSE;
-}
-
-u8 GetBattlerType(u32 battler, u8 typeIndex)
-{
-    u16 types[NUMERO_TIPOS_POR_POKEMON] = {0};
-    types[TIPO_1] = gBattleMons[battler].types[TIPO_1];
-    types[TIPO_2] = gBattleMons[battler].types[TIPO_2];
-
-    // Handle Roost's Flying-type suppression
-    if (typeIndex == TIPO_1 || typeIndex == TIPO_2)
-    {
-        if (gBattleResources->flags[battler] & RESOURCE_FLAG_ROOST)
-        {
-            if (types[TIPO_1] == TIPO_VOLADOR && types[TIPO_2] == TIPO_VOLADOR)
-            {
-                return TIPO_NORMAL;
-            }
-            if (types[typeIndex] == TIPO_VOLADOR)
-            {
-                return (typeIndex == TIPO_1) ? types[TIPO_2] : types[TIPO_1];
-            }
-        }
-    }
-
-    return types[typeIndex];
-}
-
-void RemoveBattlerType(u32 battler, u8 type)
-{
-    u32 i;
-    for (i = 0; i < 3; i++)
-    {
-        if (*(u8 *)(&gBattleMons[battler].types[TIPO_1] + i) == type)
-            *(u8 *)(&gBattleMons[battler].types[TIPO_1] + i) = TIPO_MISTERIO;
-    }
 }
 
 void AllocateBattleResources(void)

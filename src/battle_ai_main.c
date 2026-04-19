@@ -1006,7 +1006,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             ADJUST_SCORE(-10);
         break;
 
-    case EFFECT_ROAR:
+    case EFFECT_FUERZA_CAMBIO_OBJETIVO:
         if (CountUsablePartyMons(battlerDef) == 0)
             ADJUST_SCORE(-10);
         else if (aiData->abilities[battlerDef] == ABILITY_SUCTION_CUPS)
@@ -2278,8 +2278,8 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
             break;
         score += AI_TryToClearStats(battlerAtk, battlerDef, isDoubleBattle);
         break;
-    case EFFECT_ROAR:
-        if ((EsMovimientoDeSonido(move) && aiData->abilities[battlerDef] == ABILITY_SOUNDPROOF) || aiData->abilities[battlerDef] == ABILITY_SUCTION_CUPS)
+    case EFFECT_FUERZA_CAMBIO_OBJETIVO:
+        if ((EsMovimientoDeSonido(move) && aiData->abilities[battlerDef] == ABILITY_SOUNDPROOF) || aiData->abilities[battlerDef] == ABILITY_SUCTION_CUPS || EsTipo(battlerDef, TIPO_TIERRA))
             break;
         score += AI_TryToClearStats(battlerAtk, battlerDef, isDoubleBattle);
         break;

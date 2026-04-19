@@ -1130,7 +1130,6 @@ const u32 gMoveTypePalDark[] = INCBIN_U32("graphics/battle_interface/types/move_
 const u32 gMoveTypePalElectric[] = INCBIN_U32("graphics/battle_interface/types/move_electric.gbapal.lz");
 const u32 gMoveTypePalPsychic[] = INCBIN_U32("graphics/battle_interface/types/move_psychic.gbapal.lz");
 const u32 gMoveTypePalIce[] = INCBIN_U32("graphics/battle_interface/types/move_ice.gbapal.lz");
-const u32 gMoveTypePalMystery[] = INCBIN_U32("graphics/battle_interface/types/move_mystery.gbapal.lz");
 const u32 gMoveTypePalPoison[] = INCBIN_U32("graphics/battle_interface/types/move_poison.gbapal.lz");
 
 const u32 gBattleInterfaceSelector[] = INCBIN_U32("graphics/battle_interface/selector.4bpp");

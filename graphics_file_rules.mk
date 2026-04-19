@@ -19,7 +19,7 @@ NAMINGGFXDIR := graphics/naming_screen
 TITLESCREENGFXDIR := graphics/title_screen
 DIR_MAPAREGION := graphics/mapa_region
 
-types := normal fight flying poison ground rock bug ghost steel mystery fire water grass electric psychic ice dragon dark fairy
+types := normal fight flying poison ground rock bug ghost steel fire water grass electric psychic ice dragon dark fairy
 contest_types := cool beauty cute smart tough
 
 ### Tilesets ###

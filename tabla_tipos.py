@@ -17,7 +17,7 @@ PUNTOS_DEF_DEBIL = -1
 
 TIPOS = [
     "Normal", "Lucha", "Volador", "Veneno", "Tierra", "Roca", "Bicho", 
-    "Fantasma", "Acero", "Misterio", "Fuego", "Agua", "Planta", 
+    "Fantasma", "Acero", "Fuego", "Agua", "Planta", 
     "Eléctrico", "Psíquico", "Hielo", "Dragón", "Siniestro", "Hada"
 ]
 

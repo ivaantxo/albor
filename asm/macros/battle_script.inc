@@ -1464,11 +1464,6 @@
 	.4byte \jumpInstr
 	.endm
 
-	.macro losetype battler:req, type:req
-	various \battler, VARIOUS_LOSE_TYPE
-	.byte \type
-	.endm
-
 	.macro trypoisontype attacker:req, target:req, failInstr:req
 	various \attacker, VARIOUS_POISON_TYPE_IMMUNITY
 	.byte \target

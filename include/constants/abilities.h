@@ -16,6 +16,8 @@ enum Habilidades
     ABILITY_MAGO,
     ABILITY_DESPENSA,
     ABILITY_RUTA_AEREA,
+    ABILITY_PACIENTE,
+    ABILITY_SOBREMESA, // Por hacer, ateBerry sirve de base
 
     ABILITY_SPEED_BOOST,
     ABILITY_BATTLE_ARMOR,

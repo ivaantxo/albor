@@ -1385,11 +1385,6 @@ static const union AnimCmd sSpriteAnim_IconTypeSteel[] = {
     ANIMCMD_END
 };
 
-static const union AnimCmd sSpriteAnim_IconTypeMystery[] = {
-    ANIMCMD_FRAME(TIPO_MISTERIO * 4, 0, FALSE, FALSE),
-    ANIMCMD_END
-};
-
 static const union AnimCmd sSpriteAnim_IconTypeFire[] = {
     ANIMCMD_FRAME(TIPO_FUEGO * 4, 0, FALSE, FALSE),
     ANIMCMD_END
@@ -1445,7 +1440,6 @@ static const union AnimCmd *const sSpriteAnimTable_IconTypes[NUMERO_TIPOS] = {
     sSpriteAnim_IconTypeBug,
     sSpriteAnim_IconTypeGhost,
     sSpriteAnim_IconTypeSteel,
-    sSpriteAnim_IconTypeMystery,
     sSpriteAnim_IconTypeFire,
     sSpriteAnim_IconTypeWater,
     sSpriteAnim_IconTypeGrass,
@@ -1484,7 +1478,6 @@ static const u8 sMoveTypeToOamPaletteNum[NUMERO_TIPOS] =
     [TIPO_BICHO] = 13,
     [TIPO_FANTASMA] = 14,
     [TIPO_ACERO] = 15,
-    [TIPO_MISTERIO] = 15,
     [TIPO_FUEGO] = 14,
     [TIPO_AGUA] = 14,
     [TIPO_PLANTA] = 13,
@@ -1544,9 +1537,6 @@ void LoadPalettesTypes(u32 battler)
     case TIPO_HIELO:
         LoadCompressedPalette(gMoveTypePalIce, BG_PLTT_ID(12), PLTT_SIZE_4BPP);
         break;
-    case TIPO_MISTERIO:
-        LoadCompressedPalette(gMoveTypePalMystery, BG_PLTT_ID(12), PLTT_SIZE_4BPP);
-        break;
     case TIPO_NORMAL:
         LoadCompressedPalette(gMoveTypePalNormal, BG_PLTT_ID(12), PLTT_SIZE_4BPP);
         break;
@@ -1603,9 +1593,6 @@ void LoadPalettesTypes(u32 battler)
         break;
     case TIPO_HIELO:
         LoadCompressedPalette(gMoveTypePalIce, BG_PLTT_ID(13), PLTT_SIZE_4BPP);
-        break;
-    case TIPO_MISTERIO:
-        LoadCompressedPalette(gMoveTypePalMystery, BG_PLTT_ID(13), PLTT_SIZE_4BPP);
         break;
     case TIPO_NORMAL:
         LoadCompressedPalette(gMoveTypePalNormal, BG_PLTT_ID(13), PLTT_SIZE_4BPP);
@@ -1664,9 +1651,6 @@ void LoadPalettesTypes(u32 battler)
     case TIPO_HIELO:
         LoadCompressedPalette(gMoveTypePalIce, BG_PLTT_ID(14), PLTT_SIZE_4BPP);
         break;
-    case TIPO_MISTERIO:
-        LoadCompressedPalette(gMoveTypePalMystery, BG_PLTT_ID(14), PLTT_SIZE_4BPP);
-        break;
     case TIPO_NORMAL:
         LoadCompressedPalette(gMoveTypePalNormal, BG_PLTT_ID(14), PLTT_SIZE_4BPP);
         break;
@@ -1723,9 +1707,6 @@ void LoadPalettesTypes(u32 battler)
         break;
     case TIPO_HIELO:
         LoadCompressedPalette(gMoveTypePalIce, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
-        break;
-    case TIPO_MISTERIO:
-        LoadCompressedPalette(gMoveTypePalMystery, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
         break;
     case TIPO_NORMAL:
         LoadCompressedPalette(gMoveTypePalNormal, BG_PLTT_ID(15), PLTT_SIZE_4BPP);

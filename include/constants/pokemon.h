@@ -12,7 +12,6 @@ enum TiposPokemon
     TIPO_BICHO,
     TIPO_FANTASMA,
     TIPO_ACERO,
-    TIPO_MISTERIO,
     TIPO_FUEGO,
     TIPO_AGUA,
     TIPO_PLANTA,
@@ -315,17 +314,17 @@ enum SlotsHabilidades
     SLOTS_HABILIDADES
 };
 
-enum NumeroTiposPorPokemon
+enum IndiceTiposPokemon
 {
     TIPO_1,
     TIPO_2,
     NUMERO_TIPOS_POR_POKEMON
 };
 
-// Used as a signal for givemon to generate a default ability by personality.
+//  Used as a signal for givemon to generate a default ability by personality.
 #define NUM_ABILITY_PERSONALITY 0xFF
 
-//Para crear icono de Pokemon "por defecto"
+//  Para crear icono de Pokemon "por defecto"
 #define SIN_PERSONALIDAD    0
 
 #endif // GUARD_CONSTANTS_POKEMON_H
