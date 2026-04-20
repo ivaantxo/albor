@@ -114,19 +114,23 @@ Es un hackrom en castellano que está en desarrollo, que usa la pokeemerald-expa
     *El juego tiene un sistema de día y noche que es importante para evoluciones y ciertos eventos. El tiempo está dividido en 4 partes: Mañana, que es de 06:00 a 10:00; Día, que es de 10:00 a 18:00; Tarde, que es de 18:00 a 22:00; y noche, que es de 22:00 a 06:00.
     *Los pasos por ciclo de huevo son 255. Los Pokémon con habilidades Cuerpo llama o Armadura magma reducen los pasos a la mitad. La cantidad de ciclos es característica de cada familia Pokémon y va desde 40 a 200 de legendarios mayores.
 
-## Cambios a tabla de tipos:
-    * Roca x0,5 a roca.
-    * Psíquico x2 a acero.
-    * Eléctrico x2 a acero.
-    * Planta x1 a acero.
-    * Planta x1 a dragón.
-    * Fuego x0 a dragón.
-    * Bicho x2 a hada.
-    * Bicho x2 a fantasma.
-    * Veneno x2 a bicho.
-    * Agua x0,5 a hielo.
-    * Tierra x0,5 a hielo.
-    * Volador x0,5 a hielo.
+## Cambios a la tabla de tipos
+    *Veneno x2 Agua
+    *Veneno x2 Bicho
+    *Psíquico x2 Acero
+    *Eléctrico x2 Acero
+    *Planta x2 Fantasma
+    *Bicho x2 Fantasma
+    *Normal x1 Acero
+    *Planta x1 Dragón
+    *Eléctrico x1 Eléctrico
+    *Siniestro x1 Siniestro
+    *Tierra x0.5 Hielo
+    *Agua x0.5 Hielo
+    *Volador x0.5 Hielo
+    *Acero x1 Fuego
+    *Roca x0.5 Roca
+    *Hada x0.5 Planta
 
 ## Cambios a Pokémon:
     *Se han cambiado las paletas shiny de muchos Pokémon.
