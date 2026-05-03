@@ -193,7 +193,7 @@ static void CB2_BerryTagScreen(void)
     RunTasks();
     AnimateSprites();
     BuildOamBuffer();
-    DoScheduledBgTilemapCopiesToVram();
+    CopiaTilemapProgramadoVram();
     UpdatePaletteFade();
 }
 
@@ -220,7 +220,7 @@ static bool8 InitBerryTagScreen(void)
     case 0:
         SetVBlankHBlankCallbacksToNull();
         ResetVramOamAndBgCntRegs();
-        ClearScheduledBgCopiesToVram();
+        LimpiaCopiaTilemapProgramadaVram();
         gMain.state++;
         break;
     case 1:
@@ -303,8 +303,8 @@ static void HandleInitBackgrounds(void)
     SetBgTilemapBuffer(2, sBerryTag->tilemapBuffers[0]);
     SetBgTilemapBuffer(3, sBerryTag->tilemapBuffers[1]);
     ResetAllBgsCoordinates();
-    ScheduleBgCopyTilemapToVram(2);
-    ScheduleBgCopyTilemapToVram(3);
+    ProgramaCopiaTilemapVram(FONDO_2);
+    ProgramaCopiaTilemapVram(FONDO_3);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_1D_MAP | DISPCNT_OBJ_ON);
     SetGpuReg(REG_OFFSET_BLDCNT, 0);
     ShowBg(0);
@@ -376,8 +376,8 @@ static void HandleInitWindows(void)
     LoadPalette(sFontPalette, BG_PLTT_ID(15), sizeof(sFontPalette));
     for (i = 0; i < ARRAY_COUNT(sWindowTemplates) - 1; i++)
         PutWindowTilemap(i);
-    ScheduleBgCopyTilemapToVram(0);
-    ScheduleBgCopyTilemapToVram(1);
+    ProgramaCopiaTilemapVram(FONDO_0);
+    ProgramaCopiaTilemapVram(FONDO_1);
 }
 
 static void PrintTextInBerryTagScreen(u8 windowId, const u8 *text, u8 x, u8 y, s32 speed, u8 colorStructId)
@@ -391,7 +391,7 @@ static void AddBerryTagTextToBg0(void)
     FillWindowPixelBuffer(WIN_BERRY_TAG, PIXEL_FILL(15));
     PrintTextInBerryTagScreen(WIN_BERRY_TAG, sText_BerryTag, GetStringCenterAlignXOffset(FONT_NORMAL, sText_BerryTag, 0x40), 1, 0, 1);
     PutWindowTilemap(WIN_BERRY_TAG);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
 }
 
 static void PrintAllBerryData(void)

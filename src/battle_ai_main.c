@@ -93,7 +93,7 @@ void BattleAI_SetupItems(void)
         data[i] = 0;
 
     // Items are allowed to use in ONLY trainer battles.
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
     {
         for (i = 0; i < MAX_TRAINER_ITEMS; i++)
         {
@@ -111,7 +111,7 @@ static u32 GetWildAIFlags(void)
     u32 avgLevel = GetMonData(&gEnemyParty[0], MON_DATA_LEVEL);
     u32 flags = 0;
 
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
         avgLevel = (GetMonData(&gEnemyParty[0], MON_DATA_LEVEL) + GetMonData(&gEnemyParty[1], MON_DATA_LEVEL)) / 2;
 
     flags |= AI_FLAG_CHECK_BAD_MOVE;
@@ -141,7 +141,7 @@ static u32 GetAIFlags(u16 trainerId)
         flags = GetTrainerAIFlagsFromId(trainerId);
     }
 
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
     {
         flags |= AI_FLAG_DOUBLE_BATTLE;
     }
@@ -212,7 +212,7 @@ u32 BattleAI_ChooseMoveOrAction(void)
 {
     u32 ret;
 
-    if (!EsContraEntrenador())
+    if (!EsCombateContraEntrenador(gCombate->tipoCombate))
         ret = ChooseMoveOrAction_Singles(sBattler_AI);
     else
         ret = ChooseMoveOrAction_Doubles(sBattler_AI);
@@ -249,7 +249,7 @@ void AI_InitPartyStruct(void)
 
     // Save first 2 or 4(in doubles) mons
     CopyBattlerDataToAIParty(JUGADOR_IZQUIERDA, LADO_JUGADOR);
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
         CopyBattlerDataToAIParty(JUGADOR_DERECHA, LADO_JUGADOR);
 
     // Find fainted mons
@@ -1403,7 +1403,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         }
 
         /*if (AI_THINKING_STRUCT->aiFlags[battlerAtk] == AI_SCRIPT_CHECK_BAD_MOVE //Only basic AI
-        && EsContraEntrenador()) //Make the regular AI know how to use Protect minimally in Doubles
+        && EsCombateContraEntrenador(gCombate->tipoCombate)) //Make the regular AI know how to use Protect minimally in Doubles
         {
             u8 shouldProtect = ShouldProtect(battlerAtk, battlerDef, move);
             if (shouldProtect == USE_PROTECT || shouldProtect == PROTECT_FROM_FOES)
@@ -1988,7 +1988,7 @@ static inline bool32 ShouldUseSpreadDamageMove(u32 battlerAtk, u32 move, u32 mov
 {
     u32 partnerBattler = ALIADO(battlerAtk);
     u32 noOfHitsToFaintPartner = GetNoOfHitsToKOBattler(battlerAtk, partnerBattler, moveIndex);
-    return (EsContraEntrenador() && noOfHitsToFaintPartner != 0 // Immunity check
+    return (EsCombateContraEntrenador(gCombate->tipoCombate) && noOfHitsToFaintPartner != 0 // Immunity check
             && IsBattlerAlive(partnerBattler) && gMovimientos[move].target == MOVE_TARGET_FOES_AND_ALLY && !(noOfHitsToFaintPartner < 4 && hitsToFaintOpposingBattler == 1) && noOfHitsToFaintPartner < 7);
 }
 
@@ -2371,7 +2371,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         break;
     case EFFECT_HIT_ESCAPE:
     case EFFECT_PARTING_SHOT:
-        if (!EsContraEntrenador())
+        if (!EsCombateContraEntrenador(gCombate->tipoCombate))
         {
             switch (ShouldPivot(battlerAtk, battlerDef, aiData->abilities[battlerDef], move, movesetIndex))
             {

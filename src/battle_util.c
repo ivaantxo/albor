@@ -29,6 +29,7 @@
 #include "pokedex.h"
 #include "mail.h"
 #include "field_weather.h"
+#include "fpmath.h"
 #include "constants/abilities.h"
 #include "constants/battle_anim.h"
 #include "constants/battle_move_effects.h"
@@ -150,7 +151,7 @@ void HandleAction_UseMove(void)
     {
         gCombate->moveTarget[gBattlerAttacker] = gBattlerTarget = gSideTimers[side].followmeTarget; // follow me moxie fix
     }
-    else if (EsContraEntrenador() && gSideTimers[side].followmeTimer == 0 && (!EsMovimientoDeEstado(gCurrentMove) || (moveTarget != MOVE_TARGET_USER && moveTarget != MOVE_TARGET_ALL_BATTLERS)) && ((HabilidadCombatiente(*(gCombate->moveTarget + gBattlerAttacker)) != ABILITY_LIGHTNING_ROD && moveType == TIPO_ELECTRICO) || (HabilidadCombatiente(*(gCombate->moveTarget + gBattlerAttacker)) != ABILITY_STORM_DRAIN && moveType == TIPO_AGUA)))
+    else if (EsCombateContraEntrenador(gCombate->tipoCombate) && gSideTimers[side].followmeTimer == 0 && (!EsMovimientoDeEstado(gCurrentMove) || (moveTarget != MOVE_TARGET_USER && moveTarget != MOVE_TARGET_ALL_BATTLERS)) && ((HabilidadCombatiente(*(gCombate->moveTarget + gBattlerAttacker)) != ABILITY_LIGHTNING_ROD && moveType == TIPO_ELECTRICO) || (HabilidadCombatiente(*(gCombate->moveTarget + gBattlerAttacker)) != ABILITY_STORM_DRAIN && moveType == TIPO_AGUA)))
     {
         side = GetBattlerSide(gBattlerAttacker);
         for (battler = 0; battler < gBattlersCount; battler++)
@@ -200,7 +201,7 @@ void HandleAction_UseMove(void)
             gBattlerTarget = battler;
         }
     }
-    else if (EsContraEntrenador() && moveTarget & MOVE_TARGET_RANDOM)
+    else if (EsCombateContraEntrenador(gCombate->tipoCombate) && moveTarget & MOVE_TARGET_RANDOM)
     {
         gBattlerTarget = SetRandomTarget(gBattlerAttacker);
         if (gAbsentBattlerFlags & (1u << gBattlerTarget) && GetBattlerSide(gBattlerAttacker) != GetBattlerSide(gBattlerTarget))
@@ -215,7 +216,7 @@ void HandleAction_UseMove(void)
         else
             gBattlerTarget = gBattlerAttacker;
     }
-    else if (EsContraEntrenador() && moveTarget == MOVE_TARGET_FOES_AND_ALLY)
+    else if (EsCombateContraEntrenador(gCombate->tipoCombate) && moveTarget == MOVE_TARGET_FOES_AND_ALLY)
     {
         for (gBattlerTarget = 0; gBattlerTarget < gBattlersCount; gBattlerTarget++)
         {
@@ -2082,7 +2083,7 @@ bool32 HasNoMonsToSwitch(u32 battler, u8 partyIdBattlerOn1, u8 partyIdBattlerOn2
     u32 i, side, playerId, flankId;
     struct Pokemon *party;
 
-    if (!EsContraEntrenador())
+    if (!EsCombateContraEntrenador(gCombate->tipoCombate))
         return FALSE;
 
     side = GetBattlerSide(battler);
@@ -2311,13 +2312,13 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             u32 target1;
             u32 target2;
 
-            if (gSpecialStatuses[battler].switchInAbilityDone)
+            if (gSpecialStatuses[battler].habilidadEntranteHecha)
                 break;
 
             side = (OPONENTE(battler)) & BIT_SIDE;
             target1 = side;
             target2 = side + BIT_FLANK;
-            if (EsContraEntrenador())
+            if (EsCombateContraEntrenador(gCombate->tipoCombate))
             {
                 if (!gAbilitiesInfo[gBattleMons[target1].ability].cantBeTraced && gBattleMons[target1].hp != 0 && !gAbilitiesInfo[gBattleMons[target2].ability].cantBeTraced && gBattleMons[target2].hp != 0)
                     chosenTarget = (PorcentajeAleatorio(50 * 2) | side), effect++; // REVISAR O ELIMINAR
@@ -2350,14 +2351,14 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             u32 target1, target2;
             u32 chosenTarget = 0;
 
-            if (gSpecialStatuses[battler].switchInAbilityDone)
+            if (gSpecialStatuses[battler].habilidadEntranteHecha)
                 break;
 
             side = (OPONENTE(battler)) & BIT_SIDE;
             target1 = side;
             target2 = side + BIT_FLANK;
 
-            if (EsContraEntrenador())
+            if (EsCombateContraEntrenador(gCombate->tipoCombate))
             {
                 bool32 t1Valido = (gBattleMons[target1].hp != 0);
                 bool32 t2Valido = (gBattleMons[target2].hp != 0);
@@ -2429,29 +2430,29 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                     effect++;
                 }
             }
-            gSpecialStatuses[battler].switchInAbilityDone = TRUE;
+            gSpecialStatuses[battler].habilidadEntranteHecha = TRUE;
         }
         break;
         case ABILITY_MOLD_BREAKER:
-            if (!gSpecialStatuses[battler].switchInAbilityDone)
+            if (!gSpecialStatuses[battler].habilidadEntranteHecha)
             {
                 gMensajeBatalla = B_MSG_SWITCHIN_MOLDBREAKER;
-                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
+                gSpecialStatuses[battler].habilidadEntranteHecha = TRUE;
                 BattleScriptPushCursorAndCallback(BattleScript_SwitchInAbilityMsg);
                 effect++;
             }
             break;
         case ABILITY_UNNERVE:
-            if (!gSpecialStatuses[battler].switchInAbilityDone)
+            if (!gSpecialStatuses[battler].habilidadEntranteHecha)
             {
                 gMensajeBatalla = B_MSG_SWITCHIN_UNNERVE;
-                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
+                gSpecialStatuses[battler].habilidadEntranteHecha = TRUE;
                 BattleScriptPushCursorAndCallback(BattleScript_SwitchInAbilityMsg);
                 effect++;
             }
             break;
         case ABILITY_DOWNLOAD:
-            if (!gSpecialStatuses[battler].switchInAbilityDone)
+            if (!gSpecialStatuses[battler].habilidadEntranteHecha)
             {
                 u32 statId, opposingBattler;
                 u32 opposingDef = 0, opposingSpDef = 0;
@@ -2474,7 +2475,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 else
                     statId = ESTADISTICA_ATAQUE_ESPECIAL;
 
-                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
+                gSpecialStatuses[battler].habilidadEntranteHecha = TRUE;
 
                 if (CompareStat(battler, statId, ESTADISTICA_MAS_6, COMPARACION_MENOR))
                 {
@@ -2488,7 +2489,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             break;
         case ABILITY_IMPENETRABLE:
         case ABILITY_RESERVA_NATURAL:
-            if (!gSpecialStatuses[battler].switchInAbilityDone)
+            if (!gSpecialStatuses[battler].habilidadEntranteHecha)
             {
                 u32 statId, opposingBattler;
                 u32 opposingAtk = 0, opposingSpAtk = 0;
@@ -2512,7 +2513,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 else
                     statId = ESTADISTICA_DEFENSA;
 
-                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
+                gSpecialStatuses[battler].habilidadEntranteHecha = TRUE;
 
                 if (CompareStat(battler, statId, ESTADISTICA_MAS_6, COMPARACION_MENOR))
                 {
@@ -2525,19 +2526,19 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             }
             break;
         case ABILITY_GENERADOR:
-            if (!gSpecialStatuses[battler].switchInAbilityDone)
+            if (!gSpecialStatuses[battler].habilidadEntranteHecha)
             {
                 gMensajeBatalla = B_MSG_SWITCHIN_GENERADOR;
-                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
+                gSpecialStatuses[battler].habilidadEntranteHecha = TRUE;
                 BattleScriptPushCursorAndCallback(BattleScript_SwitchInAbilityMsg);
                 effect++;
             }
             break;
         case ABILITY_SCREEN_CLEANER:
-            if (!gSpecialStatuses[battler].switchInAbilityDone && TryRemoveScreens(battler))
+            if (!gSpecialStatuses[battler].habilidadEntranteHecha && TryRemoveScreens(battler))
             {
                 gMensajeBatalla = B_MSG_SWITCHIN_SCREENCLEANER;
-                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
+                gSpecialStatuses[battler].habilidadEntranteHecha = TRUE;
                 BattleScriptPushCursorAndCallback(BattleScript_SwitchInAbilityMsg);
                 effect++;
             }
@@ -2576,49 +2577,49 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             }
             break;
         case ABILITY_INTIMIDATE:
-            if (!gSpecialStatuses[battler].switchInAbilityDone)
+            if (!gSpecialStatuses[battler].habilidadEntranteHecha)
             {
                 gBattlerAttacker = battler;
-                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
+                gSpecialStatuses[battler].habilidadEntranteHecha = TRUE;
                 SET_STATCHANGER(ESTADISTICA_ATAQUE, 1, TRUE);
                 BattleScriptPushCursorAndCallback(ScriptCombate_ActivacionIntimidacionMalAura);
                 effect++;
             }
             break;
         case ABILITY_MAL_AURA:
-            if (!gSpecialStatuses[battler].switchInAbilityDone)
+            if (!gSpecialStatuses[battler].habilidadEntranteHecha)
             {
                 gBattlerAttacker = battler;
-                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
+                gSpecialStatuses[battler].habilidadEntranteHecha = TRUE;
                 SET_STATCHANGER(ESTADISTICA_ATAQUE_ESPECIAL, 1, TRUE);
                 BattleScriptPushCursorAndCallback(ScriptCombate_ActivacionIntimidacionMalAura);
                 effect++;
             }
             break;
         case ABILITY_ASPECTO_ENGANIOSO:
-            if (!gSpecialStatuses[battler].switchInAbilityDone)
+            if (!gSpecialStatuses[battler].habilidadEntranteHecha)
             {
                 gBattlerAttacker = battler;
-                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
+                gSpecialStatuses[battler].habilidadEntranteHecha = TRUE;
                 SET_STATCHANGER(ESTADISTICA_DEFENSA, 1, TRUE);
                 BattleScriptPushCursorAndCallback(ScriptCombate_ActivacionAspectoEnganioso);
                 effect++;
             }
             break;
         case ABILITY_SEPTIMO_CIELO:
-            if (!gSpecialStatuses[battler].switchInAbilityDone)
+            if (!gSpecialStatuses[battler].habilidadEntranteHecha)
             {
-                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
+                gSpecialStatuses[battler].habilidadEntranteHecha = TRUE;
                 BattleScriptPushCursorAndCallback(ScriptCombate_SeptimoCielo);
                 effect++;
             }
             break;
         case ABILITY_WIND_RIDER:
-            if (!gSpecialStatuses[battler].switchInAbilityDone && CompareStat(battler, ESTADISTICA_ATAQUE, ESTADISTICA_MAS_6, COMPARACION_MENOR) && gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_TAILWIND)
+            if (!gSpecialStatuses[battler].habilidadEntranteHecha && CompareStat(battler, ESTADISTICA_ATAQUE, ESTADISTICA_MAS_6, COMPARACION_MENOR) && gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_TAILWIND)
             {
                 gBattleScripting.savedBattler = gBattlerAttacker;
                 gBattlerAttacker = battler;
-                gSpecialStatuses[battler].switchInAbilityDone = TRUE;
+                gSpecialStatuses[battler].habilidadEntranteHecha = TRUE;
                 SET_STATCHANGER(ESTADISTICA_ATAQUE, 1, FALSE);
                 BattleScriptPushCursorAndCallback(BattleScript_BattlerAbilityStatRaiseOnSwitchIn);
                 effect++;
@@ -2759,7 +2760,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
         default:
             if (PrioridadMovimientoMasHabilidad(gBattlerAttacker, move) > PRIORIDAD_MOVIMIENTO_NORMAL && BlocksPrankster(move, gBattlerAttacker, gBattlerTarget, TRUE) && !(EsMovimientoDeEstado(move) && (gLastUsedAbility == ABILITY_ESPEJO_MAGICO)))
             {
-                if (!EsContraEntrenador() || !(GetBattlerMoveTargetType(gBattlerAttacker, move) & (MOVE_TARGET_BOTH | MOVE_TARGET_FOES_AND_ALLY)))
+                if (!EsCombateContraEntrenador(gCombate->tipoCombate) || !(GetBattlerMoveTargetType(gBattlerAttacker, move) & (MOVE_TARGET_BOTH | MOVE_TARGET_FOES_AND_ALLY)))
                     CancelMultiTurnMoves(gBattlerAttacker); // Don't cancel moves that can hit two targets bc one target might not be protected
                 gBattleScripting.battler = gBattlerAbility = gBattlerTarget;
                 battleScriptBlocksMove = BattleScript_DarkTypePreventsPrankster;
@@ -4737,7 +4738,7 @@ u32 SetRandomTarget(u32 battlerAtk)
             [LADO_OPONENTE] = {JUGADOR_IZQUIERDA, JUGADOR_DERECHA},
         };
 
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
     {
         target = targets[GetBattlerSide(battlerAtk][NumeroAleatorioEnRango(0, 1)]);
         if (!IsBattlerAlive(target))
@@ -4801,7 +4802,7 @@ u32 GetMoveTarget(u16 move, u8 setTarget)
         side = OPONENTE(GetBattlerSide(gBattlerAttacker));
         if (IsAffectedByFollowMe(gBattlerAttacker, side, move))
             targetBattler = gSideTimers[side].followmeTarget;
-        else if (EsContraEntrenador() && moveTarget & MOVE_TARGET_RANDOM)
+        else if (EsCombateContraEntrenador(gCombate->tipoCombate) && moveTarget & MOVE_TARGET_RANDOM)
             targetBattler = SetRandomTarget(gBattlerAttacker);
         else
             targetBattler = OPONENTE(GetBattlerSide(gBattlerAttacker));
@@ -4867,7 +4868,7 @@ bool32 IsMoveMakingContact(u32 move, u32 battlerAtk)
     {
         return FALSE;
     }
-    else if ((atkHoldEffect == HOLD_EFFECT_PUNCHING_GLOVE && gMovimientos[move].punchingMove) || HabilidadCombatiente(battlerAtk) == ABILITY_NINJA || HabilidadCombatiente(battlerAtk) == ABILITY_LONG_REACH)
+    else if ((atkHoldEffect == HOLD_EFFECT_PUNCHING_GLOVE && gMovimientos[move].punietazo) || HabilidadCombatiente(battlerAtk) == ABILITY_NINJA || HabilidadCombatiente(battlerAtk) == ABILITY_LONG_REACH)
     {
         return FALSE;
     }
@@ -5208,7 +5209,7 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
             MULTIPLICA(modifier, MAS_25_POR_CIENTO);
         break;
     case ABILITY_IRON_FIST:
-        if (gMovimientos[move].punchingMove)
+        if (gMovimientos[move].punietazo)
             MULTIPLICA(modifier, MAS_25_POR_CIENTO);
         break;
     case ABILITY_PATADA_FEROZ:
@@ -5381,7 +5382,7 @@ static inline u32 CalcMoveBasePowerAfterModifiers(struct DamageCalculationData *
             MULTIPLICA(modifier, MAS_12_5_POR_CIENTO);
         break;
     case HOLD_EFFECT_PUNCHING_GLOVE:
-        if (gMovimientos[move].punchingMove)
+        if (gMovimientos[move].punietazo)
             MULTIPLICA(modifier, MAS_25_POR_CIENTO);
         break;
     case HOLD_EFFECT_THROAT_SPRAY:
@@ -5679,9 +5680,9 @@ static inline s32 CalculateBaseDamage(u32 power, u32 userFinalAttack, u32 level,
     return power * userFinalAttack * (2 * level / 5 + 2) / targetFinalDefense / 50 + 2;
 }
 
-static inline uq4_12_t GetTargetDamageModifier(struct DamageCalculationData *damageCalcData)
+static inline uq4_12_t ObtenModificadorDanioObjetivoMultiple(struct DamageCalculationData *damageCalcData)
 {
-    if (EsContraEntrenador() && GetMoveTargetCount(damageCalcData) >= 2)
+    if (GetMoveTargetCount(damageCalcData) >= 2)
         return MENOS_50_POR_CIENTO;
     return MOVIMIENTO_NEUTRO;
 }
@@ -5690,7 +5691,7 @@ static inline uq4_12_t GetParentalBondModifier(u32 battlerAtk)
 {
     if (gSpecialStatuses[battlerAtk].parentalBondState != PARENTAL_BOND_2ND_HIT)
         return MOVIMIENTO_NEUTRO;
-    return MOVIMIENTO_MUY_POCO_EFECTIVO;
+    return MENOS_25_POR_CIENTO;
 }
 
 static inline uq4_12_t ObtenModificadorAtaqueMismoTipo(struct DamageCalculationData *damageCalcData)
@@ -5964,7 +5965,7 @@ static inline s32 DoMoveDamageCalcVars(struct DamageCalculationData *damageCalcD
 
     dmg = CalculateBaseDamage(gBattleMovePower, userFinalAttack, gBattleMons[battlerAtk].level, targetFinalDefense);
 
-    DAMAGE_APPLY_MODIFIER(GetTargetDamageModifier(damageCalcData));
+    DAMAGE_APPLY_MODIFIER(ObtenModificadorDanioObjetivoMultiple(damageCalcData));
     DAMAGE_APPLY_MODIFIER(ObtenModificadorDanioClima(damageCalcData, climaCombate));
     DAMAGE_APPLY_MODIFIER(GetCriticalModifier(damageCalcData->isCrit));
     DAMAGE_APPLY_MODIFIER(ObtenModificadorAtaqueMismoTipo(damageCalcData));
@@ -6167,8 +6168,10 @@ s32 DanioTrampa(u32 tipoTrampa, u32 combatiente)
     case MOVIMIENTO_NO_EFECTIVO:
     case MOVIMIENTO_MUY_POCO_EFECTIVO:
     case MOVIMIENTO_POCO_EFECTIVO:
-    case MOVIMIENTO_NEUTRO:
         danio = 0;
+        break;
+    case MOVIMIENTO_NEUTRO:
+        danio = PSMaximos / 8;
         break;
     case MOVIMIENTO_SUPER_EFECTIVO:
         danio = PSMaximos / 8;
@@ -6367,7 +6370,7 @@ void RecuperaObjetoPerdido(void)
 {
     for (u32 indicePokemon = 0; indicePokemon < PARTY_SIZE; indicePokemon++)
     {
-        if (EsContraEntrenador())
+        if (EsCombateContraEntrenador(gCombate->tipoCombate))
         {
             u32 objetoPerdido = gCombate->objetoPerdido[LADO_JUGADOR][indicePokemon];
 
@@ -6376,7 +6379,7 @@ void RecuperaObjetoPerdido(void)
                 objetoPerdido = ITEM_NONE;
 
             // Check if the lost item should be restored
-            if ((objetoPerdido != ITEM_NONE || EsContraEntrenador()) && ItemId_GetPocket(objetoPerdido) != POCKET_BERRIES)
+            if ((objetoPerdido != ITEM_NONE || EsCombateContraEntrenador(gCombate->tipoCombate)) && ItemId_GetPocket(objetoPerdido) != POCKET_BERRIES)
                 SetMonData(&gPlayerParty[indicePokemon], MON_DATA_HELD_ITEM, &objetoPerdido);
         }
     }
@@ -6742,7 +6745,7 @@ void AdjustFriendshipOnBattleFaint(u8 battler)
 {
     u8 opposingBattlerId;
 
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
     {
         u8 opposingBattlerId2;
 
@@ -6772,7 +6775,7 @@ void AdjustFriendshipOnBattleFaint(u8 battler)
 
 bool32 CanTargetPartner(u32 battlerAtk, u32 battlerDef)
 {
-    return (EsContraEntrenador() && IsBattlerAlive(ALIADO(battlerDef)) && battlerDef != ALIADO(battlerAtk));
+    return (EsCombateContraEntrenador(gCombate->tipoCombate) && IsBattlerAlive(ALIADO(battlerDef)) && battlerDef != ALIADO(battlerAtk));
 }
 
 static inline bool32 DoesBattlerHaveAbilityImmunity(u32 battlerDef)

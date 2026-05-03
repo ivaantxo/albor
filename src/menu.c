@@ -61,7 +61,7 @@ static EWRAM_DATA u16 sTileNum = 0;
 static EWRAM_DATA u8 sPaletteNum = 0;
 static EWRAM_DATA u8 sYesNoWindowId = 0;
 static EWRAM_DATA u8 sHofPCTopBarWindowId = 0;
-static EWRAM_DATA bool8 sScheduledBgCopiesToVram[4] = {FALSE};
+static EWRAM_DATA bool32 sCopiaTilemapProgramadaVram[NUMERO_FONDOS] = {FALSE};
 static EWRAM_DATA u16 sTempTileDataBufferIdx = 0;
 static EWRAM_DATA void *sTempTileDataBuffer[0x20] = {NULL};
 
@@ -1483,37 +1483,25 @@ u8 InitMenuActionGrid(u8 windowId, u8 optionWidth, u8 columns, u8 rows, u8 initi
     return sMenu.cursorPos;
 }
 
-void ClearScheduledBgCopiesToVram(void)
+void LimpiaCopiaTilemapProgramadaVram(void)
 {
-    memset(sScheduledBgCopiesToVram, 0, sizeof(sScheduledBgCopiesToVram));
+    memset(sCopiaTilemapProgramadaVram, 0, sizeof(sCopiaTilemapProgramadaVram));
 }
 
-void ScheduleBgCopyTilemapToVram(u8 bgId)
+void ProgramaCopiaTilemapVram(enum Fondos fondo)
 {
-    sScheduledBgCopiesToVram[bgId] = TRUE;
+    sCopiaTilemapProgramadaVram[fondo] = TRUE;
 }
 
-void DoScheduledBgTilemapCopiesToVram(void)
+void CopiaTilemapProgramadoVram(void)
 {
-    if (sScheduledBgCopiesToVram[0] == TRUE)
+    for (enum Fondos fondo = FONDO_0; fondo < NUMERO_FONDOS; fondo++)
     {
-        CopyBgTilemapBufferToVram(0);
-        sScheduledBgCopiesToVram[0] = FALSE;
-    }
-    if (sScheduledBgCopiesToVram[1] == TRUE)
-    {
-        CopyBgTilemapBufferToVram(1);
-        sScheduledBgCopiesToVram[1] = FALSE;
-    }
-    if (sScheduledBgCopiesToVram[2] == TRUE)
-    {
-        CopyBgTilemapBufferToVram(2);
-        sScheduledBgCopiesToVram[2] = FALSE;
-    }
-    if (sScheduledBgCopiesToVram[3] == TRUE)
-    {
-        CopyBgTilemapBufferToVram(3);
-        sScheduledBgCopiesToVram[3] = FALSE;
+        if (sCopiaTilemapProgramadaVram[fondo] == TRUE)
+        {
+            CopyBgTilemapBufferToVram(fondo);
+            sCopiaTilemapProgramadaVram[fondo] = FALSE;
+        }
     }
 }
 

@@ -656,7 +656,7 @@ static void LoadWallClockGraphics(void)
     InitWindows(sWindowTemplates);
     DeactivateAllTextPrinters();
     LoadUserWindowBorderGfx(0, 0x250, BG_PLTT_ID(13));
-    ClearScheduledBgCopiesToVram();
+    LimpiaCopiaTilemapProgramadaVram();
     ParaDistorsionFondo();
     ResetTasks();
     ResetSpriteData();
@@ -720,7 +720,7 @@ void CB2_StartWallClock(void)
 
     AddTextPrinterParameterized(WIN_BUTTON_LABEL, FONT_NORMAL, gText_Confirmar, 0, 1, 0, NULL);
     PutWindowTilemap(WIN_BUTTON_LABEL);
-    ScheduleBgCopyTilemapToVram(2);
+    ProgramaCopiaTilemapVram(FONDO_2);
 }
 
 void CB2_ViewWallClock(void)
@@ -768,7 +768,7 @@ void CB2_ViewWallClock(void)
 
     AddTextPrinterParameterized(WIN_BUTTON_LABEL, FONT_NORMAL, gText_Salir, 0, 1, 0, NULL);
     PutWindowTilemap(WIN_BUTTON_LABEL);
-    ScheduleBgCopyTilemapToVram(2);
+    ProgramaCopiaTilemapVram(FONDO_2);
 }
 
 static void CB2_WallClock(void)
@@ -776,7 +776,7 @@ static void CB2_WallClock(void)
     RunTasks();
     AnimateSprites();
     BuildOamBuffer();
-    DoScheduledBgTilemapCopiesToVram();
+    CopiaTilemapProgramadoVram();
     UpdatePaletteFade();
 }
 
@@ -833,7 +833,7 @@ static void Task_SetClock_AskConfirm(u8 taskId)
     DrawStdFrameWithCustomTileAndPalette(WIN_MSG, FALSE, 0x250, 0x0d);
     AddTextPrinterParameterized(WIN_MSG, FONT_NORMAL, gText_IsThisTheCorrectTime, 0, 1, 0, NULL);
     PutWindowTilemap(WIN_MSG);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
     CreateYesNoMenu(&sWindowTemplate_ConfirmYesNo, 0x250, 0x0d, 1);
     gTasks[taskId].func = Task_SetClock_HandleConfirmInput;
 }

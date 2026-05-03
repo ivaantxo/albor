@@ -415,7 +415,7 @@ static void CB2_PokeblockFeed(void)
     RunTasks();
     AnimateSprites();
     BuildOamBuffer();
-    DoScheduledBgTilemapCopiesToVram();
+    CopiaTilemapProgramadoVram();
     UpdatePaletteFade();
 }
 
@@ -433,7 +433,7 @@ static bool8 LoadPokeblockFeedScene(void)
     case 0:
         sPokeblockFeed = AllocZeroed(sizeof(*sPokeblockFeed));
         SetVBlankHBlankCallbacksToNull();
-        ClearScheduledBgCopiesToVram();
+        LimpiaCopiaTilemapProgramadaVram();
         gMain.state++;
         break;
     case 1:
@@ -515,7 +515,7 @@ static void HandleInitBackgrounds(void)
     IniciaFondosDesdePlantillas(MODO_0, sBackgroundTemplates, ARRAY_COUNT(sBackgroundTemplates));
     SetBgTilemapBuffer(1, sPokeblockFeed->tilemapBuffer);
     ResetAllBgsCoordinates();
-    ScheduleBgCopyTilemapToVram(1);
+    ProgramaCopiaTilemapVram(FONDO_1);
 
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
 
@@ -594,7 +594,7 @@ static void HandleInitWindows(void)
     LoadPalette(gStandardMenuPalette, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
     FillWindowPixelBuffer(0, PIXEL_FILL(0));
     PutWindowTilemap(0);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
 }
 
 static void SetPokeblockSpritePal(u8 pokeblockCaseId)

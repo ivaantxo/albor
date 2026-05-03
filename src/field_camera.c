@@ -276,9 +276,9 @@ static void DrawMetatile(s32 metatileLayerType, const u16 *tiles, u16 offset)
         gOverworldTilemapBuffer_Bg1[offset + 32] = tiles[10];
         gOverworldTilemapBuffer_Bg1[offset + 33] = tiles[11];
     }
-    ScheduleBgCopyTilemapToVram(1);
-    ScheduleBgCopyTilemapToVram(2);
-    ScheduleBgCopyTilemapToVram(3);
+    ProgramaCopiaTilemapVram(FONDO_1);
+    ProgramaCopiaTilemapVram(FONDO_2);
+    ProgramaCopiaTilemapVram(FONDO_3);
 }
 
 static s32 MapPosToBgTilemapOffset(struct FieldCameraOffset *cameraOffset, s32 x, s32 y)

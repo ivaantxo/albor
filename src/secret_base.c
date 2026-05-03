@@ -736,7 +736,7 @@ static void FinalizeRegistryMenu(u8 taskId)
     SetStandardWindowBorderStyle(tMainWindowId, FALSE);
     tListTaskId = ListMenuInit(&gMultiuseListMenuTemplate, tScrollOffset, tSelectedRow);
     AddRegistryMenuScrollArrows(taskId);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
 }
 
 static void AddRegistryMenuScrollArrows(u8 taskId)
@@ -762,7 +762,7 @@ static void HandleRegistryMenuInput(u8 taskId)
         ClearStdWindowAndFrame(tMainWindowId, FALSE);
         ClearWindowTilemap(tMainWindowId);
         RemoveWindow(tMainWindowId);
-        ScheduleBgCopyTilemapToVram(0);
+        ProgramaCopiaTilemapVram(FONDO_0);
         Free(sRegistryMenu);
         GoToSecretBasePCRegisterMenu(taskId);
         break;
@@ -785,7 +785,7 @@ static void ShowRegistryMenuActions(u8 taskId)
     SetStandardWindowBorderStyle(tActionWindowId, FALSE);
     PrintMenuTable(tActionWindowId, ARRAY_COUNT(sRegistryMenuActions), sRegistryMenuActions);
     InitMenuInUpperLeftCornerNormal(tActionWindowId, ARRAY_COUNT(sRegistryMenuActions), 0);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
     gTasks[taskId].func = HandleRegistryMenuActionsInput;
 }
 
@@ -815,7 +815,7 @@ static void ShowRegistryMenuDeleteConfirmation(u8 taskId)
     ClearWindowTilemap(tMainWindowId);
     ClearWindowTilemap(tActionWindowId);
     RemoveWindow(tActionWindowId);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
     GetSecretBaseName(gVariableTexto1, tSelectedBaseId);
     StringExpandPlaceholders(gVariableTextoAmpliada, gText_OkayToDeleteFromRegistry);
     DisplayItemMessageOnField(taskId, gVariableTextoAmpliada, ShowRegistryMenuDeleteYesNo);
@@ -860,7 +860,7 @@ static void ReturnToMainRegistryMenu(u8 taskId)
     ClearStdWindowAndFrame(tActionWindowId, FALSE);
     ClearWindowTilemap(tActionWindowId);
     RemoveWindow(tActionWindowId);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
     gTasks[taskId].func = HandleRegistryMenuInput;
 }
 

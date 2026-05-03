@@ -112,7 +112,6 @@ EWRAM_DATA u8 gDisplayedStringBattle[425] = {0}; // Increased in size to fit Jua
 EWRAM_DATA u8 gBattleTextBuff1[TEXT_BUFF_ARRAY_COUNT] = {0};
 EWRAM_DATA u8 gBattleTextBuff2[TEXT_BUFF_ARRAY_COUNT] = {0};
 EWRAM_DATA u8 gBattleTextBuff3[TEXT_BUFF_ARRAY_COUNT] = {0};
-EWRAM_DATA u32 gBattleTypeFlags = 0;
 EWRAM_DATA u8 gBattleTerrain = 0;
 EWRAM_DATA u8 *gBattleAnimBgTileBuffer = NULL;
 EWRAM_DATA u8 *gBattleAnimBgTilemapBuffer = NULL;
@@ -561,10 +560,10 @@ void CustomTrainerPartyAssignMoves(struct Pokemon *mon, const struct TrainerMon 
     }
 }
 
-u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer *trainer, bool32 firstTrainer, u32 battleTypeFlags)
+u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer *trainer, bool32 firstTrainer)
 {
     s32 i;
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
     {
         for (i = 0; i < trainer->partySize; i++)
         {
@@ -649,7 +648,7 @@ u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer 
 static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 firstTrainer)
 {
     u8 retVal;
-    retVal = CreateNPCTrainerPartyFromTrainer(party, GetTrainerStructFromId(trainerNum), firstTrainer, gBattleTypeFlags);
+    retVal = CreateNPCTrainerPartyFromTrainer(party, GetTrainerStructFromId(trainerNum), firstTrainer);
     return retVal;
 }
 
@@ -1382,7 +1381,7 @@ static void DoBattleIntro(void)
                 MarcaCombatienteOcupado(battler);
                 break;
             case OPONENTE_IZQUIERDA:
-                if (EsContraEntrenador()) // opponent 1 sprite
+                if (EsCombateContraEntrenador(gCombate->tipoCombate)) // opponent 1 sprite
                 {
                     BtlController_EmitDrawTrainerPic(battler, BUFFER_A);
                     MarcaCombatienteOcupado(battler);
@@ -1399,7 +1398,7 @@ static void DoBattleIntro(void)
             }
         }
 
-        if (EsContraEntrenador())
+        if (EsCombateContraEntrenador(gCombate->tipoCombate))
             gCombate->estadoIntro++;
         else                                                            // Skip party summary since it is a wild battle.
             gCombate->estadoIntro = ESTADO_INTRO_BATALLA_TEXTO_INICIAL; // Don't wait for sprite, print message at the same time.
@@ -1462,7 +1461,7 @@ static void DoBattleIntro(void)
     case ESTADO_INTRO_BATALLA_ESPERA_TEXTO_INICIAL:
         if (!EstaCombatienteOcupado[JUGADOR_IZQUIERDA])
         {
-            if (EsContraEntrenador())
+            if (EsCombateContraEntrenador(gCombate->tipoCombate))
             {
                 gCombate->estadoIntro++;
             }
@@ -1491,7 +1490,7 @@ static void DoBattleIntro(void)
     case ESTADO_INTRO_BATALLA_TEXTO_COMBATE_ENTRADA_JUGADOR:
         battler = JUGADOR_IZQUIERDA;
         // A hack that makes fast intro work in trainer battles too.
-        if (EsContraEntrenador() && gSprites[gHealthboxSpriteIds[battler ^ BIT_SIDE]].callback == SpriteCallbackDummy)
+        if (EsCombateContraEntrenador(gCombate->tipoCombate) && gSprites[gHealthboxSpriteIds[battler ^ BIT_SIDE]].callback == SpriteCallbackDummy)
         {
             return;
         }
@@ -1758,7 +1757,7 @@ void SwitchPartyOrder(u32 battler)
     partyId2 = GetPartyIdFromBattlePartyId(*(gCombate->monToSwitchIntoId + battler));
     SwitchPartyMonSlots(partyId1, partyId2);
 
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
     {
         for (i = 0; i < (int)ARRAY_COUNT(gBattlePartyCurrentOrder); i++)
         {
@@ -1876,7 +1875,7 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                             moveInfo.maxPp[indiceMovimiento] = PPMovimiento(gBattleMons[combatiente].moves[indiceMovimiento]);
                         }
 
-                        BtlController_EmitChooseMove(combatiente, BUFFER_A, EsContraEntrenador(), FALSE, &moveInfo);
+                        BtlController_EmitChooseMove(combatiente, BUFFER_A, EsCombateContraEntrenador(gCombate->tipoCombate), FALSE, &moveInfo);
                         MarcaCombatienteOcupado(combatiente);
                     }
                     break;
@@ -1933,7 +1932,7 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                     break;
                 }
 
-                if (EsContraEntrenador() && gBattleResources->bufferB[combatiente][1] == B_ACTION_RUN)
+                if (EsCombateContraEntrenador(gCombate->tipoCombate) && gBattleResources->bufferB[combatiente][1] == B_ACTION_RUN)
                 {
                     BattleScriptExecute(BattleScript_PrintCantRunFromTrainer);
                     gEstadoAccion[combatiente] = ANTES_ACCION;
@@ -2426,7 +2425,7 @@ static void HandleEndTurn_BattleWon(void)
 {
     gCurrentActionFuncId = 0;
 
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
     {
         BattleStopLowHpSound();
         gBattlescriptCurrInstr = BattleScript_LocalTrainerBattleWon;

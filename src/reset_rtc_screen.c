@@ -354,7 +354,7 @@ static void HideChooseTimeWindow(u8 windowId)
 {
     ClearStdWindowAndFrameToTransparent(windowId, FALSE);
     RemoveWindow(windowId);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
 }
 
 static void PrintTime(u8 windowId, u8 x, u8 y, u16 days, u8 hours, u8 minutes, u8 seconds)
@@ -388,7 +388,7 @@ static void ShowChooseTimeWindow(u8 windowId, u16 days, u8 hours, u8 minutes, u8
     DrawStdFrameWithCustomTileAndPalette(windowId, FALSE, 0x214, 0xE);
     PrintTime(windowId, 0, 1, days, hours, minutes, seconds);
     AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_Confirmar, 126, 1, 0, NULL);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
 }
 
 static bool32 MoveTimeUpDown(s16 *val, int minVal, int maxVal, u16 keys)
@@ -532,10 +532,10 @@ void CB2_InitResetRtcScreen(void)
 
 static void InitResetRtcScreenBgAndWindows(void)
 {
-    ClearScheduledBgCopiesToVram();
+    LimpiaCopiaTilemapProgramadaVram();
     ResetBgsAndClearDma3BusyFlags();
     IniciaFondosDesdePlantillas(MODO_0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
     ShowBg(0);
     InitWindows(sWindowTemplates);
@@ -548,7 +548,7 @@ static void CB2_ResetRtcScreen(void)
     RunTasks();
     AnimateSprites();
     BuildOamBuffer();
-    DoScheduledBgTilemapCopiesToVram();
+    CopiaTilemapProgramadoVram();
     UpdatePaletteFade();
 }
 
@@ -563,7 +563,7 @@ static void ShowMessage(const u8 *str)
 {
     DrawDialogFrameWithCustomTileAndPalette(WIN_MSG, FALSE, 0x200, 0xF);
     AddTextPrinterParameterized(WIN_MSG, FONT_NORMAL, str, 0, 1, 0, NULL);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
 }
 
 #define tState data[0]
@@ -599,7 +599,7 @@ static void Task_ShowResetRtcPrompt(u8 taskId)
 
         ShowMessage(gText_ResetRTCConfirmCancel);
         CopyWindowToVram(WIN_TIME, COPYWIN_GFX);
-        ScheduleBgCopyTilemapToVram(0);
+        ProgramaCopiaTilemapVram(FONDO_0);
         tState++;
     case 1:
         if (JOY_NEW(B_BUTTON))

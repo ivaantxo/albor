@@ -116,7 +116,7 @@ static void MCB2_InitRegionMapRegisters(void)
     InitWindows(sFieldRegionMapWindowTemplates);
     DeactivateAllTextPrinters();
     LoadUserWindowBorderGfx(0, 0x27, BG_PLTT_ID(13));
-    ClearScheduledBgCopiesToVram();
+    LimpiaCopiaTilemapProgramadaVram();
     SetMainCallback2(MCB2_FieldUpdateRegionMap);
     SetVBlankCallback(VBCB_FieldUpdateRegionMap);
 }
@@ -134,7 +134,7 @@ static void MCB2_FieldUpdateRegionMap(void)
     AnimateSprites();
     BuildOamBuffer();
     UpdatePaletteFade();
-    DoScheduledBgTilemapCopiesToVram();
+    CopiaTilemapProgramadoVram();
 }
 
 static void FieldUpdateRegionMap(void)
@@ -153,7 +153,7 @@ static void FieldUpdateRegionMap(void)
             DrawStdFrameWithCustomTileAndPalette(WIN_TITLE, FALSE, 0x27, 0xd);
             offset = GetStringCenterAlignXOffset(FONT_NORMAL, gText_Hoenn, 0x38);
             AddTextPrinterParameterized(WIN_TITLE, FONT_NORMAL, gText_Hoenn, offset, 1, 0, NULL);
-            ScheduleBgCopyTilemapToVram(0);
+            ProgramaCopiaTilemapVram(FONDO_0);
             DrawStdFrameWithCustomTileAndPalette(WIN_MAPSEC_NAME, FALSE, 0x27, 0xd);
             PrintRegionMapSecName();
             BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
@@ -205,7 +205,7 @@ static void PrintRegionMapSecName(void)
     {
         FillWindowPixelBuffer(WIN_MAPSEC_NAME, PIXEL_FILL(1));
         AddTextPrinterParameterized(WIN_MAPSEC_NAME, FONT_NORMAL, sFieldRegionMapHandler->regionMap.mapSecName, 0, 1, 0, NULL);
-        ScheduleBgCopyTilemapToVram(WIN_MAPSEC_NAME);
+        ProgramaCopiaTilemapVram(FONDO_0);
     }
     else
     {

@@ -121,16 +121,17 @@ Es un hackrom en castellano que está en desarrollo, que usa la pokeemerald-expa
     *Eléctrico x2 Acero
     *Planta x2 Fantasma
     *Bicho x2 Fantasma
+    *Bicho x2 Hada
     *Normal x1 Acero
     *Planta x1 Dragón
-    *Eléctrico x1 Eléctrico
-    *Siniestro x1 Siniestro
+    *Planta x1 Acero
     *Tierra x0.5 Hielo
     *Agua x0.5 Hielo
     *Volador x0.5 Hielo
     *Acero x1 Fuego
     *Roca x0.5 Roca
     *Hada x0.5 Planta
+    *Fuego x0 Dragón
 
 ## Cambios a Pokémon:
     *Se han cambiado las paletas shiny de muchos Pokémon.

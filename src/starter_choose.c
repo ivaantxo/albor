@@ -407,7 +407,7 @@ void CB2_ChooseStarter(void)
 
     DeactivateAllTextPrinters();
     LoadUserWindowBorderGfx(0, 0x2A8, BG_PLTT_ID(13));
-    ClearScheduledBgCopiesToVram();
+    LimpiaCopiaTilemapProgramadaVram();
     ParaDistorsionFondo();
     ResetTasks();
     ResetSpriteData();
@@ -467,7 +467,7 @@ static void CB2_StarterChoose(void)
     RunTasks();
     AnimateSprites();
     BuildOamBuffer();
-    DoScheduledBgTilemapCopiesToVram();
+    CopiaTilemapProgramadoVram();
     UpdatePaletteFade();
 }
 
@@ -477,7 +477,7 @@ static void Task_StarterChoose(u8 taskId)
     DrawStdFrameWithCustomTileAndPalette(0, FALSE, 0x2A8, 0xD);
     AddTextPrinterParameterized(0, FONT_NORMAL, gText_BirchInTrouble, 0, 1, 0, NULL);
     PutWindowTilemap(0);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
     gTasks[taskId].func = Task_HandleStarterChooseInput;
 }
 
@@ -530,7 +530,7 @@ static void Task_AskConfirmStarter(u8 taskId)
     PlayCry_Normal(GetStarterPokemon(gTasks[taskId].tStarterSelection), 0);
     FillWindowPixelBuffer(0, PIXEL_FILL(1));
     AddTextPrinterParameterized(0, FONT_NORMAL, gText_ConfirmStarterChoice, 0, 1, 0, NULL);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
     CreateYesNoMenu(&sWindowTemplate_ConfirmStarter, 0x2A8, 0xD, 0);
     gTasks[taskId].func = Task_HandleConfirmStarterInput;
 }
@@ -580,7 +580,7 @@ static void ClearStarterLabel(void)
     sStarterLabelWindowId = WINDOW_NONE;
     SetGpuReg(REG_OFFSET_WIN0H, 0);
     SetGpuReg(REG_OFFSET_WIN0V, 0);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
 }
 
 static void Task_MoveStarterChooseCursor(u8 taskId)

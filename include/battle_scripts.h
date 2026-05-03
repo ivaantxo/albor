@@ -114,7 +114,7 @@ extern const u8 ScriptCombate_EfectoMovimientoCongelacion[];
 extern const u8 BattleScript_MoveEffectParalysis[];
 extern const u8 BattleScript_MoveEffectUproar[];
 extern const u8 BattleScript_MoveEffectToxic[];
-extern const u8 BattleScript_MoveEffectDiaDePago[];
+extern const u8 ScriptCombate_EfectoMovimientoDiaDePago[];
 extern const u8 BattleScript_MoveEffectWrap[];
 extern const u8 BattleScript_MoveEffectConfusion[];
 extern const u8 BattleScript_MoveEffectRecoil[];

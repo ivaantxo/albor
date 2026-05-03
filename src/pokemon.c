@@ -826,7 +826,7 @@ u8 GetDefaultMoveTarget(u8 battlerId)
 {
     u8 opposing = OPONENTE(GetBattlerSide(battlerId));
 
-    if (!EsContraEntrenador())
+    if (!EsCombateContraEntrenador(gCombate->tipoCombate))
         return opposing;
     if (CountAliveMonsInBattle(BATTLE_ALIVE_EXCEPT_BATTLER, battlerId) > 1)
     {
@@ -2516,7 +2516,7 @@ void AdjustFriendship(struct Pokemon *mon, u8 event)
         if (event == FRIENDSHIP_EVENT_LEAGUE_BATTLE)
         {
             // Only if it's a trainer battle with league progression significance
-            if (!(EsContraEntrenador()))
+            if (!(EsCombateContraEntrenador(gCombate->tipoCombate)))
                 return;
             if (!(opponentTrainerClass == TRAINER_CLASS_LEADER
                 || opponentTrainerClass == TRAINER_CLASS_ELITE_FOUR
@@ -2938,7 +2938,7 @@ u16 SpeciesToPokedexNum(u16 species)
 
 u16 GetBattleBGM(void)
 {
-    if (gBattleTypeFlags & COMBATE_LEGENDARIO)
+    if (EsCombateContraLegendario(gCombate->tipoCombate))
     {
         switch (GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL))
         {
@@ -2956,7 +2956,7 @@ u16 GetBattleBGM(void)
             return MUS_RG_VS_LEGEND;
         }
     }
-    else if (EsContraEntrenador())
+    else if (EsCombateContraEntrenador(gCombate->tipoCombate))
     {
         u8 trainerClass = GetTrainerClassFromId(gTrainerBattleOpponent);
 
@@ -3191,7 +3191,7 @@ static inline bool32 CanFirstMonBoostHeldItemRarity(void)
 
 void SetWildMonHeldItem(void)
 {
-    if (!(gBattleTypeFlags & (COMBATE_LEGENDARIO | COMBATE_ENTRENADOR)))
+    if (EsCombateContraSalvaje(gCombate->tipoCombate))
     {
         u16 rnd;
         u16 species;

@@ -1251,7 +1251,7 @@ static bool8 SetupContestGraphics(u8 *stateVar)
         CreateApplauseMeterSprite();
         CreateJudgeAttentionEyeTask();
         CreateUnusedBlendTask();
-        gBattleTypeFlags = COMBATE_SALVAJE;
+        gCombate->tipoCombate = COMBATE_SALVAJE;
         gBattlerAttacker = JUGADOR_DERECHA;
         gBattlerTarget = OPONENTE_DERECHA;
         // Unclear why judge sprite is assigned here

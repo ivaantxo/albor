@@ -1589,7 +1589,7 @@ static void Task_ShowScrollableMultichoice(u8 taskId)
 
     ScrollableMultichoice_UpdateScrollArrows(taskId);
     task->tListTaskId = ListMenuInit(&gScrollableMultichoice_ListMenuTemplate, task->tScrollOffset, task->tSelectedRow);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
     gTasks[taskId].func = ScrollableMultichoice_ProcessInput;
 }
 

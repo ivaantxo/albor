@@ -3263,7 +3263,7 @@ static void AnimSporeParticle_Step(struct Sprite *sprite)
 // No args.
 void AnimTask_SporeDoubleBattle(u8 taskId)
 {
-    if (!EsContraEntrenador())
+    if (!EsCombateContraEntrenador(gCombate->tipoCombate))
     {
         DestroyAnimVisualTask(taskId);
     }
@@ -3489,7 +3489,7 @@ static void AnimTranslateLinearSingleSineWave_Step(struct Sprite *sprite)
 // arg 4: speedup frame (particles move faster at the end of the animation)
 void AnimMoveTwisterParticle(struct Sprite *sprite)
 {
-    if (EsContraEntrenador() == TRUE)
+    if (EsCombateContraEntrenador(gCombate->tipoCombate) == TRUE)
         SetAverageBattlerPositions(gBattleAnimTarget, TRUE, &sprite->x, &sprite->y);
 
     sprite->y += 32;
@@ -4427,7 +4427,7 @@ void AnimNeedleArmSpike(struct Sprite *sprite)
     {
         if (gBattleAnimArgs[0] == 0)
         {
-            if (EsContraEntrenador())
+            if (EsCombateContraEntrenador(gCombate->tipoCombate))
             {
                 SetAverageBattlerPositions(gBattleAnimAttacker, TRUE, &a, &b);
             }
@@ -4439,7 +4439,7 @@ void AnimNeedleArmSpike(struct Sprite *sprite)
         }
         else
         {
-            if (EsContraEntrenador())
+            if (EsCombateContraEntrenador(gCombate->tipoCombate))
             {
                 SetAverageBattlerPositions(gBattleAnimTarget, TRUE, &a, &b);
             }
@@ -4804,7 +4804,7 @@ static void AnimSparklingStars(struct Sprite *sprite)
     else
         battler = gBattleAnimTarget;
 
-    if (EsContraEntrenador() && IsBattlerSpriteVisible(ALIADO(battler)))
+    if (EsCombateContraEntrenador(gCombate->tipoCombate) && IsBattlerSpriteVisible(ALIADO(battler)))
     {
         SetAverageBattlerPositions(battler, gBattleAnimArgs[6], &sprite->x, &sprite->y);
         SetAnimSpriteInitialXOffset(sprite, gBattleAnimArgs[0]);

@@ -1509,7 +1509,7 @@ static s8 SwapInPalNextVBlank(void *palette, void *dst)
 static void CB2_PokeStorage(void)
 {
     RunTasks();
-    DoScheduledBgTilemapCopiesToVram();
+    CopiaTilemapProgramadoVram();
     ScrollBackground();
     AnimateSprites();
     BuildOamBuffer();
@@ -1581,7 +1581,7 @@ static void ResetForPokeStorage(void)
     ClearDma3Requests();
     gReservedSpriteTileCount = 640;
     gKeyRepeatStartDelay = 20;
-    ClearScheduledBgCopiesToVram();
+    LimpiaCopiaTilemapProgramadaVram();
     TilemapUtil_Init(TILEMAPID_COUNT);
     TilemapUtil_SetMap(TILEMAPID_PKMN_DATA, 1, sPkmnData_Tilemap, 8, 4);
     TilemapUtil_SetPos(TILEMAPID_PKMN_DATA, 1, 0);
@@ -3176,7 +3176,7 @@ static void LoadPokeStorageMenuGfx(void)
     LZ77UnCompWram(sDisplayMenu_Tilemap, sStorage->displayMenuTilemapBuffer);
     SetBgTilemapBuffer(1, sStorage->displayMenuTilemapBuffer);
     ShowBg(1);
-    ScheduleBgCopyTilemapToVram(1);
+    ProgramaCopiaTilemapVram(FONDO_1);
 }
 
 static bool8 InitPokeStorageWindows(void)
@@ -3208,7 +3208,7 @@ static void RefreshDisplayMonData(void)
 {
     LoadDisplayMonGfx(sStorage->displayMonSpecies, sStorage->displayMonPersonality);
     PrintDisplayMonInfo();
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
 }
 
 static void StartDisplayMonMosaicEffect(void)
@@ -3353,7 +3353,7 @@ static void InitSupplementalTilemaps(void)
         TilemapUtil_Update(TILEMAPID_PARTY_MENU);
     }
 
-    ScheduleBgCopyTilemapToVram(1);
+    ProgramaCopiaTilemapVram(FONDO_1);
 }
 
 static void SetUpShowPartyMenu(void)
@@ -3371,7 +3371,7 @@ static bool8 ShowPartyMenu(void)
     sStorage->partyMenuY += PARTY_MENU_SCROLL_DELTA;
     TilemapUtil_Move(PARTY_MENU_SCROLL_DELTA);
     TilemapUtil_Update(TILEMAPID_PARTY_MENU);
-    ScheduleBgCopyTilemapToVram(1);
+    ProgramaCopiaTilemapVram(FONDO_1);
     MovePartySprites(8 * PARTY_MENU_SCROLL_DELTA);
     // Disable dynamic palettes for the first 3 slots of each row
     if (sStorage->partyMenuMoveTimer == 5)
@@ -3434,7 +3434,7 @@ static bool8 HidePartyMenu(void)
         }
         if (++sStorage->partyMenuMoveTimer != 20)
         {
-            ScheduleBgCopyTilemapToVram(1);
+            ProgramaCopiaTilemapVram(FONDO_1);
             return TRUE;
         }
         else
@@ -3443,7 +3443,7 @@ static bool8 HidePartyMenu(void)
             DestroyAllPartyMonIcons();
             CompactPartySlots();
 
-            ScheduleBgCopyTilemapToVram(1);
+            ProgramaCopiaTilemapVram(FONDO_1);
             sStorage->transferWholePlttFrames = 0; // transfer only non-dynamic palettes
             return FALSE;
         }
@@ -3493,7 +3493,7 @@ static void UpdatePartySlotColors(void)
     SetPartySlotTilemaps();
     TilemapUtil_SetRect(TILEMAPID_PARTY_MENU, 0, 0, 12, 22);
     TilemapUtil_Update(TILEMAPID_PARTY_MENU);
-    ScheduleBgCopyTilemapToVram(1);
+    ProgramaCopiaTilemapVram(FONDO_1);
 }
 
 static void SetUpDoShowPartyMenu(void)
@@ -3579,7 +3579,7 @@ static void PrintMessage(u8 id)
     DrawTextBorderOuter(WIN_MESSAGE, 2, 14);
     PutWindowTilemap(WIN_MESSAGE);
     CopyWindowToVram(WIN_MESSAGE, COPYWIN_GFX);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
 }
 
 static void ShowYesNoWindow(s8 cursorPos)
@@ -3591,7 +3591,7 @@ static void ShowYesNoWindow(s8 cursorPos)
 static void ClearBottomWindow(void)
 {
     ClearStdWindowAndFrameToTransparent(WIN_MESSAGE, FALSE);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
 }
 
 static u8 GetCurrentBoxOption(void)
@@ -6460,7 +6460,7 @@ static void AddMenu(void)
     DrawStdFrameWithCustomTileAndPalette(sStorage->menuWindowId, FALSE, 11, 14);
     PrintMenuTable(sStorage->menuWindowId, sStorage->menuItemsCount, (void *)sStorage->menuItems);
     InitMenuInUpperLeftCornerNormal(sStorage->menuWindowId, sStorage->menuItemsCount, 0);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
 }
 
 // Called after AddMenu to determine whether or not the handler callback should
@@ -7107,7 +7107,7 @@ static bool8 UpdateItemInfoWindowSlideOut(void)
         DrawItemInfoWindow(pos);
 
     FillBgTilemapBufferRect(0, 0, pos + 1, 12, 1, 9, 17);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
     return TRUE;
 }
 
@@ -7121,7 +7121,7 @@ static void DrawItemInfoWindow(u32 x)
     FillBgTilemapBufferRect(0, 315, x, 13, 1, 7, 15);
     FillBgTilemapBufferRect(0, 316, x, 12, 1, 1, 15);
     FillBgTilemapBufferRect(0, 317, x, 20, 1, 1, 15);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
 }
 
 static void SpriteCB_ItemIcon_WaitAnim(struct Sprite *sprite)

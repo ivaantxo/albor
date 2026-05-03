@@ -62,7 +62,6 @@ static void AnimEllipticalGustAttacker(struct Sprite *sprite);
 static void AnimEllipticalGustAttacker_Step(struct Sprite *sprite);
 static void AnimGrowingShockWaveOrbOnTarget(struct Sprite *sprite);
 static void AnimTask_GrowStep(u8 taskId);
-static void AnimOceanicOperettaSpotlight(struct Sprite *sprite);
 static void SpriteCB_PowerShiftBallStep(struct Sprite *sprite);
 static void SpriteCB_PowerShiftBall(struct Sprite *sprite);
 static void SpriteCB_HorizontalSliceStep(struct Sprite *sprite);
@@ -3029,7 +3028,7 @@ static u8 LoadBattleAnimTarget(u8 arg)
 {
     u8 battler;
 
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
     {
         switch (gBattleAnimArgs[arg])
         {
@@ -3060,7 +3059,7 @@ static u8 LoadBattleAnimTarget(u8 arg)
 
 static u8 GetProperCentredCoord(u8 battler, u8 coordType)
 {
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
         return (GetBattlerSpriteCoord2(battler, coordType) + GetBattlerSpriteCoord2(ALIADO(battler), coordType)) / 2;
 
     return GetBattlerSpriteCoord(battler, coordType);
@@ -3193,14 +3192,14 @@ static void SpriteCB_SpriteToCentreOfSide(struct Sprite *sprite)
 
         if (gBattleAnimArgs[2] == 0) // Attacker
         {
-            if (EsContraEntrenador())
+            if (EsCombateContraEntrenador(gCombate->tipoCombate))
                 InitSpritePosToAnimAttackersCentre(sprite, var);
             else
                 InitSpritePosToAnimAttacker(sprite, var);
         }
         else
         {
-            if (EsContraEntrenador())
+            if (EsCombateContraEntrenador(gCombate->tipoCombate))
                 InitSpritePosToAnimTargetsCentre(sprite, var);
             else
                 InitSpritePosToAnimTarget(sprite, var);
@@ -3283,7 +3282,7 @@ static void SpriteCB_GrowingSuperpower(struct Sprite *sprite)
 
 static void SpriteCB_CentredSpiderWeb(struct Sprite *sprite)
 {
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
         InitSpritePosToAnimTargetsCentre(sprite, FALSE);
     else
         InitSpritePosToAnimTarget(sprite, FALSE);
@@ -3540,14 +3539,14 @@ void SpriteCB_RandomCentredHits(struct Sprite *sprite)
 
     if (gBattleAnimArgs[0] == 0)
     {
-        if (EsContraEntrenador())
+        if (EsCombateContraEntrenador(gCombate->tipoCombate))
             InitSpritePosToAnimAttackersCentre(sprite, FALSE);
         else
             InitSpritePosToAnimAttacker(sprite, FALSE);
     }
     else
     {
-        if (EsContraEntrenador())
+        if (EsCombateContraEntrenador(gCombate->tipoCombate))
             InitSpritePosToAnimTargetsCentre(sprite, FALSE);
         else
             InitSpritePosToAnimTarget(sprite, FALSE);
@@ -3828,7 +3827,7 @@ static void SpriteCB_SurroundingRing(struct Sprite *sprite)
 
 static void SpriteCB_CentredElectricity(struct Sprite *sprite)
 {
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
         InitSpritePosToAnimTargetsCentre(sprite, FALSE);
     else
         InitSpritePosToAnimTarget(sprite, FALSE);
@@ -3990,26 +3989,6 @@ static void AnimTask_GrowStep(u8 taskId)
         ResetSpriteRotScale(spriteId);
         DestroyAnimVisualTask(taskId);
     }
-}
-
-// Uses a spotlight sprite as a light mask to illuminate the attacker. The spotlight grows and shrinks.
-// arg 0: initial x pixel offset
-// arg 1: initial y pixel offset
-// arg 2: duration of fully-opened spotlight
-static void AnimOceanicOperettaSpotlight(struct Sprite *sprite)
-{
-    SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR | WINOUT_WINOBJ_BG_ALL | WINOUT_WINOBJ_OBJ);
-    SetGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_OBJWIN_ON);
-    gBattle_WIN0H = 0;
-    gBattle_WIN0V = 0;
-    SetGpuReg(REG_OFFSET_WIN0H, gBattle_WIN0H);
-    SetGpuReg(REG_OFFSET_WIN0V, gBattle_WIN0V);
-
-    sprite->data[0] = gBattleAnimArgs[2];
-    InitSpritePosToAnimAttacker(sprite, FALSE);
-    sprite->oam.objMode = ST_OAM_OBJ_WINDOW;
-    sprite->invisible = TRUE;
-    sprite->callback = AnimFlatterSpotlight_Step;
 }
 
 static void AnimTask_WaitAffineAnim(u8 taskId)
@@ -4349,14 +4328,14 @@ static void SpriteCB_AnimSpriteOnTargetSideCentre(struct Sprite *sprite)
     {
         if (IsAlly(gBattleAnimAttacker, target))
         {
-            if (EsContraEntrenador())
+            if (EsCombateContraEntrenador(gCombate->tipoCombate))
                 InitSpritePosToAnimAttackersCentre(sprite, FALSE);
             else
                 InitSpritePosToAnimAttacker(sprite, FALSE);
         }
         else
         {
-            if (EsContraEntrenador())
+            if (EsCombateContraEntrenador(gCombate->tipoCombate))
                 InitSpritePosToAnimTargetsCentre(sprite, FALSE);
             else
                 InitSpritePosToAnimTarget(sprite, FALSE);
@@ -4523,7 +4502,7 @@ static void SpriteCB_DragonEnergyShot(struct Sprite *sprite)
     u8 def1 = gBattleAnimTarget;
     u8 def2 = ALIADO(def1);
 
-    if (!EsContraEntrenador() || IsAlly(gBattleAnimAttacker, gBattleAnimTarget))
+    if (!EsCombateContraEntrenador(gCombate->tipoCombate) || IsAlly(gBattleAnimAttacker, gBattleAnimTarget))
         y = GetBattlerSpriteCoord(def1, BATTLER_COORD_Y_PIC_OFFSET);
     else
     {
@@ -4579,7 +4558,7 @@ static void SpriteCB_GlacialLance(struct Sprite *sprite)
 
     sprite->data[0] = gBattleAnimArgs[6];
 
-    if (!EsContraEntrenador() || IsAlly(gBattleAnimAttacker, gBattleAnimTarget))
+    if (!EsCombateContraEntrenador(gCombate->tipoCombate) || IsAlly(gBattleAnimAttacker, gBattleAnimTarget))
     {
         sprite->data[2] = GetBattlerSpriteCoord(def1, BATTLER_COORD_X_2) + gBattleAnimArgs[2]; // Converge on target
         sprite->data[4] = GetBattlerSpriteCoord(def1, BATTLER_COORD_Y_PIC_OFFSET) + gBattleAnimArgs[3];

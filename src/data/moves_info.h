@@ -9,6 +9,7 @@
 
 #define CLIMATICO               .climatico  = TRUE
 #define CABEZAZO                .cabezazo   = TRUE
+#define PUNIETAZO               .punietazo  = TRUE
 
 #define PRIORIDAD_NEGATIVA      .prioridad  = PRIORIDAD_MOVIMIENTO_NEGATIVA
 #define PRIORIDAD_NORMAL        .prioridad  = PRIORIDAD_MOVIMIENTO_NORMAL
@@ -182,7 +183,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_ALTA,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .battleAnimScript = gBattleAnimMove_CometPunch,
     },
 
@@ -202,7 +203,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .battleAnimScript = gBattleAnimMove_MegaPunch,
     },
 
@@ -221,7 +222,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_PAYDAY,
+            .moveEffect = EFECTO_MOVIMIENTO_SALTA_DINERO,
         }),
         .battleAnimScript = gBattleAnimMove_DiaDePago,
     },
@@ -241,7 +242,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 10,
@@ -264,7 +265,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = EFECTO_MOVIMIENTO_CONGELACION,
             .chance = 10,
@@ -287,7 +288,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 10,
@@ -508,7 +509,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .effect = EFFECT_HIT,
         .power = 15,
         .type = TIPO_NORMAL,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_5 ? 85 : 75,
+        .accuracy = PRECISION_NORMAL,
         .pp = 20,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -1779,7 +1780,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .effect = EFFECT_HIT,
         .power = B_UPDATED_MOVE_DATA >= GEN_5 ? 35 : 15,
         .type = TIPO_FUEGO,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_5 ? 85 : 70,
+        .accuracy = PRECISION_NORMAL,
         .pp = 15,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -1841,7 +1842,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .effect = EFFECT_PARALYZE,
         .power = 0,
         .type = TIPO_ELECTRICO,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_7 ? 90 : 100,
+        .accuracy = PRECISION_NORMAL,
         .pp = 20,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -2904,7 +2905,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_CONFUSION,
             .chance = 20,
@@ -3520,7 +3521,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_ALTA,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .battleAnimScript = gBattleAnimMove_UltraPunio,
     },
 
@@ -4195,7 +4196,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_CONFUSION,
             .chance = 100,
@@ -4930,7 +4931,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NEGATIVA,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .sleepTalkBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_FocusPunch,
     },
@@ -5588,7 +5589,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_ATK_PLUS_1,
             .self = TRUE,
@@ -5891,7 +5892,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .battleAnimScript = gBattleAnimMove_ShadowPunch,
     },
 
@@ -5931,7 +5932,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .damagesAirborne = TRUE,
         .battleAnimScript = gBattleAnimMove_SkyUppercut,
     },
@@ -6510,7 +6511,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .hammerMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
@@ -7263,7 +7264,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .healingMove = TRUE,
         .battleAnimScript = gBattleAnimMove_DrainPunch,
     },
@@ -7440,7 +7441,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_ALTA,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .balistico = TRUE,
         .battleAnimScript = gBattleAnimMove_BulletPunch,
     },
@@ -10421,7 +10422,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_ATK_PLUS_1,
             .self = TRUE,
@@ -10635,7 +10636,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .hammerMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
@@ -11929,7 +11930,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .alwaysCriticalHit = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .battleAnimScript = gBattleAnimMove_WickedBlow,
     },
 
@@ -11949,7 +11950,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .alwaysCriticalHit = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .strikeCount = 3,
         .battleAnimScript = gBattleAnimMove_SurgingStrikes,
     },
@@ -12136,25 +12137,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_PsyshieldBash,
     },
 
-    [MOVE_POWER_SHIFT] =
-    {
-        .name = COMPOUND_STRING("Power Shift"),
-        .description = COMPOUND_STRING(
-            "The user swaps its Attack\n"
-            "and Defense stats."),
-        .effect = EFFECT_POWER_TRICK,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_PowerShift,
-},
-
     [MOVE_STONE_AXE] =
     {
         .name = COMPOUND_STRING("Stone Axe"),
@@ -12297,7 +12279,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         CABEZAZO,
-        .punchingMove = TRUE, // ???? Revisar
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_DEF_SPDEF_DOWN,
             .self = TRUE,
@@ -12601,7 +12582,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_ALTA,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .battleAnimScript = gBattleAnimMove_JetPunch,
     },
 
@@ -12868,7 +12849,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .punchingMove = TRUE,
+        PUNIETAZO,
         .battleAnimScript = gBattleAnimMove_RageFist,
     },
 

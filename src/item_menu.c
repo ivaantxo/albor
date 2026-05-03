@@ -556,7 +556,7 @@ void CB2_BagMenuRun(void)
     RunTasks();
     AnimateSprites();
     BuildOamBuffer();
-    DoScheduledBgTilemapCopiesToVram();
+    CopiaTilemapProgramadoVram();
     UpdatePaletteFade();
 }
 
@@ -590,7 +590,7 @@ static bool8 SetupBagMenu(void)
     {
     case 0:
         SetVBlankHBlankCallbacksToNull();
-        ClearScheduledBgCopiesToVram();
+        LimpiaCopiaTilemapProgramadaVram();
         gMain.state++;
         break;
     case 1:
@@ -695,7 +695,7 @@ static void BagMenu_InitBGs(void)
     IniciaFondosDesdePlantillas(MODO_0, sBgTemplates_ItemMenu, ARRAY_COUNT(sBgTemplates_ItemMenu));
     SetBgTilemapBuffer(2, gBagMenu->tilemapBuffer);
     ResetAllBgsCoordinates();
-    ScheduleBgCopyTilemapToVram(2);
+    ProgramaCopiaTilemapVram(FONDO_2);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
     ShowBg(0);
     ShowBg(1);
@@ -1068,7 +1068,7 @@ void DisplayItemMessage(u8 taskId, u8 fontId, const u8 *str, void (*callback)(u8
     tMsgWindowId = AddItemMessageWindow(ITEMWIN_MESSAGE);
     FillWindowPixelBuffer(tMsgWindowId, PIXEL_FILL(1));
     DisplayMessageAndContinueTask(taskId, tMsgWindowId, 10, 13, fontId, GetPlayerTextSpeedDelay(), str, callback);
-    ScheduleBgCopyTilemapToVram(1);
+    ProgramaCopiaTilemapVram(FONDO_1);
 }
 
 void CloseItemMessage(u8 taskId)
@@ -1082,7 +1082,7 @@ void CloseItemMessage(u8 taskId)
     UpdatePocketListPosition(gBagPosition.pocket);
     LoadBagItemListBuffers(gBagPosition.pocket);
     tListTaskId = ListMenuInit(&gMultiuseListMenuTemplate, *scrollPos, *cursorPos);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
     ReturnToItemList(taskId);
 }
 
@@ -1175,7 +1175,7 @@ static void ReturnToItemList(u8 taskId)
     CreatePocketScrollArrowPair();
     CreatePocketSwitchArrowPair();
     PutWindowTilemap(WIN_DESCRIPTION);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
     gTasks[taskId].func = Task_BagMenu_HandleInput;
 }
 
@@ -1223,7 +1223,7 @@ static void SwitchBagPocket(u8 taskId, s16 deltaBagPocketId, bool16 skipEraseLis
         ClearWindowTilemap(WIN_ITEM_LIST);
         ClearWindowTilemap(WIN_DESCRIPTION);
         DestroyListMenuTask(tListTaskId, &gBagPosition.scrollPosition[gBagPosition.pocket], &gBagPosition.cursorPosition[gBagPosition.pocket]);
-        ScheduleBgCopyTilemapToVram(0);
+        ProgramaCopiaTilemapVram(FONDO_0);
         gSprites[gBagMenu->spriteIds[ITEMMENUSPRITE_ITEM + (gBagMenu->itemIconSlot ^ 1)]].invisible = TRUE;
         BagDestroyPocketScrollArrowPair();
     }
@@ -1242,7 +1242,7 @@ static void SwitchBagPocket(u8 taskId, s16 deltaBagPocketId, bool16 skipEraseLis
     DrawPocketIndicatorSquare(gBagPosition.pocket, FALSE);
     DrawPocketIndicatorSquare(newPocket, TRUE);
     FillBgTilemapBufferRect_Palette0(2, 11, 14, 2, 15, 16);
-    ScheduleBgCopyTilemapToVram(2);
+    ProgramaCopiaTilemapVram(FONDO_2);
     SetBagVisualPocketId(newPocket, TRUE);
     RemoveBagSprite(ITEMMENUSPRITE_BALL);
     AddSwitchPocketRotatingBallSprite(deltaBagPocketId);
@@ -1286,7 +1286,7 @@ static void Task_SwitchBagPocket(u8 taskId)
         tListTaskId = ListMenuInit(&gMultiuseListMenuTemplate, gBagPosition.scrollPosition[gBagPosition.pocket], gBagPosition.cursorPosition[gBagPosition.pocket]);
         PutWindowTilemap(WIN_DESCRIPTION);
         PutWindowTilemap(WIN_POCKET_NAME);
-        ScheduleBgCopyTilemapToVram(0);
+        ProgramaCopiaTilemapVram(FONDO_0);
         CreatePocketScrollArrowPair();
         CreatePocketSwitchArrowPair();
         SwitchTaskToFollowupFunc(taskId);
@@ -1298,7 +1298,7 @@ static void Task_SwitchBagPocket(u8 taskId)
 static void DrawItemListBgRow(u8 y)
 {
     FillBgTilemapBufferRect_Palette0(2, 17, 14, y + 2, 15, 1);
-    ScheduleBgCopyTilemapToVram(2);
+    ProgramaCopiaTilemapVram(FONDO_2);
 }
 
 static void DrawPocketIndicatorSquare(u8 x, bool8 isCurrentPocket)
@@ -1307,7 +1307,7 @@ static void DrawPocketIndicatorSquare(u8 x, bool8 isCurrentPocket)
         FillBgTilemapBufferRect_Palette0(2, 0x1017, x + 5, 3, 1, 1);
     else
         FillBgTilemapBufferRect_Palette0(2, 0x102B, x + 5, 3, 1, 1);
-    ScheduleBgCopyTilemapToVram(2);
+    ProgramaCopiaTilemapVram(FONDO_2);
 }
 
 static bool8 CanSwapItems(void)
@@ -1611,7 +1611,7 @@ static void ItemMenu_UseOutOfBattle(u8 taskId)
         else
         {
             FillWindowPixelBuffer(WIN_DESCRIPTION, PIXEL_FILL(0));
-            ScheduleBgCopyTilemapToVram(0);
+            ProgramaCopiaTilemapVram(FONDO_0);
             if (gBagPosition.pocket != BERRIES_POCKET)
                 ItemId_GetFieldFunc(gSpecialVar_ItemId)(taskId);
             else
@@ -1716,7 +1716,7 @@ static void Task_RemoveItemFromBag(u8 taskId)
         UpdatePocketListPosition(gBagPosition.pocket);
         LoadBagItemListBuffers(gBagPosition.pocket);
         tListTaskId = ListMenuInit(&gMultiuseListMenuTemplate, *scrollPos, *cursorPos);
-        ScheduleBgCopyTilemapToVram(0);
+        ProgramaCopiaTilemapVram(FONDO_0);
         ReturnToItemList(taskId);
     }
 }
@@ -1734,7 +1734,7 @@ static void ItemMenu_Register(u8 taskId)
     DestroyListMenuTask(tListTaskId, scrollPos, cursorPos);
     LoadBagItemListBuffers(gBagPosition.pocket);
     tListTaskId = ListMenuInit(&gMultiuseListMenuTemplate, *scrollPos, *cursorPos);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
     ItemMenu_Cancel(taskId);
 }
 
@@ -1796,8 +1796,8 @@ static void ItemMenu_Cancel(u8 taskId)
 
     RemoveContextWindow();
     PrintItemDescription(tListPosition);
-    ScheduleBgCopyTilemapToVram(0);
-    ScheduleBgCopyTilemapToVram(1);
+    ProgramaCopiaTilemapVram(FONDO_0);
+    ProgramaCopiaTilemapVram(FONDO_1);
     BagMenu_PrintCursor(tListTaskId, COLORID_NORMAL);
     ReturnToItemList(taskId);
 }
@@ -2141,8 +2141,8 @@ static void LoadBagMenuTextWindows(void)
         FillWindowPixelBuffer(i, PIXEL_FILL(0));
         PutWindowTilemap(i);
     }
-    ScheduleBgCopyTilemapToVram(0);
-    ScheduleBgCopyTilemapToVram(1);
+    ProgramaCopiaTilemapVram(FONDO_0);
+    ProgramaCopiaTilemapVram(FONDO_1);
 }
 
 static void BagMenu_Print(u8 windowId, u8 fontId, const u8 *str, u8 left, u8 top, u8 letterSpacing, u8 lineSpacing, u8 speed, u8 colorIndex)
@@ -2157,7 +2157,7 @@ static u8 BagMenu_AddWindow(u8 windowType)
     {
         *windowId = AddWindow(&sContextMenuWindowTemplates[windowType]);
         DrawStdFrameWithCustomTileAndPalette(*windowId, FALSE, 1, 14);
-        ScheduleBgCopyTilemapToVram(1);
+        ProgramaCopiaTilemapVram(FONDO_1);
     }
     return *windowId;
 }
@@ -2170,7 +2170,7 @@ static void BagMenu_RemoveWindow(u8 windowType)
         ClearStdWindowAndFrameToTransparent(*windowId, FALSE);
         ClearWindowTilemap(*windowId);
         RemoveWindow(*windowId);
-        ScheduleBgCopyTilemapToVram(1);
+        ProgramaCopiaTilemapVram(FONDO_1);
         *windowId = WINDOW_NONE;
     }
 }
@@ -2192,7 +2192,7 @@ static void RemoveItemMessageWindow(u8 windowType)
         // This ClearWindowTilemap call is redundant, since ClearDialogWindowAndFrameToTransparent already calls it.
         ClearWindowTilemap(*windowId);
         RemoveWindow(*windowId);
-        ScheduleBgCopyTilemapToVram(1);
+        ProgramaCopiaTilemapVram(FONDO_1);
         *windowId = WINDOW_NONE;
     }
 }

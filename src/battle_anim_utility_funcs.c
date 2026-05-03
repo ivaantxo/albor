@@ -258,7 +258,7 @@ void AnimTask_DrawFallingWhiteLinesOnAttacker(u8 taskId)
     bg1CntStruct->charBaseBlock = 1; // Cambiar el bloque base de caracteres
     SetGpuReg(REG_OFFSET_BG1CNT, bg1Cnt); // Guardar el valor actualizado
 
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
     {
         if (gBattleAnimAttacker == OPONENTE_DERECHA
          || gBattleAnimAttacker == JUGADOR_IZQUIERDA)
@@ -397,7 +397,7 @@ static void StatsChangeAnimation_Step1(u8 taskId)
     SetAnimBgAttribute(1, BG_ANIM_SCREEN_SIZE, 0);
     SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 1);
 
-    if (EsContraEntrenador() && !sAnimStatsChangeData->aMultipleBattlers)
+    if (EsCombateContraEntrenador(gCombate->tipoCombate) && !sAnimStatsChangeData->aMultipleBattlers)
     {
         if (sAnimStatsChangeData->battler1 == OPONENTE_DERECHA
          || sAnimStatsChangeData->battler1 == JUGADOR_IZQUIERDA)
@@ -1012,7 +1012,7 @@ static void AnimTask_WaitAndRestoreVisibility(u8 taskId)
 
 void AnimTask_EsContraEntrenador(u8 taskId)
 {
-    gBattleAnimArgs[7] = (EsContraEntrenador());
+    gBattleAnimArgs[7] = (EsCombateContraEntrenador(gCombate->tipoCombate));
     DestroyAnimVisualTask(taskId);
 }
 

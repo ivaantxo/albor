@@ -940,7 +940,7 @@ static void InitSwirlingFogAnim(struct Sprite *sprite)
     }
 
     sprite->data[7] = battler;
-    if (gBattleAnimArgs[5] == 0 || !EsContraEntrenador())
+    if (gBattleAnimArgs[5] == 0 || !EsCombateContraEntrenador(gCombate->tipoCombate))
         tempVar = 0x20;
     else
         tempVar = 0x40;

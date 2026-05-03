@@ -768,7 +768,7 @@ static const u8 *const sMoveEffectBS_Ptrs[] =
         [MOVE_EFFECT_TOXIC] = BattleScript_MoveEffectToxic,
         [MOVE_EFFECT_CONFUSION] = BattleScript_MoveEffectConfusion,
         [MOVE_EFFECT_UPROAR] = BattleScript_MoveEffectUproar,
-        [MOVE_EFFECT_PAYDAY] = BattleScript_MoveEffectDiaDePago,
+        [EFECTO_MOVIMIENTO_SALTA_DINERO] = ScriptCombate_EfectoMovimientoDiaDePago,
         [MOVE_EFFECT_WRAP] = BattleScript_MoveEffectWrap,
 };
 
@@ -936,7 +936,7 @@ static void Cmd_attackcanceler(void)
             battler = gBattlerTarget;
             gBattleStruct->movimientoEspejoMagicoRebota = TRUE;
         }
-        else if (EsContraEntrenador() && gMovimientos[gCurrentMove].target == MOVE_TARGET_OPPONENTS_FIELD && HabilidadCombatiente(ALIADO(gBattlerTarget)) == ABILITY_ESPEJO_MAGICO)
+        else if (EsCombateContraEntrenador(gCombate->tipoCombate) && gMovimientos[gCurrentMove].target == MOVE_TARGET_OPPONENTS_FIELD && HabilidadCombatiente(ALIADO(gBattlerTarget)) == ABILITY_ESPEJO_MAGICO)
         {
             gBattlerTarget = battler = ALIADO(gBattlerTarget);
             gBattleStruct->movimientoEspejoMagicoRebota = TRUE;
@@ -1163,7 +1163,7 @@ static void AccuracyCheck(bool32 recalcDragonDarts, const u8 *nextInstr, const u
                 return;
             }
 
-            if (EsContraEntrenador() &&
+            if (EsCombateContraEntrenador(gCombate->tipoCombate) &&
                 (moveTarget == MOVE_TARGET_BOTH || moveTarget == MOVE_TARGET_FOES_AND_ALLY))
                 gMensajeBatalla = TEXTO_COMBATE_ATAQUE_FALLO_DEFENSOR;
             else
@@ -1853,7 +1853,7 @@ void SetMoveEffect(bool32 primary)
         return;
     case MOVE_EFFECT_STEALTH_ROCK:
     case MOVE_EFFECT_SPIKES:
-    case MOVE_EFFECT_PAYDAY:
+    case EFECTO_MOVIMIENTO_SALTA_DINERO:
     case MOVE_EFFECT_STEAL_ITEM:
     case MOVE_EFFECT_BUG_BITE:
         activateAfterFaint = TRUE;
@@ -2186,7 +2186,7 @@ void SetMoveEffect(bool32 primary)
                     gBattlescriptCurrInstr++;
                 }
                 break;
-            case MOVE_EFFECT_PAYDAY:
+            case EFECTO_MOVIMIENTO_SALTA_DINERO:
                 // Don't scatter coins on the second hit of Parental Bond
                 if (GetBattlerSide(gBattlerAttacker) == LADO_JUGADOR && gSpecialStatuses[gBattlerAttacker].parentalBondState != PARENTAL_BOND_2ND_HIT)
                 {
@@ -2201,7 +2201,7 @@ void SetMoveEffect(bool32 primary)
                     if (!((moveTarget == MOVE_TARGET_BOTH || moveTarget == MOVE_TARGET_FOES_AND_ALLY) && GetNextTarget(moveTarget, TRUE) != NUMERO_COMBATIENTES))
                     {
                         BattleScriptPush(gBattlescriptCurrInstr + 1);
-                        gBattlescriptCurrInstr = BattleScript_MoveEffectDiaDePago;
+                        gBattlescriptCurrInstr = ScriptCombate_EfectoMovimientoDiaDePago;
                     }
                     else
                         gBattlescriptCurrInstr++;
@@ -2938,7 +2938,7 @@ static void Cmd_getexp(void)
 
         calculatedExp = gSpeciesInfo[gBattleMons[gBattlerFainted].species].expYield * gBattleMons[gBattlerFainted].level;
 
-        if (EsContraEntrenador())
+        if (EsCombateContraEntrenador(gCombate->tipoCombate))
             calculatedExp = (calculatedExp * 150) / 100;
 
         *exp = calculatedExp;
@@ -2968,7 +2968,7 @@ static void Cmd_getexp(void)
             else
             {
                 // Music change in a wild battle after fainting opposing pokemon.
-                if (!(EsContraEntrenador()) && (gBattleMons[0].hp || (EsContraEntrenador() && gBattleMons[2].hp)) && !IsBattlerAlive(OPONENTE_IZQUIERDA) && !IsBattlerAlive(OPONENTE_DERECHA))
+                if (!(EsCombateContraEntrenador(gCombate->tipoCombate)) && (gBattleMons[0].hp || (EsCombateContraEntrenador(gCombate->tipoCombate) && gBattleMons[2].hp)) && !IsBattlerAlive(OPONENTE_IZQUIERDA) && !IsBattlerAlive(OPONENTE_DERECHA))
                 {
                     BattleStopLowHpSound();
                     PlayBGM(MUS_VICTORY_WILD);
@@ -2986,7 +2986,7 @@ static void Cmd_getexp(void)
                     // i = STRINGID_EMPTYSTRING4;
 
                     // get exp getter battler
-                    if (EsContraEntrenador())
+                    if (EsCombateContraEntrenador(gCombate->tipoCombate))
                     {
                         if (gBattlerPartyIndexes[2] == *expMonId && !(gAbsentBattlerFlags & 4))
                             gBattleStruct->expGetterBattlerId = 2;
@@ -3041,7 +3041,7 @@ static void Cmd_getexp(void)
             if (gBattleResources->bufferB[expBattler][0] == CONTROLLER_TWORETURNVALUES && gBattleResources->bufferB[expBattler][1] == B_ACTION_SUBIO_NIVEL)
             {
                 u16 temp, battler = 0xFF;
-                if (EsContraEntrenador() && gBattlerPartyIndexes[expBattler] == *expMonId)
+                if (EsCombateContraEntrenador(gCombate->tipoCombate) && gBattlerPartyIndexes[expBattler] == *expMonId)
                     HandleLowHpMusicChange(&gPlayerParty[gBattlerPartyIndexes[expBattler]], expBattler);
 
                 PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, expBattler, *expMonId);
@@ -3058,7 +3058,7 @@ static void Cmd_getexp(void)
                 // update battle mon structure after level up
                 if (gBattlerPartyIndexes[0] == *expMonId && gBattleMons[0].hp)
                     battler = 0;
-                else if (gBattlerPartyIndexes[2] == *expMonId && gBattleMons[2].hp && (EsContraEntrenador()))
+                else if (gBattlerPartyIndexes[2] == *expMonId && gBattleMons[2].hp && (EsCombateContraEntrenador(gCombate->tipoCombate)))
                     battler = 2;
 
                 if (battler != 0xFF)
@@ -3167,7 +3167,7 @@ static void Cmd_checkteamslost(void)
     // For battles that haven't ended, count number of empty battler spots
     // In multi battles, jump to pointer if more than 1 spot empty
     // In non-multi battles, jump to pointer if 1 spot is missing on both sides
-    if (gBattleOutcome == 0 && (EsContraEntrenador()))
+    if (gBattleOutcome == 0 && (EsCombateContraEntrenador(gCombate->tipoCombate)))
     {
         s32 i, emptyPlayerSpots, emptyOpponentSpots;
 
@@ -3305,14 +3305,6 @@ static void Cmd_jumpifhalfword(void)
         break;
     case COMPARACION_MENOR:
         if (*halfwordPtr < value)
-            gBattlescriptCurrInstr = jumpInstr;
-        break;
-    case COMPARACION_BITS_COMUNES:
-        if (*halfwordPtr & value)
-            gBattlescriptCurrInstr = jumpInstr;
-        break;
-    case COMPARACION_BITS_DISTINTOS:
-        if (!(*halfwordPtr & value))
             gBattlescriptCurrInstr = jumpInstr;
         break;
     }
@@ -4152,7 +4144,7 @@ static void Cmd_moveend(void)
                 damageCalcData.battlerDef = gBattlerTarget;
                 damageCalcData.move = gCurrentMove;
 
-                uq4_12_t modificador = GetTargetDamageModifier(&damageCalcData);
+                uq4_12_t modificador = ObtenModificadorDanioObjetivoMultiple(&damageCalcData);
 
                 potencia = UQ412MultiplicaPorEntero(modificador, potencia);
                 gCombate->potenciaMovimientosRecibidosTurno[gBattlerTarget] += potencia;
@@ -4219,7 +4211,7 @@ static void Cmd_moveend(void)
                 gProtectStructs[gBattlerAttacker].targetAffected = TRUE;
 
             gBattleStruct->targetsDone[gBattlerAttacker] |= 1u << gBattlerTarget;
-            if (!(gHitMarker & HITMARKER_UNABLE_TO_USE_MOVE) && EsContraEntrenador() && !gProtectStructs[gBattlerAttacker].chargingTurn && (moveTarget == MOVE_TARGET_BOTH || moveTarget == MOVE_TARGET_FOES_AND_ALLY) && !(gHitMarker & HITMARKER_NO_ATTACKSTRING))
+            if (!(gHitMarker & HITMARKER_UNABLE_TO_USE_MOVE) && EsCombateContraEntrenador(gCombate->tipoCombate) && !gProtectStructs[gBattlerAttacker].chargingTurn && (moveTarget == MOVE_TARGET_BOTH || moveTarget == MOVE_TARGET_FOES_AND_ALLY) && !(gHitMarker & HITMARKER_NO_ATTACKSTRING))
             {
                 u32 nextTarget = GetNextTarget(moveTarget, FALSE);
                 gHitMarker |= HITMARKER_NO_PPDEDUCT;
@@ -4646,7 +4638,7 @@ bool32 CanBattlerSwitch(u32 battler)
     {
         battlerIn1 = OPONENTE_IZQUIERDA;
 
-        if (EsContraEntrenador())
+        if (EsCombateContraEntrenador(gCombate->tipoCombate))
             battlerIn2 = OPONENTE_DERECHA;
         else
             battlerIn2 = battlerIn1;
@@ -4658,7 +4650,7 @@ bool32 CanBattlerSwitch(u32 battler)
         // Check if attacker side has mon to switch into
         battlerIn1 = JUGADOR_IZQUIERDA;
 
-        if (EsContraEntrenador())
+        if (EsCombateContraEntrenador(gCombate->tipoCombate))
             battlerIn2 = JUGADOR_DERECHA;
         else
             battlerIn2 = battlerIn1;
@@ -4717,7 +4709,7 @@ static void Cmd_openpartyscreen(void)
 
     if (cmd->battler == BS_FAINTED_MULTIPLE_1)
     {
-        if (!EsContraEntrenador())
+        if (!EsCombateContraEntrenador(gCombate->tipoCombate))
         {
             for (battler = 0; battler < gBattlersCount; battler++)
             {
@@ -4741,7 +4733,7 @@ static void Cmd_openpartyscreen(void)
                 }
             }
         }
-        else if (EsContraEntrenador())
+        else if (EsCombateContraEntrenador(gCombate->tipoCombate))
         {
             bool32 hasReplacement;
 
@@ -4795,7 +4787,7 @@ static void Cmd_openpartyscreen(void)
     }
     else if (cmd->battler == BS_FAINTED_MULTIPLE_2)
     {
-        if (EsContraEntrenador())
+        if (EsCombateContraEntrenador(gCombate->tipoCombate))
         {
             hitmarkerFaintBits = gHitMarker >> 28;
             for (i = 0; i < NUM_BATTLE_SIDES; i++)
@@ -5193,7 +5185,7 @@ static void Cmd_handlelearnnewmove(void)
         {
             GiveMoveToBattleMon(&gBattleMons[battler], learnMove);
         }
-        if (EsContraEntrenador())
+        if (EsCombateContraEntrenador(gCombate->tipoCombate))
         {
             battler = JUGADOR_DERECHA;
             if (gBattlerPartyIndexes[battler] == monId)
@@ -5289,7 +5281,7 @@ static void Cmd_yesnoboxlearnmove(void) // revisar, aquí no hace falta un globa
                 {
                     SetBattleMonMoveSlot(&gBattleMons[0], gMoveToLearn, movePosition);
                 }
-                if (EsContraEntrenador() && gBattlerPartyIndexes[2] == gBattleStruct->expGetterMonId)
+                if (EsCombateContraEntrenador(gCombate->tipoCombate) && gBattlerPartyIndexes[2] == gBattleStruct->expGetterMonId)
                 {
                     SetBattleMonMoveSlot(&gBattleMons[2], gMoveToLearn, movePosition);
                 }
@@ -5391,7 +5383,7 @@ static u32 GetTrainerMoneyToGive(u16 trainerId)
     lastMonLevel = party[GetTrainerPartySizeFromId(trainerId) - 1].lvl;
     trainerMoney = gTrainerClasses[GetTrainerClassFromId(trainerId)].money;
 
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
         moneyReward = 4 * lastMonLevel * gBattleStruct->moneyMultiplier * 2 * trainerMoney;
     else
         moneyReward = 4 * lastMonLevel * gBattleStruct->moneyMultiplier * trainerMoney;
@@ -5951,7 +5943,7 @@ static bool32 IsMonGettingExpSentOut(void)
 {
     if (gBattlerPartyIndexes[0] == gBattleStruct->expGetterMonId)
         return TRUE;
-    if (EsContraEntrenador() && gBattlerPartyIndexes[2] == gBattleStruct->expGetterMonId)
+    if (EsCombateContraEntrenador(gCombate->tipoCombate) && gBattlerPartyIndexes[2] == gBattleStruct->expGetterMonId)
         return TRUE;
 
     return FALSE;
@@ -6014,7 +6006,7 @@ static void Cmd_hpthresholds(void)
 {
     CMD_ARGS(u8 battler);
 
-    if (!(EsContraEntrenador()))
+    if (!(EsCombateContraEntrenador(gCombate->tipoCombate)))
     {
         u32 battler = GetBattlerForBattleScript(cmd->battler);
         u32 opposingBattler = OPONENTE(battler);
@@ -6040,7 +6032,7 @@ static void Cmd_hpthresholds2(void)
 {
     CMD_ARGS(u8 battler);
 
-    if (!(EsContraEntrenador()))
+    if (!(EsCombateContraEntrenador(gCombate->tipoCombate)))
     {
         u32 battler = GetBattlerForBattleScript(cmd->battler);
         u32 opposingBattler = OPONENTE(battler);
@@ -6357,12 +6349,6 @@ static void Cmd_various(void)
             gBattleCommunication[MULTIUSE_STATE] = FALSE;
         break;
     }
-    case VARIOUS_RESET_SWITCH_IN_ABILITY_BITS:
-    {
-        VARIOUS_ARGS();
-        gSpecialStatuses[battler].switchInAbilityDone = FALSE;
-        break;
-    }
     case VARIOUS_UPDATE_CHOICE_MOVE_ON_LVL_UP:
     {
         VARIOUS_ARGS();
@@ -6386,7 +6372,7 @@ static void Cmd_various(void)
     case VARIOUS_RESET_PLAYER_FAINTED:
     {
         VARIOUS_ARGS();
-        if (EsContraEntrenador() && IsBattlerAlive(JUGADOR_IZQUIERDA) && IsBattlerAlive(OPONENTE_IZQUIERDA))
+        if (EsCombateContraEntrenador(gCombate->tipoCombate) && IsBattlerAlive(JUGADOR_IZQUIERDA) && IsBattlerAlive(OPONENTE_IZQUIERDA))
         {
             gHitMarker &= ~HITMARKER_PLAYER_FAINTED;
         }
@@ -6818,7 +6804,7 @@ static void Cmd_various(void)
                 gSideTimers[GetBattlerSide(battler)].auroraVeilTimer = TURNOS_EFECTOS;
             gSideTimers[GetBattlerSide(battler)].auroraVeilBattlerId = battler;
 
-            if (EsContraEntrenador() && CountAliveMonsInBattle(BATTLE_ALIVE_SIDE, gBattlerAttacker) == 2)
+            if (EsCombateContraEntrenador(gCombate->tipoCombate) && CountAliveMonsInBattle(BATTLE_ALIVE_SIDE, gBattlerAttacker) == 2)
                 gBattleCommunication[MULTISTRING_CHOOSER] = 5;
             else
                 gBattleCommunication[MULTISTRING_CHOOSER] = 5;
@@ -6865,7 +6851,7 @@ static void Cmd_various(void)
     case VARIOUS_JUMP_IF_TEAM_HEALTHY:
     {
         VARIOUS_ARGS(const u8 *jumpInstr);
-        if ((EsContraEntrenador()) && IsBattlerAlive(ALIADO(battler)))
+        if ((EsCombateContraEntrenador(gCombate->tipoCombate)) && IsBattlerAlive(ALIADO(battler)))
         {
             u8 partner = ALIADO(battler);
             if ((gBattleMons[battler].hp == gBattleMons[battler].maxHP && !(gBattleMons[battler].status1 & STATUS1_ANY)) && (gBattleMons[partner].hp == gBattleMons[partner].maxHP && !(gBattleMons[partner].status1 & STATUS1_ANY)))
@@ -6940,7 +6926,7 @@ static void Cmd_various(void)
     {
         VARIOUS_ARGS(u32 flags, const u8 *jumpInstr);
         u32 flags = cmd->flags;
-        if (IsBattlerWeatherAffected(battler, flags)) // Revisar + gBattleWeather
+        if (IsBattlerWeatherAffected(battler, flags)) // Revisar + gBattleWeather ClimaTieneEfecto
             gBattlescriptCurrInstr = cmd->jumpInstr;
         else
             gBattlescriptCurrInstr = cmd->nextInstr;
@@ -7307,7 +7293,7 @@ static void Cmd_setreflect(void)
             gSideTimers[GetBattlerSide(gBattlerAttacker)].reflectTimer = TURNOS_EFECTOS;
         gSideTimers[GetBattlerSide(gBattlerAttacker)].reflectBattlerId = gBattlerAttacker;
 
-        if (EsContraEntrenador() && CountAliveMonsInBattle(BATTLE_ALIVE_SIDE, gBattlerAttacker) == 2)
+        if (EsCombateContraEntrenador(gCombate->tipoCombate) && CountAliveMonsInBattle(BATTLE_ALIVE_SIDE, gBattlerAttacker) == 2)
             gMensajeBatalla = B_MSG_SET_REFLECT_DOUBLE;
         else
             gMensajeBatalla = B_MSG_SET_REFLECT_SINGLE;
@@ -7903,7 +7889,7 @@ static void Cmd_forcerandomswitch(void)
 
     // Red card checks against wild pokemon. If we have reached here, the player has a mon to switch into
     // Red card swaps attacker with target to get the animation correct, so here we check attacker which is really the target. Thanks GF...
-    if (gBattleScripting.switchCase == B_SWITCH_RED_CARD && !(EsContraEntrenador()) && GetBattlerSide(gBattlerAttacker) == LADO_OPONENTE) // Check opponent's red card activating
+    if (gBattleScripting.switchCase == B_SWITCH_RED_CARD && !(EsCombateContraEntrenador(gCombate->tipoCombate)) && GetBattlerSide(gBattlerAttacker) == LADO_OPONENTE) // Check opponent's red card activating
     {
         gBattlescriptCurrInstr = BattleScript_RoarSuccessEndBattle;
         return;
@@ -7911,11 +7897,11 @@ static void Cmd_forcerandomswitch(void)
 
     // Swapping pokemon happens in:
     // trainer battles
-    if ((EsContraEntrenador()) || redCardForcedSwitch)
+    if ((EsCombateContraEntrenador(gCombate->tipoCombate)) || redCardForcedSwitch)
     {
         party = GetBattlerParty(gBattlerTarget);
 
-        if (EsContraEntrenador())
+        if (EsCombateContraEntrenador(gCombate->tipoCombate))
         {
             firstMonId = 0;
             lastMonId = PARTY_SIZE;
@@ -7999,7 +7985,7 @@ static void Cmd_setlightscreen(void)
             gSideTimers[GetBattlerSide(gBattlerAttacker)].lightscreenTimer = TURNOS_EFECTOS;
         gSideTimers[GetBattlerSide(gBattlerAttacker)].lightscreenBattlerId = gBattlerAttacker;
 
-        if (EsContraEntrenador() && CountAliveMonsInBattle(BATTLE_ALIVE_SIDE, gBattlerAttacker) == 2)
+        if (EsCombateContraEntrenador(gCombate->tipoCombate) && CountAliveMonsInBattle(BATTLE_ALIVE_SIDE, gBattlerAttacker) == 2)
             gMensajeBatalla = B_MSG_SET_LIGHTSCREEN_DOUBLE;
         else
             gMensajeBatalla = B_MSG_SET_LIGHTSCREEN_SINGLE;
@@ -8060,7 +8046,7 @@ static void Cmd_updatestatusicon(void)
             BtlController_EmitStatusIconUpdate(battler, BUFFER_A, gBattleMons[battler].status1, gBattleMons[battler].status2);
             MarcaCombatienteOcupado(battler);
         }
-        if ((EsContraEntrenador()))
+        if ((EsCombateContraEntrenador(gCombate->tipoCombate)))
         {
             battler = ALIADO(gBattlerAttacker);
             if (!(gAbsentBattlerFlags & (1u << battler)))
@@ -8360,7 +8346,7 @@ static void Cmd_healpartystatus(void)
         gBattleMons[gBattlerAttacker].status1 = 0;
         gBattleMons[gBattlerAttacker].status2 &= ~STATUS2_NIGHTMARE;
 
-        if (EsContraEntrenador() && !(gAbsentBattlerFlags & (1u << partner)))
+        if (EsCombateContraEntrenador(gCombate->tipoCombate) && !(gAbsentBattlerFlags & (1u << partner)))
         {
             gBattleMons[partner].status1 = 0;
             gBattleMons[partner].status2 &= ~STATUS2_NIGHTMARE;
@@ -9471,7 +9457,7 @@ static void Cmd_handleballthrow(void)
 
     gBattlerTarget = GetCatchingBattler();
 
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
     {
         BtlController_EmitBallThrowAnim(gBattlerAttacker, BUFFER_A, BALL_TRAINER_BLOCK);
         MarcaCombatienteOcupado(gBattlerAttacker);
@@ -9997,7 +9983,7 @@ bool32 IsMoveAffectedByParentalBond(u32 move, u32 battler)
 {
     if (move != MOVE_NONE && move != MOVE_STRUGGLE && !gMovimientos[move].parentalBondBanned && gMovimientos[move].category != CATEGORIA_ESTADO && gMovimientos[move].strikeCount < 2 && gMovimientos[move].effect != EFFECT_MULTI_HIT)
     {
-        if (EsContraEntrenador())
+        if (EsCombateContraEntrenador(gCombate->tipoCombate))
         {
             switch (GetBattlerMoveTargetType(battler, move))
             {
@@ -10123,7 +10109,7 @@ void BS_ItemCureStatus(void)
         previousStatus2 = gBattleMons[battler].status2;
         gBattleMons[gBattlerAttacker].status2 &= ~GetItemStatus2Mask(gLastUsedItem);
     }
-    else if (EsContraEntrenador() && gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[ALIADO(gBattlerAttacker)])
+    else if (EsCombateContraEntrenador(gCombate->tipoCombate) && gBattleStruct->itemPartyIndex[gBattlerAttacker] == gBattlerPartyIndexes[ALIADO(gBattlerAttacker)])
     {
         battler = ALIADO(gBattlerAttacker);
         previousStatus2 = gBattleMons[battler].status2;
@@ -10462,7 +10448,7 @@ static void Cmd_resultmessage(void) // Por terminar
     }
 }
 
-void BS_IntentaRecuperarSaludTrasVencer(void)
+void IntentaRecuperarSaludTrasVencer(void)
 {
     u32 combatiente = gBattlerAttacker; 
     u32 habilidad = HabilidadCombatiente(combatiente);

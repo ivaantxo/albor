@@ -792,13 +792,13 @@ void BufferStringBattle(u16 stringID, u32 battler)
     switch (stringID)
     {
     case TEXTO_COMBATE_INTRO:
-        if (EsContraEntrenador())
+        if (EsCombateContraEntrenador(gCombate->tipoCombate))
         {
             stringPtr = COMPOUND_STRING("¡{B_TRAINER_CLASS} {B_TRAINER_NAME} quiere luchar!");
         }
         else
         {
-            if (gBattleTypeFlags & COMBATE_LEGENDARIO)
+            if (EsCombateContraLegendario(gCombate->tipoCombate))
                 stringPtr = COMPOUND_STRING("¡El Legendario {B_OPPONENT_MON1_NAME}!");
             else
                 stringPtr = COMPOUND_STRING("¡Un {B_OPPONENT_MON1_NAME} salvaje!");
@@ -807,7 +807,7 @@ void BufferStringBattle(u16 stringID, u32 battler)
     case TEXTO_COMBATE_ENVIAR_POKEMON:
         if (GetBattlerSide(battler) == LADO_JUGADOR)
         {
-            if (EsContraEntrenador() && IsValidForBattle(&gPlayerParty[gBattlerPartyIndexes[ALIADO(battler)]]))
+            if (EsCombateContraEntrenador(gCombate->tipoCombate) && IsValidForBattle(&gPlayerParty[gBattlerPartyIndexes[ALIADO(battler)]]))
             {
                 stringPtr = COMPOUND_STRING("¡Vamos! ¡{B_PLAYER_MON1_NAME} y {B_PLAYER_MON2_NAME}!");
             }
@@ -818,7 +818,7 @@ void BufferStringBattle(u16 stringID, u32 battler)
         }
         else
         {
-            if (EsContraEntrenador() && IsValidForBattle(&gEnemyParty[gBattlerPartyIndexes[ALIADO(battler)]]))
+            if (EsCombateContraEntrenador(gCombate->tipoCombate) && IsValidForBattle(&gEnemyParty[gBattlerPartyIndexes[ALIADO(battler)]]))
             {
                 stringPtr = COMPOUND_STRING("{B_TRAINER_CLASS} {B_TRAINER_NAME} sent out {B_OPPONENT_MON1_NAME} and {B_OPPONENT_MON2_NAME}!");
             }
@@ -833,7 +833,7 @@ void BufferStringBattle(u16 stringID, u32 battler)
         {
             if (gCombate->hpScale == 0)
                 stringPtr = COMPOUND_STRING("¡{B_BUFF1}, ya es suficiente! ¡Vuelve!");
-            else if (gCombate->hpScale == 1 || EsContraEntrenador())
+            else if (gCombate->hpScale == 1 || EsCombateContraEntrenador(gCombate->tipoCombate))
                 stringPtr = COMPOUND_STRING("¡{B_BUFF1}, ven conmigo!");
             else if (gCombate->hpScale == 2)
                 stringPtr = COMPOUND_STRING("¡{B_BUFF1}, bien! ¡Cambio!");
@@ -848,7 +848,7 @@ void BufferStringBattle(u16 stringID, u32 battler)
     case STRINGID_SWITCHINMON:
         if (GetBattlerSide(gBattleScripting.battler) == LADO_JUGADOR)
         {
-            if (gCombate->hpScale == 0 || EsContraEntrenador())
+            if (gCombate->hpScale == 0 || EsCombateContraEntrenador(gCombate->tipoCombate))
                 stringPtr = COMPOUND_STRING("¡A luchar, {B_BUFF1}!");
             else if (gCombate->hpScale == 1)
                 stringPtr = COMPOUND_STRING("¡Hazlo, {B_BUFF1}!");
@@ -939,7 +939,7 @@ static void GetBattlerNick(u32 battler, u8 *dst)
         }                                                             \
     if (GetBattlerSide(battler) != LADO_JUGADOR)                     \
     {                                                                 \
-        if (EsContraEntrenador())               \
+        if (EsCombateContraEntrenador(gCombate->tipoCombate))               \
             toCpy = COMPOUND_STRING(" rival");                              \
         else                                                          \
             toCpy = COMPOUND_STRING(" salvaje");                             \
@@ -1317,7 +1317,7 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
             }
             else
             {
-                if (EsContraEntrenador())
+                if (EsCombateContraEntrenador(gCombate->tipoCombate))
                     StringAppend(dst, sText_FoePkmnPrefix);
                 else
                     StringAppend(dst, sText_WildPkmnPrefix);
@@ -1537,7 +1537,7 @@ bool32 ShouldDoTrainerSlide(u32 battler, u32 which)
 {
     u32 i, firstId, lastId, trainerId, retValue = 1;
 
-    if (!(EsContraEntrenador()) || GetBattlerSide(battler) != LADO_OPONENTE)
+    if (!(EsCombateContraEntrenador(gCombate->tipoCombate)) || GetBattlerSide(battler) != LADO_OPONENTE)
         return FALSE;
 
     firstId = 0, lastId = PARTY_SIZE;

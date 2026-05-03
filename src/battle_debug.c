@@ -908,7 +908,7 @@ static void Task_ShowAIPoints(u8 taskId)
         break;
     // Input
     case 2:
-        if (JOY_NEW(R_BUTTON) && EsContraEntrenador())
+        if (JOY_NEW(R_BUTTON) && EsCombateContraEntrenador(gCombate->tipoCombate))
         {
             CleanUpAIInfoWindow(taskId);
             do {
@@ -917,7 +917,7 @@ static void Task_ShowAIPoints(u8 taskId)
             } while (!IsBattlerAlive(data->battlerId));
             data->aiViewState = 0;
         }
-        else if (JOY_NEW(L_BUTTON) && EsContraEntrenador())
+        else if (JOY_NEW(L_BUTTON) && EsCombateContraEntrenador(gCombate->tipoCombate))
         {
             CleanUpAIInfoWindow(taskId);
             do {

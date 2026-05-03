@@ -20,14 +20,6 @@
 #define MENU_CURSOR_DELTA_LEFT  -1
 #define MENU_CURSOR_DELTA_RIGHT  1
 
-#define MENU_INFO_ICON_TYPE      (NUMERO_TIPOS + 1)
-#define MENU_INFO_ICON_POWER     (NUMERO_TIPOS + 2)
-#define MENU_INFO_ICON_ACCURACY  (NUMERO_TIPOS + 3)
-#define MENU_INFO_ICON_PP        (NUMERO_TIPOS + 4)
-#define MENU_INFO_ICON_EFFECT    (NUMERO_TIPOS + 5)
-#define MENU_INFO_ICON_BALL_RED  (NUMERO_TIPOS + 6)
-#define MENU_INFO_ICON_BALL_BLUE (NUMERO_TIPOS + 7)
-
 enum
 {
     SAVE_MENU_NAME,
@@ -70,7 +62,7 @@ void AddTextPrinterParameterized3(u8 windowId, u8 fontId, u8 left, u8 top, const
 void ClearStdWindowAndFrameToTransparent(u8 windowId, bool8 copyToVram);
 void SetWindowTemplateFields(struct WindowTemplate *template, u8 priority, u8 tilemapLeft, u8 tilemapTop, u8 width, u8 height, u8 palNum, u16 baseBlock);
 void DrawStdFrameWithCustomTileAndPalette(u8 windowId, bool8 copyToVram, u16 tileStart, u8 palette);
-void ScheduleBgCopyTilemapToVram(u8 bgNum);
+void ProgramaCopiaTilemapVram(enum Fondos fondo);
 void PrintMenuTable(u8 windowId, u8 itemCount, const struct MenuAction *strs);
 u8 InitMenuInUpperLeftCornerNormal(u8 windowId, u8 numItems, u8 initialCursorPos);
 u8 Menu_GetCursorPos(void);
@@ -84,8 +76,8 @@ void CreateYesNoMenu(const struct WindowTemplate *windowTemplate, u16 borderFirs
 void DecompressAndLoadBgGfxUsingHeap(u8 bgId, const void *src, u32 size, u16 offset, u8 mode);
 s8 Menu_ProcessInputNoWrapClearOnChoose(void);
 s8 ProcessMenuInput_other(void);
-void DoScheduledBgTilemapCopiesToVram(void);
-void ClearScheduledBgCopiesToVram(void);
+void CopiaTilemapProgramadoVram(void);
+void LimpiaCopiaTilemapProgramadaVram(void);
 void AddTextPrinterParameterized4(u8 windowId, u8 fontId, u8 x, u8 y, u8 letterSpacing, u8 lineSpacing, const u8 *color, s8 speed, const u8 *str);
 void DrawDialogFrameWithCustomTileAndPalette(u8 windowId, bool8 copyToVram, u16 tileNum, u8 paletteNum);
 void PrintMenuActionTextsInUpperLeftCorner(u8 windowId, u8 optionsNo, const struct MenuAction *actions, const u8 *actionIds);

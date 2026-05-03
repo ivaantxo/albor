@@ -1286,7 +1286,7 @@ void OverworldBasic(void)
     BuildOamBuffer();
     UpdatePaletteFade();
     UpdateTilesetAnimations();
-    DoScheduledBgTilemapCopiesToVram();
+    CopiaTilemapProgramadoVram();
     // Every minute if no palette fade is active, update TOD blending as needed
     if (!gFundidoPaletas.activo && ++gTimeUpdateCounter >= 180) 
     {
@@ -1675,7 +1675,7 @@ static void InitViewGraphics(void)
 
 static void InitOverworldGraphicsRegisters(void)
 {
-    ClearScheduledBgCopiesToVram();
+    LimpiaCopiaTilemapProgramadaVram();
     ResetTempTileDataBuffers();
     SetGpuReg(REG_OFFSET_MOSAIC, 0);
     SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN1_BG_ALL | WININ_WIN1_OBJ);
@@ -1688,9 +1688,9 @@ static void InitOverworldGraphicsRegisters(void)
     SetGpuRegBits(REG_OFFSET_WININ, WININ_WIN0_CLR);
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(16, 8));
     InitOverworldBgs();
-    ScheduleBgCopyTilemapToVram(1);
-    ScheduleBgCopyTilemapToVram(2);
-    ScheduleBgCopyTilemapToVram(3);
+    ProgramaCopiaTilemapVram(FONDO_1);
+    ProgramaCopiaTilemapVram(FONDO_2);
+    ProgramaCopiaTilemapVram(FONDO_3);
     ChangeBgX(0, 0, BG_COORD_SET);
     ChangeBgY(0, 0, BG_COORD_SET);
     ChangeBgX(1, 0, BG_COORD_SET);

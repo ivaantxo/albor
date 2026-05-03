@@ -67,6 +67,8 @@ enum TiposCombate
     COMBATE_SALVAJE,
     COMBATE_ENTRENADOR,
     COMBATE_LEGENDARIO,
+
+    NUMERO_TIPOS_COMBATE = 0xFFFF,
 };
 
 enum ResultadosCombate
@@ -209,7 +211,7 @@ enum ResultadosCombate
 #define MOVE_EFFECT_CONFUSION           8
 #define MOVE_EFFECT_FLINCH              9
 #define MOVE_EFFECT_UPROAR              11
-#define MOVE_EFFECT_PAYDAY              12
+#define EFECTO_MOVIMIENTO_SALTA_DINERO              12
 #define MOVE_EFFECT_CHARGING            13
 #define MOVE_EFFECT_WRAP                14
 #define MOVE_EFFECT_ATK_PLUS_1          15
@@ -445,7 +447,7 @@ enum ClimasCombate
     CLIMA_COMBATE_NIEVE_HABILIDAD,
     CLIMA_COMBATE_NIEVE_MOVIMIENTO,
 
-    NUMERO_CLIMAS_COMBATE
+    NUMERO_CLIMAS_COMBATE = 0xFFFF,
 };
 
 enum ClimasMovimientos // Solo para argumentos de movimientos

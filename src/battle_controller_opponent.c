@@ -456,7 +456,7 @@ static void OpponentHandleChoosePokemon(u32 battler)
         {
             s32 battler1, battler2, firstId, lastId;
 
-            if (!EsContraEntrenador())
+            if (!EsCombateContraEntrenador(gCombate->tipoCombate))
             {
                 battler2 = battler1 = OPONENTE_IZQUIERDA;
             }

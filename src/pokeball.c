@@ -991,12 +991,12 @@ static void SpriteCB_ReleaseMonFromBall(struct Sprite *sprite)
         }
 
         if ((battlerId == JUGADOR_IZQUIERDA || battlerId == OPONENTE_IZQUIERDA)
-         && EsContraEntrenador() && gBattleSpritesDataPtr->animationData->introAnimActive)
+         && EsCombateContraEntrenador(gCombate->tipoCombate) && gBattleSpritesDataPtr->animationData->introAnimActive)
         {
             m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, VOLUMEN_MEDIO);
         }
 
-        if (!EsContraEntrenador() || !gBattleSpritesDataPtr->animationData->introAnimActive)
+        if (!EsCombateContraEntrenador(gCombate->tipoCombate) || !gBattleSpritesDataPtr->animationData->introAnimActive)
             wantedCryCase = 0;
         else if (battlerId == JUGADOR_IZQUIERDA || battlerId == OPONENTE_IZQUIERDA)
             wantedCryCase = 1;
@@ -1188,7 +1188,7 @@ static void SpriteCB_MonSendOut_2(struct Sprite *sprite)
             sprite->sBattler = sprite->oam.affineParam & 0xFF;
             sprite->data[0] = 0;
 
-            if (EsContraEntrenador() && gBattleSpritesDataPtr->animationData->introAnimActive
+            if (EsCombateContraEntrenador(gCombate->tipoCombate) && gBattleSpritesDataPtr->animationData->introAnimActive
              && sprite->sBattler == rightPosition)
                 sprite->callback = SpriteCB_ReleaseMon2FromBall;
             else
@@ -1216,7 +1216,7 @@ static void SpriteCB_OpponentMonSendOut(struct Sprite *sprite)
     if (sprite->data[0] > 15)
     {
         sprite->data[0] = 0;
-        if (EsContraEntrenador() && gBattleSpritesDataPtr->animationData->introAnimActive
+        if (EsCombateContraEntrenador(gCombate->tipoCombate) && gBattleSpritesDataPtr->animationData->introAnimActive
          && sprite->sBattler == OPONENTE_DERECHA)
             sprite->callback = SpriteCB_ReleaseMon2FromBall;
         else

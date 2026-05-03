@@ -471,7 +471,7 @@ void LoadBattleMenuWindowGfx(void)
 
 void DrawMainBattleBackground(void)
 {
-    if (gBattleTypeFlags & COMBATE_LEGENDARIO)
+    if (EsCombateContraLegendario(gCombate->tipoCombate))
     {
         switch (GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL))
         {
@@ -499,7 +499,7 @@ void DrawMainBattleBackground(void)
     }
     else
     {
-        if (EsContraEntrenador())
+        if (EsCombateContraEntrenador(gCombate->tipoCombate))
         {
             u32 trainerClass = GetTrainerClassFromId(gTrainerBattleOpponent);
             if (trainerClass == TRAINER_CLASS_LEADER)
@@ -578,7 +578,7 @@ void LoadBattleTextboxAndBackground(void)
 
 void DrawBattleEntryBackground(void)
 {
-    if (gBattleTypeFlags & COMBATE_LEGENDARIO)
+    if (EsCombateContraLegendario(gCombate->tipoCombate))
     {
         switch (GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL))
         {
@@ -602,7 +602,7 @@ void DrawBattleEntryBackground(void)
     }
     else
     {
-        if (EsContraEntrenador())
+        if (EsCombateContraEntrenador(gCombate->tipoCombate))
         {
             u32 trainerClass = GetTrainerClassFromId(gTrainerBattleOpponent);
             if (trainerClass == TRAINER_CLASS_LEADER)
@@ -650,7 +650,7 @@ bool8 LoadChosenBattleElement(u8 caseId)
         LoadCompressedPalette(gBattleActionsPalFight, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
         break;
     case 3:
-        if (gBattleTypeFlags & COMBATE_LEGENDARIO)
+        if (EsCombateContraLegendario(gCombate->tipoCombate))
         {
             switch (GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL))
             {
@@ -664,7 +664,7 @@ bool8 LoadChosenBattleElement(u8 caseId)
         }
         else
         {
-            if (EsContraEntrenador())
+            if (EsCombateContraEntrenador(gCombate->tipoCombate))
             {
                 u32 trainerClass = GetTrainerClassFromId(gTrainerBattleOpponent);
                 if (trainerClass == TRAINER_CLASS_LEADER)
@@ -710,7 +710,7 @@ bool8 LoadChosenBattleElement(u8 caseId)
         }
         break;
     case 4:
-        if (gBattleTypeFlags & COMBATE_LEGENDARIO)
+        if (EsCombateContraLegendario(gCombate->tipoCombate))
         {
             if (GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL) == SPECIES_GROUDON)
                 LZDecompressVram(gBattleTerrainTilemap_Cave, (void*)(BG_SCREEN_ADDR(26)));
@@ -719,7 +719,7 @@ bool8 LoadChosenBattleElement(u8 caseId)
         }
         else
         {
-            if (EsContraEntrenador())
+            if (EsCombateContraEntrenador(gCombate->tipoCombate))
             {
                 u32 trainerClass = GetTrainerClassFromId(gTrainerBattleOpponent);
                 if (trainerClass == TRAINER_CLASS_LEADER)
@@ -765,7 +765,7 @@ bool8 LoadChosenBattleElement(u8 caseId)
         }
         break;
     case 5:
-        if (gBattleTypeFlags & COMBATE_LEGENDARIO)
+        if (EsCombateContraLegendario(gCombate->tipoCombate))
         {
             if (GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL) == SPECIES_GROUDON)
                 LoadCompressedPalette(gBattleTerrainPalette_Groudon, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
@@ -774,7 +774,7 @@ bool8 LoadChosenBattleElement(u8 caseId)
         }
         else
         {
-            if (EsContraEntrenador())
+            if (EsCombateContraEntrenador(gCombate->tipoCombate))
             {
                 u32 trainerClass = GetTrainerClassFromId(gTrainerBattleOpponent);
                 if (trainerClass == TRAINER_CLASS_LEADER)

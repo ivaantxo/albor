@@ -1298,7 +1298,7 @@ static void CB2_InitRayquazaScene(void)
 {
     u32 i;
     SetVBlankHBlankCallbacksToNull();
-    ClearScheduledBgCopiesToVram();
+    LimpiaCopiaTilemapProgramadaVram();
     ParaDistorsionFondo();
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
@@ -1319,7 +1319,7 @@ static void CB2_RayquazaScene(void)
     RunTasks();
     AnimateSprites();
     BuildOamBuffer();
-    DoScheduledBgTilemapCopiesToVram();
+    CopiaTilemapProgramadoVram();
     UpdatePaletteFade();
 }
 
@@ -1580,9 +1580,9 @@ static void InitDuoFightSceneBgs(void)
     SetBgTilemapBuffer(1, sRayScene->tilemapBuffers[1]);
     SetBgTilemapBuffer(2, sRayScene->tilemapBuffers[2]);
     ResetAllBgsCoordinates();
-    ScheduleBgCopyTilemapToVram(0);
-    ScheduleBgCopyTilemapToVram(1);
-    ScheduleBgCopyTilemapToVram(2);
+    ProgramaCopiaTilemapVram(FONDO_0);
+    ProgramaCopiaTilemapVram(FONDO_1);
+    ProgramaCopiaTilemapVram(FONDO_2);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
     ShowBg(0);
     ShowBg(1);
@@ -2018,9 +2018,9 @@ static void InitTakesFlightSceneBgs(void)
     SetBgTilemapBuffer(1, sRayScene->tilemapBuffers[1]);
     SetBgTilemapBuffer(2, sRayScene->tilemapBuffers[2]);
     ResetAllBgsCoordinates();
-    ScheduleBgCopyTilemapToVram(0);
-    ScheduleBgCopyTilemapToVram(1);
-    ScheduleBgCopyTilemapToVram(2);
+    ProgramaCopiaTilemapVram(FONDO_0);
+    ProgramaCopiaTilemapVram(FONDO_1);
+    ProgramaCopiaTilemapVram(FONDO_2);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
     ShowBg(0);
     ShowBg(1);
@@ -2220,10 +2220,10 @@ static void InitDescendsSceneBgs(void)
     SetBgTilemapBuffer(2, sRayScene->tilemapBuffers[2]);
     SetBgTilemapBuffer(3, sRayScene->tilemapBuffers[3]);
     ResetAllBgsCoordinates();
-    ScheduleBgCopyTilemapToVram(0);
-    ScheduleBgCopyTilemapToVram(1);
-    ScheduleBgCopyTilemapToVram(2);
-    ScheduleBgCopyTilemapToVram(3);
+    ProgramaCopiaTilemapVram(FONDO_0);
+    ProgramaCopiaTilemapVram(FONDO_1);
+    ProgramaCopiaTilemapVram(FONDO_2);
+    ProgramaCopiaTilemapVram(FONDO_3);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
     ShowBg(0);
     ShowBg(1);
@@ -2470,10 +2470,10 @@ static void InitChargesSceneBgs(void)
     SetBgTilemapBuffer(2, sRayScene->tilemapBuffers[2]);
     SetBgTilemapBuffer(3, sRayScene->tilemapBuffers[3]);
     ResetAllBgsCoordinates();
-    ScheduleBgCopyTilemapToVram(0);
-    ScheduleBgCopyTilemapToVram(1);
-    ScheduleBgCopyTilemapToVram(2);
-    ScheduleBgCopyTilemapToVram(3);
+    ProgramaCopiaTilemapVram(FONDO_0);
+    ProgramaCopiaTilemapVram(FONDO_1);
+    ProgramaCopiaTilemapVram(FONDO_2);
+    ProgramaCopiaTilemapVram(FONDO_3);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP | DISPCNT_WIN0_ON);
     ShowBg(0);
     ShowBg(1);
@@ -2658,9 +2658,9 @@ static void InitChasesAwaySceneBgs(void)
     SetBgTilemapBuffer(1, sRayScene->tilemapBuffers[1]);
     SetBgTilemapBuffer(2, sRayScene->tilemapBuffers[2]);
     ResetAllBgsCoordinates();
-    ScheduleBgCopyTilemapToVram(0);
-    ScheduleBgCopyTilemapToVram(1);
-    ScheduleBgCopyTilemapToVram(2);
+    ProgramaCopiaTilemapVram(FONDO_0);
+    ProgramaCopiaTilemapVram(FONDO_1);
+    ProgramaCopiaTilemapVram(FONDO_2);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP | DISPCNT_WIN0_ON);
     ShowBg(0);
     ShowBg(1);

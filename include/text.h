@@ -50,7 +50,7 @@ enum {
 
 struct TextPrinterSubStruct
 {
-    u8 fontId:4;  // 0x14
+    u8 fontId:4;
     bool8 hasPrintBeenSpedUp:1;
     u8 downArrowDelay:5;
     u8 downArrowYPosIdx:2;
@@ -65,7 +65,7 @@ struct TextPrinterTemplate
     u8 fontId;
     u8 x;
     u8 y;
-    u8 currentX;        // 0x8
+    u8 currentX;
     u8 currentY;
     u8 letterSpacing;
     u8 lineSpacing;

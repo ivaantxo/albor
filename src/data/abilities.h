@@ -531,12 +531,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Restores HP if poisoned."),
     },
 
-    [ABILITY_ADAPTABILITY] =
-    {
-        .name = _("Adaptability"),
-        .description = COMPOUND_STRING("Boosts same type attacks."),
-    },
-
     [ABILITY_SKILL_LINK] =
     {
         .name = _("Encadenado"),

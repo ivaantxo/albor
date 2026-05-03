@@ -841,7 +841,7 @@ void AnimTask_MetallicShine(u8 taskId)
     SetAnimBgAttribute(1, BG_ANIM_SCREEN_SIZE, 0);
     SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 1);
 
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
     {
         if (gBattleAnimAttacker == OPONENTE_DERECHA || gBattleAnimAttacker == JUGADOR_IZQUIERDA)
         {

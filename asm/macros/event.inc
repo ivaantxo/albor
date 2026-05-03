@@ -1825,21 +1825,6 @@
 	.4byte \func
 	.endm
 
-	@ Sets VAR_RESULT to TRUE if stat can be hyper trained, or to
-	@ FALSE otherwise.
-	.macro canhypertrain stat:req, slot:req
-	callnative CanHyperTrain
-	.byte \stat
-	.2byte \slot
-	.endm
-
-	@ Hyper Trains a stat.
-	.macro hypertrain stat:req, slot:req
-	callnative HyperTrain
-	.byte \stat
-	.2byte \slot
-	.endm
-
 	@ Inflicts \status1 to the Pokémon in \slot.
 	@ If \slot is greater or equal than PARTY_SIZE, the status is inflicted on each of the Player's Pokémon.
 	.macro setstatus1 status1:req, slot:req

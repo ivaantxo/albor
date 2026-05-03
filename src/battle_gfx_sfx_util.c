@@ -396,7 +396,7 @@ void CargaBarrasSalud(void)
     LoadSpritePalette(&sSpritePalettes_HealthBoxHealthBar[0]);
     LoadSpritePalette(&sSpritePalettes_HealthBoxHealthBar[1]);
     CategoryIcons_LoadSpritesGfx();
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
     {
         LoadCompressedSpriteSheet(&sSpriteSheets_DoublesPlayerHealthbox[0]);
         LoadCompressedSpriteSheet(&sSpriteSheets_DoublesPlayerHealthbox[1]);
@@ -592,12 +592,12 @@ void HandleLowHpMusicChange(struct Pokemon *mon, u8 battler)
     else
     {
         gBattleSpritesDataPtr->battlerData[battler].lowHpSong = 0;
-        if (!EsContraEntrenador())
+        if (!EsCombateContraEntrenador(gCombate->tipoCombate))
         {
             m4aSongNumStop(SE_LOW_HEALTH);
             return;
         }
-        if (EsContraEntrenador() && !gBattleSpritesDataPtr->battlerData[ALIADO(battler)].lowHpSong)
+        if (EsCombateContraEntrenador(gCombate->tipoCombate) && !gBattleSpritesDataPtr->battlerData[ALIADO(battler)].lowHpSong)
         {
             m4aSongNumStop(SE_LOW_HEALTH);
             return;
@@ -610,7 +610,7 @@ void BattleStopLowHpSound(void)
     u8 playerBattler = JUGADOR_IZQUIERDA;
 
     gBattleSpritesDataPtr->battlerData[playerBattler].lowHpSong = 0;
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
         gBattleSpritesDataPtr->battlerData[ALIADO(playerBattler)].lowHpSong = 0;
 
     m4aSongNumStop(SE_LOW_HEALTH);
@@ -635,7 +635,7 @@ void HandleBattleLowHpMusicChange(void)
 
         if (GetMonData(&gPlayerParty[battler1PartyId], MON_DATA_HP) != 0)
             HandleLowHpMusicChange(&gPlayerParty[battler1PartyId], playerBattler1);
-        if (EsContraEntrenador() && GetMonData(&gPlayerParty[battler2PartyId], MON_DATA_HP) != 0)
+        if (EsCombateContraEntrenador(gCombate->tipoCombate) && GetMonData(&gPlayerParty[battler2PartyId], MON_DATA_HP) != 0)
             HandleLowHpMusicChange(&gPlayerParty[battler2PartyId], playerBattler2);
     }
 }
@@ -720,7 +720,7 @@ void LoadAndCreateEnemyShadowSprites(void)
     battler = OPONENTE_IZQUIERDA;
     CreateEnemyShadowSprite(battler);
 
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
     {
         battler = OPONENTE_DERECHA;
         CreateEnemyShadowSprite(battler);

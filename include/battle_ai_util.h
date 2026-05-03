@@ -16,7 +16,7 @@ bool32 AI_RandLessThan(u32 val);
 
 static inline bool32 CombatienteEsIA(u32 combatiente)
 {
-    return EsContraEntrenador()
+    return EsCombateContraEntrenador(gCombate->tipoCombate)
         && ((combatiente & BIT_SIDE) == LADO_OPONENTE);
 };
 

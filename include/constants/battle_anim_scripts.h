@@ -10,12 +10,6 @@
 // thunder cage
 #define THUNDER_CAGE_BALL_TIME  0x64
 
-// power shift
-#define POWER_SHIFT_LEFT_X      -20
-#define POWER_SHIFT_RIGHT_X     20
-#define POWER_SHIFT_DELAY       0x30
-#define POWER_SHIFT_ARC         -50
-
 // mysitcal power
 #define MYSTICAL_POWER_RING_PAUSE   7
 

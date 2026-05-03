@@ -1263,10 +1263,6 @@
 	various \battler, VARIOUS_GET_BATTLER_FAINTED
 	.endm
 
-	.macro resetswitchinabilitybits battler:req
-	various \battler, VARIOUS_RESET_SWITCH_IN_ABILITY_BITS
-	.endm
-
 	.macro updatechoicemoveonlvlup battler:req
 	various \battler, VARIOUS_UPDATE_CHOICE_MOVE_ON_LVL_UP
 	.endm
@@ -1674,32 +1670,20 @@
 	jumpifstatus3condition \battler, \flags, FALSE, \jumpInstr
 	.endm
 
-	.macro jumpifnostatus3 battler:req, flags:req, jumpInstr:req
-	jumpifstatus3condition \battler, \flags, TRUE, \jumpInstr
-	.endm
-
 	.macro jumpifmovehadnoeffect jumpInstr:req
 	jumpifbyte COMPARACION_BITS_COMUNES, gMoveResultFlags, MOVE_RESULT_NO_EFFECT, \jumpInstr
 	.endm
 
-	.macro jumpifbattletype flags:req, jumpInstr:req
-	jumpifword COMPARACION_BITS_COMUNES, gBattleTypeFlags, \flags, \jumpInstr
+	.macro SaltaSiTipoCombate tipoCombate:req, instruccionSalto:req
+	jumpifhalfword COMPARACION_IGUAL, gCombate->tipoCombate, \tipoCombate, \instruccionSalto
 	.endm
 
-	.macro jumpifnotbattletype flags:req, jumpInstr:req
-	jumpifword COMPARACION_BITS_DISTINTOS, gBattleTypeFlags, \flags, \jumpInstr
+	.macro SaltaSiNoTipoCombate tipoCombate:req, instruccionSalto:req
+	jumpifhalfword COMPARACION_DESIGUAL, gCombate->tipoCombate, \tipoCombate, \instruccionSalto
 	.endm
 
 	.macro dmg_1_8_targethp
 	manipulatedamage DMG_1_8_TARGET_HP
-	.endm
-
-	.macro dmgtomaxattackerhp
-	manipulatedamage DMG_FULL_ATTACKER_HP
-	.endm
-
-	.macro dmgtocurrattackerhp
-	manipulatedamage DMG_CURR_ATTACKER_HP
 	.endm
 
 	.macro setallytonexttarget jumpInstr:req
@@ -1708,15 +1692,6 @@
 	goto \jumpInstr
 	1:
 	subbyte gBattlerTarget, 0x2
-	goto \jumpInstr
-	.endm
-
-	.macro setallytonextattacker jumpInstr:req
-	jumpifbyte COMPARACION_MAYOR, gBattlerAttacker, 0x1, 1f
-	addbyte gBattlerAttacker, 0x2
-	goto \jumpInstr
-	1:
-	subbyte gBattlerAttacker, 0x2
 	goto \jumpInstr
 	.endm
 

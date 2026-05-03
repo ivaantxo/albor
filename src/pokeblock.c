@@ -467,7 +467,7 @@ static void CB2_PokeblockMenu(void)
     RunTasks();
     AnimateSprites();
     BuildOamBuffer();
-    DoScheduledBgTilemapCopiesToVram();
+    CopiaTilemapProgramadoVram();
     UpdatePaletteFade();
 }
 
@@ -499,7 +499,7 @@ static bool8 InitPokeblockMenu(void)
     {
     case 0:
         SetVBlankHBlankCallbacksToNull();
-        ClearScheduledBgCopiesToVram();
+        LimpiaCopiaTilemapProgramadaVram();
         gMain.state++;
         break;
     case 1:
@@ -598,7 +598,7 @@ static void HandleInitBackgrounds(void)
     IniciaFondosDesdePlantillas(MODO_0, sBgTemplatesForPokeblockMenu, ARRAY_COUNT(sBgTemplatesForPokeblockMenu));
     SetBgTilemapBuffer(2, sPokeblockMenu->tilemap);
     ResetAllBgsCoordinates();
-    ScheduleBgCopyTilemapToVram(2);
+    ProgramaCopiaTilemapVram(FONDO_2);
 
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
 
@@ -659,8 +659,8 @@ static void HandleInitWindows(void)
     for (i = 0; i < ARRAY_COUNT(sWindowTemplates) - 1; i++)
         FillWindowPixelBuffer(i, PIXEL_FILL(0));
 
-    ScheduleBgCopyTilemapToVram(0);
-    ScheduleBgCopyTilemapToVram(1);
+    ProgramaCopiaTilemapVram(FONDO_0);
+    ProgramaCopiaTilemapVram(FONDO_1);
 }
 
 static void PrintOnPokeblockWindow(u8 windowId, const u8 *string, s32 x)
@@ -778,14 +778,14 @@ static void DrawPokeblockInfo(s32 pkblId)
         CopyWindowToVram(WIN_FEEL, COPYWIN_GFX);
     }
 
-    ScheduleBgCopyTilemapToVram(0);
-    ScheduleBgCopyTilemapToVram(2);
+    ProgramaCopiaTilemapVram(FONDO_0);
+    ProgramaCopiaTilemapVram(FONDO_2);
 }
 
 static void DrawPokeblockMenuHighlight(u16 cursorPos, u16 tileNum)
 {
     FillBgTilemapBufferRect_Palette0(2, tileNum, 0xF, (cursorPos * 2) + 1, 0xE, 2);
-    ScheduleBgCopyTilemapToVram(2);
+    ProgramaCopiaTilemapVram(FONDO_2);
 }
 
 static void CompactPokeblockSlots(void)
@@ -1098,7 +1098,7 @@ static void UpdatePokeblockSwapMenu(u8 taskId, bool8 noSwap)
         sSavedPokeblockData.selectedRow--;
 
     tListTaskId = ListMenuInit(&gMultiuseListMenuTemplate, sSavedPokeblockData.scrollOffset, sSavedPokeblockData.selectedRow);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
     SetSwapLineSpritesInvisibility(sPokeblockMenu->swapLineSpriteIds, ARRAY_COUNT(sPokeblockMenu->swapLineSpriteIds), TRUE);
 
     for (i = 0; i < MAX_MENU_ITEMS; i++)
@@ -1122,7 +1122,7 @@ static void ShowPokeblockActionsWindow(u8 taskId)
     PrintMenuActionTextsInUpperLeftCorner(tWindowId, sPokeblockMenu->numActions, sPokeblockMenuActions, sPokeblockMenu->pokeblockActionIds);
     InitMenuInUpperLeftCornerNormal(tWindowId, sPokeblockMenu->numActions, 0);
     PutWindowTilemap(tWindowId);
-    ScheduleBgCopyTilemapToVram(1);
+    ProgramaCopiaTilemapVram(FONDO_1);
 
     gTasks[taskId].func = Task_HandlePokeblockActionsInput;
 }
@@ -1206,8 +1206,8 @@ static void TossPokeblock(u8 taskId)
         UpdatePokeblockList();
         tListTaskId = ListMenuInit(&gMultiuseListMenuTemplate, *scrollOffset, *selectedRow);
         DrawPokeblockMenuHighlight(*selectedRow, TILE_HIGHLIGHT_BLUE);
-        ScheduleBgCopyTilemapToVram(0);
-        ScheduleBgCopyTilemapToVram(1);
+        ProgramaCopiaTilemapVram(FONDO_0);
+        ProgramaCopiaTilemapVram(FONDO_1);
         CloseTossPokeblockWindow(taskId);
     }
 }
@@ -1215,7 +1215,7 @@ static void TossPokeblock(u8 taskId)
 static void CloseTossPokeblockWindow(u8 taskId)
 {
     ClearDialogWindowAndFrameToTransparent(WIN_TOSS_MSG, FALSE);
-    ScheduleBgCopyTilemapToVram(1);
+    ProgramaCopiaTilemapVram(FONDO_1);
     CreateScrollArrows();
     gTasks[taskId].func = Task_HandlePokeblockMenuInput;
 }
@@ -1253,7 +1253,7 @@ static void PokeblockAction_Cancel(u8 taskId)
     s16 *data = gTasks[taskId].data;
 
     ClearStdWindowAndFrameToTransparent(tWindowId, FALSE);
-    ScheduleBgCopyTilemapToVram(1);
+    ProgramaCopiaTilemapVram(FONDO_1);
     CreateScrollArrows();
     gTasks[taskId].func = Task_HandlePokeblockMenuInput;
 }

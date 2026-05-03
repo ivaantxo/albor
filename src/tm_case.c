@@ -279,7 +279,7 @@ static void CB2_Idle(void)
     RunTasks();
     AnimateSprites();
     BuildOamBuffer();
-    DoScheduledBgTilemapCopiesToVram();
+    CopiaTilemapProgramadoVram();
     UpdatePaletteFade();
 }
 
@@ -310,7 +310,7 @@ static bool8 DoSetUpTMCaseUI(void)
     {
     case 0:
         SetVBlankHBlankCallbacksToNull();
-        ClearScheduledBgCopiesToVram();
+        LimpiaCopiaTilemapProgramadaVram();
         gMain.state++;
         break;
     case 1:
@@ -413,8 +413,8 @@ static void LoadBGTemplates(void)
     ResetBgsAndClearDma3BusyFlags();
     IniciaFondosDesdePlantillas(MODO_0, sBGTemplates, ARRAY_COUNT(sBGTemplates));
     SetBgTilemapBuffer(2, *ptr);
-    ScheduleBgCopyTilemapToVram(1);
-    ScheduleBgCopyTilemapToVram(2);
+    ProgramaCopiaTilemapVram(FONDO_1);
+    ProgramaCopiaTilemapVram(FONDO_2);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_1D_MAP | DISPCNT_OBJ_ON);
     SetGpuReg(REG_OFFSET_BLDCNT, 0);
     ShowBg(0);
@@ -802,8 +802,8 @@ static void Task_SelectedTMHM_Field(u8 taskId)
     GetTMNumberAndMoveString(strbuf, gSpecialVar_ItemId);
     StringAppend(strbuf, gText_Var1IsSelected + 2); // +2 skips over the stringvar
     Free(strbuf);
-    ScheduleBgCopyTilemapToVram(0);
-    ScheduleBgCopyTilemapToVram(1);
+    ProgramaCopiaTilemapVram(FONDO_0);
+    ProgramaCopiaTilemapVram(FONDO_1);
     gTasks[taskId].func = Task_ContextMenu_HandleInput;
 }
 
@@ -832,8 +832,8 @@ static void Action_Use(u8 taskId)
 {
     RemoveContextMenu(&sTMCaseDynamicResources->contextMenuWindowId);
     PutWindowTilemap(WIN_LIST);
-    ScheduleBgCopyTilemapToVram(0);
-    ScheduleBgCopyTilemapToVram(1);
+    ProgramaCopiaTilemapVram(FONDO_0);
+    ProgramaCopiaTilemapVram(FONDO_1);
     // Chose a TM/HM to use, exit TM case for party menu
     gItemUseCB = ItemUseCB_TMHM;
     sTMCaseDynamicResources->nextScreenCallback = CB2_ShowPartyMenuForItemUseTMCase;
@@ -848,8 +848,8 @@ static void Action_Exit(u8 taskId)
     PutWindowTilemap(WIN_LIST);
     PrintListCursor(tListTaskId, COLOR_DARK);
     PutWindowTilemap(WIN_MOVE_INFO);
-    ScheduleBgCopyTilemapToVram(0);
-    ScheduleBgCopyTilemapToVram(1);
+    ProgramaCopiaTilemapVram(FONDO_0);
+    ProgramaCopiaTilemapVram(FONDO_1);
     ReturnToList(taskId);
 }
 
@@ -867,7 +867,7 @@ static void InitWindowTemplatesAndPals(void)
     PutWindowTilemap(WIN_LIST);
     PutWindowTilemap(WIN_TITLE);
     PutWindowTilemap(WIN_MOVE_INFO);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
 }
 
 static void TMCase_Print(u8 windowId, u8 fontId, const u8 * str, u8 x, u8 y, u8 letterSpacing, u8 lineSpacing, u8 speed, u8 colorIdx)
@@ -891,7 +891,7 @@ static u8 AddContextMenu(u8 * windowId, u8 windowIndex)
     {
         *windowId = AddWindow(&sWindowTemplates_ContextMenu[windowIndex]);
         TMCase_SetWindowBorder(*windowId);
-        ScheduleBgCopyTilemapToVram(0);
+        ProgramaCopiaTilemapVram(FONDO_0);
     }
     return *windowId;
 }
@@ -901,7 +901,7 @@ static void RemoveContextMenu(u8 * windowId)
     ClearStdWindowAndFrameToTransparent(*windowId, FALSE);
     ClearWindowTilemap(*windowId);
     RemoveWindow(*windowId);
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
     *windowId = WINDOW_NONE;
 }
 

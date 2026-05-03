@@ -542,7 +542,7 @@ static void AnimDefensiveWall(struct Sprite *sprite)
     if (IsBattlerSpriteVisible(battler))
         MoveBattlerSpriteToBG(battler, toBG_2 ^ var0, FALSE);
 
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
     {
         if (GetBattlerSide(gBattleAnimAttacker) == LADO_JUGADOR)
         {
@@ -669,7 +669,7 @@ static void AnimWallSparkle(struct Sprite *sprite)
         if (!ignoreOffsets)
             respectMonPicOffsets = TRUE;
 
-        if (EsContraEntrenador())
+        if (EsCombateContraEntrenador(gCombate->tipoCombate))
         {
             if (GetBattlerSide(gBattleAnimAttacker) == LADO_JUGADOR)
             {

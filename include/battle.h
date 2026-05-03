@@ -155,7 +155,6 @@ struct SpecialStatus
     u8 faintedHasReplacement : 1;
     // End of byte
     u8 stormDrainRedirected : 1;
-    u8 switchInAbilityDone : 1;
     u8 switchInItemDone : 1;
     u8 berryReduced : 1;
     u8 parentalBondState : 2;
@@ -166,6 +165,7 @@ struct SpecialStatus
     u8 damagedMons : 4; // Mons that have been damaged directly by using a move, includes substitute.
     u8 preventLifeOrbDamage : 1; // So that Life Orb doesn't activate various effects.
     bool32 potenciadoGema;
+    bool32 habilidadEntranteHecha;
 };
 
 struct SideTimer
@@ -195,8 +195,6 @@ struct SideTimer
     u8 followmeTarget : 3;
     u8 followmePowder : 1; // Rage powder, does not affect grass type pokemon.
     u8 retaliateTimer;
-    u8 damageNonTypesTimer;
-    u8 damageNonTypesType;
 };
 
 struct FieldTimer
@@ -343,18 +341,18 @@ struct EfectosFinTurno
 
 struct Clima
 {
-    u32 turnos;
+    u16 turnos;
     enum ClimasCombate modo;
 }
 
 struct Combate
 {
-    u32 contadorTurnos;
-    u32 contadorDebilitadosJugador;
-    u32 contadorDebilitadosRival;
-    u32 numeroCambiosJugador;
-    u32 danioRecibido[NUMERO_COMBATIENTES];
-    u32 contadorMultigolpes;
+    u16 contadorTurnos;
+    u16 contadorDebilitadosJugador;
+    u16 contadorDebilitadosRival;
+    u16 numeroCambiosJugador;
+    u16 danioRecibido[NUMERO_COMBATIENTES];
+    u16 contadorMultigolpes;
     u16 wrappedMove[NUMERO_COMBATIENTES];
     u16 moveTarget[NUMERO_COMBATIENTES];
     u32 expValue;
@@ -450,11 +448,12 @@ struct Combate
     u8 speedTieBreaks; // NUMERO_COMBATIENTES! values.
     u8 usedEjectItem;
     u8 usedMicleBerry;
-    bool32 movimientoEspejoMagicoRebota;
+    bool16 movimientoEspejoMagicoRebota;
     uq4_12_t resultadoMovimiento;
-    u32 potenciaMovimientosRecibidosTurno[NUMERO_COMBATIENTES];
+    u16 potenciaMovimientosRecibidosTurno[NUMERO_COMBATIENTES];
     struct EfectosFinTurno efectoFinTurno;
     struct Clima clima;
+    enum TiposCombate tipoCombate;
 };
 
 #define CAMBIA_TIPO_COMBATIENTE(combatiente, tipo)      \
@@ -620,7 +619,6 @@ extern u8 gDisplayedStringBattle[425];
 extern u8 gBattleTextBuff1[TEXT_BUFF_ARRAY_COUNT];
 extern u8 gBattleTextBuff2[TEXT_BUFF_ARRAY_COUNT];
 extern u8 gBattleTextBuff3[TEXT_BUFF_ARRAY_COUNT];
-extern u32 gBattleTypeFlags;
 extern u8 gBattleTerrain;
 extern u8 *gBattleAnimBgTileBuffer;
 extern u8 *gBattleAnimBgTilemapBuffer;
@@ -751,11 +749,6 @@ static inline struct Pokemon *GetSideParty(u32 side)
 static inline struct Pokemon *GetBattlerParty(u32 battler)
 {
     return GetSideParty(GetBattlerSide(battler));
-}
-
-static inline bool32 EsContraEntrenador(void)
-{
-    return (gBattleTypeFlags & COMBATE_ENTRENADOR);
 }
 
 static inline bool32 MovimientoEsEfectivo(uq4_12_t resultadoMovimiento)
@@ -893,6 +886,21 @@ enum TiposPokemon ObtenTipoCombatiente(u32 combatiente, enum IndiceTiposPokemon 
 static inline bool32 EsTipoDual(u32 combatiente)
 {
     return ObtenTipoCombatiente(combatiente, TIPO_1) != ObtenTipoCombatiente(combatiente, TIPO_2);
+}
+
+static inline bool32 EsCombateContraEntrenador(enum TiposCombate tipoCombate)
+{
+    return (tipoCombate == TIPO_COMBATE_ENTRENADOR);
+}
+
+static inline bool32 EsCombateContraSalvaje(enum TiposCombate tipoCombate)
+{
+    return (tipoCombate == TIPO_COMBATE_SALVAJE);
+}
+
+static inline bool32 EsCombateContraLegendario(enum TiposCombate tipoCombate)
+{
+    return (tipoCombate == TIPO_COMBATE_LEGENDARIO);
 }
 
 #endif // GUARD_BATTLE_H

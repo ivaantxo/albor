@@ -145,7 +145,7 @@ static void CB2_ReshowBattleScreenAfterMenu(void)
         opponentBattler = OPONENTE_IZQUIERDA;
         species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[opponentBattler]], MON_DATA_SPECIES);
         SetBattlerShadowSpriteCallback(opponentBattler, species);
-        if (EsContraEntrenador())
+        if (EsCombateContraEntrenador(gCombate->tipoCombate))
         {
             opponentBattler = OPONENTE_DERECHA;
             species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[opponentBattler]], MON_DATA_SPECIES);

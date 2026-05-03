@@ -606,7 +606,6 @@ extern const u8 gBattleAnimMove_GlacialLance[];
 extern const u8 gBattleAnimMove_AstralBarrage[];
 extern const u8 gBattleAnimMove_DireClaw[];
 extern const u8 gBattleAnimMove_PsyshieldBash[];
-extern const u8 gBattleAnimMove_PowerShift[];
 extern const u8 gBattleAnimMove_StoneAxe[];
 extern const u8 gBattleAnimMove_SpringtideStorm[];
 extern const u8 gBattleAnimMove_MysticalPower[];

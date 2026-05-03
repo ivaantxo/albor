@@ -746,7 +746,7 @@ u32 WhichBattleCoords(u32 battlerId)
              && gEnemyPartyCount == 1)
         return INDIVIDUAL;
     else
-        return EsContraEntrenador();
+        return EsCombateContraEntrenador(gCombate->tipoCombate);
 }
 
 u8 CreateBattlerHealthboxSprites(u8 battlerId)
@@ -1653,7 +1653,7 @@ static void TryAddPokeballIconToHealthbox(u8 healthboxSpriteId, bool8 noStatus)
 {
     u8 battlerId, healthBarSpriteId;
 
-    if (EsContraEntrenador())
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
         return;
 
     battlerId = gSprites[healthboxSpriteId].hMain_Battler;
@@ -2522,7 +2522,7 @@ void CreaMensajeHabilidad(u32 combatiente, u32 habilidad)
     gCombate->activeAbilityPopUps |= 1u << combatiente;
     battlerPosition = combatiente;
 
-    if ((EsContraEntrenador()))
+    if ((EsCombateContraEntrenador(gCombate->tipoCombate)))
         coords = sAbilityPopUpCoordsDoubles;
     else
         coords = sAbilityPopUpCoordsSingles;
@@ -2690,8 +2690,8 @@ static const struct SpriteSheet sSpriteSheet_LastUsedBallWindow =
 
 #define LAST_USED_BALL_X_F    14
 #define LAST_USED_BALL_X_0    -14
-#define LAST_USED_BALL_Y      ((EsContraEntrenador()) ? 78 : 68)
-#define LAST_USED_BALL_Y_BNC  ((EsContraEntrenador()) ? 76 : 66)
+#define LAST_USED_BALL_Y      ((EsCombateContraEntrenador(gCombate->tipoCombate)) ? 78 : 68)
+#define LAST_USED_BALL_Y_BNC  ((EsCombateContraEntrenador(gCombate->tipoCombate)) ? 76 : 66)
 
 #define LAST_BALL_WIN_X_F       (LAST_USED_BALL_X_F - 0)
 #define LAST_BALL_WIN_X_0       (LAST_USED_BALL_X_0 - 0)
@@ -2711,7 +2711,7 @@ bool32 CanThrowLastUsedBall(void)
         return FALSE;
     if (!CanThrowBall())
         return FALSE;
-    if (gBattleTypeFlags & (COMBATE_ENTRENADOR))
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
         return FALSE;
     if (!CheckBagHasItem(gBallToDisplay, 1))
         return FALSE;

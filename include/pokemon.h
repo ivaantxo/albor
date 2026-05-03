@@ -305,7 +305,6 @@ struct Movimientos
     u32 ignoresProtect:1;
     u32 espejoMagico:1;
     u32 snatchAffected:1;
-    u32 punchingMove:1;
     u32 bitingMove:1;
     u32 soundMove:1;
     u32 balistico:1;
@@ -335,6 +334,7 @@ struct Movimientos
 
     bool32 climatico;
     bool32 cabezazo;
+    bool32 punietazo;
 
     enum PrioridadMovimientos prioridad;
 

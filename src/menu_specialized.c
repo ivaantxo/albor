@@ -577,7 +577,7 @@ void InitMoveRelearnerWindows(bool8 useContestWindow)
     DrawStdFrameWithCustomTileAndPalette(RELEARNERWIN_MOVE_LIST, FALSE, 1, 0xE);
     DrawStdFrameWithCustomTileAndPalette(RELEARNERWIN_MSG, FALSE, 1, 0xE);
     MoveRelearnerDummy();
-    ScheduleBgCopyTilemapToVram(1);
+    ProgramaCopiaTilemapVram(FONDO_1);
 }
 
 static void MoveRelearnerDummy(void)

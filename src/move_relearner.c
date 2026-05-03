@@ -364,7 +364,7 @@ void CB2_InitLearnMove(void)
     ResetSpriteData();
     FreeAllSpritePalettes();
     ResetTasks();
-    ClearScheduledBgCopiesToVram();
+    LimpiaCopiaTilemapProgramadaVram();
     sMoveRelearnerStruct = AllocZeroed(sizeof(*sMoveRelearnerStruct));
     sMoveRelearnerStruct->partyMon = gSpecialVar_0x8004;
     SetVBlankCallback(VBlankCB_MoveRelearner);
@@ -392,7 +392,7 @@ static void CB2_InitLearnMoveReturnFromSelectMove(void)
     ResetSpriteData();
     FreeAllSpritePalettes();
     ResetTasks();
-    ClearScheduledBgCopiesToVram();
+    LimpiaCopiaTilemapProgramadaVram();
     sMoveRelearnerStruct = AllocZeroed(sizeof(*sMoveRelearnerStruct));
     sMoveRelearnerStruct->state = MENU_STATE_FADE_FROM_SUMMARY_SCREEN;
     sMoveRelearnerStruct->partyMon = gSpecialVar_0x8004;
@@ -432,7 +432,7 @@ static void CB2_MoveRelearnerMain(void)
     RunTasks();
     AnimateSprites();
     BuildOamBuffer();
-    DoScheduledBgTilemapCopiesToVram();
+    CopiaTilemapProgramadoVram();
     UpdatePaletteFade();
 }
 
@@ -800,7 +800,7 @@ static void HandleInput(bool8 showContest)
             sMoveRelearnerMenuSate.showContestInfo = FALSE;
         }
 
-        ScheduleBgCopyTilemapToVram(1);
+        ProgramaCopiaTilemapVram(FONDO_1);
         MoveRelearnerShowHideHearts(GetCurrentSelectedMove());
         if (B_SHOW_CATEGORY_ICON == TRUE)
             MoveRelearnerShowHideCategoryIcon(GetCurrentSelectedMove());

@@ -1046,7 +1046,7 @@ bool32 CannotUseItemsInBattle(u16 itemId, struct Pokemon *mon)
             cannotUse = TRUE;
         break;
     case EFFECT_ITEM_ESCAPE:
-        if (EsContraEntrenador())
+        if (EsCombateContraEntrenador(gCombate->tipoCombate))
             cannotUse = TRUE;
         break;
     case EFFECT_ITEM_THROW_BALL:

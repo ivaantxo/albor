@@ -10840,22 +10840,6 @@ gBattleAnimMove_PsyshieldBash::
 	end
 
 @ credits to skeli
-gBattleAnimMove_PowerShift::
-	loadspritegfx ANIM_TAG_BLUEGREEN_ORB
-	loadspritegfx ANIM_TAG_RED_HEART @Red colour for orb
-	monbg ANIM_ATK_PARTNER
-	playsewithpan SE_M_REVERSAL, SOUND_PAN_ATTACKER
-	createsprite gSpriteTemplate_PowerShiftOffenseBall, ANIM_ATTACKER, 2, POWER_SHIFT_LEFT_X, 0, POWER_SHIFT_RIGHT_X, 0, POWER_SHIFT_DELAY, POWER_SHIFT_ARC
-	createsprite gSpriteTemplate_PowerShiftDefenseBall, ANIM_ATTACKER, 2, POWER_SHIFT_RIGHT_X, 0, POWER_SHIFT_LEFT_X, 0, POWER_SHIFT_DELAY, POWER_SHIFT_ARC
-	waitforvisualfinish
-	playsewithpan SE_M_DETECT, SOUND_PAN_ATTACKER
-	createvisualtask AnimTask_BlendColorCycle, 2, F_PAL_ATTACKER, 0, 2, 0, 10, RGB_WHITE
-	waitforvisualfinish
-	clearmonbg ANIM_ATK_PARTNER
-	end
-
-
-@ credits to skeli
 gBattleAnimMove_StoneAxe::
 	loadspritegfx ANIM_TAG_SLAM_HIT_2 @Cut
 	loadspritegfx ANIM_TAG_ROCKS

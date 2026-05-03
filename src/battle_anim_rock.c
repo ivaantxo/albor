@@ -472,7 +472,7 @@ void AnimRockFragment(struct Sprite *sprite)
 // Swirls particle in vortex. Used for moves like Fire Spin or Sand Tomb
 void AnimParticleInVortex(struct Sprite *sprite)
 {
-    if (EsContraEntrenador() //got a little lazy here will fix later
+    if (EsCombateContraEntrenador(gCombate->tipoCombate) //got a little lazy here will fix later
     && (gAnimMoveIndex == MOVE_VENDAVAL_GELIDO
      || gAnimMoveIndex == MOVE_SIMUN_DE_ARENA
      || gAnimMoveIndex == MOVE_TORMENTA_PRIMAVERAL

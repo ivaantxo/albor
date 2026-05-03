@@ -1186,7 +1186,7 @@ static void MainCB2(void)
     RunTasks();
     AnimateSprites();
     BuildOamBuffer();
-    DoScheduledBgTilemapCopiesToVram();
+    CopiaTilemapProgramadoVram();
     UpdatePaletteFade();
 }
 
@@ -1209,7 +1209,7 @@ static bool8 LoadGraphics(void)
     case 0:
         SetVBlankHBlankCallbacksToNull();
         ResetVramOamAndBgCntRegs();
-        ClearScheduledBgCopiesToVram();
+        LimpiaCopiaTilemapProgramadaVram();
         gMain.state++;
         break;
     case 1:
@@ -1337,9 +1337,9 @@ static void InitBGs(void)
     SetBgTilemapBuffer(2, sMonSummaryScreen->bgTilemapBuffers[PSS_PAGE_SKILLS][0]);
     SetBgTilemapBuffer(3, sMonSummaryScreen->bgTilemapBuffers[PSS_PAGE_INFO][0]);
     ResetAllBgsCoordinates();
-    ScheduleBgCopyTilemapToVram(1);
-    ScheduleBgCopyTilemapToVram(2);
-    ScheduleBgCopyTilemapToVram(3);
+    ProgramaCopiaTilemapVram(FONDO_1);
+    ProgramaCopiaTilemapVram(FONDO_2);
+    ProgramaCopiaTilemapVram(FONDO_3);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
     SetGpuReg(REG_OFFSET_BLDCNT, 0);
     ShowBg(0);
@@ -1675,7 +1675,7 @@ static void ChangeSummaryPokemon(u8 taskId, s8 delta)
             {
                 SetSpriteInvisibility(SPRITE_ARR_ID_STATUS, TRUE);
                 ClearWindowTilemap(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATUS);
-                ScheduleBgCopyTilemapToVram(0);
+                ProgramaCopiaTilemapVram(FONDO_0);
                 HandleStatusTilemap(0, 2);
             }
             sMonSummaryScreen->curMonIndex = monId;
@@ -1833,14 +1833,14 @@ static void PssScrollRight(u8 taskId) // Scroll right
             data[1] = 1;
             SetBgAttribute(1, BG_ATTR_PRIORITY, 1);
             SetBgAttribute(2, BG_ATTR_PRIORITY, 2);
-            ScheduleBgCopyTilemapToVram(1);
+            ProgramaCopiaTilemapVram(FONDO_1);
         }
         else
         {
             data[1] = 2;
             SetBgAttribute(2, BG_ATTR_PRIORITY, 1);
             SetBgAttribute(1, BG_ATTR_PRIORITY, 2);
-            ScheduleBgCopyTilemapToVram(2);
+            ProgramaCopiaTilemapVram(FONDO_2);
         }
         ChangeBgX(data[1], 0, BG_COORD_SET);
         SetBgTilemapBuffer(data[1], sMonSummaryScreen->bgTilemapBuffers[sMonSummaryScreen->currPageIndex][0]);
@@ -1890,13 +1890,13 @@ static void PssScrollLeftEnd(u8 taskId) // display left
     {
         SetBgAttribute(1, BG_ATTR_PRIORITY, 1);
         SetBgAttribute(2, BG_ATTR_PRIORITY, 2);
-        ScheduleBgCopyTilemapToVram(2);
+        ProgramaCopiaTilemapVram(FONDO_2);
     }
     else
     {
         SetBgAttribute(2, BG_ATTR_PRIORITY, 1);
         SetBgAttribute(1, BG_ATTR_PRIORITY, 2);
-        ScheduleBgCopyTilemapToVram(1);
+        ProgramaCopiaTilemapVram(FONDO_1);
     }
     if (sMonSummaryScreen->currPageIndex > 1)
     {
@@ -1944,9 +1944,9 @@ static void SwitchToMoveSelection(u8 taskId)
     PrintMoveDetails(move);
     PrintNewMoveDetailsOrCancelText();
     SetNewMoveTypeIcon();
-    ScheduleBgCopyTilemapToVram(0);
-    ScheduleBgCopyTilemapToVram(1);
-    ScheduleBgCopyTilemapToVram(2);
+    ProgramaCopiaTilemapVram(FONDO_0);
+    ProgramaCopiaTilemapVram(FONDO_1);
+    ProgramaCopiaTilemapVram(FONDO_2);
     CreateMoveSelectorSprites(SPRITE_ARR_ID_MOVE_SELECTOR1);
     gTasks[taskId].func = Task_HandleInput_MoveSelect;
 }
@@ -2026,8 +2026,8 @@ static void ChangeSelectedMove(s16 *taskData, s8 direction, u8 *moveIndexPtr)
             break;
     }
     DrawContestMoveHearts(move);
-    ScheduleBgCopyTilemapToVram(1);
-    ScheduleBgCopyTilemapToVram(2);
+    ProgramaCopiaTilemapVram(FONDO_1);
+    ProgramaCopiaTilemapVram(FONDO_2);
     PrintMoveDetails(move);
     if ((*moveIndexPtr == MAX_MON_MOVES && sMonSummaryScreen->newMove == MOVE_NONE)
         || taskData[1] == 1)
@@ -2035,7 +2035,7 @@ static void ChangeSelectedMove(s16 *taskData, s8 direction, u8 *moveIndexPtr)
         ClearWindowTilemap(PSS_LABEL_WINDOW_PORTRAIT_SPECIES);
         if (!gSprites[sMonSummaryScreen->spriteIds[SPRITE_ARR_ID_STATUS]].invisible)
             ClearWindowTilemap(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATUS);
-        ScheduleBgCopyTilemapToVram(0);
+        ProgramaCopiaTilemapVram(FONDO_0);
         HandlePowerAccTilemap(9, -3);
         HandleAppealJamTilemap(9, -3, move);
     }
@@ -2046,7 +2046,7 @@ static void ChangeSelectedMove(s16 *taskData, s8 direction, u8 *moveIndexPtr)
         ClearWindowTilemap(PSS_LABEL_WINDOW_MOVES_POWER_ACC);
         ClearWindowTilemap(PSS_LABEL_WINDOW_MOVES_APPEAL_JAM);
         DestroyCategoryIcon();
-        ScheduleBgCopyTilemapToVram(0);
+        ProgramaCopiaTilemapVram(FONDO_0);
         HandlePowerAccTilemap(0, 3);
         HandleAppealJamTilemap(0, 3, 0);
     }
@@ -2078,9 +2078,9 @@ static void CloseMoveSelectMode(u8 taskId)
         HandlePowerAccTilemap(0, 3);
         HandleAppealJamTilemap(0, 3, 0);
     }
-    ScheduleBgCopyTilemapToVram(0);
-    ScheduleBgCopyTilemapToVram(1);
-    ScheduleBgCopyTilemapToVram(2);
+    ProgramaCopiaTilemapVram(FONDO_0);
+    ProgramaCopiaTilemapVram(FONDO_1);
+    ProgramaCopiaTilemapVram(FONDO_2);
     gTasks[taskId].func = Task_HandleInput;
 }
 
@@ -2148,8 +2148,8 @@ static void ExitMovePositionSwitchMode(u8 taskId, bool8 swapMoves)
     move = sMonSummaryScreen->summary.moves[sMonSummaryScreen->firstMoveIndex];
     PrintMoveDetails(move);
     DrawContestMoveHearts(move);
-    ScheduleBgCopyTilemapToVram(1);
-    ScheduleBgCopyTilemapToVram(2);
+    ProgramaCopiaTilemapVram(FONDO_1);
+    ProgramaCopiaTilemapVram(FONDO_2);
     gTasks[taskId].func = Task_HandleInput_MoveSelect;
 }
 
@@ -2315,7 +2315,7 @@ static void DrawPagination(void) // Updates the pagination dots at the top of th
         }
     }
     CopyToBgTilemapBufferRect_ChangePalette(3, tilemap, 11, 0, PSS_PAGE_COUNT * 2, 2, 16);
-    ScheduleBgCopyTilemapToVram(3);
+    ProgramaCopiaTilemapVram(FONDO_3);
     Free(tilemap);
 }
 
@@ -2388,11 +2388,11 @@ static void Task_ShowPowerAccWindow(u8 taskId)
                 PutWindowTilemap(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATUS);
             PutWindowTilemap(PSS_LABEL_WINDOW_PORTRAIT_SPECIES);
         }
-        ScheduleBgCopyTilemapToVram(0);
+        ProgramaCopiaTilemapVram(FONDO_0);
         DestroyTask(taskId);
     }
-    ScheduleBgCopyTilemapToVram(1);
-    ScheduleBgCopyTilemapToVram(2);
+    ProgramaCopiaTilemapVram(FONDO_1);
+    ProgramaCopiaTilemapVram(FONDO_2);
 }
 
 static void HandleAppealJamTilemap(u16 a, s16 b, u16 move)
@@ -2444,11 +2444,11 @@ static void Task_ShowAppealJamWindow(u8 taskId)
             }
             PutWindowTilemap(PSS_LABEL_WINDOW_PORTRAIT_SPECIES);
         }
-        ScheduleBgCopyTilemapToVram(0);
+        ProgramaCopiaTilemapVram(FONDO_0);
         DestroyTask(taskId);
     }
-    ScheduleBgCopyTilemapToVram(1);
-    ScheduleBgCopyTilemapToVram(2);
+    ProgramaCopiaTilemapVram(FONDO_1);
+    ProgramaCopiaTilemapVram(FONDO_2);
 }
 
 static void HandleStatusTilemap(u16 a, s16 b)
@@ -2478,14 +2478,14 @@ static void Task_ShowStatusWindow(u8 taskId)
         data[1] = sStatusTilemapCtrl1.field_6;
     ChangeTilemap(&sStatusTilemapCtrl1, sMonSummaryScreen->bgTilemapBuffers[PSS_PAGE_INFO][0], data[1], FALSE);
     ChangeTilemap(&sStatusTilemapCtrl2, sMonSummaryScreen->bgTilemapBuffers[PSS_PAGE_INFO][0], data[1], FALSE);
-    ScheduleBgCopyTilemapToVram(3);
+    ProgramaCopiaTilemapVram(FONDO_3);
     if (data[1] <= 0 || data[1] >= sStatusTilemapCtrl1.field_6)
     {
         if (data[0] < 0)
         {
             CreateSetStatusSprite();
             PutWindowTilemap(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATUS);
-            ScheduleBgCopyTilemapToVram(0);
+            ProgramaCopiaTilemapVram(FONDO_0);
         }
         DestroyTask(taskId);
     }
@@ -2530,7 +2530,7 @@ static void DrawPokerusCuredSymbol(struct Pokemon *mon) // This checks if the mo
         sMonSummaryScreen->bgTilemapBuffers[PSS_PAGE_INFO][0][0x223] = 0x81A;
         sMonSummaryScreen->bgTilemapBuffers[PSS_PAGE_INFO][1][0x223] = 0x81A;
     }
-    ScheduleBgCopyTilemapToVram(3);
+    ProgramaCopiaTilemapVram(FONDO_3);
 }
 
 static void SetMonPicBackgroundPalette(bool8 isMonShiny)
@@ -2539,7 +2539,7 @@ static void SetMonPicBackgroundPalette(bool8 isMonShiny)
         SetBgTilemapPalette(3, 1, 4, 8, 8, 0);
     else
         SetBgTilemapPalette(3, 1, 4, 8, 8, 5);
-    ScheduleBgCopyTilemapToVram(3);
+    ProgramaCopiaTilemapVram(FONDO_3);
 }
 
 static void DrawExperienceProgressBar(struct Pokemon *unused)
@@ -2579,9 +2579,9 @@ static void DrawExperienceProgressBar(struct Pokemon *unused)
     }
 
     if (GetBgTilemapBuffer(1) == sMonSummaryScreen->bgTilemapBuffers[PSS_PAGE_SKILLS][0])
-        ScheduleBgCopyTilemapToVram(1);
+        ProgramaCopiaTilemapVram(FONDO_1);
     else
-        ScheduleBgCopyTilemapToVram(2);
+        ProgramaCopiaTilemapVram(FONDO_2);
 }
 
 static void DrawContestMoveHearts(u16 move)
@@ -2669,7 +2669,7 @@ static void PrintMonInfo(void)
         PrintNotEggInfo();
     else
         PrintEggInfo();
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
 }
 
 static void PrintNotEggInfo(void)
@@ -2860,7 +2860,7 @@ static void PutPageWindowTilemaps(u8 page)
     for (i = 0; i < ARRAY_COUNT(sMonSummaryScreen->windowIds); i++)
         PutWindowTilemap(sMonSummaryScreen->windowIds[i]);
 
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
 }
 
 static void ClearPageWindowTilemaps(u8 page)
@@ -2912,7 +2912,7 @@ static void ClearPageWindowTilemaps(u8 page)
     for (i = 0; i < ARRAY_COUNT(sMonSummaryScreen->windowIds); i++)
         RemoveWindowByIndex(i);
 
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
 }
 
 static u8 AddWindowFromTemplateList(const struct WindowTemplate *template, u8 templateId)
@@ -3495,7 +3495,7 @@ static void PrintMoveDetails(u16 move)
         ClearWindowTilemap(windowId);
     }
 
-    ScheduleBgCopyTilemapToVram(0);
+    ProgramaCopiaTilemapVram(FONDO_0);
 }
 
 static void PrintNewMoveDetailsOrCancelText(void)

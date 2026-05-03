@@ -1412,7 +1412,7 @@ void CB2_OpenFlyMap(void)
         break;
     case 3:
         LoadUserWindowBorderGfx(0, 0x65, BG_PLTT_ID(13));
-        ClearScheduledBgCopiesToVram();
+        LimpiaCopiaTilemapProgramadaVram();
         gMain.state++;
         break;
     case 4:
@@ -1437,7 +1437,7 @@ void CB2_OpenFlyMap(void)
         PutWindowTilemap(WIN_FLY_TO_WHERE);
         FillWindowPixelBuffer(WIN_FLY_TO_WHERE, PIXEL_FILL(0));
         AddTextPrinterParameterized(WIN_FLY_TO_WHERE, FONT_NORMAL, gText_FlyToWhere, 0, 1, 0, NULL);
-        ScheduleBgCopyTilemapToVram(0);
+        ProgramaCopiaTilemapVram(FONDO_0);
         gMain.state++;
         break;
     case 8:
@@ -1474,7 +1474,7 @@ static void CB2_FlyMap(void)
     sFlyMap->callback();
     AnimateSprites();
     BuildOamBuffer();
-    DoScheduledBgTilemapCopiesToVram();
+    CopiaTilemapProgramadoVram();
 }
 
 static void SetFlyMapCallback(void callback(void))
@@ -1505,7 +1505,7 @@ static void DrawFlyDestTextWindow(void)
                     AddTextPrinterParameterized(WIN_MAPSEC_NAME_TALL, FONT_NORMAL, sFlyMap->regionMap.mapSecName, 0, 1, 0, NULL);
                     name = sMultiNameFlyDestinations[i].name[sFlyMap->regionMap.posWithinMapSec];
                     AddTextPrinterParameterized(WIN_MAPSEC_NAME_TALL, FONT_NORMAL, name, GetStringRightAlignXOffset(FONT_NORMAL, name, 96), 17, 0, NULL);
-                    ScheduleBgCopyTilemapToVram(0);
+                    ProgramaCopiaTilemapVram(FONDO_0);
                     sDrawFlyDestTextWindow = TRUE;
                 }
                 break;
@@ -1524,7 +1524,7 @@ static void DrawFlyDestTextWindow(void)
                 FillWindowPixelBuffer(WIN_MAPSEC_NAME, PIXEL_FILL(1));
             }
             AddTextPrinterParameterized(WIN_MAPSEC_NAME, FONT_NORMAL, sFlyMap->regionMap.mapSecName, 0, 1, 0, NULL);
-            ScheduleBgCopyTilemapToVram(0);
+            ProgramaCopiaTilemapVram(FONDO_0);
             sDrawFlyDestTextWindow = FALSE;
         }
     }
@@ -1538,7 +1538,7 @@ static void DrawFlyDestTextWindow(void)
         }
         FillWindowPixelBuffer(WIN_MAPSEC_NAME, PIXEL_FILL(1));
         CopyWindowToVram(WIN_MAPSEC_NAME, COPYWIN_GFX);
-        ScheduleBgCopyTilemapToVram(0);
+        ProgramaCopiaTilemapVram(FONDO_0);
         sDrawFlyDestTextWindow = FALSE;
     }
 }

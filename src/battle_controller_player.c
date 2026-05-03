@@ -368,7 +368,7 @@ static void HandleInputChooseAction(u32 battler)
     }
     else if (JOY_NEW(B_BUTTON) || gPlayerDpadHoldFrames > 59)
     {
-        if (EsContraEntrenador()
+        if (EsCombateContraEntrenador(gCombate->tipoCombate)
          && battler == JUGADOR_DERECHA
          && !(gAbsentBattlerFlags & (1u << JUGADOR_IZQUIERDA)))
         {
@@ -380,7 +380,7 @@ static void HandleInputChooseAction(u32 battler)
         }
         else if (B_QUICK_MOVE_CURSOR_TO_RUN)
         {
-            if (!(EsContraEntrenador())) // If wild battle, pressing B moves cursor to "Run".
+            if (!(EsCombateContraEntrenador(gCombate->tipoCombate))) // If wild battle, pressing B moves cursor to "Run".
             {
                 PlaySE(SE_SELECT);
                 gActionSelectionCursor[battler] = 2;
@@ -1081,7 +1081,7 @@ static void Task_GiveExpToMon(u8 taskId)
             gainedExp -= nextLvlExp - currExp;
             BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_SUBIO_NIVEL, gainedExp);
 
-            if (EsContraEntrenador()
+            if (EsCombateContraEntrenador(gCombate->tipoCombate)
              && (monId == gBattlerPartyIndexes[battler] || monId == gBattlerPartyIndexes[ALIADO(battler)]))
                 gTasks[taskId].func = Task_LaunchLvlUpAnim;
             else
@@ -1171,7 +1171,7 @@ static void Task_LaunchLvlUpAnim(u8 taskId)
     u8 battler = gTasks[taskId].tExpTask_battler;
     u8 monIndex = gTasks[taskId].tExpTask_monId;
 
-    if (EsContraEntrenador() && monIndex == gBattlerPartyIndexes[ALIADO(battler)])
+    if (EsCombateContraEntrenador(gCombate->tipoCombate) && monIndex == gBattlerPartyIndexes[ALIADO(battler)])
         battler ^= BIT_FLANK;
 
     InitAndLaunchSpecialAnimation(battler, battler, battler, B_ANIM_LVL_UP);
@@ -1186,7 +1186,7 @@ static void Task_UpdateLvlInHealthbox(u8 taskId)
     {
         u8 monIndex = gTasks[taskId].tExpTask_monId;
 
-        if (EsContraEntrenador() && monIndex == gBattlerPartyIndexes[ALIADO(battler)])
+        if (EsCombateContraEntrenador(gCombate->tipoCombate) && monIndex == gBattlerPartyIndexes[ALIADO(battler)])
             UpdateHealthboxAttribute(gHealthboxSpriteIds[ALIADO(battler)], &gPlayerParty[monIndex], HEALTHBOX_ALL);
         else
             UpdateHealthboxAttribute(gHealthboxSpriteIds[battler], &gPlayerParty[monIndex], HEALTHBOX_ALL);

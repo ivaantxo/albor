@@ -2729,7 +2729,7 @@ BattleScript_EffectFollowMe::
 	attackstring
 	ppreduce
 	.if B_UPDATED_MOVE_DATA >= GEN_8
-	jumpifnotbattletype COMBATE_ENTRENADOR, BattleScript_ButItFailed
+	SaltaSiNoTipoCombate COMBATE_ENTRENADOR, BattleScript_ButItFailed
 	.endif
 	setforcedtarget
 	attackanimation
@@ -3071,7 +3071,7 @@ BattleScript_FaintTarget::
 	tryactivatesoulheart
 	tryactivatereceiver BS_TARGET
 	intentaactivarautoestima BS_ATTACKER
-	callnative BS_IntentaRecuperarSaludTrasVencer
+	callnative IntentaRecuperarSaludTrasVencer
 	tryactivatebeastboost BS_ATTACKER
 	trytrainerslidefirstdownmsg BS_TARGET
 	return
@@ -3082,16 +3082,11 @@ BattleScript_GiveExp::
 	end2
 
 BattleScript_HandleFaintedMon::
-	setbyte sSHIFT_SWITCHED, 0
-	checkteamslost BattleScript_HandleFaintedMonMultiple
-	jumpifbyte COMPARACION_DESIGUAL, gBattleOutcome, 0, BattleScript_FaintedMonEnd
-	jumpifbattletype COMBATE_ENTRENADOR, BattleScript_FaintedMonTryChoose
-	jumpifword COMPARACION_BITS_DISTINTOS, gHitMarker, HITMARKER_PLAYER_FAINTED, BattleScript_FaintedMonTryChoose
-	EscribeTextoCombate "¿Quieres usar otro Pokémon?"
-	setbyte gBattleCommunication, 0
-	yesnobox
-	jumpifbyte COMPARACION_IGUAL, gBattleCommunication + 1, 0, BattleScript_FaintedMonTryChoose
-	goto BattleScript_FaintedMonEnd
+    setbyte sSHIFT_SWITCHED, 0
+    checkteamslost BattleScript_HandleFaintedMonMultiple
+    jumpifbyte COMPARACION_DESIGUAL, gBattleOutcome, 0, BattleScript_FaintedMonEnd
+    jumpifword COMPARACION_BITS_DISTINTOS, gHitMarker, HITMARKER_PLAYER_FAINTED, BattleScript_FaintedMonTryChoose
+    goto BattleScript_FaintedMonTryChoose
 
 BattleScript_FaintedMonTryChoose:
 	openpartyscreen BS_FAINTED, BattleScript_FaintedMonEnd
@@ -3113,7 +3108,7 @@ BattleScript_FaintedMonSendOutNew:
 
 BattleScript_FaintedMonSendOutNewEnd:
 	switchineffects BS_FAINTED
-	jumpifbattletype COMBATE_ENTRENADOR, BattleScript_FaintedMonEnd
+	SaltaSiTipoCombate COMBATE_ENTRENADOR, BattleScript_FaintedMonEnd
 	cancelallactions
 
 BattleScript_FaintedMonEnd::
@@ -3174,7 +3169,7 @@ BattleScript_LocalBattleLost::
 	goto BattleScript_LocalBattleLostPrintWhiteOut
 
 BattleScript_LocalBattleLostPrintWhiteOut::
-	jumpifbattletype COMBATE_ENTRENADOR, BattleScript_LocalBattleLostEnd
+	SaltaSiTipoCombate COMBATE_ENTRENADOR, BattleScript_LocalBattleLostEnd
 	EscribeTextoCombate "{B_PLAYER_NAME} is out of usable POKéMON!"
 	waitmessage PAUSA_LARGA
 	getmoneyreward
@@ -3191,7 +3186,7 @@ BattleScript_LocalBattleLostEnd::
 	end2
 
 BattleScript_LocalBattleLostPrintTrainersWinText::
-	jumpifnotbattletype COMBATE_ENTRENADOR, BattleScript_LocalBattleLostPrintWhiteOut
+	SaltaSiNoTipoCombate COMBATE_ENTRENADOR, BattleScript_LocalBattleLostPrintWhiteOut
 	returnopponentmon1toball BS_ATTACKER
 	waitstate
 	returnopponentmon2toball BS_ATTACKER
@@ -3223,7 +3218,7 @@ BattleScript_ActionSwitch::
 	hpthresholds2 BS_ATTACKER
 	saveattacker
 	printstring STRINGID_RETURNMON
-	jumpifbattletype COMBATE_ENTRENADOR, BattleScript_PursuitSwitchDmgSetMultihit
+	SaltaSiTipoCombate COMBATE_ENTRENADOR, BattleScript_PursuitSwitchDmgSetMultihit
 	setmultihit 1
 	goto BattleScript_PursuitSwitchDmgLoop
 
@@ -4465,8 +4460,8 @@ BattleScript_MoveEffectToxic::
 	waitmessage PAUSA_LARGA
 	goto BattleScript_UpdateEffectStatusIconRet
 
-BattleScript_MoveEffectDiaDePago::
-	EscribeTextoCombate "Coins were scattered everywhere!"
+ScriptCombate_EfectoMovimientoDiaDePago::
+	EscribeTextoCombate "¡Han saltado monedas por todas partes!"
 	waitmessage PAUSA_LARGA
 	return
 
