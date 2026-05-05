@@ -2,7 +2,6 @@
 #include "battle_main.h"
 #include "battle_util.h"
 #include "bg.h"
-#include "contest_effect.h"
 #include "data.h"
 #include "daycare.h"
 #include "decompress.h"
@@ -135,7 +134,6 @@ static const u8 sText_Stats_FLUCTUATING[] = _("FLUCTUATING");
 static const u8 sText_Stats_MEDIUM_SLOW[] = _("MED. SLOW");
 static const u8 sText_Stats_FAST[] = _("FAST");
 static const u8 sText_Stats_SLOW[] = _("SLOW");
-static const u8 sText_Stats_ContestHeart[] = _("H");
 static const u8 sText_Stats_Minus[] = _("-");
 static const u8 sText_Stats_eggGroup[] = _("EGG G1:");
 static const u8 sText_Stats_eggGroup_Groups[] = _("{VAR_TEXTO_1}/{VAR_TEXTO_2}");
@@ -2935,14 +2933,6 @@ static void SetSpriteInvisibility(u8 spriteArrayId, bool8 invisible)
 {
     gSprites[sPokedexView->typeIconSpriteIds[spriteArrayId]].invisible = invisible;
 }
-static const u8 sContestCategoryToOamPaletteNum[CONTEST_CATEGORIES_COUNT] =
-{
-    [CONTEST_CATEGORY_COOL] = 13,
-    [CONTEST_CATEGORY_BEAUTY] = 14,
-    [CONTEST_CATEGORY_CUTE] = 14,
-    [CONTEST_CATEGORY_SMART] = 15,
-    [CONTEST_CATEGORY_TOUGH] = 13,
-};
 
 static void SetTypeIconPosAndPal(u8 typeId, u8 x, u8 y, u8 spriteArrayId)
 {
@@ -2952,8 +2942,7 @@ static void SetTypeIconPosAndPal(u8 typeId, u8 x, u8 y, u8 spriteArrayId)
     StartSpriteAnim(sprite, typeId);
     if (typeId < NUMERO_TIPOS)
         sprite->oam.paletteNum = gTipos[typeId].palette;
-    else
-        sprite->oam.paletteNum = sContestCategoryToOamPaletteNum[typeId - NUMERO_TIPOS];
+
     sprite->x = x + 16;
     sprite->y = y + 8;
     SetSpriteInvisibility(spriteArrayId, FALSE);
@@ -3600,7 +3589,7 @@ static void PrintStatsScreen_Moves_Top(u8 taskId)
     PrintStatsScreenTextSmallWhite(WIN_STATS_MOVES_TOP, gVariableTexto1, moves_x-1, moves_y+1);
 
     //Move name
-    StringCopy(gVariableTexto3, GetMoveName(move));
+    StringCopy(gVariableTexto3, ObtenNombreMovimiento(move));
     StringCopyPadded(gVariableTexto3, gVariableTexto3, CHAR_SPACE, 20);
     PrintStatsScreenTextSmall(WIN_STATS_MOVES_TOP, gVariableTexto3, moves_x, moves_y + 17);
 
@@ -3666,11 +3655,6 @@ static void PrintStatsScreen_Moves_Description(u8 taskId)
         StringCopy(gVariableTextoAmpliada, gMovimientos[move].description);
         PrintStatsScreenTextSmall(WIN_STATS_MOVES_DESCRIPTION, gVariableTextoAmpliada, moves_x, moves_y);
     }
-    else
-    {
-        StringCopy(gVariableTextoAmpliada, gContestEffectDescriptionPointers[gMovimientos[move].contestEffect]);
-        PrintStatsScreenTextSmall(WIN_STATS_MOVES_DESCRIPTION, gVariableTextoAmpliada, moves_x, moves_y);
-    }
 }
 
 static void PrintStatsScreen_Moves_BottomText(u8 taskId)
@@ -3695,10 +3679,6 @@ static void PrintStatsScreen_Moves_Bottom(u8 taskId)
     u8 moves_y = 3;
     u8 selected = sPokedexView->moveSelected;
     u16 move;
-    //Contest
-    u8 contest_effectValue;
-    u8 contest_appeal = 0;
-    u8 contest_jam = 0;
 
     //Move
     move = sStatsMoves[selected];
@@ -3721,28 +3701,6 @@ static void PrintStatsScreen_Moves_Bottom(u8 taskId)
         else
             ConvertIntToDecimalStringN(gVariableTexto1, gMovimientos[move].accuracy, STR_CONV_MODE_RIGHT_ALIGN, 3);
         PrintStatsScreenTextSmall(WIN_STATS_MOVES_BOTTOM, gVariableTexto1,  moves_x + 114, moves_y);
-    }
-    else //Appeal + Jam
-    {
-        DestroyCategoryIcon();
-        gSprites[sPokedexView->categoryIconSpriteId].invisible = TRUE;
-        //Appeal
-        contest_effectValue = gContestEffects[gMovimientos[move].contestEffect].appeal;
-        if (contest_effectValue != 0xFF)
-            contest_appeal = contest_effectValue / 10;
-        ConvertIntToDecimalStringN(gVariableTexto1, contest_appeal, STR_CONV_MODE_RIGHT_ALIGN, 1);
-        StringCopy(gVariableTexto2, sText_PlusSymbol);
-        StringAppend(gVariableTexto2, gVariableTexto1);
-        PrintStatsScreenTextSmall(WIN_STATS_MOVES_BOTTOM, gVariableTexto2, moves_x + 45, moves_y);
-
-        //Jam
-        contest_effectValue = gContestEffects[gMovimientos[move].contestEffect].jam;
-        if (contest_effectValue != 0xFF)
-            contest_jam = contest_effectValue / 10;
-        ConvertIntToDecimalStringN(gVariableTexto1, contest_jam, STR_CONV_MODE_RIGHT_ALIGN, 1);
-        StringCopy(gVariableTexto2, sText_Stats_Minus);
-        StringAppend(gVariableTexto2, gVariableTexto1);
-        PrintStatsScreenTextSmall(WIN_STATS_MOVES_BOTTOM, gVariableTexto2,  moves_x + 119, moves_y);
     }
 }
 
@@ -4827,7 +4785,7 @@ static u8 PrintEvolutionTargetSpeciesAndMethod(u8 taskId, u16 species, u8 depth,
             StringExpandPlaceholders(gVariableTextoAmpliada, sText_EVO_NIVEL_DIA );
             break;
         case EVO_MOVIMIENTO:
-            StringCopy(gVariableTexto2, GetMoveName(evolutions[i].param));
+            StringCopy(gVariableTexto2, ObtenNombreMovimiento(evolutions[i].param));
             StringExpandPlaceholders(gVariableTextoAmpliada, sText_EVO_MOVIMIENTO );
             break;
         case EVO_NIVEL_LLUVIA:

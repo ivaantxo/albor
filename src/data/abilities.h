@@ -246,7 +246,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Trace"),
         .description = COMPOUND_STRING("Copies special ability."),
-        .cantBeCopied = TRUE,
         .cantBeTraced = TRUE,
     },
 
@@ -355,7 +354,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Forecast"), // Darle + 1 de prioridad a movimientos climáticos (Set weather y movimientos como Heat Wave, Hurricane, Weather ball)
         .description = COMPOUND_STRING("Changes with the weather."),
-        .cantBeCopied = TRUE,
         .cantBeTraced = TRUE,
     },
 
@@ -677,7 +675,7 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Steals the foe's held item."),
     },
 
-    [ABILITY_SHEER_FORCE] =
+    [ABILITY_POTENCIA_BRUTA] =
     {
         .name = _("Sheer Force"),
         .description = COMPOUND_STRING("Trades effects for power."),
@@ -1028,22 +1026,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .description = COMPOUND_STRING("Baja velocidad al contacto."),
     },
 
-    [ABILITY_RECEIVER] =
-    {
-        .name = _("Receiver"),
-        .description = COMPOUND_STRING("Copies ally's ability."),
-        .cantBeCopied = TRUE,
-        .cantBeTraced = TRUE,
-    },
-
-    [ABILITY_POWER_OF_ALCHEMY] =
-    {
-        .name = _("Power Of Alchemy"),
-        .description = COMPOUND_STRING("Copies ally's ability."),
-        .cantBeCopied = TRUE,
-        .cantBeTraced = TRUE,
-    },
-
     [ABILITY_BEAST_BOOST] =
     {
         .name = _("Beast Boost"),
@@ -1123,7 +1105,6 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
     {
         .name = _("Neutralizing Gas"),
         .description = COMPOUND_STRING("All Abilities are nullified."),
-        .cantBeCopied = TRUE,
         .cantBeTraced = TRUE,
     },
 

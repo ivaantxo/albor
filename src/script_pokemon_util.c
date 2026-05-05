@@ -84,9 +84,9 @@ void CreateScriptedWildMon(u16 species, u8 level, u16 item)
 
     ZeroEnemyPartyMons();
     if (OW_SYNCHRONIZE_NATURE > GEN_3)
-        CreaPokemonConNaturaleza(&gEnemyParty[0], species, level, USE_RANDOM_IVS, EscogeNaturalezaPokemonSalvaje());
+        CreaPokemonConNaturaleza(&gEnemyParty[0], species, level, EscogeNaturalezaPokemonSalvaje());
     else
-        CreaPokemon(&gEnemyParty[0], species, level, USE_RANDOM_IVS, 0, 0);
+        CreaPokemon(&gEnemyParty[0], species, level, 0, 0);
     if (item)
     {
         heldItem[0] = item;
@@ -102,9 +102,9 @@ void CreateScriptedDoubleWildMon(u16 species1, u8 level1, u16 item1, u16 species
     ZeroEnemyPartyMons();
 
     if (OW_SYNCHRONIZE_NATURE > GEN_3)
-        CreaPokemonConNaturaleza(&gEnemyParty[0], species1, level1, 32, EscogeNaturalezaPokemonSalvaje());
+        CreaPokemonConNaturaleza(&gEnemyParty[0], species1, level1, EscogeNaturalezaPokemonSalvaje());
     else
-        CreaPokemon(&gEnemyParty[0], species1, level1, 32, 0, 0);
+        CreaPokemon(&gEnemyParty[0], species1, level1, 0, 0);
     if (item1)
     {
         heldItem1[0] = item1;
@@ -113,9 +113,9 @@ void CreateScriptedDoubleWildMon(u16 species1, u8 level1, u16 item1, u16 species
     }
 
     if (OW_SYNCHRONIZE_NATURE > GEN_3)
-        CreaPokemonConNaturaleza(&gEnemyParty[1], species2, level2, 32, EscogeNaturalezaPokemonSalvaje());
+        CreaPokemonConNaturaleza(&gEnemyParty[1], species2, level2, EscogeNaturalezaPokemonSalvaje());
     else
-        CreaPokemon(&gEnemyParty[1], species2, level2, 32, 0, 0);
+        CreaPokemon(&gEnemyParty[1], species2, level2, 0, 0);
     if (item2)
     {
         heldItem2[0] = item2;
@@ -124,7 +124,7 @@ void CreateScriptedDoubleWildMon(u16 species1, u8 level1, u16 item1, u16 species
     }
 }
 
-void ScriptSetMonMoveSlot(u8 monIndex, u16 move, u8 slot)
+void ScriptSetMonMoveSlot(u8 monIndex, enum Movimientos movimiento, u8 slot)
 {
 // Allows monIndex to go out of bounds of gPlayerParty. Doesn't occur in vanilla
 #ifdef BUGFIX
@@ -134,7 +134,7 @@ void ScriptSetMonMoveSlot(u8 monIndex, u16 move, u8 slot)
 #endif
         monIndex = gPlayerPartyCount - 1;
 
-    SetMonMoveSlot(&gPlayerParty[monIndex], move, slot);
+    SetMonMoveSlot(&gPlayerParty[monIndex], movimiento, slot);
 }
 
 void ReducePlayerPartyToSelectedMons(void)
@@ -146,7 +146,7 @@ void ReducePlayerPartyToSelectedMons(void)
  * if side/slot are assigned, it will create the mon at the assigned party location
  * if slot == PARTY_SIZE, it will give the mon to first available party or storage slot
  */
-static u32 ScriptGiveMonParameterized(u8 side, u8 slot, u16 species, u8 level, u16 item, u8 ball, u8 nature, u8 abilityNum, u8 gender, u8 *evs, u8 *ivs, u16 *moves, bool8 isShiny)
+static u32 ScriptGiveMonParameterized(u8 side, u8 slot, u16 species, u8 level, u16 item, u8 ball, u8 nature, u8 abilityNum, u8 gender, u8 *evs, u16 *moves, bool8 isShiny)
 {
     u32 nationalDexNum, sentToPc;
     struct Pokemon mon;
@@ -167,33 +167,28 @@ static u32 ScriptGiveMonParameterized(u8 side, u8 slot, u16 species, u8 level, u
     if ((gender == MON_MALE && genderRatio != MON_FEMALE && genderRatio != MON_GENDERLESS)
      || (gender == MON_FEMALE && genderRatio != MON_MALE && genderRatio != MON_GENDERLESS)
      || (gender == MON_GENDERLESS && genderRatio == MON_GENDERLESS))
-        CreaPokemonConGeneroNaturaleza(&mon, species, level, 32, gender, nature);
+        CreaPokemonConGeneroNaturaleza(&mon, species, level, gender, nature);
     else
-        CreaPokemonConNaturaleza(&mon, species, level, 32, nature);
+        CreaPokemonConNaturaleza(&mon, species, level, nature);
 
     SetMonData(&mon, MON_DATA_IS_SHINY, &isShiny);
 
-    // EV and IV
+    // EV
     for (i = 0; i < NUMERO_ESTADISTICAS; i++)
     {
-        // EV
         if (evs[i] <= MAX_PER_STAT_EVS)
             SetMonData(&mon, MON_DATA_HP_EV + i, &evs[i]);
-
-        // IV
-        if (ivs[i] <= MAX_PER_STAT_IVS)
-            SetMonData(&mon, MON_DATA_HP_IV + i, &ivs[i]);
     }
     CalculateMonStats(&mon);
 
     // moves
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
-        if (moves[0] == MOVE_NONE)
+        if (movimientos[0] == MOVE_NONE)
             break;
-        if (moves[i] >= NUMERO_MOVIMIENTOS)
+        if (movimientos[i] >= NUMERO_MOVIMIENTOS)
             continue;
-        SetMonMoveSlot(&mon, moves[i], i);
+        SetMonMoveSlot(&mon, movimientos[i], i);
     }
 
     // ability
@@ -265,11 +260,9 @@ static u32 ScriptGiveMonParameterized(u8 side, u8 slot, u16 species, u8 level, u
 u32 ScriptGiveMon(u16 species, u8 level, u16 item)
 {
     u8 evs[NUMERO_ESTADISTICAS]        = {0, 0, 0, 0, 0, 0};
-    u8 ivs[NUMERO_ESTADISTICAS]        = {MAX_PER_STAT_IVS + 1, MAX_PER_STAT_IVS + 1, MAX_PER_STAT_IVS + 1,   // We pass "MAX_PER_STAT_IVS + 1" here to ensure that
-                                MAX_PER_STAT_IVS + 1, MAX_PER_STAT_IVS + 1, MAX_PER_STAT_IVS + 1};  // ScriptGiveMonParameterized won't touch the stats' IV.
-    u16 moves[MAX_MON_MOVES] = {MOVE_NONE, MOVE_NONE, MOVE_NONE, MOVE_NONE};
+    enum Movimientos movimientos[MAXIMO_MOVIMIENTOS_POKEMON] = {MOVE_NONE, MOVE_NONE, MOVE_NONE, MOVE_NONE};
 
-    return ScriptGiveMonParameterized(0, PARTY_SIZE, species, level, item, ITEM_POKE_BALL, NUMERO_NATURALEZAS, NUM_ABILITY_PERSONALITY, MON_GENDERLESS, evs, ivs, moves, FALSE);
+    return ScriptGiveMonParameterized(0, PARTY_SIZE, species, level, item, ITEM_POKE_BALL, NUMERO_NATURALEZAS, NUM_ABILITY_PERSONALITY, MON_GENDERLESS, evs, movimientos, FALSE);
 }
 
 #define PARSE_FLAG(n, default_) (flags & (1 << (n))) ? VarGet(ScriptReadHalfword(ctx)) : (default_)
@@ -295,23 +288,16 @@ void ScrCmd_createmon(struct ScriptContext *ctx)
     u8 speedEv        = PARSE_FLAG(8, 0);
     u8 spAtkEv        = PARSE_FLAG(9, 0);
     u8 spDefEv        = PARSE_FLAG(10, 0);
-    u8 hpIv           = PARSE_FLAG(11, Random() % (MAX_PER_STAT_IVS + 1));
-    u8 atkIv          = PARSE_FLAG(12, Random() % (MAX_PER_STAT_IVS + 1));
-    u8 defIv          = PARSE_FLAG(13, Random() % (MAX_PER_STAT_IVS + 1));
-    u8 speedIv        = PARSE_FLAG(14, Random() % (MAX_PER_STAT_IVS + 1));
-    u8 spAtkIv        = PARSE_FLAG(15, Random() % (MAX_PER_STAT_IVS + 1));
-    u8 spDefIv        = PARSE_FLAG(16, Random() % (MAX_PER_STAT_IVS + 1));
-    u16 move1         = PARSE_FLAG(17, MOVE_NONE);
-    u16 move2         = PARSE_FLAG(18, MOVE_NONE);
-    u16 move3         = PARSE_FLAG(19, MOVE_NONE);
-    u16 move4         = PARSE_FLAG(20, MOVE_NONE);
-    bool8 isShiny     = PARSE_FLAG(21, FALSE);
+    enum Movimientos movimiento1         = PARSE_FLAG(11, MOVE_NONE);
+    enum Movimientos movimiento2         = PARSE_FLAG(12, MOVE_NONE);
+    enum Movimientos movimiento3         = PARSE_FLAG(13, MOVE_NONE);
+    enum Movimientos movimiento4         = PARSE_FLAG(14, MOVE_NONE);
+    bool8 isShiny     = PARSE_FLAG(15, FALSE);
 
     u8 evs[NUMERO_ESTADISTICAS]        = {hpEv, atkEv, defEv, speedEv, spAtkEv, spDefEv};
-    u8 ivs[NUMERO_ESTADISTICAS]        = {hpIv, atkIv, defIv, speedIv, spAtkIv, spDefIv};
-    u16 moves[MAX_MON_MOVES] = {move1, move2, move3, move4};
+    enum Movimientos movimientos[MAXIMO_MOVIMIENTOS_POKEMON] = {movimiento1, movimiento2, movimiento3, movimiento4};
 
-    gSpecialVar_Result = ScriptGiveMonParameterized(side, slot, species, level, item, ball, nature, abilityNum, gender, evs, ivs, moves, isShiny);
+    gSpecialVar_Result = ScriptGiveMonParameterized(side, slot, species, level, item, ball, nature, abilityNum, gender, evs, movimientos, isShiny);
 }
 
 #undef PARSE_FLAG
@@ -328,20 +314,6 @@ void Script_GetChosenMonDefensiveEVs(void)
     ConvertIntToDecimalStringN(gVariableTexto1, GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_HP_EV), STR_CONV_MODE_LEFT_ALIGN, 3);
     ConvertIntToDecimalStringN(gVariableTexto2, GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_DEF_EV), STR_CONV_MODE_LEFT_ALIGN, 3);
     ConvertIntToDecimalStringN(gVariableTexto3, GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPDEF_EV), STR_CONV_MODE_LEFT_ALIGN, 3);
-}
-
-void Script_GetChosenMonOffensiveIVs(void)
-{
-    ConvertIntToDecimalStringN(gVariableTexto1, GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_ATK_IV), STR_CONV_MODE_LEFT_ALIGN, 3);
-    ConvertIntToDecimalStringN(gVariableTexto2, GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPATK_IV), STR_CONV_MODE_LEFT_ALIGN, 3);
-    ConvertIntToDecimalStringN(gVariableTexto3, GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPEED_IV), STR_CONV_MODE_LEFT_ALIGN, 3);
-}
-
-void Script_GetChosenMonDefensiveIVs(void)
-{
-    ConvertIntToDecimalStringN(gVariableTexto1, GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_HP_IV), STR_CONV_MODE_LEFT_ALIGN, 3);
-    ConvertIntToDecimalStringN(gVariableTexto2, GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_DEF_IV), STR_CONV_MODE_LEFT_ALIGN, 3);
-    ConvertIntToDecimalStringN(gVariableTexto3, GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPDEF_IV), STR_CONV_MODE_LEFT_ALIGN, 3);
 }
 
 void Script_SetStatus1(struct ScriptContext *ctx)

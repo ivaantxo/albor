@@ -2,7 +2,6 @@
 #include "bg.h"
 #include "malloc.h"
 #include "battle_main.h"
-#include "contest_effect.h"
 #include "data.h"
 #include "decompress.h"
 #include "gpu_regs.h"
@@ -80,15 +79,6 @@ static const struct WindowTemplate sMoveRelearnerWindowTemplates[] =
         .height = 12,
         .paletteNum = 15,
         .baseBlock = 0xA
-    },
-    [RELEARNERWIN_DESC_CONTEST] = {
-        .bg = FONDO_1,
-        .tilemapLeft = 1,
-        .tilemapTop = 1,
-        .width = 16,
-        .height = 12,
-        .paletteNum = 15,
-        .baseBlock = 0xCA
     },
     [RELEARNERWIN_MOVE_LIST] = {
         .bg = FONDO_1,
@@ -550,7 +540,7 @@ void ConditionGraph_CalcPositions(u8 *conditions, struct UCoords16 *positions)
 // Move relearner
 //----------------
 
-void InitMoveRelearnerWindows(bool8 useContestWindow)
+void InitMoveRelearnerWindows(void)
 {
     u32 i;
 
@@ -562,16 +552,8 @@ void InitMoveRelearnerWindows(bool8 useContestWindow)
     for (i = 0; i < ARRAY_COUNT(sMoveRelearnerWindowTemplates) - 1; i++)
         FillWindowPixelBuffer(i, PIXEL_FILL(1));
 
-    if (!useContestWindow)
-    {
-        PutWindowTilemap(RELEARNERWIN_DESC_BATTLE);
-        DrawStdFrameWithCustomTileAndPalette(RELEARNERWIN_DESC_BATTLE, FALSE, 0x1, 0xE);
-    }
-    else
-    {
-        PutWindowTilemap(RELEARNERWIN_DESC_CONTEST);
-        DrawStdFrameWithCustomTileAndPalette(RELEARNERWIN_DESC_CONTEST, FALSE, 1, 0xE);
-    }
+    PutWindowTilemap(RELEARNERWIN_DESC_BATTLE);
+    DrawStdFrameWithCustomTileAndPalette(RELEARNERWIN_DESC_BATTLE, FALSE, 0x1, 0xE);
     PutWindowTilemap(RELEARNERWIN_MOVE_LIST);
     PutWindowTilemap(RELEARNERWIN_MSG);
     DrawStdFrameWithCustomTileAndPalette(RELEARNERWIN_MOVE_LIST, FALSE, 1, 0xE);
@@ -664,17 +646,11 @@ static void MoveRelearnerLoadBattleMoveDescription(u32 chosenMove)
     AddTextPrinterParameterized(RELEARNERWIN_DESC_BATTLE, FONT_NARROW, str, 0, 65, 0, NULL);
 }
 
-static void MoveRelearnerMenuLoadContestMoveDescription(u32 chosenMove)
-{
-
-}
-
 static void MoveRelearnerCursorCallback(s32 itemIndex, bool8 onInit, struct ListMenu *list)
 {
     if (onInit != TRUE)
         PlaySE(SE_SELECT);
     MoveRelearnerLoadBattleMoveDescription(itemIndex);
-    MoveRelearnerMenuLoadContestMoveDescription(itemIndex);
 }
 
 void MoveRelearnerPrintMessage(u8 *str)

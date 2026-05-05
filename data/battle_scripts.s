@@ -634,14 +634,6 @@ BattleScript_ShellSmashTrySpeed:
 BattleScript_ShellSmashEnd:
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectLastResort::
-	attackcanceler
-	attackstring
-	ppreduce
-	jumpifcantuselastresort BS_ATTACKER, BattleScript_ButItFailed
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	goto BattleScript_HitFromCritCalc
-
 BattleScript_EffectGrowth::
 	attackcanceler
 	attackstring
@@ -2725,18 +2717,15 @@ BattleScript_EffectFocusPunch::
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectFollowMe::
-	attackcanceler
-	attackstring
-	ppreduce
-	.if B_UPDATED_MOVE_DATA >= GEN_8
-	SaltaSiNoTipoCombate COMBATE_ENTRENADOR, BattleScript_ButItFailed
-	.endif
-	setforcedtarget
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} became the center of attention!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
+    attackcanceler
+    attackstring
+    ppreduce
+    setforcedtarget
+    attackanimation
+    waitanimation
+    EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} became the center of attention!"
+    waitmessage PAUSA_LARGA
+    goto BattleScript_MoveEnd
 
 BattleScript_EffectCharge::
 	attackcanceler
@@ -2873,18 +2862,6 @@ BattleScript_EffectRefresh::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX}'s status returned to normal!"
 	waitmessage PAUSA_LARGA
 	updatestatusicon BS_ATTACKER
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectSnatch::
-	attackcanceler
-	trysetsnatch BattleScript_FailedFromAtkString
-	attackstring
-	ppreduce
-	attackanimation
-	waitanimation
-	pause PAUSA_CORTA
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} waits for a target to make a move!"
-	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectTickle::
@@ -3057,7 +3034,6 @@ BattleScript_FaintAttacker::
 	EscribeTextoCombate "¡{B_ATK_NAME_WITH_PREFIX} se debilitó!"
 	cleareffectsonfaint BS_ATTACKER
 	tryactivatesoulheart
-	tryactivatereceiver BS_ATTACKER
 	trytrainerslidefirstdownmsg BS_ATTACKER
 	return
 
@@ -3069,7 +3045,6 @@ BattleScript_FaintTarget::
 	cleareffectsonfaint BS_TARGET
 	tryactivatefellstinger BS_ATTACKER
 	tryactivatesoulheart
-	tryactivatereceiver BS_TARGET
 	intentaactivarautoestima BS_ATTACKER
 	callnative IntentaRecuperarSaludTrasVencer
 	tryactivatebeastboost BS_ATTACKER
@@ -3108,8 +3083,7 @@ BattleScript_FaintedMonSendOutNew:
 
 BattleScript_FaintedMonSendOutNewEnd:
 	switchineffects BS_FAINTED
-	SaltaSiTipoCombate COMBATE_ENTRENADOR, BattleScript_FaintedMonEnd
-	cancelallactions
+	CancelaAccionesSiNoEntrenador
 
 BattleScript_FaintedMonEnd::
 	end2
@@ -3165,36 +3139,21 @@ BattleScript_DiaDePagoMoney::
 	givepaydaymoney
 	end2
 
-BattleScript_LocalBattleLost::
-	goto BattleScript_LocalBattleLostPrintWhiteOut
+ScriptCombate_DerrotaContraSalvajeLegendarios::
+    EscribeTextoCombate "{B_PLAYER_NAME} is out of usable POKéMON!"
+    waitmessage PAUSA_LARGA
+    getmoneyreward
+    EscribeTextoCombate "You panicked and dropped ¥{B_BUFF1}… You were overwhelmed by your defeat!{PAUSE_UNTIL_PRESS}"
+    waitmessage PAUSA_LARGA
+    end2
 
-BattleScript_LocalBattleLostPrintWhiteOut::
-	SaltaSiTipoCombate COMBATE_ENTRENADOR, BattleScript_LocalBattleLostEnd
-	EscribeTextoCombate "{B_PLAYER_NAME} is out of usable POKéMON!"
-	waitmessage PAUSA_LARGA
-	getmoneyreward
-	EscribeTextoCombate "You panicked and dropped ¥{B_BUFF1}… You were overwhelmed by your defeat!{PAUSE_UNTIL_PRESS}"
-	waitmessage PAUSA_LARGA
-	end2
-
-BattleScript_LocalBattleLostEnd::
-	EscribeTextoCombate "{B_PLAYER_NAME} is out of usable POKéMON! Player lost against {B_TRAINER_CLASS} {B_TRAINER_NAME}!{PAUSE_UNTIL_PRESS}"
-	waitmessage PAUSA_LARGA
-	getmoneyreward
-	EscribeTextoCombate "{B_PLAYER_NAME} paid ¥{B_BUFF1} as the prize money… … … … {B_PLAYER_NAME} whited out!{PAUSE_UNTIL_PRESS}"
-	waitmessage PAUSA_LARGA
-	end2
-
-BattleScript_LocalBattleLostPrintTrainersWinText::
-	SaltaSiNoTipoCombate COMBATE_ENTRENADOR, BattleScript_LocalBattleLostPrintWhiteOut
-	returnopponentmon1toball BS_ATTACKER
-	waitstate
-	returnopponentmon2toball BS_ATTACKER
-	waitstate
-	trainerslidein BS_OPPONENT
-	waitstate
-	EscribeTextoCombate "{B_TRAINER_WIN_TEXT}"
-	end2
+ScriptCombate_DerrotaContraEntrenador::
+    EscribeTextoCombate "{B_PLAYER_NAME} is out of usable POKéMON! Player lost against {B_TRAINER_CLASS} {B_TRAINER_NAME}!{PAUSE_UNTIL_PRESS}"
+    waitmessage PAUSA_LARGA
+    getmoneyreward
+    EscribeTextoCombate "{B_PLAYER_NAME} paid ¥{B_BUFF1} as the prize money… … … … {B_PLAYER_NAME} whited out!{PAUSE_UNTIL_PRESS}"
+    waitmessage PAUSA_LARGA
+    end2
 
 BattleScript_GotAwaySafely::
 	EscribeTextoCombate "{PLAY_SE SE_FLEE}¡Lograste huir!"
@@ -3218,8 +3177,8 @@ BattleScript_ActionSwitch::
 	hpthresholds2 BS_ATTACKER
 	saveattacker
 	printstring STRINGID_RETURNMON
-	SaltaSiTipoCombate COMBATE_ENTRENADOR, BattleScript_PursuitSwitchDmgSetMultihit
-	setmultihit 1
+	@SaltaSiTipoCombate COMBATE_ENTRENADOR, BattleScript_PursuitSwitchDmgSetMultihit
+	@setmultihit 1
 	goto BattleScript_PursuitSwitchDmgLoop
 
 BattleScript_PursuitSwitchDmgSetMultihit::
@@ -3999,17 +3958,6 @@ BattleScript_MagicBounce::
 	bicword gHitMarker, HITMARKER_NO_ATTACKSTRING
 	return
 
-BattleScript_SnatchedMove::
-	attackstring
-	ppreduce
-	snatchsetbattlers
-	playanimation BS_TARGET, B_ANIM_SNATCH_MOVE
-	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} snatched {B_SCR_ACTIVE_NAME_WITH_PREFIX}'s move!"
-	waitmessage PAUSA_LARGA
-	orword gHitMarker, HITMARKER_ATTACKSTRING_PRINTED | HITMARKER_NO_PPDEDUCT | HITMARKER_ALLOW_NO_PP
-	swapattackerwithtarget
-	return
-
 BattleScript_OneHitKOMsg::
 	printstring STRINGID_ONEHITKO
 	waitmessage PAUSA_LARGA
@@ -4572,13 +4520,6 @@ ScriptCombate_ActivacionHabilidadCambioObjeto::
     printfromtable gItemSwapStringIds 
     waitmessage PAUSA_LARGA
     end3
-
-BattleScript_ReceiverActivates::
-	call BattleScript_AbilityPopUp
-	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY} was taken over!"
-	waitmessage PAUSA_LARGA
-	settracedability BS_ABILITY_BATTLER
-	return
 
 BattleScript_AbilityHpHeal:
 	call BattleScript_AbilityPopUp

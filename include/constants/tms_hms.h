@@ -47,7 +47,6 @@
     F(ATTRACT) \
     F(THIEF) \
     F(STEEL_WING) \
-    F(SNATCH) \
     F(OVERHEAT)
 
 #define FOREACH_HM(F) \

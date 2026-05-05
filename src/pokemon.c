@@ -378,15 +378,15 @@ void ZeroEnemyPartyMons(void)
         ZeroMonData(&gEnemyParty[i]);
 }
 
-void CreaPokemon(struct Pokemon *mon, u32 species, u32 level, u32 fixedIV, bool32 hasFixedPersonality, u32 fixedPersonality)
+void CreaPokemon(struct Pokemon *mon, u32 species, u32 level, bool32 hasFixedPersonality, u32 fixedPersonality)
 {
     ZeroMonData(mon);
-    CreaPokemonCaja(&mon->box, species, level, fixedIV, hasFixedPersonality, fixedPersonality);
+    CreaPokemonCaja(&mon->box, species, level, hasFixedPersonality, fixedPersonality);
     SetMonData(mon, MON_DATA_LEVEL, &level);
     CalculateMonStats(mon);
 }
 
-void CreaPokemonCaja(struct BoxPokemon *boxMon, u32 especie, u32 nivel, u32 ivFijo, bool32 tienePersonalidadFija, u32 personalidadFija)
+void CreaPokemonCaja(struct BoxPokemon *boxMon, u32 especie, u32 nivel, bool32 tienePersonalidadFija, u32 personalidadFija)
 {
     u8 nombreEspecie[POKEMON_NAME_LENGTH + 1];
     u32 personalidad;
@@ -429,38 +429,6 @@ void CreaPokemonCaja(struct BoxPokemon *boxMon, u32 especie, u32 nivel, u32 ivFi
     u32 pokeBall = ITEM_POKE_BALL;
     SetBoxMonData(boxMon, MON_DATA_POKEBALL, &pokeBall);
 
-    if (ivFijo < USE_RANDOM_IVS)
-    {
-        SetBoxMonData(boxMon, MON_DATA_HP_IV, &ivFijo);
-        SetBoxMonData(boxMon, MON_DATA_ATK_IV, &ivFijo);
-        SetBoxMonData(boxMon, MON_DATA_DEF_IV, &ivFijo);
-        SetBoxMonData(boxMon, MON_DATA_SPEED_IV, &ivFijo);
-        SetBoxMonData(boxMon, MON_DATA_SPATK_IV, &ivFijo);
-        SetBoxMonData(boxMon, MON_DATA_SPDEF_IV, &ivFijo);
-    }
-    else
-    {
-        u32 iv;
-
-        iv = Random() & MAX_IV_MASK;
-        SetBoxMonData(boxMon, MON_DATA_HP_IV, &iv);
-
-        iv = Random() & MAX_IV_MASK;
-        SetBoxMonData(boxMon, MON_DATA_ATK_IV, &iv);
-
-        iv = Random() & MAX_IV_MASK;
-        SetBoxMonData(boxMon, MON_DATA_DEF_IV, &iv);
-
-        iv = Random() & MAX_IV_MASK;
-        SetBoxMonData(boxMon, MON_DATA_SPEED_IV, &iv);
-
-        iv = Random() & MAX_IV_MASK;
-        SetBoxMonData(boxMon, MON_DATA_SPATK_IV, &iv);
-
-        iv = Random() & MAX_IV_MASK;
-        SetBoxMonData(boxMon, MON_DATA_SPDEF_IV, &iv);
-    }
-
     {
         u32 habilidadNum;
         u32 probabilidadHabilidadNum = Random() % 100;
@@ -478,7 +446,7 @@ void CreaPokemonCaja(struct BoxPokemon *boxMon, u32 especie, u32 nivel, u32 ivFi
     GiveBoxMonInitialMoveset(boxMon);
 }
 
-void CreaPokemonConNaturaleza(struct Pokemon *mon, u32 species, u32 level, u32 fixedIV, u32 nature)
+void CreaPokemonConNaturaleza(struct Pokemon *mon, u32 species, u32 level, u32 nature)
 {
     u32 personality;
 
@@ -488,10 +456,10 @@ void CreaPokemonConNaturaleza(struct Pokemon *mon, u32 species, u32 level, u32 f
     }
     while (nature != NaturalezaDePersonalidad(personality));
 
-    CreaPokemon(mon, species, level, fixedIV, TRUE, personality);
+    CreaPokemon(mon, species, level, TRUE, personality);
 }
 
-void CreaPokemonConGeneroNaturaleza(struct Pokemon *mon, u32 species, u32 level, u32 fixedIV, u32 gender, u32 nature)
+void CreaPokemonConGeneroNaturaleza(struct Pokemon *mon, u32 species, u32 level, u32 gender, u32 nature)
 {
     u32 personality;
 
@@ -502,13 +470,13 @@ void CreaPokemonConGeneroNaturaleza(struct Pokemon *mon, u32 species, u32 level,
     while (nature != NaturalezaDePersonalidad(personality)
         || gender != GetGenderFromSpeciesAndPersonality(species, personality));
 
-    CreaPokemon(mon, species, level, fixedIV, TRUE, personality);
+    CreaPokemon(mon, species, level, TRUE, personality);
 }
 
-#define CALCULA_ESTADISTICA(base, iv, ev, indiceEstadistica, field)                   \
+#define CALCULA_ESTADISTICA(baseStat, ev, indiceEstadistica, field)         \
 {                                                                           \
     u32 baseStat = gSpeciesInfo[species].base;                              \
-    s32 n = (((2 * baseStat + iv + ev / 4) * level) / 100) + 5;             \
+    s32 n = (((2 * baseStat + ev / 4) * level) / 100) + 5;                  \
     n = ModificaEstadisticaPorNaturaleza(naturaleza, n, indiceEstadistica); \
     SetMonData(mon, field, &n);                                             \
 }
@@ -517,17 +485,11 @@ void CalculateMonStats(struct Pokemon *mon)
 {
     s32 oldMaxHP = GetMonData(mon, MON_DATA_MAX_HP, NULL);
     s32 currentHP = GetMonData(mon, MON_DATA_HP, NULL);
-    s32 hpIV = GetMonData(mon, MON_DATA_HP_IV, NULL);
     s32 hpEV = GetMonData(mon, MON_DATA_HP_EV, NULL);
-    s32 attackIV = GetMonData(mon, MON_DATA_ATK_IV, NULL);
     s32 attackEV = GetMonData(mon, MON_DATA_ATK_EV, NULL);
-    s32 defenseIV = GetMonData(mon, MON_DATA_DEF_IV, NULL);
     s32 defenseEV = GetMonData(mon, MON_DATA_DEF_EV, NULL);
-    s32 speedIV = GetMonData(mon, MON_DATA_SPEED_IV, NULL);
     s32 speedEV = GetMonData(mon, MON_DATA_SPEED_EV, NULL);
-    s32 spAttackIV = GetMonData(mon, MON_DATA_SPATK_IV, NULL);
     s32 spAttackEV = GetMonData(mon, MON_DATA_SPATK_EV, NULL);
-    s32 spDefenseIV = GetMonData(mon, MON_DATA_SPDEF_IV, NULL);
     s32 spDefenseEV = GetMonData(mon, MON_DATA_SPDEF_EV, NULL);
     u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
     s32 level = GetLevelFromMonExp(mon);
@@ -536,7 +498,7 @@ void CalculateMonStats(struct Pokemon *mon)
 
     SetMonData(mon, MON_DATA_LEVEL, &level);
 
-    s32 n = 2 * gSpeciesInfo[species].baseHP + hpIV;
+    s32 n = 2 * gSpeciesInfo[species].baseHP;
     newMaxHP = (((n + hpEV / 4) * level) / 100) + level + 10;
 
     gBattleScripting.levelUpHP = newMaxHP - oldMaxHP;
@@ -545,11 +507,11 @@ void CalculateMonStats(struct Pokemon *mon)
 
     SetMonData(mon, MON_DATA_MAX_HP, &newMaxHP);
 
-    CALCULA_ESTADISTICA(baseAttack, attackIV, attackEV, ESTADISTICA_ATAQUE, MON_DATA_ATK)
-    CALCULA_ESTADISTICA(baseDefense, defenseIV, defenseEV, ESTADISTICA_DEFENSA, MON_DATA_DEF)
-    CALCULA_ESTADISTICA(baseSpeed, speedIV, speedEV, ESTADISTICA_VELOCIDAD, MON_DATA_SPEED)
-    CALCULA_ESTADISTICA(baseSpAttack, spAttackIV, spAttackEV, ESTADISTICA_ATAQUE_ESPECIAL, MON_DATA_SPATK)
-    CALCULA_ESTADISTICA(baseSpDefense, spDefenseIV, spDefenseEV, ESTADISTICA_DEFENSA_ESPECIAL, MON_DATA_SPDEF)
+    CALCULA_ESTADISTICA(baseAttack, attackEV, ESTADISTICA_ATAQUE, MON_DATA_ATK)
+    CALCULA_ESTADISTICA(baseDefense, defenseEV, ESTADISTICA_DEFENSA, MON_DATA_DEF)
+    CALCULA_ESTADISTICA(baseSpeed, speedEV, ESTADISTICA_VELOCIDAD, MON_DATA_SPEED)
+    CALCULA_ESTADISTICA(baseSpAttack, spAttackEV, ESTADISTICA_ATAQUE_ESPECIAL, MON_DATA_SPATK)
+    CALCULA_ESTADISTICA(baseSpDefense, spDefenseEV, ESTADISTICA_DEFENSA_ESPECIAL, MON_DATA_SPDEF)
 
     // Since a pokemon's maxHP data could either not have
     // been initialized at this point or this pokemon is
@@ -604,64 +566,64 @@ u8 GetLevelFromBoxMonExp(struct BoxPokemon *boxMon)
     return level - 1;
 }
 
-u16 GiveMoveToMon(struct Pokemon *mon, u16 move)
+u16 GiveMoveToMon(struct Pokemon *mon, enum Movimientos movimiento)
 {
-    return GiveMoveToBoxMon(&mon->box, move);
+    return GiveMoveToBoxMon(&mon->box, movimiento);
 }
 
-u16 GiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move)
+u16 GiveMoveToBoxMon(struct BoxPokemon *boxMon, enum Movimientos movimiento)
 {
     s32 i;
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
-        u16 existingMove = GetBoxMonData(boxMon, MON_DATA_MOVE1 + i, NULL);
+        enum Movimientos existingMove = GetBoxMonData(boxMon, MON_DATA_MOVE1 + i, NULL);
         if (existingMove == MOVE_NONE)
         {
-            SetBoxMonData(boxMon, MON_DATA_MOVE1 + i, &move);
-            SetBoxMonData(boxMon, MON_DATA_PP1 + i, &gMovimientos[move].pp);
-            return move;
+            SetBoxMonData(boxMon, MON_DATA_MOVE1 + i, &movimiento);
+            SetBoxMonData(boxMon, MON_DATA_PP1 + i, &gMovimientos[movimiento].pp);
+            return movimiento;
         }
-        if (existingMove == move)
+        if (existingMove == movimiento)
             return MON_ALREADY_KNOWS_MOVE;
     }
     return MON_HAS_MAX_MOVES;
 }
 
-u16 GiveMoveToBattleMon(struct BattlePokemon *mon, u16 move)
+u16 GiveMoveToBattleMon(struct BattlePokemon *mon, enum Movimientos movimiento)
 {
     s32 i;
 
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
         if (mon->moves[i] == MOVE_NONE)
         {
-            mon->moves[i] = move;
-            mon->pp[i] = gMovimientos[move].pp;
-            return move;
+            mon->moves[i] = movimiento;
+            mon->pp[i] = gMovimientos[movimiento].pp;
+            return movimiento;
         }
     }
 
     return MON_HAS_MAX_MOVES;
 }
 
-void SetMonMoveSlot(struct Pokemon *mon, u16 move, u8 slot)
+void SetMonMoveSlot(struct Pokemon *mon, enum Movimientos movimiento, u8 slot)
 {
-    SetMonData(mon, MON_DATA_MOVE1 + slot, &move);
-    SetMonData(mon, MON_DATA_PP1 + slot, &gMovimientos[move].pp);
+    SetMonData(mon, MON_DATA_MOVE1 + slot, &movimiento);
+    SetMonData(mon, MON_DATA_PP1 + slot, &gMovimientos[movimiento].pp);
 }
 
-static void SetMonMoveSlot_KeepPP(struct Pokemon *mon, u16 move, u8 slot)
+static void SetMonMoveSlot_KeepPP(struct Pokemon *mon, enum Movimientos movimiento, u8 slot)
 {
     u8 currPP = GetMonData(mon, MON_DATA_PP1 + slot, NULL);
 
-    SetMonData(mon, MON_DATA_MOVE1 + slot, &move);
+    SetMonData(mon, MON_DATA_MOVE1 + slot, &movimiento);
     SetMonData(mon, MON_DATA_PP1 + slot, &currPP);
 }
 
-void SetBattleMonMoveSlot(struct BattlePokemon *mon, u16 move, u8 slot)
+void SetBattleMonMoveSlot(struct BattlePokemon *mon, enum Movimientos movimiento, u8 slot)
 {
-    mon->moves[slot] = move;
-    mon->pp[slot] = gMovimientos[move].pp;
+    mon->moves[slot] = movimiento;
+    mon->pp[slot] = gMovimientos[movimiento].pp;
 }
 
 void GiveMonInitialMoveset(struct Pokemon *mon)
@@ -674,11 +636,11 @@ void GiveBoxMonInitialMoveset(struct BoxPokemon *boxMon) //Credit: AsparagusEdua
     u16 species = GetBoxMonData(boxMon, MON_DATA_SPECIES, NULL);
     s32 level = GetLevelFromBoxMonExp(boxMon);
     s32 i;
-    u16 moves[MAX_MON_MOVES] = {MOVE_NONE};
+    enum Movimientos movimientos[MAXIMO_MOVIMIENTOS_POKEMON] = {MOVE_NONE};
     u8 addedMoves = 0;
     const struct LevelUpMove *learnset = GetSpeciesLevelUpLearnset(species);
 
-    for (i = 0; learnset[i].move != LEVEL_UP_MOVE_END; i++)
+    for (i = 0; learnset[i].movimiento != LEVEL_UP_MOVE_END; i++)
     {
         s32 j;
         bool32 alreadyKnown = FALSE;
@@ -690,7 +652,7 @@ void GiveBoxMonInitialMoveset(struct BoxPokemon *boxMon) //Credit: AsparagusEdua
 
         for (j = 0; j < addedMoves; j++)
         {
-            if (moves[j] == learnset[i].move)
+            if (movimientos[j] == learnset[i].movimiento)
             {
                 alreadyKnown = TRUE;
                 break;
@@ -699,23 +661,23 @@ void GiveBoxMonInitialMoveset(struct BoxPokemon *boxMon) //Credit: AsparagusEdua
 
         if (!alreadyKnown)
         {
-            if (addedMoves < MAX_MON_MOVES)
+            if (addedMoves < MAXIMO_MOVIMIENTOS_POKEMON)
             {
-                moves[addedMoves] = learnset[i].move;
+                movimientos[addedMoves] = learnset[i].movimiento;
                 addedMoves++;
             }
             else
             {
-                for (j = 0; j < MAX_MON_MOVES - 1; j++)
-                    moves[j] = moves[j + 1];
-                moves[MAX_MON_MOVES - 1] = learnset[i].move;
+                for (j = 0; j < MAXIMO_MOVIMIENTOS_POKEMON - 1; j++)
+                    movimientos[j] = movimientos[j + 1];
+                movimientos[MAXIMO_MOVIMIENTOS_POKEMON - 1] = learnset[i].movimiento;
             }
         }
     }
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
-        SetBoxMonData(boxMon, MON_DATA_MOVE1 + i, &moves[i]);
-        SetBoxMonData(boxMon, MON_DATA_PP1 + i, &gMovimientos[moves[i]].pp);
+        SetBoxMonData(boxMon, MON_DATA_MOVE1 + i, &movimientos[i]);
+        SetBoxMonData(boxMon, MON_DATA_PP1 + i, &gMovimientos[movimientos[i]].pp);
     }
 }
 
@@ -752,46 +714,46 @@ u16 MonTryLearningNewMove(struct Pokemon *mon, bool8 firstMove)
     return retVal;
 }
 
-void DeleteFirstMoveAndGiveMoveToMon(struct Pokemon *mon, u16 move)
+void DeleteFirstMoveAndGiveMoveToMon(struct Pokemon *mon, enum Movimientos movimiento)
 {
     s32 i;
-    u16 moves[MAX_MON_MOVES];
-    u8 pp[MAX_MON_MOVES];
+    enum Movimientos movimientos[MAXIMO_MOVIMIENTOS_POKEMON];
+    u8 pp[MAXIMO_MOVIMIENTOS_POKEMON];
 
-    for (i = 0; i < MAX_MON_MOVES - 1; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON - 1; i++)
     {
-        moves[i] = GetMonData(mon, MON_DATA_MOVE2 + i, NULL);
+        movimientos[i] = GetMonData(mon, MON_DATA_MOVE2 + i, NULL);
         pp[i] = GetMonData(mon, MON_DATA_PP2 + i, NULL);
     }
 
-    moves[MAX_MON_MOVES - 1] = move;
-    pp[MAX_MON_MOVES - 1] = gMovimientos[move].pp;
+    movimientos[MAXIMO_MOVIMIENTOS_POKEMON - 1] = movimiento;
+    pp[MAXIMO_MOVIMIENTOS_POKEMON - 1] = gMovimientos[movimiento].pp;
 
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
-        SetMonData(mon, MON_DATA_MOVE1 + i, &moves[i]);
+        SetMonData(mon, MON_DATA_MOVE1 + i, &movimientos[i]);
         SetMonData(mon, MON_DATA_PP1 + i, &pp[i]);
     }
 }
 
-void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move)
+void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, enum Movimientos movimiento)
 {
     s32 i;
-    u16 moves[MAX_MON_MOVES];
-    u8 pp[MAX_MON_MOVES];
+    enum Movimientos movimientos[MAXIMO_MOVIMIENTOS_POKEMON];
+    u8 pp[MAXIMO_MOVIMIENTOS_POKEMON];
 
-    for (i = 0; i < MAX_MON_MOVES - 1; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON - 1; i++)
     {
-        moves[i] = GetBoxMonData(boxMon, MON_DATA_MOVE2 + i, NULL);
+        movimientos[i] = GetBoxMonData(boxMon, MON_DATA_MOVE2 + i, NULL);
         pp[i] = GetBoxMonData(boxMon, MON_DATA_PP2 + i, NULL);
     }
 
-    moves[MAX_MON_MOVES - 1] = move;
-    pp[MAX_MON_MOVES - 1] = gMovimientos[move].pp;
+    movimientos[MAXIMO_MOVIMIENTOS_POKEMON - 1] = movimiento;
+    pp[MAXIMO_MOVIMIENTOS_POKEMON - 1] = gMovimientos[movimiento].pp;
 
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
-        SetBoxMonData(boxMon, MON_DATA_MOVE1 + i, &moves[i]);
+        SetBoxMonData(boxMon, MON_DATA_MOVE1 + i, &movimientos[i]);
         SetBoxMonData(boxMon, MON_DATA_PP1 + i, &pp[i]);
     }
 }
@@ -1094,24 +1056,6 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
         case MON_DATA_OT_GENDER:
             retVal = 0;
             break;
-        case MON_DATA_HP_IV:
-            retVal = boxMon->hpIV;
-            break;
-        case MON_DATA_ATK_IV:
-            retVal = boxMon->attackIV;
-            break;
-        case MON_DATA_DEF_IV:
-            retVal = boxMon->defenseIV;
-            break;
-        case MON_DATA_SPEED_IV:
-            retVal = boxMon->speedIV;
-            break;
-        case MON_DATA_SPATK_IV:
-            retVal = boxMon->spAttackIV;
-            break;
-        case MON_DATA_SPDEF_IV:
-            retVal = boxMon->spDefenseIV;
-            break;
         case MON_DATA_IS_EGG:
             retVal = boxMon->isEgg;
             break;
@@ -1141,14 +1085,6 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
             retVal = boxMon->species;
             if (boxMon->species && boxMon->isEgg)
                 retVal = SPECIES_EGG;
-            break;
-        case MON_DATA_IVS:
-            retVal = boxMon->hpIV
-                    | (boxMon->attackIV << 5)
-                    | (boxMon->defenseIV << 10)
-                    | (boxMon->speedIV << 15)
-                    | (boxMon->spAttackIV << 20)
-                    | (boxMon->spDefenseIV << 25);
             break;
         case MON_DATA_KNOWN_MOVES:
             if (boxMon->species && !boxMon->isEgg)
@@ -1354,24 +1290,6 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         }
         case MON_DATA_OT_GENDER:
             break;
-        case MON_DATA_HP_IV:
-            SET8(boxMon->hpIV);
-            break;
-        case MON_DATA_ATK_IV:
-            SET8(boxMon->attackIV);
-            break;
-        case MON_DATA_DEF_IV:
-            SET8(boxMon->defenseIV);
-            break;
-        case MON_DATA_SPEED_IV:
-            SET8(boxMon->speedIV);
-            break;
-        case MON_DATA_SPATK_IV:
-            SET8(boxMon->spAttackIV);
-            break;
-        case MON_DATA_SPDEF_IV:
-            SET8(boxMon->spDefenseIV);
-            break;
         case MON_DATA_IS_EGG:
             SET8(boxMon->isEgg);
             break;
@@ -1394,17 +1312,6 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         case MON_DATA_EARTH_RIBBON:
         case MON_DATA_WORLD_RIBBON:
             break;
-        case MON_DATA_IVS:
-        {
-            u32 ivs = data[0] | (data[1] << 8) | (data[2] << 16) | (data[3] << 24);
-            boxMon->hpIV = ivs & MAX_IV_MASK;
-            boxMon->attackIV = (ivs >> 5) & MAX_IV_MASK;
-            boxMon->defenseIV = (ivs >> 10) & MAX_IV_MASK;
-            boxMon->speedIV = (ivs >> 15) & MAX_IV_MASK;
-            boxMon->spAttackIV = (ivs >> 20) & MAX_IV_MASK;
-            boxMon->spDefenseIV = (ivs >> 25) & MAX_IV_MASK;
-            break;
-        }
         case MON_DATA_STATUS:
             break;
         case MON_DATA_PERSONALITY:
@@ -1651,7 +1558,7 @@ const struct FormChange *GetSpeciesFormChanges(u16 species)
     return evolutions;
 }
 
-u8 PPMovimiento(u32 movimiento)
+u32 PPMovimiento(enum Movimientos movimiento)
 {
     return (gMovimientos[movimiento].pp);
 }
@@ -1661,7 +1568,7 @@ void PokemonToBattleMon(struct Pokemon *src, struct BattlePokemon *dst)
     s32 i;
     u8 nickname[POKEMON_NAME_BUFFER_SIZE];
 
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
         dst->moves[i] = GetMonData(src, MON_DATA_MOVE1 + i, NULL);
         dst->pp[i] = GetMonData(src, MON_DATA_PP1 + i, NULL);
@@ -1671,12 +1578,6 @@ void PokemonToBattleMon(struct Pokemon *src, struct BattlePokemon *dst)
     dst->item = GetMonData(src, MON_DATA_HELD_ITEM, NULL);
     dst->friendship = GetMonData(src, MON_DATA_FRIENDSHIP, NULL);
     dst->experience = GetMonData(src, MON_DATA_EXP, NULL);
-    dst->hpIV = GetMonData(src, MON_DATA_HP_IV, NULL);
-    dst->attackIV = GetMonData(src, MON_DATA_ATK_IV, NULL);
-    dst->defenseIV = GetMonData(src, MON_DATA_DEF_IV, NULL);
-    dst->speedIV = GetMonData(src, MON_DATA_SPEED_IV, NULL);
-    dst->spAttackIV = GetMonData(src, MON_DATA_SPATK_IV, NULL);
-    dst->spDefenseIV = GetMonData(src, MON_DATA_SPDEF_IV, NULL);
     dst->personality = GetMonData(src, MON_DATA_PERSONALITY, NULL);
     dst->status1 = GetMonData(src, MON_DATA_STATUS, NULL);
     dst->level = GetMonData(src, MON_DATA_LEVEL, NULL);
@@ -1976,7 +1877,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                         if (!(effectFlags & (ITEM4_HEAL_PP_ONE >> 3)))
                         {
                             // Heal PP for all moves
-                            for (temp2 = 0; (signed)(temp2) < (signed)(MAX_MON_MOVES); temp2++)
+                            for (temp2 = 0; (signed)(temp2) < (signed)(MAXIMO_MOVIMIENTOS_POKEMON); temp2++)
                             {
                                 u16 moveId;
                                 dataUnsigned = GetMonData(mon, MON_DATA_PP1 + temp2, NULL);
@@ -2815,7 +2716,7 @@ bool8 TryIncrementMonLevel(struct Pokemon *mon)
     }
 }
 
-u8 CanLearnTeachableMove(u16 species, u16 move)
+u8 CanLearnTeachableMove(u16 species, enum Movimientos movimiento)
 {
     if (species == SPECIES_EGG)
     {
@@ -2828,14 +2729,14 @@ u8 CanLearnTeachableMove(u16 species, u16 move)
 
         for (i = 0; teachableLearnset[i] != MOVE_NONE; i++)
         {
-            if (teachableLearnset[i] == move)
+            if (teachableLearnset[i] == movimiento)
                 return TRUE;
         }
         return FALSE;
     }
 }
 
-u8 GetMoveRelearnerMoves(struct Pokemon *mon, u16 *moves)
+u8 GetMoveRelearnerMoves(struct Pokemon *mon, enum Movimientos *movimientos)
 {
     u16 learnedMoves[4];
     u8 numMoves = 0;
@@ -2844,30 +2745,30 @@ u8 GetMoveRelearnerMoves(struct Pokemon *mon, u16 *moves)
     const struct LevelUpMove *learnset = GetSpeciesLevelUpLearnset(species);
     u32 i, j, k;
 
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
         learnedMoves[i] = GetMonData(mon, MON_DATA_MOVE1 + i, 0);
 
     for (i = 0; i < MAX_LEVEL_UP_MOVES; i++)
     {
         u16 moveLevel;
 
-        if (learnset[i].move == LEVEL_UP_MOVE_END)
+        if (learnset[i].movimiento == LEVEL_UP_MOVE_END)
             break;
 
         moveLevel = learnset[i].level;
 
         if (moveLevel <= level)
         {
-            for (j = 0; j < MAX_MON_MOVES && learnedMoves[j] != learnset[i].move; j++)
+            for (j = 0; j < MAXIMO_MOVIMIENTOS_POKEMON && learnedMoves[j] != learnset[i].movimiento; j++)
                 ;
 
-            if (j == MAX_MON_MOVES)
+            if (j == MAXIMO_MOVIMIENTOS_POKEMON)
             {
-                for (k = 0; k < numMoves && moves[k] != learnset[i].move; k++)
+                for (k = 0; k < numMoves && movimientos[k] != learnset[i].movimiento; k++)
                     ;
 
                 if (k == numMoves)
-                    moves[numMoves++] = learnset[i].move;
+                    movimientos[numMoves++] = learnset[i].movimiento;
             }
         }
     }
@@ -2875,22 +2776,22 @@ u8 GetMoveRelearnerMoves(struct Pokemon *mon, u16 *moves)
     return numMoves;
 }
 
-u8 GetLevelUpMovesBySpecies(u16 species, u16 *moves)
+u8 GetLevelUpMovesBySpecies(u16 species, enum Movimientos *movimientos)
 {
     u8 numMoves = 0;
     u32 i;
     const struct LevelUpMove *learnset = GetSpeciesLevelUpLearnset(species);
 
-    for (i = 0; i < MAX_LEVEL_UP_MOVES && learnset[i].move != LEVEL_UP_MOVE_END; i++)
-         moves[numMoves++] = learnset[i].move;
+    for (i = 0; i < MAX_LEVEL_UP_MOVES && learnset[i].movimiento != LEVEL_UP_MOVE_END; i++)
+         movimientos[numMoves++] = learnset[i].movimiento;
 
      return numMoves;
 }
 
 u8 GetNumberOfRelearnableMoves(struct Pokemon *mon)
 {
-    u16 learnedMoves[MAX_MON_MOVES];
-    u16 moves[MAX_LEVEL_UP_MOVES];
+    u16 learnedMoves[MAXIMO_MOVIMIENTOS_POKEMON];
+    enum Movimientos movimientos[MAX_LEVEL_UP_MOVES];
     u8 numMoves = 0;
     u16 species = GetMonData(mon, MON_DATA_SPECIES_OR_EGG, 0);
     u8 level = GetMonData(mon, MON_DATA_LEVEL, 0);
@@ -2900,30 +2801,30 @@ u8 GetNumberOfRelearnableMoves(struct Pokemon *mon)
     if (species == SPECIES_EGG)
         return 0;
 
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
         learnedMoves[i] = GetMonData(mon, MON_DATA_MOVE1 + i, 0);
 
     for (i = 0; i < MAX_LEVEL_UP_MOVES; i++)
     {
         u16 moveLevel;
 
-        if (learnset[i].move == LEVEL_UP_MOVE_END)
+        if (learnset[i].movimiento == LEVEL_UP_MOVE_END)
             break;
 
         moveLevel = learnset[i].level;
 
         if (moveLevel <= level)
         {
-            for (j = 0; j < MAX_MON_MOVES && learnedMoves[j] != learnset[i].move; j++)
+            for (j = 0; j < MAXIMO_MOVIMIENTOS_POKEMON && learnedMoves[j] != learnset[i].movimiento; j++)
                 ;
 
-            if (j == MAX_MON_MOVES)
+            if (j == MAXIMO_MOVIMIENTOS_POKEMON)
             {
-                for (k = 0; k < numMoves && moves[k] != learnset[i].move; k++)
+                for (k = 0; k < numMoves && movimientos[k] != learnset[i].movimiento; k++)
                     ;
 
                 if (k == numMoves)
-                    moves[numMoves++] = learnset[i].move;
+                    movimientos[numMoves++] = learnset[i].movimiento;
             }
         }
     }
@@ -3142,15 +3043,13 @@ void MonRestorePP(struct Pokemon *mon)
 
 void BoxMonRestorePP(struct BoxPokemon *boxMon)
 {
-    u32 i;
-
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (u32 indiceMovimiento = 0; indiceMovimiento < MAXIMO_MOVIMIENTOS_POKEMON; indiceMovimiento++)
     {
-        if (GetBoxMonData(boxMon, MON_DATA_MOVE1 + i, 0))
+        if (GetBoxMonData(boxMon, MON_DATA_MOVE1 + indiceMovimiento, 0))
         {
-            u16 move = GetBoxMonData(boxMon, MON_DATA_MOVE1 + i, 0);
-            u8 pp = PPMovimiento(move);
-            SetBoxMonData(boxMon, MON_DATA_PP1 + i, &pp);
+            enum Movimientos movimiento = GetBoxMonData(boxMon, MON_DATA_MOVE1 + indiceMovimiento, 0);
+            u32 pp = PPMovimiento(movimiento);
+            SetBoxMonData(boxMon, MON_DATA_PP1 + indiceMovimiento, &pp);
         }
     }
 }
@@ -3672,7 +3571,7 @@ void TryToSetBattleFormChangeMoves(struct Pokemon *mon, u16 method)
             u16 originalMove = formChanges[i].param2;
             u16 newMove = formChanges[i].param3;
 
-            for (j = 0; j < MAX_MON_MOVES; j++)
+            for (j = 0; j < MAXIMO_MOVIMIENTOS_POKEMON; j++)
             {
                 u16 currMove = GetMonData(mon, MON_DATA_MOVE1 + j, NULL);
                 if (currMove == originalMove)
@@ -3753,16 +3652,16 @@ u16 GetSpeciesPreEvolution(u16 species)
     return SPECIES_NONE;
 }
 
-const u8 *GetMoveName(u16 moveId)
+const u8 *ObtenNombreMovimiento(enum Movimientos movimiento)
 {
-    return gMovimientos[moveId].name;
+    return gMovimientos[movimiento].name;
 }
 
-const u8 *GetMoveAnimationScript(u16 moveId)
+const u8 *ObtenScriptAnimacionMovimiento(enum Movimientos movimiento)
 {
-    if (gMovimientos[moveId].battleAnimScript == NULL)
+    if (gMovimientos[movimiento].battleAnimScript == NULL)
     {
         return gMovimientos[MOVE_NONE].battleAnimScript;
     }
-    return gMovimientos[moveId].battleAnimScript;
+    return gMovimientos[movimiento].battleAnimScript;
 }

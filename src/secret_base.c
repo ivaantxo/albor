@@ -550,41 +550,7 @@ static u8 GetAverageEVs(struct Pokemon *pokemon)
 
 void SetPlayerSecretBaseParty(void)
 {
-    u32 i;
-    u16 moveIdx;
-    u16 partyId;
-    struct SecretBaseParty *party;
 
-    partyId = 0;
-    party = &gSaveBlockPtr->secretBases[0].party;
-    if (gSaveBlockPtr->secretBases[0].secretBaseId)
-    {
-        for (i = 0; i < PARTY_SIZE; i++)
-        {
-            for (moveIdx = 0; moveIdx < MAX_MON_MOVES; moveIdx++)
-                party->moves[i * MAX_MON_MOVES + moveIdx] = MOVE_NONE;
-
-            party->species[i] = SPECIES_NONE;
-            party->heldItems[i] = ITEM_NONE;
-            party->levels[i] = 0;
-            party->personality[i] = 0;
-            party->EVs[i] = 0;
-
-            if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) != SPECIES_NONE
-            && !GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG))
-            {
-                for (moveIdx = 0; moveIdx < MAX_MON_MOVES; moveIdx++)
-                    party->moves[partyId * MAX_MON_MOVES + moveIdx] = GetMonData(&gPlayerParty[i], MON_DATA_MOVE1 + moveIdx);
-
-                party->species[partyId] = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES);
-                party->heldItems[partyId] = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
-                party->levels[partyId] = GetMonData(&gPlayerParty[i], MON_DATA_LEVEL);
-                party->personality[partyId] = GetMonData(&gPlayerParty[i], MON_DATA_PERSONALITY);
-                party->EVs[partyId] = GetAverageEVs(&gPlayerParty[i]);
-                partyId++;
-            }
-        }
-    }
 }
 
 void ClearAndLeaveSecretBase(void)

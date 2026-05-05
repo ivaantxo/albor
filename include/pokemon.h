@@ -6,7 +6,6 @@
 #include "constants/items.h"
 #include "constants/region_map_sections.h"
 #include "constants/map_groups.h"
-#include "contest_effect.h"
 
 #define GET_BASE_SPECIES_ID(speciesId) (GetFormSpeciesId(speciesId, 0))
 #define FORM_SPECIES_END (0xffff)
@@ -48,12 +47,6 @@ enum {
     MON_DATA_MET_LOCATION,
     MON_DATA_MET_LEVEL,
     MON_DATA_POKEBALL,
-    MON_DATA_HP_IV,
-    MON_DATA_ATK_IV,
-    MON_DATA_DEF_IV,
-    MON_DATA_SPEED_IV,
-    MON_DATA_SPATK_IV,
-    MON_DATA_SPDEF_IV,
     MON_DATA_IS_EGG,
     MON_DATA_ABILITY_NUM,
     MON_DATA_TOUGH,
@@ -73,7 +66,6 @@ enum {
     MON_DATA_SPDEF,
     MON_DATA_MAIL,
     MON_DATA_SPECIES_OR_EGG,
-    MON_DATA_IVS,
     MON_DATA_CHAMPION_RIBBON,
     MON_DATA_WINNING_RIBBON,
     MON_DATA_VICTORY_RIBBON,
@@ -103,38 +95,31 @@ struct BoxPokemon
     u32 heldItem:10;
     u32 pokeball:6;
     u32 friendship:8;
-
     u8 hpEV;
+
     u8 attackEV;
     u8 defenseEV;
     u8 speedEV;
-
     u8 spAttackEV;
+
     u8 spDefenseEV;
     u8 metLocation;
     u32 metLevel:7;
     u32 isEgg:1;
 
-    u32 move1:11;
-    u32 hpIV:5;
-    u32 move2:11;
-    u32 attackIV:5;
 
-    u32 move3:11;
-    u32 defenseIV:5;
-    u32 move4:11;
-    u32 speedIV:5;
+    u8 otName[MAXIMO_CARACTERES_NOMBRE_JUGADOR];
+
+    enum Movimientos move1;
+    enum Movimientos move2;
+    enum Movimientos move3;
+    enum Movimientos move4;
 
     u32 pp1:7;
     u32 pp2:7;
     u32 pp3:7;
-    u32 spAttackIV:5;
-    u32 spDefenseIV:5;
-    bool32 esShiny:1;
-
-    u8 otName[MAXIMO_CARACTERES_NOMBRE_JUGADOR];
-
     u32 pp4:7;
+    bool32 esShiny:1;
     u32 abilityNum:2;
 };
 
@@ -169,18 +154,12 @@ struct BattlePokemon
     u16 speed;
     u16 spAttack;
     u16 spDefense;
-    u16 moves[MAX_MON_MOVES];
-    u32 hpIV:5;
-    u32 attackIV:5;
-    u32 defenseIV:5;
-    u32 speedIV:5;
-    u32 spAttackIV:5;
-    u32 spDefenseIV:5;
+    enum Movimientos movimientos[MAXIMO_MOVIMIENTOS_POKEMON];
     u32 abilityNum:2;
     s8 statStages[NUMERO_ESTADISTICAS_BATALLA];
     u16 ability;
     u8 types[NUMERO_TIPOS_POR_POKEMON];
-    u8 pp[MAX_MON_MOVES];
+    u8 pp[MAXIMO_MOVIMIENTOS_POKEMON];
     u16 hp;
     u8 level;
     u8 friendship;
@@ -295,8 +274,6 @@ struct Movimientos
 
     u32 strikeCount;
 
-    u32 criticalHitStage;
-
     u32 alwaysCriticalHit;
 
     u32 numAdditionalEffects;
@@ -304,7 +281,6 @@ struct Movimientos
     u32 makesContact:1;
     u32 ignoresProtect:1;
     u32 espejoMagico:1;
-    u32 snatchAffected:1;
     u32 bitingMove:1;
     u32 soundMove:1;
     u32 balistico:1;
@@ -315,7 +291,6 @@ struct Movimientos
     u32 danceMove:1;
     u32 windMove:1;
     u32 slicingMove:1;
-    u32 healingMove:1;
     u32 minimizeDoubleDamage:1;
     u32 ignoresTargetAbility:1;
     u32 ignoresTargetDefenseEvasionStages:1;
@@ -335,10 +310,14 @@ struct Movimientos
     bool32 climatico;
     bool32 cabezazo;
     bool32 punietazo;
+    bool32 altoIndiceCritico;
+    bool32 curativo;
 
     enum PrioridadMovimientos prioridad;
 
     u32 argument;
+    enum ClimasCombate clima;
+    u32 estado; // Convertir a enum, revisar
 
     const struct AdditionalEffect *additionalEffects;
 
@@ -361,8 +340,7 @@ struct Ability
 {
     u8 name[ABILITY_NAME_LENGTH + 1];
     const u8 *description;
-    u8 cantBeCopied:1; // cannot be copied by Role Play
-    u8 cantBeTraced:1; // cannot be copied by Trace - same as cantBeCopied except for Wonder Guard
+    u8 cantBeTraced:1; // cannot be copied by Trace
     u8 breakable:1; // can be bypassed by Mold Breaker and clones
 };
 
@@ -386,7 +364,7 @@ struct NatureInfo
 
 struct LevelUpMove
 {
-    u16 move;
+    enum Movimientos movimiento;
     u16 level;
 };
 
@@ -421,24 +399,24 @@ void ZeroBoxMonData(struct BoxPokemon *boxMon);
 void ZeroMonData(struct Pokemon *mon);
 void ZeroPlayerPartyMons(void);
 void ZeroEnemyPartyMons(void);
-void CreaPokemon(struct Pokemon *mon, u32 species, u32 level, u32 fixedIV, bool32 hasFixedPersonality, u32 fixedPersonality);
-void CreaPokemonCaja(struct BoxPokemon *boxMon, u32 especie, u32 nivel, u32 ivFijo, bool32 tienePersonalidadFija, u32 personalidadFija);
-void CreaPokemonConNaturaleza(struct Pokemon *mon, u32 species, u32 level, u32 fixedIV, u32 nature);
-void CreaPokemonConGeneroNaturaleza(struct Pokemon *mon, u32 species, u32 level, u32 fixedIV, u32 gender, u32 nature);
+void CreaPokemon(struct Pokemon *mon, u32 species, u32 level, bool32 hasFixedPersonality, u32 fixedPersonality);
+void CreaPokemonCaja(struct BoxPokemon *boxMon, u32 especie, u32 nivel, bool32 tienePersonalidadFija, u32 personalidadFija);
+void CreaPokemonConNaturaleza(struct Pokemon *mon, u32 species, u32 level, u32 nature);
+void CreaPokemonConGeneroNaturaleza(struct Pokemon *mon, u32 species, u32 level, u32 gender, u32 nature);
 void CalculateMonStats(struct Pokemon *mon);
 void BoxMonToMon(const struct BoxPokemon *src, struct Pokemon *dest);
 u8 GetLevelFromMonExp(struct Pokemon *mon);
 u8 GetLevelFromBoxMonExp(struct BoxPokemon *boxMon);
-u16 GiveMoveToMon(struct Pokemon *mon, u16 move);
-u16 GiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move);
-u16 GiveMoveToBattleMon(struct BattlePokemon *mon, u16 move);
-void SetMonMoveSlot(struct Pokemon *mon, u16 move, u8 slot);
-void SetBattleMonMoveSlot(struct BattlePokemon *mon, u16 move, u8 slot);
+u16 GiveMoveToMon(struct Pokemon *mon, enum Movimientos movimiento);
+u16 GiveMoveToBoxMon(struct BoxPokemon *boxMon, enum Movimientos movimiento);
+u16 GiveMoveToBattleMon(struct BattlePokemon *mon, enum Movimientos movimiento);
+void SetMonMoveSlot(struct Pokemon *mon, enum Movimientos movimiento, u8 slot);
+void SetBattleMonMoveSlot(struct BattlePokemon *mon, enum Movimientos movimiento, u8 slot);
 void GiveMonInitialMoveset(struct Pokemon *mon);
 void GiveBoxMonInitialMoveset(struct BoxPokemon *boxMon);
 u16 MonTryLearningNewMove(struct Pokemon *mon, bool8 firstMove);
-void DeleteFirstMoveAndGiveMoveToMon(struct Pokemon *mon, u16 move);
-void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move);
+void DeleteFirstMoveAndGiveMoveToMon(struct Pokemon *mon, enum Movimientos movimiento);
+void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, enum Movimientos movimiento);
 u8 CountAliveMonsInBattle(u8 caseId, u32 battler);
 u8 GetDefaultMoveTarget(u8 battlerId);
 u8 GetMonGender(struct Pokemon *mon);
@@ -479,7 +457,7 @@ const u16 *GetSpeciesEggMoves(u16 species);
 const struct Evolution *GetSpeciesEvolutions(u16 species);
 const u16 *GetSpeciesFormTable(u16 species);
 const struct FormChange *GetSpeciesFormChanges(u16 species);
-u8 PPMovimiento(u32 movimiento);
+u32 PPMovimiento(enum Movimientos movimiento);
 void PokemonToBattleMon(struct Pokemon *src, struct BattlePokemon *dst);
 void CopyPartyMonToBattleData(u32 battlerId, u32 partyIndex);
 bool8 ExecuteTableBasedItemEffect(struct Pokemon *mon, u16 item, u8 partyIndex, u8 moveIndex);
@@ -504,7 +482,7 @@ u8 CheckPartyHasHadPokerus(struct Pokemon *party, u8 selection);
 void UpdatePartyPokerusTime(u16 days);
 void PartySpreadPokerus(struct Pokemon *party);
 bool8 TryIncrementMonLevel(struct Pokemon *mon);
-u8 CanLearnTeachableMove(u16 species, u16 move);
+u8 CanLearnTeachableMove(u16 species, enum Movimientos movimiento);
 u8 GetMoveRelearnerMoves(struct Pokemon *mon, u16 *moves);
 u8 GetLevelUpMovesBySpecies(u16 species, u16 *moves);
 u8 GetNumberOfRelearnableMoves(struct Pokemon *mon);
@@ -552,7 +530,7 @@ u16 GetCryIdBySpecies(u16 species);
 u16 GetSpeciesPreEvolution(u16 species);
 void HealPokemon(struct Pokemon *mon);
 void HealBoxPokemon(struct BoxPokemon *boxMon);
-const u8 *GetMoveName(u16 moveId);
-const u8 *GetMoveAnimationScript(u16 moveId);
+const u8 *ObtenNombreMovimiento(enum Movimientos movimiento);
+const u8 *ObtenScriptAnimacionMovimiento(enum Movimientos movimiento);
 
 #endif // GUARD_POKEMON_H

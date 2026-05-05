@@ -294,11 +294,11 @@ void CreateWildMon(u32 species, u32 level)
         else
             gender = MON_FEMALE;
 
-        CreaPokemonConGeneroNaturaleza(&gEnemyParty[0], species, level, USE_RANDOM_IVS, gender, EscogeNaturalezaPokemonSalvaje());
+        CreaPokemonConGeneroNaturaleza(&gEnemyParty[0], species, level, gender, EscogeNaturalezaPokemonSalvaje());
         return;
     }
 
-    CreaPokemonConNaturaleza(&gEnemyParty[0], species, level, USE_RANDOM_IVS, EscogeNaturalezaPokemonSalvaje());
+    CreaPokemonConNaturaleza(&gEnemyParty[0], species, level, EscogeNaturalezaPokemonSalvaje());
 }
 #ifdef BUGFIX
 #define TRY_GET_ABILITY_INFLUENCED_WILD_MON_INDEX(wildPokemon, type, ability, ptr, count) TryGetAbilityInfluencedWildMonIndex(wildPokemon, type, ability, ptr, count)
@@ -382,7 +382,7 @@ static bool8 SetUpMassOutbreakEncounter(u8 flags)
         return FALSE;
 
     CreateWildMon(gSaveBlockPtr->outbreakPokemonSpecies, gSaveBlockPtr->outbreakPokemonLevel);
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
         SetMonMoveSlot(&gEnemyParty[0], gSaveBlockPtr->outbreakPokemonMoves[i], i);
 
     return TRUE;

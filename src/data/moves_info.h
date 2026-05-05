@@ -5,11 +5,12 @@
 #include "constants/battle_string_ids.h"
 #include "constants/hold_effects.h"
 #include "constants/moves.h"
-#include "constants/contest.h"
 
-#define CLIMATICO               .climatico  = TRUE
-#define CABEZAZO                .cabezazo   = TRUE
-#define PUNIETAZO               .punietazo  = TRUE
+#define CLIMATICO               .climatico          = TRUE
+#define CABEZAZO                .cabezazo           = TRUE
+#define PUNIETAZO               .punietazo          = TRUE
+#define CRITICO_ALTO            .altoIndiceCritico  = TRUE
+#define CURATIVO                .curativo           = TRUE
 
 #define PRIORIDAD_NEGATIVA      .prioridad  = PRIORIDAD_MOVIMIENTO_NEGATIVA
 #define PRIORIDAD_NORMAL        .prioridad  = PRIORIDAD_MOVIMIENTO_NORMAL
@@ -137,7 +138,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = 70,
         .type = TIPO_LUCHA,
         .accuracy = PRECISION_NORMAL,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = PP_MOVIMIENTO_NORMAL,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -345,7 +346,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .battleAnimScript = gBattleAnimMove_Guillotina,
@@ -388,7 +389,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .danceMove = TRUE,
-        .snatchAffected = TRUE,
         .battleAnimScript = gBattleAnimMove_SwordsDance,
     },
 
@@ -1227,7 +1227,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        .snatchAffected = TRUE,
         CLIMATICO,
         .battleAnimScript = gBattleAnimMove_Mist,
     },
@@ -1322,7 +1321,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .windMove = TRUE,
         CLIMATICO,
-        .argument = CLIMA_MOVIMIENTO_NIEVE,
+        .clima = CLIMA_COMBATE_NIEVE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = EFECTO_MOVIMIENTO_CONGELACION,
             .chance = 30,
@@ -1545,7 +1544,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .healingMove = TRUE,
+        CURATIVO,
         .battleAnimScript = gBattleAnimMove_Absorb,
     },
 
@@ -1561,7 +1560,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .healingMove = TRUE,
+        CURATIVO,
         .battleAnimScript = gBattleAnimMove_MegaDrain,
     },
 
@@ -1603,7 +1602,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        .snatchAffected = TRUE,
         .battleAnimScript = gBattleAnimMove_Growth,
     },
 
@@ -1617,7 +1615,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = 55,
         .type = TIPO_PLANTA,
         .accuracy = 95,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = 25,
         .target = MOVE_TARGET_BOTH,
         PRIORIDAD_NORMAL,
@@ -1641,7 +1639,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
         .sleepTalkBanned = TRUE,
-        .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKSUNLIGHT, CLIMA_MOVIMIENTO_SOL),
+        .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKSUNLIGHT, CLIMA_COMBATE_SOL),
         .battleAnimScript = gBattleAnimMove_SolarBeam,
     },
 
@@ -1867,7 +1865,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .damagesAirborne = TRUE,
         CLIMATICO,
-        .argument = CLIMA_MOVIMIENTO_LLUVIA,
+        .clima = CLIMA_COMBATE_LLUVIA,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 30,
@@ -2041,7 +2039,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        .snatchAffected = TRUE,
         .battleAnimScript = gBattleAnimMove_Meditate,
     },
 
@@ -2060,7 +2057,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        .snatchAffected = TRUE,
         .battleAnimScript = gBattleAnimMove_Agility,
     },
 
@@ -2124,7 +2120,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Doble de daño en dormidos,\n"
             "pero los despierta."),
-        .effect = EFFECT_DOUBLE_POWER_ON_ARG_STATUS,
+        .effect = EFECTO_DOBLE_POTENCIA_SI_ESTADO,
         .power = 60,
         .type = TIPO_FANTASMA,
         .accuracy = PRECISION_NORMAL,
@@ -2175,7 +2171,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        .snatchAffected = TRUE,
         .battleAnimScript = gBattleAnimMove_DoubleTeam,
     },
 
@@ -2200,8 +2195,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        .healingMove = TRUE,
-        .snatchAffected = TRUE,
+        CURATIVO,
         .battleAnimScript = gBattleAnimMove_Recover,
     },
 
@@ -2220,7 +2214,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        .snatchAffected = TRUE,
         .battleAnimScript = gBattleAnimMove_Harden,
     },
 
@@ -2239,7 +2232,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        .snatchAffected = TRUE,
         .battleAnimScript = gBattleAnimMove_Minimize,
     },
 
@@ -2294,7 +2286,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        .snatchAffected = TRUE,
         .battleAnimScript = gBattleAnimMove_Withdraw,
     },
 
@@ -2313,7 +2304,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        .snatchAffected = TRUE,
         .battleAnimScript = gBattleAnimMove_DefenseCurl,
     },
 
@@ -2332,7 +2322,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        .snatchAffected = TRUE,
         .battleAnimScript = gBattleAnimMove_Barrier,
     },
 
@@ -2351,7 +2340,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        .snatchAffected = TRUE,
         .battleAnimScript = gBattleAnimMove_LightScreen,
     },
 
@@ -2389,7 +2377,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        .snatchAffected = TRUE,
         .battleAnimScript = gBattleAnimMove_Reflect,
     },
 
@@ -2683,7 +2670,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        .snatchAffected = TRUE,
         .battleAnimScript = gBattleAnimMove_Amnesia,
     },
 
@@ -2719,9 +2705,8 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .healingMove = TRUE,
+        CURATIVO,
         .ignoresProtect = TRUE,
-        .snatchAffected = TRUE,
         .battleAnimScript = gBattleAnimMove_SoftBoiled,
     },
 
@@ -2785,7 +2770,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .healingMove = TRUE,
+        CURATIVO,
         .battleAnimScript = gBattleAnimMove_DreamEater,
     },
 
@@ -2822,7 +2807,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .effect = EFFECT_MULTI_HIT,
         .power = 15,
         .type = TIPO_NORMAL,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .accuracy = PRECISION_NORMAL,
         .pp = 10,
         .target = MOVE_TARGET_SELECTED,
@@ -2847,7 +2832,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .healingMove = TRUE,
+        CURATIVO,
         .battleAnimScript = gBattleAnimMove_LeechLife,
     },
 
@@ -2981,7 +2966,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_AcidArmor,
     },
@@ -2996,7 +2980,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 100 : 90,
         .type = TIPO_AGUA,
         .accuracy = B_UPDATED_MOVE_DATA >= GEN_5 ? 90 : 85,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = 10,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -3074,9 +3058,8 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
-        .healingMove = TRUE,
+        CURATIVO,
         .battleAnimScript = gBattleAnimMove_Rest,
     },
 
@@ -3138,7 +3121,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_Sharpen,
     },
@@ -3189,7 +3171,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = 70,
         .type = TIPO_NORMAL,
         .accuracy = PRECISION_NORMAL,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = 20,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -3213,7 +3195,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_Substitute,
     },
@@ -3394,24 +3375,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Curse,
     },
 
-    [MOVE_FLAIL] =
-    {
-        .name = COMPOUND_STRING("Azote"),
-        .description = COMPOUND_STRING(
-            "Inflicts more damage when\n"
-            "the user's HP is down."),
-        .effect = EFFECT_FLAIL,
-        .power = 1,
-        .type = TIPO_NORMAL,
-        .accuracy = PRECISION_NORMAL,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_Flail,
-    },
-
     [MOVE_AEROBLAST] =
     {
         .name = COMPOUND_STRING("Aerocañón"),
@@ -3422,7 +3385,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = 100,
         .type = TIPO_VOLADOR,
         .accuracy = 95,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = 5,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -3448,24 +3411,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .espejoMagico = TRUE,
         .powderMove = TRUE,
         .battleAnimScript = gBattleAnimMove_CottonSpore,
-    },
-
-    [MOVE_REVERSAL] =
-    {
-        .name = COMPOUND_STRING("Inversión"),
-        .description = COMPOUND_STRING(
-            "Inflicts more damage when\n"
-            "the user's HP is down."),
-        .effect = EFFECT_FLAIL,
-        .power = 1,
-        .type = TIPO_LUCHA,
-        .accuracy = PRECISION_NORMAL,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_Reversal,
     },
 
     [MOVE_NIEVE_POLVO] =
@@ -3595,7 +3540,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_BellyDrum,
     },
@@ -3861,7 +3805,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .danceMove = TRUE,
         .windMove = TRUE,
         CLIMATICO,
-        .battleAnimScript = gBattleAnimMOVE_TORMENTA_ARENA,
+        .battleAnimScript = gAnimacionMovimiento_TormentaArena,
     },
 
     [MOVE_GIGA_DRAIN] =
@@ -3878,7 +3822,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .healingMove = TRUE,
+        CURATIVO,
         .battleAnimScript = gBattleAnimMove_GigaDrain,
     },
 
@@ -3951,8 +3895,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .healingMove = TRUE,
-        .snatchAffected = TRUE,
+        CURATIVO,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_MilkDrink,
     },
@@ -4099,7 +4042,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .ignoresSubstitute = TRUE,
         .soundMove = B_UPDATED_MOVE_FLAGS != GEN_5,
@@ -4137,7 +4079,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_Safeguard,
     },
@@ -4418,8 +4359,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .healingMove = TRUE,
-        .snatchAffected = TRUE,
+        CURATIVO,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_MorningSun,
     },
@@ -4438,8 +4378,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .healingMove = TRUE,
-        .snatchAffected = TRUE,
+        CURATIVO,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_Synthesis,
     },
@@ -4458,8 +4397,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .healingMove = TRUE,
-        .snatchAffected = TRUE,
+        CURATIVO,
         .ignoresProtect = TRUE,
         .danceMove = TRUE,
         .battleAnimScript = gBattleAnimMove_Moonlight,
@@ -4475,7 +4413,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = 100,
         .type = TIPO_LUCHA,
         .accuracy = 80,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = 5,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -4587,7 +4525,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
         .ignoresSubstitute = TRUE,
-        .snatchAffected = B_UPDATED_MOVE_FLAGS < GEN_5,
         .battleAnimScript = gBattleAnimMove_PsychUp,
     },
 
@@ -4778,7 +4715,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_Stockpile,
     },
@@ -4814,8 +4750,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .healingMove = TRUE,
-        .snatchAffected = TRUE,
+        CURATIVO,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_Swallow,
     },
@@ -4827,7 +4762,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
             "Exhales a hot breath on the\n"
             "foe. May inflict a burn."),
         .effect = EFFECT_PRECISION_INCREMENTADA_CLIMA,
-        .argument = CLIMA_MOVIMIENTO_SOL,
+        .clima = CLIMA_COMBATE_SOL,
         .power = 100,
         .type = TIPO_FUEGO,
         .accuracy = PRECISION_BAJA,
@@ -4942,7 +4877,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Powerful against paralyzed\n"
             "foes, but also heals them."),
-        .effect = EFFECT_DOUBLE_POWER_ON_ARG_STATUS,
+        .effect = EFECTO_DOBLE_POTENCIA_SI_ESTADO,
         .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 70 : 60,
         .type = TIPO_NORMAL,
         .accuracy = PRECISION_NORMAL,
@@ -4990,7 +4925,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_Charge,
     },
@@ -5045,7 +4979,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_Ingrain,
     },
@@ -5086,7 +5019,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_Recycle,
     },
@@ -5179,7 +5111,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .ignoresProtect = TRUE,
         .ignoresSubstitute = TRUE,
         .battleAnimScript = gBattleAnimMove_Imprison,
@@ -5199,27 +5130,8 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_Refresh,
-    },
-
-    [MOVE_SNATCH] =
-    {
-        .name = COMPOUND_STRING("Robo"),
-        .description = COMPOUND_STRING(
-            "Steals the effects of the\n"
-            "move the target uses next."),
-        .effect = EFFECT_SNATCH,
-        .power = 0,
-        .type = TIPO_SINIESTRO,
-        .accuracy = PRECISION_NORMAL,
-        .pp = 10,
-        .target = MOVE_TARGET_DEPENDS,
-        PRIORIDAD_MUY_ALTA,
-        .category = CATEGORIA_ESTADO,
-        .ignoresSubstitute = TRUE,
-        .battleAnimScript = gBattleAnimMove_Snatch,
     },
 
     [MOVE_SECRET_POWER] =
@@ -5295,7 +5207,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_TailGlow,
     },
@@ -5390,7 +5301,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = 70,
         .type = TIPO_FUEGO,
         .accuracy = PRECISION_NORMAL,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = PP_MOVIMIENTO_LIMITADO,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -5461,8 +5372,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .healingMove = TRUE,
-        .snatchAffected = TRUE,
+        CURATIVO,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_SlackOff,
     },
@@ -5653,7 +5563,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_Aromatherapy,
     },
@@ -5686,7 +5595,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 60 : 55,
         .type = TIPO_VOLADOR,
         .accuracy = 95,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = 25,
         .target = MOVE_TARGET_BOTH,
         PRIORIDAD_NORMAL,
@@ -5834,7 +5743,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_CosmicPower,
     },
@@ -6063,7 +5971,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_IronDefense,
     },
@@ -6101,7 +6008,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .soundMove = B_UPDATED_MOVE_FLAGS >= GEN_8,
         .battleAnimScript = gBattleAnimMove_Howl,
@@ -6160,7 +6066,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_BulkUp,
     },
@@ -6222,7 +6127,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = 50,
         .type = TIPO_VENENO,
         .accuracy = PRECISION_NORMAL,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = 25,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -6313,7 +6218,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_CalmMind,
     },
@@ -6328,7 +6232,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = B_UPDATED_MOVE_DATA >= GEN_4 ? 90 : 70,
         .type = TIPO_PLANTA,
         .accuracy = PRECISION_NORMAL,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = 15,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -6353,7 +6257,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .danceMove = TRUE,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_DragonDance,
     },
@@ -6450,8 +6353,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .healingMove = TRUE,
-        .snatchAffected = TRUE,
+        CURATIVO,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_Roost,
     },
@@ -6480,7 +6382,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Powerful against sleeping\n"
             "foes, but also heals them."),
-        .effect = EFFECT_DOUBLE_POWER_ON_ARG_STATUS,
+        .effect = EFECTO_DOBLE_POTENCIA_SI_ESTADO,
         .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 70 : 60,
         .type = TIPO_LUCHA,
         .accuracy = PRECISION_NORMAL,
@@ -6611,7 +6513,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .windMove = TRUE,
         .ignoresProtect = TRUE,
         CLIMATICO,
@@ -6738,7 +6639,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_PowerTrick,
     },
@@ -6775,7 +6675,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_LuckyChant,
     },
@@ -6832,24 +6731,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .battleAnimScript = gBattleAnimMove_Punishment,
-    },
-
-    [MOVE_LAST_RESORT] =
-    {
-        .name = COMPOUND_STRING("Última baza"),
-        .description = COMPOUND_STRING(
-            "Can only be used if every\n"
-            "other move has been used."),
-        .effect = EFFECT_LAST_RESORT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_5 ? 140 : 130,
-        .type = TIPO_NORMAL,
-        .accuracy = PRECISION_NORMAL,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_LastResort,
     },
 
     [MOVE_GOLPE_BAJO] =
@@ -6921,7 +6802,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_AquaRing,
     },
@@ -6940,7 +6820,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = B_UPDATED_MOVE_FLAGS >= GEN_5,
         .ignoresProtect = TRUE,
         .gravityBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_MagnetRise,
@@ -7023,7 +6902,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_RockPolish,
     },
@@ -7082,7 +6960,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = 70,
         .type = TIPO_SINIESTRO,
         .accuracy = PRECISION_NORMAL,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = 15,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -7265,7 +7143,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         PUNIETAZO,
-        .healingMove = TRUE,
+        CURATIVO,
         .battleAnimScript = gBattleAnimMove_DrainPunch,
     },
 
@@ -7421,7 +7299,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_NastyPlot,
     },
@@ -7494,7 +7371,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = 70,
         .type = TIPO_FANTASMA,
         .accuracy = PRECISION_NORMAL,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = 15,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -7622,7 +7499,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = 70,
         .type = TIPO_PSIQUICO,
         .accuracy = PRECISION_NORMAL,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = 20,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -7886,7 +7763,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = 70,
         .type = TIPO_VENENO,
         .accuracy = PRECISION_NORMAL,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = 20,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -7973,7 +7850,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = 100,
         .type = TIPO_ROCA,
         .accuracy = 80,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = 5,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -8167,7 +8044,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = 90,
         .type = TIPO_BICHO,
         .accuracy = PRECISION_NORMAL,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = 15,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -8189,7 +8066,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_DefendOrder,
     },
@@ -8208,8 +8084,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .healingMove = TRUE,
-        .snatchAffected = TRUE,
+        CURATIVO,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_HealOrder,
     },
@@ -8263,7 +8138,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = 100,
         .type = TIPO_DRAGON,
         .accuracy = 95,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = 5,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -8406,7 +8281,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_HoneClaws,
     },
@@ -8426,7 +8300,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_MUY_ALTA,
         .category = CATEGORIA_ESTADO,
         .argument = TRUE, // Protects the whole side.
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_WideGuard,
     },
@@ -8504,7 +8377,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Does double damage if the\n"
             "foe is poisoned."),
-        .effect = EFFECT_DOUBLE_POWER_ON_ARG_STATUS,
+        .effect = EFECTO_DOBLE_POTENCIA_SI_ESTADO,
         .power = 65,
         .type = TIPO_VENENO,
         .accuracy = PRECISION_NORMAL,
@@ -8530,7 +8403,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_Autotomize,
     },
@@ -8686,7 +8558,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .danceMove = TRUE,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_DanzaAleteo,
     },
@@ -8714,7 +8585,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Hurls an orb that does more\n"
             "damage to slower foes."),
-        .effect = EFFECT_ELECTRO_BALL,
+        .effect = EFFECT_HIT
         .power = 1,
         .type = TIPO_ELECTRICO,
         .accuracy = PRECISION_NORMAL,
@@ -8763,7 +8634,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_Coil,
     },
@@ -8903,26 +8773,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_StoredPower,
     },
 
-    [MOVE_QUICK_GUARD] =
-    {
-        .name = COMPOUND_STRING("Anticipo"),
-        .description = COMPOUND_STRING(
-            "Evades priority attacks\n"
-            "for one turn."),
-        .effect = EFFECT_PROTECT,
-        .power = 0,
-        .type = TIPO_LUCHA,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 15,
-        .target = MOVE_TARGET_USER,
-        PRIORIDAD_MUY_ALTA,
-        .category = CATEGORIA_ESTADO,
-        .argument = TRUE, // Protects the whole side.
-        .snatchAffected = TRUE,
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_QuickGuard,
-    },
-
     [MOVE_ESCALDAR] =
     {
         .name = COMPOUND_STRING("Escaldar"),
@@ -8958,7 +8808,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_ShellSmash,
     },
@@ -8978,7 +8827,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .espejoMagico = TRUE,
-        .healingMove = TRUE,
+        CURATIVO,
         .balistico = TRUE,
         .battleAnimScript = gBattleAnimMove_HealPulse,
     },
@@ -8989,7 +8838,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Does double damage if the\n"
             "foe has a status problem."),
-        .effect = EFFECT_DOUBLE_POWER_ON_ARG_STATUS,
+        .effect = EFECTO_DOBLE_POTENCIA_SI_CUALQUIER_ESTADO,
         .power = B_UPDATED_MOVE_DATA >= GEN_6 ? 65 : 50,
         .type = TIPO_FANTASMA,
         .accuracy = PRECISION_NORMAL,
@@ -8997,7 +8846,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .argument = STATUS1_ANY,
         .battleAnimScript = gBattleAnimMove_Hex,
     },
 
@@ -9015,7 +8863,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_ShiftGear,
     },
@@ -9216,7 +9063,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_WorkUp,
     },
@@ -9271,7 +9117,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = 80,
         .type = TIPO_TIERRA,
         .accuracy = 95,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = 10,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -9313,7 +9159,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .punzante = TRUE,
-        .healingMove = TRUE,
+        CURATIVO,
         .battleAnimScript = gBattleAnimMove_HornLeech,
     },
 
@@ -9365,7 +9211,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
             "Golpea con 100% de precisión\n"
             "en Sol. Puede confundir."),
         .effect = EFFECT_PRECISION_INCREMENTADA_CLIMA,
-        .argument = CLIMA_MOVIMIENTO_SOL,
+        .clima = CLIMA_COMBATE_SOL,
         .power = 110,
         .type = TIPO_FUEGO,
         .accuracy = PRECISION_BAJA,
@@ -9418,7 +9264,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_CottonGuard,
     },
@@ -9495,7 +9340,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .windMove = TRUE,
         .damagesAirborne = TRUE,
         CLIMATICO,
-        .argument = CLIMA_MOVIMIENTO_LLUVIA,
+        .clima = CLIMA_COMBATE_LLUVIA,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_CONFUSION,
             .chance = 30,
@@ -9835,7 +9680,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .argument = TRUE, // Protects the whole side.
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_MatBlock,
     },
@@ -9953,7 +9797,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_FOES_AND_ALLY,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .healingMove = TRUE,
+        CURATIVO,
         .battleAnimScript = gBattleAnimMove_ParabolicCharge,
     },
 
@@ -10067,7 +9911,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
         .makesContact = TRUE,
-        .healingMove = TRUE,
+        CURATIVO,
         .battleAnimScript = gBattleAnimMove_DrainingKiss,
     },
 
@@ -10443,7 +10287,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .healingMove = TRUE,
+        CURATIVO,
         .battleAnimScript = gBattleAnimMove_OblivionWing,
     },
 
@@ -10551,8 +10395,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .healingMove = TRUE,
-        .snatchAffected = TRUE,
+        CURATIVO,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_ShoreUp,
     },
@@ -10660,7 +10503,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .argument = MOVE_EFFECT_FLORAL_HEALING,
-        .healingMove = TRUE,
+        CURATIVO,
         .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_FloralHealing,
     },
@@ -10699,7 +10542,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .espejoMagico = TRUE,
-        .healingMove = TRUE,
+        CURATIVO,
         .battleAnimScript = gBattleAnimMove_StrengthSap,
     },
 
@@ -10720,7 +10563,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .slicingMove = TRUE,
         .sleepTalkBanned = TRUE,
-        .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKSUNLIGHT, CLIMA_MOVIMIENTO_SOL),
+        .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKSUNLIGHT, CLIMA_COMBATE_SOL),
         .battleAnimScript = gBattleAnimMove_SolarBlade,
     },
 
@@ -10791,7 +10634,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .ignoresSubstitute = TRUE,
         .battleAnimScript = gBattleAnimMove_GearUp,
@@ -10971,7 +10813,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .healingMove = TRUE,
+        CURATIVO,
         .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_Purify,
     },
@@ -11073,7 +10915,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_AuroraVeil,
     },
@@ -11382,7 +11223,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = 80,
         .type = TIPO_AGUA,
         .accuracy = PRECISION_NORMAL,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = 15,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -11722,7 +11563,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
             "Absorbs light in one turn,\n"
             "then attacks next turn."),
         .effect = EFFECT_PRECISION_INCREMENTADA_CLIMA,
-        .argument = CLIMA_MOVIMIENTO_ARENA,
+        .clima = CLIMA_COMBATE_ARENA,
         .power = 110,
         .type = TIPO_ROCA,
         .accuracy = PRECISION_BAJA,
@@ -12167,7 +12008,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
             "Wraps a foe in fierce winds.\n"
             "Varies with the user's form."),
         .effect = EFFECT_PRECISION_INCREMENTADA_CLIMA,
-        .argument = CLIMA_MOVIMIENTO_LLUVIA,
+        .clima = CLIMA_COMBATE_LLUVIA,
         .power = 100,
         .type = TIPO_HADA,
         .accuracy = PRECISION_NORMAL,
@@ -12292,7 +12133,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Can poison on impact. Powers\n"
             "up against poisoned foes."),
-        .effect = EFFECT_DOUBLE_POWER_ON_ARG_STATUS,
+        .effect = EFECTO_DOBLE_POTENCIA_SI_ESTADO,
         .power = 60,
         .type = TIPO_VENENO,
         .accuracy = PRECISION_NORMAL,
@@ -12318,7 +12159,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = B_UPDATED_MOVE_DATA >= GEN_9 ? 80 : 75,
         .type = TIPO_PSIQUICO,
         .accuracy = B_UPDATED_MOVE_DATA >= GEN_9 ? 100 : 90,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = 10,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -12358,7 +12199,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Hurts a foe harder if it has\n"
             "an ailment. May leave a burn."),
-        .effect = EFFECT_DOUBLE_POWER_ON_ARG_STATUS,
+        .effect = EFECTO_DOBLE_POTENCIA_SI_CUALQUIER_ESTADO,
         .power = 60,
         .type = TIPO_FANTASMA,
         .accuracy = PRECISION_NORMAL,
@@ -12366,7 +12207,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .argument = STATUS1_ANY,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 30,
@@ -12413,7 +12253,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .windMove = TRUE,
         CLIMATICO,
-        .argument = CLIMA_MOVIMIENTO_NIEVE,
+        .clima = CLIMA_COMBATE_NIEVE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
             .chance = 30,
@@ -12437,7 +12277,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .windMove = TRUE,
         CLIMATICO,
-        .argument = CLIMA_MOVIMIENTO_LLUVIA,
+        .clima = CLIMA_COMBATE_LLUVIA,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 30,
@@ -12452,7 +12292,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
             "Hits with brutally hot sand.\n"
             "May inflict a burn."),
         .effect = EFFECT_PRECISION_INCREMENTADA_CLIMA,
-        .argument = CLIMA_MOVIMIENTO_ARENA,
+        .clima = CLIMA_COMBATE_ARENA,
         .power = 100,
         .type = TIPO_TIERRA,
         .accuracy = PRECISION_BAJA,
@@ -12483,7 +12323,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_TakeHeart,
     },
@@ -12886,7 +12725,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .slicingMove = TRUE,
-        .healingMove = TRUE,
+        CURATIVO,
         .battleAnimScript = gBattleAnimMove_BitterBlade,
     },
 
@@ -12918,7 +12757,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = 70,
         .type = TIPO_AGUA,
         .accuracy = PRECISION_NORMAL,
-        .criticalHitStage = 1,
+        CRITICO_ALTO,
         .pp = 20,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
@@ -12975,7 +12814,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .balistico = TRUE,
         .category = CATEGORIA_ESPECIAL,
-        .argument = TWO_TURN_ARG(STRINGID_ELECTROSHOTCHARGING, CLIMA_MOVIMIENTO_LLUVIA),
+        .argument = TWO_TURN_ARG(STRINGID_ELECTROSHOTCHARGING, CLIMA_COMBATE_LLUVIA),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SP_ATK_PLUS_1,
             .self = TRUE,
@@ -13093,7 +12932,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
-        .healingMove = TRUE,
+        CURATIVO,
         .bitingMove = TRUE,
         .battleAnimScript = gBattleAnimMove_Chupasangre,
     },

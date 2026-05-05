@@ -48,17 +48,14 @@ struct TrainerBacksprite
 #define MON_COORDS_SIZE(width, height) (DIV_ROUND_UP(width, 8) << 4 | DIV_ROUND_UP(height, 8))
 #define GET_MON_COORDS_WIDTH(size) ((size >> 4) * 8)
 #define GET_MON_COORDS_HEIGHT(size) ((size & 15) * 8)
-#define TRAINER_PARTY_IVS(hp, atk, def, spatk, spdef, speed) (hp | (atk << 5) | (def << 10) | (spatk << 15) | (spdef << 20) | (speed << 25))
 #define TRAINER_PARTY_EVS(hp, atk, def, spatk, spdef, speed) ((const u8[6]){hp,atk,def,spatk,spdef,speed})
 
-// Shared by both trainer and frontier mons
 // See CreateNPCTrainerPartyFromTrainer and CreateFacilityMon
 struct TrainerMon
 {
     const u8 *nickname;
     const u8 *ev;
-    u32 iv;
-    u16 moves[4];
+    enum Movimientos movimientos[4];
     u16 species;
     u16 heldItem;
     u16 ability;

@@ -27,13 +27,6 @@ enum {
     REQUEST_MET_LOCATION_BATTLE,
     REQUEST_MET_LEVEL_BATTLE,
     REQUEST_POKEBALL_BATTLE,
-    REQUEST_ALL_IVS_BATTLE,
-    REQUEST_HP_IV_BATTLE,
-    REQUEST_ATK_IV_BATTLE,
-    REQUEST_DEF_IV_BATTLE,
-    REQUEST_SPEED_IV_BATTLE,
-    REQUEST_SPATK_IV_BATTLE,
-    REQUEST_SPDEF_IV_BATTLE,
     REQUEST_PERSONALITY_BATTLE,
     REQUEST_STATUS_BATTLE,
     REQUEST_LEVEL_BATTLE,
@@ -89,19 +82,10 @@ struct HpAndStatus
     u32 status;
 };
 
-struct MovePpInfo
+struct DatosMovimiento
 {
-    u16 moves[MAX_MON_MOVES];
-    u8 pp[MAX_MON_MOVES];
-};
-
-struct ChooseMoveStruct
-{
-    u16 moves[MAX_MON_MOVES];
-    u8 currentPp[MAX_MON_MOVES];
-    u8 maxPp[MAX_MON_MOVES];
-    u16 species;
-    u8 monTypes[NUMERO_TIPOS_POR_POKEMON];
+    enum Movimientos movimiento[MAXIMO_MOVIMIENTOS_POKEMON];
+    u16 pp[MAXIMO_MOVIMIENTOS_POKEMON];
 };
 
 enum
@@ -178,12 +162,12 @@ void BtlController_EmitTrainerSlide(u32 battler, u32 bufferId);
 void BtlController_EmitTrainerSlideBack(u32 battler, u32 bufferId);
 void BtlController_EmitFaintAnimation(u32 battler, u32 bufferId);
 void BtlController_EmitBallThrowAnim(u32 battler, u32 bufferId, u8 caseId);
-void BtlController_EmitMoveAnimation(u32 battler, u32 bufferId, u16 move, u8 turnOfMove, u16 movePower, s32 dmg, u8 friendship, struct DisableStruct *disableStructPtr, u8 multihit);
+void BtlController_EmitMoveAnimation(u32 battler, u32 bufferId, enum Movimientos movimiento, u8 turnOfMove, u16 movePower, s32 dmg, u8 friendship, struct DisableStruct *disableStructPtr, u8 multihit);
 void ControladorCombate_EscribeTexto(u32 combatiente, u32 buffer, const u8 *texto);
 void BtlController_EmitPrintSelectionString(u32 battler, u32 bufferId, u16 stringId);
 void BtlController_EmitChooseAction(u32 battler, u32 bufferId, u8 action);
 void BtlController_EmitYesNoBox(u32 battler, u32 bufferId);
-void BtlController_EmitChooseMove(u32 battler, u32 bufferId, bool8 isDoubleBattle, bool8 NoPpNumber, struct ChooseMoveStruct *movePpData);
+void BtlController_EmitChooseMove(u32 battler, u32 bufferId, bool8 isDoubleBattle, bool8 NoPpNumber, struct DatosMovimiento *datosMovimiento);
 void BtlController_EmitChoosePokemon(u32 battler, u32 bufferId, u8 caseId, u8 slotId, u16 abilityId, u8 *data);
 void BtlController_EmitHealthBarUpdate(u32 battler, u32 bufferId, u16 hpValue);
 void BtlController_EmitExpUpdate(u32 battler, u32 bufferId, u8 partyId, s32 expPoints);

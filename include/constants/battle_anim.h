@@ -477,7 +477,6 @@ enum AnimacionesGeneralesBatalla //(sBattleAnims_General)
     B_ANIM_LEECH_SEED_DRAIN,
     B_ANIM_MON_HIT,
     B_ANIM_ITEM_STEAL,
-    B_ANIM_SNATCH_MOVE,
     B_ANIM_FOCUS_PUNCH_SETUP,
     B_ANIM_INGRAIN_HEAL,
     B_ANIM_FORM_CHANGE,

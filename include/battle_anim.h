@@ -61,7 +61,7 @@ extern u8 gAnimCustomPanning;
 extern u16 gAnimMoveIndex;
 
 void ClearBattleAnimationVars(void);
-void DoMoveAnim(u16 move);
+void DoMoveAnim(enum Movimientos movimiento);
 void LaunchBattleAnimation(u32 animType, u32 animId);
 void DestroyAnimSprite(struct Sprite *sprite);
 void DestroyAnimVisualTask(u8 taskId);

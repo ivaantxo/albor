@@ -765,7 +765,7 @@ static void Task_EvolutionScene(u8 taskId)
             if (!gFundidoPaletas.activo && gMain.callback2 == CB2_EvolutionSceneUpdate)
             {
                 var = GetMoveSlotToReplace();
-                if (var == MAX_MON_MOVES)
+                if (var == MAXIMO_MOVIMIENTOS_POKEMON)
                 {
                     // Didn't select move slot
                     gTasks[taskId].tLearnMoveState = MVSTATE_ASK_CANCEL;

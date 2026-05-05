@@ -422,8 +422,8 @@ static void OpponentHandleChooseAction(u32 battler)
 static void OpponentHandleChooseMove(u32 battler)
 {
     u32 chosenMoveId = gCombate->IA_Eleccion[battler];
-    struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct *)(&gBattleResources->bufferA[battler][4]);
-    u32 chosenMove = moveInfo->moves[chosenMoveId];
+    struct DatosMovimiento *moveInfo = (struct DatosMovimiento *)(&gBattleResources->bufferA[battler][4]);
+    u32 chosenMove = moveInfo->movimiento[chosenMoveId];
     gBattlerTarget = gCombate->IA_Objetivo[battler];
 
     if (GetBattlerMoveTargetType(battler, chosenMove) & (MOVE_TARGET_USER_OR_SELECTED | MOVE_TARGET_USER))

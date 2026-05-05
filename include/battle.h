@@ -109,7 +109,6 @@ struct DisableStruct
     u8 throatChopTimer;
     u8 wrapTurns;
     u8 tormentTimer : 4;
-    u8 usedMoves : 4;
     u8 cudChew : 1;
     u8 spikesDone : 1;
     u8 toxicSpikesDone : 1;
@@ -208,7 +207,7 @@ struct FieldTimer
 struct AI_SavedBattleMon
 {
     u16 ability;
-    u16 moves[MAX_MON_MOVES];
+    enum Movimientos movimientos[MAXIMO_MOVIMIENTOS_POKEMON];
     u16 heldItem;
     u16 species : 15;
     u16 saved : 1;
@@ -223,7 +222,7 @@ struct AIPartyMon
     u16 ability;
     u16 gender;
     u16 level;
-    u16 moves[MAX_MON_MOVES];
+    enum Movimientos movimientos[MAXIMO_MOVIMIENTOS_POKEMON];
     u32 status;
     bool8 isFainted;
     bool8 wasSentInBattle;
@@ -253,9 +252,9 @@ struct AILogicData
     u8 hpPercents[NUMERO_COMBATIENTES];
     u16 partnerMove;
     u16 speedStats[NUMERO_COMBATIENTES];                                       // Speed stats for all battles, calculated only once, same way as damages
-    s32 simulatedDmg[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES][MAX_MON_MOVES]; // attacker, target, moveIndex
-    u8 effectiveness[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES][MAX_MON_MOVES]; // attacker, target, moveIndex
-    u8 moveAccuracy[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES][MAX_MON_MOVES];  // attacker, target, moveIndex
+    s32 simulatedDmg[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES][MAXIMO_MOVIMIENTOS_POKEMON]; // attacker, target, moveIndex
+    u8 effectiveness[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES][MAXIMO_MOVIMIENTOS_POKEMON]; // attacker, target, moveIndex
+    u8 moveAccuracy[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES][MAXIMO_MOVIMIENTOS_POKEMON];  // attacker, target, moveIndex
     u8 moveLimitations[NUMERO_COMBATIENTES];
     u8 monToSwitchInId[NUMERO_COMBATIENTES];    // ID of the mon to switch in.
     u8 mostSuitableMonId[NUMERO_COMBATIENTES];  // Stores result of GetMostSuitableMonToSwitchInto, which decides which generic mon the AI would switch into if they decide to switch. This can be overruled by specific mons found in ShouldSwitch; the final resulting mon is stored in AI_monToSwitchIntoId.
@@ -272,7 +271,7 @@ struct AI_ThinkingStruct
     u8 aiState;
     u8 movesetIndex;
     u16 moveConsidered;
-    s32 score[MAX_MON_MOVES];
+    s32 score[MAXIMO_MOVIMIENTOS_POKEMON];
     u32 funcResult;
     u32 aiFlags[NUMERO_COMBATIENTES];
     u8 aiAction;
@@ -286,7 +285,7 @@ struct BattleHistory
 {
     u16 abilities[NUMERO_COMBATIENTES];
     u8 itemEffects[NUMERO_COMBATIENTES];
-    u16 usedMoves[NUMERO_COMBATIENTES][MAX_MON_MOVES];
+    u16 usedMoves[NUMERO_COMBATIENTES][MAXIMO_MOVIMIENTOS_POKEMON];
     u16 moveHistory[NUMERO_COMBATIENTES][AI_MOVE_HISTORY_COUNT]; // 3 last used moves for each battler
     u8 moveHistoryIndex[NUMERO_COMBATIENTES];
     u16 trainerItems[NUMERO_COMBATIENTES];
@@ -343,6 +342,7 @@ struct Clima
 {
     u16 turnos;
     enum ClimasCombate modo;
+    enum OrigenClima origen;
 }
 
 struct Combate
@@ -415,7 +415,7 @@ struct Combate
     u8 stolenStats[NUMERO_ESTADISTICAS_BATALLA]; // hp byte is used for which stats to raise, other inform about by how many stages
     u16 tracedAbility[NUMERO_COMBATIENTES];
     u16 hpBefore[NUMERO_COMBATIENTES];                                          // Hp of battlers before using a move. For Berserk and Anger Shell.
-    s32 IA_Puntuacion[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES][MAX_MON_MOVES]; // AI, target, moves to make debugging easier
+    s32 IA_Puntuacion[NUMERO_COMBATIENTES][NUMERO_COMBATIENTES][MAXIMO_MOVIMIENTOS_POKEMON]; // AI, target, moves to make debugging easier
     u8 IA_Eleccion[NUMERO_COMBATIENTES];
     u8 IA_Objetivo[NUMERO_COMBATIENTES];
     u8 soulheartBattlerId;
@@ -425,7 +425,6 @@ struct Combate
     u32 objetoPerdido[NUMERO_LADOS][PARTY_SIZE];
     u8 forcedSwitch : 4;             // For each battler
     u8 additionalEffectsCounter : 4; // A counter for the additionalEffects applied by the current move in Cmd_setadditionaleffects
-    u8 snatchedMoveIsUsed : 1;
     u8 ackBallUseBtn : 1; // Used for the last used ball feature
     u8 ballSwapped : 1;   // Used for the last used ball feature
     u8 ballSpriteIds[2];  // item gfx, window gfx
@@ -468,7 +467,7 @@ struct Combate
         gBattleMons[battlerId].types[TIPO_2] = gSpeciesInfo[gBattleMons[battlerId].species].types[TIPO_2]; \
     }
 
-#define IS_BATTLER_PROTECTED(battlerId) (gProtectStructs[battlerId].protected || gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_WIDE_GUARD || gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_QUICK_GUARD || gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_CRAFTY_SHIELD || gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_MAT_BLOCK || gProtectStructs[battlerId].spikyShielded || gProtectStructs[battlerId].silkTrapped)
+#define IS_BATTLER_PROTECTED(battlerId) (gProtectStructs[battlerId].protected || gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_WIDE_GUARD || gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_CRAFTY_SHIELD || gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_MAT_BLOCK || gProtectStructs[battlerId].spikyShielded || gProtectStructs[battlerId].silkTrapped)
 
 #define GET_STAT_BUFF_ID(n) ((n & 7)) // first three bits 0x1, 0x2, 0x4
 #define GET_STAT_BUFF_VALUE_WITH_SIGN(n) ((n & 0xF8))
@@ -746,9 +745,9 @@ static inline struct Pokemon *GetSideParty(u32 side)
     return (side == LADO_JUGADOR) ? gPlayerParty : gEnemyParty;
 }
 
-static inline struct Pokemon *GetBattlerParty(u32 battler)
+static inline struct Pokemon *GetBattlerParty(u32 combatiente)
 {
-    return GetSideParty(GetBattlerSide(battler));
+    return GetSideParty(GetBattlerSide(combatiente));
 }
 
 static inline bool32 MovimientoEsEfectivo(uq4_12_t resultadoMovimiento)
@@ -756,95 +755,123 @@ static inline bool32 MovimientoEsEfectivo(uq4_12_t resultadoMovimiento)
     return (resultadoMovimiento == MOVIMIENTO_POCO_EFECTIVO || resultadoMovimiento == MOVIMIENTO_NEUTRO || resultadoMovimiento == MOVIMIENTO_SUPER_EFECTIVO);
 }
 
-static inline bool32 EsMovimientoFisico(u32 movimiento)
+static inline bool32 EsMovimientoFisico(enum Movimientos movimiento)
 {
     return (CategoriaMovimiento(movimiento) == CATEGORIA_FISICA);
 }
 
-static inline bool32 EsMovimientoEspecial(u32 movimiento)
+static inline bool32 EsMovimientoEspecial(enum Movimientos movimiento)
 {
     return (CategoriaMovimiento(movimiento) == CATEGORIA_ESPECIAL);
 }
 
-static inline bool32 EsMovimientoDeEstado(u32 movimiento)
+static inline bool32 EsMovimientoEstado(enum Movimientos movimiento)
 {
     return (CategoriaMovimiento(movimiento) == CATEGORIA_ESTADO);
 }
 
 static inline bool32 EsPrimerGolpe(void)
 {
-    return (gCombate.contadorMultigolpes == 0);
+    return (gCombate->contadorMultigolpes == 0);
 }
 
-static inline bool32 HaceDanioRetroceso(u32 movimiento)
+static inline bool32 HaceDanioRetroceso(enum Movimientos movimiento)
 {
     return (gMovimientos[movimiento].retroceso > 0);
 }
 
-static inline bool32 EsMovimientoDeSonido(u32 movimiento)
+static inline bool32 EsMovimientoSonido(enum Movimientos movimiento)
 {
     return (gMovimientos[movimiento].soundMove);
 }
 
-static inline bool32 EsMovimientoDeClima(u32 movimiento)
+static inline bool32 EsMovimientoClima(enum Movimientos movimiento)
 {
     return (gMovimientos[movimiento].climatico);
 }
 
-static inline bool32 EsMovimientoDeCabeza(u32 movimiento)
+static inline bool32 EsMovimientoCabeza(enum Movimientos movimiento)
 {
     return (gMovimientos[movimiento].cabezazo);
 }
 
+static inline bool32 EsMovimientoAltoIndiceCritico(enum Movimientos movimiento)
+{
+    return (gMovimientos[movimiento].altoIndiceCritico);
+}
+
+static inline bool32 EsMovimientoCura(enum Movimientos movimiento)
+{
+    return gMovimientos[movimiento].curativo;
+}
+
+static inline bool32 EstaMovimientoPotenciadoPotenciaBruta(enum Movimientos movimiento)
+{
+    for (u32 indiceMovimiento = 0; indiceMovimiento < gMovimientos[movimiento].numAdditionalEffects; indiceMovimiento++)
+    {
+        if (gMovimientos[movimiento].additionalEffects[indiceMovimiento].chance > 0)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+static inline bool32 MovimientoImpideEscapar(enum Movimientos movimiento)
+{
+    switch (gMovimientos[movimiento].effect)
+    {
+    case EFFECT_MEAN_LOOK:
+        return TRUE;
+    default:
+        return MoveHasAdditionalEffect(movimiento, MOVE_EFFECT_PREVENT_ESCAPE) || MoveHasAdditionalEffect(movimiento, MOVE_EFFECT_WRAP);
+    }
+}
+
 static inline bool32 EsClimaCombateSol(enum ClimasCombate clima)
 {
-    return (clima == CLIMA_COMBATE_SOL_HABILIDAD || clima == CLIMA_COMBATE_SOL_MOVIMIENTO);
+    return (clima == CLIMA_COMBATE_SOL);
 }
 
 static inline bool32 EsClimaCombateLluvia(enum ClimasCombate clima)
 {
-    return (clima == CLIMA_COMBATE_LLUVIA_HABILIDAD || clima == CLIMA_COMBATE_LLUVIA_MOVIMIENTO);
+    return (clima == CLIMA_COMBATE_LLUVIA);
 }
 
 static inline bool32 EsClimaCombateArena(enum ClimasCombate clima)
 {
-    return (clima == CLIMA_COMBATE_ARENA_HABILIDAD || clima == CLIMA_COMBATE_ARENA_MOVIMIENTO);
+    return (clima == CLIMA_COMBATE_ARENA);
 }
 
 static inline bool32 EsClimaCombateNieve(enum ClimasCombate clima)
 {
-    return (clima == CLIMA_COMBATE_NIEVE_HABILIDAD || clima == CLIMA_COMBATE_NIEVE_MOVIMIENTO);
+    return (clima == CLIMA_COMBATE_NIEVE);
 }
 
-static inline bool32 EsHabilidadClimatica(enum ClimasCombate clima)
+static inline bool32 EsClimaPorOverworld(void)
 {
-    return (clima == CLIMA_COMBATE_LLUVIA_HABILIDAD
-         || clima == CLIMA_COMBATE_SOL_HABILIDAD
-         || clima == CLIMA_COMBATE_ARENA_HABILIDAD
-         || clima == CLIMA_COMBATE_NIEVE_HABILIDAD);
+    return (gCombate->clima.modo != CLIMA_COMBATE_NINGUNO 
+         && gCombate->clima.origen == ORIGEN_CLIMA_OVERWORLD);
 }
 
-static inline bool32 EsClimaPorMovimiento(enum ClimasCombate clima)
+static inline bool32 EsClimaPorHabilidad(void)
 {
-    return (clima != CLIMA_COMBATE_NINGUNO && !EsClimaHabilidad(clima));
+    return (gCombate->clima.modo != CLIMA_COMBATE_NINGUNO 
+         && gCombate->clima.origen == ORIGEN_CLIMA_HABILIDAD);
 }
 
-static inline bool32 ArgumentoMovimientoCoincideClima(enum ClimasMovimientos climaMovimiento)
+static inline bool32 EsClimaPorMovimiento(void)
 {
-    enum ClimasCombate climaCombate = ObtenClimaCombate();
+    return (gCombate->clima.modo != CLIMA_COMBATE_NINGUNO 
+         && gCombate->clima.origen == ORIGEN_CLIMA_MOVIMIENTO);
+}
 
-    switch (climaMovimiento)
-    {
-        case CLIMA_MOVIMIENTO_SOL:
-            return EsClimaCombateSol(climaCombate);
-        case CLIMA_MOVIMIENTO_LLUVIA:
-            return EsClimaCombateLluvia(climaCombate);
-        case CLIMA_MOVIMIENTO_ARENA:
-            return EsClimaCombateArena(climaCombate);
-        case CLIMA_MOVIMIENTO_NIEVE:
-            return EsClimaCombateNieve(climaCombate);
-    }
-    return FALSE;
+static inline bool32 ClimaMovimientoCoincide(enum ClimasCombate climaMovimiento)
+{
+    return (ObtenClimaCombate() == climaMovimiento);
+}
+
+static inline bool32 EstadoMovimientoCoincide(u32 combatiente, u32 estadoMovimiento)
+{
+    return (gBattleMons[combatiente].status1 == estadoMovimiento);
 }
 
 static inline bool32 ClimaTieneEfecto(void)
@@ -852,12 +879,12 @@ static inline bool32 ClimaTieneEfecto(void)
     return !EstaHabilidadEnCampo(ABILITY_SEPTIMO_CIELO);
 }
 
-static inline u32 CategoriaMovimiento(u32 movimiento)
+static inline u32 CategoriaMovimiento(enum Movimientos movimiento)
 {
     return gMovimientos[movimiento].category;
 }
 
-static inline enum PrioridadMovimientos PrioridadMovimiento(u32 movimiento)
+static inline enum PrioridadMovimientos PrioridadMovimiento(enum Movimientos movimiento)
 {
     return gMovimientos[movimiento].prioridad;
 }

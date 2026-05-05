@@ -312,11 +312,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .battleScript = BattleScript_EffectDestinyBond,
             },
 
-        [EFFECT_FLAIL] =
-            {
-                .battleScript = BattleScript_EffectHit,
-            },
-
         [EFFECT_HEAL_BELL] =
             {
                 .battleScript = BattleScript_EffectHealBell,
@@ -556,7 +551,11 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .battleScript = BattleScript_EffectFocusPunch,
             },
 
-        [EFFECT_DOUBLE_POWER_ON_ARG_STATUS] =
+        [EFECTO_DOBLE_POTENCIA_SI_ESTADO] =
+            {
+                .battleScript = BattleScript_EffectHit,
+            },
+        [EFECTO_DOBLE_POTENCIA_SI_CUALQUIER_ESTADO] =
             {
                 .battleScript = BattleScript_EffectHit,
             },
@@ -618,11 +617,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .encourageEncore = TRUE,
             },
 
-        [EFFECT_SNATCH] =
-            {
-                .battleScript = BattleScript_EffectSnatch,
-            },
-
         [EFFECT_HIT_ESCAPE] =
             {
                 .battleScript = BattleScript_EffectHitEscape,
@@ -678,11 +672,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
             },
 
         [EFFECT_STORED_POWER] =
-            {
-                .battleScript = BattleScript_EffectHit,
-            },
-
-        [EFFECT_ELECTRO_BALL] =
             {
                 .battleScript = BattleScript_EffectHit,
             },
@@ -887,11 +876,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
             {
                 .battleScript = BattleScript_EffectGrowth,
                 .encourageEncore = TRUE,
-            },
-
-        [EFFECT_LAST_RESORT] =
-            {
-                .battleScript = BattleScript_EffectLastResort,
             },
 
         [EFFECT_SHELL_SMASH] =

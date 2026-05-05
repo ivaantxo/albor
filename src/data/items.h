@@ -9790,21 +9790,6 @@ const struct Item gItemsInfo[] =
                 .secondaryId = MOVE_STEEL_WING,
             },
 
-        [ITEM_TM_SNATCH] =
-            {
-                .name = _("TM49"),
-                .price = 3000,
-                .description = COMPOUND_STRING(
-                    "Steals the effects\n"
-                    "of the move the foe\n"
-                    "is trying to use."),
-                .importance = I_REUSABLE_TMS,
-                .pocket = POCKET_TM_HM,
-                .type = ITEM_USE_PARTY_MENU,
-                .fieldUseFunc = ItemUseOutOfBattle_TMHM,
-                .secondaryId = MOVE_SNATCH,
-            },
-
         [ITEM_TM_OVERHEAT] =
             {
                 .name = _("TM50"),

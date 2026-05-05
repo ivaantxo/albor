@@ -17,7 +17,7 @@
 #define MAX_TRAINER_AI_FLAGS 32
 #define MAX_TRAINER_ITEMS 4
 #define PARTY_SIZE 6
-#define MAX_MON_MOVES 4
+#define MAXIMO_MOVIMIENTOS_POKEMON 4
 
 struct String
 {
@@ -49,9 +49,6 @@ struct Pokemon
     struct Stats evs;
     int evs_line;
 
-    struct Stats ivs;
-    int ivs_line;
-
     struct String ability;
     int ability_line;
 
@@ -70,7 +67,7 @@ struct Pokemon
     bool shiny;
     int shiny_line;
 
-    struct String moves[MAX_MON_MOVES];
+    struct String moves[MAXIMO_MOVIMIENTOS_POKEMON];
     int moves_n;
     int move1_line;
 };
@@ -222,10 +219,6 @@ struct Parsed
 
     struct Trainer *trainers;
     int trainers_n;
-
-    struct Stats default_ivs;
-    int default_ivs_line;
-    bool default_ivs_off;
 
     int default_level;
     int default_level_line;
@@ -975,19 +968,6 @@ static bool parse_pragma(struct Parser *p, struct Parsed *parsed)
     {
         return set_show_parse_error(p, p_.location, "expected identifier");
     }
-    else if (is_literal_token(&id, "ivs"))
-    {
-        if (parsed->default_ivs_line)
-            return set_show_parse_error(p, p_.location, "duplicate #pragma trainerproc ivs");
-        parsed->default_ivs_line = p_.location.line;
-        skip_whitespace(&p_);
-        struct Token t;
-        match_until_eol(&p_, &t);
-        if (is_literal_token(&t, "explicit"))
-            parsed->default_ivs_off = true;
-        else if (!token_stats(p, &t, &parsed->default_ivs, true))
-            return show_parse_error(p);
-    }
     else if (is_literal_token(&id, "level"))
     {
         if (parsed->default_level_line)
@@ -1257,15 +1237,6 @@ static bool parse_trainer(struct Parser *p, const struct Parsed *parsed, struct 
                 if (!token_stats(p, &value, &pokemon->evs, false))
                     any_error = !show_parse_error(p);
             }
-            else if (is_literal_token(&key, "IVs"))
-            {
-                if (pokemon->ivs_line)
-                    any_error = !set_show_parse_error(p, key.location, "duplicate 'IVs'");
-                pokemon->ivs_line = value.location.line;
-                pokemon->ivs = parsed->default_ivs;
-                if (!token_stats(p, &value, &pokemon->ivs, parsed->default_ivs_off))
-                    any_error = !show_parse_error(p);
-            }
             else if (is_literal_token(&key, "Ability"))
             {
                 if (pokemon->ability_line)
@@ -1313,7 +1284,7 @@ static bool parse_trainer(struct Parser *p, const struct Parsed *parsed, struct 
             }
             else
             {
-                any_error = !set_show_parse_error(p, key.location, "expected one of 'EVs', 'IVs', 'Ability', 'Level', 'Ball', 'Happiness', 'Naturaleza' or 'Shiny'");
+                any_error = !set_show_parse_error(p, key.location, "expected one of 'EVs', 'Ability', 'Level', 'Ball', 'Happiness', 'Naturaleza' or 'Shiny'");
             }
         }
 
@@ -1329,21 +1300,9 @@ static bool parse_trainer(struct Parser *p, const struct Parsed *parsed, struct 
                 any_error = !set_show_parse_error(p, p->location, "expected 'Level' before moves");
             }
         }
-        if (!pokemon->ivs_line)
-        {
-            if (!parsed->default_ivs_off)
-            {
-                pokemon->ivs = parsed->default_ivs;
-                pokemon->ivs_line = p->location.line;
-            }
-            else
-            {
-                any_error = !set_show_parse_error(p, p->location, "expected 'IVs' before moves");
-            }
-        }
 
-        // Parse moves.
-        for (int j = 0; j < MAX_MON_MOVES; j++)
+        // Parse moves
+        for (int j = 0; j < MAXIMO_MOVIMIENTOS_POKEMON; j++)
         {
             struct Token move;
             if (!parse_pokemon_move(p, &move))
@@ -1712,14 +1671,6 @@ static void fprint_trainers(const char *output_path, FILE *f, struct Parsed *par
                 fprintf(f, ",\n");
             }
 
-            if (pokemon->ivs_line)
-            {
-                fprintf(f, "#line %d\n", pokemon->ivs_line);
-                fprintf(f, "            .iv = ");
-                fprint_stats(f, "TRAINER_PARTY_IVS", pokemon->ivs);
-                fprintf(f, ",\n");
-            }
-
             if (pokemon->ability_line)
             {
                 fprintf(f, "#line %d\n", pokemon->ability_line);
@@ -1800,7 +1751,6 @@ int main(int argc, char *argv[])
     FILE *output_file = NULL;
     unsigned char *source_buffer = NULL;
     struct Parsed parsed = {
-        .default_ivs = { 31, 31, 31, 31, 31, 31 },
         .default_level = 100,
     };
 

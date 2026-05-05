@@ -815,7 +815,7 @@ static void Task_ShowTMHMContainedMessage(u8 taskId)
 {
     if (JOY_NEW(A_BUTTON | B_BUTTON))
     {
-        StringCopy(gVariableTexto1, GetMoveName(ItemIdToBattleMoveId(gSpecialVar_ItemId)));
+        StringCopy(gVariableTexto1, ObtenNombreMovimiento(ItemIdToBattleMoveId(gSpecialVar_ItemId)));
         StringExpandPlaceholders(gVariableTextoAmpliada, gText_TMHMContainedVar1);
         DisplayItemMessage(taskId, FONT_NORMAL, gVariableTextoAmpliada, UseTMHMYesNo);
     }
@@ -1102,12 +1102,12 @@ bool32 CannotUseItemsInBattle(u16 itemId, struct Pokemon *mon)
     case EFFECT_ITEM_RESTORE_PP:
         if (ItemId_GetEffect(itemId)[4] == ITEM4_HEAL_PP)
         {
-            for (i = 0; i < MAX_MON_MOVES; i++)
+            for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
             {
                 if (GetMonData(mon, MON_DATA_PP1 + i) < PPMovimiento(GetMonData(mon, MON_DATA_MOVE1 + i)))
                     break;
             }
-            if (i == MAX_MON_MOVES)
+            if (i == MAXIMO_MOVIMIENTOS_POKEMON)
                 cannotUse = TRUE;
         }
         else if (GetMonData(mon, MON_DATA_PP1 + gPartyMenu.data1) == PPMovimiento(GetMonData(mon, MON_DATA_MOVE1 + gPartyMenu.data1)))

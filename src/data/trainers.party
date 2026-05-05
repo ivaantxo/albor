@@ -41,8 +41,6 @@ Required fields for Pokemon:
 Optional fields for Pokemon:
     - Level (Number between 1 and 100, defaults to 100)
     - Ability (Ability Name or ABILITY_ABILITY_NAME)
-    - IVs (0 HP / 1 Atk / 2 Def / 3 SpA / 4 SpD / 5 Spe, defaults to all 31)
-          (Order does not matter)
     - EVs (252 HP / 128 Spe / 48 Def, defaults to all 0, is not capped at 512 total)
           (Order does not matter)
     - Ball (Poke Ball or ITEM_POKE_BALL, defaults to Poke Ball)
@@ -55,7 +53,7 @@ Moves have to be the last lines of a Pokemon.
 If no moves are specified, the Pokemon will use the last 4 moves it learns
 through levelup at its level.
 
-Default IVs and Level can be changed in the "main" function of tools/trainerproc/main.c
+Default Level can be changed in the "main" function of tools/trainerproc/main.c
 
 This file is processed with a custom preprocessor.
 */
@@ -85,11 +83,9 @@ AI: Check Bad Move
 
 Dragonite
 Level: 31
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 Dragonite
 Level: 31
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_CYNTHIA ===
 Name: CYNTHIA
@@ -101,8 +97,6 @@ AI: Check Bad Move
 
 Wailmer
 Level: 31
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 Zubat
 Level: 31
-IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe

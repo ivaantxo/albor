@@ -2,7 +2,6 @@
 #include "new_game.h"
 #include "random.h"
 #include "pokemon.h"
-#include "pokemon_size_record.h"
 #include "script.h"
 #include "lottery_corner.h"
 #include "play_time.h"
@@ -22,7 +21,6 @@
 #include "pokedex.h"
 #include "save.h"
 #include "main.h"
-#include "contest.h"
 #include "item_menu.h"
 #include "pokemon_storage_system.h"
 #include "decoration_inventory.h"
@@ -33,12 +31,6 @@
 extern const u8 EventScript_ResetAllMapFlags[];
 
 static void ResetItemFlags(void);
-
-static const struct ContestWinner sContestWinnerPicDummy =
-{
-    .monName = _(""),
-    .trainerName = _("")
-};
 
 u32 PersonalidadJugador(void)
 {
@@ -64,17 +56,6 @@ static void ClearPokedexFlags(void)
 {
     memset(&gSaveBlockPtr->dexCaught, 0, sizeof(gSaveBlockPtr->dexCaught));
     memset(&gSaveBlockPtr->dexSeen, 0, sizeof(gSaveBlockPtr->dexSeen));
-}
-
-void ClearAllContestWinnerPics(void)
-{
-    s32 i;
-
-    ClearContestWinnerPicsInContestHall();
-
-    // Clear Museum paintings
-    for (i = MUSEUM_CONTEST_WINNERS_START; i < NUM_CONTEST_WINNERS; i++)
-        gSaveBlockPtr->contestWinners[i] = sContestWinnerPicDummy;
 }
 
 void ResetMenuAndMonGlobals(void)
@@ -104,7 +85,6 @@ void NewGameInitData(void)
     SetMoney(&gSaveBlockPtr->money, 3000);
     SetCoins(0);
     ResetGameStats();
-    ClearAllContestWinnerPics();
     gPlayerPartyCount = 0;
     ZeroPlayerPartyMons();
     ResetPokemonStorageSystem();

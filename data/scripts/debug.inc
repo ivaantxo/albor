@@ -110,27 +110,6 @@ Debug_EventScript_Text_OffensiveEVs:
 Debug_EventScript_Text_DefensiveEVs:
 	.string "HP EVs: {VAR_TEXTO_1}, DEF EVs: {VAR_TEXTO_2}, SPDEF EVs: {VAR_TEXTO_3}$"
 
-Debug_EventScript_CheckIVs::
-	lockall
-	getpartysize
-	goto_if_eq VAR_RESULT, 0, Debug_NoPokemon
-	special ChoosePartyMon
-	waitstate
-	goto_if_ge VAR_0x8004, PARTY_SIZE, Debug_EventScript_CheckIVs_End
-	callnative Script_GetChosenMonOffensiveIVs
-	msgbox Debug_EventScript_Text_OffensiveIVs, MSGBOX_DEFAULT
-	callnative Script_GetChosenMonDefensiveIVs
-	msgbox Debug_EventScript_Text_DefensiveIVs, MSGBOX_DEFAULT
-Debug_EventScript_CheckIVs_End::
-	releaseall
-	end
-
-Debug_EventScript_Text_OffensiveIVs:
-	.string "ATK IVs: {VAR_TEXTO_1}, SPATK IVs: {VAR_TEXTO_2}, SPEED IVs: {VAR_TEXTO_3}$"
-
-Debug_EventScript_Text_DefensiveIVs:
-	.string "HP IVs: {VAR_TEXTO_1}, DEF IVs: {VAR_TEXTO_2}, SPDEF IVs: {VAR_TEXTO_3}$"
-
 Debug_EventScript_Script_1::
 	givemon SPECIES_BULBASAUR, 1, ITEM_NONE
 	givemon SPECIES_IVYSAUR, 1, ITEM_NONE

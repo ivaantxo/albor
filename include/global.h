@@ -153,7 +153,7 @@ extern u32 ActualizaPaletaSpriteSegunHora(u32 numeroPaleta);
 struct SecretBaseParty
 {
     u32 personality[PARTY_SIZE];
-    u16 moves[PARTY_SIZE * MAX_MON_MOVES];
+    u16 moves[PARTY_SIZE * MAXIMO_MOVIMIENTOS_POKEMON];
     u16 species[PARTY_SIZE];
     u16 heldItems[PARTY_SIZE];
     u8 levels[PARTY_SIZE];
@@ -205,18 +205,6 @@ struct Pokeblock
     u8 bitter;
     u8 sour;
     u8 feel;
-};
-
-struct ContestWinner
-{
-    u32 personality;
-    u32 trainerId;
-    u16 species;
-    u8 contestCategory;
-    u8 monName[VANILLA_POKEMON_NAME_LENGTH + 1];
-    u8 trainerName[MAXIMO_CARACTERES_NOMBRE_JUGADOR + 1];
-    u8 contestRank:7;
-    bool8 isShiny:1;
 };
 
 struct Mail
@@ -315,11 +303,10 @@ struct SaveBlock
     u8 outbreakLocationMapNum;
     u8 outbreakLocationMapGroup;
     u8 outbreakPokemonLevel;
-    u16 outbreakPokemonMoves[MAX_MON_MOVES]; //???
+    u16 outbreakPokemonMoves[MAXIMO_MOVIMIENTOS_POKEMON]; //???
     u8 outbreakPokemonProbability; //???
     u16 outbreakDaysLeft; //???
     struct Mail mail[MAIL_COUNT]; //eliminar
-    struct ContestWinner contestWinners[NUM_CONTEST_WINNERS];  //eliminar
     struct DayCare daycare;
     u8 giftRibbons[GIFT_RIBBONS_COUNT]; //eliminar
     u8 dexSeen[NUM_DEX_FLAG_BYTES];

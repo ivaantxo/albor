@@ -1,7 +1,6 @@
 #include "global.h"
 #include "battle.h"
 #include "battle_anim.h"
-#include "contest.h"
 #include "m4a.h"
 #include "sound.h"
 #include "task.h"

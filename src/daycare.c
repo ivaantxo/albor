@@ -36,10 +36,10 @@ static u16 GetEggSpecies(u16 species);
 
 // RAM buffers used to assist with BuildEggMoveset()
 EWRAM_DATA static u16 sHatchedEggLevelUpMoves[EGG_LVL_UP_MOVES_ARRAY_COUNT] = {0};
-EWRAM_DATA static u16 sHatchedEggFatherMoves[MAX_MON_MOVES] = {0};
-EWRAM_DATA static u16 sHatchedEggFinalMoves[MAX_MON_MOVES] = {0};
+EWRAM_DATA static u16 sHatchedEggFatherMoves[MAXIMO_MOVIMIENTOS_POKEMON] = {0};
+EWRAM_DATA static u16 sHatchedEggFinalMoves[MAXIMO_MOVIMIENTOS_POKEMON] = {0};
 EWRAM_DATA static u16 sHatchedEggEggMoves[EGG_MOVES_ARRAY_COUNT] = {0};
-EWRAM_DATA static u16 sHatchedEggMotherMoves[MAX_MON_MOVES] = {0};
+EWRAM_DATA static u16 sHatchedEggMotherMoves[MAXIMO_MOVIMIENTOS_POKEMON] = {0};
 
 static const struct WindowTemplate sDaycareLevelMenuWindowTemplate =
 {
@@ -172,7 +172,7 @@ static void TransferEggMoves(void)
                 )
                     continue;
 
-                for (l = 0; l < MAX_MON_MOVES; l++)
+                for (l = 0; l < MAXIMO_MOVIMIENTOS_POKEMON; l++)
                 {
                     if (GetBoxMonData(&gSaveBlockPtr->daycare.mons[k].mon, MON_DATA_MOVE1 + l) != sHatchedEggEggMoves[j])
                         continue;
@@ -430,31 +430,6 @@ void TriggerPendingDaycareEgg(void)
     _TriggerPendingDaycareEgg(&gSaveBlockPtr->daycare);
 }
 
-static void HeredaIVs(struct Pokemon *huevo, struct BoxPokemon *padre, struct BoxPokemon *madre)
-{
-    const u32 CamposIvs[NUMERO_ESTADISTICAS] =
-    {
-        MON_DATA_HP_IV,
-        MON_DATA_ATK_IV,
-        MON_DATA_DEF_IV,
-        MON_DATA_SPEED_IV,
-        MON_DATA_SPATK_IV,
-        MON_DATA_SPDEF_IV
-    };
-
-    for (u32 i = 0; i < NUMERO_ESTADISTICAS; i++)
-    {
-        u32 iv;
-
-        if (PorcentajeAleatorio(50))
-            iv = GetBoxMonData(madre, CamposIvs[i]);
-        else
-            iv = GetBoxMonData(padre, CamposIvs[i]);
-
-        SetMonData(huevo, CamposIvs[i], &iv);
-    }
-}
-
 static void HeredaHabilidad(struct Pokemon *huevo, struct BoxPokemon *madre)
 {
     u32 habilidadMadre = GetBoxMonData(madre, MON_DATA_ABILITY_NUM);
@@ -527,7 +502,7 @@ static void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, stru
     u32 i, j;
 
     numSharedParentMoves = 0;
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
         sHatchedEggMotherMoves[i] = MOVE_NONE;
         sHatchedEggFatherMoves[i] = MOVE_NONE;
@@ -538,7 +513,7 @@ static void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, stru
         sHatchedEggLevelUpMoves[i] = MOVE_NONE;
 
     numLevelUpMoves = GetLevelUpMovesBySpecies(GetMonData(egg, MON_DATA_SPECIES), sHatchedEggLevelUpMoves);
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
         sHatchedEggFatherMoves[i] = GetBoxMonData(father, MON_DATA_MOVE1 + i);
         sHatchedEggMotherMoves[i] = GetBoxMonData(mother, MON_DATA_MOVE1 + i);
@@ -548,7 +523,7 @@ static void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, stru
 
     if (P_MOTHER_EGG_MOVE_INHERITANCE >= GEN_6)
     {
-        for (i = 0; i < MAX_MON_MOVES; i++)
+        for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
         {
             if (sHatchedEggMotherMoves[i] != MOVE_NONE)
             {
@@ -569,7 +544,7 @@ static void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, stru
         }
     }
 
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
         if (sHatchedEggFatherMoves[i] != MOVE_NONE)
         {
@@ -591,7 +566,7 @@ static void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, stru
 
     if (P_TM_INHERITANCE < GEN_6)
     {
-        for (i = 0; i < MAX_MON_MOVES; i++)
+        for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
         {
             if (sHatchedEggFatherMoves[i] != MOVE_NONE)
             {
@@ -608,18 +583,18 @@ static void BuildEggMoveset(struct Pokemon *egg, struct BoxPokemon *father, stru
         }
     }
 
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
         if (sHatchedEggFatherMoves[i] == MOVE_NONE)
             break;
-        for (j = 0; j < MAX_MON_MOVES; j++)
+        for (j = 0; j < MAXIMO_MOVIMIENTOS_POKEMON; j++)
         {
             if (sHatchedEggFatherMoves[i] == sHatchedEggMotherMoves[j] && sHatchedEggFatherMoves[i] != MOVE_NONE)
                 sHatchedEggFinalMoves[numSharedParentMoves++] = sHatchedEggFatherMoves[i];
         }
     }
 
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
         if (sHatchedEggFinalMoves[i] == MOVE_NONE)
             break;
@@ -687,8 +662,6 @@ static void _GiveEggFromDaycare(struct DayCare *daycare)
 
     EstableceDatosInicialesHuevoGuarderia(&egg, species, daycare);
 
-    HeredaIVs(&egg, padre, madre);
-
     BuildEggMoveset(&egg, padre, madre);
 
     HeredaHabilidad(&egg, madre);
@@ -705,7 +678,7 @@ static void _GiveEggFromDaycare(struct DayCare *daycare)
 void CreaHuevo(struct Pokemon *pokemon, u16 especie)
 {
     bool32 isEgg = TRUE;
-    CreaPokemon(pokemon, especie, EGG_HATCH_LEVEL, USE_RANDOM_IVS, FALSE, 0);
+    CreaPokemon(pokemon, especie, EGG_HATCH_LEVEL, FALSE, 0);
     SetMonData(pokemon, MON_DATA_NICKNAME, COMPOUND_STRING("Huevo.\p"));
     SetMonData(pokemon, MON_DATA_FRIENDSHIP, &gSpeciesInfo[especie].eggCycles);
     SetMonData(pokemon, MON_DATA_MET_LEVEL, 0);
@@ -717,7 +690,7 @@ static void EstableceDatosInicialesHuevoGuarderia(struct Pokemon *mon, u16 speci
     u32 personality = daycare->offspringPersonality;
     u32 pokeBall = ITEM_POKE_BALL;
     u32 nivelDeEncuentro = 0;   
-    CreaPokemon(mon, species, EGG_HATCH_LEVEL, USE_RANDOM_IVS, TRUE, personality);
+    CreaPokemon(mon, species, EGG_HATCH_LEVEL, TRUE, personality);
     SetMonData(mon, MON_DATA_POKEBALL, &pokeBall);
     SetMonData(mon, MON_DATA_NICKNAME, COMPOUND_STRING("Huevo.\p"));
     SetMonData(mon, MON_DATA_FRIENDSHIP, &gSpeciesInfo[species].eggCycles);

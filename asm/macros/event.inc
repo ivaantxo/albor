@@ -889,7 +889,7 @@
 
 	@ Gives the player a Pokémon of the specified species and level, and allows to customize extra parameters.
 	@ VAR_RESULT will be set to MON_GIVEN_TO_PARTY, MON_GIVEN_TO_PC, or MON_CANT_GIVE depending on the outcome.
-	.macro givemon species:req, level:req, item, ball, nature, abilityNum, gender, hpEv, atkEv, defEv, speedEv, spAtkEv, spDefEv, hpIv, atkIv, defIv, speedIv, spAtkIv, spDefIv, move1, move2, move3, move4, isShiny
+	.macro givemon species:req, level:req, item, ball, nature, abilityNum, gender, hpEv, atkEv, defEv, speedEv, spAtkEv, spDefEv, move1, move2, move3, move4, isShiny
 	callnative ScrCmd_createmon
 	.byte 0
 	.byte 6	@ PARTY_SIZE - assign to first empty slot
@@ -907,17 +907,11 @@
 	.ifnb \speedEv; .set givemon_flags, givemon_flags | (1 << 8); .endif
 	.ifnb \spAtkEv; .set givemon_flags, givemon_flags | (1 << 9); .endif
 	.ifnb \spDefEv; .set givemon_flags, givemon_flags | (1 << 10); .endif
-	.ifnb \hpIv; .set givemon_flags, givemon_flags | (1 << 11); .endif
-	.ifnb \atkIv; .set givemon_flags, givemon_flags | (1 << 12); .endif
-	.ifnb \defIv; .set givemon_flags, givemon_flags | (1 << 13); .endif
-	.ifnb \speedIv; .set givemon_flags, givemon_flags | (1 << 14); .endif
-	.ifnb \spAtkIv; .set givemon_flags, givemon_flags | (1 << 15); .endif
-	.ifnb \spDefIv; .set givemon_flags, givemon_flags | (1 << 16); .endif
-	.ifnb \move1; .set givemon_flags, givemon_flags | (1 << 17); .endif
-	.ifnb \move2; .set givemon_flags, givemon_flags | (1 << 18); .endif
-	.ifnb \move3; .set givemon_flags, givemon_flags | (1 << 19); .endif
-	.ifnb \move4; .set givemon_flags, givemon_flags | (1 << 20); .endif
-	.ifnb \isShiny; .set givemon_flags, givemon_flags | (1 << 21); .endif
+	.ifnb \move1; .set givemon_flags, givemon_flags | (1 << 11); .endif
+	.ifnb \move2; .set givemon_flags, givemon_flags | (1 << 12); .endif
+	.ifnb \move3; .set givemon_flags, givemon_flags | (1 << 13); .endif
+	.ifnb \move4; .set givemon_flags, givemon_flags | (1 << 14); .endif
+	.ifnb \isShiny; .set givemon_flags, givemon_flags | (1 << 15); .endif
 	.4byte givemon_flags
 	.ifnb \item; .2byte \item; .endif
 	.ifnb \ball; .2byte \ball; .endif
@@ -930,12 +924,6 @@
 	.ifnb \speedEv; .2byte \speedEv; .endif
 	.ifnb \spAtkEv; .2byte \spAtkEv; .endif
 	.ifnb \spDefEv; .2byte \spDefEv; .endif
-	.ifnb \hpIv; .2byte \hpIv; .endif
-	.ifnb \atkIv; .2byte \atkIv; .endif
-	.ifnb \defIv; .2byte \defIv; .endif
-	.ifnb \speedIv; .2byte \speedIv; .endif
-	.ifnb \spAtkIv; .2byte \spAtkIv; .endif
-	.ifnb \spDefIv; .2byte \spDefIv; .endif
 	.ifnb \move1; .2byte \move1; .endif
 	.ifnb \move2; .2byte \move2; .endif
 	.ifnb \move3; .2byte \move3; .endif
@@ -945,7 +933,7 @@
 
 	@ creates a mon for a given party and slot
 	@ otherwise
-	.macro createmon side:req, slot:req, species:req, level:req, item, ball, nature, abilityNum, gender, hpEv, atkEv, defEv, speedEv, spAtkEv, spDefEv, hpIv, atkIv, defIv, speedIv, spAtkIv, spDefIv, move1, move2, move3, move4, isShiny
+	.macro createmon side:req, slot:req, species:req, level:req, item, ball, nature, abilityNum, gender, hpEv, atkEv, defEv, speedEv, spAtkEv, spDefEv, move1, move2, move3, move4, isShiny
 	callnative ScrCmd_createmon
 	.byte \side	 @ 0 - player, 1 - opponent
 	.byte \slot	 @ 0-5
@@ -963,17 +951,11 @@
 	.ifnb \speedEv; .set givemon_flags, givemon_flags | (1 << 8); .endif
 	.ifnb \spAtkEv; .set givemon_flags, givemon_flags | (1 << 9); .endif
 	.ifnb \spDefEv; .set givemon_flags, givemon_flags | (1 << 10); .endif
-	.ifnb \hpIv; .set givemon_flags, givemon_flags | (1 << 11); .endif
-	.ifnb \atkIv; .set givemon_flags, givemon_flags | (1 << 12); .endif
-	.ifnb \defIv; .set givemon_flags, givemon_flags | (1 << 13); .endif
-	.ifnb \speedIv; .set givemon_flags, givemon_flags | (1 << 14); .endif
-	.ifnb \spAtkIv; .set givemon_flags, givemon_flags | (1 << 15); .endif
-	.ifnb \spDefIv; .set givemon_flags, givemon_flags | (1 << 16); .endif
-	.ifnb \move1; .set givemon_flags, givemon_flags | (1 << 17); .endif
-	.ifnb \move2; .set givemon_flags, givemon_flags | (1 << 18); .endif
-	.ifnb \move3; .set givemon_flags, givemon_flags | (1 << 19); .endif
-	.ifnb \move4; .set givemon_flags, givemon_flags | (1 << 20); .endif
-	.ifnb \isShiny; .set givemon_flags, givemon_flags | (1 << 21); .endif
+	.ifnb \move1; .set givemon_flags, givemon_flags | (1 << 11); .endif
+	.ifnb \move2; .set givemon_flags, givemon_flags | (1 << 12); .endif
+	.ifnb \move3; .set givemon_flags, givemon_flags | (1 << 13); .endif
+	.ifnb \move4; .set givemon_flags, givemon_flags | (1 << 14); .endif
+	.ifnb \isShiny; .set givemon_flags, givemon_flags | (1 << 15); .endif
 	.4byte givemon_flags
 	.ifnb \item; .2byte \item; .endif
 	.ifnb \ball; .2byte \ball; .endif
@@ -986,12 +968,6 @@
 	.ifnb \speedEv; .2byte \speedEv; .endif
 	.ifnb \spAtkEv; .2byte \spAtkEv; .endif
 	.ifnb \spDefEv; .2byte \spDefEv; .endif
-	.ifnb \hpIv; .2byte \hpIv; .endif
-	.ifnb \atkIv; .2byte \atkIv; .endif
-	.ifnb \defIv; .2byte \defIv; .endif
-	.ifnb \speedIv; .2byte \speedIv; .endif
-	.ifnb \spAtkIv; .2byte \spAtkIv; .endif
-	.ifnb \spDefIv; .2byte \spDefIv; .endif
 	.ifnb \move1; .2byte \move1; .endif
 	.ifnb \move2; .2byte \move2; .endif
 	.ifnb \move3; .2byte \move3; .endif
@@ -1131,21 +1107,6 @@
 	.byte \treeId
 	.byte \berry
 	.byte \growthStage
-	.endm
-
-	@ Opens the party menu to select a Pokemon for a contest.
-	.macro choosecontestmon
-	.byte SCR_CMD_choosecontestmon
-	.endm
-
-	@ Starts the appeals round of a contest.
-	.macro startcontest
-	.byte SCR_CMD_startcontest
-	.endm
-
-	@ Shows the results screen of a contest.
-	.macro showcontestresults
-	.byte SCR_CMD_showcontestresults
 	.endm
 
 	@ Stores a random integer between 0 and limit (exclusive of limit) in VAR_RESULT.

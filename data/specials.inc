@@ -53,10 +53,6 @@ gSpecials::
 	def_special HasEnoughMonsForDoubleBattle
 	def_special SaveGame
 	def_special DoWateringBerryTreeAnim
-	def_special GetSeedotSizeRecordInfo
-	def_special CompareSeedotSize
-	def_special GetLotadSizeRecordInfo
-	def_special CompareLotadSize
 	def_special SwapRegisteredBike
 	def_special CalculatePlayerPartyCount
 	def_special CountPartyNonEggMons
@@ -262,6 +258,4 @@ gSpecials::
 	def_special CanWaterBerryPlot
 	def_special Script_GetChosenMonOffensiveEVs
 	def_special Script_GetChosenMonDefensiveEVs
-	def_special Script_GetChosenMonOffensiveIVs
-	def_special Script_GetChosenMonDefensiveIVs
 	def_special UseBlankMessageToCancelPokemonPic

@@ -1201,7 +1201,7 @@ bool8 BufferTMHMMoveName(void)
 {
     if (gSpecialVar_0x8004 >= ITEM_TM01 && gSpecialVar_0x8004 <= ITEM_HM08)
     {
-        StringCopy(gVariableTexto2, GetMoveName(ItemIdToBattleMoveId(gSpecialVar_0x8004)));
+        StringCopy(gVariableTexto2, ObtenNombreMovimiento(ItemIdToBattleMoveId(gSpecialVar_0x8004)));
         return TRUE;
     }
 
@@ -1242,45 +1242,6 @@ void SetDeptStoreFloor(void)
 u16 GetDeptStoreDefaultFloorChoice(void)
 {
     return 0;
-}
-
-void BufferVarsForIVRater(void)
-{
-    u32 i;
-    u32 ivStorage[NUMERO_ESTADISTICAS];
-
-    ivStorage[ESTADISTICA_PS] = GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_HP_IV);
-    ivStorage[ESTADISTICA_ATAQUE] = GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_ATK_IV);
-    ivStorage[ESTADISTICA_DEFENSA] = GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_DEF_IV);
-    ivStorage[ESTADISTICA_VELOCIDAD] = GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPEED_IV);
-    ivStorage[ESTADISTICA_ATAQUE_ESPECIAL] = GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPATK_IV);
-    ivStorage[ESTADISTICA_DEFENSA_ESPECIAL] = GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPDEF_IV);
-
-    gSpecialVar_0x8005 = 0;
-
-    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
-        gSpecialVar_0x8005 += ivStorage[i];
-
-    gSpecialVar_0x8006 = 0;
-    gSpecialVar_0x8007 = ivStorage[ESTADISTICA_PS];
-
-    for (i = 1; i < NUMERO_ESTADISTICAS; i++)
-    {
-        if (ivStorage[gSpecialVar_0x8006] < ivStorage[i])
-        {
-            gSpecialVar_0x8006 = i;
-            gSpecialVar_0x8007 = ivStorage[i];
-        }
-        else if (ivStorage[gSpecialVar_0x8006] == ivStorage[i])
-        {
-            u16 randomNumber = Random();
-            if (randomNumber & 1)
-            {
-                gSpecialVar_0x8006 = i;
-                gSpecialVar_0x8007 = ivStorage[i];
-            }
-        }
-    }
 }
 
 bool8 UsedPokemonCenterWarp(void)

@@ -863,7 +863,7 @@ void BufferStringBattle(u16 stringID, u32 battler)
         }
         break;
     case STRINGID_USEDMOVE:
-        StringCopy(gBattleTextBuff3, GetMoveName(gBattleMsgDataPtr->currentMove));
+        StringCopy(gBattleTextBuff3, ObtenNombreMovimiento(gBattleMsgDataPtr->currentMove));
         stringPtr = COMPOUND_STRING("¡{B_ATK_NAME_WITH_PREFIX} usó {B_BUFF3}!");
         break;
     case STRINGID_TRAINERSLIDE:
@@ -1090,10 +1090,10 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
                 HANDLE_NICKNAME_STRING_CASE(gBattleScripting.battler)
                 break;
             case B_TXT_CURRENT_MOVE: // current move name
-                toCpy = GetMoveName(gBattleMsgDataPtr->currentMove);
+                toCpy = ObtenNombreMovimiento(gBattleMsgDataPtr->currentMove);
                 break;
             case B_TXT_LAST_MOVE: // originally used move name
-                toCpy = GetMoveName(gBattleMsgDataPtr->originallyUsedMove);
+                toCpy = ObtenNombreMovimiento(gBattleMsgDataPtr->originallyUsedMove);
                 break;
             case B_TXT_LAST_ITEM: // last used item
                 CopyItemName(gLastUsedItem, text);
@@ -1302,7 +1302,7 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
             srcID += src[srcID + 1] + 3;
             break;
         case B_BUFF_MOVE: // move name
-            StringAppend(dst, GetMoveName(T1_READ_16(&src[srcID + 1])));
+            StringAppend(dst, ObtenNombreMovimiento(T1_READ_16(&src[srcID + 1])));
             srcID += 3;
             break;
         case B_BUFF_TYPE: // type name

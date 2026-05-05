@@ -2580,8 +2580,6 @@ extern const u32 gBattleAnimSpriteGfx_WaterGun[];
 extern const u32 gBattleAnimSpritePal_WaterGun[];
 extern const u32 gBattleAnimSpriteGfx_Punishment[];
 extern const u32 gBattleAnimSpritePal_Punishment[];
-extern const u32 gBattleAnimSpriteGfx_QuickGuard[];
-extern const u32 gBattleAnimSpritePal_QuickGuard[];
 
 // New Battle Anim Particles
 extern const u32 gBattleAnimSpriteGfx_Anchor[];

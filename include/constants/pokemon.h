@@ -236,9 +236,6 @@ enum Amistad
 #define MAX_SHEEN       255
 #define MAX_CONDITION   255
 
-#define MAX_PER_STAT_IVS 31
-#define MAX_IV_MASK 31
-#define USE_RANDOM_IVS (MAX_PER_STAT_IVS + 1)
 #define MAX_PER_STAT_EVS 252
 #define MAX_TOTAL_EVS 504
 

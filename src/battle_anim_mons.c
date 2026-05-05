@@ -3,7 +3,6 @@
 #include "battle_anim.h"
 #include "battle_interface.h"
 #include "bg.h"
-#include "contest.h"
 #include "data.h"
 #include "decompress.h"
 #include "dma3.h"
@@ -52,7 +51,7 @@ const struct UCoords8 sBattlerCoords[NUMERO_MODOS][NUMERO_COMBATIENTES] =
     },
 };
 
-// Placeholders for Pokémon sprites to be created for a move animation effect (e.g. Role Play / Snatch)
+// Placeholders for Pokémon sprites to be created for a move animation effect (e.g. Role Play)
 #define TAG_MOVE_EFFECT_MON_1 55125
 #define TAG_MOVE_EFFECT_MON_2 55126
 
@@ -1720,7 +1719,7 @@ u8 GetBattlerSpriteBGPriorityRank(u8 battlerId)
     return 1;
 }
 
-// Create Pokémon sprite to be used for a move animation effect (e.g. Role Play / Snatch)
+// Create Pokémon sprite to be used for a move animation effect (e.g. Role Play)
 u8 CreateAdditionalMonSpriteForMoveAnim(u16 species, bool8 isBackpic, u8 id, s16 x, s16 y, u8 subpriority, u32 personality, bool8 isShiny, u32 battlerId)
 {
     u32 spriteId;

@@ -62,7 +62,8 @@ static bool32 ShouldSwitchIfHasBadOdds(u32 battler)
     //Variable initialization
     u8 opposingPosition, atkType1, atkType2, defType1, defType2, effectiveness;
     s32 i, damageDealt = 0, maxDamageDealt = 0, damageTaken = 0, maxDamageTaken = 0;
-    u32 aiMove, playerMove, aiBestMove = MOVE_NONE, aiAbility = AI_DATA->abilities[battler], opposingBattler;
+    enum Movimiento movimientoIA;
+    u32 playerMove, aiBestMove = MOVE_NONE, aiAbility = AI_DATA->abilities[battler], opposingBattler;
     enum ClimasCombate climaCombate = ObtenClimaCombate();
     bool32 getsOneShot = FALSE, hasStatusMove = FALSE, hasSuperEffectiveMove = FALSE;
     u16 typeEffectiveness = MOVIMIENTO_NEUTRO, aiMoveEffect; //baseline typing damage
@@ -85,11 +86,11 @@ static bool32 ShouldSwitchIfHasBadOdds(u32 battler)
     defType2 = gBattleMons[battler].types[TIPO_2];
 
     // Check AI moves for damage dealt
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
-        aiMove = gBattleMons[battler].moves[i];
-        aiMoveEffect = gMovimientos[aiMove].effect;
-        if (aiMove != MOVE_NONE)
+        movimientoIA = gBattleMons[battler].movimientos[i];
+        aiMoveEffect = gMovimientos[movimientoIA].effect;
+        if (movimientoIA != MOVE_NONE)
         {
             // Check if mon has an "important" status move
             if (aiMoveEffect == EFFECT_REFLECT || aiMoveEffect == EFFECT_LIGHT_SCREEN
@@ -103,10 +104,10 @@ static bool32 ShouldSwitchIfHasBadOdds(u32 battler)
             }
 
             // Only check damage if move has power
-            if (!EsMovimientoDeEstado(aiMove))
+            if (!EsMovimientoEstado(movimientoIA))
             {
                 // Check if mon has a super effective move
-                if (IA_EfectividadMovimiento(aiMove, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
+                if (IA_EfectividadMovimiento(movimientoIA, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
                     hasSuperEffectiveMove = TRUE;
 
                 // Get maximum damage mon can deal
@@ -114,7 +115,7 @@ static bool32 ShouldSwitchIfHasBadOdds(u32 battler)
                 if(damageDealt > maxDamageDealt)
                 {
                     maxDamageDealt = damageDealt;
-                    aiBestMove = aiMove;
+                    aiBestMove = movimientoIA;
                 }
 
             }
@@ -133,10 +134,10 @@ static bool32 ShouldSwitchIfHasBadOdds(u32 battler)
     }
 
     // Get max damage mon could take
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
-        playerMove = gBattleMons[opposingBattler].moves[i];
-        if (playerMove != MOVE_NONE && !EsMovimientoDeEstado(playerMove))
+        playerMove = gBattleMons[opposingBattler].movimientos[i];
+        if (playerMove != MOVE_NONE && !EsMovimientoEstado(playerMove))
         {
             damageTaken = AI_CalcDamage(playerMove, opposingBattler, battler, &effectiveness, climaCombate);
             if (damageTaken > maxDamageTaken)
@@ -202,11 +203,11 @@ static bool32 ShouldSwitchIfHasBadOdds(u32 battler)
 
 static bool32 ShouldSwitchIfAllMovesBad(u32 battler)
 {
-    for (u32 indiceMovimiento = 0; indiceMovimiento < MAX_MON_MOVES; indiceMovimiento++)
+    for (u32 indiceMovimiento = 0; indiceMovimiento < MAXIMO_MOVIMIENTOS_POKEMON; indiceMovimiento++)
     {
         u32 opposingBattler = OPONENTE(battler);
         u32 opposingPartner = ALIADO(opposingBattler);
-        u32 movimientoIA = gBattleMons[battler].moves[indiceMovimiento];
+        enum Movimientos movimientoIA = gBattleMons[battler].movimientos[indiceMovimiento];
         if ((IA_EfectividadMovimiento(movimientoIA, battler, opposingBattler) > AI_EFFECTIVENESS_x0
                 || IA_EfectividadMovimiento(movimientoIA, battler, opposingPartner) > AI_EFFECTIVENESS_x0)
                 && movimientoIA != MOVE_NONE)
@@ -480,7 +481,7 @@ static bool32 HasSuperEffectiveMoveAgainstOpponents(u32 battler, bool32 noRng)
 
     if (!(gAbsentBattlerFlags & (1u << opposingBattler)))
     {
-        for (i = 0; i < MAX_MON_MOVES; i++)
+        for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
         {
             move = gBattleMons[battler].moves[i];
             if (move == MOVE_NONE)
@@ -502,7 +503,7 @@ static bool32 HasSuperEffectiveMoveAgainstOpponents(u32 battler, bool32 noRng)
 
     if (!(gAbsentBattlerFlags & (1u << opposingBattler)))
     {
-        for (i = 0; i < MAX_MON_MOVES; i++)
+        for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
         {
             move = gBattleMons[battler].moves[i];
             if (move == MOVE_NONE)
@@ -552,7 +553,7 @@ static bool32 FindMonWithFlagsAndSuperEffective(u32 combatiente, uq4_12_t result
         return FALSE;
     if (gLastHitBy[combatiente] == 0xFF)
         return FALSE;
-    if (EsMovimientoDeEstado(gLastLandedMoves[combatiente]))
+    if (EsMovimientoEstado(gLastLandedMoves[combatiente]))
         return FALSE;
 
     battlerIn1 = combatiente;
@@ -588,7 +589,7 @@ static bool32 FindMonWithFlagsAndSuperEffective(u32 combatiente, uq4_12_t result
         {
             battlerIn1 = gLastHitBy[combatiente];
 
-            for (j = 0; j < MAX_MON_MOVES; j++)
+            for (j = 0; j < MAXIMO_MOVIMIENTOS_POKEMON; j++)
             {
                 move = GetMonData(&party[i], MON_DATA_MOVE1 + j);
                 if (move == 0)
@@ -651,7 +652,7 @@ static bool32 CanMonSurviveHazardSwitchin(u32 battler)
             if (IsAceMon(battler, i))
                 continue;
 
-            for (j = 0; j < MAX_MON_MOVES; j++)
+            for (j = 0; j < MAXIMO_MOVIMIENTOS_POKEMON; j++)
             {
                 aiMove = GetMonData(&party[i], MON_DATA_MOVE1 + j, NULL);
                 if (MoveHasAdditionalEffectSelf(aiMove, MOVE_EFFECT_GIRO_RAPIDO)
@@ -962,7 +963,7 @@ void AI_TrySwitchOrUseItem(u32 battler)
 
 // If there are two(or more) mons to choose from, always choose one that has baton pass
 // as most often it can't do much on its own.
-static u32 GetBestMonRelevo(struct Pokemon *party, int firstId, int lastId, u8 invalidMons, int aliveCount, u32 battler, u32 opposingBattler)
+static u32 GetBestMonRelevo(struct Pokemon *party, u32 firstId, u32 lastId, u8 invalidMons, u32 aliveCount, u32 battler, u32 opposingBattler)
 {
     u32 combatiente, bits = 0;
 
@@ -971,7 +972,7 @@ static u32 GetBestMonRelevo(struct Pokemon *party, int firstId, int lastId, u8 i
         if (invalidMons & (1u << combatiente))
             continue;
 
-        for (u32 indiceMovimiento = 0; indiceMovimiento < MAX_MON_MOVES; indiceMovimiento++)
+        for (u32 indiceMovimiento = 0; indiceMovimiento < MAXIMO_MOVIMIENTOS_POKEMON; indiceMovimiento++)
         {
             if (gMovimientos[GetMonData(&party[combatiente], MON_DATA_MOVE1 + indiceMovimiento)].effect == EFECTO_RELEVO)
             {
@@ -993,7 +994,7 @@ static u32 GetBestMonRelevo(struct Pokemon *party, int firstId, int lastId, u8 i
     return PARTY_SIZE;
 }
 
-static u32 GetBestMonTypeMatchup(struct Pokemon *party, int firstId, int lastId, u8 invalidMons, u32 battler, u32 opposingBattler)
+static u32 GetBestMonTypeMatchup(struct Pokemon *party, u32 firstId, u32 lastId, u8 invalidMons, u32 battler, u32 opposingBattler)
 {
     u32 i, bits = 0;
 
@@ -1034,14 +1035,14 @@ static u32 GetBestMonTypeMatchup(struct Pokemon *party, int firstId, int lastId,
         // Ok, we know the mon has the right typing but does it have at least one super effective move?
         if (bestMonId != PARTY_SIZE)
         {
-            for (i = 0; i < MAX_MON_MOVES; i++)
+            for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
             {
-                u32 move = GetMonData(&party[bestMonId], MON_DATA_MOVE1 + i);
-                if (move != MOVE_NONE && IA_EfectividadMovimiento(move, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
+                enum Movimientos movimiento = GetMonData(&party[bestMonId], MON_DATA_MOVE1 + i);
+                if (movimiento != MOVE_NONE && IA_EfectividadMovimiento(movimiento, battler, opposingBattler) >= AI_EFFECTIVENESS_x2)
                     break;
             }
 
-            if (i != MAX_MON_MOVES)
+            if (i != MAXIMO_MOVIMIENTOS_POKEMON)
                 return bestMonId; // Has both the typing and at least one super effective move.
 
             bits |= (1u << bestMonId); // Sorry buddy, we want something better.
@@ -1055,13 +1056,11 @@ static u32 GetBestMonTypeMatchup(struct Pokemon *party, int firstId, int lastId,
     return PARTY_SIZE;
 }
 
-static u32 GetBestMonDmg(struct Pokemon *party, int firstId, int lastId, u8 invalidMons, u32 battler, u32 opposingBattler)
+static u32 GetBestMonDmg(struct Pokemon *party, u32 firstId, u32 lastId, u32 invalidMons, u32 battler, u32 opposingBattler)
 {
     u32 i, j;
-    int dmg, bestDmg = 0;
-    int bestMonId = PARTY_SIZE;
-
-    u32 aiMove;
+    u32 dmg, bestDmg = 0;
+    u32 bestMonId = PARTY_SIZE;
 
     gCombate->resultadoMovimiento = MOVIMIENTO_NEUTRO;
     // If we couldn't find the best mon in terms of typing, find the one that deals most damage.
@@ -1070,13 +1069,13 @@ static u32 GetBestMonDmg(struct Pokemon *party, int firstId, int lastId, u8 inva
         if ((1 << (i)) & invalidMons)
             continue;
         InitializeSwitchinCandidate(&party[i]);
-        for (j = 0; j < MAX_MON_MOVES; j++)
+        for (j = 0; j < MAXIMO_MOVIMIENTOS_POKEMON; j++)
         {
-            aiMove = AI_DATA->switchinCandidate.battleMon.moves[j];
-            if (aiMove != MOVE_NONE && !EsMovimientoDeEstado(aiMove))
+            enum Movimientos movimientoIA = AI_DATA->switchinCandidate.battleMon.movimientos[j];
+            if (movimientoIA != MOVE_NONE && !EsMovimientoEstado(movimientoIA))
             {
-                aiMove = GetMonData(&party[i], MON_DATA_MOVE1 + j);
-                dmg = AI_CalcPartyMonDamage(aiMove, battler, opposingBattler, AI_DATA->switchinCandidate.battleMon, TRUE);
+                enum Movimientos movimientoIA = GetMonData(&party[i], MON_DATA_MOVE1 + j);
+                dmg = AI_CalcPartyMonDamage(movimientoIA, battler, opposingBattler, AI_DATA->switchinCandidate.battleMon, TRUE);
                 if (bestDmg < dmg)
                 {
                     bestDmg = dmg;
@@ -1246,16 +1245,18 @@ static u32 GetSwitchinRecurringDamage(void)
     u32 passiveDamage = 0, maxHP = AI_DATA->switchinCandidate.battleMon.maxHP, ability = AI_DATA->switchinCandidate.battleMon.ability;
     u32 holdEffect = ItemId_GetHoldEffect(AI_DATA->switchinCandidate.battleMon.item);
 
-    // Items
     if (ability != ABILITY_MAGIC_GUARD)
     {
-        if (holdEffect == HOLD_EFFECT_BLACK_SLUDGE && AI_DATA->switchinCandidate.battleMon.types[TIPO_1] != TIPO_VENENO && AI_DATA->switchinCandidate.battleMon.types[TIPO_2] != TIPO_VENENO)
+        if (holdEffect == HOLD_EFFECT_BLACK_SLUDGE
+         && AI_DATA->switchinCandidate.battleMon.types[TIPO_1] != TIPO_VENENO
+         && AI_DATA->switchinCandidate.battleMon.types[TIPO_2] != TIPO_VENENO)
         {
             passiveDamage = maxHP / 16;
             if (passiveDamage == 0)
                 passiveDamage = 1;
         }
-        else if (holdEffect == HOLD_EFFECT_LIFE_ORB && ability != ABILITY_SHEER_FORCE)
+        else if (holdEffect == HOLD_EFFECT_LIFE_ORB
+              && ability != ABILITY_POTENCIA_BRUTA)
         {
             passiveDamage = maxHP / 16;
             if (passiveDamage == 0)
@@ -1489,10 +1490,10 @@ static s32 GetMaxDamagePlayerCouldDealToSwitchin(u32 battler, u32 opposingBattle
     u32 playerMove;
     s32 damageTaken = 0, maxDamageTaken = 0;
 
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
         playerMove = gBattleMons[opposingBattler].moves[i];
-        if (playerMove != MOVE_NONE && !EsMovimientoDeEstado(playerMove))
+        if (playerMove != MOVE_NONE && !EsMovimientoEstado(playerMove))
         {
             damageTaken = AI_CalcPartyMonDamage(playerMove, opposingBattler, battler, battleMon, FALSE);
             if (damageTaken > maxDamageTaken)
@@ -1609,11 +1610,11 @@ static u32 GetBestMonIntegrated(struct Pokemon *party, int firstId, int lastId, 
         }
 
         // Check through current mon's moves
-        for (j = 0; j < MAX_MON_MOVES; j++)
+        for (j = 0; j < MAXIMO_MOVIMIENTOS_POKEMON; j++)
         {
             aiMove = AI_DATA->switchinCandidate.battleMon.moves[j];
 
-            if (aiMove != MOVE_NONE && !EsMovimientoDeEstado(aiMove))
+            if (aiMove != MOVE_NONE && !EsMovimientoEstado(aiMove))
             {
                 damageDealt = AI_CalcPartyMonDamage(aiMove, battler, opposingBattler, AI_DATA->switchinCandidate.battleMon, TRUE);
             }
@@ -1640,7 +1641,7 @@ static u32 GetBestMonIntegrated(struct Pokemon *party, int firstId, int lastId, 
             }
 
             // Check for mon with resistance and super effective move for best type matchup mon with effective move
-            if (aiMove != MOVE_NONE && !EsMovimientoDeEstado(aiMove))
+            if (aiMove != MOVE_NONE && !EsMovimientoEstado(aiMove))
             {
                 if (typeMatchup < bestResistEffective)
                 {

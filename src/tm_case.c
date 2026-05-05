@@ -537,7 +537,7 @@ static void List_MoveCursorFunc(s32 itemIndex, bool8 onInit, struct ListMenu *li
 static void PrintMoveInfo(u16 itemId)
 {
     u32 i;
-    u16 move;
+    enum Movimientos movimiento;
     const u8 * str;
     struct Sprite *sprite;
     enum PrioridadMovimientos prioridad = PrioridadMovimiento(move);
@@ -553,48 +553,48 @@ static void PrintMoveInfo(u16 itemId)
         // Draw type icon
         LoadCompressedSpriteSheet(&gSpriteSheet_MoveTypes);
         LoadCompressedPalette(gMoveTypes_Pal, OBJ_PLTT_ID(14), 2 * PLTT_SIZE_4BPP);
-        move = ItemIdToBattleMoveId(itemId);
+        movimiento = ItemIdToBattleMoveId(itemId);
         if (sTMCaseDynamicResources->typeIconSpriteId == 0xFF)
         {
 		    sTMCaseDynamicResources->typeIconSpriteId = CreateSpriteAtEnd(&gSpriteTemplate_MoveTypes, 16, 152, 0);
 		    sprite = &gSprites[sTMCaseDynamicResources->typeIconSpriteId];
-		    StartSpriteAnim(sprite, gMovimientos[move].type);
-		    sprite->oam.paletteNum = gTipos[gMovimientos[move].type].palette;
+		    StartSpriteAnim(sprite, gMovimientos[movimiento].type);
+		    sprite->oam.paletteNum = gTipos[gMovimientos[movimiento].type].palette;
         }
         // Draw category icon
         LoadCompressedSpriteSheet(&gSpriteSheet_CategoryIcons);
         LoadSpritePalette(&gSpritePal_CategoryIcons);
-        move = ItemIdToBattleMoveId(itemId);
+        movimiento = ItemIdToBattleMoveId(itemId);
         if (sTMCaseDynamicResources->categoryIconSpriteId == 0xFF)
         {
 		    sTMCaseDynamicResources->categoryIconSpriteId = CreateSpriteAtEnd(&gSpriteTemplate_CategoryIcons, 48, 152, 0);
 		    sprite = &gSprites[sTMCaseDynamicResources->categoryIconSpriteId];
-		    StartSpriteAnim(sprite, gMovimientos[move].category);
+		    StartSpriteAnim(sprite, gMovimientos[movimiento].category);
         }
         // Print power
-        if (gMovimientos[move].power < 2)
+        if (gMovimientos[movimiento].power < 2)
             str = gText_ThreeDashes;
         else
         {
-            ConvertIntToDecimalStringN(gVariableTexto1, gMovimientos[move].power, STR_CONV_MODE_RIGHT_ALIGN, 3);
+            ConvertIntToDecimalStringN(gVariableTexto1, gMovimientos[movimiento].power, STR_CONV_MODE_RIGHT_ALIGN, 3);
             str = gVariableTexto1;
         }
             TMCase_Print(WIN_MOVE_INFO, FONT_BIG, gText_Pot, 9, 0, 1, 0, 0, COLOR_TITLE);
             TMCase_Print(WIN_MOVE_INFO, FONT_NORMAL, str, 36, 0, 1, 0, 0, COLOR_LIGHT);
 
         // Print accuracy
-        if (gMovimientos[move].accuracy == 0)
+        if (gMovimientos[movimiento].accuracy == 0)
             str = gText_ThreeDashes;
         else
         {
-            ConvertIntToDecimalStringN(gVariableTexto1, gMovimientos[move].accuracy, STR_CONV_MODE_RIGHT_ALIGN, 3);
+            ConvertIntToDecimalStringN(gVariableTexto1, gMovimientos[movimiento].accuracy, STR_CONV_MODE_RIGHT_ALIGN, 3);
             str = gVariableTexto1;
         }
             TMCase_Print(WIN_MOVE_INFO, FONT_BIG, gText_Pre, 56, 0, 1, 0, 0, COLOR_TITLE);
             TMCase_Print(WIN_MOVE_INFO, FONT_NORMAL, str, 84, 0, 1, 0, 0, COLOR_LIGHT);
 
         // Print PP
-        ConvertIntToDecimalStringN(gVariableTexto1, gMovimientos[move].pp, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        ConvertIntToDecimalStringN(gVariableTexto1, gMovimientos[movimiento].pp, STR_CONV_MODE_RIGHT_ALIGN, 3);
         TMCase_Print(WIN_MOVE_INFO, FONT_BIG, gText_PP, 105, 0, 1, 0, 0, COLOR_TITLE);
         TMCase_Print(WIN_MOVE_INFO, FONT_NORMAL, gVariableTexto1, 116, 0, 1, 0, 0, COLOR_LIGHT);
 

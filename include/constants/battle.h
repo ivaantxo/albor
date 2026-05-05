@@ -101,6 +101,17 @@ enum ResultadosCombate
 #define STATUS1_PSN_ANY          (STATUS1_POISON | STATUS1_TOXIC_POISON)
 #define STATUS1_ANY              (STATUS1_SLEEP | STATUS1_POISON | STATUS1_BURN | STATUS1_CONGELACION | STATUS1_PARALYSIS | STATUS1_TOXIC_POISON)
 
+//enum EstadosPokemon
+//{
+//    SIN_ESTADO,
+//    ESTADO_DORMIDO,
+//    ESTADO_ENVENENADO,
+//    ESTADO_QUEMADO,
+//    ESTADO_CONGELADO,
+//    ESTADO_PARALIZADO,
+//    NUMERO_ESTADOS = 0xFFFF,
+//};
+
 // Volatile status ailments
 // These are removed after exiting the battle or switching out
 #define STATUS2_CONFUSION             (1 << 0 | 1 << 1 | 1 << 2)
@@ -179,7 +190,6 @@ enum ResultadosCombate
 #define SIDE_STATUS_LUCKY_CHANT             (1 << 8)
 #define SIDE_STATUS_TOXIC_SPIKES            (1 << 9)
 #define SIDE_STATUS_STEALTH_ROCK            (1 << 10)
-#define SIDE_STATUS_QUICK_GUARD             (1 << 11)
 #define SIDE_STATUS_WIDE_GUARD              (1 << 12)
 #define SIDE_STATUS_CRAFTY_SHIELD           (1 << 13)
 #define SIDE_STATUS_MAT_BLOCK               (1 << 14)
@@ -438,24 +448,20 @@ enum EfectosFinTurnoIndividuales
 enum ClimasCombate
 {
     CLIMA_COMBATE_NINGUNO,
-    CLIMA_COMBATE_LLUVIA_HABILIDAD,
-    CLIMA_COMBATE_LLUVIA_MOVIMIENTO,
-    CLIMA_COMBATE_SOL_HABILIDAD,
-    CLIMA_COMBATE_SOL_MOVIMIENTO,
-    CLIMA_COMBATE_ARENA_HABILIDAD,
-    CLIMA_COMBATE_ARENA_MOVIMIENTO,
-    CLIMA_COMBATE_NIEVE_HABILIDAD,
-    CLIMA_COMBATE_NIEVE_MOVIMIENTO,
+    CLIMA_COMBATE_LLUVIA,
+    CLIMA_COMBATE_SOL,
+    CLIMA_COMBATE_ARENA,
+    CLIMA_COMBATE_NIEVE,
 
     NUMERO_CLIMAS_COMBATE = 0xFFFF,
 };
 
-enum ClimasMovimientos // Solo para argumentos de movimientos
+enum OrigenClima
 {
-    CLIMA_MOVIMIENTO_SOL,
-    CLIMA_MOVIMIENTO_LLUVIA,
-    CLIMA_MOVIMIENTO_ARENA,
-    CLIMA_MOVIMIENTO_NIEVE,
+    ORIGEN_CLIMA_OVERWORLD,
+    ORIGEN_CLIMA_MOVIMIENTO,
+    ORIGEN_CLIMA_HABILIDAD,
+    NUMERO_ORIGENES_CLIMA = 0xFFFF,
 };
 
 #endif // GUARD_CONSTANTS_BATTLE_H

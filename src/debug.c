@@ -124,7 +124,6 @@ enum PartyDebugMenu
     DEBUG_PARTY_MENU_ITEM_HEAL_PARTY,
     DEBUG_PARTY_MENU_ITEM_INFLICT_STATUS1,
     DEBUG_PARTY_MENU_ITEM_CHECK_EVS,
-    DEBUG_PARTY_MENU_ITEM_CHECK_IVS,
     DEBUG_PARTY_MENU_ITEM_CLEAR_PARTY,
 };
 
@@ -269,12 +268,6 @@ struct DebugMonData
     bool8 isShiny:1;
     u8 nature:5;
     u8 abilityNum:2;
-    u8  mon_iv_hp;
-    u8  mon_iv_atk;
-    u8  mon_iv_def;
-    u8  mon_iv_speed;
-    u8  mon_iv_satk;
-    u8  mon_iv_sdef;
     u16 mon_move_0;
     u16 mon_move_1;
     u16 mon_move_2;
@@ -386,7 +379,6 @@ static void DebugAction_Party_HatchAnEgg(u8 taskId);
 static void DebugAction_Party_HealParty(u8 taskId);
 static void DebugAction_Party_InflictStatus1(u8 taskId);
 static void DebugAction_Party_CheckEVs(u8 taskId);
-static void DebugAction_Party_CheckIVs(u8 taskId);
 static void DebugAction_Party_ClearParty(u8 taskId);
 
 static void DebugAction_FlagsVars_Flags(u8 taskId);
@@ -420,7 +412,6 @@ static void DebugAction_Give_Pokemon_SelectLevel(u8 taskId);
 static void DebugAction_Give_Pokemon_SelectShiny(u8 taskId);
 static void DebugAction_Give_Pokemon_SelectNature(u8 taskId);
 static void DebugAction_Give_Pokemon_SelectAbility(u8 taskId);
-static void DebugAction_Give_Pokemon_SelectIVs(u8 taskId);
 static void DebugAction_Give_Pokemon_SelectEVs(u8 taskId);
 static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId);
 static void DebugAction_Give_Pokemon_Move(u8 taskId);
@@ -444,7 +435,6 @@ extern const u8 Debug_FlagsNotSetOverworldConfigMessage[];
 extern const u8 Debug_FlagsNotSetBattleConfigMessage[];
 extern const u8 Debug_FlagsAndVarNotSetBattleConfigMessage[];
 extern const u8 Debug_EventScript_CheckEVs[];
-extern const u8 Debug_EventScript_CheckIVs[];
 extern const u8 Debug_EventScript_InflictStatus1[];
 extern const u8 Debug_EventScript_Script_1[];
 extern const u8 Debug_EventScript_Script_2[];
@@ -540,7 +530,6 @@ static const u8 sDebugText_Party_HatchAnEgg[] =              _("Hatch an Egg");
 static const u8 sDebugText_Party_HealParty[] =               _("Heal party");
 static const u8 sDebugText_Party_InflictStatus1[] =          _("Inflict Status1");
 static const u8 sDebugText_Party_CheckEVs[] =                _("Check EVs");
-static const u8 sDebugText_Party_CheckIVs[] =                _("Check IVs");
 static const u8 sDebugText_Party_ClearParty[] =              _("Clear Party");
 // Flags/Vars Menu
 static const u8 sDebugText_FlagsVars_Flags[] =               _("Set Flag XYZ…{CLEAR_TO 110}{RIGHT_ARROW}");
@@ -608,14 +597,7 @@ static const u8 sDebugText_PokemonLevel[] =             _("Level:{CLEAR_TO 90}\n
 static const u8 sDebugText_PokemonShiny[] =             _("Shiny:{CLEAR_TO 90}\n   {VAR_TEXTO_2}{CLEAR_TO 90}\n{CLEAR_TO 90}\n{CLEAR_TO 90}");
 static const u8 sDebugText_PokemonNature[] =            _("Nature ID: {VAR_TEXTO_3}{CLEAR_TO 90}\n{VAR_TEXTO_1}{CLEAR_TO 90}\n{CLEAR_TO 90}\n{VAR_TEXTO_2}{CLEAR_TO 90}");
 static const u8 sDebugText_PokemonAbility[] =           _("Ability Num: {VAR_TEXTO_3}{CLEAR_TO 90}\n{VAR_TEXTO_1}{CLEAR_TO 90}\n{CLEAR_TO 90}\n{VAR_TEXTO_2}{CLEAR_TO 90}");
-static const u8 sDebugText_PokemonIVs[] =               _("All IVs:{CLEAR_TO 90}\n    {VAR_TEXTO_3}{CLEAR_TO 90}\n{CLEAR_TO 90}\n{VAR_TEXTO_2}{CLEAR_TO 90}");
 static const u8 sDebugText_PokemonEVs[] =               _("All EVs:{CLEAR_TO 90}\n    {VAR_TEXTO_3}{CLEAR_TO 90}\n{CLEAR_TO 90}\n{VAR_TEXTO_2}{CLEAR_TO 90}");
-static const u8 sDebugText_IV_HP[] =                    _("IV HP:{CLEAR_TO 90}\n    {VAR_TEXTO_3}{CLEAR_TO 90}\n{CLEAR_TO 90}\n{VAR_TEXTO_2}{CLEAR_TO 90}");
-static const u8 sDebugText_IV_Attack[] =                _("IV Attack:{CLEAR_TO 90}\n    {VAR_TEXTO_3}{CLEAR_TO 90}\n{CLEAR_TO 90}\n{VAR_TEXTO_2}{CLEAR_TO 90}");
-static const u8 sDebugText_IV_Defense[] =               _("IV Defense:{CLEAR_TO 90}\n    {VAR_TEXTO_3}{CLEAR_TO 90}\n{CLEAR_TO 90}\n{VAR_TEXTO_2}{CLEAR_TO 90}");
-static const u8 sDebugText_IV_Speed[] =                 _("IV Speed:{CLEAR_TO 90}\n    {VAR_TEXTO_3}{CLEAR_TO 90}\n{CLEAR_TO 90}\n{VAR_TEXTO_2}{CLEAR_TO 90}");
-static const u8 sDebugText_IV_SpAttack[] =              _("IV Sp. Attack:{CLEAR_TO 90}\n    {VAR_TEXTO_3}{CLEAR_TO 90}\n{CLEAR_TO 90}\n{VAR_TEXTO_2}{CLEAR_TO 90}");
-static const u8 sDebugText_IV_SpDefense[] =             _("IV Sp. Defense:{CLEAR_TO 90}\n    {VAR_TEXTO_3}{CLEAR_TO 90}\n{CLEAR_TO 90}\n{VAR_TEXTO_2}{CLEAR_TO 90}");
 static const u8 sDebugText_EV_HP[] =                    _("EV HP:{CLEAR_TO 90}\n    {VAR_TEXTO_3}{CLEAR_TO 90}\n{CLEAR_TO 90}\n{VAR_TEXTO_2}{CLEAR_TO 90}");
 static const u8 sDebugText_EV_Attack[] =                _("EV Attack:{CLEAR_TO 90}\n    {VAR_TEXTO_3}{CLEAR_TO 90}\n{CLEAR_TO 90}\n{VAR_TEXTO_2}{CLEAR_TO 90}");
 static const u8 sDebugText_EV_Defense[] =               _("EV Defense:{CLEAR_TO 90}\n    {VAR_TEXTO_3}{CLEAR_TO 90}\n{CLEAR_TO 90}\n{VAR_TEXTO_2}{CLEAR_TO 90}");
@@ -735,7 +717,6 @@ static const struct ListMenuItem sDebugMenu_Items_Party[] =
     [DEBUG_PARTY_MENU_ITEM_HEAL_PARTY]      = {sDebugText_Party_HealParty,      DEBUG_PARTY_MENU_ITEM_HEAL_PARTY},
     [DEBUG_PARTY_MENU_ITEM_INFLICT_STATUS1] = {sDebugText_Party_InflictStatus1, DEBUG_PARTY_MENU_ITEM_INFLICT_STATUS1},
     [DEBUG_PARTY_MENU_ITEM_CHECK_EVS]       = {sDebugText_Party_CheckEVs,       DEBUG_PARTY_MENU_ITEM_CHECK_EVS},
-    [DEBUG_PARTY_MENU_ITEM_CHECK_IVS]       = {sDebugText_Party_CheckIVs,       DEBUG_PARTY_MENU_ITEM_CHECK_IVS},
     [DEBUG_PARTY_MENU_ITEM_CLEAR_PARTY]     = {sDebugText_Party_ClearParty,     DEBUG_PARTY_MENU_ITEM_CLEAR_PARTY},
 };
 
@@ -901,7 +882,6 @@ static void (*const sDebugMenu_Actions_Party[])(u8) =
     [DEBUG_PARTY_MENU_ITEM_HEAL_PARTY]      = DebugAction_Party_HealParty,
     [DEBUG_PARTY_MENU_ITEM_INFLICT_STATUS1] = DebugAction_Party_InflictStatus1,
     [DEBUG_PARTY_MENU_ITEM_CHECK_EVS]       = DebugAction_Party_CheckEVs,
-    [DEBUG_PARTY_MENU_ITEM_CHECK_IVS]       = DebugAction_Party_CheckIVs,
     [DEBUG_PARTY_MENU_ITEM_CLEAR_PARTY]     = DebugAction_Party_ClearParty,
 };
 
@@ -2983,12 +2963,6 @@ static void ResetMonDataStruct(struct DebugMonData *sDebugMonData)
     sDebugMonData->isShiny          = FALSE;
     sDebugMonData->nature           = 0;
     sDebugMonData->abilityNum       = 0;
-    sDebugMonData->mon_iv_hp        = 0;
-    sDebugMonData->mon_iv_atk       = 0;
-    sDebugMonData->mon_iv_def       = 0;
-    sDebugMonData->mon_iv_speed     = 0;
-    sDebugMonData->mon_iv_satk      = 0;
-    sDebugMonData->mon_iv_sdef      = 0;
     sDebugMonData->mon_ev_hp        = 0;
     sDebugMonData->mon_ev_atk       = 0;
     sDebugMonData->mon_ev_def       = 0;
@@ -3358,148 +3332,10 @@ static void DebugAction_Give_Pokemon_SelectAbility(u8 taskId)
         StringCopy(gVariableTexto2, gText_DigitIndicator[gTasks[taskId].tDigit]);
         ConvertIntToDecimalStringN(gVariableTexto3, gTasks[taskId].tInput, STR_CONV_MODE_LEADING_ZEROS, 2);
         StringCopyPadded(gVariableTexto3, gVariableTexto3, CHAR_SPACE, 15);
-        StringExpandPlaceholders(gVariableTextoAmpliada, sDebugText_IV_HP);
+        StringExpandPlaceholders(gVariableTextoAmpliada, sDebugText_EV_HP);
         AddTextPrinterParameterized(gTasks[taskId].tSubWindowId, DEBUG_MENU_FONT, gVariableTextoAmpliada, 1, 1, 0, NULL);
 
-        gTasks[taskId].func = DebugAction_Give_Pokemon_SelectIVs;
-    }
-    else if (JOY_NEW(B_BUTTON))
-    {
-        PlaySE(SE_SELECT);
-        Free(sDebugMonData);
-        DebugAction_DestroyExtraWindow(taskId);
-    }
-}
-
-static void DebugAction_Give_Pokemon_SelectIVs(u8 taskId)
-{
-    if (JOY_NEW(DPAD_ANY))
-    {
-        PlaySE(SE_SELECT);
-
-        if (JOY_NEW(DPAD_UP))
-        {
-            gTasks[taskId].tInput += sPowersOfTen[gTasks[taskId].tDigit];
-            if (gTasks[taskId].tInput > MAX_PER_STAT_IVS)
-                gTasks[taskId].tInput = MAX_PER_STAT_IVS;
-        }
-        if (JOY_NEW(DPAD_DOWN))
-        {
-            gTasks[taskId].tInput -= sPowersOfTen[gTasks[taskId].tDigit];
-            if (gTasks[taskId].tInput < 0)
-                gTasks[taskId].tInput = 0;
-        }
-        if (JOY_NEW(DPAD_LEFT))
-        {
-            if (gTasks[taskId].tDigit > 0)
-                gTasks[taskId].tDigit -= 1;
-        }
-        if (JOY_NEW(DPAD_RIGHT))
-        {
-            if (gTasks[taskId].tDigit < 2)
-                gTasks[taskId].tDigit += 1;
-        }
-
-        StringCopy(gVariableTexto2, gText_DigitIndicator[gTasks[taskId].tDigit]);
-        ConvertIntToDecimalStringN(gVariableTexto3, gTasks[taskId].tInput, STR_CONV_MODE_LEADING_ZEROS, 2);
-        StringCopyPadded(gVariableTexto3, gVariableTexto3, CHAR_SPACE, 15);
-        switch (gTasks[taskId].tIterator)
-        {
-        case ESTADISTICA_PS:
-            StringExpandPlaceholders(gVariableTextoAmpliada, sDebugText_IV_HP);
-            break;
-        case ESTADISTICA_ATAQUE:
-            StringExpandPlaceholders(gVariableTextoAmpliada, sDebugText_IV_Attack);
-            break;
-        case ESTADISTICA_DEFENSA:
-            StringExpandPlaceholders(gVariableTextoAmpliada, sDebugText_IV_Defense);
-            break;
-        case ESTADISTICA_VELOCIDAD:
-            StringExpandPlaceholders(gVariableTextoAmpliada, sDebugText_IV_Speed);
-            break;
-        case ESTADISTICA_ATAQUE_ESPECIAL:
-            StringExpandPlaceholders(gVariableTextoAmpliada, sDebugText_IV_SpAttack);
-            break;
-        case ESTADISTICA_DEFENSA_ESPECIAL:
-            StringExpandPlaceholders(gVariableTextoAmpliada, sDebugText_IV_SpDefense);
-            break;
-        }
-        AddTextPrinterParameterized(gTasks[taskId].tSubWindowId, DEBUG_MENU_FONT, gVariableTextoAmpliada, 1, 1, 0, NULL);
-    }
-
-    //If A or B button
-    if (JOY_NEW(A_BUTTON))
-    {
-        switch (gTasks[taskId].tIterator)
-        {
-        case ESTADISTICA_PS:
-            sDebugMonData->mon_iv_hp = gTasks[taskId].tInput;
-            break;
-        case ESTADISTICA_ATAQUE:
-            sDebugMonData->mon_iv_atk = gTasks[taskId].tInput;
-            break;
-        case ESTADISTICA_DEFENSA:
-            sDebugMonData->mon_iv_def = gTasks[taskId].tInput;
-            break;
-        case ESTADISTICA_VELOCIDAD:
-            sDebugMonData->mon_iv_speed = gTasks[taskId].tInput;
-            break;
-        case ESTADISTICA_ATAQUE_ESPECIAL:
-            sDebugMonData->mon_iv_satk = gTasks[taskId].tInput;
-            break;
-        case ESTADISTICA_DEFENSA_ESPECIAL:
-            sDebugMonData->mon_iv_sdef = gTasks[taskId].tInput;
-            break;
-        }
-
-        //Check if all IVs set
-        if (gTasks[taskId].tIterator != NUMERO_ESTADISTICAS - 1)
-        {
-            gTasks[taskId].tIterator++;
-            gTasks[taskId].tInput = 0;
-            gTasks[taskId].tDigit = 0;
-
-            StringCopy(gVariableTexto2, gText_DigitIndicator[gTasks[taskId].tDigit]);
-            ConvertIntToDecimalStringN(gVariableTexto3, gTasks[taskId].tInput, STR_CONV_MODE_LEADING_ZEROS, 2);
-            StringCopyPadded(gVariableTexto3, gVariableTexto3, CHAR_SPACE, 15);
-            switch (gTasks[taskId].tIterator)
-            {
-            case ESTADISTICA_PS:
-                StringExpandPlaceholders(gVariableTextoAmpliada, sDebugText_IV_HP);
-                break;
-            case ESTADISTICA_ATAQUE:
-                StringExpandPlaceholders(gVariableTextoAmpliada, sDebugText_IV_Attack);
-                break;
-            case ESTADISTICA_DEFENSA:
-                StringExpandPlaceholders(gVariableTextoAmpliada, sDebugText_IV_Defense);
-                break;
-            case ESTADISTICA_VELOCIDAD:
-                StringExpandPlaceholders(gVariableTextoAmpliada, sDebugText_IV_Speed);
-                break;
-            case ESTADISTICA_ATAQUE_ESPECIAL:
-                StringExpandPlaceholders(gVariableTextoAmpliada, sDebugText_IV_SpAttack);
-                break;
-            case ESTADISTICA_DEFENSA_ESPECIAL:
-                StringExpandPlaceholders(gVariableTextoAmpliada, sDebugText_IV_SpDefense);
-                break;
-            }
-            AddTextPrinterParameterized(gTasks[taskId].tSubWindowId, DEBUG_MENU_FONT, gVariableTextoAmpliada, 1, 1, 0, NULL);
-
-            gTasks[taskId].func = DebugAction_Give_Pokemon_SelectIVs;
-        }
-        else
-        {
-            gTasks[taskId].tInput = 0;
-            gTasks[taskId].tDigit = 0;
-            gTasks[taskId].tIterator = 0;
-
-            StringCopy(gVariableTexto2, gText_DigitIndicator[gTasks[taskId].tDigit]);
-            ConvertIntToDecimalStringN(gVariableTexto3, gTasks[taskId].tInput, STR_CONV_MODE_LEADING_ZEROS, 3);
-            StringCopyPadded(gVariableTexto3, gVariableTexto3, CHAR_SPACE, 15);
-            StringExpandPlaceholders(gVariableTextoAmpliada, sDebugText_EV_HP);
-            AddTextPrinterParameterized(gTasks[taskId].tSubWindowId, DEBUG_MENU_FONT, gVariableTextoAmpliada, 1, 1, 0, NULL);
-            gTasks[taskId].func = DebugAction_Give_Pokemon_SelectEVs;
-        }
+        gTasks[taskId].func = DebugAction_Give_Pokemon_SelectEVs;
     }
     else if (JOY_NEW(B_BUTTON))
     {
@@ -3664,7 +3500,7 @@ static void DebugAction_Give_Pokemon_SelectEVs(u8 taskId)
             else
             {
                 StringCopy(gVariableTexto2, gText_DigitIndicator[gTasks[taskId].tDigit]);
-                StringCopy(gVariableTexto1, GetMoveName(gTasks[taskId].tInput));
+                StringCopy(gVariableTexto1, ObtenNombreMovimiento(gTasks[taskId].tInput));
                 StringCopyPadded(gVariableTexto1, gVariableTexto1, CHAR_SPACE, 15);
                 ConvertIntToDecimalStringN(gVariableTexto3, gTasks[taskId].tInput, STR_CONV_MODE_LEADING_ZEROS, 3);
                 StringExpandPlaceholders(gVariableTextoAmpliada, sDebugText_PokemonMove_0);
@@ -3712,7 +3548,7 @@ static void DebugAction_Give_Pokemon_Move(u8 taskId)
         }
 
         StringCopy(gVariableTexto2, gText_DigitIndicator[gTasks[taskId].tDigit]);
-        StringCopy(gVariableTexto1, GetMoveName(gTasks[taskId].tInput));
+        StringCopy(gVariableTexto1, ObtenNombreMovimiento(gTasks[taskId].tInput));
         StringCopyPadded(gVariableTexto1, gVariableTexto1, CHAR_SPACE, 15);
         ConvertIntToDecimalStringN(gVariableTexto3, gTasks[taskId].tInput, STR_CONV_MODE_LEADING_ZEROS, 3);
         switch (gTasks[taskId].tIterator)
@@ -3757,14 +3593,14 @@ static void DebugAction_Give_Pokemon_Move(u8 taskId)
         }
 
         //If NOT last move or selected MOVE_NONE ask for next move, else make mon
-        if (gTasks[taskId].tIterator < MAX_MON_MOVES - 1)
+        if (gTasks[taskId].tIterator < MAXIMO_MOVIMIENTOS_POKEMON - 1)
         {
             gTasks[taskId].tIterator++;
             gTasks[taskId].tInput = 0;
             gTasks[taskId].tDigit = 0;
 
             StringCopy(gVariableTexto2, gText_DigitIndicator[gTasks[taskId].tDigit]);
-            StringCopy(gVariableTexto1, GetMoveName(gTasks[taskId].tInput));
+            StringCopy(gVariableTexto1, ObtenNombreMovimiento(gTasks[taskId].tInput));
             StringCopyPadded(gVariableTexto1, gVariableTexto1, CHAR_SPACE, 15);
             ConvertIntToDecimalStringN(gVariableTexto3, gTasks[taskId].tInput, STR_CONV_MODE_LEADING_ZEROS, 3);
             switch (gTasks[taskId].tIterator)
@@ -3809,8 +3645,6 @@ static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId) //https://githu
     struct Pokemon mon;
     u32 i;
     u16 moves[4];
-    u8 IVs[6];
-    u8 iv_val;
     u8 EVs[6];
     u8 ev_val;
     u16 species     = sDebugMonData->species;
@@ -3822,12 +3656,6 @@ static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId) //https://githu
     moves[1]        = sDebugMonData->mon_move_1;
     moves[2]        = sDebugMonData->mon_move_2;
     moves[3]        = sDebugMonData->mon_move_3;
-    IVs[0]          = sDebugMonData->mon_iv_hp;
-    IVs[1]          = sDebugMonData->mon_iv_atk;
-    IVs[2]          = sDebugMonData->mon_iv_def;
-    IVs[3]          = sDebugMonData->mon_iv_speed;
-    IVs[4]          = sDebugMonData->mon_iv_satk;
-    IVs[5]          = sDebugMonData->mon_iv_sdef;
     EVs[0]          = sDebugMonData->mon_ev_hp;
     EVs[1]          = sDebugMonData->mon_ev_atk;
     EVs[2]          = sDebugMonData->mon_ev_def;
@@ -3838,18 +3666,10 @@ static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId) //https://githu
     //Nature
     if (nature == NUMERO_NATURALEZAS || nature == 0xFF)
         nature = Random() % NUMERO_NATURALEZAS;
-    CreaPokemonConNaturaleza(&mon, species, level, 32, nature);
+    CreaPokemonConNaturaleza(&mon, species, level, nature);
 
     //Shininess
     SetMonData(&mon, MON_DATA_IS_SHINY, &isShiny);
-
-    //IVs
-    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
-    {
-        iv_val = IVs[i];
-        if (iv_val != 32 && iv_val != 0xFF)
-            SetMonData(&mon, MON_DATA_HP_IV + i, &iv_val);
-    }
 
     //EVs
     for (i = 0; i < NUMERO_ESTADISTICAS; i++)
@@ -3860,7 +3680,7 @@ static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId) //https://githu
     }
 
     //Moves
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
         if (moves[i] == 0 || moves[i] == 0xFF || moves[i] >= NUMERO_MOVIMIENTOS)
             continue;
@@ -3968,7 +3788,7 @@ static void DebugAction_PCBag_Fill_PCBoxes_Fast(u8 taskId) //Credit: Sierraffini
 
     personality = Random();
 
-    CreaPokemonCaja(&boxMon, species, 100, USE_RANDOM_IVS, FALSE, personality);
+    CreaPokemonCaja(&boxMon, species, 100, FALSE, personality);
 
     for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
     {
@@ -4006,7 +3826,7 @@ static void DebugAction_PCBag_Fill_PCBoxes_Slow(u8 taskId)
             {
                 if (!spaceAvailable)
                     PlayBGM(MUS_RG_MYSTERY_GIFT);
-                CreaPokemonCaja(&boxMon, species, 100, USE_RANDOM_IVS, FALSE, 0);
+                CreaPokemonCaja(&boxMon, species, 100, FALSE, 0);
                 gPokemonStoragePtr->boxes[boxId][boxPosition] = boxMon;
                 species = (species < NUM_SPECIES - 1) ? species + 1 : 1;
                 spaceAvailable = TRUE;
@@ -5283,11 +5103,6 @@ static void DebugAction_Party_InflictStatus1(u8 taskId)
 static void DebugAction_Party_CheckEVs(u8 taskId)
 {
     Debug_DestroyMenu_Full_Script(taskId, Debug_EventScript_CheckEVs);
-}
-
-static void DebugAction_Party_CheckIVs(u8 taskId)
-{
-    Debug_DestroyMenu_Full_Script(taskId, Debug_EventScript_CheckIVs);
 }
 
 static void DebugAction_Party_ClearParty(u8 taskId)

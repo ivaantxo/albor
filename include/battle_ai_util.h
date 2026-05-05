@@ -10,8 +10,8 @@ enum AIPivot
     SHOULD_PIVOT,
 };
 
-bool32 AI_IsFaster(u32 battlerAI, u32 battlerDef, u32 move);
-bool32 AI_IsSlower(u32 battlerAI, u32 battlerDef, u32 move);
+bool32 AI_IsFaster(u32 battlerAI, u32 battlerDef, enum Movimientos movimiento);
+bool32 AI_IsSlower(u32 battlerAI, u32 battlerDef, enum Movimientos movimiento);
 bool32 AI_RandLessThan(u32 val);
 
 static inline bool32 CombatienteEsIA(u32 combatiente)
@@ -22,9 +22,9 @@ static inline bool32 CombatienteEsIA(u32 combatiente)
 
 bool32 IsAIBattlerAware(u32 battlerId);
 void ClearBattlerMoveHistory(u32 battlerId);
-void RecordLastUsedMoveBy(u32 battlerId, u32 move);
+void RecordLastUsedMoveBy(u32 battlerId, enum Movimientos movimiento);
 void RecordAllMoves(u32 battler);
-void RecordKnownMove(u32 battlerId, u32 move);
+void RecordKnownMove(u32 battlerId, enum Movimientos movimiento);
 void RecuerdaHabilidad(u32 combatiente, u32 habilidad);
 void ClearBattlerAbilityHistory(u32 battlerId);
 void RecordItemEffectBattle(u32 battlerId, u32 itemEffect);
@@ -38,34 +38,34 @@ u32 GetTotalBaseStat(u32 species);
 bool32 AI_BattlerAtMaxHp(u32 battler);
 u32 GetHealthPercentage(u32 battler);
 bool32 IsBattlerTrapped(u32 battler, bool32 switching);
-s32 AI_WhoStrikesFirst(u32 battlerAI, u32 battler2, u32 moveConsidered);
+s32 AI_WhoStrikesFirst(u32 battlerAI, u32 battler2, enum Movimientos movimientoConsiderado);
 bool32 CanTargetFaintAI(u32 battlerDef, u32 battlerAtk);
 u32 NoOfHitsForTargetToFaintAI(u32 battlerDef, u32 battlerAtk);
 u32 GetBestDmgMoveFromBattler(u32 battlerAtk, u32 battlerDef);
 u32 GetBestDmgFromBattler(u32 battler, u32 battlerTarget);
-bool32 CanTargetMoveFaintAI(u32 move, u32 battlerDef, u32 battlerAtk, u32 nHits);
+bool32 PuedeMovimientoDebilitarObjetivo(enum Movimientos movimiento, u32 defensor, u32 atacante, u32 numeroGolpes);
 bool32 CanTargetFaintAIWithMod(u32 battlerDef, u32 battlerAtk, s32 hpMod, s32 dmgMod);
 s32 AI_DecideKnownAbilityForTurn(u32 battlerId);
 u32 AI_DecideHoldEffectForTurn(u32 battlerId);
-bool32 DoesBattlerIgnoreAbilityChecks(u32 atkAbility, u32 move);
+bool32 DoesBattlerIgnoreAbilityChecks(u32 atkAbility, enum Movimientos movimiento);
 bool32 CanAIFaintTarget(u32 battlerAtk, u32 battlerDef, u32 numHits);
 bool32 CanIndexMoveFaintTarget(u32 battlerAtk, u32 battlerDef, u32 index, u32 numHits);
-bool32 HasDamagingMove(u32 battlerId);
-bool32 HasDamagingMoveOfType(u32 battlerId, u32 type);
+bool32 TieneMovimientoOfensivo(u32 combatiente);
+bool32 TieneMovimientoOfensivoTipo(u32 combatiente, u32 tipo);
 u32 GetBattlerSecondaryDamage(u32 battlerId);
 bool32 BattlerWillFaintFromWeather(u32 battler, u32 ability);
 bool32 BattlerWillFaintFromSecondaryDamage(u32 battler, u32 ability);
-bool32 ShouldUseRecoilMove(u32 battlerAtk, u32 battlerDef, u32 recoilDmg, u32 moveIndex);
+bool32 ShouldUseRecoilMove(u32 battlerAtk, u32 battlerDef, u32 recoilDmg);
 u32 GetBattlerSideSpeedAverage(u32 battler);
-bool32 ShouldAbsorb(u32 battlerAtk, u32 battlerDef, u32 move, s32 damage);
-bool32 ShouldRecover(u32 battlerAtk, u32 battlerDef, u32 move, u32 healPercent);
+bool32 ShouldAbsorb(u32 battlerAtk, u32 battlerDef, enum Movimientos movimiento, s32 damage);
+bool32 ShouldRecover(u32 battlerAtk, u32 battlerDef, enum Movimientos movimiento, u32 healPercent);
 bool32 ShouldSetScreen(u32 battlerAtk, u32 battlerDef, u32 moveEffect);
-enum AIPivot ShouldPivot(u32 battlerAtk, u32 battlerDef, u32 defAbility, u32 move, u32 moveIndex);
+enum AIPivot ShouldPivot(u32 battlerAtk, u32 battlerDef, u32 defAbility, enum Movimientos movimiento, u32 moveIndex);
 bool32 IsRecycleEncouragedItem(u32 item);
 bool32 ShouldRestoreHpBerry(u32 battlerAtk, u32 item);
 bool32 IsStatBoostingBerry(u32 item);
 bool32 PuedeQuitarObjeto(u32 combatiente, u32 objeto);
-bool32 AI_MoveMakesContact(u32 ability, u32 holdEffect, u32 move);
+bool32 AI_MoveMakesContact(u32 ability, u32 holdEffect, enum Movimientos movimiento);
 
 // stat stage checks
 bool32 AnyStatIsRaised(u32 battlerId);
@@ -92,16 +92,15 @@ u32 GetNoOfHitsToKO(u32 dmg, s32 hp);
 u32 GetNoOfHitsToKOBattlerDmg(u32 dmg, u32 battlerDef);
 u32 GetNoOfHitsToKOBattler(u32 battlerAtk, u32 battlerDef, u32 moveIndex);
 u32 GetCurrDamageHpPercent(u32 battlerAtk, u32 battlerDef);
-uq4_12_t IA_EfectividadTipo(u32 movimiento, u32 atacante, u32 defensor);
-u32 IA_EfectividadMovimiento(u32 movimiento, u32 atacante, u32 defensor);
-u16 *GetMovesArray(u32 battler);
+uq4_12_t IA_EfectividadTipo(enum Movimientos movimiento, u32 atacante, u32 defensor);
+u32 IA_EfectividadMovimiento(enum Movimientos movimiento, u32 atacante, u32 defensor);
+enum Movimientos *ObtenMovimientos(u32 combatiente);
 bool32 IsConfusionMoveEffect(u32 moveEffect);
-bool32 HasMove(u32 battlerId, u32 move);
+bool32 HasMove(u32 battlerId, enum Movimientos movimiento);
 bool32 HasOnlyMovesWithCategory(u32 battlerId, u32 category, bool32 onlyOffensive);
 bool32 HasMoveWithCategory(u32 battler, u32 category);
 bool32 HasMoveWithType(u32 battler, u32 type);
 bool32 HasMoveEffect(u32 battlerId, u32 moveEffect);
-bool32 HasMoveEffectANDArg(u32 battlerId, u32 effect, u32 argument);
 bool32 HasMoveWithAdditionalEffect(u32 battlerId, u32 moveEffect);
 bool32 HasMoveWithCriticalHitChance(u32 battlerId);
 bool32 HasMoveWithMoveEffectExcept(u32 battlerId, u32 moveEffect, u32 exception);
@@ -117,10 +116,7 @@ bool32 ShouldSetSandstorm(u32 battler, u32 ability, u32 holdEffect);
 bool32 DeberiaPonerNieve(u32 combatiente, u32 habilidad, u32 efectoObjeto);
 bool32 ShouldSetRain(u32 battlerAtk, u32 ability, u32 holdEffect);
 bool32 ShouldSetSun(u32 battlerAtk, u32 atkAbility, u32 holdEffect);
-bool32 HasSleepMoveWithLowAccuracy(u32 battlerAtk, u32 battlerDef);
-bool32 IsHealingMove(u32 move);
-bool32 HasHealingEffect(u32 battler);
-bool32 IsTrappingMove(u32 move);
+bool32 TieneMovimientoCura(u32 battler);
 bool32 HasTrappingMoveEffect(u32 battler);
 bool32 DeberiaUsarSorpresa(u32 battlerAtk, u32 battlerDef, u32 move);
 bool32 IsStatRaisingEffect(u32 effect);
@@ -130,9 +126,8 @@ bool32 IsSwitchOutEffect(u32 effect);
 bool32 IsAttackBoostMoveEffect(u32 effect);
 bool32 IsUngroundingEffect(u32 effect);
 bool32 IsSemiInvulnerable(u32 battlerDef, u32 move);
-bool32 HasSubstituteIgnoringMove(u32 battler);
-bool32 HasHighCritRatioMove(u32 battler);
-bool32 HasSnatchAffectedMove(u32 battler);
+bool32 TieneMovimientoIgnoreSustituto(u32 combatiente);
+bool32 TieneMovimientoAltoIndiceCritico(u32 combatiente);
 
 // status checks
 bool32 AI_CanBeConfused(u32 battlerAtk, u32 battlerDef, u32 move, u32 ability);

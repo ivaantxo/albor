@@ -3,7 +3,6 @@
 #include "berry.h"
 #include "clock.h"
 #include "coins.h"
-#include "contest.h"
 #include "data.h"
 #include "decompress.h"
 #include "decoration.h"
@@ -1522,9 +1521,9 @@ bool8 ScrCmd_bufferdecorationname(struct ScriptContext *ctx)
 bool8 ScrCmd_buffermovename(struct ScriptContext *ctx)
 {
     u8 stringVarIndex = ScriptReadByte(ctx);
-    u16 moveId = VarGet(ScriptReadHalfword(ctx));
+    enum Movimientos movimiento = VarGet(ScriptReadHalfword(ctx));
 
-    StringCopy(sScriptStringVars[stringVarIndex], GetMoveName(moveId));
+    StringCopy(sScriptStringVars[stringVarIndex], ObtenNombreMovimiento(movimiento));
     return FALSE;
 }
 
@@ -1577,16 +1576,16 @@ bool8 ScrCmd_setmonmove(struct ScriptContext *ctx)
 {
     u8 partyIndex = ScriptReadByte(ctx);
     u8 slot = ScriptReadByte(ctx);
-    u16 move = ScriptReadHalfword(ctx);
+    enum Movimientos movimiento = ScriptReadHalfword(ctx);
 
-    ScriptSetMonMoveSlot(partyIndex, move, slot);
+    ScriptSetMonMoveSlot(partyIndex, movimiento, slot);
     return FALSE;
 }
 
 bool8 ScrCmd_checkpartymove(struct ScriptContext *ctx)
 {
     u32 i;
-    u16 moveId = ScriptReadHalfword(ctx);
+    enum Movimientos movimiento = ScriptReadHalfword(ctx);
 
     gSpecialVar_Result = PARTY_SIZE;
     for (i = 0; i < PARTY_SIZE; i++)
@@ -1594,7 +1593,7 @@ bool8 ScrCmd_checkpartymove(struct ScriptContext *ctx)
         u16 species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL);
         if (!species)
             break;
-        if (!GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG) && CanLearnTeachableMove(species, moveId))
+        if (!GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG) && CanLearnTeachableMove(species, movimiento))
         {
             gSpecialVar_Result = i;
             gSpecialVar_0x8004 = species;
@@ -1806,26 +1805,6 @@ bool8 ScrCmd_setberrytree(struct ScriptContext *ctx)
     else
         PlantBerryTree(treeId, berry, growthStage, FALSE);
     return FALSE;
-}
-
-bool8 ScrCmd_choosecontestmon(struct ScriptContext *ctx)
-{
-    ChooseContestMon();
-    ScriptContext_Stop();
-    return TRUE;
-}
-
-
-bool8 ScrCmd_startcontest(struct ScriptContext *ctx)
-{
-    ScriptContext_Stop();
-    return TRUE;
-}
-
-bool8 ScrCmd_showcontestresults(struct ScriptContext *ctx)
-{
-    ScriptContext_Stop();
-    return TRUE;
 }
 
 bool8 ScrCmd_dofieldeffect(struct ScriptContext *ctx)

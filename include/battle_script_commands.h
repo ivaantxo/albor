@@ -27,7 +27,6 @@ bool8 UproarWakeUpCheck(u8 battlerId);
 bool32 DoesSubstituteBlockMove(u32 battlerAtk, u32 battlerDef, u32 move);
 bool32 CanPoisonType(u8 battlerTarget);
 bool32 CanParalyzeType(u8 battlerTarget);
-bool32 CanUseLastResort(u8 battlerId);
 bool32 TryResetBattlerStatChanges(u8 battler);
 void StealTargetItem(u8 battlerStealer, u8 battlerItem);
 u8 GetCatchingBattler(void);

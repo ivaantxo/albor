@@ -6,7 +6,6 @@
 #include "battle_interface.h"
 #include "battle_util.h"
 #include "bg.h"
-#include "contest.h"
 #include "decompress.h"
 #include "dma3.h"
 #include "gpu_regs.h"
@@ -194,7 +193,6 @@ static const u8* const sBattleAnims_General[NUM_B_ANIMS_GENERAL] =
     [B_ANIM_LEECH_SEED_DRAIN]       = gBattleAnimGeneral_LeechSeedDrain,
     [B_ANIM_MON_HIT]                = gBattleAnimGeneral_MonHit,
     [B_ANIM_ITEM_STEAL]             = gBattleAnimGeneral_ItemSteal,
-    [B_ANIM_SNATCH_MOVE]            = gBattleAnimGeneral_SnatchMove,
     [B_ANIM_FOCUS_PUNCH_SETUP]      = gBattleAnimGeneral_FocusPunchSetUp,
     [B_ANIM_INGRAIN_HEAL]           = gBattleAnimGeneral_IngrainHeal,
     [B_ANIM_FORM_CHANGE]            = gBattleAnimGeneral_FormChange,
@@ -279,7 +277,6 @@ void LaunchBattleAnimation(u32 animType, u32 animId)
         case B_ANIM_TURN_TRAP:
         case B_ANIM_LEECH_SEED_DRAIN:
         case B_ANIM_MON_HIT:
-        case B_ANIM_SNATCH_MOVE:
             sAnimHideHpBoxes = TRUE;
             break;
         default:
@@ -316,7 +313,7 @@ void LaunchBattleAnimation(u32 animType, u32 animId)
         sBattleAnimScriptPtr = sBattleAnims_General[animId];
         break;
     case ANIM_TYPE_MOVE:
-        sBattleAnimScriptPtr = GetMoveAnimationScript(animId);
+        sBattleAnimScriptPtr = ObtenScriptAnimacionMovimiento(animId);
         break;
     case ANIM_TYPE_STATUS:
         sBattleAnimScriptPtr = sBattleAnims_StatusConditions[animId];

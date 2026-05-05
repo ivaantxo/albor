@@ -6,7 +6,6 @@
 #include "battle_gfx_sfx_util.h"
 #include "battle_interface.h"
 #include "bg.h"
-#include "contest.h"
 #include "data.h"
 #include "decompress.h"
 #include "event_data.h"
@@ -244,7 +243,6 @@ static void DisplayPartyPokemonDataForMultiBattle(u8);
 static void LoadPartyBoxPalette(struct PartyMenuBox *, u8);
 static void DrawEmptySlot(u8 windowId);
 static void DisplayPartyPokemonDataForRelearner(u8);
-static void DisplayPartyPokemonDataForContest(u8);
 static bool8 DisplayPartyPokemonDataForMoveTutorOrEvolutionItem(u8);
 static void DisplayPartyPokemonData(u8);
 static void DisplayPartyPokemonNickname(struct Pokemon *, struct PartyMenuBox *, u8);
@@ -395,8 +393,6 @@ static void BufferBattlePartyOrder(u8 *partyBattleOrder);
 static void BufferBattlePartyOrderBySide(u8 *partyBattleOrder, u8 battlerId);
 static void BufferMonSelection(void);
 static void Task_PartyMenuWaitForFade(u8 taskId);
-static void Task_ChooseContestMon(u8 taskId);
-static void CB2_ChooseContestMon(void);
 static void Task_ChoosePartyMon(u8 taskId);
 static void Task_ChooseMonForMoveRelearner(u8);
 static void CB2_ChooseMonForMoveRelearner(void);
@@ -768,8 +764,6 @@ static void RenderPartyMenuBox(u8 slot)
     {
         if (gPartyMenu.menuType == PARTY_MENU_TYPE_MOVE_RELEARNER)
             DisplayPartyPokemonDataForRelearner(slot);
-        else if (gPartyMenu.menuType == PARTY_MENU_TYPE_CONTEST)
-            DisplayPartyPokemonDataForContest(slot);
         else if (!DisplayPartyPokemonDataForMoveTutorOrEvolutionItem(slot))
             DisplayPartyPokemonData(slot);
 
@@ -813,22 +807,6 @@ static void DisplayPartyPokemonDescriptionData(u8 slot, u8 stringID)
         DisplayPartyPokemonGenderNidoranCheck(mon, &sPartyMenuBoxes[slot], 0);
     }
     DisplayPartyPokemonDescriptionText(stringID, &sPartyMenuBoxes[slot], 0);
-}
-
-static void DisplayPartyPokemonDataForContest(u8 slot)
-{
-    switch (GetContestEntryEligibility(&gPlayerParty[slot]))
-    {
-    case CANT_ENTER_CONTEST:
-    case CANT_ENTER_CONTEST_EGG:
-    case CANT_ENTER_CONTEST_FAINTED:
-        DisplayPartyPokemonDescriptionData(slot, PARTYBOX_DESC_NOT_ABLE);
-        break;
-    case CAN_ENTER_CONTEST_EQUAL_RANK:
-    case CAN_ENTER_CONTEST_HIGH_RANK:
-        DisplayPartyPokemonDescriptionData(slot, PARTYBOX_DESC_ABLE);
-        break;
-    }
 }
 
 static void DisplayPartyPokemonDataForRelearner(u8 slot)
@@ -1183,9 +1161,6 @@ static void HandleChooseMonCancel(u8 taskId, s8 *slotPtr)
 static bool8 DisplayCancelChooseMonYesNo(u8 taskId)
 {
     const u8 *stringPtr = NULL;
-
-    if (gPartyMenu.menuType == PARTY_MENU_TYPE_CONTEST)
-        stringPtr = gText_CancelParticipation;
 
     if (stringPtr == NULL)
         return FALSE;
@@ -2251,7 +2226,7 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
     AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_SUMMARY);
 
     // Add field moves to action list
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
         for (j = 0; j != FIELD_NUMERO_MOVIMIENTOS; j++)
         {
@@ -2298,7 +2273,6 @@ static u8 GetPartyMenuActionsType(struct Pokemon *mon)
         actionType = (GetMonData(mon, MON_DATA_IS_EGG)) ? ACTIONS_SUMMARY_ONLY : ACTIONS_STORE;
         break;
     // The following have no selection actions (i.e. they exit immediately upon selection)
-    // PARTY_MENU_TYPE_CONTEST
     // PARTY_MENU_TYPE_CHOOSE_MON
     // PARTY_MENU_TYPE_MOVE_RELEARNER
     default:
@@ -4045,10 +4019,10 @@ static void ShowMoveSelectWindow(u8 slot)
     u8 windowId = DisplaySelectionWindow(SELECTWINDOW_MOVES);
     u16 move;
 
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
         move = GetMonData(&gPlayerParty[slot], MON_DATA_MOVE1 + i);
-        AddTextPrinterParameterized(windowId, fontId, GetMoveName(move), 8, (i * 16) + 1, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(windowId, fontId, ObtenNombreMovimiento(move), 8, (i * 16) + 1, TEXT_SKIP_DRAW, NULL);
         if (move != MOVE_NONE)
             moveCount++;
     }
@@ -4154,7 +4128,7 @@ static void TryUseItemOnMove(u8 taskId)
             PlaySE(SE_USE_ITEM);
             RemoveBagItem(item, 1);
             move = GetMonData(mon, MON_DATA_MOVE1 + *moveSlot);
-            StringCopy(gVariableTexto1, GetMoveName(move));
+            StringCopy(gVariableTexto1, ObtenNombreMovimiento(move));
             GetMedicineItemEffectMessage(item, 0);
             DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
             ProgramaCopiaTilemapVram(FONDO_2);
@@ -4172,7 +4146,7 @@ bool8 MonKnowsMove(struct Pokemon *mon, u16 move)
 {
     u32 i;
 
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
         if (GetMonData(mon, MON_DATA_MOVE1 + i) == move)
             return TRUE;
@@ -4184,7 +4158,7 @@ bool8 BoxMonKnowsMove(struct BoxPokemon *boxMon, u16 move)
 {
     u32 i;
 
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
         if (GetBoxMonData(boxMon, MON_DATA_MOVE1 + i) == move)
             return TRUE;
@@ -4220,7 +4194,7 @@ void ItemUseCB_TMHM(u8 taskId, TaskFunc task)
     mon = &gPlayerParty[gPartyMenu.slotId];
 
     GetMonNickname(mon, gVariableTexto1);
-    StringCopy(gVariableTexto2, GetMoveName(move));
+    StringCopy(gVariableTexto2, ObtenNombreMovimiento(move));
 
     switch (CanTeachMove(mon, move))
     {
@@ -4256,7 +4230,7 @@ static void Task_LearnedMove(u8 taskId)
             RemoveBagItem(item, 1);
     }
     GetMonNickname(mon, gVariableTexto1);
-    StringCopy(gVariableTexto2, GetMoveName(move[0]));
+    StringCopy(gVariableTexto2, ObtenNombreMovimiento(move[0]));
     StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnLearnedMove3);
     DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
     ProgramaCopiaTilemapVram(FONDO_2);
@@ -4341,7 +4315,7 @@ static void Task_ReturnToPartyMenuWhileLearningMove(u8 taskId)
 {
     if (!gFundidoPaletas.activo)
     {
-        if (GetMoveSlotToReplace() != MAX_MON_MOVES)
+        if (GetMoveSlotToReplace() != MAXIMO_MOVIMIENTOS_POKEMON)
             DisplayPartyMenuForgotMoveMessage(taskId);
         else
             StopLearningMovePrompt(taskId);
@@ -4354,7 +4328,7 @@ static void DisplayPartyMenuForgotMoveMessage(u8 taskId)
     u16 move = GetMonData(mon, MON_DATA_MOVE1 + GetMoveSlotToReplace());
 
     GetMonNickname(mon, gVariableTexto1);
-    StringCopy(gVariableTexto2, GetMoveName(move));
+    StringCopy(gVariableTexto2, ObtenNombreMovimiento(move));
     DisplayLearnMoveMessage(gText_12PoofForgotMove);
     gTasks[taskId].func = Task_PartyMenuReplaceMove;
 }
@@ -4375,7 +4349,7 @@ static void Task_PartyMenuReplaceMove(u8 taskId)
 
 static void StopLearningMovePrompt(u8 taskId)
 {
-    StringCopy(gVariableTexto2, GetMoveName(gPartyMenu.data1));
+    StringCopy(gVariableTexto2, ObtenNombreMovimiento(gPartyMenu.data1));
     StringExpandPlaceholders(gVariableTextoAmpliada, gText_StopLearningMove2);
     DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
     ProgramaCopiaTilemapVram(FONDO_2);
@@ -4399,7 +4373,7 @@ static void Task_HandleStopLearningMoveYesNoInput(u8 taskId)
     {
     case 0:
         GetMonNickname(mon, gVariableTexto1);
-        StringCopy(gVariableTexto2, GetMoveName(gPartyMenu.data1));
+        StringCopy(gVariableTexto2, ObtenNombreMovimiento(gPartyMenu.data1));
         StringExpandPlaceholders(gVariableTextoAmpliada, gText_MoveNotLearned);
         DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
         if (gPartyMenu.learnMoveState == 1)
@@ -4418,7 +4392,7 @@ static void Task_HandleStopLearningMoveYesNoInput(u8 taskId)
         // fallthrough
     case 1:
         GetMonNickname(mon, gVariableTexto1);
-        StringCopy(gVariableTexto2, GetMoveName(gPartyMenu.data1));
+        StringCopy(gVariableTexto2, ObtenNombreMovimiento(gPartyMenu.data1));
         DisplayLearnMoveMessage(gText_PkmnNeedsToReplaceMove);
         gTasks[taskId].func = Task_ReplaceMoveYesNo;
         break;
@@ -4676,7 +4650,7 @@ static void PartyMenuTryEvolution(u8 taskId)
 static void DisplayMonNeedsToReplaceMove(u8 taskId)
 {
     GetMonNickname(&gPlayerParty[gPartyMenu.slotId], gVariableTexto1);
-    StringCopy(gVariableTexto2, GetMoveName(gMoveToLearn));
+    StringCopy(gVariableTexto2, ObtenNombreMovimiento(gMoveToLearn));
     StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnNeedsToReplaceMove);
     DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
     ProgramaCopiaTilemapVram(FONDO_2);
@@ -4687,7 +4661,7 @@ static void DisplayMonNeedsToReplaceMove(u8 taskId)
 static void DisplayMonLearnedMove(u8 taskId, u16 move)
 {
     GetMonNickname(&gPlayerParty[gPartyMenu.slotId], gVariableTexto1);
-    StringCopy(gVariableTexto2, GetMoveName(move));
+    StringCopy(gVariableTexto2, ObtenNombreMovimiento(move));
     StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnLearnedMove3);
     DisplayPartyMenuMessage(gVariableTextoAmpliada, TRUE);
     ProgramaCopiaTilemapVram(FONDO_2);
@@ -4822,19 +4796,19 @@ void ItemUseCB_EvolutionStone(u8 taskId, TaskFunc task)
 
 static void SpriteCB_FormChangeIconMosaic(struct Sprite *sprite);
 
-void FormChangeTeachMove(u8 taskId, u32 move, u32 slot)
+void FormChangeTeachMove(u8 taskId, enum Movimientos movimiento, u32 slot)
 {
     struct Pokemon *mon;
 
-    gPartyMenu.data1 = move;
+    gPartyMenu.data1 = movimiento;
     gPartyMenu.learnMoveState = 0;
 
     PlaySE(SE_SELECT);
     mon = &gPlayerParty[slot];
     GetMonNickname(mon, gVariableTexto1);
-    StringCopy(gVariableTexto2, GetMoveName(move));
+    StringCopy(gVariableTexto2, ObtenNombreMovimiento(movimiento));
 
-    if (GiveMoveToMon(mon, move) != MON_HAS_MAX_MOVES)
+    if (GiveMoveToMon(mon, movimiento) != MON_HAS_MAX_MOVES)
     {
         gTasks[taskId].func = Task_LearnedMove;
     }
@@ -4845,20 +4819,20 @@ void FormChangeTeachMove(u8 taskId, u32 move, u32 slot)
     }
 }
 
-void DeleteMove(struct Pokemon *mon, u32 move)
+void DeleteMove(struct Pokemon *mon, enum Movimientos movimiento)
 {
     struct BoxPokemon *boxMon = &mon->box;
     u32 i, j;
 
-    if (move != MOVE_NONE)
+    if (movimiento != MOVE_NONE)
     {
-        for (i = 0; i < MAX_MON_MOVES; i++)
+        for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
         {
             u32 existingMove = GetBoxMonData(boxMon, MON_DATA_MOVE1 + i, NULL);
-            if (existingMove == move)
+            if (existingMove == movimiento)
             {
                 SetMonMoveSlot(mon, MOVE_NONE, i);
-                for (j = i; j < MAX_MON_MOVES - 1; j++)
+                for (j = i; j < MAXIMO_MOVIMIENTOS_POKEMON - 1; j++)
                     ShiftMoveSlot(mon, j, j + 1);
                 break;
             }
@@ -4871,7 +4845,7 @@ bool32 DoesMonHaveAnyMoves(struct Pokemon *mon)
     struct BoxPokemon *boxMon = &mon->box;
     u32 i;
 
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
         u32 existingMove = GetBoxMonData(boxMon, MON_DATA_MOVE1 + i, NULL);
         if (existingMove != MOVE_NONE)
@@ -5174,7 +5148,7 @@ static void TryTutorSelectedMon(u8 taskId)
         move = &gPartyMenu.data1;
         GetMonNickname(mon, gVariableTexto1);
         gPartyMenu.data1 = gSpecialVar_0x8005;
-        StringCopy(gVariableTexto2, GetMoveName(gPartyMenu.data1));
+        StringCopy(gVariableTexto2, ObtenNombreMovimiento(gPartyMenu.data1));
         move[1] = 2;
         switch (CanTeachMove(mon, gPartyMenu.data1))
         {
@@ -5631,33 +5605,6 @@ static void Task_PartyMenuWaitForFade(u8 taskId)
     }
 }
 
-void ChooseContestMon(void)
-{
-    LockPlayerFieldControls();
-    FadeScreen(FADE_TO_BLACK, 0);
-    CreateTask(Task_ChooseContestMon, 10);
-}
-
-static void Task_ChooseContestMon(u8 taskId)
-{
-    if (!gFundidoPaletas.activo)
-    {
-        CleanupOverworldWindowsAndTilemaps();
-        InitPartyMenu(PARTY_MENU_TYPE_CONTEST, PARTY_LAYOUT_SINGLE, PARTY_ACTION_CHOOSE_AND_CLOSE, FALSE, PARTY_MSG_CHOOSE_MON, Task_HandleChooseMonInput, CB2_ChooseContestMon);
-        DestroyTask(taskId);
-    }
-}
-
-static void CB2_ChooseContestMon(void)
-{
-    gContestMonPartyIndex = GetCursorSelectionMonId();
-    if (gContestMonPartyIndex >= PARTY_SIZE)
-        gContestMonPartyIndex = PARTY_NOTHING_CHOSEN;
-    gSpecialVar_0x8004 = gContestMonPartyIndex;
-    gFieldCallback2 = CB2_FadeFromPartyMenu;
-    SetMainCallback2(CB2_ReturnToField);
-}
-
 // Used as a script special for showing a party mon to various npcs (e.g. in-game trades, move deleter)
 void ChoosePartyMon(void)
 {
@@ -5715,7 +5662,7 @@ void GetNumMovesSelectedMonHas(void)
     u32 i;
 
     gSpecialVar_Result = 0;
-    for (i = 0; i < MAX_MON_MOVES; i++)
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
         if (GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_MOVE1 + i) != MOVE_NONE)
             gSpecialVar_Result++;
@@ -5728,7 +5675,7 @@ void BufferMoveDeleterNicknameAndMove(void)
     u16 move = GetMonData(mon, MON_DATA_MOVE1 + gSpecialVar_0x8005);
 
     GetMonNickname(mon, gVariableTexto1);
-    StringCopy(gVariableTexto2, GetMoveName(move));
+    StringCopy(gVariableTexto2, ObtenNombreMovimiento(move));
 }
 
 void MoveDeleterForgetMove(void)
@@ -5736,7 +5683,7 @@ void MoveDeleterForgetMove(void)
     u32 i;
 
     SetMonMoveSlot(&gPlayerParty[gSpecialVar_0x8004], MOVE_NONE, gSpecialVar_0x8005);
-    for (i = gSpecialVar_0x8005; i < MAX_MON_MOVES - 1; i++)
+    for (i = gSpecialVar_0x8005; i < MAXIMO_MOVIMIENTOS_POKEMON - 1; i++)
         ShiftMoveSlot(&gPlayerParty[gSpecialVar_0x8004], i, i + 1);
 }
 
@@ -5773,7 +5720,7 @@ void IsLastMonThatKnowsSurf(void)
         {
             if (i != gSpecialVar_0x8004)
             {
-                for (j = 0; j < MAX_MON_MOVES; j++)
+                for (j = 0; j < MAXIMO_MOVIMIENTOS_POKEMON; j++)
                 {
                     if (GetMonData(&gPlayerParty[i], MON_DATA_MOVE1 + j) == MOVE_SURF)
                         return;

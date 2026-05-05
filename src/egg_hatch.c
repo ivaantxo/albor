@@ -308,28 +308,21 @@ static const s16 sEggShardVelocities[][2] =
 static void CreateHatchedMon(struct Pokemon *egg, struct Pokemon *temp)
 {
     u32 species, personality, i, friendship, ball;
-    u32 moves[MAX_MON_MOVES];
-    u32 ivs[NUMERO_ESTADISTICAS];
+    enum Movimientos movimientos[MAXIMO_MOVIMIENTOS_POKEMON];
 
     species = GetMonData(egg, MON_DATA_SPECIES);
 
-    for (i = 0; i < MAX_MON_MOVES; i++)
-        moves[i] = GetMonData(egg, MON_DATA_MOVE1 + i);
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
+        movimientos[i] = GetMonData(egg, MON_DATA_MOVE1 + i);
 
     personality = GetMonData(egg, MON_DATA_PERSONALITY);
 
-    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
-        ivs[i] = GetMonData(egg, MON_DATA_HP_IV + i);
-
     ball = GetMonData(egg, MON_DATA_POKEBALL);
 
-    CreaPokemon(temp, species, EGG_HATCH_LEVEL, USE_RANDOM_IVS, TRUE, personality);
+    CreaPokemon(temp, species, EGG_HATCH_LEVEL, TRUE, personality);
 
-    for (i = 0; i < MAX_MON_MOVES; i++)
-        SetMonData(temp, MON_DATA_MOVE1 + i,  &moves[i]);
-
-    for (i = 0; i < NUMERO_ESTADISTICAS; i++)
-        SetMonData(temp, MON_DATA_HP_IV + i,  &ivs[i]);
+    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
+        SetMonData(temp, MON_DATA_MOVE1 + i,  &movimientos[i]);
 
     friendship = 120;
     SetMonData(temp, MON_DATA_FRIENDSHIP, &friendship);

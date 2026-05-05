@@ -596,8 +596,8 @@
 	.byte BATTLE_CMD_yesnobox
 	.endm
 
-	.macro cancelallactions
-	.byte BATTLE_CMD_cancelallactions
+	.macro CancelaAccionesSiNoEntrenador
+	.byte BATTLE_CMD_CancelaAccionesSiNoEntrenador
 	.endm
 
 	.macro setgravity failInstr:req
@@ -1005,11 +1005,6 @@
 	.4byte \failInstr
 	.endm
 
-	.macro trysetsnatch failInstr:req
-	.byte BATTLE_CMD_trysetsnatch
-	.4byte \failInstr
-	.endm
-
 	.macro switchoutabilities battler:req
 	.byte BATTLE_CMD_switchoutabilities
 	.byte \battler
@@ -1035,10 +1030,6 @@
 	.macro tryrecycleitem failInstr:req
 	.byte BATTLE_CMD_tryrecycleitem
 	.4byte \failInstr
-	.endm
-
-	.macro snatchsetbattlers
-	.byte BATTLE_CMD_snatchsetbattlers
 	.endm
 
 	.macro EliminaPantallas
@@ -1327,10 +1318,6 @@
 	various \battler, VARIOUS_TRY_ACTIVATE_BEAST_BOOST
 	.endm
 
-	.macro tryactivatereceiver battler:req
-	various \battler, VARIOUS_TRY_ACTIVATE_RECEIVER
-	.endm
-
 	.macro tryactivatesoulheart
 	various BS_ATTACKER, VARIOUS_TRY_ACTIVATE_SOULHEART
 	.endm
@@ -1370,11 +1357,6 @@
 	.macro handleformchange battler:req, case:req
 	various \battler, VARIOUS_HANDLE_FORM_CHANGE
 	.byte \case
-	.endm
-
-	.macro jumpifcantuselastresort battler:req, jumpInstr:req
-	various \battler, VARIOUS_TRY_LAST_RESORT
-	.4byte \jumpInstr
 	.endm
 
 	.macro setargtobattledamage
@@ -1672,14 +1654,6 @@
 
 	.macro jumpifmovehadnoeffect jumpInstr:req
 	jumpifbyte COMPARACION_BITS_COMUNES, gMoveResultFlags, MOVE_RESULT_NO_EFFECT, \jumpInstr
-	.endm
-
-	.macro SaltaSiTipoCombate tipoCombate:req, instruccionSalto:req
-	jumpifhalfword COMPARACION_IGUAL, gCombate->tipoCombate, \tipoCombate, \instruccionSalto
-	.endm
-
-	.macro SaltaSiNoTipoCombate tipoCombate:req, instruccionSalto:req
-	jumpifhalfword COMPARACION_DESIGUAL, gCombate->tipoCombate, \tipoCombate, \instruccionSalto
 	.endm
 
 	.macro dmg_1_8_targethp

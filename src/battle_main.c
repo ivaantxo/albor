@@ -542,7 +542,7 @@ void CustomTrainerPartyAssignMoves(struct Pokemon *mon, const struct TrainerMon 
     bool32 noMoveSet = TRUE;
     u32 j;
 
-    for (j = 0; j < MAX_MON_MOVES; ++j)
+    for (j = 0; j < MAXIMO_MOVIMIENTOS_POKEMON; ++j)
     {
         if (partyEntry->moves[j] != MOVE_NONE)
             noMoveSet = FALSE;
@@ -553,10 +553,10 @@ void CustomTrainerPartyAssignMoves(struct Pokemon *mon, const struct TrainerMon 
         return;
     }
 
-    for (j = 0; j < MAX_MON_MOVES; ++j)
+    for (j = 0; j < MAXIMO_MOVIMIENTOS_POKEMON; ++j)
     {
-        SetMonData(mon, MON_DATA_MOVE1 + j, &partyEntry->moves[j]);
-        SetMonData(mon, MON_DATA_PP1 + j, &gMovimientos[partyEntry->moves[j]].pp);
+        SetMonData(mon, MON_DATA_MOVE1 + j, &partyEntry->movimientos[j]);
+        SetMonData(mon, MON_DATA_PP1 + j, &gMovimientos[partyEntry->movimientos[j]].pp);
     }
 }
 
@@ -581,11 +581,10 @@ u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer 
             else if (partyData[i].gender == TRAINER_MON_RANDOM_GENDER)
                 personalityValue = (personalityValue & 0xFFFFFF00) | GeneratePersonalityForGender(Random() & 1 ? MON_MALE : MON_FEMALE, partyData[i].species);
             ModifyPersonalityForNature(&personalityValue, partyData[i].nature);
-            CreaPokemon(&party[i], partyData[i].species, partyData[i].lvl, 0, TRUE, personalityValue);
+            CreaPokemon(&party[i], partyData[i].species, partyData[i].lvl, TRUE, personalityValue);
             SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
 
             CustomTrainerPartyAssignMoves(&party[i], &partyData[i]);
-            SetMonData(&party[i], MON_DATA_IVS, &(partyData[i].iv));
             if (partyData[i].ev != NULL)
             {
                 SetMonData(&party[i], MON_DATA_HP_EV, &(partyData[i].ev[0]));
@@ -1108,7 +1107,7 @@ static void BattleStartClearSetData(void)
     gBattlerAbility = 0;
     gCombate->clima.modo == CLIMA_COMBATE_NINGUNO;
     gHitMarker = 0;
-    gCombate.contadorMultigolpes = 0;
+    gCombate->contadorMultigolpes = 0;
     gBattleOutcome = 0;
     gPaydayMoney = 0;
     gBattleResources->battleScriptsStack->size = 0;
@@ -1862,17 +1861,10 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                     }
                     else
                     {
-                        struct ChooseMoveStruct moveInfo;
-
-                        moveInfo.species = gBattleMons[combatiente].species;
-                        moveInfo.monTypes[TIPO_1] = gBattleMons[combatiente].types[TIPO_1];
-                        moveInfo.monTypes[TIPO_2] = gBattleMons[combatiente].types[TIPO_2];
-
-                        for (u32 indiceMovimiento = 0; indiceMovimiento < MAX_MON_MOVES; indiceMovimiento++)
+                        for (u32 indiceMovimiento = 0; indiceMovimiento < MAXIMO_MOVIMIENTOS_POKEMON; indiceMovimiento++)
                         {
-                            moveInfo.moves[indiceMovimiento] = gBattleMons[combatiente].moves[indiceMovimiento];
-                            moveInfo.currentPp[indiceMovimiento] = gBattleMons[combatiente].pp[indiceMovimiento];
-                            moveInfo.maxPp[indiceMovimiento] = PPMovimiento(gBattleMons[combatiente].moves[indiceMovimiento]);
+                            moveInfo.movimiento[indiceMovimiento] = gBattleMons[combatiente].moves[indiceMovimiento];
+                            moveInfo.pp[indiceMovimiento] = gBattleMons[combatiente].pp[indiceMovimiento];
                         }
 
                         BtlController_EmitChooseMove(combatiente, BUFFER_A, EsCombateContraEntrenador(gCombate->tipoCombate), FALSE, &moveInfo);
@@ -2113,17 +2105,17 @@ enum PrioridadMovimientos PrioridadMovimientoMasHabilidad(u32 combatiente, u32 m
         (habilidad == ABILITY_BAILARIN && gMovimientos[movimiento].danceMove)                   ||
         (habilidad == ABILITY_ATAQUE_RELAMPAGO && gMovimientos[movimiento].balistico)           ||
         (habilidad == ABILITY_OJOS_PRESTOS && gMovimientos[movimiento].eyesMove)                ||
-        (habilidad == ABILITY_CARA_DURA && EsMovimientoDeCabeza(movimiento))                    ||
+        (habilidad == ABILITY_CARA_DURA && EsMovimientoCabeza(movimiento))                      ||
         (habilidad == ABILITY_HUIDIZO && gMovimientos[movimiento].effect == EFFECT_HIT_ESCAPE)  ||
-        (habilidad == ABILITY_VOZ_CANTANTE && EsMovimientoDeSonido(movimiento))                 ||
-        (habilidad == ABILITY_PACIFISTA && EsMovimientoDeEstado(movimiento))                    ||
-        (habilidad == ABILITY_TRIAGE && IsHealingMove(movimiento))                              ||
-        (habilidad == ABILITY_FORECAST && EsMovimientoDeClima(movimiento)))
+        (habilidad == ABILITY_VOZ_CANTANTE && EsMovimientoSonido(movimiento))                   ||
+        (habilidad == ABILITY_PACIFISTA && EsMovimientoEstado(movimiento))                      ||
+        (habilidad == ABILITY_TRIAGE && EsMovimientoCura(movimiento))                           ||
+        (habilidad == ABILITY_FORECAST && EsMovimientoClima(movimiento)))
     {
         prioridad++;
     }
 
-    if (habilidad == ABILITY_BROMISTA && EsMovimientoDeEstado(movimiento))
+    if (habilidad == ABILITY_BROMISTA && EsMovimientoEstado(movimiento))
     {
         gProtectStructs[combatiente].prioridadBromista = TRUE;
         prioridad++;
@@ -2186,12 +2178,12 @@ s32 GetWhichBattlerFasterOrTies(u32 battler1, u32 battler2, bool32 ignoreChosenM
     {
         if (gAccionElegida[battler1] == B_ACTION_USE_MOVE)
         {
-            movimiento1 = gBattleMons[battler1].moves[gBattleStruct->chosenMovePositions[battler1]];
+            movimiento1 = gBattleMons[battler1].moves[gCombate->chosenMovePositions[battler1]];
             prioridad1 = PrioridadMovimientoMasHabilidad(battler1, movimiento1);
         }
         if (gAccionElegida[battler2] == B_ACTION_USE_MOVE)
         {
-            movimiento2 = gBattleMons[battler2].moves[gBattleStruct->chosenMovePositions[battler2]];
+            movimiento2 = gBattleMons[battler2].moves[gCombate->chosenMovePositions[battler2]];
             prioridad2 = PrioridadMovimientoMasHabilidad(battler2, movimiento2);
         }
     }
@@ -2344,7 +2336,7 @@ static void TurnValuesCleanUp(bool8 var0)
     }
     for (u32 lado = LADO_JUGADOR; lado < NUMERO_LADOS; lado++)
     {
-        gSideStatuses[lado] &= ~(SIDE_STATUS_QUICK_GUARD | SIDE_STATUS_WIDE_GUARD | SIDE_STATUS_CRAFTY_SHIELD | SIDE_STATUS_MAT_BLOCK);
+        gSideStatuses[lado] &= ~(SIDE_STATUS_WIDE_GUARD | SIDE_STATUS_CRAFTY_SHIELD | SIDE_STATUS_MAT_BLOCK);
         gSideTimers[lado].followmeTimer = 0;
     }
 
@@ -2463,7 +2455,10 @@ static void HandleEndTurn_BattleWon(void)
 static void HandleEndTurn_BattleLost(void)
 {
     gCurrentActionFuncId = 0;
-    gBattlescriptCurrInstr = BattleScript_LocalBattleLost;
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
+        gBattlescriptCurrInstr = ScriptCombate_DerrotaContraEntrenador;
+    else
+        gBattlescriptCurrInstr = ScriptCombate_DerrotaContraSalvajeLegendarios;
     gBattleMainFunc = HandleEndTurn_FinishBattle;
 }
 
@@ -2612,7 +2607,7 @@ void RunBattleScriptCommands(void)
         gBattleScriptingCommandsTable[gBattlescriptCurrInstr[0]]();
 }
 
-u32 TipoMovimiento(u32 movimiento, u32 combatiente)
+u32 TipoMovimiento(enum Movimientos movimiento, u32 combatiente)
 {
     u32 tipoMovimiento = gMovimientos[movimiento].type;
     // u32 efectoMovimiento = gMovimientos[movimiento].effect;
@@ -2631,7 +2626,8 @@ u32 TipoMovimiento(u32 movimiento, u32 combatiente)
             return TIPO_HIELO;
     }
 
-    if (movimiento == MOVE_DIA_DE_PAGO && habilidad == ABILITY_EN_METALICO)
+    if (movimiento == MOVE_DIA_DE_PAGO
+     && habilidad == ABILITY_EN_METALICO)
     {
         return TIPO_ACERO;
     }
@@ -2639,7 +2635,7 @@ u32 TipoMovimiento(u32 movimiento, u32 combatiente)
     return tipoMovimiento;
 }
 
-static void IntentaActivarGema(u32 combatiente, u32 movimiento)
+static void IntentaActivarGema(u32 combatiente, enum Movimientos movimiento)
 {
     u32 objetoEquipado = gBattleMons[combatiente].item;
     u32 efectoObjeto = GetBattlerHoldEffect(combatiente, TRUE);

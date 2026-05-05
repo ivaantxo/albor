@@ -255,11 +255,11 @@ void BtlController_EmitBallThrowAnim(u32 battler, u32 bufferId, u8 caseId)
     PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 2);
 }
 
-void BtlController_EmitMoveAnimation(u32 battler, u32 bufferId, u16 move, u8 turnOfMove, u16 movePower, s32 dmg, u8 friendship, struct DisableStruct *disableStructPtr, u8 multihit)
+void BtlController_EmitMoveAnimation(u32 battler, u32 bufferId, enum Movimientos movimiento, u8 turnOfMove, u16 movePower, s32 dmg, u8 friendship, struct DisableStruct *disableStructPtr, u8 multihit)
 {
     gBattleResources->transferBuffer[0] = CONTROLLER_MOVEANIMATION;
-    gBattleResources->transferBuffer[1] = move;
-    gBattleResources->transferBuffer[2] = (move & 0xFF00) >> 8;
+    gBattleResources->transferBuffer[1] = movimiento;
+    gBattleResources->transferBuffer[2] = (movimiento & 0xFF00) >> 8;
     gBattleResources->transferBuffer[3] = turnOfMove;
     gBattleResources->transferBuffer[4] = movePower;
     gBattleResources->transferBuffer[5] = (movePower & 0xFF00) >> 8;
@@ -365,7 +365,7 @@ void BtlController_EmitYesNoBox(u32 battler, u32 bufferId)
     PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
 }
 
-void BtlController_EmitChooseMove(u32 battler, u32 bufferId, bool8 isDoubleBattle, bool8 NoPpNumber, struct ChooseMoveStruct *movePpData)
+void BtlController_EmitChooseMove(u32 battler, u32 bufferId, bool8 isDoubleBattle, bool8 NoPpNumber, struct DatosMovimiento *datosMovimiento)
 {
     s32 i;
 
@@ -373,9 +373,9 @@ void BtlController_EmitChooseMove(u32 battler, u32 bufferId, bool8 isDoubleBattl
     gBattleResources->transferBuffer[1] = isDoubleBattle;
     gBattleResources->transferBuffer[2] = NoPpNumber;
     gBattleResources->transferBuffer[3] = 0;
-    for (i = 0; i < sizeof(*movePpData); i++)
-        gBattleResources->transferBuffer[4 + i] = *((u8 *)(movePpData) + i);
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, sizeof(*movePpData) + 4);
+    for (i = 0; i < sizeof(*datosMovimiento); i++)
+        gBattleResources->transferBuffer[4 + i] = *((u8 *)(datosMovimiento) + i);
+    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, sizeof(*datosMovimiento) + 4);
 }
 
 void BtlController_EmitChoosePokemon(u32 battler, u32 bufferId, u8 caseId, u8 slotId, u16 abilityId, u8 *data)
@@ -617,10 +617,10 @@ void BattleControllerComplete(u32 battler)
 static u32 GetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId, u8 *dst)
 {
     struct BattlePokemon battleMon;
-    struct MovePpInfo moveData;
+    struct DatosMovimiento datosMovimiento;
     u8 nickname[POKEMON_NAME_LENGTH * 2];
     u8 *src;
-    s16 data16;
+    u16 data16;
     u32 data32;
     s32 size = 0;
 
@@ -629,19 +629,13 @@ static u32 GetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId, u8 *
     case REQUEST_ALL_BATTLE:
         battleMon.species = GetMonData(&party[monId], MON_DATA_SPECIES);
         battleMon.item = GetMonData(&party[monId], MON_DATA_HELD_ITEM);
-        for (size = 0; size < MAX_MON_MOVES; size++)
+        for (size = 0; size < MAXIMO_MOVIMIENTOS_POKEMON; size++)
         {
             battleMon.moves[size] = GetMonData(&party[monId], MON_DATA_MOVE1 + size);
             battleMon.pp[size] = GetMonData(&party[monId], MON_DATA_PP1 + size);
         }
         battleMon.friendship = GetMonData(&party[monId], MON_DATA_FRIENDSHIP);
         battleMon.experience = GetMonData(&party[monId], MON_DATA_EXP);
-        battleMon.hpIV = GetMonData(&party[monId], MON_DATA_HP_IV);
-        battleMon.attackIV = GetMonData(&party[monId], MON_DATA_ATK_IV);
-        battleMon.defenseIV = GetMonData(&party[monId], MON_DATA_DEF_IV);
-        battleMon.speedIV = GetMonData(&party[monId], MON_DATA_SPEED_IV);
-        battleMon.spAttackIV = GetMonData(&party[monId], MON_DATA_SPATK_IV);
-        battleMon.spDefenseIV = GetMonData(&party[monId], MON_DATA_SPDEF_IV);
         battleMon.personality = GetMonData(&party[monId], MON_DATA_PERSONALITY);
         battleMon.status1 = GetMonData(&party[monId], MON_DATA_STATUS);
         battleMon.level = GetMonData(&party[monId], MON_DATA_LEVEL);
@@ -658,9 +652,7 @@ static u32 GetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId, u8 *
         GetMonData(&party[monId], MON_DATA_NICKNAME, nickname);
         StringCopy_Nickname(battleMon.nickname, nickname);
         GetMonData(&party[monId], MON_DATA_OT_NAME, battleMon.otName);
-        src = (u8 *)&battleMon;
-        for (size = 0; size < sizeof(battleMon); size++)
-            dst[size] = src[size];
+        memcpy(dst, &battleMon, sizeof(battleMon));
         break;
     case REQUEST_SPECIES_BATTLE:
         data16 = GetMonData(&party[monId], MON_DATA_SPECIES);
@@ -675,14 +667,12 @@ static u32 GetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId, u8 *
         size = 2;
         break;
     case REQUEST_MOVES_PP_BATTLE:
-        for (size = 0; size < MAX_MON_MOVES; size++)
+        for (size = 0; size < MAXIMO_MOVIMIENTOS_POKEMON; size++)
         {
-            moveData.moves[size] = GetMonData(&party[monId], MON_DATA_MOVE1 + size);
-            moveData.pp[size] = GetMonData(&party[monId], MON_DATA_PP1 + size);
+            datosMovimiento.movimiento[size] = GetMonData(&party[monId], MON_DATA_MOVE1 + size);
+            datosMovimiento.pp[size] = GetMonData(&party[monId], MON_DATA_PP1 + size);
         }
-        src = (u8 *)(&moveData);
-        for (size = 0; size < sizeof(moveData); size++)
-            dst[size] = src[size];
+        memcpy(dst, &datosMovimiento, sizeof(datosMovimiento));
         break;
     case REQUEST_MOVE1_BATTLE:
     case REQUEST_MOVE2_BATTLE:
@@ -694,7 +684,7 @@ static u32 GetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId, u8 *
         size = 2;
         break;
     case REQUEST_PP_DATA_BATTLE:
-        for (size = 0; size < MAX_MON_MOVES; size++)
+        for (size = 0; size < MAXIMO_MOVIMIENTOS_POKEMON; size++)
             dst[size] = GetMonData(&party[monId], MON_DATA_PP1 + size);
         size++;
         break;
@@ -754,39 +744,6 @@ static u32 GetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId, u8 *
         break;
     case REQUEST_POKEBALL_BATTLE:
         dst[0] = GetMonData(&party[monId], MON_DATA_POKEBALL);
-        size = 1;
-        break;
-    case REQUEST_ALL_IVS_BATTLE:
-        dst[0] = GetMonData(&party[monId], MON_DATA_HP_IV);
-        dst[1] = GetMonData(&party[monId], MON_DATA_ATK_IV);
-        dst[2] = GetMonData(&party[monId], MON_DATA_DEF_IV);
-        dst[3] = GetMonData(&party[monId], MON_DATA_SPEED_IV);
-        dst[4] = GetMonData(&party[monId], MON_DATA_SPATK_IV);
-        dst[5] = GetMonData(&party[monId], MON_DATA_SPDEF_IV);
-        size = 6;
-        break;
-    case REQUEST_HP_IV_BATTLE:
-        dst[0] = GetMonData(&party[monId], MON_DATA_HP_IV);
-        size = 1;
-        break;
-    case REQUEST_ATK_IV_BATTLE:
-        dst[0] = GetMonData(&party[monId], MON_DATA_ATK_IV);
-        size = 1;
-        break;
-    case REQUEST_DEF_IV_BATTLE:
-        dst[0] = GetMonData(&party[monId], MON_DATA_DEF_IV);
-        size = 1;
-        break;
-    case REQUEST_SPEED_IV_BATTLE:
-        dst[0] = GetMonData(&party[monId], MON_DATA_SPEED_IV);
-        size = 1;
-        break;
-    case REQUEST_SPATK_IV_BATTLE:
-        dst[0] = GetMonData(&party[monId], MON_DATA_SPATK_IV);
-        size = 1;
-        break;
-    case REQUEST_SPDEF_IV_BATTLE:
-        dst[0] = GetMonData(&party[monId], MON_DATA_SPDEF_IV);
         size = 1;
         break;
     case REQUEST_PERSONALITY_BATTLE:
@@ -903,36 +860,22 @@ static u32 GetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId, u8 *
 static void SetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId)
 {
     struct BattlePokemon *battlePokemon = (struct BattlePokemon *)&gBattleResources->bufferA[battler][3];
-    struct MovePpInfo *moveData = (struct MovePpInfo *)&gBattleResources->bufferA[battler][3];
+    struct DatosMovimiento *datosMovimiento = (struct DatosMovimiento *)&gBattleResources->bufferA[battler][3];
     s32 i;
 
     switch (gBattleResources->bufferA[battler][1])
     {
     case REQUEST_ALL_BATTLE:
         {
-            u8 iv;
-
             SetMonData(&party[monId], MON_DATA_SPECIES, &battlePokemon->species);
             SetMonData(&party[monId], MON_DATA_HELD_ITEM, &battlePokemon->item);
-            for (i = 0; i < MAX_MON_MOVES; i++)
+            for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
             {
                 SetMonData(&party[monId], MON_DATA_MOVE1 + i, &battlePokemon->moves[i]);
                 SetMonData(&party[monId], MON_DATA_PP1 + i, &battlePokemon->pp[i]);
             }
             SetMonData(&party[monId], MON_DATA_FRIENDSHIP, &battlePokemon->friendship);
             SetMonData(&party[monId], MON_DATA_EXP, &battlePokemon->experience);
-            iv = battlePokemon->hpIV;
-            SetMonData(&party[monId], MON_DATA_HP_IV, &iv);
-            iv = battlePokemon->attackIV;
-            SetMonData(&party[monId], MON_DATA_ATK_IV, &iv);
-            iv = battlePokemon->defenseIV;
-            SetMonData(&party[monId], MON_DATA_DEF_IV, &iv);
-            iv = battlePokemon->speedIV;
-            SetMonData(&party[monId], MON_DATA_SPEED_IV, &iv);
-            iv = battlePokemon->spAttackIV;
-            SetMonData(&party[monId], MON_DATA_SPATK_IV, &iv);
-            iv = battlePokemon->spDefenseIV;
-            SetMonData(&party[monId], MON_DATA_SPDEF_IV, &iv);
             SetMonData(&party[monId], MON_DATA_PERSONALITY, &battlePokemon->personality);
             SetMonData(&party[monId], MON_DATA_STATUS, &battlePokemon->status1);
             SetMonData(&party[monId], MON_DATA_LEVEL, &battlePokemon->level);
@@ -952,10 +895,10 @@ static void SetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId)
         SetMonData(&party[monId], MON_DATA_HELD_ITEM, &gBattleResources->bufferA[battler][3]);
         break;
     case REQUEST_MOVES_PP_BATTLE:
-        for (i = 0; i < MAX_MON_MOVES; i++)
+        for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
         {
-            SetMonData(&party[monId], MON_DATA_MOVE1 + i, &moveData->moves[i]);
-            SetMonData(&party[monId], MON_DATA_PP1 + i, &moveData->pp[i]);
+            SetMonData(&party[monId], MON_DATA_MOVE1 + i, &datosMovimiento->movimiento[i]);
+            SetMonData(&party[monId], MON_DATA_PP1 + i, &datosMovimiento->pp[i]);
         }
         break;
     case REQUEST_MOVE1_BATTLE:
@@ -1011,32 +954,6 @@ static void SetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId)
         break;
     case REQUEST_POKEBALL_BATTLE:
         SetMonData(&party[monId], MON_DATA_POKEBALL, &gBattleResources->bufferA[battler][3]);
-        break;
-    case REQUEST_ALL_IVS_BATTLE:
-        SetMonData(&party[monId], MON_DATA_HP_IV, &gBattleResources->bufferA[battler][3]);
-        SetMonData(&party[monId], MON_DATA_ATK_IV, &gBattleResources->bufferA[battler][4]);
-        SetMonData(&party[monId], MON_DATA_DEF_IV, &gBattleResources->bufferA[battler][5]);
-        SetMonData(&party[monId], MON_DATA_SPEED_IV, &gBattleResources->bufferA[battler][6]);
-        SetMonData(&party[monId], MON_DATA_SPATK_IV, &gBattleResources->bufferA[battler][7]);
-        SetMonData(&party[monId], MON_DATA_SPDEF_IV, &gBattleResources->bufferA[battler][8]);
-        break;
-    case REQUEST_HP_IV_BATTLE:
-        SetMonData(&party[monId], MON_DATA_HP_IV, &gBattleResources->bufferA[battler][3]);
-        break;
-    case REQUEST_ATK_IV_BATTLE:
-        SetMonData(&party[monId], MON_DATA_ATK_IV, &gBattleResources->bufferA[battler][3]);
-        break;
-    case REQUEST_DEF_IV_BATTLE:
-        SetMonData(&party[monId], MON_DATA_DEF_IV, &gBattleResources->bufferA[battler][3]);
-        break;
-    case REQUEST_SPEED_IV_BATTLE:
-        SetMonData(&party[monId], MON_DATA_SPEED_IV, &gBattleResources->bufferA[battler][3]);
-        break;
-    case REQUEST_SPATK_IV_BATTLE:
-        SetMonData(&party[monId], MON_DATA_SPATK_IV, &gBattleResources->bufferA[battler][3]);
-        break;
-    case REQUEST_SPDEF_IV_BATTLE:
-        SetMonData(&party[monId], MON_DATA_SPDEF_IV, &gBattleResources->bufferA[battler][3]);
         break;
     case REQUEST_PERSONALITY_BATTLE:
         SetMonData(&party[monId], MON_DATA_PERSONALITY, &gBattleResources->bufferA[battler][3]);
