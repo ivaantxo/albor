@@ -114,17 +114,6 @@ const struct SpriteTemplate gShadowSneakImpactSpriteTemplate =
         .affineAnims = gAffineAnims_IceCrystalHit,
         .callback = AnimIceEffectParticle};
 
-// power trick
-const struct SpriteTemplate gPowerTrickSpriteTemplate =
-    {
-        .tileTag = ANIM_TAG_POWER_TRICK,
-        .paletteTag = ANIM_TAG_POWER_TRICK,
-        .oam = &gOamData_AffineNormal_ObjNormal_64x64,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = gAffineAnims_SpinningBone,
-        .callback = SpriteCB_SpriteOnMonForDuration};
-
 //// GEN 5
 // shell smash
 const struct SpriteTemplate gShellSmashLeftShellSpriteTemplate =
@@ -156,59 +145,6 @@ const struct SpriteTemplate gShellSmashPurpleRocksSpriteTemplate =
         .images = NULL,
         .affineAnims = gDummySpriteAffineAnimTable,
         .callback = AnimRockFragment};
-
-// wide guard
-const struct SpriteTemplate gWideGuardBlueConversionTemplate =
-    {
-        .tileTag = ANIM_TAG_CONVERSION,
-        .paletteTag = ANIM_TAG_WATER_ORB,
-        .oam = &gOamData_AffineDouble_ObjBlend_8x8,
-        .anims = gConversionAnimTable,
-        .images = NULL,
-        .affineAnims = gConversionAffineAnimTable,
-        .callback = AnimConversion};
-
-// guard split
-const struct SpriteTemplate gGuardSwapOrbs1Template =
-    {
-        .tileTag = ANIM_TAG_BLUEGREEN_ORB,
-        .paletteTag = ANIM_TAG_BLUEGREEN_ORB,
-        .oam = &gOamData_AffineNormal_ObjNormal_16x16,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = gAffineAnims_HitSplat,
-        .callback = AnimMimicOrb};
-
-const struct SpriteTemplate gGuardSwapOrbs2Template =
-    {
-        .tileTag = ANIM_TAG_BLUEGREEN_ORB,
-        .paletteTag = ANIM_TAG_BLUEGREEN_ORB,
-        .oam = &gOamData_AffineNormal_ObjNormal_16x16,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = gAffineAnims_HitSplat,
-        .callback = AnimMissileArc};
-
-// power split
-const struct SpriteTemplate gPowerSplitOrbs1Template =
-    {
-        .tileTag = ANIM_TAG_BLUEGREEN_ORB,
-        .paletteTag = ANIM_TAG_RED_HEART,
-        .oam = &gOamData_AffineNormal_ObjNormal_16x16,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = gAffineAnims_HitSplat,
-        .callback = AnimMimicOrb};
-
-const struct SpriteTemplate gPowerSplitOrbs2Template =
-    {
-        .tileTag = ANIM_TAG_BLUEGREEN_ORB,
-        .paletteTag = ANIM_TAG_RED_HEART,
-        .oam = &gOamData_AffineNormal_ObjNormal_16x16,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = gAffineAnims_HitSplat,
-        .callback = AnimMissileArc};
 
 // automotize
 const struct SpriteTemplate gAutotomizeMetalShardsTemplate =
@@ -809,16 +745,6 @@ const struct SpriteTemplate gIcicleCrashSpearTemplate =
         .callback = AnimFallingRock};
 
 // GEN 6
-// mat block
-const struct SpriteTemplate gMatBlockGreenConversionTemplate =
-    {
-        .tileTag = ANIM_TAG_CONVERSION,
-        .paletteTag = ANIM_TAG_GREEN_LIGHT_WALL,
-        .oam = &gOamData_AffineDouble_ObjBlend_8x8,
-        .anims = gConversionAnimTable,
-        .images = NULL,
-        .affineAnims = gConversionAffineAnimTable,
-        .callback = AnimConversion};
 
 // belch
 static const union AnimCmd sAnimCmdBerryEaten[] =
@@ -879,17 +805,6 @@ const struct SpriteTemplate gPetalBlizzardTwister2Template =
         .images = NULL,
         .affineAnims = gDummySpriteAffineAnimTable,
         .callback = AnimMoveTwisterParticle};
-
-// crafty shield
-const struct SpriteTemplate gCraftyShieldPinkConversionTemplate =
-    {
-        .tileTag = ANIM_TAG_CRAFTY_SHIELD,
-        .paletteTag = ANIM_TAG_CRAFTY_SHIELD,
-        .oam = &gOamData_AffineDouble_ObjBlend_8x8,
-        .anims = gConversionAnimTable,
-        .images = NULL,
-        .affineAnims = gConversionAffineAnimTable,
-        .callback = AnimConversion};
 
 // fairy wind
 const struct SpriteTemplate gFairyWindCloudTemplate =
@@ -1569,47 +1484,6 @@ const struct SpriteTemplate gPowerTripImpactTemplate =
         .images = NULL,
         .affineAnims = gAffineAnims_HitSplat,
         .callback = AnimHitSplatBasic};
-
-// speed swap
-const struct SpriteTemplate gSpeedSwapRingTemplate =
-    {
-        .tileTag = ANIM_TAG_THIN_RING,
-        .paletteTag = ANIM_TAG_ICE_CHUNK,
-        .oam = &gOamData_AffineDouble_ObjBlend_64x64,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = gThinRingShrinkingAffineAnimTable,
-        .callback = AnimSpriteOnMonPos};
-
-const struct SpriteTemplate gSpeedSwapCircleTemplate =
-    {
-        .tileTag = ANIM_TAG_ORBS,
-        .paletteTag = ANIM_TAG_ICE_CHUNK,
-        .oam = &gOamData_AffineDouble_ObjNormal_16x16,
-        .anims = gPowerAbsorptionOrbAnimTable,
-        .images = NULL,
-        .affineAnims = gMimicOrbAffineAnimTable,
-        .callback = AnimMimicOrb};
-
-const struct SpriteTemplate gSpeedSwapOrbMissileTemplate =
-    {
-        .tileTag = ANIM_TAG_ORBS,
-        .paletteTag = ANIM_TAG_ICE_CHUNK,
-        .oam = &gOamData_AffineDouble_ObjNormal_16x16,
-        .anims = gPowerAbsorptionOrbAnimTable,
-        .images = NULL,
-        .affineAnims = gMimicOrbAffineAnimTable,
-        .callback = AnimMissileArc};
-
-const struct SpriteTemplate gSpeedSwapOrbTemplate =
-    {
-        .tileTag = ANIM_TAG_ORBS,
-        .paletteTag = ANIM_TAG_ICE_CHUNK,
-        .oam = &gOamData_AffineOff_ObjBlend_16x16,
-        .anims = gPowerAbsorptionOrbAnimTable,
-        .images = NULL,
-        .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = AnimNeedleArmSpike};
 
 // smart strike
 const struct SpriteTemplate gSmartStrikeGemTemplate =
@@ -2902,24 +2776,6 @@ const struct SpriteTemplate gSpriteTemplate_WildboltStormSpark = {
 const struct SpriteTemplate gSpriteTemplate_LunarRing = {
     .tileTag = ANIM_TAG_GUARD_RING,
     .paletteTag = ANIM_TAG_SMALL_EMBER,
-    .oam = &gOamData_AffineDouble_ObjBlend_64x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gGuardRingAffineAnimTable,
-    .callback = SpriteCB_SurroundingRing};
-
-// take heart
-const struct SpriteTemplate gSpriteTemplate_TakeHeartFallingHeart = {
-    .tileTag = ANIM_TAG_RED_HEART,
-    .paletteTag = ANIM_TAG_RED_HEART,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_FallingObject};
-const struct SpriteTemplate gSpriteTemplate_TakeHeartRing = {
-    .tileTag = ANIM_TAG_GUARD_RING,
-    .paletteTag = ANIM_TAG_RED_HEART,
     .oam = &gOamData_AffineDouble_ObjBlend_64x32,
     .anims = gDummySpriteAnimTable,
     .images = NULL,

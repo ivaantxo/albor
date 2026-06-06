@@ -87,9 +87,6 @@ const u32 gBattleAnimSpritePal_Cacoon[] = INCBIN_U32("graphics/battle_anims/spri
 const u32 gBattleAnimSpriteGfx_Confide[] = INCBIN_U32("graphics/battle_anims/sprites/confide.4bpp.lz");
 const u32 gBattleAnimSpritePal_Confide[] = INCBIN_U32("graphics/battle_anims/sprites/confide.gbapal.lz");
 
-const u32 gBattleAnimSpriteGfx_CraftyShield[] = INCBIN_U32("graphics/battle_anims/sprites/crafty_shield.4bpp.lz");
-const u32 gBattleAnimSpritePal_CraftyShield[] = INCBIN_U32("graphics/battle_anims/sprites/crafty_shield.gbapal.lz");
-
 const u32 gBattleAnimSpriteGfx_NewNail[] = INCBIN_U32("graphics/battle_anims/sprites/curse_nail.4bpp.lz");
 const u32 gBattleAnimSpritePal_NewNail[] = INCBIN_U32("graphics/battle_anims/sprites/curse_nail.gbapal.lz");
 
@@ -167,9 +164,6 @@ const u32 gBattleAnimSpritePal_NewImpact[] = INCBIN_U32("graphics/battle_anims/s
 
 const u32 gBattleAnimSpriteGfx_PinkDiamond[] = INCBIN_U32("graphics/battle_anims/sprites/pink_diamond.4bpp.lz");
 const u32 gBattleAnimSpritePal_PinkDiamond[] = INCBIN_U32("graphics/battle_anims/sprites/pink_diamond.gbapal.lz");
-
-const u32 gBattleAnimSpriteGfx_PowerTrick[] = INCBIN_U32("graphics/battle_anims/sprites/power_trick.4bpp.lz");
-const u32 gBattleAnimSpritePal_PowerTrick[] = INCBIN_U32("graphics/battle_anims/sprites/power_trick.gbapal.lz");
 
 const u32 gBattleAnimSpriteGfx_PurpleChain[] = INCBIN_U32("graphics/battle_anims/sprites/purple_chain.4bpp.lz");
 const u32 gBattleAnimSpritePal_PurpleChain[] = INCBIN_U32("graphics/battle_anims/sprites/purple_chain.gbapal.lz");
@@ -1281,13 +1275,9 @@ const u32 gBattleAnimBgPalette_SkyNight[] = INCBIN_U32("graphics/battle_anims/ba
 
 const u32 gBattleAnimBgPalette_TectonicRage[] = INCBIN_U32("graphics/battle_anims/backgrounds/tectonic_rage.gbapal.lz");
 
-const u32 gBattleAnimBgImage_TrickRoom[] = INCBIN_U32("graphics/battle_anims/backgrounds/trick_room.4bpp.lz");
-const u32 gBattleAnimBgPalette_TrickRoom[] = INCBIN_U32("graphics/battle_anims/backgrounds/trick_room.gbapal.lz");
-const u32 gBattleAnimBgTilemap_TrickRoom[] = INCBIN_U32("graphics/battle_anims/backgrounds/trick_room.bin.lz");
-
-const u32 gBattleAnimBgPalette_MagicRoom[] = INCBIN_U32("graphics/battle_anims/backgrounds/magic_room.gbapal.lz");
-
-const u32 gBattleAnimBgPalette_WonderRoom[] = INCBIN_U32("graphics/battle_anims/backgrounds/wonder_room.gbapal.lz");
+const u32 gBattleAnimBgImage_EspacioRaro[] = INCBIN_U32("graphics/battle_anims/backgrounds/trick_room.4bpp.lz");
+const u32 gBattleAnimBgPalette_EspacioRaro[] = INCBIN_U32("graphics/battle_anims/backgrounds/trick_room.gbapal.lz");
+const u32 gBattleAnimBgTilemap_EspacioRaro[] = INCBIN_U32("graphics/battle_anims/backgrounds/trick_room.bin.lz");
 
 const u32 gBattleAnimBgImage_WaterPulse[] = INCBIN_U32("graphics/battle_anims/backgrounds/water_pulse.4bpp.lz");
 const u32 gBattleAnimBgPalette_WaterPulse[] = INCBIN_U32("graphics/battle_anims/backgrounds/water_pulse.gbapal.lz");

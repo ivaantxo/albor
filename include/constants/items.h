@@ -455,11 +455,6 @@ enum Items
     ITEM_SMOOTH_ROCK,
     ITEM_ICY_ROCK,
 
-    ITEM_ELECTRIC_SEED,
-    ITEM_PSYCHIC_SEED,
-    ITEM_MISTY_SEED,
-    ITEM_GRASSY_SEED,
-
     ITEM_ABSORB_BULB, //Obtenible equipado en Pokémon salvajes
     ITEM_CELL_BATTERY, //Obtenible equipado en Pokémon salvajes
     ITEM_LUMINOUS_MOSS, //Obtenible equipado en Pokémon salvajes

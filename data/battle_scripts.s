@@ -99,20 +99,6 @@ BattleScript_CorrosiveGasFail:
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectTakeHeart::
-	attackcanceler
-	attackstring
-	ppreduce
-	cureifburnedparalysedorpoisoned BattleScript_CalmMindTryToRaiseStats
-	attackanimation
-	waitanimation
-	updatestatusicon BS_ATTACKER
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX}'s status returned to normal!"
-	waitmessage PAUSA_LARGA
-	jumpifstat BS_ATTACKER, COMPARACION_MENOR, ESTADISTICA_ATAQUE_ESPECIAL, ESTADISTICA_MAS_6, BattleScript_CalmMindStatRaise
-	jumpifstat BS_ATTACKER, COMPARACION_MENOR, ESTADISTICA_DEFENSA_ESPECIAL, ESTADISTICA_MAS_6, BattleScript_CalmMindStatRaise
-	goto BattleScript_CantRaiseMultipleStats
-
 BattleScript_StealthRockActivates::
 	setstealthrock BattleScript_MoveEnd
 	printfromtable gDmgHazardsStringIds
@@ -181,15 +167,6 @@ BattleScript_BothCanNoLongerEscape::
 	EscribeTextoCombate "Neither Pokémon can run away!"
 	waitmessage PAUSA_LARGA
 	return
-
-BattleScript_EffectSparklySwirl::
-	call BattleScript_EffectHit_Ret
-	tryfaintmon BS_TARGET
-	healpartystatus
-	waitstate
-	updatestatusicon BS_ATTACKER_WITH_PARTNER
-	waitstate
-	goto BattleScript_MoveEnd
 
 BattleScript_EffectCoaching::
 	attackcanceler
@@ -376,18 +353,6 @@ BattleScript_MoveEffectFlameBurst::
 	restoretarget
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectPowerTrick::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	powertrick BS_ATTACKER
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} switched its Attack and Defense!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
 BattleScript_MoveEffectSmackDown::
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} fell straight down!"
 	waitmessage PAUSA_LARGA
@@ -402,8 +367,10 @@ BattleScript_EffectDefog::
 	attackcanceler
 	jumpifsubstituteblocks BattleScript_DefogIfCanClearHazards
 	jumpifstat BS_TARGET, COMPARACION_DESIGUAL, ESTADISTICA_EVASION, ESTADISTICA_MENOS_6, BattleScript_DefogWorks
+
 BattleScript_DefogIfCanClearHazards:
 	trydefog FALSE, BattleScript_FailedFromAtkString
+
 BattleScript_DefogWorks:
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
 	attackstring
@@ -413,19 +380,23 @@ BattleScript_DefogWorks:
 	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_FELL_EMPTY, BattleScript_DefogTryHazardsWithAnim
 	pause PAUSA_CORTA
 	goto BattleScript_DefogPrintString
+
 BattleScript_DefogDoAnim::
 	attackanimation
 	waitanimation
 	setgraphicalstatchangevalues
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+
 BattleScript_DefogPrintString::
 	printfromtable gStatDownStringIds
 	waitmessage PAUSA_LARGA
+
 BattleScript_DefogTryHazards::
 	copybyte gEffectBattler, gBattlerAttacker
 	trydefog TRUE, NULL
 	copybyte gBattlerAttacker, gEffectBattler
 	goto BattleScript_MoveEnd
+
 BattleScript_DefogTryHazardsWithAnim:
 	attackanimation
 	waitanimation
@@ -881,99 +852,6 @@ BattleScript_EffectGolpeBajo::
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
 	goto BattleScript_HitFromAtkString
 
-BattleScript_EffectLuckyChant::
-	attackcanceler
-	attackstring
-	ppreduce
-	setluckychant BS_ATTACKER, BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "The {B_CURRENT_MOVE} shielded {B_ATK_TEAM2} team from critical hits!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectPowerSplit::
-	attackcanceler
-	attackstring
-	ppreduce
-	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
-	averagestats ESTADISTICA_ATAQUE
-	averagestats ESTADISTICA_ATAQUE_ESPECIAL
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} shared its power with the target!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectGuardSplit::
-	attackcanceler
-	attackstring
-	ppreduce
-	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
-	averagestats ESTADISTICA_DEFENSA
-	averagestats ESTADISTICA_DEFENSA_ESPECIAL
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} shared its guard with the target!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectHeartSwap::
-	attackcanceler
-	attackstring
-	ppreduce
-	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
-	swapstatstages ESTADISTICA_ATAQUE
-	swapstatstages ESTADISTICA_DEFENSA
-	swapstatstages ESTADISTICA_VELOCIDAD
-	swapstatstages ESTADISTICA_ATAQUE_ESPECIAL
-	swapstatstages ESTADISTICA_DEFENSA_ESPECIAL
-	swapstatstages ESTADISTICA_EVASION
-	swapstatstages ESTADISTICA_PRECISION
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} switched stat changes with the target!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectPowerSwap::
-	attackcanceler
-	attackstring
-	ppreduce
-	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
-	swapstatstages ESTADISTICA_ATAQUE
-	swapstatstages ESTADISTICA_ATAQUE_ESPECIAL
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} switched stat changes with the target!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectGuardSwap::
-	attackcanceler
-	attackstring
-	ppreduce
-	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
-	swapstatstages ESTADISTICA_DEFENSA
-	swapstatstages ESTADISTICA_DEFENSA_ESPECIAL
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} switched stat changes with the target!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectSpeedSwap::
-	attackcanceler
-	attackstring
-	ppreduce
-	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
-	swapstats ESTADISTICA_VELOCIDAD
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} switched {B_BUFF1} with its target!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectTelekinesis::
 	attackcanceler
 	accuracycheck BattleScript_PrintMoveMissed, NO_ACC_CALC_CHECK_LOCK_ON
@@ -1044,14 +922,14 @@ BattleScript_EffectMagnetRise::
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectTrickRoom::
+ScriptCombate_EfectoEspacioRaro::
 	attackcanceler
 	attackstring
 	ppreduce
-	setroom
+	PonEspacioRaro
 	attackanimation
 	waitanimation
-	printfromtable gRoomsStringIds
+	EscribeTextoCombate "¡{B_ATK_NAME_WITH_PREFIX} puso el espacio raro!"
 	waitmessage PAUSA_LARGA
 	call BattleScript_TryRoomServiceLoop
 	goto BattleScript_MoveEnd
@@ -1070,18 +948,6 @@ BattleScript_RoomServiceLoop_NextBattler:
 	jumpifbytenotequal gBattlerTarget, gBattlersCount, BattleScript_RoomServiceLoop
 	restoretarget
 	return
-
-BattleScript_EffectWonderRoom::
-BattleScript_EffectMagicRoom::
-	attackcanceler
-	attackstring
-	ppreduce
-	setroom
-	attackanimation
-	waitanimation
-	printfromtable gRoomsStringIds
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
 
 BattleScript_EffectAquaRing::
 	attackcanceler
@@ -1150,34 +1016,6 @@ BattleScript_TryTailwindAbilitiesLoop_Globo:
 	call BattleScript_AbilityPopUp
 	modifybattlerstatstage BS_TARGET, ESTADISTICA_DEFENSA, INCREASE, 1, BattleScript_TryTailwindAbilitiesLoop_Increment, ANIM_ON
 	goto BattleScript_TryTailwindAbilitiesLoop_Increment
-
-BattleScript_EffectGravity::
-	attackcanceler
-	attackstring
-	ppreduce
-	setgravity BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-
-BattleScript_EffectGravitySuccess::
-	EscribeTextoCombate "Gravity intensified!"
-	waitmessage PAUSA_LARGA
-	selectfirstvalidtarget
-
-BattleScript_GravityLoop:
-	movevaluescleanup
-	jumpifstatus3 BS_TARGET, STATUS3_ON_AIR | STATUS3_MAGNET_RISE | STATUS3_TELEKINESIS, BattleScript_GravityLoopDrop
-	goto BattleScript_GravityLoopEnd
-
-BattleScript_GravityLoopDrop:
-	bringdownairbornebattler BS_TARGET
-	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} can't stay airborne because of gravity!"
-	waitmessage PAUSA_LARGA
-
-BattleScript_GravityLoopEnd:
-	moveendto MOVEEND_NEXT_TARGET
-	jumpifnexttargetvalid BattleScript_GravityLoop
-	end
 
 BattleScript_EffectRoost::
 	attackcanceler
@@ -1593,7 +1431,7 @@ BattleScript_EffectRoar::
 	forcerandomswitch BattleScript_ButItFailed
 
 ScriptCombate_TipoTierraNoPuedenSerEchados:
-	EscribeTextoCombate ("¡Pokémon de tipo Tierra no pueden ser echados!") @ Revisar, hacer que ponga de quién es la habilidad
+	EscribeTextoCombate "¡Pokémon de tipo Tierra no pueden ser echados!" @ Revisar, hacer que ponga de quién es la habilidad
 
 BattleScript_MultiHitPrintStrings::
 	resultmessage
@@ -2001,16 +1839,9 @@ BattleScript_EffectSnore::
 	goto BattleScript_ButItFailed
 
 BattleScript_SnoreIsAsleep::
-	jumpifhalfword COMPARACION_IGUAL, gChosenMove, MOVE_SLEEP_TALK, BattleScript_DoSnore
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} is fast asleep."
 	waitmessage PAUSA_LARGA
 	statusanimation BS_ATTACKER
-
-BattleScript_DoSnore::
-	attackstring
-	ppreduce
-	accuracycheck BattleScript_MoveMissedPause, ACC_CURR_MOVE
-	goto BattleScript_HitFromCritCalc
 
 BattleScript_EffectLockOn::
 	attackcanceler
@@ -2024,31 +1855,6 @@ BattleScript_EffectLockOn::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} took aim at {B_DEF_NAME_WITH_PREFIX}!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
-
-BattleScript_EffectSleepTalk::
-	attackcanceler
-	jumpifstatus BS_ATTACKER, STATUS1_SLEEP, BattleScript_SleepTalkIsAsleep
-	attackstring
-	ppreduce
-	goto BattleScript_ButItFailed
-
-BattleScript_SleepTalkIsAsleep::
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} is fast asleep."
-	waitmessage PAUSA_LARGA
-	statusanimation BS_ATTACKER
-	attackstring
-	ppreduce
-	orword gHitMarker, HITMARKER_NO_PPDEDUCT
-	trychoosesleeptalkmove BattleScript_SleepTalkUsingMove
-	pause PAUSA_LARGA
-	goto BattleScript_ButItFailed
-
-BattleScript_SleepTalkUsingMove::
-	attackanimation
-	waitanimation
-	setbyte sB_ANIM_TURN, 0
-	setbyte sB_ANIM_TARGETS_HIT, 0
-	jumptocalledmove TRUE
 
 BattleScript_EffectDestinyBond::
 	attackcanceler
@@ -2184,20 +1990,14 @@ BattleScript_DoGhostCurse::
 	tryfaintmon BS_ATTACKER
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectMatBlock::
-	attackcanceler
-	jumpifnotfirstturn BattleScript_FailedFromAtkString
-	goto BattleScript_ProtectLikeAtkString
-
 BattleScript_EffectProtect::
 	attackcanceler
-BattleScript_ProtectLikeAtkString:
 	attackstring
 	ppreduce
-	setprotectlike
+	ColocaProteccion
 	attackanimation
 	waitanimation
-	printfromtable gProtectLikeUsedStringIds
+	EscribeTextoCombate "¡{B_DEF_NAME_WITH_PREFIX} se protegió!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -3344,33 +3144,13 @@ BattleScript_SideStatusWoreOffReturn::
 	waitmessage PAUSA_LARGA
 	return
 
-BattleScript_LuckyChantEnds::
-	EscribeTextoCombate "{B_ATK_TEAM1} team's Lucky Chant wore off!"
-	waitmessage PAUSA_LARGA
-	end2
-
 BattleScript_TailwindEnds::
 	EscribeTextoCombate "{B_ATK_TEAM1} team's Tailwind petered out!"
 	waitmessage PAUSA_LARGA
 	end2
 
-BattleScript_TrickRoomEnds::
-	printstring STRINGID_TRICKROOMENDS
-	waitmessage PAUSA_LARGA
-	end2
-
-BattleScript_WonderRoomEnds::
-	printstring STRINGID_WONDERROOMENDS
-	waitmessage PAUSA_LARGA
-	end2
-
-BattleScript_MagicRoomEnds::
-	printstring STRINGID_MAGICROOMENDS
-	waitmessage PAUSA_LARGA
-	end2
-
-BattleScript_GravityEnds::
-	EscribeTextoCombate "Gravity returned to normal!"
+ScriptCombate_EspacioRaroFin::
+	printstring "¡Ha desaparecido el espacio raro!"
 	waitmessage PAUSA_LARGA
 	end2
 
@@ -3827,18 +3607,9 @@ BattleScript_ThroatChopEndTurn::
 	waitmessage PAUSA_LARGA
 	end2
 
-BattleScript_SelectingNotAllowedMoveGravity::
-	printselectionstring STRINGID_GRAVITYPREVENTSUSAGE
-	endselectionscript
-
 BattleScript_SelectingNotAllowedBelch::
 	printselectionstring STRINGID_BELCHCANTSELECT
 	endselectionscript
-
-BattleScript_MoveUsedGravityPrevents::
-	printstring STRINGID_GRAVITYPREVENTSUSAGE
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
 
 BattleScript_SelectingNotAllowedCurrentMove::
 	printselectionstring STRINGID_CURRENTMOVECANTSELECT
@@ -4029,14 +3800,6 @@ BattleScript_AttackerFormChangeMoveEffect::
 	waitmessage PAUSA_LARGA
 	handleformchange BS_ATTACKER, 2
 	return
-
-BattleScript_CudChewActivates::
-	pause PAUSA_MUY_CORTA
-	call BattleScript_AbilityPopUp
-	setbyte sBERRY_OVERRIDE, 1 @ override the requirements for eating berries
-	consumeberry BS_SCRIPTING, FALSE
-	setbyte sBERRY_OVERRIDE, 0
-	end3
 
 BattleScript_TargetFormChangeNoPopup:
 	handleformchange BS_SCRIPTING, 0
@@ -4661,7 +4424,7 @@ BattleScript_IntimidateContrary:
 	goto BattleScript_IntimidateEffect_WaitString
 
 BattleScript_IntimidateContrary_WontIncrease:
-	printstring ("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} won't go any higher!")
+	printstring "{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} won't go any higher!"
 	goto BattleScript_IntimidateEffect_WaitString
 
 BattleScript_IntimidateInReverse:
@@ -4703,7 +4466,7 @@ BattleScript_BadDreams_Dmg:
 	jumpifbyteequal sFIXED_ABILITY_POPUP, sZero, BattleScript_BadDreams_ShowPopUp
 
 BattleScript_BadDreams_DmgAfterPopUp:
-	printstring STRIN("{B_DEF_NAME_WITH_PREFIX} is tormented!")GID_BADDREAMSDMG
+	printstring "{B_DEF_NAME_WITH_PREFIX} is tormented!"
 	waitmessage PAUSA_LARGA
 	dmg_1_8_targethp
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
@@ -5088,20 +4851,6 @@ BattleScript_RockyHelmetActivates::
 
 BattleScript_RockyHelmetActivatesDmg:
 	call BattleScript_HurtAttacker
-	return
-
-BattleScript_SpikyShieldEffect::
-	jumpifabsent BS_ATTACKER, BattleScript_SpikyShieldRet
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
-	bichalfword gMoveResultFlags, MOVE_RESULT_NO_EFFECT
-	healthbarupdate BS_ATTACKER
-	datahpupdate BS_ATTACKER
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} was hurt by {B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}!"
-	waitmessage PAUSA_LARGA
-	tryfaintmon BS_ATTACKER
-	orhalfword gMoveResultFlags, MOVE_RESULT_MISSED
-
-BattleScript_SpikyShieldRet::
 	return
 
 BattleScript_CuteCharmActivates::
@@ -5494,26 +5243,6 @@ ScriptCombate_SeptimoCielo::
 	waitmessage PAUSA_LARGA
 	call BattleScript_ActivateWeatherAbilities
 	end3
-
-BattleScript_MicleBerryActivateEnd2::
-	goto BattleScript_MicleBerryActivateEnd2_Anim
-
-BattleScript_MicleBerryActivateEnd2_Anim:
-	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT
-	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX} boosted the accuracy of its next move using {B_LAST_ITEM}!"
-	waitmessage PAUSA_LARGA
-	removeitem BS_ATTACKER
-	end2
-
-BattleScript_MicleBerryActivateRet::
-	goto BattleScript_MicleBerryActivateRet_Anim
-
-BattleScript_MicleBerryActivateRet_Anim:
-	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT
-	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX} boosted the accuracy of its next move using {B_LAST_ITEM}!"
-	waitmessage PAUSA_LARGA
-	removeitem BS_SCRIPTING
-	return
 
 BattleScript_JabocaRowapBerryActivates::
 	goto BattleScript_JabocaRowapBerryActivate_Anim

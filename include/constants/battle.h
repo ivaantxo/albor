@@ -156,7 +156,6 @@ enum ResultadosCombate
 #define STATUS3_PHANTOM_FORCE           (1 << 24)
 #define STATUS3_MAGNET_RISE             (1 << 26)
 #define STATUS3_AQUA_RING               (1 << 28)
-#define STATUS3_POWER_TRICK             (1 << 30)
 #define STATUS3_SEMI_INVULNERABLE       (STATUS3_UNDERGROUND | STATUS3_ON_AIR | STATUS3_UNDERWATER | STATUS3_PHANTOM_FORCE)
 
 #define HITMARKER_DESTINYBOND           (1 << 6)
@@ -187,21 +186,11 @@ enum ResultadosCombate
 #define SIDE_STATUS_MIST                    (1 << 5)
 #define SIDE_STATUS_TAILWIND                (1 << 6)
 #define SIDE_STATUS_AURORA_VEIL             (1 << 7)
-#define SIDE_STATUS_LUCKY_CHANT             (1 << 8)
 #define SIDE_STATUS_TOXIC_SPIKES            (1 << 9)
 #define SIDE_STATUS_STEALTH_ROCK            (1 << 10)
-#define SIDE_STATUS_WIDE_GUARD              (1 << 12)
-#define SIDE_STATUS_CRAFTY_SHIELD           (1 << 13)
-#define SIDE_STATUS_MAT_BLOCK               (1 << 14)
 
 #define SIDE_STATUS_HAZARDS_ANY    (SIDE_STATUS_SPIKES | SIDE_STATUS_STICKY_WEB | SIDE_STATUS_TOXIC_SPIKES | SIDE_STATUS_STEALTH_ROCK)
 #define SIDE_STATUS_SCREEN_ANY     (SIDE_STATUS_REFLECT | SIDE_STATUS_LIGHTSCREEN | SIDE_STATUS_AURORA_VEIL)
-
-// Field affecting statuses.
-#define STATUS_FIELD_MAGIC_ROOM                     (1 << 0)
-#define STATUS_FIELD_TRICK_ROOM                     (1 << 1)
-#define STATUS_FIELD_WONDER_ROOM                    (1 << 2)
-#define STATUS_FIELD_GRAVITY                        (1 << 3)
 
 // Flags describing move's result
 #define MOVE_RESULT_MISSED                (1 << 0)
@@ -381,17 +370,13 @@ enum EfectosFinTurnoCampo
     ENDTURN_LIGHT_SCREEN,
     ENDTURN_AURORA_VEIL,
     ENDTURN_MIST,
-    ENDTURN_LUCKY_CHANT,
     ENDTURN_SAFEGUARD,
     ENDTURN_TAILWIND,
     ENDTURN_RAIN,
     ENDTURN_SANDSTORM,
     ENDTURN_SUN,
     ENDTURN_SNOW,
-    ENDTURN_GRAVITY,
-    ENDTURN_TRICK_ROOM,
-    ENDTURN_WONDER_ROOM,
-    ENDTURN_MAGIC_ROOM,
+    ENDTURN_ESPACIO_RARO,
     ENDTURN_STATUS_HEAL,
     ENDTURN_FIELD_COUNT,
 };
@@ -426,7 +411,7 @@ enum EfectosFinTurnoIndividuales
     ENDTURN_ORBS,
     ENDTURN_ROOST,
     ENDTURN_THROAT_CHOP,
-    ENDTURN_CUD_CHEW,
+    FIN_TURNO_RUMIANTE,
     ENDTURN_TORMENT, // supposedly this goes after Taunt, before Encore, but Encore is first right now?
     ENDTURN_ITEMS3,
     ENDTURN_BATTLER_COUNT

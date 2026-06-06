@@ -150,7 +150,6 @@ void SetControllerToPlayer(u32 battler)
     gBattlerControllerEndFuncs[battler] = PlayerBufferExecCompleted;
     gBattlerControllerFuncs[battler] = PlayerBufferRunCommand;
     gDoingBattleAnim = FALSE;
-    gPlayerDpadHoldFrames = 0;
 }
 
 static void PlayerBufferExecCompleted(u32 combatiente)
@@ -245,7 +244,6 @@ static void HandleInputChooseAction(u32 battler)
         DestroySpriteAndFreeResources(&gSprites[sIconTypeId[3]]);
         sIconTypeId[3] = 0xFF;
     }
-    gPlayerDpadHoldFrames = 0;
 
     if (B_LAST_USED_BALL == TRUE && B_LAST_USED_BALL_CYCLE == TRUE)
     {
@@ -366,7 +364,7 @@ static void HandleInputChooseAction(u32 battler)
             LoadCompressedPalette(gBattleActionsPalPokemon, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
         }
     }
-    else if (JOY_NEW(B_BUTTON) || gPlayerDpadHoldFrames > 59)
+    else if (JOY_NEW(B_BUTTON))
     {
         if (EsCombateContraEntrenador(gCombate->tipoCombate)
          && battler == JUGADOR_DERECHA
@@ -422,8 +420,6 @@ void HandleInputChooseTarget(u32 battler)
             EndBounceEffect(i, BOUNCE_HEALTHBOX);
     }
 
-    gPlayerDpadHoldFrames = 0;
-
     if (JOY_NEW(A_BUTTON))
     {
         PlaySE(SE_SELECT);
@@ -454,7 +450,7 @@ void HandleInputChooseTarget(u32 battler)
         }
         MoveSelectionDestroyCursor();
     }
-    else if (JOY_NEW(B_BUTTON) || gPlayerDpadHoldFrames > 59)
+    else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
         gSprites[gBattlerSpriteIds[gPosicionCursorSiNo]].callback = SpriteCB_HideAsMoveTarget; // REVISAR
@@ -592,8 +588,6 @@ static void HideShownTargets(u32 battler)
 
 void HandleInputShowEntireFieldTargets(u32 battler)
 {
-    gPlayerDpadHoldFrames = 0;
-
     if (JOY_NEW(A_BUTTON))
     {
         PlaySE(SE_SELECT);
@@ -622,7 +616,7 @@ void HandleInputShowEntireFieldTargets(u32 battler)
         }
         MoveSelectionDestroyCursor();
     }
-    else if (JOY_NEW(B_BUTTON) || gPlayerDpadHoldFrames > 59)
+    else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
         HideAllTargets();
@@ -634,8 +628,6 @@ void HandleInputShowEntireFieldTargets(u32 battler)
 
 void HandleInputShowTargets(u32 battler)
 {
-    gPlayerDpadHoldFrames = 0;
-
     if (JOY_NEW(A_BUTTON))
     {
         PlaySE(SE_SELECT);
@@ -665,7 +657,7 @@ void HandleInputShowTargets(u32 battler)
         }
         MoveSelectionDestroyCursor();
     }
-    else if (JOY_NEW(B_BUTTON) || gPlayerDpadHoldFrames > 59)
+    else if (JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
         HideShownTargets(battler);
@@ -689,8 +681,6 @@ void HandleInputChooseMove(u32 battler)
     u16 moveTarget;
     u32 canSelectTarget = 0;
     struct DatosMovimiento *datosMovimiento = (struct DatosMovimiento *)(&gBattleResources->bufferA[battler][4]);
-
-    gPlayerDpadHoldFrames = 0;
 
     if (JOY_NEW(A_BUTTON))
     {
@@ -796,7 +786,7 @@ void HandleInputChooseMove(u32 battler)
             break;
         }
     }
-    else if ((JOY_NEW(B_BUTTON) || gPlayerDpadHoldFrames > 59))
+    else if ((JOY_NEW(B_BUTTON)))
     {
         PlaySE(SE_SELECT);
         BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_EXEC_SCRIPT, 0xFFFF);

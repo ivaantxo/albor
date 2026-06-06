@@ -1153,9 +1153,9 @@ const struct Ability gAbilitiesInfo[ABILITIES_COUNT] =
         .breakable = TRUE,
     },
 
-    [ABILITY_CUD_CHEW] =
+    [ABILITY_RUMIANTE] =
     {
-        .name = _("Cud Chew"),
+        .name = _("Rumiante"),
         .description = COMPOUND_STRING("Eats a used berry again."),
     },
 

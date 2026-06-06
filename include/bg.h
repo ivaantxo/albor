@@ -30,13 +30,15 @@ enum {
 
 struct BgTemplate
 {
-    u16 bg:2;
+    u16 bg:2; // Revisar si es posible hacerlo u16
     u16 charBaseIndex:2;
     u16 mapBaseIndex:5;
     u16 screenSize:2;
     u16 paletteMode:1;
     u16 priority:2;
     u16 baseTile:10;
+    //u16 mosaic:1;
+    //u16 wrapAround:1;
 };
 
 enum ModosFondos

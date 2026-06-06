@@ -569,11 +569,6 @@
 	.byte \battler
 	.endm
 
-	.macro jumptocalledmove notChosenMove:req
-	.byte BATTLE_CMD_jumptocalledmove
-	.byte \notChosenMove
-	.endm
-
 	.macro statusanimation battler:req
 	.byte BATTLE_CMD_statusanimation
 	.byte \battler
@@ -598,11 +593,6 @@
 
 	.macro CancelaAccionesSiNoEntrenador
 	.byte BATTLE_CMD_CancelaAccionesSiNoEntrenador
-	.endm
-
-	.macro setgravity failInstr:req
-	.byte BATTLE_CMD_setgravity
-	.4byte \failInstr
 	.endm
 
 	.macro removeitem battler:req
@@ -660,8 +650,8 @@
 	.byte \id
 	.endm
 
-	.macro setprotectlike
-	.byte BATTLE_CMD_setprotectlike
+	.macro ColocaProteccion
+	.byte BATTLE_CMD_ColocaProteccion
 	.endm
 
 	.macro tryexplosion
@@ -792,11 +782,6 @@
 
 	.macro setalwayshitflag
 	.byte BATTLE_CMD_setalwayshitflag
-	.endm
-
-	.macro trychoosesleeptalkmove failInstr:req
-	.byte BATTLE_CMD_trychoosesleeptalkmove
-	.4byte \failInstr
 	.endm
 
 	.macro setdestinybond
@@ -985,8 +970,8 @@
 	.4byte \failInstr
 	.endm
 
-	.macro setroom
-	.byte BATTLE_CMD_setroom
+	.macro PonEspacioRaro
+	.byte BATTLE_CMD_PonEspacioRaro
 	.endm
 
 	.macro tryimprison failInstr:req
@@ -1331,11 +1316,6 @@
 	.2byte \move
 	.endm
 
-	.macro setluckychant battler:req, failInstr:req
-	various \battler VARIOUS_SET_LUCKY_CHANT
-	.4byte \failInstr
-	.endm
-
 	.macro golpebajocheck failInstr:req
 	various BS_ATTACKER, VARIOUS_GOLPE_BAJO_CHECK
 	.4byte \failInstr
@@ -1385,10 +1365,6 @@
 	various \battler, VARIOUS_CURE_STATUS
 	.endm
 
-	.macro powertrick battler:req
-	various \battler, VARIOUS_POWER_TRICK
-	.endm
-
 	.macro jumpifnotgrounded battler:req, jumpInstr:req
 	various \battler, VARIOUS_JUMP_IF_NOT_GROUNDED
 	.4byte \jumpInstr
@@ -1413,10 +1389,6 @@
 
 	.macro spectralthiefprintstats
 	various BS_ATTACKER, VARIOUS_SPECTRAL_THIEF
-	.endm
-
-	.macro bringdownairbornebattler battler:req
-	various \battler, VARIOUS_GRAVITY_ON_AIRBORNE_MONS
 	.endm
 
 	.macro jumpifnotberry battler:req, jumpInstr:req

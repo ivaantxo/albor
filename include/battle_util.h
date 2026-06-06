@@ -10,10 +10,9 @@
 #define MOVE_LIMITATION_ENCORE                  (1 << 6)
 #define MOVE_LIMITATION_CHOICE_ITEM             (1 << 7)
 #define MOVE_LIMITATION_ASSAULT_VEST            (1 << 8)
-#define MOVE_LIMITATION_GRAVITY                 (1 << 9)
-#define MOVE_LIMITATION_BELCH                   (1 << 10)
-#define MOVE_LIMITATION_THROAT_CHOP             (1 << 11)
-#define MOVE_LIMITATION_CANT_USE_TWICE          (1 << 12)
+#define MOVE_LIMITATION_BELCH                   (1 << 9)
+#define MOVE_LIMITATION_THROAT_CHOP             (1 << 10)
+#define MOVE_LIMITATION_CANT_USE_TWICE          (1 << 11)
 
 #define MOVE_LIMITATIONS_ALL                    0xFFFF
 
@@ -80,7 +79,6 @@ enum
     CANCELLER_RECHARGE,
     CANCELLER_FLINCH,
     CANCELLER_DISABLED,
-    CANCELLER_GRAVITY,
     CANCELLER_TAUNTED,
     CANCELLER_IMPRISONED,
     CANCELLER_CONFUSED,

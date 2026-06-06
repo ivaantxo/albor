@@ -170,7 +170,6 @@ enum
     LIST_STATUS3_TELEKINESIS,
     LIST_STATUS3_MAGNET_RISE,
     LIST_STATUS3_AQUA_RING,
-    LIST_STATUS3_POWER_TRICK,
 };
 
 enum
@@ -183,7 +182,6 @@ enum
     LIST_SIDE_MIST,
     LIST_SIDE_TAILWIND,
     LIST_SIDE_AURORA_VEIL,
-    LIST_SIDE_LUCKY_CHANT,
     LIST_SIDE_TOXIC_SPIKES,
     LIST_SIDE_STEALTH_ROCK,
 };
@@ -297,7 +295,6 @@ static const u8 sText_SmackedDown[] = _("Smacked Down");
 static const u8 sText_Telekinesis[] = _("Telekinesis");
 static const u8 sText_MagnetRise[] = _("Magnet Rise");
 static const u8 sText_AquaRing[] = _("Aqua Ring");
-static const u8 sText_PowerTrick[] = _("Power Trick");
 static const u8 sText_Reflect[] = _("Reflect");
 static const u8 sText_LightScreen[] = _("Light Screen");
 static const u8 sText_StickyWeb[] = _("Sticky Web");
@@ -306,7 +303,6 @@ static const u8 sText_Safeguard[] = _("Safeguard");
 static const u8 sText_Mist[] = _("Mist");
 static const u8 sText_Tailwind[] = _("Tailwind");
 static const u8 sText_AuroraVeil[] = _("Aurora Veil");
-static const u8 sText_LuckyChant[] = _("Lucky Chant");
 static const u8 sText_ToxicSpikes[] = _("Toxic Spikes");
 static const u8 sText_StealthRock[] = _("Stealth Rock");
 static const u8 sText_CheckBadMove[] = _("Check Bad Move");
@@ -483,7 +479,6 @@ static const struct ListMenuItem sStatus3ListItems[] =
     {sText_Telekinesis, LIST_STATUS3_TELEKINESIS},
     {sText_MagnetRise, LIST_STATUS3_MAGNET_RISE},
     {sText_AquaRing, LIST_STATUS3_AQUA_RING},
-    {sText_PowerTrick, LIST_STATUS3_POWER_TRICK},
 };
 
 static const struct ListMenuItem sSideStatusListItems[] =
@@ -496,7 +491,6 @@ static const struct ListMenuItem sSideStatusListItems[] =
     {sText_Mist, LIST_SIDE_MIST},
     {sText_Tailwind, LIST_SIDE_TAILWIND},
     {sText_AuroraVeil, LIST_SIDE_AURORA_VEIL},
-    {sText_LuckyChant, LIST_SIDE_LUCKY_CHANT},
     {sText_ToxicSpikes, LIST_SIDE_TOXIC_SPIKES},
     {sText_StealthRock, LIST_SIDE_STEALTH_ROCK},
 };
@@ -1803,16 +1797,6 @@ static u8 *GetSideStatusValue(struct BattleDebugMenu *data, bool32 changeStatus,
             sideTimer->auroraVeilBattlerId = data->battlerId;
         }
         return &sideTimer->auroraVeilTimer;
-    case LIST_SIDE_LUCKY_CHANT:
-        if (changeStatus)
-        {
-            if (statusTrue)
-                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_LUCKY_CHANT;
-            else
-                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_LUCKY_CHANT;
-            sideTimer->luckyChantBattlerId = data->battlerId;
-        }
-        return &sideTimer->luckyChantTimer;
     case LIST_SIDE_TOXIC_SPIKES:
         if (changeStatus)
         {
@@ -2217,7 +2201,6 @@ static const u8 sText_HoldEffectLuminousMoss[] = _("Luminous Moss");
 static const u8 sText_HoldEffectSnowball[] = _("Snowball");
 static const u8 sText_HoldEffectWeaknessPolicy[] = _("Weakness Policy");
 static const u8 sText_HoldEffectProtectivePads[] = _("Protective Pads");
-static const u8 sText_HoldEffectSeeds[] = _("Seeds");
 static const u8 sText_HoldEffectAdrenalineOrb[] = _("Adrenaline Orb");
 static const u8 sText_HoldEffectMemory[] = _("Memory");
 static const u8 sText_HoldEffectPlate[] = _("Plate");
@@ -2329,7 +2312,6 @@ static const u8 *const sHoldEffectNames[] =
     [HOLD_EFFECT_RESIST_BERRY] = sText_HoldEffectResistBerry,
     [HOLD_EFFECT_POWER_ITEM] = sText_HoldEffectPowerItem,
     [HOLD_EFFECT_RESTORE_PCT_HP] = sText_HoldEffectRestorePctHp,
-    [HOLD_EFFECT_MICLE_BERRY] = sText_HoldEffectMicleBerry,
     [HOLD_EFFECT_JABOCA_BERRY] = sText_HoldEffectJabocaBerry,
     [HOLD_EFFECT_ROWAP_BERRY] = sText_HoldEffectRowapBerry,
     [HOLD_EFFECT_KEE_BERRY] = sText_HoldEffectKeeBerry,
@@ -2355,7 +2337,6 @@ static const u8 *const sHoldEffectNames[] =
     [HOLD_EFFECT_SNOWBALL] = sText_HoldEffectSnowball,
     [HOLD_EFFECT_WEAKNESS_POLICY] = sText_HoldEffectWeaknessPolicy,
     [HOLD_EFFECT_PROTECTIVE_PADS] = sText_HoldEffectProtectivePads,
-    [HOLD_EFFECT_SEEDS] = sText_HoldEffectSeeds,
     [HOLD_EFFECT_ADRENALINE_ORB] = sText_HoldEffectAdrenalineOrb,
     [HOLD_EFFECT_MEMORY] = sText_HoldEffectMemory,
     [HOLD_EFFECT_UTILITY_UMBRELLA] = sText_HoldEffectUtilityUmbrella,

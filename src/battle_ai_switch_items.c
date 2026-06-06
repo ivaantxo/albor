@@ -97,7 +97,7 @@ static bool32 ShouldSwitchIfHasBadOdds(u32 battler)
             || aiMoveEffect == EFFECT_SPIKES || aiMoveEffect == EFFECT_TOXIC_SPIKES || aiMoveEffect == EFFECT_STEALTH_ROCK || aiMoveEffect == EFFECT_STICKY_WEB || aiMoveEffect == EFFECT_LEECH_SEED
             || aiMoveEffect == EFFECT_EXPLOSION
             || aiMoveEffect == EFFECT_SLEEP || aiMoveEffect == EFFECT_TOXIC || aiMoveEffect == EFFECT_WILL_O_WISP || aiMoveEffect == EFFECT_PARALYZE
-            || aiMoveEffect == EFFECT_TRICK || aiMoveEffect == EFFECT_TRICK_ROOM || aiMoveEffect== EFFECT_WONDER_ROOM || aiMoveEffect == EFFECT_FIRST_TURN_ONLY
+            || aiMoveEffect == EFFECT_TRICK || aiMoveEffect == EFFECT_ESPACIO_RARO || aiMoveEffect == EFFECT_FIRST_TURN_ONLY
             )
             {
                 hasStatusMove = TRUE;
@@ -227,8 +227,8 @@ static bool32 FindMonThatAbsorbsOpponentsMove(u32 battler)
     struct Pokemon *party;
     u16 monAbility;
     u32 opposingBattler = OPONENTE(battler);
-    u32 incomingMove = AI_DATA->lastUsedMove[opposingBattler];
-    u32 predictedMove = incomingMove; // Update for move prediction
+    enum Movimientos incomingMove = AI_DATA->ultimoMovimientoUsado[opposingBattler];
+    enum Movimientos predictedMove = incomingMove; // Update for move prediction
     bool32 isOpposingBattlerChargingOrInvulnerable = (IsSemiInvulnerable(opposingBattler, incomingMove) || IsTwoTurnNotSemiInvulnerableMove(opposingBattler, incomingMove));
     s32 i, j;
 
@@ -321,7 +321,7 @@ static bool32 FindMonThatAbsorbsOpponentsMove(u32 battler)
 static bool32 ShouldSwitchIfOpponentChargingOrInvulnerable(u32 battler)
 {
     u32 opposingBattler = OPONENTE(battler);
-    u32 incomingMove = AI_DATA->lastUsedMove[opposingBattler];
+    enum Movimientos incomingMove = AI_DATA->ultimoMovimientoUsado[opposingBattler];
     bool32 isOpposingBattlerChargingOrInvulnerable = (IsSemiInvulnerable(opposingBattler, incomingMove) || IsTwoTurnNotSemiInvulnerableMove(opposingBattler, incomingMove));
 
     if (EsCombateContraEntrenador(gCombate->tipoCombate) || !(AI_THINKING_STRUCT->aiFlags[battler] & AI_FLAG_SMART_SWITCHING))
@@ -1094,7 +1094,7 @@ bool32 EstaPokemonEnSuelo(u32 efectoObjeto, u32 habilidad, u32 tipo1, u32 tipo2)
     if (tipo1 == TIPO_VOLADOR || tipo2 == TIPO_VOLADOR || habilidad == ABILITY_LEVITATE || (efectoObjeto == HOLD_EFFECT_AIR_BALLOON))
              {
         // List that overrides being off the ground
-        if ((efectoObjeto == HOLD_EFFECT_IRON_BALL) || (gFieldStatuses & STATUS_FIELD_GRAVITY) || (gFieldStatuses & STATUS_FIELD_MAGIC_ROOM))
+        if ((efectoObjeto == HOLD_EFFECT_IRON_BALL))
             return TRUE;
         else
             return FALSE;
@@ -1318,8 +1318,7 @@ static u32 GetSwitchinStatusDamage(u32 battler)
     if (tSpikesLayers != 0 && (defType1 != TIPO_VENENO && defType2 != TIPO_VENENO
         && ability != ABILITY_IMMUNITY && ability != ABILITY_POISON_HEAL
         && status == 0
-        && !(heldItemEffect == HOLD_EFFECT_HEAVY_DUTY_BOOTS
-            && (((gFieldStatuses & STATUS_FIELD_MAGIC_ROOM))))
+        && heldItemEffect != HOLD_EFFECT_HEAVY_DUTY_BOOTS
         && heldItemEffect != HOLD_EFFECT_CURE_PSN && heldItemEffect != HOLD_EFFECT_CURE_STATUS
         && EstaPokemonEnSuelo(heldItemEffect, ability, defType1, defType2)))
     {

@@ -294,21 +294,21 @@ void IniciaFondosDesdePlantillas(enum ModosFondos modo, const struct BgTemplate 
     SetBgMode(modo);
     ResetBgControlStructs();
 
-    for (u32 i = 0; i < numeroPlantillas; i++)
+    for (u32 indiceFondo = 0; indiceFondo < numeroPlantillas; indiceFondo++)
     {
-        fondo = plantillas[i].bg;
+        fondo = plantillas[indiceFondo].bg;
         if (fondo < NUMERO_FONDOS)
         {
             SetBgControlAttributes(fondo,
-                                   plantillas[i].charBaseIndex,
-                                   plantillas[i].mapBaseIndex,
-                                   plantillas[i].screenSize,
-                                   plantillas[i].paletteMode,
-                                   plantillas[i].priority,
-                                   FALSE,
-                                   FALSE);
+                                   plantillas[indiceFondo].charBaseIndex,
+                                   plantillas[indiceFondo].mapBaseIndex,
+                                   plantillas[indiceFondo].screenSize,
+                                   plantillas[indiceFondo].paletteMode,
+                                   plantillas[indiceFondo].priority,
+                                   FALSE,   //plantillas[indiceFondo].mosaic,
+                                   FALSE);  //plantillas[indiceFondo].wrapAround);
 
-            sGpuBgConfigs2[fondo].baseTile = plantillas[i].baseTile;
+            sGpuBgConfigs2[fondo].baseTile = plantillas[indiceFondo].baseTile;
             sGpuBgConfigs2[fondo].basePalette = BG_PLTT_OFFSET;
 
             sGpuBgConfigs2[fondo].tilemap = NULL;
@@ -318,7 +318,7 @@ void IniciaFondosDesdePlantillas(enum ModosFondos modo, const struct BgTemplate 
     }
 }
 
-void InitBgFromTemplate(const struct BgTemplate *template)
+void InitBgFromTemplate(const struct BgTemplate *template) // Esto se podrá eliminar
 {
     u32 bg = template->bg;
 

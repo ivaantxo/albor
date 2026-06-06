@@ -6981,76 +6981,6 @@ const struct Item gItemsInfo[] =
                 .iconPalette = gItemIconPalette_IcyRock,
             },
 
-        // Terrain Seeds
-
-        [ITEM_ELECTRIC_SEED] =
-            {
-                .name = _("Electric Seed"),
-                .price = (I_PRICE >= GEN_9) ? 20000 : 4000,
-                .holdEffect = HOLD_EFFECT_SEEDS,
-                .holdEffectParam = HOLD_EFFECT_PARAM_ELECTRIC_TERRAIN,
-                .description = COMPOUND_STRING(
-                    "Boosts Defense on\n"
-                    "Electric Terrain,\n"
-                    "but only one time."),
-                .pocket = POCKET_ITEMS,
-                .type = ITEM_USE_BAG_MENU,
-                .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-                .iconPic = gItemIcon_ElectricSeed,
-                .iconPalette = gItemIconPalette_ElectricSeed,
-            },
-
-        [ITEM_PSYCHIC_SEED] =
-            {
-                .name = _("Psychic Seed"),
-                .price = (I_PRICE >= GEN_9) ? 20000 : 4000,
-                .holdEffect = HOLD_EFFECT_SEEDS,
-                .holdEffectParam = HOLD_EFFECT_PARAM_PSYCHIC_TERRAIN,
-                .description = COMPOUND_STRING(
-                    "Boosts Sp. Def. on\n"
-                    "Psychic Terrain,\n"
-                    "but only one time."),
-                .pocket = POCKET_ITEMS,
-                .type = ITEM_USE_BAG_MENU,
-                .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-                .iconPic = gItemIcon_PsychicSeed,
-                .iconPalette = gItemIconPalette_PsychicSeed,
-            },
-
-        [ITEM_MISTY_SEED] =
-            {
-                .name = _("Misty Seed"),
-                .price = (I_PRICE >= GEN_9) ? 20000 : 4000,
-                .holdEffect = HOLD_EFFECT_SEEDS,
-                .holdEffectParam = HOLD_EFFECT_PARAM_MISTY_TERRAIN,
-                .description = COMPOUND_STRING(
-                    "Boosts Sp. Def. on\n"
-                    "Misty Terrain,\n"
-                    "but only one time."),
-                .pocket = POCKET_ITEMS,
-                .type = ITEM_USE_BAG_MENU,
-                .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-                .iconPic = gItemIcon_MistySeed,
-                .iconPalette = gItemIconPalette_MistySeed,
-            },
-
-        [ITEM_GRASSY_SEED] =
-            {
-                .name = _("Grassy Seed"),
-                .price = (I_PRICE >= GEN_9) ? 20000 : 4000,
-                .holdEffect = HOLD_EFFECT_SEEDS,
-                .holdEffectParam = HOLD_EFFECT_PARAM_GRASSY_TERRAIN,
-                .description = COMPOUND_STRING(
-                    "Boosts Defense on\n"
-                    "Grassy Terrain,\n"
-                    "but only one time."),
-                .pocket = POCKET_ITEMS,
-                .type = ITEM_USE_BAG_MENU,
-                .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-                .iconPic = gItemIcon_GrassySeed,
-                .iconPalette = gItemIconPalette_GrassySeed,
-            },
-
         // Type-activated Stat Modifiers
 
         [ITEM_ABSORB_BULB] =
@@ -9047,7 +8977,7 @@ const struct Item gItemsInfo[] =
                 .name = _("Micle Berry"),
                 .pluralName = _("Micle Berries"),
                 .price = (I_BERRY_PRICE >= GEN_8) ? 80 : 20,
-                .holdEffect = HOLD_EFFECT_MICLE_BERRY,
+                .holdEffect = HOLD_EFFECT_NONE,
                 .holdEffectParam = 4,
                 .description = COMPOUND_STRING(
                     "When held, it ups\n"

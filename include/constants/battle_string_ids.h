@@ -120,16 +120,13 @@ enum TextosCombate
     STRINGID_PKMNSXHADNOEFFECTONY, //printfromtable
     STRINGID_QUESTIONFORFEITMATCH, // printselectionstring
     STRINGID_VANISHEDINSTANTLY, //TWO_TURN_ARG
-    STRINGID_PROTECTEDTEAM, //printfromtable
     STRINGID_MOLDBREAKERENTERS, //printfromtable
     STRINGID_ASSAULTVESTDOESNTALLOW, //printselectionstring
-    STRINGID_GRAVITYPREVENTSUSAGE, //printstring + printselectionstring
     STRINGID_DRASTICALLY, // ChangeStatBuffs
     STRINGID_SEVERELY, // ChangeStatBuffs
     STRINGID_INFESTATION, //printfromtable
     STRINGID_SPIKESSCATTERED, //PRINTSTRING + printfromtable
     STRINGID_PKMNHURTBYSPIKES, //printfromtable
-    STRINGID_PKMNBRACEDITSELF, //printfromtable
     STRINGID_PKMNFORESAWATTACK, //printfromtable
     STRINGID_PKMNCANTUSEMOVESEALED, //printstring + printselectionstring
     STRINGID_PKMNPREVENTSPARALYSISWITH, //printfromtable
@@ -162,16 +159,10 @@ enum TextosCombate
     STRINGID_PKMNSITEMCUREDPROBLEM, //printfromtable
     STRINGID_STATSWONTDECREASE2, //PrepareStringBattle
     STRINGID_PKMNSXPREVENTSYSZ, //printfromtable
-    STRINGID_PKMNTWISTEDDIMENSIONS, //printfromtable
     STRINGID_POINTEDSTONESFLOAT, //printfromtable
     STRINGID_TRAPPEDBYSWIRLINGMAGMA, //printfromtable
-    STRINGID_SWAPSDEFANDSPDEFOFALLPOKEMON, //printfromtable
-    STRINGID_HELDITEMSLOSEEFFECTS, //printfromtable
     STRINGID_ELECTROMAGNETISM, //PrepareStringBattle
     STRINGID_BUFFERENDS, //printfromtable
-    STRINGID_TRICKROOMENDS, //printfromtable
-    STRINGID_WONDERROOMENDS, //printstring + printfromtable
-    STRINGID_MAGICROOMENDS, //printstring + printfromtable
     STRINGID_UNNERVEENTERS, //printfromtable
     STRINGID_STEALTHROCKDMG, //printfromtable
     STRINGID_BELCHCANTSELECT, //printselectionstring
@@ -253,12 +244,6 @@ enum TextosCombate
 #define B_MSG_SET_LIGHTSCREEN_SINGLE 3
 #define B_MSG_SET_LIGHTSCREEN_DOUBLE 4
 #define B_MSG_SET_SAFEGUARD          5
-
-// gProtectLikeUsedStringIds
-#define B_MSG_PROTECTED_ITSELF 0
-#define B_MSG_BRACED_ITSELF    1
-#define B_MSG_PROTECT_FAILED   2
-#define B_MSG_PROTECTED_TEAM   3
 
 // gRestUsedStringIds
 #define B_MSG_REST           0

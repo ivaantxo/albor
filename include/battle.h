@@ -68,7 +68,7 @@ struct __attribute__((packed, aligned(2))) BattleMoveEffect
     u16 encourageEncore : 1;
     u16 twoTurnEffect : 1;
     u16 semiInvulnerableEffect : 1;
-    u16 usesProtectCounter : 1;
+    u16 usesProtectCounter : 1; // Revisar
     u16 padding : 9;
 };
 
@@ -109,24 +109,21 @@ struct DisableStruct
     u8 throatChopTimer;
     u8 wrapTurns;
     u8 tormentTimer : 4;
-    u8 cudChew : 1;
     u8 spikesDone : 1;
     u8 toxicSpikesDone : 1;
     u8 stickyWebDone : 1;
     u8 stealthRockDone : 1;
+    bool32 rumianteHaConsumidoBaya;
     bool32 esPrimerTurno;
 };
 
 struct ProtectStruct
 {
     u32 protected : 1;
-    u32 spikyShielded : 1;
     u32 noValidMoves : 1;
-    u32 stealMove : 1;
     u32 prlzImmobility : 1;
     u32 sleepImmobility : 1;
     u32 confusionSelfDmg : 1;
-    u32 targetAffected : 1;
     u32 chargingTurn : 1;
     u32 usedImprisonedMove : 1;
     u32 loveImmobility : 1;
@@ -134,14 +131,10 @@ struct ProtectStruct
     u32 usedTauntedMove : 1;
     u32 flinchImmobility : 1;
     u32 notFirstStrike : 1;
-    u32 usedGravityPreventedMove : 1;
-    u32 powderSelfDmg : 1;
     u32 usedThroatChopPreventedMove : 1;
     u32 statRaised : 1;
-    u32 touchedProtectLike : 1;
     u16 disableEjectPack : 1;
     u16 statFell : 1;
-    u16 silkTrapped : 1;
     bool32 prioridadBromista;
 };
 
@@ -187,8 +180,6 @@ struct SideTimer
     u8 auroraVeilBattlerId;
     u8 tailwindTimer;
     u8 tailwindBattlerId;
-    u8 luckyChantTimer;
-    u8 luckyChantBattlerId;
     // Timers below this point are not swapped by Court Change
     u8 followmeTimer;
     u8 followmeTarget : 3;
@@ -196,13 +187,6 @@ struct SideTimer
     u8 retaliateTimer;
 };
 
-struct FieldTimer
-{
-    u8 wonderRoomTimer;
-    u8 magicRoomTimer;
-    u8 trickRoomTimer;
-    u8 gravityTimer;
-};
 
 struct AI_SavedBattleMon
 {
@@ -248,7 +232,7 @@ struct AILogicData
     u16 items[NUMERO_COMBATIENTES];
     u16 holdEffects[NUMERO_COMBATIENTES];
     u8 holdEffectParams[NUMERO_COMBATIENTES];
-    u16 lastUsedMove[NUMERO_COMBATIENTES];
+    enum Movimientos ultimoMovimientoUsado[NUMERO_COMBATIENTES];
     u8 hpPercents[NUMERO_COMBATIENTES];
     u16 partnerMove;
     u16 speedStats[NUMERO_COMBATIENTES];                                       // Speed stats for all battles, calculated only once, same way as damages
@@ -353,6 +337,7 @@ struct Combate
     u16 numeroCambiosJugador;
     u16 danioRecibido[NUMERO_COMBATIENTES];
     u16 contadorMultigolpes;
+    u16 turnosEspacioRaro;
     u16 wrappedMove[NUMERO_COMBATIENTES];
     u16 moveTarget[NUMERO_COMBATIENTES];
     u32 expValue;
@@ -362,7 +347,6 @@ struct Combate
     u8 expGetterBattlerId : 2;
     u8 givenExpMons;  // Bits for enemy party's pokemon that gave exp to player's party.
     u8 expSentInMons; // As bits for player party mons - not including exp share mons.
-    u8 dynamicMoveType;
     u8 wrappedBy[NUMERO_COMBATIENTES];
     u8 focusPunchBattlers; // as bits
     u8 battlerPreventingSwitchout;
@@ -446,7 +430,6 @@ struct Combate
     u8 timesGotHit[NUMERO_LADOS][PARTY_SIZE];
     u8 speedTieBreaks; // NUMERO_COMBATIENTES! values.
     u8 usedEjectItem;
-    u8 usedMicleBerry;
     bool16 movimientoEspejoMagicoRebota;
     uq4_12_t resultadoMovimiento;
     u16 potenciaMovimientosRecibidosTurno[NUMERO_COMBATIENTES];
@@ -467,7 +450,7 @@ struct Combate
         gBattleMons[battlerId].types[TIPO_2] = gSpeciesInfo[gBattleMons[battlerId].species].types[TIPO_2]; \
     }
 
-#define IS_BATTLER_PROTECTED(battlerId) (gProtectStructs[battlerId].protected || gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_WIDE_GUARD || gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_CRAFTY_SHIELD || gSideStatuses[GetBattlerSide(battlerId)] & SIDE_STATUS_MAT_BLOCK || gProtectStructs[battlerId].spikyShielded || gProtectStructs[battlerId].silkTrapped)
+#define IS_BATTLER_PROTECTED(battlerId) (gProtectStructs[battlerId].protected)
 
 #define GET_STAT_BUFF_ID(n) ((n & 7)) // first three bits 0x1, 0x2, 0x4
 #define GET_STAT_BUFF_VALUE_WITH_SIGN(n) ((n & 0xF8))
@@ -634,7 +617,6 @@ extern u8 gCurrMovePos;
 extern u8 gChosenMovePos;
 extern u16 gCurrentMove;
 extern u16 gChosenMove;
-extern u16 gCalledMove;
 extern s32 gBattleMoveDamage;
 extern s32 gHpDealt;
 extern u16 gLastUsedItem;
@@ -645,15 +627,13 @@ extern u8 gBattlerFainted;
 extern u8 gEffectBattler;
 extern u8 gPotentialItemEffectBattler;
 extern u8 gAbsentBattlerFlags;
-extern u32 gEsGolpeCritico;
+extern bool32 gEsGolpeCritico;
 extern const u8 *gBattlescriptCurrInstr;
 extern u32 gAccionElegida[NUMERO_COMBATIENTES];
 extern const u8 *gSelectionBattleScripts[NUMERO_COMBATIENTES];
 extern u16 gLastPrintedMoves[NUMERO_COMBATIENTES];
 extern u16 gLastMoves[NUMERO_COMBATIENTES];
-extern u16 gLastLandedMoves[NUMERO_COMBATIENTES];
-extern u16 gLastHitByType[NUMERO_COMBATIENTES];
-extern u16 gLastUsedMoveType[NUMERO_COMBATIENTES];
+extern enum Movimientos gLastLandedMoves[NUMERO_COMBATIENTES];
 extern u16 gLastResultingMoves[NUMERO_COMBATIENTES];
 extern u16 gLockedMoves[NUMERO_COMBATIENTES];
 extern u16 gLastUsedMove;
@@ -683,13 +663,10 @@ extern u8 gMoveSelectionCursor[NUMERO_COMBATIENTES];
 extern u8 gBattlerStatusSummaryTaskId[NUMERO_COMBATIENTES];
 extern u8 gBattlerInMenuId;
 extern bool8 gDoingBattleAnim;
-extern u8 gPlayerDpadHoldFrames;
 extern struct BattleSpriteData *gBattleSpritesDataPtr;
 extern struct MonSpritesGfx *gMonSpritesGfxPtr;
 extern u16 gBattleMovePower;
 extern u16 gMoveToLearn;
-extern u32 gFieldStatuses;
-extern struct FieldTimer gFieldTimers;
 extern u32 gBattlerAbility;
 extern const struct BattleMoveEffect gBattleMoveEffects[];
 
@@ -773,6 +750,11 @@ static inline bool32 EsMovimientoEstado(enum Movimientos movimiento)
 static inline bool32 EsPrimerGolpe(void)
 {
     return (gCombate->contadorMultigolpes == 0);
+}
+
+static inline bool32 EstaEspacioRaroPuesto(void)
+{
+    return gCombate->turnosEspacioRaro != 0;
 }
 
 static inline bool32 HaceDanioRetroceso(enum Movimientos movimiento)

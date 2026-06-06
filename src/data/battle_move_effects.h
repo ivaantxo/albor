@@ -301,12 +301,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .encourageEncore = TRUE,
             },
 
-        [EFFECT_SLEEP_TALK] =
-            {
-                .battleScript = BattleScript_EffectSleepTalk,
-                .encourageEncore = TRUE,
-            },
-
         [EFFECT_DESTINY_BOND] =
             {
                 .battleScript = BattleScript_EffectDestinyBond,
@@ -717,12 +711,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .encourageEncore = TRUE,
             },
 
-        [EFFECT_GRAVITY] =
-            {
-                .battleScript = BattleScript_EffectGravity,
-                .encourageEncore = TRUE,
-            },
-
         [EFFECT_VIENTO_AFIN] =
             {
                 .battleScript = BattleScript_EffectTailwind,
@@ -741,19 +729,9 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .encourageEncore = TRUE,
             },
 
-        [EFFECT_TRICK_ROOM] =
+        [EFFECT_ESPACIO_RARO] =
             {
-                .battleScript = BattleScript_EffectTrickRoom,
-            },
-
-        [EFFECT_WONDER_ROOM] =
-            {
-                .battleScript = BattleScript_EffectWonderRoom,
-            },
-
-        [EFFECT_MAGIC_ROOM] =
-            {
-                .battleScript = BattleScript_EffectMagicRoom,
+                .battleScript = ScriptCombate_EfectoEspacioRaro,
             },
 
         [EFFECT_MAGNET_RISE] =
@@ -784,42 +762,9 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .encourageEncore = TRUE,
             },
 
-        [EFFECT_POWER_SWAP] =
-            {
-                .battleScript = BattleScript_EffectPowerSwap,
-                .encourageEncore = TRUE,
-            },
-
-        [EFFECT_GUARD_SWAP] =
-            {
-                .battleScript = BattleScript_EffectGuardSwap,
-                .encourageEncore = TRUE,
-            },
-
-        [EFFECT_HEART_SWAP] =
-            {
-                .battleScript = BattleScript_EffectHeartSwap,
-            },
-
-        [EFFECT_POWER_SPLIT] =
-            {
-                .battleScript = BattleScript_EffectPowerSplit,
-            },
-
-        [EFFECT_GUARD_SPLIT] =
-            {
-                .battleScript = BattleScript_EffectGuardSplit,
-            },
-
         [EFFECT_STICKY_WEB] =
             {
                 .battleScript = BattleScript_EffectStickyWeb,
-                .encourageEncore = TRUE,
-            },
-
-        [EFFECT_LUCKY_CHANT] =
-            {
-                .battleScript = BattleScript_EffectLuckyChant,
                 .encourageEncore = TRUE,
             },
 
@@ -938,18 +883,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .battleScript = BattleScript_EffectHitEnemyHealAlly,
             },
 
-        [EFFECT_POWER_TRICK] =
-            {
-                .battleScript = BattleScript_EffectPowerTrick,
-                .encourageEncore = TRUE,
-            },
-
-        [EFFECT_SPEED_SWAP] =
-            {
-                .battleScript = BattleScript_EffectSpeedSwap,
-            },
-
-
         [EFECTO_VELO_AURORA] =
             {
                 .battleScript = BattleScript_EffectAuroraVeil,
@@ -964,12 +897,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         [EFFECT_PARTING_SHOT] =
             {
                 .battleScript = BattleScript_EffectPartingShot,
-            },
-
-        [EFFECT_MAT_BLOCK] =
-            {
-                .battleScript = BattleScript_EffectMatBlock,
-                .encourageEncore = TRUE,
             },
 
         [EFFECT_GEAR_UP] =
@@ -1025,11 +952,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .battleScript = BattleScript_EffectHit,
             },
 
-        [EFFECT_SPARKLY_SWIRL] =
-            {
-                .battleScript = BattleScript_EffectSparklySwirl,
-            },
-
         [EFFECT_DARK_VOID] =
             {
                 .battleScript = BattleScript_EffectDarkVoid,
@@ -1048,11 +970,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         [EFFECT_NEVADA] =
             {
                 .battleScript = BattleScript_EffectSnow,
-            },
-
-        [EFFECT_TAKE_HEART] =
-            {
-                .battleScript = BattleScript_EffectTakeHeart,
             },
 
         [EFFECT_CORROSIVE_GAS] =

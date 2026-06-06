@@ -2360,28 +2360,6 @@ const struct SpriteTemplate gNightSlashRightSpriteTemplate =
     .callback = AnimNightSlash,
 };
 
-const struct SpriteTemplate gLuckyChantBigStarsSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_GOLD_STARS,
-    .paletteTag = ANIM_TAG_GOLD_STARS,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = gPetalDanceBigFlowerAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimPetalDanceBigFlower,
-};
-
-const struct SpriteTemplate gLuckyChantSmallStarsSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_GOLD_STARS,
-    .paletteTag = ANIM_TAG_GOLD_STARS,
-    .oam = &gOamData_AffineOff_ObjNormal_8x8,
-    .anims = gPetalDanceSmallFlowerAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimPetalDanceSmallFlower,
-};
-
 const union AnimCmd gWoodHammerBigAnimCmd_1[] =
 {
     ANIMCMD_FRAME(0, 1),

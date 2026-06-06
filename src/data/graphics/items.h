@@ -1147,20 +1147,6 @@ const u32 gItemIconPalette_SmoothRock[] = INCBIN_U32("graphics/items/icon_palett
 const u32 gItemIcon_IcyRock[] = INCBIN_U32("graphics/items/icons/icy_rock.4bpp.lz");
 const u32 gItemIconPalette_IcyRock[] = INCBIN_U32("graphics/items/icon_palettes/icy_rock.gbapal.lz");
 
-// Terrain Seeds
-
-const u32 gItemIcon_ElectricSeed[] = INCBIN_U32("graphics/items/icons/electric_seed.4bpp.lz");
-const u32 gItemIconPalette_ElectricSeed[] = INCBIN_U32("graphics/items/icon_palettes/electric_seed.gbapal.lz");
-
-const u32 gItemIcon_PsychicSeed[] = INCBIN_U32("graphics/items/icons/psychic_seed.4bpp.lz");
-const u32 gItemIconPalette_PsychicSeed[] = INCBIN_U32("graphics/items/icon_palettes/psychic_seed.gbapal.lz");
-
-const u32 gItemIcon_MistySeed[] = INCBIN_U32("graphics/items/icons/misty_seed.4bpp.lz");
-const u32 gItemIconPalette_MistySeed[] = INCBIN_U32("graphics/items/icon_palettes/misty_seed.gbapal.lz");
-
-const u32 gItemIcon_GrassySeed[] = INCBIN_U32("graphics/items/icons/grassy_seed.4bpp.lz");
-const u32 gItemIconPalette_GrassySeed[] = INCBIN_U32("graphics/items/icon_palettes/grassy_seed.gbapal.lz");
-
 // Type-activated Stat Modifiers
 
 const u32 gItemIcon_AbsorbBulb[] = INCBIN_U32("graphics/items/icons/absorb_bulb.4bpp.lz");

@@ -302,8 +302,6 @@ struct Movimientos
     u32 eyesMove:1;
     u32 lickMove:1;
     u32 patada:1;
-    u32 gravityBanned:1;
-    u32 sleepTalkBanned:1;
     u32 encoreBanned:1;
     u32 parentalBondBanned:1;
 

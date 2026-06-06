@@ -494,8 +494,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .gravityBanned = TRUE,
-        .sleepTalkBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_PKMNFLEWHIGH, COMPRESS_BITS(STATUS3_ON_AIR)),
         .battleAnimScript = gBattleAnimMove_Fly,
     },
@@ -644,7 +642,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .patada = TRUE,
         .makesContact = TRUE,
-        .gravityBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_JumpKick,
     },
 
@@ -1638,7 +1635,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .sleepTalkBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKSUNLIGHT, CLIMA_COMBATE_SOL),
         .battleAnimScript = gBattleAnimMove_SolarBeam,
     },
@@ -1941,7 +1937,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .sleepTalkBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_PKMNDUGHOLE, COMPRESS_BITS(STATUS3_UNDERGROUND)),
         .battleAnimScript = gBattleAnimMove_Dig,
     },
@@ -2605,7 +2600,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         CABEZAZO,
-        .sleepTalkBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_PKMNLOWEREDHEAD),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_DEF_PLUS_1,
@@ -2727,7 +2721,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .patada = TRUE,
-        .gravityBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_HighJumpKick,
     },
 
@@ -3215,7 +3208,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .sleepTalkBanned = TRUE,
         .encoreBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Struggle,
     },
@@ -4008,26 +4000,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Attract,
     },
 
-    [MOVE_SLEEP_TALK] =
-    {
-        .name = COMPOUND_STRING("Sonámbulo"),
-        .description = COMPOUND_STRING(
-            "Uses an available move\n"
-            "randomly while asleep."),
-        .effect = EFFECT_SLEEP_TALK,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 10,
-        .target = MOVE_TARGET_DEPENDS,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .sleepTalkBanned = TRUE,
-        .encoreBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_SleepTalk,
-    },
-
     [MOVE_HEAL_BELL] =
     {
         .name = COMPOUND_STRING("Campana cura"),
@@ -4693,7 +4665,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .soundMove = TRUE,
-        .sleepTalkBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_UPROAR,
             .self = TRUE,
@@ -4867,7 +4838,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         PUNIETAZO,
-        .sleepTalkBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_FocusPunch,
     },
 
@@ -5170,7 +5140,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .sleepTalkBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_PKMNHIDUNDERWATER, COMPRESS_BITS(STATUS3_UNDERWATER)),
         .battleAnimScript = gBattleAnimMove_Dive,
     },
@@ -6085,8 +6054,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .gravityBanned = TRUE,
-        .sleepTalkBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_PKMNSPRANGUP, COMPRESS_BITS(STATUS3_ON_AIR)),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
@@ -6358,24 +6325,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Roost,
     },
 
-    [MOVE_GRAVITY] =
-    {
-        .name = COMPOUND_STRING("Gravedad"),
-        .description = COMPOUND_STRING(
-            "Gravity is intensified\n"
-            "negating levitation."),
-        .effect = EFFECT_GRAVITY,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 5,
-        .target = MOVE_TARGET_ALL_BATTLERS,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_Gravity,
-    },
-
     [MOVE_WAKE_UP_SLAP] =
     {
         .name = COMPOUND_STRING("Espabila"),
@@ -6625,24 +6574,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_WringOut,
     },
 
-    [MOVE_POWER_TRICK] =
-    {
-        .name = COMPOUND_STRING("Truco fuerza"),
-        .description = COMPOUND_STRING(
-            "The user swaps its Attack\n"
-            "and Defense stats."),
-        .effect = EFFECT_POWER_TRICK,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_PowerTrick,
-    },
-
     [MOVE_GASTRO_ACID] =
     {
         .name = COMPOUND_STRING("Bilis"),
@@ -6659,60 +6590,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESTADO,
         .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_GastroAcid,
-    },
-
-    [MOVE_LUCKY_CHANT] =
-    {
-        .name = COMPOUND_STRING("Conjuro"),
-        .description = COMPOUND_STRING(
-            "Prevents the foe from\n"
-            "landing critical hits."),
-        .effect = EFFECT_LUCKY_CHANT,
-        .power = 0,
-        .type = TIPO_HADA,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 30,
-        .target = MOVE_TARGET_USER,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_LuckyChant,
-    },
-
-    [MOVE_POWER_SWAP] =
-    {
-        .name = COMPOUND_STRING("Cambiafuerza"),
-        .description = COMPOUND_STRING(
-            "Swaps changes to Attack\n"
-            "and Sp. Atk with the foe."),
-        .effect = EFFECT_POWER_SWAP,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .ignoresSubstitute = TRUE,
-        .battleAnimScript = gBattleAnimMove_PowerSwap,
-    },
-
-    [MOVE_GUARD_SWAP] =
-    {
-        .name = COMPOUND_STRING("Cambiadefensa"),
-        .description = COMPOUND_STRING(
-            "Swaps changes to Defense\n"
-            "and Sp. Def with the foe."),
-        .effect = EFFECT_GUARD_SWAP,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .ignoresSubstitute = TRUE,
-        .battleAnimScript = gBattleAnimMove_GuardSwap,
     },
 
     [MOVE_PUNISHMENT] =
@@ -6770,24 +6647,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_ToxicSpikes,
     },
 
-    [MOVE_HEART_SWAP] =
-    {
-        .name = COMPOUND_STRING("Cambiaalmas"),
-        .description = COMPOUND_STRING(
-            "Swaps any stat changes\n"
-            "with the foe."),
-        .effect = EFFECT_HEART_SWAP,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .ignoresSubstitute = TRUE,
-        .battleAnimScript = gBattleAnimMove_HeartSwap,
-    },
-
     [MOVE_AQUA_RING] =
     {
         .name = COMPOUND_STRING("Acua aro"),
@@ -6821,7 +6680,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        .gravityBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_MagnetRise,
     },
 
@@ -7616,13 +7474,13 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Defog,
     },
 
-    [MOVE_TRICK_ROOM] =
+    [MOVE_ESPACIO_RARO] =
     {
         .name = COMPOUND_STRING("Espacio raro"),
         .description = COMPOUND_STRING(
             "Slower Pokémon get to move\n"
             "first for 5 turns."),
-        .effect = EFFECT_TRICK_ROOM,
+        .effect = EFFECT_ESPACIO_RARO,
         .power = 0,
         .type = TIPO_PSIQUICO,
         .accuracy = PRECISION_PERFECTA,
@@ -7631,7 +7489,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_TrickRoom,
+        .battleAnimScript = gBattleAnimMove_EspacioRaro,
     },
 
     [MOVE_DRACO_METEOR] =
@@ -7929,7 +7787,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESPECIAL,
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .soundMove = TRUE,
-        .sleepTalkBanned = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_CONFUSION,
             .chance = 100,
@@ -8259,7 +8116,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .ignoresProtect = TRUE,
         .minimizeDoubleDamage = B_UPDATED_MOVE_FLAGS == GEN_6,
-        .sleepTalkBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_VANISHEDINSTANTLY, COMPRESS_BITS(STATUS3_PHANTOM_FORCE)),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_FEINT,
@@ -8283,77 +8139,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_HoneClaws,
-    },
-
-    [MOVE_WIDE_GUARD] =
-    {
-        .name = COMPOUND_STRING("Vastaguardia"),
-        .description = COMPOUND_STRING(
-            "Evades wide-ranging attacks\n"
-            "for one turn."),
-        .effect = EFFECT_PROTECT,
-        .power = 0,
-        .type = TIPO_ROCA,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        PRIORIDAD_MUY_ALTA,
-        .category = CATEGORIA_ESTADO,
-        .argument = TRUE, // Protects the whole side.
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_WideGuard,
-    },
-
-    [MOVE_GUARD_SPLIT] =
-    {
-        .name = COMPOUND_STRING("Isoguardia"),
-        .description = COMPOUND_STRING(
-            "Averages changes to Defense\n"
-            "and Sp. Def with the foe."),
-        .effect = EFFECT_GUARD_SPLIT,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .battleAnimScript = gBattleAnimMove_GuardSplit,
-    },
-
-    [MOVE_POWER_SPLIT] =
-    {
-        .name = COMPOUND_STRING("Isofuerza"),
-        .description = COMPOUND_STRING(
-            "Averages changes to Attack\n"
-            "and Sp. Atk with the foe."),
-        .effect = EFFECT_POWER_SPLIT,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .battleAnimScript = gBattleAnimMove_PowerSplit,
-    },
-
-    [MOVE_WONDER_ROOM] =
-    {
-        .name = COMPOUND_STRING("Zona extraña"),
-        .description = COMPOUND_STRING(
-            "Defense and Sp. Def stats\n"
-            "are swapped for 5 turns."),
-        .effect = EFFECT_WONDER_ROOM,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 10,
-        .target = MOVE_TARGET_ALL_BATTLERS,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_WonderRoom,
     },
 
     [MOVE_PSYSHOCK] =
@@ -8441,26 +8226,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
         .espejoMagico = TRUE,
-        .gravityBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Telekinesis,
-    },
-
-    [MOVE_MAGIC_ROOM] =
-    {
-        .name = COMPOUND_STRING("Zona mágica"),
-        .description = COMPOUND_STRING(
-            "Hold items lose their\n"
-            "effects for 5 turns."),
-        .effect = EFFECT_MAGIC_ROOM,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 10,
-        .target = MOVE_TARGET_ALL_BATTLERS,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_MagicRoom,
     },
 
     [MOVE_SMACK_DOWN] =
@@ -9568,7 +9334,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
-        .sleepTalkBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_CLOAKEDINAFREEZINGLIGHT),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
@@ -9591,7 +9356,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .sleepTalkBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_CLOAKEDINAFREEZINGLIGHT),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
@@ -9661,27 +9425,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .argument = TIPO_VOLADOR,
         .makesContact = TRUE,
         .minimizeDoubleDamage = TRUE,
-        .gravityBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_FlyingPress,
-    },
-
-    [MOVE_MAT_BLOCK] =
-    {
-        .name = COMPOUND_STRING("Mat Block"),
-        .description = COMPOUND_STRING(
-            "Evades damaging moves\n"
-            "for one turn."),
-        .effect = EFFECT_MAT_BLOCK,
-        .power = 0,
-        .type = TIPO_LUCHA,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 15,
-        .target = MOVE_TARGET_USER,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .argument = TRUE, // Protects the whole side.
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_MatBlock,
     },
 
     [MOVE_BELCH] =
@@ -9698,7 +9442,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .sleepTalkBanned = TRUE,
         .battleAnimScript = gBattleAnimMove_Belch,
     },
 
@@ -9755,7 +9498,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .ignoresProtect = TRUE,
         .makesContact = TRUE,
         .minimizeDoubleDamage = B_UPDATED_MOVE_FLAGS == GEN_6,
-        .sleepTalkBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_VANISHEDINSTANTLY, COMPRESS_BITS(STATUS3_PHANTOM_FORCE)),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_FEINT,
@@ -9913,25 +9655,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         CURATIVO,
         .battleAnimScript = gBattleAnimMove_DrainingKiss,
-    },
-
-    [MOVE_CRAFTY_SHIELD] =
-    {
-        .name = COMPOUND_STRING("Crafty Shield"),
-        .description = COMPOUND_STRING(
-            "Evades status moves for\n"
-            "one turn."),
-        .effect = EFFECT_PROTECT,
-        .power = 0,
-        .type = TIPO_HADA,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        PRIORIDAD_MUY_ALTA,
-        .category = CATEGORIA_ESTADO,
-        .argument = TRUE, // Protects the whole side.
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_CraftyShield,
     },
 
     [MOVE_PLAY_ROUGH] =
@@ -10134,24 +9857,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
             .chance = 100,
         }),
         .battleAnimScript = gBattleAnimMove_MysticalFire,
-    },
-
-    [MOVE_SPIKY_SHIELD] =
-    {
-        .name = COMPOUND_STRING("Spiky Shield"),
-        .description = COMPOUND_STRING(
-            "Evades attack, and damages\n"
-            "the foe if struck."),
-        .effect = EFFECT_PROTECT,
-        .power = 0,
-        .type = TIPO_PLANTA,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        PRIORIDAD_MUY_ALTA,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_SpikyShield,
     },
 
     [MOVE_VENOM_DRENCH] =
@@ -10562,7 +10267,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .slicingMove = TRUE,
-        .sleepTalkBanned = TRUE,
         .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKSUNLIGHT, CLIMA_COMBATE_SOL),
         .battleAnimScript = gBattleAnimMove_SolarBlade,
     },
@@ -10760,24 +10464,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .battleAnimScript = gBattleAnimMove_PowerTrip,
-    },
-
-    [MOVE_SPEED_SWAP] =
-    {
-        .name = COMPOUND_STRING("Speed Swap"),
-        .description = COMPOUND_STRING(
-            "Swaps user's Speed with\n"
-            "the target's."),
-        .effect = EFFECT_SPEED_SWAP,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .ignoresSubstitute = TRUE,
-        .battleAnimScript = gBattleAnimMove_SpeedSwap,
     },
 
     [MOVE_SMART_STRIKE] =
@@ -11139,24 +10825,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_TearfulLook,
     },
 
-    [MOVE_MULTI_ATTACK] =
-    {
-        .name = COMPOUND_STRING("Multi-Attack"),
-        .description = COMPOUND_STRING(
-            "An attack that changes\n"
-            "with Memories."),
-        .effect = EFFECT_CHANGE_TYPE_ON_ITEM,
-        .power = B_UPDATED_MOVE_DATA >= GEN_8 ? 120 : 90,
-        .type = TIPO_NORMAL,
-        .accuracy = PRECISION_NORMAL,
-        .pp = 10,
-        .target = MOVE_TARGET_SELECTED,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_MultiAttack,
-    },
-
     [MOVE_MIND_BLOWN] =
     {
         .name = COMPOUND_STRING("Mind Blown"),
@@ -11172,45 +10840,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
         .battleAnimScript = gBattleAnimMove_MindBlown,
-    },
-
-    [MOVE_SIZZLY_SLIDE] =
-    {
-        .name = COMPOUND_STRING("Sizzly Slide"),
-        .description = COMPOUND_STRING(
-            "User cloaked in fire charges.\n"
-            "Leaves the foe with a burn."),
-        .effect = EFFECT_HIT,
-        .power = B_UPDATED_MOVE_DATA >= GEN_8 ? 60 : 90,
-        .type = TIPO_FUEGO,
-        .accuracy = PRECISION_NORMAL,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_8 ? 20 : 15,
-        .target = MOVE_TARGET_SELECTED,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_BURN,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_SizzlySlide,
-    },
-
-    [MOVE_SPARKLY_SWIRL] =
-    {
-        .name = COMPOUND_STRING("Sparkly Swirl"),
-        .description = COMPOUND_STRING(
-            "Wrap foe with whirlwind of\n"
-            "scent. Heals party's status."),
-        .effect = EFFECT_SPARKLY_SWIRL,
-        .power = B_UPDATED_MOVE_DATA >= GEN_8 ? 120 : 90,
-        .type = TIPO_HADA,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_8 ? 85 : 100,
-        .pp = B_UPDATED_MOVE_DATA >= GEN_8 ? 5 : 15,
-        .target = MOVE_TARGET_SELECTED,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESPECIAL,
-        .battleAnimScript = gBattleAnimMove_SparklySwirl,
     },
 
     [MOVE_SNIPE_SHOT] =
@@ -12307,42 +11936,6 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
             .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_SandsearStorm,
-    },
-
-    [MOVE_TAKE_HEART] =
-    {
-        .name = COMPOUND_STRING("Take Heart"),
-        .description = COMPOUND_STRING(
-            "The user lifts its spirits to\n"
-            "heal and strengthen itself."),
-        .effect = EFFECT_TAKE_HEART,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_TakeHeart,
-    },
-
-    [MOVE_SILK_TRAP] =
-    {
-        .name = COMPOUND_STRING("Silk Trap"),
-        .description = COMPOUND_STRING(
-            "Protects itself, lowering\n"
-            "Speed on contact."),
-        .effect = EFFECT_PROTECT,
-        .power = 0,
-        .type = TIPO_BICHO,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        PRIORIDAD_MUY_ALTA,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_SilkTrap,
     },
 
     [MOVE_PATADA_HACHA] =

@@ -128,7 +128,6 @@ EWRAM_DATA u8 gCurrMovePos = 0;
 EWRAM_DATA u8 gChosenMovePos = 0;
 EWRAM_DATA u16 gCurrentMove = 0;
 EWRAM_DATA u16 gChosenMove = 0;
-EWRAM_DATA u16 gCalledMove = 0;
 EWRAM_DATA s32 gBattleMoveDamage = 0;
 EWRAM_DATA s32 gHpDealt = 0;
 EWRAM_DATA u16 gLastUsedItem = 0;
@@ -139,15 +138,13 @@ EWRAM_DATA u8 gBattlerFainted = 0;
 EWRAM_DATA u8 gEffectBattler = 0;
 EWRAM_DATA u8 gPotentialItemEffectBattler = 0;
 EWRAM_DATA u8 gAbsentBattlerFlags = 0;
-EWRAM_DATA u32 gEsGolpeCritico = FALSE;
+EWRAM_DATA bool32 gEsGolpeCritico = FALSE;
 EWRAM_DATA const u8 *gBattlescriptCurrInstr = NULL;
 EWRAM_DATA u32 gAccionElegida[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA const u8 *gSelectionBattleScripts[NUMERO_COMBATIENTES] = {NULL};
 EWRAM_DATA u16 gLastPrintedMoves[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u16 gLastMoves[NUMERO_COMBATIENTES] = {0};
-EWRAM_DATA u16 gLastLandedMoves[NUMERO_COMBATIENTES] = {0};
-EWRAM_DATA u16 gLastHitByType[NUMERO_COMBATIENTES] = {0};
-EWRAM_DATA u16 gLastUsedMoveType[NUMERO_COMBATIENTES] = {0};
+EWRAM_DATA enum Movimientos gLastLandedMoves[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u16 gLastResultingMoves[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u16 gLockedMoves[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u16 gLastUsedMove = 0;
@@ -167,7 +164,7 @@ EWRAM_DATA bool32 gMostrarMensajeBatalla = FALSE;
 EWRAM_DATA u8 gBattleOutcome = 0;
 EWRAM_DATA struct ProtectStruct gProtectStructs[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA struct SpecialStatus gSpecialStatuses[NUMERO_COMBATIENTES] = {0};
-EWRAM_DATA u16 gIntroSlideFlags = 0;
+EWRAM_DATA u16 gIntroSlideFlags = 0; // Revisar
 EWRAM_DATA u8 gSentPokesToOpponent[2] = {0};
 EWRAM_DATA struct BattleScripting gBattleScripting = {0};
 EWRAM_DATA struct Combate *gCombate = NULL;
@@ -177,13 +174,10 @@ EWRAM_DATA u8 gMoveSelectionCursor[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u8 gBattlerStatusSummaryTaskId[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u8 gBattlerInMenuId = 0;
 EWRAM_DATA bool8 gDoingBattleAnim = FALSE;
-EWRAM_DATA u8 gPlayerDpadHoldFrames = 0;
 EWRAM_DATA struct BattleSpriteData *gBattleSpritesDataPtr = NULL;
 EWRAM_DATA struct MonSpritesGfx *gMonSpritesGfxPtr = NULL;
 EWRAM_DATA u16 gBattleMovePower = 0;
 EWRAM_DATA u16 gMoveToLearn = 0;
-EWRAM_DATA u32 gFieldStatuses = 0;
-EWRAM_DATA struct FieldTimer gFieldTimers = {0};
 EWRAM_DATA u32 gBattlerAbility = 0;
 EWRAM_DATA u8 gLastUsedBall = 0;
 EWRAM_DATA u16 gLastThrownBall = 0;
@@ -1071,7 +1065,6 @@ static void BattleStartClearSetData(void)
     SpecialStatusesClear();
 
     memset(&gDisableStructs, 0, sizeof(gDisableStructs));
-    memset(&gFieldTimers, 0, sizeof(gFieldTimers));
     memset(&gSideStatuses, 0, sizeof(gSideStatuses));
     memset(&gSideTimers, 0, sizeof(gSideTimers));
     ClearSetBScriptingStruct();
@@ -1082,8 +1075,6 @@ static void BattleStartClearSetData(void)
         gDisableStructs[combatiente].esPrimerTurno = TRUE;
         gLastMoves[combatiente] = MOVE_NONE;
         gLastLandedMoves[combatiente] = MOVE_NONE;
-        gLastHitByType[combatiente] = 0;
-        gLastUsedMoveType[combatiente] = 0;
         gLastResultingMoves[combatiente] = MOVE_NONE;
         gLastHitBy[combatiente] = 0xFF;
         gLockedMoves[combatiente] = MOVE_NONE;
@@ -1097,7 +1088,7 @@ static void BattleStartClearSetData(void)
     }
 
     gLastUsedMove = 0;
-    gFieldStatuses = 0;
+    gCombate->turnosEspacioRaro = 0;
 
     gLastUsedBall = 0;
 
@@ -1172,7 +1163,7 @@ void SwitchInClearSetData(u32 battler)
     if (gMovimientos[gCurrentMove].effect == EFECTO_RELEVO)
     {
         gBattleMons[battler].status2 &= (STATUS2_CONFUSION | STATUS2_SUBSTITUTE | STATUS2_ESCAPE_PREVENTION | STATUS2_CURSED);
-        gStatuses3[battler] &= (STATUS3_LEECHSEED_BATTLER | STATUS3_LEECHSEED | STATUS3_ALWAYS_HITS | STATUS3_PERISH_SONG | STATUS3_ROOTED | STATUS3_GASTRO_ACID | STATUS3_EMBARGO | STATUS3_TELEKINESIS | STATUS3_MAGNET_RISE | STATUS3_AQUA_RING | STATUS3_POWER_TRICK);
+        gStatuses3[battler] &= (STATUS3_LEECHSEED_BATTLER | STATUS3_LEECHSEED | STATUS3_ALWAYS_HITS | STATUS3_PERISH_SONG | STATUS3_ROOTED | STATUS3_GASTRO_ACID | STATUS3_EMBARGO | STATUS3_TELEKINESIS | STATUS3_MAGNET_RISE | STATUS3_AQUA_RING);
         for (i = 0; i < gBattlersCount; i++)
         {
             if (GetBattlerSide(battler) != GetBattlerSide(i) && (gStatuses3[i] & STATUS3_ALWAYS_HITS) != 0 && (gDisableStructs[i].battlerWithSureHit == battler))
@@ -1181,8 +1172,6 @@ void SwitchInClearSetData(u32 battler)
                 gStatuses3[i] |= STATUS3_ALWAYS_HITS_TURN(2);
             }
         }
-        if (gStatuses3[battler] & STATUS3_POWER_TRICK)
-            SWAP(gBattleMons[battler].attack, gBattleMons[battler].defense, i);
     }
     else
     {
@@ -1216,8 +1205,6 @@ void SwitchInClearSetData(u32 battler)
     gDisableStructs[battler].esPrimerTurno = TRUE;
     gLastMoves[battler] = MOVE_NONE;
     gLastLandedMoves[battler] = MOVE_NONE;
-    gLastHitByType[battler] = 0;
-    gLastUsedMoveType[battler] = 0;
     gLastResultingMoves[battler] = MOVE_NONE;
     gLastPrintedMoves[battler] = MOVE_NONE;
     gLastHitBy[battler] = 0xFF;
@@ -1278,14 +1265,10 @@ const u8 *FaintClearSetData(u32 combatiente)
     memset(&gDisableStructs[combatiente], 0, sizeof(struct DisableStruct));
 
     gProtectStructs[combatiente].protected = FALSE;
-    gProtectStructs[combatiente].spikyShielded = FALSE;
-    gProtectStructs[combatiente].silkTrapped = FALSE;
     gProtectStructs[combatiente].noValidMoves = FALSE;
-    gProtectStructs[combatiente].stealMove = FALSE;
     gProtectStructs[combatiente].prlzImmobility = FALSE;
     gProtectStructs[combatiente].sleepImmobility = FALSE;
     gProtectStructs[combatiente].confusionSelfDmg = FALSE;
-    gProtectStructs[combatiente].targetAffected = FALSE;
     gProtectStructs[combatiente].chargingTurn = FALSE;
     gProtectStructs[combatiente].usedImprisonedMove = FALSE;
     gProtectStructs[combatiente].loveImmobility = FALSE;
@@ -1293,7 +1276,6 @@ const u8 *FaintClearSetData(u32 combatiente)
     gProtectStructs[combatiente].usedTauntedMove = FALSE;
     gProtectStructs[combatiente].flinchImmobility = FALSE;
     gProtectStructs[combatiente].notFirstStrike = FALSE;
-    gProtectStructs[combatiente].usedGravityPreventedMove = FALSE;
     gProtectStructs[combatiente].usedThroatChopPreventedMove = FALSE;
     gProtectStructs[combatiente].statRaised = FALSE;
     gProtectStructs[combatiente].statFell = FALSE;
@@ -1303,8 +1285,6 @@ const u8 *FaintClearSetData(u32 combatiente)
 
     gLastMoves[combatiente] = MOVE_NONE;
     gLastLandedMoves[combatiente] = MOVE_NONE;
-    gLastHitByType[combatiente] = 0;
-    gLastUsedMoveType[combatiente] = 0;
     gLastResultingMoves[combatiente] = MOVE_NONE;
     gLastPrintedMoves[combatiente] = MOVE_NONE;
     gLastHitBy[combatiente] = 0xFF;
@@ -2140,14 +2120,14 @@ s32 GetWhichBattlerFasterArgs(u32 battler1, u32 battler2, bool32 ignoreChosenMov
         }
         else if (speedBattler1 < speedBattler2)
         {
-            if (gFieldStatuses & STATUS_FIELD_TRICK_ROOM)
+            if (EstaEspacioRaroPuesto())
                 strikesFirst = 1;
             else
                 strikesFirst = -1;
         }
         else
         {
-            if (gFieldStatuses & STATUS_FIELD_TRICK_ROOM)
+            if (EstaEspacioRaroPuesto())
                 strikesFirst = -1;
             else
                 strikesFirst = 1;
@@ -2336,7 +2316,6 @@ static void TurnValuesCleanUp(bool8 var0)
     }
     for (u32 lado = LADO_JUGADOR; lado < NUMERO_LADOS; lado++)
     {
-        gSideStatuses[lado] &= ~(SIDE_STATUS_WIDE_GUARD | SIDE_STATUS_CRAFTY_SHIELD | SIDE_STATUS_MAT_BLOCK);
         gSideTimers[lado].followmeTimer = 0;
     }
 

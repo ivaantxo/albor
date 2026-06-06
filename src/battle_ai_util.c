@@ -435,8 +435,6 @@ s32 AI_CalcDamage(enum Movimientos movimiento, u32 battlerAtk, u32 battlerDef, u
     // convert multiper to AI_EFFECTIVENESS_xX
     *typeEffectiveness = IA_Efectividad(effectivenessMultiplier);
 
-    // Undo temporary settings
-    gCombate->dynamicMoveType = 0;
     AI_DATA->aiCalcInProgress = FALSE;
     return simulatedDmg;
 }
@@ -769,7 +767,7 @@ s32 AI_WhoStrikesFirst(u32 battlerAI, u32 battler, u32 moveConsidered)
 
     if (speedBattlerAI > speedBattler)
     {
-        if (gFieldStatuses & STATUS_FIELD_TRICK_ROOM)
+        if (EstaEspacioRaroPuesto())
             return AI_IS_SLOWER;
         else
             return AI_IS_FASTER;
@@ -780,7 +778,7 @@ s32 AI_WhoStrikesFirst(u32 battlerAI, u32 battler, u32 moveConsidered)
     }
     else
     {
-        if (gFieldStatuses & STATUS_FIELD_TRICK_ROOM)
+        if (EstaEspacioRaroPuesto())
             return AI_IS_FASTER;
         else
             return AI_IS_SLOWER;
@@ -991,8 +989,6 @@ u32 AI_DecideHoldEffectForTurn(u32 battlerId)
         return holdEffect;
 
     if (gStatuses3[battlerId] & STATUS3_EMBARGO)
-        return HOLD_EFFECT_NONE;
-    if (gFieldStatuses & STATUS_FIELD_MAGIC_ROOM)
         return HOLD_EFFECT_NONE;
 
     return holdEffect;
@@ -1411,14 +1407,15 @@ enum Movimientos *ObtenMovimientos(u32 combatiente)
 
 bool32 HasOnlyMovesWithCategory(u32 battlerId, u32 category, bool32 onlyOffensive)
 {
-    u32 i;
     enum Movimientos *moves = ObtenMovimientos(battlerId);
 
-    for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
+    for (u32 indiceMovimiento = 0; indiceMovimiento < MAXIMO_MOVIMIENTOS_POKEMON; indiceMovimiento++)
     {
-        if (onlyOffensive && EsMovimientoEstado(moves[i]))
+        if (onlyOffensive
+         && EsMovimientoEstado(moves[indiceMovimiento]))
             continue;
-        if (moves[i] != MOVE_NONE && CategoriaMovimiento(moves[i]) != category)
+        if (moves[indiceMovimiento] != MOVE_NONE
+         && CategoriaMovimiento(moves[indiceMovimiento]) != category)
             return FALSE;
     }
 
@@ -1687,7 +1684,7 @@ bool32 IsStatRaisingEffect(u32 effect)
 
 bool32 IsStatLoweringEffect(u32 effect)
 {
-    // ignore other potentially-beneficial effects like defog, gravity
+    // ignore other potentially-beneficial effects like defog
     switch (effect)
     {
     case EFFECT_ATTACK_DOWN:
@@ -2030,7 +2027,7 @@ static bool32 PartyBattlerShouldAvoidHazards(u32 currBattler, u32 switchBattler)
     if (flags & SIDE_STATUS_STEALTH_ROCK)
         hazardDamage += DanioTrampa(gMovimientos[MOVE_STEALTH_ROCK].type, currBattler);
 
-    if (flags & SIDE_STATUS_SPIKES && ((type1 != TIPO_VOLADOR && type2 != TIPO_VOLADOR && ability != ABILITY_LEVITATE && holdEffect != HOLD_EFFECT_AIR_BALLOON) || holdEffect == HOLD_EFFECT_IRON_BALL || gFieldStatuses & STATUS_FIELD_GRAVITY))
+    if (flags & SIDE_STATUS_SPIKES && ((type1 != TIPO_VOLADOR && type2 != TIPO_VOLADOR && ability != ABILITY_LEVITATE && holdEffect != HOLD_EFFECT_AIR_BALLOON) || holdEffect == HOLD_EFFECT_IRON_BALL))
     {
         s32 spikesDmg = maxHp / ((5 - gSideTimers[GetBattlerSide(currBattler)].spikesAmount) * 2);
         if (spikesDmg == 0)
@@ -2552,7 +2549,6 @@ bool32 IsMoveEffectWeather(u32 move)
     return FALSE;
 }
 
-// PARTNER_MOVE_IS_TAILWIND_TRICKROOM
 bool32 PartnerMoveIs(u32 battlerAtkPartner, u32 partnerMove, u32 moveCheck)
 {
     if (!EsCombateContraEntrenador(gCombate->tipoCombate))
@@ -2787,7 +2783,6 @@ static const u16 sRecycleEncouragedItems[] =
         ITEM_LUM_BERRY,
         ITEM_STARF_BERRY,
         ITEM_SITRUS_BERRY,
-        ITEM_MICLE_BERRY,
         ITEM_MENTAL_HERB,
 };
 
@@ -2801,9 +2796,7 @@ bool32 IsStatBoostingBerry(u32 item)
     case ITEM_SALAC_BERRY:
     case ITEM_PETAYA_BERRY:
     case ITEM_APICOT_BERRY:
-    // case ITEM_LANSAT_BERRY:
     case ITEM_STARF_BERRY:
-    case ITEM_MICLE_BERRY:
         return TRUE;
     default:
         return FALSE;
@@ -3035,8 +3028,7 @@ void IncreaseSleepScore(u32 battlerAtk, u32 battlerDef, u32 move, s32 *score)
         return;
 
     if ((HasMoveEffect(battlerAtk, EFFECT_DREAM_EATER)
-     || HasMoveEffect(battlerAtk, EFFECT_NIGHTMARE)) && !(HasMoveEffect(battlerDef, EFFECT_SNORE)
-     || HasMoveEffect(battlerDef, EFFECT_SLEEP_TALK)))
+     || HasMoveEffect(battlerAtk, EFFECT_NIGHTMARE)) && !(HasMoveEffect(battlerDef, EFFECT_SNORE)))
         ADJUST_SCORE_PTR(WEAK_EFFECT);
 
     if (HasMoveEffect(battlerAtk, EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(battlerAtk, STATUS1_SLEEP)
