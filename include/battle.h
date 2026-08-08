@@ -649,6 +649,27 @@ extern u16 gPaydayMoney;
 extern u32 gEstadoAccion[NUMERO_COMBATIENTES];
 extern u32 gMensajeBatalla;
 extern bool32 gMostrarMensajeBatalla;
+// Qué ha pasado en el último cambio de estadística. Es estado interno de C: los
+// scripts no lo miran nunca, preguntan con jumpifestadisticaallimite y escriben
+// con EscribeTextoCambioEstadistica. Sustituye a los B_MSG_ que indexaban
+// gStatUpStringIds / gStatDownStringIds.
+enum ResultadoCambioEstadistica
+{
+    CAMBIO_ESTADISTICA_ATACANTE,   // la estadística del atacante subió o bajó
+    CAMBIO_ESTADISTICA_DEFENSOR,   // la del objetivo
+    CAMBIO_ESTADISTICA_TOPE,       // ya estaba al máximo o al mínimo
+    CAMBIO_ESTADISTICA_SILENCIOSO, // cambió, pero sin mensaje
+    CAMBIO_ESTADISTICA_OBJETO,     // lo provocó un objeto equipado
+    CAMBIO_ESTADISTICA_MAX_SUBIDA, // Impulso y similares
+};
+
+extern enum ResultadoCambioEstadistica gResultadoCambioEstadistica;
+// Lo pone ChangeStatBuffs cuando la bajada recae sobre gBattlerTarget; lo consume
+// IntentaHabilidadPorBajadaEstadistica.
+extern bool32 gBajadaEstadisticaEnObjetivo;
+// Lo pone el bucle de Intimidacion antes de cada bajada, para que Cobardia sepa
+// que le toca; lo consume IntentaHabilidadPorBajadaEstadistica.
+extern bool32 gBajadaEstadisticaPorIntimidacion;
 extern u32 gPosicionCursorSiNo;
 extern u8 gBattleOutcome;
 extern struct ProtectStruct gProtectStructs[NUMERO_COMBATIENTES];

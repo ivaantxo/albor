@@ -54,7 +54,7 @@ static const struct LevelUpMove sKakunaLevelUpLearnset[] = {
 static const struct LevelUpMove sBeedrillLevelUpLearnset[] = {
     LEVEL_UP_MOVE(1, MOVE_COLMENA),
     LEVEL_UP_MOVE(1, MOVE_PAYBACK), // POR HABILIDAD AGRESIVIDAD
-    LEVEL_UP_MOVE(1, MOVE_DOBLE_AGUIJÓN),
+    LEVEL_UP_MOVE(1, MOVE_DOBLE_AGUIJON),
     LEVEL_UP_END};
 
 static const struct LevelUpMove sPidgeyLevelUpLearnset[] = {
@@ -821,7 +821,7 @@ static const struct LevelUpMove sSpinarakLevelUpLearnset[] = {
     LEVEL_UP_END};
 
 static const struct LevelUpMove sAriadosLevelUpLearnset[] = {
-    LEVEL_UP_MOVE(1, MOVE_DOBLE_AGUIJÓN),
+    LEVEL_UP_MOVE(1, MOVE_DOBLE_AGUIJON),
     LEVEL_UP_END};
 
 static const struct LevelUpMove sChinchouLevelUpLearnset[] = {
@@ -1808,7 +1808,7 @@ static const struct LevelUpMove sSkorupiLevelUpLearnset[] = {
 
 static const struct LevelUpMove sDrapionLevelUpLearnset[] = {
     LEVEL_UP_MOVE(1, MOVE_DESTRUCTOR),
-    LEVEL_UP_MOVE(1, MOVE_DOBLE_AGUIJÓN),
+    LEVEL_UP_MOVE(1, MOVE_DOBLE_AGUIJON),
     LEVEL_UP_MOVE(1, MOVE_COLMILLO_HELADO),
     LEVEL_UP_MOVE(1, MOVE_GUILLOTINA),
     LEVEL_UP_END};

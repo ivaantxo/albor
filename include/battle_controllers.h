@@ -106,8 +106,6 @@ enum
     CONTROLLER_BALLTHROWANIM,
     CONTROLLER_PAUSE,
     CONTROLLER_MOVEANIMATION,
-    CONTROLLER_PRINTSTRING,
-    CONTROLLER_PRINTSTRINGPLAYERONLY,
     CONTROLLER_CHOOSEACTION,
     CONTROLLER_YESNOBOX,
     CONTROLLER_CHOOSEMOVE,
@@ -163,8 +161,6 @@ void BtlController_EmitTrainerSlideBack(u32 battler, u32 bufferId);
 void BtlController_EmitFaintAnimation(u32 battler, u32 bufferId);
 void BtlController_EmitBallThrowAnim(u32 battler, u32 bufferId, u8 caseId);
 void BtlController_EmitMoveAnimation(u32 battler, u32 bufferId, enum Movimientos movimiento, u8 turnOfMove, u16 movePower, s32 dmg, u8 friendship, struct DisableStruct *disableStructPtr, u8 multihit);
-void ControladorCombate_EscribeTexto(u32 combatiente, u32 buffer, const u8 *texto);
-void BtlController_EmitPrintSelectionString(u32 battler, u32 bufferId, u16 stringId);
 void BtlController_EmitChooseAction(u32 battler, u32 bufferId, u8 action);
 void BtlController_EmitYesNoBox(u32 battler, u32 bufferId);
 void BtlController_EmitChooseMove(u32 battler, u32 bufferId, bool8 isDoubleBattle, bool8 NoPpNumber, struct DatosMovimiento *datosMovimiento);
@@ -215,7 +211,6 @@ void BtlController_HandleFaintAnimation(u32 battler);
 void BtlController_HandleSuccessBallThrowAnim(u32 battler, u32 target, u32 animId);
 void BtlController_HandleBallThrowAnim(u32 battler, u32 target, u32 animId);
 void BtlController_HandleMoveAnimation(u32 battler);
-void BtlController_HandlePrintString(u32 battler);
 void BtlController_HandleHealthBarUpdate(u32 battler, bool32 updateHpText);
 void DoStatusIconUpdate(u32 battler);
 void BtlController_HandleStatusIconUpdate(u32 battler);

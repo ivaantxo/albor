@@ -142,6 +142,55 @@ bool AsmFile::CheckForDirective(std::string name)
     return true;
 }
 
+// Battle script macros that take a single inline charmap string, e.g.
+//     EscribeTextoCombate "¡{B_ATK_NAME_WITH_PREFIX} usó {B_CURRENT_MOVE}!"
+// The string is charmapped, emitted into .rodata under a generated label, and
+// the macro is re-emitted with that label so it can store a plain pointer.
+static const char *const sInlineStringMacros[] =
+{
+    "EscribeTextoCombate",
+    "EscribeTextoSeleccion",
+    "PonTextoPendiente",
+};
+
+// Checks if we're at `<Macro> "..."`. Consumes only the macro name, leaving the
+// position on the opening quote. Consumes nothing at all if it doesn't match.
+//
+// This deliberately avoids CheckForDirective, which is a bare prefix match:
+// that would make "EscribeTextoCombateFoo" match, and would let the shorter of
+// two similarly-prefixed macro names swallow the longer one.
+bool AsmFile::CheckForInlineStringMacro()
+{
+    long startPos = m_pos;
+    std::string name = ReadIdentifier();
+
+    if (!name.empty())
+    {
+        for (const char *candidate : sInlineStringMacros)
+        {
+            if (name == candidate)
+            {
+                long posAfterName = m_pos;
+
+                SkipWhitespace();
+
+                if (m_buffer[m_pos] == '"')
+                {
+                    m_pendingMacroName = name;
+                    return true;
+                }
+
+                m_pos = posAfterName;
+                break;
+            }
+        }
+    }
+
+    m_pos = startPos;
+
+    return false;
+}
+
 // Checks if we're at a known directive and if so, consumes it.
 // Returns which directive was found.
 Directive AsmFile::GetDirective()
@@ -154,6 +203,8 @@ Directive AsmFile::GetDirective()
         return Directive::String;
     else if (CheckForDirective("enum"))
         return Directive::Enum;
+    else if (CheckForInlineStringMacro())
+        return Directive::InlineStringMacro;
     else
         return Directive::Unknown;
 }

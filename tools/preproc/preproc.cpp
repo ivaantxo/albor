@@ -86,6 +86,25 @@ void PreprocAsmFile(std::string filename, bool isStdin, bool doEnum)
                 stack.top().OutputLine();
             break;
         }
+        case Directive::InlineStringMacro:
+        {
+            static int inlineStringCount = 0;
+
+            unsigned char s[kMaxStringLength];
+            std::string macroName = stack.top().GetPendingMacroName();
+            int length = stack.top().ReadString(s);
+            int id = ++inlineStringCount;
+
+            // ReadString does not append a terminator, so emit EOS ourselves.
+            std::printf("\t.pushsection .rodata\n_sTextoEnLinea_%d:\n", id);
+            PrintAsmBytes(s, length);
+            std::printf("\t.byte 0xFF\n\t.popsection\n");
+            std::printf("\t%s _sTextoEnLinea_%d\n", macroName.c_str(), id);
+
+            // Resync line numbers so any `as` diagnostics point at the real source.
+            stack.top().OutputLocation();
+            break;
+        }
         case Directive::Unknown:
         {
             std::string globalLabel = stack.top().GetGlobalLabel();

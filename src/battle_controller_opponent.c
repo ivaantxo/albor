@@ -38,7 +38,6 @@ static void OpponentHandleDrawTrainerPic(u32 battler);
 static void OpponentHandleTrainerSlide(u32 battler);
 static void OpponentHandleTrainerSlideBack(u32 battler);
 static void OpponentHandleMoveAnimation(u32 battler);
-static void OpponentHandlePrintString(u32 battler);
 static void OpponentHandleChooseAction(u32 battler);
 static void OpponentHandleChooseMove(u32 battler);
 static void OpponentHandleChoosePokemon(u32 battler);
@@ -70,8 +69,6 @@ static void (*const sOpponentBufferCommands[CONTROLLER_CMDS_COUNT])(u32 battler)
     [CONTROLLER_BALLTHROWANIM]            = BtlController_Empty,
     [CONTROLLER_PAUSE]                    = BtlController_Empty,
     [CONTROLLER_MOVEANIMATION]            = OpponentHandleMoveAnimation,
-    [CONTROLLER_PRINTSTRING]              = OpponentHandlePrintString,
-    [CONTROLLER_PRINTSTRINGPLAYERONLY]    = BtlController_Empty,
     [CONTROLLER_CHOOSEACTION]             = OpponentHandleChooseAction,
     [CONTROLLER_YESNOBOX]                 = BtlController_Empty,
     [CONTROLLER_CHOOSEMOVE]               = OpponentHandleChooseMove,
@@ -406,11 +403,6 @@ static void OpponentHandleTrainerSlideBack(u32 battler)
 static void OpponentHandleMoveAnimation(u32 battler)
 {
     BtlController_HandleMoveAnimation(battler);
-}
-
-static void OpponentHandlePrintString(u32 battler)
-{
-    BtlController_HandlePrintString(battler);
 }
 
 static void OpponentHandleChooseAction(u32 battler)

@@ -31,6 +31,7 @@ enum class Directive
     Include,
     String,
     Enum,
+    InlineStringMacro,
     Unknown
 };
 
@@ -45,6 +46,7 @@ public:
     std::string GetGlobalLabel();
     std::string ReadPath();
     int ReadString(unsigned char* s);
+    const std::string& GetPendingMacroName() const { return m_pendingMacroName; }
     bool IsAtEnd();
     void OutputLine();
     void OutputLocation();
@@ -58,7 +60,9 @@ private:
     long m_lineNum;
     long m_lineStart;
     std::string m_filename;
+    std::string m_pendingMacroName;
 
+    bool CheckForInlineStringMacro();
     bool ConsumeComma();
     int ReadPadLength();
     void RemoveComments();

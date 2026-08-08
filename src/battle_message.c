@@ -38,8 +38,6 @@ struct BattleWindowText
     u8 shadowColor;
 };
 
-static EWRAM_DATA u16 sBattlerAbilities[NUMERO_COMBATIENTES] = {0};
-EWRAM_DATA struct BattleMsgData *gBattleMsgDataPtr = NULL;
 
 // todo: make some of those names less vague: attacker/target vs pkmn, etc.
 
@@ -741,124 +739,89 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
 };
 
-void BufferStringBattle(u16 stringID, u32 battler)
+// Los textos que siguen no se pueden escribir en línea en el script porque su
+// contenido depende del estado en tiempo de ejecución.
+
+void EscribeTextoIntroCombate(void)
 {
-    s32 i;
-    const u8 *stringPtr = NULL;
+    const u8 *texto;
 
-    gBattleMsgDataPtr = (struct BattleMsgData *)(&gBattleResources->bufferA[battler][4]);
-    gLastUsedItem = gBattleMsgDataPtr->lastItem;
-    gLastUsedAbility = gBattleMsgDataPtr->lastAbility;
-    gBattleScripting.battler = gBattleMsgDataPtr->scrActive;
-    gCombate->scriptPartyIdx = gBattleMsgDataPtr->bakScriptPartyIdx;
-    gCombate->hpScale = gBattleMsgDataPtr->hpScale;
-    gPotentialItemEffectBattler = gBattleMsgDataPtr->itemEffectBattler;
+    if (EsCombateContraEntrenador(gCombate->tipoCombate))
+        texto = COMPOUND_STRING("¡{B_TRAINER_CLASS} {B_TRAINER_NAME} quiere luchar!");
+    else if (EsCombateContraLegendario(gCombate->tipoCombate))
+        texto = COMPOUND_STRING("¡El Legendario {B_OPPONENT_MON1_NAME}!");
+    else
+        texto = COMPOUND_STRING("¡Un {B_OPPONENT_MON1_NAME} salvaje!");
 
-    for (i = 0; i < NUMERO_COMBATIENTES; i++)
+    EscribeTextoCombate(JUGADOR_IZQUIERDA, texto);
+}
+
+void EscribeTextoEnviarPokemon(u32 combatiente)
+{
+    const u8 *texto;
+
+    if (GetBattlerSide(combatiente) == LADO_JUGADOR)
     {
-        sBattlerAbilities[i] = gBattleMsgDataPtr->abilities[i];
+        if (EsCombateContraEntrenador(gCombate->tipoCombate) && IsValidForBattle(&gPlayerParty[gBattlerPartyIndexes[ALIADO(combatiente)]]))
+            texto = COMPOUND_STRING("¡Vamos! ¡{B_PLAYER_MON1_NAME} y {B_PLAYER_MON2_NAME}!");
+        else
+            texto = COMPOUND_STRING("¡Vamos, {B_PLAYER_MON1_NAME}!");
     }
-    for (i = 0; i < TEXT_BUFF_ARRAY_COUNT; i++)
+    else
     {
-        gBattleTextBuff1[i] = gBattleMsgDataPtr->textBuffs[0][i];
-        gBattleTextBuff2[i] = gBattleMsgDataPtr->textBuffs[1][i];
-        gBattleTextBuff3[i] = gBattleMsgDataPtr->textBuffs[2][i];
-    }
-
-    switch (stringID)
-    {
-    case TEXTO_COMBATE_INTRO:
-        if (EsCombateContraEntrenador(gCombate->tipoCombate))
-        {
-            stringPtr = COMPOUND_STRING("¡{B_TRAINER_CLASS} {B_TRAINER_NAME} quiere luchar!");
-        }
+        if (EsCombateContraEntrenador(gCombate->tipoCombate) && IsValidForBattle(&gEnemyParty[gBattlerPartyIndexes[ALIADO(combatiente)]]))
+            texto = COMPOUND_STRING("{B_TRAINER_CLASS} {B_TRAINER_NAME} sent out {B_OPPONENT_MON1_NAME} and {B_OPPONENT_MON2_NAME}!");
         else
-        {
-            if (EsCombateContraLegendario(gCombate->tipoCombate))
-                stringPtr = COMPOUND_STRING("¡El Legendario {B_OPPONENT_MON1_NAME}!");
-            else
-                stringPtr = COMPOUND_STRING("¡Un {B_OPPONENT_MON1_NAME} salvaje!");
-        }
-        break;
-    case TEXTO_COMBATE_ENVIAR_POKEMON:
-        if (GetBattlerSide(battler) == LADO_JUGADOR)
-        {
-            if (EsCombateContraEntrenador(gCombate->tipoCombate) && IsValidForBattle(&gPlayerParty[gBattlerPartyIndexes[ALIADO(battler)]]))
-            {
-                stringPtr = COMPOUND_STRING("¡Vamos! ¡{B_PLAYER_MON1_NAME} y {B_PLAYER_MON2_NAME}!");
-            }
-            else
-            {
-                stringPtr = COMPOUND_STRING("¡Vamos, {B_PLAYER_MON1_NAME}!");
-            }
-        }
-        else
-        {
-            if (EsCombateContraEntrenador(gCombate->tipoCombate) && IsValidForBattle(&gEnemyParty[gBattlerPartyIndexes[ALIADO(battler)]]))
-            {
-                stringPtr = COMPOUND_STRING("{B_TRAINER_CLASS} {B_TRAINER_NAME} sent out {B_OPPONENT_MON1_NAME} and {B_OPPONENT_MON2_NAME}!");
-            }
-            else
-            {
-                stringPtr = COMPOUND_STRING("{B_TRAINER_CLASS} {B_TRAINER_NAME} sent out {B_OPPONENT_MON1_NAME}!");
-            }
-        }
-        break;
-    case STRINGID_RETURNMON:
-        if (GetBattlerSide(battler) == LADO_JUGADOR)
-        {
-            if (gCombate->hpScale == 0)
-                stringPtr = COMPOUND_STRING("¡{B_BUFF1}, ya es suficiente! ¡Vuelve!");
-            else if (gCombate->hpScale == 1 || EsCombateContraEntrenador(gCombate->tipoCombate))
-                stringPtr = COMPOUND_STRING("¡{B_BUFF1}, ven conmigo!");
-            else if (gCombate->hpScale == 2)
-                stringPtr = COMPOUND_STRING("¡{B_BUFF1}, bien! ¡Cambio!");
-            else
-                stringPtr = COMPOUND_STRING("¡Lo has hecho bien, {B_BUFF1}! ¡Descansa!");
-        }
-        else
-        {
-            stringPtr = COMPOUND_STRING("{B_TRAINER_CLASS} {B_TRAINER_NAME} guardó a {B_BUFF1}!");
-        }
-        break;
-    case STRINGID_SWITCHINMON:
-        if (GetBattlerSide(gBattleScripting.battler) == LADO_JUGADOR)
-        {
-            if (gCombate->hpScale == 0 || EsCombateContraEntrenador(gCombate->tipoCombate))
-                stringPtr = COMPOUND_STRING("¡A luchar, {B_BUFF1}!");
-            else if (gCombate->hpScale == 1)
-                stringPtr = COMPOUND_STRING("¡Hazlo, {B_BUFF1}!");
-            else if (gCombate->hpScale == 2)
-                stringPtr = COMPOUND_STRING("¡A por ello, {B_BUFF1}!");
-            else
-                stringPtr = COMPOUND_STRING("¡Tu rival está débil! ¡Tú puedes, {B_BUFF1}!");
-        }
-        else
-        {
-            stringPtr = COMPOUND_STRING("{B_TRAINER_CLASS} {B_TRAINER_NAME} sent out {B_BUFF1}!");
-        }
-        break;
-    case STRINGID_USEDMOVE:
-        StringCopy(gBattleTextBuff3, ObtenNombreMovimiento(gBattleMsgDataPtr->currentMove));
-        stringPtr = COMPOUND_STRING("¡{B_ATK_NAME_WITH_PREFIX} usó {B_BUFF3}!");
-        break;
-    case STRINGID_TRAINERSLIDE:
-        stringPtr = gCombate->trainerSlideMsg;
-        break;
-    default:
-        if (stringID >= NUMERO_TEXTOS_COMBATE)
-        {
-            gDisplayedStringBattle[0] = EOS;
-            return;
-        }
-        else
-        {
-            stringPtr = gBattleStringsTable[stringID];
-        }
-        break;
+            texto = COMPOUND_STRING("{B_TRAINER_CLASS} {B_TRAINER_NAME} sent out {B_OPPONENT_MON1_NAME}!");
     }
 
-    BattleStringExpandPlaceholdersToDisplayedString(stringPtr);
+    EscribeTextoCombate(combatiente, texto);
+}
+
+void EscribeTextoDevolverPokemon(u32 combatiente)
+{
+    const u8 *texto;
+
+    if (GetBattlerSide(combatiente) == LADO_JUGADOR)
+    {
+        if (gCombate->hpScale == 0)
+            texto = COMPOUND_STRING("¡{B_BUFF1}, ya es suficiente! ¡Vuelve!");
+        else if (gCombate->hpScale == 1 || EsCombateContraEntrenador(gCombate->tipoCombate))
+            texto = COMPOUND_STRING("¡{B_BUFF1}, ven conmigo!");
+        else if (gCombate->hpScale == 2)
+            texto = COMPOUND_STRING("¡{B_BUFF1}, bien! ¡Cambio!");
+        else
+            texto = COMPOUND_STRING("¡Lo has hecho bien, {B_BUFF1}! ¡Descansa!");
+    }
+    else
+    {
+        texto = COMPOUND_STRING("{B_TRAINER_CLASS} {B_TRAINER_NAME} guardó a {B_BUFF1}!");
+    }
+
+    EscribeTextoCombate(combatiente, texto);
+}
+
+void EscribeTextoEntraPokemon(u32 combatiente)
+{
+    const u8 *texto;
+
+    if (GetBattlerSide(gBattleScripting.battler) == LADO_JUGADOR)
+    {
+        if (gCombate->hpScale == 0 || EsCombateContraEntrenador(gCombate->tipoCombate))
+            texto = COMPOUND_STRING("¡A luchar, {B_BUFF1}!");
+        else if (gCombate->hpScale == 1)
+            texto = COMPOUND_STRING("¡Hazlo, {B_BUFF1}!");
+        else if (gCombate->hpScale == 2)
+            texto = COMPOUND_STRING("¡A por ello, {B_BUFF1}!");
+        else
+            texto = COMPOUND_STRING("¡Tu rival está débil! ¡Tú puedes, {B_BUFF1}!");
+    }
+    else
+    {
+        texto = COMPOUND_STRING("{B_TRAINER_CLASS} {B_TRAINER_NAME} sent out {B_BUFF1}!");
+    }
+
+    EscribeTextoCombate(combatiente, texto);
 }
 
 u32 BattleStringExpandPlaceholdersToDisplayedString(const u8 *src)
@@ -1066,10 +1029,10 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
                 HANDLE_NICKNAME_STRING_CASE(gBattleScripting.battler)
                 break;
             case B_TXT_CURRENT_MOVE: // current move name
-                toCpy = ObtenNombreMovimiento(gBattleMsgDataPtr->currentMove);
+                toCpy = ObtenNombreMovimiento(gCurrentMove);
                 break;
             case B_TXT_LAST_MOVE: // originally used move name
-                toCpy = ObtenNombreMovimiento(gBattleMsgDataPtr->originallyUsedMove);
+                toCpy = ObtenNombreMovimiento(gChosenMove);
                 break;
             case B_TXT_LAST_ITEM: // last used item
                 CopyItemName(gLastUsedItem, text);
@@ -1079,16 +1042,16 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
                 toCpy = gAbilitiesInfo[gLastUsedAbility].name;
                 break;
             case B_TXT_ATK_ABILITY: // attacker ability
-                toCpy = gAbilitiesInfo[sBattlerAbilities[gBattlerAttacker]].name;
+                toCpy = gAbilitiesInfo[gBattleMons[gBattlerAttacker].ability].name;
                 break;
             case B_TXT_DEF_ABILITY: // target ability
-                toCpy = gAbilitiesInfo[sBattlerAbilities[gBattlerTarget]].name;
+                toCpy = gAbilitiesInfo[gBattleMons[gBattlerTarget].ability].name;
                 break;
             case B_TXT_SCR_ACTIVE_ABILITY: // scripting active ability
-                toCpy = gAbilitiesInfo[sBattlerAbilities[gBattleScripting.battler]].name;
+                toCpy = gAbilitiesInfo[gBattleMons[gBattleScripting.battler].ability].name;
                 break;
             case B_TXT_EFF_ABILITY: // effect battler ability
-                toCpy = gAbilitiesInfo[sBattlerAbilities[gEffectBattler]].name;
+                toCpy = gAbilitiesInfo[gBattleMons[gEffectBattler].ability].name;
                 break;
             case B_TXT_TRAINER_CLASS:
                 toCpy = BattleStringGetOpponentClassByTrainerId(gTrainerBattleOpponent);

@@ -28,15 +28,15 @@ BattleScript_LowerAtkSpAtkDoAnim::
 	playstatchangeanimation BS_EFFECT_BATTLER, BIT_ATK | BIT_SPATK, STAT_CHANGE_NEGATIVE
 	setstatchanger ESTADISTICA_ATAQUE, 1, TRUE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_LowerAtkSpAtkTrySpAtk
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_LowerAtkSpAtkTrySpAtk
-	printfromtable gStatDownStringIds
+	jumpifestadisticaallimite BattleScript_LowerAtkSpAtkTrySpAtk
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_LowerAtkSpAtkTrySpAtk::
 	setstatchanger ESTADISTICA_ATAQUE_ESPECIAL, 1, TRUE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_LowerAtkSpAtkEnd
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_LowerAtkSpAtkEnd
-	printfromtable gStatDownStringIds
+	jumpifestadisticaallimite BattleScript_LowerAtkSpAtkEnd
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_LowerAtkSpAtkEnd:
@@ -124,13 +124,13 @@ BattleScript_EffectAttackUpUserAlly_Works:
 	waitanimation
 	setstatchanger ESTADISTICA_ATAQUE, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_EffectAttackUpUserAlly_TryAlly
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_EffectAttackUpUserAllyUser_PrintString
+	jumpifestadisticaallimite BattleScript_EffectAttackUpUserAllyUser_PrintString
 	setgraphicalstatchangevalues
 
 	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 
 BattleScript_EffectAttackUpUserAllyUser_PrintString:
-	printfromtable gStatUpStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_EffectAttackUpUserAlly_TryAlly:
@@ -143,7 +143,7 @@ BattleScript_EffectAttackUpUserAlly_TryAlly_:
 	jumpifblockedbysoundproof BS_ATTACKER_PARTNER, BattleScript_EffectAttackUpUserAlly_TryAllyBlocked
 	setstatchanger ESTADISTICA_ATAQUE, 1, FALSE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_EffectAttackUpUserAlly_End
-	jumpifword COMPARACION_DESIGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_EffectAttackUpUserAlly_AllyAnim
+	jumpifestadisticanoallimite BattleScript_EffectAttackUpUserAlly_AllyAnim
 	pause PAUSA_MUY_CORTA
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} won't go any higher!"
 	waitmessage PAUSA_LARGA
@@ -152,7 +152,7 @@ BattleScript_EffectAttackUpUserAlly_TryAlly_:
 BattleScript_EffectAttackUpUserAlly_AllyAnim:
 	setgraphicalstatchangevalues
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	printfromtable gStatUpStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 	goto BattleScript_EffectAttackUpUserAlly_End
 
@@ -189,15 +189,15 @@ BattleScript_CoachingWorks:
 	playstatchangeanimation BS_TARGET, BIT_ATK | BIT_DEF, 0
 	setstatchanger ESTADISTICA_ATAQUE, 1, FALSE
 	statbuffchange STAT_CHANGE_ALLOW_PTR | STAT_CHANGE_NOT_PROTECT_AFFECTED, BattleScript_CoachingBoostDef
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, 2, BattleScript_CoachingBoostDef
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_CoachingBoostDef
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_CoachingBoostDef:
 	setstatchanger ESTADISTICA_DEFENSA, 1, FALSE
 	statbuffchange STAT_CHANGE_ALLOW_PTR | STAT_CHANGE_NOT_PROTECT_AFFECTED, BattleScript_MoveEnd
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, 2, BattleScript_MoveEnd
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_MoveEnd
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -276,7 +276,7 @@ BattleScript_StrengthSapLiquidOoze:
 
 BattleScript_StrengthSapMustLower:
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_MoveEnd
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_FELL_EMPTY, BattleScript_MoveEnd
+	jumpifestadisticasincambio BattleScript_MoveEnd
 	attackanimation
 	waitanimation
 	goto BattleScript_StrengthSapLower
@@ -317,14 +317,14 @@ BattleScript_EffectPartingShotTryAtk:
 	playstatchangeanimation BS_TARGET, BIT_ATK, STAT_CHANGE_NEGATIVE
 	setstatchanger ESTADISTICA_ATAQUE, 1, TRUE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_EffectPartingShotTrySpAtk
-	printfromtable gStatDownStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_EffectPartingShotTrySpAtk:
 	playstatchangeanimation BS_TARGET, BIT_SPATK, STAT_CHANGE_NEGATIVE
 	setstatchanger ESTADISTICA_ATAQUE_ESPECIAL, 1, TRUE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_EffectPartingShotSwitch
-	printfromtable gStatDownStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_EffectPartingShotSwitch:
@@ -376,8 +376,8 @@ BattleScript_DefogWorks:
 	attackstring
 	ppreduce
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_DefogTryHazardsWithAnim
-	jumpifword COMPARACION_MENOR, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_DefogDoAnim
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_FELL_EMPTY, BattleScript_DefogTryHazardsWithAnim
+	jumpifestadisticacambiada BattleScript_DefogDoAnim
+	jumpifestadisticasincambio BattleScript_DefogTryHazardsWithAnim
 	pause PAUSA_CORTA
 	goto BattleScript_DefogPrintString
 
@@ -388,7 +388,7 @@ BattleScript_DefogDoAnim::
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 
 BattleScript_DefogPrintString::
-	printfromtable gStatDownStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_DefogTryHazards::
@@ -408,7 +408,7 @@ BattleScript_EffectAutotomize::
 	attackstring
 	ppreduce
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_AutotomizeWeightLoss
-	jumpifword COMPARACION_DESIGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_AutotomizeAttackAnim
+	jumpifestadisticanoallimite BattleScript_AutotomizeAttackAnim
 	pause PAUSA_CORTA
 	goto BattleScript_AutotomizePrintString
 
@@ -419,7 +419,7 @@ BattleScript_AutotomizeAttackAnim::
 	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 
 BattleScript_AutotomizePrintString::
-	printfromtable gStatUpStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_AutotomizeWeightLoss::
@@ -457,8 +457,8 @@ BattleScript_ToxicThreadWorks:
 	attackstring
 	ppreduce
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_ToxicThreadTryPsn
-	jumpifword COMPARACION_MENOR, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_ToxicThreadDoAnim
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_FELL_EMPTY, BattleScript_ToxicThreadTryPsn
+	jumpifestadisticacambiada BattleScript_ToxicThreadDoAnim
+	jumpifestadisticasincambio BattleScript_ToxicThreadTryPsn
 	pause PAUSA_CORTA
 	goto BattleScript_ToxicThreadPrintString
 
@@ -469,7 +469,7 @@ BattleScript_ToxicThreadDoAnim::
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 
 BattleScript_ToxicThreadPrintString::
-	printfromtable gStatDownStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_ToxicThreadTryPsn::
@@ -497,24 +497,24 @@ BattleScript_VenomDrenchDoMoveAnim::
 	playstatchangeanimation BS_TARGET, BIT_ATK, STAT_CHANGE_NEGATIVE
 	setstatchanger ESTADISTICA_ATAQUE, 1, TRUE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_VenomDrenchTryLowerSpAtk
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_VenomDrenchTryLowerSpAtk
-	printfromtable gStatDownStringIds
+	jumpifestadisticaallimite BattleScript_VenomDrenchTryLowerSpAtk
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_VenomDrenchTryLowerSpAtk::
 	playstatchangeanimation BS_TARGET, BIT_SPATK, STAT_CHANGE_NEGATIVE
 	setstatchanger ESTADISTICA_ATAQUE_ESPECIAL, 1, TRUE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_VenomDrenchTryLowerSpeed
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_VenomDrenchTryLowerSpeed
-	printfromtable gStatDownStringIds
+	jumpifestadisticaallimite BattleScript_VenomDrenchTryLowerSpeed
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_VenomDrenchTryLowerSpeed::
 	playstatchangeanimation BS_TARGET, BIT_SPEED, STAT_CHANGE_NEGATIVE
 	setstatchanger ESTADISTICA_VELOCIDAD, 1, TRUE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_VenomDrenchEnd
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_VenomDrenchEnd
-	printfromtable gStatDownStringIds
+	jumpifestadisticaallimite BattleScript_VenomDrenchEnd
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_VenomDrenchEnd::
@@ -536,16 +536,16 @@ BattleScript_RugidoNobleDoMoveAnim::
 	playstatchangeanimation BS_TARGET, BIT_ATK, STAT_CHANGE_NEGATIVE
 	setstatchanger ESTADISTICA_ATAQUE, 1, TRUE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_RugidoNobleTryLowerSpAtk
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_RugidoNobleTryLowerSpAtk
-	printfromtable gStatDownStringIds
+	jumpifestadisticaallimite BattleScript_RugidoNobleTryLowerSpAtk
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_RugidoNobleTryLowerSpAtk::
 	playstatchangeanimation BS_TARGET, BIT_SPATK, STAT_CHANGE_NEGATIVE
 	setstatchanger ESTADISTICA_ATAQUE_ESPECIAL, 1, TRUE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_RugidoNobleEnd
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_RugidoNobleEnd
-	printfromtable gStatDownStringIds
+	jumpifestadisticaallimite BattleScript_RugidoNobleEnd
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_RugidoNobleEnd::
@@ -568,15 +568,15 @@ BattleScript_ShellSmashTryDef::
 	playstatchangeanimation BS_ATTACKER, BIT_DEF | BIT_SPDEF, STAT_CHANGE_NEGATIVE | STAT_CHANGE_CANT_PREVENT
 	setstatchanger ESTADISTICA_DEFENSA, 1, TRUE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR | MOVE_EFFECT_CERTAIN, BattleScript_ShellSmashTrySpDef
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_ShellSmashTrySpDef
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_ShellSmashTrySpDef
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_ShellSmashTrySpDef:
 	setstatchanger ESTADISTICA_DEFENSA_ESPECIAL, 1, TRUE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR | MOVE_EFFECT_CERTAIN, BattleScript_ShellSmashTryAttack
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_ShellSmashTryAttack
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_ShellSmashTryAttack
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_ShellSmashTryAttack:
@@ -584,22 +584,22 @@ BattleScript_ShellSmashTryAttack:
 	playstatchangeanimation BS_ATTACKER, BIT_SPATK | BIT_ATK | BIT_SPEED, STAT_CHANGE_BY_TWO
 	setstatchanger ESTADISTICA_ATAQUE, 2, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_ShellSmashTrySpAtk
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_ShellSmashTrySpAtk
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_ShellSmashTrySpAtk
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_ShellSmashTrySpAtk:
 	setstatchanger ESTADISTICA_ATAQUE_ESPECIAL, 2, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_ShellSmashTrySpeed
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_ShellSmashTrySpeed
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_ShellSmashTrySpeed
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_ShellSmashTrySpeed:
 	setstatchanger ESTADISTICA_VELOCIDAD, 2, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_ShellSmashEnd
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_ShellSmashEnd
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_ShellSmashEnd
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_ShellSmashEnd:
@@ -626,8 +626,8 @@ BattleScript_GrowthAtk2:
 
 BattleScript_GrowthAtk:
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_GrowthTrySpAtk
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_GrowthTrySpAtk
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_GrowthTrySpAtk
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_GrowthTrySpAtk::
@@ -640,8 +640,8 @@ BattleScript_GrowthSpAtk2:
 
 BattleScript_GrowthSpAtk:
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_GrowthEnd
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_GrowthEnd
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_GrowthEnd
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_GrowthEnd:
@@ -669,15 +669,15 @@ BattleScript_ShiftGearSpeedBy1:
 
 BattleScript_ShiftGearDoSpeed:
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_ShiftGearTryAtk
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_ShiftGearTryAtk
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_ShiftGearTryAtk
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_ShiftGearTryAtk:
 	setstatchanger ESTADISTICA_ATAQUE, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_ShiftGearEnd
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_ShiftGearEnd
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_ShiftGearEnd
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_ShiftGearEnd:
@@ -698,22 +698,22 @@ BattleScript_CoilDoMoveAnim:
 	playstatchangeanimation BS_ATTACKER, BIT_ATK | BIT_DEF | BIT_ACC, 0
 	setstatchanger ESTADISTICA_ATAQUE, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_CoilTryDef
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_CoilTryDef
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_CoilTryDef
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_CoilTryDef:
 	setstatchanger ESTADISTICA_DEFENSA, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_CoilTryAcc
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_CoilTryAcc
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_CoilTryAcc
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_CoilTryAcc:
 	setstatchanger ESTADISTICA_PRECISION, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_CoilEnd
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_CoilEnd
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_CoilEnd
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_CoilEnd:
@@ -733,22 +733,22 @@ BattleScript_DanzaAleteoDoMoveAnim::
 	playstatchangeanimation BS_ATTACKER, BIT_SPATK | BIT_SPDEF | BIT_SPEED, 0
 	setstatchanger ESTADISTICA_ATAQUE_ESPECIAL, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_DanzaAleteoTrySpDef
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_DanzaAleteoTrySpDef
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_DanzaAleteoTrySpDef
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_DanzaAleteoTrySpDef::
 	setstatchanger ESTADISTICA_DEFENSA_ESPECIAL, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_DanzaAleteoTrySpeed
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_DanzaAleteoTrySpeed
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_DanzaAleteoTrySpeed
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_DanzaAleteoTrySpeed::
 	setstatchanger ESTADISTICA_VELOCIDAD, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_DanzaAleteoEnd
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_DanzaAleteoEnd
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_DanzaAleteoEnd
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_DanzaAleteoEnd::
@@ -768,15 +768,15 @@ BattleScript_AttackSpAttackUpDoMoveAnim::
 	playstatchangeanimation BS_ATTACKER, BIT_ATK | BIT_SPATK, 0
 	setstatchanger ESTADISTICA_ATAQUE, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_AttackSpAttackUpTrySpAtk
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_AttackSpAttackUpTrySpAtk
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_AttackSpAttackUpTrySpAtk
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_AttackSpAttackUpTrySpAtk::
 	setstatchanger ESTADISTICA_ATAQUE_ESPECIAL, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_AttackSpAttackUpEnd
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_AttackSpAttackUpEnd
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_AttackSpAttackUpEnd
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_AttackSpAttackUpEnd:
@@ -796,15 +796,15 @@ BattleScript_AttackAccUpDoMoveAnim::
 	playstatchangeanimation BS_ATTACKER, BIT_SPATK | BIT_SPDEF, 0
 	setstatchanger ESTADISTICA_ATAQUE, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_AttackAccUpTrySpDef
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_AttackAccUpTrySpDef
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_AttackAccUpTrySpDef
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_AttackAccUpTrySpDef::
 	setstatchanger ESTADISTICA_PRECISION, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_AttackAccUpEnd
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_AttackAccUpEnd
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_AttackAccUpEnd
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_AttackAccUpEnd:
@@ -1289,7 +1289,7 @@ BattleScript_EffectStatUpAfterAtkCanceler::
 	attackstring
 	ppreduce
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_StatUpEnd
-	jumpifword COMPARACION_DESIGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_StatUpAttackAnim
+	jumpifestadisticanoallimite BattleScript_StatUpAttackAnim
 	pause PAUSA_CORTA
 	goto BattleScript_StatUpPrintString
 
@@ -1302,7 +1302,7 @@ BattleScript_StatUpDoAnim::
 	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 
 BattleScript_StatUpPrintString::
-	printfromtable gStatUpStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_StatUpEnd::
@@ -1312,7 +1312,7 @@ BattleScript_StatUp::
 	playanimation BS_EFFECT_BATTLER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 
 BattleScript_StatUpMsg::
-	printfromtable gStatUpStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 	return
 
@@ -1351,8 +1351,8 @@ BattleScript_StatDownFromAttackString:
 	ppreduce
 BattleScript_EffectStatDownFromStatBuffChange:
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_StatDownEnd
-	jumpifword COMPARACION_MENOR, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_StatDownDoAnim
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_FELL_EMPTY, BattleScript_StatDownEnd
+	jumpifestadisticacambiada BattleScript_StatDownDoAnim
+	jumpifestadisticasincambio BattleScript_StatDownEnd
 	pause PAUSA_CORTA
 	goto BattleScript_StatDownPrintString
 BattleScript_StatDownDoAnim::
@@ -1362,7 +1362,7 @@ BattleScript_StatDownDoAnim::
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 	bicword gHitMarker, HITMARKER_DISABLE_ANIMATION
 BattleScript_StatDownPrintString::
-	printfromtable gStatDownStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 BattleScript_StatDownEnd::
 	goto BattleScript_MoveEnd
@@ -1374,7 +1374,7 @@ BattleScript_MirrorArmorReflect::
 
 BattleScript_MirrorArmorReflectStatLoss:
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_MIRROR_ARMOR | STAT_CHANGE_NOT_PROTECT_AFFECTED | STAT_CHANGE_ALLOW_PTR, BattleScript_MirrorArmorReflectEnd
-	jumpifword COMPARACION_MENOR, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_MirrorArmorReflectAnim
+	jumpifestadisticacambiada BattleScript_MirrorArmorReflectAnim
 	goto BattleScript_MirrorArmorReflectWontFall
 
 BattleScript_MirrorArmorReflectAnim:
@@ -1382,7 +1382,7 @@ BattleScript_MirrorArmorReflectAnim:
 	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 
 BattleScript_MirrorArmorReflectPrintString:
-	printfromtable gStatDownStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_MirrorArmorReflectEnd:
@@ -1402,7 +1402,7 @@ BattleScript_MirrorArmorReflectStickyWeb:
 
 BattleScript_StatDown::
 	playanimation BS_EFFECT_BATTLER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	printfromtable gStatDownStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 	return
 
@@ -1951,19 +1951,19 @@ BattleScript_CurseTrySpeed::
 	waitanimation
 	setstatchanger ESTADISTICA_VELOCIDAD, 1, TRUE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_CurseTryAttack
-	printfromtable gStatDownStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_CurseTryAttack::
 	setstatchanger ESTADISTICA_ATAQUE, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_CurseTryDefense
-	printfromtable gStatUpStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_CurseTryDefense::
 	setstatchanger ESTADISTICA_DEFENSA, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_CurseEnd
-	printfromtable gStatUpStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_CurseEnd::
@@ -2090,10 +2090,10 @@ BattleScript_EffectSwagger::
 	waitanimation
 	setstatchanger ESTADISTICA_ATAQUE, 2, FALSE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_SwaggerTryConfuse
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_SwaggerTryConfuse
+	jumpifestadisticaallimite BattleScript_SwaggerTryConfuse
 	setgraphicalstatchangevalues
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	printfromtable gStatUpStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_SwaggerTryConfuse:
@@ -2276,7 +2276,7 @@ BattleScript_EffectDefenseCurl::
 	setdefensecurlbit
 	setstatchanger ESTADISTICA_DEFENSA, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_DefenseCurlDoStatUpAnim
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_StatUpPrintString
+	jumpifestadisticaallimite BattleScript_StatUpPrintString
 	attackanimation
 	waitanimation
 
@@ -2370,14 +2370,14 @@ BattleScript_EffectStockpileDef:
 	playstatchangeanimation BS_ATTACKER, BIT_DEF | BIT_SPDEF, 0
 	setstatchanger ESTADISTICA_DEFENSA, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_EffectStockpileSpDef
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_EffectStockpileSpDef
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_EffectStockpileSpDef
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 BattleScript_EffectStockpileSpDef::
 	setstatchanger ESTADISTICA_DEFENSA_ESPECIAL, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_EffectStockpileEnd
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_EffectStockpileEnd
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_EffectStockpileEnd
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 BattleScript_EffectStockpileEnd:
 	stockpile 1
@@ -2395,7 +2395,7 @@ BattleScript_StockpileStatChangeDown:
 	statbuffchange MOVE_EFFECT_AFFECTS_USER, BattleScript_StockpileStatChangeDown_Ret
 	setgraphicalstatchangevalues
 	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	printfromtable gStatDownStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_StockpileStatChangeDown_Ret:
@@ -2466,10 +2466,10 @@ BattleScript_EffectFlatter::
 	waitanimation
 	setstatchanger ESTADISTICA_ATAQUE_ESPECIAL, 1, FALSE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_FlatterTryConfuse
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_FlatterTryConfuse
+	jumpifestadisticaallimite BattleScript_FlatterTryConfuse
 	setgraphicalstatchangevalues
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	printfromtable gStatUpStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_FlatterTryConfuse::
@@ -2536,10 +2536,10 @@ BattleScript_EffectCharge::
 	waitanimation
 	setstatchanger ESTADISTICA_DEFENSA_ESPECIAL, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_EffectChargeString
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_EffectChargeString
+	jumpifestadisticaallimite BattleScript_EffectChargeString
 	setgraphicalstatchangevalues
 	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	printfromtable gStatUpStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_EffectChargeString:
@@ -2680,16 +2680,16 @@ BattleScript_TickleDoMoveAnim::
 	playstatchangeanimation BS_TARGET, BIT_ATK, STAT_CHANGE_NEGATIVE
 	setstatchanger ESTADISTICA_ATAQUE, 1, TRUE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_TickleTryLowerDef
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_TickleTryLowerDef
-	printfromtable gStatDownStringIds
+	jumpifestadisticaallimite BattleScript_TickleTryLowerDef
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_TickleTryLowerDef::
 	playstatchangeanimation BS_TARGET, BIT_DEF, STAT_CHANGE_NEGATIVE
 	setstatchanger ESTADISTICA_DEFENSA, 1, TRUE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_TickleEnd
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_TickleEnd
-	printfromtable gStatDownStringIds
+	jumpifestadisticaallimite BattleScript_TickleEnd
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_TickleEnd::
@@ -2716,15 +2716,15 @@ BattleScript_CosmicPowerDoMoveAnim::
 	playstatchangeanimation BS_ATTACKER, BIT_DEF | BIT_SPDEF, 0
 	setstatchanger ESTADISTICA_DEFENSA, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_CosmicPowerTrySpDef
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_CosmicPowerTrySpDef
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_CosmicPowerTrySpDef
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_CosmicPowerTrySpDef::
 	setstatchanger ESTADISTICA_DEFENSA_ESPECIAL, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_CosmicPowerEnd
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_CosmicPowerEnd
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_CosmicPowerEnd
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_CosmicPowerEnd::
@@ -2744,15 +2744,15 @@ BattleScript_BulkUpDoMoveAnim::
 	playstatchangeanimation BS_ATTACKER, BIT_ATK | BIT_DEF, 0
 	setstatchanger ESTADISTICA_ATAQUE, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_BulkUpTryDef
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_BulkUpTryDef
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_BulkUpTryDef
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_BulkUpTryDef::
 	setstatchanger ESTADISTICA_DEFENSA, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_BulkUpEnd
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_BulkUpEnd
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_BulkUpEnd
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_BulkUpEnd::
@@ -2776,15 +2776,15 @@ BattleScript_CalmMindStatRaise::
 	playstatchangeanimation BS_ATTACKER, BIT_SPATK | BIT_SPDEF, 0
 	setstatchanger ESTADISTICA_ATAQUE_ESPECIAL, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_CalmMindTrySpDef
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_CalmMindTrySpDef
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_CalmMindTrySpDef
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_CalmMindTrySpDef::
 	setstatchanger ESTADISTICA_DEFENSA_ESPECIAL, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_CalmMindEnd
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_CalmMindEnd
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_CalmMindEnd
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_CalmMindEnd::
@@ -2813,15 +2813,15 @@ BattleScript_DragonDanceDoMoveAnim::
 	playstatchangeanimation BS_ATTACKER, BIT_ATK | BIT_SPEED, 0
 	setstatchanger ESTADISTICA_ATAQUE, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_DragonDanceTrySpeed
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_DragonDanceTrySpeed
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_DragonDanceTrySpeed
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_DragonDanceTrySpeed::
 	setstatchanger ESTADISTICA_VELOCIDAD, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_DragonDanceEnd
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_DragonDanceEnd
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_DragonDanceEnd
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_DragonDanceEnd::
@@ -3135,7 +3135,7 @@ BattleScript_SunlightFaded::
 	end2
 
 BattleScript_SideStatusWoreOff::
-	EscribeTextoCombate "{B_ATK_PREFIX1}'s {B_BUFF1} wore off!",
+	EscribeTextoCombate "{B_ATK_PREFIX1}'s {B_BUFF1} wore off!"
 	waitmessage PAUSA_LARGA
 	end2
 
@@ -3238,13 +3238,13 @@ BattleScript_WeaknessPolicyAtk:
 	playstatchangeanimation BS_TARGET, BIT_ATK | BIT_SPATK, STAT_CHANGE_BY_TWO
 	setstatchanger ESTADISTICA_ATAQUE, 2, FALSE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_WeaknessPolicySpAtk
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_WeaknessPolicySpAtk
+	jumpifestadisticaallimite BattleScript_WeaknessPolicySpAtk
 	printstring STRINGID_USINGITEMSTATOFPKMNROSE
 	waitmessage PAUSA_LARGA
 BattleScript_WeaknessPolicySpAtk:
 	setstatchanger ESTADISTICA_ATAQUE_ESPECIAL, 2, FALSE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_WeaknessPolicyRemoveItem
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_WeaknessPolicyRemoveItem
+	jumpifestadisticaallimite BattleScript_WeaknessPolicyRemoveItem
 	printstring STRINGID_USINGITEMSTATOFPKMNROSE
 	waitmessage PAUSA_LARGA
 BattleScript_WeaknessPolicyRemoveItem:
@@ -3255,7 +3255,7 @@ BattleScript_WeaknessPolicyEnd:
 BattleScript_TargetItemStatRaise::
 	copybyte sBATTLER, gBattlerTarget
 	statbuffchange 0, BattleScript_TargetItemStatRaiseRemoveItemRet
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_TargetItemStatRaiseRemoveItemRet
+	jumpifestadisticaallimite BattleScript_TargetItemStatRaiseRemoveItemRet
 	playanimation BS_TARGET, B_ANIM_HELD_ITEM_EFFECT
 	waitanimation
 	setgraphicalstatchangevalues
@@ -3270,7 +3270,7 @@ BattleScript_TargetItemStatRaiseRemoveItemRet:
 BattleScript_AttackerItemStatRaise::
 	copybyte sBATTLER, gBattlerAttacker
 	statbuffchange MOVE_EFFECT_AFFECTS_USER, BattleScript_AttackerItemStatRaiseRet
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, 2, BattleScript_AttackerItemStatRaiseRet
+	jumpifestadisticaallimite BattleScript_AttackerItemStatRaiseRet
 	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT
 	waitanimation
 	setgraphicalstatchangevalues
@@ -3410,8 +3410,8 @@ BattleScript_StickyWebOnSwitchIn::
 	waitmessage PAUSA_LARGA
 	jumpifability BS_TARGET, ABILITY_MIRROR_ARMOR, BattleScript_MirrorArmorReflectStickyWeb
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_StickyWebOnSwitchInEnd
-	jumpifword COMPARACION_MENOR, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_StickyWebOnSwitchInStatAnim
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_FELL_EMPTY, BattleScript_StickyWebOnSwitchInEnd
+	jumpifestadisticacambiada BattleScript_StickyWebOnSwitchInStatAnim
+	jumpifestadisticasincambio BattleScript_StickyWebOnSwitchInEnd
 	pause PAUSA_CORTA
 	goto BattleScript_StickyWebOnSwitchInPrintStatMsg
 
@@ -3420,7 +3420,7 @@ BattleScript_StickyWebOnSwitchInStatAnim:
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 
 BattleScript_StickyWebOnSwitchInPrintStatMsg:
-	printfromtable gStatDownStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_StickyWebOnSwitchInEnd:
@@ -3475,31 +3475,31 @@ BattleScript_AllStatsUpAtk::
 	playstatchangeanimation BS_ATTACKER, BIT_ATK | BIT_DEF | BIT_SPEED | BIT_SPATK | BIT_SPDEF, 0
 	setstatchanger ESTADISTICA_ATAQUE, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_AllStatsUpDef
-	printfromtable gStatUpStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_AllStatsUpDef::
 	setstatchanger ESTADISTICA_DEFENSA, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_AllStatsUpSpeed
-	printfromtable gStatUpStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_AllStatsUpSpeed::
 	setstatchanger ESTADISTICA_VELOCIDAD, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_AllStatsUpSpAtk
-	printfromtable gStatUpStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_AllStatsUpSpAtk::
 	setstatchanger ESTADISTICA_ATAQUE_ESPECIAL, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_AllStatsUpSpDef
-	printfromtable gStatUpStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_AllStatsUpSpDef::
 	setstatchanger ESTADISTICA_DEFENSA_ESPECIAL, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_AllStatsUpRet
-	printfromtable gStatUpStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_AllStatsUpRet::
@@ -3643,16 +3643,16 @@ BattleScript_AtkDefDown::
 	playstatchangeanimation BS_ATTACKER, BIT_ATK, STAT_CHANGE_CANT_PREVENT | STAT_CHANGE_NEGATIVE
 	setstatchanger ESTADISTICA_ATAQUE, 1, TRUE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_CERTAIN | STAT_CHANGE_ALLOW_PTR, BattleScript_AtkDefDownTryDef
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_AtkDefDownTryDef
-	printfromtable gStatDownStringIds
+	jumpifestadisticaallimite BattleScript_AtkDefDownTryDef
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_AtkDefDownTryDef:
 	playstatchangeanimation BS_ATTACKER, BIT_DEF, STAT_CHANGE_CANT_PREVENT | STAT_CHANGE_NEGATIVE
 	setstatchanger ESTADISTICA_DEFENSA, 1, TRUE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_CERTAIN | STAT_CHANGE_ALLOW_PTR, BattleScript_AtkDefDownRet
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_AtkDefDownRet
-	printfromtable gStatDownStringIds
+	jumpifestadisticaallimite BattleScript_AtkDefDownRet
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_AtkDefDownRet:
@@ -3664,16 +3664,16 @@ BattleScript_DefSpDefDown::
 	playstatchangeanimation BS_ATTACKER, BIT_DEF, STAT_CHANGE_CANT_PREVENT | STAT_CHANGE_NEGATIVE
 	setstatchanger ESTADISTICA_DEFENSA, 1, TRUE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_CERTAIN | STAT_CHANGE_ALLOW_PTR, BattleScript_DefSpDefDownTrySpDef
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_DefSpDefDownTrySpDef
-	printfromtable gStatDownStringIds
+	jumpifestadisticaallimite BattleScript_DefSpDefDownTrySpDef
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_DefSpDefDownTrySpDef::
 	playstatchangeanimation BS_ATTACKER, BIT_SPDEF, STAT_CHANGE_CANT_PREVENT | STAT_CHANGE_NEGATIVE
 	setstatchanger ESTADISTICA_DEFENSA_ESPECIAL, 1, TRUE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_CERTAIN | STAT_CHANGE_ALLOW_PTR, BattleScript_DefSpDefDownRet
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_DefSpDefDownRet
-	printfromtable gStatDownStringIds
+	jumpifestadisticaallimite BattleScript_DefSpDefDownRet
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_DefSpDefDownRet::
@@ -3687,16 +3687,16 @@ BattleScript_DefDownSpeedUpTryDef::
 	playstatchangeanimation BS_ATTACKER, BIT_DEF, STAT_CHANGE_NEGATIVE | STAT_CHANGE_CANT_PREVENT
 	setstatchanger ESTADISTICA_DEFENSA, 1, TRUE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR | MOVE_EFFECT_CERTAIN, BattleScript_DefDownSpeedUpTrySpeed
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_DefDownSpeedUpTrySpeed
-	printfromtable gStatDownStringIds
+	jumpifestadisticaallimite BattleScript_DefDownSpeedUpTrySpeed
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_DefDownSpeedUpTrySpeed:
 	playstatchangeanimation BS_ATTACKER, BIT_SPEED, 0
 	setstatchanger ESTADISTICA_VELOCIDAD, 1, FALSE
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR | MOVE_EFFECT_CERTAIN, BattleScript_DefDownSpeedUpRet
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_DefDownSpeedUpRet
-	printfromtable gStatUpStringIds
+	jumpifestadisticaallimite BattleScript_DefDownSpeedUpRet
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_DefDownSpeedUpRet::
@@ -3855,7 +3855,7 @@ BattleScript_CottonDownLoop:
 	statbuffchange STAT_CHANGE_NOT_PROTECT_AFFECTED, BattleScript_CottonDownTargetSpeedCantGoLower
 	setgraphicalstatchangevalues
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	printfromtable gStatDownStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 	goto BattleScript_CottonDownLoopIncrement
 
@@ -4391,6 +4391,13 @@ BattleScript_IntimidateLoop:
 	jumpifability BS_TARGET, ABILITY_OWN_TEMPO, BattleScript_IntimidatePrevented
 	jumpifability BS_TARGET, ABILITY_OBLIVIOUS, BattleScript_IntimidatePrevented
 	jumpifability BS_TARGET, ABILITY_GUARD_DOG, BattleScript_IntimidateInReverse
+	MarcaBajadaPorIntimidacion
+	setstatchanger ESTADISTICA_ATAQUE, 1, TRUE
+	statbuffchange STAT_CHANGE_NOT_PROTECT_AFFECTED | MOVE_EFFECT_CERTAIN | STAT_CHANGE_ALLOW_PTR, BattleScript_IntimidateLoopIncrement
+	jumpifestadisticasincambio BattleScript_IntimidateLoopIncrement
+	setgraphicalstatchangevalues
+	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	EscribeTextoCambioEstadistica
 
 BattleScript_IntimidateEffect_WaitString:
 	waitmessage PAUSA_LARGA
@@ -4418,9 +4425,9 @@ BattleScript_IntimidateWontDecrease:
 
 BattleScript_IntimidateContrary:
 	call BattleScript_AbilityPopUpTarget
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_IntimidateContrary_WontIncrease
+	jumpifestadisticaallimite BattleScript_IntimidateContrary_WontIncrease
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	printfromtable gStatUpStringIds
+	EscribeTextoCambioEstadistica
 	goto BattleScript_IntimidateEffect_WaitString
 
 BattleScript_IntimidateContrary_WontIncrease:
@@ -4539,7 +4546,7 @@ BattleScript_MoveStatDrain::
 	waitanimation
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_MoveStatDrain_Cont
 .if B_ABSORBING_ABILITY_STRING >= GEN_5
-	printfromtable gStatUpStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 .else
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} raised its {B_BUFF1}!"
@@ -4656,7 +4663,7 @@ BattleScript_AbilityNoSpecificStatLoss::
 	call BattleScript_AbilityPopUp
 	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY} prevents {B_BUFF1} loss!"
 	waitmessage PAUSA_LARGA
-	setword gMensajeBatalla, B_MSG_STAT_FELL_EMPTY
+	MarcaCambioEstadisticaSilencioso
 	orhalfword gMoveResultFlags, MOVE_RESULT_NO_EFFECT
 	return
 
@@ -4725,10 +4732,10 @@ BattleScript_WeakArmorActivates::
 	call BattleScript_AbilityPopUp
 	setstatchanger ESTADISTICA_DEFENSA, 1, TRUE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_WeakArmorActivatesSpeed
-	jumpifword COMPARACION_MENOR, gMensajeBatalla, B_MSG_STAT_WONT_DECREASE, BattleScript_WeakArmorDefAnim
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_FELL_EMPTY, BattleScript_WeakArmorActivatesSpeed
+	jumpifestadisticacambiada BattleScript_WeakArmorDefAnim
+	jumpifestadisticasincambio BattleScript_WeakArmorActivatesSpeed
 	pause PAUSA_MUY_CORTA
-	printfromtable gStatDownStringIds
+	EscribeTextoCambioEstadistica
 	bichalfword gMoveResultFlags, MOVE_RESULT_MISSED @ Set by statbuffchange when stat can't be decreased
 	waitmessage PAUSA_LARGA
 	goto BattleScript_WeakArmorActivatesSpeed
@@ -4746,8 +4753,8 @@ BattleScript_WeakArmorActivatesSpeed:
 	setstatchanger ESTADISTICA_VELOCIDAD, 1, FALSE
 .endif
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_WeakArmorActivatesEnd
-	jumpifword COMPARACION_MENOR, gMensajeBatalla, B_MSG_STAT_WONT_INCREASE, BattleScript_WeakArmorSpeedAnim
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_STAT_ROSE_EMPTY, BattleScript_WeakArmorActivatesEnd
+	jumpifestadisticacambiada BattleScript_WeakArmorSpeedAnim
+	jumpifestadisticasincambio BattleScript_WeakArmorActivatesEnd
 	pause PAUSA_MUY_CORTA
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} won't go any higher!"
 	bichalfword gMoveResultFlags, MOVE_RESULT_MISSED
@@ -4804,10 +4811,10 @@ BattleScript_AttackerAbilityStatRaise_End:
 
 BattleScript_FellStingerRaisesStat::
 	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_FellStingerRaisesAtkEnd
-	jumpifword COMPARACION_MAYOR, gMensajeBatalla, B_MSG_DEFENDER_STAT_ROSE, BattleScript_FellStingerRaisesAtkEnd
+	jumpifestadisticanocambiada BattleScript_FellStingerRaisesAtkEnd
 	setgraphicalstatchangevalues
 	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	printfromtable gStatUpStringIds
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 
 BattleScript_FellStingerRaisesAtkEnd:

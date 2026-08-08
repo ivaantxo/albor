@@ -67,14 +67,16 @@
 	.byte BATTLE_CMD_resultmessage
 	.endm
 
-	.macro EscribeTextoCombate id:req
+@ El texto va como literal en línea; preproc lo charmapea, lo mete en .rodata
+@ y sustituye el literal por la etiqueta generada. Ver tools/preproc/asm_file.cpp.
+	.macro EscribeTextoCombate texto:req
 	.byte BATTLE_CMD_EscribeTextoCombate
-	.2byte \id
+	.4byte \texto
 	.endm
 
-	.macro printselectionstring id:req
-	.byte BATTLE_CMD_printselectionstring
-	.2byte \id
+	.macro EscribeTextoSeleccion texto:req
+	.byte BATTLE_CMD_EscribeTextoSeleccion
+	.4byte \texto
 	.endm
 
 	.macro waitmessage time:req
@@ -82,10 +84,58 @@
 	.2byte \time
 	.endm
 
-	.macro printfromtable ptr:req
-	.byte BATTLE_CMD_printfromtable
-	.4byte \ptr
+@ Escribe el mensaje del ultimo cambio de estadistica: atacante, defensor, al
+@ limite, por objeto, o ninguno. Sustituye a printfromtable gStat*StringIds.
+	.macro EscribeTextoCambioEstadistica
+	.byte BATTLE_CMD_EscribeTextoCambioEstadistica
 	.endm
+
+@ Preguntas sobre el ultimo cambio de estadistica. Sustituyen a los
+@ jumpifword sobre gMensajeBatalla + B_MSG_STAT_*.
+	.macro jumpifestadisticaallimite jumpInstr:req, siEsAsi=TRUE
+	.byte BATTLE_CMD_jumpifestadisticaallimite
+	.byte \siEsAsi
+	.4byte \jumpInstr
+	.endm
+
+	.macro jumpifestadisticanoallimite jumpInstr:req
+	jumpifestadisticaallimite \jumpInstr, FALSE
+	.endm
+
+	.macro jumpifestadisticasincambio jumpInstr:req, siEsAsi=TRUE
+	.byte BATTLE_CMD_jumpifestadisticasincambio
+	.byte \siEsAsi
+	.4byte \jumpInstr
+	.endm
+
+	.macro jumpifestadisticacambiada jumpInstr:req, siEsAsi=TRUE
+	.byte BATTLE_CMD_jumpifestadisticacambiada
+	.byte \siEsAsi
+	.4byte \jumpInstr
+	.endm
+
+	.macro jumpifestadisticanocambiada jumpInstr:req
+	jumpifestadisticacambiada \jumpInstr, FALSE
+	.endm
+
+	.macro MarcaBajadaPorIntimidacion
+	.byte BATTLE_CMD_MarcaBajadaPorIntimidacion
+	.endm
+
+	.macro MarcaCambioEstadisticaSilencioso
+	.byte BATTLE_CMD_MarcaCambioEstadisticaSilencioso
+	.endm
+
+@ Textos cuyo contenido depende del estado en tiempo de ejecución; el literal
+@ vive en C porque hay que elegir entre varias variantes.
+	.macro EscribeTextoEntraPokemon
+	.byte BATTLE_CMD_EscribeTextoEntraPokemon
+	.endm
+
+	.macro EscribeTextoDevolverPokemon
+	.byte BATTLE_CMD_EscribeTextoDevolverPokemon
+	.endm
+
 
 	.macro setadditionaleffects
 	1:
@@ -1667,12 +1717,9 @@
 	.ifnb \customString
 		EscribeTextoCombate \customString
 	.else
-		.if \mode == DECREASE
-			printfromtable gStatDownStringIds
-		.else
-		.if \mode == INCREASE
-			printfromtable gStatUpStringIds
-		.endif
+		@ Subida y bajada comparten comando: la diferencia la trae {B_BUFF2}.
+		.if (\mode == DECREASE) || (\mode == INCREASE)
+			EscribeTextoCambioEstadistica
 		.endif
 	.endif
 	waitmessage PAUSA_LARGA

@@ -934,7 +934,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_PoisonSting,
     },
 
-    [MOVE_DOBLE_AGUIJÓN] =
+    [MOVE_DOBLE_AGUIJON] =
     {
         .name = COMPOUND_STRING("Doble aguijón"),
         .description = COMPOUND_STRING(

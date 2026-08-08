@@ -260,13 +260,21 @@ $(ASM_BUILDDIR)/%.d: $(ASM_SUBDIR)/%.s
 	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) -I "" $<
 
 # Archivos .s dentro de C
-$(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.s
+#
+# Tres pasos, y el orden importa:
+#   1. preproc      charmapea los .string y los literales en linea de las macros
+#                   de battle_script (ver tools/preproc/asm_file.cpp).
+#   2. cpp          resuelve los #include y los #define de include/, que es de
+#                   donde salen BATTLE_CMD_*, MOVE_*, y los .if de config/.
+#   3. preproc -ie  convierte los enum de C que acaba de traer cpp en constantes
+#                   que entiende el ensamblador.
+$(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.s $(PREPROC) charmap.txt
 	@mkdir -p $(dir $@)
-	$(PREPROC) $< charmap.txt | $(AS) $(ASFLAGS) -o $@
+	$(PREPROC) $< charmap.txt | $(CPP) $(INCLUDE_CPP_ARGS) - | $(PREPROC) -ie $< charmap.txt | $(AS) $(ASFLAGS) -o $@
 
-$(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s
+$(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $(PREPROC) charmap.txt
 	@mkdir -p $(dir $@)
-	$(PREPROC) $< charmap.txt | $(AS) $(ASFLAGS) -o $@
+	$(PREPROC) $< charmap.txt | $(CPP) $(INCLUDE_CPP_ARGS) - | $(PREPROC) -ie $< charmap.txt | $(AS) $(ASFLAGS) -o $@
 	
 ifneq ($(NODEP),1)
 -include $(addprefix $(OBJ_DIR)/,$(REGULAR_DATA_ASM_SRCS:.s=.d))

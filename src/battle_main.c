@@ -159,6 +159,9 @@ EWRAM_DATA u16 gPauseCounterBattle = 0;
 EWRAM_DATA u16 gPaydayMoney = 0;
 EWRAM_DATA u32 gEstadoAccion[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u32 gMensajeBatalla = 0;
+EWRAM_DATA enum ResultadoCambioEstadistica gResultadoCambioEstadistica = CAMBIO_ESTADISTICA_ATACANTE;
+EWRAM_DATA bool32 gBajadaEstadisticaEnObjetivo = FALSE;
+EWRAM_DATA bool32 gBajadaEstadisticaPorIntimidacion = FALSE;
 EWRAM_DATA u32 gPosicionCursorSiNo = CURSOR_SI;
 EWRAM_DATA bool32 gMostrarMensajeBatalla = FALSE;
 EWRAM_DATA u8 gBattleOutcome = 0;
@@ -1433,7 +1436,7 @@ static void DoBattleIntro(void)
     case ESTADO_INTRO_BATALLA_TEXTO_INICIAL:
         if (!EstaCombatienteOcupado[JUGADOR_IZQUIERDA])
         {
-            PrepareStringBattle(TEXTO_COMBATE_INTRO, JUGADOR_IZQUIERDA);
+            EscribeTextoIntroCombate();
             gCombate->estadoIntro++;
         }
         break;
@@ -1449,7 +1452,7 @@ static void DoBattleIntro(void)
         }
         break;
     case ESTADO_INTRO_BATALLA_TEXTO_ENTRENADOR:
-        PrepareStringBattle(TEXTO_COMBATE_ENVIAR_POKEMON, OPONENTE_IZQUIERDA);
+        EscribeTextoEnviarPokemon(OPONENTE_IZQUIERDA);
         gCombate->estadoIntro++;
         break;
     case ESTADO_INTRO_BATALLA_ESPERA_TEXTO_ENTRENADOR:
@@ -1473,7 +1476,7 @@ static void DoBattleIntro(void)
         {
             return;
         }
-        PrepareStringBattle(TEXTO_COMBATE_ENVIAR_POKEMON, battler);
+        EscribeTextoEnviarPokemon(battler);
         BtlController_EmitIntroTrainerBallThrow(battler, BUFFER_A);
         MarcaCombatienteOcupado(battler);
         gCombate->estadoIntro++;

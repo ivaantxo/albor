@@ -202,21 +202,6 @@
     textVar[4] = B_BUFF_EOS;                                    \
 }
 
-struct BattleMsgData
-{
-    u16 currentMove;
-    u16 originallyUsedMove;
-    u16 lastItem;
-    u16 lastAbility;
-    u8 scrActive;
-    u8 bakScriptPartyIdx;
-    u8 hpScale;
-    u8 itemEffectBattler;
-    u8 moveType;
-    u16 abilities[NUMERO_COMBATIENTES];
-    u8 textBuffs[3][TEXT_BUFF_ARRAY_COUNT];
-};
-
 enum
 {
     TRAINER_SLIDE_LAST_SWITCHIN,
@@ -230,15 +215,16 @@ enum
     TRAINER_SLIDE_BEFORE_FIRST_TURN,
 };
 
-void BufferStringBattle(u16 stringID, u32 battler);
+void EscribeTextoIntroCombate(void);
+void EscribeTextoEnviarPokemon(u32 combatiente);
+void EscribeTextoDevolverPokemon(u32 combatiente);
+void EscribeTextoEntraPokemon(u32 combatiente);
 u32 BattleStringExpandPlaceholdersToDisplayedString(const u8 *src);
 u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize);
 void BattlePutTextOnWindow(const u8 *text, u8 windowId);
 u8 GetCurrentPpToMaxPpState(u8 currentPp, u8 maxPp);
 bool32 ShouldDoTrainerSlide(u32 battler, u32 which);
 void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst);
-
-extern struct BattleMsgData *gBattleMsgDataPtr;
 
 extern const u8 *const gBattleStringsTable[];
 extern const u8 *const gStatNamesTable[];

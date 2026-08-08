@@ -230,10 +230,10 @@ enum BattleScriptCommands
     BATTLE_CMD_critmessage,
     BATTLE_CMD_HazSonidoEfectividad,
     BATTLE_CMD_resultmessage,
-    BATTLE_CMD_printstring,
-    BATTLE_CMD_printselectionstring,
+    BATTLE_CMD_EscribeTextoCombate,
+    BATTLE_CMD_EscribeTextoSeleccion,
     BATTLE_CMD_waitmessage,
-    BATTLE_CMD_printfromtable,
+    BATTLE_CMD_EscribeTextoCambioEstadistica,
     BATTLE_CMD_setadditionaleffects,
     BATTLE_CMD_seteffectprimary,
     BATTLE_CMD_seteffectsecondary,
@@ -416,6 +416,13 @@ enum BattleScriptCommands
     BATTLE_CMD_swapstatstages,
     BATTLE_CMD_averagestats,
     BATTLE_CMD_jumpifoppositegenders,
+    BATTLE_CMD_jumpifestadisticaallimite,
+    BATTLE_CMD_jumpifestadisticasincambio,
+    BATTLE_CMD_jumpifestadisticacambiada,
+    BATTLE_CMD_MarcaBajadaPorIntimidacion,
+    BATTLE_CMD_MarcaCambioEstadisticaSilencioso,
+    BATTLE_CMD_EscribeTextoEntraPokemon,
+    BATTLE_CMD_EscribeTextoDevolverPokemon,
 };
 
 #endif // GUARD_CONSTANTS_BATTLE_SCRIPT_COMMANDS_H

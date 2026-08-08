@@ -335,9 +335,16 @@ static void Cmd_critmessage(void);
 static void Cmd_HazSonidoEfectividad(void);
 static void Cmd_resultmessage(void);
 static void Cmd_EscribeTextoCombate(void);
-static void Cmd_printselectionstring(void);
+static void Cmd_EscribeTextoSeleccion(void);
 static void Cmd_waitmessage(void);
-static void Cmd_printfromtable(void);
+static void Cmd_EscribeTextoCambioEstadistica(void);
+static void Cmd_jumpifestadisticaallimite(void);
+static void Cmd_jumpifestadisticasincambio(void);
+static void Cmd_jumpifestadisticacambiada(void);
+static void Cmd_MarcaBajadaPorIntimidacion(void);
+static void Cmd_MarcaCambioEstadisticaSilencioso(void);
+static void Cmd_EscribeTextoEntraPokemon(void);
+static void Cmd_EscribeTextoDevolverPokemon(void);
 static void Cmd_setadditionaleffects(void);
 static void Cmd_seteffectprimary(void);
 static void Cmd_seteffectsecondary(void);
@@ -542,9 +549,9 @@ void (*const gBattleScriptingCommandsTable[])(void) =
         BATTLE_CMD(HazSonidoEfectividad),
         BATTLE_CMD(resultmessage),
         BATTLE_CMD(EscribeTextoCombate),
-        BATTLE_CMD(printselectionstring),
+        BATTLE_CMD(EscribeTextoSeleccion),
         BATTLE_CMD(waitmessage),
-        BATTLE_CMD(printfromtable),
+        BATTLE_CMD(EscribeTextoCambioEstadistica),
         BATTLE_CMD(setadditionaleffects),
         BATTLE_CMD(seteffectprimary),
         BATTLE_CMD(seteffectsecondary),
@@ -727,6 +734,13 @@ void (*const gBattleScriptingCommandsTable[])(void) =
         BATTLE_CMD(swapstatstages),
         BATTLE_CMD(averagestats),
         BATTLE_CMD(jumpifoppositegenders),
+        BATTLE_CMD(jumpifestadisticaallimite),
+        BATTLE_CMD(jumpifestadisticasincambio),
+        BATTLE_CMD(jumpifestadisticacambiada),
+        BATTLE_CMD(MarcaBajadaPorIntimidacion),
+        BATTLE_CMD(MarcaCambioEstadisticaSilencioso),
+        BATTLE_CMD(EscribeTextoEntraPokemon),
+        BATTLE_CMD(EscribeTextoDevolverPokemon),
 };
 
 static const u32 sStatusFlagsForMoveEffects[NUM_MOVE_EFFECTS] =
@@ -1166,7 +1180,7 @@ static void Cmd_attackstring(void)
 
     if (!(gHitMarker & (HITMARKER_NO_ATTACKSTRING | HITMARKER_ATTACKSTRING_PRINTED)))
     {
-        PrepareStringBattle(STRINGID_USEDMOVE, gBattlerAttacker);
+        EscribeTextoCombate(gBattlerAttacker, COMPOUND_STRING("¡{B_ATK_NAME_WITH_PREFIX} usó {B_CURRENT_MOVE}!"));
         gHitMarker |= HITMARKER_ATTACKSTRING_PRINTED;
     }
     gBattlescriptCurrInstr = cmd->nextInstr;
@@ -1691,15 +1705,37 @@ static void Cmd_EscribeTextoCombate(void)
     }
 }
 
-static void Cmd_printselectionstring(void)
+static void Cmd_EscribeTextoSeleccion(void)
 {
-    CMD_ARGS(u16 id);
+    CMD_ARGS(const u8 *texto);
 
-    BtlController_EmitPrintSelectionString(gBattlerAttacker, BUFFER_A, cmd->id);
-    MarcaCombatienteOcupado(gBattlerAttacker);
+    if (!HayAlgunCombatienteOcupado())
+    {
+        EscribeTextoSeleccion(gBattlerAttacker, cmd->texto);
+        gBattlescriptCurrInstr = cmd->nextInstr;
+    }
+}
 
-    gBattlescriptCurrInstr = cmd->nextInstr;
-    gMostrarMensajeBatalla = TRUE;
+static void Cmd_EscribeTextoEntraPokemon(void)
+{
+    CMD_ARGS();
+
+    if (!HayAlgunCombatienteOcupado())
+    {
+        EscribeTextoEntraPokemon(gBattlerAttacker);
+        gBattlescriptCurrInstr = cmd->nextInstr;
+    }
+}
+
+static void Cmd_EscribeTextoDevolverPokemon(void)
+{
+    CMD_ARGS();
+
+    if (!HayAlgunCombatienteOcupado())
+    {
+        EscribeTextoDevolverPokemon(gBattlerAttacker);
+        gBattlescriptCurrInstr = cmd->nextInstr;
+    }
 }
 
 static void Cmd_waitmessage(void)
@@ -1725,19 +1761,115 @@ static void Cmd_waitmessage(void)
     }
 }
 
-static void Cmd_printfromtable(void)
+// Sustituye a `printfromtable gStatUpStringIds` y `gStatDownStringIds`, que juntas
+// eran dos tercios de todos los printfromtable. Las dos tablas colapsan en un solo
+// comando porque el texto de subida y el de bajada son el mismo: la diferencia
+// ("subió" / "bajó") ya la trae {B_BUFF2}.
+static void Cmd_EscribeTextoCambioEstadistica(void)
 {
-    CMD_ARGS(const u32 *ptr);
+    CMD_ARGS();
 
-    if (!HayAlgunCombatienteOcupado())
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = NULL;
+
+    switch (gResultadoCambioEstadistica)
     {
-        const u32 *ptr = cmd->ptr;
-        ptr += gMensajeBatalla;
-
-        gBattlescriptCurrInstr = cmd->nextInstr;
-        PrepareStringBattle(*ptr, gBattlerAttacker);
-        gMostrarMensajeBatalla = TRUE;
+    case CAMBIO_ESTADISTICA_ATACANTE:
+        texto = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1} {B_BUFF2}");
+        break;
+    case CAMBIO_ESTADISTICA_DEFENSOR:
+        texto = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} {B_BUFF2}");
+        break;
+    case CAMBIO_ESTADISTICA_TOPE:
+        // Aquí la dirección ya es la definitiva: ChangeStatBuffs aplicó antes
+        // Contrarrestar y Respondón, así que no hay que darle la vuelta al texto
+        // como hacía PrepareStringBattle mirando el id de la cadena.
+        texto = (gBattleScripting.statChanger & STAT_BUFF_NEGATIVE)
+              ? COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} won't go lower!")
+              : COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1} won't go higher!");
+        break;
+    case CAMBIO_ESTADISTICA_OBJETO:
+        texto = COMPOUND_STRING("Using {B_LAST_ITEM}, the {B_BUFF1} of {B_SCR_ACTIVE_NAME_WITH_PREFIX} {B_BUFF2}");
+        break;
+    case CAMBIO_ESTADISTICA_MAX_SUBIDA:
+        texto = COMPOUND_STRING("{B_SCR_ACTIVE_NAME_WITH_PREFIX} used {B_LAST_ITEM} to get pumped!");
+        break;
+    case CAMBIO_ESTADISTICA_SILENCIOSO:
+        break; // el cambio se aplicó sin anunciarlo
     }
+
+    // El avance va antes de escribir, porque IntentaHabilidadPorBajadaEstadistica
+    // hace BattleScriptPushCursor() y tiene que guardar la instrucción siguiente.
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+    IntentaHabilidadPorBajadaEstadistica();
+    gMostrarMensajeBatalla = TRUE;
+}
+
+// Los tres predicados que siguen sustituyen a los `jumpifword ... gMensajeBatalla,
+// B_MSG_STAT_*`. Cada uno lleva un flag `siEsAsi` para poder preguntar también por
+// lo contrario, igual que hace jumpifholdeffect: así las comparaciones de orden del
+// código anterior (COMPARACION_MENOR / MAYOR sobre los índices) se leen como lo que
+// de verdad querían decir.
+
+// La estadística ya estaba al máximo o al mínimo.
+static void Cmd_jumpifestadisticaallimite(void)
+{
+    CMD_ARGS(bool8 siEsAsi, const u8 *jumpInstr);
+
+    if ((gResultadoCambioEstadistica == CAMBIO_ESTADISTICA_TOPE) == cmd->siEsAsi)
+        gBattlescriptCurrInstr = cmd->jumpInstr;
+    else
+        gBattlescriptCurrInstr = cmd->nextInstr;
+}
+
+// La estadística cambió, pero este camino no lo anuncia.
+static void Cmd_jumpifestadisticasincambio(void)
+{
+    CMD_ARGS(bool8 siEsAsi, const u8 *jumpInstr);
+
+    if ((gResultadoCambioEstadistica == CAMBIO_ESTADISTICA_SILENCIOSO) == cmd->siEsAsi)
+        gBattlescriptCurrInstr = cmd->jumpInstr;
+    else
+        gBattlescriptCurrInstr = cmd->nextInstr;
+}
+
+// La estadística cambió de verdad y hay mensaje: es el caso en el que toca lanzar
+// la animación.
+static void Cmd_jumpifestadisticacambiada(void)
+{
+    CMD_ARGS(bool8 siEsAsi, const u8 *jumpInstr);
+
+    bool32 cambiada = (gResultadoCambioEstadistica == CAMBIO_ESTADISTICA_ATACANTE
+                    || gResultadoCambioEstadistica == CAMBIO_ESTADISTICA_DEFENSOR);
+
+    if (cambiada == cmd->siEsAsi)
+        gBattlescriptCurrInstr = cmd->jumpInstr;
+    else
+        gBattlescriptCurrInstr = cmd->nextInstr;
+}
+
+// Marca que la bajada que viene la causa Intimidación, para que Cobardía sepa que
+// le toca. Lo pone el bucle de Intimidación antes de cada bajada, y lo consume
+// IntentaHabilidadPorBajadaEstadistica.
+static void Cmd_MarcaBajadaPorIntimidacion(void)
+{
+    CMD_ARGS();
+
+    gBajadaEstadisticaPorIntimidacion = TRUE;
+    gBattlescriptCurrInstr = cmd->nextInstr;
+}
+
+// Fuerza que el proximo cambio de estadistica no se anuncie. Sustituye a
+// `setword gMensajeBatalla, B_MSG_STAT_FELL_EMPTY`.
+static void Cmd_MarcaCambioEstadisticaSilencioso(void)
+{
+    CMD_ARGS();
+
+    gResultadoCambioEstadistica = CAMBIO_ESTADISTICA_SILENCIOSO;
+    gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
 u8 GetBattlerTurnOrderNum(u8 battler)
@@ -6588,8 +6720,7 @@ static void Cmd_various(void)
         }
         else if (cmd->case_ == 1)
         {
-            ControladorCombate_EscribeTexto(battler, BUFFER_A, STRINGID_TRAINERSLIDE);
-            MarcaCombatienteOcupado(battler);
+            EscribeTextoCombate(battler, gCombate->trainerSlideMsg);
         }
         else
         {
@@ -7561,12 +7692,14 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
 
             if (gBattleMons[battler].statStages[statId] == ESTADISTICA_MENOS_6)
             {
-                gMensajeBatalla = B_MSG_STAT_WONT_DECREASE;
+                gResultadoCambioEstadistica = CAMBIO_ESTADISTICA_TOPE;
             }
             else
             {
-                gProtectStructs[battler].statFell = TRUE;                                // Eject pack, lash out
-                gBattleCommunication[MULTISTRING_CHOOSER] = (gBattlerTarget == battler); // B_MSG_ATTACKER_STAT_FELL or B_MSG_DEFENDER_STAT_FELL
+                gProtectStructs[battler].statFell = TRUE; // Eject pack, lash out
+                gResultadoCambioEstadistica = (gBattlerTarget == battler) ? CAMBIO_ESTADISTICA_DEFENSOR : CAMBIO_ESTADISTICA_ATACANTE;
+                // Lo consume IntentaHabilidadPorBajadaEstadistica al imprimir.
+                gBajadaEstadisticaEnObjetivo = (gBattlerTarget == battler);
             }
         }
     }
@@ -7600,7 +7733,7 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
 
         if (gBattleMons[battler].statStages[statId] == ESTADISTICA_MAS_6)
         {
-            gMensajeBatalla = B_MSG_STAT_WONT_INCREASE;
+            gResultadoCambioEstadistica = CAMBIO_ESTADISTICA_TOPE;
         }
         else
         {
@@ -7610,7 +7743,7 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
             else
                 statIncrease = statValue;
 
-            gBattleCommunication[MULTISTRING_CHOOSER] = (gBattlerTarget == battler);
+            gResultadoCambioEstadistica = (gBattlerTarget == battler) ? CAMBIO_ESTADISTICA_DEFENSOR : CAMBIO_ESTADISTICA_ATACANTE;
             gProtectStructs[battler].statRaised = TRUE;
         }
     }

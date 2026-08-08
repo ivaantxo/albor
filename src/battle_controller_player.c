@@ -52,8 +52,6 @@ static void PlayerHandlePaletteFade(u32 battler);
 static void PlayerHandleSuccessBallThrowAnim(u32 battler);
 static void PlayerHandlePause(u32 battler);
 static void PlayerHandleMoveAnimation(u32 battler);
-static void PlayerHandlePrintString(u32 battler);
-static void PlayerHandlePrintSelectionString(u32 battler);
 static void PlayerHandleChooseAction(u32 battler);
 static void PlayerHandleYesNoBox(u32 battler);
 static void PlayerHandleChoosePokemon(u32 battler);
@@ -107,8 +105,6 @@ static void (*const sPlayerBufferCommands[CONTROLLER_CMDS_COUNT])(u32 battler) =
     [CONTROLLER_BALLTHROWANIM]            = PlayerHandleBallThrowAnim,
     [CONTROLLER_PAUSE]                    = PlayerHandlePause,
     [CONTROLLER_MOVEANIMATION]            = PlayerHandleMoveAnimation,
-    [CONTROLLER_PRINTSTRING]              = PlayerHandlePrintString,
-    [CONTROLLER_PRINTSTRINGPLAYERONLY]    = PlayerHandlePrintSelectionString,
     [CONTROLLER_CHOOSEACTION]             = PlayerHandleChooseAction,
     [CONTROLLER_YESNOBOX]                 = PlayerHandleYesNoBox,
     [CONTROLLER_CHOOSEMOVE]               = PlayerHandleChooseMove,
@@ -1642,19 +1638,6 @@ static void PlayerHandlePause(u32 battler)
 static void PlayerHandleMoveAnimation(u32 battler)
 {
     BtlController_HandleMoveAnimation(battler);
-}
-
-static void PlayerHandlePrintString(u32 battler)
-{
-    BtlController_HandlePrintString(battler);
-}
-
-static void PlayerHandlePrintSelectionString(u32 battler)
-{
-    if (GetBattlerSide(battler) == LADO_JUGADOR)
-        PlayerHandlePrintString(battler);
-    else
-        PlayerBufferExecCompleted(battler);
 }
 
 static void HandleChooseActionAfterDma3(u32 battler)

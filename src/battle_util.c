@@ -476,26 +476,37 @@ bool32 WasUnableToUseMove(u32 battler)
         return FALSE;
 }
 
-void PrepareStringBattle(u16 stringId, u32 battler)
+// Defiant, Competitive y Cobardía suben una estadística cuando el rival te baja
+// otra. Antes esto vivía dentro de PrepareStringBattle y se disparaba mirando qué
+// cadena se iba a imprimir; ahora lo dispara el estado: gBajadaEstadisticaEnObjetivo,
+// que pone ChangeStatBuffs cuando la bajada recae sobre gBattlerTarget.
+//
+// Se llama al imprimir, no al aplicar la bajada, porque el mensaje original salía
+// después de la animación y aquí se hace BattleScriptPushCursor().
+//
+// Las ramas son excluyentes a propósito, como el if/else-if original: solo una
+// habilidad puede encadenar un script, o se pisarían el cursor.
+void IntentaHabilidadPorBajadaEstadistica(void)
 {
     u32 targetSide = GetBattlerSide(gBattlerTarget);
-    u16 battlerAbility = HabilidadCombatiente(battler);
     u16 targetAbility = HabilidadCombatiente(gBattlerTarget);
-    // Support for Contrary ability.
-    // If a move attempted to raise stat - print "won't increase".
-    // If a move attempted to lower stat - print "won't decrease".
-    if (stringId == STRINGID_STATSWONTDECREASE && !(gBattleScripting.statChanger & STAT_BUFF_NEGATIVE))
-        stringId = STRINGID_STATSWONTINCREASE;
-    else if (stringId == STRINGID_STATSWONTINCREASE && gBattleScripting.statChanger & STAT_BUFF_NEGATIVE)
-        stringId = STRINGID_STATSWONTDECREASE;
+    bool32 porIntimidacion = gBajadaEstadisticaPorIntimidacion;
 
-    else if (stringId == STRINGID_STATSWONTDECREASE2 && battlerAbility == ABILITY_RESPONDON)
-        stringId = STRINGID_STATSWONTINCREASE2;
-    else if (stringId == STRINGID_STATSWONTINCREASE2 && battlerAbility == ABILITY_RESPONDON)
-        stringId = STRINGID_STATSWONTDECREASE2;
+    gBajadaEstadisticaPorIntimidacion = FALSE;
 
-    // Check Defiant and Competitive stat raise whenever a stat is lowered.
-    else if ((stringId == STRINGID_DEFENDERSSTATFELL || stringId == STRINGID_PKMNCUTSATTACKWITH) && ((targetAbility == ABILITY_DEFIANT && CompareStat(gBattlerTarget, ESTADISTICA_ATAQUE, ESTADISTICA_MAS_6, COMPARACION_MENOR)) || (targetAbility == ABILITY_COMPETITIVE && CompareStat(gBattlerTarget, ESTADISTICA_ATAQUE_ESPECIAL, ESTADISTICA_MAS_6, COMPARACION_MENOR))) && gSpecialStatuses[gBattlerTarget].changedStatsBattlerId != ALIADO(gBattlerTarget) && ((gSpecialStatuses[gBattlerTarget].changedStatsBattlerId != gBattlerTarget) || gBattleScripting.stickyWebStatDrop == 1) && !(gBattleScripting.stickyWebStatDrop == 1 && gSideTimers[targetSide].stickyWebBattlerSide == targetSide)) // Sticky Web must have been set by the foe
+    if (!gBajadaEstadisticaEnObjetivo)
+        return;
+
+    gBajadaEstadisticaEnObjetivo = FALSE;
+
+    // La telaraña la tiene que haber puesto el rival.
+    if (gSpecialStatuses[gBattlerTarget].changedStatsBattlerId == ALIADO(gBattlerTarget)
+     || (gSpecialStatuses[gBattlerTarget].changedStatsBattlerId == gBattlerTarget && gBattleScripting.stickyWebStatDrop != 1)
+     || (gBattleScripting.stickyWebStatDrop == 1 && gSideTimers[targetSide].stickyWebBattlerSide == targetSide))
+        return;
+
+    if ((targetAbility == ABILITY_DEFIANT && CompareStat(gBattlerTarget, ESTADISTICA_ATAQUE, ESTADISTICA_MAS_6, COMPARACION_MENOR))
+     || (targetAbility == ABILITY_COMPETITIVE && CompareStat(gBattlerTarget, ESTADISTICA_ATAQUE_ESPECIAL, ESTADISTICA_MAS_6, COMPARACION_MENOR)))
     {
         gBattlerAbility = gBattlerTarget;
         BattleScriptPushCursor();
@@ -505,30 +516,49 @@ void PrepareStringBattle(u16 stringId, u32 battler)
         else
             SET_STATCHANGER(ESTADISTICA_ATAQUE_ESPECIAL, 2, FALSE);
     }
-    else if (stringId == STRINGID_PKMNCUTSATTACKWITH && targetAbility == ABILITY_RATTLED && CompareStat(gBattlerTarget, ESTADISTICA_VELOCIDAD, ESTADISTICA_MAS_6, COMPARACION_MENOR))
+    // Cobardía sube la Velocidad al recibir un ataque Bicho, Siniestro o Fantasma
+    // (eso lo resuelve AbilityBattleEffects, más abajo en este archivo) y al recibir
+    // Intimidación, que es esta rama. NO salta con cualquier bajada.
+    else if (porIntimidacion
+          && targetAbility == ABILITY_RATTLED
+          && CompareStat(gBattlerTarget, ESTADISTICA_VELOCIDAD, ESTADISTICA_MAS_6, COMPARACION_MENOR))
     {
         gBattlerAbility = gBattlerTarget;
         BattleScriptPushCursor();
         gBattlescriptCurrInstr = BattleScript_AbilityRaisesDefenderStat;
         SET_STATCHANGER(ESTADISTICA_VELOCIDAD, 1, FALSE);
     }
-
-    // Signal for the trainer slide-in system.
-    if ((stringId == STRINGID_ITDOESNTAFFECT || stringId == STRINGID_PKMNWASNTAFFECTED) && GetBattlerSide(gBattlerTarget) == LADO_OPONENTE && gCombate->trainerSlidePlayerMonUnaffectedMsgState != 2)
-        gCombate->trainerSlidePlayerMonUnaffectedMsgState = 1;
-
-    ControladorCombate_EscribeTexto(battler, BUFFER_A, stringId);
-    MarcaCombatienteOcupado(battler);
 }
 
+// Expande el texto y lo pinta en el momento. Antes esto daba un rodeo por el
+// buffer del controlador, guardando una copia de media docena de globales en un
+// struct para restaurarlas más tarde; eso solo hacía falta para el combate por
+// link, que ya no existe. Al expandir aquí, las globales todavía son las buenas.
+//
+// El llamante es quien debe comprobar HayAlgunCombatienteOcupado(): tragarse el
+// mensaje aquí en silencio escondería el error.
 void EscribeTextoCombate(u32 combatiente, const u8 *texto)
 {
-    if (HayAlgunCombatienteOcupado())
+    if (texto == NULL)
         return;
 
-    ControladorCombate_EscribeTexto(combatiente, BUFFER_A, texto);
+    gBattle_BG0_X = 0;
+    gBattle_BG0_Y = 0;
+    BattleStringExpandPlaceholdersToDisplayedString(texto);
+    BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
+
     MarcaCombatienteOcupado(combatiente);
+    gBattlerControllerFuncs[combatiente] = Controller_WaitForString;
     gMostrarMensajeBatalla = TRUE;
+}
+
+// Los textos de selección solo se le muestran al jugador.
+void EscribeTextoSeleccion(u32 combatiente, const u8 *texto)
+{
+    if (GetBattlerSide(combatiente) != LADO_JUGADOR)
+        return;
+
+    EscribeTextoCombate(combatiente, texto);
 }
 
 void ResetSentPokesToOpponentValue(void)
