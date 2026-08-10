@@ -5,7 +5,6 @@
 #include "constants/pokemon.h"
 #include "constants/battle_script_commands.h"
 #include "constants/battle_anim.h"
-#include "constants/battle_string_ids.h"
 #include "constants/abilities.h"
 #include "constants/hold_effects.h"
 #include "constants/moves.h"
@@ -61,7 +60,7 @@ BattleScript_MoveSwitchOpenPartyScreen:
 	getswitchedmondata BS_ATTACKER
 	switchindataupdate BS_ATTACKER
 	hpthresholds BS_ATTACKER
-	printstring STRINGID_SWITCHINMON
+	EscribeTextoEntraPokemon BS_ATTACKER
 	switchinanim BS_ATTACKER, TRUE
 	waitstate
 	switchineffects BS_ATTACKER
@@ -94,20 +93,20 @@ BattleScript_EffectCorrosiveGas::
 
 BattleScript_CorrosiveGasFail:
 	pause PAUSA_CORTA
-	orhalfword gMoveResultFlags, MOVE_RESULT_FAILED
+	ponresultadoataque RESULTADO_MOVIMIENTO_FALLIDO
 	EscribeTextoCombate "It had no effect on {B_DEF_NAME_WITH_PREFIX}!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
 BattleScript_StealthRockActivates::
 	setstealthrock BattleScript_MoveEnd
-	printfromtable gDmgHazardsStringIds
+	EscribeTextoCombate "Pointed stones float in the air around {B_DEF_TEAM2} team!"
 	waitmessage PAUSA_LARGA
 	return
 
 BattleScript_SpikesActivates::
 	trysetspikes BattleScript_MoveEnd
-	printfromtable gDmgHazardsStringIds
+	EscribeTextoCombate "¡Han caído púas en el campo de {B_DEF_TEAM2}!"
 	waitmessage PAUSA_LARGA
 	return
 
@@ -259,17 +258,16 @@ BattleScript_StrengthSapManipulateDmg:
 	jumpifability BS_TARGET, ABILITY_LIQUID_OOZE, BattleScript_StrengthSapLiquidOoze
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
-	printstring STRINGID_PKMNENERGYDRAINED
+	EscribeTextoCombate "¡{B_DEF_NAME_WITH_PREFIX} fue drenado!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
 BattleScript_StrengthSapLiquidOoze:
 	call BattleScript_AbilityPopUpTarget
 	manipulatedamage DMG_CHANGE_SIGN
-	setword gMensajeBatalla, B_MSG_ABSORB_OOZE
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
-	printfromtable gAbsorbDrainStringIds
+	EscribeTextoDrenaje
 	waitmessage PAUSA_LARGA
 	tryfaintmon BS_ATTACKER
 	goto BattleScript_MoveEnd
@@ -871,7 +869,7 @@ BattleScript_EffectStealthRock::
 	setstealthrock BattleScript_ButItFailed
 	attackanimation
 	waitanimation
-	printstring STRINGID_POINTEDSTONESFLOAT
+	EscribeTextoCombate "Pointed stones float in the air around {B_DEF_TEAM2} team!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -1100,7 +1098,7 @@ BattleScript_Hit_RetFromAtkAnimation::
 	return
 
 BattleScript_MakeMoveMissed::
-	orhalfword gMoveResultFlags, MOVE_RESULT_MISSED
+	ponresultadoataque RESULTADO_MOVIMIENTO_FALLO
 
 BattleScript_PrintMoveMissed::
 	attackstring
@@ -1136,13 +1134,13 @@ BattleScript_EffectSleep::
 BattleScript_AbilityProtectsDoesntAffectRet::
 	pause PAUSA_CORTA
 	call BattleScript_AbilityPopUp
-	printstring STRINGID_ITDOESNTAFFECT
+	EscribeTextoCombate "It doesn't affect {B_DEF_NAME_WITH_PREFIX}…"
 	waitmessage PAUSA_LARGA
 	return
 
 BattleScript_AbilityProtectsDoesntAffect:
 	call BattleScript_AbilityProtectsDoesntAffectRet
-	orhalfword gMoveResultFlags, MOVE_RESULT_FAILED
+	ponresultadoataque RESULTADO_MOVIMIENTO_FALLIDO
 	goto BattleScript_MoveEnd
 
 BattleScript_InsomniaProtects:
@@ -1150,28 +1148,28 @@ BattleScript_InsomniaProtects:
 	call BattleScript_AbilityPopUp
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} stayed awake using its {B_DEF_ABILITY}!"
 	waitmessage PAUSA_LARGA
-	orhalfword gMoveResultFlags, MOVE_RESULT_FAILED
+	ponresultadoataque RESULTADO_MOVIMIENTO_FALLIDO
 	goto BattleScript_MoveEnd
 
 BattleScript_AlreadyAsleep::
 	pause PAUSA_CORTA
 	EscribeTextoCombate "¡{B_DEF_NAME_WITH_PREFIX} ya está durmiendo!"
 	waitmessage PAUSA_LARGA
-	orhalfword gMoveResultFlags, MOVE_RESULT_FAILED
+	ponresultadoataque RESULTADO_MOVIMIENTO_FALLIDO
 	goto BattleScript_MoveEnd
 
 BattleScript_WasntAffected::
 	pause PAUSA_CORTA
-	printstring STRINGID_PKMNWASNTAFFECTED
+	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} wasn't affected!"
 	waitmessage PAUSA_LARGA
-	orhalfword gMoveResultFlags, MOVE_RESULT_FAILED
+	ponresultadoataque RESULTADO_MOVIMIENTO_FALLIDO
 	goto BattleScript_MoveEnd
 
 BattleScript_CantMakeAsleep::
 	pause PAUSA_CORTA
-	printfromtable gUproarAwakeStringIds
+	EscribeTextoAlborotoDesvela
 	waitmessage PAUSA_LARGA
-	orhalfword gMoveResultFlags, MOVE_RESULT_FAILED
+	ponresultadoataque RESULTADO_MOVIMIENTO_FALLIDO
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectAbsorb::
@@ -1180,19 +1178,17 @@ BattleScript_EffectAbsorb::
 	manipulatedamage DMG_BIG_ROOT
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
 	jumpifability BS_TARGET, ABILITY_LIQUID_OOZE, BattleScript_AbsorbLiquidOoze
-	setword gMensajeBatalla, B_MSG_ABSORB
 	goto BattleScript_AbsorbUpdateHp
 
 BattleScript_AbsorbLiquidOoze::
 	call BattleScript_AbilityPopUpTarget
 	manipulatedamage DMG_CHANGE_SIGN
-	setword gMensajeBatalla, B_MSG_ABSORB_OOZE
 
 BattleScript_AbsorbUpdateHp::
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	jumpifmovehadnoeffect BattleScript_AbsorbTryFainting
-	printfromtable gAbsorbDrainStringIds
+	EscribeTextoDrenaje
 	waitmessage PAUSA_LARGA
 
 BattleScript_AbsorbTryFainting::
@@ -1248,7 +1244,7 @@ BattleScript_DreamEaterWorked:
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	jumpifmovehadnoeffect BattleScript_DreamEaterTryFaintEnd
-	printstring STRINGID_PKMNENERGYDRAINED
+	EscribeTextoCombate "¡{B_DEF_NAME_WITH_PREFIX} fue drenado!"
 	waitmessage PAUSA_LARGA
 
 BattleScript_DreamEaterTryFaintEnd:
@@ -1487,7 +1483,7 @@ BattleScript_AlreadyPoisoned::
 BattleScript_ImmunityProtected::
 	copybyte gEffectBattler, gBattlerTarget
 	call BattleScript_AbilityPopUp
-	setword gMensajeBatalla, B_MSG_ABILITY_PREVENTS_MOVE_STATUS
+	MarcaPrevencionPorHabilidadPropia
 	call BattleScript_PSNPrevention
 	goto BattleScript_MoveEnd
 
@@ -1515,7 +1511,7 @@ BattleScript_EffectRest::
 	jumpifability BS_TARGET, ABILITY_VITAL_SPIRIT, BattleScript_InsomniaProtects
 	trysetrest BattleScript_AlreadyAtFullHp
 	pause PAUSA_CORTA
-	printfromtable gRestUsedStringIds
+	EscribeTextoDescanso
 	waitmessage PAUSA_LARGA
 	updatestatusicon BS_ATTACKER
 	waitstate
@@ -1523,7 +1519,7 @@ BattleScript_EffectRest::
 
 BattleScript_RestCantSleep::
 	pause PAUSA_LARGA
-	printfromtable gUproarAwakeStringIds
+	EscribeTextoAlborotoDesvela
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -1540,7 +1536,7 @@ BattleScript_EffectMist::
 	setmist
 	attackanimation
 	waitanimation
-	printfromtable gMistUsedStringIds
+	EscribeTextoNeblina
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -1641,7 +1637,7 @@ BattleScript_PrintReflectLightScreenSafeguardString::
 	waitanimation
 
 BattleScript_EffectAuroraVeilSuccess::
-	printfromtable gReflectLightScreenSafeguardStringIds
+	EscribeTextoBarrera
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -1677,7 +1673,6 @@ BattleScript_EffectParalyze::
 	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	jumpifsafeguard BattleScript_SafeguardProtected
-	bichalfword gMoveResultFlags, MOVE_RESULT_SUPER_EFFECTIVE | MOVE_RESULT_NOT_VERY_EFFECTIVE
 	attackanimation
 	waitanimation
 	seteffectprimary MOVE_EFFECT_PARALYSIS
@@ -1698,7 +1693,7 @@ BattleScript_AlreadyParalyzed:
 
 BattleScript_LimberProtected::
 	copybyte gEffectBattler, gBattlerTarget
-	setword gMensajeBatalla, B_MSG_ABILITY_PREVENTS_MOVE_STATUS
+	MarcaPrevencionPorHabilidadPropia
 	call BattleScript_PRLZPrevention
 	goto BattleScript_MoveEnd
 
@@ -1757,7 +1752,9 @@ BattleScript_EffectSubstitute::
 	waitstate
 	jumpifstatus2 BS_ATTACKER, STATUS2_SUBSTITUTE, BattleScript_AlreadyHasSubstitute
 	setsubstitute
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_SUBSTITUTE_FAILED, BattleScript_SubstituteString
+	jumpifstatus2 BS_ATTACKER, STATUS2_SUBSTITUTE, BattleScript_SubstituteMade
+	goto BattleScript_SubstituteString
+BattleScript_SubstituteMade:
 	orword gHitMarker, HITMARKER_PASSIVE_DAMAGE
 	attackanimation
 	waitanimation
@@ -1766,7 +1763,7 @@ BattleScript_EffectSubstitute::
 
 BattleScript_SubstituteString::
 	pause PAUSA_CORTA
-	printfromtable gSubstituteUsedStringIds
+	EscribeTextoSustituto
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -1803,7 +1800,7 @@ BattleScript_DoLeechSeed::
 	setseeded
 	attackanimation
 	waitanimation
-	printfromtable gLeechSeedStringIds
+	EscribeTextoDrenadoras
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -1875,15 +1872,15 @@ BattleScript_EffectHealBell::
 	waitstate
 	attackanimation
 	waitanimation
-	printfromtable gPartyStatusHealStringIds
+	EscribeTextoCuraEquipo
 	waitmessage PAUSA_LARGA
 	jumpifnotmove MOVE_HEAL_BELL, BattleScript_PartyHealEnd
-	jumpifword COMPARACION_BITS_DISTINTOS, gMensajeBatalla, B_MSG_BELL_SOUNDPROOF_ATTACKER, BattleScript_CheckHealBellMon2Unaffected
+	jumpifinsonorizadoatacante BattleScript_CheckHealBellMon2Unaffected
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} blocks {B_CURRENT_MOVE}!"
 	waitmessage PAUSA_LARGA
 
 BattleScript_CheckHealBellMon2Unaffected::
-	jumpifword COMPARACION_BITS_DISTINTOS, gMensajeBatalla, B_MSG_BELL_SOUNDPROOF_PARTNER, BattleScript_PartyHealEnd
+	jumpifinsonorizadoaliado BattleScript_PartyHealEnd
 	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY} blocks {B_CURRENT_MOVE}!"
 	waitmessage PAUSA_LARGA
 
@@ -1904,7 +1901,7 @@ BattleScript_EffectMeanLook::
 	attackanimation
 	waitanimation
 	seteffectprimary MOVE_EFFECT_PREVENT_ESCAPE
-	printstring STRINGID_TARGETCANTESCAPENOW
+	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} can't escape now!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -2008,7 +2005,7 @@ BattleScript_EffectSpikes::
 	ppreduce
 	attackanimation
 	waitanimation
-	printstring STRINGID_SPIKESSCATTERED
+	EscribeTextoCombate "¡Han caído púas en el campo de {B_DEF_TEAM2}!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -2054,7 +2051,7 @@ BattleScript_PerishSongBlocked::
 	goto BattleScript_PerishSongLoopIncrement
 
 BattleScript_PerishSongNotAffected:
-	printstring STRINGID_ITDOESNTAFFECT
+	EscribeTextoCombate "It doesn't affect {B_DEF_NAME_WITH_PREFIX}…"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_PerishSongLoopIncrement
 
@@ -2062,7 +2059,7 @@ BattleScript_EffectSandstorm::
 	attackcanceler
 	attackstring
 	ppreduce
-	setfieldweather ENUM_WEATHER_SANDSTORM
+	setfieldweather CLIMA_COMBATE_ARENA
 	goto BattleScript_MoveWeatherChange
 
 BattleScript_EffectRollout::
@@ -2150,7 +2147,7 @@ BattleScript_EffectAttract::
 	tryinfatuating BattleScript_ButItFailed
 	attackanimation
 	waitanimation
-	printstring STRINGID_PKMNFELLINLOVE
+	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} fell in love!"
 	waitmessage PAUSA_LARGA
 	call BattleScript_TryDestinyKnotAttacker
 	goto BattleScript_MoveEnd
@@ -2199,7 +2196,7 @@ BattleScript_EffectRelevo::
 	getswitchedmondata BS_ATTACKER
 	switchindataupdate BS_ATTACKER
 	hpthresholds BS_ATTACKER
-	printstring STRINGID_SWITCHINMON
+	EscribeTextoEntraPokemon BS_ATTACKER
 	switchinanim BS_ATTACKER, TRUE
 	waitstate
 	switchineffects BS_ATTACKER
@@ -2219,7 +2216,7 @@ BattleScript_EffectRainDance::
 	attackcanceler
 	attackstring
 	ppreduce
-	setfieldweather ENUM_WEATHER_RAIN
+	setfieldweather CLIMA_COMBATE_LLUVIA
 
 BattleScript_MoveWeatherChange::
 	attackanimation
@@ -2228,7 +2225,7 @@ BattleScript_MoveWeatherChange::
 	goto BattleScript_MoveEnd
 
 BattleScript_MoveWeatherChangeRet::
-	printfromtable gMoveWeatherChangeStringIds
+	EscribeTextoCambioClima
 	waitmessage PAUSA_LARGA
 	call BattleScript_ActivateWeatherAbilities
 	return
@@ -2237,7 +2234,7 @@ BattleScript_EffectSunnyDay::
 	attackcanceler
 	attackstring
 	ppreduce
-	setfieldweather ENUM_WEATHER_SUN
+	setfieldweather CLIMA_COMBATE_SOL
 	goto BattleScript_MoveWeatherChange
 
 BattleScript_EffectBellyDrum::
@@ -2301,7 +2298,7 @@ BattleScript_PresentHealTarget::
 
 BattleScript_AlreadyAtFullHp::
 	pause PAUSA_CORTA
-	printstring STRINGID_PKMNHPFULL
+	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s HP is full!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -2318,7 +2315,7 @@ BattleScript_FailedFromPpReduce::
 	ppreduce
 BattleScript_ButItFailed::
 	pause PAUSA_CORTA
-	orhalfword gMoveResultFlags, MOVE_RESULT_FAILED
+	ponresultadoataque RESULTADO_MOVIMIENTO_FALLIDO
 	resultmessage
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
@@ -2328,7 +2325,7 @@ BattleScript_RestoreAttackerButItFailed:
 
 BattleScript_NotAffected::
 	pause PAUSA_CORTA
-	orhalfword gMoveResultFlags, MOVE_RESULT_DOESNT_AFFECT_FOE
+	ponresultadoataque RESULTADO_MOVIMIENTO_NO_AFECTA
 	resultmessage
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
@@ -2336,7 +2333,7 @@ BattleScript_NotAffected::
 BattleScript_NotAffectedAbilityPopUp::
 	pause PAUSA_CORTA
 	call BattleScript_AbilityPopUpTarget
-	orhalfword gMoveResultFlags, MOVE_RESULT_DOESNT_AFFECT_FOE
+	ponresultadoataque RESULTADO_MOVIMIENTO_NO_AFECTA
 	resultmessage
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
@@ -2357,7 +2354,7 @@ BattleScript_EffectStockpile::
 	stockpile 0
 	attackanimation
 	waitanimation
-	printfromtable gStockpileUsedStringIds
+	EscribeTextoReserva
 	waitmessage PAUSA_LARGA
 	.if B_STOCKPILE_RAISES_DEFS < GEN_4
 	goto BattleScript_EffectStockpileEnd
@@ -2403,7 +2400,7 @@ BattleScript_StockpileStatChangeDown_Ret:
 
 BattleScript_EffectSpitUp::
 	attackcanceler
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, TEXTO_COMBATE_PROTECCION, BattleScript_SpitUpFailProtect
+	jumpifataquefallo BattleScript_SpitUpFailProtect
 	attackstring
 	ppreduce
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
@@ -2439,7 +2436,7 @@ BattleScript_EffectSwallow::
 
 BattleScript_SwallowFail::
 	pause PAUSA_CORTA
-	printfromtable gSwallowFailStringIds
+	EscribeTextoTragarFalla
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -2451,7 +2448,7 @@ BattleScript_EffectTorment::
 	settorment BattleScript_ButItFailed
 	attackanimation
 	waitanimation
-	printstring STRINGID_PKMNSUBJECTEDTOTORMENT
+	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} was subjected to torment!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -2498,7 +2495,7 @@ BattleScript_EffectWillOWisp::
 BattleScript_AbilityPreventsBurn::
 	call BattleScript_AbilityPopUp
 	copybyte gEffectBattler, gBattlerTarget
-	setword gMensajeBatalla, B_MSG_ABILITY_PREVENTS_MOVE_STATUS
+	MarcaPrevencionPorHabilidadPropia
 	call BattleScript_BRNPrevention
 	goto BattleScript_MoveEnd
 
@@ -2570,7 +2567,7 @@ BattleScript_EffectTrick::
 	waitanimation
 	EscribeTextoCombate "¡{B_ATK_NAME_WITH_PREFIX} cambió objetos con el rival!"
 	waitmessage PAUSA_LARGA
-	printfromtable gItemSwapStringIds
+	EscribeTextoCambioObjeto
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -2607,7 +2604,7 @@ BattleScript_EffectBrickBreak::
 	damagecalc
 	adjustdamage
 	jumpifbyte COMPARACION_IGUAL, sB_ANIM_TURN, 0, BattleScript_BrickBreakAnim
-	bichalfword gMoveResultFlags, MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE
+	ponresultadoataque RESULTADO_MOVIMIENTO_CONECTA
 
 BattleScript_BrickBreakAnim::
 	attackanimation
@@ -2697,8 +2694,8 @@ BattleScript_TickleEnd::
 
 BattleScript_CantLowerMultipleStats::
 	pause PAUSA_CORTA
-	orhalfword gMoveResultFlags, MOVE_RESULT_FAILED
-	printstring STRINGID_STATSWONTDECREASE2
+	ponresultadoataque RESULTADO_MOVIMIENTO_FALLIDO
+	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s stats won't go any lower!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -2792,8 +2789,8 @@ BattleScript_CalmMindEnd::
 
 BattleScript_CantRaiseMultipleStats::
 	pause PAUSA_CORTA
-	orhalfword gMoveResultFlags, MOVE_RESULT_FAILED
-	printstring STRINGID_STATSWONTINCREASE2
+	ponresultadoataque RESULTADO_MOVIMIENTO_FALLIDO
+	EscribeTextoCombate "¡Las estadísticas de {B_ATK_NAME_WITH_PREFIX} no pueden subir más!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -2873,7 +2870,7 @@ BattleScript_FaintedMonSendOutNew:
 	getswitchedmondata BS_FAINTED
 	switchindataupdate BS_FAINTED
 	hpthresholds BS_FAINTED
-	printstring STRINGID_SWITCHINMON
+	EscribeTextoEntraPokemon BS_FAINTED
 	hidepartystatussummary BS_FAINTED
 	switchinanim BS_FAINTED, FALSE
 	waitstate
@@ -2909,7 +2906,7 @@ BattleScript_HandleFaintedMonLoop::
 	getswitchedmondata BS_FAINTED
 	switchindataupdate BS_FAINTED
 	hpthresholds BS_FAINTED
-	printstring STRINGID_SWITCHINMON
+	EscribeTextoEntraPokemon BS_FAINTED
 	hidepartystatussummary BS_FAINTED
 	switchinanim BS_FAINTED, FALSE
 	waitstate
@@ -2970,13 +2967,13 @@ BattleScript_PrintCantRunFromTrainer::
 	end2
 
 BattleScript_PrintFullBox::
-	printselectionstring STRINGID_BOXISFULL
+	EscribeTextoSeleccion "La caja está llena. ¡No puedes capturar más!"
 	endselectionscript
 
 BattleScript_ActionSwitch::
 	hpthresholds2 BS_ATTACKER
 	saveattacker
-	printstring STRINGID_RETURNMON
+	EscribeTextoDevolverPokemon BS_ATTACKER
 	@SaltaSiTipoCombate COMBATE_ENTRENADOR, BattleScript_PursuitSwitchDmgSetMultihit
 	@setmultihit 1
 	goto BattleScript_PursuitSwitchDmgLoop
@@ -3003,7 +3000,7 @@ BattleScript_DoSwitchOut::
 	getswitchedmondata BS_ATTACKER
 	switchindataupdate BS_ATTACKER
 	hpthresholds BS_ATTACKER
-	printstring STRINGID_SWITCHINMON
+	EscribeTextoEntraPokemon BS_ATTACKER
 	hidepartystatussummary BS_ATTACKER
 	switchinanim BS_ATTACKER, FALSE
 	waitstate
@@ -3055,26 +3052,26 @@ BattleScript_TryLearnMoveLoop::
 
 BattleScript_AskToLearnMove::
 	buffermovetolearn
-	printstring "{B_BUFF1} puede aprender {B_BUFF2}, pero ya conoce cuatro. ¿Cuál quieres que olvide?"
+	EscribeTextoCombate "{B_BUFF1} puede aprender {B_BUFF2}, pero ya conoce cuatro. ¿Cuál quieres que olvide?"
 	waitstate
 	setbyte sLEARNMOVE_STATE, 0
 	yesnoboxlearnmove BattleScript_ForgotAndLearnedNewMove
-	printstring STRINGID_STOPLEARNINGMOVE
+	EscribeTextoCombate "{PAUSE 32}¿No quieres que aprenda {B_BUFF2}?"
 	waitstate
 	setbyte sLEARNMOVE_STATE, 0
 	yesnoboxstoplearningmove BattleScript_AskToLearnMove
-	printstring STRINGID_DIDNOTLEARNMOVE
+	EscribeTextoCombate "{B_BUFF1} no aprendió {B_BUFF2}."
 	goto BattleScript_TryLearnMoveLoop
 
 BattleScript_ForgotAndLearnedNewMove::
-	printstring STRINGID_123POOF
-	printstring STRINGID_PKMNFORGOTMOVE
-	printstring STRINGID_ANDELLIPSIS
+	EscribeTextoCombate "{PAUSE 32}1, {PAUSE 15}2, y{PAUSE 15}… {PAUSE 15}… {PAUSE 15}… {PAUSE 15}{PLAY_SE SE_BALL_BOUNCE_1}¡Guau!"
+	EscribeTextoCombate "{B_BUFF1} olvidó {B_BUFF2}."
+	EscribeTextoCombate "Y…"
 
 BattleScript_LearnedNewMove::
 	buffermovetolearn
 	fanfare MUS_LEVEL_UP
-	printstring STRINGID_PKMNLEARNEDMOVE
+	EscribeTextoCombate "{B_BUFF1} aprendió {B_BUFF2}!{WAIT_SE}"
 	waitmessage PAUSA_LARGA
 	updatechoicemoveonlvlup BS_ATTACKER
 	goto BattleScript_TryLearnMoveLoop
@@ -3083,9 +3080,11 @@ BattleScript_LearnMoveReturn::
 	return
 
 BattleScript_RainContinuesOrEnds::
-	printfromtable gRainContinuesStringIds
+	EscribeTextoLluvia
 	waitmessage PAUSA_LARGA
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, B_MSG_RAIN_STOPPED, BattleScript_RainContinuesOrEndsEnd
+	jumpifweatheraffected BS_ATTACKER, B_WEATHER_RAIN, BattleScript_RainContinues
+	goto BattleScript_RainContinuesOrEndsEnd
+BattleScript_RainContinues:
 	playanimation BS_ATTACKER, B_ANIM_RAIN_CONTINUES
 
 BattleScript_RainContinuesOrEndsEnd::
@@ -3093,14 +3092,14 @@ BattleScript_RainContinuesOrEndsEnd::
 	end2
 
 BattleScript_DamagingWeatherContinues::
-	printfromtable gSandStormHailSnowContinuesStringIds
+	EscribeTextoClimaContinua
 	waitmessage PAUSA_LARGA
 	playanimation_var BS_ATTACKER, sB_ANIM_ARG1
-	setbyte gBattleCommunication, 0
+	setbyte gEstadoMultiuso, 0
 	end2
 
 BattleScript_DamagingWeather::
-	printfromtable gSandStormHailDmgStringIds
+	EscribeTextoDanioClima
 	waitmessage PAUSA_LARGA
 	HazSonidoEfectividad
 	hitanimation BS_SCRIPTING
@@ -3116,20 +3115,20 @@ BattleScript_IceBodyHeal::
 	end2
 
 BattleScript_SandStormHailSnowEnds::
-	printfromtable gSandStormHailSnowEndStringIds
+	EscribeTextoClimaTermina
 	waitmessage PAUSA_LARGA
 	call BattleScript_ActivateWeatherAbilities
 	end2
 
 BattleScript_SunlightContinues::
-	printstring STRINGID_SUNLIGHTSTRONG
+	EscribeTextoCombate "El Sol brilla fuerte."
 	waitmessage PAUSA_LARGA
 	playanimation BS_ATTACKER, B_ANIM_SUN_CONTINUES
 	call BattleScript_ActivateWeatherAbilities
 	end2
 
 BattleScript_SunlightFaded::
-	printstring STRINGID_SUNLIGHTFADED
+	EscribeTextoCombate "El Sol se ha tapado."
 	waitmessage PAUSA_LARGA
 	call BattleScript_ActivateWeatherAbilities
 	end2
@@ -3150,7 +3149,7 @@ BattleScript_TailwindEnds::
 	end2
 
 ScriptCombate_EspacioRaroFin::
-	printstring "¡Ha desaparecido el espacio raro!"
+	EscribeTextoCombate "¡Ha desaparecido el espacio raro!"
 	waitmessage PAUSA_LARGA
 	end2
 
@@ -3173,20 +3172,18 @@ BattleScript_LeechSeedTurnDrain::
 	datahpupdate BS_ATTACKER
 	copyword gBattleMoveDamage, gHpDealt
 	jumpifability BS_ATTACKER, ABILITY_LIQUID_OOZE, BattleScript_LeechSeedTurnPrintLiquidOoze
-	setword gMensajeBatalla, B_MSG_LEECH_SEED_DRAIN
 	manipulatedamage DMG_BIG_ROOT
 	goto BattleScript_LeechSeedTurnPrintAndUpdateHp
 
 BattleScript_LeechSeedTurnPrintLiquidOoze::
 	copybyte gBattlerAbility, gBattlerAttacker
 	call BattleScript_AbilityPopUp
-	setword gMensajeBatalla, B_MSG_LEECH_SEED_OOZE
 
 BattleScript_LeechSeedTurnPrintAndUpdateHp::
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
 	healthbarupdate BS_TARGET
 	datahpupdate BS_TARGET
-	printfromtable gLeechSeedStringIds
+	EscribeTextoDrenadorasTurno
 	waitmessage PAUSA_LARGA
 	tryfaintmon BS_ATTACKER
 	tryfaintmon BS_TARGET
@@ -3239,13 +3236,13 @@ BattleScript_WeaknessPolicyAtk:
 	setstatchanger ESTADISTICA_ATAQUE, 2, FALSE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_WeaknessPolicySpAtk
 	jumpifestadisticaallimite BattleScript_WeaknessPolicySpAtk
-	printstring STRINGID_USINGITEMSTATOFPKMNROSE
+	EscribeTextoCombate "Using {B_LAST_ITEM}, the {B_BUFF1} of {B_SCR_ACTIVE_NAME_WITH_PREFIX} {B_BUFF2}"
 	waitmessage PAUSA_LARGA
 BattleScript_WeaknessPolicySpAtk:
 	setstatchanger ESTADISTICA_ATAQUE_ESPECIAL, 2, FALSE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_WeaknessPolicyRemoveItem
 	jumpifestadisticaallimite BattleScript_WeaknessPolicyRemoveItem
-	printstring STRINGID_USINGITEMSTATOFPKMNROSE
+	EscribeTextoCombate "Using {B_LAST_ITEM}, the {B_BUFF1} of {B_SCR_ACTIVE_NAME_WITH_PREFIX} {B_BUFF2}"
 	waitmessage PAUSA_LARGA
 BattleScript_WeaknessPolicyRemoveItem:
 	removeitem BS_TARGET
@@ -3261,7 +3258,7 @@ BattleScript_TargetItemStatRaise::
 	setgraphicalstatchangevalues
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 	waitanimation
-	printstring STRINGID_USINGITEMSTATOFPKMNROSE
+	EscribeTextoCombate "Using {B_LAST_ITEM}, the {B_BUFF1} of {B_SCR_ACTIVE_NAME_WITH_PREFIX} {B_BUFF2}"
 	waitmessage PAUSA_LARGA
 	removeitem BS_TARGET
 BattleScript_TargetItemStatRaiseRemoveItemRet:
@@ -3276,7 +3273,7 @@ BattleScript_AttackerItemStatRaise::
 	setgraphicalstatchangevalues
 	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 	waitanimation
-	printstring STRINGID_USINGITEMSTATOFPKMNROSE
+	EscribeTextoCombate "Using {B_LAST_ITEM}, the {B_BUFF1} of {B_SCR_ACTIVE_NAME_WITH_PREFIX} {B_BUFF2}"
 	waitmessage PAUSA_LARGA
 	removeitem BS_ATTACKER
 BattleScript_AttackerItemStatRaiseRet:
@@ -3296,21 +3293,21 @@ BattleScript_RageIsBuildingEnd:
 	return
 
 BattleScript_MoveUsedIsDisabled::
-	printstring STRINGID_PKMNMOVEISDISABLED
+	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX}'s {B_CURRENT_MOVE} is disabled!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
 BattleScript_SelectingDisabledMove::
-	printselectionstring STRINGID_PKMNMOVEISDISABLED
+	EscribeTextoSeleccion "{B_ATK_NAME_WITH_PREFIX}'s {B_CURRENT_MOVE} is disabled!"
 	endselectionscript
 
 BattleScript_DisabledNoMore::
-	printstring STRINGID_PKMNMOVEDISABLEDNOMORE
+	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} is disabled no more!"
 	waitmessage PAUSA_LARGA
 	end2
 
 BattleScript_EncoredNoMore::
-	printstring STRINGID_PKMNENCOREENDED
+	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX}'s ENCORE ended!"
 	waitmessage PAUSA_LARGA
 	end2
 
@@ -3384,7 +3381,7 @@ BattleScript_DmgHazardsOnFaintedBattlerFainted::
 	goto BattleScript_HandleFaintedMon
 
 BattleScript_PrintHurtByDmgHazards::
-	printfromtable gDmgHazardsStringIds
+	EscribeTextoDanioTrampa
 	waitmessage PAUSA_LARGA
 	return
 
@@ -3449,7 +3446,7 @@ BattleScript_PunzonActivates::
 	call BattleScript_AbilityPopUp
 	pause PAUSA_CORTA
 	settoxicspikes BattleScript_PunzonRet
-	printstring STRINGID_SPIKESSCATTERED
+	EscribeTextoCombate "¡Han caído púas en el campo de {B_DEF_TEAM2}!"
 	waitmessage PAUSA_LARGA
 
 BattleScript_PunzonRet:
@@ -3561,11 +3558,11 @@ BattleScript_StealthRockDefog::
 	return
 
 BattleScript_NoMovesLeft::
-	printselectionstring STRINGID_PKMNHASNOMOVESLEFT
+	EscribeTextoSeleccion "¡A {B_ATK_NAME_WITH_PREFIX} no le quedan PPs!"
 	endselectionscript
 
 BattleScript_SelectingMoveWithNoPP::
-	printselectionstring STRINGID_NOPPLEFT
+	EscribeTextoSeleccion "¡No te quedan PP!"
 	endselectionscript
 
 BattleScript_NoPPForMove::
@@ -3576,29 +3573,29 @@ BattleScript_NoPPForMove::
 	goto BattleScript_MoveEnd
 
 BattleScript_SelectingTormentedMove::
-	printselectionstring STRINGID_PKMNCANTUSEMOVETORMENT
+	EscribeTextoSeleccion "{B_ATK_NAME_WITH_PREFIX} can't use the same move in a row due to the Torment!"
 	endselectionscript
 
 BattleScript_MoveUsedIsTormented::
-	printstring STRINGID_PKMNCANTUSEMOVETORMENT
+	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} can't use the same move in a row due to the Torment!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
 BattleScript_SelectingNotAllowedMoveTaunt::
-	printselectionstring STRINGID_PKMNCANTUSEMOVETAUNT
+	EscribeTextoSeleccion "{B_ATK_NAME_WITH_PREFIX} can't use {B_CURRENT_MOVE} after the Taunt!"
 	endselectionscript
 
 BattleScript_MoveUsedIsTaunted::
-	printstring STRINGID_PKMNCANTUSEMOVETAUNT
+	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} can't use {B_CURRENT_MOVE} after the Taunt!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
 BattleScript_SelectingNotAllowedMoveThroatChop::
-	printselectionstring STRINGID_PKMNCANTUSEMOVETHROATCHOP
+	EscribeTextoSeleccion "{B_ATK_NAME_WITH_PREFIX} can't use {B_CURRENT_MOVE} due to Throat Chop!"
 	endselectionscript
 
 BattleScript_MoveUsedIsThroatChopPrevented::
-	printstring STRINGID_PKMNCANTUSEMOVETHROATCHOP
+	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} can't use {B_CURRENT_MOVE} due to Throat Chop!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -3608,11 +3605,11 @@ BattleScript_ThroatChopEndTurn::
 	end2
 
 BattleScript_SelectingNotAllowedBelch::
-	printselectionstring STRINGID_BELCHCANTSELECT
+	EscribeTextoSeleccion "Belch cannot be used!"
 	endselectionscript
 
 BattleScript_SelectingNotAllowedCurrentMove::
-	printselectionstring STRINGID_CURRENTMOVECANTSELECT
+	EscribeTextoSeleccion "{B_BUFF1} cannot be used!"
 	endselectionscript
 
 BattleScript_IngrainTurnHeal::
@@ -3709,12 +3706,12 @@ BattleScript_KnockedOff::
 	return
 
 BattleScript_MoveUsedIsImprisoned::
-	printstring STRINGID_PKMNCANTUSEMOVESEALED
+	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} can't use the sealed {B_CURRENT_MOVE}!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
 BattleScript_SelectingImprisonedMove::
-	printselectionstring STRINGID_PKMNCANTUSEMOVESEALED
+	EscribeTextoSeleccion "{B_ATK_NAME_WITH_PREFIX} can't use the sealed {B_CURRENT_MOVE}!"
 	endselectionscript
 
 BattleScript_MagicBounce::
@@ -3730,7 +3727,7 @@ BattleScript_MagicBounce::
 	return
 
 BattleScript_OneHitKOMsg::
-	printstring STRINGID_ONEHITKO
+	EscribeTextoCombate "It's a one-hit KO!"
 	waitmessage PAUSA_LARGA
 	return
 
@@ -3860,7 +3857,7 @@ BattleScript_CottonDownLoop:
 	goto BattleScript_CottonDownLoopIncrement
 
 BattleScript_CottonDownTargetSpeedCantGoLower:
-	printstring STRINGID_STATSWONTDECREASE
+	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} won't go lower!"
 	waitmessage PAUSA_LARGA
 
 BattleScript_CottonDownLoopIncrement:
@@ -3976,12 +3973,12 @@ BattleScript_PowderMoveNoEffectOvercoat:
 	call BattleScript_AbilityPopUp
 
 BattleScript_PowderMoveNoEffectPrint:
-	printstring STRINGID_ITDOESNTAFFECT
+	EscribeTextoCombate "It doesn't affect {B_DEF_NAME_WITH_PREFIX}…"
 
 BattleScript_PowderMoveNoEffectWaitMsg:
 	waitmessage PAUSA_LARGA
 	cancelmultiturnmoves BS_ATTACKER
-	sethword gMoveResultFlags, MOVE_RESULT_FAILED
+	ponresultadoataque RESULTADO_MOVIMIENTO_FALLIDO
 	goto BattleScript_MoveEnd
 
 BattleScript_MoveUsedFlinched::
@@ -3989,7 +3986,7 @@ BattleScript_MoveUsedFlinched::
 	waitmessage PAUSA_LARGA
 
 BattleScript_PrintUproarOverTurns::
-	printfromtable gUproarOverTurnStringIds
+	EscribeTextoAlboroto
 	waitmessage PAUSA_LARGA
 	end2
 
@@ -4003,7 +4000,7 @@ BattleScript_MoveUsedIsConfused::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} is confused!"
 	waitmessage PAUSA_LARGA
 	status2animation BS_ATTACKER, STATUS2_CONFUSION
-	jumpifword COMPARACION_IGUAL, gMensajeBatalla, FALSE, BattleScript_MoveUsedIsConfusedRet
+	jumpifword COMPARACION_BITS_DISTINTOS, gHitMarker, HITMARKER_UNABLE_TO_USE_MOVE, BattleScript_MoveUsedIsConfusedRet
 
 BattleScript_DoSelfConfusionDmg::
 	cancelmultiturnmoves BS_ATTACKER
@@ -4101,7 +4098,7 @@ ScriptCombate_SeCuroCongelacion::
 
 BattleScript_MoveEffectSleep::
 	statusanimation BS_EFFECT_BATTLER
-	printfromtable gFellAsleepStringIds
+	EscribeTextoEstadoAlterado MOVE_EFFECT_SLEEP
 	waitmessage PAUSA_LARGA
 
 BattleScript_UpdateEffectStatusIconRet::
@@ -4120,43 +4117,41 @@ BattleScript_TelekinesisEndTurn::
 	end2
 
 BattleScript_BufferEndTurn::
-	printstring STRINGID_BUFFERENDS
+	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1} wore off!"
 	waitmessage PAUSA_LARGA
 	end2
 
 BattleScript_ToxicOrb::
-	setword gMensajeBatalla, 0
 	copybyte gEffectBattler, gBattlerAttacker
 	call BattleScript_MoveEffectToxic
 	end2
 
 BattleScript_FlameOrb::
-	setword gMensajeBatalla, 0
 	copybyte gEffectBattler, gBattlerAttacker
 	call BattleScript_MoveEffectBurn
 	end2
 
 BattleScript_MoveEffectPoison::
 	statusanimation BS_EFFECT_BATTLER
-	printfromtable gGotPoisonedStringIds
+	EscribeTextoEstadoAlterado MOVE_EFFECT_POISON
 	waitmessage PAUSA_LARGA
 	goto BattleScript_UpdateEffectStatusIconRet
 
 BattleScript_MoveEffectBurn::
 	statusanimation BS_EFFECT_BATTLER
-	printfromtable gGotBurnedStringIds
+	EscribeTextoEstadoAlterado MOVE_EFFECT_BURN
 	waitmessage PAUSA_LARGA
 	goto BattleScript_UpdateEffectStatusIconRet
 
 ScriptCombate_EfectoMovimientoCongelacion::
 	statusanimation BS_EFFECT_BATTLER
-	printfromtable gGotFrozenStringIds
+	EscribeTextoEstadoAlterado EFECTO_MOVIMIENTO_CONGELACION
 	waitmessage PAUSA_LARGA
 	goto BattleScript_UpdateEffectStatusIconRet
 
 BattleScript_MoveEffectParalysis::
 	statusanimation BS_EFFECT_BATTLER
-	printfromtable gGotParalyzedStringIds
+	EscribeTextoEstadoAlterado MOVE_EFFECT_PARALYSIS
 	waitmessage PAUSA_LARGA
 	goto BattleScript_UpdateEffectStatusIconRet
 
@@ -4167,7 +4162,7 @@ BattleScript_MoveEffectUproar::
 
 BattleScript_MoveEffectToxic::
 	statusanimation BS_EFFECT_BATTLER
-	printstring STRINGID_PKMNBADLYPOISONED
+	EscribeTextoCombate "¡{B_EFF_NAME_WITH_PREFIX} está gravemente envenenado!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_UpdateEffectStatusIconRet
 
@@ -4177,13 +4172,13 @@ ScriptCombate_EfectoMovimientoDiaDePago::
 	return
 
 BattleScript_MoveEffectWrap::
-	printfromtable gWrappedStringIds
+	EscribeTextoAtrapado
 	waitmessage PAUSA_LARGA
 	return
 
 BattleScript_MoveEffectConfusion::
 	chosenstatus2animation BS_EFFECT_BATTLER, STATUS2_CONFUSION
-	printstring STRINGID_PKMNWASCONFUSED
+	EscribeTextoCombate "{B_EFF_NAME_WITH_PREFIX} became confused!"
 	waitmessage PAUSA_LARGA
 	return
 
@@ -4224,7 +4219,7 @@ BattleScript_AbilityRaisesDefenderStat::
 	statbuffchange 0, NULL
 	setgraphicalstatchangevalues
 	playanimation BS_ABILITY_BATTLER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	printstring STRINGID_DEFENDERSSTATROSE
+	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} {B_BUFF2}"
 	waitmessage PAUSA_LARGA
 	return
 
@@ -4280,7 +4275,7 @@ BattleScript_TraceActivates::
 ScriptCombate_ActivacionHabilidadCambioObjeto::
     call BattleScript_AbilityPopUp
     waitmessage PAUSA_LARGA
-    printfromtable gItemSwapStringIds 
+    EscribeTextoCambioObjeto 
     waitmessage PAUSA_LARGA
     end3
 
@@ -4367,7 +4362,7 @@ BattleScript_TryIntimidateHoldEffects:
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
 	copybyte sBATTLER, gBattlerTarget
 	setlastuseditem BS_TARGET
-	printstring STRINGID_USINGITEMSTATOFPKMNROSE
+	EscribeTextoCombate "Using {B_LAST_ITEM}, the {B_BUFF1} of {B_SCR_ACTIVE_NAME_WITH_PREFIX} {B_BUFF2}"
 	waitmessage PAUSA_LARGA
 	removeitem BS_TARGET
 
@@ -4420,7 +4415,7 @@ BattleScript_IntimidatePrevented:
 	goto BattleScript_IntimidateEffect_WaitString
 
 BattleScript_IntimidateWontDecrease:
-	printstring STRINGID_STATSWONTDECREASE
+	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} won't go lower!"
 	goto BattleScript_IntimidateEffect_WaitString
 
 BattleScript_IntimidateContrary:
@@ -4431,7 +4426,7 @@ BattleScript_IntimidateContrary:
 	goto BattleScript_IntimidateEffect_WaitString
 
 BattleScript_IntimidateContrary_WontIncrease:
-	printstring "{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} won't go any higher!"
+	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} won't go any higher!"
 	goto BattleScript_IntimidateEffect_WaitString
 
 BattleScript_IntimidateInReverse:
@@ -4473,7 +4468,7 @@ BattleScript_BadDreams_Dmg:
 	jumpifbyteequal sFIXED_ABILITY_POPUP, sZero, BattleScript_BadDreams_ShowPopUp
 
 BattleScript_BadDreams_DmgAfterPopUp:
-	printstring "{B_DEF_NAME_WITH_PREFIX} is tormented!"
+	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} is tormented!"
 	waitmessage PAUSA_LARGA
 	dmg_1_8_targethp
 	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
@@ -4531,7 +4526,7 @@ BattleScript_MoveHPDrain::
 	datahpupdate BS_TARGET
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} restored HP using its {B_DEF_ABILITY}!"
 	waitmessage PAUSA_LARGA
-	orhalfword gMoveResultFlags, MOVE_RESULT_DOESNT_AFFECT_FOE
+	ponresultadoataque RESULTADO_MOVIMIENTO_NO_AFECTA
 	goto BattleScript_MoveEnd
 
 BattleScript_MoveStatDrain_PPLoss::
@@ -4566,7 +4561,7 @@ BattleScript_MonMadeMoveUseless::
 	call BattleScript_AbilityPopUp
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} made {B_CURRENT_MOVE} useless!"
 	waitmessage PAUSA_LARGA
-	orhalfword gMoveResultFlags, MOVE_RESULT_DOESNT_AFFECT_FOE
+	ponresultadoataque RESULTADO_MOVIMIENTO_NO_AFECTA
 	goto BattleScript_MoveEnd
 
 BattleScript_FlashFireBoost_PPLoss::
@@ -4576,7 +4571,7 @@ BattleScript_FlashFireBoost::
 	attackstring
 	pause PAUSA_CORTA
 	call BattleScript_AbilityPopUp
-	printfromtable gFlashFireStringIds
+	EscribeTextoAbsorbeFuego
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -4602,19 +4597,19 @@ BattleScript_ItemNoStatLoss::
 
 BattleScript_BRNPrevention::
 	pause PAUSA_CORTA
-	printfromtable gBRNPreventionStringIds
+	EscribeTextoPrevencionEstado MOVE_EFFECT_BURN
 	waitmessage PAUSA_LARGA
 	return
 
 BattleScript_PRLZPrevention::
 	pause PAUSA_CORTA
-	printfromtable gPRLZPreventionStringIds
+	EscribeTextoPrevencionEstado MOVE_EFFECT_PARALYSIS
 	waitmessage PAUSA_LARGA
 	return
 
 BattleScript_PSNPrevention::
 	pause PAUSA_CORTA
-	printfromtable gPSNPreventionStringIds
+	EscribeTextoPrevencionEstado MOVE_EFFECT_POISON
 	waitmessage PAUSA_LARGA
 	return
 
@@ -4646,7 +4641,7 @@ BattleScript_SoundproofProtected::
 	call BattleScript_AbilityPopUp
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} blocks {B_CURRENT_MOVE}!"
 	waitmessage PAUSA_LARGA
-	orhalfword gMoveResultFlags, MOVE_RESULT_DOESNT_AFFECT_FOE
+	ponresultadoataque RESULTADO_MOVIMIENTO_NO_AFECTA
 	goto BattleScript_MoveEnd
 
 BattleScript_HabilidadProtegeEquipoDePrioridad::
@@ -4664,13 +4659,13 @@ BattleScript_AbilityNoSpecificStatLoss::
 	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY} prevents {B_BUFF1} loss!"
 	waitmessage PAUSA_LARGA
 	MarcaCambioEstadisticaSilencioso
-	orhalfword gMoveResultFlags, MOVE_RESULT_NO_EFFECT
+	ponresultadoataque RESULTADO_MOVIMIENTO_NO_AFECTA
 	return
 
 BattleScript_StickyHoldActivates::
 	pause PAUSA_CORTA
 	call BattleScript_AbilityPopUp
-	printstring STRINGID_PKMNSXMADEYINEFFECTIVE
+	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} made {B_CURRENT_MOVE} ineffective!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -4736,7 +4731,7 @@ BattleScript_WeakArmorActivates::
 	jumpifestadisticasincambio BattleScript_WeakArmorActivatesSpeed
 	pause PAUSA_MUY_CORTA
 	EscribeTextoCambioEstadistica
-	bichalfword gMoveResultFlags, MOVE_RESULT_MISSED @ Set by statbuffchange when stat can't be decreased
+	ponresultadoataque RESULTADO_MOVIMIENTO_CONECTA @ Set by statbuffchange when stat can't be decreased
 	waitmessage PAUSA_LARGA
 	goto BattleScript_WeakArmorActivatesSpeed
 
@@ -4757,7 +4752,7 @@ BattleScript_WeakArmorActivatesSpeed:
 	jumpifestadisticasincambio BattleScript_WeakArmorActivatesEnd
 	pause PAUSA_MUY_CORTA
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1} won't go any higher!"
-	bichalfword gMoveResultFlags, MOVE_RESULT_MISSED
+	ponresultadoataque RESULTADO_MOVIMIENTO_CONECTA
 	waitmessage PAUSA_LARGA
 	goto BattleScript_WeakArmorActivatesEnd
 
@@ -4826,13 +4821,13 @@ BattleScript_AttackerAbilityStatRaiseEnd3::
 
 BattleScript_SwitchInAbilityMsg::
 	call BattleScript_AbilityPopUp
-	printfromtable gSwitchInAbilityStringIds
+	EscribeTextoHabilidadEntrada
 	waitmessage PAUSA_LARGA
 	end3
 
 BattleScript_SwitchInAbilityMsgRet::
 	call BattleScript_AbilityPopUp
-	printfromtable gSwitchInAbilityStringIds
+	EscribeTextoHabilidadEntrada
 	waitmessage PAUSA_LARGA
 	return
 
@@ -4863,7 +4858,7 @@ BattleScript_RockyHelmetActivatesDmg:
 BattleScript_CuteCharmActivates::
 	call BattleScript_AbilityPopUp
 	status2animation BS_ATTACKER, STATUS2_INFATUATION
-	printstring STRINGID_PKMNSXINFATUATEDY
+	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} infatuated {B_ATK_NAME_WITH_PREFIX}!"
 	waitmessage PAUSA_LARGA
 	call BattleScript_TryDestinyKnotTarget
 	return
@@ -4903,7 +4898,7 @@ BattleScript_SynchronizeActivates::
 
 BattleScript_NoItemSteal::
 	call BattleScript_AbilityPopUpTarget
-	printstring STRINGID_PKMNSXMADEYINEFFECTIVE
+	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} made {B_CURRENT_MOVE} ineffective!"
 	waitmessage PAUSA_LARGA
 	return
 
@@ -5032,7 +5027,7 @@ BattleScript_BerryCureChosenStatusEnd2::
 
 BattleScript_BerryCureChosenStatusRet::
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT
-	printfromtable gBerryEffectStringIds
+	EscribeTextoBaya
 	waitmessage PAUSA_LARGA
 	updatestatusicon BS_SCRIPTING
 	removeitem BS_SCRIPTING
@@ -5040,7 +5035,7 @@ BattleScript_BerryCureChosenStatusRet::
 
 BattleScript_MentalHerbCureRet::
 	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT
-	printfromtable gMentalHerbCureStringIds
+	EscribeTextoHierbaMental
 	waitmessage PAUSA_LARGA
 	updatestatusicon BS_SCRIPTING
 	removeitem BS_SCRIPTING
@@ -5151,15 +5146,15 @@ BattleScript_ItemHealHP_Ret::
 	return
 
 BattleScript_SelectingNotAllowedMoveChoiceItem::
-	printselectionstring STRINGID_ITEMALLOWSONLYYMOVE
+	EscribeTextoSeleccion "{B_LAST_ITEM} allows the use of only {B_CURRENT_MOVE}!"
 	endselectionscript
 
 BattleScript_SelectingNotAllowedMoveGorillaTactics::
-	printselectionstring STRINGID_ABILITYALLOWSONLYMOVE
+	EscribeTextoSeleccion "{B_ATK_ABILITY} only allows the use of {B_CURRENT_MOVE}!"
 	endselectionscript
 
 BattleScript_SelectingNotAllowedMoveAssaultVest::
-	printselectionstring STRINGID_ASSAULTVESTDOESNTALLOW
+	EscribeTextoSeleccion "{B_LAST_ITEM} impide el uso de ataques de estado."
 	endselectionscript
 
 BattleScript_BerryConfuseHealEnd2::
@@ -5206,7 +5201,6 @@ BattleScript_BerryStatRaiseEnd2_Anim:
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_BerryStatRaiseEnd2_End
 	setgraphicalstatchangevalues
 	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT, sB_ANIM_ARG1
-	setword gMensajeBatalla, B_MSG_STAT_ROSE_ITEM
 	call BattleScript_StatUp
 	removeitem BS_ATTACKER
 
@@ -5223,7 +5217,6 @@ BattleScript_BerryStatRaiseRet_Anim:
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_BerryStatRaiseRet_End
 	setgraphicalstatchangevalues
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT, sB_ANIM_ARG1
-	setword gMensajeBatalla, B_MSG_STAT_ROSE_ITEM
 	call BattleScript_StatUp
 	removeitem BS_SCRIPTING
 
@@ -5231,11 +5224,11 @@ BattleScript_BerryStatRaiseRet_End:
 	return
 
 BattleScript_ActionSelectionItemsCantBeUsed::
-	printselectionstring STRINGID_ITEMSCANTBEUSEDNOW
+	EscribeTextoSeleccion "Items can't be used now.{PAUSE 64}"
 	endselectionscript
 
 BattleScript_AskIfWantsToForfeitMatch::
-	printselectionstring STRINGID_QUESTIONFORFEITMATCH
+	EscribeTextoSeleccion "Would you like to forfeit the match and quit now?"
 	forfeityesnobox BS_ATTACKER
 	endselectionscript
 
@@ -5363,9 +5356,9 @@ BattleScript_DarkTypePreventsPrankster::
 	attackstring
 	ppreduce
 	pause PAUSA_CORTA
-	printstring STRINGID_ITDOESNTAFFECT
+	EscribeTextoCombate "It doesn't affect {B_DEF_NAME_WITH_PREFIX}…"
 	waitmessage PAUSA_LARGA
-	orhalfword gMoveResultFlags, MOVE_RESULT_NO_EFFECT
+	ponresultadoataque RESULTADO_MOVIMIENTO_NO_AFECTA
 	goto BattleScript_MoveEnd
 
 BattleScript_WindRiderActivatesMoveEnd::
@@ -5373,7 +5366,7 @@ BattleScript_WindRiderActivatesMoveEnd::
 	ppreduce
 	pause PAUSA_CORTA
 	call BattleScript_AbilityPopUpTarget
-	orhalfword gMoveResultFlags, MOVE_RESULT_NO_EFFECT
+	ponresultadoataque RESULTADO_MOVIMIENTO_NO_AFECTA
 	modifybattlerstatstage BS_TARGET, ESTADISTICA_ATAQUE, INCREASE, 1, BattleScript_WindRiderActivatesMoveEnd_End, ANIM_ON
 
 BattleScript_WindRiderActivatesMoveEnd_End:
@@ -5384,7 +5377,7 @@ ScriptCombate_ActivacionExuvia::
 	ppreduce
 	call BattleScript_AbilityPopUpTarget
 	pause PAUSA_CORTA
-	printstring STRINGID_ITDOESNTAFFECT
+	EscribeTextoCombate "It doesn't affect {B_DEF_NAME_WITH_PREFIX}…"
 	waitmessage PAUSA_MEDIA
 	goto BattleScript_MoveEnd
 
@@ -5432,7 +5425,7 @@ BattleScript_EffectSnow::
 	attackcanceler
 	attackstring
 	ppreduce
-	setfieldweather ENUM_WEATHER_SNOW
+	setfieldweather CLIMA_COMBATE_NIEVE
 	goto BattleScript_MoveWeatherChange
 
 ScriptBatalla_LanzaPokeball::
@@ -5451,13 +5444,13 @@ BattleScript_TryPrintCaughtMonInfo:
 	trysetcaughtmondexflags BattleScript_TryNicknameCaughtMon
 	EscribeTextoCombate "Los datos de {B_DEF_NAME} se añadieron a la Pokédex."
 	waitstate
-	setbyte gBattleCommunication, 0
+	setbyte gEstadoMultiuso, 0
 	displaydexinfo
 
 BattleScript_TryNicknameCaughtMon::
 	EscribeTextoCombate "¿Quieres ponerle un mote a {B_DEF_NAME}?"
 	waitstate
-	setbyte gBattleCommunication, 0
+	setbyte gEstadoMultiuso, 0
 	trygivecaughtmonnick BattleScript_GiveCaughtMonEnd
 	givecaughtmon
 	EscribeTextoCombate "Se mandó a {VAR_TEXTO_2} a\n{VAR_TEXTO_1} del PC."
@@ -5472,7 +5465,7 @@ BattleScript_SuccessBallThrowEnd::
 	finishturn
 
 BattleScript_ShakeBallThrow::
-	printfromtable gBallEscapeStringIds
+	EscribeTextoBallEscapa
 	waitmessage PAUSA_LARGA
 	finishaction
 

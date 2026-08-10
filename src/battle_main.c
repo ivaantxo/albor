@@ -49,7 +49,6 @@
 #include "constants/abilities.h"
 #include "constants/battle_ai.h"
 #include "constants/battle_move_effects.h"
-#include "constants/battle_string_ids.h"
 #include "constants/hold_effects.h"
 #include "constants/items.h"
 #include "constants/moves.h"
@@ -158,10 +157,24 @@ EWRAM_DATA struct DisableStruct gDisableStructs[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u16 gPauseCounterBattle = 0;
 EWRAM_DATA u16 gPaydayMoney = 0;
 EWRAM_DATA u32 gEstadoAccion[NUMERO_COMBATIENTES] = {0};
-EWRAM_DATA u32 gMensajeBatalla = 0;
+EWRAM_DATA u8 gEstadoMultiuso = 0;
+EWRAM_DATA u8 gElegidorTextoMultiple = 0;
 EWRAM_DATA enum ResultadoCambioEstadistica gResultadoCambioEstadistica = CAMBIO_ESTADISTICA_ATACANTE;
 EWRAM_DATA bool32 gBajadaEstadisticaEnObjetivo = FALSE;
 EWRAM_DATA bool32 gBajadaEstadisticaPorIntimidacion = FALSE;
+EWRAM_DATA bool32 gEstadoAlteradoPorHabilidad = FALSE;
+EWRAM_DATA enum ResultadoPrevencionEstado gResultadoPrevencionEstado = PREVENCION_POR_HABILIDAD_PROPIA;
+EWRAM_DATA bool32 gDescansoCuroEstado = FALSE;
+EWRAM_DATA bool32 gAbsorbeFuegoSubioPotencia = FALSE;
+EWRAM_DATA bool32 gBayaNormalizoEstado = FALSE;
+EWRAM_DATA bool32 gCuraEquipoPorAroma = FALSE;
+EWRAM_DATA bool32 gDanioPorRocasTrampa = FALSE;
+EWRAM_DATA u32 gSacudidasBall = 0;
+EWRAM_DATA u32 gInsonorizadoCascabel = 0;
+EWRAM_DATA enum ResultadoDrenadoras gResultadoDrenadoras = DRENADORAS_PUESTAS;
+EWRAM_DATA enum ResultadoCambioObjeto gResultadoCambioObjeto = OBJETO_TOMADO;
+EWRAM_DATA enum CuraHierbaMental gCuraHierbaMental = HIERBA_ENAMORAMIENTO;
+EWRAM_DATA enum TipoBarrera gTipoBarreraPuesta = BARRERA_FALLO;
 EWRAM_DATA u32 gPosicionCursorSiNo = CURSOR_SI;
 EWRAM_DATA bool32 gMostrarMensajeBatalla = FALSE;
 EWRAM_DATA u8 gBattleOutcome = 0;
@@ -423,7 +436,7 @@ static void CB2_InitBattleInternal(void)
         AdjustFriendship(&gPlayerParty[i], FRIENDSHIP_EVENT_LEAGUE_BATTLE);
     }
 
-    gBattleCommunication[MULTIUSE_STATE] = 0;
+    gEstadoMultiuso = 0;
 }
 
 #define BUFFER_PARTY_VS_SCREEN_STATUS(party, flags, i)                    \
@@ -541,7 +554,7 @@ void CustomTrainerPartyAssignMoves(struct Pokemon *mon, const struct TrainerMon 
 
     for (j = 0; j < MAXIMO_MOVIMIENTOS_POKEMON; ++j)
     {
-        if (partyEntry->moves[j] != MOVE_NONE)
+        if (partyEntry->movimientos[j] != MOVE_NONE)
             noMoveSet = FALSE;
     }
     if (noMoveSet)
@@ -1064,6 +1077,8 @@ static void ClearSetBScriptingStruct(void)
 
 static void BattleStartClearSetData(void)
 {
+    u32 i;
+
     TurnValuesCleanUp(FALSE);
     SpecialStatusesClear();
 
@@ -1087,7 +1102,7 @@ static void BattleStartClearSetData(void)
         gCombate->changedItems[combatiente] = 0;
         gCombate->AI_monToSwitchIntoId[combatiente] = PARTY_SIZE;
         gCombate->overwrittenAbilities[combatiente] = ABILITY_NONE;
-        DesmarcaCombatienteOcupado[combatiente];
+        DesmarcaCombatienteOcupado(combatiente);
     }
 
     gLastUsedMove = 0;
@@ -1099,7 +1114,7 @@ static void BattleStartClearSetData(void)
     gBattlerTarget = 0;
     gEffectBattler = 0;
     gBattlerAbility = 0;
-    gCombate->clima.modo == CLIMA_COMBATE_NINGUNO;
+    gCombate->clima.modo = CLIMA_COMBATE_NINGUNO;
     gHitMarker = 0;
     gCombate->contadorMultigolpes = 0;
     gBattleOutcome = 0;
@@ -1107,8 +1122,8 @@ static void BattleStartClearSetData(void)
     gBattleResources->battleScriptsStack->size = 0;
     gBattleResources->battleCallbackStack->size = 0;
 
-    for (i = 0; i < BATTLE_COMMUNICATION_ENTRIES_COUNT; i++)
-        gBattleCommunication[i] = 0;
+    gEstadoMultiuso = 0;
+    gElegidorTextoMultiple = 0;
 
     gPauseCounterBattle = 0;
     gBattleMoveDamage = 0;
@@ -1135,6 +1150,14 @@ static void BattleStartClearSetData(void)
     gSelectedMonPartyId = PARTY_SIZE; // Revival Blessing
     gCategoryIconSpriteId = 0xFF;
 }
+
+enum EstadosAccionTurno
+{
+    ANTES_ACCION,
+    PROCESA_ACCION,
+    ESPERA_ACCION,
+    EJECUTA_ACCION,
+};
 
 static void ReseteaAcciones(u32 combatiente)
 {
@@ -1225,7 +1248,7 @@ void SwitchInClearSetData(u32 battler)
     gCurrentMove = MOVE_NONE;
 
     // Reset damage to prevent things like red card activating if the switched-in mon is holding it
-    gCombate[battler].danioRecibido = 0;
+    gCombate->danioRecibido[battler] = 0;
 
     // Reset Eject Button / Eject Pack switch detection
     AI_DATA->ejectButtonSwitch = FALSE;
@@ -1323,9 +1346,11 @@ static void DoBattleIntro(void)
     switch (gCombate->estadoIntro)
     {
     case ESTADO_INTRO_BATALLA_OBTEN_DATOS_POKEMON:
-        battler = gPosicionCursorSiNo // REVISAR;
+        for (battler = 0; battler < gBattlersCount; battler++)
+        {
             BtlController_EmitGetMonData(battler, BUFFER_A, REQUEST_ALL_BATTLE, 0);
-        MarcaCombatienteOcupado(battler);
+            MarcaCombatienteOcupado(battler);
+        }
         gCombate->estadoIntro++;
         break;
     case ESTADO_INTRO_BATALLA_PREPARA_DESLIZAMIENTO_FONDO:
@@ -1334,7 +1359,7 @@ static void DoBattleIntro(void)
             battler = 0;
             BtlController_EmitIntroSlide(battler, BUFFER_A, gBattleTerrain);
             MarcaCombatienteOcupado(battler);
-            gBattleCommunication[MULTIUSE_STATE] = 0;
+            gEstadoMultiuso = 0;
             gPosicionCursorSiNo = 0; // REVISAR
             gCombate->estadoIntro++;
         }
@@ -1434,14 +1459,14 @@ static void DoBattleIntro(void)
             gCombate->estadoIntro++;
         break;
     case ESTADO_INTRO_BATALLA_TEXTO_INICIAL:
-        if (!EstaCombatienteOcupado[JUGADOR_IZQUIERDA])
+        if (!EstaCombatienteOcupado(JUGADOR_IZQUIERDA))
         {
             EscribeTextoIntroCombate();
             gCombate->estadoIntro++;
         }
         break;
     case ESTADO_INTRO_BATALLA_ESPERA_TEXTO_INICIAL:
-        if (!EstaCombatienteOcupado[JUGADOR_IZQUIERDA])
+        if (!EstaCombatienteOcupado(JUGADOR_IZQUIERDA))
         {
             if (EsCombateContraEntrenador(gCombate->tipoCombate))
             {
@@ -1466,7 +1491,7 @@ static void DoBattleIntro(void)
         gCombate->estadoIntro++;
         break;
     case ESTADO_INTRO_BATALLA_ESPERA_TEXTO_COMBATE_SALVAJE:
-        if (!EstaCombatienteOcupado[JUGADOR_IZQUIERDA])
+        if (!EstaCombatienteOcupado(JUGADOR_IZQUIERDA))
             gCombate->estadoIntro++;
         break;
     case ESTADO_INTRO_BATALLA_TEXTO_COMBATE_ENTRADA_JUGADOR:
@@ -1576,8 +1601,8 @@ static void TryDoEventsBeforeFirstTurn(void)
         gBattleMainFunc = GestionaEstadoSeleccionAccionesTurno;
         ResetSentPokesToOpponentValue();
 
-        for (i = 0; i < BATTLE_COMMUNICATION_ENTRIES_COUNT; i++)
-            gBattleCommunication[i] = 0;
+        gEstadoMultiuso = 0;
+        gElegidorTextoMultiple = 0;
 
         for (i = 0; i < gBattlersCount; i++)
         {
@@ -1586,7 +1611,7 @@ static void TryDoEventsBeforeFirstTurn(void)
         }
 
         gCombate->efectoFinTurno.individual = ENDTURN_WEATHER_DAMAGE;
-        gCombate->gCombate->efectoFinTurno.indiceCombatiente = JUGADOR_IZQUIERDA;
+        gCombate->efectoFinTurno.indiceCombatiente = JUGADOR_IZQUIERDA;
         gCombate->perishSongState = 0;
         gCombate->perishSongBattlerId = 0;
         gBattleScripting.moveendState = 0;
@@ -1610,8 +1635,8 @@ static void HandleEndTurn_ContinueBattle(void)
     if (!HayAlgunCombatienteOcupado())
     {
         gBattleMainFunc = BattleTurnPassed;
-        for (i = 0; i < BATTLE_COMMUNICATION_ENTRIES_COUNT; i++)
-            gBattleCommunication[i] = 0;
+        gEstadoMultiuso = 0;
+        gElegidorTextoMultiple = 0;
         for (i = 0; i < gBattlersCount; i++)
         {
             gBattleMons[i].status2 &= ~STATUS2_FLINCHED;
@@ -1619,7 +1644,7 @@ static void HandleEndTurn_ContinueBattle(void)
                 CancelMultiTurnMoves(i);
         }
         gCombate->efectoFinTurno.individual = ENDTURN_WEATHER_DAMAGE;
-        gCombate->gCombate->efectoFinTurno.indiceCombatiente = JUGADOR_IZQUIERDA;
+        gCombate->efectoFinTurno.indiceCombatiente = JUGADOR_IZQUIERDA;
         gCombate->perishSongState = 0;
         gCombate->perishSongBattlerId = 0;
         gCombate->efectoFinTurno.campo = FIN_TURNO_ORDEN;
@@ -1658,8 +1683,8 @@ void BattleTurnPassed(void)
     gBattleMoveDamage = 0;
     gCombate->resultadoMovimiento = MOVIMIENTO_NEUTRO;
 
-    for (i = 0; i < 5; i++)
-        gBattleCommunication[i] = 0;
+    gEstadoMultiuso = 0;
+    gElegidorTextoMultiple = 0;
 
     if (gBattleOutcome != 0)
     {
@@ -1756,14 +1781,6 @@ void SwitchPartyOrder(u32 battler)
     }
 }
 
-enum EstadosAccionTurno
-{
-    ANTES_ACCION,
-    PROCESA_ACCION,
-    ESPERA_ACCION,
-    EJECUTA_ACCION,
-};
-
 static void HazCalculosIA(u32 combatiente)
 {
     if (!CombatienteEsIA(combatiente))
@@ -1789,6 +1806,8 @@ static void HazCalculosIA(u32 combatiente)
 
 static void GestionaEstadoSeleccionAccionesTurno(void)
 {
+    struct DatosMovimiento moveInfo;
+
     for (u32 combatiente = JUGADOR_IZQUIERDA; combatiente < gBattlersCount; combatiente++)
     {
         switch (gEstadoAccion[combatiente])
@@ -1846,7 +1865,7 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                     {
                         for (u32 indiceMovimiento = 0; indiceMovimiento < MAXIMO_MOVIMIENTOS_POKEMON; indiceMovimiento++)
                         {
-                            moveInfo.movimiento[indiceMovimiento] = gBattleMons[combatiente].moves[indiceMovimiento];
+                            moveInfo.movimiento[indiceMovimiento] = gBattleMons[combatiente].movimientos[indiceMovimiento];
                             moveInfo.pp[indiceMovimiento] = gBattleMons[combatiente].pp[indiceMovimiento];
                         }
 
@@ -1956,7 +1975,7 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                         {
                             // Get the chosen move position (and thus the chosen move) and target from the returned buffer.
                             gCombate->chosenMovePositions[combatiente] = gBattleResources->bufferB[combatiente][2];
-                            gMovimientoElegido[combatiente] = gBattleMons[combatiente].moves[gCombate->chosenMovePositions[combatiente]];
+                            gMovimientoElegido[combatiente] = gBattleMons[combatiente].movimientos[gCombate->chosenMovePositions[combatiente]];
                             gCombate->moveTarget[combatiente] = gBattleResources->bufferB[combatiente][3];
                             gEstadoAccion[combatiente] = EJECUTA_ACCION;
                         }
@@ -2029,7 +2048,7 @@ void SwapTurnOrder(u8 id1, u8 id2)
 u32 GetBattlerTotalSpeedStatArgs(u32 battler, u32 ability, u32 holdEffect)
 {
     u32 velocidad = gBattleMons[battler].speed;
-    uq4_12_t modificador = NEUTRO;
+    uq4_12_t modificador = MOVIMIENTO_NEUTRO;
     enum ClimasCombate climaCombate = ObtenClimaCombate();
 
     if ((ability == ABILITY_SWIFT_SWIM || ability == ABILITY_ALAS_HIDROFOBAS) && EsClimaCombateLluvia(climaCombate))
@@ -2161,17 +2180,17 @@ s32 GetWhichBattlerFasterOrTies(u32 battler1, u32 battler2, bool32 ignoreChosenM
     {
         if (gAccionElegida[battler1] == B_ACTION_USE_MOVE)
         {
-            movimiento1 = gBattleMons[battler1].moves[gCombate->chosenMovePositions[battler1]];
+            movimiento1 = gBattleMons[battler1].movimientos[gCombate->chosenMovePositions[battler1]];
             prioridad1 = PrioridadMovimientoMasHabilidad(battler1, movimiento1);
         }
         if (gAccionElegida[battler2] == B_ACTION_USE_MOVE)
         {
-            movimiento2 = gBattleMons[battler2].moves[gCombate->chosenMovePositions[battler2]];
+            movimiento2 = gBattleMons[battler2].movimientos[gCombate->chosenMovePositions[battler2]];
             prioridad2 = PrioridadMovimientoMasHabilidad(battler2, movimiento2);
         }
     }
 
-    return GetWhichBattlerFasterArgs(battler1, battler2, ignoreChosenMoves, HabilidadCombatiente(battler1), HabilidadCombatiente(battler2), 0, 0, prioridad1, prioridad2);
+    return GetWhichBattlerFasterArgs(battler1, battler2, ignoreChosenMoves, HabilidadCombatiente(battler1), HabilidadCombatiente(battler2), 0, 0, speedBattler1, speedBattler2, prioridad1, prioridad2);
 }
 
 // 24 == NUMERO_COMBATIENTES!.
@@ -2617,7 +2636,7 @@ u32 TipoMovimiento(enum Movimientos movimiento, u32 combatiente)
     return tipoMovimiento;
 }
 
-static void IntentaActivarGema(u32 combatiente, enum Movimientos movimiento)
+void IntentaActivarGema(u32 combatiente, enum Movimientos movimiento)
 {
     u32 objetoEquipado = gBattleMons[combatiente].item;
     u32 efectoObjeto = GetBattlerHoldEffect(combatiente, TRUE);

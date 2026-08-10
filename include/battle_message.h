@@ -139,13 +139,15 @@
     textVar[8] = B_BUFF_EOS;                                    \
 }
 
-#define PREPARE_STRING_BUFFER(textVar, stringId)                \
+#define PREPARE_STRING_BUFFER(textVar, texto)                   \
 {                                                               \
     textVar[0] = B_BUFF_PLACEHOLDER_BEGIN;                      \
     textVar[1] = B_BUFF_STRING;                                 \
-    textVar[2] = stringId & 0xFF;                               \
-    textVar[3] = (stringId & 0xFF00) >> 8;                      \
-    textVar[4] = B_BUFF_EOS;                                    \
+    textVar[2] = ((u32)(texto)) & 0xFF;                         \
+    textVar[3] = (((u32)(texto)) >> 8) & 0xFF;                  \
+    textVar[4] = (((u32)(texto)) >> 16) & 0xFF;                 \
+    textVar[5] = (((u32)(texto)) >> 24) & 0xFF;                 \
+    textVar[6] = B_BUFF_EOS;                                    \
 }
 
 #define PREPARE_MOVE_BUFFER(textVar, move)                      \
@@ -226,7 +228,6 @@ u8 GetCurrentPpToMaxPpState(u8 currentPp, u8 maxPp);
 bool32 ShouldDoTrainerSlide(u32 battler, u32 which);
 void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst);
 
-extern const u8 *const gBattleStringsTable[];
 extern const u8 *const gStatNamesTable[];
 extern const u8 *const gPokeblockWasTooXStringTable[];
 
@@ -243,6 +244,5 @@ extern const u8 gText_Ice[];
 extern const u8 gText_Confusion[];
 extern const u8 gText_Love[];
 
-extern const u16 gStatUpStringIds[];
 
 #endif // GUARD_BATTLE_MESSAGE_H

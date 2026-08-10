@@ -6,6 +6,8 @@
 #include "constants/items.h"
 #include "constants/region_map_sections.h"
 #include "constants/map_groups.h"
+#include "constants/moves.h"
+#include "constants/battle.h"
 
 #define GET_BASE_SPECIES_ID(speciesId) (GetFormSpeciesId(speciesId, 0))
 #define FORM_SPECIES_END (0xffff)
@@ -255,7 +257,7 @@ enum PrioridadMovimientos
     PRIORIDAD_MOVIMIENTO_MUY_ALTA,
 };
 
-struct Movimientos
+struct InfoMovimiento
 {
     const u8 *name;
     const u8 *description;
@@ -384,7 +386,7 @@ extern struct Pokemon gEnemyParty[PARTY_SIZE];
 extern struct SpriteTemplate gMultiuseSpriteTemplate;
 extern u16 gFollowerSteps;
 
-extern const struct Movimientos gMovimientos[];
+extern const struct InfoMovimiento gMovimientos[];
 extern const struct SpeciesInfo gSpeciesInfo[];
 extern const u32 gExperienceTables[TIPOS_CRECIMIENTO][MAX_LEVEL + 1];
 extern const uq4_12_t gMultiplicadorEstadisticas[NUMERO_CAMBIOS_ESTADISTICAS];

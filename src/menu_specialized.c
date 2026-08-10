@@ -584,7 +584,7 @@ u8 LoadMoveRelearnerMovesList(const struct ListMenuItem *items, u16 numChoices)
 static void MoveRelearnerLoadBattleMoveDescription(u32 chosenMove)
 {
     s32 x;
-    const struct Movimientos *move;
+    const struct InfoMovimiento *move;
     u8 buffer[32];
     const u8 *str;
 

@@ -3,6 +3,8 @@
 
 // should they be included here or included individually by every file?
 #include "constants/battle.h"
+#include "constants/battle_move_effects.h"
+#include "constants/abilities.h"
 #include "constants/form_change_types.h"
 #include "battle_main.h"
 #include "battle_message.h"
@@ -109,6 +111,7 @@ struct DisableStruct
     u8 throatChopTimer;
     u8 wrapTurns;
     u8 tormentTimer : 4;
+    u8 usedMoves : 4;
     u8 spikesDone : 1;
     u8 toxicSpikesDone : 1;
     u8 stickyWebDone : 1;
@@ -327,7 +330,7 @@ struct Clima
     u16 turnos;
     enum ClimasCombate modo;
     enum OrigenClima origen;
-}
+};
 
 struct Combate
 {
@@ -432,6 +435,8 @@ struct Combate
     u8 usedEjectItem;
     bool16 movimientoEspejoMagicoRebota;
     uq4_12_t resultadoMovimiento;
+    enum ResultadoMovimiento resultadoAtaque;
+    const u8 *textoResultadoOverride;
     u16 potenciaMovimientosRecibidosTurno[NUMERO_COMBATIENTES];
     struct EfectosFinTurno efectoFinTurno;
     struct Clima clima;
@@ -647,7 +652,8 @@ extern struct DisableStruct gDisableStructs[NUMERO_COMBATIENTES];
 extern u16 gPauseCounterBattle;
 extern u16 gPaydayMoney;
 extern u32 gEstadoAccion[NUMERO_COMBATIENTES];
-extern u32 gMensajeBatalla;
+extern u8 gEstadoMultiuso;
+extern u8 gElegidorTextoMultiple;
 extern bool32 gMostrarMensajeBatalla;
 // Qué ha pasado en el último cambio de estadística. Es estado interno de C: los
 // scripts no lo miran nunca, preguntan con jumpifestadisticaallimite y escriben
@@ -670,6 +676,43 @@ extern bool32 gBajadaEstadisticaEnObjetivo;
 // Lo pone el bucle de Intimidacion antes de cada bajada, para que Cobardia sepa
 // que le toca; lo consume IntentaHabilidadPorBajadaEstadistica.
 extern bool32 gBajadaEstadisticaPorIntimidacion;
+// Distingue si el estado alterado lo causo un movimiento o una habilidad.
+extern bool32 gEstadoAlteradoPorHabilidad;
+
+// Por que no prendio un estado alterado. Sustituye a los B_MSG_ que indexaban
+// gBRN/gPRLZ/gPSNPreventionStringIds.
+enum ResultadoPrevencionEstado
+{
+    PREVENCION_POR_HABILIDAD_PROPIA,   // la habilidad del objetivo lo impide
+    PREVENCION_POR_HABILIDAD_ATACANTE, // la del atacante anula la del objetivo
+    PREVENCION_SIN_EFECTO,             // no le hizo nada
+};
+
+extern enum ResultadoPrevencionEstado gResultadoPrevencionEstado;
+
+// Banderas para los mensajes cuyo resultado el propio codigo pisa despues, asi que
+// no se puede deducir del estado del combate cuando toca imprimir.
+extern bool32 gDescansoCuroEstado;
+extern bool32 gAbsorbeFuegoSubioPotencia;
+extern bool32 gBayaNormalizoEstado;
+extern bool32 gCuraEquipoPorAroma;
+extern bool32 gDanioPorRocasTrampa;
+extern u32 gSacudidasBall;
+
+// Insonorizar frente a Cascabel Cura: mascara de bits, no un indice de mensaje.
+#define INSONORIZADO_ATACANTE (1 << 0)
+#define INSONORIZADO_ALIADO   (1 << 1)
+extern u32 gInsonorizadoCascabel;
+
+enum ResultadoDrenadoras   { DRENADORAS_PUESTAS, DRENADORAS_FALLO, DRENADORAS_INMUNE };
+enum ResultadoCambioObjeto { OBJETO_TOMADO, OBJETO_DADO, OBJETO_AMBOS };
+enum CuraHierbaMental      { HIERBA_ENAMORAMIENTO, HIERBA_MOFA, HIERBA_BIS, HIERBA_TORMENTO, HIERBA_ANULACION };
+enum TipoBarrera           { BARRERA_FALLO, BARRERA_REFLEJO, BARRERA_PANTALLA_LUZ, BARRERA_VELO_SAGRADO };
+
+extern enum ResultadoDrenadoras gResultadoDrenadoras;
+extern enum ResultadoCambioObjeto gResultadoCambioObjeto;
+extern enum CuraHierbaMental gCuraHierbaMental;
+extern enum TipoBarrera gTipoBarreraPuesta;
 extern u32 gPosicionCursorSiNo;
 extern u8 gBattleOutcome;
 extern struct ProtectStruct gProtectStructs[NUMERO_COMBATIENTES];
@@ -719,7 +762,7 @@ static inline bool32 EstaDormido(u32 combatiente)
 
 static inline bool32 HaSidoDaniado(u32 combatiente)
 {
-    return gCombate[combatiente].danioRecibido != 0; // Solo por movimientos, no por confusión/retroceso.
+    return gCombate->danioRecibido[combatiente] != 0; // Solo por movimientos, no por confusión/retroceso.
 }
 
 static inline bool32 IsBattlerAtMaxHp(u32 battler)
@@ -751,6 +794,11 @@ static inline struct Pokemon *GetBattlerParty(u32 combatiente)
 static inline bool32 MovimientoEsEfectivo(uq4_12_t resultadoMovimiento)
 {
     return (resultadoMovimiento == MOVIMIENTO_POCO_EFECTIVO || resultadoMovimiento == MOVIMIENTO_NEUTRO || resultadoMovimiento == MOVIMIENTO_SUPER_EFECTIVO);
+}
+
+static inline u32 CategoriaMovimiento(enum Movimientos movimiento)
+{
+    return gMovimientos[movimiento].category;
 }
 
 static inline bool32 EsMovimientoFisico(enum Movimientos movimiento)
@@ -882,11 +930,6 @@ static inline bool32 ClimaTieneEfecto(void)
     return !EstaHabilidadEnCampo(ABILITY_SEPTIMO_CIELO);
 }
 
-static inline u32 CategoriaMovimiento(enum Movimientos movimiento)
-{
-    return gMovimientos[movimiento].category;
-}
-
 static inline enum PrioridadMovimientos PrioridadMovimiento(enum Movimientos movimiento)
 {
     return gMovimientos[movimiento].prioridad;
@@ -920,17 +963,17 @@ static inline bool32 EsTipoDual(u32 combatiente)
 
 static inline bool32 EsCombateContraEntrenador(enum TiposCombate tipoCombate)
 {
-    return (tipoCombate == TIPO_COMBATE_ENTRENADOR);
+    return (tipoCombate == COMBATE_ENTRENADOR);
 }
 
 static inline bool32 EsCombateContraSalvaje(enum TiposCombate tipoCombate)
 {
-    return (tipoCombate == TIPO_COMBATE_SALVAJE);
+    return (tipoCombate == COMBATE_SALVAJE);
 }
 
 static inline bool32 EsCombateContraLegendario(enum TiposCombate tipoCombate)
 {
-    return (tipoCombate == TIPO_COMBATE_LEGENDARIO);
+    return (tipoCombate == COMBATE_LEGENDARIO);
 }
 
 #endif // GUARD_BATTLE_H

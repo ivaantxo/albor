@@ -27,7 +27,6 @@
 #include "text_window.h"
 #include "trig.h"
 #include "util.h"
-#include "constants/battle_string_ids.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
 #include "constants/items.h"
@@ -371,10 +370,11 @@ static void CreaShedinja(struct Pokemon *nincada)
         return;
 
     struct Pokemon *shedinja = &gPlayerParty[gPlayerPartyCount];
+    u16 species = SPECIES_SHEDINJA;
 
     CopyMon(shedinja, nincada, sizeof(struct Pokemon));
 
-    SetMonData(shedinja, MON_DATA_SPECIES, &SPECIES_SHEDINJA);
+    SetMonData(shedinja, MON_DATA_SPECIES, &species);
     SetMonData(shedinja, MON_DATA_NICKNAME, GetSpeciesName(SPECIES_SHEDINJA));
 
     CalculateMonStats(shedinja);
@@ -655,7 +655,7 @@ static void Task_EvolutionScene(u8 taskId)
         {
             BufferMoveToLearnIntoBattleTextBuff2();
             PlayFanfare(MUS_LEVEL_UP);
-            BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_PKMNLEARNEDMOVE]);
+            BattleStringExpandPlaceholdersToDisplayedString(COMPOUND_STRING("{B_BUFF1} aprendió {B_BUFF2}!{WAIT_SE}"));
             BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
             gTasks[taskId].tLearnsFirstMove = 0x40; // re-used as a counter
             gTasks[taskId].tState++;
@@ -673,7 +673,7 @@ static void Task_EvolutionScene(u8 taskId)
             {
                 // "{mon} is trying to learn {move}"
                 BufferMoveToLearnIntoBattleTextBuff2();
-                BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_TRYTOLEARNMOVE1]);
+                BattleStringExpandPlaceholdersToDisplayedString(COMPOUND_STRING("{B_BUFF1} puede aprender {B_BUFF2}."));
                 BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
                 gTasks[taskId].tLearnMoveState++;
             }
@@ -682,7 +682,7 @@ static void Task_EvolutionScene(u8 taskId)
             if (!IsTextPrinterActive(0) && !IsSEPlaying())
             {
                 // "But, {mon} can't learn more than four moves"
-                BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_TRYTOLEARNMOVE2]);
+                BattleStringExpandPlaceholdersToDisplayedString(COMPOUND_STRING("Pero {B_BUFF1} ya conoce cuatro ataques."));
                 BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
                 gTasks[taskId].tLearnMoveState++;
             }
@@ -691,7 +691,7 @@ static void Task_EvolutionScene(u8 taskId)
             if (!IsTextPrinterActive(0) && !IsSEPlaying())
             {
                 // "Delete a move to make room for {move}?"
-                BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_TRYTOLEARNMOVE3]);
+                BattleStringExpandPlaceholdersToDisplayedString(COMPOUND_STRING("¿Quieres que olvide algún ataque?"));
                 BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
                 gTasks[taskId].tLearnMoveYesState = MVSTATE_SHOW_MOVE_SELECT;
                 gTasks[taskId].tLearnMoveNoState = MVSTATE_ASK_CANCEL;
@@ -783,14 +783,14 @@ static void Task_EvolutionScene(u8 taskId)
             }
             break;
         case MVSTATE_FORGET_MSG_1:
-            BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_123POOF]);
+            BattleStringExpandPlaceholdersToDisplayedString(COMPOUND_STRING("{PAUSE 32}1, {PAUSE 15}2, y{PAUSE 15}… {PAUSE 15}… {PAUSE 15}… {PAUSE 15}{PLAY_SE SE_BALL_BOUNCE_1}¡Guau!"));
             BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
             gTasks[taskId].tLearnMoveState++;
             break;
         case MVSTATE_FORGET_MSG_2:
             if (!IsTextPrinterActive(0) && !IsSEPlaying())
             {
-                BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_PKMNFORGOTMOVE]);
+                BattleStringExpandPlaceholdersToDisplayedString(COMPOUND_STRING("{B_BUFF1} olvidó {B_BUFF2}."));
                 BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
                 gTasks[taskId].tLearnMoveState++;
             }
@@ -798,20 +798,20 @@ static void Task_EvolutionScene(u8 taskId)
         case MVSTATE_LEARNED_MOVE:
             if (!IsTextPrinterActive(0) && !IsSEPlaying())
             {
-                BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_ANDELLIPSIS]);
+                BattleStringExpandPlaceholdersToDisplayedString(COMPOUND_STRING("Y…"));
                 BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
                 gTasks[taskId].tState = EVOSTATE_LEARNED_MOVE;
             }
             break;
         case MVSTATE_ASK_CANCEL:
-            BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_STOPLEARNINGMOVE]);
+            BattleStringExpandPlaceholdersToDisplayedString(COMPOUND_STRING("{PAUSE 32}¿No quieres que aprenda {B_BUFF2}?"));
             BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
             gTasks[taskId].tLearnMoveYesState = MVSTATE_CANCEL;
             gTasks[taskId].tLearnMoveNoState = MVSTATE_INTRO_MSG_1;
             gTasks[taskId].tLearnMoveState = MVSTATE_PRINT_YES_NO;
             break;
         case MVSTATE_CANCEL:
-            BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_DIDNOTLEARNMOVE]);
+            BattleStringExpandPlaceholdersToDisplayedString(COMPOUND_STRING("{B_BUFF1} no aprendió {B_BUFF2}."));
             BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
             gTasks[taskId].tState = EVOSTATE_TRY_LEARN_MOVE;
             break;

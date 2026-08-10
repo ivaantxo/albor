@@ -192,12 +192,16 @@ enum ResultadosCombate
 #define SIDE_STATUS_HAZARDS_ANY    (SIDE_STATUS_SPIKES | SIDE_STATUS_STICKY_WEB | SIDE_STATUS_TOXIC_SPIKES | SIDE_STATUS_STEALTH_ROCK)
 #define SIDE_STATUS_SCREEN_ANY     (SIDE_STATUS_REFLECT | SIDE_STATUS_LIGHTSCREEN | SIDE_STATUS_AURORA_VEIL)
 
-// Flags describing move's result
-#define MOVE_RESULT_MISSED                (1 << 0)
-#define MOVE_RESULT_SUPER_EFFECTIVE       (1 << 1)
-#define MOVE_RESULT_NOT_VERY_EFFECTIVE    (1 << 2)
-#define MOVE_RESULT_DOESNT_AFFECT_FOE     (1 << 3)
-#define MOVE_RESULT_FAILED                (1 << 5)
+// Qué le ha pasado al movimiento, independientemente de su efectividad
+// (que vive en resultadoMovimiento, el multiplicador uq4_12_t). Sustituye a los
+// flags gMoveResultFlags/MOVE_RESULT_*.
+enum ResultadoMovimiento
+{
+    RESULTADO_MOVIMIENTO_CONECTA,
+    RESULTADO_MOVIMIENTO_FALLO,
+    RESULTADO_MOVIMIENTO_NO_AFECTA,
+    RESULTADO_MOVIMIENTO_FALLIDO,
+};
 
 // Move Effects
 #define MOVE_EFFECT_SLEEP               1
@@ -206,7 +210,7 @@ enum ResultadosCombate
 #define EFECTO_MOVIMIENTO_CONGELACION              4
 #define MOVE_EFFECT_PARALYSIS           5
 #define MOVE_EFFECT_TOXIC               6
-#define PRIMARY_STATUS_MOVE_EFFECT      MOVE_EFFECT_FROSTBITE // All above move effects apply primary status
+#define PRIMARY_STATUS_MOVE_EFFECT      EFECTO_MOVIMIENTO_CONGELACION // All above move effects apply primary status
 #define MOVE_EFFECT_CONFUSION           8
 #define MOVE_EFFECT_FLINCH              9
 #define MOVE_EFFECT_UPROAR              11
@@ -440,6 +444,13 @@ enum ClimasCombate
 
     NUMERO_CLIMAS_COMBATE = 0xFFFF,
 };
+
+// Máscara de bits sobre enum ClimasCombate, para IsBattlerWeatherAffected / jumpifweatheraffected.
+#define B_WEATHER_RAIN      (1 << CLIMA_COMBATE_LLUVIA)
+#define B_WEATHER_SUN       (1 << CLIMA_COMBATE_SOL)
+#define B_WEATHER_SANDSTORM (1 << CLIMA_COMBATE_ARENA)
+#define B_WEATHER_SNOW      (1 << CLIMA_COMBATE_NIEVE)
+#define B_WEATHER_ANY       (B_WEATHER_RAIN | B_WEATHER_SUN | B_WEATHER_SANDSTORM | B_WEATHER_SNOW)
 
 enum OrigenClima
 {

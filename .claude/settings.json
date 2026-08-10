@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(awk '{print $2}')",
+      "Bash(timeout 180 make build/modern/src/battle_ai_util.o)",
+      "Bash(git stash *)",
+      "Bash(echo \"EXIT_MARKER: $?\")",
+      "Bash(tee /private/tmp/claude-501/-Users-ivanmartinez-Proyectos-albor/284cf40c-2b93-4c94-971b-e632230a6015/scratchpad/bsc_build2.log)",
+      "Bash(timeout 550 make build/modern/src/battle_script_commands.o)",
+      "Bash(cd /Users/ivanmartinez/Proyectos/albor *)",
+      "Read(//private/tmp/claude-501/-Users-ivanptinez-Proyectos-albor/284cf40c-2b93-4c94-971b-e632230a6015/scratchpad/**)",
+      "Bash(grep -c \"^static void Cmd_.*\\(void\\);$\\\\|^static void Cmd_.*\\(.*\\);$\" src/battle_script_commands.c)",
+      "Bash(awk '/^static void Cmd_[A-Za-z0-9_]+\\\\\\(.*\\\\\\)$/{print NR\": \"$0}' src/battle_script_commands.c)",
+      "Bash(python3 -c ' *)",
+      "Bash(arm-none-eabi-gcc -dM -E -mthumb -mabi=apcs-gnu -mtune=arm7tdmi -march=armv4t -x c /dev/null)",
+      "Bash(grep -n '\\\\$\\(CC1\\)' Makefile make_tools.mk)",
+      "Bash(clang -fsyntax-only -x c -std=gnu17 -Wno-everything -iquote include -Iinclude -DMODERN=1 src/battle_script_commands.c)",
+      "Bash(clang -fsyntax-only -x c -std=gnu17 -Wno-everything -ferror-limit=0 -iquote include -Iinclude -DMODERN=1 src/battle_script_commands.c)",
+      "Bash(sort -u -t: -k2 -n)",
+      "Bash(awk -F: '{print $2}')",
+      "Bash(cd /Users/ivanmartinize/Proyectos/albor 2>/dev/null; cd /Users/ivanmartinez/Proyectos/albor *)",
+      "Read(//Users/ivanmartinize/Proyectos/**)",
+      "Bash(sed -i '' '4922s/.*/    enum Movimientos movimiento = damageCalcData->movimiento;/' src/battle_util.c)",
+      "Bash(sed -i '' '5036s/.*/    enum Movimientos move = damageCalcData->movimiento;/' src/battle_util.c)",
+      "Bash(sed -i '' '5304s/.*/    enum Movimientos movimiento = damageCalcData->movimiento;/' src/battle_util.c)",
+      "Bash(sed -i '' '5467s/.*/    enum Movimientos movimiento = damageCalcData->movimiento;/' src/battle_util.c)",
+      "Bash(sed -i '' '5773s/.*/    enum Movimientos movimiento = damageCalcData->movimiento;/' src/battle_util.c)",
+      "Bash(awk 'NR<2578 && /^[a-zA-Z].*\\\\\\(.*\\\\\\)$/ {last=NR\": \"$0} END{print last}' src/battle_util.c)",
+      "Bash(awk 'NR>=2222 && NR<=2578 && /climaCombate/' src/battle_util.c)"
+    ]
+  }
+}

@@ -114,6 +114,21 @@
 	.4byte \jumpInstr
 	.endm
 
+	.macro jumpifataquefallo jumpInstr:req
+	.byte BATTLE_CMD_jumpifataquefallo
+	.4byte \jumpInstr
+	.endm
+
+	.macro ponresultadoataque valor:req
+	.byte BATTLE_CMD_ponresultadoataque
+	.byte \valor
+	.endm
+
+	.macro jumpifataquenoafecta jumpInstr:req
+	.byte BATTLE_CMD_jumpifataquenoafecta
+	.4byte \jumpInstr
+	.endm
+
 	.macro jumpifestadisticanocambiada jumpInstr:req
 	jumpifestadisticacambiada \jumpInstr, FALSE
 	.endm
@@ -126,14 +141,143 @@
 	.byte BATTLE_CMD_MarcaCambioEstadisticaSilencioso
 	.endm
 
-@ Textos cuyo contenido depende del estado en tiempo de ejecución; el literal
-@ vive en C porque hay que elegir entre varias variantes.
-	.macro EscribeTextoEntraPokemon
-	.byte BATTLE_CMD_EscribeTextoEntraPokemon
+@ Mensaje de estado alterado: cambia segun lo cause un movimiento o una habilidad.
+	.macro EscribeTextoEstadoAlterado estado:req
+	.byte BATTLE_CMD_EscribeTextoEstadoAlterado
+	.byte \estado
 	.endm
 
-	.macro EscribeTextoDevolverPokemon
+@ Por que no prendio el estado alterado.
+	.macro EscribeTextoPrevencionEstado estado:req
+	.byte BATTLE_CMD_EscribeTextoPrevencionEstado
+	.byte \estado
+	.endm
+
+	.macro MarcaPrevencionPorHabilidadPropia
+	.byte BATTLE_CMD_MarcaPrevencionPorHabilidadPropia
+	.endm
+
+@ Mensajes de clima. Se leen del clima actual, no de ningun indice.
+	.macro EscribeTextoCambioClima
+	.byte BATTLE_CMD_EscribeTextoCambioClima
+	.endm
+
+	.macro EscribeTextoClimaContinua
+	.byte BATTLE_CMD_EscribeTextoClimaContinua
+	.endm
+
+	.macro EscribeTextoDanioClima
+	.byte BATTLE_CMD_EscribeTextoDanioClima
+	.endm
+
+	.macro EscribeTextoClimaTermina
+	.byte BATTLE_CMD_EscribeTextoClimaTermina
+	.endm
+
+	.macro EscribeTextoLluvia
+	.byte BATTLE_CMD_EscribeTextoLluvia
+	.endm
+
+	.macro EscribeTextoNeblina
+	.byte BATTLE_CMD_EscribeTextoNeblina
+	.endm
+
+	.macro EscribeTextoSustituto
+	.byte BATTLE_CMD_EscribeTextoSustituto
+	.endm
+
+	.macro EscribeTextoReserva
+	.byte BATTLE_CMD_EscribeTextoReserva
+	.endm
+
+	.macro EscribeTextoTragarFalla
+	.byte BATTLE_CMD_EscribeTextoTragarFalla
+	.endm
+
+	.macro EscribeTextoDescanso
+	.byte BATTLE_CMD_EscribeTextoDescanso
+	.endm
+
+	.macro EscribeTextoAlboroto
+	.byte BATTLE_CMD_EscribeTextoAlboroto
+	.endm
+
+	.macro EscribeTextoAlborotoDesvela
+	.byte BATTLE_CMD_EscribeTextoAlborotoDesvela
+	.endm
+
+	.macro EscribeTextoAbsorbeFuego
+	.byte BATTLE_CMD_EscribeTextoAbsorbeFuego
+	.endm
+
+	.macro EscribeTextoBaya
+	.byte BATTLE_CMD_EscribeTextoBaya
+	.endm
+
+	.macro EscribeTextoDrenaje
+	.byte BATTLE_CMD_EscribeTextoDrenaje
+	.endm
+
+	.macro EscribeTextoDrenadorasTurno
+	.byte BATTLE_CMD_EscribeTextoDrenadorasTurno
+	.endm
+
+	.macro EscribeTextoDrenadoras
+	.byte BATTLE_CMD_EscribeTextoDrenadoras
+	.endm
+
+	.macro EscribeTextoCambioObjeto
+	.byte BATTLE_CMD_EscribeTextoCambioObjeto
+	.endm
+
+	.macro EscribeTextoHabilidadEntrada
+	.byte BATTLE_CMD_EscribeTextoHabilidadEntrada
+	.endm
+
+	.macro EscribeTextoHierbaMental
+	.byte BATTLE_CMD_EscribeTextoHierbaMental
+	.endm
+
+	.macro EscribeTextoBarrera
+	.byte BATTLE_CMD_EscribeTextoBarrera
+	.endm
+
+	.macro EscribeTextoCuraEquipo
+	.byte BATTLE_CMD_EscribeTextoCuraEquipo
+	.endm
+
+	.macro jumpifinsonorizadoatacante jumpInstr:req
+	.byte BATTLE_CMD_jumpifinsonorizadoatacante
+	.4byte \jumpInstr
+	.endm
+
+	.macro jumpifinsonorizadoaliado jumpInstr:req
+	.byte BATTLE_CMD_jumpifinsonorizadoaliado
+	.4byte \jumpInstr
+	.endm
+
+	.macro EscribeTextoAtrapado
+	.byte BATTLE_CMD_EscribeTextoAtrapado
+	.endm
+
+	.macro EscribeTextoDanioTrampa
+	.byte BATTLE_CMD_EscribeTextoDanioTrampa
+	.endm
+
+	.macro EscribeTextoBallEscapa
+	.byte BATTLE_CMD_EscribeTextoBallEscapa
+	.endm
+
+@ Textos cuyo contenido depende del estado en tiempo de ejecución; el literal
+@ vive en C porque hay que elegir entre varias variantes.
+	.macro EscribeTextoEntraPokemon battler:req
+	.byte BATTLE_CMD_EscribeTextoEntraPokemon
+	.byte \battler
+	.endm
+
+	.macro EscribeTextoDevolverPokemon battler:req
 	.byte BATTLE_CMD_EscribeTextoDevolverPokemon
+	.byte \battler
 	.endm
 
 
@@ -1675,7 +1819,7 @@
 	.endm
 
 	.macro jumpifmovehadnoeffect jumpInstr:req
-	jumpifbyte COMPARACION_BITS_COMUNES, gMoveResultFlags, MOVE_RESULT_NO_EFFECT, \jumpInstr
+	jumpifataquenoafecta \jumpInstr
 	.endm
 
 	.macro dmg_1_8_targethp
@@ -1728,5 +1872,5 @@
 	@ Will jump to script pointer if the specified battler has or has not fainted.
 	.macro jumpiffainted battler:req, value:req, ptr:req
 	getbattlerfainted \battler
-	jumpifbyte COMPARACION_IGUAL, gBattleCommunication, \value, \ptr
+	jumpifbyte COMPARACION_IGUAL, gEstadoMultiuso, \value, \ptr
 	.endm

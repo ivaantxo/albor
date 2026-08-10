@@ -45,7 +45,6 @@
 #include "constants/abilities.h"
 #include "constants/battle_anim.h"
 #include "constants/battle_move_effects.h"
-#include "constants/battle_string_ids.h"
 #include "constants/flags.h"
 #include "constants/hold_effects.h"
 #include "constants/items.h"
@@ -341,8 +340,41 @@ static void Cmd_EscribeTextoCambioEstadistica(void);
 static void Cmd_jumpifestadisticaallimite(void);
 static void Cmd_jumpifestadisticasincambio(void);
 static void Cmd_jumpifestadisticacambiada(void);
+static void Cmd_jumpifataquefallo(void);
+static void Cmd_ponresultadoataque(void);
+static void Cmd_jumpifataquenoafecta(void);
 static void Cmd_MarcaBajadaPorIntimidacion(void);
 static void Cmd_MarcaCambioEstadisticaSilencioso(void);
+static void Cmd_EscribeTextoEstadoAlterado(void);
+static void Cmd_EscribeTextoPrevencionEstado(void);
+static void Cmd_MarcaPrevencionPorHabilidadPropia(void);
+static void Cmd_EscribeTextoCambioClima(void);
+static void Cmd_EscribeTextoClimaContinua(void);
+static void Cmd_EscribeTextoDanioClima(void);
+static void Cmd_EscribeTextoClimaTermina(void);
+static void Cmd_EscribeTextoLluvia(void);
+static void Cmd_EscribeTextoNeblina(void);
+static void Cmd_EscribeTextoSustituto(void);
+static void Cmd_EscribeTextoReserva(void);
+static void Cmd_EscribeTextoTragarFalla(void);
+static void Cmd_EscribeTextoDescanso(void);
+static void Cmd_EscribeTextoAlboroto(void);
+static void Cmd_EscribeTextoAlborotoDesvela(void);
+static void Cmd_EscribeTextoAbsorbeFuego(void);
+static void Cmd_EscribeTextoBaya(void);
+static void Cmd_EscribeTextoDrenaje(void);
+static void Cmd_EscribeTextoDrenadorasTurno(void);
+static void Cmd_EscribeTextoDrenadoras(void);
+static void Cmd_EscribeTextoCambioObjeto(void);
+static void Cmd_EscribeTextoHabilidadEntrada(void);
+static void Cmd_EscribeTextoHierbaMental(void);
+static void Cmd_EscribeTextoBarrera(void);
+static void Cmd_EscribeTextoCuraEquipo(void);
+static void Cmd_jumpifinsonorizadoatacante(void);
+static void Cmd_jumpifinsonorizadoaliado(void);
+static void Cmd_EscribeTextoAtrapado(void);
+static void Cmd_EscribeTextoDanioTrampa(void);
+static void Cmd_EscribeTextoBallEscapa(void);
 static void Cmd_EscribeTextoEntraPokemon(void);
 static void Cmd_EscribeTextoDevolverPokemon(void);
 static void Cmd_setadditionaleffects(void);
@@ -737,8 +769,41 @@ void (*const gBattleScriptingCommandsTable[])(void) =
         BATTLE_CMD(jumpifestadisticaallimite),
         BATTLE_CMD(jumpifestadisticasincambio),
         BATTLE_CMD(jumpifestadisticacambiada),
+        BATTLE_CMD(jumpifataquefallo),
+        BATTLE_CMD(ponresultadoataque),
+        BATTLE_CMD(jumpifataquenoafecta),
         BATTLE_CMD(MarcaBajadaPorIntimidacion),
         BATTLE_CMD(MarcaCambioEstadisticaSilencioso),
+        BATTLE_CMD(EscribeTextoEstadoAlterado),
+        BATTLE_CMD(EscribeTextoPrevencionEstado),
+        BATTLE_CMD(MarcaPrevencionPorHabilidadPropia),
+        BATTLE_CMD(EscribeTextoCambioClima),
+        BATTLE_CMD(EscribeTextoClimaContinua),
+        BATTLE_CMD(EscribeTextoDanioClima),
+        BATTLE_CMD(EscribeTextoClimaTermina),
+        BATTLE_CMD(EscribeTextoLluvia),
+        BATTLE_CMD(EscribeTextoNeblina),
+        BATTLE_CMD(EscribeTextoSustituto),
+        BATTLE_CMD(EscribeTextoReserva),
+        BATTLE_CMD(EscribeTextoTragarFalla),
+        BATTLE_CMD(EscribeTextoDescanso),
+        BATTLE_CMD(EscribeTextoAlboroto),
+        BATTLE_CMD(EscribeTextoAlborotoDesvela),
+        BATTLE_CMD(EscribeTextoAbsorbeFuego),
+        BATTLE_CMD(EscribeTextoBaya),
+        BATTLE_CMD(EscribeTextoDrenaje),
+        BATTLE_CMD(EscribeTextoDrenadorasTurno),
+        BATTLE_CMD(EscribeTextoDrenadoras),
+        BATTLE_CMD(EscribeTextoCambioObjeto),
+        BATTLE_CMD(EscribeTextoHabilidadEntrada),
+        BATTLE_CMD(EscribeTextoHierbaMental),
+        BATTLE_CMD(EscribeTextoBarrera),
+        BATTLE_CMD(EscribeTextoCuraEquipo),
+        BATTLE_CMD(jumpifinsonorizadoatacante),
+        BATTLE_CMD(jumpifinsonorizadoaliado),
+        BATTLE_CMD(EscribeTextoAtrapado),
+        BATTLE_CMD(EscribeTextoDanioTrampa),
+        BATTLE_CMD(EscribeTextoBallEscapa),
         BATTLE_CMD(EscribeTextoEntraPokemon),
         BATTLE_CMD(EscribeTextoDevolverPokemon),
 };
@@ -844,6 +909,20 @@ static bool32 NoTargetPresent(u8 battler, u32 move)
     return FALSE;
 }
 
+static void RecuerdaHabilidadCombate(u32 battler, u32 ability)
+{
+    AI_DATA->abilities[battler] = ability;
+}
+
+static bool32 IsBattlerWeatherAffected(u32 battler, u32 weatherFlags)
+{
+    if (!ClimaTieneEfecto())
+        return FALSE;
+    if (GetBattlerHoldEffect(battler, TRUE) == HOLD_EFFECT_UTILITY_UMBRELLA)
+        return FALSE;
+    return (1u << ObtenClimaCombate()) & weatherFlags;
+}
+
 static void Cmd_attackcanceler(void)
 {
     CMD_ARGS();
@@ -915,7 +994,7 @@ static void Cmd_attackcanceler(void)
     if (!gBattleMons[gBattlerAttacker].pp[gCurrMovePos] && gCurrentMove != MOVE_STRUGGLE && !(gHitMarker & (HITMARKER_ALLOW_NO_PP | HITMARKER_NO_ATTACKSTRING | HITMARKER_NO_PPDEDUCT)) && !(gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS))
     {
         gBattlescriptCurrInstr = BattleScript_NoPPForMove;
-        gMoveResultFlags |= MOVE_RESULT_MISSED;
+        gCombate->resultadoAtaque = RESULTADO_MOVIMIENTO_FALLO;
         return;
     }
 
@@ -976,7 +1055,7 @@ static void Cmd_attackcanceler(void)
     else if (IsBattlerProtected(gBattlerAttacker, gBattlerTarget, gCurrentMove) && (gCurrentMove != MOVE_CURSE || EsTipo(gBattlerAttacker, TIPO_FANTASMA)) && (!gBattleMoveEffects[gMovimientos[gCurrentMove].effect].twoTurnEffect || (gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS)) && gMovimientos[gCurrentMove].effect != EFFECT_GOLPE_BAJO && gMovimientos[gCurrentMove].effect != EFFECT_PALMA_RAUDA)
     {
         CancelMultiTurnMoves(gBattlerAttacker);
-        gMoveResultFlags |= MOVE_RESULT_MISSED;
+        gCombate->resultadoAtaque = RESULTADO_MOVIMIENTO_FALLO;
         gLastLandedMoves[gBattlerTarget] = MOVE_NONE;
 
         if (gSpecialStatuses[gBattlerAttacker].parentalBondState == PARENTAL_BOND_1ST_HIT)
@@ -985,7 +1064,7 @@ static void Cmd_attackcanceler(void)
             gSpecialStatuses[gBattlerAttacker].multiHitOn = 0;
             gCombate->contadorMultigolpes = 0;
         }
-        gMensajeBatalla = TEXTO_COMBATE_PROTECCION;
+        gCombate->textoResultadoOverride = COMPOUND_STRING("¡{B_DEF_NAME_WITH_PREFIX} se protegió!");
         gBattlescriptCurrInstr = cmd->nextInstr;
     }
     else
@@ -1017,9 +1096,9 @@ static bool8 JumpIfMoveAffectedByProtect(u16 move)
     bool8 affected = FALSE;
     if (IsBattlerProtected(gBattlerAttacker, gBattlerTarget, move))
     {
-        gMoveResultFlags |= MOVE_RESULT_MISSED;
+        gCombate->resultadoAtaque = RESULTADO_MOVIMIENTO_FALLO;
         JumpIfMoveFailed(move);
-        gMensajeBatalla = TEXTO_COMBATE_PROTECCION;
+        gCombate->textoResultadoOverride = COMPOUND_STRING("¡{B_DEF_NAME_WITH_PREFIX} se protegió!");
         affected = TRUE;
     }
     return affected;
@@ -1029,7 +1108,7 @@ u32 GetTotalAccuracy(u32 battlerAtk, u32 battlerDef, u32 move, u32 atkAbility, u
 {
     u32 moveAcc;
     s32 buff, accStage, evasionStage;
-    uq4_12_t modifier = NEUTRO;
+    uq4_12_t modifier = MOVIMIENTO_NEUTRO;
     enum ClimasCombate climaCombate = ObtenClimaCombate();
 
     gPotentialItemEffectBattler = battlerDef;
@@ -1106,8 +1185,8 @@ u32 GetTotalAccuracy(u32 battlerAtk, u32 battlerDef, u32 move, u32 atkAbility, u
 static void AccuracyCheck(bool32 recalcDragonDarts, const u8 *nextInstr, const u8 *failInstr, u16 move)
 {
     u32 moveTarget = GetBattlerMoveTargetType(gBattlerAttacker, move);
-    u32 abilityAtk = GetBattlerAbility(gBattlerAttacker);
-    u32 abilityDef = GetBattlerAbility(gBattlerTarget);
+    u32 abilityAtk = HabilidadCombatiente(gBattlerAttacker);
+    u32 abilityDef = HabilidadCombatiente(gBattlerTarget);
     u32 holdEffectAtk = GetBattlerHoldEffect(gBattlerAttacker, TRUE);
 
     if (move == ACC_CURR_MOVE)
@@ -1137,22 +1216,22 @@ static void AccuracyCheck(bool32 recalcDragonDarts, const u8 *nextInstr, const u
 
         if (!PorcentajeAleatorio(accuracy))
         {
-            gMoveResultFlags |= MOVE_RESULT_MISSED;
+            gCombate->resultadoAtaque = RESULTADO_MOVIMIENTO_FALLO;
             if (gMovimientos[gCurrentMove].effect == EFFECT_DRAGON_DARTS && !recalcDragonDarts // So we don't jump back and forth between targets
                 && CanTargetPartner(gBattlerAttacker, gBattlerTarget) && !TargetFullyImmuneToCurrMove(gBattlerAttacker, ALIADO(gBattlerTarget)))
             {
                 // Smart target to partner if miss
                 gBattlerTarget = ALIADO(gBattlerTarget);
-                gMoveResultFlags &= ~MOVE_RESULT_MISSED;
+                gCombate->resultadoAtaque = RESULTADO_MOVIMIENTO_CONECTA;
                 AccuracyCheck(TRUE, nextInstr, failInstr, move);
                 return;
             }
 
             if (EsCombateContraEntrenador(gCombate->tipoCombate) &&
                 (moveTarget == MOVE_TARGET_BOTH || moveTarget == MOVE_TARGET_FOES_AND_ALLY))
-                gMensajeBatalla = TEXTO_COMBATE_ATAQUE_FALLO_DEFENSOR;
+                gCombate->textoResultadoOverride = COMPOUND_STRING("¡{B_DEF_NAME_WITH_PREFIX} esquivó el ataque!");
             else
-                gMensajeBatalla = TEXTO_COMBATE_ATAQUE_FALLO_ATACANTE;
+                gCombate->textoResultadoOverride = COMPOUND_STRING("¡El ataque de {B_ATK_NAME_WITH_PREFIX}  falló!");
 
             if (gMovimientos[move].power)
                 CalcTypeEffectivenessMultiplier(move, type, gBattlerAttacker, gBattlerTarget, abilityDef, TRUE);
@@ -1471,7 +1550,7 @@ static void Cmd_healthbarupdate(void)
 
         if (DoesSubstituteBlockMove(gBattlerAttacker, battler, gCurrentMove) && gDisableStructs[battler].substituteHP && !(gHitMarker & HITMARKER_IGNORE_SUBSTITUTE))
         {
-            PrepareStringBattle(STRINGID_SUBSTITUTEDAMAGED, battler);
+            EscribeTextoCombate(battler, COMPOUND_STRING("The SUBSTITUTE took damage for {B_DEF_NAME_WITH_PREFIX}!"));
         }
         s16 healthValue = min(gBattleMoveDamage, 10000); // Max damage (10000) not present in R/S, ensures that huge damage values don't change sign
 
@@ -1540,7 +1619,7 @@ static void Cmd_datahpupdate(void)
                     gBattleMons[battler].hp = 0;
                 }
 
-                gCombate[battler].danioRecibido = gHpDealt;
+                gCombate->danioRecibido[battler] = gHpDealt;
             }
             gHitMarker &= ~HITMARKER_PASSIVE_DAMAGE;
 
@@ -1565,7 +1644,7 @@ static void Cmd_critmessage(void)
         if (gEsGolpeCritico == TRUE
          && MovimientoEsEfectivo(gCombate->resultadoMovimiento))
         {
-            PrepareStringBattle(STRINGID_CRITICALHIT, gBattlerAttacker);
+            EscribeTextoCombate(gBattlerAttacker, COMPOUND_STRING("¡Un golpe crítico!"));
 
             // Signal for the trainer slide-in system.
             if (GetBattlerSide(gBattlerTarget) != LADO_JUGADOR && gCombate->trainerSlideFirstCriticalHitMsgState != 2)
@@ -1584,40 +1663,24 @@ static void Cmd_HazSonidoEfectividad(void)
     if (HayAlgunCombatienteOcupado())
         return;
 
-    if (!(gMoveResultFlags & MOVE_RESULT_MISSED))
+    if (gCombate->resultadoAtaque == RESULTADO_MOVIMIENTO_CONECTA)
     {
-        switch (gMoveResultFlags & ~MOVE_RESULT_MISSED)
+        if (gCombate->resultadoMovimiento > MOVIMIENTO_NEUTRO)
         {
-        case MOVE_RESULT_SUPER_EFFECTIVE:
             BtlController_EmitPlaySE(gBattlerTarget, BUFFER_A, SE_SUPER_EFFECTIVE);
             MarcaCombatienteOcupado(gBattlerTarget);
-            break;
-        case MOVE_RESULT_NOT_VERY_EFFECTIVE:
+        }
+        else if (gCombate->resultadoMovimiento == MOVIMIENTO_NEUTRO)
+        {
+            BtlController_EmitPlaySE(gBattlerTarget, BUFFER_A, SE_EFFECTIVE);
+            MarcaCombatienteOcupado(gBattlerTarget);
+        }
+        else if (gCombate->resultadoMovimiento != MOVIMIENTO_NO_EFECTIVO)
+        {
             BtlController_EmitPlaySE(gBattlerTarget, BUFFER_A, SE_NOT_EFFECTIVE);
             MarcaCombatienteOcupado(gBattlerTarget);
-            break;
-        case MOVE_RESULT_DOESNT_AFFECT_FOE:
-        case MOVE_RESULT_FAILED:
-            // no sound
-            break;
-        default:
-            if (gMoveResultFlags & MOVE_RESULT_SUPER_EFFECTIVE)
-            {
-                BtlController_EmitPlaySE(gBattlerTarget, BUFFER_A, SE_SUPER_EFFECTIVE);
-                MarcaCombatienteOcupado(gBattlerTarget);
-            }
-            else if (gMoveResultFlags & MOVE_RESULT_NOT_VERY_EFFECTIVE)
-            {
-                BtlController_EmitPlaySE(gBattlerTarget, BUFFER_A, SE_NOT_EFFECTIVE);
-                MarcaCombatienteOcupado(gBattlerTarget);
-            }
-            else if (!(gMoveResultFlags & (MOVE_RESULT_DOESNT_AFFECT_FOE | MOVE_RESULT_FAILED)))
-            {
-                BtlController_EmitPlaySE(gBattlerTarget, BUFFER_A, SE_EFFECTIVE);
-                MarcaCombatienteOcupado(gBattlerTarget);
-            }
-            break;
         }
+        // MOVIMIENTO_NO_EFECTIVO: no sound
     }
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
@@ -1626,61 +1689,51 @@ static void Cmd_resultmessage(void)
 {
     CMD_ARGS();
 
-    u32 stringId = 0;
+    const u8 *texto = NULL;
 
     if (HayAlgunCombatienteOcupado())
         return;
 
-    if (gMoveResultFlags & MOVE_RESULT_MISSED && (!(gMoveResultFlags & MOVE_RESULT_DOESNT_AFFECT_FOE) || gMensajeBatalla == TEXTO_COMBATE_LEVITACION || gMensajeBatalla == TEXTO_COMBATE_TELEPATA))
+    gMostrarMensajeBatalla = TRUE;
+
+    if (gCombate->textoResultadoOverride != NULL)
     {
-        if (gMensajeBatalla == TEXTO_COMBATE_LEVITACION || gMensajeBatalla == TEXTO_COMBATE_TELEPATA)
-            CreaMensajeHabilidad(gBattlerTarget, gBattleMons[gBattlerTarget].ability);
-        stringId = gMensajeBatalla;
-        gMostrarMensajeBatalla = TRUE;
+        texto = gCombate->textoResultadoOverride;
+        gCombate->textoResultadoOverride = NULL;
     }
-    else
+    else switch (gCombate->resultadoAtaque)
     {
-        gMostrarMensajeBatalla = TRUE;
-        switch (gMoveResultFlags & ~MOVE_RESULT_MISSED)
+    case RESULTADO_MOVIMIENTO_CONECTA:
+        if (!gCombate->contadorMultigolpes) // Don't print effectiveness on each hit in a multi hit attack
         {
-        case MOVE_RESULT_SUPER_EFFECTIVE:
-            if (!gCombate->contadorMultigolpes) // Don't print effectiveness on each hit in a multi hit attack
+            if (gCombate->resultadoMovimiento > MOVIMIENTO_NEUTRO)
             {
                 // Signal for the trainer slide-in system.
                 if (GetBattlerSide(gBattlerTarget) != LADO_JUGADOR && gCombate->trainerSlideFirstSuperEffectiveHitMsgState != 2)
                     gCombate->trainerSlideFirstSuperEffectiveHitMsgState = 1;
 
-                stringId = STRINGID_SUPEREFFECTIVE;
+                texto = COMPOUND_STRING("¡Es super efectivo!");
             }
-            break;
-        case MOVE_RESULT_NOT_VERY_EFFECTIVE:
-            if (!gCombate->contadorMultigolpes)
-                stringId = STRINGID_NOTVERYEFFECTIVE;
-            break;
-        case MOVE_RESULT_FAILED:
-            stringId = STRINGID_BUTITFAILED;
-            break;
-        case MOVE_RESULT_DOESNT_AFFECT_FOE:
-            stringId = STRINGID_ITDOESNTAFFECT;
-            break;
-        default:
-            if (gMoveResultFlags & MOVE_RESULT_DOESNT_AFFECT_FOE)
+            else if (gCombate->resultadoMovimiento < MOVIMIENTO_NEUTRO && gCombate->resultadoMovimiento != MOVIMIENTO_NO_EFECTIVO)
             {
-                stringId = STRINGID_ITDOESNTAFFECT;
-            }
-            else if (gMoveResultFlags & MOVE_RESULT_FAILED)
-            {
-                stringId = STRINGID_BUTITFAILED;
-            }
-            else
-            {
-                gMostrarMensajeBatalla = FALSE;
+                texto = COMPOUND_STRING("No es muy efectivo…");
             }
         }
+        break;
+    case RESULTADO_MOVIMIENTO_FALLIDO:
+        texto = COMPOUND_STRING("¡Pero falló!");
+        break;
+    case RESULTADO_MOVIMIENTO_NO_AFECTA:
+        texto = COMPOUND_STRING("It doesn't affect {B_DEF_NAME_WITH_PREFIX}…");
+        break;
+    default: // RESULTADO_MOVIMIENTO_FALLO sin texto propio (ya asignado en su origen si lo necesitaba)
+        break;
     }
 
-    if (stringId)
-        PrepareStringBattle(stringId, gBattlerAttacker);
+    if (texto != NULL)
+        EscribeTextoCombate(gBattlerAttacker, texto);
+    else
+        gMostrarMensajeBatalla = FALSE;
 
     gBattlescriptCurrInstr = cmd->nextInstr;
 
@@ -1718,22 +1771,22 @@ static void Cmd_EscribeTextoSeleccion(void)
 
 static void Cmd_EscribeTextoEntraPokemon(void)
 {
-    CMD_ARGS();
+    CMD_ARGS(u8 battler);
 
     if (!HayAlgunCombatienteOcupado())
     {
-        EscribeTextoEntraPokemon(gBattlerAttacker);
+        EscribeTextoEntraPokemon(GetBattlerForBattleScript(cmd->battler));
         gBattlescriptCurrInstr = cmd->nextInstr;
     }
 }
 
 static void Cmd_EscribeTextoDevolverPokemon(void)
 {
-    CMD_ARGS();
+    CMD_ARGS(u8 battler);
 
     if (!HayAlgunCombatienteOcupado())
     {
-        EscribeTextoDevolverPokemon(gBattlerAttacker);
+        EscribeTextoDevolverPokemon(GetBattlerForBattleScript(cmd->battler));
         gBattlescriptCurrInstr = cmd->nextInstr;
     }
 }
@@ -1851,6 +1904,39 @@ static void Cmd_jumpifestadisticacambiada(void)
         gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
+// Sustituye a `jumpifword ... gMensajeBatalla, TEXTO_COMBATE_PROTECCION`. Se usa
+// justo tras attackcanceler, para saltar si el movimiento ya ha sido bloqueado
+// (por Protección u otra causa) antes de gastar el turno en calcular daño.
+static void Cmd_jumpifataquefallo(void)
+{
+    CMD_ARGS(const u8 *jumpInstr);
+
+    if (gCombate->resultadoAtaque == RESULTADO_MOVIMIENTO_FALLO)
+        gBattlescriptCurrInstr = cmd->jumpInstr;
+    else
+        gBattlescriptCurrInstr = cmd->nextInstr;
+}
+
+// Sustituye a `orhalfword/bichalfword/sethword gMoveResultFlags, MOVE_RESULT_*` en los scripts.
+static void Cmd_ponresultadoataque(void)
+{
+    CMD_ARGS(u8 valor);
+
+    gCombate->resultadoAtaque = cmd->valor;
+    gBattlescriptCurrInstr = cmd->nextInstr;
+}
+
+// Sustituye a `jumpifbyte ... gMoveResultFlags, MOVE_RESULT_NO_EFFECT` (jumpifmovehadnoeffect).
+static void Cmd_jumpifataquenoafecta(void)
+{
+    CMD_ARGS(const u8 *jumpInstr);
+
+    if (gCombate->resultadoAtaque == RESULTADO_MOVIMIENTO_NO_AFECTA)
+        gBattlescriptCurrInstr = cmd->jumpInstr;
+    else
+        gBattlescriptCurrInstr = cmd->nextInstr;
+}
+
 // Marca que la bajada que viene la causa Intimidación, para que Cobardía sepa que
 // le toca. Lo pone el bucle de Intimidación antes de cada bajada, y lo consume
 // IntentaHabilidadPorBajadaEstadistica.
@@ -1859,6 +1945,623 @@ static void Cmd_MarcaBajadaPorIntimidacion(void)
     CMD_ARGS();
 
     gBajadaEstadisticaPorIntimidacion = TRUE;
+    gBattlescriptCurrInstr = cmd->nextInstr;
+}
+
+// Sustituye a las cinco tablas gGot*StringIds / gFellAsleepStringIds, que tenían
+// todas la misma forma: el mismo mensaje cambia según lo cause un movimiento o una
+// habilidad. La congelación no llegó a tener tabla ni texto; se le da uno aquí.
+static void Cmd_EscribeTextoEstadoAlterado(void)
+{
+    CMD_ARGS(u8 estado);
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    bool32 porHabilidad = gEstadoAlteradoPorHabilidad;
+    const u8 *texto = NULL;
+
+    switch (cmd->estado)
+    {
+    case MOVE_EFFECT_SLEEP:
+        texto = porHabilidad ? COMPOUND_STRING("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_BUFF1} made {B_EFF_NAME_WITH_PREFIX} sleep!")
+                             : COMPOUND_STRING("{B_EFF_NAME_WITH_PREFIX} fell asleep!");
+        break;
+    case MOVE_EFFECT_POISON:
+        texto = porHabilidad ? COMPOUND_STRING("¡{B_EFF_NAME_WITH_PREFIX} fue envenenado por {B_BUFF1} de {B_SCR_ACTIVE_NAME_WITH_PREFIX}!")
+                             : COMPOUND_STRING("¡{B_EFF_NAME_WITH_PREFIX} fue envenenado!");
+        break;
+    case MOVE_EFFECT_BURN:
+        texto = porHabilidad ? COMPOUND_STRING("¡{B_SCR_ACTIVE_ABILITY} de {B_SCR_ACTIVE_NAME_WITH_PREFIX} ha quemado a {B_EFF_NAME_WITH_PREFIX}!")
+                             : COMPOUND_STRING("¡{B_EFF_NAME_WITH_PREFIX} fue quemado!");
+        break;
+    case EFECTO_MOVIMIENTO_CONGELACION:
+        texto = porHabilidad ? COMPOUND_STRING("¡{B_SCR_ACTIVE_ABILITY} de {B_SCR_ACTIVE_NAME_WITH_PREFIX} ha congelado a {B_EFF_NAME_WITH_PREFIX}!")
+                             : COMPOUND_STRING("¡{B_EFF_NAME_WITH_PREFIX} fue congelado!");
+        break;
+    case MOVE_EFFECT_PARALYSIS:
+        texto = porHabilidad ? COMPOUND_STRING("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_BUFF1} paralyzed {B_EFF_NAME_WITH_PREFIX}!\lIt may be unable to move!")
+                             : COMPOUND_STRING("{B_EFF_NAME_WITH_PREFIX} is paralyzed! It may be unable to move!");
+        break;
+    }
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+// Sustituye a gBRN/gPRLZ/gPSNPreventionStringIds. Las tres tablas compartían dos de
+// sus tres entradas; lo único propio de cada estado es el primer mensaje.
+static void Cmd_EscribeTextoPrevencionEstado(void)
+{
+    CMD_ARGS(u8 estado);
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = NULL;
+
+    switch (gResultadoPrevencionEstado)
+    {
+    case PREVENCION_POR_HABILIDAD_PROPIA:
+        switch (cmd->estado)
+        {
+        case MOVE_EFFECT_BURN:
+            texto = COMPOUND_STRING("{B_EFF_NAME_WITH_PREFIX}'s {B_EFF_ABILITY} prevents burns!");
+            break;
+        case MOVE_EFFECT_PARALYSIS:
+            texto = COMPOUND_STRING("{B_EFF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} prevents paralysis!");
+            break;
+        case MOVE_EFFECT_POISON:
+            texto = COMPOUND_STRING("{B_EFF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} prevents poisoning!");
+            break;
+        }
+        break;
+    case PREVENCION_POR_HABILIDAD_ATACANTE:
+        texto = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX}'s {B_ATK_ABILITY} prevents {B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} from working!");
+        break;
+    case PREVENCION_SIN_EFECTO:
+        texto = COMPOUND_STRING("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY} had no effect on {B_EFF_NAME_WITH_PREFIX}!");
+        break;
+    }
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+// Los cuatro comandos de clima que siguen sustituyen a gMoveWeatherChangeStringIds,
+// gSandStormHailSnowContinuesStringIds, gSandStormHailDmgStringIds y
+// gSandStormHailSnowEndStringIds. Ninguno necesita variable intermedia: el clima ya
+// es estado, así que basta con mirarlo.
+//
+// El granizo ya no existe como clima propio en esta base (lo sustituyó la nieve), así
+// que sus entradas de las tablas viejas se quedan fuera.
+
+static void Cmd_EscribeTextoCambioClima(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = NULL;
+
+    if (gCombate->resultadoAtaque == RESULTADO_MOVIMIENTO_FALLO)
+    {
+        texto = COMPOUND_STRING("¡Pero falló!");
+    }
+    else
+    {
+        switch (gCombate->clima.modo)
+        {
+        case CLIMA_COMBATE_LLUVIA: texto = COMPOUND_STRING("¡Ha empezado a llover!");     break;
+        case CLIMA_COMBATE_SOL:    texto = COMPOUND_STRING("¡El Sol ha empezado a brillar!"); break;
+        case CLIMA_COMBATE_ARENA:  texto = COMPOUND_STRING("A sandstorm kicked up!");     break;
+        case CLIMA_COMBATE_NIEVE:  texto = COMPOUND_STRING("¡Ha empezado a nevar!");      break;
+        default: break;
+        }
+    }
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+static void Cmd_EscribeTextoClimaContinua(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = NULL;
+
+    switch (gCombate->clima.modo)
+    {
+    case CLIMA_COMBATE_ARENA: texto = COMPOUND_STRING("The sandstorm is raging."); break;
+    case CLIMA_COMBATE_NIEVE: texto = COMPOUND_STRING("La nieve sigue cayendo");   break;
+    default: break;
+    }
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+static void Cmd_EscribeTextoDanioClima(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = NULL;
+
+    switch (gCombate->clima.modo)
+    {
+    case CLIMA_COMBATE_ARENA: texto = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} is buffeted by the sandstorm!"); break;
+    // La nieve heredó el mensaje que tenía el granizo.
+    case CLIMA_COMBATE_NIEVE: texto = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} is pelted by HAIL!");            break;
+    default: break;
+    }
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+static void Cmd_EscribeTextoClimaTermina(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = NULL;
+
+    switch (gCombate->clima.modo)
+    {
+    case CLIMA_COMBATE_ARENA: texto = COMPOUND_STRING("The sandstorm subsided."); break;
+    case CLIMA_COMBATE_NIEVE: texto = COMPOUND_STRING("La nieve ha parado.");     break;
+    default: break;
+    }
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+// Sustituye a gRainContinuesStringIds. Para cuando se imprime, la lluvia ya se ha
+// quitado del clima si tocaba terminar, así que el propio clima lo dice.
+static void Cmd_EscribeTextoLluvia(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = (gCombate->clima.modo == CLIMA_COMBATE_LLUVIA)
+                    ? COMPOUND_STRING("Sigue lloviendo…")
+                    : COMPOUND_STRING("The rain stopped.");
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+// Los comandos que siguen sustituyen a una tabla g*StringIds cada uno. Cuando el
+// resultado ya queda registrado en el estado del combate, se lee de ahí y no hace
+// falta ninguna variable; solo se guarda una bandera cuando el propio código pisa
+// después el dato que haría falta.
+
+static void Cmd_EscribeTextoNeblina(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = (gCombate->resultadoAtaque == RESULTADO_MOVIMIENTO_FALLIDO)
+                    ? COMPOUND_STRING("¡Pero falló!")
+                    : COMPOUND_STRING("{B_ATK_PREFIX2} became shrouded in MIST!");
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+static void Cmd_EscribeTextoSustituto(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = (gBattleMons[gBattlerAttacker].status2 & STATUS2_SUBSTITUTE)
+                    ? COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} made a SUBSTITUTE!")
+                    : COMPOUND_STRING("But it does not have enough HP left to make a substitute!");
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+static void Cmd_EscribeTextoReserva(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    // Cmd_stockpile marca RESULTADO_MOVIMIENTO_FALLO cuando ya no se puede reservar más.
+    const u8 *texto = (gCombate->resultadoAtaque == RESULTADO_MOVIMIENTO_FALLO)
+                    ? COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} can't stockpile any more!")
+                    : COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} stockpiled {B_BUFF1}!");
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+static void Cmd_EscribeTextoTragarFalla(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = (gBattleMons[gBattlerAttacker].hp == gBattleMons[gBattlerAttacker].maxHP)
+                    ? COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX}'s HP is full!")
+                    : COMPOUND_STRING("But it failed to swallow a thing!");
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+// Descanso pisa status1 al dormir, así que el "además se curó" hay que anotarlo.
+static void Cmd_EscribeTextoDescanso(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = gDescansoCuroEstado
+                    ? COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} slept and became healthy!")
+                    : COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} went to sleep!");
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+static void Cmd_EscribeTextoAlboroto(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = (gBattleMons[gBattlerAttacker].status2 & STATUS2_UPROAR)
+                    ? COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} is making an uproar!")
+                    : COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} calmed down.");
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+// Por qué el objetivo no se puede dormir: por estar en pleno alboroto, o porque el
+// alboroto lo despertó.
+static void Cmd_EscribeTextoAlborotoDesvela(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = (gBattleMons[gBattlerTarget].status2 & STATUS2_UPROAR)
+                    ? COMPOUND_STRING("But {B_DEF_NAME_WITH_PREFIX} can't sleep in an UPROAR!")
+                    : COMPOUND_STRING("But the UPROAR kept {B_DEF_NAME_WITH_PREFIX} awake!");
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+static void Cmd_EscribeTextoAbsorbeFuego(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = gAbsorbeFuegoSubioPotencia
+                    ? COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} raised its FIRE power!")
+                    : COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} made {B_CURRENT_MOVE} ineffective!");
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+static void Cmd_EscribeTextoBaya(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = gBayaNormalizoEstado
+                    ? COMPOUND_STRING("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM} normalized its status!")
+                    : COMPOUND_STRING("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM} cured its {B_BUFF1} problem!");
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+// Drenaje de PS. La rama de Viscosidad ya la decide el script con jumpifability, y
+// la habilidad sigue puesta al imprimir, así que basta con mirarla.
+static void Cmd_EscribeTextoDrenaje(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = (HabilidadCombatiente(gBattlerTarget) == ABILITY_LIQUID_OOZE)
+                    ? COMPOUND_STRING("It sucked up the liquid ooze!")
+                    : COMPOUND_STRING("¡{B_DEF_NAME_WITH_PREFIX} fue drenado!");
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+// Drenaje del turno de Drenadoras: aquí la Viscosidad es la del que tiene la semilla.
+static void Cmd_EscribeTextoDrenadorasTurno(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = (HabilidadCombatiente(gBattlerAttacker) == ABILITY_LIQUID_OOZE)
+                    ? COMPOUND_STRING("It sucked up the liquid ooze!")
+                    : COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX}'s health is sapped by Leech Seed!");
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+static void Cmd_EscribeTextoDrenadoras(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = NULL;
+
+    switch (gResultadoDrenadoras)
+    {
+    case DRENADORAS_PUESTAS: texto = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} was seeded!");        break;
+    case DRENADORAS_FALLO:   texto = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} avoided the attack!"); break;
+    case DRENADORAS_INMUNE:  texto = COMPOUND_STRING("It doesn't affect {B_DEF_NAME_WITH_PREFIX}…");  break;
+    }
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+static void Cmd_EscribeTextoCambioObjeto(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = NULL;
+
+    switch (gResultadoCambioObjeto)
+    {
+    case OBJETO_TOMADO: texto = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} obtuvo {B_BUFF1}."); break;
+    case OBJETO_DADO:   texto = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} obtuvo {B_BUFF2}."); break;
+    case OBJETO_AMBOS:  texto = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} obtuvo {B_BUFF1}. {B_DEF_NAME_WITH_PREFIX} obtuvo {B_BUFF2}."); break;
+    }
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+// Los seis mensajes de habilidad al entrar son de habilidades distintas, así que la
+// propia habilidad los distingue.
+static void Cmd_EscribeTextoHabilidadEntrada(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = NULL;
+
+    switch (gLastUsedAbility)
+    {
+    case ABILITY_MOLD_BREAKER:
+        texto = COMPOUND_STRING("{B_SCR_ACTIVE_NAME_WITH_PREFIX} breaks the mold!");
+        break;
+    case ABILITY_UNNERVE:
+        texto = COMPOUND_STRING("The opposing team is too nervous to eat Berries!");
+        break;
+    case ABILITY_GENERADOR:
+        texto = COMPOUND_STRING("¡{B_SCR_ACTIVE_NAME_WITH_PREFIX} genera energía y potencia ataques eléctricos de su equipo!");
+        break;
+    case ABILITY_SCREEN_CLEANER:
+        texto = COMPOUND_STRING("All screens on the field were cleansed!");
+        break;
+    case ABILITY_NEUTRALIZING_GAS:
+        texto = COMPOUND_STRING("Neutralizing gas filled the area!");
+        break;
+    }
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+static void Cmd_EscribeTextoHierbaMental(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = NULL;
+
+    switch (gCuraHierbaMental)
+    {
+    case HIERBA_ENAMORAMIENTO: texto = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} got over its infatuation!"); break;
+    case HIERBA_MOFA:          texto = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1} wore off!");      break;
+    case HIERBA_BIS:           texto = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX}'s ENCORE ended!");            break;
+    case HIERBA_TORMENTO:      texto = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} is no longer tormented!");    break;
+    case HIERBA_ANULACION:     texto = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} is disabled no more!");       break;
+    }
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+// Reflejo, Pantalla Luz y Velo Sagrado. Las variantes "single"/"double" de la tabla
+// vieja tenían el mismo texto, así que sus seis entradas eran en realidad cuatro.
+static void Cmd_EscribeTextoBarrera(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = NULL;
+
+    switch (gTipoBarreraPuesta)
+    {
+    case BARRERA_FALLO:        texto = COMPOUND_STRING("¡Pero falló!");                                       break;
+    case BARRERA_REFLEJO:      texto = COMPOUND_STRING("{B_ATK_PREFIX2}'s {B_CURRENT_MOVE} raised DEFENSE!");  break;
+    case BARRERA_PANTALLA_LUZ: texto = COMPOUND_STRING("{B_ATK_PREFIX2}'s {B_CURRENT_MOVE} raised SP. DEF!");  break;
+    case BARRERA_VELO_SAGRADO: texto = COMPOUND_STRING("{B_ATK_PREFIX2}'s party is covered by a veil!");       break;
+    }
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+// Cascabel Cura / Aromaterapia. Las cuatro variantes de Insonorizar que tenía la
+// tabla decían todas lo mismo: lo que cambia es a quién cura, no el texto.
+static void Cmd_EscribeTextoCuraEquipo(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = gCuraEquipoPorAroma
+                    ? COMPOUND_STRING("A soothing aroma wafted through the area!")
+                    : COMPOUND_STRING("A bell chimed!");
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+static void Cmd_jumpifinsonorizadoatacante(void)
+{
+    CMD_ARGS(const u8 *jumpInstr);
+
+    if (gInsonorizadoCascabel & INSONORIZADO_ATACANTE)
+        gBattlescriptCurrInstr = cmd->nextInstr;
+    else
+        gBattlescriptCurrInstr = cmd->jumpInstr;
+}
+
+static void Cmd_jumpifinsonorizadoaliado(void)
+{
+    CMD_ARGS(const u8 *jumpInstr);
+
+    if (gInsonorizadoCascabel & INSONORIZADO_ALIADO)
+        gBattlescriptCurrInstr = cmd->nextInstr;
+    else
+        gBattlescriptCurrInstr = cmd->jumpInstr;
+}
+
+// El movimiento que atrapó ya está guardado, así que no hace falta el índice que
+// calculaba el bucle sobre sTrappingMoves.
+static void Cmd_EscribeTextoAtrapado(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto;
+
+    switch (gCombate->wrappedMove[gEffectBattler])
+    {
+    case MOVE_BIND:
+        texto = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} was squeezed by {B_ATK_NAME_WITH_PREFIX}'s BIND!");
+        break;
+    case MOVE_WRAP:
+        texto = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} was WRAPPED by {B_ATK_NAME_WITH_PREFIX}!");
+        break;
+    case MOVE_CLAMP:
+        texto = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} was CLAMPED by {B_ATK_NAME_WITH_PREFIX}!");
+        break;
+    case MOVE_SAND_TOMB:
+        texto = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} was trapped by SAND TOMB!");
+        break;
+    case MOVE_MAGMA_STORM:
+        texto = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} became trapped by swirling magma!");
+        break;
+    case MOVE_INFESTATION:
+        texto = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} has been afflicted with an infestation by {B_ATK_NAME_WITH_PREFIX}!");
+        break;
+    case MOVE_THUNDER_CAGE:
+        texto = COMPOUND_STRING("{B_ATK_NAME_WITH_PREFIX} trapped {B_DEF_NAME_WITH_PREFIX}!");
+        break;
+    // Fuego Fatuo y Torbellino comparten el mensaje del vórtice.
+    default:
+        texto = COMPOUND_STRING("{B_DEF_NAME_WITH_PREFIX} was trapped in the vortex!");
+        break;
+    }
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+static void Cmd_EscribeTextoDanioTrampa(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = gDanioPorRocasTrampa
+                    ? COMPOUND_STRING("Pointed stones dug into {B_SCR_ACTIVE_NAME_WITH_PREFIX}!")
+                    : COMPOUND_STRING("¡{B_SCR_ACTIVE_NAME_WITH_PREFIX} se ha pinchado con las púas!");
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+static void Cmd_EscribeTextoBallEscapa(void)
+{
+    CMD_ARGS();
+
+    if (HayAlgunCombatienteOcupado())
+        return;
+
+    const u8 *texto = NULL;
+
+    switch (gSacudidasBall)
+    {
+    case 0: texto = COMPOUND_STRING("Oh, no! The POKéMON broke free!"); break;
+    case 1: texto = COMPOUND_STRING("Aww! It appeared to be caught!");  break;
+    case 2: texto = COMPOUND_STRING("Aargh! Almost had it!");           break;
+    default: break; // tres sacudidas y se escapa: sin mensaje propio
+    }
+
+    gBattlescriptCurrInstr = cmd->nextInstr;
+    EscribeTextoCombate(gBattlerAttacker, texto);
+}
+
+// Sustituye a `setword gMensajeBatalla, B_MSG_ABILITY_PREVENTS_MOVE_STATUS`.
+static void Cmd_MarcaPrevencionPorHabilidadPropia(void)
+{
+    CMD_ARGS();
+
+    gResultadoPrevencionEstado = PREVENCION_POR_HABILIDAD_PROPIA;
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
@@ -2041,12 +2744,12 @@ void SetMoveEffect(bool32 primary)
 
                 if (gHitMarker & HITMARKER_STATUS_ABILITY_EFFECT)
                 {
-                    gMensajeBatalla = B_MSG_ABILITY_PREVENTS_ABILITY_STATUS;
+                    gResultadoPrevencionEstado = PREVENCION_POR_HABILIDAD_ATACANTE;
                     gHitMarker &= ~HITMARKER_STATUS_ABILITY_EFFECT;
                 }
                 else
                 {
-                    gMensajeBatalla = B_MSG_ABILITY_PREVENTS_MOVE_STATUS;
+                    gResultadoPrevencionEstado = PREVENCION_POR_HABILIDAD_PROPIA;
                 }
                 RESET_RETURN
             }
@@ -2055,7 +2758,7 @@ void SetMoveEffect(bool32 primary)
                 BattleScriptPush(gBattlescriptCurrInstr + 1);
                 gBattlescriptCurrInstr = BattleScript_PSNPrevention;
 
-                gMensajeBatalla = B_MSG_STATUS_HAD_NO_EFFECT;
+                gResultadoPrevencionEstado = PREVENCION_SIN_EFECTO;
                 RESET_RETURN
             }
             if (!CanBePoisoned(gEffectBattler, HabilidadCombatiente(gEffectBattler)))
@@ -2073,12 +2776,12 @@ void SetMoveEffect(bool32 primary)
                 gBattlescriptCurrInstr = BattleScript_BRNPrevention;
                 if (gHitMarker & HITMARKER_STATUS_ABILITY_EFFECT)
                 {
-                    gMensajeBatalla = B_MSG_ABILITY_PREVENTS_ABILITY_STATUS;
+                    gResultadoPrevencionEstado = PREVENCION_POR_HABILIDAD_ATACANTE;
                     gHitMarker &= ~HITMARKER_STATUS_ABILITY_EFFECT;
                 }
                 else
                 {
-                    gMensajeBatalla = B_MSG_ABILITY_PREVENTS_MOVE_STATUS;
+                    gResultadoPrevencionEstado = PREVENCION_POR_HABILIDAD_PROPIA;
                 }
                 RESET_RETURN
             }
@@ -2087,7 +2790,7 @@ void SetMoveEffect(bool32 primary)
                 BattleScriptPush(gBattlescriptCurrInstr + 1);
                 gBattlescriptCurrInstr = BattleScript_BRNPrevention;
 
-                gMensajeBatalla = B_MSG_STATUS_HAD_NO_EFFECT;
+                gResultadoPrevencionEstado = PREVENCION_SIN_EFECTO;
                 RESET_RETURN
             }
 
@@ -2118,12 +2821,12 @@ void SetMoveEffect(bool32 primary)
 
                     if (gHitMarker & HITMARKER_STATUS_ABILITY_EFFECT)
                     {
-                        gMensajeBatalla = B_MSG_ABILITY_PREVENTS_ABILITY_STATUS;
+                        gResultadoPrevencionEstado = PREVENCION_POR_HABILIDAD_ATACANTE;
                         gHitMarker &= ~HITMARKER_STATUS_ABILITY_EFFECT;
                     }
                     else
                     {
-                        gMensajeBatalla = B_MSG_ABILITY_PREVENTS_MOVE_STATUS;
+                        gResultadoPrevencionEstado = PREVENCION_POR_HABILIDAD_PROPIA;
                     }
                     RESET_RETURN
                 }
@@ -2135,7 +2838,7 @@ void SetMoveEffect(bool32 primary)
                 BattleScriptPush(gBattlescriptCurrInstr + 1);
                 gBattlescriptCurrInstr = BattleScript_PRLZPrevention;
 
-                gBattleCommunication[MULTISTRING_CHOOSER] = 2;
+                gElegidorTextoMultiple = 2;
                 RESET_RETURN
             }
             if (!CanParalyzeType(gEffectBattler))
@@ -2156,12 +2859,12 @@ void SetMoveEffect(bool32 primary)
 
                 if (gHitMarker & HITMARKER_STATUS_ABILITY_EFFECT)
                 {
-                    gMensajeBatalla = B_MSG_ABILITY_PREVENTS_ABILITY_STATUS;
+                    gResultadoPrevencionEstado = PREVENCION_POR_HABILIDAD_ATACANTE;
                     gHitMarker &= ~HITMARKER_STATUS_ABILITY_EFFECT;
                 }
                 else
                 {
-                    gMensajeBatalla = B_MSG_ABILITY_PREVENTS_MOVE_STATUS;
+                    gResultadoPrevencionEstado = PREVENCION_POR_HABILIDAD_PROPIA;
                 }
                 RESET_RETURN
             }
@@ -2170,7 +2873,7 @@ void SetMoveEffect(bool32 primary)
                 BattleScriptPush(gBattlescriptCurrInstr + 1);
                 gBattlescriptCurrInstr = BattleScript_PSNPrevention;
 
-                gMensajeBatalla = B_MSG_STATUS_HAD_NO_EFFECT;
+                gResultadoPrevencionEstado = PREVENCION_SIN_EFECTO;
                 RESET_RETURN
             }
             if (gBattleMons[gEffectBattler].status1)
@@ -2185,7 +2888,7 @@ void SetMoveEffect(bool32 primary)
             }
             else
             {
-                gMoveResultFlags |= MOVE_RESULT_DOESNT_AFFECT_FOE;
+                gCombate->resultadoAtaque = RESULTADO_MOVIMIENTO_NO_AFECTA;
             }
             break;
         }
@@ -2202,12 +2905,12 @@ void SetMoveEffect(bool32 primary)
 
             if (gHitMarker & HITMARKER_STATUS_ABILITY_EFFECT)
             {
-                gMensajeBatalla = B_MSG_STATUSED_BY_ABILITY;
+                gEstadoAlteradoPorHabilidad = TRUE;
                 gHitMarker &= ~HITMARKER_STATUS_ABILITY_EFFECT;
             }
             else
             {
-                gMensajeBatalla = B_MSG_STATUSED;
+                gEstadoAlteradoPorHabilidad = FALSE;
             }
 
             // for synchronize
@@ -2340,21 +3043,10 @@ void SetMoveEffect(bool32 primary)
                     BattleScriptPush(gBattlescriptCurrInstr + 1);
                     gBattlescriptCurrInstr = sMoveEffectBS_Ptrs[gBattleScripting.moveEffect];
 
-                    for (gBattleCommunication[MULTISTRING_CHOOSER] = 0; gBattleCommunication[MULTISTRING_CHOOSER] < NUM_TRAPPING_MOVES; gBattleCommunication[MULTISTRING_CHOOSER]++)
-                    {
-                        static const u16 sTrappingMoves[NUM_TRAPPING_MOVES] =
-                            {
-                                MOVE_BIND,
-                                MOVE_WRAP,
-                                MOVE_FIRE_SPIN,
-                                MOVE_CLAMP, --> STRINGID_PKMNCLAMPED MOVE_WHIRLPOOL,
-                                MOVE_SAND_TOMB,
-                                MOVE_MAGMA_STORM,
-                                MOVE_INFESTATION,
-                                MOVE_THUNDER_CAGE};
-                        if (sTrappingMoves[gBattleCommunication[MULTISTRING_CHOOSER]] == gCurrentMove)
-                            break;
-                    }
+                    // Aquí había un bucle sobre sTrappingMoves cuyo único fin era
+                    // calcular el índice del mensaje. El movimiento ya queda en
+                    // gCombate->wrappedMove, así que EscribeTextoAtrapado lo mira
+                    // directamente.
                 }
                 break;
             case MOVE_EFFECT_ATK_PLUS_1:
@@ -2608,7 +3300,7 @@ void SetMoveEffect(bool32 primary)
             case MOVE_EFFECT_SPIKES:
                 if (gSideTimers[GetBattlerSide(gEffectBattler)].spikesAmount < 3)
                 {
-                    gMensajeBatalla = B_MSG_SPIKESSCATTERED;
+                    
                     BattleScriptPush(gBattlescriptCurrInstr + 1);
                     gBattlescriptCurrInstr = BattleScript_SpikesActivates;
                 }
@@ -3105,7 +3797,7 @@ static void Cmd_getexp(void)
                     PREPARE_WORD_NUMBER_BUFFER(gBattleTextBuff3, 6, gBattleMoveDamage);
 
                     if (wasSentOut)
-                        PrepareStringBattle(STRINGID_PKMNGAINEDEXP, gCombate->expGetterBattlerId);
+                        EscribeTextoCombate(gCombate->expGetterBattlerId, COMPOUND_STRING("¡{B_BUFF1} ganó {B_BUFF2} {B_BUFF3} puntos de experiencia!"));
 
                     MonGainEVs(&gPlayerParty[*expMonId], gBattleMons[gBattlerFainted].species);
                 }
@@ -4072,7 +4764,7 @@ static void Cmd_moveend(void)
             u16 *choicedMoveAtk = &gCombate->choicedMove[gBattlerAttacker];
             if ((HOLD_EFFECT_CHOICE(holdEffectAtk) || HabilidadCombatiente(gBattlerAttacker) == ABILITY_GORILLA_TACTICS) && gChosenMove != MOVE_STRUGGLE && (*choicedMoveAtk == MOVE_NONE))
             {
-                if ((gMovimientos[gChosenMove].effect == EFECTO_RELEVO) && !(gMoveResultFlags & MOVE_RESULT_FAILED))
+                if ((gMovimientos[gChosenMove].effect == EFECTO_RELEVO) && gCombate->resultadoAtaque != RESULTADO_MOVIMIENTO_FALLIDO)
                 {
                     gBattleScripting.moveendState++;
                     break;
@@ -4081,7 +4773,7 @@ static void Cmd_moveend(void)
             }
             for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
             {
-                if (gBattleMons[gBattlerAttacker].moves[i] == *choicedMoveAtk)
+                if (gBattleMons[gBattlerAttacker].movimientos[i] == *choicedMoveAtk)
                     break;
             }
             if (i == MAXIMO_MOVIMIENTOS_POKEMON)
@@ -4189,7 +4881,7 @@ static void Cmd_moveend(void)
             gBattleScripting.moveendState++;
             break;
         case MOVEEND_ATTACKER_VISIBLE: // make attacker sprite visible
-            if (!(EsMovimientoEfectivo(gCombate->resultadoMovimiento)) || !(gStatuses3[gBattlerAttacker] & (STATUS3_SEMI_INVULNERABLE)) || WasUnableToUseMove(gBattlerAttacker))
+            if (!(MovimientoEsEfectivo(gCombate->resultadoMovimiento)) || !(gStatuses3[gBattlerAttacker] & (STATUS3_SEMI_INVULNERABLE)) || WasUnableToUseMove(gBattlerAttacker))
             {
                 BtlController_EmitSpriteInvisibility(gBattlerAttacker, BUFFER_A, FALSE);
                 MarcaCombatienteOcupado(gBattlerAttacker);
@@ -4557,7 +5249,7 @@ static void Cmd_moveend(void)
             break;
         case MOVEEND_CLEAR_BITS:                                                                                   // Clear/Set bits for things like using a move for all targets and all hits.
             if (B_RAMPAGE_CANCELLING >= GEN_5 && MoveHasAdditionalEffectSelf(gCurrentMove, MOVE_EFFECT_THRASH)     // If we're rampaging
-                && !(EsMovimientoEfectivo(gCombate->resultadoMovimiento))                                          // And it is unusable
+                && !(MovimientoEsEfectivo(gCombate->resultadoMovimiento))                                          // And it is unusable
                 && (gBattleMons[gBattlerAttacker].status2 & STATUS2_LOCK_CONFUSE) != STATUS2_LOCK_CONFUSE_TURN(1)) // And won't end this turn
                 CancelMultiTurnMoves(gBattlerAttacker);                                                            // Cancel it
 
@@ -4583,7 +5275,6 @@ static void Cmd_moveend(void)
             gBattleScripting.moveendState = MOVEEND_COUNT;
         if (endMode == 2 && endState == gBattleScripting.moveendState)
             gBattleScripting.moveendState = MOVEEND_COUNT;
-
     } while (gBattleScripting.moveendState != MOVEEND_COUNT && effect == FALSE);
 
     if (gBattleScripting.moveendState == MOVEEND_COUNT && effect == FALSE)
@@ -4838,7 +5529,7 @@ static void Cmd_openpartyscreen(void)
                 }
             }
 
-            for (i = 0; i < NUM_BATTLE_SIDES; i++)
+            for (i = 0; i < NUMERO_LADOS; i++)
             {
                 if (!(gSpecialStatuses[i].faintedHasReplacement))
                 {
@@ -4862,7 +5553,7 @@ static void Cmd_openpartyscreen(void)
         if (EsCombateContraEntrenador(gCombate->tipoCombate))
         {
             hitmarkerFaintBits = gHitMarker >> 28;
-            for (i = 0; i < NUM_BATTLE_SIDES; i++)
+            for (i = 0; i < NUMERO_LADOS; i++)
             {
                 if ((1 << ALIADO(i)) & hitmarkerFaintBits && (1 << i) & hitmarkerFaintBits)
                 {
@@ -4964,24 +5655,24 @@ static void Cmd_switchhandleorder(void)
         SwitchPartyOrder(combatiente);
         break;
     case 2:
-        gBattleCommunication[MULTIUSE_STATE] = gBattleResources->bufferB[combatiente][1];
+        gEstadoMultiuso = gBattleResources->bufferB[combatiente][1];
         *(gCombate->monToSwitchIntoId + combatiente) = gBattleResources->bufferB[combatiente][1];
         SwitchPartyOrder(combatiente);
 
         PREPARE_SPECIES_BUFFER(gBattleTextBuff1, gBattleMons[gBattlerAttacker].species)
-        PREPARE_MON_NICK_BUFFER(gBattleTextBuff2, battler, gBattleResources->bufferB[combatiente][1])
+        PREPARE_MON_NICK_BUFFER(gBattleTextBuff2, combatiente, gBattleResources->bufferB[combatiente][1])
         break;
     }
 
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
-static void SetDmgHazardsBattlescript(u8 battler, u8 multistringId)
+static void SetDmgHazardsBattlescript(u8 battler, bool32 esRocas)
 {
     gBattleMons[battler].status2 &= ~STATUS2_DESTINY_BOND;
     gHitMarker &= ~HITMARKER_DESTINYBOND;
     gBattleScripting.battler = battler;
-    gBattleCommunication[MULTISTRING_CHOOSER] = multistringId;
+    gDanioPorRocasTrampa = esRocas;
 
     BattleScriptPushCursor();
     if (gBattlescriptCurrInstr[1] == BS_TARGET)
@@ -4997,7 +5688,7 @@ static void SetDmgHazardsBattlescript(u8 battler, u8 multistringId)
 bool32 DoSwitchInAbilities(u32 battler)
 {
     return (AbilityBattleEffects(ABILITYEFFECT_ON_SWITCHIN, battler, 0, 0, 0) ||
-           (gBattleWeather & B_WEATHER_ANY && ClimaTieneEfecto() && AbilityBattleEffects(ABILITYEFFECT_ON_WEATHER, battler, 0, 0, 0)));
+           (ObtenClimaCombate() != CLIMA_COMBATE_NINGUNO && ClimaTieneEfecto() && AbilityBattleEffects(ABILITYEFFECT_ON_WEATHER, battler, 0, 0, 0)));
 }
 
 static void UpdateSentMonFlags(u32 battler)
@@ -5014,7 +5705,7 @@ static bool32 DoSwitchInEffectsForBattler(u32 battler)
     // Neutralizing Gas announces itself before hazards
     if (gBattleMons[battler].ability == ABILITY_NEUTRALIZING_GAS && gSpecialStatuses[battler].announceNeutralizingGas == 0)
     {
-        gMensajeBatalla = B_MSG_SWITCHIN_NEUTRALIZING_GAS;
+        
         gSpecialStatuses[battler].announceNeutralizingGas = TRUE;
         gBattlerAbility = battler;
         BattleScriptPushCursor();
@@ -5028,7 +5719,7 @@ static bool32 DoSwitchInEffectsForBattler(u32 battler)
             gBattleMoveDamage = 1;
 
         gDisableStructs[battler].spikesDone = TRUE;
-        SetDmgHazardsBattlescript(battler, B_MSG_PKMNHURTBYSPIKES);
+        SetDmgHazardsBattlescript(battler, FALSE);
     }
     else if (!(gDisableStructs[battler].stealthRockDone) && (gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_STEALTH_ROCK) && IsBattlerAffectedByHazards(battler, FALSE) && HabilidadCombatiente(battler) != ABILITY_MAGIC_GUARD)
     {
@@ -5036,7 +5727,7 @@ static bool32 DoSwitchInEffectsForBattler(u32 battler)
         gBattleMoveDamage = DanioTrampa(gMovimientos[MOVE_STEALTH_ROCK].type, battler);
 
         if (gBattleMoveDamage != 0)
-            SetDmgHazardsBattlescript(battler, B_MSG_STEALTHROCKDMG);
+            SetDmgHazardsBattlescript(battler, TRUE);
     }
     else if (!(gDisableStructs[battler].toxicSpikesDone) && (gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_TOXIC_SPIKES) && EstaCombatienteEnSuelo(battler))
     {
@@ -5374,7 +6065,7 @@ static void Cmd_yesnoboxlearnmove(void) // revisar, aquí no hace falta un globa
     }
 }
 
-static void Cmd_yesnoboxstoplearningmove(void)-- > posiblemente no haga falta un global aquí, revisar
+static void Cmd_yesnoboxstoplearningmove(void) // posiblemente no haga falta un global aquí, revisar
 {
     CMD_ARGS(const u8 *noInstr);
 
@@ -5624,12 +6315,12 @@ static void Cmd_yesnobox(void)
 {
     CMD_ARGS();
 
-    switch (gBattleCommunication[MULTIUSE_STATE])
+    switch (gEstadoMultiuso)
     {
     case 0:
         HandleBattleWindow(YESNOBOX_X_Y, 0);
         BattlePutTextOnWindow(gText_BattleYesNoChoice, B_WIN_YESNO);
-        gBattleCommunication[MULTIUSE_STATE]++;
+        gEstadoMultiuso++;
         gPosicionCursorSiNo = CURSOR_SI;
         CreaCursorBatallaSiNo();
         break;
@@ -6115,7 +6806,7 @@ static bool32 HasAttackerFaintedTarget(void)
      && gCombate->moveTarget[gBattlerAttacker] == gBattlerTarget
      && gBattlerTarget != gBattlerAttacker
      && gCurrentTurnActionNumber == GetBattlerTurnOrderNum(gBattlerAttacker)
-     && (gChosenMove == gMovimientoElegido[gBattlerAttacker] || gChosenMove == gBattleMons[gBattlerAttacker].moves[gChosenMovePos]))
+     && (gChosenMove == gMovimientoElegido[gBattlerAttacker] || gChosenMove == gBattleMons[gBattlerAttacker].movimientos[gChosenMovePos]))
         return TRUE;
     else
         return FALSE;
@@ -6146,7 +6837,7 @@ bool32 CanParalyzeType(u32 objetivo)
             }                                                    \
             else                                                 \
             {                                                    \
-                gBattlerAttacker = saveBattler;                  \
+                gBattlerAttacker = combatientePrevio;            \
             }                                                    \
             return TRUE;                                         \
         }                                                        \
@@ -6370,9 +7061,9 @@ static void Cmd_various(void)
     {
         VARIOUS_ARGS();
         if (gHitMarker & HITMARKER_FAINTED(battler))
-            gBattleCommunication[MULTIUSE_STATE] = TRUE;
+            gEstadoMultiuso = TRUE;
         else
-            gBattleCommunication[MULTIUSE_STATE] = FALSE;
+            gEstadoMultiuso = FALSE;
         break;
     }
     case VARIOUS_UPDATE_CHOICE_MOVE_ON_LVL_UP:
@@ -6387,7 +7078,7 @@ static void Cmd_various(void)
 
             for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
             {
-                if (gBattleMons[battler].moves[i] == gCombate->choicedMove[battler])
+                if (gBattleMons[battler].movimientos[i] == gCombate->choicedMove[battler])
                     break;
             }
             if (i == MAXIMO_MOVIMIENTOS_POKEMON)
@@ -6489,7 +7180,7 @@ static void Cmd_various(void)
     case VARIOUS_STAT_TEXT_BUFFER:
     {
         VARIOUS_ARGS();
-        PREPARE_STAT_BUFFER(gBattleTextBuff1, gBattleCommunication[MULTIUSE_STATE]);
+        PREPARE_STAT_BUFFER(gBattleTextBuff1, gEstadoMultiuso);
         break;
     }
     case VARIOUS_SWITCHIN_ABILITIES:
@@ -6591,7 +7282,7 @@ static void Cmd_various(void)
         VARIOUS_ARGS(const u8 *failInstr);
         if (GetBattlerTurnOrderNum(gBattlerAttacker) > GetBattlerTurnOrderNum(gBattlerTarget))
             gBattlescriptCurrInstr = cmd->failInstr;
-        else if (EsMovimientoEstado(gBattleMons[gBattlerTarget].moves[gCombate->chosenMovePositions[gBattlerTarget]]))
+        else if (EsMovimientoEstado(gBattleMons[gBattlerTarget].movimientos[gCombate->chosenMovePositions[gBattlerTarget]]))
             gBattlescriptCurrInstr = cmd->failInstr;
         else
             gBattlescriptCurrInstr = cmd->nextInstr;
@@ -6768,10 +7459,10 @@ static void Cmd_various(void)
     case VARIOUS_SET_AURORA_VEIL:
     {
         VARIOUS_ARGS();
-        if (gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_AURORA_VEIL || !(ClimaTieneEfecto() && gBattleWeather & B_WEATHER_SNOW))
+        if (gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_AURORA_VEIL || !(ClimaTieneEfecto() && EsClimaCombateNieve(ObtenClimaCombate())))
         {
-            gMoveResultFlags |= MOVE_RESULT_MISSED;
-            gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+            gCombate->resultadoAtaque = RESULTADO_MOVIMIENTO_FALLO;
+            gElegidorTextoMultiple = 0;
         }
         else
         {
@@ -6783,9 +7474,9 @@ static void Cmd_various(void)
             gSideTimers[GetBattlerSide(battler)].auroraVeilBattlerId = battler;
 
             if (EsCombateContraEntrenador(gCombate->tipoCombate) && CountAliveMonsInBattle(BATTLE_ALIVE_SIDE, gBattlerAttacker) == 2)
-                gBattleCommunication[MULTISTRING_CHOOSER] = 5;
+                gElegidorTextoMultiple = 5;
             else
-                gBattleCommunication[MULTISTRING_CHOOSER] = 5;
+                gElegidorTextoMultiple = 5;
         }
         break;
     }
@@ -6963,14 +7654,14 @@ static void Cmd_various(void)
         if (gBattleMons[battler].status2 & STATUS2_INFATUATION)
         {
             gBattleMons[battler].status2 &= ~(STATUS2_INFATUATION);
-            gMensajeBatalla = B_MSG_MENTALHERBCURE_INFATUATION; // STRINGID_TARGETGOTOVERINFATUATION
+            gCuraHierbaMental = HIERBA_ENAMORAMIENTO; // STRINGID_TARGETGOTOVERINFATUATION
             StringCopy(gBattleTextBuff1, gText_Love);
         }
         // Check taunt
         if (gDisableStructs[battler].tauntTimer != 0)
         {
             gDisableStructs[battler].tauntTimer = 0;
-            gMensajeBatalla = B_MSG_MENTALHERBCURE_TAUNT;
+            gCuraHierbaMental = HIERBA_MOFA;
             PREPARE_MOVE_BUFFER(gBattleTextBuff1, MOVE_TAUNT);
         }
         // Check encore
@@ -6978,20 +7669,20 @@ static void Cmd_various(void)
         {
             gDisableStructs[battler].encoredMove = 0;
             gDisableStructs[battler].encoreTimer = 0;
-            gMensajeBatalla = B_MSG_MENTALHERBCURE_ENCORE; // STRINGID_PKMNENCOREENDED
+            gCuraHierbaMental = HIERBA_BIS; // STRINGID_PKMNENCOREENDED
         }
         // Check torment
         if (gBattleMons[battler].status2 & STATUS2_TORMENT)
         {
             gBattleMons[battler].status2 &= ~(STATUS2_TORMENT);
-            gMensajeBatalla = B_MSG_MENTALHERBCURE_TORMENT;
+            gCuraHierbaMental = HIERBA_TORMENTO;
         }
         // Check disable
         if (gDisableStructs[battler].disableTimer != 0)
         {
             gDisableStructs[battler].disableTimer = 0;
             gDisableStructs[battler].disabledMove = 0;
-            gMensajeBatalla = B_MSG_MENTALHERBCURE_DISABLE;
+            gCuraHierbaMental = HIERBA_ANULACION;
         }
         gBattlescriptCurrInstr = cmd->nextInstr;
         return;
@@ -7100,7 +7791,7 @@ static void Cmd_ColocaProteccion(void)
     if (sProtectSuccessRates[gDisableStructs[gBattlerAttacker].protectUses] >= Random() && notLastTurn)
     {
         gProtectStructs[gBattlerAttacker].protected = TRUE;
-        gMensajeBatalla = TEXTO_COMBATE_PROTECCION;
+        gCombate->textoResultadoOverride = COMPOUND_STRING("¡{B_DEF_NAME_WITH_PREFIX} se protegió!");
         gDisableStructs[gBattlerAttacker].protectUses++;
         fail = FALSE;
     }
@@ -7108,8 +7799,8 @@ static void Cmd_ColocaProteccion(void)
     if (fail)
     {
         gDisableStructs[gBattlerAttacker].protectUses = 0;
-        gMensajeBatalla = B_MSG_PROTECT_FAILED;
-        gMoveResultFlags |= MOVE_RESULT_MISSED;
+        gCombate->resultadoAtaque = RESULTADO_MOVIMIENTO_FALLO;
+        gCombate->textoResultadoOverride = COMPOUND_STRING("¡Pero falló!");
     }
 
     gBattlescriptCurrInstr = cmd->nextInstr;
@@ -7188,28 +7879,11 @@ static void Cmd_setfieldweather(void)
 
     u8 weather = cmd->weather;
 
-    if (!TryChangeBattleWeather(gBattlerAttacker, weather, FALSE))
+    if (!IntentaCambiarClimaCombate(gBattlerAttacker, weather, ORIGEN_CLIMA_MOVIMIENTO))
     {
-        gMoveResultFlags |= MOVE_RESULT_MISSED;
-        gMensajeBatalla = B_MSG_WEATHER_FAILED;
+        gCombate->resultadoAtaque = RESULTADO_MOVIMIENTO_FALLO;
         gBattlescriptCurrInstr = cmd->nextInstr;
         return;
-    }
-
-    switch (weather)
-    {
-    case ENUM_WEATHER_RAIN:
-        gMensajeBatalla = B_MSG_STARTED_RAIN;
-        break;
-    case ENUM_WEATHER_SUN:
-        gMensajeBatalla = B_MSG_STARTED_SUNLIGHT;
-        break;
-    case ENUM_WEATHER_SANDSTORM:
-        gMensajeBatalla = B_MSG_STARTED_SANDSTORM;
-        break;
-    case ENUM_WEATHER_SNOW:
-        gMensajeBatalla = B_MSG_STARTED_SNOW;
-        break;
     }
 
     gBattlescriptCurrInstr = cmd->nextInstr;
@@ -7221,8 +7895,8 @@ static void Cmd_setreflect(void)
 
     if (gSideStatuses[GetBattlerSide(gBattlerAttacker)] & SIDE_STATUS_REFLECT)
     {
-        gMoveResultFlags |= MOVE_RESULT_MISSED;
-        gMensajeBatalla = B_MSG_SIDE_STATUS_FAILED;
+        gCombate->resultadoAtaque = RESULTADO_MOVIMIENTO_FALLO;
+        gTipoBarreraPuesta = BARRERA_FALLO;
     }
     else
     {
@@ -7234,9 +7908,9 @@ static void Cmd_setreflect(void)
         gSideTimers[GetBattlerSide(gBattlerAttacker)].reflectBattlerId = gBattlerAttacker;
 
         if (EsCombateContraEntrenador(gCombate->tipoCombate) && CountAliveMonsInBattle(BATTLE_ALIVE_SIDE, gBattlerAttacker) == 2)
-            gMensajeBatalla = B_MSG_SET_REFLECT_DOUBLE;
+            gTipoBarreraPuesta = BARRERA_REFLEJO;
         else
-            gMensajeBatalla = B_MSG_SET_REFLECT_SINGLE;
+            gTipoBarreraPuesta = BARRERA_REFLEJO;
     }
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
@@ -7245,21 +7919,21 @@ static void Cmd_setseeded(void)
 {
     CMD_ARGS();
 
-    if (!(EsMovimientoEfectivo(gCombate->resultadoMovimiento)) || gStatuses3[gBattlerTarget] & STATUS3_LEECHSEED)
+    if (!(MovimientoEsEfectivo(gCombate->resultadoMovimiento)) || gStatuses3[gBattlerTarget] & STATUS3_LEECHSEED)
     {
-        gMoveResultFlags |= MOVE_RESULT_MISSED;
-        gMensajeBatalla = B_MSG_LEECH_SEED_MISS;
+        gCombate->resultadoAtaque = RESULTADO_MOVIMIENTO_FALLO;
+        gResultadoDrenadoras = DRENADORAS_FALLO;
     }
     else if (EsTipo(gBattlerTarget, TIPO_PLANTA))
     {
-        gMoveResultFlags |= MOVE_RESULT_MISSED;
-        gMensajeBatalla = B_MSG_LEECH_SEED_FAIL;
+        gCombate->resultadoAtaque = RESULTADO_MOVIMIENTO_FALLO;
+        gResultadoDrenadoras = DRENADORAS_INMUNE;
     }
     else
     {
         gStatuses3[gBattlerTarget] |= gBattlerAttacker;
         gStatuses3[gBattlerTarget] |= STATUS3_LEECHSEED;
-        gMensajeBatalla = B_MSG_LEECH_SEED_SET;
+        gResultadoDrenadoras = DRENADORAS_PUESTAS;
     }
 
     gBattlescriptCurrInstr = cmd->nextInstr;
@@ -7308,9 +7982,9 @@ static void Cmd_trysetrest(void)
     else
     {
         if (gBattleMons[gBattlerTarget].status1 & ((u8)(~STATUS1_SLEEP)))
-            gMensajeBatalla = B_MSG_REST_STATUSED;
+            gDescansoCuroEstado = TRUE;
         else
-            gMensajeBatalla = B_MSG_REST;
+            gDescansoCuroEstado = FALSE;
 
         gBattleMons[gBattlerTarget].status1 = STATUS1_SLEEP;
         BtlController_EmitSetMonData(gBattlerTarget, BUFFER_A, REQUEST_STATUS_BATTLE, 0, sizeof(gBattleMons[gBattlerTarget].status1), &gBattleMons[gBattlerTarget].status1);
@@ -7346,11 +8020,9 @@ bool8 UproarWakeUpCheck(u8 battler)
         if (gBattlerTarget == 0xFF)
             gBattlerTarget = i;
         else if (gBattlerTarget == i)
-            gMensajeBatalla = B_MSG_CANT_SLEEP_UPROAR;
+            ;
         else
-            gMensajeBatalla = B_MSG_UPROAR_KEPT_AWAKE;
-
-        break;
+            break;
     }
 
     if (i == gBattlersCount)
@@ -7378,8 +8050,7 @@ static void Cmd_stockpile(void)
     case 0:
         if (gDisableStructs[gBattlerAttacker].stockpileCounter >= 3)
         {
-            gMoveResultFlags |= MOVE_RESULT_MISSED;
-            gMensajeBatalla = B_MSG_CANT_STOCKPILE;
+            gCombate->resultadoAtaque = RESULTADO_MOVIMIENTO_FALLO;
         }
         else
         {
@@ -7387,7 +8058,6 @@ static void Cmd_stockpile(void)
             gDisableStructs[gBattlerAttacker].stockpileBeforeDef = gBattleMons[gBattlerAttacker].statStages[ESTADISTICA_DEFENSA];
             gDisableStructs[gBattlerAttacker].stockpileBeforeSpDef = gBattleMons[gBattlerAttacker].statStages[ESTADISTICA_DEFENSA_ESPECIAL];
             PREPARE_BYTE_NUMBER_BUFFER(gBattleTextBuff1, 1, gDisableStructs[gBattlerAttacker].stockpileCounter);
-            gMensajeBatalla = B_MSG_STOCKPILED;
         }
         break;
     case 1: // Save def/sp def stats.
@@ -7413,7 +8083,7 @@ static void Cmd_stockpiletobasedamage(void)
     }
     else
     {
-        if (gMensajeBatalla != TEXTO_COMBATE_PROTECCION)
+        if (gCombate->resultadoAtaque != RESULTADO_MOVIMIENTO_FALLO)
             gBattleScripting.animTurn = gDisableStructs[gBattlerAttacker].stockpileCounter;
 
         if (!(gSpecialStatuses[gBattlerAttacker].parentalBondState == PARENTAL_BOND_1ST_HIT && IsBattlerAlive(gBattlerTarget)))
@@ -7433,7 +8103,6 @@ static void Cmd_stockpiletohpheal(void)
     if (gDisableStructs[gBattlerAttacker].stockpileCounter == 0)
     {
         gBattlescriptCurrInstr = failInstr;
-        gMensajeBatalla = B_MSG_SWALLOW_FAILED;
     }
     else
     {
@@ -7442,7 +8111,6 @@ static void Cmd_stockpiletohpheal(void)
             gDisableStructs[gBattlerAttacker].stockpileCounter = 0;
             gBattlescriptCurrInstr = failInstr;
             gBattlerTarget = gBattlerAttacker;
-            gMensajeBatalla = B_MSG_SWALLOW_FULL_HP;
         }
         else
         {
@@ -7551,7 +8219,7 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
 {
     bool32 certain = FALSE;
     bool32 notProtectAffected = FALSE;
-    u32 index, battler, battlerAbility, battlerHoldEffect;
+    u32 battler, battlerAbility, battlerHoldEffect;
     bool32 affectsUser = (flags & MOVE_EFFECT_AFFECTS_USER);
     bool32 mirrorArmored = (flags & STAT_CHANGE_MIRROR_ARMOR);
 
@@ -7669,26 +8337,12 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
                 statValue = -1;
             else if (gBattleMons[battler].statStages[statId] == 2 && statValue < -2)
                 statValue = -2;
-            gBattleTextBuff2[0] = B_BUFF_PLACEHOLDER_BEGIN;
-            index = 1;
             if (statValue == -2)
-            {
-                gBattleTextBuff2[1] = B_BUFF_STRING;
-                gBattleTextBuff2[2] = STRINGID_STATHARSHLY;
-                gBattleTextBuff2[3] = STRINGID_STATHARSHLY >> 8;
-                index = 4;
-            }
+                PREPARE_STRING_BUFFER(gBattleTextBuff2, COMPOUND_STRING("harshly {B_BUFF1} fell!"))
             else if (statValue <= -3)
-            {
-                gBattleTextBuff2[1] = B_BUFF_STRING;
-                gBattleTextBuff2[2] = STRINGID_SEVERELY & 0xFF;
-                gBattleTextBuff2[3] = STRINGID_SEVERELY >> 8;
-                index = 4;
-            }
-            gBattleTextBuff2[index++] = B_BUFF_STRING;
-            gBattleTextBuff2[index++] = STRINGID_STATFELL;
-            gBattleTextBuff2[index++] = STRINGID_STATFELL >> 8;
-            gBattleTextBuff2[index] = B_BUFF_EOS;
+                PREPARE_STRING_BUFFER(gBattleTextBuff2, COMPOUND_STRING("severely {B_BUFF1} fell!"))
+            else
+                PREPARE_STRING_BUFFER(gBattleTextBuff2, COMPOUND_STRING("{B_BUFF1} fell!"))
 
             if (gBattleMons[battler].statStages[statId] == ESTADISTICA_MENOS_6)
             {
@@ -7710,26 +8364,12 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
             statValue = 1;
         else if (gBattleMons[battler].statStages[statId] == 10 && statValue > 2)
             statValue = 2;
-        gBattleTextBuff2[0] = B_BUFF_PLACEHOLDER_BEGIN;
-        index = 1;
         if (statValue == 2)
-        {
-            gBattleTextBuff2[1] = B_BUFF_STRING;
-            gBattleTextBuff2[2] = STRINGID_STATSHARPLY;
-            gBattleTextBuff2[3] = STRINGID_STATSHARPLY >> 8;
-            index = 4;
-        }
+            PREPARE_STRING_BUFFER(gBattleTextBuff2, COMPOUND_STRING("sharply {B_BUFF1} rose!"))
         else if (statValue >= 3)
-        {
-            gBattleTextBuff2[1] = B_BUFF_STRING;
-            gBattleTextBuff2[2] = STRINGID_DRASTICALLY & 0xFF;
-            gBattleTextBuff2[3] = STRINGID_DRASTICALLY >> 8;
-            index = 4;
-        }
-        gBattleTextBuff2[index++] = B_BUFF_STRING;
-        gBattleTextBuff2[index++] = STRINGID_STATROSE;
-        gBattleTextBuff2[index++] = STRINGID_STATROSE >> 8;
-        gBattleTextBuff2[index] = B_BUFF_EOS;
+            PREPARE_STRING_BUFFER(gBattleTextBuff2, COMPOUND_STRING("drastically {B_BUFF1} rose!"))
+        else
+            PREPARE_STRING_BUFFER(gBattleTextBuff2, COMPOUND_STRING("{B_BUFF1} rose!"))
 
         if (gBattleMons[battler].statStages[statId] == ESTADISTICA_MAS_6)
         {
@@ -7754,10 +8394,10 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
     if (gBattleMons[battler].statStages[statId] > ESTADISTICA_MAS_6)
         gBattleMons[battler].statStages[statId] = ESTADISTICA_MAS_6;
 
-    if (gBattleCommunication[MULTISTRING_CHOOSER] == B_MSG_STAT_WONT_INCREASE && flags & STAT_CHANGE_ALLOW_PTR)
-        gMoveResultFlags |= MOVE_RESULT_MISSED;
+    if (gResultadoCambioEstadistica == CAMBIO_ESTADISTICA_TOPE && flags & STAT_CHANGE_ALLOW_PTR)
+        gCombate->resultadoAtaque = RESULTADO_MOVIMIENTO_FALLO;
 
-    if (gBattleCommunication[MULTISTRING_CHOOSER] == B_MSG_STAT_WONT_INCREASE && !(flags & STAT_CHANGE_ALLOW_PTR))
+    if (gResultadoCambioEstadistica == CAMBIO_ESTADISTICA_TOPE && !(flags & STAT_CHANGE_ALLOW_PTR))
         return STAT_CHANGE_DIDNT_WORK;
 
     return STAT_CHANGE_WORKED;
@@ -7910,8 +8550,8 @@ static void Cmd_setlightscreen(void)
 
     if (gSideStatuses[GetBattlerSide(gBattlerAttacker)] & SIDE_STATUS_LIGHTSCREEN)
     {
-        gMoveResultFlags |= MOVE_RESULT_MISSED;
-        gMensajeBatalla = B_MSG_SIDE_STATUS_FAILED;
+        gCombate->resultadoAtaque = RESULTADO_MOVIMIENTO_FALLO;
+        gTipoBarreraPuesta = BARRERA_FALLO;
     }
     else
     {
@@ -7923,9 +8563,9 @@ static void Cmd_setlightscreen(void)
         gSideTimers[GetBattlerSide(gBattlerAttacker)].lightscreenBattlerId = gBattlerAttacker;
 
         if (EsCombateContraEntrenador(gCombate->tipoCombate) && CountAliveMonsInBattle(BATTLE_ALIVE_SIDE, gBattlerAttacker) == 2)
-            gMensajeBatalla = B_MSG_SET_LIGHTSCREEN_DOUBLE;
+            gTipoBarreraPuesta = BARRERA_PANTALLA_LUZ;
         else
-            gMensajeBatalla = B_MSG_SET_LIGHTSCREEN_SINGLE;
+            gTipoBarreraPuesta = BARRERA_PANTALLA_LUZ;
     }
 
     gBattlescriptCurrInstr = cmd->nextInstr;
@@ -8009,15 +8649,13 @@ static void Cmd_setmist(void)
 
     if (gSideTimers[GetBattlerSide(gBattlerAttacker)].mistTimer)
     {
-        gMoveResultFlags |= MOVE_RESULT_FAILED;
-        gMensajeBatalla = B_MSG_MIST_FAILED;
+        gCombate->resultadoAtaque = RESULTADO_MOVIMIENTO_FALLIDO;
     }
     else
     {
         gSideTimers[GetBattlerSide(gBattlerAttacker)].mistTimer = TURNOS_EFECTOS;
         gSideTimers[GetBattlerSide(gBattlerAttacker)].mistBattlerId = gBattlerAttacker;
         gSideStatuses[GetBattlerSide(gBattlerAttacker)] |= SIDE_STATUS_MIST;
-        gMensajeBatalla = B_MSG_SET_MIST;
     }
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
@@ -8034,7 +8672,6 @@ static void Cmd_setsubstitute(void)
     if (gBattleMons[gBattlerAttacker].hp <= hp)
     {
         gBattleMoveDamage = 0;
-        gMensajeBatalla = B_MSG_SUBSTITUTE_FAILED;
     }
     else
     {
@@ -8045,7 +8682,7 @@ static void Cmd_setsubstitute(void)
         gBattleMons[gBattlerAttacker].status2 |= STATUS2_SUBSTITUTE;
         gBattleMons[gBattlerAttacker].status2 &= ~STATUS2_WRAPPED;
         gDisableStructs[gBattlerAttacker].substituteHP = gBattleMoveDamage;
-        gMensajeBatalla = B_MSG_SET_SUBSTITUTE;
+
         gHitMarker |= HITMARKER_IGNORE_SUBSTITUTE;
     }
 
@@ -8060,14 +8697,14 @@ static void Cmd_disablelastusedattack(void)
 
     for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
-        if (gBattleMons[gBattlerTarget].moves[i] == gLastMoves[gBattlerTarget])
+        if (gBattleMons[gBattlerTarget].movimientos[i] == gLastMoves[gBattlerTarget])
             break;
     }
     if (gDisableStructs[gBattlerTarget].disabledMove == MOVE_NONE && i != MAXIMO_MOVIMIENTOS_POKEMON && gBattleMons[gBattlerTarget].pp[i] != 0)
     {
-        PREPARE_MOVE_BUFFER(gBattleTextBuff1, gBattleMons[gBattlerTarget].moves[i])
+        PREPARE_MOVE_BUFFER(gBattleTextBuff1, gBattleMons[gBattlerTarget].movimientos[i])
 
-        gDisableStructs[gBattlerTarget].disabledMove = gBattleMons[gBattlerTarget].moves[i];
+        gDisableStructs[gBattlerTarget].disabledMove = gBattleMons[gBattlerTarget].movimientos[i];
         gDisableStructs[gBattlerTarget].disableTimer = TURNOS_EFECTOS;
         gBattlescriptCurrInstr = cmd->nextInstr;
     }
@@ -8085,7 +8722,7 @@ static void Cmd_trysetencore(void)
 
     for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
-        if (gBattleMons[gBattlerTarget].moves[i] == gLastMoves[gBattlerTarget])
+        if (gBattleMons[gBattlerTarget].movimientos[i] == gLastMoves[gBattlerTarget])
             break;
     }
 
@@ -8096,7 +8733,7 @@ static void Cmd_trysetencore(void)
 
     if (gDisableStructs[gBattlerTarget].encoredMove == MOVE_NONE && i != MAXIMO_MOVIMIENTOS_POKEMON && gBattleMons[gBattlerTarget].pp[i] != 0)
     {
-        gDisableStructs[gBattlerTarget].encoredMove = gBattleMons[gBattlerTarget].moves[i];
+        gDisableStructs[gBattlerTarget].encoredMove = gBattleMons[gBattlerTarget].movimientos[i];
         gDisableStructs[gBattlerTarget].encoredMovePos = i;
         // Encore always lasts 3 turns, but we need to account for a scenario where Encore changes the move during the same turn.
         if (GetBattlerTurnOrderNum(gBattlerAttacker) > GetBattlerTurnOrderNum(gBattlerTarget))
@@ -8179,7 +8816,7 @@ static void Cmd_healpartystatus(void)
         struct Pokemon *party = GetBattlerParty(gBattlerAttacker);
         s32 i;
 
-        gMensajeBatalla = B_MSG_BELL;
+        gCuraEquipoPorAroma = FALSE;
 
         if (HabilidadCombatiente(gBattlerAttacker) != ABILITY_SOUNDPROOF || B_HEAL_BELL_SOUNDPROOF == GEN_5 || B_HEAL_BELL_SOUNDPROOF >= GEN_8)
         {
@@ -8189,7 +8826,7 @@ static void Cmd_healpartystatus(void)
         else
         {
             RecuerdaHabilidad(gBattlerAttacker, gBattleMons[gBattlerAttacker].ability);
-            gBattleCommunication[MULTISTRING_CHOOSER] |= B_MSG_BELL_SOUNDPROOF_ATTACKER;
+            gInsonorizadoCascabel |= INSONORIZADO_ATACANTE;
         }
 
         gBattleScripting.battler = partner;
@@ -8204,7 +8841,7 @@ static void Cmd_healpartystatus(void)
             else
             {
                 RecuerdaHabilidad(partner, gBattleMons[partner].ability);
-                gBattleCommunication[MULTISTRING_CHOOSER] |= B_MSG_BELL_SOUNDPROOF_PARTNER;
+                gInsonorizadoCascabel |= INSONORIZADO_ALIADO;
             }
         }
 
@@ -8241,7 +8878,7 @@ static void Cmd_healpartystatus(void)
     }
     else // Aromatherapy
     {
-        gMensajeBatalla = B_MSG_SOOTHING_AROMA;
+        gCuraEquipoPorAroma = TRUE;
         toHeal = (1 << PARTY_SIZE) - 1;
 
         gBattleMons[gBattlerAttacker].status1 = 0;
@@ -8460,7 +9097,7 @@ static void Cmd_presentdamagecalculation(void)
     }
     else
     {
-        gMoveResultFlags &= ~MOVE_RESULT_DOESNT_AFFECT_FOE;
+        gCombate->resultadoAtaque = RESULTADO_MOVIMIENTO_CONECTA;
         gBattlescriptCurrInstr = BattleScript_PresentHealTarget;
     }
 }
@@ -8471,15 +9108,15 @@ static void Cmd_setsafeguard(void)
 
     if (gSideStatuses[GetBattlerSide(gBattlerAttacker)] & SIDE_STATUS_SAFEGUARD)
     {
-        gMoveResultFlags |= MOVE_RESULT_MISSED;
-        gMensajeBatalla = B_MSG_SIDE_STATUS_FAILED;
+        gCombate->resultadoAtaque = RESULTADO_MOVIMIENTO_FALLO;
+        gTipoBarreraPuesta = BARRERA_FALLO;
     }
     else
     {
         gSideStatuses[GetBattlerSide(gBattlerAttacker)] |= SIDE_STATUS_SAFEGUARD;
         gSideTimers[GetBattlerSide(gBattlerAttacker)].safeguardTimer = TURNOS_EFECTOS;
         gSideTimers[GetBattlerSide(gBattlerAttacker)].safeguardBattlerId = gBattlerAttacker;
-        gMensajeBatalla = B_MSG_SET_SAFEGUARD;
+        gTipoBarreraPuesta = BARRERA_VELO_SAGRADO;
     }
 
     gBattlescriptCurrInstr = cmd->nextInstr;
@@ -8703,7 +9340,7 @@ static void Cmd_RecuperaSaludSegunClima(void)
         }
         else
         {
-            if (!(gBattleWeather & B_WEATHER_ANY) || !ClimaTieneEfecto())
+            if (climaCombate == CLIMA_COMBATE_NINGUNO || !ClimaTieneEfecto())
                 gBattleMoveDamage = CuantosPSMaximos(gBattlerAttacker) / 2;
             else if (EsClimaCombateSol(climaCombate))
                 gBattleMoveDamage = 20 * CuantosPSMaximos(gBattlerAttacker) / 30;
@@ -8952,19 +9589,19 @@ static void Cmd_tryswapitems(void)
 
         if (oldItemAtk != ITEM_NONE && *newItemAtk != ITEM_NONE)
         {
-            gMensajeBatalla = B_MSG_ITEM_SWAP_BOTH; // attacker's item -> <- target's item
+            gResultadoCambioObjeto = OBJETO_AMBOS; // attacker's item -> <- target's item
         }
         else if (oldItemAtk == ITEM_NONE && *newItemAtk != ITEM_NONE)
         {
             if (HabilidadCombatiente(gBattlerAttacker) == ABILITY_UNBURDEN && gBattleResources->flags[gBattlerAttacker] & RESOURCE_FLAG_UNBURDEN)
                 gBattleResources->flags[gBattlerAttacker] &= ~RESOURCE_FLAG_UNBURDEN;
 
-            gMensajeBatalla = B_MSG_ITEM_SWAP_TAKEN; // nothing -> <- target's item
+            gResultadoCambioObjeto = OBJETO_TOMADO; // nothing -> <- target's item
         }
         else
         {
             CheckSetUnburden(gBattlerAttacker);
-            gMensajeBatalla = B_MSG_ITEM_SWAP_GIVEN; // attacker's item -> <- nothing
+            gResultadoCambioObjeto = OBJETO_DADO; // attacker's item -> <- nothing
         }
     }
 }
@@ -9069,7 +9706,7 @@ static void Cmd_tryimprison(void)
                     s32 i;
                     for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
                     {
-                        if (gBattleMons[gBattlerAttacker].moves[attackerMoveId] == gBattleMons[battler].moves[i] && gBattleMons[gBattlerAttacker].moves[attackerMoveId] != MOVE_NONE)
+                        if (gBattleMons[gBattlerAttacker].movimientos[attackerMoveId] == gBattleMons[battler].movimientos[i] && gBattleMons[gBattlerAttacker].movimientos[attackerMoveId] != MOVE_NONE)
                             break;
                     }
                     if (i != MAXIMO_MOVIMIENTOS_POKEMON)
@@ -9241,7 +9878,7 @@ static void Cmd_EliminaPantallas(void)
 
     u32 lado = GetBattlerSide(gBattlerTarget);
 
-    if (EsMovimientoEfectivo(gCombate->resultadoMovimiento) && (gSideTimers[lado].reflectTimer || gSideTimers[lado].lightscreenTimer || gSideTimers[lado].auroraVeilTimer))
+    if (MovimientoEsEfectivo(gCombate->resultadoMovimiento) && (gSideTimers[lado].reflectTimer || gSideTimers[lado].lightscreenTimer || gSideTimers[lado].auroraVeilTimer))
     {
         gSideStatuses[lado] &= ~SIDE_STATUS_REFLECT;
         gSideStatuses[lado] &= ~SIDE_STATUS_LIGHTSCREEN;
@@ -9351,7 +9988,7 @@ static void Cmd_handleballthrow(void)
             TryBattleFormChange(gBattlerTarget, FORM_CHANGE_END_BATTLE);
             gBattlescriptCurrInstr = BattleScript_SuccessBallThrow;
             SetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL, &gLastUsedItem);
-            gBattleCommunication[MULTISTRING_CHOOSER] = (CalculatePlayerPartyCount() == PARTY_SIZE) ? 0 : 1;
+            gElegidorTextoMultiple = (CalculatePlayerPartyCount() == PARTY_SIZE) ? 0 : 1;
             return;
         }
 
@@ -9368,7 +10005,7 @@ static void Cmd_handleballthrow(void)
             u8 shakes = CalculateShakes(odds);
             BtlController_EmitBallThrowAnim(gBattlerAttacker, BUFFER_A, shakes);
             MarcaCombatienteOcupado(gBattlerAttacker);
-            gBattleCommunication[MULTISTRING_CHOOSER] = shakes;
+            gSacudidasBall = shakes;
             gBattlescriptCurrInstr = BattleScript_ShakeBallThrow;
         }
     }
@@ -9421,11 +10058,11 @@ static void Cmd_displaydexinfo(void)
     u32 species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[GetCatchingBattler()]], MON_DATA_SPECIES);
     u8 taskId;
 
-    switch (gBattleCommunication[MULTIUSE_STATE])
+    switch (gEstadoMultiuso)
     {
     case 0:
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
-        gBattleCommunication[MULTIUSE_STATE]++;
+        gEstadoMultiuso++;
         break;
     case 1:
         if (!gFundidoPaletas.activo)
@@ -9433,21 +10070,21 @@ static void Cmd_displaydexinfo(void)
             struct Pokemon *mon = &gEnemyParty[gBattlerPartyIndexes[GetCatchingBattler()]];
             FreeAllWindowBuffers();
             taskId = DisplayCaughtMonDexPage(species, GetMonData(mon, MON_DATA_IS_SHINY), GetMonData(mon, MON_DATA_PERSONALITY));
-            gBattleCommunication[MULTIUSE_STATE]++;
+            gEstadoMultiuso++;
         }
         break;
     case 2:
         if (!gFundidoPaletas.activo && gMain.callback2 == BattleMainCB2 && !gTasks[taskId].isActive)
         {
             SetVBlankCallback(VBlankCB_Battle);
-            gBattleCommunication[MULTIUSE_STATE]++;
+            gEstadoMultiuso++;
         }
         break;
     case 3:
         InitBattleBgsVideo();
         LoadBattleTextboxAndBackground();
         gBattle_BG3_X = 256;
-        gBattleCommunication[MULTIUSE_STATE]++;
+        gEstadoMultiuso++;
         break;
     case 4:
         if (!IsDma3ManagerBusyWithBgCopy())
@@ -9455,7 +10092,7 @@ static void Cmd_displaydexinfo(void)
             BeginNormalPaletteFade(PALETTES_BG, 0, 16, 0, RGB_BLACK);
             ShowBg(0);
             ShowBg(3);
-            gBattleCommunication[MULTIUSE_STATE]++;
+            gEstadoMultiuso++;
         }
         break;
     case 5:
@@ -9535,12 +10172,12 @@ static void Cmd_trygivecaughtmonnick(void)
 {
     CMD_ARGS(const u8 *successInstr);
 
-    switch (gBattleCommunication[MULTIUSE_STATE])
+    switch (gEstadoMultiuso)
     {
     case 0:
         HandleBattleWindow(YESNOBOX_X_Y, 0);
         BattlePutTextOnWindow(gText_BattleYesNoChoice, B_WIN_YESNO);
-        gBattleCommunication[MULTIUSE_STATE]++;
+        gEstadoMultiuso++;
         gPosicionCursorSiNo = CURSOR_SI;
         CreaCursorBatallaSiNo();
         break;
@@ -9564,18 +10201,18 @@ static void Cmd_trygivecaughtmonnick(void)
             PlaySE(SE_SELECT);
             if (gPosicionCursorSiNo == CURSOR_SI)
             {
-                gBattleCommunication[MULTIUSE_STATE]++;
+                gEstadoMultiuso++;
                 EmpiezaFundidoPaletasRapido(FUNDIDO_A_NEGRO);
             }
             else
             {
-                gBattleCommunication[MULTIUSE_STATE]++;
+                gEstadoMultiuso++;
             }
         }
         else if (JOY_NEW(B_BUTTON))
         {
             PlaySE(SE_SELECT);
-            gBattleCommunication[MULTIUSE_STATE]++;
+            gEstadoMultiuso++;
         }
         break;
     case 2:
@@ -9591,7 +10228,7 @@ static void Cmd_trygivecaughtmonnick(void)
                            BattleMainCB2,
                            GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_IS_SHINY));
 
-            gBattleCommunication[MULTIUSE_STATE]++;
+            gEstadoMultiuso++;
         }
         break;
     case 3:
@@ -9649,21 +10286,9 @@ static void Cmd_trainerslideout(void)
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
-static const u16 sTelekinesisBanList[] =
-    {
-        SPECIES_SANDYGAST,
-        SPECIES_PALOSSAND,
-};
-
 bool32 IsTelekinesisBannedSpecies(u16 species)
 {
-    u32 i;
-
-    for (i = 0; i < ARRAY_COUNT(sTelekinesisBanList); i++)
-    {
-        if (species == sTelekinesisBanList[i])
-            return TRUE;
-    }
+    // Sandygast/Palossand (los únicos vetados en el juego original) no existen en esta Pokédex.
     return FALSE;
 }
 
@@ -10089,7 +10714,7 @@ void ScriptCombate_PalmaRauda(void)
         break;
 
     case PRIORIDAD_MOVIMIENTO_MUY_ALTA:
-        if (GetBattlerSpeed(gBattlerAttacker) > GetBattlerSpeed(objetivo))
+        if (GetBattlerTotalSpeedStat(gBattlerAttacker) > GetBattlerTotalSpeedStat(objetivo))
             gBattlescriptCurrInstr = cmd->nextInstr;
         else
             gBattlescriptCurrInstr = cmd->failInstr;
@@ -10204,100 +10829,6 @@ void BS_ObjetivoEspejoMagico(void)
     gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
-static void Cmd_resultmessage(void) // Por terminar
-{
-    CMD_ARGS();
-
-    u32 stringId = 0;
-
-    if (HayAlgunCombatienteOcupado())
-        return;
-
-    gMostrarMensajeBatalla = TRUE;
-    switch (gCombate->resultadoMovimiento)
-    {
-    case MOVIMIENTO_POCO_EFECTIVO:
-        if (EsPrimerGolpe())
-            stringId = STRINGID_NOTVERYEFFECTIVE;
-        break;
-    case MOVIMIENTO_NEUTRO:
-    default:
-        gMostrarMensajeBatalla = FALSE;
-        break;
-    case MOVIMIENTO_SUPER_EFECTIVO:
-        if (EsPrimerGolpe())
-        {
-            if (GetBattlerSide(gBattlerTarget) != LADO_JUGADOR && gCombate->trainerSlideFirstSuperEffectiveHitMsgState != 2)
-                gCombate->trainerSlideFirstSuperEffectiveHitMsgState = 1;
-
-            stringId = STRINGID_SUPEREFFECTIVE;
-        }
-        break;
-    }
-
-    if (gMoveResultFlags & MOVE_RESULT_MISSED && (!(gMoveResultFlags & MOVE_RESULT_DOESNT_AFFECT_FOE) || gMensajeBatalla == TEXTO_COMBATE_LEVITACION || gMensajeBatalla == TEXTO_COMBATE_TELEPATA))
-    {
-        if (gMensajeBatalla == TEXTO_COMBATE_LEVITACION || gMensajeBatalla == TEXTO_COMBATE_TELEPATA)
-            CreaMensajeHabilidad(gBattlerTarget, gBattleMons[gBattlerTarget].ability);
-        stringId = gMensajeBatalla;
-        gMostrarMensajeBatalla = TRUE;
-    }
-    else
-    {
-        gMostrarMensajeBatalla = TRUE;
-        switch (gMoveResultFlags & ~MOVE_RESULT_MISSED)
-        {
-        case MOVE_RESULT_SUPER_EFFECTIVE:
-            if (!gCombate->contadorMultigolpes) // Don't print effectiveness on each hit in a multi hit attack
-            {
-                // Signal for the trainer slide-in system.
-                if (GetBattlerSide(gBattlerTarget) != LADO_JUGADOR && gCombate->trainerSlideFirstSuperEffectiveHitMsgState != 2)
-                    gCombate->trainerSlideFirstSuperEffectiveHitMsgState = 1;
-
-                stringId = STRINGID_SUPEREFFECTIVE;
-            }
-            break;
-        case MOVE_RESULT_NOT_VERY_EFFECTIVE:
-            if (!gCombate->contadorMultigolpes)
-                stringId = STRINGID_NOTVERYEFFECTIVE;
-            break;
-        case MOVE_RESULT_FAILED:
-            stringId = STRINGID_BUTITFAILED;
-            break;
-        case MOVE_RESULT_DOESNT_AFFECT_FOE:
-            stringId = STRINGID_ITDOESNTAFFECT;
-            break;
-        default:
-            if (gMoveResultFlags & MOVE_RESULT_DOESNT_AFFECT_FOE)
-            {
-                stringId = STRINGID_ITDOESNTAFFECT;
-            }
-            else if (gMoveResultFlags & MOVE_RESULT_FAILED)
-            {
-                stringId = STRINGID_BUTITFAILED;
-            }
-            else
-            {
-                gMostrarMensajeBatalla = FALSE;
-            }
-        }
-    }
-
-    if (stringId)
-        PrepareStringBattle(stringId, gBattlerAttacker);
-
-    gBattlescriptCurrInstr = cmd->nextInstr;
-
-    // Print berry reducing message after result message.
-    if (gSpecialStatuses[gBattlerTarget].berryReduced && MovimientoEsEfectivo(gCombate->resultadoMovimiento))
-    {
-        gCombate->ateBerry[gBattlerTarget & BIT_SIDE] |= 1u << gBattlerPartyIndexes[gBattlerTarget];
-        gSpecialStatuses[gBattlerTarget].berryReduced = FALSE;
-        BattleScriptPushCursor();
-        gBattlescriptCurrInstr = BattleScript_PrintBerryReduceString;
-    }
-}
-
 void IntentaRecuperarSaludTrasVencer(void)
 {
     u32 combatiente = gBattlerAttacker; 
@@ -10308,17 +10839,17 @@ void IntentaRecuperarSaludTrasVencer(void)
         && !NoAliveMonsForEitherParty())
     {
 
-        s32 maxHP = CuantosPSMaximos(battler);
-        gBattleMoveDamage = (maxHP / 3) + gBattleMons[battler].hp;
+        s32 maxHP = CuantosPSMaximos(combatiente);
+        gBattleMoveDamage = (maxHP / 3) + gBattleMons[combatiente].hp;
 
         if (gBattleMoveDamage > maxHP)
             gBattleMoveDamage = maxHP;
 
-        BtlController_EmitSetMonData(battler, BUFFER_A, REQUEST_HP_BATTLE, 0, sizeof(gBattleMoveDamage), &gBattleMoveDamage);
-        MarcaCombatienteOcupado(battler);
+        BtlController_EmitSetMonData(combatiente, BUFFER_A, REQUEST_HP_BATTLE, 0, sizeof(gBattleMoveDamage), &gBattleMoveDamage);
+        MarcaCombatienteOcupado(combatiente);
 
         BattleScriptPushCursor(); 
-        
+
         gLastUsedAbility = habilidad;
         gBattlescriptCurrInstr = ScriptCombate_HabilidadRecuperacionSaludTrasVencer;
     }

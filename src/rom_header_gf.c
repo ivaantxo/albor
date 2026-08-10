@@ -47,7 +47,7 @@ struct GFRomHeader
     const u8 (* abilityNames)[];
     const u8 *const * abilityDescriptions;
     const struct Item * items;
-    const struct Movimientos * moves;
+    const struct InfoMovimiento * moves;
     const struct CompressedSpriteSheet * ballGfx;
     const struct CompressedSpritePalette * ballPalettes;
     u32 gameClearFlag;

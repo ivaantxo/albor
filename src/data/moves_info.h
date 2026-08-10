@@ -2,7 +2,6 @@
 #include "constants/battle.h"
 #include "constants/battle_move_effects.h"
 #include "constants/battle_script_commands.h"
-#include "constants/battle_string_ids.h"
 #include "constants/hold_effects.h"
 #include "constants/moves.h"
 
@@ -17,10 +16,11 @@
 #define PRIORIDAD_ALTA          .prioridad  = PRIORIDAD_MOVIMIENTO_ALTA
 #define PRIORIDAD_MUY_ALTA      .prioridad  = PRIORIDAD_MOVIMIENTO_MUY_ALTA
 
-/* First arg is the charge turn string id, second arg depends on effect
+/* Optional arg depends on effect, packed into the high 16 bits (read via HIHALF):
 EFFECT_SEMI_INVULNERABLE: semi-invulnerable STATUS3 to apply to battler
-EFFECT_TWO_TURNS_ATTACK: weather in which to skip charge turn */
-#define TWO_TURN_ARG(stringid, ...) (stringid) __VA_OPT__(| ((__VA_ARGS__) << 16))
+EFFECT_TWO_TURNS_ATTACK: weather in which to skip charge turn
+Absent for moves with neither. */
+#define TWO_TURN_ARG(...) (0 __VA_OPT__(| ((__VA_ARGS__) << 16)))
 
 #define PP_MOVIMIENTO_LIMITADO  8
 #define PP_MOVIMIENTO_NORMAL    16
@@ -89,7 +89,7 @@ static const u8 sCloseCombatDescription[] = _(
     "A strong attack but lowers\n"
     "the defensive stats.");
 
-const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
+const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
 {
     [MOVE_NONE] =
     {
@@ -494,7 +494,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .argument = TWO_TURN_ARG(STRINGID_PKMNFLEWHIGH, COMPRESS_BITS(STATUS3_ON_AIR)),
+        .argument = TWO_TURN_ARG(COMPRESS_BITS(STATUS3_ON_AIR)),
         .battleAnimScript = gBattleAnimMove_Fly,
     },
 
@@ -1635,7 +1635,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKSUNLIGHT, CLIMA_COMBATE_SOL),
+        .argument = TWO_TURN_ARG(CLIMA_COMBATE_SOL),
         .battleAnimScript = gBattleAnimMove_SolarBeam,
     },
 
@@ -1937,7 +1937,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .argument = TWO_TURN_ARG(STRINGID_PKMNDUGHOLE, COMPRESS_BITS(STATUS3_UNDERGROUND)),
+        .argument = TWO_TURN_ARG(COMPRESS_BITS(STATUS3_UNDERGROUND)),
         .battleAnimScript = gBattleAnimMove_Dig,
     },
 
@@ -2600,7 +2600,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         CABEZAZO,
-        .argument = TWO_TURN_ARG(STRINGID_PKMNLOWEREDHEAD),
+        .argument = TWO_TURN_ARG(),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_DEF_PLUS_1,
             .self = TRUE,
@@ -5140,7 +5140,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .argument = TWO_TURN_ARG(STRINGID_PKMNHIDUNDERWATER, COMPRESS_BITS(STATUS3_UNDERWATER)),
+        .argument = TWO_TURN_ARG(COMPRESS_BITS(STATUS3_UNDERWATER)),
         .battleAnimScript = gBattleAnimMove_Dive,
     },
 
@@ -6054,7 +6054,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .argument = TWO_TURN_ARG(STRINGID_PKMNSPRANGUP, COMPRESS_BITS(STATUS3_ON_AIR)),
+        .argument = TWO_TURN_ARG(COMPRESS_BITS(STATUS3_ON_AIR)),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 30,
@@ -8116,7 +8116,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .ignoresProtect = TRUE,
         .minimizeDoubleDamage = B_UPDATED_MOVE_FLAGS == GEN_6,
-        .argument = TWO_TURN_ARG(STRINGID_VANISHEDINSTANTLY, COMPRESS_BITS(STATUS3_PHANTOM_FORCE)),
+        .argument = TWO_TURN_ARG(COMPRESS_BITS(STATUS3_PHANTOM_FORCE)),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_FEINT,
         }),
@@ -9334,7 +9334,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
-        .argument = TWO_TURN_ARG(STRINGID_CLOAKEDINAFREEZINGLIGHT),
+        .argument = TWO_TURN_ARG(),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 30,
@@ -9356,7 +9356,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .argument = TWO_TURN_ARG(STRINGID_CLOAKEDINAFREEZINGLIGHT),
+        .argument = TWO_TURN_ARG(),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 30,
@@ -9498,7 +9498,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .ignoresProtect = TRUE,
         .makesContact = TRUE,
         .minimizeDoubleDamage = B_UPDATED_MOVE_FLAGS == GEN_6,
-        .argument = TWO_TURN_ARG(STRINGID_VANISHEDINSTANTLY, COMPRESS_BITS(STATUS3_PHANTOM_FORCE)),
+        .argument = TWO_TURN_ARG(COMPRESS_BITS(STATUS3_PHANTOM_FORCE)),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_FEINT,
         }),
@@ -10267,7 +10267,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .slicingMove = TRUE,
-        .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKSUNLIGHT, CLIMA_COMBATE_SOL),
+        .argument = TWO_TURN_ARG(CLIMA_COMBATE_SOL),
         .battleAnimScript = gBattleAnimMove_SolarBlade,
     },
 
@@ -12407,7 +12407,7 @@ const struct Movimientos gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .balistico = TRUE,
         .category = CATEGORIA_ESPECIAL,
-        .argument = TWO_TURN_ARG(STRINGID_ELECTROSHOTCHARGING, CLIMA_COMBATE_LLUVIA),
+        .argument = TWO_TURN_ARG(CLIMA_COMBATE_LLUVIA),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SP_ATK_PLUS_1,
             .self = TRUE,
