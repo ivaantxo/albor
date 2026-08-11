@@ -62,7 +62,7 @@ static bool32 ShouldSwitchIfHasBadOdds(u32 battler)
     //Variable initialization
     u8 opposingPosition, atkType1, atkType2, defType1, defType2, effectiveness;
     s32 i, damageDealt = 0, maxDamageDealt = 0, damageTaken = 0, maxDamageTaken = 0;
-    enum Movimiento movimientoIA;
+    enum Movimientos movimientoIA;
     u32 playerMove, aiBestMove = MOVE_NONE, aiAbility = AI_DATA->abilities[battler], opposingBattler;
     enum ClimasCombate climaCombate = ObtenClimaCombate();
     bool32 getsOneShot = FALSE, hasStatusMove = FALSE, hasSuperEffectiveMove = FALSE;
@@ -375,9 +375,6 @@ static bool32 ShouldSwitchIfBadlyStatused(u32 battler)
 {
     bool32 switchMon = FALSE;
     u16 monAbility = AI_DATA->abilities[battler];
-    u16 holdEffect = AI_DATA->holdEffects[battler];
-    u8 opposingPosition = OPONENTE(battler);
-    u8 opposingBattler = opposingPosition;
     bool32 hasStatRaised = AnyStatIsRaised(battler);
 
     //Perish Song
@@ -483,7 +480,7 @@ static bool32 HasSuperEffectiveMoveAgainstOpponents(u32 battler, bool32 noRng)
     {
         for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
         {
-            move = gBattleMons[battler].moves[i];
+            move = gBattleMons[battler].movimientos[i];
             if (move == MOVE_NONE)
                 continue;
 
@@ -505,7 +502,7 @@ static bool32 HasSuperEffectiveMoveAgainstOpponents(u32 battler, bool32 noRng)
     {
         for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
         {
-            move = gBattleMons[battler].moves[i];
+            move = gBattleMons[battler].movimientos[i];
             if (move == MOVE_NONE)
                 continue;
 
@@ -1170,7 +1167,7 @@ static s32 GetSwitchinWeatherImpact(void)
             if (weatherImpact == 0)
                 weatherImpact = 1;
         }
-        else if ((EsClimaCombatArena(climaCombate))
+        else if ((EsClimaCombateArena(climaCombate))
             && (AI_DATA->switchinCandidate.battleMon.types[TIPO_1] != TIPO_TIERRA && AI_DATA->switchinCandidate.battleMon.types[TIPO_2] != TIPO_TIERRA
             && AI_DATA->switchinCandidate.battleMon.types[TIPO_1] != TIPO_ROCA && AI_DATA->switchinCandidate.battleMon.types[TIPO_2] != TIPO_ROCA
             && ability != ABILITY_SAND_VEIL && ability != ABILITY_SAND_RUSH && ability != ABILITY_SAND_FORCE))
@@ -1349,8 +1346,8 @@ static u32 GetSwitchinHitsToKO(s32 damageTaken, u32 battler)
     u16 maxHP = AI_DATA->switchinCandidate.battleMon.maxHP, item = AI_DATA->switchinCandidate.battleMon.item, heldItemEffect = ItemId_GetHoldEffect(item);
     u32 weatherDuration = gCombate->clima.turnos, holdEffectParam = ItemId_GetHoldEffectParam(item);
     u32 opposingBattler = OPONENTE(battler);
-    u32 opposingAbility = gBattleMons[opposingBattler].ability, ability = AI_DATA->switchinCandidate.battleMon.ability;
-    bool32 usedSingleUseHealingItem = FALSE, opponentCanBreakMold = IsMoldBreakerTypeAbility(opposingBattler, opposingAbility);
+    u32 opposingAbility = gBattleMons[opposingBattler].ability;
+    bool32 usedSingleUseHealingItem = FALSE;
     s32 currentHP = startingHP;
 
     // No damage being dealt
@@ -1491,7 +1488,7 @@ static s32 GetMaxDamagePlayerCouldDealToSwitchin(u32 battler, u32 opposingBattle
 
     for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
-        playerMove = gBattleMons[opposingBattler].moves[i];
+        playerMove = gBattleMons[opposingBattler].movimientos[i];
         if (playerMove != MOVE_NONE && !EsMovimientoEstado(playerMove))
         {
             damageTaken = AI_CalcPartyMonDamage(playerMove, opposingBattler, battler, battleMon, FALSE);
@@ -1611,7 +1608,7 @@ static u32 GetBestMonIntegrated(struct Pokemon *party, int firstId, int lastId, 
         // Check through current mon's moves
         for (j = 0; j < MAXIMO_MOVIMIENTOS_POKEMON; j++)
         {
-            aiMove = AI_DATA->switchinCandidate.battleMon.moves[j];
+            aiMove = AI_DATA->switchinCandidate.battleMon.movimientos[j];
 
             if (aiMove != MOVE_NONE && !EsMovimientoEstado(aiMove))
             {

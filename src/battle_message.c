@@ -623,7 +623,7 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
                 toCpy = GetTrainerLoseText();
                 break;
             case B_TXT_PC_CREATOR_NAME:
-                toCpy = COMPOUND_STRING("PC de Bill.}");
+                toCpy = COMPOUND_STRING("PC de Bill.");
                 break;
             case B_TXT_ATK_PREFIX2:
                 if (GetBattlerSide(gBattlerAttacker) == LADO_JUGADOR)

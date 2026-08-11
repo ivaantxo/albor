@@ -361,7 +361,7 @@ static void SwitchIn_TryShinyAnim(u32 battler)
 static void OpponentBufferExecCompleted(u32 combatiente)
 {
     gBattlerControllerFuncs[combatiente] = OpponentBufferRunCommand;
-    DesmarcaCombatienteOcupado[combatiente];
+    DesmarcaCombatienteOcupado(combatiente);
 }
 
 static void OpponentHandleLoadMonSprite(u32 battler)

@@ -8,6 +8,8 @@
 
 static void AnimBonemerangProjectile(struct Sprite *);
 static void AnimBoneHitProjectile(struct Sprite *);
+void AnimSalpicaTierraDirtRising(struct Sprite *);
+static void AnimSalpicaTierraDirtFalling(struct Sprite *);
 static void AnimDirtPlumeParticle_Step(struct Sprite *);
 static void AnimDigDirtMound(struct Sprite *);
 static void AnimBonemerangProjectile_Step(struct Sprite *);

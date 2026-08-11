@@ -26,7 +26,6 @@
 static u32 ChooseMoveOrAction_Singles(u32 battlerAI);
 static u32 ChooseMoveOrAction_Doubles(u32 battlerAI);
 static inline void BattleAI_DoAIProcessing(struct AI_ThinkingStruct *aiThink, u32 battlerAI, u32 battlerDef);
-static bool32 IsPinchBerryItemEffect(u32 holdEffect);
 
 // ewram
 EWRAM_DATA const u8 *gAIScriptPtr = NULL; // Still used in contests
@@ -286,8 +285,8 @@ void AI_UpdateSwitchInData(u32 battler)
             BATTLE_HISTORY->itemEffects[battler] = aiMon->heldEffect;
         for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
         {
-            if (aiMon->moves[i])
-                BATTLE_HISTORY->usedMoves[battler][i] = aiMon->moves[i];
+            if (aiMon->movimientos[i])
+                BATTLE_HISTORY->usedMoves[battler][i] = aiMon->movimientos[i];
         }
         aiMon->switchInCount++;
         aiMon->status = gBattleMons[battler].status1; // Copy status, because it could've been changed in battle.
@@ -341,7 +340,7 @@ static void SetBattlerAIMovesData(struct AILogicData *aiData, u32 battlerAtk, u3
 {
     u32 battlerDef, moveIndex, move;
     SaveBattlerData(battlerAtk);
-    enum Movimientos = ObtenMovimientos(battlerAtk);
+    enum Movimientos *moves = ObtenMovimientos(battlerAtk);
 
     SetBattlerData(battlerAtk);
 
@@ -1186,19 +1185,19 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         }
         break;
     case EFFECT_TORMENTA_ARENA:
-        if (weather & B_WEATHER_SANDSTORM || IsMoveEffectWeather(aiData->partnerMove))
+        if (EsClimaCombateArena(climaCombate) || IsMoveEffectWeather(aiData->partnerMove))
             ADJUST_SCORE(-8);
         break;
     case EFFECT_DIA_SOLEADO:
-        if (weather & B_WEATHER_SUN || IsMoveEffectWeather(aiData->partnerMove))
+        if (EsClimaCombateSol(climaCombate) || IsMoveEffectWeather(aiData->partnerMove))
             ADJUST_SCORE(-8);
         break;
     case EFFECT_DANZA_LLUVIA:
-        if (weather & B_WEATHER_RAIN || IsMoveEffectWeather(aiData->partnerMove))
+        if (EsClimaCombateLluvia(climaCombate) || IsMoveEffectWeather(aiData->partnerMove))
             ADJUST_SCORE(-8);
         break;
     case EFFECT_NEVADA:
-        if (weather & B_WEATHER_SNOW || IsMoveEffectWeather(aiData->partnerMove))
+        if (EsClimaCombateNieve(climaCombate) || IsMoveEffectWeather(aiData->partnerMove))
             ADJUST_SCORE(-8);
         break;
     case EFFECT_ATTRACT:
@@ -1538,7 +1537,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         }
         else if (prioridad == PRIORIDAD_MOVIMIENTO_MUY_ALTA)
         {
-            if (AI_IsFaster(battlerAtk, battlerDef))
+            if (AI_IsFaster(battlerAtk, battlerDef, move))
                 ADJUST_SCORE(10);
             else
                 ADJUST_SCORE(-10);
@@ -1821,22 +1820,6 @@ static s32 AI_DoubleBattle(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     return score;
 }
 
-static bool32 IsPinchBerryItemEffect(u32 holdEffect)
-{
-    switch (holdEffect)
-    {
-    case HOLD_EFFECT_ATTACK_UP:
-    case HOLD_EFFECT_DEFENSE_UP:
-    case HOLD_EFFECT_SPEED_UP:
-    case HOLD_EFFECT_SP_ATTACK_UP:
-    case HOLD_EFFECT_SP_DEFENSE_UP:
-    case HOLD_EFFECT_RANDOM_STAT_UP:
-        return TRUE;
-    }
-
-    return FALSE;
-}
-
 static s32 CompareMoveAccuracies(u32 battlerAtk, u32 battlerDef, u32 moveSlot1, u32 moveSlot2)
 {
     u32 acc1 = AI_DATA->moveAccuracy[battlerAtk][battlerDef][moveSlot1];
@@ -1970,7 +1953,6 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
 
     s32 score = 0;
     enum Movimientos movimientoPredecido = aiData->ultimoMovimientoUsado[battlerDef];
-    u32 movimientoPredecidoSlot = ObtenIndiceMovimiento(GetMovesArray(battlerDef), movimientoPredecido);
     bool32 isDoubleBattle = IsValidDoubleBattle(battlerAtk);
     u32 i;
     enum ClimasCombate climaCombate = ObtenClimaCombate();
@@ -2211,7 +2193,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         }
         else if (ShouldRecover(battlerAtk, battlerDef, move, 100))
         {
-            if (aiData->holdEffects[battlerAtk] == HOLD_EFFECT_CURE_SLP || aiData->holdEffects[battlerAtk] == HOLD_EFFECT_CURE_STATUS || HasMoveEffect(EFFECT_SNORE, battlerAtk) || aiData->abilities[battlerAtk] == ABILITY_MUDAR || EsClimaCombateLluvia(climaCombate) && gCombate->clima.turnos != 1 && aiData->abilities[battlerAtk] == ABILITY_HYDRATION && aiData->holdEffects[battlerAtk] != HOLD_EFFECT_UTILITY_UMBRELLA))
+            if (aiData->holdEffects[battlerAtk] == HOLD_EFFECT_CURE_SLP || aiData->holdEffects[battlerAtk] == HOLD_EFFECT_CURE_STATUS || HasMoveEffect(battlerAtk, EFFECT_SNORE) || aiData->abilities[battlerAtk] == ABILITY_MUDAR || (EsClimaCombateLluvia(climaCombate) && gCombate->clima.turnos != 1 && aiData->abilities[battlerAtk] == ABILITY_HYDRATION && aiData->holdEffects[battlerAtk] != HOLD_EFFECT_UTILITY_UMBRELLA))
                 ADJUST_SCORE(GOOD_EFFECT);
         }
         break;
@@ -2698,7 +2680,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
     for (i = 0; i < gMovimientos[move].numAdditionalEffects; i++)
     {
         // Only consider effects with a guaranteed chance to happen
-        if (!EfectoSecundarioGarantizado(battlerAtk, aiData->abilities[battlerAtk], &gMovimientos[move].additionalEffects[i]))
+        if (!EfectoSecundarioGarantizado(aiData->abilities[battlerAtk], &gMovimientos[move].additionalEffects[i]))
             continue;
 
         // Consider move effects that target self
@@ -3142,7 +3124,7 @@ static s32 AI_PreferRelevo(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             ADJUST_SCORE(DECENT_EFFECT);
         break;
     case EFFECT_PROTECT:
-        if (gLastMoves[battlerAtk] == MOVE_PROTECT || gLastMoves[battlerAtk] == MOVE_DETECT)
+        if (gLastMoves[battlerAtk] == MOVE_PROTECT)
             ADJUST_SCORE(-2);
         else
             ADJUST_SCORE(DECENT_EFFECT);

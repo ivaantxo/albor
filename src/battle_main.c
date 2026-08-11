@@ -792,7 +792,6 @@ static void SpriteCB_WildMonAnimate(struct Sprite *sprite)
 
 void SpriteCB_FaintOpponentMon(struct Sprite *sprite)
 {
-    u8 battler = sprite->sBattler;
     u16 species = sprite->sSpeciesId;
     u8 yOffset;
 
@@ -1265,7 +1264,6 @@ void SwitchInClearSetData(u32 battler)
 const u8 *FaintClearSetData(u32 combatiente)
 {
     const u8 *result = NULL;
-    u32 ladoCombatiente = GetBattlerSide(combatiente);
 
     for (u32 indiceEstadistica = 0; indiceEstadistica < NUMERO_ESTADISTICAS_BATALLA; indiceEstadistica++)
         gBattleMons[combatiente].statStages[indiceEstadistica] = ESTADISTICA_NEUTRA;
@@ -2089,7 +2087,7 @@ u32 GetBattlerTotalSpeedStat(u32 battler)
     return GetBattlerTotalSpeedStatArgs(battler, ability, holdEffect);
 }
 
-enum PrioridadMovimientos PrioridadMovimientoMasHabilidad(u32 combatiente, u32 movimiento)
+enum PrioridadMovimientos PrioridadMovimientoMasHabilidad(u32 combatiente, enum Movimientos movimiento)
 {
     enum PrioridadMovimientos prioridad = PrioridadMovimiento(movimiento);
     u32 habilidad = HabilidadCombatiente(combatiente);
@@ -2482,7 +2480,7 @@ static void HandleEndTurn_MonFled(void)
 
 static void HandleEndTurn_FinishBattle(void)
 {
-    u32 i, battler;
+    u32 i;
 
     if (gCurrentActionFuncId == B_ACTION_TRY_FINISH || gCurrentActionFuncId == B_ACTION_FINISHED)
     {

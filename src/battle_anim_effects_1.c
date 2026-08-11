@@ -169,6 +169,11 @@ static const union AffineAnimCmd sFeintAffineZoom[] =
     AFFINEANIMCMD_END,
 };
 
+static const union AffineAnimCmd *const sFeintAffineAnims[] =
+{
+    sFeintAffineZoom,
+};
+
 static const union AffineAnimCmd sAccupressureTurn[] =
 {
     AFFINEANIMCMD_FRAME(0, 0, 1, 20),
@@ -5747,27 +5752,6 @@ static inline void SwapStructData(void *s1, void *s2, void *data, u32 size)
     memcpy(data, s1, size);
     memcpy(s1, s2, size);
     memcpy(s2, data, size);
-}
-
-static void ReloadBattlerSprites(u32 battler, struct Pokemon *party)
-{
-    struct Pokemon *mon = &party[gBattlerPartyIndexes[battler]];
-    BattleLoadMonSpriteGfx(mon, battler);
-    CreateBattlerSprite(battler);
-    UpdateHealthboxAttribute(gHealthboxSpriteIds[battler], mon, HEALTHBOX_ALL);
-
-    // Try to recreate shadow sprite
-    // Both of these *should* be true, but use an OR just to be certain
-    if (gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary < MAX_SPRITES
-        || gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdSecondary < MAX_SPRITES)
-    {
-        DestroySprite(&gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary]);
-        DestroySprite(&gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdSecondary]);
-        gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary = MAX_SPRITES;
-        gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdSecondary = MAX_SPRITES;
-        CreateEnemyShadowSprite(battler);
-        SetBattlerShadowSpriteCallback(battler, GetMonData(mon, MON_DATA_SPECIES));
-    }
 }
 
 static void AnimTask_DoubleTeam_Step(u8 taskId)

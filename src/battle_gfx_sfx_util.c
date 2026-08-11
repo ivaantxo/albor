@@ -341,8 +341,12 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
 
     monsPersonality = GetMonData(mon, MON_DATA_PERSONALITY);
     isShiny = GetMonData(mon, MON_DATA_IS_SHINY);
-    species = GetMonData(mon, MON_DATA_SPECIES);
     currentPersonality = monsPersonality;
+
+    if (gBattleSpritesDataPtr->battlerData[battler].transformSpecies == SPECIES_NONE)
+        species = GetMonData(mon, MON_DATA_SPECIES);
+    else
+        species = gBattleSpritesDataPtr->battlerData[battler].transformSpecies;
 
     position = battler;
     if (GetBattlerSide(battler) == LADO_OPONENTE)
@@ -360,7 +364,10 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
 
     paletteOffset = OBJ_PLTT_ID(battler);
 
-    lzPaletteData = GetMonFrontSpritePal(mon);
+    if (gBattleSpritesDataPtr->battlerData[battler].transformSpecies == SPECIES_NONE)
+        lzPaletteData = GetMonFrontSpritePal(mon);
+    else
+        lzPaletteData = GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, currentPersonality);
 
     LZDecompressWram(lzPaletteData, gDecompressionBuffer);
     LoadPalette(gDecompressionBuffer, paletteOffset, PLTT_SIZE_4BPP);
@@ -511,9 +518,9 @@ void GestionaCambioGraficoEspecie(u32 atacante, u32 defensor, bool32 usarPersona
                                     personalityValue);
     }
     src = gMonSpritesGfxPtr->spritesGfx[position];
-    dst = (void *)(OBJ_VRAM0 + gSprites[gBattlerSpriteIds[battlerAtk]].oam.tileNum * TILE_4BPP);
+    dst = (void *)(OBJ_VRAM0 + gSprites[gBattlerSpriteIds[atacante]].oam.tileNum * TILE_4BPP);
     DmaCopy32(3, src, dst, MON_PIC_SIZE);
-    paletteOffset = OBJ_PLTT_ID(battlerAtk);
+    paletteOffset = OBJ_PLTT_ID(atacante);
     lzPaletteData = GetMonSpritePalFromSpeciesAndPersonality(targetSpecies, isShiny, personalityValue);
     LZDecompressWram(lzPaletteData, gDecompressionBuffer);
     LoadPalette(gDecompressionBuffer, paletteOffset, PLTT_SIZE_4BPP);
@@ -522,8 +529,8 @@ void GestionaCambioGraficoEspecie(u32 atacante, u32 defensor, bool32 usarPersona
     BlendPalette(paletteOffset, 16, 6, RGB_WHITE);
     CopiaCpu32(&gPlttBufferFaded[paletteOffset], &gPlttBufferUnfaded[paletteOffset], PLTT_SIZE_4BPP);
 
-    gSprites[gBattlerSpriteIds[battlerAtk]].y = GetBattlerSpriteDefault_Y(battlerAtk);
-    StartSpriteAnim(&gSprites[gBattlerSpriteIds[battlerAtk]], 0);
+    gSprites[gBattlerSpriteIds[atacante]].y = GetBattlerSpriteDefault_Y(atacante);
+    StartSpriteAnim(&gSprites[gBattlerSpriteIds[atacante]], 0);
 }
 
 void BattleLoadSubstituteOrMonSpriteGfx(u8 battler, bool8 loadMonSprite)
@@ -562,7 +569,7 @@ void LoadBattleMonGfxAndAnimate(u8 battler, bool8 loadMonSprite, u32 spriteId)
         gSprites[spriteId].y = GetBattlerSpriteDefault_Y(battler);
 }
 
-void TrySetBehindSubstituteSpriteBit(u8 battler, u16 move)
+void TrySetBehindSubstituteSpriteBit(u8 battler, enum Movimientos move)
 {
     if (gMovimientos[move].effect == EFFECT_SUBSTITUTE)
         gBattleSpritesDataPtr->battlerData[battler].behindSubstitute = 1;

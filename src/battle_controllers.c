@@ -38,7 +38,7 @@ void PreparaVarsBatalla(void)
         gBattlerControllerFuncs[combatiente] = BattleControllerDummy;
         gActionSelectionCursor[combatiente] = 0;
         gMoveSelectionCursor[combatiente] = 0;
-        DesmarcaCombatienteOcupado[combatiente];
+        DesmarcaCombatienteOcupado(combatiente);
     }
 
     ClearBattleAnimationVars();
@@ -271,8 +271,9 @@ void BtlController_EmitMoveAnimation(u32 battler, u32 bufferId, enum Movimientos
     gBattleResources->transferBuffer[11] = multihit;
     if (ClimaTieneEfecto())
     {
-        gBattleResources->transferBuffer[12] = gBattleWeather;
-        gBattleResources->transferBuffer[13] = (gBattleWeather & 0xFF00) >> 8;
+        u16 weatherBit = (1 << gCombate->clima.modo);
+        gBattleResources->transferBuffer[12] = weatherBit;
+        gBattleResources->transferBuffer[13] = (weatherBit & 0xFF00) >> 8;
     }
     else
     {
@@ -558,7 +559,6 @@ static u32 GetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId, u8 *
     struct BattlePokemon battleMon;
     struct DatosMovimiento datosMovimiento;
     u8 nickname[POKEMON_NAME_LENGTH * 2];
-    u8 *src;
     u16 data16;
     u32 data32;
     s32 size = 0;
@@ -570,7 +570,7 @@ static u32 GetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId, u8 *
         battleMon.item = GetMonData(&party[monId], MON_DATA_HELD_ITEM);
         for (size = 0; size < MAXIMO_MOVIMIENTOS_POKEMON; size++)
         {
-            battleMon.moves[size] = GetMonData(&party[monId], MON_DATA_MOVE1 + size);
+            battleMon.movimientos[size] = GetMonData(&party[monId], MON_DATA_MOVE1 + size);
             battleMon.pp[size] = GetMonData(&party[monId], MON_DATA_PP1 + size);
         }
         battleMon.friendship = GetMonData(&party[monId], MON_DATA_FRIENDSHIP);
@@ -810,7 +810,7 @@ static void SetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId)
             SetMonData(&party[monId], MON_DATA_HELD_ITEM, &battlePokemon->item);
             for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
             {
-                SetMonData(&party[monId], MON_DATA_MOVE1 + i, &battlePokemon->moves[i]);
+                SetMonData(&party[monId], MON_DATA_MOVE1 + i, &battlePokemon->movimientos[i]);
                 SetMonData(&party[monId], MON_DATA_PP1 + i, &battlePokemon->pp[i]);
             }
             SetMonData(&party[monId], MON_DATA_FRIENDSHIP, &battlePokemon->friendship);

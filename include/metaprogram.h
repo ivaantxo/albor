@@ -29,8 +29,17 @@
 /* You'll never guess what this one does */
 #define APPEND_SEMICOLON(a) a;
 
-/* Converts a string to a compound literal, essentially making it a pointer to const u8 */
+/* Converts a string to a compound literal, essentially making it a pointer to const u8.
+ * 'static' gives the real build's compound literal program lifetime, so the pointer stays
+ * valid even when assigned inside a nested block (switch/if) and read after that block ends
+ * (a plain compound literal's storage only lives until the end of its innermost enclosing
+ * block). Apple clang (used only for IDE syntax-checking, never for the real build) doesn't
+ * support 'static' compound literals, so it keeps the plain form there. */
+#if defined(__APPLE__) || defined(__CYGWIN__) || defined(__INTELLISENSE__)
 #define COMPOUND_STRING(str) (const u8[]) _(str)
+#else
+#define COMPOUND_STRING(str) (static const u8[]) _(str)
+#endif
 
 /* Expands to the first/second/third/fourth argument. */
 #define FIRST(a, ...) a

@@ -90,6 +90,8 @@ void AnimTranslateLinearAndFlicker_Flipped(struct Sprite *sprite);
 void AnimWeatherBallUp(struct Sprite *sprite);
 void AnimWeatherBallDown(struct Sprite *sprite);
 void AnimSpinningSparkle(struct Sprite *sprite);
+void AnimSalpicaTierraDirt(struct Sprite *sprite);
+void AnimSalpicaTierraDirtRising(struct Sprite *sprite);
 void SetAverageBattlerPositions(u8 battlerId, bool8 respectMonPicOffsets, s16 *x, s16 *y);
 void DestroySpriteAndMatrix(struct Sprite *sprite);
 void TranslateSpriteLinearFixedPoint(struct Sprite *sprite);

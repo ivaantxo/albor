@@ -26,7 +26,18 @@
       "Bash(sed -i '' '5467s/.*/    enum Movimientos movimiento = damageCalcData->movimiento;/' src/battle_util.c)",
       "Bash(sed -i '' '5773s/.*/    enum Movimientos movimiento = damageCalcData->movimiento;/' src/battle_util.c)",
       "Bash(awk 'NR<2578 && /^[a-zA-Z].*\\\\\\(.*\\\\\\)$/ {last=NR\": \"$0} END{print last}' src/battle_util.c)",
-      "Bash(awk 'NR>=2222 && NR<=2578 && /climaCombate/' src/battle_util.c)"
+      "Bash(awk 'NR>=2222 && NR<=2578 && /climaCombate/' src/battle_util.c)",
+      "Bash(awk '/^static u32 GetBattlerMonData/,0{print; if\\(/^}/ && started\\) exit; started=1}' src/battle_controllers.c)",
+      "Bash(awk '/gBattleAnimPicTable\\\\[\\\\] =/,/^};/' src/data/battle_anim.h)",
+      "Bash(awk -F: '$1>1009')",
+      "Bash(awk '/^const struct CompressedSpriteSheetAndPalette gBattleAnimTable/,/^    };$/' src/data/battle_anim.h)",
+      "Bash(sips -g pixelWidth -g pixelHeight graphics/battle_anims/sprites/yellow_ball.png)",
+      "Bash(awk 'NR==1017,/^    };$/{print NR\": \"$0}' src/data/battle_anim.h)",
+      "Bash(awk 'NR>=1017 && NR<=1441 && /^    };$/{print NR; exit}' src/data/battle_anim.h)",
+      "Bash(awk 'NR>=1017 && NR<=1441 && /^};$/{print NR; exit}' src/data/battle_anim.h)",
+      "Bash(awk 'NR<=6191 && /^static void |^void /{name=$0; line=NR} END{print line\": \"name}')",
+      "Bash(awk '/^void GestionaCambioGraficoEspecie/,0{print; if\\(/^}/ && started\\) exit; started=1}' src/battle_gfx_sfx_util.c)",
+      "Bash(awk '/^void BattleLoadMonSpriteGfx/,0{print; if\\(/^}/ && started\\) exit; started=1}' src/battle_gfx_sfx_util.c)"
     ]
   }
 }

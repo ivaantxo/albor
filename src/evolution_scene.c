@@ -42,7 +42,7 @@ struct EvoInfo
 
 static EWRAM_DATA struct EvoInfo *sEvoStructPtr = NULL;
 static EWRAM_DATA u16 *sBgAnimPal = NULL;
-static EWRAM_DATA u32 sEvoGraphicsTaskId = 0xFF;
+static EWRAM_DATA u32 sEvoGraphicsTaskId = 0;
 COMMON_DATA void (*gCB2_AfterEvolution)(void) = NULL;
 
 static void Task_EvolutionScene(u8 taskId);

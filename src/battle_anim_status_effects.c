@@ -156,7 +156,7 @@ void AnimTask_CentredIceCube(u8 taskId)
     u8 battler1 = gBattleAnimTarget;
     u8 battler2 = ALIADO(battler1);
 
-    if (!EsCombateContraEntrenador(gCombate->tipoCombate) || IsAlly(gBattleAnimAttacker, gBattleAnimTarget))
+    if (!EsCombateContraEntrenador(gCombate->tipoCombate) || EsAliado(gBattleAnimAttacker, gBattleAnimTarget))
     {
         x = GetBattlerSpriteCoord(battler1, BATTLER_COORD_X_2);
         y = GetBattlerSpriteCoord(battler1, BATTLER_COORD_Y_PIC_OFFSET);

@@ -231,11 +231,16 @@ $(C_BUILDDIR)/data.o: CFLAGS += -fno-show-column -fno-diagnostics-show-caret
 CXX_SRCS := src/agb_flash_le.c src/agb_flash_1m.c src/agb_flash_mx.c
 
 # Regla general para compilar C/C++ a .o
-$(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.c
+#
+# Los .c normales (no C++) pasan por el mismo tipo de pipeline de tres pasos que los
+# .s, y por la misma razón: preproc -i es quien resuelve _("...") e INCBIN_U8/16/32(...)
+# (solo tienen definición real dentro del bloque #if defined(__APPLE__)/IDE de global.h).
+# Sin este paso, _()/INCBIN_* no resuelven con ningún compilador fuera de un IDE.
+$(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.c $(PREPROC) charmap.txt
 	@mkdir -p $(dir $@)
 ifeq ($(filter $<,$(CXX_SRCS)),)
 	@echo "CC $<"
-	@$(ARMCC) $(CFLAGS) $(CPPFLAGS) -Iinclude -c $< -o $@
+	@$(CPP) $(CPPFLAGS) $< | $(PREPROC) -i $< charmap.txt | $(CC1) $(CFLAGS) -o - - | cat - <(echo -e ".text\n\t.align\t2, 0") | $(AS) $(ASFLAGS) -o $@ -
 else
 	@echo "CXX $<"
 	@$(CXX) $(CXXFLAGS) -Iinclude -c $< -o $@

@@ -927,7 +927,6 @@ static void Cmd_attackcanceler(void)
 {
     CMD_ARGS();
 
-    s32 i;
     u32 attackerAbility = HabilidadCombatiente(gBattlerAttacker);
     u32 moveType = TipoMovimiento(gCurrentMove, gBattlerAttacker);
     u32 habilidadObjetivo = HabilidadCombatiente(gBattlerTarget);
@@ -1270,8 +1269,7 @@ static void Cmd_ppreduce(void)
 {
     CMD_ARGS();
 
-    s32 i, ppToDeduct = 1;
-    u32 moveTarget = GetBattlerMoveTargetType(gBattlerAttacker, gCurrentMove);
+    s32 ppToDeduct = 1;
 
     if (HayAlgunCombatienteOcupado())
         return;
@@ -3830,7 +3828,7 @@ static void Cmd_getexp(void)
             u32 expBattler = gCombate->expGetterBattlerId;
             if (gBattleResources->bufferB[expBattler][0] == CONTROLLER_TWORETURNVALUES && gBattleResources->bufferB[expBattler][1] == B_ACTION_SUBIO_NIVEL)
             {
-                u16 temp, battler = 0xFF;
+                u16 battler = 0xFF;
                 if (EsCombateContraEntrenador(gCombate->tipoCombate) && gBattlerPartyIndexes[expBattler] == *expMonId)
                     HandleLowHpMusicChange(&gPlayerParty[gBattlerPartyIndexes[expBattler]], expBattler);
 
@@ -4322,17 +4320,6 @@ static void Cmd_pause(void)
     }
 }
 
-static void Pausa(u32 numeroFrames)
-{
-    if (!HayAlgunCombatienteOcupado())
-    {
-        if (++gPauseCounterBattle >= numeroFrames)
-        {
-            gPauseCounterBattle = 0;
-        }
-    }
-}
-
 static void Cmd_waitstate(void)
 {
     CMD_ARGS();
@@ -4631,8 +4618,6 @@ static bool32 IntentaScriptCombateQuitarObjeto(u32 defensor)
         }
         else
         {
-            u32 side = GetBattlerSide(defensor);
-
             gLastUsedItem = gBattleMons[defensor].item;
             gBattleMons[defensor].item = 0;
             if (gBattleMons[defensor].ability != ABILITY_GORILLA_TACTICS)
@@ -6899,8 +6884,7 @@ static void Cmd_various(void)
 
     struct Pokemon *mon;
     s32 i;
-    u8 data[10];
-    u32 battler, bits;
+    u32 battler;
 
     if (HayAlgunCombatienteOcupado())
         return;
@@ -8377,12 +8361,6 @@ static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr
         }
         else
         {
-            u32 statIncrease;
-            if ((statValue + gBattleMons[battler].statStages[statId]) > ESTADISTICA_MAS_6)
-                statIncrease = ESTADISTICA_MAS_6 - gBattleMons[battler].statStages[statId];
-            else
-                statIncrease = statValue;
-
             gResultadoCambioEstadistica = (gBattlerTarget == battler) ? CAMBIO_ESTADISTICA_DEFENSOR : CAMBIO_ESTADISTICA_ATACANTE;
             gProtectStructs[battler].statRaised = TRUE;
         }
@@ -9544,9 +9522,6 @@ static void Cmd_tryswapitems(void)
 {
     CMD_ARGS(const u8 *failInstr);
 
-    u8 sideAttacker = GetBattlerSide(gBattlerAttacker);
-    u8 sideTarget = GetBattlerSide(gBattlerTarget);
-
     if ((gBattleMons[gBattlerAttacker].item == ITEM_NONE && gBattleMons[gBattlerTarget].item == ITEM_NONE))
     {
         gBattlescriptCurrInstr = cmd->failInstr;
@@ -10055,8 +10030,8 @@ static void Cmd_displaydexinfo(void)
 {
     CMD_ARGS();
 
+    static u8 sDisplayDexInfoTaskId;
     u32 species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[GetCatchingBattler()]], MON_DATA_SPECIES);
-    u8 taskId;
 
     switch (gEstadoMultiuso)
     {
@@ -10069,12 +10044,12 @@ static void Cmd_displaydexinfo(void)
         {
             struct Pokemon *mon = &gEnemyParty[gBattlerPartyIndexes[GetCatchingBattler()]];
             FreeAllWindowBuffers();
-            taskId = DisplayCaughtMonDexPage(species, GetMonData(mon, MON_DATA_IS_SHINY), GetMonData(mon, MON_DATA_PERSONALITY));
+            sDisplayDexInfoTaskId = DisplayCaughtMonDexPage(species, GetMonData(mon, MON_DATA_IS_SHINY), GetMonData(mon, MON_DATA_PERSONALITY));
             gEstadoMultiuso++;
         }
         break;
     case 2:
-        if (!gFundidoPaletas.activo && gMain.callback2 == BattleMainCB2 && !gTasks[taskId].isActive)
+        if (!gFundidoPaletas.activo && gMain.callback2 == BattleMainCB2 && !gTasks[sDisplayDexInfoTaskId].isActive)
         {
             SetVBlankCallback(VBlankCB_Battle);
             gEstadoMultiuso++;

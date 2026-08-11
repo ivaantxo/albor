@@ -59,15 +59,6 @@ static u32 GetBattlerItemHoldEffectParam(u32 battler, u32 item);
         effect++;                                                                                                                                                                                                                                                                                                                                                                                    \
     }
 
-static void CheckSetUnburden(u8 battler)
-{
-    if (HabilidadCombatiente(battler) == ABILITY_UNBURDEN)
-    {
-        gBattleResources->flags[battler] |= RESOURCE_FLAG_UNBURDEN;
-        RecuerdaHabilidad(battler, ABILITY_UNBURDEN);
-    }
-}
-
 bool32 IsAffectedByFollowMe(u32 battlerAtk, u32 defSide, u32 move)
 {
     u32 ability = HabilidadCombatiente(battlerAtk);
@@ -719,7 +710,7 @@ u32 TrySetCantSelectMoveBattleScript(u32 battler)
 
 u8 CheckMoveLimitations(u32 battler, u8 unusableMoves, u16 check)
 {
-    u32 move, moveEffect;
+    u32 move;
     u32 holdEffect = GetBattlerHoldEffect(battler, TRUE);
     u16 *choicedMove = &gCombate->choicedMove[battler];
     s32 i;
@@ -729,7 +720,6 @@ u8 CheckMoveLimitations(u32 battler, u8 unusableMoves, u16 check)
     for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
         move = gBattleMons[battler].movimientos[i];
-        moveEffect = gMovimientos[move].effect;
         // No move
         if (check & MOVE_LIMITATION_ZEROMOVE && move == MOVE_NONE)
             unusableMoves |= 1u << i;
@@ -1772,7 +1762,7 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
                     gBattleMons[gBattlerAttacker].status1 &= ~STATUS1_SLEEP;
                     gBattleMons[gBattlerAttacker].status2 &= ~STATUS2_NIGHTMARE;
                     BattleScriptPushCursor();
-                    EscribeTextoCombate(gBattlerAttacker, "The uproar woke {B_ATK_NAME_WITH_PREFIX}!");
+                    EscribeTextoCombate(gBattlerAttacker, COMPOUND_STRING("The uproar woke {B_ATK_NAME_WITH_PREFIX}!"));
                     gBattlescriptCurrInstr = BattleScript_MoveUsedWokeUp;
                     effect = 2;
                 }
@@ -2223,8 +2213,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
     u32 effect = 0;
     u32 moveType = 0, move = 0;
     u32 side = 0;
-    u32 i = 0, j = 0;
-    u32 partner = 0;
+    u32 i = 0;
     enum ClimasCombate climaCombate = ObtenClimaCombate();
 
     if (gBattlerAttacker >= gBattlersCount)
@@ -3967,7 +3956,6 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
     u32 i = 0, moveType;
     u8 effect = ITEM_NO_EFFECT;
     u32 battlerHoldEffect = 0, atkHoldEffect;
-    u8 atkHoldEffectParam;
     u16 atkItem;
 
     if (caseID != ITEMEFFECT_USE_LAST_ITEM)
@@ -3978,7 +3966,6 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
 
     atkItem = gBattleMons[gBattlerAttacker].item;
     atkHoldEffect = GetBattlerHoldEffect(gBattlerAttacker, TRUE);
-    atkHoldEffectParam = GetBattlerHoldEffectParam(gBattlerAttacker);
 
     switch (caseID)
     {
@@ -4919,9 +4906,7 @@ static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData
     u32 battlerDef = damageCalcData->battlerDef;
     enum Movimientos movimiento = damageCalcData->movimiento;
 
-    u32 i;
     u32 basePower = gMovimientos[movimiento].power;
-    u32 weight, hpFraction, speed;
 
     switch (gMovimientos[movimiento].effect)
     {
@@ -5597,10 +5582,12 @@ static uq4_12_t ObtenModificadorDanioClima(struct DamageCalculationData *datosMo
     if (EsClimaCombateSol(climaCombate))
     {
         if (tipoMovimiento == TIPO_AGUA)
+        {
             if (gMovimientos[movimiento].effect == EFFECT_HIDROVAPOR)
                 return MAS_25_POR_CIENTO;
             else
                 return MOVIMIENTO_POCO_EFECTIVO;
+        }
         if (tipoMovimiento == TIPO_FUEGO)
             return MAS_25_POR_CIENTO;
     }
@@ -5709,7 +5696,6 @@ static inline uq4_12_t GetDefenderAbilitiesModifier(enum Movimientos movimiento,
 
 static inline uq4_12_t GetAttackerItemsModifier(u32 battlerAtk, uq4_12_t typeEffectivenessModifier, u32 holdEffectAtk)
 {
-    u32 percentBoost;
     switch (holdEffectAtk)
     {
     case HOLD_EFFECT_METRONOME:
@@ -5773,7 +5759,6 @@ static inline uq4_12_t GetOtherModifiers(struct DamageCalculationData *damageCal
     u32 isCrit = damageCalcData->isCrit;
 
     uq4_12_t finalModifier = MOVIMIENTO_NEUTRO;
-    u32 battlerDefPartner = ALIADO(battlerDef);
     u32 unmodifiedAttackerSpeed = gBattleMons[battlerAtk].speed;
     u32 unmodifiedDefenderSpeed = gBattleMons[battlerDef].speed;
 
@@ -5814,7 +5799,6 @@ static inline s32 DoMoveDamageCalcVars(struct DamageCalculationData *damageCalcD
     u32 userFinalAttack;
     u32 targetFinalDefense;
     u32 battlerAtk = damageCalcData->battlerAtk;
-    u32 battlerDef = damageCalcData->battlerDef;
 
     userFinalAttack = CalcAttackStat(damageCalcData, abilityAtk, abilityDef, holdEffectAtk, climaCombate);
 
@@ -6226,6 +6210,69 @@ static bool32 TryRemoveScreens(u32 battler)
 
 // Sort an array of battlers by speed
 // Useful for effects like pickpocket, eject button, red card
+u32 GetBattlerTotalSpeedStat(u32 battler)
+{
+    u32 speed = gBattleMons[battler].speed;
+    u32 ability = HabilidadCombatiente(battler);
+    u32 holdEffect = GetBattlerHoldEffect(battler, TRUE);
+    enum ClimasCombate climaCombate = ObtenClimaCombate();
+    uq4_12_t modifier = MOVIMIENTO_NEUTRO;
+
+    // Estadio de la estadística
+    MULTIPLICA(modifier, gMultiplicadorEstadisticas[gBattleMons[battler].statStages[ESTADISTICA_VELOCIDAD]]);
+
+    // Habilidad
+    switch (ability)
+    {
+    case ABILITY_SWIFT_SWIM:
+        if (ClimaTieneEfecto() && EsClimaCombateLluvia(climaCombate))
+            MULTIPLICA(modifier, MAS_100_POR_CIENTO);
+        break;
+    case ABILITY_CHLOROPHYLL:
+        if (ClimaTieneEfecto() && EsClimaCombateSol(climaCombate))
+            MULTIPLICA(modifier, MAS_100_POR_CIENTO);
+        break;
+    case ABILITY_SAND_RUSH:
+        if (ClimaTieneEfecto() && EsClimaCombateArena(climaCombate))
+            MULTIPLICA(modifier, MAS_100_POR_CIENTO);
+        break;
+    case ABILITY_SLUSH_RUSH:
+        if (ClimaTieneEfecto() && EsClimaCombateNieve(climaCombate))
+            MULTIPLICA(modifier, MAS_100_POR_CIENTO);
+        break;
+    case ABILITY_QUICK_FEET:
+        if (gBattleMons[battler].status1 & STATUS1_ANY)
+            MULTIPLICA(modifier, MAS_50_POR_CIENTO);
+        break;
+    case ABILITY_UNBURDEN:
+        if (gBattleResources->flags[battler] & RESOURCE_FLAG_UNBURDEN)
+            MULTIPLICA(modifier, MAS_100_POR_CIENTO);
+        break;
+    }
+
+    // Parálisis (Patas Rápidas ya cubre su propio bono arriba, y anula el recorte)
+    if (gBattleMons[battler].status1 & STATUS1_PARALYSIS && ability != ABILITY_QUICK_FEET)
+        MULTIPLICA(modifier, UQ_4_12(0.25));
+
+    // Viento Afín
+    if (gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_TAILWIND)
+        MULTIPLICA(modifier, MAS_100_POR_CIENTO);
+
+    // Objeto
+    switch (holdEffect)
+    {
+    case HOLD_EFFECT_CHOICE_SCARF:
+        MULTIPLICA(modifier, MAS_50_POR_CIENTO);
+        break;
+    case HOLD_EFFECT_MACHO_BRACE:
+    case HOLD_EFFECT_IRON_BALL:
+        MULTIPLICA(modifier, MENOS_50_POR_CIENTO);
+        break;
+    }
+
+    return UQ412MultiplicaPorEntero(modifier, speed);
+}
+
 void SortBattlersBySpeed(u8 *battlers, bool32 slowToFast)
 {
     u32 i, j, currSpeed, currBattler;
@@ -6509,7 +6556,7 @@ u32 CalculaProbabilidadEfectoSecundario(u32 habilidad, const struct AdditionalEf
 
     if (EsClimaCombateLluvia(climaCombate)
      && efectoSecundario->moveEffect == MOVE_EFFECT_BURN) // Revisar y comprobar.
-        probabilidad == 0;
+        probabilidad = 0;
 
     return probabilidad;
 }

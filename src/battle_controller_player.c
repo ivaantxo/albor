@@ -75,7 +75,6 @@ static void MoveSelectionDisplayMoveType(u32 battler);
 static void MoveSelectionDisplayMoveNames(u32 battler);
 static void SwitchIn_HandleSoundAndEnd(u32 battler);
 static void WaitForMonSelection(u32 battler);
-static void CompleteWhenChoseItem(u32 battler);
 static void Task_LaunchLvlUpAnim(u8);
 static void Task_PrepareToGiveExpWithExpBar(u8);
 static void Task_SetControllerToWaitForString(u8);
@@ -151,7 +150,7 @@ void SetControllerToPlayer(u32 battler)
 static void PlayerBufferExecCompleted(u32 combatiente)
 {
     gBattlerControllerFuncs[combatiente] = PlayerBufferRunCommand;
-    DesmarcaCombatienteOcupado[combatiente];
+    DesmarcaCombatienteOcupado(combatiente);
 }
 
 static void PlayerBufferRunCommand(u32 combatiente)
@@ -1211,26 +1210,6 @@ static void WaitForMonSelection(u32 battler)
         else
             BtlController_EmitChosenMonReturnValue(battler, BUFFER_B, PARTY_SIZE, NULL);
 
-        PlayerBufferExecCompleted(battler);
-    }
-}
-
-static void OpenBagAndChooseItem(u32 battler)
-{
-    if (!gFundidoPaletas.activo)
-    {
-        gBattlerControllerFuncs[battler] = CompleteWhenChoseItem;
-        ReshowBattleScreenDummy();
-        FreeAllWindowBuffers();
-        CB2_BagMenuFromBattle();
-    }
-}
-
-static void CompleteWhenChoseItem(u32 battler)
-{
-    if (gMain.callback2 == BattleMainCB2 && !gFundidoPaletas.activo)
-    {
-        BtlController_EmitOneReturnValue(battler, BUFFER_B, gSpecialVar_ItemId);
         PlayerBufferExecCompleted(battler);
     }
 }

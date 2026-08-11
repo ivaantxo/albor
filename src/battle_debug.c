@@ -313,6 +313,7 @@ static const u8 sText_Risky[] = _("Risky");
 static const u8 sText_PreferStrongestMove[] = _("Prefer Strongest Move");
 static const u8 sText_PreferRelevo[] = _("Prefer Baton Pass");
 static const u8 sText_DoubleBattle[] = _("Double Battle");
+static const u8 sText_FirstBattle[] = _("First Battle");
 static const u8 sText_HpAware[] = _("HP Aware");
 static const u8 sText_PowerfulStatus[] = _("Powerful Status");
 static const u8 sText_NegateUnaware[] = _("Negate Unaware");
@@ -440,7 +441,7 @@ static const struct ListMenuItem sStatus1ListItems[] =
     {sText_Sleep, LIST_STATUS1_SLEEP},
     {sText_Poison, LIST_STATUS1_POISON},
     {sText_Burn, LIST_STATUS1_BURN},
-    {COMPOUND_STRING("Congelación");, LIST_STATUS1_CONGELACION},
+    {COMPOUND_STRING("Congelación"), LIST_STATUS1_CONGELACION},
     {sText_Paralysis, LIST_STATUS1_PARALYSIS},
     {sText_ToxicPoison, LIST_STATUS1_TOXIC_POISON},
     {sText_ToxicCounter, LIST_STATUS1_TOXIC_COUNTER},
@@ -805,7 +806,7 @@ static void PutMovesPointsText(struct BattleDebugMenu *data)
     for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
         text[0] = CHAR_SPACE;
-        StringCopy(text + 1, ObtenNombreMovimiento(gBattleMons[data->aiBattlerId].moves[i]));
+        StringCopy(text + 1, ObtenNombreMovimiento(gBattleMons[data->aiBattlerId].movimientos[i]));
         AddTextPrinterParameterized(data->aiMovesWindowId, FONT_NORMAL, text, 0, i * 15, 0, NULL);
         for (count = 0, j = 0; j < NUMERO_COMBATIENTES; j++)
         {
@@ -1007,7 +1008,7 @@ static void PutAIPartyText(struct BattleDebugMenu *data)
 
         for (j = 0; j < MAXIMO_MOVIMIENTOS_POKEMON; j++)
         {
-            txtPtr = StringCopyN(text, ObtenNombreMovimiento(aiMons[i].moves[j]), 8);
+            txtPtr = StringCopyN(text, ObtenNombreMovimiento(aiMons[i].movimientos[j]), 8);
             *txtPtr = EOS;
             AddTextPrinterParameterized5(data->aiMovesWindowId, FONT_SMALL_NARROW, text, i * 41, 35 + j * 15, 0, NULL, 0, 0);
         }
@@ -1504,7 +1505,7 @@ static void PrintSecondaryEntries(struct BattleDebugMenu *data)
     case LIST_ITEM_PP:
         for (i = 0; i < 4; i++)
         {
-            PadString(ObtenNombreMovimiento(gBattleMons[data->battlerId].moves[i]), text);
+            PadString(ObtenNombreMovimiento(gBattleMons[data->battlerId].movimientos[i]), text);
             printer.currentY = printer.y = (i * yMultiplier) + sSecondaryListTemplate.upText_Y;
             AddTextPrinter(&printer, 0, NULL);
         }
@@ -1618,10 +1619,10 @@ static void UpdateBattlerValue(struct BattleDebugMenu *data)
         *(u16 *)(data->modifyArrows.modifiedValPtr) = data->modifyArrows.currValue;
         break;
     case VAR_U16_4_ENTRIES:
-        ((u16 *)(data->modifyArrows.modifiedValPtr))[0] = data->modifyArrows.currValue;
-        ((u16 *)(data->modifyArrows.modifiedValPtr))[1] = data->modifyArrows.currValue;
-        ((u16 *)(data->modifyArrows.modifiedValPtr))[2] = data->modifyArrows.currValue;
-        ((u16 *)(data->modifyArrows.modifiedValPtr))[3] = data->modifyArrows.currValue;
+        ((enum Movimientos *)(data->modifyArrows.modifiedValPtr))[0] = data->modifyArrows.currValue;
+        ((enum Movimientos *)(data->modifyArrows.modifiedValPtr))[1] = data->modifyArrows.currValue;
+        ((enum Movimientos *)(data->modifyArrows.modifiedValPtr))[2] = data->modifyArrows.currValue;
+        ((enum Movimientos *)(data->modifyArrows.modifiedValPtr))[3] = data->modifyArrows.currValue;
         break;
     case VAL_ALL_STAT_STAGES:
         for (i = 0; i < NUMERO_ESTADISTICAS_BATALLA; i++)
@@ -1842,20 +1843,20 @@ static void SetUpModifyArrows(struct BattleDebugMenu *data)
         data->modifyArrows.maxDigits = 3;
         if (data->currentSecondaryListItemId == 4)
         {
-            data->modifyArrows.modifiedValPtr = &gBattleMons[data->battlerId].moves[0];
-            data->modifyArrows.currValue = gBattleMons[data->battlerId].moves[0];
+            data->modifyArrows.modifiedValPtr = &gBattleMons[data->battlerId].movimientos[0];
+            data->modifyArrows.currValue = gBattleMons[data->battlerId].movimientos[0];
             data->modifyArrows.typeOfVal = VAR_U16_4_ENTRIES;
         }
         else
         {
-            data->modifyArrows.modifiedValPtr = &gBattleMons[data->battlerId].moves[data->currentSecondaryListItemId];
-            data->modifyArrows.currValue = gBattleMons[data->battlerId].moves[data->currentSecondaryListItemId];
+            data->modifyArrows.modifiedValPtr = &gBattleMons[data->battlerId].movimientos[data->currentSecondaryListItemId];
+            data->modifyArrows.currValue = gBattleMons[data->battlerId].movimientos[data->currentSecondaryListItemId];
             data->modifyArrows.typeOfVal = VAL_U16;
         }
         break;
     case LIST_ITEM_PP:
         data->modifyArrows.minValue = 0;
-        data->modifyArrows.maxValue = PPMovimiento(gBattleMons[data->battlerId].moves[data->currentSecondaryListItemId]);
+        data->modifyArrows.maxValue = PPMovimiento(gBattleMons[data->battlerId].movimientos[data->currentSecondaryListItemId]);
         data->modifyArrows.maxDigits = 2;
         data->modifyArrows.modifiedValPtr = &gBattleMons[data->battlerId].pp[data->currentSecondaryListItemId];
         data->modifyArrows.typeOfVal = VAL_U8;
@@ -2075,7 +2076,7 @@ static void UpdateMonData(struct BattleDebugMenu *data)
             SetMonData(mon, MON_DATA_HP, &battleMon->hp);
             SetMonData(mon, MON_DATA_MAX_HP, &battleMon->maxHP);
             for (j = 0; j < 4; j++)
-                SetMonData(mon, MON_DATA_MOVE1 + j, &battleMon->moves[j]);
+                SetMonData(mon, MON_DATA_MOVE1 + j, &battleMon->movimientos[j]);
         }
     }
 }

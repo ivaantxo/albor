@@ -272,7 +272,7 @@ struct BattleHistory
 {
     u16 abilities[NUMERO_COMBATIENTES];
     u8 itemEffects[NUMERO_COMBATIENTES];
-    u16 usedMoves[NUMERO_COMBATIENTES][MAXIMO_MOVIMIENTOS_POKEMON];
+    enum Movimientos usedMoves[NUMERO_COMBATIENTES][MAXIMO_MOVIMIENTOS_POKEMON];
     u16 moveHistory[NUMERO_COMBATIENTES][AI_MOVE_HISTORY_COUNT]; // 3 last used moves for each battler
     u8 moveHistoryIndex[NUMERO_COMBATIENTES];
     u16 trainerItems[NUMERO_COMBATIENTES];
@@ -506,6 +506,7 @@ struct BattleSpriteInfo
     u16 behindSubstitute : 1; // 0x4
     u16 flag_x8 : 1;          // Marcador de que el sprite del pokemon esta siendo usado para mostrar el HP, para que no se muestre el HP en la barra de HP
     u16 hpNumbersNoBars : 1;  // 0x10
+    u16 transformSpecies;
 };
 
 struct BattleAnimationInfo

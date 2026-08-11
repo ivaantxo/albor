@@ -4,6 +4,7 @@
 #include "task.h"
 #include "text.h"
 #include "window.h"
+#include "bg.h"
 
 #define DLG_WINDOW_PALETTE_NUM 15
 #define DLG_WINDOW_BASE_TILE_NUM 512

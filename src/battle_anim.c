@@ -248,7 +248,7 @@ void ClearBattleAnimationVars(void)
     gAnimCustomPanning = 0;
 }
 
-void DoMoveAnim(u16 move)
+void DoMoveAnim(enum Movimientos move)
 {
     gBattleAnimAttacker = gBattlerAttacker;
     gBattleAnimTarget = gBattlerTarget;
@@ -477,7 +477,7 @@ static u8 GetBattleAnimMoveTargets(u8 battlerArgIndex, u8 *targets)
     case MOVE_TARGET_BOTH: // all opponents
         for (i = 0; i < gBattlersCount; i++)
         {
-            if (i != ignoredTgt && !IsAlly(i, ignoredTgt) && IS_ALIVE_AND_PRESENT(i))
+            if (i != ignoredTgt && !EsAliado(i, ignoredTgt) && IS_ALIVE_AND_PRESENT(i))
                 targets[numTargets++] = i + NUMERO_COMBATIENTES;
         }
         break;
