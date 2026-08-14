@@ -9,7 +9,6 @@
 #include "trig.h"
 #include "overworld.h"
 #include "event_data.h"
-#include "secret_base.h"
 #include "string_util.h"
 #include "international_string_util.h"
 #include "strings.h"

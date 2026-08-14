@@ -13,7 +13,6 @@
 #include "battle_scripts.h"
 #include "random.h"
 #include "text.h"
-#include "safari_zone.h"
 #include "sound.h"
 #include "sprite.h"
 #include "string_util.h"

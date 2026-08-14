@@ -1022,7 +1022,6 @@ const u8 gText_MenuPlayer[] = _("{JUGADOR}");
 const u8 gText_MenuSave[] = _("Guardar");
 const u8 gText_MenuOption[] = _("Opciones");
 const u8 gText_MenuExit[] = _("Salir");
-const u8 gText_MenuRetire[] = _("RETIRE");
 const u8 gText_MenuRest[] = _("REST");
 const u8 gText_Peak[] = _("Peak");
 const u8 gText_DexHoenn[] = _("Hoenn");

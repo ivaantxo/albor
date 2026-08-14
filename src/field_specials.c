@@ -3,7 +3,6 @@
 #include "malloc.h"
 #include "battle.h"
 #include "data.h"
-#include "decoration.h"
 #include "event_data.h"
 #include "event_object_movement.h"
 #include "fieldmap.h"
@@ -20,11 +19,9 @@
 #include "load_save.h"
 #include "list_menu.h"
 #include "main.h"
-#include "match_call.h"
 #include "menu.h"
 #include "overworld.h"
 #include "party_menu.h"
-#include "pokeblock.h"
 #include "pokedex.h"
 #include "pokemon.h"
 #include "pokemon_storage_system.h"
@@ -43,7 +40,6 @@
 #include "tilesets.h"
 #include "wallclock.h"
 #include "window.h"
-#include "constants/decorations.h"
 #include "constants/event_objects.h"
 #include "constants/event_object_movement.h"
 #include "constants/field_effects.h"
@@ -105,7 +101,6 @@ static void Task_DeoxysRockInteraction(u8);
 static void ChangeDeoxysRockLevel(u8);
 static void Task_LoopWingFlapSE(u8);
 static void SetInitialFansOfPlayer(void);
-static u16 PlayerGainRandomTrainerFan(void);
 
 void Special_ViewWallClock(void)
 {
@@ -983,16 +978,6 @@ void RemoveCameraObject(void)
 {
     CameraObjectSetFollowedSpriteId(GetPlayerAvatarSpriteId());
     RemoveObjectEventByLocalIdAndMap(LOCALID_CAMERA, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup);
-}
-
-u8 GetPokeblockNameByMonNature(void)
-{
-    return CopyMonFavoritePokeblockName(Naturaleza(&gPlayerParty[GetLeadMonIndex()]), gVariableTexto1);
-}
-
-void GetSecretBaseNearbyMapName(void)
-{
-    GetMapName(gVariableTexto1, VarGet(VAR_SECRET_BASE_MAP), 0);
 }
 
 bool8 LeadMonHasEffortRibbon(void)
@@ -1907,17 +1892,6 @@ u32 GetMartEmployeeObjectEventId(void)
     return 1;
 }
 
-bool32 IsTrainerRegistered(void)
-{
-    int index = GetRematchIdxByTrainerIdx(gSpecialVar_0x8004);
-    if (index >= 0)
-    {
-        if (FlagGet(TRAINER_REGISTERED_FLAGS_START + index) == TRUE)
-            return TRUE;
-    }
-    return FALSE;
-}
-
 // Always returns FALSE
 bool32 ShouldDistributeEonTicket(void)
 {
@@ -2066,43 +2040,6 @@ void UpdateTrainerFanClubGameClear(void)
         FlagClear(FLAG_HIDE_LILYCOVE_FAN_CLUB_INTERVIEWER);
         VarSet(VAR_LILYCOVE_FAN_CLUB_STATE, 1);
     }
-}
-
-// Loop through the fan club members, and if theyre not a fan of the player there is a 50% chance for them to become a fan
-// Stops when a fan is gained
-// If no new fan was gained while looping, the last non-fan in the list becomes a fan
-// If all the members are already fans of the player then this redundantly sets the first fan in the list to be a fan
-static u16 PlayerGainRandomTrainerFan(void)
-{
-    static const u8 sFanClubMemberIds[NUM_TRAINER_FAN_CLUB_MEMBERS] =
-    {
-        FANCLUB_MEMBER1,
-        FANCLUB_MEMBER2,
-        FANCLUB_MEMBER3,
-        FANCLUB_MEMBER4,
-        FANCLUB_MEMBER5,
-        FANCLUB_MEMBER6,
-        FANCLUB_MEMBER7,
-        FANCLUB_MEMBER8
-    };
-
-    u32 i;
-    u8 idx = 0;
-
-    for (i = 0; i < ARRAY_COUNT(sFanClubMemberIds); i++)
-    {
-        if (!GET_TRAINER_FAN_CLUB_FLAG(sFanClubMemberIds[i]))
-        {
-            idx = i;
-            if (Random() & 1)
-            {
-                SET_TRAINER_FAN_CLUB_FLAG(sFanClubMemberIds[idx]);
-                return idx;
-            }
-        }
-    }
-    SET_TRAINER_FAN_CLUB_FLAG(sFanClubMemberIds[idx]);
-    return idx;
 }
 
 // Loops through the fan club members, and if theyre a fan of the player there is a 50% chance for them to stop being a fan

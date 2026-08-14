@@ -29,7 +29,6 @@
 #include "malloc.h"
 #include "m4a.h"
 #include "map_name_popup.h"
-#include "match_call.h"
 #include "menu.h"
 #include "metatile_behavior.h"
 #include "mirage_tower.h"
@@ -54,7 +53,6 @@
 #include "trainer_pokemon_sprites.h"
 #include "distorsion_fondo.h"
 #include "wild_encounter.h"
-#include "vs_seeker.h"
 #include "constants/abilities.h"
 #include "constants/event_objects.h"
 #include "constants/layouts.h"
@@ -640,9 +638,6 @@ void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
     RestartWildEncounterImmunitySteps();
     SetBg2Transparent();
 
-if (I_VS_SEEKER_CHARGING != 0)
-    MapResetTrainerRematches(mapGroup, mapNum);
-
     DoTimeBasedEvents();
     SetSavedWeatherFromCurrMapHeader();
     ChooseAmbientCrySpecies();
@@ -679,9 +674,6 @@ static void LoadMapFromWarp(void)
     TrySetMapSaveWarpStatus();
     ClearTempFieldEventData();
     RestartWildEncounterImmunitySteps();
-
-    if (I_VS_SEEKER_CHARGING != 0)
-        MapResetTrainerRematches(gSaveBlockPtr->location.mapGroup, gSaveBlockPtr->location.mapNum);
 
     DoTimeBasedEvents();
     SetSavedWeatherFromCurrMapHeader();
@@ -1486,7 +1478,6 @@ void CB2_ContinueSavedGame(void)
     ScriptContext_Init();
     UnlockPlayerFieldControls();
     gExitStairsMovementDisabled = TRUE;
-    InitMatchCallCounters();
     if (UseContinueGameWarp() == TRUE)
     {
         ClearContinueGameWarpStatus();

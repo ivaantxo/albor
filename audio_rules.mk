@@ -16,11 +16,16 @@ $(SONG_BUILDDIR)/%.o: $(SONG_SUBDIR)/%.s
 $(MID_BUILDDIR)/%.o: $(MID_ASM_DIR)/%.s
 	$(AS) $(ASFLAGS) -I sound -o $@ $<
 
-$(CRY_BIN_DIR)/%.bin: $(CRY_SUBDIR)/%.aif 
+$(CRY_BIN_DIR)/%.bin: $(CRY_SUBDIR)/%.aif
 	$(AIF) $< $@ --compress
 
-$(SOUND_BIN_DIR)/%.bin: sound/%.aif 
+$(SOUND_BIN_DIR)/%.bin: sound/%.aif
 	$(AIF) $< $@
+
+# sound_data.o .incbins ~900 direct_sound_samples/*.bin files directly (not via a rule
+# scaninc can see), so nothing otherwise tells Make to build them first. Force it here.
+DIRECT_SOUND_SAMPLE_BINS := $(patsubst %.aif,%.bin,$(wildcard sound/direct_sound_samples/*.aif) $(wildcard $(CRY_SUBDIR)/*.aif))
+$(DATA_ASM_BUILDDIR)/sound_data.o: $(DIRECT_SOUND_SAMPLE_BINS)
 
 # For each line in midi.cfg, we do some trickery to convert it into a make rule for the `.mid` file described on the line
 # Data following the colon in said file corresponds to arguments passed into mid2agb

@@ -1046,16 +1046,11 @@ static void PrintHpOnHealthbox(u32 spriteId, s16 currHp, s16 maxHp, u32 bgColor,
 static void UpdateOpponentHpTextDoubles(u32 healthboxSpriteId, u32 barSpriteId, s16 value, u8 maxOrCurrent)
 {
     u8 text[32], *txtPtr;
-    u32 i, var;
     u32 battlerId = gSprites[healthboxSpriteId].hMain_Battler;
 
     if (gBattleSpritesDataPtr->battlerData[battlerId].hpNumbersNoBars) // don't print text if only bars are visible
     {
         memcpy(text, sEmptyWhiteText_TransparentHighlight, sizeof(sEmptyWhiteText_TransparentHighlight));
-        if (maxOrCurrent == HP_CURRENT)
-            var = 0;
-        else
-            var = 4;
 
         txtPtr = ConvertIntToDecimalStringN(text + 6, value, STR_CONV_MODE_RIGHT_ALIGN, 3);
         if (!maxOrCurrent)
@@ -1072,17 +1067,11 @@ static void UpdateOpponentHpTextDoubles(u32 healthboxSpriteId, u32 barSpriteId, 
 static void UpdateOpponentHpTextSingles(u32 healthboxSpriteId, s16 value, u32 maxOrCurrent)
 {
     u8 text[32];
-    u32 var, i;
     u32 battler = gSprites[healthboxSpriteId].hMain_Battler;
 
     memcpy(text, sEmptyWhiteText_GrayHighlight, sizeof(sEmptyWhiteText_GrayHighlight));
     if (gBattleSpritesDataPtr->battlerData[battler].hpNumbersNoBars) // don't print text if only bars are visible
     {
-        if (maxOrCurrent == HP_CURRENT)
-            var = 21;
-        else
-            var = 49;
-
         ConvertIntToDecimalStringN(text + 6, value, STR_CONV_MODE_LEADING_ZEROS, 3);
     }
 }

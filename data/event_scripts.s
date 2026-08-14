@@ -7,7 +7,6 @@
 #include "constants/berry.h"
 #include "constants/coins.h"
 #include "constants/daycare.h"
-#include "constants/decorations.h"
 #include "constants/event_objects.h"
 #include "constants/event_object_movement.h"
 #include "constants/field_effects.h"
@@ -75,7 +74,6 @@ gStdScripts::
 	.4byte Std_MsgboxDefault           @ MSGBOX_DEFAULT
 	.4byte Std_MsgboxYesNo             @ MSGBOX_YESNO
 	.4byte Std_MsgboxAutoclose         @ MSGBOX_AUTOCLOSE
-	.4byte Std_ObtainDecoration        @ STD_OBTAIN_DECORATION
 	.4byte Std_RegisteredInMatchCall   @ STD_REGISTER_MATCH_CALL
 	.4byte Std_MsgboxGetPoints         @ MSGBOX_GETPOINTS
 	.4byte Std_MsgboxPokenav           @ MSGBOX_POKENAV
@@ -492,13 +490,6 @@ Common_EventScript_LegendaryFlewAway::
 	release
 	end
 
-EventScript_VsSeekerChargingDone::
-	special VsSeekerFreezeObjectsAfterChargeComplete
-	waitstate
-	special VsSeekerResetObjectMovementAfterChargeComplete
-	releaseall
-	end
-
 	.include "data/scripts/pc_transfer.inc"
 	.include "data/scripts/abnormal_weather.inc"
 	.include "data/scripts/trainer_script.inc"
@@ -512,7 +503,6 @@ EventScript_VsSeekerChargingDone::
 	.include "data/scripts/players_house.inc"
 	.include "data/text/trainers.inc"
 	.include "data/scripts/repel.inc"
-	.include "data/scripts/safari_zone.inc"
 	.include "data/scripts/roulette.inc"
 	.include "data/text/pokedex_rating.inc"
 	.include "data/text/lottery_corner.inc"

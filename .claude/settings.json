@@ -37,7 +37,9 @@
       "Bash(awk 'NR>=1017 && NR<=1441 && /^};$/{print NR; exit}' src/data/battle_anim.h)",
       "Bash(awk 'NR<=6191 && /^static void |^void /{name=$0; line=NR} END{print line\": \"name}')",
       "Bash(awk '/^void GestionaCambioGraficoEspecie/,0{print; if\\(/^}/ && started\\) exit; started=1}' src/battle_gfx_sfx_util.c)",
-      "Bash(awk '/^void BattleLoadMonSpriteGfx/,0{print; if\\(/^}/ && started\\) exit; started=1}' src/battle_gfx_sfx_util.c)"
+      "Bash(awk '/^void BattleLoadMonSpriteGfx/,0{print; if\\(/^}/ && started\\) exit; started=1}' src/battle_gfx_sfx_util.c)",
+      "Bash(grep -i \"claude\" \"/Users/ivanmartinez/Library/Application Support/Code/User/settings.json\" 2>/dev/null)",
+      "Read(//Users/ivanmartinez/Library/Application Support/Code/User/**)"
     ]
   }
 }

@@ -6,7 +6,6 @@
 #include "field_poison.h"
 #include "fldeff_misc.h"
 #include "party_menu.h"
-#include "pokenav.h"
 #include "script.h"
 #include "string_util.h"
 #include "strings.h"

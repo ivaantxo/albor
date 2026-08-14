@@ -19,7 +19,6 @@
 #include "m4a.h"
 #include "party_menu.h"
 #include "pokedex.h"
-#include "pokeblock.h"
 #include "pokemon.h"
 #include "pokemon_animation.h"
 #include "pokemon_icon.h"
@@ -34,6 +33,7 @@
 #include "text.h"
 #include "util.h"
 #include "constants/abilities.h"
+#include "constants/berry.h"
 #include "constants/battle_move_effects.h"
 #include "constants/battle_script_commands.h"
 #include "constants/cries.h"
@@ -475,7 +475,7 @@ void CreaPokemonConGeneroNaturaleza(struct Pokemon *mon, u32 species, u32 level,
 
 #define CALCULA_ESTADISTICA(baseStat, ev, indiceEstadistica, field)         \
 {                                                                           \
-    u32 baseStat = gSpeciesInfo[species].base;                              \
+    u32 baseStat = gSpeciesInfo[species].baseStat;                          \
     s32 n = (((2 * baseStat + ev / 4) * level) / 100) + 5;                  \
     n = ModificaEstadisticaPorNaturaleza(naturaleza, n, indiceEstadistica); \
     SetMonData(mon, field, &n);                                             \
@@ -595,9 +595,9 @@ u16 GiveMoveToBattleMon(struct BattlePokemon *mon, enum Movimientos movimiento)
 
     for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
-        if (mon->moves[i] == MOVE_NONE)
+        if (mon->movimientos[i] == MOVE_NONE)
         {
-            mon->moves[i] = movimiento;
+            mon->movimientos[i] = movimiento;
             mon->pp[i] = gMovimientos[movimiento].pp;
             return movimiento;
         }
@@ -622,7 +622,7 @@ static void SetMonMoveSlot_KeepPP(struct Pokemon *mon, enum Movimientos movimien
 
 void SetBattleMonMoveSlot(struct BattlePokemon *mon, enum Movimientos movimiento, u8 slot)
 {
-    mon->moves[slot] = movimiento;
+    mon->movimientos[slot] = movimiento;
     mon->pp[slot] = gMovimientos[movimiento].pp;
 }
 
@@ -699,14 +699,14 @@ u16 MonTryLearningNewMove(struct Pokemon *mon, bool8 firstMove)
         while (learnset[sLearningMoveTableID].level != level)
         {
             sLearningMoveTableID++;
-            if (learnset[sLearningMoveTableID].move == LEVEL_UP_MOVE_END)
+            if (learnset[sLearningMoveTableID].movimiento == LEVEL_UP_MOVE_END)
                 return MOVE_NONE;
         }
     }
 
     if (learnset[sLearningMoveTableID].level == level)
     {
-        gMoveToLearn = learnset[sLearningMoveTableID].move;
+        gMoveToLearn = learnset[sLearningMoveTableID].movimiento;
         sLearningMoveTableID++;
         retVal = GiveMoveToMon(mon, gMoveToLearn);
     }
@@ -1570,7 +1570,7 @@ void PokemonToBattleMon(struct Pokemon *src, struct BattlePokemon *dst)
 
     for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
-        dst->moves[i] = GetMonData(src, MON_DATA_MOVE1 + i, NULL);
+        dst->movimientos[i] = GetMonData(src, MON_DATA_MOVE1 + i, NULL);
         dst->pp[i] = GetMonData(src, MON_DATA_PP1 + i, NULL);
     }
 
@@ -2724,7 +2724,7 @@ u8 CanLearnTeachableMove(u16 species, enum Movimientos movimiento)
     }
     else
     {
-        u32 i, j;
+        u32 i;
         const u16 *teachableLearnset = GetSpeciesTeachableLearnset(species);
 
         for (i = 0; teachableLearnset[i] != MOVE_NONE; i++)
@@ -3024,16 +3024,28 @@ bool8 IsMonSpriteNotFlipped(u16 species)
     return gSpeciesInfo[species].noFlip;
 }
 
+// Whether a nature likes (positive), dislikes (negative), or is neutral (zero) about a berry flavor.
+// Used for the confusion check when a held berry heals HP (e.g. Sitrus/Figy-family berries).
+static const s8 sNatureFlavorCompatibilityTable[NUMERO_NATURALEZAS * FLAVOR_COUNT] =
+{
+     // Spicy,  Dry, Sweet, Bitter, Sour
+          1,      0,    0,     0,     0, // Ofensiva
+          1,      0,    0,     0,     0, // Defensiva
+          1,      0,    0,     0,     0, // Rápida
+          1,      0,    0,     0,     0, // Ofensiva especial
+          1,      0,    0,     0,     0  // Defensiva especial
+};
+
 s8 GetMonFlavorRelation(struct Pokemon *mon, u8 flavor)
 {
     u8 nature = Naturaleza(mon);
-    return gPokeblockFlavorCompatibilityTable[nature * FLAVOR_COUNT + flavor];
+    return sNatureFlavorCompatibilityTable[nature * FLAVOR_COUNT + flavor];
 }
 
 s8 GetFlavorRelationByPersonality(u32 personality, u8 flavor)
 {
     u8 nature = NaturalezaDePersonalidad(personality);
-    return gPokeblockFlavorCompatibilityTable[nature * FLAVOR_COUNT + flavor];
+    return sNatureFlavorCompatibilityTable[nature * FLAVOR_COUNT + flavor];
 }
 
 void MonRestorePP(struct Pokemon *mon)
@@ -3488,11 +3500,11 @@ u16 MonTryLearningNewMoveEvolution(struct Pokemon *mon, bool8 firstMove)
     {
         sLearningMoveTableID = 0;
     }
-    while(learnset[sLearningMoveTableID].move != LEVEL_UP_MOVE_END)
+    while(learnset[sLearningMoveTableID].movimiento != LEVEL_UP_MOVE_END)
     {
         while (learnset[sLearningMoveTableID].level == 0 || learnset[sLearningMoveTableID].level == level)
         {
-            gMoveToLearn = learnset[sLearningMoveTableID].move;
+            gMoveToLearn = learnset[sLearningMoveTableID].movimiento;
             sLearningMoveTableID++;
             return GiveMoveToMon(mon, gMoveToLearn);
         }

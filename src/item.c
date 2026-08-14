@@ -5,7 +5,6 @@
 #include "text.h"
 #include "event_data.h"
 #include "malloc.h"
-#include "secret_base.h"
 #include "item_menu.h"
 #include "party_menu.h"
 #include "strings.h"
@@ -302,11 +301,6 @@ bool8 RemoveBagItem(u16 itemId, u16 count)
 
     if (totalQuantity < count)
         return FALSE;   // We don't have enough of the item
-
-    if (CurMapIsSecretBase() == TRUE)
-    {
-        VarSet(VAR_SECRET_BASE_LAST_ITEM_USED, itemId);
-    }
 
     var = GetItemListPosition(pocket);
     if (itemPocket->capacity > var

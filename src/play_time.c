@@ -1,6 +1,6 @@
 #include "global.h"
 #include "play_time.h"
-#include "fake_rtc.h"
+#include "rtc.h"
 
 enum
 {
@@ -46,7 +46,7 @@ void PlayTimeCounter_Update(void)
 
     gSaveBlockPtr->playTimeVBlanks = 0;
     gSaveBlockPtr->playTimeSeconds++;
-    FakeRtc_TickTimeForward();
+    Rtc_TickTimeForward();
 
     if (gSaveBlockPtr->playTimeSeconds < 60)
         return;

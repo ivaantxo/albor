@@ -1,10 +1,13 @@
 #include "global.h"
 #include "data.h"
 #include "pokemon_icon.h"
-#include "decoration.h"
 #include "battle_main.h"
 #include "item.h"
 #include "pokeball.h"
+
+// This fork's decoration system was removed; kept as an incomplete type so the
+// public API struct below doesn't have to be rearranged (see comment below).
+struct Decoration;
 
 // The purpose of this struct is for outside applications to be
 // able to access parts of the ROM or its save file, like a public API.
@@ -67,7 +70,7 @@ __attribute__((section(".text.consts")))
 static const struct GFRomHeader sGFRomHeader = {
     .version = GAME_VERSION,
     .gameName = "pokemon emerald version",
-    .decorations = gDecorations,
+    // .decorations = gDecorations,  // Decoration system removed
     .flagsOffset = offsetof(struct SaveBlock, flags),
     .varsOffset = offsetof(struct SaveBlock, vars),
     .pokedexOffset = offsetof(struct SaveBlock, pokedexOrder),

@@ -79,29 +79,6 @@ EventScript_PlayFanfareObtainedTMHM::
 	playfanfare MUS_OBTAIN_TMHM
 	return
 
-Std_ObtainDecoration::
-	adddecoration ITEMID
-	copyvar VAR_0x8007, VAR_RESULT
-	call EventScript_ObtainDecorationMessage
-	return
-
-EventScript_ObtainDecorationMessage::
-	bufferdecorationname VAR_TEXTO_2, ITEMID
-	call_if_eq VAR_0x8007, TRUE, EventScript_ObtainedDecor
-	call_if_eq VAR_0x8007, FALSE, EventScript_NoRoomForDecor
-	return
-
-EventScript_ObtainedDecor::
-	playfanfare MUS_OBTAIN_ITEM
-	message gText_ObtainedTheDecor
-	waitfanfare
-	msgbox gText_TheDecorWasTransferredToThePC, MSGBOX_DEFAULT
-	setvar VAR_RESULT, TRUE
-	return
-
-EventScript_NoRoomForDecor::
-	setvar VAR_RESULT, FALSE
-	return
 
 Std_FindItem::
 	lock

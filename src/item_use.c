@@ -27,7 +27,6 @@
 #include "overworld.h"
 #include "palette.h"
 #include "party_menu.h"
-#include "pokeblock.h"
 #include "pokemon.h"
 #include "script.h"
 #include "sound.h"
@@ -36,7 +35,6 @@
 #include "task.h"
 #include "text.h"
 #include "tm_case.h"
-#include "vs_seeker.h"
 #include "constants/event_bg.h"
 #include "constants/event_objects.h"
 #include "constants/item_effects.h"
@@ -55,7 +53,6 @@ static bool8 ItemfinderCheckForHiddenItems(const struct MapEvents *, u8);
 static u8 GetDirectionToHiddenItem(s16, s16);
 static void PlayerFaceHiddenItem(u8);
 static void CheckForHiddenItemsInMapConnection(u8);
-static void Task_OpenRegisteredPokeblockCase(u8);
 static void ItemUseOnFieldCB_Bike(u8);
 static void ItemUseOnFieldCB_Rod(u8);
 static void ItemUseOnFieldCB_Itemfinder(u8);
@@ -71,9 +68,7 @@ static void Task_StartUseRepel(u8);
 static void Task_UseRepel(u8);
 static void Task_CloseCantUseKeyItemMessage(u8);
 static void SetDistanceOfClosestHiddenItem(u8, s16, s16);
-static void CB2_OpenPokeblockFromBag(void);
 static void ItemUseOnFieldCB_Honey(u8 taskId);
-static bool32 IsValidLocationForVsSeeker(void);
 static void InitTMCaseFromBag(void);
 static void Task_InitTMCaseFromField(u8 taskId);
 
@@ -625,36 +620,6 @@ static void Task_StandingOnHiddenItem(u8 taskId)
 #undef tItemfinderBeeps
 #undef tFacingDir
 
-void ItemUseOutOfBattle_PokeblockCase(u8 taskId)
-{
-    if (gTasks[taskId].tUsingRegisteredKeyItem != TRUE)
-    {
-        gBagMenu->newScreenCallback = CB2_OpenPokeblockFromBag;
-        Task_FadeAndCloseBagMenu(taskId);
-    }
-    else
-    {
-        gFieldCallback = FieldCB_ReturnToFieldNoScript;
-        FadeScreen(FADE_TO_BLACK, 0);
-        gTasks[taskId].func = Task_OpenRegisteredPokeblockCase;
-    }
-}
-
-static void CB2_OpenPokeblockFromBag(void)
-{
-    OpenPokeblockCase(PBLOCK_CASE_FIELD, CB2_ReturnToBagMenuPocket);
-}
-
-static void Task_OpenRegisteredPokeblockCase(u8 taskId)
-{
-    if (!gFundidoPaletas.activo)
-    {
-        CleanupOverworldWindowsAndTilemaps();
-        OpenPokeblockCase(PBLOCK_CASE_FIELD, CB2_ReturnToField);
-        DestroyTask(taskId);
-    }
-}
-
 void ItemUseOutOfBattle_CoinCase(u8 taskId)
 {
     ConvertIntToDecimalStringN(gVariableTexto1, GetCoins(), STR_CONV_MODE_LEFT_ALIGN, 4);
@@ -1012,12 +977,6 @@ void ItemUseInBattle_PokeBall(u8 taskId)
     }
 }
 
-static void ItemUseInBattle_ShowPartyMenu(u8 taskId)
-{
-    gBagMenu->newScreenCallback = ChooseMonForInBattleItem;
-    Task_FadeAndCloseBagMenu(taskId);
-}
-
 // Returns whether an item can be used in battle and sets the fail text.
 bool32 CannotUseItemsInBattle(u16 itemId, struct Pokemon *mon)
 {
@@ -1198,27 +1157,6 @@ void ItemUseOutOfBattle_Honey(u8 taskId)
 void ItemUseOutOfBattle_CannotUse(u8 taskId)
 {
     DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem);
-}
-
-static bool32 IsValidLocationForVsSeeker(void)
-{
-    return FALSE;
-}
-
-void FieldUseFunc_VsSeeker(u8 taskId)
-{
-    if (IsValidLocationForVsSeeker())
-    {
-        sItemUseOnFieldCB = Task_InitVsSeekerAndCheckForTrainersOnScreen;
-        SetUpItemUseOnFieldCallback(taskId);
-    }
-    else
-        DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem);
-}
-
-void Task_ItemUse_CloseMessageBoxAndReturnToField_VsSeeker(u8 taskId)
-{
-    Task_CloseCantUseKeyItemMessage(taskId);
 }
 
 void FieldUseFunc_TmCase(u8 taskId)

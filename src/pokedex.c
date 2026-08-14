@@ -1,4 +1,5 @@
 #include "global.h"
+#include "battle.h"
 #include "battle_main.h"
 #include "battle_util.h"
 #include "bg.h"
@@ -2957,10 +2958,16 @@ static void PrintCurrentSpeciesTypeInfo(u8 newEntry, u16 species)
         species = NationalPokedexNumToSpeciesHGSS(sPokedexListItem->dexNum);
     }
     //type icon(s)
+    if (species == SPECIES_NONE)
+    {
+        // No "Mystery type" icon graphic exists to show for an unseen species.
+        SetSpriteInvisibility(0, TRUE);
+        SetSpriteInvisibility(1, TRUE);
+        return;
+    }
+
     type1 = gSpeciesInfo[species].types[TIPO_1];
     type2 = gSpeciesInfo[species].types[TIPO_2];
-    if (species == SPECIES_NONE)
-        type1 = type2 = SIN_TIPO;
 
     if (type1 == type2)
     {
@@ -3491,7 +3498,7 @@ static bool8 CalculateMoves(void)
     const u16 *teachableLearnset = GetSpeciesTeachableLearnset(species);
 
     u16 statsMovesEgg[EGG_MOVES_ARRAY_COUNT] = {0};
-    u16 statsMovesLevelUp[MAX_LEVEL_UP_MOVES] = {0};
+    enum Movimientos statsMovesLevelUp[MAX_LEVEL_UP_MOVES] = {0};
     u16 move;
 
     u8 numEggMoves = 0;

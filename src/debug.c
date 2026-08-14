@@ -146,8 +146,6 @@ enum FlagsVarsDebugMenu
     DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_ALL,
     DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_RESET,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKEDEX,
-    DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKENAV,
-    DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_MATCH_CALL,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_RUN_SHOES,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_LOCATIONS,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_BADGES_ALL,
@@ -389,8 +387,6 @@ static void DebugAction_FlagsVars_SetValue(u8 taskId);
 static void DebugAction_FlagsVars_PokedexFlags_All(u8 taskId);
 static void DebugAction_FlagsVars_PokedexFlags_Reset(u8 taskId);
 static void DebugAction_FlagsVars_SwitchDex(u8 taskId);
-static void DebugAction_FlagsVars_SwitchPokeNav(u8 taskId);
-static void DebugAction_FlagsVars_SwitchMatchCall(u8 taskId);
 static void DebugAction_FlagsVars_ToggleFlyFlags(u8 taskId);
 static void DebugAction_FlagsVars_ToggleBadgeFlags(u8 taskId);
 static void DebugAction_FlagsVars_CollisionOnOff(u8 taskId);
@@ -542,8 +538,6 @@ static const u8 sDebugText_FlagsVars_VariableValueSet[] =    _("Var: {VAR_TEXTO_
 static const u8 sDebugText_FlagsVars_PokedexFlags_All[] =    _("Pokédex Flags All");
 static const u8 sDebugText_FlagsVars_PokedexFlags_Reset[] =  _("Pokédex Flags Reset");
 static const u8 sDebugText_FlagsVars_SwitchDex[] =           _("Toggle {VAR_TEXTO_1}Pokédex");
-static const u8 sDebugText_FlagsVars_SwitchPokeNav[] =       _("Toggle {VAR_TEXTO_1}PokéNav");
-static const u8 sDebugText_FlagsVars_SwitchMatchCall[] =     _("Toggle {VAR_TEXTO_1}Match Call");
 static const u8 sDebugText_FlagsVars_RunningShoes[] =        _("Toggle {VAR_TEXTO_1}Running Shoes");
 static const u8 sDebugText_FlagsVars_ToggleFlyFlags[] =      _("Toggle {VAR_TEXTO_1}Fly Flags");
 static const u8 sDebugText_FlagsVars_ToggleAllBadges[] =     _("Toggle {VAR_TEXTO_1}All badges");
@@ -739,8 +733,6 @@ static const struct ListMenuItem sDebugMenu_Items_FlagsVars[] =
     [DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_ALL]         = {sDebugText_FlagsVars_PokedexFlags_All,   DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_ALL},
     [DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_RESET]       = {sDebugText_FlagsVars_PokedexFlags_Reset, DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_RESET},
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKEDEX]       = {sDebugText_FlagsVars_SwitchDex,          DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKEDEX},
-    [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKENAV]       = {sDebugText_FlagsVars_SwitchPokeNav,      DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKENAV},
-    [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_MATCH_CALL]    = {sDebugText_FlagsVars_SwitchMatchCall,    DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_MATCH_CALL},
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_RUN_SHOES]     = {sDebugText_FlagsVars_RunningShoes,       DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_RUN_SHOES},
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_LOCATIONS]     = {sDebugText_FlagsVars_ToggleFlyFlags,     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_LOCATIONS},
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_BADGES_ALL]    = {sDebugText_FlagsVars_ToggleAllBadges,    DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_BADGES_ALL},
@@ -904,8 +896,6 @@ static void (*const sDebugMenu_Actions_Flags[])(u8) =
     [DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_ALL]         = DebugAction_FlagsVars_PokedexFlags_All,
     [DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_RESET]       = DebugAction_FlagsVars_PokedexFlags_Reset,
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKEDEX]       = DebugAction_FlagsVars_SwitchDex,
-    [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKENAV]       = DebugAction_FlagsVars_SwitchPokeNav,
-    [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_MATCH_CALL]    = DebugAction_FlagsVars_SwitchMatchCall,
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_RUN_SHOES]     = DebugAction_FlagsVars_RunningShoes,
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_LOCATIONS]     = DebugAction_FlagsVars_ToggleFlyFlags,
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_BADGES_ALL]    = DebugAction_FlagsVars_ToggleBadgeFlags,
@@ -1215,12 +1205,6 @@ static u8 Debug_CheckToggleFlags(u8 id)
     {
         case DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKEDEX:
             result = FlagGet(FLAG_SYS_POKEDEX_GET);
-            break;
-        case DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKENAV:
-            result = FlagGet(FLAG_SYS_POKENAV_GET);
-            break;
-        case DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_MATCH_CALL:
-            result = FlagGet(FLAG_ADDED_MATCH_CALL_TO_POKENAV) && FlagGet(FLAG_HAS_MATCH_CALL);
             break;
         case DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_RUN_SHOES:
             result = FlagGet(FLAG_SYS_B_DASH);
@@ -2638,31 +2622,6 @@ static void DebugAction_FlagsVars_SwitchDex(u8 taskId)
     else
         PlaySE(SE_PC_LOGIN);
     FlagToggle(FLAG_SYS_POKEDEX_GET);
-}
-
-static void DebugAction_FlagsVars_SwitchPokeNav(u8 taskId)
-{
-    if (FlagGet(FLAG_SYS_POKENAV_GET))
-        PlaySE(SE_PC_OFF);
-    else
-        PlaySE(SE_PC_LOGIN);
-    FlagToggle(FLAG_SYS_POKENAV_GET);
-}
-
-static void DebugAction_FlagsVars_SwitchMatchCall(u8 taskId)
-{
-    if (FlagGet(FLAG_ADDED_MATCH_CALL_TO_POKENAV))
-    {
-        PlaySE(SE_PC_OFF);
-        FlagClear(FLAG_ADDED_MATCH_CALL_TO_POKENAV);
-        FlagClear(FLAG_HAS_MATCH_CALL);
-    }
-    else
-    {
-        PlaySE(SE_PC_LOGIN);
-        FlagSet(FLAG_ADDED_MATCH_CALL_TO_POKENAV);
-        FlagSet(FLAG_HAS_MATCH_CALL);
-    }
 }
 
 static void DebugAction_FlagsVars_RunningShoes(u8 taskId)

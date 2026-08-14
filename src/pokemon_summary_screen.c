@@ -216,7 +216,6 @@ static void DrawPagination(void);
 static void HandlePowerAccTilemap(u16, s16);
 static void Task_ShowPowerAccWindow(u8);
 static void HandleAppealJamTilemap(u16, s16, u16);
-static void Task_ShowAppealJamWindow(u8);
 static void HandleStatusTilemap(u16, s16);
 static void Task_ShowStatusWindow(u8);
 static void TilemapFiveMovesDisplay(u16 *, u16, bool8);
@@ -2285,6 +2284,13 @@ static void HandlePowerAccTilemap(u16 a, s16 b)
     }
 }
 
+// No-op: this fork has no Contest UI (sContestMoveTilemapCtrl and the appeal/jam
+// heart display it would drive don't exist), but the move-selection flow still
+// calls this alongside HandlePowerAccTilemap unconditionally.
+static void HandleAppealJamTilemap(u16 a, s16 b, u16 move)
+{
+}
+
 static void Task_ShowPowerAccWindow(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
@@ -3209,13 +3215,11 @@ static void PrintMovePowerAndAccuracy(u16 moveIndex)
 static void PrintMoveDetails(u16 move)
 {
     u8 windowId = AddWindowFromTemplateList(sPageMovesTemplate, PSS_DATA_WINDOW_MOVE_DESCRIPTION);
-    u8 moveEffect;
     FillWindowPixelBuffer(windowId, PIXEL_FILL(0));
     if (move != MOVE_NONE)
     {
         if (sMonSummaryScreen->currPageIndex == PSS_PAGE_BATTLE_MOVES)
         {
-            moveEffect = gMovimientos[move].effect;
             if (B_SHOW_CATEGORY_ICON == TRUE)
                 ShowCategoryIcon(CategoriaMovimiento(move));
             PrintMovePowerAndAccuracy(move);
@@ -3378,7 +3382,7 @@ static void SetMoveTypeIcons(void)
     {
         if (summary->moves[i] != MOVE_NONE)
         {
-            TipoMovimiento(summary->moves[i], JUGADOR_IZQUIERDA);
+            type = TipoMovimiento(summary->moves[i], JUGADOR_IZQUIERDA);
             SetTypeSpritePosAndPal(type, 85, 32 + (i * 16), i + SPRITE_ARR_ID_TYPE);
         }
         else

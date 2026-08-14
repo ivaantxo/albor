@@ -119,7 +119,6 @@ gFieldEffectScript_GroundImpactDust::
 	field_eff_end
 
 gFieldEffectScript_UseSecretPowerCave::
-	field_eff_callnative FldEff_UseSecretPowerCave
 	field_eff_end
 
 gFieldEffectScript_JumpTallGrass::
@@ -168,11 +167,9 @@ gFieldEffectScript_PokeCenterHeal::
 	field_eff_end
 
 gFieldEffectScript_UseSecretPowerTree::
-	field_eff_callnative FldEff_UseSecretPowerTree
 	field_eff_end
 
 gFieldEffectScript_UseSecretPowerShrub::
-	field_eff_callnative FldEff_UseSecretPowerShrub
 	field_eff_end
 
 gFieldEffectScript_TreeDisguise::
@@ -276,15 +273,12 @@ gFieldEffectScript_Sparkle::
 	field_eff_end
 
 gFieldEffectScript_ShowSecretPowerCave::
-	field_eff_loadfadedpal_callnative gSpritePalette_SecretPower_Cave, FldEff_SecretPowerCave
 	field_eff_end
 
 gFieldEffectScript_ShowSecretPowerTree::
-	field_eff_loadfadedpal_callnative gSpritePalette_SecretPower_Plant, FldEff_SecretPowerTree
 	field_eff_end
 
 gFieldEffectScript_ShowSecretPowerShrub::
-	field_eff_loadfadedpal_callnative gSpritePalette_SecretPower_Plant, FldEff_SecretPowerShrub
 	field_eff_end
 
 gFieldEffectScript_ShowCutGrass::
@@ -296,7 +290,6 @@ gFieldEffectScript_FieldMoveShowMonInit::
 	field_eff_end
 
 gFieldEffectScript_SecretBaseBootPC::
-	field_eff_callnative FldEff_SecretBasePCTurnOn
 	field_eff_end
 
 gFieldEffectScript_HallOfFameRecord::

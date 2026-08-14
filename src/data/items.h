@@ -7786,22 +7786,6 @@ const struct Item gItemsInfo[] =
                 .iconPalette = gItemIconPalette_AdrenalineOrb,
             },
 
-        [ITEM_TERRAIN_EXTENDER] =
-            {
-                .name = _("Terrain Extender"),
-                .price = (I_PRICE >= GEN_9) ? 15000 : 4000,
-                .holdEffect = HOLD_EFFECT_TERRAIN_EXTENDER,
-                .description = COMPOUND_STRING(
-                    "Extends the length\n"
-                    "of the active\n"
-                    "battle terrain."),
-                .pocket = POCKET_ITEMS,
-                .type = ITEM_USE_BAG_MENU,
-                .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-                .iconPic = gItemIcon_TerrainExtender,
-                .iconPalette = gItemIconPalette_TerrainExtender,
-            },
-
         [ITEM_PROTECTIVE_PADS] =
             {
                 .name = _("Protective Pads"),
@@ -10755,26 +10739,6 @@ const struct Item gItemsInfo[] =
                 .iconPalette = gItemIconPalette_TownMap,
             },
 
-        [ITEM_VS_SEEKER] =
-            {
-                .name = _("Vs. Seeker"),
-                .price = 0,
-                .description = COMPOUND_STRING(
-                    "A rechargeable unit\n"
-                    "that flags battle-\n"
-                    "ready Trainers."),
-                .importance = 1,
-                .pocket = POCKET_KEY_ITEMS,
-                .type = ITEM_USE_FIELD,
-#if I_VS_SEEKER_CHARGING != 0
-                .fieldUseFunc = FieldUseFunc_VsSeeker,
-#else
-                .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-#endif
-                .iconPic = gItemIcon_VsSeeker,
-                .iconPalette = gItemIconPalette_VsSeeker,
-            },
-
         [ITEM_TM_CASE] =
             {
                 .name = _("Máquina de discos"),
@@ -10885,22 +10849,6 @@ const struct Item gItemsInfo[] =
                 .fieldUseFunc = ItemUseOutOfBattle_CannotUse, // Todo
                 .iconPic = gItemIcon_PokeRadar,
                 .iconPalette = gItemIconPalette_PokeRadar,
-            },
-
-        [ITEM_POKEBLOCK_CASE] =
-            {
-                .name = _("{POKEBLOCK} Case"),
-                .price = 0,
-                .description = COMPOUND_STRING(
-                    "A case for holding\n"
-                    "{POKEBLOCK}s made with\n"
-                    "a Berry Blender."),
-                .importance = 1,
-                .pocket = POCKET_KEY_ITEMS,
-                .type = ITEM_USE_PBLOCK_CASE,
-                .fieldUseFunc = ItemUseOutOfBattle_PokeblockCase,
-                .iconPic = gItemIcon_PokeblockCase,
-                .iconPalette = gItemIconPalette_PokeblockCase,
             },
 
         [ITEM_SOOT_SACK] =

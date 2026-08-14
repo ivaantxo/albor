@@ -1292,9 +1292,6 @@ const u32 gItemIconPalette_SafetyGoggles[] = INCBIN_U32("graphics/items/icon_pal
 const u32 gItemIcon_AdrenalineOrb[] = INCBIN_U32("graphics/items/icons/adrenaline_orb.4bpp.lz");
 const u32 gItemIconPalette_AdrenalineOrb[] = INCBIN_U32("graphics/items/icon_palettes/adrenaline_orb.gbapal.lz");
 
-const u32 gItemIcon_TerrainExtender[] = INCBIN_U32("graphics/items/icons/terrain_extender.4bpp.lz");
-const u32 gItemIconPalette_TerrainExtender[] = INCBIN_U32("graphics/items/icon_palettes/terrain_extender.gbapal.lz");
-
 const u32 gItemIcon_ProtectivePads[] = INCBIN_U32("graphics/items/icons/protective_pads.4bpp.lz");
 const u32 gItemIconPalette_ProtectivePads[] = INCBIN_U32("graphics/items/icon_palettes/protective_pads.gbapal.lz");
 
@@ -1618,9 +1615,6 @@ const u32 gItemIconPalette_DowsingMachine[] = INCBIN_U32("graphics/items/icon_pa
 const u32 gItemIcon_TownMap[] = INCBIN_U32("graphics/items/icons/town_map.4bpp.lz");
 const u32 gItemIconPalette_TownMap[] = INCBIN_U32("graphics/items/icon_palettes/town_map.gbapal.lz");
 
-const u32 gItemIcon_VsSeeker[] = INCBIN_U32("graphics/items/icons/vs_seeker.4bpp.lz");
-const u32 gItemIconPalette_VsSeeker[] = INCBIN_U32("graphics/items/icon_palettes/vs_seeker.gbapal.lz");
-
 const u32 gItemIcon_TMCase[] = INCBIN_U32("graphics/items/icons/tm_case.4bpp.lz");
 const u32 gItemIconPalette_TMCase[] = INCBIN_U32("graphics/items/icon_palettes/tm_case.gbapal.lz");
 
@@ -1641,9 +1635,6 @@ const u32 gItemIconPalette_WailmerPail[] = INCBIN_U32("graphics/items/icon_palet
 
 const u32 gItemIcon_PokeRadar[] = INCBIN_U32("graphics/items/icons/poke_radar.4bpp.lz");
 const u32 gItemIconPalette_PokeRadar[] = INCBIN_U32("graphics/items/icon_palettes/poke_radar.gbapal.lz");
-
-const u32 gItemIcon_PokeblockCase[] = INCBIN_U32("graphics/items/icons/pokeblock_case.4bpp.lz");
-const u32 gItemIconPalette_PokeblockCase[] = INCBIN_U32("graphics/items/icon_palettes/pokeblock_case.gbapal.lz");
 
 const u32 gItemIcon_SootSack[] = INCBIN_U32("graphics/items/icons/soot_sack.4bpp.lz");
 const u32 gItemIconPalette_SootSack[] = INCBIN_U32("graphics/items/icon_palettes/soot_sack.gbapal.lz");

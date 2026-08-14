@@ -35,7 +35,7 @@ static u8 GetEggMoves(struct Pokemon *pokemon, u16 *eggMoves);
 static u16 GetEggSpecies(u16 species);
 
 // RAM buffers used to assist with BuildEggMoveset()
-EWRAM_DATA static u16 sHatchedEggLevelUpMoves[EGG_LVL_UP_MOVES_ARRAY_COUNT] = {0};
+EWRAM_DATA static enum Movimientos sHatchedEggLevelUpMoves[EGG_LVL_UP_MOVES_ARRAY_COUNT] = {0};
 EWRAM_DATA static u16 sHatchedEggFatherMoves[MAXIMO_MOVIMIENTOS_POKEMON] = {0};
 EWRAM_DATA static u16 sHatchedEggFinalMoves[MAXIMO_MOVIMIENTOS_POKEMON] = {0};
 EWRAM_DATA static u16 sHatchedEggEggMoves[EGG_MOVES_ARRAY_COUNT] = {0};

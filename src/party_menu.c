@@ -118,7 +118,6 @@ enum {
     FIELD_MOVE_WATERFALL,   // FLAG_BADGE08_GET
     FIELD_MOVE_TELETRANSPORTE,
     FIELD_MOVE_DIG,
-    FIELD_MOVE_SECRET_POWER,
     FIELD_MOVE_MILK_DRINK,
     FIELD_MOVE_SOFT_BOILED,
     FIELD_MOVE_SWEET_SCENT,
@@ -239,7 +238,6 @@ static void CreateCancelConfirmPokeballSprites(void);
 static void Task_ExitPartyMenu(u8);
 static void FreePartyPointers(void);
 static void PartyPaletteBufferCopy(u8);
-static void DisplayPartyPokemonDataForMultiBattle(u8);
 static void LoadPartyBoxPalette(struct PartyMenuBox *, u8);
 static void DrawEmptySlot(u8 windowId);
 static void DisplayPartyPokemonDataForRelearner(u8);
@@ -261,17 +259,12 @@ static void DisplayPartyPokemonHP(u16 hp, u16 maxHp, struct PartyMenuBox *menuBo
 static void DisplayPartyPokemonMaxHP(u16, struct PartyMenuBox *);
 static void DisplayPartyPokemonHPBar(u16, u16, struct PartyMenuBox *);
 static void CreatePartyMonIconSpriteParameterized(u16, u32, struct PartyMenuBox *, u8);
-static void CreatePartyMonHeldItemSpriteParameterized(u16, u16, struct PartyMenuBox *);
-static void CreatePartyMonPokeballSpriteParameterized(u16, struct PartyMenuBox *);
-static void CreatePartyMonStatusSpriteParameterized(u16, u8, struct PartyMenuBox *);
-// These next 4 functions are essentially redundant with the above 4
-// The only difference is that rather than receive the data directly they retrieve it from the mon struct
+// CreatePartyMonIconSprite retrieves its data from the mon struct rather than receiving it directly
 static void CreatePartyMonHeldItemSprite(struct Pokemon *, struct PartyMenuBox *);
 static void CreatePartyMonPokeballSprite(struct Pokemon *, struct PartyMenuBox *);
 static void CreatePartyMonIconSprite(struct Pokemon *, struct PartyMenuBox *, u32);
 static void CreatePartyMonStatusSprite(struct Pokemon *, struct PartyMenuBox *);
 static u8 CreatePokeballButtonSprite(u8, u8);
-static void AnimateSelectedPartyIcon(u32 spriteId, u8 animNum);
 static void PartyMenuStartSpriteAnim(u32 spriteId, u8 animNum);
 static u8 GetPartyBoxPaletteFlags(u8, u8);
 static u8 GetPartyIdFromBattleSlot(u8);
@@ -290,7 +283,6 @@ static void TryGiveItemOrMailToSelectedMon(u8);
 static void SwitchSelectedMons(u8);
 static void Task_TryCreateSelectionWindow(u8);
 static void FinishTwoMonAction(u8);
-static void CancelParticipationPrompt(u8);
 static bool8 DisplayCancelChooseMonYesNo(u8);
 static void Task_CancelChooseMonYesNo(u8);
 static void PartyMenuDisplayYesNoMenu(void);
@@ -302,8 +294,6 @@ static void UpdatePartySelectionDoubleLayout(s8 *, s8);
 static s8 GetNewSlotDoubleLayout(s8, s8);
 static void PrintMessage(const u8 *);
 static void Task_PrintAndWaitForText(u8);
-static void Task_CancelParticipationYesNo(u8);
-static void Task_HandleCancelParticipationYesNoInput(u8);
 static bool8 ShouldUseChooseMonText(void);
 static void SetPartyMonFieldSelectionActions(struct Pokemon *, u8);
 static u8 GetPartyMenuActionsTypeInBattle(struct Pokemon *);
@@ -883,8 +873,6 @@ static u8 *GetPartyMenuBgTile(u16 tileId)
 
 static void CreatePartyMonSprites(u8 slot)
 {
-    u8 actualSlot;
-
     if (GetMonData(&gPlayerParty[slot], MON_DATA_SPECIES) != SPECIES_NONE)
     {
         CreatePartyMonIconSprite(&gPlayerParty[slot], &sPartyMenuBoxes[slot], slot);
@@ -1650,39 +1638,6 @@ u8 GetMonAilment(struct Pokemon *mon)
     if (CheckPartyPokerus(mon, 0))
         return AILMENT_PKRS;
     return AILMENT_NONE;
-}
-
-static void CancelParticipationPrompt(u8 taskId)
-{
-    DisplayPartyMenuMessage(gText_CancelParticipation, TRUE);
-    ProgramaCopiaTilemapVram(FONDO_2);
-    gTasks[taskId].func = Task_CancelParticipationYesNo;
-}
-
-static void Task_CancelParticipationYesNo(u8 taskId)
-{
-    if (IsPartyMenuTextPrinterActive() != TRUE)
-    {
-        PartyMenuDisplayYesNoMenu();
-        gTasks[taskId].func = Task_HandleCancelParticipationYesNoInput;
-    }
-}
-
-static void Task_HandleCancelParticipationYesNoInput(u8 taskId)
-{
-    switch (Menu_ProcessInputNoWrapClearOnChoose())
-    {
-    case 0:
-        gSpecialVar_0x8004 = PARTY_SIZE + 1;
-        Task_ClosePartyMenu(taskId);
-        break;
-    case MENU_B_PRESSED:
-        PlaySE(SE_SELECT);
-        // fallthrough
-    case 1:
-        gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
-        break;
-    }
 }
 
 static u8 CanTeachMove(struct Pokemon *mon, u16 move)
@@ -3245,45 +3200,12 @@ static void UpdatePartyMonHPBar(u32 spriteId, struct Pokemon *mon)
     UpdateHPBar(spriteId, GetMonData(mon, MON_DATA_HP), GetMonData(mon, MON_DATA_MAX_HP));
 }
 
-static void AnimateSelectedPartyIcon(u32 spriteId, u8 animNum)
-{
-    gSprites[spriteId].data[0] = 0;
-    if (animNum == 0)
-    {
-        if (gSprites[spriteId].x == 16)
-        {
-            gSprites[spriteId].x2 = 0;
-            gSprites[spriteId].y2 = -4;
-        }
-        else
-        {
-            gSprites[spriteId].x2 = -4;
-            gSprites[spriteId].y2 = 0;
-        }
-    }
-    else
-    {
-        gSprites[spriteId].x2 = 0;
-        gSprites[spriteId].y2 = 0;
-    }
-}
-
 static void CreatePartyMonHeldItemSprite(struct Pokemon *mon, struct PartyMenuBox *menuBox)
 {
     if (GetMonData(mon, MON_DATA_SPECIES) != SPECIES_NONE)
     {
         menuBox->itemSpriteId = CreateSprite(&sSpriteTemplate_HeldItem, menuBox->spriteCoords[2], menuBox->spriteCoords[3], 0);
         UpdatePartyMonHeldItemSprite(mon, menuBox);
-    }
-}
-
-static void CreatePartyMonHeldItemSpriteParameterized(u16 species, u16 item, struct PartyMenuBox *menuBox)
-{
-    if (species != SPECIES_NONE)
-    {
-        menuBox->itemSpriteId = CreateSprite(&sSpriteTemplate_HeldItem, menuBox->spriteCoords[2], menuBox->spriteCoords[3], 0);
-        gSprites[menuBox->itemSpriteId].oam.priority = 0;
-        ShowOrHideHeldItemSprite(item, menuBox);
     }
 }
 
@@ -3320,15 +3242,6 @@ static void CreatePartyMonPokeballSprite(struct Pokemon *mon, struct PartyMenuBo
         menuBox->pokeballSpriteId = CreateSprite(&sSpriteTemplate_MenuPokeball, menuBox->spriteCoords[6], menuBox->spriteCoords[7], 8);
 }
 
-static void CreatePartyMonPokeballSpriteParameterized(u16 species, struct PartyMenuBox *menuBox)
-{
-    if (species != SPECIES_NONE)
-    {
-        menuBox->pokeballSpriteId = CreateSprite(&sSpriteTemplate_MenuPokeball, menuBox->spriteCoords[6], menuBox->spriteCoords[7], 8);
-        gSprites[menuBox->pokeballSpriteId].oam.priority = 0;
-    }
-}
-
 // For Cancel when Confirm isnt present
 static u8 CreatePokeballButtonSprite(u8 x, u8 y)
 {
@@ -3356,16 +3269,6 @@ static void CreatePartyMonStatusSprite(struct Pokemon *mon, struct PartyMenuBox 
     {
         menuBox->statusSpriteId = CreateSprite(&gSpriteTemplate_StatusIcons, menuBox->spriteCoords[4], menuBox->spriteCoords[5], 0);
         SetPartyMonAilmentGfx(mon, menuBox);
-    }
-}
-
-static void CreatePartyMonStatusSpriteParameterized(u16 species, u8 status, struct PartyMenuBox *menuBox)
-{
-    if (species != SPECIES_NONE)
-    {
-        menuBox->statusSpriteId = CreateSprite(&gSpriteTemplate_StatusIcons, menuBox->spriteCoords[4], menuBox->spriteCoords[5], 0);
-        UpdatePartyMonAilmentGfx(status, menuBox);
-        gSprites[menuBox->statusSpriteId].oam.priority = 0;
     }
 }
 
@@ -3487,7 +3390,7 @@ static void GetMedicineItemEffectMessage(u16 item, u32 statusCured)
         StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnBurnHealed);
         break;
     case EFECTO_OBJETO_CURA_CONGELACION:
-        StringExpandPlaceholders(gVariableTextoAmpliada, COMPOUND_STRING("{VAR_TEXTO_1} se curó de su congelación.{PAUSE_UNTIL_PRESS}")):
+        StringExpandPlaceholders(gVariableTextoAmpliada, COMPOUND_STRING("{VAR_TEXTO_1} se curó de su congelación.{PAUSE_UNTIL_PRESS}"));
         break;
     case ITEM_EFFECT_CURE_PARALYSIS:
         StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnCuredOfParalysis);

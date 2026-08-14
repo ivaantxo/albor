@@ -34,9 +34,9 @@ Std_MsgboxGetPoints:
 	waitmessage
 	return
 
-@ Never used, pokenavcall is always used directly instead
+@ Unreachable: was for the PokéNav Match Call incoming-call popup, which no longer exists.
 Std_MsgboxPokenav:
-	pokenavcall NULL
+	message NULL
 	waitmessage
 	return
 

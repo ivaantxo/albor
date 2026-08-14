@@ -9,26 +9,6 @@
 		.align 2
 gSpecials::
 	def_special HealPlayerParty
-	def_special SetPlayerSecretBase
-	def_special CheckPlayerHasSecretBase
-	def_special EnterSecretBase
-	def_special ClearAndLeaveSecretBase
-	def_special MoveOutOfSecretBase
-	def_special IsCurSecretBaseOwnedByAnotherPlayer
-	def_special GetCurSecretBaseRegistrationValidity
-	def_special ToggleCurSecretBaseRegistry
-	def_special ShowSecretBaseDecorationMenu
-	def_special ShowSecretBaseRegistryMenu
-	def_special PrepSecretBaseBattleFlags
-	def_special GetSecretBaseOwnerAndState
-	def_special InitSecretBaseDecorationSprites
-	def_special SetDecoration
-	def_special GetObjectEventLocalIdByFlag
-	def_special GetSecretBaseTypeInFrontOfPlayer
-	def_special SetSecretBaseOwnerGfxId
-	def_special PutAwayDecorationIteration
-	def_special SetBattledOwnerFromResult
-	def_special DoSecretBasePCTurnOffEffect
 	def_special SavePlayerParty
 	def_special LoadPlayerParty
 	def_special ObjectEventInteractionGetBerryTreeData
@@ -46,9 +26,6 @@ gSpecials::
 	def_special GetTrainerFlag
 	def_special DoTrainerApproach
 	def_special PlayTrainerEncounterMusic
-	def_special ShouldTryRematchBattle
-	def_special IsTrainerReadyForRematch
-	def_special BattleSetup_StartRematchBattle
 	def_special ShowPokemonStorageSystemPC
 	def_special HasEnoughMonsForDoubleBattle
 	def_special SaveGame
@@ -77,7 +54,6 @@ gSpecials::
 	def_special ChangePokemonNickname
 	def_special ChangeBoxPokemonNickname
 	def_special ChoosePartyMon
-	def_special GetFirstFreePokeblockSlot
 	def_special PlayRoulette
 	def_special IsFanClubMemberFanOfPlayer
 	def_special GetNumFansOfPlayerInTrainerFanClub
@@ -109,10 +85,6 @@ gSpecials::
 	def_special RotatingGate_InitPuzzleAndGraphics
 	def_special SetSSTidalFlag
 	def_special ResetSSTidalFlag
-	def_special EnterSafariMode
-	def_special ExitSafariMode
-	def_special GetPokeblockFeederInFront
-	def_special OpenPokeblockCaseOnFeeder
 	def_special IsMirageIslandPresent
 	def_special UpdateShoalTideFlag
 	def_special InitBirchState
@@ -150,8 +122,6 @@ gSpecials::
 	def_special ShowGlassWorkshopMenu
 	def_special SpawnCameraObject
 	def_special RemoveCameraObject
-	def_special GetPokeblockNameByMonNature
-	def_special GetSecretBaseNearbyMapName
 	def_special DoOrbEffect
 	def_special FadeOutOrbEffect
 	def_special WaitWeather
@@ -164,9 +134,7 @@ gSpecials::
 	def_special TryUpdateRusturfTunnelState
 	def_special IsGrassTypeInParty
 	def_special IsStarterInParty
-	def_special CopyCurSecretBaseOwnerName_StrVar1
 	def_special ScriptCheckFreePokemonStorageSpace
-	def_special InteractWithShieldOrTVDecoration
 	def_special IsPokerusInParty
 	def_special SetSootopolisGymCrackedIceMetatiles
 	def_special ShakeCamera
@@ -182,7 +150,6 @@ gSpecials::
 	def_special SetRoute123Weather
 	def_special ScriptGetPartyMonSpecies
 	def_special IsSelectedMonEgg
-	def_special MoveOutOfSecretBaseFromOutside
 	def_special LoadPlayerBag
 	def_special Script_DesvaneceMusicaMapa
 	def_special SetPacifidlogTMReceivedDay
@@ -192,18 +159,6 @@ gSpecials::
 	def_special BufferLottoTicketNumber
 	def_special SetChampionSaveWarp
 	def_special ShowGlassWorkshopMenu
-	def_special InitSecretBaseVars
-	def_special CheckInteractedWithFriendsSandOrnament
-	def_special DeclinedSecretBaseBattle
-	def_special DrewSecretBaseBattle
-	def_special WonSecretBaseBattle
-	def_special LostSecretBaseBattle
-	def_special CheckInteractedWithFriendsDollDecor
-	def_special CheckInteractedWithFriendsCushionDecor
-	def_special CheckInteractedWithFriendsFurnitureBottom
-	def_special CheckInteractedWithFriendsFurnitureMiddle
-	def_special CheckInteractedWithFriendsFurnitureTop
-	def_special CheckInteractedWithFriendsPosterDecor
 	def_special ShowMapNamePopup
 	def_special ShowMapNamePopup
 	def_special DoMirageTowerCeilingCrumble
@@ -213,11 +168,9 @@ gSpecials::
 	def_special HasAtLeastOneBerry
 	def_special OffsetCameraForBattle
 	def_special GetDeptStoreDefaultFloorChoice
-	def_special BufferVarsForIVRater
 	def_special ShowScrollableMultichoice
 	def_special ScrollableMultichoice_TryReturnToList
 	def_special Script_DoRayquazaScene
-	def_special OpenPokenavForTutorial
 	def_special ScriptMenu_CreateStartMenuForPokenavTutorial
 	def_special CountPlayerTrainerStars
 	def_special ChooseMonForMoveTutor
@@ -228,11 +181,9 @@ gSpecials::
 	def_special StartMirageTowerFossilFallAndSink
 	def_special GetPCBoxToSendMon
 	def_special ShouldShowBoxWasFullMessage
-	def_special SetMatchCallRegisteredFlag
 	def_special CreateAbnormalWeatherEvent
 	def_special GetAbnormalWeatherMapNameAndType
 	def_special GetMartEmployeeObjectEventId
-	def_special IsTrainerRegistered
 	def_special ScriptMenu_CreateLilycoveSSTidalMultichoice
 	def_special GetLilycoveSSTidalSelection
 	def_special SetMewAboveGrass
@@ -246,8 +197,6 @@ gSpecials::
 	def_special GetNumberSprayStrength
 	def_special GetSprayId
 	def_special GetLastUsedSprayType
-	def_special VsSeekerResetObjectMovementAfterChargeComplete
-	def_special VsSeekerFreezeObjectsAfterChargeComplete
 	def_special PlayerHasMulch
 	def_special Bag_ChooseMulch
 	def_special ObjectEventInteractionApplyMulch

@@ -33,7 +33,6 @@
 #include "pokedex.h"
 #include "pokemon.h"
 #include "random.h"
-#include "safari_zone.h"
 #include "distorsion_fondo.h"
 #include "script.h"
 #include "sound.h"

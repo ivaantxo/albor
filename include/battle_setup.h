@@ -1,19 +1,6 @@
 #ifndef GUARD_BATTLE_SETUP_H
 #define GUARD_BATTLE_SETUP_H
 
-#include "gym_leader_rematch.h"
-
-#define REMATCHES_COUNT 5
-
-struct RematchTrainer
-{
-    u16 trainerIds[REMATCHES_COUNT];
-    u16 mapGroup;
-    u16 mapNum;
-};
-
-extern const struct RematchTrainer gRematchTable[REMATCH_TABLE_ENTRIES];
-
 extern u16 gTrainerBattleOpponent;
 
 void BattleSetup_StartWildBattle(void);
@@ -40,27 +27,15 @@ bool8 HasTrainerBeenFought(u16 trainerId);
 void SetTrainerFlag(u16 trainerId);
 void ClearTrainerFlag(u16 trainerId);
 void BattleSetup_StartTrainerBattle(void);
-void BattleSetup_StartRematchBattle(void);
 void ShowTrainerIntroSpeech(void);
 const u8 *BattleSetup_GetScriptAddrAfterBattle(void);
 void ShowTrainerCantBattleSpeech(void);
 void PlayTrainerEncounterMusic(void);
 const u8 *GetTrainerLoseText(void);
 const u8 *GetTrainerWonSpeech(void);
-void UpdateRematchIfDefeated(s32 rematchTableId);
-void IncrementRematchStepCounter(void);
-bool32 DoesSomeoneWantRematchIn(u16 mapGroup, u16 mapNum);
-bool32 IsRematchTrainerIn(u16 mapGroup, u16 mapNum);
-u16 GetLastBeatenRematchTrainerId(u16 trainerId);
-bool8 ShouldTryRematchBattle(void);
-bool8 IsTrainerReadyForRematch(void);
-u16 CountBattledRematchTeams(u16 trainerId);
 
 void DoStandardWildBattle(void);
 void DoStandardWildBattle_Debug(void);
 void BattleSetup_StartTrainerBattle_Debug(void);
-s32 TrainerIdToRematchTableId(const struct RematchTrainer *table, u16 trainerId);
-s32 FirstBattleTrainerIdToRematchTableId(const struct RematchTrainer *table, u16 trainerId);
-u16 GetRematchTrainerIdFromTable(const struct RematchTrainer *table, u16 firstBattleTrainerId);
 
 #endif // GUARD_BATTLE_SETUP_H

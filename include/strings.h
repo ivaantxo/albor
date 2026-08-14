@@ -192,7 +192,6 @@ extern const u8 gText_MenuPlayer[];
 extern const u8 gText_MenuSave[];
 extern const u8 gText_MenuOption[];
 extern const u8 gText_MenuExit[];
-extern const u8 gText_MenuRetire[];
 extern const u8 gText_MenuRest[];
 extern const u8 gText_Peak[];
 
@@ -1322,6 +1321,8 @@ extern const u8 gText_Sorry[];
 extern const u8 gText_YaySmileEmoji[];
 extern const u8 gText_ThankYou[];
 extern const u8 gText_ByeBye[];
+extern const u8 gText_ChangeForm[];
+extern const u8 gText_ChangeAbility[];
 
 // Dodrio Berry Picking
 extern const u8 gText_BerryPickingRecords[];

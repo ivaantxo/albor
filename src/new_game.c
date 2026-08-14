@@ -5,9 +5,7 @@
 #include "script.h"
 #include "lottery_corner.h"
 #include "play_time.h"
-#include "match_call.h"
 #include "load_save.h"
-#include "pokeblock.h"
 #include "berry.h"
 #include "rtc.h"
 #include "event_data.h"
@@ -23,8 +21,6 @@
 #include "main.h"
 #include "item_menu.h"
 #include "pokemon_storage_system.h"
-#include "decoration_inventory.h"
-#include "secret_base.h"
 #include "field_specials.h"
 #include "constants/items.h"
 
@@ -64,7 +60,6 @@ void ResetMenuAndMonGlobals(void)
     ZeroPlayerPartyMons();
     ZeroEnemyPartyMons();
     ResetBagScrollPositions();
-    ResetPokeblockScrollPositions();
 }
 
 void NewGameInitData(void)

@@ -1,5 +1,6 @@
 #include "global.h"
 #include "malloc.h"
+#include "battle.h"
 #include "battle_main.h"
 #include "bg.h"
 #include "decompress.h"
@@ -540,7 +541,7 @@ static void PrintMoveInfo(u16 itemId)
     enum Movimientos movimiento;
     const u8 * str;
     struct Sprite *sprite;
-    enum PrioridadMovimientos prioridad = PrioridadMovimiento(move);
+    enum PrioridadMovimientos prioridad;
 
     FillWindowPixelBuffer(WIN_MOVE_INFO, 0);
     if (itemId == ITEM_NONE)
@@ -599,6 +600,7 @@ static void PrintMoveInfo(u16 itemId)
         TMCase_Print(WIN_MOVE_INFO, FONT_NORMAL, gVariableTexto1, 116, 0, 1, 0, 0, COLOR_LIGHT);
 
         // Print Priority
+        prioridad = PrioridadMovimiento(movimiento);
         TMCase_Print(WIN_MOVE_INFO, FONT_BIG, gText_Pri, 137, 0, 1, 0, 0, COLOR_TITLE);
         if (prioridad == PRIORIDAD_MOVIMIENTO_NORMAL)
         {

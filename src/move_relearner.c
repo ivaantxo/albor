@@ -163,7 +163,7 @@ static EWRAM_DATA struct
 {
     u8 state;
     u8 heartSpriteIds[16];                               /*0x001*/
-    u16 movesToLearn[MAX_RELEARNER_MOVES];               /*0x01A*/
+    enum Movimientos movesToLearn[MAX_RELEARNER_MOVES];  /*0x01A*/
     u8 partyMon;                                         /*0x044*/
     u8 moveSlot;                                         /*0x045*/
     struct ListMenuItem menuItems[MAX_RELEARNER_MOVES];  /*0x0E8*/
@@ -323,7 +323,6 @@ static void CB2_InitLearnMoveReturnFromSelectMove(void);
 static void InitMoveRelearnerBackgroundLayers(void);
 static void AddScrollArrows(void);
 static void HandleInput(void);
-static void ShowTeachMoveText(u8);
 static s32 GetCurrentSelectedMove(void);
 static void FreeMoveRelearnerResources(void);
 static void RemoveScrollArrows(void);
@@ -760,22 +759,6 @@ static void HandleInput(void)
 static s32 GetCurrentSelectedMove(void)
 {
     return sMoveRelearnerStruct->menuItems[sMoveRelearnerMenuSate.listRow + sMoveRelearnerMenuSate.listOffset].id;
-}
-
-// Theory: This used to make the heart sprites visible again (i.e.
-// this was the inverse of HideHeartsAndShowTeachMoveText), but the
-// code was commented out. The bool argument would have been named
-// "justShowHearts." The code for showing/hiding the heards was moved
-// to MoveRelearnerShowHideHearts, which is called whenever a new move is
-// selected and whenever the display mode changes.
-static void ShowTeachMoveText(bool8 shouldDoNothingInstead)
-{
-    if (shouldDoNothingInstead == FALSE)
-    {
-        StringExpandPlaceholders(gVariableTextoAmpliada, gText_TeachWhichMoveToPkmn);
-        FillWindowPixelBuffer(RELEARNERWIN_MSG, 0x11);
-        AddTextPrinterParameterized(RELEARNERWIN_MSG, FONT_NORMAL, gVariableTextoAmpliada, 0, 1, 0, NULL);
-    }
 }
 
 static void CreateUISprites(void)

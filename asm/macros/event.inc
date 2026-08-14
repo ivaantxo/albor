@@ -44,8 +44,7 @@
 	@ callstd function names
 	STD_OBTAIN_ITEM = 0
 	STD_FIND_ITEM = 1
-	STD_OBTAIN_DECORATION = 7
-	STD_REGISTER_MATCH_CALL = 8
+	STD_REGISTER_MATCH_CALL = 7
 
 	@ Calls the script in gStdScripts at index function.
 	.macro callstd function:req
@@ -522,31 +521,6 @@
 	.macro checkitemtype itemId:req
 	.byte SCR_CMD_checkitemtype
 	.2byte \itemId
-	.endm
-
-	@ Adds a decoration to the player's PC.
-	.macro adddecoration decoration:req
-	.byte SCR_CMD_adddecoration
-	.2byte \decoration
-	.endm
-
-	@ Removes a decoration from the player's PC.
-	.macro removedecoration decoration:req
-	.byte SCR_CMD_removedecoration
-	.2byte \decoration
-	.endm
-
-	@ Checks for decoration in the player's PC.
-	.macro checkdecor decoration:req
-	.byte SCR_CMD_checkdecor
-	.2byte \decoration
-	.endm
-
-	@ Checks if the player has enough space in their PC to hold the decoration.
-	@ Sets VAR_RESULT to TRUE if there is room, or FALSE is there is no room.
-	.macro checkdecorspace decoration:req
-	.byte SCR_CMD_checkdecorspace
-	.2byte \decoration
 	.endm
 
 	@ Applies the movement data at movements to the specified (localId) object. If no map is specified, then the current map is used.
@@ -1045,13 +1019,6 @@
 	.2byte \item
 	.endm
 
-	@ Writes the name of the specified decoration to the specified buffer.
-	.macro bufferdecorationname stringVarId:req, decoration:req
-	.byte SCR_CMD_bufferdecorationname
-	stringvar \stringVarId
-	.2byte \decoration
-	.endm
-
 	@ Writes the name of the specified move to the specified buffer.
 	.macro buffermovename stringVarId:req, move:req
 	.byte SCR_CMD_buffermovename
@@ -1084,19 +1051,6 @@
 	@ Products should be a list of .2byte item values preceded by an .align 2
 	.macro pokemart products:req
 	.byte SCR_CMD_pokemart
-	.4byte \products
-	.endm
-
-	@ Opens the Pokemart system and treats the list of items as decorations.
-	@ Products should be a list of .2byte decoration values preceded by an .align 2
-	.macro pokemartdecoration products:req
-	.byte SCR_CMD_pokemartdecoration
-	.4byte \products
-	.endm
-
-	@ Identical to pokemartdecoration, but with slight changes to the clerk dialogue. See uses of MART_TYPE_DECOR2.
-	.macro pokemartdecoration2 products:req
-	.byte SCR_CMD_pokemartdecoration2
 	.4byte \products
 	.endm
 
@@ -1530,12 +1484,6 @@
 	.2byte \trainerId
 	.endm
 
-	@ Starts a Pokenav call with the given text.
-	.macro pokenavcall text:req
-	.byte SCR_CMD_pokenavcall
-	.4byte \text
-	.endm
-
 	@ Warp with a fade to white. Used during the Sootopolis legendary fight.
 	@ Warp commands can be given either the id of which warp location to go to on the destination map
 	@ or a pair of x/y coordinates to go to directly on the destination map.
@@ -1729,8 +1677,8 @@
 	MSGBOX_DEFAULT = 4
 	MSGBOX_YESNO = 5
 	MSGBOX_AUTOCLOSE = 6
-	MSGBOX_GETPOINTS = 9
-	MSGBOX_POKENAV = 10
+	MSGBOX_GETPOINTS = 8
+	MSGBOX_POKENAV = 9
 
 	YES = 1
 	NO  = 0
@@ -1757,20 +1705,6 @@
 	setorcopyvar VAR_0x8000, \item
 	setorcopyvar VAR_0x8001, \amount
 	callstd STD_FIND_ITEM
-	.endm
-
-	@ Equivalent to giveitem but for a single decoration.
-	.macro givedecoration decoration:req
-	setorcopyvar VAR_0x8000, \decoration
-	callstd STD_OBTAIN_DECORATION
-	.endm
-
-	@ Registers the specified trainer in Match Call and plays a fanfare with a notification message.
-	.macro register_matchcall trainer:req
-	setvar VAR_0x8004, \trainer
-	special SetMatchCallRegisteredFlag
-	setorcopyvar VAR_0x8000, \trainer
-	callstd STD_REGISTER_MATCH_CALL
 	.endm
 
 	@ Does a sparkle field effect (e.g. when the Trick Master is hiding) at the given coordinates.

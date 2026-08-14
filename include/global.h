@@ -256,7 +256,7 @@ struct SaveBlock
     u32 pokedexOrder;
     struct Time localTimeOffset;
     struct Time lastBerryTreeUpdate;
-    struct Time fakeRTC;
+    struct Time gameClock;
     u8 itemFlags[ITEM_FLAGS_COUNT];
     struct Coords16 pos;
     struct WarpData location;

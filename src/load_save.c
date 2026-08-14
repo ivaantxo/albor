@@ -9,7 +9,6 @@
 #include "random.h"
 #include "save_location.h"
 #include "gba/flash_internal.h"
-#include "decoration_inventory.h"
 #include "agb_flash.h"
 #include "event_data.h"
 #include "constants/event_objects.h"

@@ -7,9 +7,7 @@
 #include "mirage_tower.h"
 #include "overworld.h"
 #include "palette.h"
-#include "pokenav.h"
 #include "script.h"
-#include "secret_base.h"
 #include "constants/rgb.h"
 #include "constants/metatile_behaviors.h"
 #include "wild_encounter.h"
@@ -39,7 +37,6 @@ static void FillWestConnection(struct MapHeader const *mapHeader, struct MapHead
 static void FillEastConnection(struct MapHeader const *mapHeader, struct MapHeader const *connectedMapHeader, s32 offset);
 static void InitBackupMapLayoutConnections(struct MapHeader *mapHeader);
 static void LoadSavedMapView(void);
-static bool8 SkipCopyingMetatileFromSavedMap(u16 *mapBlock, u16 mapWidth, u8 yMode);
 static const struct MapConnection *GetIncomingConnection(u8 direction, int x, int y);
 static bool8 IsPosInIncomingConnectingMap(u8 direction, int x, int y, const struct MapConnection *connection);
 static bool8 IsCoordInIncomingConnectingMap(int coord, int srcMax, int destMax, int offset);
@@ -445,7 +442,6 @@ static void ClearSavedMapView(void)
 
 static void LoadSavedMapView(void)
 {
-    u8 yMode;
     u32 i, j;
     int x, y;
     u16 *mapView;
@@ -458,17 +454,9 @@ static void LoadSavedMapView(void)
         y = gSaveBlockPtr->pos.y;
         for (i = y; i < y + MAP_OFFSET_H; i++)
         {
-            if (i == y && i != 0)
-                yMode = 0;
-            else if (i == y + MAP_OFFSET_H - 1 && i != gMapHeader.mapLayout->height - 1)
-                yMode = 1;
-            else
-                yMode = 0xFF;
-
             for (j = x; j < x + MAP_OFFSET_W; j++)
             {
-                if (!SkipCopyingMetatileFromSavedMap(&sBackupMapData[j + width * i], width, yMode))
-                    sBackupMapData[j + width * i] = *mapView;
+                sBackupMapData[j + width * i] = *mapView;
                 mapView++;
             }
         }
@@ -798,20 +786,6 @@ void MapGridSetMetatileImpassabilityAt(int x, int y, bool32 impassable)
     }
 }
 
-static bool8 SkipCopyingMetatileFromSavedMap(u16 *mapBlock, u16 mapWidth, u8 yMode)
-{
-    if (yMode == 0xFF)
-        return FALSE;
-
-    if (yMode == 0)
-        mapBlock -= mapWidth;
-    else
-        mapBlock += mapWidth;
-
-    if (IsLargeBreakableDecoration(*mapBlock & MAPGRID_METATILE_ID_MASK, yMode) == TRUE)
-        return TRUE;
-    return FALSE;
-}
 
 static void CopyTilesetToVram(struct Tileset const *tileset, u16 numTiles, u16 offset)
 {

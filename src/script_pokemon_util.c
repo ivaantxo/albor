@@ -146,7 +146,7 @@ void ReducePlayerPartyToSelectedMons(void)
  * if side/slot are assigned, it will create the mon at the assigned party location
  * if slot == PARTY_SIZE, it will give the mon to first available party or storage slot
  */
-static u32 ScriptGiveMonParameterized(u8 side, u8 slot, u16 species, u8 level, u16 item, u8 ball, u8 nature, u8 abilityNum, u8 gender, u8 *evs, u16 *moves, bool8 isShiny)
+static u32 ScriptGiveMonParameterized(u8 side, u8 slot, u16 species, u8 level, u16 item, u8 ball, u8 nature, u8 abilityNum, u8 gender, u8 *evs, enum Movimientos *movimientos, bool8 isShiny)
 {
     u32 nationalDexNum, sentToPc;
     struct Pokemon mon;

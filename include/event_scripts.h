@@ -33,8 +33,6 @@ extern const u8 EventScript_StartTrainerApproach[];
 extern const u8 EventScript_DoNoIntroTrainerBattle[];
 extern const u8 EventScript_TryDoDoubleTrainerBattle[];
 extern const u8 EventScript_TryDoNormalTrainerBattle[];
-extern const u8 EventScript_TryDoDoubleRematchBattle[];
-extern const u8 EventScript_TryDoRematchBattle[];
 
 extern const u8 BerryTreeScript[];
 
@@ -51,7 +49,6 @@ extern const u8 EventScript_PC[];
 extern const u8 EventScript_TestSignpostMsg[];
 extern const u8 EventScript_HiddenItemScript[];
 extern const u8 EventScript_TV[];
-extern const u8 EventScript_PokeBlockFeeder[];
 extern const u8 EventScript_RegionMap[];
 extern const u8 EventScript_RunningShoesManual[];
 extern const u8 EventScript_PictureBookShelf[];
@@ -85,10 +82,6 @@ extern const u8 EventScript_WhiteOut[];
 extern const u8 EventScript_AfterWhiteOutMomHeal[];
 extern const u8 EventScript_AfterWhiteOutHeal[];
 extern const u8 EventScript_ResetMrBriney[];
-extern const u8 VSSeeker_Text_BatteryNotChargedNeedXSteps[];
-extern const u8 VSSeeker_Text_NoTrainersWithinRange[];
-extern const u8 VSSeeker_Text_TrainersNotReady[];
-extern const u8 EventScript_VsSeekerChargingDone[];
 
 extern const u8 Common_Movement_FollowerSafeStart[];
 extern const u8 Common_Movement_FollowerSafeEnd[];

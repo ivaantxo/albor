@@ -39,7 +39,6 @@
 #include "party_menu.h"
 #include "field_specials.h"
 #include "pokemon_summary_screen.h"
-#include "pokenav.h"
 #include "menu_specialized.h"
 #include "data.h"
 #include "constants/abilities.h"
