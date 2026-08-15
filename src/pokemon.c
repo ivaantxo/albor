@@ -378,6 +378,25 @@ void ZeroEnemyPartyMons(void)
         ZeroMonData(&gEnemyParty[i]);
 }
 
+// Tiradas extra de variocolor del Amuleto Iris. Vive aparte para que los Pokemon
+// salvajes del overworld, que generan su personalidad al aparecer en el mapa y no
+// a traves de CreaPokemon, respeten exactamente la misma probabilidad.
+u32 AplicaTiradasShinyExtra(u32 personalidad)
+{
+    u32 rerollsExtra = 0;
+
+    if (CheckBagHasItem(ITEM_SHINY_CHARM, 1))
+        rerollsExtra += I_SHINY_CHARM_ADDITIONAL_ROLLS;
+
+    while (VALOR_SHINY(personalidad) >= SHINY_ODDS && rerollsExtra > 0)
+    {
+        personalidad = Random();
+        rerollsExtra--;
+    }
+
+    return personalidad;
+}
+
 void CreaPokemon(struct Pokemon *mon, u32 species, u32 level, bool32 hasFixedPersonality, u32 fixedPersonality)
 {
     ZeroMonData(mon);
@@ -399,15 +418,8 @@ void CreaPokemonCaja(struct BoxPokemon *boxMon, u32 especie, u32 nivel, bool32 t
     else
         personalidad = Random();
 
-    u32 rerollsExtra = 0;
-    if (CheckBagHasItem(ITEM_SHINY_CHARM, 1))
-        rerollsExtra += I_SHINY_CHARM_ADDITIONAL_ROLLS;
-
-    while (VALOR_SHINY(personalidad) >= SHINY_ODDS && rerollsExtra > 0)
-    {
-        personalidad = Random();
-        rerollsExtra--;
-    }
+    if (!tienePersonalidadFija)
+        personalidad = AplicaTiradasShinyExtra(personalidad);
 
     esVariocolor = VALOR_SHINY(personalidad) < SHINY_ODDS;
 
@@ -473,10 +485,10 @@ void CreaPokemonConGeneroNaturaleza(struct Pokemon *mon, u32 species, u32 level,
     CreaPokemon(mon, species, level, TRUE, personality);
 }
 
-#define CALCULA_ESTADISTICA(baseStat, ev, indiceEstadistica, field)         \
+#define CALCULA_ESTADISTICA(baseStat, indiceEstadistica, field)             \
 {                                                                           \
     u32 baseStat = gSpeciesInfo[species].baseStat;                          \
-    s32 n = (((2 * baseStat + ev / 4) * level) / 100) + 5;                  \
+    s32 n = (((2 * baseStat) * level) / 100) + 5;                           \
     n = ModificaEstadisticaPorNaturaleza(naturaleza, n, indiceEstadistica); \
     SetMonData(mon, field, &n);                                             \
 }
@@ -485,12 +497,6 @@ void CalculateMonStats(struct Pokemon *mon)
 {
     s32 oldMaxHP = GetMonData(mon, MON_DATA_MAX_HP, NULL);
     s32 currentHP = GetMonData(mon, MON_DATA_HP, NULL);
-    s32 hpEV = GetMonData(mon, MON_DATA_HP_EV, NULL);
-    s32 attackEV = GetMonData(mon, MON_DATA_ATK_EV, NULL);
-    s32 defenseEV = GetMonData(mon, MON_DATA_DEF_EV, NULL);
-    s32 speedEV = GetMonData(mon, MON_DATA_SPEED_EV, NULL);
-    s32 spAttackEV = GetMonData(mon, MON_DATA_SPATK_EV, NULL);
-    s32 spDefenseEV = GetMonData(mon, MON_DATA_SPDEF_EV, NULL);
     u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
     s32 level = GetLevelFromMonExp(mon);
     s32 newMaxHP;
@@ -499,7 +505,7 @@ void CalculateMonStats(struct Pokemon *mon)
     SetMonData(mon, MON_DATA_LEVEL, &level);
 
     s32 n = 2 * gSpeciesInfo[species].baseHP;
-    newMaxHP = (((n + hpEV / 4) * level) / 100) + level + 10;
+    newMaxHP = ((n * level) / 100) + level + 10;
 
     gBattleScripting.levelUpHP = newMaxHP - oldMaxHP;
     if (gBattleScripting.levelUpHP == 0)
@@ -507,11 +513,11 @@ void CalculateMonStats(struct Pokemon *mon)
 
     SetMonData(mon, MON_DATA_MAX_HP, &newMaxHP);
 
-    CALCULA_ESTADISTICA(baseAttack, attackEV, ESTADISTICA_ATAQUE, MON_DATA_ATK)
-    CALCULA_ESTADISTICA(baseDefense, defenseEV, ESTADISTICA_DEFENSA, MON_DATA_DEF)
-    CALCULA_ESTADISTICA(baseSpeed, speedEV, ESTADISTICA_VELOCIDAD, MON_DATA_SPEED)
-    CALCULA_ESTADISTICA(baseSpAttack, spAttackEV, ESTADISTICA_ATAQUE_ESPECIAL, MON_DATA_SPATK)
-    CALCULA_ESTADISTICA(baseSpDefense, spDefenseEV, ESTADISTICA_DEFENSA_ESPECIAL, MON_DATA_SPDEF)
+    CALCULA_ESTADISTICA(baseAttack, ESTADISTICA_ATAQUE, MON_DATA_ATK)
+    CALCULA_ESTADISTICA(baseDefense, ESTADISTICA_DEFENSA, MON_DATA_DEF)
+    CALCULA_ESTADISTICA(baseSpeed, ESTADISTICA_VELOCIDAD, MON_DATA_SPEED)
+    CALCULA_ESTADISTICA(baseSpAttack, ESTADISTICA_ATAQUE_ESPECIAL, MON_DATA_SPATK)
+    CALCULA_ESTADISTICA(baseSpDefense, ESTADISTICA_DEFENSA_ESPECIAL, MON_DATA_SPDEF)
 
     // Since a pokemon's maxHP data could either not have
     // been initialized at this point or this pokemon is
@@ -1005,35 +1011,27 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
         case MON_DATA_MOVE4:
             retVal = boxMon->move4;
             break;
+        // Los PP no se guardan: siempre valen el maximo del movimiento.
         case MON_DATA_PP1:
-            retVal = boxMon->pp1;
+            retVal = gMovimientos[boxMon->move1].pp;
             break;
         case MON_DATA_PP2:
-            retVal = boxMon->pp2;
+            retVal = gMovimientos[boxMon->move2].pp;
             break;
         case MON_DATA_PP3:
-            retVal = boxMon->pp3;
+            retVal = gMovimientos[boxMon->move3].pp;
             break;
         case MON_DATA_PP4:
-            retVal = boxMon->pp4;
+            retVal = gMovimientos[boxMon->move4].pp;
             break;
+        // Los EV y los IV no existen en este juego.
         case MON_DATA_HP_EV:
-            retVal = boxMon->hpEV;
-            break;
         case MON_DATA_ATK_EV:
-            retVal = boxMon->attackEV;
-            break;
         case MON_DATA_DEF_EV:
-            retVal = boxMon->defenseEV;
-            break;
         case MON_DATA_SPEED_EV:
-            retVal = boxMon->speedEV;
-            break;
         case MON_DATA_SPATK_EV:
-            retVal = boxMon->spAttackEV;
-            break;
         case MON_DATA_SPDEF_EV:
-            retVal = boxMon->spDefenseEV;
+            retVal = 0;
             break;
         case MON_DATA_COOL:
         case MON_DATA_BEAUTY:
@@ -1044,11 +1042,10 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
         case MON_DATA_POKERUS:
             retVal = 0;
             break;
+        // No hay intercambios: no se guardan datos de captura.
         case MON_DATA_MET_LOCATION:
-            retVal = boxMon->metLocation;
-            break;
         case MON_DATA_MET_LEVEL:
-            retVal = boxMon->metLevel;
+            retVal = 0;
             break;
         case MON_DATA_POKEBALL:
             retVal = boxMon->pokeball;
@@ -1117,13 +1114,14 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
         case MON_DATA_LANGUAGE:
             retVal = 0;
             break;
+        // Todos los Pokemon son del jugador: no se guarda entrenador original.
         case MON_DATA_OT_NAME:
         {
             retVal = 0;
 
             while (retVal < MAXIMO_CARACTERES_NOMBRE_JUGADOR)
             {
-                data[retVal] = boxMon->otName[retVal];
+                data[retVal] = gSaveBlockPtr->nombreJugador[retVal];
                 retVal++;
             }
 
@@ -1235,36 +1233,17 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         case MON_DATA_MOVE4:
             SET16(boxMon->move4);
             break;
+        // PP y EV no se guardan: escribirlos no hace nada.
         case MON_DATA_PP1:
-            SET8(boxMon->pp1);
-            break;
         case MON_DATA_PP2:
-            SET8(boxMon->pp2);
-            break;
         case MON_DATA_PP3:
-            SET8(boxMon->pp3);
-            break;
         case MON_DATA_PP4:
-            SET8(boxMon->pp4);
-            break;
         case MON_DATA_HP_EV:
-            SET8(boxMon->hpEV);
-            break;
         case MON_DATA_ATK_EV:
-            SET8(boxMon->attackEV);
-            break;
         case MON_DATA_DEF_EV:
-            SET8(boxMon->defenseEV);
-            break;
         case MON_DATA_SPEED_EV:
-            SET8(boxMon->speedEV);
-            break;
         case MON_DATA_SPATK_EV:
-            SET8(boxMon->spAttackEV);
-            break;
         case MON_DATA_SPDEF_EV:
-            SET8(boxMon->spDefenseEV);
-            break;
         case MON_DATA_COOL:
         case MON_DATA_BEAUTY:
         case MON_DATA_CUTE:
@@ -1273,15 +1252,10 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         case MON_DATA_SHEEN:
         case MON_DATA_POKERUS:
             break;
+        // No hay intercambios: los datos de captura no se guardan.
         case MON_DATA_MET_LOCATION:
-            SET8(boxMon->metLocation);
-            break;
         case MON_DATA_MET_LEVEL:
-        {
-            u8 metLevel = *data;
-            boxMon->metLevel = metLevel;
             break;
-        }
         case MON_DATA_POKEBALL:
         {
             u8 pokeball = *data;
@@ -1319,13 +1293,9 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
             break;
         case MON_DATA_LANGUAGE:
             break;
+        // El entrenador original siempre es el jugador.
         case MON_DATA_OT_NAME:
-        {
-            s32 i;
-            for (i = 0; i < MAXIMO_CARACTERES_NOMBRE_JUGADOR; i++)
-                boxMon->otName[i] = data[i];
             break;
-        }
         case MON_DATA_MARKINGS:
             break;
     case MON_DATA_IS_SHINY:
@@ -2919,8 +2889,6 @@ u16 GetBattleBGM(void)
         case SPECIES_KYOGRE:
         case SPECIES_RAYQUAZA:
             return MUS_VS_KYOGRE_GROUDON;
-        case SPECIES_JIRACHI:
-            return MUS_VS_WILD;
         case SPECIES_DEOXYS_NORMAL:
         case SPECIES_DEOXYS_ATTACK:
         case SPECIES_DEOXYS_DEFENSE:

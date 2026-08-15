@@ -103,14 +103,18 @@ void LoadCompressedSpritePaletteWithTag(const u32 *pal, u16 tag)
     LoadSpritePalette(&dest);
 }
 
-void LoadCompressedSpritePaletteWithTagHueShifted(const u32 *pal, u16 tag, u32 personality)
+// Devuelve el slot concreto que se ha usado. Es importante no volver a buscarlo
+// por etiqueta: LoadUniqueSpritePalette siempre ocupa un slot libre nuevo, asi que
+// puede haber varios slots con la misma etiqueta (dos Pokemon de la misma especie
+// con personalidades distintas) e IndexOfSpritePaletteTag devolveria el primero.
+u32 LoadCompressedSpritePaletteWithTagHueShifted(const u32 *pal, u16 tag, u32 personality)
 {
     struct SpritePalette dest;
 
     LZ77UnCompWram(pal, gDecompressionBuffer);
     dest.data = (void *) gDecompressionBuffer;
     dest.tag = tag;
-    LoadUniqueSpritePalette(&dest, personality);
+    return LoadUniqueSpritePalette(&dest, personality);
 }
 
 void LoadCompressedSpritePaletteOverrideBuffer(const struct CompressedSpritePalette *src, void *buffer)

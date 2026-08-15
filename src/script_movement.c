@@ -115,18 +115,23 @@ static u8 GetMovementScriptIdFromObjectEventId(u8 taskId, u32 objEventId)
     return OBJECT_EVENTS_COUNT;
 }
 
-static void LoadObjectEventIdPtrFromMovementScript(u8 taskId, u8 moveScrId, u32 **pObjEventId)
+// Las ranuras de gTasks[].data[1..] guardan un objEventId por byte, y asi las
+// leen GetMovementScriptIdFromObjectEventId y ScriptMovement_UnfreezeActiveObjects.
+// Hay que recorrerlas de byte en byte: con un u32 * se escribia una ranura de cada
+// cuatro, se pisaban las contiguas y el centinela de ranura libre (0xFF) dejaba de
+// reconocerse, con lo que el movimiento acababa aplicado a otro objeto.
+static void LoadObjectEventIdPtrFromMovementScript(u8 taskId, u8 moveScrId, u8 **pObjEventId)
 {
     u32 i;
 
-    *pObjEventId = (u32 *)&gTasks[taskId].data[1];
+    *pObjEventId = (u8 *)&gTasks[taskId].data[1];
     for (i = 0; i < moveScrId; i++, (*pObjEventId)++)
         ;
 }
 
 static void SetObjectEventIdAtMovementScript(u8 taskId, u8 moveScrId, u32 objEventId)
 {
-    u32 *ptr;
+    u8 *ptr;
 
     LoadObjectEventIdPtrFromMovementScript(taskId, moveScrId, &ptr);
     *ptr = objEventId;
@@ -134,7 +139,7 @@ static void SetObjectEventIdAtMovementScript(u8 taskId, u8 moveScrId, u32 objEve
 
 static void LoadObjectEventIdFromMovementScript(u8 taskId, u8 moveScrId, u32 *objEventId)
 {
-    u32 *ptr;
+    u8 *ptr;
 
     LoadObjectEventIdPtrFromMovementScript(taskId, moveScrId, &ptr);
     *objEventId = *ptr;

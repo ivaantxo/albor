@@ -241,7 +241,7 @@ static void UseVsSeeker_CleanUpFieldEffect(struct Task *task);
 
 static u8 sActiveList[32];
 
-extern u8 *gFieldEffectScriptPointers[];
+#include "data/field_effect_script_pointers.h"
 extern const struct SpriteTemplate *const gFieldEffectObjectTemplatePointers[];
 
 static const u32 sNewGameBirch_Gfx[] = INCBIN_U32("graphics/birch_speech/birch.4bpp");
@@ -694,6 +694,11 @@ u32 FieldEffectStart(u8 id)
 {
     u8 *script;
     u32 val;
+
+    // Una id invalida (o una ranura sin script) solia ejecutarse como puntero
+    // basura y colgaba el juego; aqui simplemente no se hace nada.
+    if (id >= ARRAY_COUNT(gFieldEffectScriptPointers) || gFieldEffectScriptPointers[id] == NULL)
+        return 0;
 
     FieldEffectActiveListAdd(id);
 

@@ -191,7 +191,6 @@ bool32 EstaPotenciadoPotenciaBruta(u32 combatiente, enum Movimientos movimiento)
 void RecuperaObjetoPerdido(void);
 u8 TryHandleSeed(u32 battler, u32 terrainFlag, u8 statId, u16 itemId, bool32 execute);
 bool32 IsBattlerAffectedByHazards(u32 battler, bool32 toxicSpikes);
-u32 GetBattlerTotalSpeedStat(u32 battler);
 void SortBattlersBySpeed(u8 *battlers, bool32 slowToFast);
 bool32 CompareStat(u32 battler, u8 statId, u8 cmpTo, u8 cmpKind);
 bool32 TryRoomService(u32 battler);

@@ -163,7 +163,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .strikeCount = 2,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_ATTACK_DOWN_1,
+            .moveEffect = MOVE_EFFECT_ATK_MINUS_1,
             .chance = 50,
         }),
         .battleAnimScript = gBattleAnimMove_DobleBofeton,
@@ -662,7 +662,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .patada = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SPD_PLUS_1
+            .moveEffect = MOVE_EFFECT_SPD_PLUS_1,
             .self = TRUE,
             .chance = 100,
         }),
@@ -1011,7 +1011,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .bitingMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_ATK_MINUS_1
+            .moveEffect = MOVE_EFFECT_ATK_MINUS_1,
             .chance = 30,
         }),
         .battleAnimScript = gBattleAnimMove_Bite,
@@ -2101,7 +2101,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = 0,
         .type = TIPO_PSIQUICO,
         .accuracy = PRECISION_PERFECTA,
-        .pp = PP_MOVIMIENTOS_ESTADO,
+        .pp = PP_MOVIMIENTO_NORMAL,
         .target = MOVE_TARGET_USER,
         PRIORIDAD_ALTA,
         .category = CATEGORIA_ESTADO,
@@ -4167,7 +4167,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = 0,
         .type = TIPO_NORMAL,
         .accuracy = PRECISION_PERFECTA,
-        .pp = PP_MOVIMIENTOS_ESTADO,
+        .pp = PP_MOVIMIENTO_NORMAL,
         .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
@@ -4185,7 +4185,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .power = 0,
         .type = TIPO_NORMAL,
         .accuracy = PRECISION_NORMAL,
-        .pp = PP_MOVIMIENTOS_ESTADO,
+        .pp = PP_MOVIMIENTO_NORMAL,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
@@ -4612,7 +4612,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Summons party Pokémon to\n"
             "join in the attack."),
-        .effect = EFECTO_MULTI_HIT,
+        .effect = EFFECT_MULTI_HIT,
         .power = 15,
         .type = TIPO_SINIESTRO,
         .accuracy = PRECISION_NORMAL,
@@ -8351,7 +8351,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Hurls an orb that does more\n"
             "damage to slower foes."),
-        .effect = EFFECT_HIT
+        .effect = EFFECT_HIT,
         .power = 1,
         .type = TIPO_ELECTRICO,
         .accuracy = PRECISION_NORMAL,
@@ -8557,7 +8557,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 30,
         }),
-        .battleAnimScript = gBattleAnimMove_Scald,
+        .battleAnimScript = gBattleAnimMove_Escaldar,
     },
 
     [MOVE_SHELL_SMASH] =
@@ -10521,7 +10521,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .patada = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_ACC_MINUS_1
+            .moveEffect = MOVE_EFFECT_ACC_MINUS_1,
             .chance = 100,
         }),
         .battleAnimScript = gBattleAnimMove_TropKick,
@@ -12500,7 +12500,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .description = COMPOUND_STRING(
             "Todo el equipo se suma\n"
             "al ataque."),
-        .effect = EFECTO_MULTI_HIT,
+        .effect = EFFECT_MULTI_HIT,
         .power = 25,
         .type = TIPO_BICHO,
         .accuracy = PRECISION_NORMAL,

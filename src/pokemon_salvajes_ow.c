@@ -81,7 +81,13 @@ static u32 CreaObjetoPokemonSalvajeOw(struct PokemonSalvajeOw *pokemonSalvaje, u
 {
     struct ObjectEventTemplate plantilla = {0};
 
+    // Shiny y genero se derivan de la personalidad, la misma que heredara el Pokemon
+    // al combatir, asi que lo que se ve en el mapa es lo que luego te encuentras.
     plantilla.graphicsId = pokemonSalvaje->especie + OBJ_EVENT_MON;
+    if (VALOR_SHINY(pokemonSalvaje->personalidad) < SHINY_ODDS)
+        plantilla.graphicsId += OBJ_EVENT_MON_SHINY;
+    if (GetGenderFromSpeciesAndPersonality(pokemonSalvaje->especie, pokemonSalvaje->personalidad) == MON_FEMALE)
+        plantilla.graphicsId += OBJ_EVENT_MON_FEMALE;
 
     // ❗ Corregido: localId no puede ser LOCALID_NONE
     plantilla.localId = (u8)(indice + 1);
@@ -95,6 +101,7 @@ static u32 CreaObjetoPokemonSalvajeOw(struct PokemonSalvajeOw *pokemonSalvaje, u
         return OBJECT_EVENTS_COUNT;
 
     pokemonSalvaje->idObjetoEvento = id;
+    FijaPersonalidadObjetoEvento(id, pokemonSalvaje->personalidad);
     return id;
 }
 
@@ -201,7 +208,7 @@ void ActualizarPokemonSalvajesOw(void)
                         p->x = x;
                         p->y = y;
                         p->estado = ESTADO_POKEMON_SALVAJE_ACTIVO;
-                        p->personalidad = Random();
+                        p->personalidad = AplicaTiradasShinyExtra(Random());
                         p->temporizador = 0;
                         p->idObjetoEvento = OBJECT_EVENTS_COUNT;
 

@@ -97,32 +97,18 @@ struct BoxPokemon
     u32 heldItem:10;
     u32 pokeball:6;
     u32 friendship:8;
-    u8 hpEV;
 
-    u8 attackEV;
-    u8 defenseEV;
-    u8 speedEV;
-    u8 spAttackEV;
-
-    u8 spDefenseEV;
-    u8 metLocation;
-    u32 metLevel:7;
-    u32 isEgg:1;
-
-
-    u8 otName[MAXIMO_CARACTERES_NOMBRE_JUGADOR];
+    // No hay intercambios, así que no se guarda entrenador original ni datos de captura.
+    // Los PP no se guardan: se regeneran al salir de combate, así que siempre valen el máximo.
+    // Los EV y los IV no existen: no influyen en las estadísticas.
+    u8 isEgg:1;
+    u8 esShiny:1;
+    u8 abilityNum:2;
 
     enum Movimientos move1;
     enum Movimientos move2;
     enum Movimientos move3;
     enum Movimientos move4;
-
-    u32 pp1:7;
-    u32 pp2:7;
-    u32 pp3:7;
-    u32 pp4:7;
-    bool32 esShiny:1;
-    u32 abilityNum:2;
 };
 
 struct Pokemon
@@ -419,6 +405,7 @@ void DeleteFirstMoveAndGiveMoveToMon(struct Pokemon *mon, enum Movimientos movim
 void DeleteFirstMoveAndGiveMoveToBoxMon(struct BoxPokemon *boxMon, enum Movimientos movimiento);
 u8 CountAliveMonsInBattle(u8 caseId, u32 battler);
 u8 GetDefaultMoveTarget(u8 battlerId);
+u32 AplicaTiradasShinyExtra(u32 personalidad);
 u8 GetMonGender(struct Pokemon *mon);
 u8 GetBoxMonGender(struct BoxPokemon *boxMon);
 u8 GetGenderFromSpeciesAndPersonality(u16 species, u32 personality);

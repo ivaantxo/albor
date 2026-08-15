@@ -233,7 +233,11 @@ enum ObjectEventGraphics
 #define OBJ_EVENT_MON               (1u << 14)
 #define OBJ_EVENT_MON_SHINY         (1u << 13)
 #define OBJ_EVENT_MON_FEMALE        (1u << 12)
-#define OBJ_EVENT_MON_SPECIES_MASK  (~(7u << 12))
+// graphicsId = 12 bits de especie + 4 bits altos de flags/forma. La mascara debe
+// limpiar los CUATRO bits altos: con ~(7u << 12) el bit 15 sobrevivia y, en cuanto
+// alguien lo usara (esta reservado para BLEND_IMMUNE_FLAG), OW_SPECIES devolveria
+// especie|0x8000 e indexaria gSpeciesInfo muy fuera de rango.
+#define OBJ_EVENT_MON_SPECIES_MASK  0x0FFF
 
 #define OBJ_EVENT_GFX_SPECIES(name)                 (SPECIES_##name + OBJ_EVENT_MON)
 #define OBJ_EVENT_GFX_SPECIES_SHINY(name)           (SPECIES_##name + OBJ_EVENT_MON + OBJ_EVENT_MON_SHINY)

@@ -6224,7 +6224,7 @@ gBattleAnimMove_FreezeDry::
 	call IceCrystalEffectShort
 	delay 5
 	loadspritegfx ANIM_TAG_ICE_CUBE
-	createvisualtask AnimTask_FrozenIceCube, 2
+	createvisualtask AnimTask_IceCube, 2
 	waitplaysewithpan SE_M_HAIL, SOUND_PAN_TARGET, 17
 	waitforvisualfinish
 	createvisualtask AnimTask_BlendBattleAnimPal, 10, 4, 2, 9, 0, RGB(12, 26, 31)
@@ -10076,7 +10076,7 @@ gBattleAnimMove_GlacialLance::
 	createvisualtask AnimTask_BlendBattleAnimPal, 0xa, F_PAL_BG, 0x1, 0x0, 0xA, 0x3C00 @;Royal Blue
 	monbg ANIM_TARGET
 	playsewithpan SE_M_HAIL, SOUND_PAN_TARGET
-	createvisualtask AnimTask_CentredFrozenIceCube, ANIM_TARGET, 0
+	createvisualtask AnimTask_CentredIceCube, ANIM_TARGET, 0
 	createsprite gSpriteTemplate_GlacialLance, ANIM_TARGET, 2, 0, 40, 0, 0, 40, 50, 10
 	delay 60
 	createvisualtask AnimTask_FlashAnimTagWithColor, 0x2, ANIM_TAG_ICICLE_SPEAR, 0x4, 0x1, 0x7FFF, 0x10, 0x0, 0x0
@@ -19056,7 +19056,7 @@ gBattleAnimMove_SheerCold::
 	monbg ANIM_DEF_PARTNER
 	splitbgprio ANIM_TARGET
 	setalpha 12, 8
-	createvisualtask AnimTask_FrozenIceCube, 2
+	createvisualtask AnimTask_IceCube, 2
 	waitplaysewithpan SE_M_HAIL, SOUND_PAN_TARGET, 17
 	waitforvisualfinish
 	clearmonbg ANIM_DEF_PARTNER
@@ -20602,7 +20602,7 @@ gBattleAnimStatus_Freeze::
 	monbg ANIM_DEF_PARTNER
 	splitbgprio ANIM_TARGET
 	waitplaysewithpan SE_M_HAIL, SOUND_PAN_TARGET, 17
-	createvisualtask AnimTask_FrozenIceCube, 2
+	createvisualtask AnimTask_IceCube, 2
 	waitforvisualfinish
 	clearmonbg ANIM_DEF_PARTNER
 	end

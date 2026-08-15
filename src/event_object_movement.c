@@ -178,6 +178,16 @@ static void SetSpriteDataForNormalStep(struct Sprite *, u8, u8);
 static void InitSpriteForFigure8Anim(struct Sprite *);
 static bool8 AnimateSpriteInFigure8(struct Sprite *);
 u8 GetDirectionToFace(s16 x1, s16 y1, s16 x2, s16 y2);
+// Valor que devuelven las funciones de paleta cuando no hay slot disponible.
+#define PALETA_NO_DISPONIBLE 0xFF
+
+static void AsignaPaletaSprite(struct Sprite *sprite, u32 numeroPaleta);
+
+// Personalidad de cada objeto de tipo Pokemon del mapa. Determina su tono unico y,
+// en el caso de salvajes y legendarios, es la que hereda el Pokemon al combatir.
+// Vive solo en EWRAM a proposito: no se guarda, asi que se regenera al cambiar de
+// mapa (que es el comportamiento buscado) y no altera la disposicion de SaveBlock.
+static EWRAM_DATA u32 sPersonalidadObjeto[OBJECT_EVENTS_COUNT] = {0};
 static void PreparaGraficosFollower(struct ObjectEvent *objetoEvento, u32 especie, bool32 shiny, bool32 hembra);
 static void ObjectEventSetGraphics(struct ObjectEvent *, const struct ObjectEventGraphicsInfo *);
 static void SpriteCB_VirtualObject(struct Sprite *);
@@ -189,7 +199,7 @@ static u8 DoJumpSpecialSpriteMovement(struct Sprite *);
 static void CreateLevitateMovementTask(struct ObjectEvent *);
 static void DestroyLevitateMovementTask(u8);
 static bool32 InformacionFollower(u32 *especie, bool32 *shiny, bool32 *hembra);
-static u32 CargaPaletaFollower(u32 especie, bool32 shiny, bool32 hembra);
+static u32 CargaPaletaFollower(u32 especie, bool32 shiny, bool32 hembra, u32 personalidad);
 static const struct ObjectEventGraphicsInfo *InformacionGraficaDesdeEspecie(u32 especie, bool32 shiny, bool32 hembra);
 static bool8 NpcTakeStep(struct Sprite *);
 static bool8 IsElevationMismatchAt(u8, s16, s16);
@@ -1029,6 +1039,7 @@ static void ClearAllObjectEvents(void)
 
 void ResetObjectEvents(void)
 {
+    memset(sPersonalidadObjeto, 0, sizeof(sPersonalidadObjeto));
     ClearAllObjectEvents();
     ClearPlayerAvatarInfo();
     CreateReflectionEffectSprites();
@@ -1261,7 +1272,7 @@ static u8 TrySetupObjectEventSprite(const struct ObjectEventTemplate *objectEven
 
     sprite = &gSprites[spriteId];
     if (spriteTemplate->paletteTag == OBJ_EVENT_PAL_TAG_DYNAMIC)
-        sprite->oam.paletteNum = CargaPaletaFollower(OW_SPECIES(objectEvent), OW_SHINY(objectEvent), OW_FEMALE(objectEvent));
+        AsignaPaletaSprite(sprite, CargaPaletaFollower(OW_SPECIES(objectEvent), OW_SHINY(objectEvent), OW_FEMALE(objectEvent), ObtenPersonalidadObjetoEvento(objectEvent)));
     GetMapCoordsFromSpritePos(objectEvent->currentCoords.x + cameraX, objectEvent->currentCoords.y + cameraY, &sprite->x, &sprite->y);
     sprite->centerToCornerVecX = -(graphicsInfo->width >> 1);
     sprite->centerToCornerVecY = -(graphicsInfo->height >> 1);
@@ -1364,12 +1375,25 @@ static void CopyObjectGraphicsInfoToSpriteTemplate_WithMovementType(u16 graphics
     CopyObjectGraphicsInfoToSpriteTemplate(graphicsId, sMovementTypeCallbacks[movementType], spriteTemplate, subspriteTables);
 }
 
+// oam.paletteNum solo tiene 4 bits, asi que el centinela de error (0xFF) se
+// truncaria a 0xF y el sprite pasaria a usar la paleta 15. Si la carga fallo,
+// se conserva la paleta anterior en vez de dejar uno con colores erroneos.
+static void AsignaPaletaSprite(struct Sprite *sprite, u32 numeroPaleta)
+{
+    if (numeroPaleta != PALETA_NO_DISPONIBLE)
+        sprite->oam.paletteNum = numeroPaleta;
+}
+
 static u32 CargaPaletaFollowerDesdePlantilla(u16 graphicsId, struct SpriteTemplate *plantilla)
 {
     u16 especie = graphicsId & OBJ_EVENT_MON_SPECIES_MASK;
     bool32 shiny = graphicsId & OBJ_EVENT_MON_SHINY;
     bool32 hembra = graphicsId & OBJ_EVENT_MON_FEMALE;
-    u32 numeroPaleta = CargaPaletaFollower(especie, shiny, hembra);
+    // Esta variante se usa para sprites sueltos (menus, previsualizaciones), que no
+    // son objetos del mapa: no hay personalidad propia, se toma la del Pokemon guia.
+    struct Pokemon *mon = GetFirstLiveMon();
+    u32 personalidad = mon != NULL ? GetMonData(mon, MON_DATA_PERSONALITY) : 0;
+    u32 numeroPaleta = CargaPaletaFollower(especie, shiny, hembra, personalidad);
     if (plantilla)
     {
         plantilla->paletteTag = especie + OBJ_EVENT_MON;
@@ -1381,16 +1405,16 @@ static u32 CargaPaletaFollowerDesdePlantilla(u16 graphicsId, struct SpriteTempla
     return numeroPaleta;
 }
 
-static u32 CargaPaletaFollower(u32 especie, bool32 shiny, bool32 hembra)
+static u32 CargaPaletaFollower(u32 especie, bool32 shiny, bool32 hembra, u32 personalidad)
 {
     u32 numeroPaleta;
     const u32 *paleta = GetMonSpritePalFromSpecies(especie, shiny, hembra);
-    struct Pokemon *mon = GetFirstLiveMon();
-    {
-        LoadCompressedSpritePaletteWithTagHueShifted(paleta, especie, GetMonData(mon, MON_DATA_PERSONALITY));
-        numeroPaleta = IndexOfSpritePaletteTag(especie);
-        UpdateSpritePaletteWithWeather(numeroPaleta, FALSE);
-    }
+
+    // Usar el slot que devuelve la carga, no re-buscarlo por etiqueta.
+    numeroPaleta = LoadCompressedSpritePaletteWithTagHueShifted(paleta, especie, personalidad);
+    if (numeroPaleta == PALETA_NO_DISPONIBLE)
+        return PALETA_NO_DISPONIBLE;
+    UpdateSpritePaletteWithWeather(numeroPaleta, FALSE);
     return numeroPaleta;
 }
 
@@ -1488,6 +1512,32 @@ struct Pokemon *GetFirstLiveMon(void)
     return NULL;
 }
 
+// Fija la personalidad de un objeto de tipo Pokemon recien creado.
+void FijaPersonalidadObjetoEvento(u32 objectEventId, u32 personalidad)
+{
+    if (objectEventId < OBJECT_EVENTS_COUNT)
+        sPersonalidadObjeto[objectEventId] = personalidad;
+}
+
+// El follower refleja al Pokemon del equipo, asi que su personalidad se consulta
+// en vivo; el resto (salvajes, legendarios, acompanantes) la tienen fijada al crearse.
+u32 ObtenPersonalidadObjetoEvento(struct ObjectEvent *objEvent)
+{
+    u32 objectEventId;
+
+    if (objEvent == NULL)
+        return 0;
+
+    if (objEvent->localId == LOCALID_FOLLOWER)
+    {
+        struct Pokemon *mon = GetFirstLiveMon();
+        return mon != NULL ? GetMonData(mon, MON_DATA_PERSONALITY) : 0;
+    }
+
+    objectEventId = objEvent - gObjectEvents;
+    return objectEventId < OBJECT_EVENTS_COUNT ? sPersonalidadObjeto[objectEventId] : 0;
+}
+
 // Return follower ObjectEvent or NULL
 struct ObjectEvent *GetFollowerObject(void)
 {
@@ -1519,7 +1569,15 @@ static const struct ObjectEventGraphicsInfo *InformacionGraficaDesdeEspecie(u32 
 
 static void PreparaGraficosFollower(struct ObjectEvent *objEvent, u32 especie, bool32 shiny, bool32 hembra)
 {
-    const struct ObjectEventGraphicsInfo *graphicsInfo = InformacionGraficaDesdeEspecie(especie, shiny, hembra);
+    const struct ObjectEventGraphicsInfo *graphicsInfo;
+
+    // Salvaguarda: esto solo debe aplicarse al follower. Si llega el objeto del
+    // jugador, OW_SPECIES vale 0 y acabaria poniendole el sprite de SPECIES_NONE
+    // y liberandole la paleta (avatar cambiado y en negro).
+    if (objEvent == NULL || objEvent->isPlayer)
+        return;
+
+    graphicsInfo = InformacionGraficaDesdeEspecie(especie, shiny, hembra);
     ObjectEventSetGraphics(objEvent, graphicsInfo);
     objEvent->graphicsId = IDGraficosPokemon(especie, shiny, hembra);
     if (graphicsInfo->paletteTag == OBJ_EVENT_PAL_TAG_DYNAMIC)
@@ -1529,7 +1587,7 @@ static void PreparaGraficosFollower(struct ObjectEvent *objEvent, u32 especie, b
         sprite->inUse = FALSE;
         FieldEffectFreePaletteIfUnused(sprite->oam.paletteNum);
         sprite->inUse = TRUE;
-        sprite->oam.paletteNum = CargaPaletaFollower(especie, shiny, hembra);
+        AsignaPaletaSprite(sprite, CargaPaletaFollower(especie, shiny, hembra, ObtenPersonalidadObjetoEvento(objEvent)));
     }
 }
 
@@ -1562,7 +1620,7 @@ static void RefreshFollowerGraphics(struct ObjectEvent *objEvent)
         sprite->inUse = FALSE;
         FieldEffectFreePaletteIfUnused(sprite->oam.paletteNum);
         sprite->inUse = TRUE;
-        sprite->oam.paletteNum = CargaPaletaFollower(especie, shiny, hembra);
+        AsignaPaletaSprite(sprite, CargaPaletaFollower(especie, shiny, hembra, ObtenPersonalidadObjetoEvento(objEvent)));
     }
     else if (i != 0xFF)
     {
@@ -2213,7 +2271,7 @@ static void SpawnObjectEventOnReturnToField(u32 objectEventId, s16 x, s16 y)
 
     if (spriteTemplate.paletteTag == OBJ_EVENT_PAL_TAG_DYNAMIC)
     {
-        u32 numeroPaleta = CargaPaletaFollower(OW_SPECIES(objectEvent), OW_SHINY(objectEvent), OW_FEMALE(objectEvent));
+        u32 numeroPaleta = CargaPaletaFollower(OW_SPECIES(objectEvent), OW_SHINY(objectEvent), OW_FEMALE(objectEvent), ObtenPersonalidadObjetoEvento(objectEvent));
         spriteTemplate.paletteTag = GetSpritePaletteTagByPaletteNum(numeroPaleta);
     }
     else if (spriteTemplate.paletteTag != TAG_NONE)

@@ -2853,6 +2853,17 @@ const struct SpriteTemplate gBitterBladeImpactTemplate =
         .affineAnims = gDummySpriteAffineAnimTable,
         .callback = AnimClawSlash};
 
+const struct SpriteTemplate gTectonicRageExplosionSpriteTemplate =
+{
+    .tileTag = ANIM_TAG_EXPLOSION_2,
+    .paletteTag = ANIM_TAG_EXPLOSION_2,
+    .oam = &gOamData_AffineOff_ObjNormal_32x32,
+    .anims = gExplosionAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = AnimSpriteOnMonPos
+};
+
 const struct SpriteTemplate gRedExplosionSpriteTemplate =
     {
         .tileTag = ANIM_TAG_RED_EXPLOSION,

@@ -394,10 +394,6 @@ static const u16 sSwinubEggMoveLearnset[] = {
     MOVE_NONE,
 };
 
-static const u16 sCorsolaEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-
 static const u16 sDelibirdEggMoveLearnset[] = {
     MOVE_NONE,
 };
@@ -621,14 +617,6 @@ static const u16 sSphealEggMoveLearnset[] = {
     MOVE_NONE,
 };
 
-static const u16 sClamperlEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-
-static const u16 sRelicanthEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-
 static const u16 sBagonEggMoveLearnset[] = {
     MOVE_NONE,
 };
@@ -669,10 +657,6 @@ static const u16 sRayquazaEggMoveLearnset[] = {
     MOVE_NONE,
 };
 
-static const u16 sJirachiEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-
 static const u16 sDeoxysEggMoveLearnset[] = {
     MOVE_NONE,
 };
@@ -694,10 +678,6 @@ static const u16 sHeatranEggMoveLearnset[] = {
 };
 
 static const u16 sRegigigasEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-
-static const u16 sZoruaHisuiEggMoveLearnset[] = {
     MOVE_NONE,
 };
 
@@ -749,10 +729,6 @@ static const u16 sRioluEggMoveLearnset[] = {
     MOVE_NONE,
 };
 
-static const u16 sHippopotasEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-
 static const u16 sSkorupiEggMoveLearnset[] = {
     MOVE_NONE,
 };
@@ -765,31 +741,11 @@ static const u16 sSnoverEggMoveLearnset[] = {
     MOVE_NONE,
 };
 
-static const u16 sSnivyEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-
-static const u16 sTepigEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-
-static const u16 sOshawottEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-
-static const u16 sDrilburEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-
 static const u16 sSandileEggMoveLearnset[] = {
     MOVE_NONE,
 };
 
 static const u16 sYamaskEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-
-static const u16 sZoruaEggMoveLearnset[] = {
     MOVE_NONE,
 };
 
@@ -802,10 +758,6 @@ static const u16 sJoltikEggMoveLearnset[] = {
 };
 
 static const u16 sFerroseedEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-
-static const u16 sElgyemEggMoveLearnset[] = {
     MOVE_NONE,
 };
 
@@ -833,23 +785,11 @@ static const u16 sLarvestaEggMoveLearnset[] = {
     MOVE_NONE,
 };
 
-static const u16 sChespinEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-
 static const u16 sFennekinEggMoveLearnset[] = {
     MOVE_NONE,
 };
 
-static const u16 sFroakieEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-
 static const u16 sFletchlingEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-
-static const u16 sPanchamEggMoveLearnset[] = {
     MOVE_NONE,
 };
 
@@ -865,23 +805,7 @@ static const u16 sAmauraEggMoveLearnset[] = {
     MOVE_NONE,
 };
 
-static const u16 sGoomyEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-
 static const u16 sRowletEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-
-static const u16 sLittenEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-
-static const u16 sPopplioEggMoveLearnset[] = {
-    MOVE_NONE,
-};
-
-static const u16 sSandygastEggMoveLearnset[] = {
     MOVE_NONE,
 };
 

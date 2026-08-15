@@ -272,13 +272,6 @@ BattleScript_StrengthSapLiquidOoze:
 	tryfaintmon BS_ATTACKER
 	goto BattleScript_MoveEnd
 
-BattleScript_StrengthSapMustLower:
-	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_MoveEnd
-	jumpifestadisticasincambio BattleScript_MoveEnd
-	attackanimation
-	waitanimation
-	goto BattleScript_StrengthSapLower
-
 BattleScript_MoveEffectBugBite::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} stole and ate its target's {B_LAST_ITEM}!"
 	waitmessage PAUSA_LARGA
@@ -4262,6 +4255,10 @@ BattleScript_SpeedBoostActivates::
 
 BattleScript_SpeedBoostActivatesEnd:
 	end3
+
+@ No se puede comparar contra un valor directamente, hay que comparar contra el valor apuntado
+sZero:
+.byte 0
 
 BattleScript_TraceActivates::
 	pause PAUSA_CORTA

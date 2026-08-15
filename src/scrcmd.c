@@ -877,7 +877,13 @@ bool8 ScrCmd_applymovement(struct ScriptContext *ctx)
         gSprites[objEvent->spriteId].animCmdIndex = 0; // Reset start frame of animation
     }
 
-    gObjectEvents[GetObjectEventIdByLocalId(localId)].directionOverwrite = DIR_NONE;
+    {
+        // GetObjectEventIdByLocalId devuelve OBJECT_EVENTS_COUNT si no lo encuentra,
+        // que esta fuera del array: sin esta comprobacion se escribia fuera de rango.
+        u32 objEventId = GetObjectEventIdByLocalId(localId);
+        if (objEventId < OBJECT_EVENTS_COUNT)
+            gObjectEvents[objEventId].directionOverwrite = DIR_NONE;
+    }
     ScriptMovement_StartObjectMovementScript(localId, gSaveBlockPtr->location.mapNum, gSaveBlockPtr->location.mapGroup, movementScript);
     sMovingNpcId = localId;
     objEvent = GetFollowerObject();
@@ -902,7 +908,13 @@ bool8 ScrCmd_applymovementat(struct ScriptContext *ctx)
     u8 mapGroup = ScriptReadByte(ctx);
     u8 mapNum = ScriptReadByte(ctx);
 
-    gObjectEvents[GetObjectEventIdByLocalId(localId)].directionOverwrite = DIR_NONE;
+    {
+        // GetObjectEventIdByLocalId devuelve OBJECT_EVENTS_COUNT si no lo encuentra,
+        // que esta fuera del array: sin esta comprobacion se escribia fuera de rango.
+        u32 objEventId = GetObjectEventIdByLocalId(localId);
+        if (objEventId < OBJECT_EVENTS_COUNT)
+            gObjectEvents[objEventId].directionOverwrite = DIR_NONE;
+    }
     ScriptMovement_StartObjectMovementScript(localId, mapNum, mapGroup, movementScript);
     sMovingNpcId = localId;
     return FALSE;

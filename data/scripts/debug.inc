@@ -426,7 +426,7 @@ Debug_EventScript_InflictStatus1_Single:
 	case 1, Debug_EventScript_InflictStatus1_Single_Paralysis
 	case 2, Debug_EventScript_InflictStatus1_Single_Sleep
 	case 3, Debug_EventScript_InflictStatus1_Single_Burn
-	case 4, Debug_EventScript_InflictStatus1_Single_Freeeze
+	case 4, Debug_EventScript_InflictStatus1_Single_Freeze
 	case 5, Debug_EventScript_InflictStatus1_Close
 	case MULTI_B_PRESSED, Debug_EventScript_InflictStatus1_Close
 	releaseall

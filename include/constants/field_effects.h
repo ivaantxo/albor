@@ -47,7 +47,7 @@
 #define FLDEFF_POKEBALL_TRAIL            42
 #define FLDEFF_HEART_ICON                43
 #define FLDEFF_ASH_PUFF                  44
-#define FLDEFF_ASH_LAUNCH                44
+#define FLDEFF_ASH_LAUNCH                45
 #define FLDEFF_SWEET_SCENT               46
 #define FLDEFF_SAND_PILLAR               47
 #define FLDEFF_BUBBLES                   48
@@ -67,8 +67,8 @@
 #define FLDEFF_X_ICON                    63
 #define FLDEFF_DOUBLE_EXCL_MARK_ICON     64
 #define FLDEFF_TRACKS_SLITHER            65
-#define FLDEFF_TRACKS_SPOT               66
-#define FLDEFF_TRACKS_BUG                67
+#define FLDEFF_TRACKS_SPOT               67
+#define FLDEFF_TRACKS_BUG                66
 
 #define FLDEFFOBJ_SHADOW_S              0
 #define FLDEFFOBJ_SHADOW_M              1

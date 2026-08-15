@@ -110,6 +110,8 @@ struct Pokemon *GetFirstLiveMon(void);
 void UpdateFollowingPokemon(void);
 void RemoveFollowingPokemon(void);
 struct ObjectEvent *GetFollowerObject(void);
+void FijaPersonalidadObjetoEvento(u32 objectEventId, u32 personalidad);
+u32 ObtenPersonalidadObjetoEvento(struct ObjectEvent *objEvent);
 u8 GetDirectionToFace(s16, s16, s16, s16);
 void UpdateLightSprite(struct Sprite *);
 void TrySpawnObjectEvents(s16 cameraX, s16 cameraY);

@@ -6209,69 +6209,6 @@ static bool32 TryRemoveScreens(u32 battler)
 
 // Sort an array of battlers by speed
 // Useful for effects like pickpocket, eject button, red card
-u32 GetBattlerTotalSpeedStat(u32 battler)
-{
-    u32 speed = gBattleMons[battler].speed;
-    u32 ability = HabilidadCombatiente(battler);
-    u32 holdEffect = GetBattlerHoldEffect(battler, TRUE);
-    enum ClimasCombate climaCombate = ObtenClimaCombate();
-    uq4_12_t modifier = MOVIMIENTO_NEUTRO;
-
-    // Estadio de la estadística
-    MULTIPLICA(modifier, gMultiplicadorEstadisticas[gBattleMons[battler].statStages[ESTADISTICA_VELOCIDAD]]);
-
-    // Habilidad
-    switch (ability)
-    {
-    case ABILITY_SWIFT_SWIM:
-        if (ClimaTieneEfecto() && EsClimaCombateLluvia(climaCombate))
-            MULTIPLICA(modifier, MAS_100_POR_CIENTO);
-        break;
-    case ABILITY_CHLOROPHYLL:
-        if (ClimaTieneEfecto() && EsClimaCombateSol(climaCombate))
-            MULTIPLICA(modifier, MAS_100_POR_CIENTO);
-        break;
-    case ABILITY_SAND_RUSH:
-        if (ClimaTieneEfecto() && EsClimaCombateArena(climaCombate))
-            MULTIPLICA(modifier, MAS_100_POR_CIENTO);
-        break;
-    case ABILITY_SLUSH_RUSH:
-        if (ClimaTieneEfecto() && EsClimaCombateNieve(climaCombate))
-            MULTIPLICA(modifier, MAS_100_POR_CIENTO);
-        break;
-    case ABILITY_QUICK_FEET:
-        if (gBattleMons[battler].status1 & STATUS1_ANY)
-            MULTIPLICA(modifier, MAS_50_POR_CIENTO);
-        break;
-    case ABILITY_UNBURDEN:
-        if (gBattleResources->flags[battler] & RESOURCE_FLAG_UNBURDEN)
-            MULTIPLICA(modifier, MAS_100_POR_CIENTO);
-        break;
-    }
-
-    // Parálisis (Patas Rápidas ya cubre su propio bono arriba, y anula el recorte)
-    if (gBattleMons[battler].status1 & STATUS1_PARALYSIS && ability != ABILITY_QUICK_FEET)
-        MULTIPLICA(modifier, UQ_4_12(0.25));
-
-    // Viento Afín
-    if (gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_TAILWIND)
-        MULTIPLICA(modifier, MAS_100_POR_CIENTO);
-
-    // Objeto
-    switch (holdEffect)
-    {
-    case HOLD_EFFECT_CHOICE_SCARF:
-        MULTIPLICA(modifier, MAS_50_POR_CIENTO);
-        break;
-    case HOLD_EFFECT_MACHO_BRACE:
-    case HOLD_EFFECT_IRON_BALL:
-        MULTIPLICA(modifier, MENOS_50_POR_CIENTO);
-        break;
-    }
-
-    return UQ412MultiplicaPorEntero(modifier, speed);
-}
-
 void SortBattlersBySpeed(u8 *battlers, bool32 slowToFast)
 {
     u32 i, j, currSpeed, currBattler;

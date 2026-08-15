@@ -674,5 +674,7 @@ extern const u8 gBattleAnimSpecial_BallThrow[];
 extern const u8 gBattleAnimSpecial_BallThrowWithTrainer[];
 extern const u8 gBattleAnimSpecial_SubstituteToMon[];
 extern const u8 gBattleAnimSpecial_MonToSubstitute[];
+extern const u8 gBattleAnimMove_Psywave[];
+extern const u8 gAnimacionMovimiento_Bostezo[];
 
 #endif // GUARD_BATTLE_ANIM_SCRIPTS_H

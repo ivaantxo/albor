@@ -8,7 +8,10 @@
 #define SECTOR_SIZE (SECTOR_DATA_SIZE + SECTOR_FOOTER_SIZE)
 
 // If the sector's signature field is not this value then the sector is either invalid or empty.
-#define SECTOR_SIGNATURE 0x8012025
+// Subir esta firma cada vez que cambie la disposicion de struct SaveBlock
+// (por ejemplo al anadir o quitar campos de BoxPokemon). Si no se sube, un
+// guardado antiguo se lee con los offsets desplazados y produce datos basura.
+#define SECTOR_SIGNATURE 0x8012026
 
 #define SECTOR_ID_SAVEBLOCK_START       0
 #define SECTOR_ID_SAVEBLOCK_END         2

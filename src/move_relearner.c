@@ -733,7 +733,6 @@ static void HandleInput(void)
         sMoveRelearnerStruct->state = MENU_STATE_SETUP_BATTLE_MODE;
 
         ProgramaCopiaTilemapVram(FONDO_1);
-        MoveRelearnerShowHideHearts(GetCurrentSelectedMove());
         if (B_SHOW_CATEGORY_ICON == TRUE)
             MoveRelearnerShowHideCategoryIcon(GetCurrentSelectedMove());
 

@@ -17,7 +17,7 @@ void LoadCompressedSpriteSheetUsingHeap(const struct CompressedSpriteSheet *src)
 
 void LoadCompressedSpritePalette(const struct CompressedSpritePalette *src);
 void LoadCompressedSpritePaletteWithTag(const u32 *pal, u16 tag);
-void LoadCompressedSpritePaletteWithTagHueShifted(const u32 *pal, u16 tag, u32 personality);
+u32 LoadCompressedSpritePaletteWithTagHueShifted(const u32 *pal, u16 tag, u32 personality);
 void LoadCompressedSpritePaletteOverrideBuffer(const struct CompressedSpritePalette *src, void *buffer);
 void LoadCompressedSpritePaletteUsingHeap(const struct CompressedSpritePalette *src);
 void LoadCompressedEggSpritePalette(const struct CompressedSpritePalette *src1, const struct CompressedSpritePalette *src2);

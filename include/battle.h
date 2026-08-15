@@ -936,7 +936,7 @@ static inline enum PrioridadMovimientos PrioridadMovimiento(enum Movimientos mov
     return gMovimientos[movimiento].prioridad;
 }
 
-enum TiposPokemon ObtenTipoCombatiente(u32 combatiente, enum IndiceTiposPokemon indiceTipo)
+static inline enum TiposPokemon ObtenTipoCombatiente(u32 combatiente, enum IndiceTiposPokemon indiceTipo)
 {
     enum TiposPokemon tipo1, tipo2;
     tipo1 = gBattleMons[combatiente].types[TIPO_1];

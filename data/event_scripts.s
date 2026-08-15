@@ -58,8 +58,6 @@ gSpecialVars::
 	.4byte gSpecialVar_Result
 	.4byte gSpecialVar_ItemId
 	.4byte gSpecialVar_LastTalked
-	.4byte gSpecialVar_ContestRank
-	.4byte gSpecialVar_ContestCategory
 	.4byte gSpecialVar_MonBoxId
 	.4byte gSpecialVar_MonBoxPos
 	.4byte gTrainerBattleOpponent
@@ -199,7 +197,6 @@ EventScript_BackupMrBrineyLocation::
 
 	.include "data/scripts/surf.inc"
 	.include "data/scripts/rival_graphics.inc"
-	.include "data/scripts/set_gym_trainers.inc"
 
 EventScript_CancelMessageBox::
 	special UseBlankMessageToCancelPokemonPic
