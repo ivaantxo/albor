@@ -265,7 +265,7 @@ void DoStandardWildBattle(void)
     FreezeObjectEvents();
     StopPlayerAvatar();
     gMain.savedCallback = CB2_EndWildBattle;
-    gCombate->tipoCombate = COMBATE_SALVAJE;
+    FijaTipoCombate(COMBATE_SALVAJE);
     CreateBattleStartTask(GetWildBattleTransition(), 0);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
@@ -277,7 +277,7 @@ void DoStandardWildBattle_Debug(void)
     FreezeObjectEvents();
     StopPlayerAvatar();
     gMain.savedCallback = CB2_EndWildBattle;
-    gCombate->tipoCombate = COMBATE_SALVAJE;
+    FijaTipoCombate(COMBATE_SALVAJE);
     CreateBattleStartTask_Debug(GetWildBattleTransition(), 0);
 }
 
@@ -298,7 +298,7 @@ void BattleSetup_StartScriptedWildBattle(void)
 {
     LockPlayerFieldControls();
     gMain.savedCallback = CB2_EndScriptedWildBattle;
-    gCombate->tipoCombate = COMBATE_SALVAJE;
+    FijaTipoCombate(COMBATE_SALVAJE);
     CreateBattleStartTask(GetWildBattleTransition(), 0);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
@@ -308,7 +308,7 @@ void BattleSetup_StartScriptedDoubleWildBattle(void)
 {
     LockPlayerFieldControls();
     gMain.savedCallback = CB2_EndScriptedWildBattle;
-    gCombate->tipoCombate = COMBATE_ENTRENADOR;
+    FijaTipoCombate(COMBATE_ENTRENADOR);
     CreateBattleStartTask(GetWildBattleTransition(), 0);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
@@ -318,7 +318,7 @@ void BattleSetup_StartLatiBattle(void)
 {
     LockPlayerFieldControls();
     gMain.savedCallback = CB2_EndScriptedWildBattle;
-    gCombate->tipoCombate = COMBATE_LEGENDARIO;
+    FijaTipoCombate(COMBATE_LEGENDARIO);
     CreateBattleStartTask(GetWildBattleTransition(), 0);
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
@@ -328,7 +328,7 @@ void BattleSetup_StartLegendaryBattle(void)
 {
     LockPlayerFieldControls();
     gMain.savedCallback = CB2_EndScriptedWildBattle;
-    gCombate->tipoCombate = COMBATE_LEGENDARIO;
+    FijaTipoCombate(COMBATE_LEGENDARIO);
 
     switch (GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL))
     {
@@ -365,7 +365,7 @@ void StartGroudonKyogreBattle(void)
 {
     LockPlayerFieldControls();
     gMain.savedCallback = CB2_EndScriptedWildBattle;
-    gCombate->tipoCombate = COMBATE_LEGENDARIO;
+    FijaTipoCombate(COMBATE_LEGENDARIO);
 
     if (gGameVersion == VERSION_RUBY)
         CreateBattleStartTask(B_TRANSITION_ANGLED_WIPES, MUS_VS_KYOGRE_GROUDON); // GROUDON
@@ -383,7 +383,7 @@ void StartRegiBattle(void)
 
     LockPlayerFieldControls();
     gMain.savedCallback = CB2_EndScriptedWildBattle;
-    gCombate->tipoCombate = COMBATE_LEGENDARIO;
+    FijaTipoCombate(COMBATE_LEGENDARIO);
 
     species = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES);
     switch (species)
@@ -647,7 +647,7 @@ static void CB2_StartFirstBattle(void)
 
     if (IsBattleTransitionDone() == TRUE)
     {
-        gCombate->tipoCombate = COMBATE_SALVAJE;
+        FijaTipoCombate(COMBATE_SALVAJE);
         gMain.savedCallback = CB2_EndFirstBattle;
         FreeAllWindowBuffers();
         SetMainCallback2(CB2_InitBattle);
@@ -865,7 +865,7 @@ void ClearTrainerFlag(u16 trainerId)
 
 void BattleSetup_StartTrainerBattle(void)
 {
-    gCombate->tipoCombate = COMBATE_ENTRENADOR;
+    FijaTipoCombate(COMBATE_ENTRENADOR);
     gMain.savedCallback = CB2_EndTrainerBattle;
 
     DoTrainerBattle();

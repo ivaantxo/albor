@@ -722,6 +722,8 @@ extern u16 gIntroSlideFlags;
 extern u8 gSentPokesToOpponent[2];
 extern struct BattleScripting gBattleScripting;
 extern struct Combate *gCombate;
+extern enum TiposCombate gTipoCombatePendiente;
+void FijaTipoCombate(enum TiposCombate tipo);
 extern struct BattleResources *gBattleResources;
 extern u8 gActionSelectionCursor[NUMERO_COMBATIENTES];
 extern u8 gMoveSelectionCursor[NUMERO_COMBATIENTES];

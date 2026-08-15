@@ -1,4 +1,5 @@
 #include "global.h"
+#include "depuracion_mgba.h"
 #include "battle.h"
 #include "battle_ai_main.h"
 #include "battle_ai_util.h"
@@ -592,6 +593,12 @@ static u32 GetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId, u8 *
         StringCopy_Nickname(battleMon.nickname, nickname);
         GetMonData(&party[monId], MON_DATA_OT_NAME, battleMon.otName);
         memcpy(dst, &battleMon, sizeof(battleMon));
+        // Imprescindible: el bucle de movimientos de arriba usa 'size' como contador
+        // y la deja valiendo MAXIMO_MOVIMIENTOS_POKEMON. Sin esta linea se transferian
+        // solo 4 bytes de los 96 de la estructura, asi que al combatiente le llegaba
+        // la especie pero nivel, PS y PS maximos quedaban a cero: se le daba por
+        // ausente y el combate se colgaba antes de pedir la primera accion.
+        size = sizeof(battleMon);
         break;
     case REQUEST_SPECIES_BATTLE:
         data16 = GetMonData(&party[monId], MON_DATA_SPECIES);
@@ -989,6 +996,7 @@ void StartSendOutAnim(u32 battler, bool32 dontClearSubstituteBit, bool32 doSlide
         BattleLoadMonSpriteGfx(&party[gBattlerPartyIndexes[battler]], battler);
     SetMultiuseSpriteTemplateToPokemon(species, battler);
 
+    LOG("LoadMonSprite battler/especie", battler, species);
     gBattlerSpriteIds[battler] = CreateSprite(&gMultiuseSpriteTemplate,
                                         GetBattlerSpriteCoord(battler, BATTLER_COORD_X_2),
                                         GetBattlerSpriteDefault_Y(battler),
@@ -1704,9 +1712,20 @@ void BtlController_HandleIntroTrainerBallThrow(u32 battler, u16 tagTrainerPal, c
         StoreSpriteCallbackInData6(&gSprites[gBattlerSpriteIds[battler]], SpriteCB_FreePlayerSpriteLoadMonSprite);
         StartSpriteAnim(&gSprites[gBattlerSpriteIds[battler]], ShouldDoSlideInAnim() ? 2 : 1);
 
+        // AllocSpritePalette devuelve 0xFF si no quedan slots. Sin comprobarlo,
+        // OBJ_PLTT_ID(0xFF) apunta miles de entradas fuera del buffer de paletas y
+        // LoadCompressedPalette corrompe EWRAM; ademas oam.paletteNum solo tiene
+        // 4 bits, con lo que 0xFF se truncaba a la paleta 15 (el sprite en negro).
         paletteNum = AllocSpritePalette(tagTrainerPal);
-        LoadCompressedPalette(trainerPal, OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
-        gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = paletteNum;
+        if (paletteNum != 0xFF)
+        {
+            LoadCompressedPalette(trainerPal, OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
+            gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = paletteNum;
+        }
+        else
+        {
+            LOG("SIN SLOTS DE PALETA en intro, battler", battler, 0);
+        }
     }
     else
     {

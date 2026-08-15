@@ -1,4 +1,5 @@
 #include "global.h"
+#include "depuracion_mgba.h"
 #include "malloc.h"
 #include "battle.h"
 #include "battle_anim.h"
@@ -1631,6 +1632,7 @@ static void HandleChooseActionAfterDma3(u32 battler)
 
 static void PlayerHandleChooseAction(u32 battler)
 {
+    LOG("MENU 1) entra PlayerHandleChooseAction", battler, 0);
     gBattlerControllerFuncs[battler] = HandleChooseActionAfterDma3;
 
     TryRestoreLastUsedBall();

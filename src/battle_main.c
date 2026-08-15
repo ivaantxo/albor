@@ -1,4 +1,5 @@
 #include "global.h"
+#include "depuracion_mgba.h"
 #include "battle.h"
 #include "battle_anim.h"
 #include "battle_ai_main.h"
@@ -183,6 +184,21 @@ EWRAM_DATA u16 gIntroSlideFlags = 0; // Revisar
 EWRAM_DATA u8 gSentPokesToOpponent[2] = {0};
 EWRAM_DATA struct BattleScripting gBattleScripting = {0};
 EWRAM_DATA struct Combate *gCombate = NULL;
+
+// gCombate se reserva con AllocZeroed al entrar en combate, asi que cualquier
+// tipoCombate fijado desde el overworld se perdia. Se guarda aparte y se restaura
+// justo despues de la reserva.
+EWRAM_DATA enum TiposCombate gTipoCombatePendiente = COMBATE_SALVAJE;
+
+// Se llama desde el overworld, donde gCombate puede ser NULL (primer combate) o
+// apuntar a memoria ya liberada (combates posteriores), asi que solo se escribe
+// la estructura si sigue viva; el valor que de verdad manda es el global.
+void FijaTipoCombate(enum TiposCombate tipo)
+{
+    gTipoCombatePendiente = tipo;
+    if (gCombate != NULL)
+        gCombate->tipoCombate = tipo;
+}
 EWRAM_DATA struct BattleResources *gBattleResources = NULL;
 EWRAM_DATA u8 gActionSelectionCursor[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u8 gMoveSelectionCursor[NUMERO_COMBATIENTES] = {0};
@@ -356,6 +372,7 @@ void CB2_InitBattle(void)
 {
     ResetHeap();
     AllocateBattleResources();
+    gCombate->tipoCombate = gTipoCombatePendiente;
     AllocateBattleSpritesData();
     AllocateMonSpritesGfx();
     CB2_InitBattleInternal();
@@ -1339,6 +1356,14 @@ static void DoBattleIntro(void)
 {
     s32 i;
     u32 battler;
+    static u32 sUltimoEstado = 0xFFFF;
+
+    if (gCombate->estadoIntro != sUltimoEstado)
+    {
+        sUltimoEstado = gCombate->estadoIntro;
+        LOG("intro estado/tipoCombate", gCombate->estadoIntro, gCombate->tipoCombate);
+        LOG("   gBattlersCount", gBattlersCount, 0);
+    }
 
     switch (gCombate->estadoIntro)
     {
@@ -1509,6 +1534,19 @@ static void DoBattleIntro(void)
             gCombate->estadoIntro++;
         break;
     case ESTADO_INTRO_BATALLA_PREPARA_VARS:
+        {
+            static u32 sUltimaMascara = 0xFFFF;
+            u32 mascara = 0, k;
+            for (k = 0; k < gBattlersCount; k++)
+                if (EstaCombatienteOcupado(k))
+                    mascara |= (1 << k);
+            if (mascara != sUltimaMascara)
+            {
+                sUltimaMascara = mascara;
+                // bit0 = jugador ocupado, bit1 = oponente ocupado
+                LOG("PREPARA_VARS ocupados", mascara, 0);
+            }
+        }
         if (!HayAlgunCombatienteOcupado())
         {
             for (battler = 0; battler < gBattlersCount; battler++)
@@ -1530,6 +1568,20 @@ static void DoBattleIntro(void)
 static void TryDoEventsBeforeFirstTurn(void)
 {
     s32 i, j;
+
+    {
+        static u32 sUltimo = 0xFFFF;
+        u32 k, ocupados = 0;
+        for (k = 0; k < gBattlersCount; k++)
+            if (EstaCombatienteOcupado(k))
+                ocupados |= (1 << k);
+        // a = estado de eventos previos al primer turno, b = mascara de ocupados
+        if (((gCombate->eventsBeforeFirstTurnState << 8) | ocupados) != sUltimo)
+        {
+            sUltimo = (gCombate->eventsBeforeFirstTurnState << 8) | ocupados;
+            LOG("EventosPrimerTurno estado/ocupados", gCombate->eventsBeforeFirstTurnState, ocupados);
+        }
+    }
 
     if (HayAlgunCombatienteOcupado())
         return;
@@ -1782,22 +1834,28 @@ static void HazCalculosIA(u32 combatiente)
 {
     if (!CombatienteEsIA(combatiente))
         return;
+    LOG("IA 1 entra combatiente", combatiente, 0);
     u32 isAIRisky = AI_THINKING_STRUCT->aiFlags[combatiente] & AI_FLAG_RISKY; // Risky AI switches aggressively even mid battle
 
     // Do AI score computations here so we can use them in AI_TrySwitchOrUseItem
+    LOG("IA 2", combatiente, 0);
     AI_DATA->aiCalcInProgress = TRUE;
 
     // Setup battler data
     sBattler_AI = combatiente;
+    LOG("IA 3", combatiente, 0);
     BattleAI_SetupAIData(15, sBattler_AI);
 
     // Setup switching data
     AI_DATA->mostSuitableMonId[combatiente] = GetMostSuitableMonToSwitchInto(combatiente, isAIRisky);
+    LOG("IA 4", combatiente, 0);
     if (ShouldSwitch(combatiente))
         AI_DATA->shouldSwitch |= (1u << combatiente);
 
     // Do scoring
+    LOG("IA 5", combatiente, 0);
     gCombate->IA_Eleccion[combatiente] = BattleAI_ChooseMoveOrAction();
+    LOG("IA 6 sale", combatiente, 0);
     AI_DATA->aiCalcInProgress = FALSE;
 }
 
@@ -1805,12 +1863,29 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
 {
     struct DatosMovimiento moveInfo;
 
+    {
+        static u32 sUltimo = 0xFFFFFFFF;
+        u32 k, resumen = 0;
+        // 4 bits por combatiente: los 2 bajos el estado de accion, el 3o si esta ocupado
+        for (k = 0; k < gBattlersCount && k < 4; k++)
+            resumen |= ((gEstadoAccion[k] & 3) | (EstaCombatienteOcupado(k) ? 4 : 0)) << (k * 4);
+        if (resumen != sUltimo)
+        {
+            sUltimo = resumen;
+            LOG("SeleccionAccion resumen", resumen, gEstadoAccion[JUGADOR_IZQUIERDA]);
+        }
+    }
+
     for (u32 combatiente = JUGADOR_IZQUIERDA; combatiente < gBattlersCount; combatiente++)
     {
         switch (gEstadoAccion[combatiente])
         {
         case ANTES_ACCION:
+            LOG("ACC a) entra combatiente", combatiente, 0);
             HazCalculosIA(combatiente);
+            LOG("ACC b) ausentes/status2", gCombate->absentBattlerFlags, gBattleMons[combatiente].status2);
+            LOG("ACC b2) hp/maxhp", gBattleMons[combatiente].hp, gBattleMons[combatiente].maxHP);
+            LOG("ACC b3) especie/nivel", gBattleMons[combatiente].species, gBattleMons[combatiente].level);
             *(gCombate->monToSwitchIntoId + combatiente) = PARTY_SIZE;
             if ((combatiente & BIT_FLANK) == FLANCO_IZQUIERDO || gCombate->absentBattlerFlags & (1u << ALIADO(combatiente)) || gEstadoAccion[ALIADO(combatiente)] == EJECUTA_ACCION)
             {
@@ -1829,8 +1904,10 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                     else
                     {
                         gCombate->itemPartyIndex[combatiente] = PARTY_SIZE;
+                        LOG("ACC c) va a pedir accion", combatiente, 0);
                         BtlController_EmitChooseAction(combatiente, BUFFER_A, gAccionElegida[combatiente]);
                         MarcaCombatienteOcupado(combatiente);
+                        LOG("ACC d) accion pedida", combatiente, 0);
                         gEstadoAccion[combatiente] = PROCESA_ACCION;
                     }
                 }

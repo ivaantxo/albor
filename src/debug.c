@@ -1664,7 +1664,7 @@ static void DebugTask_HandleMenuInput_Battle(u8 taskId)
 static void Debug_InitializeBattle(u8 taskId)
 {
     u32 i;
-    gCombate->tipoCombate = COMBATE_SALVAJE;
+    FijaTipoCombate(COMBATE_SALVAJE);
 
     // Set main battle flags
     switch (sDebugBattleData->battleType)
@@ -1674,7 +1674,7 @@ static void Debug_InitializeBattle(u8 taskId)
     case DEBUG_BATTLE_0_MENU_ITEM_SINGLE:
     case DEBUG_BATTLE_0_MENU_ITEM_DOUBLE:
     case DEBUG_BATTLE_0_MENU_ITEM_MULTI:
-        gCombate->tipoCombate = COMBATE_ENTRENADOR;
+        FijaTipoCombate(COMBATE_ENTRENADOR);
         break;
     }
 

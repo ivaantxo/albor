@@ -1,4 +1,5 @@
 #include "global.h"
+#include "depuracion_mgba.h"
 #include "battle.h"
 #include "battle_controllers.h"
 #include "battle_ai_main.h"
@@ -56,12 +57,21 @@ static const struct CompressedSpriteSheet sSpriteSheets_DoublesOpponentHealthbox
     {gHealthboxDoublesOpponentGfx, 0x800, TAG_HEALTHBOX_OPPONENT2_TILE}
 };
 
-static const struct CompressedSpriteSheet sSpriteSheets_HealthBar[NUMERO_COMBATIENTES] =
+// Estas hojas solo sirven para RESERVAR los tiles de la barra de vida, que luego
+// se dibujan dinamicamente; no tienen grafico propio. Estaban a NULL pero se
+// seguian pasando a LoadCompressedSpriteSheet, que descomprimia LZ77 desde la
+// direccion 0 (la BIOS) y volcaba basura a VRAM: de ahi los sprites en negro y
+// los tiles del fondo descuadrados. Se reservan en blanco.
+#define TAMANO_MAXIMO_BARRA_VIDA 0x120
+
+static const u8 sGraficoBarraVidaEnBlanco[TAMANO_MAXIMO_BARRA_VIDA] = {0};
+
+static const struct SpriteSheet sSpriteSheets_HealthBar[NUMERO_COMBATIENTES] =
 {
-    {NULL, 0x0100, TAG_HEALTHBAR_PLAYER1_TILE},
-    {NULL, 0x0120, TAG_HEALTHBAR_OPPONENT1_TILE},
-    {NULL, 0x0100, TAG_HEALTHBAR_PLAYER2_TILE},
-    {NULL, 0x0120, TAG_HEALTHBAR_OPPONENT2_TILE}
+    {sGraficoBarraVidaEnBlanco, 0x0100, TAG_HEALTHBAR_PLAYER1_TILE},
+    {sGraficoBarraVidaEnBlanco, 0x0120, TAG_HEALTHBAR_OPPONENT1_TILE},
+    {sGraficoBarraVidaEnBlanco, 0x0100, TAG_HEALTHBAR_PLAYER2_TILE},
+    {sGraficoBarraVidaEnBlanco, 0x0120, TAG_HEALTHBAR_OPPONENT2_TILE}
 };
 
 const struct SpritePalette sSpritePalettes_HealthBoxHealthBar[2] =
@@ -407,17 +417,17 @@ void CargaBarrasSalud(void)
         LoadCompressedSpriteSheet(&sSpriteSheets_DoublesPlayerHealthbox[1]);
         LoadCompressedSpriteSheet(&sSpriteSheets_DoublesOpponentHealthbox[0]);
         LoadCompressedSpriteSheet(&sSpriteSheets_DoublesOpponentHealthbox[1]);
-        LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[0]);
-        LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[1]);
-        LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[2]);
-        LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[3]);
+        LoadSpriteSheet(&sSpriteSheets_HealthBar[0]);
+        LoadSpriteSheet(&sSpriteSheets_HealthBar[1]);
+        LoadSpriteSheet(&sSpriteSheets_HealthBar[2]);
+        LoadSpriteSheet(&sSpriteSheets_HealthBar[3]);
     }
     else
     {
         LoadCompressedSpriteSheet(&sSpriteSheet_SinglesPlayerHealthbox);
         LoadCompressedSpriteSheet(&sSpriteSheet_SinglesOpponentHealthbox);
-        LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[0]);
-        LoadCompressedSpriteSheet(&sSpriteSheets_HealthBar[1]);
+        LoadSpriteSheet(&sSpriteSheets_HealthBar[0]);
+        LoadSpriteSheet(&sSpriteSheets_HealthBar[1]);
     }
 }
 
@@ -676,6 +686,7 @@ void SetBattlerSpriteAffineMode(u8 affineMode)
 
 void CreateEnemyShadowSprite(u32 battler)
 {
+    LOG("CreateEnemyShadow battler", battler, 0);
     u16 species = SanitizeSpeciesId(gBattleMons[battler].species);
     u8 size = gSpeciesInfo[species].enemyShadowSize;
 

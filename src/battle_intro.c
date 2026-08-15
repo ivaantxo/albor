@@ -1,4 +1,5 @@
 #include "global.h"
+#include "depuracion_mgba.h"
 #include "battle.h"
 #include "battle_anim.h"
 #include "battle_main.h"
@@ -29,6 +30,21 @@ static const TaskFunc sBattleIntroSlideFuncs[] =
     [BATTLE_TERRAIN_CAVE]       = BattleIntroSlide1,
     [BATTLE_TERRAIN_BUILDING]   = BattleIntroSlide3,
     [BATTLE_TERRAIN_PLAIN]      = BattleIntroSlide3,
+    // Sin entrada, CreateTask recibia NULL y la animacion de entrada no se
+    // ejecutaba nunca: los sprites se quedaban con x2 != 0, el oponente no
+    // llegaba a completar su comando y el combate se colgaba en PREPARA_VARS.
+    [BATTLE_TERRAIN_SOARING]           = BattleIntroSlide3,
+    [BATTLE_TERRAIN_SKY_PILLAR]        = BattleIntroSlide3,
+    [BATTLE_TERRAIN_BURIAL_GROUND]     = BattleIntroSlide3,
+    [BATTLE_TERRAIN_PUDDLE]            = BattleIntroSlide2,
+    [BATTLE_TERRAIN_MARSH]             = BattleIntroSlide2,
+    [BATTLE_TERRAIN_SWAMP]             = BattleIntroSlide2,
+    [BATTLE_TERRAIN_SNOW]              = BattleIntroSlide1,
+    [BATTLE_TERRAIN_ICE]               = BattleIntroSlide1,
+    [BATTLE_TERRAIN_VOLCANO]           = BattleIntroSlide1,
+    [BATTLE_TERRAIN_DISTORTION_WORLD]  = BattleIntroSlide3,
+    [BATTLE_TERRAIN_SPACE]             = BattleIntroSlide3,
+    [BATTLE_TERRAIN_ULTRA_SPACE]       = BattleIntroSlide3,
 };
 
 void SetAnimBgAttribute(u8 bgId, u8 attributeId, u8 value)
@@ -108,7 +124,18 @@ void HandleIntroSlide(u8 terrain)
     }
     else
     {
-        taskId = CreateTask(sBattleIntroSlideFuncs[terrain], 0);
+        TaskFunc funcion = terrain < ARRAY_COUNT(sBattleIntroSlideFuncs)
+                         ? sBattleIntroSlideFuncs[terrain] : NULL;
+
+        // Red de seguridad: sin funcion valida el combate se quedaria colgado
+        // esperando a que termine una animacion que nunca arranca.
+        if (funcion == NULL)
+        {
+            funcion = BattleIntroSlide3;
+            terrain = BATTLE_TERRAIN_PLAIN;
+        }
+        LOG("HandleIntroSlide terreno", terrain, 0);
+        taskId = CreateTask(funcion, 0);
     }
 
     gTasks[taskId].tState = 0;
