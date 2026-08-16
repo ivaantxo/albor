@@ -838,15 +838,18 @@ void FieldEffectFreeTilesIfUnused(u16 tileStart)
 void FieldEffectFreePaletteIfUnused(u8 paletteNum)
 {
     u32 i;
-    u16 tag = GetSpritePaletteTagByPaletteNum(paletteNum);
 
-    if (tag != TAG_NONE)
-    {
-        for (i = 0; i < MAX_SPRITES; i++)
-            if (gSprites[i].inUse && gSprites[i].oam.paletteNum == paletteNum)
-                return;
-        FreeSpritePaletteByTag(tag);
-    }
+    if (GetSpritePaletteTagByPaletteNum(paletteNum) == TAG_NONE)
+        return;
+
+    for (i = 0; i < MAX_SPRITES; i++)
+        if (gSprites[i].inUse && gSprites[i].oam.paletteNum == paletteNum)
+            return;
+
+    // Por slot y no por etiqueta: dos Pokemon de la misma especie en pantalla
+    // tienen dos slots con la misma etiqueta, y liberar por etiqueta soltaba el
+    // del otro, que se quedaba pintando con una paleta ya marcada como libre.
+    LiberaPaletaSpritePorSlot(paletteNum);
 }
 
 void FieldEffectActiveListClear(void)

@@ -12,6 +12,7 @@
 #include "field_control_avatar.h"
 #include "field_message_box.h"
 #include "field_player_avatar.h"
+#include "pokemon_salvajes_ow.h"
 #include "field_poison.h"
 #include "field_screen_effect.h"
 #include "field_specials.h"
@@ -32,8 +33,6 @@
 #include "constants/metatile_behaviors.h"
 #include "constants/songs.h"
 
-static EWRAM_DATA u8 sWildEncounterImmunitySteps = 0;
-static EWRAM_DATA u16 sPrevMetatileBehavior = 0;
 
 COMMON_DATA u8 gSelectedObjectEvent = 0;
 
@@ -48,7 +47,6 @@ static const u8 *GetInteractedWaterScript(struct MapPosition *, u8, u8);
 static bool32 TrySetupDiveDownScript(void);
 static bool32 TrySetupDiveEmergeScript(void);
 static bool8 TryStartStepBasedScript(struct MapPosition *, u16, u16);
-static bool8 CheckStandardWildEncounter(u16);
 static bool8 TryArrowWarp(struct MapPosition *, u16, u8);
 static bool8 IsWarpMetatileBehavior(u16);
 static bool8 IsArrowWarpMetatileBehavior(u16, u8);
@@ -76,7 +74,7 @@ static const u8 *GetSignpostScriptAtMapPosition(struct MapPosition * position);
 void FieldClearPlayerInput(struct FieldInput *input)
 {
     input->pressedAButton = FALSE;
-    input->checkStandardWildEncounter = FALSE;
+    input->enCentroDeCasilla = FALSE;
     input->pressedStartButton = FALSE;
     input->pressedSelectButton = FALSE;
     input->heldDirection = FALSE;
@@ -122,7 +120,7 @@ void FieldGetPlayerInput(struct FieldInput *input, u16 newKeys, u16 heldKeys)
         if (tileTransitionState == T_TILE_CENTER && runningState == MOVING)
             input->tookStep = TRUE;
         if (forcedMove == FALSE && tileTransitionState == T_TILE_CENTER)
-            input->checkStandardWildEncounter = TRUE;
+            input->enCentroDeCasilla = TRUE;
     }
 
     if (heldKeys & DPAD_UP)
@@ -172,9 +170,14 @@ bool32 ProcessPlayerFieldInput(struct FieldInput *input)
         IncrementBirthIslandRockStepCount();
         if (TryStartStepBasedScript(&position, metatileBehavior, playerDirection) == TRUE)
             return TRUE;
+
+        // El sistema de Pokemon salvajes avanza al ritmo del jugador. El contacto
+        // no se mira aqui: el movimiento que se acaba de encargar no surte efecto
+        // hasta el fotograma siguiente, asi que de eso se ocupa OverworldBasic.
+        ActualizaPokemonSalvajesOw();
     }
 
-    if ((input->checkStandardWildEncounter) && ((input->dpadDirection == 0) || input->dpadDirection == playerDirection))
+    if ((input->enCentroDeCasilla) && ((input->dpadDirection == 0) || input->dpadDirection == playerDirection))
     {
         GetInFrontOfPlayerPosition(&position);
         metatileBehavior = MapGridGetMetatileBehaviorAt(position.x, position.y);
@@ -184,8 +187,6 @@ bool32 ProcessPlayerFieldInput(struct FieldInput *input)
         metatileBehavior = MapGridGetMetatileBehaviorAt(position.x, position.y);
     }
 
-    if (input->checkStandardWildEncounter && CheckStandardWildEncounter(metatileBehavior) == TRUE)
-        return TRUE;
     if (input->heldDirection && input->dpadDirection == playerDirection)
     {
         if (TryArrowWarp(&position, metatileBehavior, playerDirection) == TRUE)
@@ -196,6 +197,12 @@ bool32 ProcessPlayerFieldInput(struct FieldInput *input)
     metatileBehavior = MapGridGetMetatileBehaviorAt(position.x, position.y);
 
     if (input->heldDirection && (input->dpadDirection == playerDirection) && (TrySetUpWalkIntoSignpostScript(&position, metatileBehavior, playerDirection) == TRUE))
+        return TRUE;
+
+    // Los Pokemon salvajes no tienen guion, asi que la interaccion normal pasa de
+    // largo. Se atiende antes: con uno pegado, la A empieza el combate aunque el
+    // jugador no este en su terreno, que es la unica forma de pelear desde fuera.
+    if (input->pressedAButton && IntentaCombatePokemonSalvajePulsandoA() == TRUE)
         return TRUE;
 
     if (input->pressedAButton && TryStartInteractionScript(&position, metatileBehavior, playerDirection) == TRUE)
@@ -568,34 +575,7 @@ static bool8 UpdatePoisonStepCounter(void)
 }
 #endif // OW_POISON_DAMAGE
 
-void RestartWildEncounterImmunitySteps(void)
-{
-    // Starts at 0 and counts up to 4 steps.
-    sWildEncounterImmunitySteps = 0;
-}
 
-static bool8 CheckStandardWildEncounter(u16 metatileBehavior)
-{
-    if (FlagGet(OW_FLAG_NO_ENCOUNTER))
-        return FALSE;
-
-    if (sWildEncounterImmunitySteps < 4)
-    {
-        sWildEncounterImmunitySteps++;
-        sPrevMetatileBehavior = metatileBehavior;
-        return FALSE;
-    }
-
-    if (StandardWildEncounter(metatileBehavior, sPrevMetatileBehavior) == TRUE)
-    {
-        sWildEncounterImmunitySteps = 0;
-        sPrevMetatileBehavior = metatileBehavior;
-        return TRUE;
-    }
-
-    sPrevMetatileBehavior = metatileBehavior;
-    return FALSE;
-}
 
 static void StorePlayerStateAndSetupWarp(struct MapPosition *position, s32 warpEventId)
 {

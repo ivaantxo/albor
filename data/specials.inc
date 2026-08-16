@@ -61,7 +61,6 @@ gSpecials::
 	def_special TryLoseFansFromPlayTime
 	def_special SetPlayerGotFirstFans
 	def_special UpdateTrainerFanClubGameClear
-	def_special RockSmashWildEncounter
 	def_special GetDaycareMonNicknames
 	def_special GetDaycareState
 	def_special RejectEggFromDayCare

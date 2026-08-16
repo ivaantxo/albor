@@ -195,7 +195,6 @@ static void Task_BattleStart(u8 taskId)
         {
             CleanupOverworldWindowsAndTilemaps();
             SetMainCallback2(CB2_InitBattle);
-            RestartWildEncounterImmunitySteps();
             ClearPoisonStepCounter();
             DestroyTask(taskId);
         }
@@ -230,7 +229,6 @@ static void Task_BattleStart_Debug(u8 taskId)
         {
             CleanupOverworldWindowsAndTilemaps();
             SetMainCallback2(CB2_InitBattle);
-            RestartWildEncounterImmunitySteps();
             ClearPoisonStepCounter();
             DestroyTask(taskId);
         }
@@ -651,7 +649,6 @@ static void CB2_StartFirstBattle(void)
         gMain.savedCallback = CB2_EndFirstBattle;
         FreeAllWindowBuffers();
         SetMainCallback2(CB2_InitBattle);
-        RestartWildEncounterImmunitySteps();
         ClearPoisonStepCounter();
         IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
         IncrementGameStat(GAME_STAT_WILD_BATTLES);

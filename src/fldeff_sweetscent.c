@@ -69,17 +69,12 @@ static void TrySweetScentEncounter(u8 taskId)
         BlendPalettes(0x00000040, 8, RGB_RED);
         if (gTasks[taskId].data[0] == 64)
         {
+            // Dulce Aroma ya no provoca encuentros: los Pokemon salvajes solo
+            // aparecen en el mapa y hay que acercarse a ellos.
             gTasks[taskId].data[0] = 0;
-            if (SweetScentWildEncounter() == TRUE)
-            {
-                DestroyTask(taskId);
-            }
-            else
-            {
-                gTasks[taskId].func = FailSweetScentEncounter;
-                BeginNormalPaletteFade(~(1 << (gSprites[GetPlayerAvatarSpriteId()].oam.paletteNum + 16)), 4, 8, 0, RGB_RED);
-                TryStartMirageTowerPulseBlendEffect();
-            }
+            gTasks[taskId].func = FailSweetScentEncounter;
+            BeginNormalPaletteFade(~(1 << (gSprites[GetPlayerAvatarSpriteId()].oam.paletteNum + 16)), 4, 8, 0, RGB_RED);
+            TryStartMirageTowerPulseBlendEffect();
         }
         else
         {

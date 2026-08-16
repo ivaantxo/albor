@@ -22,7 +22,6 @@ struct WildPokemonHeader
     u8 mapNum;
     const struct WildPokemonInfo *landMonsInfo;
     const struct WildPokemonInfo *waterMonsInfo;
-    const struct WildPokemonInfo *rockSmashMonsInfo;
     const struct WildPokemonInfo *fishingMonsInfo;
 };
 
@@ -33,8 +32,6 @@ extern u8 gChainFishingDexNavStreak;
 
 void DisableWildEncounters(bool8 disabled);
 u32 EscogeNaturalezaPokemonSalvaje(void);
-bool8 StandardWildEncounter(u16 currMetaTileBehavior, u16 previousMetaTileBehavior);
-bool8 SweetScentWildEncounter(void);
 bool8 DoesCurrentMapHaveFishingMons(void);
 void FishingWildEncounter(u8 rod);
 u16 GetLocalWildMon(bool8 *isWaterMon);
@@ -44,6 +41,11 @@ bool8 StandardWildEncounter_Debug(void);
 u32 CalculateChainFishingShinyRolls(void);
 u32 ChooseWildMonLevel(const struct WildPokemon *wildPokemon, u32 wildMonIndex, u32 area);
 u32 ChooseWildMonIndex_Land(void);
+u8 ChooseWildMonIndex_WaterRock(void);
+#define HEADER_NONE 0xFFFF
+
+u16 ObtenIdCabeceraSalvajesMapaActual(void);
+void CreaPokemonSalvajeConPersonalidad(u32 especie, u32 nivel, u32 personalidad);
 void CreateWildMon(u32 species, u32 level);
 
 #endif // GUARD_WILD_ENCOUNTER_H

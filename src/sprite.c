@@ -1739,11 +1739,68 @@ bool8 AddSubspritesToOamBuffer(struct Sprite *sprite, struct OamData *destOam, u
     return 0;
 }
 
+// Un slot esta libre de verdad cuando ni el reparto de etiquetas lo tiene
+// apuntado ni queda ningun sprite pintando con el. Las dos condiciones hacen
+// falta: si solo se mirara la etiqueta, un slot que quedo mal liberado se daria
+// por libre y se cargaria encima de un sprite que sigue en pantalla.
+bool32 EsPaletaSpriteLibre(u32 paletteNum)
+{
+    if (paletteNum < gReservedSpritePaletteCount || paletteNum >= 16)
+        return FALSE;
+    if (sSpritePaletteTags[paletteNum] != TAG_NONE)
+        return FALSE;
+
+    for (u32 i = 0; i < MAX_SPRITES; i++)
+    {
+        if (gSprites[i].inUse && gSprites[i].oam.paletteNum == paletteNum)
+            return FALSE;
+    }
+
+    return TRUE;
+}
+
+u32 PaletasSpriteLibres(void)
+{
+    u32 libres = 0;
+
+    for (u32 i = gReservedSpritePaletteCount; i < 16; i++)
+    {
+        if (EsPaletaSpriteLibre(i))
+            libres++;
+    }
+
+    return libres;
+}
+
+// Libera EL SLOT indicado, no "el primero que lleve esta etiqueta".
+// LoadUniqueSpritePalette reparte un slot nuevo por cada carga pero les pone a
+// todos la etiqueta de la especie, asi que dos Pokemon iguales en pantalla tienen
+// dos slots con la misma etiqueta. Liberar por etiqueta soltaba el del otro.
+void LiberaPaletaSpritePorSlot(u32 paletteNum)
+{
+    if (paletteNum >= gReservedSpritePaletteCount && paletteNum < 16)
+        sSpritePaletteTags[paletteNum] = TAG_NONE;
+}
+
+bool32 HaySlotDePaletaLibre(void)
+{
+    return PaletasSpriteLibres() != 0;
+}
+
 u32 LoadUniqueSpritePalette(const struct SpritePalette *palette, u32 personality)
 {
-    u32 index = IndexOfSpritePaletteTag(0xFFFF);
+    // Se busca un slot libre de verdad, no solo uno sin etiqueta: si alguien lo
+    // solto mal y todavia hay un sprite pintando con el, cargar ahi le cambiaria
+    // los colores a ese sprite. Es como el follower acababa con la paleta de otro.
+    u32 index;
 
-    if (index == 0xFF)
+    for (index = gReservedSpritePaletteCount; index < 16; index++)
+    {
+        if (EsPaletaSpriteLibre(index))
+            break;
+    }
+
+    if (index >= 16)
         return 0xFF;
     else
     {

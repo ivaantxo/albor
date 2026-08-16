@@ -1,5 +1,6 @@
 #include "global.h"
 #include "overworld.h"
+#include "pokemon_salvajes_ow.h"
 #include "battle_setup.h"
 #include "berry.h"
 #include "bg.h"
@@ -36,7 +37,6 @@
 #include "new_game.h"
 #include "palette.h"
 #include "play_time.h"
-#include "pokemon_salvajes_ow.h"
 #include "random.h"
 #include "rotating_gate.h"
 #include "rtc.h"
@@ -635,7 +635,6 @@ void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
     LoadObjEventTemplatesFromHeader();
     TrySetMapSaveWarpStatus();
     ClearTempFieldEventData();
-    RestartWildEncounterImmunitySteps();
     SetBg2Transparent();
 
     DoTimeBasedEvents();
@@ -673,7 +672,6 @@ static void LoadMapFromWarp(void)
 
     TrySetMapSaveWarpStatus();
     ClearTempFieldEventData();
-    RestartWildEncounterImmunitySteps();
 
     DoTimeBasedEvents();
     SetSavedWeatherFromCurrMapHeader();
@@ -1270,6 +1268,10 @@ u32 ActualizaPaletaSpriteSegunHora(u32 numeroPaleta)
 
 void OverworldBasic(void)
 {
+    // El contacto se comprueba cada fotograma y no al dar el paso: un Pokemon que
+    // se acerca tarda unos fotogramas en llegar, y mirarlo solo al pisar dejaba
+    // combates sin arrancar hasta que el jugador se movia otra vez.
+    ComprobaContactoPokemonSalvaje();
     ScriptContext_RunScript();
     RunTasks();
     AnimateSprites();
@@ -1298,7 +1300,6 @@ void OverworldBasic(void)
             UpdatePalettesWithTime(PALETTES_ALL);
         }
     }
-    ActualizarPokemonSalvajesOw();
 }
 
 void CB2_Overworld(void)
@@ -1733,12 +1734,18 @@ static void InitObjectEventsLocal(void)
     ResetInitialPlayerAvatarState();
     TrySpawnObjectEvents(0, 0);
     UpdateFollowingPokemon();
+    // Los salvajes del mapa anterior no vienen: en este se generan otros nuevos,
+    // con personalidades nuevas.
+    ReiniciaPokemonSalvajesOw();
     TryRunOnWarpIntoMapScript();
 }
 
 static void InitObjectEventsReturnToField(void)
 {
     SpawnObjectEventsOnReturnToField(0, 0);
+    // Al rehacerse el mapa los salvajes pierden su personalidad y volverian con
+    // otros colores, asi que se quitan y ya apareceran otros.
+    ReiniciaPokemonSalvajesOw();
     RotatingGate_InitPuzzleAndGraphics();
     RunOnReturnToFieldMapScript();
 }
