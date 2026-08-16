@@ -505,7 +505,6 @@ struct BattleSpriteInfo
     u16 lowHpSong : 1;        // 0x2
     u16 behindSubstitute : 1; // 0x4
     u16 flag_x8 : 1;          // Marcador de que el sprite del pokemon esta siendo usado para mostrar el HP, para que no se muestre el HP en la barra de HP
-    u16 hpNumbersNoBars : 1;  // 0x10
     u16 transformSpecies;
 };
 
@@ -727,7 +726,6 @@ void FijaTipoCombate(enum TiposCombate tipo);
 extern struct BattleResources *gBattleResources;
 extern u8 gActionSelectionCursor[NUMERO_COMBATIENTES];
 extern u8 gMoveSelectionCursor[NUMERO_COMBATIENTES];
-extern u8 gBattlerStatusSummaryTaskId[NUMERO_COMBATIENTES];
 extern u8 gBattlerInMenuId;
 extern bool8 gDoingBattleAnim;
 extern struct BattleSpriteData *gBattleSpritesDataPtr;
@@ -740,7 +738,7 @@ extern const struct BattleMoveEffect gBattleMoveEffects[];
 extern void (*gPreBattleCallback1)(void);
 extern void (*gBattleMainFunc)(void);
 extern u8 gLeveledUpInBattle;
-extern u8 gHealthboxSpriteIds[NUMERO_COMBATIENTES];
+extern u8 gMarcadorSpriteIds[NUMERO_COMBATIENTES];
 extern u8 gNumberOfMovesToChoose;
 extern u8 gLastUsedBall;
 extern u16 gLastThrownBall;

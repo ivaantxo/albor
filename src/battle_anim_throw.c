@@ -49,7 +49,6 @@ enum {
     SHINY_STAR_DIAGONAL,
 };
 
-static void AnimTask_UnusedLevelUpHealthBox_Step(u8);
 static void AnimTask_FlashHealthboxOnLevelUp_Step(u8);
 static void AnimTask_ThrowBall_Step(u8);
 static void SpriteCB_Ball_Throw(struct Sprite *);
@@ -625,162 +624,31 @@ const struct SpriteTemplate gPokeblockSpriteTemplate =
 extern const struct SpriteTemplate gWishStarSpriteTemplate;
 extern const struct SpriteTemplate gMiniTwinklingStarSpriteTemplate;
 
-// This is an unused function, but it seems likely that it was
-// intended to be an additional effect during the level-up animation.
-// It is an upward blue gradient effect on the mon's healthbox.
-void AnimTask_UnusedLevelUpHealthBox(u8 taskId)
+
+
+// El marcador tiene una sola paleta, compartida por todas sus piezas: para poder
+// hacerla parpadear sin tocar la de los demas se saca una copia temporal.
+static void LoadHealthboxPalsForLevelUp(u8 *paletteId, u8 battler)
 {
-    struct BattleAnimBgData animBgData;
-    u8 healthBoxSpriteId;
-    u8 battler;
-    u32 spriteId1, spriteId2, spriteId3, spriteId4;
+    u8 marcadorSpriteId = gMarcadorSpriteIds[battler];
+    u16 offset = OBJ_PLTT_ID(gSprites[marcadorSpriteId].oam.paletteNum);
 
-    battler = gBattleAnimAttacker;
-    gBattle_WIN0H = 0;
-    gBattle_WIN0V = 0;
-    SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR | WININ_WIN1_BG_ALL | WININ_WIN1_OBJ | WININ_WIN1_CLR);
-    SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG0 | WINOUT_WIN01_BG2 | WINOUT_WIN01_BG3 | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR | WINOUT_WINOBJ_BG_ALL | WINOUT_WINOBJ_OBJ | WINOUT_WINOBJ_CLR);
-    SetGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_OBJWIN_ON);
-    SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_BG1 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_ALL);
-    SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 16));
-    SetAnimBgAttribute(1, BG_ANIM_PRIORITY, 0);
-    SetAnimBgAttribute(1, BG_ANIM_SCREEN_SIZE, 0);
-    SetAnimBgAttribute(1, BG_ANIM_AREA_OVERFLOW_MODE, 1);
-    SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 1);
-
-    healthBoxSpriteId = gHealthboxSpriteIds[battler];
-    spriteId1 = gSprites[healthBoxSpriteId].oam.affineParam;
-    spriteId2 = gSprites[healthBoxSpriteId].data[5];
-    spriteId3 = CreateInvisibleSpriteWithCallback(SpriteCallbackDummy);
-    spriteId4 = CreateInvisibleSpriteWithCallback(SpriteCallbackDummy);
-    gSprites[healthBoxSpriteId].oam.priority = 1;
-    gSprites[spriteId1].oam.priority = 1;
-    gSprites[spriteId2].oam.priority = 1;
-    gSprites[spriteId3] = gSprites[healthBoxSpriteId];
-    gSprites[spriteId4] = gSprites[spriteId1];
-    gSprites[spriteId3].oam.objMode = ST_OAM_OBJ_WINDOW;
-    gSprites[spriteId4].oam.objMode = ST_OAM_OBJ_WINDOW;
-    gSprites[spriteId3].callback = SpriteCallbackDummy;
-    gSprites[spriteId4].callback = SpriteCallbackDummy;
-
-    GetBattleAnimBg1Data(&animBgData);
-    AnimLoadCompressedBgTilemap(animBgData.bgId, UnusedLevelupAnimationTilemap);
-    AnimLoadCompressedBgGfx(animBgData.bgId, UnusedLevelupAnimationGfx, animBgData.tilesOffset);
-    LoadCompressedPalette(gCureBubblesPal, BG_PLTT_ID(animBgData.paletteId), PLTT_SIZE_4BPP);
-
-    gBattle_BG1_X = -gSprites[spriteId3].x + 32;
-    gBattle_BG1_Y = -gSprites[spriteId3].y - 32;
-    gTasks[taskId].data[1] = 640;
-    gTasks[taskId].data[0] = spriteId3;
-    gTasks[taskId].data[2] = spriteId4;
-    gTasks[taskId].func = AnimTask_UnusedLevelUpHealthBox_Step;
-}
-
-static void AnimTask_UnusedLevelUpHealthBox_Step(u8 taskId)
-{
-    u32 spriteId1, spriteId2;
-    u8 battler;
-
-    battler = gBattleAnimAttacker;
-    gTasks[taskId].data[13] += gTasks[taskId].data[1];
-    gBattle_BG1_Y += (u16)gTasks[taskId].data[13] >> 8;
-    gTasks[taskId].data[13] &= 0xFF;
-
-    switch (gTasks[taskId].data[15])
-    {
-    case 0:
-        if (gTasks[taskId].data[11]++ > 1)
-        {
-            gTasks[taskId].data[11] = 0;
-            gTasks[taskId].data[12]++;
-            SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(gTasks[taskId].data[12], 16 - gTasks[taskId].data[12]));
-            if (gTasks[taskId].data[12] == 8)
-                gTasks[taskId].data[15]++;
-        }
-        break;
-    case 1:
-        if (++gTasks[taskId].data[10] == 30)
-            gTasks[taskId].data[15]++;
-        break;
-    case 2:
-        if (gTasks[taskId].data[11]++ > 1)
-        {
-            gTasks[taskId].data[11] = 0;
-            gTasks[taskId].data[12]--;
-            SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(gTasks[taskId].data[12], 16 - gTasks[taskId].data[12]));
-            if (gTasks[taskId].data[12] == 0)
-            {
-                ResetBattleAnimBg(FALSE);
-                gBattle_WIN0H = 0;
-                gBattle_WIN0V = 0;
-                SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR | WININ_WIN1_BG_ALL | WININ_WIN1_OBJ | WININ_WIN1_CLR);
-                SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR | WINOUT_WINOBJ_BG_ALL | WINOUT_WINOBJ_OBJ | WINOUT_WINOBJ_CLR);
-                SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 0);
-
-                SetGpuReg(REG_OFFSET_DISPCNT, GetGpuReg(REG_OFFSET_DISPCNT) ^ DISPCNT_OBJWIN_ON);
-                SetGpuReg(REG_OFFSET_BLDCNT, 0);
-                SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 0));
-                DestroySprite(&gSprites[gTasks[taskId].data[0]]);
-                DestroySprite(&gSprites[gTasks[taskId].data[2]]);
-                SetAnimBgAttribute(1, BG_ANIM_AREA_OVERFLOW_MODE, 0);
-                spriteId1 = gSprites[gHealthboxSpriteIds[battler]].oam.affineParam;
-                spriteId2 = gSprites[gHealthboxSpriteIds[battler]].data[5];
-                gSprites[gHealthboxSpriteIds[battler]].oam.priority = 1;
-                gSprites[spriteId1].oam.priority = 1;
-                gSprites[spriteId2].oam.priority = 1;
-                DestroyAnimVisualTask(taskId);
-            }
-        }
-        break;
-    }
-}
-
-static void LoadHealthboxPalsForLevelUp(u8 *paletteId1, u8 *paletteId2, u8 battler)
-{
-    u8 healthBoxSpriteId;
-    u32 spriteId1, spriteId2;
-    u16 offset1, offset2;
-
-    healthBoxSpriteId = gHealthboxSpriteIds[battler];
-    spriteId1 = gSprites[healthBoxSpriteId].oam.affineParam;
-    spriteId2 = gSprites[healthBoxSpriteId].data[5];
-    *paletteId1 = AllocSpritePalette(TAG_HEALTHBOX_PALS_1);
-    *paletteId2 = AllocSpritePalette(TAG_HEALTHBOX_PALS_2);
-
-    offset1 = OBJ_PLTT_ID(gSprites[healthBoxSpriteId].oam.paletteNum);
-    offset2 = OBJ_PLTT_ID(gSprites[spriteId2].oam.paletteNum);
-    LoadPalette(&gPlttBufferUnfaded[offset1], OBJ_PLTT_ID(*paletteId1), PLTT_SIZE_4BPP);
-    LoadPalette(&gPlttBufferUnfaded[offset2], OBJ_PLTT_ID(*paletteId2), PLTT_SIZE_4BPP);
-
-    gSprites[healthBoxSpriteId].oam.paletteNum = *paletteId1;
-    gSprites[spriteId1].oam.paletteNum = *paletteId1;
-    gSprites[spriteId2].oam.paletteNum = *paletteId2;
+    *paletteId = AllocSpritePalette(TAG_MARCADOR_PAL_PARPADEO);
+    LoadPalette(&gPlttBufferUnfaded[offset], OBJ_PLTT_ID(*paletteId), PLTT_SIZE_4BPP);
+    FijaPaletaMarcador(marcadorSpriteId, *paletteId);
 }
 
 void AnimTask_LoadHealthboxPalsForLevelUp(u8 taskId)
 {
-    u8 paletteId1, paletteId2;
-    LoadHealthboxPalsForLevelUp(&paletteId1, &paletteId2, gBattleAnimAttacker);
+    u8 paletteId;
+    LoadHealthboxPalsForLevelUp(&paletteId, gBattleAnimAttacker);
     DestroyAnimVisualTask(taskId);
 }
 
 static void FreeHealthboxPalsForLevelUp(u8 battler)
 {
-    u8 healthBoxSpriteId;
-    u32 spriteId1, spriteId2;
-    u32 paletteId1, paletteId2;
-
-    healthBoxSpriteId = gHealthboxSpriteIds[battler];
-    spriteId1 = gSprites[healthBoxSpriteId].oam.affineParam;
-    spriteId2 = gSprites[healthBoxSpriteId].data[5];
-
-    FreeSpritePaletteByTag(TAG_HEALTHBOX_PALS_1);
-    FreeSpritePaletteByTag(TAG_HEALTHBOX_PALS_2);
-    paletteId1 = IndexOfSpritePaletteTag(TAG_HEALTHBOX_PAL);
-    paletteId2 = IndexOfSpritePaletteTag(TAG_HEALTHBAR_PAL);
-    gSprites[healthBoxSpriteId].oam.paletteNum = paletteId1;
-    gSprites[spriteId1].oam.paletteNum = paletteId1;
-    gSprites[spriteId2].oam.paletteNum = paletteId2;
+    FreeSpritePaletteByTag(TAG_MARCADOR_PAL_PARPADEO);
+    FijaPaletaMarcador(gMarcadorSpriteIds[battler], IndexOfSpritePaletteTag(TAG_MARCADOR_PAL));
 }
 
 void AnimTask_FreeHealthboxPalsForLevelUp(u8 taskId)
@@ -805,7 +673,7 @@ static void AnimTask_FlashHealthboxOnLevelUp_Step(u8 taskId)
     if (gTasks[taskId].data[0]++ >= gTasks[taskId].data[11])
     {
         gTasks[taskId].data[0] = 0;
-        paletteNum = IndexOfSpritePaletteTag(TAG_HEALTHBOX_PALS_1);
+        paletteNum = IndexOfSpritePaletteTag(TAG_MARCADOR_PAL_PARPADEO);
         colorOffset = gTasks[taskId].data[10] == 0 ? 6 : 2;
         switch (gTasks[taskId].data[1])
         {
@@ -1531,7 +1399,7 @@ static void SpriteCB_Ball_Capture_Step(struct Sprite *sprite)
     else if (sprite->sTimer == 95)
     {
         gDoingBattleAnim = FALSE;
-        UpdateOamPriorityInAllHealthboxes(1, FALSE);
+        FijaPrioridadMarcadores(1, FALSE);
         m4aMPlayAllStop();
         PlaySE(MUS_RG_CAUGHT_INTRO);
     }
@@ -1714,7 +1582,7 @@ static void SpriteCB_Ball_Release_Wait(struct Sprite *sprite)
         sprite->sFrame = 0;
         sprite->callback = DestroySpriteAfterOneFrame;
         gDoingBattleAnim = 0;
-        UpdateOamPriorityInAllHealthboxes(1, FALSE);
+        FijaPrioridadMarcadores(1, FALSE);
     }
 }
 
@@ -1756,7 +1624,7 @@ static void SpriteCB_Ball_Block_Step(struct Sprite *sprite)
         sprite->sFrame = 0;
         sprite->callback = DestroySpriteAfterOneFrame;
         gDoingBattleAnim = 0;
-        UpdateOamPriorityInAllHealthboxes(1, FALSE);
+        FijaPrioridadMarcadores(1, FALSE);
     }
 }
 

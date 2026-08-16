@@ -18,7 +18,7 @@
 // this file's functions
 static void CB2_ReshowBattleScreenAfterMenu(void);
 static bool8 LoadBattlerSpriteGfx(u32 battler);
-static void CreateHealthboxSprite(u32 battler);
+static void CreaMarcadorDe(u32 battler);
 static void ClearBattleBgCntBaseBlocks(void);
 
 void ReshowBattleScreenDummy(void)
@@ -123,19 +123,19 @@ static void CB2_ReshowBattleScreenAfterMenu(void)
         sEstadoVueltaBatalla++;
         break;
     case 15:
-        CreateHealthboxSprite(0);
+        CreaMarcadorDe(0);
         sEstadoVueltaBatalla++;
         break;
     case 16:
-        CreateHealthboxSprite(1);
+        CreaMarcadorDe(1);
         sEstadoVueltaBatalla++;
         break;
     case 17:
-        CreateHealthboxSprite(2);
+        CreaMarcadorDe(2);
         sEstadoVueltaBatalla++;
         break;
     case 18:
-        CreateHealthboxSprite(3);
+        CreaMarcadorDe(3);
         sEstadoVueltaBatalla++;
         break;
     case 19:
@@ -242,30 +242,30 @@ void CreateBattlerSprite(u32 battler)
     }
 }
 
-static void CreateHealthboxSprite(u32 battler)
+static void CreaMarcadorDe(u32 battler)
 {
     if (battler < gBattlersCount)
     {
-        u8 healthboxSpriteId = CreateBattlerHealthboxSprites(battler);
+        u8 marcadorSpriteId = CreaMarcadorCombate(battler);
 
-        gHealthboxSpriteIds[battler] = healthboxSpriteId;
-        InitBattlerHealthboxCoords(battler);
-        SetHealthboxSpriteVisible(healthboxSpriteId);
+        gMarcadorSpriteIds[battler] = marcadorSpriteId;
+        ColocaMarcador(battler);
+        MuestraMarcador(marcadorSpriteId);
 
         if (GetBattlerSide(battler) != LADO_JUGADOR)
-            UpdateHealthboxAttribute(gHealthboxSpriteIds[battler], &gEnemyParty[gBattlerPartyIndexes[battler]], HEALTHBOX_ALL);
+            ActualizaMarcador(gMarcadorSpriteIds[battler], &gEnemyParty[gBattlerPartyIndexes[battler]], MARCADOR_TODO);
         else
-            UpdateHealthboxAttribute(gHealthboxSpriteIds[battler], &gPlayerParty[gBattlerPartyIndexes[battler]], HEALTHBOX_ALL);
+            ActualizaMarcador(gMarcadorSpriteIds[battler], &gPlayerParty[gBattlerPartyIndexes[battler]], MARCADOR_TODO);
 
         if (GetBattlerSide(battler) != LADO_JUGADOR)
         {
             if (GetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_HP) == 0)
-                SetHealthboxSpriteInvisible(healthboxSpriteId);
+                OcultaMarcador(marcadorSpriteId);
         }
         else
         {
             if (!IsValidForBattle(&gPlayerParty[gBattlerPartyIndexes[battler]]))
-                SetHealthboxSpriteInvisible(healthboxSpriteId);
+                OcultaMarcador(marcadorSpriteId);
         }
     }
 }

@@ -1020,7 +1020,7 @@ static void FreeMonSprite(u32 battler)
     DestroySprite(&gSprites[gBattlerSpriteIds[battler]]);
     if (GetBattlerSide(battler) == LADO_OPONENTE)
         HideBattlerShadowSprite(battler);
-    SetHealthboxSpriteInvisible(gHealthboxSpriteIds[battler]);
+    OcultaMarcador(gMarcadorSpriteIds[battler]);
 }
 
 static void Controller_ReturnMonToBall2(u32 battler)
@@ -1060,7 +1060,7 @@ static void Controller_FaintPlayerMon(u32 battler)
     {
         FreeOamMatrix(gSprites[spriteId].oam.matrixNum);
         DestroySprite(&gSprites[spriteId]);
-        SetHealthboxSpriteInvisible(gHealthboxSpriteIds[battler]);
+        OcultaMarcador(gMarcadorSpriteIds[battler]);
         BattleControllerComplete(battler);
     }
 }
@@ -1069,7 +1069,7 @@ static void Controller_FaintOpponentMon(u32 battler)
 {
     if (!gSprites[gBattlerSpriteIds[battler]].inUse)
     {
-        SetHealthboxSpriteInvisible(gHealthboxSpriteIds[battler]);
+        OcultaMarcador(gMarcadorSpriteIds[battler]);
         BattleControllerComplete(battler);
     }
 }
@@ -1138,12 +1138,11 @@ static void Controller_HandleTrainerSlideBack(u32 battler)
 
 void Controller_WaitForHealthBar(u32 battler)
 {
-    s16 hpValue = MoveBattleBar(battler, gHealthboxSpriteIds[battler], HEALTH_BAR);
+    s16 hpValue = MoveBattleBar(battler, gMarcadorSpriteIds[battler]);
 
-    SetHealthboxSpriteVisible(gHealthboxSpriteIds[battler]);
+    MuestraMarcador(gMarcadorSpriteIds[battler]);
     if (hpValue != -1)
     {
-        UpdateHpTextInHealthbox(gHealthboxSpriteIds[battler], HP_CURRENT, hpValue, gBattleMons[battler].maxHP);
     }
     else
     {
@@ -1183,14 +1182,6 @@ void Controller_WaitForString(u32 battler)
         BattleControllerComplete(battler);
 }
 
-static void Controller_WaitForPartyStatusSummary(u32 battler)
-{
-    if (gBattleSpritesDataPtr->healthBoxesData[battler].partyStatusDelayTimer++ > 92)
-    {
-        gBattleSpritesDataPtr->healthBoxesData[battler].partyStatusDelayTimer = 0;
-        BattleControllerComplete(battler);
-    }
-}
 
 static void Controller_HitAnimation(u32 battler)
 {
@@ -1538,7 +1529,7 @@ void BtlController_HandleMoveAnimation(u32 battler)
     }
 }
 
-void BtlController_HandleHealthBarUpdate(u32 battler, bool32 updateHpText)
+void BtlController_HandleHealthBarUpdate(u32 battler)
 {
     s32 maxHP, curHP;
     s16 hpVal;
@@ -1550,13 +1541,11 @@ void BtlController_HandleHealthBarUpdate(u32 battler, bool32 updateHpText)
 
     if (hpVal != INSTANT_HP_BAR_DROP)
     {
-        SetBattleBarStruct(battler, gHealthboxSpriteIds[battler], maxHP, curHP, hpVal);
+        SetBattleBarStruct(battler, gMarcadorSpriteIds[battler], maxHP, curHP, hpVal);
     }
     else
     {
-        SetBattleBarStruct(battler, gHealthboxSpriteIds[battler], maxHP, 0, hpVal);
-        if (updateHpText)
-            UpdateHpTextInHealthbox(gHealthboxSpriteIds[battler], HP_CURRENT, 0, maxHP);
+        SetBattleBarStruct(battler, gMarcadorSpriteIds[battler], maxHP, 0, hpVal);
     }
 
     gBattlerControllerFuncs[battler] = Controller_WaitForHealthBar;
@@ -1566,7 +1555,7 @@ void DoStatusIconUpdate(u32 battler)
 {
     struct Pokemon *party = GetBattlerParty(battler);
 
-    UpdateHealthboxAttribute(gHealthboxSpriteIds[battler], &party[gBattlerPartyIndexes[battler]], HEALTHBOX_STATUS_ICON);
+    ActualizaMarcador(gMarcadorSpriteIds[battler], &party[gBattlerPartyIndexes[battler]], MARCADOR_ESTADO);
     gBattleSpritesDataPtr->healthBoxesData[battler].statusAnimActive = 0;
     gBattlerControllerFuncs[battler] = Controller_WaitForStatusAnimation;
 }
@@ -1739,9 +1728,6 @@ void BtlController_HandleIntroTrainerBallThrow(u32 battler, u16 tagTrainerPal, c
     gTasks[taskId].tFramesToWait = framesToWait;
     SetWordTaskArg(taskId, tControllerFunc_1, (uint32_t)(controllerCallback));
 
-    if (gBattleSpritesDataPtr->healthBoxesData[battler].partyStatusSummaryShown)
-        gTasks[gBattlerStatusSummaryTaskId[battler]].func = Task_HidePartyStatusSummary;
-
     gBattleSpritesDataPtr->animationData->introAnimActive = TRUE;
     gBattlerControllerFuncs[battler] = BattleControllerDummy;
 }
@@ -1828,44 +1814,16 @@ static void SpriteCB_FreeOpponentSprite(struct Sprite *sprite)
 
 #undef sBattlerId
 
+// El resumen de bolas ya no existe: todos los entrenadores llevan seis Pokemon,
+// asi que no informaba de nada. Las ordenes se conservan hasta que se simplifiquen
+// los controladores, pero no dibujan nada.
 void BtlController_HandleDrawPartyStatusSummary(u32 battler, u32 side, bool32 considerDelay)
 {
-    if (gBattleResources->bufferA[battler][1] != 0 && GetBattlerSide(battler) == LADO_JUGADOR)
-    {
-        BattleControllerComplete(battler);
-    }
-    else
-    {
-        gBattleSpritesDataPtr->healthBoxesData[battler].partyStatusSummaryShown = 1;
-
-        if (side == LADO_OPONENTE && gBattleResources->bufferA[battler][2] != 0)
-        {
-            if (gBattleSpritesDataPtr->healthBoxesData[battler].opponentDrawPartyStatusSummaryDelay < 2)
-            {
-                gBattleSpritesDataPtr->healthBoxesData[battler].opponentDrawPartyStatusSummaryDelay++;
-                return;
-            }
-            else
-            {
-                gBattleSpritesDataPtr->healthBoxesData[battler].opponentDrawPartyStatusSummaryDelay = 0;
-            }
-        }
-
-        gBattlerStatusSummaryTaskId[battler] = CreatePartyStatusSummarySprites(battler, (struct HpAndStatus *)&gBattleResources->bufferA[battler][4], gBattleResources->bufferA[battler][1], gBattleResources->bufferA[battler][2]);
-        gBattleSpritesDataPtr->healthBoxesData[battler].partyStatusDelayTimer = 0;
-
-        // If intro, skip the delay after drawing
-        if (considerDelay && gBattleResources->bufferA[battler][2] != 0)
-            gBattleSpritesDataPtr->healthBoxesData[battler].partyStatusDelayTimer = 93;
-
-        gBattlerControllerFuncs[battler] = Controller_WaitForPartyStatusSummary;
-    }
+    BattleControllerComplete(battler);
 }
 
 void BtlController_HandleHidePartyStatusSummary(u32 battler)
 {
-    if (gBattleSpritesDataPtr->healthBoxesData[battler].partyStatusSummaryShown)
-        gTasks[gBattlerStatusSummaryTaskId[battler]].func = Task_HidePartyStatusSummary;
     BattleControllerComplete(battler);
 }
 

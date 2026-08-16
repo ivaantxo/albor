@@ -36,49 +36,37 @@ static void Task_ClearBitWhenSpecialAnimDone(u8 taskId);
 static void ClearSpritesBattlerHealthboxAnimData(void);
 
 // const rom data
-static const struct CompressedSpriteSheet sSpriteSheet_SinglesPlayerHealthbox =
+//
+// Cada combatiente reserva sus tiles en blanco: el relleno de la barra, el
+// porcentaje y la tira de nombre y nivel se dibujan en tiempo de ejecucion, no
+// salen de ningun grafico. La hoja solo sirve para apartar el sitio en VRAM.
+static const u8 sTilesMarcadorEnBlanco[TILES_RESERVADOS_BARRA_VIDA * TILE_4BPP] = {0};
+
+static const struct SpriteSheet sHojasMarcador[NUMERO_COMBATIENTES] =
 {
-    gHealthboxSinglesPlayerGfx, 0x1000, TAG_HEALTHBOX_PLAYER1_TILE
+    [JUGADOR_IZQUIERDA]  = {sTilesMarcadorEnBlanco, sizeof(sTilesMarcadorEnBlanco), TAG_MARCADOR_JUGADOR1},
+    [OPONENTE_IZQUIERDA] = {sTilesMarcadorEnBlanco, sizeof(sTilesMarcadorEnBlanco), TAG_MARCADOR_OPONENTE1},
+    [JUGADOR_DERECHA]    = {sTilesMarcadorEnBlanco, sizeof(sTilesMarcadorEnBlanco), TAG_MARCADOR_JUGADOR2},
+    [OPONENTE_DERECHA]   = {sTilesMarcadorEnBlanco, sizeof(sTilesMarcadorEnBlanco), TAG_MARCADOR_OPONENTE2},
 };
 
-static const struct CompressedSpriteSheet sSpriteSheet_SinglesOpponentHealthbox =
+// El contorno y los iconos de estado son iguales para todos: una hoja de cada uno.
+static const struct SpriteSheet sHojaContornoBarra =
 {
-    gHealthboxSinglesOpponentGfx, 0x1000, TAG_HEALTHBOX_OPPONENT1_TILE
+    (const void *)gBarraSalud_Gfx, TILES_CONTORNO_BARRA * TILE_4BPP, TAG_CONTORNO_BARRA
 };
 
-static const struct CompressedSpriteSheet sSpriteSheets_DoublesPlayerHealthbox[2] =
+static const struct SpriteSheet sHojaIconosEstado =
 {
-    {gHealthboxDoublesPlayerGfx, 0x800, TAG_HEALTHBOX_PLAYER1_TILE},
-    {gHealthboxDoublesPlayerGfx, 0x800, TAG_HEALTHBOX_PLAYER2_TILE}
+    gIconosEstado_Gfx, TILES_ICONOS_ESTADO * TILE_4BPP, TAG_ICONOS_ESTADO
 };
 
-static const struct CompressedSpriteSheet sSpriteSheets_DoublesOpponentHealthbox[2] =
-{
-    {gHealthboxDoublesOpponentGfx, 0x800, TAG_HEALTHBOX_OPPONENT1_TILE},
-    {gHealthboxDoublesOpponentGfx, 0x800, TAG_HEALTHBOX_OPPONENT2_TILE}
-};
-
-// Estas hojas solo sirven para RESERVAR los tiles de la barra de vida, que luego
-// se dibujan dinamicamente; no tienen grafico propio. Estaban a NULL pero se
-// seguian pasando a LoadCompressedSpriteSheet, que descomprimia LZ77 desde la
-// direccion 0 (la BIOS) y volcaba basura a VRAM: de ahi los sprites en negro y
-// los tiles del fondo descuadrados. Se reservan en blanco.
-#define TAMANO_MAXIMO_BARRA_VIDA 0x120
-
-static const u8 sGraficoBarraVidaEnBlanco[TAMANO_MAXIMO_BARRA_VIDA] = {0};
-
-static const struct SpriteSheet sSpriteSheets_HealthBar[NUMERO_COMBATIENTES] =
-{
-    {sGraficoBarraVidaEnBlanco, 0x0100, TAG_HEALTHBAR_PLAYER1_TILE},
-    {sGraficoBarraVidaEnBlanco, 0x0120, TAG_HEALTHBAR_OPPONENT1_TILE},
-    {sGraficoBarraVidaEnBlanco, 0x0100, TAG_HEALTHBAR_PLAYER2_TILE},
-    {sGraficoBarraVidaEnBlanco, 0x0120, TAG_HEALTHBAR_OPPONENT2_TILE}
-};
-
+// Una sola paleta para todo el marcador: contorno, barra, textos e iconos.
+// 1 blanco, 2 verde, 3 amarillo, 4 rojo, 5-9 los fondos de los estados.
 const struct SpritePalette sSpritePalettes_HealthBoxHealthBar[2] =
 {
-    {gBattleInterface_BallStatusBarPal, TAG_HEALTHBOX_PAL},
-    {gBattleInterface_BallDisplayPal, TAG_HEALTHBAR_PAL}
+    {gBarraSalud_Pal, TAG_MARCADOR_PAL},
+    {gBarraSalud_Pal, TAG_MARCADOR_PAL},
 };
 
 const struct CompressedSpriteSheet gSpriteSheet_EnemyShadowsSized =
@@ -405,26 +393,13 @@ void FreeTrainerFrontPicPalette(u16 frontPicId)
 void CargaBarrasSalud(void)
 {
     LoadSpritePalette(&sSpritePalettes_HealthBoxHealthBar[0]);
-    LoadSpritePalette(&sSpritePalettes_HealthBoxHealthBar[1]);
     CategoryIcons_LoadSpritesGfx();
-    if (EsCombateContraEntrenador(gCombate->tipoCombate))
-    {
-        LoadCompressedSpriteSheet(&sSpriteSheets_DoublesPlayerHealthbox[0]);
-        LoadCompressedSpriteSheet(&sSpriteSheets_DoublesPlayerHealthbox[1]);
-        LoadCompressedSpriteSheet(&sSpriteSheets_DoublesOpponentHealthbox[0]);
-        LoadCompressedSpriteSheet(&sSpriteSheets_DoublesOpponentHealthbox[1]);
-        LoadSpriteSheet(&sSpriteSheets_HealthBar[0]);
-        LoadSpriteSheet(&sSpriteSheets_HealthBar[1]);
-        LoadSpriteSheet(&sSpriteSheets_HealthBar[2]);
-        LoadSpriteSheet(&sSpriteSheets_HealthBar[3]);
-    }
-    else
-    {
-        LoadCompressedSpriteSheet(&sSpriteSheet_SinglesPlayerHealthbox);
-        LoadCompressedSpriteSheet(&sSpriteSheet_SinglesOpponentHealthbox);
-        LoadSpriteSheet(&sSpriteSheets_HealthBar[0]);
-        LoadSpriteSheet(&sSpriteSheets_HealthBar[1]);
-    }
+
+    for (u32 combatiente = 0; combatiente < NUMERO_COMBATIENTES; combatiente++)
+        LoadSpriteSheet(&sHojasMarcador[combatiente]);
+
+    LoadSpriteSheet(&sHojaContornoBarra);
+    LoadSpriteSheet(&sHojaIconosEstado);
 }
 
 void IniciaSpritesBatalla(void)
@@ -440,17 +415,17 @@ void IniciaSpritesBatalla(void)
     ClearSpritesBattlerHealthboxAnimData();
     for (u32 combatiente = 0; combatiente < gBattlersCount; combatiente++)
     {
-        gHealthboxSpriteIds[combatiente] = CreateBattlerHealthboxSprites(combatiente);
-        InitBattlerHealthboxCoords(combatiente);
+        gMarcadorSpriteIds[combatiente] = CreaMarcadorCombate(combatiente);
+        ColocaMarcador(combatiente);
         if (GetBattlerSide(combatiente) == LADO_JUGADOR)
         {
-            UpdateHealthboxAttribute(gHealthboxSpriteIds[combatiente], &gPlayerParty[gBattlerPartyIndexes[combatiente]], HEALTHBOX_ALL);
+            ActualizaMarcador(gMarcadorSpriteIds[combatiente], &gPlayerParty[gBattlerPartyIndexes[combatiente]], MARCADOR_TODO);
         }
         else
         {
-            UpdateHealthboxAttribute(gHealthboxSpriteIds[combatiente], &gEnemyParty[gBattlerPartyIndexes[combatiente]], HEALTHBOX_ALL);
+            ActualizaMarcador(gMarcadorSpriteIds[combatiente], &gEnemyParty[gBattlerPartyIndexes[combatiente]], MARCADOR_TODO);
         }
-        SetHealthboxSpriteInvisible(gHealthboxSpriteIds[combatiente]);
+        OcultaMarcador(gMarcadorSpriteIds[combatiente]);
     }
     LoadAndCreateEnemyShadowSprites();
     BufferBattlePartyCurrentOrder();

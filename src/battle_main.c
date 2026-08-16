@@ -202,7 +202,6 @@ void FijaTipoCombate(enum TiposCombate tipo)
 EWRAM_DATA struct BattleResources *gBattleResources = NULL;
 EWRAM_DATA u8 gActionSelectionCursor[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u8 gMoveSelectionCursor[NUMERO_COMBATIENTES] = {0};
-EWRAM_DATA u8 gBattlerStatusSummaryTaskId[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u8 gBattlerInMenuId = 0;
 EWRAM_DATA bool8 gDoingBattleAnim = FALSE;
 EWRAM_DATA struct BattleSpriteData *gBattleSpritesDataPtr = NULL;
@@ -220,7 +219,7 @@ EWRAM_DATA u8 gCategoryIconSpriteId = 0;
 COMMON_DATA void (*gPreBattleCallback1)(void) = NULL;
 COMMON_DATA void (*gBattleMainFunc)(void) = NULL;
 COMMON_DATA u8 gLeveledUpInBattle = 0;
-COMMON_DATA u8 gHealthboxSpriteIds[NUMERO_COMBATIENTES] = {0};
+COMMON_DATA u8 gMarcadorSpriteIds[NUMERO_COMBATIENTES] = {0};
 COMMON_DATA u8 gNumberOfMovesToChoose = 0;
 
 static const struct ParametrosDistorsionFondo sIntroScanlineParams16Bit =
@@ -799,7 +798,7 @@ static void SpriteCB_WildMonShowHealthbox(struct Sprite *sprite)
     if (sprite->animEnded)
     {
         StartHealthboxSlideIn(sprite->sBattler);
-        SetHealthboxSpriteVisible(gHealthboxSpriteIds[sprite->sBattler]);
+        MuestraMarcador(gMarcadorSpriteIds[sprite->sBattler]);
         sprite->callback = SpriteCB_WildMonAnimate;
         StartSpriteAnimIfDifferent(sprite, 0);
         BeginNormalPaletteFade((0x10000 << sprite->sBattler), 0, 10, 0, RGB(8, 8, 8));
@@ -950,7 +949,7 @@ void DoBounceEffect(u8 battler, u8 which, s8 delta, s8 amplitude)
     invisibleSpriteId = CreateInvisibleSpriteWithCallback(SpriteCB_BounceEffect);
     if (which == BOUNCE_HEALTHBOX)
     {
-        bouncerSpriteId = gHealthboxSpriteIds[battler];
+        bouncerSpriteId = gMarcadorSpriteIds[battler];
         gBattleSpritesDataPtr->healthBoxesData[battler].healthboxBounceSpriteId = invisibleSpriteId;
         gBattleSpritesDataPtr->healthBoxesData[battler].healthboxIsBouncing = 1;
         gSprites[invisibleSpriteId].sSinIndex = 128; // 0
@@ -1530,7 +1529,7 @@ static void DoBattleIntro(void)
     case ESTADO_INTRO_BATALLA_TEXTO_COMBATE_ENTRADA_JUGADOR:
         battler = JUGADOR_IZQUIERDA;
         // A hack that makes fast intro work in trainer battles too.
-        if (EsCombateContraEntrenador(gCombate->tipoCombate) && gSprites[gHealthboxSpriteIds[battler ^ BIT_SIDE]].callback == SpriteCallbackDummy)
+        if (EsCombateContraEntrenador(gCombate->tipoCombate) && gSprites[gMarcadorSpriteIds[battler ^ BIT_SIDE]].callback == SpriteCallbackDummy)
         {
             return;
         }

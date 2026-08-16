@@ -12,12 +12,6 @@ enum
 
 enum
 {
-    HEALTH_BAR,
-    EXP_BAR
-};
-
-enum
-{
     HP_BAR_EMPTY,
     HP_BAR_RED,
     HP_BAR_YELLOW,
@@ -25,59 +19,73 @@ enum
     HP_BAR_FULL,
 };
 
-#define TAG_HEALTHBOX_PLAYER1_TILE      0xD6FF
-#define TAG_HEALTHBOX_PLAYER2_TILE      0xD700
-#define TAG_HEALTHBOX_OPPONENT1_TILE    0xD701
-#define TAG_HEALTHBOX_OPPONENT2_TILE    0xD702
+// Una hoja de tiles por combatiente (relleno, porcentaje, nombre y nivel) y una
+// sola paleta para todo el marcador: contorno, textos e iconos de estado.
+#define TAG_MARCADOR_JUGADOR1           0xD704
+#define TAG_MARCADOR_OPONENTE1          0xD705
+#define TAG_MARCADOR_JUGADOR2           0xD706
+#define TAG_MARCADOR_OPONENTE2          0xD707
 
-#define TAG_HEALTHBAR_PLAYER1_TILE      0xD704
-#define TAG_HEALTHBAR_OPPONENT1_TILE    0xD705
-#define TAG_HEALTHBAR_PLAYER2_TILE      0xD706
-#define TAG_HEALTHBAR_OPPONENT2_TILE    0xD707
+#define TAG_MARCADOR_PAL                TAG_MARCADOR_JUGADOR1
 
-#define TAG_HEALTHBOX_PALS_1            0xD709
-#define TAG_HEALTHBOX_PALS_2            0xD70A
-#define TAG_STATUS_SUMMARY_BAR_TILE     0xD70C
 
-#define TAG_STATUS_SUMMARY_BAR_PAL      0xD710
-#define TAG_STATUS_SUMMARY_BALLS_PAL    0xD712
 
-#define TAG_STATUS_SUMMARY_BALLS_TILE   0xD714
-
-#define TAG_HEALTHBAR_PAL               TAG_HEALTHBAR_PLAYER1_TILE
-#define TAG_HEALTHBOX_PAL               TAG_HEALTHBOX_PLAYER1_TILE
-#define TAG_SHADOW_PAL                  TAG_HEALTHBOX_PLAYER1_TILE
+#define TAG_SHADOW_PAL                  TAG_MARCADOR_PAL
 
 #define TAG_SHADOW_TILE                 0xD759
+
+#define TAG_CONTORNO_BARRA              0xD75A
+#define TAG_ICONOS_ESTADO               0xD75B
+
+// Copia temporal de la paleta del marcador, para el parpadeo de subida de nivel.
+#define TAG_MARCADOR_PAL_PARPADEO       0xD75C
+
+// Tiles que reserva cada combatiente para su barra: los diez primeros son el
+// relleno de 80x8 y los cuatro siguientes el porcentaje de 32x8. Todos se
+// dibujan en codigo, la hoja solo reserva el sitio.
+#define TILES_RELLENO_BARRA_VIDA    10
+#define TILES_TEXTO_MARCADOR_HOJA   24   // 96x16
+#define TILES_RESERVADOS_BARRA_VIDA (TILES_RELLENO_BARRA_VIDA + TILES_TEXTO_MARCADOR_HOJA)
+
+// El contorno y los cinco iconos de estado son compartidos por todo el mundo.
+#define TILES_ICONOS_ESTADO 20
+
+// Reparto de los data[] del ancla del marcador. Esta aqui y no en el .c porque
+// pokeball.c tambien la toca para la entrada deslizante, y con el reparto en dos
+// sitios se pisaban los ids de las piezas.
+#define sMarcadorPieza(n)       data[n]   // n = enum PiezaMarcador, 0..2
+#define sMarcadorDeslizVelX     data[3]
+#define sMarcadorDeslizVelY     data[4]
+#define sMarcadorDeslizEspera   data[5]
+#define sMarcadorCombatiente    data[6]
+
+// El contorno es un unico grafico de 96x16 compartido por todos los marcadores.
+#define TILES_CONTORNO_BARRA 24
 
 #define TAG_BATTLE_INTERFACE_SELECTOR   0xD77F
 
 enum
 {
-    HEALTHBOX_ALL,
-    HEALTHBOX_CURRENT_HP,
-    HEALTHBOX_MAX_HP,
-    HEALTHBOX_LEVEL,
-    HEALTHBOX_NICK,
-    HEALTHBOX_HEALTH_BAR,
-    HEALTHBOX_EXP_BAR,
-    HEALTHBOX_STATUS_ICON,
+    MARCADOR_TODO,
+    MARCADOR_VIDA_ACTUAL,
+    MARCADOR_VIDA_MAXIMA,
+    MARCADOR_NIVEL,
+    MARCADOR_NOMBRE,
+    MARCADOR_BARRA,
+    MARCADOR_ESTADO,
 };
 
 u32 WhichBattleCoords(u32 battlerId);
-u8 CreateBattlerHealthboxSprites(u8 battler);
+u8 CreaMarcadorCombate(u8 battler);
 void SetBattleBarStruct(u8 battler, u8 healthboxSpriteId, s32 maxVal, s32 currVal, s32 receivedValue);
-void SetHealthboxSpriteInvisible(u8 healthboxSpriteId);
-void SetHealthboxSpriteVisible(u8 healthboxSpriteId);
-void UpdateOamPriorityInAllHealthboxes(u8 priority, bool32 hideHpBoxes);
-void InitBattlerHealthboxCoords(u8 battler);
-void GetBattlerHealthboxCoords(u8 battler, s16 *x, s16 *y);
-void UpdateHpTextInHealthbox(u32 healthboxSpriteId, u32 maxOrCurrent, s16 currHp, s16 maxHp);
-void SwapHpBarsWithHpText(void);
-u8 CreatePartyStatusSummarySprites(u8 battler, struct HpAndStatus *partyInfo, bool8 skipPlayer, bool8 isBattleStart);
-void Task_HidePartyStatusSummary(u8 taskId);
-void UpdateHealthboxAttribute(u8 healthboxSpriteId, struct Pokemon *mon, u8 elementId);
-s32 MoveBattleBar(u8 battler, u8 healthboxSpriteId, u8 whichBar);
+void OcultaMarcador(u8 healthboxSpriteId);
+void FijaPaletaMarcador(u8 marcadorSpriteId, u8 paletteNum);
+void MuestraMarcador(u8 healthboxSpriteId);
+void FijaPrioridadMarcadores(u8 priority, bool32 hideHpBoxes);
+void ColocaMarcador(u8 battler);
+void CoordenadasMarcador(u8 battler, s16 *x, s16 *y);
+void ActualizaMarcador(u8 healthboxSpriteId, struct Pokemon *mon, u8 elementId);
+s32 MoveBattleBar(u8 battler, u8 healthboxSpriteId);
 u8 GetScaledHPFraction(s16 hp, s16 maxhp, u8 scale);
 u8 GetHPBarLevel(s16 hp, s16 maxhp);
 void CreaMensajeHabilidad(u32 combatiente, u32 habilidad);

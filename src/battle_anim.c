@@ -284,7 +284,7 @@ void LaunchBattleAnimation(u32 animType, u32 animId)
     }
 
     InitPrioritiesForVisibleBattlers();
-    UpdateOamPriorityInAllHealthboxes(0, sAnimHideHpBoxes);
+    FijaPrioridadMarcadores(0, sAnimHideHpBoxes);
     for (i = 0; i < NUMERO_COMBATIENTES; i++)
     {
         if (GetBattlerSide(i) != LADO_JUGADOR)
@@ -782,7 +782,7 @@ static void Cmd_end(void)
     {
         m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, VOLUMEN_MAXIMO);
         InitPrioritiesForVisibleBattlers();
-        UpdateOamPriorityInAllHealthboxes(1, sAnimHideHpBoxes);
+        FijaPrioridadMarcadores(1, sAnimHideHpBoxes);
         sAnimHideHpBoxes = FALSE;
         gAnimScriptActive = FALSE;
     }

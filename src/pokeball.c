@@ -6,6 +6,7 @@
 #include "main.h"
 #include "m4a.h"
 #include "pokeball.h"
+#include "battle_interface.h"
 #include "pokemon.h"
 #include "sound.h"
 #include "sprite.h"
@@ -1449,53 +1450,47 @@ static void SpriteCB_TradePokeballEnd(struct Sprite *sprite)
 #undef sFadePalsHi
 #undef sTimer
 
-#define sSpeedX data[0]
-#define sSpeedY data[1]
-
-#define sDelayTimer data[1]
-
+// El marcador entra deslizandose. Guarda su estado en los data[] que le reserva
+// battle_interface.h y no en data[0..1], que son los ids de sus piezas: al usarlos
+// aqui se perdian, y la barra y el texto acababan dibujados en otros sprites.
 void StartHealthboxSlideIn(u8 battlerId)
 {
-    struct Sprite *healthboxSprite = &gSprites[gHealthboxSpriteIds[battlerId]];
+    struct Sprite *ancla = &gSprites[gMarcadorSpriteIds[battlerId]];
 
-    healthboxSprite->sSpeedX = 5;
-    healthboxSprite->sSpeedY = 0;
-    healthboxSprite->x2 = 0x73;
-    healthboxSprite->y2 = 0;
-    healthboxSprite->callback = SpriteCB_HealthboxSlideIn;
+    ancla->sMarcadorDeslizVelX = 5;
+    ancla->sMarcadorDeslizVelY = 0;
+    ancla->x2 = 0x73;
+    ancla->y2 = 0;
+    ancla->callback = SpriteCB_HealthboxSlideIn;
     if (GetBattlerSide(battlerId) != LADO_JUGADOR)
     {
-        healthboxSprite->sSpeedX = -healthboxSprite->sSpeedX;
-        healthboxSprite->sSpeedY = -healthboxSprite->sSpeedY;
-        healthboxSprite->x2 = -healthboxSprite->x2;
-        healthboxSprite->y2 = -healthboxSprite->y2;
+        ancla->sMarcadorDeslizVelX = -ancla->sMarcadorDeslizVelX;
+        ancla->sMarcadorDeslizVelY = -ancla->sMarcadorDeslizVelY;
+        ancla->x2 = -ancla->x2;
+        ancla->y2 = -ancla->y2;
     }
-    gSprites[healthboxSprite->data[5]].callback(&gSprites[healthboxSprite->data[5]]);
+    // Ya no hace falta empujar a mano la barra: las piezas siguen al ancla solas.
     if (battlerId == JUGADOR_DERECHA)
-        healthboxSprite->callback = SpriteCB_HealthboxSlideInDelayed;
+        ancla->callback = SpriteCB_HealthboxSlideInDelayed;
 }
 
 static void SpriteCB_HealthboxSlideInDelayed(struct Sprite *sprite)
 {
-    sprite->sDelayTimer++;
-    if (sprite->sDelayTimer == 20)
+    sprite->sMarcadorDeslizEspera++;
+    if (sprite->sMarcadorDeslizEspera == 20)
     {
-        sprite->sDelayTimer = 0;
+        sprite->sMarcadorDeslizEspera = 0;
         sprite->callback = SpriteCB_HealthboxSlideIn;
     }
 }
 
 static void SpriteCB_HealthboxSlideIn(struct Sprite *sprite)
 {
-    sprite->x2 -= sprite->sSpeedX;
-    sprite->y2 -= sprite->sSpeedY;
+    sprite->x2 -= sprite->sMarcadorDeslizVelX;
+    sprite->y2 -= sprite->sMarcadorDeslizVelY;
     if (sprite->x2 == 0 && sprite->y2 == 0)
         sprite->callback = SpriteCallbackDummy;
 }
-
-#undef sSpeedX
-#undef sSpeedY
-#undef sDelayTimer
 
 void DoHitAnimHealthboxEffect(u8 battlerId)
 {
@@ -1503,7 +1498,7 @@ void DoHitAnimHealthboxEffect(u8 battlerId)
 
     spriteId = CreateInvisibleSpriteWithCallback(SpriteCB_HitAnimHealthoxEffect);
     gSprites[spriteId].data[0] = 1;
-    gSprites[spriteId].data[1] = gHealthboxSpriteIds[battlerId];
+    gSprites[spriteId].data[1] = gMarcadorSpriteIds[battlerId];
     gSprites[spriteId].callback = SpriteCB_HitAnimHealthoxEffect;
 }
 

@@ -211,7 +211,7 @@ void BtlController_HandleFaintAnimation(u32 battler);
 void BtlController_HandleSuccessBallThrowAnim(u32 battler, u32 target, u32 animId);
 void BtlController_HandleBallThrowAnim(u32 battler, u32 target, u32 animId);
 void BtlController_HandleMoveAnimation(u32 battler);
-void BtlController_HandleHealthBarUpdate(u32 battler, bool32 updateHpText);
+void BtlController_HandleHealthBarUpdate(u32 battler);
 void DoStatusIconUpdate(u32 battler);
 void BtlController_HandleStatusIconUpdate(u32 battler);
 void BtlController_HandleStatusAnimation(u32 battler);

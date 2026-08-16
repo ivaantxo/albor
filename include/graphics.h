@@ -1863,11 +1863,10 @@ extern const u32 gShopMenu_Tilemap[];
 extern const u32 gShopMenu_Pal[];
 extern const u32 gShopMenuMoney_Gfx[];
 
-extern const u32 gBattleInterface_BallStatusBarGfx[];
 extern const u8 gBattleInterface_BallDisplayGfx[];
-extern const u16 gBattleInterface_BallStatusBarPal[];
-extern const u16 gBattleInterface_BallDisplayPal[];
-extern const u8 gHealthboxElementsGfxTable[][32];
+extern const u32 gBarraSalud_Gfx[];
+extern const u16 gBarraSalud_Pal[];
+extern const u8 gIconosEstado_Gfx[];
 
 extern const u16 gNamingScreenMenu_Pal[6][16];
 extern const u32 gNamingScreenMenu_Gfx[];
@@ -1896,13 +1895,6 @@ extern const u32 gConfetti_Pal[];
 extern const u32 gBattleAnimSpriteGfx_Substitute[];
 extern const u32 gBattleAnimSpriteGfx_SubstituteBack[];
 extern const u32 gBattleAnimSpritePal_Substitute[];
-extern const u32 gHealthboxSinglesPlayerGfx[];
-extern const u32 gHealthboxSinglesOpponentGfx[];
-extern const u32 gHealthboxDoublesPlayerGfx[];
-extern const u32 gHealthboxDoublesOpponentGfx[];
-extern const u32 gHealthboxSafariGfx[];
-extern const u16 gBattleInterface_BallStatusBarPal[];
-extern const u16 gBattleInterface_BallDisplayPal[];
 
 extern const u32 gSwapLineGfx[];
 extern const u32 gSwapLinePal[];
@@ -2007,8 +1999,6 @@ extern const u32 gBattleAnimSpriteGfx_HumanoidHand[];
 extern const u32 gBattleAnimSpriteGfx_NoiseLine[];
 extern const u32 gBattleAnimSpritePal_NoiseLine[];
 extern const u32 gBattleAnimSpriteGfx_FairyLockChains[];
-extern const u32 UnusedLevelupAnimationGfx[];
-extern const u32 UnusedLevelupAnimationTilemap[];
 extern const u32 gBattleAnimSpriteGfx_YellowUnk[];
 extern const u32 gBattleAnimSpriteGfx_RedFist[];
 extern const u32 gBattleAnimSpriteGfx_SlamHit[];

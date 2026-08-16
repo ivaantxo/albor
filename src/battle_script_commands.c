@@ -6990,7 +6990,7 @@ static void Cmd_various(void)
             mon = &gPlayerParty[gBattlerPartyIndexes[battler]];
         else
             mon = &gEnemyParty[gBattlerPartyIndexes[battler]];
-        UpdateHealthboxAttribute(gHealthboxSpriteIds[battler], mon, HEALTHBOX_NICK);
+        ActualizaMarcador(gMarcadorSpriteIds[battler], mon, MARCADOR_NOMBRE);
         break;
     }
     case VARIOUS_JUMP_IF_NOT_BERRY:
@@ -7140,7 +7140,7 @@ static void Cmd_various(void)
             gHitMarker |= HITMARKER_FAINTED(battler);
             gBattleMons[battler].hp = 0;
             SetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_HP, &gBattleMons[battler].hp);
-            SetHealthboxSpriteInvisible(gHealthboxSpriteIds[battler]);
+            OcultaMarcador(gMarcadorSpriteIds[battler]);
             FaintClearSetData(battler);
         }
         else if (GetBattlerSide(battler) == LADO_JUGADOR)
@@ -7321,7 +7321,7 @@ static void Cmd_various(void)
         // Update healthbox.
         else
         {
-            UpdateHealthboxAttribute(gHealthboxSpriteIds[battler], mon, HEALTHBOX_ALL);
+            ActualizaMarcador(gMarcadorSpriteIds[battler], mon, MARCADOR_TODO);
         }
         gBattlescriptCurrInstr = cmd->nextInstr;
         return;
