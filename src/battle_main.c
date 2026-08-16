@@ -342,6 +342,14 @@ static void (*const sTurnActionsFuncsTable[])(void) =
         [B_ACTION_FINISHED] = HandleAction_ActionFinished,
         [B_ACTION_NOTHING_FAINTED] = HandleAction_NothingIsFainted,
         [B_ACTION_THROW_BALL] = HandleAction_ThrowBall,
+        // Sin estas tres entradas la tabla dejaba huecos a NULL: elegir la accion
+        // de depuracion llamaba a NULL, o sea saltaba a la direccion 0, y la BIOS
+        // reiniciaba la consola (volvia a la pantalla de inicio). Ademas
+        // B_ACTION_SUBIO_NIVEL (10) caia fuera del array. No tienen accion propia
+        // en el turno: simplemente se dan por terminadas.
+        [B_ACTION_CANCEL_PARTNER] = HandleAction_ActionFinished,
+        [B_ACTION_DEBUG] = HandleAction_ActionFinished,
+        [B_ACTION_SUBIO_NIVEL] = HandleAction_ActionFinished,
 };
 
 static void (*const sEndTurnFuncsTable[])(void) =
@@ -1080,6 +1088,17 @@ static void BattleMainCB1(void)
 {
     u32 battler;
 
+    {
+        // Sonda general: cada cambio de fase del combate. La direccion se traduce
+        // a nombre con la tabla de simbolos del ELF.
+        static void *sUltimaFase = NULL;
+        if (gBattleMainFunc != sUltimaFase)
+        {
+            sUltimaFase = gBattleMainFunc;
+            LOG("FASE combate", (u32)gBattleMainFunc, 0);
+        }
+    }
+
     gBattleMainFunc();
     for (battler = 0; battler < gBattlersCount; battler++)
         gBattlerControllerFuncs[battler](battler);
@@ -1356,15 +1375,6 @@ static void DoBattleIntro(void)
 {
     s32 i;
     u32 battler;
-    static u32 sUltimoEstado = 0xFFFF;
-
-    if (gCombate->estadoIntro != sUltimoEstado)
-    {
-        sUltimoEstado = gCombate->estadoIntro;
-        LOG("intro estado/tipoCombate", gCombate->estadoIntro, gCombate->tipoCombate);
-        LOG("   gBattlersCount", gBattlersCount, 0);
-    }
-
     switch (gCombate->estadoIntro)
     {
     case ESTADO_INTRO_BATALLA_OBTEN_DATOS_POKEMON:
@@ -1510,6 +1520,7 @@ static void DoBattleIntro(void)
         battler = OPONENTE_IZQUIERDA;
         BtlController_EmitIntroTrainerBallThrow(battler, BUFFER_A);
         MarcaCombatienteOcupado(battler);
+        LOG("ENVIO 0b) buffer/ocupado", gBattleResources->bufferA[battler][0], EstaCombatienteOcupado(battler));
         gCombate->estadoIntro++;
         break;
     case ESTADO_INTRO_BATALLA_ESPERA_TEXTO_COMBATE_SALVAJE:
@@ -1523,30 +1534,25 @@ static void DoBattleIntro(void)
         {
             return;
         }
+        // Aqui solo se imprime el texto. EscribeTextoCombate marca al combatiente
+        // como ocupado y le pone Controller_WaitForString como controlador, asi que
+        // emitir aqui la orden de lanzar la Pokeball la dejaba en el buffer sin que
+        // PlayerBufferRunCommand llegara a despacharla: el jugador no sacaba a su
+        // Pokemon. Se emite en el estado siguiente, ya con el texto terminado, que
+        // es como lo hace el camino del rival.
         EscribeTextoEnviarPokemon(battler);
-        BtlController_EmitIntroTrainerBallThrow(battler, BUFFER_A);
-        MarcaCombatienteOcupado(battler);
         gCombate->estadoIntro++;
         break;
     case ESTADO_INTRO_BATALLA_ESPERA_TEXTO_COMBATE_ENTRADA_JUGADOR:
         battler = JUGADOR_IZQUIERDA;
         if (!EstaCombatienteOcupado(battler))
+        {
+            BtlController_EmitIntroTrainerBallThrow(battler, BUFFER_A);
+            MarcaCombatienteOcupado(battler);
             gCombate->estadoIntro++;
+        }
         break;
     case ESTADO_INTRO_BATALLA_PREPARA_VARS:
-        {
-            static u32 sUltimaMascara = 0xFFFF;
-            u32 mascara = 0, k;
-            for (k = 0; k < gBattlersCount; k++)
-                if (EstaCombatienteOcupado(k))
-                    mascara |= (1 << k);
-            if (mascara != sUltimaMascara)
-            {
-                sUltimaMascara = mascara;
-                // bit0 = jugador ocupado, bit1 = oponente ocupado
-                LOG("PREPARA_VARS ocupados", mascara, 0);
-            }
-        }
         if (!HayAlgunCombatienteOcupado())
         {
             for (battler = 0; battler < gBattlersCount; battler++)
@@ -1568,20 +1574,6 @@ static void DoBattleIntro(void)
 static void TryDoEventsBeforeFirstTurn(void)
 {
     s32 i, j;
-
-    {
-        static u32 sUltimo = 0xFFFF;
-        u32 k, ocupados = 0;
-        for (k = 0; k < gBattlersCount; k++)
-            if (EstaCombatienteOcupado(k))
-                ocupados |= (1 << k);
-        // a = estado de eventos previos al primer turno, b = mascara de ocupados
-        if (((gCombate->eventsBeforeFirstTurnState << 8) | ocupados) != sUltimo)
-        {
-            sUltimo = (gCombate->eventsBeforeFirstTurnState << 8) | ocupados;
-            LOG("EventosPrimerTurno estado/ocupados", gCombate->eventsBeforeFirstTurnState, ocupados);
-        }
-    }
 
     if (HayAlgunCombatienteOcupado())
         return;
@@ -1834,28 +1826,22 @@ static void HazCalculosIA(u32 combatiente)
 {
     if (!CombatienteEsIA(combatiente))
         return;
-    LOG("IA 1 entra combatiente", combatiente, 0);
     u32 isAIRisky = AI_THINKING_STRUCT->aiFlags[combatiente] & AI_FLAG_RISKY; // Risky AI switches aggressively even mid battle
 
     // Do AI score computations here so we can use them in AI_TrySwitchOrUseItem
-    LOG("IA 2", combatiente, 0);
     AI_DATA->aiCalcInProgress = TRUE;
 
     // Setup battler data
     sBattler_AI = combatiente;
-    LOG("IA 3", combatiente, 0);
     BattleAI_SetupAIData(15, sBattler_AI);
 
     // Setup switching data
     AI_DATA->mostSuitableMonId[combatiente] = GetMostSuitableMonToSwitchInto(combatiente, isAIRisky);
-    LOG("IA 4", combatiente, 0);
     if (ShouldSwitch(combatiente))
         AI_DATA->shouldSwitch |= (1u << combatiente);
 
     // Do scoring
-    LOG("IA 5", combatiente, 0);
     gCombate->IA_Eleccion[combatiente] = BattleAI_ChooseMoveOrAction();
-    LOG("IA 6 sale", combatiente, 0);
     AI_DATA->aiCalcInProgress = FALSE;
 }
 
@@ -1863,29 +1849,12 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
 {
     struct DatosMovimiento moveInfo;
 
-    {
-        static u32 sUltimo = 0xFFFFFFFF;
-        u32 k, resumen = 0;
-        // 4 bits por combatiente: los 2 bajos el estado de accion, el 3o si esta ocupado
-        for (k = 0; k < gBattlersCount && k < 4; k++)
-            resumen |= ((gEstadoAccion[k] & 3) | (EstaCombatienteOcupado(k) ? 4 : 0)) << (k * 4);
-        if (resumen != sUltimo)
-        {
-            sUltimo = resumen;
-            LOG("SeleccionAccion resumen", resumen, gEstadoAccion[JUGADOR_IZQUIERDA]);
-        }
-    }
-
     for (u32 combatiente = JUGADOR_IZQUIERDA; combatiente < gBattlersCount; combatiente++)
     {
         switch (gEstadoAccion[combatiente])
         {
         case ANTES_ACCION:
-            LOG("ACC a) entra combatiente", combatiente, 0);
             HazCalculosIA(combatiente);
-            LOG("ACC b) ausentes/status2", gCombate->absentBattlerFlags, gBattleMons[combatiente].status2);
-            LOG("ACC b2) hp/maxhp", gBattleMons[combatiente].hp, gBattleMons[combatiente].maxHP);
-            LOG("ACC b3) especie/nivel", gBattleMons[combatiente].species, gBattleMons[combatiente].level);
             *(gCombate->monToSwitchIntoId + combatiente) = PARTY_SIZE;
             if ((combatiente & BIT_FLANK) == FLANCO_IZQUIERDO || gCombate->absentBattlerFlags & (1u << ALIADO(combatiente)) || gEstadoAccion[ALIADO(combatiente)] == EJECUTA_ACCION)
             {
@@ -1904,10 +1873,8 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                     else
                     {
                         gCombate->itemPartyIndex[combatiente] = PARTY_SIZE;
-                        LOG("ACC c) va a pedir accion", combatiente, 0);
                         BtlController_EmitChooseAction(combatiente, BUFFER_A, gAccionElegida[combatiente]);
                         MarcaCombatienteOcupado(combatiente);
-                        LOG("ACC d) accion pedida", combatiente, 0);
                         gEstadoAccion[combatiente] = PROCESA_ACCION;
                     }
                 }
@@ -1916,6 +1883,7 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
         case PROCESA_ACCION:
             if (!EstaCombatienteOcupado(combatiente))
             {
+                LOG("ACCION cruda buffer/combatiente", gBattleResources->bufferB[combatiente][1], combatiente);
                 gAccionElegida[combatiente] = gBattleResources->bufferB[combatiente][1];
                 switch (gBattleResources->bufferB[combatiente][1])
                 {
@@ -2019,25 +1987,21 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                 case B_ACTION_USE_MOVE:
                     switch (gBattleResources->bufferB[combatiente][1])
                     {
-                    case 3:
-                    case 4:
-                    case 5:
-                    case 6:
-                    case 7:
-                    case 8:
-                    case 9:
-                        gAccionElegida[combatiente] = gBattleResources->bufferB[combatiente][1];
-                        return;
-                    case 15:
+                    case SELECCION_CANCELADA:
+                        // Volvio atras desde la pantalla de movimientos.
+                        gEstadoAccion[combatiente] = ANTES_ACCION;
+                        break;
+                    case SELECCION_CAMBIO:
                         gAccionElegida[combatiente] = B_ACTION_SWITCH;
                         UpdateBattlerPartyOrdersOnSwitch(combatiente);
                         return;
+                    case SELECCION_DATOS:
+                        // Pantalla informativa: no elige nada, se vuelve a preguntar.
+                        gEstadoAccion[combatiente] = ANTES_ACCION;
+                        break;
+                    case SELECCION_MOVIMIENTO:
                     default:
-                        if ((gBattleResources->bufferB[combatiente][2] | (gBattleResources->bufferB[combatiente][3] << 8)) == 0xFFFF)
-                        {
-                            gEstadoAccion[combatiente] = ANTES_ACCION;
-                        }
-                        else if (TrySetCantSelectMoveBattleScript(combatiente))
+                        if (TrySetCantSelectMoveBattleScript(combatiente))
                         {
                             gEstadoAccion[combatiente] = EJECUTA_ACCION;
                             *(gCombate->selectionScriptFinished + combatiente) = FALSE;
@@ -2378,6 +2342,22 @@ static void SetActionsAndBattlersTurnOrder(void)
             }
         }
     }
+
+    // Enlace que faltaba. Estas inicializaciones y el salto a la siguiente fase
+    // vivian en pokeemerald dentro de CheckFocusPunch_ClearVarsBeforeTurnStarts,
+    // que aqui no existe: al eliminarla, la funcion terminaba sin fijar
+    // gBattleMainFunc y el combate se quedaba recalculando el orden del turno
+    // indefinidamente, sin mensaje ni avance.
+    TryClearRageAndFuryCutter();
+    gCurrentTurnActionNumber = 0;
+    gCurrentActionFuncId = gActionsByTurnOrder[0];
+    // Se reinicia por turno: solo se ponia a TRUE, con lo que los efectos previos
+    // al movimiento dejaban de ejecutarse a partir del primer turno.
+    gCombate->effectsBeforeUsingMoveDone = FALSE;
+    gEstadoMultiuso = 0;
+    gElegidorTextoMultiple = 0;
+    gBattleResources->battleScriptsStack->size = 0;
+    gBattleMainFunc = RunTurnActionsFunctions;
 }
 
 static void TurnValuesCleanUp(bool8 var0)
@@ -2470,7 +2450,34 @@ static void RunTurnActionsFunctions(void)
         gCombate->effectsBeforeUsingMoveDone = TRUE;
     }
 
+    {
+        static u32 sUltimaAccion = 0xFFFFFFFF;
+        if (gAccionElegida[JUGADOR_IZQUIERDA] != sUltimaAccion)
+        {
+            sUltimaAccion = gAccionElegida[JUGADOR_IZQUIERDA];
+            LOG("ACCION jugador cambia a", gAccionElegida[JUGADOR_IZQUIERDA], 0);
+        }
+    }
+    {
+        static u32 sUltimo = 0xFFFFFFFF;
+        u32 v = (gCurrentTurnActionNumber << 8) | gCurrentActionFuncId;
+        if (v != sUltimo)
+        {
+            sUltimo = v;
+            // a = numero de accion del turno, b = accion que se va a ejecutar
+            LOG("TURNO accion/funcId", gCurrentTurnActionNumber, gCurrentActionFuncId);
+            LOG("   orden combatientes", gBattlerByTurnOrder[0], gBattlerByTurnOrder[1]);
+            LOG("   acciones elegidas", gAccionElegida[0], gAccionElegida[1]);
+        }
+    }
+
     gCombate->savedTurnActionNumber = gCurrentTurnActionNumber;
+
+    // Red de seguridad: una entrada vacia significaria saltar a la direccion 0.
+    if (gCurrentActionFuncId >= ARRAY_COUNT(sTurnActionsFuncsTable)
+     || sTurnActionsFuncsTable[gCurrentActionFuncId] == NULL)
+        gCurrentActionFuncId = B_ACTION_FINISHED;
+
     sTurnActionsFuncsTable[gCurrentActionFuncId]();
 
     if (gCurrentTurnActionNumber >= gBattlersCount) // everyone did their actions, turn finished

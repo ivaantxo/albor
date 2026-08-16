@@ -150,6 +150,10 @@ void SetControllerToPlayer(u32 battler)
 
 static void PlayerBufferExecCompleted(u32 combatiente)
 {
+    // Se registra que funcion de controlador estaba activa al liberar: eso
+    // identifica al llamante sin tener que instrumentar 33 puntos de llamada.
+    LOG("LIBERA comando/func", gBattleResources->bufferA[combatiente][0],
+        (u32)gBattlerControllerFuncs[combatiente]);
     gBattlerControllerFuncs[combatiente] = PlayerBufferRunCommand;
     DesmarcaCombatienteOcupado(combatiente);
 }
@@ -158,6 +162,15 @@ static void PlayerBufferRunCommand(u32 combatiente)
 {
     if (EstaCombatienteOcupado(combatiente))
     {
+        {
+            static u32 sUltimoComando = 0xFFFF;
+            u32 comando = gBattleResources->bufferA[combatiente][0];
+            if (comando != sUltimoComando)
+            {
+                sUltimoComando = comando;
+                LOG("CMD jugador comando/combatiente", comando, combatiente);
+            }
+        }
         if (gBattleResources->bufferA[combatiente][0] < ARRAY_COUNT(sPlayerBufferCommands))
             sPlayerBufferCommands[gBattleResources->bufferA[combatiente][0]](combatiente);
         else
@@ -420,7 +433,7 @@ void HandleInputChooseTarget(u32 battler)
     {
         PlaySE(SE_SELECT);
         gSprites[gBattlerSpriteIds[gPosicionCursorSiNo]].callback = SpriteCB_HideAsMoveTarget; // REVISAR
-        BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_EXEC_SCRIPT, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8)); // REVISAR
+        BtlController_EmitTwoReturnValues(battler, BUFFER_B, SELECCION_MOVIMIENTO, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
         EndBounceEffect(gPosicionCursorSiNo, BOUNCE_HEALTHBOX); // REVISAR
         TryHideLastUsedBall();
         PlayerBufferExecCompleted(battler);
@@ -588,7 +601,7 @@ void HandleInputShowEntireFieldTargets(u32 battler)
     {
         PlaySE(SE_SELECT);
         HideAllTargets();
-        BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_EXEC_SCRIPT, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8)); // REVISAR
+        BtlController_EmitTwoReturnValues(battler, BUFFER_B, SELECCION_MOVIMIENTO, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
         PlayerBufferExecCompleted(battler);
         if (sIconTypeId[0] != 0xFF)
         {
@@ -628,7 +641,7 @@ void HandleInputShowTargets(u32 battler)
     {
         PlaySE(SE_SELECT);
         HideShownTargets(battler);
-        BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_EXEC_SCRIPT, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
+        BtlController_EmitTwoReturnValues(battler, BUFFER_B, SELECCION_MOVIMIENTO, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
         TryHideLastUsedBall();
         PlayerBufferExecCompleted(battler);
         if (sIconTypeId[0] != 0xFF)
@@ -737,7 +750,7 @@ void HandleInputChooseMove(u32 battler)
         {
         case 0:
         default:
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_EXEC_SCRIPT, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8)); // REVISAR
+            BtlController_EmitTwoReturnValues(battler, BUFFER_B, SELECCION_MOVIMIENTO, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
             TryHideLastUsedBall();
             PlayerBufferExecCompleted(battler);
             if (sIconTypeId[0] != 0xFF)
@@ -785,7 +798,7 @@ void HandleInputChooseMove(u32 battler)
     else if ((JOY_NEW(B_BUTTON)))
     {
         PlaySE(SE_SELECT);
-        BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_EXEC_SCRIPT, 0xFFFF);
+        BtlController_EmitTwoReturnValues(battler, BUFFER_B, SELECCION_CANCELADA, 0);
         PlayerBufferExecCompleted(battler);
         LoadBattleMenuWindowGfx();
         MoveSelectionDestroyCursor();
@@ -1632,7 +1645,6 @@ static void HandleChooseActionAfterDma3(u32 battler)
 
 static void PlayerHandleChooseAction(u32 battler)
 {
-    LOG("MENU 1) entra PlayerHandleChooseAction", battler, 0);
     gBattlerControllerFuncs[battler] = HandleChooseActionAfterDma3;
 
     TryRestoreLastUsedBall();

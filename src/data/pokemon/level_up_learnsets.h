@@ -5,6 +5,7 @@ static const struct LevelUpMove sNoneLevelUpLearnset[] = {
     LEVEL_UP_END};
 
 static const struct LevelUpMove sBulbasaurLevelUpLearnset[] = {
+    LEVEL_UP_MOVE(1, MOVE_PISOTON),
     LEVEL_UP_END};
 
 static const struct LevelUpMove sIvysaurLevelUpLearnset[] = {

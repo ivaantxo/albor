@@ -983,6 +983,7 @@ static bool8 ShouldDoSlideInAnim(void)
 
 void StartSendOutAnim(u32 battler, bool32 dontClearSubstituteBit, bool32 doSlideIn)
 {
+    LOG("ENVIO 4) StartSendOutAnim battler", battler, 0);
     u16 species;
     u32 side = GetBattlerSide(battler);
     struct Pokemon *party = GetBattlerParty(battler);
@@ -996,7 +997,6 @@ void StartSendOutAnim(u32 battler, bool32 dontClearSubstituteBit, bool32 doSlide
         BattleLoadMonSpriteGfx(&party[gBattlerPartyIndexes[battler]], battler);
     SetMultiuseSpriteTemplateToPokemon(species, battler);
 
-    LOG("LoadMonSprite battler/especie", battler, species);
     gBattlerSpriteIds[battler] = CreateSprite(&gMultiuseSpriteTemplate,
                                         GetBattlerSpriteCoord(battler, BATTLER_COORD_X_2),
                                         GetBattlerSpriteDefault_Y(battler),
@@ -1688,6 +1688,7 @@ bool32 TwoOpponentIntroMons(u32 battler) // Double battle with both opponent pok
 
 void BtlController_HandleIntroTrainerBallThrow(u32 battler, u16 tagTrainerPal, const u32 *trainerPal, s16 framesToWait, void (*controllerCallback)(u32 battler))
 {
+    LOG("ENVIO 1) BallThrow battler/espera", battler, framesToWait);
     u8 paletteNum, taskId;
     u32 side = GetBattlerSide(battler);
 
@@ -1733,6 +1734,7 @@ void BtlController_HandleIntroTrainerBallThrow(u32 battler, u16 tagTrainerPal, c
     }
 
     taskId = CreateTask(Task_StartSendOutAnim, 5);
+    LOG("ENVIO 2) tarea creada id", taskId, battler);
     gTasks[taskId].tBattlerId = battler;
     gTasks[taskId].tFramesToWait = framesToWait;
     SetWordTaskArg(taskId, tControllerFunc_1, (uint32_t)(controllerCallback));
@@ -1774,6 +1776,8 @@ static void Task_StartSendOutAnim(u8 taskId)
     {
         u32 battlerPartner;
         u32 battler = gTasks[taskId].tBattlerId;
+
+        LOG("ENVIO 3) tarea dispara battler", battler, 0);
 
         if (TwoMonsAtSendOut(battler))
         {

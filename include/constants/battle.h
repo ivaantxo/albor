@@ -43,6 +43,21 @@ enum LadosCombate
     NUMERO_LADOS
 };
 
+// Lo que devuelve un controlador en bufferB[1] al cerrarse una pantalla de
+// seleccion. Es un espacio de valores PROPIO: no son acciones de turno
+// (B_ACTION_*), aunque viajen por el mismo byte en otro momento del turno.
+// Antes se reutilizaban valores de B_ACTION_* como marcadores, y como
+// B_ACTION_EXEC_SCRIPT vale 3, "he elegido movimiento" acababa asignandose
+// como accion "ejecutar guion" y el Pokemon no atacaba nunca.
+enum ResultadoSeleccion
+{
+    SELECCION_MOVIMIENTO,   // datos = posicion del movimiento | (objetivo << 8)
+    SELECCION_CAMBIO,       // datos = indice del Pokemon elegido
+    SELECCION_HUIDA,        // huir o rendirse
+    SELECCION_DATOS,        // pantalla informativa: no cambia nada
+    SELECCION_CANCELADA,    // se volvio atras sin elegir
+};
+
 enum FlancosCombate
 {
     FLANCO_IZQUIERDO,

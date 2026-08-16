@@ -1,4 +1,5 @@
 #include "global.h"
+#include "depuracion_mgba.h"
 #include "malloc.h"
 #include "battle.h"
 #include "bg.h"
@@ -813,6 +814,8 @@ u8 CreateBattlerHealthboxSprites(u8 battlerId)
     }
 
     healthbarSpriteId = CreateSpriteAtEnd(&sHealthbarSpriteTemplates[battlerId], 140, 60, 0);
+    LOG("HEALTHBOX ids izq/der", healthboxLeftSpriteId, healthboxRightSpriteId);
+    LOG("HEALTHBAR id", healthbarSpriteId, 0);
     healthBarSpritePtr = &gSprites[healthbarSpriteId];
     SetSubspriteTables(healthBarSpritePtr, &sHealthBar_SubspriteTables[GetBattlerSide(battlerId)]);
     healthBarSpritePtr->subspriteMode = SUBSPRITES_IGNORE_PRIORITY;

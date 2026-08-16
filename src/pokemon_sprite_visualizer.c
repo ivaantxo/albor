@@ -1,5 +1,6 @@
 //Credits: Gamer2020, AsparagusEduardo, TheXaman, ShinyDragonHunter
 #include "global.h"
+#include "sombra_pokemon.h"
 #include "battle.h"
 #include "battle_anim.h"
 #include "battle_gfx_sfx_util.h"
@@ -44,10 +45,6 @@
 #include "constants/songs.h"
 
 extern const struct BattleBackground sBattleTerrainTable[];
-extern const struct CompressedSpriteSheet gSpriteSheet_EnemyShadow;
-extern const struct CompressedSpriteSheet gSpriteSheet_EnemyShadowsSized;
-extern const struct SpriteTemplate gSpriteTemplate_EnemyShadow;
-extern const struct SpritePalette sSpritePalettes_HealthBoxHealthBar[2];
 extern const struct UCoords8 sBattlerCoords[NUMERO_MODOS][NUMERO_COMBATIENTES] ;
 static const u16 sBgColor[] = {RGB_WHITE};
 
@@ -763,28 +760,17 @@ static u8 GetBattlerSpriteFinal_YCustom(u16 species, s8 offset_picCoords, s8 off
     return y;
 }
 
-#define tFrontSpriteId  data[0]
-#define tSpriteSide     data[1]
-#define tShadowXOffset  data[2]
-#define tShadowYOffset  data[3]
+// data[0..2] los usa el modulo comun de sombras; aqui solo los propios.
+#define tShadowXOffset  data[3]
+#define tShadowYOffset  data[4]
 
-#define SPRITE_SIDE_LEFT    0
-#define SPRITE_SIDE_RIGHT   1
 
 
 static void SpriteCB_EnemyShadowCustom(struct Sprite *shadowSprite)
 {
-    u8 frontSpriteId = shadowSprite->tFrontSpriteId;
-    struct Sprite *battlerSprite = &gSprites[frontSpriteId];
+    struct Sprite *dueno = &gSprites[shadowSprite->sSombraDueno];
 
-    s8 xOffset = 0, yOffset = 0;
-    xOffset = shadowSprite->tShadowXOffset + (shadowSprite->tSpriteSide == SPRITE_SIDE_LEFT ? -16 : 16);
-    yOffset = shadowSprite->tShadowYOffset + 16;
-
-    shadowSprite->y = battlerSprite->y + yOffset;
-
-    shadowSprite->x = battlerSprite->x + xOffset;
-    shadowSprite->x2 = battlerSprite->x2;
+    ColocaSombraPokemon(shadowSprite, dueno, shadowSprite->tShadowXOffset, shadowSprite->tShadowYOffset);
 }
 
 static void SpriteCB_Follower(struct Sprite *sprite)
@@ -817,38 +803,39 @@ static void SpriteCB_Follower(struct Sprite *sprite)
 }
 static void LoadAndCreateEnemyShadowSpriteCustom(struct PokemonSpriteVisualizer *data, u16 species)
 {
-    bool8 invisible = FALSE;
-    species = SanitizeSpeciesId(species);
-
-    invisible = gSpeciesInfo[species].suppressEnemyShadow;
-
-    LoadCompressedSpriteSheet(&gSpriteSheet_EnemyShadowsSized);
-    LoadSpritePalette(&sSpritePalettes_HealthBoxHealthBar[0]);
-    u8 x = sBattlerCoords[0][1].x;
-    u8 y = sBattlerCoords[0][1].y;
+    bool8 invisible;
     s8 xOffset = data->shadowSettings.overrideX;
     s8 yOffset = data->shadowSettings.overrideY;
-    u8 size = data->shadowSettings.overrideSize;
+    u8 tamano = data->shadowSettings.overrideSize;
+    u8 x = sBattlerCoords[0][1].x;
+    u8 y = sBattlerCoords[0][1].y;
+    u32 mitad;
 
-    data->frontShadowSpriteIdPrimary = CreateSprite(&gSpriteTemplate_EnemyShadow, x, y, 200);
-    gSprites[data->frontShadowSpriteIdPrimary].tFrontSpriteId = data->frontspriteId;
-    gSprites[data->frontShadowSpriteIdPrimary].tSpriteSide = SPRITE_SIDE_LEFT;
-    gSprites[data->frontShadowSpriteIdPrimary].tShadowXOffset = (u8)xOffset;
-    gSprites[data->frontShadowSpriteIdPrimary].tShadowYOffset = (u8)yOffset;
-    gSprites[data->frontShadowSpriteIdPrimary].callback = SpriteCB_EnemyShadowCustom;
-    gSprites[data->frontShadowSpriteIdPrimary].oam.priority = 0;
-    gSprites[data->frontShadowSpriteIdPrimary].oam.tileNum += 8 * size;
-    gSprites[data->frontShadowSpriteIdPrimary].invisible = invisible;
+    species = SanitizeSpeciesId(species);
+    invisible = gSpeciesInfo[species].suppressEnemyShadow;
 
-    data->frontShadowSpriteIdSecondary = CreateSprite(&gSpriteTemplate_EnemyShadow, x, y, 200);
-    gSprites[data->frontShadowSpriteIdSecondary].tFrontSpriteId = data->frontspriteId;
-    gSprites[data->frontShadowSpriteIdSecondary].tSpriteSide = SPRITE_SIDE_RIGHT;
-    gSprites[data->frontShadowSpriteIdSecondary].tShadowXOffset = (u8)xOffset;
-    gSprites[data->frontShadowSpriteIdSecondary].tShadowYOffset = (u8)yOffset;
-    gSprites[data->frontShadowSpriteIdSecondary].callback = SpriteCB_EnemyShadowCustom;
-    gSprites[data->frontShadowSpriteIdSecondary].oam.priority = 0;
-    gSprites[data->frontShadowSpriteIdSecondary].oam.tileNum += (8 * size) + 4;
-    gSprites[data->frontShadowSpriteIdSecondary].invisible = invisible;
+    CargaGraficosSombraPokemon();
+
+    data->frontShadowSpriteIdPrimary = CreaMitadSombraPokemon(x, y, 200, SOMBRA_IZQUIERDA, tamano);
+    data->frontShadowSpriteIdSecondary = CreaMitadSombraPokemon(x, y, 200, SOMBRA_DERECHA, tamano);
+
+    for (mitad = 0; mitad < 2; mitad++)
+    {
+        u8 spriteId = (mitad == 0) ? data->frontShadowSpriteIdPrimary
+                                   : data->frontShadowSpriteIdSecondary;
+        struct Sprite *sombra;
+
+        if (spriteId >= MAX_SPRITES)
+            continue;
+
+        sombra = &gSprites[spriteId];
+        sombra->sSombraDueno = data->frontspriteId;
+        sombra->tShadowXOffset = xOffset;
+        sombra->tShadowYOffset = yOffset;
+        sombra->callback = SpriteCB_EnemyShadowCustom;
+        sombra->oam.priority = 0;
+        sombra->invisible = invisible;
+    }
 }
 
 //Battle background functions

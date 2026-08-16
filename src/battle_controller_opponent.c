@@ -288,20 +288,6 @@ static void Intro_TryShinyAnimShowHealthbox(u32 battler)
 
 static void TryShinyAnimAfterMonAnim(u32 battler)
 {
-    {
-        static u32 sUltimo = 0xFFFF;
-        u32 estado = (gSprites[gBattlerSpriteIds[battler]].x2 == 0)
-                   | ((gSprites[gBattlerSpriteIds[battler]].callback == SpriteCallbackDummy) << 1)
-                   | (gBattleSpritesDataPtr->healthBoxesData[battler].triedShinyMonAnim << 2)
-                   | (gBattleSpritesDataPtr->healthBoxesData[battler].finishedShinyMonAnim << 3);
-        if (estado != sUltimo)
-        {
-            sUltimo = estado;
-            // bit0: x2==0   bit1: callback listo   bit2: shiny intentada   bit3: shiny terminada
-            LOG("shinyAnim bits/x2", estado, gSprites[gBattlerSpriteIds[battler]].x2);
-        }
-    }
-
     if (gSprites[gBattlerSpriteIds[battler]].x2 == 0
         && !gBattleSpritesDataPtr->healthBoxesData[battler].triedShinyMonAnim
         && !gBattleSpritesDataPtr->healthBoxesData[battler].finishedShinyMonAnim)
@@ -375,7 +361,6 @@ static void SwitchIn_TryShinyAnim(u32 battler)
 
 static void OpponentBufferExecCompleted(u32 combatiente)
 {
-    LOG("OpponentExecCompleted battler", combatiente, 0);
     gBattlerControllerFuncs[combatiente] = OpponentBufferRunCommand;
     DesmarcaCombatienteOcupado(combatiente);
 }
@@ -442,7 +427,7 @@ static void OpponentHandleChooseMove(u32 battler)
         if (gAbsentBattlerFlags & (1u << gBattlerTarget))
             gBattlerTarget = JUGADOR_DERECHA;
     }
-    BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_EXEC_SCRIPT, (chosenMoveId) | (gBattlerTarget << 8));
+    BtlController_EmitTwoReturnValues(battler, BUFFER_B, SELECCION_MOVIMIENTO, (chosenMoveId) | (gBattlerTarget << 8));
     OpponentBufferExecCompleted(battler);
 }
 

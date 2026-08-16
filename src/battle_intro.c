@@ -134,7 +134,6 @@ void HandleIntroSlide(u8 terrain)
             funcion = BattleIntroSlide3;
             terrain = BATTLE_TERRAIN_PLAIN;
         }
-        LOG("HandleIntroSlide terreno", terrain, 0);
         taskId = CreateTask(funcion, 0);
     }
 
