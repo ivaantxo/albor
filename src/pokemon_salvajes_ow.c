@@ -355,9 +355,13 @@ void ActualizaPokemonSalvajesOw(void)
 // Compara coordenadas contra nuestras propias ranuras en vez de preguntarle al
 // mapa quien hay en tal casilla: aquella consulta exige que coincida la altura, y
 // bastaba con que el Pokemon estuviera en otra para que el combate no empezara.
+// Si hay varios pegados al jugador a la vez, pelea uno al azar y no siempre el
+// de la primera ranura, que es lo que salia al recorrerlas en orden.
 static struct SalvajeOw *SalvajeContiguoAlJugador(void)
 {
+    struct SalvajeOw *elegido = NULL;
     s16 jugadorX, jugadorY;
+    u32 candidatos = 0;
 
     PlayerGetDestCoords(&jugadorX, &jugadorY);
 
@@ -369,11 +373,15 @@ static struct SalvajeOw *SalvajeContiguoAlJugador(void)
         if (objEvent == NULL)
             continue;
 
-        if (abs(objEvent->currentCoords.x - jugadorX) + abs(objEvent->currentCoords.y - jugadorY) == 1)
-            return salvaje;
+        if (abs(objEvent->currentCoords.x - jugadorX) + abs(objEvent->currentCoords.y - jugadorY) != 1)
+            continue;
+
+        candidatos++;
+        if (Random() % candidatos == 0)
+            elegido = salvaje;
     }
 
-    return NULL;
+    return elegido;
 }
 
 static bool32 EmpiezaCombateCon(struct SalvajeOw *salvaje)
