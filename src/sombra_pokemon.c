@@ -1,55 +1,185 @@
 #include "global.h"
 #include "sombra_pokemon.h"
-#include "decompress.h"
+#include "gpu_regs.h"
 #include "palette.h"
 #include "sprite.h"
+#include "constants/event_objects.h"
+#include "constants/rgb.h"
 
-// La hoja guarda 4 tamanos consecutivos; cada uno ocupa 8 tiles, repartidos en
-// 4 para la mitad izquierda y 4 para la derecha.
-#define TILES_POR_MITAD  4
-#define TILES_POR_TAMANO (TILES_POR_MITAD * 2)
+// Etiqueta de la unica paleta que gastan todas las sombras.
+#define TAG_SOMBRA_PAL 0xD759
 
-// Separacion de cada mitad respecto al centro del Pokemon, y bajada hasta los pies.
-#define SEPARACION_MITAD 16
-#define BAJADA_A_LOS_PIES 16
+// Negra entera. El indice 0 no se usa -en un sprite siempre es transparente-,
+// asi que cualquier pixel opaco del Pokemon cae en un negro.
+static const u16 sPaletaSombra[16] =
+{
+    RGB_BLACK, RGB_BLACK, RGB_BLACK, RGB_BLACK,
+    RGB_BLACK, RGB_BLACK, RGB_BLACK, RGB_BLACK,
+    RGB_BLACK, RGB_BLACK, RGB_BLACK, RGB_BLACK,
+    RGB_BLACK, RGB_BLACK, RGB_BLACK, RGB_BLACK,
+};
+
+static const struct SpritePalette sPaletaSombraPokemon =
+{
+    sPaletaSombra, TAG_SOMBRA_PAL
+};
+
+// CreateSprite desreferencia template->images aunque el sprite no vaya a usar
+// tiles propios: con NULL leia de la direccion 0 y luego copiaba basura a VRAM en
+// cada fotograma, que es lo que machacaba la barra de salud. Un tile vacio de
+// verdad cuesta 32 bytes y quita el problema de raiz.
+static const u8 sTileVacioSombra[TILE_4BPP] = {0};
+
+static const struct SpriteFrameImage sImagenesSombra[] =
+{
+    { sTileVacioSombra, sizeof(sTileVacioSombra) },
+};
+
+// Prioridad 2, la misma que los Pokemon de combate, para quedar por encima del
+// terreno. Que se dibuje por DETRAS del bicho lo decide la subprioridad, que es
+// alta. La caja es doble porque al inclinarla los pixeles se salen del recuadro
+// original y el hardware los recortaria.
+static const struct OamData sOamSombra =
+{
+    .y = 0,
+    .affineMode = ST_OAM_AFFINE_DOUBLE,
+    .objMode = ST_OAM_OBJ_BLEND,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(64x64),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(64x64),
+    .tileNum = 0,
+    .priority = 2,
+    .paletteNum = 0,
+    .affineParam = 0,
+};
+
+static const struct SpriteTemplate sPlantillaSombra =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = TAG_SOMBRA_PAL,
+    .oam = &sOamSombra,
+    .anims = gDummySpriteAnimTable,
+    .images = sImagenesSombra,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
 
 void CargaGraficosSombraPokemon(void)
 {
-    LoadCompressedSpriteSheet(&gSpriteSheet_EnemyShadowsSized);
-    // La sombra no tiene paleta propia: reutiliza la del marcador de vida.
-    LoadSpritePalette(&sSpritePalettes_HealthBoxHealthBar[0]);
+    LoadSpritePalette(&sPaletaSombraPokemon);
 }
 
-void FijaTamanoSombraPokemon(struct Sprite *sombra, u32 tamano)
+// La matriz que usa el hardware es la INVERSA de la transformacion que se ve: el
+// GBA recorre pixeles de pantalla y pregunta de que pixel del sprite vienen.
+//
+// Como es la inversa, el signo va al reves de lo que dice la intuicion: para que
+// la silueta se tumbe hacia la DERECHA por arriba hay que muestrear mas a la
+// izquierda segun se sube, o sea con el termino en positivo.
+//
+//   pa = 256      pb = +s*256/k
+//   pc = 0        pd = 256*256/k
+static const u16 sAplastadoPorTamano[] =
 {
-    sombra->oam.tileNum = sombra->sSombraTileBase + (TILES_POR_TAMANO * tamano);
+    [SHADOW_SIZE_S]  = SOMBRA_APLASTADO_S,
+    [SHADOW_SIZE_M]  = SOMBRA_APLASTADO_M,
+    [SHADOW_SIZE_L]  = SOMBRA_APLASTADO_L,
+    [SHADOW_SIZE_XL] = SOMBRA_APLASTADO_XL,
+};
+
+void FijaAplastadoSombra(struct Sprite *sombra, u32 tamano)
+{
+    s32 aplastado;
+
+    if (tamano >= ARRAY_COUNT(sAplastadoPorTamano))
+        tamano = SHADOW_SIZE_M;
+
+    aplastado = sAplastadoPorTamano[tamano];
+    if (aplastado < 1)
+        aplastado = 1;
+
+    SetOamMatrix(sombra->sSombraMatriz,
+                 256,
+                 (SOMBRA_INCLINACION * 256) / aplastado,
+                 0,
+                 (256 * 256) / aplastado);
 }
 
-// Crea una de las dos mitades. Nace invisible: cada sistema decide cuando y bajo
-// que condiciones mostrarla. Devuelve MAX_SPRITES si no hay hueco.
-u8 CreaMitadSombraPokemon(s16 x, s16 y, u8 subprioridad, u32 lado, u32 tamano)
+// Un sprite en modo semitransparente se mezcla siempre con lo que tenga detras,
+// sin importar los bits de primera capa de BLDCNT. Lo que si hace falta es decir
+// cuales son las segundas capas -los fondos- y en que proporcion.
+//
+// Como el duplicado es negro no aporta color: el resultado es el fondo atenuado,
+// y por eso la proporcion de la primera capa va a cero y solo cuenta la del fondo.
+void PreparaMezclaSombraPokemon(void)
 {
-    u8 spriteId = CreateSprite(&gSpriteTemplate_EnemyShadow, x, y, subprioridad);
+    SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_BG_ALL | BLDCNT_TGT2_BD | BLDCNT_EFFECT_BLEND);
+    SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, SOMBRA_MEZCLA_FONDO));
+}
+
+void TerminaMezclaSombraPokemon(void)
+{
+    SetGpuReg(REG_OFFSET_BLDCNT, 0);
+    SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+}
+
+u8 CreaSombraPokemon(u8 spriteIdDueno, u8 subprioridad)
+{
+    u8 spriteId;
+    u32 matriz;
     struct Sprite *sombra;
 
-    if (spriteId >= MAX_SPRITES)
+    if (spriteIdDueno >= MAX_SPRITES)
         return MAX_SPRITES;
 
+    matriz = AllocOamMatrix();
+    if (matriz == 0xFF)
+        return MAX_SPRITES;
+
+    spriteId = CreateSprite(&sPlantillaSombra, 0, 0, subprioridad);
+    if (spriteId >= MAX_SPRITES)
+    {
+        FreeOamMatrix(matriz);
+        return MAX_SPRITES;
+    }
+
     sombra = &gSprites[spriteId];
-    sombra->sSombraLado = lado;
-    sombra->sSombraTileBase = sombra->oam.tileNum
-                            + (lado == SOMBRA_DERECHA ? TILES_POR_MITAD : 0);
-    FijaTamanoSombraPokemon(sombra, tamano);
+
+    // Sin animacion de ninguna clase. Los tiles los reapunta ColocaSombraPokemon
+    // a los del dueno y la matriz la fijamos aqui: si el sistema de animacion
+    // corriera, sobreescribiria las dos cosas en cada fotograma.
+    sombra->animPaused = TRUE;
+    sombra->affineAnimPaused = TRUE;
+
+    sombra->oam.matrixNum = matriz;
+    sombra->sSombraMatriz = matriz;
+    sombra->sSombraDueno = spriteIdDueno;
     sombra->invisible = TRUE;
+    FijaAplastadoSombra(sombra, SHADOW_SIZE_M);
 
     return spriteId;
 }
 
 void ColocaSombraPokemon(struct Sprite *sombra, const struct Sprite *dueno, s32 desplazamientoX, s32 desplazamientoY)
 {
-    s32 separacion = (sombra->sSombraLado == SOMBRA_IZQUIERDA) ? -SEPARACION_MITAD : SEPARACION_MITAD;
+    // Apunta a los tiles del dueno en cada fotograma, no solo al crearse: el
+    // sprite del Pokemon cambia de fotograma al animarse, y asi la silueta lo
+    // sigue sin que haya que enterarse de nada.
+    sombra->oam.tileNum = dueno->oam.tileNum;
 
-    sombra->x  = dueno->x + desplazamientoX + separacion;
+    sombra->x = dueno->x + desplazamientoX + SOMBRA_CORRIMIENTO;
+    sombra->y = dueno->y + desplazamientoY;
     sombra->x2 = dueno->x2;
-    sombra->y  = dueno->y + desplazamientoY + BAJADA_A_LOS_PIES;
+    sombra->y2 = dueno->y2;
+}
+
+void DestruyeSombraPokemon(u8 spriteIdSombra)
+{
+    if (spriteIdSombra >= MAX_SPRITES || !gSprites[spriteIdSombra].inUse)
+        return;
+
+    FreeOamMatrix(gSprites[spriteIdSombra].sSombraMatriz);
+    DestroySprite(&gSprites[spriteIdSombra]);
 }

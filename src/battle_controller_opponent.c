@@ -112,8 +112,27 @@ static void OpponentBufferRunCommand(u32 combatiente)
 {
     if (EstaCombatienteOcupado(combatiente))
     {
+        {
+            // El lado del rival no tenia sonda, y es justo el que estaba actuando
+            // cuando el juego salta a la pantalla de inicio.
+            static u32 sUltimoComando = 0xFFFF;
+            u32 comando = gBattleResources->bufferA[combatiente][0];
+            if (comando != sUltimoComando)
+            {
+                sUltimoComando = comando;
+                LOG("CMD rival comando/combatiente", comando, combatiente);
+            }
+        }
         if (gBattleResources->bufferA[combatiente][0] < ARRAY_COUNT(sOpponentBufferCommands))
+        {
+            if (sOpponentBufferCommands[gBattleResources->bufferA[combatiente][0]] == NULL)
+            {
+                LOG("NULO: comando de rival", gBattleResources->bufferA[combatiente][0], combatiente);
+                OpponentBufferExecCompleted(combatiente);
+                return;
+            }
             sOpponentBufferCommands[gBattleResources->bufferA[combatiente][0]](combatiente);
+        }
         else
             OpponentBufferExecCompleted(combatiente);
     }
@@ -192,10 +211,7 @@ static void Intro_WaitForShinyAnimAndHealthbox(u32 battler)
 static void TrySetBattlerShadowSpriteCallback(u32 battler)
 {
     if (gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary].callback == SpriteCallbackDummy)
-    {
-        if (gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdSecondary].callback == SpriteCallbackDummy)
-            SetBattlerShadowSpriteCallback(battler, GetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES));
-    }
+        SetBattlerShadowSpriteCallback(battler, GetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES));
 }
 
 static void Intro_TryShinyAnimShowHealthbox(u32 battler)
@@ -416,7 +432,20 @@ static void OpponentHandleChooseMove(u32 battler)
 {
     u32 chosenMoveId = gCombate->IA_Eleccion[battler];
     struct DatosMovimiento *moveInfo = (struct DatosMovimiento *)(&gBattleResources->bufferA[battler][4]);
-    u32 chosenMove = moveInfo->movimiento[chosenMoveId];
+    u32 chosenMove;
+
+    // La eleccion de la IA no siempre es un indice de movimiento: hay estados que
+    // significan "no pienso atacar" y valen mas de 3 (AIExpectsToFaintPlayer ya lo
+    // comprueba por su cuenta). Aqui se indexaba sin mirar, leyendo fuera de la
+    // estructura y sacando un numero de movimiento inventado.
+    if (chosenMoveId >= MAXIMO_MOVIMIENTOS_POKEMON)
+    {
+        LOG("IA eleccion fuera de rango. combatiente/valor", battler, chosenMoveId);
+        chosenMoveId = 0;
+    }
+
+    chosenMove = moveInfo->movimiento[chosenMoveId];
+    LOG("IA elige movimiento/id", chosenMove, chosenMoveId);
     gBattlerTarget = gCombate->IA_Objetivo[battler];
 
     if (GetBattlerMoveTargetType(battler, chosenMove) & (MOVE_TARGET_USER_OR_SELECTED | MOVE_TARGET_USER))

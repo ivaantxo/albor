@@ -1,6 +1,7 @@
 //Credits: Gamer2020, AsparagusEduardo, TheXaman, ShinyDragonHunter
 #include "global.h"
 #include "sombra_pokemon.h"
+#include "depuracion_mgba.h"
 #include "battle.h"
 #include "battle_anim.h"
 #include "battle_gfx_sfx_util.h"
@@ -384,13 +385,14 @@ const u8 gBattleBackgroundTerrainNames[][26] =
     [BATTLE_TERRAIN_BUILDING]   = _("NORMAL - BUILDING        "),
     [BATTLE_TERRAIN_PLAIN]      = _("NORMAL - PLAIN           "),
 };
-const u8 sShadowSizeLabels[][4] =
+static const u8 sEtiquetasTamanoSombra[][4] =
 {
-    [SHADOW_SIZE_S]                 = _(" S"),
-    [SHADOW_SIZE_M]                 = _(" M"),
-    [SHADOW_SIZE_L]                 = _(" L"),
-    [SHADOW_SIZE_XL]                = _(" XL"),
+    [SHADOW_SIZE_S]  = _(" S"),
+    [SHADOW_SIZE_M]  = _(" M"),
+    [SHADOW_SIZE_L]  = _(" L"),
+    [SHADOW_SIZE_XL] = _(" XL"),
 };
+
 //Function declarations
 static void PrintDigitChars(struct PokemonSpriteVisualizer *data);
 static void SetUpModifyArrows(struct PokemonSpriteVisualizer *data);
@@ -732,11 +734,12 @@ static void ResetShadowSettings(struct PokemonSpriteVisualizer *data, u16 specie
 {
     data->shadowSettings.definedX = gSpeciesInfo[species].enemyShadowXOffset;
     data->shadowSettings.definedY = gSpeciesInfo[species].enemyShadowYOffset;
+
     data->shadowSettings.definedSize = gSpeciesInfo[species].enemyShadowSize;
+    data->shadowSettings.overrideSize = data->shadowSettings.definedSize;
 
     data->shadowSettings.overrideX = data->shadowSettings.definedX;
     data->shadowSettings.overrideY = data->shadowSettings.definedY;
-    data->shadowSettings.overrideSize = data->shadowSettings.definedSize;
 }
 
 static u8 GetBattlerSpriteFinal_YCustom(u16 species, s8 offset_picCoords, s8 offset_elevation)
@@ -768,9 +771,13 @@ static u8 GetBattlerSpriteFinal_YCustom(u16 species, s8 offset_picCoords, s8 off
 
 static void SpriteCB_EnemyShadowCustom(struct Sprite *shadowSprite)
 {
-    struct Sprite *dueno = &gSprites[shadowSprite->sSombraDueno];
+    ColocaSombraPokemon(shadowSprite, &gSprites[shadowSprite->sSombraDueno],
+                        shadowSprite->tShadowXOffset, shadowSprite->tShadowYOffset);
 
-    ColocaSombraPokemon(shadowSprite, dueno, shadowSprite->tShadowXOffset, shadowSprite->tShadowYOffset);
+    // Igual que en combate: la mezcla se reafirma cada fotograma, porque el resto
+    // de la pantalla reescribe BLDCNT por su cuenta y sin segunda capa el
+    // duplicado dejaria de mezclarse y saldria negro macizo.
+    PreparaMezclaSombraPokemon();
 }
 
 static void SpriteCB_Follower(struct Sprite *sprite)
@@ -803,39 +810,23 @@ static void SpriteCB_Follower(struct Sprite *sprite)
 }
 static void LoadAndCreateEnemyShadowSpriteCustom(struct PokemonSpriteVisualizer *data, u16 species)
 {
-    bool8 invisible;
-    s8 xOffset = data->shadowSettings.overrideX;
-    s8 yOffset = data->shadowSettings.overrideY;
-    u8 tamano = data->shadowSettings.overrideSize;
-    u8 x = sBattlerCoords[0][1].x;
-    u8 y = sBattlerCoords[0][1].y;
-    u32 mitad;
+    struct Sprite *sombra;
 
     species = SanitizeSpeciesId(species);
-    invisible = gSpeciesInfo[species].suppressEnemyShadow;
 
     CargaGraficosSombraPokemon();
+    PreparaMezclaSombraPokemon();
 
-    data->frontShadowSpriteIdPrimary = CreaMitadSombraPokemon(x, y, 200, SOMBRA_IZQUIERDA, tamano);
-    data->frontShadowSpriteIdSecondary = CreaMitadSombraPokemon(x, y, 200, SOMBRA_DERECHA, tamano);
+    data->frontShadowSpriteIdPrimary = CreaSombraPokemon(data->frontspriteId, 200);
+    if (data->frontShadowSpriteIdPrimary >= MAX_SPRITES)
+        return;
 
-    for (mitad = 0; mitad < 2; mitad++)
-    {
-        u8 spriteId = (mitad == 0) ? data->frontShadowSpriteIdPrimary
-                                   : data->frontShadowSpriteIdSecondary;
-        struct Sprite *sombra;
-
-        if (spriteId >= MAX_SPRITES)
-            continue;
-
-        sombra = &gSprites[spriteId];
-        sombra->sSombraDueno = data->frontspriteId;
-        sombra->tShadowXOffset = xOffset;
-        sombra->tShadowYOffset = yOffset;
-        sombra->callback = SpriteCB_EnemyShadowCustom;
-        sombra->oam.priority = 0;
-        sombra->invisible = invisible;
-    }
+    sombra = &gSprites[data->frontShadowSpriteIdPrimary];
+    sombra->tShadowXOffset = data->shadowSettings.overrideX;
+    sombra->tShadowYOffset = data->shadowSettings.overrideY;
+    sombra->callback = SpriteCB_EnemyShadowCustom;
+    sombra->invisible = gSpeciesInfo[species].suppressEnemyShadow;
+    FijaAplastadoSombra(sombra, data->shadowSettings.overrideSize);
 }
 
 //Battle background functions
@@ -1062,6 +1053,25 @@ static void UpdateYPosOffsetText(struct PokemonSpriteVisualizer *data)
     ConvertIntToDecimalStringN(&text[1], ABS(val), STR_CONV_MODE_LEFT_ALIGN, 2);    \
 }
 
+// Vuelca el ajuste en una sola linea y con la forma exacta del macro de
+// species_info, para poder copiarla tal cual. En dos lineas habia que emparejar
+// registros consecutivos, y bastaba con que se colara otro log entre medias para
+// que el emparejamiento dejara de ser fiable.
+static void VuelcaAjusteSombra(struct PokemonSpriteVisualizer *data)
+{
+    static const char *const nombreTamano[] = { "S", "M", "L", "XL" };
+    u32 tamano = data->shadowSettings.overrideSize;
+
+    if (tamano >= ARRAY_COUNT(nombreTamano))
+        tamano = SHADOW_SIZE_M;
+
+    LogMgba("SOMBRA especie %d -> SOMBRA(%d, %d, %s)",
+            (int)data->currentmonId,
+            (int)data->shadowSettings.overrideX,
+            (int)data->shadowSettings.overrideY,
+            nombreTamano[tamano]);
+}
+
 static void UpdateShadowSettingsText(struct PokemonSpriteVisualizer *data)
 {
     u8 text[16];
@@ -1093,12 +1103,14 @@ static void UpdateShadowSettingsText(struct PokemonSpriteVisualizer *data)
     ITOA_SIGNED(text, data->shadowSettings.overrideY);
     AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, text, x_new_val, y, 0, NULL);
 
-    // Shadow Size
+    // Aplastado (el "tamano" de la especie)
     y = 24;
     AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, textConst, 0, y, 0, NULL);
-    AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, sShadowSizeLabels[data->shadowSettings.definedSize], x_const_val, y, 0, NULL);
+    AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, sEtiquetasTamanoSombra[data->shadowSettings.definedSize], x_const_val, y, 0, NULL);
     AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, textNew, x_new_text, y, 0, NULL);
-    AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, sShadowSizeLabels[data->shadowSettings.overrideSize], x_new_val, y, 0, NULL);
+    AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, sEtiquetasTamanoSombra[data->shadowSettings.overrideSize], x_new_val, y, 0, NULL);
+
+    VuelcaAjusteSombra(data);
 }
 
 static void ResetPokemonSpriteVisualizerWindows(void)
@@ -1476,18 +1488,34 @@ static void UpdateShadowSettingsValue(u8 taskId, bool8 increment)
     struct PokemonSpriteVisualizer *data = GetStructPtr(taskId);
     u8 option = data->submenuYpos[2];
     s8 *offset;
-    s16 *leftTarget, *rightTarget;
+    s16 *destino;
+
+    // Tercera fila: el aplastado. No cambia el tamano de la silueta -esa siempre
+    // es la del Pokemon-, solo cuanto se tumba.
+    if (option == 2)
+    {
+        u32 tamano = data->shadowSettings.overrideSize;
+
+        if (increment)
+            tamano = (tamano >= SHADOW_SIZE_XL) ? SHADOW_SIZE_S : tamano + 1;
+        else
+            tamano = (tamano == SHADOW_SIZE_S) ? SHADOW_SIZE_XL : tamano - 1;
+
+        data->shadowSettings.overrideSize = tamano;
+        FijaAplastadoSombra(&gSprites[data->frontShadowSpriteIdPrimary], tamano);
+        UpdateShadowSettingsText(data);
+        return;
+    }
+
     if (option == 0)
     {
         offset = &data->shadowSettings.overrideX;
-        leftTarget = &gSprites[data->frontShadowSpriteIdPrimary].tShadowXOffset;
-        rightTarget = &gSprites[data->frontShadowSpriteIdSecondary].tShadowXOffset;
+        destino = &gSprites[data->frontShadowSpriteIdPrimary].tShadowXOffset;
     }
     else
     {
         offset = &data->shadowSettings.overrideY;
-        leftTarget = &gSprites[data->frontShadowSpriteIdPrimary].tShadowYOffset;
-        rightTarget = &gSprites[data->frontShadowSpriteIdSecondary].tShadowYOffset;
+        destino = &gSprites[data->frontShadowSpriteIdPrimary].tShadowYOffset;
     }
 
     *offset = *offset + (increment ? 1 : -1);
@@ -1497,46 +1525,9 @@ static void UpdateShadowSettingsValue(u8 taskId, bool8 increment)
         *offset = 20;
     UpdateShadowSettingsText(data);
 
-    *leftTarget = (s16)*offset;
-    *rightTarget = (s16)*offset;
+    *destino = (s16)*offset;
 }
 
-static void UpdateShadowSizeValue(u8 taskId, bool8 increment)
-{
-    struct PokemonSpriteVisualizer *data = GetStructPtr(taskId);
-    s8 update;
-
-    if (increment)
-    {
-        if (data->shadowSettings.overrideSize == SHADOW_SIZE_XL)
-        {
-            update = -data->shadowSettings.overrideSize;
-            data->shadowSettings.overrideSize = SHADOW_SIZE_S;
-        }
-        else
-        {
-            update = 1;
-            data->shadowSettings.overrideSize += 1;
-        }
-    }
-    else
-    {
-        if (data->shadowSettings.overrideSize == SHADOW_SIZE_S)
-        {
-            update = SHADOW_SIZE_XL;
-            data->shadowSettings.overrideSize = update;
-        }
-        else
-        {
-            update = -1;
-            data->shadowSettings.overrideSize -= 1;
-        }
-    }
-
-    UpdateShadowSettingsText(data);
-    gSprites[data->frontShadowSpriteIdPrimary].oam.tileNum += (8 * update);
-    gSprites[data->frontShadowSpriteIdSecondary].oam.tileNum += (8 * update);
-}
 
 #define READ_PTR_FROM_TASK(taskId, dataId)                      \
     (void *)(                                                   \
@@ -1817,17 +1808,11 @@ static void HandleInput_PokemonSpriteVisualizer(u8 taskId)
         }
         else if (JOY_NEW(DPAD_LEFT))
         {
-            if (data->submenuYpos[2] < 2)
-                UpdateShadowSettingsValue(taskId, FALSE);
-            else
-                UpdateShadowSizeValue(taskId, FALSE);
+            UpdateShadowSettingsValue(taskId, FALSE);
         }
         else if (JOY_NEW(DPAD_RIGHT))
         {
-            if (data->submenuYpos[2] < 2)
-                UpdateShadowSettingsValue(taskId, TRUE);
-            else
-                UpdateShadowSizeValue(taskId, TRUE);
+            UpdateShadowSettingsValue(taskId, TRUE);
         }
     }
 }
@@ -1847,8 +1832,7 @@ static void ReloadPokemonSprites(struct PokemonSpriteVisualizer *data)
     DestroySprite(&gSprites[data->backspriteId]);
     DestroySprite(&gSprites[data->followerspriteId]);
 
-    DestroySprite(&gSprites[data->frontShadowSpriteIdPrimary]);
-    DestroySprite(&gSprites[data->frontShadowSpriteIdSecondary]);
+    DestruyeSombraPokemon(data->frontShadowSpriteIdPrimary);
 
     FreeMonSpritesGfx();
     ResetSpriteData();

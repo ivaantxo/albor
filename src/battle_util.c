@@ -4627,7 +4627,7 @@ void ClearVariousBattlerFlags(u32 battler)
 void HandleAction_RunBattleScript(void) // identical to RunBattleScriptCommands
 {
     if (!HayAlgunCombatienteOcupado())
-        gBattleScriptingCommandsTable[*gBattlescriptCurrInstr]();
+        EjecutaComandoGuionCombate();
 }
 
 u32 SetRandomTarget(u32 battlerAtk)

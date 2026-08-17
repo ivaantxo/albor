@@ -30,9 +30,7 @@ enum
 
 
 
-#define TAG_SHADOW_PAL                  TAG_MARCADOR_PAL
 
-#define TAG_SHADOW_TILE                 0xD759
 
 #define TAG_CONTORNO_BARRA              0xD75A
 #define TAG_ICONOS_ESTADO               0xD75B

@@ -810,6 +810,7 @@ void ActualizaMarcador(u8 healthboxSpriteId, struct Pokemon *mon, u8 elementId)
 
     if (elementId == MARCADOR_ESTADO || elementId == MARCADOR_TODO)
         DibujaIconoEstado(healthboxSpriteId);
+
 }
 
 // Interior de la barra: 80 pixeles = 10 tiles de 8x8. En base 10 para que el

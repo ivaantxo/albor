@@ -49,10 +49,11 @@ struct PokemonShadowSettings
 {
     s8 definedX;
     s8 definedY;
-    u8 definedSize;
 
     s8 overrideX;
     s8 overrideY;
+
+    u8 definedSize;
     u8 overrideSize;
 };
 
@@ -67,7 +68,6 @@ struct PokemonSpriteVisualizer
     bool8 isShiny;
     bool8 isFemale;
     u8 frontShadowSpriteIdPrimary;
-    u8 frontShadowSpriteIdSecondary;
     struct PokemonShadowSettings shadowSettings;
     struct PokemonSpriteVisualizerModifyArrows modifyArrows;
     struct PokemonSpriteVisualizerOptionArrows optionArrows;

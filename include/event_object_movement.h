@@ -111,6 +111,7 @@ void UpdateFollowingPokemon(void);
 void RemoveFollowingPokemon(void);
 struct ObjectEvent *GetFollowerObject(void);
 void FijaPersonalidadObjetoEvento(u32 objectEventId, u32 personalidad);
+void RecargaPaletaObjetoPokemon(u32 objectEventId);
 u32 ObtenPersonalidadObjetoEvento(struct ObjectEvent *objEvent);
 u8 GetDirectionToFace(s16, s16, s16, s16);
 void UpdateLightSprite(struct Sprite *);

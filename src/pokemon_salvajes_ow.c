@@ -4,8 +4,12 @@
 #include "event_object_movement.h"
 #include "field_player_avatar.h"
 #include "fieldmap.h"
+#include "m4a.h"
 #include "pokemon.h"
 #include "random.h"
+#include "depuracion_mgba.h"
+#include "sound.h"
+#include "constants/songs.h"
 #include "sprite.h"
 #include "script.h"
 #include "wild_encounter.h"
@@ -18,9 +22,12 @@
 #define MAXIMO_SALVAJES_OW 3
 
 // Todos los plazos se cuentan en pasos del jugador, no en fotogramas.
-#define PASOS_ENTRE_APARICIONES  2
-#define PASOS_DE_VIDA            8
-#define PASOS_TRAS_DESAPARICION  2
+//
+// La separacion entre apariciones no es solo ritmo de juego: cada una suena con
+// su grito, y demasiado juntas se pisaban unas a otras.
+#define PASOS_ENTRE_APARICIONES  6
+#define PASOS_DE_VIDA           24
+#define PASOS_TRAS_DESAPARICION  6
 
 // A que distancia del jugador se busca sitio para uno nuevo, y a que distancia
 // minima: uno que naciera en una casilla contigua provocaria un combate al paso
@@ -30,6 +37,10 @@
 
 // Ids locales reservados. El 254 y el 255 ya son el follower y el jugador.
 #define LOCALID_SALVAJE_PRIMERO 251
+
+#define PANEO_IZQUIERDA         (-64)
+#define PANEO_CENTRO            0
+#define PANEO_DERECHA           64
 
 struct SalvajeOw
 {
@@ -207,6 +218,22 @@ static bool32 BuscaSitioDeAparicion(u32 terreno, s16 *destinoX, s16 *destinoY)
     return encontradas != 0;
 }
 
+// Paneo segun a que lado del jugador ha salido. El registro va de 0 (todo a la
+// izquierda) a 255 (todo a la derecha), con 128 en el centro.
+static s8 PaneoDesdeJugador(s16 x)
+{
+    s16 jugadorX, jugadorY;
+
+    PlayerGetDestCoords(&jugadorX, &jugadorY);
+
+    if (x < jugadorX)
+        return PANEO_IZQUIERDA;
+    if (x > jugadorX)
+        return PANEO_DERECHA;
+
+    return PANEO_CENTRO;
+}
+
 // Personalidad propia, con sus tiradas de variocolor. Se decide aqui y no en el
 // combate para que el sprite del mapa ya ensene el tono definitivo.
 static u32 GeneraPersonalidadSalvaje(void)
@@ -253,25 +280,39 @@ static void IntentaCrearSalvaje(void)
     u8 nivel, objectEventId;
     u32 personalidad;
     u16 graphicsId;
+    bool32 esVariocolor;
     s16 x, y;
 
     if (salvaje == NULL)
+    {
+        LOG("SALVAJE sin ranura libre", 0, 0);
         return;
+    }
     // Cada uno se lleva una paleta entera para tener su tono propio, asi que el
     // numero que puede haber a la vez lo limita el de paletas libres, no solo
     // MAXIMO_SALVAJES_OW. Sin hueco no aparece: antes que quitarle los colores a
     // otro sprite, es preferible que no salga.
     if (PaletasSpriteLibres() == 0)
+    {
+        LOG("SALVAJE sin paleta libre", 0, 0);
         return;
+    }
     if (!EligeEspecieYNivel(terreno, &especie, &nivel))
+    {
+        LOG("SALVAJE sin tabla de especies", 0, 0);
         return;
+    }
     if (!BuscaSitioDeAparicion(terreno, &x, &y))
+    {
+        LOG("SALVAJE sin sitio en el terreno", 0, 0);
         return;
+    }
 
     personalidad = GeneraPersonalidadSalvaje();
+    esVariocolor = VALOR_SHINY(personalidad) < SHINY_ODDS;
 
     graphicsId = especie + OBJ_EVENT_MON;
-    if (VALOR_SHINY(personalidad) < SHINY_ODDS)
+    if (esVariocolor)
         graphicsId += OBJ_EVENT_MON_SHINY;
     if (GetGenderFromSpeciesAndPersonality(especie, personalidad) == MON_FEMALE)
         graphicsId += OBJ_EVENT_MON_FEMALE;
@@ -281,9 +322,15 @@ static void IntentaCrearSalvaje(void)
                         x, y, gObjectEvents[gPlayerAvatar.objectEventId].currentElevation);
 
     if (objectEventId >= OBJECT_EVENTS_COUNT)
-        return; // No quedaban objetos de mapa libres.
+    {
+        LOG("SALVAJE sin objeto de mapa libre", 0, 0);
+        return;
+    }
 
     FijaPersonalidadObjetoEvento(objectEventId, personalidad);
+    // La paleta se tino al crear el sprite, cuando la personalidad aun no estaba
+    // puesta. Hay que rehacerla para que el tono del mapa sea el del combate.
+    RecargaPaletaObjetoPokemon(objectEventId);
 
     salvaje->activo = TRUE;
     salvaje->objectEventId = objectEventId;
@@ -292,6 +339,22 @@ static void IntentaCrearSalvaje(void)
     salvaje->especie = especie;
     salvaje->nivel = nivel;
     salvaje->personalidad = personalidad;
+
+    {
+        u32 vivos = 0;
+        for (u32 i = 0; i < MAXIMO_SALVAJES_OW; i++)
+            if (sSalvajes[i].activo)
+                vivos++;
+        LOG("SALVAJE creado. vivos / paletas libres", vivos, PaletasSpriteLibres());
+    }
+
+    // Se anuncia con su grito al aparecer, para que se note que hay algo ahi
+    // aunque quede fuera de pantalla. El paneo sale de si ha salido a izquierda o
+    // derecha del jugador, y va en prioridad ambiental para que no pise a nada.
+    PlayCry_NormalNoDucking(especie, PaneoDesdeJugador(x), VOLUMEN_BAJO, CRY_PRIORITY_AMBIENT);
+
+    if (esVariocolor)
+        PlaySE(SE_SHINY);
 }
 
 // Un movimiento por paso del jugador: o mira hacia un lado, o da un paso hacia
@@ -389,9 +452,11 @@ static bool32 EmpiezaCombateCon(struct SalvajeOw *salvaje)
     struct ObjectEvent *objEvent = ObjetoDeSalvaje(salvaje);
     s16 jugadorX, jugadorY;
 
-    // Que se miren a la cara antes de empezar.
+    // Que se miren a la cara los dos, venga el combate de donde venga: si empezo
+    // porque solo uno miraba al otro, el otro se gira.
     PlayerGetDestCoords(&jugadorX, &jugadorY);
     ObjectEventTurn(objEvent, GetDirectionToFace(objEvent->currentCoords.x, objEvent->currentCoords.y, jugadorX, jugadorY));
+    PlayerTurnInPlace(GetDirectionToFace(jugadorX, jugadorY, objEvent->currentCoords.x, objEvent->currentCoords.y));
 
     // La personalidad que se ha estado ensenando en el mapa es la que se lleva al
     // combate: el tono y el variocolor son los mismos.

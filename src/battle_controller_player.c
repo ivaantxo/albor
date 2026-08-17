@@ -170,7 +170,15 @@ static void PlayerBufferRunCommand(u32 combatiente)
             }
         }
         if (gBattleResources->bufferA[combatiente][0] < ARRAY_COUNT(sPlayerBufferCommands))
+        {
+            if (sPlayerBufferCommands[gBattleResources->bufferA[combatiente][0]] == NULL)
+            {
+                LOG("NULO: comando de jugador", gBattleResources->bufferA[combatiente][0], combatiente);
+                PlayerBufferExecCompleted(combatiente);
+                return;
+            }
             sPlayerBufferCommands[gBattleResources->bufferA[combatiente][0]](combatiente);
+        }
         else
             PlayerBufferExecCompleted(combatiente);
     }

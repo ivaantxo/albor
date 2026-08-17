@@ -1098,9 +1098,25 @@ static void BattleMainCB1(void)
         }
     }
 
+    // Un puntero a funcion nulo no cuelga la consola: la BIOS salta a su vector de
+    // arranque y el juego reaparece en la pantalla de inicio. Por eso conviene
+    // atraparlo aqui y decir cual era, en vez de perder la partida sin rastro.
+    if (gBattleMainFunc == NULL)
+    {
+        LOG("NULO: gBattleMainFunc", 0, 0);
+        return;
+    }
     gBattleMainFunc();
+
     for (battler = 0; battler < gBattlersCount; battler++)
+    {
+        if (gBattlerControllerFuncs[battler] == NULL)
+        {
+            LOG("NULO: controlador de combatiente", battler, 0);
+            continue;
+        }
         gBattlerControllerFuncs[battler](battler);
+    }
 }
 
 static void ClearSetBScriptingStruct(void)
@@ -2054,7 +2070,7 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                 gBattlescriptCurrInstr = gSelectionBattleScripts[combatiente];
                 if (!EstaCombatienteOcupado(combatiente))
                 {
-                    gBattleScriptingCommandsTable[gBattlescriptCurrInstr[0]]();
+                    EjecutaComandoGuionCombate();
                 }
                 gSelectionBattleScripts[combatiente] = gBattlescriptCurrInstr;
             }
@@ -2598,7 +2614,7 @@ static void HandleEndTurn_FinishBattle(void)
     else
     {
         if (!HayAlgunCombatienteOcupado())
-            gBattleScriptingCommandsTable[gBattlescriptCurrInstr[0]]();
+            EjecutaComandoGuionCombate();
     }
 }
 
@@ -2678,14 +2694,14 @@ void RunBattleScriptCommands_PopCallbacksStack(void)
     else
     {
         if (!HayAlgunCombatienteOcupado())
-            gBattleScriptingCommandsTable[gBattlescriptCurrInstr[0]]();
+            EjecutaComandoGuionCombate();
     }
 }
 
 void RunBattleScriptCommands(void)
 {
     if (!HayAlgunCombatienteOcupado())
-        gBattleScriptingCommandsTable[gBattlescriptCurrInstr[0]]();
+        EjecutaComandoGuionCombate();
 }
 
 u32 TipoMovimiento(enum Movimientos movimiento, u32 combatiente)

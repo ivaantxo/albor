@@ -1,5 +1,6 @@
 #include "global.h"
 #include "sprite.h"
+#include "depuracion_mgba.h"
 #include "main.h"
 #include "palette.h"
 #include "util.h"
@@ -298,6 +299,16 @@ void AnimateSprites(void)
 
         if (sprite->inUse)
         {
+#if DEPURACION_MGBA
+            // Un callback nulo salta a la direccion 0, que en GBA es el vector de
+            // arranque de la BIOS: el juego reaparece en la pantalla de inicio sin
+            // dejar rastro de quien fue. Aqui se atrapa y se dice el numero de sprite.
+            if (sprite->callback == NULL)
+            {
+                LOG("NULO: callback de sprite", i, sprite->oam.tileNum);
+                sprite->callback = SpriteCallbackDummy;
+            }
+#endif
             sprite->callback(sprite);
 
             if (sprite->inUse)

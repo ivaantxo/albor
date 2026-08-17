@@ -26,7 +26,6 @@
 #include "constants/songs.h"
 #include "constants/rgb.h"
 #include "constants/battle_move_effects.h"
-#include "constants/event_objects.h" // only for SHADOW_SIZE constants
 
 // this file's functions
 static void SpriteCB_TrainerSlideVertical(struct Sprite *sprite);
@@ -69,40 +68,6 @@ const struct SpritePalette sSpritePalettes_HealthBoxHealthBar[2] =
     {gBarraSalud_Pal, TAG_MARCADOR_PAL},
 };
 
-const struct CompressedSpriteSheet gSpriteSheet_EnemyShadowsSized =
-{
-    .data = gEnemyMonShadowsSized_Gfx,
-    .size = TILE_4BPP * 8 * 4, // 8 tiles per sprite, 4 sprites total
-    .tag = TAG_SHADOW_TILE,
-};
-
-static const struct OamData sOamData_EnemyShadow =
-{
-    .y = 0,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = FALSE,
-    .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(32x8),
-    .x = 0,
-    .matrixNum = 0,
-    .size = SPRITE_SIZE(32x8),
-    .tileNum = 0,
-    .priority = 3,
-    .paletteNum = 0,
-    .affineParam = 0
-};
-
-const struct SpriteTemplate gSpriteTemplate_EnemyShadow =
-{
-    .tileTag = TAG_SHADOW_TILE,
-    .paletteTag = TAG_SHADOW_PAL,
-    .oam = &sOamData_EnemyShadow,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy,
-};
 
 // code
 void AllocateBattleSpritesData(void)
@@ -657,48 +622,37 @@ void SetBattlerSpriteAffineMode(u8 affineMode)
 }
 
 
+void SpriteCB_EnemyShadow(struct Sprite *shadowSprite);
+
 void CreateEnemyShadowSprite(u32 battler)
 {
-    u32 especie = SanitizeSpeciesId(gBattleMons[battler].species);
-    u32 tamano = gSpeciesInfo[especie].enemyShadowSize;
-    s16 x = GetBattlerSpriteCoord(battler, BATTLER_COORD_X);
-    s16 y = GetBattlerSpriteCoord(battler, BATTLER_COORD_Y);
-    u8 primaria = CreaMitadSombraPokemon(x, y, 0xC8, SOMBRA_IZQUIERDA, tamano);
-    u8 secundaria = CreaMitadSombraPokemon(x, y, 0xC8, SOMBRA_DERECHA, tamano);
+    u8 sombra = CreaSombraPokemon(gBattlerSpriteIds[battler], 0xC8);
 
-    gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary = primaria;
-    gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdSecondary = secundaria;
+    gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary = sombra;
 
-    LOG("SOMBRA ids primaria/secundaria", primaria, secundaria);
-
-    if (primaria < MAX_SPRITES)
-        gSprites[primaria].sSombraDueno = battler;
-    if (secundaria < MAX_SPRITES)
-        gSprites[secundaria].sSombraDueno = battler;
+    if (sombra < MAX_SPRITES)
+    {
+        gSprites[sombra].sSombraDueno = battler;
+        gSprites[sombra].callback = SpriteCB_EnemyShadow;
+    }
 }
 
 void LoadAndCreateEnemyShadowSprites(void)
 {
-    u8 battler;
     u32 i;
 
     CargaGraficosSombraPokemon();
+    PreparaMezclaSombraPokemon();
 
-    // initialize shadow sprite ids
     for (i = 0; i < gBattlersCount; i++)
-    {
         gBattleSpritesDataPtr->healthBoxesData[i].shadowSpriteIdPrimary = MAX_SPRITES;
-        gBattleSpritesDataPtr->healthBoxesData[i].shadowSpriteIdSecondary = MAX_SPRITES;
-    }
 
-    battler = OPONENTE_IZQUIERDA;
-    CreateEnemyShadowSprite(battler);
+    // Solo los rivales proyectan sombra: los propios se ven de espaldas y su
+    // sombra caeria fuera de la plataforma.
+    CreateEnemyShadowSprite(OPONENTE_IZQUIERDA);
 
     if (EsCombateContraEntrenador(gCombate->tipoCombate))
-    {
-        battler = OPONENTE_DERECHA;
-        CreateEnemyShadowSprite(battler);
-    }
+        CreateEnemyShadowSprite(OPONENTE_DERECHA);
 }
 
 void SpriteCB_EnemyShadow(struct Sprite *shadowSprite)
@@ -706,7 +660,6 @@ void SpriteCB_EnemyShadow(struct Sprite *shadowSprite)
     u32 battler = shadowSprite->sSombraDueno;
     struct Sprite *battlerSprite = &gSprites[gBattlerSpriteIds[battler]];
     s32 desplazamientoX = 0, desplazamientoY = 0;
-    u32 tamano = SHADOW_SIZE_S;
     bool32 invisible = FALSE;
 
     if (!battlerSprite->inUse || !IsBattlerSpritePresent(battler))
@@ -721,19 +674,28 @@ void SpriteCB_EnemyShadow(struct Sprite *shadowSprite)
     }
     else
     {
-        // Se leen en vivo porque la especie puede cambiar en combate (Transformacion).
+        // Se lee en vivo porque la especie puede cambiar en combate (Transformacion).
         u32 especie = SanitizeSpeciesId(gBattleMons[battler].species);
         desplazamientoX = gSpeciesInfo[especie].enemyShadowXOffset;
         desplazamientoY = gSpeciesInfo[especie].enemyShadowYOffset;
-        tamano = gSpeciesInfo[especie].enemyShadowSize;
+        FijaAplastadoSombra(shadowSprite, gSpeciesInfo[especie].enemyShadowSize);
+        if (gSpeciesInfo[especie].suppressEnemyShadow)
+            invisible = TRUE;
     }
 
     if (gBattleSpritesDataPtr->battlerData[battler].behindSubstitute)
         invisible = TRUE;
 
     ColocaSombraPokemon(shadowSprite, battlerSprite, desplazamientoX, desplazamientoY);
-    FijaTamanoSombraPokemon(shadowSprite, tamano);
     shadowSprite->invisible = invisible;
+
+    // La mezcla se reafirma en cada fotograma. Se fijaba solo al crear la sombra,
+    // pero el combate reescribe BLDCNT por su cuenta -entradas, fundidos- y al
+    // quedarse sin segunda capa el duplicado deja de mezclarse y sale negro
+    // macizo. Solo se reafirma con la sombra a la vista: durante las animaciones
+    // esta oculta, y asi ellas siguen disponiendo de la mezcla a su gusto.
+    if (!invisible)
+        PreparaMezclaSombraPokemon();
 }
 
 #undef tBattlerId
@@ -748,30 +710,25 @@ void SetBattlerShadowSpriteCallback(u8 battler, u16 species)
     if (GetBattlerSide(battler) == LADO_JUGADOR || gBattleScripting.monCaught)
     {
         gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary].callback = SpriteCB_SetInvisible;
-        gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdSecondary].callback = SpriteCB_SetInvisible;
         return;
     }
 
-    if (gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary >= MAX_SPRITES
-        || gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdSecondary >= MAX_SPRITES)
+    if (gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary >= MAX_SPRITES)
         return;
 
     if (gSpeciesInfo[SanitizeSpeciesId(species)].suppressEnemyShadow == FALSE)
     {
         gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary].callback = SpriteCB_EnemyShadow;
-        gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdSecondary].callback = SpriteCB_EnemyShadow;
     }
     else
     {
         gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary].callback = SpriteCB_SetInvisible;
-        gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdSecondary].callback = SpriteCB_SetInvisible;
     }
 }
 
 void HideBattlerShadowSprite(u8 battler)
 {
     gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary].callback = SpriteCB_SetInvisible;
-    gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdSecondary].callback = SpriteCB_SetInvisible;
 }
 
 // Color the background tiles surrounding the action selection and move windows

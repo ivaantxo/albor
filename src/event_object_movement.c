@@ -8,6 +8,7 @@
 #include "decompress.h"
 #include "event_data.h"
 #include "event_object_movement.h"
+#include "depuracion_mgba.h"
 #include "event_scripts.h"
 #include "faraway_island.h"
 #include "field_camera.h"
@@ -1325,7 +1326,10 @@ u8 SpawnSpecialObjectEvent(struct ObjectEventTemplate *objectEventTemplate)
 
 u8 SpawnSpecialObjectEventParameterized(u16 graphicsId, u8 movementBehavior, u8 localId, s16 x, s16 y, u8 elevation)
 {
-    struct ObjectEventTemplate objectEventTemplate;
+    // Inicializada entera a proposito: InitObjectEventStateFromTemplate llega a
+    // DESREFERENCIAR template->script para los objetos de tipo Pokemon, y aqui no
+    // se rellenaba, asi que se leia un puntero de basura de la pila.
+    struct ObjectEventTemplate objectEventTemplate = {0};
 
     x -= MAP_OFFSET;
     y -= MAP_OFFSET;
@@ -1510,6 +1514,40 @@ struct Pokemon *GetFirstLiveMon(void)
             return &gPlayerParty[i];
     }
     return NULL;
+}
+
+// Rehace la paleta de un objeto Pokemon con su personalidad definitiva.
+//
+// Hace falta porque la paleta se tine al crear el sprite, y ahi la personalidad
+// del objeto todavia no esta puesta: quien lo crea solo puede fijarla despues,
+// cuando ya conoce su id. Sin esto el Pokemon del mapa sale con el tono que
+// dejara el objeto anterior en esa ranura, que no es el que hereda el combate.
+//
+// Se carga la nueva antes de soltar la vieja, porque FieldEffectFreePaletteIfUnused
+// no suelta una paleta que un sprite siga usando.
+void RecargaPaletaObjetoPokemon(u32 objectEventId)
+{
+    struct ObjectEvent *objEvent;
+    struct Sprite *sprite;
+    u32 paletaAnterior, paletaNueva;
+
+    if (objectEventId >= OBJECT_EVENTS_COUNT)
+        return;
+
+    objEvent = &gObjectEvents[objectEventId];
+    if (!objEvent->active || !IS_OW_MON_OBJ(objEvent))
+        return;
+
+    sprite = &gSprites[objEvent->spriteId];
+    paletaAnterior = sprite->oam.paletteNum;
+
+    paletaNueva = CargaPaletaFollower(OW_SPECIES(objEvent), OW_SHINY(objEvent), OW_FEMALE(objEvent),
+                                      ObtenPersonalidadObjetoEvento(objEvent));
+    if (paletaNueva == PALETA_NO_DISPONIBLE)
+        return; // Sin hueco se queda con la que tenia, que es mejor que ninguna.
+
+    sprite->oam.paletteNum = paletaNueva;
+    FieldEffectFreePaletteIfUnused(paletaAnterior);
 }
 
 // Fija la personalidad de un objeto de tipo Pokemon recien creado.

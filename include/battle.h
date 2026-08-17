@@ -553,7 +553,6 @@ struct BattleHealthboxInfo
     u8 matrixNum;
 
     u8 shadowSpriteIdPrimary;
-    u8 shadowSpriteIdSecondary;
 
     u8 soundTimer;
     u8 introEndDelay;

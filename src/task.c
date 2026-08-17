@@ -1,5 +1,6 @@
 #include "global.h"
 #include "task.h"
+#include "depuracion_mgba.h"
 
 COMMON_DATA struct Task gTasks[NUM_TASKS] = {0};
 
@@ -115,6 +116,13 @@ void RunTasks(void)
     {
         do
         {
+#if DEPURACION_MGBA
+            if (gTasks[taskId].func == NULL)
+            {
+                LOG("NULO: funcion de tarea", taskId, 0);
+                gTasks[taskId].func = TaskDummy;
+            }
+#endif
             gTasks[taskId].func(taskId);
             taskId = gTasks[taskId].next;
         } while (taskId != TAIL_SENTINEL);

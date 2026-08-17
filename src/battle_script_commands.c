@@ -5,6 +5,7 @@
 #include "battle_ai_main.h"
 #include "battle_ai_util.h"
 #include "battle_scripts.h"
+#include "depuracion_mgba.h"
 #include "bg.h"
 #include "constants/moves.h"
 #include "constants/abilities.h"
@@ -806,6 +807,32 @@ void (*const gBattleScriptingCommandsTable[])(void) =
         BATTLE_CMD(EscribeTextoEntraPokemon),
         BATTLE_CMD(EscribeTextoDevolverPokemon),
 };
+
+// Los cinco sitios que ejecutaban un comando de guion indexaban la tabla a pelo,
+// sin mirar si el puntero de guion es valido ni si el comando cae dentro. Y
+// gBattlescriptCurrInstr arranca a NULL: leerlo entonces coge un byte de la BIOS
+// como numero de comando y se salta a una direccion cualquiera, que es como el
+// juego reaparece en la pantalla de inicio sin dejar rastro.
+void EjecutaComandoGuionCombate(void)
+{
+    u32 comando;
+
+    if (gBattlescriptCurrInstr == NULL)
+    {
+        LOG("NULO: gBattlescriptCurrInstr", 0, 0);
+        return;
+    }
+
+    comando = gBattlescriptCurrInstr[0];
+    if (comando >= ARRAY_COUNT(gBattleScriptingCommandsTable)
+     || gBattleScriptingCommandsTable[comando] == NULL)
+    {
+        LOG("Comando de guion invalido", comando, (u32)gBattlescriptCurrInstr);
+        return;
+    }
+
+    gBattleScriptingCommandsTable[comando]();
+}
 
 static const u32 sStatusFlagsForMoveEffects[NUM_MOVE_EFFECTS] =
     {
