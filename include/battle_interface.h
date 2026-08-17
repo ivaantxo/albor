@@ -58,7 +58,17 @@ enum
 #define sMarcadorCombatiente    data[6]
 
 // El contorno es un unico grafico de 96x16 compartido por todos los marcadores.
-#define TILES_CONTORNO_BARRA 24
+// Geometria de barra_salud.png. El contorno mide 128x16 y deja un hueco de 80x3
+// en la posicion (32, 5) para el relleno. Todo lo demas se deriva de aqui, asi
+// que si se redibuja el grafico solo hay que tocar estos cinco numeros.
+#define CONTORNO_ANCHO      128
+#define CONTORNO_ALTO        16
+#define HUECO_BARRA_X        32
+#define HUECO_BARRA_Y         5
+#define HUECO_BARRA_ANCHO    80
+#define HUECO_BARRA_ALTO      3
+
+#define TILES_CONTORNO_BARRA ((CONTORNO_ANCHO / 8) * (CONTORNO_ALTO / 8))
 
 #define TAG_BATTLE_INTERFACE_SELECTOR   0xD77F
 

@@ -268,15 +268,14 @@ static const struct OamData sOamData_Healthbar =
 };
 
 
-// El relleno mide 80x8 y el OAM no tiene ningun tamano de 80 de ancho, asi que se
-// compone de tres piezas: 32 + 32 + 16. El origen queda a 32 px del borde izquierdo.
-/*        v-- Origen
-[0     ][1     ][2 ]   80x8
-*/
+// Relleno de 80x8. En un subsprite, .x/.y son la ESQUINA superior izquierda
+// respecto a la posicion del sprite, no su centro: las piezas van seguidas,
+// asi que la de 16 empieza donde acaba la segunda de 32. Con esto el borde
+// izquierdo del relleno cae justo en la posicion del sprite.
 static const struct Subsprite sSubsprites_RellenoBarra[] =
 {
     {
-        .x = -16,
+        .x = 0,
         .y = 0,
         .shape = SPRITE_SHAPE(32x8),
         .size = SPRITE_SIZE(32x8),
@@ -284,7 +283,7 @@ static const struct Subsprite sSubsprites_RellenoBarra[] =
         .priority = 1
     },
     {
-        .x = 16,
+        .x = 32,
         .y = 0,
         .shape = SPRITE_SHAPE(32x8),
         .size = SPRITE_SIZE(32x8),
@@ -292,7 +291,7 @@ static const struct Subsprite sSubsprites_RellenoBarra[] =
         .priority = 1
     },
     {
-        .x = 40,
+        .x = 64,
         .y = 0,
         .shape = SPRITE_SHAPE(16x8),
         .size = SPRITE_SIZE(16x8),
@@ -306,32 +305,39 @@ static const struct SubspriteTable sSubspriteTable_RellenoBarra[] =
     {ARRAY_COUNT(sSubsprites_RellenoBarra), sSubsprites_RellenoBarra}
 };
 
-// El contorno es el grafico de 96x16, en tres piezas de 32x16. Colocado sobre el
-// mismo origen que el relleno, su interior de 80x8 cae justo encima de este.
+// Contorno de 128x16 en cuatro piezas seguidas, centrado en el ancla.
 static const struct Subsprite sSubsprites_ContornoBarra[] =
 {
     {
-        .x = -20,
-        .y = 0,
+        .x = -64,
+        .y = -8,
         .shape = SPRITE_SHAPE(32x16),
         .size = SPRITE_SIZE(32x16),
         .tileOffset = 0,
         .priority = 1
     },
     {
-        .x = 12,
-        .y = 0,
+        .x = -32,
+        .y = -8,
         .shape = SPRITE_SHAPE(32x16),
         .size = SPRITE_SIZE(32x16),
         .tileOffset = 8,
         .priority = 1
     },
     {
-        .x = 44,
-        .y = 0,
+        .x = 0,
+        .y = -8,
         .shape = SPRITE_SHAPE(32x16),
         .size = SPRITE_SIZE(32x16),
         .tileOffset = 16,
+        .priority = 1
+    },
+    {
+        .x = 32,
+        .y = -8,
+        .shape = SPRITE_SHAPE(32x16),
+        .size = SPRITE_SIZE(32x16),
+        .tileOffset = 24,
         .priority = 1
     }
 };
@@ -369,12 +375,33 @@ static const struct SpriteTemplate sPlantillaContornoBarra =
     .callback = SpriteCallbackDummy
 };
 
-// Tira de 96x16 con el nombre, el nivel y el porcentaje: tres piezas de 32x16.
+// Tira de 96x16 con nombre, nivel y porcentaje, centrada en el ancla.
 static const struct Subsprite sSubsprites_TextoMarcador[] =
 {
-    {.x = -32, .y = 0, .shape = SPRITE_SHAPE(32x16), .size = SPRITE_SIZE(32x16), .tileOffset = 0,  .priority = 1},
-    {.x =   0, .y = 0, .shape = SPRITE_SHAPE(32x16), .size = SPRITE_SIZE(32x16), .tileOffset = 8,  .priority = 1},
-    {.x =  32, .y = 0, .shape = SPRITE_SHAPE(32x16), .size = SPRITE_SIZE(32x16), .tileOffset = 16, .priority = 1}
+    {
+        .x = -48,
+        .y = -8,
+        .shape = SPRITE_SHAPE(32x16),
+        .size = SPRITE_SIZE(32x16),
+        .tileOffset = 0,
+        .priority = 1
+    },
+    {
+        .x = -16,
+        .y = -8,
+        .shape = SPRITE_SHAPE(32x16),
+        .size = SPRITE_SIZE(32x16),
+        .tileOffset = 8,
+        .priority = 1
+    },
+    {
+        .x = 16,
+        .y = -8,
+        .shape = SPRITE_SHAPE(32x16),
+        .size = SPRITE_SIZE(32x16),
+        .tileOffset = 16,
+        .priority = 1
+    }
 };
 
 static const struct SubspriteTable sSubspriteTable_TextoMarcador[] =
@@ -469,6 +496,19 @@ u32 WhichBattleCoords(u32 battlerId)
 #define TILE_TEXTO          (TILE_RELLENO_BARRA + TILES_RELLENO_BARRA_VIDA)
 
 // Colocacion de cada pieza respecto al ancla, que esta en el centro de la barra.
+// El ancla es el centro del contorno, asi que el hueco cae en
+// (HUECO_BARRA_* - la mitad del contorno). El relleno es un sprite de una fila de
+// tiles: dentro de sus 8 px pinta ALTO_RELLENO_BARRA centradas, y hay que
+// descontar esa centradura para que las filas pintadas caigan justo en el hueco.
+// El ancla es el centro del contorno, y el relleno se posiciona por su esquina
+// superior izquierda. El hueco del grafico esta en (HUECO_BARRA_X, HUECO_BARRA_Y)
+// contados desde la esquina del contorno, de ahi el descuento de media caja.
+//
+// En vertical hay que descontar ademas la centradura del relleno dentro de su
+// fila de tiles: pinta HUECO_BARRA_ALTO filas centradas en las ocho del tile.
+#define RELLENO_DESPLAZAMIENTO_X (HUECO_BARRA_X - CONTORNO_ANCHO / 2)
+#define RELLENO_DESPLAZAMIENTO_Y (HUECO_BARRA_Y - CONTORNO_ALTO / 2 - (8 - HUECO_BARRA_ALTO) / 2)
+
 #define TEXTO_DESPLAZAMIENTO_Y   -13
 #define ESTADO_DESPLAZAMIENTO_X  -16
 #define ESTADO_DESPLAZAMIENTO_Y    9
@@ -556,7 +596,7 @@ u8 CreaMarcadorCombate(u8 battlerId)
 // callbacks para que la disposicion del marcador se lea de un vistazo.
 static const struct { s8 x, y; } sDesplazamientosPiezas[PIEZAS_MARCADOR] =
 {
-    [PIEZA_RELLENO] = {0, 0},
+    [PIEZA_RELLENO] = {RELLENO_DESPLAZAMIENTO_X, RELLENO_DESPLAZAMIENTO_Y},
     [PIEZA_TEXTO]   = {0, TEXTO_DESPLAZAMIENTO_Y},
     [PIEZA_ESTADO]  = {ESTADO_DESPLAZAMIENTO_X, ESTADO_DESPLAZAMIENTO_Y},
 };
@@ -617,21 +657,22 @@ void FijaPrioridadMarcadores(u8 priority, bool32 hideHPBoxes)
 
 void CoordenadasMarcador(u8 battler, s16 *x, s16 *y)
 {
-    // El ancla marca el centro de la barra, no la esquina de ninguna caja.
+    // El ancla es el CENTRO del contorno, que mide 128x16: se extiende 64 px a
+    // cada lado y 8 arriba y abajo.
     switch (battler)
     {
     case JUGADOR_IZQUIERDA:
     default:
-        *x = 174, *y = 88;
+        *x = 160, *y = 104;
         break;
     case JUGADOR_DERECHA:
-        *x = 187, *y = 101;
+        *x = 173, *y = 117;
         break;
     case OPONENTE_IZQUIERDA:
-        *x = 60, *y = 30;
+        *x = 56, *y = 16;
         break;
     case OPONENTE_DERECHA:
-        *x = 48, *y = 44;
+        *x = 44, *y = 30;
         break;
     }
 }
@@ -746,10 +787,23 @@ static void DibujaNombreYNivel(u8 marcadorSpriteId, struct Pokemon *mon)
     TextoDerechaAlSprite(textoSpriteId, nivel, COL_NIVEL, COLS_NIVEL);
 }
 
+// Se redibuja solo cuando el numero cambia. Antes se rehacia en cada fotograma
+// aunque saliera lo mismo: montar la ventana, renderizar la fuente y volcar los
+// tiles es lo mas caro de actualizar la barra, y se hacia sesenta veces por
+// segundo para pintar los mismos digitos.
 static void DibujaPorcentajeVida(u8 marcadorSpriteId, u32 porcentaje)
 {
+    static u8 sUltimoPorcentaje[NUMERO_COMBATIENTES];
     u8 texto[8], *fin;
     u32 textoSpriteId = gSprites[marcadorSpriteId].sMarcadorPieza(PIEZA_TEXTO);
+    u32 combatiente = gSprites[marcadorSpriteId].sMarcadorCombatiente;
+
+    if (combatiente < NUMERO_COMBATIENTES)
+    {
+        if (sUltimoPorcentaje[combatiente] == porcentaje)
+            return;
+        sUltimoPorcentaje[combatiente] = porcentaje;
+    }
 
     fin = ConvertIntToDecimalStringN(texto, porcentaje, STR_CONV_MODE_LEFT_ALIGN, 3);
     *fin++ = CHAR_PERCENT;
@@ -815,12 +869,12 @@ void ActualizaMarcador(u8 healthboxSpriteId, struct Pokemon *mon, u8 elementId)
 
 // Interior de la barra: 80 pixeles = 10 tiles de 8x8. En base 10 para que el
 // porcentaje y el relleno salgan de la misma cuenta, sin ajustes raros.
-#define B_HEALTHBAR_PIXELS 80
+#define B_HEALTHBAR_PIXELS HUECO_BARRA_ANCHO
 #define TILES_BARRA_SALUD  (B_HEALTHBAR_PIXELS / 8)
 
 // Grosor del relleno dentro de la fila de tiles, centrado. Bajarlo adelgaza la
 // barra sin tocar nada mas; el interior de barra_salud.png tiene que acompanar.
-#define ALTO_RELLENO_BARRA 4
+#define ALTO_RELLENO_BARRA HUECO_BARRA_ALTO
 
 // Indices dentro de la paleta de barra_salud.png. El relleno no tiene grafico
 // propio: los tiles se construyen en codigo, que solo escribe estos indices.

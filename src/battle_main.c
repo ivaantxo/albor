@@ -1213,6 +1213,9 @@ static void ReseteaAcciones(u32 combatiente)
     gAccionElegida[combatiente] = B_ACTION_NONE;
     gMovimientoElegido[combatiente] = MOVE_NONE;
     gEstadoAccion[combatiente] = ANTES_ACCION;
+    // El guion de seleccion es de un turno: si se deja puesto, al siguiente se
+    // ejecutaria uno viejo que ya termino.
+    gSelectionBattleScripts[combatiente] = NULL;
 }
 
 void SwitchInClearSetData(u32 battler)
@@ -2060,6 +2063,17 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
             }
             break;
         case EJECUTA_ACCION:
+            // Este estado hace dos cosas: ejecutar el guion de seleccion cuando lo
+            // hay, y servir de "accion ya decidida" cuando no. Varios caminos
+            // entran aqui sin dejar guion -combatiente ausente, movimiento de
+            // varios turnos, Otra Vez-, y como gCombate se reserva a cero,
+            // selectionScriptFinished vale FALSE: se acababa ejecutando un puntero
+            // nulo, que en GBA salta al arranque de la BIOS y devuelve el juego a
+            // la pantalla de inicio. Sin guion no hay nada que ejecutar; el
+            // combatiente se queda aqui, no ocupado, y el turno avanza solo.
+            if (gSelectionBattleScripts[combatiente] == NULL)
+                break;
+
             if (*(gCombate->selectionScriptFinished + combatiente))
             {
                 gEstadoAccion[combatiente] = *(gCombate->stateIdAfterSelScript + combatiente);
