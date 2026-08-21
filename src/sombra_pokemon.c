@@ -113,10 +113,41 @@ void FijaAplastadoSombra(struct Sprite *sombra, u32 tamano)
 //
 // Como el duplicado es negro no aporta color: el resultado es el fondo atenuado,
 // y por eso la proporcion de la primera capa va a cero y solo cuenta la del fondo.
+// El valor elegido es exactamente el que deja "setalpha 12, 8", que es lo que
+// piden 241 de los 294 setalpha de los guiones de animacion. Asi la mezcla en
+// reposo ya es la que la mayoria de las animaciones iban a pedir: no cambian nada
+// al empezar, y la sombra no cambia de densidad a media pelea.
 void PreparaMezclaSombraPokemon(void)
 {
-    SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_BG_ALL | BLDCNT_TGT2_BD | BLDCNT_EFFECT_BLEND);
-    SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, SOMBRA_MEZCLA_FONDO));
+    SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND);
+    SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(SOMBRA_MEZCLA_SOMBRA, SOMBRA_MEZCLA_FONDO));
+}
+
+// La mezcla es un recurso unico del hardware y la comparten varios. La sombra no
+// puede reservarla en exclusiva, asi que hace lo contrario: mira si sigue como la
+// dejo y, si no, se esconde. Un OBJ semitransparente se mezcla siempre con lo que
+// tenga detras, pero necesita que haya alguna segunda capa declarada; sin ella no
+// tiene con que mezclarse y sale negro macizo.
+//
+// No se exige la configuracion exacta de la sombra, solo que sirva. A la sombra
+// le da igual la proporcion de la primera capa -es negra, no aporta color-, asi
+// que aguanta la mezcla de otro y como mucho cambia de densidad un rato. Lo unico
+// que no puede es quedarse sin nada con lo que mezclarse.
+bool32 MezclaSirveParaSombra(void)
+{
+    u32 bldcnt = GetGpuReg(REG_OFFSET_BLDCNT);
+
+    // En modo mezcla...
+    if ((bldcnt & BLDCNT_EFFECT_MASK) != BLDCNT_EFFECT_BLEND)
+        return FALSE;
+
+    // ...con algo detras con lo que mezclarse. Los otros objetos no valen: la
+    // sombra cae sobre el terreno.
+    if (!(bldcnt & (BLDCNT_TGT2_BG_ALL | BLDCNT_TGT2_BD)))
+        return FALSE;
+
+    // ...y dejando pasar algo de ese fondo. A cero saldria negra maciza.
+    return ((GetGpuReg(REG_OFFSET_BLDALPHA) >> 8) & 0x1F) != 0;
 }
 
 void TerminaMezclaSombraPokemon(void)

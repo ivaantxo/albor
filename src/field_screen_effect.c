@@ -10,6 +10,7 @@
 #include "event_scripts.h"
 #include "field_player_avatar.h"
 #include "field_screen_effect.h"
+#include "depuracion_mgba.h"
 #include "field_special_scene.h"
 #include "field_weather.h"
 #include "gpu_regs.h"
@@ -361,6 +362,7 @@ void FieldCB_ReturnToFieldNoScript(void)
 
 void FieldCB_ReturnToFieldNoScriptCheckMusic(void)
 {
+    LOG("mapa: empieza el fundido de entrada", gMain.vblankCounter, 0);
     LockPlayerFieldControls();
     Overworld_PlaySpecialMapMusic();
     FadeInFromBlack();

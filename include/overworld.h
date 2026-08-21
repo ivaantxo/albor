@@ -106,6 +106,7 @@ void CleanupOverworldWindowsAndTilemaps(void);
 void CB1_Overworld(void);
 void OverworldBasic(void);
 u8 UpdateTimeOfDay(void);
+bool32 LaHoraDelDiaHaCambiado(void);
 bool32 MapaTieneLuzNatural(u8 mapType);
 void UpdateAltBgPalettes(u16 palettes);
 void UpdatePalettesWithTime(u32);

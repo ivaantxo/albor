@@ -2,6 +2,7 @@
 #include "battle.h"
 #include "battle_anim.h"
 #include "battle_bg.h"
+#include "depuracion_mgba.h"
 #include "battle_main.h"
 #include "battle_message.h"
 #include "battle_setup.h"
@@ -14,6 +15,7 @@
 #include "menu.h"
 #include "overworld.h"
 #include "palette.h"
+#include "sombra_pokemon.h"
 #include "sound.h"
 #include "sprite.h"
 #include "task.h"
@@ -464,6 +466,147 @@ void InitBattleBgsVideo(void)
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJWIN_ON | DISPCNT_WIN0_ON | DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
 }
 
+// Punto de reposo de los registros de video del combate: como tienen que quedar
+// siempre que no haya nada especial ocurriendo.
+//
+// Quien los toque -animaciones, fundidos, la entrada al combate- vuelve aqui al
+// acabar, en vez de apagar a mano lo que cree que encendio. Apagar a mano es lo
+// que fallaba: BLDCNT es uno solo y con varios duenos, asi que el ultimo en
+// escribir se llevaba por delante los ajustes que el resto daba por hechos.
+//
+// El caso concreto que lo destapo: la mezcla del hardware NO esta apagada en
+// reposo. Es del combate, la usan las sombras de los Pokemon, y estan a la vista
+// casi todo el rato. Cada vez que alguien dejaba BLDCNT a cero -o sin bits de
+// segunda capa- la sombra se quedaba sin con que mezclarse y salia negra maciza:
+// el parpadeo.
+void RestauraRegistrosCombate(void)
+{
+    SetGpuReg(REG_OFFSET_MOSAIC, 0);
+    SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR
+                              | WININ_WIN1_BG_ALL | WININ_WIN1_OBJ | WININ_WIN1_CLR);
+    SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR
+                               | WINOUT_WINOBJ_BG_ALL | WINOUT_WINOBJ_OBJ | WINOUT_WINOBJ_CLR);
+    SetGpuReg(REG_OFFSET_BLDY, 0);
+
+    // Deja BLDCNT y BLDALPHA como los quiere la sombra.
+    PreparaMezclaSombraPokemon();
+}
+
+// Que se tine en combate y que no.
+//
+// Se tine el mundo: el terreno -fondos 2, 3 y 4, donde deja la paleta del
+// escenario LoadBattleTextboxAndBackground- y los combatientes, que ocupan una
+// paleta de objeto cada uno de la 0 a la 3, mas la copia que se guarda de cada una
+// en los fondos 8 a 11 para cuando las animaciones dibujan al Pokemon en una capa.
+//
+// Queda inmune todo lo que es interfaz: el cuadro de texto (fondo 0), el menu de
+// acciones (fondo 1), el texto de ventana (fondo 5), y por el lado de los objetos
+// los marcadores, las barras de vida, los iconos de estado y de tipo y la sombra,
+// que viven de la paleta de objeto 4 en adelante.
+//
+// El indice es plano: 0-15 son paletas de fondo y 16-31 de objeto.
+static const u8 sPaletasCombateConHora[] =
+{
+    2, 3, 4,            // terreno
+    8, 9, 10, 11,       // copia en fondo de cada combatiente
+    16, 17, 18, 19,     // los cuatro combatientes
+};
+
+// Copia sin tenir de cada una de esas paletas.
+//
+// Hace falta porque el tinte se escribe sobre la paleta SIN FUNDIR, no sobre la
+// fundida. Es la unica forma de que aguante: cualquier fundido rehace la fundida a
+// partir de la sin fundir, asi que un tinte que viva solo en la fundida se pierde
+// en cuanto algo se desvanece -la entrada del rival, el paso al menu de Pokemon,
+// la salida del combate-. Escribiendolo en la de origen, todos esos fundidos lo
+// arrastran solos y no hay que ir parcheandolos uno a uno.
+//
+// La pega de escribir en la de origen es que se pierde el color original, y sin el
+// no se puede volver a tenir cuando cambia la hora sin que el tinte se acumule. De
+// ahi esta copia: son 11 paletas, 352 bytes.
+static EWRAM_DATA u16 sPaletasCombateSinTenir[11 * 16] = {0};
+
+static u16 *CopiaSinTenirDe(u32 paleta)
+{
+    for (u32 i = 0; i < ARRAY_COUNT(sPaletasCombateConHora); i++)
+    {
+        if (sPaletasCombateConHora[i] == paleta)
+            return &sPaletasCombateSinTenir[i * 16];
+    }
+
+    return NULL;
+}
+
+static void TinePaletaCombate(u32 paleta, u16 *cruda)
+{
+    u32 posicion = PLTT_ID(paleta);
+
+    // Misma regla que en el mapa: bajo techo no entra la luz. En combate
+    // gMapHeader sigue siendo el del mapa del que vienes, que es justo lo que
+    // interesa: si el combate es en una cueva, no se tine.
+    if (!MapaTieneLuzNatural(gMapHeader.mapType))
+        return;
+
+    // Aqui NO se llama a UpdateAltBgPalettes. Las paletas alternas salen de los
+    // tilesets del mapa, y en combate esos tilesets no estan cargados: mezclaria
+    // el escenario de combate contra los colores de otra cosa.
+    TimeMixPalettes(1, cruda, gPlttBufferUnfaded + posicion,
+                    (struct ConfiguracionBlend *)&gBlendHoraDia[blendHoraActual.tiempoInicial],
+                    (struct ConfiguracionBlend *)&gBlendHoraDia[blendHoraActual.tiempoFinal],
+                    blendHoraActual.intensidad);
+
+    // Con un fundido en marcha no se toca la paleta fundida: la esta calculando el
+    // fundido, y ya la saca de la sin fundir que acabamos de tenir.
+    if (!gFundidoPaletas.activo)
+        CopiaCpu16(gPlttBufferUnfaded + posicion, gPlttBufferFaded + posicion, PLTT_SIZE_4BPP);
+}
+
+// Se llama justo despues de cargar una paleta, cuando todavia tiene su color
+// original. Guarda ese color y le aplica la hora.
+void GuardaYTinePaletaCombate(u32 paleta)
+{
+    u16 *cruda = CopiaSinTenirDe(paleta);
+
+    if (cruda == NULL)
+        return;
+
+    CopiaCpu16(gPlttBufferUnfaded + PLTT_ID(paleta), cruda, PLTT_SIZE_4BPP);
+    LOG("tine paleta / fundido activo", paleta, gFundidoPaletas.activo);
+    TinePaletaCombate(paleta, cruda);
+}
+
+// Tine una paleta suelta, de las que no estan en la lista de arriba: la del
+// entrenador rival va a una ranura que se asigna sobre la marcha, asi que no se le
+// puede reservar sitio fijo para la copia sin tenir.
+//
+// Al no guardar copia, esto se aplica UNA vez, justo al cargarla, y no se repinta
+// si cambia la hora mientras esta en pantalla. Es aceptable porque esos sprites
+// duran poco.
+void TinePaletaSueltaDeCombate(u32 paleta)
+{
+    u32 posicion;
+
+    if (paleta >= 32 || !MapaTieneLuzNatural(gMapHeader.mapType))
+        return;
+
+    posicion = PLTT_ID(paleta);
+    TimeMixPalettes(1, gPlttBufferUnfaded + posicion, gPlttBufferUnfaded + posicion,
+                    (struct ConfiguracionBlend *)&gBlendHoraDia[blendHoraActual.tiempoInicial],
+                    (struct ConfiguracionBlend *)&gBlendHoraDia[blendHoraActual.tiempoFinal],
+                    blendHoraActual.intensidad);
+
+    if (!gFundidoPaletas.activo)
+        CopiaCpu16(gPlttBufferUnfaded + posicion, gPlttBufferFaded + posicion, PLTT_SIZE_4BPP);
+}
+
+// Repinta todas con la hora actual. Se puede llamar cuantas veces haga falta: el
+// tinte sale siempre de la copia sin tenir, asi que no se acumula.
+void ActualizaPaletasCombateSegunHora(void)
+{
+    for (u32 i = 0; i < ARRAY_COUNT(sPaletasCombateConHora); i++)
+        TinePaletaCombate(sPaletasCombateConHora[i], &sPaletasCombateSinTenir[i * 16]);
+}
+
 void LoadBattleMenuWindowGfx(void)
 {
     LoadCompressedPalette(gBattleWindowTextPalette, BG_PLTT_ID(5), PLTT_SIZE_4BPP);
@@ -574,6 +717,11 @@ void LoadBattleTextboxAndBackground(void)
     LoadCompressedPalette(gBattleActionsPalFight, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
     LoadBattleMenuWindowGfx();
     DrawMainBattleBackground();
+
+    // El terreno acaba de entrar con su color original.
+    GuardaYTinePaletaCombate(2);
+    GuardaYTinePaletaCombate(3);
+    GuardaYTinePaletaCombate(4);
 }
 
 void DrawBattleEntryBackground(void)

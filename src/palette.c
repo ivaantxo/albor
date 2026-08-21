@@ -626,11 +626,18 @@ static void UpdateBlendRegisters(void)
     }
 }
 
+// Fotogramas de cortesia al acabar el fundido, para que al buffer de paletas le
+// de tiempo a llegar al hardware. Con uno basta: TransferPlttBuffer vuelca en
+// cada vblank. Estaba en cuatro, y son cuatro fotogramas muertos al final de CADA
+// fundido por software del juego -con la pantalla ya negra al salir, o ya visible
+// pero sin control al entrar-.
+#define FOTOGRAMAS_CORTESIA_FUNDIDO 1
+
 static bool32 IsSoftwarePaletteFadeFinishing(void)
 {
     if (gFundidoPaletas.fundidoSoftwareAcabado)
     {
-        if (gFundidoPaletas.contadorFundidoSoftwareAcabado == 4)
+        if (gFundidoPaletas.contadorFundidoSoftwareAcabado == FOTOGRAMAS_CORTESIA_FUNDIDO)
         {
             gFundidoPaletas.activo = FALSE;
             gFundidoPaletas.fundidoSoftwareAcabado = FALSE;

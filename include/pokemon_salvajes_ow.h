@@ -37,4 +37,8 @@ bool32 IntentaCombatePokemonSalvajePulsandoA(void);
 
 bool32 EsObjetoPokemonSalvaje(u32 objectEventId);
 
+// Cierto si ese localId es de uno de los Pokemon salvajes del mapa. Se identifican
+// por localId y no por indice, porque el indice lo reutiliza el motor.
+bool32 EsLocalIdDePokemonSalvaje(u32 localId);
+
 #endif // GUARD_POKEMON_SALVAJES_OW_H

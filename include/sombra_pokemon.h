@@ -38,7 +38,23 @@
 // Cuanto del fondo se deja pasar, de 0 a 16. Cuanto mas bajo, mas oscura queda
 // la sombra: el duplicado es negro, asi que no aporta color y el resultado es
 // simplemente el fondo atenuado en esta proporcion.
-#define SOMBRA_MEZCLA_FONDO 10
+//
+// El 8 no es arbitrario. BLDALPHA es un unico registro para TODOS los objetos
+// semitransparentes, asi que la sombra lo comparte con los sprites de las
+// animaciones de combate, que lo fijan a su gusto. De los 294 setalpha de los
+// guiones, 275 piden 8, asi que a 8 la inmensa mayoria de las animaciones dejan
+// la sombra exactamente igual en vez de cambiarle la densidad a media pelea.
+//
+// De paso coincide con el overworld, que ya usaba BLDALPHA_BLEND(16, 8) para las
+// sombras de los objetos del mapa: la misma densidad en el mapa y en combate.
+#define SOMBRA_MEZCLA_FONDO 8
+
+// Proporcion de la PRIMERA capa. A la sombra le da igual cual sea -es negra, y
+// negro por cualquier coeficiente sigue siendo negro-, asi que se elige pensando
+// en los demas: es la que piden 241 de los 294 setalpha de los guiones de
+// animacion. Con ella, "setalpha 12, 8" no cambia nada y las animaciones que lo
+// usan se encuentran los registros ya listos.
+#define SOMBRA_MEZCLA_SOMBRA 12
 
 // La sombra se coloca con el MISMO CENTRO que el Pokemon: encaja sobre el sprite
 // original y desde ahi la estira e inclina la matriz afin.
@@ -66,6 +82,12 @@
 void FijaAplastadoSombra(struct Sprite *sombra, u32 tamano);
 
 void CargaGraficosSombraPokemon(void);
+
+// Cierto solo si los registros de mezcla estan exactamente como los deja
+// PreparaMezclaSombraPokemon. Sirve para que la sombra se aparte sola cuando
+// alguien -una animacion, casi siempre- se adueña de la mezcla para otra cosa, y
+// vuelva en cuanto se devuelvan al reposo.
+bool32 MezclaSirveParaSombra(void);
 void PreparaMezclaSombraPokemon(void);
 void TerminaMezclaSombraPokemon(void);
 
@@ -83,5 +105,6 @@ void DestruyeSombraPokemon(u8 spriteIdSombra);
 #define sSombraDueno  data[0] // id del sprite o combatiente al que sigue
 #define sSombraMatriz data[1] // matriz afin reservada, para poder soltarla
 #define sSombraLibre  data[2] // sitio libre para el sistema que la use
+#define sSombraEspecie data[3] // ultima especie valida vista, ver SpriteCB_EnemyShadow
 
 #endif // GUARD_SOMBRA_POKEMON_H

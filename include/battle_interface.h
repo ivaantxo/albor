@@ -41,9 +41,10 @@ enum
 // Tiles que reserva cada combatiente para su barra: los diez primeros son el
 // relleno de 80x8 y los cuatro siguientes el porcentaje de 32x8. Todos se
 // dibujan en codigo, la hoja solo reserva el sitio.
-#define TILES_RELLENO_BARRA_VIDA    10
-#define TILES_TEXTO_MARCADOR_HOJA   24   // 96x16
-#define TILES_RESERVADOS_BARRA_VIDA (TILES_RELLENO_BARRA_VIDA + TILES_TEXTO_MARCADOR_HOJA)
+#define TILES_RELLENO_BARRA_VIDA    10   // 80x8
+#define TILES_TEXTO_MARCADOR_HOJA   24   // 96x16, nombre y nivel
+#define TILES_PORCENTAJE_HOJA        8   // 32x16, pieza aparte
+#define TILES_RESERVADOS_BARRA_VIDA (TILES_RELLENO_BARRA_VIDA + TILES_TEXTO_MARCADOR_HOJA + TILES_PORCENTAJE_HOJA)
 
 // El contorno y los cinco iconos de estado son compartidos por todo el mundo.
 #define TILES_ICONOS_ESTADO 20
@@ -51,11 +52,15 @@ enum
 // Reparto de los data[] del ancla del marcador. Esta aqui y no en el .c porque
 // pokeball.c tambien la toca para la entrada deslizante, y con el reparto en dos
 // sitios se pisaban los ids de las piezas.
-#define sMarcadorPieza(n)       data[n]   // n = enum PiezaMarcador, 0..2
-#define sMarcadorDeslizVelX     data[3]
-#define sMarcadorDeslizVelY     data[4]
-#define sMarcadorDeslizEspera   data[5]
+// Las piezas ocupan data[0..3], una por cada enum PiezaMarcador. El resto de
+// campos del ancla van DESPUES a proposito: cuando el deslizamiento guardaba su
+// velocidad en data[0..1] machacaba los ids de las piezas, y la barra acababa
+// dibujandose sobre el rival. Si se anade una pieza mas, hay que correr estos.
+#define sMarcadorPieza(n)       data[n]   // n = enum PiezaMarcador, 0..3
+#define sMarcadorDeslizVelX     data[4]
+#define sMarcadorDeslizVelY     data[5]
 #define sMarcadorCombatiente    data[6]
+#define sMarcadorDeslizEspera   data[7]
 
 // El contorno es un unico grafico de 96x16 compartido por todos los marcadores.
 // Geometria de barra_salud.png. El contorno mide 128x16 y deja un hueco de 80x3

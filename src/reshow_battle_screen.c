@@ -8,6 +8,7 @@
 #include "text.h"
 #include "gpu_regs.h"
 #include "bg.h"
+#include "battle_bg.h"
 #include "battle_controllers.h"
 #include "sprite.h"
 #include "constants/trainers.h"
@@ -70,77 +71,48 @@ static void CB2_ReshowBattleScreenAfterMenu(void)
         sEstadoVueltaBatalla++;
         break;
     case 3:
+        // Todo esto es barato: no hay razon para gastar un fotograma en cada paso.
+        // Repartido de uno en uno, la vuelta al combate tardaba veinte fotogramas y
+        // se veia el textbox mucho antes que el resto.
         ResetSpriteData();
-        sEstadoVueltaBatalla++;
-        break;
-    case 4:
         FreeAllSpritePalettes();
         gReservedSpritePaletteCount = NUMERO_COMBATIENTES;
-        sEstadoVueltaBatalla++;
-        break;
-    case 5:
         ClearSpritesHealthboxAnimData();
-        sEstadoVueltaBatalla++;
-        break;
-    case 6:
         CargaBarrasSalud();
         sEstadoVueltaBatalla++;
         break;
-    case 7:
+    case 4:
         if (!LoadBattlerSpriteGfx(0))
             return;
         sEstadoVueltaBatalla++;
         break;
-    case 8:
+    case 5:
         if (!LoadBattlerSpriteGfx(1))
             return;
         sEstadoVueltaBatalla++;
         break;
-    case 9:
+    case 6:
         if (!LoadBattlerSpriteGfx(2))
             return;
         sEstadoVueltaBatalla++;
         break;
-    case 10:
+    case 7:
         if (!LoadBattlerSpriteGfx(3))
             return;
         sEstadoVueltaBatalla++;
         break;
-    case 11:
-        CreateBattlerSprite(0);
-        sEstadoVueltaBatalla++;
-        break;
-    case 12:
-        CreateBattlerSprite(1);
-        sEstadoVueltaBatalla++;
-        break;
-    case 13:
-        CreateBattlerSprite(2);
-        sEstadoVueltaBatalla++;
-        break;
-    case 14:
-        CreateBattlerSprite(3);
-        sEstadoVueltaBatalla++;
-        break;
-    case 15:
-        CreaMarcadorDe(0);
-        sEstadoVueltaBatalla++;
-        break;
-    case 16:
-        CreaMarcadorDe(1);
-        sEstadoVueltaBatalla++;
-        break;
-    case 17:
-        CreaMarcadorDe(2);
-        sEstadoVueltaBatalla++;
-        break;
-    case 18:
-        CreaMarcadorDe(3);
-        sEstadoVueltaBatalla++;
-        break;
-    case 19:
+    case 8:
     {
         u32 opponentBattler, species;
+
+        // Crear sprites y marcadores tampoco cuesta nada; lo caro era la
+        // descompresion de los graficos, que sigue teniendo su propio fotograma.
+        for (u32 combatiente = 0; combatiente < NUMERO_COMBATIENTES; combatiente++)
+        {
+            CreateBattlerSprite(combatiente);
+            CreaMarcadorDe(combatiente);
+        }
+
         LoadAndCreateEnemyShadowSprites();
         opponentBattler = OPONENTE_IZQUIERDA;
         species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[opponentBattler]], MON_DATA_SPECIES);
@@ -157,7 +129,13 @@ static void CB2_ReshowBattleScreenAfterMenu(void)
     default:
         SetVBlankCallback(VBlankCB_Battle);
         ClearBattleBgCntBaseBlocks();
-        EmpiezaFundidoPaletasHardware(BLDCNT_TGT1_ALL | BLDCNT_EFFECT_BLEND, 0, 16, 0, TRUE);
+        // Aqui habia un fundido por hardware que no fundia nada: pedia mezcla
+        // (BLDCNT_EFFECT_BLEND) sin declarar ninguna segunda capa, asi que no
+        // habia con que mezclar y BLDY ni se mira en ese modo. Lo unico que hacia
+        // era dejar BLDCNT sin segundas capas durante unos fotogramas, que es
+        // justo lo que ponia negra la sombra al volver de la pantalla de Pokemon.
+        // La pantalla ya reaparece sola al reanudarse el volcado de paletas.
+        RestauraRegistrosCombate();
         gFundidoPaletas.transferenciaBufferDeshabilitada = FALSE;
         SetMainCallback2(BattleMainCB2);
         FillAroundBattleWindows();

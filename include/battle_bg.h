@@ -12,6 +12,10 @@ struct BattleBackground
 
 void BattleInitBgsAndWindows(void);
 void InitBattleBgsVideo(void);
+void RestauraRegistrosCombate(void);
+void ActualizaPaletasCombateSegunHora(void);
+void GuardaYTinePaletaCombate(u32 paleta);
+void TinePaletaSueltaDeCombate(u32 paleta);
 void LoadBattleMenuWindowGfx(void);
 void DrawMainBattleBackground(void);
 void LoadBattleTextboxAndBackground(void);

@@ -598,6 +598,7 @@
 #define BLDCNT_TGT1_BD       (1 << 5)
 #define BLDCNT_TGT1_ALL      (BLDCNT_TGT1_BG_ALL | BLDCNT_TGT1_OBJ | BLDCNT_TGT1_BD)
 // Bits 6-7 select the special effect
+#define BLDCNT_EFFECT_MASK      (3 << 6)
 #define BLDCNT_EFFECT_NONE      (0 << 6)   // no special effect
 #define BLDCNT_EFFECT_BLEND     (1 << 6)   // 1st+2nd targets mixed (controlled by BLDALPHA)
 #define BLDCNT_EFFECT_LIGHTEN   (2 << 6)   // 1st target becomes whiter (controlled by BLDY)

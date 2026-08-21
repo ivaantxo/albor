@@ -52,6 +52,8 @@ void SpriteCB_OpponentMonFromBall(struct Sprite *sprite);
 void SpriteCB_BattleSpriteStartSlideLeft(struct Sprite *sprite);
 void SpriteCB_FaintSlideAnim(struct Sprite *sprite);
 void DoBounceEffect(u8 battler, u8 which, s8 delta, s8 amplitude);
+u8 IniciaBoteDeSprite(u8 spriteIdQueBota, s8 delta, s8 amplitud);
+void ParaBoteDeSprite(u8 motor, u8 spriteIdQueBota);
 void EndBounceEffect(u8 battler, u8 which);
 void SpriteCB_PlayerMonFromBall(struct Sprite *sprite);
 void SpriteCB_PlayerMonSlideIn(struct Sprite *sprite);
@@ -87,5 +89,7 @@ extern const struct Tipos gTipos[NUMERO_TIPOS];
 extern const uq4_12_t gTablaEfectividadTipos[NUMERO_TIPOS][NUMERO_TIPOS];
 
 extern const u8 *const gStatusConditionStringsTable[7];
+
+extern bool8 gZoomEntradaEnMarcha;
 
 #endif // GUARD_BATTLE_MAIN_H

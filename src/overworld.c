@@ -1,5 +1,6 @@
 #include "global.h"
 #include "overworld.h"
+#include "depuracion_mgba.h"
 #include "pokemon_salvajes_ow.h"
 #include "battle_setup.h"
 #include "berry.h"
@@ -1060,6 +1061,23 @@ void CB1_Overworld(void)
         DoCB1_Overworld(gMain.newKeys, gMain.heldKeys);
 }
 
+// Que paletas llevan tinte horario y cuales no.
+//
+// Las de fondo 13, 14 y 15 son de la interfaz -cuadros de dialogo, textos, menus-
+// y no se tinen nunca: la hora del dia es del mundo, no de los menus. La 0 tampoco
+// entra en las paletas alternas de tileset, porque no pertenece a ninguno.
+//
+// Antes esto estaba escrito como 8190 y 4294909951, que son los mismos numeros en
+// decimal y no dicen nada.
+#define ULTIMA_PALETA_FONDO_DEL_MUNDO 12
+#define PALETAS_HASTA_EL_MUNDO        ((1u << (ULTIMA_PALETA_FONDO_DEL_MUNDO + 1)) - 1)
+
+// Fondos 1 a 12: los tilesets del mapa.
+#define PALETAS_FONDO_CON_HORA        (PALETAS_HASTA_EL_MUNDO & ~1u)
+
+// Lo anterior mas la 0 y las 16 de objetos.
+#define PALETAS_CON_HORA              (PALETAS_HASTA_EL_MUNDO | 0xFFFF0000u)
+
 const struct ConfiguracionBlend gBlendHoraDia[] =
 {
     [TIEMPO_MANANA]     = {.coeficiente = 5,  .colorBlend = RGB_AMARILLO_CLARO},
@@ -1141,7 +1159,7 @@ void UpdateAltBgPalettes(u16 palettes)
         return;
     palettes &= ~((1 << NUM_PALS_IN_PRIMARY) - 1) | primary->swapPalettes;
     palettes &= ((1 << NUM_PALS_IN_PRIMARY) - 1) | (secondary->swapPalettes << NUM_PALS_IN_PRIMARY);
-    palettes &= 8190; // don't blend palette 0, [13,15]
+    palettes &= PALETAS_FONDO_CON_HORA;
     palettes >>= 1; // start at palette 1
     if (!palettes)
         return;
@@ -1174,7 +1192,7 @@ void UpdatePalettesWithTime(u32 palettes)
             if (GetSpritePaletteTagByPaletteNum(i) >> 15) // Don't blend special sprite palette tags
                 palettes &= ~(mask);
 
-    palettes &= 4294909951; // Don't blend UI BG palettes [13,15]
+    palettes &= PALETAS_CON_HORA;
     if (!palettes)
         return;
     TimeMixPalettes(palettes, gPlttBufferUnfaded, gPlttBufferFaded, (struct ConfiguracionBlend *)&gBlendHoraDia[blendHoraActual.tiempoInicial], (struct ConfiguracionBlend *)&gBlendHoraDia[blendHoraActual.tiempoFinal], blendHoraActual.intensidad);
@@ -1194,6 +1212,35 @@ u32 ActualizaPaletaSpriteSegunHora(u32 numeroPaleta)
   return numeroPaleta;
 }
 
+// Cada cuanto se mira el reloj. Son 3 segundos reales, que con la razon de 20
+// del reloj del juego (ver Rtc_GetSecondsRatio) es exactamente un minuto de
+// juego: no tiene sentido mirar mas a menudo, porque la mezcla no puede haber
+// cambiado.
+#define FOTOGRAMAS_ENTRE_COMPROBACIONES_DE_HORA 180
+
+// Cierto solo cuando la mezcla horaria ha cambiado de verdad y toca repintar. En
+// pleno dia o plena noche la intensidad es constante, asi que devuelve FALSE
+// siempre y no se repinta nunca; solo cuesta algo durante el amanecer y el
+// atardecer, y aun asi como mucho una vez por minuto de juego.
+//
+// Durante un fundido no se toca nada: el fundido recalcula las paletas desde las
+// sin fundir y se llevaria el tinte por delante.
+bool32 LaHoraDelDiaHaCambiado(void)
+{
+    struct ConfiguracionBlendHora anterior;
+
+    if (gFundidoPaletas.activo || ++gTimeUpdateCounter < FOTOGRAMAS_ENTRE_COMPROBACIONES_DE_HORA)
+        return FALSE;
+
+    gTimeUpdateCounter = 0;
+    anterior = blendHoraActual;
+    UpdateTimeOfDay();
+
+    return anterior.tiempoInicial != blendHoraActual.tiempoInicial
+        || anterior.tiempoFinal != blendHoraActual.tiempoFinal
+        || anterior.intensidad != blendHoraActual.intensidad;
+}
+
 void OverworldBasic(void)
 {
     // El contacto se comprueba cada fotograma y no al dar el paso: un Pokemon que
@@ -1209,24 +1256,10 @@ void OverworldBasic(void)
     UpdatePaletteFade();
     UpdateTilesetAnimations();
     CopiaTilemapProgramadoVram();
-    // Every minute if no palette fade is active, update TOD blending as needed
-    if (!gFundidoPaletas.activo && ++gTimeUpdateCounter >= 180) 
+    if (LaHoraDelDiaHaCambiado())
     {
-        struct ConfiguracionBlendHora configuracionBlendGuardada = 
-        {
-            .tiempoInicial = blendHoraActual.tiempoInicial,
-            .tiempoFinal = blendHoraActual.tiempoFinal,
-            .intensidad = blendHoraActual.intensidad,
-        };
-        gTimeUpdateCounter = 0;
-        UpdateTimeOfDay();
-        if (configuracionBlendGuardada.tiempoInicial != blendHoraActual.tiempoInicial
-        || configuracionBlendGuardada.tiempoFinal != blendHoraActual.tiempoFinal
-        || configuracionBlendGuardada.intensidad != blendHoraActual.intensidad) 
-        {
-            UpdateAltBgPalettes(PALETTES_BG);
-            UpdatePalettesWithTime(PALETTES_ALL);
-        }
+        UpdateAltBgPalettes(PALETTES_BG);
+        UpdatePalettesWithTime(PALETTES_ALL);
     }
 }
 
@@ -1292,11 +1325,17 @@ void CB2_NewGame(void)
     SetMainCallback2(CB2_Overworld);
 }
 
+// Espera con la pantalla ya en negro tras caer derrotado. No se carga nada
+// durante ella -todo el trabajo va en el fotograma en que vence-, asi que es
+// tiempo muerto y punto. Venia con 120, dos segundos clavados. A 1 se pasa
+// directamente a cargar, sin castigo anadido por perder.
+#define FOTOGRAMAS_PAUSA_DERROTA 1
+
 void CB2_WhiteOut(void)
 {
     u8 state;
 
-    if (++gMain.state >= 120)
+    if (++gMain.state >= FOTOGRAMAS_PAUSA_DERROTA)
     {
         FieldClearVBlankHBlankCallbacks();
         StopMapMusic();
@@ -1346,6 +1385,10 @@ void CB2_ReturnToField(void)
 {
     FieldClearVBlankHBlankCallbacks();
     SetMainCallback2(CB2_ReturnToFieldLocal);
+    // Y se arranca ya, en vez de gastar un fotograma entero en negro solo para
+    // llegar aqui el siguiente. SetMainCallback2 deja gMain.state a cero, que es
+    // justo lo que espera el primer paso.
+    CB2_ReturnToFieldLocal();
 }
 
 static void CB2_ReturnToFieldLocal(void)
@@ -1533,6 +1576,8 @@ static bool32 LoadMapInStepsLocal(u8 *state)
 
 static bool32 ReturnToFieldLocal(u8 *state)
 {
+    LOG("mapa: paso de carga", *state, gMain.vblankCounter);
+
     switch (*state)
     {
     case 0:
@@ -1552,11 +1597,14 @@ static bool32 ReturnToFieldLocal(u8 *state)
         (*state)++;
         break;
     case 2:
+        // Se devuelve TRUE aqui mismo. Habia un estado 3 que no hacia mas que
+        // esto, o sea un fotograma entero de pantalla en negro por nada.
         if (RunFieldCallback())
+        {
             (*state)++;
+            return TRUE;
+        }
         break;
-    case 3:
-        return TRUE;
     }
 
     return FALSE;

@@ -7,6 +7,8 @@
 #include "battle_controllers.h"
 #include "battle_interface.h"
 #include "battle_main.h"
+#include "battle_bg.h"
+#include "overworld.h"
 #include "battle_message.h"
 #include "battle_scripts.h"
 #include "battle_setup.h"
@@ -65,8 +67,10 @@ static void CB2_InitBattleInternal(void);
 static void CB2_HandleStartBattle(void);
 static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 firstTrainer);
 static void BattleMainCB1(void);
-static void SpriteCB_MoveWildMonToRight(struct Sprite *sprite);
-static void SpriteCB_WildMonShowHealthbox(struct Sprite *sprite);
+static void SpriteCB_ZoomEntradaSalvaje(struct Sprite *sprite);
+static void ColocaZoom(struct Sprite *sprite, s32 cercania);
+static void TerminaZoomEntrada(struct Sprite *sprite);
+static bool32 ArrancaZoom(struct Sprite *sprite);
 static void SpriteCB_WildMonAnimate(struct Sprite *sprite);
 static void SpriteCB_AnimFaintOpponent(struct Sprite *sprite);
 static void SpriteCB_BlinkVisible(struct Sprite *sprite);
@@ -181,6 +185,7 @@ EWRAM_DATA u8 gBattleOutcome = 0;
 EWRAM_DATA struct ProtectStruct gProtectStructs[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA struct SpecialStatus gSpecialStatuses[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u16 gIntroSlideFlags = 0; // Revisar
+EWRAM_DATA bool8 gZoomEntradaEnMarcha = FALSE;
 EWRAM_DATA u8 gSentPokesToOpponent[2] = {0};
 EWRAM_DATA struct BattleScripting gBattleScripting = {0};
 EWRAM_DATA struct Combate *gCombate = NULL;
@@ -438,7 +443,9 @@ static void CB2_InitBattleInternal(void)
     LoadBattleTextboxAndBackground();
     ResetSpriteData();
     ResetTasks();
-    DrawBattleEntryBackground();
+    // Sin fondo de entrada. Cargaba en FONDO_1 una version aparte del escenario que
+    // solo servia para el deslizamiento de entrada; sin deslizamiento se quedaba
+    // ahi quieta y de mas. FONDO_1 queda vacio, que es como debe estar.
     FreeAllSpritePalettes();
     gReservedSpritePaletteCount = NUMERO_COMBATIENTES;
     SetVBlankCallback(VBlankCB_Battle);
@@ -507,8 +514,24 @@ static void CB2_HandleStartBattle(void)
     SetMainCallback2(BattleMainCB2);
 }
 
+// La hora del dia sigue corriendo durante el combate -el reloj lo mueve
+// AgbMainLoop, que es ajeno a en que pantalla estes-, asi que la luz tiene que
+// acompanar. Es la misma puerta que usa el mapa: en pleno dia o plena noche no
+// hace nada, y durante el amanecer o el atardecer repinta una vez por minuto de
+// juego.
+static void ActualizaHoraDelDiaEnCombate(void)
+{
+    // Ya no hace falta repintar al terminar cada fundido: el tinte vive en las
+    // paletas sin fundir y los fundidos lo arrastran solos. Aquel repintado era
+    // ademas el flashazo blanco al salir del combate, porque devolvia las paletas
+    // a pleno brillo durante un fotograma con la pantalla ya en negro.
+    if (LaHoraDelDiaHaCambiado())
+        ActualizaPaletasCombateSegunHora();
+}
+
 void BattleMainCB2(void)
 {
+    ActualizaHoraDelDiaEnCombate();
     AnimateSprites();
     BuildOamBuffer();
     RunTextPrinters();
@@ -774,35 +797,161 @@ u32 GetBattleWindowTemplatePixelWidth(u32 tableId)
 #define sBattler data[0]
 #define sSpeciesId data[2]
 
+// El velo gris de entrada del rival es un fundido normal y debe seguir siendolo:
+// ahora la paleta sin fundir ya viene tenida, asi que el fundido arrastra la hora
+// solo. Usar aqui la variante con hora la aplicaria dos veces.
+// Entrada del rival: arranca en primer plano y se aleja.
+//
+// Aparece de golpe centrado en pantalla y al doble de tamano, grita, y desde ahi
+// se va a su sitio encogiendo hasta el tamano normal. El sprite del entrenador
+// entra en cuanto empieza ese camino.
+//
+// El doble tamano es el techo del hardware, no una eleccion: un sprite de 64x64 en
+// ST_OAM_AFFINE_DOUBLE recibe una caja de dibujo de 128x128, y lo que se salga de
+// ahi lo recorta el propio hardware.
+
+// La matriz afin es la INVERSA de lo que se ve: 256 deja el tamano natural y 128
+// lo pinta al doble.
+#define ZOOM_MATRIZ_NATURAL      256
+#define ZOOM_MATRIZ_DOBLE        128
+
+// Las dos duraciones, en fotogramas. Se pueden tocar por separado: la posicion y
+// la escala salen las dos del mismo avance, asi que no se descuadran.
+#define ZOOM_ESPERA_CENTRO        60
+#define ZOOM_CAMINO               64
+
+// Hitos del contador, para no repartir sumas por el codigo.
+#define ZOOM_HITO_VUELVE    (ZOOM_ESPERA_CENTRO)
+#define ZOOM_HITO_FIN       (ZOOM_HITO_VUELVE + ZOOM_CAMINO)
+
+#define sZoomMatriz data[3]
+#define sZoomPaso   data[4]
+#define sZoomDesplX data[5]   // cuanto hay de su sitio al centro de la pantalla
+#define sZoomDesplY data[6]
+
+// cercania va de 0 (en su sitio, tamano natural) a ZOOM_CAMINO (centrado y al doble).
+static void ColocaZoom(struct Sprite *sprite, s32 cercania)
+{
+    u32 escala = ZOOM_MATRIZ_NATURAL
+               - ((ZOOM_MATRIZ_NATURAL - ZOOM_MATRIZ_DOBLE) * cercania) / ZOOM_CAMINO;
+
+    sprite->x2 = (sprite->sZoomDesplX * cercania) / ZOOM_CAMINO;
+    sprite->y2 = (sprite->sZoomDesplY * cercania) / ZOOM_CAMINO;
+    SetOamMatrix(sprite->sZoomMatriz, escala, 0, 0, escala);
+}
+
+// Pasa el sprite a modo afin. Devuelve falso si no queda ninguna matriz libre.
+static bool32 ArrancaZoom(struct Sprite *sprite)
+{
+    // ST_OAM_AFFINE_DOUBLE no agranda nada por si solo: lo unico que hace es dar al
+    // sprite una caja de dibujo del doble de tamano para que, al escalarlo, no se
+    // recorte contra sus propios bordes. Quien agranda es la matriz.
+    sprite->oam.affineMode = ST_OAM_AFFINE_DOUBLE;
+
+    // Y la matriz se pide por la via del sistema de sprites, no a mano. Hacerlo a
+    // mano dejaba el sprite a tamano normal: InitSpriteAffineAnim ademas recoloca
+    // el ancla segun la caja nueva y pone en orden el estado de animacion afin, que
+    // es lo que faltaba.
+    InitSpriteAffineAnim(sprite);
+
+    if (sprite->oam.matrixNum >= 32)
+    {
+        sprite->oam.affineMode = ST_OAM_AFFINE_OFF;
+        return FALSE;
+    }
+
+    sprite->sZoomMatriz = sprite->oam.matrixNum;
+
+    // Y aqui esta la clave, que costo encontrar: affineAnimPaused NO SIRVE en esta
+    // base. AnimateSprite (sprite.c) consulta la global gAffineAnimsDisabled y no
+    // el campo del sprite, asi que la animacion afin de la especie se ejecutaba
+    // igual y devolvia la matriz a la identidad en cuanto se escribia.
+    //
+    // La forma que si funciona -y que es la que usa la sombra desde siempre- es
+    // dejar al sprite sin animaciones afines que ejecutar: BeginAffineAnim se salta
+    // el trabajo entero si el primer comando de la tabla es AFFINE_ANIM_END, que es
+    // exactamente lo unico que tiene gDummySpriteAffineAnimTable.
+    sprite->affineAnims = gDummySpriteAffineAnimTable;
+    sprite->affineAnimPaused = TRUE;
+    return TRUE;
+}
+
+static void TerminaZoomEntrada(struct Sprite *sprite)
+{
+    sprite->x2 = 0;
+    sprite->y2 = 0;
+
+    if (sprite->oam.affineMode != ST_OAM_AFFINE_OFF)
+    {
+        FreeSpriteOamMatrix(sprite);
+        sprite->oam.affineMode = ST_OAM_AFFINE_OFF;
+        CalcCenterToCornerVec(sprite, sprite->oam.shape, sprite->oam.size, ST_OAM_AFFINE_OFF);
+
+        // Se le devuelven sus animaciones afines, que es lo que usa despues la
+        // animacion de la especie.
+        sprite->affineAnims = gAffineAnims_BattleSpriteOpponentSide;
+    }
+
+    sprite->affineAnimPaused = FALSE;
+    sprite->animPaused = FALSE;
+
+    // Sin esto el sprite se queda con la animacion que tuviera puesta, que no es
+    // la suya.
+    StartSpriteAnimIfDifferent(sprite, 0);
+
+    gZoomEntradaEnMarcha = FALSE;
+    StartHealthboxSlideIn(sprite->sBattler);
+    MuestraMarcador(gMarcadorSpriteIds[sprite->sBattler]);
+    BeginNormalPaletteFade((0x10000 << sprite->sBattler), 0, 10, 0, RGB(8, 8, 8));
+    sprite->callback = SpriteCB_WildMonAnimate;
+}
+
+static void SpriteCB_ZoomEntradaSalvaje(struct Sprite *sprite)
+{
+    s32 t = sprite->sZoomPaso++;
+
+    // Quieto en primer plano mientras suena el grito.
+    if (t < ZOOM_HITO_VUELVE)
+        return;
+
+    // Al arrancar el camino se da via libre: es cuando entra tu entrenador.
+    if (t == ZOOM_HITO_VUELVE)
+        gZoomEntradaEnMarcha = FALSE;
+
+    if (t < ZOOM_HITO_FIN)
+    {
+        ColocaZoom(sprite, ZOOM_HITO_FIN - t);
+        return;
+    }
+
+    TerminaZoomEntrada(sprite);
+}
+
 void SpriteCB_WildMon(struct Sprite *sprite)
 {
-    sprite->callback = SpriteCB_MoveWildMonToRight;
-    StartSpriteAnimIfDifferent(sprite, 0);
+    // Quieto y en su pose normal: no se anima nada hasta que esta colocado.
+    StartSpriteAnim(sprite, 0);
+    sprite->animPaused = TRUE;
     BeginNormalPaletteFade((0x10000 << sprite->sBattler), 0, 10, 10, RGB(8, 8, 8));
-}
 
-static void SpriteCB_MoveWildMonToRight(struct Sprite *sprite)
-{
-    if ((gIntroSlideFlags & 1) == 0)
-    {
-        sprite->x2 += 2;
-        if (sprite->x2 == 0)
-        {
-            sprite->callback = SpriteCB_WildMonShowHealthbox;
-        }
-    }
-}
+    sprite->sZoomDesplX = ANCHO_PANTALLA / 2 - sprite->x;
+    sprite->sZoomDesplY = ALTURA_PANTALLA / 2 - sprite->y;
+    sprite->sZoomPaso = 0;
 
-static void SpriteCB_WildMonShowHealthbox(struct Sprite *sprite)
-{
-    if (sprite->animEnded)
+    // Sin matriz libre no hay primer plano, pero el combate tiene que seguir: se
+    // queda en su sitio y a otra cosa.
+    if (!ArrancaZoom(sprite))
     {
-        StartHealthboxSlideIn(sprite->sBattler);
-        MuestraMarcador(gMarcadorSpriteIds[sprite->sBattler]);
-        sprite->callback = SpriteCB_WildMonAnimate;
-        StartSpriteAnimIfDifferent(sprite, 0);
-        BeginNormalPaletteFade((0x10000 << sprite->sBattler), 0, 10, 0, RGB(8, 8, 8));
+        TerminaZoomEntrada(sprite);
+        return;
     }
+
+    // Ya en primer plano desde el primer fotograma, sin transicion de acercamiento.
+    ColocaZoom(sprite, ZOOM_CAMINO);
+    PlayCry_ByMode(sprite->sSpeciesId, 25, CRY_MODE_NORMAL);
+
+    gZoomEntradaEnMarcha = TRUE;
+    sprite->callback = SpriteCB_ZoomEntradaSalvaje;
 }
 
 static void SpriteCB_WildMonAnimate(struct Sprite *sprite)
@@ -927,6 +1076,40 @@ void SpriteCB_FaintSlideAnim(struct Sprite *sprite)
 #define sAmplitude data[5]
 #define sBouncerSpriteId data[6]
 #define sWhich data[7]
+
+// Bote generico para un sprite cualquiera, sin pasar por el combatiente. Lo mueve
+// el mismo SpriteCB_BounceEffect que los marcadores y los Pokemon: un sprite
+// invisible que hace de motor y le escribe la y2 al que bota.
+//
+// Devuelve el id del motor, que hay que guardar para poder pararlo; si no queda
+// sitio para el sprite, devuelve MAX_SPRITES y no pasa nada.
+u8 IniciaBoteDeSprite(u8 spriteIdQueBota, s8 delta, s8 amplitud)
+{
+    u8 motor;
+
+    if (spriteIdQueBota >= MAX_SPRITES)
+        return MAX_SPRITES;
+
+    motor = CreateInvisibleSpriteWithCallback(SpriteCB_BounceEffect);
+    if (motor >= MAX_SPRITES)
+        return MAX_SPRITES;
+
+    gSprites[motor].sSinIndex = 128;
+    gSprites[motor].sDelta = delta;
+    gSprites[motor].sAmplitude = amplitud;
+    gSprites[motor].sBouncerSpriteId = spriteIdQueBota;
+    gSprites[spriteIdQueBota].y2 = 0;
+
+    return motor;
+}
+
+void ParaBoteDeSprite(u8 motor, u8 spriteIdQueBota)
+{
+    if (motor < MAX_SPRITES && gSprites[motor].inUse)
+        DestroySprite(&gSprites[motor]);
+    if (spriteIdQueBota < MAX_SPRITES && gSprites[spriteIdQueBota].inUse)
+        gSprites[spriteIdQueBota].y2 = 0;
+}
 
 void DoBounceEffect(u8 battler, u8 which, s8 delta, s8 amplitude)
 {
@@ -1117,6 +1300,12 @@ static void BattleMainCB1(void)
         }
         gBattlerControllerFuncs[battler](battler);
     }
+
+    // Al final del fotograma a proposito: gBattle_BG0_Y ya tiene el valor que se
+    // va a mostrar en el VBlank de este mismo fotograma, asi que los iconos
+    // aparecen y desaparecen a la vez que su pagina. Comprobandolo al principio
+    // se leeria el valor del fotograma anterior y llegarian tarde.
+    SincronizaIconosTipoConPantalla();
 }
 
 static void ClearSetBScriptingStruct(void)
@@ -1863,6 +2052,29 @@ static void HazCalculosIA(u32 combatiente)
     AI_DATA->aiCalcInProgress = FALSE;
 }
 
+// El turno solo puede arrancar cuando TODOS han decidido de verdad.
+//
+// Antes se miraba solo si quedaba alguien ocupado, y eso no es lo mismo: un
+// combatiente que acaba de cancelar con B vuelve a ANTES_ACCION y tampoco esta
+// ocupado, asi que el turno se ponia en marcha con la accion anterior y la
+// cancelacion no surtia efecto. Un guion de seleccion a medias tampoco cuenta
+// como decidido.
+static bool32 TodosHanElegidoAccion(void)
+{
+    for (u32 combatiente = 0; combatiente < gBattlersCount; combatiente++)
+    {
+        if (EstaCombatienteOcupado(combatiente))
+            return FALSE;
+        if (gEstadoAccion[combatiente] != EJECUTA_ACCION)
+            return FALSE;
+        if (gSelectionBattleScripts[combatiente] != NULL
+         && !gCombate->selectionScriptFinished[combatiente])
+            return FALSE;
+    }
+
+    return TRUE;
+}
+
 static void GestionaEstadoSeleccionAccionesTurno(void)
 {
     struct DatosMovimiento moveInfo;
@@ -2092,7 +2304,7 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
         }
     }
 
-    if (!HayAlgunCombatienteOcupado())
+    if (TodosHanElegidoAccion())
     {
         gBattleMainFunc = SetActionsAndBattlersTurnOrder;
     }
@@ -2597,6 +2809,7 @@ static void HandleEndTurn_FinishBattle(void)
     if (gCurrentActionFuncId == B_ACTION_TRY_FINISH || gCurrentActionFuncId == B_ACTION_FINISHED)
     {
         EmpiezaFundidoPaletasRapido(FUNDIDO_A_NEGRO);
+        LOG("salida 1 empieza el fundido a negro", gMain.vblankCounter, 0);
         DesvaneceMusicaMapa(VELOCIDAD_LENTA_MUSICA);
         RecuperaObjetoPerdido();
 
@@ -2634,20 +2847,29 @@ static void HandleEndTurn_FinishBattle(void)
 
 static void FreeResetData_ReturnToOvOrDoEvolutions(void)
 {
-    if (!gFundidoPaletas.activo)
+    // Mientras dura el fundido a negro no se libera nada. Antes el bloque de
+    // abajo caia fuera del if y se ejecutaba en CADA fotograma del fundido, asi
+    // que FreeBattleSpritesData soltaba gBattleSpritesDataPtr -y lo dejaba a
+    // NULL- en el primer fotograma, con la pantalla todavia a la vista y los
+    // callbacks de sprite corriendo. El de la sombra lo consulta, se encontraba
+    // el puntero nulo y se apagaba: por eso la sombra se iba unos fotogramas
+    // antes que el resto de la pantalla.
+    if (gFundidoPaletas.activo)
+        return;
+
+    LOG("salida 2 pantalla negra, se libera", gMain.vblankCounter, 0);
+    gIsFishingEncounter = FALSE;
+    gIsSurfingEncounter = FALSE;
+    ResetSpriteData();
+
+    if (B_EVOLUTION_AFTER_WHITEOUT >= GEN_6 || gBattleOutcome == B_OUTCOME_WON || gBattleOutcome == B_OUTCOME_CAUGHT)
     {
-        gIsFishingEncounter = FALSE;
-        gIsSurfingEncounter = FALSE;
-        ResetSpriteData();
-        if ((B_EVOLUTION_AFTER_WHITEOUT >= GEN_6 || gBattleOutcome == B_OUTCOME_WON || gBattleOutcome == B_OUTCOME_CAUGHT))
-        {
-            gBattleMainFunc = TryEvolvePokemon;
-        }
-        else
-        {
-            gBattleMainFunc = ReturnFromBattleToOverworld;
-            return;
-        }
+        gBattleMainFunc = TryEvolvePokemon;
+    }
+    else
+    {
+        gBattleMainFunc = ReturnFromBattleToOverworld;
+        return;
     }
 
     FreeAllWindowBuffers();
@@ -2693,6 +2915,7 @@ static void ReturnFromBattleToOverworld(void)
     gMain.inBattle = FALSE;
     gMain.callback1 = gPreBattleCallback1;
 
+    LOG("salida 3 se cede el control al mapa", gMain.vblankCounter, 0);
     m4aSongNumStop(SE_LOW_HEALTH);
     SetMainCallback2(gMain.savedCallback);
 }

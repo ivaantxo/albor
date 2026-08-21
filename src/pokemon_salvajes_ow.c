@@ -83,9 +83,60 @@ static bool32 EsTerrenoDe(u32 terreno, s16 x, s16 y)
     return MapGridGetMetatileBehaviorAt(x, y) == sComportamientoDeTerreno[terreno];
 }
 
+// El jugador no ocupa una casilla, sino hasta tres: la que pisa, la que acaba de
+// dejar y la que va a pisar. La tercera es la que faltaba.
+//
+// Mirando solo las dos primeras seguia colandose el cruce, porque hay un hueco de
+// un fotograma entre que se encarga un paso y las coordenadas se mueven de sitio.
+// En ese hueco la casilla de destino no la reclama nadie, y el salvaje se metia
+// en la que el jugador estaba dejando mientras el jugador entraba en la suya: los
+// dos se atravesaban sin tocarse.
+//
+// Reservando tambien la casilla de delante, el salvaje no puede pisar el origen
+// del jugador y el cruce es imposible por construccion, sin depender de en que
+// orden se muevan los dos.
+static bool32 CasillaDelJugador(s16 x, s16 y)
+{
+    const struct ObjectEvent *jugador = &gObjectEvents[gPlayerAvatar.objectEventId];
+    s16 frenteX = jugador->currentCoords.x + sDeltaX[jugador->facingDirection];
+    s16 frenteY = jugador->currentCoords.y + sDeltaY[jugador->facingDirection];
+
+    return (jugador->currentCoords.x == x && jugador->currentCoords.y == y)
+        || (jugador->previousCoords.x == x && jugador->previousCoords.y == y)
+        || (frenteX == x && frenteY == y);
+}
+
+// No basta con mirar donde esta cada objeto AHORA, hay que mirar tambien de donde
+// viene: mientras se da un paso se ocupan las dos casillas, la de salida y la de
+// llegada, y asi lo comprueba la colision normal del juego.
+//
+// GetObjectEventIdByPosition solo consulta currentCoords, y por ese hueco se
+// colaba el cruce: el jugador arrancaba su paso -su currentCoords pasaba a ser la
+// casilla del salvaje- y la casilla que estaba dejando parecia libre, asi que el
+// salvaje se metia en ella. Los dos se atravesaban.
 static bool32 CasillaLibre(s16 x, s16 y, u8 elevacion)
 {
-    return GetObjectEventIdByPosition(x, y, elevacion) == OBJECT_EVENTS_COUNT;
+    if (CasillaDelJugador(x, y))
+        return FALSE;
+
+    for (u32 i = 0; i < OBJECT_EVENTS_COUNT; i++)
+    {
+        const struct ObjectEvent *objeto = &gObjectEvents[i];
+
+        if (!objeto->active)
+            continue;
+
+        // Misma regla de alturas que ObjectEventDoesElevationMatch: la altura 0 es
+        // comodin y se lleva bien con cualquiera.
+        if (objeto->currentElevation != 0 && elevacion != 0 && objeto->currentElevation != elevacion)
+            continue;
+
+        if ((objeto->currentCoords.x == x && objeto->currentCoords.y == y)
+         || (objeto->previousCoords.x == x && objeto->previousCoords.y == y))
+            return FALSE;
+    }
+
+    return TRUE;
 }
 
 // Una casilla sirve si es del terreno del Pokemon y no la ocupa nadie.
@@ -166,17 +217,34 @@ static void QuitaSalvaje(struct SalvajeOw *salvaje)
 // objetos ya no estan y solo hay que olvidarlos; en el segundo siguen ahi y hay
 // que quitarlos, porque al rehacerse el mapa pierden su personalidad y volverian
 // con otros colores. Se prefiere que desaparezcan a que cambien de aspecto.
+bool32 EsLocalIdDePokemonSalvaje(u32 localId)
+{
+    return localId >= LOCALID_SALVAJE_PRIMERO
+        && localId < LOCALID_SALVAJE_PRIMERO + MAXIMO_SALVAJES_OW;
+}
+
 void ReiniciaPokemonSalvajesOw(void)
 {
     for (u32 i = 0; i < MAXIMO_SALVAJES_OW; i++)
     {
-        struct ObjectEvent *objEvent = ObjetoDeSalvaje(&sSalvajes[i]);
-
-        if (objEvent != NULL)
-            RemoveObjectEvent(objEvent);
-
         sSalvajes[i].activo = FALSE;
         sSalvajes[i].objectEventId = OBJECT_EVENTS_COUNT;
+    }
+
+    // Se barren TODOS los objetos del mapa que lleven un localId de salvaje, no
+    // solo los que este modulo tenga fichados.
+    //
+    // Los objetos del mapa se guardan en la partida (ver SaveObjectEvents), asi
+    // que una partida guardada con salvajes a la vista los devolvia al cargar. Pero
+    // sSalvajes vive en EWRAM y arranca vacio, asi que volvian huerfanos: nadie los
+    // movia y nadie miraba si tocabas con ellos. Estaban ahi, muertos.
+    //
+    // Esto los limpia vengan de donde vengan, incluidas las partidas guardadas
+    // antes de arreglarlo.
+    for (u32 i = 0; i < OBJECT_EVENTS_COUNT; i++)
+    {
+        if (gObjectEvents[i].active && EsLocalIdDePokemonSalvaje(gObjectEvents[i].localId))
+            RemoveObjectEvent(&gObjectEvents[i]);
     }
     sPasosHastaProximaAparicion = PASOS_ENTRE_APARICIONES;
     sCombateArrancado = FALSE;
@@ -374,6 +442,14 @@ static void MueveSalvaje(struct SalvajeOw *salvaje, struct ObjectEvent *objEvent
 
             if (CasillaTransitable(salvaje->terreno, x, y, objEvent->currentElevation))
             {
+                const struct ObjectEvent *jugador = &gObjectEvents[gPlayerAvatar.objectEventId];
+
+                LOG("salvaje anda: desde x,y", objEvent->currentCoords.x, objEvent->currentCoords.y);
+                LOG("salvaje anda: hacia x,y", x, y);
+                LOG("jugador ahora x,y", jugador->currentCoords.x, jugador->currentCoords.y);
+                LOG("jugador antes x,y", jugador->previousCoords.x, jugador->previousCoords.y);
+                LOG("jugador mira / se mueve", jugador->facingDirection, jugador->movementDirection);
+
                 ObjectEventSetHeldMovement(objEvent, MOVEMENT_ACTION_WALK_NORMAL_DOWN + (direccion - DIR_SOUTH));
                 return;
             }

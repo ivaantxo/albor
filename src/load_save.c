@@ -2,6 +2,7 @@
 #include "malloc.h"
 #include "item.h"
 #include "load_save.h"
+#include "pokemon_salvajes_ow.h"
 #include "main.h"
 #include "overworld.h"
 #include "pokemon.h"
@@ -138,6 +139,12 @@ void SaveObjectEvents(void)
         gSaveBlockPtr->objectEvents[i].spriteId = 127; // magic number
         // To avoid crash on vanilla, save follower as inactive
         if (gObjectEvents[i].localId == LOCALID_FOLLOWER)
+            gSaveBlockPtr->objectEvents[i].active = FALSE;
+        // Los Pokemon salvajes del mapa son de quita y pon: no tiene sentido
+        // guardarlos. Ademas, quien los mueve y quien mira si tocas con ellos vive
+        // en EWRAM y arranca vacio, asi que al cargar volverian sin nadie que los
+        // atendiera: presentes, quietos y sin poder interactuar.
+        if (EsLocalIdDePokemonSalvaje(gObjectEvents[i].localId))
             gSaveBlockPtr->objectEvents[i].active = FALSE;
     }
 }

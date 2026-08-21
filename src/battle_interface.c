@@ -48,12 +48,16 @@
 
 // Reparto de la tira en columnas de 8 px. Nombre a la izquierda, nivel y
 // porcentaje pegados a la derecha de su tramo.
+// La tira de texto ya solo lleva nombre y nivel: el porcentaje se fue a su propia
+// pieza para poder dibujarlo por debajo del contorno.
 #define COL_NOMBRE          0
-#define COLS_NOMBRE         6
-#define COL_NIVEL           6
-#define COLS_NIVEL          3
-#define COL_PORCENTAJE      9
-#define COLS_PORCENTAJE     3
+#define COLS_NOMBRE         8
+#define COL_NIVEL           8
+#define COLS_NIVEL          4
+
+// El porcentaje ocupa su pieza entera, de 32 px de ancho.
+#define COL_PORCENTAJE      0
+#define COLS_PORCENTAJE     4
 
 // Blanco de la paleta compartida: el mismo que dibuja el contorno de la barra.
 #define COLOR_TEXTO_MARCADOR 1
@@ -61,7 +65,8 @@
 enum PiezaMarcador
 {
     PIEZA_RELLENO,
-    PIEZA_TEXTO,    // nombre, nivel y porcentaje comparten tira
+    PIEZA_TEXTO,        // nombre y nivel
+    PIEZA_PORCENTAJE,
     PIEZA_ESTADO,
     PIEZAS_MARCADOR,
 };
@@ -72,7 +77,9 @@ enum PiezaMarcador
 #define SUBPRIORIDAD_ESTADO     0
 #define SUBPRIORIDAD_RELLENO    1
 #define SUBPRIORIDAD_CONTORNO   2
-#define SUBPRIORIDAD_MARCADOR   3
+// Mayor que la del contorno: el porcentaje se monta sobre el, pero por debajo,
+// asi que el marco del grafico se dibuja encima donde se solapen.
+#define SUBPRIORIDAD_PORCENTAJE 3
 
 
 enum IconoEstado
@@ -409,6 +416,24 @@ static const struct SubspriteTable sSubspriteTable_TextoMarcador[] =
     {ARRAY_COUNT(sSubsprites_TextoMarcador), sSubsprites_TextoMarcador}
 };
 
+// El porcentaje: una sola pieza de 32x16, colocada por su esquina.
+static const struct Subsprite sSubsprites_Porcentaje[] =
+{
+    {
+        .x = 0,
+        .y = 0,
+        .shape = SPRITE_SHAPE(32x16),
+        .size = SPRITE_SIZE(32x16),
+        .tileOffset = 0,
+        .priority = 1
+    }
+};
+
+static const struct SubspriteTable sSubspriteTable_Porcentaje[] =
+{
+    {ARRAY_COUNT(sSubsprites_Porcentaje), sSubsprites_Porcentaje}
+};
+
 
 // Relleno, porcentaje y texto salen de la misma hoja del combatiente y comparten
 // forma de OAM: cada uno se queda con su tramo de tiles.
@@ -494,6 +519,7 @@ u32 WhichBattleCoords(u32 battlerId)
 
 #define TILE_RELLENO_BARRA  0
 #define TILE_TEXTO          (TILE_RELLENO_BARRA + TILES_RELLENO_BARRA_VIDA)
+#define TILE_PORCENTAJE     (TILE_TEXTO + TILES_TEXTO_MARCADOR_HOJA)
 
 // Colocacion de cada pieza respecto al ancla, que esta en el centro de la barra.
 // El ancla es el centro del contorno, asi que el hueco cae en
@@ -509,7 +535,13 @@ u32 WhichBattleCoords(u32 battlerId)
 #define RELLENO_DESPLAZAMIENTO_X (HUECO_BARRA_X - CONTORNO_ANCHO / 2)
 #define RELLENO_DESPLAZAMIENTO_Y (HUECO_BARRA_Y - CONTORNO_ALTO / 2 - (8 - HUECO_BARRA_ALTO) / 2)
 
-#define TEXTO_DESPLAZAMIENTO_Y   -13
+// El porcentaje se monta sobre el extremo derecho del contorno. Su subprioridad
+// lo deja por debajo, asi que el marco se dibuja encima donde se solapen.
+#define PORCENTAJE_DESPLAZAMIENTO_X  (CONTORNO_ANCHO / 2 - 32)
+#define PORCENTAJE_DESPLAZAMIENTO_Y  (-CONTORNO_ALTO / 2)
+
+// Nombre y nivel, algo mas bajos que antes para acercarlos a la barra.
+#define TEXTO_DESPLAZAMIENTO_Y   -11
 #define ESTADO_DESPLAZAMIENTO_X  -16
 #define ESTADO_DESPLAZAMIENTO_Y    9
 
@@ -540,11 +572,18 @@ void DestruyeMarcadorCombate(u8 battlerId)
     gMarcadorSpriteIds[battlerId] = MAX_SPRITES;
 }
 
+// Ultimo porcentaje pintado, para no rehacer el texto si no ha cambiado. Vive
+// fuera de la funcion porque hay que poder invalidarlo: si sobreviviera de un
+// combate a otro y el valor coincidiera, el porcentaje no llegaria a dibujarse.
+static u8 sUltimoPorcentaje[NUMERO_COMBATIENTES];
+
+#define PORCENTAJE_SIN_PINTAR 0xFF
+
 u8 CreaMarcadorCombate(u8 battlerId)
 {
     DestruyeMarcadorCombate(battlerId);
 
-    u8 anclaSpriteId, rellenoSpriteId, textoSpriteId, estadoSpriteId;
+    u8 anclaSpriteId, rellenoSpriteId, textoSpriteId, porcentajeSpriteId, estadoSpriteId;
     struct Sprite *ancla;
 
     // El contorno hace de ancla porque siempre esta presente y marca donde cae
@@ -566,13 +605,19 @@ u8 CreaMarcadorCombate(u8 battlerId)
     gSprites[textoSpriteId].subspriteMode = SUBSPRITES_IGNORE_PRIORITY;
     gSprites[textoSpriteId].oam.tileNum += TILE_TEXTO;
 
+    porcentajeSpriteId = CreateSpriteAtEnd(&sPlantillasMarcador[battlerId], ANCHO_PANTALLA, ALTURA_PANTALLA, SUBPRIORIDAD_PORCENTAJE);
+    SetSubspriteTables(&gSprites[porcentajeSpriteId], sSubspriteTable_Porcentaje);
+    gSprites[porcentajeSpriteId].subspriteMode = SUBSPRITES_IGNORE_PRIORITY;
+    gSprites[porcentajeSpriteId].oam.tileNum += TILE_PORCENTAJE;
+
     estadoSpriteId = CreateSpriteAtEnd(&sPlantillaIconoEstado, ANCHO_PANTALLA, ALTURA_PANTALLA, SUBPRIORIDAD_ESTADO);
 
     for (u32 pieza = 0; pieza < PIEZAS_MARCADOR; pieza++)
     {
-        u8 id = (pieza == PIEZA_RELLENO) ? rellenoSpriteId
-              : (pieza == PIEZA_TEXTO)   ? textoSpriteId
-              :                            estadoSpriteId;
+        u8 id = (pieza == PIEZA_RELLENO)    ? rellenoSpriteId
+              : (pieza == PIEZA_TEXTO)      ? textoSpriteId
+              : (pieza == PIEZA_PORCENTAJE) ? porcentajeSpriteId
+              :                               estadoSpriteId;
 
         ancla->sMarcadorPieza(pieza) = id;
         gSprites[id].sPiezaAncla = anclaSpriteId;
@@ -586,6 +631,9 @@ u8 CreaMarcadorCombate(u8 battlerId)
 
     ancla->sMarcadorCombatiente = battlerId;
 
+    if (battlerId < NUMERO_COMBATIENTES)
+        sUltimoPorcentaje[battlerId] = PORCENTAJE_SIN_PINTAR;
+
     gCombate->ballSpriteIds[0] = MAX_SPRITES;
     gCombate->ballSpriteIds[1] = MAX_SPRITES;
 
@@ -598,6 +646,7 @@ static const struct { s8 x, y; } sDesplazamientosPiezas[PIEZAS_MARCADOR] =
 {
     [PIEZA_RELLENO] = {RELLENO_DESPLAZAMIENTO_X, RELLENO_DESPLAZAMIENTO_Y},
     [PIEZA_TEXTO]   = {0, TEXTO_DESPLAZAMIENTO_Y},
+    [PIEZA_PORCENTAJE] = {PORCENTAJE_DESPLAZAMIENTO_X, PORCENTAJE_DESPLAZAMIENTO_Y},
     [PIEZA_ESTADO]  = {ESTADO_DESPLAZAMIENTO_X, ESTADO_DESPLAZAMIENTO_Y},
 };
 
@@ -793,9 +842,8 @@ static void DibujaNombreYNivel(u8 marcadorSpriteId, struct Pokemon *mon)
 // segundo para pintar los mismos digitos.
 static void DibujaPorcentajeVida(u8 marcadorSpriteId, u32 porcentaje)
 {
-    static u8 sUltimoPorcentaje[NUMERO_COMBATIENTES];
     u8 texto[8], *fin;
-    u32 textoSpriteId = gSprites[marcadorSpriteId].sMarcadorPieza(PIEZA_TEXTO);
+    u32 porcentajeSpriteId = gSprites[marcadorSpriteId].sMarcadorPieza(PIEZA_PORCENTAJE);
     u32 combatiente = gSprites[marcadorSpriteId].sMarcadorCombatiente;
 
     if (combatiente < NUMERO_COMBATIENTES)
@@ -809,7 +857,7 @@ static void DibujaPorcentajeVida(u8 marcadorSpriteId, u32 porcentaje)
     *fin++ = CHAR_PERCENT;
     *fin = EOS;
 
-    TextoDerechaAlSprite(textoSpriteId, texto, COL_PORCENTAJE, COLS_PORCENTAJE);
+    TextoDerechaAlSprite(porcentajeSpriteId, texto, COL_PORCENTAJE, COLS_PORCENTAJE);
 }
 
 static void DibujaIconoEstado(u8 marcadorSpriteId)

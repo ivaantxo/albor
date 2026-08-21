@@ -504,6 +504,10 @@ struct BattleSpriteInfo
     u16 invisible : 1;        // 0x1
     u16 lowHpSong : 1;        // 0x2
     u16 behindSubstitute : 1; // 0x4
+    // Las animaciones pasan al Pokemon a una capa de fondo y apagan su sprite.
+    // Sigue estando a la vista, solo que dibujado por otro medio, asi que lo que
+    // cuelgue de el -la sombra- no debe esconderse por ver el sprite apagado.
+    u16 enFondoAnimacion : 1;
     u16 flag_x8 : 1;          // Marcador de que el sprite del pokemon esta siendo usado para mostrar el HP, para que no se muestre el HP en la barra de HP
     u16 transformSpecies;
 };

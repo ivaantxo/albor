@@ -2,6 +2,7 @@
 #include "depuracion_mgba.h"
 #include "battle.h"
 #include "battle_anim.h"
+#include "battle_bg.h"
 #include "battle_main.h"
 #include "battle_setup.h"
 #include "bg.h"
@@ -113,37 +114,41 @@ int GetAnimBgAttribute(u8 bgId, u8 attributeId)
 #define tState data[0]
 #define tTerrain data[1]
 
+// La entrada al combate ya no desliza la camara ni el escenario: el efecto es un
+// zoom del sprite del rival, que se aleja hasta su sitio (SpriteCB_WildMon en
+// battle_main.c). Aqui no queda mas que dejar los registros como deben quedar y
+// avisar de que no hay deslizamiento que esperar.
+//
+// De paso desaparece lo que apagaba la sombra durante la entrada: el deslizamiento
+// escribia BLDCNT por su cuenta y no lo devolvia hasta terminar.
+static void BattleIntroSlideEnd(u8 taskId);
+
+static void Task_EntradaSinDeslizamiento(u8 taskId)
+{
+    // Los registros se dejan en su sitio ya, para que la sombra no se apague.
+    if (gTasks[taskId].data[0] == 0)
+    {
+        gTasks[taskId].data[0] = 1;
+        gBattle_BG1_X = 0;
+        gBattle_BG1_Y = 0;
+        gBattle_BG2_X = 0;
+        gBattle_BG2_Y = 0;
+        RestauraRegistrosCombate();
+    }
+
+    // Pero la via libre no se da hasta que el rival ha terminado de acercarse. Si
+    // no hay zoom -combate contra entrenador, o no habia matriz libre- la bandera
+    // esta a falso y esto pasa de largo en el primer fotograma.
+    if (gZoomEntradaEnMarcha)
+        return;
+
+    gIntroSlideFlags &= ~1;
+    DestroyTask(taskId);
+}
+
 void HandleIntroSlide(u8 terrain)
 {
-    u8 taskId;
-
-    if (GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL) == SPECIES_KYOGRE)
-    {
-        terrain = BATTLE_TERRAIN_UNDERWATER;
-        taskId = CreateTask(BattleIntroSlide2, 0);
-    }
-    else
-    {
-        TaskFunc funcion = terrain < ARRAY_COUNT(sBattleIntroSlideFuncs)
-                         ? sBattleIntroSlideFuncs[terrain] : NULL;
-
-        // Red de seguridad: sin funcion valida el combate se quedaria colgado
-        // esperando a que termine una animacion que nunca arranca.
-        if (funcion == NULL)
-        {
-            funcion = BattleIntroSlide3;
-            terrain = BATTLE_TERRAIN_PLAIN;
-        }
-        taskId = CreateTask(funcion, 0);
-    }
-
-    gTasks[taskId].tState = 0;
-    gTasks[taskId].tTerrain = terrain;
-    gTasks[taskId].data[2] = 0;
-    gTasks[taskId].data[3] = 0;
-    gTasks[taskId].data[4] = 0;
-    gTasks[taskId].data[5] = 0;
-    gTasks[taskId].data[6] = 0;
+    CreateTask(Task_EntradaSinDeslizamiento, 0);
 }
 
 static void BattleIntroSlideEnd(u8 taskId)
@@ -153,11 +158,7 @@ static void BattleIntroSlideEnd(u8 taskId)
     gBattle_BG1_Y = 0;
     gBattle_BG2_X = 0;
     gBattle_BG2_Y = 0;
-    SetGpuReg(REG_OFFSET_BLDCNT, 0);
-    SetGpuReg(REG_OFFSET_BLDALPHA, 0);
-    SetGpuReg(REG_OFFSET_BLDY, 0);
-    SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR | WININ_WIN1_BG_ALL | WININ_WIN1_OBJ | WININ_WIN1_CLR);
-    SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR | WINOUT_WINOBJ_BG_ALL | WINOUT_WINOBJ_OBJ | WINOUT_WINOBJ_CLR);
+    RestauraRegistrosCombate();
 }
 
 static void BattleIntroSlide1(u8 taskId)

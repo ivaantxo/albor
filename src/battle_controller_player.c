@@ -73,6 +73,8 @@ static void PlayerHandleBattleDebug(u32 battler);
 static void PlayerBufferRunCommand(u32 battler);
 static void MoveSelectionDisplayPpNumber(u32 battler);
 static void MoveSelectionDisplayMoveType(u32 battler);
+static void DestruyeIconosTipo(void);
+static void AseguraIconosTipo(u32 battler);
 static void MoveSelectionDisplayMoveNames(u32 battler);
 static void SwitchIn_HandleSoundAndEnd(u32 battler);
 static void WaitForMonSelection(u32 battler);
@@ -83,6 +85,16 @@ static void Task_UpdateLvlInHealthbox(u8);
 #define TAG_ICON_TYPES 30005
 
 static EWRAM_DATA u8 monIconData;
+// A que combatiente pertenece el icono, para copiarle el bote.
+#define sIconoCombatiente data[0]
+
+static void SpriteCB_IconoAccion(struct Sprite *sprite)
+{
+    u32 combatiente = sprite->sIconoCombatiente;
+
+    if (combatiente < NUMERO_COMBATIENTES)
+        sprite->y2 = gSprites[gBattlerSpriteIds[combatiente]].y2;
+}
 static EWRAM_DATA u8 sIconTypeId[MAXIMO_MOVIMIENTOS_POKEMON] = {0};
 
 static void (*const sPlayerBufferCommands[CONTROLLER_CMDS_COUNT])(u32 battler) =
@@ -239,26 +251,6 @@ static void HandleInputChooseAction(u32 battler)
     DoBounceEffect(battler, BOUNCE_HEALTHBOX, 7, 1);
     DoBounceEffect(battler, BOUNCE_MON, 7, 1);
 
-    if (sIconTypeId[0] != 0xFF)
-    {
-        DestroySpriteAndFreeResources(&gSprites[sIconTypeId[0]]);
-        sIconTypeId[0] = 0xFF;
-    }
-    if (sIconTypeId[1] != 0xFF)
-    {
-        DestroySpriteAndFreeResources(&gSprites[sIconTypeId[1]]);
-        sIconTypeId[1] = 0xFF;
-    }
-    if (sIconTypeId[2] != 0xFF)
-    {
-        DestroySpriteAndFreeResources(&gSprites[sIconTypeId[2]]);
-        sIconTypeId[2] = 0xFF;
-    }
-    if (sIconTypeId[3] != 0xFF)
-    {
-        DestroySpriteAndFreeResources(&gSprites[sIconTypeId[3]]);
-        sIconTypeId[3] = 0xFF;
-    }
 
     if (B_LAST_USED_BALL == TRUE && B_LAST_USED_BALL_CYCLE == TRUE)
     {
@@ -388,7 +380,7 @@ static void HandleInputChooseAction(u32 battler)
             PlaySE(SE_SELECT);
             BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_CANCEL_PARTNER, 0);
             PlayerBufferExecCompleted(battler);
-            DestroySpriteAndFreeResources(&gSprites[monIconData]);
+        DestroySpriteAndFreeResources(&gSprites[monIconData]);
             MoveSelectionDestroyCursor();
         }
         else if (B_QUICK_MOVE_CURSOR_TO_RUN)
@@ -439,26 +431,6 @@ void HandleInputChooseTarget(u32 battler)
         EndBounceEffect(gPosicionCursorSiNo, BOUNCE_HEALTHBOX); // REVISAR
         TryHideLastUsedBall();
         PlayerBufferExecCompleted(battler);
-        if (sIconTypeId[0] != 0xFF)
-        {
-            DestroySpriteAndFreeResources(&gSprites[sIconTypeId[0]]);
-            sIconTypeId[0] = 0xFF;
-        }
-        if (sIconTypeId[1] != 0xFF)
-        {
-            DestroySpriteAndFreeResources(&gSprites[sIconTypeId[1]]);
-            sIconTypeId[1] = 0xFF;
-        }
-        if (sIconTypeId[2] != 0xFF)
-        {
-            DestroySpriteAndFreeResources(&gSprites[sIconTypeId[2]]);
-            sIconTypeId[2] = 0xFF;
-        }
-        if (sIconTypeId[3] != 0xFF)
-        {
-            DestroySpriteAndFreeResources(&gSprites[sIconTypeId[3]]);
-            sIconTypeId[3] = 0xFF;
-        }
         MoveSelectionDestroyCursor();
     }
     else if (JOY_NEW(B_BUTTON))
@@ -605,26 +577,6 @@ void HandleInputShowEntireFieldTargets(u32 battler)
         HideAllTargets();
         BtlController_EmitTwoReturnValues(battler, BUFFER_B, SELECCION_MOVIMIENTO, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
         PlayerBufferExecCompleted(battler);
-        if (sIconTypeId[0] != 0xFF)
-        {
-            DestroySpriteAndFreeResources(&gSprites[sIconTypeId[0]]);
-            sIconTypeId[0] = 0xFF;
-        }
-        if (sIconTypeId[1] != 0xFF)
-        {
-            DestroySpriteAndFreeResources(&gSprites[sIconTypeId[1]]);
-            sIconTypeId[1] = 0xFF;
-        }
-        if (sIconTypeId[2] != 0xFF)
-        {
-            DestroySpriteAndFreeResources(&gSprites[sIconTypeId[2]]);
-            sIconTypeId[2] = 0xFF;
-        }
-        if (sIconTypeId[3] != 0xFF)
-        {
-            DestroySpriteAndFreeResources(&gSprites[sIconTypeId[3]]);
-            sIconTypeId[3] = 0xFF;
-        }
         MoveSelectionDestroyCursor();
     }
     else if (JOY_NEW(B_BUTTON))
@@ -646,26 +598,6 @@ void HandleInputShowTargets(u32 battler)
         BtlController_EmitTwoReturnValues(battler, BUFFER_B, SELECCION_MOVIMIENTO, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
         TryHideLastUsedBall();
         PlayerBufferExecCompleted(battler);
-        if (sIconTypeId[0] != 0xFF)
-        {
-            DestroySpriteAndFreeResources(&gSprites[sIconTypeId[0]]);
-            sIconTypeId[0] = 0xFF;
-        }
-        if (sIconTypeId[1] != 0xFF)
-        {
-            DestroySpriteAndFreeResources(&gSprites[sIconTypeId[1]]);
-            sIconTypeId[1] = 0xFF;
-        }
-        if (sIconTypeId[2] != 0xFF)
-        {
-            DestroySpriteAndFreeResources(&gSprites[sIconTypeId[2]]);
-            sIconTypeId[2] = 0xFF;
-        }
-        if (sIconTypeId[3] != 0xFF)
-        {
-            DestroySpriteAndFreeResources(&gSprites[sIconTypeId[3]]);
-            sIconTypeId[3] = 0xFF;
-        }
         MoveSelectionDestroyCursor();
     }
     else if (JOY_NEW(B_BUTTON))
@@ -755,26 +687,6 @@ void HandleInputChooseMove(u32 battler)
             BtlController_EmitTwoReturnValues(battler, BUFFER_B, SELECCION_MOVIMIENTO, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
             TryHideLastUsedBall();
             PlayerBufferExecCompleted(battler);
-            if (sIconTypeId[0] != 0xFF)
-            {
-                DestroySpriteAndFreeResources(&gSprites[sIconTypeId[0]]);
-                sIconTypeId[0] = 0xFF;
-            }
-            if (sIconTypeId[1] != 0xFF)
-            {
-                DestroySpriteAndFreeResources(&gSprites[sIconTypeId[1]]);
-                sIconTypeId[1] = 0xFF;
-            }
-            if (sIconTypeId[2] != 0xFF)
-            {
-                DestroySpriteAndFreeResources(&gSprites[sIconTypeId[2]]);
-                sIconTypeId[2] = 0xFF;
-            }
-            if (sIconTypeId[3] != 0xFF)
-            {
-                DestroySpriteAndFreeResources(&gSprites[sIconTypeId[3]]);
-                sIconTypeId[3] = 0xFF;
-            }
             MoveSelectionDestroyCursor();
             break;
         case 1:
@@ -1153,7 +1065,13 @@ static void OpenPartyMenuToChooseMon(u32 battler)
 
 static void WaitForMonSelection(u32 battler)
 {
-    if (gMain.callback2 == BattleMainCB2 && !gFundidoPaletas.activo)
+    // Basta con haber vuelto al combate; esperar ademas a que el fundido TERMINE
+    // era lo que descuadraba la interfaz. Con esa espera, el menu de accion y el
+    // icono no empezaban a montarse hasta que la pantalla ya se veia entera, asi
+    // que aparecian varios fotogramas despues que el textbox y los Pokemon.
+    // Quien abre el menu ya espera al fundido de salida antes de dejar aqui el
+    // control, asi que esta condicion sola es suficiente.
+    if (gMain.callback2 == BattleMainCB2)
     {
         if (gPartyMenuUseExitCallback == TRUE)
             BtlController_EmitChosenMonReturnValue(battler, BUFFER_B, gSelectedMonPartyId, gBattlePartyCurrentOrder);
@@ -1437,51 +1355,109 @@ void LoadPalettesTypes(u32 combatiente)
         CargaPaletaTipo(gMovimientos[datosMovimiento->movimiento[i]].type, 12 + i);
 }
 
-static void MoveSelectionDisplayMoveType(u32 battler)
+// Los cuatro iconos comparten una sola hoja de tiles, asi que hay que soltarla
+// UNA vez y no una por sprite. Sus paletas se cargan a mano con
+// LoadCompressedPalette, no por el repartidor de paletas de sprites, asi que
+// tampoco hay que liberarlas: DestroySpriteAndFreeResources lo intentaba igual.
+static void DestruyeIconosTipo(void)
 {
+    bool32 habia = FALSE;
+
+    for (u32 i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
+    {
+        if (sIconTypeId[i] == 0xFF)
+            continue;
+
+        DestroySprite(&gSprites[sIconTypeId[i]]);
+        sIconTypeId[i] = 0xFF;
+        habia = TRUE;
+    }
+
+    if (habia)
+        FreeSpriteTilesByTag(TAG_ICON_TYPES);
+}
+
+// Los iconos de tipo pertenecen a la pagina de seleccion de movimiento, que es la
+// que muestra BG0 desplazado dos pantallas. Su vida se ata a esa pagina en vez de
+// crearlos y destruirlos a mano en cada camino: antes cada sitio lo hacia en un
+// momento distinto y quedaban un fotograma por delante o por detras del resto.
+//
+// Gobierna las dos direcciones a proposito. Solo destruyendo no bastaba: se crean
+// al preparar la pantalla, que es ANTES de que la pagina cambie, asi que la propia
+// comprobacion los borraba en ese mismo fotograma y no volvian a aparecer.
+// Guarda el combatiente MAS UNO, porque las variables de EWRAM solo pueden
+// inicializarse a cero: asi el cero significa "todavia no hay dueno".
+static EWRAM_DATA u8 sDuenoIconosTipoMasUno = 0;
+
+void SincronizaIconosTipoConPantalla(void)
+{
+    if (gBattle_BG0_Y == ALTURA_PANTALLA * 2)
+    {
+        if (sDuenoIconosTipoMasUno != 0)
+            AseguraIconosTipo(sDuenoIconosTipoMasUno - 1);
+    }
+    else
+    {
+        DestruyeIconosTipo();
+    }
+}
+
+static void AseguraIconosTipo(u32 battler)
+{
+    // Esquina superior izquierda de cada icono, en el orden de los movimientos.
+    static const struct { u8 x, y; } sPosicionIconoTipo[MAXIMO_MOVIMIENTOS_POKEMON] =
+    {
+        {  9, 124}, {129, 124}, {  9, 148}, {129, 148},
+    };
     struct DatosMovimiento *datosMovimiento = (struct DatosMovimiento *)(&gBattleResources->bufferA[battler][4]);
-    struct Sprite *sprite1, *sprite2, *sprite3, *sprite4;
+    bool32 hayQueCrear = FALSE;
+
+    for (u32 i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
+    {
+        if (sIconTypeId[i] == 0xFF && datosMovimiento->movimiento[i] != MOVE_NONE)
+            hayQueCrear = TRUE;
+    }
+
+    // Esto se llamaba en CADA movimiento del cursor, y con el rehacia ocho
+    // descompresiones y volvia a pedir tiles para una hoja ya cargada, que se
+    // reservaban de nuevo sin soltar los anteriores. Ahora solo se carga cuando
+    // de verdad hay iconos que crear.
+    if (!hayQueCrear)
+        return;
 
     LoadPalettesTypes(battler);
     LoadCompressedSpriteSheet(&sSpriteSheet_IconTypes);
     LoadCompressedPalette(gIconTypes_Pal, OBJ_PLTT_ID(13), 3 * PLTT_SIZE_4BPP);
 
-    if (sIconTypeId[0] == 0xFF && datosMovimiento->movimiento[0] != MOVE_NONE)
+    for (u32 i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
-        sIconTypeId[0] = CreateSprite(&sSpriteTemplate_IconTypes, 9, 124, 0);
-        sprite1 = &gSprites[sIconTypeId[0]];
-		StartSpriteAnim(sprite1, gMovimientos[datosMovimiento->movimiento[0]].type);
-	    sprite1->oam.paletteNum = sMoveTypeToOamPaletteNum[gMovimientos[datosMovimiento->movimiento[0]].type];
-		sprite1->oam.priority = 0;
-		sprite1->subpriority = 1;
+        u32 tipo;
+        struct Sprite *icono;
+
+        if (sIconTypeId[i] != 0xFF || datosMovimiento->movimiento[i] == MOVE_NONE)
+            continue;
+
+        sIconTypeId[i] = CreateSprite(&sSpriteTemplate_IconTypes,
+                                      sPosicionIconoTipo[i].x, sPosicionIconoTipo[i].y, 0);
+        if (sIconTypeId[i] >= MAX_SPRITES)
+        {
+            sIconTypeId[i] = 0xFF;
+            continue;
+        }
+
+        tipo = gMovimientos[datosMovimiento->movimiento[i]].type;
+        icono = &gSprites[sIconTypeId[i]];
+        StartSpriteAnim(icono, tipo);
+        icono->oam.paletteNum = sMoveTypeToOamPaletteNum[tipo];
+        icono->oam.priority = 0;
+        icono->subpriority = 1;
     }
-    if (sIconTypeId[1] == 0xFF && datosMovimiento->movimiento[1] != MOVE_NONE)
-    {
-        sIconTypeId[1] = CreateSprite(&sSpriteTemplate_IconTypes, 129, 124, 0);
-        sprite2 = &gSprites[sIconTypeId[1]];
-		StartSpriteAnim(sprite2, gMovimientos[datosMovimiento->movimiento[1]].type);
-	    sprite2->oam.paletteNum = sMoveTypeToOamPaletteNum[gMovimientos[datosMovimiento->movimiento[1]].type];
-		sprite2->oam.priority = 0;
-		sprite2->subpriority = 1;
-    }
-    if (sIconTypeId[2] == 0xFF && datosMovimiento->movimiento[2] != MOVE_NONE)
-    {
-        sIconTypeId[2] = CreateSprite(&sSpriteTemplate_IconTypes, 9, 148, 0);
-        sprite3 = &gSprites[sIconTypeId[2]];
-		StartSpriteAnim(sprite3, gMovimientos[datosMovimiento->movimiento[2]].type);
-	    sprite3->oam.paletteNum = sMoveTypeToOamPaletteNum[gMovimientos[datosMovimiento->movimiento[2]].type];
-		sprite3->oam.priority = 0;
-		sprite3->subpriority = 1;
-    }
-    if (sIconTypeId[3] == 0xFF && datosMovimiento->movimiento[3] != MOVE_NONE)
-    {
-        sIconTypeId[3] = CreateSprite(&sSpriteTemplate_IconTypes, 129, 148, 0);
-        sprite4 = &gSprites[sIconTypeId[3]];
-		StartSpriteAnim(sprite4, gMovimientos[datosMovimiento->movimiento[3]].type);
-	    sprite4->oam.paletteNum = sMoveTypeToOamPaletteNum[gMovimientos[datosMovimiento->movimiento[3]].type];
-		sprite4->oam.priority = 0;
-		sprite4->subpriority = 1;
-    }
+}
+
+static void MoveSelectionDisplayMoveType(u32 battler)
+{
+    sDuenoIconosTipoMasUno = battler + 1;
+    AseguraIconosTipo(battler);
 }
 
 void CB2_SetUpReshowBattleScreenAfterMenu(void)
@@ -1583,6 +1559,12 @@ static void PlayerHandleChooseAction(u32 battler)
 {
     gBattlerControllerFuncs[battler] = HandleChooseActionAfterDma3;
 
+    // El resaltado del menu no es un cursor sino un cambio de paleta de fondo, y
+    // al volver de otra pantalla se recarga siempre la de "Luchar". Si no se
+    // reinicia el indice, lo resaltado y lo elegido dejan de coincidir: se veia
+    // Luchar y al pulsar A se abria el equipo.
+    gActionSelectionCursor[battler] = 0;
+
     TryRestoreLastUsedBall();
     PREPARE_MON_NICK_BUFFER(gBattleTextBuff1, battler, gBattlerPartyIndexes[battler]);
 
@@ -1591,6 +1573,20 @@ static void PlayerHandleChooseAction(u32 battler)
     monIconData = CreaIconoPokemon(species, 20, 132, 1, personality);
     gSprites[monIconData].oam.priority = 0;
     StartSpriteAnim(&gSprites[monIconData], 0);
+
+    // El icono no carga paleta propia: usa la del combatiente, que ya esta
+    // cargada en el hueco 'battler' y ya viene desplazada por su personalidad.
+    // Antes se quedaba con el 0xFF que devuelve IndexOfSpritePaletteTag cuando no
+    // encuentra la etiqueta, y ese valor en un campo de cuatro bits es la paleta
+    // 15: de ahi que saliera negro, y que cambiara de color segun quien ocupara
+    // ese hueco despues.
+    gSprites[monIconData].oam.paletteNum = battler;
+
+    // El icono se queda en el fotograma 0 y copia el bote del propio Pokemon. Con
+    // un motor aparte iba a la misma velocidad pero arrancaba en otro fotograma,
+    // asi que quedaba desfasado; copiando la y2 no puede desincronizarse.
+    gSprites[monIconData].sIconoCombatiente = battler;
+    gSprites[monIconData].callback = SpriteCB_IconoAccion;
 }
 
 static void PlayerHandleYesNoBox(u32 battler)
@@ -1627,7 +1623,7 @@ void PlayerHandleChooseMove(u32 battler)
 
 void InitMoveSelectionsVarsAndStrings(u32 battler)
 {
-    DestroySpriteAndFreeResources(&gSprites[monIconData]);
+        DestroySpriteAndFreeResources(&gSprites[monIconData]);
     MoveSelectionDisplayMoveNames(battler);
     MoveSelectionCreateCursorAt(gMoveSelectionCursor[battler]);
     MoveSelectionDisplayPpNumber(battler);
@@ -1785,7 +1781,13 @@ static void PlayerHandleResetActionMoveSelection(u32 battler)
 
 static void Controller_WaitForDebug(u32 battler)
 {
-    if (gMain.callback2 == BattleMainCB2 && !gFundidoPaletas.activo)
+    // Basta con haber vuelto al combate; esperar ademas a que el fundido TERMINE
+    // era lo que descuadraba la interfaz. Con esa espera, el menu de accion y el
+    // icono no empezaban a montarse hasta que la pantalla ya se veia entera, asi
+    // que aparecian varios fotogramas despues que el textbox y los Pokemon.
+    // Quien abre el menu ya espera al fundido de salida antes de dejar aqui el
+    // control, asi que esta condicion sola es suficiente.
+    if (gMain.callback2 == BattleMainCB2)
     {
         PlayerBufferExecCompleted(battler);
     }

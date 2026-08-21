@@ -1,6 +1,7 @@
 #include "global.h"
 #include "battle.h"
 #include "battle_anim.h"
+#include "battle_bg.h"
 #include "battle_anim_scripts.h"
 #include "battle_controllers.h"
 #include "battle_interface.h"
@@ -36,6 +37,7 @@ static void Cmd_waitforvisualfinish(void);
 static void Cmd_end(void);
 static void Cmd_playse(void);
 static void Cmd_monbg(void);
+static void SacaSpriteDelFondoAnimacion(u32 battler);
 static void Cmd_clearmonbg(void);
 static void Cmd_setalpha(void);
 static void Cmd_blendoff(void);
@@ -781,6 +783,13 @@ static void Cmd_end(void)
     if (!continuousAnim) // May have been used for debug?
     {
         m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, VOLUMEN_MAXIMO);
+        // Las animaciones disponen de la mezcla y de las ventanas a su gusto -la
+        // sombra se esconde mientras dura una-, pero al acabar devuelven los
+        // registros al reposo del combate en vez de apagarlos a cero.
+        RestauraRegistrosCombate();
+        // Red de seguridad: ninguna animacion deja Pokemon dibujados en un fondo.
+        for (i = 0; i < NUMERO_COMBATIENTES; i++)
+            gBattleSpritesDataPtr->battlerData[i].enFondoAnimacion = FALSE;
         InitPrioritiesForVisibleBattlers();
         FijaPrioridadMarcadores(1, sAnimHideHpBoxes);
         sAnimHideHpBoxes = FALSE;
@@ -847,6 +856,12 @@ static void Task_InitUpdateMonBg(u8 taskId)
     gTasks[updateTaskId].t2_BattlerId = tBattlerId;
     sMonAnimTaskIdArray[tIsPartner] = updateTaskId;
     DestroyAnimVisualTask(taskId);
+}
+
+static void SacaSpriteDelFondoAnimacion(u32 battler)
+{
+    gSprites[gBattlerSpriteIds[battler]].invisible = FALSE;
+    gBattleSpritesDataPtr->battlerData[battler].enFondoAnimacion = FALSE;
 }
 
 static void Cmd_monbg(void)
@@ -960,7 +975,10 @@ void MoveBattlerSpriteToBG(u8 battlerId, bool8 toBG_2, bool8 setSpriteInvisible)
         gBattle_BG1_X =  -(gSprites[battlerSpriteId].x + gSprites[battlerSpriteId].x2) + 0x20;
         gBattle_BG1_Y =  -(gSprites[battlerSpriteId].y + gSprites[battlerSpriteId].y2) + 0x20;
         if (setSpriteInvisible)
+        {
             gSprites[gBattlerSpriteIds[battlerId]].invisible = TRUE;
+            gBattleSpritesDataPtr->battlerData[battlerId].enFondoAnimacion = TRUE;
+        }
 
         SetGpuReg(REG_OFFSET_BG1HOFS, gBattle_BG1_X);
         SetGpuReg(REG_OFFSET_BG1VOFS, gBattle_BG1_Y);
@@ -989,7 +1007,10 @@ void MoveBattlerSpriteToBG(u8 battlerId, bool8 toBG_2, bool8 setSpriteInvisible)
         gBattle_BG2_Y =  -(gSprites[battlerSpriteId].y + gSprites[battlerSpriteId].y2) + 0x20;
 
         if (setSpriteInvisible)
+        {
             gSprites[gBattlerSpriteIds[battlerId]].invisible = TRUE;
+            gBattleSpritesDataPtr->battlerData[battlerId].enFondoAnimacion = TRUE;
+        }
 
         SetGpuReg(REG_OFFSET_BG2HOFS, gBattle_BG2_X);
         SetGpuReg(REG_OFFSET_BG2VOFS, gBattle_BG2_Y);
@@ -1096,9 +1117,9 @@ static void Cmd_clearmonbg(void)
         battlerId = gBattleAnimTarget;
 
     if (sMonAnimTaskIdArray[0] != TASK_NONE)
-        gSprites[gBattlerSpriteIds[battlerId]].invisible = FALSE;
+        SacaSpriteDelFondoAnimacion(battlerId);
     if (animBattlerId > 1 && sMonAnimTaskIdArray[1] != TASK_NONE)
-        gSprites[gBattlerSpriteIds[ALIADO(battlerId)]].invisible = FALSE;
+        SacaSpriteDelFondoAnimacion(ALIADO(battlerId));
     else
         animBattlerId = 0;
 
@@ -1204,9 +1225,9 @@ static void Cmd_clearmonbg_static(void)
         battlerId = gBattleAnimTarget;
 
     if (IsBattlerSpriteVisible(battlerId))
-        gSprites[gBattlerSpriteIds[battlerId]].invisible = FALSE;
+        SacaSpriteDelFondoAnimacion(battlerId);
     if (animBattlerId > 1 && IsBattlerSpriteVisible(ALIADO(battlerId)))
-        gSprites[gBattlerSpriteIds[ALIADO(battlerId)]].invisible = FALSE;
+        SacaSpriteDelFondoAnimacion(ALIADO(battlerId));
     else
         animBattlerId = 0;
 
@@ -1253,8 +1274,10 @@ static void Cmd_setalpha(void)
 static void Cmd_blendoff(void)
 {
     sBattleAnimScriptPtr++;
-    SetGpuReg(REG_OFFSET_BLDCNT, 0);
-    SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+    // "Apagar la mezcla" desde un guion de animacion significa devolverla a como
+    // la quiere el combate, no dejarla a cero: a cero se lleva por delante la
+    // sombra.
+    RestauraRegistrosCombate();
 }
 
 static void Cmd_call(void)

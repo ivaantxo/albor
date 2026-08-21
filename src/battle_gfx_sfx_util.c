@@ -5,6 +5,7 @@
 #include "battle_controllers.h"
 #include "battle_ai_main.h"
 #include "battle_anim.h"
+#include "battle_bg.h"
 #include "constants/battle_anim.h"
 #include "battle_interface.h"
 #include "main.h"
@@ -22,6 +23,7 @@
 #include "m4a.h"
 #include "decompress.h"
 #include "data.h"
+#include "gpu_regs.h"
 #include "palette.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
@@ -333,6 +335,10 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
     LoadPalette(gDecompressionBuffer, BG_PLTT_ID(8) + BG_PLTT_ID(battler), PLTT_SIZE_4BPP);
     DesplazaTonoPaleta(paletteOffset, currentPersonality);
     DesplazaTonoPaleta(BG_PLTT_ID(8) + BG_PLTT_ID(battler), currentPersonality);
+
+    // Ya tiene su color definitivo. Ahora le toca la luz de la hora.
+    GuardaYTinePaletaCombate(16 + battler);
+    GuardaYTinePaletaCombate(8 + battler);
 }
 
 void DecompressTrainerFrontPic(u16 frontPicId, u8 battler)
@@ -340,6 +346,16 @@ void DecompressTrainerFrontPic(u16 frontPicId, u8 battler)
     DecompressPicFromTable(&gTrainerSprites[frontPicId].frontPic,
                            gMonSpritesGfxPtr->spritesGfx[battler]);
     LoadCompressedSpritePalette(&gTrainerSprites[frontPicId].palette);
+
+    // El entrenador rival no va a una ranura fija como el jugador, sino a una que
+    // se le asigna por etiqueta, asi que hay que preguntar cual le ha tocado. Era
+    // el unico sprite del escenario que se quedaba sin luz.
+    {
+        u32 ranura = IndexOfSpritePaletteTag(gTrainerSprites[frontPicId].palette.tag);
+
+        if (ranura != 0xFF)
+            TinePaletaSueltaDeCombate(16 + ranura);
+    }
 }
 
 void DecompressTrainerBackPic(u16 backPicId, u8 battler)
@@ -348,6 +364,9 @@ void DecompressTrainerBackPic(u16 backPicId, u8 battler)
                            gMonSpritesGfxPtr->spritesGfx[battler]);
     LoadCompressedPalette(gTrainerBacksprites[backPicId].palette.data,
                           OBJ_PLTT_ID(battler), PLTT_SIZE_4BPP);
+    // El entrenador esta en el mismo escenario que los Pokemon, asi que le da la
+    // misma luz. Va a la misma ranura de paleta que el combatiente.
+    GuardaYTinePaletaCombate(16 + battler);
 }
 
 void FreeTrainerFrontPicPalette(u16 frontPicId)
@@ -482,6 +501,9 @@ void GestionaCambioGraficoEspecie(u32 atacante, u32 defensor, bool32 usarPersona
     DesplazaTonoPaleta(paletteOffset, personalityValue);
     BlendPalette(paletteOffset, 16, 6, RGB_WHITE);
     CopiaCpu32(&gPlttBufferFaded[paletteOffset], &gPlttBufferUnfaded[paletteOffset], PLTT_SIZE_4BPP);
+    // Transformacion cambia la paleta a media pelea, asi que hay que volver a
+    // darle la luz de la hora.
+    GuardaYTinePaletaCombate(16 + atacante);
 
     gSprites[gBattlerSpriteIds[atacante]].y = GetBattlerSpriteDefault_Y(atacante);
     StartSpriteAnim(&gSprites[gBattlerSpriteIds[atacante]], 0);
@@ -507,6 +529,7 @@ void BattleLoadSubstituteOrMonSpriteGfx(u8 battler, bool8 loadMonSprite)
 
         palOffset = OBJ_PLTT_ID(battler);
         LoadCompressedPalette(gBattleAnimSpritePal_Substitute, palOffset, PLTT_SIZE_4BPP);
+        GuardaYTinePaletaCombate(16 + battler);
     }
     else
         BattleLoadMonSpriteGfx(&GetBattlerParty(battler)[gBattlerPartyIndexes[battler]], battler);
@@ -642,6 +665,9 @@ void LoadAndCreateEnemyShadowSprites(void)
     u32 i;
 
     CargaGraficosSombraPokemon();
+    // Primer ajuste de la mezcla, para las sombras que nacen antes de que el
+    // combate llegue a su reposo (la vuelta de un menu, sin entrada que valga).
+    // A partir de ahi manda RestauraRegistrosCombate, que pone lo mismo.
     PreparaMezclaSombraPokemon();
 
     for (i = 0; i < gBattlersCount; i++)
@@ -668,14 +694,33 @@ void SpriteCB_EnemyShadow(struct Sprite *shadowSprite)
         return;
     }
 
-    if (gAnimScriptActive || battlerSprite->invisible)
+    // Antes se escondia durante CUALQUIER animacion. No hace falta: solo estorba
+    // a las que se adueñan de la mezcla, y esas se detectan solas mirando como han
+    // dejado los registros. Las demas -la mayoria- pueden llevar sombra.
+    // El sprite apagado por estar dibujado en una capa de fondo no cuenta: el
+    // Pokemon sigue viendose, y esa capa tiene mas prioridad que la sombra, asi
+    // que el orden entre los dos se mantiene.
+    if ((battlerSprite->invisible && !gBattleSpritesDataPtr->battlerData[battler].enFondoAnimacion)
+        || !MezclaSirveParaSombra())
     {
         invisible = TRUE;
     }
     else
     {
         // Se lee en vivo porque la especie puede cambiar en combate (Transformacion).
+        //
+        // Pero al acabar el combate gBattleMons se vacia mientras la sombra sigue
+        // dibujandose, y entonces esto devolvia SPECIES_NONE, que no declara
+        // SOMBRA(...): tamano S y desplazamientos a cero. De ahi que la sombra se
+        // encogiera un poco justo al terminar. Con la especie a cero nos quedamos
+        // con la ultima buena.
         u32 especie = SanitizeSpeciesId(gBattleMons[battler].species);
+
+        if (especie == SPECIES_NONE)
+            especie = shadowSprite->sSombraEspecie;
+        else
+            shadowSprite->sSombraEspecie = especie;
+
         desplazamientoX = gSpeciesInfo[especie].enemyShadowXOffset;
         desplazamientoY = gSpeciesInfo[especie].enemyShadowYOffset;
         FijaAplastadoSombra(shadowSprite, gSpeciesInfo[especie].enemyShadowSize);
@@ -688,14 +733,6 @@ void SpriteCB_EnemyShadow(struct Sprite *shadowSprite)
 
     ColocaSombraPokemon(shadowSprite, battlerSprite, desplazamientoX, desplazamientoY);
     shadowSprite->invisible = invisible;
-
-    // La mezcla se reafirma en cada fotograma. Se fijaba solo al crear la sombra,
-    // pero el combate reescribe BLDCNT por su cuenta -entradas, fundidos- y al
-    // quedarse sin segunda capa el duplicado deja de mezclarse y sale negro
-    // macizo. Solo se reafirma con la sombra a la vista: durante las animaciones
-    // esta oculta, y asi ellas siguen disponiendo de la mezcla a su gusto.
-    if (!invisible)
-        PreparaMezclaSombraPokemon();
 }
 
 #undef tBattlerId

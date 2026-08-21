@@ -544,11 +544,24 @@ static void ApplyColorMapWithBlend(u8 startPalIndex, u8 numPalettes, s8 colorMap
     colorMapIndex--;
     curPalIndex = startPalIndex;
 
+    // El rango entero se prepara de una sola vez.
+    //
+    // Estas tres llamadas estaban DENTRO del bucle de abajo, cada una con una
+    // mascara de un solo bit: hasta 32 vueltas montando mascaras, releyendo los
+    // tilesets del mapa y volviendo a preguntar si el mapa tiene luz natural,
+    // para acabar haciendo exactamente el mismo trabajo. El resultado es el mismo
+    // porque las tres operan por paleta y en el mismo orden.
+    {
+        u32 paletas = (~0u >> (32 - (numPalettes - startPalIndex))) << startPalIndex;
+
+        UpdateAltBgPalettes(paletas & PALETTES_BG);
+        CopiaRapidaCpu(gPlttBufferUnfaded + palOffset, gPlttBufferFaded + palOffset,
+                       (numPalettes - startPalIndex) * PLTT_SIZE_4BPP);
+        UpdatePalettesWithTime(paletas);
+    }
+
     while (curPalIndex < numPalettes)
     {
-        UpdateAltBgPalettes((1 << (palOffset >> 4)) & PALETTES_BG);
-        CopiaRapidaCpu(gPlttBufferUnfaded + palOffset, gPlttBufferFaded + palOffset, 16 * sizeof(u16));
-        UpdatePalettesWithTime(1 << (palOffset >> 4)); // Apply TOD blend
         if (sPaletteColorMapTypes[curPalIndex] == COLOR_MAP_NONE)
         {
             // No color map. Simply blend the colors.
