@@ -71,6 +71,10 @@ static void SpriteCB_ZoomEntradaSalvaje(struct Sprite *sprite);
 static void ColocaZoom(struct Sprite *sprite, s32 cercania);
 static void TerminaZoomEntrada(struct Sprite *sprite);
 static bool32 ArrancaZoom(struct Sprite *sprite);
+
+// Las animaciones afines que el sprite del rival tenia antes del acercamiento. Solo
+// hay un acercamiento a la vez, asi que con una basta.
+static const union AffineAnimCmd *const *sAnimsAfinesDelRival = NULL;
 static void SpriteCB_WildMonAnimate(struct Sprite *sprite);
 static void SpriteCB_AnimFaintOpponent(struct Sprite *sprite);
 static void SpriteCB_BlinkVisible(struct Sprite *sprite);
@@ -443,9 +447,7 @@ static void CB2_InitBattleInternal(void)
     LoadBattleTextboxAndBackground();
     ResetSpriteData();
     ResetTasks();
-    // Sin fondo de entrada. Cargaba en FONDO_1 una version aparte del escenario que
-    // solo servia para el deslizamiento de entrada; sin deslizamiento se quedaba
-    // ahi quieta y de mas. FONDO_1 queda vacio, que es como debe estar.
+    // Sin fondo de entrada: no hay deslizamiento y sus tiles no se quieren.
     FreeAllSpritePalettes();
     gReservedSpritePaletteCount = NUMERO_COMBATIENTES;
     SetVBlankCallback(VBlankCB_Battle);
@@ -528,6 +530,7 @@ static void ActualizaHoraDelDiaEnCombate(void)
     if (LaHoraDelDiaHaCambiado())
         ActualizaPaletasCombateSegunHora();
 }
+
 
 void BattleMainCB2(void)
 {
@@ -840,37 +843,31 @@ static void ColocaZoom(struct Sprite *sprite, s32 cercania)
     SetOamMatrix(sprite->sZoomMatriz, escala, 0, 0, escala);
 }
 
-// Pasa el sprite a modo afin. Devuelve falso si no queda ninguna matriz libre.
+// Pasa el sprite a caja doble para poder escalarlo.
+//
+// NO se pide matriz: el sprite del rival ya viene con una, porque su plantilla
+// declara ST_OAM_AFFINE_NORMAL y CreateSprite se la asigna al nacer. Pedir otra
+// filtraba la primera y, al soltar la segunda al terminar, dejaba matrixNum
+// apuntando a una matriz ya libre que acababa quedandose otro sprite: los dos
+// Pokemon compartian matriz y se animaban igual y a la vez.
 static bool32 ArrancaZoom(struct Sprite *sprite)
 {
+    if (!(sprite->oam.affineMode & ST_OAM_AFFINE_ON_MASK))
+        return FALSE;
+
     // ST_OAM_AFFINE_DOUBLE no agranda nada por si solo: lo unico que hace es dar al
     // sprite una caja de dibujo del doble de tamano para que, al escalarlo, no se
     // recorte contra sus propios bordes. Quien agranda es la matriz.
     sprite->oam.affineMode = ST_OAM_AFFINE_DOUBLE;
-
-    // Y la matriz se pide por la via del sistema de sprites, no a mano. Hacerlo a
-    // mano dejaba el sprite a tamano normal: InitSpriteAffineAnim ademas recoloca
-    // el ancla segun la caja nueva y pone en orden el estado de animacion afin, que
-    // es lo que faltaba.
-    InitSpriteAffineAnim(sprite);
-
-    if (sprite->oam.matrixNum >= 32)
-    {
-        sprite->oam.affineMode = ST_OAM_AFFINE_OFF;
-        return FALSE;
-    }
+    CalcCenterToCornerVec(sprite, sprite->oam.shape, sprite->oam.size, ST_OAM_AFFINE_DOUBLE);
 
     sprite->sZoomMatriz = sprite->oam.matrixNum;
 
-    // Y aqui esta la clave, que costo encontrar: affineAnimPaused NO SIRVE en esta
-    // base. AnimateSprite (sprite.c) consulta la global gAffineAnimsDisabled y no
-    // el campo del sprite, asi que la animacion afin de la especie se ejecutaba
-    // igual y devolvia la matriz a la identidad en cuanto se escribia.
-    //
-    // La forma que si funciona -y que es la que usa la sombra desde siempre- es
-    // dejar al sprite sin animaciones afines que ejecutar: BeginAffineAnim se salta
-    // el trabajo entero si el primer comando de la tabla es AFFINE_ANIM_END, que es
-    // exactamente lo unico que tiene gDummySpriteAffineAnimTable.
+    // Su animacion afin volveria a escribir la matriz cada fotograma. Dejarlo sin
+    // animaciones afines es lo que de verdad lo impide: BeginAffineAnim se salta el
+    // trabajo entero si el primer comando de la tabla es AFFINE_ANIM_END, que es lo
+    // unico que tiene gDummySpriteAffineAnimTable.
+    sAnimsAfinesDelRival = sprite->affineAnims;
     sprite->affineAnims = gDummySpriteAffineAnimTable;
     sprite->affineAnimPaused = TRUE;
     return TRUE;
@@ -881,15 +878,17 @@ static void TerminaZoomEntrada(struct Sprite *sprite)
     sprite->x2 = 0;
     sprite->y2 = 0;
 
-    if (sprite->oam.affineMode != ST_OAM_AFFINE_OFF)
+    if (sprite->oam.affineMode == ST_OAM_AFFINE_DOUBLE)
     {
-        FreeSpriteOamMatrix(sprite);
-        sprite->oam.affineMode = ST_OAM_AFFINE_OFF;
-        CalcCenterToCornerVec(sprite, sprite->oam.shape, sprite->oam.size, ST_OAM_AFFINE_OFF);
+        // Se vuelve a la caja normal, que es el modo de su plantilla. NO se libera
+        // la matriz: es suya de siempre y la suelta el sistema al destruir el
+        // sprite. Solo se deja en identidad para que su animacion empiece limpia.
+        sprite->oam.affineMode = ST_OAM_AFFINE_NORMAL;
+        CalcCenterToCornerVec(sprite, sprite->oam.shape, sprite->oam.size, ST_OAM_AFFINE_NORMAL);
+        SetOamMatrix(sprite->oam.matrixNum, 256, 0, 0, 256);
 
-        // Se le devuelven sus animaciones afines, que es lo que usa despues la
-        // animacion de la especie.
-        sprite->affineAnims = gAffineAnims_BattleSpriteOpponentSide;
+        // Y se le devuelven las animaciones afines que tuviera antes.
+        sprite->affineAnims = sAnimsAfinesDelRival;
     }
 
     sprite->affineAnimPaused = FALSE;
@@ -1277,7 +1276,7 @@ static void BattleMainCB1(void)
         if (gBattleMainFunc != sUltimaFase)
         {
             sUltimaFase = gBattleMainFunc;
-            LOG("FASE combate", (u32)gBattleMainFunc, 0);
+            // LOG("FASE combate", (u32)gBattleMainFunc, 0);
         }
     }
 
@@ -2113,7 +2112,7 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
         case PROCESA_ACCION:
             if (!EstaCombatienteOcupado(combatiente))
             {
-                LOG("ACCION cruda buffer/combatiente", gBattleResources->bufferB[combatiente][1], combatiente);
+                // LOG("ACCION cruda buffer/combatiente", gBattleResources->bufferB[combatiente][1], combatiente);
                 gAccionElegida[combatiente] = gBattleResources->bufferB[combatiente][1];
                 switch (gBattleResources->bufferB[combatiente][1])
                 {
@@ -2706,9 +2705,9 @@ static void RunTurnActionsFunctions(void)
         {
             sUltimo = v;
             // a = numero de accion del turno, b = accion que se va a ejecutar
-            LOG("TURNO accion/funcId", gCurrentTurnActionNumber, gCurrentActionFuncId);
-            LOG("   orden combatientes", gBattlerByTurnOrder[0], gBattlerByTurnOrder[1]);
-            LOG("   acciones elegidas", gAccionElegida[0], gAccionElegida[1]);
+            // LOG("TURNO accion/funcId", gCurrentTurnActionNumber, gCurrentActionFuncId);
+            // LOG("   orden combatientes", gBattlerByTurnOrder[0], gBattlerByTurnOrder[1]);
+            // LOG("   acciones elegidas", gAccionElegida[0], gAccionElegida[1]);
         }
     }
 

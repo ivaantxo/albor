@@ -496,8 +496,18 @@ void RestauraRegistrosCombate(void)
 //
 // Se tine el mundo: el terreno -fondos 2, 3 y 4, donde deja la paleta del
 // escenario LoadBattleTextboxAndBackground- y los combatientes, que ocupan una
-// paleta de objeto cada uno de la 0 a la 3, mas la copia que se guarda de cada una
-// en los fondos 8 a 11 para cuando las animaciones dibujan al Pokemon en una capa.
+// paleta de objeto cada uno de la 0 a la 3.
+//
+// Los fondos 8 a 11 NO entran, aunque BattleLoadMonSpriteGfx deje ahi una copia de
+// cada combatiente. Estuvieron un tiempo y fue un error: monbg reutiliza el 8 y el
+// 9 para lo suyo cuando dibuja al Pokemon en una capa, asi que la instantania sin
+// tenir que se guardaba aqui no correspondia con lo que hubiera en ese momento, y
+// al repintar se escribia encima -o peor, se escribia negro, que es lo que hay en
+// una instantania que nunca se llego a tomar-.
+//
+// Tampoco hacen falta: monbg copia desde la paleta de objeto SIN FUNDIR del
+// Pokemon, que ya viene tenida, asi que el Pokemon dibujado en la capa hereda la
+// luz por ese camino sin que nadie tenga que teñirlo aqui.
 //
 // Queda inmune todo lo que es interfaz: el cuadro de texto (fondo 0), el menu de
 // acciones (fondo 1), el texto de ventana (fondo 5), y por el lado de los objetos
@@ -508,7 +518,6 @@ void RestauraRegistrosCombate(void)
 static const u8 sPaletasCombateConHora[] =
 {
     2, 3, 4,            // terreno
-    8, 9, 10, 11,       // copia en fondo de cada combatiente
     16, 17, 18, 19,     // los cuatro combatientes
 };
 
@@ -523,8 +532,8 @@ static const u8 sPaletasCombateConHora[] =
 //
 // La pega de escribir en la de origen es que se pierde el color original, y sin el
 // no se puede volver a tenir cuando cambia la hora sin que el tinte se acumule. De
-// ahi esta copia: son 11 paletas, 352 bytes.
-static EWRAM_DATA u16 sPaletasCombateSinTenir[11 * 16] = {0};
+// ahi esta copia: son 7 paletas, 224 bytes.
+static EWRAM_DATA u16 sPaletasCombateSinTenir[7 * 16] = {0};
 
 static u16 *CopiaSinTenirDe(u32 paleta)
 {
@@ -571,7 +580,7 @@ void GuardaYTinePaletaCombate(u32 paleta)
         return;
 
     CopiaCpu16(gPlttBufferUnfaded + PLTT_ID(paleta), cruda, PLTT_SIZE_4BPP);
-    LOG("tine paleta / fundido activo", paleta, gFundidoPaletas.activo);
+
     TinePaletaCombate(paleta, cruda);
 }
 

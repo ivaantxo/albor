@@ -41,4 +41,9 @@ bool32 EsObjetoPokemonSalvaje(u32 objectEventId);
 // por localId y no por indice, porque el indice lo reutiliza el motor.
 bool32 EsLocalIdDePokemonSalvaje(u32 localId);
 
+// Cierto si un Pokemon salvaje tiene pedida esa casilla aunque todavia no la
+// ocupe. Sirve para tapar el fotograma que hay entre que se le encarga el paso y
+// sus coordenadas se mudan, que es por donde se colaba el jugador.
+bool32 EsCasillaReservadaPorPokemonSalvaje(s16 x, s16 y);
+
 #endif // GUARD_POKEMON_SALVAJES_OW_H

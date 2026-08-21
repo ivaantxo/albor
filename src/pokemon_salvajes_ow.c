@@ -51,7 +51,18 @@ struct SalvajeOw
     u16 especie;
     u8 nivel;
     u32 personalidad;
+
+    // Casilla que tiene pedida pero todavia no ocupa.
+    //
+    // Entre que se le encarga un paso y sus coordenadas se mudan de sitio pasa un
+    // fotograma, y en ese hueco la casilla de destino no la reclama nadie: la
+    // colision del juego no la ve y el jugador se cuela dentro. Aqui la reclama el
+    // salvaje desde el instante en que decide ir.
+    s16 reservaX;
+    s16 reservaY;
 };
+
+#define SIN_RESERVA (-1)
 
 static EWRAM_DATA struct SalvajeOw sSalvajes[MAXIMO_SALVAJES_OW] = {0};
 static EWRAM_DATA u8 sPasosHastaProximaAparicion = 0;
@@ -207,6 +218,8 @@ static void QuitaSalvaje(struct SalvajeOw *salvaje)
 
     salvaje->activo = FALSE;
     salvaje->objectEventId = OBJECT_EVENTS_COUNT;
+    salvaje->reservaX = SIN_RESERVA;
+    salvaje->reservaY = SIN_RESERVA;
 
     // Un hueco recien liberado no se reutiliza de inmediato.
     if (sPasosHastaProximaAparicion < PASOS_TRAS_DESAPARICION)
@@ -217,6 +230,17 @@ static void QuitaSalvaje(struct SalvajeOw *salvaje)
 // objetos ya no estan y solo hay que olvidarlos; en el segundo siguen ahi y hay
 // que quitarlos, porque al rehacerse el mapa pierden su personalidad y volverian
 // con otros colores. Se prefiere que desaparezcan a que cambien de aspecto.
+bool32 EsCasillaReservadaPorPokemonSalvaje(s16 x, s16 y)
+{
+    for (u32 i = 0; i < MAXIMO_SALVAJES_OW; i++)
+    {
+        if (sSalvajes[i].activo && sSalvajes[i].reservaX == x && sSalvajes[i].reservaY == y)
+            return TRUE;
+    }
+
+    return FALSE;
+}
+
 bool32 EsLocalIdDePokemonSalvaje(u32 localId)
 {
     return localId >= LOCALID_SALVAJE_PRIMERO
@@ -229,6 +253,8 @@ void ReiniciaPokemonSalvajesOw(void)
     {
         sSalvajes[i].activo = FALSE;
         sSalvajes[i].objectEventId = OBJECT_EVENTS_COUNT;
+        sSalvajes[i].reservaX = SIN_RESERVA;
+        sSalvajes[i].reservaY = SIN_RESERVA;
     }
 
     // Se barren TODOS los objetos del mapa que lleven un localId de salvaje, no
@@ -430,6 +456,13 @@ static void IntentaCrearSalvaje(void)
 // ocho movimientos posibles y asi no se pierde el turno.
 static void MueveSalvaje(struct SalvajeOw *salvaje, struct ObjectEvent *objEvent)
 {
+    // Ya esta donde habia pedido: la reserva sobra.
+    if (objEvent->currentCoords.x == salvaje->reservaX && objEvent->currentCoords.y == salvaje->reservaY)
+    {
+        salvaje->reservaX = SIN_RESERVA;
+        salvaje->reservaY = SIN_RESERVA;
+    }
+
     u32 direccion = DIR_SOUTH + (Random() % 4);
     bool32 quiereAndar = (Random() % 2) != 0;
 
@@ -442,14 +475,8 @@ static void MueveSalvaje(struct SalvajeOw *salvaje, struct ObjectEvent *objEvent
 
             if (CasillaTransitable(salvaje->terreno, x, y, objEvent->currentElevation))
             {
-                const struct ObjectEvent *jugador = &gObjectEvents[gPlayerAvatar.objectEventId];
-
-                LOG("salvaje anda: desde x,y", objEvent->currentCoords.x, objEvent->currentCoords.y);
-                LOG("salvaje anda: hacia x,y", x, y);
-                LOG("jugador ahora x,y", jugador->currentCoords.x, jugador->currentCoords.y);
-                LOG("jugador antes x,y", jugador->previousCoords.x, jugador->previousCoords.y);
-                LOG("jugador mira / se mueve", jugador->facingDirection, jugador->movementDirection);
-
+                salvaje->reservaX = x;
+                salvaje->reservaY = y;
                 ObjectEventSetHeldMovement(objEvent, MOVEMENT_ACTION_WALK_NORMAL_DOWN + (direccion - DIR_SOUTH));
                 return;
             }
@@ -460,6 +487,34 @@ static void MueveSalvaje(struct SalvajeOw *salvaje, struct ObjectEvent *objEvent
 
 void ActualizaPokemonSalvajesOw(void)
 {
+#if DEPURACION_MGBA
+    // Estado de cada salvaje vivo en cada paso del jugador, con las alturas: si un
+    // salvaje y el jugador estan a alturas incompatibles, la colision del juego no
+    // los frena y se atraviesan.
+    {
+        const struct ObjectEvent *jugador = &gObjectEvents[gPlayerAvatar.objectEventId];
+
+        LOG("PASO jugador x,y", jugador->currentCoords.x, jugador->currentCoords.y);
+        LOG("PASO jugador altura / mira", jugador->currentElevation, jugador->facingDirection);
+
+        for (u32 i = 0; i < MAXIMO_SALVAJES_OW; i++)
+        {
+            const struct ObjectEvent *objEvent = ObjetoDeSalvaje(&sSalvajes[i]);
+
+            if (objEvent == NULL)
+                continue;
+
+            LOG("PASO salvaje ahora x,y", objEvent->currentCoords.x, objEvent->currentCoords.y);
+            LOG("PASO salvaje antes x,y", objEvent->previousCoords.x, objEvent->previousCoords.y);
+            LOG("PASO salvaje altura / ranura", objEvent->currentElevation, i);
+
+            if (objEvent->currentCoords.x == jugador->currentCoords.x
+             && objEvent->currentCoords.y == jugador->currentCoords.y)
+                LOG("*** CRUCE: misma casilla, alturas", jugador->currentElevation, objEvent->currentElevation);
+        }
+    }
+#endif
+
     for (u32 i = 0; i < MAXIMO_SALVAJES_OW; i++)
     {
         struct SalvajeOw *salvaje = &sSalvajes[i];

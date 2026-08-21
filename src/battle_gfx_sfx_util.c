@@ -337,8 +337,11 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
     DesplazaTonoPaleta(BG_PLTT_ID(8) + BG_PLTT_ID(battler), currentPersonality);
 
     // Ya tiene su color definitivo. Ahora le toca la luz de la hora.
+    //
+    // Solo la paleta de objeto. La copia de fondo que se acaba de dejar en 8+battler
+    // se queda sin tenir a proposito: esas ranuras las reutiliza monbg y no se les
+    // puede guardar una instantania fiable.
     GuardaYTinePaletaCombate(16 + battler);
-    GuardaYTinePaletaCombate(8 + battler);
 }
 
 void DecompressTrainerFrontPic(u16 frontPicId, u8 battler)
@@ -723,7 +726,6 @@ void SpriteCB_EnemyShadow(struct Sprite *shadowSprite)
 
         desplazamientoX = gSpeciesInfo[especie].enemyShadowXOffset;
         desplazamientoY = gSpeciesInfo[especie].enemyShadowYOffset;
-        FijaAplastadoSombra(shadowSprite, gSpeciesInfo[especie].enemyShadowSize);
         if (gSpeciesInfo[especie].suppressEnemyShadow)
             invisible = TRUE;
     }

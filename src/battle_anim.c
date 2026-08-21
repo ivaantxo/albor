@@ -2,6 +2,7 @@
 #include "battle.h"
 #include "battle_anim.h"
 #include "battle_bg.h"
+#include "depuracion_mgba.h"
 #include "battle_anim_scripts.h"
 #include "battle_controllers.h"
 #include "battle_interface.h"
@@ -864,13 +865,13 @@ static void SacaSpriteDelFondoAnimacion(u32 battler)
     gBattleSpritesDataPtr->battlerData[battler].enFondoAnimacion = FALSE;
 }
 
+
 static void Cmd_monbg(void)
 {
     bool8 toBG_2;
     u8 taskId;
     u8 battlerId;
     u8 animBattler;
-
     sBattleAnimScriptPtr++;
 
     animBattler = sBattleAnimScriptPtr[0];
@@ -916,7 +917,6 @@ static void Cmd_monbg(void)
         gTasks[taskId].tActive = TRUE;
         gTasks[taskId].tIsPartner = TRUE;
     }
-
     sBattleAnimScriptPtr++;
     sAnimFramesToWait = 1;
     gAnimScriptCallback = WaitAnimFrameCount;

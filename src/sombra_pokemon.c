@@ -81,30 +81,47 @@ void CargaGraficosSombraPokemon(void)
 //
 //   pa = 256      pb = +s*256/k
 //   pc = 0        pd = 256*256/k
-static const u16 sAplastadoPorTamano[] =
+
+
+// Unica funcion que calcula la matriz de una sombra. La usan tanto el juego -con
+// las constantes de sombra_pokemon.h- como la pagina de deformacion del visor de
+// sprites, para que sea IMPOSIBLE que lo que se ve al ajustar y lo que hace el
+// codigo se separen: no hay dos caminos que puedan redondear distinto.
+void FijaDeformacionSombra(struct Sprite *sombra, s32 ancho, s32 alto, s32 inclinH, s32 inclinV)
 {
-    [SHADOW_SIZE_S]  = SOMBRA_APLASTADO_S,
-    [SHADOW_SIZE_M]  = SOMBRA_APLASTADO_M,
-    [SHADOW_SIZE_L]  = SOMBRA_APLASTADO_L,
-    [SHADOW_SIZE_XL] = SOMBRA_APLASTADO_XL,
-};
+    s32 escala = SOMBRA_TAMANO;
+    s32 pa, pb, pc, pd, pieX, pieY;
 
-void FijaAplastadoSombra(struct Sprite *sombra, u32 tamano)
+    // Una escala de cero haria estallar la division y dejaria la sombra invisible.
+    if (ancho > -SOMBRA_ESCALA_MINIMA && ancho < SOMBRA_ESCALA_MINIMA)
+        ancho = (ancho < 0) ? -SOMBRA_ESCALA_MINIMA : SOMBRA_ESCALA_MINIMA;
+    if (alto > -SOMBRA_ESCALA_MINIMA && alto < SOMBRA_ESCALA_MINIMA)
+        alto = (alto < 0) ? -SOMBRA_ESCALA_MINIMA : SOMBRA_ESCALA_MINIMA;
+
+    // La matriz es la INVERSA de lo que se ve, de ahi que dividir agrande. El
+    // tamano de la especie divide los cuatro terminos por igual, asi que cambia lo
+    // grande que es la sombra pero no su forma: la luz es la misma para todos.
+    pa = (256 * 100 * 100) / (ancho * escala);
+    pd = (256 * 100 * 100) / (alto * escala);
+    pb = (inclinH * 256 * 100) / (100 * escala);
+    pc = (inclinV * 256 * 100) / (100 * escala);
+
+    SetOamMatrix(sombra->sSombraMatriz, (u16)pa, (u16)pb, (u16)pc, (u16)pd);
+
+    // Donde acaban los pies despues de deformar, y cuanto hay que mover la sombra
+    // para devolverlos a la linea del suelo. Se despeja de la propia matriz en vez
+    // de rehacer la trigonometria: asi sigue valiendo se toquen los numeros que se
+    // toquen.
+    pieY = (pd != 0) ? (256 * SOMBRA_LINEA_PIES) / pd : SOMBRA_LINEA_PIES;
+    pieX = (pa != 0) ? -(pb * pieY) / pa : 0;
+
+    sombra->sSombraCorreccionX = -pieX;
+    sombra->sSombraCorreccionY = SOMBRA_LINEA_PIES - pieY;
+}
+
+void FijaFormaSombra(struct Sprite *sombra)
 {
-    s32 aplastado;
-
-    if (tamano >= ARRAY_COUNT(sAplastadoPorTamano))
-        tamano = SHADOW_SIZE_M;
-
-    aplastado = sAplastadoPorTamano[tamano];
-    if (aplastado < 1)
-        aplastado = 1;
-
-    SetOamMatrix(sombra->sSombraMatriz,
-                 256,
-                 (SOMBRA_INCLINACION * 256) / aplastado,
-                 0,
-                 (256 * 256) / aplastado);
+    FijaDeformacionSombra(sombra, SOMBRA_ANCHO, SOMBRA_ALTO, SOMBRA_INCLINACION, 0);
 }
 
 // Un sprite en modo semitransparente se mezcla siempre con lo que tenga detras,
@@ -188,7 +205,7 @@ u8 CreaSombraPokemon(u8 spriteIdDueno, u8 subprioridad)
     sombra->sSombraMatriz = matriz;
     sombra->sSombraDueno = spriteIdDueno;
     sombra->invisible = TRUE;
-    FijaAplastadoSombra(sombra, SHADOW_SIZE_M);
+    FijaFormaSombra(sombra);
 
     return spriteId;
 }
@@ -200,8 +217,8 @@ void ColocaSombraPokemon(struct Sprite *sombra, const struct Sprite *dueno, s32 
     // sigue sin que haya que enterarse de nada.
     sombra->oam.tileNum = dueno->oam.tileNum;
 
-    sombra->x = dueno->x + desplazamientoX + SOMBRA_CORRIMIENTO;
-    sombra->y = dueno->y + desplazamientoY;
+    sombra->x = dueno->x + desplazamientoX + sombra->sSombraCorreccionX;
+    sombra->y = dueno->y + desplazamientoY + sombra->sSombraCorreccionY;
     sombra->x2 = dueno->x2;
     sombra->y2 = dueno->y2;
 }

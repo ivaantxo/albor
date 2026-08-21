@@ -8,6 +8,7 @@
 #include "decompress.h"
 #include "event_data.h"
 #include "event_object_movement.h"
+#include "pokemon_salvajes_ow.h"
 #include "depuracion_mgba.h"
 #include "event_scripts.h"
 #include "faraway_island.h"
@@ -5552,6 +5553,14 @@ static u8 GetVanillaCollision(struct ObjectEvent *objectEvent, s16 x, s16 y, u8 
     else if (IsElevationMismatchAt(objectEvent->currentElevation, x, y))
         return COLLISION_ELEVATION_MISMATCH;
     else if (DoesObjectCollideWithObjectAt(objectEvent, x, y))
+        return COLLISION_OBJECT_EVENT;
+    // Una casilla que un Pokemon salvaje tiene pedida cuenta como ocupada aunque
+    // todavia no este en ella: si no, el jugador se cuela en el fotograma que hay
+    // entre que el salvaje decide el paso y sus coordenadas se mudan, y los dos se
+    // atraviesan. El propio salvaje no se estorba porque solo se consulta para el
+    // jugador.
+    else if (objectEvent == &gObjectEvents[gPlayerAvatar.objectEventId]
+          && EsCasillaReservadaPorPokemonSalvaje(x, y))
         return COLLISION_OBJECT_EVENT;
 
     return COLLISION_NONE;

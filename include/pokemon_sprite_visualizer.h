@@ -52,9 +52,6 @@ struct PokemonShadowSettings
 
     s8 overrideX;
     s8 overrideY;
-
-    u8 definedSize;
-    u8 overrideSize;
 };
 
 struct PokemonSpriteVisualizer

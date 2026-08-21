@@ -178,7 +178,7 @@ static void PlayerBufferRunCommand(u32 combatiente)
             if (comando != sUltimoComando)
             {
                 sUltimoComando = comando;
-                LOG("CMD jugador comando/combatiente", comando, combatiente);
+                // LOG("CMD jugador comando/combatiente", comando, combatiente);
             }
         }
         if (gBattleResources->bufferA[combatiente][0] < ARRAY_COUNT(sPlayerBufferCommands))

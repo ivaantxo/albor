@@ -1019,6 +1019,19 @@ void JumpToTopOfAnimLoop(struct Sprite *sprite)
 
 void BeginAffineAnim(struct Sprite *sprite)
 {
+    // Pausada es pausada, tambien para empezar.
+    //
+    // ContinueAffineAnim si respeta affineAnimPaused, pero aqui no se miraba, y
+    // como InitSpriteAffineAnim deja siempre affineAnimBeginning a cierto, una
+    // animacion afin recien montada arrancaba aunque estuviera pausada y se
+    // llevaba por delante cualquier matriz puesta a mano.
+    //
+    // Se sale sin tocar nada y sin bajar affineAnimBeginning, asi que la animacion
+    // arranca sola en cuanto se despause. La matriz se queda como la dejo
+    // InitSpriteAffineAnim, que es la identidad.
+    //if (sprite->affineAnimPaused)
+    //    return;
+
     if ((sprite->oam.affineMode & ST_OAM_AFFINE_ON_MASK) && sprite->affineAnims[0][0].type != 32767)
     {
         struct AffineAnimFrameCmd frameCmd;

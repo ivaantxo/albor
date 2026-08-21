@@ -4,6 +4,7 @@
 #include "battle_ai_main.h"
 #include "battle_ai_util.h"
 #include "battle_anim.h"
+#include "battle_bg.h"
 #include "battle_controllers.h"
 #include "battle_gfx_sfx_util.h"
 #include "battle_interface.h"
@@ -1711,6 +1712,12 @@ void BtlController_HandleIntroTrainerBallThrow(u32 battler, u16 tagTrainerPal, c
         {
             LoadCompressedPalette(trainerPal, OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
             gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = paletteNum;
+
+            // Para la animacion de lanzamiento el entrenador se muda a una ranura
+            // pedida sobre la marcha, con la paleta recien descomprimida. Ahi se
+            // quedaba sin la luz de la hora: empezaba tenido en la ranura del
+            // combatiente y la perdia al mudarse.
+            TinePaletaSueltaDeCombate(16 + paletteNum);
         }
         else
         {

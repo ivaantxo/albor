@@ -691,7 +691,20 @@ bool32 InitSpritePosToAnimBattler(u32 animBattlerId, struct Sprite *sprite, bool
 
 bool8 IsBattlerSpritePresent(u8 battlerId)
 {
-    if (battlerId == 0xFF)
+    // Que el combatiente EXISTA, antes de nada.
+    //
+    // Aqui solo se miraba si tenia PS, y para un combatiente que no esta en juego
+    // -el 2 y el 3 en un combate individual- gBattlerPartyIndexes tiene basura
+    // residual: se acababa leyendo los PS de un Pokemon cualquiera del equipo y,
+    // como los tenia, se daba por presente uno que no existe.
+    //
+    // De ahi salia lo de Pisoton: Cmd_monbg mueve al objetivo Y a su companero a
+    // sendas capas de fondo, el companero fantasma se daba por visible, y monbg se
+    // apoderaba tambien de FONDO_2 dibujando encima del escenario.
+    if (battlerId >= gBattlersCount)
+        return FALSE;
+
+    if (gBattlerPartyIndexes[battlerId] >= PARTY_SIZE)
         return FALSE;
 
     if (GetBattlerSide(battlerId) == LADO_OPONENTE)

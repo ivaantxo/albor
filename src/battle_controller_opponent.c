@@ -120,7 +120,7 @@ static void OpponentBufferRunCommand(u32 combatiente)
             if (comando != sUltimoComando)
             {
                 sUltimoComando = comando;
-                LOG("CMD rival comando/combatiente", comando, combatiente);
+                // LOG("CMD rival comando/combatiente", comando, combatiente);
             }
         }
         if (gBattleResources->bufferA[combatiente][0] < ARRAY_COUNT(sOpponentBufferCommands))
@@ -445,7 +445,7 @@ static void OpponentHandleChooseMove(u32 battler)
     }
 
     chosenMove = moveInfo->movimiento[chosenMoveId];
-    LOG("IA elige movimiento/id", chosenMove, chosenMoveId);
+    // LOG("IA elige movimiento/id", chosenMove, chosenMoveId);
     gBattlerTarget = gCombate->IA_Objetivo[battler];
 
     if (GetBattlerMoveTargetType(battler, chosenMove) & (MOVE_TARGET_USER_OR_SELECTED | MOVE_TARGET_USER))

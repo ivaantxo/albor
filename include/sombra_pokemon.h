@@ -18,22 +18,30 @@
 // Cuesta un hueco de paleta, compartido por todas las sombras, y reserva la
 // mezcla del hardware mientras haya alguna en pantalla.
 
-// Grados de libertad de la sombra, en coma fija 8.8 (256 = 1,0).
+// Grados de libertad de la sombra.
 //
-// APLASTADO  alto respecto al original. 256 la deja igual de alta, 128 a la
-//            mitad. Cuanto mas alto, mas se alarga la sombra.
-// INCLINACION cuanto se tumba. Positivo la lleva hacia la DERECHA por arriba;
-//            negativo, hacia la izquierda.
-#define SOMBRA_INCLINACION 160
+// Son los mismos tres numeros que se ajustan en la pagina de deformacion del visor
+// de sprites, en las mismas unidades: porcentajes de lo que se ve. Lo que salga de
+// experimentar alli se copia aqui tal cual.
+//
+//   ANCHO / ALTO  porcentaje del tamano original. 100 lo deja igual, 50 lo reduce
+//                 a la mitad, y un valor negativo voltea la silueta en ese eje.
+//   INCLINACION   cuanto se tumba, en porcentaje: 100 equivale a 45 grados, o sea
+//                 que la parte de arriba se corre tanto como alta es la silueta.
+#define SOMBRA_ANCHO       110
+#define SOMBRA_ALTO         75
+#define SOMBRA_INCLINACION  82
 
-// El aplastado va por tamano de sombra, que cada especie declara en
-// enemyShadowSize. No cambia lo ANCHA que es la sombra -la silueta siempre es la
-// del bicho-, sino cuanto se tumba: una sombra menos aplastada se alarga mas.
-// 256 la deja tan alta como el original.
-#define SOMBRA_APLASTADO_S  120
-#define SOMBRA_APLASTADO_M  150
-#define SOMBRA_APLASTADO_L  190
-#define SOMBRA_APLASTADO_XL 250
+// Todas las sombras son del mismo tamano. Antes cada especie declaraba el suyo,
+// pero como la silueta ya es la del propio Pokemon, la sombra sale proporcionada
+// sola: un bicho grande proyecta una sombra grande sin que nadie se lo diga.
+//
+// Este numero se queda porque los tres de arriba se ajustaron con el puesto; sin
+// el habria que reescribirlos y perderian precision al redondear.
+#define SOMBRA_TAMANO 85
+
+// Por debajo de esto en ancho o alto la silueta desaparece y la division estalla.
+#define SOMBRA_ESCALA_MINIMA 10
 
 // Cuanto del fondo se deja pasar, de 0 a 16. Cuanto mas bajo, mas oscura queda
 // la sombra: el duplicado es negro, asi que no aporta color y el resultado es
@@ -68,18 +76,27 @@
 //
 // Esa caja doble es la que impide que se recorte lo que sobresale al inclinarla.
 
-// La cizalla pivota sobre el centro del sprite, asi que corre el pie hacia la
-// izquierda tanto como corre la cabeza hacia la derecha. Esto lo devuelve a su
-// sitio, midiendo desde el centro hasta la linea donde el Pokemon apoya: no es el
-// borde de la caja, porque los sprites frontales dejan unos pixeles de aire
-// debajo. Se deriva de la inclinacion para que no haya que reajustarlo a mano.
+// La deformacion pivota sobre el centro del sprite, asi que los pies se van de
+// sitio: hacia el centro por el encogido y hacia un lado por la inclinacion. Esto
+// mide desde el centro hasta la linea donde el Pokemon apoya, que no es el borde de
+// la caja porque los sprites frontales dejan unos pixeles de aire debajo.
+//
+// La correccion que hace falta depende de la deformacion, asi que no es una
+// constante: la calcula FijaDeformacionSombra y la deja en el propio sprite.
 #define SOMBRA_LINEA_PIES  26
-#define SOMBRA_CORRIMIENTO ((SOMBRA_INCLINACION * SOMBRA_LINEA_PIES) / 256)
 
-// Cambia el aplastado de una sombra ya creada. Se puede llamar en cualquier
-// momento: cada sombra tiene su propia matriz afin, asi que no se pisan entre
-// ellas, y la especie puede cambiar en pleno combate (Transformacion).
-void FijaAplastadoSombra(struct Sprite *sombra, u32 tamano);
+// Devuelve la sombra a la forma declarada arriba. Se puede llamar en cualquier
+// momento: cada sombra tiene su propia matriz afin, asi que no se pisan entre ellas.
+void FijaFormaSombra(struct Sprite *sombra);
+
+// Cuanto agranda o encoge la sombra el tamano declarado por la especie, en tanto
+// por ciento. Lo necesita el visor de sprites para descontarlo y poder mostrar los
+// valores BASE, que son los que se copian a las constantes de arriba.
+// Calcula la matriz de la sombra a partir de los cuatro valores de deformacion, en
+// las mismas unidades que la pagina del visor de sprites. FijaFormaSombra no es mas
+// que esta con las constantes de arriba, y el visor llama a esta directamente: hay
+// un solo camino, asi que lo ajustado y lo compilado no pueden divergir.
+void FijaDeformacionSombra(struct Sprite *sombra, s32 ancho, s32 alto, s32 inclinH, s32 inclinV);
 
 void CargaGraficosSombraPokemon(void);
 
@@ -101,10 +118,21 @@ void ColocaSombraPokemon(struct Sprite *sombra, const struct Sprite *dueno, s32 
 
 void DestruyeSombraPokemon(u8 spriteIdSombra);
 
-// Campos comunes del sprite de sombra. data[3] en adelante queda para quien la use.
-#define sSombraDueno  data[0] // id del sprite o combatiente al que sigue
-#define sSombraMatriz data[1] // matriz afin reservada, para poder soltarla
-#define sSombraLibre  data[2] // sitio libre para el sistema que la use
-#define sSombraEspecie data[3] // ultima especie valida vista, ver SpriteCB_EnemyShadow
+// Reparto de data del sprite de sombra.
+//
+// De data[0] a data[3] son de ESTE modulo y no las puede tocar nadie mas. De
+// data[4] en adelante son de quien use la sombra, y cada sistema las reparte como
+// quiera: el combate guarda ahi la ultima especie vista y el visor de sprites sus
+// desplazamientos manuales, que son sprites distintos y no coinciden nunca.
+//
+// Si al modulo le hiciera falta otro campo propio, va dentro de su rango, NUNCA
+// ampliando hacia data[4]: eso pisaria en silencio los ajustes del visor.
+#define sSombraDueno       data[0] // id del sprite o combatiente al que sigue
+#define sSombraMatriz      data[1] // matriz afin reservada, para poder soltarla
+#define sSombraCorreccionX data[2] // devuelve los pies a su sitio tras deformar
+#define sSombraCorreccionY data[3]
+
+// De aqui en adelante, de quien use la sombra. El combate usa esta:
+#define sSombraEspecie data[4] // ultima especie valida vista, ver SpriteCB_EnemyShadow
 
 #endif // GUARD_SOMBRA_POKEMON_H
