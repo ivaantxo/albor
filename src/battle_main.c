@@ -1743,7 +1743,7 @@ static void DoBattleIntro(void)
         // Aqui solo se imprime el texto. EscribeTextoCombate marca al combatiente
         // como ocupado y le pone Controller_WaitForString como controlador, asi que
         // emitir aqui la orden de lanzar la Pokeball la dejaba en el buffer sin que
-        // PlayerBufferRunCommand llegara a despacharla: el jugador no sacaba a su
+        // EjecutaComandoEnCurso llegara a despacharla: el jugador no sacaba a su
         // Pokemon. Se emite en el estado siguiente, ya con el texto terminado, que
         // es como lo hace el camino del rival.
         EscribeTextoEnviarPokemon(battler);

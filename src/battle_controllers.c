@@ -161,11 +161,43 @@ COMMON_DATA struct ArgumentosComando gArgumentosComando[NUMERO_COMBATIENTES] = {
 COMMON_DATA struct RespuestaCombatiente gRespuestaCombatiente[NUMERO_COMBATIENTES] = {0};
 COMMON_DATA u8 gComandoEnCurso[NUMERO_COMBATIENTES] = {0};
 
-// Deja anotado que comando toca. El manejador se reentra en cada fotograma hasta
-// que se da por terminado, de ahi que haga falta recordarlo.
-static void ArrancaComando(u32 combatiente, u32 comando)
+COMMON_DATA void (*gManejadorComando[NUMERO_COMBATIENTES])(u32 combatiente) = {0};
+
+static bool32 EsDelJugador(u32 combatiente)
+{
+    return GetBattlerSide(combatiente) == LADO_JUGADOR;
+}
+
+// Arranca un comando: apunta a quien lo atiende y deja anotado cual es.
+//
+// Antes esto lo resolvia una tabla de 39 entradas POR CADA LADO, y el controlador
+// la consultaba en cada fotograma para saber a quien llamar. Ahora cada orden
+// nombra a su manejador, asi que se ve de un vistazo que codigo ejecuta cada una y
+// cuales son las trece que de verdad difieren entre jugador y rival.
+//
+// El manejador se reentra cada fotograma hasta que se da por terminado; de ahi que
+// haya que recordarlo en vez de llamarlo y ya.
+static void ArrancaComando(u32 combatiente, u32 comando, void (*manejador)(u32 combatiente))
 {
     gComandoEnCurso[combatiente] = comando;
+    gManejadorComando[combatiente] = manejador;
+}
+
+// Lo que corre cada fotograma mientras el combatiente esta ocupado. Uno solo para
+// los dos lados: antes eran dos funciones casi identicas, una por controlador.
+void EjecutaComandoEnCurso(u32 combatiente)
+{
+    if (!EstaCombatienteOcupado(combatiente))
+        return;
+
+    if (gManejadorComando[combatiente] == NULL)
+    {
+        LOG("comando sin manejador", gComandoEnCurso[combatiente], combatiente);
+        BattleControllerComplete(combatiente);
+        return;
+    }
+
+    gManejadorComando[combatiente](combatiente);
 }
 
 // ---------------------------------------------------------------------------
@@ -176,7 +208,7 @@ void ComandoObtenDatosPokemon(u32 combatiente, u8 peticion, u8 pokemon)
 {
     gArgumentosComando[combatiente].peticion = peticion;
     gArgumentosComando[combatiente].pokemon = pokemon;
-    ArrancaComando(combatiente, CONTROLLER_GETMONDATA);
+    ArrancaComando(combatiente, CONTROLLER_GETMONDATA, BtlController_HandleGetMonData);
 }
 
 void ComandoFijaDatosPokemon(u32 combatiente, u8 peticion, u8 pokemon, u8 bytes, void *datos)
@@ -188,51 +220,57 @@ void ComandoFijaDatosPokemon(u32 combatiente, u8 peticion, u8 pokemon, u8 bytes,
     gArgumentosComando[combatiente].pokemon = pokemon;
     gArgumentosComando[combatiente].bytes = bytes;
     memcpy(gArgumentosComando[combatiente].datos, datos, bytes);
-    ArrancaComando(combatiente, CONTROLLER_SETMONDATA);
+    ArrancaComando(combatiente, CONTROLLER_SETMONDATA, BtlController_HandleSetMonData);
 }
 
 void ComandoCargaSpritePokemon(u32 combatiente)
 {
-    ArrancaComando(combatiente, CONTROLLER_LOADMONSPRITE);
+    ArrancaComando(combatiente, CONTROLLER_LOADMONSPRITE,
+                   EsDelJugador(combatiente) ? PlayerHandleLoadMonSprite : OpponentHandleLoadMonSprite);
 }
 
 void ComandoAnimacionEntrada(u32 combatiente, u8 indiceEquipo, bool8 noLimpiarSustituto)
 {
     gArgumentosComando[combatiente].indiceEquipo = indiceEquipo;
     gArgumentosComando[combatiente].noLimpiarSustituto = noLimpiarSustituto;
-    ArrancaComando(combatiente, CONTROLLER_SWITCHINANIM);
+    ArrancaComando(combatiente, CONTROLLER_SWITCHINANIM,
+                   EsDelJugador(combatiente) ? PlayerHandleSwitchInAnim : OpponentHandleSwitchInAnim);
 }
 
 void ComandoDevuelvePokemonABall(u32 combatiente, bool8 saltarAnimacion)
 {
     gArgumentosComando[combatiente].saltarAnimacion = saltarAnimacion;
-    ArrancaComando(combatiente, CONTROLLER_RETURNMONTOBALL);
+    ArrancaComando(combatiente, CONTROLLER_RETURNMONTOBALL, BtlController_HandleReturnMonToBall);
 }
 
 void ComandoDibujaEntrenador(u32 combatiente)
 {
-    ArrancaComando(combatiente, CONTROLLER_DRAWTRAINERPIC);
+    ArrancaComando(combatiente, CONTROLLER_DRAWTRAINERPIC,
+                   EsDelJugador(combatiente) ? PlayerHandleDrawTrainerPic : OpponentHandleDrawTrainerPic);
 }
 
 void ComandoEntrenadorEntra(u32 combatiente)
 {
-    ArrancaComando(combatiente, CONTROLLER_TRAINERSLIDE);
+    ArrancaComando(combatiente, CONTROLLER_TRAINERSLIDE,
+                   EsDelJugador(combatiente) ? PlayerHandleTrainerSlide : OpponentHandleTrainerSlide);
 }
 
 void ComandoEntrenadorSale(u32 combatiente)
 {
-    ArrancaComando(combatiente, CONTROLLER_TRAINERSLIDEBACK);
+    ArrancaComando(combatiente, CONTROLLER_TRAINERSLIDEBACK,
+                   EsDelJugador(combatiente) ? PlayerHandleTrainerSlideBack : OpponentHandleTrainerSlideBack);
 }
 
 void ComandoAnimacionDebilitado(u32 combatiente)
 {
-    ArrancaComando(combatiente, CONTROLLER_FAINTANIMATION);
+    ArrancaComando(combatiente, CONTROLLER_FAINTANIMATION, BtlController_HandleFaintAnimation);
 }
 
 void ComandoAnimacionLanzarBall(u32 combatiente, u8 caso)
 {
     gArgumentosComando[combatiente].caso = caso;
-    ArrancaComando(combatiente, CONTROLLER_BALLTHROWANIM);
+    ArrancaComando(combatiente, CONTROLLER_BALLTHROWANIM,
+                   EsDelJugador(combatiente) ? PlayerHandleBallThrowAnim : BtlController_Empty);
 }
 
 void ComandoAnimacionMovimiento(u32 combatiente, enum Movimientos movimiento, u8 turnoDelMovimiento,
@@ -249,18 +287,21 @@ void ComandoAnimacionMovimiento(u32 combatiente, enum Movimientos movimiento, u8
     args->golpesMultiples = golpesMultiples;
     args->clima = ClimaTieneEfecto() ? (1 << gCombate->clima.modo) : 0;
     args->estadoDeshabilitado = *estadoDeshabilitado;
-    ArrancaComando(combatiente, CONTROLLER_MOVEANIMATION);
+    ArrancaComando(combatiente, CONTROLLER_MOVEANIMATION,
+                   EsDelJugador(combatiente) ? PlayerHandleMoveAnimation : OpponentHandleMoveAnimation);
 }
 
 void ComandoEligeAccion(u32 combatiente, u8 accion)
 {
     gArgumentosComando[combatiente].accion = accion;
-    ArrancaComando(combatiente, CONTROLLER_CHOOSEACTION);
+    ArrancaComando(combatiente, CONTROLLER_CHOOSEACTION,
+                   EsDelJugador(combatiente) ? PlayerHandleChooseAction : OpponentHandleChooseAction);
 }
 
 void ComandoCuadroSiNo(u32 combatiente)
 {
-    ArrancaComando(combatiente, CONTROLLER_YESNOBOX);
+    ArrancaComando(combatiente, CONTROLLER_YESNOBOX,
+                   EsDelJugador(combatiente) ? PlayerHandleYesNoBox : BtlController_Empty);
 }
 
 void ComandoEligeMovimiento(u32 combatiente, bool8 esCombateDoble, bool8 sinNumeroDePP, struct DatosMovimiento *datosMovimiento)
@@ -268,7 +309,8 @@ void ComandoEligeMovimiento(u32 combatiente, bool8 esCombateDoble, bool8 sinNume
     gArgumentosComando[combatiente].esCombateDoble = esCombateDoble;
     gArgumentosComando[combatiente].sinNumeroDePP = sinNumeroDePP;
     gArgumentosComando[combatiente].datosMovimiento = *datosMovimiento;
-    ArrancaComando(combatiente, CONTROLLER_CHOOSEMOVE);
+    ArrancaComando(combatiente, CONTROLLER_CHOOSEMOVE,
+                   EsDelJugador(combatiente) ? PlayerHandleChooseMove : OpponentHandleChooseMove);
 }
 
 void ComandoEligePokemon(u32 combatiente, u8 caso, u8 ranura, u16 habilidad, u8 *datos)
@@ -278,73 +320,77 @@ void ComandoEligePokemon(u32 combatiente, u8 caso, u8 ranura, u16 habilidad, u8 
     gArgumentosComando[combatiente].habilidad = habilidad;
     for (u32 i = 0; i < 3; i++)
         gArgumentosComando[combatiente].datosEleccion[i] = datos[i];
-    ArrancaComando(combatiente, CONTROLLER_CHOOSEPOKEMON);
+    ArrancaComando(combatiente, CONTROLLER_CHOOSEPOKEMON,
+                   EsDelJugador(combatiente) ? PlayerHandleChoosePokemon : OpponentHandleChoosePokemon);
 }
 
 void ComandoActualizaBarraSalud(u32 combatiente, u16 valorPS)
 {
     gArgumentosComando[combatiente].valorPS = valorPS;
-    ArrancaComando(combatiente, CONTROLLER_HEALTHBARUPDATE);
+    ArrancaComando(combatiente, CONTROLLER_HEALTHBARUPDATE,
+                   EsDelJugador(combatiente) ? PlayerHandleHealthBarUpdate : OpponentHandleHealthBarUpdate);
 }
 
 void ComandoActualizaExperiencia(u32 combatiente, u8 indiceEquipo, s32 experiencia)
 {
     gArgumentosComando[combatiente].indiceEquipo = indiceEquipo;
     gArgumentosComando[combatiente].experiencia = experiencia;
-    ArrancaComando(combatiente, CONTROLLER_EXPUPDATE);
+    ArrancaComando(combatiente, CONTROLLER_EXPUPDATE,
+                   EsDelJugador(combatiente) ? PlayerHandleExpUpdate : BtlController_Empty);
 }
 
 void ComandoActualizaIconoEstado(u32 combatiente, u32 estado1, u32 estado2)
 {
     gArgumentosComando[combatiente].estado1 = estado1;
     gArgumentosComando[combatiente].estado2 = estado2;
-    ArrancaComando(combatiente, CONTROLLER_STATUSICONUPDATE);
+    ArrancaComando(combatiente, CONTROLLER_STATUSICONUPDATE, BtlController_HandleStatusIconUpdate);
 }
 
 void ComandoAnimacionEstado(u32 combatiente, bool8 esEstado2, u32 estado)
 {
     gArgumentosComando[combatiente].esEstado2 = esEstado2;
     gArgumentosComando[combatiente].estado1 = estado;
-    ArrancaComando(combatiente, CONTROLLER_STATUSANIMATION);
+    ArrancaComando(combatiente, CONTROLLER_STATUSANIMATION, BtlController_HandleStatusAnimation);
 }
 
 void ComandoAnimacionGolpe(u32 combatiente)
 {
-    ArrancaComando(combatiente, CONTROLLER_HITANIMATION);
+    ArrancaComando(combatiente, CONTROLLER_HITANIMATION, BtlController_HandleHitAnimation);
 }
 
 void ComandoNoPuedeCambiar(u32 combatiente)
 {
-    ArrancaComando(combatiente, CONTROLLER_CANTSWITCH);
+    ArrancaComando(combatiente, CONTROLLER_CANTSWITCH, BtlController_Empty);
 }
 
 void ComandoSuenaEfecto(u32 combatiente, u16 cancion)
 {
     gArgumentosComando[combatiente].cancion = cancion;
-    ArrancaComando(combatiente, CONTROLLER_PLAYSE);
+    ArrancaComando(combatiente, CONTROLLER_PLAYSE, BtlController_HandlePlaySE);
 }
 
 void ComandoSuenaFanfarriaOMusica(u32 combatiente, u16 cancion, bool8 esMusica)
 {
     gArgumentosComando[combatiente].cancion = cancion;
     gArgumentosComando[combatiente].esMusica = esMusica;
-    ArrancaComando(combatiente, CONTROLLER_PLAYFANFAREORBGM);
+    ArrancaComando(combatiente, CONTROLLER_PLAYFANFAREORBGM, BtlController_HandlePlayFanfareOrBGM);
 }
 
 void ComandoGritoAlDebilitarse(u32 combatiente)
 {
-    ArrancaComando(combatiente, CONTROLLER_FAINTINGCRY);
+    ArrancaComando(combatiente, CONTROLLER_FAINTINGCRY, BtlController_HandleFaintingCry);
 }
 
 void ComandoEntradaEscenario(u32 combatiente, u8 terreno)
 {
     gArgumentosComando[combatiente].terreno = terreno;
-    ArrancaComando(combatiente, CONTROLLER_INTROSLIDE);
+    ArrancaComando(combatiente, CONTROLLER_INTROSLIDE, BtlController_HandleIntroSlide);
 }
 
 void ComandoEntrenadorLanzaBall(u32 combatiente)
 {
-    ArrancaComando(combatiente, CONTROLLER_INTROTRAINERBALLTHROW);
+    ArrancaComando(combatiente, CONTROLLER_INTROTRAINERBALLTHROW,
+                   EsDelJugador(combatiente) ? PlayerHandleIntroTrainerBallThrow : OpponentHandleIntroTrainerBallThrow);
 }
 
 void ComandoMuestraResumenEquipo(u32 combatiente, struct HpAndStatus *resumen, u8 banderas)
@@ -352,23 +398,25 @@ void ComandoMuestraResumenEquipo(u32 combatiente, struct HpAndStatus *resumen, u
     for (u32 i = 0; i < PARTY_SIZE; i++)
         gArgumentosComando[combatiente].resumenEquipo[i] = resumen[i];
     gArgumentosComando[combatiente].banderas = banderas;
-    ArrancaComando(combatiente, CONTROLLER_DRAWPARTYSTATUSSUMMARY);
+    ArrancaComando(combatiente, CONTROLLER_DRAWPARTYSTATUSSUMMARY,
+                   EsDelJugador(combatiente) ? PlayerHandleDrawPartyStatusSummary : OpponentHandleDrawPartyStatusSummary);
 }
 
 void ComandoOcultaResumenEquipo(u32 combatiente)
 {
-    ArrancaComando(combatiente, CONTROLLER_HIDEPARTYSTATUSSUMMARY);
+    ArrancaComando(combatiente, CONTROLLER_HIDEPARTYSTATUSSUMMARY, BtlController_HandleHidePartyStatusSummary);
 }
 
 void ComandoTerminaBote(u32 combatiente)
 {
-    ArrancaComando(combatiente, CONTROLLER_ENDBOUNCE);
+    ArrancaComando(combatiente, CONTROLLER_ENDBOUNCE,
+                   EsDelJugador(combatiente) ? PlayerHandleEndBounceEffect : BtlController_Empty);
 }
 
 void ComandoVisibilidadSprite(u32 combatiente, bool8 invisible)
 {
     gArgumentosComando[combatiente].invisible = invisible;
-    ArrancaComando(combatiente, CONTROLLER_SPRITEINVISIBILITY);
+    ArrancaComando(combatiente, CONTROLLER_SPRITEINVISIBILITY, BtlController_HandleSpriteInvisibility);
 }
 
 void ComandoAnimacionCombate(u32 combatiente, u8 animacion, struct DisableStruct *estadoDeshabilitado, u16 argumento)
@@ -376,18 +424,21 @@ void ComandoAnimacionCombate(u32 combatiente, u8 animacion, struct DisableStruct
     gArgumentosComando[combatiente].animacion = animacion;
     gArgumentosComando[combatiente].argumentoAnimacion = argumento;
     gArgumentosComando[combatiente].estadoDeshabilitado = *estadoDeshabilitado;
-    ArrancaComando(combatiente, CONTROLLER_BATTLEANIMATION);
+    ArrancaComando(combatiente, CONTROLLER_BATTLEANIMATION,
+                   EsDelJugador(combatiente) ? PlayerHandleBattleAnimation : OpponentHandleBattleAnimation);
 }
 
 void ComandoReiniciaSeleccion(u32 combatiente, u8 caso)
 {
     gArgumentosComando[combatiente].caso = caso;
-    ArrancaComando(combatiente, CONTROLLER_RESETACTIONMOVESELECTION);
+    ArrancaComando(combatiente, CONTROLLER_RESETACTIONMOVESELECTION,
+                   EsDelJugador(combatiente) ? PlayerHandleResetActionMoveSelection : BtlController_Empty);
 }
 
 void ComandoMenuDepuracion(u32 combatiente)
 {
-    ArrancaComando(combatiente, CONTROLLER_DEBUGMENU);
+    ArrancaComando(combatiente, CONTROLLER_DEBUGMENU,
+                   EsDelJugador(combatiente) ? PlayerHandleBattleDebug : BtlController_Empty);
 }
 
 // ---------------------------------------------------------------------------

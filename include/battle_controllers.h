@@ -167,6 +167,45 @@ struct RespuestaCombatiente
 extern struct ArgumentosComando gArgumentosComando[NUMERO_COMBATIENTES];
 extern struct RespuestaCombatiente gRespuestaCombatiente[NUMERO_COMBATIENTES];
 extern u8 gComandoEnCurso[NUMERO_COMBATIENTES];
+extern void (*gManejadorComando[NUMERO_COMBATIENTES])(u32 combatiente);
+
+void EjecutaComandoEnCurso(u32 combatiente);
+
+// Manejadores que viven en los ficheros de cada lado y que las ordenes necesitan
+// nombrar. Los que son iguales para los dos lados estan en battle_controllers.c.
+void PlayerHandleLoadMonSprite(u32 battler);
+void PlayerHandleSwitchInAnim(u32 battler);
+void PlayerHandleDrawTrainerPic(u32 battler);
+void PlayerHandleTrainerSlide(u32 battler);
+void PlayerHandleTrainerSlideBack(u32 battler);
+void PlayerHandleBallThrowAnim(u32 battler);
+void PlayerHandleMoveAnimation(u32 battler);
+void PlayerHandleChooseAction(u32 battler);
+void PlayerHandleYesNoBox(u32 battler);
+void PlayerHandleChooseMove(u32 battler);
+void PlayerHandleChoosePokemon(u32 battler);
+void PlayerHandleHealthBarUpdate(u32 battler);
+void PlayerHandleExpUpdate(u32 battler);
+void PlayerHandleIntroTrainerBallThrow(u32 battler);
+void PlayerHandleDrawPartyStatusSummary(u32 battler);
+void PlayerHandleEndBounceEffect(u32 battler);
+void PlayerHandleBattleAnimation(u32 battler);
+void PlayerHandleResetActionMoveSelection(u32 battler);
+void PlayerHandleBattleDebug(u32 battler);
+
+void OpponentHandleLoadMonSprite(u32 battler);
+void OpponentHandleSwitchInAnim(u32 battler);
+void OpponentHandleDrawTrainerPic(u32 battler);
+void OpponentHandleTrainerSlide(u32 battler);
+void OpponentHandleTrainerSlideBack(u32 battler);
+void OpponentHandleMoveAnimation(u32 battler);
+void OpponentHandleChooseAction(u32 battler);
+void OpponentHandleChooseMove(u32 battler);
+void OpponentHandleChoosePokemon(u32 battler);
+void OpponentHandleHealthBarUpdate(u32 battler);
+void OpponentHandleIntroTrainerBallThrow(u32 battler);
+void OpponentHandleDrawPartyStatusSummary(u32 battler);
+void OpponentHandleBattleAnimation(u32 battler);
 
 enum
 {

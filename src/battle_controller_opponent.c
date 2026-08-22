@@ -33,102 +33,18 @@
 #include "constants/songs.h"
 #include "constants/trainers.h"
 
-static void OpponentHandleLoadMonSprite(u32 battler);
-static void OpponentHandleSwitchInAnim(u32 battler);
-static void OpponentHandleDrawTrainerPic(u32 battler);
-static void OpponentHandleTrainerSlide(u32 battler);
-static void OpponentHandleTrainerSlideBack(u32 battler);
-static void OpponentHandleMoveAnimation(u32 battler);
-static void OpponentHandleChooseAction(u32 battler);
-static void OpponentHandleChooseMove(u32 battler);
-static void OpponentHandleChoosePokemon(u32 battler);
-static void OpponentHandleHealthBarUpdate(u32 battler);
-static void OpponentHandleIntroTrainerBallThrow(u32 battler);
-static void OpponentHandleDrawPartyStatusSummary(u32 battler);
-static void OpponentHandleBattleAnimation(u32 battler);
 static u8 CountAIAliveNonEggMonsExcept(u8 slotToIgnore);
 
-static void OpponentBufferRunCommand(u32 battler);
 static void OpponentBufferExecCompleted(u32 combatiente);
 static void SwitchIn_HandleSoundAndEnd(u32 battler);
 
-static void (*const sOpponentBufferCommands[CONTROLLER_CMDS_COUNT])(u32 battler) =
-{
-    [CONTROLLER_GETMONDATA]               = BtlController_HandleGetMonData,
-    [CONTROLLER_SETMONDATA]               = BtlController_HandleSetMonData,
-    [CONTROLLER_LOADMONSPRITE]            = OpponentHandleLoadMonSprite,
-    [CONTROLLER_SWITCHINANIM]             = OpponentHandleSwitchInAnim,
-    [CONTROLLER_RETURNMONTOBALL]          = BtlController_HandleReturnMonToBall,
-    [CONTROLLER_DRAWTRAINERPIC]           = OpponentHandleDrawTrainerPic,
-    [CONTROLLER_TRAINERSLIDE]             = OpponentHandleTrainerSlide,
-    [CONTROLLER_TRAINERSLIDEBACK]         = OpponentHandleTrainerSlideBack,
-    [CONTROLLER_FAINTANIMATION]           = BtlController_HandleFaintAnimation,
-    [CONTROLLER_BALLTHROWANIM]            = BtlController_Empty,
-    [CONTROLLER_MOVEANIMATION]            = OpponentHandleMoveAnimation,
-    [CONTROLLER_CHOOSEACTION]             = OpponentHandleChooseAction,
-    [CONTROLLER_YESNOBOX]                 = BtlController_Empty,
-    [CONTROLLER_CHOOSEMOVE]               = OpponentHandleChooseMove,
-    [CONTROLLER_CHOOSEPOKEMON]            = OpponentHandleChoosePokemon,
-    [CONTROLLER_HEALTHBARUPDATE]          = OpponentHandleHealthBarUpdate,
-    [CONTROLLER_EXPUPDATE]                = BtlController_Empty,
-    [CONTROLLER_STATUSICONUPDATE]         = BtlController_HandleStatusIconUpdate,
-    [CONTROLLER_STATUSANIMATION]          = BtlController_HandleStatusAnimation,
-    [CONTROLLER_DATATRANSFER]             = BtlController_Empty,
-    [CONTROLLER_TWORETURNVALUES]          = BtlController_Empty,
-    [CONTROLLER_CHOSENMONRETURNVALUE]     = BtlController_Empty,
-    [CONTROLLER_ONERETURNVALUE]           = BtlController_Empty,
-    [CONTROLLER_HITANIMATION]             = BtlController_HandleHitAnimation,
-    [CONTROLLER_CANTSWITCH]               = BtlController_Empty,
-    [CONTROLLER_PLAYSE]                   = BtlController_HandlePlaySE,
-    [CONTROLLER_PLAYFANFAREORBGM]         = BtlController_HandlePlayFanfareOrBGM,
-    [CONTROLLER_FAINTINGCRY]              = BtlController_HandleFaintingCry,
-    [CONTROLLER_INTROSLIDE]               = BtlController_HandleIntroSlide,
-    [CONTROLLER_INTROTRAINERBALLTHROW]    = OpponentHandleIntroTrainerBallThrow,
-    [CONTROLLER_DRAWPARTYSTATUSSUMMARY]   = OpponentHandleDrawPartyStatusSummary,
-    [CONTROLLER_HIDEPARTYSTATUSSUMMARY]   = BtlController_HandleHidePartyStatusSummary,
-    [CONTROLLER_ENDBOUNCE]                = BtlController_Empty,
-    [CONTROLLER_SPRITEINVISIBILITY]       = BtlController_HandleSpriteInvisibility,
-    [CONTROLLER_BATTLEANIMATION]          = OpponentHandleBattleAnimation,
-    [CONTROLLER_RESETACTIONMOVESELECTION] = BtlController_Empty,
-    [CONTROLLER_DEBUGMENU]                = BtlController_Empty,
-    [CONTROLLER_TERMINATOR_NOP]           = BtlController_TerminatorNop
-};
 
 void SetControllerToOpponent(u32 battler)
 {
     gBattlerControllerEndFuncs[battler] = OpponentBufferExecCompleted;
-    gBattlerControllerFuncs[battler] = OpponentBufferRunCommand;
+    gBattlerControllerFuncs[battler] = EjecutaComandoEnCurso;
 }
 
-static void OpponentBufferRunCommand(u32 combatiente)
-{
-    if (EstaCombatienteOcupado(combatiente))
-    {
-        {
-            // El lado del rival no tenia sonda, y es justo el que estaba actuando
-            // cuando el juego salta a la pantalla de inicio.
-            static u32 sUltimoComando = 0xFFFF;
-            u32 comando = gComandoEnCurso[combatiente];
-            if (comando != sUltimoComando)
-            {
-                sUltimoComando = comando;
-                // LOG("CMD rival comando/combatiente", comando, combatiente);
-            }
-        }
-        if (gComandoEnCurso[combatiente] < ARRAY_COUNT(sOpponentBufferCommands))
-        {
-            if (sOpponentBufferCommands[gComandoEnCurso[combatiente]] == NULL)
-            {
-                LOG("NULO: comando de rival", gComandoEnCurso[combatiente], combatiente);
-                OpponentBufferExecCompleted(combatiente);
-                return;
-            }
-            sOpponentBufferCommands[gComandoEnCurso[combatiente]](combatiente);
-        }
-        else
-            OpponentBufferExecCompleted(combatiente);
-    }
-}
 
 static void Intro_DelayAndEnd(u32 battler)
 {
@@ -369,16 +285,16 @@ static void SwitchIn_TryShinyAnim(u32 battler)
 
 static void OpponentBufferExecCompleted(u32 combatiente)
 {
-    gBattlerControllerFuncs[combatiente] = OpponentBufferRunCommand;
+    gBattlerControllerFuncs[combatiente] = EjecutaComandoEnCurso;
     DesmarcaCombatienteOcupado(combatiente);
 }
 
-static void OpponentHandleLoadMonSprite(u32 battler)
+void OpponentHandleLoadMonSprite(u32 battler)
 {
     BtlController_HandleLoadMonSprite(battler, TryShinyAnimAfterMonAnim);
 }
 
-static void OpponentHandleSwitchInAnim(u32 battler)
+void OpponentHandleSwitchInAnim(u32 battler)
 {
     gCombate->monToSwitchIntoId[battler] = PARTY_SIZE;
     BtlController_HandleSwitchInAnim(battler, FALSE, SwitchIn_TryShinyAnim);
@@ -390,7 +306,7 @@ static u32 OpponentGetTrainerPicId(u32 battlerId)
     return trainerPicId;
 }
 
-static void OpponentHandleDrawTrainerPic(u32 battler)
+void OpponentHandleDrawTrainerPic(u32 battler)
 {
     s16 xPos = 176;
     u32 trainerPicId = OpponentGetTrainerPicId(battler);
@@ -398,29 +314,29 @@ static void OpponentHandleDrawTrainerPic(u32 battler)
     BtlController_HandleDrawTrainerPic(battler, trainerPicId, TRUE, xPos, 40, -1);
 }
 
-static void OpponentHandleTrainerSlide(u32 battler)
+void OpponentHandleTrainerSlide(u32 battler)
 {
     u32 trainerPicId = OpponentGetTrainerPicId(battler);
     BtlController_HandleTrainerSlide(battler, trainerPicId);
 }
 
-static void OpponentHandleTrainerSlideBack(u32 battler)
+void OpponentHandleTrainerSlideBack(u32 battler)
 {
     BtlController_HandleTrainerSlideBack(battler, 35, TRUE);
 }
 
-static void OpponentHandleMoveAnimation(u32 battler)
+void OpponentHandleMoveAnimation(u32 battler)
 {
     BtlController_HandleMoveAnimation(battler);
 }
 
-static void OpponentHandleChooseAction(u32 battler)
+void OpponentHandleChooseAction(u32 battler)
 {
     AI_TrySwitchOrUseItem(battler);
     OpponentBufferExecCompleted(battler);
 }
 
-static void OpponentHandleChooseMove(u32 battler)
+void OpponentHandleChooseMove(u32 battler)
 {
     u32 chosenMoveId = gCombate->IA_Eleccion[battler];
     struct DatosMovimiento *moveInfo = &gArgumentosComando[battler].datosMovimiento;
@@ -452,7 +368,7 @@ static void OpponentHandleChooseMove(u32 battler)
     OpponentBufferExecCompleted(battler);
 }
 
-static void OpponentHandleChoosePokemon(u32 battler)
+void OpponentHandleChoosePokemon(u32 battler)
 {
     s32 chosenMonId;
     s32 pokemonInBattle = 1;
@@ -525,22 +441,22 @@ static u8 CountAIAliveNonEggMonsExcept(u8 slotToIgnore)
     return count;
 }
 
-static void OpponentHandleHealthBarUpdate(u32 battler)
+void OpponentHandleHealthBarUpdate(u32 battler)
 {
     BtlController_HandleHealthBarUpdate(battler);
 }
 
-static void OpponentHandleIntroTrainerBallThrow(u32 battler)
+void OpponentHandleIntroTrainerBallThrow(u32 battler)
 {
     BtlController_HandleIntroTrainerBallThrow(battler, 0, NULL, 0, Intro_TryShinyAnimShowHealthbox);
 }
 
-static void OpponentHandleDrawPartyStatusSummary(u32 battler)
+void OpponentHandleDrawPartyStatusSummary(u32 battler)
 {
     BtlController_HandleDrawPartyStatusSummary(battler, LADO_OPONENTE, TRUE);
 }
 
-static void OpponentHandleBattleAnimation(u32 battler)
+void OpponentHandleBattleAnimation(u32 battler)
 {
     BtlController_HandleBattleAnimation(battler, FALSE);
 }

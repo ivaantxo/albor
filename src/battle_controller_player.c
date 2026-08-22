@@ -44,27 +44,7 @@
 #include "pokemon_summary_screen.h"
 
 static void PlayerBufferExecCompleted(u32 combatiente);
-static void PlayerHandleLoadMonSprite(u32 battler);
-static void PlayerHandleSwitchInAnim(u32 battler);
-static void PlayerHandleDrawTrainerPic(u32 battler);
-static void PlayerHandleTrainerSlide(u32 battler);
-static void PlayerHandleTrainerSlideBack(u32 battler);
-static void PlayerHandleMoveAnimation(u32 battler);
-static void PlayerHandleChooseAction(u32 battler);
-static void PlayerHandleYesNoBox(u32 battler);
-static void PlayerHandleChoosePokemon(u32 battler);
-static void PlayerHandleHealthBarUpdate(u32 battler);
-static void PlayerHandleTwoReturnValues(u32 battler);
-static void PlayerHandleChosenMonReturnValue(u32 battler);
-static void PlayerHandleOneReturnValue(u32 battler);
-static void PlayerHandleIntroTrainerBallThrow(u32 battler);
-static void PlayerHandleDrawPartyStatusSummary(u32 battler);
-static void PlayerHandleEndBounceEffect(u32 battler);
-static void PlayerHandleBattleAnimation(u32 battler);
-static void PlayerHandleResetActionMoveSelection(u32 battler);
-static void PlayerHandleBattleDebug(u32 battler);
 
-static void PlayerBufferRunCommand(u32 battler);
 static void MoveSelectionDisplayPpNumber(u32 battler);
 static void MoveSelectionDisplayMoveType(u32 battler);
 static void DestruyeIconosTipo(void);
@@ -91,47 +71,6 @@ static void SpriteCB_IconoAccion(struct Sprite *sprite)
 }
 static EWRAM_DATA u8 sIconTypeId[MAXIMO_MOVIMIENTOS_POKEMON] = {0};
 
-static void (*const sPlayerBufferCommands[CONTROLLER_CMDS_COUNT])(u32 battler) =
-{
-    [CONTROLLER_GETMONDATA]               = BtlController_HandleGetMonData,
-    [CONTROLLER_SETMONDATA]               = BtlController_HandleSetMonData,
-    [CONTROLLER_LOADMONSPRITE]            = PlayerHandleLoadMonSprite,
-    [CONTROLLER_SWITCHINANIM]             = PlayerHandleSwitchInAnim,
-    [CONTROLLER_RETURNMONTOBALL]          = BtlController_HandleReturnMonToBall,
-    [CONTROLLER_DRAWTRAINERPIC]           = PlayerHandleDrawTrainerPic,
-    [CONTROLLER_TRAINERSLIDE]             = PlayerHandleTrainerSlide,
-    [CONTROLLER_TRAINERSLIDEBACK]         = PlayerHandleTrainerSlideBack,
-    [CONTROLLER_FAINTANIMATION]           = BtlController_HandleFaintAnimation,
-    [CONTROLLER_BALLTHROWANIM]            = PlayerHandleBallThrowAnim,
-    [CONTROLLER_MOVEANIMATION]            = PlayerHandleMoveAnimation,
-    [CONTROLLER_CHOOSEACTION]             = PlayerHandleChooseAction,
-    [CONTROLLER_YESNOBOX]                 = PlayerHandleYesNoBox,
-    [CONTROLLER_CHOOSEMOVE]               = PlayerHandleChooseMove,
-    [CONTROLLER_CHOOSEPOKEMON]            = PlayerHandleChoosePokemon,
-    [CONTROLLER_HEALTHBARUPDATE]          = PlayerHandleHealthBarUpdate,
-    [CONTROLLER_EXPUPDATE]                = PlayerHandleExpUpdate,
-    [CONTROLLER_STATUSICONUPDATE]         = BtlController_HandleStatusIconUpdate,
-    [CONTROLLER_STATUSANIMATION]          = BtlController_HandleStatusAnimation,
-    [CONTROLLER_DATATRANSFER]             = BtlController_Empty,
-    [CONTROLLER_TWORETURNVALUES]          = PlayerHandleTwoReturnValues,
-    [CONTROLLER_CHOSENMONRETURNVALUE]     = PlayerHandleChosenMonReturnValue,
-    [CONTROLLER_ONERETURNVALUE]           = PlayerHandleOneReturnValue,
-    [CONTROLLER_HITANIMATION]             = BtlController_HandleHitAnimation,
-    [CONTROLLER_CANTSWITCH]               = BtlController_Empty,
-    [CONTROLLER_PLAYSE]                   = BtlController_HandlePlaySE,
-    [CONTROLLER_PLAYFANFAREORBGM]         = BtlController_HandlePlayFanfareOrBGM,
-    [CONTROLLER_FAINTINGCRY]              = BtlController_HandleFaintingCry,
-    [CONTROLLER_INTROSLIDE]               = BtlController_HandleIntroSlide,
-    [CONTROLLER_INTROTRAINERBALLTHROW]    = PlayerHandleIntroTrainerBallThrow,
-    [CONTROLLER_DRAWPARTYSTATUSSUMMARY]   = PlayerHandleDrawPartyStatusSummary,
-    [CONTROLLER_HIDEPARTYSTATUSSUMMARY]   = BtlController_HandleHidePartyStatusSummary,
-    [CONTROLLER_ENDBOUNCE]                = PlayerHandleEndBounceEffect,
-    [CONTROLLER_SPRITEINVISIBILITY]       = BtlController_HandleSpriteInvisibility,
-    [CONTROLLER_BATTLEANIMATION]          = PlayerHandleBattleAnimation,
-    [CONTROLLER_RESETACTIONMOVESELECTION] = PlayerHandleResetActionMoveSelection,
-    [CONTROLLER_DEBUGMENU]                = PlayerHandleBattleDebug,
-    [CONTROLLER_TERMINATOR_NOP]           = BtlController_TerminatorNop
-};
 
 void SetControllerToPlayer(u32 battler)
 {
@@ -140,7 +79,7 @@ void SetControllerToPlayer(u32 battler)
     sIconTypeId[2] = 0xFF;
     sIconTypeId[3] = 0xFF;
     gBattlerControllerEndFuncs[battler] = PlayerBufferExecCompleted;
-    gBattlerControllerFuncs[battler] = PlayerBufferRunCommand;
+    gBattlerControllerFuncs[battler] = EjecutaComandoEnCurso;
     gDoingBattleAnim = FALSE;
 }
 
@@ -150,37 +89,10 @@ static void PlayerBufferExecCompleted(u32 combatiente)
     // identifica al llamante sin tener que instrumentar 33 puntos de llamada.
     LOG("LIBERA comando/func", gComandoEnCurso[combatiente],
         (u32)gBattlerControllerFuncs[combatiente]);
-    gBattlerControllerFuncs[combatiente] = PlayerBufferRunCommand;
+    gBattlerControllerFuncs[combatiente] = EjecutaComandoEnCurso;
     DesmarcaCombatienteOcupado(combatiente);
 }
 
-static void PlayerBufferRunCommand(u32 combatiente)
-{
-    if (EstaCombatienteOcupado(combatiente))
-    {
-        {
-            static u32 sUltimoComando = 0xFFFF;
-            u32 comando = gComandoEnCurso[combatiente];
-            if (comando != sUltimoComando)
-            {
-                sUltimoComando = comando;
-                // LOG("CMD jugador comando/combatiente", comando, combatiente);
-            }
-        }
-        if (gComandoEnCurso[combatiente] < ARRAY_COUNT(sPlayerBufferCommands))
-        {
-            if (sPlayerBufferCommands[gComandoEnCurso[combatiente]] == NULL)
-            {
-                LOG("NULO: comando de jugador", gComandoEnCurso[combatiente], combatiente);
-                PlayerBufferExecCompleted(combatiente);
-                return;
-            }
-            sPlayerBufferCommands[gComandoEnCurso[combatiente]](combatiente);
-        }
-        else
-            PlayerBufferExecCompleted(combatiente);
-    }
-}
 
 static void CompleteOnBattlerSpritePosX_0(u32 combatiente)
 {
@@ -1456,14 +1368,14 @@ void CB2_SetUpReshowBattleScreenAfterMenu2(void)
     SetMainCallback2(ReshowBattleScreenAfterMenu);
 }
 
-static void PlayerHandleLoadMonSprite(u32 battler)
+void PlayerHandleLoadMonSprite(u32 battler)
 {
     BattleLoadMonSpriteGfx(&gPlayerParty[gBattlerPartyIndexes[battler]], battler);
     gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = battler;
     gBattlerControllerFuncs[battler] = CompleteOnBattlerSpritePosX_0;
 }
 
-static void PlayerHandleSwitchInAnim(u32 battler)
+void PlayerHandleSwitchInAnim(u32 battler)
 {
     gActionSelectionCursor[battler] = 0;
     gMoveSelectionCursor[battler] = 0;
@@ -1480,7 +1392,7 @@ static u32 PlayerGetTrainerBackPicId(void)
 // In emerald it's possible to have a tag battle in the battle frontier facilities with AI
 // which use the front sprite for both the player and the partner as opposed to any other battles (including the one with Steven)
 // that use an animated back pic.
-static void PlayerHandleDrawTrainerPic(u32 battler)
+void PlayerHandleDrawTrainerPic(u32 battler)
 {
     s16 xPos = 80;
     u32 trainerPicId = PlayerGetTrainerBackPicId();
@@ -1489,13 +1401,13 @@ static void PlayerHandleDrawTrainerPic(u32 battler)
     BtlController_HandleDrawTrainerPic(battler, trainerPicId, FALSE, xPos, yPos, -1);
 }
 
-static void PlayerHandleTrainerSlide(u32 battler)
+void PlayerHandleTrainerSlide(u32 battler)
 {
     u32 trainerPicId = PlayerGetTrainerBackPicId();
     BtlController_HandleTrainerSlide(battler, trainerPicId);
 }
 
-static void PlayerHandleTrainerSlideBack(u32 battler)
+void PlayerHandleTrainerSlideBack(u32 battler)
 {
     BtlController_HandleTrainerSlideBack(battler, 50, TRUE);
 }
@@ -1508,7 +1420,7 @@ void PlayerHandleBallThrowAnim(u32 battler)
 }
 
 
-static void PlayerHandleMoveAnimation(u32 battler)
+void PlayerHandleMoveAnimation(u32 battler)
 {
     BtlController_HandleMoveAnimation(battler);
 }
@@ -1523,7 +1435,7 @@ static void HandleChooseActionAfterDma3(u32 battler)
     }
 }
 
-static void PlayerHandleChooseAction(u32 battler)
+void PlayerHandleChooseAction(u32 battler)
 {
     gBattlerControllerFuncs[battler] = HandleChooseActionAfterDma3;
 
@@ -1557,7 +1469,7 @@ static void PlayerHandleChooseAction(u32 battler)
     gSprites[monIconData].callback = SpriteCB_IconoAccion;
 }
 
-static void PlayerHandleYesNoBox(u32 battler)
+void PlayerHandleYesNoBox(u32 battler)
 {
     if (GetBattlerSide(battler) == LADO_JUGADOR)
     {
@@ -1598,7 +1510,7 @@ void InitMoveSelectionsVarsAndStrings(u32 battler)
     MoveSelectionDisplayMoveType(battler);
 }
 
-static void PlayerHandleChoosePokemon(u32 battler)
+void PlayerHandleChoosePokemon(u32 battler)
 {
     s32 i;
 
@@ -1615,7 +1527,7 @@ static void PlayerHandleChoosePokemon(u32 battler)
     gBattlerInMenuId = battler;
 }
 
-static void PlayerHandleHealthBarUpdate(u32 battler)
+void PlayerHandleHealthBarUpdate(u32 battler)
 {
     BtlController_HandleHealthBarUpdate(battler);
 }
@@ -1650,48 +1562,33 @@ void PlayerHandleExpUpdate(u32 battler)
 
 
 
-static void PlayerHandleTwoReturnValues(u32 battler)
-{
-    RespondeDosValores(battler, 0, 0);
-    PlayerBufferExecCompleted(battler);
-}
 
-static void PlayerHandleChosenMonReturnValue(u32 battler)
-{
-    RespondePokemonElegido(battler, 0, NULL);
-    PlayerBufferExecCompleted(battler);
-}
 
-static void PlayerHandleOneReturnValue(u32 battler)
-{
-    RespondeUnValor(battler, 0);
-    PlayerBufferExecCompleted(battler);
-}
 
-static void PlayerHandleIntroTrainerBallThrow(u32 battler)
+void PlayerHandleIntroTrainerBallThrow(u32 battler)
 {
     const u32 *trainerPal = gTrainerBacksprites[gSaveBlockPtr->playerGender].palette.data;
     BtlController_HandleIntroTrainerBallThrow(battler, 0xD6F8, trainerPal, 31, Intro_TryShinyAnimShowHealthbox);
 }
 
-static void PlayerHandleDrawPartyStatusSummary(u32 battler)
+void PlayerHandleDrawPartyStatusSummary(u32 battler)
 {
     BtlController_HandleDrawPartyStatusSummary(battler, LADO_JUGADOR, TRUE);
 }
 
-static void PlayerHandleEndBounceEffect(u32 battler)
+void PlayerHandleEndBounceEffect(u32 battler)
 {
     EndBounceEffect(battler, BOUNCE_HEALTHBOX);
     EndBounceEffect(battler, BOUNCE_MON);
     PlayerBufferExecCompleted(battler);
 }
 
-static void PlayerHandleBattleAnimation(u32 battler)
+void PlayerHandleBattleAnimation(u32 battler)
 {
     BtlController_HandleBattleAnimation(battler, TRUE);
 }
 
-static void PlayerHandleResetActionMoveSelection(u32 battler)
+void PlayerHandleResetActionMoveSelection(u32 battler)
 {
     switch (gArgumentosComando[battler].caso)
     {
@@ -1723,7 +1620,7 @@ static void Controller_WaitForDebug(u32 battler)
     }
 }
 
-static void PlayerHandleBattleDebug(u32 battler)
+void PlayerHandleBattleDebug(u32 battler)
 {
     BeginNormalPaletteFade(-1, 0, 0, 0x10, 0);
     SetMainCallback2(CB2_BattleDebugMenu);
