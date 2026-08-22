@@ -460,6 +460,26 @@ void InitBattleBgsVideo(void)
     DisableInterrupts(INTR_FLAG_HBLANK);
     EnableInterrupts(INTR_FLAG_VBLANK | INTR_FLAG_VCOUNT | INTR_FLAG_TIMER3 | INTR_FLAG_SERIAL);
     BattleInitBgsAndWindows();
+
+    // FONDO_1 y FONDO_2 tienen que quedarse con la base de caracteres a cero.
+    //
+    // Son las capas que usan las animaciones, y monbg escribe en ellas contando 512
+    // casillas DESDE su base. Con la base a 1 -que es lo que dice la plantilla- esos
+    // tiles caen en 0x8000, que es justo donde vive el tileset del terreno: cada
+    // animacion que dibujara al Pokemon en una capa se llevaba el escenario por
+    // delante, y clearmonbg remataba rellenando de ceros.
+    //
+    // Hasta ahora esto no se veia porque la transicion de entrada al combate dejaba
+    // la base a cero de camino. O sea que el fallo estaba ahi para cualquier combate
+    // arrancado sin transicion, como los del menu de depuracion.
+    //
+    // Se usa SetBgAttribute y no SetAnimBgAttribute a proposito: el segundo solo
+    // toca el registro del hardware, y quien decide donde se escribe es la
+    // contabilidad propia de bg.c. Cambiar uno solo los deja diciendo cosas
+    // distintas.
+    SetBgAttribute(FONDO_1, BG_ATTR_CHARBASEINDEX, 0);
+    SetBgAttribute(FONDO_2, BG_ATTR_CHARBASEINDEX, 0);
+
     SetGpuReg(REG_OFFSET_BLDCNT, 0);
     SetGpuReg(REG_OFFSET_BLDALPHA, 0);
     SetGpuReg(REG_OFFSET_BLDY, 0);

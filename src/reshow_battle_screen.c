@@ -22,11 +22,6 @@ static bool8 LoadBattlerSpriteGfx(u32 battler);
 static void CreaMarcadorDe(u32 battler);
 static void ClearBattleBgCntBaseBlocks(void);
 
-void ReshowBattleScreenDummy(void)
-{
-
-}
-
 void ReshowBattleScreenAfterMenu(void)
 {
     gFundidoPaletas.transferenciaBufferDeshabilitada = TRUE;

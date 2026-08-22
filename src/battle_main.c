@@ -7,6 +7,7 @@
 #include "battle_controllers.h"
 #include "battle_interface.h"
 #include "battle_main.h"
+#include "laboratorio_animaciones.h"
 #include "battle_bg.h"
 #include "overworld.h"
 #include "battle_message.h"
@@ -2691,7 +2692,7 @@ static void RunTurnActionsFunctions(void)
         if (gAccionElegida[JUGADOR_IZQUIERDA] != sUltimaAccion)
         {
             sUltimaAccion = gAccionElegida[JUGADOR_IZQUIERDA];
-            LOG("ACCION jugador cambia a", gAccionElegida[JUGADOR_IZQUIERDA], 0);
+            // LOG("ACCION jugador cambia a", gAccionElegida[JUGADOR_IZQUIERDA], 0);
         }
     }
     {
@@ -2907,6 +2908,7 @@ static void WaitForEvoSceneToFinish(void)
 static void ReturnFromBattleToOverworld(void)
 {
     gSpecialVar_Result = gBattleOutcome;
+    gLaboratorioAnimaciones = FALSE;
     gMain.inBattle = FALSE;
     gMain.callback1 = gPreBattleCallback1;
 

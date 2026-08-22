@@ -6,6 +6,7 @@
 #include "battle_anim.h"
 #include "battle_bg.h"
 #include "battle_controllers.h"
+#include "laboratorio_animaciones.h"
 #include "battle_gfx_sfx_util.h"
 #include "battle_interface.h"
 #include "battle_message.h"

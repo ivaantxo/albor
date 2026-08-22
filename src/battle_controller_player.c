@@ -4,6 +4,7 @@
 #include "battle.h"
 #include "battle_anim.h"
 #include "battle_controllers.h"
+#include "laboratorio_animaciones.h"
 #include "battle_interface.h"
 #include "battle_message.h"
 #include "battle_setup.h"
@@ -1437,6 +1438,11 @@ static void HandleChooseActionAfterDma3(u32 battler)
 
 void PlayerHandleChooseAction(u32 battler)
 {
+    // En el laboratorio de animaciones no hay menu de accion: en su lugar sale el
+    // selector de movimientos, que solo lanza la animacion.
+    if (LaboratorioTomaElControl(battler))
+        return;
+
     gBattlerControllerFuncs[battler] = HandleChooseActionAfterDma3;
 
     // El resaltado del menu no es un cursor sino un cambio de paleta de fondo, y
