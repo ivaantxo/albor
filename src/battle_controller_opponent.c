@@ -55,9 +55,7 @@ static void SwitchIn_HandleSoundAndEnd(u32 battler);
 static void (*const sOpponentBufferCommands[CONTROLLER_CMDS_COUNT])(u32 battler) =
 {
     [CONTROLLER_GETMONDATA]               = BtlController_HandleGetMonData,
-    [CONTROLLER_GETRAWMONDATA]            = BtlController_HandleGetRawMonData,
     [CONTROLLER_SETMONDATA]               = BtlController_HandleSetMonData,
-    [CONTROLLER_SETRAWMONDATA]            = BtlController_HandleSetRawMonData,
     [CONTROLLER_LOADMONSPRITE]            = OpponentHandleLoadMonSprite,
     [CONTROLLER_SWITCHINANIM]             = OpponentHandleSwitchInAnim,
     [CONTROLLER_RETURNMONTOBALL]          = BtlController_HandleReturnMonToBall,
@@ -65,10 +63,7 @@ static void (*const sOpponentBufferCommands[CONTROLLER_CMDS_COUNT])(u32 battler)
     [CONTROLLER_TRAINERSLIDE]             = OpponentHandleTrainerSlide,
     [CONTROLLER_TRAINERSLIDEBACK]         = OpponentHandleTrainerSlideBack,
     [CONTROLLER_FAINTANIMATION]           = BtlController_HandleFaintAnimation,
-    [CONTROLLER_PALETTEFADE]              = BtlController_Empty,
-    [CONTROLLER_SUCCESSBALLTHROWANIM]     = BtlController_Empty,
     [CONTROLLER_BALLTHROWANIM]            = BtlController_Empty,
-    [CONTROLLER_PAUSE]                    = BtlController_Empty,
     [CONTROLLER_MOVEANIMATION]            = OpponentHandleMoveAnimation,
     [CONTROLLER_CHOOSEACTION]             = OpponentHandleChooseAction,
     [CONTROLLER_YESNOBOX]                 = BtlController_Empty,
@@ -78,10 +73,7 @@ static void (*const sOpponentBufferCommands[CONTROLLER_CMDS_COUNT])(u32 battler)
     [CONTROLLER_EXPUPDATE]                = BtlController_Empty,
     [CONTROLLER_STATUSICONUPDATE]         = BtlController_HandleStatusIconUpdate,
     [CONTROLLER_STATUSANIMATION]          = BtlController_HandleStatusAnimation,
-    [CONTROLLER_STATUSXOR]                = BtlController_Empty,
     [CONTROLLER_DATATRANSFER]             = BtlController_Empty,
-    [CONTROLLER_DMA3TRANSFER]             = BtlController_Empty,
-    [CONTROLLER_PLAYBGM]                  = BtlController_Empty,
     [CONTROLLER_TWORETURNVALUES]          = BtlController_Empty,
     [CONTROLLER_CHOSENMONRETURNVALUE]     = BtlController_Empty,
     [CONTROLLER_ONERETURNVALUE]           = BtlController_Empty,
@@ -116,22 +108,22 @@ static void OpponentBufferRunCommand(u32 combatiente)
             // El lado del rival no tenia sonda, y es justo el que estaba actuando
             // cuando el juego salta a la pantalla de inicio.
             static u32 sUltimoComando = 0xFFFF;
-            u32 comando = gBattleResources->bufferA[combatiente][0];
+            u32 comando = gComandoEnCurso[combatiente];
             if (comando != sUltimoComando)
             {
                 sUltimoComando = comando;
                 // LOG("CMD rival comando/combatiente", comando, combatiente);
             }
         }
-        if (gBattleResources->bufferA[combatiente][0] < ARRAY_COUNT(sOpponentBufferCommands))
+        if (gComandoEnCurso[combatiente] < ARRAY_COUNT(sOpponentBufferCommands))
         {
-            if (sOpponentBufferCommands[gBattleResources->bufferA[combatiente][0]] == NULL)
+            if (sOpponentBufferCommands[gComandoEnCurso[combatiente]] == NULL)
             {
-                LOG("NULO: comando de rival", gBattleResources->bufferA[combatiente][0], combatiente);
+                LOG("NULO: comando de rival", gComandoEnCurso[combatiente], combatiente);
                 OpponentBufferExecCompleted(combatiente);
                 return;
             }
-            sOpponentBufferCommands[gBattleResources->bufferA[combatiente][0]](combatiente);
+            sOpponentBufferCommands[gComandoEnCurso[combatiente]](combatiente);
         }
         else
             OpponentBufferExecCompleted(combatiente);
@@ -431,7 +423,7 @@ static void OpponentHandleChooseAction(u32 battler)
 static void OpponentHandleChooseMove(u32 battler)
 {
     u32 chosenMoveId = gCombate->IA_Eleccion[battler];
-    struct DatosMovimiento *moveInfo = (struct DatosMovimiento *)(&gBattleResources->bufferA[battler][4]);
+    struct DatosMovimiento *moveInfo = &gArgumentosComando[battler].datosMovimiento;
     u32 chosenMove;
 
     // La eleccion de la IA no siempre es un indice de movimiento: hay estados que
@@ -456,7 +448,7 @@ static void OpponentHandleChooseMove(u32 battler)
         if (gAbsentBattlerFlags & (1u << gBattlerTarget))
             gBattlerTarget = JUGADOR_DERECHA;
     }
-    BtlController_EmitTwoReturnValues(battler, BUFFER_B, SELECCION_MOVIMIENTO, (chosenMoveId) | (gBattlerTarget << 8));
+    RespondeDosValores(battler, SELECCION_MOVIMIENTO, (chosenMoveId) | (gBattlerTarget << 8));
     OpponentBufferExecCompleted(battler);
 }
 
@@ -466,7 +458,7 @@ static void OpponentHandleChoosePokemon(u32 battler)
     s32 pokemonInBattle = 1;
 
     // Choosing Revival Blessing target
-    if ((gBattleResources->bufferA[battler][1] & 0xF) == PARTY_ACTION_CHOOSE_FAINTED_MON)
+    if ((gArgumentosComando[battler].caso & 0xF) == PARTY_ACTION_CHOOSE_FAINTED_MON)
     {
         chosenMonId = gSelectedMonPartyId = GetFirstFaintedPartyIndex(battler);
     }
@@ -512,7 +504,7 @@ static void OpponentHandleChoosePokemon(u32 battler)
         gCombate->AI_monToSwitchIntoId[battler] = PARTY_SIZE;
         gCombate->monToSwitchIntoId[battler] = chosenMonId;
     }
-    BtlController_EmitChosenMonReturnValue(battler, BUFFER_B, chosenMonId, NULL);
+    RespondePokemonElegido(battler, chosenMonId, NULL);
     OpponentBufferExecCompleted(battler);
 
 }

@@ -908,7 +908,7 @@ void AI_TrySwitchOrUseItem(u32 battler)
     {
         if (AI_DATA->shouldSwitch & (1u << battler) && IsSwitchinValid(battler))
         {
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_SWITCH, 0);
+            RespondeDosValores(battler, B_ACTION_SWITCH, 0);
             if (gCombate->AI_monToSwitchIntoId[battler] == PARTY_SIZE)
             {
                 s32 monToSwitchId = AI_DATA->mostSuitableMonId[battler];
@@ -955,7 +955,7 @@ void AI_TrySwitchOrUseItem(u32 battler)
         }
     }
 
-    BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_USE_MOVE, OPONENTE(battler) << 8);
+    RespondeDosValores(battler, B_ACTION_USE_MOVE, OPONENTE(battler) << 8);
 }
 
 // If there are two(or more) mons to choose from, always choose one that has baton pass

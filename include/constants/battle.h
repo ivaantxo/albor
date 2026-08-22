@@ -43,7 +43,7 @@ enum LadosCombate
     NUMERO_LADOS
 };
 
-// Lo que devuelve un controlador en bufferB[1] al cerrarse una pantalla de
+// Lo que devuelve un controlador en gRespuestaCombatiente.valor8 al cerrarse una pantalla de
 // seleccion. Es un espacio de valores PROPIO: no son acciones de turno
 // (B_ACTION_*), aunque viajen por el mismo byte en otro momento del turno.
 // Antes se reutilizaban valores de B_ACTION_* como marcadores, y como

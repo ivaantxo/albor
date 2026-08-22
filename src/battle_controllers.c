@@ -151,401 +151,279 @@ static void SetBattlePartyIds(void)
     }
 }
 
-static void PrepareBufferDataTransfer(u32 battler, u32 bufferId, u8 *data, u16 size)
-{
-    s32 i;
+// Estado del comando en curso de cada combatiente.
+//
+// Antes esto vivia en bufferA y bufferB, dos arrays de 512 bytes por combatiente
+// donde los argumentos se empaquetaban byte a byte y el manejador los desempaquetaba
+// a continuacion. Ese empaquetado era el protocolo del cable de enlace; el enlace ya
+// no esta, asi que solo quedaba el coste.
+COMMON_DATA struct ArgumentosComando gArgumentosComando[NUMERO_COMBATIENTES] = {0};
+COMMON_DATA struct RespuestaCombatiente gRespuestaCombatiente[NUMERO_COMBATIENTES] = {0};
+COMMON_DATA u8 gComandoEnCurso[NUMERO_COMBATIENTES] = {0};
 
-    switch (bufferId)
-    {
-    case BUFFER_A:
-        for (i = 0; i < size; data++, i++)
-            gBattleResources->bufferA[battler][i] = *data;
-        break;
-    case BUFFER_B:
-        for (i = 0; i < size; data++, i++)
-            gBattleResources->bufferB[battler][i] = *data;
-        break;
-    }
+// Deja anotado que comando toca. El manejador se reentra en cada fotograma hasta
+// que se da por terminado, de ahi que haga falta recordarlo.
+static void ArrancaComando(u32 combatiente, u32 comando)
+{
+    gComandoEnCurso[combatiente] = comando;
 }
 
-void BtlController_EmitGetMonData(u32 battler, u32 bufferId, u8 requestId, u8 monToCheck)
+// ---------------------------------------------------------------------------
+// Ordenes: del guion de combate al combatiente.
+// ---------------------------------------------------------------------------
+
+void ComandoObtenDatosPokemon(u32 combatiente, u8 peticion, u8 pokemon)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_GETMONDATA;
-    gBattleResources->transferBuffer[1] = requestId;
-    gBattleResources->transferBuffer[2] = monToCheck;
-    gBattleResources->transferBuffer[3] = 0;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
+    gArgumentosComando[combatiente].peticion = peticion;
+    gArgumentosComando[combatiente].pokemon = pokemon;
+    ArrancaComando(combatiente, CONTROLLER_GETMONDATA);
 }
 
-void BtlController_EmitSetMonData(u32 battler, u32 bufferId, u8 requestId, u8 monToCheck, u8 bytes, void *data)
+void ComandoFijaDatosPokemon(u32 combatiente, u8 peticion, u8 pokemon, u8 bytes, void *datos)
 {
-    s32 i;
+    if (bytes > sizeof(gArgumentosComando[combatiente].datos))
+        bytes = sizeof(gArgumentosComando[combatiente].datos);
 
-    gBattleResources->transferBuffer[0] = CONTROLLER_SETMONDATA;
-    gBattleResources->transferBuffer[1] = requestId;
-    gBattleResources->transferBuffer[2] = monToCheck;
-    for (i = 0; i < bytes; i++)
-        gBattleResources->transferBuffer[3 + i] = *(u8 *)(data++);
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 3 + bytes);
+    gArgumentosComando[combatiente].peticion = peticion;
+    gArgumentosComando[combatiente].pokemon = pokemon;
+    gArgumentosComando[combatiente].bytes = bytes;
+    memcpy(gArgumentosComando[combatiente].datos, datos, bytes);
+    ArrancaComando(combatiente, CONTROLLER_SETMONDATA);
 }
 
-void BtlController_EmitLoadMonSprite(u32 battler, u32 bufferId)
+void ComandoCargaSpritePokemon(u32 combatiente)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_LOADMONSPRITE;
-    gBattleResources->transferBuffer[1] = CONTROLLER_LOADMONSPRITE;
-    gBattleResources->transferBuffer[2] = CONTROLLER_LOADMONSPRITE;
-    gBattleResources->transferBuffer[3] = CONTROLLER_LOADMONSPRITE;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
+    ArrancaComando(combatiente, CONTROLLER_LOADMONSPRITE);
 }
 
-void BtlController_EmitSwitchInAnim(u32 battler, u32 bufferId, u8 partyId, bool8 dontClearSubstituteBit)
+void ComandoAnimacionEntrada(u32 combatiente, u8 indiceEquipo, bool8 noLimpiarSustituto)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_SWITCHINANIM;
-    gBattleResources->transferBuffer[1] = partyId;
-    gBattleResources->transferBuffer[2] = dontClearSubstituteBit;
-    gBattleResources->transferBuffer[3] = 5;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
+    gArgumentosComando[combatiente].indiceEquipo = indiceEquipo;
+    gArgumentosComando[combatiente].noLimpiarSustituto = noLimpiarSustituto;
+    ArrancaComando(combatiente, CONTROLLER_SWITCHINANIM);
 }
 
-void BtlController_EmitReturnMonToBall(u32 battler, u32 bufferId, bool8 skipAnim)
+void ComandoDevuelvePokemonABall(u32 combatiente, bool8 saltarAnimacion)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_RETURNMONTOBALL;
-    gBattleResources->transferBuffer[1] = skipAnim;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 2);
+    gArgumentosComando[combatiente].saltarAnimacion = saltarAnimacion;
+    ArrancaComando(combatiente, CONTROLLER_RETURNMONTOBALL);
 }
 
-void BtlController_EmitDrawTrainerPic(u32 battler, u32 bufferId)
+void ComandoDibujaEntrenador(u32 combatiente)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_DRAWTRAINERPIC;
-    gBattleResources->transferBuffer[1] = CONTROLLER_DRAWTRAINERPIC;
-    gBattleResources->transferBuffer[2] = CONTROLLER_DRAWTRAINERPIC;
-    gBattleResources->transferBuffer[3] = CONTROLLER_DRAWTRAINERPIC;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
+    ArrancaComando(combatiente, CONTROLLER_DRAWTRAINERPIC);
 }
 
-void BtlController_EmitTrainerSlide(u32 battler, u32 bufferId)
+void ComandoEntrenadorEntra(u32 combatiente)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_TRAINERSLIDE;
-    gBattleResources->transferBuffer[1] = CONTROLLER_TRAINERSLIDE;
-    gBattleResources->transferBuffer[2] = CONTROLLER_TRAINERSLIDE;
-    gBattleResources->transferBuffer[3] = CONTROLLER_TRAINERSLIDE;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
+    ArrancaComando(combatiente, CONTROLLER_TRAINERSLIDE);
 }
 
-void BtlController_EmitTrainerSlideBack(u32 battler, u32 bufferId)
+void ComandoEntrenadorSale(u32 combatiente)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_TRAINERSLIDEBACK;
-    gBattleResources->transferBuffer[1] = CONTROLLER_TRAINERSLIDEBACK;
-    gBattleResources->transferBuffer[2] = CONTROLLER_TRAINERSLIDEBACK;
-    gBattleResources->transferBuffer[3] = CONTROLLER_TRAINERSLIDEBACK;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
+    ArrancaComando(combatiente, CONTROLLER_TRAINERSLIDEBACK);
 }
 
-void BtlController_EmitFaintAnimation(u32 battler, u32 bufferId)
+void ComandoAnimacionDebilitado(u32 combatiente)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_FAINTANIMATION;
-    gBattleResources->transferBuffer[1] = CONTROLLER_FAINTANIMATION;
-    gBattleResources->transferBuffer[2] = CONTROLLER_FAINTANIMATION;
-    gBattleResources->transferBuffer[3] = CONTROLLER_FAINTANIMATION;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
+    ArrancaComando(combatiente, CONTROLLER_FAINTANIMATION);
 }
 
-void BtlController_EmitBallThrowAnim(u32 battler, u32 bufferId, u8 caseId)
+void ComandoAnimacionLanzarBall(u32 combatiente, u8 caso)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_BALLTHROWANIM;
-    gBattleResources->transferBuffer[1] = caseId;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 2);
+    gArgumentosComando[combatiente].caso = caso;
+    ArrancaComando(combatiente, CONTROLLER_BALLTHROWANIM);
 }
 
-void BtlController_EmitMoveAnimation(u32 battler, u32 bufferId, enum Movimientos movimiento, u8 turnOfMove, u16 movePower, s32 dmg, u8 friendship, struct DisableStruct *disableStructPtr, u8 multihit)
+void ComandoAnimacionMovimiento(u32 combatiente, enum Movimientos movimiento, u8 turnoDelMovimiento,
+                                u16 potencia, s32 dano, u8 amistad, struct DisableStruct *estadoDeshabilitado,
+                                u8 golpesMultiples)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_MOVEANIMATION;
-    gBattleResources->transferBuffer[1] = movimiento;
-    gBattleResources->transferBuffer[2] = (movimiento & 0xFF00) >> 8;
-    gBattleResources->transferBuffer[3] = turnOfMove;
-    gBattleResources->transferBuffer[4] = movePower;
-    gBattleResources->transferBuffer[5] = (movePower & 0xFF00) >> 8;
-    gBattleResources->transferBuffer[6] = dmg;
-    gBattleResources->transferBuffer[7] = (dmg & 0x0000FF00) >> 8;
-    gBattleResources->transferBuffer[8] = (dmg & 0x00FF0000) >> 16;
-    gBattleResources->transferBuffer[9] = (dmg & 0xFF000000) >> 24;
-    gBattleResources->transferBuffer[10] = friendship;
-    gBattleResources->transferBuffer[11] = multihit;
-    if (ClimaTieneEfecto())
-    {
-        u16 weatherBit = (1 << gCombate->clima.modo);
-        gBattleResources->transferBuffer[12] = weatherBit;
-        gBattleResources->transferBuffer[13] = (weatherBit & 0xFF00) >> 8;
-    }
-    else
-    {
-        gBattleResources->transferBuffer[12] = 0;
-        gBattleResources->transferBuffer[13] = 0;
-    }
-    gBattleResources->transferBuffer[14] = 0;
-    gBattleResources->transferBuffer[15] = 0;
-    memcpy(&gBattleResources->transferBuffer[16], disableStructPtr, sizeof(struct DisableStruct));
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 16 + sizeof(struct DisableStruct));
+    struct ArgumentosComando *args = &gArgumentosComando[combatiente];
+
+    args->movimiento = movimiento;
+    args->turnoDelMovimiento = turnoDelMovimiento;
+    args->potencia = potencia;
+    args->dano = dano;
+    args->amistad = amistad;
+    args->golpesMultiples = golpesMultiples;
+    args->clima = ClimaTieneEfecto() ? (1 << gCombate->clima.modo) : 0;
+    args->estadoDeshabilitado = *estadoDeshabilitado;
+    ArrancaComando(combatiente, CONTROLLER_MOVEANIMATION);
 }
 
-// itemId only relevant for B_ACTION_USE_ITEM
-void BtlController_EmitChooseAction(u32 battler, u32 bufferId, u8 action)
+void ComandoEligeAccion(u32 combatiente, u8 accion)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_CHOOSEACTION;
-    gBattleResources->transferBuffer[1] = action;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
+    gArgumentosComando[combatiente].accion = accion;
+    ArrancaComando(combatiente, CONTROLLER_CHOOSEACTION);
 }
 
-// Only used by the forfeit prompt in the Battle Frontier
-// For other Yes/No boxes in battle, see Cmd_yesnobox
-void BtlController_EmitYesNoBox(u32 battler, u32 bufferId)
+void ComandoCuadroSiNo(u32 combatiente)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_YESNOBOX;
-    gBattleResources->transferBuffer[1] = CONTROLLER_YESNOBOX;
-    gBattleResources->transferBuffer[2] = CONTROLLER_YESNOBOX;
-    gBattleResources->transferBuffer[3] = CONTROLLER_YESNOBOX;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
+    ArrancaComando(combatiente, CONTROLLER_YESNOBOX);
 }
 
-void BtlController_EmitChooseMove(u32 battler, u32 bufferId, bool8 isDoubleBattle, bool8 NoPpNumber, struct DatosMovimiento *datosMovimiento)
+void ComandoEligeMovimiento(u32 combatiente, bool8 esCombateDoble, bool8 sinNumeroDePP, struct DatosMovimiento *datosMovimiento)
 {
-    s32 i;
-
-    gBattleResources->transferBuffer[0] = CONTROLLER_CHOOSEMOVE;
-    gBattleResources->transferBuffer[1] = isDoubleBattle;
-    gBattleResources->transferBuffer[2] = NoPpNumber;
-    gBattleResources->transferBuffer[3] = 0;
-    for (i = 0; i < sizeof(*datosMovimiento); i++)
-        gBattleResources->transferBuffer[4 + i] = *((u8 *)(datosMovimiento) + i);
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, sizeof(*datosMovimiento) + 4);
+    gArgumentosComando[combatiente].esCombateDoble = esCombateDoble;
+    gArgumentosComando[combatiente].sinNumeroDePP = sinNumeroDePP;
+    gArgumentosComando[combatiente].datosMovimiento = *datosMovimiento;
+    ArrancaComando(combatiente, CONTROLLER_CHOOSEMOVE);
 }
 
-void BtlController_EmitChoosePokemon(u32 battler, u32 bufferId, u8 caseId, u8 slotId, u16 abilityId, u8 *data)
+void ComandoEligePokemon(u32 combatiente, u8 caso, u8 ranura, u16 habilidad, u8 *datos)
 {
-    s32 i;
-
-    gBattleResources->transferBuffer[0] = CONTROLLER_CHOOSEPOKEMON;
-    gBattleResources->transferBuffer[1] = caseId;
-    gBattleResources->transferBuffer[2] = slotId;
-    gBattleResources->transferBuffer[3] = abilityId & 0xFF;
-    gBattleResources->transferBuffer[7] = (abilityId >> 8) & 0xFF;
-    for (i = 0; i < 3; i++)
-        gBattleResources->transferBuffer[4 + i] = data[i];
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 8);  // Only 7 bytes were written.
+    gArgumentosComando[combatiente].caso = caso;
+    gArgumentosComando[combatiente].ranura = ranura;
+    gArgumentosComando[combatiente].habilidad = habilidad;
+    for (u32 i = 0; i < 3; i++)
+        gArgumentosComando[combatiente].datosEleccion[i] = datos[i];
+    ArrancaComando(combatiente, CONTROLLER_CHOOSEPOKEMON);
 }
 
-// why is the argument u16 if it's being cast to s16 anyway?
-void BtlController_EmitHealthBarUpdate(u32 battler, u32 bufferId, u16 hpValue)
+void ComandoActualizaBarraSalud(u32 combatiente, u16 valorPS)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_HEALTHBARUPDATE;
-    gBattleResources->transferBuffer[1] = 0;
-    gBattleResources->transferBuffer[2] = (s16)hpValue;
-    gBattleResources->transferBuffer[3] = ((s16)hpValue & 0xFF00) >> 8;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
+    gArgumentosComando[combatiente].valorPS = valorPS;
+    ArrancaComando(combatiente, CONTROLLER_HEALTHBARUPDATE);
 }
 
-void BtlController_EmitExpUpdate(u32 battler, u32 bufferId, u8 partyId, s32 expPoints)
+void ComandoActualizaExperiencia(u32 combatiente, u8 indiceEquipo, s32 experiencia)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_EXPUPDATE;
-    gBattleResources->transferBuffer[1] = partyId;
-    gBattleResources->transferBuffer[2] = expPoints;
-    gBattleResources->transferBuffer[3] = (expPoints & 0x0000FF00) >> 8;
-    gBattleResources->transferBuffer[4] = (expPoints & 0x00FF0000) >> 16;
-    gBattleResources->transferBuffer[5] = (expPoints & 0xFF000000) >> 24;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 6);
+    gArgumentosComando[combatiente].indiceEquipo = indiceEquipo;
+    gArgumentosComando[combatiente].experiencia = experiencia;
+    ArrancaComando(combatiente, CONTROLLER_EXPUPDATE);
 }
 
-void BtlController_EmitStatusIconUpdate(u32 battler, u32 bufferId, u32 status1, u32 status2)
+void ComandoActualizaIconoEstado(u32 combatiente, u32 estado1, u32 estado2)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_STATUSICONUPDATE;
-    gBattleResources->transferBuffer[1] = status1;
-    gBattleResources->transferBuffer[2] = (status1 & 0x0000FF00) >> 8;
-    gBattleResources->transferBuffer[3] = (status1 & 0x00FF0000) >> 16;
-    gBattleResources->transferBuffer[4] = (status1 & 0xFF000000) >> 24;
-    gBattleResources->transferBuffer[5] = status2;
-    gBattleResources->transferBuffer[6] = (status2 & 0x0000FF00) >> 8;
-    gBattleResources->transferBuffer[7] = (status2 & 0x00FF0000) >> 16;
-    gBattleResources->transferBuffer[8] = (status2 & 0xFF000000) >> 24;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 9);
+    gArgumentosComando[combatiente].estado1 = estado1;
+    gArgumentosComando[combatiente].estado2 = estado2;
+    ArrancaComando(combatiente, CONTROLLER_STATUSICONUPDATE);
 }
 
-void BtlController_EmitStatusAnimation(u32 battler, u32 bufferId, bool8 status2, u32 status)
+void ComandoAnimacionEstado(u32 combatiente, bool8 esEstado2, u32 estado)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_STATUSANIMATION;
-    gBattleResources->transferBuffer[1] = status2;
-    gBattleResources->transferBuffer[2] = status;
-    gBattleResources->transferBuffer[3] = (status & 0x0000FF00) >> 8;
-    gBattleResources->transferBuffer[4] = (status & 0x00FF0000) >> 16;
-    gBattleResources->transferBuffer[5] = (status & 0xFF000000) >> 24;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 6);
+    gArgumentosComando[combatiente].esEstado2 = esEstado2;
+    gArgumentosComando[combatiente].estado1 = estado;
+    ArrancaComando(combatiente, CONTROLLER_STATUSANIMATION);
 }
 
-void BtlController_EmitDataTransfer(u32 battler, u32 bufferId, u16 size, void *data)
+void ComandoAnimacionGolpe(u32 combatiente)
 {
-    s32 i;
-
-    gBattleResources->transferBuffer[0] = CONTROLLER_DATATRANSFER;
-    gBattleResources->transferBuffer[1] = CONTROLLER_DATATRANSFER;
-    gBattleResources->transferBuffer[2] = size;
-    gBattleResources->transferBuffer[3] = (size & 0xFF00) >> 8;
-    for (i = 0; i < size; i++)
-        gBattleResources->transferBuffer[4 + i] = *(u8 *)(data++);
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, size + 4);
+    ArrancaComando(combatiente, CONTROLLER_HITANIMATION);
 }
 
-void BtlController_EmitTwoReturnValues(u32 battler, u32 bufferId, u8 ret8, u32 ret32)
+void ComandoNoPuedeCambiar(u32 combatiente)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_TWORETURNVALUES;
-    gBattleResources->transferBuffer[1] = ret8;
-    gBattleResources->transferBuffer[2] = ret32;
-    gBattleResources->transferBuffer[3] = (ret32 & 0x0000FF00) >> 8;
-    gBattleResources->transferBuffer[4] = (ret32 & 0x00FF0000) >> 16;
-    gBattleResources->transferBuffer[5] = (ret32 & 0xFF000000) >> 24;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 6);
+    ArrancaComando(combatiente, CONTROLLER_CANTSWITCH);
 }
 
-void BtlController_EmitChosenMonReturnValue(u32 battler, u32 bufferId, u8 partyId, u8 *battlePartyOrder)
+void ComandoSuenaEfecto(u32 combatiente, u16 cancion)
 {
-    s32 i;
-
-    gBattleResources->transferBuffer[0] = CONTROLLER_CHOSENMONRETURNVALUE;
-    gBattleResources->transferBuffer[1] = partyId;
-    for (i = 0; i < (int)ARRAY_COUNT(gBattlePartyCurrentOrder); i++)
-        gBattleResources->transferBuffer[2 + i] = battlePartyOrder[i];
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 5);
+    gArgumentosComando[combatiente].cancion = cancion;
+    ArrancaComando(combatiente, CONTROLLER_PLAYSE);
 }
 
-void BtlController_EmitOneReturnValue(u32 battler, u32 bufferId, u16 ret)
+void ComandoSuenaFanfarriaOMusica(u32 combatiente, u16 cancion, bool8 esMusica)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_ONERETURNVALUE;
-    gBattleResources->transferBuffer[1] = ret;
-    gBattleResources->transferBuffer[2] = (ret & 0xFF00) >> 8;
-    gBattleResources->transferBuffer[3] = 0;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
+    gArgumentosComando[combatiente].cancion = cancion;
+    gArgumentosComando[combatiente].esMusica = esMusica;
+    ArrancaComando(combatiente, CONTROLLER_PLAYFANFAREORBGM);
 }
 
-void BtlController_EmitHitAnimation(u32 battler, u32 bufferId)
+void ComandoGritoAlDebilitarse(u32 combatiente)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_HITANIMATION;
-    gBattleResources->transferBuffer[1] = CONTROLLER_HITANIMATION;
-    gBattleResources->transferBuffer[2] = CONTROLLER_HITANIMATION;
-    gBattleResources->transferBuffer[3] = CONTROLLER_HITANIMATION;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
+    ArrancaComando(combatiente, CONTROLLER_FAINTINGCRY);
 }
 
-void BtlController_EmitCantSwitch(u32 battler, u32 bufferId)
+void ComandoEntradaEscenario(u32 combatiente, u8 terreno)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_CANTSWITCH;
-    gBattleResources->transferBuffer[1] = CONTROLLER_CANTSWITCH;
-    gBattleResources->transferBuffer[2] = CONTROLLER_CANTSWITCH;
-    gBattleResources->transferBuffer[3] = CONTROLLER_CANTSWITCH;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
+    gArgumentosComando[combatiente].terreno = terreno;
+    ArrancaComando(combatiente, CONTROLLER_INTROSLIDE);
 }
 
-void BtlController_EmitPlaySE(u32 battler, u32 bufferId, u16 songId)
+void ComandoEntrenadorLanzaBall(u32 combatiente)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_PLAYSE;
-    gBattleResources->transferBuffer[1] = songId;
-    gBattleResources->transferBuffer[2] = (songId & 0xFF00) >> 8;
-    gBattleResources->transferBuffer[3] = 0;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
+    ArrancaComando(combatiente, CONTROLLER_INTROTRAINERBALLTHROW);
 }
 
-void BtlController_EmitPlayFanfareOrBGM(u32 battler, u32 bufferId, u16 songId, bool8 playBGM)
+void ComandoMuestraResumenEquipo(u32 combatiente, struct HpAndStatus *resumen, u8 banderas)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_PLAYFANFAREORBGM;
-    gBattleResources->transferBuffer[1] = songId;
-    gBattleResources->transferBuffer[2] = (songId & 0xFF00) >> 8;
-    gBattleResources->transferBuffer[3] = playBGM;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
+    for (u32 i = 0; i < PARTY_SIZE; i++)
+        gArgumentosComando[combatiente].resumenEquipo[i] = resumen[i];
+    gArgumentosComando[combatiente].banderas = banderas;
+    ArrancaComando(combatiente, CONTROLLER_DRAWPARTYSTATUSSUMMARY);
 }
 
-void BtlController_EmitFaintingCry(u32 battler, u32 bufferId)
+void ComandoOcultaResumenEquipo(u32 combatiente)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_FAINTINGCRY;
-    gBattleResources->transferBuffer[1] = CONTROLLER_FAINTINGCRY;
-    gBattleResources->transferBuffer[2] = CONTROLLER_FAINTINGCRY;
-    gBattleResources->transferBuffer[3] = CONTROLLER_FAINTINGCRY;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
+    ArrancaComando(combatiente, CONTROLLER_HIDEPARTYSTATUSSUMMARY);
 }
 
-void BtlController_EmitIntroSlide(u32 battler, u32 bufferId, u8 terrainId)
+void ComandoTerminaBote(u32 combatiente)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_INTROSLIDE;
-    gBattleResources->transferBuffer[1] = terrainId;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 2);
+    ArrancaComando(combatiente, CONTROLLER_ENDBOUNCE);
 }
 
-void BtlController_EmitIntroTrainerBallThrow(u32 battler, u32 bufferId)
+void ComandoVisibilidadSprite(u32 combatiente, bool8 invisible)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_INTROTRAINERBALLTHROW;
-    gBattleResources->transferBuffer[1] = CONTROLLER_INTROTRAINERBALLTHROW;
-    gBattleResources->transferBuffer[2] = CONTROLLER_INTROTRAINERBALLTHROW;
-    gBattleResources->transferBuffer[3] = CONTROLLER_INTROTRAINERBALLTHROW;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
+    gArgumentosComando[combatiente].invisible = invisible;
+    ArrancaComando(combatiente, CONTROLLER_SPRITEINVISIBILITY);
 }
 
-void BtlController_EmitDrawPartyStatusSummary(u32 battler, u32 bufferId, struct HpAndStatus* hpAndStatus, u8 flags)
+void ComandoAnimacionCombate(u32 combatiente, u8 animacion, struct DisableStruct *estadoDeshabilitado, u16 argumento)
 {
-    s32 i;
-
-    gBattleResources->transferBuffer[0] = CONTROLLER_DRAWPARTYSTATUSSUMMARY;
-    gBattleResources->transferBuffer[1] = flags & ~PARTY_SUMM_SKIP_DRAW_DELAY; // If true, skip player side
-    gBattleResources->transferBuffer[2] = (flags & PARTY_SUMM_SKIP_DRAW_DELAY) >> 7; // If true, skip delay after drawing. True during intro
-    gBattleResources->transferBuffer[3] = CONTROLLER_DRAWPARTYSTATUSSUMMARY;
-    for (i = 0; i < (s32)(sizeof(struct HpAndStatus) * PARTY_SIZE); i++)
-        gBattleResources->transferBuffer[4 + i] = *(i + (u8 *)(hpAndStatus));
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, sizeof(struct HpAndStatus) * PARTY_SIZE + 4);
+    gArgumentosComando[combatiente].animacion = animacion;
+    gArgumentosComando[combatiente].argumentoAnimacion = argumento;
+    gArgumentosComando[combatiente].estadoDeshabilitado = *estadoDeshabilitado;
+    ArrancaComando(combatiente, CONTROLLER_BATTLEANIMATION);
 }
 
-void BtlController_EmitHidePartyStatusSummary(u32 battler, u32 bufferId)
+void ComandoReiniciaSeleccion(u32 combatiente, u8 caso)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_HIDEPARTYSTATUSSUMMARY;
-    gBattleResources->transferBuffer[1] = CONTROLLER_HIDEPARTYSTATUSSUMMARY;
-    gBattleResources->transferBuffer[2] = CONTROLLER_HIDEPARTYSTATUSSUMMARY;
-    gBattleResources->transferBuffer[3] = CONTROLLER_HIDEPARTYSTATUSSUMMARY;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
+    gArgumentosComando[combatiente].caso = caso;
+    ArrancaComando(combatiente, CONTROLLER_RESETACTIONMOVESELECTION);
 }
 
-void BtlController_EmitEndBounceEffect(u32 battler, u32 bufferId)
+void ComandoMenuDepuracion(u32 combatiente)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_ENDBOUNCE;
-    gBattleResources->transferBuffer[1] = CONTROLLER_ENDBOUNCE;
-    gBattleResources->transferBuffer[2] = CONTROLLER_ENDBOUNCE;
-    gBattleResources->transferBuffer[3] = CONTROLLER_ENDBOUNCE;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
+    ArrancaComando(combatiente, CONTROLLER_DEBUGMENU);
 }
 
-void BtlController_EmitSpriteInvisibility(u32 battler, u32 bufferId, bool8 isInvisible)
+// ---------------------------------------------------------------------------
+// Respuestas: del combatiente al guion de combate.
+// ---------------------------------------------------------------------------
+
+void RespondeDosValores(u32 combatiente, u8 valor8, u32 valor32)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_SPRITEINVISIBILITY;
-    gBattleResources->transferBuffer[1] = isInvisible;
-    gBattleResources->transferBuffer[2] = CONTROLLER_SPRITEINVISIBILITY;
-    gBattleResources->transferBuffer[3] = CONTROLLER_SPRITEINVISIBILITY;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4);
+    gRespuestaCombatiente[combatiente].tipo = CONTROLLER_TWORETURNVALUES;
+    gRespuestaCombatiente[combatiente].valor8 = valor8;
+    gRespuestaCombatiente[combatiente].valor32 = valor32;
+    gRespuestaCombatiente[combatiente].posicionMovimiento = valor32 & 0xFF;
+    gRespuestaCombatiente[combatiente].objetivo = (valor32 >> 8) & 0xFF;
 }
 
-void BtlController_EmitBattleAnimation(u32 battler, u32 bufferId, u8 animationId, struct DisableStruct* disableStructPtr, u16 argument)
+void RespondeUnValor(u32 combatiente, u16 valor)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_BATTLEANIMATION;
-    gBattleResources->transferBuffer[1] = animationId;
-    gBattleResources->transferBuffer[2] = argument;
-    gBattleResources->transferBuffer[3] = (argument & 0xFF00) >> 8;
-    memcpy(&gBattleResources->transferBuffer[4], disableStructPtr, sizeof(struct DisableStruct));
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 4 + sizeof(struct DisableStruct));
+    gRespuestaCombatiente[combatiente].tipo = CONTROLLER_ONERETURNVALUE;
+    gRespuestaCombatiente[combatiente].valor8 = valor & 0xFF;
+    gRespuestaCombatiente[combatiente].valor32 = valor;
 }
 
-void BtlController_EmitResetActionMoveSelection(u32 battler, u32 bufferId, u8 caseId)
+void RespondePokemonElegido(u32 combatiente, u8 indiceEquipo, u8 *ordenEquipo)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_RESETACTIONMOVESELECTION;
-    gBattleResources->transferBuffer[1] = caseId;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 2);
+    gRespuestaCombatiente[combatiente].tipo = CONTROLLER_CHOSENMONRETURNVALUE;
+    gRespuestaCombatiente[combatiente].valor8 = indiceEquipo;
+    for (u32 i = 0; i < 3; i++)
+        gRespuestaCombatiente[combatiente].datos[i] = ordenEquipo[i];
 }
 
-void BtlController_EmitDebugMenu(u32 battler, u32 bufferId)
+void RespondeDatos(u32 combatiente, u16 tamano, void *datos)
 {
-    gBattleResources->transferBuffer[0] = CONTROLLER_DEBUGMENU;
-    PrepareBufferDataTransfer(battler, bufferId, gBattleResources->transferBuffer, 1);
+    gRespuestaCombatiente[combatiente].tipo = CONTROLLER_DATATRANSFER;
+    if (tamano > sizeof(gRespuestaCombatiente[combatiente].datos))
+        tamano = sizeof(gRespuestaCombatiente[combatiente].datos);
+    memcpy(gRespuestaCombatiente[combatiente].datos, datos, tamano);
 }
 
 // Standardized Controller functions
@@ -565,7 +443,7 @@ static u32 GetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId, u8 *
     u32 data32;
     s32 size = 0;
 
-    switch (gBattleResources->bufferA[battler][1])
+    switch (gArgumentosComando[battler].peticion)
     {
     case REQUEST_ALL_BATTLE:
         battleMon.species = GetMonData(&party[monId], MON_DATA_SPECIES);
@@ -625,7 +503,7 @@ static u32 GetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId, u8 *
     case REQUEST_MOVE2_BATTLE:
     case REQUEST_MOVE3_BATTLE:
     case REQUEST_MOVE4_BATTLE:
-        data16 = GetMonData(&party[monId], MON_DATA_MOVE1 + gBattleResources->bufferA[battler][1] - REQUEST_MOVE1_BATTLE);
+        data16 = GetMonData(&party[monId], MON_DATA_MOVE1 + gArgumentosComando[battler].peticion - REQUEST_MOVE1_BATTLE);
         dst[0] = data16;
         dst[1] = data16 >> 8;
         size = 2;
@@ -639,7 +517,7 @@ static u32 GetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId, u8 *
     case REQUEST_PPMOVE2_BATTLE:
     case REQUEST_PPMOVE3_BATTLE:
     case REQUEST_PPMOVE4_BATTLE:
-        dst[0] = GetMonData(&party[monId], MON_DATA_PP1 + gBattleResources->bufferA[battler][1] - REQUEST_PPMOVE1_BATTLE);
+        dst[0] = GetMonData(&party[monId], MON_DATA_PP1 + gArgumentosComando[battler].peticion - REQUEST_PPMOVE1_BATTLE);
         size = 1;
         break;
     case REQUEST_EXP_BATTLE:
@@ -806,11 +684,11 @@ static u32 GetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId, u8 *
 
 static void SetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId)
 {
-    struct BattlePokemon *battlePokemon = (struct BattlePokemon *)&gBattleResources->bufferA[battler][3];
-    struct DatosMovimiento *datosMovimiento = (struct DatosMovimiento *)&gBattleResources->bufferA[battler][3];
+    struct BattlePokemon *battlePokemon = (struct BattlePokemon *)gArgumentosComando[battler].datos;
+    struct DatosMovimiento *datosMovimiento = (struct DatosMovimiento *)gArgumentosComando[battler].datos;
     s32 i;
 
-    switch (gBattleResources->bufferA[battler][1])
+    switch (gArgumentosComando[battler].peticion)
     {
     case REQUEST_ALL_BATTLE:
         {
@@ -836,10 +714,10 @@ static void SetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId)
         }
         break;
     case REQUEST_SPECIES_BATTLE:
-        SetMonData(&party[monId], MON_DATA_SPECIES, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_SPECIES, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_HELDITEM_BATTLE:
-        SetMonData(&party[monId], MON_DATA_HELD_ITEM, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_HELD_ITEM, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_MOVES_PP_BATTLE:
         for (i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
@@ -852,118 +730,118 @@ static void SetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId)
     case REQUEST_MOVE2_BATTLE:
     case REQUEST_MOVE3_BATTLE:
     case REQUEST_MOVE4_BATTLE:
-        SetMonData(&party[monId], MON_DATA_MOVE1 + gBattleResources->bufferA[battler][1] - REQUEST_MOVE1_BATTLE, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_MOVE1 + gArgumentosComando[battler].peticion - REQUEST_MOVE1_BATTLE, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_PP_DATA_BATTLE:
-        SetMonData(&party[monId], MON_DATA_PP1, &gBattleResources->bufferA[battler][3]);
-        SetMonData(&party[monId], MON_DATA_PP2, &gBattleResources->bufferA[battler][4]);
-        SetMonData(&party[monId], MON_DATA_PP3, &gBattleResources->bufferA[battler][5]);
-        SetMonData(&party[monId], MON_DATA_PP4, &gBattleResources->bufferA[battler][6]);
+        SetMonData(&party[monId], MON_DATA_PP1, &gArgumentosComando[battler].datos[0]);
+        SetMonData(&party[monId], MON_DATA_PP2, &gArgumentosComando[battler].datos[1]);
+        SetMonData(&party[monId], MON_DATA_PP3, &gArgumentosComando[battler].datos[2]);
+        SetMonData(&party[monId], MON_DATA_PP4, &gArgumentosComando[battler].datos[3]);
         break;
     case REQUEST_PPMOVE1_BATTLE:
     case REQUEST_PPMOVE2_BATTLE:
     case REQUEST_PPMOVE3_BATTLE:
     case REQUEST_PPMOVE4_BATTLE:
-        SetMonData(&party[monId], MON_DATA_PP1 + gBattleResources->bufferA[battler][1] - REQUEST_PPMOVE1_BATTLE, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_PP1 + gArgumentosComando[battler].peticion - REQUEST_PPMOVE1_BATTLE, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_EXP_BATTLE:
-        SetMonData(&party[monId], MON_DATA_EXP, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_EXP, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_HP_EV_BATTLE:
-        SetMonData(&party[monId], MON_DATA_HP_EV, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_HP_EV, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_ATK_EV_BATTLE:
-        SetMonData(&party[monId], MON_DATA_ATK_EV, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_ATK_EV, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_DEF_EV_BATTLE:
-        SetMonData(&party[monId], MON_DATA_DEF_EV, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_DEF_EV, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_SPEED_EV_BATTLE:
-        SetMonData(&party[monId], MON_DATA_SPEED_EV, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_SPEED_EV, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_SPATK_EV_BATTLE:
-        SetMonData(&party[monId], MON_DATA_SPATK_EV, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_SPATK_EV, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_SPDEF_EV_BATTLE:
-        SetMonData(&party[monId], MON_DATA_SPDEF_EV, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_SPDEF_EV, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_FRIENDSHIP_BATTLE:
-        SetMonData(&party[monId], MON_DATA_FRIENDSHIP, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_FRIENDSHIP, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_POKERUS_BATTLE:
-        SetMonData(&party[monId], MON_DATA_POKERUS, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_POKERUS, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_MET_LOCATION_BATTLE:
-        SetMonData(&party[monId], MON_DATA_MET_LOCATION, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_MET_LOCATION, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_MET_LEVEL_BATTLE:
-        SetMonData(&party[monId], MON_DATA_MET_LEVEL, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_MET_LEVEL, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_POKEBALL_BATTLE:
-        SetMonData(&party[monId], MON_DATA_POKEBALL, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_POKEBALL, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_PERSONALITY_BATTLE:
-        SetMonData(&party[monId], MON_DATA_PERSONALITY, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_PERSONALITY, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_STATUS_BATTLE:
-        SetMonData(&party[monId], MON_DATA_STATUS, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_STATUS, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_LEVEL_BATTLE:
-        SetMonData(&party[monId], MON_DATA_LEVEL, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_LEVEL, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_HP_BATTLE:
-        SetMonData(&party[monId], MON_DATA_HP, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_HP, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_MAX_HP_BATTLE:
-        SetMonData(&party[monId], MON_DATA_MAX_HP, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_MAX_HP, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_ATK_BATTLE:
-        SetMonData(&party[monId], MON_DATA_ATK, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_ATK, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_DEF_BATTLE:
-        SetMonData(&party[monId], MON_DATA_DEF, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_DEF, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_SPEED_BATTLE:
-        SetMonData(&party[monId], MON_DATA_SPEED, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_SPEED, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_SPATK_BATTLE:
-        SetMonData(&party[monId], MON_DATA_SPATK, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_SPATK, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_SPDEF_BATTLE:
-        SetMonData(&party[monId], MON_DATA_SPDEF, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_SPDEF, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_COOL_BATTLE:
-        SetMonData(&party[monId], MON_DATA_COOL, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_COOL, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_BEAUTY_BATTLE:
-        SetMonData(&party[monId], MON_DATA_BEAUTY, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_BEAUTY, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_CUTE_BATTLE:
-        SetMonData(&party[monId], MON_DATA_CUTE, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_CUTE, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_SMART_BATTLE:
-        SetMonData(&party[monId], MON_DATA_SMART, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_SMART, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_TOUGH_BATTLE:
-        SetMonData(&party[monId], MON_DATA_TOUGH, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_TOUGH, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_SHEEN_BATTLE:
-        SetMonData(&party[monId], MON_DATA_SHEEN, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_SHEEN, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_COOL_RIBBON_BATTLE:
-        SetMonData(&party[monId], MON_DATA_COOL_RIBBON, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_COOL_RIBBON, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_BEAUTY_RIBBON_BATTLE:
-        SetMonData(&party[monId], MON_DATA_BEAUTY_RIBBON, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_BEAUTY_RIBBON, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_CUTE_RIBBON_BATTLE:
-        SetMonData(&party[monId], MON_DATA_CUTE_RIBBON, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_CUTE_RIBBON, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_SMART_RIBBON_BATTLE:
-        SetMonData(&party[monId], MON_DATA_SMART_RIBBON, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_SMART_RIBBON, &gArgumentosComando[battler].datos[0]);
         break;
     case REQUEST_TOUGH_RIBBON_BATTLE:
-        SetMonData(&party[monId], MON_DATA_TOUGH_RIBBON, &gBattleResources->bufferA[battler][3]);
+        SetMonData(&party[monId], MON_DATA_TOUGH_RIBBON, &gArgumentosComando[battler].datos[0]);
         break;
     }
 
@@ -990,7 +868,7 @@ void StartSendOutAnim(u32 battler, bool32 dontClearSubstituteBit, bool32 doSlide
     struct Pokemon *party = GetBattlerParty(battler);
 
     ClearTemporarySpeciesSpriteData(battler, dontClearSubstituteBit);
-    gBattlerPartyIndexes[battler] = gBattleResources->bufferA[battler][1];
+    gBattlerPartyIndexes[battler] = gArgumentosComando[battler].indiceEquipo;
     species = GetMonData(&party[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES);
     gBattleControllerData[battler] = CreateInvisibleSpriteWithCallback(SpriteCB_WaitForBattlerBallReleaseAnim);
     // Load sprite for opponent only, player sprite is expected to be already loaded.
@@ -1077,7 +955,7 @@ static void Controller_FaintOpponentMon(u32 battler)
 
 static void Controller_DoMoveAnimation(u32 battler)
 {
-    u16 move = gBattleResources->bufferA[battler][1] | (gBattleResources->bufferA[battler][2] << 8);
+    u16 move = gArgumentosComando[battler].movimiento;
 
     switch (gBattleSpritesDataPtr->healthBoxesData[battler].animationState)
     {
@@ -1102,7 +980,7 @@ static void Controller_DoMoveAnimation(u32 battler)
         gAnimScriptCallback();
         if (!gAnimScriptActive)
         {
-            u8 multihit = gBattleResources->bufferA[battler][11];
+            u8 multihit = gArgumentosComando[battler].golpesMultiples;
 
             SetBattlerSpriteAffineMode(ST_OAM_AFFINE_NORMAL);
             if (gBattleSpritesDataPtr->battlerData[battler].behindSubstitute && multihit < 2)
@@ -1117,7 +995,7 @@ static void Controller_DoMoveAnimation(u32 battler)
         if (!gBattleSpritesDataPtr->healthBoxesData[battler].specialAnimActive)
         {
             CopyAllBattleSpritesInvisibilities();
-            TrySetBehindSubstituteSpriteBit(battler, gBattleResources->bufferA[battler][1] | (gBattleResources->bufferA[battler][2] << 8));
+            TrySetBehindSubstituteSpriteBit(battler, gArgumentosComando[battler].movimiento);
             gBattleSpritesDataPtr->healthBoxesData[battler].animationState = 0;
             BattleControllerComplete(battler);
         }
@@ -1227,13 +1105,13 @@ void BtlController_HandleGetMonData(u32 battler)
     u8 monToCheck;
     s32 i;
 
-    if (gBattleResources->bufferA[battler][2] == 0)
+    if (gArgumentosComando[battler].pokemon == 0)
     {
         size += GetBattlerMonData(battler, party, gBattlerPartyIndexes[battler], monData);
     }
     else
     {
-        monToCheck = gBattleResources->bufferA[battler][2];
+        monToCheck = gArgumentosComando[battler].pokemon;
         for (i = 0; i < PARTY_SIZE; i++)
         {
             if (monToCheck & 1)
@@ -1241,38 +1119,23 @@ void BtlController_HandleGetMonData(u32 battler)
             monToCheck >>= 1;
         }
     }
-    BtlController_EmitDataTransfer(battler, BUFFER_B, size, monData);
+    RespondeDatos(battler, size, monData);
     BattleControllerComplete(battler);
 }
 
-void BtlController_HandleGetRawMonData(u32 battler)
-{
-    struct BattlePokemon battleMon;
-    struct Pokemon *party = GetBattlerParty(battler);
-
-    u8 *src = (u8 *)&party[gBattlerPartyIndexes[battler]] + gBattleResources->bufferA[battler][1];
-    u8 *dst = (u8 *)&battleMon + gBattleResources->bufferA[battler][1];
-    u32 i;
-
-    for (i = 0; i < gBattleResources->bufferA[battler][2]; i++)
-        dst[i] = src[i];
-
-    BtlController_EmitDataTransfer(battler, BUFFER_B, gBattleResources->bufferA[battler][2], dst);
-    BattleControllerComplete(battler);
-}
 
 void BtlController_HandleSetMonData(u32 battler)
 {
     struct Pokemon *party = GetBattlerParty(battler);
     u32 i, monToCheck;
 
-    if (gBattleResources->bufferA[battler][2] == 0)
+    if (gArgumentosComando[battler].pokemon == 0)
     {
         SetBattlerMonData(battler, party, gBattlerPartyIndexes[battler]);
     }
     else
     {
-        monToCheck = gBattleResources->bufferA[battler][2];
+        monToCheck = gArgumentosComando[battler].pokemon;
         for (i = 0; i < PARTY_SIZE; i++)
         {
             if (monToCheck & 1)
@@ -1283,17 +1146,6 @@ void BtlController_HandleSetMonData(u32 battler)
     BattleControllerComplete(battler);
 }
 
-void BtlController_HandleSetRawMonData(u32 battler)
-{
-    u32 i;
-    struct Pokemon *party = GetBattlerParty(battler);
-    u8 *dst = (u8 *)&party[gBattlerPartyIndexes[battler]] + gBattleResources->bufferA[battler][1];
-
-    for (i = 0; i < gBattleResources->bufferA[battler][2]; i++)
-        dst[i] = gBattleResources->bufferA[battler][3 + i];
-
-    BattleControllerComplete(battler);
-}
 
 void BtlController_HandleLoadMonSprite(u32 battler, void (*controllerCallback)(u32 battler))
 {
@@ -1322,17 +1174,17 @@ void BtlController_HandleLoadMonSprite(u32 battler, void (*controllerCallback)(u
 void BtlController_HandleSwitchInAnim(u32 battler, bool32 isPlayerSide, void (*controllerCallback)(u32 battler))
 {
     if (isPlayerSide)
-        ClearTemporarySpeciesSpriteData(battler, gBattleResources->bufferA[battler][2]);
-    gBattlerPartyIndexes[battler] = gBattleResources->bufferA[battler][1];
+        ClearTemporarySpeciesSpriteData(battler, gArgumentosComando[battler].noLimpiarSustituto);
+    gBattlerPartyIndexes[battler] = gArgumentosComando[battler].indiceEquipo;
     if (isPlayerSide)
         BattleLoadMonSpriteGfx(&gPlayerParty[gBattlerPartyIndexes[battler]], battler);
-    StartSendOutAnim(battler, gBattleResources->bufferA[battler][2], FALSE);
+    StartSendOutAnim(battler, gArgumentosComando[battler].noLimpiarSustituto, FALSE);
     gBattlerControllerFuncs[battler] = controllerCallback;
 }
 
 void BtlController_HandleReturnMonToBall(u32 battler)
 {
-    if (gBattleResources->bufferA[battler][1] == 0)
+    if (gArgumentosComando[battler].saltarAnimacion == 0)
     {
         gBattleSpritesDataPtr->healthBoxesData[battler].animationState = 0;
         gBattlerControllerFuncs[battler] = Controller_ReturnMonToBall;
@@ -1511,7 +1363,7 @@ void BtlController_HandleSuccessBallThrowAnim(u32 battler, u32 target, u32 animI
 
 void BtlController_HandleBallThrowAnim(u32 battler, u32 target, u32 animId)
 {
-    gBattleSpritesDataPtr->animationData->ballThrowCaseId = gBattleResources->bufferA[battler][1];
+    gBattleSpritesDataPtr->animationData->ballThrowCaseId = gArgumentosComando[battler].caso;
     HandleBallThrow(battler, target, animId);
 }
 
@@ -1519,12 +1371,12 @@ void BtlController_HandleMoveAnimation(u32 battler)
 {
     if (!IsBattleSEPlaying(battler))
     {
-        gAnimMoveTurn = gBattleResources->bufferA[battler][3];
-        gAnimMovePower = gBattleResources->bufferA[battler][4] | (gBattleResources->bufferA[battler][5] << 8);
-        gAnimMoveDmg = gBattleResources->bufferA[battler][6] | (gBattleResources->bufferA[battler][7] << 8) | (gBattleResources->bufferA[battler][8] << 16) | (gBattleResources->bufferA[battler][9] << 24);
-        gAnimFriendship = gBattleResources->bufferA[battler][10];
-        gWeatherMoveAnim = gBattleResources->bufferA[battler][12] | (gBattleResources->bufferA[battler][13] << 8);
-        gAnimDisableStructPtr = (struct DisableStruct *)&gBattleResources->bufferA[battler][16];
+        gAnimMoveTurn = gArgumentosComando[battler].turnoDelMovimiento;
+        gAnimMovePower = gArgumentosComando[battler].potencia;
+        gAnimMoveDmg = gArgumentosComando[battler].dano;
+        gAnimFriendship = gArgumentosComando[battler].amistad;
+        gWeatherMoveAnim = gArgumentosComando[battler].clima;
+        gAnimDisableStructPtr = &gArgumentosComando[battler].estadoDeshabilitado;
         gBattleSpritesDataPtr->healthBoxesData[battler].animationState = 0;
         gBattlerControllerFuncs[battler] = Controller_DoMoveAnimation;
     }
@@ -1536,7 +1388,7 @@ void BtlController_HandleHealthBarUpdate(u32 battler)
     s16 hpVal;
     struct Pokemon *party = GetBattlerParty(battler);
 
-    hpVal = gBattleResources->bufferA[battler][2] | (gBattleResources->bufferA[battler][3] << 8);
+    hpVal = gArgumentosComando[battler].valorPS;
     maxHP = GetMonData(&party[gBattlerPartyIndexes[battler]], MON_DATA_MAX_HP);
     curHP = GetMonData(&party[gBattlerPartyIndexes[battler]], MON_DATA_HP);
 
@@ -1573,8 +1425,7 @@ void BtlController_HandleStatusAnimation(u32 battler)
 {
     if (!IsBattleSEPlaying(battler))
     {
-        InitAndLaunchChosenStatusAnimation(battler, gBattleResources->bufferA[battler][1],
-                        gBattleResources->bufferA[battler][2] | (gBattleResources->bufferA[battler][3] << 8) | (gBattleResources->bufferA[battler][4] << 16) | (gBattleResources->bufferA[battler][5] << 24));
+        InitAndLaunchChosenStatusAnimation(battler, gArgumentosComando[battler].esEstado2, gArgumentosComando[battler].estado1);
         gBattlerControllerFuncs[battler] = Controller_WaitForStatusAnimation;
     }
 }
@@ -1598,20 +1449,20 @@ void BtlController_HandlePlaySE(u32 battler)
 {
     s8 pan = (GetBattlerSide(battler) == LADO_JUGADOR) ? SOUND_PAN_ATTACKER : SOUND_PAN_TARGET;
 
-    PlaySE12WithPanning(gBattleResources->bufferA[battler][1] | (gBattleResources->bufferA[battler][2] << 8), pan);
+    PlaySE12WithPanning(gArgumentosComando[battler].cancion, pan);
     BattleControllerComplete(battler);
 }
 
 void BtlController_HandlePlayFanfareOrBGM(u32 battler)
 {
-    if (gBattleResources->bufferA[battler][3])
+    if (gArgumentosComando[battler].esMusica)
     {
         BattleStopLowHpSound();
-        PlayBGM(gBattleResources->bufferA[battler][1] | (gBattleResources->bufferA[battler][2] << 8));
+        PlayBGM(gArgumentosComando[battler].cancion);
     }
     else
     {
-        PlayFanfare(gBattleResources->bufferA[battler][1] | (gBattleResources->bufferA[battler][2] << 8));
+        PlayFanfare(gArgumentosComando[battler].cancion);
     }
 
     BattleControllerComplete(battler);
@@ -1639,7 +1490,7 @@ void BtlController_HandleFaintingCry(u32 battler)
 
 void BtlController_HandleIntroSlide(u32 battler)
 {
-    HandleIntroSlide(gBattleResources->bufferA[battler][1]);
+    HandleIntroSlide(gArgumentosComando[battler].terreno);
     gIntroSlideFlags |= 1;
     BattleControllerComplete(battler);
 }
@@ -1648,7 +1499,7 @@ void BtlController_HandleSpriteInvisibility(u32 battler)
 {
     if (IsBattlerSpritePresent(battler))
     {
-        gSprites[gBattlerSpriteIds[battler]].invisible = gBattleResources->bufferA[battler][1];
+        gSprites[gBattlerSpriteIds[battler]].invisible = gArgumentosComando[battler].invisible;
         CopyBattleSpriteInvisibility(battler);
     }
     BattleControllerComplete(battler);
@@ -1774,17 +1625,17 @@ static void Task_StartSendOutAnim(u8 taskId)
 
         if (TwoMonsAtSendOut(battler))
         {
-            gBattleResources->bufferA[battler][1] = gBattlerPartyIndexes[battler];
+            gArgumentosComando[battler].indiceEquipo = gBattlerPartyIndexes[battler];
             StartSendOutAnim(battler, FALSE, ShouldDoSlideInAnim());
 
             battlerPartner = battler ^ BIT_FLANK;
-            gBattleResources->bufferA[battlerPartner][1] = gBattlerPartyIndexes[battlerPartner];
+            gArgumentosComando[battlerPartner].indiceEquipo = gBattlerPartyIndexes[battlerPartner];
             BattleLoadMonSpriteGfx(&gPlayerParty[gBattlerPartyIndexes[battlerPartner]], battlerPartner);
             StartSendOutAnim(battlerPartner, FALSE, ShouldDoSlideInAnim());
         }
         else
         {
-            gBattleResources->bufferA[battler][1] = gBattlerPartyIndexes[battler];
+            gArgumentosComando[battler].indiceEquipo = gBattlerPartyIndexes[battler];
             StartSendOutAnim(battler, FALSE, ShouldDoSlideInAnim());
         }
         gBattlerControllerFuncs[battler] = (void*)(GetWordTaskArg(taskId, tControllerFunc_1));
@@ -1838,10 +1689,10 @@ void BtlController_HandleBattleAnimation(u32 battler, bool32 ignoreSE)
 {
     if (ignoreSE || !IsBattleSEPlaying(battler))
     {
-        u8 animationId = gBattleResources->bufferA[battler][1];
-        u16 argument = gBattleResources->bufferA[battler][2] | (gBattleResources->bufferA[battler][3] << 8);
+        u8 animationId = gArgumentosComando[battler].animacion;
+        u16 argument = gArgumentosComando[battler].argumentoAnimacion;
 
-        gAnimDisableStructPtr = (struct DisableStruct *)&gBattleResources->bufferA[battler][4];
+        gAnimDisableStructPtr = &gArgumentosComando[battler].estadoDeshabilitado;
 
         if (TryHandleLaunchBattleTableAnimation(battler, battler, battler, animationId, argument))
             BattleControllerComplete(battler);

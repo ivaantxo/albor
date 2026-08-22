@@ -307,9 +307,6 @@ struct BattleResources
     struct AILogicData *aiData;
     struct AIPartyData *aiParty;
     struct BattleHistory *battleHistory;
-    u8 bufferA[NUMERO_COMBATIENTES][512];
-    u8 bufferB[NUMERO_COMBATIENTES][512];
-    u8 transferBuffer[256];
     u32 flags[NUMERO_COMBATIENTES];
 };
 

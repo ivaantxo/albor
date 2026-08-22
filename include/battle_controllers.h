@@ -88,12 +88,90 @@ struct DatosMovimiento
     u16 pp[MAXIMO_MOVIMIENTOS_POKEMON];
 };
 
+// Argumentos del comando que cada combatiente tiene en curso.
+//
+// Sustituye a bufferA, que eran 512 bytes por combatiente donde los argumentos se
+// empaquetaban byte a byte para que el manejador los desempaquetara dos lineas
+// despues. Ese empaquetado existia para mandarlos por el cable de enlace; sin
+// enlace, era serializar para uno mismo.
+//
+// El comando dura varios fotogramas y se reentra en cada uno, asi que sus
+// argumentos tienen que sobrevivir entre fotogramas: de ahi que sean un dato por
+// combatiente y no parametros de funcion.
+struct ArgumentosComando
+{
+    // Datos del Pokemon
+    u8 peticion;
+    u8 pokemon;
+    u8 bytes;
+
+    // La carga se COPIA, no se apunta. El comando dura varios fotogramas y el
+    // manejador lee esto mas tarde: guardar un puntero funcionaria mientras
+    // apuntase a un global, pero con la direccion de una variable local se estaria
+    // leyendo pila ya muerta. El sistema viejo tambien copiaba.
+    u8 datos[sizeof(struct BattlePokemon)];
+
+    // Sprites y animaciones
+    u8 indiceEquipo;
+    bool8 noLimpiarSustituto;
+    bool8 saltarAnimacion;
+    bool8 invisible;
+    u8 caso;
+    u8 terreno;
+    u8 animacion;
+    u16 argumentoAnimacion;
+
+    // Movimiento
+    enum Movimientos movimiento;
+    u8 turnoDelMovimiento;
+    u16 potencia;
+    s32 dano;
+    u8 amistad;
+    u8 golpesMultiples;
+    u16 clima;
+    struct DisableStruct estadoDeshabilitado;
+
+    // Eleccion del jugador
+    u8 accion;
+    bool8 esCombateDoble;
+    bool8 sinNumeroDePP;
+    struct DatosMovimiento datosMovimiento;
+    u8 ranura;
+    u16 habilidad;
+    u8 datosEleccion[3];
+
+    // Marcador, estado y sonido
+    u16 valorPS;
+    s32 experiencia;
+    u32 estado1;
+    u32 estado2;
+    bool8 esEstado2;
+    u16 cancion;
+    bool8 esMusica;
+    u8 banderas;
+    struct HpAndStatus resumenEquipo[PARTY_SIZE];
+};
+
+// Lo que el combatiente le contesta al guion de combate. Sustituye a bufferB, con
+// el mismo criterio: datos con nombre en vez de bytes sueltos.
+struct RespuestaCombatiente
+{
+    u8 tipo;                // que comando esta contestando
+    u8 valor8;              // accion elegida, indice de equipo...
+    u8 posicionMovimiento;
+    u8 objetivo;
+    u32 valor32;
+    u8 datos[sizeof(struct BattlePokemon) + 8];
+};
+
+extern struct ArgumentosComando gArgumentosComando[NUMERO_COMBATIENTES];
+extern struct RespuestaCombatiente gRespuestaCombatiente[NUMERO_COMBATIENTES];
+extern u8 gComandoEnCurso[NUMERO_COMBATIENTES];
+
 enum
 {
     CONTROLLER_GETMONDATA,
-    CONTROLLER_GETRAWMONDATA,
     CONTROLLER_SETMONDATA,
-    CONTROLLER_SETRAWMONDATA,
     CONTROLLER_LOADMONSPRITE,
     CONTROLLER_SWITCHINANIM,
     CONTROLLER_RETURNMONTOBALL,
@@ -101,10 +179,7 @@ enum
     CONTROLLER_TRAINERSLIDE,
     CONTROLLER_TRAINERSLIDEBACK,
     CONTROLLER_FAINTANIMATION,
-    CONTROLLER_PALETTEFADE,
-    CONTROLLER_SUCCESSBALLTHROWANIM,
     CONTROLLER_BALLTHROWANIM,
-    CONTROLLER_PAUSE,
     CONTROLLER_MOVEANIMATION,
     CONTROLLER_CHOOSEACTION,
     CONTROLLER_YESNOBOX,
@@ -114,10 +189,7 @@ enum
     CONTROLLER_EXPUPDATE,
     CONTROLLER_STATUSICONUPDATE,
     CONTROLLER_STATUSANIMATION,
-    CONTROLLER_STATUSXOR,
     CONTROLLER_DATATRANSFER,
-    CONTROLLER_DMA3TRANSFER,
-    CONTROLLER_PLAYBGM,
     CONTROLLER_TWORETURNVALUES,
     CONTROLLER_CHOSENMONRETURNVALUE,
     CONTROLLER_ONERETURNVALUE,
@@ -150,43 +222,43 @@ void InitBattleControllers(void);
 bool32 IsValidForBattle(struct Pokemon *mon);
 
 // emitters
-void BtlController_EmitGetMonData(u32 battler, u32 bufferId, u8 requestId, u8 monToCheck);
-void BtlController_EmitSetMonData(u32 battler, u32 bufferId, u8 requestId, u8 monToCheck, u8 bytes, void *data);
-void BtlController_EmitLoadMonSprite(u32 battler, u32 bufferId);
-void BtlController_EmitSwitchInAnim(u32 battler, u32 bufferId, u8 partyId, bool8 dontClearSubstituteBit);
-void BtlController_EmitReturnMonToBall(u32 battler, u32 bufferId, bool8 skipAnim);
-void BtlController_EmitDrawTrainerPic(u32 battler, u32 bufferId);
-void BtlController_EmitTrainerSlide(u32 battler, u32 bufferId);
-void BtlController_EmitTrainerSlideBack(u32 battler, u32 bufferId);
-void BtlController_EmitFaintAnimation(u32 battler, u32 bufferId);
-void BtlController_EmitBallThrowAnim(u32 battler, u32 bufferId, u8 caseId);
-void BtlController_EmitMoveAnimation(u32 battler, u32 bufferId, enum Movimientos movimiento, u8 turnOfMove, u16 movePower, s32 dmg, u8 friendship, struct DisableStruct *disableStructPtr, u8 multihit);
-void BtlController_EmitChooseAction(u32 battler, u32 bufferId, u8 action);
-void BtlController_EmitYesNoBox(u32 battler, u32 bufferId);
-void BtlController_EmitChooseMove(u32 battler, u32 bufferId, bool8 isDoubleBattle, bool8 NoPpNumber, struct DatosMovimiento *datosMovimiento);
-void BtlController_EmitChoosePokemon(u32 battler, u32 bufferId, u8 caseId, u8 slotId, u16 abilityId, u8 *data);
-void BtlController_EmitHealthBarUpdate(u32 battler, u32 bufferId, u16 hpValue);
-void BtlController_EmitExpUpdate(u32 battler, u32 bufferId, u8 partyId, s32 expPoints);
-void BtlController_EmitStatusIconUpdate(u32 battler, u32 bufferId, u32 status1, u32 status2);
-void BtlController_EmitStatusAnimation(u32 battler, u32 bufferId, bool8 status2, u32 status);
-void BtlController_EmitDataTransfer(u32 battler, u32 bufferId, u16 size, void *data);
-void BtlController_EmitTwoReturnValues(u32 battler, u32 bufferId, u8 ret8, u32 ret32);
-void BtlController_EmitChosenMonReturnValue(u32 battler, u32 bufferId, u8 partyId, u8 *battlePartyOrder);
-void BtlController_EmitOneReturnValue(u32 battler, u32 bufferId, u16 ret);
-void BtlController_EmitHitAnimation(u32 battler, u32 bufferId);
-void BtlController_EmitCantSwitch(u32 battler, u32 bufferId);
-void BtlController_EmitPlaySE(u32 battler, u32 bufferId, u16 songId);
-void BtlController_EmitPlayFanfareOrBGM(u32 battler, u32 bufferId, u16 songId, bool8 playBGM);
-void BtlController_EmitFaintingCry(u32 battler, u32 bufferId);
-void BtlController_EmitIntroSlide(u32 battler, u32 bufferId, u8 terrainId);
-void BtlController_EmitIntroTrainerBallThrow(u32 battler, u32 bufferId);
-void BtlController_EmitDrawPartyStatusSummary(u32 battler, u32 bufferId, struct HpAndStatus* hpAndStatus, u8 flags);
-void BtlController_EmitHidePartyStatusSummary(u32 battler, u32 bufferId);
-void BtlController_EmitEndBounceEffect(u32 battler, u32 bufferId);
-void BtlController_EmitSpriteInvisibility(u32 battler, u32 bufferId, bool8 isInvisible);
-void BtlController_EmitBattleAnimation(u32 battler, u32 bufferId, u8 animationId, struct DisableStruct* disableStructPtr, u16 argument);
-void BtlController_EmitResetActionMoveSelection(u32 battler, u32 bufferId, u8 caseId);
-void BtlController_EmitDebugMenu(u32 battler, u32 bufferId);
+void ComandoObtenDatosPokemon(u32 combatiente, u8 requestId, u8 monToCheck);
+void ComandoFijaDatosPokemon(u32 combatiente, u8 requestId, u8 monToCheck, u8 bytes, void *data);
+void ComandoCargaSpritePokemon(u32 combatiente);
+void ComandoAnimacionEntrada(u32 combatiente, u8 partyId, bool8 dontClearSubstituteBit);
+void ComandoDevuelvePokemonABall(u32 combatiente, bool8 skipAnim);
+void ComandoDibujaEntrenador(u32 combatiente);
+void ComandoEntrenadorEntra(u32 combatiente);
+void ComandoEntrenadorSale(u32 combatiente);
+void ComandoAnimacionDebilitado(u32 combatiente);
+void ComandoAnimacionLanzarBall(u32 combatiente, u8 caseId);
+void ComandoAnimacionMovimiento(u32 combatiente, enum Movimientos movimiento, u8 turnOfMove, u16 movePower, s32 dmg, u8 friendship, struct DisableStruct *disableStructPtr, u8 multihit);
+void ComandoEligeAccion(u32 combatiente, u8 action);
+void ComandoCuadroSiNo(u32 combatiente);
+void ComandoEligeMovimiento(u32 combatiente, bool8 isDoubleBattle, bool8 NoPpNumber, struct DatosMovimiento *datosMovimiento);
+void ComandoEligePokemon(u32 combatiente, u8 caseId, u8 slotId, u16 abilityId, u8 *data);
+void ComandoActualizaBarraSalud(u32 combatiente, u16 hpValue);
+void ComandoActualizaExperiencia(u32 combatiente, u8 partyId, s32 expPoints);
+void ComandoActualizaIconoEstado(u32 combatiente, u32 status1, u32 status2);
+void ComandoAnimacionEstado(u32 combatiente, bool8 status2, u32 status);
+void RespondeDatos(u32 combatiente, u16 size, void *data);
+void RespondeDosValores(u32 combatiente, u8 ret8, u32 ret32);
+void RespondePokemonElegido(u32 combatiente, u8 partyId, u8 *battlePartyOrder);
+void RespondeUnValor(u32 combatiente, u16 ret);
+void ComandoAnimacionGolpe(u32 combatiente);
+void ComandoNoPuedeCambiar(u32 combatiente);
+void ComandoSuenaEfecto(u32 combatiente, u16 songId);
+void ComandoSuenaFanfarriaOMusica(u32 combatiente, u16 songId, bool8 playBGM);
+void ComandoGritoAlDebilitarse(u32 combatiente);
+void ComandoEntradaEscenario(u32 combatiente, u8 terrainId);
+void ComandoEntrenadorLanzaBall(u32 combatiente);
+void ComandoMuestraResumenEquipo(u32 combatiente, struct HpAndStatus* hpAndStatus, u8 flags);
+void ComandoOcultaResumenEquipo(u32 combatiente);
+void ComandoTerminaBote(u32 combatiente);
+void ComandoVisibilidadSprite(u32 combatiente, bool8 isInvisible);
+void ComandoAnimacionCombate(u32 combatiente, u8 animationId, struct DisableStruct* disableStructPtr, u16 argument);
+void ComandoReiniciaSeleccion(u32 combatiente, u8 caseId);
+void ComandoMenuDepuracion(u32 combatiente);
 
 void BattleControllerComplete(u32 battler); // Can be used for all the controllers.
 void BtlController_Empty(u32 battler); // Empty command, does nothing, only completes the execution.

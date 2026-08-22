@@ -1586,7 +1586,7 @@ static void DoBattleIntro(void)
     case ESTADO_INTRO_BATALLA_OBTEN_DATOS_POKEMON:
         for (battler = 0; battler < gBattlersCount; battler++)
         {
-            BtlController_EmitGetMonData(battler, BUFFER_A, REQUEST_ALL_BATTLE, 0);
+            ComandoObtenDatosPokemon(battler, REQUEST_ALL_BATTLE, 0);
             MarcaCombatienteOcupado(battler);
         }
         gCombate->estadoIntro++;
@@ -1595,7 +1595,7 @@ static void DoBattleIntro(void)
         if (!HayAlgunCombatienteOcupado())
         {
             battler = 0;
-            BtlController_EmitIntroSlide(battler, BUFFER_A, gBattleTerrain);
+            ComandoEntradaEscenario(battler, gBattleTerrain);
             MarcaCombatienteOcupado(battler);
             gEstadoMultiuso = 0;
             gPosicionCursorSiNo = 0; // REVISAR
@@ -1609,7 +1609,7 @@ static void DoBattleIntro(void)
     case ESTADO_INTRO_BATALLA_DIBUJA_SPRITES:
         for (battler = 0; battler < gBattlersCount; battler++)
         {
-            memcpy(&gBattleMons[battler], &gBattleResources->bufferB[battler][4], sizeof(struct BattlePokemon));
+            memcpy(&gBattleMons[battler], gRespuestaCombatiente[battler].datos, sizeof(struct BattlePokemon));
             gBattleMons[battler].types[TIPO_1] = gSpeciesInfo[gBattleMons[battler].species].types[TIPO_1];
             gBattleMons[battler].types[TIPO_2] = gSpeciesInfo[gBattleMons[battler].species].types[TIPO_2];
             gBattleMons[battler].ability = GetAbilityBySpecies(gBattleMons[battler].species, gBattleMons[battler].abilityNum);
@@ -1622,18 +1622,18 @@ static void DoBattleIntro(void)
             switch (battler)
             {
             case JUGADOR_IZQUIERDA: // player sprite
-                BtlController_EmitDrawTrainerPic(battler, BUFFER_A);
+                ComandoDibujaEntrenador(battler);
                 MarcaCombatienteOcupado(battler);
                 break;
             case OPONENTE_IZQUIERDA:
                 if (EsCombateContraEntrenador(gCombate->tipoCombate)) // opponent 1 sprite
                 {
-                    BtlController_EmitDrawTrainerPic(battler, BUFFER_A);
+                    ComandoDibujaEntrenador(battler);
                     MarcaCombatienteOcupado(battler);
                 }
                 else // wild mon 1
                 {
-                    BtlController_EmitLoadMonSprite(battler, BUFFER_A);
+                    ComandoCargaSpritePokemon(battler);
                     MarcaCombatienteOcupado(battler);
                 }
                 break;
@@ -1668,7 +1668,7 @@ static void DoBattleIntro(void)
             }
 
             battler = OPONENTE_IZQUIERDA;
-            BtlController_EmitDrawPartyStatusSummary(battler, BUFFER_A, hpStatus, PARTY_SUMM_SKIP_DRAW_DELAY);
+            ComandoMuestraResumenEquipo(battler, hpStatus, PARTY_SUMM_SKIP_DRAW_DELAY);
             MarcaCombatienteOcupado(battler);
 
             for (i = 0; i < PARTY_SIZE; i++)
@@ -1686,7 +1686,7 @@ static void DoBattleIntro(void)
             }
 
             battler = JUGADOR_IZQUIERDA;
-            BtlController_EmitDrawPartyStatusSummary(battler, BUFFER_A, hpStatus, PARTY_SUMM_SKIP_DRAW_DELAY);
+            ComandoMuestraResumenEquipo(battler, hpStatus, PARTY_SUMM_SKIP_DRAW_DELAY);
             MarcaCombatienteOcupado(battler);
 
             gCombate->estadoIntro++;
@@ -1724,9 +1724,9 @@ static void DoBattleIntro(void)
         break;
     case ESTADO_INTRO_BATALLA_ANIMACION_ENVIAR_POKEMON:
         battler = OPONENTE_IZQUIERDA;
-        BtlController_EmitIntroTrainerBallThrow(battler, BUFFER_A);
+        ComandoEntrenadorLanzaBall(battler);
         MarcaCombatienteOcupado(battler);
-        LOG("ENVIO 0b) buffer/ocupado", gBattleResources->bufferA[battler][0], EstaCombatienteOcupado(battler));
+        LOG("ENVIO 0b) comando/ocupado", gComandoEnCurso[battler], EstaCombatienteOcupado(battler));
         gCombate->estadoIntro++;
         break;
     case ESTADO_INTRO_BATALLA_ESPERA_TEXTO_COMBATE_SALVAJE:
@@ -1753,7 +1753,7 @@ static void DoBattleIntro(void)
         battler = JUGADOR_IZQUIERDA;
         if (!EstaCombatienteOcupado(battler))
         {
-            BtlController_EmitIntroTrainerBallThrow(battler, BUFFER_A);
+            ComandoEntrenadorLanzaBall(battler);
             MarcaCombatienteOcupado(battler);
             gCombate->estadoIntro++;
         }
@@ -2102,7 +2102,7 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                     else
                     {
                         gCombate->itemPartyIndex[combatiente] = PARTY_SIZE;
-                        BtlController_EmitChooseAction(combatiente, BUFFER_A, gAccionElegida[combatiente]);
+                        ComandoEligeAccion(combatiente, gAccionElegida[combatiente]);
                         MarcaCombatienteOcupado(combatiente);
                         gEstadoAccion[combatiente] = PROCESA_ACCION;
                     }
@@ -2112,9 +2112,9 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
         case PROCESA_ACCION:
             if (!EstaCombatienteOcupado(combatiente))
             {
-                // LOG("ACCION cruda buffer/combatiente", gBattleResources->bufferB[combatiente][1], combatiente);
-                gAccionElegida[combatiente] = gBattleResources->bufferB[combatiente][1];
-                switch (gBattleResources->bufferB[combatiente][1])
+                // LOG("ACCION cruda / combatiente", gRespuestaCombatiente[combatiente].valor8, combatiente);
+                gAccionElegida[combatiente] = gRespuestaCombatiente[combatiente].valor8;
+                switch (gRespuestaCombatiente[combatiente].valor8)
                 {
                 case B_ACTION_USE_MOVE:
                     if (AreAllMovesUnusable(combatiente))
@@ -2122,7 +2122,7 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                         gEstadoAccion[combatiente] = EJECUTA_ACCION;
                         *(gCombate->selectionScriptFinished + combatiente) = FALSE;
                         *(gCombate->stateIdAfterSelScript + combatiente) = EJECUTA_ACCION;
-                        *(gCombate->moveTarget + combatiente) = gBattleResources->bufferB[combatiente][3];
+                        *(gCombate->moveTarget + combatiente) = gRespuestaCombatiente[combatiente].objetivo;
                         return;
                     }
                     else if (gDisableStructs[combatiente].encoredMove != 0)
@@ -2140,7 +2140,7 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                             moveInfo.pp[indiceMovimiento] = gBattleMons[combatiente].pp[indiceMovimiento];
                         }
 
-                        BtlController_EmitChooseMove(combatiente, BUFFER_A, EsCombateContraEntrenador(gCombate->tipoCombate), FALSE, &moveInfo);
+                        ComandoEligeMovimiento(combatiente, EsCombateContraEntrenador(gCombate->tipoCombate), FALSE, &moveInfo);
                         MarcaCombatienteOcupado(combatiente);
                     }
                     break;
@@ -2152,10 +2152,8 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
 
                     if (ItemId_GetHoldEffect(gBattleMons[combatiente].item) != HOLD_EFFECT_SHED_SHELL && HabilidadImpideCambiar(combatiente))
                     {
-                        BtlController_EmitChoosePokemon(
-                            combatiente,
-                            BUFFER_A,
-                            PARTY_ACTION_ABILITY_PREVENTS,
+                        ComandoEligePokemon(
+                            combatiente, PARTY_ACTION_ABILITY_PREVENTS,
                             PARTY_SIZE,
                             ABILITY_NONE,
                             gCombate->battlerPartyOrders[combatiente]);
@@ -2167,10 +2165,8 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                         if (gAccionElegida[aliado] == B_ACTION_SWITCH)
                             monAliado = gCombate->monToSwitchIntoId[aliado];
 
-                        BtlController_EmitChoosePokemon(
-                            combatiente,
-                            BUFFER_A,
-                            PARTY_ACTION_CHOOSE_MON,
+                        ComandoEligePokemon(
+                            combatiente, PARTY_ACTION_CHOOSE_MON,
                             monAliado,
                             ABILITY_NONE,
                             gCombate->battlerPartyOrders[combatiente]);
@@ -2183,21 +2179,21 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                     gEstadoAccion[ALIADO(combatiente)] = ANTES_ACCION;
                     if (gBattleMons[ALIADO(combatiente)].status2 & STATUS2_MULTIPLETURNS || gBattleMons[ALIADO(combatiente)].status2 & STATUS2_RECHARGE)
                     {
-                        BtlController_EmitEndBounceEffect(combatiente, BUFFER_A);
+                        ComandoTerminaBote(combatiente);
                         MarcaCombatienteOcupado(combatiente);
                         return;
                     }
 
-                    BtlController_EmitEndBounceEffect(combatiente, BUFFER_A);
+                    ComandoTerminaBote(combatiente);
                     MarcaCombatienteOcupado(combatiente);
                     return;
                 case B_ACTION_DEBUG:
-                    BtlController_EmitDebugMenu(combatiente, BUFFER_A);
+                    ComandoMenuDepuracion(combatiente);
                     MarcaCombatienteOcupado(combatiente);
                     break;
                 }
 
-                if (EsCombateContraEntrenador(gCombate->tipoCombate) && gBattleResources->bufferB[combatiente][1] == B_ACTION_RUN)
+                if (EsCombateContraEntrenador(gCombate->tipoCombate) && gRespuestaCombatiente[combatiente].valor8 == B_ACTION_RUN)
                 {
                     BattleScriptExecute(BattleScript_PrintCantRunFromTrainer);
                     gEstadoAccion[combatiente] = ANTES_ACCION;
@@ -2214,7 +2210,7 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                 switch (gAccionElegida[combatiente])
                 {
                 case B_ACTION_USE_MOVE:
-                    switch (gBattleResources->bufferB[combatiente][1])
+                    switch (gRespuestaCombatiente[combatiente].valor8)
                     {
                     case SELECCION_CANCELADA:
                         // Volvio atras desde la pantalla de movimientos.
@@ -2234,23 +2230,23 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                         {
                             gEstadoAccion[combatiente] = EJECUTA_ACCION;
                             *(gCombate->selectionScriptFinished + combatiente) = FALSE;
-                            gBattleResources->bufferB[combatiente][1] = B_ACTION_USE_MOVE;
+                            gRespuestaCombatiente[combatiente].valor8 = B_ACTION_USE_MOVE;
                             *(gCombate->stateIdAfterSelScript + combatiente) = PROCESA_ACCION;
                             return;
                         }
                         else
                         {
                             // Get the chosen move position (and thus the chosen move) and target from the returned buffer.
-                            gCombate->chosenMovePositions[combatiente] = gBattleResources->bufferB[combatiente][2];
+                            gCombate->chosenMovePositions[combatiente] = gRespuestaCombatiente[combatiente].posicionMovimiento;
                             gMovimientoElegido[combatiente] = gBattleMons[combatiente].movimientos[gCombate->chosenMovePositions[combatiente]];
-                            gCombate->moveTarget[combatiente] = gBattleResources->bufferB[combatiente][3];
+                            gCombate->moveTarget[combatiente] = gRespuestaCombatiente[combatiente].objetivo;
                             gEstadoAccion[combatiente] = EJECUTA_ACCION;
                         }
                         break;
                     }
                     break;
                 case B_ACTION_SWITCH:
-                    if (gBattleResources->bufferB[combatiente][1] == PARTY_SIZE)
+                    if (gRespuestaCombatiente[combatiente].valor8 == PARTY_SIZE)
                     {
                         gEstadoAccion[combatiente] = ANTES_ACCION;
                     }
@@ -2311,7 +2307,7 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
 
 static void UpdateBattlerPartyOrdersOnSwitch(u32 battler)
 {
-    gCombate->monToSwitchIntoId[battler] = gBattleResources->bufferB[battler][1];
+    gCombate->monToSwitchIntoId[battler] = gRespuestaCombatiente[battler].valor8;
 }
 
 void SwapTurnOrder(u8 id1, u8 id2)

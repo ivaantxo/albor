@@ -49,17 +49,11 @@ static void PlayerHandleSwitchInAnim(u32 battler);
 static void PlayerHandleDrawTrainerPic(u32 battler);
 static void PlayerHandleTrainerSlide(u32 battler);
 static void PlayerHandleTrainerSlideBack(u32 battler);
-static void PlayerHandlePaletteFade(u32 battler);
-static void PlayerHandleSuccessBallThrowAnim(u32 battler);
-static void PlayerHandlePause(u32 battler);
 static void PlayerHandleMoveAnimation(u32 battler);
 static void PlayerHandleChooseAction(u32 battler);
 static void PlayerHandleYesNoBox(u32 battler);
 static void PlayerHandleChoosePokemon(u32 battler);
 static void PlayerHandleHealthBarUpdate(u32 battler);
-static void PlayerHandleStatusXor(u32 battler);
-static void PlayerHandleDMA3Transfer(u32 battler);
-static void PlayerHandlePlayBGM(u32 battler);
 static void PlayerHandleTwoReturnValues(u32 battler);
 static void PlayerHandleChosenMonReturnValue(u32 battler);
 static void PlayerHandleOneReturnValue(u32 battler);
@@ -100,9 +94,7 @@ static EWRAM_DATA u8 sIconTypeId[MAXIMO_MOVIMIENTOS_POKEMON] = {0};
 static void (*const sPlayerBufferCommands[CONTROLLER_CMDS_COUNT])(u32 battler) =
 {
     [CONTROLLER_GETMONDATA]               = BtlController_HandleGetMonData,
-    [CONTROLLER_GETRAWMONDATA]            = BtlController_HandleGetRawMonData,
     [CONTROLLER_SETMONDATA]               = BtlController_HandleSetMonData,
-    [CONTROLLER_SETRAWMONDATA]            = BtlController_HandleSetRawMonData,
     [CONTROLLER_LOADMONSPRITE]            = PlayerHandleLoadMonSprite,
     [CONTROLLER_SWITCHINANIM]             = PlayerHandleSwitchInAnim,
     [CONTROLLER_RETURNMONTOBALL]          = BtlController_HandleReturnMonToBall,
@@ -110,10 +102,7 @@ static void (*const sPlayerBufferCommands[CONTROLLER_CMDS_COUNT])(u32 battler) =
     [CONTROLLER_TRAINERSLIDE]             = PlayerHandleTrainerSlide,
     [CONTROLLER_TRAINERSLIDEBACK]         = PlayerHandleTrainerSlideBack,
     [CONTROLLER_FAINTANIMATION]           = BtlController_HandleFaintAnimation,
-    [CONTROLLER_PALETTEFADE]              = PlayerHandlePaletteFade,
-    [CONTROLLER_SUCCESSBALLTHROWANIM]     = PlayerHandleSuccessBallThrowAnim,
     [CONTROLLER_BALLTHROWANIM]            = PlayerHandleBallThrowAnim,
-    [CONTROLLER_PAUSE]                    = PlayerHandlePause,
     [CONTROLLER_MOVEANIMATION]            = PlayerHandleMoveAnimation,
     [CONTROLLER_CHOOSEACTION]             = PlayerHandleChooseAction,
     [CONTROLLER_YESNOBOX]                 = PlayerHandleYesNoBox,
@@ -123,10 +112,7 @@ static void (*const sPlayerBufferCommands[CONTROLLER_CMDS_COUNT])(u32 battler) =
     [CONTROLLER_EXPUPDATE]                = PlayerHandleExpUpdate,
     [CONTROLLER_STATUSICONUPDATE]         = BtlController_HandleStatusIconUpdate,
     [CONTROLLER_STATUSANIMATION]          = BtlController_HandleStatusAnimation,
-    [CONTROLLER_STATUSXOR]                = PlayerHandleStatusXor,
     [CONTROLLER_DATATRANSFER]             = BtlController_Empty,
-    [CONTROLLER_DMA3TRANSFER]             = PlayerHandleDMA3Transfer,
-    [CONTROLLER_PLAYBGM]                  = PlayerHandlePlayBGM,
     [CONTROLLER_TWORETURNVALUES]          = PlayerHandleTwoReturnValues,
     [CONTROLLER_CHOSENMONRETURNVALUE]     = PlayerHandleChosenMonReturnValue,
     [CONTROLLER_ONERETURNVALUE]           = PlayerHandleOneReturnValue,
@@ -162,7 +148,7 @@ static void PlayerBufferExecCompleted(u32 combatiente)
 {
     // Se registra que funcion de controlador estaba activa al liberar: eso
     // identifica al llamante sin tener que instrumentar 33 puntos de llamada.
-    LOG("LIBERA comando/func", gBattleResources->bufferA[combatiente][0],
+    LOG("LIBERA comando/func", gComandoEnCurso[combatiente],
         (u32)gBattlerControllerFuncs[combatiente]);
     gBattlerControllerFuncs[combatiente] = PlayerBufferRunCommand;
     DesmarcaCombatienteOcupado(combatiente);
@@ -174,22 +160,22 @@ static void PlayerBufferRunCommand(u32 combatiente)
     {
         {
             static u32 sUltimoComando = 0xFFFF;
-            u32 comando = gBattleResources->bufferA[combatiente][0];
+            u32 comando = gComandoEnCurso[combatiente];
             if (comando != sUltimoComando)
             {
                 sUltimoComando = comando;
                 // LOG("CMD jugador comando/combatiente", comando, combatiente);
             }
         }
-        if (gBattleResources->bufferA[combatiente][0] < ARRAY_COUNT(sPlayerBufferCommands))
+        if (gComandoEnCurso[combatiente] < ARRAY_COUNT(sPlayerBufferCommands))
         {
-            if (sPlayerBufferCommands[gBattleResources->bufferA[combatiente][0]] == NULL)
+            if (sPlayerBufferCommands[gComandoEnCurso[combatiente]] == NULL)
             {
-                LOG("NULO: comando de jugador", gBattleResources->bufferA[combatiente][0], combatiente);
+                LOG("NULO: comando de jugador", gComandoEnCurso[combatiente], combatiente);
                 PlayerBufferExecCompleted(combatiente);
                 return;
             }
-            sPlayerBufferCommands[gBattleResources->bufferA[combatiente][0]](combatiente);
+            sPlayerBufferCommands[gComandoEnCurso[combatiente]](combatiente);
         }
         else
             PlayerBufferExecCompleted(combatiente);
@@ -303,7 +289,7 @@ static void HandleInputChooseAction(u32 battler)
                 PlaySE(SE_SELECT);
                 ArrowsChangeColorLastBallCycle(FALSE);
                 TryHideLastUsedBall();
-                BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_THROW_BALL, 0);
+                RespondeDosValores(battler, B_ACTION_THROW_BALL, 0);
                 PlayerBufferExecCompleted(battler);
             }
             return;
@@ -318,13 +304,13 @@ static void HandleInputChooseAction(u32 battler)
         switch (gActionSelectionCursor[battler])
         {
         case 0:
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_USE_MOVE, 0);
+            RespondeDosValores(battler, B_ACTION_USE_MOVE, 0);
             break;
         case 1:
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_SWITCH, 0);
+            RespondeDosValores(battler, B_ACTION_SWITCH, 0);
             break;
         case 2:
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_RUN, 0);
+            RespondeDosValores(battler, B_ACTION_RUN, 0);
             break;
         }
         PlayerBufferExecCompleted(battler);
@@ -378,7 +364,7 @@ static void HandleInputChooseAction(u32 battler)
          && !(gAbsentBattlerFlags & (1u << JUGADOR_IZQUIERDA)))
         {
             PlaySE(SE_SELECT);
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_CANCEL_PARTNER, 0);
+            RespondeDosValores(battler, B_ACTION_CANCEL_PARTNER, 0);
             PlayerBufferExecCompleted(battler);
         DestroySpriteAndFreeResources(&gSprites[monIconData]);
             MoveSelectionDestroyCursor();
@@ -395,7 +381,7 @@ static void HandleInputChooseAction(u32 battler)
     }
     else if (DEBUG_BATTLE_MENU == TRUE && JOY_NEW(SELECT_BUTTON))
     {
-        BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_DEBUG, 0);
+        RespondeDosValores(battler, B_ACTION_DEBUG, 0);
         PlayerBufferExecCompleted(battler);
     }
     else if (B_LAST_USED_BALL == TRUE && B_LAST_USED_BALL_CYCLE == FALSE
@@ -403,7 +389,7 @@ static void HandleInputChooseAction(u32 battler)
     {
         PlaySE(SE_SELECT);
         TryHideLastUsedBall();
-        BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_THROW_BALL, 0);
+        RespondeDosValores(battler, B_ACTION_THROW_BALL, 0);
         PlayerBufferExecCompleted(battler);
         DestroySpriteAndFreeResources(&gSprites[monIconData]);
     }
@@ -427,7 +413,7 @@ void HandleInputChooseTarget(u32 battler)
     {
         PlaySE(SE_SELECT);
         gSprites[gBattlerSpriteIds[gPosicionCursorSiNo]].callback = SpriteCB_HideAsMoveTarget; // REVISAR
-        BtlController_EmitTwoReturnValues(battler, BUFFER_B, SELECCION_MOVIMIENTO, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
+        RespondeDosValores(battler, SELECCION_MOVIMIENTO, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
         EndBounceEffect(gPosicionCursorSiNo, BOUNCE_HEALTHBOX); // REVISAR
         TryHideLastUsedBall();
         PlayerBufferExecCompleted(battler);
@@ -575,7 +561,7 @@ void HandleInputShowEntireFieldTargets(u32 battler)
     {
         PlaySE(SE_SELECT);
         HideAllTargets();
-        BtlController_EmitTwoReturnValues(battler, BUFFER_B, SELECCION_MOVIMIENTO, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
+        RespondeDosValores(battler, SELECCION_MOVIMIENTO, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
         PlayerBufferExecCompleted(battler);
         MoveSelectionDestroyCursor();
     }
@@ -595,7 +581,7 @@ void HandleInputShowTargets(u32 battler)
     {
         PlaySE(SE_SELECT);
         HideShownTargets(battler);
-        BtlController_EmitTwoReturnValues(battler, BUFFER_B, SELECCION_MOVIMIENTO, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
+        RespondeDosValores(battler, SELECCION_MOVIMIENTO, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
         TryHideLastUsedBall();
         PlayerBufferExecCompleted(battler);
         MoveSelectionDestroyCursor();
@@ -623,7 +609,7 @@ void HandleInputChooseMove(u32 battler)
 {
     u16 moveTarget;
     u32 canSelectTarget = 0;
-    struct DatosMovimiento *datosMovimiento = (struct DatosMovimiento *)(&gBattleResources->bufferA[battler][4]);
+    struct DatosMovimiento *datosMovimiento = &gArgumentosComando[battler].datosMovimiento;
 
     if (JOY_NEW(A_BUTTON))
     {
@@ -636,9 +622,9 @@ void HandleInputChooseMove(u32 battler)
         else
             gPosicionCursorSiNo = OPONENTE(GetBattlerSide(battler)); // REVISAR
 
-        if (!gBattleResources->bufferA[battler][1]) // not a double battle
+        if (!gArgumentosComando[battler].esCombateDoble) // not a double battle
         {
-            if (moveTarget & MOVE_TARGET_USER_OR_SELECTED && !gBattleResources->bufferA[battler][2])
+            if (moveTarget & MOVE_TARGET_USER_OR_SELECTED && !gArgumentosComando[battler].sinNumeroDePP)
                 canSelectTarget = 1;
         }
         else // double battle
@@ -684,7 +670,7 @@ void HandleInputChooseMove(u32 battler)
         {
         case 0:
         default:
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, SELECCION_MOVIMIENTO, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
+            RespondeDosValores(battler, SELECCION_MOVIMIENTO, gMoveSelectionCursor[battler] | (gPosicionCursorSiNo << 8));
             TryHideLastUsedBall();
             PlayerBufferExecCompleted(battler);
             MoveSelectionDestroyCursor();
@@ -712,7 +698,7 @@ void HandleInputChooseMove(u32 battler)
     else if ((JOY_NEW(B_BUTTON)))
     {
         PlaySE(SE_SELECT);
-        BtlController_EmitTwoReturnValues(battler, BUFFER_B, SELECCION_CANCELADA, 0);
+        RespondeDosValores(battler, SELECCION_CANCELADA, 0);
         PlayerBufferExecCompleted(battler);
         LoadBattleMenuWindowGfx();
         MoveSelectionDestroyCursor();
@@ -994,7 +980,7 @@ static void Task_GiveExpToMon(u8 taskId)
         CalculateMonStats(mon);
 
         gainedExp -= nextLvlExp - currExp;
-        BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_SUBIO_NIVEL, gainedExp);
+        RespondeDosValores(battler, B_ACTION_SUBIO_NIVEL, gainedExp);
 
         // La animacion de subida de nivel solo tiene sentido sobre el Pokemon que
         // esta en el terreno; los del banquillo suben en silencio.
@@ -1074,9 +1060,9 @@ static void WaitForMonSelection(u32 battler)
     if (gMain.callback2 == BattleMainCB2)
     {
         if (gPartyMenuUseExitCallback == TRUE)
-            BtlController_EmitChosenMonReturnValue(battler, BUFFER_B, gSelectedMonPartyId, gBattlePartyCurrentOrder);
+            RespondePokemonElegido(battler, gSelectedMonPartyId, gBattlePartyCurrentOrder);
         else
-            BtlController_EmitChosenMonReturnValue(battler, BUFFER_B, PARTY_SIZE, NULL);
+            RespondePokemonElegido(battler, PARTY_SIZE, NULL);
 
         PlayerBufferExecCompleted(battler);
     }
@@ -1104,9 +1090,9 @@ static void PlayerHandleYesNoInput(u32 battler)
         PlaySE(SE_SELECT);
 
         if (gPosicionCursorSiNo == CURSOR_NO)
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 14, 0);
+            RespondeDosValores(battler, 14, 0);
         else
-            BtlController_EmitTwoReturnValues(battler, BUFFER_B, 13, 0);
+            RespondeDosValores(battler, 13, 0);
 
         PlayerBufferExecCompleted(battler);
     }
@@ -1120,7 +1106,7 @@ static void PlayerHandleYesNoInput(u32 battler)
 
 static void MoveSelectionDisplayMoveNames(u32 battler)
 {
-    struct DatosMovimiento *moveInfo = (struct DatosMovimiento *)(&gBattleResources->bufferA[battler][4]);
+    struct DatosMovimiento *moveInfo = &gArgumentosComando[battler].datosMovimiento;
     gNumberOfMovesToChoose = 0;
 
     for (u32 i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
@@ -1136,9 +1122,9 @@ static void MoveSelectionDisplayMoveNames(u32 battler)
 
 static void MoveSelectionDisplayPpNumber(u32 battler)
 {
-    struct DatosMovimiento *moveInfo = (struct DatosMovimiento *)(&gBattleResources->bufferA[battler][4]);
+    struct DatosMovimiento *moveInfo = &gArgumentosComando[battler].datosMovimiento;
 
-    if (gBattleResources->bufferA[battler][2] == TRUE) // check if we didn't want to display pp number
+    if (gArgumentosComando[battler].sinNumeroDePP == TRUE) // check if we didn't want to display pp number
         return;
 
     for (u32 i = 0; i < 4; i++)
@@ -1349,7 +1335,7 @@ static void CargaPaletaTipo(u32 tipo, u32 paletteId)
 
 void LoadPalettesTypes(u32 combatiente)
 {
-    struct DatosMovimiento *datosMovimiento = (struct DatosMovimiento *)(&gBattleResources->bufferA[combatiente][4]);
+    struct DatosMovimiento *datosMovimiento = &gArgumentosComando[combatiente].datosMovimiento;
 
     for (u32 i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
         CargaPaletaTipo(gMovimientos[datosMovimiento->movimiento[i]].type, 12 + i);
@@ -1409,7 +1395,7 @@ static void AseguraIconosTipo(u32 battler)
     {
         {  9, 124}, {129, 124}, {  9, 148}, {129, 148},
     };
-    struct DatosMovimiento *datosMovimiento = (struct DatosMovimiento *)(&gBattleResources->bufferA[battler][4]);
+    struct DatosMovimiento *datosMovimiento = &gArgumentosComando[battler].datosMovimiento;
     bool32 hayQueCrear = FALSE;
 
     for (u32 i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
@@ -1514,31 +1500,13 @@ static void PlayerHandleTrainerSlideBack(u32 battler)
     BtlController_HandleTrainerSlideBack(battler, 50, TRUE);
 }
 
-static void PlayerHandlePaletteFade(u32 battler)
-{
-    BeginNormalPaletteFade(PALETTES_ALL, 2, 0, 16, RGB_BLACK);
-    PlayerBufferExecCompleted(battler);
-}
 
-static void PlayerHandleSuccessBallThrowAnim(u32 battler)
-{
-    BtlController_HandleSuccessBallThrowAnim(battler, gBattlerTarget, B_ANIM_BALL_THROW);
-}
 
 void PlayerHandleBallThrowAnim(u32 battler)
 {
     BtlController_HandleBallThrowAnim(battler, gBattlerTarget, B_ANIM_BALL_THROW);
 }
 
-static void PlayerHandlePause(u32 battler)
-{
-    u8 timer = gBattleResources->bufferA[battler][1];
-
-    while (timer != 0)
-        timer--;
-
-    PlayerBufferExecCompleted(battler);
-}
 
 static void PlayerHandleMoveAnimation(u32 battler)
 {
@@ -1635,13 +1603,13 @@ static void PlayerHandleChoosePokemon(u32 battler)
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(gBattlePartyCurrentOrder); i++)
-        gBattlePartyCurrentOrder[i] = gBattleResources->bufferA[battler][4 + i];
+        gBattlePartyCurrentOrder[i] = gArgumentosComando[battler].datosEleccion[i];
 
     gBattleControllerData[battler] = CreateTask(TaskDummy, 0xFF);
-    gTasks[gBattleControllerData[battler]].data[0] = gBattleResources->bufferA[battler][1] & 0xF;
-    gCombate->battlerPreventingSwitchout = gBattleResources->bufferA[battler][1] >> 4;
-    gCombate->prevSelectedPartySlot = gBattleResources->bufferA[battler][2];
-    gCombate->abilityPreventingSwitchout = (gBattleResources->bufferA[battler][3] & 0xFF) | (gBattleResources->bufferA[battler][7] << 8);
+    gTasks[gBattleControllerData[battler]].data[0] = gArgumentosComando[battler].caso & 0xF;
+    gCombate->battlerPreventingSwitchout = gArgumentosComando[battler].caso >> 4;
+    gCombate->prevSelectedPartySlot = gArgumentosComando[battler].ranura;
+    gCombate->abilityPreventingSwitchout = gArgumentosComando[battler].habilidad;
     BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
     gBattlerControllerFuncs[battler] = OpenPartyMenuToChooseMon;
     gBattlerInMenuId = battler;
@@ -1654,7 +1622,7 @@ static void PlayerHandleHealthBarUpdate(u32 battler)
 
 void PlayerHandleExpUpdate(u32 battler)
 {
-    u8 monId = gBattleResources->bufferA[battler][1];
+    u8 monId = gArgumentosComando[battler].indiceEquipo;
     s32 taskId, expPointsToGive;
 
     if (GetMonData(&gPlayerParty[monId], MON_DATA_LEVEL) >= MAX_LEVEL)
@@ -1663,7 +1631,7 @@ void PlayerHandleExpUpdate(u32 battler)
     }
     else
     {
-        expPointsToGive = T1_READ_32(&gBattleResources->bufferA[battler][2]);
+        expPointsToGive = gArgumentosComando[battler].experiencia;
         taskId = CreateTask(Task_GiveExpToMon, 10);
         gTasks[taskId].tExpTask_monId = monId;
         gTasks[taskId].tExpTask_gainedExp_1 = expPointsToGive;
@@ -1679,62 +1647,24 @@ void PlayerHandleExpUpdate(u32 battler)
 #undef tExpTask_gainedExp_2
 #undef tExpTask_frames
 
-static void PlayerHandleStatusXor(u32 battler)
-{
-    u8 val = GetMonData(&gPlayerParty[gBattlerPartyIndexes[battler]], MON_DATA_STATUS) ^ gBattleResources->bufferA[battler][1];
 
-    SetMonData(&gPlayerParty[gBattlerPartyIndexes[battler]], MON_DATA_STATUS, &val);
-    PlayerBufferExecCompleted(battler);
-}
 
-static void PlayerHandleDMA3Transfer(u32 battler)
-{
-    u32 dstArg = gBattleResources->bufferA[battler][1]
-            | (gBattleResources->bufferA[battler][2] << 8)
-            | (gBattleResources->bufferA[battler][3] << 16)
-            | (gBattleResources->bufferA[battler][4] << 24);
-    u16 sizeArg = gBattleResources->bufferA[battler][5] | (gBattleResources->bufferA[battler][6] << 8);
-
-    const u8 *src = &gBattleResources->bufferA[battler][7];
-    u8 *dst = (u8 *)(dstArg);
-    u32 size = sizeArg;
-
-    while(1)
-    {
-        if (size <= 4096)
-        {
-            DmaCopy16(3, src, dst, size);
-            break;
-        }
-        DmaCopy16(3, src, dst, 4096);
-        src += 4096;
-        dst += 4096;
-        size -= 4096;
-    }
-    PlayerBufferExecCompleted(battler);
-}
-
-static void PlayerHandlePlayBGM(u32 battler)
-{
-    PlayBGM(gBattleResources->bufferA[battler][1] | (gBattleResources->bufferA[battler][2] << 8));
-    PlayerBufferExecCompleted(battler);
-}
 
 static void PlayerHandleTwoReturnValues(u32 battler)
 {
-    BtlController_EmitTwoReturnValues(battler, BUFFER_B, 0, 0);
+    RespondeDosValores(battler, 0, 0);
     PlayerBufferExecCompleted(battler);
 }
 
 static void PlayerHandleChosenMonReturnValue(u32 battler)
 {
-    BtlController_EmitChosenMonReturnValue(battler, BUFFER_B, 0, NULL);
+    RespondePokemonElegido(battler, 0, NULL);
     PlayerBufferExecCompleted(battler);
 }
 
 static void PlayerHandleOneReturnValue(u32 battler)
 {
-    BtlController_EmitOneReturnValue(battler, BUFFER_B, 0);
+    RespondeUnValor(battler, 0);
     PlayerBufferExecCompleted(battler);
 }
 
@@ -1763,7 +1693,7 @@ static void PlayerHandleBattleAnimation(u32 battler)
 
 static void PlayerHandleResetActionMoveSelection(u32 battler)
 {
-    switch (gBattleResources->bufferA[battler][1])
+    switch (gArgumentosComando[battler].caso)
     {
     case RESET_ACTION_MOVE_SELECTION:
         gActionSelectionCursor[battler] = 0;

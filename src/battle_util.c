@@ -626,7 +626,7 @@ bool32 IsBelchPreventingMove(u32 battler, u32 move)
 u32 TrySetCantSelectMoveBattleScript(u32 battler)
 {
     u32 limitations = 0;
-    u8 moveId = gBattleResources->bufferB[battler][2];
+    u8 moveId = gRespuestaCombatiente[battler].posicionMovimiento;
     u32 move = gBattleMons[battler].movimientos[moveId];
     u32 holdEffect = GetBattlerHoldEffect(battler, TRUE);
     u16 *choicedMove = &gCombate->choicedMove[battler];
@@ -1386,7 +1386,7 @@ u8 DoBattlerEndTurnEffects(void)
                         gBattleMons[gBattlerAttacker].status2 &= ~STATUS2_NIGHTMARE;
                         gElegidorTextoMultiple = 1;
                         BattleScriptExecute(BattleScript_MonWokeUpInUproar);
-                        BtlController_EmitSetMonData(gBattlerAttacker, BUFFER_A, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[gBattlerAttacker].status1);
+                        ComandoFijaDatosPokemon(gBattlerAttacker, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[gBattlerAttacker].status1);
                         MarcaCombatienteOcupado(gBattlerAttacker);
                         break;
                     }
@@ -1997,7 +1997,7 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
 
     if (effect == 2)
     {
-        BtlController_EmitSetMonData(gBattlerAttacker, BUFFER_A, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[gBattlerAttacker].status1);
+        ComandoFijaDatosPokemon(gBattlerAttacker, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[gBattlerAttacker].status1);
         MarcaCombatienteOcupado(gBattlerAttacker);
     }
     return effect;
@@ -2334,10 +2334,10 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                     gBattleMons[battler].item = itemTarget;
                     gBattleMons[chosenTarget].item = itemUser;
 
-                    BtlController_EmitSetMonData(battler, BUFFER_A, REQUEST_HELDITEM_BATTLE, 0, sizeof(gBattleMons[battler].item), &gBattleMons[battler].item);
+                    ComandoFijaDatosPokemon(battler, REQUEST_HELDITEM_BATTLE, 0, sizeof(gBattleMons[battler].item), &gBattleMons[battler].item);
                     MarcaCombatienteOcupado(battler);
 
-                    BtlController_EmitSetMonData(chosenTarget, BUFFER_A, REQUEST_HELDITEM_BATTLE, 0, sizeof(gBattleMons[chosenTarget].item), &gBattleMons[chosenTarget].item);
+                    ComandoFijaDatosPokemon(chosenTarget, REQUEST_HELDITEM_BATTLE, 0, sizeof(gBattleMons[chosenTarget].item), &gBattleMons[chosenTarget].item);
                     MarcaCombatienteOcupado(chosenTarget);
 
                     gCombate->choicedMove[chosenTarget] = MOVE_NONE;
@@ -2624,7 +2624,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                     gBattleMons[battler].status2 &= ~STATUS2_NIGHTMARE;
                     gBattleScripting.battler = battler;
                     BattleScriptPushCursorAndCallback(BattleScript_ShedSkinActivates);
-                    BtlController_EmitSetMonData(battler, BUFFER_A, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[battler].status1);
+                    ComandoFijaDatosPokemon(battler, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[battler].status1);
                     MarcaCombatienteOcupado(battler);
                     effect++;
                 }
@@ -3275,7 +3275,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 }
 
                 gBattleScripting.battler = gBattlerAbility = battler;
-                BtlController_EmitSetMonData(battler, BUFFER_A, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[battler].status1);
+                ComandoFijaDatosPokemon(battler, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[battler].status1);
                 MarcaCombatienteOcupado(battler);
                 return effect;
             }
@@ -3666,7 +3666,7 @@ static u32 ItemRestorePp(u32 battler, u32 itemId, bool32 execute)
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_BerryPPHealRet;
             }
-            BtlController_EmitSetMonData(battler, BUFFER_A, i + REQUEST_PPMOVE1_BATTLE, 0, 1, &changedPP);
+            ComandoFijaDatosPokemon(battler, i + REQUEST_PPMOVE1_BATTLE, 0, 1, &changedPP);
             MarcaCombatienteOcupado(battler);
             gBattleMons[battler].pp[i] = changedPP;
             return ITEM_PP_CHANGE;
@@ -4164,7 +4164,7 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
                 switch (effect)
                 {
                 case ITEM_STATUS_CHANGE:
-                    BtlController_EmitSetMonData(battler, BUFFER_A, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[battler].status1);
+                    ComandoFijaDatosPokemon(battler, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[battler].status1);
                     MarcaCombatienteOcupado(battler);
                     break;
                 }
@@ -4380,7 +4380,7 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
                 switch (effect)
                 {
                 case ITEM_STATUS_CHANGE:
-                    BtlController_EmitSetMonData(battler, BUFFER_A, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[battler].status1);
+                    ComandoFijaDatosPokemon(battler, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[battler].status1);
                     MarcaCombatienteOcupado(battler);
                     break;
                 }
@@ -4395,7 +4395,7 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
             gPotentialItemEffectBattler = gBattleScripting.battler = battler;
             if (effect == ITEM_STATUS_CHANGE)
             {
-                BtlController_EmitSetMonData(battler, BUFFER_A, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[battler].status1);
+                ComandoFijaDatosPokemon(battler, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[battler].status1);
                 MarcaCombatienteOcupado(battler);
             }
             break;
@@ -4411,7 +4411,7 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
                 gPotentialItemEffectBattler = gBattleScripting.battler = battler;
                 if (effect == ITEM_STATUS_CHANGE)
                 {
-                    BtlController_EmitSetMonData(battler, BUFFER_A, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[battler].status1);
+                    ComandoFijaDatosPokemon(battler, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[battler].status1);
                     MarcaCombatienteOcupado(battler);
                 }
                 break;
@@ -4591,7 +4591,7 @@ u8 ItemBattleEffects(u8 caseID, u32 battler, bool32 moveTurn)
 
         if (effect == ITEM_STATUS_CHANGE)
         {
-            BtlController_EmitSetMonData(battler, BUFFER_A, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[battler].status1);
+            ComandoFijaDatosPokemon(battler, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[battler].status1);
             MarcaCombatienteOcupado(battler);
         }
     }
