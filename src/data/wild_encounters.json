@@ -85,7 +85,12 @@
               {
                 "min_level": 5,
                 "max_level": 5,
-                "species": "SPECIES_VENUSAUR"
+                "species": "SPECIES_BULBASAUR"
+              },
+              {
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_IVYSAUR"
               },
               {
                 "min_level": 5,
@@ -95,47 +100,42 @@
               {
                 "min_level": 5,
                 "max_level": 5,
-                "species": "SPECIES_VENUSAUR"
+                "species": "SPECIES_CHARMANDER"
               },
               {
                 "min_level": 5,
                 "max_level": 5,
-                "species": "SPECIES_VENUSAUR"
+                "species": "SPECIES_CHARMELEON"
               },
               {
                 "min_level": 5,
                 "max_level": 5,
-                "species": "SPECIES_VENUSAUR"
+                "species": "SPECIES_CHARIZARD"
               },
               {
                 "min_level": 5,
                 "max_level": 5,
-                "species": "SPECIES_VENUSAUR"
+                "species": "SPECIES_SQUIRTLE"
               },
               {
                 "min_level": 5,
                 "max_level": 5,
-                "species": "SPECIES_VENUSAUR"
+                "species": "SPECIES_WARTORTLE"
               },
               {
                 "min_level": 5,
                 "max_level": 5,
-                "species": "SPECIES_VENUSAUR"
+                "species": "SPECIES_BLASTOISE"
               },
               {
                 "min_level": 5,
                 "max_level": 5,
-                "species": "SPECIES_VENUSAUR"
+                "species": "SPECIES_PIDGEY"
               },
               {
                 "min_level": 5,
                 "max_level": 5,
-                "species": "SPECIES_VENUSAUR"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_VENUSAUR"
+                "species": "SPECIES_PIDGEOTTO"
               },
               {
                 "min_level": 5,
