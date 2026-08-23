@@ -874,7 +874,8 @@ void GetConditionMenuMonGfx(void *tilesDst, void *palDst, u16 boxId, u16 monId, 
         u32 personality = GetBoxOrPartyMonData(boxId, monId, MON_DATA_PERSONALITY, NULL);
 
         LoadSpecialPokePic(tilesDst, species, personality, TRUE);
-        LZ77UnCompWram(GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality), palDst);
+        // La paleta va cruda: copia directa en vez de descomprimir.
+        CopiaCpu16(GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality), palDst, PLTT_SIZE_4BPP);
     }
 }
 

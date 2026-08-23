@@ -73,7 +73,7 @@ static const struct CompressedSpriteSheet sSpriteSheet_SwapLine =
     gSwapLineGfx, 0x100, TAG_SWAP_LINE
 };
 
-static const struct CompressedSpritePalette sSpritePalette_SwapLine =
+static const struct SpritePalette sSpritePalette_SwapLine =
 {
     gSwapLinePal, TAG_SWAP_LINE
 };
@@ -358,7 +358,7 @@ void SetCursorScrollWithinListBounds(u16 *scrollOffset, u16 *cursorPos, u8 shown
 void LoadListMenuSwapLineGfx(void)
 {
     LoadCompressedSpriteSheet(&sSpriteSheet_SwapLine);
-    LoadCompressedSpritePalette(&sSpritePalette_SwapLine);
+    LoadSpritePalette(&sSpritePalette_SwapLine);
 }
 
 void CreateSwapLineSprites(u32 *spriteIds, u8 count)

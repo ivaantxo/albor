@@ -1579,7 +1579,7 @@ bool32 TwoOpponentIntroMons(u32 battler) // Double battle with both opponent pok
 // Sprite data for SpriteCB_FreePlayerSpriteLoadMonSprite
 #define sBattlerId data[5]
 
-void BtlController_HandleIntroTrainerBallThrow(u32 battler, u16 tagTrainerPal, const u32 *trainerPal, s16 framesToWait, void (*controllerCallback)(u32 battler))
+void BtlController_HandleIntroTrainerBallThrow(u32 battler, u16 tagTrainerPal, const u16 *trainerPal, s16 framesToWait, void (*controllerCallback)(u32 battler))
 {
     LOG("ENVIO 1) BallThrow battler/espera", battler, framesToWait);
     u8 paletteNum, taskId;
@@ -1608,12 +1608,12 @@ void BtlController_HandleIntroTrainerBallThrow(u32 battler, u16 tagTrainerPal, c
 
         // AllocSpritePalette devuelve 0xFF si no quedan slots. Sin comprobarlo,
         // OBJ_PLTT_ID(0xFF) apunta miles de entradas fuera del buffer de paletas y
-        // LoadCompressedPalette corrompe EWRAM; ademas oam.paletteNum solo tiene
+        // LoadPalette corrompe EWRAM; ademas oam.paletteNum solo tiene
         // 4 bits, con lo que 0xFF se truncaba a la paleta 15 (el sprite en negro).
         paletteNum = AllocSpritePalette(tagTrainerPal);
         if (paletteNum != 0xFF)
         {
-            LoadCompressedPalette(trainerPal, OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
+            LoadPalette(trainerPal, OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
             gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = paletteNum;
 
             // Para la animacion de lanzamiento el entrenador se muda a una ranura

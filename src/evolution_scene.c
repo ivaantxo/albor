@@ -242,7 +242,7 @@ void EvolutionScene(struct Pokemon *mon, u16 postEvoSpecies, u8 partyId)
                         currSpecies,
                         personality,
                         TRUE);
-    LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(currSpecies, isShiny, personality), OBJ_PLTT_ID(1), PLTT_SIZE_4BPP);
+    LoadPalette(GetMonSpritePalFromSpeciesAndPersonality(currSpecies, isShiny, personality), OBJ_PLTT_ID(1), PLTT_SIZE_4BPP);
     DesplazaTonoPaleta(OBJ_PLTT_ID(1), personality);
 
     SetMultiuseSpriteTemplateToPokemon(currSpecies, OPONENTE_IZQUIERDA);
@@ -258,7 +258,7 @@ void EvolutionScene(struct Pokemon *mon, u16 postEvoSpecies, u8 partyId)
                         postEvoSpecies,
                         personality,
                         TRUE);
-    LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(postEvoSpecies, isShiny, personality), OBJ_PLTT_ID(2), PLTT_SIZE_4BPP);
+    LoadPalette(GetMonSpritePalFromSpeciesAndPersonality(postEvoSpecies, isShiny, personality), OBJ_PLTT_ID(2), PLTT_SIZE_4BPP);
     DesplazaTonoPaleta(OBJ_PLTT_ID(2), personality);
 
     SetMultiuseSpriteTemplateToPokemon(postEvoSpecies, OPONENTE_DERECHA);
@@ -331,7 +331,7 @@ static void CB2_EvolutionSceneLoadGraphics(void)
                         postEvoSpecies,
                         personality,
                         TRUE);
-    LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(postEvoSpecies, isShiny, personality), OBJ_PLTT_ID(2), PLTT_SIZE_4BPP);
+    LoadPalette(GetMonSpritePalFromSpeciesAndPersonality(postEvoSpecies, isShiny, personality), OBJ_PLTT_ID(2), PLTT_SIZE_4BPP);
     DesplazaTonoPaleta(OBJ_PLTT_ID(2), personality);
 
     SetMultiuseSpriteTemplateToPokemon(postEvoSpecies, OPONENTE_DERECHA);

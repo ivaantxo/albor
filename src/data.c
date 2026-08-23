@@ -241,7 +241,7 @@ const union AnimCmd *const gAnims_Trainer[] =
     sAnim_TrainerPic_2
 };
 
-const struct CompressedSpritePalette gEgg1PaletteTable[] =
+const struct SpritePalette gEgg1PaletteTable[] =
 {
     [TIPO_NORMAL]       =   {gMonPalette_Egg_Normal1,   SPECIES_EGG},
     [TIPO_LUCHA]        =   {gMonPalette_Egg_Fighting1, SPECIES_EGG},
@@ -263,7 +263,7 @@ const struct CompressedSpritePalette gEgg1PaletteTable[] =
     [TIPO_HADA]         =   {gMonPalette_Egg_Fairy1,    SPECIES_EGG}
 };
 
-const struct CompressedSpritePalette gEgg2PaletteTable[] =
+const struct SpritePalette gEgg2PaletteTable[] =
 {
     [TIPO_NORMAL]       =   {gMonPalette_Egg_Normal2,   SPECIES_EGG},
     [TIPO_LUCHA]        =   {gMonPalette_Egg_Fighting2, SPECIES_EGG},

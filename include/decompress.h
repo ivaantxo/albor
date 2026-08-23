@@ -15,13 +15,10 @@ u16 LoadCompressedSpriteSheetByTemplate(const struct SpriteTemplate *template, s
 void LoadCompressedSpriteSheetOverrideBuffer(const struct CompressedSpriteSheet *src, void *buffer);
 void LoadCompressedSpriteSheetUsingHeap(const struct CompressedSpriteSheet *src);
 
-void LoadCompressedSpritePalette(const struct CompressedSpritePalette *src);
-void LoadCompressedSpritePaletteWithTag(const u32 *pal, u16 tag);
-u32 LoadCompressedSpritePaletteWithTagHueShifted(const u32 *pal, u16 tag, u32 personality);
-void LoadCompressedSpritePaletteOverrideBuffer(const struct CompressedSpritePalette *src, void *buffer);
-void LoadCompressedSpritePaletteUsingHeap(const struct CompressedSpritePalette *src);
-void LoadCompressedEggSpritePalette(const struct CompressedSpritePalette *src1, const struct CompressedSpritePalette *src2);
-void LoadCompressedEggHatchSpritePalette(const struct CompressedSpritePalette *src1, const struct CompressedSpritePalette *src2);
+void LoadSpritePaletteWithTag(const u16 *pal, u16 tag);
+u32 LoadSpritePaletteWithTagHueShifted(const u16 *pal, u16 tag, u32 personality);
+void LoadCompressedEggSpritePalette(const struct SpritePalette *src1, const struct SpritePalette *src2);
+void LoadCompressedEggHatchSpritePalette(const struct SpritePalette *src1, const struct SpritePalette *src2);
 
 void LoadCompressedSpriteSheetAndPaletteUsingHeap(const struct CompressedSpriteSheetAndPalette *src);
 

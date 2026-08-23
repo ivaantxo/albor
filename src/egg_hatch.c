@@ -398,7 +398,7 @@ static u8 EggHatchCreateMonSprite(u8 state, u8 partyId, u16 *speciesLoc)
             HandleLoadSpecialPokePic(TRUE,
                                      gMonSpritesGfxPtr->spritesGfx[OPONENTE_IZQUIERDA],
                                      species, pid);
-            LoadCompressedSpritePaletteWithTagHueShifted(GetMonFrontSpritePal(mon), species, pid);
+            LoadSpritePaletteWithTagHueShifted(GetMonFrontSpritePal(mon), species, pid);
             *speciesLoc = species;
         }
         break;
@@ -440,7 +440,7 @@ static void Task_EggHatch(u8 taskId)
 
 static void CB2_LoadEggHatch(void)
 {
-    const struct CompressedSpritePalette *pal1, *pal2;
+    const struct SpritePalette *pal1, *pal2;
 
     switch (gMain.state)
     {
@@ -485,7 +485,7 @@ static void CB2_LoadEggHatch(void)
     case 2:
         DecompressAndLoadBgGfxUsingHeap(0, gBattleTextboxTiles, 0, 0, 0);
         CopyToBgTilemapBuffer(0, gBattleTextboxTilemap, 0, 0);
-        LoadCompressedPalette(gBattleTextboxPalette, BG_PLTT_ID(0), PLTT_SIZE_4BPP);
+        LoadPalette(gBattleTextboxPalette, BG_PLTT_ID(0), PLTT_SIZE_4BPP);
         gMain.state++;
         break;
     case 3:

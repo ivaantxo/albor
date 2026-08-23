@@ -440,8 +440,8 @@ static bool8 HandleLoadTMCaseGraphicsAndPalettes(void)
         }
         break;
     case 2:
-        LoadCompressedPalette(gTMCaseMenu_Pal, BG_PLTT_ID(0), PLTT_SIZE_4BPP);
-        LoadCompressedPalette(gTMCaseText_Pal, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
+        LoadPalette(gTMCaseMenu_Pal, BG_PLTT_ID(0), PLTT_SIZE_4BPP);
+        LoadPalette(gTMCaseText_Pal, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
         sTMCaseDynamicResources->seqId++;
         break;
     default:
@@ -553,7 +553,7 @@ static void PrintMoveInfo(u16 itemId)
     {
         // Draw type icon
         LoadCompressedSpriteSheet(&gSpriteSheet_MoveTypes);
-        LoadCompressedPalette(gMoveTypes_Pal, OBJ_PLTT_ID(14), 2 * PLTT_SIZE_4BPP);
+        LoadPalette(gMoveTypes_Pal, OBJ_PLTT_ID(14), 2 * PLTT_SIZE_4BPP);
         movimiento = ItemIdToBattleMoveId(itemId);
         if (sTMCaseDynamicResources->typeIconSpriteId == 0xFF)
         {
@@ -949,7 +949,7 @@ static void DrawPartyMonIcons(void)
         }
         spriteIdData[i] = CreaIconoPokemon(species, icon_x, icon_y, 1, GetMonData(&gPlayerParty[i], MON_DATA_PERSONALITY));
         u32 index = i < gPlayerPartyCount ? IndexOfSpritePaletteTag(ETIQUETA_ICONO_POKEMON + i) : 0xFF;
-        LoadCompressedPalette(GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality), OBJ_PLTT_ID(index), PLTT_SIZE_4BPP);
+        LoadPalette(GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality), OBJ_PLTT_ID(index), PLTT_SIZE_4BPP);
         DesplazaTonoPaleta(OBJ_PLTT_ID(index), personality);
         gSprites[spriteIdData[i]].oam.priority = 0;
         StartSpriteAnim(&gSprites[spriteIdData[i]], 0);

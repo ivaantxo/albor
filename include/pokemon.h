@@ -207,10 +207,10 @@ struct SpeciesInfo
     const u32 *frontPicFemale;
     const u32 *backPic;
     const u32 *backPicFemale;
-    const u32 *palette;
-    const u32 *paletteFemale;
-    const u32 *shinyPalette;
-    const u32 *shinyPaletteFemale;
+    const u16 *palette;
+    const u16 *paletteFemale;
+    const u16 *shinyPalette;
+    const u16 *shinyPaletteFemale;
     u8 frontPicSize; // The dimensions of this drawn pixel area.
     u8 frontPicSizeFemale; // The dimensions of this drawn pixel area.
     u8 frontPicYOffset; // The number of pixels between the drawn pixel area and the bottom edge.
@@ -477,9 +477,9 @@ u16 GetBattleBGM(void);
 void PlayBattleBGM(void);
 void PlayMapChosenOrBattleBGM(u16 songId);
 void CreateTask_PlayMapChosenOrBattleBGM(u16 songId);
-const u32 *GetMonFrontSpritePal(struct Pokemon *mon);
-const u32 *GetMonSpritePalFromSpeciesAndPersonality(u16 species, bool32 isShiny, u32 personality);
-const u32 *GetMonSpritePalFromSpecies(u16 species, bool32 isShiny, bool32 isFemale);
+const u16 *GetMonFrontSpritePal(struct Pokemon *mon);
+const u16 *GetMonSpritePalFromSpeciesAndPersonality(u16 species, bool32 isShiny, u32 personality);
+const u16 *GetMonSpritePalFromSpecies(u16 species, bool32 isShiny, bool32 isFemale);
 bool8 IsMonSpriteNotFlipped(u16 species);
 s8 GetMonFlavorRelation(struct Pokemon *mon, u8 flavor);
 s8 GetFlavorRelationByPersonality(u32 personality, u8 flavor);

@@ -295,7 +295,7 @@ bool8 IsBattleSEPlaying(u8 battler)
 void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
 {
     u32 monsPersonality, currentPersonality, isShiny, species, paletteOffset, position;
-    const void *lzPaletteData;
+    const u16 *lzPaletteData;
 
     if (GetMonData(mon, MON_DATA_IS_EGG) || GetMonData(mon, MON_DATA_SPECIES) == SPECIES_NONE) // Don't load GFX of egg pokemon.
         return;
@@ -330,9 +330,9 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
     else
         lzPaletteData = GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, currentPersonality);
 
-    LZDecompressWram(lzPaletteData, gDecompressionBuffer);
-    LoadPalette(gDecompressionBuffer, paletteOffset, PLTT_SIZE_4BPP);
-    LoadPalette(gDecompressionBuffer, BG_PLTT_ID(8) + BG_PLTT_ID(battler), PLTT_SIZE_4BPP);
+    // Paleta cruda: se carga directamente en las dos ranuras, sin descomprimir.
+    LoadPalette(lzPaletteData, paletteOffset, PLTT_SIZE_4BPP);
+    LoadPalette(lzPaletteData, BG_PLTT_ID(8) + BG_PLTT_ID(battler), PLTT_SIZE_4BPP);
     DesplazaTonoPaleta(paletteOffset, currentPersonality);
     DesplazaTonoPaleta(BG_PLTT_ID(8) + BG_PLTT_ID(battler), currentPersonality);
 
@@ -348,7 +348,7 @@ void DecompressTrainerFrontPic(u16 frontPicId, u8 battler)
 {
     DecompressPicFromTable(&gTrainerSprites[frontPicId].frontPic,
                            gMonSpritesGfxPtr->spritesGfx[battler]);
-    LoadCompressedSpritePalette(&gTrainerSprites[frontPicId].palette);
+    LoadSpritePalette(&gTrainerSprites[frontPicId].palette);
 
     // El entrenador rival no va a una ranura fija como el jugador, sino a una que
     // se le asigna por etiqueta, asi que hay que preguntar cual le ha tocado. Era
@@ -365,7 +365,7 @@ void DecompressTrainerBackPic(u16 backPicId, u8 battler)
 {
     DecompressPicFromTable(&gTrainerBacksprites[backPicId].backPic,
                            gMonSpritesGfxPtr->spritesGfx[battler]);
-    LoadCompressedPalette(gTrainerBacksprites[backPicId].palette.data,
+    LoadPalette(gTrainerBacksprites[backPicId].palette.data,
                           OBJ_PLTT_ID(battler), PLTT_SIZE_4BPP);
     // El entrenador esta en el mismo escenario que los Pokemon, asi que le da la
     // misma luz. Va a la misma ranura de paleta que el combatiente.
@@ -447,7 +447,8 @@ void GestionaCambioGraficoEspecie(u32 atacante, u32 defensor, bool32 usarPersona
 {
     u32 personalityValue, position, paletteOffset, targetSpecies;
     bool32 isShiny;
-    const void *lzPaletteData, *src;
+    const u16 *lzPaletteData;
+    const void *src;
     void *dst;
 
     position = atacante;
@@ -498,8 +499,7 @@ void GestionaCambioGraficoEspecie(u32 atacante, u32 defensor, bool32 usarPersona
     DmaCopy32(3, src, dst, MON_PIC_SIZE);
     paletteOffset = OBJ_PLTT_ID(atacante);
     lzPaletteData = GetMonSpritePalFromSpeciesAndPersonality(targetSpecies, isShiny, personalityValue);
-    LZDecompressWram(lzPaletteData, gDecompressionBuffer);
-    LoadPalette(gDecompressionBuffer, paletteOffset, PLTT_SIZE_4BPP);
+    LoadPalette(lzPaletteData, paletteOffset, PLTT_SIZE_4BPP);
 
     DesplazaTonoPaleta(paletteOffset, personalityValue);
     BlendPalette(paletteOffset, 16, 6, RGB_WHITE);
@@ -531,7 +531,7 @@ void BattleLoadSubstituteOrMonSpriteGfx(u8 battler, bool8 loadMonSprite)
         }
 
         palOffset = OBJ_PLTT_ID(battler);
-        LoadCompressedPalette(gBattleAnimSpritePal_Substitute, palOffset, PLTT_SIZE_4BPP);
+        LoadPalette(gBattleAnimSpritePal_Substitute, palOffset, PLTT_SIZE_4BPP);
         GuardaYTinePaletaCombate(16 + battler);
     }
     else

@@ -23,7 +23,7 @@ enum {
 struct CompressedTilesPal
 {
     const u32 *tiles;
-    const u32 *pal;
+    const u16 *pal;
 };
 
 // this file's functions
@@ -135,7 +135,7 @@ const struct CompressedSpriteSheet gBagFemaleSpriteSheet =
     gBagFemaleTiles, 0x3000, TAG_BAG_GFX
 };
 
-const struct CompressedSpritePalette gBagPaletteTable =
+const struct SpritePalette gBagPaletteTable =
 {
     gBagPalette, TAG_BAG_GFX
 };
@@ -397,7 +397,7 @@ const struct CompressedSpriteSheet gBerryCheckCircleSpriteSheet =
     gBerryCheckCircle_Gfx, 0x800, TAG_BERRY_CHECK_CIRCLE_GFX
 };
 
-const struct CompressedSpritePalette gBerryCheckCirclePaletteTable =
+const struct SpritePalette gBerryCheckCirclePaletteTable =
 {
     gBerryCheck_Pal, TAG_BERRY_CHECK_CIRCLE_GFX
 };
@@ -638,11 +638,11 @@ static void ArrangeBerryGfx(void *src, void *dest)
 
 static void LoadBerryGfx(u8 berryId)
 {
-    struct CompressedSpritePalette pal;
+    struct SpritePalette pal;
 
     pal.data = sBerryPicTable[berryId].pal;
     pal.tag = TAG_BERRY_PIC_PAL;
-    LoadCompressedSpritePalette(&pal);
+    LoadSpritePalette(&pal);
     LZDecompressWram(sBerryPicTable[berryId].tiles, &gDecompressionBuffer[0x1000]);
     ArrangeBerryGfx(&gDecompressionBuffer[0x1000], &gDecompressionBuffer[0]);
 }

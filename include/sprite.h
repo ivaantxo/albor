@@ -40,16 +40,10 @@ struct SpritePalette
     u16 tag;
 };
 
-struct CompressedSpritePalette
-{
-    const u32 *data;  // LZ77 compressed palette data
-    u16 tag;
-};
-
 struct CompressedSpriteSheetAndPalette
 {
     const u32 *sheet;   // LZ77 compressed pixel data
-    const u32 *palette; // LZ77 compressed palette data
+    const u16 *palette; // Raw uncompressed palette data
     u16 sheetSize;      // Uncompressed size of pixel data
     u16 tag;
 };

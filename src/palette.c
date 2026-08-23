@@ -28,12 +28,6 @@ ALIGNED(4) EWRAM_DATA u16 gPlttBufferUnfaded[PLTT_BUFFER_SIZE] = {0};
 ALIGNED(4) EWRAM_DATA u16 gPlttBufferFaded[PLTT_BUFFER_SIZE] = {0};
 EWRAM_DATA struct ControlFundidoPaletas gFundidoPaletas = {0};
 
-void LoadCompressedPalette(const u32 *src, u32 offset, u32 size)
-{
-    LZDecompressWram(src, gDecompressionBuffer);
-    CopiaCpu16(gDecompressionBuffer, &gPlttBufferUnfaded[offset], size);
-    CopiaCpu16(gDecompressionBuffer, &gPlttBufferFaded[offset], size);
-}
 
 void LoadPalette(const void *src, u32 offset, u32 size)
 {

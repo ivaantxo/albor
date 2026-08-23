@@ -83,22 +83,12 @@ void LoadCompressedSpriteSheetOverrideBuffer(const struct CompressedSpriteSheet 
     LoadSpriteSheet(&dest);
 }
 
-void LoadCompressedSpritePalette(const struct CompressedSpritePalette *src)
+
+void LoadSpritePaletteWithTag(const u16 *pal, u16 tag)
 {
     struct SpritePalette dest;
 
-    LZ77UnCompWram(src->data, gDecompressionBuffer);
-    dest.data = (void *) gDecompressionBuffer;
-    dest.tag = src->tag;
-    LoadSpritePalette(&dest);
-}
-
-void LoadCompressedSpritePaletteWithTag(const u32 *pal, u16 tag)
-{
-    struct SpritePalette dest;
-
-    LZ77UnCompWram(pal, gDecompressionBuffer);
-    dest.data = (void *) gDecompressionBuffer;
+    dest.data = pal;
     dest.tag = tag;
     LoadSpritePalette(&dest);
 }
@@ -107,25 +97,15 @@ void LoadCompressedSpritePaletteWithTag(const u32 *pal, u16 tag)
 // por etiqueta: LoadUniqueSpritePalette siempre ocupa un slot libre nuevo, asi que
 // puede haber varios slots con la misma etiqueta (dos Pokemon de la misma especie
 // con personalidades distintas) e IndexOfSpritePaletteTag devolveria el primero.
-u32 LoadCompressedSpritePaletteWithTagHueShifted(const u32 *pal, u16 tag, u32 personality)
+u32 LoadSpritePaletteWithTagHueShifted(const u16 *pal, u16 tag, u32 personality)
 {
     struct SpritePalette dest;
 
-    LZ77UnCompWram(pal, gDecompressionBuffer);
-    dest.data = (void *) gDecompressionBuffer;
+    dest.data = pal;
     dest.tag = tag;
     return LoadUniqueSpritePalette(&dest, personality);
 }
 
-void LoadCompressedSpritePaletteOverrideBuffer(const struct CompressedSpritePalette *src, void *buffer)
-{
-    struct SpritePalette dest;
-
-    LZ77UnCompWram(src->data, buffer);
-    dest.data = buffer;
-    dest.tag = src->tag;
-    LoadSpritePalette(&dest);
-}
 
 void DecompressPicFromTable(const struct CompressedSpriteSheet *src, void *buffer)
 {
@@ -182,47 +162,27 @@ void LoadCompressedSpriteSheetUsingHeap(const struct CompressedSpriteSheet *src)
     Free(buffer);
 }
 
-void LoadCompressedSpritePaletteUsingHeap(const struct CompressedSpritePalette *src)
-{
-    struct SpritePalette dest;
-    void *buffer;
 
-    buffer = AllocZeroed(src->data[0] >> 8);
-    LZ77UnCompWram(src->data, buffer);
-    dest.data = buffer;
-    dest.tag = src->tag;
-
-    LoadSpritePalette(&dest);
-    Free(buffer);
-}
-
-void LoadCompressedEggSpritePalette(const struct CompressedSpritePalette *src1, const struct CompressedSpritePalette *src2)
+void LoadCompressedEggSpritePalette(const struct SpritePalette *src1, const struct SpritePalette *src2)
 {
     struct SpritePalette dest1, dest2;
-    u8 *buffer = gDecompressionBuffer;
-
-    LZ77UnCompWram(src1->data, buffer);
-    dest1.data = (void*) buffer;
+    dest1.data = src1->data;
     dest1.tag = src1->tag;
 
-    LZ77UnCompWram(src2->data, buffer + PLTT_SIZE_4BPP / 2);
-    dest2.data = (void*) (buffer + PLTT_SIZE_4BPP / 2);
+    dest2.data = src2->data;
     dest2.tag = src2->tag;
 
     LoadEggSpritePalette(&dest1, &dest2);
 }
 
-void LoadCompressedEggHatchSpritePalette(const struct CompressedSpritePalette *src1, const struct CompressedSpritePalette *src2)
+void LoadCompressedEggHatchSpritePalette(const struct SpritePalette *src1, const struct SpritePalette *src2)
 {
     struct SpritePalette dest1, dest2;
-    u8 *buffer = gDecompressionBuffer;
 
-    LZ77UnCompWram(src1->data, buffer);
-    dest1.data = (void*) buffer;
+    dest1.data = src1->data;
     dest1.tag = 54321;
 
-    LZ77UnCompWram(src2->data, buffer + PLTT_SIZE_4BPP / 2);
-    dest2.data = (void*) (buffer + PLTT_SIZE_4BPP / 2);
+    dest2.data = src2->data;
     dest2.tag = src2->tag;
 
     LoadEggSpritePalette(&dest1, &dest2);
@@ -241,14 +201,9 @@ void LoadCompressedSpriteSheetAndPaletteUsingHeap(const struct CompressedSpriteS
     LoadSpriteSheet(&sheetDest);
     Free(sheetBuffer);
 
-    struct SpritePalette palDest;
-    void *palBuffer = AllocZeroed(PLTT_SIZE_4BPP * sizeof(u32)); // CAMBIAR CUANDO PALETAS DESCOMPRIMIDAS
-
-    LZ77UnCompWram(src->palette, palBuffer);
-
-    palDest.data = palBuffer;
-    palDest.tag  = src->tag;
+    // La paleta ya no se descomprime: va cruda en la ROM. Se acabaron la reserva de
+    // heap, la descompresion LZ y la copia intermedia; se carga tal cual.
+    struct SpritePalette palDest = { src->palette, src->tag };
 
     LoadSpritePalette(&palDest);
-    Free(palBuffer);
 }

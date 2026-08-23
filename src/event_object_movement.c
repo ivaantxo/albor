@@ -1413,10 +1413,10 @@ static u32 CargaPaletaFollowerDesdePlantilla(u16 graphicsId, struct SpriteTempla
 static u32 CargaPaletaFollower(u32 especie, bool32 shiny, bool32 hembra, u32 personalidad)
 {
     u32 numeroPaleta;
-    const u32 *paleta = GetMonSpritePalFromSpecies(especie, shiny, hembra);
+    const u16 *paleta = GetMonSpritePalFromSpecies(especie, shiny, hembra);
 
     // Usar el slot que devuelve la carga, no re-buscarlo por etiqueta.
-    numeroPaleta = LoadCompressedSpritePaletteWithTagHueShifted(paleta, especie, personalidad);
+    numeroPaleta = LoadSpritePaletteWithTagHueShifted(paleta, especie, personalidad);
     if (numeroPaleta == PALETA_NO_DISPONIBLE)
         return PALETA_NO_DISPONIBLE;
     UpdateSpritePaletteWithWeather(numeroPaleta, FALSE);

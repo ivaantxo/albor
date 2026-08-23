@@ -25,7 +25,7 @@ struct Item
     u8 type;
     u8 battleUsage;
     const u32 *iconPic;
-    const u32 *iconPalette;
+    const u16 *iconPalette;
 };
 
 struct BagPocket

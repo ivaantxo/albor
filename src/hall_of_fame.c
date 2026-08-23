@@ -150,7 +150,7 @@ static const struct CompressedSpriteSheet sSpriteSheet_Confetti[] =
     {},
 };
 
-static const struct CompressedSpritePalette sSpritePalette_Confetti[] =
+static const struct SpritePalette sSpritePalette_Confetti[] =
 {
     {.data = gConfetti_Pal, .tag = TAG_CONFETTI},
     {},
@@ -1191,7 +1191,7 @@ static void LoadHofGfx(void)
     FreeAllSpritePalettes();
     gReservedSpritePaletteCount = 8;
     LoadCompressedSpriteSheet(sSpriteSheet_Confetti);
-    LoadCompressedSpritePalette(sSpritePalette_Confetti);
+    LoadSpritePalette(sSpritePalette_Confetti);
 }
 
 static void InitHofBgs(void)

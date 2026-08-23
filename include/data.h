@@ -31,7 +31,7 @@ struct TrainerSprite
 {
     u8 y_offset;
     struct CompressedSpriteSheet frontPic;
-    struct CompressedSpritePalette palette;
+    struct SpritePalette palette;
     const union AnimCmd *const *const animation;
     const struct Coords16 mugshotCoords;
     s16 mugshotRotation;
@@ -41,7 +41,7 @@ struct TrainerBacksprite
 {
     struct MonCoords coordinates;
     struct CompressedSpriteSheet backPic;
-    struct CompressedSpritePalette palette;
+    struct SpritePalette palette;
     const union AnimCmd *const *const animation;
 };
 
@@ -108,15 +108,15 @@ struct Tipos
 {
     u8 name[TYPE_NAME_LENGTH + 1];
     u8 palette;
-    const u32 *const paletteTMHM;
+    const u16 *const paletteTMHM;
     //u16 enhanceItem;
     //u16 berry;
     //u16 gem;
 };
 
 // Egg palette tables
-extern const struct CompressedSpritePalette gEgg1PaletteTable[];
-extern const struct CompressedSpritePalette gEgg2PaletteTable[];
+extern const struct SpritePalette gEgg1PaletteTable[];
+extern const struct SpritePalette gEgg2PaletteTable[];
 
 extern const struct SpriteFrameImage gBattlerPicTable_PlayerLeft[];
 extern const struct SpriteFrameImage gBattlerPicTable_OpponentLeft[];

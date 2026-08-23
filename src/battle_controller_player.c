@@ -234,19 +234,19 @@ static void HandleInputChooseAction(u32 battler)
         {
             PlaySE(SE_SELECT);
             gActionSelectionCursor[battler] -= 1;
-            LoadCompressedPalette(gBattleActionsPalFight, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
+            LoadPalette(gBattleActionsPalFight, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
         }
         else if (gActionSelectionCursor[battler] & 2)// De Huir a Pokémon
         {
             PlaySE(SE_SELECT);
             gActionSelectionCursor[battler] -= 1;
-            LoadCompressedPalette(gBattleActionsPalPokemon, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
+            LoadPalette(gBattleActionsPalPokemon, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
         }
         else // De Luchar a Huir
         {
             PlaySE(SE_SELECT);
             gActionSelectionCursor[battler] += 2;
-            LoadCompressedPalette(gBattleActionsPalRun, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
+            LoadPalette(gBattleActionsPalRun, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
         }
     }
     else if (JOY_NEW(DPAD_RIGHT))
@@ -255,19 +255,19 @@ static void HandleInputChooseAction(u32 battler)
         {
             PlaySE(SE_SELECT);
             gActionSelectionCursor[battler] -= 2;
-            LoadCompressedPalette(gBattleActionsPalFight, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
+            LoadPalette(gBattleActionsPalFight, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
         }
         else if (gActionSelectionCursor[battler] & 1) // De Pokémon a Huir
         {
             PlaySE(SE_SELECT);
             gActionSelectionCursor[battler] += 1;
-            LoadCompressedPalette(gBattleActionsPalRun, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
+            LoadPalette(gBattleActionsPalRun, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
         }
         else // De Luchar a Pokémon
         {
             PlaySE(SE_SELECT);
             gActionSelectionCursor[battler] += 1;
-            LoadCompressedPalette(gBattleActionsPalPokemon, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
+            LoadPalette(gBattleActionsPalPokemon, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
         }
     }
     else if (JOY_NEW(B_BUTTON))
@@ -288,7 +288,7 @@ static void HandleInputChooseAction(u32 battler)
             {
                 PlaySE(SE_SELECT);
                 gActionSelectionCursor[battler] = 2;
-                LoadCompressedPalette(gBattleActionsPalRun, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
+                LoadPalette(gBattleActionsPalRun, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
             }
         }
     }
@@ -1222,7 +1222,7 @@ static const u8 sMoveTypeToOamPaletteNum[NUMERO_TIPOS] =
 
 static void CargaPaletaTipo(u32 tipo, u32 paletteId)
 {
-    static const u32 *const sPaletasPorTipo[] =
+    static const u16 *const sPaletasPorTipo[] =
     {
         [TIPO_BICHO]     = gMoveTypePalBug,
         [TIPO_SINIESTRO] = gMoveTypePalDark,
@@ -1243,7 +1243,7 @@ static void CargaPaletaTipo(u32 tipo, u32 paletteId)
         [TIPO_ACERO]     = gMoveTypePalSteel,
         [TIPO_AGUA]      = gMoveTypePalWater,
     };
-    LoadCompressedPalette(sPaletasPorTipo[tipo], BG_PLTT_ID(paletteId), PLTT_SIZE_4BPP);
+    LoadPalette(sPaletasPorTipo[tipo], BG_PLTT_ID(paletteId), PLTT_SIZE_4BPP);
 }
 
 void LoadPalettesTypes(u32 combatiente)
@@ -1256,7 +1256,7 @@ void LoadPalettesTypes(u32 combatiente)
 
 // Los cuatro iconos comparten una sola hoja de tiles, asi que hay que soltarla
 // UNA vez y no una por sprite. Sus paletas se cargan a mano con
-// LoadCompressedPalette, no por el repartidor de paletas de sprites, asi que
+// LoadPalette, no por el repartidor de paletas de sprites, asi que
 // tampoco hay que liberarlas: DestroySpriteAndFreeResources lo intentaba igual.
 static void DestruyeIconosTipo(void)
 {
@@ -1326,7 +1326,7 @@ static void AseguraIconosTipo(u32 battler)
 
     LoadPalettesTypes(battler);
     LoadCompressedSpriteSheet(&sSpriteSheet_IconTypes);
-    LoadCompressedPalette(gIconTypes_Pal, OBJ_PLTT_ID(13), 3 * PLTT_SIZE_4BPP);
+    LoadPalette(gIconTypes_Pal, OBJ_PLTT_ID(13), 3 * PLTT_SIZE_4BPP);
 
     for (u32 i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {
@@ -1573,7 +1573,7 @@ void PlayerHandleExpUpdate(u32 battler)
 
 void PlayerHandleIntroTrainerBallThrow(u32 battler)
 {
-    const u32 *trainerPal = gTrainerBacksprites[gSaveBlockPtr->playerGender].palette.data;
+    const u16 *trainerPal = gTrainerBacksprites[gSaveBlockPtr->playerGender].palette.data;
     BtlController_HandleIntroTrainerBallThrow(battler, 0xD6F8, trainerPal, 31, Intro_TryShinyAnimShowHealthbox);
 }
 
