@@ -2,6 +2,7 @@
 #include "sombra_pokemon.h"
 #include "depuracion_mgba.h"
 #include "battle.h"
+#include "pic_combate.h"
 #include "battle_controllers.h"
 #include "battle_ai_main.h"
 #include "battle_anim.h"
@@ -292,6 +293,25 @@ bool8 IsBattleSEPlaying(u8 battler)
     return TRUE;
 }
 
+
+// Deja los dos fotogramas del combatiente apuntando al sitio correcto dentro de su
+// hueco, con el tamano que le toca a esta especie, y recoloca los tiles si el pic es
+// de los grandes. Hay que hacerlo aqui y no al reservar: hasta que no se sabe que
+// Pokemon entra no se sabe cuanto ocupa.
+static void AjustaFotogramasPic(u32 posicion, u32 especie, u32 personalidad, bool32 esFront)
+{
+    u32 bytes = BytesPicCombate(especie, personalidad, esFront);
+
+    if (bytes == PIC_GRANDE_BYTES)
+        ReordenaPicGrande(gMonSpritesGfxPtr->spritesGfx[posicion], NUMERO_FRAMES_POKEMON);
+
+    for (u32 fotograma = 0; fotograma < NUMERO_FRAMES_POKEMON; fotograma++)
+    {
+        gMonSpritesGfxPtr->frameImages[posicion][fotograma].data = gMonSpritesGfxPtr->spritesGfx[posicion] + (fotograma * bytes);
+        gMonSpritesGfxPtr->frameImages[posicion][fotograma].size = bytes;
+    }
+}
+
 void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
 {
     u32 monsPersonality, currentPersonality, isShiny, species, paletteOffset, position;
@@ -315,12 +335,14 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
         HandleLoadSpecialPokePic(TRUE,
                                  gMonSpritesGfxPtr->spritesGfx[position],
                                  species, currentPersonality);
+        AjustaFotogramasPic(position, species, currentPersonality, TRUE);
     }
     else
     {
         HandleLoadSpecialPokePic(FALSE,
                                  gMonSpritesGfxPtr->spritesGfx[position],
                                  species, currentPersonality);
+        AjustaFotogramasPic(position, species, currentPersonality, FALSE);
     }
 
     paletteOffset = OBJ_PLTT_ID(battler);
@@ -804,17 +826,19 @@ void AllocateMonSpritesGfx(void)
 {
     gMonSpritesGfxPtr = NULL;
     gMonSpritesGfxPtr = AllocZeroed(sizeof(*gMonSpritesGfxPtr));
-    gMonSpritesGfxPtr->firstDecompressed = AllocZeroed(MON_PIC_SIZE * NUMERO_FRAMES_POKEMON * NUMERO_COMBATIENTES);
+    gMonSpritesGfxPtr->firstDecompressed = AllocZeroed(MAX_PIC_BYTES * NUMERO_FRAMES_POKEMON * NUMERO_COMBATIENTES);
 
     for (u32 indiceCombatiente = 0; indiceCombatiente < NUMERO_COMBATIENTES; indiceCombatiente++)
     {
-        gMonSpritesGfxPtr->spritesGfx[indiceCombatiente] = gMonSpritesGfxPtr->firstDecompressed + (indiceCombatiente * MON_PIC_SIZE * NUMERO_FRAMES_POKEMON);
+        gMonSpritesGfxPtr->spritesGfx[indiceCombatiente] = gMonSpritesGfxPtr->firstDecompressed + (indiceCombatiente * MAX_PIC_BYTES * NUMERO_FRAMES_POKEMON);
         gMonSpritesGfxPtr->templates[indiceCombatiente] = gBattlerSpriteTemplates[indiceCombatiente];
 
         for (u32 frameCombatiente = 0; frameCombatiente < NUMERO_FRAMES_POKEMON; frameCombatiente++)
         {
             if (gMonSpritesGfxPtr->spritesGfx[indiceCombatiente])
             {
+                // Provisional: AjustaFotogramasPic lo recoloca al cargar cada Pokemon,
+                // que es cuando se sabe cuanto ocupa su pic.
                 gMonSpritesGfxPtr->frameImages[indiceCombatiente][frameCombatiente].data = gMonSpritesGfxPtr->spritesGfx[indiceCombatiente] + (frameCombatiente * MON_PIC_SIZE);
                 gMonSpritesGfxPtr->frameImages[indiceCombatiente][frameCombatiente].size = MON_PIC_SIZE;
             }

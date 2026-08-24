@@ -6,6 +6,7 @@
 #include "battle_anim.h"
 #include "battle_bg.h"
 #include "battle_controllers.h"
+#include "pic_combate.h"
 #include "laboratorio_animaciones.h"
 #include "battle_gfx_sfx_util.h"
 #include "battle_interface.h"
@@ -932,6 +933,7 @@ void StartSendOutAnim(u32 battler, bool32 dontClearSubstituteBit, bool32 doSlide
                                         GetBattlerSpriteCoord(battler, BATTLER_COORD_X_2),
                                         GetBattlerSpriteDefault_Y(battler),
                                         GetBattlerSpriteSubpriority(battler));
+AplicaSubspritesPic(gBattlerSpriteIds[battler]);
 
     gSprites[gBattlerSpriteIds[battler]].data[0] = battler;
     gSprites[gBattlerSpriteIds[battler]].data[2] = species;
@@ -1211,6 +1213,7 @@ void BtlController_HandleLoadMonSprite(u32 battler, void (*controllerCallback)(u
                                                GetBattlerSpriteCoord(battler, BATTLER_COORD_X_2),
                                                GetBattlerSpriteDefault_Y(battler),
                                                GetBattlerSpriteSubpriority(battler));
+AplicaSubspritesPic(gBattlerSpriteIds[battler]);
 
     gSprites[gBattlerSpriteIds[battler]].x2 = -ANCHO_PANTALLA;
     gSprites[gBattlerSpriteIds[battler]].data[0] = battler;
@@ -1266,6 +1269,7 @@ void BtlController_HandleDrawTrainerPic(u32 battler, u32 trainerPicId, bool32 is
                                                    xPos,
                                                    yPos,
                                                    subpriority);
+AplicaSubspritesPic(gBattlerSpriteIds[battler]);
 
         gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = IndexOfSpritePaletteTag(gTrainerSprites[trainerPicId].palette.tag);
         gSprites[gBattlerSpriteIds[battler]].x2 = -ANCHO_PANTALLA;
@@ -1285,6 +1289,7 @@ void BtlController_HandleDrawTrainerPic(u32 battler, u32 trainerPicId, bool32 is
                                                              xPos,
                                                              yPos,
                                                              subpriority);
+AplicaSubspritesPic(gBattlerSpriteIds[battler]);
 
             gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = IndexOfSpritePaletteTag(gTrainerSprites[trainerPicId].palette.tag);
             gSprites[gBattlerSpriteIds[battler]].oam.affineMode = ST_OAM_AFFINE_OFF;
@@ -1301,6 +1306,7 @@ void BtlController_HandleDrawTrainerPic(u32 battler, u32 trainerPicId, bool32 is
                                                              xPos,
                                                              yPos,
                                                              subpriority);
+AplicaSubspritesPic(gBattlerSpriteIds[battler]);
 
             gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = battler;
         }
@@ -1322,6 +1328,7 @@ void BtlController_HandleTrainerSlide(u32 battler, u32 trainerPicId)
                                                          80,
                                                          (8 - gTrainerBacksprites[trainerPicId].coordinates.size) * 4 + 80,
                                                          30);
+AplicaSubspritesPic(gBattlerSpriteIds[battler]);
         gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = battler;
         gSprites[gBattlerSpriteIds[battler]].x2 = -96;
         gSprites[gBattlerSpriteIds[battler]].sSpeedX = 2;
@@ -1331,6 +1338,7 @@ void BtlController_HandleTrainerSlide(u32 battler, u32 trainerPicId)
         DecompressTrainerFrontPic(trainerPicId, battler);
         SetMultiuseSpriteTemplateToTrainer(trainerPicId, battler);
         gBattlerSpriteIds[battler] = CreateSprite(&gMultiuseSpriteTemplate, 176, 40, 30);
+AplicaSubspritesPic(gBattlerSpriteIds[battler]);
         gSprites[gBattlerSpriteIds[battler]].oam.affineParam = trainerPicId;
         gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = IndexOfSpritePaletteTag(gTrainerSprites[trainerPicId].palette.tag);
         gSprites[gBattlerSpriteIds[battler]].x2 = 96;

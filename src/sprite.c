@@ -1664,13 +1664,45 @@ bool8 AddSubspritesToOamBuffer(struct Sprite *sprite, struct OamData *destOam, u
         u8 hFlip;
         u8 vFlip;
         u32 i;
+        // Matriz inversa, en 8.8. Con la identidad las cuentas de abajo dan justo el
+        // mismo resultado que el camino sin afin, asi que no hace falta separarlos.
+        u32 esAfin = (oam->affineMode & ST_OAM_AFFINE_ON_MASK) != 0;
+        s32 invA = 0x100, invB = 0, invC = 0, invD = 0x100;
 
         tileNum = oam->tileNum;
         subspriteCount = subspriteTable->subspriteCount;
-        hFlip = ((s32)oam->matrixNum >> 3) & 1;
-        vFlip = ((s32)oam->matrixNum >> 4) & 1;
         baseX = oam->x - sprite->centerToCornerVecX;
         baseY = oam->y - sprite->centerToCornerVecY;
+
+        if (esAfin)
+        {
+            // Cuando el sprite es afin, matrixNum es el indice de matriz y NO dos
+            // bits de volteo: leerlo como flips daria la vuelta a las piezas al azar
+            // segun que matriz tocara.
+            struct OamMatrix *m = &gOamMatrices[oam->matrixNum];
+            s32 det = ((s32)m->a * m->d - (s32)m->b * m->c) >> 8;
+
+            hFlip = FALSE;
+            vFlip = FALSE;
+
+            // Cada pieza se transforma alrededor de SU propio centro, no del centro
+            // del conjunto. Si se dejan en su sitio de textura, en cuanto la escala
+            // deja de ser 1 el sprite se abre por las costuras. Pasando el
+            // desplazamiento de cada pieza por la inversa, las piezas se separan o
+            // juntan al mismo ritmo que se escalan y el conjunto queda cosido.
+            if (det != 0)
+            {
+                invA =  ((s32)m->d << 8) / det;
+                invB = -((s32)m->b << 8) / det;
+                invC = -((s32)m->c << 8) / det;
+                invD =  ((s32)m->a << 8) / det;
+            }
+        }
+        else
+        {
+            hFlip = ((s32)oam->matrixNum >> 3) & 1;
+            vFlip = ((s32)oam->matrixNum >> 4) & 1;
+        }
 
         for (i = 0; i < subspriteCount; i++, (*oamIndex)++)
         {
@@ -1704,9 +1736,29 @@ bool8 AddSubspritesToOamBuffer(struct Sprite *sprite, struct OamData *destOam, u
             destOam[i] = *oam;
             destOam[i].shape = subspriteTable->subsprites[i].shape;
             destOam[i].size = subspriteTable->subsprites[i].size;
-            destOam[i].x = (s16)baseX + (s16)x;
-            destOam[i].y = baseY + y;
             destOam[i].tileNum = tileNum + subspriteTable->subsprites[i].tileOffset;
+
+            {
+                s32 anchoPieza = sOamDimensions[subspriteTable->subsprites[i].shape][subspriteTable->subsprites[i].size].width;
+                s32 altoPieza = sOamDimensions[subspriteTable->subsprites[i].shape][subspriteTable->subsprites[i].size].height;
+                // Del centro de la caja a la esquina que guarda el OAM. Con
+                // ST_OAM_AFFINE_DOUBLE la caja mide el doble, asi que la distancia es
+                // una pieza entera y no media. Si se usara siempre la mitad, cada
+                // pieza se desplazaria segun su propio tamano y el sprite se
+                // desmontaria en cuanto empezara la animacion.
+                s32 mitadAncho = (oam->affineMode & ST_OAM_AFFINE_DOUBLE_MASK) ? anchoPieza : anchoPieza / 2;
+                s32 mitadAlto = (oam->affineMode & ST_OAM_AFFINE_DOUBLE_MASK) ? altoPieza : altoPieza / 2;
+                // El centro de la pieza en textura, que es lo que hay que transformar.
+                s32 cx = (s16)x + anchoPieza / 2;
+                s32 cy = (s16)y + altoPieza / 2;
+                // Redondeo al mas cercano, no truncado: el error de colocacion baja
+                // de un pixel entero a medio, y las costuras se notan la mitad.
+                s32 px = (invA * cx + invB * cy + 128) >> 8;
+                s32 py = (invC * cx + invD * cy + 128) >> 8;
+
+                destOam[i].x = (s16)baseX + px - mitadAncho;
+                destOam[i].y = baseY + py - mitadAlto;
+            }
 
             if (sprite->subspriteMode < SUBSPRITES_IGNORE_PRIORITY)
                 destOam[i].priority = subspriteTable->subsprites[i].priority;
