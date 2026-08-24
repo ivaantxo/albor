@@ -5,15 +5,6 @@ static const union AnimCmd sAnim_##name[] =     \
     ANIMCMD_END,                                \
 }
 
-#define PLACEHOLDER_ANIM_TWO_FRAMES(name)       \
-static const union AnimCmd sAnim_##name[] =     \
-{                                               \
-    ANIMCMD_FRAME(0, 30),                       \
-    ANIMCMD_FRAME(1, 30),                       \
-    ANIMCMD_FRAME(0, 1),                        \
-    ANIMCMD_END,                                \
-}
-
 static const union AnimCmd sAnim_None[] =
 {
     ANIMCMD_FRAME(0, 30),
@@ -25,10 +16,18 @@ static const union AnimCmd sAnim_None[] =
 // Bulbasaur, de prueba: bucle continuo de cuatro fotogramas, como Venusaur.
 static const union AnimCmd sAnim_Bulbasaur[] =
 {
-    ANIMCMD_FRAME(0, 10),
-    ANIMCMD_FRAME(1, 10),
-    ANIMCMD_FRAME(2, 10),
-    ANIMCMD_FRAME(3, 10),
+    ANIMCMD_FRAME(0, 20),
+    ANIMCMD_FRAME(1, 20),
+    ANIMCMD_FRAME(0, 20),
+    ANIMCMD_FRAME(1, 20),
+    ANIMCMD_FRAME(0, 20),
+    ANIMCMD_FRAME(1, 20),
+    ANIMCMD_FRAME(0, 20),
+    ANIMCMD_FRAME(1, 20),
+    ANIMCMD_FRAME(0, 20),
+    ANIMCMD_FRAME(1, 20),
+    ANIMCMD_FRAME(2, 20),
+    ANIMCMD_FRAME(3, 20),
     ANIMCMD_JUMP(0),
 };
 
