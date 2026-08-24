@@ -146,7 +146,7 @@ void BeginNormalPaletteFade(u32 selectedPalettes, s32 delay, u32 startY, u32 tar
 // Like normal palette fade but respects sprite/tile palettes immune to time of day fading
 bool32 BeginTimeOfDayPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targetY, struct ConfiguracionBlend *bld0, struct ConfiguracionBlend *bld1, u16 weight, u32 color)
 {
-    u8 temp;
+    u32 temp;
 
     if (gFundidoPaletas.activo)
     {
@@ -873,7 +873,7 @@ void BlendPalettesUnfaded(u32 selectedPalettes, u8 coeff, u32 color)
 // One call is used to fade the bg from white, while another fades the duo from black
 void BlendPalettesGradually(u32 selectedPalettes, s8 delay, u8 coeff, u8 coeffTarget, u16 color, u8 priority, u8 id)
 {
-    u8 taskId;
+    u32 taskId;
 
     taskId = CreateTask((void *)Task_BlendPalettesGradually, priority);
     gTasks[taskId].tCoeff = coeff;
@@ -903,7 +903,7 @@ static void Task_BlendPalettesGradually(u8 taskId)
 {
     u32 palettes;
     s16 *data;
-    s16 target;
+    s32 target;
 
     data = gTasks[taskId].data;
     palettes = GetWordTaskArg(taskId, tPalettes);

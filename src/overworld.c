@@ -489,13 +489,6 @@ void SetWarpDestinationToDynamicWarp(u8 unusedWarpId)
     sWarpDestination = gSaveBlockPtr->dynamicWarp;
 }
 
-void SetWarpDestinationToHealLocation(u8 healLocationId)
-{
-    const struct HealLocation *healLocation = GetHealLocation(healLocationId);
-    if (healLocation)
-        SetWarpDestination(healLocation->mapGroup, healLocation->mapNum, WARP_ID_NONE, healLocation->x, healLocation->y);
-}
-
 void SetWarpDestinationToLastHealLocation(void)
 {
     sWarpDestination = gSaveBlockPtr->lastHealLocation;
@@ -552,18 +545,6 @@ void SetWarpDestinationToFixedHoleWarp(s16 x, s16 y)
 static void SetWarpDestinationToContinueGameWarp(void)
 {
     sWarpDestination = gSaveBlockPtr->continueGameWarp;
-}
-
-void SetContinueGameWarp(s8 mapGroup, s8 mapNum, s8 warpId, s8 x, s8 y)
-{
-    SetWarpData(&gSaveBlockPtr->continueGameWarp, mapGroup, mapNum, warpId, x, y);
-}
-
-void SetContinueGameWarpToHealLocation(u8 healLocationId)
-{
-    const struct HealLocation *healLocation = GetHealLocation(healLocationId);
-    if (healLocation)
-        SetWarpData(&gSaveBlockPtr->continueGameWarp, healLocation->mapGroup, healLocation->mapNum, WARP_ID_NONE, healLocation->x, healLocation->y);
 }
 
 void SetContinueGameWarpToDynamicWarp(int unused)
@@ -834,11 +815,6 @@ u16 GetWarpDestinationMusic(void)
     return music;
 }
 
-void Overworld_ResetMapMusic(void)
-{
-    ResetMapMusic();
-}
-
 void Overworld_PlaySpecialMapMusic(void)
 {
     u16 music = GetCurrLocationDefaultMusic();
@@ -992,11 +968,6 @@ bool8 IsMapTypeIndoors(u8 mapType)
         return TRUE;
     else
         return FALSE;
-}
-
-u8 GetSavedWarpRegionMapSectionId(void)
-{
-    return Overworld_GetMapHeaderByGroupAndId(gSaveBlockPtr->dynamicWarp.mapGroup, gSaveBlockPtr->dynamicWarp.mapNum)->regionMapSectionId;
 }
 
 u8 GetCurrentRegionMapSectionId(void)
@@ -1370,17 +1341,6 @@ static void CB2_LoadMap2(void)
     SetMainCallback2(CB2_Overworld);
 }
 
-void CB2_ReturnToFieldContestHall(void)
-{
-    if (!gMain.state)
-    {
-        FieldClearVBlankHBlankCallbacks();
-        ScriptContext_Init();
-        UnlockPlayerFieldControls();
-        SetMainCallback1(NULL);
-    }
-}
-
 void CB2_ReturnToField(void)
 {
     FieldClearVBlankHBlankCallbacks();
@@ -1418,13 +1378,6 @@ void CB2_ReturnToFieldContinueScriptPlayMapMusic(void)
 {
     FieldClearVBlankHBlankCallbacks();
     gFieldCallback = FieldCB_ContinueScriptHandleMusic;
-    CB2_ReturnToField();
-}
-
-void CB2_ReturnToFieldFadeFromBlack(void)
-{
-    FieldClearVBlankHBlankCallbacks();
-    gFieldCallback = FieldCB_WarpExitFadeFromBlack;
     CB2_ReturnToField();
 }
 

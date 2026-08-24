@@ -13,7 +13,6 @@
 #include "international_string_util.h"
 #include "main.h"
 #include "main_menu.h"
-#include "depuracion_mgba.h"
 #include "menu.h"
 #include "list_menu.h"
 #include "naming_screen.h"
@@ -575,7 +574,6 @@ static u32 InitMainMenu(bool8 returningFromOptionsMenu)
     ChangeBgX(1, 0, BG_COORD_SET);
     ChangeBgY(1, 0, BG_COORD_SET);
     InitWindows(sWindowTemplates_MainMenu);
-    LOG("MENU ventanas: buffer w0/w2", (u32)gWindows[0].tileData, (u32)gWindows[2].tileData);
     DeactivateAllTextPrinters();
     LoadMainMenuWindowFrameTiles(0, MAIN_MENU_BORDER_TILE);
 
@@ -610,12 +608,6 @@ static void Task_MainMenuCheckSaveFile(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
 
-    {
-        static u32 tics = 0;
-        if (tics < 3 || (tics % 120) == 0)
-            LOG("MENU comprueba guardado activo/estado", gFundidoPaletas.activo, gSaveFileStatus);
-        tics++;
-    }
     if (!gFundidoPaletas.activo)
     {
         SetGpuReg(REG_OFFSET_WIN0H, 0);
@@ -691,7 +683,6 @@ static void Task_MainMenuCheckBattery(u8 taskId)
         SetGpuReg(REG_OFFSET_BLDALPHA, 0);
         SetGpuReg(REG_OFFSET_BLDY, 7);
 
-        LOG("MENU pasa a dibujar", 0, 0);
         gTasks[taskId].func = Task_DisplayMainMenu;
     }
 }
@@ -769,9 +760,6 @@ static void Task_DisplayMainMenu(u8 taskId)
                 DrawMainMenuWindowBorder(&sWindowTemplates_MainMenu[4], MAIN_MENU_BORDER_TILE);
                 break;
         }
-        LOG("MENU dibujado, tipo", gTasks[taskId].tMenuType, 0);
-        LOG("MENU pal15 blanco / pal2 col1", gPlttBufferFaded[BG_PLTT_ID(15) + 10], gPlttBufferFaded[BG_PLTT_ID(2) + 1]);
-        LOG("MENU pal0 col1 (azul de fondo)", gPlttBufferFaded[BG_PLTT_ID(0) + 1], gPlttBufferFaded[BG_PLTT_ID(15) + 14]);
         gTasks[taskId].func = Task_HighlightSelectedMainMenuItem;
     }
 }

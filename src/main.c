@@ -19,6 +19,8 @@
 #include "text.h"
 #include "intro.h"
 #include "main.h"
+#include "malloc.h"
+#include "depuracion_mgba.h"
 #include "constants/rgb.h"
 
 static void VBlankIntr(void);
@@ -96,6 +98,22 @@ void AgbMainLoop(void)
 {
     for (;;)
     {
+#if DEPURACION_MGBA
+        // Vigilante del monton: si la lista de bloques se corrompe, AllocInternal se
+        // queda dando vueltas para siempre y la pantalla se congela. Esto lo caza en
+        // el fotograma en que ocurre, no cuando ya es tarde.
+        {
+            static u32 tics = 0;
+            static bool32 avisado = FALSE;
+
+            tics++;
+            if (!avisado && (tics & 15) == 0 && !CheckHeap())
+            {
+                LOG("MONTON CORRUPTO en el fotograma", tics, (u32)gMain.callback2);
+                avisado = TRUE;
+            }
+        }
+#endif
         ReadKeys();
         CallCallbacks();
         PlayTimeCounter_Update();
@@ -136,7 +154,7 @@ void StartTimer1(void)
 
 void EnableVCountIntrAtLine150(void)
 {
-    u16 gpuReg = (GetGpuReg(REG_OFFSET_DISPSTAT) & 0xFF) | (150 << 8);
+    u32 gpuReg = (GetGpuReg(REG_OFFSET_DISPSTAT) & 0xFF) | (150 << 8);
     SetGpuReg(REG_OFFSET_DISPSTAT, gpuReg | DISPSTAT_VCOUNT_INTR);
     EnableInterrupts(INTR_FLAG_VCOUNT);
 }
@@ -155,7 +173,7 @@ void InitKeys(void)
 
 static void ReadKeys(void)
 {
-    u16 keyInput = REG_KEYINPUT ^ KEYS_MASK;
+    u32 keyInput = REG_KEYINPUT ^ KEYS_MASK;
     gMain.newKeysRaw = keyInput & ~gMain.heldKeysRaw;
     gMain.newKeys = gMain.newKeysRaw;
     gMain.newAndRepeatedKeys = gMain.newKeysRaw;
@@ -225,11 +243,6 @@ void SetVBlankCallback(IntrCallback callback)
 void SetHBlankCallback(IntrCallback callback)
 {
     gMain.hblankCallback = callback;
-}
-
-void SetVCountCallback(IntrCallback callback)
-{
-    gMain.vcountCallback = callback;
 }
 
 void SetSerialCallback(IntrCallback callback)

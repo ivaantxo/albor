@@ -50,6 +50,7 @@ extern u8 gHeap[HEAP_SIZE];
 void *Alloc_(u32 size, const char *location);
 void *AllocZeroed_(u32 size, const char *location);
 void Free(void *pointer);
+bool32 CheckHeap(void);
 void InitHeap(void);
 
 const struct MemBlock *HeapHead(void);

@@ -474,13 +474,13 @@ u32 GetBgAttribute(u32 bg, u32 attributeId)
     }
 }
 
-s32 ChangeBgX(u32 bg, s32 value, u32 op)
+void ChangeBgX(u32 bg, s32 value, u32 op)
 {
     u32 mode, temp1, temp2;
 
     if (IsInvalidBg(bg) || !GetBgControlAttribute(bg, BG_CTRL_ATTR_VISIBLE))
     {
-        return -1;
+        return;
     }
 
     switch (op)
@@ -539,26 +539,15 @@ s32 ChangeBgX(u32 bg, s32 value, u32 op)
         break;
     }
 
-    return sGpuBgConfigs2[bg].bg_x;
 }
 
-s32 GetBgX(u32 bg)
-{
-    if (IsInvalidBg(bg))
-        return -1;
-    else if (!GetBgControlAttribute(bg, BG_CTRL_ATTR_VISIBLE))
-        return -1;
-    else
-        return sGpuBgConfigs2[bg].bg_x;
-}
-
-s32 ChangeBgY(u32 bg, s32 value, u32 op)
+void ChangeBgY(u32 bg, s32 value, u32 op)
 {
     u32 mode, temp1, temp2;
 
     if (IsInvalidBg(bg) || !GetBgControlAttribute(bg, BG_CTRL_ATTR_VISIBLE))
     {
-        return -1;
+        return;
     }
 
     switch (op)
@@ -617,16 +606,15 @@ s32 ChangeBgY(u32 bg, s32 value, u32 op)
         break;
     }
 
-    return sGpuBgConfigs2[bg].bg_y;
 }
 
-s32 ChangeBgY_ScreenOff(u32 bg, s32 value, u32 op)
+void ChangeBgY_ScreenOff(u32 bg, s32 value, u32 op)
 {
     u32 mode, temp1, temp2;
 
     if (IsInvalidBg(bg) || !GetBgControlAttribute(bg, BG_CTRL_ATTR_VISIBLE))
     {
-        return -1;
+        return;
     }
 
     switch (op)
@@ -685,7 +673,6 @@ s32 ChangeBgY_ScreenOff(u32 bg, s32 value, u32 op)
         break;
     }
 
-    return sGpuBgConfigs2[bg].bg_y;
 }
 
 s32 GetBgY(u32 bg)

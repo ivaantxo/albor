@@ -58,7 +58,6 @@ void CopyWindowRectToVram(u32 windowId, u32 mode, u32 x, u32 y, u32 w, u32 h);
 void PutWindowTilemap(u32 windowId);
 void PutWindowRectTilemapOverridePalette(u32 windowId, u32 x, u32 y, u32 width, u32 height, u32 palette);
 void ClearWindowTilemap(u32 windowId);
-void PutWindowRectTilemap(u32 windowId, u32 x, u32 y, u32 width, u32 height);
 void BlitBitmapToWindow(u32 windowId, const u8 *pixels, u32 x, u32 y, u32 width, u32 height);
 void BlitBitmapRectToWindow(u32 windowId, const u8 *pixels, u32 srcX, u32 srcY, u32 srcWidth, u32 srcHeight, u32 destX, u32 destY, u32 rectWidth, u32 rectHeight);
 void FillWindowPixelRect(u32 windowId, u32 fillValue, u32 x, u32 y, u32 width, u32 height);
@@ -66,7 +65,7 @@ void CopyToWindowPixelBuffer(u32 windowId, const void *src, u32 size, u32 tileOf
 void FillWindowPixelBuffer(u32 windowId, u32 fillValue);
 void ScrollWindow(u32 windowId, u32 direction, u32 distance, u32 fillValue);
 void CallWindowFunction(u32 windowId, void ( *func)(u8, u8, u8, u8, u8, u8));
-bool32 SetWindowAttribute(u32 windowId, u32 attributeId, u32 value);
+void SetWindowAttribute(u32 windowId, u32 attributeId, u32 value);
 u32 GetWindowAttribute(u32 windowId, u32 attributeId);
 u32 WindowWidthPx(u32 windowId);
 u32 WindowTemplateWidthPx(const struct WindowTemplate *template);

@@ -309,28 +309,6 @@ void ClearWindowTilemap(u32 windowId)
         windowLocal.window.paletteNum);
 }
 
-void PutWindowRectTilemap(u32 windowId, u32 x, u32 y, u32 width, u32 height)
-{
-    struct Window windowLocal = gWindows[windowId];
-    u32 currentRow = windowLocal.window.baseBlock + (y * windowLocal.window.width) + x + GetBgAttribute(windowLocal.window.bg, BG_ATTR_BASETILE);
-    u32 i;
-
-    for (i = 0; i < height; ++i)
-    {
-        WriteSequenceToBgTilemapBuffer(
-            windowLocal.window.bg,
-            currentRow,
-            windowLocal.window.tilemapLeft + x,
-            windowLocal.window.tilemapTop + y + i,
-            width,
-            1,
-            windowLocal.window.paletteNum,
-            1);
-
-        currentRow += windowLocal.window.width;
-    }
-}
-
 void BlitBitmapToWindow(u32 windowId, const u8 *pixels, u32 x, u32 y, u32 width, u32 height)
 {
     BlitBitmapRectToWindow(windowId, pixels, 0, 0, width, height, x, y, width, height);
@@ -453,30 +431,30 @@ void CallWindowFunction(u32 windowId, void ( *func)(u8, u8, u8, u8, u8, u8))
     func(window.bg, window.tilemapLeft, window.tilemapTop, window.width, window.height, window.paletteNum);
 }
 
-bool32 SetWindowAttribute(u32 windowId, u32 attributeId, u32 value)
+void SetWindowAttribute(u32 windowId, u32 attributeId, u32 value)
 {
     switch (attributeId)
     {
     case WINDOW_TILEMAP_LEFT:
         gWindows[windowId].window.tilemapLeft = value;
-        return FALSE;
+        return;
     case WINDOW_TILEMAP_TOP:
         gWindows[windowId].window.tilemapTop = value;
-        return FALSE;
+        return;
     case WINDOW_PALETTE_NUM:
         gWindows[windowId].window.paletteNum = value;
-        return FALSE;
+        return;
     case WINDOW_BASE_BLOCK:
         gWindows[windowId].window.baseBlock = value;
-        return FALSE;
+        return;
     case WINDOW_TILE_DATA:
         gWindows[windowId].tileData = (u8 *)(value);
-        return TRUE;
+        return;
     case WINDOW_BG:
     case WINDOW_WIDTH:
     case WINDOW_HEIGHT:
     default:
-        return TRUE;
+        return;
     }
 }
 

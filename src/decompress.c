@@ -45,7 +45,7 @@ u16 LoadCompressedSpriteSheet(const struct CompressedSpriteSheet *src)
 {
     struct SpriteSheet dest;
     void *buffer;
-    u16 resultado;
+    u32 resultado;
     // Hay que reservar lo que dice la cabecera LZ77, no lo que declara la ficha: las
     // dos cosas no son lo mismo. El .size es cuanto se copia a VRAM, y hay fichas
     // donde se queda corto respecto al grafico real (press_start declara 0x520 y
@@ -69,46 +69,6 @@ u16 LoadCompressedSpriteSheet(const struct CompressedSpriteSheet *src)
     Free(buffer);
     return resultado;
 }
-
-// This can be used for either compressed or uncompressed sprite sheets
-u16 LoadCompressedSpriteSheetByTemplate(const struct SpriteTemplate *template, s32 offset)
-{
-    struct SpriteTemplate myTemplate;
-    struct SpriteFrameImage myImage;
-    u32 size;
-    void *buffer;
-    u16 resultado;
-
-    // Check for LZ77 header and read uncompressed size, or fallback if not compressed (zero size)
-    if ((size = IsLZ77Data(template->images->data, TILE_4BPP, MAX_TAMANO_DESCOMPRESION)) == 0)
-        return LoadSpriteSheetByTemplate(template, 0, offset);
-
-    buffer = AllocZeroed(size + offset);
-    if (buffer == NULL)
-        return 0xFFFF;
-
-    LZ77UnCompWram(template->images->data, buffer);
-    myImage.data = buffer;
-    myImage.size = size + offset;
-    myTemplate.images = &myImage;
-    myTemplate.tileTag = template->tileTag;
-
-    resultado = LoadSpriteSheetByTemplate(&myTemplate, 0, offset);
-    Free(buffer);
-    return resultado;
-}
-
-void LoadCompressedSpriteSheetOverrideBuffer(const struct CompressedSpriteSheet *src, void *buffer)
-{
-    struct SpriteSheet dest;
-
-    LZ77UnCompWram(src->data, buffer);
-    dest.data = buffer;
-    dest.size = src->size;
-    dest.tag = src->tag;
-    LoadSpriteSheet(&dest);
-}
-
 
 void LoadSpritePaletteWithTag(const u16 *pal, u16 tag)
 {
@@ -164,12 +124,6 @@ void LoadSpecialPokePic(void *dest, s32 species, u32 personality, bool8 isFrontP
         else
             LZ77UnCompWram(gSpeciesInfo[SPECIES_NONE].backPic, dest);
     }
-}
-
-u32 GetDecompressedDataSize(const u32 *ptr)
-{
-    const u8 *ptr8 = (const u8 *)ptr;
-    return (ptr8[3] << 16) | (ptr8[2] << 8) | (ptr8[1]);
 }
 
 void LoadCompressedSpriteSheetUsingHeap(const struct CompressedSpriteSheet *src)

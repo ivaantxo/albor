@@ -630,6 +630,8 @@ void ResetSprite(struct Sprite *sprite)
 
 void CalcCenterToCornerVec(struct Sprite *sprite, u8 shape, u8 size, u8 affineMode)
 {
+    // u8 a proposito: la tabla es u8 pero guarda negativos (-4 se almacena como 252),
+    // y el destino es s8. El truncado a 8 bits es parte de la cuenta, no un descuido.
     u8 x = sCenterToCornerVecTable[shape][size][0];
     u8 y = sCenterToCornerVecTable[shape][size][1];
 
@@ -645,9 +647,9 @@ void CalcCenterToCornerVec(struct Sprite *sprite, u8 shape, u8 size, u8 affineMo
 
 s16 AllocSpriteTiles(u16 tileCount)
 {
-    u16 i = gReservedSpriteTileCount;
-    u16 numTilesFound = 0;
-    s16 start = -1;
+    u32 i = gReservedSpriteTileCount;
+    u32 numTilesFound = 0;
+    s32 start = -1;
 
     if (tileCount == 0)
     {
@@ -683,32 +685,6 @@ s16 AllocSpriteTiles(u16 tileCount)
         ALLOC_SPRITE_TILE(i);
 
     return start;
-}
-
-u8 SpriteTileAllocBitmapOp(u16 bit, u8 op)
-{
-    u8 index = bit / 8;
-    u8 shift = bit % 8;
-    u8 val = bit % 8;
-    u8 retVal = 0;
-
-    if (op == 0)
-    {
-        val = ~(1 << val);
-        sSpriteTileAllocBitmap[index] &= val;
-    }
-    else if (op == 1)
-    {
-        val = (1 << val);
-        sSpriteTileAllocBitmap[index] |= val;
-    }
-    else
-    {
-        retVal = 1 << shift;
-        retVal &= sSpriteTileAllocBitmap[index];
-    }
-
-    return retVal;
 }
 
 void SpriteCallbackDummy(struct Sprite *sprite)
@@ -748,41 +724,6 @@ void RequestSpriteFrameImageCopy(u16 index, u16 tileNum, const struct SpriteFram
         }
         sSpriteCopyRequests[sSpriteCopyRequestCount].dest = (u8 *)OBJ_VRAM0 + TILE_4BPP * tileNum;
         sSpriteCopyRequestCount++;
-    }
-}
-
-void RequestSpriteCopy(const u8 *src, u8 *dest, u16 size)
-{
-    if (sSpriteCopyRequestCount < MAX_SPRITE_COPY_REQUESTS)
-    {
-        sSpriteCopyRequests[sSpriteCopyRequestCount].src = src;
-        sSpriteCopyRequests[sSpriteCopyRequestCount].dest = dest;
-        sSpriteCopyRequests[sSpriteCopyRequestCount].size = size;
-        sSpriteCopyRequestCount++;
-    }
-}
-
-void CopyFromSprites(u8 *dest)
-{
-    u32 i;
-    u8 *src = (u8 *)gSprites;
-    for (i = 0; i < sizeof(struct Sprite) * MAX_SPRITES; i++)
-    {
-        *dest = *src;
-        dest++;
-        src++;
-    }
-}
-
-void CopyToSprites(u8 *src)
-{
-    u32 i;
-    u8 *dest = (u8 *)gSprites;
-    for (i = 0; i < sizeof(struct Sprite) * MAX_SPRITES; i++)
-    {
-        *dest = *src;
-        src++;
-        dest++;
     }
 }
 
@@ -849,10 +790,14 @@ void AnimateSprite(struct Sprite *sprite)
 
 void BeginAnim(struct Sprite *sprite)
 {
+    // OJO: s16 a proposito. El campo del que se lee es 'u32 imageValue:16', sin
+    // signo, y el centinela ANIMCMD_END viaja dentro como 0xFFFF. Solo al meterlo en
+    // un s16 se reinterpreta como el -1 que comparan los 'if' de abajo. Con s32 vale
+    // 65535, el final de la animacion no se detecta nunca y se indexa fuera de rango.
     s16 imageValue;
-    u8 duration;
-    u8 hFlip;
-    u8 vFlip;
+    u32 duration;
+    u32 hFlip;
+    u32 vFlip;
 
     sprite->animCmdIndex = 0;
     sprite->animEnded = FALSE;
@@ -912,10 +857,14 @@ void ContinueAnim(struct Sprite *sprite)
 
 void AnimCmd_frame(struct Sprite *sprite)
 {
+    // OJO: s16 a proposito. El campo del que se lee es 'u32 imageValue:16', sin
+    // signo, y el centinela ANIMCMD_END viaja dentro como 0xFFFF. Solo al meterlo en
+    // un s16 se reinterpreta como el -1 que comparan los 'if' de abajo. Con s32 vale
+    // 65535, el final de la animacion no se detecta nunca y se indexa fuera de rango.
     s16 imageValue;
-    u8 duration;
-    u8 hFlip;
-    u8 vFlip;
+    u32 duration;
+    u32 hFlip;
+    u32 vFlip;
 
     imageValue = sprite->anims[sprite->animNum][sprite->animCmdIndex].frame.imageValue;
     duration = sprite->anims[sprite->animNum][sprite->animCmdIndex].frame.duration;
@@ -948,10 +897,14 @@ void AnimCmd_end(struct Sprite *sprite)
 
 void AnimCmd_jump(struct Sprite *sprite)
 {
+    // OJO: s16 a proposito. El campo del que se lee es 'u32 imageValue:16', sin
+    // signo, y el centinela ANIMCMD_END viaja dentro como 0xFFFF. Solo al meterlo en
+    // un s16 se reinterpreta como el -1 que comparan los 'if' de abajo. Con s32 vale
+    // 65535, el final de la animacion no se detecta nunca y se indexa fuera de rango.
     s16 imageValue;
-    u8 duration;
-    u8 hFlip;
-    u8 vFlip;
+    u32 duration;
+    u32 hFlip;
+    u32 vFlip;
 
     sprite->animCmdIndex = sprite->anims[sprite->animNum][sprite->animCmdIndex].jump.target;
 
@@ -1035,7 +988,7 @@ void BeginAffineAnim(struct Sprite *sprite)
     if ((sprite->oam.affineMode & ST_OAM_AFFINE_ON_MASK) && sprite->affineAnims[0][0].type != 32767)
     {
         struct AffineAnimFrameCmd frameCmd;
-        u8 matrixNum = GetSpriteMatrixNum(sprite);
+        u32 matrixNum = GetSpriteMatrixNum(sprite);
         AffineAnimStateRestartAnim(matrixNum);
         GetAffineAnimFrame(matrixNum, sprite, &frameCmd);
         sprite->affineAnimBeginning = FALSE;
@@ -1051,7 +1004,7 @@ void ContinueAffineAnim(struct Sprite *sprite)
 {
     if (sprite->oam.affineMode & ST_OAM_AFFINE_ON_MASK)
     {
-        u8 matrixNum = GetSpriteMatrixNum(sprite);
+        u32 matrixNum = GetSpriteMatrixNum(sprite);
 
         if (sAffineAnimStates[matrixNum].delayCounter)
             AffineAnimDelay(matrixNum, sprite);
@@ -1157,7 +1110,7 @@ void CopyOamMatrix(u8 destMatrixIndex, struct OamMatrix *srcMatrix)
 
 u8 GetSpriteMatrixNum(struct Sprite *sprite)
 {
-    u8 matrixNum = 0;
+    u32 matrixNum = 0;
     if (sprite->oam.affineMode & ST_OAM_AFFINE_ON_MASK)
         matrixNum = sprite->oam.matrixNum;
     return matrixNum;
@@ -1311,7 +1264,7 @@ void StartSpriteAnimIfDifferent(struct Sprite *sprite, u8 animNum)
 
 void SeekSpriteAnim(struct Sprite *sprite, u8 animCmdIndex)
 {
-    u8 temp = sprite->animPaused;
+    u32 temp = sprite->animPaused;
     sprite->animCmdIndex = animCmdIndex - 1;
     sprite->animDelayCounter = 0;
     sprite->animBeginning = FALSE;
@@ -1325,7 +1278,7 @@ void SeekSpriteAnim(struct Sprite *sprite, u8 animCmdIndex)
 
 void StartSpriteAffineAnim(struct Sprite *sprite, u8 animNum)
 {
-    u8 matrixNum = GetSpriteMatrixNum(sprite);
+    u32 matrixNum = GetSpriteMatrixNum(sprite);
     AffineAnimStateStartAnim(matrixNum, animNum);
     sprite->affineAnimBeginning = TRUE;
     sprite->affineAnimEnded = FALSE;
@@ -1333,14 +1286,14 @@ void StartSpriteAffineAnim(struct Sprite *sprite, u8 animNum)
 
 void StartSpriteAffineAnimIfDifferent(struct Sprite *sprite, u8 animNum)
 {
-    u8 matrixNum = GetSpriteMatrixNum(sprite);
+    u32 matrixNum = GetSpriteMatrixNum(sprite);
     if (sAffineAnimStates[matrixNum].animNum != animNum)
         StartSpriteAffineAnim(sprite, animNum);
 }
 
 void ChangeSpriteAffineAnim(struct Sprite *sprite, u8 animNum)
 {
-    u8 matrixNum = GetSpriteMatrixNum(sprite);
+    u32 matrixNum = GetSpriteMatrixNum(sprite);
     sAffineAnimStates[matrixNum].animNum = animNum;
     sprite->affineAnimBeginning = TRUE;
     sprite->affineAnimEnded = FALSE;
@@ -1348,7 +1301,7 @@ void ChangeSpriteAffineAnim(struct Sprite *sprite, u8 animNum)
 
 void ChangeSpriteAffineAnimIfDifferent(struct Sprite *sprite, u8 animNum)
 {
-    u8 matrixNum = GetSpriteMatrixNum(sprite);
+    u32 matrixNum = GetSpriteMatrixNum(sprite);
     if (sAffineAnimStates[matrixNum].animNum != animNum)
         ChangeSpriteAffineAnim(sprite, animNum);
 }
@@ -1438,7 +1391,7 @@ void SetOamMatrixRotationScaling(u8 matrixNum, s16 xScale, s16 yScale, u16 rotat
 
 static u16 LoadSpriteSheetWithOffset(const struct SpriteSheet *sheet, u32 offset)
 {
-    s16 tileStart = AllocSpriteTiles(sheet->size / TILE_4BPP);
+    s32 tileStart = AllocSpriteTiles(sheet->size / TILE_4BPP);
 
     if (tileStart < 0)
     {
@@ -1460,7 +1413,7 @@ u16 LoadSpriteSheet(const struct SpriteSheet *sheet)
 // Like LoadSpriteSheet, but checks if already loaded, and uses template image frames
 u16 LoadSpriteSheetByTemplate(const struct SpriteTemplate *template, u32 frame, s32 offset)
 {
-    u16 tileStart;
+    u32 tileStart;
     struct SpriteSheet sheet;
     // error if template is null or tile tag or images not set
     if (!template || template->tileTag == TAG_NONE || !template->images)
@@ -1804,11 +1757,6 @@ void LiberaPaletaSpritePorSlot(u32 paletteNum)
 {
     if (paletteNum >= gReservedSpritePaletteCount && paletteNum < 16)
         sSpritePaletteTags[paletteNum] = TAG_NONE;
-}
-
-bool32 HaySlotDePaletaLibre(void)
-{
-    return PaletasSpriteLibres() != 0;
 }
 
 u32 LoadUniqueSpritePalette(const struct SpritePalette *palette, u32 personality)

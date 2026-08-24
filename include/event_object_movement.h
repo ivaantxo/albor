@@ -130,7 +130,6 @@ const struct ObjectEventGraphicsInfo *GetObjectEventGraphicsInfo(u16 graphicsId)
 void SetObjectInvisibility(u8 localId, u8 mapNum, u8 mapGroup, bool8 invisible);
 u32 LoadObjectEventPalette(u32 paletteTag);
 u32 LoadPlayerObjectEventPalette(u32 gender);
-void SetObjectEventSpritePosByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup, s16 x, s16 y);
 void ResetObjectSubpriority(u8 localId, u8 mapNum, u8 mapGroup);
 void SetObjectSubpriority(u8 localId, u8 mapNum, u8 mapGroup, u8 subpriority);
 void AllowObjectAtPosTriggerGroundEffects(s16 x, s16 y);
@@ -139,7 +138,7 @@ void ShiftObjectEventCoords(struct ObjectEvent *, s16 x, s16 y);
 void MoveObjectEventToMapCoords(struct ObjectEvent *, s16 x, s16 y);
 void TryOverrideObjectEventTemplateCoords(u8 localId, u8 mapNum, u8 mapGroup);
 void UpdateObjectEventCurrentMovement(struct ObjectEvent *, struct Sprite *, bool8(struct ObjectEvent *, struct Sprite *));
-u8 ObjectEventFaceOppositeDirection(struct ObjectEvent *, u8 direction);
+void ObjectEventFaceOppositeDirection(struct ObjectEvent *, u8 direction);
 u8 GetOppositeDirection(u8 direction);
 u8 GetWalkInPlaceFasterMovementAction(u32);
 u8 GetWalkInPlaceFastMovementAction(u32);
@@ -199,9 +198,8 @@ void SetAndStartSpriteAnim(struct Sprite *, u8 animNum, u8 animCmdIndex);
 bool8 SpriteAnimEnded(struct Sprite *);
 void UnfreezeObjectEvents(void);
 void FreezeObjectEventsExceptOne(u32 objectEventId);
-void FreezeObjectEventsExceptTwo(u32 objectEventId1, u32 objectEventId2);
 void FreezeObjectEvents(void);
-bool8 FreezeObjectEvent(struct ObjectEvent *objectEvent);
+void FreezeObjectEvent(struct ObjectEvent *objectEvent);
 u8 GetMoveDirectionFastAnimNum(u8 direction);
 u8 GetMoveDirectionFasterAnimNum(u8 direction);
 u8 GetMoveDirectionFastestAnimNum(u8 direction);
@@ -274,7 +272,6 @@ void MovementType_FollowPlayer(struct Sprite *);
 u8 GetSlideMovementAction(u32);
 u8 GetJumpMovementAction(u32);
 u8 GetJump2MovementAction(u32);
-u8 CopySprite(struct Sprite *sprite, s16 x, s16 y, u8 subpriority);
 u8 CreateCopySpriteAt(struct Sprite *sprite, s16 x, s16 y, u8 subpriority);
 
 u8 MovementType_WanderAround_Step0(struct ObjectEvent *, struct Sprite *);
@@ -433,7 +430,6 @@ bool8 FollowablePlayerMovement_GoSpeed2(struct ObjectEvent *, struct Sprite *, u
 bool8 FollowablePlayerMovement_Slide(struct ObjectEvent *, struct Sprite *, u8, bool8(u8));
 bool8 FollowablePlayerMovement_JumpInPlace(struct ObjectEvent *, struct Sprite *, u8, bool8(u8));
 bool8 FollowablePlayerMovement_GoSpeed4(struct ObjectEvent *, struct Sprite *, u8, bool8(u8));
-bool8 FollowablePlayerMovement_Jump(struct ObjectEvent *, struct Sprite *, u8, bool8(u8));
 bool8 CopyablePlayerMovement_Jump2(struct ObjectEvent *, struct Sprite *, u8, bool8(u8));
 u8 MovementType_CopyPlayerInGrass_Step1(struct ObjectEvent *, struct Sprite *);
 u8 MovementType_Buried_Step0(struct ObjectEvent *, struct Sprite *);
@@ -448,11 +444,6 @@ u8 MovementType_Invisible_Step2(struct ObjectEvent *, struct Sprite *);
 
 u8 CreateVirtualObject(u16 graphicsId, u8 virtualObjId, s16 x, s16 y, u8 elevation, u8 direction);
 void TurnVirtualObject(u8 virtualObjId, u8 direction);
-void SetVirtualObjectGraphics(u8 virtualObjId, u16 graphicsId);
-void SetVirtualObjectInvisibility(u8 virtualObjId, bool32 invisible);
-bool32 IsVirtualObjectInvisible(u8 virtualObjId);
-void SetVirtualObjectSpriteAnim(u8 virtualObjId, u8 animNum);
-bool32 IsVirtualObjectAnimating(u8 virtualObjId);
 u32 GetObjectEventIdByLocalId(u32 localId);
 bool32 IsFollowerVisible(void);
 
