@@ -1710,7 +1710,15 @@ bool8 AddSubspritesToOamBuffer(struct Sprite *sprite, struct OamData *destOam, u
             u16 y;
 
             if (*oamIndex >= 64)
+            {
+#if DEPURACION_MGBA
+                {
+                    static u32 avisos = 0;
+                    if (avisos < 4) { avisos++; LOG("OAM LLENO: piezas emitidas / de", i, subspriteCount); }
+                }
+#endif
                 return 1;
+            }
 
             x = subspriteTable->subsprites[i].x;
             y = subspriteTable->subsprites[i].y;
@@ -1762,6 +1770,7 @@ bool8 AddSubspritesToOamBuffer(struct Sprite *sprite, struct OamData *destOam, u
 
             if (sprite->subspriteMode < SUBSPRITES_IGNORE_PRIORITY)
                 destOam[i].priority = subspriteTable->subsprites[i].priority;
+
         }
     }
 

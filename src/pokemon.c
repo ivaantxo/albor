@@ -3148,9 +3148,20 @@ static void Task_PokemonSummaryAnimateAfterDelay(u8 taskId)
     }
 }
 
+// Las animaciones de Pokemon de vanilla son deformaciones afines, y sobre pixel art
+// repetido rompen un poco las diagonales. Con los pics grandes ademas abren costuras
+// entre las piezas. Apagadas mientras se prueba la animacion por fotogramas, que es la
+// que hace el trabajo de verdad. Poner a 1 para recuperarlas.
+#define ANIMACION_AFIN_POKEMON 0
+
 void BattleAnimateFrontSprite(struct Sprite *sprite, u16 species, bool8 noCry, u8 panMode)
 {
+#if ANIMACION_AFIN_POKEMON
     DoMonFrontSpriteAnimation(sprite, species, noCry, panMode);
+#else
+    // Solo el grito y a su sitio: la pose la lleva la animacion por fotogramas.
+    DoMonFrontSpriteAnimation(sprite, species, noCry, panMode | SKIP_FRONT_ANIM);
+#endif
 }
 
 void DoMonFrontSpriteAnimation(struct Sprite *sprite, u16 species, bool8 noCry, u8 panModeAnimFlag)
@@ -3229,6 +3240,10 @@ void StopPokemonAnimationDelayTask(void)
 
 void BattleAnimateBackSprite(struct Sprite *sprite, u16 species)
 {
+#if !ANIMACION_AFIN_POKEMON
+    sprite->callback = SpriteCallbackDummy;
+    return;
+#endif
     LaunchAnimationTaskForBackSprite(sprite, GetSpeciesBackAnimSet(species));
     sprite->callback = SpriteCallbackDummy;
 }

@@ -11,13 +11,15 @@ Uso tipico:
     importar_bw.py hoja.png --especie pikachu --rejilla 96x96 --lado back
     importar_bw.py carpeta/ --especie gengar --paleta-existente
 
+    importar_bw.py 001.gif --especie bulbasaur --rejilla 96x96 --frames 6
+
 Con --solo-informe no escribe nada: dice que haria y que problemas ve.
 """
 
 import argparse
 import os
 import sys
-from PIL import Image, ImageSequence
+from PIL import Image
 
 COLOR_TRANSPARENTE_POR_DEFECTO = (152, 160, 208)   # el que usa el proyecto
 COLORES_MAXIMOS = 16                                # 4bpp
@@ -37,17 +39,17 @@ def carga_fotogramas(ruta, rejilla):
     img = Image.open(ruta)
 
     if getattr(img, "n_frames", 1) > 1:
-        # GIF animado: hay que componer cada fotograma sobre el anterior, porque
-        # muchos guardan solo lo que cambia.
-        salida, lienzo = [], None
-        for marco in ImageSequence.Iterator(img):
-            marco = marco.convert("RGBA")
-            if lienzo is None:
-                lienzo = marco.copy()
-            else:
-                lienzo = lienzo.copy()
-                lienzo.alpha_composite(marco)
-            salida.append(lienzo.copy())
+        # GIF animado. Ojo: NO hay que componer los fotogramas a mano.
+        #
+        # Un GIF puede guardar cada fotograma entero o solo lo que cambia respecto al
+        # anterior, y ademas cada uno lleva su metodo de descarte. Pillow ya lo resuelve
+        # al avanzar con seek(): lo que devuelve es el lienzo ya montado. Componer
+        # encima por nuestra cuenta deja asomando lo del fotograma previo por las zonas
+        # transparentes, y los sprites salen superpuestos.
+        salida = []
+        for n in range(img.n_frames):
+            img.seek(n)
+            salida.append(img.convert("RGBA").copy())
         return salida
 
     img = img.convert("RGBA")
@@ -83,14 +85,25 @@ def caja_comun(fotogramas):
             max(c[2] for c in cajas), max(c[3] for c in cajas))
 
 
-def encaja(fotogramas, lado, anclaje):
+def encaja(fotogramas, lado, anclaje, recortar):
     caja = caja_comun(fotogramas)
     ancho, alto = caja[2] - caja[0], caja[3] - caja[1]
 
     if ancho > lado or alto > lado:
-        raise SystemExit(
-            "DEMASIADO GRANDE: el contenido mide %dx%d y el lienzo es de %dx%d.\n"
-            "  Recorta el original o sube el lienzo con --lienzo." % (ancho, alto, lado, lado))
+        if not recortar:
+            raise SystemExit(
+                "DEMASIADO GRANDE: el contenido mide %dx%d y el lienzo es de %dx%d.\n"
+                "  Opciones: --recortar (pierde los bordes), --lienzo N (lienzo mayor),\n"
+                "  o bajar --frames, porque puede que sean fotogramas sueltos los que se salen."
+                % (ancho, alto, lado, lado))
+
+        # Recorte centrado: se sacrifica lo mismo por los dos lados.
+        sobraX, sobraY = max(0, ancho - lado), max(0, alto - lado)
+        print("  AVISO: recortando %d px de ancho y %d de alto (%d y %d por lado)"
+              % (sobraX, sobraY, sobraX // 2, sobraY // 2))
+        caja = (caja[0] + sobraX // 2, caja[1] + sobraY // 2,
+                caja[2] - (sobraX - sobraX // 2), caja[3] - (sobraY - sobraY // 2))
+        ancho, alto = caja[2] - caja[0], caja[3] - caja[1]
 
     x = (lado - ancho) // 2
     y = (lado - alto) // 2 if anclaje == "centro" else lado - alto
@@ -188,6 +201,36 @@ def mas_parecido(rgb, paleta):
     return mejor
 
 
+def reindexa_en_sitio(ruta, paleta):
+    """Cambia solo los colores, sin tocar el encuadre ni el tamano.
+
+    Hace falta porque el front y el back de una especie comparten la misma paleta de
+    16 colores. Al importar uno de los dos desde otra fuente, la paleta cambia y el
+    otro se queda indexado a la anterior: sigue teniendo la forma correcta, pero se
+    dibuja con colores que ya no significan lo mismo.
+    """
+    origen = Image.open(ruta).convert("RGBA")
+    salida = Image.new("P", origen.size)
+    plana = []
+    for c in paleta:
+        plana.extend(c)
+    salida.putpalette(plana)
+
+    directo = {c: i for i, c in enumerate(paleta)}
+    pixeles = origen.load()
+    for y in range(origen.height):
+        for x in range(origen.width):
+            r, g, b, a = pixeles[x, y]
+            if a < 128 or (r, g, b) == paleta[0]:
+                indice = 0
+            else:
+                indice = directo.get((r, g, b))
+                if indice is None or indice == 0:
+                    indice = mas_parecido((r, g, b), paleta)
+            salida.putpixel((x, y), indice)
+    return salida
+
+
 def indexa(fotogramas, paleta, lado):
     """Apila los fotogramas en un PNG indexado, uno debajo de otro."""
     tira = Image.new("P", (lado, lado * len(fotogramas)))
@@ -220,12 +263,23 @@ def main():
     p.add_argument("--especie", required=True, help="nombre en minusculas, p.ej. venusaur")
     p.add_argument("--lado", choices=["front", "back"], default="front")
     p.add_argument("--frames", type=int, default=4, help="maximo de fotogramas (por defecto 4)")
-    p.add_argument("--lienzo", type=int, default=80, help="lado del lienzo (por defecto 80)")
-    p.add_argument("--anclaje", choices=["centro", "suelo"], default="centro")
+    p.add_argument("--lienzo", type=int, default=96,
+                   help="lado del lienzo (por defecto 96, el nativo de BW y el que usa el juego)")
+    p.add_argument("--anclaje", choices=["centro", "suelo"], default="suelo",
+                   help="donde apoyar el contenido en el lienzo. Por defecto al suelo: "
+                        "estos GIF vienen recortados al contenido y cada especie tiene "
+                        "su tamano, asi que centrar dejaria los pies a distinta altura "
+                        "en cada Pokemon")
     p.add_argument("--rejilla", help="para hojas de sprites, p.ej. 96x96")
     p.add_argument("--raiz", default="graphics/pokemon", help="carpeta de graficos")
     p.add_argument("--paleta-existente", action="store_true",
                    help="reindexa a la paleta que ya tiene la especie en vez de crear una")
+    p.add_argument("--reindexar", action="store_true",
+                   help="solo cambia los colores a la paleta actual de la especie, sin "
+                        "tocar encuadre ni tamano. Para arreglar el back cuando el front "
+                        "se ha importado con una paleta nueva")
+    p.add_argument("--recortar", action="store_true",
+                   help="si no cabe, recorta por los bordes en vez de abortar")
     p.add_argument("--solo-informe", action="store_true", help="no escribe nada")
     args = p.parse_args()
 
@@ -238,16 +292,33 @@ def main():
     ruta_pal = os.path.join(destino, "normal.pal")
     nombre = "anim_front.png" if args.lado == "front" else "back.png"
 
+    if args.reindexar:
+        if not os.path.exists(ruta_pal):
+            raise SystemExit("No existe %s: no hay paleta a la que reindexar" % ruta_pal)
+        paleta = lee_paleta_jasc(ruta_pal)
+        salida = reindexa_en_sitio(args.entrada, paleta)
+        print("Reindexado %s (%dx%d) a la paleta de %s"
+              % (args.entrada, salida.width, salida.height, args.especie))
+        if args.solo_informe:
+            print("\n(--solo-informe: no se ha escrito nada)")
+            return
+        salida.save(os.path.join(destino, nombre))
+        print("Escrito %s" % os.path.join(destino, nombre))
+        return
+
     brutos = carga_fotogramas(args.entrada, rejilla)
     print("Leidos %d fotogramas de %s" % (len(brutos), args.entrada))
 
-    encajados, (ancho, alto) = encaja(brutos, args.lienzo, args.anclaje)
+    # Primero se eligen los fotogramas y despues se mide: el recuadro que importa es
+    # el de los que se van a usar, no el de toda la animacion. Un solo fotograma con
+    # un latigo estirado no tiene por que obligar a recortar a los demas.
+    indices = elige_fotogramas(brutos, args.frames)
+    print("Elegidos %d de %d: %s" % (len(indices), len(brutos), indices))
+
+    elegidos, (ancho, alto) = encaja([brutos[i] for i in indices], args.lienzo,
+                                     args.anclaje, args.recortar)
     print("Contenido de %dx%d, encajado en %dx%d (%s)"
           % (ancho, alto, args.lienzo, args.lienzo, args.anclaje))
-
-    indices = elige_fotogramas(encajados, args.frames)
-    elegidos = [encajados[i] for i in indices]
-    print("Elegidos %d de %d: %s" % (len(elegidos), len(encajados), indices))
 
     if args.paleta_existente:
         if not os.path.exists(ruta_pal):

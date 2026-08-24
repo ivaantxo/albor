@@ -298,6 +298,48 @@ bool8 IsBattleSEPlaying(u8 battler)
 // hueco, con el tamano que le toca a esta especie, y recoloca los tiles si el pic es
 // de los grandes. Hay que hacerlo aqui y no al reservar: hasta que no se sabe que
 // Pokemon entra no se sabe cuanto ocupa.
+// Cuanto sitio tiene el hueco de un combatiente. Todo lo que se descomprima ahi tiene
+// que caber, porque los cuatro huecos son consecutivos y pasarse pisa al de al lado.
+// Lo minimo que tiene que medir el hueco de un combatiente: no solo guarda los
+// fotogramas del pic, tambien lo usan de zona de trabajo battle_intro, el sustituto y
+// la escena de evolucion.
+#define BYTES_MINIMOS_HUECO (MON_PIC_SIZE * NUMERO_FRAMES_POKEMON)
+
+// Agranda el hueco de un combatiente si su pic no cabe en el minimo.
+static void AseguraHuecoPic(u32 posicion, u32 bytes)
+{
+    u32 falta = bytes * NUMERO_FRAMES_POKEMON;
+
+    if (falta <= BYTES_MINIMOS_HUECO || gMonSpritesGfxPtr->spritesGfx[posicion] == NULL)
+        return;
+
+    Free(gMonSpritesGfxPtr->spritesGfx[posicion]);
+    gMonSpritesGfxPtr->spritesGfx[posicion] = AllocZeroed(falta);
+#if DEPURACION_MGBA
+    if (gMonSpritesGfxPtr->spritesGfx[posicion] == NULL)
+        LOG("SIN MEMORIA para el pic de la posicion", posicion, falta);
+#endif
+}
+
+// Aviso temprano si un pic trae mas fotogramas de los que caben. Es un fallo de datos,
+// no de codigo: pasa al importar una especie con --frames por encima de
+// NUMERO_FRAMES_POKEMON. Sin esto, LZ77 escribe lo que diga su cabecera y se lleva por
+// delante el hueco del siguiente combatiente, con el estropicio a varios segundos vista.
+static void ComprobarQueElPicCabe(u32 especie, u32 personalidad, bool32 esFront)
+{
+#if DEPURACION_MGBA
+    const u32 *comprimido = esFront ? gSpeciesInfo[especie].frontPic : gSpeciesInfo[especie].backPic;
+    u32 tamano;
+
+    if (comprimido == NULL)
+        return;
+
+    tamano = comprimido[0] >> 8;   // la cabecera LZ77 dice cuanto ocupa descomprimido
+    if (tamano > MAX_PIC_BYTES * NUMERO_FRAMES_POKEMON)
+        LOG("PIC DEMASIADO GRANDE especie / bytes", especie, tamano);
+#endif
+}
+
 static void AjustaFotogramasPic(u32 posicion, u32 especie, u32 personalidad, bool32 esFront)
 {
     u32 bytes = BytesPicCombate(especie, personalidad, esFront);
@@ -332,6 +374,8 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
     position = battler;
     if (GetBattlerSide(battler) == LADO_OPONENTE)
     {
+        ComprobarQueElPicCabe(species, currentPersonality, TRUE);
+        AseguraHuecoPic(position, BytesPicCombate(species, currentPersonality, TRUE));
         HandleLoadSpecialPokePic(TRUE,
                                  gMonSpritesGfxPtr->spritesGfx[position],
                                  species, currentPersonality);
@@ -339,6 +383,8 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
     }
     else
     {
+        ComprobarQueElPicCabe(species, currentPersonality, FALSE);
+        AseguraHuecoPic(position, BytesPicCombate(species, currentPersonality, FALSE));
         HandleLoadSpecialPokePic(FALSE,
                                  gMonSpritesGfxPtr->spritesGfx[position],
                                  species, currentPersonality);
@@ -826,11 +872,17 @@ void AllocateMonSpritesGfx(void)
 {
     gMonSpritesGfxPtr = NULL;
     gMonSpritesGfxPtr = AllocZeroed(sizeof(*gMonSpritesGfxPtr));
-    gMonSpritesGfxPtr->firstDecompressed = AllocZeroed(MAX_PIC_BYTES * NUMERO_FRAMES_POKEMON * NUMERO_COMBATIENTES);
+    // Un hueco por combatiente, reservado aparte y del tamano minimo. Antes se
+    // reservaba de golpe el caso peor para los cuatro -el pic mas grande por el numero
+    // de fotogramas-, y eso son 73 KB de los 114 del monton. Con tanto ocupado, las
+    // reservas pequenas de despues empiezan a fallar: las ventanas del nombre y el
+    // nivel de las cajas de vida se quedan sin dibujar, y el buffer de trabajo del
+    // reordenado tampoco cabe. Ninguna de las dos cosas avisa, simplemente no pasan.
+    gMonSpritesGfxPtr->firstDecompressed = NULL;
 
     for (u32 indiceCombatiente = 0; indiceCombatiente < NUMERO_COMBATIENTES; indiceCombatiente++)
     {
-        gMonSpritesGfxPtr->spritesGfx[indiceCombatiente] = gMonSpritesGfxPtr->firstDecompressed + (indiceCombatiente * MAX_PIC_BYTES * NUMERO_FRAMES_POKEMON);
+        gMonSpritesGfxPtr->spritesGfx[indiceCombatiente] = AllocZeroed(BYTES_MINIMOS_HUECO);
         gMonSpritesGfxPtr->templates[indiceCombatiente] = gBattlerSpriteTemplates[indiceCombatiente];
 
         for (u32 frameCombatiente = 0; frameCombatiente < NUMERO_FRAMES_POKEMON; frameCombatiente++)
@@ -854,11 +906,8 @@ void FreeMonSpritesGfx(void)
         return;
 
     TRY_FREE_AND_SET_NULL(gMonSpritesGfxPtr->buffer);
-    FREE_AND_SET_NULL(gMonSpritesGfxPtr->firstDecompressed);
-    gMonSpritesGfxPtr->spritesGfx[JUGADOR_IZQUIERDA] = NULL;
-    gMonSpritesGfxPtr->spritesGfx[OPONENTE_IZQUIERDA] = NULL;
-    gMonSpritesGfxPtr->spritesGfx[JUGADOR_DERECHA] = NULL;
-    gMonSpritesGfxPtr->spritesGfx[OPONENTE_DERECHA] = NULL;
+    for (u32 i = 0; i < NUMERO_COMBATIENTES; i++)
+        TRY_FREE_AND_SET_NULL(gMonSpritesGfxPtr->spritesGfx[i]);
     FREE_AND_SET_NULL(gMonSpritesGfxPtr);
 }
 

@@ -22,12 +22,14 @@ static const union AnimCmd sAnim_None[] =
     ANIMCMD_END,
 };
 
+// Bulbasaur, de prueba: bucle continuo de cuatro fotogramas, como Venusaur.
 static const union AnimCmd sAnim_Bulbasaur[] =
 {
-    ANIMCMD_FRAME(0, 30),
-    ANIMCMD_FRAME(1, 30),
-    ANIMCMD_FRAME(0, 1),
-    ANIMCMD_END,
+    ANIMCMD_FRAME(0, 10),
+    ANIMCMD_FRAME(1, 10),
+    ANIMCMD_FRAME(2, 10),
+    ANIMCMD_FRAME(3, 10),
+    ANIMCMD_JUMP(0),
 };
 
 static const union AnimCmd sAnim_Ivysaur[] =
@@ -38,12 +40,15 @@ static const union AnimCmd sAnim_Ivysaur[] =
     ANIMCMD_END,
 };
 
+// Venusaur, de prueba: animacion continua estilo BW. Cuatro fotogramas en bucle en vez
+// del vaiven de dos de vanilla, que solo se reproducia una vez al salir.
 static const union AnimCmd sAnim_Venusaur[] =
 {
     ANIMCMD_FRAME(0, 10),
-    ANIMCMD_FRAME(1, 25),
-    ANIMCMD_FRAME(0, 10),
-    ANIMCMD_END,
+    ANIMCMD_FRAME(1, 10),
+    ANIMCMD_FRAME(2, 10),
+    ANIMCMD_FRAME(3, 10),
+    ANIMCMD_JUMP(0),
 };
 
 static const union AnimCmd sAnim_Charmander[] =

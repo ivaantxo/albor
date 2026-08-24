@@ -6,16 +6,19 @@
 // Los pics de combate ya no son todos de 64x64. El motor sigue trabajando con un
 // solo sprite por combatiente, pero cuando el pic pasa de 64 hay que repartirlo en
 // varios objetos, porque 64x64 es el mayor tamano de OBJ que existe en GBA.
-#define PIC_GRANDE_LADO       80
-
-// El lienzo son 100 tiles, pero en VRAM ocupa 144: las piezas se solapan 16 px y
-// esos tiles van duplicados. Es el precio de que las animaciones afines no abran
-// costuras -los OBJ de GBA no tienen posicion subpixel, asi que al rotar cada pieza
-// se desalinea hasta un pixel de su vecina; con solape, el hueco lo tapa la de al lado.
-#define PIC_GRANDE_TILES_ORIGEN 100
-#define PIC_GRANDE_TILES        144
-#define PIC_GRANDE_BYTES_ORIGEN (PIC_GRANDE_TILES_ORIGEN * TILE_4BPP)   // 3200
-#define PIC_GRANDE_BYTES        (PIC_GRANDE_TILES * TILE_4BPP)          // 4608
+// El lienzo de combate para las especies grandes: 96x96, que es el tamano nativo de
+// los sprites de BW/B2W2. Son 12x12 = 144 tiles justos, que se reparten en cuatro
+// objetos sin desperdiciar ninguno.
+//
+// No hay solape entre piezas, y eso tiene una consecuencia que conviene tener
+// presente: si a uno de estos sprites se le aplica una matriz afin, se le abriran
+// costuras. No es un defecto del reparto, es que los OBJ de GBA anclan el muestreo a
+// una posicion entera y no hay forma de pedirles medio pixel. Los fondos afines si
+// pueden -BG2X/BG2Y tienen 8 bits de parte fraccionaria-, asi que si algun dia hace
+// falta un zoom, el sitio donde hacerlo es una capa de fondo, no el sprite.
+#define PIC_GRANDE_LADO       96
+#define PIC_GRANDE_TILES     144
+#define PIC_GRANDE_BYTES     (PIC_GRANDE_TILES * TILE_4BPP)   // 4608
 
 // Lo que hay que reservar por fotograma y combatiente: el mayor de los casos.
 #define MAX_PIC_BYTES        PIC_GRANDE_BYTES
