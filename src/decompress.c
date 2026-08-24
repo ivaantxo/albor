@@ -7,7 +7,7 @@
 #include "pokemon_sprite_visualizer.h"
 #include "text.h"
 
-EWRAM_DATA ALIGNED(4) u8 gDecompressionBuffer[16384] = {0};
+
 
 void LZDecompressWram(const u32 *src, void *dest)
 {
@@ -44,12 +44,30 @@ u32 IsLZ77Data(const void *ptr, u32 minSize, u32 maxSize)
 u16 LoadCompressedSpriteSheet(const struct CompressedSpriteSheet *src)
 {
     struct SpriteSheet dest;
+    void *buffer;
+    u16 resultado;
+    // Hay que reservar lo que dice la cabecera LZ77, no lo que declara la ficha: las
+    // dos cosas no son lo mismo. El .size es cuanto se copia a VRAM, y hay fichas
+    // donde se queda corto respecto al grafico real (press_start declara 0x520 y
+    // ocupa 0x600). Mientras todo se descomprimia sobre el buffer compartido de
+    // 16 KB el exceso caia en su hueco y no molestaba; reservando justo, quedarse
+    // corto machaca el bloque siguiente del monton.
+    u32 tamano = IsLZ77Data(src->data, TILE_4BPP, MAX_TAMANO_DESCOMPRESION);
 
-    LZ77UnCompWram(src->data, gDecompressionBuffer);
-    dest.data = gDecompressionBuffer;
+    if (tamano < src->size)
+        tamano = src->size;
+
+    buffer = AllocZeroed(tamano);
+    if (buffer == NULL)
+        return 0xFFFF;
+
+    LZ77UnCompWram(src->data, buffer);
+    dest.data = buffer;
     dest.size = src->size;
     dest.tag = src->tag;
-    return LoadSpriteSheet(&dest);
+    resultado = LoadSpriteSheet(&dest);
+    Free(buffer);
+    return resultado;
 }
 
 // This can be used for either compressed or uncompressed sprite sheets
@@ -58,18 +76,26 @@ u16 LoadCompressedSpriteSheetByTemplate(const struct SpriteTemplate *template, s
     struct SpriteTemplate myTemplate;
     struct SpriteFrameImage myImage;
     u32 size;
+    void *buffer;
+    u16 resultado;
 
     // Check for LZ77 header and read uncompressed size, or fallback if not compressed (zero size)
-    if ((size = IsLZ77Data(template->images->data, TILE_4BPP, sizeof(gDecompressionBuffer))) == 0)
+    if ((size = IsLZ77Data(template->images->data, TILE_4BPP, MAX_TAMANO_DESCOMPRESION)) == 0)
         return LoadSpriteSheetByTemplate(template, 0, offset);
 
-    LZ77UnCompWram(template->images->data, gDecompressionBuffer);
-    myImage.data = gDecompressionBuffer;
+    buffer = AllocZeroed(size + offset);
+    if (buffer == NULL)
+        return 0xFFFF;
+
+    LZ77UnCompWram(template->images->data, buffer);
+    myImage.data = buffer;
     myImage.size = size + offset;
     myTemplate.images = &myImage;
     myTemplate.tileTag = template->tileTag;
 
-    return LoadSpriteSheetByTemplate(&myTemplate, 0, offset);
+    resultado = LoadSpriteSheetByTemplate(&myTemplate, 0, offset);
+    Free(buffer);
+    return resultado;
 }
 
 void LoadCompressedSpriteSheetOverrideBuffer(const struct CompressedSpriteSheet *src, void *buffer)
@@ -152,6 +178,9 @@ void LoadCompressedSpriteSheetUsingHeap(const struct CompressedSpriteSheet *src)
     void *buffer;
 
     buffer = AllocZeroed(src->data[0] >> 8);
+    if (buffer == NULL)
+        return;
+
     LZ77UnCompWram(src->data, buffer);
 
     dest.data = buffer;
@@ -191,7 +220,17 @@ void LoadCompressedEggHatchSpritePalette(const struct SpritePalette *src1, const
 void LoadCompressedSpriteSheetAndPaletteUsingHeap(const struct CompressedSpriteSheetAndPalette *src)
 {
     struct SpriteSheet sheetDest;
-    void *sheetBuffer = AllocZeroed(src->sheetSize);
+    void *sheetBuffer;
+    // Mismo cuidado que en LoadCompressedSpriteSheet: manda la cabecera, no sheetSize.
+    u32 tamano = IsLZ77Data(src->sheet, TILE_4BPP, MAX_TAMANO_DESCOMPRESION);
+
+    if (tamano < src->sheetSize)
+        tamano = src->sheetSize;
+
+    sheetBuffer = AllocZeroed(tamano);
+    if (sheetBuffer == NULL)
+        return;
+
     LZ77UnCompWram(src->sheet, sheetBuffer);
 
     sheetDest.data = sheetBuffer;

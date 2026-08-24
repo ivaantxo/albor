@@ -48,7 +48,6 @@
 #define FLDEFF_HEART_ICON                43
 #define FLDEFF_ASH_PUFF                  44
 #define FLDEFF_ASH_LAUNCH                45
-#define FLDEFF_SWEET_SCENT               46
 #define FLDEFF_SAND_PILLAR               47
 #define FLDEFF_BUBBLES                   48
 #define FLDEFF_SPARKLE                   49

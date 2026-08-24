@@ -86,7 +86,6 @@ const u8 gMenuText_Use[] = _("Usar");
 const u8 gMenuText_Toss[] = _("Tirar");
 const u8 gMenuText_Register[] = _("REGISTER");
 const u8 gMenuText_Give[] = _("Dar");
-const u8 gMenuText_CheckTag[] = _("CHECK TAG");
 const u8 gMenuText_Confirm[] = _("Confirmar");
 const u8 gMenuText_Walk[] = _("WALK");
 const u8 gText_Item[] = _("Objeto");

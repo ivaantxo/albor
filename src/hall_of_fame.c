@@ -33,6 +33,19 @@
 #include "data.h"
 #include "constants/rgb.h"
 
+// Hogar del equipo del salon de la fama mientras dura la pantalla. Antes se tomaba
+// prestado el buffer de descompresion; ahora se reserva del monton lo justo, un
+// sector de guardado.
+static struct HallofFameTeam *gBufferSalonFama = NULL;
+
+static struct HallofFameTeam *BufferSalonFama(void)
+{
+    if (gBufferSalonFama == NULL)
+        gBufferSalonFama = AllocZeroed(SECTOR_SIZE);
+
+    return gBufferSalonFama;
+}
+
 #define HALL_OF_FAME_MAX_TEAMS 25
 #define TAG_CONFETTI 1001
 
@@ -470,7 +483,7 @@ static void Task_Hof_InitMonData(u8 taskId)
 static void Task_Hof_InitTeamSaveData(u8 taskId)
 {
     u32 i;
-    struct HallofFameTeam *lastSavedTeam = (struct HallofFameTeam *)(gDecompressionBuffer);
+    struct HallofFameTeam *lastSavedTeam = BufferSalonFama();
 
     for (i = 0; i < HALL_OF_FAME_MAX_TEAMS; i++, lastSavedTeam++)
     {
@@ -479,8 +492,8 @@ static void Task_Hof_InitTeamSaveData(u8 taskId)
     }
     if (i >= HALL_OF_FAME_MAX_TEAMS)
     {
-        struct HallofFameTeam *afterTeam = (struct HallofFameTeam *)(gDecompressionBuffer);
-        struct HallofFameTeam *beforeTeam = (struct HallofFameTeam *)(gDecompressionBuffer);
+        struct HallofFameTeam *afterTeam = BufferSalonFama();
+        struct HallofFameTeam *beforeTeam = BufferSalonFama();
         afterTeam++;
         for (i = 0; i < HALL_OF_FAME_MAX_TEAMS - 1; i++, beforeTeam++, afterTeam++)
         {
@@ -790,7 +803,7 @@ void CB2_DoHallOfFamePC(void)
     case 3:
         if (!LoadHofBgs())
         {
-            struct HallofFameTeam *fameTeam = (struct HallofFameTeam *)(gDecompressionBuffer);
+            struct HallofFameTeam *fameTeam = BufferSalonFama();
             fameTeam->mon[0] = sDummyFameMon;
             ComputerScreenOpenEffect(0, 0, 0);
             SetVBlankCallback(VBlankCB_HallOfFame);
@@ -838,7 +851,7 @@ static void Task_HofPC_CopySaveData(u8 taskId)
         u32 i;
         struct HallofFameTeam *savedTeams;
 
-        CopiaCpu16(gDecompressionBuffer, sHofMonPtr, SECTOR_SIZE);
+        CopiaCpu16(BufferSalonFama(), sHofMonPtr, SECTOR_SIZE);
         savedTeams = sHofMonPtr;
         for (i = 0; i < HALL_OF_FAME_MAX_TEAMS; i++, savedTeams++)
         {
@@ -1014,7 +1027,7 @@ static void Task_HofPC_HandlePaletteOnExit(u8 taskId)
     struct HallofFameTeam *fameTeam;
 
     CopiaCpu16(gPlttBufferFaded, gPlttBufferUnfaded, PLTT_SIZE);
-    fameTeam = (struct HallofFameTeam *)(gDecompressionBuffer);
+    fameTeam = BufferSalonFama();
     fameTeam->mon[0] = sDummyFameMon;
     ComputerScreenCloseEffect(0, 0, 0);
     gTasks[taskId].func = Task_HofPC_HandleExit;

@@ -3,7 +3,10 @@
 
 #include "sprite.h"
 
-extern u8 ALIGNED(4) gDecompressionBuffer[16384];
+// Ya no hay buffer compartido: cada quien reserva del monton lo que necesita y lo
+// suelta. Esto se queda solo como tope para validar cabeceras LZ77, no como tamano
+// de nada reservado.
+#define MAX_TAMANO_DESCOMPRESION 12288
 
 void LZDecompressWram(const u32 *src, void *dest);
 void LZDecompressVram(const u32 *src, void *dest);

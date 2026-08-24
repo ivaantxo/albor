@@ -52,7 +52,6 @@ extern u8 gFieldEffectScript_ShowSecretPowerTree[];
 extern u8 gFieldEffectScript_Sparkle[];
 extern u8 gFieldEffectScript_Splash[];
 extern u8 gFieldEffectScript_SurfBlob[];
-extern u8 gFieldEffectScript_SweetScent[];
 extern u8 gFieldEffectScript_TallGrass[];
 extern u8 gFieldEffectScript_TracksBug[];
 extern u8 gFieldEffectScript_TracksSlither[];
@@ -124,7 +123,6 @@ u8 *const gFieldEffectScriptPointers[] =
     [FLDEFF_HEART_ICON]                = gFieldEffectScript_HeartIcon,
     [FLDEFF_ASH_PUFF]                  = gFieldEffectScript_AshPuff,
     [FLDEFF_ASH_LAUNCH]                = gFieldEffectScript_AshLaunch,
-    [FLDEFF_SWEET_SCENT]               = gFieldEffectScript_SweetScent,
     [FLDEFF_SAND_PILLAR]               = gFieldEffectScript_SandPillar,
     [FLDEFF_BUBBLES]                   = gFieldEffectScript_Bubbles,
     [FLDEFF_SPARKLE]                   = gFieldEffectScript_Sparkle,

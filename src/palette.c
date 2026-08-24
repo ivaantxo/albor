@@ -1,5 +1,6 @@
 #include "global.h"
 #include "palette.h"
+#include "malloc.h"
 #include "util.h"
 #include "decompress.h"
 #include "gpu_regs.h"
@@ -27,6 +28,35 @@ static void Task_BlendPalettesGradually(u8 taskId);
 ALIGNED(4) EWRAM_DATA u16 gPlttBufferUnfaded[PLTT_BUFFER_SIZE] = {0};
 ALIGNED(4) EWRAM_DATA u16 gPlttBufferFaded[PLTT_BUFFER_SIZE] = {0};
 EWRAM_DATA struct ControlFundidoPaletas gFundidoPaletas = {0};
+
+// Copia de seguridad de las paletas, para los efectos que las oscurecen y luego las
+// devuelven.
+//
+// Es un PUNTERO, no un array: la copia tiene que sobrevivir entre fotogramas -y a
+// veces entre dos comandos de guion distintos-, pero el kilobyte solo hace falta
+// mientras hay una copia viva. Un array estatico lo ocuparia siempre.
+static EWRAM_DATA u16 *sRespaldoPaletas = NULL;
+
+// Guarda las paletas sin fundir. Si no hay memoria, no se guarda nada y la
+// restauracion lo detecta y no hace daño.
+void GuardaRespaldoPaletas(void)
+{
+    if (sRespaldoPaletas == NULL)
+        sRespaldoPaletas = Alloc(PLTT_SIZE);
+
+    if (sRespaldoPaletas != NULL)
+        CopiaCpu32(gPlttBufferUnfaded, sRespaldoPaletas, PLTT_SIZE);
+}
+
+void RestauraRespaldoPaletas(void)
+{
+    if (sRespaldoPaletas == NULL)
+        return;
+
+    CopiaCpu32(sRespaldoPaletas, gPlttBufferUnfaded, PLTT_SIZE);
+    Free(sRespaldoPaletas);
+    sRespaldoPaletas = NULL;
+}
 
 
 void LoadPalette(const void *src, u32 offset, u32 size)

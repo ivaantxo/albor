@@ -1131,8 +1131,9 @@ void ItemUseOutOfBattle_RotomCatalog(u8 taskId)
 
 void Task_UseHoneyOnField(u8 taskId)
 {
-    //ResetInitialPlayerAvatarState();
-    StartSweetScentFieldEffect();
+    // La miel llamaba a Dulce Aroma, que ya no existe: los Pokemon salvajes
+    // aparecen en el mapa y hay que acercarse a ellos. Queda por decidir que hace
+    // este objeto, si es que se queda.
     DestroyTask(taskId);
 }
 

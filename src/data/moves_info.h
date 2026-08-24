@@ -4235,24 +4235,6 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_GiroRapido,
     },
 
-    [MOVE_SWEET_SCENT] =
-    {
-        .name = COMPOUND_STRING("Dulce aroma"),
-        .description = COMPOUND_STRING(
-            "Allures the foe to reduce\n"
-            "evasiveness."),
-        .effect = B_UPDATED_MOVE_DATA >= GEN_6 ? EFFECT_EVASION_DOWN_2 : EFFECT_EVASION_DOWN,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = PRECISION_NORMAL,
-        .pp = 20,
-        .target = MOVE_TARGET_BOTH,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .espejoMagico = TRUE,
-        .battleAnimScript = gBattleAnimMove_SweetScent,
-    },
-
     [MOVE_IRON_TAIL] =
     {
         .name = COMPOUND_STRING("Cola férrea"),

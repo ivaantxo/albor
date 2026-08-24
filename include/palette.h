@@ -65,6 +65,9 @@ struct ControlFundidoPaletas
 extern const struct ConfiguracionBlend gBlendHoraDia[];
 
 extern struct ControlFundidoPaletas gFundidoPaletas;
+// Copia y devuelve las paletas sin fundir. La memoria solo se ocupa entre las dos.
+void GuardaRespaldoPaletas(void);
+void RestauraRespaldoPaletas(void);
 extern u16 ALIGNED(4) gPlttBufferUnfaded[PLTT_BUFFER_SIZE];
 extern u16 ALIGNED(4) gPlttBufferFaded[PLTT_BUFFER_SIZE];
 

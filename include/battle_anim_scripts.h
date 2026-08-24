@@ -209,7 +209,6 @@ extern const u8 gBattleAnimMove_Relevo[];
 extern const u8 gBattleAnimMove_Encore[];
 extern const u8 gBattleAnimMove_Pursuit[];
 extern const u8 gBattleAnimMove_GiroRapido[];
-extern const u8 gBattleAnimMove_SweetScent[];
 extern const u8 gBattleAnimMove_IronTail[];
 extern const u8 gBattleAnimMove_MetalClaw[];
 extern const u8 gBattleAnimMove_VitalThrow[];

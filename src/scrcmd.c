@@ -522,12 +522,12 @@ bool8 ScrCmd_fadescreenswapbuffers(struct ScriptContext *ctx)
     case FADE_TO_BLACK:
     case FADE_TO_WHITE:
     default:
-        CopiaCpu32(gPlttBufferUnfaded, gDecompressionBuffer, PLTT_SIZE);
+        GuardaRespaldoPaletas();
         FadeScreen(mode, 0);
         break;
     case FADE_FROM_BLACK:
     case FADE_FROM_WHITE:
-        CopiaCpu32(gDecompressionBuffer, gPlttBufferUnfaded, PLTT_SIZE);
+        RestauraRespaldoPaletas();
         FadeScreen(mode, 0);
         break;
     }

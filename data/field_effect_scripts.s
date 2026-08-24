@@ -189,10 +189,6 @@ gFieldEffectScript_AshLaunch::
 	field_eff_loadfadedpal_callnative gSpritePalette_Ash, FldEff_AshLaunch
 	field_eff_end
 
-gFieldEffectScript_SweetScent::
-	field_eff_callnative FldEff_SweetScent
-	field_eff_end
-
 gFieldEffectScript_SandPillar::
 	field_eff_end
 

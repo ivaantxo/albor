@@ -4,6 +4,7 @@
 #include "palette.h"
 #include "graphics.h"
 #include "gpu_regs.h"
+#include "malloc.h"
 #include "bg.h"
 #include "decompress.h"
 #include "task.h"
@@ -133,6 +134,11 @@ static const u8 sClockFrames[8][3] =
 static const u8 sSaveFailedClockPal[] = INCBIN_U8("graphics/misc/clock_small.gbapal");
 static const u32 sSaveFailedClockGfx[] = INCBIN_U32("graphics/misc/clock_small.4bpp.lz");
 
+// Lo que ocupan el tilemap (0x800) y las dos ventanas, la ultima a partir de 0x1D00.
+#define TAMANO_BUFFER_PANTALLA 0x2000
+
+static u8 *sBuffer = NULL;
+
 static void CB2_SaveFailedScreen(void);
 static void CB2_WipeSave(void);
 static void CB2_GameplayCannotBeContinued(void);
@@ -198,14 +204,22 @@ static void CB2_SaveFailedScreen(void)
         LZ77UnCompVram(sSaveFailedClockGfx, (void *)(OBJ_VRAM0 + 0x20));
         ResetBgsAndClearDma3BusyFlags();
         IniciaFondosDesdePlantillas(MODO_0, sBgTemplates, ARRAY_COUNT(sBgTemplates));
-        SetBgTilemapBuffer(0, (void *)&gDecompressionBuffer[0x2000]);
-        CpuFill32(0, &gDecompressionBuffer[0x2000], 0x800);
+        // Buffer propio para el tilemap y las dos ventanas. Antes se tomaba prestado
+        // el de descompresion, y era el unico motivo de que aquel midiera 16 KB.
+        //
+        // No se libera: de esta pantalla solo se sale a la de titulo, que reinicia
+        // el monton entero.
+        sBuffer = AllocZeroed(TAMANO_BUFFER_PANTALLA);
+        if (sBuffer == NULL)
+            break;
+
+        SetBgTilemapBuffer(0, &sBuffer[0x0000]);
         CargaTilesFondo(0, gTextWindowFrame1_Gfx, 0x120, 0x214);
         InitWindows(sDummyWindowTemplate);
         sWindowIds[TEXT_WIN_ID] = AddWindowWithoutTileMap(sWindowTemplate_Text);
-        SetWindowAttribute(sWindowIds[TEXT_WIN_ID], 7, (u32)&gDecompressionBuffer[0x2800]);
+        SetWindowAttribute(sWindowIds[TEXT_WIN_ID], 7, (u32)&sBuffer[0x0800]);
         sWindowIds[CLOCK_WIN_ID] = AddWindowWithoutTileMap(sWindowTemplate_Clock);
-        SetWindowAttribute(sWindowIds[CLOCK_WIN_ID], 7, (u32)&gDecompressionBuffer[0x3D00]);
+        SetWindowAttribute(sWindowIds[CLOCK_WIN_ID], 7, (u32)&sBuffer[0x1D00]);
         DeactivateAllTextPrinters();
         ResetSpriteData();
         ResetTasks();
