@@ -18,6 +18,9 @@
     (sSpriteTileRanges + 1)[index * 2] = count;    \
 }
 
+// Cuantas entradas de OAM se pueden llegar a llenar. El hardware tiene 128.
+#define OAM_ENTRADAS_MAXIMAS 128
+
 #define ALLOC_SPRITE_TILE(n)                             \
 {                                                        \
     sSpriteTileAllocBitmap[(n) / 8] |= (1 << ((n) % 8)); \
@@ -507,7 +510,21 @@ u32 CreateSpriteAt(u32 index, const struct SpriteTemplate *template, s16 x, s16 
     {
         s16 tileNum;
         sprite->images = template->images;
-        tileNum = AllocSpriteTiles((u8)(sprite->images->size / TILE_4BPP));
+        // Ojo: AllocSpriteTiles(0) NO significa "ningun tile", significa "libera el
+        // mapa entero". Es una sobrecarga de vanilla facil de disparar sin querer, y
+        // desde aqui nunca es lo que se quiere: un sprite sin imagen es un error de
+        // datos, no una orden de vaciar VRAM.
+        u32 tilesPedidos = sprite->images->size / TILE_4BPP;
+
+        if (tilesPedidos == 0)
+        {
+#if DEPURACION_MGBA
+            LOG("SPRITE SIN IMAGEN: pediria cero tiles", (u32)sprite->images, 0);
+#endif
+            tilesPedidos = 1;
+        }
+
+        tileNum = AllocSpriteTiles(tilesPedidos);
         if (tileNum == -1)
         {
             ResetSprite(sprite);
@@ -516,6 +533,7 @@ u32 CreateSpriteAt(u32 index, const struct SpriteTemplate *template, s16 x, s16 
         sprite->oam.tileNum = tileNum;
         sprite->usingSheet = FALSE;
         sprite->sheetTileStart = 0;
+        sprite->tilesReservados = tilesPedidos;
     }
     else
     {
@@ -565,8 +583,10 @@ void DestroySprite(struct Sprite *sprite)
     {
         if (!sprite->usingSheet)
         {
+            // Por lo que se reservo, NO por lo que mida images ahora: ver el
+            // comentario de tilesReservados en sprite.h.
             u32 i;
-            u16 tileEnd = (sprite->images->size / TILE_4BPP) + sprite->oam.tileNum;
+            u16 tileEnd = sprite->tilesReservados + sprite->oam.tileNum;
             for (i = sprite->oam.tileNum; i < tileEnd; i++)
                 FREE_SPRITE_TILE(i);
         }
@@ -680,6 +700,19 @@ s16 AllocSpriteTiles(u16 tileCount)
         if (i == NUMERO_TILES_SPRITES)
             return -1;
     }
+
+#if DEPURACION_MGBA
+    // Si el mapa dice libre algo que ya estaba entregado, es que se ha liberado por
+    // una via que no cuadra. Mas vale enterarse aqui que a base de sprites rotos.
+    for (i = start; i < start + tileCount; i++)
+    {
+        if (SPRITE_TILE_IS_ALLOCATED(i))
+        {
+            LOG("TILES ENTREGADOS DOS VECES: tile / peticion", i, tileCount);
+            break;
+        }
+    }
+#endif
 
     for (i = start; i < start + tileCount; i++)
         ALLOC_SPRITE_TILE(i);
@@ -1623,7 +1656,10 @@ void SetSubspriteTables(struct Sprite *sprite, const struct SubspriteTable *subs
 
 bool8 AddSpriteToOamBuffer(struct Sprite *sprite, u8 *oamIndex)
 {
-    if (*oamIndex >= 64)
+    // El hardware admite 128 objetos; ese 64 era un tope conservador de vanilla que
+    // sobraba cuando cada Pokemon gastaba una entrada. Con pics repartidos en cuatro
+    // piezas y sus sombras, un combate doble se lo come.
+    if (*oamIndex >= OAM_ENTRADAS_MAXIMAS)
         return 1;
 
     if (!sprite->subspriteTables || sprite->subspriteMode == SUBSPRITES_OFF)
@@ -1643,7 +1679,10 @@ bool8 AddSubspritesToOamBuffer(struct Sprite *sprite, struct OamData *destOam, u
     const struct SubspriteTable *subspriteTable;
     struct OamData *oam;
 
-    if (*oamIndex >= 64)
+    // El hardware admite 128 objetos; ese 64 era un tope conservador de vanilla que
+    // sobraba cuando cada Pokemon gastaba una entrada. Con pics repartidos en cuatro
+    // piezas y sus sombras, un combate doble se lo come.
+    if (*oamIndex >= OAM_ENTRADAS_MAXIMAS)
         return 1;
 
     subspriteTable = &sprite->subspriteTables[sprite->subspriteTableNum];
@@ -1664,21 +1703,61 @@ bool8 AddSubspritesToOamBuffer(struct Sprite *sprite, struct OamData *destOam, u
         u8 hFlip;
         u8 vFlip;
         u32 i;
+        // Matriz inversa, en 8.8. Con la identidad las cuentas de abajo dan justo el
+        // mismo resultado que el camino sin afin, asi que no hace falta separarlos.
+        u32 esAfin = (oam->affineMode & ST_OAM_AFFINE_ON_MASK) != 0;
+        s32 invA = 0x100, invB = 0, invC = 0, invD = 0x100;
 
         tileNum = oam->tileNum;
         subspriteCount = subspriteTable->subspriteCount;
-        hFlip = ((s32)oam->matrixNum >> 3) & 1;
-        vFlip = ((s32)oam->matrixNum >> 4) & 1;
         baseX = oam->x - sprite->centerToCornerVecX;
         baseY = oam->y - sprite->centerToCornerVecY;
+
+        if (esAfin)
+        {
+            // Cuando el sprite es afin, matrixNum es el indice de matriz y NO dos
+            // bits de volteo: leerlo como flips daria la vuelta a las piezas al azar
+            // segun que matriz tocara.
+            struct OamMatrix *m = &gOamMatrices[oam->matrixNum];
+            s32 det = ((s32)m->a * m->d - (s32)m->b * m->c) >> 8;
+
+            hFlip = FALSE;
+            vFlip = FALSE;
+
+            // Cada pieza se transforma alrededor de SU propio centro, no del centro
+            // del conjunto. Si se dejan en su sitio de textura, en cuanto la escala
+            // deja de ser 1 el sprite se abre por las costuras. Pasando el
+            // desplazamiento de cada pieza por la inversa, las piezas se separan o
+            // juntan al mismo ritmo que se escalan y el conjunto queda cosido.
+            if (det != 0)
+            {
+                invA =  ((s32)m->d << 8) / det;
+                invB = -((s32)m->b << 8) / det;
+                invC = -((s32)m->c << 8) / det;
+                invD =  ((s32)m->a << 8) / det;
+            }
+        }
+        else
+        {
+            hFlip = ((s32)oam->matrixNum >> 3) & 1;
+            vFlip = ((s32)oam->matrixNum >> 4) & 1;
+        }
 
         for (i = 0; i < subspriteCount; i++, (*oamIndex)++)
         {
             u16 x;
             u16 y;
 
-            if (*oamIndex >= 64)
+            if (*oamIndex >= OAM_ENTRADAS_MAXIMAS)
+            {
+#if DEPURACION_MGBA
+                {
+                    static u32 avisos = 0;
+                    if (avisos < 4) { avisos++; LOG("OAM LLENO: piezas emitidas / de", i, subspriteCount); }
+                }
+#endif
                 return 1;
+            }
 
             x = subspriteTable->subsprites[i].x;
             y = subspriteTable->subsprites[i].y;
@@ -1704,12 +1783,33 @@ bool8 AddSubspritesToOamBuffer(struct Sprite *sprite, struct OamData *destOam, u
             destOam[i] = *oam;
             destOam[i].shape = subspriteTable->subsprites[i].shape;
             destOam[i].size = subspriteTable->subsprites[i].size;
-            destOam[i].x = (s16)baseX + (s16)x;
-            destOam[i].y = baseY + y;
             destOam[i].tileNum = tileNum + subspriteTable->subsprites[i].tileOffset;
+
+            {
+                s32 anchoPieza = sOamDimensions[subspriteTable->subsprites[i].shape][subspriteTable->subsprites[i].size].width;
+                s32 altoPieza = sOamDimensions[subspriteTable->subsprites[i].shape][subspriteTable->subsprites[i].size].height;
+                // Del centro de la caja a la esquina que guarda el OAM. Con
+                // ST_OAM_AFFINE_DOUBLE la caja mide el doble, asi que la distancia es
+                // una pieza entera y no media. Si se usara siempre la mitad, cada
+                // pieza se desplazaria segun su propio tamano y el sprite se
+                // desmontaria en cuanto empezara la animacion.
+                s32 mitadAncho = (oam->affineMode & ST_OAM_AFFINE_DOUBLE_MASK) ? anchoPieza : anchoPieza / 2;
+                s32 mitadAlto = (oam->affineMode & ST_OAM_AFFINE_DOUBLE_MASK) ? altoPieza : altoPieza / 2;
+                // El centro de la pieza en textura, que es lo que hay que transformar.
+                s32 cx = (s16)x + anchoPieza / 2;
+                s32 cy = (s16)y + altoPieza / 2;
+                // Redondeo al mas cercano, no truncado: el error de colocacion baja
+                // de un pixel entero a medio, y las costuras se notan la mitad.
+                s32 px = (invA * cx + invB * cy + 128) >> 8;
+                s32 py = (invC * cx + invD * cy + 128) >> 8;
+
+                destOam[i].x = (s16)baseX + px - mitadAncho;
+                destOam[i].y = baseY + py - mitadAlto;
+            }
 
             if (sprite->subspriteMode < SUBSPRITES_IGNORE_PRIORITY)
                 destOam[i].priority = subspriteTable->subsprites[i].priority;
+
         }
     }
 

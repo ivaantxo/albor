@@ -10,6 +10,7 @@
 #include "global.h"
 #include "battle.h"
 #include "battle_setup.h"
+#include "constants/opponents.h"
 #include "berry.h"
 #include "clock.h"
 #include "coins.h"
@@ -76,7 +77,7 @@ enum DebugMenu
     DEBUG_MENU_ITEM_GIVE,
     DEBUG_MENU_ITEM_SCRIPTS,
     DEBUG_MENU_ITEM_FLAGVAR,
-    //DEBUG_MENU_ITEM_BATTLE,
+    DEBUG_MENU_ITEM_BATTLE,
     DEBUG_MENU_ITEM_SOUND,
     DEBUG_MENU_ITEM_CANCEL,
 };
@@ -338,6 +339,7 @@ static void DebugTask_HandleMenuInput_PCBag_Fill(u8 taskId);
 static void DebugTask_HandleMenuInput_Party(u8 taskId);
 static void DebugTask_HandleMenuInput_Scripts(u8 taskId);
 static void DebugTask_HandleMenuInput_FlagsVars(u8 taskId);
+static void DebugAction_OpenBattleMenu(u8 taskId);
 static void DebugTask_HandleMenuInput_Battle(u8 taskId);
 static void DebugTask_HandleMenuInput_Give(u8 taskId);
 static void DebugTask_HandleMenuInput_Sound(u8 taskId);
@@ -666,7 +668,7 @@ static const struct ListMenuItem sDebugMenu_Items_Main[] =
     [DEBUG_MENU_ITEM_GIVE]          = {sDebugText_Give,         DEBUG_MENU_ITEM_GIVE},
     [DEBUG_MENU_ITEM_SCRIPTS]       = {sDebugText_Scripts,      DEBUG_MENU_ITEM_SCRIPTS},
     [DEBUG_MENU_ITEM_FLAGVAR]       = {sDebugText_FlagsVars,    DEBUG_MENU_ITEM_FLAGVAR},
-    //[DEBUG_MENU_ITEM_BATTLE]        = {sDebugText_Battle,       DEBUG_MENU_ITEM_BATTLE},
+    [DEBUG_MENU_ITEM_BATTLE]        = {sDebugText_Battle,       DEBUG_MENU_ITEM_BATTLE},
     [DEBUG_MENU_ITEM_SOUND]         = {sDebugText_Sound,        DEBUG_MENU_ITEM_SOUND},
     [DEBUG_MENU_ITEM_CANCEL]        = {sDebugText_Cancel,       DEBUG_MENU_ITEM_CANCEL},
 };
@@ -830,7 +832,7 @@ static void (*const sDebugMenu_Actions_Main[])(u8) =
     [DEBUG_MENU_ITEM_GIVE]          = DebugAction_OpenGiveMenu,
     [DEBUG_MENU_ITEM_SCRIPTS]       = DebugAction_OpenScriptsMenu,
     [DEBUG_MENU_ITEM_FLAGVAR]       = DebugAction_OpenFlagsVarsMenu,
-    //[DEBUG_MENU_ITEM_BATTLE]        = DebugAction_OpenBattleMenu,
+    [DEBUG_MENU_ITEM_BATTLE]        = DebugAction_OpenBattleMenu,
     [DEBUG_MENU_ITEM_SOUND]         = DebugAction_OpenSoundMenu,
     [DEBUG_MENU_ITEM_CANCEL]        = DebugAction_Cancel
 };
@@ -1560,6 +1562,17 @@ static void DebugTask_HandleMenuInput_FlagsVars(u8 taskId)
     }
 }
 
+// Reactivada para poder probar los dobles: en este proyecto un combate doble es un
+// combate contra entrenador, asi que no hay forma de lanzarlo desde el mapa sin un
+// entrenador de verdad. El submenu ya estaba entero; solo faltaba esta puerta.
+static void DebugAction_OpenBattleMenu(u8 taskId)
+{
+    Debug_InitDebugBattleData();
+    sDebugBattleData->submenu = 0;
+    Debug_DestroyMenu(taskId);
+    Debug_ShowMenu(DebugTask_HandleMenuInput_Battle, sDebugMenu_ListTemplate_Battle_0);
+}
+
 static void DebugTask_HandleBattleMenuReDraw(u8 taskId)
 {
     Debug_RefreshListMenu(taskId);
@@ -1598,21 +1611,19 @@ static void DebugTask_HandleMenuInput_Battle(u8 taskId)
 
         switch (sDebugBattleData->submenu)
         {
-        case 0: // Battle type
+        case 0: // Tipo de combate: se elige y se entra, sin mas pantallas.
+            //
+            // Los submenus de banderas de IA y de Pokemon rival se apoyaban en
+            // gMultiuseListMenuTemplate, que nadie rellenaba para ellos: salia lo que
+            // hubiera dejado el menu anterior, tipicamente "set flag / set var". Como
+            // esto es para mirar sprites y no para afinar la IA, se saltan los tres y
+            // se arranca con lo de por defecto: sin banderas de IA y terreno 0.
+            //
+            // Si algun dia hace falta elegir IA o terreno, el codigo de los submenus
+            // 1, 2 y 3 sigue aqui abajo intacto; basta con devolver el encadenado.
             sDebugBattleData->battleType = idx;
-            sDebugBattleData->submenu++;
-            Debug_DestroyMenu(taskId);
-
-            if (sDebugBattleData->battleType == DEBUG_BATTLE_0_MENU_ITEM_WILD // Skip AI Flag selection if wild battle
-             || sDebugBattleData->battleType == DEBUG_BATTLE_0_MENU_ITEM_WILD_DOUBLE)
-            {
-                sDebugBattleData->submenu++;
-                Debug_ShowMenu(DebugTask_HandleMenuInput_Battle, sDebugMenu_ListTemplate_Battle_2);
-            }
-            else
-            {
-                Debug_ShowMenu(DebugTask_HandleMenuInput_Battle, gMultiuseListMenuTemplate);
-            }
+            sDebugBattleData->battleTerrain = 0;
+            Debug_InitializeBattle(taskId);
             break;
         case 1: // AI Flags
             if (idx == sDebugMenu_ListTemplate_Battle_1.totalItems - 1)
@@ -1701,6 +1712,13 @@ static void Debug_InitializeBattle(u8 taskId)
         if (sDebugBattleData->aiFlags[i])
             gDebugAIFlags |= (1 << i);
     }
+
+    // Un entrenador de relleno para las pruebas: sin uno asignado, el combate saca
+    // el sprite y la animacion de entrada de quien hubiera quedado en la variable, y
+    // salen cosas raras. Cynthia vale de comodin.
+    if (sDebugBattleData->battleType != DEBUG_BATTLE_0_MENU_ITEM_WILD
+     && sDebugBattleData->battleType != DEBUG_BATTLE_0_MENU_ITEM_WILD_DOUBLE)
+        gTrainerBattleOpponent = TRAINER_CYNTHIA;
 
     gIsDebugBattle = TRUE;
     BattleSetup_StartTrainerBattle_Debug();
