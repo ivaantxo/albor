@@ -924,9 +924,13 @@ void StartSendOutAnim(u32 battler, bool32 dontClearSubstituteBit, bool32 doSlide
     gBattlerPartyIndexes[battler] = gArgumentosComando[battler].indiceEquipo;
     species = GetMonData(&party[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES);
     gBattleControllerData[battler] = CreateInvisibleSpriteWithCallback(SpriteCB_WaitForBattlerBallReleaseAnim);
-    // Load sprite for opponent only, player sprite is expected to be already loaded.
-    if (side == LADO_OPONENTE)
-        BattleLoadMonSpriteGfx(&party[gBattlerPartyIndexes[battler]], battler);
+    // Se carga para los dos bandos, no solo para el rival. El comentario de vanilla
+    // decia que el del jugador "ya estaba cargado", y con pics de 64x64 daba igual
+    // porque todos median lo mismo. Ahora no: el tamano del pic decide cuantos tiles
+    // reserva CreateSprite, y si se crea antes de saberlo pide 64 donde hacen falta
+    // 144. Luego las copias escriben 4608 bytes en un hueco de 2048 y se llevan por
+    // delante los tiles del vecino.
+    BattleLoadMonSpriteGfx(&party[gBattlerPartyIndexes[battler]], battler);
     SetMultiuseSpriteTemplateToPokemon(species, battler);
 
     gBattlerSpriteIds[battler] = CreateSprite(&gMultiuseSpriteTemplate,

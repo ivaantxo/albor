@@ -1,4 +1,5 @@
 #include "global.h"
+#include "pic_combate.h"
 #include "pokemon.h"
 #include "egg_hatch.h"
 #include "pokedex.h"
@@ -395,6 +396,7 @@ static u8 EggHatchCreateMonSprite(u8 state, u8 partyId, u16 *speciesLoc)
         // Load mon sprite gfx
         {
             u32 pid = GetMonData(mon, MON_DATA_PERSONALITY);
+            HuecoPic(OPONENTE_IZQUIERDA, MON_PIC_SIZE * NUMERO_FRAMES_POKEMON);
             HandleLoadSpecialPokePic(TRUE,
                                      gMonSpritesGfxPtr->spritesGfx[OPONENTE_IZQUIERDA],
                                      species, pid);

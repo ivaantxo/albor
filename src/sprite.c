@@ -18,6 +18,9 @@
     (sSpriteTileRanges + 1)[index * 2] = count;    \
 }
 
+// Cuantas entradas de OAM se pueden llegar a llenar. El hardware tiene 128.
+#define OAM_ENTRADAS_MAXIMAS 128
+
 #define ALLOC_SPRITE_TILE(n)                             \
 {                                                        \
     sSpriteTileAllocBitmap[(n) / 8] |= (1 << ((n) % 8)); \
@@ -507,7 +510,21 @@ u32 CreateSpriteAt(u32 index, const struct SpriteTemplate *template, s16 x, s16 
     {
         s16 tileNum;
         sprite->images = template->images;
-        tileNum = AllocSpriteTiles((u8)(sprite->images->size / TILE_4BPP));
+        // Ojo: AllocSpriteTiles(0) NO significa "ningun tile", significa "libera el
+        // mapa entero". Es una sobrecarga de vanilla facil de disparar sin querer, y
+        // desde aqui nunca es lo que se quiere: un sprite sin imagen es un error de
+        // datos, no una orden de vaciar VRAM.
+        u32 tilesPedidos = sprite->images->size / TILE_4BPP;
+
+        if (tilesPedidos == 0)
+        {
+#if DEPURACION_MGBA
+            LOG("SPRITE SIN IMAGEN: pediria cero tiles", (u32)sprite->images, 0);
+#endif
+            tilesPedidos = 1;
+        }
+
+        tileNum = AllocSpriteTiles(tilesPedidos);
         if (tileNum == -1)
         {
             ResetSprite(sprite);
@@ -516,6 +533,7 @@ u32 CreateSpriteAt(u32 index, const struct SpriteTemplate *template, s16 x, s16 
         sprite->oam.tileNum = tileNum;
         sprite->usingSheet = FALSE;
         sprite->sheetTileStart = 0;
+        sprite->tilesReservados = tilesPedidos;
     }
     else
     {
@@ -565,8 +583,10 @@ void DestroySprite(struct Sprite *sprite)
     {
         if (!sprite->usingSheet)
         {
+            // Por lo que se reservo, NO por lo que mida images ahora: ver el
+            // comentario de tilesReservados en sprite.h.
             u32 i;
-            u16 tileEnd = (sprite->images->size / TILE_4BPP) + sprite->oam.tileNum;
+            u16 tileEnd = sprite->tilesReservados + sprite->oam.tileNum;
             for (i = sprite->oam.tileNum; i < tileEnd; i++)
                 FREE_SPRITE_TILE(i);
         }
@@ -680,6 +700,19 @@ s16 AllocSpriteTiles(u16 tileCount)
         if (i == NUMERO_TILES_SPRITES)
             return -1;
     }
+
+#if DEPURACION_MGBA
+    // Si el mapa dice libre algo que ya estaba entregado, es que se ha liberado por
+    // una via que no cuadra. Mas vale enterarse aqui que a base de sprites rotos.
+    for (i = start; i < start + tileCount; i++)
+    {
+        if (SPRITE_TILE_IS_ALLOCATED(i))
+        {
+            LOG("TILES ENTREGADOS DOS VECES: tile / peticion", i, tileCount);
+            break;
+        }
+    }
+#endif
 
     for (i = start; i < start + tileCount; i++)
         ALLOC_SPRITE_TILE(i);
@@ -1623,7 +1656,10 @@ void SetSubspriteTables(struct Sprite *sprite, const struct SubspriteTable *subs
 
 bool8 AddSpriteToOamBuffer(struct Sprite *sprite, u8 *oamIndex)
 {
-    if (*oamIndex >= 64)
+    // El hardware admite 128 objetos; ese 64 era un tope conservador de vanilla que
+    // sobraba cuando cada Pokemon gastaba una entrada. Con pics repartidos en cuatro
+    // piezas y sus sombras, un combate doble se lo come.
+    if (*oamIndex >= OAM_ENTRADAS_MAXIMAS)
         return 1;
 
     if (!sprite->subspriteTables || sprite->subspriteMode == SUBSPRITES_OFF)
@@ -1643,7 +1679,10 @@ bool8 AddSubspritesToOamBuffer(struct Sprite *sprite, struct OamData *destOam, u
     const struct SubspriteTable *subspriteTable;
     struct OamData *oam;
 
-    if (*oamIndex >= 64)
+    // El hardware admite 128 objetos; ese 64 era un tope conservador de vanilla que
+    // sobraba cuando cada Pokemon gastaba una entrada. Con pics repartidos en cuatro
+    // piezas y sus sombras, un combate doble se lo come.
+    if (*oamIndex >= OAM_ENTRADAS_MAXIMAS)
         return 1;
 
     subspriteTable = &sprite->subspriteTables[sprite->subspriteTableNum];
@@ -1709,7 +1748,7 @@ bool8 AddSubspritesToOamBuffer(struct Sprite *sprite, struct OamData *destOam, u
             u16 x;
             u16 y;
 
-            if (*oamIndex >= 64)
+            if (*oamIndex >= OAM_ENTRADAS_MAXIMAS)
             {
 #if DEPURACION_MGBA
                 {

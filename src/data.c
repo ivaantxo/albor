@@ -209,10 +209,26 @@ static const union AnimCmd sAnim_MonPic_1[] =
     ANIMCMD_END,
 };
 
+// Vaiven continuo entre los dos primeros fotogramas. Es la animacion de los sprites
+// de espalda, que no tienen tabla propia por especie como los frontales: todos
+// comparten esta. Solo debe arrancarse en los pics grandes, porque los de 64x64
+// tienen un unico fotograma y el segundo seria basura del buffer.
+static const union AnimCmd sAnim_MonPic_Bucle[] =
+{
+    ANIMCMD_FRAME(0, 20),
+    ANIMCMD_FRAME(1, 20),
+    ANIMCMD_JUMP(0),
+};
+
+// Ojo: hay que rellenar las cuatro. La tabla se declara con NUMERO_FRAMES_POKEMON
+// entradas y antes solo tenia dos inicializadas; las otras quedaban a NULL y pedir
+// esa animacion habria saltado a la nada.
 const union AnimCmd *const gAnims_MonPic[NUMERO_FRAMES_POKEMON] =
 {
     sAnim_MonPic_0,
     sAnim_MonPic_1,
+    sAnim_MonPic_Bucle,
+    sAnim_MonPic_0,
 };
 
 static const union AnimCmd sAnim_TrainerPic_0[] =

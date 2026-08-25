@@ -234,6 +234,12 @@ struct Sprite
 
     u16 sheetTileStart;
 
+    // Cuantos tiles se le reservaron al crearlo. Hay que guardarlo porque al
+    // destruirlo no se puede volver a preguntar: los sprites basados en 'images'
+    // apuntan a un hueco compartido cuyo tamano cambia cada vez que entra otro
+    // Pokemon, y liberar por el tamano de entonces suelta tiles que ya son de otro.
+    u16 tilesReservados;
+
     u8 subspriteTableNum:6;
     u8 subspriteMode:2;
 

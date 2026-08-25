@@ -300,60 +300,6 @@ bool8 IsBattleSEPlaying(u8 battler)
 // Pokemon entra no se sabe cuanto ocupa.
 // Cuanto sitio tiene el hueco de un combatiente. Todo lo que se descomprima ahi tiene
 // que caber, porque los cuatro huecos son consecutivos y pasarse pisa al de al lado.
-// Lo minimo que tiene que medir el hueco de un combatiente: no solo guarda los
-// fotogramas del pic, tambien lo usan de zona de trabajo battle_intro, el sustituto y
-// la escena de evolucion.
-#define BYTES_MINIMOS_HUECO (MON_PIC_SIZE * NUMERO_FRAMES_POKEMON)
-
-// Agranda el hueco de un combatiente si su pic no cabe en el minimo.
-static void AseguraHuecoPic(u32 posicion, u32 bytes)
-{
-    u32 falta = bytes * NUMERO_FRAMES_POKEMON;
-
-    if (falta <= BYTES_MINIMOS_HUECO || gMonSpritesGfxPtr->spritesGfx[posicion] == NULL)
-        return;
-
-    Free(gMonSpritesGfxPtr->spritesGfx[posicion]);
-    gMonSpritesGfxPtr->spritesGfx[posicion] = AllocZeroed(falta);
-#if DEPURACION_MGBA
-    if (gMonSpritesGfxPtr->spritesGfx[posicion] == NULL)
-        LOG("SIN MEMORIA para el pic de la posicion", posicion, falta);
-#endif
-}
-
-// Aviso temprano si un pic trae mas fotogramas de los que caben. Es un fallo de datos,
-// no de codigo: pasa al importar una especie con --frames por encima de
-// NUMERO_FRAMES_POKEMON. Sin esto, LZ77 escribe lo que diga su cabecera y se lleva por
-// delante el hueco del siguiente combatiente, con el estropicio a varios segundos vista.
-static void ComprobarQueElPicCabe(u32 especie, u32 personalidad, bool32 esFront)
-{
-#if DEPURACION_MGBA
-    const u32 *comprimido = esFront ? gSpeciesInfo[especie].frontPic : gSpeciesInfo[especie].backPic;
-    u32 tamano;
-
-    if (comprimido == NULL)
-        return;
-
-    tamano = comprimido[0] >> 8;   // la cabecera LZ77 dice cuanto ocupa descomprimido
-    if (tamano > MAX_PIC_BYTES * NUMERO_FRAMES_POKEMON)
-        LOG("PIC DEMASIADO GRANDE especie / bytes", especie, tamano);
-#endif
-}
-
-static void AjustaFotogramasPic(u32 posicion, u32 especie, u32 personalidad, bool32 esFront)
-{
-    u32 bytes = BytesPicCombate(especie, personalidad, esFront);
-
-    if (bytes == PIC_GRANDE_BYTES)
-        ReordenaPicGrande(gMonSpritesGfxPtr->spritesGfx[posicion], NUMERO_FRAMES_POKEMON);
-
-    for (u32 fotograma = 0; fotograma < NUMERO_FRAMES_POKEMON; fotograma++)
-    {
-        gMonSpritesGfxPtr->frameImages[posicion][fotograma].data = gMonSpritesGfxPtr->spritesGfx[posicion] + (fotograma * bytes);
-        gMonSpritesGfxPtr->frameImages[posicion][fotograma].size = bytes;
-    }
-}
-
 void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
 {
     u32 monsPersonality, currentPersonality, isShiny, species, paletteOffset, position;
@@ -374,8 +320,7 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
     position = battler;
     if (GetBattlerSide(battler) == LADO_OPONENTE)
     {
-        ComprobarQueElPicCabe(species, currentPersonality, TRUE);
-        AseguraHuecoPic(position, BytesPicCombate(species, currentPersonality, TRUE));
+        PreparaHuecoPic(position, species, currentPersonality, TRUE);
         HandleLoadSpecialPokePic(TRUE,
                                  gMonSpritesGfxPtr->spritesGfx[position],
                                  species, currentPersonality);
@@ -383,8 +328,7 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
     }
     else
     {
-        ComprobarQueElPicCabe(species, currentPersonality, FALSE);
-        AseguraHuecoPic(position, BytesPicCombate(species, currentPersonality, FALSE));
+        PreparaHuecoPic(position, species, currentPersonality, FALSE);
         HandleLoadSpecialPokePic(FALSE,
                                  gMonSpritesGfxPtr->spritesGfx[position],
                                  species, currentPersonality);
@@ -587,6 +531,10 @@ void BattleLoadSubstituteOrMonSpriteGfx(u8 battler, bool8 loadMonSprite)
     if (!loadMonSprite)
     {
         position = battler;
+
+        // El sustituto tambien escribe en el hueco, y puede llegar antes de que
+        // ningun pic lo haya pedido.
+        HuecoPic(position, MON_PIC_SIZE * NUMERO_FRAMES_POKEMON);
 
         if (GetBattlerSide(battler) != LADO_JUGADOR)
             LZDecompressVram(gBattleAnimSpriteGfx_Substitute, gMonSpritesGfxPtr->spritesGfx[position]);
@@ -882,18 +830,22 @@ void AllocateMonSpritesGfx(void)
 
     for (u32 indiceCombatiente = 0; indiceCombatiente < NUMERO_COMBATIENTES; indiceCombatiente++)
     {
-        gMonSpritesGfxPtr->spritesGfx[indiceCombatiente] = AllocZeroed(BYTES_MINIMOS_HUECO);
+        // Nada de reservar por adelantado: cada hueco se pide una sola vez, cuando
+        // se sabe que Pokemon entra y cuanto ocupa. Ver HuecoPic en pic_combate.c.
+        gMonSpritesGfxPtr->spritesGfx[indiceCombatiente] = NULL;
+        gMonSpritesGfxPtr->tamanoHueco[indiceCombatiente] = 0;
         gMonSpritesGfxPtr->templates[indiceCombatiente] = gBattlerSpriteTemplates[indiceCombatiente];
 
+        // El tamano hay que dejarlo puesto SIEMPRE, aunque el hueco todavia no
+        // exista. Si un sprite se crea antes de que se cargue su pic y encuentra aqui
+        // un cero, pide cero tiles... y pedir cero tiles no significa "ninguno": el
+        // repartidor lo interpreta como "libera el mapa entero". A partir de ahi
+        // reparte sitio que ya era de otro y se pisan marcadores, backs y frontales.
+        // AjustaFotogramasPic lo recoloca con el tamano de verdad al cargar cada uno.
         for (u32 frameCombatiente = 0; frameCombatiente < NUMERO_FRAMES_POKEMON; frameCombatiente++)
         {
-            if (gMonSpritesGfxPtr->spritesGfx[indiceCombatiente])
-            {
-                // Provisional: AjustaFotogramasPic lo recoloca al cargar cada Pokemon,
-                // que es cuando se sabe cuanto ocupa su pic.
-                gMonSpritesGfxPtr->frameImages[indiceCombatiente][frameCombatiente].data = gMonSpritesGfxPtr->spritesGfx[indiceCombatiente] + (frameCombatiente * MON_PIC_SIZE);
-                gMonSpritesGfxPtr->frameImages[indiceCombatiente][frameCombatiente].size = MON_PIC_SIZE;
-            }
+            gMonSpritesGfxPtr->frameImages[indiceCombatiente][frameCombatiente].data = NULL;
+            gMonSpritesGfxPtr->frameImages[indiceCombatiente][frameCombatiente].size = MON_PIC_SIZE;
         }
         
         gMonSpritesGfxPtr->templates[indiceCombatiente].images = gMonSpritesGfxPtr->frameImages[indiceCombatiente];
@@ -907,7 +859,10 @@ void FreeMonSpritesGfx(void)
 
     TRY_FREE_AND_SET_NULL(gMonSpritesGfxPtr->buffer);
     for (u32 i = 0; i < NUMERO_COMBATIENTES; i++)
+    {
         TRY_FREE_AND_SET_NULL(gMonSpritesGfxPtr->spritesGfx[i]);
+        gMonSpritesGfxPtr->tamanoHueco[i] = 0;
+    }
     FREE_AND_SET_NULL(gMonSpritesGfxPtr);
 }
 

@@ -33,6 +33,20 @@ const struct SubspriteTable *SubspritesPicCombate(u32 bytesPorFotograma);
 // quiere agrupados por pieza. Esto los recoloca en el sitio.
 void ReordenaPicGrande(u8 *datos, u32 numFotogramas);
 
+// Indice del vaiven continuo dentro de gAnims_MonPic, la tabla de los sprites de
+// espalda. Ver src/data.c.
+#define ANIM_ESPALDA_BUCLE 2
+
+// Asegura que el hueco de un combatiente mida al menos lo pedido. Devuelve donde esta,
+// que puede seguir siendo el anterior si no hubo memoria.
+u8 *HuecoPic(u32 posicion, u32 bytes);
+
+// Agranda el hueco del combatiente si su pic lo necesita. Llamar ANTES de descomprimir.
+void PreparaHuecoPic(u32 posicion, u32 especie, u32 personalidad, bool32 esFront);
+
+// Recoloca los tiles y reparte los fotogramas. Llamar DESPUES de descomprimir.
+void AjustaFotogramasPic(u32 posicion, u32 especie, u32 personalidad, bool32 esFront);
+
 // Pone las piezas al sprite del combatiente si su pic pasa de 64x64.
 void AplicaSubspritesPic(u32 spriteId);
 
