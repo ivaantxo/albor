@@ -99,6 +99,36 @@
 
 #define NUM_DEX_FLAG_BYTES ROUND_BITS_TO_BYTES(DEX_COUNT)
 #define NUM_FLAG_BYTES ROUND_BITS_TO_BYTES(FLAGS_COUNT)
+
+// Las banderas que van a la partida, cada familia en su propio array.
+//
+// Antes eran un unico bloque y los grupos se delimitaban con aritmetica repetida en
+// cada sitio que los borraba: un desplazamiento inicial y un tamano calculados a mano.
+// Eso tenia dos problemas. Uno, que equivocarse era facil y silencioso -un tamano mal
+// calculado dejaba un grupo sin borrar o pisaba el siguiente-. Y dos, que anadir una
+// bandera de guion desplazaba TODAS las de detras, incluidas las diarias, invalidando
+// mas partida de la necesaria.
+//
+// Separados, cada grupo se borra con sizeof y crece sin mover a los demas. Las
+// especiales no estan aqui: viven en EWRAM y no se guardan.
+struct BanderasGuardadas
+{
+    // Se borran al cargar cualquier mapa.
+    u8 temporales[ROUND_BITS_TO_BYTES(NUM_TEMP_FLAGS + 1)];
+
+    // Progreso y sucesos del mundo. Permanentes.
+    u8 guion[ROUND_BITS_TO_BYTES(BANDERAS_GUION_FIN - TEMP_FLAGS_END)];
+
+    // Estado del sistema y del jugador. Permanentes.
+    u8 sistema[ROUND_BITS_TO_BYTES(BANDERAS_SISTEMA_FIN - SYSTEM_FLAGS)];
+
+    // Se borran al cambiar el dia.
+    u8 diarias[ROUND_BITS_TO_BYTES(NUM_DAILY_FLAGS + 1)];
+
+    // Una por entrenador, indexada por su identificador. En este proyecto tambien se
+    // borran a diario, asi que todos vuelven a ser combatibles cada dia.
+    u8 entrenadores[ROUND_BITS_TO_BYTES(TRAINERS_COUNT)];
+};
 #define NUM_TRAINER_FLAG_BYTES ROUND_BITS_TO_BYTES(TRAINERS_COUNT)
 
 // This produces an error at compile-time if expr is zero.
@@ -280,32 +310,12 @@ struct SaveBlock
     struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT];
     struct ItemSlot bagPocket_TMHM[BAG_TMHM_COUNT]; //modificar
     struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT];
-    struct Pokeblock pokeblocks[POKEBLOCKS_COUNT]; //eliminar
     struct ObjectEvent objectEvents[OBJECT_EVENTS_COUNT];
     struct ObjectEventTemplate objectEventTemplates[OBJECT_EVENT_TEMPLATES_COUNT];
-    u8 flags[NUM_FLAG_BYTES];
-    u8 trainerFlags[NUM_TRAINER_FLAG_BYTES];
+    struct BanderasGuardadas banderas;
     u16 vars[VARS_COUNT];
     u32 gameStats[NUM_GAME_STATS];
     struct BerryTree berryTrees[BERRY_TREES_COUNT];
-    struct SecretBase secretBases[SECRET_BASES_COUNT]; //eliminar
-    u8 playerRoomDecorations[DECOR_MAX_PLAYERS_HOUSE]; //eliminar
-    u8 playerRoomDecorationPositions[DECOR_MAX_PLAYERS_HOUSE]; //eliminar
-    u8 decorationDesks[10]; //eliminar
-    u8 decorationChairs[10]; //eliminar
-    u8 decorationPlants[10]; //eliminar
-    u8 decorationOrnaments[30]; //eliminar
-    u8 decorationMats[30]; //eliminar
-    u8 decorationPosters[10]; //eliminar
-    u8 decorationDolls[40]; //eliminar
-    u8 decorationCushions[10]; //eliminar
-    u16 outbreakPokemonSpecies;
-    u8 outbreakLocationMapNum;
-    u8 outbreakLocationMapGroup;
-    u8 outbreakPokemonLevel;
-    u16 outbreakPokemonMoves[MAXIMO_MOVIMIENTOS_POKEMON]; //???
-    u8 outbreakPokemonProbability; //???
-    u16 outbreakDaysLeft; //???
     struct Mail mail[MAIL_COUNT]; //eliminar
     struct DayCare daycare;
     u8 giftRibbons[GIFT_RIBBONS_COUNT]; //eliminar

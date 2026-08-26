@@ -6509,7 +6509,7 @@ bool32 EsAliado(u32 atacante, u32 defensor)
 
 bool32 IsGen6ExpShareEnabled(void)
 {
-    if (I_EXP_SHARE_FLAG <= TEMP_FLAGS_END)
+    if ((u32)I_EXP_SHARE_FLAG <= (u32)TEMP_FLAGS_END)   // enums distintas: comparar como numeros
         return FALSE;
 
     return FlagGet(I_EXP_SHARE_FLAG);

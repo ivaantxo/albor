@@ -26,7 +26,6 @@
 #include "pokemon.h"
 #include "pokemon_storage_system.h"
 #include "random.h"
-#include "rayquaza_scene.h"
 #include "region_map.h"
 #include "rtc.h"
 #include "script.h"
@@ -1904,20 +1903,6 @@ bool32 ShouldDistributeEonTicket(void)
         return FALSE;
 
     return TRUE;
-}
-
-void Script_DoRayquazaScene(void)
-{
-    if (!gSpecialVar_0x8004)
-    {
-        // Groudon/Kyogre fight scene
-        DoRayquazaScene(0, TRUE, CB2_ReturnToFieldContinueScriptPlayMapMusic);
-    }
-    else
-    {
-        // Rayquaza arrives scene
-        DoRayquazaScene(1, FALSE, CB2_ReturnToFieldContinueScriptPlayMapMusic);
-    }
 }
 
 #define playCount data[0]

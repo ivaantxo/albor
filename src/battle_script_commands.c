@@ -279,19 +279,6 @@ static const s32 sExperienceScalingFactors[] =
         159767,
 };
 
-static const u16 sBadgeFlags[8] = {
-    FLAG_BADGE01_GET,
-    FLAG_BADGE02_GET,
-    FLAG_BADGE03_GET,
-    FLAG_BADGE04_GET,
-    FLAG_BADGE05_GET,
-    FLAG_BADGE06_GET,
-    FLAG_BADGE07_GET,
-    FLAG_BADGE08_GET,
-};
-
-static const u16 sWhiteOutBadgeMoney[9] = {8, 16, 24, 36, 48, 64, 80, 100, 120};
-
 #define STAT_CHANGE_WORKED 0
 #define STAT_CHANGE_DIDNT_WORK 1
 
@@ -6171,7 +6158,6 @@ static void Cmd_getmoneyreward(void)
     CMD_ARGS();
 
     u32 money;
-    u8 sPartyLevel = 1;
 
     if (gBattleOutcome == B_OUTCOME_WON)
     {
@@ -6180,21 +6166,11 @@ static void Cmd_getmoneyreward(void)
     }
     else
     {
-        s32 i, count;
-        for (i = 0; i < PARTY_SIZE; i++)
-        {
-            if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG) != SPECIES_NONE && GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG) != SPECIES_EGG)
-            {
-                if (GetMonData(&gPlayerParty[i], MON_DATA_LEVEL) > sPartyLevel)
-                    sPartyLevel = GetMonData(&gPlayerParty[i], MON_DATA_LEVEL);
-            }
-        }
-        for (count = 0, i = 0; i < ARRAY_COUNT(sBadgeFlags); i++)
-        {
-            if (FlagGet(sBadgeFlags[i]) == TRUE)
-                ++count;
-        }
-        money = sWhiteOutBadgeMoney[count] * sPartyLevel;
+        // Un diez por ciento de lo que lleves. La formula de vanilla multiplicaba una
+        // tabla de medallas por el nivel mas alto del equipo, lo que castigaba llevar
+        // un Pokemon fuerte de apoyo y ademas ataba el castigo a un numero fijo de
+        // hitos de progresion. Un porcentaje escala solo y no depende de nada.
+        money = GetMoney(&gSaveBlockPtr->money) / 10;
         RemoveMoney(&gSaveBlockPtr->money, money);
     }
 

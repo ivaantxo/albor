@@ -728,7 +728,6 @@ const u8 gText_SaveFailed[] = _("Save failed…");
 const u8 gText_NoSaveFileCantSetTime[] = _("There is no save file, so the time\ncan't be set.");
 const u8 gText_InGameClockUsable[] = _("The in-game clock adjustment system\nis now useable.");
 const u8 gText_Slots[] = _("SLOTS");
-const u8 gText_Roulette[] = _("ROULETTE");
 const u8 gText_Good[] = _("Good");
 const u8 gText_VeryGood[] = _("Very good");
 const u8 gText_Excellent[] = _("Excellent");

@@ -2,10 +2,9 @@
 #include "event_data.h"
 #include "pokedex.h"
 
-#define SPECIAL_FLAGS_SIZE  (NUM_SPECIAL_FLAGS / 8)  // 8 flags per byte
-#define TEMP_FLAGS_SIZE     (NUM_TEMP_FLAGS / 8)
-#define DAILY_FLAGS_SIZE    (NUM_DAILY_FLAGS / 8)
-#define TRAINER_FLAGS_SIZE  (TRAINERS_COUNT / 8)
+// Hacia arriba: con menos de ocho banderas especiales la division daba cero y el
+// array se quedaba sin un solo byte donde escribir.
+#define SPECIAL_FLAGS_SIZE  ROUND_BITS_TO_BYTES(NUM_SPECIAL_FLAGS)
 #define TEMP_VARS_SIZE      (NUM_TEMP_VARS * 2)      // 1/2 var per byte
 
 EWRAM_DATA u16 gSpecialVar_0x8000 = 0;
@@ -31,15 +30,14 @@ extern u16 *const gSpecialVars[];
 
 void InitEventData(void)
 {
-    memset(gSaveBlockPtr->flags, 0, sizeof(gSaveBlockPtr->flags));
-    memset(gSaveBlockPtr->trainerFlags, 0, sizeof(gSaveBlockPtr->trainerFlags));
+    memset(&gSaveBlockPtr->banderas, 0, sizeof(gSaveBlockPtr->banderas));
     memset(gSaveBlockPtr->vars, 0, sizeof(gSaveBlockPtr->vars));
     memset(sSpecialFlags, 0, sizeof(sSpecialFlags));
 }
 
 void ClearTempFieldEventData(void)
 {
-    memset(&gSaveBlockPtr->flags[TEMP_FLAGS_START / 8], 0, TEMP_FLAGS_SIZE);
+    memset(gSaveBlockPtr->banderas.temporales, 0, sizeof(gSaveBlockPtr->banderas.temporales));
     memset(&gSaveBlockPtr->vars[TEMP_VARS_START - VARS_START], 0, TEMP_VARS_SIZE);
     FlagClear(FLAG_SYS_ENC_UP_ITEM);
     FlagClear(FLAG_SYS_ENC_DOWN_ITEM);
@@ -49,8 +47,10 @@ void ClearTempFieldEventData(void)
 
 void ClearDailyFlags(void)
 {
-    memset(&gSaveBlockPtr->flags[DAILY_FLAGS_START / 8], 0, DAILY_FLAGS_SIZE);
-    memset(&gSaveBlockPtr->trainerFlags[0], 0, TRAINER_FLAGS_SIZE);
+    memset(gSaveBlockPtr->banderas.diarias, 0, sizeof(gSaveBlockPtr->banderas.diarias));
+    // Los entrenadores tambien: en este proyecto todos vuelven a ser combatibles cada
+    // dia, no solo los revanchistas como en vanilla.
+    memset(gSaveBlockPtr->banderas.entrenadores, 0, sizeof(gSaveBlockPtr->banderas.entrenadores));
 }
 
 void DisableResetRTC(void)
@@ -113,25 +113,39 @@ u16 VarGetObjectEventGraphicsId(u8 id)
     return VarGet(VAR_OBJ_GFX_ID_0 + id);
 }
 
-u8 *GetFlagPointer(u16 id)
+// Traduce el identificador de una bandera al byte que la contiene. Es el unico sitio
+// donde vive el reparto por familias: el resto del juego solo maneja el numero.
+u8 *GetFlagPointer(u32 id)
 {
+    struct BanderasGuardadas *b = &gSaveBlockPtr->banderas;
+
     if (id == 0)
-        return NULL;
-    else if (id < SPECIAL_FLAGS_START)
-        return &gSaveBlockPtr->flags[id / 8];
-    else
-        return &sSpecialFlags[(id - SPECIAL_FLAGS_START) / 8];
+        return NULL;                        // el 0 significa "sin bandera"
+
+    if (id <= TEMP_FLAGS_END)
+        return &b->temporales[id / 8];
+
+    if (id < SYSTEM_FLAGS)
+        return &b->guion[(id - (TEMP_FLAGS_END + 1)) / 8];
+
+    if (id < DAILY_FLAGS_START)
+        return &b->sistema[(id - SYSTEM_FLAGS) / 8];
+
+    if (id < SPECIAL_FLAGS_START)
+        return &b->diarias[(id - DAILY_FLAGS_START) / 8];
+
+    return &sSpecialFlags[(id - SPECIAL_FLAGS_START) / 8];
 }
 
-u8 *GetTrainerFlagPointer(u16 id)
+u8 *GetTrainerFlagPointer(u32 id)
 {
     if (id == 0 || id >= TRAINERS_COUNT)
         return NULL;
 
-    return &gSaveBlockPtr->trainerFlags[id / 8];
+    return &gSaveBlockPtr->banderas.entrenadores[id / 8];
 }
 
-u8 FlagSet(u16 id)
+u32 FlagSet(u32 id)
 {
     u8 *ptr = GetFlagPointer(id);
     if (ptr)
@@ -139,7 +153,7 @@ u8 FlagSet(u16 id)
     return 0;
 }
 
-u8 TrainerFlagSet(u16 id)
+u32 TrainerFlagSet(u32 id)
 {
     u8 *ptr = GetTrainerFlagPointer(id);
     if (ptr)
@@ -147,7 +161,7 @@ u8 TrainerFlagSet(u16 id)
     return 0;
 }
 
-u8 FlagToggle(u16 id)
+u32 FlagToggle(u32 id)
 {
     u8 *ptr = GetFlagPointer(id);
     if (ptr)
@@ -155,7 +169,7 @@ u8 FlagToggle(u16 id)
     return 0;
 }
 
-u8 FlagClear(u16 id)
+u32 FlagClear(u32 id)
 {
     u8 *ptr = GetFlagPointer(id);
     if (ptr)
@@ -163,7 +177,7 @@ u8 FlagClear(u16 id)
     return 0;
 }
 
-u8 TrainerFlagClear(u16 id)
+u32 TrainerFlagClear(u32 id)
 {
     u8 *ptr = GetTrainerFlagPointer(id);
     if (ptr)
@@ -171,7 +185,7 @@ u8 TrainerFlagClear(u16 id)
     return 0;
 }
 
-bool8 FlagGet(u16 id)
+bool32 FlagGet(u32 id)
 {
     u8 *ptr = GetFlagPointer(id);
 
@@ -184,7 +198,7 @@ bool8 FlagGet(u16 id)
     return TRUE;
 }
 
-bool8 TrainerFlagGet(u16 id)
+bool32 TrainerFlagGet(u32 id)
 {
     u8 *ptr = GetTrainerFlagPointer(id);
 

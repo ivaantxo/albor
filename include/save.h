@@ -1,8 +1,7 @@
 #ifndef GUARD_SAVE_H
 #define GUARD_SAVE_H
 
-// Each 4 KiB flash sector contains 3968 bytes of actual data followed by a 128 byte footer.
-// Only 12 bytes of the footer are used.
+// Cada sector de 4 KiB de la flash lleva 4084 bytes de datos y un pie de 12.
 #define SECTOR_DATA_SIZE 4084
 #define SECTOR_FOOTER_SIZE 12
 #define SECTOR_SIZE (SECTOR_DATA_SIZE + SECTOR_FOOTER_SIZE)
@@ -11,24 +10,23 @@
 // Subir esta firma cada vez que cambie la disposicion de struct SaveBlock
 // (por ejemplo al anadir o quitar campos de BoxPokemon). Si no se sube, un
 // guardado antiguo se lee con los offsets desplazados y produce datos basura.
-#define SECTOR_SIGNATURE 0x8012026
+#define SECTOR_SIGNATURE 0x8012027
 
 #define SECTOR_ID_SAVEBLOCK_START       0
-#define SECTOR_ID_SAVEBLOCK_END         2
-#define SECTOR_ID_PKMN_STORAGE_START    3
-#define SECTOR_ID_PKMN_STORAGE_END      15
+#define SECTOR_ID_SAVEBLOCK_END         1
+#define SECTOR_ID_PKMN_STORAGE_START    2
+#define SECTOR_ID_PKMN_STORAGE_END      10
 
-#define SECTORS_COUNT                   16
+// 2 sectores para struct SaveBlock (6632 B) y 9 para struct PokemonStorage
+// (36276 B). No sobra ninguno: un sector de mas se borraria y se programaria
+// entero en cada guardado aunque no llevase un solo byte util.
+#define SECTORS_COUNT                   11
 
 #define SAVE_STATUS_EMPTY    0
 #define SAVE_STATUS_OK       1
 #define SAVE_STATUS_CORRUPT  2
 #define SAVE_STATUS_NO_FLASH 4
 #define SAVE_STATUS_ERROR    0xFF
-
-// Special sector id value for certain save functions to
-// indicate that no specific sector should be used.
-#define FULL_SAVE_SLOT 0xFFFF
 
 // SetDamagedSectorBits states
 enum
@@ -55,9 +53,6 @@ struct SaveSector
     u32 counter;
 }; // size is SECTOR_SIZE (0x1000)
 
-extern u16 gLastWrittenSector;
-extern u32 gLastSaveCounter;
-extern u16 gLastKnownGoodSector;
 extern u32 gDamagedSaveSectors;
 extern u32 gSaveCounter;
 extern u16 gSaveFileStatus;

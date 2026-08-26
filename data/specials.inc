@@ -54,7 +54,6 @@ gSpecials::
 	def_special ChangePokemonNickname
 	def_special ChangeBoxPokemonNickname
 	def_special ChoosePartyMon
-	def_special PlayRoulette
 	def_special IsFanClubMemberFanOfPlayer
 	def_special GetNumFansOfPlayerInTrainerFanClub
 	def_special BufferFanClubTrainerName
@@ -169,7 +168,6 @@ gSpecials::
 	def_special GetDeptStoreDefaultFloorChoice
 	def_special ShowScrollableMultichoice
 	def_special ScrollableMultichoice_TryReturnToList
-	def_special Script_DoRayquazaScene
 	def_special ScriptMenu_CreateStartMenuForPokenavTutorial
 	def_special CountPlayerTrainerStars
 	def_special ChooseMonForMoveTutor

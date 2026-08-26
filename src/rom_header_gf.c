@@ -71,7 +71,9 @@ static const struct GFRomHeader sGFRomHeader = {
     .version = GAME_VERSION,
     .gameName = "pokemon emerald version",
     // .decorations = gDecorations,  // Decoration system removed
-    .flagsOffset = offsetof(struct SaveBlock, flags),
+        // Ahora las banderas viven agrupadas en un struct por familias. Se apunta a su
+    // comienzo, que es donde empiezan las temporales.
+    .flagsOffset = offsetof(struct SaveBlock, banderas),
     .varsOffset = offsetof(struct SaveBlock, vars),
     .pokedexOffset = offsetof(struct SaveBlock, pokedexOrder),
     .seenOffset = offsetof(struct SaveBlock, dexSeen),

@@ -615,7 +615,11 @@ static void ShowSaveMessage(const u8 *message, u8 (*saveCallback)(void))
 {
     StringExpandPlaceholders(gVariableTextoAmpliada, message);
     LoadMessageBoxAndFrameGfx(0, TRUE);
-    AddTextPrinterForMessage_2(TRUE);
+    // Velocidad 0, no la del jugador: es un aviso de estado, no dialogo, y
+    // ademas el guardado no empieza hasta que el mensaje termina de escribirse
+    // (RunSaveCallback espera al impresor). A velocidad media eran dos segundos
+    // de maquina de escribir antes de tocar la flash.
+    AddTextPrinterWithCustomSpeedForMessage(TRUE, 0);
     sSavingComplete = TRUE;
     sSaveDialogCallback = saveCallback;
 }
@@ -680,15 +684,11 @@ static u8 SaveSuccessCallback(void)
 
 static u8 SaveReturnSuccessCallback(void)
 {
-    if (!IsSEPlaying())
-    {
-        HideSaveInfoWindow();
-        return SAVE_SUCCESS;
-    }
-    else
-    {
-        return SAVE_IN_PROGRESS;
-    }
+    // No se espera a que termine el jingle (unos 0,7 s): se cierra el menu y
+    // suena ya sobre el mapa. Esperarlo era lo que mas duraba de todo el
+    // guardado una vez optimizada la escritura en flash.
+    HideSaveInfoWindow();
+    return SAVE_SUCCESS;
 }
 
 static void ShowSaveInfoWindow(void)

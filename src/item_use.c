@@ -179,7 +179,9 @@ void ItemUseOutOfBattle_Mail(u8 taskId)
     Task_FadeAndCloseBagMenu(taskId);
 }
 
-STATIC_ASSERT(I_EXP_SHARE_ITEM < GEN_6 || I_EXP_SHARE_FLAG > TEMP_FLAGS_END, YouNeedToSetAFlagToUseGen6ExpShare);
+// Los dos lados vienen de enums distintas ahora, asi que hay que compararlos como
+// numeros o el compilador se queja con razon.
+STATIC_ASSERT(I_EXP_SHARE_ITEM < GEN_6 || (u32)I_EXP_SHARE_FLAG > (u32)TEMP_FLAGS_END, YouNeedToSetAFlagToUseGen6ExpShare);
 
 void ItemUseOutOfBattle_ExpShare(u8 taskId)
 {

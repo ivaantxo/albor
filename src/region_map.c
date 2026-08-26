@@ -274,14 +274,9 @@ static const u8 *const sEverGrandeCityNames[] =
     gText_PokemonCenter
 };
 
-static const struct MultiNameFlyDest sMultiNameFlyDestinations[] =
-{
-    {
-        .name = sEverGrandeCityNames,
-        .mapSecId = MAPSEC_NONE,
-        .flag = FLAG_LANDMARK_POKEMON_LEAGUE
-    }
-};
+// La unica entrada era la Liga de Hoenn. Se queda vacia a proposito: el mecanismo de
+// destinos con varios nombres sigue en pie para cuando tu region lo necesite.
+static const struct MultiNameFlyDest sMultiNameFlyDestinations[] = {};
 
 static const struct BgTemplate sFlyMapBgTemplates[] =
 {

@@ -7,6 +7,7 @@
 #include "battle_controllers.h"
 #include "battle_interface.h"
 #include "battle_main.h"
+#include "nivel_dinamico.h"
 #include "laboratorio_animaciones.h"
 #include "battle_bg.h"
 #include "overworld.h"
@@ -641,7 +642,15 @@ u8 CreateNPCTrainerPartyFromTrainer(struct Pokemon *party, const struct Trainer 
             else if (partyData[i].gender == TRAINER_MON_RANDOM_GENDER)
                 personalityValue = (personalityValue & 0xFFFFFF00) | GeneratePersonalityForGender(Random() & 1 ? MON_MALE : MON_FEMALE, partyData[i].species);
             ModifyPersonalityForNature(&personalityValue, partyData[i].nature);
-            CreaPokemon(&party[i], partyData[i].species, partyData[i].lvl, TRUE, personalityValue);
+            // El nivel del dato no se usa: manda el del Pokemon mas fuerte del
+            // jugador. Y a ese nivel, la especie evoluciona lo que le toque, asi que
+            // basta con nombrar la primera etapa en el equipo del entrenador.
+            {
+                u32 nivel = NivelDinamico();
+                u32 especie = EspecieSegunNivel(partyData[i].species, nivel);
+
+                CreaPokemon(&party[i], especie, nivel, TRUE, personalityValue);
+            }
             SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
 
             CustomTrainerPartyAssignMoves(&party[i], &partyData[i]);
