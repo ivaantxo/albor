@@ -1812,7 +1812,7 @@ static u8 GetTextEntryPosition(void)
 
 static u8 GetPreviousTextCaretPosition(void)
 {
-    s8 i;
+    s32 i;
 
     for (i = sNamingScreen->template->maxChars - 1; i > 0; i--)
     {

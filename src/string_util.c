@@ -122,7 +122,7 @@ u16 StringLength(const u8 *str)
 
 u16 StringLineLength(const u8 *str)
 {
-    u16 i = 0, length = 0;
+    u32 i = 0, length = 0;
 
     while (str[length] != EOS)
     {

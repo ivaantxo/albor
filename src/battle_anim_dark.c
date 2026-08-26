@@ -719,7 +719,7 @@ static void DoMementoShadowEffect(struct Task *task)
 {
     int var0, var1;
     s16 var2;
-    s16 i;
+    s32 i;
     int var4;
 
     var2 = task->data[5] - task->data[4];

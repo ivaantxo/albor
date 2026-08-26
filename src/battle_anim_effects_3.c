@@ -1645,7 +1645,7 @@ void AnimTask_RapinSpinMonElevation(u8 taskId)
     s16 var2;
     int var3;
     int var4;
-    s16 i;
+    s32 i;
     struct ParametrosDistorsionFondo parametrosDistorsionFondo;
     struct Task *task = &gTasks[taskId];
 
@@ -1723,7 +1723,7 @@ void AnimTask_RapinSpinMonElevation(u8 taskId)
 
 static void RapinSpinMonElevation_Step(u8 taskId)
 {
-    s16 i;
+    s32 i;
     struct Task *task = &gTasks[taskId];
 
     task->data[0] -= task->data[5];
@@ -2855,7 +2855,7 @@ static void AnimTask_AcidArmor_Step(u8 taskId)
     s16 bgX, bgY;
     s16 offset;
     s16 var0;
-    s16 i;
+    s32 i;
     s16 sineIndex;
     s16 var3;
 

@@ -779,7 +779,7 @@ static void SpriteCB_Egg_WaitHatch(struct Sprite *sprite)
 
 static void SpriteCB_Egg_Hatch(struct Sprite *sprite)
 {
-    s16 i;
+    s32 i;
 
     // Fade to white to hide transition from egg to Pokémon
     if (sprite->sTimer == 0)

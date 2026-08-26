@@ -1024,7 +1024,7 @@ static void Task_StartHandleBetGridInput(u8 taskId)
 
 static void Task_SelectFirstEmptySquare(u8 taskId)
 {
-    s16 i;
+    s32 i;
 
     if (sRoulette->hitFlags & F_ORANGE_ROW)
     {
@@ -1462,7 +1462,7 @@ static void Task_EndTurn(u8 taskId)
 
 static void Task_TryPrintEndTurnMsg(u8 taskId)
 {
-    u8 i = 0;
+    u32 i = 0;
     gTasks[taskId].tSelectionId = i;
     sRoulette->betSelection[sRoulette->curBallNum] = SELECTION_NONE;
     DrawGridBackground(SELECTION_NONE);
@@ -1509,7 +1509,7 @@ static void Task_TryPrintEndTurnMsg(u8 taskId)
 
 static void Task_ClearBoard(u8 taskId)
 {
-    u8 i = 0;
+    u32 i = 0;
 
     gTasks[taskId].tBallNum = 0;
     ResetBallDataForNewSpin(taskId);
@@ -1601,7 +1601,7 @@ static void StartTaskAfterDelayOrInput(u8 taskId, TaskFunc task, u16 delay, u16 
 
 static void ResetBallDataForNewSpin(u8 taskId)
 {
-    u8 i = 0;
+    u32 i = 0;
     sRoulette->ballStuck = FALSE;
     sRoulette->ballUnstuck = FALSE;
     sRoulette->useTaillow = FALSE;
@@ -3013,7 +3013,7 @@ static void ShowHideGridIcons(bool8 hideAll, u8 hideSquare)
 
 static void ShowHideGridBalls(bool8 hideAll, u8 hideBallId)
 {
-    u8 i = 0;
+    u32 i = 0;
     if (hideAll)
     {
         for (; i < BALLS_PER_ROUND; i++)
@@ -3684,7 +3684,7 @@ static void CreateShroomishSprite(struct Sprite *ball)
 
 static void CreateTaillowSprite(struct Sprite *ball)
 {
-    u8 i = 0;
+    u32 i = 0;
     s16 t;
     s16 coords[2][2] = {
         {256, 84}, // Right approach
@@ -3716,7 +3716,7 @@ static void SetBallStuck(struct Sprite *sprite)
     u8 numCandidates = 0;
     u8 maxSlotToCheck = 5;
     u8 betSlotId = 0;
-    u8 i = 0;
+    u32 i = 0;
     u8 slotsToSkip;
     u8 slotCandidates[NUM_ROULETTE_SLOTS - 2] = {}; // - 2 because we know at least 2 are already occupied
     u16 rand = Random();

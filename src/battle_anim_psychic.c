@@ -999,7 +999,7 @@ static void AnimSkillSwapOrb(struct Sprite *sprite)
 // arg0: Stage. Stage 0 is a slight right distortion, 1 is a medium left distortion, and 2 is a severe right distortion
 void AnimTask_ExtrasensoryDistortion(u8 taskId)
 {
-    s16 i;
+    s32 i;
     u8 yOffset;
     struct ParametrosDistorsionFondo parametrosDistorsionFondo;
     struct Task *task = &gTasks[taskId];

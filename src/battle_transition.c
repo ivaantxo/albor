@@ -1204,7 +1204,7 @@ static bool8 BigPokeball_Init(struct Task *task)
 
 static bool8 BigPokeball_SetGfx(struct Task *task)
 {
-    s16 i, j;
+    s32 i, j;
     u16 *tilemap, *tileset;
     const u16 *bigPokeballMap;
 
@@ -1531,7 +1531,7 @@ static bool8 PokeballsTrail_Init(struct Task *task)
 
 static bool8 PokeballsTrail_Main(struct Task *task)
 {
-    s16 i;
+    s32 i;
     s16 side;
     s16 startX[ARRAY_COUNT(sPokeballsTrail_StartXCoords)];
     s16 delays[ARRAY_COUNT(sPokeballsTrail_Delays)];
@@ -2039,7 +2039,7 @@ static bool8 Mugshot_Init(struct Task *task)
 
 static bool8 Mugshot_SetGfx(struct Task *task)
 {
-    s16 i, j;
+    s32 i, j;
     u16 *tilemap, *tileset;
     const u16 *mugshotsMap = sMugshotsTilemap;
     u8 mugshotColor = GetTrainerMugshotColorFromId(gTrainerBattleOpponent);
@@ -2205,7 +2205,7 @@ static bool8 Mugshot_GradualWhiteFade(struct Task *task)
 
     if (++task->tTimer & 1)
     {
-        s16 i;
+        s32 i;
         for (i = 0, active = FALSE; i <= task->tFadeSpread; i++)
         {
             // Fade starts in middle of screen and
@@ -3570,7 +3570,7 @@ static bool8 AngledWipes_SetWipeData(struct Task *task)
 
 static bool8 AngledWipes_DoWipe(struct Task *task)
 {
-    s16 i;
+    s32 i;
     bool8 finished;
 
     sTransitionData->VBlank_DMA = 0;
@@ -3818,7 +3818,7 @@ static void SetSinWave(s16 *array, s16 sinAdd, s16 index, s16 indexIncrementer, 
 
 static void SetCircularMask(u16 *buffer, s16 centerX, s16 centerY, s16 radius)
 {
-    s16 i;
+    s32 i;
 
     memset(buffer, 10, ALTURA_PANTALLA * sizeof(u16));
     for (i = 0; i < 64; i++)

@@ -1437,7 +1437,7 @@ static bool8 LoadPokedexListPage(u8 page)
 static void CreatePokedexList(void)
 {
     u16 dexNum;
-    s16 i;
+    s32 i;
     s16 r5, r10;
 
     sPokedexView->pokemonListCount = 0;
@@ -5072,7 +5072,7 @@ static void Task_HandleFormsScreenInput(u8 taskId)
 static void PrintForms(u8 taskId, u16 species)
 {
     u32 i;
-    u8 j = 1;
+    u32 j = 1;
     u16 speciesForm;
 
     u8 base_x = 5;

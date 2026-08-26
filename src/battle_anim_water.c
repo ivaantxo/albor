@@ -1104,7 +1104,7 @@ static void AnimTask_CreateSurfWave_Step2(u8 taskId)
 
 static void AnimTask_SurfWaveScanlineEffect(u8 taskId)
 {
-    s16 i;
+    s32 i;
     struct ParametrosDistorsionFondo parametros;
     struct Task *task = &gTasks[taskId];
 
@@ -1327,7 +1327,7 @@ static u8 GetWaterSpoutPowerForAnim(void)
 
 static void CreateWaterSpoutLaunchDroplets(struct Task *task, u8 taskId)
 {
-    s16 i;
+    s32 i;
     s16 attackerCoordX = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_X_2);
     s16 attackerCoordY = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_Y_PIC_OFFSET);
     s16 trigIndex = 172;

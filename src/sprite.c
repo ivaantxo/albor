@@ -728,7 +728,7 @@ void ProcessSpriteCopyRequests(void)
 {
     if (sShouldProcessSpriteCopyRequests)
     {
-        u8 i = 0;
+        u32 i = 0;
 
         while (sSpriteCopyRequestCount > 0)
         {

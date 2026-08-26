@@ -238,7 +238,7 @@ void CableCar(void)
 static void CB2_LoadCableCar(void)
 {
     u16 imebak;
-    u8 i = 0;
+    u32 i = 0;
     u32 sizeOut = 0;
 
     switch (gMain.state)
@@ -368,7 +368,7 @@ static void CB2_CableCar(void)
 
 static void CB2_EndCableCar(void)
 {
-    u8 i = 0;
+    u32 i = 0;
 
     HideBg(0);
     HideBg(1);
@@ -404,7 +404,7 @@ static void CB2_EndCableCar(void)
 
 static void Task_CableCar(u8 taskId)
 {
-    u8 i = 0;
+    u32 i = 0;
 
     sCableCar->timer++;
     switch (sCableCar->state)
@@ -963,7 +963,7 @@ static void AnimateGroundGoingDown(void)
 
 static void DrawNextGroundSegmentGoingUp(void)
 {
-    u8 i = 0;
+    u32 i = 0;
 
     sCableCar->groundXOffset = sCableCar->groundYOffset = 0;
     sCableCar->groundXBase = sCableCar->bg0HorizontalOffset;
@@ -997,7 +997,7 @@ static void DrawNextGroundSegmentGoingUp(void)
 
 static void DrawNextGroundSegmentGoingDown(void)
 {
-    u8 i = 0;
+    u32 i = 0;
 
     sCableCar->groundXOffset = sCableCar->groundYOffset = 0;
     sCableCar->groundXBase = sCableCar->bg0HorizontalOffset;

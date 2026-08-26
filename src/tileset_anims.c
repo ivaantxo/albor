@@ -562,25 +562,25 @@ static void TilesetAnim_Building(u16 timer)
 
 static void QueueAnimTiles_General_Flower(u16 timer)
 {
-    u16 i = timer % ARRAY_COUNT(gTilesetAnims_General_Flower);
+    u32 i = timer % ARRAY_COUNT(gTilesetAnims_General_Flower);
     AppendTilesetAnimToBuffer(gTilesetAnims_General_Flower[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(508)), 4 * TILE_4BPP);
 }
 
 static void QueueAnimTiles_General_Water(u16 timer)
 {
-    u8 i = timer % ARRAY_COUNT(gTilesetAnims_General_Water);
+    u32 i = timer % ARRAY_COUNT(gTilesetAnims_General_Water);
     AppendTilesetAnimToBuffer(gTilesetAnims_General_Water[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(432)), 30 * TILE_4BPP);
 }
 
 static void QueueAnimTiles_General_SandWaterEdge(u16 timer)
 {
-    u16 i = timer % ARRAY_COUNT(gTilesetAnims_General_SandWaterEdge);
+    u32 i = timer % ARRAY_COUNT(gTilesetAnims_General_SandWaterEdge);
     AppendTilesetAnimToBuffer(gTilesetAnims_General_SandWaterEdge[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(464)), 10 * TILE_4BPP);
 }
 
 static void QueueAnimTiles_General_Waterfall(u16 timer)
 {
-    u16 i = timer % ARRAY_COUNT(gTilesetAnims_General_Waterfall);
+    u32 i = timer % ARRAY_COUNT(gTilesetAnims_General_Waterfall);
     AppendTilesetAnimToBuffer(gTilesetAnims_General_Waterfall[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(496)), 6 * TILE_4BPP);
 }
 
@@ -828,13 +828,13 @@ static void TilesetAnim_Cave(u16 timer)
 
 static void QueueAnimTiles_General_LandWaterEdge(u16 timer)
 {
-    u16 i = timer % ARRAY_COUNT(gTilesetAnims_General_LandWaterEdge);
+    u32 i = timer % ARRAY_COUNT(gTilesetAnims_General_LandWaterEdge);
     AppendTilesetAnimToBuffer(gTilesetAnims_General_LandWaterEdge[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(480)), 10 * TILE_4BPP);
 }
 
 static void QueueAnimTiles_Lavaridge_Steam(u8 timer)
 {
-    u8 i = timer % ARRAY_COUNT(gTilesetAnims_Lavaridge_Steam);
+    u32 i = timer % ARRAY_COUNT(gTilesetAnims_Lavaridge_Steam);
     AppendTilesetAnimToBuffer(gTilesetAnims_Lavaridge_Steam[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(NUM_TILES_IN_PRIMARY + 288)), 4 * TILE_4BPP);
 
     i = (timer + 2) % (int)ARRAY_COUNT(gTilesetAnims_Lavaridge_Steam);
@@ -843,19 +843,19 @@ static void QueueAnimTiles_Lavaridge_Steam(u8 timer)
 
 static void QueueAnimTiles_Pacifidlog_LogBridges(u8 timer)
 {
-    u8 i = timer % ARRAY_COUNT(gTilesetAnims_Pacifidlog_LogBridges);
+    u32 i = timer % ARRAY_COUNT(gTilesetAnims_Pacifidlog_LogBridges);
     AppendTilesetAnimToBuffer(gTilesetAnims_Pacifidlog_LogBridges[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(NUM_TILES_IN_PRIMARY + 464)), 30 * TILE_4BPP);
 }
 
 static void QueueAnimTiles_Underwater_Seaweed(u8 timer)
 {
-    u8 i = timer % ARRAY_COUNT(gTilesetAnims_Underwater_Seaweed);
+    u32 i = timer % ARRAY_COUNT(gTilesetAnims_Underwater_Seaweed);
     AppendTilesetAnimToBuffer(gTilesetAnims_Underwater_Seaweed[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(NUM_TILES_IN_PRIMARY + 496)), 4 * TILE_4BPP);
 }
 
 static void QueueAnimTiles_Pacifidlog_WaterCurrents(u8 timer)
 {
-    u8 i = timer % ARRAY_COUNT(gTilesetAnims_Pacifidlog_WaterCurrents);
+    u32 i = timer % ARRAY_COUNT(gTilesetAnims_Pacifidlog_WaterCurrents);
     AppendTilesetAnimToBuffer(gTilesetAnims_Pacifidlog_WaterCurrents[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(NUM_TILES_IN_PRIMARY + 496)), 8 * TILE_4BPP);
 }
 
@@ -886,13 +886,13 @@ static void QueueAnimTiles_Rustboro_WindyWater(u16 timer_div, u8 timer_mod)
 
 static void QueueAnimTiles_Rustboro_Fountain(u16 timer)
 {
-    u16 i = timer % ARRAY_COUNT(gTilesetAnims_Rustboro_Fountain);
+    u32 i = timer % ARRAY_COUNT(gTilesetAnims_Rustboro_Fountain);
     AppendTilesetAnimToBuffer(gTilesetAnims_Rustboro_Fountain[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(NUM_TILES_IN_PRIMARY + 448)), 4 * TILE_4BPP);
 }
 
 static void QueueAnimTiles_Lavaridge_Lava(u16 timer)
 {
-    u16 i = timer % ARRAY_COUNT(gTilesetAnims_Lavaridge_Cave_Lava);
+    u32 i = timer % ARRAY_COUNT(gTilesetAnims_Lavaridge_Cave_Lava);
     AppendTilesetAnimToBuffer(gTilesetAnims_Lavaridge_Cave_Lava[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(NUM_TILES_IN_PRIMARY + 160)), 4 * TILE_4BPP);
 }
 
@@ -906,19 +906,19 @@ static void QueueAnimTiles_EverGrande_Flowers(u16 timer_div, u8 timer_mod)
 
 static void QueueAnimTiles_Cave_Lava(u16 timer)
 {
-    u16 i = timer % ARRAY_COUNT(gTilesetAnims_Lavaridge_Cave_Lava);
+    u32 i = timer % ARRAY_COUNT(gTilesetAnims_Lavaridge_Cave_Lava);
     AppendTilesetAnimToBuffer(gTilesetAnims_Lavaridge_Cave_Lava[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(NUM_TILES_IN_PRIMARY + 416)), 4 * TILE_4BPP);
 }
 
 static void QueueAnimTiles_Dewford_Flag(u16 timer)
 {
-    u16 i = timer % ARRAY_COUNT(gTilesetAnims_Dewford_Flag);
+    u32 i = timer % ARRAY_COUNT(gTilesetAnims_Dewford_Flag);
     AppendTilesetAnimToBuffer(gTilesetAnims_Dewford_Flag[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(NUM_TILES_IN_PRIMARY + 170)), 6 * TILE_4BPP);
 }
 
 static void QueueAnimTiles_Slateport_Balloons(u16 timer)
 {
-    u16 i = timer % ARRAY_COUNT(gTilesetAnims_Slateport_Balloons);
+    u32 i = timer % ARRAY_COUNT(gTilesetAnims_Slateport_Balloons);
     AppendTilesetAnimToBuffer(gTilesetAnims_Slateport_Balloons[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(NUM_TILES_IN_PRIMARY + 224)), 4 * TILE_4BPP);
 }
 
@@ -950,43 +950,43 @@ static void TilesetAnim_BikeShop(u16 timer)
 
 static void QueueAnimTiles_Building_TVTurnedOn(u16 timer)
 {
-    u16 i = timer % ARRAY_COUNT(gTilesetAnims_Building_TvTurnedOn);
+    u32 i = timer % ARRAY_COUNT(gTilesetAnims_Building_TvTurnedOn);
     AppendTilesetAnimToBuffer(gTilesetAnims_Building_TvTurnedOn[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(496)), 4 * TILE_4BPP);
 }
 
 static void QueueAnimTiles_SootopolisGym_Waterfalls(u16 timer)
 {
-    u16 i = timer % min(ARRAY_COUNT(gTilesetAnims_SootopolisGym_SideWaterfall), ARRAY_COUNT(gTilesetAnims_SootopolisGym_FrontWaterfall));
+    u32 i = timer % min(ARRAY_COUNT(gTilesetAnims_SootopolisGym_SideWaterfall), ARRAY_COUNT(gTilesetAnims_SootopolisGym_FrontWaterfall));
     AppendTilesetAnimToBuffer(gTilesetAnims_SootopolisGym_SideWaterfall[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(NUM_TILES_IN_PRIMARY + 496)), 12 * TILE_4BPP);
     AppendTilesetAnimToBuffer(gTilesetAnims_SootopolisGym_FrontWaterfall[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(NUM_TILES_IN_PRIMARY + 464)), 20 * TILE_4BPP);
 }
 
 static void QueueAnimTiles_EliteFour_WallLights(u16 timer)
 {
-    u16 i = timer % ARRAY_COUNT(gTilesetAnims_EliteFour_WallLights);
+    u32 i = timer % ARRAY_COUNT(gTilesetAnims_EliteFour_WallLights);
     AppendTilesetAnimToBuffer(gTilesetAnims_EliteFour_WallLights[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(NUM_TILES_IN_PRIMARY + 504)), 1 * TILE_4BPP);
 }
 
 static void QueueAnimTiles_EliteFour_GroundLights(u16 timer)
 {
-    u16 i = timer % ARRAY_COUNT(gTilesetAnims_EliteFour_FloorLight);
+    u32 i = timer % ARRAY_COUNT(gTilesetAnims_EliteFour_FloorLight);
     AppendTilesetAnimToBuffer(gTilesetAnims_EliteFour_FloorLight[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(NUM_TILES_IN_PRIMARY + 480)), 4 * TILE_4BPP);
 }
 
 static void QueueAnimTiles_MauvilleGym_ElectricGates(u16 timer)
 {
-    u16 i = timer % ARRAY_COUNT(gTilesetAnims_MauvilleGym_ElectricGates);
+    u32 i = timer % ARRAY_COUNT(gTilesetAnims_MauvilleGym_ElectricGates);
     AppendTilesetAnimToBuffer(gTilesetAnims_MauvilleGym_ElectricGates[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(NUM_TILES_IN_PRIMARY + 144)), 16 * TILE_4BPP);
 }
 
 static void QueueAnimTiles_BikeShop_BlinkingLights(u16 timer)
 {
-    u16 i = timer % ARRAY_COUNT(gTilesetAnims_BikeShop_BlinkingLights);
+    u32 i = timer % ARRAY_COUNT(gTilesetAnims_BikeShop_BlinkingLights);
     AppendTilesetAnimToBuffer(gTilesetAnims_BikeShop_BlinkingLights[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(NUM_TILES_IN_PRIMARY + 496)), 9 * TILE_4BPP);
 }
 
 static void QueueAnimTiles_Sootopolis_StormyWater(u16 timer)
 {
-    u16 i = timer % ARRAY_COUNT(gTilesetAnims_Sootopolis_StormyWater);
+    u32 i = timer % ARRAY_COUNT(gTilesetAnims_Sootopolis_StormyWater);
     AppendTilesetAnimToBuffer(gTilesetAnims_Sootopolis_StormyWater[i], (u16 *)(BG_VRAM + POSICION_TILE_4BPP(NUM_TILES_IN_PRIMARY + 240)), 96 * TILE_4BPP);
 }

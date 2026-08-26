@@ -1028,7 +1028,7 @@ static u8 SetCardBgsAndPals(void)
 
 static void DrawCardScreenBackground(u16 *ptr)
 {
-    s16 i, j;
+    s32 i, j;
     u16 *dst = sData->bgTilemapBuffer;
 
     for (i = 0; i < 20; i++)
@@ -1046,7 +1046,7 @@ static void DrawCardScreenBackground(u16 *ptr)
 
 static void DrawCardFrontOrBack(u16 *ptr)
 {
-    s16 i, j;
+    s32 i, j;
     u16 *dst = sData->cardTilemapBuffer;
 
     for (i = 0; i < 20; i++)
@@ -1163,7 +1163,7 @@ static bool8 Task_BeginCardFlip(struct Task *task)
 static bool8 Task_AnimateCardFlipDown(struct Task *task)
 {
     u32 cardHeight, r5, r10, cardTop, r6, var_24, cardBottom, var;
-    s16 i;
+    s32 i;
 
     sData->allowDMACopy = FALSE;
     if (task->tCardTop >= CARD_FLIP_Y)
@@ -1276,7 +1276,7 @@ static bool8 Task_SetCardFlipped(struct Task *task)
 static bool8 Task_AnimateCardFlipUp(struct Task *task)
 {
     u32 cardHeight, r5, r10, cardTop, r6, var_24, cardBottom, var;
-    s16 i;
+    s32 i;
 
     sData->allowDMACopy = FALSE;
     if (task->tCardTop <= 5)

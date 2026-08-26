@@ -2181,7 +2181,7 @@ static void DrawPagination(void) // Updates the pagination dots at the top of th
 
     for (i = 0; i < PSS_PAGE_COUNT; i++)
     {
-        u8 j = i * 2;
+        u32 j = i * 2;
 
         if (i < sMonSummaryScreen->minPageIndex)
         {

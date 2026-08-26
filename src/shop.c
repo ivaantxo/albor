@@ -328,7 +328,7 @@ static void SetShopMenuCallback(void (* callback)(void))
 
 static void SetShopItemsForSale(const u16 *items)
 {
-    u16 i = 0;
+    u32 i = 0;
 
     sMartInfo.itemList = items;
     sMartInfo.itemCount = 0;
@@ -709,7 +709,7 @@ static void BuyMenuDrawMapGraphics(void)
 
 static void BuyMenuDrawMapBg(void)
 {
-    s16 i, j;
+    s32 i, j;
     s16 x, y;
     const struct MapLayout *mapLayout;
     u16 metatile;
@@ -886,7 +886,7 @@ static bool8 BuyMenuCheckIfObjectEventOverlapsMenuBg(s16 *object)
 
 static void BuyMenuCopyMenuBgToBg1TilemapBuffer(void)
 {
-    s16 i;
+    s32 i;
     u16 *dest = sShopData->tilemapBuffers[1];
     const u16 *src = sShopData->tilemapBuffers[0];
 

@@ -309,7 +309,7 @@ static void StartCutGrassFieldEffect(void)
 bool8 FldEff_CutGrass(void)
 {
     s16 x, y;
-    u8 i = 0;
+    u32 i = 0;
 
     PlaySE(SE_M_CUT);
     PlayerGetDestCoords(&gPlayerFacingPosition.x, &gPlayerFacingPosition.y);
@@ -411,7 +411,7 @@ static u8 GetLongGrassCaseAt(s16 x, s16 y)
 
 static void SetCutGrassMetatiles(s16 x, s16 y)
 {
-    s16 i;
+    s32 i;
     s16 lowerY = y + sCutSquareSide;
 
     for (i = 0; i < sCutSquareSide; i++)

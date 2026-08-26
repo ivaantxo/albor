@@ -3274,7 +3274,7 @@ static void DebugAction_Give_Pokemon_SelectAbility(u8 taskId)
 {
     u16 abilityId;
     u8 abilityCount = NUM_ABILITY_SLOTS - 1; //-1 for proper iteration
-    u8 i = 0;
+    u32 i = 0;
 
     if (JOY_NEW(DPAD_ANY))
     {

@@ -462,7 +462,12 @@ void MauvilleGymDeactivatePuzzle(void)
 {
     u32 i, x, y;
     const struct UCoords8 *switchCoords = sMauvilleGymSwitchCoords;
-    for (i = ARRAY_COUNT(sMauvilleGymSwitchCoords) - 1; i >= 0; i--)
+    // 'i' es u32, asi que 'i >= 0' seria siempre cierto y el bucle no terminaria
+    // nunca: al llegar a cero el i-- daria 0xFFFFFFFF y switchCoords se saldria del
+    // array escribiendo metatiles en coordenadas basura. Con 'i-- > 0' la condicion
+    // se evalua antes de restar, que es la forma correcta de contar hacia atras sin
+    // signo.
+    for (i = ARRAY_COUNT(sMauvilleGymSwitchCoords); i-- > 0;)
     {
         MapGridSetMetatileIdAt(switchCoords->x, switchCoords->y, METATILE_MauvilleGym_PressedSwitch);
         switchCoords++;
@@ -2101,7 +2106,7 @@ u16 GetNumFansOfPlayerInTrainerFanClub(void)
 // If the player has > 5 fans in the Trainer Fan Club, then lose 1 fan for every 12 hours since the last fan loss / timer reset
 void TryLoseFansFromPlayTime(void)
 {
-    u8 i = 0;
+    u32 i = 0;
     if (gSaveBlockPtr->playTimeHours < 999)
     {
         while (TRUE)
