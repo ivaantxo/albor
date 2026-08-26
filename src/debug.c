@@ -17,6 +17,7 @@
 #include "data.h"
 #include "daycare.h"
 #include "debug.h"
+#include "fondo_afin.h"
 #include "laboratorio_animaciones.h"
 #include "event_data.h"
 #include "event_object_movement.h"
@@ -99,6 +100,7 @@ enum UtilDebugMenu
     DEBUG_UTIL_MENU_ITEM_BERRY_FUNCTIONS,
     DEBUG_UTIL_MENU_ITEM_EWRAM_COUNTERS,
     DEBUG_UTIL_MENU_ITEM_LAB_ANIMACIONES,
+    DEBUG_UTIL_MENU_ITEM_FONDO_AFIN,
 };
 
 enum GivePCBagDebugMenu
@@ -363,6 +365,7 @@ static void DebugAction_Util_ExpansionVersion(u8 taskId);
 static void DebugAction_Util_BerryFunctions(u8 taskId);
 static void DebugAction_Util_CheckEWRAMCounters(u8 taskId);
 static void DebugAction_Util_LabAnimaciones(u8 taskId);
+static void DebugAction_Util_FondoAfin(u8 taskId);
 
 static void DebugAction_OpenPCBagFillMenu(u8 taskId);
 static void DebugAction_PCBag_Fill_PCBoxes_Fast(u8 taskId);
@@ -512,6 +515,7 @@ static const u8 sDebugText_Util_ExpansionVersion[] =         _("Expansion Versio
 static const u8 sDebugText_Util_BerryFunctions[] =           _("Berry Functions…{CLEAR_TO 110}{RIGHT_ARROW}");
 static const u8 sDebugText_Util_EWRAMCounters[] =            _("EWRAM Counters…{CLEAR_TO 110}{RIGHT_ARROW}");
 static const u8 sDebugText_Util_LabAnimaciones[] =           _("Lab. animaciones");
+static const u8 sDebugText_Util_FondoAfin[] =                _("Fondo afin (modo 7)");
 // PC/Bag Menu
 static const u8 sDebugText_PCBag_Fill[] =                    _("Fill…{CLEAR_TO 110}{RIGHT_ARROW}");
 static const u8 sDebugText_PCBag_Fill_Pc_Fast[] =            _("Fill PC Boxes Fast");
@@ -688,6 +692,7 @@ static const struct ListMenuItem sDebugMenu_Items_Utilities[] =
     [DEBUG_UTIL_MENU_ITEM_BERRY_FUNCTIONS] = {sDebugText_Util_BerryFunctions,   DEBUG_UTIL_MENU_ITEM_BERRY_FUNCTIONS},
     [DEBUG_UTIL_MENU_ITEM_EWRAM_COUNTERS]  = {sDebugText_Util_EWRAMCounters,    DEBUG_UTIL_MENU_ITEM_EWRAM_COUNTERS},
     [DEBUG_UTIL_MENU_ITEM_LAB_ANIMACIONES] = {sDebugText_Util_LabAnimaciones,   DEBUG_UTIL_MENU_ITEM_LAB_ANIMACIONES},
+    [DEBUG_UTIL_MENU_ITEM_FONDO_AFIN]      = {sDebugText_Util_FondoAfin,        DEBUG_UTIL_MENU_ITEM_FONDO_AFIN},
 };
 
 static const struct ListMenuItem sDebugMenu_Items_PCBag[] =
@@ -851,6 +856,7 @@ static void (*const sDebugMenu_Actions_Utilities[])(u8) =
     [DEBUG_UTIL_MENU_ITEM_BERRY_FUNCTIONS] = DebugAction_Util_BerryFunctions,
     [DEBUG_UTIL_MENU_ITEM_EWRAM_COUNTERS]  = DebugAction_Util_CheckEWRAMCounters,
     [DEBUG_UTIL_MENU_ITEM_LAB_ANIMACIONES] = DebugAction_Util_LabAnimaciones,
+    [DEBUG_UTIL_MENU_ITEM_FONDO_AFIN]      = DebugAction_Util_FondoAfin,
 };
 
 static void (*const sDebugMenu_Actions_PCBag[])(u8) =
@@ -5066,4 +5072,10 @@ static void DebugAction_Util_LabAnimaciones(u8 taskId)
 {
     Debug_DestroyMenu_Full(taskId);
     EntraEnLaboratorioAnimaciones();
+}
+
+static void DebugAction_Util_FondoAfin(u8 taskId)
+{
+    Debug_DestroyMenu_Full(taskId);
+    EntraEnDemoFondoAfin();
 }
