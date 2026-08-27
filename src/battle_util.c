@@ -27,7 +27,6 @@
 #include "malloc.h"
 #include "berry.h"
 #include "pokedex.h"
-#include "mail.h"
 #include "field_weather.h"
 #include "fpmath.h"
 #include "constants/abilities.h"

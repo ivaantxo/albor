@@ -17,7 +17,6 @@
 #include "item.h"
 #include "item_icon.h"
 #include "item_menu.h"
-#include "mail.h"
 #include "main.h"
 #include "menu.h"
 #include "naming_screen.h"
@@ -474,7 +473,6 @@ static void Task_ReshowPokeStorage(u8);
 static void Task_PokeStorageMain(u8);
 static void Task_JumpBox(u8);
 static void Task_NameBox(u8);
-static void Task_PrintCantStoreMail(u8);
 static void Task_HandleMovingMonFromParty(u8);
 
 // Input handlers
@@ -733,7 +731,6 @@ static const union AffineAnimCmd sAffineAnim_ChooseBoxMenu[] =
 static const u8 sChooseBoxMenu_TextColors[] = {TEXT_COLOR_RED, TEXT_DYNAMIC_COLOR_6, TEXT_DYNAMIC_COLOR_5};
 static const u8 sText_OutOf30[] = _("/30");
 
-static const u16 sChooseBoxMenu_Pal[] = INCBIN_U16("graphics/pokemon_storage/box_selection_popup.gbapal");
 static const u8 sChooseBoxMenuCenter_Gfx[] = INCBIN_U8("graphics/pokemon_storage/box_selection_popup_center.4bpp");
 static const u8 sChooseBoxMenuSides_Gfx[] = INCBIN_U8("graphics/pokemon_storage/box_selection_popup_sides.4bpp");
 static const u32 sScrollingBg_Gfx[] = INCBIN_U32("graphics/pokemon_storage/scrolling_bg.4bpp.lz");
@@ -1818,7 +1815,6 @@ enum
     MSTATE_SCROLL_BOX,
     MSTATE_WAIT_MSG,
     MSTATE_ERROR_LAST_PARTY_MON,
-    MSTATE_ERROR_HAS_MAIL,
     MSTATE_WAIT_ERROR_MSG,
     MSTATE_SCROLL_BOX_ITEM,
     MSTATE_WAIT_ITEM_ANIM,
@@ -1850,10 +1846,7 @@ static void Task_PokeStorageMain(u8 taskId)
         case INPUT_HIDE_PARTY:
             if (sStorage->boxOption == OPTION_MOVE_MONS)
             {
-                if (IsMonBeingMoved() && ItemIsMail(sStorage->displayMonItemId))
-                    sStorage->state = MSTATE_ERROR_HAS_MAIL;
-                else
-                    SetPokeStorageTask(Task_HidePartyPokemon);
+                SetPokeStorageTask(Task_HidePartyPokemon);
             }
             else if (sStorage->boxOption == OPTION_MOVE_ITEMS)
             {
@@ -1907,15 +1900,8 @@ static void Task_PokeStorageMain(u8 taskId)
         case INPUT_DEPOSIT:
             if (!IsRemovingLastPartyMon())
             {
-                if (ItemIsMail(sStorage->displayMonItemId))
-                {
-                    sStorage->state = MSTATE_ERROR_HAS_MAIL;
-                }
-                else
-                {
-                    PlaySE(SE_SELECT);
-                    SetPokeStorageTask(Task_DepositMenu);
-                }
+                PlaySE(SE_SELECT);
+                SetPokeStorageTask(Task_DepositMenu);
             }
             else
             {
@@ -2005,11 +1991,6 @@ static void Task_PokeStorageMain(u8 taskId)
     case MSTATE_ERROR_LAST_PARTY_MON:
         PlaySE(SE_FAILURE);
         PrintMessage(MSG_LAST_POKE);
-        sStorage->state = MSTATE_WAIT_ERROR_MSG;
-        break;
-    case MSTATE_ERROR_HAS_MAIL:
-        PlaySE(SE_FAILURE);
-        PrintMessage(MSG_PLEASE_REMOVE_MAIL);
         sStorage->state = MSTATE_WAIT_ERROR_MSG;
         break;
     case MSTATE_WAIT_ERROR_MSG:
@@ -2145,10 +2126,6 @@ static void Task_OnSelectedMon(u8 taskId)
             {
                 sStorage->state = 3;
             }
-            else if (ItemIsMail(sStorage->displayMonItemId))
-            {
-                sStorage->state = 4;
-            }
             else
             {
                 PlaySE(SE_SELECT);
@@ -2164,10 +2141,6 @@ static void Task_OnSelectedMon(u8 taskId)
             else if (sStorage->displayMonIsEgg)
             {
                 sStorage->state = 5; // Cannot release an Egg.
-            }
-            else if (ItemIsMail(sStorage->displayMonItemId))
-            {
-                sStorage->state = 4;
             }
             else
             {
@@ -2532,15 +2505,8 @@ static void Task_TakeItemForMoving(u8 taskId)
     switch (sStorage->state)
     {
     case 0:
-        if (!ItemIsMail(sStorage->displayMonItemId))
-        {
-            ClearBottomWindow();
-            sStorage->state++;
-        }
-        else
-        {
-            SetPokeStorageTask(Task_PrintCantStoreMail);
-        }
+        ClearBottomWindow();
+        sStorage->state++;
         break;
     case 1:
         StartCursorAnim(CURSOR_ANIM_OPEN);
@@ -2655,15 +2621,8 @@ static void Task_SwitchSelectedItem(u8 taskId)
     switch (sStorage->state)
     {
     case 0:
-        if (!ItemIsMail(sStorage->displayMonItemId))
-        {
-            ClearBottomWindow();
-            sStorage->state++;
-        }
-        else
-        {
-            SetPokeStorageTask(Task_PrintCantStoreMail);
-        }
+        ClearBottomWindow();
+        sStorage->state++;
         break;
     case 1:
         StartCursorAnim(CURSOR_ANIM_OPEN);
@@ -2809,32 +2768,6 @@ static void Task_HandleMovingMonFromParty(u8 taskId)
             UpdatePartySlotColors();
             SetPokeStorageTask(Task_PokeStorageMain);
         }
-        break;
-    }
-}
-
-static void Task_PrintCantStoreMail(u8 taskId)
-{
-    switch (sStorage->state)
-    {
-    case 0:
-        PrintMessage(MSG_CANT_STORE_MAIL);
-        sStorage->state++;
-        break;
-    case 1:
-        if (!IsDma3ManagerBusyWithBgCopy())
-            sStorage->state++;
-        break;
-    case 2:
-        if (JOY_NEW(A_BUTTON | B_BUTTON | DPAD_ANY))
-        {
-            ClearBottomWindow();
-            sStorage->state++;
-        }
-        break;
-    case 3:
-        if (!IsDma3ManagerBusyWithBgCopy())
-            SetPokeStorageTask(Task_PokeStorageMain);
         break;
     }
 }
@@ -6247,11 +6180,8 @@ static bool8 SetMenuTexts_Item(void)
         }
         else
         {
-            if (!ItemIsMail(sStorage->displayMonItemId))
-            {
-                SetMenuText(MENU_TAKE);
-                SetMenuText(MENU_BAG);
-            }
+            SetMenuText(MENU_TAKE);
+            SetMenuText(MENU_BAG);
             SetMenuText(MENU_INFO);
         }
     }
@@ -6266,9 +6196,6 @@ static bool8 SetMenuTexts_Item(void)
         }
         else
         {
-            if (ItemIsMail(sStorage->displayMonItemId) == TRUE)
-                return FALSE;
-
             SetMenuText(MENU_SWITCH);
         }
     }

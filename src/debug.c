@@ -13,7 +13,6 @@
 #include "constants/opponents.h"
 #include "berry.h"
 #include "clock.h"
-#include "coins.h"
 #include "data.h"
 #include "daycare.h"
 #include "debug.h"
@@ -57,7 +56,6 @@
 #include "wild_encounter.h"
 #include "constants/abilities.h"
 #include "constants/battle_ai.h"
-#include "constants/coins.h"
 #include "constants/expansion.h"
 #include "constants/flags.h"
 #include "constants/items.h"
@@ -210,7 +208,6 @@ enum GiveDebugMenu
     DEBUG_GIVE_MENU_ITEM_POKEMON_SIMPLE,
     DEBUG_GIVE_MENU_ITEM_POKEMON_COMPLEX,
     DEBUG_GIVE_MENU_ITEM_MAX_MONEY,
-    DEBUG_GIVE_MENU_ITEM_MAX_COINS,
     DEBUG_GIVE_MENU_ITEM_MAX_BATTLE_POINTS,
     DEBUG_GIVE_MENU_ITEM_DAYCARE_EGG,
 };
@@ -415,7 +412,6 @@ static void DebugAction_Give_Pokemon_SelectEVs(u8 taskId);
 static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId);
 static void DebugAction_Give_Pokemon_Move(u8 taskId);
 static void DebugAction_Give_MaxMoney(u8 taskId);
-static void DebugAction_Give_MaxCoins(u8 taskId);
 static void DebugAction_Give_MaxBattlePoints(u8 taskId);
 static void DebugAction_Give_DayCareEgg(u8 taskId);
 
@@ -607,7 +603,6 @@ static const u8 sDebugText_PokemonMove_1[] =            _("Move 1: {VAR_TEXTO_3}
 static const u8 sDebugText_PokemonMove_2[] =            _("Move 2: {VAR_TEXTO_3}{CLEAR_TO 90}\n{VAR_TEXTO_1}{CLEAR_TO 90}\n{CLEAR_TO 90}\n{VAR_TEXTO_2}{CLEAR_TO 90}");
 static const u8 sDebugText_PokemonMove_3[] =            _("Move 3: {VAR_TEXTO_3}{CLEAR_TO 90}\n{VAR_TEXTO_1}{CLEAR_TO 90}\n{CLEAR_TO 90}\n{VAR_TEXTO_2}{CLEAR_TO 90}");
 static const u8 sDebugText_Give_MaxMoney[] =            _("Max Money");
-static const u8 sDebugText_Give_MaxCoins[] =            _("Max Coins");
 static const u8 sDebugText_Give_BattlePoints[] =        _("Max Battle Points");
 static const u8 sDebugText_Give_DaycareEgg[] =          _("Daycare Egg");
 // Sound Menu
@@ -799,7 +794,6 @@ static const struct ListMenuItem sDebugMenu_Items_Give[] =
     [DEBUG_GIVE_MENU_ITEM_POKEMON_SIMPLE]    = {sDebugText_Give_GivePokemonSimple,  DEBUG_GIVE_MENU_ITEM_POKEMON_SIMPLE},
     [DEBUG_GIVE_MENU_ITEM_POKEMON_COMPLEX]   = {sDebugText_Give_GivePokemonComplex, DEBUG_GIVE_MENU_ITEM_POKEMON_COMPLEX},
     [DEBUG_GIVE_MENU_ITEM_MAX_MONEY]         = {sDebugText_Give_MaxMoney,           DEBUG_GIVE_MENU_ITEM_MAX_MONEY},
-    [DEBUG_GIVE_MENU_ITEM_MAX_COINS]         = {sDebugText_Give_MaxCoins,           DEBUG_GIVE_MENU_ITEM_MAX_COINS},
     [DEBUG_GIVE_MENU_ITEM_MAX_BATTLE_POINTS] = {sDebugText_Give_BattlePoints,       DEBUG_GIVE_MENU_ITEM_MAX_BATTLE_POINTS},
     [DEBUG_GIVE_MENU_ITEM_DAYCARE_EGG]       = {sDebugText_Give_DaycareEgg,         DEBUG_GIVE_MENU_ITEM_DAYCARE_EGG},
 };
@@ -915,7 +909,6 @@ static void (*const sDebugMenu_Actions_Give[])(u8) =
     [DEBUG_GIVE_MENU_ITEM_POKEMON_SIMPLE]    = DebugAction_Give_PokemonSimple,
     [DEBUG_GIVE_MENU_ITEM_POKEMON_COMPLEX]   = DebugAction_Give_PokemonComplex,
     [DEBUG_GIVE_MENU_ITEM_MAX_MONEY]         = DebugAction_Give_MaxMoney,
-    [DEBUG_GIVE_MENU_ITEM_MAX_COINS]         = DebugAction_Give_MaxCoins,
     [DEBUG_GIVE_MENU_ITEM_MAX_BATTLE_POINTS] = DebugAction_Give_MaxBattlePoints,
     [DEBUG_GIVE_MENU_ITEM_DAYCARE_EGG]       = DebugAction_Give_DayCareEgg,
 };
@@ -3684,11 +3677,6 @@ static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId) //https://githu
 static void DebugAction_Give_MaxMoney(u8 taskId)
 {
     SetMoney(&gSaveBlockPtr->money, MAX_MONEY);
-}
-
-static void DebugAction_Give_MaxCoins(u8 taskId)
-{
-    SetCoins(MAX_COINS);
 }
 
 static void DebugAction_Give_MaxBattlePoints(u8 taskId)

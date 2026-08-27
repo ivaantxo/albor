@@ -34,7 +34,6 @@ struct TrainerCard
     /*0x10*/ u16 playTimeHours;
     /*0x12*/ u16 playTimeMinutes;
     /*0x1C*/ u16 contestsWithFriends;
-    /*0x1E*/ u16 pokeblocksWithFriends;
     /*0x20*/ u16 pokemonTrades;
     /*0x24*/ u32 money;
     /*0x30*/ u8 playerName[MAXIMO_CARACTERES_NOMBRE_JUGADOR + 1];

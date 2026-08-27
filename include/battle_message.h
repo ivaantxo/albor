@@ -229,7 +229,7 @@ bool32 ShouldDoTrainerSlide(u32 battler, u32 which);
 void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst);
 
 extern const u8 *const gStatNamesTable[];
-extern const u8 *const gPokeblockWasTooXStringTable[];
+extern const u8 *const gSaborDemasiadoFuerte[];
 
 extern const u8 gText_PkmnIsEvolving[];
 extern const u8 gText_CongratsPkmnEvolved[];

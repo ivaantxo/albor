@@ -4,7 +4,6 @@
 #include "battle_anim.h"
 #include "berry.h"
 #include "bike.h"
-#include "coins.h"
 #include "data.h"
 #include "event_data.h"
 #include "event_object_lock.h"
@@ -19,7 +18,6 @@
 #include "item.h"
 #include "item_menu.h"
 #include "item_use.h"
-#include "mail.h"
 #include "main.h"
 #include "menu.h"
 #include "menu_helpers.h"
@@ -78,7 +76,7 @@ EWRAM_DATA static void(*sItemUseOnFieldCB)(u8 taskId) = NULL;
 // Below is set TRUE by UseRegisteredKeyItemOnField
 #define tUsingRegisteredKeyItem  data[3]
 
-// UB here if an item with type ITEM_USE_MAIL or ITEM_USE_BAG_MENU uses SetUpItemUseCallback
+// UB here if an item with type ITEM_USE_NINGUNO or ITEM_USE_BAG_MENU uses SetUpItemUseCallback
 // Never occurs in vanilla, but can occur with improperly created items
 static const MainCallback sItemUseCallbacks[] =
 {
@@ -163,20 +161,6 @@ u8 CheckIfItemIsTMHMOrEvolutionStone(u16 itemId)
         return 2;
     else
         return 0;
-}
-
-// Mail in the bag menu can't have a message but it can be checked (view the mail background, no message)
-static void CB2_CheckMail(void)
-{
-    struct Mail mail;
-    mail.itemId = gSpecialVar_ItemId;
-    ReadMail(&mail, CB2_ReturnToBagMenuPocket, FALSE);
-}
-
-void ItemUseOutOfBattle_Mail(u8 taskId)
-{
-    gBagMenu->newScreenCallback = CB2_CheckMail;
-    Task_FadeAndCloseBagMenu(taskId);
 }
 
 // Los dos lados vienen de enums distintas ahora, asi que hay que compararlos como
@@ -621,21 +605,6 @@ static void Task_StandingOnHiddenItem(u8 taskId)
 #undef tCounter
 #undef tItemfinderBeeps
 #undef tFacingDir
-
-void ItemUseOutOfBattle_CoinCase(u8 taskId)
-{
-    ConvertIntToDecimalStringN(gVariableTexto1, GetCoins(), STR_CONV_MODE_LEFT_ALIGN, 4);
-    StringExpandPlaceholders(gVariableTextoAmpliada, gText_CoinCase);
-
-    if (!gTasks[taskId].tUsingRegisteredKeyItem)
-    {
-        DisplayItemMessage(taskId, FONT_NORMAL, gVariableTextoAmpliada, CloseItemMessage);
-    }
-    else
-    {
-        DisplayItemMessageOnField(taskId, gVariableTextoAmpliada, Task_CloseCantUseKeyItemMessage);
-    }
-}
 
 void ItemUseOutOfBattle_PowderJar(u8 taskId)
 {

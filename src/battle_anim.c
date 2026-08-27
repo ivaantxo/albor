@@ -185,7 +185,6 @@ static const u8* const sBattleAnims_General[NUM_B_ANIMS_GENERAL] =
     [B_ANIM_STATS_CHANGE]           = gBattleAnimGeneral_StatsChange,
     [B_ANIM_SUBSTITUTE_FADE]        = gBattleAnimGeneral_SubstituteFade,
     [B_ANIM_SUBSTITUTE_APPEAR]      = gBattleAnimGeneral_SubstituteAppear,
-    [B_ANIM_POKEBLOCK_THROW]        = gBattleAnimGeneral_PokeblockThrow,
     [B_ANIM_ITEM_KNOCKOFF]          = gBattleAnimGeneral_ItemKnockoff,
     [B_ANIM_TURN_TRAP]              = gBattleAnimGeneral_TurnTrap,
     [B_ANIM_HELD_ITEM_EFFECT]       = gBattleAnimGeneral_HeldItemEffect,

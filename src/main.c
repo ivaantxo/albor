@@ -33,8 +33,6 @@ extern void CB2_FlashNotDetectedScreen(void);
 
 const u8 gGameVersion = GAME_VERSION;
 
-const char BuildDateTime[] = "2005 02 21 11:10";
-
 const IntrFunc gIntrTableTemplate[] =
 {
     VCountIntr, // V-count interrupt
@@ -60,7 +58,14 @@ COMMON_DATA struct Main gMain = {0};
 COMMON_DATA u16 gKeyRepeatContinueDelay = 0;
 COMMON_DATA bool8 gSoftResetDisabled = 0;
 COMMON_DATA IntrFunc gIntrTable[INTR_COUNT] = {0};
-COMMON_DATA u32 IntrMain_Buffer[512] = {0};
+// IntrMain se copia de la ROM a la IWRAM para que el despacho de interrupciones
+// no pague los dos ciclos de espera de la ROM. La rutina, con su tabla de
+// literales incluida, ocupa 340 bytes; vanilla reservaba 2 KB de IWRAM para
+// ella y copiaba los 2 KB enteros, leyendo de paso 1,7 KB de ROM que no eran
+// suyos. Con 96 palabras sobra, y el aviso de InitIntrHandlers salta si algun
+// dia deja de sobrar.
+#define PALABRAS_INTRMAIN 96
+COMMON_DATA u32 IntrMain_Buffer[PALABRAS_INTRMAIN] = {0};
 COMMON_DATA s8 gPcmDmaCounter = 0;
 
 static void InitMainCallbacks(void);
@@ -222,7 +227,20 @@ void InitIntrHandlers(void)
     for (i = 0; i < INTR_COUNT; i++)
         gIntrTable[i] = gIntrTableTemplate[i];
 
-    DmaCopy32(3, IntrMain, IntrMain_Buffer, sizeof(IntrMain_Buffer));
+    {
+        u32 bytes = (u32)IntrMain_End - (u32)IntrMain;
+
+        if (bytes > sizeof(IntrMain_Buffer))
+        {
+            // No cabe: copiar de mas machacaria lo siguiente en IWRAM, y copiar
+            // de menos dejaria la rutina cortada. Se copia lo que cabe para que
+            // el aviso llegue a salir por el log.
+            LOG("INTRMAIN NO CABE: bytes / hueco", bytes, sizeof(IntrMain_Buffer));
+            bytes = sizeof(IntrMain_Buffer);
+        }
+
+        DmaCopy32(3, IntrMain, IntrMain_Buffer, bytes);
+    }
 
     INTR_VECTOR = IntrMain_Buffer;
 
@@ -313,11 +331,15 @@ void ClearPokemonCrySongs(void)
     CpuFill16(0, gPokemonCrySongs, MAX_POKEMON_CRIES * sizeof(struct PokemonCrySong));
 }
 
+// El cero tiene un digito. Con el bucle de vanilla -while (value > 0)- devolvia
+// cero, y quien lo usa para decidir cuantas cifras imprimir se quedaba sin
+// imprimir nada: ScrCmd_buffernumberstring sobre una variable a cero daba
+// cadena vacia en vez de "0".
 size_t CountDigits(int value)
 {
-    u32 count = 0;
+    u32 count = 1;
 
-    while (value > 0)
+    while (value >= 10)
     {
         value /= 10;
         count++;

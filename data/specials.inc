@@ -74,7 +74,6 @@ gSpecials::
 	def_special TakePokemonFromDaycare
 	def_special ScriptHatchMon
 	def_special EggHatch
-	def_special CheckDaycareMonReceivedMail
 	def_special IsEnoughForCostInVar0x8005
 	def_special SubtractMoneyFromVar0x8005
 	def_special TryFieldPoisonWhiteOut
@@ -166,9 +165,6 @@ gSpecials::
 	def_special HasAtLeastOneBerry
 	def_special OffsetCameraForBattle
 	def_special GetDeptStoreDefaultFloorChoice
-	def_special ShowScrollableMultichoice
-	def_special ScrollableMultichoice_TryReturnToList
-	def_special ScriptMenu_CreateStartMenuForPokenavTutorial
 	def_special CountPlayerTrainerStars
 	def_special ChooseMonForMoveTutor
 	def_special DoDeoxysRockInteraction
@@ -181,8 +177,6 @@ gSpecials::
 	def_special CreateAbnormalWeatherEvent
 	def_special GetAbnormalWeatherMapNameAndType
 	def_special GetMartEmployeeObjectEventId
-	def_special ScriptMenu_CreateLilycoveSSTidalMultichoice
-	def_special GetLilycoveSSTidalSelection
 	def_special SetMewAboveGrass
 	def_special ShouldDistributeEonTicket
 	def_special LoopWingFlapSE

@@ -1,49 +1,16 @@
 @ Interact with cuttable tree
-EventScript_CutTree::
-	lockall
-	checkpartymove MOVE_CUT
-	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CheckTreeCantCut
-	setfieldeffectargument 0, VAR_RESULT
-	bufferpartymonnick VAR_TEXTO_1, VAR_RESULT
-	buffermovename VAR_TEXTO_2, MOVE_CUT
-	msgbox Text_MonUsedFieldMove, MSGBOX_DEFAULT
-	closemessage
 EventScript_CutTreeCommon:
 	isfollowerfieldmoveuser VAR_0x8004
 	setfieldeffectargument 3, VAR_0x8004 @ skip pose if so
 	dofieldeffect FLDEFF_USE_CUT_ON_TREE
 	waitstate
-EventScript_CutTreeDown:: @ fallthrough
-	setflag FLAG_SAFE_FOLLOWER_MOVEMENT
-	call_if_eq VAR_0x8004, TRUE, EventScript_FollowerFieldMove
-	applymovement VAR_LAST_TALKED, Movement_CutTreeDown
-	waitmovement 0
-	removeobject VAR_LAST_TALKED
-	releaseall
-	end
-
-@ Use cut from party menu
 EventScript_UseCut::
 	lockall
 	goto EventScript_CutTreeCommon
 
-Movement_CutTreeDown:
-	cut_tree
-	step_end
-
-EventScript_CheckTreeCantCut::
-	msgbox Text_CantCut, MSGBOX_DEFAULT
-	releaseall
-	end
-
 Text_MonUsedFieldMove:
 	.string "¡{VAR_TEXTO_1} usó {VAR_TEXTO_2}!$"
 
-Text_CantCut:
-	.string "¡Este arbolito parece que\n"
-	.string "puede cortarse!$"
-
-@ Use rock smash from party menu
 EventScript_UseRockSmash::
 	lockall
 	goto EventScript_RockSmashCommon
@@ -210,20 +177,6 @@ Text_CantSmash:
 	.string "It's a rugged rock, but a POKéMON\n"
 	.string "may be able to smash it.$"
 
-EventScript_StrengthBoulder::
-	lockall
-	goto_if_set FLAG_SYS_USE_STRENGTH, EventScript_CheckActivatedBoulder
-	checkpartymove MOVE_STRENGTH
-	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CantStrength
-	setfieldeffectargument 0, VAR_RESULT
-	msgbox Text_WantToStrength, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, EventScript_CancelStrength
-	closemessage
-	dofieldeffect FLDEFF_USE_STRENGTH
-	waitstate
-	goto EventScript_ActivateStrength
-	end
-
 EventScript_UseStrength::
 	lockall
 	dofieldeffect FLDEFF_USE_STRENGTH
@@ -237,38 +190,10 @@ EventScript_ActivateStrength::
 	releaseall
 	end
 
-EventScript_CantStrength::
-	msgbox Text_CantStrength, MSGBOX_DEFAULT
-	releaseall
-	end
-
-EventScript_CheckActivatedBoulder::
-	msgbox Text_StrengthActivated, MSGBOX_DEFAULT
-	releaseall
-	end
-
-EventScript_CancelStrength::
-	closemessage
-	releaseall
-	end
-
-Text_WantToStrength:
-	.string "It's a big boulder, but a POKéMON\n"
-	.string "may be able to push it aside.\p"
-	.string "Would you like to use STRENGTH?$"
-
 Text_MonUsedStrength:
 	.string "{VAR_TEXTO_1} used STRENGTH!\p"
 	.string "{VAR_TEXTO_1}'s STRENGTH made it\n"
 	.string "possible to move boulders around!$"
-
-Text_CantStrength:
-	.string "It's a big boulder, but a POKéMON\n"
-	.string "may be able to push it aside.$"
-
-Text_StrengthActivated:
-	.string "STRENGTH made it possible to move\n"
-	.string "boulders around.$"
 
 EventScript_UseWaterfall::
 	lockall
@@ -355,10 +280,6 @@ EventScript_DigCommon:
 	setfieldeffectargument 3, VAR_0x8004 @ skip pose if true
 	dofieldeffect FLDEFF_USE_DIG
 	waitstate
-EventScript_DigSealedChamber:: @ fallthrough
-	end
-
-@ Use Dig from party menu
 EventScript_UseDig::
 	lockall
 	goto EventScript_DigCommon

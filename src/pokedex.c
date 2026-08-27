@@ -195,7 +195,6 @@ static const u32 sPokedexPlusHGSS_Interface_Gfx[] = INCBIN_U32("graphics/pokedex
 static const u32 sPokedexPlusHGSS_Interface_DECA_Gfx[] = INCBIN_U32("graphics/pokedex/tileset_interface_DECA.4bpp.lz");
 static const u32 sPokedexPlusHGSS_Menu_1_Gfx[] = INCBIN_U32("graphics/pokedex/tileset_menu1.4bpp.lz");
 static const u32 sPokedexPlusHGSS_Menu_2_Gfx[] = INCBIN_U32("graphics/pokedex/tileset_menu2.4bpp.lz");
-static const u32 sPokedexPlusHGSS_Menu_3_Gfx[] = INCBIN_U32("graphics/pokedex/tileset_menu3.4bpp.lz");
 static const u32 sPokedexPlusHGSS_ScreenSelectBarSubmenu_Tilemap[] = INCBIN_U32("graphics/pokedex/SelectBar.bin.lz");
 static const u32 sPokedexPlusHGSS_ScreenSelectBarSubmenu_Tilemap_Clear[] = INCBIN_U32("graphics/pokedex/SelectBar_clear.bin.lz");
 static const u32 sFondoLista[] = INCBIN_U32("graphics/pokedex/fondo_lista.bin.lz");
@@ -203,7 +202,6 @@ static const u32 sTilesFondo[] = INCBIN_U32("graphics/pokedex/tiles_fondo.4bpp.l
 static const u32 sFondoScrolling[] = INCBIN_U32("graphics/pokedex/fondo_scrolling.bin.lz");
 static const u32 sPokedexPlusHGSS_ScreenInfo_Tilemap[] = INCBIN_U32("graphics/pokedex/tilemap_info_screen.bin.lz");
 static const u32 sPokedexPlusHGSS_ScreenStats_Tilemap[] = INCBIN_U32("graphics/pokedex/tilemap_stats_screen.bin.lz");
-static const u32 sPokedexPlusHGSS_ScreenEvolution_Tilemap[] = INCBIN_U32("graphics/pokedex/tilemap_evo_screen.bin.lz");
 static const u32 sPokedexPlusHGSS_ScreenEvolution_Tilemap_PE[] = INCBIN_U32("graphics/pokedex/tilemap_evo_screen_PE.bin.lz");
 static const u32 sPokedexPlusHGSS_ScreenForms_Tilemap[] = INCBIN_U32("graphics/pokedex/tilemap_forms_screen.bin.lz");
 
@@ -1331,7 +1329,6 @@ static void LoadPokedexBgPalette(void)
     LoadPalette(sFondoPal, BG_PLTT_ID(0), PLTT_SIZE_4BPP);
 }
 
-
 //************************************
 //*                                  *
 //*    Main scrolling list screen    *
@@ -1587,7 +1584,6 @@ void ResetPokedex(void)
 
     sLastSelectedPokemon = 0;
     sPokeBallRotation = POKEBALL_ROTATION_TOP;
-    gSaveBlockPtr->pokedexOrder = 0;
     for (i = 0; i < NUM_DEX_FLAG_BYTES; i++)
     {
         gSaveBlockPtr->dexCaught[i] = 0;
@@ -2411,8 +2407,6 @@ static void SpriteCB_StatBarsBg(struct Sprite *sprite)
     }
 }
 
-
-
 //************************************
 //*                                  *
 //*        Info screen               *
@@ -2714,8 +2708,6 @@ static void Task_SwitchScreensFromAreaScreen(u8 taskId)
         }
     }
 }
-
-
 
 //************************************
 //*                                  *
@@ -3114,8 +3106,6 @@ static u16 GetNextPosition(u8 direction, u16 position, u16 min, u16 max)
     }
     return position;
 }
-
-
 
 //************************************
 //*                                  *
@@ -4243,7 +4233,6 @@ static void Task_ExitStatsScreen(u8 taskId)
     }
 }
 
-
 //************************************
 //*                                  *
 //*        EVOS                      *
@@ -4865,7 +4854,6 @@ static void Task_ExitEvolutionScreen(u8 taskId)
     }
 }
 
-
 //************************************
 //*                                  *
 //*        FORMS                      *
@@ -5040,7 +5028,6 @@ static void Task_HandleFormsScreenInput(u8 taskId)
         gSprites[sPokedexView->sFormScreenData.arrowSpriteId].y = base_y + offset_y * row;
 
         sPokedexView->sFormScreenData.menuPos = menuPos;
-
 
         if (JOY_NEW(A_BUTTON))
         {

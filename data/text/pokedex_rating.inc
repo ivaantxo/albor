@@ -1,17 +1,3 @@
-gBirchDexRatingText_AreYouCurious::
-	.string "PROF. BIRCH: Ah, {JUGADOR}!\p"
-	.string "Are you curious about how your\n"
-	.string "POKéDEX is coming along?$"
-
-gBirchDexRatingText_Cancel::
-	.string "Hm? Oh, you haven't caught enough\n"
-	.string "POKéMON to make it worthwhile.$"
-
-gBirchDexRatingText_SoYouveSeenAndCaught::
-	.string "Hmhm…\p"
-	.string "So, you've seen {VAR_TEXTO_1} POKéMON,\n"
-	.string "and you've caught {VAR_TEXTO_2} POKéMON…$"
-
 gBirchDexRatingText_LessThan10::
 	.string "Go into grassy areas more and look\n"
 	.string "for POKéMON more carefully.$"
@@ -108,8 +94,3 @@ gBirchDexRatingText_DexCompleted::
 	.string "Congratulations!\n"
 	.string "Your POKéDEX is complete!$"
 
-gBirchDexRatingText_OnANationwideBasis::
-	.string "Hmhm…\n"
-	.string "On a nationwide basis…\p"
-	.string "You've seen {VAR_TEXTO_1} POKéMON,\n"
-	.string "and you've caught {VAR_TEXTO_2} POKéMON…$"

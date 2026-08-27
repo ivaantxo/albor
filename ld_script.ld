@@ -56,8 +56,6 @@ SECTIONS {
     ALIGN(4)
     {
         src/rom_header.o(.text*);
-        src/rom_header_gf.o(.text.*);
-        src/rom_header_rhh.o(.text.*);
         src/crt0.o(.text);
         src/main.o(.text);
         src/*.o(.text*);

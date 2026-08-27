@@ -221,18 +221,6 @@ enum Items
     ITEM_ARMORITE_ORE,
     ITEM_DYNITE_ORE,
 
-    ITEM_ORANGE_MAIL,
-    ITEM_HARBOR_MAIL,
-    ITEM_GLITTER_MAIL,
-    ITEM_MECH_MAIL,
-    ITEM_WOOD_MAIL,
-    ITEM_WAVE_MAIL,
-    ITEM_BEAD_MAIL,
-    ITEM_SHADOW_MAIL,
-    ITEM_TROPIC_MAIL,
-    ITEM_DREAM_MAIL,
-    ITEM_FAB_MAIL,
-    ITEM_RETRO_MAIL,
 
     ITEM_FIRE_STONE,
     ITEM_WATER_STONE,
@@ -823,7 +811,6 @@ enum Items
 
 #define CONFUSE_BERRY_HP_FRACTION ((B_CONFUSE_BERRIES_HEAL >= GEN_7) ? 4 : 2)
 
-#define FIRST_MAIL_INDEX ITEM_ORANGE_MAIL
 
 #define FIRST_BERRY_INDEX ITEM_CHERI_BERRY
 #define LAST_BERRY_INDEX  ITEM_MARANGA_BERRY
@@ -851,8 +838,6 @@ enum Items
 #define NUM_ROUTE_114_MAN_BERRIES_SKIPPED (FIRST_ROUTE_114_MAN_BERRY - FIRST_BERRY_INDEX)
 
 #define ITEM_TO_BERRY(itemId) (((itemId) - FIRST_BERRY_INDEX) + 1)
-#define ITEM_TO_MAIL(itemId) ((itemId) - FIRST_MAIL_INDEX)
-#define MAIL_NONE 0xFF
 #define ITEM_TO_MULCH(itemId)(((itemId) - ITEM_GROWTH_MULCH) + 1)
 
 #define NUM_TECHNICAL_MACHINES 100
@@ -879,7 +864,7 @@ enum Items
 #define EXP_30000 5
 
 // Item type IDs (used to determine the exit callback)
-#define ITEM_USE_MAIL             0
+#define ITEM_USE_NINGUNO          0
 #define ITEM_USE_PARTY_MENU       1
 #define ITEM_USE_FIELD            2
 #define ITEM_USE_PBLOCK_CASE      3

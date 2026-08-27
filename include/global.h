@@ -226,37 +226,9 @@ struct ItemSlot
     u16 quantity;
 };
 
-struct Pokeblock
-{
-    u8 color;
-    u8 spicy;
-    u8 dry;
-    u8 sweet;
-    u8 bitter;
-    u8 sour;
-    u8 feel;
-};
-
-struct Mail
-{
-    /*0x00*/ u16 words[MAIL_WORDS_COUNT];
-    /*0x12*/ u8 playerName[MAXIMO_CARACTERES_NOMBRE_JUGADOR + 1];
-    /*0x1A*/ u8 trainerId[TRAINER_ID_LENGTH];
-    /*0x1E*/ u16 species;
-    /*0x20*/ u16 itemId;
-};
-
-struct DaycareMail
-{
-    struct Mail message;
-    u8 otName[MAXIMO_CARACTERES_NOMBRE_JUGADOR + 1];
-    u8 monName[VANILLA_POKEMON_NAME_LENGTH + 1];
-};
-
 struct DaycareMon
 {
     struct BoxPokemon mon;
-    struct DaycareMail mail;
     u32 steps;
 };
 
@@ -267,69 +239,109 @@ struct DayCare
     u8 stepCounter;
 };
 
-struct SaveBlock
-{
-    u8 nombreJugador[MAXIMO_CARACTERES_NOMBRE_JUGADOR + 1];
-    u8 playerGender; // MALE, FEMALE
-    u8 specialSaveWarpFlags;
-    u32 personalidadJugador;
-    u16 playTimeHours;
-    u8 playTimeMinutes;
-    u8 playTimeSeconds;
-    u8 playTimeVBlanks;
-    u8 optionsButtonMode;  // OPTIONS_BUTTON_MODE_[NORMAL/LR/L_EQUALS_A] //modificar
-    u16 optionsTextSpeed:3; // OPTIONS_TEXT_SPEED_[SLOW/MID/FAST]
-             u16 optionsWindowFrameType:5; // Specifies one of the 20 decorative borders for text boxes
-             u16 optionsSound:1; // OPTIONS_SOUND_[MONO/STEREO]
-             u16 optionsBattleSceneOff:1; // whether battle animations are disabled
-             u16 regionMapZoom:1; // whether the map is zoomed in
-    u32 pokedexOrder;
-    struct Time localTimeOffset;
-    struct Time lastBerryTreeUpdate;
-    struct Time gameClock;
-    u8 itemFlags[ITEM_FLAGS_COUNT];
-    struct Coords16 pos;
-    struct WarpData location;
-    struct WarpData continueGameWarp;
-    struct WarpData dynamicWarp;
-    struct WarpData lastHealLocation; // used by white-out and teleport
-    struct WarpData escapeWarp; // used by Dig and Escape Rope
-    u16 savedMusic;
-    u8 weather;
-    u8 weatherCycleStage;
-    u8 flashLevel;
-    u16 mapLayoutId;
-    u16 mapView[256];
-    u8 playerPartyCount;
-    struct Pokemon playerParty[PARTY_SIZE];
-    u32 money;
-    u16 coins; //eliminar?
-    u16 registeredItem; // registered for use with SELECT button //eliminar?
-    struct ItemSlot bagPocket_Items[BAG_ITEMS_COUNT];
-    struct ItemSlot bagPocket_KeyItems[BAG_KEYITEMS_COUNT]; //modificar
-    struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT];
-    struct ItemSlot bagPocket_TMHM[BAG_TMHM_COUNT]; //modificar
-    struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT];
-    struct ObjectEvent objectEvents[OBJECT_EVENTS_COUNT];
-    struct ObjectEventTemplate objectEventTemplates[OBJECT_EVENT_TEMPLATES_COUNT];
-    struct BanderasGuardadas banderas;
-    u16 vars[VARS_COUNT];
-    u32 gameStats[NUM_GAME_STATS];
-    struct BerryTree berryTrees[BERRY_TREES_COUNT];
-    struct Mail mail[MAIL_COUNT]; //eliminar
-    struct DayCare daycare;
-    u8 giftRibbons[GIFT_RIBBONS_COUNT]; //eliminar
-    u8 dexSeen[NUM_DEX_FLAG_BYTES];
-    u8 dexCaught[NUM_DEX_FLAG_BYTES];
-};
-
-extern struct SaveBlock* gSaveBlockPtr;
-
 struct MapPosition
 {
     s16 x;
     s16 y;
     s8 elevation;
 };
+
+// ---------------------------------------------------------------------------
+// El bloque de guardado
+//
+// Va al final del fichero a proposito: necesita que esten definidas todas las
+// estructuras de arriba, y asi se ve de un vistazo que no depende de nada mas.
+//
+// Sobre los tipos. La EWRAM tiene un bus de 16 bits: leer un u16 o un u8 cuesta
+// un acceso y leer un u32 cuesta dos. Aqui ancho no es rapido, es lo contrario,
+// asi que solo hay u32 donde el valor no cabe en 16 bits. Y no hay campos de
+// bits salvo las banderas, que son bits por definicion: empaquetar obliga a
+// desplazar y enmascarar en cada lectura, y a leer-modificar-escribir en cada
+// escritura, a cambio de unos bytes que aqui sobran.
+//
+// Sitio libre: el menu de depuracion, Utilities -> SaveBlock, lo dice.
+// ---------------------------------------------------------------------------
+struct SaveBlock
+{
+    // --- Jugador ---
+    u32 personalidadJugador;
+    u8 nombreJugador[MAXIMO_CARACTERES_NOMBRE_JUGADOR + 1];
+    u8 playerGender; // MALE, FEMALE
+
+    // --- Opciones ---
+    // Sueltas y de un byte cada una: antes iban empaquetadas en un u16 y
+    // optionsTextSpeed se consulta en cada linea de texto que se imprime.
+    u8 optionsButtonMode;        // OPTIONS_BUTTON_MODE_[NORMAL/LR/L_EQUALS_A]
+    u8 optionsTextSpeed;         // OPTIONS_TEXT_SPEED_[SLOW/MID/FAST]
+    u8 optionsWindowFrameType;   // uno de los bordes decorativos de los cuadros de texto
+    u8 optionsSound;             // OPTIONS_SOUND_[MONO/STEREO]
+    u8 optionsBattleSceneOff;    // si las animaciones de combate estan apagadas
+    u8 regionMapZoom;            // si el mapa esta acercado
+
+    // --- Tiempo ---
+    // RECORDATORIO: playTime y gameClock son el MISMO contador con dos escalas.
+    // Aqui no hay reloj de cartucho: Rtc_GetCurrentTime devuelve gameClock, y a
+    // gameClock solo lo mueve PlayTimeCounter_Update, una vez por segundo real,
+    // sumandole Rtc_GetSecondsRatio() -hoy 20- segundos de juego. O sea que
+    // gameClock == playTime * 20 salvo por dos cosas: OW_FLAG_PAUSE_TIME para
+    // uno y no el otro, y quien llame a Rtc_AdvanceTimeBy a mano.
+    // Uno de los dos se puede derivar del otro y ahorrarse el campo; lo que no
+    // se deriva es localTimeOffset, que es la hora que eligio el jugador.
+    u16 playTimeHours;
+    u8 playTimeMinutes;
+    u8 playTimeSeconds;
+    u8 playTimeVBlanks;
+    struct Time gameClock;
+    struct Time localTimeOffset;
+    struct Time lastBerryTreeUpdate;
+
+    // --- Posicion y mapa ---
+    struct Coords16 pos;
+    struct WarpData location;
+    struct WarpData continueGameWarp;
+    struct WarpData dynamicWarp;
+    struct WarpData lastHealLocation; // usado por la derrota y por Teletransporte
+    struct WarpData escapeWarp;       // usado por Excavar y Cuerda Huida
+    u16 savedMusic;
+    u16 mapLayoutId;
+    u8 specialSaveWarpFlags;
+    u8 weather;
+    u8 weatherCycleStage;
+    u8 flashLevel;
+    u16 mapView[256];
+
+    // --- Equipo ---
+    struct Pokemon playerParty[PARTY_SIZE];
+    u8 playerPartyCount;
+
+    // --- Dinero y mochila ---
+    u32 money;
+    u16 registeredItem; // el que responde al boton SELECT
+    struct ItemSlot bagPocket_Items[BAG_ITEMS_COUNT];
+    struct ItemSlot bagPocket_KeyItems[BAG_KEYITEMS_COUNT];
+    struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT];
+    struct ItemSlot bagPocket_TMHM[BAG_TMHM_COUNT];
+    struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT];
+    u8 itemFlags[ITEM_FLAGS_COUNT];
+
+    // --- Lo que hay puesto en el mapa ---
+    struct ObjectEvent objectEvents[OBJECT_EVENTS_COUNT];
+    struct ObjectEventTemplate objectEventTemplates[OBJECT_EVENT_TEMPLATES_COUNT];
+
+    // --- Estado del guion ---
+    struct BanderasGuardadas banderas;
+    u16 vars[VARS_COUNT];
+    u32 gameStats[NUM_GAME_STATS]; // contadores que se pasan de 65535
+
+    // --- Pokedex ---
+    u8 dexSeen[NUM_DEX_FLAG_BYTES];
+    u8 dexCaught[NUM_DEX_FLAG_BYTES];
+
+    // --- Otros sistemas ---
+    struct BerryTree berryTrees[BERRY_TREES_COUNT];
+    struct DayCare daycare;
+};
+
+extern struct SaveBlock *gSaveBlockPtr;
 
 #endif // GUARD_GLOBAL_H

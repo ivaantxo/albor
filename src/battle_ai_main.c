@@ -28,7 +28,6 @@ static u32 ChooseMoveOrAction_Doubles(u32 battlerAI);
 static inline void BattleAI_DoAIProcessing(struct AI_ThinkingStruct *aiThink, u32 battlerAI, u32 battlerDef);
 
 // ewram
-EWRAM_DATA const u8 *gAIScriptPtr = NULL; // Still used in contests
 EWRAM_DATA u8 sBattler_AI = 0;
 EWRAM_DATA AIScoreFunc sDynamicAIFunc = NULL;
 

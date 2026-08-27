@@ -1019,7 +1019,6 @@ static const struct SpritePalette sSpritePalette_RayquazaOrb[] =
     {},
 };
 
-
 static void VBlankCB_Intro(void)
 {
     LoadOam();

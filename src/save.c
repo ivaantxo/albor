@@ -11,6 +11,21 @@
 #include "main.h"
 #include "constants/game_stat.h"
 
+// Firma que va en el pie de cada sector. Un guardado con otra disposicion se
+// leeria con los offsets desplazados y daria basura, asi que tiene que cambiar
+// cuando cambie la disposicion.
+//
+// Ya no hay que acordarse de subirla a mano en el caso normal: el tamano de las
+// dos estructuras entra en la cuenta, y anadir o quitar campos lo cambia. Lo
+// unico que no detecta es reordenar campos sin tocar el tamano total -cambiar
+// dos u16 de sitio, por ejemplo-; para eso esta el contador de abajo.
+#define FIRMA_DISPOSICION 1
+
+const u32 gFirmaSector = 0x08010000u
+                       ^ ((u32)FIRMA_DISPOSICION << 24)
+                       ^ ((u32)sizeof(struct SaveBlock) << 8)
+                       ^ (u32)sizeof(struct PokemonStorage);
+
 static u16 CalculateChecksum(const void *, u32);
 static u32 TryWriteSector(u32, u8 *);
 static u32 HandleWriteSector(u32, const struct SaveSectorLocation *);
@@ -135,7 +150,7 @@ static bool32 SectorSinCambios(u32 sectorId, const u8 *data, u32 size)
     ReadFlash(sectorId, 0, (u8 *)gReadWriteSector, SECTOR_SIZE);
 
     // Sector vacio, de una version anterior del guardado, o descolocado.
-    if (gReadWriteSector->signature != SECTOR_SIGNATURE || gReadWriteSector->id != sectorId)
+    if (gReadWriteSector->signature != gFirmaSector || gReadWriteSector->id != sectorId)
         return FALSE;
 
     // Solo se comparan los bytes utiles: el resto del sector es relleno a cero
@@ -168,7 +183,7 @@ static u32 HandleWriteSector(u32 sectorId, const struct SaveSectorLocation *loca
 
     // Rellenar el pie
     gReadWriteSector->id = sectorId;
-    gReadWriteSector->signature = SECTOR_SIGNATURE;
+    gReadWriteSector->signature = gFirmaSector;
     gReadWriteSector->counter = gSaveCounter;
 
     // Copiar los datos actuales al buffer que se va a escribir
@@ -213,7 +228,7 @@ static u32 LoadSaveSlot(struct SaveSectorLocation *locations)
 
         // La id se comprueba contra la posicion antes de usarla como indice:
         // un sector vacio trae 0xFFFF ahi y indexaria locations[] fuera de rango.
-        if (gReadWriteSector->signature != SECTOR_SIGNATURE || gReadWriteSector->id != i)
+        if (gReadWriteSector->signature != gFirmaSector || gReadWriteSector->id != i)
             continue;
 
         size = locations[i].size;

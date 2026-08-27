@@ -1,11 +1,9 @@
 #ifndef GUARD_ITEM_USE_H
 #define GUARD_ITEM_USE_H
 
-void ItemUseOutOfBattle_Mail(u8);
 void ItemUseOutOfBattle_Bike(u8);
 void ItemUseOutOfBattle_Rod(u8);
 void ItemUseOutOfBattle_Itemfinder(u8);
-void ItemUseOutOfBattle_CoinCase(u8);
 void ItemUseOutOfBattle_PokemonBoxLink(u8);
 void ItemUseOutOfBattle_PowderJar(u8);
 void ItemUseOutOfBattle_SSTicket(u8);

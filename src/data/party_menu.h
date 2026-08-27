@@ -61,7 +61,6 @@ static const struct PartyMenuBoxInfoRects sPartyBoxInfoRects[] =
     },
 };
 
-
 // Each layout array has an array for each of the 6 party slots
 // The array for each slot has the sprite coords of its various sprites in the following order
 // Pokémon icon (x, y), held item (x, y), status condition (x, y), menu Poké Ball (x, y)
@@ -88,8 +87,6 @@ static const u8 sPartyMenuSpriteCoords[PARTY_LAYOUT_COUNT][PARTY_SIZE][4 * 2] =
 };
 
 // Used only when both Cancel and Confirm are present
-static const u32 sConfirmButton_Tilemap[] = INCBIN_U32("graphics/party_menu/confirm_button.bin");
-static const u32 sCancelButton_Tilemap[] = INCBIN_U32("graphics/party_menu/cancel_button.bin");
 
 // Text colors for BG, FG, and Shadow in that order
 static const u8 sFontColorTable[][3] =
@@ -431,17 +428,6 @@ static const struct WindowTemplate sDoWhatWithItemMsgWindowTemplate =
     .baseBlock = 0x299,
 };
 
-static const struct WindowTemplate sDoWhatWithMailMsgWindowTemplate =
-{
-    .bg = FONDO_2,
-    .tilemapLeft = 1,
-    .tilemapTop = 17,
-    .width = 18,
-    .height = 2,
-    .paletteNum = 15,
-    .baseBlock = 0x299,
-};
-
 static const struct WindowTemplate sWhichMoveMsgWindowTemplate =
 {
     .bg = FONDO_2,
@@ -481,17 +467,6 @@ static const struct WindowTemplate sItemGiveTakeWindowTemplate =
     .tilemapLeft = 23,
     .tilemapTop = 13,
     .width = 6,
-    .height = 6,
-    .paletteNum = 14,
-    .baseBlock = 0x39D,
-};
-
-static const struct WindowTemplate sMailReadTakeWindowTemplate =
-{
-    .bg = FONDO_2,
-    .tilemapLeft = 21,
-    .tilemapTop = 13,
-    .width = 8,
     .height = 6,
     .paletteNum = 14,
     .baseBlock = 0x39D,
@@ -604,7 +579,6 @@ static const u8 *const sActionStringTable[] =
     [PARTY_MSG_RESTORE_WHICH_MOVE]     = gText_RestoreWhichMove,
     [PARTY_MSG_BOOST_PP_WHICH_MOVE]    = gText_BoostPp,
     [PARTY_MSG_DO_WHAT_WITH_ITEM]      = gText_DoWhatWithItem,
-    [PARTY_MSG_DO_WHAT_WITH_MAIL]      = gText_DoWhatWithMail,
     [PARTY_MSG_ALREADY_HOLDING_ONE]    = gText_AlreadyHoldingOne,
     [PARTY_MSG_WHICH_APPLIANCE]        = gText_WhichAppliance,
     [PARTY_MSG_CHOOSE_SECOND_FUSION]   = gText_NextFusionMon,
@@ -639,8 +613,6 @@ struct
     [MENU_ITEM] = {gText_Item, CursorCb_Item},
     [MENU_GIVE] = {gMenuText_Give, CursorCb_Give},
     [MENU_TAKE_ITEM] = {gText_Take, CursorCb_TakeItem},
-    [MENU_MAIL] = {gText_Mail, CursorCb_Mail},
-    [MENU_READ] = {gText_Read2, CursorCb_Read},
     [MENU_CANCEL2] = {gText_Salir, CursorCb_Cancel2},
     [MENU_SHIFT] = {gText_Shift, CursorCb_SendMon},
     [MENU_SEND_OUT] = {gText_SendOut, CursorCb_SendMon},
@@ -760,16 +732,9 @@ static const union AnimCmd sSpriteAnim_HeldItem[] =
     ANIMCMD_END
 };
 
-static const union AnimCmd sSpriteAnim_HeldMail[] =
-{
-    ANIMCMD_FRAME(1, 1),
-    ANIMCMD_END
-};
-
 static const union AnimCmd *const sSpriteAnimTable_HeldItem[] =
 {
     sSpriteAnim_HeldItem,
-    sSpriteAnim_HeldMail,
 };
 
 static const struct SpriteSheet sSpriteSheet_HeldItem =

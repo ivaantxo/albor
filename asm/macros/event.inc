@@ -1311,26 +1311,11 @@
 	.endm
 
 	@ Gets the number of coins the player has and stores it in the variable 'out'.
-	.macro checkcoins out:req
-	.byte SCR_CMD_checkcoins
-	.2byte \out
-	.endm
-
 	@ Gives 'count' coins to the player, up to a total of MAX_COINS.
 	@ If the player already has MAX_COINS then VAR_RESULT is set to TRUE, otherwise it is set to FALSE.
-	.macro addcoins count:req
-	.byte SCR_CMD_addcoins
-	.2byte \count
-	.endm
-
 	@ Takes 'count' coins from the player.
 	@ If the player has fewer than 'count' coins then no coins are taken and VAR_RESULT is set to TRUE.
 	@ Otherwise VAR_RESULT is set to FALSE.
-	.macro removecoins count:req
-	.byte SCR_CMD_removecoins
-	.2byte \count
-	.endm
-
 	@ Prepares to start a wild battle against a 'species' at 'level' holding 'item'.
 	@ If 'species2' is something other than SPECIES_NONE, then the battle is a double battle
 	@ that is also against 'species2' at 'level2' holding 'item2'.
@@ -1352,26 +1337,8 @@
 	.endm
 
 	@ Create a window showing how many Coins the player has.
-	.macro showcoinsbox x:req, y:req
-	.byte SCR_CMD_showcoinsbox
-	.byte \x
-	.byte \y
-	.endm
-
 	@ Destroys the window created by showcoins. It consumes its arguments but doesn't use them.
-	.macro hidecoinsbox x:req, y:req
-	.byte SCR_CMD_hidecoinsbox
-	.byte \x
-	.byte \y
-	.endm
-
 	@ Updates the window created by showcoins. It consumes its arguments but doesn't use them.
-	.macro updatecoinsbox x:req, y:req
-	.byte SCR_CMD_updatecoinsbox
-	.byte \x
-	.byte \y
-	.endm
-
 	@ Increases the value of the specified game stat by 1. The maximum value of a stat is 0xFFFFFF. See include/constants/game_stat.h
 	.macro incrementgamestat stat:req
 	.byte SCR_CMD_incrementgamestat

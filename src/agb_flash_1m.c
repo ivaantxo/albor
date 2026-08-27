@@ -37,7 +37,6 @@ u16 IdentifyFlash(void)
 
     ProgramFlashByte = (*setupInfo)->programFlashByte;
     ProgramFlashSector = (*setupInfo)->programFlashSector;
-    EraseFlashChip = (*setupInfo)->eraseFlashChip;
     EraseFlashSector = (*setupInfo)->eraseFlashSector;
     WaitForFlashWrite = (*setupInfo)->WaitForFlashWrite;
     gFlashMaxTime = (*setupInfo)->maxTime;

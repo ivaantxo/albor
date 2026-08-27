@@ -45,7 +45,6 @@ static EWRAM_DATA u8 sDynamicMenuEventId = 0;
 static EWRAM_DATA struct DynamicMultichoiceStack *sDynamicMultiChoiceStack = NULL;
 static EWRAM_DATA u16 *sDynamicMenuEventScratchPad = NULL;
 
-static u8 sLilycoveSSTidalSelections[SSTIDAL_COUNT];
 
 static void FreeListMenuItems(struct ListMenuItem *items, u32 count);
 static void Task_HandleScrollingMultichoiceInput(u8 taskId);
@@ -55,10 +54,7 @@ static void Task_HandleMultichoiceGridInput(u8 taskId);
 static void DrawMultichoiceMenuDynamic(u8 left, u8 top, u8 argc, struct ListMenuItem *items, bool8 ignoreBPress, u32 initialRow, u8 maxBeforeScroll, u32 callbackSet);
 static void DrawMultichoiceMenu(u8 left, u8 top, u8 multichoiceId, bool8 ignoreBPress, u8 cursorPos);
 static void InitMultichoiceCheckWrap(bool8 ignoreBPress, u8 count, u8 windowId, u8 multichoiceId);
-static void CreateLilycoveSSTidalMultichoice(void);
 static bool8 IsPicboxClosed(void);
-static void CreateStartMenuForPokenavTutorial(void);
-static void InitMultichoiceNoWrap(bool8 ignoreBPress, u8 unusedCount, u8 windowId, u8 multichoiceId);
 static void MultichoiceDynamicEventShowItem_OnInit(struct DynamicListMenuEventArgs *eventArgs);
 static void MultichoiceDynamicEventShowItem_OnSelectionChanged(struct DynamicListMenuEventArgs *eventArgs);
 static void MultichoiceDynamicEventShowItem_OnDestroy(struct DynamicListMenuEventArgs *eventArgs);
@@ -267,6 +263,22 @@ void MultichoiceDynamic_DestroyStack(void)
     TRY_FREE_AND_SET_NULL(sDynamicMultiChoiceStack);
 }
 
+static u16 sFilaVisibleMultichoice;
+
+static u8 CreateWindowFromRect(u8 x, u8 y, u8 width, u8 height)
+{
+    struct WindowTemplate template = CreateWindowTemplate(0, x + 1, y + 1, width, height, 15, 100);
+    u8 windowId = AddWindow(&template);
+    PutWindowTilemap(windowId);
+    return windowId;
+}
+
+static void ClearToTransparentAndRemoveWindow(u8 windowId)
+{
+    ClearStdWindowAndFrameToTransparent(windowId, TRUE);
+    RemoveWindow(windowId);
+}
+
 static void MultichoiceDynamic_MoveCursor(s32 itemIndex, bool8 onInit, struct ListMenu *list)
 {
     u8 taskId;
@@ -275,7 +287,7 @@ static void MultichoiceDynamic_MoveCursor(s32 itemIndex, bool8 onInit, struct Li
     taskId = FindTaskIdByFunc(Task_HandleScrollingMultichoiceInput);
     if (taskId != TASK_NONE)
     {
-        ListMenuGetScrollAndRow(gTasks[taskId].data[0], &gScrollableMultichoice_ScrollOffset, NULL);
+        ListMenuGetScrollAndRow(gTasks[taskId].data[0], &sFilaVisibleMultichoice, NULL);
         if (sDynamicMenuEventId != DYN_MULTICHOICE_CB_NONE && sDynamicListMenuEventCollections[sDynamicMenuEventId].OnSelectionChanged && !onInit)
         {
             struct DynamicListMenuEventArgs eventArgs = {.selectedItem = itemIndex, .windowId = list->template.windowId, .list = &list->template};
@@ -338,7 +350,7 @@ static void DrawMultichoiceMenuDynamic(u8 left, u8 top, u8 argc, struct ListMenu
         struct DynamicListMenuEventArgs eventArgs = {.selectedItem = items[initialRow].id, .windowId = windowId, .list = &gMultiuseListMenuTemplate};
         sDynamicListMenuEventCollections[sDynamicMenuEventId].OnSelectionChanged(&eventArgs);
     }
-    ListMenuGetScrollAndRow(gTasks[taskId].data[0], &gScrollableMultichoice_ScrollOffset, NULL);
+    ListMenuGetScrollAndRow(gTasks[taskId].data[0], &sFilaVisibleMultichoice, NULL);
     if (argc > maxBeforeScroll)
     {
         // Create Scrolling Arrows
@@ -355,7 +367,7 @@ static void DrawMultichoiceMenuDynamic(u8 left, u8 top, u8 argc, struct ListMenu
         template.palTag = 100,
         template.palNum = 0;
 
-        gTasks[taskId].data[6] = AddScrollIndicatorArrowPair(&template, &gScrollableMultichoice_ScrollOffset);
+        gTasks[taskId].data[6] = AddScrollIndicatorArrowPair(&template, &sFilaVisibleMultichoice);
     }
 }
 
@@ -520,14 +532,6 @@ bool8 ScriptMenu_YesNo(u8 left, u8 top)
 }
 
 // Unused
-bool8 IsScriptActive(void)
-{
-    if (gSpecialVar_Result == 0xFF)
-        return FALSE;
-    else
-        return TRUE;
-}
-
 static void Task_HandleYesNoInput(u8 taskId)
 {
     if (gTasks[taskId].tRight < 5)
@@ -618,136 +622,8 @@ static void Task_HandleMultichoiceGridInput(u8 taskId)
 
 #undef tWindowId
 
-bool8 ScriptMenu_CreateLilycoveSSTidalMultichoice(void)
-{
-    if (FuncIsActiveTask(Task_HandleMultichoiceInput) == TRUE)
-    {
-        return FALSE;
-    }
-    else
-    {
-        gSpecialVar_Result = 0xFF;
-        CreateLilycoveSSTidalMultichoice();
-        return TRUE;
-    }
-}
-
 // gSpecialVar_0x8004 is 1 if the Sailor was shown multiple event tickets at the same time
 // otherwise gSpecialVar_0x8004 is 0
-static void CreateLilycoveSSTidalMultichoice(void)
-{
-    u8 selectionCount = 0;
-    u8 count;
-    u32 pixelWidth;
-    u8 width;
-    u8 windowId;
-    u32 i;
-    u32 j;
-
-    for (i = 0; i < SSTIDAL_COUNT; i++)
-    {
-        sLilycoveSSTidalSelections[i] = 0xFF;
-    }
-
-    GetFontAttribute(FONT_NORMAL, FONTATTR_MAX_LETTER_WIDTH);
-
-    if (gSpecialVar_0x8004 == 0)
-    {
-        sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_SLATEPORT;
-        selectionCount++;
-
-        if (FlagGet(FLAG_MET_SCOTT_ON_SS_TIDAL) == TRUE)
-        {
-            selectionCount++;
-        }
-    }
-
-    if (CheckBagHasItem(ITEM_EON_TICKET, 1) == TRUE && FlagGet(FLAG_ENABLE_SHIP_SOUTHERN_ISLAND) == TRUE)
-    {
-        if (gSpecialVar_0x8004 == 0)
-        {
-            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_SOUTHERN_ISLAND;
-            selectionCount++;
-        }
-
-        if (gSpecialVar_0x8004 == 1 && FlagGet(FLAG_SHOWN_EON_TICKET) == FALSE)
-        {
-            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_SOUTHERN_ISLAND;
-            selectionCount++;
-            FlagSet(FLAG_SHOWN_EON_TICKET);
-        }
-    }
-
-    if (CheckBagHasItem(ITEM_OLD_SEA_MAP, 1) == TRUE && FlagGet(FLAG_ENABLE_SHIP_FARAWAY_ISLAND) == TRUE)
-    {
-        if (gSpecialVar_0x8004 == 0)
-        {
-            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_FARAWAY_ISLAND;
-            selectionCount++;
-        }
-
-        if (gSpecialVar_0x8004 == 1 && FlagGet(FLAG_SHOWN_OLD_SEA_MAP) == FALSE)
-        {
-            sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_FARAWAY_ISLAND;
-            selectionCount++;
-            FlagSet(FLAG_SHOWN_OLD_SEA_MAP);
-        }
-    }
-
-    sLilycoveSSTidalSelections[selectionCount] = SSTIDAL_EXIT;
-    selectionCount++;
-
-    if (gSpecialVar_0x8004 == 0 && FlagGet(FLAG_MET_SCOTT_ON_SS_TIDAL) == TRUE)
-    {
-        count = selectionCount;
-    }
-
-    count = selectionCount;
-    if (count == SSTIDAL_COUNT)
-    {
-        gSpecialVar_0x8004 = SCROLL_MULTI_SS_TIDAL_DESTINATION;
-        ShowScrollableMultichoice();
-    }
-    else
-    {
-        pixelWidth = 0;
-
-        for (j = 0; j < SSTIDAL_COUNT; j++)
-        {
-            u8 selection = sLilycoveSSTidalSelections[j];
-            if (selection != 0xFF)
-            {
-                pixelWidth = DisplayTextAndGetWidth(sLilycoveSSTidalDestinations[selection], pixelWidth);
-            }
-        }
-
-        width = ConvertPixelWidthToTileWidth(pixelWidth);
-        windowId = CreateWindowFromRect(MAX_MULTICHOICE_WIDTH - width, (6 - count) * 2, width, count * 2);
-        SetStandardWindowBorderStyle(windowId, FALSE);
-
-        for (selectionCount = 0, i = 0; i < SSTIDAL_COUNT; i++)
-        {
-            if (sLilycoveSSTidalSelections[i] != 0xFF)
-            {
-                AddTextPrinterParameterized(windowId, FONT_NORMAL, sLilycoveSSTidalDestinations[sLilycoveSSTidalSelections[i]], 8, selectionCount * 16 + 1, TEXT_SKIP_DRAW, NULL);
-                selectionCount++;
-            }
-        }
-
-        InitMenuInUpperLeftCornerNormal(windowId, count, count - 1);
-        CopyWindowToVram(windowId, COPYWIN_FULL);
-        InitMultichoiceCheckWrap(FALSE, count, windowId, MULTI_SSTIDAL_LILYCOVE);
-    }
-}
-
-void GetLilycoveSSTidalSelection(void)
-{
-    if (gSpecialVar_Result != MULTI_B_PRESSED)
-    {
-        gSpecialVar_Result = sLilycoveSSTidalSelections[gSpecialVar_Result];
-    }
-}
-
 #define tState       data[0]
 #define tMonSpecies  data[1]
 #define tMonSpriteId data[2]
@@ -828,63 +704,7 @@ static bool8 IsPicboxClosed(void)
 #undef tWindowY
 #undef tWindowId
 
-u8 CreateWindowFromRect(u8 x, u8 y, u8 width, u8 height)
-{
-    struct WindowTemplate template = CreateWindowTemplate(0, x + 1, y + 1, width, height, 15, 100);
-    u8 windowId = AddWindow(&template);
-    PutWindowTilemap(windowId);
-    return windowId;
-}
-
-void ClearToTransparentAndRemoveWindow(u8 windowId)
-{
-    ClearStdWindowAndFrameToTransparent(windowId, TRUE);
-    RemoveWindow(windowId);
-}
-
-bool16 ScriptMenu_CreateStartMenuForPokenavTutorial(void)
-{
-    if (FuncIsActiveTask(Task_HandleMultichoiceInput) == TRUE)
-    {
-        return FALSE;
-    }
-    else
-    {
-        gSpecialVar_Result = 0xFF;
-        CreateStartMenuForPokenavTutorial();
-        return TRUE;
-    }
-}
-
-static void CreateStartMenuForPokenavTutorial(void)
-{
-    u8 windowId = CreateWindowFromRect(21, 0, 7, 18);
-    SetStandardWindowBorderStyle(windowId, FALSE);
-    AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_MenuOptionPokedex, 8, 9, TEXT_SKIP_DRAW, NULL);
-    AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_MenuOptionPokemon, 8, 25, TEXT_SKIP_DRAW, NULL);
-    AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_MenuOptionBag, 8, 41, TEXT_SKIP_DRAW, NULL);
-    AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_MenuOptionPokenav, 8, 57, TEXT_SKIP_DRAW, NULL);
-    AddTextPrinterParameterized(windowId, FONT_NORMAL, gSaveBlockPtr->nombreJugador, 8, 73, TEXT_SKIP_DRAW, NULL);
-    AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_MenuOptionSave, 8, 89, TEXT_SKIP_DRAW, NULL);
-    AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_MenuOptionOption, 8, 105, TEXT_SKIP_DRAW, NULL);
-    AddTextPrinterParameterized(windowId, FONT_NORMAL, gText_MenuOptionExit, 8, 121, TEXT_SKIP_DRAW, NULL);
-    InitMenuNormal(windowId, FONT_NORMAL, 0, 9, 16, ARRAY_COUNT(MultichoiceList_ForcedStartMenu), 0);
-    InitMultichoiceNoWrap(FALSE, ARRAY_COUNT(MultichoiceList_ForcedStartMenu), windowId, MULTI_FORCED_START_MENU);
-    CopyWindowToVram(windowId, COPYWIN_FULL);
-}
-
 #define tWindowId       data[6]
-
-static void InitMultichoiceNoWrap(bool8 ignoreBPress, u8 unusedCount, u8 windowId, u8 multichoiceId)
-{
-    u8 taskId;
-    sProcessInputDelay = 2;
-    taskId = CreateTask(Task_HandleMultichoiceInput, 80);
-    gTasks[taskId].tIgnoreBPress = ignoreBPress;
-    gTasks[taskId].tDoWrap = 0;
-    gTasks[taskId].tWindowId = windowId;
-    gTasks[taskId].tMultichoiceId = multichoiceId;
-}
 
 #undef tLeft
 #undef tTop

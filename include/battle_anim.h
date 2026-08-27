@@ -358,7 +358,6 @@ void AnimAcidPoisonBubble_Step(struct Sprite *sprite);
 void AnimBubbleEffect(struct Sprite *);
 extern const union AffineAnimCmd *const gAffineAnims_PoisonProjectile[];
 extern const union AnimCmd *const gAnims_PoisonProjectile[];
-extern const union AnimCmd *const gAnims_AcidPoisonDroplet[];
 extern const union AffineAnimCmd *const gAffineAnims_Bubble[];
 
 // battle_anim_ghost.c

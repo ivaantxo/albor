@@ -10,7 +10,6 @@
 #include "graphics.h"
 #include "string_util.h"
 #include "sound.h"
-#include "mail.h"
 #include "overworld.h"
 #include "decompress.h"
 #include "constants/songs.h"
@@ -275,11 +274,6 @@ u8 GetLRKeysPressedAndHeld(void)
 }
 
 bool8 IsHoldingItemAllowed(u16 itemId)
-{
-    return TRUE;
-}
-
-bool8 IsWritingMailAllowed(u16 itemId)
 {
     return TRUE;
 }

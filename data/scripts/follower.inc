@@ -1,12 +1,6 @@
 gText_FollowerLovesYou::
 	.string "{VAR_TEXTO_1} is regarding you with\nadoration!$"
 
-gText_FollowerLostInThought::
-	.string "{VAR_TEXTO_1} seems lost in thought.$"
-
-gText_FollowerDefault::
-	.string "ERROR 404: Script not found.$"
-
 gText_WantsToFly::
 	.string "{VAR_TEXTO_1} looks up at the\nsky restlessly.\pWould you like to use FLY?$"
 
@@ -46,16 +40,6 @@ EventScript_FollowerLovesYou::
 EventScript_FollowerGeneric:: @ similar to Std_MsgboxDefault
 	faceplayer
 EventScript_FollowerGenericSkipFace:
-	waitfieldeffect FLDEFF_EMOTE
-	message 0x0
-	waitmessage
-	waitbuttonpress
-	return
-
-EventScript_FollowerJump::
-	faceplayer
-	applymovement LOCALID_FOLLOWER, FollowerSplashMovement
-	waitmovement LOCALID_FOLLOWER
 	waitfieldeffect FLDEFF_EMOTE
 	message 0x0
 	waitmessage

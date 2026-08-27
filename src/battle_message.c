@@ -47,7 +47,7 @@ const u8 *const gStatNamesTable[NUMERO_ESTADISTICAS_BATALLA] =
     gText_Precision, gText_Evasion
 };
 
-const u8 *const gPokeblockWasTooXStringTable[FLAVOR_COUNT] =
+const u8 *const gSaborDemasiadoFuerte[FLAVOR_COUNT] =
 {
     [FLAVOR_SPICY]  = COMPOUND_STRING("was too spicy!"),
     [FLAVOR_DRY]    = COMPOUND_STRING("was too dry!"),
@@ -847,7 +847,7 @@ void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
             srcID += 3;
             break;
         case B_BUFF_NEGATIVE_FLAVOR: // flavor table
-            StringAppend(dst, gPokeblockWasTooXStringTable[src[srcID + 1]]);
+            StringAppend(dst, gSaborDemasiadoFuerte[src[srcID + 1]]);
             srcID += 2;
             break;
         case B_BUFF_ABILITY: // ability names

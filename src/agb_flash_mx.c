@@ -11,12 +11,12 @@ const u16 mxMaxTime[] =
 
 const struct FlashSetupInfo MX29L010 =
 {
-    ProgramFlashByte_MX,
-    ProgramFlashSector_MX,
-    EraseFlashChip_MX,
-    EraseFlashSector_MX,
-    WaitForFlashWrite_Common,
-    mxMaxTime,
+    .programFlashByte = ProgramFlashByte_MX,
+    .programFlashSector = ProgramFlashSector_MX,
+    .eraseFlashSector = EraseFlashSector_MX,
+    .WaitForFlashWrite = WaitForFlashWrite_Common,
+    .maxTime = mxMaxTime,
+    .type =
     {
         131072, // ROM size
         {
@@ -32,12 +32,12 @@ const struct FlashSetupInfo MX29L010 =
 
 const struct FlashSetupInfo DefaultFlash =
 {
-    ProgramFlashByte_MX,
-    ProgramFlashSector_MX,
-    EraseFlashChip_MX,
-    EraseFlashSector_MX,
-    WaitForFlashWrite_Common,
-    mxMaxTime,
+    .programFlashByte = ProgramFlashByte_MX,
+    .programFlashSector = ProgramFlashSector_MX,
+    .eraseFlashSector = EraseFlashSector_MX,
+    .WaitForFlashWrite = WaitForFlashWrite_Common,
+    .maxTime = mxMaxTime,
+    .type =
     {
         131072, // ROM size
         {
@@ -51,28 +51,6 @@ const struct FlashSetupInfo DefaultFlash =
     }
 };
 
-u16 EraseFlashChip_MX(void)
-{
-    u16 result;
-    u16 readFlash1Buffer[0x20];
-
-    REG_WAITCNT = (REG_WAITCNT & ~WAITCNT_SRAM_MASK) | gFlash->wait[0];
-
-    FLASH_WRITE(0x5555, 0xAA);
-    FLASH_WRITE(0x2AAA, 0x55);
-    FLASH_WRITE(0x5555, 0x80);
-    FLASH_WRITE(0x5555, 0xAA);
-    FLASH_WRITE(0x2AAA, 0x55);
-    FLASH_WRITE(0x5555, 0x10);
-
-    SetReadFlash1(readFlash1Buffer);
-
-    result = WaitForFlashWrite(3, FLASH_BASE, 0xFF);
-
-    REG_WAITCNT = (REG_WAITCNT & ~WAITCNT_SRAM_MASK) | WAITCNT_SRAM_8;
-
-    return result;
-}
 
 u16 EraseFlashSector_MX(u16 sectorNum)
 {

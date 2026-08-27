@@ -108,7 +108,6 @@ static bool8 PrintAllOnCardBack(void);
 static void PrintNameOnCardBack(void);
 static void PrintHofDebutTimeOnCard(void);
 static void PrintTradesStringOnCard(void);
-static void PrintPokeblockStringOnCard(void);
 static void PrintUnionStringOnCard(void);
 static void PrintContestStringOnCard(void);
 static void PrintPokemonIconsOnCard(void);
@@ -131,7 +130,6 @@ static bool8 Task_EndCardFlip(struct Task *task);
 static void UpdateCardFlipRegs(u16);
 
 static const u32 sTrainerCardStickers_Gfx[]      = INCBIN_U32("graphics/trainer_card/frlg/stickers.4bpp.lz");
-static const u16 sUnused_Pal[]                   = INCBIN_U16("graphics/trainer_card/unused.gbapal");
 static const u16 sHoennTrainerCardBronze_Pal[]   = INCBIN_U16("graphics/trainer_card/bronze.gbapal");
 static const u16 sKantoTrainerCardGreen_Pal[]    = INCBIN_U16("graphics/trainer_card/frlg/green.gbapal");
 static const u16 sHoennTrainerCardCopper_Pal[]   = INCBIN_U16("graphics/trainer_card/copper.gbapal");
@@ -698,7 +696,6 @@ static bool8 PrintAllOnCardBack(void)
         PrintTradesStringOnCard();
         break;
     case 4:
-        PrintPokeblockStringOnCard();
         break;
     case 5:
         PrintUnionStringOnCard();
@@ -921,11 +918,6 @@ static void PrintTradesStringOnCard(void)
 }
 
 static void PrintUnionStringOnCard(void)
-{
-
-}
-
-static void PrintPokeblockStringOnCard(void)
 {
 
 }

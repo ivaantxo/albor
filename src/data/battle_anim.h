@@ -1274,7 +1274,6 @@ const struct CompressedSpriteSheetAndPalette gBattleAnimTable[] =
         [ANIM_TAG_GREEN_SPIKE] = {gBattleAnimSpriteGfx_GreenSpike, gBattleAnimSpritePal_GreenSpike, 128, ANIM_TAG_GREEN_SPIKE},
         [ANIM_TAG_WHITE_CIRCLE_OF_LIGHT] = {gBattleAnimSpriteGfx_CircleOfLight, gBattleAnimSpritePal_WhiteCircleOfLight, 2048, ANIM_TAG_WHITE_CIRCLE_OF_LIGHT},
         [ANIM_TAG_GLOWY_BLUE_ORB] = {gBattleAnimSpriteGfx_GlowyRedOrb, gBattleAnimSpritePal_GlowyBlueOrb, 32, ANIM_TAG_GLOWY_BLUE_ORB},
-        [ANIM_TAG_POKEBLOCK] = {gBattleAnimSpriteGfx_Pokeblock, gBattleAnimSpritePal_Pokeblock, 128, ANIM_TAG_POKEBLOCK},
         [ANIM_TAG_WHITE_FEATHER] = {gBattleAnimSpriteGfx_WhiteFeather, gBattleAnimSpritePal_WhiteFeather, 1024, ANIM_TAG_WHITE_FEATHER},
         [ANIM_TAG_SPARKLE_6] = {gBattleAnimSpriteGfx_Sparkle6, gBattleAnimSpritePal_Sparkle6, 128, ANIM_TAG_SPARKLE_6},
         [ANIM_TAG_SPLASH] = {gBattleAnimSpriteGfx_Splash, gBattleAnimSpritePal_Splash, 2048, ANIM_TAG_SPLASH},

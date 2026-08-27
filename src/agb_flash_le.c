@@ -11,12 +11,12 @@ const u16 leMaxTime[] =
 
 const struct FlashSetupInfo LE26FV10N1TS =
 {
-    ProgramFlashByte_MX,
-    ProgramFlashSector_MX,
-    EraseFlashChip_MX,
-    EraseFlashSector_MX,
-    WaitForFlashWrite_Common,
-    leMaxTime,
+    .programFlashByte = ProgramFlashByte_MX,
+    .programFlashSector = ProgramFlashSector_MX,
+    .eraseFlashSector = EraseFlashSector_MX,
+    .WaitForFlashWrite = WaitForFlashWrite_Common,
+    .maxTime = leMaxTime,
+    .type =
     {
         131072, // ROM size
         {

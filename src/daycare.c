@@ -4,7 +4,6 @@
 #include "bg.h"
 #include "daycare.h"
 #include "string_util.h"
-#include "mail.h"
 #include "pokemon_storage_system.h"
 #include "event_data.h"
 #include "random.h"
@@ -27,7 +26,6 @@
 #include "constants/moves.h"
 #include "constants/region_map_sections.h"
 
-static void ClearDaycareMonMail(struct DaycareMail *mail);
 static void EstableceDatosInicialesHuevoGuarderia(struct Pokemon *mon, u16 species, struct DayCare *daycare);
 static void DaycarePrintMonInfo(u8 windowId, u32 daycareSlotId, u8 y);
 static u8 ModifyBreedingScoreForOvalCharm(u8 score);
@@ -219,10 +217,8 @@ static void ShiftDaycareSlots(struct DayCare *daycare)
         daycare->mons[0].mon = daycare->mons[1].mon;
         ZeroBoxMonData(&daycare->mons[1].mon);
 
-        daycare->mons[0].mail = daycare->mons[1].mail;
         daycare->mons[0].steps = daycare->mons[1].steps;
         daycare->mons[1].steps = 0;
-        ClearDaycareMonMail(&daycare->mons[1].mail);
     }
 }
 
@@ -356,18 +352,6 @@ u8 GetNumLevelsGainedFromDaycare(void)
         return GetNumLevelsGainedForDaycareMon(&gSaveBlockPtr->daycare.mons[gSpecialVar_0x8004]);
 
     return 0;
-}
-
-static void ClearDaycareMonMail(struct DaycareMail *mail)
-{
-    s32 i;
-
-    for (i = 0; i < MAXIMO_CARACTERES_NOMBRE_JUGADOR + 1; i++)
-        mail->otName[i] = 0;
-    for (i = 0; i < VANILLA_POKEMON_NAME_LENGTH + 1; i++)
-        mail->monName[i] = 0;
-
-    ClearMail(&mail->message);
 }
 
 // Determines what the species of an Egg would be based on the given species.

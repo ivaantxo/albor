@@ -128,6 +128,10 @@ IntrMain_RetAddr:
 
 	.pool
 
+@ Fin de IntrMain, contando su tabla de literales: main.c copia a IWRAM justo
+@ hasta aqui en vez de un tamano fijo a ojo.
+IntrMain_End::
+
 	.align 2, 0 @ Don't pad with nop.
 
 @ Fills initialized IWRAM and EWRAM sections in RAM from LMA areas in ROM
@@ -159,22 +163,6 @@ CopyMemory_DMA:
 	orr r2, r2, r4
 	ldr r3, =REG_DMA3
 	stmia r3, {r0, r1, r2}
-	bx lr
-
-.thumb
-@ Called from C code to reinitialize working memory after a link connection failure
-ReInitializeEWRAM::
-	ldr r0, =__ewram_lma
-	ldr r1, =__ewram_start
-	ldr r2, =__ewram_end
-	cmp r1, r2
-	beq EndReinitializeEWRAM
-	subs r2, r1
-	movs r3, #1
-	lsls r3, r3, #26
-	orrs r2, r2, r3
-	swi 0x0B
-EndReinitializeEWRAM:
 	bx lr
 
 	.pool

@@ -1,10 +1,6 @@
 #ifndef GUARD_FIELD_EFFECTS_H
 #define GUARD_FIELD_EFFECTS_H
 
-extern const struct SpritePalette gNewGameBirchObjectPaletteInfo;
-extern const struct SpriteTemplate gNewGameBirchObjectTemplate;
-extern const struct OamData gNewGameBirchOamAttributes;
-
 extern s32 gFieldEffectArguments[8];
 extern void (*gPostMenuFieldCallback)(void);
 extern bool8 (*gFieldCallback2)(void);

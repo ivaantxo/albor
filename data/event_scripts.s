@@ -5,7 +5,6 @@
 #include "constants/battle.h"
 #include "constants/battle_setup.h"
 #include "constants/berry.h"
-#include "constants/coins.h"
 #include "constants/daycare.h"
 #include "constants/event_objects.h"
 #include "constants/event_object_movement.h"
@@ -79,7 +78,6 @@ gStdScripts_End::
 	.include "data/scripts/std_msgbox.inc"
 	.include "data/scripts/trainer_battle.inc"
 	.include "data/scripts/new_game.inc"
-	.include "data/scripts/hall_of_fame.inc"
 
 	.include "data/scripts/config.inc"
 	.include "data/scripts/debug.inc"
@@ -156,26 +154,6 @@ EverGrandeCity_HallOfFame_EventScript_ResetEliteFour::
 	setvar VAR_ELITE_4_STATE, 0
 	return
 
-Common_EventScript_UpdateBrineyLocation::
-	return
-
-EventScript_SetBrineyLocation_House::
-	setvar VAR_BRINEY_LOCATION, 1
-	return
-
-EventScript_SetBrineyLocation_Dewford::
-	setvar VAR_BRINEY_LOCATION, 2
-	return
-
-EventScript_SetBrineyLocation_Route109::
-	setvar VAR_BRINEY_LOCATION, 3
-	return
-
-	.include "data/scripts/pkmn_center_nurse.inc"
-	.include "data/scripts/obtain_item.inc"
-	.include "data/scripts/pc.inc"
-
-@ scripts/notices.inc? signs.inc? See comment about text/notices.inc
 Common_EventScript_ShowPokemartSign::
 	msgbox gText_PokemartSign, MSGBOX_SIGN
 	end
@@ -184,59 +162,10 @@ Common_EventScript_ShowPokemonCenterSign::
 	msgbox gText_PokemonCenterSign, MSGBOX_SIGN
 	end
 
-Common_EventScript_ReadyPetalburgGymForBattle::
-	clearflag FLAG_HIDE_PETALBURG_GYM_GREETER
-	setflag FLAG_PETALBURG_MART_EXPANDED_ITEMS
-	return
-
-EventScript_BackupMrBrineyLocation::
-	copyvar VAR_0x8008, VAR_BRINEY_LOCATION
-	setvar VAR_BRINEY_LOCATION, 0
-	return
-
-	.include "data/scripts/surf.inc"
-	.include "data/scripts/rival_graphics.inc"
-
 EventScript_CancelMessageBox::
 	special UseBlankMessageToCancelPokemonPic
 	release
 	end
-
-Common_EventScript_ShowBagIsFull::
-	msgbox gText_TooBadBagIsFull, MSGBOX_DEFAULT
-	release
-	end
-
-Common_EventScript_BagIsFull::
-	msgbox gText_TooBadBagIsFull, MSGBOX_DEFAULT
-	return
-
-Common_EventScript_ShowNoRoomForDecor::
-	msgbox gText_NoRoomLeftForAnother, MSGBOX_DEFAULT
-	release
-	end
-
-Common_EventScript_NoRoomForDecor::
-	msgbox gText_NoRoomLeftForAnother, MSGBOX_DEFAULT
-	return
-
-Common_EventScript_SetAbnormalWeather::
-	setweather WEATHER_ABNORMAL
-	return
-
-Common_EventScript_PlayGymBadgeFanfare::
-	playfanfare MUS_OBTAIN_BADGE
-	waitfanfare
-	return
-
-Common_EventScript_OutOfCenterPartyHeal::
-	fadescreenswapbuffers FADE_TO_BLACK
-	playfanfare MUS_HEAL
-	waitfanfare
-	special HealPlayerParty
-	callnative UpdateFollowingPokemon
-	fadescreenswapbuffers FADE_FROM_BLACK
-	return
 
 EventScript_RegionMap::
 	lockall
@@ -246,78 +175,6 @@ EventScript_RegionMap::
 	releaseall
 	end
 
-Common_EventScript_PlayBrineysBoatMusic::
-	setflag FLAG_DONT_TRANSITION_MUSIC
-	playbgm MUS_SAILING, FALSE
-	return
-
-Common_EventScript_StopBrineysBoatMusic::
-	clearflag FLAG_DONT_TRANSITION_MUSIC
-	fadedefaultbgm
-	return
-
-	.include "data/scripts/prof_birch.inc"
-
-@ Below could be split as ferry.inc aside from the Rusturf tunnel script
-Common_EventScript_FerryDepart::
-	delay 60
-	applymovement VAR_0x8004, Movement_FerryDepart
-	waitmovement 0
-	return
-
-Movement_FerryDepart:
-	walk_slow_right
-	walk_slow_right
-	walk_slow_right
-	walk_right
-	walk_right
-	walk_right
-	walk_right
-	step_end
-
-EventScript_HideMrBriney::
-	setflag FLAG_HIDE_MR_BRINEY_DEWFORD_TOWN
-	setflag FLAG_HIDE_MR_BRINEY_BOAT_DEWFORD_TOWN
-	setflag FLAG_HIDE_ROUTE_109_MR_BRINEY
-	setflag FLAG_HIDE_ROUTE_109_MR_BRINEY_BOAT
-	setflag FLAG_HIDE_ROUTE_104_MR_BRINEY
-	setflag FLAG_HIDE_ROUTE_104_MR_BRINEY_BOAT
-	setflag FLAG_HIDE_BRINEYS_HOUSE_MR_BRINEY
-	setflag FLAG_HIDE_BRINEYS_HOUSE_PEEKO
-	setvar VAR_BRINEY_LOCATION, 0
-	return
-
-RusturfTunnel_EventScript_SetRusturfTunnelOpen::
-	return
-
-Common_EventScript_FerryDepartIsland::
-	return
-
-	.include "data/scripts/kecleon.inc"
-
-Common_EventScript_NameReceivedPartyMon::
-	fadescreen FADE_TO_BLACK
-	special ChangePokemonNickname
-	waitstate
-	return
-
-Common_EventScript_PlayerHandedOverTheItem::
-	bufferitemname VAR_TEXTO_1, VAR_0x8004
-	playfanfare MUS_OBTAIN_TMHM
-	message gText_PlayerHandedOverTheItem
-	waitmessage
-	waitfanfare
-	removeitem VAR_0x8004
-	return
-
-	.include "data/scripts/elite_four.inc"
-	.include "data/scripts/movement.inc"
-	.include "data/scripts/check_furniture.inc"
-	.include "data/text/pkmn_center_nurse.inc"
-	.include "data/text/mart_clerk.inc"
-	.include "data/text/obtain_item.inc"
-
-@ The below and surf.inc could be split into some text/notices.inc
 gText_PokemartSign::
 	.string "“Selected items for your convenience!”\n"
 	.string "POKéMON MART$"
@@ -326,34 +183,9 @@ gText_PokemonCenterSign::
 	.string "“Rejuvenate your tired partners!”\n"
 	.string "POKéMON CENTER$"
 
-gText_MomOrDadMightLikeThisProgram::
-	.string "{VAR_TEXTO_1} might like this program.\n"
-	.string "… … … … … … … … … … … … … … … …\p"
-	.string "Better get going!$"
-
-gText_WhichFloorWouldYouLike::
-	.string "Welcome to LILYCOVE DEPARTMENT STORE.\p"
-	.string "Which floor would you like?$"
-
-gText_SandstormIsVicious::
-	.string "The sandstorm is vicious.\n"
-	.string "It's impossible to keep going.$"
-
 gText_SelectWithoutRegisteredItem::
 	.string "An item in the BAG can be\n"
 	.string "registered to SELECT for easy use.$"
-
-gText_PokemonTrainerSchoolEmail::
-	.string "There's an e-mail from POKéMON TRAINER\n"
-	.string "SCHOOL.\p"
-	.string "… … … … … …\p"
-	.string "A POKéMON may learn up to four moves.\p"
-	.string "A TRAINER's expertise is tested on the\n"
-	.string "move sets chosen for POKéMON.\p"
-	.string "… … … … … …$"
-
-gText_PlayerHouseBootPC::
-	.string "{JUGADOR} booted up the PC.$"
 
 gText_PlayerWhitedOut::
 	.string "{JUGADOR} is out of usable\n"
@@ -378,67 +210,9 @@ gText_MonsHealed::
 	.string "to perfect health.\p"
 	.string "We hope you excel!$"
 
-gText_HadQuiteAnExperienceTakeRest::
-	.string "MOM: {JUGADOR}!\n"
-	.string "Welcome home.\p"
-	.string "It sounds like you had quite\n"
-	.string "an experience.\p"
-	.string "Maybe you should take a quick\n"
-	.string "rest.$"
-
-gText_MomExplainHPGetPotions::
-	.string "MOM: Oh, good! You and your\n"
-	.string "POKéMON are looking great.\p"
-	.string "I just heard from PROF. BIRCH.\p"
-	.string "He said that POKéMON's energy is\n"
-	.string "measured in HP.\p"
-	.string "If your POKéMON lose their HP,\n"
-	.string "you can restore them at any\l"
-	.string "POKéMON CENTER.\p"
-	.string "If you're going to travel far away,\n"
-	.string "the smart TRAINER stocks up on\l"
-	.string "POTIONS at the POKéMON MART.\p"
-	.string "Make me proud, honey!\p"
-	.string "Take care!$"
-
 gText_RegisteredTrainerinPokeNav::
 	.string "Registered {VAR_TEXTO_1} {VAR_TEXTO_2}\n"
 	.string "in the POKéNAV.$"
-
-gText_ComeBackWithSecretPower::
-	.string "Do you know the TM SECRET POWER?\p"
-	.string "Our group, we love the TM SECRET\n"
-	.string "POWER.\p"
-	.string "One of our members will give it to you.\n"
-	.string "Come back and show me if you get it.\p"
-	.string "We'll accept you as a member and sell\n"
-	.string "you good stuff in secrecy.$"
-
-gText_PokerusExplanation::
-	.string "Your POKéMON may be infected with\n"
-	.string "POKéRUS.\p"
-	.string "Little is known about the POKéRUS\n"
-	.string "except that they are microscopic life-\l"
-	.string "forms that attach to POKéMON.\p"
-	.string "While infected, POKéMON are said to\n"
-	.string "grow exceptionally well.$"
-
-	.include "data/text/surf.inc"
-
-gText_DoorOpenedFarAway::
-	.string "It sounded as if a door opened\n"
-	.string "somewhere far away.$"
-
-gText_BigHoleInTheWall::
-	.string "There is a big hole in the wall.$"
-
-gText_UndergoingAdjustments::
-	.string "It appears to be undergoing\n"
-	.string "adjustments…$"
-
-gText_PlayerHandedOverTheItem::
-	.string "{JUGADOR} handed over the\n"
-	.string "{VAR_TEXTO_1}.$"
 
 gText_PlayerFoundOneTMHM::
 	.string "{JUGADOR} found one {VAR_TEXTO_1}\n"
@@ -447,16 +221,6 @@ gText_PlayerFoundOneTMHM::
 gText_PlayerFoundTMHMs::
 	.string "{JUGADOR} found {VAR_TEXTO_3} {VAR_TEXTO_1}\n"
 	.string "{VAR_TEXTO_2}!$"
-
-gText_Sudowoodo_Attacked::
-	.string "The weird tree doesn't like the\n"
-	.string "WAILMER PAIL!\p"
-	.string "The weird tree attacked!$"
-
-gText_LegendaryFlewAway::
-	.string "The {VAR_TEXTO_1} flew away!$"
-
-	.include "data/text/abnormal_weather.inc"
 
 EventScript_SelectWithoutRegisteredItem::
 	msgbox gText_SelectWithoutRegisteredItem, MSGBOX_SIGN
@@ -467,53 +231,31 @@ EventScript_SelectWithoutRegisteredItem::
 Common_EventScript_UnionRoomAttendant::
 	end
 
-Common_EventScript_DirectCornerAttendant::
-	end
-
-Common_EventScript_RemoveStaticPokemon::
-	fadescreenswapbuffers FADE_TO_BLACK
-	removeobject VAR_LAST_TALKED
-	fadescreenswapbuffers FADE_FROM_BLACK
-	release
-	end
-
-Common_EventScript_LegendaryFlewAway::
-	fadescreenswapbuffers FADE_TO_BLACK
-	removeobject VAR_LAST_TALKED
-	fadescreenswapbuffers FADE_FROM_BLACK
-	bufferspeciesname VAR_TEXTO_1, VAR_0x8004
-	msgbox gText_LegendaryFlewAway, MSGBOX_DEFAULT
-	release
-	end
-
-	.include "data/scripts/pc_transfer.inc"
+	.include "data/scripts/pkmn_center_nurse.inc"
+	.include "data/scripts/obtain_item.inc"
+	.include "data/scripts/pc.inc"
+	.include "data/scripts/surf.inc"
+	.include "data/scripts/movement.inc"
+	.include "data/scripts/check_furniture.inc"
+	.include "data/text/pkmn_center_nurse.inc"
+	.include "data/text/obtain_item.inc"
+	.include "data/text/surf.inc"
+	.include "data/text/abnormal_weather.inc"
 	.include "data/scripts/abnormal_weather.inc"
 	.include "data/scripts/trainer_script.inc"
 	.include "data/scripts/berry_tree.inc"
-	.include "data/scripts/interview.inc"
 	.include "data/scripts/field_move_scripts.inc"
-	.include "data/scripts/item_ball_scripts.inc"
-	.include "data/scripts/profile_man.inc"
 	.include "data/scripts/day_care.inc"
 	.include "data/scripts/flash.inc"
 	.include "data/scripts/players_house.inc"
-	.include "data/text/trainers.inc"
 	.include "data/scripts/repel.inc"
 	.include "data/text/pokedex_rating.inc"
-	.include "data/text/lottery_corner.inc"
-	.include "data/text/event_ticket_1.inc"
-	.include "data/text/berries.inc"
-	.include "data/text/shoal_cave.inc"
 	.include "data/text/check_furniture.inc"
 	.include "data/scripts/cave_hole.inc"
 	.include "data/text/match_call.inc"
-	.include "data/text/blend_master.inc"
-	.include "data/text/event_ticket_2.inc"
 	.include "data/scripts/test_signpost.inc"
 	.include "data/scripts/follower.inc"
 	.include "data/text/save.inc"
 	.include "data/text/birch_speech.inc"
-
 	.include "data/maps/Test/scripts.inc"
-
 	.include "data/maps/CentroPokemon/scripts.inc"

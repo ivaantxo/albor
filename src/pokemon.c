@@ -360,8 +360,6 @@ void ZeroMonData(struct Pokemon *mon)
     SetMonData(mon, MON_DATA_SPEED, &arg);
     SetMonData(mon, MON_DATA_SPATK, &arg);
     SetMonData(mon, MON_DATA_SPDEF, &arg);
-    arg = MAIL_NONE;
-    SetMonData(mon, MON_DATA_MAIL, &arg);
 }
 
 void ZeroPlayerPartyMons(void)
@@ -945,9 +943,6 @@ u32 GetMonData3(struct Pokemon *mon, s32 field, u8 *data)
     case MON_DATA_SPDEF:
         ret = mon->spDefense;
         break;
-    case MON_DATA_MAIL:
-        ret = 0;
-        break;
     default:
         ret = GetBoxMonData(&mon->box, field, data);
         break;
@@ -1185,8 +1180,6 @@ void SetMonData(struct Pokemon *mon, s32 field, const void *dataArg)
         break;
     case MON_DATA_SPDEF:
         SET16(mon->spDefense);
-        break;
-    case MON_DATA_MAIL:
         break;
     case MON_DATA_SPECIES_OR_EGG:
         break;

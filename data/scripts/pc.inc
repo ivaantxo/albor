@@ -16,12 +16,5 @@ EventScript_AccessPokemonStorage::
 	special ShowPokemonStorageSystemPC
 	end
 
-EventScript_TurnOffPC::
-	setvar VAR_0x8004, PC_LOCATION_OTHER
-	playse SE_PC_OFF
-	special DoPCTurnOffEffect
-	releaseall
-	end
-
 Text_EsteProgramaLeEncantaAMama:
 	.string "Este programa le encanta a mamá.$"

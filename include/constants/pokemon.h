@@ -172,11 +172,11 @@ enum CambiosEstadisticas
 // special distribution ribbons that correspond to
 // 1 bit each in the Pokémon struct. Gen 4 hard-codes
 // each of these to the given name. In Gen 3 they're
-// used to get an index into giftRibbons in the save block,
-// which can have a value 0-64 (0 is 'no ribbon') that
-// corresponds to one of the special ribbons listed
-// in gGiftRibbonDescriptionPointers. Most of these were
-// never distributed
+// used to get an index into a table in the save block,
+// which could have a value 0-64 (0 is 'no ribbon'). Ese
+// campo ya no existe aqui: se quito al borrar la cabecera
+// de ROM para herramientas externas, que era lo unico que
+// lo mantenia vivo. Casi ninguna llego a distribuirse
 #define MAX_GIFT_RIBBON 64
 
 #define MIN_LEVEL 1

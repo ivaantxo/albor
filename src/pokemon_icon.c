@@ -1,6 +1,5 @@
 #include "global.h"
 #include "graphics.h"
-#include "mail.h"
 #include "palette.h"
 #include "pokemon_sprite_visualizer.h"
 #include "pokemon_icon.h"

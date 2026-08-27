@@ -2,7 +2,6 @@
 #define GUARD_CRT0_H
 
 extern u32 IntrMain[];
-
-extern void ReInitializeEWRAM();
+extern u32 IntrMain_End[];
 
 #endif //GUARD_CRT0_H

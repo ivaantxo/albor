@@ -3,7 +3,6 @@
 
 extern bool8 gBikeCyclingChallenge;
 extern u8 gBikeCollisions;
-extern u16 gScrollableMultichoice_ScrollOffset;
 
 u8 GetLeadMonIndex(void);
 u8 IsDestinationBoxFull(void);
@@ -15,7 +14,6 @@ bool32 ShouldDoRoxanneCall(void);
 bool32 ShouldDoRivalRayquazaCall(void);
 bool32 CountSSTidalStep(u16 delta);
 u8 GetSSTidalLocation(s8 *mapGroup, s8 *mapNum, s16 *x, s16 *y);
-void ShowScrollableMultichoice(void);
 bool8 InPokemonCenter(void);
 void SetShoalItemFlag(u16 unused);
 bool8 UsedPokemonCenterWarp(void);

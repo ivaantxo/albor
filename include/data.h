@@ -143,7 +143,6 @@ extern const struct TrainerSprite gTrainerSprites[];
 extern const struct TrainerBacksprite gTrainerBacksprites[];
 
 extern const struct Trainer gTrainers[];
-extern const struct Trainer gBattlePartners[];
 
 extern const struct TrainerClass gTrainerClasses[TRAINER_CLASS_COUNT];
 

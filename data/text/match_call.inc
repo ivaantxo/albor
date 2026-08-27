@@ -1677,35 +1677,6 @@ MatchCall_Text_Wallace::
 	.string "But what is a rare stone exactly?\n"
 	.string "All I can think of is a METEORITE…$"
 
-MatchCall_Text_MayRayquazaCall:
-	.string "… … … … … …\n"
-	.string "… … … … … Beep!\p"
-	.string "MAY: Hi, {JUGADOR}!\p"
-	.string "I was just in PACIFIDLOG a little\n"
-	.string "while ago.\p"
-	.string "I saw a giant green POKéMON\n"
-	.string "flying high in the sky.\p"
-	.string "I…\n"
-	.string "I've never seen anything like it.\p"
-	.string "I wonder what it was.\n"
-	.string "Is this maybe a major discovery?\p"
-	.string "… … … … … …\n"
-	.string "… … … … … Click!$"
-
-MatchCall_Text_BrendanRayquazaCall:
-	.string "… … … … … …\n"
-	.string "… … … … … Beep!\p"
-	.string "BRENDAN: Hey, {JUGADOR}!\n"
-	.string "I was in PACIFIDLOG just now.\p"
-	.string "I saw this huge green POKéMON\n"
-	.string "flying across the sky.\p"
-	.string "I've never seen anything that\n"
-	.string "amazing before.\p"
-	.string "I wish you could've seen it,\n"
-	.string "{JUGADOR}.\p"
-	.string "… … … … … …\n"
-	.string "… … … … … Click!$"
-
 MatchCall_Text_May1::
 	.string "MAY: Hi, {JUGADOR}!\p"
 	.string "MR. BRINEY retired as a SAILOR,\n"
@@ -2201,21 +2172,6 @@ MatchCall_Text_Steven7::
 	.string "… … … … … …\p"
 	.string "I hope we can meet again\n"
 	.string "somewhere!$"
-
-MatchCall_Text_BirchRegisterCall:
-	.string "PROF. BIRCH: Oh, {JUGADOR}!\n"
-	.string "I've already heard about you!\p"
-	.string "It seems your POKéNAV's been\n"
-	.string "upgraded with MATCH CALL.\p"
-	.string "Well, I should register, too!\p"
-	.string "That way, I'd be able to examine\n"
-	.string "your POKéDEX even while you're\l"
-	.string "out in the field.\p"
-	.string "… … … … … …$"
-
-MatchCall_Text_RegisteredBirch:
-	.string "Registered PROF. BIRCH\n"
-	.string "in the POKéNAV.$"
 
 MatchCall_Text_MrStone1::
 	.string "MR. STONE: Oh? {JUGADOR}!\p"

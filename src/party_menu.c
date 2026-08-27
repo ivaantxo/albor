@@ -26,7 +26,6 @@
 #include "item.h"
 #include "item_menu.h"
 #include "item_use.h"
-#include "mail.h"
 #include "main.h"
 #include "menu.h"
 #include "menu_helpers.h"
@@ -71,8 +70,6 @@ enum {
     MENU_ITEM,
     MENU_GIVE,
     MENU_TAKE_ITEM,
-    MENU_MAIL,
-    MENU_READ,
     MENU_CANCEL2,
     MENU_SHIFT,
     MENU_SEND_OUT,
@@ -99,7 +96,6 @@ enum {
     ACTIONS_STORE,
     ACTIONS_SUMMARY_ONLY,
     ACTIONS_ITEM,
-    ACTIONS_MAIL,
     ACTIONS_REGISTER,
     ACTIONS_TAKEITEM_TOSS,
     ACTIONS_ROTOM_CATALOG,
@@ -278,7 +274,7 @@ static void PartyMenuRemoveWindow(u8 *);
 static void CB2_SetUpExitToBattleScreen(void);
 static void Task_ClosePartyMenuAfterText(u8);
 static void TryTutorSelectedMon(u8);
-static void TryGiveItemOrMailToSelectedMon(u8);
+static void TryGiveItemToSelectedMon(u8);
 static void SwitchSelectedMons(u8);
 static void Task_TryCreateSelectionWindow(u8);
 static void FinishTwoMonAction(u8);
@@ -307,18 +303,14 @@ static void SwitchPartyMon(void);
 static void Task_SlideSelectedSlotsOnscreen(u8);
 static void CB2_SelectBagItemToGive(void);
 static void CB2_GiveHoldItem(void);
-static void CB2_WriteMailToGiveMon(void);
 static void Task_SwitchHoldItemsPrompt(u8);
 static void Task_GiveHoldItem(u8);
 static void Task_SwitchItemsYesNo(u8);
 static void Task_HandleSwitchItemsYesNoInput(u8);
-static void Task_WriteMailToGiveMonAfterText(u8);
 static void UpdatePartyMonHeldItemSprite(struct Pokemon *, struct PartyMenuBox *);
 static void Task_TossHeldItemYesNo(u8 taskId);
 static void Task_HandleTossHeldItemYesNoInput(u8);
 static void Task_TossHeldItem(u8);
-static void CB2_ReadHeldMail(void);
-static void CB2_ReturnToPartyMenuFromReadingMail(void);
 static bool8 TrySwitchInPokemon(void);
 static void Task_CancelAfterAorBPress(u8);
 static void DisplayFieldMoveExitAreaMessage(u8);
@@ -370,11 +362,8 @@ static void DisplayMonLearnedMove(u8, u16);
 static void UseSacredAsh(u8);
 static void Task_SacredAshLoop(u8);
 static void Task_SacredAshDisplayHPRestored(u8);
-static void GiveItemOrMailToSelectedMon(u8);
-static void DisplayItemMustBeRemovedFirstMessage(u8);
 static void Task_SwitchItemsFromBagYesNo(u8);
 static void RemoveItemToGiveFromBag(u16);
-static void CB2_WriteMailToGiveMonFromBag(void);
 static void GiveItemToSelectedMon(u8);
 static void Task_UpdateHeldItemSpriteAndClosePartyMenu(u8);
 static void Task_HandleSwitchItemsFromBagYesNoInput(u8);
@@ -394,8 +383,6 @@ static void CursorCb_Cancel1(u8);
 static void CursorCb_Item(u8);
 static void CursorCb_Give(u8);
 static void CursorCb_TakeItem(u8);
-static void CursorCb_Mail(u8);
-static void CursorCb_Read(u8);
 static void CursorCb_Cancel2(u8);
 static void CursorCb_SendMon(u8);
 static void CursorCb_Store(u8);
@@ -1071,7 +1058,7 @@ static void HandleChooseMonSelection(u8 taskId, s8 *slotPtr)
             {
                 PlaySE(SE_SELECT);
                 PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[1]);
-                TryGiveItemOrMailToSelectedMon(taskId);
+                TryGiveItemToSelectedMon(taskId);
             }
             break;
         case PARTY_ACTION_SWITCH:
@@ -1504,11 +1491,6 @@ static void GiveItemToMon(struct Pokemon *mon, u16 item)
 {
     u8 itemBytes[2];
 
-    if (ItemIsMail(item) == TRUE)
-    {
-        if (GiveMailToMonByItemId(mon, item) == MAIL_NONE)
-            return;
-    }
     itemBytes[0] = item;
     itemBytes[1] = item >> 8;
     SetMonData(mon, MON_DATA_HELD_ITEM, itemBytes);
@@ -2031,9 +2013,6 @@ void DisplayPartyMenuStdMessage(u32 stringId)
         case PARTY_MSG_DO_WHAT_WITH_ITEM:
             *windowPtr = AddWindow(&sDoWhatWithItemMsgWindowTemplate);
             break;
-        case PARTY_MSG_DO_WHAT_WITH_MAIL:
-            *windowPtr = AddWindow(&sDoWhatWithMailMsgWindowTemplate);
-            break;
         case PARTY_MSG_RESTORE_WHICH_MOVE:
         case PARTY_MSG_BOOST_PP_WHICH_MOVE:
             *windowPtr = AddWindow(&sWhichMoveMsgWindowTemplate);
@@ -2094,9 +2073,6 @@ static u8 DisplaySelectionWindow(u8 windowType)
         break;
     case SELECTWINDOW_ITEM:
         window = sItemGiveTakeWindowTemplate;
-        break;
-    case SELECTWINDOW_MAIL:
-        window = sMailReadTakeWindowTemplate;
         break;
     case SELECTWINDOW_CATALOG:
         window = sCatalogSelectWindowTemplate;
@@ -2201,10 +2177,7 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
 
     if (GetMonData(&mons[1], MON_DATA_SPECIES) != SPECIES_NONE)
         AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_SWITCH);
-    if (ItemIsMail(GetMonData(&mons[slotId], MON_DATA_HELD_ITEM)))
-        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_MAIL);
-    else
-        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_ITEM);
+    AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_ITEM);
     AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_CANCEL1);
 }
 
@@ -2638,13 +2611,6 @@ static void CB2_GiveHoldItem(void)
         {
             InitPartyMenu(gPartyMenu.menuType, KEEP_PARTY_LAYOUT, gPartyMenu.action, TRUE, PARTY_MSG_NONE, Task_SwitchHoldItemsPrompt, gPartyMenu.exitCallback);
         }
-        // Give mail
-        else if (ItemIsMail(gSpecialVar_ItemId))
-        {
-            RemoveBagItem(gSpecialVar_ItemId, 1);
-            GiveItemToMon(&gPlayerParty[gPartyMenu.slotId], gSpecialVar_ItemId);
-            CB2_WriteMailToGiveMon();
-        }
         // Give item
         else
         {
@@ -2700,12 +2666,6 @@ static void Task_HandleSwitchItemsYesNoInput(u8 taskId)
             DisplayPartyMenuMessage(gVariableTextoAmpliada, FALSE);
             gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
         }
-        // Giving mail
-        else if (ItemIsMail(gSpecialVar_ItemId))
-        {
-            GiveItemToMon(&gPlayerParty[gPartyMenu.slotId], gSpecialVar_ItemId);
-            gTasks[taskId].func = Task_WriteMailToGiveMonAfterText;
-        }
         // Giving item
         else
         {
@@ -2721,20 +2681,6 @@ static void Task_HandleSwitchItemsYesNoInput(u8 taskId)
         gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
         break;
     }
-}
-
-static void Task_WriteMailToGiveMonAfterText(u8 taskId)
-{
-    if (IsPartyMenuTextPrinterActive() != TRUE)
-    {
-        sPartyMenuInternal->exitCallback = CB2_WriteMailToGiveMon;
-        Task_ClosePartyMenu(taskId);
-    }
-}
-
-static void CB2_WriteMailToGiveMon(void)
-{
-
 }
 
 static void Task_UpdateHeldItemSprite(u8 taskId)
@@ -2842,36 +2788,6 @@ static void Task_TossHeldItem(u8 taskId)
         DisplayPartyPokemonDescriptionText(PARTYBOX_DESC_DONT_HAVE, &sPartyMenuBoxes[gPartyMenu.slotId], 1);
         gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
     }
-}
-
-static void CursorCb_Mail(u8 taskId)
-{
-    PlaySE(SE_SELECT);
-    PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[0]);
-    PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[1]);
-    SetPartyMonSelectionActions(gPlayerParty, gPartyMenu.slotId, ACTIONS_MAIL);
-    DisplaySelectionWindow(SELECTWINDOW_MAIL);
-    DisplayPartyMenuStdMessage(PARTY_MSG_DO_WHAT_WITH_MAIL);
-    gTasks[taskId].data[0] = 0xFF;
-    gTasks[taskId].func = Task_HandleSelectionMenuInput;
-}
-
-static void CursorCb_Read(u8 taskId)
-{
-    PlaySE(SE_SELECT);
-    sPartyMenuInternal->exitCallback = CB2_ReadHeldMail;
-    Task_ClosePartyMenu(taskId);
-}
-
-static void CB2_ReadHeldMail(void)
-{
-    ReadMail(&gSaveBlockPtr->mail[GetMonData(&gPlayerParty[gPartyMenu.slotId], MON_DATA_MAIL)], CB2_ReturnToPartyMenuFromReadingMail, TRUE);
-}
-
-static void CB2_ReturnToPartyMenuFromReadingMail(void)
-{
-    gFundidoPaletas.transferenciaBufferDeshabilitada = TRUE;
-    InitPartyMenu(gPartyMenu.menuType, KEEP_PARTY_LAYOUT, gPartyMenu.action, TRUE, PARTY_MSG_DO_WHAT_WITH_MON, Task_TryCreateSelectionWindow, gPartyMenu.exitCallback);
 }
 
 static void CursorCb_Cancel2(u8 taskId)
@@ -3221,10 +3137,7 @@ static void ShowOrHideHeldItemSprite(u16 item, struct PartyMenuBox *menuBox)
     }
     else
     {
-        if (ItemIsMail(item))
-            StartSpriteAnim(&gSprites[menuBox->itemSpriteId], 1);
-        else
-            StartSpriteAnim(&gSprites[menuBox->itemSpriteId], 0);
+        StartSpriteAnim(&gSprites[menuBox->itemSpriteId], 0);
         gSprites[menuBox->itemSpriteId].invisible = FALSE;
     }
 }
@@ -5087,35 +5000,17 @@ void CB2_ChooseMonToGiveItem(void)
     gPartyMenu.bagItem = gSpecialVar_ItemId;
 }
 
-static void TryGiveItemOrMailToSelectedMon(u8 taskId)
+static void TryGiveItemToSelectedMon(u8 taskId)
 {
     sPartyMenuItemId = GetMonData(&gPlayerParty[gPartyMenu.slotId], MON_DATA_HELD_ITEM);
     if (sPartyMenuItemId == ITEM_NONE)
     {
-        GiveItemOrMailToSelectedMon(taskId);
-    }
-    else if (ItemIsMail(sPartyMenuItemId))
-    {
-        DisplayItemMustBeRemovedFirstMessage(taskId);
+        GiveItemToSelectedMon(taskId);
     }
     else
     {
         DisplayAlreadyHoldingItemSwitchMessage(&gPlayerParty[gPartyMenu.slotId], sPartyMenuItemId, TRUE);
         gTasks[taskId].func = Task_SwitchItemsFromBagYesNo;
-    }
-}
-
-static void GiveItemOrMailToSelectedMon(u8 taskId)
-{
-    if (ItemIsMail(gPartyMenu.bagItem))
-    {
-        RemoveItemToGiveFromBag(gPartyMenu.bagItem);
-        sPartyMenuInternal->exitCallback = CB2_WriteMailToGiveMonFromBag;
-        Task_ClosePartyMenu(taskId);
-    }
-    else
-    {
-        GiveItemToSelectedMon(taskId);
     }
 }
 
@@ -5144,11 +5039,6 @@ static void Task_UpdateHeldItemSpriteAndClosePartyMenu(u8 taskId)
     }
 }
 
-static void CB2_WriteMailToGiveMonFromBag(void)
-{
-
-}
-
 static void Task_SwitchItemsFromBagYesNo(u8 taskId)
 {
     if (IsPartyMenuTextPrinterActive() != TRUE)
@@ -5174,11 +5064,6 @@ static void Task_HandleSwitchItemsFromBagYesNoInput(u8 taskId)
             DisplayPartyMenuMessage(gVariableTextoAmpliada, FALSE);
             gTasks[taskId].func = Task_UpdateHeldItemSpriteAndClosePartyMenu;
         }
-        else if (ItemIsMail(item))
-        {
-            sPartyMenuInternal->exitCallback = CB2_WriteMailToGiveMonFromBag;
-            Task_ClosePartyMenu(taskId);
-        }
         else
         {
             GiveItemToMon(&gPlayerParty[gPartyMenu.slotId], item);
@@ -5193,13 +5078,6 @@ static void Task_HandleSwitchItemsFromBagYesNoInput(u8 taskId)
         gTasks[taskId].func = Task_UpdateHeldItemSpriteAndClosePartyMenu;
         break;
     }
-}
-
-static void DisplayItemMustBeRemovedFirstMessage(u8 taskId)
-{
-    DisplayPartyMenuMessage(gText_RemoveMailBeforeItem, TRUE);
-    ProgramaCopiaTilemapVram(FONDO_2);
-    gTasks[taskId].func = Task_UpdateHeldItemSpriteAndClosePartyMenu;
 }
 
 static void RemoveItemToGiveFromBag(u16 item)

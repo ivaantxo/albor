@@ -2,7 +2,6 @@
 #include "battle_setup.h"
 #include "berry.h"
 #include "clock.h"
-#include "coins.h"
 #include "data.h"
 #include "decompress.h"
 #include "event_data.h"
@@ -1621,27 +1620,6 @@ bool8 ScrCmd_updatemoneybox(struct ScriptContext *ctx)
     return FALSE;
 }
 
-bool8 ScrCmd_showcoinsbox(struct ScriptContext *ctx)
-{
-    u8 x = ScriptReadByte(ctx);
-    u8 y = ScriptReadByte(ctx);
-
-    ShowCoinsWindow(GetCoins(), x, y);
-    return FALSE;
-}
-
-bool8 ScrCmd_hidecoinsbox(struct ScriptContext *ctx)
-{
-    HideCoinsWindow();
-    return FALSE;
-}
-
-bool8 ScrCmd_updatecoinsbox(struct ScriptContext *ctx)
-{
-    PrintCoinsString(GetCoins());
-    return FALSE;
-}
-
 bool8 ScrCmd_trainerbattle(struct ScriptContext *ctx)
 {
     ctx->scriptPtr = BattleSetup_ConfigureTrainerBattle(ctx->scriptPtr);
@@ -1900,35 +1878,6 @@ bool8 ScrCmd_showelevmenu(struct ScriptContext *ctx)
     /*ScriptShowElevatorMenu();
     ScriptContext_Stop();
     return TRUE;*/
-    return FALSE;
-}
-
-bool8 ScrCmd_checkcoins(struct ScriptContext *ctx)
-{
-    u16 *ptr = GetVarPointer(ScriptReadHalfword(ctx));
-    *ptr = GetCoins();
-    return FALSE;
-}
-
-bool8 ScrCmd_addcoins(struct ScriptContext *ctx)
-{
-    u16 coins = VarGet(ScriptReadHalfword(ctx));
-
-    if (AddCoins(coins) == TRUE)
-        gSpecialVar_Result = FALSE;
-    else
-        gSpecialVar_Result = TRUE;
-    return FALSE;
-}
-
-bool8 ScrCmd_removecoins(struct ScriptContext *ctx)
-{
-    u16 coins = VarGet(ScriptReadHalfword(ctx));
-
-    if (RemoveCoins(coins) == TRUE)
-        gSpecialVar_Result = FALSE;
-    else
-        gSpecialVar_Result = TRUE;
     return FALSE;
 }
 

@@ -10,10 +10,8 @@
 #include "rtc.h"
 #include "event_data.h"
 #include "money.h"
-#include "coins.h"
 #include "text.h"
 #include "overworld.h"
-#include "mail.h"
 #include "item.h"
 #include "pokedex.h"
 #include "pokedex.h"
@@ -78,7 +76,6 @@ void NewGameInitData(void)
     InitEventData();
     ClearBerryTrees();
     SetMoney(&gSaveBlockPtr->money, 3000);
-    SetCoins(0);
     ResetGameStats();
     gPlayerPartyCount = 0;
     ZeroPlayerPartyMons();
