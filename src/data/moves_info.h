@@ -3605,11 +3605,11 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
     {
         .name = COMPOUND_STRING("Púas"),
         .description = COMPOUND_STRING(
-            "Sets spikes that hurt a \n"
-            "foe switching in."),
+            "Esparce púas de acero que\n"
+            "dañan al rival al entrar."),
         .effect = EFFECT_SPIKES,
         .power = 0,
-        .type = TIPO_TIERRA,
+        .type = TIPO_ACERO,
         .accuracy = PRECISION_PERFECTA,
         .pp = 20,
         .target = MOVE_TARGET_OPPONENTS_FIELD,
@@ -6614,9 +6614,9 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
     {
         .name = COMPOUND_STRING("Púas tóxicas"),
         .description = COMPOUND_STRING(
-            "Sets spikes that poison a\n"
-            "foe switching in."),
-        .effect = EFFECT_TOXIC_SPIKES,
+            "Esparce púas venenosas que\n"
+            "dañan al rival al entrar."),
+        .effect = EFFECT_SPIKES,
         .power = 0,
         .type = TIPO_VENENO,
         .accuracy = PRECISION_PERFECTA,
@@ -7718,11 +7718,11 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
 
     [MOVE_STEALTH_ROCK] =
     {
-        .name = COMPOUND_STRING("Trampa rocas"),
+        .name = COMPOUND_STRING("Rocas puntiagudas"),
         .description = COMPOUND_STRING(
-            "Sets floating stones that\n"
-            "hurt a foe switching in."),
-        .effect = EFFECT_STEALTH_ROCK,
+            "Deja rocas puntiagudas que\n"
+            "dañan al rival al entrar."),
+        .effect = EFFECT_SPIKES,
         .power = 0,
         .type = TIPO_ROCA,
         .accuracy = PRECISION_PERFECTA,
@@ -9429,10 +9429,10 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
 
     [MOVE_STICKY_WEB] =
     {
-        .name = COMPOUND_STRING("Sticky Web"),
+        .name = COMPOUND_STRING("Red viscosa"),
         .description = COMPOUND_STRING(
-            "Weaves a sticky net that\n"
-            "slows foes switching in."),
+            "Tiende una red viscosa que\n"
+            "baja Velocidad al entrar."),
         .effect = EFFECT_STICKY_WEB,
         .power = 0,
         .type = TIPO_BICHO,
@@ -11128,10 +11128,10 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
 
     [MOVE_RODILLO] =
     {
-        .name = COMPOUND_STRING("Rodillo"),
+        .name = COMPOUND_STRING("Apisonadora"),
         .description = COMPOUND_STRING(
-            "Spins the body at high\n"
-            "speed to strike the foe."),
+            "Arrolla al rival y elimina\n"
+            "trampas del lado propio."),
         .effect = EFFECT_HIT,
         .power = 70,
         .type = TIPO_ROCA,
@@ -12024,10 +12024,10 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
 
     [MOVE_ICE_SPINNER] =
     {
-        .name = COMPOUND_STRING("Ice Spinner"), //Quitar trampas?
+        .name = COMPOUND_STRING("Pirueta helada"),
         .description = COMPOUND_STRING(
-            "Ice-covered feet hit a foe\n"
-            "and destroy the terrain."),
+            "Golpea girando y elimina las\n"
+            "trampas del lado propio."),
         .effect = EFFECT_HIT,
         .power = 80,
         .type = TIPO_HIELO,
@@ -12037,6 +12037,10 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
+        .additionalEffects = ADDITIONAL_EFFECTS({
+            .moveEffect = MOVE_EFFECT_GIRO_RAPIDO,
+            .self = TRUE,
+        }),
         .battleAnimScript = gBattleAnimMove_IceSpinner,
     },
 
@@ -12510,5 +12514,81 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         CURATIVO,
         .bitingMove = TRUE,
         .battleAnimScript = gBattleAnimMove_Chupasangre,
+    },
+
+    [MOVE_BRASAS] =
+    {
+        .name = COMPOUND_STRING("Brasas"),
+        .description = COMPOUND_STRING(
+            "Deja brasas en el suelo que\n"
+            "dañan al rival al entrar."),
+        .effect = EFFECT_SPIKES,
+        .power = 0,
+        .type = TIPO_FUEGO,
+        .accuracy = PRECISION_PERFECTA,
+        .pp = 20,
+        .target = MOVE_TARGET_OPPONENTS_FIELD,
+        PRIORIDAD_NORMAL,
+        .category = CATEGORIA_ESTADO,
+        .ignoresProtect = TRUE,
+        .espejoMagico = TRUE,
+        .battleAnimScript = gBattleAnimMove_Brasas,
+    },
+
+    [MOVE_ESPINAS] =
+    {
+        .name = COMPOUND_STRING("Espinas"),
+        .description = COMPOUND_STRING(
+            "Deja espinas en el suelo que\n"
+            "dañan al rival al entrar."),
+        .effect = EFFECT_SPIKES,
+        .power = 0,
+        .type = TIPO_PLANTA,
+        .accuracy = PRECISION_PERFECTA,
+        .pp = 20,
+        .target = MOVE_TARGET_OPPONENTS_FIELD,
+        PRIORIDAD_NORMAL,
+        .category = CATEGORIA_ESTADO,
+        .ignoresProtect = TRUE,
+        .espejoMagico = TRUE,
+        .battleAnimScript = gBattleAnimMove_Espinas,
+    },
+
+    [MOVE_PENITENTES] =
+    {
+        .name = COMPOUND_STRING("Penitentes"),
+        .description = COMPOUND_STRING(
+            "Deja penitentes de hielo que\n"
+            "dañan al rival al entrar."),
+        .effect = EFFECT_SPIKES,
+        .power = 0,
+        .type = TIPO_HIELO,
+        .accuracy = PRECISION_PERFECTA,
+        .pp = 20,
+        .target = MOVE_TARGET_OPPONENTS_FIELD,
+        PRIORIDAD_NORMAL,
+        .category = CATEGORIA_ESTADO,
+        .ignoresProtect = TRUE,
+        .espejoMagico = TRUE,
+        .battleAnimScript = gBattleAnimMove_Penitentes,
+    },
+
+    [MOVE_ENREDADERAS] =
+    {
+        .name = COMPOUND_STRING("Enredaderas"),
+        .description = COMPOUND_STRING(
+            "Tiende enredaderas que bajan\n"
+            "Velocidad al rival al entrar."),
+        .effect = EFFECT_STICKY_WEB,
+        .power = 0,
+        .type = TIPO_PLANTA,
+        .accuracy = PRECISION_PERFECTA,
+        .pp = 20,
+        .target = MOVE_TARGET_OPPONENTS_FIELD,
+        PRIORIDAD_NORMAL,
+        .category = CATEGORIA_ESTADO,
+        .ignoresProtect = TRUE,
+        .espejoMagico = TRUE,
+        .battleAnimScript = gBattleAnimMove_Enredaderas,
     },
 };

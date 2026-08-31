@@ -20988,3 +20988,19 @@ gBattleAnimSpecial_SubstituteToMon::
 gBattleAnimSpecial_MonToSubstitute::
 	createvisualtask AnimTask_SwapMonSpriteToFromSubstitute, 2, FALSE
 	end
+
+@ TODO: Falta crear la animación de Brasas.
+gBattleAnimMove_Brasas::
+	end
+
+@ TODO: Falta crear la animación de Espinas.
+gBattleAnimMove_Espinas::
+	end
+
+@ TODO: Falta crear la animación de Penitentes.
+gBattleAnimMove_Penitentes::
+	end
+
+@ TODO: Falta crear la animación de Enredaderas.
+gBattleAnimMove_Enredaderas::
+	end

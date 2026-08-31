@@ -2007,35 +2007,17 @@ static bool32 PartyBattlerShouldAvoidHazards(u32 currBattler, u32 switchBattler)
     u32 ability = GetMonAbility(mon); // we know our own party data
     u32 holdEffect = gItemsInfo[GetMonData(mon, MON_DATA_HELD_ITEM)].holdEffect;
     u32 species = GetMonData(mon, MON_DATA_SPECIES);
-    u32 flags = gSideStatuses[GetBattlerSide(currBattler)] & (SIDE_STATUS_SPIKES | SIDE_STATUS_STEALTH_ROCK | SIDE_STATUS_STICKY_WEB | SIDE_STATUS_TOXIC_SPIKES);
-    s32 hazardDamage = 0;
-    u32 type1 = gSpeciesInfo[species].types[TIPO_1];
-    u32 type2 = gSpeciesInfo[species].types[TIPO_2];
-    u32 maxHp = GetMonData(mon, MON_DATA_MAX_HP);
+    u32 tipo1 = gSpeciesInfo[species].types[TIPO_1];
+    u32 tipo2 = gSpeciesInfo[species].types[TIPO_2];
 
-    if (flags == 0)
-        return FALSE;
-
-    if (ability == ABILITY_MAGIC_GUARD)
-        return FALSE;
-
+    // Las botas y no pisar el suelo son lo unico que libra. Muro Magico no.
     if (holdEffect == HOLD_EFFECT_HEAVY_DUTY_BOOTS)
         return FALSE;
+    if (!EstaPokemonEnSuelo(holdEffect, ability, tipo1, tipo2))
+        return FALSE;
 
-    if (flags & SIDE_STATUS_STEALTH_ROCK)
-        hazardDamage += DanioTrampa(gMovimientos[MOVE_STEALTH_ROCK].type, currBattler);
-
-    if (flags & SIDE_STATUS_SPIKES && ((type1 != TIPO_VOLADOR && type2 != TIPO_VOLADOR && ability != ABILITY_LEVITATE && holdEffect != HOLD_EFFECT_AIR_BALLOON) || holdEffect == HOLD_EFFECT_IRON_BALL))
-    {
-        s32 spikesDmg = maxHp / ((5 - gSideTimers[GetBattlerSide(currBattler)].spikesAmount) * 2);
-        if (spikesDmg == 0)
-            spikesDmg = 1;
-        hazardDamage += spikesDmg;
-    }
-
-    if (hazardDamage >= GetMonData(mon, MON_DATA_HP))
-        return TRUE;
-    return FALSE;
+    return CalculaDanioTrampasEntrada(GetBattlerSide(currBattler), tipo1, tipo2,
+                                      GetMonData(mon, MON_DATA_MAX_HP)) >= GetMonData(mon, MON_DATA_HP);
 }
 
 enum AIPivot ShouldPivot(u32 battlerAtk, u32 battlerDef, u32 defAbility, enum Movimientos move, u32 moveIndex)
@@ -2073,7 +2055,7 @@ enum AIPivot ShouldPivot(u32 battlerAtk, u32 battlerDef, u32 defAbility, enum Mo
                         return SHOULD_PIVOT;
 
                     /* TODO - check if switchable mon unafffected by/will remove hazards
-                    if (gSideStatuses[battlerAtk] & SIDE_STATUS_SPIKES && switchScore >= SWITCHING_INCREASE_CAN_REMOVE_HAZARDS)
+                    if (HayAlgunaTrampaEntrada(GetBattlerSide(battlerAtk)) && switchScore >= SWITCHING_INCREASE_CAN_REMOVE_HAZARDS)
                         return SHOULD_PIVOT;*/
 
                     /*if (BattlerWillFaintFromSecondaryDamage(battlerAtk, AI_DATA->abilities[battlerAtk]) && switchScore >= SWITCHING_INCREASE_WALLS_FOE)
@@ -2150,7 +2132,7 @@ enum AIPivot ShouldPivot(u32 battlerAtk, u32 battlerDef, u32 defAbility, enum Mo
                     if (!hasStatBoost)
                     {
                         // TODO - check if switching prevents/removes hazards
-                        // if (gSideStatuses[battlerAtk] & SIDE_STATUS_SPIKES && switchScore >= SWITCHING_INCREASE_CAN_REMOVE_HAZARDS)
+                        // if (HayAlgunaTrampaEntrada(GetBattlerSide(battlerAtk)) && switchScore >= SWITCHING_INCREASE_CAN_REMOVE_HAZARDS)
                         // return SHOULD_PIVOT;
 
                         // TODO - not always a good idea

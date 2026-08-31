@@ -1131,26 +1131,18 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
         }
         break;
     case EFFECT_SPIKES:
-        if (gSideTimers[GetBattlerSide(battlerDef)].spikesAmount >= 3)
-            ADJUST_SCORE(-10);
-        else if (PartnerMoveIsSameNoTarget(ALIADO(battlerAtk), move, aiData->partnerMove) && gSideTimers[GetBattlerSide(battlerDef)].spikesAmount == 2)
-            ADJUST_SCORE(-10); // only one mon needs to set up the last layer of Spikes
-        break;
     case EFFECT_STEALTH_ROCK:
-        if (gSideTimers[GetBattlerSide(battlerDef)].stealthRockAmount > 0 || PartnerMoveIsSameNoTarget(ALIADO(battlerAtk), move, aiData->partnerMove)) // Only one mon needs to set up Stealth Rocks
-            ADJUST_SCORE(-10);
-        break;
     case EFFECT_TOXIC_SPIKES:
-        if (gSideTimers[GetBattlerSide(battlerDef)].toxicSpikesAmount >= 2)
+        // Ya no hay capas: la trampa esta puesta o no lo esta. La que coloca el
+        // movimiento la decide su tipo.
+        if (HayTrampaEntrada(TrampaEntradaPorTipo(gMovimientos[move].type), GetBattlerSide(battlerDef))
+         || PartnerMoveIsSameNoTarget(ALIADO(battlerAtk), move, aiData->partnerMove))
             ADJUST_SCORE(-10);
-        else if (PartnerMoveIsSameNoTarget(ALIADO(battlerAtk), move, aiData->partnerMove) && gSideTimers[GetBattlerSide(battlerDef)].toxicSpikesAmount == 1)
-            ADJUST_SCORE(-10); // only one mon needs to set up the last layer of Toxic Spikes
         break;
     case EFFECT_STICKY_WEB:
-        if (gSideTimers[GetBattlerSide(battlerDef)].stickyWebAmount)
+        if (HayTrampaEntrada(gMovimientos[move].type == TIPO_PLANTA ? TRAMPA_ENREDADERAS : TRAMPA_RED_VISCOSA, GetBattlerSide(battlerDef))
+         || PartnerMoveIsSameNoTarget(ALIADO(battlerAtk), move, aiData->partnerMove))
             ADJUST_SCORE(-10);
-        else if (PartnerMoveIsSameNoTarget(ALIADO(battlerAtk), move, aiData->partnerMove) && gSideTimers[GetBattlerSide(battlerDef)].stickyWebAmount)
-            ADJUST_SCORE(-10); // only one mon needs to set up Sticky Web
         break;
     case EFFECT_FORESIGHT:
         if (gBattleMons[battlerDef].status2 & STATUS2_FORESIGHT)
@@ -1387,7 +1379,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
     }
     break;
     case EFFECT_DEFOG:
-        if (gSideStatuses[GetBattlerSide(battlerDef)] & (SIDE_STATUS_REFLECT | SIDE_STATUS_LIGHTSCREEN | SIDE_STATUS_AURORA_VEIL | SIDE_STATUS_SAFEGUARD | SIDE_STATUS_MIST) || gSideTimers[GetBattlerSide(battlerDef)].auroraVeilTimer != 0 || gSideStatuses[GetBattlerSide(battlerAtk)] & SIDE_STATUS_HAZARDS_ANY)
+        if (gSideStatuses[GetBattlerSide(battlerDef)] & (SIDE_STATUS_REFLECT | SIDE_STATUS_LIGHTSCREEN | SIDE_STATUS_AURORA_VEIL | SIDE_STATUS_SAFEGUARD | SIDE_STATUS_MIST) || HayAlgunaTrampaEntrada(GetBattlerSide(battlerDef)))
         {
             if (PartnerHasSameMoveEffectWithoutTarget(ALIADO(battlerAtk), move, aiData->partnerMove))
             {
@@ -1396,7 +1388,7 @@ static s32 AI_CheckBadMove(u32 battlerAtk, u32 battlerDef, u32 move, s32 score)
             }
         }
 
-        if (gSideStatuses[GetBattlerSide(battlerDef)] & SIDE_STATUS_HAZARDS_ANY)
+        if (HayAlgunaTrampaEntrada(GetBattlerSide(battlerDef)))
         {
             ADJUST_SCORE(-10); // Don't blow away opposing hazards
             break;
@@ -2427,11 +2419,11 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
         //     ADJUST_SCORE(GOOD_EFFECT);
         // break;
     case EFFECT_DEFOG:
-        if ((gSideStatuses[GetBattlerSide(battlerAtk)] & SIDE_STATUS_HAZARDS_ANY && CountUsablePartyMons(battlerAtk) != 0) || (gSideStatuses[GetBattlerSide(battlerDef)] & (SIDE_STATUS_SCREEN_ANY | SIDE_STATUS_SAFEGUARD | SIDE_STATUS_MIST)))
+        if ((HayAlgunaTrampaEntrada(GetBattlerSide(battlerAtk)) && CountUsablePartyMons(battlerAtk) != 0) || (gSideStatuses[GetBattlerSide(battlerDef)] & (SIDE_STATUS_SCREEN_ANY | SIDE_STATUS_SAFEGUARD | SIDE_STATUS_MIST)))
         {
             ADJUST_SCORE(GOOD_EFFECT);
         }
-        else if (!(gSideStatuses[GetBattlerSide(battlerDef)] & SIDE_STATUS_SPIKES)) // Don't blow away hazards if you set them up
+        else if (!HayAlgunaTrampaEntrada(GetBattlerSide(battlerDef))) // Don't blow away hazards if you set them up
         {
             if (isDoubleBattle)
             {
@@ -2716,7 +2708,7 @@ static u32 AI_CalcMoveEffectScore(u32 battlerAtk, u32 battlerDef, u32 move)
                     ADJUST_SCORE(IncreaseStatUpScore(battlerAtk, battlerDef, STAT_CHANGE_EVASION));
                     break;
                 case MOVE_EFFECT_GIRO_RAPIDO:
-                    if ((gSideStatuses[GetBattlerSide(battlerAtk)] & SIDE_STATUS_HAZARDS_ANY && CountUsablePartyMons(battlerAtk) != 0) || (gStatuses3[battlerAtk] & STATUS3_LEECHSEED || gBattleMons[battlerAtk].status2 & STATUS2_WRAPPED))
+                    if ((HayAlgunaTrampaEntrada(GetBattlerSide(battlerAtk)) && CountUsablePartyMons(battlerAtk) != 0) || (gStatuses3[battlerAtk] & STATUS3_LEECHSEED || gBattleMons[battlerAtk].status2 & STATUS2_WRAPPED))
                         ADJUST_SCORE(GOOD_EFFECT);
                     break;
                 }

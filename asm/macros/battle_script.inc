@@ -264,6 +264,10 @@
 	.byte BATTLE_CMD_EscribeTextoDanioTrampa
 	.endm
 
+	.macro EscribeTextoTrampaPuesta
+	.byte BATTLE_CMD_EscribeTextoTrampaPuesta
+	.endm
+
 	.macro EscribeTextoBallEscapa
 	.byte BATTLE_CMD_EscribeTextoBallEscapa
 	.endm
@@ -1000,11 +1004,6 @@
 	.4byte \failInstr
 	.endm
 
-	.macro trysetspikes failInstr:req
-	.byte BATTLE_CMD_trysetspikes
-	.4byte \failInstr
-	.endm
-
 	.macro setforesight
 	.byte BATTLE_CMD_setforesight
 	.endm
@@ -1069,11 +1068,6 @@
 
 	.macro RecuperaSaludSegunClima failInstr:req
 	.byte BATTLE_CMD_RecuperaSaludSegunClima
-	.4byte \failInstr
-	.endm
-
-	.macro setstickyweb failInstr:req
-	.byte BATTLE_CMD_setstickyweb
 	.4byte \failInstr
 	.endm
 
@@ -1149,11 +1143,6 @@
 	.4byte \failInstr
 	.endm
 
-	.macro settoxicspikes failInstr:req
-	.byte BATTLE_CMD_settoxicspikes
-	.4byte \failInstr
-	.endm
-
 	.macro setgastroacid failInstr:req
 	.byte BATTLE_CMD_setgastroacid
 	.4byte \failInstr
@@ -1173,8 +1162,29 @@
 	.4byte \failInstr
 	.endm
 
-	.macro setstealthrock failInstr:req
-	.byte BATTLE_CMD_setstealthrock
+	@ Coloca una trampa concreta. TRAMPA_SEGUN_TIPO_MOVIMIENTO usa el
+	@ identificador guardado en gMovimientos[gCurrentMove].argument.
+	.macro ponmarca marca:req
+	.byte BATTLE_CMD_ponmarca
+	.byte \marca
+	.endm
+
+	.macro quitamarca marca:req
+	.byte BATTLE_CMD_quitamarca
+	.byte \marca
+	.endm
+
+	@ Salta si la marca vale lo indicado (TRUE o FALSE).
+	.macro jumpifmarca marca:req, valor:req, dest:req
+	.byte BATTLE_CMD_jumpifmarca
+	.byte \marca
+	.byte \valor
+	.4byte \dest
+	.endm
+
+	.macro settypedhazard hazard:req, failInstr:req
+	.byte BATTLE_CMD_settypedhazard
+	.byte \hazard
 	.4byte \failInstr
 	.endm
 

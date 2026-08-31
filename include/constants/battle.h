@@ -173,39 +173,76 @@ enum ResultadosCombate
 #define STATUS3_AQUA_RING               (1 << 28)
 #define STATUS3_SEMI_INVULNERABLE       (STATUS3_UNDERGROUND | STATUS3_ON_AIR | STATUS3_UNDERWATER | STATUS3_PHANTOM_FORCE)
 
-#define HITMARKER_DESTINYBOND           (1 << 6)
-#define HITMARKER_IGNORE_SUBSTITUTE     (1 << 8)
-#define HITMARKER_NO_ATTACKSTRING       (1 << 9)
-#define HITMARKER_ATTACKSTRING_PRINTED  (1 << 10)
-#define HITMARKER_NO_PPDEDUCT           (1 << 11)
-#define HITMARKER_SWAP_ATTACKER_TARGET  (1 << 12)
-#define HITMARKER_STATUS_ABILITY_EFFECT (1 << 13)
-#define HITMARKER_SYNCHRONISE_EFFECT    (1 << 14)
-#define HITMARKER_RUN                   (1 << 15)
-#define HITMARKER_DISABLE_ANIMATION     (1 << 17)   // disable animations during battle scripts, e.g. for Bug Bite
-// 3 free spots because of change in handling of UNDERGROUND/UNDERWATER/ON AIR
-#define HITMARKER_UNABLE_TO_USE_MOVE    (1 << 19)
-#define HITMARKER_PASSIVE_DAMAGE        (1 << 20)
-#define HITMARKER_PLAYER_FAINTED        (1 << 22)
-#define HITMARKER_ALLOW_NO_PP           (1 << 23)
-#define HITMARKER_CHARGING              (1 << 27)
-#define HITMARKER_FAINTED(battler)      (1u << (battler + 28))
-#define HITMARKER_STRING_PRINTED        (1 << 29)
+// Marcas del golpe en curso.
+//
+// Antes eran diecisiete bits repartidos a mano dentro de un u32 -gHitMarker-,
+// con huecos por todas partes de banderas que se fueron quitando y sin sitio
+// para nada que no fuera un si/no. Ahora cada una es su propia variable: se
+// pueden combinar sin presupuesto de bits y, el dia que a alguna le haga falta,
+// puede guardar algo mas que un cero o un uno.
+enum MarcaGolpe
+{
+    MARCA_LAZO_DESTINO,             // el atacante lleva Lazo Destino armado
+    MARCA_IGNORA_SUSTITUTO,
+    MARCA_SIN_TEXTO_ATAQUE,
+    MARCA_TEXTO_ATAQUE_ESCRITO,
+    MARCA_SIN_GASTAR_PP,
+    MARCA_PERMITIR_SIN_PP,
+    MARCA_INTERCAMBIA_ATACANTE,
+    MARCA_EFECTO_HABILIDAD_ESTADO,
+    MARCA_EFECTO_SINCRONIA,
+    MARCA_HUYENDO,
+    MARCA_SIN_ANIMACION,            // apaga las animaciones dentro de un guion
+    MARCA_NO_PUEDE_MOVERSE,
+    MARCA_DANIO_PASIVO,
+    MARCA_JUGADOR_DEBILITADO,
+    MARCA_CARGANDO,
+    NUMERO_MARCAS_GOLPE,
+};
 
 // Per-side statuses that affect an entire party
 #define SIDE_STATUS_REFLECT                 (1 << 0)
 #define SIDE_STATUS_LIGHTSCREEN             (1 << 1)
-#define SIDE_STATUS_STICKY_WEB              (1 << 2)
-#define SIDE_STATUS_SPIKES                  (1 << 3)
 #define SIDE_STATUS_SAFEGUARD               (1 << 4)
 #define SIDE_STATUS_MIST                    (1 << 5)
 #define SIDE_STATUS_TAILWIND                (1 << 6)
 #define SIDE_STATUS_AURORA_VEIL             (1 << 7)
-#define SIDE_STATUS_TOXIC_SPIKES            (1 << 9)
-#define SIDE_STATUS_STEALTH_ROCK            (1 << 10)
 
-#define SIDE_STATUS_HAZARDS_ANY    (SIDE_STATUS_SPIKES | SIDE_STATUS_STICKY_WEB | SIDE_STATUS_TOXIC_SPIKES | SIDE_STATUS_STEALTH_ROCK)
 #define SIDE_STATUS_SCREEN_ANY     (SIDE_STATUS_REFLECT | SIDE_STATUS_LIGHTSCREEN | SIDE_STATUS_AURORA_VEIL)
+
+// Trampas de entrada. Cada una vive en su propio u16 de EWRAM y solo gasta dos
+// bits: uno por lado del campo. Un u16 por trampa permite consultar o cambiar un
+// lado con una sola operacion, sin contadores de capas ni mascaras compartidas.
+//
+// Las de dano van primero a proposito: asi "trampa < NUMERO_TRAMPAS_DANIO" basta
+// para separarlas de las que solo bajan Velocidad, y los dos recorridos que hay
+// sobre ellas no necesitan ninguna tabla.
+enum TrampaEntrada
+{
+    TRAMPA_BRASAS,              // Fuego
+    TRAMPA_ESPINAS,             // Planta
+    TRAMPA_PUAS_TOXICAS,        // Veneno
+    TRAMPA_ROCAS_PUNTIAGUDAS,   // Roca
+    TRAMPA_PUAS,                // Acero
+    TRAMPA_PENITENTES,          // Hielo
+    NUMERO_TRAMPAS_DANIO,
+
+    TRAMPA_RED_VISCOSA = NUMERO_TRAMPAS_DANIO,  // Bicho, baja Velocidad
+    TRAMPA_ENREDADERAS,                         // Planta, baja Velocidad
+    NUMERO_TRAMPAS_ENTRADA,
+
+    // Para el guion de combate: la trampa la decide el tipo del movimiento.
+    TRAMPA_SEGUN_TIPO_MOVIMIENTO = 0xFE,
+    TRAMPA_ENTRADA_NINGUNA       = 0xFF,
+};
+
+// Marcas de gDisableStructs[].trampasEntradaProcesadas: un bit por trampa ya
+// resuelta en este cambio de Pokemon, mas uno para la absorcion, que va antes
+// que todas y solo puede pasar una vez.
+enum FaseTrampasEntrada
+{
+    TRAMPAS_ABSORCION_PROCESADA = 1 << NUMERO_TRAMPAS_ENTRADA,
+};
 
 // Qué le ha pasado al movimiento, independientemente de su efectividad
 // (que vive en resultadoMovimiento, el multiplicador uq4_12_t). Sustituye a los

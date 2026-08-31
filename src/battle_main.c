@@ -159,7 +159,8 @@ EWRAM_DATA u16 gLockedMoves[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u16 gLastUsedMove = 0;
 EWRAM_DATA u8 gLastHitBy[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u16 gMovimientoElegido[NUMERO_COMBATIENTES] = {0};
-EWRAM_DATA u32 gHitMarker = 0;
+EWRAM_DATA u8 gMarcasGolpe[NUMERO_MARCAS_GOLPE] = {0};
+EWRAM_DATA u8 gCombatienteDebilitado[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u32 gSideStatuses[NUMERO_LADOS] = {0};
 EWRAM_DATA struct SideTimer gSideTimers[NUMERO_LADOS] = {0};
 EWRAM_DATA u32 gStatuses3[NUMERO_COMBATIENTES] = {0};
@@ -178,7 +179,6 @@ EWRAM_DATA bool32 gDescansoCuroEstado = FALSE;
 EWRAM_DATA bool32 gAbsorbeFuegoSubioPotencia = FALSE;
 EWRAM_DATA bool32 gBayaNormalizoEstado = FALSE;
 EWRAM_DATA bool32 gCuraEquipoPorAroma = FALSE;
-EWRAM_DATA bool32 gDanioPorRocasTrampa = FALSE;
 EWRAM_DATA u32 gSacudidasBall = 0;
 EWRAM_DATA u32 gInsonorizadoCascabel = 0;
 EWRAM_DATA enum ResultadoDrenadoras gResultadoDrenadoras = DRENADORAS_PUESTAS;
@@ -1362,7 +1362,8 @@ static void BattleStartClearSetData(void)
     gEffectBattler = 0;
     gBattlerAbility = 0;
     gCombate->clima.modo = CLIMA_COMBATE_NINGUNO;
-    gHitMarker = 0;
+    memset(gMarcasGolpe, 0, sizeof(gMarcasGolpe));
+    memset(gCombatienteDebilitado, 0, sizeof(gCombatienteDebilitado));
     gCombate->contadorMultigolpes = 0;
     gBattleOutcome = 0;
     gPaydayMoney = 0;
@@ -1930,10 +1931,10 @@ void BattleTurnPassed(void)
     gCombate->faintedActionsState = 0;
 
     TurnValuesCleanUp(FALSE);
-    gHitMarker &= ~HITMARKER_NO_ATTACKSTRING;
-    gHitMarker &= ~HITMARKER_UNABLE_TO_USE_MOVE;
-    gHitMarker &= ~HITMARKER_PLAYER_FAINTED;
-    gHitMarker &= ~HITMARKER_PASSIVE_DAMAGE;
+    gMarcasGolpe[MARCA_SIN_TEXTO_ATAQUE] = FALSE;
+    gMarcasGolpe[MARCA_NO_PUEDE_MOVERSE] = FALSE;
+    gMarcasGolpe[MARCA_JUGADOR_DEBILITADO] = FALSE;
+    gMarcasGolpe[MARCA_DANIO_PASIVO] = FALSE;
     gBattleScripting.animTurn = 0;
     gBattleScripting.animTargetsHit = 0;
     gBattleScripting.moveendState = 0;
@@ -2267,7 +2268,7 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                     }
                     break;
                 case B_ACTION_RUN:
-                    gHitMarker |= HITMARKER_RUN;
+                    gMarcasGolpe[MARCA_HUYENDO] = TRUE;
                     gEstadoAccion[combatiente] = EJECUTA_ACCION;
                     break;
                 case B_ACTION_THROW_BALL:
@@ -2658,7 +2659,7 @@ static void PopulateArrayWithBattlers(u8 *battlers)
 
 static bool32 TryDoMoveEffectsBeforeMoves(void)
 {
-    if (!(gHitMarker & HITMARKER_RUN))
+    if (!(gMarcasGolpe[MARCA_HUYENDO]))
     {
         u32 i;
         u8 battlers[NUMERO_COMBATIENTES];
@@ -2728,15 +2729,15 @@ static void RunTurnActionsFunctions(void)
 
     if (gCurrentTurnActionNumber >= gBattlersCount) // everyone did their actions, turn finished
     {
-        gHitMarker &= ~HITMARKER_PASSIVE_DAMAGE;
+        gMarcasGolpe[MARCA_DANIO_PASIVO] = FALSE;
         gBattleMainFunc = sEndTurnFuncsTable[gBattleOutcome & 0x7F];
     }
     else
     {
         if (gCombate->savedTurnActionNumber != gCurrentTurnActionNumber) // action turn has been done, clear hitmarker bits for another battler
         {
-            gHitMarker &= ~HITMARKER_NO_ATTACKSTRING;
-            gHitMarker &= ~HITMARKER_UNABLE_TO_USE_MOVE;
+            gMarcasGolpe[MARCA_SIN_TEXTO_ATAQUE] = FALSE;
+            gMarcasGolpe[MARCA_NO_PUEDE_MOVERSE] = FALSE;
         }
     }
 }

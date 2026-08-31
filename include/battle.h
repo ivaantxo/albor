@@ -112,10 +112,7 @@ struct DisableStruct
     u8 wrapTurns;
     u8 tormentTimer : 4;
     u8 usedMoves : 4;
-    u8 spikesDone : 1;
-    u8 toxicSpikesDone : 1;
-    u8 stickyWebDone : 1;
-    u8 stealthRockDone : 1;
+    u16 trampasEntradaProcesadas;
     bool32 rumianteHaConsumidoBaya;
     bool32 esPrimerTurno;
 };
@@ -173,12 +170,10 @@ struct SideTimer
     u8 mistBattlerId;
     u8 safeguardTimer;
     u8 safeguardBattlerId;
-    u8 spikesAmount;
-    u8 toxicSpikesAmount;
-    u8 stealthRockAmount;
-    u8 stickyWebAmount;
     u8 stickyWebBattlerId;
     u8 stickyWebBattlerSide; // Used for Court Change
+    u8 enredaderasBattlerId;
+    u8 enredaderasBattlerSide;
     u8 auroraVeilTimer;
     u8 auroraVeilBattlerId;
     u8 tailwindTimer;
@@ -188,6 +183,20 @@ struct SideTimer
     u8 followmeTarget : 3;
     u8 followmePowder : 1; // Rage powder, does not affect grass type pokemon.
     u8 retaliateTimer;
+};
+
+// Un u16 por trampa permite consultar o cambiar el lado con una sola operacion
+// de 16 bits, sin contadores ni capas. Solo se usan los dos bits inferiores.
+struct TrampasEntrada
+{
+    u16 brasas;
+    u16 espinas;
+    u16 puasToxicas;
+    u16 rocasPuntiagudas;
+    u16 puas;
+    u16 penitentes;
+    u16 redViscosa;
+    u16 enredaderas;
 };
 
 
@@ -644,9 +653,12 @@ extern u16 gLockedMoves[NUMERO_COMBATIENTES];
 extern u16 gLastUsedMove;
 extern u8 gLastHitBy[NUMERO_COMBATIENTES];
 extern u16 gMovimientoElegido[NUMERO_COMBATIENTES];
-extern u32 gHitMarker;
+extern u8 gMarcasGolpe[NUMERO_MARCAS_GOLPE];
+extern u8 gCombatienteDebilitado[NUMERO_COMBATIENTES];
 extern u32 gSideStatuses[NUMERO_LADOS];
 extern struct SideTimer gSideTimers[NUMERO_LADOS];
+extern struct TrampasEntrada gTrampasEntrada;
+extern u16 gTrampaEntradaActiva;
 extern u32 gStatuses3[NUMERO_COMBATIENTES];
 extern struct DisableStruct gDisableStructs[NUMERO_COMBATIENTES];
 extern u16 gPauseCounterBattle;
@@ -696,7 +708,6 @@ extern bool32 gDescansoCuroEstado;
 extern bool32 gAbsorbeFuegoSubioPotencia;
 extern bool32 gBayaNormalizoEstado;
 extern bool32 gCuraEquipoPorAroma;
-extern bool32 gDanioPorRocasTrampa;
 extern u32 gSacudidasBall;
 
 // Insonorizar frente a Cascabel Cura: mascara de bits, no un indice de mensaje.

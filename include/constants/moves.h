@@ -631,6 +631,10 @@ enum Movimientos
     MOVE_TEMPER_FLARE,
     MOVE_COLMENA,
     MOVE_CHUPASANGRE,
+    MOVE_BRASAS,
+    MOVE_ESPINAS,
+    MOVE_PENITENTES,
+    MOVE_ENREDADERAS,
 
     //Crear movimiento Tornado (knock off especial volador) MOVE_TORNADO,
     NUMERO_MOVIMIENTOS

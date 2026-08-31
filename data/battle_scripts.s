@@ -69,7 +69,8 @@ BattleScript_MoveSwitchEnd:
 	end
 
 BattleScript_HurtTarget_NoString:
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_TARGET
 	datahpupdate BS_TARGET
 	tryfaintmon BS_TARGET
@@ -99,14 +100,14 @@ BattleScript_CorrosiveGasFail:
 	goto BattleScript_MoveEnd
 
 BattleScript_StealthRockActivates::
-	setstealthrock BattleScript_MoveEnd
-	EscribeTextoCombate "Pointed stones float in the air around {B_DEF_TEAM2} team!"
+	settypedhazard TRAMPA_ROCAS_PUNTIAGUDAS, BattleScript_MoveEnd
+	EscribeTextoTrampaPuesta
 	waitmessage PAUSA_LARGA
 	return
 
 BattleScript_SpikesActivates::
-	trysetspikes BattleScript_MoveEnd
-	EscribeTextoCombate "¡Han caído púas en el campo de {B_DEF_TEAM2}!"
+	settypedhazard TRAMPA_PUAS, BattleScript_MoveEnd
+	EscribeTextoTrampaPuesta
 	waitmessage PAUSA_LARGA
 	return
 
@@ -254,7 +255,7 @@ BattleScript_StrengthSapHp:
 
 BattleScript_StrengthSapManipulateDmg:
 	manipulatedamage DMG_BIG_ROOT
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
+	ponmarca MARCA_IGNORA_SUSTITUTO
 	jumpifability BS_TARGET, ABILITY_LIQUID_OOZE, BattleScript_StrengthSapLiquidOoze
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
@@ -275,11 +276,11 @@ BattleScript_StrengthSapLiquidOoze:
 BattleScript_MoveEffectBugBite::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} stole and ate its target's {B_LAST_ITEM}!"
 	waitmessage PAUSA_LARGA
-	orword gHitMarker, HITMARKER_DISABLE_ANIMATION
+	ponmarca MARCA_SIN_ANIMACION
 	setbyte sBERRY_OVERRIDE, 1   @ override the requirements for eating berries
 	savetarget
 	consumeberry BS_ATTACKER, FALSE
-	bicword gHitMarker, HITMARKER_DISABLE_ANIMATION
+	quitamarca MARCA_SIN_ANIMACION
 	setbyte sBERRY_OVERRIDE, 0
 	restoretarget
 	return
@@ -337,7 +338,8 @@ BattleScript_MoveEffectFlameBurst::
 	waitmessage PAUSA_LARGA
 	savetarget
 	copybyte gBattlerTarget, sSAVED_BATTLER
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_TARGET
 	datahpupdate BS_TARGET
 	tryfaintmon BS_TARGET
@@ -859,10 +861,10 @@ BattleScript_EffectStealthRock::
 	attackcanceler
 	attackstring
 	ppreduce
-	setstealthrock BattleScript_ButItFailed
+	settypedhazard TRAMPA_SEGUN_TIPO_MOVIMIENTO, BattleScript_ButItFailed
 	attackanimation
 	waitanimation
-	EscribeTextoCombate "Pointed stones float in the air around {B_DEF_TEAM2} team!"
+	EscribeTextoTrampaPuesta
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -870,10 +872,10 @@ BattleScript_EffectStickyWeb::
 	attackcanceler
 	attackstring
 	ppreduce
-	setstickyweb BattleScript_ButItFailed
+	settypedhazard TRAMPA_SEGUN_TIPO_MOVIMIENTO, BattleScript_ButItFailed
 	attackanimation
 	waitanimation
-	EscribeTextoCombate "A sticky web has been laid out on the ground around {B_DEF_TEAM2} team!"
+	EscribeTextoTrampaPuesta
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -895,10 +897,10 @@ BattleScript_EffectToxicSpikes::
 	attackcanceler
 	attackstring
 	ppreduce
-	settoxicspikes BattleScript_ButItFailed
+	settypedhazard TRAMPA_SEGUN_TIPO_MOVIMIENTO, BattleScript_ButItFailed
 	attackanimation
 	waitanimation
-	EscribeTextoCombate "¡Han caído púas tóxicas en el campo de {B_DEF_TEAM2}!"
+	EscribeTextoTrampaPuesta
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -1169,7 +1171,7 @@ BattleScript_EffectAbsorb::
 	call BattleScript_EffectHit_Ret
 	setdrainedhp
 	manipulatedamage DMG_BIG_ROOT
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
+	ponmarca MARCA_IGNORA_SUSTITUTO
 	jumpifability BS_TARGET, ABILITY_LIQUID_OOZE, BattleScript_AbsorbLiquidOoze
 	goto BattleScript_AbsorbUpdateHp
 
@@ -1233,7 +1235,7 @@ BattleScript_DreamEaterWorked:
 	waitmessage PAUSA_LARGA
 	setdrainedhp
 	manipulatedamage DMG_BIG_ROOT
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
+	ponmarca MARCA_IGNORA_SUSTITUTO
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	jumpifmovehadnoeffect BattleScript_DreamEaterTryFaintEnd
@@ -1349,7 +1351,7 @@ BattleScript_StatDownDoAnim::
 	waitanimation
 	setgraphicalstatchangevalues
 	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	bicword gHitMarker, HITMARKER_DISABLE_ANIMATION
+	quitamarca MARCA_SIN_ANIMACION
 BattleScript_StatDownPrintString::
 	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
@@ -1442,7 +1444,7 @@ BattleScript_EffectRestoreHp::
 	attackanimation
 	waitanimation
 BattleScript_RestoreHp:
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
+	ponmarca MARCA_IGNORA_SUSTITUTO
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} regained health!"
@@ -1699,7 +1701,7 @@ BattleScript_PowerHerbActivation:
 
 BattleScript_EffectTwoTurnsAttack::
 	jumpifstatus2 BS_ATTACKER, STATUS2_MULTIPLETURNS, BattleScript_TwoTurnMovesSecondTurn
-	jumpifword COMPARACION_BITS_COMUNES, gHitMarker, HITMARKER_NO_ATTACKSTRING, BattleScript_TwoTurnMovesSecondTurn
+	jumpifmarca MARCA_SIN_TEXTO_ATAQUE, TRUE, BattleScript_TwoTurnMovesSecondTurn
 	tryfiretwoturnmovewithoutcharging BS_ATTACKER, BattleScript_EffectHit @ e.g. Solar Beam
 	call BattleScript_FirstChargingTurn
 	tryfiretwoturnmoveaftercharging BS_ATTACKER, BattleScript_TwoTurnMovesSecondTurn @ e.g. Electro Shot
@@ -1729,7 +1731,7 @@ BattleScript_FromTwoTurnMovesSecondTurnRet:
 BattleScript_TwoTurnMovesSecondTurn::
 	attackcanceler
 	call BattleScript_TwoTurnMovesSecondTurnRet
-	orword gHitMarker, HITMARKER_NO_PPDEDUCT
+	ponmarca MARCA_SIN_GASTAR_PP
 	goto BattleScript_HitFromAccCheck
 
 BattleScript_TwoTurnMovesSecondTurnRet:
@@ -1748,7 +1750,7 @@ BattleScript_EffectSubstitute::
 	jumpifstatus2 BS_ATTACKER, STATUS2_SUBSTITUTE, BattleScript_SubstituteMade
 	goto BattleScript_SubstituteString
 BattleScript_SubstituteMade:
-	orword gHitMarker, HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_DANIO_PASIVO
 	attackanimation
 	waitanimation
 	healthbarupdate BS_ATTACKER
@@ -1969,7 +1971,7 @@ BattleScript_DoGhostCurse::
 	ppreduce
 	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
 	cursetarget BattleScript_ButItFailed
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
+	ponmarca MARCA_IGNORA_SUSTITUTO
 	setbyte sB_ANIM_TURN, 0
 	attackanimation
 	waitanimation
@@ -1993,12 +1995,12 @@ BattleScript_EffectProtect::
 
 BattleScript_EffectSpikes::
 	attackcanceler
-	trysetspikes BattleScript_FailedFromAtkString
+	settypedhazard TRAMPA_SEGUN_TIPO_MOVIMIENTO, BattleScript_FailedFromAtkString
 	attackstring
 	ppreduce
 	attackanimation
 	waitanimation
-	EscribeTextoCombate "¡Han caído púas en el campo de {B_DEF_TEAM2}!"
+	EscribeTextoTrampaPuesta
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -2161,7 +2163,8 @@ BattleScript_EffectSafeguard::
 	goto BattleScript_PrintReflectLightScreenSafeguardString
 
 BattleScript_EffectMagnitude::
-	jumpifword COMPARACION_BITS_COMUNES, gHitMarker, HITMARKER_NO_ATTACKSTRING | HITMARKER_NO_PPDEDUCT, BattleScript_EffectMagnitudeTarget
+	jumpifmarca MARCA_SIN_TEXTO_ATAQUE, TRUE, BattleScript_EffectMagnitudeTarget
+	jumpifmarca MARCA_SIN_GASTAR_PP, TRUE, BattleScript_EffectMagnitudeTarget
 	attackcanceler
 	attackstring
 	ppreduce
@@ -2236,7 +2239,8 @@ BattleScript_EffectBellyDrum::
 	ppreduce
 	jumpifstat BS_ATTACKER, COMPARACION_IGUAL, ESTADISTICA_ATAQUE, ESTADISTICA_MAS_6, BattleScript_ButItFailed
 	halvehp BattleScript_ButItFailed
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	attackanimation
 	waitanimation
 	healthbarupdate BS_ATTACKER
@@ -2282,7 +2286,7 @@ BattleScript_EffectSoftboiled::
 BattleScript_PresentHealTarget::
 	attackanimation
 	waitanimation
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
+	ponmarca MARCA_IGNORA_SUSTITUTO
 	healthbarupdate BS_TARGET
 	datahpupdate BS_TARGET
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} regained health!"
@@ -2850,7 +2854,7 @@ BattleScript_HandleFaintedMon::
     setbyte sSHIFT_SWITCHED, 0
     checkteamslost BattleScript_HandleFaintedMonMultiple
     jumpifbyte COMPARACION_DESIGUAL, gBattleOutcome, 0, BattleScript_FaintedMonEnd
-    jumpifword COMPARACION_BITS_DISTINTOS, gHitMarker, HITMARKER_PLAYER_FAINTED, BattleScript_FaintedMonTryChoose
+    jumpifmarca MARCA_JUGADOR_DEBILITADO, FALSE, BattleScript_FaintedMonTryChoose
     goto BattleScript_FaintedMonTryChoose
 
 BattleScript_FaintedMonTryChoose:
@@ -3160,7 +3164,8 @@ BattleScript_SafeguardEnds::
 
 BattleScript_LeechSeedTurnDrain::
 	playanimation BS_ATTACKER, B_ANIM_LEECH_SEED_DRAIN, sB_ANIM_ARG1
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	copyword gBattleMoveDamage, gHpDealt
@@ -3173,7 +3178,8 @@ BattleScript_LeechSeedTurnPrintLiquidOoze::
 	call BattleScript_AbilityPopUp
 
 BattleScript_LeechSeedTurnPrintAndUpdateHp::
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_TARGET
 	datahpupdate BS_TARGET
 	EscribeTextoDrenadorasTurno
@@ -3307,14 +3313,16 @@ BattleScript_EncoredNoMore::
 BattleScript_DestinyBondTakesLife::
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} took {B_ATK_NAME_WITH_PREFIX} with it!"
 	waitmessage PAUSA_LARGA
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	tryfaintmon BS_ATTACKER
 	return
 
 BattleScript_DmgHazardsOnAttacker::
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	call BattleScript_PrintHurtByDmgHazards
@@ -3329,7 +3337,8 @@ BattleScript_DmgHazardsOnAttackerFainted::
 	goto BattleScript_HandleFaintedMon
 
 BattleScript_DmgHazardsOnTarget::
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_TARGET
 	datahpupdate BS_TARGET
 	call BattleScript_PrintHurtByDmgHazards
@@ -3344,7 +3353,8 @@ BattleScript_DmgHazardsOnTargetFainted::
 	goto BattleScript_HandleFaintedMon
 
 BattleScript_DmgHazardsOnBattlerScripting::
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_SCRIPTING
 	datahpupdate BS_SCRIPTING
 	call BattleScript_PrintHurtByDmgHazards
@@ -3359,7 +3369,8 @@ BattleScript_DmgHazardsOnBattlerScriptingFainted::
 	goto BattleScript_HandleFaintedMon
 
 BattleScript_DmgHazardsOnFaintedBattler::
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_FAINTED
 	datahpupdate BS_FAINTED
 	call BattleScript_PrintHurtByDmgHazards
@@ -3378,17 +3389,14 @@ BattleScript_PrintHurtByDmgHazards::
 	waitmessage PAUSA_LARGA
 	return
 
-BattleScript_ToxicSpikesAbsorbed::
-	EscribeTextoCombate "The poison spikes disappeared from around {B_DEF_TEAM2} team's feet!"
+BattleScript_TrampasAbsorbidas::
+	EscribeTextoCombate "¡{B_SCR_ACTIVE_NAME_WITH_PREFIX} ha absorbido las trampas de su tipo!"
 	waitmessage PAUSA_LARGA
 	return
 
-BattleScript_ToxicSpikesPoisoned::
-	EscribeTextoCombate "¡{B_SCR_ACTIVE_NAME_WITH_PREFIX} fue envenenado por las púas tóxicas!"
+BattleScript_TrampasBarridas::
+	EscribeTextoCombate "¡{B_ATK_NAME_WITH_PREFIX} ha despejado las trampas del campo!"
 	waitmessage PAUSA_LARGA
-	statusanimation BS_SCRIPTING
-	updatestatusicon BS_SCRIPTING
-	waitstate
 	return
 
 BattleScript_StickyWebOnSwitchIn::
@@ -3422,7 +3430,8 @@ BattleScript_StickyWebOnSwitchInEnd:
 BattleScript_PerishSongTakesLife::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX}'s PERISH count fell to {B_BUFF1}!"
 	waitmessage PAUSA_LARGA
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	tryfaintmon BS_ATTACKER
@@ -3438,8 +3447,8 @@ BattleScript_WindPowerActivates::
 BattleScript_PunzonActivates::
 	call BattleScript_AbilityPopUp
 	pause PAUSA_CORTA
-	settoxicspikes BattleScript_PunzonRet
-	EscribeTextoCombate "¡Han caído púas en el campo de {B_DEF_TEAM2}!"
+	settypedhazard TRAMPA_PUAS, BattleScript_PunzonRet
+	EscribeTextoTrampaPuesta
 	waitmessage PAUSA_LARGA
 
 BattleScript_PunzonRet:
@@ -3510,46 +3519,6 @@ BattleScript_LeechSeedFree::
 	waitmessage PAUSA_LARGA
 	return
 
-BattleScript_SpikesFree::
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} blew away spikes!"
-	waitmessage PAUSA_LARGA
-	return
-
-BattleScript_ToxicSpikesFree::
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} blew away Toxic Spikes!"
-	waitmessage PAUSA_LARGA
-	return
-
-BattleScript_StickyWebFree::
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} blew away Sticky Web!"
-	waitmessage PAUSA_LARGA
-	return
-
-BattleScript_StealthRockFree::
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} blew away Stealth Rock!"
-	waitmessage PAUSA_LARGA
-	return
-
-BattleScript_SpikesDefog::
-	EscribeTextoCombate "The spikes disappeared from the ground around {B_ATK_TEAM2} team!"
-	waitmessage PAUSA_LARGA
-	return
-
-BattleScript_ToxicSpikesDefog::
-	EscribeTextoCombate "The poison spikes disappeared from the ground around {B_ATK_TEAM2} team!"
-	waitmessage PAUSA_LARGA
-	return
-
-BattleScript_StickyWebDefog::
-	EscribeTextoCombate "The sticky web has disappeared from the ground around {B_ATK_TEAM2} team!"
-	waitmessage PAUSA_LARGA
-	return
-
-BattleScript_StealthRockDefog::
-	EscribeTextoCombate "The pointed stones disappeared from around {B_ATK_TEAM2} team!"
-	waitmessage PAUSA_LARGA
-	return
-
 BattleScript_NoMovesLeft::
 	EscribeTextoSeleccion "¡A {B_ATK_NAME_WITH_PREFIX} no le quedan PPs!"
 	endselectionscript
@@ -3611,7 +3580,7 @@ BattleScript_IngrainTurnHeal::
 
 BattleScript_TurnHeal:
 	waitmessage PAUSA_LARGA
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
+	ponmarca MARCA_IGNORA_SUSTITUTO
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	end2
@@ -3715,8 +3684,10 @@ BattleScript_MagicBounce::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX}'s {B_CURRENT_MOVE} was bounced back by {B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}!"
 	waitmessage PAUSA_LARGA
 	ObjetivoEspejoMagico
-	orword gHitMarker, HITMARKER_ATTACKSTRING_PRINTED | HITMARKER_NO_PPDEDUCT | HITMARKER_ALLOW_NO_PP
-	bicword gHitMarker, HITMARKER_NO_ATTACKSTRING
+	ponmarca MARCA_TEXTO_ATAQUE_ESCRITO
+	ponmarca MARCA_SIN_GASTAR_PP
+	ponmarca MARCA_PERMITIR_SIN_PP
+	quitamarca MARCA_SIN_TEXTO_ATAQUE
 	return
 
 BattleScript_OneHitKOMsg::
@@ -3864,7 +3835,8 @@ BattleScript_AftermathDmg::
 	pause PAUSA_CORTA
 	call BattleScript_AbilityPopUp
 	jumpifability BS_ATTACKER, ABILITY_MAGIC_GUARD, BattleScript_AftermathDmgRet
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} was hurt!"
@@ -3909,7 +3881,8 @@ BattleScript_DoStatusTurnDmg::
 	statusanimation BS_ATTACKER
 
 BattleScript_DoTurnDmg:
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	tryfaintmon BS_ATTACKER
@@ -3924,7 +3897,8 @@ BattleScript_PoisonHealActivates::
 	EscribeTextoCombate "The poisoning healed {B_ATK_NAME_WITH_PREFIX} a little bit!"
 	waitmessage PAUSA_LARGA
 	statusanimation BS_ATTACKER
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	end2
@@ -3993,7 +3967,7 @@ BattleScript_MoveUsedIsConfused::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} is confused!"
 	waitmessage PAUSA_LARGA
 	status2animation BS_ATTACKER, STATUS2_CONFUSION
-	jumpifword COMPARACION_BITS_DISTINTOS, gHitMarker, HITMARKER_UNABLE_TO_USE_MOVE, BattleScript_MoveUsedIsConfusedRet
+	jumpifmarca MARCA_NO_PUEDE_MOVERSE, FALSE, BattleScript_MoveUsedIsConfusedRet
 
 BattleScript_DoSelfConfusionDmg::
 	cancelmultiturnmoves BS_ATTACKER
@@ -4003,7 +3977,8 @@ BattleScript_DoSelfConfusionDmg::
 	HazSonidoEfectividad
 	hitanimation BS_ATTACKER
 	waitstate
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	resultmessage
@@ -4181,7 +4156,8 @@ BattleScript_MoveEffectRecoil::
 	jumpifability BS_ATTACKER, ABILITY_MAGIC_GUARD, BattleScript_RecoilEnd
 
 BattleScript_DoRecoil::
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} is hit with recoil!"
@@ -4280,7 +4256,7 @@ BattleScript_AbilityHpHeal:
 	call BattleScript_AbilityPopUp
 	EscribeTextoCombate "¡{B_ATK_ABILITY} de {B_ATK_NAME_WITH_PREFIX} le hizo recuperar salud!"
 	waitmessage PAUSA_LARGA
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
+	ponmarca MARCA_IGNORA_SUSTITUTO
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	return
@@ -4468,7 +4444,8 @@ BattleScript_BadDreams_DmgAfterPopUp:
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} is tormented!"
 	waitmessage PAUSA_LARGA
 	dmg_1_8_targethp
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_TARGET
 	datahpupdate BS_TARGET
 	jumpifhasnohp BS_TARGET, BattleScript_BadDreams_HidePopUp
@@ -4499,7 +4476,7 @@ BattleScript_TookAttack::
 	pause PAUSA_CORTA
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} took the attack!"
 	waitmessage PAUSA_LARGA
-	orword gHitMarker, HITMARKER_ATTACKSTRING_PRINTED
+	ponmarca MARCA_TEXTO_ATAQUE_ESCRITO
 	return
 
 BattleScript_DampStopsExplosion::
@@ -4518,7 +4495,7 @@ BattleScript_MoveHPDrain::
 	attackstring
 	pause PAUSA_CORTA
 	call BattleScript_AbilityPopUp
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE
+	ponmarca MARCA_IGNORA_SUSTITUTO
 	healthbarupdate BS_TARGET
 	datahpupdate BS_TARGET
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} restored HP using its {B_DEF_ABILITY}!"
@@ -4782,7 +4759,8 @@ ScriptCombate_HabilidadRecuperacionSaludTrasVencer::
 	EscribeTextoCombate "¡{B_ATK_NAME_WITH_PREFIX} ha usado a {B_DEF_NAME_WITH_PREFIX} para recuperarse!"
 	waitmessage PAUSA_LARGA
 	statusanimation BS_ATTACKER
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	@ end2
@@ -4829,7 +4807,8 @@ BattleScript_SwitchInAbilityMsgRet::
 	return
 
 BattleScript_HurtAttacker:
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} was hurt by {B_DEF_NAME_WITH_PREFIX}'s {B_BUFF1}!"
@@ -5064,7 +5043,8 @@ BattleScript_ItemHealHP_RemoveItemRet_Anim:
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT
 	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM} restored health!"
 	waitmessage PAUSA_LARGA
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_SCRIPTING
 	datahpupdate BS_SCRIPTING
 	removeitem BS_SCRIPTING
@@ -5080,7 +5060,8 @@ BattleScript_ItemHealHP_RemoveItemEnd2_Anim:
 	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT
 	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM} restored health!"
 	waitmessage PAUSA_LARGA
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	removeitem BS_ATTACKER
@@ -5119,7 +5100,8 @@ BattleScript_AirBaloonMsgPop::
 	return
 
 BattleScript_ItemHurtRet::
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} was hurt by the {B_LAST_ITEM}!"
@@ -5137,7 +5119,8 @@ BattleScript_ItemHealHP_Ret::
 	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT
 	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM} restored its HP a little!"
 	waitmessage PAUSA_LARGA
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_ATTACKER
 	datahpupdate BS_ATTACKER
 	return
@@ -5164,7 +5147,8 @@ BattleScript_BerryConfuseHealEnd2_Anim:
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT
 	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM} restored health!"
 	waitmessage PAUSA_LARGA
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_SCRIPTING
 	datahpupdate BS_SCRIPTING
 	seteffectprimary MOVE_EFFECT_CONFUSION | MOVE_EFFECT_AFFECTS_USER
@@ -5181,7 +5165,8 @@ BattleScript_BerryConfuseHealRet_Anim:
 	playanimation BS_SCRIPTING, B_ANIM_HELD_ITEM_EFFECT
 	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_LAST_ITEM} restored health!"
 	waitmessage PAUSA_LARGA
-	orword gHitMarker, HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_PASSIVE_DAMAGE
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_SCRIPTING
 	datahpupdate BS_SCRIPTING
 	seteffectprimary MOVE_EFFECT_CONFUSION | MOVE_EFFECT_CERTAIN

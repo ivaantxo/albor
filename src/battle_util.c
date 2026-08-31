@@ -53,7 +53,7 @@ static u32 GetBattlerItemHoldEffectParam(u32 battler, u32 item);
         PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);                                                                                                                                                                                                                                                                                                                                  \
         BattleScriptPushCursor();                                                                                                                                                                                                                                                                                                                                                                    \
         gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;                                                                                                                                                                                                                                                                                                                                   \
-        gHitMarker |= HITMARKER_STATUS_ABILITY_EFFECT;                                                                                                                                                                                                                                                                                                                                               \
+        gMarcasGolpe[MARCA_EFECTO_HABILIDAD_ESTADO] = TRUE;                                                                                                                                                                                                                                                                                                                                               \
         effect++;                                                                                                                                                                                                                                                                                                                                                                                    \
     }
 
@@ -96,7 +96,7 @@ void HandleAction_UseMove(void)
         gProtectStructs[gBattlerAttacker].noValidMoves = FALSE;
         gCurrentMove = gChosenMove = MOVE_STRUGGLE;
         IncrementGameStat(GAME_STAT_USED_STRUGGLE);
-        gHitMarker |= HITMARKER_NO_PPDEDUCT;
+        gMarcasGolpe[MARCA_SIN_GASTAR_PP] = TRUE;
         *(gCombate->moveTarget + gBattlerAttacker) = GetMoveTarget(MOVE_STRUGGLE, NO_TARGET_OVERRIDE);
     }
     else if (gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS || gBattleMons[gBattlerAttacker].status2 & STATUS2_RECHARGE)
@@ -295,7 +295,14 @@ void HandleAction_NothingIsFainted(void)
 {
     gCurrentTurnActionNumber++;
     gCurrentActionFuncId = gActionsByTurnOrder[gCurrentTurnActionNumber];
-    gHitMarker &= ~(HITMARKER_DESTINYBOND | HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_ATTACKSTRING_PRINTED | HITMARKER_NO_PPDEDUCT | HITMARKER_STATUS_ABILITY_EFFECT | HITMARKER_PASSIVE_DAMAGE | HITMARKER_SYNCHRONISE_EFFECT | HITMARKER_CHARGING);
+    gMarcasGolpe[MARCA_LAZO_DESTINO] = FALSE;
+    gMarcasGolpe[MARCA_IGNORA_SUSTITUTO] = FALSE;
+    gMarcasGolpe[MARCA_TEXTO_ATAQUE_ESCRITO] = FALSE;
+    gMarcasGolpe[MARCA_SIN_GASTAR_PP] = FALSE;
+    gMarcasGolpe[MARCA_EFECTO_HABILIDAD_ESTADO] = FALSE;
+    gMarcasGolpe[MARCA_DANIO_PASIVO] = FALSE;
+    gMarcasGolpe[MARCA_EFECTO_SINCRONIA] = FALSE;
+    gMarcasGolpe[MARCA_CARGANDO] = FALSE;
 }
 
 void HandleAction_ActionFinished(void)
@@ -305,7 +312,14 @@ void HandleAction_ActionFinished(void)
     gCurrentTurnActionNumber++;
     gCurrentActionFuncId = gActionsByTurnOrder[gCurrentTurnActionNumber];
     SpecialStatusesClear();
-    gHitMarker &= ~(HITMARKER_DESTINYBOND | HITMARKER_IGNORE_SUBSTITUTE | HITMARKER_ATTACKSTRING_PRINTED | HITMARKER_NO_PPDEDUCT | HITMARKER_STATUS_ABILITY_EFFECT | HITMARKER_PASSIVE_DAMAGE | HITMARKER_SYNCHRONISE_EFFECT | HITMARKER_CHARGING);
+    gMarcasGolpe[MARCA_LAZO_DESTINO] = FALSE;
+    gMarcasGolpe[MARCA_IGNORA_SUSTITUTO] = FALSE;
+    gMarcasGolpe[MARCA_TEXTO_ATAQUE_ESCRITO] = FALSE;
+    gMarcasGolpe[MARCA_SIN_GASTAR_PP] = FALSE;
+    gMarcasGolpe[MARCA_EFECTO_HABILIDAD_ESTADO] = FALSE;
+    gMarcasGolpe[MARCA_DANIO_PASIVO] = FALSE;
+    gMarcasGolpe[MARCA_EFECTO_SINCRONIA] = FALSE;
+    gMarcasGolpe[MARCA_CARGANDO] = FALSE;
 
     gCurrentMove = 0;
     gBattleMoveDamage = 0;
@@ -1776,7 +1790,7 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
                         {
                             gProtectStructs[gBattlerAttacker].sleepImmobility = TRUE;
                             gBattlescriptCurrInstr = BattleScript_MoveUsedIsParalyzed;
-                            gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                            gMarcasGolpe[MARCA_NO_PUEDE_MOVERSE] = TRUE;
                             effect = 1;
                         }
                     }
@@ -1791,7 +1805,7 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
                 gDisableStructs[gBattlerAttacker].rechargeTimer = 0;
                 CancelMultiTurnMoves(gBattlerAttacker);
                 gBattlescriptCurrInstr = BattleScript_MoveUsedMustRecharge;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                gMarcasGolpe[MARCA_NO_PUEDE_MOVERSE] = TRUE;
                 effect = 1;
             }
             gCombate->atkCancellerTracker++;
@@ -1802,7 +1816,7 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
                 gProtectStructs[gBattlerAttacker].flinchImmobility = TRUE;
                 CancelMultiTurnMoves(gBattlerAttacker);
                 gBattlescriptCurrInstr = BattleScript_MoveUsedFlinched;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                gMarcasGolpe[MARCA_NO_PUEDE_MOVERSE] = TRUE;
                 effect = 1;
             }
             gCombate->atkCancellerTracker++;
@@ -1814,7 +1828,7 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
                 gBattleScripting.battler = gBattlerAttacker;
                 CancelMultiTurnMoves(gBattlerAttacker);
                 gBattlescriptCurrInstr = BattleScript_MoveUsedIsDisabled;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                gMarcasGolpe[MARCA_NO_PUEDE_MOVERSE] = TRUE;
                 effect = 1;
             }
             gCombate->atkCancellerTracker++;
@@ -1825,7 +1839,7 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
                 gProtectStructs[gBattlerAttacker].usedTauntedMove = TRUE;
                 CancelMultiTurnMoves(gBattlerAttacker);
                 gBattlescriptCurrInstr = BattleScript_MoveUsedIsTaunted;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                gMarcasGolpe[MARCA_NO_PUEDE_MOVERSE] = TRUE;
                 effect = 1;
             }
             gCombate->atkCancellerTracker++;
@@ -1836,7 +1850,7 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
                 gProtectStructs[gBattlerAttacker].usedImprisonedMove = TRUE;
                 CancelMultiTurnMoves(gBattlerAttacker);
                 gBattlescriptCurrInstr = BattleScript_MoveUsedIsImprisoned;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                gMarcasGolpe[MARCA_NO_PUEDE_MOVERSE] = TRUE;
                 effect = 1;
             }
             gCombate->atkCancellerTracker++;
@@ -1860,7 +1874,7 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
                         damageCalcData.updateFlags = TRUE;
                         gBattleMoveDamage = CalculateMoveDamage(&damageCalcData, 40);
                         gProtectStructs[gBattlerAttacker].confusionSelfDmg = TRUE;
-                        gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                        gMarcasGolpe[MARCA_NO_PUEDE_MOVERSE] = TRUE;
                     }
                     else
                     {
@@ -1883,7 +1897,7 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
             {
                 gProtectStructs[gBattlerAttacker].prlzImmobility = TRUE;
                 gBattlescriptCurrInstr = BattleScript_MoveUsedIsParalyzed;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                gMarcasGolpe[MARCA_NO_PUEDE_MOVERSE] = TRUE;
                 effect = 1;
             }
             gCombate->atkCancellerTracker++;
@@ -1899,7 +1913,7 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
                 else
                 {
                     BattleScriptPush(BattleScript_MoveUsedIsInLoveCantAttack);
-                    gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                    gMarcasGolpe[MARCA_NO_PUEDE_MOVERSE] = TRUE;
                     gProtectStructs[gBattlerAttacker].loveImmobility = TRUE;
                     CancelMultiTurnMoves(gBattlerAttacker);
                 }
@@ -1934,7 +1948,7 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
                 gProtectStructs[gBattlerAttacker].usedThroatChopPreventedMove = TRUE;
                 CancelMultiTurnMoves(gBattlerAttacker);
                 gBattlescriptCurrInstr = BattleScript_MoveUsedIsThroatChopPrevented;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                gMarcasGolpe[MARCA_NO_PUEDE_MOVERSE] = TRUE;
                 effect = 1;
             }
             gCombate->atkCancellerTracker++;
@@ -1946,7 +1960,7 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
             {
                 gBattleScripting.battler = dampBattler - 1;
                 gBattlescriptCurrInstr = BattleScript_DampStopsExplosion;
-                gHitMarker |= HITMARKER_UNABLE_TO_USE_MOVE;
+                gMarcasGolpe[MARCA_NO_PUEDE_MOVERSE] = TRUE;
                 effect = 1;
             }
             gCombate->atkCancellerTracker++;
@@ -2665,7 +2679,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
         {
         case MOVE_BLOCKED_BY_SOUNDPROOF_OR_BULLETPROOF:
             if (gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS)
-                gHitMarker |= HITMARKER_NO_PPDEDUCT;
+                gMarcasGolpe[MARCA_SIN_GASTAR_PP] = TRUE;
             battleScriptBlocksMove = BattleScript_SoundproofProtected;
             break;
         case MOVE_BLOCKED_BY_DAZZLING:
@@ -2675,7 +2689,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             else
                 gBattleScripting.battler = battler;
             if (gBattleMons[gBattlerAttacker].status2 & STATUS2_MULTIPLETURNS)
-                gHitMarker |= HITMARKER_NO_PPDEDUCT;
+                gMarcasGolpe[MARCA_SIN_GASTAR_PP] = TRUE;
             battleScriptBlocksMove = BattleScript_HabilidadProtegeEquipoDePrioridad;
             break;
         case MOVIMIENTO_BLOQUEADO_POR_EXUVIA:
@@ -2906,7 +2920,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_GooeyActivates;
-                gHitMarker |= HITMARKER_STATUS_ABILITY_EFFECT;
+                gMarcasGolpe[MARCA_EFECTO_HABILIDAD_ESTADO] = TRUE;
                 effect++;
             }
             break;
@@ -3010,7 +3024,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 gBattleScripting.moveEffect = MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_PARALYSIS;
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
-                gHitMarker |= HITMARKER_STATUS_ABILITY_EFFECT;
+                gMarcasGolpe[MARCA_EFECTO_HABILIDAD_ESTADO] = TRUE;
                 effect++;
             }
             break;
@@ -3079,7 +3093,8 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
             }
             break;
         case ABILITY_PUNZON:
-            if (MovimientoEsEfectivo(gCombate->resultadoMovimiento) && !gProtectStructs[gBattlerAttacker].confusionSelfDmg && EsMovimientoFisico(gCurrentMove) && HaSidoDaniado(gBattlerTarget) && (gSideTimers[gBattlerAttacker].spikesAmount != 2))
+            if (MovimientoEsEfectivo(gCombate->resultadoMovimiento) && !gProtectStructs[gBattlerAttacker].confusionSelfDmg && EsMovimientoFisico(gCurrentMove) && HaSidoDaniado(gBattlerTarget)
+             && !HayTrampaEntrada(TRAMPA_PUAS, GetBattlerSide(gBattlerAttacker)))
             {
                 SWAP(gBattlerAttacker, gBattlerTarget, i);
                 BattleScriptPushCursor();
@@ -3099,7 +3114,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
-                gHitMarker |= HITMARKER_STATUS_ABILITY_EFFECT;
+                gMarcasGolpe[MARCA_EFECTO_HABILIDAD_ESTADO] = TRUE;
                 effect++;
             }
             break;
@@ -3110,7 +3125,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
-                gHitMarker |= HITMARKER_STATUS_ABILITY_EFFECT;
+                gMarcasGolpe[MARCA_EFECTO_HABILIDAD_ESTADO] = TRUE;
                 effect++;
             }
             break;
@@ -3121,7 +3136,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
-                gHitMarker |= HITMARKER_STATUS_ABILITY_EFFECT;
+                gMarcasGolpe[MARCA_EFECTO_HABILIDAD_ESTADO] = TRUE;
                 effect++;
             }
             break;
@@ -3132,7 +3147,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
-                gHitMarker |= HITMARKER_STATUS_ABILITY_EFFECT;
+                gMarcasGolpe[MARCA_EFECTO_HABILIDAD_ESTADO] = TRUE;
                 effect++;
             }
             break;
@@ -3149,7 +3164,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
-                gHitMarker |= HITMARKER_STATUS_ABILITY_EFFECT;
+                gMarcasGolpe[MARCA_EFECTO_HABILIDAD_ESTADO] = TRUE;
                 effect++;
             }
             break;
@@ -3166,7 +3181,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
-                gHitMarker |= HITMARKER_STATUS_ABILITY_EFFECT;
+                gMarcasGolpe[MARCA_EFECTO_HABILIDAD_ESTADO] = TRUE;
                 effect++;
             }
             break;
@@ -3183,7 +3198,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, gLastUsedAbility);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_AbilityStatusEffect;
-                gHitMarker |= HITMARKER_STATUS_ABILITY_EFFECT;
+                gMarcasGolpe[MARCA_EFECTO_HABILIDAD_ESTADO] = TRUE;
                 effect++;
             }
             break;
@@ -3281,9 +3296,9 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
         }
         break;
     case ABILITYEFFECT_SYNCHRONIZE:
-        if (gLastUsedAbility == ABILITY_SYNCHRONIZE && (gHitMarker & HITMARKER_SYNCHRONISE_EFFECT))
+        if (gLastUsedAbility == ABILITY_SYNCHRONIZE && (gMarcasGolpe[MARCA_EFECTO_SINCRONIA]))
         {
-            gHitMarker &= ~HITMARKER_SYNCHRONISE_EFFECT;
+            gMarcasGolpe[MARCA_EFECTO_SINCRONIA] = FALSE;
 
             if (!(gBattleMons[gBattlerAttacker].status1 & STATUS1_ANY))
             {
@@ -3296,15 +3311,15 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, ABILITY_SYNCHRONIZE);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_SynchronizeActivates;
-                gHitMarker |= HITMARKER_STATUS_ABILITY_EFFECT;
+                gMarcasGolpe[MARCA_EFECTO_HABILIDAD_ESTADO] = TRUE;
                 effect++;
             }
         }
         break;
     case ABILITYEFFECT_ATK_SYNCHRONIZE:
-        if (gLastUsedAbility == ABILITY_SYNCHRONIZE && (gHitMarker & HITMARKER_SYNCHRONISE_EFFECT))
+        if (gLastUsedAbility == ABILITY_SYNCHRONIZE && (gMarcasGolpe[MARCA_EFECTO_SINCRONIA]))
         {
-            gHitMarker &= ~HITMARKER_SYNCHRONISE_EFFECT;
+            gMarcasGolpe[MARCA_EFECTO_SINCRONIA] = FALSE;
 
             if (!(gBattleMons[gBattlerTarget].status1 & STATUS1_ANY))
             {
@@ -3317,7 +3332,7 @@ u32 AbilityBattleEffects(u32 caseID, u32 battler, u32 ability, u32 special, u32 
                 PREPARE_ABILITY_BUFFER(gBattleTextBuff1, ABILITY_SYNCHRONIZE);
                 BattleScriptPushCursor();
                 gBattlescriptCurrInstr = BattleScript_SynchronizeActivates;
-                gHitMarker |= HITMARKER_STATUS_ABILITY_EFFECT;
+                gMarcasGolpe[MARCA_EFECTO_HABILIDAD_ESTADO] = TRUE;
                 effect++;
             }
         }
@@ -4809,6 +4824,17 @@ bool32 EstaCombatienteEnSuelo(u32 combatiente)
     return TRUE;
 }
 
+// Sustituye al viejo "gHitMarker >> 28 != 0": ya no hay mascara que mirar.
+bool32 HayAlgunCombatienteDebilitado(void)
+{
+    for (u32 i = 0; i < NUMERO_COMBATIENTES; i++)
+    {
+        if (gCombatienteDebilitado[i])
+            return TRUE;
+    }
+    return FALSE;
+}
+
 bool32 IsBattlerAlive(u32 battler)
 {
     if (gBattleMons[battler].hp == 0)
@@ -6031,34 +6057,47 @@ uq4_12_t ModificadorTipo(u32 tipoAtacante, u32 tipoDefensor)
     return gTablaEfectividadTipos[tipoAtacante][tipoDefensor];
 }
 
-s32 DanioTrampa(u32 tipoTrampa, u32 combatiente)
+s32 CalculaDanioTrampa(u32 tipoTrampa, u32 tipo1, u32 tipo2, u32 psMaximos)
 {
-    s32 danio = 0;
     uq4_12_t modificador = MOVIMIENTO_NEUTRO;
-    u32 tipo1 = gBattleMons[combatiente].types[TIPO_1];
-    u32 tipo2 = gBattleMons[combatiente].types[TIPO_2];
-    u32 PSMaximos = gBattleMons[combatiente].maxHP;
 
     modificador = UQ412Multiplica(modificador, ModificadorTipo(tipoTrampa, tipo1));
     if (tipo2 != tipo1)
         modificador = UQ412Multiplica(modificador, ModificadorTipo(tipoTrampa, tipo2));
 
-    switch (modificador)
+    if (modificador < MOVIMIENTO_NEUTRO)
+        return 0;
+    if (modificador == MOVIMIENTO_NEUTRO)
+        return max(1, psMaximos / 16);
+    if (modificador == MOVIMIENTO_SUPER_EFECTIVO)
+        return max(1, psMaximos / 8);
+    return max(1, psMaximos / 4);
+}
+
+s32 DanioTrampa(u32 tipoTrampa, u32 combatiente)
+{
+    return CalculaDanioTrampa(tipoTrampa,
+                              gBattleMons[combatiente].types[TIPO_1],
+                              gBattleMons[combatiente].types[TIPO_2],
+                              gBattleMons[combatiente].maxHP);
+}
+
+u32 CalculaDanioTrampasEntrada(u32 lado, u32 tipo1, u32 tipo2, u32 psMaximos)
+{
+    u32 danio = 0;
+
+    for (u32 trampa = 0; trampa < NUMERO_TRAMPAS_DANIO; trampa++)
     {
-    case MOVIMIENTO_NO_EFECTIVO:
-    case MOVIMIENTO_MUY_POCO_EFECTIVO:
-    case MOVIMIENTO_POCO_EFECTIVO:
-        danio = 0;
-        break;
-    case MOVIMIENTO_NEUTRO:
-        danio = PSMaximos / 8;
-        break;
-    case MOVIMIENTO_SUPER_EFECTIVO:
-        danio = PSMaximos / 8;
-        break;
-    case MOVIMIENTO_ULTRA_EFECTIVO:
-        danio = PSMaximos / 4;
-        break;
+        u32 tipoTrampa = TipoTrampaEntrada(trampa);
+
+        if (!HayTrampaEntrada(trampa, lado))
+            continue;
+
+        // El tipo coincidente absorbe la trampa al entrar y nunca recibe dano.
+        if (tipo1 == tipoTrampa || tipo2 == tipoTrampa)
+            continue;
+
+        danio += CalculaDanioTrampa(tipoTrampa, tipo1, tipo2, psMaximos);
     }
     return danio;
 }
@@ -6263,23 +6302,6 @@ void RecuperaObjetoPerdido(void)
                 SetMonData(&gPlayerParty[indicePokemon], MON_DATA_HELD_ITEM, &objetoPerdido);
         }
     }
-}
-
-bool32 IsBattlerAffectedByHazards(u32 battler, bool32 toxicSpikes)
-{
-    bool32 ret = TRUE;
-    u32 holdEffect = GetBattlerHoldEffect(battler, TRUE);
-    if (toxicSpikes && holdEffect == HOLD_EFFECT_HEAVY_DUTY_BOOTS && !EsTipo(battler, TIPO_VENENO))
-    {
-        ret = FALSE;
-        RecordItemEffectBattle(battler, holdEffect);
-    }
-    else if (holdEffect == HOLD_EFFECT_HEAVY_DUTY_BOOTS)
-    {
-        ret = FALSE;
-        RecordItemEffectBattle(battler, holdEffect);
-    }
-    return ret;
 }
 
 bool32 EstaPotenciadoPotenciaBruta(u32 combatiente, enum Movimientos movimiento)

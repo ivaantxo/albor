@@ -1100,53 +1100,23 @@ bool32 EstaPokemonEnSuelo(u32 efectoObjeto, u32 habilidad, u32 tipo1, u32 tipo2)
         return TRUE;
 }
 
-// Gets hazard damage
+// Cuanto le costaria entrar al campo con las trampas que hay puestas.
+//
+// Sale una sola llamada porque el modelo nuevo no tiene capas ni estados que
+// consultar: cada trampa cobra segun lo debil que sea el Pokemon a su tipo, y
+// las que coinciden con su tipo no cobran nada porque se las lleva puestas.
 static u32 GetSwitchinHazardsDamage(u32 battler, struct BattlePokemon *battleMon)
 {
-    u8 defType1 = battleMon->types[TIPO_1], defType2 = battleMon->types[TIPO_2], tSpikesLayers;
-    u16 heldItemEffect = ItemId_GetHoldEffect(battleMon->item);
-    u32 maxHP = battleMon->maxHP, ability = battleMon->ability, status = battleMon->status1;
-    u32 spikesDamage = 0, tSpikesDamage = 0, hazardDamage = 0;
-    u32 hazardFlags = gSideStatuses[GetBattlerSide(battler)] & (SIDE_STATUS_SPIKES | SIDE_STATUS_STEALTH_ROCK | SIDE_STATUS_STICKY_WEB | SIDE_STATUS_TOXIC_SPIKES | SIDE_STATUS_SAFEGUARD);
+    u32 tipo1 = battleMon->types[TIPO_1], tipo2 = battleMon->types[TIPO_2];
 
-    // Check ways mon might avoid all hazards
-    if (ability != ABILITY_MAGIC_GUARD || (heldItemEffect == HOLD_EFFECT_HEAVY_DUTY_BOOTS))
-    {
-        if ((hazardFlags & SIDE_STATUS_STEALTH_ROCK) && heldItemEffect != HOLD_EFFECT_HEAVY_DUTY_BOOTS)
-            hazardDamage += DanioTrampa(gMovimientos[MOVE_STEALTH_ROCK].type, battler);
+    // Las botas y no pisar el suelo libran de todo. Muro Magico no: aqui las
+    // trampas cobran igual, que es como lo quiere el juego.
+    if (ItemId_GetHoldEffect(battleMon->item) == HOLD_EFFECT_HEAVY_DUTY_BOOTS)
+        return 0;
+    if (!EstaPokemonEnSuelo(ItemId_GetHoldEffect(battleMon->item), battleMon->ability, tipo1, tipo2))
+        return 0;
 
-        if ((hazardFlags & SIDE_STATUS_SPIKES) && EstaPokemonEnSuelo(heldItemEffect, ability, defType1, defType2))
-        {
-            spikesDamage = maxHP / ((5 - gSideTimers[GetBattlerSide(battler)].spikesAmount) * 2);
-            if (spikesDamage == 0)
-                spikesDamage = 1;
-            hazardDamage += spikesDamage;
-        }
-
-        if ((hazardFlags & SIDE_STATUS_TOXIC_SPIKES) && (defType1 != TIPO_VENENO && defType2 != TIPO_VENENO
-            && ability != ABILITY_IMMUNITY && ability != ABILITY_POISON_HEAL
-            && status == 0
-            && !(hazardFlags & SIDE_STATUS_SAFEGUARD))
-            && heldItemEffect != HOLD_EFFECT_CURE_PSN && heldItemEffect != HOLD_EFFECT_CURE_STATUS
-            && EstaPokemonEnSuelo(heldItemEffect, ability, defType1, defType2))
-        {
-            tSpikesLayers = gSideTimers[GetBattlerSide(battler)].toxicSpikesAmount;
-            if (tSpikesLayers == 1)
-            {
-                tSpikesDamage = maxHP / 8;
-                if (tSpikesDamage == 0)
-                    tSpikesDamage = 1;
-            }
-            else if (tSpikesLayers >= 2)
-            {
-                tSpikesDamage = maxHP / 16;
-                if (tSpikesDamage == 0)
-                    tSpikesDamage = 1;
-            }
-            hazardDamage += tSpikesDamage;
-        }
-    }
-    return hazardDamage;
+    return CalculaDanioTrampasEntrada(GetBattlerSide(battler), tipo1, tipo2, battleMon->maxHP);
 }
 
 // Gets damage / healing from weather
@@ -1272,10 +1242,9 @@ static u32 GetSwitchinRecurringDamage(void)
 // Gets one turn of status damage
 static u32 GetSwitchinStatusDamage(u32 battler)
 {
-    u32 defType1 = AI_DATA->switchinCandidate.battleMon.types[TIPO_1], defType2 = AI_DATA->switchinCandidate.battleMon.types[TIPO_2];
-    u8 tSpikesLayers = gSideTimers[GetBattlerSide(battler)].toxicSpikesAmount;
-    u16 heldItemEffect = ItemId_GetHoldEffect(AI_DATA->switchinCandidate.battleMon.item);
-    u32 status = AI_DATA->switchinCandidate.battleMon.status1, ability = AI_DATA->switchinCandidate.battleMon.ability, maxHP = AI_DATA->switchinCandidate.battleMon.maxHP;
+    u32 status = AI_DATA->switchinCandidate.battleMon.status1;
+    u32 ability = AI_DATA->switchinCandidate.battleMon.ability;
+    u32 maxHP = AI_DATA->switchinCandidate.battleMon.maxHP;
     u32 statusDamage = 0;
 
     // Status condition damage
@@ -1310,27 +1279,8 @@ static u32 GetSwitchinStatusDamage(u32 battler)
         }
     }
 
-    // Apply hypothetical poisoning from Toxic Spikes, which means the first turn of damage already added in GetSwitchinHazardsDamage
-    // Do this last to skip one iteration of Poison / Toxic damage, and start counting Toxic damage one turn later.
-    if (tSpikesLayers != 0 && (defType1 != TIPO_VENENO && defType2 != TIPO_VENENO
-        && ability != ABILITY_IMMUNITY && ability != ABILITY_POISON_HEAL
-        && status == 0
-        && heldItemEffect != HOLD_EFFECT_HEAVY_DUTY_BOOTS
-        && heldItemEffect != HOLD_EFFECT_CURE_PSN && heldItemEffect != HOLD_EFFECT_CURE_STATUS
-        && EstaPokemonEnSuelo(heldItemEffect, ability, defType1, defType2)))
-    {
-        if (tSpikesLayers == 1)
-        {
-            AI_DATA->switchinCandidate.battleMon.status1 = STATUS1_POISON; // Assign "hypothetical" status to the switchin candidate so we can get the damage it would take from TSpikes
-            AI_DATA->switchinCandidate.hypotheticalStatus = TRUE;
-        }
-        if (tSpikesLayers == 2)
-        {
-            AI_DATA->switchinCandidate.battleMon.status1 = STATUS1_TOXIC_POISON; // Assign "hypothetical" status to the switchin candidate so we can get the damage it would take from TSpikes
-            AI_DATA->switchinCandidate.battleMon.status1 += STATUS1_TOXIC_TURN(1);
-            AI_DATA->switchinCandidate.hypotheticalStatus = TRUE;
-        }
-    }
+    // Las púas tóxicas ya no envenenan: solo hacen daño al entrar, y de eso se
+    // encarga GetSwitchinHazardsDamage.
     return statusDamage;
 }
 

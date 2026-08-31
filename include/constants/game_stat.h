@@ -25,7 +25,8 @@
 #define GAME_STAT_RECEIVED_RIBBONS    18
 #define GAME_STAT_JUMPED_DOWN_LEDGES  19
 #define GAME_STAT_USED_DAYCARE        20
+#define GAME_STAT_POKEMON_CAPTURES    21
 
-#define NUM_GAME_STATS                21
+#define NUM_GAME_STATS                22
 
 #endif // GUARD_CONSTANTS_GAME_STAT_H

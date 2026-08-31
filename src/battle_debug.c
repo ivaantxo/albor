@@ -172,18 +172,19 @@ enum
     LIST_STATUS3_AQUA_RING,
 };
 
+// Las trampas de entrada salieron de este menu: ya no son bits de SIDE_STATUS
+// con un contador de capas, sino struct TrampasEntrada, un u16 por trampa con un
+// bit por lado. No encajan en modifyArrows porque ya no hay ningun numero que
+// subir o bajar; para reponerlas habria que llamar a ColocaTrampaEntrada y
+// QuitaTrampaEntrada desde una entrada de tipo interruptor.
 enum
 {
     LIST_SIDE_REFLECT,
     LIST_SIDE_LIGHTSCREEN,
-    LIST_SIDE_STICKY_WEB,
-    LIST_SIDE_SPIKES,
     LIST_SIDE_SAFEGUARD,
     LIST_SIDE_MIST,
     LIST_SIDE_TAILWIND,
     LIST_SIDE_AURORA_VEIL,
-    LIST_SIDE_TOXIC_SPIKES,
-    LIST_SIDE_STEALTH_ROCK,
 };
 
 enum
@@ -295,14 +296,10 @@ static const u8 sText_MagnetRise[] = _("Magnet Rise");
 static const u8 sText_AquaRing[] = _("Aqua Ring");
 static const u8 sText_Reflect[] = _("Reflect");
 static const u8 sText_LightScreen[] = _("Light Screen");
-static const u8 sText_StickyWeb[] = _("Sticky Web");
-static const u8 sText_Spikes[] = _("Spikes");
 static const u8 sText_Safeguard[] = _("Safeguard");
 static const u8 sText_Mist[] = _("Mist");
 static const u8 sText_Tailwind[] = _("Tailwind");
 static const u8 sText_AuroraVeil[] = _("Aurora Veil");
-static const u8 sText_ToxicSpikes[] = _("Toxic Spikes");
-static const u8 sText_StealthRock[] = _("Stealth Rock");
 static const u8 sText_CheckBadMove[] = _("Check Bad Move");
 static const u8 sText_TryToFaint[] = _("Try to Faint");
 static const u8 sText_CheckViability[] = _("Check Viability");
@@ -483,14 +480,10 @@ static const struct ListMenuItem sSideStatusListItems[] =
 {
     {sText_Reflect, LIST_SIDE_REFLECT},
     {sText_LightScreen, LIST_SIDE_LIGHTSCREEN},
-    {sText_StickyWeb, LIST_SIDE_STICKY_WEB},
-    {sText_Spikes, LIST_SIDE_SPIKES},
     {sText_Safeguard, LIST_SIDE_SAFEGUARD},
     {sText_Mist, LIST_SIDE_MIST},
     {sText_Tailwind, LIST_SIDE_TAILWIND},
     {sText_AuroraVeil, LIST_SIDE_AURORA_VEIL},
-    {sText_ToxicSpikes, LIST_SIDE_TOXIC_SPIKES},
-    {sText_StealthRock, LIST_SIDE_STEALTH_ROCK},
 };
 
 static const struct ListMenuItem sAIListItems[] =
@@ -1731,26 +1724,6 @@ static u8 *GetSideStatusValue(struct BattleDebugMenu *data, bool32 changeStatus,
             sideTimer->lightscreenBattlerId = data->battlerId;
         }
         return &sideTimer->lightscreenTimer;
-    case LIST_SIDE_STICKY_WEB:
-        if (changeStatus)
-        {
-            if (statusTrue)
-                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_STICKY_WEB;
-            else
-                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_STICKY_WEB;
-            sideTimer->stickyWebBattlerId = data->battlerId;
-            sideTimer->stickyWebBattlerSide = GetBattlerSide(data->battlerId);
-        }
-        return &sideTimer->stickyWebAmount;
-    case LIST_SIDE_SPIKES:
-        if (changeStatus)
-        {
-            if (statusTrue)
-                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_SPIKES;
-            else
-                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_SPIKES;
-        }
-        return &sideTimer->spikesAmount;
     case LIST_SIDE_SAFEGUARD:
         if (changeStatus)
         {
@@ -1791,24 +1764,6 @@ static u8 *GetSideStatusValue(struct BattleDebugMenu *data, bool32 changeStatus,
             sideTimer->auroraVeilBattlerId = data->battlerId;
         }
         return &sideTimer->auroraVeilTimer;
-    case LIST_SIDE_TOXIC_SPIKES:
-        if (changeStatus)
-        {
-            if (statusTrue)
-                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_TOXIC_SPIKES;
-            else
-                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_TOXIC_SPIKES;
-        }
-        return &sideTimer->toxicSpikesAmount;
-    case LIST_SIDE_STEALTH_ROCK:
-        if (changeStatus)
-        {
-            if (statusTrue)
-                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_STEALTH_ROCK;
-            else
-                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_STEALTH_ROCK;
-        }
-        return &sideTimer->stealthRockAmount;
     default:
         return NULL;
     }
@@ -1960,9 +1915,7 @@ static void SetUpModifyArrows(struct BattleDebugMenu *data)
     case LIST_ITEM_SIDE_STATUS:
         data->modifyArrows.minValue = 0;
 
-        if (data->currentSecondaryListItemId == LIST_SIDE_SPIKES)
-            data->modifyArrows.maxValue = 3;
-        else if (data->currentSecondaryListItemId == LIST_SIDE_STEALTH_ROCK || data->currentSecondaryListItemId == LIST_SIDE_STICKY_WEB)
+        if (0)
             data->modifyArrows.maxValue = 1;
         else
             data->modifyArrows.maxValue = 9;
