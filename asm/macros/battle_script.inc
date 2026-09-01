@@ -198,14 +198,6 @@
 	.byte BATTLE_CMD_EscribeTextoDescanso
 	.endm
 
-	.macro EscribeTextoAlboroto
-	.byte BATTLE_CMD_EscribeTextoAlboroto
-	.endm
-
-	.macro EscribeTextoAlborotoDesvela
-	.byte BATTLE_CMD_EscribeTextoAlborotoDesvela
-	.endm
-
 	.macro EscribeTextoAbsorbeFuego
 	.byte BATTLE_CMD_EscribeTextoAbsorbeFuego
 	.endm
@@ -337,18 +329,29 @@
 	.byte \battler
 	.endm
 
-	.macro jumpifstatus battler:req, flags:req, jumpInstr:req
-	.byte BATTLE_CMD_jumpifstatus
+	.macro jumpifestado battler:req, estado:req, jumpInstr:req
+	.byte BATTLE_CMD_jumpifestado
 	.byte \battler
-	.4byte \flags
+	.byte \estado
 	.4byte \jumpInstr
 	.endm
 
-	.macro jumpifstatus2 battler:req, flags:req, jumpInstr:req
-	.byte BATTLE_CMD_jumpifstatus2
+	.macro jumpiftransitoriocond battler:req, transitorio:req, negado:req, jumpInstr:req
+	.byte BATTLE_CMD_jumpiftransitorio
 	.byte \battler
-	.4byte \flags
+	.byte \transitorio
+	.byte \negado
 	.4byte \jumpInstr
+	.endm
+
+	@ Salta si el combatiente tiene ese estado transitorio.
+	.macro jumpiftransitorio battler:req, transitorio:req, jumpInstr:req
+	jumpiftransitoriocond \battler, \transitorio, FALSE, \jumpInstr
+	.endm
+
+	@ Salta si NO lo tiene.
+	.macro jumpifnotransitorio battler:req, transitorio:req, jumpInstr:req
+	jumpiftransitoriocond \battler, \transitorio, TRUE, \jumpInstr
 	.endm
 
 	.macro jumpifability battler:req, ability:req, jumpInstr:req
@@ -371,14 +374,6 @@
 	.byte \comparison
 	.byte \stat
 	.byte \value
-	.4byte \jumpInstr
-	.endm
-
-	.macro jumpifstatus3condition battler:req, flags:req, jumpIfTrue:req, jumpInstr:req
-	.byte BATTLE_CMD_jumpifstatus3condition
-	.byte \battler
-	.4byte \flags
-	.byte \jumpIfTrue
 	.4byte \jumpInstr
 	.endm
 
@@ -767,22 +762,15 @@
 	.byte \battler
 	.endm
 
-	.macro statusanimation battler:req
+	.macro animaestado battler:req
 	.byte BATTLE_CMD_statusanimation
 	.byte \battler
 	.endm
 
-	.macro status2animation battler:req, status2:req
-	.byte BATTLE_CMD_status2animation
+	.macro animatransitorio battler:req, transitorio:req
+	.byte BATTLE_CMD_animatransitorio
 	.byte \battler
-	.4byte \status2
-	.endm
-
-	.macro chosenstatusanimation battler:req, isStatus2:req, status:req
-	.byte BATTLE_CMD_chosenstatusanimation
-	.byte \battler
-	.byte \isStatus2
-	.4byte \status
+	.byte \transitorio
 	.endm
 
 	.macro yesnobox
@@ -896,11 +884,6 @@
 
 	.macro jumpifnotfirstturn jumpInstr:req
 	.byte BATTLE_CMD_jumpifnotfirstturn
-	.4byte \jumpInstr
-	.endm
-
-	.macro jumpifuproarwakes jumpInstr:req
-	.byte BATTLE_CMD_jumpifuproarwakes
 	.4byte \jumpInstr
 	.endm
 
@@ -1099,10 +1082,6 @@
 	tryfiretwoturnmovenowbyeffect \battler, FALSE, \jumpInstr
 	.endm
 
-	.macro setminimize
-	.byte BATTLE_CMD_setminimize
-	.endm
-
 	.macro setforcedtarget
 	.byte BATTLE_CMD_setforcedtarget
 	.endm
@@ -1188,9 +1167,9 @@
 	.4byte \failInstr
 	.endm
 
-	.macro setuserstatus3 flags:req, failInstr:req
-	.byte BATTLE_CMD_setuserstatus3
-	.4byte \flags
+	.macro pontransitorio transitorio:req, failInstr:req
+	.byte BATTLE_CMD_pontransitorio
+	.byte \transitorio
 	.4byte \failInstr
 	.endm
 
@@ -1249,10 +1228,6 @@
 
 	.macro subattackerhpbydmg
 	.byte BATTLE_CMD_subattackerhpbydmg
-	.endm
-
-	.macro removeattackerstatus1
-	.byte BATTLE_CMD_removeattackerstatus1
 	.endm
 
 	.macro finishaction
@@ -1354,16 +1329,6 @@
 	callnative BS_JumpIfArgument
 	.byte \argument
 	.4byte \jumpInstr
-	.endm
-
-	.macro trysetstatus1, ptr:req
-	callnative BS_TrySetStatus1
-	.4byte \ptr
-	.endm
-
-	.macro trysetstatus2, ptr:req
-	callnative BS_TrySetStatus2
-	.4byte \ptr
 	.endm
 
 	.macro tryhealsixthhealth, ptr:req
@@ -1772,14 +1737,6 @@
 	sethword sSAVED_MOVE_EFFECT, \effect
 	.endm
 
-	.macro chosenstatus1animation battler:req, status:req
-	chosenstatusanimation \battler, 0x0, \status
-	.endm
-
-	.macro chosenstatus2animation battler:req, status:req
-	chosenstatusanimation \battler, 0x1, \status
-	.endm
-
 	.macro sethword dst:req, value:req
 	setbyte \dst, (\value) & 0xFF
 	setbyte \dst + 1, ((\value) >> 8) & 0xFF
@@ -1822,10 +1779,6 @@
 
 	.macro jumpifnotchosenmove move:req, jumpInstr:req
 	jumpifhalfword COMPARACION_DESIGUAL, gChosenMove, \move, \jumpInstr
-	.endm
-
-	.macro jumpifstatus3 battler:req, flags:req, jumpInstr:req
-	jumpifstatus3condition \battler, \flags, FALSE, \jumpInstr
 	.endm
 
 	.macro jumpifmovehadnoeffect jumpInstr:req

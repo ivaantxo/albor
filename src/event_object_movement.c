@@ -1833,7 +1833,7 @@ bool32 CheckMsgCondition(const struct MsgCondition *cond, struct Pokemon *mon, u
             return multi;
         break;
     case MSG_COND_STATUS:
-        return (cond->data.raw & mon->status);
+        return cond->data.raw == mon->estado;
     case MSG_COND_MAPSEC:
         return (cond->data.raw == gMapHeader.regionMapSectionId);
     case MSG_COND_MAP:
@@ -1954,7 +1954,7 @@ void GetFollowerAction(struct ScriptContext *ctx) // Essentially a big switch fo
         condEmotes[condCount++] = (struct SpecialEmote){.emotion = FOLLOWER_EMOTION_SAD, .index = 4};
         condEmotes[condCount++] = (struct SpecialEmote){.emotion = FOLLOWER_EMOTION_SAD, .index = 5};
     }
-    if (multi < 50 || mon->status & STATUS1_PARALYSIS)
+    if (multi < 50 || mon->estado == ESTADO_PARALISIS)
     {
         emotion_weight[FOLLOWER_EMOTION_SAD] = 30;
         condEmotes[condCount++] = (struct SpecialEmote){.emotion = FOLLOWER_EMOTION_SAD, .index = 6};
@@ -2016,7 +2016,7 @@ void GetFollowerAction(struct ScriptContext *ctx) // Essentially a big switch fo
     }
 
     emotion = ElementoAleatorioPonderado(emotion_weight, FOLLOWER_EMOTION_LENGTH);
-    if ((mon->status & STATUS1_PSN_ANY) && GetMonAbility(mon) != ABILITY_POISON_HEAL)
+    if (mon->estado == ESTADO_VENENO && GetMonAbility(mon) != ABILITY_POISON_HEAL)
         emotion = FOLLOWER_EMOTION_POISONED;
 
     // end special conditions

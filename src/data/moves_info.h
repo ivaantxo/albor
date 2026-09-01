@@ -494,7 +494,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .argument = TWO_TURN_ARG(COMPRESS_BITS(STATUS3_ON_AIR)),
+        .argument = TWO_TURN_ARG(TRANSITORIO_EN_EL_AIRE),
         .battleAnimScript = gBattleAnimMove_Fly,
     },
 
@@ -1937,7 +1937,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .argument = TWO_TURN_ARG(COMPRESS_BITS(STATUS3_UNDERGROUND)),
+        .argument = TWO_TURN_ARG(TRANSITORIO_BAJO_TIERRA),
         .battleAnimScript = gBattleAnimMove_Dig,
     },
 
@@ -2077,17 +2077,16 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
     {
         .name = COMPOUND_STRING("Furia"),
         .description = COMPOUND_STRING(
-            "Raises the user's Attack\n"
-            "every time it is hit."),
+            "Se enfurece: cada golpe que\n"
+            "reciba le sube el ataque."),
         .effect = EFFECT_RAGE,
-        .power = 20,
+        .power = 0,
         .type = TIPO_NORMAL,
-        .accuracy = PRECISION_NORMAL,
+        .accuracy = PRECISION_PERFECTA,
         .pp = 20,
-        .target = MOVE_TARGET_SELECTED,
+        .target = MOVE_TARGET_USER,
         PRIORIDAD_NORMAL,
-        .category = CATEGORIA_FISICA,
-        .makesContact = TRUE,
+        .category = CATEGORIA_ESTADO,
         .battleAnimScript = gBattleAnimMove_Rage,
     },
 
@@ -2123,7 +2122,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .argument = STATUS1_SLEEP,
+        .argument = ESTADO_SUENO,
         .makesContact = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_REMOVE_STATUS,
@@ -3272,38 +3271,24 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_SpiderWeb,
     },
 
-    [MOVE_MIND_READER] =
-    {
-        .name = COMPOUND_STRING("Telépata"),
-        .description = COMPOUND_STRING(
-            "Senses the foe's action to\n"
-            "ensure the next move's hit."),
-        .effect = EFFECT_LOCK_ON,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_4 ? 0 : 100,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .battleAnimScript = gBattleAnimMove_MindReader,
-    },
-
     [MOVE_NIGHTMARE] =
     {
         .name = COMPOUND_STRING("Pesadilla"),
         .description = COMPOUND_STRING(
-            "Inflicts 1/4 damage on a\n"
-            "sleeping foe every turn."),
-        .effect = EFFECT_NIGHTMARE,
-        .power = 0,
+            "Dobla su daño contra un\n"
+            "rival dormido y lo despierta."),
+        .effect = EFECTO_DOBLE_POTENCIA_SI_ESTADO,
+        .power = 80,
         .type = TIPO_FANTASMA,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_4 ? 100 : 0,
+        .accuracy = PRECISION_NORMAL,
         .pp = 15,
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = B_UPDATED_MOVE_FLAGS <= GEN_3,
+        .category = CATEGORIA_ESPECIAL,
+        .argument = ESTADO_SUENO,
+        .additionalEffects = ADDITIONAL_EFFECTS({
+            .moveEffect = MOVE_EFFECT_REMOVE_STATUS,
+        }),
         .battleAnimScript = gBattleAnimMove_Nightmare,
     },
 
@@ -3352,8 +3337,8 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
     {
         .name = COMPOUND_STRING("Maldición"),
         .description = COMPOUND_STRING(
-            "A move that functions\n"
-            "differently for GHOSTS."),
+            "Maldice al rival: pierde un\n"
+            "cuarto de sus PS por turno."),
         .effect = EFFECT_CURSE,
         .power = 0,
         .type = TIPO_FANTASMA,
@@ -3642,44 +3627,6 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_ZapCannon,
     },
 
-    [MOVE_FORESIGHT] =
-    {
-        .name = COMPOUND_STRING("Profecía"),
-        .description = COMPOUND_STRING(
-            "Negates the foe's efforts\n"
-            "to heighten evasiveness."),
-        .effect = EFFECT_FORESIGHT,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_5 ? 0 : 100,
-        .pp = 40,
-        .target = MOVE_TARGET_SELECTED,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
-        .ignoresSubstitute = TRUE,
-        .battleAnimScript = gBattleAnimMove_Foresight,
-    },
-
-    [MOVE_DESTINY_BOND] =
-    {
-        .name = COMPOUND_STRING("Mismo destino"),
-        .description = COMPOUND_STRING(
-            "If the user faints, the foe\n"
-            "is also made to faint."),
-        .effect = EFFECT_DESTINY_BOND,
-        .power = 0,
-        .type = TIPO_FANTASMA,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 5,
-        .target = MOVE_TARGET_USER,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .ignoresSubstitute = TRUE,
-        .battleAnimScript = gBattleAnimMove_DestinyBond,
-    },
-
     [MOVE_PERISH_SONG] =
     {
         .name = COMPOUND_STRING("Canto mortal"),
@@ -3738,23 +3685,6 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .battleAnimScript = gBattleAnimMove_BoneRush,
-    },
-
-    [MOVE_LOCK_ON] =
-    {
-        .name = COMPOUND_STRING("Fijar blanco"),
-        .description = COMPOUND_STRING(
-            "Locks on to the foe to\n"
-            "ensure the next move hits."),
-        .effect = EFFECT_LOCK_ON,
-        .power = 0,
-        .type = TIPO_NORMAL,
-        .accuracy = B_UPDATED_MOVE_DATA >= GEN_4 ? 0 : 100,
-        .pp = 5,
-        .target = MOVE_TARGET_SELECTED,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .battleAnimScript = gBattleAnimMove_LockOn,
     },
 
     [MOVE_OUTRAGE] =
@@ -4631,25 +4561,21 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
     {
         .name = COMPOUND_STRING("Alboroto"),
         .description = COMPOUND_STRING(
-                                    #if B_UPROAR_TURNS >= GEN_5
-                                       "Causes an uproar for 2 to 5\n"
-                                    #else
-                                       "Causes an uproar for 3\n"
-                                    #endif
-                                       "turns and prevents sleep."),
-        .effect = EFFECT_UPROAR,
-        .power = B_UPDATED_MOVE_DATA >= GEN_5 ? 90 : 50,
+            "Un estruendo que dobla su\n"
+            "daño y despierta al rival."),
+        .effect = EFECTO_DOBLE_POTENCIA_SI_ESTADO,
+        .power = 90,
         .type = TIPO_NORMAL,
         .accuracy = PRECISION_NORMAL,
         .pp = 10,
-        .target = MOVE_TARGET_RANDOM,
+        .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
+        .argument = ESTADO_SUENO,
         .soundMove = TRUE,
+        .ignoresSubstitute = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_UPROAR,
-            .self = TRUE,
+            .moveEffect = MOVE_EFFECT_REMOVE_STATUS,
         }),
         .battleAnimScript = gBattleAnimMove_Uproar,
     },
@@ -4837,7 +4763,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
-        .argument = STATUS1_PARALYSIS,
+        .argument = ESTADO_PARALISIS,
         .makesContact = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_REMOVE_STATUS,
@@ -5049,25 +4975,6 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Eruption,
     },
 
-    [MOVE_IMPRISON] =
-    {
-        .name = COMPOUND_STRING("Sello"),
-        .description = COMPOUND_STRING(
-            "Prevents foes from using\n"
-            "moves known by the user."),
-        .effect = EFFECT_IMPRISON,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = PRECISION_NORMAL,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .ignoresSubstitute = TRUE,
-        .battleAnimScript = gBattleAnimMove_Imprison,
-    },
-
     [MOVE_REFRESH] =
     {
         .name = COMPOUND_STRING("Refresco"),
@@ -5122,7 +5029,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .argument = TWO_TURN_ARG(COMPRESS_BITS(STATUS3_UNDERWATER)),
+        .argument = TWO_TURN_ARG(TRANSITORIO_BAJO_EL_AGUA),
         .battleAnimScript = gBattleAnimMove_Dive,
     },
 
@@ -6036,7 +5943,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .argument = TWO_TURN_ARG(COMPRESS_BITS(STATUS3_ON_AIR)),
+        .argument = TWO_TURN_ARG(TRANSITORIO_EN_EL_AIRE),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 30,
@@ -6321,7 +6228,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
-        .argument = STATUS1_SLEEP,
+        .argument = ESTADO_SUENO,
         .makesContact = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_REMOVE_STATUS,
@@ -6522,24 +6429,6 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .battleAnimScript = gBattleAnimMove_Assurance,
     },
 
-    [MOVE_EMBARGO] =
-    {
-        .name = COMPOUND_STRING("Embargo"),
-        .description = COMPOUND_STRING(
-            "Prevents the foe from\n"
-            "using any items."),
-        .effect = EFFECT_EMBARGO,
-        .power = 0,
-        .type = TIPO_SINIESTRO,
-        .accuracy = PRECISION_NORMAL,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .espejoMagico = B_UPDATED_MOVE_FLAGS >= GEN_5,
-        .battleAnimScript = gBattleAnimMove_Embargo,
-    },
-
     [MOVE_WRING_OUT] =
     {
         .name = COMPOUND_STRING("Estrujón"),
@@ -6645,24 +6534,6 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_AquaRing,
-    },
-
-    [MOVE_MAGNET_RISE] =
-    {
-        .name = COMPOUND_STRING("Levitón"),
-        .description = COMPOUND_STRING(
-            "The user levitates with\n"
-            "electromagnetism."),
-        .effect = EFFECT_MAGNET_RISE,
-        .power = 0,
-        .type = TIPO_ELECTRICO,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 10,
-        .target = MOVE_TARGET_USER,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .ignoresProtect = TRUE,
-        .battleAnimScript = gBattleAnimMove_MagnetRise,
     },
 
     [MOVE_FLARE_BLITZ] =
@@ -8098,7 +7969,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .ignoresProtect = TRUE,
         .minimizeDoubleDamage = B_UPDATED_MOVE_FLAGS == GEN_6,
-        .argument = TWO_TURN_ARG(COMPRESS_BITS(STATUS3_PHANTOM_FORCE)),
+        .argument = TWO_TURN_ARG(TRANSITORIO_GOLPE_FANTASMA),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_FEINT,
         }),
@@ -8152,7 +8023,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .argument = STATUS1_PSN_ANY,
+        .argument = ESTADO_VENENO,
         .battleAnimScript = gBattleAnimMove_Venoshock,
     },
 
@@ -8191,45 +8062,6 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .powderMove = TRUE,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_RagePowder,
-    },
-
-    [MOVE_TELEKINESIS] =
-    {
-        .name = COMPOUND_STRING("Telequinesis"),
-        .description = COMPOUND_STRING(
-            "Makes the foe float. It is\n"
-            "easier to hit for 3 turns."),
-        .effect = EFFECT_TELEKINESIS,
-        .power = 0,
-        .type = TIPO_PSIQUICO,
-        .accuracy = PRECISION_PERFECTA,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESTADO,
-        .espejoMagico = TRUE,
-        .battleAnimScript = gBattleAnimMove_Telekinesis,
-    },
-
-    [MOVE_SMACK_DOWN] =
-    {
-        .name = COMPOUND_STRING("Antiaéreo"),
-        .description = COMPOUND_STRING(
-            "Throws a rock to knock the\n"
-            "foe down to the ground."),
-        .effect = EFFECT_HIT,
-        .power = 50,
-        .type = TIPO_ROCA,
-        .accuracy = PRECISION_NORMAL,
-        .pp = 15,
-        .target = MOVE_TARGET_SELECTED,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_FISICA,
-        .damagesAirborne = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SMACK_DOWN,
-        }),
-        .battleAnimScript = gBattleAnimMove_SmackDown,
     },
 
     [MOVE_STORM_THROW] =
@@ -9187,7 +9019,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_BOTH,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .argument = STATUS1_SLEEP,
+        .argument = ESTADO_SUENO,
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .soundMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
@@ -9480,7 +9312,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .ignoresProtect = TRUE,
         .makesContact = TRUE,
         .minimizeDoubleDamage = B_UPDATED_MOVE_FLAGS == GEN_6,
-        .argument = TWO_TURN_ARG(COMPRESS_BITS(STATUS3_PHANTOM_FORCE)),
+        .argument = TWO_TURN_ARG(TRANSITORIO_GOLPE_FANTASMA),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_FEINT,
         }),
@@ -10141,7 +9973,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_FOES_AND_ALLY,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .argument = STATUS1_BURN,
+        .argument = ESTADO_QUEMADURA,
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .soundMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
@@ -11752,7 +11584,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
-        .argument = STATUS1_PSN_ANY,
+        .argument = ESTADO_VENENO,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_POISON,
             .chance = 50,

@@ -7227,10 +7227,15 @@ u32 GetAndCopyBoxMonDataAt(u8 boxId, u8 boxPosition, s32 request, void *dst)
         return 0;
 }
 
+// Guardar en la caja cura: PP al maximo y sin estado. Los PS no se guardan en
+// la caja, y al sacarlo BoxMonToMon lo devuelve con los PS al maximo.
 void SetBoxMonAt(u8 boxId, u8 boxPosition, struct BoxPokemon *src)
 {
     if (boxId < TOTAL_BOXES_COUNT && boxPosition < IN_BOX_COUNT)
+    {
         gPokemonStoragePtr->boxes[boxId][boxPosition] = *src;
+        HealBoxPokemon(&gPokemonStoragePtr->boxes[boxId][boxPosition]);
+    }
 }
 
 void ZeroBoxMonAt(u8 boxId, u8 boxPosition)

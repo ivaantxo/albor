@@ -19,7 +19,7 @@
 // dos estructuras entra en la cuenta, y anadir o quitar campos lo cambia. Lo
 // unico que no detecta es reordenar campos sin tocar el tamano total -cambiar
 // dos u16 de sitio, por ejemplo-; para eso esta el contador de abajo.
-#define FIRMA_DISPOSICION 1
+#define FIRMA_DISPOSICION 2
 
 const u32 gFirmaSector = 0x08010000u
                        ^ ((u32)FIRMA_DISPOSICION << 24)

@@ -103,9 +103,8 @@ enum
     LIST_ITEM_TYPES,
     LIST_ITEM_STATS,
     LIST_ITEM_STAT_STAGES,
-    LIST_ITEM_STATUS1,
-    LIST_ITEM_STATUS2,
-    LIST_ITEM_STATUS3,
+    LIST_ITEM_ESTADO,
+    LIST_ITEM_TRANSITORIOS,
     LIST_ITEM_SIDE_STATUS,
     LIST_ITEM_AI,
     LIST_ITEM_AI_MOVES_PTS,
@@ -124,52 +123,6 @@ enum
     LIST_ESTADISTICA_VELOCIDAD,
     LIST_STAT_SP_ATK,
     LIST_STAT_SP_DEF,
-};
-
-enum
-{
-    LIST_STATUS1_SLEEP,
-    LIST_STATUS1_POISON,
-    LIST_STATUS1_BURN,
-    LIST_STATUS1_CONGELACION,
-    LIST_STATUS1_PARALYSIS,
-    LIST_STATUS1_TOXIC_POISON,
-    LIST_STATUS1_TOXIC_COUNTER,
-};
-
-enum
-{
-    LIST_STATUS2_CONFUSION,
-    LIST_STATUS2_FLINCHED,
-    LIST_STATUS2_TORMENT,
-    LIST_STATUS2_DEFENSE_CURL,
-    LIST_STATUS2_RECHARGE,
-    LIST_STATUS2_RAGE,
-    LIST_STATUS2_DESTINY_BOND,
-    LIST_STATUS2_ESCAPE_PREVENTION,
-    LIST_STATUS2_CURSED,
-    LIST_STATUS2_FORESIGHT,
-};
-
-enum
-{
-    LIST_STATUS3_LEECH_SEED_HEALER,
-    LIST_STATUS3_LEECH_SEEDED,
-    LIST_STATUS3_ALWAYS_HITS,
-    LIST_STATUS3_PERISH_SONG,
-    LIST_STATUS3_ON_AIR,
-    LIST_STATUS3_UNDERGROUND,
-    LIST_STATUS3_MINIMIZED,
-    LIST_STATUS3_CHARGED_UP,
-    LIST_STATUS3_ROOTED,
-    LIST_STATUS3_IMPRISONED_OTHERS,
-    LIST_STATUS3_GASTRO_ACID,
-    LIST_STATUS3_EMBARGO,
-    LIST_STATUS3_UNDERWATER,
-    LIST_STATUS3_SMACKED_DOWN,
-    LIST_STATUS3_TELEKINESIS,
-    LIST_STATUS3_MAGNET_RISE,
-    LIST_STATUS3_AQUA_RING,
 };
 
 // Las trampas de entrada salieron de este menu: ya no son bits de SIDE_STATUS
@@ -214,7 +167,6 @@ enum
 enum
 {
     VARIOUS_SUBSTITUTE_HP,
-    VARIOUS_IN_LOVE,
 };
 
 enum
@@ -234,7 +186,8 @@ enum
     VAL_BITFIELD_32,
     VAR_SIDE_STATUS,
     VAR_SUBSTITUTE,
-    VAR_IN_LOVE,
+    VAR_ESTADO,
+    VAR_TRANSITORIO,
     VAR_U16_4_ENTRIES,
     VAL_S8,
     VAL_ALL_STAT_STAGES,
@@ -251,9 +204,6 @@ static const u8 sText_HoldEffect[] = _("Hold Effect");
 static const u8 sText_Types[] = _("Types");
 static const u8 sText_Stats[] = _("Stats");
 static const u8 sText_StatStages[] = _("Stat Stages");
-static const u8 sText_Status1[] = _("Status1");
-static const u8 sText_Status2[] = _("Status2");
-static const u8 sText_Status3[] = _("Status3");
 static const u8 sText_SideStatus[] = _("Side Status");
 static const u8 sText_AI[] = _("AI");
 static const u8 sText_AIMovePts[] = _("AI Pts/Dmg");
@@ -321,57 +271,7 @@ static const u8 sText_AcePokemon[] = _("Ace Pokemon");
 static const u8 sText_Omniscient[] = _("Omniscient");
 static const u8 sText_SmartMonChoices[] = _("Smart Mon Choices");
 static const u8 sText_SubstituteHp[] = _("Substitute HP");
-static const u8 sText_InLove[] = _("In Love");
 static const u8 sText_EmptyString[] = _("");
-
-static const struct BitfieldInfo sStatus1Bitfield[] =
-{
-    {/*Sleep*/ 3, 0},
-    {/*Poison*/ 1, 3},
-    {/*Burn*/ 1, 4},
-    {/*Freeze*/ 1, 5},
-    {/*Paralysis*/1, 6},
-    {/*Toxic Poison*/ 1, 7},
-    {/*Toxic Counter*/ 4, 8},
-};
-
-static const struct BitfieldInfo sStatus2Bitfield[] =
-{
-    {/*Confusion*/ 3, 0},
-    {/*Flinched*/ 1, 3},
-    {/*Torment*/ 1, 7},
-    {/*Powder*/ 1, 14},
-    {/*Defense Curl*/ 1, 20},
-    {/*Recharge*/ 1, 22},
-    {/*Rage*/ 1, 23},
-    {/*Destiny Bond*/ 1, 25},
-    {/*Escape Prevention*/ 1, 26},
-    {/*Cursed*/ 1, 28},
-    {/*Foresight*/ 1, 29},
-};
-
-static const struct BitfieldInfo sStatus3Bitfield[] =
-{
-    {/*Leech Seed Battler*/ 2, 0},
-    {/*Leech Seed*/ 1, 2},
-    {/*Always Hits*/ 2, 3},
-    {/*Perish Song*/ 1, 5},
-    {/*On Air*/ 1, 6},
-    {/*Underground*/ 1, 7},
-    {/*Minimized*/ 1, 8},
-    {/*Charged Up*/ 1, 9},
-    {/*Rooted*/ 1, 10},
-    {/*Imprisoned Others*/ 1, 13},
-    {/*Gastro Acid*/ 1, 16},
-    {/*Embargo*/ 1, 17},
-    {/*Underwater*/ 1, 18},
-    {/*Smacked Down*/ 1, 21},
-    {/*Telekinesis*/ 1, 23},
-    {/*Magnet Rise*/ 1, 26},
-    {/*Aqua Ring*/ 1, 28},
-    {/*Laser Focus*/ 1, 29},
-    {/*Power Trick*/ 1, 30},
-};
 
 static const struct BitfieldInfo sAIBitfield[] =
 {
@@ -408,9 +308,8 @@ static const struct ListMenuItem sMainListItems[] =
     {sText_Types, LIST_ITEM_TYPES},
     {sText_Stats, LIST_ITEM_STATS},
     {sText_StatStages, LIST_ITEM_STAT_STAGES},
-    {sText_Status1, LIST_ITEM_STATUS1},
-    {sText_Status2, LIST_ITEM_STATUS2},
-    {sText_Status3, LIST_ITEM_STATUS3},
+    {COMPOUND_STRING("Estado"), LIST_ITEM_ESTADO},
+    {COMPOUND_STRING("Transitorios"), LIST_ITEM_TRANSITORIOS},
     {sText_SideStatus, LIST_ITEM_SIDE_STATUS},
     {sText_AI, LIST_ITEM_AI},
     {sText_AIMovePts, LIST_ITEM_AI_MOVES_PTS},
@@ -430,50 +329,39 @@ static const struct ListMenuItem sStatsListItems[] =
     {gText_DefEsp, LIST_STAT_SP_DEF},
 };
 
-static const struct ListMenuItem sStatus1ListItems[] =
+static const struct ListMenuItem sEstadoListItems[] =
 {
-    {sText_Sleep, LIST_STATUS1_SLEEP},
-    {sText_Poison, LIST_STATUS1_POISON},
-    {sText_Burn, LIST_STATUS1_BURN},
-    {COMPOUND_STRING("Congelación"), LIST_STATUS1_CONGELACION},
-    {sText_Paralysis, LIST_STATUS1_PARALYSIS},
-    {sText_ToxicPoison, LIST_STATUS1_TOXIC_POISON},
-    {sText_ToxicCounter, LIST_STATUS1_TOXIC_COUNTER},
+    {COMPOUND_STRING("Quemadura"),   ESTADO_QUEMADURA},
+    {COMPOUND_STRING("Congelación"), ESTADO_CONGELACION},
+    {COMPOUND_STRING("Veneno"),      ESTADO_VENENO},
+    {COMPOUND_STRING("Parálisis"),   ESTADO_PARALISIS},
+    {COMPOUND_STRING("Sueño"),       ESTADO_SUENO},
+    {COMPOUND_STRING("Enamorado"),   ESTADO_ENAMORADO},
 };
 
-static const struct ListMenuItem sStatus2ListItems[] =
+static const struct ListMenuItem sTransitorioListItems[] =
 {
-    {sText_Confusion, LIST_STATUS2_CONFUSION},
-    {sText_Flinched, LIST_STATUS2_FLINCHED},
-    {sText_Torment, LIST_STATUS2_TORMENT},
-    {sText_DefenseCurl, LIST_STATUS2_DEFENSE_CURL},
-    {sText_Recharge, LIST_STATUS2_RECHARGE},
-    {sText_Rage, LIST_STATUS2_RAGE},
-    {sText_DestinyBond, LIST_STATUS2_DESTINY_BOND},
-    {sText_EscapePrevention, LIST_STATUS2_ESCAPE_PREVENTION},
-    {sText_Cursed, LIST_STATUS2_CURSED},
-    {sText_Foresight, LIST_STATUS2_FORESIGHT},
-};
-
-static const struct ListMenuItem sStatus3ListItems[] =
-{
-    {sText_LeechSeedHealer, LIST_STATUS3_LEECH_SEED_HEALER},
-    {sText_LeechSeeded, LIST_STATUS3_LEECH_SEEDED},
-    {sText_AlwaysHits, LIST_STATUS3_ALWAYS_HITS},
-    {sText_PerishSong, LIST_STATUS3_PERISH_SONG},
-    {sText_OnAir, LIST_STATUS3_ON_AIR},
-    {sText_Underground, LIST_STATUS3_UNDERGROUND},
-    {sText_Minimized, LIST_STATUS3_MINIMIZED},
-    {sText_ChargedUp, LIST_STATUS3_CHARGED_UP},
-    {sText_Rooted, LIST_STATUS3_ROOTED},
-    {sText_ImprisonedOthers, LIST_STATUS3_IMPRISONED_OTHERS},
-    {sText_GastroAcid, LIST_STATUS3_GASTRO_ACID},
-    {sText_Embargo, LIST_STATUS3_EMBARGO},
-    {sText_Underwater, LIST_STATUS3_UNDERWATER},
-    {sText_SmackedDown, LIST_STATUS3_SMACKED_DOWN},
-    {sText_Telekinesis, LIST_STATUS3_TELEKINESIS},
-    {sText_MagnetRise, LIST_STATUS3_MAGNET_RISE},
-    {sText_AquaRing, LIST_STATUS3_AQUA_RING},
+    {COMPOUND_STRING("Confusión"),      TRANSITORIO_CONFUSION},
+    {COMPOUND_STRING("Sorpresa"),       TRANSITORIO_SORPRESA},
+    {COMPOUND_STRING("Tormento"),       TRANSITORIO_TORMENTO},
+    {COMPOUND_STRING("Encadenado"),     TRANSITORIO_ENCADENADO},
+    {COMPOUND_STRING("Multiturno"),     TRANSITORIO_MULTITURNO},
+    {COMPOUND_STRING("Rizo defensa"),   TRANSITORIO_RIZO_DEFENSA},
+    {COMPOUND_STRING("Descanso"),       TRANSITORIO_DESCANSO},
+    {COMPOUND_STRING("Furia"),          TRANSITORIO_FURIA},
+    {COMPOUND_STRING("Sustituto"),      TRANSITORIO_SUSTITUTO},
+    {COMPOUND_STRING("Sin escape"),     TRANSITORIO_SIN_ESCAPE},
+    {COMPOUND_STRING("Maldición"),      TRANSITORIO_MALDICION},
+    {COMPOUND_STRING("Drenadoras"),     TRANSITORIO_DRENADORAS},
+    {COMPOUND_STRING("Canto mortal"),   TRANSITORIO_CANTO_MORTAL},
+    {COMPOUND_STRING("En el aire"),     TRANSITORIO_EN_EL_AIRE},
+    {COMPOUND_STRING("Bajo tierra"),    TRANSITORIO_BAJO_TIERRA},
+    {COMPOUND_STRING("Bajo el agua"),   TRANSITORIO_BAJO_EL_AGUA},
+    {COMPOUND_STRING("Golpe fantasma"), TRANSITORIO_GOLPE_FANTASMA},
+    {COMPOUND_STRING("Cargado"),        TRANSITORIO_CARGADO},
+    {COMPOUND_STRING("Arraigado"),      TRANSITORIO_ARRAIGADO},
+    {COMPOUND_STRING("Bilis"),          TRANSITORIO_BILIS},
+    {COMPOUND_STRING("Acua aro"),       TRANSITORIO_ACUA_ARO},
 };
 
 static const struct ListMenuItem sSideStatusListItems[] =
@@ -513,7 +401,6 @@ static const struct ListMenuItem sAIListItems[] =
 static const struct ListMenuItem sVariousListItems[] =
 {
     {sText_SubstituteHp, VARIOUS_SUBSTITUTE_HP},
-    {sText_InLove, VARIOUS_IN_LOVE},
 };
 
 static const struct ListMenuItem sSecondaryListItems[] =
@@ -1111,7 +998,7 @@ static void Task_ShowAIParty(u8 taskId)
             if (aiMons[i].isFainted)
                 ailment = AILMENT_FNT;
             else
-                ailment = GetAilmentFromStatus(aiMons[i].status);
+                ailment = GetAilmentFromStatus(aiMons[i].estado);
 
             if (ailment != AILMENT_NONE)
                 StartSpriteAnim(&gSprites[gSprites[data->spriteIds.aiPartyIcons[i]].sConditionSpriteId], ailment - 1);
@@ -1403,20 +1290,13 @@ static void CreateSecondaryListMenu(struct BattleDebugMenu *data)
     case LIST_ITEM_STAT_STAGES:
         itemsCount = 8;
         break;
-    case LIST_ITEM_STATUS1:
-        listTemplate.items = sStatus1ListItems;
-        itemsCount = ARRAY_COUNT(sStatus1ListItems);
-        data->bitfield = sStatus1Bitfield;
+    case LIST_ITEM_ESTADO:
+        listTemplate.items = sEstadoListItems;
+        itemsCount = ARRAY_COUNT(sEstadoListItems);
         break;
-    case LIST_ITEM_STATUS2:
-        listTemplate.items = sStatus2ListItems;
-        itemsCount = ARRAY_COUNT(sStatus2ListItems);
-        data->bitfield = sStatus2Bitfield;
-        break;
-    case LIST_ITEM_STATUS3:
-        listTemplate.items = sStatus3ListItems;
-        itemsCount = ARRAY_COUNT(sStatus3ListItems);
-        data->bitfield = sStatus3Bitfield;
+    case LIST_ITEM_TRANSITORIOS:
+        listTemplate.items = sTransitorioListItems;
+        itemsCount = ARRAY_COUNT(sTransitorioListItems);
         break;
     case LIST_ITEM_AI:
         listTemplate.items = sAIListItems;
@@ -1631,27 +1511,26 @@ static void UpdateBattlerValue(struct BattleDebugMenu *data)
         *(u8 *)(data->modifyArrows.modifiedValPtr) = data->modifyArrows.currValue;
         if (*(u8 *)(data->modifyArrows.modifiedValPtr) == 0)
         {
-            gBattleMons[data->battlerId].status2 &= ~STATUS2_SUBSTITUTE;
+            QuitaTransitorio(data->battlerId, TRANSITORIO_SUSTITUTO);
             gBattleSpritesDataPtr->battlerData[data->battlerId].behindSubstitute = 0;
         }
         else
         {
-            gBattleMons[data->battlerId].status2 |= STATUS2_SUBSTITUTE;
+            PonTransitorio(data->battlerId, TRANSITORIO_SUSTITUTO);
             gBattleSpritesDataPtr->battlerData[data->battlerId].behindSubstitute = 1;
         }
         break;
-    case VAR_IN_LOVE:
+    case VAR_ESTADO:
         if (data->modifyArrows.currValue)
-        {
-            if (IsBattlerAlive(OPONENTE(data->battlerId)))
-                gBattleMons[data->battlerId].status2 |= STATUS2_INFATUATED_WITH(OPONENTE(data->battlerId));
-            else
-                gBattleMons[data->battlerId].status2 |= STATUS2_INFATUATED_WITH(ALIADO(OPONENTE(data->battlerId)));
-        }
+            PonEstado(data->battlerId, data->currentSecondaryListItemId);
         else
-        {
-            gBattleMons[data->battlerId].status2 &= ~STATUS2_INFATUATION;
-        }
+            QuitaEstado(data->battlerId, data->currentSecondaryListItemId);
+        break;
+    case VAR_TRANSITORIO:
+        if (data->modifyArrows.currValue)
+            PonTransitorio(data->battlerId, data->currentSecondaryListItemId);
+        else
+            QuitaTransitorio(data->battlerId, data->currentSecondaryListItemId);
         break;
     }
     data->battlerWasChanged[data->battlerId] = TRUE;
@@ -1877,31 +1756,24 @@ static void SetUpModifyArrows(struct BattleDebugMenu *data)
             data->modifyArrows.typeOfVal = VAR_SUBSTITUTE;
             data->modifyArrows.currValue = gDisableStructs[data->battlerId].substituteHP;
         }
-        else if (data->currentSecondaryListItemId == VARIOUS_IN_LOVE)
-        {
-            data->modifyArrows.minValue = 0;
-            data->modifyArrows.maxValue = 1;
-            data->modifyArrows.maxDigits = 1;
-            data->modifyArrows.modifiedValPtr = NULL;
-            data->modifyArrows.typeOfVal = VAR_IN_LOVE;
-            data->modifyArrows.currValue = (gBattleMons[data->battlerId].status2 & STATUS2_INFATUATION) != 0;
-        }
         break;
-    case LIST_ITEM_STATUS1:
-        data->modifyArrows.modifiedValPtr = &gBattleMons[data->battlerId].status1;
-        data->modifyArrows.currValue = GetBitfieldValue(gBattleMons[data->battlerId].status1, data->bitfield[data->currentSecondaryListItemId].currBit, data->bitfield[data->currentSecondaryListItemId].bitsCount);
-        data->modifyArrows.typeOfVal = VAL_BITFIELD_32;
-        goto CASE_ITEM_STATUS;
-    case LIST_ITEM_STATUS2:
-        data->modifyArrows.modifiedValPtr = &gBattleMons[data->battlerId].status2;
-        data->modifyArrows.currValue = GetBitfieldValue(gBattleMons[data->battlerId].status2, data->bitfield[data->currentSecondaryListItemId].currBit, data->bitfield[data->currentSecondaryListItemId].bitsCount);
-        data->modifyArrows.typeOfVal = VAL_BITFIELD_32;
-        goto CASE_ITEM_STATUS;
-    case LIST_ITEM_STATUS3:
-        data->modifyArrows.modifiedValPtr = &gStatuses3[data->battlerId];
-        data->modifyArrows.currValue = GetBitfieldValue(gStatuses3[data->battlerId], data->bitfield[data->currentSecondaryListItemId].currBit, data->bitfield[data->currentSecondaryListItemId].bitsCount);
-        data->modifyArrows.typeOfVal = VAL_BITFIELD_32;
-        goto CASE_ITEM_STATUS;
+    case LIST_ITEM_ESTADO:
+        // Solo puede haber un estado principal, asi que ponerlo quita el anterior.
+        data->modifyArrows.minValue = 0;
+        data->modifyArrows.maxValue = 1;
+        data->modifyArrows.maxDigits = 1;
+        data->modifyArrows.modifiedValPtr = NULL;
+        data->modifyArrows.typeOfVal = VAR_ESTADO;
+        data->modifyArrows.currValue = EstadoActivo(data->battlerId, data->currentSecondaryListItemId);
+        break;
+    case LIST_ITEM_TRANSITORIOS:
+        data->modifyArrows.minValue = 0;
+        data->modifyArrows.maxValue = 1;
+        data->modifyArrows.maxDigits = 1;
+        data->modifyArrows.modifiedValPtr = NULL;
+        data->modifyArrows.typeOfVal = VAR_TRANSITORIO;
+        data->modifyArrows.currValue = TransitorioActivo(data->battlerId, data->currentSecondaryListItemId);
+        break;
     case LIST_ITEM_AI:
         data->modifyArrows.modifiedValPtr = &gBattleResources->ai->aiFlags[data->battlerId];
         data->modifyArrows.currValue = GetBitfieldValue(gBattleResources->ai->aiFlags[data->battlerId], data->bitfield[data->currentSecondaryListItemId].currBit, data->bitfield[data->currentSecondaryListItemId].bitsCount);
@@ -2009,7 +1881,7 @@ static void UpdateMonData(struct BattleDebugMenu *data)
             struct BattlePokemon *battleMon = &gBattleMons[i];
 
             SetMonData(mon, MON_DATA_HELD_ITEM, &battleMon->item);
-            SetMonData(mon, MON_DATA_STATUS, &battleMon->status1);
+            SetMonData(mon, MON_DATA_STATUS, &battleMon->estado);
             SetMonData(mon, MON_DATA_HP, &battleMon->hp);
             SetMonData(mon, MON_DATA_MAX_HP, &battleMon->maxHP);
             for (j = 0; j < 4; j++)

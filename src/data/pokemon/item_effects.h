@@ -1,8 +1,3 @@
-const u8 gItemEffect_Potion[7] = {
-    [4] = ITEM4_HEAL_HP,
-    [6] = 20, // Amount of HP to recover
-};
-
 const u8 gItemEffect_Antidote[6] = {
     [3] = ITEM3_POISON,
 };
@@ -23,77 +18,8 @@ const u8 gItemEffect_ParalyzeHeal[6] = {
     [3] = ITEM3_PARALYSIS,
 };
 
-const u8 gItemEffect_FullRestore[7] = {
-    [3] = ITEM3_STATUS_ALL,
-    [4] = ITEM4_HEAL_HP,
-    [6] = ITEM6_HEAL_HP_FULL,
-};
-
-const u8 gItemEffect_MaxPotion[7] = {
-    [4] = ITEM4_HEAL_HP,
-    [6] = ITEM6_HEAL_HP_FULL,
-};
-
-const u8 gItemEffect_HyperPotion[7] = {
-    [4] = ITEM4_HEAL_HP,
-    [6] = I_HEALTH_RECOVERY >= GEN_7 ? 120 : 200, // Amount of HP to recover
-};
-
-const u8 gItemEffect_SuperPotion[7] = {
-    [4] = ITEM4_HEAL_HP,
-    [6] = I_HEALTH_RECOVERY >= GEN_7 ? 60 : 50, // Amount of HP to recover
-};
-
 const u8 gItemEffect_FullHeal[6] = {
     [3] = ITEM3_STATUS_ALL,
-};
-
-const u8 gItemEffect_Revive[7] = {
-    [4] = ITEM4_REVIVE | ITEM4_HEAL_HP,
-    [6] = ITEM6_HEAL_HP_HALF,
-};
-
-const u8 gItemEffect_MaxRevive[7] = {
-    [4] = ITEM4_REVIVE | ITEM4_HEAL_HP,
-    [6] = ITEM6_HEAL_HP_FULL,
-};
-
-const u8 gItemEffect_FreshWater[7] = {
-    [4] = ITEM4_HEAL_HP,
-    [6] = I_HEALTH_RECOVERY >= GEN_7 ? 30 : 50, // Amount of HP to recover
-};
-
-const u8 gItemEffect_SodaPop[7] = {
-    [4] = ITEM4_HEAL_HP,
-    [6] = I_HEALTH_RECOVERY >= GEN_7 ? 50 : 60, // Amount of HP to recover
-};
-
-const u8 gItemEffect_Lemonade[7] = {
-    [4] = ITEM4_HEAL_HP,
-    [6] = I_HEALTH_RECOVERY >= GEN_7 ? 70 : 80, // Amount of HP to recover
-};
-
-const u8 gItemEffect_MoomooMilk[7] = {
-    [4] = ITEM4_HEAL_HP,
-    [6] = 100, // Amount of HP to recover
-};
-
-const u8 gItemEffect_EnergyPowder[10] = {
-    [4] = ITEM4_HEAL_HP,
-    [5] = ITEM5_FRIENDSHIP_ALL,
-    [6] = I_HEALTH_RECOVERY >= GEN_7 ? 60 : 50, // Amount of HP to recover
-    [7] = -5, // Friendship change, low
-    [8] = -5, // Friendship change, mid
-    [9] = -10, // Friendship change, high
-};
-
-const u8 gItemEffect_EnergyRoot[10] = {
-    [4] = ITEM4_HEAL_HP,
-    [5] = ITEM5_FRIENDSHIP_ALL,
-    [6] = I_HEALTH_RECOVERY >= GEN_7 ? 120 : 200, // Amount of HP to recover
-    [7] = -10, // Friendship change, low
-    [8] = -10, // Friendship change, mid
-    [9] = -15, // Friendship change, high
 };
 
 const u8 gItemEffect_HealPowder[9] = {
@@ -104,74 +30,12 @@ const u8 gItemEffect_HealPowder[9] = {
     [8] = -10, // Friendship change, high
 };
 
-const u8 gItemEffect_RevivalHerb[10] = {
-    [4] = ITEM4_REVIVE | ITEM4_HEAL_HP,
-    [5] = ITEM5_FRIENDSHIP_ALL,
-    [6] = ITEM6_HEAL_HP_FULL,
-    [7] = -15, // Friendship change, low
-    [8] = -15, // Friendship change, mid
-    [9] = -20, // Friendship change, high
-};
-
-const u8 gItemEffect_Remedy[10] = {
-    [4] = ITEM4_HEAL_HP,
-    [5] = ITEM5_FRIENDSHIP_ALL,
-    [6] = 20, // Amount of HP to recover
-    [7] = -5, // Friendship change, low
-    [8] = -5, // Friendship change, mid
-    [9] = -10, // Friendship change, high
-};
-
-const u8 gItemEffect_FineRemedy[10] = {
-    [4] = ITEM4_HEAL_HP,
-    [5] = ITEM5_FRIENDSHIP_ALL,
-    [6] = I_HEALTH_RECOVERY >= GEN_7 ? 60 : 50, // Amount of HP to recover
-    [7] = -10, // Friendship change, low
-    [8] = -10, // Friendship change, mid
-    [9] = -15, // Friendship change, high
-};
-
-const u8 gItemEffect_SuperbRemedy[10] = {
-    [4] = ITEM4_HEAL_HP,
-    [5] = ITEM5_FRIENDSHIP_ALL,
-    [6] = I_HEALTH_RECOVERY >= GEN_7 ? 120 : 200, // Amount of HP to recover
-    [7] = -15, // Friendship change, low
-    [8] = -15, // Friendship change, mid
-    [9] = -20, // Friendship change, high
-};
-
-const u8 gItemEffect_Ether[7] = {
-    [4] = ITEM4_HEAL_PP_ONE | ITEM4_HEAL_PP,
-    [6] = 10,
-};
-
-const u8 gItemEffect_MaxEther[7] = {
-    [4] = ITEM4_HEAL_PP_ONE | ITEM4_HEAL_PP,
-    [6] = ITEM6_HEAL_PP_FULL,
-};
-
-const u8 gItemEffect_Elixir[7] = {
-    [4] = ITEM4_HEAL_PP,
-    [6] = 10, // Amount of PP to recover
-};
-
-const u8 gItemEffect_MaxElixir[7] = {
-    [4] = ITEM4_HEAL_PP,
-    [6] = ITEM6_HEAL_PP_FULL,
-};
-
 const u8 gItemEffect_YellowFlute[6] = {
     [3] = ITEM3_CONFUSION,
 };
 
 const u8 gItemEffect_RedFlute[6] = {
     [0] = ITEM0_INFATUATION,
-};
-
-const u8 gItemEffect_SacredAsh[7] = {
-    [0] = ITEM0_SACRED_ASH,
-    [4] = ITEM4_REVIVE | ITEM4_HEAL_HP,
-    [6] = ITEM6_HEAL_HP_FULL,
 };
 
 #define VITAMIN_FRIENDSHIP_CHANGE(i)             \

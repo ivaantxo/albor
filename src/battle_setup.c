@@ -402,12 +402,12 @@ void StartRegiBattle(void)
 static void DowngradeBadPoison(void)
 {
     u32 i;
-    u32 status = STATUS1_POISON;
+    u32 status = ESTADO_VENENO;
     if (B_TOXIC_REVERSAL < GEN_5)
         return;
     for(i = 0; i < PARTY_SIZE; i++)
     {
-        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) && GetMonData(&gPlayerParty[i], MON_DATA_STATUS) == STATUS1_TOXIC_POISON)
+        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) && GetMonData(&gPlayerParty[i], MON_DATA_STATUS) == ESTADO_VENENO)
             SetMonData(&gPlayerParty[i], MON_DATA_STATUS, &status);
     }
 }

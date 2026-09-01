@@ -3,7 +3,6 @@
 
 // field 0 masks
 #define ITEM0_DIRE_HIT          0x30 // Works the same way as the move Focus Energy.
-#define ITEM0_SACRED_ASH        0x40
 #define ITEM0_INFATUATION       0x80
 
 // new field 1 masks
@@ -80,7 +79,6 @@ enum EfectosObjetos
     ITEM_EFFECT_CURE_PARALYSIS,
     ITEM_EFFECT_CURE_CONFUSION,
     ITEM_EFFECT_CURE_INFATUATION,
-    ITEM_EFFECT_SACRED_ASH,
     ITEM_EFFECT_CURE_ALL_STATUS,
     ITEM_EFFECT_ATK_EV,
     ITEM_EFFECT_HP_EV,

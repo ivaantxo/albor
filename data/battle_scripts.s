@@ -232,7 +232,7 @@ BattleScript_EffectPurify::
 	attackstring
 	ppreduce
 	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
-	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_PurifyWorks
+	jumpifestado BS_TARGET, ESTADO_CUALQUIERA, BattleScript_PurifyWorks
 	goto BattleScript_ButItFailed
 
 BattleScript_PurifyWorks:
@@ -428,7 +428,7 @@ BattleScript_EffectHitSwitchTarget::
 	jumpiffainted BS_TARGET, TRUE, BattleScript_MoveEnd
 	jumpifability BS_TARGET, ABILITY_SUCTION_CUPS, BattleScript_AbilityPreventsPhasingOut
 	jumpifability BS_TARGET, ABILITY_GUARD_DOG, BattleScript_MoveEnd
-	jumpifstatus3 BS_TARGET, STATUS3_ROOTED, BattleScript_PrintMonIsRooted
+	jumpiftransitorio BS_TARGET, TRANSITORIO_ARRAIGADO, BattleScript_PrintMonIsRooted
 	tryhitswitchtarget BattleScript_MoveEnd
 	forcerandomswitch BattleScript_HitSwitchTargetForceRandomSwitchFailed
 	goto BattleScript_MoveEnd
@@ -443,7 +443,7 @@ BattleScript_EffectToxicThread::
 	attackcanceler
 	jumpifsubstituteblocks BattleScript_FailedFromAtkString
 	jumpifstat BS_TARGET, COMPARACION_DESIGUAL, ESTADISTICA_VELOCIDAD, ESTADISTICA_MENOS_6, BattleScript_ToxicThreadWorks
-	jumpifstatus BS_TARGET, STATUS1_PSN_ANY, BattleScript_FailedFromAtkString
+	jumpifestado BS_TARGET, ESTADO_VENENO, BattleScript_FailedFromAtkString
 
 BattleScript_ToxicThreadWorks:
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
@@ -473,7 +473,7 @@ BattleScript_EffectVenomDrench::
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifstatus BS_TARGET, STATUS1_PSN_ANY, BattleScript_EffectVenomDrenchCanBeUsed
+	jumpifestado BS_TARGET, ESTADO_VENENO, BattleScript_EffectVenomDrenchCanBeUsed
 	goto BattleScript_ButItFailed
 
 BattleScript_EffectVenomDrenchCanBeUsed:
@@ -845,18 +845,6 @@ BattleScript_EffectGolpeBajo::
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
 	goto BattleScript_HitFromAtkString
 
-BattleScript_EffectTelekinesis::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, NO_ACC_CALC_CHECK_LOCK_ON
-	attackstring
-	ppreduce
-	settelekinesis BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} was hurled into the air!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectStealthRock::
 	attackcanceler
 	attackstring
@@ -904,17 +892,6 @@ BattleScript_EffectToxicSpikes::
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectMagnetRise::
-	attackcanceler
-	attackstring
-	ppreduce
-	setuserstatus3 STATUS3_MAGNET_RISE, BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} levitated on electromagnetism!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
 ScriptCombate_EfectoEspacioRaro::
 	attackcanceler
 	attackstring
@@ -946,22 +923,10 @@ BattleScript_EffectAquaRing::
 	attackcanceler
 	attackstring
 	ppreduce
-	setuserstatus3 STATUS3_AQUA_RING, BattleScript_ButItFailed
+	pontransitorio TRANSITORIO_ACUA_ARO, BattleScript_ButItFailed
 	attackanimation
 	waitanimation
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} surrounded itself with a veil of water!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectEmbargo::
-	attackcanceler
-	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
-	attackstring
-	ppreduce
-	setembargo BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} can't use items anymore!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -1114,11 +1079,10 @@ BattleScript_EffectSleep::
 	attackstring
 	ppreduce
 	jumpifsubstituteblocks BattleScript_ButItFailed
-	jumpifstatus BS_TARGET, STATUS1_SLEEP, BattleScript_AlreadyAsleep
-	jumpifuproarwakes BattleScript_CantMakeAsleep
+	jumpifestado BS_TARGET, ESTADO_SUENO, BattleScript_AlreadyAsleep
 	jumpifability BS_TARGET, ABILITY_INSOMNIA, BattleScript_InsomniaProtects
 	jumpifability BS_TARGET, ABILITY_VITAL_SPIRIT, BattleScript_InsomniaProtects
-	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
+	jumpifestado BS_TARGET, ESTADO_CUALQUIERA, BattleScript_ButItFailed
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	jumpifsafeguard BattleScript_SafeguardProtected
 	attackanimation
@@ -1162,7 +1126,6 @@ BattleScript_WasntAffected::
 
 BattleScript_CantMakeAsleep::
 	pause PAUSA_CORTA
-	EscribeTextoAlborotoDesvela
 	waitmessage PAUSA_LARGA
 	ponresultadoataque RESULTADO_MOVIMIENTO_FALLIDO
 	goto BattleScript_MoveEnd
@@ -1207,7 +1170,7 @@ BattleScript_FaintAttackerForExplosion::
 BattleScript_EffectDreamEater::
 	attackcanceler
 	jumpifsubstituteblocks BattleScript_DreamEaterNoEffect
-	jumpifstatus BS_TARGET, STATUS1_SLEEP, BattleScript_DreamEaterWorked
+	jumpifestado BS_TARGET, ESTADO_SUENO, BattleScript_DreamEaterWorked
 
 BattleScript_DreamEaterNoEffect:
 	attackstring
@@ -1415,7 +1378,7 @@ BattleScript_EffectRoar::
 	jumpifroarfails BattleScript_ButItFailed
 	jumpifability BS_TARGET, ABILITY_GUARD_DOG, BattleScript_ButItFailed
 	jumpifability BS_TARGET, ABILITY_SUCTION_CUPS, BattleScript_AbilityPreventsPhasingOut
-	jumpifstatus3 BS_TARGET, STATUS3_ROOTED, BattleScript_PrintMonIsRooted
+	jumpiftransitorio BS_TARGET, TRANSITORIO_ARRAIGADO, BattleScript_PrintMonIsRooted
 	jumpiftype BS_TARGET, TIPO_TIERRA, ScriptCombate_TipoTierraNoPuedenSerEchados
 	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
 	accuracycheck BattleScript_MoveMissedPause, ACC_CURR_MOVE
@@ -1457,8 +1420,8 @@ BattleScript_EffectToxic::
 	ppreduce
 	jumpifability BS_TARGET, ABILITY_IMMUNITY, BattleScript_ImmunityProtected
 	jumpifsubstituteblocks BattleScript_ButItFailed
-	jumpifstatus BS_TARGET, STATUS1_POISON | STATUS1_TOXIC_POISON, BattleScript_AlreadyPoisoned
-	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
+	jumpifestado BS_TARGET, ESTADO_VENENO, BattleScript_AlreadyPoisoned
+	jumpifestado BS_TARGET, ESTADO_CUALQUIERA, BattleScript_ButItFailed
 	trypoisontype BS_ATTACKER, BS_TARGET, BattleScript_NotAffected
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	jumpifsafeguard BattleScript_SafeguardProtected
@@ -1500,8 +1463,7 @@ BattleScript_EffectRest::
 	attackcanceler
 	attackstring
 	ppreduce
-	jumpifstatus BS_ATTACKER, STATUS1_SLEEP, BattleScript_RestIsAlreadyAsleep
-	jumpifuproarwakes BattleScript_RestCantSleep
+	jumpifestado BS_ATTACKER, ESTADO_SUENO, BattleScript_RestIsAlreadyAsleep
 	jumpifability BS_TARGET, ABILITY_INSOMNIA, BattleScript_InsomniaProtects
 	jumpifability BS_TARGET, ABILITY_VITAL_SPIRIT, BattleScript_InsomniaProtects
 	trysetrest BattleScript_AlreadyAtFullHp
@@ -1514,7 +1476,6 @@ BattleScript_EffectRest::
 
 BattleScript_RestCantSleep::
 	pause PAUSA_LARGA
-	EscribeTextoAlborotoDesvela
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -1541,7 +1502,7 @@ BattleScript_EffectConfuse::
 	ppreduce
 	jumpifability BS_TARGET, ABILITY_OWN_TEMPO, BattleScript_OwnTempoPrevents
 	jumpifsubstituteblocks BattleScript_ButItFailed
-	jumpifstatus2 BS_TARGET, STATUS2_CONFUSION, BattleScript_AlreadyConfused
+	jumpiftransitorio BS_TARGET, TRANSITORIO_CONFUSION, BattleScript_AlreadyConfused
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	jumpifsafeguard BattleScript_SafeguardProtected
 	attackanimation
@@ -1642,10 +1603,10 @@ BattleScript_EffectPoison::
 	ppreduce
 	jumpifability BS_TARGET, ABILITY_IMMUNITY, BattleScript_ImmunityProtected
 	jumpifsubstituteblocks BattleScript_ButItFailed
-	jumpifstatus BS_TARGET, STATUS1_POISON, BattleScript_AlreadyPoisoned
-	jumpifstatus BS_TARGET, STATUS1_TOXIC_POISON, BattleScript_AlreadyPoisoned
+	jumpifestado BS_TARGET, ESTADO_VENENO, BattleScript_AlreadyPoisoned
+	jumpifestado BS_TARGET, ESTADO_VENENO, BattleScript_AlreadyPoisoned
 	trypoisontype BS_ATTACKER, BS_TARGET, BattleScript_NotAffected
-	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
+	jumpifestado BS_TARGET, ESTADO_CUALQUIERA, BattleScript_ButItFailed
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	jumpifsafeguard BattleScript_SafeguardProtected
 	attackanimation
@@ -1663,9 +1624,9 @@ BattleScript_EffectParalyze::
 	jumpifsubstituteblocks BattleScript_ButItFailed
 	typecalc
 	jumpifmovehadnoeffect BattleScript_ButItFailed
-	jumpifstatus BS_TARGET, STATUS1_PARALYSIS, BattleScript_AlreadyParalyzed
+	jumpifestado BS_TARGET, ESTADO_PARALISIS, BattleScript_AlreadyParalyzed
 	tryparalyzetype BS_ATTACKER, BS_TARGET, BattleScript_NotAffected
-	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
+	jumpifestado BS_TARGET, ESTADO_CUALQUIERA, BattleScript_ButItFailed
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	jumpifsafeguard BattleScript_SafeguardProtected
 	attackanimation
@@ -1700,7 +1661,7 @@ BattleScript_PowerHerbActivation:
 	return
 
 BattleScript_EffectTwoTurnsAttack::
-	jumpifstatus2 BS_ATTACKER, STATUS2_MULTIPLETURNS, BattleScript_TwoTurnMovesSecondTurn
+	jumpiftransitorio BS_ATTACKER, TRANSITORIO_MULTITURNO, BattleScript_TwoTurnMovesSecondTurn
 	jumpifmarca MARCA_SIN_TEXTO_ATAQUE, TRUE, BattleScript_TwoTurnMovesSecondTurn
 	tryfiretwoturnmovewithoutcharging BS_ATTACKER, BattleScript_EffectHit @ e.g. Solar Beam
 	call BattleScript_FirstChargingTurn
@@ -1745,9 +1706,9 @@ BattleScript_EffectSubstitute::
 	ppreduce
 	attackstring
 	waitstate
-	jumpifstatus2 BS_ATTACKER, STATUS2_SUBSTITUTE, BattleScript_AlreadyHasSubstitute
+	jumpiftransitorio BS_ATTACKER, TRANSITORIO_SUSTITUTO, BattleScript_AlreadyHasSubstitute
 	setsubstitute
-	jumpifstatus2 BS_ATTACKER, STATUS2_SUBSTITUTE, BattleScript_SubstituteMade
+	jumpiftransitorio BS_ATTACKER, TRANSITORIO_SUSTITUTO, BattleScript_SubstituteMade
 	goto BattleScript_SubstituteString
 BattleScript_SubstituteMade:
 	ponmarca MARCA_DANIO_PASIVO
@@ -1775,9 +1736,14 @@ BattleScript_MoveUsedMustRecharge::
 
 BattleScript_EffectRage::
 	attackcanceler
-	accuracycheck BattleScript_RageMiss, ACC_CURR_MOVE
+	attackstring
+	ppreduce
 	seteffectprimary MOVE_EFFECT_RAGE
-	goto BattleScript_HitFromAtkString
+	attackanimation
+	waitanimation
+	EscribeTextoCombate "¡{B_ATK_NAME_WITH_PREFIX} se ha puesto furioso!"
+	waitmessage PAUSA_LARGA
+	goto BattleScript_MoveEnd
 
 BattleScript_RageMiss::
 	clearstatusfromeffect BS_ATTACKER, MOVE_EFFECT_RAGE
@@ -1825,7 +1791,7 @@ BattleScript_EffectEncore::
 
 BattleScript_EffectSnore::
 	attackcanceler
-	jumpifstatus BS_ATTACKER, STATUS1_SLEEP, BattleScript_SnoreIsAsleep
+	jumpifestado BS_ATTACKER, ESTADO_SUENO, BattleScript_SnoreIsAsleep
 	attackstring
 	ppreduce
 	goto BattleScript_ButItFailed
@@ -1833,31 +1799,7 @@ BattleScript_EffectSnore::
 BattleScript_SnoreIsAsleep::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} is fast asleep."
 	waitmessage PAUSA_LARGA
-	statusanimation BS_ATTACKER
-
-BattleScript_EffectLockOn::
-	attackcanceler
-	attackstring
-	ppreduce
-	jumpifsubstituteblocks BattleScript_ButItFailed
-	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
-	setalwayshitflag
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} took aim at {B_DEF_NAME_WITH_PREFIX}!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectDestinyBond::
-	attackcanceler
-	attackstring
-	ppreduce
-	setdestinybond
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} is trying to take its foe with it!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
+	animaestado BS_ATTACKER
 
 BattleScript_EffectHealBell::
 	attackcanceler
@@ -1889,7 +1831,7 @@ BattleScript_EffectMeanLook::
 	attackstring
 	ppreduce
 	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
-	jumpifstatus2 BS_TARGET, STATUS2_ESCAPE_PREVENTION, BattleScript_ButItFailed
+	jumpiftransitorio BS_TARGET, TRANSITORIO_SIN_ESCAPE, BattleScript_ButItFailed
 	jumpifsubstituteblocks BattleScript_ButItFailed
 	jumpiftype BS_TARGET, TIPO_FANTASMA, BattleScript_ButItFailed
 	jumpifability BS_TARGET, ABILITY_HUIDIZO, BattleScript_ButItFailed
@@ -1900,26 +1842,8 @@ BattleScript_EffectMeanLook::
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
-BattleScript_EffectNightmare::
-	attackcanceler
-	attackstring
-	ppreduce
-	jumpifsubstituteblocks BattleScript_ButItFailed
-	jumpifstatus2 BS_TARGET, STATUS2_NIGHTMARE, BattleScript_ButItFailed
-	jumpifstatus BS_TARGET, STATUS1_SLEEP, BattleScript_NightmareWorked
-	goto BattleScript_ButItFailed
-
-BattleScript_NightmareWorked::
-	attackanimation
-	waitanimation
-	seteffectprimary MOVE_EFFECT_NIGHTMARE
-	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX} fell into a NIGHTMARE!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
 BattleScript_EffectMinimize::
 	attackcanceler
-	setminimize
 .if B_MINIMIZE_EVASION >= GEN_5
 	setstatchanger ESTADISTICA_EVASION, 2, FALSE
 .else
@@ -1928,44 +1852,6 @@ BattleScript_EffectMinimize::
 	goto BattleScript_EffectStatUpAfterAtkCanceler
 
 BattleScript_EffectCurse::
-	jumpiftype BS_ATTACKER, TIPO_FANTASMA, BattleScript_GhostCurse
-	attackcanceler
-	attackstring
-	ppreduce
-	jumpifstat BS_ATTACKER, COMPARACION_MAYOR, ESTADISTICA_VELOCIDAD, ESTADISTICA_MENOS_6, BattleScript_CurseTrySpeed
-	jumpifstat BS_ATTACKER, COMPARACION_DESIGUAL, ESTADISTICA_ATAQUE, ESTADISTICA_MAS_6, BattleScript_CurseTrySpeed
-	jumpifstat BS_ATTACKER, COMPARACION_IGUAL, ESTADISTICA_DEFENSA, ESTADISTICA_MAS_6, BattleScript_ButItFailed
-
-BattleScript_CurseTrySpeed::
-	copybyte gBattlerTarget, gBattlerAttacker
-	setbyte sB_ANIM_TURN, 1
-	attackanimation
-	waitanimation
-	setstatchanger ESTADISTICA_VELOCIDAD, 1, TRUE
-	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_CurseTryAttack
-	EscribeTextoCambioEstadistica
-	waitmessage PAUSA_LARGA
-
-BattleScript_CurseTryAttack::
-	setstatchanger ESTADISTICA_ATAQUE, 1, FALSE
-	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_CurseTryDefense
-	EscribeTextoCambioEstadistica
-	waitmessage PAUSA_LARGA
-
-BattleScript_CurseTryDefense::
-	setstatchanger ESTADISTICA_DEFENSA, 1, FALSE
-	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_ALLOW_PTR, BattleScript_CurseEnd
-	EscribeTextoCambioEstadistica
-	waitmessage PAUSA_LARGA
-
-BattleScript_CurseEnd::
-	goto BattleScript_MoveEnd
-
-BattleScript_GhostCurse::
-	jumpifbytenotequal gBattlerAttacker, gBattlerTarget, BattleScript_DoGhostCurse
-	getmovetarget BS_ATTACKER
-
-BattleScript_DoGhostCurse::
 	attackcanceler
 	attackstring
 	ppreduce
@@ -1975,11 +1861,8 @@ BattleScript_DoGhostCurse::
 	setbyte sB_ANIM_TURN, 0
 	attackanimation
 	waitanimation
-	healthbarupdate BS_ATTACKER
-	datahpupdate BS_ATTACKER
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} cut its own HP and laid a CURSE on {B_DEF_NAME_WITH_PREFIX}!"
+	EscribeTextoCombate "¡{B_ATK_NAME_WITH_PREFIX} ha maldecido a {B_DEF_NAME_WITH_PREFIX}!"
 	waitmessage PAUSA_LARGA
-	tryfaintmon BS_ATTACKER
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectProtect::
@@ -2001,21 +1884,6 @@ BattleScript_EffectSpikes::
 	attackanimation
 	waitanimation
 	EscribeTextoTrampaPuesta
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectForesight::
-	attackcanceler
-	attackstring
-	ppreduce
-	accuracycheck BattleScript_ButItFailed, NO_ACC_CALC_CHECK_LOCK_ON
-	jumpifstatus2 BS_TARGET, STATUS2_FORESIGHT, BattleScript_ButItFailed
-	setforesight
-
-BattleScript_IdentifiedFoe:
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} identified {B_DEF_NAME_WITH_PREFIX}!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -2060,7 +1928,7 @@ BattleScript_EffectSandstorm::
 BattleScript_EffectRollout::
 	attackcanceler
 	attackstring
-	jumpifstatus2 BS_ATTACKER, STATUS2_MULTIPLETURNS, BattleScript_RolloutCheckAccuracy
+	jumpiftransitorio BS_ATTACKER, TRANSITORIO_MULTITURNO, BattleScript_RolloutCheckAccuracy
 	ppreduce
 
 BattleScript_RolloutCheckAccuracy::
@@ -2113,7 +1981,7 @@ BattleScript_TryDestinyKnotTarget:
 	infatuatewithbattler BS_TARGET, BS_ATTACKER
 	playanimation BS_ATTACKER, B_ANIM_HELD_ITEM_EFFECT
 	waitanimation
-	status2animation BS_TARGET, STATUS2_INFATUATION
+	animaestado BS_TARGET
 	waitanimation
 	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX} fell in love because of the {B_LAST_ITEM}!"
 	waitmessage PAUSA_LARGA
@@ -2126,7 +1994,7 @@ BattleScript_TryDestinyKnotAttacker:
 	infatuatewithbattler BS_ATTACKER, BS_TARGET
 	playanimation BS_TARGET, B_ANIM_HELD_ITEM_EFFECT
 	waitanimation
-	status2animation BS_ATTACKER, STATUS2_INFATUATION
+	animaestado BS_ATTACKER
 	waitanimation
 	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX} fell in love because of the {B_LAST_ITEM}!"
 	waitmessage PAUSA_LARGA
@@ -2339,7 +2207,7 @@ BattleScript_EffectUproar::
 	attackcanceler
 	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
 	attackstring
-	jumpifstatus2 BS_ATTACKER, STATUS2_MULTIPLETURNS, BattleScript_UproarHit
+	jumpiftransitorio BS_ATTACKER, TRANSITORIO_MULTITURNO, BattleScript_UproarHit
 	ppreduce
 BattleScript_UproarHit::
 	goto BattleScript_HitFromCritCalc
@@ -2477,11 +2345,11 @@ BattleScript_EffectWillOWisp::
 	attackstring
 	ppreduce
 	jumpifsubstituteblocks BattleScript_ButItFailed
-	jumpifstatus BS_TARGET, STATUS1_BURN, BattleScript_AlreadyBurned
+	jumpifestado BS_TARGET, ESTADO_QUEMADURA, BattleScript_AlreadyBurned
 	jumpiftype BS_TARGET, TIPO_FUEGO, BattleScript_NotAffected
 	jumpifability BS_TARGET, ABILITY_WATER_VEIL, BattleScript_AbilityPreventsBurn
 	jumpifability BS_TARGET, ABILITY_TIERRA_HUMEDA, BattleScript_AbilityPreventsBurn
-	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
+	jumpifestado BS_TARGET, ESTADO_CUALQUIERA, BattleScript_ButItFailed
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	jumpifsafeguard BattleScript_SafeguardProtected
 	attackanimation
@@ -2573,7 +2441,7 @@ BattleScript_EffectIngrain::
 	attackcanceler
 	attackstring
 	ppreduce
-	setuserstatus3 STATUS3_ROOTED, BattleScript_ButItFailed
+	pontransitorio TRANSITORIO_ARRAIGADO, BattleScript_ButItFailed
 	attackanimation
 	waitanimation
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} planted its roots!"
@@ -2632,17 +2500,6 @@ BattleScript_PrintAbilityMadeIneffective::
 	pause PAUSA_CORTA
 	call BattleScript_AbilityPopUp
 	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY} made it ineffective!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_MoveEnd
-
-BattleScript_EffectImprison::
-	attackcanceler
-	attackstring
-	ppreduce
-	tryimprison BattleScript_ButItFailed
-	attackanimation
-	waitanimation
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} sealed the opponent's move(s)!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
@@ -3163,29 +3020,23 @@ BattleScript_SafeguardEnds::
 	end2
 
 BattleScript_LeechSeedTurnDrain::
-	playanimation BS_ATTACKER, B_ANIM_LEECH_SEED_DRAIN, sB_ANIM_ARG1
-	ponmarca MARCA_IGNORA_SUSTITUTO
-	ponmarca MARCA_DANIO_PASIVO
-	healthbarupdate BS_ATTACKER
-	datahpupdate BS_ATTACKER
-	copyword gBattleMoveDamage, gHpDealt
-	jumpifability BS_ATTACKER, ABILITY_LIQUID_OOZE, BattleScript_LeechSeedTurnPrintLiquidOoze
-	manipulatedamage DMG_BIG_ROOT
-	goto BattleScript_LeechSeedTurnPrintAndUpdateHp
-
-BattleScript_LeechSeedTurnPrintLiquidOoze::
-	copybyte gBattlerAbility, gBattlerAttacker
-	call BattleScript_AbilityPopUp
-
-BattleScript_LeechSeedTurnPrintAndUpdateHp::
+	playanimation BS_TARGET, B_ANIM_LEECH_SEED_DRAIN, sB_ANIM_ARG1
 	ponmarca MARCA_IGNORA_SUSTITUTO
 	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_TARGET
 	datahpupdate BS_TARGET
 	EscribeTextoDrenadorasTurno
 	waitmessage PAUSA_LARGA
-	tryfaintmon BS_ATTACKER
 	tryfaintmon BS_TARGET
+	end2
+
+@ Lo que las drenadoras reparten a los Pokemon de tipo Planta del campo.
+BattleScript_LeechSeedTurnRecover::
+	ponmarca MARCA_IGNORA_SUSTITUTO
+	healthbarupdate BS_ATTACKER
+	datahpupdate BS_ATTACKER
+	EscribeTextoCombate "¡{B_ATK_NAME_WITH_PREFIX} ha absorbido la savia de las drenadoras!"
+	waitmessage PAUSA_LARGA
 	end2
 
 BattleScript_RoarSuccessSwitch::
@@ -3285,8 +3136,15 @@ BattleScript_MistProtected::
 	return
 
 BattleScript_RageIsBuilding::
+	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_RageAtaqueEspecial
+	EscribeTextoCambioEstadistica
+	waitmessage PAUSA_LARGA
+
+@ Furia sube las dos: Ataque y Ataque Especial, por cada golpe recibido.
+BattleScript_RageAtaqueEspecial::
+	setstatchanger ESTADISTICA_ATAQUE_ESPECIAL, 1, FALSE
 	statbuffchange STAT_CHANGE_ALLOW_PTR, BattleScript_RageIsBuildingEnd
-	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s RAGE is building!"
+	EscribeTextoCambioEstadistica
 	waitmessage PAUSA_LARGA
 BattleScript_RageIsBuildingEnd:
 	return
@@ -3859,7 +3717,7 @@ BattleScript_DampPreventsAftermath::
 BattleScript_MoveUsedIsAsleep::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} is fast asleep."
 	waitmessage PAUSA_LARGA
-	statusanimation BS_ATTACKER
+	animaestado BS_ATTACKER
 	goto BattleScript_MoveEnd
 
 BattleScript_MoveUsedWokeUp::
@@ -3878,7 +3736,7 @@ BattleScript_PoisonTurnDmg::
 	waitmessage PAUSA_LARGA
 
 BattleScript_DoStatusTurnDmg::
-	statusanimation BS_ATTACKER
+	animaestado BS_ATTACKER
 
 BattleScript_DoTurnDmg:
 	ponmarca MARCA_IGNORA_SUSTITUTO
@@ -3896,7 +3754,7 @@ BattleScript_PoisonHealActivates::
 	call BattleScript_AbilityPopUp
 	EscribeTextoCombate "The poisoning healed {B_ATK_NAME_WITH_PREFIX} a little bit!"
 	waitmessage PAUSA_LARGA
-	statusanimation BS_ATTACKER
+	animaestado BS_ATTACKER
 	ponmarca MARCA_IGNORA_SUSTITUTO
 	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_ATTACKER
@@ -3916,14 +3774,14 @@ ScriptCombate_DanioCongelacion::
 BattleScript_MoveUsedIsParalyzed::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} is paralyzed! It can't move!"
 	waitmessage PAUSA_LARGA
-	statusanimation BS_ATTACKER
+	animaestado BS_ATTACKER
 	cancelmultiturnmoves BS_ATTACKER
 	goto BattleScript_MoveEnd
 
 BattleScript_EstaSomnoliento::
 	EscribeTextoCombate "¡{B_ATK_NAME_WITH_PREFIX} está echando una cabezada!"
 	waitmessage PAUSA_LARGA
-	statusanimation BS_ATTACKER
+	animaestado BS_ATTACKER
 	cancelmultiturnmoves BS_ATTACKER
 	goto BattleScript_MoveEnd
 
@@ -3953,20 +3811,13 @@ BattleScript_MoveUsedFlinched::
 	waitmessage PAUSA_LARGA
 
 BattleScript_PrintUproarOverTurns::
-	EscribeTextoAlboroto
-	waitmessage PAUSA_LARGA
-	end2
-
-BattleScript_ThrashConfuses::
-	chosenstatus2animation BS_ATTACKER, STATUS2_CONFUSION
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} became confused due to fatigue!"
 	waitmessage PAUSA_LARGA
 	end2
 
 BattleScript_MoveUsedIsConfused::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} is confused!"
 	waitmessage PAUSA_LARGA
-	status2animation BS_ATTACKER, STATUS2_CONFUSION
+	animatransitorio BS_ATTACKER, TRANSITORIO_CONFUSION
 	jumpifmarca MARCA_NO_PUEDE_MOVERSE, FALSE, BattleScript_MoveUsedIsConfusedRet
 
 BattleScript_DoSelfConfusionDmg::
@@ -3999,13 +3850,6 @@ BattleScript_PrintDiaDePagoMoneyString::
 	waitmessage PAUSA_LARGA
 	return
 
-BattleScript_WrapTurnDmg::
-	jumpifability BS_ATTACKER, ABILITY_MAGIC_GUARD, BattleScript_DoTurnDmgEnd
-	playanimation BS_ATTACKER, B_ANIM_TURN_TRAP, sB_ANIM_ARG1
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} is hurt by {B_BUFF1}!"
-	waitmessage PAUSA_LARGA
-	goto BattleScript_DoTurnDmg
-
 BattleScript_WrapEnds::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} was freed from {B_BUFF1}!"
 	waitmessage PAUSA_LARGA
@@ -4014,7 +3858,7 @@ BattleScript_WrapEnds::
 BattleScript_MoveUsedIsInLove::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} is in love with {B_SCR_ACTIVE_NAME_WITH_PREFIX}!"
 	waitmessage PAUSA_LARGA
-	status2animation BS_ATTACKER, STATUS2_INFATUATION
+	animaestado BS_ATTACKER
 	return
 
 BattleScript_MoveUsedIsInLoveCantAttack::
@@ -4022,16 +3866,10 @@ BattleScript_MoveUsedIsInLoveCantAttack::
 	waitmessage PAUSA_LARGA
 	goto BattleScript_MoveEnd
 
-BattleScript_NightmareTurnDmg::
-	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} is locked in a NIGHTMARE!"
-	waitmessage PAUSA_LARGA
-	status2animation BS_ATTACKER, STATUS2_NIGHTMARE
-	goto BattleScript_DoTurnDmg
-
 BattleScript_CurseTurnDmg::
 	EscribeTextoCombate "{B_ATK_NAME_WITH_PREFIX} is afflicted by the CURSE!"
 	waitmessage PAUSA_LARGA
-	status2animation BS_ATTACKER, STATUS2_CURSED
+	animatransitorio BS_ATTACKER, TRANSITORIO_MALDICION
 	goto BattleScript_DoTurnDmg
 
 BattleScript_TargetPRLZHeal::
@@ -4065,7 +3903,7 @@ ScriptCombate_SeCuroCongelacion::
 	return
 
 BattleScript_MoveEffectSleep::
-	statusanimation BS_EFFECT_BATTLER
+	animaestado BS_EFFECT_BATTLER
 	EscribeTextoEstadoAlterado MOVE_EFFECT_SLEEP
 	waitmessage PAUSA_LARGA
 
@@ -4100,25 +3938,25 @@ BattleScript_FlameOrb::
 	end2
 
 BattleScript_MoveEffectPoison::
-	statusanimation BS_EFFECT_BATTLER
+	animaestado BS_EFFECT_BATTLER
 	EscribeTextoEstadoAlterado MOVE_EFFECT_POISON
 	waitmessage PAUSA_LARGA
 	goto BattleScript_UpdateEffectStatusIconRet
 
 BattleScript_MoveEffectBurn::
-	statusanimation BS_EFFECT_BATTLER
+	animaestado BS_EFFECT_BATTLER
 	EscribeTextoEstadoAlterado MOVE_EFFECT_BURN
 	waitmessage PAUSA_LARGA
 	goto BattleScript_UpdateEffectStatusIconRet
 
 ScriptCombate_EfectoMovimientoCongelacion::
-	statusanimation BS_EFFECT_BATTLER
+	animaestado BS_EFFECT_BATTLER
 	EscribeTextoEstadoAlterado EFECTO_MOVIMIENTO_CONGELACION
 	waitmessage PAUSA_LARGA
 	goto BattleScript_UpdateEffectStatusIconRet
 
 BattleScript_MoveEffectParalysis::
-	statusanimation BS_EFFECT_BATTLER
+	animaestado BS_EFFECT_BATTLER
 	EscribeTextoEstadoAlterado MOVE_EFFECT_PARALYSIS
 	waitmessage PAUSA_LARGA
 	goto BattleScript_UpdateEffectStatusIconRet
@@ -4129,7 +3967,7 @@ BattleScript_MoveEffectUproar::
 	return
 
 BattleScript_MoveEffectToxic::
-	statusanimation BS_EFFECT_BATTLER
+	animaestado BS_EFFECT_BATTLER
 	EscribeTextoCombate "¡{B_EFF_NAME_WITH_PREFIX} está gravemente envenenado!"
 	waitmessage PAUSA_LARGA
 	goto BattleScript_UpdateEffectStatusIconRet
@@ -4145,7 +3983,7 @@ BattleScript_MoveEffectWrap::
 	return
 
 BattleScript_MoveEffectConfusion::
-	chosenstatus2animation BS_EFFECT_BATTLER, STATUS2_CONFUSION
+	animatransitorio BS_EFFECT_BATTLER, TRANSITORIO_CONFUSION
 	EscribeTextoCombate "{B_EFF_NAME_WITH_PREFIX} became confused!"
 	waitmessage PAUSA_LARGA
 	return
@@ -4353,7 +4191,7 @@ BattleScript_IntimidateLoop:
 	jumpifbyteequal gBattlerTarget, gBattlerAttacker, BattleScript_IntimidateLoopIncrement
 	jumpiftargetally BattleScript_IntimidateLoopIncrement
 	jumpifabsent BS_TARGET, BattleScript_IntimidateLoopIncrement
-	jumpifstatus2 BS_TARGET, STATUS2_SUBSTITUTE, BattleScript_IntimidateLoopIncrement
+	jumpiftransitorio BS_TARGET, TRANSITORIO_SUSTITUTO, BattleScript_IntimidateLoopIncrement
 	jumpifability BS_TARGET, ABILITY_FUERZA_MENTAL, BattleScript_IntimidatePrevented
 	jumpifability BS_TARGET, ABILITY_SCRAPPY, BattleScript_IntimidatePrevented
 	jumpifability BS_TARGET, ABILITY_OWN_TEMPO, BattleScript_IntimidatePrevented
@@ -4434,7 +4272,7 @@ BattleScript_BadDreamsActivates::
 BattleScript_BadDreamsLoop:
 	jumpiftargetally BattleScript_BadDreamsIncrement
 	jumpifability BS_TARGET, ABILITY_MAGIC_GUARD, BattleScript_BadDreamsIncrement
-	jumpifstatus BS_TARGET, STATUS1_SLEEP, BattleScript_BadDreams_Dmg
+	jumpifestado BS_TARGET, ESTADO_SUENO, BattleScript_BadDreams_Dmg
 	goto BattleScript_BadDreamsIncrement
 
 BattleScript_BadDreams_Dmg:
@@ -4758,7 +4596,7 @@ ScriptCombate_HabilidadRecuperacionSaludTrasVencer::
 	call BattleScript_AbilityPopUp
 	EscribeTextoCombate "¡{B_ATK_NAME_WITH_PREFIX} ha usado a {B_DEF_NAME_WITH_PREFIX} para recuperarse!"
 	waitmessage PAUSA_LARGA
-	statusanimation BS_ATTACKER
+	animaestado BS_ATTACKER
 	ponmarca MARCA_IGNORA_SUSTITUTO
 	ponmarca MARCA_DANIO_PASIVO
 	healthbarupdate BS_ATTACKER
@@ -4833,7 +4671,7 @@ BattleScript_RockyHelmetActivatesDmg:
 
 BattleScript_CuteCharmActivates::
 	call BattleScript_AbilityPopUp
-	status2animation BS_ATTACKER, STATUS2_INFATUATION
+	animaestado BS_ATTACKER
 	EscribeTextoCombate "{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY} infatuated {B_ATK_NAME_WITH_PREFIX}!"
 	waitmessage PAUSA_LARGA
 	call BattleScript_TryDestinyKnotTarget
@@ -4841,7 +4679,7 @@ BattleScript_CuteCharmActivates::
 
 BattleScript_NueveColas::
 	call BattleScript_AbilityPopUp
-	status2animation BS_ATTACKER, STATUS2_CURSED
+	animatransitorio BS_ATTACKER, TRANSITORIO_MALDICION
 	EscribeTextoCombate "¡Se ha activado la maldición de las nueve colas!"
 	waitmessage PAUSA_LARGA
 	return
@@ -5276,7 +5114,7 @@ BattleScript_RedCardActivates::
 	EscribeTextoCombate "{B_SCR_ACTIVE_NAME_WITH_PREFIX} held up its Red Card against {B_ATK_NAME_WITH_PREFIX}!"
 	waitmessage PAUSA_LARGA
 	swapattackerwithtarget
-	jumpifstatus3 BS_EFFECT_BATTLER, STATUS3_ROOTED, BattleScript_RedCardIngrain
+	jumpiftransitorio BS_EFFECT_BATTLER, TRANSITORIO_ARRAIGADO, BattleScript_RedCardIngrain
 	jumpifability BS_EFFECT_BATTLER, ABILITY_SUCTION_CUPS, BattleScript_RedCardSuctionCups
 	removeitem BS_SCRIPTING
 	setbyte sSWITCH_CASE, B_SWITCH_RED_CARD

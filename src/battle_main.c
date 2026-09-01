@@ -38,6 +38,7 @@
 #include "pokedex.h"
 #include "pokemon.h"
 #include "random.h"
+#include "script_pokemon_util.h"
 #include "distorsion_fondo.h"
 #include "script.h"
 #include "sound.h"
@@ -156,6 +157,7 @@ EWRAM_DATA u16 gLastMoves[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA enum Movimientos gLastLandedMoves[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u16 gLastResultingMoves[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u16 gLockedMoves[NUMERO_COMBATIENTES] = {0};
+EWRAM_DATA u32 gEstadosTransitorios[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u16 gLastUsedMove = 0;
 EWRAM_DATA u8 gLastHitBy[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u16 gMovimientoElegido[NUMERO_COMBATIENTES] = {0};
@@ -163,7 +165,6 @@ EWRAM_DATA u8 gMarcasGolpe[NUMERO_MARCAS_GOLPE] = {0};
 EWRAM_DATA u8 gCombatienteDebilitado[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u32 gSideStatuses[NUMERO_LADOS] = {0};
 EWRAM_DATA struct SideTimer gSideTimers[NUMERO_LADOS] = {0};
-EWRAM_DATA u32 gStatuses3[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA struct DisableStruct gDisableStructs[NUMERO_COMBATIENTES] = {0};
 EWRAM_DATA u16 gPauseCounterBattle = 0;
 EWRAM_DATA u16 gPaydayMoney = 0;
@@ -1336,7 +1337,7 @@ static void BattleStartClearSetData(void)
 
     for (u32 combatiente = JUGADOR_IZQUIERDA; combatiente < NUMERO_COMBATIENTES; combatiente++)
     {
-        gStatuses3[combatiente] = 0;
+        QuitaTodosTransitorios(combatiente);
         gDisableStructs[combatiente].esPrimerTurno = TRUE;
         gLastMoves[combatiente] = MOVE_NONE;
         gLastLandedMoves[combatiente] = MOVE_NONE;
@@ -1428,40 +1429,33 @@ void SwitchInClearSetData(u32 battler)
             gBattleMons[battler].statStages[i] = ESTADISTICA_NEUTRA;
         for (i = 0; i < gBattlersCount; i++)
         {
-            if ((gBattleMons[i].status2 & STATUS2_ESCAPE_PREVENTION) && gDisableStructs[i].battlerPreventingEscape == battler)
-                gBattleMons[i].status2 &= ~STATUS2_ESCAPE_PREVENTION;
-            if ((gStatuses3[i] & STATUS3_ALWAYS_HITS) && gDisableStructs[i].battlerWithSureHit == battler)
-            {
-                gStatuses3[i] &= ~STATUS3_ALWAYS_HITS;
-                gDisableStructs[i].battlerWithSureHit = 0;
-            }
+            if ((TransitorioActivo(i, TRANSITORIO_SIN_ESCAPE)) && gDisableStructs[i].battlerPreventingEscape == battler)
+                QuitaTransitorio(i, TRANSITORIO_SIN_ESCAPE);
         }
     }
     if (gMovimientos[gCurrentMove].effect == EFECTO_RELEVO)
     {
-        gBattleMons[battler].status2 &= (STATUS2_CONFUSION | STATUS2_SUBSTITUTE | STATUS2_ESCAPE_PREVENTION | STATUS2_CURSED);
-        gStatuses3[battler] &= (STATUS3_LEECHSEED_BATTLER | STATUS3_LEECHSEED | STATUS3_ALWAYS_HITS | STATUS3_PERISH_SONG | STATUS3_ROOTED | STATUS3_GASTRO_ACID | STATUS3_EMBARGO | STATUS3_TELEKINESIS | STATUS3_MAGNET_RISE | STATUS3_AQUA_RING);
-        for (i = 0; i < gBattlersCount; i++)
-        {
-            if (GetBattlerSide(battler) != GetBattlerSide(i) && (gStatuses3[i] & STATUS3_ALWAYS_HITS) != 0 && (gDisableStructs[i].battlerWithSureHit == battler))
-            {
-                gStatuses3[i] &= ~STATUS3_ALWAYS_HITS;
-                gStatuses3[i] |= STATUS3_ALWAYS_HITS_TURN(2);
-            }
-        }
+        // Relevo conserva lo que se pasa al que entra; el resto se va.
+        gEstadosTransitorios[battler] &= (1u << TRANSITORIO_CONFUSION)
+                                       | (1u << TRANSITORIO_SUSTITUTO)
+                                       | (1u << TRANSITORIO_SIN_ESCAPE)
+                                       | (1u << TRANSITORIO_MALDICION)
+                                       | (1u << TRANSITORIO_DRENADORAS)
+                                       | (1u << TRANSITORIO_CANTO_MORTAL)
+                                       | (1u << TRANSITORIO_ARRAIGADO)
+                                       | (1u << TRANSITORIO_BILIS)
+                                       | (1u << TRANSITORIO_ACUA_ARO);
     }
     else
     {
-        gBattleMons[battler].status2 = 0;
-        gStatuses3[battler] = 0;
+        QuitaTodosTransitorios(battler);
+        QuitaTodosTransitorios(battler);
     }
 
     for (i = 0; i < gBattlersCount; i++)
     {
-        if (gBattleMons[i].status2 & STATUS2_INFATUATED_WITH(battler))
-            gBattleMons[i].status2 &= ~STATUS2_INFATUATED_WITH(battler);
-        if ((gBattleMons[i].status2 & STATUS2_WRAPPED) && *(gCombate->wrappedBy + i) == battler)
-            gBattleMons[i].status2 &= ~STATUS2_WRAPPED;
+        if ((TransitorioActivo(i, TRANSITORIO_SIN_ESCAPE)) && *(gCombate->wrappedBy + i) == battler)
+            QuitaTransitorio(i, TRANSITORIO_SIN_ESCAPE);
     }
 
     gActionSelectionCursor[battler] = 0;
@@ -1472,10 +1466,8 @@ void SwitchInClearSetData(u32 battler)
     if (gMovimientos[gCurrentMove].effect == EFECTO_RELEVO)
     {
         gDisableStructs[battler].substituteHP = disableStructCopy.substituteHP;
-        gDisableStructs[battler].battlerWithSureHit = disableStructCopy.battlerWithSureHit;
         gDisableStructs[battler].perishSongTimer = disableStructCopy.perishSongTimer;
         gDisableStructs[battler].battlerPreventingEscape = disableStructCopy.battlerPreventingEscape;
-        gDisableStructs[battler].embargoTimer = disableStructCopy.embargoTimer;
     }
 
     gCombate->resultadoMovimiento = MOVIMIENTO_NEUTRO;
@@ -1520,19 +1512,17 @@ const u8 *FaintClearSetData(u32 combatiente)
     for (u32 indiceEstadistica = 0; indiceEstadistica < NUMERO_ESTADISTICAS_BATALLA; indiceEstadistica++)
         gBattleMons[combatiente].statStages[indiceEstadistica] = ESTADISTICA_NEUTRA;
 
-    gBattleMons[combatiente].status2 = 0;
-    gStatuses3[combatiente] &= STATUS3_GASTRO_ACID; // Edge case: Keep Gastro Acid if pokemon's ability can have effect after fainting, for example Innards Out.
+    QuitaTodosTransitorios(combatiente);
+    gEstadosTransitorios[combatiente] &= (1u << TRANSITORIO_BILIS); // Edge case: Keep Gastro Acid if pokemon's ability can have effect after fainting, for example Innards Out.
 
     for (u32 indiceCombatiente = JUGADOR_IZQUIERDA; indiceCombatiente < gBattlersCount; indiceCombatiente++)
     {
-        if ((gBattleMons[indiceCombatiente].status2 & STATUS2_ESCAPE_PREVENTION) && gDisableStructs[indiceCombatiente].battlerPreventingEscape == combatiente)
-            gBattleMons[indiceCombatiente].status2 &= ~STATUS2_ESCAPE_PREVENTION;
+        if ((TransitorioActivo(indiceCombatiente, TRANSITORIO_SIN_ESCAPE)) && gDisableStructs[indiceCombatiente].battlerPreventingEscape == combatiente)
+            QuitaTransitorio(indiceCombatiente, TRANSITORIO_SIN_ESCAPE);
 
-        if (gBattleMons[indiceCombatiente].status2 & STATUS2_INFATUATED_WITH(combatiente))
-            gBattleMons[indiceCombatiente].status2 &= ~STATUS2_INFATUATED_WITH(combatiente);
 
-        if ((gBattleMons[indiceCombatiente].status2 & STATUS2_WRAPPED) && gCombate->wrappedBy[indiceCombatiente] == combatiente)
-            gBattleMons[indiceCombatiente].status2 &= ~STATUS2_WRAPPED;
+        if ((TransitorioActivo(indiceCombatiente, TRANSITORIO_SIN_ESCAPE)) && gCombate->wrappedBy[indiceCombatiente] == combatiente)
+            QuitaTransitorio(indiceCombatiente, TRANSITORIO_SIN_ESCAPE);
     }
 
     gActionSelectionCursor[combatiente] = 0;
@@ -1625,7 +1615,7 @@ static void DoBattleIntro(void)
             gBattleMons[battler].types[TIPO_2] = gSpeciesInfo[gBattleMons[battler].species].types[TIPO_2];
             gBattleMons[battler].ability = GetAbilityBySpecies(gBattleMons[battler].species, gBattleMons[battler].abilityNum);
             gCombate->hpOnSwitchout[GetBattlerSide(battler)] = gBattleMons[battler].hp;
-            gBattleMons[battler].status2 = 0; // AQUÍ SE REINICIA STATUS 2 AL ENTRAR EN COMBATE
+            QuitaTodosTransitorios(battler); // AQUÍ SE REINICIA STATUS 2 AL ENTRAR EN COMBATE
             for (i = 0; i < NUMERO_ESTADISTICAS_BATALLA; i++)
                 gBattleMons[battler].statStages[i] = ESTADISTICA_NEUTRA;
 
@@ -1864,7 +1854,7 @@ static void TryDoEventsBeforeFirstTurn(void)
 
         for (i = 0; i < gBattlersCount; i++)
         {
-            gBattleMons[i].status2 &= ~STATUS2_FLINCHED;
+            QuitaTransitorio(i, TRANSITORIO_SORPRESA);
             gCombate->potenciaMovimientosRecibidosTurno[i] = 0;
         }
 
@@ -1897,8 +1887,8 @@ static void HandleEndTurn_ContinueBattle(void)
         gElegidorTextoMultiple = 0;
         for (i = 0; i < gBattlersCount; i++)
         {
-            gBattleMons[i].status2 &= ~STATUS2_FLINCHED;
-            if ((gBattleMons[i].status1 & STATUS1_SLEEP) && (gBattleMons[i].status2 & STATUS2_MULTIPLETURNS))
+            QuitaTransitorio(i, TRANSITORIO_SORPRESA);
+            if ((EstadoActivo(i, ESTADO_SUENO)) && (TransitorioActivo(i, TRANSITORIO_MULTITURNO)))
                 CancelMultiTurnMoves(i);
         }
         gCombate->efectoFinTurno.individual = ENDTURN_WEATHER_DAMAGE;
@@ -2105,7 +2095,7 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                 }
                 else
                 {
-                    if (gBattleMons[combatiente].status2 & STATUS2_MULTIPLETURNS || gBattleMons[combatiente].status2 & STATUS2_RECHARGE)
+                    if (TransitorioActivo(combatiente, TRANSITORIO_MULTITURNO) || TransitorioActivo(combatiente, TRANSITORIO_DESCANSO))
                     {
                         gAccionElegida[combatiente] = B_ACTION_USE_MOVE;
                         gEstadoAccion[combatiente] = EJECUTA_ACCION;
@@ -2188,7 +2178,7 @@ static void GestionaEstadoSeleccionAccionesTurno(void)
                 case B_ACTION_CANCEL_PARTNER:
                     gEstadoAccion[combatiente] = ANTES_ACCION;
                     gEstadoAccion[ALIADO(combatiente)] = ANTES_ACCION;
-                    if (gBattleMons[ALIADO(combatiente)].status2 & STATUS2_MULTIPLETURNS || gBattleMons[ALIADO(combatiente)].status2 & STATUS2_RECHARGE)
+                    if (TransitorioActivo(ALIADO(combatiente), TRANSITORIO_MULTITURNO) || TransitorioActivo(ALIADO(combatiente), TRANSITORIO_DESCANSO))
                     {
                         ComandoTerminaBote(combatiente);
                         MarcaCombatienteOcupado(combatiente);
@@ -2345,7 +2335,7 @@ u32 GetBattlerTotalSpeedStatArgs(u32 battler, u32 ability, u32 holdEffect)
     if (ability == ABILITY_SLUSH_RUSH && EsClimaCombateNieve(climaCombate))
         MULTIPLICA(modificador, MAS_50_POR_CIENTO);
 
-    if (ability == ABILITY_QUICK_FEET && (gBattleMons[battler].status1 & STATUS1_ANY))
+    if (ability == ABILITY_QUICK_FEET && (HayAlgunEstado(battler)))
         MULTIPLICA(modificador, MAS_50_POR_CIENTO);
 
     if (gBattleResources->flags[battler] & RESOURCE_FLAG_UNBURDEN)
@@ -2359,8 +2349,8 @@ u32 GetBattlerTotalSpeedStatArgs(u32 battler, u32 ability, u32 holdEffect)
     if (gSideStatuses[GetBattlerSide(battler)] & SIDE_STATUS_TAILWIND)
         MULTIPLICA(modificador, MAS_100_POR_CIENTO);
 
-    if ((gBattleMons[battler].status1 & STATUS1_PARALYSIS) && ability != ABILITY_QUICK_FEET)
-        MULTIPLICA(modificador, MENOS_50_POR_CIENTO);
+    if ((EstadoActivo(battler, ESTADO_PARALISIS)) && ability != ABILITY_QUICK_FEET)
+        MULTIPLICA(modificador, ModificadorEstadoSobreEstadistica(battler, ESTADISTICA_VELOCIDAD));
 
     MULTIPLICA(modificador, gMultiplicadorEstadisticas[gBattleMons[battler].statStages[ESTADISTICA_VELOCIDAD]]);
 
@@ -2628,12 +2618,12 @@ static void TurnValuesCleanUp(bool8 var0)
             {
                 gDisableStructs[i].rechargeTimer--;
                 if (gDisableStructs[i].rechargeTimer == 0)
-                    gBattleMons[i].status2 &= ~STATUS2_RECHARGE;
+                    QuitaTransitorio(i, TRANSITORIO_DESCANSO);
             }
         }
 
         if (gDisableStructs[i].substituteHP == 0)
-            gBattleMons[i].status2 &= ~STATUS2_SUBSTITUTE;
+            QuitaTransitorio(i, TRANSITORIO_SUSTITUTO);
 
         gSpecialStatuses[i].parentalBondState = PARENTAL_BOND_OFF;
     }
@@ -2668,7 +2658,7 @@ static bool32 TryDoMoveEffectsBeforeMoves(void)
         SortBattlersBySpeed(battlers, FALSE);
         for (i = 0; i < gBattlersCount; i++)
         {
-            if (!(gCombate->focusPunchBattlers & (1u << battlers[i])) && !(gBattleMons[battlers[i]].status1 & STATUS1_SLEEP) && !(gProtectStructs[battlers[i]].noValidMoves))
+            if (!(gCombate->focusPunchBattlers & (1u << battlers[i])) && !EstadoActivo(battlers[i], ESTADO_SUENO) && !(gProtectStructs[battlers[i]].noValidMoves))
             {
                 gCombate->focusPunchBattlers |= 1u << battlers[i];
                 gBattlerAttacker = battlers[i];
@@ -2917,6 +2907,11 @@ static void WaitForEvoSceneToFinish(void)
 
 static void ReturnFromBattleToOverworld(void)
 {
+    // Nada del combate sale del combate: PS, PP y estados vuelven al maximo, y
+    // los debilitados se levantan. Fuera del combate un Pokemon esta siempre
+    // entero, asi que no hay que guardar ni PS ni PP entre combates.
+    HealPlayerParty();
+
     gSpecialVar_Result = gBattleOutcome;
     gLaboratorioAnimaciones = FALSE;
     gMain.inBattle = FALSE;

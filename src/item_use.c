@@ -715,12 +715,6 @@ void ItemUseOutOfBattle_ReduceEV(u8 taskId)
     SetUpItemUseCallback(taskId);
 }
 
-void ItemUseOutOfBattle_SacredAsh(u8 taskId)
-{
-    gItemUseCB = ItemUseCB_SacredAsh;
-    SetUpItemUseCallback(taskId);
-}
-
 void ItemUseOutOfBattle_PPRecovery(u8 taskId)
 {
     gItemUseCB = ItemUseCB_PPRecovery;
@@ -908,7 +902,7 @@ static u32 GetBallThrowableState(void)
         return BALL_THROW_UNABLE_TWO_MONS;
     else if (IsPlayerPartyAndPokemonStorageFull() == TRUE)
         return BALL_THROW_UNABLE_NO_ROOM;
-    else if (B_SEMI_INVULNERABLE_CATCH >= GEN_4 && (gStatuses3[GetCatchingBattler()] & STATUS3_SEMI_INVULNERABLE))
+    else if (B_SEMI_INVULNERABLE_CATCH >= GEN_4 && ES_SEMI_INVULNERABLE(GetCatchingBattler()))
         return BALL_THROW_UNABLE_SEMI_INVULNERABLE;
     else if (FlagGet(B_FLAG_NO_CATCHING))
         return BALL_THROW_UNABLE_DISABLED_FLAG;
@@ -958,11 +952,6 @@ bool32 CannotUseItemsInBattle(u16 itemId, struct Pokemon *mon)
     u16 hp = GetMonData(mon, MON_DATA_HP);
 
     // Embargo Check
-    if ((gPartyMenu.slotId == 0 && gStatuses3[JUGADOR_IZQUIERDA] & STATUS3_EMBARGO)
-        || (gPartyMenu.slotId == 1 && gStatuses3[JUGADOR_DERECHA] & STATUS3_EMBARGO))
-    {
-        return TRUE;
-    }
 
     // battleUsage checks
     switch (battleUsage)
@@ -1015,18 +1004,9 @@ bool32 CannotUseItemsInBattle(u16 itemId, struct Pokemon *mon)
             cannotUse = TRUE;
         break;
     case EFFECT_ITEM_CURE_STATUS:
-        if (!((GetMonData(mon, MON_DATA_STATUS) & GetItemStatus1Mask(itemId))
-            || (gPartyMenu.slotId == 0 && gBattleMons[gBattlerInMenuId].status2 & GetItemStatus2Mask(itemId))))
-            cannotUse = TRUE;
-        break;
-    case EFFECT_ITEM_HEAL_AND_CURE_STATUS:
-        if ((hp == 0 || hp == GetMonData(mon, MON_DATA_MAX_HP))
-            && !((GetMonData(mon, MON_DATA_STATUS) & GetItemStatus1Mask(itemId))
-            || (gPartyMenu.slotId == 0 && gBattleMons[gBattlerInMenuId].status2 & GetItemStatus2Mask(itemId))))
-            cannotUse = TRUE;
-        break;
-    case EFFECT_ITEM_REVIVE:
-        if (hp != 0)
+        if (!(CuraEsteEstado(GetMonData(mon, MON_DATA_STATUS), EstadoQueCura(itemId))
+            || (gPartyMenu.slotId == 0 && TransitorioQueCura(itemId) != 0
+                && TransitorioActivo(gBattlerInMenuId, TransitorioQueCura(itemId) - 1))))
             cannotUse = TRUE;
         break;
     case EFFECT_ITEM_RESTORE_PP:

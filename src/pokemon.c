@@ -538,7 +538,7 @@ void BoxMonToMon(const struct BoxPokemon *src, struct Pokemon *dest)
 {
     u32 value = 0;
     dest->box = *src;
-    dest->status = GetBoxMonData(&dest->box, MON_DATA_STATUS, NULL);
+    dest->estado = GetBoxMonData(&dest->box, MON_DATA_STATUS, NULL);
     dest->hp = 0;
     dest->maxHP = 0;
     CalculateMonStats(dest);
@@ -917,7 +917,7 @@ u32 GetMonData3(struct Pokemon *mon, s32 field, u8 *data)
     switch (field)
     {
     case MON_DATA_STATUS:
-        ret = mon->status;
+        ret = mon->estado;
         break;
     case MON_DATA_LEVEL:
         ret = mon->level;
@@ -1155,7 +1155,7 @@ void SetMonData(struct Pokemon *mon, s32 field, const void *dataArg)
     switch (field)
     {
     case MON_DATA_STATUS:
-        SET32(mon->status);
+        SET8(mon->estado);
         break;
     case MON_DATA_LEVEL:
         SET8(mon->level);
@@ -1542,7 +1542,7 @@ void PokemonToBattleMon(struct Pokemon *src, struct BattlePokemon *dst)
     dst->friendship = GetMonData(src, MON_DATA_FRIENDSHIP, NULL);
     dst->experience = GetMonData(src, MON_DATA_EXP, NULL);
     dst->personality = GetMonData(src, MON_DATA_PERSONALITY, NULL);
-    dst->status1 = GetMonData(src, MON_DATA_STATUS, NULL);
+    dst->estado = GetMonData(src, MON_DATA_STATUS, NULL);
     dst->level = GetMonData(src, MON_DATA_LEVEL, NULL);
     dst->hp = GetMonData(src, MON_DATA_HP, NULL);
     dst->maxHP = GetMonData(src, MON_DATA_MAX_HP, NULL);
@@ -1562,8 +1562,6 @@ void PokemonToBattleMon(struct Pokemon *src, struct BattlePokemon *dst)
 
     for (i = 0; i < NUMERO_ESTADISTICAS_BATALLA; i++)
         dst->statStages[i] = ESTADISTICA_NEUTRA;
-
-    dst->status2 = 0;
 }
 
 void CopyPartyMonToBattleData(u32 battlerId, u32 partyIndex)
@@ -1656,7 +1654,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
         switch (i)
         {
 
-        // Handle ITEM0 effects (infatuation, Dire Hit, X Attack). ITEM0_SACRED_ASH is handled in party_menu.c
+        // Handle ITEM0 effects (infatuation, Dire Hit, X Attack).
         // Now handled in item battle scripts.
         case 0:
             break;
@@ -1702,15 +1700,15 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
             }
 
             // Cure status
-            if ((itemEffect[i] & ITEM3_SLEEP) && HealStatusConditions(mon, STATUS1_SLEEP, battlerId) == 0)
+            if ((itemEffect[i] & ITEM3_SLEEP) && HealStatusConditions(mon, ESTADO_SUENO, battlerId) == 0)
                 retVal = FALSE;
-            if ((itemEffect[i] & ITEM3_POISON) && HealStatusConditions(mon, STATUS1_PSN_ANY | STATUS1_TOXIC_COUNTER, battlerId) == 0)
+            if ((itemEffect[i] & ITEM3_POISON) && HealStatusConditions(mon, ESTADO_VENENO, battlerId) == 0)
                 retVal = FALSE;
-            if ((itemEffect[i] & ITEM3_BURN) && HealStatusConditions(mon, STATUS1_BURN, battlerId) == 0)
+            if ((itemEffect[i] & ITEM3_BURN) && HealStatusConditions(mon, ESTADO_QUEMADURA, battlerId) == 0)
                 retVal = FALSE;
-            if ((itemEffect[i] & ITEM3_FREEZE) && HealStatusConditions(mon, STATUS1_CONGELACION, battlerId) == 0)
+            if ((itemEffect[i] & ITEM3_FREEZE) && HealStatusConditions(mon, ESTADO_CONGELACION, battlerId) == 0)
                 retVal = FALSE;
-            if ((itemEffect[i] & ITEM3_PARALYSIS) && HealStatusConditions(mon, STATUS1_PARALYSIS, battlerId) == 0)
+            if ((itemEffect[i] & ITEM3_PARALYSIS) && HealStatusConditions(mon, ESTADO_PARALISIS, battlerId) == 0)
                 retVal = FALSE;
             break;
 
@@ -2010,16 +2008,18 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
     return retVal;
 }
 
-bool8 HealStatusConditions(struct Pokemon *mon, u32 healMask, u8 battlerId)
+// Devuelve FALSE cuando ha curado algo, que es lo que esperan sus llamadores.
+bool8 HealStatusConditions(struct Pokemon *mon, u32 estadoQueCura, u8 battlerId)
 {
-    u32 status = GetMonData(mon, MON_DATA_STATUS, 0);
+    u32 estado = GetMonData(mon, MON_DATA_STATUS, 0);
 
-    if (status & healMask)
+    if (estado != ESTADO_NINGUNO && (estado == estadoQueCura || estadoQueCura == ESTADO_CUALQUIERA))
     {
-        status &= ~healMask;
-        SetMonData(mon, MON_DATA_STATUS, &status);
+        u32 ninguno = ESTADO_NINGUNO;
+
+        SetMonData(mon, MON_DATA_STATUS, &ninguno);
         if (gMain.inBattle && battlerId != NUMERO_COMBATIENTES)
-            gBattleMons[battlerId].status1 &= ~healMask;
+            QuitaTodosEstados(battlerId);
         return FALSE;
     }
     else
@@ -3419,7 +3419,7 @@ u16 GetFormChangeTargetSpeciesBoxMon(struct BoxPokemon *boxMon, u16 method, u32 
                         targetSpecies = formChanges[i].targetSpecies;
                     break;
                 case FORM_CHANGE_FAINT:
-                    if (GetBoxMonData(boxMon, MON_DATA_STATUS, NULL) & formChanges[i].param1)
+                    if (GetBoxMonData(boxMon, MON_DATA_STATUS, NULL) == formChanges[i].param1)
                         targetSpecies = formChanges[i].targetSpecies;
                     break;
                 }
@@ -3582,7 +3582,7 @@ void HealPokemon(struct Pokemon *mon)
     data = GetMonData(mon, MON_DATA_MAX_HP);
     SetMonData(mon, MON_DATA_HP, &data);
 
-    data = STATUS1_NONE;
+    data = ESTADO_NINGUNO;
     SetMonData(mon, MON_DATA_STATUS, &data);
 
     MonRestorePP(mon);
@@ -3592,7 +3592,7 @@ void HealBoxPokemon(struct BoxPokemon *boxMon)
 {
     u32 data;
 
-    data = STATUS1_NONE;
+    data = ESTADO_NINGUNO;
     SetBoxMonData(boxMon, MON_DATA_STATUS, &data);
 
     BoxMonRestorePP(boxMon);

@@ -150,34 +150,32 @@ static void SpriteCB_TrainerSlideVertical(struct Sprite *sprite)
 
 #undef sSpeedX
 
-void InitAndLaunchChosenStatusAnimation(u32 battler, bool32 isStatus2, u32 status)
+void InitAndLaunchChosenStatusAnimation(u32 battler, bool32 esTransitorio, u32 estado)
 {
     gBattleSpritesDataPtr->healthBoxesData[battler].statusAnimActive = 1;
-    if (!isStatus2)
+    if (!esTransitorio)
     {
-        if (status == STATUS1_CONGELACION)
+        if (estado == ESTADO_CONGELACION)
             LaunchStatusAnimation(battler, B_ANIM_STATUS_FRZ);
-        else if (status == STATUS1_POISON || status & STATUS1_TOXIC_POISON)
+        else if (estado == ESTADO_VENENO)
             LaunchStatusAnimation(battler, B_ANIM_STATUS_PSN);
-        else if (status == STATUS1_BURN)
+        else if (estado == ESTADO_QUEMADURA)
             LaunchStatusAnimation(battler, B_ANIM_STATUS_BRN);
-        else if (status & STATUS1_SLEEP)
+        else if (estado == ESTADO_SUENO)
             LaunchStatusAnimation(battler, B_ANIM_STATUS_SLP);
-        else if (status == STATUS1_PARALYSIS)
+        else if (estado == ESTADO_PARALISIS)
             LaunchStatusAnimation(battler, B_ANIM_STATUS_PRZ);
+        else if (estado == ESTADO_ENAMORADO)
+            LaunchStatusAnimation(battler, B_ANIM_STATUS_INFATUATION);
         else // no animation
             gBattleSpritesDataPtr->healthBoxesData[battler].statusAnimActive = 0;
     }
     else
     {
-        if (status & STATUS2_INFATUATION)
-            LaunchStatusAnimation(battler, B_ANIM_STATUS_INFATUATION);
-        else if (status & STATUS2_CONFUSION)
+        if (estado == TRANSITORIO_CONFUSION)
             LaunchStatusAnimation(battler, B_ANIM_STATUS_CONFUSION);
-        else if (status & STATUS2_CURSED)
+        else if (estado == TRANSITORIO_MALDICION)
             LaunchStatusAnimation(battler, B_ANIM_STATUS_CURSED);
-        else if (status & STATUS2_NIGHTMARE)
-            LaunchStatusAnimation(battler, B_ANIM_STATUS_NIGHTMARE);
         else // no animation
             gBattleSpritesDataPtr->healthBoxesData[battler].statusAnimActive = 0;
     }
@@ -843,7 +841,7 @@ bool32 ShouldPlayNormalMonCry(struct Pokemon *mon)
     s16 hp, maxHP;
     s32 barLevel;
 
-    if (GetMonData(mon, MON_DATA_STATUS) & (STATUS1_ANY | STATUS1_TOXIC_COUNTER))
+    if (GetMonData(mon, MON_DATA_STATUS) != ESTADO_NINGUNO)
         return FALSE;
 
     hp = GetMonData(mon, MON_DATA_HP);

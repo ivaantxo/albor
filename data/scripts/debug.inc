@@ -407,27 +407,27 @@ Debug_EventScript_InflictStatus1_Single:
 	end
 
 Debug_EventScript_InflictStatus1_Single_Poison:
-	setstatus1 STATUS1_POISON, VAR_0x8004
+	ponestado ESTADO_VENENO, VAR_0x8004
 	releaseall
 	end
 
 Debug_EventScript_InflictStatus1_Single_Paralysis:
-	setstatus1 STATUS1_PARALYSIS, VAR_0x8004
+	ponestado ESTADO_PARALISIS, VAR_0x8004
 	releaseall
 	end
 
 Debug_EventScript_InflictStatus1_Single_Sleep:
-	setstatus1 STATUS1_SLEEP, VAR_0x8004
+	ponestado ESTADO_SUENO, VAR_0x8004
 	releaseall
 	end
 
 Debug_EventScript_InflictStatus1_Single_Burn:
-	setstatus1 STATUS1_BURN, VAR_0x8004
+	ponestado ESTADO_QUEMADURA, VAR_0x8004
 	releaseall
 	end
 
 Debug_EventScript_InflictStatus1_Single_Freeze:
-	setstatus1 STATUS1_CONGELACION, VAR_0x8004
+	ponestado ESTADO_CONGELACION, VAR_0x8004
 	releaseall
 	end
 
@@ -451,27 +451,27 @@ Debug_EventScript_InflictStatus1_Party:
 	end
 
 Debug_EventScript_InflictStatus1_Party_Poison:
-	setstatus1 STATUS1_POISON, PARTY_SIZE
+	ponestado ESTADO_VENENO, PARTY_SIZE
 	releaseall
 	end
 
 Debug_EventScript_InflictStatus1_Party_Paralysis:
-	setstatus1 STATUS1_PARALYSIS, PARTY_SIZE
+	ponestado ESTADO_PARALISIS, PARTY_SIZE
 	releaseall
 	end
 
 Debug_EventScript_InflictStatus1_Party_Sleep:
-	setstatus1 STATUS1_SLEEP, PARTY_SIZE
+	ponestado ESTADO_SUENO, PARTY_SIZE
 	releaseall
 	end
 
 Debug_EventScript_InflictStatus1_Party_Burn:
-	setstatus1 STATUS1_BURN, PARTY_SIZE
+	ponestado ESTADO_QUEMADURA, PARTY_SIZE
 	releaseall
 	end
 
 Debug_EventScript_InflictStatus1_Party_Freeze:
-	setstatus1 STATUS1_CONGELACION, PARTY_SIZE
+	ponestado ESTADO_CONGELACION, PARTY_SIZE
 	releaseall
 	end
 

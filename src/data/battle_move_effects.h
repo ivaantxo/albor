@@ -295,17 +295,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .battleScript = BattleScript_EffectSnore,
             },
 
-        [EFFECT_LOCK_ON] =
-            {
-                .battleScript = BattleScript_EffectLockOn,
-                .encourageEncore = TRUE,
-            },
-
-        [EFFECT_DESTINY_BOND] =
-            {
-                .battleScript = BattleScript_EffectDestinyBond,
-            },
-
         [EFFECT_HEAL_BELL] =
             {
                 .battleScript = BattleScript_EffectHealBell,
@@ -315,12 +304,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         [EFFECT_MEAN_LOOK] =
             {
                 .battleScript = BattleScript_EffectMeanLook,
-                .encourageEncore = TRUE,
-            },
-
-        [EFFECT_NIGHTMARE] =
-            {
-                .battleScript = BattleScript_EffectNightmare,
                 .encourageEncore = TRUE,
             },
 
@@ -345,12 +328,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         [EFFECT_SPIKES] =
             {
                 .battleScript = BattleScript_EffectSpikes,
-            },
-
-        [EFFECT_FORESIGHT] =
-            {
-                .battleScript = BattleScript_EffectForesight,
-                .encourageEncore = TRUE,
             },
 
         [EFFECT_PERISH_SONG] =
@@ -495,11 +472,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .encourageEncore = TRUE,
             },
 
-        [EFFECT_UPROAR] =
-            {
-                .battleScript = BattleScript_EffectUproar,
-            },
-
         [EFFECT_STOCKPILE] =
             {
                 .battleScript = BattleScript_EffectStockpile,
@@ -597,12 +569,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         [EFFECT_POWER_BASED_ON_USER_HP] =
             {
                 .battleScript = BattleScript_EffectHit,
-            },
-
-        [EFFECT_IMPRISON] =
-            {
-                .battleScript = BattleScript_EffectImprison,
-                .encourageEncore = TRUE,
             },
 
         [EFFECT_REFRESH] =
@@ -717,12 +683,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
                 .encourageEncore = TRUE,
             },
 
-        [EFFECT_EMBARGO] =
-            {
-                .battleScript = BattleScript_EffectEmbargo,
-                .encourageEncore = TRUE,
-            },
-
         [EFFECT_AQUA_RING] =
             {
                 .battleScript = BattleScript_EffectAquaRing,
@@ -732,12 +692,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         [EFFECT_ESPACIO_RARO] =
             {
                 .battleScript = ScriptCombate_EfectoEspacioRaro,
-            },
-
-        [EFFECT_MAGNET_RISE] =
-            {
-                .battleScript = BattleScript_EffectMagnetRise,
-                .encourageEncore = TRUE,
             },
 
         [EFFECT_TOXIC_SPIKES] =
@@ -753,12 +707,6 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         [EFFECT_STEALTH_ROCK] =
             {
                 .battleScript = BattleScript_EffectStealthRock,
-                .encourageEncore = TRUE,
-            },
-
-        [EFFECT_TELEKINESIS] =
-            {
-                .battleScript = BattleScript_EffectTelekinesis,
                 .encourageEncore = TRUE,
             },
 

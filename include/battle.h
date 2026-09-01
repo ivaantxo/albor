@@ -86,6 +86,7 @@ struct DisableStruct
     u16 disabledMove;
     u16 encoredMove;
     u8 protectUses : 4;
+    u8 posicionFijada;   // hueco al que apunta un movimiento encadenado
     u8 stockpileCounter : 4;
     s8 stockpileDef;
     s8 stockpileSpDef;
@@ -101,15 +102,10 @@ struct DisableStruct
     u8 tauntTimer : 4;
     u8 furyCutterCounter;
     u8 battlerPreventingEscape;
-    u8 battlerWithSureHit;
     u8 chargeTimer : 4;
     u8 rechargeTimer;
     u8 autotomizeCount;
-    u8 embargoTimer;
-    u8 magnetRiseTimer;
-    u8 telekinesisTimer;
     u8 throatChopTimer;
-    u8 wrapTurns;
     u8 tormentTimer : 4;
     u8 usedMoves : 4;
     u16 trampasEntradaProcesadas;
@@ -219,7 +215,7 @@ struct AIPartyMon
     u16 gender;
     u16 level;
     enum Movimientos movimientos[MAXIMO_MOVIMIENTOS_POKEMON];
-    u32 status;
+    u8 estado;   // enum EstadoPrincipal
     bool8 isFainted;
     bool8 wasSentInBattle;
     u8 switchInCount; // Counts how many times this Pokemon has been sent out or switched into in a battle.
@@ -659,7 +655,7 @@ extern u32 gSideStatuses[NUMERO_LADOS];
 extern struct SideTimer gSideTimers[NUMERO_LADOS];
 extern struct TrampasEntrada gTrampasEntrada;
 extern u16 gTrampaEntradaActiva;
-extern u32 gStatuses3[NUMERO_COMBATIENTES];
+extern u32 gEstadosTransitorios[NUMERO_COMBATIENTES];
 extern struct DisableStruct gDisableStructs[NUMERO_COMBATIENTES];
 extern u16 gPauseCounterBattle;
 extern u16 gPaydayMoney;
@@ -769,7 +765,7 @@ static inline bool32 EsPrimerTurno(u32 combatiente)
 
 static inline bool32 EstaDormido(u32 combatiente)
 {
-    return (gBattleMons[combatiente].status1 & STATUS1_SLEEP);
+    return gBattleMons[combatiente].estado == ESTADO_SUENO;
 }
 
 static inline bool32 HaSidoDaniado(u32 combatiente)
@@ -934,7 +930,7 @@ static inline bool32 ClimaMovimientoCoincide(enum ClimasCombate climaMovimiento)
 
 static inline bool32 EstadoMovimientoCoincide(u32 combatiente, u32 estadoMovimiento)
 {
-    return (gBattleMons[combatiente].status1 == estadoMovimiento);
+    return gBattleMons[combatiente].estado == estadoMovimiento;
 }
 
 static inline bool32 ClimaTieneEfecto(void)

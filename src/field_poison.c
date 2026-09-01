@@ -39,7 +39,7 @@ static bool32 AllMonsFainted(void)
 static void FaintFromFieldPoison(u8 partyIdx)
 {
     struct Pokemon *pokemon = &gPlayerParty[partyIdx];
-    u32 status = STATUS1_NONE;
+    u32 status = ESTADO_NINGUNO;
 
     if (OW_POISON_DAMAGE < GEN_4)
         AdjustFriendship(pokemon, FRIENDSHIP_EVENT_FAINT_FIELD_PSN);

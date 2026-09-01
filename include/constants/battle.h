@@ -104,17 +104,32 @@ enum ResultadosCombate
 // If a new STATUS1 is added here, it should also be added to
 // sCompressedStatuses in src/pokemon.c or else it will be lost outside
 // of battle.
-#define STATUS1_NONE             0
-#define STATUS1_SLEEP            (1 << 0 | 1 << 1 | 1 << 2) // First 3 bits (Number of turns to sleep)
-#define STATUS1_POISON           (1 << 3)
-#define STATUS1_BURN             (1 << 4)
-#define STATUS1_CONGELACION           (1 << 5)
-#define STATUS1_PARALYSIS        (1 << 6)
-#define STATUS1_TOXIC_POISON     (1 << 7)
-#define STATUS1_TOXIC_COUNTER    (1 << 8 | 1 << 9 | 1 << 10 | 1 << 11)
-#define STATUS1_TOXIC_TURN(num)  ((num) << 8)
-#define STATUS1_PSN_ANY          (STATUS1_POISON | STATUS1_TOXIC_POISON)
-#define STATUS1_ANY              (STATUS1_SLEEP | STATUS1_POISON | STATUS1_BURN | STATUS1_CONGELACION | STATUS1_PARALYSIS | STATUS1_TOXIC_POISON)
+// Estados principales.
+//
+// Se mantienen al cambiar de Pokemon dentro del combate y se borran al salir de
+// el: fuera de combate no existen, asi que no viajan a los datos del equipo.
+// Cada uno es su propia casilla, no un bit: pueden acumularse, y el dia que a
+// alguno le haga falta guardar algo mas que un si/no, ya cabe.
+//
+// Ninguno lleva contador de turnos. Duran hasta que algo los cure.
+enum EstadoPrincipal
+{
+    ESTADO_NINGUNO,
+    ESTADO_QUEMADURA,
+    ESTADO_CONGELACION,
+    ESTADO_VENENO,
+    ESTADO_PARALISIS,
+    ESTADO_SUENO,
+    ESTADO_ENAMORADO,
+    NUMERO_ESTADOS_PRINCIPALES,
+    ESTADO_CUALQUIERA,   // no se guarda: solo lo usan las curaciones que valen para todos
+};
+
+//
+// La interfaz de arriba -EstadoActivo, PonEstado, QuitaEstado- es la unica que
+// deberia usar el juego; estas banderas son el almacen y estan aqui para que
+// convivan los sitios que aun no se han pasado. Cuando no quede ninguno, el
+// array de casillas sustituye a la palabra y esto se borra entero.
 
 //enum EstadosPokemon
 //{
@@ -129,49 +144,45 @@ enum ResultadosCombate
 
 // Volatile status ailments
 // These are removed after exiting the battle or switching out
-#define STATUS2_CONFUSION             (1 << 0 | 1 << 1 | 1 << 2)
-#define STATUS2_CONFUSION_TURN(num)   ((num) << 0)
-#define STATUS2_FLINCHED              (1 << 3)
-#define STATUS2_UPROAR                (1 << 4 | 1 << 5 | 1 << 6)
-#define STATUS2_UPROAR_TURN(num)      ((num) << 4)
-#define STATUS2_TORMENT               (1 << 7)
-#define STATUS2_LOCK_CONFUSE          (1 << 10 | 1 << 11) // e.g. Thrash
-#define STATUS2_LOCK_CONFUSE_TURN(num)((num) << 10)
-#define STATUS2_MULTIPLETURNS         (1 << 12)
-#define STATUS2_WRAPPED               (1 << 13)
-#define STATUS2_INFATUATION           (1 << 16 | 1 << 17 | 1 << 18 | 1 << 19)  // 4 bits, one for every battler
-#define STATUS2_INFATUATED_WITH(battler) (1u << (battler + 16))
-#define STATUS2_DEFENSE_CURL          (1 << 20)
-#define STATUS2_RECHARGE              (1 << 22)
-#define STATUS2_RAGE                  (1 << 23)
-#define STATUS2_SUBSTITUTE            (1 << 24)
-#define STATUS2_DESTINY_BOND          (1 << 25)
-#define STATUS2_ESCAPE_PREVENTION     (1 << 26)
-#define STATUS2_NIGHTMARE             (1 << 27)
-#define STATUS2_CURSED                (1 << 28)
-#define STATUS2_FORESIGHT             (1 << 29)
+// Estados transitorios.
+//
+// Se borran al cambiar de Pokemon y no salen del combate. A diferencia de los
+// permanentes, estos SI se acumulan entre si: son cosas distintas que pueden
+// pasarle a la vez al mismo Pokemon.
+//
+// Antes estaban repartidos en dos palabras -status2 y gStatuses3- solo porque
+// no cabian en una; esa frontera no significaba nada y ha desaparecido.
+enum EstadoTransitorio
+{
+    TRANSITORIO_CONFUSION,
+    TRANSITORIO_SORPRESA,        // pierde el turno
+    TRANSITORIO_TORMENTO,        // no puede repetir movimiento
+    TRANSITORIO_ENCADENADO,      // repite contra la misma posicion del campo
+    TRANSITORIO_MULTITURNO,      // movimiento de varios turnos en curso
+    TRANSITORIO_RIZO_DEFENSA,
+    TRANSITORIO_DESCANSO,        // turno de descanso obligatorio
+    TRANSITORIO_FURIA,
+    TRANSITORIO_SUSTITUTO,
+    TRANSITORIO_SIN_ESCAPE,
+    TRANSITORIO_MALDICION,
+    TRANSITORIO_DRENADORAS,
+    TRANSITORIO_CANTO_MORTAL,
+    TRANSITORIO_EN_EL_AIRE,
+    TRANSITORIO_BAJO_TIERRA,
+    TRANSITORIO_BAJO_EL_AGUA,
+    TRANSITORIO_GOLPE_FANTASMA,
+    TRANSITORIO_CARGADO,
+    TRANSITORIO_ARRAIGADO,
+    TRANSITORIO_BILIS,
+    TRANSITORIO_ACUA_ARO,
+    NUMERO_ESTADOS_TRANSITORIOS,
+};
 
-#define STATUS3_LEECHSEED_BATTLER       (1 << 0 | 1 << 1) // The battler to receive HP from Leech Seed
-#define STATUS3_LEECHSEED               (1 << 2)
-#define STATUS3_ALWAYS_HITS             (1 << 3 | 1 << 4)
-#define STATUS3_ALWAYS_HITS_TURN(num)   (((num) << 3) & STATUS3_ALWAYS_HITS) // "Always Hits" is set as a 2 turn timer, i.e. next turn is the last turn when it's active
-#define STATUS3_PERISH_SONG             (1 << 5)
-#define STATUS3_ON_AIR                  (1 << 6)
-#define STATUS3_UNDERGROUND             (1 << 7)
-#define STATUS3_MINIMIZED               (1 << 8)
-#define STATUS3_CHARGED_UP              (1 << 9)
-#define STATUS3_ROOTED                  (1 << 10)
-#define STATUS3_IMPRISONED_OTHERS       (1 << 13)
-#define STATUS3_GASTRO_ACID             (1 << 16)
-#define STATUS3_EMBARGO                 (1 << 17)
-#define STATUS3_UNDERWATER              (1 << 18)
-#define STATUS3_TRACE                   (1 << 20)
-#define STATUS3_SMACKED_DOWN            (1 << 21)
-#define STATUS3_TELEKINESIS             (1 << 23)
-#define STATUS3_PHANTOM_FORCE           (1 << 24)
-#define STATUS3_MAGNET_RISE             (1 << 26)
-#define STATUS3_AQUA_RING               (1 << 28)
-#define STATUS3_SEMI_INVULNERABLE       (STATUS3_UNDERGROUND | STATUS3_ON_AIR | STATUS3_UNDERWATER | STATUS3_PHANTOM_FORCE)
+// Los cuatro que sacan al Pokemon del campo durante un turno.
+#define ES_SEMI_INVULNERABLE(b) (TransitorioActivo(b, TRANSITORIO_EN_EL_AIRE)     \
+                              || TransitorioActivo(b, TRANSITORIO_BAJO_TIERRA)    \
+                              || TransitorioActivo(b, TRANSITORIO_BAJO_EL_AGUA)   \
+                              || TransitorioActivo(b, TRANSITORIO_GOLPE_FANTASMA))
 
 // Marcas del golpe en curso.
 //
@@ -434,6 +445,7 @@ enum EfectosFinTurnoCampo
     ENDTURN_SNOW,
     ENDTURN_ESPACIO_RARO,
     ENDTURN_STATUS_HEAL,
+    FIN_TURNO_REPARTO_DRENADORAS,
     ENDTURN_FIELD_COUNT,
 };
 
@@ -449,18 +461,11 @@ enum EfectosFinTurnoIndividuales
     ENDTURN_BAD_POISON,
     ENDTURN_BURN,
     FIN_TURNO_CONGELACION,
-    ENDTURN_NIGHTMARES,
     ENDTURN_CURSE,
-    ENDTURN_WRAP,
-    ENDTURN_UPROAR,
     ENDTURN_THRASH,
     ENDTURN_FLINCH,
     ENDTURN_DISABLE,
     ENDTURN_ENCORE,
-    ENDTURN_MAGNET_RISE,
-    ENDTURN_TELEKINESIS,
-    ENDTURN_EMBARGO,
-    ENDTURN_LOCK_ON,
     ENDTURN_CHARGE,
     ENDTURN_TAUNT,
     ENDTURN_ITEMS2,

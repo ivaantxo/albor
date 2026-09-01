@@ -205,9 +205,9 @@ bool32 IsBattlerTrapped(u32 battler, bool32 checkSwitch)
         return FALSE;
     else if (!checkSwitch && holdEffect == HOLD_EFFECT_CAN_ALWAYS_RUN)
         return FALSE;
-    else if (gBattleMons[battler].status2 & (STATUS2_ESCAPE_PREVENTION | STATUS2_WRAPPED))
+    else if (TransitorioActivo(battler, TRANSITORIO_SIN_ESCAPE))
         return TRUE;
-    else if (gStatuses3[battler] & (STATUS3_ROOTED))
+    else if (TransitorioActivo(battler, TRANSITORIO_ARRAIGADO))
         return TRUE;
     else if (HabilidadImpideCambiar(battler) == TRUE)
         return TRUE;
@@ -292,11 +292,11 @@ bool32 IsDamageMoveUnusable(u32 battlerAtk, u32 battlerDef, u32 move, u32 moveTy
             return TRUE;
         break;
     case EFFECT_FOCUS_PUNCH:
-        if (TieneMovimientoOfensivo(battlerDef) && !((gBattleMons[battlerAtk].status2 & STATUS2_SUBSTITUTE) || IsBattlerIncapacitated(battlerDef, aiData->abilities[battlerDef]) || gBattleMons[battlerDef].status2 & (STATUS2_INFATUATION | STATUS2_CONFUSION)))
+        if (TieneMovimientoOfensivo(battlerDef) && !((TransitorioActivo(battlerAtk, TRANSITORIO_SUSTITUTO)) || IsBattlerIncapacitated(battlerDef, aiData->abilities[battlerDef]) || (EstadoActivo(battlerDef, ESTADO_ENAMORADO) || TransitorioActivo(battlerDef, TRANSITORIO_CONFUSION))))
             // TODO: || IsPredictedToSwitch(battlerDef, battlerAtk)
             return TRUE;
         // If AI could Sub and doesn't have a Sub, don't Punch yet
-        if (HasMoveEffect(battlerAtk, EFFECT_SUBSTITUTE) && !(gBattleMons[battlerAtk].status2 & STATUS2_SUBSTITUTE))
+        if (HasMoveEffect(battlerAtk, EFFECT_SUBSTITUTE) && !(TransitorioActivo(battlerAtk, TRANSITORIO_SUSTITUTO)))
             return TRUE;
         break;
     }
@@ -929,7 +929,7 @@ bool32 CanTargetFaintAIWithMod(u32 battlerDef, u32 battlerAtk, s32 hpMod, s32 dm
 
 u32 AI_HabilidadCombatiente(u32 battler)
 {
-    if (gStatuses3[battler] & STATUS3_GASTRO_ACID)
+    if (TransitorioActivo(battler, TRANSITORIO_BILIS))
         return ABILITY_NONE;
 
     if (IsNeutralizingGasOnField() && gBattleMons[battler].ability != ABILITY_NEUTRALIZING_GAS && GetBattlerHoldEffectIgnoreAbility(battler, TRUE) != HOLD_EFFECT_ABILITY_SHIELD)
@@ -987,9 +987,6 @@ u32 AI_DecideHoldEffectForTurn(u32 battlerId)
 
     if (AI_THINKING_STRUCT->aiFlags[battlerId] & AI_FLAG_NEGATE_UNAWARE)
         return holdEffect;
-
-    if (gStatuses3[battlerId] & STATUS3_EMBARGO)
-        return HOLD_EFFECT_NONE;
 
     return holdEffect;
 }
@@ -1059,13 +1056,13 @@ bool32 IsMoveRedirectionPrevented(u32 move, u32 atkAbility)
 
 bool32 IsSemiInvulnerable(u32 battlerDef, u32 move)
 {
-    if (gStatuses3[battlerDef] & STATUS3_PHANTOM_FORCE)
+    if (TransitorioActivo(battlerDef, TRANSITORIO_GOLPE_FANTASMA))
         return TRUE;
-    else if (!gMovimientos[move].damagesAirborne && gStatuses3[battlerDef] & STATUS3_ON_AIR)
+    else if (!gMovimientos[move].damagesAirborne && TransitorioActivo(battlerDef, TRANSITORIO_EN_EL_AIRE))
         return TRUE;
-    else if (!gMovimientos[move].damagesUnderwater && gStatuses3[battlerDef] & STATUS3_UNDERWATER)
+    else if (!gMovimientos[move].damagesUnderwater && TransitorioActivo(battlerDef, TRANSITORIO_BAJO_EL_AGUA))
         return TRUE;
-    else if (!gMovimientos[move].damagesUnderground && gStatuses3[battlerDef] & STATUS3_UNDERGROUND)
+    else if (!gMovimientos[move].damagesUnderground && TransitorioActivo(battlerDef, TRANSITORIO_BAJO_TIERRA))
         return TRUE;
     else
         return FALSE;
@@ -1186,12 +1183,12 @@ void ProtectChecks(u32 battlerAtk, u32 battlerDef, u32 move, u32 predictedMove, 
             ADJUST_SCORE_PTR(-(min(uses, 3)));
     }
 
-    if (gBattleMons[battlerAtk].status1 & (STATUS1_PSN_ANY | STATUS1_BURN | STATUS1_CONGELACION) || gBattleMons[battlerAtk].status2 & (STATUS2_CURSED | STATUS2_INFATUATION) || gStatuses3[battlerAtk] & (STATUS3_PERISH_SONG | STATUS3_LEECHSEED))
+    if ((EstadoActivo(battlerAtk, ESTADO_VENENO) || EstadoActivo(battlerAtk, ESTADO_QUEMADURA) || EstadoActivo(battlerAtk, ESTADO_CONGELACION)) || (TransitorioActivo(battlerAtk, TRANSITORIO_MALDICION) || EstadoActivo(battlerAtk, ESTADO_ENAMORADO)) || (TransitorioActivo(battlerAtk, TRANSITORIO_CANTO_MORTAL) || TransitorioActivo(battlerAtk, TRANSITORIO_DRENADORAS)))
     {
         ADJUST_SCORE_PTR(-1);
     }
 
-    if (gBattleMons[battlerDef].status1 & STATUS1_TOXIC_POISON || gBattleMons[battlerDef].status2 & (STATUS2_CURSED | STATUS2_INFATUATION) || gStatuses3[battlerDef] & (STATUS3_PERISH_SONG | STATUS3_LEECHSEED))
+    if (EstadoActivo(battlerDef, ESTADO_VENENO) || (TransitorioActivo(battlerDef, TRANSITORIO_MALDICION) || EstadoActivo(battlerDef, ESTADO_ENAMORADO)) || (TransitorioActivo(battlerDef, TRANSITORIO_CANTO_MORTAL) || TransitorioActivo(battlerDef, TRANSITORIO_DRENADORAS)))
         ADJUST_SCORE_PTR(DECENT_EFFECT);
 }
 
@@ -1608,15 +1605,12 @@ bool32 HasTrappingMoveEffect(u32 battler)
     return FALSE;
 }
 
+// Leviton era el unico movimiento que levantaba del suelo, y se fue con el
+// resto de las bajas. Se conserva la funcion porque la IA la consulta en varios
+// sitios; el dia que vuelva a haber alguno, se anade aqui.
 bool32 IsUngroundingEffect(u32 effect)
 {
-    switch (effect)
-    {
-    case EFFECT_MAGNET_RISE:
-        return TRUE;
-    default:
-        return FALSE;
-    }
+    return FALSE;
 }
 
 // for anger point
@@ -1817,7 +1811,7 @@ bool32 IsTwoTurnNotSemiInvulnerableMove(u32 battlerAtk, u32 move)
 static u32 GetLeechSeedDamage(u32 battlerId)
 {
     u32 damage = 0;
-    if ((gStatuses3[battlerId] & STATUS3_LEECHSEED) && gBattleMons[gStatuses3[battlerId] & STATUS3_LEECHSEED_BATTLER].hp != 0)
+    if (TransitorioActivo(battlerId, TRANSITORIO_DRENADORAS))
     {
         damage = CuantosPSMaximos(battlerId) / 8;
         if (damage == 0)
@@ -1829,19 +1823,13 @@ static u32 GetLeechSeedDamage(u32 battlerId)
 static u32 GetNightmareDamage(u32 battlerId)
 {
     u32 damage = 0;
-    if ((gBattleMons[battlerId].status2 & STATUS2_NIGHTMARE) && gBattleMons[battlerId].status1 & STATUS1_SLEEP)
-    {
-        damage = CuantosPSMaximos(battlerId) / 4;
-        if (damage == 0)
-            damage = 1;
-    }
     return damage;
 }
 
 static u32 GetCurseDamage(u32 battlerId)
 {
     u32 damage = 0;
-    if (gBattleMons[battlerId].status2 & STATUS2_CURSED)
+    if (TransitorioActivo(battlerId, TRANSITORIO_MALDICION))
     {
         damage = CuantosPSMaximos(battlerId) / 4;
         if (damage == 0)
@@ -1855,7 +1843,7 @@ static u32 GetTrapDamage(u32 battlerId)
     // ai has no knowledge about turns remaining
     u32 damage = 0;
     u32 holdEffect = AI_DATA->holdEffects[gCombate->wrappedBy[battlerId]];
-    if (gBattleMons[battlerId].status2 & STATUS2_WRAPPED)
+    if (TransitorioActivo(battlerId, TRANSITORIO_SIN_ESCAPE))
     {
         if (holdEffect == HOLD_EFFECT_BINDING_BAND)
             damage = CuantosPSMaximos(battlerId) / 8;
@@ -1875,20 +1863,20 @@ static u32 GetPoisonDamage(u32 battlerId)
     if (AI_DATA->abilities[battlerId] == ABILITY_POISON_HEAL)
         return damage;
 
-    if (gBattleMons[battlerId].status1 & STATUS1_POISON)
+    if (EstadoActivo(battlerId, ESTADO_VENENO))
     {
         damage = gBattleMons[battlerId].maxHP / 8;
         if (damage == 0)
             damage = 1;
     }
-    else if (gBattleMons[battlerId].status1 & STATUS1_TOXIC_POISON)
+    else if (EstadoActivo(battlerId, ESTADO_VENENO))
     {
         damage = gBattleMons[battlerId].maxHP / 16;
         if (damage == 0)
             damage = 1;
-        if ((gBattleMons[battlerId].status1 & STATUS1_TOXIC_COUNTER) != STATUS1_TOXIC_TURN(15)) // not 16 turns
-            gBattleMons[battlerId].status1 += STATUS1_TOXIC_TURN(1);
-        damage *= (gBattleMons[battlerId].status1 & STATUS1_TOXIC_COUNTER) >> 8;
+        damage = gBattleMons[battlerId].maxHP / 8;   // veneno unificado, sin contador
+        if (damage == 0)
+            damage = 1;
     }
     return damage;
 }
@@ -1918,7 +1906,7 @@ static u32 ObtenDanioClima(u32 battlerId)
 
     if (EsClimaCombateArena(climaCombate))
     {
-        if (BattlerAffectedBySandstorm(battlerId, ability) && !(gStatuses3[battlerId] & (STATUS3_UNDERGROUND | STATUS3_UNDERWATER)) && holdEffect != HOLD_EFFECT_SAFETY_GOGGLES)
+        if (BattlerAffectedBySandstorm(battlerId, ability) && !((TransitorioActivo(battlerId, TRANSITORIO_BAJO_TIERRA) || TransitorioActivo(battlerId, TRANSITORIO_BAJO_EL_AGUA))) && holdEffect != HOLD_EFFECT_SAFETY_GOGGLES)
         {
             damage = CuantosPSMaximos(battlerId) / 16;
             if (damage == 0)
@@ -1927,7 +1915,7 @@ static u32 ObtenDanioClima(u32 battlerId)
     }
     if (EsClimaCombateNieve(climaCombate) && ability != ABILITY_ICE_BODY)
     {
-        if (BattlerAffectedBySnow(battlerId, ability) && !(gStatuses3[battlerId] & (STATUS3_UNDERGROUND | STATUS3_UNDERWATER)) && holdEffect != HOLD_EFFECT_SAFETY_GOGGLES)
+        if (BattlerAffectedBySnow(battlerId, ability) && !((TransitorioActivo(battlerId, TRANSITORIO_BAJO_TIERRA) || TransitorioActivo(battlerId, TRANSITORIO_BAJO_EL_AGUA))) && holdEffect != HOLD_EFFECT_SAFETY_GOGGLES)
         {
             damage = CuantosPSMaximos(battlerId) / 16;
             if (damage == 0)
@@ -2186,7 +2174,7 @@ bool32 PuedeQuitarObjeto(u32 combatiente, u32 objeto)
 // status checks
 bool32 IsBattlerIncapacitated(u32 battler, u32 ability)
 {
-    if (gBattleMons[battler].status2 & STATUS2_RECHARGE)
+    if (TransitorioActivo(battler, TRANSITORIO_DESCANSO))
         return TRUE;
 
     return FALSE;
@@ -2225,7 +2213,7 @@ bool32 AI_CanParalyze(u32 battlerAtk, u32 battlerDef, u32 defAbility, u32 move, 
 
 bool32 AI_CanBeConfused(u32 battlerAtk, u32 battlerDef, u32 move, u32 ability)
 {
-    if ((gBattleMons[battlerDef].status2 & STATUS2_CONFUSION) || (ability == ABILITY_OWN_TEMPO && !DoesBattlerIgnoreAbilityChecks(AI_DATA->abilities[battlerAtk], move)) || gSideStatuses[GetBattlerSide(battlerDef)] & SIDE_STATUS_SAFEGUARD || DoesSubstituteBlockMove(battlerAtk, battlerDef, move))
+    if ((TransitorioActivo(battlerDef, TRANSITORIO_CONFUSION)) || (ability == ABILITY_OWN_TEMPO && !DoesBattlerIgnoreAbilityChecks(AI_DATA->abilities[battlerAtk], move)) || gSideStatuses[GetBattlerSide(battlerDef)] & SIDE_STATUS_SAFEGUARD || DoesSubstituteBlockMove(battlerAtk, battlerDef, move))
         return FALSE;
     return TRUE;
 }
@@ -2268,7 +2256,7 @@ bool32 IA_PuedeCongelar(u32 atacante, u32 defensor, u32 habilidad, u32 aliado, u
 
 bool32 AI_CanBeInfatuated(u32 battlerAtk, u32 battlerDef, u32 defAbility)
 {
-    if ((gBattleMons[battlerDef].status2 & STATUS2_INFATUATION) || AI_DATA->effectiveness[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex] == AI_EFFECTIVENESS_x0 || defAbility == ABILITY_OBLIVIOUS || !AreBattlersOfOppositeGender(battlerAtk, battlerDef))
+    if ((EstadoActivo(battlerDef, ESTADO_ENAMORADO)) || AI_DATA->effectiveness[battlerAtk][battlerDef][AI_THINKING_STRUCT->movesetIndex] == AI_EFFECTIVENESS_x0 || defAbility == ABILITY_OBLIVIOUS || !AreBattlersOfOppositeGender(battlerAtk, battlerDef))
         return FALSE;
     return TRUE;
 }
@@ -2279,7 +2267,7 @@ u32 ShouldTryToFlinch(u32 battlerAtk, u32 battlerDef, u32 atkAbility, u32 defAbi
     {
         return 0;
     }
-    else if ((atkAbility == ABILITY_SERENE_GRACE || gBattleMons[battlerDef].status1 & STATUS1_PARALYSIS || gBattleMons[battlerDef].status2 & STATUS2_INFATUATION || gBattleMons[battlerDef].status2 & STATUS2_CONFUSION) || ((AI_IsFaster(battlerAtk, battlerDef, move)) && CanTargetFaintAI(battlerDef, battlerAtk)))
+    else if ((atkAbility == ABILITY_SERENE_GRACE || EstadoActivo(battlerDef, ESTADO_PARALISIS) || EstadoActivo(battlerDef, ESTADO_ENAMORADO) || TransitorioActivo(battlerDef, TRANSITORIO_CONFUSION)) || ((AI_IsFaster(battlerAtk, battlerDef, move)) && CanTargetFaintAI(battlerDef, battlerAtk)))
     {
         return 2; // good idea to flinch
     }
@@ -2329,7 +2317,7 @@ bool32 AnyPartyMemberStatused(u32 battlerId, bool32 checkSoundproof)
         battlerOnField1 = gBattlerPartyIndexes[battlerId];
         battlerOnField2 = gBattlerPartyIndexes[ALIADO(battlerId)];
         // Check partner's status
-        if ((B_HEAL_BELL_SOUNDPROOF == GEN_5 || AI_DATA->abilities[ALIADO(battlerId)] != ABILITY_SOUNDPROOF || !checkSoundproof) && GetMonData(&party[battlerOnField2], MON_DATA_STATUS) != STATUS1_NONE)
+        if ((B_HEAL_BELL_SOUNDPROOF == GEN_5 || AI_DATA->abilities[ALIADO(battlerId)] != ABILITY_SOUNDPROOF || !checkSoundproof) && GetMonData(&party[battlerOnField2], MON_DATA_STATUS) != ESTADO_NINGUNO)
             return TRUE;
     }
     else // In singles there's only one battlerId by side.
@@ -2339,7 +2327,7 @@ bool32 AnyPartyMemberStatused(u32 battlerId, bool32 checkSoundproof)
     }
 
     // Check attacker's status
-    if ((B_HEAL_BELL_SOUNDPROOF == GEN_5 || B_HEAL_BELL_SOUNDPROOF >= GEN_8 || AI_DATA->abilities[battlerId] != ABILITY_SOUNDPROOF || !checkSoundproof) && GetMonData(&party[battlerOnField1], MON_DATA_STATUS) != STATUS1_NONE)
+    if ((B_HEAL_BELL_SOUNDPROOF == GEN_5 || B_HEAL_BELL_SOUNDPROOF >= GEN_8 || AI_DATA->abilities[battlerId] != ABILITY_SOUNDPROOF || !checkSoundproof) && GetMonData(&party[battlerOnField1], MON_DATA_STATUS) != ESTADO_NINGUNO)
         return TRUE;
 
     // Check inactive party mons' status
@@ -2349,7 +2337,7 @@ bool32 AnyPartyMemberStatused(u32 battlerId, bool32 checkSoundproof)
             continue;
         if (B_HEAL_BELL_SOUNDPROOF < GEN_5 && checkSoundproof && GetMonAbility(&party[i]) == ABILITY_SOUNDPROOF)
             continue;
-        if (GetMonData(&party[i], MON_DATA_STATUS) != STATUS1_NONE)
+        if (GetMonData(&party[i], MON_DATA_STATUS) != ESTADO_NINGUNO)
             return TRUE;
     }
 
@@ -2914,8 +2902,8 @@ void IncreasePoisonScore(u32 battlerAtk, u32 battlerDef, u32 move, s32 *score)
         if (AI_THINKING_STRUCT->aiFlags[battlerAtk] & AI_FLAG_STALL && HasMoveEffect(battlerAtk, EFFECT_PROTECT))
             ADJUST_SCORE_PTR(WEAK_EFFECT); // stall tactic
 
-        if ((HasMoveEffect(battlerAtk, EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(battlerAtk, STATUS1_PSN_ANY))
-         || (HasMoveEffect(ALIADO(battlerAtk), EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(ALIADO(battlerAtk), STATUS1_PSN_ANY))
+        if ((HasMoveEffect(battlerAtk, EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(battlerAtk, ESTADO_VENENO))
+         || (HasMoveEffect(ALIADO(battlerAtk), EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(ALIADO(battlerAtk), ESTADO_VENENO))
          || HasMoveEffect(battlerAtk, EFFECT_VENOM_DRENCH)
          || HasMoveEffect(battlerAtk, EFECTO_DOBLE_POTENCIA_SI_CUALQUIER_ESTADO)
          || HasMoveEffect(ALIADO(battlerAtk), EFECTO_DOBLE_POTENCIA_SI_CUALQUIER_ESTADO)
@@ -2942,8 +2930,8 @@ void IncreaseBurnScore(u32 battlerAtk, u32 battlerDef, u32 move, s32 *score)
                 ADJUST_SCORE_PTR(WEAK_EFFECT);
         }
 
-        if ((HasMoveEffect(battlerAtk, EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(battlerAtk, STATUS1_BURN))
-         || (HasMoveEffect(ALIADO(battlerAtk), EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(ALIADO(battlerAtk), STATUS1_BURN))
+        if ((HasMoveEffect(battlerAtk, EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(battlerAtk, ESTADO_QUEMADURA))
+         || (HasMoveEffect(ALIADO(battlerAtk), EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(ALIADO(battlerAtk), ESTADO_QUEMADURA))
          || HasMoveEffect(battlerAtk, EFECTO_DOBLE_POTENCIA_SI_CUALQUIER_ESTADO)
          || HasMoveEffect(ALIADO(battlerAtk), EFECTO_DOBLE_POTENCIA_SI_CUALQUIER_ESTADO))
             ADJUST_SCORE_PTR(WEAK_EFFECT);
@@ -2961,12 +2949,12 @@ void IncreaseParalyzeScore(u32 battlerAtk, u32 battlerDef, u32 move, s32 *score)
         u32 defSpeed = AI_DATA->speedStats[battlerDef];
 
         if ((defSpeed >= atkSpeed && defSpeed / 2 < atkSpeed)                                                                                                                                 // You'll go first after paralyzing foe
-            || (HasMoveEffect(battlerAtk, EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(battlerAtk, STATUS1_PARALYSIS))
-            || (HasMoveEffect(ALIADO(battlerAtk), EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(ALIADO(battlerAtk), STATUS1_PARALYSIS))
+            || (HasMoveEffect(battlerAtk, EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(battlerAtk, ESTADO_PARALISIS))
+            || (HasMoveEffect(ALIADO(battlerAtk), EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(ALIADO(battlerAtk), ESTADO_PARALISIS))
             || HasMoveEffect(battlerAtk, EFECTO_DOBLE_POTENCIA_SI_CUALQUIER_ESTADO)
             || HasMoveEffect(ALIADO(battlerAtk), EFECTO_DOBLE_POTENCIA_SI_CUALQUIER_ESTADO)
             || (HasMoveWithMoveEffectExcept(battlerAtk, MOVE_EFFECT_FLINCH, EFFECT_FIRST_TURN_ONLY)) // filter out Sorpresa
-            || gBattleMons[battlerDef].status2 & STATUS2_INFATUATION || gBattleMons[battlerDef].status2 & STATUS2_CONFUSION)
+            || EstadoActivo(battlerDef, ESTADO_ENAMORADO) || TransitorioActivo(battlerDef, TRANSITORIO_CONFUSION))
             ADJUST_SCORE_PTR(GOOD_EFFECT);
         else
             ADJUST_SCORE_PTR(DECENT_EFFECT);
@@ -2985,12 +2973,11 @@ void IncreaseSleepScore(u32 battlerAtk, u32 battlerDef, u32 move, s32 *score)
     else
         return;
 
-    if ((HasMoveEffect(battlerAtk, EFFECT_DREAM_EATER)
-     || HasMoveEffect(battlerAtk, EFFECT_NIGHTMARE)) && !(HasMoveEffect(battlerDef, EFFECT_SNORE)))
+    if (HasMoveEffect(battlerAtk, EFFECT_DREAM_EATER) && !(HasMoveEffect(battlerDef, EFFECT_SNORE)))
         ADJUST_SCORE_PTR(WEAK_EFFECT);
 
-    if ((HasMoveEffect(battlerAtk, EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(battlerAtk, STATUS1_SLEEP))
-        || (HasMoveEffect(ALIADO(battlerAtk), EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(ALIADO(battlerAtk), STATUS1_SLEEP))
+    if ((HasMoveEffect(battlerAtk, EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(battlerAtk, ESTADO_SUENO))
+        || (HasMoveEffect(ALIADO(battlerAtk), EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(ALIADO(battlerAtk), ESTADO_SUENO))
         || HasMoveEffect(battlerAtk, EFECTO_DOBLE_POTENCIA_SI_CUALQUIER_ESTADO)
         || HasMoveEffect(ALIADO(battlerAtk), EFECTO_DOBLE_POTENCIA_SI_CUALQUIER_ESTADO))
         ADJUST_SCORE_PTR(WEAK_EFFECT);
@@ -3003,7 +2990,7 @@ void IncreaseConfusionScore(u32 battlerAtk, u32 battlerDef, u32 move, s32 *score
 
     if (AI_CanConfuse(battlerAtk, battlerDef, AI_DATA->abilities[battlerDef], ALIADO(battlerAtk), move, AI_DATA->partnerMove) && AI_DATA->holdEffects[battlerDef] != HOLD_EFFECT_CURE_CONFUSION && AI_DATA->holdEffects[battlerDef] != HOLD_EFFECT_CURE_STATUS)
     {
-        if (gBattleMons[battlerDef].status1 & STATUS1_PARALYSIS || gBattleMons[battlerDef].status2 & STATUS2_INFATUATION || (AI_DATA->abilities[battlerAtk] == ABILITY_SERENE_GRACE && HasMoveWithMoveEffectExcept(battlerAtk, MOVE_EFFECT_FLINCH, EFFECT_FIRST_TURN_ONLY)))
+        if (EstadoActivo(battlerDef, ESTADO_PARALISIS) || EstadoActivo(battlerDef, ESTADO_ENAMORADO) || (AI_DATA->abilities[battlerAtk] == ABILITY_SERENE_GRACE && HasMoveWithMoveEffectExcept(battlerAtk, MOVE_EFFECT_FLINCH, EFFECT_FIRST_TURN_ONLY)))
             ADJUST_SCORE_PTR(GOOD_EFFECT);
         else
             ADJUST_SCORE_PTR(DECENT_EFFECT);
@@ -3026,8 +3013,8 @@ void AumentaPuntuacionCongelacion(u32 atacante, u32 defensor, u32 movimiento, s3
                 ADJUST_SCORE_PTR(WEAK_EFFECT);
         }
 
-        if ((HasMoveEffect(atacante, EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(atacante, STATUS1_CONGELACION))
-         || (HasMoveEffect(ALIADO(atacante), EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(ALIADO(atacante), STATUS1_CONGELACION))
+        if ((HasMoveEffect(atacante, EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(atacante, ESTADO_CONGELACION))
+         || (HasMoveEffect(ALIADO(atacante), EFECTO_DOBLE_POTENCIA_SI_ESTADO) && EstadoMovimientoCoincide(ALIADO(atacante), ESTADO_CONGELACION))
          || HasMoveEffect(atacante, EFECTO_DOBLE_POTENCIA_SI_CUALQUIER_ESTADO)
          || HasMoveEffect(ALIADO(atacante), EFECTO_DOBLE_POTENCIA_SI_CUALQUIER_ESTADO))
             ADJUST_SCORE_PTR(WEAK_EFFECT);
@@ -3097,12 +3084,12 @@ void IncreaseSubstituteMoveScore(u32 battlerAtk, u32 battlerDef, u32 move, s32 *
             ADJUST_SCORE_PTR(GOOD_EFFECT);
     }
 
-    if (gStatuses3[battlerDef] & STATUS3_PERISH_SONG)
+    if (TransitorioActivo(battlerDef, TRANSITORIO_CANTO_MORTAL))
         ADJUST_SCORE_PTR(GOOD_EFFECT);
 
-    if (gBattleMons[battlerDef].status1 & STATUS1_SLEEP)
+    if (EstadoActivo(battlerDef, ESTADO_SUENO))
         ADJUST_SCORE_PTR(GOOD_EFFECT);
-    else if (gBattleMons[battlerDef].status1 & (STATUS1_BURN | STATUS1_PSN_ANY | STATUS1_CONGELACION))
+    else if ((EstadoActivo(battlerDef, ESTADO_QUEMADURA) || EstadoActivo(battlerDef, ESTADO_VENENO) || EstadoActivo(battlerDef, ESTADO_CONGELACION)))
         ADJUST_SCORE_PTR(DECENT_EFFECT);
 
     // TODO:

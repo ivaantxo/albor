@@ -318,7 +318,7 @@ void Script_GetChosenMonDefensiveEVs(void)
 
 void Script_SetStatus1(struct ScriptContext *ctx)
 {
-    u32 status1 = VarGet(ScriptReadHalfword(ctx));
+    u32 estado = VarGet(ScriptReadHalfword(ctx));
     u32 slot = VarGet(ScriptReadHalfword(ctx));
 
     if (slot >= PARTY_SIZE)
@@ -331,11 +331,11 @@ void Script_SetStatus1(struct ScriptContext *ctx)
             if (species != SPECIES_NONE
              && species != SPECIES_EGG
              && GetMonData(&gPlayerParty[slot], MON_DATA_HP) != 0)
-                SetMonData(&gPlayerParty[slot], MON_DATA_STATUS, &status1);
+                SetMonData(&gPlayerParty[slot], MON_DATA_STATUS, &estado);
         }
     }
     else
     {
-        SetMonData(&gPlayerParty[slot], MON_DATA_STATUS, &status1);
+        SetMonData(&gPlayerParty[slot], MON_DATA_STATUS, &estado);
     }
 }

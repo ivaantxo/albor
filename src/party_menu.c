@@ -325,7 +325,6 @@ static void ShowOrHideHeldItemSprite(u16, struct PartyMenuBox *);
 static void SetPartyMonAilmentGfx(struct Pokemon *, struct PartyMenuBox *);
 static void UpdatePartyMonAilmentGfx(u8, struct PartyMenuBox *);
 static u8 GetPartyLayoutFromBattleType(void);
-static void Task_SetSacredAshCB(u8);
 static void CB2_ReturnToBagMenu(void);
 static void Task_DisplayHPRestoredMessage(u8);
 static u16 ItemEffectToMonEv(struct Pokemon *, u8);
@@ -359,9 +358,6 @@ static void Task_TryLearnNewMoves(u8);
 static void PartyMenuTryEvolution(u8);
 static void DisplayMonNeedsToReplaceMove(u8);
 static void DisplayMonLearnedMove(u8, u16);
-static void UseSacredAsh(u8);
-static void Task_SacredAshLoop(u8);
-static void Task_SacredAshDisplayHPRestored(u8);
 static void Task_SwitchItemsFromBagYesNo(u8);
 static void RemoveItemToGiveFromBag(u16);
 static void GiveItemToSelectedMon(u8);
@@ -1592,18 +1588,16 @@ static void ResetHPTaskData(u8 taskId, u8 caseId, u32 hp)
 #undef tPartyId
 #undef tStartHP
 
-u8 GetAilmentFromStatus(u32 status)
+u8 GetAilmentFromStatus(u32 estado)
 {
-    if (status & STATUS1_PSN_ANY)
-        return AILMENT_PSN;
-    if (status & STATUS1_PARALYSIS)
-        return AILMENT_PRZ;
-    if (status & STATUS1_SLEEP)
-        return AILMENT_SLP;
-    if (status & STATUS1_CONGELACION)
-        return AILMENT_FRZ;
-    if (status & STATUS1_BURN)
-        return AILMENT_BRN;
+    switch (estado)
+    {
+    case ESTADO_VENENO:      return AILMENT_PSN;
+    case ESTADO_PARALISIS:   return AILMENT_PRZ;
+    case ESTADO_SUENO:       return AILMENT_SLP;
+    case ESTADO_CONGELACION: return AILMENT_FRZ;
+    case ESTADO_QUEMADURA:   return AILMENT_BRN;
+    }
     return AILMENT_NONE;
 }
 
@@ -3215,7 +3209,6 @@ void CB2_ShowPartyMenuForItemUse(void)
     MainCallback callback = CB2_ReturnToBagMenu;
     u8 partyLayout;
     u8 menuType;
-    u32 i;
     u8 msgId;
     TaskFunc task;
 
@@ -3230,21 +3223,6 @@ void CB2_ShowPartyMenuForItemUse(void)
         partyLayout = PARTY_LAYOUT_SINGLE;
     }
 
-    if (GetItemEffectType(gSpecialVar_ItemId) == ITEM_EFFECT_SACRED_ASH)
-    {
-        gPartyMenu.slotId = 0;
-        for (i = 0; i < PARTY_SIZE; i++)
-        {
-            if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) != SPECIES_NONE && GetMonData(&gPlayerParty[i], MON_DATA_HP) == 0)
-            {
-                gPartyMenu.slotId = i;
-                break;
-            }
-        }
-        task = Task_SetSacredAshCB;
-        msgId = PARTY_MSG_NONE;
-    }
-    else
     {
         if (GetPocketByItemId(gSpecialVar_ItemId) == POCKET_TM_HM)
         {
@@ -3263,16 +3241,6 @@ void CB2_ShowPartyMenuForItemUse(void)
 static void CB2_ReturnToBagMenu(void)
 {
     GoToBagMenu(ITEMMENULOCATION_LAST, POCKETS_COUNT, NULL);
-}
-
-static void Task_SetSacredAshCB(u8 taskId)
-{
-    if (!gFundidoPaletas.activo)
-    {
-        if (gPartyMenu.menuType == PARTY_MENU_TYPE_IN_BATTLE)
-            sPartyMenuInternal->exitCallback = CB2_SetUpExitToBattleScreen;
-        gItemUseCB(taskId, Task_ClosePartyMenuAfterText); // ItemUseCB_SacredAsh in this case
-    }
 }
 
 static bool8 IsHPRecoveryItem(u16 item)
@@ -4498,85 +4466,6 @@ static void BufferMonStatsToTaskData(struct Pokemon *mon, s16 *data)
 #define tHadEffect    data[1]
 #define tLastSlotUsed data[2]
 
-void ItemUseCB_SacredAsh(u8 taskId, TaskFunc task)
-{
-    sPartyMenuInternal->tUsedOnSlot = FALSE;
-    sPartyMenuInternal->tHadEffect = FALSE;
-    sPartyMenuInternal->tLastSlotUsed = gPartyMenu.slotId;
-    UseSacredAsh(taskId);
-}
-
-static void UseSacredAsh(u8 taskId)
-{
-    struct Pokemon *mon = &gPlayerParty[gPartyMenu.slotId];
-    u16 hp;
-
-    if (GetMonData(mon, MON_DATA_SPECIES) == SPECIES_NONE)
-    {
-        gTasks[taskId].func = Task_SacredAshLoop;
-        return;
-    }
-
-    hp = GetMonData(mon, MON_DATA_HP);
-    if (ExecuteTableBasedItemEffect(mon, gSpecialVar_ItemId, gPartyMenu.slotId, 0))
-    {
-        gTasks[taskId].func = Task_SacredAshLoop;
-        return;
-    }
-
-    PlaySE(SE_USE_ITEM);
-    SetPartyMonAilmentGfx(mon, &sPartyMenuBoxes[gPartyMenu.slotId]);
-    if (gSprites[sPartyMenuBoxes[gPartyMenu.slotId].statusSpriteId].invisible)
-        DisplayPartyPokemonLevelCheck(mon, &sPartyMenuBoxes[gPartyMenu.slotId], 1);
-    AnimatePartySlot(sPartyMenuInternal->tLastSlotUsed, 0);
-    AnimatePartySlot(gPartyMenu.slotId, 1);
-    PartyMenuModifyHP(taskId, gPartyMenu.slotId, 1, GetMonData(mon, MON_DATA_HP) - hp, Task_SacredAshDisplayHPRestored);
-    ResetHPTaskData(taskId, 0, hp);
-    sPartyMenuInternal->tUsedOnSlot = TRUE;
-    sPartyMenuInternal->tHadEffect = TRUE;
-}
-
-static void Task_SacredAshLoop(u8 taskId)
-{
-    if (IsPartyMenuTextPrinterActive() != TRUE)
-    {
-        if (sPartyMenuInternal->tUsedOnSlot == TRUE)
-        {
-            sPartyMenuInternal->tUsedOnSlot = FALSE;
-            sPartyMenuInternal->tLastSlotUsed = gPartyMenu.slotId;
-        }
-        if (++(gPartyMenu.slotId) == PARTY_SIZE)
-        {
-            if (sPartyMenuInternal->tHadEffect == FALSE)
-            {
-                gPartyMenuUseExitCallback = FALSE;
-                DisplayPartyMenuMessage(gText_WontHaveEffect, TRUE);
-                ProgramaCopiaTilemapVram(FONDO_2);
-            }
-            else
-            {
-                gPartyMenuUseExitCallback = TRUE;
-                RemoveBagItem(gSpecialVar_ItemId, 1);
-            }
-            gTasks[taskId].func = Task_ClosePartyMenuAfterText;
-            gPartyMenu.slotId = 0;
-        }
-        else
-        {
-            UseSacredAsh(taskId);
-        }
-    }
-}
-
-static void Task_SacredAshDisplayHPRestored(u8 taskId)
-{
-    GetMonNickname(&gPlayerParty[gPartyMenu.slotId], gVariableTexto1);
-    StringExpandPlaceholders(gVariableTextoAmpliada, gText_PkmnHPRestoredByVar2);
-    DisplayPartyMenuMessage(gVariableTextoAmpliada, FALSE);
-    ProgramaCopiaTilemapVram(FONDO_2);
-    gTasks[taskId].func = Task_SacredAshLoop;
-}
-
 #undef tUsedOnSlot
 #undef tHadEffect
 #undef tLastSlotUsed
@@ -4904,8 +4793,6 @@ u8 GetItemEffectType(u16 item)
 
     if ((itemEffect[0] & ITEM0_DIRE_HIT) || itemEffect[1] || (itemEffect[3] & ITEM3_GUARD_SPEC))
         return ITEM_EFFECT_X_ITEM;
-    else if (itemEffect[0] & ITEM0_SACRED_ASH)
-        return ITEM_EFFECT_SACRED_ASH;
     else if (itemEffect[3] & ITEM3_LEVEL_UP)
         return ITEM_EFFECT_RAISE_LEVEL;
 

@@ -864,26 +864,26 @@ static void DibujaIconoEstado(u8 marcadorSpriteId)
 {
     u32 battlerId = gSprites[marcadorSpriteId].sMarcadorCombatiente;
     u32 estadoSpriteId = gSprites[marcadorSpriteId].sMarcadorPieza(PIEZA_ESTADO);
-    struct Pokemon *party = (GetBattlerSide(battlerId) == LADO_JUGADOR) ? gPlayerParty : gEnemyParty;
-    u32 status = GetMonData(&party[gBattlerPartyIndexes[battlerId]], MON_DATA_STATUS);
     u32 icono;
 
-    if (status & STATUS1_SLEEP)
-        icono = ICONO_ESTADO_SLP;
-    else if (status & STATUS1_PSN_ANY)
-        icono = ICONO_ESTADO_PSN;
-    else if (status & STATUS1_BURN)
-        icono = ICONO_ESTADO_BRN;
-    else if (status & STATUS1_CONGELACION)
-        icono = ICONO_ESTADO_FRZ;
-    else if (status & STATUS1_PARALYSIS)
-        icono = ICONO_ESTADO_PRZ;
-    else
+    // Los estados solo existen dentro del combate, asi que se leen del
+    // combatiente y no de los datos del equipo. Solo cabe un icono; si hay
+    // varios a la vez manda el orden de EstadoParaIcono.
+    switch (EstadoParaIcono(battlerId))
+    {
+    case ESTADO_SUENO:       icono = ICONO_ESTADO_SLP; break;
+    case ESTADO_VENENO:      icono = ICONO_ESTADO_PSN; break;
+    case ESTADO_QUEMADURA:   icono = ICONO_ESTADO_BRN; break;
+    case ESTADO_CONGELACION: icono = ICONO_ESTADO_FRZ; break;
+    case ESTADO_PARALISIS:   icono = ICONO_ESTADO_PRZ; break;
+    case ESTADO_ENAMORADO:   icono = ICONO_ESTADO_PSN; break; // sin icono propio todavia
+    default:
     {
         // Sin estado alterado no hay icono: el sprite se apaga y ya esta. Antes
         // habia que copiar un tile "en blanco" y ajustar un color de paleta.
         gSprites[estadoSpriteId].sPiezaOculta = TRUE;
         return;
+    }
     }
 
     // La hoja de iconos es una sola para los cuatro combatientes, asi que hay que

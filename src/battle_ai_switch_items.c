@@ -378,7 +378,7 @@ static bool32 ShouldSwitchIfBadlyStatused(u32 battler)
     bool32 hasStatRaised = AnyStatIsRaised(battler);
 
     //Perish Song
-    if (gStatuses3[battler] & STATUS3_PERISH_SONG
+    if (TransitorioActivo(battler, TRANSITORIO_CANTO_MORTAL)
         && gDisableStructs[battler].perishSongTimer == 0
         && monAbility != ABILITY_SOUNDPROOF)
         switchMon = TRUE;
@@ -390,30 +390,26 @@ static bool32 ShouldSwitchIfBadlyStatused(u32 battler)
             && !AIExpectsToFaintPlayer(battler))
         {
             //Toxic
-            if (((gBattleMons[battler].status1 & STATUS1_TOXIC_COUNTER) >= STATUS1_TOXIC_TURN(2))
+            if (EstadoActivo(battler, ESTADO_VENENO)
                 && gBattleMons[battler].hp >= (gBattleMons[battler].maxHP / 3)
                 && AI_DATA->mostSuitableMonId[battler] != PARTY_SIZE
                 && (hasStatRaised ? PorcentajeAleatorio(20) : PorcentajeAleatorio(50)))
                 switchMon = TRUE;
 
             //Cursed
-            if (gBattleMons[battler].status2 & STATUS2_CURSED
+            if (TransitorioActivo(battler, TRANSITORIO_MALDICION)
                 && (hasStatRaised ? PorcentajeAleatorio(20) : PorcentajeAleatorio(50)))
                 switchMon = TRUE;
 
-            //Nightmare
-            if (gBattleMons[battler].status2 & STATUS2_NIGHTMARE
-                && (hasStatRaised ? PorcentajeAleatorio(15) : PorcentajeAleatorio(33)))
-                switchMon = TRUE;
 
             //Leech Seed
-            if (gStatuses3[battler] & STATUS3_LEECHSEED
+            if (TransitorioActivo(battler, TRANSITORIO_DRENADORAS)
                 && (hasStatRaised ? PorcentajeAleatorio(10) : PorcentajeAleatorio(25)))
                 switchMon = TRUE;
         }
 
         // Infatuation
-        if (gBattleMons[battler].status2 & STATUS2_INFATUATION
+        if (EstadoActivo(battler, ESTADO_ENAMORADO)
             && !AIExpectsToFaintPlayer(battler))
             switchMon = TRUE;
     }
@@ -429,7 +425,7 @@ static bool32 ShouldSwitchIfAbilityBenefit(u32 battler)
     bool32 hasStatRaised = AnyStatIsRaised(battler);
 
     //Check if ability is blocked
-    if (gStatuses3[battler] & STATUS3_GASTRO_ACID
+    if (TransitorioActivo(battler, TRANSITORIO_BILIS)
         || IsNeutralizingGasOnField())
         return FALSE;
 
@@ -437,12 +433,12 @@ static bool32 ShouldSwitchIfAbilityBenefit(u32 battler)
     {
         case ABILITY_NATURAL_CURE:
             //Attempt to cure bad ailment
-            if (gBattleMons[battler].status1 & (STATUS1_SLEEP | STATUS1_CONGELACION | STATUS1_TOXIC_POISON)
+            if ((EstadoActivo(battler, ESTADO_SUENO) || EstadoActivo(battler, ESTADO_CONGELACION) || EstadoActivo(battler, ESTADO_VENENO))
                 && AI_DATA->mostSuitableMonId[battler] != PARTY_SIZE
                 && (hasStatRaised ? PorcentajeAleatorio(10) : PorcentajeAleatorio(66)))
                 break;
             //Attempt to cure lesser ailment
-            if ((gBattleMons[battler].status1 & STATUS1_ANY)
+            if ((HayAlgunEstado(battler))
                 && (gBattleMons[battler].hp >= gBattleMons[battler].maxHP / 2)
                 && AI_DATA->mostSuitableMonId[battler] != PARTY_SIZE
                 && (hasStatRaised ? PorcentajeAleatorio(10) : PorcentajeAleatorio(25)))
@@ -452,7 +448,7 @@ static bool32 ShouldSwitchIfAbilityBenefit(u32 battler)
 
         case ABILITY_REGENERATOR:
             //Don't switch if ailment
-            if (gBattleMons[battler].status1 & STATUS1_ANY)
+            if (HayAlgunEstado(battler))
                 return FALSE;
             if ((gBattleMons[battler].hp <= ((gBattleMons[battler].maxHP * 2) / 3))
                  && AI_DATA->mostSuitableMonId[battler] != PARTY_SIZE
@@ -763,9 +759,9 @@ bool32 ShouldSwitch(u32 battler)
     s32 availableToSwitch;
     bool32 hasAceMon = FALSE;
 
-    if (gBattleMons[battler].status2 & (STATUS2_WRAPPED | STATUS2_ESCAPE_PREVENTION))
+    if (TransitorioActivo(battler, TRANSITORIO_SIN_ESCAPE))
         return FALSE;
-    if (gStatuses3[battler] & STATUS3_ROOTED)
+    if (TransitorioActivo(battler, TRANSITORIO_ARRAIGADO))
         return FALSE;
     if (HabilidadImpideCambiar(battler) == TRUE)
         return FALSE;
@@ -1196,7 +1192,7 @@ static u32 GetSwitchinRecurringHealing(void)
     }
 
     // Abilities
-    if (ability == ABILITY_POISON_HEAL && (AI_DATA->switchinCandidate.battleMon.status1 & STATUS1_POISON))
+    if (ability == ABILITY_POISON_HEAL && AI_DATA->switchinCandidate.battleMon.estado == ESTADO_VENENO)
     {
         u32 healing = maxHP / 8;
         if (healing == 0)
@@ -1242,41 +1238,21 @@ static u32 GetSwitchinRecurringDamage(void)
 // Gets one turn of status damage
 static u32 GetSwitchinStatusDamage(u32 battler)
 {
-    u32 status = AI_DATA->switchinCandidate.battleMon.status1;
+    u32 estado = AI_DATA->switchinCandidate.battleMon.estado;
     u32 ability = AI_DATA->switchinCandidate.battleMon.ability;
     u32 maxHP = AI_DATA->switchinCandidate.battleMon.maxHP;
     u32 statusDamage = 0;
 
-    // Status condition damage
-    if ((status != 0) && AI_DATA->switchinCandidate.battleMon.ability != ABILITY_MAGIC_GUARD)
+    if (estado != ESTADO_NINGUNO && ability != ABILITY_MAGIC_GUARD)
     {
-        if (status & STATUS1_BURN)
-        {
+        if (estado == ESTADO_QUEMADURA || estado == ESTADO_CONGELACION)
             statusDamage = maxHP / 16;
-            if (statusDamage == 0)
-                statusDamage = 1;
-        }
-        else if (status & STATUS1_CONGELACION)
-        {
-            statusDamage = maxHP / 16;
-            if (statusDamage == 0)
-                statusDamage = 1;
-        }
-        else if ((status & STATUS1_POISON) && ability != ABILITY_POISON_HEAL)
-        {
+        else if (estado == ESTADO_VENENO && ability != ABILITY_POISON_HEAL)
             statusDamage = maxHP / 8;
-            if (statusDamage == 0)
-                statusDamage = 1;
-        }
-        else if ((status & STATUS1_TOXIC_POISON) && ability != ABILITY_POISON_HEAL)
-        {
-            if ((status & STATUS1_TOXIC_COUNTER) != STATUS1_TOXIC_TURN(15)) // not 16 turns
-                AI_DATA->switchinCandidate.battleMon.status1 += STATUS1_TOXIC_TURN(1);
-            statusDamage = maxHP / 16;
-            if (statusDamage == 0)
-                statusDamage = 1;
-            statusDamage *= AI_DATA->switchinCandidate.battleMon.status1 & STATUS1_TOXIC_COUNTER >> 8;
-        }
+
+        if (statusDamage == 0 && estado != ESTADO_PARALISIS
+         && estado != ESTADO_SUENO && estado != ESTADO_ENAMORADO)
+            statusDamage = 1;
     }
 
     // Las púas tóxicas ya no envenenan: solo hacen daño al entrar, y de eso se
@@ -1369,10 +1345,6 @@ static u32 GetSwitchinHitsToKO(s32 damageTaken, u32 battler)
         if (currentHP >= 0)
             currentHP = currentHP + recurringHealing - recurringDamage - statusDamage;
 
-        // Recalculate toxic damage if needed
-        if (AI_DATA->switchinCandidate.battleMon.status1 & STATUS1_TOXIC_POISON)
-            statusDamage = GetSwitchinStatusDamage(battler);
-
         // Reduce weather duration
         if (weatherDuration != 0)
             weatherDuration--;
@@ -1383,7 +1355,7 @@ static u32 GetSwitchinHitsToKO(s32 damageTaken, u32 battler)
     // If mon had a hypothetical status from TSpikes, clear it
     if (AI_DATA->switchinCandidate.hypotheticalStatus == TRUE)
     {
-        AI_DATA->switchinCandidate.battleMon.status1 = 0;
+        AI_DATA->switchinCandidate.battleMon.estado = ESTADO_NINGUNO;
         AI_DATA->switchinCandidate.hypotheticalStatus = FALSE;
     }
     return hitsToKO;

@@ -71,8 +71,9 @@ u8 ItemId_GetType(u16 itemId);
 ItemUseFunc ItemId_GetFieldFunc(u16 itemId);
 u8 ItemId_GetBattleUsage(u16 itemId);
 u8 ItemId_GetSecondaryId(u16 itemId);
-u32 GetItemStatus1Mask(u16 itemId);
-u32 GetItemStatus2Mask(u16 itemId);
+u32 EstadoQueCura(u16 itemId);
+bool32 CuraEsteEstado(u32 estado, u32 estadoQueCura);
+u32 TransitorioQueCura(u16 itemId);
 
 /* Expands to:
  * enum

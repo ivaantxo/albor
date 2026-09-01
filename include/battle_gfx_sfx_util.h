@@ -5,7 +5,7 @@ void AllocateBattleSpritesData(void);
 void FreeBattleSpritesData(void);
 void SpriteCB_WaitForBattlerBallReleaseAnim(struct Sprite *sprite);
 void SpriteCB_TrainerSlideIn(struct Sprite *sprite);
-void InitAndLaunchChosenStatusAnimation(u32 battler, bool32 isStatus2, u32 status);
+void InitAndLaunchChosenStatusAnimation(u32 battler, bool32 esTransitorio, u32 estado);
 bool8 TryHandleLaunchBattleTableAnimation(u8 activeBattlerId, u8 attacker, u8 target, u8 tableId, u16 argument);
 void InitAndLaunchSpecialAnimation(u8 activeBattlerId, u8 attacker, u8 target, u8 tableId);
 bool8 IsBattleSEPlaying(u8 battler);

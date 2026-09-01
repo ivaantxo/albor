@@ -113,7 +113,7 @@ struct BoxPokemon
 struct Pokemon
 {
     struct BoxPokemon box;
-    u32 status;
+    u8 estado;   // enum EstadoPrincipal
     u8 level;
     u16 hp;
     u16 maxHP;
@@ -156,8 +156,7 @@ struct BattlePokemon
     u8 otName[MAXIMO_CARACTERES_NOMBRE_JUGADOR + 1];
     u32 experience;
     u32 personality;
-    u32 status1;
-    u32 status2;
+    u8 estado;   // enum EstadoPrincipal
     u8 metLevel;
     bool8 isShiny;
 };

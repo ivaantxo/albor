@@ -340,16 +340,14 @@ void ComandoActualizaExperiencia(u32 combatiente, u8 indiceEquipo, s32 experienc
                    EsDelJugador(combatiente) ? PlayerHandleExpUpdate : BtlController_Empty);
 }
 
-void ComandoActualizaIconoEstado(u32 combatiente, u32 estado1, u32 estado2)
+void ComandoActualizaIconoEstado(u32 combatiente)
 {
-    gArgumentosComando[combatiente].estado1 = estado1;
-    gArgumentosComando[combatiente].estado2 = estado2;
     ArrancaComando(combatiente, CONTROLLER_STATUSICONUPDATE, BtlController_HandleStatusIconUpdate);
 }
 
-void ComandoAnimacionEstado(u32 combatiente, bool8 esEstado2, u32 estado)
+void ComandoAnimacionEstado(u32 combatiente, bool8 esTransitorio, u32 estado)
 {
-    gArgumentosComando[combatiente].esEstado2 = esEstado2;
+    gArgumentosComando[combatiente].esTransitorio = esTransitorio;
     gArgumentosComando[combatiente].estado1 = estado;
     ArrancaComando(combatiente, CONTROLLER_STATUSANIMATION, BtlController_HandleStatusAnimation);
 }
@@ -508,7 +506,7 @@ static u32 GetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId, u8 *
         battleMon.friendship = GetMonData(&party[monId], MON_DATA_FRIENDSHIP);
         battleMon.experience = GetMonData(&party[monId], MON_DATA_EXP);
         battleMon.personality = GetMonData(&party[monId], MON_DATA_PERSONALITY);
-        battleMon.status1 = GetMonData(&party[monId], MON_DATA_STATUS);
+        battleMon.estado = GetMonData(&party[monId], MON_DATA_STATUS);
         battleMon.level = GetMonData(&party[monId], MON_DATA_LEVEL);
         battleMon.hp = GetMonData(&party[monId], MON_DATA_HP);
         battleMon.maxHP = GetMonData(&party[monId], MON_DATA_MAX_HP);
@@ -754,7 +752,7 @@ static void SetBattlerMonData(u32 battler, struct Pokemon *party, u32 monId)
             SetMonData(&party[monId], MON_DATA_FRIENDSHIP, &battlePokemon->friendship);
             SetMonData(&party[monId], MON_DATA_EXP, &battlePokemon->experience);
             SetMonData(&party[monId], MON_DATA_PERSONALITY, &battlePokemon->personality);
-            SetMonData(&party[monId], MON_DATA_STATUS, &battlePokemon->status1);
+            SetMonData(&party[monId], MON_DATA_STATUS, &battlePokemon->estado);
             SetMonData(&party[monId], MON_DATA_LEVEL, &battlePokemon->level);
             SetMonData(&party[monId], MON_DATA_HP, &battlePokemon->hp);
             SetMonData(&party[monId], MON_DATA_MAX_HP, &battlePokemon->maxHP);
@@ -1477,7 +1475,7 @@ void BtlController_HandleStatusAnimation(u32 battler)
 {
     if (!IsBattleSEPlaying(battler))
     {
-        InitAndLaunchChosenStatusAnimation(battler, gArgumentosComando[battler].esEstado2, gArgumentosComando[battler].estado1);
+        InitAndLaunchChosenStatusAnimation(battler, gArgumentosComando[battler].esTransitorio, gArgumentosComando[battler].estado1);
         gBattlerControllerFuncs[battler] = Controller_WaitForStatusAnimation;
     }
 }

@@ -2018,7 +2018,6 @@ static void RestoreBagAfterWallyTutorial(void)
 void DoWallyTutorialBagMenu(void)
 {
     PrepareBagForWallyTutorial();
-    AddBagItem(ITEM_POTION, 1);
     AddBagItem(ITEM_POKE_BALL, 1);
     GoToBagMenu(ITEMMENULOCATION_WALLY, ITEMS_POCKET, CB2_SetUpReshowBattleScreenAfterMenu2);
 }

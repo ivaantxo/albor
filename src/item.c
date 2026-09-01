@@ -566,36 +566,43 @@ u8 ItemId_GetSecondaryId(u16 itemId)
     return gItemsInfo[SanitizeItemId(itemId)].secondaryId;
 }
 
-u32 GetItemStatus1Mask(u16 itemId)
+// TRUE si un objeto que cura "estadoQueCura" sirve contra el estado que hay.
+bool32 CuraEsteEstado(u32 estado, u32 estadoQueCura)
+{
+    if (estado == ESTADO_NINGUNO)
+        return FALSE;
+    return estado == estadoQueCura || estadoQueCura == ESTADO_CUALQUIERA;
+}
+
+u32 EstadoQueCura(u16 itemId)
 {
     const u8 *effect = ItemId_GetEffect(itemId);
     switch (effect[3])
     {
         case ITEM3_PARALYSIS:
-            return STATUS1_PARALYSIS;
+            return ESTADO_PARALISIS;
         case ITEM3_FREEZE:
-            return STATUS1_CONGELACION;
+            return ESTADO_CONGELACION;
         case ITEM3_BURN:
-            return STATUS1_BURN;
+            return ESTADO_QUEMADURA;
         case ITEM3_POISON:
-            return STATUS1_PSN_ANY | STATUS1_TOXIC_COUNTER;
+            return ESTADO_VENENO;
         case ITEM3_SLEEP:
-            return STATUS1_SLEEP;
+            return ESTADO_SUENO;
         case ITEM3_STATUS_ALL:
-            return STATUS1_ANY | STATUS1_TOXIC_COUNTER;
+            return ESTADO_CUALQUIERA;
     }
     return 0;
 }
 
-u32 GetItemStatus2Mask(u16 itemId)
+// Que estado transitorio cura un objeto, +1 para que el cero sea "ninguno".
+u32 TransitorioQueCura(u16 itemId)
 {
     const u8 *effect = ItemId_GetEffect(itemId);
     if (effect[3] & ITEM3_STATUS_ALL)
-        return STATUS2_INFATUATION | STATUS2_CONFUSION;
-    else if (effect[0] & ITEM0_INFATUATION)
-        return STATUS2_INFATUATION;
+        return TRANSITORIO_CONFUSION + 1;
     else if (effect[3] & ITEM3_CONFUSION)
-        return STATUS2_CONFUSION;
+        return TRANSITORIO_CONFUSION + 1;
     else
         return 0;
 }

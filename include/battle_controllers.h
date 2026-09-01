@@ -144,8 +144,7 @@ struct ArgumentosComando
     u16 valorPS;
     s32 experiencia;
     u32 estado1;
-    u32 estado2;
-    bool8 esEstado2;
+    bool8 esTransitorio;
     u16 cancion;
     bool8 esMusica;
     u8 banderas;
@@ -278,8 +277,8 @@ void ComandoEligeMovimiento(u32 combatiente, bool8 isDoubleBattle, bool8 NoPpNum
 void ComandoEligePokemon(u32 combatiente, u8 caseId, u8 slotId, u16 abilityId, u8 *data);
 void ComandoActualizaBarraSalud(u32 combatiente, u16 hpValue);
 void ComandoActualizaExperiencia(u32 combatiente, u8 partyId, s32 expPoints);
-void ComandoActualizaIconoEstado(u32 combatiente, u32 status1, u32 status2);
-void ComandoAnimacionEstado(u32 combatiente, bool8 status2, u32 status);
+void ComandoActualizaIconoEstado(u32 combatiente);
+void ComandoAnimacionEstado(u32 combatiente, bool8 esTransitorio, u32 estado);
 void RespondeDatos(u32 combatiente, u16 size, void *data);
 void RespondeDosValores(u32 combatiente, u8 ret8, u32 ret32);
 void RespondePokemonElegido(u32 combatiente, u8 partyId, u8 *battlePartyOrder);

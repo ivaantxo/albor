@@ -1687,11 +1687,11 @@
 	.4byte \func
 	.endm
 
-	@ Inflicts \status1 to the Pokémon in \slot.
+	@ Inflicts \estado to the Pokémon in \slot.
 	@ If \slot is greater or equal than PARTY_SIZE, the status is inflicted on each of the Player's Pokémon.
-	.macro setstatus1 status1:req, slot:req
+	.macro ponestado estado:req, slot:req
 	callnative Script_SetStatus1
-	.2byte \status1
+	.2byte \estado
 	.2byte \slot
 	.endm
 

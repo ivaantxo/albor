@@ -87,45 +87,23 @@ const u16 gItemIconPalette_CherishBall[] = INCBIN_U16("graphics/items/icon_palet
 
 // Medicine
 
-const u32 gItemIcon_Potion[] = INCBIN_U32("graphics/items/icons/potion.4bpp.lz");
-const u16 gItemIconPalette_Potion[] = INCBIN_U16("graphics/items/icon_palettes/potion.gbapal");
 
-const u16 gItemIconPalette_SuperPotion[] = INCBIN_U16("graphics/items/icon_palettes/super_potion.gbapal");
 
-const u16 gItemIconPalette_HyperPotion[] = INCBIN_U16("graphics/items/icon_palettes/hyper_potion.gbapal");
 
 const u32 gItemIcon_LargePotion[] = INCBIN_U32("graphics/items/icons/large_potion.4bpp.lz");
-const u16 gItemIconPalette_MaxPotion[] = INCBIN_U16("graphics/items/icon_palettes/max_potion.gbapal");
 
-const u16 gItemIconPalette_FullRestore[] = INCBIN_U16("graphics/items/icon_palettes/full_restore.gbapal");
 
-const u32 gItemIcon_Revive[] = INCBIN_U32("graphics/items/icons/revive.4bpp.lz");
-const u16 gItemIconPalette_Revive[] = INCBIN_U16("graphics/items/icon_palettes/revive.gbapal");
 
-const u32 gItemIcon_MaxRevive[] = INCBIN_U32("graphics/items/icons/max_revive.4bpp.lz");
 
-const u32 gItemIcon_FreshWater[] = INCBIN_U32("graphics/items/icons/fresh_water.4bpp.lz");
-const u16 gItemIconPalette_FreshWater[] = INCBIN_U16("graphics/items/icon_palettes/fresh_water.gbapal");
 
-const u32 gItemIcon_SodaPop[] = INCBIN_U32("graphics/items/icons/soda_pop.4bpp.lz");
-const u16 gItemIconPalette_SodaPop[] = INCBIN_U16("graphics/items/icon_palettes/soda_pop.gbapal");
 
-const u32 gItemIcon_Lemonade[] = INCBIN_U32("graphics/items/icons/lemonade.4bpp.lz");
-const u16 gItemIconPalette_Lemonade[] = INCBIN_U16("graphics/items/icon_palettes/lemonade.gbapal");
 
-const u32 gItemIcon_MoomooMilk[] = INCBIN_U32("graphics/items/icons/moomoo_milk.4bpp.lz");
-const u16 gItemIconPalette_MoomooMilk[] = INCBIN_U16("graphics/items/icon_palettes/moomoo_milk.gbapal");
 
 const u32 gItemIcon_Powder[] = INCBIN_U32("graphics/items/icons/powder.4bpp.lz");
-const u16 gItemIconPalette_EnergyPowder[] = INCBIN_U16("graphics/items/icon_palettes/energy_powder.gbapal");
 
-const u32 gItemIcon_EnergyRoot[] = INCBIN_U32("graphics/items/icons/energy_root.4bpp.lz");
-const u16 gItemIconPalette_EnergyRoot[] = INCBIN_U16("graphics/items/icon_palettes/energy_root.gbapal");
 
 const u16 gItemIconPalette_HealPowder[] = INCBIN_U16("graphics/items/icon_palettes/heal_powder.gbapal");
 
-const u32 gItemIcon_RevivalHerb[] = INCBIN_U32("graphics/items/icons/revival_herb.4bpp.lz");
-const u16 gItemIconPalette_RevivalHerb[] = INCBIN_U16("graphics/items/icon_palettes/revival_herb.gbapal");
 
 const u32 gItemIcon_Antidote[] = INCBIN_U32("graphics/items/icons/antidote.4bpp.lz");
 const u16 gItemIconPalette_Antidote[] = INCBIN_U16("graphics/items/icon_palettes/antidote.gbapal");
@@ -142,26 +120,13 @@ const u16 gItemIconPalette_Awakening[] = INCBIN_U16("graphics/items/icon_palette
 const u32 gItemIcon_FullHeal[] = INCBIN_U32("graphics/items/icons/full_heal.4bpp.lz");
 const u16 gItemIconPalette_FullHeal[] = INCBIN_U16("graphics/items/icon_palettes/full_heal.gbapal");
 
-const u32 gItemIcon_Ether[] = INCBIN_U32("graphics/items/icons/ether.4bpp.lz");
-const u16 gItemIconPalette_Ether[] = INCBIN_U16("graphics/items/icon_palettes/ether.gbapal");
 
-const u16 gItemIconPalette_MaxEther[] = INCBIN_U16("graphics/items/icon_palettes/max_ether.gbapal");
 
-const u16 gItemIconPalette_Elixir[] = INCBIN_U16("graphics/items/icon_palettes/elixir.gbapal");
 
-const u16 gItemIconPalette_MaxElixir[] = INCBIN_U16("graphics/items/icon_palettes/max_elixir.gbapal");
 
-const u32 gItemIcon_BerryJuice[] = INCBIN_U32("graphics/items/icons/berry_juice.4bpp.lz");
-const u16 gItemIconPalette_BerryJuice[] = INCBIN_U16("graphics/items/icon_palettes/berry_juice.gbapal");
 
-const u32 gItemIcon_SacredAsh[] = INCBIN_U32("graphics/items/icons/sacred_ash.4bpp.lz");
-const u16 gItemIconPalette_SacredAsh[] = INCBIN_U16("graphics/items/icon_palettes/sacred_ash.gbapal");
 
-const u32 gItemIcon_SweetHeart[] = INCBIN_U32("graphics/items/icons/sweet_heart.4bpp.lz");
-const u16 gItemIconPalette_SweetHeart[] = INCBIN_U16("graphics/items/icon_palettes/sweet_heart.gbapal");
 
-const u32 gItemIcon_MaxHoney[] = INCBIN_U32("graphics/items/icons/max_honey.4bpp.lz");
-const u16 gItemIconPalette_MaxHoney[] = INCBIN_U16("graphics/items/icon_palettes/max_honey.gbapal");
 
 // Regional Specialties
 
@@ -1784,14 +1749,8 @@ const u16 gItemIconPalette_LustrousGlobe[] = INCBIN_U16("graphics/items/icon_pal
 const u32 gItemIcon_FairyFeather[] = INCBIN_U32("graphics/items/icons/fairy_feather.4bpp.lz");
 const u16 gItemIconPalette_FairyFeather[] = INCBIN_U16("graphics/items/icon_palettes/fairy_feather.gbapal");
 
-const u32 gItemIcon_Remedy[] = INCBIN_U32("graphics/items/icons/remedy.4bpp.lz");
-const u16 gItemIconPalette_Remedy[] = INCBIN_U16("graphics/items/icon_palettes/remedy.gbapal");
 
-const u32 gItemIcon_FineRemedy[] = INCBIN_U32("graphics/items/icons/fine_remedy.4bpp.lz");
-const u16 gItemIconPalette_FineRemedy[] = INCBIN_U16("graphics/items/icon_palettes/fine_remedy.gbapal");
 
-const u32 gItemIcon_SuperbRemedy[] = INCBIN_U32("graphics/items/icons/superb_remedy.4bpp.lz");
-const u16 gItemIconPalette_SuperbRemedy[] = INCBIN_U16("graphics/items/icon_palettes/superb_remedy.gbapal");
 
 const u32 gItemIcon_AuxBottle[] = INCBIN_U32("graphics/items/icons/aux_bottle.4bpp.lz");
 const u16 gItemIconPalette_AuxEvasion[] = INCBIN_U16("graphics/items/icon_palettes/aux_evasion.gbapal");

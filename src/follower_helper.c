@@ -285,7 +285,7 @@ const struct FollowerMsgInfoExtended gFollowerConditionalMessages[COND_MSG_COUNT
         .emotion = FOLLOWER_EMOTION_UPSET,
         .conditions =
         {
-           MATCH_STATUS(STATUS1_CONGELACION),
+           MATCH_STATUS(ESTADO_CONGELACION),
         },
     },
     [COND_MSG_SEASIDE] =
@@ -351,7 +351,7 @@ const struct FollowerMsgInfoExtended gFollowerConditionalMessages[COND_MSG_COUNT
         .emotion = FOLLOWER_EMOTION_SAD,
         .conditions =
         {
-            MATCH_STATUS(STATUS1_BURN),
+            MATCH_STATUS(ESTADO_QUEMADURA),
         },
     },
     [COND_MSG_DAY] =
