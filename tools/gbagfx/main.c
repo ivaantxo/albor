@@ -297,11 +297,35 @@ void HandlePngToJascPaletteCommand(char *inputPath, char *outputPath, int argc U
     WriteJascPalette(outputPath, &palette);
 }
 
-void HandlePngToGbaPaletteCommand(char *inputPath, char *outputPath, int argc UNUSED, char **argv UNUSED)
+void HandlePngToGbaPaletteCommand(char *inputPath, char *outputPath, int argc, char **argv)
 {
     struct Palette palette = {};
+    int numColors = 0;
+
+    for (int i = 3; i < argc; i++) {
+        char *option = argv[i];
+
+        if (strcmp(option, "-num_colors") == 0) {
+            if (i + 1 >= argc)
+                FATAL_ERROR("No number of colors following \"-num_colors\".\n");
+            i++;
+            if (!ParseNumber(argv[i], NULL, 10, &numColors))
+                FATAL_ERROR("Failed to parse number of colors.\n");
+            if (numColors < 1 || numColors > 256)
+                FATAL_ERROR("Number of colors must be in 1..256.\n");
+        } else {
+            FATAL_ERROR("Unrecognized option \"%s\".\n", option);
+        }
+    }
 
     ReadPngPalette(inputPath, &palette);
+
+    // Con -num_colors el fichero mide siempre lo mismo aunque el png traiga
+    // menos colores: los que faltan salen a negro. Sin esto, un png de 5
+    // colores genera una paleta de 10 bytes y quien la cargue leera 32.
+    if (numColors > palette.numColors)
+        palette.numColors = numColors;
+
     WriteGbaPalette(outputPath, &palette);
 }
 

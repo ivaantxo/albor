@@ -280,6 +280,14 @@ $(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.s $(PREPROC) charmap.txt
 $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $(PREPROC) charmap.txt
 	@mkdir -p $(dir $@)
 	$(PREPROC) $< charmap.txt | $(CPP) $(INCLUDE_CPP_ARGS) - | $(PREPROC) -ie $< charmap.txt | $(AS) $(ASFLAGS) -o $@
+
+# Sin esto los .s de data/ no se rehacen aunque cambie una constante que usan:
+# mas abajo se hace -include de estos .d, pero nadie los generaba. Un scripts de
+# animacion viejo junto a una tabla nueva significa que cada animacion carga el
+# sprite equivocado, y no se nota hasta que se mira.
+$(DATA_ASM_BUILDDIR)/%.d: $(DATA_ASM_SUBDIR)/%.s
+	@mkdir -p $(dir $@)
+	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) -I "" $<
 	
 ifneq ($(NODEP),1)
 -include $(addprefix $(OBJ_DIR)/,$(REGULAR_DATA_ASM_SRCS:.s=.d))

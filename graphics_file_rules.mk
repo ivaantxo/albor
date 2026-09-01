@@ -149,6 +149,22 @@ $(TILESETGFXDIR)/secondary/navel_rock/tiles.4bpp: %.4bpp: %.png
 $(TILESETGFXDIR)/secondary/mystery_events_house/tiles.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 509 -Wnum_tiles
 
+### Animaciones de combate ###
+
+# Un sprite de animacion gasta una paleta de 16 colores, y el cargador copia
+# siempre 32 bytes. Un png con menos colores generaba un fichero mas corto y se
+# leia fuera de el, asi que aqui se rellena hasta 16.
+#
+# Solo para los sprites que unicamente tienen png: donde hay .pal manda el .pal,
+# porque alguno lleva varias paletas seguidas en el mismo fichero -las notas de
+# Campana Cura son cinco- y forzar 16 lo dejaria en la primera.
+BTLANMSPR_SOLO_PNG := $(patsubst %.png,%.gbapal,\
+    $(filter-out $(patsubst %.pal,%.png,$(wildcard $(BTLANMSPRGFXDIR)/*.pal)),\
+                 $(wildcard $(BTLANMSPRGFXDIR)/*.png)))
+
+$(BTLANMSPR_SOLO_PNG): %.gbapal: %.png
+	$(GFX) $< $@ -num_colors 16
+
 ### Fuentes ###
 
 $(FONTGFXDIR)/normal.latfont: $(FONTGFXDIR)/normal.png

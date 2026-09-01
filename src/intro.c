@@ -22,6 +22,7 @@
 #include "title_screen.h"
 #include "expansion_intro.h"
 #include "constants/rgb.h"
+#include "battle_anim.h"
 #include "constants/battle_anim.h"
 
 /*
@@ -105,7 +106,6 @@ static void SpriteCB_RayquazaOrb(struct Sprite *sprite);
 
 static void MainCB2_EndIntro(void);
 
-extern const struct CompressedSpriteSheetAndPalette gBattleAnimTable[];
 
 extern const struct SpriteTemplate gAncientPowerRockSpriteTemplate[];
 
@@ -1746,7 +1746,7 @@ static void Task_Scene3_LoadGroudon(u8 taskId)
         LZDecompressVram(gIntroGroudon_Tilemap, (void *)(BG_CHAR_ADDR(3)));
         LZDecompressVram(gIntroLegendBg_Gfx, (void *)(BG_CHAR_ADDR(1)));
         LZDecompressVram(gIntroGroudonBg_Tilemap, (void *)(BG_SCREEN_ADDR(28)));
-        LoadCompressedSpriteSheetAndPaletteUsingHeap(&gBattleAnimTable[ANIM_TAG_ROCKS]);
+        CargaSpriteDeAnimacion(ANIM_TAG_ROCKS);
         CopiaCpu16(gIntro3Bg_Pal, gPlttBufferUnfaded, sizeof(gIntro3Bg_Pal));
         gTasks[taskId].func = Task_Scene3_InitGroudonBg;
     }

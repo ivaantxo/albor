@@ -27,7 +27,12 @@
     battle_anim_script.inc and used in battle_anim_scripts.s
 */
 
-#define ANIM_SPRITE_INDEX_COUNT 8
+// Cuantos sprites puede tener cargados a la vez una animacion. Es lo que se
+// recuerda para soltarlo al acabar, asi que pasarse no rompe nada de golpe:
+// simplemente el sobrante se queda en VRAM y con su hueco de paleta pillado
+// hasta el final del combate. La animacion mas cargada -Laser Prismatico- gasta
+// nueve, asi que hay margen; si alguna futura se acerca, subir esto.
+#define ANIM_SPRITE_INDEX_COUNT 12
 
 static void Cmd_loadspritegfx(void);
 static void Cmd_unloadspritegfx(void);
@@ -415,29 +420,62 @@ static void RunAnimScriptCommand(void)
     } while (sAnimFramesToWait == 0 && gAnimScriptActive);
 }
 
+// Carga un sprite entero bajo su etiqueta: el dibujo, con el tamano que diga su
+// cabecera, y la paleta, que va cruda en la ROM y no hay que descomprimir. La
+// etiqueta es la que usan luego las plantillas de sprite del script.
+void CargaSpriteDeAnimacion(u32 etiqueta)
+{
+    const struct SpriteAnimacion *sprite = &gSpritesAnimacion[etiqueta - ANIM_SPRITES_START];
+    struct SpritePalette paleta = { sprite->paleta, etiqueta };
+    u32 inicio;
+
+    // Si la etiqueta seguia cargada de antes -una animacion que no la solto, o
+    // dos que la comparten- hay que soltarla primero. Cargarla encima anadiria
+    // un segundo tramo con la misma etiqueta, y quien preguntase por ella se
+    // llevaria el tramo viejo mientras el dibujo nuevo esta en otro sitio: el
+    // sprite acaba enseñando los tiles de otro.
+    if (GetSpriteTileStartByTag(etiqueta) != TAG_NONE)
+        SueltaSpriteDeAnimacion(etiqueta);
+
+    inicio = CargaSpriteComprimidoConEtiqueta(sprite->grafico, etiqueta, sprite->reserva);
+    LoadSpritePalette(&paleta);
+
+#if DEPURACION_MGBA
+    if (inicio == TAG_NONE)
+        LOG("ANIM: no ha entrado el sprite / etiqueta", etiqueta, 0);
+    else
+        LOG("ANIM: etiqueta / primer tile", etiqueta, inicio);
+#endif
+}
+
+void SueltaSpriteDeAnimacion(u32 etiqueta)
+{
+    FreeSpriteTilesByTag(etiqueta);
+    FreeSpritePaletteByTag(etiqueta);
+}
+
 static void Cmd_loadspritegfx(void)
 {
-    u16 index;
+    u16 etiqueta;
 
     sBattleAnimScriptPtr++;
-    index = T1_READ_16(sBattleAnimScriptPtr);
-    LoadCompressedSpriteSheetAndPaletteUsingHeap(&gBattleAnimTable[index]);
+    etiqueta = T1_READ_16(sBattleAnimScriptPtr);
+    CargaSpriteDeAnimacion(etiqueta);
     sBattleAnimScriptPtr += 2;
-    AddSpriteIndex(index);
+    AddSpriteIndex(etiqueta);
     sAnimFramesToWait = 1;
     gAnimScriptCallback = WaitAnimFrameCount;
 }
 
 static void Cmd_unloadspritegfx(void)
 {
-    u16 index;
+    u16 etiqueta;
 
     sBattleAnimScriptPtr++;
-    index = T1_READ_16(sBattleAnimScriptPtr);
-    FreeSpriteTilesByTag(gBattleAnimTable[index].tag);
-    FreeSpritePaletteByTag(gBattleAnimTable[index].tag);
+    etiqueta = T1_READ_16(sBattleAnimScriptPtr);
+    SueltaSpriteDeAnimacion(etiqueta);
     sBattleAnimScriptPtr += 2;
-    ClearSpriteIndex(index);
+    ClearSpriteIndex(etiqueta);
 }
 
 static u8 GetBattleAnimMoveTargets(u8 battlerArgIndex, u8 *targets)
@@ -774,8 +812,7 @@ static void Cmd_end(void)
     {
         if (sAnimSpriteIndexArray[i] != 0xFFFF)
         {
-            FreeSpriteTilesByTag(gBattleAnimTable[sAnimSpriteIndexArray[i]].tag);
-            FreeSpritePaletteByTag(gBattleAnimTable[sAnimSpriteIndexArray[i]].tag);
+            SueltaSpriteDeAnimacion(sAnimSpriteIndexArray[i]);
             sAnimSpriteIndexArray[i] = 0xFFFF; // set terminator.
         }
     }

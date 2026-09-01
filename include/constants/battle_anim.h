@@ -3,9 +3,17 @@
 
 #include "battle_anim_scripts.h"
 
+// Las etiquetas de sprite son un espacio compartido con el resto del juego, y
+// la paleta de un Pokemon en combate se registra con su numero de especie
+// -SetMultiuseSpriteTemplateToPokemon-. Si las animaciones empezaran en cero se
+// pisarian: cargar ANIM_TAG_LICK -174- encontraria la paleta de Igglybuff ya
+// puesta bajo esa etiqueta, la reutilizaria sin cargar la suya, y al terminar la
+// animacion liberaria la del Pokemon. De ahi que empiecen bien lejos.
+#define ANIM_SPRITES_START 10000
+
 enum AnimTags
 {
-    ANIM_TAG_BONE,
+    ANIM_TAG_BONE = ANIM_SPRITES_START,
     ANIM_TAG_SPARK,
     ANIM_TAG_PENCIL,
     ANIM_TAG_AIR_WAVE,
@@ -51,7 +59,6 @@ enum AnimTags
     ANIM_TAG_GLASS_2, // unused
     ANIM_TAG_PINK_HEART_2, // unused
     ANIM_TAG_SAP_DRIP, // unused
-    ANIM_TAG_SAP_DRIP_2, // unused
     ANIM_TAG_SPARKLE_1,
     ANIM_TAG_SPARKLE_2,
     ANIM_TAG_HUMANOID_FOOT,
@@ -363,10 +370,11 @@ enum AnimTags
     ANIM_TAG_BEAM,
     ANIM_TAG_RED_EXPLOSION,
     ANIM_TAG_PURPLE_CHAIN,
-    ANIM_TAG_PINKVIO_ORB,
 
     ANIM_TAG_COUNT
 };
+
+#define NUMERO_SPRITES_ANIMACION (ANIM_TAG_COUNT - ANIM_SPRITES_START)
 
 #define TAG_MUSIC_NOTES_TEMP_BASE 0xF000
 #define TAG_VS_LETTER             0xEFFF

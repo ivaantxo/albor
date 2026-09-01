@@ -11,7 +11,6 @@
 #include "constants/battle_anim.h"
 #include "constants/rgb.h"
 
-extern const struct CompressedSpriteSheetAndPalette gBattleAnimTable[];
 extern const struct OamData gOamData_AffineOff_ObjNormal_8x8;
 extern const struct OamData gOamData_AffineOff_ObjBlend_64x64;
 

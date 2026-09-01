@@ -2293,7 +2293,7 @@ void TryShinyAnimation(u8 battler, struct Pokemon *mon)
         {
             if (GetSpriteTileStartByTag(ANIM_TAG_GOLD_STARS) == 0xFFFF)
             {
-                LoadCompressedSpriteSheetAndPaletteUsingHeap(&gBattleAnimTable[ANIM_TAG_GOLD_STARS]);
+                CargaSpriteDeAnimacion(ANIM_TAG_GOLD_STARS);
             }
 
             taskCirc = CreateTask(Task_ShinyStars, 10);

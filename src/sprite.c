@@ -1,5 +1,7 @@
 #include "global.h"
 #include "sprite.h"
+#include "decompress.h"
+#include "malloc.h"
 #include "depuracion_mgba.h"
 #include "main.h"
 #include "palette.h"
@@ -673,6 +675,10 @@ s16 AllocSpriteTiles(u16 tileCount)
 
     if (tileCount == 0)
     {
+        // Pedir cero tiles no significa "ninguno": vacia el mapa entero y deja
+        // todos los sprites cargados apuntando a tiles que ya se consideran
+        // libres. Es una sobrecarga de vanilla y casi nunca es lo que se quiere.
+        LOG("TILES: VACIADO COMPLETO DEL MAPA", 0, 0);
         for (i = gReservedSpriteTileCount; i < NUMERO_TILES_SPRITES; i++)
             FREE_SPRITE_TILE(i);
         return 0;
@@ -1443,6 +1449,46 @@ u16 LoadSpriteSheet(const struct SpriteSheet *sheet)
     return LoadSpriteSheetWithOffset(sheet, 0);
 }
 
+// Carga un grafico comprimido bajo una etiqueta. El tamano lo manda la cabecera
+// del LZ77, no una cifra escrita a mano que puede no cuadrar; "reserva" solo se
+// usa cuando el sprite necesita mas tiles de los que trae el dibujo, y entonces
+// los de mas se quedan en blanco.
+//
+// Se descomprime a un buffer y de ahi se copia, en vez de descomprimir sobre la
+// propia VRAM: LZ77UnCompVram lee lo que ya ha escrito para resolver las
+// referencias hacia atras, y sobre VRAM eso corrompe los dibujos con zonas
+// planas -que son justo las que comprimen con referencias cortas-.
+u16 CargaSpriteComprimidoConEtiqueta(const u32 *grafico, u16 etiqueta, u32 reserva)
+{
+    u32 tamano = IsLZ77Data(grafico, TILE_4BPP, MAX_TAMANO_DESCOMPRESION);
+    struct SpriteSheet ficha;
+    void *buffer;
+    u16 resultado;
+
+    if (tamano == 0)
+        return TAG_NONE;
+    if (reserva < tamano)
+        reserva = tamano;
+
+    buffer = AllocZeroed(reserva);
+    if (buffer == NULL)
+        return TAG_NONE;
+
+    LZ77UnCompWram(grafico, buffer);
+
+    ficha.data = buffer;
+    ficha.size = reserva;
+    ficha.tag = etiqueta;
+    resultado = LoadSpriteSheet(&ficha);
+
+    LOG("TILES: bytes / primeros datos", reserva, *(u32 *)buffer);
+    LOG("TILES: destino VRAM / lo que hay ya alli", (u32)((u8 *)OBJ_VRAM0 + TILE_4BPP * resultado),
+        *(u32 *)((u8 *)OBJ_VRAM0 + TILE_4BPP * resultado));
+
+    Free(buffer);
+    return resultado;
+}
+
 // Like LoadSpriteSheet, but checks if already loaded, and uses template image frames
 u16 LoadSpriteSheetByTemplate(const struct SpriteTemplate *template, u32 frame, s32 offset)
 {
@@ -1481,6 +1527,7 @@ void FreeSpriteTilesByTag(u16 tag)
         rangeCounts = sSpriteTileRanges + 1;
         count = rangeCounts[index * 2];
 
+        LOG("TILES: suelta etiqueta / primer tile", tag, start);
         for (i = start; i < start + count; i++)
             FREE_SPRITE_TILE(i);
 

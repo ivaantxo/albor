@@ -424,7 +424,26 @@ extern const struct OamData gOamData_AffineOff_ObjBlend_64x32;
 extern const struct OamData gOamData_AffineOff_ObjBlend_16x32;
 extern const struct OamData gOamData_AffineDouble_ObjBlend_32x8;
 
-extern const struct CompressedSpriteSheetAndPalette gBattleAnimTable[];
+// Cada sprite de animacion son dos cosas: el grafico comprimido y la paleta de
+// 16 colores en crudo. La posicion en la tabla ES la etiqueta, y el tamano sale
+// de la cabecera del LZ77, asi que no hay campos que puedan desmentirse.
+struct SpriteAnimacion
+{
+    const u32 *grafico;
+    const u16 *paleta;
+    // Cuanta VRAM se le reserva. A cero -lo normal- se reserva justo lo que
+    // ocupa el dibujo. Solo se pone cuando el sprite usa mas tiles de los que
+    // trae el dibujo y los que sobran tienen que quedarse en blanco: si no se
+    // reservan, el sprite acaba enseñando los tiles del vecino.
+    u16 reserva;
+};
+
+extern const struct SpriteAnimacion gSpritesAnimacion[];
+
+// Reserva sitio en VRAM y deja ahi el sprite, con su paleta bajo la misma
+// etiqueta. Es lo que hace loadspritegfx desde el script de combate.
+void CargaSpriteDeAnimacion(u32 etiqueta);
+void SueltaSpriteDeAnimacion(u32 etiqueta);
 extern const struct SpriteTemplate gWaterHitSplatSpriteTemplate;
 
 extern const union AnimCmd *const gAnims_WaterMudOrb[];
