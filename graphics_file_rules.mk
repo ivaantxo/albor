@@ -149,33 +149,15 @@ $(TILESETGFXDIR)/secondary/navel_rock/tiles.4bpp: %.4bpp: %.png
 $(TILESETGFXDIR)/secondary/mystery_events_house/tiles.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 509 -Wnum_tiles
 
-### Fonts ###
+### Fuentes ###
 
-$(FONTGFXDIR)/small.latfont: $(FONTGFXDIR)/latin_small.png
+$(FONTGFXDIR)/normal.latfont: $(FONTGFXDIR)/normal.png
 	$(GFX) $< $@
 
-$(FONTGFXDIR)/normal.latfont: $(FONTGFXDIR)/latin_normal.png
+$(FONTGFXDIR)/borde.latfont: $(FONTGFXDIR)/borde.png
 	$(GFX) $< $@
 
-$(FONTGFXDIR)/short.latfont: $(FONTGFXDIR)/latin_short.png
-	$(GFX) $< $@
-
-$(FONTGFXDIR)/big.latfont: $(FONTGFXDIR)/latin_big.png
-	$(GFX) $< $@
-
-$(FONTGFXDIR)/narrow.latfont: $(FONTGFXDIR)/latin_narrow.png
-	$(GFX) $< $@
-
-$(FONTGFXDIR)/small_narrow.latfont: $(FONTGFXDIR)/latin_small_narrow.png
-	$(GFX) $< $@
-
-$(FONTGFXDIR)/narrower.latfont: $(FONTGFXDIR)/latin_narrower.png
-	$(GFX) $< $@
-
-$(FONTGFXDIR)/small_narrower.latfont: $(FONTGFXDIR)/latin_small_narrower.png
-	$(GFX) $< $@
-
-$(FONTGFXDIR)/short_narrow.latfont: $(FONTGFXDIR)/latin_short_narrow.png
+$(FONTGFXDIR)/gruesa.latfont: $(FONTGFXDIR)/gruesa.png
 	$(GFX) $< $@
 
 ### Mapa de Región ###

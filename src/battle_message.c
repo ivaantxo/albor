@@ -78,7 +78,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
 {
     [B_WIN_MSG] = {
         .fillValue = PIXEL_FILL(2),
-        .fontId = FONT_NORMAL,
+        .fontId = FUENTE_NORMAL,
         .x = 0,
         .y = 1,
         .speed = 1,
@@ -88,7 +88,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_MOVE_NAME_1] = {
         .fillValue = PIXEL_FILL(2),
-        .fontId = FONT_NARROW,
+        .fontId = FUENTE_NORMAL,
         .x = 0,
         .y = 4,
         .speed = 0,
@@ -98,7 +98,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_MOVE_NAME_2] = {
         .fillValue = PIXEL_FILL(2),
-        .fontId = FONT_NARROW,
+        .fontId = FUENTE_NORMAL,
         .x = 0,
         .y = 4,
         .speed = 0,
@@ -108,7 +108,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_MOVE_NAME_3] = {
         .fillValue = PIXEL_FILL(2),
-        .fontId = FONT_NARROW,
+        .fontId = FUENTE_NORMAL,
         .x = 0,
         .y = 4,
         .speed = 0,
@@ -118,7 +118,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_MOVE_NAME_4] = {
         .fillValue = PIXEL_FILL(2),
-        .fontId = FONT_NARROW,
+        .fontId = FUENTE_NORMAL,
         .x = 0,
         .y = 4,
         .speed = 0,
@@ -128,7 +128,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_PP_1] = {
         .fillValue = PIXEL_FILL(3),
-        .fontId = FONT_NARROW,
+        .fontId = FUENTE_NORMAL,
         .x = 2,
         .y = 4,
         .speed = 0,
@@ -138,7 +138,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_PP_2] = {
         .fillValue = PIXEL_FILL(3),
-        .fontId = FONT_NARROW,
+        .fontId = FUENTE_NORMAL,
         .x = 2,
         .y = 4,
         .speed = 0,
@@ -148,7 +148,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_PP_3] = {
         .fillValue = PIXEL_FILL(3),
-        .fontId = FONT_NARROW,
+        .fontId = FUENTE_NORMAL,
         .x = 2,
         .y = 4,
         .speed = 0,
@@ -158,7 +158,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_PP_4] = {
         .fillValue = PIXEL_FILL(3),
-        .fontId = FONT_NARROW,
+        .fontId = FUENTE_NORMAL,
         .x = 2,
         .y = 4,
         .speed = 0,
@@ -168,7 +168,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_YESNO] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NORMAL,
+        .fontId = FUENTE_NORMAL,
         .x = 0,
         .y = 1,
         .speed = 0,
@@ -178,7 +178,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_LEVEL_UP_BOX] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NORMAL,
+        .fontId = FUENTE_NORMAL,
         .x = 0,
         .y = 1,
         .speed = 0,
@@ -188,7 +188,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_LEVEL_UP_BANNER] = {
         .fillValue = PIXEL_FILL(0),
-        .fontId = FONT_NORMAL,
+        .fontId = FUENTE_NORMAL,
         .x = 32,
         .y = 1,
         .speed = 0,
@@ -197,7 +197,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_VS_PLAYER] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NORMAL,
+        .fontId = FUENTE_NORMAL,
         .x = -1,
         .y = 1,
         .speed = 0,
@@ -207,7 +207,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_VS_OPPONENT] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NORMAL,
+        .fontId = FUENTE_NORMAL,
         .x = -1,
         .y = 1,
         .speed = 0,
@@ -217,7 +217,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_VS_MULTI_PLAYER_1] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NORMAL,
+        .fontId = FUENTE_NORMAL,
         .x = -1,
         .y = 1,
         .speed = 0,
@@ -227,7 +227,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_VS_MULTI_PLAYER_2] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NORMAL,
+        .fontId = FUENTE_NORMAL,
         .x = -1,
         .y = 1,
         .speed = 0,
@@ -237,7 +237,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_VS_MULTI_PLAYER_3] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NORMAL,
+        .fontId = FUENTE_NORMAL,
         .x = -1,
         .y = 1,
         .speed = 0,
@@ -247,7 +247,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_VS_MULTI_PLAYER_4] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NORMAL,
+        .fontId = FUENTE_NORMAL,
         .x = -1,
         .y = 1,
         .speed = 0,
@@ -257,7 +257,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_VS_OUTCOME_DRAW] = {
         .fillValue = PIXEL_FILL(0),
-        .fontId = FONT_NORMAL,
+        .fontId = FUENTE_NORMAL,
         .x = -1,
         .y = 1,
         .speed = 0,
@@ -266,7 +266,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_VS_OUTCOME_LEFT] = {
         .fillValue = PIXEL_FILL(0),
-        .fontId = FONT_NORMAL,
+        .fontId = FUENTE_NORMAL,
         .x = -1,
         .y = 1,
         .speed = 0,
@@ -275,7 +275,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_VS_OUTCOME_RIGHT] = {
         .fillValue = PIXEL_FILL(0x0),
-        .fontId = FONT_NORMAL,
+        .fontId = FUENTE_NORMAL,
         .x = -1,
         .y = 1,
         .speed = 0,
@@ -284,7 +284,7 @@ static const struct BattleWindowText sTextOnWindowsInfo[] =
     },
     [B_WIN_MOVE_DESCRIPTION] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = FONT_NARROW,
+        .fontId = FUENTE_NORMAL,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -487,7 +487,7 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize)
     u32 dstWidth = 0;
     // This buffer may hold either the name of a trainer, Pokémon, or item.
     u8 text[max(max(max(32, TRAINER_NAME_LENGTH + 1), POKEMON_NAME_LENGTH + 1), ITEM_NAME_LENGTH)];
-    u8 fontId = FONT_NORMAL;
+    u8 fontId = FUENTE_NORMAL;
     s16 letterSpacing = 0;
     u32 lineNum = 1;
 

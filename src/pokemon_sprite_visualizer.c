@@ -515,7 +515,7 @@ static void PrintDigitChars(struct PokemonSpriteVisualizer *data)
     StringCopy(&text[i], GetSpeciesName(species));
 
     FillWindowPixelBuffer(WIN_NAME_NUMBERS, 0x11);
-    AddTextPrinterParameterized(WIN_NAME_NUMBERS, FONT_NORMAL, text, 6, 0, 0, NULL);
+    AddTextPrinterParameterized(WIN_NAME_NUMBERS, FUENTE_NORMAL, text, 6, 0, 0, NULL);
 }
 
 static u32 CharDigitsToValue(u8 *charDigits, u8 maxDigits)

@@ -104,9 +104,9 @@ static const u8 sText_Stats_Speed[] = _("Vel:");
 static const u8 sText_Stats_SpAttack[] = _("AEsp:");
 static const u8 sText_Stats_SpDefense[] = _("DEsp:");
 static const u8 sText_Stats_Total[] = _("Total:");
-static const u8 sText_Stats_EV_Plus1[] = _("{UP_ARROW_2}");
-static const u8 sText_Stats_EV_Plus2[] = _("{UP_ARROW_2}{UP_ARROW_2}");
-static const u8 sText_Stats_EV_Plus3[] = _("{UP_ARROW_2}{UP_ARROW_2}{UP_ARROW_2}");
+static const u8 sText_Stats_EV_Plus1[] = _("{UP_ARROW}");
+static const u8 sText_Stats_EV_Plus2[] = _("{UP_ARROW}{UP_ARROW}");
+static const u8 sText_Stats_EV_Plus3[] = _("{UP_ARROW}{UP_ARROW}{UP_ARROW}");
 static const u8 sText_Stats_EvStr1Str2[] = _("{VAR_TEXTO_1}{VAR_TEXTO_2}");
 static const u8 sText_Stats_MoveSelectedMax[] = _("{VAR_TEXTO_1} / {VAR_TEXTO_2}");
 static const u8 sText_Stats_MoveLevel[] = _("LVL");
@@ -119,16 +119,16 @@ static const u8 sText_Stats_Gender_87_5[] = _("♀ 7/1 ♂");
 static const u8 sText_Stats_Gender_100[] = _("♀");
 static const u8 sText_Stats_ExpYield[] = _("EXP YIELD: ");
 static const u8 sText_Stats_EggCycles[] = _("HATCH STEPS:");
-static const u8 sText_Stats_EggCycles_VeryFast[] = _("{EMOJI_BOLT}{EMOJI_DIZZYEGG}");
-static const u8 sText_Stats_EggCycles_Fast[] = _("{EMOJI_DIZZYEGG}");
-static const u8 sText_Stats_EggCycles_Normal[] = _("{EMOJI_DIZZYEGG}{EMOJI_DIZZYEGG}");
-static const u8 sText_Stats_EggCycles_Slow[] = _("{EMOJI_DIZZYEGG}{EMOJI_DIZZYEGG}{EMOJI_DIZZYEGG}");
+static const u8 sText_Stats_EggCycles_VeryFast[] = _("·");
+static const u8 sText_Stats_EggCycles_Fast[] = _("·");
+static const u8 sText_Stats_EggCycles_Normal[] = _("··");
+static const u8 sText_Stats_EggCycles_Slow[] = _("···");
 static const u8 sText_Stats_Growthrate[] = _("GROW: ");
 static const u8 sText_Stats_Friendship[] = _("FRIENDSHIP:");
-static const u8 sText_Stats_Friendship_BigAnger[] = _("{EMOJI_BIGANGER}");
-static const u8 sText_Stats_Friendship_Neutral[] = _("{EMOJI_NEUTRAL}");
-static const u8 sText_Stats_Friendship_Happy[] = _("{EMOJI_HAPPY}");
-static const u8 sText_Stats_Friendship_BigSmile[] = _("{EMOJI_BIGSMILE}");
+static const u8 sText_Stats_Friendship_BigAnger[] = _("X");
+static const u8 sText_Stats_Friendship_Neutral[] = _("-");
+static const u8 sText_Stats_Friendship_Happy[] = _("O");
+static const u8 sText_Stats_Friendship_BigSmile[] = _("OO");
 static const u8 sText_Stats_MEDIUM_FAST[] = _("MED. FAST");
 static const u8 sText_Stats_ERRATIC[] = _("ERRATIC");
 static const u8 sText_Stats_FLUCTUATING[] = _("FLUCTUATING");
@@ -139,17 +139,17 @@ static const u8 sText_Stats_Minus[] = _("-");
 static const u8 sText_Stats_eggGroup[] = _("EGG G1:");
 static const u8 sText_Stats_eggGroup_Groups[] = _("{VAR_TEXTO_1}/{VAR_TEXTO_2}");
 static const u8 sText_Stats_eggGroup_MONSTER[] = _("MONSTER");
-static const u8 sText_Stats_eggGroup_WATER_1[] = _("WATER {CIRCLE_1}");
+static const u8 sText_Stats_eggGroup_WATER_1[] = _("WATER 1");
 static const u8 sText_Stats_eggGroup_BUG[] = _("BUG");
 static const u8 sText_Stats_eggGroup_FLYING[] = _("FLYING");
 static const u8 sText_Stats_eggGroup_FIELD[] = _("FIELD");
 static const u8 sText_Stats_eggGroup_FAIRY[] = _("FAIRY");
 static const u8 sText_Stats_eggGroup_GRASS[] = _("GRASS");
 static const u8 sText_Stats_eggGroup_HUMAN_LIKE[] = _("HUMANE");
-static const u8 sText_Stats_eggGroup_WATER_3[] = _("WATER {CIRCLE_3}");
+static const u8 sText_Stats_eggGroup_WATER_3[] = _("WATER 3");
 static const u8 sText_Stats_eggGroup_MINERAL[] = _("MINERAL");
 static const u8 sText_Stats_eggGroup_AMORPHOUS[] = _("AMORPHOUS");
-static const u8 sText_Stats_eggGroup_WATER_2[] = _("WATER {CIRCLE_2}");
+static const u8 sText_Stats_eggGroup_WATER_2[] = _("WATER 2");
 static const u8 sText_Stats_eggGroup_DRAGON[] = _("DRAGON");
 static const u8 sText_Stats_eggGroup_NO_EGGS_DISCOVERED[] = _("---");
 
@@ -1302,11 +1302,11 @@ static void ScrollBackground(void)
 
 static void PrintTitleSeenAndOwn(void)
 {
-    AddTextPrinterParameterized3(WIN_TITLE, FONT_BIG, 0, 0, sTextColors[COLOR_TITLE], 0, gText_SavingPokedex);
+    AddTextPrinterParameterized3(WIN_TITLE, FUENTE_NORMAL, 0, 0, sTextColors[COLOR_TITLE], 0, gText_SavingPokedex);
     ConvertIntToDecimalStringN(gVariableTexto1, sPokedexView->ownCount, STR_CONV_MODE_RIGHT_ALIGN, 3);
-    AddTextPrinterParameterized3(WIN_SEEN, FONT_BIG, 6, 0, sTextColors[COLOR_TITLE], 0, gVariableTexto1);
+    AddTextPrinterParameterized3(WIN_SEEN, FUENTE_NORMAL, 6, 0, sTextColors[COLOR_TITLE], 0, gVariableTexto1);
     ConvertIntToDecimalStringN(gVariableTexto1, sPokedexView->seenCount, STR_CONV_MODE_RIGHT_ALIGN, 3);
-    AddTextPrinterParameterized3(WIN_OWN, FONT_BIG, 5, 0, sTextColors[COLOR_TITLE], 0, gVariableTexto1);
+    AddTextPrinterParameterized3(WIN_OWN, FUENTE_NORMAL, 5, 0, sTextColors[COLOR_TITLE], 0, gVariableTexto1);
 }
 
 static void Task_ClosePokedex(u8 taskId)
@@ -1472,7 +1472,7 @@ static void PrintMonDexNum(u8 windowId, u8 fontId, const u8 *str, u8 left, u8 to
 static void PrintMonName(u8 windowId, u8 fontId, const u8 *str, u8 left, u8 top)
 {
     static const u8 color[3] = { TEXT_COLOR_TRANSPARENT, TEXT_DYNAMIC_COLOR_6, TEXT_COLOR_LIGHT_GRAY };
-    AddTextPrinterParameterized4(windowId, FONT_NORMAL, left * 8, (top * 8) + 1, 0, 0, color, TEXT_SKIP_DRAW, str);
+    AddTextPrinterParameterized4(windowId, FUENTE_NORMAL, left * 8, (top * 8) + 1, 0, 0, color, TEXT_SKIP_DRAW, str);
 }
 
 #define MON_LIST_X 2
@@ -1575,7 +1575,7 @@ static void CreateMonDexNum(u16 entryNum, u8 left, u8 top)
     text[offset++] = CHAR_0 + ((dexNum % 1000) % 100) / 10;
     text[offset++] = CHAR_0 + ((dexNum % 1000) % 100) % 10;
     text[offset++] = EOS;
-    PrintMonDexNum(0, FONT_NARROW, text, left, top);
+    PrintMonDexNum(0, FUENTE_NORMAL, text, left, top);
 }
 
 void ResetPokedex(void)
@@ -1699,7 +1699,7 @@ static u8 CreateMonName(u16 num, u8 left, u8 top)
         str = GetSpeciesName(num);
     else
         str = sText_TenDashes;
-    PrintMonName(0, FONT_NARROW, str, left, top);
+    PrintMonName(0, FUENTE_NORMAL, str, left, top);
     return StringLength(str);
 }
 
@@ -2888,7 +2888,7 @@ static void PrintInfoScreenTextWhite(const u8* str, u8 left, u8 top)
     color[1] = TEXT_COLOR_WHITE;
     color[2] = TEXT_DYNAMIC_COLOR_6;
 
-    AddTextPrinterParameterized4(0, FONT_NORMAL, left, top, 0, 0, color, TEXT_SKIP_DRAW, str);
+    AddTextPrinterParameterized4(0, FUENTE_NORMAL, left, top, 0, 0, color, TEXT_SKIP_DRAW, str);
 }
 
 static void PrintInfoScreenTextSmall(const u8* str, u8 left, u8 top)

@@ -481,7 +481,7 @@ static void InitTMCaseListMenuItems(void)
     gMultiuseListMenuTemplate.itemVerticalPadding = 2;
     gMultiuseListMenuTemplate.upText_Y = 0;
     gMultiuseListMenuTemplate.maxShowed = sTMCaseDynamicResources->maxTMsShown;
-    gMultiuseListMenuTemplate.fontId = FONT_SHORT;
+    gMultiuseListMenuTemplate.fontId = FUENTE_NORMAL;
     gMultiuseListMenuTemplate.cursorPal = 2;
     gMultiuseListMenuTemplate.fillValue = 0;
     gMultiuseListMenuTemplate.cursorShadowPal = 3;
@@ -493,7 +493,7 @@ static void InitTMCaseListMenuItems(void)
 
 static void GetTMNumberAndMoveString(u8 * dest, u16 itemId)
 {
-    StringCopy(gVariableTextoAmpliada, gText_FontBig);
+    gVariableTextoAmpliada[0] = EOS;
     if (itemId >= ITEM_HM01)
     {
         StringAppend(gVariableTextoAmpliada, gText_MO);
@@ -507,7 +507,6 @@ static void GetTMNumberAndMoveString(u8 * dest, u16 itemId)
         StringAppend(gVariableTextoAmpliada, gVariableTexto1);
     }
     StringAppend(gVariableTextoAmpliada, sText_SingleSpace);
-    StringAppend(gVariableTextoAmpliada, gText_FontNormal);
     StringAppend(gVariableTextoAmpliada, gMovimientos[ItemIdToBattleMoveId(itemId)].name);
     StringCopy(dest, gVariableTextoAmpliada);
 }
@@ -547,7 +546,7 @@ static void PrintMoveInfo(u16 itemId)
     if (itemId == ITEM_NONE)
     {
         for (i = 0; i < 4; i++)
-            TMCase_Print(WIN_MOVE_INFO, FONT_NORMAL, gText_ThreeDashes, 2, 0, 1, 0, 0, COLOR_LIGHT);
+            TMCase_Print(WIN_MOVE_INFO, FUENTE_NORMAL, gText_ThreeDashes, 2, 0, 1, 0, 0, COLOR_LIGHT);
     }
     else
     {
@@ -580,8 +579,8 @@ static void PrintMoveInfo(u16 itemId)
             ConvertIntToDecimalStringN(gVariableTexto1, gMovimientos[movimiento].power, STR_CONV_MODE_RIGHT_ALIGN, 3);
             str = gVariableTexto1;
         }
-            TMCase_Print(WIN_MOVE_INFO, FONT_BIG, gText_Pot, 9, 0, 1, 0, 0, COLOR_TITLE);
-            TMCase_Print(WIN_MOVE_INFO, FONT_NORMAL, str, 36, 0, 1, 0, 0, COLOR_LIGHT);
+            TMCase_Print(WIN_MOVE_INFO, FUENTE_NORMAL, gText_Pot, 9, 0, 1, 0, 0, COLOR_TITLE);
+            TMCase_Print(WIN_MOVE_INFO, FUENTE_NORMAL, str, 36, 0, 1, 0, 0, COLOR_LIGHT);
 
         // Print accuracy
         if (gMovimientos[movimiento].accuracy == 0)
@@ -591,28 +590,28 @@ static void PrintMoveInfo(u16 itemId)
             ConvertIntToDecimalStringN(gVariableTexto1, gMovimientos[movimiento].accuracy, STR_CONV_MODE_RIGHT_ALIGN, 3);
             str = gVariableTexto1;
         }
-            TMCase_Print(WIN_MOVE_INFO, FONT_BIG, gText_Pre, 56, 0, 1, 0, 0, COLOR_TITLE);
-            TMCase_Print(WIN_MOVE_INFO, FONT_NORMAL, str, 84, 0, 1, 0, 0, COLOR_LIGHT);
+            TMCase_Print(WIN_MOVE_INFO, FUENTE_NORMAL, gText_Pre, 56, 0, 1, 0, 0, COLOR_TITLE);
+            TMCase_Print(WIN_MOVE_INFO, FUENTE_NORMAL, str, 84, 0, 1, 0, 0, COLOR_LIGHT);
 
         // Print PP
         ConvertIntToDecimalStringN(gVariableTexto1, gMovimientos[movimiento].pp, STR_CONV_MODE_RIGHT_ALIGN, 3);
-        TMCase_Print(WIN_MOVE_INFO, FONT_BIG, gText_PP, 105, 0, 1, 0, 0, COLOR_TITLE);
-        TMCase_Print(WIN_MOVE_INFO, FONT_NORMAL, gVariableTexto1, 116, 0, 1, 0, 0, COLOR_LIGHT);
+        TMCase_Print(WIN_MOVE_INFO, FUENTE_NORMAL, gText_PP, 105, 0, 1, 0, 0, COLOR_TITLE);
+        TMCase_Print(WIN_MOVE_INFO, FUENTE_NORMAL, gVariableTexto1, 116, 0, 1, 0, 0, COLOR_LIGHT);
 
         // Print Priority
         prioridad = PrioridadMovimiento(movimiento);
-        TMCase_Print(WIN_MOVE_INFO, FONT_BIG, gText_Pri, 137, 0, 1, 0, 0, COLOR_TITLE);
+        TMCase_Print(WIN_MOVE_INFO, FUENTE_NORMAL, gText_Pri, 137, 0, 1, 0, 0, COLOR_TITLE);
         if (prioridad == PRIORIDAD_MOVIMIENTO_NORMAL)
         {
-            TMCase_Print(WIN_MOVE_INFO, FONT_NORMAL, gText_OneDash, 164, 0, 1, 0, 0, COLOR_LIGHT);
+            TMCase_Print(WIN_MOVE_INFO, FUENTE_NORMAL, gText_OneDash, 164, 0, 1, 0, 0, COLOR_LIGHT);
         }
         if (prioridad > PRIORIDAD_MOVIMIENTO_NORMAL)
         {
-            TMCase_Print(WIN_MOVE_INFO, FONT_BIG, gText_UpArrow, 164, 0, 1, 0, 0, COLOR_LIGHT);
+            TMCase_Print(WIN_MOVE_INFO, FUENTE_NORMAL, gText_UpArrow, 164, 0, 1, 0, 0, COLOR_LIGHT);
         }
         if (prioridad == PRIORIDAD_MOVIMIENTO_NEGATIVA)
         {
-            TMCase_Print(WIN_MOVE_INFO, FONT_BIG, gText_DownArrow, 164, 0, 1, 0, 0, COLOR_LIGHT);
+            TMCase_Print(WIN_MOVE_INFO, FUENTE_NORMAL, gText_DownArrow, 164, 0, 1, 0, 0, COLOR_LIGHT);
         }
     }
 }
@@ -624,7 +623,7 @@ static void PrintListCursor(u8 listTaskId, u8 colorIdx)
 
 static void PrintListCursorAtRow(u8 y, u8 colorIdx)
 {
-    TMCase_Print(WIN_LIST, FONT_NORMAL, gText_SelectorArrow2, 0, y, 0, 0, 0, colorIdx);
+    TMCase_Print(WIN_LIST, FUENTE_NORMAL, gText_SelectorArrow2, 0, y, 0, 0, 0, colorIdx);
 }
 
 
@@ -788,16 +787,16 @@ static void Task_SelectedTMHM_Field(u8 taskId)
 
     // Print context window actions
     PrintMenuActionTexts(sTMCaseDynamicResources->contextMenuWindowId,
-                                  FONT_NORMAL,
-                                  GetMenuCursorDimensionByFont(FONT_NORMAL, 0),
+                                  FUENTE_NORMAL,
+                                  GetMenuCursorDimensionByFont(FUENTE_NORMAL, 0),
                                   2,
                                   0,
-                                  GetFontAttribute(FONT_NORMAL, FONTATTR_MAX_LETTER_HEIGHT) + 2,
+                                  GetFontAttribute(FUENTE_NORMAL, FONTATTR_MAX_LETTER_HEIGHT) + 2,
                                   sTMCaseDynamicResources->numMenuActions,
                                   sMenuActions,
                                   sTMCaseDynamicResources->menuActionIndices);
 
-    Menu_InitCursor(sTMCaseDynamicResources->contextMenuWindowId, FONT_NORMAL, 0, 2, GetFontAttribute(FONT_NORMAL, FONTATTR_MAX_LETTER_HEIGHT) + 2, sTMCaseDynamicResources->numMenuActions, 0);
+    Menu_InitCursor(sTMCaseDynamicResources->contextMenuWindowId, FUENTE_NORMAL, 0, 2, GetFontAttribute(FUENTE_NORMAL, FONTATTR_MAX_LETTER_HEIGHT) + 2, sTMCaseDynamicResources->numMenuActions, 0);
     
     // Print label text next to the context window
     strbuf = Alloc(256);
@@ -884,7 +883,7 @@ static void TMCase_SetWindowBorder(u8 windowId)
 
 static void PrintTitle(void)
 {
-    AddTextPrinterParameterized3(WIN_TITLE, FONT_BIG, 0, 0, sTextColors[COLOR_TITLE], 0, gText_TMCase);
+    AddTextPrinterParameterized3(WIN_TITLE, FUENTE_NORMAL, 0, 0, sTextColors[COLOR_TITLE], 0, gText_TMCase);
 }
 
 static u8 AddContextMenu(u8 * windowId, u8 windowIndex)

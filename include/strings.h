@@ -751,8 +751,7 @@ extern const u8 gText_PlantBerry[];
 // Máquina de discos
 extern const u8 gText_PP[];
 extern const u8 gText_TMCase[];
-extern const u8 gText_FontNormal[];
-extern const u8 gText_FontBig[];
+extern const u8 gText_FuenteNormal[];
 extern const u8 gText_Use[];
 extern const u8 gText_MT[];
 extern const u8 gText_MO[];

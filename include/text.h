@@ -7,16 +7,13 @@
 // loaded at once but not copied to vram yet.
 #define TEXT_SKIP_DRAW 0xFF
 
+// Las tres fuentes del juego. NORMAL es la de siempre, con sombra; BORDE y
+// GRUESA llevan contorno en vez de sombra, para texto sobre fondos que no son
+// una caja lisa.
 enum {
-    FONT_SMALL,
-    FONT_NORMAL,
-    FONT_SHORT,
-    FONT_BIG,
-    FONT_NARROW,
-    FONT_SMALL_NARROW, // Very similar to FONT_SMALL, some glyphs are narrower
-    FONT_NARROWER,
-    FONT_SMALL_NARROWER,
-    FONT_SHORT_NARROW,
+    FUENTE_NORMAL,
+    FUENTE_BORDE,
+    FUENTE_GRUESA,
 };
 
 // Return values for font functions
@@ -45,7 +42,8 @@ enum {
     FONTATTR_LINE_SPACING,
     FONTATTR_COLOR_FOREGROUND,
     FONTATTR_COLOR_BACKGROUND,
-    FONTATTR_COLOR_SHADOW
+    FONTATTR_COLOR_SHADOW,
+    FONTATTR_COLOR_CONTORNO,
 };
 
 struct TextPrinterSubStruct
@@ -72,6 +70,7 @@ struct TextPrinterTemplate
     u8 fgColor:4;
     u8 bgColor:4;
     u8 shadowColor:4;
+    u8 colorContorno:4;
 };
 
 struct TextPrinter
@@ -99,6 +98,7 @@ struct FontInfo
     u8 fgColor:4;
     u8 bgColor:4;
     u8 shadowColor:4;
+    u8 colorContorno:4;   // el cuarto valor del glifo; solo lo usan BORDE y GRUESA
 };
 
 extern const struct FontInfo *gFonts;
@@ -134,7 +134,7 @@ u16 AddTextPrinterParameterized(u8 windowId, u8 fontId, const u8 *str, u8 x, u8 
 bool32 AddTextPrinter(struct TextPrinterTemplate *template, u8 speed, void (*callback)(struct TextPrinterTemplate *, u16));
 void RunTextPrinters(void);
 bool32 IsTextPrinterActive(u8 id);
-void GenerateFontHalfRowLookupTable(u8 fgColor, u8 bgColor, u8 shadowColor);
+void GeneraTablaColores(u8 letra, u8 fondo, u8 sombra, u8 contorno);
 void SaveTextColors(u8 *fgColor, u8 *bgColor, u8 *shadowColor);
 void RestoreTextColors(u8 *fgColor, u8 *bgColor, u8 *shadowColor);
 void DecompressGlyphTile(const void *src_, void *dest_);

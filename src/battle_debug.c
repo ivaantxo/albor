@@ -683,7 +683,7 @@ static void PutMovesPointsText(struct BattleDebugMenu *data)
     {
         text[0] = CHAR_SPACE;
         StringCopy(text + 1, ObtenNombreMovimiento(gBattleMons[data->aiBattlerId].movimientos[i]));
-        AddTextPrinterParameterized(data->aiMovesWindowId, FONT_NORMAL, text, 0, i * 15, 0, NULL);
+        AddTextPrinterParameterized(data->aiMovesWindowId, FUENTE_NORMAL, text, 0, i * 15, 0, NULL);
         for (count = 0, j = 0; j < NUMERO_COMBATIENTES; j++)
         {
             if (data->spriteIds.aiIconSpriteIds[j] == 0xFF)
@@ -692,12 +692,12 @@ static void PutMovesPointsText(struct BattleDebugMenu *data)
             ConvertIntToDecimalStringN(text,
                                        gCombate->IA_Puntuacion[data->aiBattlerId][battlerDef][i],
                                        STR_CONV_MODE_RIGHT_ALIGN, 3);
-            AddTextPrinterParameterized(data->aiMovesWindowId, FONT_NORMAL, text, 83 + count * 54, i * 15, 0, NULL);
+            AddTextPrinterParameterized(data->aiMovesWindowId, FUENTE_NORMAL, text, 83 + count * 54, i * 15, 0, NULL);
 
             ConvertIntToDecimalStringN(text,
                                        AI_DATA->simulatedDmg[data->aiBattlerId][battlerDef][i],
                                        STR_CONV_MODE_RIGHT_ALIGN, 3);
-            AddTextPrinterParameterized(data->aiMovesWindowId, FONT_NORMAL, text, 110 + count * 54, i * 15, 0, NULL);
+            AddTextPrinterParameterized(data->aiMovesWindowId, FUENTE_NORMAL, text, 110 + count * 54, i * 15, 0, NULL);
 
             count++;
         }
@@ -833,7 +833,7 @@ static void PutAIInfoText(struct BattleDebugMenu *data)
     // item names
     for (i = 0; i < ARRAY_COUNT(sAIInfoItemNames); i++)
     {
-        AddTextPrinterParameterized(data->aiMovesWindowId, FONT_NORMAL, sAIInfoItemNames[i], 3, i * 15, 0, NULL);
+        AddTextPrinterParameterized(data->aiMovesWindowId, FUENTE_NORMAL, sAIInfoItemNames[i], 3, i * 15, 0, NULL);
     }
 
     // items info
@@ -845,9 +845,9 @@ static void PutAIInfoText(struct BattleDebugMenu *data)
             u32 holdEffect = AI_DATA->holdEffects[i];
             u32 item = AI_DATA->items[i];
             u32 x = (i == JUGADOR_IZQUIERDA) ? 83 + (i) * 75 : 83 + (i - 1) * 75;
-            AddTextPrinterParameterized(data->aiMovesWindowId, FONT_SMALL, gAbilitiesInfo[ability].name, x, 0, 0, NULL);
-            AddTextPrinterParameterized(data->aiMovesWindowId, FONT_SMALL, ItemId_GetName(item), x, 15, 0, NULL);
-            AddTextPrinterParameterized(data->aiMovesWindowId, FONT_SMALL, GetHoldEffectName(holdEffect), x, 30, 0, NULL);
+            AddTextPrinterParameterized(data->aiMovesWindowId, FUENTE_NORMAL, gAbilitiesInfo[ability].name, x, 0, 0, NULL);
+            AddTextPrinterParameterized(data->aiMovesWindowId, FUENTE_NORMAL, ItemId_GetName(item), x, 15, 0, NULL);
+            AddTextPrinterParameterized(data->aiMovesWindowId, FUENTE_NORMAL, GetHoldEffectName(holdEffect), x, 30, 0, NULL);
         }
     }
 
@@ -875,27 +875,27 @@ static void PutAIPartyText(struct BattleDebugMenu *data)
             else if (aiMons[i].gender == MON_FEMALE)
                 *txtPtr++ = CHAR_FEMALE;
             *txtPtr = EOS;
-            AddTextPrinterParameterized5(data->aiMovesWindowId, FONT_SMALL_NARROW, text, i * 41, 0, 0, NULL, 0, 0);
+            AddTextPrinterParameterized5(data->aiMovesWindowId, FUENTE_NORMAL, text, i * 41, 0, 0, NULL, 0, 0);
         }
 
         txtPtr = StringCopyN(text, gAbilitiesInfo[aiMons[i].ability].name, 7); // The screen is too small to fit the whole string, so we need to drop the last letters.
         *txtPtr = EOS;
-        AddTextPrinterParameterized5(data->aiMovesWindowId, FONT_SMALL_NARROW, text, i * 41, 15, 0, NULL, 0, 0);
+        AddTextPrinterParameterized5(data->aiMovesWindowId, FUENTE_NORMAL, text, i * 41, 15, 0, NULL, 0, 0);
 
         for (j = 0; j < MAXIMO_MOVIMIENTOS_POKEMON; j++)
         {
             txtPtr = StringCopyN(text, ObtenNombreMovimiento(aiMons[i].movimientos[j]), 8);
             *txtPtr = EOS;
-            AddTextPrinterParameterized5(data->aiMovesWindowId, FONT_SMALL_NARROW, text, i * 41, 35 + j * 15, 0, NULL, 0, 0);
+            AddTextPrinterParameterized5(data->aiMovesWindowId, FUENTE_NORMAL, text, i * 41, 35 + j * 15, 0, NULL, 0, 0);
         }
 
         txtPtr = StringCopyN(text, GetHoldEffectName(aiMons[i].heldEffect), 7);
         *txtPtr = EOS;
-        AddTextPrinterParameterized5(data->aiMovesWindowId, FONT_SMALL_NARROW, text, i * 41, 35 + j * 15, 0, NULL, 0, 0);
+        AddTextPrinterParameterized5(data->aiMovesWindowId, FUENTE_NORMAL, text, i * 41, 35 + j * 15, 0, NULL, 0, 0);
 
         txtPtr = ConvertIntToDecimalStringN(text, aiMons[i].switchInCount, STR_CONV_MODE_LEFT_ALIGN, 2);
         *txtPtr = EOS;
-        AddTextPrinterParameterized5(data->aiMovesWindowId, FONT_SMALL_NARROW, text, i * 41, 35 + (j + 1) * 15, 0, NULL, 0, 0);
+        AddTextPrinterParameterized5(data->aiMovesWindowId, FUENTE_NORMAL, text, i * 41, 35 + (j + 1) * 15, 0, NULL, 0, 0);
     }
 
     CopyWindowToVram(data->aiMovesWindowId, COPYWIN_FULL);
@@ -1233,7 +1233,7 @@ static void PrintOnBattlerWindow(u8 windowId, u8 battlerId)
     StringCopy(&text[4], gBattleMons[battlerId].nickname);
 
     FillWindowPixelBuffer(windowId, 0x11);
-    AddTextPrinterParameterized(windowId, FONT_NORMAL, text, 0, 0, 0, NULL);
+    AddTextPrinterParameterized(windowId, FUENTE_NORMAL, text, 0, 0, 0, NULL);
     CopyWindowToVram(windowId, COPYWIN_FULL);
 }
 
@@ -1454,7 +1454,7 @@ static void PrintDigitChars(struct BattleDebugMenu *data)
     text[i] = EOS;
 
     FillWindowPixelBuffer(data->modifyWindowId, 0x11);
-    AddTextPrinterParameterized(data->modifyWindowId, FONT_NORMAL, text, 3, 0, 0, NULL);
+    AddTextPrinterParameterized(data->modifyWindowId, FUENTE_NORMAL, text, 3, 0, 0, NULL);
 }
 
 static const u32 GetBitfieldToAndValue(u32 currBit, u32 bitsCount)

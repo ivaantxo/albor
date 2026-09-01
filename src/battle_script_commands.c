@@ -6465,7 +6465,7 @@ static void DrawLevelUpBannerText(void)
 
     printerTemplate.currentChar = gVariableTextoAmpliada;
     printerTemplate.windowId = B_WIN_LEVEL_UP_BANNER;
-    printerTemplate.fontId = FONT_SMALL;
+    printerTemplate.fontId = FUENTE_NORMAL;
     printerTemplate.x = 32;
     printerTemplate.y = 0;
     printerTemplate.currentX = 32;
@@ -6479,8 +6479,8 @@ static void DrawLevelUpBannerText(void)
     AddTextPrinter(&printerTemplate, TEXT_SKIP_DRAW, NULL);
 
     txtPtr = gVariableTextoAmpliada;
-    *(txtPtr)++ = CHAR_EXTRA_SYMBOL;
-    *(txtPtr)++ = CHAR_LV_2;
+    *(txtPtr)++ = CHAR_L;
+    *(txtPtr)++ = CHAR_v;
 
     var = (u32)(txtPtr);
     txtPtr = ConvertIntToDecimalStringN(txtPtr, monLevel, STR_CONV_MODE_LEFT_ALIGN, 3);

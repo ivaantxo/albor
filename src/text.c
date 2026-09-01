@@ -16,66 +16,29 @@
 
 static u16 RenderText(struct TextPrinter *);
 static u32 RenderFont(struct TextPrinter *);
-static u16 FontFunc_Small(struct TextPrinter *);
-static u16 FontFunc_Normal(struct TextPrinter *);
-static u16 FontFunc_Short(struct TextPrinter *);
-static u16 FontFunc_Big(struct TextPrinter *);
-static u16 FontFunc_Narrow(struct TextPrinter *);
-static u16 FontFunc_SmallNarrow(struct TextPrinter *);
-static u16 FontFunc_Narrower(struct TextPrinter *);
-static u16 FontFunc_SmallNarrower(struct TextPrinter *);
-static u16 FontFunc_ShortNarrow(struct TextPrinter *);
-static void DecompressGlyph_Small(u16 glyphId);
-static void DecompressGlyph_Normal(u16 glyphId);
-static void DecompressGlyph_Short(u16 glyphId);
-static void DecompressGlyph_Big(u16);
-static void DecompressGlyph_Narrow(u16 glyphId);
-static void DecompressGlyph_SmallNarrow(u16 glyphId);
-static void DecompressGlyph_Narrower(u16 glyphId);
-static void DecompressGlyph_SmallNarrower(u16 glyphId);
-static void DecompressGlyph_ShortNarrow(u16 glyphId);
-static u32 GetGlyphWidth_Small(u16 glyphId);
-static u32 GetGlyphWidth_Normal(u16 glyphId);
-static u32 GetGlyphWidth_Short(u16 glyphId);
-static u32 GetGlyphWidth_Big(u16 glyphId);
-static u32 GetGlyphWidth_Narrow(u16 glyphId);
-static u32 GetGlyphWidth_SmallNarrow(u16 glyphId);
-static u32 GetGlyphWidth_Narrower(u16 glyphId);
-static u32 GetGlyphWidth_SmallNarrower(u16 glyphId);
-static u32 GetGlyphWidth_ShortNarrow(u16 glyphId);
+static u16 FuncionFuenteNormal(struct TextPrinter *);
+static u16 FuncionFuenteBorde(struct TextPrinter *);
+static u16 FuncionFuenteGruesa(struct TextPrinter *);
+static void SacaGlifoNormal(u16 glifo);
+static void SacaGlifoBorde(u16 glifo);
+static void SacaGlifoGruesa(u16 glifo);
+static u32 AnchoGlifoNormal(u16 glifo);
+static u32 AnchoGlifoBorde(u16 glifo);
+static u32 AnchoGlifoGruesa(u16 glifo);
 
 static EWRAM_DATA struct TextPrinter sTempTextPrinter = {0};
 static EWRAM_DATA struct TextPrinter sTextPrinters[WINDOWS_MAX] = {0};
 
-static u16 sFontHalfRowLookupTable[81];
-static u16 sLastTextBgColor;
-static u16 sLastTextFgColor;
-static u16 sLastTextShadowColor;
+static u16 sTablaColores[256];
+static u16 sUltimoColorFondo;
+static u16 sUltimoColorLetra;
+static u16 sUltimoColorSombra;
+static u16 sUltimoColorContorno;
 
 COMMON_DATA const struct FontInfo *gFonts = NULL;
 COMMON_DATA bool8 gDisableTextPrinters = 0;
 COMMON_DATA struct TextGlyph gCurGlyph = {0};
 COMMON_DATA TextFlags gTextFlags = {0};
-
-static const u8 sFontHalfRowOffsets[] =
-{
-    0,  1,  2,  0,  3,  4,  5,  3,  6,  7,  8,  6,  0,  1,  2,  0,
-    9,  10, 11, 9,  12, 13, 14, 12, 15, 16, 17, 15, 9,  10, 11, 9,
-    18, 19, 20, 18, 21, 22, 23, 21, 24, 25, 26, 24, 18, 19, 20, 18,
-    0,  1,  2,  0,  3,  4,  5,  3,  6,  7,  8,  6,  0,  1,  2,  0,
-    27, 28, 29, 27, 30, 31, 32, 30, 33, 34, 35, 33, 27, 28, 29, 27,
-    36, 37, 38, 36, 39, 40, 41, 39, 42, 43, 44, 42, 36, 37, 38, 36,
-    45, 46, 47, 45, 48, 49, 50, 48, 51, 52, 53, 51, 45, 46, 47, 45,
-    27, 28, 29, 27, 30, 31, 32, 30, 33, 34, 35, 33, 27, 28, 29, 27,
-    54, 55, 56, 54, 57, 58, 59, 57, 60, 61, 62, 60, 54, 55, 56, 54,
-    63, 64, 65, 63, 66, 67, 68, 66, 69, 70, 71, 69, 63, 64, 65, 63,
-    72, 73, 74, 72, 75, 76, 77, 75, 78, 79, 80, 78, 72, 73, 74, 72,
-    54, 55, 56, 54, 57, 58, 59, 57, 60, 61, 62, 60, 54, 55, 56, 54,
-    0,  1,  2,  0,  3,  4,  5,  3,  6,  7,  8,  6,  0,  1,  2,  0,
-    9,  10, 11, 9,  12, 13, 14, 12, 15, 16, 17, 15, 9,  10, 11, 9,
-    18, 19, 20, 18, 21, 22, 23, 21, 24, 25, 26, 24, 18, 19, 20, 18,
-    0,  1,  2,  0,  3,  4,  5,  3,  6,  7,  8,  6,  0,  1,  2,  0
-};
 
 static const u8 sDownArrowTiles[] = INCBIN_U8("graphics/fonts/down_arrow.4bpp");
 static const u8 sDarkDownArrowTiles[] = INCBIN_U8("graphics/fonts/down_arrow_alt.4bpp");
@@ -88,15 +51,9 @@ static const u8 sWindowVerticalScrollSpeeds[] = {
 
 static const struct GlyphWidthFunc sGlyphWidthFuncs[] =
 {
-    {FONT_SMALL,          GetGlyphWidth_Small},
-    {FONT_NORMAL,         GetGlyphWidth_Normal},
-    {FONT_SHORT,          GetGlyphWidth_Short},
-    {FONT_BIG,            GetGlyphWidth_Big},
-    {FONT_NARROW,         GetGlyphWidth_Narrow},
-    {FONT_SMALL_NARROW,   GetGlyphWidth_SmallNarrow},
-    {FONT_NARROWER,       GetGlyphWidth_Narrower},
-    {FONT_SMALL_NARROWER, GetGlyphWidth_SmallNarrower},
-    {FONT_SHORT_NARROW,   GetGlyphWidth_ShortNarrow},
+    {FUENTE_NORMAL, AnchoGlifoNormal},
+    {FUENTE_BORDE,  AnchoGlifoBorde},
+    {FUENTE_GRUESA, AnchoGlifoGruesa},
 };
 
 struct
@@ -125,18 +82,8 @@ static const u8 sKeypadIconTiles[] = INCBIN_U8("graphics/fonts/keypad_icons.4bpp
 
 static const struct FontInfo sFontInfos[] =
 {
-    [FONT_SMALL] = {
-        .fontFunction = FontFunc_Small,
-        .maxLetterWidth = 5,
-        .maxLetterHeight = 12,
-        .letterSpacing = 0,
-        .lineSpacing = 0,
-        .fgColor = 2,
-        .bgColor = 1,
-        .shadowColor = 3,
-    },
-    [FONT_NORMAL] = {
-        .fontFunction = FontFunc_Normal,
+    [FUENTE_NORMAL] = {
+        .fontFunction = FuncionFuenteNormal,
         .maxLetterWidth = 6,
         .maxLetterHeight = 16,
         .letterSpacing = 0,
@@ -144,91 +91,41 @@ static const struct FontInfo sFontInfos[] =
         .fgColor = 2,
         .bgColor = 1,
         .shadowColor = 3,
+        .colorContorno = 3,
     },
-    [FONT_SHORT] = {
-        .fontFunction = FontFunc_Short,
-        .maxLetterWidth = 6,
-        .maxLetterHeight = 14,
-        .letterSpacing = 0,
-        .lineSpacing = 0,
-        .fgColor = 2,
-        .bgColor = 1,
-        .shadowColor = 3,
-    },
-    [FONT_BIG] = {
-        .fontFunction = FontFunc_Big,
+    // Las dos con contorno no llevan sombra: el hueco de la sombra se queda a
+    // fondo y el relieve lo da el contorno, que es el cuarto valor del glifo.
+    [FUENTE_BORDE] = {
+        .fontFunction = FuncionFuenteBorde,
         .maxLetterWidth = 7,
         .maxLetterHeight = 16,
         .letterSpacing = 0,
         .lineSpacing = 0,
-        .fgColor = 2,
-        .bgColor = 1,
-        .shadowColor = 3,
+        .fgColor = 1,
+        .bgColor = 0,
+        .shadowColor = 0,
+        .colorContorno = 2,
     },
-    [FONT_NARROW] = {
-        .fontFunction = FontFunc_Narrow,
-        .maxLetterWidth = 5,
+    [FUENTE_GRUESA] = {
+        .fontFunction = FuncionFuenteGruesa,
+        .maxLetterWidth = 7,
         .maxLetterHeight = 16,
         .letterSpacing = 0,
         .lineSpacing = 0,
-        .fgColor = 2,
-        .bgColor = 1,
-        .shadowColor = 3,
-    },
-    [FONT_SMALL_NARROW] = {
-        .fontFunction = FontFunc_SmallNarrow,
-        .maxLetterWidth = 5,
-        .maxLetterHeight = 8,
-        .letterSpacing = 0,
-        .lineSpacing = 0,
-        .fgColor = 2,
-        .bgColor = 1,
-        .shadowColor = 3,
-    },
-    [FONT_NARROWER] = {
-        .fontFunction = FontFunc_Narrower,
-        .maxLetterWidth = 5,
-        .maxLetterHeight = 16,
-        .letterSpacing = 0,
-        .lineSpacing = 0,
-        .fgColor = 2,
-        .bgColor = 1,
-        .shadowColor = 3,
-    },
-    [FONT_SMALL_NARROWER] = {
-        .fontFunction = FontFunc_SmallNarrower,
-        .maxLetterWidth = 5,
-        .maxLetterHeight = 8,
-        .letterSpacing = 0,
-        .lineSpacing = 0,
-        .fgColor = 2,
-        .bgColor = 1,
-        .shadowColor = 3,
-    },
-    [FONT_SHORT_NARROW] = {
-        .fontFunction = FontFunc_ShortNarrow,
-        .maxLetterWidth = 5,
-        .maxLetterHeight = 14,
-        .letterSpacing = 0,
-        .lineSpacing = 0,
-        .fgColor = 2,
-        .bgColor = 1,
-        .shadowColor = 3,
+        .fgColor = 1,
+        .bgColor = 0,
+        .shadowColor = 0,
+        .colorContorno = 2,
     },
 };
 
 static const u8 sMenuCursorDimensions[][2] =
 {
-    [FONT_SMALL]          = {8, 12},
-    [FONT_NORMAL]         = {8, 15},
-    [FONT_SHORT]          = {8, 14},
-    [FONT_BIG]            = {8, 15},
-    [FONT_NARROW]         = {8, 15},
-    [FONT_SMALL_NARROW]   = {8,  8},
-    [FONT_NARROWER]       = {8, 15},
-    [FONT_SMALL_NARROWER] = {8,  8},
-    [FONT_SHORT_NARROW]   = {8, 14},
+    [FUENTE_NORMAL] = {8, 16},
+    [FUENTE_BORDE]  = {8, 16},
+    [FUENTE_GRUESA] = {8, 16},
 };
+
 
 static void SetFontsPointer(const struct FontInfo *fonts)
 {
@@ -269,6 +166,11 @@ bool32 AddTextPrinter(struct TextPrinterTemplate *printerTemplate, u8 speed, voi
     if (!gFonts)
         return FALSE;
 
+    // El color del contorno no lo elige quien imprime: es del dibujo de la
+    // fuente, igual que el propio contorno. Se pone aqui para que no haya que
+    // acordarse en cada sitio que rellena una plantilla a mano.
+    printerTemplate->colorContorno = gFonts[printerTemplate->fontId].colorContorno;
+
     sTempTextPrinter.active = TRUE;
     sTempTextPrinter.state = RENDER_STATE_HANDLE_CHAR;
     sTempTextPrinter.textSpeed = speed;
@@ -282,7 +184,7 @@ bool32 AddTextPrinter(struct TextPrinterTemplate *printerTemplate, u8 speed, voi
     sTempTextPrinter.callback = callback;
     sTempTextPrinter.minLetterSpacing = 0;
 
-    GenerateFontHalfRowLookupTable(printerTemplate->fgColor, printerTemplate->bgColor, printerTemplate->shadowColor);
+    GeneraTablaColores(printerTemplate->fgColor, printerTemplate->bgColor, printerTemplate->shadowColor, printerTemplate->colorContorno);
     if (speed != TEXT_SKIP_DRAW && speed != 0)
     {
         --sTempTextPrinter.textSpeed;
@@ -352,167 +254,41 @@ static u32 RenderFont(struct TextPrinter *textPrinter)
     }
 }
 
-void GenerateFontHalfRowLookupTable(u8 fgColor, u8 bgColor, u8 shadowColor)
+// Los glifos vienen a dos bits por pixel, o sea cuatro valores: fondo, letra,
+// sombra y contorno. Esta tabla traduce de una vez los cuatro pixeles que caben
+// en un byte a los cuatro medios bytes que quiere la VRAM, asi que se indexa
+// directamente con el byte del glifo. Antes eran 81 entradas -3^4- y hacia
+// falta una tabla de rebote para llegar a ellas, porque el cuarto valor no se
+// usaba; ahora son 4^4 y se entra directo.
+void GeneraTablaColores(u8 letra, u8 fondo, u8 sombra, u8 contorno)
 {
-    u32 fg12, bg12, shadow12;
-    u32 temp;
+    const u8 color[4] = { fondo, letra, sombra, contorno };
+    u32 i;
 
-    u16 *current = sFontHalfRowLookupTable;
+    sUltimoColorLetra = letra;
+    sUltimoColorFondo = fondo;
+    sUltimoColorSombra = sombra;
+    sUltimoColorContorno = contorno;
 
-    sLastTextBgColor = bgColor;
-    sLastTextFgColor = fgColor;
-    sLastTextShadowColor = shadowColor;
-
-    bg12 = bgColor << 12;
-    fg12 = fgColor << 12;
-    shadow12 = shadowColor << 12;
-
-    temp = (bgColor << 8) | (bgColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (bgColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (bgColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (fgColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (fgColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (fgColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (shadowColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (shadowColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (shadowColor << 4) | bgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (bgColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (bgColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (bgColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (fgColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (fgColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (fgColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (shadowColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (shadowColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (shadowColor << 4) | fgColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (bgColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (bgColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (bgColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (fgColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (fgColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (fgColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (bgColor << 8) | (shadowColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (fgColor << 8) | (shadowColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
-
-    temp = (shadowColor << 8) | (shadowColor << 4) | shadowColor;
-    *(current++) = (bg12) | temp;
-    *(current++) = (fg12) | temp;
-    *(current++) = (shadow12) | temp;
+    for (i = 0; i < 256; i++)
+    {
+        sTablaColores[i] = (color[(i >> 6) & 3])
+                         | (color[(i >> 4) & 3] << 4)
+                         | (color[(i >> 2) & 3] << 8)
+                         | (color[(i >> 0) & 3] << 12);
+    }
 }
 
 void SaveTextColors(u8 *fgColor, u8 *bgColor, u8 *shadowColor)
 {
-    *bgColor = sLastTextBgColor;
-    *fgColor = sLastTextFgColor;
-    *shadowColor = sLastTextShadowColor;
+    *bgColor = sUltimoColorFondo;
+    *fgColor = sUltimoColorLetra;
+    *shadowColor = sUltimoColorSombra;
 }
 
 void RestoreTextColors(u8 *fgColor, u8 *bgColor, u8 *shadowColor)
 {
-    GenerateFontHalfRowLookupTable(*fgColor, *bgColor, *shadowColor);
+    GeneraTablaColores(*fgColor, *bgColor, *shadowColor, sUltimoColorContorno);
 }
 
 void DecompressGlyphTile(const void *src_, void *dest_)
@@ -522,28 +298,28 @@ void DecompressGlyphTile(const void *src_, void *dest_)
     u32 *dest = dest_;
 
     temp = *(src++);
-    *(dest)++ = ((sFontHalfRowLookupTable[sFontHalfRowOffsets[temp & 255]]) << 16) | (sFontHalfRowLookupTable[sFontHalfRowOffsets[temp >> 8]]);
+    *(dest)++ = ((sTablaColores[temp & 255]) << 16) | (sTablaColores[temp >> 8]);
 
     temp = *(src++);
-    *(dest++) = ((sFontHalfRowLookupTable[sFontHalfRowOffsets[temp & 255]]) << 16) | (sFontHalfRowLookupTable[sFontHalfRowOffsets[temp >> 8]]);
+    *(dest++) = ((sTablaColores[temp & 255]) << 16) | (sTablaColores[temp >> 8]);
 
     temp = *(src++);
-    *(dest++) = ((sFontHalfRowLookupTable[sFontHalfRowOffsets[temp & 255]]) << 16) | (sFontHalfRowLookupTable[sFontHalfRowOffsets[temp >> 8]]);
+    *(dest++) = ((sTablaColores[temp & 255]) << 16) | (sTablaColores[temp >> 8]);
 
     temp = *(src++);
-    *(dest++) = ((sFontHalfRowLookupTable[sFontHalfRowOffsets[temp & 255]]) << 16) | (sFontHalfRowLookupTable[sFontHalfRowOffsets[temp >> 8]]);
+    *(dest++) = ((sTablaColores[temp & 255]) << 16) | (sTablaColores[temp >> 8]);
 
     temp = *(src++);
-    *(dest++) = ((sFontHalfRowLookupTable[sFontHalfRowOffsets[temp & 255]]) << 16) | (sFontHalfRowLookupTable[sFontHalfRowOffsets[temp >> 8]]);
+    *(dest++) = ((sTablaColores[temp & 255]) << 16) | (sTablaColores[temp >> 8]);
 
     temp = *(src++);
-    *(dest++) = ((sFontHalfRowLookupTable[sFontHalfRowOffsets[temp & 255]]) << 16) | (sFontHalfRowLookupTable[sFontHalfRowOffsets[temp >> 8]]);
+    *(dest++) = ((sTablaColores[temp & 255]) << 16) | (sTablaColores[temp >> 8]);
 
     temp = *(src++);
-    *(dest++) = ((sFontHalfRowLookupTable[sFontHalfRowOffsets[temp & 255]]) << 16) | (sFontHalfRowLookupTable[sFontHalfRowOffsets[temp >> 8]]);
+    *(dest++) = ((sTablaColores[temp & 255]) << 16) | (sTablaColores[temp >> 8]);
 
     temp = *(src++);
-    *(dest++) = ((sFontHalfRowLookupTable[sFontHalfRowOffsets[temp & 255]]) << 16) | (sFontHalfRowLookupTable[sFontHalfRowOffsets[temp >> 8]]);
+    *(dest++) = ((sTablaColores[temp & 255]) << 16) | (sTablaColores[temp >> 8]);
 }
 
 inline static void GLYPH_COPY(u8 *windowTiles, u32 widthOffset, u32 j, u32 i, u32 *glyphPixels, s32 width, s32 height)
@@ -630,7 +406,7 @@ void ClearTextSpan(struct TextPrinter *textPrinter, u32 width)
     struct TextGlyph *glyph;
     u8 *glyphHeight;
 
-    if (sLastTextBgColor != TEXT_COLOR_TRANSPARENT)
+    if (sUltimoColorFondo != TEXT_COLOR_TRANSPARENT)
     {
         window = &gWindows[textPrinter->printerTemplate.windowId];
         pixels_data.pixels = window->tileData;
@@ -646,117 +422,26 @@ void ClearTextSpan(struct TextPrinter *textPrinter, u32 width)
             textPrinter->printerTemplate.currentY,
             width,
             *glyphHeight,
-            sLastTextBgColor);
+            sUltimoColorFondo);
     }
 }
 
-static u16 FontFunc_Small(struct TextPrinter *textPrinter)
-{
-    struct TextPrinterSubStruct *subStruct = (struct TextPrinterSubStruct *)(&textPrinter->subStructFields);
-
-    if (subStruct->hasFontIdBeenSet == FALSE)
-    {
-        subStruct->fontId = FONT_SMALL;
-        subStruct->hasFontIdBeenSet = TRUE;
-    }
-    return RenderText(textPrinter);
+#define FUNCION_DE_FUENTE(nombre, fuente)                                       \
+static u16 nombre(struct TextPrinter *textPrinter)                              \
+{                                                                               \
+    struct TextPrinterSubStruct *sub = (void *)&textPrinter->subStructFields;   \
+                                                                                \
+    if (sub->hasFontIdBeenSet == FALSE)                                         \
+    {                                                                           \
+        sub->fontId = fuente;                                                   \
+        sub->hasFontIdBeenSet = TRUE;                                           \
+    }                                                                           \
+    return RenderText(textPrinter);                                             \
 }
 
-static u16 FontFunc_Normal(struct TextPrinter *textPrinter)
-{
-    struct TextPrinterSubStruct *subStruct = (struct TextPrinterSubStruct *)(&textPrinter->subStructFields);
-
-    if (subStruct->hasFontIdBeenSet == FALSE)
-    {
-        subStruct->fontId = FONT_NORMAL;
-        subStruct->hasFontIdBeenSet = TRUE;
-    }
-    return RenderText(textPrinter);
-}
-
-static u16 FontFunc_Short(struct TextPrinter *textPrinter)
-{
-    struct TextPrinterSubStruct *subStruct = (struct TextPrinterSubStruct *)(&textPrinter->subStructFields);
-
-    if (subStruct->hasFontIdBeenSet == FALSE)
-    {
-        subStruct->fontId = FONT_SHORT;
-        subStruct->hasFontIdBeenSet = TRUE;
-    }
-    return RenderText(textPrinter);
-}
-
-static u16 FontFunc_Big(struct TextPrinter *textPrinter)
-{
-    struct TextPrinterSubStruct *subStruct = (struct TextPrinterSubStruct *)(&textPrinter->subStructFields);
-
-    if (subStruct->hasFontIdBeenSet == FALSE)
-    {
-        subStruct->fontId = FONT_BIG;
-        subStruct->hasFontIdBeenSet = TRUE;
-    }
-    return RenderText(textPrinter);
-}
-
-static u16 FontFunc_Narrow(struct TextPrinter *textPrinter)
-{
-    struct TextPrinterSubStruct *subStruct = (struct TextPrinterSubStruct *)(&textPrinter->subStructFields);
-
-    if (subStruct->hasFontIdBeenSet == FALSE)
-    {
-        subStruct->fontId = FONT_NARROW;
-        subStruct->hasFontIdBeenSet = TRUE;
-    }
-    return RenderText(textPrinter);
-}
-
-static u16 FontFunc_SmallNarrow(struct TextPrinter *textPrinter)
-{
-    struct TextPrinterSubStruct *subStruct = (struct TextPrinterSubStruct *)(&textPrinter->subStructFields);
-
-    if (subStruct->hasFontIdBeenSet == FALSE)
-    {
-        subStruct->fontId = FONT_SMALL_NARROW;
-        subStruct->hasFontIdBeenSet = TRUE;
-    }
-    return RenderText(textPrinter);
-}
-
-static u16 FontFunc_Narrower(struct TextPrinter *textPrinter)
-{
-    struct TextPrinterSubStruct *subStruct = (struct TextPrinterSubStruct *)(&textPrinter->subStructFields);
-
-    if (subStruct->hasFontIdBeenSet == FALSE)
-    {
-        subStruct->fontId = FONT_NARROWER;
-        subStruct->hasFontIdBeenSet = TRUE;
-    }
-    return RenderText(textPrinter);
-}
-
-static u16 FontFunc_SmallNarrower(struct TextPrinter *textPrinter)
-{
-    struct TextPrinterSubStruct *subStruct = (struct TextPrinterSubStruct *)(&textPrinter->subStructFields);
-
-    if (subStruct->hasFontIdBeenSet == FALSE)
-    {
-        subStruct->fontId = FONT_SMALL_NARROWER;
-        subStruct->hasFontIdBeenSet = TRUE;
-    }
-    return RenderText(textPrinter);
-}
-
-static u16 FontFunc_ShortNarrow(struct TextPrinter *textPrinter)
-{
-    struct TextPrinterSubStruct *subStruct = (struct TextPrinterSubStruct *)(&textPrinter->subStructFields);
-
-    if (subStruct->hasFontIdBeenSet == FALSE)
-    {
-        subStruct->fontId = FONT_SHORT_NARROW;
-        subStruct->hasFontIdBeenSet = TRUE;
-    }
-    return RenderText(textPrinter);
-}
+FUNCION_DE_FUENTE(FuncionFuenteNormal, FUENTE_NORMAL)
+FUNCION_DE_FUENTE(FuncionFuenteBorde,  FUENTE_BORDE)
+FUNCION_DE_FUENTE(FuncionFuenteGruesa, FUENTE_GRUESA)
 
 void TextPrinterInitDownArrowCounters(struct TextPrinter *textPrinter)
 {
@@ -977,17 +662,17 @@ static u16 RenderText(struct TextPrinter *textPrinter)
             case EXT_CTRL_CODE_COLOR:
                 textPrinter->printerTemplate.fgColor = *textPrinter->printerTemplate.currentChar;
                 textPrinter->printerTemplate.currentChar++;
-                GenerateFontHalfRowLookupTable(textPrinter->printerTemplate.fgColor, textPrinter->printerTemplate.bgColor, textPrinter->printerTemplate.shadowColor);
+                GeneraTablaColores(textPrinter->printerTemplate.fgColor, textPrinter->printerTemplate.bgColor, textPrinter->printerTemplate.shadowColor, textPrinter->printerTemplate.colorContorno);
                 return RENDER_REPEAT;
             case EXT_CTRL_CODE_HIGHLIGHT:
                 textPrinter->printerTemplate.bgColor = *textPrinter->printerTemplate.currentChar;
                 textPrinter->printerTemplate.currentChar++;
-                GenerateFontHalfRowLookupTable(textPrinter->printerTemplate.fgColor, textPrinter->printerTemplate.bgColor, textPrinter->printerTemplate.shadowColor);
+                GeneraTablaColores(textPrinter->printerTemplate.fgColor, textPrinter->printerTemplate.bgColor, textPrinter->printerTemplate.shadowColor, textPrinter->printerTemplate.colorContorno);
                 return RENDER_REPEAT;
             case EXT_CTRL_CODE_SHADOW:
                 textPrinter->printerTemplate.shadowColor = *textPrinter->printerTemplate.currentChar;
                 textPrinter->printerTemplate.currentChar++;
-                GenerateFontHalfRowLookupTable(textPrinter->printerTemplate.fgColor, textPrinter->printerTemplate.bgColor, textPrinter->printerTemplate.shadowColor);
+                GeneraTablaColores(textPrinter->printerTemplate.fgColor, textPrinter->printerTemplate.bgColor, textPrinter->printerTemplate.shadowColor, textPrinter->printerTemplate.colorContorno);
                 return RENDER_REPEAT;
             case EXT_CTRL_CODE_COLOR_HIGHLIGHT_SHADOW:
                 textPrinter->printerTemplate.fgColor = *textPrinter->printerTemplate.currentChar;
@@ -996,7 +681,7 @@ static u16 RenderText(struct TextPrinter *textPrinter)
                 textPrinter->printerTemplate.currentChar++;
                 textPrinter->printerTemplate.shadowColor = *textPrinter->printerTemplate.currentChar;
                 textPrinter->printerTemplate.currentChar++;
-                GenerateFontHalfRowLookupTable(textPrinter->printerTemplate.fgColor, textPrinter->printerTemplate.bgColor, textPrinter->printerTemplate.shadowColor);
+                GeneraTablaColores(textPrinter->printerTemplate.fgColor, textPrinter->printerTemplate.bgColor, textPrinter->printerTemplate.shadowColor, textPrinter->printerTemplate.colorContorno);
                 return RENDER_REPEAT;
             case EXT_CTRL_CODE_PALETTE:
                 textPrinter->printerTemplate.currentChar++;
@@ -1100,10 +785,6 @@ static u16 RenderText(struct TextPrinter *textPrinter)
             textPrinter->state = RENDER_STATE_SCROLL_START;
             TextPrinterInitDownArrowCounters(textPrinter);
             return RENDER_UPDATE;
-        case CHAR_EXTRA_SYMBOL:
-            currChar = *textPrinter->printerTemplate.currentChar | 256;
-            textPrinter->printerTemplate.currentChar++;
-            break;
         case CHAR_KEYPAD_ICON:
             currChar = *textPrinter->printerTemplate.currentChar++;
             gCurGlyph.width = DrawKeypadIcon(textPrinter->printerTemplate.windowId, currChar, textPrinter->printerTemplate.currentX, textPrinter->printerTemplate.currentY);
@@ -1115,32 +796,14 @@ static u16 RenderText(struct TextPrinter *textPrinter)
 
         switch (subStruct->fontId)
         {
-        case FONT_SMALL:
-            DecompressGlyph_Small(currChar);
+        case FUENTE_BORDE:
+            SacaGlifoBorde(currChar);
             break;
-        case FONT_NORMAL:
-            DecompressGlyph_Normal(currChar);
+        case FUENTE_GRUESA:
+            SacaGlifoGruesa(currChar);
             break;
-        case FONT_SHORT:
-            DecompressGlyph_Short(currChar);
-            break;
-        case FONT_BIG:
-            DecompressGlyph_Big(currChar);
-            break;
-        case FONT_NARROW:
-            DecompressGlyph_Narrow(currChar);
-            break;
-        case FONT_SMALL_NARROW:
-            DecompressGlyph_SmallNarrow(currChar);
-            break;
-        case FONT_NARROWER:
-            DecompressGlyph_Narrower(currChar);
-            break;
-        case FONT_SMALL_NARROWER:
-            DecompressGlyph_SmallNarrower(currChar);
-            break;
-        case FONT_SHORT_NARROW:
-            DecompressGlyph_ShortNarrow(currChar);
+        default:
+            SacaGlifoNormal(currChar);
             break;
         }
 
@@ -1357,11 +1020,7 @@ s32 GetStringWidth(u8 fontId, const u8 *str, s16 letterSpacing)
             }
             break;
         case CHAR_KEYPAD_ICON:
-        case CHAR_EXTRA_SYMBOL:
-            if (*str == CHAR_EXTRA_SYMBOL)
-                glyphWidth = func(*++str | 256);
-            else
-                glyphWidth = GetKeypadIconWidth(*++str);
+            glyphWidth = GetKeypadIconWidth(*++str);
 
             if (minGlyphWidth > 0)
             {
@@ -1483,6 +1142,9 @@ u8 GetFontAttribute(u8 fontId, u8 attributeId)
         case FONTATTR_COLOR_SHADOW:
             result = sFontInfos[fontId].shadowColor;
             break;
+        case FONTATTR_COLOR_CONTORNO:
+            result = sFontInfos[fontId].colorContorno;
+            break;
     }
     return result;
 }
@@ -1492,283 +1154,40 @@ u8 GetMenuCursorDimensionByFont(u8 fontId, u8 whichDimension)
     return sMenuCursorDimensions[fontId][whichDimension];
 }
 
-static void DecompressGlyph_Small(u16 glyphId)
-{
-    const u16 *glyphs;
-
-    glyphs = gFontSmallLatinGlyphs + (32 * glyphId);
-    gCurGlyph.width = gFontSmallLatinGlyphWidths[glyphId];
-
-    if (gCurGlyph.width <= 8)
-    {
-        DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
-        DecompressGlyphTile(glyphs + 16, gCurGlyph.gfxBufferBottom);
-    }
-    else
-    {
-        DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
-        DecompressGlyphTile(glyphs + 8, gCurGlyph.gfxBufferTop + 8);
-        DecompressGlyphTile(glyphs + 16, gCurGlyph.gfxBufferBottom);
-        DecompressGlyphTile(glyphs + 24, gCurGlyph.gfxBufferBottom + 8);
-    }
-
-    gCurGlyph.height = 13;
+// Saca un glifo del .latfont al buffer que luego pega CopyGlyphToWindow. Los
+// glifos miden 16x16, o sea dos tiles de ancho por dos de alto, pero los que no
+// pasan de 8 pixeles de ancho solo necesitan la columna izquierda.
+#define SACA_GLIFO(saca, ancho, glifos, anchos)                                 \
+static void saca(u16 glifo)                                                   \
+{                                                                               \
+    const u16 *dibujo = glifos + (32 * glifo);                                  \
+                                                                                \
+    gCurGlyph.width = anchos[glifo];                                            \
+    gCurGlyph.height = 16;                                                      \
+                                                                                \
+    DecompressGlyphTile(dibujo, gCurGlyph.gfxBufferTop);                        \
+    DecompressGlyphTile(dibujo + 16, gCurGlyph.gfxBufferBottom);                \
+    if (gCurGlyph.width > 8)                                                    \
+    {                                                                           \
+        DecompressGlyphTile(dibujo + 8, gCurGlyph.gfxBufferTop + 8);            \
+        DecompressGlyphTile(dibujo + 24, gCurGlyph.gfxBufferBottom + 8);        \
+    }                                                                           \
+}                                                                               \
+static u32 ancho(u16 glifo)                                                     \
+{                                                                               \
+    return anchos[glifo];                                                       \
 }
 
-static u32 GetGlyphWidth_Small(u16 glyphId)
-{
-    return gFontSmallLatinGlyphWidths[glyphId];
-}
+SACA_GLIFO(SacaGlifoNormal, AnchoGlifoNormal, gGlifosFuenteNormal, gAnchosFuenteNormal)
+SACA_GLIFO(SacaGlifoBorde,  AnchoGlifoBorde,  gGlifosFuenteBorde,  gAnchosFuenteBorde)
+SACA_GLIFO(SacaGlifoGruesa, AnchoGlifoGruesa, gGlifosFuenteGruesa, gAnchosFuenteGruesa)
 
-static void DecompressGlyph_Narrow(u16 glyphId)
-{
-    const u16 *glyphs;
-
-    glyphs = gFontNarrowLatinGlyphs + (32 * glyphId);
-    gCurGlyph.width = gFontNarrowLatinGlyphWidths[glyphId];
-
-    if (gCurGlyph.width <= 8)
-    {
-        DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
-        DecompressGlyphTile(glyphs + 16, gCurGlyph.gfxBufferBottom);
-    }
-    else
-    {
-        DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
-        DecompressGlyphTile(glyphs + 8, gCurGlyph.gfxBufferTop + 8);
-        DecompressGlyphTile(glyphs + 16, gCurGlyph.gfxBufferBottom);
-        DecompressGlyphTile(glyphs + 24, gCurGlyph.gfxBufferBottom + 8);
-    }
-
-    gCurGlyph.height = 15;
-}
-
-static u32 GetGlyphWidth_Narrow(u16 glyphId)
-{
-    return gFontNarrowLatinGlyphWidths[glyphId];
-}
-
-static void DecompressGlyph_SmallNarrow(u16 glyphId)
-{
-    const u16 *glyphs;
-
-    glyphs = gFontSmallNarrowLatinGlyphs + (32 * glyphId);
-    gCurGlyph.width = gFontSmallNarrowLatinGlyphWidths[glyphId];
-
-    if (gCurGlyph.width <= 8)
-    {
-        DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
-        DecompressGlyphTile(glyphs + 16, gCurGlyph.gfxBufferBottom);
-    }
-    else
-    {
-        DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
-        DecompressGlyphTile(glyphs + 8, gCurGlyph.gfxBufferTop + 8);
-        DecompressGlyphTile(glyphs + 16, gCurGlyph.gfxBufferBottom);
-        DecompressGlyphTile(glyphs + 24, gCurGlyph.gfxBufferBottom + 8);
-    }
-
-    gCurGlyph.height = 12;
-}
-
-static u32 GetGlyphWidth_SmallNarrow(u16 glyphId)
-{
-    return gFontSmallNarrowLatinGlyphWidths[glyphId];
-}
-
-static void DecompressGlyph_Short(u16 glyphId)
-{
-    const u16 *glyphs;
-
-    glyphs = gFontShortLatinGlyphs + (32 * glyphId);
-    gCurGlyph.width = gFontShortLatinGlyphWidths[glyphId];
-
-    if (gCurGlyph.width <= 8)
-    {
-        DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
-        DecompressGlyphTile(glyphs + 16, gCurGlyph.gfxBufferBottom);
-    }
-    else
-    {
-        DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
-        DecompressGlyphTile(glyphs + 8, gCurGlyph.gfxBufferTop + 8);
-        DecompressGlyphTile(glyphs + 16, gCurGlyph.gfxBufferBottom);
-        DecompressGlyphTile(glyphs + 24, gCurGlyph.gfxBufferBottom + 8);
-    }
-
-    gCurGlyph.height = 14;
-}
-
-static u32 GetGlyphWidth_Short(u16 glyphId)
-{
-    return gFontShortLatinGlyphWidths[glyphId];
-}
-
-static void DecompressGlyph_Big(u16 glyphId)
-{
-    const u16 *glyphs;
-
-    glyphs = gFontBigLatinGlyphs + (32 * glyphId);
-    gCurGlyph.width = gFontBigLatinGlyphWidths[glyphId];
-
-    if (gCurGlyph.width <= 8)
-    {
-        DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
-        DecompressGlyphTile(glyphs + 16, gCurGlyph.gfxBufferBottom);
-    }
-    else
-    {
-        DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
-        DecompressGlyphTile(glyphs + 8, gCurGlyph.gfxBufferTop + 8);
-        DecompressGlyphTile(glyphs + 16, gCurGlyph.gfxBufferBottom);
-        DecompressGlyphTile(glyphs + 24, gCurGlyph.gfxBufferBottom + 8);
-    }
-
-    gCurGlyph.height = 15;
-}
-
-static u32 GetGlyphWidth_Big(u16 glyphId)
-{
-    return gFontBigLatinGlyphWidths[glyphId];
-}
-
-static void DecompressGlyph_Normal(u16 glyphId)
-{
-    const u16 *glyphs;
-
-    glyphs = gFontNormalLatinGlyphs + (32 * glyphId);
-    gCurGlyph.width = gFontNormalLatinGlyphWidths[glyphId];
-
-    if (gCurGlyph.width <= 8)
-    {
-        DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
-        DecompressGlyphTile(glyphs + 16, gCurGlyph.gfxBufferBottom);
-    }
-    else
-    {
-        DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
-        DecompressGlyphTile(glyphs + 8, gCurGlyph.gfxBufferTop + 8);
-        DecompressGlyphTile(glyphs + 16, gCurGlyph.gfxBufferBottom);
-        DecompressGlyphTile(glyphs + 24, gCurGlyph.gfxBufferBottom + 8);
-    }
-
-    gCurGlyph.height = 15;
-}
-
-static u32 GetGlyphWidth_Normal(u16 glyphId)
-{
-    return gFontNormalLatinGlyphWidths[glyphId];
-}
-
-static void DecompressGlyph_Narrower(u16 glyphId)
-{
-    const u16 *glyphs;
-
-    glyphs = gFontNarrowerLatinGlyphs + (32 * glyphId);
-    gCurGlyph.width = gFontNarrowerLatinGlyphWidths[glyphId];
-
-    if (gCurGlyph.width <= 8)
-    {
-        DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
-        DecompressGlyphTile(glyphs + 16, gCurGlyph.gfxBufferBottom);
-    }
-    else
-    {
-        DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
-        DecompressGlyphTile(glyphs + 8, gCurGlyph.gfxBufferTop + 8);
-        DecompressGlyphTile(glyphs + 16, gCurGlyph.gfxBufferBottom);
-        DecompressGlyphTile(glyphs + 24, gCurGlyph.gfxBufferBottom + 8);
-    }
-
-    gCurGlyph.height = 15;
-}
-
-static u32 GetGlyphWidth_Narrower(u16 glyphId)
-{
-    return gFontNarrowerLatinGlyphWidths[glyphId];
-}
-
-static void DecompressGlyph_SmallNarrower(u16 glyphId)
-{
-    const u16 *glyphs;
-
-    glyphs = gFontSmallNarrowerLatinGlyphs + (32 * glyphId);
-    gCurGlyph.width = gFontSmallNarrowerLatinGlyphWidths[glyphId];
-
-    if (gCurGlyph.width <= 8)
-    {
-        DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
-        DecompressGlyphTile(glyphs + 16, gCurGlyph.gfxBufferBottom);
-    }
-    else
-    {
-        DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
-        DecompressGlyphTile(glyphs + 8, gCurGlyph.gfxBufferTop + 8);
-        DecompressGlyphTile(glyphs + 16, gCurGlyph.gfxBufferBottom);
-        DecompressGlyphTile(glyphs + 24, gCurGlyph.gfxBufferBottom + 8);
-    }
-
-    gCurGlyph.height = 15;
-}
-
-static u32 GetGlyphWidth_SmallNarrower(u16 glyphId)
-{
-    return gFontSmallNarrowerLatinGlyphWidths[glyphId];
-}
-
-static void DecompressGlyph_ShortNarrow(u16 glyphId)
-{
-    const u16 *glyphs;
-
-    glyphs = gFontShortNarrowLatinGlyphs + (32 * glyphId);
-    gCurGlyph.width = gFontShortNarrowLatinGlyphWidths[glyphId];
-
-    if (gCurGlyph.width <= 8)
-    {
-        DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
-        DecompressGlyphTile(glyphs + 16, gCurGlyph.gfxBufferBottom);
-    }
-    else
-    {
-        DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
-        DecompressGlyphTile(glyphs + 8, gCurGlyph.gfxBufferTop + 8);
-        DecompressGlyphTile(glyphs + 16, gCurGlyph.gfxBufferBottom);
-        DecompressGlyphTile(glyphs + 24, gCurGlyph.gfxBufferBottom + 8);
-    }
-
-    gCurGlyph.height = 14;
-}
-
-static u32 GetGlyphWidth_ShortNarrow(u16 glyphId)
-{
-    return gFontShortNarrowLatinGlyphWidths[glyphId];
-}
-
-static const s8 sNarrowerFontIds[] =
-{
-    [FONT_SMALL] = FONT_SMALL_NARROW,
-    [FONT_NORMAL] = FONT_NARROW,
-    [FONT_SHORT] = FONT_SHORT_NARROW,
-    [FONT_NARROW] = FONT_NARROWER,
-    [FONT_SMALL_NARROW] = FONT_SMALL_NARROWER,
-    [FONT_NARROWER] = -1,
-    [FONT_SMALL_NARROWER] = -1,
-    [FONT_SHORT_NARROW] = -1,
-};
-
-// If the narrowest font ID doesn't fit the text, we still return that
-// ID because clipping is better than crashing.
+// Ya no hay una familia de fuentes mas estrechas a la que caerse. Se mantiene
+// la funcion para no tocar los sitios que la llaman: si el texto no cabe se
+// recorta, que es mejor que no pintar nada.
 u32 GetFontIdToFit(const u8 *string, u32 fontId, u32 letterSpacing, u32 widthPx)
 {
-    for (;;)
-    {
-        s32 narrowerFontId = sNarrowerFontIds[fontId];
-        if (narrowerFontId == -1)
-            return fontId;
-        if (GetStringWidth(fontId, string, letterSpacing) <= widthPx)
-            return fontId;
-        fontId = narrowerFontId;
-    }
+    return fontId;
 }
 
 u8 *PrependFontIdToFit(u8 *start, u8 *end, u32 fontId, u32 width)

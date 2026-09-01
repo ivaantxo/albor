@@ -178,7 +178,7 @@ static const struct ListMenuTemplate sShopBuyMenuListTemplate =
     .lettersSpacing = 0,
     .itemVerticalPadding = 0,
     .scrollMultiple = LIST_NO_MULTIPLE_SCROLL,
-    .fontId = FONT_NARROW,
+    .fontId = FUENTE_NORMAL,
     .cursorKind = CURSOR_BLACK_ARROW,
     .textNarrowWidth = 84,
 };
@@ -572,8 +572,8 @@ static void BuyMenuPrintPriceInList(u8 windowId, u32 itemId, u8 y)
             StringCopy(gVariableTextoAmpliada, gText_SoldOut);
         else
             StringExpandPlaceholders(gVariableTextoAmpliada, gText_PokedollarVar1);
-        x = GetStringRightAlignXOffset(FONT_NARROW, gVariableTextoAmpliada, 120);
-        AddTextPrinterParameterized4(windowId, FONT_NARROW, x, y, 0, 0, sShopBuyMenuTextColors[COLORID_ITEM_LIST], TEXT_SKIP_DRAW, gVariableTextoAmpliada);
+        x = GetStringRightAlignXOffset(FUENTE_NORMAL, gVariableTextoAmpliada, 120);
+        AddTextPrinterParameterized4(windowId, FUENTE_NORMAL, x, y, 0, 0, sShopBuyMenuTextColors[COLORID_ITEM_LIST], TEXT_SKIP_DRAW, gVariableTextoAmpliada);
     }
 }
 
@@ -679,12 +679,12 @@ static void BuyMenuInitWindows(void)
 
 static void BuyMenuPrint(u8 windowId, const u8 *text, u8 x, u8 y, s8 speed, u8 colorSet)
 {
-    AddTextPrinterParameterized4(windowId, FONT_NORMAL, x, y, 0, 0, sShopBuyMenuTextColors[colorSet], speed, text);
+    AddTextPrinterParameterized4(windowId, FUENTE_NORMAL, x, y, 0, 0, sShopBuyMenuTextColors[colorSet], speed, text);
 }
 
 static void BuyMenuDisplayMessage(u8 taskId, const u8 *text, TaskFunc callback)
 {
-    DisplayMessageAndContinueTask(taskId, WIN_MESSAGE, 10, 14, FONT_NORMAL, GetPlayerTextSpeedDelay(), text, callback);
+    DisplayMessageAndContinueTask(taskId, WIN_MESSAGE, 10, 14, FUENTE_NORMAL, GetPlayerTextSpeedDelay(), text, callback);
     ProgramaCopiaTilemapVram(FONDO_0);
 }
 

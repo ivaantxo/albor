@@ -687,7 +687,7 @@ static const u8 sMemoNatureTextColor[] = _("{COLOR LIGHT_RED}{SHADOW GREEN}");
 static const u8 sMemoMiscTextColor[] = _("{COLOR WHITE}{SHADOW DARK_GRAY}"); // This is also affected by palettes, apparently
 static const u8 sStatsLeftColumnLayout[] = _("{DYNAMIC 0}/{DYNAMIC 1}\n{DYNAMIC 2}\n{DYNAMIC 3}");
 static const u8 sStatsRightColumnLayout[] = _("{DYNAMIC 0}\n{DYNAMIC 1}\n{DYNAMIC 2}");
-static const u8 sMovesPPLayout[] = _("{PP}{DYNAMIC 0}/{DYNAMIC 1}");
+static const u8 sMovesPPLayout[] = _("PP{DYNAMIC 0}/{DYNAMIC 1}");
 
 #define TAG_MOVE_SELECTOR 30000
 #define TAG_MON_STATUS 30001
@@ -2484,12 +2484,12 @@ static void PrintTextOnWindowWithFont(u8 windowId, const u8 *string, u8 x, u8 y,
 
 static void PrintTextOnWindow(u8 windowId, const u8 *string, u8 x, u8 y, u8 lineSpacing, u8 colorId)
 {
-    PrintTextOnWindowWithFont(windowId, string, x, y, lineSpacing, colorId, FONT_NORMAL);
+    PrintTextOnWindowWithFont(windowId, string, x, y, lineSpacing, colorId, FUENTE_NORMAL);
 }
 
 static void PrintTextOnWindowToFitPx(u8 windowId, const u8 *string, u8 x, u8 y, u8 lineSpacing, u8 colorId, u32 width)
 {
-    u32 fontId = GetFontIdToFit(string, FONT_NORMAL, 0, width);
+    u32 fontId = GetFontIdToFit(string, FUENTE_NORMAL, 0, width);
     PrintTextOnWindowWithFont(windowId, string, x, y, lineSpacing, colorId, fontId);
 }
 
@@ -2603,14 +2603,14 @@ static void PrintPageNamesAndStats(void)
 
     ShowCancelOrRenamePrompt();
 
-    stringXPos = GetStringRightAlignXOffset(FONT_NORMAL, gText_Info, 62);
+    stringXPos = GetStringRightAlignXOffset(FUENTE_NORMAL, gText_Info, 62);
     iconXPos = stringXPos - 16;
     if (iconXPos < 0)
         iconXPos = 0;
     PrintAOrBButtonIcon(PSS_LABEL_WINDOW_PROMPT_INFO, FALSE, iconXPos);
     PrintTextOnWindow(PSS_LABEL_WINDOW_PROMPT_INFO, gText_Info, stringXPos, 1, 0, 0);
 
-    stringXPos = GetStringRightAlignXOffset(FONT_NORMAL, gText_Switch, 62);
+    stringXPos = GetStringRightAlignXOffset(FUENTE_NORMAL, gText_Switch, 62);
     iconXPos = stringXPos - 16;
     if (iconXPos < 0)
         iconXPos = 0;
@@ -2619,17 +2619,17 @@ static void PrintPageNamesAndStats(void)
 
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_INFO_RENTAL, gText_RentalPkmn, 0, 1, 0, 1);
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_INFO_TYPE, gText_TypeSlash, 0, 1, 0, 0);
-    statsXPos = 6 + GetStringCenterAlignXOffset(FONT_NORMAL, gText_PS, 42);
+    statsXPos = 6 + GetStringCenterAlignXOffset(FUENTE_NORMAL, gText_PS, 42);
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_LEFT, gText_PS, statsXPos, 1, 0, 1);
-    statsXPos = 6 + GetStringCenterAlignXOffset(FONT_NORMAL, gText_Ataque, 42);
+    statsXPos = 6 + GetStringCenterAlignXOffset(FUENTE_NORMAL, gText_Ataque, 42);
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_LEFT, gText_Ataque, statsXPos, 17, 0, 1);
-    statsXPos = 6 + GetStringCenterAlignXOffset(FONT_NORMAL, gText_Defensa, 42);
+    statsXPos = 6 + GetStringCenterAlignXOffset(FUENTE_NORMAL, gText_Defensa, 42);
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_LEFT, gText_Defensa, statsXPos, 33, 0, 1);
-    statsXPos = 2 + GetStringCenterAlignXOffset(FONT_NORMAL, gText_AtEsp, 36);
+    statsXPos = 2 + GetStringCenterAlignXOffset(FUENTE_NORMAL, gText_AtEsp, 36);
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_RIGHT, gText_AtEsp, statsXPos, 1, 0, 1);
-    statsXPos = 2 + GetStringCenterAlignXOffset(FONT_NORMAL, gText_DefEsp, 36);
+    statsXPos = 2 + GetStringCenterAlignXOffset(FUENTE_NORMAL, gText_DefEsp, 36);
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_RIGHT, gText_DefEsp, statsXPos, 17, 0, 1);
-    statsXPos = 2 + GetStringCenterAlignXOffset(FONT_NORMAL, gText_Velocidad, 36);
+    statsXPos = 2 + GetStringCenterAlignXOffset(FUENTE_NORMAL, gText_Velocidad, 36);
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_STATS_RIGHT, gText_Velocidad, statsXPos, 33, 0, 1);
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_EXP, gText_ExpPoints, 6, 1, 0, 1);
     PrintTextOnWindow(PSS_LABEL_WINDOW_POKEMON_SKILLS_EXP, gText_NextLv, 6, 17, 0, 1);
@@ -2638,7 +2638,7 @@ static void PrintPageNamesAndStats(void)
     PrintTextOnWindow(PSS_LABEL_WINDOW_MOVES_POWER_ACC, gText_Precision, 0, 17, 0, 1);
     PrintTextOnWindow(PSS_LABEL_WINDOW_MOVES_APPEAL_JAM, gText_Appeal, 0, 1, 0, 1);
     PrintTextOnWindow(PSS_LABEL_WINDOW_MOVES_APPEAL_JAM, gText_Jam, 0, 17, 0, 1);
-    PrintTextOnWindowWithFont(PSS_LABEL_WINDOW_PROMPT_RELEARN, gText_Relearn, 0, 4, 0, 0, FONT_SMALL);
+    PrintTextOnWindowWithFont(PSS_LABEL_WINDOW_PROMPT_RELEARN, gText_Relearn, 0, 4, 0, 0, FUENTE_NORMAL);
 }
 
 static void PutPageWindowTilemaps(u8 page)
@@ -2815,7 +2815,7 @@ static void PrintMonOTName(void)
 
     windowId = AddWindowFromTemplateList(sPageInfoTemplate, PSS_DATA_WINDOW_INFO_ORIGINAL_TRAINER);
     PrintTextOnWindow(windowId, gText_OTSlash, 0, 1, 0, 1);
-    x = GetStringWidth(FONT_NORMAL, gText_OTSlash, 0);
+    x = GetStringWidth(FUENTE_NORMAL, gText_OTSlash, 0);
     if (sMonSummaryScreen->summary.OTGender == 0)
         PrintTextOnWindow(windowId, sMonSummaryScreen->summary.OTName, x, 1, 0, 5);
     else
@@ -2885,7 +2885,7 @@ static void GetMetLevelString(u8 *output)
 static void PrintEggOTName(void)
 {
     u32 windowId = AddWindowFromTemplateList(sPageInfoTemplate, PSS_DATA_WINDOW_INFO_ORIGINAL_TRAINER);
-    u32 width = GetStringWidth(FONT_NORMAL, gText_OTSlash, 0);
+    u32 width = GetStringWidth(FUENTE_NORMAL, gText_OTSlash, 0);
     PrintTextOnWindow(windowId, gText_OTSlash, 0, 1, 0, 1);
     PrintTextOnWindow(windowId, gText_FiveMarks, width, 1, 0, 1);
 }
@@ -2975,7 +2975,7 @@ static void PrintHeldItemName(void)
         text = gVariableTexto1;
     }
 
-    fontId = GetFontIdToFit(text, FONT_NORMAL, 0, WindowTemplateWidthPx(&sPageSkillsTemplate[PSS_DATA_WINDOW_SKILLS_HELD_ITEM]) - 8);
+    fontId = GetFontIdToFit(text, FUENTE_NORMAL, 0, WindowTemplateWidthPx(&sPageSkillsTemplate[PSS_DATA_WINDOW_SKILLS_HELD_ITEM]) - 8);
     x = GetStringCenterAlignXOffset(fontId, text, 72) + 6;
     PrintTextOnWindowWithFont(AddWindowFromTemplateList(sPageSkillsTemplate, PSS_DATA_WINDOW_SKILLS_HELD_ITEM), text, x, 1, 0, 0, fontId);
 }
@@ -2996,7 +2996,7 @@ static void PrintRibbonCount(void)
         text = gVariableTextoAmpliada;
     }
 
-    x = GetStringCenterAlignXOffset(FONT_NORMAL, text, 70) + 6;
+    x = GetStringCenterAlignXOffset(FUENTE_NORMAL, text, 70) + 6;
     PrintTextOnWindow(AddWindowFromTemplateList(sPageSkillsTemplate, PSS_DATA_WINDOW_SKILLS_RIBBON_COUNT), text, x, 1, 0, 0);
 }
 
@@ -3064,7 +3064,7 @@ static void PrintExpPointsNextLevel(void)
     u32 expToNextLevel;
 
     ConvertIntToDecimalStringN(gVariableTexto1, sum->exp, STR_CONV_MODE_RIGHT_ALIGN, 7);
-    x = GetStringRightAlignXOffset(FONT_NORMAL, gVariableTexto1, 42) + 2;
+    x = GetStringRightAlignXOffset(FUENTE_NORMAL, gVariableTexto1, 42) + 2;
     PrintTextOnWindow(windowId, gVariableTexto1, x, 1, 0, 0);
 
     if (sum->level < MAX_LEVEL)
@@ -3073,7 +3073,7 @@ static void PrintExpPointsNextLevel(void)
         expToNextLevel = 0;
 
     ConvertIntToDecimalStringN(gVariableTexto1, expToNextLevel, STR_CONV_MODE_RIGHT_ALIGN, 6);
-    x = GetStringRightAlignXOffset(FONT_NORMAL, gVariableTexto1, 42) + 2;
+    x = GetStringRightAlignXOffset(FUENTE_NORMAL, gVariableTexto1, 42) + 2;
     PrintTextOnWindow(windowId, gVariableTexto1, x, 17, 0, 0);
 }
 
@@ -3166,14 +3166,14 @@ static void PrintMoveNameAndPP(u8 moveIndex)
         DynamicPlaceholderTextUtil_ExpandPlaceholders(gVariableTextoAmpliada, sMovesPPLayout);
         text = gVariableTextoAmpliada;
         ppState = GetCurrentPpToMaxPpState(summary->pp[moveIndex], pp) + 9;
-        x = GetStringRightAlignXOffset(FONT_NORMAL, text, 44);
+        x = GetStringRightAlignXOffset(FUENTE_NORMAL, text, 44);
     }
     else
     {
         PrintTextOnWindow(moveNameWindowId, gText_OneDash, 0, moveIndex * 16 + 1, 0, 1);
         text = gText_TwoDashes;
         ppState = 12;
-        x = GetStringCenterAlignXOffset(FONT_NORMAL, text, 44);
+        x = GetStringCenterAlignXOffset(FUENTE_NORMAL, text, 44);
     }
 
     PrintTextOnWindow(ppValueWindowId, text, x, moveIndex * 16 + 1, 0, ppState);
@@ -3258,7 +3258,7 @@ static void PrintNewMoveDetailsOrCancelText(void)
         DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, gVariableTexto1);
         DynamicPlaceholderTextUtil_SetPlaceholderPtr(1, gVariableTexto1);
         DynamicPlaceholderTextUtil_ExpandPlaceholders(gVariableTextoAmpliada, sMovesPPLayout);
-        PrintTextOnWindow(windowId2, gVariableTextoAmpliada, GetStringRightAlignXOffset(FONT_NORMAL, gVariableTextoAmpliada, 44), 65, 0, 12);
+        PrintTextOnWindow(windowId2, gVariableTextoAmpliada, GetStringRightAlignXOffset(FUENTE_NORMAL, gVariableTextoAmpliada, 44), 65, 0, 12);
     }
 }
 
@@ -3718,7 +3718,7 @@ static void ShowCancelOrRenamePrompt(void)
 {
     const u8 *promptText = ShouldShowRename() ? gText_Rename : gText_Salir;
 
-    int stringXPos = GetStringRightAlignXOffset(FONT_NORMAL, promptText, 62);
+    int stringXPos = GetStringRightAlignXOffset(FUENTE_NORMAL, promptText, 62);
     int iconXPos = stringXPos - 16;
     if (iconXPos < 0)
         iconXPos = 0;

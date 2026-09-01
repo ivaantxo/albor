@@ -1746,6 +1746,6 @@ bool32 CheckPartyHasSpecies(u32 givenSpecies)
 void UseBlankMessageToCancelPokemonPic(void)
 {
     u8 t = EOS;
-    AddTextPrinterParameterized(0, FONT_NORMAL, &t, 0, 1, 0, NULL);
+    AddTextPrinterParameterized(0, FUENTE_NORMAL, &t, 0, 1, 0, NULL);
     ScriptMenu_HidePokemonPic();
 }

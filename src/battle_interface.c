@@ -39,7 +39,7 @@
 #define TILES_POR_ICONO_ESTADO 4   // 32x8
 
 // Tira de texto del marcador: 96x16, en cuatro columnas de tiles por subsprite.
-// Son 16 px de alto y no 8 porque FONT_SMALL mide 12: con una sola fila de tiles
+// Son 16 px de alto y no 8 porque FUENTE_NORMAL mide 12: con una sola fila de tiles
 // la fuente se cortaba por la mitad de abajo.
 #define TILES_ANCHO_TEXTO      12
 #define TILES_ALTO_TEXTO        2
@@ -785,7 +785,7 @@ static void TextoAlSprite(u32 spriteId, const u8 *texto, u32 x, u32 columna, u32
     color[1] = COLOR_TEXTO_MARCADOR;
     color[2] = 0; // sin sombreado
 
-    AddTextPrinterParameterized4(windowId, FONT_SMALL, x, 0, 0, 0, color, TEXT_SKIP_DRAW, texto);
+    AddTextPrinterParameterized4(windowId, FUENTE_NORMAL, x, 0, 0, 0, color, TEXT_SKIP_DRAW, texto);
     tilesVentana = (const u8 *)(GetWindowAttribute(windowId, WINDOW_TILE_DATA));
 
     for (c = columna; c < columna + numColumnas; c++)
@@ -807,7 +807,7 @@ static void TextoAlSprite(u32 spriteId, const u8 *texto, u32 x, u32 columna, u32
 static void TextoDerechaAlSprite(u32 spriteId, const u8 *texto, u32 columna, u32 numColumnas)
 {
     s32 hueco = numColumnas * 8;
-    s32 ancho = GetStringWidth(FONT_SMALL, texto, 0);
+    s32 ancho = GetStringWidth(FUENTE_NORMAL, texto, 0);
 
     if (ancho > hueco)
         ancho = hueco;
@@ -828,8 +828,8 @@ static void DibujaNombreYNivel(u8 marcadorSpriteId, struct Pokemon *mon)
     TextoAlSprite(textoSpriteId, nombre, COL_NOMBRE * 8, COL_NOMBRE, COLS_NOMBRE);
 
     fin = nivel;
-    *fin++ = CHAR_EXTRA_SYMBOL;
-    *fin++ = CHAR_LV_2;
+    *fin++ = CHAR_L;
+    *fin++ = CHAR_v;
     fin = ConvertIntToDecimalStringN(fin, GetMonData(mon, MON_DATA_LEVEL), STR_CONV_MODE_LEFT_ALIGN, 3);
     *fin = EOS;
 
@@ -1297,7 +1297,7 @@ static u8* AddTextPrinterAndCreateWindowOnAbilityPopUp(const u8 *str, u32 x, u32
     *windowId = AddWindow(&winTemplate);
     FillWindowPixelBuffer(*windowId, PIXEL_FILL(color1));
 
-    fontId = GetFontIdToFit(str, FONT_SMALL, 0, 76);
+    fontId = GetFontIdToFit(str, FUENTE_NORMAL, 0, 76);
     AddTextPrinterParameterized4(*windowId, fontId, x, y, 0, 0, color, TEXT_SKIP_DRAW, str);
     return (u8 *)(GetWindowAttribute(*windowId, WINDOW_TILE_DATA));
 }
@@ -1329,7 +1329,7 @@ static void PrintOnAbilityPopUp(const u8 *str, u8 *spriteTileData1, u8 *spriteTi
     TextIntoAbilityPopUp(spriteTileData1, windowTileData, 8, (y == 0));
     RemoveWindow(windowId);
 
-    width = GetStringWidth(FONT_SMALL, str, 0);
+    width = GetStringWidth(FUENTE_NORMAL, str, 0);
 
     if (width > MAX_POPUP_STRING_WIDTH - 5)
     {

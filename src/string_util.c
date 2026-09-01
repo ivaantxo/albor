@@ -492,8 +492,6 @@ u8 *StringCopyN_Multibyte(u8 *dest, u8 *src, u32 n)
         else
         {
             *dest++ = *src++;
-            if (*(src - 1) == CHAR_EXTRA_SYMBOL)
-                *dest++ = *src++;
         }
     }
 
@@ -507,8 +505,6 @@ u32 StringLength_Multibyte(const u8 *str)
 
     while (*str != EOS)
     {
-        if (*str == CHAR_EXTRA_SYMBOL)
-            str++;
         str++;
         length++;
     }
