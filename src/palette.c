@@ -573,6 +573,10 @@ static u32 UpdateFastPaletteFade(void)
     return PALETTE_FADE_STATUS_ACTIVE;
 }
 
+// El fundido por hardware mueve BLDY, asi que controlBlend TIENE que llevar
+// BLDCNT_EFFECT_DARKEN o BLDCNT_EFFECT_LIGHTEN: en modo BLEND el hardware ignora
+// BLDY -lo controla BLDALPHA- y el fundido no se ve, dejando un corte seco donde
+// deberia haber una transicion.
 void EmpiezaFundidoPaletasHardware(u32 controlBlend, u32 retraso, u32 y, u32 targetY, u32 reseteoRegistroBlend)
 {
     gFundidoPaletas.controlBlend = controlBlend;

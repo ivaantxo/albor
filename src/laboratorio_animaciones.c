@@ -46,7 +46,7 @@ static EWRAM_DATA u16 sMovimientoElegido = 0;
 //
 // El laboratorio tiene cientos de movimientos y casi todos se ven igual pase lo
 // que pase; para comprobar un cambio hace falta ir a los que lo tocan. La lista
-// se genera leyendo los guiones, no a mano, y se poda segun avanza el repaso.
+// se genera leyendo los guiones, no a mano.
 enum FiltroLaboratorio
 {
     FILTRO_TODOS,           // los ~900

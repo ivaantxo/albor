@@ -1,4 +1,5 @@
 #include "global.h"
+#include "sombra_pokemon.h"
 #include "malloc.h"
 #include "battle.h"
 #include "battle_anim.h"
@@ -1067,7 +1068,8 @@ const struct SpriteTemplate gRecycleSpriteTemplate =
 {
     .tileTag = ANIM_TAG_RECYCLE,
     .paletteTag = ANIM_TAG_RECYCLE,
-    .oam = &gOamData_AffineNormal_ObjBlend_64x64,
+    // Opaca: ya no entra ni sale con un fundido, ver AnimRecycle.
+    .oam = &gOamData_AffineNormal_ObjNormal_64x64,
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = gRecycleSpriteAffineAnimTable,
@@ -1155,8 +1157,7 @@ static void AnimWhiteHalo_Step1(struct Sprite *sprite)
 
 static void AnimWhiteHalo_Step2(struct Sprite *sprite)
 {
-    SetGpuReg(REG_OFFSET_BLDCNT, 0);
-    SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+    PreparaMezclaSombraPokemon();
     DestroyAnimSprite(sprite);
 }
 
@@ -1202,8 +1203,7 @@ static void AnimMeanLookEye_Step1(struct Sprite *sprite)
 
     if (sprite->data[2]++ > 70)
     {
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
-        SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+        PreparaMezclaSombraPokemon();
         StartSpriteAffineAnim(sprite, 1);
         sprite->data[2] = 0;
         sprite->invisible = TRUE;
@@ -1277,8 +1277,7 @@ static void AnimMeanLookEye_Step4(struct Sprite *sprite)
 
     if (sprite->data[0] < 0)
     {
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
-        SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+        PreparaMezclaSombraPokemon();
         DestroyAnimSprite(sprite);
     }
 }
@@ -2285,12 +2284,11 @@ void AnimTask_MorningSunLightBeam(u8 taskId)
     case 4:
         GetBattleAnimBg1Data(&animBg);
         ClearBattleAnimBg(animBg.bgId);
-        SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 0);
+        DevuelveElBg1AlCombate();
         SetAnimBgAttribute(1, BG_ANIM_PRIORITY, 1);
         gBattle_BG1_X = 0;
         gBattle_BG1_Y = 0;
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
-        SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+        PreparaMezclaSombraPokemon();
         DestroyAnimVisualTask(taskId);
         break;
     }
@@ -4144,8 +4142,15 @@ static void AnimDesarmeStrike(struct Sprite *sprite)
     sprite->callback = AnimDesarmeStrike_Step;
 }
 
-// Gradually fades a rotating recyle arrow sprite in and back out.
-// No args.
+// La flecha de reciclaje: sale sobre el Pokemon, gira un rato y se va.
+//
+// Antes entraba y salia con un fundido de BLDALPHA. Se quito: BLDALPHA es el mismo
+// registro del que sale la densidad de la sombra, asi que mover el fundido la hacia
+// pulsar de invisible a negra maciza y desaparecer de golpe. La flecha no necesitaba
+// el fundido para nada.
+//
+// TODO: falta cargar el sprite del objeto reciclado y mostrarlo dentro de la flecha,
+// que es lo que deberia contar la animacion.
 static void AnimRecycle(struct Sprite *sprite)
 {
     sprite->x = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_X_2);
@@ -4153,70 +4158,17 @@ static void AnimRecycle(struct Sprite *sprite)
     if (sprite->y < 16)
         sprite->y = 16;
 
-    sprite->data[6] = 0;
-    sprite->data[7] = 16;
     sprite->callback = AnimRecycle_Step;
-    SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(sprite->data[6], sprite->data[7]));
 }
+
+// Lo que duraba entrar, esperar y salir con el fundido de antes, para no descuadrar
+// el sonido que corre en paralelo.
+#define FOTOGRAMAS_FLECHA_RECICLAJE 138
 
 static void AnimRecycle_Step(struct Sprite *sprite)
 {
-    switch (sprite->data[2])
-    {
-    case 0:
-        if (++sprite->data[0] > 1)
-        {
-            sprite->data[0] = 0;
-            if (!(sprite->data[1] & 1))
-            {
-                if (sprite->data[6] < 16)
-                    sprite->data[6]++;
-            }
-            else
-            {
-                if (sprite->data[7] != 0)
-                    sprite->data[7]--;
-            }
-
-            sprite->data[1]++;
-            SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(sprite->data[6], sprite->data[7]));
-            if (sprite->data[7] == 0)
-                sprite->data[2]++;
-        }
-        break;
-    case 1:
-        if (++sprite->data[0] == 10)
-        {
-            sprite->data[0] = 0;
-            sprite->data[1] = 0;
-            sprite->data[2]++;
-        }
-        break;
-    case 2:
-        if (++sprite->data[0] > 1)
-        {
-            sprite->data[0] = 0;
-            if (!(sprite->data[1] & 1))
-            {
-                if (sprite->data[6] != 0)
-                    sprite->data[6]--;
-            }
-            else
-            {
-                if (sprite->data[7] < 16)
-                    sprite->data[7]++;
-            }
-
-            sprite->data[1]++;
-            SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(sprite->data[6], sprite->data[7]));
-            if (sprite->data[7] == 16)
-                sprite->data[2]++;
-        }
-        break;
-    case 3:
+    if (++sprite->data[0] >= FOTOGRAMAS_FLECHA_RECICLAJE)
         DestroySpriteAndMatrix(sprite);
-        break;
-    }
 }
 
 void AnimTask_GetWeather(u8 taskId)

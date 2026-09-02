@@ -1,4 +1,5 @@
 #include "global.h"
+#include "sombra_pokemon.h"
 #include "battle_anim.h"
 #include "gpu_regs.h"
 #include "trig.h"
@@ -10,7 +11,6 @@ static void AnimTranslateWebThread(struct Sprite *);
 static void AnimTranslateWebThread_Step(struct Sprite *);
 static void AnimStringWrap(struct Sprite *);
 static void AnimSpiderWeb_Step(struct Sprite *);
-static void AnimSpiderWeb_End(struct Sprite *);
 static void AnimTailGlowOrb(struct Sprite *);
 
 static const union AffineAnimCmd sAffineAnim_MegahornHorn_0[] =
@@ -123,7 +123,8 @@ const struct SpriteTemplate gSpiderWebSpriteTemplate =
 {
     .tileTag = ANIM_TAG_SPIDER_WEB,
     .paletteTag = ANIM_TAG_SPIDER_WEB,
-    .oam = &gOamData_AffineDouble_ObjBlend_64x64,
+    // Opaca: ya no se desvanece con BLDALPHA, ver AnimSpiderWeb.
+    .oam = &gOamData_AffineDouble_ObjNormal_64x64,
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = sAffineAnims_SpiderWeb,
@@ -302,14 +303,19 @@ void AnimStringWrap_Step(struct Sprite *sprite)
     }
 }
 
+// La tela que queda pegada al objetivo.
+//
+// Antes se desvanecia llevando BLDALPHA de (16,0) a (0,16). Se quito: ese registro
+// es el mismo del que sale la densidad de la sombra, asi que el desvanecido la hacia
+// desaparecer durante toda la animacion, y encima empezaba en (16,0) -sin nada de
+// fondo- que es donde la sombra saldria negra maciza. La tela se queda opaca y se va
+// cuando le toca, sin tocar un solo registro.
+//
 // arg0: x
 // arg1: y
 // arg2: targets both
 void AnimSpiderWeb(struct Sprite *sprite)
 {
-    SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND);
-    SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(16, 0));
-
     if (gBattleAnimArgs[2])
         SetAverageBattlerPositions(gBattleAnimTarget, FALSE, &sprite->x, &sprite->y);
 
@@ -319,34 +325,17 @@ void AnimSpiderWeb(struct Sprite *sprite)
         sprite->x += gBattleAnimArgs[0];
 
     sprite->y += gBattleAnimArgs[1];
-    sprite->data[0] = 16;
     sprite->callback = AnimSpiderWeb_Step;
 }
 
+// Lo que tardaba en quedarse quieta y desvanecerse: veinte fotogramas parada mas
+// treinta y dos de desvanecido.
+#define FOTOGRAMAS_TELARANA 52
+
 static void AnimSpiderWeb_Step(struct Sprite *sprite)
 {
-    if (sprite->data[2] < 20)
-    {
-        sprite->data[2]++;
-    }
-    else if (sprite->data[1]++ & 1)
-    {
-        sprite->data[0]--;
-        SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(sprite->data[0], 16 - sprite->data[0]));
-
-        if (sprite->data[0] == 0)
-        {
-            sprite->invisible = TRUE;
-            sprite->callback = AnimSpiderWeb_End;
-        }
-    }
-}
-
-static void AnimSpiderWeb_End(struct Sprite *sprite)
-{
-    SetGpuReg(REG_OFFSET_BLDCNT, 0);
-    SetGpuReg(REG_OFFSET_BLDALPHA, 0);
-    DestroyAnimSprite(sprite);
+    if (++sprite->data[1] >= FOTOGRAMAS_TELARANA)
+        DestroyAnimSprite(sprite);
 }
 
 // Translates a stinger sprite linearly to a destination location. The sprite is

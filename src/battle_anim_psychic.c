@@ -1,4 +1,5 @@
 #include "global.h"
+#include "sombra_pokemon.h"
 #include "battle_anim.h"
 #include "gpu_regs.h"
 #include "palette.h"
@@ -897,8 +898,7 @@ static void AnimTask_ImprisonOrbs_Step(u8 taskId)
         task->data[0]++;
         break;
     case 3:
-        SetGpuReg(REG_OFFSET_BLDALPHA, 0);
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
+        PreparaMezclaSombraPokemon();
         DestroyAnimVisualTask(taskId);
         break;
     }
@@ -1199,8 +1199,7 @@ void AnimPsychoBoost(struct Sprite *sprite)
         sprite->data[3] &= 0xFF;
         break;
     case 3:
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
-        SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+        PreparaMezclaSombraPokemon();
         DestroyAnimSprite(sprite);
         break;
     }

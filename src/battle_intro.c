@@ -82,6 +82,18 @@ void SetAnimBgAttribute(u8 bgId, u8 attributeId, u8 value)
     }
 }
 
+// Cero, y NO lo que dice gBattleBgTemplates.
+//
+// InitBattleBgsVideo pone a cero la base de FONDO_1 y FONDO_2 a proposito, en contra
+// de la plantilla: las animaciones y monbg escriben 512 casillas DESDE la base, y
+// 512 tiles son exactamente 0x4000, o sea un bloque entero. Con la base a cero eso
+// cae en 0x4000, que esta libre; con la base a uno caeria en 0x8000, que es el
+// tileset del terreno. Ver el comentario largo de InitBattleBgsVideo.
+void DevuelveElBg1AlCombate(void)
+{
+    SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 0);
+}
+
 int GetAnimBgAttribute(u8 bgId, u8 attributeId)
 {
     u32 bgCnt;

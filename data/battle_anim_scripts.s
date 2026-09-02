@@ -1854,22 +1854,8 @@ gBattleAnimMove_RockClimb::
 	blendoff
 	end
 
+@ TODO: Falta crear la animación de Despejar. La que tenía se la quedó Destello.
 gBattleAnimMove_Defog::
-	loadspritegfx ANIM_TAG_WHITE_CIRCLE_OF_LIGHT
-	monbg ANIM_ATTACKER
-	setalpha 12, 8
-	playsewithpan SE_M_SOLAR_BEAM, SOUND_PAN_ATTACKER
-	createsprite gLusterPurgeCircleSpriteTemplate, ANIM_ATTACKER, 41, 0, 0, 0, 0
-	delay 20
-	createvisualtask AnimTask_BlendBattleAnimPalExclude, 5, 5, 2, 0, 16, -1
-	createvisualtask AnimTask_BlendParticle, 5, ANIM_TAG_WHITE_CIRCLE_OF_LIGHT, 2, 0, 16, -1
-	waitforvisualfinish
-	waitforvisualfinish
-	delay 16
-	createvisualtask AnimTask_BlendBattleAnimPalExclude, 5, 5, 2, 16, 0, -1
-	waitforvisualfinish
-	clearmonbg ANIM_ATTACKER
-	blendoff
 	end
 
 gBattleAnimMove_EspacioRaro::
@@ -2892,80 +2878,12 @@ gBattleAnimMove_Colmena::
 	blendoff
 	end
 
+@ TODO: Falta crear la animación de A defender. La que había era la de Orden de Ataque, apuntada al rival.
 gBattleAnimMove_DefendOrder::
-	loadspritegfx ANIM_TAG_ATTACK_ORDER
-	loadspritegfx ANIM_TAG_IMPACT
-	loadspritegfx ANIM_TAG_ROCKS
-	monbg ANIM_DEF_PARTNER
-	splitbgprio ANIM_TARGET
-	playsewithpan SE_M_SWEET_SCENT, SOUND_PAN_TARGET
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 120, 70, 5, 70, 30
-	delay 1
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 115, 55, 6, 60, 25
-	delay 1
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 115, 60, 7, 60, 30
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 115, 55, 10, 60, 30
-	delay 3
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 100, 50, 4, 50, 26
-	delay 1
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 105, 25, 8, 60, 20
-	delay 1
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 115, 40, 10, 48, 30
-	delay 3
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 120, 30, 6, 45, 25
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 115, 35, 10, 60, 30
-	delay 3
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 105, 20, 8, 40, 0
-	delay 3
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 20, 255, 15, 32, 0
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 110, 10, 8, 32, 20
-	waitforvisualfinish
-	loadspritegfx ANIM_TAG_BLUE_STAR
-	waitforvisualfinish
-	clearmonbg ANIM_ATK_PARTNER
-	blendoff
-	delay 1
-	loopsewithpan SE_M_TAKE_DOWN, SOUND_PAN_ATTACKER, 9, 2
-	createvisualtask AnimTask_BlendColorCycle, 2, F_PAL_ATTACKER, 2, 2, 0, 11, RGB_RED
-	createvisualtask AnimTask_ShakeMon2, 2, ANIM_ATTACKER, 1, 0, 32, 1
-	waitforvisualfinish
 	end
 
+@ TODO: Falta crear la animación de Auxilio. La que había era la de Orden de Ataque, apuntada al rival.
 gBattleAnimMove_HealOrder::
-	loadspritegfx ANIM_TAG_ATTACK_ORDER
-	loadspritegfx ANIM_TAG_IMPACT
-	loadspritegfx ANIM_TAG_ROCKS
-	monbg ANIM_DEF_PARTNER
-	splitbgprio ANIM_TARGET
-	playsewithpan SE_M_SWEET_SCENT, SOUND_PAN_TARGET
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 120, 70, 5, 70, 30
-	delay 1
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 115, 55, 6, 60, 25
-	delay 1
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 115, 60, 7, 60, 30
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 115, 55, 10, 60, 30
-	delay 3
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 100, 50, 4, 50, 26
-	delay 1
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 105, 25, 8, 60, 20
-	delay 1
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 115, 40, 10, 48, 30
-	delay 3
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 120, 30, 6, 45, 25
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 115, 35, 10, 60, 30
-	delay 3
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 105, 20, 8, 40, 0
-	delay 3
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 20, 255, 15, 32, 0
-	createsprite gAttackOrderParticleSpriteTemplate, 130, 5, 110, 10, 8, 32, 20
-	waitforvisualfinish
-	loadspritegfx ANIM_TAG_BLUE_STAR
-	waitforvisualfinish
-	clearmonbg ANIM_ATK_PARTNER
-	blendoff
-	delay 1
-	call HealingEffect
-	waitforvisualfinish
 	end
 
 gBattleAnimMove_HeadSmash::
@@ -3088,9 +3006,12 @@ gBattleAnimMove_MagmaStorm::
 	call FireSpinEffect
 	createvisualtask AnimTask_BlendColorCycle, 2, (F_PAL_ATTACKER | F_PAL_TARGET), 4, 2, 2, 0, 12, RGB(22, 9, 7)
 	call FireSpinEffect
+	@ El terminador va ANTES de rehacer el terreno: para el fondo deslizante y le
+	@ devuelve al BG3 su tamano. Detras, el terreno de 64x32 se redibujaba con el
+	@ BG3 todavia en 32x32 y salian manchas negras al aclararse la pantalla.
+	setarg 7, 0xFFF
 	restorebg
 	waitbgfadeout
-	setarg 7, 0xFFF
 	waitbgfadein
 	clearmonbg ANIM_DEF_PARTNER
 	blendoff
@@ -3261,10 +3182,13 @@ OminousWindHit:
 	playsewithpan SE_M_GUST2, SOUND_PAN_TARGET
 	clearmonbg ANIM_DEF_PARTNER
 	delay 0
+	@ El terminador va ANTES de rehacer el terreno: para el fondo deslizante y le
+	@ devuelve al BG3 su tamano. Detras, el terreno de 64x32 se redibujaba con el
+	@ BG3 todavia en 32x32 y salian manchas negras al aclararse la pantalla.
+	setarg 7, -1
 	restorebg
 	waitbgfadeout
 	createvisualtask AnimTask_BlendBattleAnimPalExclude, 10, 1, 0, 4, 0, RGB_BLACK
-	setarg 7, -1
 	waitbgfadein
 	end
 
@@ -6604,6 +6528,7 @@ SteamEruptionBreath:
 	delay 0x1
 	return
 
+@ TODO: revisar. Se ve mal.
 gBattleAnimMove_WaterShuriken::
 	loadspritegfx ANIM_TAG_WATER_ORB @blue color
 	loadspritegfx ANIM_TAG_YELLOW_STAR @swift
@@ -6727,23 +6652,8 @@ POWDER_SPORE:
 	delay 0xc
 	return
 
+@ TODO: Falta crear la animación de Brillo Mágico. La que había no golpeaba al objetivo.
 gBattleAnimMove_DazzlingGleam::
-	loadspritegfx ANIM_TAG_SPARKLE_2
-	loadspritegfx ANIM_TAG_BLUE_STAR
-	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, 0x1, 0x2, 0x0, 0xd, 0x7fff
-	playsewithpan SE_M_TWISTER, SOUND_PAN_ATTACKER
-	@call 0x081D56B3 -> middle of GrantingStarsEffect
-	createsprite gGrantingStarsSpriteTemplate, ANIM_ATTACKER, 2, 12, -5, 0, 0, 32, 60
-	delay 8
-	waitforvisualfinish
-	createvisualtask AnimTask_BlendColorCycle, 2, F_PAL_ATTACKER, 0, 3, 0, 16, RGB_WHITE
-	delay 0x4
-	playsewithpan SE_M_GIGA_DRAIN, SOUND_PAN_ATTACKER
-	waitforvisualfinish
-	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, 0x1, 0x0, 0xd, 0x0, 0x7fff
-	waitforvisualfinish
-	clearmonbg 0x0
-	blendoff
 	end
 
 gBattleAnimMove_BabyDollEyes::
@@ -7058,7 +6968,7 @@ gBattleAnimMove_PrecipiceBlades::
 	monbg ANIM_DEF_PARTNER
 	splitbgprio ANIM_TARGET
 	setalpha 12, 8
-	fadetobg 0x15
+	fadetobg BG_FISSURE
 	waitbgfadeout
 	createvisualtask AnimTask_PositionFissureBgOnBattler, 5, ANIM_TARGET, 5, -1
 	createvisualtask AnimTask_HorizontalShake, 5, (NUMERO_COMBATIENTES + 1), 10, 0x5
@@ -13085,22 +12995,8 @@ gBattleAnimMove_Guillotina::
 	waitbgfadein
 	end
 
+@ TODO: Falta crear la animación de Día de Pago.
 gBattleAnimMove_DiaDePago::
-	loadspritegfx ANIM_TAG_COIN
-	loadspritegfx ANIM_TAG_IMPACT
-	monbg ANIM_TARGET
-	splitbgprio ANIM_TARGET
-	setalpha 12, 8
-	playsewithpan SE_M_VIENTO_CORTANTE2, SOUND_PAN_ATTACKER
-	createsprite gCoinThrowSpriteTemplate, ANIM_ATTACKER, 2, 20, 0, 0, 0, 1152
-	waitforvisualfinish
-	playsewithpan SE_M_PAY_DAY, SOUND_PAN_TARGET
-	createsprite gBasicHitSplatSpriteTemplate, ANIM_ATTACKER, 1, 0, 0, ANIM_TARGET, 2
-	createsprite gFallingCoinSpriteTemplate, ANIM_ATTACKER, 2
-	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 1, 0, 6, 1
-	waitforvisualfinish
-	clearmonbg ANIM_TARGET
-	blendoff
 	end
 
 gBattleAnimMove_Outrage::
@@ -13625,9 +13521,12 @@ HornDrillContinue:
 	delay 4
 	createsprite gBowMonSpriteTemplate, ANIM_ATTACKER, 2, 2
 	waitforvisualfinish
+	@ El terminador va ANTES de rehacer el terreno: para el fondo deslizante y le
+	@ devuelve al BG3 su tamano. Detras, el terreno de 64x32 se redibujaba con el
+	@ BG3 todavia en 32x32 y salian manchas negras al aclararse la pantalla.
+	setarg 7, 0xFFFF
 	restorebg
 	waitbgfadeout
-	setarg 7, 0xFFFF
 	waitbgfadein
 	end
 
@@ -13729,9 +13628,12 @@ gBattleAnimMove_Fissure::
 	createvisualtask AnimTask_PositionFissureBgOnBattler, 5, ANIM_TARGET, 5, -1
 	waitbgfadein
 	delay 40
+	@ El terminador va ANTES de rehacer el terreno: para el fondo deslizante y le
+	@ devuelve al BG3 su tamano. Detras, el terreno de 64x32 se redibujaba con el
+	@ BG3 todavia en 32x32 y salian manchas negras al aclararse la pantalla.
+	setarg 7, -1
 	restorebg
 	waitbgfadeout
-	setarg 7, -1
 	waitbgfadein
 	end
 
@@ -14010,20 +13912,24 @@ gBattleAnimMove_Barrage::
 	end
 
 gBattleAnimMove_Flash::
-	playsewithpan SE_M_LEER, SOUND_PAN_ATTACKER
-	createvisualtask AnimTask_Flash, 2
+	loadspritegfx ANIM_TAG_WHITE_CIRCLE_OF_LIGHT
+	monbg ANIM_ATTACKER
+	setalpha 12, 8
+	playsewithpan SE_M_SOLAR_BEAM, SOUND_PAN_ATTACKER
+	createsprite gLusterPurgeCircleSpriteTemplate, ANIM_ATTACKER, 41, 0, 0, 0, 0
+	delay 20
+	createvisualtask AnimTask_BlendBattleAnimPalExclude, 5, 5, 2, 0, 16, -1
+	createvisualtask AnimTask_BlendParticle, 5, ANIM_TAG_WHITE_CIRCLE_OF_LIGHT, 2, 0, 16, -1
 	waitforvisualfinish
+	delay 16
+	createvisualtask AnimTask_BlendBattleAnimPalExclude, 5, 5, 2, 16, 0, -1
+	waitforvisualfinish
+	clearmonbg ANIM_ATTACKER
+	blendoff
 	end
 
+@ TODO: Falta crear la animación de Armadura Ácida. La que había solo deformaba la capa de monbg.
 gBattleAnimMove_AcidArmor::
-	monbg ANIM_ATTACKER
-	setalpha 15, 0
-	createvisualtask AnimTask_AcidArmor, 2, ANIM_ATTACKER
-	playsewithpan SE_M_ACID_ARMOR, SOUND_PAN_ATTACKER
-	waitforvisualfinish
-	blendoff
-	clearmonbg ANIM_ATTACKER
-	delay 1
 	end
 
 gBattleAnimMove_Sharpen::
@@ -14108,9 +14014,12 @@ SetHighSpeedBgFade:
 	return
 
 UnsetHighSpeedBg:
+	@ El terminador va ANTES de rehacer el terreno: para el fondo deslizante y le
+	@ devuelve al BG3 su tamano. Detras, el terreno de 64x32 se redibujaba con el
+	@ BG3 todavia en 32x32 y salian manchas negras al aclararse la pantalla.
+	setarg 7, -1
 	restorebg
 	waitbgfadeout
-	setarg 7, -1
 	waitbgfadein
 	return
 
@@ -14555,20 +14464,13 @@ gBattleAnimMove_Superpower::
 	delay 1
 	end
 
+@ TODO: Reciclaje solo ensena la flecha. Falta el sprite del objeto reciclado
+@ dentro de ella, que es lo que le daria sentido.
 gBattleAnimMove_Recycle::
 	loadspritegfx ANIM_TAG_RECYCLE
-	monbg ANIM_ATTACKER
-	setalpha 0, 16
-	delay 1
 	createsprite gRecycleSpriteTemplate, ANIM_ATTACKER, 2
 	loopsewithpan SE_M_TAKE_DOWN, SOUND_PAN_ATTACKER, 24, 3
 	waitforvisualfinish
-	createvisualtask AnimTask_BlendMonInAndOut, 5, ANIM_ATTACKER, RGB_WHITE, 12, 2, 1
-	playsewithpan SE_M_TAKE_DOWN, SOUND_PAN_ATTACKER
-	waitforvisualfinish
-	blendoff
-	clearmonbg ANIM_ATTACKER
-	delay 1
 	end
 
 gBattleAnimMove_BrickBreak::
@@ -14693,6 +14595,7 @@ gBattleAnimMove_Imprison::
 	call UnsetPsychicBg
 	end
 
+@ TODO: revisar. No remata en el objetivo, igual que le pasaba a Brillo Magico.
 gBattleAnimMove_TailGlow::
 	loadspritegfx ANIM_TAG_CIRCLE_OF_LIGHT
 	monbg ANIM_ATTACKER
@@ -15523,9 +15426,12 @@ gBattleAnimMove_Thunder::
 	delay 1
 	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_TARGET, 2, F_PAL_BG, 2, 16, 0, RGB_BLACK
 	waitforvisualfinish
+	@ El terminador va ANTES de rehacer el terreno: para el fondo deslizante y le
+	@ devuelve al BG3 su tamano. Detras, el terreno de 64x32 se redibujaba con el
+	@ BG3 todavia en 32x32 y salian manchas negras al aclararse la pantalla.
+	setarg 7, 0xFFFF
 	restorebg
 	waitbgfadeout
-	setarg 7, 0xFFFF
 	waitbgfadein
 	end
 
@@ -16816,9 +16722,12 @@ MegahornContinue:
 	waitforvisualfinish
 	clearmonbg ANIM_DEF_PARTNER
 	blendoff
+	@ El terminador va ANTES de rehacer el terreno: para el fondo deslizante y le
+	@ devuelve al BG3 su tamano. Detras, el terreno de 64x32 se redibujaba con el
+	@ BG3 todavia en 32x32 y salian manchas negras al aclararse la pantalla.
+	setarg 7, 0xFFFF
 	restorebg
 	waitbgfadeout
-	setarg 7, 0xFFFF
 	waitbgfadein
 	end
 
@@ -18045,13 +17954,14 @@ StringShotThread:
 	delay 1
 	return
 
+@ Sin oscurecer el fondo: el par de gSimplePaletteBlendSpriteTemplate sobre
+@ F_PAL_BG que llevaba al principio y al final se quito a proposito. Electrotela y
+@ Red Viscosa lo siguen teniendo, por si hay que comparar.
 gBattleAnimMove_SpiderWeb::
 	loadspritegfx ANIM_TAG_SPIDER_WEB
 	loadspritegfx ANIM_TAG_WEB_THREAD
 	monbg ANIM_DEF_PARTNER
 	delay 0
-	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 5, F_PAL_BG, 2, 0, 9, RGB_BLACK
-	waitforvisualfinish
 	splitbgprio ANIM_TARGET
 	loopsewithpan SE_M_STRING_SHOT, SOUND_PAN_ATTACKER, 9, 6
 	call SpiderWebThread
@@ -18074,7 +17984,6 @@ gBattleAnimMove_SpiderWeb::
 	waitforvisualfinish
 	clearmonbg ANIM_DEF_PARTNER
 	delay 1
-	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 5, F_PAL_BG, 2, 9, 0, RGB_BLACK
 	end
 
 SpiderWebThread:
@@ -19346,9 +19255,12 @@ gBattleAnimMove_CosmicPower::
 	delay 40
 	createvisualtask AnimTask_BlendNonAttackerPalettes, 2, 0, 15, 0, RGB_BLACK
 	waitforvisualfinish
+	@ El terminador va ANTES de rehacer el terreno: para el fondo deslizante y le
+	@ devuelve al BG3 su tamano. Detras, el terreno de 64x32 se redibujaba con el
+	@ BG3 todavia en 32x32 y salian manchas negras al aclararse la pantalla.
+	setarg 7, 0xFFFF
 	restorebg
 	waitbgfadeout
-	setarg 7, 0xFFFF
 	waitbgfadein
 	waitforvisualfinish
 	end
@@ -19449,10 +19361,13 @@ SetBugBgFade:
 	return
 
 UnsetBugBg:
+	@ El terminador va ANTES de rehacer el terreno: para el fondo deslizante y le
+	@ devuelve al BG3 su tamano. Detras, el terreno de 64x32 se redibujaba con el
+	@ BG3 todavia en 32x32 y salian manchas negras al aclararse la pantalla.
+	setarg 7, -1
 	restorebg
 	waitbgfadeout
 	createvisualtask AnimTask_BlendBattleAnimPalExclude, 10, 1, 0, 4, 0, RGB_BLACK
-	setarg 7, -1
 	waitbgfadein
 	return
 
@@ -19718,9 +19633,12 @@ gBattleAnimMove_SeismicToss::
 	jumpreteq 1, SeismicTossMedium
 	jumpreteq 2, SeismicTossStrong
 SeismicTossContinue:
+	@ El terminador va ANTES de rehacer el terreno: para el fondo deslizante y le
+	@ devuelve al BG3 su tamano. Detras, el terreno de 64x32 se redibujaba con el
+	@ BG3 todavia en 32x32 y salian manchas negras al aclararse la pantalla.
+	setarg 7, 0xFFF
 	restorebg
 	waitbgfadeout
-	setarg 7, 0xFFF
 	waitbgfadein
 	clearmonbg ANIM_DEF_PARTNER
 	blendoff
@@ -19882,9 +19800,12 @@ gBattleAnimMove_SkyUppercut::
 	createsprite gSlideMonToOriginalPosSpriteTemplate, ANIM_ATTACKER, 2, 1, 0, 6
 	clearmonbg ANIM_DEF_PARTNER
 	blendoff
+	@ El terminador va ANTES de rehacer el terreno: para el fondo deslizante y le
+	@ devuelve al BG3 su tamano. Detras, el terreno de 64x32 se redibujaba con el
+	@ BG3 todavia en 32x32 y salian manchas negras al aclararse la pantalla.
+	setarg 7, 0xFFFF
 	restorebg
 	waitbgfadeout
-	setarg 7, 0xFFFF
 	waitbgfadein
 	end
 
@@ -20445,9 +20366,12 @@ SetPsychicBackground:
 	return
 
 UnsetPsychicBg:
+	@ El terminador va ANTES de rehacer el terreno: para el fondo deslizante y le
+	@ devuelve al BG3 su tamano. Detras, el terreno de 64x32 se redibujaba con el
+	@ BG3 todavia en 32x32 y salian manchas negras al aclararse la pantalla.
+	setarg 7, 0xFFFF
 	restorebg
 	waitbgfadeout
-	setarg 7, 0xFFFF
 	waitbgfadein
 	return
 
@@ -20460,9 +20384,12 @@ SetSkyBgContinue:
 	return
 
 UnsetSkyBg:
+	@ El terminador va ANTES de rehacer el terreno: para el fondo deslizante y le
+	@ devuelve al BG3 su tamano. Detras, el terreno de 64x32 se redibujaba con el
+	@ BG3 todavia en 32x32 y salian manchas negras al aclararse la pantalla.
+	setarg 7, 0xFFFF
 	restorebg
 	waitbgfadeout
-	setarg 7, 0xFFFF
 	waitbgfadein
 	return
 
@@ -20649,9 +20576,12 @@ Status_MagmaStorm:
 	call FireSpinEffect
 	createvisualtask AnimTask_BlendColorCycle, 2, (F_PAL_ATTACKER | F_PAL_TARGET), 4, 2, 2, 0, 12, RGB(22, 9, 7)
 	call FireSpinEffect
+	@ El terminador va ANTES de rehacer el terreno: para el fondo deslizante y le
+	@ devuelve al BG3 su tamano. Detras, el terreno de 64x32 se redibujaba con el
+	@ BG3 todavia en 32x32 y salian manchas negras al aclararse la pantalla.
+	setarg 7, 0xFFF
 	restorebg
 	waitbgfadeout
-	setarg 7, 0xFFF
 	waitbgfadein
 	stopsound
 	clearmonbg ANIM_DEF_PARTNER

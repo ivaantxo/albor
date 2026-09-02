@@ -1,4 +1,5 @@
 #include "global.h"
+#include "sombra_pokemon.h"
 #include "battle_anim.h"
 #include "bg.h"
 #include "field_weather.h"
@@ -1059,10 +1060,10 @@ static void AnimTask_HazeScrollingFog_Step(u8 taskId)
         gTasks[taskId].data[12]++;
         // fall through
     case 4:
-        SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 0);
+        DevuelveElBg1AlCombate();
         gBattle_BG1_X = 0;
         gBattle_BG1_Y = 0;
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
+        PreparaMezclaSombraPokemon();
         SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 0));
         SetAnimBgAttribute(1, BG_ANIM_PRIORITY, 1);
         DestroyAnimVisualTask(taskId);
@@ -1157,10 +1158,10 @@ static void AnimTask_MistBallFog_Step(u8 taskId)
 
         // fall through
     case 4:
-        SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 0);
+        DevuelveElBg1AlCombate();
         gBattle_BG1_X = 0;
         gBattle_BG1_Y = 0;
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
+        PreparaMezclaSombraPokemon();
         SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 0));
         SetAnimBgAttribute(1, BG_ANIM_PRIORITY, 1);
         DestroyAnimVisualTask(taskId);

@@ -79,6 +79,12 @@ void LoadMoveBg(u16 bgId);
 
 // battle_intro.c
 void SetAnimBgAttribute(u8 bgId, u8 attributeId, u8 value);
+
+// Las animaciones se llevan prestado el BG1 del combate y le cambian el bloque de
+// caracteres para meter ahi sus graficos. Esto lo devuelve como el combate lo
+// quiere. Existe para tener el porque escrito en un solo sitio: el valor bueno es
+// el cero que fija InitBattleBgsVideo, no el uno de gBattleBgTemplates.
+void DevuelveElBg1AlCombate(void);
 void DrawBattlerOnBg(int bgId, u8 x, u8 y, u8 battlerPosition, u8 paletteId, u8 *tiles, u16 *tilemap, u16 tilesOffset);
 void HandleIntroSlide(u8 terrainId);
 int GetAnimBgAttribute(u8 bgId, u8 attributeId);

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "sombra_pokemon.h"
 #include "battle_anim.h"
 #include "item_menu_icons.h"
 #include "sprite.h"
@@ -3807,8 +3808,7 @@ void AnimTask_Llamas_Step(u8 taskId)
             task->data[0]++;
         break;
     case 5:
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
-        SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+        PreparaMezclaSombraPokemon();
         DestroyAnimVisualTask(taskId);
         break;
     }

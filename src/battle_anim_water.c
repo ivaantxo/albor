@@ -1,4 +1,5 @@
 #include "global.h"
+#include "sombra_pokemon.h"
 #include "battle.h"
 #include "battle_anim.h"
 #include "gpu_regs.h"
@@ -1092,10 +1093,10 @@ static void AnimTask_CreateSurfWave_Step2(u8 taskId)
     }
     else
     {
-        SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 0);
+        DevuelveElBg1AlCombate();
         *BGptrX = 0;
         *BGptrY = 0;
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
+        PreparaMezclaSombraPokemon();
         SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 0));
         gTasks[gTasks[taskId].data[15]].data[15] = -1;
         DestroyAnimVisualTask(taskId);

@@ -100,13 +100,20 @@ void FijaDeformacionSombra(struct Sprite *sombra, s32 ancho, s32 alto, s32 incli
 
 void CargaGraficosSombraPokemon(void);
 
-// Cierto solo si los registros de mezcla estan exactamente como los deja
-// PreparaMezclaSombraPokemon. Sirve para que la sombra se aparte sola cuando
+// Cierto si la mezcla del hardware sigue sirviendo para dibujar la sombra: en modo
+// mezcla, con fondo detras y dejando pasar justo la densidad que la sombra pide. De
+// la primera capa no se exige nada, porque a una silueta negra le da igual con que
+// coeficiente la multipliquen. Sirve para que la sombra se aparte sola cuando
 // alguien -una animacion, casi siempre- se adueña de la mezcla para otra cosa, y
 // vuelva en cuanto se devuelvan al reposo.
 bool32 MezclaSirveParaSombra(void);
 void PreparaMezclaSombraPokemon(void);
 void TerminaMezclaSombraPokemon(void);
+
+// Cierto cuando las paletas del terreno han perdido todos sus tonos oscuros, o sea
+// cuando algo ha lavado el fondo a blanco. La sombra se aparta mientras dure: negra
+// sobre blanco no hay quien la mire.
+bool32 FondoLavadoABlanco(void);
 
 // Crea la sombra de un sprite ya existente. Devuelve MAX_SPRITES si no hay hueco
 // de sprite, de matriz afin o de paleta. Nace invisible: cada sistema decide

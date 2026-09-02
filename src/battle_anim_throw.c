@@ -1,4 +1,5 @@
 #include "global.h"
+#include "sombra_pokemon.h"
 #include "battle.h"
 #include "battle_anim.h"
 #include "depuracion_mgba.h"
@@ -1411,8 +1412,7 @@ static void SpriteCB_Ball_FadeOut(struct Sprite *sprite)
     default:
         if (!gFundidoPaletas.activo)
         {
-            SetGpuReg(REG_OFFSET_BLDCNT, 0);
-            SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+            PreparaMezclaSombraPokemon();
 
             sprite->sFrame = 0;
             sprite->callback = DestroySpriteAfterOneFrame;

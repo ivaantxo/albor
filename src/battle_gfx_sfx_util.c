@@ -702,7 +702,8 @@ void SpriteCB_EnemyShadow(struct Sprite *shadowSprite)
     // Pokemon sigue viendose, y esa capa tiene mas prioridad que la sombra, asi
     // que el orden entre los dos se mantiene.
     if ((battlerSprite->invisible && !gBattleSpritesDataPtr->battlerData[battler].enFondoAnimacion)
-        || !MezclaSirveParaSombra())
+        || !MezclaSirveParaSombra()
+        || FondoLavadoABlanco())
     {
         invisible = TRUE;
     }

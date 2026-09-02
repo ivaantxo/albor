@@ -1755,7 +1755,7 @@ static void Task_ReshowPokeStorage(u8 taskId)
     {
     case 0:
         BlendPalettes(PALETTES_ALL, 0, RGB_BLACK);
-        EmpiezaFundidoPaletasHardware(BLDCNT_TGT1_ALL | BLDCNT_EFFECT_BLEND, 0, 16, 0, TRUE);
+        EmpiezaFundidoPaletasHardware(BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN, 0, 16, 0, TRUE);
         EnableInterrupts(INTR_FLAG_VBLANK | INTR_FLAG_HBLANK);
         SetHBlankCallback(HBlankCB_PokeStorage);
         sStorage->state++;
@@ -2841,7 +2841,7 @@ static void Task_NameBox(u8 taskId)
     {
     case 0:
         SaveMovingMon();
-        EmpiezaFundidoPaletasHardware(BLDCNT_TGT1_ALL | BLDCNT_EFFECT_BLEND, 0, 0, 16, TRUE);
+        EmpiezaFundidoPaletasHardware(BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN, 0, 0, 16, TRUE);
         sStorage->state++;
         break;
     case 1:
@@ -2864,7 +2864,7 @@ static void Task_ShowMonSummary(u8 taskId)
     {
     case 0:
         InitSummaryScreenData();
-        EmpiezaFundidoPaletasHardware(BLDCNT_TGT1_ALL | BLDCNT_EFFECT_BLEND, 0, 0, 16, TRUE);
+        EmpiezaFundidoPaletasHardware(BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN, 0, 0, 16, TRUE);
         sStorage->state++;
         break;
     case 1:
@@ -2886,7 +2886,7 @@ static void Task_GiveItemFromBag(u8 taskId)
     switch (sStorage->state)
     {
     case 0:
-        EmpiezaFundidoPaletasHardware(BLDCNT_TGT1_ALL | BLDCNT_EFFECT_BLEND, 0, 0, 16, TRUE);
+        EmpiezaFundidoPaletasHardware(BLDCNT_TGT1_ALL | BLDCNT_EFFECT_DARKEN, 0, 0, 16, TRUE);
         sStorage->state++;
         break;
     case 1:

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "sombra_pokemon.h"
 #include "battle.h"
 #include "battle_anim.h"
 #include "gpu_regs.h"
@@ -387,8 +388,7 @@ static void AnimTask_NightShadeClone_Step2(u8 taskId)
     {
         ResetSpriteRotScale(spriteId);
         DestroyAnimVisualTask(taskId);
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
-        SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+        PreparaMezclaSombraPokemon();
     }
 }
 
@@ -575,8 +575,7 @@ static void AnimTask_NightmareClone_Step(u8 taskId)
     case 1:
         if (++task->data[6] <= 1)
             break;
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
-        SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+        PreparaMezclaSombraPokemon();
         task->data[4] += 1;
         break;
     case 2:
@@ -596,11 +595,17 @@ void AnimTask_SpiteTargetShadow(u8 taskId)
     task->func(taskId);
 }
 
+// La sombra que se despega del objetivo. El original se tiñe de morado y se le
+// va y se le viene la opacidad; detras queda un clon con la paleta sin teñir, que
+// es lo que asoma cuando el original se difumina.
+//
+// Antes esto se hacia mandando al objetivo a BG1 o BG2 con monbg y fundiendo la
+// capa. Esas capas ya no llevan Pokemon -estan vacias-, asi que se mezcla el
+// sprite: el original marcado como primer objetivo y el clon, que no lo esta, como
+// lo que hay debajo.
 static void AnimTask_SpiteTargetShadow_Step1(u8 taskId)
 {
-    s16 startLine;
     struct Task *task = &gTasks[taskId];
-    u8 position = GetBattlerSpriteBGPriorityRank(gBattleAnimTarget);
 
     switch (task->data[15])
     {
@@ -620,27 +625,18 @@ static void AnimTask_SpiteTargetShadow_Step1(u8 taskId)
             }
             else
             {
-                s16 mask2;
+                task->data[13] = GetAnimBattlerSpriteId(ANIM_TARGET);
                 gSprites[task->data[0]].oam.paletteNum = task->data[14];
                 gSprites[task->data[0]].oam.objMode = ST_OAM_OBJ_NORMAL;
-                gSprites[task->data[0]].oam.priority = 3;
+                // Justo detras del original, no al fondo del todo: si no, el
+                // terreno se le pone delante.
+                gSprites[task->data[0]].oam.priority = gSprites[task->data[13]].oam.priority;
+                gSprites[task->data[0]].subpriority = gSprites[task->data[13]].subpriority + 1;
                 gSprites[task->data[0]].invisible = (gBattleSpritesDataPtr->battlerData[gBattleAnimTarget].invisible);
                 task->data[1] = 0;
                 task->data[2] = 0;
                 task->data[3] = 16;
-                task->data[13] = GetAnimBattlerSpriteId(ANIM_TARGET);
                 task->data[4] = OBJ_PLTT_ID2(gSprites[task->data[13]].oam.paletteNum);
-                if (position == 1)
-                {
-                    u16 mask = DISPCNT_BG1_ON;
-                    mask2 = mask;
-                }
-                else
-                {
-                    u16 mask = DISPCNT_BG2_ON;
-                    mask2 = mask;
-                }
-                ClearGpuRegBits(REG_OFFSET_DISPCNT, mask2);
                 task->data[15]++;
             }
         }
@@ -652,32 +648,11 @@ static void AnimTask_SpiteTargetShadow_Step1(u8 taskId)
         task->data[15]++;
         break;
     case 2:
-        startLine = gSprites[task->data[13]].y + gSprites[task->data[13]].y2 - 32;
-        if (startLine < 0)
-            startLine = 0;
-
-        if (position == 1)
-            task->data[10] = IniciaDistorsionFondo(startLine, startLine + 64, 2, 6, 0, DISTORSION_FONDO_BG_1_HORIZONTAL, TRUE);
-        else
-            task->data[10] = IniciaDistorsionFondo(startLine, startLine + 64, 2, 6, 0, DISTORSION_FONDO_BG_2_HORIZONTAL, TRUE);
-
-        task->data[15]++;
-        break;
-    case 3:
-        if (position == 1)
-            SetGpuReg(REG_OFFSET_BLDCNT, (BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_ALL | BLDCNT_TGT1_BG1));
-        else
-            SetGpuReg(REG_OFFSET_BLDCNT, (BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_ALL | BLDCNT_TGT1_BG2));
-
+        gSprites[task->data[13]].oam.objMode = ST_OAM_OBJ_BLEND;
+        // TGT2 lleva OBJ a proposito: lo que tiene que asomar por debajo del
+        // original al difuminarse es el clon, que tambien es un sprite.
+        SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_OBJ | BLDCNT_TGT2_ALL);
         SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 0x10));
-        task->data[15]++;
-        break;
-    case 4:
-        if (position == 1)
-            SetGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_BG1_ON);
-        else
-            SetGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_BG2_ON);
-
         task->func = AnimTask_SpiteTargetShadow_Step2;
         task->data[15]++;
         break;
@@ -710,31 +685,24 @@ static void AnimTask_SpiteTargetShadow_Step2(u8 taskId)
 static void AnimTask_SpiteTargetShadow_Step3(u8 taskId)
 {
     struct Task *task = &gTasks[taskId];
-    u8 rank = GetBattlerSpriteBGPriorityRank(gBattleAnimTarget);
 
     switch (task->data[15])
     {
     case 0:
-        gDistorsionFondo.estado = ESTADO_DISTORSION_FONDO_PARAR;
         task->data[14] = GetAnimBattlerSpriteId(ANIM_TARGET);
-        if (rank == 1)
-            ClearGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_BG1_ON);
-        else
-            ClearGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_BG2_ON);
         break;
     case 1:
         BlendPalette(task->data[4], 16, 0, RGB(13, 0, 15));
         break;
     case 2:
-        gSprites[task->data[14]].invisible = TRUE;
+        // El objetivo se queda visible y sin mezcla. Antes se escondia aqui y lo
+        // devolvia clearmonbg; sin monbg no habia quien lo sacara y el Pokemon
+        // desaparecia para el resto del combate.
+        gSprites[task->data[14]].oam.objMode = ST_OAM_OBJ_NORMAL;
+        gSprites[task->data[14]].invisible = FALSE;
         DestroySpriteWithActiveSheet(&gSprites[task->data[0]]);
         FreeSpritePaletteByTag(ANIM_TAG_BENT_SPOON);
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
-        SetGpuReg(REG_OFFSET_BLDALPHA, 0);
-        if (rank == 1)
-            SetGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_BG1_ON);
-        else
-            SetGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_BG2_ON);
+        PreparaMezclaSombraPokemon();
 
         DestroyAnimVisualTask(taskId);
         break;
@@ -916,8 +884,7 @@ static void AnimTask_DestinyBondWhiteShadow_Step(u8 taskId)
             task->data[0]++;
         break;
     case 3:
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
-        SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+        PreparaMezclaSombraPokemon();
         DestroyAnimVisualTask(taskId);
         break;
     }
@@ -1008,7 +975,7 @@ static void AnimTask_CurseStretchingBlackBg_Step2(u8 taskId)
                                         (WININ_WIN1_BG_ALL | WININ_WIN1_OBJ | WININ_WIN1_CLR)));
         SetGpuReg(REG_OFFSET_WINOUT, ((WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR) |
                                         (WINOUT_WINOBJ_BG_ALL | WINOUT_WINOBJ_OBJ | WINOUT_WINOBJ_CLR)));
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
+        PreparaMezclaSombraPokemon();
         SetGpuReg(REG_OFFSET_BLDY, 0);
         DestroyAnimVisualTask(taskId);
     }
@@ -1098,8 +1065,7 @@ static void AnimCurseNail_Step2(struct Sprite *sprite)
 
 static void AnimCurseNail_End(struct Sprite *sprite)
 {
-    SetGpuReg(REG_OFFSET_BLDCNT, 0);
-    SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+    PreparaMezclaSombraPokemon();
     gBattle_WIN0H = 0;
     gBattle_WIN0V = 0;
     DestroyAnimSprite(sprite);
@@ -1149,7 +1115,6 @@ void AnimGhostStatusSprite(struct Sprite *sprite)
 
 static void AnimGhostStatusSprite_Step(struct Sprite *sprite)
 {
-    SetGpuReg(REG_OFFSET_BLDCNT, 0);
-    SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+    PreparaMezclaSombraPokemon();
     DestroyAnimSprite(sprite);
 }

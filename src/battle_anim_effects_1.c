@@ -1,4 +1,5 @@
 #include "global.h"
+#include "sombra_pokemon.h"
 #include "malloc.h"
 #include "battle_anim.h"
 #include "battle_interface.h"
@@ -4737,7 +4738,7 @@ static void AnimMilkBottle_Step1(struct Sprite *sprite)
         sprite->data[0]++;
         break;
     case 4:
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
+        PreparaMezclaSombraPokemon();
         SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 0));
         DestroyAnimSprite(sprite);
         break;

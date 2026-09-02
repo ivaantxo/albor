@@ -139,16 +139,61 @@ void PreparaMezclaSombraPokemon(void)
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(SOMBRA_MEZCLA_SOMBRA, SOMBRA_MEZCLA_FONDO));
 }
 
+// Con la pantalla lavada a blanco -un fogonazo, un resplandor- la sombra se queda
+// negra sobre blanco y canta muchisimo.
+//
+// Esto no se puede detectar mirando el hardware, que es como la sombra se entera de
+// todo lo demas: los blends a blanco de las animaciones tiñen PALETAS, y los
+// registros de mezcla siguen exactamente como los dejo la sombra. Asi que se mira el
+// resultado. Si a las tres paletas del terreno no les queda un solo tono oscuro, es
+// que algo ha blanqueado el fondo, y da igual quien haya sido: vale para cualquier
+// animacion, incluidas las que aun no existen.
+//
+// Sale en cuanto encuentra un color oscuro, que es lo que pasa siempre salvo durante
+// el fogonazo, asi que en la practica cuesta una comparacion.
+#define SOMBRA_UMBRAL_LAVADO 24
+
+static bool32 CanalOscuro(u32 color)
+{
+    return (color & 0x1F) < SOMBRA_UMBRAL_LAVADO
+        || ((color >> 5) & 0x1F) < SOMBRA_UMBRAL_LAVADO
+        || ((color >> 10) & 0x1F) < SOMBRA_UMBRAL_LAVADO;
+}
+
+bool32 FondoLavadoABlanco(void)
+{
+    for (u32 paleta = 2; paleta <= 4; paleta++)
+    {
+        const u16 *colores = &gPlttBufferFaded[PLTT_ID(paleta)];
+
+        // El indice 0 de una paleta de fondo no se dibuja.
+        for (u32 i = 1; i < 16; i++)
+        {
+            if (CanalOscuro(colores[i]))
+                return FALSE;
+        }
+    }
+
+    return TRUE;
+}
+
 // La mezcla es un recurso unico del hardware y la comparten varios. La sombra no
 // puede reservarla en exclusiva, asi que hace lo contrario: mira si sigue como la
 // dejo y, si no, se esconde. Un OBJ semitransparente se mezcla siempre con lo que
 // tenga detras, pero necesita que haya alguna segunda capa declarada; sin ella no
 // tiene con que mezclarse y sale negro macizo.
 //
-// No se exige la configuracion exacta de la sombra, solo que sirva. A la sombra
-// le da igual la proporcion de la primera capa -es negra, no aporta color-, asi
-// que aguanta la mezcla de otro y como mucho cambia de densidad un rato. Lo unico
-// que no puede es quedarse sin nada con lo que mezclarse.
+// De la PRIMERA capa no se exige nada: la sombra es negra y no aporta color, asi
+// que el coeficiente que le pongan da igual y puede convivir con quien lo mueva.
+// De la SEGUNDA si, y exactamente el suyo. Ese coeficiente es la densidad de la
+// sombra, y tolerar cualquier valor la hacia pulsar: Reciclaje, por ejemplo, lleva
+// BLDALPHA de (0,16) a (16,0) para que su flecha aparezca, y por el camino la
+// sombra pasaba de invisible a negra maciza y desaparecia de golpe. No es que
+// cambie de densidad un rato: es un parpadeo en toda regla.
+//
+// Esto no la aparta de las animaciones normales. De los 294 setalpha de los
+// guiones, 275 piden justo la densidad de la sombra, asi que en esos la mezcla
+// sigue siendo valida y la sombra se queda donde esta.
 bool32 MezclaSirveParaSombra(void)
 {
     u32 bldcnt = GetGpuReg(REG_OFFSET_BLDCNT);
@@ -162,8 +207,9 @@ bool32 MezclaSirveParaSombra(void)
     if (!(bldcnt & (BLDCNT_TGT2_BG_ALL | BLDCNT_TGT2_BD)))
         return FALSE;
 
-    // ...y dejando pasar algo de ese fondo. A cero saldria negra maciza.
-    return ((GetGpuReg(REG_OFFSET_BLDALPHA) >> 8) & 0x1F) != 0;
+    // ...y dejando pasar exactamente lo que la sombra pide. A cero saldria negra
+    // maciza y a dieciseis no se veria.
+    return ((GetGpuReg(REG_OFFSET_BLDALPHA) >> 8) & 0x1F) == SOMBRA_MEZCLA_FONDO;
 }
 
 void TerminaMezclaSombraPokemon(void)

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "sombra_pokemon.h"
 #include "battle_anim.h"
 #include "gpu_regs.h"
 #include "graphics.h"
@@ -254,17 +255,25 @@ static void AnimPunishment(struct Sprite *sprite)
     StoreSpriteCallbackInData6(sprite, DestroyAnimSprite);
 }
 
+// El atacante se desvanece y vuelve. Antes esto fundia la CAPA de fondo en la que
+// monbg copiaba al Pokemon; ahora el Pokemon es siempre un sprite, asi que se marca
+// ese sprite como primer objetivo de la mezcla y se funde solo el.
+#define MEZCLA_ATACANTE (BLDCNT_TGT1_OBJ | BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_BG_ALL | BLDCNT_TGT2_BD)
+
+static void MarcaAtacanteParaMezcla(bool32 mezclado)
+{
+    struct Sprite *atacante = &gSprites[gBattlerSpriteIds[gBattleAnimAttacker]];
+
+    atacante->oam.objMode = mezclado ? ST_OAM_OBJ_BLEND : ST_OAM_OBJ_NORMAL;
+}
+
 void AnimTask_AttackerFadeToInvisible(u8 taskId)
 {
-    int battler;
     gTasks[taskId].data[0] = gBattleAnimArgs[0];
-    battler = gBattleAnimAttacker;
     gTasks[taskId].data[1] = 16;
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(16, 0));
-    if (GetBattlerSpriteBGPriorityRank(battler) == 1)
-        SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG1);
-    else
-        SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG2);
+    SetGpuReg(REG_OFFSET_BLDCNT, MEZCLA_ATACANTE);
+    MarcaAtacanteParaMezcla(TRUE);
 
     gTasks[taskId].func = AnimTask_AttackerFadeToInvisible_Step;
 }
@@ -283,6 +292,7 @@ static void AnimTask_AttackerFadeToInvisible_Step(u8 taskId)
         if (blendA == 16)
         {
             gSprites[gBattlerSpriteIds[gBattleAnimAttacker]].invisible = TRUE;
+            MarcaAtacanteParaMezcla(FALSE);
             DestroyAnimVisualTask(taskId);
         }
     }
@@ -298,6 +308,11 @@ void AnimTask_AttackerFadeFromInvisible(u8 taskId)
     gTasks[taskId].data[1] = BLDALPHA_BLEND(0, 16);
     gTasks[taskId].func = AnimTask_AttackerFadeFromInvisible_Step;
     SetGpuReg(REG_OFFSET_BLDALPHA, gTasks[taskId].data[1]);
+    // Se vuelve a ver ya, pero con la mezcla a cero: lo que se ve es el fundido.
+    // Quien lo escondio fue la tarea de ida, asi que le toca a esta devolverlo; antes
+    // lo hacia clearmonbg y el Pokemon se quedaba borrado para siempre.
+    gSprites[gBattlerSpriteIds[gBattleAnimAttacker]].invisible = FALSE;
+    MarcaAtacanteParaMezcla(TRUE);
 }
 
 static void AnimTask_AttackerFadeFromInvisible_Step(u8 taskId)
@@ -313,8 +328,8 @@ static void AnimTask_AttackerFadeFromInvisible_Step(u8 taskId)
         gTasks[taskId].data[2] = 0;
         if (blendA == 0)
         {
-            SetGpuReg(REG_OFFSET_BLDCNT, 0);
-            SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+            MarcaAtacanteParaMezcla(FALSE);
+            PreparaMezclaSombraPokemon();
             DestroyAnimVisualTask(taskId);
         }
     }
@@ -324,13 +339,13 @@ static void AnimTask_AttackerFadeFromInvisible_Step(u8 taskId)
     }
 }
 
+// Deja los registros preparados para que un AttackerFadeFromInvisible posterior
+// encuentre la mezcla montada. Finta lo necesita porque entre esconder al atacante
+// y devolverlo pasan otras cosas que tocan BLDCNT.
 void AnimTask_InitAttackerFadeFromInvisible(u8 taskId)
 {
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0, 16));
-    if (GetBattlerSpriteBGPriorityRank(gBattleAnimAttacker) == 1)
-        SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG1);
-    else
-        SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG2);
+    SetGpuReg(REG_OFFSET_BLDCNT, MEZCLA_ATACANTE);
 
     DestroyAnimVisualTask(taskId);
 }
@@ -820,109 +835,51 @@ void AnimClawSlash(struct Sprite *sprite)
 // arg1: if true, use custom color
 // arg2: custom color
 // Custom color argument is used in MOVE_POISON_TAIL to make the mon turn purplish/pinkish as if became cloaked in poison.
+// El metalizado del Pokemon: le pone la paleta en escala de grises -o la tiñe del
+// color que le digan- durante un rato.
+//
+// Antes hacia ademas pasar un destello en diagonal por encima de la silueta,
+// dibujado en el BG1 y recortado con una ventana de objeto. Se quito por dos
+// motivos: se veia cortado a media trayectoria, y para montarlo se adueñaba de la
+// mezcla del hardware -BLDCNT con el BG1 de primer objetivo y BLDALPHA a (8,12)-,
+// asi que la sombra se apartaba durante toda la animacion. El metalizado, que es lo
+// que de verdad cuenta el efecto, no necesita nada de eso: solo toca la paleta del
+// Pokemon y deja los registros en paz.
+//
+//   arg0  al terminar, devuelve la paleta a su color (0) o la deja tenida (1)
+//   arg1  como tine: en escala de grises (0) o mezclando con arg2 (1)
+//   arg2  color de la mezcla
 void AnimTask_MetallicShine(u8 taskId)
 {
-    u16 species;
-    u32 spriteId;
-    u8 newSpriteId;
-    u16 paletteNum;
-    struct BattleAnimBgData animBg;
-    bool32 priorityChanged = FALSE;
-
-    gBattle_WIN0H = 0;
-    gBattle_WIN0V = 0;
-    SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR | WININ_WIN1_BG_ALL | WININ_WIN1_OBJ | WININ_WIN1_CLR);
-    SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WINOBJ_BG_ALL | WINOUT_WINOBJ_OBJ | WINOUT_WINOBJ_CLR | WINOUT_WIN01_BG0 | WINOUT_WIN01_BG2 | WINOUT_WIN01_BG3 | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR);
-    SetGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_OBJWIN_ON);
-    SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND | BLDCNT_TGT1_BG1);
-    SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(8, 12));
-    SetAnimBgAttribute(1, BG_ANIM_PRIORITY, 0);
-    SetAnimBgAttribute(1, BG_ANIM_SCREEN_SIZE, 0);
-    SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 1);
-
-    if (EsCombateContraEntrenador(gCombate->tipoCombate))
-    {
-        if (gBattleAnimAttacker == OPONENTE_DERECHA || gBattleAnimAttacker == JUGADOR_IZQUIERDA)
-        {
-            if (IsBattlerSpriteVisible(ALIADO(gBattleAnimAttacker)) == TRUE)
-            {
-                gSprites[gBattlerSpriteIds[ALIADO(gBattleAnimAttacker)]].oam.priority--;
-                SetAnimBgAttribute(1, BG_ANIM_PRIORITY, 1);
-                priorityChanged = TRUE;
-            }
-        }
-    }
-
-    if (GetBattlerSide(gBattleAnimAttacker) != LADO_JUGADOR)
-        species = GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattleAnimAttacker]], MON_DATA_SPECIES);
-    else
-        species = GetMonData(&gPlayerParty[gBattlerPartyIndexes[gBattleAnimAttacker]], MON_DATA_SPECIES);
-
-    spriteId = GetAnimBattlerSpriteId(ANIM_ATTACKER);
-    newSpriteId = CreateInvisibleSpriteCopy(gBattleAnimAttacker, spriteId, species);
-
-    GetBattleAnimBg1Data(&animBg);
-    AnimLoadCompressedBgTilemap(animBg.bgId, gMetalShineTilemap);
-    AnimLoadCompressedBgGfx(animBg.bgId, gMetalShineGfx, animBg.tilesOffset);
-    LoadPalette(gMetalShinePalette, BG_PLTT_ID(animBg.paletteId), PLTT_SIZE_4BPP);
-
-    gBattle_BG1_X = -gSprites[spriteId].x + 96;
-    gBattle_BG1_Y = -gSprites[spriteId].y + 32;
-    paletteNum = 16 + gSprites[spriteId].oam.paletteNum;
+    u32 spriteId = GetAnimBattlerSpriteId(ANIM_ATTACKER);
+    u16 paletteNum = 16 + gSprites[spriteId].oam.paletteNum;
 
     if (gBattleAnimArgs[1] == 0)
         SetGrayscaleOrOriginalPalette(paletteNum, FALSE);
     else
         BlendPalette(BG_PLTT_ID(paletteNum), 16, 11, gBattleAnimArgs[2]);
 
-    gTasks[taskId].data[0] = newSpriteId;
     gTasks[taskId].data[1] = gBattleAnimArgs[0];
-    gTasks[taskId].data[2] = gBattleAnimArgs[1];
-    gTasks[taskId].data[3] = gBattleAnimArgs[2];
-    gTasks[taskId].data[6] = priorityChanged;
     gTasks[taskId].func = AnimTask_MetallicShine_Step;
 }
 
+// Lo que duraba el destello: tres pasadas de treinta y dos fotogramas. Se conserva
+// para no descuadrar a los guiones que esperan con waitforvisualfinish.
+#define FOTOGRAMAS_METALIZADO 96
+
 static void AnimTask_MetallicShine_Step(u8 taskId)
 {
-    struct BattleAnimBgData animBg;
-    u16 paletteNum;
-    u32 spriteId;
+    if (++gTasks[taskId].data[10] < FOTOGRAMAS_METALIZADO)
+        return;
 
-    gTasks[taskId].data[10] += 4;
-    gBattle_BG1_X -= 4;
-    if (gTasks[taskId].data[10] == 128)
+    if (gTasks[taskId].data[1] == 0)
     {
-        gTasks[taskId].data[10] = 0;
-        gBattle_BG1_X += 128;
-        gTasks[taskId].data[11]++;
-        if (gTasks[taskId].data[11] == 2)
-        {
-            spriteId = GetAnimBattlerSpriteId(ANIM_ATTACKER);
-            paletteNum = 16 + gSprites[spriteId].oam.paletteNum;
-            if (gTasks[taskId].data[1] == 0)
-                SetGrayscaleOrOriginalPalette(paletteNum, TRUE);
+        u32 spriteId = GetAnimBattlerSpriteId(ANIM_ATTACKER);
 
-            DestroySprite(&gSprites[gTasks[taskId].data[0]]);
-            GetBattleAnimBg1Data(&animBg);
-            ClearBattleAnimBg(animBg.bgId);
-            if (gTasks[taskId].data[6] == 1)
-                gSprites[gBattlerSpriteIds[ALIADO(gBattleAnimAttacker)]].oam.priority++;
-        }
-        else if (gTasks[taskId].data[11] == 3)
-        {
-            gBattle_WIN0H = 0;
-            gBattle_WIN0V = 0;
-            SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR | WININ_WIN1_BG_ALL | WININ_WIN1_OBJ | WININ_WIN1_CLR);
-            SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WINOBJ_BG_ALL | WINOUT_WINOBJ_OBJ | WINOUT_WINOBJ_CLR | WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR);
-            SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 0);
-
-            SetGpuReg(REG_OFFSET_DISPCNT, GetGpuReg(REG_OFFSET_DISPCNT) ^ DISPCNT_OBJWIN_ON);
-            SetGpuReg(REG_OFFSET_BLDCNT, 0);
-            SetGpuReg(REG_OFFSET_BLDALPHA, 0);
-            DestroyAnimVisualTask(taskId);
-        }
+        SetGrayscaleOrOriginalPalette(16 + gSprites[spriteId].oam.paletteNum, TRUE);
     }
+
+    DestroyAnimVisualTask(taskId);
 }
 
 // Changes battler's palette to either grayscale or original.

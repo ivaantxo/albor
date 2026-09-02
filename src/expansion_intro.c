@@ -146,7 +146,7 @@ static const struct CompressedSpriteSheet sSpriteSheet_Porygon =
 {
     .data = sSpriteTiles_Porygon,
     .size = 0x2800,
-    .tag = PAL_TAG_PORYGON,
+    .tag = TAG_PORYGON,
 };
 
 static const struct SpritePalette sSpritePalette_DizzyEgg =

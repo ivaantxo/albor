@@ -1,4 +1,5 @@
 #include "global.h"
+#include "sombra_pokemon.h"
 #include "battle.h"
 #include "battle_anim.h"
 #include "battle_interface.h"
@@ -541,15 +542,13 @@ void RunStoredCallbackWhenAnimEnds(struct Sprite *sprite)
 
 void DestroyAnimSpriteAndDisableBlend(struct Sprite *sprite)
 {
-    SetGpuReg(REG_OFFSET_BLDCNT, 0);
-    SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+    PreparaMezclaSombraPokemon();
     DestroyAnimSprite(sprite);
 }
 
 void DestroyAnimVisualTaskAndDisableBlend(u8 taskId)
 {
-    SetGpuReg(REG_OFFSET_BLDCNT, 0);
-    SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+    PreparaMezclaSombraPokemon();
     DestroyAnimVisualTask(taskId);
 }
 
@@ -1145,7 +1144,12 @@ u32 GetBattlePalettesMask(bool8 battleBackground, bool8 attacker, bool8 target, 
 
     if (battleBackground)
     {
-        selectedPalettes = 14; // Palettes 1, 2, and 3
+        // El escenario son las paletas de fondo 2, 3 y 4: LoadBattleTextboxAndBackground
+        // carga tres seguidas desde la 2. Aqui ponia 1, 2 y 3, asi que teñir el fondo
+        // dejaba fuera un tercio del terreno -de ahi el corte horizontal a media
+        // pantalla, justo donde el tilemap cambia de paleta- y de paso se llevaba por
+        // delante la 1, que es el menu de acciones.
+        selectedPalettes = (1 << 2) | (1 << 3) | (1 << 4);
     }
     if (attacker)
     {

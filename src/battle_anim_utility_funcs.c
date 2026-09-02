@@ -1,4 +1,5 @@
 #include "global.h"
+#include "sombra_pokemon.h"
 #include "battle_anim.h"
 #include "bg.h"
 #include "gpu_regs.h"
@@ -324,8 +325,7 @@ static void AnimTask_DrawFallingWhiteLinesOnAttacker_Step(u8 taskId)
             SetGpuReg(REG_OFFSET_BG1CNT, bg1CntValue); // Guardar el valor actualizado
 
             SetGpuReg(REG_OFFSET_DISPCNT, GetGpuReg(REG_OFFSET_DISPCNT) ^ DISPCNT_OBJWIN_ON);
-            SetGpuReg(REG_OFFSET_BLDCNT, 0);
-            SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+            PreparaMezclaSombraPokemon();
             sprite = &gSprites[GetAnimBattlerSpriteId(0)]; // unused
             sprite = &gSprites[gTasks[taskId].data[0]];
             DestroySprite(sprite);
@@ -550,11 +550,10 @@ static void StatsChangeAnimation_Step3(u8 taskId)
         SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_ALL | WININ_WIN1_ALL);
         SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_ALL | WINOUT_WINOBJ_ALL);
 
-        SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 0);
+        DevuelveElBg1AlCombate();
 
         SetGpuReg(REG_OFFSET_DISPCNT, GetGpuReg(REG_OFFSET_DISPCNT) ^ DISPCNT_OBJWIN_ON);
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
-        SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+        PreparaMezclaSombraPokemon();
 
         DestroySprite(&gSprites[gTasks[taskId].tAnimSpriteId1]);
         if (gTasks[taskId].tMultipleBattlers)
@@ -856,8 +855,7 @@ static void UpdateMonScrollingBgMask(u8 taskId)
                 SetGpuReg(REG_OFFSET_BG1CNT, bg1CntValue); // Guardar el valor actualizado
 
                 SetGpuReg(REG_OFFSET_DISPCNT, GetGpuReg(REG_OFFSET_DISPCNT) ^ DISPCNT_OBJWIN_ON);
-                SetGpuReg(REG_OFFSET_BLDCNT, 0);
-                SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+                PreparaMezclaSombraPokemon();
                 DestroySprite(&gSprites[gTasks[taskId].data[0]]);
                 if (gTasks[taskId].data[2])
                     DestroySprite(&gSprites[gTasks[taskId].data[3]]);

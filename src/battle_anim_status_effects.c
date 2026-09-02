@@ -1,4 +1,5 @@
 #include "global.h"
+#include "sombra_pokemon.h"
 #include "battle.h"
 #include "battle_anim.h"
 #include "decompress.h"
@@ -271,8 +272,7 @@ static void AnimTask_IceCube_Step4(u8 taskId)
     }
     else if (gTasks[taskId].data[1] == 39)
     {
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
-        SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+        PreparaMezclaSombraPokemon();
         DestroyAnimVisualTask(taskId);
     }
 }

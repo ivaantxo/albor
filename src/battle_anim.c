@@ -1,4 +1,5 @@
 #include "global.h"
+#include "sombra_pokemon.h"
 #include "battle.h"
 #include "battle_anim.h"
 #include "battle_bg.h"
@@ -774,8 +775,20 @@ static void Cmd_end(void)
     bool32 continuousAnim = FALSE;
 
     // Keep waiting as long as there are animations to be done.
+    //
+    // El fundido de fondo cuenta aunque no sea una tarea visual: Task_FadeToBg nace
+    // de CreateTask, asi que no suma en gAnimVisualTaskCount. Los guiones que cierran
+    // con "restorebg / waitbgfadeout / end" -18 de ellos- terminan justo cuando la
+    // pantalla se queda negra, con el fundido de vuelta recien empezado. Sin esta
+    // espera, el RestauraRegistrosCombate de mas abajo devolvia la mezcla al reposo y
+    // acto seguido el fundido, todavia vivo, volvia a escribir DARKEN encima durante
+    // otros dieciseis fotogramas: el terreno salia oscurecido a medias -las rayas
+    // negras- y la sombra parpadeaba. Salia una de cada dos porque, si el sonido
+    // seguia sonando, Cmd_end ya esperaba por otro motivo y daba tiempo a que el
+    // fundido acabara solo.
     if (gAnimVisualTaskCount != 0 || gAnimSoundTaskCount != 0
-     || sMonAnimTaskIdArray[0] != TASK_NONE || sMonAnimTaskIdArray[1] != TASK_NONE)
+     || sMonAnimTaskIdArray[0] != TASK_NONE || sMonAnimTaskIdArray[1] != TASK_NONE
+     || sAnimBackgroundFadeState != 0)
     {
         sSoundAnimFramesToWait = 0;
         sAnimFramesToWait = 1;
@@ -1438,7 +1451,7 @@ static void Task_FadeToBg(u8 taskId)
 {
     if (gTasks[taskId].tState == 0)
     {
-        EmpiezaFundidoPaletasHardware(BLDCNT_TGT1_BG3 | BLDCNT_TGT1_BD | BLDCNT_EFFECT_BLEND, 0, 0, 16, FALSE);
+        EmpiezaFundidoPaletasHardware(BLDCNT_TGT1_BG3 | BLDCNT_TGT1_BD | BLDCNT_EFFECT_DARKEN, 0, 0, 16, FALSE);
         gTasks[taskId].tState++;
         return;
     }
@@ -1458,7 +1471,7 @@ static void Task_FadeToBg(u8 taskId)
         else
             LoadMoveBg(bgId);
 
-        EmpiezaFundidoPaletasHardware(BLDCNT_TGT1_BG3 | BLDCNT_TGT1_BD | BLDCNT_EFFECT_BLEND, 0, 16, 0, TRUE);
+        EmpiezaFundidoPaletasHardware(BLDCNT_TGT1_BG3 | BLDCNT_TGT1_BD | BLDCNT_EFFECT_DARKEN, 0, 16, 0, TRUE);
         gTasks[taskId].tState++;
         return;
     }
@@ -1466,6 +1479,10 @@ static void Task_FadeToBg(u8 taskId)
         return;
     if (gTasks[taskId].tState == 3)
     {
+        // El fundido dejo la mezcla a cero, y a cero la sombra no tiene con que
+        // mezclarse y se esconde. Se devuelve la del combate para que el Pokemon
+        // siga proyectando sombra sobre el fondo nuevo.
+        RestauraRegistrosCombate();
         DestroyTask(taskId);
         sAnimBackgroundFadeState = 0;
     }
@@ -1473,6 +1490,10 @@ static void Task_FadeToBg(u8 taskId)
 
 void LoadMoveBg(u16 bgId)
 {
+    // El fondo de un movimiento no lleva hora del dia: dura unos segundos y se ha
+    // dibujado con sus propios colores. Lo que hay que evitar es que el reloj lo
+    // repinte mientras esta puesto, ver ActualizaPaletasCombateSegunHora.
+    gFondoDeAnimacionPuesto = TRUE;
     LZDecompressVram(gBattleAnimBackgroundTable[bgId].tilemap, (void *)BG_SCREEN_ADDR(26));
     LZDecompressVram(gBattleAnimBackgroundTable[bgId].image, (void *)BG_CHAR_ADDR(2));
     LoadPalette(gBattleAnimBackgroundTable[bgId].palette, BG_PLTT_ID(2), PLTT_SIZE_4BPP);

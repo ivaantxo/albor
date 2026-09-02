@@ -1,4 +1,5 @@
 #include "global.h"
+#include "sombra_pokemon.h"
 #include "battle_anim.h"
 #include "gpu_regs.h"
 #include "graphics.h"
@@ -582,11 +583,10 @@ static void AnimTask_LoadSandstormBackground_Step(u8 taskId)
         gTasks[taskId].data[12]++;
         break;
     case 4:
-        SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 0);
+        DevuelveElBg1AlCombate();
         gBattle_BG1_X = 0;
         gBattle_BG1_Y = 0;
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
-        SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+        PreparaMezclaSombraPokemon();
         SetAnimBgAttribute(1, BG_ANIM_PRIORITY, 1);
         DestroyAnimVisualTask(taskId);
         break;

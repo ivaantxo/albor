@@ -1,4 +1,5 @@
 #include "global.h"
+#include "sombra_pokemon.h"
 #include "malloc.h"
 #include "battle_anim.h"
 #include "battle_interface.h"
@@ -2518,8 +2519,7 @@ static void AnimSoftBoiledEgg_Step4(struct Sprite *sprite)
 
 static void AnimSoftBoiledEgg_Step4_Callback(struct Sprite *sprite)
 {
-    SetGpuReg(REG_OFFSET_BLDCNT, 0);
-    SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+    PreparaMezclaSombraPokemon();
     DestroyAnimSprite(sprite);
 }
 
@@ -2858,7 +2858,7 @@ static void AnimTask_Sorpresa_Step2(u8 taskId)
         gBattle_WIN0V = 0;
         SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR | WININ_WIN1_BG_ALL | WININ_WIN1_OBJ | WININ_WIN1_CLR);
         SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG_ALL | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR | WINOUT_WINOBJ_BG_ALL | WINOUT_WINOBJ_OBJ | WINOUT_WINOBJ_CLR);
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
+        PreparaMezclaSombraPokemon();
         SetGpuReg(REG_OFFSET_BLDY, 0);
         DestroyAnimVisualTask(taskId);
     }
@@ -3043,9 +3043,8 @@ static void AnimTask_HeartsBackground_Step(u8 taskId)
         gTasks[taskId].data[12]++;
         break;
     case 4:
-        SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 0);
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
-        SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+        DevuelveElBg1AlCombate();
+        PreparaMezclaSombraPokemon();
         SetAnimBgAttribute(1, BG_ANIM_PRIORITY, 1);
         DestroyAnimVisualTask(taskId);
         break;
@@ -3129,9 +3128,8 @@ static void AnimTask_ScaryFace_Step(u8 taskId)
         gTasks[taskId].data[12]++;
         // fall through
     case 4:
-        SetAnimBgAttribute(1, BG_ANIM_CHAR_BASE_BLOCK, 0);
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
-        SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+        DevuelveElBg1AlCombate();
+        PreparaMezclaSombraPokemon();
         SetAnimBgAttribute(1, BG_ANIM_PRIORITY, 1);
         DestroyAnimVisualTask(taskId);
         break;

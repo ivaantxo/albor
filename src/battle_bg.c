@@ -540,6 +540,16 @@ static const u8 sPaletasCombateConHora[] =
     16, 17, 18, 19,     // los cuatro combatientes
 };
 
+// Cierto mientras una animacion tiene puesto un fondo de movimiento en lugar del
+// terreno. Lo llevan LoadMoveBg y DrawMainBattleBackground, que son los dos unicos
+// caminos que cambian el fondo, asi que no se puede quedar descolgado.
+bool8 gFondoDeAnimacionPuesto = FALSE;
+
+static bool32 EsPaletaDelTerreno(u32 paleta)
+{
+    return paleta >= 2 && paleta <= 4;
+}
+
 // Copia sin tenir de cada una de esas paletas.
 //
 // Hace falta porque el tinte se escribe sobre la paleta SIN FUNDIR, no sobre la
@@ -629,10 +639,23 @@ void TinePaletaSueltaDeCombate(u32 paleta)
 
 // Repinta todas con la hora actual. Se puede llamar cuantas veces haga falta: el
 // tinte sale siempre de la copia sin tenir, asi que no se acumula.
+//
+// Con un fondo de animacion puesto se saltan las tres del terreno. La copia sin
+// tenir sigue siendo la del ESCENARIO, asi que repintarlas no seria tenir el fondo
+// del movimiento: seria escribirle encima el terreno de siempre. Y como el reloj
+// solo repinta al cambiar de minuto, y solo durante el amanecer y el atardecer, el
+// fallo salia una de cada tres veces y parecia cosa de brujas.
 void ActualizaPaletasCombateSegunHora(void)
 {
     for (u32 i = 0; i < ARRAY_COUNT(sPaletasCombateConHora); i++)
-        TinePaletaCombate(sPaletasCombateConHora[i], &sPaletasCombateSinTenir[i * 16]);
+    {
+        u32 paleta = sPaletasCombateConHora[i];
+
+        if (gFondoDeAnimacionPuesto && EsPaletaDelTerreno(paleta))
+            continue;
+
+        TinePaletaCombate(paleta, &sPaletasCombateSinTenir[i * 16]);
+    }
 }
 
 void LoadBattleMenuWindowGfx(void)
@@ -640,7 +663,7 @@ void LoadBattleMenuWindowGfx(void)
     LoadPalette(gBattleWindowTextPalette, BG_PLTT_ID(5), PLTT_SIZE_4BPP);
 }
 
-void DrawMainBattleBackground(void)
+static void CargaGraficosDelTerreno(void)
 {
     if (EsCombateContraLegendario(gCombate->tipoCombate))
     {
@@ -735,6 +758,25 @@ void DrawMainBattleBackground(void)
         }
     }
 }
+
+// El terreno tambien se repinta al terminar una animacion que trajo su propio
+// fondo, y ahi es donde se perdia la hora: se cargaba la paleta original y nadie
+// la tenia, asi que el escenario volvia a mediodia mientras los Pokemon seguian
+// de noche. Como la carga tiene varios return por el camino, el tinte va aqui
+// fuera, envolviendola, y asi no hay salida que se lo salte.
+void DrawMainBattleBackground(void)
+{
+    CargaGraficosDelTerreno();
+
+    // Vuelve el terreno: se rehace la copia sin tenir con los colores del escenario
+    // y el reloj puede repintarlo otra vez.
+    gFondoDeAnimacionPuesto = FALSE;
+
+    GuardaYTinePaletaCombate(2);
+    GuardaYTinePaletaCombate(3);
+    GuardaYTinePaletaCombate(4);
+}
+
 
 void LoadBattleTextboxAndBackground(void)
 {
