@@ -215,8 +215,8 @@ static const union AnimCmd sAnim_MonPic_1[] =
 // tienen un unico fotograma y el segundo seria basura del buffer.
 static const union AnimCmd sAnim_MonPic_Bucle[] =
 {
-    ANIMCMD_FRAME(0, 20),
-    ANIMCMD_FRAME(1, 20),
+    ANIMCMD_FRAME(0, 600),
+    ANIMCMD_FRAME(1, 30),
     ANIMCMD_JUMP(0),
 };
 

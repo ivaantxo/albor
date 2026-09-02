@@ -52,23 +52,23 @@ struct AnimFrameCmd
 {
     // If the sprite has an array of images, this is the array index.
     // If the sprite has a sheet, this is the tile offset.
-    u32 imageValue:16;
+    u32 imageValue;
 
-    u32 duration:6;
-    u32 hFlip:1;
-    u32 vFlip:1;
+    u32 duration;
+    u32 hFlip;
+    u32 vFlip;
 };
 
 struct AnimLoopCmd
 {
-    u32 type:16;
-    u32 count:6;
+    u32 type;
+    u32 count;
 };
 
 struct AnimJumpCmd
 {
-    u32 type:16;
-    u32 target:6;
+    u32 type;
+    u32 target;
 };
 
 // The first halfword of this union specifies the type of command.
@@ -76,7 +76,7 @@ struct AnimJumpCmd
 // Otherwise, it is the imageValue for a frame command.
 union AnimCmd
 {
-    s16 type;
+    s32 type;
     struct AnimFrameCmd frame;
     struct AnimLoopCmd loop;
     struct AnimJumpCmd jump;
@@ -93,33 +93,33 @@ union AnimCmd
 
 struct AffineAnimFrameCmd
 {
-    s16 xScale;
-    s16 yScale;
-    u8 rotation;
-    u8 duration;
+    s32 xScale;
+    s32 yScale;
+    u32 rotation;
+    u32 duration;
 };
 
 struct AffineAnimLoopCmd
 {
-    s16 type;
-    s16 count;
+    s32 type;
+    s32 count;
 };
 
 struct AffineAnimJumpCmd
 {
-    s16 type;
-    u16 target;
+    s32 type;
+    u32 target;
 };
 
 struct AffineAnimEndCmdAlt
 {
-    s16 type;
-    u16 val;
+    s32 type;
+    u32 val;
 };
 
 union AffineAnimCmd
 {
-    s16 type;
+    s32 type;
     struct AffineAnimFrameCmd frame;
     struct AffineAnimLoopCmd loop;
     struct AffineAnimJumpCmd jump;

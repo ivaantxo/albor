@@ -6066,7 +6066,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         FRONT_PIC(Dratini, 96, 96),
         ELEVACION_FRONT_PIC(9),
         FRONT_ANIM(Dratini, V_SQUISH_AND_BOUNCE),
-        BACK_PIC(Dratini, 56, 48),
+        BACK_PIC(Dratini, 96, 96),
         ELEVACION_BACK_PIC(8),
         BACK_ANIM(H_SLIDE),
         PALETAS(Dratini),
