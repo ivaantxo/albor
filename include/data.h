@@ -19,6 +19,8 @@ enum {
     BATTLER_AFFINE_RETURN,
 };
 
+
+
 struct MonCoords
 {
     // This would use a bitfield, but some function

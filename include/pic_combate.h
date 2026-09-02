@@ -50,4 +50,6 @@ void AjustaFotogramasPic(u32 posicion, u32 especie, u32 personalidad, bool32 esF
 // Pone las piezas al sprite del combatiente si su pic pasa de 64x64.
 void AplicaSubspritesPic(u32 spriteId);
 
+bool32 EsPicGrande(u32 spriteId);
+
 #endif // GUARD_PIC_COMBATE_H

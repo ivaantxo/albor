@@ -94,35 +94,49 @@ union AnimCmd
 #define ANIMCMD_END \
     {.type = -1}
 
+// OJO: estos tipos NO se pueden ensanchar. No son "el tamano que hizo falta en su
+// dia": llevan informacion dentro.
+//
+//   - xScale e yScale son s16 CON SIGNO, y sesenta y seis comandos del juego
+//     escriben sus deltas negativos en hexadecimal, del estilo
+//     AFFINEANIMCMD_FRAME(0xFFE2, 0xFFE2, 0, 8). Ese 0xFFE2 vale -30 en s16 y
+//     65506 en s32, asi que pasarlos a 32 bits vuelve locas las escalas y los
+//     sprites salen inmensos o no salen.
+//   - rotation es u8 por lo mismo al reves: hay comandos que pasan -128 contando
+//     con que de la vuelta a 128.
+//   - type solapa con xScale, asi que tiene que medir lo mismo que el.
+//
+// Si algun dia hacen falta escalas mas finas, hay que convertir los 66 comandos
+// primero.
 struct AffineAnimFrameCmd
 {
-    s32 xScale;
-    s32 yScale;
-    s32 rotation;
-    u32 duration;
+    s16 xScale;
+    s16 yScale;
+    u8 rotation;
+    u8 duration;
 };
 
 struct AffineAnimLoopCmd
 {
-    s32 type;
-    u32 count;
+    s16 type;
+    s16 count;
 };
 
 struct AffineAnimJumpCmd
 {
-    s32 type;
-    u32 target;
+    s16 type;
+    u16 target;
 };
 
 struct AffineAnimEndCmdAlt
 {
-    s32 type;
-    u32 val;
+    s16 type;
+    u16 val;
 };
 
 union AffineAnimCmd
 {
-    s32 type;
+    s16 type;
     struct AffineAnimFrameCmd frame;
     struct AffineAnimLoopCmd loop;
     struct AffineAnimJumpCmd jump;
@@ -146,13 +160,13 @@ union AffineAnimCmd
 
 struct AffineAnimState
 {
-    u32 animNum;
-    u32 animCmdIndex;
-    u32 delayCounter;
-    u32 loopCounter;
-    s32 xScale;
-    s32 yScale;
-    s32 rotation;
+    u8 animNum;
+    u8 animCmdIndex;
+    u8 delayCounter;
+    u8 loopCounter;
+    s16 xScale;
+    s16 yScale;
+    u16 rotation;
 };
 
 enum
@@ -209,8 +223,13 @@ struct Sprite
 
     s16 x, y;
     s16 x2, y2;
-    s32 centerToCornerVecX;
-    s32 centerToCornerVecY;
+    // s8 a la fuerza, NO por ahorrar. La tabla de la que salen guarda los negativos
+    // como u8 -el -4 esta escrito 252- y es el truncado a ocho bits al asignarlos
+    // aqui lo que los devuelve a negativo. En s32 ese 252 se queda en 252 y el
+    // sprite se dibuja doscientos cincuenta y dos pixeles mas alla. Ver
+    // CalcCenterToCornerVec.
+    s8 centerToCornerVecX;
+    s8 centerToCornerVecY;
 
     u32 animNum;
     u32 animCmdIndex;
@@ -247,9 +266,6 @@ struct Sprite
     // apuntan a un hueco compartido cuyo tamano cambia cada vez que entra otro
     // Pokemon, y liberar por el tamano de entonces suelta tiles que ya son de otro.
     u32 tilesReservados;
-
-    u32 subspriteTableNum;
-    u32 subspriteMode;
 
     u32 subspriteTableNum;
     u32 subspriteMode;

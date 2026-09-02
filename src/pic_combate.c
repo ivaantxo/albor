@@ -1,4 +1,5 @@
 #include "global.h"
+#include "battle_main.h"
 #include "pic_combate.h"
 #include "malloc.h"
 #include "pokemon.h"
@@ -148,6 +149,13 @@ void ReordenaPicGrande(u8 *datos, u32 numFotogramas)
 // entran matrices afines de por medio, en vez de tener una sola pasada al salir.
 // Poner a 0 cuando ya no haga falta.
 // ---------------------------------------------------------------------------
+// PROVISIONAL, mientras se prueban los pics grandes: los aparta de donde los deja
+// el combate, que cuenta con 64x64. Poner a 0 cuando las coordenadas de los
+// combatientes sepan del tamano de cada pic.
+#define CORRIGE_SITIO_PIC_GRANDE 1
+#define DESPLAZA_PIC_GRANDE_X 16
+#define DESPLAZA_PIC_GRANDE_Y 32
+
 #define REPITE_ANIMACION_POKEMON 1
 // El meneo afin repetido canta: al ser una deformacion de pixel art, las lineas
 // diagonales se rompen un poco cada vez que pasa. Queda bien de tarde en tarde,
@@ -161,6 +169,16 @@ void ReordenaPicGrande(u8 *datos, u32 numFotogramas)
 // el combate la deja parada en la pose 0 al salir.
 static void ArrancaAnimacionContinua(void)
 {
+    // Mientras el Pokemon esta en primer plano no se le toca la animacion.
+    //
+    // SpriteCB_WildMon la deja pausada a proposito para que la entrada se vea
+    // quieta, pero esto corre en cada fotograma y se la despausaba: el pic cambiaba
+    // de dibujo estando escalado, y ahi es donde se veia mal. Las piezas de un pic
+    // troceado aguantan bien el zoom quieto; lo que no aguantan es cambiar de
+    // fotograma en mitad de el.
+    if (gZoomEntradaEnMarcha)
+        return;
+
     for (u32 combatiente = 0; combatiente < gBattlersCount; combatiente++)
     {
         u32 spriteId = gBattlerSpriteIds[combatiente];
@@ -325,5 +343,28 @@ void AplicaSubspritesPic(u32 spriteId)
     SetSubspriteTables(sprite, tabla);
     // La prioridad la sigue mandando el combate, no la tabla.
     sprite->subspriteMode = SUBSPRITES_IGNORE_PRIORITY;
+
+#if CORRIGE_SITIO_PIC_GRANDE
+    // PROVISIONAL. Las coordenadas de los combatientes -GetBattlerSpriteCoord y
+    // GetBattlerSpriteDefault_Y- estan calculadas para pics de 64x64, asi que uno
+    // de 96x96 nace descentrado y con media cabeza tapada. Esto lo aparta para
+    // poder mirarlo mientras se prueban el zoom y las piezas.
+    //
+    // No es el arreglo bueno: el sitio de verdad es la tabla de coordenadas, que
+    // tiene que tener en cuenta el tamano del pic de cada especie.
+    sprite->x -= DESPLAZA_PIC_GRANDE_X;
+    sprite->y -= DESPLAZA_PIC_GRANDE_Y;
+#endif
 }
 
+
+// Cierto si el pic de este sprite es de los grandes, o sea de los que se dibujan
+// troceados. Lo necesita quien tenga que tratarlos distinto -por ejemplo, para
+// darles un zoom de entrada que no abra costuras entre las piezas-.
+bool32 EsPicGrande(u32 spriteId)
+{
+    struct Sprite *sprite = &gSprites[spriteId];
+
+    return sprite->images != NULL
+        && SubspritesPicCombate(sprite->images->size) != NULL;
+}

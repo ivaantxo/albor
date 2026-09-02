@@ -117,7 +117,10 @@ typedef void (*AffineAnimCmdFunc)(u8 matrixNum, struct Sprite *);
     .affineParam = 0                        \
 }
 
-#define ANIM_END        0xFFFF
+// El centinela de fin de animacion. Era 0xFFFF porque el campo del que se leia
+// era de dieciseis bits SIN signo y solo se convertia en -1 al meterlo en un s16;
+// ahora imageValue es un s32 con signo y el -1 se escribe tal cual.
+#define ANIM_END        (-1)
 #define AFFINE_ANIM_END 0x7FFF
 
 // forward declarations
@@ -832,11 +835,9 @@ void AnimateSprite(struct Sprite *sprite)
 
 void BeginAnim(struct Sprite *sprite)
 {
-    // OJO: s16 a proposito. El campo del que se lee es 'u32 imageValue:16', sin
-    // signo, y el centinela ANIMCMD_END viaja dentro como 0xFFFF. Solo al meterlo en
-    // un s16 se reinterpreta como el -1 que comparan los 'if' de abajo. Con s32 vale
-    // 65535, el final de la animacion no se detecta nunca y se indexa fuera de rango.
-    s16 imageValue;
+    // imageValue es un s32 con signo y el centinela de fin vale -1 tal cual, asi
+    // que aqui ya no hace falta el s16 que hacia de conversor.
+    s32 imageValue;
     u32 duration;
     u32 hFlip;
     u32 vFlip;
@@ -899,11 +900,9 @@ void ContinueAnim(struct Sprite *sprite)
 
 void AnimCmd_frame(struct Sprite *sprite)
 {
-    // OJO: s16 a proposito. El campo del que se lee es 'u32 imageValue:16', sin
-    // signo, y el centinela ANIMCMD_END viaja dentro como 0xFFFF. Solo al meterlo en
-    // un s16 se reinterpreta como el -1 que comparan los 'if' de abajo. Con s32 vale
-    // 65535, el final de la animacion no se detecta nunca y se indexa fuera de rango.
-    s16 imageValue;
+    // imageValue es un s32 con signo y el centinela de fin vale -1 tal cual, asi
+    // que aqui ya no hace falta el s16 que hacia de conversor.
+    s32 imageValue;
     u32 duration;
     u32 hFlip;
     u32 vFlip;
@@ -939,11 +938,9 @@ void AnimCmd_end(struct Sprite *sprite)
 
 void AnimCmd_jump(struct Sprite *sprite)
 {
-    // OJO: s16 a proposito. El campo del que se lee es 'u32 imageValue:16', sin
-    // signo, y el centinela ANIMCMD_END viaja dentro como 0xFFFF. Solo al meterlo en
-    // un s16 se reinterpreta como el -1 que comparan los 'if' de abajo. Con s32 vale
-    // 65535, el final de la animacion no se detecta nunca y se indexa fuera de rango.
-    s16 imageValue;
+    // imageValue es un s32 con signo y el centinela de fin vale -1 tal cual, asi
+    // que aqui ya no hace falta el s16 que hacia de conversor.
+    s32 imageValue;
     u32 duration;
     u32 hFlip;
     u32 vFlip;

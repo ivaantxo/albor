@@ -935,7 +935,7 @@ void StartSendOutAnim(u32 battler, bool32 dontClearSubstituteBit, bool32 doSlide
                                         GetBattlerSpriteCoord(battler, BATTLER_COORD_X_2),
                                         GetBattlerSpriteDefault_Y(battler),
                                         GetBattlerSpriteSubpriority(battler));
-AplicaSubspritesPic(gBattlerSpriteIds[battler]);
+    AplicaSubspritesPic(gBattlerSpriteIds[battler]);
 
     gSprites[gBattlerSpriteIds[battler]].data[0] = battler;
     gSprites[gBattlerSpriteIds[battler]].data[2] = species;

@@ -829,14 +829,19 @@ u32 GetBattleWindowTemplatePixelWidth(u32 tableId)
 #define ZOOM_MATRIZ_NATURAL      256
 #define ZOOM_MATRIZ_DOBLE        128
 
-// Las dos duraciones, en fotogramas. Se pueden tocar por separado: la posicion y
-// la escala salen las dos del mismo avance, asi que no se descuadran.
-#define ZOOM_ESPERA_CENTRO        60
+// Donde se planta el Pokemon mientras esta en primer plano. La mitad de la pantalla
+// lo deja demasiado abajo -tapa el cuadro de texto y queda descentrado respecto a lo
+// que se mira-, asi que sube de ahi.
+#define ZOOM_SUBE_EL_CENTRO       64
+
+// Cuanto dura el camino de vuelta, en fotogramas. La posicion y la escala salen las
+// dos del mismo avance, asi que no se pueden descuadrar.
 #define ZOOM_CAMINO               64
 
-// Hitos del contador, para no repartir sumas por el codigo.
-#define ZOOM_HITO_VUELVE    (ZOOM_ESPERA_CENTRO)
-#define ZOOM_HITO_FIN       (ZOOM_HITO_VUELVE + ZOOM_CAMINO)
+// Fotogramas de espera entre paso y paso del desvelado. El fundido va de 16 a 0 de
+// dos en dos, o sea ocho pasos, asi que esto por ocho es lo que tarda: a 3 son 32
+// fotogramas, poco mas de medio segundo.
+#define ZOOM_RETRASO_DESVELADO     3
 
 #define sZoomMatriz data[3]
 #define sZoomPaso   data[4]
@@ -912,25 +917,31 @@ static void TerminaZoomEntrada(struct Sprite *sprite)
     gZoomEntradaEnMarcha = FALSE;
     StartHealthboxSlideIn(sprite->sBattler);
     MuestraMarcador(gMarcadorSpriteIds[sprite->sBattler]);
-    BeginNormalPaletteFade((0x10000 << sprite->sBattler), 0, 10, 0, RGB(8, 8, 8));
+
+    // Con el zoom apagado no ha habido desvelado, asi que la paleta puede seguir
+    // oscura: se aclara aqui por si acaso. Con el zoom puesto esto no hace nada,
+    // porque ya llego a cero.
+    BeginNormalPaletteFade((0x10000 << sprite->sBattler), 0, 16, 0, RGB_BLACK);
     sprite->callback = SpriteCB_WildMonAnimate;
 }
 
 static void SpriteCB_ZoomEntradaSalvaje(struct Sprite *sprite)
 {
-    s32 t = sprite->sZoomPaso++;
-
-    // Quieto en primer plano mientras suena el grito.
-    if (t < ZOOM_HITO_VUELVE)
+    // Quieto en primer plano mientras se desvela y suena el grito. Se espera al
+    // fundido en vez de contar fotogramas: asi las dos cosas no se pueden
+    // descuadrar si algun dia se cambia lo que tarda el desvelado.
+    if (gFundidoPaletas.activo)
         return;
 
+    s32 t = sprite->sZoomPaso++;
+
     // Al arrancar el camino se da via libre: es cuando entra tu entrenador.
-    if (t == ZOOM_HITO_VUELVE)
+    if (t == 0)
         gZoomEntradaEnMarcha = FALSE;
 
-    if (t < ZOOM_HITO_FIN)
+    if (t < ZOOM_CAMINO)
     {
-        ColocaZoom(sprite, ZOOM_HITO_FIN - t);
+        ColocaZoom(sprite, ZOOM_CAMINO - t);
         return;
     }
 
@@ -939,20 +950,32 @@ static void SpriteCB_ZoomEntradaSalvaje(struct Sprite *sprite)
 
 // El zoom de entrada usa una matriz afin, y a un pic repartido en piezas -los de
 // 96x96- eso le abre costuras: los OBJ de GBA anclan el muestreo a una posicion entera
-// y no admiten medio pixel. Apagado mientras se prueba la animacion por fotogramas.
-// El codigo se queda entero; cuando haga falta, el sitio donde recuperarlo es una capa
-// de fondo afin, que si tiene precision subpixel. Ver include/pic_combate.h.
-#define ZOOM_ENTRADA_ACTIVO 0
+// y no admiten medio pixel.
+//
+// Medido despues: de las 128 escalas que hay entre el tamano natural y el doble,
+// las UNICAS con desvio cero son los dos extremos, 256 y 128. Las intermedias
+// descolocan las piezas hasta medio pixel, y por ahi es por donde se abren. O sea
+// que el problema no es el zoom, es el camino: quedarse quieto en 256 o en 128 no
+// abre nada.
+//
+// Si el recorrido continuo canta demasiado, la salida es que ColocaZoom avance por
+// escalones en vez de pixel a pixel, o llevarlo a una capa de fondo afin, que si
+// tiene precision subpixel. Ver include/pic_combate.h.
+#define ZOOM_ENTRADA_ACTIVO 1
 
 void SpriteCB_WildMon(struct Sprite *sprite)
 {
     // Quieto y en su pose normal: no se anima nada hasta que esta colocado.
     StartSpriteAnim(sprite, 0);
     sprite->animPaused = TRUE;
-    BeginNormalPaletteFade((0x10000 << sprite->sBattler), 0, 10, 10, RGB(8, 8, 8));
+    // Entra a oscuras y se desvela. Antes se quedaba tenido fijo -de 10 a 10, o sea
+    // sin moverse- y lo aclaraba TerminaZoomEntrada al final; ahora el desvelado ES
+    // la entrada, y el zoom de vuelta no arranca hasta que acaba.
+    BeginNormalPaletteFade((0x10000 << sprite->sBattler),
+                           ZOOM_RETRASO_DESVELADO, 16, 0, RGB_BLACK);
 
     sprite->sZoomDesplX = ANCHO_PANTALLA / 2 - sprite->x;
-    sprite->sZoomDesplY = ALTURA_PANTALLA / 2 - sprite->y;
+    sprite->sZoomDesplY = ALTURA_PANTALLA / 2 - ZOOM_SUBE_EL_CENTRO - sprite->y;
     sprite->sZoomPaso = 0;
 
     // Sin matriz libre no hay primer plano, pero el combate tiene que seguir: se
