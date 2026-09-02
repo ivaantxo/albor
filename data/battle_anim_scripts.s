@@ -17951,25 +17951,6 @@ gBattleAnimMove_MetalClaw::
 	waitforvisualfinish
 	end
 
-gBattleAnimMove_NightShade::
-	monbg ANIM_ATTACKER
-	splitbgprio ANIM_ATTACKER
-	playsewithpan SE_M_PSYBEAM, SOUND_PAN_ATTACKER
-	fadetobg BG_GHOST
-	waitbgfadein
-	delay 10
-	playsewithpan SE_M_LEER, SOUND_PAN_ATTACKER
-	createvisualtask AnimTask_NightShadeClone, 5, 85
-	delay 70
-	createvisualtask AnimTask_ShakeMon2, 2, ANIM_TARGET, 2, 0, 12, 1
-	createvisualtask AnimTask_BlendColorCycle, 2, F_PAL_TARGET, 0, 2, 0, 13, RGB_BLACK
-	waitforvisualfinish
-	clearmonbg ANIM_ATTACKER
-	delay 1
-	restorebg
-	waitbgfadein
-	end
-
 gBattleAnimMove_EggBomb::
 	loadspritegfx ANIM_TAG_EXPLOSION
 	loadspritegfx ANIM_TAG_LARGE_FRESH_EGG

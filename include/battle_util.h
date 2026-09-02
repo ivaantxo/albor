@@ -231,7 +231,6 @@ bool32 IsGen6ExpShareEnabled(void);
 bool32 MoveHasAdditionalEffect(enum Movimientos movimiento, u32 moveEffect);
 bool32 MoveHasAdditionalEffectWithChance(enum Movimientos movimiento, u32 moveEffect, u32 chance);
 bool32 MoveHasAdditionalEffectSelf(enum Movimientos movimiento, u32 moveEffect);
-bool32 MoveHasAdditionalEffectSelfArg(enum Movimientos movimiento, u32 moveEffect, u32 argument);
 bool32 MoveHasChargeTurnAdditionalEffect(enum Movimientos movimiento);
 bool32 CanTargetPartner(u32 battlerAtk, u32 battlerDef);
 bool32 TargetFullyImmuneToCurrMove(u32 battlerAtk, u32 battlerDef);

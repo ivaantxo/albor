@@ -298,9 +298,40 @@ struct InfoMovimiento
 
     enum PrioridadMovimientos prioridad;
 
-    u32 argument;
+    // Cada movimiento declara SOLO lo que le hace falta. Antes todo esto era un
+    // unico "argument" de 32 bits que significaba una cosa distinta en cada
+    // movimiento -y en los de dos turnos, dos a la vez, una en cada mitad-, asi que
+    // no habia forma de saber que guardaba sin ir a mirar quien lo leia.
+    //
+    // El clima en el que el movimiento no falla. Distinto de climaQueSaltaCarga: uno
+    // es puntería y el otro es saltarse el turno de carga.
     enum ClimasCombate clima;
-    u32 estado; // Convertir a enum, revisar
+
+    // El estado con el que el movimiento interactua: el que dobla su potencia, el
+    // que cura, el que hace falta que tenga el objetivo.
+    enum EstadoPrincipal estado;
+
+    // Los de dos turnos. El transitorio dura mientras carga -y es el que lo saca del
+    // campo, si es de los que desaparecen-; el clima le deja atacar ya en el primero.
+    enum EstadoTransitorio transitorioCarga;
+    enum ClimasCombate climaQueSaltaCarga;
+
+    // Tipos que el movimiento mira ademas del suyo.
+    u8 tipoSuperEfectivo;      // le hace mas daño del que le tocaria por la tabla
+    u8 tipoSecundario;         // golpea tambien con este tipo
+    u8 tipoQueExigeAlUsuario;  // falla si quien lo usa no es de este tipo
+
+    // Cuanto se cura de lo que ha hecho de daño, en tanto por ciento. A cero, la
+    // mitad, que es lo que hacen todos los que drenan ahora mismo.
+    u8 porcentajeDrenaje;
+
+    // El efecto de objeto que le fija el tipo, para los que cambian segun lo que
+    // lleve puesto el Pokemon.
+    u8 efectoObjetoQueFijaTipo;
+
+    // Un MOVE_EFFECT_* que el propio movimiento se busca a si mismo, para
+    // distinguirse de otros que comparten effect.
+    u8 efectoPropio;
 
     const struct AdditionalEffect *additionalEffects;
 

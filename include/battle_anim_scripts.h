@@ -102,7 +102,6 @@ extern const u8 gBattleAnimMove_Agility[];
 extern const u8 gBattleAnimMove_QuickAttack[];
 extern const u8 gBattleAnimMove_Rage[];
 extern const u8 gBattleAnimMove_Teletransporte[];
-extern const u8 gBattleAnimMove_NightShade[];
 extern const u8 gBattleAnimMove_Screech[];
 extern const u8 gBattleAnimMove_DoubleTeam[];
 extern const u8 gBattleAnimMove_Recover[];

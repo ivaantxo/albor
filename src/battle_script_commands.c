@@ -4745,15 +4745,15 @@ static void Cmd_moveend(void)
                 }
                 break;
             case MOVE_EFFECT_REMOVE_STATUS:
-                if (gBattleMons[gBattlerTarget].estado == gMovimientos[gCurrentMove].argument && IsBattlerAlive(gBattlerTarget) && !DoesSubstituteBlockMove(gBattlerAttacker, gBattlerTarget, gCurrentMove))
+                if (gBattleMons[gBattlerTarget].estado == gMovimientos[gCurrentMove].estado && IsBattlerAlive(gBattlerTarget) && !DoesSubstituteBlockMove(gBattlerAttacker, gBattlerTarget, gCurrentMove))
                 {
-                    QuitaEstado(gBattlerTarget, gMovimientos[gCurrentMove].argument);
+                    QuitaEstado(gBattlerTarget, gMovimientos[gCurrentMove].estado);
 
                     ComandoFijaDatosPokemon(gBattlerTarget, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[gBattlerTarget].estado);
                     MarcaCombatienteOcupado(gBattlerTarget);
                     effect = TRUE;
                     BattleScriptPush(gBattlescriptCurrInstr);
-                    switch (gMovimientos[gCurrentMove].argument)
+                    switch (gMovimientos[gCurrentMove].estado)
                     {
                     case ESTADO_PARALISIS:
                         gBattlescriptCurrInstr = BattleScript_TargetPRLZHeal;
@@ -4769,6 +4769,15 @@ static void Cmd_moveend(void)
                         break;
                     case ESTADO_VENENO:
                         gBattlescriptCurrInstr = BattleScript_TargetPoisonHealed;
+                        break;
+                    // Los demas no tienen mensaje de curacion propio. No puede
+                    // llegarse aqui: mas arriba se ha comprobado que el objetivo
+                    // tiene justo el estado que el movimiento declara, y ninguno
+                    // declara estos.
+                    case ESTADO_NINGUNO:
+                    case ESTADO_ENAMORADO:
+                    case NUMERO_ESTADOS_PRINCIPALES:
+                    case ESTADO_CUALQUIERA:
                         break;
                     }
                 }
@@ -4950,7 +4959,7 @@ static void Cmd_moveend(void)
                 if (gCombate->contadorMultigolpes == 0)
                 {
                     BattleScriptPushCursor();
-                    if (gMovimientos[gCurrentMove].argument == MOVE_EFFECT_SCALE_SHOT && !NoAliveMonsForEitherParty())
+                    if (gMovimientos[gCurrentMove].efectoPropio == MOVE_EFFECT_SCALE_SHOT && !NoAliveMonsForEitherParty())
                         gBattlescriptCurrInstr = BattleScript_ScaleShot;
                     else
                         gBattlescriptCurrInstr = BattleScript_MultiHitPrintStrings;
@@ -7236,12 +7245,6 @@ static void Cmd_various(void)
         gBattlescriptCurrInstr = cmd->nextInstr;
         return;
     }
-    case VARIOUS_SET_ARG_TO_BATTLE_DAMAGE:
-    {
-        VARIOUS_ARGS();
-        gBattleMoveDamage = gMovimientos[gCurrentMove].argument;
-        break;
-    }
     case VARIOUS_TRY_AUTOTOMIZE:
     {
         VARIOUS_ARGS(const u8 *failInstr);
@@ -7992,8 +7995,8 @@ static void Cmd_setdrainedhp(void)
 {
     CMD_ARGS();
 
-    if (gMovimientos[gCurrentMove].argument != 0)
-        gBattleMoveDamage = (gHpDealt * gMovimientos[gCurrentMove].argument / 100);
+    if (gMovimientos[gCurrentMove].porcentajeDrenaje != 0)
+        gBattleMoveDamage = (gHpDealt * gMovimientos[gCurrentMove].porcentajeDrenaje / 100);
     else
         gBattleMoveDamage = (gHpDealt / 2);
 
@@ -9131,7 +9134,7 @@ static void Cmd_setsemiinvulnerablebit(void)
 
     if (gBattleMoveEffects[gMovimientos[gCurrentMove].effect].semiInvulnerableEffect == TRUE)
     {
-        u32 transitorio = HIHALF(gMovimientos[gCurrentMove].argument);
+        u32 transitorio = gMovimientos[gCurrentMove].transitorioCarga;
         if (cmd->clear)
             QuitaTransitorio(gBattlerAttacker, transitorio);
         else
@@ -9153,7 +9156,7 @@ static bool32 CheckIfCanFireTwoTurnMoveNow(u8 battler, bool8 checkChargeTurnEffe
 
     // Certain two-turn moves may fire on the first turn in the right weather (Solar Beam, Electro Shot)
     // By default, all two-turn moves have the option of adding weather to their argument
-    if (ClimaMovimientoCoincide(HIHALF(gMovimientos[gCurrentMove].argument)))
+    if (ClimaMovimientoCoincide(gMovimientos[gCurrentMove].climaQueSaltaCarga))
         return TRUE;
 
     return FALSE;
@@ -9455,7 +9458,7 @@ static void Cmd_jumpifnotcurrentmoveargtype(void)
     u8 battler = GetBattlerForBattleScript(cmd->battler);
     const u8 *failInstr = cmd->failInstr;
 
-    if (!EsTipo(battler, gMovimientos[gCurrentMove].argument))
+    if (!EsTipo(battler, gMovimientos[gCurrentMove].tipoQueExigeAlUsuario))
         gBattlescriptCurrInstr = failInstr;
     else
         gBattlescriptCurrInstr = cmd->nextInstr;
@@ -10242,16 +10245,6 @@ void BS_TryRevertWeatherForm(void)
         return;
     }
     gBattlescriptCurrInstr = cmd->nextInstr;
-}
-
-void BS_JumpIfArgument(void)
-{
-    NATIVE_ARGS(u8 argument, const u8 *jumpInstr);
-
-    if (gMovimientos[gCurrentMove].argument == cmd->argument)
-        gBattlescriptCurrInstr = cmd->jumpInstr;
-    else
-        gBattlescriptCurrInstr = cmd->nextInstr;
 }
 
 void BS_TryRelicSong(void)

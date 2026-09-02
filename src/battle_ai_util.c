@@ -284,7 +284,7 @@ bool32 IsDamageMoveUnusable(u32 battlerAtk, u32 battlerDef, u32 move, u32 moveTy
             return TRUE;
         break;
     case EFFECT_FAIL_IF_NOT_ARG_TYPE:
-        if (!EsTipo(battlerAtk, gMovimientos[move].argument))
+        if (!EsTipo(battlerAtk, gMovimientos[move].tipoQueExigeAlUsuario))
             return TRUE;
         break;
     case EFFECT_FIRST_TURN_ONLY:
@@ -2384,7 +2384,7 @@ bool32 ShouldAbsorb(u32 battlerAtk, u32 battlerDef, enum Movimientos move, s32 d
     if (move == 0xFFFF || AI_IsFaster(battlerAtk, battlerDef, move))
     {
         // using item or user goes first
-        u32 healPercent = (gMovimientos[move].argument == 0) ? 50 : gMovimientos[move].argument;
+        u32 healPercent = (gMovimientos[move].porcentajeDrenaje == 0) ? 50 : gMovimientos[move].porcentajeDrenaje;
         s32 healDmg = (healPercent * damage) / 100;
 
         if (CanTargetFaintAI(battlerDef, battlerAtk) && !CanTargetFaintAIWithMod(battlerDef, battlerAtk, healDmg, 0))

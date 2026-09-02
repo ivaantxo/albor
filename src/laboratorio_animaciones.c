@@ -44,14 +44,13 @@ static EWRAM_DATA u16 sMovimientoElegido = 0;
 
 // Que movimientos recorre el selector. Se cambia con START.
 //
-// El laboratorio tiene cientos de movimientos y casi todos se ven igual pasa lo
-// que pasa; para comprobar un cambio hace falta ir a los que lo tocan. Estas
-// listas se generan leyendo los guiones, no a mano.
+// El laboratorio tiene cientos de movimientos y casi todos se ven igual pase lo
+// que pase; para comprobar un cambio hace falta ir a los que lo tocan. La lista
+// se genera leyendo los guiones, no a mano, y se poda segun avanza el repaso.
 enum FiltroLaboratorio
 {
-    FILTRO_TODOS,          // los ~900
-    FILTRO_CON_CAPA,       // los 345 cuya animacion llama a monbg
-    FILTRO_RETUERCEN,      // los 7 que ademas retuercen al Pokemon
+    FILTRO_TODOS,           // los ~900
+    FILTRO_PROBLEMATICOS,   // los que quedan por repasar
     NUMERO_FILTROS,
 };
 
@@ -61,26 +60,22 @@ static EWRAM_DATA u8 sFiltro = 0;
 // filtro puesto, moverse uno a la derecha es ir al siguiente de la lista.
 static EWRAM_DATA u16 sPosicion = 0;
 
-static const u8 sNombreFiltro[NUMERO_FILTROS][12] = { _("todos"), _("con capa"), _("retuercen") };
+static const u8 sNombreFiltro[NUMERO_FILTROS][12] = { _("todos"), _("problemas") };
 
 static u32 CuantosEnElFiltro(void)
 {
-    switch (sFiltro)
-    {
-    case FILTRO_CON_CAPA:  return ARRAY_COUNT(sMovimientosConCapa);
-    case FILTRO_RETUERCEN: return ARRAY_COUNT(sMovimientosQueRetuercen);
-    default:               return NUMERO_MOVIMIENTOS - 1;
-    }
+    if (sFiltro == FILTRO_PROBLEMATICOS)
+        return ARRAY_COUNT(sMovimientosProblematicos);
+
+    return NUMERO_MOVIMIENTOS - 1;
 }
 
 static u16 MovimientoDelFiltro(u32 posicion)
 {
-    switch (sFiltro)
-    {
-    case FILTRO_CON_CAPA:  return sMovimientosConCapa[posicion];
-    case FILTRO_RETUERCEN: return sMovimientosQueRetuercen[posicion];
-    default:               return posicion + 1;
-    }
+    if (sFiltro == FILTRO_PROBLEMATICOS)
+        return sMovimientosProblematicos[posicion];
+
+    return posicion + 1;
 }
 
 enum FaseLaboratorio

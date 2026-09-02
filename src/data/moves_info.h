@@ -20,7 +20,6 @@
 EFFECT_SEMI_INVULNERABLE: semi-invulnerable STATUS3 to apply to battler
 EFFECT_TWO_TURNS_ATTACK: weather in which to skip charge turn
 Absent for moves with neither. */
-#define TWO_TURN_ARG(...) (0 __VA_OPT__(| ((__VA_ARGS__) << 16)))
 
 #define PP_MOVIMIENTO_LIMITADO  8
 #define PP_MOVIMIENTO_NORMAL    16
@@ -494,7 +493,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .argument = TWO_TURN_ARG(TRANSITORIO_EN_EL_AIRE),
+        .transitorioCarga = TRANSITORIO_EN_EL_AIRE,
         .battleAnimScript = gBattleAnimMove_Fly,
     },
 
@@ -1635,7 +1634,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .argument = TWO_TURN_ARG(CLIMA_COMBATE_SOL),
+        .climaQueSaltaCarga = CLIMA_COMBATE_SOL,
         .battleAnimScript = gBattleAnimMove_SolarBeam,
     },
 
@@ -1937,7 +1936,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .argument = TWO_TURN_ARG(TRANSITORIO_BAJO_TIERRA),
+        .transitorioCarga = TRANSITORIO_BAJO_TIERRA,
         .battleAnimScript = gBattleAnimMove_Dig,
     },
 
@@ -2106,28 +2105,6 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_ESTADO,
         .ignoresProtect = TRUE,
         .battleAnimScript = gBattleAnimMove_Teletransporte,
-    },
-
-    [MOVE_NIGHT_SHADE] =
-    {
-        .name = COMPOUND_STRING("Pesadilla"),
-        .description = COMPOUND_STRING(
-            "Doble de daño en dormidos,\n"
-            "pero los despierta."),
-        .effect = EFECTO_DOBLE_POTENCIA_SI_ESTADO,
-        .power = 60,
-        .type = TIPO_FANTASMA,
-        .accuracy = PRECISION_NORMAL,
-        .pp = PP_MOVIMIENTO_NORMAL,
-        .target = MOVE_TARGET_SELECTED,
-        PRIORIDAD_NORMAL,
-        .category = CATEGORIA_ESPECIAL,
-        .argument = ESTADO_SUENO,
-        .makesContact = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_REMOVE_STATUS,
-        }),
-        .battleAnimScript = gBattleAnimMove_NightShade,
     },
 
     [MOVE_SCREECH] =
@@ -2599,7 +2576,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         CABEZAZO,
-        .argument = TWO_TURN_ARG(),
+        
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_DEF_PLUS_1,
             .self = TRUE,
@@ -3285,7 +3262,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .argument = ESTADO_SUENO,
+        .estado = ESTADO_SUENO,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_REMOVE_STATUS,
         }),
@@ -4571,7 +4548,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .argument = ESTADO_SUENO,
+        .estado = ESTADO_SUENO,
         .soundMove = TRUE,
         .ignoresSubstitute = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
@@ -4763,7 +4740,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
-        .argument = ESTADO_PARALISIS,
+        .estado = ESTADO_PARALISIS,
         .makesContact = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_REMOVE_STATUS,
@@ -5029,7 +5006,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .argument = TWO_TURN_ARG(TRANSITORIO_BAJO_EL_AGUA),
+        .transitorioCarga = TRANSITORIO_BAJO_EL_AGUA,
         .battleAnimScript = gBattleAnimMove_Dive,
     },
 
@@ -5943,7 +5920,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
-        .argument = TWO_TURN_ARG(TRANSITORIO_EN_EL_AIRE),
+        .transitorioCarga = TRANSITORIO_EN_EL_AIRE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 30,
@@ -6228,7 +6205,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
-        .argument = ESTADO_SUENO,
+        .estado = ESTADO_SUENO,
         .makesContact = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_REMOVE_STATUS,
@@ -7661,7 +7638,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .argument = HOLD_EFFECT_PLATE,
+        .efectoObjetoQueFijaTipo = HOLD_EFFECT_PLATE,
         .battleAnimScript = gBattleAnimMove_Judgment,
     },
 
@@ -7969,7 +7946,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .makesContact = TRUE,
         .ignoresProtect = TRUE,
         .minimizeDoubleDamage = B_UPDATED_MOVE_FLAGS == GEN_6,
-        .argument = TWO_TURN_ARG(TRANSITORIO_GOLPE_FANTASMA),
+        .transitorioCarga = TRANSITORIO_GOLPE_FANTASMA,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_FEINT,
         }),
@@ -8023,7 +8000,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .argument = ESTADO_VENENO,
+        .estado = ESTADO_VENENO,
         .battleAnimScript = gBattleAnimMove_Venoshock,
     },
 
@@ -9001,7 +8978,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .argument = HOLD_EFFECT_DRIVE,
+        .efectoObjetoQueFijaTipo = HOLD_EFFECT_DRIVE,
         .battleAnimScript = gBattleAnimMove_TechnoBlast,
     },
 
@@ -9019,7 +8996,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_BOTH,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .argument = ESTADO_SUENO,
+        .estado = ESTADO_SUENO,
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .soundMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
@@ -9104,7 +9081,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .argument = TIPO_ROCA,
+        .tipoSuperEfectivo = TIPO_ROCA,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 10,
@@ -9148,7 +9125,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
-        .argument = TWO_TURN_ARG(),
+        
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 30,
@@ -9170,7 +9147,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .argument = TWO_TURN_ARG(),
+        
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 30,
@@ -9236,7 +9213,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
-        .argument = TIPO_VOLADOR,
+        .tipoSecundario = TIPO_VOLADOR,
         .makesContact = TRUE,
         .minimizeDoubleDamage = TRUE,
         .battleAnimScript = gBattleAnimMove_FlyingPress,
@@ -9312,7 +9289,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .ignoresProtect = TRUE,
         .makesContact = TRUE,
         .minimizeDoubleDamage = B_UPDATED_MOVE_FLAGS == GEN_6,
-        .argument = TWO_TURN_ARG(TRANSITORIO_GOLPE_FANTASMA),
+        .transitorioCarga = TRANSITORIO_GOLPE_FANTASMA,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_FEINT,
         }),
@@ -9389,7 +9366,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .argument = TIPO_AGUA,
+        .tipoSuperEfectivo = TIPO_AGUA,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = EFECTO_MOVIMIENTO_CONGELACION,
             .chance = 10,
@@ -9973,7 +9950,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_FOES_AND_ALLY,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESPECIAL,
-        .argument = ESTADO_QUEMADURA,
+        .estado = ESTADO_QUEMADURA,
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .soundMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
@@ -10021,7 +9998,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_ESTADO,
-        .argument = MOVE_EFFECT_FLORAL_HEALING,
+        .efectoPropio = MOVE_EFFECT_FLORAL_HEALING,
         CURATIVO,
         .espejoMagico = TRUE,
         .battleAnimScript = gBattleAnimMove_FloralHealing,
@@ -10081,7 +10058,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .category = CATEGORIA_FISICA,
         .makesContact = TRUE,
         .slicingMove = TRUE,
-        .argument = TWO_TURN_ARG(CLIMA_COMBATE_SOL),
+        .climaQueSaltaCarga = CLIMA_COMBATE_SOL,
         .battleAnimScript = gBattleAnimMove_SolarBlade,
     },
 
@@ -10995,7 +10972,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .balistico = TRUE,
         .category = CATEGORIA_FISICA,
-        .argument = MOVE_EFFECT_SCALE_SHOT,
+        .efectoPropio = MOVE_EFFECT_SCALE_SHOT,
         .battleAnimScript = gBattleAnimMove_ScaleShot,
     },
 
@@ -11584,7 +11561,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         .target = MOVE_TARGET_SELECTED,
         PRIORIDAD_NORMAL,
         .category = CATEGORIA_FISICA,
-        .argument = ESTADO_VENENO,
+        .estado = ESTADO_VENENO,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_POISON,
             .chance = 50,
@@ -12225,7 +12202,7 @@ const struct InfoMovimiento gMovimientos[NUMERO_MOVIMIENTOS] =
         PRIORIDAD_NORMAL,
         .balistico = TRUE,
         .category = CATEGORIA_ESPECIAL,
-        .argument = TWO_TURN_ARG(CLIMA_COMBATE_LLUVIA),
+        .climaQueSaltaCarga = CLIMA_COMBATE_LLUVIA,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SP_ATK_PLUS_1,
             .self = TRUE,

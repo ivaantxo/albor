@@ -4860,7 +4860,7 @@ static inline u32 CalcMoveBasePower(struct DamageCalculationData *damageCalcData
             basePower *= 2;
         break;
     case EFECTO_DOBLE_POTENCIA_SI_ESTADO:
-        if ((gBattleMons[battlerDef].estado == gMovimientos[movimiento].argument) && !((gMovimientos[movimiento].additionalEffects->moveEffect == MOVE_EFFECT_REMOVE_STATUS) && DoesSubstituteBlockMove(battlerAtk, battlerDef, movimiento)))
+        if ((gBattleMons[battlerDef].estado == gMovimientos[movimiento].estado) && !((gMovimientos[movimiento].additionalEffects->moveEffect == MOVE_EFFECT_REMOVE_STATUS) && DoesSubstituteBlockMove(battlerAtk, battlerDef, movimiento)))
         {
             basePower *= 2;
         }
@@ -5877,7 +5877,7 @@ static inline void MulByTypeEffectiveness(uq4_12_t *modifier, enum Movimientos m
     }
 
     if (gMovimientos[movimiento].effect == EFFECT_SUPER_EFFECTIVE_ON_ARG
-     && defType == gMovimientos[movimiento].argument)
+     && defType == gMovimientos[movimiento].tipoSuperEfectivo)
         mod = MOVIMIENTO_SUPER_EFECTIVO;
 
     if (moveType == TIPO_TIERRA
@@ -6497,11 +6497,6 @@ bool32 MoveHasAdditionalEffectSelf(enum Movimientos movimiento, u32 moveEffect)
             return TRUE;
     }
     return FALSE;
-}
-
-bool32 MoveHasAdditionalEffectSelfArg(enum Movimientos movimiento, u32 moveEffect, u32 argument)
-{
-    return (gMovimientos[movimiento].argument == argument) && MoveHasAdditionalEffectSelf(movimiento, moveEffect);
 }
 
 bool32 MoveHasChargeTurnAdditionalEffect(enum Movimientos movimiento)
