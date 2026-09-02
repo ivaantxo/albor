@@ -27,11 +27,8 @@
 
 #define STATE_END 0xFF
 
-enum {
-    TAG_CABLE_CAR = 1,
-    TAG_DOOR,
-    TAG_CABLE,
-};
+// Las etiquetas de esta pantalla estan en constants/etiquetas.h.
+
 
 struct CableCar
 {

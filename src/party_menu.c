@@ -124,13 +124,9 @@ enum {
     PARTY_BOX_RIGHT_COLUMN,
 };
 
-enum {
-    TAG_POKEBALL = 1200,
-    TAG_POKEBALL_SMALL,
-    TAG_STATUS_ICONS,
-};
+// Las etiquetas de esta pantalla estan en constants/etiquetas.h.
 
-#define TAG_HELD_ITEM 55120
+
 
 #define PARTY_PAL_SELECTED     (1 << 0)
 #define PARTY_PAL_FAINTED      (1 << 1)

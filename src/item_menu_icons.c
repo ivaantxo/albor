@@ -12,12 +12,8 @@
 #include "window.h"
 #include "constants/items.h"
 
-enum {
-    TAG_BAG_GFX = 100,
-    TAG_ROTATING_BALL_GFX,
-    TAG_ITEM_ICON,
-    TAG_ITEM_ICON_ALT,
-};
+// TAG_ITEM_ICON y los suyos viven en constants/etiquetas.h, con su rango
+// reservado: aqui se hace TAG_ITEM_ICON + id para cada icono de la bolsa.
 
 struct CompressedTilesPal
 {

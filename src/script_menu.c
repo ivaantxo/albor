@@ -126,7 +126,6 @@ bool8 ScriptMenu_MultichoiceWithDefault(u8 left, u8 top, u8 multichoiceId, bool8
 
 #define sAuxWindowId sDynamicMenuEventScratchPad[0]
 #define sItemSpriteId sDynamicMenuEventScratchPad[1]
-#define TAG_CB_ITEM_ICON 3000
 
 static void MultichoiceDynamicEventShowItem_OnInit(struct DynamicListMenuEventArgs *eventArgs)
 {

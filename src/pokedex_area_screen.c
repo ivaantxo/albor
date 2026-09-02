@@ -35,8 +35,6 @@
 
 #define GLOW_PALETTE 10
 
-#define TAG_AREA_MARKER 2
-#define TAG_AREA_UNKNOWN 3
 
 #define MAX_AREA_HIGHLIGHTS 64 // Maximum number of rectangular route highlights
 #define MAX_AREA_MARKERS 32 // Maximum number of circular spot highlights

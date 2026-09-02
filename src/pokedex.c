@@ -462,8 +462,6 @@ static const u8 sTextColors[][3] = {
 };
 
 //Stat bars by DizzyEgg
-#define TAG_STAT_BAR 4097
-#define TAG_STAT_BAR_BG 4098
 static const struct OamData sOamData_StatBar =
 {
     .y = 160,
@@ -708,7 +706,6 @@ static const union AnimCmd *const sSpriteAnimTable_DexListStartMenuCursor[] =
     sSpriteAnim_DexListStartMenuCursor
 };
 
-#define TAG_DEX_INTERFACE 4096 // Tile and pal tag used for all interface sprites.
 
 static const struct SpriteTemplate sScrollBarSpriteTemplate =
 {

@@ -54,10 +54,7 @@
 #include "palette.h"
 #include "battle_util.h"
 
-#define TAG_ITEM_ICON 5500
 
-#define GFXTAG_MULTICHOICE_SCROLL_ARROWS 2000
-#define PALTAG_MULTICHOICE_SCROLL_ARROWS 100
 
 EWRAM_DATA bool8 gBikeCyclingChallenge = FALSE;
 EWRAM_DATA u8 gBikeCollisions = 0;

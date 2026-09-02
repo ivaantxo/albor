@@ -689,11 +689,6 @@ static const u8 sStatsLeftColumnLayout[] = _("{DYNAMIC 0}/{DYNAMIC 1}\n{DYNAMIC 
 static const u8 sStatsRightColumnLayout[] = _("{DYNAMIC 0}\n{DYNAMIC 1}\n{DYNAMIC 2}");
 static const u8 sMovesPPLayout[] = _("PP{DYNAMIC 0}/{DYNAMIC 1}");
 
-#define TAG_MOVE_SELECTOR 30000
-#define TAG_MON_STATUS 30001
-#define TAG_MOVE_TYPES 30002
-#define TAG_MON_MARKINGS 30003
-#define TAG_CATEGORY_ICONS 30004
 
 const struct OamData gOamData_CategoryIcons =
 {

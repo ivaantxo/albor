@@ -82,7 +82,6 @@ static const union AffineAnimCmd *const sVsLetterAffineAnimTable[] =
     sVsLetterAffineAnimCmds1,
 };
 
-#define TAG_VS_LETTERS 10000
 
 static const struct SpriteTemplate sVsLetter_V_SpriteTemplate =
 {

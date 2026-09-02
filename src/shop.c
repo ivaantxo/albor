@@ -36,8 +36,6 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
-#define TAG_SCROLL_ARROW   2100
-#define TAG_ITEM_ICON_BASE 9110 // immune to time blending
 
 #define MAX_ITEMS_SHOWN 8
 
@@ -587,8 +585,8 @@ static void BuyMenuAddScrollIndicatorArrows(void)
             12,
             148,
             sMartInfo.itemCount - (MAX_ITEMS_SHOWN - 1),
-            TAG_SCROLL_ARROW,
-            TAG_SCROLL_ARROW,
+            TAG_FLECHA_LISTA_TIENDA,
+            TAG_FLECHA_LISTA_TIENDA,
             &sShopData->scrollOffset);
     }
 }

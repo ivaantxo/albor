@@ -55,7 +55,6 @@ struct FallAnim_Fossil
     u16 disintegrateIdx;
 };
 
-#define TAG_CEILING_CRUMBLE 4000
 
 #define MIRAGE_TOWER_GFX_LENGTH (sizeof(sBlankTile_Gfx) + sizeof(sMirageTower_Gfx))
 #define FOSSIL_DISINTEGRATE_LENGTH 0x100

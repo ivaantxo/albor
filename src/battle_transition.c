@@ -3696,7 +3696,7 @@ void Task_BattleTransition_Intro(u8 taskId)
 
 static bool8 TransitionIntro_FadeToGray(struct Task *task)
 {
-    u32 paletteNum = IndexOfSpritePaletteTag(TAG_WEATHER_START);
+    u32 paletteNum = IndexOfSpritePaletteTag(PALTAG_WEATHER);
     u16 index = OBJ_PLTT_ID2(paletteNum) + SHADOW_COLOR_INDEX;
     if (task->tDelayTimer == 0 || --task->tDelayTimer == 0)
     {
@@ -3729,7 +3729,7 @@ static bool8 TransitionIntro_FadeFromGray(struct Task *task)
 {
     if (task->tDelayTimer == 0 || --task->tDelayTimer == 0)
     {
-        u32 paletteNum = IndexOfSpritePaletteTag(TAG_WEATHER_START);
+        u32 paletteNum = IndexOfSpritePaletteTag(PALTAG_WEATHER);
         task->tDelayTimer = task->tFadeFromGrayDelay;
         task->tBlend -= task->tFadeFromGrayIncrement;
         if (task->tBlend < 0)

@@ -47,7 +47,6 @@ static struct HallofFameTeam *BufferSalonFama(void)
 }
 
 #define HALL_OF_FAME_MAX_TEAMS 25
-#define TAG_CONFETTI 1001
 
 struct HallofFameMon
 {

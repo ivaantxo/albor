@@ -1,6 +1,14 @@
 #ifndef GUARD_OVERWORLD_H
 #define GUARD_OVERWORLD_H
 
+// El unico ajuste de mezcla del overworld. Se pone al entrar al mapa y no se
+// vuelve a tocar; si un efecto lo cambia, al acabar llama a
+// PonMezclaDelOverworld en vez de poner los registros a cero.
+#define MEZCLA_OVERWORLD_BLDCNT   (BLDCNT_TGT1_BG0 | BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND)
+#define MEZCLA_OVERWORLD_BLDALPHA BLDALPHA_BLEND(16, 8)
+
+void PonMezclaDelOverworld(void);
+
 #define SKIP_OBJECT_EVENT_LOAD  1
 
 struct InitialPlayerAvatarState

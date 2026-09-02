@@ -320,6 +320,13 @@ const u16 gShadowVerticalOffsets[] = {
     16
 };
 
+// La sombra gasta un unico color, el indice 9, y en negro: lo que la hace
+// sombra es la mezcla del OAM -ST_OAM_OBJ_BLEND-, no el color. Antes se colgaba
+// de la paleta del clima solo para tomar prestado ese negro, y cualquier cambio
+// de etiqueta la dejaba con la paleta de otro.
+static const u16 sPaletaSombra[16] = { [9] = RGB_BLACK };
+static const struct SpritePalette sFichaPaletaSombra = { sPaletaSombra, PALTAG_SOMBRA };
+
 // Sprite data for FLDEFF_SHADOW
 #define sLocalId  data[0]
 #define sMapNum   data[1]
@@ -343,6 +350,7 @@ u32 FldEff_Shadow(void)
     if (graphicsInfo->shadowSize == SHADOW_SIZE_NONE) // don't create a shadow at all
         return 0;
     LoadSpriteSheetByTemplate(gFieldEffectObjectTemplatePointers[sShadowEffectTemplateIds[graphicsInfo->shadowSize]], 0, 0);
+    LoadSpritePalette(&sFichaPaletaSombra);
     spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[sShadowEffectTemplateIds[graphicsInfo->shadowSize]], 0, 0, 0x94 + 1); // higher = farther back; shadows should be behind object events
     if (spriteId != MAX_SPRITES)
     {

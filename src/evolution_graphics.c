@@ -36,20 +36,19 @@ static void Task_CycleEvolutionMonSprite_UpdateSize(u8 taskId);
 static void EndOnPreEvoMon(u8 taskId);
 static void EndOnPostEvoMon(u8 taskId);
 
-#define TAG_SPARKLE 1001
 
 static const u16 sEvoSparkle_Pal[] = INCBIN_U16("graphics/misc/evo_sparkle.gbapal");
 static const u32 sEvoSparkle_Gfx[] = INCBIN_U32("graphics/misc/evo_sparkle.4bpp.lz");
 
 static const struct CompressedSpriteSheet sEvoSparkleSpriteSheets[] =
 {
-    {sEvoSparkle_Gfx, 0x20, TAG_SPARKLE},
+    {sEvoSparkle_Gfx, 0x20, TAG_DESTELLO_EVOLUCION},
     {NULL, 0, 0}
 };
 
 static const struct SpritePalette sEvoSparkleSpritePals[] =
 {
-    {sEvoSparkle_Pal, TAG_SPARKLE},
+    {sEvoSparkle_Pal, TAG_DESTELLO_EVOLUCION},
     {NULL, 0}
 };
 
@@ -83,8 +82,8 @@ static const union AnimCmd *const sSpriteAnimTable_EvoSparkle[] =
 
 static const struct SpriteTemplate sEvoSparkleSpriteTemplate =
 {
-    .tileTag = TAG_SPARKLE,
-    .paletteTag = TAG_SPARKLE,
+    .tileTag = TAG_DESTELLO_EVOLUCION,
+    .paletteTag = TAG_DESTELLO_EVOLUCION,
     .oam = &sOamData_EvoSparkle,
     .anims = sSpriteAnimTable_EvoSparkle,
     .images = NULL,

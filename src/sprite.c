@@ -1481,10 +1481,6 @@ u16 CargaSpriteComprimidoConEtiqueta(const u32 *grafico, u16 etiqueta, u32 reser
     ficha.tag = etiqueta;
     resultado = LoadSpriteSheet(&ficha);
 
-    LOG("TILES: bytes / primeros datos", reserva, *(u32 *)buffer);
-    LOG("TILES: destino VRAM / lo que hay ya alli", (u32)((u8 *)OBJ_VRAM0 + TILE_4BPP * resultado),
-        *(u32 *)((u8 *)OBJ_VRAM0 + TILE_4BPP * resultado));
-
     Free(buffer);
     return resultado;
 }
@@ -1527,7 +1523,6 @@ void FreeSpriteTilesByTag(u16 tag)
         rangeCounts = sSpriteTileRanges + 1;
         count = rangeCounts[index * 2];
 
-        LOG("TILES: suelta etiqueta / primer tile", tag, start);
         for (i = start; i < start + count; i++)
             FREE_SPRITE_TILE(i);
 

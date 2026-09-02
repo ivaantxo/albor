@@ -21,22 +21,14 @@ enum
 
 // Una hoja de tiles por combatiente (relleno, porcentaje, nombre y nivel) y una
 // sola paleta para todo el marcador: contorno, textos e iconos de estado.
-#define TAG_MARCADOR_JUGADOR1           0xD704
-#define TAG_MARCADOR_OPONENTE1          0xD705
-#define TAG_MARCADOR_JUGADOR2           0xD706
-#define TAG_MARCADOR_OPONENTE2          0xD707
-
-#define TAG_MARCADOR_PAL                TAG_MARCADOR_JUGADOR1
 
 
 
 
 
-#define TAG_CONTORNO_BARRA              0xD75A
-#define TAG_ICONOS_ESTADO               0xD75B
+
 
 // Copia temporal de la paleta del marcador, para el parpadeo de subida de nivel.
-#define TAG_MARCADOR_PAL_PARPADEO       0xD75C
 
 // Tiles que reserva cada combatiente para su barra: los diez primeros son el
 // relleno de 80x8 y los cuatro siguientes el porcentaje de 32x8. Todos se
@@ -75,7 +67,6 @@ enum
 
 #define TILES_CONTORNO_BARRA ((CONTORNO_ANCHO / 8) * (CONTORNO_ALTO / 8))
 
-#define TAG_BATTLE_INTERFACE_SELECTOR   0xD77F
 
 enum
 {

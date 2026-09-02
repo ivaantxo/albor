@@ -17,14 +17,8 @@
     the related graphics that are used only by the credits.
 */
 
-#define TAG_BICYCLE 1001
-#define TAG_BRENDAN 1002
-#define TAG_MAY     1003
-#define TAG_FLYGON_LATIOS  1004
-#define TAG_FLYGON_LATIAS  1005
 
 // Used for the Clouds/Trees/Houses sprites that pass by in the background
-#define TAG_MOVING_SCENERY 2000
 
 struct IntroCreditsSpriteMetadata
 {

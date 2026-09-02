@@ -78,7 +78,7 @@ const struct SpriteTemplate *const gFieldEffectLightTemplates[] = {
 
 const struct SpriteTemplate gFieldEffectObjectTemplate_ShadowSmall = {
     .tileTag = FLDEFF_TILE_TAG_SHADOW_SMALL,
-    .paletteTag = TAG_WEATHER_START,
+    .paletteTag = PALTAG_SOMBRA,
     .oam = &gObjectEventBaseOam_8x8,
     .anims = sAnimTable_Shadow,
     .images = sPicTable_ShadowSmall,
@@ -88,7 +88,7 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_ShadowSmall = {
 
 const struct SpriteTemplate gFieldEffectObjectTemplate_ShadowMedium = {
     .tileTag = FLDEFF_TILE_TAG_SHADOW_MEDIUM,
-    .paletteTag = TAG_WEATHER_START,
+    .paletteTag = PALTAG_SOMBRA,
     .oam = &gObjectEventBaseOam_16x8,
     .anims = sAnimTable_Shadow,
     .images = sPicTable_ShadowMedium,
@@ -98,7 +98,7 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_ShadowMedium = {
 
 const struct SpriteTemplate gFieldEffectObjectTemplate_ShadowLarge = {
     .tileTag = FLDEFF_TILE_TAG_SHADOW_LARGE,
-    .paletteTag = TAG_WEATHER_START,
+    .paletteTag = PALTAG_SOMBRA,
     .oam = &gObjectEventBaseOam_32x8,
     .anims = sAnimTable_Shadow,
     .images = sPicTable_ShadowLarge,
@@ -108,7 +108,7 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_ShadowLarge = {
 
 const struct SpriteTemplate gFieldEffectObjectTemplate_ShadowExtraLarge = {
     .tileTag = FLDEFF_TILE_TAG_SHADOW_EXTRA_LARGE,
-    .paletteTag = TAG_WEATHER_START,
+    .paletteTag = PALTAG_SOMBRA,
     .oam = &gObjectEventBaseOam_64x32,
     .anims = sAnimTable_Shadow,
     .images = sPicTable_ShadowExtraLarge,

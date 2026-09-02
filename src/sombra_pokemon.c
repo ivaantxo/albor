@@ -7,7 +7,6 @@
 #include "constants/rgb.h"
 
 // Etiqueta de la unica paleta que gastan todas las sombras.
-#define TAG_SOMBRA_PAL 0xD759
 
 // Negra entera. El indice 0 no se usa -en un sprite siempre es transparente-,
 // asi que cualquier pixel opaco del Pokemon cae en un negro.

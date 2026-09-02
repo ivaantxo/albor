@@ -15,7 +15,6 @@
 #include "constants/songs.h"
 #include "constants/items.h"
 
-#define TAG_SWAP_LINE 109
 
 static void Task_ContinueTaskAfterMessagePrints(u8 taskId);
 static void Task_CallYesOrNoCallback(u8 taskId);

@@ -376,8 +376,6 @@ enum AnimTags
 
 #define NUMERO_SPRITES_ANIMACION (ANIM_TAG_COUNT - ANIM_SPRITES_START)
 
-#define TAG_MUSIC_NOTES_TEMP_BASE 0xF000
-#define TAG_VS_LETTER             0xEFFF
 
 // battlers
 #define ANIM_ATTACKER         0

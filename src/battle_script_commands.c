@@ -284,7 +284,6 @@ static const s32 sExperienceScalingFactors[] =
 #define LEVEL_UP_BANNER_START 416
 #define LEVEL_UP_BANNER_END 512
 
-#define TAG_LVLUP_BANNER_MON_ICON 55130
 
 static u32 ChangeStatBuffs(s8 statValue, u32 statId, u32 flags, const u8 *BS_ptr);
 static bool32 IsMonGettingExpSentOut(void);

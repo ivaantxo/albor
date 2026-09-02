@@ -51,9 +51,6 @@ static void SpriteCB_AMIndicator(struct Sprite *sprite);
 #define tPeriod          data[5]
 #define tMoveSpeed       data[6]
 
-#define GFXTAG_WALL_CLOCK_HAND   0x1000
-#define PALTAG_WALL_CLOCK_MALE   0x1000
-#define PALTAG_WALL_CLOCK_FEMALE 0x1001
 
 enum {
     PERIOD_AM,

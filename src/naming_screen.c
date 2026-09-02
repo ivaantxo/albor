@@ -46,31 +46,11 @@ enum {
 #define KBROW_COUNT 4
 #define KBCOL_COUNT 8
 
-enum {
-    GFXTAG_BACK_BUTTON,
-    GFXTAG_OK_BUTTON,
-    GFXTAG_PAGE_SWAP_FRAME,
-    GFXTAG_PAGE_SWAP_BUTTON,
-    GFXTAG_PAGE_SWAP_UPPER,
-    GFXTAG_PAGE_SWAP_LOWER,
-    GFXTAG_PAGE_SWAP_OTHERS,
-    GFXTAG_CURSOR,
-    GFXTAG_CURSOR_SQUISHED,
-    GFXTAG_CURSOR_FILLED,
-    GFXTAG_INPUT_ARROW,
-    GFXTAG_UNDERSCORE,
-};
+// Las etiquetas de esta pantalla estan en constants/etiquetas.h.
 
-enum {
-    PALTAG_MENU, // Also the PC icon
-    PALTAG_PAGE_SWAP_UPPER,
-    PALTAG_PAGE_SWAP_LOWER,
-    PALTAG_PAGE_SWAP_OTHERS, // Also the input arrow/underscore
-    PALTAG_PAGE_SWAP,
-    PALTAG_CURSOR,
-    PALTAG_BACK_BUTTON,
-    PALTAG_OK_BUTTON,
-};
+
+// Las etiquetas de esta pantalla estan en constants/etiquetas.h.
+
 
 enum {
     WIN_KB_PAGE_1, // Which of these two windows is in front is cycled as the player swaps

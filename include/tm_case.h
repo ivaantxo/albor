@@ -1,7 +1,6 @@
 #ifndef GUARD_TM_CASE_H
 #define GUARD_TM_CASE_H
 
-#define TAG_SCROLL_ARROW 110
 
 // Values for 'type' argument to InitTMCase
 enum {

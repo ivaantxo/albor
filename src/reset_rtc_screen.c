@@ -19,7 +19,6 @@
 #include "gpu_regs.h"
 #include "constants/rgb.h"
 
-#define PALTAG_ARROW 0x1000
 
 // Task data for the Task_ResetRtc_* series of tasks, when setting the time on the clock
 // Data from these tasks is also used by the cursors and the main task (Task_ResetRtcScreen)

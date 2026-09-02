@@ -52,8 +52,6 @@ const struct UCoords8 sBattlerCoords[NUMERO_MODOS][NUMERO_COMBATIENTES] =
 };
 
 // Placeholders for Pokémon sprites to be created for a move animation effect (e.g. Role Play)
-#define TAG_MOVE_EFFECT_MON_1 55125
-#define TAG_MOVE_EFFECT_MON_2 55126
 
 static const struct SpriteTemplate sSpriteTemplates_MoveEffectMons[] =
 {

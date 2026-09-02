@@ -39,7 +39,8 @@
       "Bash(awk '/^void GestionaCambioGraficoEspecie/,0{print; if\\(/^}/ && started\\) exit; started=1}' src/battle_gfx_sfx_util.c)",
       "Bash(awk '/^void BattleLoadMonSpriteGfx/,0{print; if\\(/^}/ && started\\) exit; started=1}' src/battle_gfx_sfx_util.c)",
       "Bash(grep -i \"claude\" \"/Users/ivanmartinez/Library/Application Support/Code/User/settings.json\" 2>/dev/null)",
-      "Read(//Users/ivanmartinez/Library/Application Support/Code/User/**)"
+      "Read(//Users/ivanmartinez/Library/Application Support/Code/User/**)",
+      "Bash(grep -n -B2 -A4 \"field_eff_loadfadedpal$\\\\|field_eff_loadpal$\" data/field_effect_scripts.s)"
     ]
   }
 }

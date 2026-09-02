@@ -42,8 +42,6 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
-#define TAG_POCKET_SCROLL_ARROW 110
-#define TAG_BAG_SCROLL_ARROW    111
 
 // The buffer for the bag item list needs to be large enough to hold the maximum
 // number of item slots that could fit in a single pocket, + 1 for Cancel.

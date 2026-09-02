@@ -57,7 +57,6 @@ static void Task_LaunchLvlUpAnim(u8);
 static void Task_SetControllerToWaitForString(u8);
 static void Task_UpdateLvlInHealthbox(u8);
 
-#define TAG_ICON_TYPES 30005
 
 static EWRAM_DATA u8 monIconData;
 // A que combatiente pertenece el icono, para copiarle el bote.

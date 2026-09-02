@@ -6,7 +6,6 @@
 #include "sprite.h"
 #include "util.h"
 
-#define TAG_SMOKESCREEN 55019
 
 static void SpriteCB_SmokescreenImpactMain(struct Sprite *);
 static void SpriteCB_SmokescreenImpact(struct Sprite *);

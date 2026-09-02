@@ -30,8 +30,6 @@
 #define STARTER_PKMN_POS_X (ANCHO_PANTALLA / 2)
 #define STARTER_PKMN_POS_Y 64
 
-#define TAG_POKEBALL_SELECT 0x1000
-#define TAG_STARTER_CIRCLE  0x1001
 
 static void CB2_StarterChoose(void);
 static void ClearStarterLabel(void);

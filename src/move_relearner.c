@@ -152,10 +152,6 @@ enum {
     JAM_HEART_FULL,
 };
 
-#define TAG_MODE_ARROWS 5325
-#define TAG_LIST_ARROWS 5425
-#define GFXTAG_UI       5525
-#define PALTAG_UI       5526
 
 #define MAX_RELEARNER_MOVES max(MAX_LEVEL_UP_MOVES, 25)
 

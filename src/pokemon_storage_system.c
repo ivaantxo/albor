@@ -193,29 +193,11 @@ enum
 #define BOXID_NONE_CHOSEN 200
 #define BOXID_CANCELED 201
 
-enum
-{
-    PALTAG_DISPLAY_MON,
-    PALTAG_MISC,
-    PALTAG_BOX_TITLE,
-    PALTAG_ITEM_ICON_0,
-    PALTAG_ITEM_ICON_1, // Used implicitly in CreateItemIconSprites
-    PALTAG_ITEM_ICON_2, // Used implicitly in CreateItemIconSprites
-};
+// Las etiquetas de esta pantalla estan en constants/etiquetas.h.
 
-enum
-{
-    GFXTAG_CURSOR,
-    GFXTAG_DISPLAY_MON,
-    GFXTAG_BOX_TITLE,
-    GFXTAG_BOX_TITLE_ALT,
-    GFXTAG_ITEM_ICON_0,
-    GFXTAG_ITEM_ICON_1, // Used implicitly in CreateItemIconSprites
-    GFXTAG_ITEM_ICON_2, // Used implicitly in CreateItemIconSprites
-    GFXTAG_CHOOSE_BOX_MENU,
-    GFXTAG_CHOOSE_BOX_MENU_SIDES,
-    GFXTAG_MON_ICON,
-};
+
+// Las etiquetas de esta pantalla estan en constants/etiquetas.h.
+
 
 // The maximum number of Pokémon icons that can appear on-screen.
 // By default the limit is 40 (though in practice only 37 can be).

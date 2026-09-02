@@ -596,12 +596,14 @@ bool8 SetDiveWarpDive(u16 x, u16 y)
     return SetDiveWarp(CONNECTION_DIVE, x, y);
 }
 
-static void SetBg2Transparent(void)
+// La mezcla del overworld es una sola y no cambia: el fondo 0 se mezcla con lo
+// que haya detras, y los sprites marcados con ST_OAM_OBJ_BLEND -la sombra- se
+// mezclan tambien, porque ese bit del OAM manda por encima de TGT1. Quien la
+// toque para un efecto puntual tiene que dejarla asi al terminar, no a cero.
+void PonMezclaDelOverworld(void)
 {
-    //if (gMapHeader.bg2Transparente)
-    //SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_BG0 | BLDCNT_TGT1_BG2 | BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND);
-    //else
-        SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT1_BG0 | BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND);
+    SetGpuReg(REG_OFFSET_BLDCNT, MEZCLA_OVERWORLD_BLDCNT);
+    SetGpuReg(REG_OFFSET_BLDALPHA, MEZCLA_OVERWORLD_BLDALPHA);
 }
 
 void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
@@ -614,7 +616,7 @@ void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
     LoadObjEventTemplatesFromHeader();
     TrySetMapSaveWarpStatus();
     ClearTempFieldEventData();
-    SetBg2Transparent();
+    PonMezclaDelOverworld();
 
     DoTimeBasedEvents();
     SetSavedWeatherFromCurrMapHeader();
@@ -659,7 +661,7 @@ static void LoadMapFromWarp(void)
     RunOnTransitionMapScript();
     gChainFishingDexNavStreak = 0;
     InitMap();
-    SetBg2Transparent();
+    PonMezclaDelOverworld();
 }
 
 void ResetInitialPlayerAvatarState(void)
@@ -1604,9 +1606,8 @@ static void InitOverworldGraphicsRegisters(void)
     SetGpuReg(REG_OFFSET_WIN0V, 0xFF);
     SetGpuReg(REG_OFFSET_WIN1H, 0xFFFF);
     SetGpuReg(REG_OFFSET_WIN1V, 0xFFFF);
-    SetBg2Transparent();
+    PonMezclaDelOverworld();
     SetGpuRegBits(REG_OFFSET_WININ, WININ_WIN0_CLR);
-    SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(16, 8));
     InitOverworldBgs();
     ProgramaCopiaTilemapVram(FONDO_1);
     ProgramaCopiaTilemapVram(FONDO_2);

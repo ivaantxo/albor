@@ -15,16 +15,8 @@ enum {
     RELEARNERWIN_YESNO,
 };
 
-enum {
-    TAG_CONDITION_MON = 100,
-    TAG_CONDITION_BALL,
-    TAG_CONDITION_CANCEL,
-    TAG_CONDITION_BALL_PLACEHOLDER,
-    TAG_CONDITION_SPARKLE,
-    TAG_CONDITION_MON_MARKINGS,
-    TAG_CONDITION_MARKINGS_MENU,
-    TAG_CONDITION_MARKINGS_MENU_2, // Used implicitly by CreateMonMarkingsMenuSprites
-};
+// Las etiquetas de esta pantalla estan en constants/etiquetas.h.
+
 
 enum {
     CONDITION_ICON_SELECTED,

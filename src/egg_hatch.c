@@ -38,10 +38,7 @@
 #include "constants/rgb.h"
 #include "party_menu.h"
 
-#define GFXTAG_EGG       12345
-#define GFXTAG_EGG_SHARD 23456
 
-#define PALTAG_EGG       54321
 
 #define EGG_X (ANCHO_PANTALLA / 2)
 #define EGG_Y (ALTURA_PANTALLA / 2 - 5)

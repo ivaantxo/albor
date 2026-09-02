@@ -46,11 +46,8 @@
 
 #define FLYDESTICON_RED_OUTLINE 6
 
-enum {
-    TAG_CURSOR,
-    TAG_PLAYER_ICON,
-    TAG_FLY_ICON,
-};
+// Las etiquetas de esta pantalla estan en constants/etiquetas.h.
+
 
 // Window IDs for the fly map
 enum {

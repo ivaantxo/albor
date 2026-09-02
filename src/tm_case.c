@@ -34,7 +34,6 @@
 #include "constants/songs.h"
 #include "constants/rgb.h"
 
-#define TAG_SCROLL_ARROW 110
 
 enum {
     WIN_LIST,
@@ -632,7 +631,7 @@ static void CreateListScrollArrows(void)
     sTMCaseDynamicResources->scrollArrowsTaskId = AddScrollIndicatorArrowPairParameterized(SCROLL_ARROW_UP,
                                                                                            180, 8, 132,
                                                                                            sTMCaseDynamicResources->numTMs - sTMCaseDynamicResources->maxTMsShown,
-                                                                                           TAG_SCROLL_ARROW, TAG_SCROLL_ARROW,
+                                                                                           TAG_FLECHA_LISTA_MT, TAG_FLECHA_LISTA_MT,
                                                                                            &sTMCaseStaticResources.scrollOffset);
 }
 

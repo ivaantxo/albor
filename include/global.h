@@ -8,6 +8,7 @@
 #include "fpmath.h"
 #include "metaprogram.h"
 #include "constants/global.h"
+#include "constants/etiquetas.h"
 #include "constants/flags.h"
 #include "constants/vars.h"
 #include "constants/species.h"

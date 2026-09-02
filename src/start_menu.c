@@ -39,7 +39,6 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
-#define TAG_SAVING_ANIMATION 4096
 static const u16 sSavingAnimation_Pal[] = INCBIN_U16("graphics/text_window/saving_animation.gbapal");
 const u32 gSavingAnimation_Gfx[] = INCBIN_U32("graphics/text_window/saving_animation.4bpp.lz");
 static u8 savingSpriteId;

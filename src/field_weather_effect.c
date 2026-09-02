@@ -322,7 +322,9 @@ static void UpdateDroughtBlend(u8 taskId)
         }
         break;
     case 3:
-        SetGpuReg(REG_OFFSET_BLDCNT, 0);
+        // Devolver la mezcla del mapa, no cero: con BLDCNT a cero la sombra se
+        // queda sin segundo objetivo y se pinta negra maciza.
+        PonMezclaDelOverworld();
         SetGpuReg(REG_OFFSET_BLDY, 0);
         SetGpuReg(REG_OFFSET_WININ, task->tWinRange);
         task->tState++;

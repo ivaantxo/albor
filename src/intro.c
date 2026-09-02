@@ -116,19 +116,8 @@ enum {
     COPYRIGHT_START_INTRO,
 };
 
-#define TAG_VOLBEAT   1500
-#define TAG_TORCHIC   1501
-#define TAG_MANECTRIC 1502
-#define TAG_LIGHTNING 1503
-#define TAG_BUBBLES   1504
-#define TAG_SPARKLE   1505
 
-#define GFXTAG_DROPS_LOGO 2000
-#define PALTAG_DROPS      2000
-#define PALTAG_LOGO       2001
 
-#define TAG_FLYGON_SILHOUETTE 2002
-#define TAG_RAYQUAZA_ORB      2003
 
 // Used by various tasks and sprites
 #define tState data[0]
@@ -198,12 +187,12 @@ static const u32 sIntroLati_Gfx[]             = INCBIN_U32("graphics/intro/scene
 
 static const struct CompressedSpriteSheet sSpriteSheet_Sparkle[] =
 {
-    {gIntroSparkle_Gfx, 0x400, TAG_SPARKLE},
+    {gIntroSparkle_Gfx, 0x400, TAG_DESTELLO_INTRO},
     {},
 };
 static const struct SpritePalette sSpritePalette_Sparkle[] =
 {
-    {gIntroLightning_Pal, TAG_SPARKLE}, // Lightning palette re-used
+    {gIntroLightning_Pal, TAG_DESTELLO_INTRO}, // Lightning palette re-used
     {},
 };
 static const struct OamData sOamData_Sparkle =
@@ -237,8 +226,8 @@ static const union AnimCmd *const sAnims_Sparkle[] =
 };
 static const struct SpriteTemplate sSpriteTemplate_Sparkle =
 {
-    .tileTag = TAG_SPARKLE,
-    .paletteTag = TAG_SPARKLE,
+    .tileTag = TAG_DESTELLO_INTRO,
+    .paletteTag = TAG_DESTELLO_INTRO,
     .oam = &sOamData_Sparkle,
     .anims = sAnims_Sparkle,
     .images = NULL,

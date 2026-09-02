@@ -28,10 +28,8 @@ enum {
     WIN_TITLE,
 };
 
-enum {
-    TAG_PLAYER_ICON,
-    TAG_CURSOR,
-};
+// Las etiquetas de esta pantalla estan en constants/etiquetas.h.
+
 
 static EWRAM_DATA struct {
     MainCallback callback;

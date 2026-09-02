@@ -40,6 +40,49 @@ static EWRAM_DATA u16 sMovimientoElegido = 0;
 #define SALTO_MEDIO  10
 #define SALTO_GRUESO 50
 
+#include "data/laboratorio_animaciones.h"
+
+// Que movimientos recorre el selector. Se cambia con START.
+//
+// El laboratorio tiene cientos de movimientos y casi todos se ven igual pasa lo
+// que pasa; para comprobar un cambio hace falta ir a los que lo tocan. Estas
+// listas se generan leyendo los guiones, no a mano.
+enum FiltroLaboratorio
+{
+    FILTRO_TODOS,          // los ~900
+    FILTRO_CON_CAPA,       // los 345 cuya animacion llama a monbg
+    FILTRO_RETUERCEN,      // los 7 que ademas retuercen al Pokemon
+    NUMERO_FILTROS,
+};
+
+static EWRAM_DATA u8 sFiltro = 0;
+
+// Posicion dentro de la lista que toque, no el numero de movimiento: con un
+// filtro puesto, moverse uno a la derecha es ir al siguiente de la lista.
+static EWRAM_DATA u16 sPosicion = 0;
+
+static const u8 sNombreFiltro[NUMERO_FILTROS][12] = { _("todos"), _("con capa"), _("retuercen") };
+
+static u32 CuantosEnElFiltro(void)
+{
+    switch (sFiltro)
+    {
+    case FILTRO_CON_CAPA:  return ARRAY_COUNT(sMovimientosConCapa);
+    case FILTRO_RETUERCEN: return ARRAY_COUNT(sMovimientosQueRetuercen);
+    default:               return NUMERO_MOVIMIENTOS - 1;
+    }
+}
+
+static u16 MovimientoDelFiltro(u32 posicion)
+{
+    switch (sFiltro)
+    {
+    case FILTRO_CON_CAPA:  return sMovimientosConCapa[posicion];
+    case FILTRO_RETUERCEN: return sMovimientosQueRetuercen[posicion];
+    default:               return posicion + 1;
+    }
+}
+
 enum FaseLaboratorio
 {
     LAB_ELIGIENDO,
@@ -57,8 +100,11 @@ void EntraEnLaboratorioAnimaciones(void)
 {
     gLaboratorioAnimaciones = TRUE;
     sFase = LAB_ELIGIENDO;
-    if (sMovimientoElegido == 0)
-        sMovimientoElegido = 1;
+    // La posicion manda: al volver al laboratorio se sigue donde se dejo, y con
+    // el filtro que hubiera puesto.
+    if (sPosicion >= CuantosEnElFiltro())
+        sPosicion = 0;
+    sMovimientoElegido = MovimientoDelFiltro(sPosicion);
     CreateWildMon(ESPECIE_RIVAL, NIVEL_RIVAL);
     DoStandardWildBattle_Debug();
 }
@@ -75,16 +121,27 @@ static void OcultaLoQueEstorba(void)
 
 static void MueveSeleccion(s32 salto)
 {
-    s32 movimiento = sMovimientoElegido + salto;
+    s32 cuantos = CuantosEnElFiltro();
+    s32 posicion = sPosicion + salto;
 
     // Se da la vuelta por los dos extremos: recorrer la lista entera no deberia
     // obligar a cambiar de direccion.
-    while (movimiento < 1)
-        movimiento += NUMERO_MOVIMIENTOS - 1;
-    while (movimiento >= NUMERO_MOVIMIENTOS)
-        movimiento -= NUMERO_MOVIMIENTOS - 1;
+    while (posicion < 0)
+        posicion += cuantos;
+    while (posicion >= cuantos)
+        posicion -= cuantos;
 
-    sMovimientoElegido = movimiento;
+    sPosicion = posicion;
+    sMovimientoElegido = MovimientoDelFiltro(posicion);
+}
+
+static void CambiaFiltro(void)
+{
+    if (++sFiltro == NUMERO_FILTROS)
+        sFiltro = FILTRO_TODOS;
+
+    sPosicion = 0;
+    sMovimientoElegido = MovimientoDelFiltro(0);
 }
 
 // El texto NO puede ser local. BattlePutTextOnWindow se queda con el puntero y va
@@ -97,11 +154,21 @@ static void MuestraSeleccion(void)
 {
     static const u8 sFlechaIzquierda[] = _("{LEFT_ARROW} ");
     static const u8 sFlechaDerecha[] = _(" {RIGHT_ARROW}");
+    static const u8 sAbreFiltro[] = _("  (");
+    static const u8 sCierraFiltro[] = _(")");
     u8 *fin;
 
     fin = StringCopy(sTextoSeleccion, sFlechaIzquierda);
     fin = StringCopy(fin, gMovimientos[sMovimientoElegido].name);
     fin = StringCopy(fin, sFlechaDerecha);
+
+    if (sFiltro != FILTRO_TODOS)
+    {
+        fin = StringCopy(fin, sAbreFiltro);
+        fin = StringCopy(fin, sNombreFiltro[sFiltro]);
+        fin = StringCopy(fin, sCierraFiltro);
+    }
+
     *fin = EOS;
 
     BattlePutTextOnWindow(sTextoSeleccion, B_WIN_MSG);
@@ -165,6 +232,7 @@ static void ControladorLaboratorio(u32 combatiente)
         PlaySE(SE_SELECT);
         ArrancaAnimacion(combatiente);
     }
+    else if (JOY_NEW(START_BUTTON)) { CambiaFiltro();               MuestraSeleccion(); PlaySE(SE_SELECT); }
     else if (JOY_NEW(B_BUTTON))
     {
         // Salir es huir: es la unica forma de que el combate se deshaga por su

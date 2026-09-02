@@ -427,7 +427,6 @@ void CargaSpriteDeAnimacion(u32 etiqueta)
 {
     const struct SpriteAnimacion *sprite = &gSpritesAnimacion[etiqueta - ANIM_SPRITES_START];
     struct SpritePalette paleta = { sprite->paleta, etiqueta };
-    u32 inicio;
 
     // Si la etiqueta seguia cargada de antes -una animacion que no la solto, o
     // dos que la comparten- hay que soltarla primero. Cargarla encima anadiria
@@ -437,15 +436,8 @@ void CargaSpriteDeAnimacion(u32 etiqueta)
     if (GetSpriteTileStartByTag(etiqueta) != TAG_NONE)
         SueltaSpriteDeAnimacion(etiqueta);
 
-    inicio = CargaSpriteComprimidoConEtiqueta(sprite->grafico, etiqueta, sprite->reserva);
+    CargaSpriteComprimidoConEtiqueta(sprite->grafico, etiqueta, sprite->reserva);
     LoadSpritePalette(&paleta);
-
-#if DEPURACION_MGBA
-    if (inicio == TAG_NONE)
-        LOG("ANIM: no ha entrado el sprite / etiqueta", etiqueta, 0);
-    else
-        LOG("ANIM: etiqueta / primer tile", etiqueta, inicio);
-#endif
 }
 
 void SueltaSpriteDeAnimacion(u32 etiqueta)
@@ -865,7 +857,15 @@ static void Task_InitUpdateMonBg(u8 taskId)
 
     s16 *data = gTasks[taskId].data;
     u8 battlerSpriteId = gBattlerSpriteIds[tBattlerId];
+
+    // Aqui es donde el Pokemon deja de dibujarse como sprite y pasa a verse en
+    // la capa de fondo, asi que aqui es donde hay que decirlo. La bandera se
+    // ponia solo dentro de MoveBattlerSpriteToBG, en la rama que esconde el
+    // sprite ella misma, y monbg no usa esa rama: escondia por su cuenta y
+    // dejaba la bandera a cero. Quien la lee -la sombra de combate- entendia
+    // que el Pokemon estaba escondido de verdad y se apagaba con el.
     gSprites[battlerSpriteId].invisible = TRUE;
+    gBattleSpritesDataPtr->battlerData[tBattlerId].enFondoAnimacion = TRUE;
 
     if (!tActive)
     {
@@ -902,8 +902,27 @@ static void SacaSpriteDelFondoAnimacion(u32 battler)
 }
 
 
+// Pasar el Pokemon a una capa de fondo solo hace falta para lo que el hardware
+// no sabe hacer entre sprites: en GBA un objeto semitransparente se mezcla con
+// las capas de fondo y con el color de relleno, pero NO con otro objeto. Si una
+// animacion quiere velar al Pokemon con algo translucido, o retorcerlo con la
+// distorsion de fondo, el Pokemon tiene que estar en una capa.
+//
+// Lo que pasa es que en vanilla se puso en casi todos los guiones por costumbre,
+// lo necesiten o no: 363 lo llaman y 221 no, y esos 221 se ven igual de bien.
+//
+// A cero, monbg y clearmonbg no hacen nada y el Pokemon se queda como sprite
+// durante toda la animacion. Se pierde el velado translucido sobre el Pokemon y
+// que se le aplique la distorsion de fondo; el resto se ve igual.
+#define ANIMACIONES_PASAN_EL_POKEMON_A_UNA_CAPA 0
+
 static void Cmd_monbg(void)
 {
+#if !ANIMACIONES_PASAN_EL_POKEMON_A_UNA_CAPA
+    sBattleAnimScriptPtr += 2;
+    return;
+#endif
+
     bool8 toBG_2;
     u8 taskId;
     u8 battlerId;
@@ -1026,6 +1045,7 @@ void MoveBattlerSpriteToBG(u8 battlerId, bool8 toBG_2, bool8 setSpriteInvisible)
 
         DrawBattlerOnBg(1, 0, 0, battlerPosition, animBg.paletteId, animBg.bgTiles, animBg.bgTilemap, animBg.tilesOffset);
 
+
     }
     else
     {
@@ -1136,6 +1156,11 @@ static void Task_UpdateMonBg(u8 taskId)
 
 static void Cmd_clearmonbg(void)
 {
+#if !ANIMACIONES_PASAN_EL_POKEMON_A_UNA_CAPA
+    sBattleAnimScriptPtr += 2;
+    return;
+#endif
+
     u8 animBattlerId;
     u8 battlerId;
     u8 taskId;

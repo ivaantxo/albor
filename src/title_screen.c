@@ -22,11 +22,8 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
-enum {
-    TAG_VERSION = 1000,
-    TAG_PRESS_START_COPYRIGHT,
-    TAG_LOGO_SHINE,
-};
+// Las etiquetas de esta pantalla estan en constants/etiquetas.h.
+
 
 #define VERSION_BANNER_RIGHT_TILEOFFSET 64
 #define VERSION_BANNER_LEFT_X 98
