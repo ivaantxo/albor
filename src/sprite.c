@@ -383,9 +383,12 @@ void BuildOamBuffer(void)
         }
 
         // y in [-128...159], so (159 - y) in [0..287].
+        // La subprioridad se enmascara a sus ocho bits. Antes lo garantizaba el
+        // tipo -era u8- y ahora es una palabra, asi que un valor pasado de rosca se
+        // colaria en los bits de priority y descolocaria el orden de dibujado.
         spritePriorities[toSort++]
             = (sprite->oam.priority << 30)
-            | (sprite->subpriority << 22)
+            | ((sprite->subpriority & 0xFF) << 22)
             | (((159 - y) & 0x1FF) << 13)
             | (index << 0);
     }

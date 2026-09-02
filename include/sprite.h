@@ -52,23 +52,26 @@ struct AnimFrameCmd
 {
     // If the sprite has an array of images, this is the array index.
     // If the sprite has a sheet, this is the tile offset.
-    u32 imageValue:16;
+    s32 imageValue;
 
-    u32 duration:6;
-    u32 hFlip:1;
-    u32 vFlip:1;
+    // Fotogramas que dura este cuadro. Ya no hay tope practico: eran seis bits -63
+    // como mucho- y no llegaban para las animaciones lentas, las de un Pokemon
+    // parado que parpadea cada pocos segundos.
+    u32 duration;
+    bool32 hFlip;
+    bool32 vFlip;
 };
 
 struct AnimLoopCmd
 {
-    u32 type:16;
-    u32 count:6;
+    s32 type;
+    u32 count;
 };
 
 struct AnimJumpCmd
 {
-    u32 type:16;
-    u32 target:6;
+    s32 type;
+    u32 target;
 };
 
 // The first halfword of this union specifies the type of command.
@@ -76,7 +79,7 @@ struct AnimJumpCmd
 // Otherwise, it is the imageValue for a frame command.
 union AnimCmd
 {
-    s16 type;
+    s32 type;
     struct AnimFrameCmd frame;
     struct AnimLoopCmd loop;
     struct AnimJumpCmd jump;
@@ -93,33 +96,33 @@ union AnimCmd
 
 struct AffineAnimFrameCmd
 {
-    s16 xScale;
-    s16 yScale;
-    u8 rotation;
-    u8 duration;
+    s32 xScale;
+    s32 yScale;
+    s32 rotation;
+    u32 duration;
 };
 
 struct AffineAnimLoopCmd
 {
-    s16 type;
-    s16 count;
+    s32 type;
+    u32 count;
 };
 
 struct AffineAnimJumpCmd
 {
-    s16 type;
-    u16 target;
+    s32 type;
+    u32 target;
 };
 
 struct AffineAnimEndCmdAlt
 {
-    s16 type;
-    u16 val;
+    s32 type;
+    u32 val;
 };
 
 union AffineAnimCmd
 {
-    s16 type;
+    s32 type;
     struct AffineAnimFrameCmd frame;
     struct AffineAnimLoopCmd loop;
     struct AffineAnimJumpCmd jump;
@@ -143,13 +146,13 @@ union AffineAnimCmd
 
 struct AffineAnimState
 {
-    u8 animNum;
-    u8 animCmdIndex;
-    u8 delayCounter;
-    u8 loopCounter;
-    s16 xScale;
-    s16 yScale;
-    u16 rotation;
+    u32 animNum;
+    u32 animCmdIndex;
+    u32 delayCounter;
+    u32 loopCounter;
+    s32 xScale;
+    s32 yScale;
+    s32 rotation;
 };
 
 enum
@@ -206,45 +209,60 @@ struct Sprite
 
     s16 x, y;
     s16 x2, y2;
-    s8 centerToCornerVecX;
-    s8 centerToCornerVecY;
+    s32 centerToCornerVecX;
+    s32 centerToCornerVecY;
 
-    u8 animNum;
-    u8 animCmdIndex;
-    u8 animDelayCounter:6;
-    bool8 animPaused:1;
-    bool8 affineAnimPaused:1;
-    u8 animLoopCounter;
+    u32 animNum;
+    u32 animCmdIndex;
+    u32 animDelayCounter;
+    u32 animLoopCounter;
 
+    // data[] se queda en s16 a proposito, y es la unica excepcion.
+    //
+    // Medio juego guarda ahi contadores y coordenadas contando con que dan la vuelta
+    // a los 16 bits, y hay cientos de #define sX data[0] repartidos por las
+    // animaciones. Ampliarlo no es cambiar un tipo: es cambiar la aritmetica de todo
+    // lo que lo usa.
     s16 data[8];
 
-    u16 inUse:1;
-    u16 coordOffsetEnabled:1;
-    u16 invisible:1;
-    u16 sheetSpan:3;
+    bool32 inUse;
+    bool32 coordOffsetEnabled;
+    bool32 invisible;
 
-    u16 hFlip:1;
-    u16 vFlip:1;
-    u16 animBeginning:1;
-    u16 affineAnimBeginning:1;
-    u16 animEnded:1;
-    u16 affineAnimEnded:1;
-    u16 usingSheet:1;
-    u16 anchored:1;
+    bool32 hFlip;
+    bool32 vFlip;
+    bool32 animBeginning;
+    bool32 affineAnimBeginning;
+    bool32 animEnded;
+    bool32 affineAnimEnded;
+    bool32 usingSheet;
+    bool32 anchored;
+    bool32 animPaused;
+    bool32 affineAnimPaused;
 
-    u16 sheetTileStart;
+    u32 sheetTileStart;
 
     // Cuantos tiles se le reservaron al crearlo. Hay que guardarlo porque al
     // destruirlo no se puede volver a preguntar: los sprites basados en 'images'
     // apuntan a un hueco compartido cuyo tamano cambia cada vez que entra otro
     // Pokemon, y liberar por el tamano de entonces suelta tiles que ya son de otro.
-    u16 tilesReservados;
+    u32 tilesReservados;
 
-    u8 subspriteTableNum:6;
-    u8 subspriteMode:2;
+    u32 subspriteTableNum;
+    u32 subspriteMode;
 
-    u8 subpriority;
+    u32 subpriority;
 };
+
+// La duracion del comando y el contador del sprite tienen que aguantar el mismo
+// rango, y esto lo comprueba al compilar. Ampliar solo uno de los dos es el error
+// facil: si el comando declara mas de lo que el contador puede guardar, el valor se
+// trunca al asignarlo y la animacion sale mas RAPIDA, que es justo lo contrario de
+// lo que uno pretendia.
+STATIC_ASSERT(sizeof(((struct Sprite *)0)->animDelayCounter)
+              >= sizeof(((union AnimCmd *)0)->frame.duration),
+              ElContadorDeAnimacionNoAguantaLaDuracionDelComando);
+
 
 struct OamMatrix
 {
