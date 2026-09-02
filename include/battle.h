@@ -589,6 +589,7 @@ struct MonSpritesGfx
 {
     void *firstDecompressed; // ptr to the decompressed sprite of the first Pokémon
     u8 *spritesGfx[NUMERO_COMBATIENTES];
+    u32 tamanoHueco[NUMERO_COMBATIENTES];   // lo que mide cada uno, para no repedirlo
     struct SpriteTemplate templates[NUMERO_COMBATIENTES];
     struct SpriteFrameImage frameImages[NUMERO_COMBATIENTES][NUMERO_FRAMES_POKEMON];
     u16 *buffer;

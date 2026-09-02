@@ -292,7 +292,11 @@ enum MetodosEvolutivos {
 // - Deoxys has 2 frames, 1 for each form
 // - Spinda has 1 frame, presumably to avoid the work of animating its spots
 // - Unown has 1 frame, presumably to avoid the work of animating all 28 of its forms
-#define NUMERO_FRAMES_POKEMON 2
+// Fotogramas por Pokemon. Cada uno cuesta su tamano de pic por combatiente: con pics
+// de 96x96 son 4608 B, asi que 4 fotogramas ocupan 73728 B de los 114688 del monton
+// (64%). Con 6 se iria al 96% y no cabria el resto del combate; para llegar ahi habria
+// que reservar por combatiente segun lo que ocupe su pic, en vez de un bloque unico.
+#define NUMERO_FRAMES_POKEMON 4
 
 #define BATTLE_ALIVE_EXCEPT_BATTLER  0
 #define BATTLE_ALIVE_SIDE            1

@@ -1,0 +1,524 @@
+Pidiendo el catalogo a WikiDex...
+  724 sprites, de ellos 96 variantes hembra
+
+[  1/486]  ok   bulbasaur              1 fichero(s), 16 colores
+[  2/486]  ok   ivysaur                1 fichero(s), 15 colores
+[  3/486]  ok   venusaur               2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[  4/486]  ok   charmander             1 fichero(s), 15 colores
+[  5/486]  ok   charmeleon             1 fichero(s), 15 colores
+[  6/486]  ok   charizard              1 fichero(s), 13 colores
+[  7/486]  ok   squirtle               1 fichero(s), 16 colores
+[  8/486]  ok   wartortle              1 fichero(s), 15 colores
+[  9/486]  ok   blastoise              1 fichero(s), 15 colores
+[ 10/486]  ok   caterpie               1 fichero(s), 15 colores
+[ 11/486]  ok   metapod                1 fichero(s), 8 colores
+[ 12/486] FALLO butterfree             exceso de colores en la hembra: 16, caben 15
+[ 13/486]  ok   weedle                 1 fichero(s), 15 colores
+[ 14/486]  ok   kakuna                 1 fichero(s), 11 colores
+[ 15/486]  ok   beedrill               1 fichero(s), 16 colores
+[ 16/486]  ok   pidgey                 1 fichero(s), 15 colores
+[ 17/486]  ok   pidgeotto              1 fichero(s), 16 colores
+[ 18/486]  ok   pidgeot                1 fichero(s), 14 colores
+[ 19/486]  ok   rattata                2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[ 20/486]  ok   raticate               2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[ 21/486]  ok   spearow                1 fichero(s), 15 colores
+[ 22/486] FALLO fearow                 anim_front.png: exceso de alto: 100 px, caben 96
+[ 23/486]  ok   ekans                  1 fichero(s), 16 colores
+[ 24/486]  ok   arbok                  1 fichero(s), 12 colores
+[ 25/486]  ok   pichu                  1 fichero(s), 14 colores
+[ 26/486]  ok   pikachu                2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[ 27/486]  ok   raichu                 2 fichero(s), 15 colores
+[ 28/486] ----  raichu_alola           no hay sprite de Negro/Blanco en la wiki
+[ 29/486]  ok   sandshrew              1 fichero(s), 14 colores
+[ 30/486]  ok   sandslash              1 fichero(s), 13 colores
+[ 31/486] ----  sandshrew_alola        no hay sprite de Negro/Blanco en la wiki
+[ 32/486] ----  sandslash_alola        no hay sprite de Negro/Blanco en la wiki
+[ 33/486]  ok   nidoran_f              1 fichero(s), 13 colores
+[ 34/486]  ok   nidorina               1 fichero(s), 15 colores
+[ 35/486]  ok   nidoqueen              1 fichero(s), 15 colores
+[ 36/486]  ok   nidoran_m              1 fichero(s), 15 colores
+[ 37/486]  ok   nidorino               1 fichero(s), 14 colores
+[ 38/486]  ok   nidoking               1 fichero(s), 15 colores
+[ 39/486]  ok   cleffa                 1 fichero(s), 12 colores
+[ 40/486]  ok   clefairy               1 fichero(s), 13 colores
+[ 41/486]  ok   clefable               1 fichero(s), 14 colores
+[ 42/486]  ok   vulpix                 1 fichero(s), 15 colores
+[ 43/486]  ok   ninetales              1 fichero(s), 13 colores
+[ 44/486] ----  vulpix_alola           no hay sprite de Negro/Blanco en la wiki
+[ 45/486] ----  ninetales_alola        no hay sprite de Negro/Blanco en la wiki
+[ 46/486]  ok   igglybuff              1 fichero(s), 11 colores
+[ 47/486]  ok   jigglypuff             1 fichero(s), 13 colores
+[ 48/486]  ok   wigglytuff             1 fichero(s), 13 colores
+[ 49/486]  ok   zubat                  2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[ 50/486] FALLO golbat                 anim_frontf.png: exceso de ancho: 109 px, caben 96
+[ 51/486]  ok   crobat                 1 fichero(s), 13 colores
+[ 52/486]  ok   oddish                 1 fichero(s), 12 colores
+[ 53/486]  ok   gloom                  2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[ 54/486]  ok   vileplume              2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[ 55/486]  ok   bellossom              1 fichero(s), 15 colores
+[ 56/486]  ok   paras                  1 fichero(s), 16 colores
+[ 57/486]  ok   parasect               1 fichero(s), 15 colores
+[ 58/486]  ok   meowth                 1 fichero(s), 16 colores
+[ 59/486]  ok   persian                1 fichero(s), 14 colores
+[ 60/486]  ok   psyduck                1 fichero(s), 12 colores
+[ 61/486]  ok   golduck                1 fichero(s), 15 colores
+[ 62/486]  ok   mankey                 1 fichero(s), 15 colores
+[ 63/486]  ok   primeape               1 fichero(s), 15 colores
+[ 64/486] ----  annihilape             no hay sprite de Negro/Blanco en la wiki
+[ 65/486]  ok   growlithe              1 fichero(s), 13 colores
+[ 66/486]  ok   arcanine               1 fichero(s), 12 colores
+[ 67/486] ----  growlithe_hisui        no hay sprite de Negro/Blanco en la wiki
+[ 68/486] ----  arcanine_hisui         no hay sprite de Negro/Blanco en la wiki
+[ 69/486]  ok   poliwag                1 fichero(s), 14 colores
+[ 70/486]  ok   poliwhirl              1 fichero(s), 13 colores
+[ 71/486]  ok   poliwrath              1 fichero(s), 13 colores
+[ 72/486]  ok   politoed               2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[ 73/486]  ok   abra                   1 fichero(s), 10 colores
+[ 74/486]  ok   kadabra                2 fichero(s), 15 colores
+[ 75/486]  ok   alakazam               2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[ 76/486]  ok   machop                 1 fichero(s), 14 colores
+[ 77/486]  ok   machoke                1 fichero(s), 15 colores
+[ 78/486]  ok   machamp                1 fichero(s), 15 colores
+[ 79/486]  ok   bellsprout             1 fichero(s), 15 colores
+[ 80/486]  ok   weepinbell             1 fichero(s), 15 colores
+[ 81/486]  ok   victreebel             1 fichero(s), 14 colores
+[ 82/486]  ok   tentacool              1 fichero(s), 15 colores
+[ 83/486]  ok   tentacruel             1 fichero(s), 15 colores
+[ 84/486]  ok   geodude                1 fichero(s), 13 colores
+[ 85/486]  ok   graveler               1 fichero(s), 9 colores
+[ 86/486]  ok   golem                  1 fichero(s), 15 colores
+[ 87/486]  ok   ponyta                 1 fichero(s), 14 colores
+[ 88/486]  ok   rapidash               1 fichero(s), 14 colores
+[ 89/486]  ok   slowpoke               1 fichero(s), 14 colores
+[ 90/486]  ok   slowbro                1 fichero(s), 16 colores
+[ 91/486]  ok   slowking               1 fichero(s), 16 colores
+[ 92/486]  ok   magnemite              1 fichero(s), 14 colores
+[ 93/486]  ok   magneton               1 fichero(s), 16 colores
+[ 94/486]  ok   magnezone              1 fichero(s), 15 colores
+[ 95/486]  ok   doduo                  2 fichero(s), 12 colores
+[ 96/486]  ok   dodrio                 2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[ 97/486]  ok   grimer                 1 fichero(s), 12 colores
+[ 98/486]  ok   muk                    1 fichero(s), 11 colores
+[ 99/486]  ok   shellder               1 fichero(s), 11 colores
+[100/486]  ok   cloyster               1 fichero(s), 15 colores
+[101/486]  ok   gastly                 1 fichero(s), 11 colores
+[102/486]  ok   haunter                1 fichero(s), 12 colores
+[103/486]  ok   gengar                 1 fichero(s), 13 colores
+[104/486]  ok   onix                   1 fichero(s), 8 colores
+[105/486]  ok   steelix                2 fichero(s), 9 colores
+[106/486]  ok   drowzee                1 fichero(s), 14 colores
+[107/486]  ok   hypno                  2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[108/486]  ok   krabby                 1 fichero(s), 13 colores
+[109/486]  ok   kingler                1 fichero(s), 14 colores
+[110/486]  ok   exeggcute              1 fichero(s), 11 colores
+[111/486]  ok   exeggutor              1 fichero(s), 14 colores
+[112/486]  ok   cubone                 1 fichero(s), 13 colores
+[113/486]  ok   marowak                1 fichero(s), 15 colores
+[114/486] ----  marowak_alola          no hay sprite de Negro/Blanco en la wiki
+[115/486]  ok   tyrogue                1 fichero(s), 16 colores
+[116/486]  ok   hitmonlee              1 fichero(s), 16 colores
+[117/486]  ok   hitmonchan             1 fichero(s), 15 colores
+[118/486]  ok   hitmontop              1 fichero(s), 14 colores
+[119/486]  ok   lickitung              1 fichero(s), 15 colores
+[120/486]  ok   lickilicky             1 fichero(s), 16 colores
+[121/486]  ok   koffing                1 fichero(s), 14 colores
+[122/486]  ok   weezing                1 fichero(s), 16 colores
+[123/486] ----  weezing_galar          no hay sprite de Negro/Blanco en la wiki
+[124/486]  ok   rhyhorn                2 fichero(s), 16 colores
+[125/486]  ok   rhydon                 2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[126/486]  ok   rhyperior              2 fichero(s), 15 colores
+[127/486]  ok   tangela                1 fichero(s), 12 colores
+[128/486]  ok   tangrowth              2 fichero(s), 11 colores
+[129/486]  ok   kangaskhan             1 fichero(s), 16 colores
+[130/486]  ok   horsea                 1 fichero(s), 12 colores
+[131/486]  ok   seadra                 1 fichero(s), 12 colores
+[132/486] FALLO kingdra                exceso de colores en el macho: 22, caben 15
+[133/486]  ok   goldeen                2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[134/486]  ok   seaking                2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[135/486]  ok   staryu                 1 fichero(s), 15 colores
+[136/486]  ok   starmie                1 fichero(s), 15 colores
+[137/486]  ok   mime_jr                1 fichero(s), 13 colores
+[138/486]  ok   mr_mime                1 fichero(s), 15 colores
+[139/486]  ok   scyther                2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[140/486]  ok   scizor                 2 fichero(s), 15 colores
+[141/486] ----  kleavor                no hay sprite de Negro/Blanco en la wiki
+[142/486]  ok   smoochum               1 fichero(s), 15 colores
+[143/486]  ok   jynx                   1 fichero(s), 15 colores
+[144/486]  ok   elekid                 1 fichero(s), 12 colores
+[145/486]  ok   electabuzz             1 fichero(s), 14 colores
+[146/486]  ok   electivire             1 fichero(s), 12 colores
+[147/486]  ok   magby                  1 fichero(s), 12 colores
+[148/486]  ok   magmar                 1 fichero(s), 14 colores
+[149/486]  ok   magmortar              1 fichero(s), 15 colores
+[150/486]  ok   pinsir                 1 fichero(s), 12 colores
+[151/486]  ok   tauros                 1 fichero(s), 15 colores
+[152/486]  ok   magikarp               2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[153/486] FALLO gyarados               anim_front.png: exceso de ancho: 102 px, caben 96
+[154/486]  ok   lapras                 1 fichero(s), 14 colores
+[155/486]  ok   eevee                  1 fichero(s), 9 colores
+[156/486]  ok   vaporeon               1 fichero(s), 16 colores
+[157/486]  ok   jolteon                1 fichero(s), 11 colores
+[158/486]  ok   flareon                1 fichero(s), 11 colores
+[159/486]  ok   espeon                 1 fichero(s), 13 colores
+[160/486]  ok   umbreon                1 fichero(s), 11 colores
+[161/486]  ok   leafeon                1 fichero(s), 16 colores
+[162/486]  ok   glaceon                1 fichero(s), 12 colores
+[163/486] ----  sylveon                no hay sprite de Negro/Blanco en la wiki
+[164/486]  ok   porygon                1 fichero(s), 13 colores
+[165/486]  ok   porygon2               1 fichero(s), 13 colores
+[166/486]  ok   porygon_z              1 fichero(s), 15 colores
+[167/486]  ok   omanyte                1 fichero(s), 14 colores
+[168/486]  ok   omastar                1 fichero(s), 13 colores
+[169/486]  ok   kabuto                 1 fichero(s), 11 colores
+[170/486]  ok   kabutops               1 fichero(s), 11 colores
+[171/486]  ok   aerodactyl             1 fichero(s), 15 colores
+[172/486]  ok   munchlax               1 fichero(s), 15 colores
+[173/486]  ok   snorlax                1 fichero(s), 15 colores
+[174/486]  ok   articuno               1 fichero(s), 15 colores
+[175/486]  ok   zapdos                 1 fichero(s), 12 colores
+[176/486] FALLO moltres                anim_front.png: exceso de ancho: 120 px, caben 96
+[177/486]  ok   dratini                1 fichero(s), 10 colores
+[178/486]  ok   dragonair              1 fichero(s), 14 colores
+[179/486]  ok   dragonite              1 fichero(s), 14 colores
+[180/486]  ok   mew                    1 fichero(s), 11 colores
+[181/486]  ok   mewtwo                 1 fichero(s), 11 colores
+[182/486]  ok   chikorita              1 fichero(s), 15 colores
+[183/486]  ok   bayleef                1 fichero(s), 15 colores
+[184/486]  ok   meganium               2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[185/486]  ok   cyndaquil              1 fichero(s), 16 colores
+[186/486]  ok   quilava                1 fichero(s), 14 colores
+[187/486]  ok   typhlosion             1 fichero(s), 15 colores
+[188/486]  ok   totodile               1 fichero(s), 14 colores
+[189/486]  ok   croconaw               1 fichero(s), 15 colores
+[190/486]  ok   feraligatr             1 fichero(s), 14 colores
+[191/486]  ok   sentret                1 fichero(s), 14 colores
+[192/486]  ok   furret                 1 fichero(s), 14 colores
+[193/486]  ok   hoothoot               1 fichero(s), 16 colores
+[194/486]  ok   noctowl                1 fichero(s), 14 colores
+[195/486]  ok   ledyba                 2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[196/486]  ok   ledian                 2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[197/486]  ok   spinarak               1 fichero(s), 16 colores
+[198/486]  ok   ariados                1 fichero(s), 14 colores
+[199/486]  ok   chinchou               1 fichero(s), 16 colores
+[200/486]  ok   lanturn                1 fichero(s), 15 colores
+[201/486]  ok   togepi                 1 fichero(s), 15 colores
+[202/486]  ok   togetic                1 fichero(s), 9 colores
+[203/486]  ok   togekiss               1 fichero(s), 12 colores
+[204/486]  ok   natu                   1 fichero(s), 14 colores
+[205/486] FALLO xatu                   exceso de colores en el macho: 16, caben 15
+[206/486]  ok   mareep                 1 fichero(s), 16 colores
+[207/486] FALLO flaaffy                exceso de colores en el macho: 21, caben 15
+[208/486]  ok   ampharos               1 fichero(s), 14 colores
+[209/486]  ok   azurill                1 fichero(s), 12 colores
+[210/486]  ok   marill                 1 fichero(s), 14 colores
+[211/486]  ok   azumarill              1 fichero(s), 14 colores
+[212/486]  ok   bonsly                 1 fichero(s), 12 colores
+[213/486]  ok   sudowoodo              2 fichero(s), 13 colores
+[214/486]  ok   hoppip                 1 fichero(s), 11 colores
+[215/486]  ok   skiploom               1 fichero(s), 12 colores
+[216/486]  ok   jumpluff               1 fichero(s), 14 colores
+[217/486]  ok   aipom                  2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[218/486]  ok   ambipom                2 fichero(s), 16 colores
+[219/486]  ok   sunkern                1 fichero(s), 13 colores
+[220/486]  ok   sunflora               1 fichero(s), 12 colores
+[221/486]  ok   yanma                  1 fichero(s), 16 colores
+[222/486]  ok   yanmega                1 fichero(s), 16 colores
+[223/486]  ok   murkrow                2 fichero(s), 13 colores
+[224/486]  ok   honchkrow              1 fichero(s), 16 colores
+[225/486]  ok   misdreavus             1 fichero(s), 15 colores
+[226/486]  ok   mismagius              1 fichero(s), 13 colores
+[227/486]  ok   girafarig              2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[228/486]  ok   gligar                 2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[229/486]  ok   gliscor                1 fichero(s), 15 colores
+[230/486]  ok   snubbull               1 fichero(s), 15 colores
+[231/486]  ok   granbull               1 fichero(s), 12 colores
+[232/486]  ok   heracross              2 fichero(s), 12 colores
+[233/486]  ok   sneasel                2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[234/486]  ok   weavile                2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[235/486] ----  sneasler               no hay sprite de Negro/Blanco en la wiki
+[236/486]  ok   teddiursa              1 fichero(s), 12 colores
+[237/486]  ok   ursaring               2 fichero(s), 15 colores
+[238/486]  ok   slugma                 1 fichero(s), 9 colores
+[239/486]  ok   magcargo               1 fichero(s), 13 colores
+[240/486]  ok   swinub                 1 fichero(s), 10 colores
+[241/486]  ok   piloswine              2 fichero(s), 14 colores
+[242/486]  ok   mamoswine              2 fichero(s), 16 colores
+[243/486]  ok   octillery              2 fichero(s), 12 colores
+[244/486]  ok   delibird               1 fichero(s), 15 colores
+[245/486]  ok   houndour               1 fichero(s), 11 colores
+[246/486]  ok   houndoom               2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[247/486]  ok   phanpy                 1 fichero(s), 13 colores
+[248/486]  ok   donphan                2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[249/486] FALLO stantler               exceso de colores en el macho: 17, caben 15
+[250/486] ----  wyrdeer                no hay sprite de Negro/Blanco en la wiki
+[251/486] FALLO raikou                 exceso de colores en el macho: 26, caben 15
+[252/486]  ok   entei                  1 fichero(s), 15 colores
+[253/486]  ok   suicune                1 fichero(s), 16 colores
+[254/486]  ok   larvitar               1 fichero(s), 11 colores
+[255/486]  ok   pupitar                1 fichero(s), 9 colores
+[256/486]  ok   tyranitar              1 fichero(s), 14 colores
+[257/486] FALLO lugia                  anim_front.png: exceso de ancho: 153 px, caben 96
+[258/486] FALLO ho_oh                  anim_front.png: exceso de ancho: 107 px, caben 96
+[259/486]  ok   celebi                 1 fichero(s), 14 colores
+[260/486]  ok   treecko                1 fichero(s), 15 colores
+[261/486]  ok   grovyle                1 fichero(s), 14 colores
+[262/486]  ok   sceptile               1 fichero(s), 15 colores
+[263/486]  ok   torchic                2 fichero(s), 11 colores
+[264/486]  ok   combusken              2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[265/486] FALLO blaziken               exceso de colores en el macho: 17, caben 15
+[266/486]  ok   mudkip                 1 fichero(s), 14 colores
+[267/486]  ok   marshtomp              1 fichero(s), 15 colores
+[268/486]  ok   swampert               1 fichero(s), 16 colores
+[269/486]  ok   poochyena              1 fichero(s), 12 colores
+[270/486]  ok   mightyena              1 fichero(s), 15 colores
+[271/486]  ok   wurmple                1 fichero(s), 14 colores
+[272/486]  ok   silcoon                1 fichero(s), 8 colores
+[273/486]  ok   beautifly              2 fichero(s), 15 colores
+[274/486]  ok   cascoon                1 fichero(s), 11 colores
+[275/486]  ok   dustox                 2 fichero(s), 15 colores
+[276/486]  ok   lotad                  1 fichero(s), 14 colores
+[277/486]  ok   lombre                 1 fichero(s), 13 colores
+[278/486]  ok   ludicolo               2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[279/486]  ok   seedot                 1 fichero(s), 12 colores
+[280/486]  ok   nuzleaf                2 fichero(s), 16 colores
+[281/486] FALLO shiftry                anim_front.png: exceso de ancho: 97 px, caben 96
+[282/486]  ok   taillow                1 fichero(s), 14 colores
+[283/486]  ok   swellow                1 fichero(s), 16 colores
+[284/486]  ok   wingull                1 fichero(s), 13 colores
+[285/486]  ok   pelipper               1 fichero(s), 15 colores
+[286/486]  ok   ralts                  1 fichero(s), 13 colores
+[287/486]  ok   kirlia                 1 fichero(s), 12 colores
+[288/486]  ok   gardevoir              1 fichero(s), 13 colores
+[289/486] FALLO gallade                exceso de colores en el macho: 17, caben 15
+[290/486]  ok   surskit                1 fichero(s), 12 colores
+[291/486]  ok   masquerain             1 fichero(s), 12 colores
+[292/486]  ok   slakoth                1 fichero(s), 13 colores
+[293/486]  ok   vigoroth               1 fichero(s), 16 colores
+[294/486]  ok   slaking                1 fichero(s), 14 colores
+[295/486]  ok   nincada                1 fichero(s), 15 colores
+[296/486]  ok   ninjask                1 fichero(s), 15 colores
+[297/486]  ok   shedinja               1 fichero(s), 14 colores
+[298/486]  ok   whismur                1 fichero(s), 11 colores
+[299/486]  ok   loudred                1 fichero(s), 15 colores
+[300/486]  ok   exploud                1 fichero(s), 15 colores
+[301/486]  ok   makuhita               1 fichero(s), 14 colores
+[302/486]  ok   hariyama               1 fichero(s), 15 colores
+[303/486]  ok   nosepass               1 fichero(s), 11 colores
+[304/486] FALLO probopass              exceso de colores en el macho: 19, caben 15
+[305/486]  ok   sableye                1 fichero(s), 14 colores
+[306/486]  ok   mawile                 1 fichero(s), 14 colores
+[307/486]  ok   aron                   1 fichero(s), 10 colores
+[308/486]  ok   lairon                 1 fichero(s), 14 colores
+[309/486]  ok   aggron                 1 fichero(s), 13 colores
+[310/486]  ok   meditite               2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[311/486]  ok   medicham               2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[312/486]  ok   electrike              1 fichero(s), 14 colores
+[313/486]  ok   manectric              1 fichero(s), 15 colores
+[314/486]  ok   budew                  1 fichero(s), 13 colores
+[315/486]  ok   roselia                2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[316/486]  ok   roserade               2 fichero(s), 15 colores
+[317/486]  ok   carvanha               1 fichero(s), 15 colores
+[318/486]  ok   sharpedo               1 fichero(s), 14 colores
+[319/486]  ok   wailmer                1 fichero(s), 14 colores
+[320/486]  ok   wailord                1 fichero(s), 14 colores
+[321/486]  ok   numel                  2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[322/486]  ok   camerupt               2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[323/486]  ok   torkoal                1 fichero(s), 14 colores
+[324/486]  ok   spoink                 1 fichero(s), 12 colores
+[325/486]  ok   grumpig                1 fichero(s), 16 colores
+[326/486]  ok   trapinch               1 fichero(s), 11 colores
+[327/486]  ok   vibrava                1 fichero(s), 13 colores
+[328/486]  ok   flygon                 1 fichero(s), 16 colores
+[329/486]  ok   cacnea                 1 fichero(s), 15 colores
+[330/486]  ok   cacturne               2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[331/486]  ok   swablu                 1 fichero(s), 11 colores
+[332/486]  ok   altaria                1 fichero(s), 13 colores
+[333/486]  ok   lunatone               1 fichero(s), 12 colores
+[334/486]  ok   solrock                1 fichero(s), 15 colores
+[335/486]  ok   baltoy                 1 fichero(s), 10 colores
+[336/486]  ok   claydol                1 fichero(s), 15 colores
+[337/486]  ok   lileep                 1 fichero(s), 13 colores
+[338/486]  ok   cradily                1 fichero(s), 14 colores
+[339/486]  ok   anorith                1 fichero(s), 13 colores
+[340/486]  ok   armaldo                1 fichero(s), 15 colores
+[341/486]  ok   feebas                 1 fichero(s), 14 colores
+[342/486]  ok   milotic                2 fichero(s), 14 colores
+[343/486]  ok   castform               1 fichero(s), 9 colores
+[344/486]  ok   castform_sunny         1 fichero(s), 14 colores
+[345/486]  ok   castform_rainy         1 fichero(s), 15 colores
+[346/486]  ok   castform_snowy         1 fichero(s), 14 colores
+[347/486]  ok   kecleon                1 fichero(s), 15 colores
+[348/486]  ok   shuppet                1 fichero(s), 14 colores
+[349/486]  ok   banette                1 fichero(s), 15 colores
+[350/486]  ok   duskull                1 fichero(s), 14 colores
+[351/486]  ok   dusclops               1 fichero(s), 15 colores
+[352/486]  ok   dusknoir               1 fichero(s), 12 colores
+[353/486]  ok   tropius                1 fichero(s), 14 colores
+[354/486]  ok   chingling              1 fichero(s), 12 colores
+[355/486]  ok   chimecho               1 fichero(s), 14 colores
+[356/486]  ok   absol                  1 fichero(s), 13 colores
+[357/486]  ok   snorunt                1 fichero(s), 15 colores
+[358/486]  ok   glalie                 1 fichero(s), 13 colores
+[359/486]  ok   froslass               1 fichero(s), 15 colores
+[360/486]  ok   spheal                 1 fichero(s), 14 colores
+[361/486]  ok   sealeo                 1 fichero(s), 16 colores
+[362/486]  ok   walrein                1 fichero(s), 14 colores
+[363/486]  ok   bagon                  1 fichero(s), 15 colores
+[364/486]  ok   shelgon                1 fichero(s), 14 colores
+[365/486]  ok   salamence              1 fichero(s), 14 colores
+[366/486]  ok   beldum                 1 fichero(s), 15 colores
+[367/486]  ok   metang                 1 fichero(s), 15 colores
+[368/486]  ok   metagross              1 fichero(s), 14 colores
+[369/486]  ok   latias                 1 fichero(s), 15 colores
+[370/486]  ok   latios                 1 fichero(s), 15 colores
+[371/486]  ok   kyogre                 1 fichero(s), 16 colores
+[372/486]  ok   groudon                1 fichero(s), 15 colores
+[373/486] FALLO rayquaza               anim_front.png: exceso de ancho: 109 px, caben 96
+[374/486]  ok   deoxys_normal          1 fichero(s), 14 colores
+[375/486]  ok   deoxys_attack          1 fichero(s), 15 colores
+[376/486]  ok   deoxys_defense         1 fichero(s), 13 colores
+[377/486]  ok   deoxys_speed           1 fichero(s), 14 colores
+[378/486]  ok   turtwig                1 fichero(s), 14 colores
+[379/486]  ok   grotle                 1 fichero(s), 15 colores
+[380/486]  ok   torterra               1 fichero(s), 14 colores
+[381/486]  ok   chimchar               1 fichero(s), 16 colores
+[382/486]  ok   monferno               1 fichero(s), 15 colores
+[383/486]  ok   infernape              1 fichero(s), 16 colores
+[384/486]  ok   piplup                 1 fichero(s), 16 colores
+[385/486]  ok   prinplup               1 fichero(s), 15 colores
+[386/486]  ok   empoleon               1 fichero(s), 15 colores
+[387/486]  ok   starly                 2 fichero(s), 12 colores
+[388/486]  ok   staravia               2 fichero(s), 15 colores
+[389/486]  ok   staraptor              2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[390/486]  ok   bidoof                 2 fichero(s), 13 colores
+[391/486]  ok   bibarel                2 fichero(s), 15 colores
+[392/486]  ok   kricketot              2 fichero(s), 14 colores
+[393/486] FALLO kricketune             exceso de colores en el macho: 16, caben 15
+[394/486]  ok   shinx                  2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[395/486]  ok   luxio                  2 fichero(s), 14 colores
+[396/486]  ok   luxray                 2 fichero(s), 14 colores
+[397/486]  ok   cranidos               1 fichero(s), 15 colores
+[398/486]  ok   rampardos              1 fichero(s), 15 colores
+[399/486]  ok   shieldon               1 fichero(s), 13 colores
+[400/486]  ok   bastiodon              1 fichero(s), 14 colores
+[401/486]  ok   combee                 2 fichero(s), 15 colores
+[402/486] FALLO vespiquen              exceso de colores en el macho: 16, caben 15
+[403/486]  ok   drifloon               1 fichero(s), 13 colores
+[404/486]  ok   drifblim               1 fichero(s), 16 colores
+[405/486]  ok   buneary                1 fichero(s), 13 colores
+[406/486]  ok   lopunny                1 fichero(s), 13 colores
+[407/486]  ok   gible                  2 fichero(s), 16 colores
+[408/486]  ok   gabite                 2 fichero(s), 16 colores
+[409/486]  ok   garchomp               2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[410/486]  ok   riolu                  1 fichero(s), 14 colores
+[411/486]  ok   lucario                1 fichero(s), 14 colores
+[412/486]  ok   skorupi                1 fichero(s), 13 colores
+[413/486]  ok   drapion                1 fichero(s), 14 colores
+[414/486]  ok   croagunk               2 fichero(s), 15 colores
+[415/486]  ok   toxicroak              2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[416/486]  ok   snover                 2 fichero(s), 13 colores
+[417/486]  ok   abomasnow              2 fichero(s), 15 colores
+[418/486]  ok   rotom                  1 fichero(s), 14 colores
+[419/486]  ok   rotom_heat             1 fichero(s), 15 colores
+[420/486]  ok   rotom_wash             1 fichero(s), 14 colores
+[421/486]  ok   rotom_frost            1 fichero(s), 14 colores
+[422/486]  ok   rotom_fan              1 fichero(s), 14 colores
+[423/486]  ok   rotom_mow              1 fichero(s), 14 colores
+[424/486] FALLO heatran                exceso de colores en el macho: 17, caben 15
+[425/486]  ok   sandile                1 fichero(s), 12 colores
+[426/486]  ok   krokorok               1 fichero(s), 14 colores
+[427/486]  ok   krookodile             1 fichero(s), 14 colores
+[428/486]  ok   yamask                 1 fichero(s), 12 colores
+[429/486] FALLO cofagrigus             anim_front.png: exceso de ancho: 114 px, caben 96
+[430/486]  ok   gothita                1 fichero(s), 14 colores
+[431/486]  ok   gothorita              1 fichero(s), 14 colores
+[432/486]  ok   gothitelle             1 fichero(s), 13 colores
+[433/486]  ok   frillish               2 fichero(s), 16 colores
+[434/486]  ok   jellicent              2 fichero(s), paletas separadas (normal.pal, normalf.pal)
+[435/486]  ok   joltik                 1 fichero(s), 10 colores
+[436/486]  ok   galvantula             1 fichero(s), 13 colores
+[437/486] FALLO ferroseed              exceso de colores en el macho: 17, caben 15
+[438/486]  ok   ferrothorn             1 fichero(s), 11 colores
+[439/486]  ok   litwick                1 fichero(s), 11 colores
+[440/486]  ok   lampent                1 fichero(s), 11 colores
+[441/486]  ok   chandelure             1 fichero(s), 11 colores
+[442/486]  ok   axew                   1 fichero(s), 14 colores
+[443/486]  ok   fraxure                1 fichero(s), 15 colores
+[444/486]  ok   haxorus                1 fichero(s), 14 colores
+[445/486]  ok   cubchoo                1 fichero(s), 14 colores
+[446/486]  ok   beartic                1 fichero(s), 11 colores
+[447/486]  ok   golett                 1 fichero(s), 13 colores
+[448/486]  ok   golurk                 1 fichero(s), 14 colores
+[449/486]  ok   pawniard               1 fichero(s), 13 colores
+[450/486]  ok   bisharp                1 fichero(s), 16 colores
+[451/486]  ok   deino                  1 fichero(s), 12 colores
+[452/486]  ok   zweilous               1 fichero(s), 14 colores
+[453/486]  ok   hydreigon              1 fichero(s), 14 colores
+[454/486]  ok   larvesta               1 fichero(s), 16 colores
+[455/486]  ok   volcarona              1 fichero(s), 16 colores
+[456/486] ----  fennekin               no hay sprite de Negro/Blanco en la wiki
+[457/486] ----  braixen                no hay sprite de Negro/Blanco en la wiki
+[458/486] ----  delphox                no hay sprite de Negro/Blanco en la wiki
+[459/486] ----  fletchling             no hay sprite de Negro/Blanco en la wiki
+[460/486] ----  fletchinder            no hay sprite de Negro/Blanco en la wiki
+[461/486] ----  talonflame             no hay sprite de Negro/Blanco en la wiki
+[462/486] ----  tyrunt                 no hay sprite de Negro/Blanco en la wiki
+[463/486] ----  tyrantrum              no hay sprite de Negro/Blanco en la wiki
+[464/486] ----  amaura                 no hay sprite de Negro/Blanco en la wiki
+[465/486] ----  aurorus                no hay sprite de Negro/Blanco en la wiki
+[466/486] ----  rowlet                 no hay sprite de Negro/Blanco en la wiki
+[467/486] ----  dartrix                no hay sprite de Negro/Blanco en la wiki
+[468/486] ----  decidueye              no hay sprite de Negro/Blanco en la wiki
+[469/486] ----  jangmo_o               no hay sprite de Negro/Blanco en la wiki
+[470/486] ----  hakamo_o               no hay sprite de Negro/Blanco en la wiki
+[471/486] ----  kommo_o                no hay sprite de Negro/Blanco en la wiki
+[472/486] ----  rookidee               no hay sprite de Negro/Blanco en la wiki
+[473/486] ----  corvisquire            no hay sprite de Negro/Blanco en la wiki
+[474/486] ----  corviknight            no hay sprite de Negro/Blanco en la wiki
+[475/486] ----  blipbug                no hay sprite de Negro/Blanco en la wiki
+[476/486] ----  dottler                no hay sprite de Negro/Blanco en la wiki
+[477/486] ----  orbeetle               no hay sprite de Negro/Blanco en la wiki
+[478/486] ----  snom                   no hay sprite de Negro/Blanco en la wiki
+[479/486] ----  frosmoth               no hay sprite de Negro/Blanco en la wiki
+[480/486] ----  dreepy                 no hay sprite de Negro/Blanco en la wiki
+[481/486] ----  drakloak               no hay sprite de Negro/Blanco en la wiki
+[482/486] ----  dragapult              no hay sprite de Negro/Blanco en la wiki
+[483/486]  ok   regirock               1 fichero(s), 13 colores
+[484/486]  ok   regice                 1 fichero(s), 11 colores
+[485/486]  ok   registeel              1 fichero(s), 14 colores
+[486/486] FALLO regigigas              exceso de colores en el macho: 35, caben 15
+
+======================================================================
+PROCESADAS BIEN : 422
+SIN SPRITE EN BW: 41  (formas regionales y especies de 6a en adelante)
+NO CABEN        : 23
+
+--- las que no caben, con la causa ---
+  butterfree             exceso de colores en la hembra: 16, caben 15
+  fearow                 anim_front.png: exceso de alto: 100 px, caben 96
+  golbat                 anim_frontf.png: exceso de ancho: 109 px, caben 96
+  kingdra                exceso de colores en el macho: 22, caben 15
+  gyarados               anim_front.png: exceso de ancho: 102 px, caben 96
+  moltres                anim_front.png: exceso de ancho: 120 px, caben 96
+  xatu                   exceso de colores en el macho: 16, caben 15
+  flaaffy                exceso de colores en el macho: 21, caben 15
+  stantler               exceso de colores en el macho: 17, caben 15
+  raikou                 exceso de colores en el macho: 26, caben 15
+  lugia                  anim_front.png: exceso de ancho: 153 px, caben 96
+  ho_oh                  anim_front.png: exceso de ancho: 107 px, caben 96
+  blaziken               exceso de colores en el macho: 17, caben 15
+  shiftry                anim_front.png: exceso de ancho: 97 px, caben 96
+  gallade                exceso de colores en el macho: 17, caben 15
+  probopass              exceso de colores en el macho: 19, caben 15
+  rayquaza               anim_front.png: exceso de ancho: 109 px, caben 96
+  kricketune             exceso de colores en el macho: 16, caben 15
+  vespiquen              exceso de colores en el macho: 16, caben 15
+  heatran                exceso de colores en el macho: 17, caben 15
+  cofagrigus             anim_front.png: exceso de ancho: 114 px, caben 96
+  ferroseed              exceso de colores en el macho: 17, caben 15
+  regigigas              exceso de colores en el macho: 35, caben 15
+
+--- sin sprite en Negro/Blanco ---
+  raichu_alola, sandshrew_alola, sandslash_alola, vulpix_alola, ninetales_alola, annihilape, growlithe_hisui, arcanine_hisui, marowak_alola, weezing_galar, kleavor, sylveon, sneasler, wyrdeer, fennekin, braixen, delphox, fletchling, fletchinder, talonflame, tyrunt, tyrantrum, amaura, aurorus, rowlet, dartrix, decidueye, jangmo_o, hakamo_o, kommo_o, rookidee, corvisquire, corviknight, blipbug, dottler, orbeetle, snom, frosmoth, dreepy, drakloak, dragapult
+
+Guiones de animacion en desarrollo/pokemon/anims_generados.h

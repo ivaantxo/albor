@@ -26,6 +26,7 @@
 #include "pokemon.h"
 #include "pokemon_animation.h"
 #include "pokemon_sprite_visualizer.h"
+#include "pic_combate.h"
 #include "pokemon_icon.h"
 #include "reset_rtc_screen.h"
 #include "distorsion_fondo.h"
@@ -1179,7 +1180,11 @@ void CB2_Pokemon_Sprite_Visualizer(void)
             LoadSpritePaletteWithTag(palette, species);
             LoadPalette(palette, OBJ_PLTT_ID(0), PLTT_SIZE_4BPP);
             //Front
-            HandleLoadSpecialPokePic(TRUE, gMonSpritesGfxPtr->spritesGfx[1], species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY));
+            PreparaHuecoPic(1, species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY), TRUE);
+            PreparaHuecoPic(1, species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY), TRUE);
+    HandleLoadSpecialPokePic(TRUE, gMonSpritesGfxPtr->spritesGfx[1], species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY));
+    AjustaFotogramasPic(1, species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY), TRUE);
+            AjustaFotogramasPic(1, species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY), TRUE);
             data->isShiny = FALSE;
             data->isFemale = FALSE;
             BattleLoadOpponentMonSpriteGfxCustom(species, data->isFemale, data->isShiny, 1);
@@ -1187,6 +1192,12 @@ void CB2_Pokemon_Sprite_Visualizer(void)
             gMultiuseSpriteTemplate.paletteTag = species;
             front_y = GetBattlerSpriteFinal_YCustom(species, 0, 0);
             data->frontspriteId = CreateSprite(&gMultiuseSpriteTemplate, front_x, front_y, 0);
+    AplicaSubspritesPic(data->frontspriteId);
+    // El mismo bucle continuo que en combate: anims[1] es la secuencia de la especie
+    // y termina en ANIMCMD_JUMP, asi que gira sola. Sin quitarle la pausa se quedaria
+    // congelada en la pose de reposo y no se podria juzgar la animacion.
+    StartSpriteAnim(&gSprites[data->frontspriteId], 1);
+    gSprites[data->frontspriteId].animPaused = FALSE;
             gSprites[data->frontspriteId].oam.paletteNum = 0;
             gSprites[data->frontspriteId].callback = SpriteCallbackDummy;
             gSprites[data->frontspriteId].oam.priority = 0;
@@ -1200,11 +1211,24 @@ void CB2_Pokemon_Sprite_Visualizer(void)
             LoadAndCreateEnemyShadowSpriteCustom(data, species);
 
             //Back
-            HandleLoadSpecialPokePic(FALSE, gMonSpritesGfxPtr->spritesGfx[2], species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY));
+            PreparaHuecoPic(2, species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY), FALSE);
+            PreparaHuecoPic(2, species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY), FALSE);
+    HandleLoadSpecialPokePic(FALSE, gMonSpritesGfxPtr->spritesGfx[2], species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY));
+    AjustaFotogramasPic(2, species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY), FALSE);
+            AjustaFotogramasPic(2, species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY), FALSE);
             BattleLoadOpponentMonSpriteGfxCustom(species, data->isFemale, data->isShiny, 4);
             SetMultiuseSpriteTemplateToPokemon(species, 2);
             offset_y = gSpeciesInfo[species].backPicYOffset;
             data->backspriteId = CreateSprite(&gMultiuseSpriteTemplate, VISUALIZER_MON_BACK_X, VISUALIZER_MON_BACK_Y + offset_y, 0);
+    AplicaSubspritesPic(data->backspriteId);
+    // El back comparte gAnims_MonPic con todas las especies, asi que su vaiven va en
+    // otro indice que el del frontal. Solo tiene sentido si el pic es de los grandes.
+    if (gSprites[data->backspriteId].images != NULL
+     && gSprites[data->backspriteId].images->size == PIC_GRANDE_BYTES)
+    {
+        StartSpriteAnim(&gSprites[data->backspriteId], ANIM_ESPALDA_BUCLE);
+        gSprites[data->backspriteId].animPaused = FALSE;
+    }
             gSprites[data->backspriteId].oam.paletteNum = 0;
             gSprites[data->backspriteId].callback = SpriteCallbackDummy;
             gSprites[data->backspriteId].oam.priority = 0;
@@ -1818,12 +1842,20 @@ static void ReloadPokemonSprites(struct PokemonSpriteVisualizer *data)
     LoadSpritePaletteWithTag(palette, species);
     LoadPalette(palette, OBJ_PLTT_ID(0), PLTT_SIZE_4BPP);
     //Front
+    PreparaHuecoPic(1, species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY), TRUE);
     HandleLoadSpecialPokePic(TRUE, gMonSpritesGfxPtr->spritesGfx[1], species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY));
+    AjustaFotogramasPic(1, species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY), TRUE);
     BattleLoadOpponentMonSpriteGfxCustom(species, data->isFemale, data->isShiny, 1);
     SetMultiuseSpriteTemplateToPokemon(species, 1);
     gMultiuseSpriteTemplate.paletteTag = species;
     front_y = GetBattlerSpriteFinal_YCustom(species, 0, 0);
     data->frontspriteId = CreateSprite(&gMultiuseSpriteTemplate, front_x, front_y, 0);
+    AplicaSubspritesPic(data->frontspriteId);
+    // El mismo bucle continuo que en combate: anims[1] es la secuencia de la especie
+    // y termina en ANIMCMD_JUMP, asi que gira sola. Sin quitarle la pausa se quedaria
+    // congelada en la pose de reposo y no se podria juzgar la animacion.
+    StartSpriteAnim(&gSprites[data->frontspriteId], 1);
+    gSprites[data->frontspriteId].animPaused = FALSE;
     gSprites[data->frontspriteId].oam.paletteNum = 0;
     personality = Random();
     DesplazaTonoPaleta(OBJ_PLTT_ID(0), personality);
@@ -1833,11 +1865,22 @@ static void ReloadPokemonSprites(struct PokemonSpriteVisualizer *data)
     LoadAndCreateEnemyShadowSpriteCustom(data, species);
 
     //Back
+    PreparaHuecoPic(2, species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY), FALSE);
     HandleLoadSpecialPokePic(FALSE, gMonSpritesGfxPtr->spritesGfx[2], species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY));
+    AjustaFotogramasPic(2, species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY), FALSE);
     BattleLoadOpponentMonSpriteGfxCustom(species, data->isFemale, data->isShiny, 5);
     SetMultiuseSpriteTemplateToPokemon(species, 2);
     offset_y = gSpeciesInfo[species].backPicYOffset;
     data->backspriteId = CreateSprite(&gMultiuseSpriteTemplate, VISUALIZER_MON_BACK_X, VISUALIZER_MON_BACK_Y + offset_y, 0);
+    AplicaSubspritesPic(data->backspriteId);
+    // El back comparte gAnims_MonPic con todas las especies, asi que su vaiven va en
+    // otro indice que el del frontal. Solo tiene sentido si el pic es de los grandes.
+    if (gSprites[data->backspriteId].images != NULL
+     && gSprites[data->backspriteId].images->size == PIC_GRANDE_BYTES)
+    {
+        StartSpriteAnim(&gSprites[data->backspriteId], ANIM_ESPALDA_BUCLE);
+        gSprites[data->backspriteId].animPaused = FALSE;
+    }
     gSprites[data->backspriteId].oam.paletteNum = 0;
     gSprites[data->backspriteId].callback = SpriteCallbackDummy;
     gSprites[data->backspriteId].oam.priority = 0;

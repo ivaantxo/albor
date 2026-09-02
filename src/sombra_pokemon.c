@@ -1,5 +1,6 @@
 #include "global.h"
 #include "sombra_pokemon.h"
+#include "pic_combate.h"
 #include "gpu_regs.h"
 #include "palette.h"
 #include "sprite.h"
@@ -261,6 +262,38 @@ void ColocaSombraPokemon(struct Sprite *sombra, const struct Sprite *dueno, s32 
     // sprite del Pokemon cambia de fotograma al animarse, y asi la silueta lo
     // sigue sin que haya que enterarse de nada.
     sombra->oam.tileNum = dueno->oam.tileNum;
+
+    // Si el dueno es de los grandes, su imagen no cabe en un solo objeto: esta
+    // repartida en piezas y sus tiles reordenados para que cada una lea los suyos.
+    // La sombra tiene que usar el mismo reparto o leeria solo el primer cuadrante,
+    // que en un Pokemon apoyado al suelo esta medio vacio, y esparciria esos restos
+    // por el campo. Las piezas conviven con la matriz de la sombra porque el emisor
+    // de subsprites ya coloca cada una pasando su desplazamiento por la inversa.
+    // Interruptor de prueba: a 0, la sombra vuelve a leer solo el primer cuadrante
+    // (rota, pero gasta una entrada de OAM en vez de cuatro).
+#define SOMBRA_PIEZAS_GRANDES 0
+
+#if SOMBRA_PIEZAS_GRANDES
+    {
+        const struct SubspriteTable *piezas = (dueno->images != NULL)
+                                            ? SubspritesPicCombate(dueno->images->size)
+                                            : NULL;
+
+        if (piezas != NULL)
+        {
+            if (sombra->subspriteTables != piezas)
+            {
+                SetSubspriteTables(sombra, piezas);
+                sombra->subspriteMode = SUBSPRITES_IGNORE_PRIORITY;
+            }
+        }
+        else if (sombra->subspriteTables != NULL)
+        {
+            sombra->subspriteTables = NULL;
+            sombra->subspriteMode = SUBSPRITES_OFF;
+        }
+    }
+#endif
 
     sombra->x = dueno->x + desplazamientoX + sombra->sSombraCorreccionX;
     sombra->y = dueno->y + desplazamientoY + sombra->sSombraCorreccionY;

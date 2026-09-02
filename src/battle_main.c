@@ -937,6 +937,13 @@ static void SpriteCB_ZoomEntradaSalvaje(struct Sprite *sprite)
     TerminaZoomEntrada(sprite);
 }
 
+// El zoom de entrada usa una matriz afin, y a un pic repartido en piezas -los de
+// 96x96- eso le abre costuras: los OBJ de GBA anclan el muestreo a una posicion entera
+// y no admiten medio pixel. Apagado mientras se prueba la animacion por fotogramas.
+// El codigo se queda entero; cuando haga falta, el sitio donde recuperarlo es una capa
+// de fondo afin, que si tiene precision subpixel. Ver include/pic_combate.h.
+#define ZOOM_ENTRADA_ACTIVO 0
+
 void SpriteCB_WildMon(struct Sprite *sprite)
 {
     // Quieto y en su pose normal: no se anima nada hasta que esta colocado.
@@ -949,8 +956,8 @@ void SpriteCB_WildMon(struct Sprite *sprite)
     sprite->sZoomPaso = 0;
 
     // Sin matriz libre no hay primer plano, pero el combate tiene que seguir: se
-    // queda en su sitio y a otra cosa.
-    if (!ArrancaZoom(sprite))
+    // queda en su sitio y a otra cosa. Lo mismo cuando el zoom esta apagado.
+    if (!ZOOM_ENTRADA_ACTIVO || !ArrancaZoom(sprite))
     {
         TerminaZoomEntrada(sprite);
         return;

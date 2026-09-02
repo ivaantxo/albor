@@ -2,6 +2,7 @@
 #include "sombra_pokemon.h"
 #include "depuracion_mgba.h"
 #include "battle.h"
+#include "pic_combate.h"
 #include "battle_controllers.h"
 #include "battle_ai_main.h"
 #include "battle_anim.h"
@@ -290,6 +291,13 @@ bool8 IsBattleSEPlaying(u8 battler)
     return TRUE;
 }
 
+
+// Deja los dos fotogramas del combatiente apuntando al sitio correcto dentro de su
+// hueco, con el tamano que le toca a esta especie, y recoloca los tiles si el pic es
+// de los grandes. Hay que hacerlo aqui y no al reservar: hasta que no se sabe que
+// Pokemon entra no se sabe cuanto ocupa.
+// Cuanto sitio tiene el hueco de un combatiente. Todo lo que se descomprima ahi tiene
+// que caber, porque los cuatro huecos son consecutivos y pasarse pisa al de al lado.
 void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
 {
     u32 monsPersonality, currentPersonality, isShiny, species, paletteOffset, position;
@@ -310,15 +318,19 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
     position = battler;
     if (GetBattlerSide(battler) == LADO_OPONENTE)
     {
+        PreparaHuecoPic(position, species, currentPersonality, TRUE);
         HandleLoadSpecialPokePic(TRUE,
                                  gMonSpritesGfxPtr->spritesGfx[position],
                                  species, currentPersonality);
+        AjustaFotogramasPic(position, species, currentPersonality, TRUE);
     }
     else
     {
+        PreparaHuecoPic(position, species, currentPersonality, FALSE);
         HandleLoadSpecialPokePic(FALSE,
                                  gMonSpritesGfxPtr->spritesGfx[position],
                                  species, currentPersonality);
+        AjustaFotogramasPic(position, species, currentPersonality, FALSE);
     }
 
     paletteOffset = OBJ_PLTT_ID(battler);
@@ -517,6 +529,10 @@ void BattleLoadSubstituteOrMonSpriteGfx(u8 battler, bool8 loadMonSprite)
     if (!loadMonSprite)
     {
         position = battler;
+
+        // El sustituto tambien escribe en el hueco, y puede llegar antes de que
+        // ningun pic lo haya pedido.
+        HuecoPic(position, MON_PIC_SIZE * NUMERO_FRAMES_POKEMON);
 
         if (GetBattlerSide(battler) != LADO_JUGADOR)
             LZDecompressVram(gBattleAnimSpriteGfx_Substitute, gMonSpritesGfxPtr->spritesGfx[position]);
@@ -803,20 +819,32 @@ void AllocateMonSpritesGfx(void)
 {
     gMonSpritesGfxPtr = NULL;
     gMonSpritesGfxPtr = AllocZeroed(sizeof(*gMonSpritesGfxPtr));
-    gMonSpritesGfxPtr->firstDecompressed = AllocZeroed(MON_PIC_SIZE * NUMERO_FRAMES_POKEMON * NUMERO_COMBATIENTES);
+    // Un hueco por combatiente, reservado aparte y del tamano minimo. Antes se
+    // reservaba de golpe el caso peor para los cuatro -el pic mas grande por el numero
+    // de fotogramas-, y eso son 73 KB de los 114 del monton. Con tanto ocupado, las
+    // reservas pequenas de despues empiezan a fallar: las ventanas del nombre y el
+    // nivel de las cajas de vida se quedan sin dibujar, y el buffer de trabajo del
+    // reordenado tampoco cabe. Ninguna de las dos cosas avisa, simplemente no pasan.
+    gMonSpritesGfxPtr->firstDecompressed = NULL;
 
     for (u32 indiceCombatiente = 0; indiceCombatiente < NUMERO_COMBATIENTES; indiceCombatiente++)
     {
-        gMonSpritesGfxPtr->spritesGfx[indiceCombatiente] = gMonSpritesGfxPtr->firstDecompressed + (indiceCombatiente * MON_PIC_SIZE * NUMERO_FRAMES_POKEMON);
+        // Nada de reservar por adelantado: cada hueco se pide una sola vez, cuando
+        // se sabe que Pokemon entra y cuanto ocupa. Ver HuecoPic en pic_combate.c.
+        gMonSpritesGfxPtr->spritesGfx[indiceCombatiente] = NULL;
+        gMonSpritesGfxPtr->tamanoHueco[indiceCombatiente] = 0;
         gMonSpritesGfxPtr->templates[indiceCombatiente] = gBattlerSpriteTemplates[indiceCombatiente];
 
+        // El tamano hay que dejarlo puesto SIEMPRE, aunque el hueco todavia no
+        // exista. Si un sprite se crea antes de que se cargue su pic y encuentra aqui
+        // un cero, pide cero tiles... y pedir cero tiles no significa "ninguno": el
+        // repartidor lo interpreta como "libera el mapa entero". A partir de ahi
+        // reparte sitio que ya era de otro y se pisan marcadores, backs y frontales.
+        // AjustaFotogramasPic lo recoloca con el tamano de verdad al cargar cada uno.
         for (u32 frameCombatiente = 0; frameCombatiente < NUMERO_FRAMES_POKEMON; frameCombatiente++)
         {
-            if (gMonSpritesGfxPtr->spritesGfx[indiceCombatiente])
-            {
-                gMonSpritesGfxPtr->frameImages[indiceCombatiente][frameCombatiente].data = gMonSpritesGfxPtr->spritesGfx[indiceCombatiente] + (frameCombatiente * MON_PIC_SIZE);
-                gMonSpritesGfxPtr->frameImages[indiceCombatiente][frameCombatiente].size = MON_PIC_SIZE;
-            }
+            gMonSpritesGfxPtr->frameImages[indiceCombatiente][frameCombatiente].data = NULL;
+            gMonSpritesGfxPtr->frameImages[indiceCombatiente][frameCombatiente].size = MON_PIC_SIZE;
         }
         
         gMonSpritesGfxPtr->templates[indiceCombatiente].images = gMonSpritesGfxPtr->frameImages[indiceCombatiente];
@@ -829,11 +857,11 @@ void FreeMonSpritesGfx(void)
         return;
 
     TRY_FREE_AND_SET_NULL(gMonSpritesGfxPtr->buffer);
-    FREE_AND_SET_NULL(gMonSpritesGfxPtr->firstDecompressed);
-    gMonSpritesGfxPtr->spritesGfx[JUGADOR_IZQUIERDA] = NULL;
-    gMonSpritesGfxPtr->spritesGfx[OPONENTE_IZQUIERDA] = NULL;
-    gMonSpritesGfxPtr->spritesGfx[JUGADOR_DERECHA] = NULL;
-    gMonSpritesGfxPtr->spritesGfx[OPONENTE_DERECHA] = NULL;
+    for (u32 i = 0; i < NUMERO_COMBATIENTES; i++)
+    {
+        TRY_FREE_AND_SET_NULL(gMonSpritesGfxPtr->spritesGfx[i]);
+        gMonSpritesGfxPtr->tamanoHueco[i] = 0;
+    }
     FREE_AND_SET_NULL(gMonSpritesGfxPtr);
 }
 

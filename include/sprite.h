@@ -251,6 +251,9 @@ struct Sprite
     u32 subspriteTableNum;
     u32 subspriteMode;
 
+    u32 subspriteTableNum;
+    u32 subspriteMode;
+
     u32 subpriority;
 };
 
