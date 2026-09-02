@@ -1,73 +1,74 @@
 #ifndef GUARD_FIELD_EFFECT_CONSTANTS_H
 #define GUARD_FIELD_EFFECT_CONSTANTS_H
 
-#define FLDEFF_EXCLAMATION_MARK_ICON     0
-#define FLDEFF_USE_CUT_ON_GRASS          1
-#define FLDEFF_USE_CUT_ON_TREE           2
-#define FLDEFF_SHADOW                    3
-#define FLDEFF_TALL_GRASS                4
-#define FLDEFF_RIPPLE                    5
-#define FLDEFF_FIELD_MOVE_SHOW_MON       6
-#define FLDEFF_ASH                       7
-#define FLDEFF_SURF_BLOB                 8
-#define FLDEFF_USE_SURF                  9
-#define FLDEFF_DUST                      10
-#define FLDEFF_USE_SECRET_POWER_CAVE     11
-#define FLDEFF_JUMP_TALL_GRASS           12
-#define FLDEFF_SAND_FOOTPRINTS           13
-#define FLDEFF_JUMP_BIG_SPLASH           14
-#define FLDEFF_SPLASH                    15
-#define FLDEFF_JUMP_SMALL_SPLASH         16
-#define FLDEFF_LONG_GRASS                17
-#define FLDEFF_JUMP_LONG_GRASS           18
-#define FLDEFF_WATER_SURFACING           19
-#define FLDEFF_BERRY_TREE_GROWTH_SPARKLE 20
-#define FLDEFF_DEEP_SAND_FOOTPRINTS      21
-#define FLDEFF_POKECENTER_HEAL           22
-#define FLDEFF_USE_SECRET_POWER_TREE     23
-#define FLDEFF_USE_SECRET_POWER_SHRUB    24
-#define FLDEFF_TREE_DISGUISE             25
-#define FLDEFF_MOUNTAIN_DISGUISE         26
-#define FLDEFF_NPCFLY_OUT                27
-#define FLDEFF_USE_FLY                   28
-#define FLDEFF_FLY_IN                    29
-#define FLDEFF_QUESTION_MARK_ICON        30
-#define FLDEFF_EMOTE                     30 // shares a slot with FLDEFF_QUESTION_MARK_ICON
-#define FLDEFF_FEET_IN_FLOWING_WATER     31
-#define FLDEFF_BIKE_TIRE_TRACKS          32
-#define FLDEFF_SAND_DISGUISE             33
-#define FLDEFF_USE_ROCK_SMASH            34
-#define FLDEFF_USE_DIG                   35
-#define FLDEFF_SAND_PILE                 36
-#define FLDEFF_USE_STRENGTH              37
-#define FLDEFF_SHORT_GRASS               38
-#define FLDEFF_HOT_SPRINGS_WATER         39
-#define FLDEFF_USE_WATERFALL             40
-#define FLDEFF_USE_DIVE                  41
-#define FLDEFF_POKEBALL_TRAIL            42
-#define FLDEFF_HEART_ICON                43
-#define FLDEFF_ASH_PUFF                  44
-#define FLDEFF_ASH_LAUNCH                45
-#define FLDEFF_SAND_PILLAR               47
-#define FLDEFF_BUBBLES                   48
-#define FLDEFF_SPARKLE                   49
-#define FLDEFF_SECRET_POWER_CAVE         50
-#define FLDEFF_SECRET_POWER_TREE         51
-#define FLDEFF_SECRET_POWER_SHRUB        52
-#define FLDEFF_CUT_GRASS                 53
-#define FLDEFF_FIELD_MOVE_SHOW_MON_INIT  54
-#define FLDEFF_PCTURN_ON                 56
-#define FLDEFF_HALL_OF_FAME_RECORD       57
-#define FLDEFF_USE_TELEPORT              58
-#define FLDEFF_RAYQUAZA_SPOTLIGHT        59
-#define FLDEFF_DESTROY_DEOXYS_ROCK       60
-#define FLDEFF_MOVE_DEOXYS_ROCK          61
-#define FLDEFF_USE_VS_SEEKER             62
-#define FLDEFF_X_ICON                    63
-#define FLDEFF_DOUBLE_EXCL_MARK_ICON     64
-#define FLDEFF_TRACKS_SLITHER            65
-#define FLDEFF_TRACKS_SPOT               67
-#define FLDEFF_TRACKS_BUG                66
+// Los efectos de campo. La posicion es la id: los scripts de mapa lanzan por
+// numero con dofieldeffect, y FieldEffectActiveListContains espera por id.
+//
+// Se fueron ocho que no hacian nada -restos de las bases secretas- y que
+// ademas no referenciaba nadie.
+enum EfectosDeCampo
+{
+    FLDEFF_EXCLAMATION_MARK_ICON,
+    FLDEFF_USE_CUT_ON_GRASS,
+    FLDEFF_USE_CUT_ON_TREE,
+    FLDEFF_SHADOW,
+    FLDEFF_TALL_GRASS,
+    FLDEFF_RIPPLE,
+    FLDEFF_FIELD_MOVE_SHOW_MON,
+    FLDEFF_ASH,
+    FLDEFF_USE_SURF,
+    FLDEFF_DUST,
+    FLDEFF_JUMP_TALL_GRASS,
+    FLDEFF_SAND_FOOTPRINTS,
+    FLDEFF_JUMP_BIG_SPLASH,
+    FLDEFF_SPLASH,
+    FLDEFF_JUMP_SMALL_SPLASH,
+    FLDEFF_LONG_GRASS,
+    FLDEFF_JUMP_LONG_GRASS,
+    FLDEFF_WATER_SURFACING,
+    FLDEFF_BERRY_TREE_GROWTH_SPARKLE,
+    FLDEFF_DEEP_SAND_FOOTPRINTS,
+    FLDEFF_POKECENTER_HEAL,
+    FLDEFF_NPCFLY_OUT,
+    FLDEFF_USE_FLY,
+    FLDEFF_FLY_IN,
+    FLDEFF_QUESTION_MARK_ICON,
+    FLDEFF_FEET_IN_FLOWING_WATER,
+    FLDEFF_BIKE_TIRE_TRACKS,
+    FLDEFF_SAND_DISGUISE,
+    FLDEFF_USE_ROCK_SMASH,
+    FLDEFF_USE_DIG,
+    FLDEFF_SAND_PILE,
+    FLDEFF_USE_STRENGTH,
+    FLDEFF_SHORT_GRASS,
+    FLDEFF_HOT_SPRINGS_WATER,
+    FLDEFF_USE_WATERFALL,
+    FLDEFF_USE_DIVE,
+    FLDEFF_POKEBALL_TRAIL,
+    FLDEFF_HEART_ICON,
+    FLDEFF_ASH_PUFF,
+    FLDEFF_ASH_LAUNCH,
+    FLDEFF_BUBBLES,
+    FLDEFF_SPARKLE,
+    FLDEFF_CUT_GRASS,
+    FLDEFF_FIELD_MOVE_SHOW_MON_INIT,
+    FLDEFF_HALL_OF_FAME_RECORD,
+    FLDEFF_USE_TELEPORT,
+    FLDEFF_RAYQUAZA_SPOTLIGHT,
+    FLDEFF_DESTROY_DEOXYS_ROCK,
+    FLDEFF_MOVE_DEOXYS_ROCK,
+    FLDEFF_USE_VS_SEEKER,
+    FLDEFF_X_ICON,
+    FLDEFF_DOUBLE_EXCL_MARK_ICON,
+    FLDEFF_TRACKS_SLITHER,
+    FLDEFF_TRACKS_BUG,
+    FLDEFF_TRACKS_SPOT,
+    NUMERO_EFECTOS_CAMPO,
+};
+
+// Mismo efecto y misma ranura: el icono de interrogacion es el que se usa
+// para las emociones de los personajes.
+#define FLDEFF_EMOTE FLDEFF_QUESTION_MARK_ICON
 
 #define FLDEFFOBJ_SHADOW_S              0
 #define FLDEFFOBJ_SHADOW_M              1
@@ -76,7 +77,6 @@
 #define FLDEFFOBJ_TALL_GRASS            4
 #define FLDEFFOBJ_RIPPLE                5
 #define FLDEFFOBJ_ASH                   6
-#define FLDEFFOBJ_SURF_BLOB             7
 #define FLDEFFOBJ_ARROW                 8
 #define FLDEFFOBJ_GROUND_IMPACT_DUST    9
 #define FLDEFFOBJ_JUMP_TALL_GRASS       10

@@ -36,14 +36,14 @@ static void FieldCallback_Dig(void)
     ScriptContext_SetupScript(EventScript_UseDig);
 }
 
-bool8 FldEff_UseDig(void)
+void FldEff_UseDig(void)
 {
     u8 taskId = CreateFieldMoveTask();
 
     gTasks[taskId].data[8] = (u32)StartDigFieldEffect >> 16;
     gTasks[taskId].data[9] = (u32)StartDigFieldEffect;
     SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_ON_FOOT);
-    return FALSE;
+    return;
 }
 
 static void StartDigFieldEffect(void)

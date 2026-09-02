@@ -23,7 +23,7 @@ static u8 CheckPathBetweenTrainerAndPlayer(struct ObjectEvent *trainerObj, u8 ap
 static void InitTrainerApproachTask(struct ObjectEvent *trainerObj, u8 range);
 static void Task_RunTrainerSeeFuncList(u8 taskId);
 static void Task_EndTrainerApproach(u8 taskId);
-static void SetIconSpriteData(struct Sprite *sprite, u16 fldEffId, u8 spriteAnimNum);
+static void SetIconSpriteData(struct Sprite *sprite, u16 fldEffId, u8 spriteAnimNum, u8 localId, u8 mapNum, u8 mapGroup);
 
 static u8 GetTrainerApproachDistanceSouth(struct ObjectEvent *trainerObj, s16 range, s16 x, s16 y);
 static u8 GetTrainerApproachDistanceNorth(struct ObjectEvent *trainerObj, s16 range, s16 x, s16 y);
@@ -549,8 +549,7 @@ static bool8 TrainerExclamationMark(u8 taskId, struct Task *task, struct ObjectE
 {
     u8 direction;
 
-    ObjectEventGetLocalIdAndMap(trainerObj, &gFieldEffectArguments[0], &gFieldEffectArguments[1], &gFieldEffectArguments[2]);
-    FieldEffectStart(FLDEFF_EXCLAMATION_MARK_ICON);
+    FldEff_ExclamationMarkIcon(trainerObj->localId, trainerObj->mapNum, trainerObj->mapGroup);
     direction = GetFaceDirectionMovementAction(trainerObj->facingDirection);
     ObjectEventSetHeldMovement(trainerObj, direction);
     task->tFuncId++; // TRSEE_EXCLAMATION_WAIT
@@ -666,11 +665,8 @@ static bool8 PopOutOfAshBuriedTrainer(u8 taskId, struct Task *task, struct Objec
 {
     if (ObjectEventCheckHeldMovementStatus(trainerObj))
     {
-        gFieldEffectArguments[0] = trainerObj->currentCoords.x;
-        gFieldEffectArguments[1] = trainerObj->currentCoords.y;
-        gFieldEffectArguments[2] = gSprites[trainerObj->spriteId].subpriority - 1;
-        gFieldEffectArguments[3] = 2;
-        task->tOutOfAshSpriteId = FieldEffectStart(FLDEFF_ASH_PUFF);
+        task->tOutOfAshSpriteId = FldEff_AshPuff(trainerObj->currentCoords.x, trainerObj->currentCoords.y,
+                                                 gSprites[trainerObj->spriteId].subpriority - 1, 2);
         task->tFuncId++;
     }
     return FALSE;
@@ -759,88 +755,98 @@ static void Task_EndTrainerApproach(u8 taskId)
 #define sYOffset    data[4]
 #define sFldEffId   data[7]
 
-u8 FldEff_ExclamationMarkIcon(void)
+void FldEff_ExclamationMarkIcon(u8 localId, u8 mapNum, u8 mapGroup)
 {
+    FieldEffectActiveListAdd(FLDEFF_EXCLAMATION_MARK_ICON);
+
     u32 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_ExclamationQuestionMark, 0, 0, 0x53);
 
     if (spriteId != MAX_SPRITES)
     {
-        SetIconSpriteData(&gSprites[spriteId], FLDEFF_EXCLAMATION_MARK_ICON, 0);
+        SetIconSpriteData(&gSprites[spriteId], FLDEFF_EXCLAMATION_MARK_ICON, 0, localId, mapNum, mapGroup);
         UpdateSpritePaletteByTemplate(&sSpriteTemplate_ExclamationQuestionMark, &gSprites[spriteId]);
     }
 
-    return 0;
+    return;
 }
 
-u8 FldEff_QuestionMarkIcon(void)
+void FldEff_QuestionMarkIcon(u8 localId, u8 mapNum, u8 mapGroup, s8 emocion)
 {
+    FieldEffectActiveListAdd(FLDEFF_QUESTION_MARK_ICON);
+
     u32 spriteId;
-    if (gFieldEffectArguments[7] >= 0)
+    if (emocion >= 0)
     {
         // Use follower emotes
-        u8 emotion = gFieldEffectArguments[7];
+        u8 emotion = emocion;
         spriteId = CreateSpriteAtEnd(&sSpriteTemplate_Emote, 0, 0, 0x52);
         if (spriteId == MAX_SPRITES)
-            return 0;
-        SetIconSpriteData(&gSprites[spriteId], FLDEFF_EMOTE, emotion); // Set animation based on emotion
+            return;
+        SetIconSpriteData(&gSprites[spriteId], FLDEFF_EMOTE, emotion, localId, mapNum, mapGroup); // Set animation based on emotion
         UpdateSpritePaletteByTemplate(&sSpriteTemplate_Emote, &gSprites[spriteId]);
-        return 0;
+        return;
     }
     spriteId = CreateSpriteAtEnd(&sSpriteTemplate_ExclamationQuestionMark, 0, 0, 0x52);
 
     if (spriteId != MAX_SPRITES)
     {
-        SetIconSpriteData(&gSprites[spriteId], FLDEFF_QUESTION_MARK_ICON, 1);
+        SetIconSpriteData(&gSprites[spriteId], FLDEFF_QUESTION_MARK_ICON, 1, localId, mapNum, mapGroup);
         UpdateSpritePaletteByTemplate(&sSpriteTemplate_ExclamationQuestionMark, &gSprites[spriteId]);
     }
 
-    return 0;
+    return;
 }
 
-u8 FldEff_HeartIcon(void)
+void FldEff_HeartIcon(u8 localId, u8 mapNum, u8 mapGroup)
 {
+    FieldEffectActiveListAdd(FLDEFF_HEART_ICON);
+
     u32 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_HeartIcon, 0, 0, 0x52);
 
     if (spriteId != MAX_SPRITES)
     {
         struct Sprite *sprite = &gSprites[spriteId];
 
-        SetIconSpriteData(sprite, FLDEFF_HEART_ICON, 0);
+        SetIconSpriteData(sprite, FLDEFF_HEART_ICON, 0, localId, mapNum, mapGroup);
         UpdateSpritePaletteByTemplate(&sSpriteTemplate_HeartIcon, sprite);
     }
 
-    return 0;
+    return;
 }
 
 
-u8 FldEff_DoubleExclMarkIcon(void)
+void FldEff_DoubleExclMarkIcon(u8 localId, u8 mapNum, u8 mapGroup)
 {
+    FieldEffectActiveListAdd(FLDEFF_DOUBLE_EXCL_MARK_ICON);
+
     u32 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_ExclamationQuestionMark, 0, 0, 0x53);
 
     if (spriteId != MAX_SPRITES)
-        SetIconSpriteData(&gSprites[spriteId], FLDEFF_EXCLAMATION_MARK_ICON, 2);
+        SetIconSpriteData(&gSprites[spriteId], FLDEFF_EXCLAMATION_MARK_ICON, 2, localId, mapNum, mapGroup);
 
-    return 0;
+    return;
 }
 
-u8 FldEff_XIcon(void)
+void FldEff_XIcon(u8 localId, u8 mapNum, u8 mapGroup)
 {
+    FieldEffectActiveListAdd(FLDEFF_X_ICON);
+
     u32 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_ExclamationQuestionMark, 0, 0, 0x53);
 
     if (spriteId != MAX_SPRITES)
-        SetIconSpriteData(&gSprites[spriteId], FLDEFF_EXCLAMATION_MARK_ICON, 3);
+        SetIconSpriteData(&gSprites[spriteId], FLDEFF_EXCLAMATION_MARK_ICON, 3, localId, mapNum, mapGroup);
 
-    return 0;
+    return;
 }
 
-static void SetIconSpriteData(struct Sprite *sprite, u16 fldEffId, u8 spriteAnimNum)
+static void SetIconSpriteData(struct Sprite *sprite, u16 fldEffId, u8 spriteAnimNum, u8 localId, u8 mapNum, u8 mapGroup)
 {
     sprite->oam.priority = 1;
     sprite->coordOffsetEnabled = 1;
 
-    sprite->sLocalId = gFieldEffectArguments[0];
-    sprite->sMapNum = gFieldEffectArguments[1];
-    sprite->sMapGroup = gFieldEffectArguments[2];
+    sprite->sLocalId = localId;
+    sprite->sMapNum = mapNum;
+    sprite->sMapGroup = mapGroup;
     sprite->sYVelocity = -5;
     sprite->sFldEffId = fldEffId;
 

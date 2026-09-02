@@ -152,7 +152,6 @@ static void DoGroundEffects_OnBeginStep(struct ObjectEvent *, struct Sprite *);
 static void DoGroundEffects_OnFinishStep(struct ObjectEvent *, struct Sprite *);
 static void VirtualObject_UpdateAnim(struct Sprite *);
 static void ApplyLevitateMovement(u8);
-static bool8 MovementType_Disguise_Callback(struct ObjectEvent *, struct Sprite *);
 static bool8 MovementType_Buried_Callback(struct ObjectEvent *, struct Sprite *);
 static void CreateReflectionEffectSprites(void);
 static u32 GetObjectEventIdByLocalIdAndMapInternal(u32 localId, u32 mapNum, u32 mapGroupId);
@@ -300,8 +299,6 @@ static void (*const sMovementTypeCallbacks[])(struct Sprite *) =
         [MOVEMENT_TYPE_COPY_PLAYER_OPPOSITE] = MovementType_CopyPlayer,
         [MOVEMENT_TYPE_COPY_PLAYER_COUNTERCLOCKWISE] = MovementType_CopyPlayer,
         [MOVEMENT_TYPE_COPY_PLAYER_CLOCKWISE] = MovementType_CopyPlayer,
-        [MOVEMENT_TYPE_TREE_DISGUISE] = MovementType_TreeDisguise,
-        [MOVEMENT_TYPE_MOUNTAIN_DISGUISE] = MovementType_MountainDisguise,
         [MOVEMENT_TYPE_COPY_PLAYER_IN_GRASS] = MovementType_CopyPlayerInGrass,
         [MOVEMENT_TYPE_COPY_PLAYER_OPPOSITE_IN_GRASS] = MovementType_CopyPlayerInGrass,
         [MOVEMENT_TYPE_COPY_PLAYER_COUNTERCLOCKWISE_IN_GRASS] = MovementType_CopyPlayerInGrass,
@@ -429,8 +426,6 @@ const u8 gInitialMovementTypeFacingDirections[] = {
     [MOVEMENT_TYPE_COPY_PLAYER_OPPOSITE] = DIR_SOUTH,
     [MOVEMENT_TYPE_COPY_PLAYER_COUNTERCLOCKWISE] = DIR_WEST,
     [MOVEMENT_TYPE_COPY_PLAYER_CLOCKWISE] = DIR_EAST,
-    [MOVEMENT_TYPE_TREE_DISGUISE] = DIR_SOUTH,
-    [MOVEMENT_TYPE_MOUNTAIN_DISGUISE] = DIR_SOUTH,
     [MOVEMENT_TYPE_COPY_PLAYER_IN_GRASS] = DIR_NORTH,
     [MOVEMENT_TYPE_COPY_PLAYER_OPPOSITE_IN_GRASS] = DIR_SOUTH,
     [MOVEMENT_TYPE_COPY_PLAYER_COUNTERCLOCKWISE_IN_GRASS] = DIR_WEST,
@@ -1774,9 +1769,7 @@ static bool8 SpeciesHasType(u16 species, u8 type)
 static void ObjectEventEmote(struct ObjectEvent *objEvent, u8 emotion)
 {
     emotion %= FOLLOWER_EMOTION_LENGTH;
-    ObjectEventGetLocalIdAndMap(objEvent, &gFieldEffectArguments[0], &gFieldEffectArguments[1], &gFieldEffectArguments[2]);
-    gFieldEffectArguments[7] = emotion;
-    FieldEffectStart(FLDEFF_EMOTE);
+    FldEff_QuestionMarkIcon(objEvent->localId, objEvent->mapNum, objEvent->mapGroup, emotion);
 }
 
 // Find and return direction of metatile behavior within distance
@@ -3450,11 +3443,7 @@ bool8 MovementType_BerryTreeGrowth_Normal(struct ObjectEvent *objectEvent, struc
     {
         if (!(sprite->sBerryTreeFlags & BERRY_FLAG_JUST_PICKED) && sprite->animNum == BERRY_STAGE_FLOWERING)
         {
-            gFieldEffectArguments[0] = objectEvent->currentCoords.x;
-            gFieldEffectArguments[1] = objectEvent->currentCoords.y;
-            gFieldEffectArguments[2] = sprite->subpriority - 1;
-            gFieldEffectArguments[3] = sprite->oam.priority;
-            FieldEffectStart(FLDEFF_BERRY_TREE_GROWTH_SPARKLE);
+            FldEff_BerryTreeGrowthSparkle(objectEvent->currentCoords.x, objectEvent->currentCoords.y, sprite->subpriority - 1, sprite->oam.priority);
             sprite->animNum = berryStage;
         }
         return FALSE;
@@ -3491,11 +3480,7 @@ bool8 MovementType_BerryTreeGrowth_SparkleStart(struct ObjectEvent *objectEvent,
     sprite->sTypeFuncId = BERRYTREEFUNC_SPARKLE;
     sprite->sTimer = 0;
     sprite->sBerryTreeFlags |= BERRY_FLAG_SPARKLING;
-    gFieldEffectArguments[0] = objectEvent->currentCoords.x;
-    gFieldEffectArguments[1] = objectEvent->currentCoords.y;
-    gFieldEffectArguments[2] = sprite->subpriority - 1;
-    gFieldEffectArguments[3] = sprite->oam.priority;
-    FieldEffectStart(FLDEFF_BERRY_TREE_GROWTH_SPARKLE);
+    FldEff_BerryTreeGrowthSparkle(objectEvent->currentCoords.x, objectEvent->currentCoords.y, sprite->subpriority - 1, sprite->oam.priority);
     return TRUE;
 }
 
@@ -5080,42 +5065,6 @@ movement_type_def(MovementType_CopyPlayerInGrass, gMovementTypeFuncs_CopyPlayerI
         return FALSE;
 
     return gCopyPlayerMovementFuncs[PlayerGetCopyableMovement()](objectEvent, sprite, GetPlayerMovementDirection(), MetatileBehavior_IsPokeGrass);
-}
-
-void MovementType_TreeDisguise(struct Sprite *sprite)
-{
-    struct ObjectEvent *objectEvent;
-
-    objectEvent = &gObjectEvents[sprite->sObjEventId];
-    if (objectEvent->directionSequenceIndex == 0 || (objectEvent->directionSequenceIndex == 1 && !sprite->data[7]))
-    {
-        ObjectEventGetLocalIdAndMap(objectEvent, &gFieldEffectArguments[0], &gFieldEffectArguments[1], &gFieldEffectArguments[2]);
-        objectEvent->fieldEffectSpriteId = FieldEffectStart(FLDEFF_TREE_DISGUISE);
-        objectEvent->directionSequenceIndex = 1;
-        sprite->data[7]++;
-    }
-    UpdateObjectEventCurrentMovement(&gObjectEvents[sprite->sObjEventId], sprite, MovementType_Disguise_Callback);
-}
-
-static bool8 MovementType_Disguise_Callback(struct ObjectEvent *objectEvent, struct Sprite *sprite)
-{
-    ClearObjectEventMovement(objectEvent, sprite);
-    return FALSE;
-}
-
-void MovementType_MountainDisguise(struct Sprite *sprite)
-{
-    struct ObjectEvent *objectEvent;
-
-    objectEvent = &gObjectEvents[sprite->sObjEventId];
-    if (objectEvent->directionSequenceIndex == 0 || (objectEvent->directionSequenceIndex == 1 && !sprite->data[7]))
-    {
-        ObjectEventGetLocalIdAndMap(objectEvent, &gFieldEffectArguments[0], &gFieldEffectArguments[1], &gFieldEffectArguments[2]);
-        objectEvent->fieldEffectSpriteId = FieldEffectStart(FLDEFF_MOUNTAIN_DISGUISE);
-        objectEvent->directionSequenceIndex = 1;
-        sprite->data[7]++;
-    }
-    UpdateObjectEventCurrentMovement(&gObjectEvents[sprite->sObjEventId], sprite, MovementType_Disguise_Callback);
 }
 
 void MovementType_Buried(struct Sprite *sprite)
@@ -7593,25 +7542,21 @@ bool8 MovementAction_SetVisible_Step0(struct ObjectEvent *objectEvent, struct Sp
 
 bool8 MovementAction_EmoteExclamationMark_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
-    ObjectEventGetLocalIdAndMap(objectEvent, &gFieldEffectArguments[0], &gFieldEffectArguments[1], &gFieldEffectArguments[2]);
-    FieldEffectStart(FLDEFF_EXCLAMATION_MARK_ICON);
+    FldEff_ExclamationMarkIcon(objectEvent->localId, objectEvent->mapNum, objectEvent->mapGroup);
     sprite->sActionFuncId = 1;
     return TRUE;
 }
 
 bool8 MovementAction_EmoteQuestionMark_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
-    ObjectEventGetLocalIdAndMap(objectEvent, &gFieldEffectArguments[0], &gFieldEffectArguments[1], &gFieldEffectArguments[2]);
-    gFieldEffectArguments[7] = -1;
-    FieldEffectStart(FLDEFF_QUESTION_MARK_ICON);
+    FldEff_QuestionMarkIcon(objectEvent->localId, objectEvent->mapNum, objectEvent->mapGroup, -1);
     sprite->sActionFuncId = 1;
     return TRUE;
 }
 
 bool8 MovementAction_EmoteHeart_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
-    ObjectEventGetLocalIdAndMap(objectEvent, &gFieldEffectArguments[0], &gFieldEffectArguments[1], &gFieldEffectArguments[2]);
-    FieldEffectStart(FLDEFF_HEART_ICON);
+    FldEff_HeartIcon(objectEvent->localId, objectEvent->mapNum, objectEvent->mapGroup);
     sprite->sActionFuncId = 1;
     return TRUE;
 }
@@ -7623,14 +7568,10 @@ bool8 MovementAction_RevealTrainer_Step0(struct ObjectEvent *objectEvent, struct
         SetBuriedTrainerMovement(objectEvent);
         return FALSE;
     }
-    if (objectEvent->movementType != MOVEMENT_TYPE_TREE_DISGUISE && objectEvent->movementType != MOVEMENT_TYPE_MOUNTAIN_DISGUISE)
-    {
-        sprite->sActionFuncId = 2;
-        return TRUE;
-    }
-    StartRevealDisguise(objectEvent);
-    sprite->sActionFuncId = 1;
-    return MovementAction_RevealTrainer_Step1(objectEvent, sprite);
+    // Los unicos que se "revelaban" ademas del enterrado eran los disfrazados de
+    // arbol y de montaña, que ya no existen: aqui no queda nada que revelar.
+    sprite->sActionFuncId = 2;
+    return TRUE;
 }
 
 bool8 MovementAction_RevealTrainer_Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite)
@@ -8936,54 +8877,48 @@ static bool8 AreElevationsCompatible(u8 a, u8 b)
 
 void GroundEffect_SpawnOnTallGrass(struct ObjectEvent *objEvent, struct Sprite *sprite)
 {
-    gFieldEffectArguments[0] = objEvent->currentCoords.x;
-    gFieldEffectArguments[1] = objEvent->currentCoords.y;
-    gFieldEffectArguments[2] = objEvent->previousElevation;
-    gFieldEffectArguments[3] = 2; // priority
-    gFieldEffectArguments[4] = objEvent->localId << 8 | objEvent->mapNum;
-    gFieldEffectArguments[5] = objEvent->mapGroup;
-    gFieldEffectArguments[6] = (u8)gSaveBlockPtr->location.mapNum << 8 | (u8)gSaveBlockPtr->location.mapGroup;
-    gFieldEffectArguments[7] = TRUE; // skip to end of anim
-    FieldEffectStart(FLDEFF_TALL_GRASS);
+    FldEff_TallGrass(objEvent->currentCoords.x,
+                     objEvent->currentCoords.y,
+                     objEvent->previousElevation,
+                     2,
+                     objEvent->localId << 8 | objEvent->mapNum,
+                     objEvent->mapGroup,
+                     (u8)gSaveBlockPtr->location.mapNum << 8 | (u8)gSaveBlockPtr->location.mapGroup,
+                     TRUE);
 }
 
 void GroundEffect_StepOnTallGrass(struct ObjectEvent *objEvent, struct Sprite *sprite)
 {
-    gFieldEffectArguments[0] = objEvent->currentCoords.x;
-    gFieldEffectArguments[1] = objEvent->currentCoords.y;
-    gFieldEffectArguments[2] = objEvent->previousElevation;
-    gFieldEffectArguments[3] = 2; // priority
-    gFieldEffectArguments[4] = objEvent->localId << 8 | objEvent->mapNum;
-    gFieldEffectArguments[5] = objEvent->mapGroup;
-    gFieldEffectArguments[6] = (u8)gSaveBlockPtr->location.mapNum << 8 | (u8)gSaveBlockPtr->location.mapGroup;
-    gFieldEffectArguments[7] = FALSE; // don't skip to end of anim
-    FieldEffectStart(FLDEFF_TALL_GRASS);
+    FldEff_TallGrass(objEvent->currentCoords.x,
+                     objEvent->currentCoords.y,
+                     objEvent->previousElevation,
+                     2,
+                     objEvent->localId << 8 | objEvent->mapNum,
+                     objEvent->mapGroup,
+                     (u8)gSaveBlockPtr->location.mapNum << 8 | (u8)gSaveBlockPtr->location.mapGroup,
+                     FALSE);
 }
 
 void GroundEffect_SpawnOnLongGrass(struct ObjectEvent *objEvent, struct Sprite *sprite)
 {
-    gFieldEffectArguments[0] = objEvent->currentCoords.x;
-    gFieldEffectArguments[1] = objEvent->currentCoords.y;
-    gFieldEffectArguments[2] = objEvent->previousElevation;
-    gFieldEffectArguments[3] = 2;
-    gFieldEffectArguments[4] = objEvent->localId << 8 | objEvent->mapNum;
-    gFieldEffectArguments[5] = objEvent->mapGroup;
-    gFieldEffectArguments[6] = (u8)gSaveBlockPtr->location.mapNum << 8 | (u8)gSaveBlockPtr->location.mapGroup;
-    gFieldEffectArguments[7] = 1;
-    FieldEffectStart(FLDEFF_LONG_GRASS);
+    FldEff_LongGrass(objEvent->currentCoords.x,
+                     objEvent->currentCoords.y,
+                     objEvent->previousElevation,
+                     objEvent->localId << 8 | objEvent->mapNum,
+                     objEvent->mapGroup,
+                     (u8)gSaveBlockPtr->location.mapNum << 8 | (u8)gSaveBlockPtr->location.mapGroup,
+                     1);
 }
 
 void GroundEffect_StepOnLongGrass(struct ObjectEvent *objEvent, struct Sprite *sprite)
 {
-    gFieldEffectArguments[0] = objEvent->currentCoords.x;
-    gFieldEffectArguments[1] = objEvent->currentCoords.y;
-    gFieldEffectArguments[2] = objEvent->previousElevation;
-    gFieldEffectArguments[3] = 2;
-    gFieldEffectArguments[4] = (objEvent->localId << 8) | objEvent->mapNum;
-    gFieldEffectArguments[5] = objEvent->mapGroup;
-    gFieldEffectArguments[6] = (u8)gSaveBlockPtr->location.mapNum << 8 | (u8)gSaveBlockPtr->location.mapGroup;
-    gFieldEffectArguments[7] = 0;
-    FieldEffectStart(FLDEFF_LONG_GRASS);
+    FldEff_LongGrass(objEvent->currentCoords.x,
+                     objEvent->currentCoords.y,
+                     objEvent->previousElevation,
+                     (objEvent->localId << 8) | objEvent->mapNum,
+                     objEvent->mapGroup,
+                     (u8)gSaveBlockPtr->location.mapNum << 8 | (u8)gSaveBlockPtr->location.mapGroup,
+                     0);
 }
 
 void GroundEffect_WaterReflection(struct ObjectEvent *objEvent, struct Sprite *sprite)
@@ -8998,7 +8933,7 @@ void GroundEffect_IceReflection(struct ObjectEvent *objEvent, struct Sprite *spr
 
 void GroundEffect_FlowingWater(struct ObjectEvent *objEvent, struct Sprite *sprite)
 {
-    StartFieldEffectForObjectEvent(FLDEFF_FEET_IN_FLOWING_WATER, objEvent);
+    FldEff_FeetInFlowingWater(objEvent->localId, objEvent->mapNum, objEvent->mapGroup);
 }
 
 static void (*const sGroundEffectTracksFuncs[])(struct ObjectEvent *objEvent, struct Sprite *sprite, bool8 isDeepSand) = {
@@ -9028,49 +8963,30 @@ static void DoTracksGroundEffect_None(struct ObjectEvent *objEvent, struct Sprit
 
 static void DoTracksGroundEffect_Footprints(struct ObjectEvent *objEvent, struct Sprite *sprite, bool8 isDeepSand)
 {
-    // First half-word is a Field Effect script id. (gFieldEffectScriptPointers)
-    u16 sandFootprints_FieldEffectData[2] = {
-        FLDEFF_SAND_FOOTPRINTS,
-        FLDEFF_DEEP_SAND_FOOTPRINTS};
-
-    gFieldEffectArguments[0] = objEvent->previousCoords.x;
-    gFieldEffectArguments[1] = objEvent->previousCoords.y;
-    gFieldEffectArguments[2] = 149;
-    gFieldEffectArguments[3] = 2;
-    gFieldEffectArguments[4] = objEvent->facingDirection;
-    FieldEffectStart(sandFootprints_FieldEffectData[isDeepSand]);
+    if (isDeepSand)
+        FldEff_DeepSandFootprints(objEvent->previousCoords.x, objEvent->previousCoords.y,
+                                  149, 2, objEvent->facingDirection);
+    else
+        FldEff_SandFootprints(objEvent->previousCoords.x, objEvent->previousCoords.y,
+                              149, 2, objEvent->facingDirection);
 }
 
 static void DoTracksGroundEffect_FootprintsB(struct ObjectEvent *objEvent, struct Sprite *sprite, bool8 isDeepSand)
 {
-    // First half-word is a Field Effect script id. (gFieldEffectScriptPointers)
-    u16 otherFootprintsA_FieldEffectData[2] = {
-        FLDEFF_TRACKS_SPOT,
-        FLDEFF_TRACKS_SPOT};
-
-    gFieldEffectArguments[0] = objEvent->previousCoords.x;
-    gFieldEffectArguments[1] = objEvent->previousCoords.y;
-    gFieldEffectArguments[2] = 149;
-    gFieldEffectArguments[3] = 2;
-    gFieldEffectArguments[4] = objEvent->facingDirection;
-    gFieldEffectArguments[5] = objEvent->previousMetatileBehavior;
-    FieldEffectStart(otherFootprintsA_FieldEffectData[isDeepSand]);
+    // La arena profunda no cambia este rastro: la tabla que se consultaba tenia
+    // el mismo efecto en las dos posiciones. Y habia un sexto argumento con el
+    // comportamiento del metatile que la funcion nunca leyo.
+    FldEff_TracksSpot(objEvent->previousCoords.x, objEvent->previousCoords.y,
+                      149, 2, objEvent->facingDirection);
 }
 
 static void DoTracksGroundEffect_FootprintsC(struct ObjectEvent *objEvent, struct Sprite *sprite, bool8 isDeepSand)
 {
-    // First half-word is a Field Effect script id. (gFieldEffectScriptPointers)
-    u16 otherFootprintsB_FieldEffectData[2] = {
-        FLDEFF_TRACKS_BUG,
-        FLDEFF_TRACKS_BUG};
-
-    gFieldEffectArguments[0] = objEvent->previousCoords.x;
-    gFieldEffectArguments[1] = objEvent->previousCoords.y;
-    gFieldEffectArguments[2] = 149;
-    gFieldEffectArguments[3] = 2;
-    gFieldEffectArguments[4] = objEvent->facingDirection;
-    gFieldEffectArguments[5] = objEvent->previousMetatileBehavior;
-    FieldEffectStart(otherFootprintsB_FieldEffectData[isDeepSand]);
+    // La arena profunda no cambia este rastro: la tabla que se consultaba tenia
+    // el mismo efecto en las dos posiciones. Y habia un sexto argumento con el
+    // comportamiento del metatile que la funcion nunca leyo.
+    FldEff_TracksBug(objEvent->previousCoords.x, objEvent->previousCoords.y,
+                     149, 2, objEvent->facingDirection);
 }
 
 static void DoTracksGroundEffect_BikeTireTracks(struct ObjectEvent *objEvent, struct Sprite *sprite, bool8 isDeepSand)
@@ -9091,13 +9007,7 @@ static void DoTracksGroundEffect_BikeTireTracks(struct ObjectEvent *objEvent, st
     if (objEvent->currentCoords.x != objEvent->previousCoords.x || objEvent->currentCoords.y != objEvent->previousCoords.y)
     {
         u8 movementDir = (objEvent->previousMovementDirection > DIR_EAST) ? (objEvent->previousMovementDirection - DIR_EAST) : objEvent->previousMovementDirection;
-        gFieldEffectArguments[0] = objEvent->previousCoords.x;
-        gFieldEffectArguments[1] = objEvent->previousCoords.y;
-        gFieldEffectArguments[2] = 149;
-        gFieldEffectArguments[3] = 2;
-        gFieldEffectArguments[4] =
-            bikeTireTracks_Transitions[movementDir][objEvent->facingDirection - 5];
-        FieldEffectStart(FLDEFF_BIKE_TIRE_TRACKS);
+        FldEff_BikeTireTracks(objEvent->previousCoords.x, objEvent->previousCoords.y, 149, 2, bikeTireTracks_Transitions[movementDir][objEvent->facingDirection - 5]);
     }
 }
 
@@ -9118,14 +9028,11 @@ static void DoTracksGroundEffect_SlitherTracks(struct ObjectEvent *objEvent, str
 
     if (objEvent->currentCoords.x != objEvent->previousCoords.x || objEvent->currentCoords.y != objEvent->previousCoords.y)
     {
-        gFieldEffectArguments[0] = objEvent->previousCoords.x;
-        gFieldEffectArguments[1] = objEvent->previousCoords.y;
-        gFieldEffectArguments[2] = 149;
-        gFieldEffectArguments[3] = 2;
-        gFieldEffectArguments[4] =
-            slitherTracks_Transitions[objEvent->previousMovementDirection][objEvent->facingDirection - 5];
-        gFieldEffectArguments[5] = objEvent->previousMetatileBehavior;
-        FieldEffectStart(FLDEFF_TRACKS_SLITHER);
+        // Habia un sexto argumento con previousMetatileBehavior que la funcion
+        // nunca llego a leer. Se va con las globales.
+        FldEff_TracksSlither(objEvent->previousCoords.x, objEvent->previousCoords.y, 149, 2,
+                             slitherTracks_Transitions[objEvent->previousMovementDirection]
+                                                      [objEvent->facingDirection - 5]);
     }
 }
 
@@ -9136,23 +9043,19 @@ void GroundEffect_Ripple(struct ObjectEvent *objEvent, struct Sprite *sprite)
 
 void GroundEffect_StepOnPuddle(struct ObjectEvent *objEvent, struct Sprite *sprite)
 {
-    StartFieldEffectForObjectEvent(FLDEFF_SPLASH, objEvent);
+    FldEff_Splash(objEvent->localId, objEvent->mapNum, objEvent->mapGroup);
 }
 
 void GroundEffect_SandHeap(struct ObjectEvent *objEvent, struct Sprite *sprite)
 {
-    StartFieldEffectForObjectEvent(FLDEFF_SAND_PILE, objEvent);
+    FldEff_SandPile(objEvent->localId, objEvent->mapNum, objEvent->mapGroup);
 }
 
 void GroundEffect_JumpOnTallGrass(struct ObjectEvent *objEvent, struct Sprite *sprite)
 {
     u32 spriteId;
 
-    gFieldEffectArguments[0] = objEvent->currentCoords.x;
-    gFieldEffectArguments[1] = objEvent->currentCoords.y;
-    gFieldEffectArguments[2] = objEvent->previousElevation;
-    gFieldEffectArguments[3] = 2;
-    FieldEffectStart(FLDEFF_JUMP_TALL_GRASS);
+    FldEff_JumpTallGrass(objEvent->currentCoords.x, objEvent->currentCoords.y, objEvent->previousElevation, 2);
 
     spriteId = FindTallGrassFieldEffectSpriteId(
         objEvent->localId,
@@ -9167,55 +9070,37 @@ void GroundEffect_JumpOnTallGrass(struct ObjectEvent *objEvent, struct Sprite *s
 
 void GroundEffect_JumpOnLongGrass(struct ObjectEvent *objEvent, struct Sprite *sprite)
 {
-    gFieldEffectArguments[0] = objEvent->currentCoords.x;
-    gFieldEffectArguments[1] = objEvent->currentCoords.y;
-    gFieldEffectArguments[2] = objEvent->previousElevation;
-    gFieldEffectArguments[3] = 2;
-    FieldEffectStart(FLDEFF_JUMP_LONG_GRASS);
+    FldEff_JumpLongGrass(objEvent->currentCoords.x, objEvent->currentCoords.y, objEvent->previousElevation, 2);
 }
 
 void GroundEffect_JumpOnShallowWater(struct ObjectEvent *objEvent, struct Sprite *sprite)
 {
-    gFieldEffectArguments[0] = objEvent->currentCoords.x;
-    gFieldEffectArguments[1] = objEvent->currentCoords.y;
-    gFieldEffectArguments[2] = objEvent->previousElevation;
-    gFieldEffectArguments[3] = sprite->oam.priority;
-    FieldEffectStart(FLDEFF_JUMP_SMALL_SPLASH);
+    FldEff_JumpSmallSplash(objEvent->currentCoords.x, objEvent->currentCoords.y, objEvent->previousElevation, sprite->oam.priority);
 }
 
 void GroundEffect_JumpOnWater(struct ObjectEvent *objEvent, struct Sprite *sprite)
 {
-    gFieldEffectArguments[0] = objEvent->currentCoords.x;
-    gFieldEffectArguments[1] = objEvent->currentCoords.y;
-    gFieldEffectArguments[2] = objEvent->previousElevation;
-    gFieldEffectArguments[3] = sprite->oam.priority;
-    FieldEffectStart(FLDEFF_JUMP_BIG_SPLASH);
+    FldEff_JumpBigSplash(objEvent->currentCoords.x, objEvent->currentCoords.y, objEvent->previousElevation, sprite->oam.priority);
 }
 
 void GroundEffect_JumpLandingDust(struct ObjectEvent *objEvent, struct Sprite *sprite)
 {
-    gFieldEffectArguments[0] = objEvent->currentCoords.x;
-    gFieldEffectArguments[1] = objEvent->currentCoords.y;
-    gFieldEffectArguments[2] = objEvent->previousElevation;
-    gFieldEffectArguments[3] = sprite->oam.priority;
-    FieldEffectStart(FLDEFF_DUST);
+    FldEff_Dust(objEvent->currentCoords.x, objEvent->currentCoords.y, objEvent->previousElevation, sprite->oam.priority);
 }
 
 void GroundEffect_ShortGrass(struct ObjectEvent *objEvent, struct Sprite *sprite)
 {
-    StartFieldEffectForObjectEvent(FLDEFF_SHORT_GRASS, objEvent);
+    FldEff_ShortGrass(objEvent->localId, objEvent->mapNum, objEvent->mapGroup);
 }
 
 void GroundEffect_HotSprings(struct ObjectEvent *objEvent, struct Sprite *sprite)
 {
-    StartFieldEffectForObjectEvent(FLDEFF_HOT_SPRINGS_WATER, objEvent);
+    FldEff_HotSpringsWater(objEvent->localId, objEvent->mapNum, objEvent->mapGroup);
 }
 
 void GroundEffect_Seaweed(struct ObjectEvent *objEvent, struct Sprite *sprite)
 {
-    gFieldEffectArguments[0] = objEvent->currentCoords.x;
-    gFieldEffectArguments[1] = objEvent->currentCoords.y;
-    FieldEffectStart(FLDEFF_BUBBLES);
+    FldEff_Bubbles(objEvent->currentCoords.x, objEvent->currentCoords.y);
 }
 
 static void (*const sGroundEffectFuncs[])(struct ObjectEvent *objEvent, struct Sprite *sprite) = {
@@ -9972,20 +9857,10 @@ static void VirtualObject_UpdateAnim(struct Sprite *sprite)
     }
 }
 
-void StartFieldEffectForObjectEvent(u8 fieldEffectId, struct ObjectEvent *objectEvent)
-{
-    ObjectEventGetLocalIdAndMap(objectEvent, &gFieldEffectArguments[0], &gFieldEffectArguments[1], &gFieldEffectArguments[2]);
-    FieldEffectStart(fieldEffectId);
-}
-
 static void DoRippleFieldEffect(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
     const struct ObjectEventGraphicsInfo *graphicsInfo = GetObjectEventGraphicsInfo(objectEvent->graphicsId);
-    gFieldEffectArguments[0] = sprite->x;
-    gFieldEffectArguments[1] = sprite->y + (graphicsInfo->height >> 1) - 2;
-    gFieldEffectArguments[2] = 151;
-    gFieldEffectArguments[3] = 3;
-    FieldEffectStart(FLDEFF_RIPPLE);
+    FldEff_Ripple(sprite->x, sprite->y + (graphicsInfo->height >> 1) - 2, 151, 3);
 }
 
 u8 (*const gMovementActionFuncs_LockAnim[])(struct ObjectEvent *, struct Sprite *) = {
@@ -10173,16 +10048,14 @@ u8 MovementAction_Fly_Finish(struct ObjectEvent *objectEvent, struct Sprite *spr
 
 bool8 MovementAction_EmoteX_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
-    ObjectEventGetLocalIdAndMap(objectEvent, &gFieldEffectArguments[0], &gFieldEffectArguments[1], &gFieldEffectArguments[2]);
-    FieldEffectStart(FLDEFF_X_ICON);
+    FldEff_XIcon(objectEvent->localId, objectEvent->mapNum, objectEvent->mapGroup);
     sprite->sActionFuncId = 1;
     return TRUE;
 }
 
 bool8 MovementAction_EmoteDoubleExclamationMark_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
-    ObjectEventGetLocalIdAndMap(objectEvent, &gFieldEffectArguments[0], &gFieldEffectArguments[1], &gFieldEffectArguments[2]);
-    FieldEffectStart(FLDEFF_DOUBLE_EXCL_MARK_ICON);
+    FldEff_DoubleExclMarkIcon(objectEvent->localId, objectEvent->mapNum, objectEvent->mapGroup);
     sprite->sActionFuncId = 1;
     return TRUE;
 }

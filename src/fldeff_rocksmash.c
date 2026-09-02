@@ -60,12 +60,13 @@ static void Task_DoFieldMove_Init(u8 taskId)
     if (!ObjectEventIsMovementOverridden(&gObjectEvents[objEventId])
      || ObjectEventClearHeldMovementIfFinished(&gObjectEvents[objEventId]))
     {
+        // La ranura del equipo y el "saltar la pose" los pone el guion del mapa
+        // con setfieldeffectargument: aqui es donde dejan de ser globales.
         if (gMapHeader.mapType == MAP_TYPE_UNDERWATER || gFieldEffectArguments[3])
         {
-            // Skip field move pose underwater, or if arg3 is nonzero
             if (gFieldEffectArguments[3])
                 gFieldEffectArguments[3] = 0;
-            FieldEffectStart(FLDEFF_FIELD_MOVE_SHOW_MON_INIT);
+            FldEff_FieldMoveShowMonInit(gFieldEffectArguments[0], FALSE);
             gTasks[taskId].func = Task_DoFieldMove_WaitForMon;
         }
         else
@@ -82,7 +83,7 @@ static void Task_DoFieldMove_ShowMonAfterPose(u8 taskId)
 {
     if (ObjectEventCheckHeldMovementStatus(&gObjectEvents[gPlayerAvatar.objectEventId]) == TRUE)
     {
-        FieldEffectStart(FLDEFF_FIELD_MOVE_SHOW_MON_INIT);
+        FldEff_FieldMoveShowMonInit(gFieldEffectArguments[0], FALSE);
         gTasks[taskId].func = Task_DoFieldMove_WaitForMon;
     }
 }
@@ -139,14 +140,14 @@ static void FieldCallback_RockSmash(void)
     ScriptContext_SetupScript(EventScript_UseRockSmash);
 }
 
-bool8 FldEff_UseRockSmash(void)
+void FldEff_UseRockSmash(void)
 {
     u8 taskId = CreateFieldMoveTask();
 
     gTasks[taskId].data[8] = (u32)FieldMove_RockSmash >> 16;
     gTasks[taskId].data[9] = (u32)FieldMove_RockSmash;
     IncrementGameStat(GAME_STAT_USED_ROCK_SMASH);
-    return FALSE;
+    return;
 }
 
 // The actual rock smashing is handled by EventScript_SmashRock, so this function does very little

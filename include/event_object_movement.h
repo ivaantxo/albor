@@ -259,8 +259,6 @@ void MovementType_WalkSequenceDownLeftUpRight(struct Sprite *);
 void MovementType_WalkSequenceLeftUpRightDown(struct Sprite *);
 void MovementType_WalkSequenceRightDownLeftUp(struct Sprite *);
 void MovementType_CopyPlayer(struct Sprite *);
-void MovementType_TreeDisguise(struct Sprite *);
-void MovementType_MountainDisguise(struct Sprite *);
 void MovementType_CopyPlayerInGrass(struct Sprite *);
 void MovementType_Buried(struct Sprite *);
 void MovementType_WalkInPlace(struct Sprite *);

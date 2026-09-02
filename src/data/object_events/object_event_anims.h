@@ -221,25 +221,25 @@ static const union AnimCmd sAnim_FieldMove[] =
     ANIMCMD_END,
 };
 
-static const union AnimCmd sAnim_GetOnOffSurfBlobSouth[] =
+static const union AnimCmd sAnim_MontarYDesmontarSouth[] =
 {
     ANIMCMD_FRAME(9, 32),
     ANIMCMD_JUMP(0),
 };
 
-static const union AnimCmd sAnim_GetOnOffSurfBlobNorth[] =
+static const union AnimCmd sAnim_MontarYDesmontarNorth[] =
 {
     ANIMCMD_FRAME(10, 32),
     ANIMCMD_JUMP(0),
 };
 
-static const union AnimCmd sAnim_GetOnOffSurfBlobWest[] =
+static const union AnimCmd sAnim_MontarYDesmontarWest[] =
 {
     ANIMCMD_FRAME(11, 32),
     ANIMCMD_JUMP(0),
 };
 
-static const union AnimCmd sAnim_GetOnOffSurfBlobEast[] =
+static const union AnimCmd sAnim_MontarYDesmontarEast[] =
 {
     ANIMCMD_FRAME(11, 32, .hFlip = TRUE),
     ANIMCMD_JUMP(0),
@@ -1217,10 +1217,10 @@ static const union AnimCmd *const sAnimTable_Surfing[] = {
     [ANIM_STD_GO_FASTEST_NORTH] = sAnim_GoFastestNorth,
     [ANIM_STD_GO_FASTEST_WEST] = sAnim_GoFastestWest,
     [ANIM_STD_GO_FASTEST_EAST] = sAnim_GoFastestEast,
-    [ANIM_GET_ON_OFF_POKEMON_SOUTH] = sAnim_GetOnOffSurfBlobSouth,
-    [ANIM_GET_ON_OFF_POKEMON_NORTH] = sAnim_GetOnOffSurfBlobNorth,
-    [ANIM_GET_ON_OFF_POKEMON_WEST] = sAnim_GetOnOffSurfBlobWest,
-    [ANIM_GET_ON_OFF_POKEMON_EAST] = sAnim_GetOnOffSurfBlobEast,
+    [ANIM_GET_ON_OFF_POKEMON_SOUTH] = sAnim_MontarYDesmontarSouth,
+    [ANIM_GET_ON_OFF_POKEMON_NORTH] = sAnim_MontarYDesmontarNorth,
+    [ANIM_GET_ON_OFF_POKEMON_WEST] = sAnim_MontarYDesmontarWest,
+    [ANIM_GET_ON_OFF_POKEMON_EAST] = sAnim_MontarYDesmontarEast,
 };
 
 static const union AnimCmd *const sAnimTable_Nurse[] = {

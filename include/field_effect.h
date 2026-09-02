@@ -5,7 +5,25 @@ extern s32 gFieldEffectArguments[8];
 extern void (*gPostMenuFieldCallback)(void);
 extern bool8 (*gFieldCallback2)(void);
 
-u32 FieldEffectStart(u8);
+void FieldEffectStart(u8);
+void CargaPaletaDeEfecto(const struct SpritePalette *paleta);
+// Fuera de la tabla de efectos: devuelve el sprite que crea, y quien la llama lo
+// necesita para esperar a que termine su animacion.
+u8 FldEff_AshPuff(s16 x, s16 y, u8 subprioridad, u8 prioridad);
+void FldEff_NPCFlyOut(u16 spriteIdAve);
+void FldEff_UseFly(u8 monId);
+void FldEff_DestroyDeoxysRock(u8 localId, u8 mapNum, u8 mapGroup);
+// Los iconos que salen sobre la cabeza de un personaje. La interrogacion sirve
+// ademas para las emociones del follower: emocion a -1 es el icono normal.
+void FldEff_ExclamationMarkIcon(u8 localId, u8 mapNum, u8 mapGroup);
+void FldEff_QuestionMarkIcon(u8 localId, u8 mapNum, u8 mapGroup, s8 emocion);
+void FldEff_HeartIcon(u8 localId, u8 mapNum, u8 mapGroup);
+void FldEff_XIcon(u8 localId, u8 mapNum, u8 mapGroup);
+void FldEff_DoubleExclMarkIcon(u8 localId, u8 mapNum, u8 mapGroup);
+// Mostrar el Pokemon al usar un movimiento de campo son dos pasos: el primero
+// mira que Pokemon es y llama al segundo, que es el que lo dibuja.
+void FldEff_FieldMoveShowMonInit(u8 ranuraEquipo, bool8 sinAgacharse);
+void FldEff_FieldMoveShowMon(u16 especie, bool8 variocolor, u32 personalidad, bool8 sinAgacharse);
 bool8 FieldEffectActiveListContains(u8 id);
 void FieldEffectActiveListClear(void);
 void ReturnToFieldFromFlyMapSelect(void);
@@ -18,21 +36,9 @@ void FldEff_TeleportWarpOut(void);
 void FieldEffectActiveListRemove(u8 id);
 void MultiplyInvertedPaletteRGBComponents(u32 i, u8 r, u8 g, u8 b);
 void FieldEffectActiveListAdd(u8 id);
-void FieldEffectScript_LoadTiles(u8 **script);
-void FieldEffectScript_LoadFadedPalette(u8 **script);
-void FieldEffectScript_LoadPalette(u8 **script);
-void FieldEffectScript_CallNative(u8 **script, u32 *val);
 void FieldEffectFreeGraphicsResources(struct Sprite *sprite);
 void FieldEffectFreeTilesIfUnused(u16 tileStart);
 void FieldEffectFreePaletteIfUnused(u8 paletteNum);
-bool8 FieldEffectCmd_loadtiles(u8 **script, u32 *val);
-bool8 FieldEffectCmd_loadfadedpal(u8 **script, u32 *val);
-bool8 FieldEffectCmd_loadpal(u8 **script, u32 *val);
-bool8 FieldEffectCmd_callnative(u8 **script, u32 *val);
-bool8 FieldEffectCmd_end(u8 **script, u32 *val);
-bool8 FieldEffectCmd_loadgfx_callnative(u8 **script, u32 *val);
-bool8 FieldEffectCmd_loadtiles_callnative(u8 **script, u32 *val);
-bool8 FieldEffectCmd_loadfadedpal_callnative(u8 **script, u32 *val);
 void FieldCB_FallWarpExit(void);
 void StartEscalatorWarp(u8 metatileBehavior, u8 priority);
 void StartLavaridgeGymB1FWarp(u8 priority);

@@ -877,17 +877,11 @@ static void PlayerAvatarTransition_AcroBike(struct ObjectEvent *objEvent)
 
 static void PlayerAvatarTransition_Surfing(struct ObjectEvent *objEvent)
 {
-    u32 spriteId;
-
+    // Surfeando solo se ve al jugador: el sprite que iba debajo era una mancha
+    // generica, y su sustituto sera un follower del Pokemon que sepa Surf.
     ObjectEventSetGraphicsId(objEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_SURFING));
     ObjectEventTurn(objEvent, objEvent->movementDirection);
     SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_SURFING);
-    gFieldEffectArguments[0] = objEvent->currentCoords.x;
-    gFieldEffectArguments[1] = objEvent->currentCoords.y;
-    gFieldEffectArguments[2] = gPlayerAvatar.objectEventId;
-    spriteId = FieldEffectStart(FLDEFF_SURF_BLOB);
-    objEvent->fieldEffectSpriteId = spriteId;
-    SetSurfBlob_BobState(spriteId, BOB_PLAYER_AND_MON);
 }
 
 static void PlayerAvatarTransition_Underwater(struct ObjectEvent *objEvent)
@@ -895,7 +889,7 @@ static void PlayerAvatarTransition_Underwater(struct ObjectEvent *objEvent)
     ObjectEventSetGraphicsId(objEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_UNDERWATER));
     ObjectEventTurn(objEvent, objEvent->movementDirection);
     SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_UNDERWATER);
-    objEvent->fieldEffectSpriteId = StartUnderwaterSurfBlobBobbing(objEvent->spriteId);
+    objEvent->fieldEffectSpriteId = EmpiezaBamboleoBajoElAgua(objEvent->spriteId);
 }
 
 static void PlayerAvatarTransition_ReturnToField(struct ObjectEvent *objEvent)
@@ -1508,11 +1502,7 @@ static bool8 PushBoulder_Move(struct Task *task, struct ObjectEvent *player, str
         ObjectEventClearHeldMovementIfFinished(boulder);
         ObjectEventSetHeldMovement(player, GetWalkInPlaceNormalMovementAction((u8)task->tDirection));
         ObjectEventSetHeldMovement(boulder, GetWalkSlowMovementAction((u8)task->tDirection));
-        gFieldEffectArguments[0] = boulder->currentCoords.x;
-        gFieldEffectArguments[1] = boulder->currentCoords.y;
-        gFieldEffectArguments[2] = boulder->previousElevation;
-        gFieldEffectArguments[3] = gSprites[boulder->spriteId].oam.priority;
-        FieldEffectStart(FLDEFF_DUST);
+        FldEff_Dust(boulder->currentCoords.x, boulder->currentCoords.y, boulder->previousElevation, gSprites[boulder->spriteId].oam.priority);
         PlaySE(SE_M_STRENGTH);
         task->tState++;
     }
@@ -1666,7 +1656,6 @@ static void Task_StopSurfingInit(u8 taskId)
         if (!ObjectEventClearHeldMovementIfFinished(playerObjEvent))
             return;
     }
-    SetSurfBlob_BobState(playerObjEvent->fieldEffectSpriteId, BOB_JUST_MON);
     ObjectEventSetHeldMovement(playerObjEvent, GetJumpSpecialMovementAction((u8)gTasks[taskId].data[0]));
     gTasks[taskId].func = Task_WaitStopSurfing;
 }
@@ -2008,8 +1997,6 @@ static bool32 Fishing_StartEncounter(struct Task *task)
 
             ObjectEventSetGraphicsId(playerObjEvent, task->tPlayerGfxId);
             ObjectEventTurn(playerObjEvent, playerObjEvent->movementDirection);
-            if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING)
-                SetSurfBlob_PlayerOffset(gObjectEvents[gPlayerAvatar.objectEventId].fieldEffectSpriteId, FALSE, 0);
             gSprites[gPlayerAvatar.spriteId].x2 = 0;
             gSprites[gPlayerAvatar.spriteId].y2 = 0;
             ClearDialogWindowAndFrame(0, TRUE);
@@ -2066,8 +2053,6 @@ static bool32 Fishing_PutRodAway(struct Task *task)
 
         ObjectEventSetGraphicsId(playerObjEvent, task->tPlayerGfxId);
         ObjectEventTurn(playerObjEvent, playerObjEvent->movementDirection);
-        if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING)
-            SetSurfBlob_PlayerOffset(gObjectEvents[gPlayerAvatar.objectEventId].fieldEffectSpriteId, FALSE, 0);
         gSprites[gPlayerAvatar.spriteId].x2 = 0;
         gSprites[gPlayerAvatar.spriteId].y2 = 0;
         task->tStep = FISHING_END_NO_MON;
@@ -2322,8 +2307,6 @@ static void AlignFishingAnimationFrames(void)
         playerSprite->y2 = -8;
     if (animType == 10 || animType == 11)
         playerSprite->y2 = 8;
-    if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING)
-        SetSurfBlob_PlayerOffset(gObjectEvents[gPlayerAvatar.objectEventId].fieldEffectSpriteId, TRUE, playerSprite->y2);
 }
 
 void SetSpinStartFacingDir(u8 direction)

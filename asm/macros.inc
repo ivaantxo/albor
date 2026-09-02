@@ -2,4 +2,3 @@
 	.include "asm/macros/function.inc"
 	.include "asm/macros/movement.inc"
 	.include "asm/macros/map.inc"
-	.include "asm/macros/field_effect_script.inc"

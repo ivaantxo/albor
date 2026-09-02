@@ -33,13 +33,13 @@ static void FieldCallback_Strength(void)
     ScriptContext_SetupScript(EventScript_UseStrength);
 }
 
-bool8 FldEff_UseStrength(void)
+void FldEff_UseStrength(void)
 {
     u8 taskId = CreateFieldMoveTask();
     gTasks[taskId].data[8] = (u32)StartStrengthFieldEffect >> 16;
     gTasks[taskId].data[9] = (u32)StartStrengthFieldEffect;
     GetMonNickname(&gPlayerParty[gFieldEffectArguments[0]], gVariableTexto1);
-    return FALSE;
+    return;
 }
 
 // Just passes control back to EventScript_UseStrength

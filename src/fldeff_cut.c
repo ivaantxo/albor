@@ -274,14 +274,14 @@ static void FieldCallback_CutGrass(void)
     gFieldEffectArguments[0] = GetCursorSelectionMonId();
 }
 
-bool8 FldEff_UseCutOnGrass(void)
+void FldEff_UseCutOnGrass(void)
 {
     u8 taskId = CreateFieldMoveTask();
 
     gTasks[taskId].data[8] = (u32)StartCutGrassFieldEffect >> 16;
     gTasks[taskId].data[9] = (u32)StartCutGrassFieldEffect;
     IncrementGameStat(GAME_STAT_USED_CUT);
-    return FALSE;
+    return;
 }
 
 static void FieldCallback_CutTree(void)
@@ -290,14 +290,14 @@ static void FieldCallback_CutTree(void)
     ScriptContext_SetupScript(EventScript_UseCut);
 }
 
-bool8 FldEff_UseCutOnTree(void)
+void FldEff_UseCutOnTree(void)
 {
     u8 taskId = CreateFieldMoveTask();
 
     gTasks[taskId].data[8] = (u32)StartCutTreeFieldEffect >> 16;
     gTasks[taskId].data[9] = (u32)StartCutTreeFieldEffect;
     IncrementGameStat(GAME_STAT_USED_CUT);
-    return FALSE;
+    return;
 }
 
 static void StartCutGrassFieldEffect(void)
@@ -306,7 +306,7 @@ static void StartCutGrassFieldEffect(void)
     FieldEffectStart(FLDEFF_CUT_GRASS);
 }
 
-bool8 FldEff_CutGrass(void)
+void FldEff_CutGrass(void)
 {
     s16 x, y;
     u32 i = 0;
@@ -340,7 +340,7 @@ bool8 FldEff_CutGrass(void)
         gSprites[sCutGrassSpriteArrayPtr[i]].data[2] = 32 * i;
     }
 
-    return FALSE;
+    return;
 }
 
 // set map grid metatile depending on x, y

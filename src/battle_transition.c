@@ -6,6 +6,7 @@
 #include "event_object_movement.h"
 #include "field_camera.h"
 #include "field_effect.h"
+#include "field_effect_helpers.h"
 #include "field_weather.h"
 #include "gpu_regs.h"
 #include "main.h"
@@ -1543,11 +1544,7 @@ static bool8 PokeballsTrail_Main(struct Task *task)
     side = Random() & 1;
     for (i = 0; i < NUM_POKEBALL_TRAILS; i++, side ^= 1)
     {
-        gFieldEffectArguments[0] = startX[side];   // x
-        gFieldEffectArguments[1] = (i * 32) + 16;  // y
-        gFieldEffectArguments[2] = side;
-        gFieldEffectArguments[3] = delays[i];
-        FieldEffectStart(FLDEFF_POKEBALL_TRAIL);
+        FldEff_PokeballTrail(startX[side], (i * 32) + 16, side, delays[i]);
     }
 
     task->tState++;
@@ -1564,17 +1561,20 @@ static bool8 PokeballsTrail_End(struct Task *task)
     return FALSE;
 }
 
-bool8 FldEff_PokeballTrail(void)
+void FldEff_PokeballTrail(s16 x, s16 y, u8 subprioridad, u8 prioridad)
 {
-    u32 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_Pokeball, gFieldEffectArguments[0], gFieldEffectArguments[1], 0);
+    FieldEffectActiveListAdd(FLDEFF_POKEBALL_TRAIL);
+    LoadSpritePalette(&gSpritePalette_Pokeball);
+
+    u32 spriteId = CreateSpriteAtEnd(&sSpriteTemplate_Pokeball, x, y, 0);
     gSprites[spriteId].oam.priority = 0;
     gSprites[spriteId].oam.affineMode = ST_OAM_AFFINE_NORMAL;
-    gSprites[spriteId].sSide = gFieldEffectArguments[2];
-    gSprites[spriteId].sDelay = gFieldEffectArguments[3];
+    gSprites[spriteId].sSide = subprioridad;
+    gSprites[spriteId].sDelay = prioridad;
     gSprites[spriteId].sPrevX = -1;
     InitSpriteAffineAnim(&gSprites[spriteId]);
-    StartSpriteAffineAnim(&gSprites[spriteId], gFieldEffectArguments[2]);
-    return FALSE;
+    StartSpriteAffineAnim(&gSprites[spriteId], subprioridad);
+    return;
 }
 
 static void SpriteCB_FldEffPokeballTrail(struct Sprite *sprite)

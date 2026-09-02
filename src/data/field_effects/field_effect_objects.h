@@ -218,53 +218,6 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_Ash = {
     .callback = UpdateAshFieldEffect,
 };
 
-static const struct SpriteFrameImage sPicTable_SurfBlob[] = {
-    overworld_frame(gFieldEffectObjectPic_SurfBlob, 4, 4, 0),
-    overworld_frame(gFieldEffectObjectPic_SurfBlob, 4, 4, 1),
-    overworld_frame(gFieldEffectObjectPic_SurfBlob, 4, 4, 2),
-};
-
-static const union AnimCmd sSurfBlobAnim_FaceSouth[] =
-{
-    ANIMCMD_FRAME(0, 1),
-    ANIMCMD_JUMP(0),
-};
-
-static const union AnimCmd sSurfBlobAnim_FaceNorth[] =
-{
-    ANIMCMD_FRAME(1, 1),
-    ANIMCMD_JUMP(0),
-};
-
-static const union AnimCmd sSurfBlobAnim_FaceWest[] =
-{
-    ANIMCMD_FRAME(2, 1),
-    ANIMCMD_JUMP(0),
-};
-
-static const union AnimCmd sSurfBlobAnim_FaceEast[] =
-{
-    ANIMCMD_FRAME(2, 1, .hFlip = TRUE),
-    ANIMCMD_JUMP(0),
-};
-
-static const union AnimCmd *const sAnimTable_SurfBlob[] =
-{
-    sSurfBlobAnim_FaceSouth,
-    sSurfBlobAnim_FaceNorth,
-    sSurfBlobAnim_FaceWest,
-    sSurfBlobAnim_FaceEast,
-};
-
-const struct SpriteTemplate gFieldEffectObjectTemplate_SurfBlob = {
-    .tileTag = TAG_NONE,
-    .paletteTag = OBJ_EVENT_PAL_TAG_MAY,
-    .oam = &gObjectEventBaseOam_32x32,
-    .anims = sAnimTable_SurfBlob,
-    .images = sPicTable_SurfBlob,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = UpdateSurfBlobFieldEffect,
-};
 
 static const struct SpriteFrameImage sPicTable_Arrow[] = {
     overworld_frame(gFieldEffectObjectPic_Arrow, 2, 2, 0),
