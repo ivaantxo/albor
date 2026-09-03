@@ -152,6 +152,10 @@ void ReordenaPicGrande(u8 *datos, u32 numFotogramas)
 // PROVISIONAL, mientras se prueban los pics grandes: los aparta de donde los deja
 // el combate, que cuenta con 64x64. Poner a 0 cuando las coordenadas de los
 // combatientes sepan del tamano de cada pic.
+// A 1 el pic sigue cambiando de fotograma mientras esta ampliado, que es lo que se
+// quiere mirar. A 0 se queda quieto hasta que el zoom acaba.
+#define ANIMA_DURANTE_EL_ZOOM 1
+
 #define CORRIGE_SITIO_PIC_GRANDE 1
 #define DESPLAZA_PIC_GRANDE_X 16
 #define DESPLAZA_PIC_GRANDE_Y 32
@@ -176,8 +180,10 @@ static void ArrancaAnimacionContinua(void)
     // de dibujo estando escalado, y ahi es donde se veia mal. Las piezas de un pic
     // troceado aguantan bien el zoom quieto; lo que no aguantan es cambiar de
     // fotograma en mitad de el.
+#if !ANIMA_DURANTE_EL_ZOOM
     if (gZoomEntradaEnMarcha)
         return;
+#endif
 
     for (u32 combatiente = 0; combatiente < gBattlersCount; combatiente++)
     {

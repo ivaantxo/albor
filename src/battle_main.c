@@ -838,10 +838,17 @@ u32 GetBattleWindowTemplatePixelWidth(u32 tableId)
 // dos del mismo avance, asi que no se pueden descuadrar.
 #define ZOOM_CAMINO               64
 
+// EN SUSPENSO. A 1, el Pokemon entra en negro y se desvela antes de volver a su
+// sitio; a 0 se queda el tinte fijo de siempre y espera ZOOM_ESPERA_CENTRO.
+#define ENTRADA_CON_DESVELADO      0
+
 // Fotogramas de espera entre paso y paso del desvelado. El fundido va de 16 a 0 de
 // dos en dos, o sea ocho pasos, asi que esto por ocho es lo que tarda: a 3 son 32
 // fotogramas, poco mas de medio segundo.
 #define ZOOM_RETRASO_DESVELADO     3
+
+// Lo que se queda quieto en primer plano cuando no hay desvelado que esperar.
+#define ZOOM_ESPERA_CENTRO        60
 
 #define sZoomMatriz data[3]
 #define sZoomPaso   data[4]
@@ -921,19 +928,28 @@ static void TerminaZoomEntrada(struct Sprite *sprite)
     // Con el zoom apagado no ha habido desvelado, asi que la paleta puede seguir
     // oscura: se aclara aqui por si acaso. Con el zoom puesto esto no hace nada,
     // porque ya llego a cero.
-    BeginNormalPaletteFade((0x10000 << sprite->sBattler), 0, 16, 0, RGB_BLACK);
+    BeginNormalPaletteFade((0x10000 << sprite->sBattler), 0, 10, 0, RGB(8, 8, 8));
     sprite->callback = SpriteCB_WildMonAnimate;
 }
 
 static void SpriteCB_ZoomEntradaSalvaje(struct Sprite *sprite)
 {
-    // Quieto en primer plano mientras se desvela y suena el grito. Se espera al
-    // fundido en vez de contar fotogramas: asi las dos cosas no se pueden
-    // descuadrar si algun dia se cambia lo que tarda el desvelado.
+    // Quieto en primer plano mientras suena el grito.
+#if ENTRADA_CON_DESVELADO
+    // Se espera al fundido en vez de contar fotogramas: asi las dos cosas no se
+    // pueden descuadrar si se cambia lo que tarda el desvelado.
     if (gFundidoPaletas.activo)
         return;
+#else
+    if (sprite->sZoomPaso < ZOOM_ESPERA_CENTRO)
+    {
+        sprite->sZoomPaso++;
+        return;
+    }
+    sprite->sZoomPaso = ZOOM_ESPERA_CENTRO;
+#endif
 
-    s32 t = sprite->sZoomPaso++;
+    s32 t = sprite->sZoomPaso++ - (ENTRADA_CON_DESVELADO ? 0 : ZOOM_ESPERA_CENTRO);
 
     // Al arrancar el camino se da via libre: es cuando entra tu entrenador.
     if (t == 0)
@@ -961,18 +977,21 @@ static void SpriteCB_ZoomEntradaSalvaje(struct Sprite *sprite)
 // Si el recorrido continuo canta demasiado, la salida es que ColocaZoom avance por
 // escalones en vez de pixel a pixel, o llevarlo a una capa de fondo afin, que si
 // tiene precision subpixel. Ver include/pic_combate.h.
-#define ZOOM_ENTRADA_ACTIVO 1
+#define ZOOM_ENTRADA_ACTIVO TRUE
 
 void SpriteCB_WildMon(struct Sprite *sprite)
 {
     // Quieto y en su pose normal: no se anima nada hasta que esta colocado.
     StartSpriteAnim(sprite, 0);
     sprite->animPaused = TRUE;
-    // Entra a oscuras y se desvela. Antes se quedaba tenido fijo -de 10 a 10, o sea
-    // sin moverse- y lo aclaraba TerminaZoomEntrada al final; ahora el desvelado ES
-    // la entrada, y el zoom de vuelta no arranca hasta que acaba.
+#if ENTRADA_CON_DESVELADO
+    // Entra a oscuras y se desvela; el zoom de vuelta no arranca hasta que acaba.
     BeginNormalPaletteFade((0x10000 << sprite->sBattler),
                            ZOOM_RETRASO_DESVELADO, 16, 0, RGB_BLACK);
+#else
+    // Tinte fijo, de 10 a 10: no se mueve, solo deja el Pokemon algo apagado.
+    BeginNormalPaletteFade((0x10000 << sprite->sBattler), 0, 10, 10, RGB(8, 8, 8));
+#endif
 
     sprite->sZoomDesplX = ANCHO_PANTALLA / 2 - sprite->x;
     sprite->sZoomDesplY = ALTURA_PANTALLA / 2 - ZOOM_SUBE_EL_CENTRO - sprite->y;

@@ -269,9 +269,12 @@ void ColocaSombraPokemon(struct Sprite *sombra, const struct Sprite *dueno, s32 
     // que en un Pokemon apoyado al suelo esta medio vacio, y esparciria esos restos
     // por el campo. Las piezas conviven con la matriz de la sombra porque el emisor
     // de subsprites ya coloca cada una pasando su desplazamiento por la inversa.
-    // Interruptor de prueba: a 0, la sombra vuelve a leer solo el primer cuadrante
-    // (rota, pero gasta una entrada de OAM en vez de cuatro).
-#define SOMBRA_PIEZAS_GRANDES 0
+    // A 0 la sombra vuelve a leer solo el primer cuadrante: gasta una entrada de OAM
+    // en vez de cuatro, pero se le ven los restos. En Bulbasaur ese cuadrante lleva
+    // justo las puntas de las orejas -dos pares de pixeles de la ultima fila- y se
+    // veian sueltas flotando sobre el Pokemon, sin escalar, en los fotogramas 0 y 2;
+    // en el 1 y el 3 el cuadrante esta vacio y por eso alli no se notaba nada.
+#define SOMBRA_PIEZAS_GRANDES 1
 
 #if SOMBRA_PIEZAS_GRANDES
     {
