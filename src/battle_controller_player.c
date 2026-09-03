@@ -783,6 +783,41 @@ static void Intro_TryShinyAnimShowHealthbox(u32 battler)
         }
     }
 
+#if DEPURACION_MGBA
+    {
+        // Uno de cada 16 fotogramas: asi los avisos cubren segundos y no medio
+        // segundo, que es lo que se agotaba antes de llegar al fallo.
+        static u32 fotogramas = 0;
+        static u32 avisos = 0;
+
+        if (!(bgmRestored && battlerAnimsDone) && avisos < 40 && (fotogramas++ & 15) == 0)
+        {
+            struct Sprite *mon = &gSprites[gBattlerSpriteIds[battler]];
+            struct Sprite *rival = &gSprites[gBattlerSpriteIds[OPONENTE_IZQUIERDA]];
+            u32 quien = (mon->callback == SpriteCallbackDummy) ? 1
+                      : (mon->callback == SpriteCB_PlayerMonFromBall) ? 2
+                      : (mon->callback == SpriteCB_PlayerMonSlideIn) ? 3
+                      : 0;
+
+            avisos++;
+            LOG("INTRO bgm/anims", bgmRestored, battlerAnimsDone);
+            LOG("    grito suena/esperaGrito",
+                IsCryPlayingOrClearCrySongs(),
+                gBattleSpritesDataPtr->healthBoxesData[battler].waitForCry);
+            LOG("    esperaGritoAliado/marcadorEmpezado",
+                gBattleSpritesDataPtr->healthBoxesData[ALIADO(battler)].waitForCry,
+                gBattleSpritesDataPtr->healthBoxesData[battler].healthboxSlideInStarted);
+            LOG("    ballAnimActive propio/aliado",
+                gBattleSpritesDataPtr->healthBoxesData[battler].ballAnimActive,
+                gBattleSpritesDataPtr->healthBoxesData[ALIADO(battler)].ballAnimActive);
+            LOG("    MON quien/dummy bola", quien,
+                gSprites[gBattleControllerData[battler]].callback == SpriteCallbackDummy);
+            LOG("    RIVAL dummy?/paso",
+                rival->callback == SpriteCallbackDummy, rival->data[4]);
+        }
+    }
+#endif
+
     // Clean up
     if (bgmRestored && battlerAnimsDone)
     {
@@ -1326,6 +1361,27 @@ static void AseguraIconosTipo(u32 battler)
     LoadPalettesTypes(battler);
     LoadCompressedSpriteSheet(&sSpriteSheet_IconTypes);
     LoadPalette(gIconTypes_Pal, OBJ_PLTT_ID(13), 3 * PLTT_SIZE_4BPP);
+
+#if DEPURACION_MGBA
+    if (GetSpriteTileStartByTag(TAG_ICON_TYPES) == 0xFFFF)
+    {
+        static bool32 volcado = FALSE;
+
+        if (!volcado)
+        {
+            u32 libre, mayorHueco;
+
+            volcado = TRUE;
+            MideMonton(&libre, &mayorHueco);
+            LOG("ICONOS NO CABEN: pedidos", sSpriteSheet_IconTypes.size / TILE_4BPP, 0);
+            LOG("MONTON libre/mayor hueco", libre, mayorHueco);
+            for (u32 c = 0; c < NUMERO_COMBATIENTES; c++)
+                LOG("   hueco de pic combatiente/bytes", c,
+                    gMonSpritesGfxPtr == NULL ? 0 : gMonSpritesGfxPtr->tamanoHueco[c]);
+            VuelcaMapaTilesSprites();
+        }
+    }
+#endif
 
     for (u32 i = 0; i < MAXIMO_MOVIMIENTOS_POKEMON; i++)
     {

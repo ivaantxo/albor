@@ -287,16 +287,29 @@ enum MetodosEvolutivos {
 #define MON_PIC_HEIGHT 64
 #define MON_PIC_SIZE (MON_PIC_WIDTH * MON_PIC_HEIGHT / 2)
 
-// Most Pokémon have 2 frames (a default and an alternate for their animation).
-// There are 4 exceptions:
-// - Deoxys has 2 frames, 1 for each form
-// - Spinda has 1 frame, presumably to avoid the work of animating its spots
-// - Unown has 1 frame, presumably to avoid the work of animating all 28 of its forms
-// Fotogramas por Pokemon. Cada uno cuesta su tamano de pic por combatiente: con pics
-// de 96x96 son 4608 B, asi que 4 fotogramas ocupan 73728 B de los 114688 del monton
-// (64%). Con 6 se iria al 96% y no cabria el resto del combate; para llegar ahi habria
-// que reservar por combatiente segun lo que ocupe su pic, en vez de un bloque unico.
-#define NUMERO_FRAMES_POKEMON 4
+// Cuantos fotogramas puede llegar a tener el pic de un Pokemon. Es un TECHO, no
+// una cuenta: cada especie trae los suyos y HuecoPic reserva por lo que traiga.
+// Solo dimensiona la tabla frameImages y limita hasta donde reordena
+// AjustaFotogramasPic; NO es cuanta memoria se pide.
+#define NUMERO_FRAMES_POKEMON 24
+
+// Cuantos fotogramas necesita la ZONA DE TRABAJO del combatiente, que es otra cosa.
+// El hueco de cada combatiente no solo guarda su pic: el sustituto lo usa para
+// replicar su dibujo -y replica exactamente cuatro-, battle_intro lee un
+// BG_SCREEN_SIZE de el para pintar al Pokemon sobre una capa, y la escena de
+// evolucion descomprime ahi.
+//
+// Esto valia NUMERO_FRAMES_POKEMON, y al subir aquel de 4 a 24 el suelo por
+// combatiente paso de 8 KB a 48 KB SIN QUE NADIE LO PIDIERA. Dos combatientes se
+// llevaban 98304 de los 147456 del monton, y a partir de ahi cualquier reserva
+// pequena fallaba: los iconos de tipo se quedaban sin sus 2304 B, y como
+// LoadCompressedSpriteSheet devuelve el fallo en silencio, el sprite salia
+// dibujando tiles de otro. Los dos conceptos van separados desde entonces.
+#define FOTOGRAMAS_ZONA_TRABAJO 4
+
+// Cuantas animaciones distintas ofrece gAnims_MonPic. Nada que ver con las dos de
+// arriba, aunque durante mucho tiempo las tres valieran lo mismo.
+#define ANIMACIONES_POR_PIC 4
 
 #define BATTLE_ALIVE_EXCEPT_BATTLER  0
 #define BATTLE_ALIVE_SIDE            1

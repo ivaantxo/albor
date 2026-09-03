@@ -867,9 +867,13 @@ static void UpdateMonScrollingBgMask(u8 taskId)
     }
 }
 
+// Esto guarda PALETAS, no fotogramas: AnimTask_CopyPalUnfadedToBackup copia
+// PLTT_SIZE_4BPP en la ranura que le diga el guion. Pedia el tamano de un pic entero
+// con todos sus fotogramas -48 KB- para usar unas decenas de bytes. Con PLTT_SIZE hay
+// sitio para treinta y dos ranuras, y los guiones usan dos.
 void AnimTask_AllocBackupPalBuffer(u8 taskId)
 {
-    gMonSpritesGfxPtr->buffer = AllocZeroed(MON_PIC_SIZE * NUMERO_FRAMES_POKEMON);
+    gMonSpritesGfxPtr->buffer = AllocZeroed(PLTT_SIZE);
     DestroyAnimVisualTask(taskId);
 }
 

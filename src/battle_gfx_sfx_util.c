@@ -531,8 +531,10 @@ void BattleLoadSubstituteOrMonSpriteGfx(u8 battler, bool8 loadMonSprite)
         position = battler;
 
         // El sustituto tambien escribe en el hueco, y puede llegar antes de que
-        // ningun pic lo haya pedido.
-        HuecoPic(position, MON_PIC_SIZE * NUMERO_FRAMES_POKEMON);
+        // ningun pic lo haya pedido. Pide los cuatro fotogramas que replica justo
+        // debajo, ni uno mas: pedir el techo de la animacion reservaba 48 KB para
+        // escribir 8.
+        HuecoPic(position, MON_PIC_SIZE * FOTOGRAMAS_ZONA_TRABAJO);
 
         if (GetBattlerSide(battler) != LADO_JUGADOR)
             LZDecompressVram(gBattleAnimSpriteGfx_Substitute, gMonSpritesGfxPtr->spritesGfx[position]);

@@ -108,6 +108,7 @@ const struct NatureInfo gInfoNaturalezas[NUMERO_NATURALEZAS] =
 };
 
 #include "data/graphics/pokemon.h"
+#include "animacion_pic.h"
 #include "data/pokemon/front_pic_anims.h"
 
 #include "data/pokemon/experience_tables.h"
@@ -870,7 +871,17 @@ void SetMultiuseSpriteTemplateToPokemon(u16 speciesTag, u8 battlerPosition)
 
     gMultiuseSpriteTemplate.paletteTag = speciesTag;
     if (battlerPosition == JUGADOR_IZQUIERDA || battlerPosition == JUGADOR_DERECHA)
-        gMultiuseSpriteTemplate.anims = gAnims_MonPic;
+    {
+        // De momento solo Bulbasaur tiene espalda animada de BW. El resto sigue con
+        // gAnims_MonPic, que es la tabla que comparten todas las especies y solo
+        // sabe de dos fotogramas.
+        u32 conFrentes = SanitizeSpeciesId(speciesTag > SPECIES_SHINY_TAG
+                                           ? speciesTag - SPECIES_SHINY_TAG : speciesTag);
+
+        gMultiuseSpriteTemplate.anims = (conFrentes == SPECIES_BULBASAUR)
+                                      ? gAnims_BulbasaurEspalda
+                                      : gAnims_MonPic;
+    }
     else
     {
         if (speciesTag > SPECIES_SHINY_TAG)
@@ -3278,7 +3289,10 @@ struct MonSpritesGfxManager *CreateMonSpritesGfxManager(void)
         return NULL;
 
     // Set up sprite / sprite pointer buffers
-    gfx->spriteBuffer = AllocZeroed(MON_PIC_SIZE * NUMERO_FRAMES_POKEMON * NUMERO_COMBATIENTES);
+    // Uno, no cuatro. Esto lo usa la pantalla de resumen, que ensena UN Pokemon;
+    // reservar los cuatro puestos de combate eran tres cuartas partes tiradas, y con
+    // los fotogramas de BW pasaba de 32 KB a casi 200, mas que el monton entero.
+    gfx->spriteBuffer = AllocZeroed(MON_PIC_SIZE * NUMERO_FRAMES_POKEMON);
     gfx->spritePointers = AllocZeroed(NUMERO_COMBATIENTES * 32);
     if (gfx->spriteBuffer == NULL || gfx->spritePointers == NULL)
     {
@@ -3286,8 +3300,14 @@ struct MonSpritesGfxManager *CreateMonSpritesGfxManager(void)
     }
     else
     {
+        // Los cuatro apuntan al MISMO sitio, que es el unico que se ha reservado.
+        // Antes cada uno se desplazaba un hueco entero, y como el buffer paso de
+        // cuatro huecos a uno, los puestos 1, 2 y 3 caian fuera del bloque: 48, 96 y
+        // 144 KB mas alla de su final. Y no era teorico, MonSpritesGfxManager_GetSpritePtr
+        // devuelve justo el 1, y la pantalla de resumen descomprime ahi un pic entero.
+        // Esta pantalla ensena UN Pokemon cada vez, asi que compartir hueco le vale.
         for (i = 0; i < NUMERO_COMBATIENTES; i++)
-            gfx->spritePointers[i] = gfx->spriteBuffer + (MON_PIC_SIZE * NUMERO_FRAMES_POKEMON * i);
+            gfx->spritePointers[i] = gfx->spriteBuffer;
     }
 
     // Set up sprite structs

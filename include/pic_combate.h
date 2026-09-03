@@ -25,6 +25,7 @@
 
 // Cuantos bytes ocupa un fotograma del pic de esta especie (segun genero).
 u32 BytesPicCombate(u32 especie, u32 personalidad, bool32 esFront);
+u32 BytesPicDescomprimido(u32 especie, u32 personalidad, bool32 esFront);
 
 // La tabla de piezas, o NULL si el pic cabe en un solo objeto de 64x64.
 const struct SubspriteTable *SubspritesPicCombate(u32 bytesPorFotograma);

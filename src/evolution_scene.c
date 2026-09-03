@@ -239,7 +239,7 @@ void EvolutionScene(struct Pokemon *mon, u16 postEvoSpecies, u8 partyId)
     currSpecies = GetMonData(mon, MON_DATA_SPECIES);
     isShiny = GetMonData(mon, MON_DATA_IS_SHINY);
     personality = GetMonData(mon, MON_DATA_PERSONALITY);
-    HuecoPic(OPONENTE_IZQUIERDA, MON_PIC_SIZE * NUMERO_FRAMES_POKEMON);
+    HuecoPic(OPONENTE_IZQUIERDA, BytesPicDescomprimido(currSpecies, personality, TRUE));
     LoadSpecialPokePic(gMonSpritesGfxPtr->spritesGfx[OPONENTE_IZQUIERDA],
                         currSpecies,
                         personality,
@@ -256,8 +256,7 @@ void EvolutionScene(struct Pokemon *mon, u16 postEvoSpecies, u8 partyId)
     gSprites[id].invisible = TRUE;
 
     // postEvo sprite
-    HuecoPic(OPONENTE_DERECHA, MON_PIC_SIZE * NUMERO_FRAMES_POKEMON);
-    HuecoPic(OPONENTE_DERECHA, MON_PIC_SIZE * NUMERO_FRAMES_POKEMON);
+    HuecoPic(OPONENTE_DERECHA, BytesPicDescomprimido(postEvoSpecies, personality, TRUE));
     LoadSpecialPokePic(gMonSpritesGfxPtr->spritesGfx[OPONENTE_DERECHA],
                         postEvoSpecies,
                         personality,
@@ -331,9 +330,7 @@ static void CB2_EvolutionSceneLoadGraphics(void)
     FreeAllSpritePalettes();
     gReservedSpritePaletteCount = 4;
 
-    HuecoPic(OPONENTE_DERECHA, MON_PIC_SIZE * NUMERO_FRAMES_POKEMON);
-
-    HuecoPic(OPONENTE_DERECHA, MON_PIC_SIZE * NUMERO_FRAMES_POKEMON);
+    HuecoPic(OPONENTE_DERECHA, BytesPicDescomprimido(postEvoSpecies, personality, TRUE));
     LoadSpecialPokePic(gMonSpritesGfxPtr->spritesGfx[OPONENTE_DERECHA],
                         postEvoSpecies,
                         personality,

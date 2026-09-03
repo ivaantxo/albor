@@ -6,6 +6,7 @@
 #include "data.h"
 #include "constants/pokemon.h"
 #include "battle.h"
+#include "battle_controllers.h"
 #include "task.h"
 #include "pokemon_animation.h"
 #include "depuracion_mgba.h"
@@ -198,9 +199,35 @@ static void ArrancaAnimacionContinua(void)
         if (!sprite->inUse || sprite->invisible || sprite->images == NULL)
             continue;
 
-        // Solo los pics grandes: los de 64x64 tienen uno o dos fotogramas y pedirles
-        // el tercero mostraria basura del buffer.
-        if (sprite->images->size != PIC_GRANDE_BYTES)
+        // Mientras la salida no ha terminado no se le toca la animacion.
+        //
+        // Quien la vigila es el sprite invisible de gBattleControllerData, con
+        // SpriteCB_WaitForBattlerBallReleaseAnim: espera a que la animacion del
+        // Pokemon acabe -animEnded- y solo entonces se pone en el callback vacio,
+        // que es lo que la intro del combate espera para dar paso al menu.
+        //
+        // Ponerle aqui el vaiven continuo, que da vueltas y no acaba nunca, le
+        // borraba ese animEnded justo antes de que lo leyera y el combate se
+        // quedaba colgado con el mensaje en pantalla.
+        //
+        // No sirve mirar el callback del propio Pokemon -es el vacio un instante
+        // antes de que la secuencia arranque- ni ballAnimActive, que aqui no se
+        // enciende porque el Pokemon del jugador no sale de una Pokeball.
+        {
+            u32 vigilante = gBattleControllerData[combatiente];
+
+            if (vigilante < MAX_SPRITES && gSprites[vigilante].inUse
+                && gSprites[vigilante].callback != SpriteCallbackDummy)
+                continue;
+        }
+
+
+        // Solo los que tienen mas de un fotograma, se llamen como se llamen de
+        // grandes. Antes esto preguntaba si el pic era de 96x96, y se quedaba fuera
+        // cualquier especie animada en una caja menor: AjustaFotogramasPic hace que
+        // los fotogramas que el pic NO trae apunten al primero, asi que basta con
+        // mirar si el segundo va a otro sitio.
+        if (sprite->images[1].data == sprite->images[0].data)
             continue;
 
         sprite->animPaused = FALSE;
@@ -233,8 +260,10 @@ static void ArrancaRepeticionAnimacion(void)
 
 // Lo minimo que tiene que medir el hueco de un combatiente: no solo guarda los
 // fotogramas del pic, tambien lo usan de zona de trabajo battle_intro, el sustituto y
-// la escena de evolucion.
-#define BYTES_MINIMOS_HUECO (MON_PIC_SIZE * NUMERO_FRAMES_POKEMON)
+// la escena de evolucion. Va por FOTOGRAMAS_ZONA_TRABAJO, que es lo que esos tres
+// necesitan, y NO por el techo de fotogramas de la animacion: ver el comentario de
+// FOTOGRAMAS_ZONA_TRABAJO en constants/pokemon.h.
+#define BYTES_MINIMOS_HUECO (MON_PIC_SIZE * FOTOGRAMAS_ZONA_TRABAJO)
 
 // Asegura que el hueco de un combatiente mida al menos lo pedido, y devuelve donde
 // esta. Reserva UNA sola vez y al tamano definitivo: la version anterior reservaba
@@ -271,24 +300,36 @@ u8 *HuecoPic(u32 posicion, u32 bytes)
     return nuevo;
 }
 
-void PreparaHuecoPic(u32 posicion, u32 especie, u32 personalidad, bool32 esFront)
+// Cuanto ocupa el pic de una especie una vez descomprimido. Es la cifra que hay que
+// reservar para descomprimirlo entero: LoadSpecialPokePic vuelca TODOS los fotogramas
+// que trae el pic, no solo el primero, asi que quedarse corto escribe fuera del bloque.
+//
+// Con los fotogramas que trae de verdad, no con el techo. La cabecera LZ77 dice cuanto
+// ocupa descomprimido, y un back de dos fotogramas necesita la mitad que uno de cuatro.
+//
+// Y manda la cabecera EN LOS DOS SENTIDOS. Antes solo se hacia caso si pedia menos que
+// el techo, asi que un pic con mas fotogramas de los que dice NUMERO_FRAMES_POKEMON
+// reservaba de menos y se descomprimia fuera del bloque, callando. Mientras el techo
+// fue mayor que cualquier pic daba igual; en cuanto se baje, deja de darlo.
+u32 BytesPicDescomprimido(u32 especie, u32 personalidad, bool32 esFront)
 {
     const u32 *comprimido = esFront ? gSpeciesInfo[especie].frontPic : gSpeciesInfo[especie].backPic;
     u32 bytes = BytesPicCombate(especie, personalidad, esFront) * NUMERO_FRAMES_POKEMON;
 
-    // Con los fotogramas que trae de verdad, no con el maximo. La cabecera LZ77 dice
-    // cuanto ocupa descomprimido, y un back de dos fotogramas necesita la mitad que
-    // uno de cuatro. En un combate doble con los cuatro a 96x96, reservar siempre el
-    // maximo son 73 KB de los 114 del monton y la ultima peticion se queda sin sitio.
     if (comprimido != NULL)
     {
         u32 real = comprimido[0] >> 8;
 
-        if (real != 0 && real < bytes)
+        if (real != 0)
             bytes = real;
     }
 
-    HuecoPic(posicion, bytes);
+    return bytes;
+}
+
+void PreparaHuecoPic(u32 posicion, u32 especie, u32 personalidad, bool32 esFront)
+{
+    HuecoPic(posicion, BytesPicDescomprimido(especie, personalidad, esFront));
 }
 
 // Y esto DESPUES de descomprimir: recoloca los tiles si el pic es de los grandes y

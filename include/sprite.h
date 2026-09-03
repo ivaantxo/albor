@@ -344,6 +344,7 @@ void FreeSpriteTilesByTag(u16 tag);
 void FreeSpriteTileRanges(void);
 u16 GetSpriteTileStartByTag(u16 tag);
 u16 GetSpriteTileTagByTileStart(u16 start);
+void VuelcaMapaTilesSprites(void);
 void FreeAllSpritePalettes(void);
 u32 LoadSpritePalette(const struct SpritePalette *palette);
 u32 LoadEggSpritePalette(const struct SpritePalette *palette1, const struct SpritePalette *palette2);

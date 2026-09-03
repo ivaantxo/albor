@@ -10,6 +10,7 @@
 #include "gpu_regs.h"
 #include "malloc.h"
 #include "palette.h"
+#include "pic_combate.h"
 #include "pokemon_icon.h"
 #include "sprite.h"
 #include "task.h"
@@ -1759,8 +1760,11 @@ u8 CreateAdditionalMonSpriteForMoveAnim(u16 species, bool8 isBackpic, u8 id, s16
     u16 sheet = LoadSpriteSheet(&sSpriteSheets_MoveEffectMons[id]);
     u16 palette = AllocSpritePalette(sSpriteTemplates_MoveEffectMons[id].paletteTag);
 
+    // Lo que ocupe el pic de ESTA especie descomprimido, que es lo que
+    // LoadSpecialPokePic va a volcar aqui debajo. Antes pedia el techo de fotogramas
+    // por el tamano de pic: 48 KB para copiar 2 a la VRAM.
     if (gMonSpritesGfxPtr != NULL && gMonSpritesGfxPtr->buffer == NULL)
-        gMonSpritesGfxPtr->buffer = AllocZeroed(MON_PIC_SIZE * NUMERO_FRAMES_POKEMON);
+        gMonSpritesGfxPtr->buffer = AllocZeroed(BytesPicDescomprimido(species, personality, !isBackpic));
     if (!isBackpic)
     {
         LoadPalette(GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality), OBJ_PLTT_ID(palette), PLTT_SIZE_4BPP);

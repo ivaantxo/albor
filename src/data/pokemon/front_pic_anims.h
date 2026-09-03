@@ -13,19 +13,14 @@ static const union AnimCmd sAnim_None[] =
     ANIMCMD_END,
 };
 
-// Animacion de BW: vaiven continuo y, cada tres vueltas, el gesto especial mas la
-// transicion de vuelta al reposo. 0 reposo, 1 vaiven, 2 especial, 3 transicion.
+// El vaiven da un saltito hacia delante -la pose 1- y el gesto reaprovecha esa misma
+// pose para frenar en seco antes de agacharse. Cinco imagenes: 0 reposo, 1 arriba,
+// 2 abajo, 3 transicion del gesto, 4 gesto.
 static const union AnimCmd sAnim_Bulbasaur[] =
 {
-    ANIMCMD_FRAME(0, 10),
-    ANIMCMD_FRAME(1, 10),
-    ANIMCMD_FRAME(0, 10),
-    ANIMCMD_FRAME(1, 10),
-    ANIMCMD_FRAME(0, 10),
-    ANIMCMD_FRAME(1, 10),
-    ANIMCMD_FRAME(2, 12),
-    ANIMCMD_FRAME(3, 10),
-    ANIMCMD_JUMP(0),
+    BUCLE_PRINCIPAL(0, 1, 0, 2, 0),
+    BUCLE_ESPECIAL(2, 3, 4),
+    VUELTA_AL_PRINCIPIO,
 };
 
 // Animacion de BW: vaiven continuo y, cada tres vueltas, el gesto especial mas la
@@ -6556,6 +6551,38 @@ static const union AnimCmd sAnim_Egg[] =
     ANIMCMD_FRAME(2, 6),
     ANIMCMD_FRAME(3, 6),
     ANIMCMD_END,
+};
+
+// La espalda tambien es de BW: 20 fotogramas, ciclo de 12 por tres y cola de 14.
+//
+// Va en una tabla propia porque la de espaldas la comparten TODAS las especies
+// -gAnims_MonPic-, y ahi no caben los fotogramas de una en concreto. El indice 2
+// es el vaiven continuo, que es el que pide el combate.
+// La espalda lleva solo el vaiven, sin gesto: tres imagenes -0 reposo, 1 arriba,
+// 2 abajo- y la misma forma que el bucle principal del frente.
+static const union AnimCmd sAnim_BulbasaurEspalda[] =
+{
+    BUCLE_PRINCIPAL(0, 1, 0, 2),
+    VUELTA_AL_PRINCIPIO,
+};
+
+// Quieto en el primer cuadro. Es la que corre al salir de la Pokeball, y TIENE que
+// terminar: quien la lanza espera a animEnded para dar el turno por empezado, asi
+// que una con ANIMCMD_JUMP deja el combate colgado para siempre.
+static const union AnimCmd sAnim_BulbasaurEspaldaQuieta[] =
+{
+    ANIMCMD_FRAME(0, 0),
+    TERMINA,
+};
+
+// El indice 0 es el de la salida y el 2 el vaiven continuo, igual que en la tabla
+// que comparten las demas especies. Solo el 2 puede dar vueltas.
+const union AnimCmd *const gAnims_BulbasaurEspalda[ANIMACIONES_POR_PIC] =
+{
+    sAnim_BulbasaurEspaldaQuieta,
+    sAnim_BulbasaurEspaldaQuieta,
+    sAnim_BulbasaurEspalda,
+    sAnim_BulbasaurEspaldaQuieta,
 };
 
 #define SINGLE_ANIMATION(name)                      \

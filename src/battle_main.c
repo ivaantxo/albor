@@ -946,9 +946,14 @@ static void SpriteCB_ZoomEntradaSalvaje(struct Sprite *sprite)
         sprite->sZoomPaso++;
         return;
     }
-    sprite->sZoomPaso = ZOOM_ESPERA_CENTRO;
 #endif
 
+    // Un solo contador para las dos etapas: la espera son los primeros
+    // ZOOM_ESPERA_CENTRO y el camino de vuelta lo que venga despues. Aqui NO se
+    // puede volver a fijar el contador al final de la espera: la funcion corre
+    // cada fotograma, asi que ponerlo lo dejaba clavado en ese numero, t salia 0
+    // siempre y el rival se quedaba en primer plano para siempre. Y con el, todo
+    // el combate: la intro del salvaje espera a que este sprite acabe.
     s32 t = sprite->sZoomPaso++ - (ENTRADA_CON_DESVELADO ? 0 : ZOOM_ESPERA_CENTRO);
 
     // Al arrancar el camino se da via libre: es cuando entra tu entrenador.

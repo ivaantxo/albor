@@ -998,13 +998,21 @@ void JumpToTopOfAnimLoop(struct Sprite *sprite)
     {
         sprite->animCmdIndex--;
 
-        while (sprite->anims[sprite->animNum][sprite->animCmdIndex - 1].type != -3)
-        {
-            if (sprite->animCmdIndex == 0)
-                break;
+        // Se retrocede hasta justo despues del bucle anterior, o hasta el principio
+        // de la animacion si no hay ninguno.
+        //
+        // El indice se mira ANTES de leer la casilla de detras. Antes se leia primero
+        // y se comprobaba despues, asi que con el indice ya en cero se leia
+        // anims[-1]: la casilla anterior a la tabla, que es el final de otra. Da la
+        // casualidad de que casi siempre vale -1 o -2 y no pasa nada, pero si alguna
+        // vez cayera un -3 ahi, el bucle rebobinaria a una posicion que no existe.
+        // Con un solo bucle por animacion nunca se noto; ahora los llevan todos.
+        while (sprite->animCmdIndex != 0
+            && sprite->anims[sprite->animNum][sprite->animCmdIndex - 1].type != -3)
             sprite->animCmdIndex--;
-        }
 
+        // Uno menos, porque ContinueAnim va a sumar uno antes de leer. Desde cero se
+        // da la vuelta a proposito y el sumando lo devuelve a cero.
         sprite->animCmdIndex--;
     }
 }
@@ -1582,6 +1590,57 @@ u16 GetSpriteTileTagByTileStart(u16 start)
     }
 
     return TAG_NONE;
+}
+
+// Quien tiene cogida la VRAM de objetos, por etiqueta, y cual es el hueco seguido
+// mas grande que queda. AllocSpriteTiles falla en silencio -devuelve -1 y
+// LoadSpriteSheet un cero que nadie mira-, asi que sin esto un sheet que no cabe
+// se manifiesta como un sprite que dibuja tiles ajenos.
+void VuelcaMapaTilesSprites(void)
+{
+#if DEPURACION_MGBA
+    u32 ocupados = 0;
+    u32 hueco = 0;
+    u32 mayorHueco = 0;
+
+    for (u32 i = 0; i < NUMERO_TILES_SPRITES; i++)
+    {
+        if (SPRITE_TILE_IS_ALLOCATED(i))
+        {
+            ocupados++;
+            hueco = 0;
+        }
+        else
+        {
+            hueco++;
+            if (hueco > mayorHueco)
+                mayorHueco = hueco;
+        }
+    }
+
+    LOG("TILES ocupados/mayor hueco", ocupados, mayorHueco);
+    LOG("   reservados de salida", gReservedSpriteTileCount, NUMERO_TILES_SPRITES);
+
+    for (u32 i = 0; i < MAX_SPRITES; i++)
+    {
+        if (sSpriteTileRangeTags[i] == TAG_NONE)
+            continue;
+
+        LOG("   etiqueta/inicio", sSpriteTileRangeTags[i], sSpriteTileRanges[i * 2]);
+        LOG("      cuantos", (sSpriteTileRanges + 1)[i * 2], 0);
+    }
+
+    // Los sprites de pic no van por etiqueta: reservan a pelo en CreateSprite.
+    for (u32 i = 0; i < MAX_SPRITES; i++)
+    {
+        if (gSprites[i].inUse && gSprites[i].tilesReservados != 0
+            && GetSpriteTileTagByTileStart(gSprites[i].oam.tileNum) == TAG_NONE)
+        {
+            LOG("   SIN etiqueta sprite/inicio", i, gSprites[i].oam.tileNum);
+            LOG("      cuantos", gSprites[i].tilesReservados, 0);
+        }
+    }
+#endif
 }
 
 void AllocSpriteTileRange(u16 tag, u16 start, u16 count)

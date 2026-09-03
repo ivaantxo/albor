@@ -8,10 +8,8 @@ void PutMemBlockHeader(void *block, struct MemBlock *prev, struct MemBlock *next
     struct MemBlock *header = (struct MemBlock *)block;
 
     header->allocated = FALSE;
-    header->locationHi = 0;
     header->magic = MALLOC_SYSTEM_ID;
     header->size = size;
-    header->locationLo = 0;
     header->prev = prev;
     header->next = next;
 }
@@ -21,9 +19,9 @@ void PutFirstMemBlockHeader(void *block, u32 size)
     PutMemBlockHeader(block, (struct MemBlock *)block, (struct MemBlock *)block, size - sizeof(struct MemBlock));
 }
 
-void *AllocInternal(void *heapStart, u32 size, const char *location)
+void *Alloc(u32 size)
 {
-    struct MemBlock *pos = (struct MemBlock *)heapStart;
+    struct MemBlock *pos = (struct MemBlock *)gHeap;
     struct MemBlock *head = pos;
     struct MemBlock *splitBlock;
     u32 foundBlockSize;
@@ -68,9 +66,6 @@ void *AllocInternal(void *heapStart, u32 size, const char *location)
                         splitBlock->next->prev = splitBlock;
                 }
 
-                pos->locationHi = ((uintptr_t)location) >> 14;
-                pos->locationLo = (uintptr_t)location;
-
                 return pos->data;
             }
         }
@@ -84,11 +79,11 @@ void *AllocInternal(void *heapStart, u32 size, const char *location)
     }
 }
 
-void FreeInternal(void *heapStart, void *pointer)
+void Free(void *pointer)
 {
     if (pointer)
     {
-        struct MemBlock *head = (struct MemBlock *)heapStart;
+        struct MemBlock *head = (struct MemBlock *)gHeap;
         struct MemBlock *block = (struct MemBlock *)((u8 *)pointer - sizeof(struct MemBlock));
         block->allocated = FALSE;
 
@@ -124,9 +119,9 @@ void FreeInternal(void *heapStart, void *pointer)
     }
 }
 
-void *AllocZeroedInternal(void *heapStart, u32 size, const char *location)
+void *AllocZeroed(u32 size)
 {
-    void *mem = AllocInternal(heapStart, size, location);
+    void *mem = Alloc(size);
 
     if (mem != NULL)
     {
@@ -139,9 +134,9 @@ void *AllocZeroedInternal(void *heapStart, u32 size, const char *location)
     return mem;
 }
 
-bool32 CheckMemBlockInternal(void *heapStart, void *pointer)
+bool32 CheckMemBlock(void *pointer)
 {
-    struct MemBlock *head = (struct MemBlock *)heapStart;
+    struct MemBlock *head = (struct MemBlock *)gHeap;
     struct MemBlock *block = (struct MemBlock *)((u8 *)pointer - sizeof(struct MemBlock));
 
     if (block->magic != MALLOC_SYSTEM_ID)
@@ -170,32 +165,12 @@ void InitHeap(void)
     PutFirstMemBlockHeader(gHeap, HEAP_SIZE);
 }
 
-void *Alloc_(u32 size, const char *location)
-{
-    return AllocInternal(gHeap, size, location);
-}
-
-void *AllocZeroed_(u32 size, const char *location)
-{
-    return AllocZeroedInternal(gHeap, size, location);
-}
-
-void Free(void *pointer)
-{
-    FreeInternal(gHeap, pointer);
-}
-
-bool32 CheckMemBlock(void *pointer)
-{
-    return CheckMemBlockInternal(gHeap, pointer);
-}
-
 bool32 CheckHeap(void)
 {
     struct MemBlock *pos = (struct MemBlock *)gHeap;
 
     do {
-        if (!CheckMemBlockInternal(gHeap, pos->data))
+        if (!CheckMemBlock(pos->data))
             return FALSE;
         pos = pos->next;
     } while (pos != (struct MemBlock *)gHeap);
@@ -208,10 +183,20 @@ const struct MemBlock *HeapHead(void)
     return (const struct MemBlock *)gHeap;
 }
 
-const char *MemBlockLocation(const struct MemBlock *block)
+void MideMonton(u32 *libre, u32 *mayorHueco)
 {
-    if (!block->allocated)
-        return NULL;
+    struct MemBlock *pos = (struct MemBlock *)gHeap;
 
-    return (const char *)(ROM_START | (block->locationHi << 14) | block->locationLo);
+    *libre = 0;
+    *mayorHueco = 0;
+
+    do {
+        if (!pos->allocated)
+        {
+            *libre += pos->size;
+            if (pos->size > *mayorHueco)
+                *mayorHueco = pos->size;
+        }
+        pos = pos->next;
+    } while (pos != (struct MemBlock *)gHeap);
 }

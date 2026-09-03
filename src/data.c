@@ -220,10 +220,13 @@ static const union AnimCmd sAnim_MonPic_Bucle[] =
     ANIMCMD_JUMP(0),
 };
 
-// Ojo: hay que rellenar las cuatro. La tabla se declara con NUMERO_FRAMES_POKEMON
-// entradas y antes solo tenia dos inicializadas; las otras quedaban a NULL y pedir
-// esa animacion habria saltado a la nada.
-const union AnimCmd *const gAnims_MonPic[NUMERO_FRAMES_POKEMON] =
+// Cuantas ANIMACIONES distintas puede pedir un pic, que no tiene nada que ver con
+// cuantos fotogramas tiene. Estaba declarada con NUMERO_FRAMES_POKEMON porque las
+// dos valian cuatro, y al subir los fotogramas la tabla crecia sola llena de NULL:
+// pedir cualquiera de las nuevas habria saltado a la nada.
+//
+// Ojo: hay que rellenarlas todas.
+const union AnimCmd *const gAnims_MonPic[ANIMACIONES_POR_PIC] =
 {
     sAnim_MonPic_0,
     sAnim_MonPic_1,
