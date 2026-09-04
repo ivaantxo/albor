@@ -710,6 +710,30 @@ static void Intro_WaitForShinyAnimAndHealthbox(u32 battler)
         if (TwoPlayerIntroMons(battler))
             HandleLowHpMusicChange(&gPlayerParty[gBattlerPartyIndexes[ALIADO(battler)]], ALIADO(battler));
 
+#if DEPURACION_MGBA
+        // El combate ya esta montado del todo: es el momento de saber cuanto se ha
+        // llevado. Lo que no son los pic es el coste fijo, y esa cifra es la que
+        // decide cuantos fotogramas caben. Hasta ahora estaba estimada de un combate
+        // de dos; con un doble delante deja de ser una estimacion.
+        {
+            static bool32 medido = FALSE;
+
+            if (!medido)
+            {
+                u32 libre, mayorHueco, enPics = 0;
+
+                medido = TRUE;
+                MideMonton(&libre, &mayorHueco);
+                for (u32 c = 0; c < NUMERO_COMBATIENTES; c++)
+                    enPics += gMonSpritesGfxPtr == NULL ? 0 : gMonSpritesGfxPtr->tamanoHueco[c];
+
+                LOG("MONTON combatientes/en pics", gBattlersCount, enPics);
+                LOG("   libre/mayor hueco", libre, mayorHueco);
+                LOG("   COSTE FIJO (todo lo demas)", HEAP_SIZE - enPics - libre, HEAP_SIZE);
+            }
+        }
+#endif
+
         gBattleSpritesDataPtr->healthBoxesData[battler].introEndDelay = 3;
         gBattlerControllerFuncs[battler] = Intro_DelayAndEnd;
     }

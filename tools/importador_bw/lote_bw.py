@@ -22,11 +22,16 @@ Uso:
     lote_bw.py --solo-informe      no descarga ni escribe, dice que haria
 """
 
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from usa_entorno import asegura_pillow
+asegura_pillow()
+
 import argparse
 import json
-import os
 import re
-import sys
 import time
 import unicodedata
 import urllib.parse

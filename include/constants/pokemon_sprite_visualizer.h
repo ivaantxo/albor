@@ -21,8 +21,17 @@
 #define MON_PIC_BACK 0
 #define MON_PIC_FRONT 1
 
-//Sprite offset
-#define MAX_Y_OFFSET 20
+// Cuanto puede alejarse del valor de la especie el ajuste de altura del visor.
+//
+// Era 20 y NO por ningun motivo del juego: los campos son u8, y en species_info.h ya
+// hay espaldas puestas a 21 y a 22, o sea por encima del tope de la herramienta. Era
+// solo el limite del mando.
+//
+// Ahora es la altura del pic, que si es un limite con sentido: pasado eso el dibujo
+// se ha ido entero de su sitio. Importa con los sprites recortados a ras del borde de
+// abajo, donde la especie parte de cero y los 20 de antes eran todo el recorrido que
+// habia hacia arriba.
+#define MAX_Y_OFFSET MON_PIC_HEIGHT
 
 //Windows
 #define WIN_NAME_NUMBERS 0

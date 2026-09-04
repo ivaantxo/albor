@@ -481,10 +481,17 @@ void GestionaCambioGraficoEspecie(u32 atacante, u32 defensor, bool32 usarPersona
             isShiny = GetMonData(&gPlayerParty[gBattlerPartyIndexes[atacante]], MON_DATA_IS_SHINY);
         }
 
+        // El hueco hay que ajustarlo ANTES, y las imagenes DESPUES, igual que en
+        // BattleLoadMonSpriteGfx. Esto solo hacia la descompresion: si la forma
+        // nueva traia un pic mayor que la anterior -mas fotogramas, o 96x96 donde
+        // habia 64x64- se escribia fuera del bloque y se llevaba por delante lo que
+        // hubiera detras, sin decir nada.
+        PreparaHuecoPic(position, targetSpecies, personalityValue, FALSE);
         HandleLoadSpecialPokePic(FALSE,
                                     gMonSpritesGfxPtr->spritesGfx[position],
                                     targetSpecies,
                                     personalityValue);
+        AjustaFotogramasPic(position, targetSpecies, personalityValue, FALSE);
     }
     else
     {
@@ -499,10 +506,12 @@ void GestionaCambioGraficoEspecie(u32 atacante, u32 defensor, bool32 usarPersona
             isShiny = GetMonData(&gEnemyParty[gBattlerPartyIndexes[atacante]], MON_DATA_IS_SHINY);
         }
 
+        PreparaHuecoPic(position, targetSpecies, personalityValue, TRUE);
         HandleLoadSpecialPokePic(TRUE,
                                     gMonSpritesGfxPtr->spritesGfx[position],
                                     targetSpecies,
                                     personalityValue);
+        AjustaFotogramasPic(position, targetSpecies, personalityValue, TRUE);
     }
     src = gMonSpritesGfxPtr->spritesGfx[position];
     dst = (void *)(OBJ_VRAM0 + gSprites[gBattlerSpriteIds[atacante]].oam.tileNum * TILE_4BPP);

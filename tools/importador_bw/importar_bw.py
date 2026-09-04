@@ -16,9 +16,14 @@ Uso tipico:
 Con --solo-informe no escribe nada: dice que haria y que problemas ve.
 """
 
-import argparse
 import os
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from usa_entorno import asegura_pillow
+asegura_pillow()
+
+import argparse
 from PIL import Image
 
 COLOR_TRANSPARENTE_POR_DEFECTO = (152, 160, 208)   # el que usa el proyecto

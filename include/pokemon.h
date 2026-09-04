@@ -201,6 +201,11 @@ struct SpeciesInfo
     u8 frontAnimId;
     u8 backAnimId;
     const union AnimCmd *const *frontAnimFrames;
+
+    // La animacion del sprite de espalda. A NULL, la especie usa gAnims_MonPic, que
+    // es el vaiven de dos fotogramas que comparten todas: eso es el provisional
+    // mientras no tenga arte propio. Se rellena con ANIM_ESPALDA en species_info.h.
+    const union AnimCmd *const *backAnimFrames;
     const u32 *frontPic;
     const u32 *frontPicFemale;
     const u32 *backPic;

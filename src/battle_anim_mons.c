@@ -53,36 +53,6 @@ const struct UCoords8 sBattlerCoords[NUMERO_MODOS][NUMERO_COMBATIENTES] =
     },
 };
 
-// Placeholders for Pokémon sprites to be created for a move animation effect (e.g. Role Play)
-
-static const struct SpriteTemplate sSpriteTemplates_MoveEffectMons[] =
-{
-    {
-        .tileTag = TAG_MOVE_EFFECT_MON_1,
-        .paletteTag = TAG_MOVE_EFFECT_MON_1,
-        .oam = &gOamData_AffineNormal_ObjNormal_64x64,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = SpriteCallbackDummy,
-    },
-    {
-        .tileTag = TAG_MOVE_EFFECT_MON_2,
-        .paletteTag = TAG_MOVE_EFFECT_MON_2,
-        .oam = &gOamData_AffineNormal_ObjNormal_64x64,
-        .anims = gDummySpriteAnimTable,
-        .images = NULL,
-        .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = SpriteCallbackDummy,
-    }
-};
-
-static const struct SpriteSheet sSpriteSheets_MoveEffectMons[] =
-{
-    { NULL, MON_PIC_SIZE, TAG_MOVE_EFFECT_MON_1, },
-    { NULL, MON_PIC_SIZE, TAG_MOVE_EFFECT_MON_2, },
-};
-
 u8 GetBattlerSpriteCoord(u8 battlerId, u8 coordType)
 {
     u8 retVal;
@@ -1751,48 +1721,6 @@ u8 GetBattlerSpriteBGPriorityRank(u8 battlerId)
     else
         return 1;
     return 1;
-}
-
-// Create Pokémon sprite to be used for a move animation effect (e.g. Role Play)
-u8 CreateAdditionalMonSpriteForMoveAnim(u16 species, bool8 isBackpic, u8 id, s16 x, s16 y, u8 subpriority, u32 personality, bool8 isShiny, u32 battlerId)
-{
-    u32 spriteId;
-    u16 sheet = LoadSpriteSheet(&sSpriteSheets_MoveEffectMons[id]);
-    u16 palette = AllocSpritePalette(sSpriteTemplates_MoveEffectMons[id].paletteTag);
-
-    // Lo que ocupe el pic de ESTA especie descomprimido, que es lo que
-    // LoadSpecialPokePic va a volcar aqui debajo. Antes pedia el techo de fotogramas
-    // por el tamano de pic: 48 KB para copiar 2 a la VRAM.
-    if (gMonSpritesGfxPtr != NULL && gMonSpritesGfxPtr->buffer == NULL)
-        gMonSpritesGfxPtr->buffer = AllocZeroed(BytesPicDescomprimido(species, personality, !isBackpic));
-    if (!isBackpic)
-    {
-        LoadPalette(GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality), OBJ_PLTT_ID(palette), PLTT_SIZE_4BPP);
-        DesplazaTonoPaleta(OBJ_PLTT_ID(palette), personality);
-        LoadSpecialPokePic(gMonSpritesGfxPtr->buffer,
-                           species,
-                           personality,
-                           TRUE);
-    }
-    else
-    {
-        LoadPalette(GetMonSpritePalFromSpeciesAndPersonality(species, isShiny, personality), OBJ_PLTT_ID(palette), PLTT_SIZE_4BPP);
-        DesplazaTonoPaleta(OBJ_PLTT_ID(palette), personality);
-        LoadSpecialPokePic(gMonSpritesGfxPtr->buffer,
-                           species,
-                           personality,
-                           FALSE);
-    }
-
-    RequestDma3Copy(gMonSpritesGfxPtr->buffer, (void *)(OBJ_VRAM0 + (sheet * TILE_4BPP)), MON_PIC_SIZE, DMA_REQUEST_COPY32);
-    FREE_AND_SET_NULL(gMonSpritesGfxPtr->buffer);
-
-    if (!isBackpic)
-        spriteId = CreateSprite(&sSpriteTemplates_MoveEffectMons[id], x, y + gSpeciesInfo[species].frontPicYOffset, subpriority);
-    else
-        spriteId = CreateSprite(&sSpriteTemplates_MoveEffectMons[id], x, y + gSpeciesInfo[species].backPicYOffset, subpriority);
-
-    return spriteId;
 }
 
 s16 GetBattlerSpriteCoordAttr(u8 battlerId, u8 attr)

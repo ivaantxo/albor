@@ -77,6 +77,11 @@
 
 #define BACK_ANIM(anim) .backAnimId = BACK_ANIM_##anim
 
+// La animacion del sprite de espalda, para las especies que ya tienen la suya en
+// animaciones_pokemon.h. Sin esto la especie usa gAnims_MonPic, el vaiven de dos
+// fotogramas que comparten todas, que es el provisional mientras no tenga arte.
+#define ANIM_ESPALDA(especie) .backAnimFrames = sAnimsEspalda_##especie
+
 #define RATIO_CAPTURA(ratio) .catchRate = RATIO_CAPTURA_##ratio
 
 #define RETRASO_ANIMACION(retraso) .frontAnimDelay = retraso
@@ -202,12 +207,14 @@ const struct SpeciesInfo gSpeciesInfo[] =
         GRITO(BULBASAUR),
         OBJETO_RARO(ABSORB_BULB),
         POKEDEX(BULBASAUR),
-        SOMBRA(-5, -4),
+        SOMBRA(3, 0),
         FRONT_PIC(Bulbasaur, 64, 64),
-        ELEVACION_FRONT_PIC(13),
+        ELEVACION_FRONT_PIC(0),
+        ELEVACION_COMO_ENEMIGO(1),
         FRONT_ANIM(Bulbasaur, V_JUMPS_H_JUMPS),
+        ANIM_ESPALDA(Bulbasaur),
         BACK_PIC(Bulbasaur, 64, 64),
-        ELEVACION_BACK_PIC(13),
+        ELEVACION_BACK_PIC(0),
         BACK_ANIM(DIP_RIGHT_SIDE),
         PALETAS(Bulbasaur),
         FOLLOWER(Bulbasaur, TRACKS_FOOT),

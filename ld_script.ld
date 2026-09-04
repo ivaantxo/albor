@@ -25,6 +25,29 @@ SECTIONS {
         src/*.o(.sbss);
     } > EWRAM
 
+    /* El monton se queda con TODA la EWRAM que sobre, sea la que sea. Antes era un
+       array de tamano fijo, y cada vez que hacia falta mas habia que subir el numero
+       a mano mirando cuanto quedaba libre: eso significa que entre subida y subida
+       habia memoria pagada y sin usar. Va el ultimo a proposito, para que lo que
+       sobre este siempre detras. */
+    .ewram.monton (NOLOAD) :
+    ALIGN(4)
+    {
+        __monton_inicio = .;
+    } > EWRAM
+
+    __monton_bytes = ORIGIN(EWRAM) + LENGTH(EWRAM) - __monton_inicio;
+
+    /* Si alguien mete tantos datos en EWRAM que el monton se queda en nada, el
+       enlazador no protesta -sigue habiendo sitio para los datos-, y el juego se
+       cae luego al primer Alloc. Mejor enterarse aqui. */
+    /* El suelo NO es un numero redondo: es lo que pide el peor combate. Cuatro pics
+       de 96x96 con cinco poses son 92160, el resto del combate 47144 medidos, y las
+       animaciones de movimiento unos 16000 encima. Por debajo de eso el juego seguiria
+       enlazando y se rompería en la primera batalla doble, que es justo lo que no se
+       quiere descubrir jugando. */
+    ASSERT(__monton_bytes >= 160K, "No queda EWRAM para el monton: por debajo de 160K los combates dobles con pics grandes se quedan sin memoria. Mira que dato nuevo se ha comido el sitio.")
+
     .iwram ORIGIN(IWRAM) : AT (__iwram_lma)
     ALIGN(4)
     {

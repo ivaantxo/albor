@@ -11,12 +11,16 @@ Uso:
     lote_apng.py --hasta 493          todas
 """
 
-import argparse
 import os
-import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from usa_entorno import asegura_pillow
+asegura_pillow()
+
+import argparse
+import re
+
 RAIZ = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import bulbapedia

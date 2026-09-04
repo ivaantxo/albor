@@ -411,12 +411,21 @@ static void PrintInstructionsOnWindow(struct PokemonSpriteVisualizer *data)
     u8 textInstructionsSubmenuTwoGender[] = _("{START_BUTTON} Shiny {SELECT_BUTTON} Gender\n{B_BUTTON} Back  {A_BUTTON} Shadow Coords$");
     u8 textInstructionsSubmenuThree[] = _("{START_BUTTON} Shiny\n{B_BUTTON} Back");
     u8 textInstructionsSubmenuThreeGender[] = _("{START_BUTTON} Shiny {SELECT_BUTTON} Gender\n{B_BUTTON} Back$");
+    // El volcado al log no cabe en las dos lineas de ayuda, y no hace falta que
+    // quepa: es una herramienta de desarrollo y va apuntado en VuelcaAjustesAlLog.
 
 
     u8 textBottom[] = _("BACK:\nFRONT:\nBG:$");
     u8 textBottomForms[] = _("BACK:\nFRONT:\nBG:\nFORMS:$");
-    u8 textBottomSubmenuTwo[] = _("B coords:\nF coords:\nF elev:");
-    u8 textBottomSubmenuThree[] = _("X coords:\nY coords:\nSize:");
+    // "F coords" va la ULTIMA y no se toca: describe el arte -cuanto hueco hay bajo
+    // el dibujo- y de ahi lo leen la caida al debilitarse y el escalado afin. Lo que
+    // coloca al Pokemon es "F elev". Se ensena porque conviene verlo, y con los
+    // sprites recuadrados a ras del borde de abajo deberia ser 0 siempre.
+    u8 textBottomSubmenuTwo[] = _("B coords:\nF elev:\nF coords:");
+
+    // "Size" ya no esta: todas las sombras miden lo mismo desde que la silueta es la
+    // del propio Pokemon. La fila seguia impresa y no la manejaba nadie.
+    u8 textBottomSubmenuThree[] = _("X coords:\nY coords:");
     u16 species = data->modifyArrows.currValue;
 
     u8 textL[] = _("{L_BUTTON}");
@@ -721,7 +730,6 @@ static void SetConstSpriteValues(struct PokemonSpriteVisualizer *data)
 static void ResetOffsetSpriteValues(struct PokemonSpriteVisualizer *data)
 {
     data->offsetsSpriteValues.offset_back_picCoords = 0;
-    data->offsetsSpriteValues.offset_front_picCoords = 0;
     data->offsetsSpriteValues.offset_front_elevation = 0;
 }
 
@@ -735,14 +743,20 @@ static void ResetShadowSettings(struct PokemonSpriteVisualizer *data, u16 specie
     data->shadowSettings.overrideY = data->shadowSettings.definedY;
 }
 
-static u8 GetBattlerSpriteFinal_YCustom(u16 species, s8 offset_picCoords, s8 offset_elevation)
+static u8 GetBattlerSpriteFinal_YCustom(u16 species, s8 offset_elevation)
 {
-    u16 offset;
-    u8 y;
+    // Con signo. Era u16, y como la elevacion se RESTA, en cuanto pasaba de lo que
+    // suma el pic la cuenta daba la vuelta y salia un numero enorme; lo tapaba el
+    // recorte de abajo, que lo dejaba pegado al tope. Con margenes de hasta la altura
+    // del pic eso es facil de alcanzar, y un sprite clavado en el tope parece que el
+    // ajuste no responde.
+    s32 offset;
+    s32 y;
+
     species = SanitizeSpeciesId(species);
 
     //FrontPicCoords
-    offset = gSpeciesInfo[species].frontPicYOffset + offset_picCoords;
+    offset = gSpeciesInfo[species].frontPicYOffset;
 
     //Elevation
     offset -= gSpeciesInfo[species].enemyMonElevation + offset_elevation;
@@ -752,6 +766,8 @@ static u8 GetBattlerSpriteFinal_YCustom(u16 species, s8 offset_picCoords, s8 off
 
     if (y > ALTURA_PANTALLA - MON_PIC_HEIGHT + 8)
         y = ALTURA_PANTALLA - MON_PIC_HEIGHT + 8;
+    if (y < 0)
+        y = 0;
 
     return y;
 }
@@ -987,6 +1003,49 @@ static void UpdateMonAnimNames(u8 taskId)
     PrintBattleBgName(taskId);
 }
 
+// Pone a andar el vaiven continuo de un sprite de espalda.
+//
+// El vaiven va en ANIM_ESPALDA_BUCLE, no en el indice 1 como el del frente: los dos
+// lados no comparten tabla. Y hay que quitarle la pausa a mano, que el sprite se crea
+// parado en la pose de reposo.
+//
+// La condicion es tener MAS DE UN FOTOGRAMA, no ser de 96x96. Antes preguntaba por el
+// tamano del pic y dejaba fuera a cualquier especie animada en una caja menor, que con
+// los backs de BW recortados a 64x64 son casi todas: se veian quietas en el visor y
+// moviendose en combate. AjustaFotogramasPic hace que los fotogramas que el pic NO
+// trae apunten al primero, asi que basta con mirar si el segundo va a otro sitio.
+// Es el mismo criterio que usa ArrancaAnimacionContinua en el combate.
+static void ArrancaVaivenDeEspalda(struct Sprite *espalda)
+{
+    if (espalda->images == NULL || espalda->images[1].data == espalda->images[0].data)
+        return;
+
+    StartSpriteAnim(espalda, ANIM_ESPALDA_BUCLE);
+    espalda->animPaused = FALSE;
+}
+
+// Las alturas con la forma exacta de los macros de species_info.h, para copiarlas.
+//
+// En una sola linea y con los nombres dentro, igual que VuelcaAjusteSombra: repartir
+// un dato entre varios registros obliga a emparejarlos al leer, y basta con que se
+// cuele otro log en medio para que el emparejamiento deje de valer.
+//
+// Sale sola cada vez que cambia un valor, como la de sombra. La primera version pedia
+// una combinacion de botones, y una herramienta que hay que saber invocar es una
+// herramienta que no se usa.
+static void VuelcaAlturasAlLog(struct PokemonSpriteVisualizer *data)
+{
+    u32 especie = SanitizeSpeciesId(data->currentmonId);
+
+    LogMgba("ALTURA especie %d -> ELEVACION_BACK_PIC(%d), ELEVACION_COMO_ENEMIGO(%d), ELEVACION_FRONT_PIC(%d)",
+            (int)especie,
+            (int)(gSpeciesInfo[especie].backPicYOffset
+                  + data->offsetsSpriteValues.offset_back_picCoords),
+            (int)(gSpeciesInfo[especie].enemyMonElevation
+                  + data->offsetsSpriteValues.offset_front_elevation),
+            (int)gSpeciesInfo[especie].frontPicYOffset);
+}
+
 static void UpdateYPosOffsetText(struct PokemonSpriteVisualizer *data)
 {
     u8 text[34];
@@ -1003,11 +1062,9 @@ static void UpdateYPosOffsetText(struct PokemonSpriteVisualizer *data)
     u8 frontElevation   = data->constSpriteValues.frontElevation;
 
     s8 offset_back_picCoords    = data->offsetsSpriteValues.offset_back_picCoords;
-    s8 offset_front_picCoords   = data->offsetsSpriteValues.offset_front_picCoords;
     s8 offset_front_elevation   = data->offsetsSpriteValues.offset_front_elevation;
 
     u8 newBackPicCoords    = backPicCoords   +  offset_back_picCoords;
-    u8 newFrontPicCoords   = frontPicCoords  +  offset_front_picCoords;
     u8 newFrontElevation   = frontElevation  +  offset_front_elevation;
 
     FillWindowPixelBuffer(WIN_BOTTOM_RIGHT, PIXEL_FILL(0));
@@ -1020,22 +1077,21 @@ static void UpdateYPosOffsetText(struct PokemonSpriteVisualizer *data)
     AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, textNew, x_new_text, y, 0, NULL);
     ConvertIntToDecimalStringN(text, newBackPicCoords , STR_CONV_MODE_LEFT_ALIGN, 2);
     AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, text, x_new_val, y, 0, NULL);
-    //Front picCoords
-    y = 12;
-    AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, textConst, 0, y, 0, NULL);
-    ConvertIntToDecimalStringN(text, frontPicCoords , STR_CONV_MODE_LEFT_ALIGN, 2);
-    AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, text, x_const_val, y, 0, NULL);
-    AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, textNew, x_new_text, y, 0, NULL);
-    ConvertIntToDecimalStringN(text, newFrontPicCoords , STR_CONV_MODE_LEFT_ALIGN, 2);
-    AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, text, x_new_val, y, 0, NULL);
     //Front elevation
-    y = 24;
+    y = 12;
     AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, textConst, 0, y, 0, NULL);
     ConvertIntToDecimalStringN(text, frontElevation , STR_CONV_MODE_LEFT_ALIGN, 2);
     AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, text, x_const_val, y, 0, NULL);
     AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, textNew, x_new_text, y, 0, NULL);
     ConvertIntToDecimalStringN(text, newFrontElevation , STR_CONV_MODE_LEFT_ALIGN, 2);
     AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, text, x_new_val, y, 0, NULL);
+    //Front picCoords: solo se ensena, no se ajusta
+    y = 24;
+    AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, textConst, 0, y, 0, NULL);
+    ConvertIntToDecimalStringN(text, frontPicCoords , STR_CONV_MODE_LEFT_ALIGN, 2);
+    AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, text, x_const_val, y, 0, NULL);
+
+    VuelcaAlturasAlLog(data);
 }
 
 #define ABS(val)    (val < 0 ? val * -1 : val)
@@ -1190,7 +1246,7 @@ void CB2_Pokemon_Sprite_Visualizer(void)
             BattleLoadOpponentMonSpriteGfxCustom(species, data->isFemale, data->isShiny, 1);
             SetMultiuseSpriteTemplateToPokemon(species, 1);
             gMultiuseSpriteTemplate.paletteTag = species;
-            front_y = GetBattlerSpriteFinal_YCustom(species, 0, 0);
+            front_y = GetBattlerSpriteFinal_YCustom(species, 0);
             data->frontspriteId = CreateSprite(&gMultiuseSpriteTemplate, front_x, front_y, 0);
     AplicaSubspritesPic(data->frontspriteId);
     // El mismo bucle continuo que en combate: anims[1] es la secuencia de la especie
@@ -1221,14 +1277,7 @@ void CB2_Pokemon_Sprite_Visualizer(void)
             offset_y = gSpeciesInfo[species].backPicYOffset;
             data->backspriteId = CreateSprite(&gMultiuseSpriteTemplate, VISUALIZER_MON_BACK_X, VISUALIZER_MON_BACK_Y + offset_y, 0);
     AplicaSubspritesPic(data->backspriteId);
-    // El back comparte gAnims_MonPic con todas las especies, asi que su vaiven va en
-    // otro indice que el del frontal. Solo tiene sentido si el pic es de los grandes.
-    if (gSprites[data->backspriteId].images != NULL
-     && gSprites[data->backspriteId].images->size == PIC_GRANDE_BYTES)
-    {
-        StartSpriteAnim(&gSprites[data->backspriteId], ANIM_ESPALDA_BUCLE);
-        gSprites[data->backspriteId].animPaused = FALSE;
-    }
+    ArrancaVaivenDeEspalda(&gSprites[data->backspriteId]);
             gSprites[data->backspriteId].oam.paletteNum = 0;
             gSprites[data->backspriteId].callback = SpriteCallbackDummy;
             gSprites[data->backspriteId].oam.priority = 0;
@@ -1324,7 +1373,7 @@ static void ApplyOffsetSpriteValues(struct PokemonSpriteVisualizer *data)
     //Back
     gSprites[data->backspriteId].y = VISUALIZER_MON_BACK_Y + gSpeciesInfo[species].backPicYOffset + data->offsetsSpriteValues.offset_back_picCoords;
     //Front
-    gSprites[data->frontspriteId].y = GetBattlerSpriteFinal_YCustom(species, data->offsetsSpriteValues.offset_front_picCoords, data->offsetsSpriteValues.offset_front_elevation);
+    gSprites[data->frontspriteId].y = GetBattlerSpriteFinal_YCustom(species, data->offsetsSpriteValues.offset_front_elevation);
 }
 
 static void UpdateSubmenuOneOptionValue(u8 taskId, bool8 increment)
@@ -1416,74 +1465,50 @@ static void UpdateSubmenuOneOptionValue(u8 taskId, bool8 increment)
     }
 }
 
+// Sube o baja un ajuste de altura, dando la vuelta por los extremos.
+//
+// El ajuste se GUARDA como desplazamiento respecto a lo que dice la especie, pero el
+// limite es del valor FINAL. Lo que significa algo es "a cuantos pixeles del borde de
+// abajo esta el dibujo", y eso ni baja de cero ni pasa de la altura del pic.
+//
+// Antes el tope se le ponia al desplazamiento y el suelo al valor final, cada uno por
+// su lado: una especie que partia de 13 llegaba a 77 y otra que partia de 0 se
+// quedaba en 64. El mismo control daba recorridos distintos segun a quien mirases.
+static s8 GiraAjusteDeAltura(s8 desplazamiento, u8 base, bool8 increment)
+{
+    s32 valor = base + desplazamiento + (increment ? 1 : -1);
+
+    if (valor > MAX_Y_OFFSET)
+        valor = 0;
+    else if (valor < 0)
+        valor = MAX_Y_OFFSET;
+
+    return valor - base;
+}
+
 static void UpdateSubmenuTwoOptionValue(u8 taskId, bool8 increment)
 {
     struct PokemonSpriteVisualizer *data = GetStructPtr(taskId);
     u16 species = data->currentmonId;
     u8 option = data->submenuYpos[2];
     s8 offset;
-    u8 y;
 
     switch (option)
     {
     case 0: //Back picCoords
-        offset = data->offsetsSpriteValues.offset_back_picCoords;
-        if (increment)
-        {
-            if (offset == MAX_Y_OFFSET)
-                offset = -data->constSpriteValues.backPicCoords;
-            else
-                offset += 1;
-        }
-        else
-        {
-            if (offset == -data->constSpriteValues.backPicCoords)
-                offset = MAX_Y_OFFSET;
-            else
-                offset -= 1;
-        }
+        offset = GiraAjusteDeAltura(data->offsetsSpriteValues.offset_back_picCoords,
+                                    data->constSpriteValues.backPicCoords, increment);
         data->offsetsSpriteValues.offset_back_picCoords = offset;
         gSprites[data->backspriteId].y = VISUALIZER_MON_BACK_Y + gSpeciesInfo[species].backPicYOffset + offset;
         break;
-    case 1: //Front picCoords
-        offset = data->offsetsSpriteValues.offset_front_picCoords;
-        if (increment)
-        {
-            if (offset == MAX_Y_OFFSET)
-                offset = -data->constSpriteValues.frontPicCoords;
-            else
-                offset += 1;
-        }
-        else
-        {
-            if (offset == -data->constSpriteValues.frontPicCoords)
-                offset = MAX_Y_OFFSET;
-            else
-                offset -= 1;
-        }
-        data->offsetsSpriteValues.offset_front_picCoords = offset;
-        y = GetBattlerSpriteFinal_YCustom(species, offset, data->offsetsSpriteValues.offset_front_elevation);
-        gSprites[data->frontspriteId].y = y;
-        break;
-    case 2: //Front elevation
-        offset = data->offsetsSpriteValues.offset_front_elevation;
-        if (increment)
-        {
-            if (offset == MAX_Y_OFFSET)
-                offset = -data->constSpriteValues.frontElevation;
-            else
-                offset += 1;
-        }
-        else
-        {
-            if (offset == -data->constSpriteValues.frontElevation)
-                offset = MAX_Y_OFFSET;
-            else
-                offset -= 1;
-        }
+    // No hay caso para F coords: describe el arte, no la posicion, y moverlo desde
+    // aqui descuadraria la caida al debilitarse y el escalado afin, que lo leen solo.
+    case 1: //Front elevation
+        offset = GiraAjusteDeAltura(data->offsetsSpriteValues.offset_front_elevation,
+                                    data->constSpriteValues.frontElevation, increment);
         data->offsetsSpriteValues.offset_front_elevation = offset;
-        y = GetBattlerSpriteFinal_YCustom(species, data->offsetsSpriteValues.offset_front_picCoords, offset);
-        gSprites[data->frontspriteId].y = y;
+        gSprites[data->frontspriteId].y =
+            GetBattlerSpriteFinal_YCustom(species, offset);
         break;
     }
 
@@ -1743,8 +1768,9 @@ static void HandleInput_PokemonSpriteVisualizer(u8 taskId)
         }
         else if (JOY_NEW(DPAD_DOWN))
         {
+            // Dos, no tres: la tercera fila es F coords, que solo se ensena.
             data->submenuYpos[2] += 1;
-            if (data->submenuYpos[2] >= 3)
+            if (data->submenuYpos[2] >= 2)
                 data->submenuYpos[2] = 0;
 
             data->yPosModifyArrows.currentDigit = data->submenuYpos[2];
@@ -1753,7 +1779,7 @@ static void HandleInput_PokemonSpriteVisualizer(u8 taskId)
         else if (JOY_NEW(DPAD_UP))
         {
             if (data->submenuYpos[2] == 0)
-                    data->submenuYpos[2] = 2;
+                    data->submenuYpos[2] = 1;
             else
                 data->submenuYpos[2] -= 1;
 
@@ -1848,7 +1874,7 @@ static void ReloadPokemonSprites(struct PokemonSpriteVisualizer *data)
     BattleLoadOpponentMonSpriteGfxCustom(species, data->isFemale, data->isShiny, 1);
     SetMultiuseSpriteTemplateToPokemon(species, 1);
     gMultiuseSpriteTemplate.paletteTag = species;
-    front_y = GetBattlerSpriteFinal_YCustom(species, 0, 0);
+    front_y = GetBattlerSpriteFinal_YCustom(species, 0);
     data->frontspriteId = CreateSprite(&gMultiuseSpriteTemplate, front_x, front_y, 0);
     AplicaSubspritesPic(data->frontspriteId);
     // El mismo bucle continuo que en combate: anims[1] es la secuencia de la especie
@@ -1873,14 +1899,7 @@ static void ReloadPokemonSprites(struct PokemonSpriteVisualizer *data)
     offset_y = gSpeciesInfo[species].backPicYOffset;
     data->backspriteId = CreateSprite(&gMultiuseSpriteTemplate, VISUALIZER_MON_BACK_X, VISUALIZER_MON_BACK_Y + offset_y, 0);
     AplicaSubspritesPic(data->backspriteId);
-    // El back comparte gAnims_MonPic con todas las especies, asi que su vaiven va en
-    // otro indice que el del frontal. Solo tiene sentido si el pic es de los grandes.
-    if (gSprites[data->backspriteId].images != NULL
-     && gSprites[data->backspriteId].images->size == PIC_GRANDE_BYTES)
-    {
-        StartSpriteAnim(&gSprites[data->backspriteId], ANIM_ESPALDA_BUCLE);
-        gSprites[data->backspriteId].animPaused = FALSE;
-    }
+    ArrancaVaivenDeEspalda(&gSprites[data->backspriteId]);
     gSprites[data->backspriteId].oam.paletteNum = 0;
     gSprites[data->backspriteId].callback = SpriteCallbackDummy;
     gSprites[data->backspriteId].oam.priority = 0;

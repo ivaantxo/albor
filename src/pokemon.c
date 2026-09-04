@@ -109,7 +109,7 @@ const struct NatureInfo gInfoNaturalezas[NUMERO_NATURALEZAS] =
 
 #include "data/graphics/pokemon.h"
 #include "animacion_pic.h"
-#include "data/pokemon/front_pic_anims.h"
+#include "data/pokemon/animaciones_pokemon.h"
 
 #include "data/pokemon/experience_tables.h"
 
@@ -872,14 +872,14 @@ void SetMultiuseSpriteTemplateToPokemon(u16 speciesTag, u8 battlerPosition)
     gMultiuseSpriteTemplate.paletteTag = speciesTag;
     if (battlerPosition == JUGADOR_IZQUIERDA || battlerPosition == JUGADOR_DERECHA)
     {
-        // De momento solo Bulbasaur tiene espalda animada de BW. El resto sigue con
-        // gAnims_MonPic, que es la tabla que comparten todas las especies y solo
-        // sabe de dos fotogramas.
-        u32 conFrentes = SanitizeSpeciesId(speciesTag > SPECIES_SHINY_TAG
-                                           ? speciesTag - SPECIES_SHINY_TAG : speciesTag);
+        // La de la especie si la tiene, y si no la que comparten todas. Antes esto
+        // era un "si es Bulbasaur" escrito a mano, porque era el unico con espalda de
+        // BW; cada especie nueva pedia tocar aqui.
+        u32 especie = SanitizeSpeciesId(speciesTag > SPECIES_SHINY_TAG
+                                        ? speciesTag - SPECIES_SHINY_TAG : speciesTag);
 
-        gMultiuseSpriteTemplate.anims = (conFrentes == SPECIES_BULBASAUR)
-                                      ? gAnims_BulbasaurEspalda
+        gMultiuseSpriteTemplate.anims = gSpeciesInfo[especie].backAnimFrames != NULL
+                                      ? gSpeciesInfo[especie].backAnimFrames
                                       : gAnims_MonPic;
     }
     else

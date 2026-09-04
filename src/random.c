@@ -1,6 +1,6 @@
 #include "global.h"
 #include "random.h"
-#include "malloc.h"
+#include "main.h"
 #include <alloca.h>
 
 // IWRAM common
@@ -65,27 +65,38 @@ u32 NAKED Random32(void)
     );
 }
 
+// De donde sale el azar al encender, y por que de ahi.
+//
+// La GBA no tiene nada aleatorio al arrancar: el mismo cartucho encendido dos veces
+// ejecuta exactamente las mismas instrucciones. Y en albor tampoco hay reloj de
+// hardware al que preguntar la hora -Rtc_GetCurrentTime devuelve gameClock, que es un
+// reloj de software guardado en la partida-, asi que ese camino tampoco vale.
+//
+// Lo unico de verdad impredecible es LA PERSONA. Cuanto tarda en pulsar el boton que
+// empieza a jugar no se repite nunca dos veces igual, y eso es lo que mide
+// gMain.vblankCounter: fotogramas desde que se encendio. Un segundo de diferencia son
+// sesenta valores distintos, y nadie acierta el fotograma exacto.
+//
+// Lo que habia antes leia dos palabras del monton, buscando la basura que quedara en
+// la RAM. Eso es peligroso por dos motivos: es memoria que el repartidor ya ha
+// entregado a otro, y desde que el monton ocupa lo que sobra de EWRAM su direccion se
+// mueve con cada cambio de datos. Ademas casi no daba azar: cuando esto corre, esas
+// dos palabras son la cabecera del primer bloque libre, que vale siempre lo mismo.
 void GeneraSemillaAleatoria(void)
 {
     struct Sfc32State state;
-    u32 semilla = 0;
 
-    // Línea de escaneo del haz vertical (0–159, se reinicia cada frame)
-    semilla ^= REG_VCOUNT << 8;
+    // Los fotogramas que el jugador ha tardado en llegar hasta aqui. Se mezclan con
+    // una multiplicacion para que los bits altos, que es donde esta la cuenta, muevan
+    // tambien los bajos: sin eso dos arranques parecidos dan semillas parecidas.
+    u32 semilla = gMain.vblankCounter * 1103515245 + 12345;
 
-    // Timer 0 (si está corriendo) — útil si lo usas para temporización
-    semilla ^= REG_TM0CNT_L ^ (REG_TM0CNT_H << 16);
+    // En que punto del barrido de pantalla cayo la llamada, y el temporizador si
+    // alguien lo tiene corriendo. Aportan poco por si solos, pero no cuestan nada.
+    semilla ^= (REG_VCOUNT << 16) ^ REG_TM0CNT_L;
 
-    // Entrada del jugador — por si pulsa algún botón
-    semilla ^= REG_KEYINPUT;
-
-    // Dirección actual del stack pointer
-    register u32 sp;
-    __asm__("mov %0, sp" : "=r"(sp));
-    semilla ^= sp;
-
-    semilla ^= *(vu32*)(gHeap + 16);
-    semilla ^= *(vu32*)(gHeap + 64);
+    // Que teclas trae pulsadas en ese momento, incluidas las que no hacen nada.
+    semilla ^= REG_KEYINPUT << 6;
 
     SFC32_Seed(&state, semilla, STREAM);
 

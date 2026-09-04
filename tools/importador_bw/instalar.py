@@ -11,8 +11,14 @@ Uso:
     instalar.py                     lo hace
 """
 
-import argparse
 import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from usa_entorno import asegura_pillow
+asegura_pillow()
+
+import argparse
 import re
 import shutil
 from PIL import Image

@@ -1392,6 +1392,12 @@ static void FieldCB_FadeTryShowMapPopup(void)
 
 void CB2_ContinueSavedGame(void)
 {
+    // Aqui tambien, no solo al empezar partida nueva. gRngValue vive en IWRAM y se
+    // pone a cero al encender, asi que sin esto una partida continuada arrancaba
+    // SIEMPRE desde el mismo estado: los mismos encuentros y los mismos criticos en
+    // el mismo orden hasta que algo consumiera azar. Ver GeneraSemillaAleatoria.
+    GeneraSemillaAleatoria();
+
     FieldClearVBlankHBlankCallbacks();
     StopMapMusic();
     LoadSaveblockMapHeader();

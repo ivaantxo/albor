@@ -41,7 +41,6 @@ struct PokemonSpriteConstValues
 struct PokemonSpriteOffsets
 {
     s8 offset_back_picCoords;
-    s8 offset_front_picCoords;
     s8 offset_front_elevation;
 };
 

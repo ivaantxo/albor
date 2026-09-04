@@ -5185,8 +5185,44 @@ static void Anim_ShakeGlowPurple_Slow(struct Sprite *sprite)
     sprite->data[2]++;
 }
 
+// Si la animacion por fotogramas que tiene puesta el sprite da vueltas, o sea si
+// acaba en un salto en vez de en un final.
+//
+// Hay que preguntarlo porque animEnded NO se pone nunca en una que gira, y quien la
+// espera se queda esperando para siempre.
+static bool32 AnimacionDaVueltas(const struct Sprite *sprite)
+{
+    // Tope de seguridad: si una tabla no trae ni final ni salto, mas vale salir por
+    // aqui que recorrer la ROM entera.
+    const u32 MAXIMO = 64;
+
+    if (sprite->anims == NULL || sprite->anims[sprite->animNum] == NULL)
+        return FALSE;
+
+    for (u32 i = 0; i < MAXIMO; i++)
+    {
+        s32 tipo = sprite->anims[sprite->animNum][i].type;
+
+        if (tipo == -1)     // final
+            return FALSE;
+        if (tipo == -2)     // salto: gira
+            return TRUE;
+    }
+
+    return FALSE;
+}
+
+// Fin de una animacion de entrada: se espera a que acabe la de fotogramas y se
+// devuelve el sprite al callback vacio, que es lo que mira todo el mundo para saber
+// que ya se puede volver a animar.
+//
+// Lo de las vueltas no es un adorno. Las animaciones de albor son bucles de BW que
+// terminan en ANIMCMD_JUMP y no acaban NUNCA, asi que sin esa comprobacion el sprite
+// se quedaba clavado aqui: en el visor de sprites la animacion de entrada se podia
+// lanzar UNA vez por sprite y a la siguiente pulsacion ya no respondia. En combate no
+// se veia solo porque ANIMACION_AFIN_POKEMON esta a 0 y este camino no se recorre.
 static void WaitAnimEnd(struct Sprite *sprite)
 {
-    if (sprite->animEnded)
+    if (sprite->animEnded || AnimacionDaVueltas(sprite))
         sprite->callback = SpriteCallbackDummy;
 }

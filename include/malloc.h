@@ -47,15 +47,21 @@ struct MemBlock
 // asi que si alguien vuelve a meter un campo aqui conviene que se entere.
 STATIC_ASSERT(sizeof(struct MemBlock) == 12, LaCabeceraDeBloqueHaCambiadoDeTamano);
 
-// 144 KB. Eran 112 y no llegaban: un combate contra un Bulbasaur de BW pide 88 KB
-// solo en los dos pic -23 fotogramas su frente y 20 tu espalda-, y de los 112 hay
-// 32 apartados antes para los buffers de los combatientes.
+// El monton NO tiene tamano fijo: se queda con toda la EWRAM que sobre despues de
+// los datos, y el enlazador decide cuanta es. Los dos simbolos los pone ld_script.ld,
+// que ademas comprueba al enlazar que no baje de 128 KB.
 //
-// El techo es la EWRAM, que son 256 KB y ya lleva 209 de datos: subir mucho mas
-// dejaria al enlazador sin sitio. Y size, en la cabecera de bloque, son dieciocho
-// bits, o sea 256 KB justos.
-#define HEAP_SIZE 147456
-extern u8 gHeap[HEAP_SIZE];
+// Antes era un array con un numero escrito a mano, y ese numero solo se subia cuando
+// algo dejaba de caber: entre subida y subida habia EWRAM pagada y sin usar. Y al
+// reves, al anadir datos el monton menguaba sin que nadie se enterara.
+//
+// El techo de verdad son los dieciocho bits del campo size de la cabecera de bloque:
+// 256 KB, que es justo toda la EWRAM, asi que no estorba.
+extern u8 __monton_inicio[];
+extern u8 __monton_bytes[];
+
+#define gHeap       __monton_inicio
+#define HEAP_SIZE   ((u32)__monton_bytes)
 
 
 

@@ -6553,37 +6553,55 @@ static const union AnimCmd sAnim_Egg[] =
     ANIMCMD_END,
 };
 
-// La espalda tambien es de BW: 20 fotogramas, ciclo de 12 por tres y cola de 14.
+// ---------------------------------------------------------------------------
+// ESPALDAS
 //
-// Va en una tabla propia porque la de espaldas la comparten TODAS las especies
-// -gAnims_MonPic-, y ahi no caben los fotogramas de una en concreto. El indice 2
-// es el vaiven continuo, que es el que pide el combate.
-// La espalda lleva solo el vaiven, sin gesto: tres imagenes -0 reposo, 1 arriba,
-// 2 abajo- y la misma forma que el bucle principal del frente.
-static const union AnimCmd sAnim_BulbasaurEspalda[] =
-{
-    BUCLE_PRINCIPAL(0, 1, 0, 2),
-    VUELTA_AL_PRINCIPIO,
-};
+// El bando del jugador ve espaldas, y hasta hace poco todas compartian una sola
+// animacion -gAnims_MonPic-, un vaiven de dos fotogramas. Ahora cada especie puede
+// traer la suya, escrita con las mismas macros que el frente. La que no la traiga
+// sigue con la compartida, que hace de provisional: eso se decide en
+// SetMultiuseSpriteTemplateToPokemon mirando si backAnimFrames esta a NULL, sin
+// nombrar a nadie.
+//
+// Para darle una a una especie hacen falta dos cosas: escribirla aqui con ESPALDA,
+// y anadirle ANIM_ESPALDA(Nombre) a su entrada de species_info.h.
+// ---------------------------------------------------------------------------
 
-// Quieto en el primer cuadro. Es la que corre al salir de la Pokeball, y TIENE que
-// terminar: quien la lanza espera a animEnded para dar el turno por empezado, asi
-// que una con ANIMCMD_JUMP deja el combate colgado para siempre.
-static const union AnimCmd sAnim_BulbasaurEspaldaQuieta[] =
+// Quieto en el primer cuadro, y TERMINA. Es la que corre al salir de la Pokeball:
+// quien la lanza espera a animEnded para dar el turno por empezado, asi que una que
+// salte deja el combate colgado para siempre. Solo hay una, compartida: parar en el
+// primer cuadro es lo mismo para todas.
+static const union AnimCmd sAnim_EspaldaQuieta[] =
 {
     ANIMCMD_FRAME(0, 0),
     TERMINA,
 };
 
-// El indice 0 es el de la salida y el 2 el vaiven continuo, igual que en la tabla
-// que comparten las demas especies. Solo el 2 puede dar vueltas.
-const union AnimCmd *const gAnims_BulbasaurEspalda[ANIMACIONES_POR_PIC] =
+// Monta la tabla de las cuatro animaciones de una espalda a partir de su vaiven.
+//
+// El reparto NO es libre: el indice 0 es el de la salida de la Pokeball y tiene que
+// terminar, y el 2 es el vaiven continuo, que es el unico que puede dar vueltas. Es
+// el mismo orden que gAnims_MonPic. Escrito a mano se equivoca uno una vez y el
+// combate se queda colgado sin decir por que; con la macro no hay donde fallar.
+#define ESPALDA(nombre)                                                 \
+static const union AnimCmd *const sAnimsEspalda_##nombre[ANIMACIONES_POR_PIC] = \
+{                                                                       \
+    sAnim_EspaldaQuieta,                                                \
+    sAnim_EspaldaQuieta,                                                \
+    sAnimEspalda_##nombre,                                              \
+    sAnim_EspaldaQuieta,                                                \
+}
+
+// Bulbasaur: tres imagenes -0 reposo, 1 arriba, 2 abajo- y la misma forma que el
+// bucle principal de su frente, sin gesto especial.
+static const union AnimCmd sAnimEspalda_Bulbasaur[] =
 {
-    sAnim_BulbasaurEspaldaQuieta,
-    sAnim_BulbasaurEspaldaQuieta,
-    sAnim_BulbasaurEspalda,
-    sAnim_BulbasaurEspaldaQuieta,
+    BUCLE_PRINCIPAL(0, 1, 0, 2, 0),
+    BUCLE_ESPECIAL(2, 3, 4),
+    VUELTA_AL_PRINCIPIO,
 };
+
+ESPALDA(Bulbasaur);
 
 #define SINGLE_ANIMATION(name)                      \
 static const union AnimCmd *const sAnims_##name[] = \

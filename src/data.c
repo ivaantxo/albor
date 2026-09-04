@@ -10,38 +10,44 @@
 #include "constants/trainers.h"
 #include "constants/battle_ai.h"
 
-#define BATTLER_OFFSET(i) (gHeap + 0x8000 + MON_PIC_SIZE * (i))
+// Un fotograma en blanco, y los dieciseis puestos apuntan al mismo.
+//
+// Estas tablas son solo el RESPALDO de gBattlerSpriteTemplates: en cuanto empieza un
+// combate, AllocateMonSpritesGfx las sustituye por gMonSpritesGfxPtr->frameImages, que
+// apuntan al hueco de verdad de cada combatiente. Solo se usan si se crea un sprite de
+// combatiente sin que exista ninguno de los dos gestores de graficos, que no deberia
+// pasar nunca.
+//
+// Antes apuntaban a gHeap + 0x8000, o sea a la mitad del monton: memoria que el
+// repartidor entrega a quien la pida. Si el respaldo llegaba a usarse alguna vez, el
+// sprite leia -y el DMA copiaba a la VRAM- lo que hubiera reservado otro. Y como
+// gHeap ya no es un array de sitio fijo sino lo que sobra de EWRAM, esa direccion se
+// mueve con cada cambio de datos, asi que ni siquiera era un sitio predecible.
+//
+// Asi el caso raro sale en blanco -se ve que algo va mal- en vez de dibujar memoria
+// ajena y, sobre todo, sin poder pisar nada.
+static const u8 sPicDeRespaldo[MON_PIC_SIZE] = {0};
+
+#define RESPALDO {sPicDeRespaldo, MON_PIC_SIZE}
 
 const struct SpriteFrameImage gBattlerPicTable_PlayerLeft[] =
 {
-    {BATTLER_OFFSET(0), MON_PIC_SIZE},
-    {BATTLER_OFFSET(1), MON_PIC_SIZE},
-    {BATTLER_OFFSET(2), MON_PIC_SIZE},
-    {BATTLER_OFFSET(3), MON_PIC_SIZE},
+    RESPALDO, RESPALDO, RESPALDO, RESPALDO,
 };
 
 const struct SpriteFrameImage gBattlerPicTable_OpponentLeft[] =
 {
-    {BATTLER_OFFSET(4), MON_PIC_SIZE},
-    {BATTLER_OFFSET(5), MON_PIC_SIZE},
-    {BATTLER_OFFSET(6), MON_PIC_SIZE},
-    {BATTLER_OFFSET(7), MON_PIC_SIZE},
+    RESPALDO, RESPALDO, RESPALDO, RESPALDO,
 };
 
 const struct SpriteFrameImage gBattlerPicTable_PlayerRight[] =
 {
-    {BATTLER_OFFSET(8),  MON_PIC_SIZE},
-    {BATTLER_OFFSET(9),  MON_PIC_SIZE},
-    {BATTLER_OFFSET(10), MON_PIC_SIZE},
-    {BATTLER_OFFSET(11), MON_PIC_SIZE},
+    RESPALDO, RESPALDO, RESPALDO, RESPALDO,
 };
 
 const struct SpriteFrameImage gBattlerPicTable_OpponentRight[] =
 {
-    {BATTLER_OFFSET(12), MON_PIC_SIZE},
-    {BATTLER_OFFSET(13), MON_PIC_SIZE},
-    {BATTLER_OFFSET(14), MON_PIC_SIZE},
-    {BATTLER_OFFSET(15), MON_PIC_SIZE},
+    RESPALDO, RESPALDO, RESPALDO, RESPALDO,
 };
 
 const union AnimCmd sAnim_GeneralFrame0[] =
