@@ -1,0 +1,518 @@
+BULBASAUR: generated default.front=[64, 64], default.back=[64, 64]
+IVYSAUR: generated default.front=[64, 64], default.back=[64, 64]
+VENUSAUR: partial default.front=[96, 96], default.back=[96, 96]
+CHARMANDER: generated default.front=[64, 64], default.back=[64, 64]
+CHARMELEON: generated default.front=[80, 80], default.back=[64, 64]
+CHARIZARD: generated default.front=[96, 96], default.back=[96, 96]
+SQUIRTLE: generated default.front=[64, 64], default.back=[64, 64]
+WARTORTLE: generated default.front=[64, 64], default.back=[64, 64]
+BLASTOISE: generated default.front=[80, 80], default.back=[80, 80]
+CATERPIE: generated default.front=[64, 64], default.back=[64, 64]
+METAPOD: generated default.front=[64, 64], default.back=[64, 64]
+BUTTERFREE: partial default.front=[64, 64], default.back=[64, 64]
+WEEDLE: generated default.front=[64, 64], default.back=[64, 64]
+KAKUNA: generated default.front=[64, 64], default.back=[64, 64]
+BEEDRILL: generated default.front=[80, 80], default.back=[80, 80]
+PIDGEY: generated default.front=[64, 64], default.back=[64, 64]
+PIDGEOTTO: generated default.front=[116, 116], default.back=[96, 96]
+PIDGEOT: generated default.front=[80, 80], default.back=[80, 80]
+RATTATA: partial default.front=[64, 64], default.back=[64, 64]
+RATICATE: partial default.front=[64, 64], default.back=[80, 80]
+SPEAROW: generated default.front=[64, 64], default.back=[64, 64]
+FEAROW: generated default.front=[112, 112], default.back=[96, 96]
+EKANS: generated default.front=[64, 64], default.back=[64, 64]
+ARBOK: generated default.front=[96, 96], default.back=[96, 96]
+PICHU: generated default.front=[64, 64], default.back=[64, 64]
+PIKACHU: partial default.front=[64, 64], default.back=[64, 64]
+RAICHU: partial default.front=[80, 80], default.back=[80, 80]
+RAICHU_ALOLA: missing 
+SANDSHREW: generated default.front=[64, 64], default.back=[64, 64]
+SANDSLASH: generated default.front=[64, 64], default.back=[64, 64]
+SANDSHREW_ALOLA: missing 
+SANDSLASH_ALOLA: missing 
+NIDORAN_F: generated default.front=[64, 64], default.back=[64, 64]
+NIDORINA: generated default.front=[64, 64], default.back=[64, 64]
+NIDOQUEEN: generated default.front=[80, 80], default.back=[96, 96]
+NIDORAN_M: generated default.front=[64, 64], default.back=[64, 64]
+NIDORINO: generated default.front=[64, 64], default.back=[64, 64]
+NIDOKING: generated default.front=[96, 96], default.back=[96, 96]
+CLEFFA: generated default.front=[64, 64], default.back=[64, 64]
+CLEFAIRY: generated default.front=[64, 64], default.back=[64, 64]
+CLEFABLE: generated default.front=[64, 64], default.back=[64, 64]
+VULPIX: generated default.front=[64, 64], default.back=[64, 64]
+NINETALES: generated default.front=[80, 80], default.back=[80, 80]
+VULPIX_ALOLA: missing 
+NINETALES_ALOLA: missing 
+IGGLYBUFF: generated default.front=[64, 64], default.back=[64, 64]
+JIGGLYPUFF: generated default.front=[64, 64], default.back=[64, 64]
+WIGGLYTUFF: generated default.front=[96, 96], default.back=[64, 64]
+ZUBAT: partial default.front=[64, 64], default.back=[64, 64]
+GOLBAT: partial default.front=[111, 111], default.back=[80, 80]
+CROBAT: generated default.front=[96, 96], default.back=[96, 96]
+ODDISH: generated default.front=[64, 64], default.back=[64, 64]
+GLOOM: partial default.front=[64, 64], default.back=[64, 64]
+VILEPLUME: partial default.front=[64, 64], default.back=[64, 64]
+BELLOSSOM: generated default.front=[64, 64], default.back=[64, 64]
+PARAS: generated default.front=[64, 64], default.back=[64, 64]
+PARASECT: generated default.front=[64, 64], default.back=[64, 64]
+MEOWTH: generated default.front=[80, 80], default.back=[64, 64]
+PERSIAN: generated default.front=[80, 80], default.back=[80, 80]
+PSYDUCK: generated default.front=[64, 64], default.back=[64, 64]
+GOLDUCK: generated default.front=[64, 64], default.back=[64, 64]
+MANKEY: generated default.front=[80, 80], default.back=[64, 64]
+PRIMEAPE: generated default.front=[80, 80], default.back=[80, 80]
+ANNIHILAPE: missing 
+GROWLITHE: generated default.front=[64, 64], default.back=[64, 64]
+ARCANINE: generated default.front=[80, 80], default.back=[96, 96]
+GROWLITHE_HISUI: missing 
+ARCANINE_HISUI: missing 
+POLIWAG: generated default.front=[64, 64], default.back=[64, 64]
+POLIWHIRL: generated default.front=[80, 80], default.back=[80, 80]
+POLIWRATH: generated default.front=[96, 96], default.back=[80, 80]
+POLITOED: partial default.front=[80, 80], default.back=[96, 96]
+ABRA: generated default.front=[64, 64], default.back=[80, 80]
+KADABRA: partial default.front=[80, 80], default.back=[80, 80]
+ALAKAZAM: partial default.front=[96, 96], default.back=[96, 96]
+MACHOP: generated default.front=[64, 64], default.back=[64, 64]
+MACHOKE: generated default.front=[80, 80], default.back=[80, 80]
+MACHAMP: generated default.front=[80, 80], default.back=[80, 80]
+BELLSPROUT: generated default.front=[64, 64], default.back=[64, 64]
+WEEPINBELL: generated default.front=[80, 80], default.back=[64, 64]
+VICTREEBEL: generated default.front=[80, 80], default.back=[80, 80]
+TENTACOOL: generated default.front=[80, 80], default.back=[80, 80]
+TENTACRUEL: generated default.front=[96, 96], default.back=[96, 96]
+GEODUDE: generated default.front=[64, 64], default.back=[64, 64]
+GRAVELER: generated default.front=[80, 80], default.back=[80, 80]
+GOLEM: generated default.front=[80, 80], default.back=[80, 80]
+PONYTA: generated default.front=[64, 64], default.back=[64, 64]
+RAPIDASH: generated default.front=[80, 80], default.back=[80, 80]
+SLOWPOKE: generated default.front=[64, 64], default.back=[80, 80]
+SLOWBRO: generated default.front=[64, 64], default.back=[80, 80]
+SLOWKING: generated default.front=[80, 80], default.back=[80, 80]
+MAGNEMITE: generated default.front=[64, 64], default.back=[64, 64]
+MAGNETON: generated default.front=[80, 80], default.back=[80, 80]
+MAGNEZONE: generated default.front=[96, 96], default.back=[96, 96]
+DODUO: partial default.front=[64, 64], default.back=[64, 64]
+DODRIO: partial default.front=[80, 80], default.back=[80, 80]
+GRIMER: generated default.front=[80, 80], default.back=[80, 80]
+MUK: generated default.front=[96, 96], default.back=[96, 96]
+SHELLDER: generated default.front=[64, 64], default.back=[64, 64]
+CLOYSTER: generated default.front=[80, 80], default.back=[80, 80]
+GASTLY: generated default.front=[80, 80], default.back=[80, 80]
+HAUNTER: generated default.front=[80, 80], default.back=[80, 80]
+GENGAR: generated default.front=[80, 80], default.back=[64, 64]
+ONIX: generated default.front=[80, 80], default.back=[98, 98]
+STEELIX: partial default.front=[96, 96], default.back=[96, 96]
+DROWZEE: generated default.front=[64, 64], default.back=[64, 64]
+HYPNO: partial default.front=[64, 64], default.back=[64, 64]
+KRABBY: generated default.front=[64, 64], default.back=[64, 64]
+KINGLER: generated default.front=[96, 96], default.back=[96, 96]
+EXEGGCUTE: generated default.front=[64, 64], default.back=[64, 64]
+EXEGGUTOR: generated default.front=[80, 80], default.back=[80, 80]
+CUBONE: generated default.front=[64, 64], default.back=[64, 64]
+MAROWAK: generated default.front=[80, 80], default.back=[64, 64]
+MAROWAK_ALOLA: missing 
+TYROGUE: generated default.front=[64, 64], default.back=[64, 64]
+HITMONLEE: generated default.front=[80, 80], default.back=[80, 80]
+HITMONCHAN: generated default.front=[64, 64], default.back=[64, 64]
+HITMONTOP: generated default.front=[96, 96], default.back=[80, 80]
+LICKITUNG: generated default.front=[80, 80], default.back=[80, 80]
+LICKILICKY: generated default.front=[80, 80], default.back=[80, 80]
+KOFFING: generated default.front=[96, 96], default.back=[64, 64]
+WEEZING: generated default.front=[96, 96], default.back=[96, 96]
+WEEZING_GALAR: missing 
+RHYHORN: partial default.front=[80, 80], default.back=[80, 80]
+RHYDON: partial default.front=[80, 80], default.back=[96, 96]
+RHYPERIOR: partial default.front=[96, 96], default.back=[96, 96]
+TANGELA: generated default.front=[64, 64], default.back=[64, 64]
+TANGROWTH: partial default.front=[96, 96], default.back=[96, 96]
+KANGASKHAN: generated default.front=[80, 80], default.back=[80, 80]
+HORSEA: generated default.front=[64, 64], default.back=[64, 64]
+SEADRA: generated default.front=[64, 64], default.back=[80, 80]
+KINGDRA: generated default.front=[96, 96], default.back=[80, 80]
+GOLDEEN: partial default.front=[80, 80], default.back=[80, 80]
+SEAKING: partial default.front=[80, 80], default.back=[96, 96]
+STARYU: generated default.front=[64, 64], default.back=[64, 64]
+STARMIE: generated default.front=[80, 80], default.back=[64, 64]
+MIME_JR: generated default.front=[64, 64], default.back=[64, 64]
+MR_MIME: generated default.front=[64, 64], default.back=[64, 64]
+SCYTHER: partial default.front=[64, 64], default.back=[80, 80]
+SCIZOR: partial default.front=[80, 80], default.back=[80, 80]
+KLEAVOR: missing 
+SMOOCHUM: generated default.front=[64, 64], default.back=[64, 64]
+JYNX: generated default.front=[64, 64], default.back=[64, 64]
+ELEKID: generated default.front=[64, 64], default.back=[64, 64]
+ELECTABUZZ: generated default.front=[80, 80], default.back=[80, 80]
+ELECTIVIRE: generated default.front=[102, 102], default.back=[96, 96]
+MAGBY: generated default.front=[64, 64], default.back=[64, 64]
+MAGMAR: generated default.front=[80, 80], default.back=[64, 64]
+MAGMORTAR: generated default.front=[96, 96], default.back=[80, 80]
+PINSIR: generated default.front=[80, 80], default.back=[80, 80]
+TAUROS: generated default.front=[80, 80], default.back=[80, 80]
+MAGIKARP: partial default.front=[64, 64], default.back=[64, 64]
+GYARADOS: partial default.front=[109, 109], default.back=[109, 109]
+LAPRAS: generated default.front=[80, 80], default.back=[80, 80]
+EEVEE: partial default.front=[64, 64], default.back=[64, 64]
+VAPOREON: generated default.front=[64, 64], default.back=[64, 64]
+JOLTEON: generated default.front=[64, 64], default.back=[64, 64]
+FLAREON: generated default.front=[80, 80], default.back=[80, 80]
+ESPEON: generated default.front=[64, 64], default.back=[64, 64]
+UMBREON: generated default.front=[64, 64], default.back=[64, 64]
+LEAFEON: generated default.front=[64, 64], default.back=[64, 64]
+GLACEON: generated default.front=[80, 80], default.back=[80, 80]
+SYLVEON: missing 
+PORYGON: generated default.front=[64, 64], default.back=[64, 64]
+PORYGON2: generated default.front=[64, 64], default.back=[64, 64]
+PORYGON_Z: generated default.front=[64, 64], default.back=[64, 64]
+OMANYTE: generated default.front=[64, 64], default.back=[64, 64]
+OMASTAR: generated default.front=[64, 64], default.back=[64, 64]
+KABUTO: generated default.front=[64, 64], default.back=[64, 64]
+KABUTOPS: generated default.front=[80, 80], default.back=[80, 80]
+AERODACTYL: generated default.front=[96, 96], default.back=[99, 99]
+MUNCHLAX: generated default.front=[64, 64], default.back=[64, 64]
+SNORLAX: generated default.front=[80, 80], default.back=[80, 80]
+ARTICUNO: generated default.front=[96, 96], default.back=[96, 96]
+ZAPDOS: generated default.front=[97, 97], default.back=[96, 96]
+MOLTRES: generated default.front=[129, 129], default.back=[129, 129]
+DRATINI: generated default.front=[64, 64], default.back=[64, 64]
+DRAGONAIR: generated default.front=[80, 80], default.back=[80, 80]
+DRAGONITE: generated default.front=[96, 96], default.back=[96, 96]
+MEW: generated default.front=[80, 80], default.back=[64, 64]
+MEWTWO: generated default.front=[96, 96], default.back=[80, 80]
+CHIKORITA: generated default.front=[64, 64], default.back=[64, 64]
+BAYLEEF: generated default.front=[80, 80], default.back=[80, 80]
+MEGANIUM: partial default.front=[96, 96], default.back=[80, 80]
+CYNDAQUIL: generated default.front=[64, 64], default.back=[64, 64]
+QUILAVA: generated default.front=[64, 64], default.back=[64, 64]
+TYPHLOSION: generated default.front=[80, 80], default.back=[80, 80]
+TOTODILE: generated default.front=[64, 64], default.back=[64, 64]
+CROCONAW: generated default.front=[64, 64], default.back=[64, 64]
+FERALIGATR: generated default.front=[96, 96], default.back=[96, 96]
+SENTRET: generated default.front=[80, 80], default.back=[64, 64]
+FURRET: generated default.front=[64, 64], default.back=[64, 64]
+HOOTHOOT: generated default.front=[64, 64], default.back=[64, 64]
+NOCTOWL: generated default.front=[80, 80], default.back=[80, 80]
+LEDYBA: partial default.front=[64, 64], default.back=[64, 64]
+LEDIAN: partial default.front=[80, 80], default.back=[64, 64]
+SPINARAK: generated default.front=[64, 64], default.back=[64, 64]
+ARIADOS: generated default.front=[64, 64], default.back=[64, 64]
+CHINCHOU: generated default.front=[64, 64], default.back=[64, 64]
+LANTURN: generated default.front=[80, 80], default.back=[80, 80]
+TOGEPI: generated default.front=[64, 64], default.back=[64, 64]
+TOGETIC: generated default.front=[80, 80], default.back=[64, 64]
+TOGEKISS: generated default.front=[96, 96], default.back=[96, 96]
+NATU: generated default.front=[64, 64], default.back=[64, 64]
+XATU: partial default.front=[64, 64], default.back=[64, 64]
+MAREEP: generated default.front=[64, 64], default.back=[64, 64]
+FLAAFFY: generated default.front=[64, 64], default.back=[64, 64]
+AMPHAROS: generated default.front=[80, 80], default.back=[64, 64]
+AZURILL: generated default.front=[64, 64], default.back=[64, 64]
+MARILL: generated default.front=[64, 64], default.back=[64, 64]
+AZUMARILL: generated default.front=[80, 80], default.back=[80, 80]
+BONSLY: generated default.front=[64, 64], default.back=[64, 64]
+SUDOWOODO: partial default.front=[80, 80], default.back=[80, 80]
+HOPPIP: generated default.front=[80, 80], default.back=[80, 80]
+SKIPLOOM: generated default.front=[64, 64], default.back=[64, 64]
+JUMPLUFF: generated default.front=[80, 80], default.back=[64, 64]
+AIPOM: partial default.front=[64, 64], default.back=[64, 64]
+AMBIPOM: partial default.front=[80, 80], default.back=[80, 80]
+SUNKERN: generated default.front=[64, 64], default.back=[64, 64]
+SUNFLORA: generated default.front=[64, 64], default.back=[64, 64]
+YANMA: generated default.front=[96, 96], default.back=[96, 96]
+YANMEGA: generated default.front=[96, 96], default.back=[96, 96]
+MURKROW: partial default.front=[64, 64], default.back=[64, 64]
+HONCHKROW: generated default.front=[80, 80], default.back=[80, 80]
+MISDREAVUS: generated default.front=[64, 64], default.back=[64, 64]
+MISMAGIUS: generated default.front=[96, 96], default.back=[80, 80]
+GIRAFARIG: partial default.front=[80, 80], default.back=[80, 80]
+GLIGAR: partial default.front=[96, 96], default.back=[80, 80]
+GLISCOR: generated default.front=[96, 96], default.back=[96, 96]
+SNUBBULL: generated default.front=[64, 64], default.back=[64, 64]
+GRANBULL: generated default.front=[64, 64], default.back=[64, 64]
+HERACROSS: partial default.front=[80, 80], default.back=[80, 80]
+SNEASEL: partial default.front=[64, 64], default.back=[64, 64]
+WEAVILE: partial default.front=[96, 96], default.back=[64, 64]
+SNEASLER: missing 
+TEDDIURSA: generated default.front=[64, 64], default.back=[64, 64]
+URSARING: partial default.front=[96, 96], default.back=[80, 80]
+SLUGMA: generated default.front=[64, 64], default.back=[64, 64]
+MAGCARGO: generated default.front=[64, 64], default.back=[64, 64]
+SWINUB: generated default.front=[64, 64], default.back=[64, 64]
+PILOSWINE: partial default.front=[64, 64], default.back=[64, 64]
+MAMOSWINE: partial default.front=[96, 96], default.back=[80, 80]
+OCTILLERY: partial default.front=[80, 80], default.back=[80, 80]
+DELIBIRD: generated default.front=[64, 64], default.back=[64, 64]
+HOUNDOUR: generated default.front=[64, 64], default.back=[64, 64]
+HOUNDOOM: partial default.front=[80, 80], default.back=[80, 80]
+PHANPY: generated default.front=[64, 64], default.back=[64, 64]
+DONPHAN: partial default.front=[96, 96], default.back=[96, 96]
+STANTLER: generated default.front=[80, 80], default.back=[80, 80]
+WYRDEER: missing 
+RAIKOU: generated default.front=[96, 96], default.back=[96, 96]
+ENTEI: generated default.front=[80, 80], default.back=[96, 96]
+SUICUNE: generated default.front=[80, 80], default.back=[96, 96]
+LARVITAR: generated default.front=[64, 64], default.back=[64, 64]
+PUPITAR: generated default.front=[64, 64], default.back=[64, 64]
+TYRANITAR: generated default.front=[96, 96], default.back=[80, 80]
+LUGIA: generated default.front=[153, 153], default.back=[153, 153]
+HO_OH: generated default.front=[108, 108], default.back=[96, 96]
+CELEBI: generated default.front=[64, 64], default.back=[64, 64]
+TREECKO: generated default.front=[64, 64], default.back=[64, 64]
+GROVYLE: generated default.front=[80, 80], default.back=[80, 80]
+SCEPTILE: generated default.front=[80, 80], default.back=[80, 80]
+TORCHIC: partial default.front=[64, 64], default.back=[64, 64]
+COMBUSKEN: partial default.front=[80, 80], default.back=[80, 80]
+BLAZIKEN: partial default.front=[80, 80], default.back=[80, 80]
+MUDKIP: generated default.front=[64, 64], default.back=[64, 64]
+MARSHTOMP: generated default.front=[64, 64], default.back=[64, 64]
+SWAMPERT: generated default.front=[80, 80], default.back=[80, 80]
+POOCHYENA: generated default.front=[64, 64], default.back=[64, 64]
+MIGHTYENA: generated default.front=[80, 80], default.back=[80, 80]
+WURMPLE: generated default.front=[64, 64], default.back=[64, 64]
+SILCOON: generated default.front=[64, 64], default.back=[64, 64]
+BEAUTIFLY: partial default.front=[80, 80], default.back=[64, 64]
+CASCOON: generated default.front=[64, 64], default.back=[64, 64]
+DUSTOX: partial default.front=[80, 80], default.back=[64, 64]
+LOTAD: generated default.front=[64, 64], default.back=[64, 64]
+LOMBRE: generated default.front=[64, 64], default.back=[64, 64]
+LUDICOLO: partial default.front=[96, 96], default.back=[80, 80]
+SEEDOT: generated default.front=[64, 64], default.back=[64, 64]
+NUZLEAF: partial default.front=[64, 64], default.back=[64, 64]
+SHIFTRY: partial default.front=[103, 103], default.back=[96, 96]
+TAILLOW: generated default.front=[64, 64], default.back=[64, 64]
+SWELLOW: generated default.front=[80, 80], default.back=[80, 80]
+WINGULL: generated default.front=[64, 64], default.back=[64, 64]
+PELIPPER: generated default.front=[96, 96], default.back=[96, 96]
+RALTS: generated default.front=[64, 64], default.back=[64, 64]
+KIRLIA: generated default.front=[64, 64], default.back=[64, 64]
+GARDEVOIR: generated default.front=[80, 80], default.back=[80, 80]
+GALLADE: generated default.front=[80, 80], default.back=[80, 80]
+SURSKIT: generated default.front=[80, 80], default.back=[80, 80]
+MASQUERAIN: generated default.front=[80, 80], default.back=[64, 64]
+SLAKOTH: generated default.front=[64, 64], default.back=[64, 64]
+VIGOROTH: generated default.front=[80, 80], default.back=[80, 80]
+SLAKING: generated default.front=[80, 80], default.back=[80, 80]
+NINCADA: generated default.front=[64, 64], default.back=[64, 64]
+NINJASK: generated default.front=[64, 64], default.back=[64, 64]
+SHEDINJA: generated default.front=[64, 64], default.back=[64, 64]
+WHISMUR: generated default.front=[64, 64], default.back=[64, 64]
+LOUDRED: generated default.front=[64, 64], default.back=[64, 64]
+EXPLOUD: generated default.front=[80, 80], default.back=[80, 80]
+MAKUHITA: generated default.front=[64, 64], default.back=[64, 64]
+HARIYAMA: generated default.front=[96, 96], default.back=[80, 80]
+NOSEPASS: generated default.front=[64, 64], default.back=[64, 64]
+PROBOPASS: generated default.front=[96, 96], default.back=[96, 96]
+SABLEYE: generated default.front=[64, 64], default.back=[64, 64]
+MAWILE: generated default.front=[80, 80], default.back=[80, 80]
+ARON: generated default.front=[64, 64], default.back=[64, 64]
+LAIRON: generated default.front=[64, 64], default.back=[64, 64]
+AGGRON: generated default.front=[80, 80], default.back=[80, 80]
+MEDITITE: partial default.front=[64, 64], default.back=[64, 64]
+MEDICHAM: partial default.front=[80, 80], default.back=[80, 80]
+ELECTRIKE: generated default.front=[64, 64], default.back=[64, 64]
+MANECTRIC: generated default.front=[80, 80], default.back=[80, 80]
+BUDEW: generated default.front=[64, 64], default.back=[64, 64]
+ROSELIA: partial default.front=[64, 64], default.back=[64, 64]
+ROSERADE: partial default.front=[80, 80], default.back=[64, 64]
+CARVANHA: generated default.front=[64, 64], default.back=[64, 64]
+SHARPEDO: generated default.front=[80, 80], default.back=[80, 80]
+WAILMER: generated default.front=[96, 96], default.back=[80, 80]
+WAILORD: generated default.front=[111, 111], default.back=[111, 111]
+NUMEL: partial default.front=[64, 64], default.back=[64, 64]
+CAMERUPT: partial default.front=[80, 80], default.back=[80, 80]
+TORKOAL: generated default.front=[64, 64], default.back=[80, 80]
+SPOINK: generated default.front=[80, 80], default.back=[64, 64]
+GRUMPIG: generated default.front=[80, 80], default.back=[64, 64]
+TRAPINCH: generated default.front=[64, 64], default.back=[64, 64]
+VIBRAVA: generated default.front=[64, 64], default.back=[64, 64]
+FLYGON: generated default.front=[80, 80], default.back=[80, 80]
+CACNEA: generated default.front=[64, 64], default.back=[64, 64]
+CACTURNE: partial default.front=[80, 80], default.back=[80, 80]
+SWABLU: generated default.front=[80, 80], default.back=[80, 80]
+ALTARIA: generated default.front=[64, 64], default.back=[80, 80]
+LUNATONE: generated default.front=[64, 64], default.back=[64, 64]
+SOLROCK: generated default.front=[96, 96], default.back=[80, 80]
+BALTOY: generated default.front=[64, 64], default.back=[64, 64]
+CLAYDOL: generated default.front=[80, 80], default.back=[80, 80]
+LILEEP: generated default.front=[64, 64], default.back=[64, 64]
+CRADILY: generated default.front=[80, 80], default.back=[80, 80]
+ANORITH: generated default.front=[64, 64], default.back=[64, 64]
+ARMALDO: generated default.front=[96, 96], default.back=[80, 80]
+FEEBAS: generated default.front=[64, 64], default.back=[64, 64]
+MILOTIC: partial default.front=[96, 96], default.back=[96, 96]
+CASTFORM: generated default.front=[64, 64], default.back=[64, 64]
+CASTFORM_SUNNY: missing 
+CASTFORM_RAINY: missing 
+CASTFORM_SNOWY: missing 
+KECLEON: generated default.front=[64, 64], default.back=[64, 64]
+SHUPPET: generated default.front=[64, 64], default.back=[64, 64]
+BANETTE: generated default.front=[64, 64], default.back=[64, 64]
+DUSKULL: generated default.front=[64, 64], default.back=[64, 64]
+DUSCLOPS: generated default.front=[96, 96], default.back=[80, 80]
+DUSKNOIR: generated default.front=[80, 80], default.back=[80, 80]
+TROPIUS: generated default.front=[96, 96], default.back=[96, 96]
+CHINGLING: generated default.front=[64, 64], default.back=[64, 64]
+CHIMECHO: generated default.front=[80, 80], default.back=[80, 80]
+ABSOL: generated default.front=[80, 80], default.back=[80, 80]
+SNORUNT: generated default.front=[64, 64], default.back=[64, 64]
+GLALIE: generated default.front=[64, 64], default.back=[64, 64]
+FROSLASS: generated default.front=[80, 80], default.back=[64, 64]
+SPHEAL: generated default.front=[64, 64], default.back=[64, 64]
+SEALEO: generated default.front=[80, 80], default.back=[64, 64]
+WALREIN: generated default.front=[80, 80], default.back=[80, 80]
+BAGON: generated default.front=[64, 64], default.back=[64, 64]
+SHELGON: generated default.front=[64, 64], default.back=[64, 64]
+SALAMENCE: generated default.front=[96, 96], default.back=[96, 96]
+BELDUM: generated default.front=[64, 64], default.back=[64, 64]
+METANG: generated default.front=[80, 80], default.back=[80, 80]
+METAGROSS: generated default.front=[96, 96], default.back=[80, 80]
+LATIAS: generated default.front=[96, 96], default.back=[80, 80]
+LATIOS: generated default.front=[96, 96], default.back=[80, 80]
+KYOGRE: generated default.front=[109, 109], default.back=[109, 109]
+GROUDON: generated default.front=[96, 96], default.back=[96, 96]
+RAYQUAZA: generated default.front=[110, 110], default.back=[110, 110]
+DEOXYS_NORMAL: generated default.front=[80, 80], default.back=[80, 80]
+DEOXYS_ATTACK: missing 
+DEOXYS_DEFENSE: missing 
+DEOXYS_SPEED: missing 
+TURTWIG: generated default.front=[64, 64], default.back=[64, 64]
+GROTLE: generated default.front=[64, 64], default.back=[64, 64]
+TORTERRA: generated default.front=[80, 80], default.back=[96, 96]
+CHIMCHAR: generated default.front=[64, 64], default.back=[64, 64]
+MONFERNO: generated default.front=[80, 80], default.back=[64, 64]
+INFERNAPE: generated default.front=[80, 80], default.back=[80, 80]
+PIPLUP: generated default.front=[64, 64], default.back=[64, 64]
+PRINPLUP: generated default.front=[64, 64], default.back=[64, 64]
+EMPOLEON: generated default.front=[96, 96], default.back=[80, 80]
+STARLY: partial default.front=[64, 64], default.back=[64, 64]
+STARAVIA: partial default.front=[64, 64], default.back=[64, 64]
+STARAPTOR: partial default.front=[80, 80], default.back=[64, 64]
+BIDOOF: partial default.front=[64, 64], default.back=[64, 64]
+BIBAREL: partial default.front=[80, 80], default.back=[64, 64]
+KRICKETOT: partial default.front=[64, 64], default.back=[64, 64]
+KRICKETUNE: partial default.front=[80, 80], default.back=[80, 80]
+SHINX: partial default.front=[64, 64], default.back=[64, 64]
+LUXIO: partial default.front=[80, 80], default.back=[64, 64]
+LUXRAY: partial default.front=[80, 80], default.back=[80, 80]
+CRANIDOS: generated default.front=[64, 64], default.back=[64, 64]
+RAMPARDOS: generated default.front=[96, 96], default.back=[80, 80]
+SHIELDON: generated default.front=[64, 64], default.back=[64, 64]
+BASTIODON: generated default.front=[80, 80], default.back=[80, 80]
+COMBEE: partial default.front=[80, 80], default.back=[64, 64]
+VESPIQUEN: generated default.front=[80, 80], default.back=[80, 80]
+DRIFLOON: generated default.front=[80, 80], default.back=[64, 64]
+DRIFBLIM: generated default.front=[80, 80], default.back=[80, 80]
+BUNEARY: generated default.front=[80, 80], default.back=[64, 64]
+LOPUNNY: generated default.front=[80, 80], default.back=[64, 64]
+GIBLE: partial default.front=[64, 64], default.back=[64, 64]
+GABITE: partial default.front=[80, 80], default.back=[80, 80]
+GARCHOMP: partial default.front=[96, 96], default.back=[80, 80]
+RIOLU: generated default.front=[64, 64], default.back=[64, 64]
+LUCARIO: generated default.front=[64, 64], default.back=[80, 80]
+SKORUPI: generated default.front=[80, 80], default.back=[80, 80]
+DRAPION: generated default.front=[96, 96], default.back=[99, 99]
+CROAGUNK: partial default.front=[64, 64], default.back=[64, 64]
+TOXICROAK: partial default.front=[64, 64], default.back=[64, 64]
+SNOVER: partial default.front=[80, 80], default.back=[80, 80]
+ABOMASNOW: partial default.front=[96, 96], default.back=[96, 96]
+ROTOM: generated default.front=[96, 96], default.back=[96, 96]
+ROTOM_HEAT: missing 
+ROTOM_WASH: missing 
+ROTOM_FROST: missing 
+ROTOM_FAN: missing 
+ROTOM_MOW: missing 
+HEATRAN: generated default.front=[96, 96], default.back=[96, 96]
+SANDILE: missing 
+KROKOROK: missing 
+KROOKODILE: missing 
+YAMASK: missing 
+COFAGRIGUS: missing 
+GOTHITA: missing 
+GOTHORITA: missing 
+GOTHITELLE: missing 
+FRILLISH: missing 
+JELLICENT: missing 
+JOLTIK: missing 
+GALVANTULA: missing 
+FERROSEED: missing 
+FERROTHORN: missing 
+LITWICK: missing 
+LAMPENT: missing 
+CHANDELURE: missing 
+AXEW: missing 
+FRAXURE: missing 
+HAXORUS: missing 
+CUBCHOO: missing 
+BEARTIC: missing 
+GOLETT: missing 
+GOLURK: missing 
+PAWNIARD: missing 
+BISHARP: missing 
+DEINO: missing 
+ZWEILOUS: missing 
+HYDREIGON: missing 
+LARVESTA: missing 
+VOLCARONA: missing 
+FENNEKIN: missing 
+BRAIXEN: missing 
+DELPHOX: missing 
+FLETCHLING: missing 
+FLETCHINDER: missing 
+TALONFLAME: missing 
+TYRUNT: missing 
+TYRANTRUM: missing 
+AMAURA: missing 
+AURORUS: missing 
+ROWLET: missing 
+DARTRIX: missing 
+DECIDUEYE: missing 
+JANGMO_O: missing 
+HAKAMO_O: missing 
+KOMMO_O: missing 
+ROOKIDEE: missing 
+CORVISQUIRE: missing 
+CORVIKNIGHT: missing 
+BLIPBUG: missing 
+DOTTLER: missing 
+ORBEETLE: missing 
+SNOM: missing 
+FROSMOTH: missing 
+DREEPY: missing 
+DRAKLOAK: missing 
+DRAGAPULT: missing 
+REGIROCK: generated default.front=[80, 80], default.back=[80, 80]
+REGICE: generated default.front=[96, 96], default.back=[80, 80]
+REGISTEEL: generated default.front=[80, 80], default.back=[80, 80]
+REGIGIGAS: generated default.front=[96, 96], default.back=[96, 96]
+EGG: missing 
+{
+  "species_in_manifest": 487,
+  "status": {
+    "generated": 322,
+    "partial": 81,
+    "missing": 84
+  },
+  "generated_views": 806,
+  "sizes": {
+    "64x64": 412,
+    "96x96": 109,
+    "80x80": 263,
+    "116x116": 1,
+    "112x112": 1,
+    "111x111": 3,
+    "98x98": 1,
+    "102x102": 1,
+    "109x109": 4,
+    "99x99": 2,
+    "97x97": 1,
+    "129x129": 2,
+    "153x153": 2,
+    "108x108": 1,
+    "103x103": 1,
+    "110x110": 2
+  },
+  "exceptional_views": 22,
+  "quantized_species": 0,
+  "with_selection_warnings": 186,
+  "errors": {}
+}

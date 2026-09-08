@@ -1,0 +1,47 @@
+{
+  "ok": true,
+  "samples": [
+    {
+      "species": "BULBASAUR",
+      "side": "back",
+      "frame_size": 64,
+      "4bpp_bytes": 6144,
+      "palette_bytes": 32
+    },
+    {
+      "species": "BULBASAUR",
+      "side": "front",
+      "frame_size": 64,
+      "4bpp_bytes": 10240,
+      "palette_bytes": 32
+    },
+    {
+      "species": "BLASTOISE",
+      "side": "back",
+      "frame_size": 80,
+      "4bpp_bytes": 9600,
+      "palette_bytes": 32
+    },
+    {
+      "species": "CHARMELEON",
+      "side": "front",
+      "frame_size": 80,
+      "4bpp_bytes": 16000,
+      "palette_bytes": 32
+    },
+    {
+      "species": "VENUSAUR",
+      "side": "back",
+      "frame_size": 96,
+      "4bpp_bytes": 13824,
+      "palette_bytes": 32
+    },
+    {
+      "species": "VENUSAUR",
+      "side": "front",
+      "frame_size": 96,
+      "4bpp_bytes": 23040,
+      "palette_bytes": 32
+    }
+  ]
+}

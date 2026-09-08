@@ -10011,55 +10011,8 @@ const struct Item gItemsInfo[] =
                 .iconPalette = gItemIconPalette_ReinsOfUnity,
             },
 
-        [ITEM_BICYCLE] =
-            {
-                .name = _("Bicycle"),
-                .price = 0,
-                .description = COMPOUND_STRING(
-                    "A folding bicycle\n"
-                    "that is faster than\n"
-                    "the Running Shoes."),
-                .importance = 1,
-                .pocket = POCKET_KEY_ITEMS,
-                .type = ITEM_USE_FIELD,
-                .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
-                .iconPic = gItemIcon_Bicycle,
-                .iconPalette = gItemIconPalette_Bicycle,
-            },
 
-        [ITEM_MACH_BIKE] =
-            {
-                .name = _("Mach Bike"),
-                .price = 0,
-                .description = COMPOUND_STRING(
-                    "A folding bicycle\n"
-                    "that doubles your\n"
-                    "speed or better."),
-                .importance = 1,
-                .pocket = POCKET_KEY_ITEMS,
-                .type = ITEM_USE_FIELD,
-                .fieldUseFunc = ItemUseOutOfBattle_Bike,
-                .secondaryId = MACH_BIKE,
-                .iconPic = gItemIcon_MachBike,
-                .iconPalette = gItemIconPalette_MachBike,
-            },
 
-        [ITEM_ACRO_BIKE] =
-            {
-                .name = _("Acro Bike"),
-                .price = 0,
-                .description = COMPOUND_STRING(
-                    "A folding bicycle\n"
-                    "capable of jumps\n"
-                    "and wheelies."),
-                .importance = 1,
-                .pocket = POCKET_KEY_ITEMS,
-                .type = ITEM_USE_FIELD,
-                .fieldUseFunc = ItemUseOutOfBattle_Bike,
-                .secondaryId = ACRO_BIKE,
-                .iconPic = gItemIcon_AcroBike,
-                .iconPalette = gItemIconPalette_AcroBike,
-            },
 
         [ITEM_OLD_ROD] =
             {

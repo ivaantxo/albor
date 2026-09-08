@@ -14,16 +14,43 @@
 // Reparto de un pic de 80x80 en objetos legales de GBA. 80 = 64 + 16 en los dos
 // ejes, asi que salen seis piezas y ni un tile desperdiciado:
 //
-//     +---------------+----+      A 64x64   D 32x16
-//     |               | B  |      B 16x32   E 32x16
-//     |       A       +----+      C 16x32   F 16x16
-//     |               | C  |
+//     +---------------+----+      A 64x64 -> 64 tiles    D 32x16 -> 8
+//     |               | B  |      B 16x32 ->  8          E 32x16 -> 8
+//     |       A       +----+      C 16x32 ->  8          F 16x16 -> 4
+//     |               | C  |                             TOTAL    100
 //     +-------+-------+----+
 //     |   D   |   E   | F  |
 //     +-------+-------+----+
 //
-// Las coordenadas van referidas al centro del sprite, que es lo que espera
-// AddSubspritesToOamBuffer.
+// Las coordenadas van referidas al centro del sprite -que en 80x80 esta en (40,40)-,
+// que es lo que espera AddSubspritesToOamBuffer.
+static const struct Subsprite sPiezasPic80[] =
+{
+    { .x = -40, .y = -40, .shape = ST_OAM_SQUARE,      .size = 3, .tileOffset =  0, .priority = 2 },
+    { .x =  24, .y = -40, .shape = ST_OAM_V_RECTANGLE, .size = 2, .tileOffset = 64, .priority = 2 },
+    { .x =  24, .y =  -8, .shape = ST_OAM_V_RECTANGLE, .size = 2, .tileOffset = 72, .priority = 2 },
+    { .x = -40, .y =  24, .shape = ST_OAM_H_RECTANGLE, .size = 2, .tileOffset = 80, .priority = 2 },
+    { .x =  -8, .y =  24, .shape = ST_OAM_H_RECTANGLE, .size = 2, .tileOffset = 88, .priority = 2 },
+    { .x =  24, .y =  24, .shape = ST_OAM_SQUARE,      .size = 1, .tileOffset = 96, .priority = 2 },
+};
+
+static const struct SubspriteTable sTablaPic80[] =
+{
+    { ARRAY_COUNT(sPiezasPic80), sPiezasPic80 },
+};
+
+// El mismo reparto visto desde la imagen de origen, que llega en tiles de 10 por fila.
+static const u8 sBloques80[][4] =
+{
+    // fila, columna, ancho, alto (en tiles)
+    { 0, 0, 8, 8 },
+    { 0, 8, 2, 4 },
+    { 4, 8, 2, 4 },
+    { 8, 0, 4, 2 },
+    { 8, 4, 4, 2 },
+    { 8, 8, 2, 2 },
+};
+
 // Reparto de un pic de 96x96 en objetos legales de GBA. 96 = 64 + 32 en los dos ejes,
 // asi que salen cuatro piezas justas y ni un tile de sobra:
 //
@@ -60,8 +87,6 @@ static const u8 sBloques[][4] =
     { 8, 8, 4, 4 },
 };
 
-#define TILES_POR_FILA (PIC_GRANDE_LADO / 8)   // 12
-
 u32 BytesPicCombate(u32 especie, u32 personalidad, bool32 esFront)
 {
     u32 medida;
@@ -93,43 +118,66 @@ const struct SubspriteTable *SubspritesPicCombate(u32 bytesPorFotograma)
 {
     if (bytesPorFotograma == PIC_GRANDE_BYTES)
         return sTablaPicGrande;
+    if (bytesPorFotograma == PIC_80_BYTES)
+        return sTablaPic80;
 
     return NULL;
 }
 
-void ReordenaPicGrande(u8 *datos, u32 numFotogramas)
+void ReordenaPicTroceado(u8 *datos, u32 numFotogramas, u32 bytesPorFotograma)
 {
+    const u8 (*bloques)[4];
+    u32 cuantosBloques, tilesPorFila;
+    u8 *copia;
+
+    if (bytesPorFotograma == PIC_GRANDE_BYTES)
+    {
+        bloques = sBloques;
+        cuantosBloques = ARRAY_COUNT(sBloques);
+        tilesPorFila = PIC_GRANDE_LADO / 8;
+    }
+    else if (bytesPorFotograma == PIC_80_BYTES)
+    {
+        bloques = sBloques80;
+        cuantosBloques = ARRAY_COUNT(sBloques80);
+        tilesPorFila = PIC_80_LADO / 8;
+    }
+    else
+    {
+        return;     // cabe en un solo objeto: no hay nada que repartir
+    }
+
     // Un fotograma de trabajo: el reparto solo cambia de sitio los tiles, no cambia
     // cuantos hay, asi que basta con copiar aparte el fotograma que se esta tocando.
-    u8 *copia = Alloc(PIC_GRANDE_BYTES);
+    copia = Alloc(bytesPorFotograma);
 
     if (copia == NULL)
     {
         // Sin buffer no se puede recolocar nada, y los tiles se quedan en orden de
-        // imagen: cada pieza leeria los que no son y el Pokemon saldria en bandas.
+        // imagen: cada pieza leeria los que no son y el dibujo saldria en bandas.
         // Antes esto pasaba callado; ahora al menos se entera uno.
-        LOG("REORDENADO SIN MEMORIA: el pic saldra roto", PIC_GRANDE_BYTES, 0);
+        LOG("REORDENADO SIN MEMORIA: el pic saldra roto", bytesPorFotograma, 0);
         return;
     }
 
     for (u32 fotograma = 0; fotograma < numFotogramas; fotograma++)
     {
-        u8 *marco = datos + fotograma * PIC_GRANDE_BYTES;
+        u8 *marco = datos + fotograma * bytesPorFotograma;
         const u8 *fuente = copia;
         u32 destino = 0;
 
-        CopiaCpu32(marco, copia, PIC_GRANDE_BYTES);
+        CopiaCpu32(marco, copia, bytesPorFotograma);
 
-        for (u32 b = 0; b < ARRAY_COUNT(sBloques); b++)
+        for (u32 b = 0; b < cuantosBloques; b++)
         {
-            u32 fila = sBloques[b][0], columna = sBloques[b][1];
-            u32 ancho = sBloques[b][2], alto = sBloques[b][3];
+            u32 fila = bloques[b][0], columna = bloques[b][1];
+            u32 ancho = bloques[b][2], alto = bloques[b][3];
 
             for (u32 y = 0; y < alto; y++)
             {
                 for (u32 x = 0; x < ancho; x++)
                 {
-                    u32 origen = (fila + y) * TILES_POR_FILA + (columna + x);
+                    u32 origen = (fila + y) * tilesPorFila + (columna + x);
 
                     CopiaCpu32(fuente + origen * TILE_4BPP,
                                marco + destino * TILE_4BPP,
@@ -350,8 +398,8 @@ void AjustaFotogramasPic(u32 posicion, u32 especie, u32 personalidad, bool32 esF
     if (reales == 0)
         reales = 1;
 
-    if (bytes == PIC_GRANDE_BYTES)
-        ReordenaPicGrande(gMonSpritesGfxPtr->spritesGfx[posicion], reales);
+    // Sin condicion: ReordenaPicTroceado sale sola si el pic cabe en un solo objeto.
+    ReordenaPicTroceado(gMonSpritesGfxPtr->spritesGfx[posicion], reales, bytes);
 
     for (u32 fotograma = 0; fotograma < NUMERO_FRAMES_POKEMON; fotograma++)
     {
@@ -369,27 +417,40 @@ void AjustaFotogramasPic(u32 posicion, u32 especie, u32 personalidad, bool32 esF
 // Engancha las piezas al sprite recien creado, si su pic las necesita. Se apoya en
 // el tamano que quedo puesto en images al cargar el pic, asi que no hace falta
 // consultar la especie otra vez.
-void AplicaSubspritesPic(u32 spriteId)
+// Solo las piezas, sin tocar la posicion. Es lo que necesita cualquiera que sepa
+// donde va su sprite, como los entrenadores.
+void AplicaSubspritesSinMover(u32 spriteId)
 {
     struct Sprite *sprite = &gSprites[spriteId];
     const struct SubspriteTable *tabla;
-
-#if REPITE_ANIMACION_POKEMON
-    ArrancaRepeticionAnimacion();
-#endif
 
     if (sprite->images == NULL)
         return;
 
     tabla = SubspritesPicCombate(sprite->images->size);
     if (tabla == NULL)
-    {
         return;
-    }
 
     SetSubspriteTables(sprite, tabla);
     // La prioridad la sigue mandando el combate, no la tabla.
     sprite->subspriteMode = SUBSPRITES_IGNORE_PRIORITY;
+}
+
+void AplicaSubspritesPic(u32 spriteId)
+{
+    struct Sprite *sprite = &gSprites[spriteId];
+
+#if REPITE_ANIMACION_POKEMON
+    ArrancaRepeticionAnimacion();
+#endif
+
+    AplicaSubspritesSinMover(spriteId);
+
+    // De aqui para abajo, cosas del Pokemon. El apano de posicion que viene ahora es
+    // de las coordenadas de combatiente, y a un entrenador no le corresponde: por eso
+    // esta funcion y la de arriba estan separadas.
+    if (sprite->subspriteTables == NULL)
+        return;
 
 #if CORRIGE_SITIO_PIC_GRANDE
     // PROVISIONAL. Las coordenadas de los combatientes -GetBattlerSpriteCoord y

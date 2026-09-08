@@ -1166,12 +1166,6 @@ extern const u16 gItemIconPalette_PrisonBottle[];
 extern const u32 gItemIcon_ReinsOfUnity[];
 extern const u16 gItemIconPalette_ReinsOfUnity[];
 // Misc. Key Items
-extern const u32 gItemIcon_Bicycle[];
-extern const u16 gItemIconPalette_Bicycle[];
-extern const u32 gItemIcon_MachBike[];
-extern const u16 gItemIconPalette_MachBike[];
-extern const u32 gItemIcon_AcroBike[];
-extern const u16 gItemIconPalette_AcroBike[];
 extern const u32 gItemIcon_OldRod[];
 extern const u16 gItemIconPalette_OldRod[];
 extern const u32 gItemIcon_GoodRod[];

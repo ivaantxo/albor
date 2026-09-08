@@ -30,7 +30,6 @@ gSpecials::
 	def_special HasEnoughMonsForDoubleBattle
 	def_special SaveGame
 	def_special DoWateringBerryTreeAnim
-	def_special SwapRegisteredBike
 	def_special CalculatePlayerPartyCount
 	def_special CountPartyNonEggMons
 	def_special CountPartyAliveNonEggMons_IgnoreVar0x8004Slot
@@ -97,11 +96,6 @@ gSpecials::
 	def_special BufferMoveDeleterNicknameAndMove
 	def_special GetNumMovesSelectedMonHas
 	def_special TeachMoveRelearnerMove
-	def_special GetRecordedCyclingRoadResults
-	def_special Special_BeginCyclingRoadChallenge
-	def_special GetPlayerAvatarBike
-	def_special FinishCyclingRoadChallenge
-	def_special UpdateCyclingRoadState
 	def_special GetLeadMonFriendshipScore
 	def_special StopMapMusic
 	def_special FieldShowRegionMap

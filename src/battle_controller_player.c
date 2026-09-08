@@ -21,6 +21,7 @@
 #include "party_menu.h"
 #include "pokeball.h"
 #include "pokemon.h"
+#include "pic_combate.h"
 #include "pokemon_icon.h"
 #include "pokemon_summary_screen.h"
 #include "random.h"
@@ -807,41 +808,6 @@ static void Intro_TryShinyAnimShowHealthbox(u32 battler)
         }
     }
 
-#if DEPURACION_MGBA
-    {
-        // Uno de cada 16 fotogramas: asi los avisos cubren segundos y no medio
-        // segundo, que es lo que se agotaba antes de llegar al fallo.
-        static u32 fotogramas = 0;
-        static u32 avisos = 0;
-
-        if (!(bgmRestored && battlerAnimsDone) && avisos < 40 && (fotogramas++ & 15) == 0)
-        {
-            struct Sprite *mon = &gSprites[gBattlerSpriteIds[battler]];
-            struct Sprite *rival = &gSprites[gBattlerSpriteIds[OPONENTE_IZQUIERDA]];
-            u32 quien = (mon->callback == SpriteCallbackDummy) ? 1
-                      : (mon->callback == SpriteCB_PlayerMonFromBall) ? 2
-                      : (mon->callback == SpriteCB_PlayerMonSlideIn) ? 3
-                      : 0;
-
-            avisos++;
-            LOG("INTRO bgm/anims", bgmRestored, battlerAnimsDone);
-            LOG("    grito suena/esperaGrito",
-                IsCryPlayingOrClearCrySongs(),
-                gBattleSpritesDataPtr->healthBoxesData[battler].waitForCry);
-            LOG("    esperaGritoAliado/marcadorEmpezado",
-                gBattleSpritesDataPtr->healthBoxesData[ALIADO(battler)].waitForCry,
-                gBattleSpritesDataPtr->healthBoxesData[battler].healthboxSlideInStarted);
-            LOG("    ballAnimActive propio/aliado",
-                gBattleSpritesDataPtr->healthBoxesData[battler].ballAnimActive,
-                gBattleSpritesDataPtr->healthBoxesData[ALIADO(battler)].ballAnimActive);
-            LOG("    MON quien/dummy bola", quien,
-                gSprites[gBattleControllerData[battler]].callback == SpriteCallbackDummy);
-            LOG("    RIVAL dummy?/paso",
-                rival->callback == SpriteCallbackDummy, rival->data[4]);
-        }
-    }
-#endif
-
     // Clean up
     if (bgmRestored && battlerAnimsDone)
     {
@@ -1464,9 +1430,10 @@ void PlayerHandleSwitchInAnim(u32 battler)
 
 static u32 PlayerGetTrainerBackPicId(void)
 {
-    u32 trainerPicId = gSaveBlockPtr->playerGender + TRAINER_BACK_PIC_BRENDAN;
-
-    return trainerPicId;
+    // De momento uno fijo. Iba por genero -Brendan o May-, pero eso se va con el arte
+    // viejo: lo que viene es elegir personaje entre varios, y el genero deja de
+    // decidir el grafico.
+    return TRAINER_BACK_PIC_ETHAN;
 }
 
 // In emerald it's possible to have a tag battle in the battle frontier facilities with AI
@@ -1476,7 +1443,16 @@ void PlayerHandleDrawTrainerPic(u32 battler)
 {
     s16 xPos = 80;
     u32 trainerPicId = PlayerGetTrainerBackPicId();
-    s16 yPos = (8 - gTrainerBacksprites[trainerPicId].coordinates.size) * 4 + 80;
+
+    // Se coloca por donde tiene que APOYAR, no por una formula sobre coordinates.size.
+    // El sprite se posiciona por su centro, asi que se resta medio lienzo.
+    //
+    // Para los backs de 64x64 esto da 80, que es exactamente lo que salia antes: o
+    // sea que 112 siempre fue la linea del suelo, solo que escrita de una forma que
+    // no lo decia y que se rompia en cuanto el lienzo cambiaba de tamano.
+    u32 alto = (gTrainerBacksprites[trainerPicId].bytesPorFotograma == PIC_80_BYTES)
+             ? PIC_80_LADO : TRAINER_PIC_HEIGHT;
+    s16 yPos = SUELO_ENTRENADOR_JUGADOR - alto / 2;
 
     BtlController_HandleDrawTrainerPic(battler, trainerPicId, FALSE, xPos, yPos, -1);
 }
@@ -1653,7 +1629,9 @@ void PlayerHandleExpUpdate(u32 battler)
 void PlayerHandleIntroTrainerBallThrow(u32 battler)
 {
     const u16 *trainerPal = gTrainerBacksprites[gSaveBlockPtr->playerGender].palette.data;
-    BtlController_HandleIntroTrainerBallThrow(battler, 0xD6F8, trainerPal, 31, Intro_TryShinyAnimShowHealthbox);
+    BtlController_HandleIntroTrainerBallThrow(battler, 0xD6F8, trainerPal,
+                                              ENTRADA_ENTRENADOR_RECORRIDO + ENTRADA_ENTRENADOR_SUELTA,
+                                              Intro_TryShinyAnimShowHealthbox);
 }
 
 void PlayerHandleDrawPartyStatusSummary(u32 battler)

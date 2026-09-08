@@ -56,9 +56,6 @@
 
 
 
-EWRAM_DATA bool8 gBikeCyclingChallenge = FALSE;
-EWRAM_DATA u8 gBikeCollisions = 0;
-static EWRAM_DATA u32 sBikeCyclingTimer = 0;
 static EWRAM_DATA u8 sSlidingDoorNextFrameCounter = 0;
 static EWRAM_DATA u8 sSlidingDoorFrame = 0;
 
@@ -69,7 +66,6 @@ void TryLoseFansFromPlayTime(void);
 void SetPlayerGotFirstFans(void);
 u16 GetNumFansOfPlayerInTrainerFanClub(void);
 
-static void RecordCyclingRoadResults(u32, u8);
 static void Task_PetalburgGymSlideOpenRoomDoors(u8);
 static void PetalburgGymSetDoorMetatiles(u8, u16);
 static void Task_PCTurnOnEffect(u8);
@@ -90,114 +86,6 @@ void Special_ViewWallClock(void)
     gMain.savedCallback = CB2_ReturnToField;
     SetMainCallback2(CB2_ViewWallClock);
     LockPlayerFieldControls();
-}
-
-void Special_BeginCyclingRoadChallenge(void)
-{
-    gBikeCyclingChallenge = TRUE;
-    gBikeCollisions = 0;
-    sBikeCyclingTimer = gMain.vblankCounter;
-}
-
-u16 GetPlayerAvatarBike(void)
-{
-    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_ACRO_BIKE))
-        return 1;
-    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_MACH_BIKE))
-        return 2;
-    return 0;
-}
-
-static void DetermineCyclingRoadResults(u32 numFrames, u8 numBikeCollisions)
-{
-    u8 result;
-
-    if (numBikeCollisions < 100)
-    {
-        ConvertIntToDecimalStringN(gVariableTexto1, numBikeCollisions, STR_CONV_MODE_LEFT_ALIGN, 2);
-        StringAppend(gVariableTexto1, gText_SpaceTimes);
-    }
-    else
-    {
-        StringCopy(gVariableTexto1, gText_99TimesPlus);
-    }
-
-    if (numFrames < 3600)
-    {
-        ConvertIntToDecimalStringN(gVariableTexto2, numFrames / 60, STR_CONV_MODE_RIGHT_ALIGN, 2);
-        gVariableTexto2[2] = CHAR_COMMA;
-        ConvertIntToDecimalStringN(&gVariableTexto2[3], ((numFrames % 60) * 100) / 60, STR_CONV_MODE_LEADING_ZEROS, 2);
-        StringAppend(gVariableTexto2, gText_SpaceSeconds);
-    }
-    else
-    {
-        StringCopy(gVariableTexto2, gText_1MinutePlus);
-    }
-
-    result = 0;
-    if (numBikeCollisions == 0)
-        result = 5;
-    else if (numBikeCollisions < 4)
-        result = 4;
-    else if (numBikeCollisions < 10)
-        result = 3;
-    else if (numBikeCollisions < 20)
-        result = 2;
-    else if (numBikeCollisions < 100)
-        result = 1;
-
-    if (numFrames / 60 <= 10)
-        result += 5;
-    else if (numFrames / 60 <= 15)
-        result += 4;
-    else if (numFrames / 60 <= 20)
-        result += 3;
-    else if (numFrames / 60 <= 40)
-        result += 2;
-    else if (numFrames / 60 < 60)
-        result += 1;
-
-    gSpecialVar_Result = result;
-}
-
-void FinishCyclingRoadChallenge(void)
-{
-    const u32 numFrames = gMain.vblankCounter - sBikeCyclingTimer;
-
-    DetermineCyclingRoadResults(numFrames, gBikeCollisions);
-    RecordCyclingRoadResults(numFrames, gBikeCollisions);
-}
-
-static void RecordCyclingRoadResults(u32 numFrames, u8 numBikeCollisions)
-{
-    u16 low = VarGet(VAR_CYCLING_ROAD_RECORD_TIME_L);
-    u16 high = VarGet(VAR_CYCLING_ROAD_RECORD_TIME_H);
-    u32 framesRecord = low + (high << 16);
-
-    if (framesRecord > numFrames || framesRecord == 0)
-    {
-        VarSet(VAR_CYCLING_ROAD_RECORD_TIME_L, numFrames);
-        VarSet(VAR_CYCLING_ROAD_RECORD_TIME_H, numFrames >> 16);
-        VarSet(VAR_CYCLING_ROAD_RECORD_COLLISIONS, numBikeCollisions);
-    }
-}
-
-u16 GetRecordedCyclingRoadResults(void)
-{
-    u16 low = VarGet(VAR_CYCLING_ROAD_RECORD_TIME_L);
-    u16 high = VarGet(VAR_CYCLING_ROAD_RECORD_TIME_H);
-    u32 framesRecord = low + (high << 16);
-
-    if (framesRecord == 0)
-        return FALSE;
-
-    DetermineCyclingRoadResults(framesRecord, VarGet(VAR_CYCLING_ROAD_RECORD_COLLISIONS));
-    return TRUE;
-}
-
-void UpdateCyclingRoadState(void)
-{
-
 }
 
 void SetSSTidalFlag(void)

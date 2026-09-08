@@ -1,5 +1,6 @@
 #include "global.h"
 #include "battle.h"
+#include "depuracion_mgba.h"
 #include "battle_anim.h"
 #include "battle_util.h"
 #include "battle_controllers.h"
@@ -444,11 +445,37 @@ bool32 EstaCombatienteOcupado(u32 combatiente)
 
 bool32 HayAlgunCombatienteOcupado(void)
 {
-    for (u32 combatiente = JUGADOR_IZQUIERDA; combatiente < NUMERO_COMBATIENTES; combatiente++)
+    // Los que ESTAN en el combate, no los cuatro puestos siempre.
+    //
+    // NUMERO_COMBATIENTES vale 4 pase lo que pase; en un individual los puestos 2 y 3
+    // no existen. Si alguno de esos se queda marcado -y se quedan: la intro trata al
+    // aliado del puesto 2 aunque no haya nadie ahi-, esta funcion decia que si para
+    // siempre y el guion de combate no volvia a avanzar: el turno se elegia, el
+    // motor pasaba a ejecutar el guion y ahi se quedaba, con la musica sonando y la
+    // pantalla intacta.
+    for (u32 combatiente = 0; combatiente < gBattlersCount; combatiente++)
     {
         if (EstaCombatienteOcupado(combatiente))
             return TRUE;
     }
+
+#if DEPURACION_MGBA
+    // Y si algun puesto fantasma esta marcado, conviene saberlo: significa que algo
+    // lo ocupa y nadie lo suelta. Ya no cuelga, pero sigue siendo un cabo suelto.
+    {
+        static bool32 avisado = FALSE;
+
+        for (u32 combatiente = gBattlersCount; !avisado && combatiente < NUMERO_COMBATIENTES; combatiente++)
+        {
+            if (EstaCombatienteOcupado(combatiente))
+            {
+                avisado = TRUE;
+                LOG("PUESTO FANTASMA ocupado: combatiente/de", combatiente, gBattlersCount);
+            }
+        }
+    }
+#endif
+
     return FALSE;
 }
 
@@ -1817,6 +1844,21 @@ u8 AtkCanceller_UnableToUseMove(u32 moveType)
             gCombate->atkCancellerTracker++;
             break;
         case CANCELLER_END:
+            break;
+
+        // Un valor de la enum sin caso NO avanza el contador, y este bucle no sale
+        // hasta llegar a CANCELLER_END: se queda dando vueltas dentro de la funcion,
+        // sin volver nunca. Desde fuera parece que el juego se cuelga entero -la
+        // musica sigue, que va por interrupciones, y la pantalla se queda como
+        // estaba-, y ninguna sonda del combate llega a enterarse porque el motor no
+        // vuelve a ejecutarse.
+        //
+        // Paso una tarde entera persiguiendo esto: sobraba CANCELLER_IMPRISONED en la
+        // enum despues de quitar el movimiento. Con esto, el mismo descuido sale por
+        // el registro en vez de colgar.
+        default:
+            LOG("CANCELLER sin caso: se sigue de largo", gCombate->atkCancellerTracker, 0);
+            gCombate->atkCancellerTracker++;
             break;
         }
     } while (gCombate->atkCancellerTracker != CANCELLER_END && effect == 0);

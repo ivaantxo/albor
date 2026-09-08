@@ -665,9 +665,6 @@ enum Items
     ITEM_PRISON_BOTTLE,
     ITEM_REINS_OF_UNITY,
 
-    ITEM_BICYCLE,
-    ITEM_MACH_BIKE,
-    ITEM_ACRO_BIKE,
     ITEM_OLD_ROD,
     ITEM_GOOD_ROD,
     ITEM_SUPER_ROD,
@@ -826,10 +823,6 @@ enum Items
 #define OLD_ROD   0
 #define GOOD_ROD  1
 #define SUPER_ROD 2
-
-// Secondary IDs for bikes
-#define MACH_BIKE 0
-#define ACRO_BIKE 1
 
 // Item parameters for EXP Candies
 #define EXP_100   1

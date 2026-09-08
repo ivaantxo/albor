@@ -20,6 +20,11 @@
 #define PIC_GRANDE_TILES     144
 #define PIC_GRANDE_BYTES     (PIC_GRANDE_TILES * TILE_4BPP)   // 4608
 
+// El otro lienzo troceado: 80x80, que es la medida de los graficos de entrenador.
+#define PIC_80_LADO           80
+#define PIC_80_TILES         100
+#define PIC_80_BYTES         (PIC_80_TILES * TILE_4BPP)       // 3200
+
 // Lo que hay que reservar por fotograma y combatiente: el mayor de los casos.
 #define MAX_PIC_BYTES        PIC_GRANDE_BYTES
 
@@ -31,8 +36,9 @@ u32 BytesPicDescomprimido(u32 especie, u32 personalidad, bool32 esFront);
 const struct SubspriteTable *SubspritesPicCombate(u32 bytesPorFotograma);
 
 // gbagfx entrega los tiles en orden de lectura de la imagen completa; el OAM los
-// quiere agrupados por pieza. Esto los recoloca en el sitio.
-void ReordenaPicGrande(u8 *datos, u32 numFotogramas);
+// quiere agrupados por pieza. Esto los recoloca en el sitio. Vale para los dos
+// lienzos troceados: se le pasa cuanto mide un fotograma.
+void ReordenaPicTroceado(u8 *datos, u32 numFotogramas, u32 bytesPorFotograma);
 
 // Indice del vaiven continuo dentro de gAnims_MonPic, la tabla de los sprites de
 // espalda. Ver src/data.c.
@@ -41,6 +47,11 @@ void ReordenaPicGrande(u8 *datos, u32 numFotogramas);
 // Asegura que el hueco de un combatiente mida al menos lo pedido. Devuelve donde esta,
 // que puede seguir siendo el anterior si no hubo memoria.
 u8 *HuecoPic(u32 posicion, u32 bytes);
+
+// Reparte el sprite en piezas si su pic no cabe en un objeto, y NADA mas. La version
+// con nombre a secas ademas le corrige la posicion, que es un apano de los pics de
+// Pokemon y no vale para los entrenadores.
+void AplicaSubspritesSinMover(u32 spriteId);
 
 // Agranda el hueco del combatiente si su pic lo necesita. Llamar ANTES de descomprimir.
 void PreparaHuecoPic(u32 posicion, u32 especie, u32 personalidad, bool32 esFront);

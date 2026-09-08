@@ -1824,6 +1824,14 @@ u32 CreateInvisibleSpriteCopy(u32 battlerId, u32 spriteId, u32 species)
     u32 newSpriteId = CreateInvisibleSpriteWithCallback(SpriteCallbackDummy);
     gSprites[newSpriteId] = gSprites[spriteId];
     gSprites[newSpriteId].usingSheet = TRUE;
+    // La mascara comparte los tiles y la matriz del Pokemon. Solo el original
+    // debe animarlos: con usingSheet, sus indices de fotograma se interpretarian
+    // como offsets de tiles y la copia acabaria apuntando a otros graficos.
+    gSprites[newSpriteId].animBeginning = FALSE;
+    gSprites[newSpriteId].animPaused = TRUE;
+    gSprites[newSpriteId].animDelayCounter = 0;
+    gSprites[newSpriteId].affineAnimBeginning = FALSE;
+    gSprites[newSpriteId].affineAnimPaused = TRUE;
     gSprites[newSpriteId].oam.priority = 0;
     gSprites[newSpriteId].oam.objMode = ST_OAM_OBJ_WINDOW;
     gSprites[newSpriteId].oam.tileNum = gSprites[spriteId].oam.tileNum;

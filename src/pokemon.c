@@ -196,6 +196,18 @@ const struct SpriteTemplate gBattlerSpriteTemplates[NUMERO_COMBATIENTES] =
 
 static const struct SpriteTemplate sTrainerBackSpriteTemplates[] =
 {
+    // Las espaldas del proyecto no traen .images: se las pone
+    // SetMultiuseSpriteTemplateToTrainer apuntando al hueco del combatiente, que es
+    // donde el pic queda ya troceado. La tabla de ROM no vale porque no se reordena.
+    [TRAINER_BACK_PIC_ETHAN] = {
+        .tileTag = TAG_NONE,
+        .paletteTag = 0,
+        .oam = &gOamData_BattleSpritePlayerSide,
+        .anims = NULL,
+        .images = NULL,
+        .affineAnims = gAffineAnims_BattleSpritePlayerSide,
+        .callback = SpriteCB_BattleSpriteStartSlideLeft,
+    },
     [TRAINER_BACK_PIC_BRENDAN] = {
         .tileTag = TAG_NONE,
         .paletteTag = 0,
@@ -211,60 +223,6 @@ static const struct SpriteTemplate sTrainerBackSpriteTemplates[] =
         .oam = &gOamData_BattleSpritePlayerSide,
         .anims = NULL,
         .images = gTrainerBackPicTable_May,
-        .affineAnims = gAffineAnims_BattleSpritePlayerSide,
-        .callback = SpriteCB_BattleSpriteStartSlideLeft,
-    },
-    [TRAINER_BACK_PIC_RED] = {
-        .tileTag = TAG_NONE,
-        .paletteTag = 0,
-        .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = NULL,
-        .images = gTrainerBackPicTable_Red,
-        .affineAnims = gAffineAnims_BattleSpritePlayerSide,
-        .callback = SpriteCB_BattleSpriteStartSlideLeft,
-    },
-    [TRAINER_BACK_PIC_LEAF] = {
-        .tileTag = TAG_NONE,
-        .paletteTag = 0,
-        .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = NULL,
-        .images = gTrainerBackPicTable_Leaf,
-        .affineAnims = gAffineAnims_BattleSpritePlayerSide,
-        .callback = SpriteCB_BattleSpriteStartSlideLeft,
-    },
-    [TRAINER_BACK_PIC_RUBY_SAPPHIRE_BRENDAN] = {
-        .tileTag = TAG_NONE,
-        .paletteTag = 0,
-        .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = NULL,
-        .images = gTrainerBackPicTable_RubySapphireBrendan,
-        .affineAnims = gAffineAnims_BattleSpritePlayerSide,
-        .callback = SpriteCB_BattleSpriteStartSlideLeft,
-    },
-    [TRAINER_BACK_PIC_RUBY_SAPPHIRE_MAY] = {
-        .tileTag = TAG_NONE,
-        .paletteTag = 0,
-        .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = NULL,
-        .images = gTrainerBackPicTable_RubySapphireMay,
-        .affineAnims = gAffineAnims_BattleSpritePlayerSide,
-        .callback = SpriteCB_BattleSpriteStartSlideLeft,
-    },
-    [TRAINER_BACK_PIC_WALLY] = {
-        .tileTag = TAG_NONE,
-        .paletteTag = 0,
-        .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = NULL,
-        .images = gTrainerBackPicTable_Wally,
-        .affineAnims = gAffineAnims_BattleSpritePlayerSide,
-        .callback = SpriteCB_BattleSpriteStartSlideLeft,
-    },
-    [TRAINER_BACK_PIC_STEVEN] = {
-        .tileTag = TAG_NONE,
-        .paletteTag = 0,
-        .oam = &gOamData_BattleSpritePlayerSide,
-        .anims = NULL,
-        .images = gTrainerBackPicTable_Steven,
         .affineAnims = gAffineAnims_BattleSpritePlayerSide,
         .callback = SpriteCB_BattleSpriteStartSlideLeft,
     },
@@ -902,6 +860,12 @@ void SetMultiuseSpriteTemplateToTrainer(u16 trainerPicId, u8 battlerPosition)
     {
         gMultiuseSpriteTemplate = sTrainerBackSpriteTemplates[trainerPicId];
         gMultiuseSpriteTemplate.anims = gTrainerBacksprites[trainerPicId].animation;
+
+        // Las imagenes salen del hueco del combatiente, que es donde
+        // DecompressTrainerBackPic ha dejado el pic ya troceado. La tabla de la
+        // plantilla apunta a ROM, y la ROM no se puede reordenar.
+        if (gMonSpritesGfxPtr != NULL)
+            gMultiuseSpriteTemplate.images = gMonSpritesGfxPtr->frameImages[battlerPosition];
     }
     else
     {

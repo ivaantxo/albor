@@ -31,6 +31,22 @@ static void InitSinglePlayerBtlControllers(void);
 static void SetBattlePartyIds(void);
 static void Task_StartSendOutAnim(u8 taskId);
 static void SpriteCB_FreePlayerSpriteLoadMonSprite(struct Sprite *sprite);
+static void SpriteCB_LanzaAlLlegar(struct Sprite *sprite);
+static bool32 TwoMonsAtSendOut(u32 battler);
+static bool8 ShouldDoSlideInAnim(void);
+
+// El indice de la animacion de lanzamiento dentro de la tabla del entrenador.
+#define ANIM_ENTRENADOR_LANZA 1
+
+// Si en esta entrada llega a salir alguna Pokeball.
+//
+// Con follower el primero entra andando, asi que en un individual no sale ninguna y
+// el entrenador no tiene nada que lanzar. En un doble el segundo si sale de su bola,
+// y entonces el gesto si toca.
+static bool32 HayLanzamientoEnLaEntrada(u32 battler)
+{
+    return !ShouldDoSlideInAnim() || TwoMonsAtSendOut(battler);
+}
 static void SpriteCB_FreeOpponentSprite(struct Sprite *sprite);
 
 void PreparaVarsBatalla(void)
@@ -1308,7 +1324,9 @@ AplicaSubspritesPic(gBattlerSpriteIds[battler]);
                                                              xPos,
                                                              yPos,
                                                              subpriority);
-AplicaSubspritesPic(gBattlerSpriteIds[battler]);
+            // Sin mover: el sitio del entrenador lo decide quien llama, y el apano de
+            // posicion de AplicaSubspritesPic es de los pics de Pokemon.
+            AplicaSubspritesSinMover(gBattlerSpriteIds[battler]);
 
             gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = battler;
         }
@@ -1330,7 +1348,7 @@ void BtlController_HandleTrainerSlide(u32 battler, u32 trainerPicId)
                                                          80,
                                                          (8 - gTrainerBacksprites[trainerPicId].coordinates.size) * 4 + 80,
                                                          30);
-AplicaSubspritesPic(gBattlerSpriteIds[battler]);
+        AplicaSubspritesSinMover(gBattlerSpriteIds[battler]);
         gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = battler;
         gSprites[gBattlerSpriteIds[battler]].x2 = -96;
         gSprites[gBattlerSpriteIds[battler]].sSpeedX = 2;
@@ -1598,7 +1616,7 @@ void BtlController_HandleIntroTrainerBallThrow(u32 battler, u16 tagTrainerPal, c
     SetSpritePrimaryCoordsFromSecondaryCoords(&gSprites[gBattlerSpriteIds[battler]]);
     if (side == LADO_JUGADOR)
     {
-        gSprites[gBattlerSpriteIds[battler]].data[0] = 50;
+        gSprites[gBattlerSpriteIds[battler]].data[0] = ENTRADA_ENTRENADOR_RECORRIDO;
         gSprites[gBattlerSpriteIds[battler]].data[2] = -40;
     }
     else
@@ -1613,8 +1631,9 @@ void BtlController_HandleIntroTrainerBallThrow(u32 battler, u16 tagTrainerPal, c
 
     if (side == LADO_JUGADOR)
     {
-        StoreSpriteCallbackInData6(&gSprites[gBattlerSpriteIds[battler]], SpriteCB_FreePlayerSpriteLoadMonSprite);
-        StartSpriteAnim(&gSprites[gBattlerSpriteIds[battler]], ShouldDoSlideInAnim() ? 2 : 1);
+        // El camino se hace en la pose de reposo; el lanzamiento lo arranca
+        // SpriteCB_LanzaAlLlegar cuando el desplazamiento termina.
+        StoreSpriteCallbackInData6(&gSprites[gBattlerSpriteIds[battler]], SpriteCB_LanzaAlLlegar);
 
         // AllocSpritePalette devuelve 0xFF si no quedan slots. Sin comprobarlo,
         // OBJ_PLTT_ID(0xFF) apunta miles de entradas fuera del buffer de paletas y
@@ -1641,6 +1660,10 @@ void BtlController_HandleIntroTrainerBallThrow(u32 battler, u16 tagTrainerPal, c
     {
         StoreSpriteCallbackInData6(&gSprites[gBattlerSpriteIds[battler]], SpriteCB_FreeOpponentSprite);
     }
+
+    // Sin gesto no hay nada que esperar mas alla de que llegue a su sitio.
+    if (side == LADO_JUGADOR && !HayLanzamientoEnLaEntrada(battler))
+        framesToWait = ENTRADA_ENTRENADOR_RECORRIDO;
 
     taskId = CreateTask(Task_StartSendOutAnim, 5);
     LOG("ENVIO 2) tarea creada id", taskId, battler);
@@ -1693,7 +1716,11 @@ static void Task_StartSendOutAnim(u8 taskId)
             battlerPartner = battler ^ BIT_FLANK;
             gArgumentosComando[battlerPartner].indiceEquipo = gBattlerPartyIndexes[battlerPartner];
             BattleLoadMonSpriteGfx(&gPlayerParty[gBattlerPartyIndexes[battlerPartner]], battlerPartner);
-            StartSendOutAnim(battlerPartner, FALSE, ShouldDoSlideInAnim());
+
+            // El companero SIEMPRE de la Pokeball. Solo el primero puede venir
+            // andando, porque solo hay un follower: el segundo tiene que salir de
+            // su bola como cualquier otro.
+            StartSendOutAnim(battlerPartner, FALSE, FALSE);
         }
         else
         {
@@ -1710,6 +1737,36 @@ static void Task_StartSendOutAnim(u8 taskId)
 #undef tFramesToWait
 #undef tControllerFunc_1
 #undef tControllerFunc_2
+
+// Recien llegado a su sitio: ahora si, el lanzamiento. Y cuando acabe, fuera.
+//
+// Antes la animacion se arrancaba a la vez que el desplazamiento, asi que el
+// entrenador hacia todo el gesto MIENTRAS entraba y llegaba con el brazo ya estirado.
+// El recorrido se hace entero en la pose de reposo, que es como se ve en los juegos.
+//
+// El estado se lleva en animNum y no en un data[]: los seis primeros son del
+// desplazamiento y los dos ultimos guardan este mismo callback.
+static void SpriteCB_LanzaAlLlegar(struct Sprite *sprite)
+{
+    // Con follower no se lanza NADA: el primero entra andando por su cuenta y el
+    // entrenador se queda como esta. El gesto es de tirar una Pokeball, y solo hay
+    // Pokeball cuando el que sale viene dentro de una: el segundo de un doble, o un
+    // relevo despues de que caiga alguno.
+    if (!HayLanzamientoEnLaEntrada(sprite->sBattlerId))
+    {
+        SpriteCB_FreePlayerSpriteLoadMonSprite(sprite);
+        return;
+    }
+
+    if (sprite->animNum != ANIM_ENTRENADOR_LANZA)
+    {
+        StartSpriteAnim(sprite, ANIM_ENTRENADOR_LANZA);
+        return;
+    }
+
+    if (sprite->animEnded)
+        SpriteCB_FreePlayerSpriteLoadMonSprite(sprite);
+}
 
 static void SpriteCB_FreePlayerSpriteLoadMonSprite(struct Sprite *sprite)
 {

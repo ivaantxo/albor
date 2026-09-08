@@ -1,0 +1,1056 @@
+{
+  "species": "GRUMPIG",
+  "national_id": 326,
+  "output_dir": "grumpig",
+  "family": "spoink",
+  "status": "generated",
+  "missing_views": [],
+  "shared_views": {},
+  "warnings": [
+    "La especie no tiene bloque de datos en species_info.h.",
+    "default.front: No se identifica un ciclo inicial repetido con confianza; la selección base requiere revisión.",
+    "default.back: No se identifica un ciclo inicial repetido con confianza; la selección base requiere revisión."
+  ],
+  "palette": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      106,
+      65,
+      106
+    ],
+    [
+      246,
+      164,
+      180
+    ],
+    [
+      16,
+      16,
+      16
+    ],
+    [
+      74,
+      74,
+      82
+    ],
+    [
+      98,
+      98,
+      115
+    ],
+    [
+      123,
+      123,
+      131
+    ],
+    [
+      156,
+      156,
+      164
+    ],
+    [
+      255,
+      255,
+      255
+    ],
+    [
+      164,
+      65,
+      90
+    ],
+    [
+      205,
+      90,
+      123
+    ],
+    [
+      189,
+      98,
+      172
+    ],
+    [
+      238,
+      123,
+      148
+    ],
+    [
+      213,
+      131,
+      205
+    ],
+    [
+      230,
+      164,
+      222
+    ],
+    [
+      246,
+      189,
+      246
+    ]
+  ],
+  "palette_metadata": {
+    "frame_count": 8,
+    "total_pixels": 44288,
+    "opaque_pixels": 15966,
+    "transparent_pixels": 28322,
+    "partial_alpha_pixels": 0,
+    "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "source_opaque_color_count": 15,
+    "quantized": false,
+    "method": "exact_source_colors",
+    "changed_opaque_pixels": 0,
+    "mean_delta_e76": 0.0,
+    "max_delta_e76": 0.0,
+    "ordering_method": "heuristic_reference_blocks_then_dark_to_light_with_family_slots",
+    "species_reference_grouped_colors": 15,
+    "anatomical_grouping_verified": false,
+    "family_alignment_verified": false,
+    "species_reference_provided": true,
+    "family_reference_provided": true,
+    "family_matched_ramps": 3,
+    "ramps": [
+      {
+        "indices": [
+          1,
+          2
+        ],
+        "colors": [
+          [
+            106,
+            65,
+            106
+          ],
+          [
+            246,
+            164,
+            180
+          ]
+        ],
+        "kind": "chromatic",
+        "hue_degrees": 313.96,
+        "opaque_pixel_count": 644,
+        "ordering_reference": "family",
+        "preferred_start_index": 1,
+        "start_preserved": true,
+        "order": "dark_to_light_CIE_Lstar"
+      },
+      {
+        "indices": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "colors": [
+          [
+            16,
+            16,
+            16
+          ],
+          [
+            74,
+            74,
+            82
+          ],
+          [
+            98,
+            98,
+            115
+          ],
+          [
+            123,
+            123,
+            131
+          ],
+          [
+            156,
+            156,
+            164
+          ],
+          [
+            255,
+            255,
+            255
+          ]
+        ],
+        "kind": "neutral",
+        "hue_degrees": 262.9,
+        "opaque_pixel_count": 9230,
+        "ordering_reference": "family",
+        "preferred_start_index": 5,
+        "start_preserved": false,
+        "order": "dark_to_light_CIE_Lstar"
+      },
+      {
+        "indices": [
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "colors": [
+          [
+            164,
+            65,
+            90
+          ],
+          [
+            205,
+            90,
+            123
+          ],
+          [
+            189,
+            98,
+            172
+          ],
+          [
+            238,
+            123,
+            148
+          ],
+          [
+            213,
+            131,
+            205
+          ],
+          [
+            230,
+            164,
+            222
+          ]
+        ],
+        "kind": "chromatic",
+        "hue_degrees": 317.44,
+        "opaque_pixel_count": 6087,
+        "ordering_reference": "species",
+        "preferred_start_index": 6,
+        "start_preserved": false,
+        "order": "dark_to_light_CIE_Lstar"
+      },
+      {
+        "indices": [
+          15
+        ],
+        "colors": [
+          [
+            246,
+            189,
+            246
+          ]
+        ],
+        "kind": "chromatic",
+        "hue_degrees": 300.0,
+        "opaque_pixel_count": 5,
+        "ordering_reference": "family",
+        "preferred_start_index": 7,
+        "start_preserved": false,
+        "order": "dark_to_light_CIE_Lstar"
+      }
+    ],
+    "unused_indices": [],
+    "opaque_palette_color_count": 15,
+    "palette_size": 16,
+    "transparent_index": 0,
+    "transparent_rgb": [
+      255,
+      0,
+      255
+    ],
+    "opaque_magenta_present": false,
+    "review_reasons": [
+      "body regions and evolution correspondence use color heuristics",
+      "some color ramps could not be aligned with the family reference",
+      "ramp sizes required shifting some preferred palette indices"
+    ]
+  },
+  "palette_groups": [],
+  "animation": {
+    "front": {
+      "loop": [
+        0,
+        1,
+        0,
+        2
+      ],
+      "special": [
+        0,
+        3,
+        4,
+        0
+      ],
+      "idle_cycles_before_special": 4,
+      "frame_ms": 140
+    },
+    "back": {
+      "loop": [
+        0,
+        1,
+        0,
+        2
+      ],
+      "frame_ms": 140
+    }
+  },
+  "views": [
+    {
+      "variant": "default",
+      "side": "front",
+      "filename": "anim_front.png",
+      "stem": "anim_front",
+      "source": "desarrollo/.apng_bw/f326.png",
+      "source_sha256": "a7751fd784ebed3dab76dd8067126702b3be92cb7bd983034817518f637ccf13",
+      "source_frame_count": 15,
+      "source_durations_ms": [
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186
+      ],
+      "indices": [
+        2,
+        0,
+        5,
+        7,
+        11
+      ],
+      "automatic_selection": {
+        "indices": [
+          2,
+          0,
+          5,
+          7,
+          11
+        ],
+        "unique_count": 15,
+        "selected_unique_count": 5,
+        "warnings": [
+          "No se identifica un ciclo inicial repetido con confianza; la selección base requiere revisión."
+        ],
+        "metrics": {
+          "canvas": [
+            68,
+            68
+          ],
+          "frame_count": 15,
+          "duration_ms": 1504.36,
+          "frame_metrics": [
+            {
+              "bbox": [
+                6,
+                2,
+                64,
+                68
+              ],
+              "centroid": [
+                35.3271,
+                33.7484
+              ],
+              "area": 1987.0,
+              "opaque_pixels": 1987
+            },
+            {
+              "bbox": [
+                4,
+                3,
+                64,
+                68
+              ],
+              "centroid": [
+                35.2492,
+                34.5076
+              ],
+              "area": 1970.0,
+              "opaque_pixels": 1970
+            },
+            {
+              "bbox": [
+                5,
+                4,
+                64,
+                68
+              ],
+              "centroid": [
+                35.2685,
+                35.2752
+              ],
+              "area": 1948.0,
+              "opaque_pixels": 1948
+            },
+            {
+              "bbox": [
+                5,
+                5,
+                64,
+                68
+              ],
+              "centroid": [
+                35.2275,
+                36.0993
+              ],
+              "area": 1934.0,
+              "opaque_pixels": 1934
+            },
+            {
+              "bbox": [
+                5,
+                5,
+                64,
+                68
+              ],
+              "centroid": [
+                35.2916,
+                36.3806
+              ],
+              "area": 1934.0,
+              "opaque_pixels": 1934
+            },
+            {
+              "bbox": [
+                5,
+                5,
+                64,
+                68
+              ],
+              "centroid": [
+                35.3783,
+                36.4517
+              ],
+              "area": 1935.0,
+              "opaque_pixels": 1935
+            },
+            {
+              "bbox": [
+                5,
+                5,
+                64,
+                68
+              ],
+              "centroid": [
+                35.2081,
+                36.3228
+              ],
+              "area": 1927.0,
+              "opaque_pixels": 1927
+            },
+            {
+              "bbox": [
+                5,
+                4,
+                64,
+                68
+              ],
+              "centroid": [
+                35.3387,
+                35.6952
+              ],
+              "area": 1919.0,
+              "opaque_pixels": 1919
+            },
+            {
+              "bbox": [
+                5,
+                3,
+                64,
+                68
+              ],
+              "centroid": [
+                35.2575,
+                34.9045
+              ],
+              "area": 1938.0,
+              "opaque_pixels": 1938
+            },
+            {
+              "bbox": [
+                5,
+                2,
+                64,
+                68
+              ],
+              "centroid": [
+                35.2909,
+                34.2073
+              ],
+              "area": 1949.0,
+              "opaque_pixels": 1949
+            },
+            {
+              "bbox": [
+                5,
+                1,
+                64,
+                68
+              ],
+              "centroid": [
+                35.2889,
+                33.5347
+              ],
+              "area": 1973.0,
+              "opaque_pixels": 1973
+            },
+            {
+              "bbox": [
+                5,
+                0,
+                64,
+                68
+              ],
+              "centroid": [
+                35.3886,
+                32.7413
+              ],
+              "area": 2010.0,
+              "opaque_pixels": 2010
+            },
+            {
+              "bbox": [
+                5,
+                1,
+                64,
+                68
+              ],
+              "centroid": [
+                35.0777,
+                32.9836
+              ],
+              "area": 2009.0,
+              "opaque_pixels": 2009
+            },
+            {
+              "bbox": [
+                5,
+                2,
+                64,
+                68
+              ],
+              "centroid": [
+                35.1735,
+                33.5035
+              ],
+              "area": 2006.0,
+              "opaque_pixels": 2006
+            },
+            {
+              "bbox": [
+                4,
+                2,
+                64,
+                68
+              ],
+              "centroid": [
+                35.1638,
+                33.7856
+              ],
+              "area": 1996.0,
+              "opaque_pixels": 1996
+            }
+          ],
+          "pose_labels": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14
+          ],
+          "selected_durations_ms": [
+            100.2906976744186,
+            100.2906976744186,
+            100.2906976744186,
+            100.2906976744186,
+            100.2906976744186
+          ],
+          "selected_pair_distances": [
+            [
+              0.0,
+              0.44076,
+              0.32518,
+              0.21046,
+              0.54695
+            ],
+            [
+              0.44076,
+              0.0,
+              0.61613,
+              0.51622,
+              0.29006
+            ],
+            [
+              0.32518,
+              0.61613,
+              0.0,
+              0.22369,
+              0.69057
+            ],
+            [
+              0.21046,
+              0.51622,
+              0.22369,
+              0.0,
+              0.61118
+            ],
+            [
+              0.54695,
+              0.29006,
+              0.69057,
+              0.61118,
+              0.0
+            ]
+          ],
+          "loop": {
+            "detected": false,
+            "confidence": "low",
+            "start": 0,
+            "end_exclusive": 6,
+            "period_runs": null,
+            "mean_error": null,
+            "compared_runs": 0,
+            "indices": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5
+            ]
+          },
+          "motion": {
+            "axis": "y",
+            "range_px": 2.7033,
+            "displacements": [
+              0.0,
+              -1.5268,
+              1.1765
+            ]
+          },
+          "special": {
+            "detected": true,
+            "range": [
+              6,
+              14
+            ],
+            "novelty_threshold": 0.027,
+            "novelty": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.08471,
+              0.18568,
+              0.18717,
+              0.24168,
+              0.25586,
+              0.29006,
+              0.25955,
+              0.15025,
+              0.11319
+            ]
+          }
+        }
+      },
+      "manual_selection": false,
+      "layout": {
+        "source_canvas": [
+          68,
+          68
+        ],
+        "frame_size": [
+          80,
+          80
+        ],
+        "source_bbox": [
+          5,
+          0,
+          64,
+          68
+        ],
+        "translation": [
+          5,
+          12
+        ],
+        "offset": [
+          0,
+          0
+        ],
+        "exceptional_size": false,
+        "alignment": "union_center_bottom"
+      },
+      "selected_unique_count": 5
+    },
+    {
+      "variant": "default",
+      "side": "back",
+      "filename": "back.png",
+      "stem": "back",
+      "source": "desarrollo/.apng_bw/b326.png",
+      "source_sha256": "98a411e468e5c94b551c9c562e2f74e48226784c2694afd3dac579d53f8bdcb8",
+      "source_frame_count": 14,
+      "source_durations_ms": [
+        200.5813953488372,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186,
+        100.2906976744186
+      ],
+      "indices": [
+        2,
+        0,
+        4
+      ],
+      "automatic_selection": {
+        "indices": [
+          2,
+          0,
+          4
+        ],
+        "unique_count": 13,
+        "selected_unique_count": 3,
+        "warnings": [
+          "No se identifica un ciclo inicial repetido con confianza; la selección base requiere revisión."
+        ],
+        "metrics": {
+          "canvas": [
+            68,
+            68
+          ],
+          "frame_count": 14,
+          "duration_ms": 1504.36,
+          "frame_metrics": [
+            {
+              "bbox": [
+                3,
+                3,
+                64,
+                66
+              ],
+              "centroid": [
+                32.191,
+                34.1833
+              ],
+              "area": 2078.0,
+              "opaque_pixels": 2078
+            },
+            {
+              "bbox": [
+                3,
+                4,
+                64,
+                66
+              ],
+              "centroid": [
+                32.15,
+                34.8973
+              ],
+              "area": 2074.0,
+              "opaque_pixels": 2074
+            },
+            {
+              "bbox": [
+                3,
+                5,
+                64,
+                66
+              ],
+              "centroid": [
+                32.191,
+                35.673
+              ],
+              "area": 2058.0,
+              "opaque_pixels": 2058
+            },
+            {
+              "bbox": [
+                3,
+                6,
+                64,
+                66
+              ],
+              "centroid": [
+                32.2313,
+                36.6531
+              ],
+              "area": 2041.0,
+              "opaque_pixels": 2041
+            },
+            {
+              "bbox": [
+                3,
+                6,
+                64,
+                66
+              ],
+              "centroid": [
+                32.3038,
+                36.7784
+              ],
+              "area": 2031.0,
+              "opaque_pixels": 2031
+            },
+            {
+              "bbox": [
+                3,
+                6,
+                64,
+                66
+              ],
+              "centroid": [
+                32.3457,
+                36.9668
+              ],
+              "area": 2016.0,
+              "opaque_pixels": 2016
+            },
+            {
+              "bbox": [
+                3,
+                6,
+                64,
+                66
+              ],
+              "centroid": [
+                32.37,
+                36.9831
+              ],
+              "area": 2011.0,
+              "opaque_pixels": 2011
+            },
+            {
+              "bbox": [
+                3,
+                5,
+                64,
+                66
+              ],
+              "centroid": [
+                32.3697,
+                35.9975
+              ],
+              "area": 2037.0,
+              "opaque_pixels": 2037
+            },
+            {
+              "bbox": [
+                3,
+                4,
+                64,
+                66
+              ],
+              "centroid": [
+                32.3528,
+                35.102
+              ],
+              "area": 2058.0,
+              "opaque_pixels": 2058
+            },
+            {
+              "bbox": [
+                3,
+                3,
+                64,
+                66
+              ],
+              "centroid": [
+                32.191,
+                34.1833
+              ],
+              "area": 2078.0,
+              "opaque_pixels": 2078
+            },
+            {
+              "bbox": [
+                3,
+                2,
+                64,
+                66
+              ],
+              "centroid": [
+                32.2104,
+                33.1913
+              ],
+              "area": 2101.0,
+              "opaque_pixels": 2101
+            },
+            {
+              "bbox": [
+                3,
+                2,
+                64,
+                66
+              ],
+              "centroid": [
+                32.1814,
+                32.5775
+              ],
+              "area": 2128.0,
+              "opaque_pixels": 2128
+            },
+            {
+              "bbox": [
+                3,
+                2,
+                64,
+                66
+              ],
+              "centroid": [
+                32.1718,
+                33.2679
+              ],
+              "area": 2090.0,
+              "opaque_pixels": 2090
+            },
+            {
+              "bbox": [
+                3,
+                3,
+                64,
+                66
+              ],
+              "centroid": [
+                32.2677,
+                34.1788
+              ],
+              "area": 2081.0,
+              "opaque_pixels": 2081
+            }
+          ],
+          "pose_labels": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            0,
+            9,
+            10,
+            11,
+            12
+          ],
+          "selected_durations_ms": [
+            100.2906976744186,
+            200.5813953488372,
+            100.2906976744186
+          ],
+          "selected_pair_distances": [
+            [
+              0.0,
+              0.36236,
+              0.3319
+            ],
+            [
+              0.36236,
+              0.0,
+              0.54685
+            ],
+            [
+              0.3319,
+              0.54685,
+              0.0
+            ]
+          ],
+          "loop": {
+            "detected": false,
+            "confidence": "low",
+            "start": 0,
+            "end_exclusive": 5,
+            "period_runs": null,
+            "mean_error": null,
+            "compared_runs": 0,
+            "indices": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ]
+          },
+          "motion": {
+            "axis": "y",
+            "range_px": 2.5951,
+            "displacements": [
+              0.0,
+              -1.4897,
+              1.1054
+            ]
+          },
+          "special": {
+            "detected": false,
+            "range": null
+          }
+        }
+      },
+      "manual_selection": false,
+      "layout": {
+        "source_canvas": [
+          68,
+          68
+        ],
+        "frame_size": [
+          64,
+          64
+        ],
+        "source_bbox": [
+          3,
+          3,
+          64,
+          66
+        ],
+        "translation": [
+          -2,
+          -2
+        ],
+        "offset": [
+          0,
+          0
+        ],
+        "exceptional_size": false,
+        "alignment": "union_center_bottom"
+      },
+      "selected_unique_count": 3
+    }
+  ]
+}

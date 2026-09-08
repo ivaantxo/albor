@@ -1275,8 +1275,10 @@ void SpriteCB_PlayerMonSlideIn(struct Sprite *sprite)
     }
     else if (sprite->data[3] == 1)
     {
-        if (sprite->animEnded)
-            return;
+        // Aqui habia una espera a animEnded que no significaba nada: pedia que la
+        // animacion por fotogramas hubiera TERMINADO, y las de albor dan vueltas y no
+        // terminan nunca. Solo avanzaba de rebote, cuando la tarea del vaiven continuo
+        // le cambiaba la animacion.
         sprite->data[4] = sprite->x;
         sprite->x = -33;
         sprite->invisible = FALSE;

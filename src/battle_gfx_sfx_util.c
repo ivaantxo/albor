@@ -373,9 +373,40 @@ void DecompressTrainerFrontPic(u16 frontPicId, u8 battler)
 
 void DecompressTrainerBackPic(u16 backPicId, u8 battler)
 {
-    DecompressPicFromTable(&gTrainerBacksprites[backPicId].backPic,
-                           gMonSpritesGfxPtr->spritesGfx[battler]);
-    LoadPalette(gTrainerBacksprites[backPicId].palette.data,
+    const struct TrainerBacksprite *espalda = &gTrainerBacksprites[backPicId];
+    u32 porFotograma = espalda->bytesPorFotograma;
+    u32 fotogramas = espalda->backPic.size / porFotograma;
+    u8 *hueco;
+
+    // El hueco tiene que dar para el pic entero ANTES de escribir nada: una espalda
+    // de 80x80 con tres poses son 9600 bytes, por encima del suelo de 8192.
+    hueco = HuecoPic(battler, espalda->backPic.size);
+
+    // Y aqui NO se descomprime a ciegas. Antes esto llamaba a LZ77UnCompWram sobre un
+    // .4bpp SIN comprimir: la BIOS leia un tamano inventado de los propios pixeles y
+    // volcaba lo que le saliera en el hueco del combatiente. No se notaba porque el
+    // sprite leia de ROM y nadie miraba ese hueco, pero era una escritura suelta.
+    if (IsLZ77Data(espalda->backPic.data, porFotograma, espalda->backPic.size) != 0)
+        LZ77UnCompWram(espalda->backPic.data, hueco);
+    else
+        CopiaCpu32(espalda->backPic.data, hueco, espalda->backPic.size);
+
+    // Los lienzos que no caben en un objeto llegan en orden de lectura de la imagen y
+    // hay que agruparlos por pieza. Sale sola si el pic cabe.
+    ReordenaPicTroceado(hueco, fotogramas, porFotograma);
+
+    // Y las imagenes del sprite apuntan al hueco, no a la ROM: es lo unico que se
+    // puede reordenar. Los fotogramas que la espalda no trae repiten el primero, igual
+    // que en los pics de Pokemon.
+    for (u32 i = 0; i < NUMERO_FRAMES_POKEMON; i++)
+    {
+        u32 cual = (i < fotogramas) ? i : 0;
+
+        gMonSpritesGfxPtr->frameImages[battler][i].data = hueco + cual * porFotograma;
+        gMonSpritesGfxPtr->frameImages[battler][i].size = porFotograma;
+    }
+
+    LoadPalette(espalda->palette.data,
                           OBJ_PLTT_ID(battler), PLTT_SIZE_4BPP);
     // El entrenador esta en el mismo escenario que los Pokemon, asi que le da la
     // misma luz. Va a la misma ranura de paleta que el combatiente.

@@ -1,8 +1,6 @@
 #ifndef GUARD_FIELD_SPECIALS_H
 #define GUARD_FIELD_SPECIALS_H
 
-extern bool8 gBikeCyclingChallenge;
-extern u8 gBikeCollisions;
 
 u8 GetLeadMonIndex(void);
 u8 IsDestinationBoxFull(void);

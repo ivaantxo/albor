@@ -47,7 +47,6 @@ extern const u8 gMenuText_Give[];
 extern const u8 gMenuText_Give2[];
 extern const u8 gMenuText_Register[];
 extern const u8 gMenuText_Check[];
-extern const u8 gMenuText_Walk[];
 extern const u8 gMenuText_Deselect[];
 extern const u8 gMenuText_Confirm[];
 extern const u8 gMenuText_Give2[];
@@ -281,7 +280,6 @@ extern const u8 gText_MoveRelearnerPower[];
 extern const u8 gText_MoveRelearnerAccuracy[];
 
 extern const u8 gText_DadsAdvice[];
-extern const u8 gText_CantDismountBike[];
 extern const u8 gText_ItemFinderNothing[];
 extern const u8 gText_ItemFinderNearby[];
 extern const u8 gText_ItemFinderOnTop[];

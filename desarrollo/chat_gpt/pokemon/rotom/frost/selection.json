@@ -1,0 +1,44 @@
+{
+  "species": "ROTOM_FROST",
+  "national_id": 479,
+  "output_dir": "rotom/frost",
+  "family": "rotom",
+  "status": "missing",
+  "missing_views": [
+    "default.front",
+    "default.back"
+  ],
+  "shared_views": {},
+  "warnings": [],
+  "palette": null,
+  "palette_metadata": null,
+  "palette_groups": [],
+  "animation": {
+    "front": {
+      "loop": [
+        0,
+        1,
+        0,
+        2
+      ],
+      "special": [
+        0,
+        3,
+        4,
+        0
+      ],
+      "idle_cycles_before_special": 4,
+      "frame_ms": 140
+    },
+    "back": {
+      "loop": [
+        0,
+        1,
+        0,
+        2
+      ],
+      "frame_ms": 140
+    }
+  },
+  "views": []
+}

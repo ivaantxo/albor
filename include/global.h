@@ -279,6 +279,10 @@ struct SaveBlock
     u8 optionsBattleSceneOff;    // si las animaciones de combate estan apagadas
     u8 regionMapZoom;            // si el mapa esta acercado
 
+    // Si se corre sin tener que mantener B. Es una preferencia del jugador, asi que
+    // vive en la partida y no en una global que se pierde al apagar.
+    u8 correSiempre;
+
     // --- Tiempo ---
     // RECORDATORIO: playTime y gameClock son el MISMO contador con dos escalas.
     // Aqui no hay reloj de cartucho: Rtc_GetCurrentTime devuelve gameClock, y a

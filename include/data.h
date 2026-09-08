@@ -45,6 +45,12 @@ struct TrainerBacksprite
     struct CompressedSpriteSheet backPic;
     struct SpritePalette palette;
     const union AnimCmd *const *const animation;
+
+    // Lo que ocupa UN fotograma. Va explicito y no se deduce del lienzo porque
+    // conviven dos medidas: las espaldas de vanilla son de 64x64 y las del proyecto
+    // de 80x80, que no cabe en un objeto de GBA y hay que trocear. De aqui salen
+    // tanto el troceado como cuantos fotogramas trae -el tamano total entre este-.
+    u16 bytesPorFotograma;
 };
 
 #define MON_COORDS_SIZE(width, height) (DIV_ROUND_UP(width, 8) << 4 | DIV_ROUND_UP(height, 8))

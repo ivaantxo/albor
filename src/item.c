@@ -367,19 +367,6 @@ void ClearItemSlots(struct ItemSlot *itemSlots, u8 itemCount)
     }
 }
 
-void SwapRegisteredBike(void)
-{
-    switch (gSaveBlockPtr->registeredItem)
-    {
-    case ITEM_MACH_BIKE:
-        gSaveBlockPtr->registeredItem = ITEM_ACRO_BIKE;
-        break;
-    case ITEM_ACRO_BIKE:
-        gSaveBlockPtr->registeredItem = ITEM_MACH_BIKE;
-        break;
-    }
-}
-
 u16 BagGetItemIdByPocketPosition(u8 pocketId, u16 pocketPos)
 {
     return gBagPockets[pocketId - 1].itemSlots[pocketPos].itemId;

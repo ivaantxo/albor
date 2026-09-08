@@ -70,7 +70,6 @@ enum {
     ACTION_CANCEL,
     ACTION_BATTLE_USE,
     ACTION_CHECK,
-    ACTION_WALK,
     ACTION_DESELECT,
     ACTION_CONFIRM,
     ACTION_DUMMY,
@@ -241,7 +240,6 @@ static const struct MenuAction sItemMenuActions[] = {
     [ACTION_CANCEL]            = {gText_Salir,          {ItemMenu_Cancel}},
     [ACTION_BATTLE_USE]        = {gMenuText_Use,        {ItemMenu_UseInBattle}},
     [ACTION_CHECK]             = {gMenuText_Check,      {ItemMenu_UseOutOfBattle}},
-    [ACTION_WALK]              = {gMenuText_Walk,       {ItemMenu_UseOutOfBattle}},
     [ACTION_DESELECT]          = {gMenuText_Deselect,   {ItemMenu_Register}},
     [ACTION_CONFIRM]           = {gMenuText_Confirm,    {Task_FadeAndCloseBagMenu}},
     [ACTION_DUMMY]             = {gText_EmptyString,    {NULL}}
@@ -1441,11 +1439,6 @@ static void OpenContextMenu(u8 taskId)
             memcpy(&gBagMenu->contextMenuItemsBuffer, &sContextMenuItems_KeyItemsPocket, sizeof(sContextMenuItems_KeyItemsPocket));
             if (gSaveBlockPtr->registeredItem == gSpecialVar_ItemId)
                 gBagMenu->contextMenuItemsBuffer[1] = ACTION_DESELECT;
-            if (gSpecialVar_ItemId == ITEM_MACH_BIKE || gSpecialVar_ItemId == ITEM_ACRO_BIKE)
-            {
-                if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE))
-                    gBagMenu->contextMenuItemsBuffer[0] = ACTION_WALK;
-            }
             break;
         case BALLS_POCKET:
             gBagMenu->contextMenuItemsPtr = sContextMenuItems_BallsPocket;

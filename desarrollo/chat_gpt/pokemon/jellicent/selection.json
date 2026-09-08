@@ -1,0 +1,46 @@
+{
+  "species": "JELLICENT",
+  "national_id": 593,
+  "output_dir": "jellicent",
+  "family": "frillish",
+  "status": "missing",
+  "missing_views": [
+    "default.front",
+    "default.back",
+    "female.front",
+    "female.back"
+  ],
+  "shared_views": {},
+  "warnings": [],
+  "palette": null,
+  "palette_metadata": null,
+  "palette_groups": [],
+  "animation": {
+    "front": {
+      "loop": [
+        0,
+        1,
+        0,
+        2
+      ],
+      "special": [
+        0,
+        3,
+        4,
+        0
+      ],
+      "idle_cycles_before_special": 4,
+      "frame_ms": 140
+    },
+    "back": {
+      "loop": [
+        0,
+        1,
+        0,
+        2
+      ],
+      "frame_ms": 140
+    }
+  },
+  "views": []
+}

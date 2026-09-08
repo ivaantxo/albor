@@ -158,11 +158,13 @@ enum FlagsVarsDebugMenu
 
 enum BattleType
 {
-    DEBUG_BATTLE_0_MENU_ITEM_WILD,
-    DEBUG_BATTLE_0_MENU_ITEM_WILD_DOUBLE,
-    DEBUG_BATTLE_0_MENU_ITEM_SINGLE,
-    DEBUG_BATTLE_0_MENU_ITEM_DOUBLE,
-    DEBUG_BATTLE_0_MENU_ITEM_MULTI,
+    // Dos, y cada uno lleva su modo pegado: salvaje es SIEMPRE individual y
+    // entrenador es SIEMPRE doble. No hace falta elegirlo porque no lo decide este
+    // menu: lo decide WhichBattleCoords, que devuelve DOBLES cuando el combate es
+    // contra entrenador. Tener las cuatro combinaciones solo servia para pedir cosas
+    // que el motor iba a ignorar. Y el multi no existe en albor.
+    DEBUG_BATTLE_0_MENU_ITEM_SALVAJE,
+    DEBUG_BATTLE_0_MENU_ITEM_ENTRENADOR,
 };
 
 enum BattleAIFlags
@@ -277,6 +279,10 @@ struct DebugMonData
     u8  mon_ev_sdef;
 };
 
+// Los otros dos numeros de lista -0 banderas y variables, 1 combate- vienen de antes
+// y no tienen nombre. Este si, porque es el unico que se consulta desde tres sitios.
+#define LISTA_ENTRENADORES 2
+
 struct DebugMenuListData
 {
     struct ListMenuItem listItems[20 + 1];
@@ -289,6 +295,7 @@ struct DebugBattleData
     u8 submenu;
     u8 battleType;
     u8 battleTerrain;
+    u8 entrenador;      // Contra quien, en el combate de entrenador
     bool8 aiFlags[AI_FLAG_COUNT];
 };
 
@@ -547,11 +554,8 @@ static const u8 sDebugText_FlagsVars_SwitchTrainerSee[] =    _("Toggle {VAR_TEXT
 static const u8 sDebugText_FlagsVars_SwitchBagUse[] =        _("Toggle {VAR_TEXTO_1}Bag Use OFF");
 static const u8 sDebugText_FlagsVars_SwitchCatching[] =      _("Toggle {VAR_TEXTO_1}Catching OFF");
 // Battle
-static const u8 sDebugText_Battle_0_Wild[] =        _("Wild…{CLEAR_TO 110}{RIGHT_ARROW}");
-static const u8 sDebugText_Battle_0_WildDouble[] =  _("Wild Double…{CLEAR_TO 110}{RIGHT_ARROW}");
-static const u8 sDebugText_Battle_0_Single[] =      _("Single…{CLEAR_TO 110}{RIGHT_ARROW}");
-static const u8 sDebugText_Battle_0_Double[] =      _("Double…{CLEAR_TO 110}{RIGHT_ARROW}");
-static const u8 sDebugText_Battle_0_Mulit[] =       _("Multi…{CLEAR_TO 110}{RIGHT_ARROW}");
+static const u8 sDebugText_Battle_0_Salvaje[] =    _("Salvaje (indiv.)");
+static const u8 sDebugText_Battle_0_Entrenador[] = _("Entrenador (dobles)…{CLEAR_TO 110}{RIGHT_ARROW}");
 static const u8 sDebugText_Battle_1_AIFlag_00[] =   _("{VAR_TEXTO_1}Check bad move");
 static const u8 sDebugText_Battle_1_AIFlag_01[] =   _("{VAR_TEXTO_1}Try to faint");
 static const u8 sDebugText_Battle_1_AIFlag_02[] =   _("{VAR_TEXTO_1}Check viability");
@@ -744,11 +748,8 @@ static const struct ListMenuItem sDebugMenu_Items_FlagsVars[] =
 
 static const struct ListMenuItem sDebugMenu_Items_Battle_0[] =
 {
-    [DEBUG_BATTLE_0_MENU_ITEM_WILD]        = {sDebugText_Battle_0_Wild,       DEBUG_BATTLE_0_MENU_ITEM_WILD},
-    [DEBUG_BATTLE_0_MENU_ITEM_WILD_DOUBLE] = {sDebugText_Battle_0_WildDouble, DEBUG_BATTLE_0_MENU_ITEM_WILD_DOUBLE},
-    [DEBUG_BATTLE_0_MENU_ITEM_SINGLE]      = {sDebugText_Battle_0_Single,     DEBUG_BATTLE_0_MENU_ITEM_SINGLE},
-    [DEBUG_BATTLE_0_MENU_ITEM_DOUBLE]      = {sDebugText_Battle_0_Double,     DEBUG_BATTLE_0_MENU_ITEM_DOUBLE},
-    [DEBUG_BATTLE_0_MENU_ITEM_MULTI]       = {sDebugText_Battle_0_Mulit,      DEBUG_BATTLE_0_MENU_ITEM_MULTI},
+    [DEBUG_BATTLE_0_MENU_ITEM_SALVAJE]    = {sDebugText_Battle_0_Salvaje,    DEBUG_BATTLE_0_MENU_ITEM_SALVAJE},
+    [DEBUG_BATTLE_0_MENU_ITEM_ENTRENADOR] = {sDebugText_Battle_0_Entrenador, DEBUG_BATTLE_0_MENU_ITEM_ENTRENADOR},
 };
 
 static const struct ListMenuItem sDebugMenu_Items_Battle_1[] =
@@ -1265,7 +1266,14 @@ static void Debug_GenerateListMenuNames(u32 totalItems)
     // Copy item names for all entries but the last (which is Cancel)
     for (i = 0; i < totalItems; i++)
     {
-        if (sDebugMenuListData->listId == 1 && sDebugBattleData->submenu > 1)
+        if (sDebugMenuListData->listId == LISTA_ENTRENADORES)
+        {
+            // Salen de gTrainers y no de una lista escrita a mano, saltando
+            // TRAINER_NONE: asi los que se vayan metiendo aparecen solos sin tener
+            // que volver a tocar el menu.
+            StringCopy(&sDebugMenuListData->itemNames[i][0], gTrainers[i + 1].trainerName);
+        }
+        else if (sDebugMenuListData->listId == 1 && sDebugBattleData->submenu > 1)
         {
             u16 species;
             if (i == 6)
@@ -1326,7 +1334,11 @@ static void Debug_RefreshListMenu(u8 taskId)
 {
     u8 totalItems = 0;
 
-    if (sDebugMenuListData->listId == 0)
+    if (sDebugMenuListData->listId == LISTA_ENTRENADORES)
+    {
+        totalItems = TRAINERS_COUNT - 1;    // todos menos TRAINER_NONE
+    }
+    else if (sDebugMenuListData->listId == 0)
     {
         gMultiuseListMenuTemplate = sDebugMenu_ListTemplate_FlagsVars;
         totalItems = gMultiuseListMenuTemplate.totalItems;
@@ -1581,33 +1593,34 @@ static void DebugTask_HandleMenuInput_Battle(u8 taskId)
 
         switch (sDebugBattleData->submenu)
         {
-        case 0: // Tipo de combate: se elige y se entra, sin mas pantallas.
-            //
-            // Los submenus de banderas de IA y de Pokemon rival se apoyaban en
-            // gMultiuseListMenuTemplate, que nadie rellenaba para ellos: salia lo que
-            // hubiera dejado el menu anterior, tipicamente "set flag / set var". Como
-            // esto es para mirar sprites y no para afinar la IA, se saltan los tres y
-            // se arranca con lo de por defecto: sin banderas de IA y terreno 0.
-            //
-            // Si algun dia hace falta elegir IA o terreno, el codigo de los submenus
-            // 1, 2 y 3 sigue aqui abajo intacto; basta con devolver el encadenado.
+        case 0: // Tipo de combate
+            // Sin pantallas de banderas de IA ni de terreno: esto es para mirar
+            // sprites y animaciones, no para afinar la IA. Arranca con lo de por
+            // defecto, sin banderas y terreno 0.
             sDebugBattleData->battleType = idx;
             sDebugBattleData->battleTerrain = 0;
-            Debug_InitializeBattle(taskId);
-            break;
-        case 1: // AI Flags
-            if (idx == sDebugMenu_ListTemplate_Battle_1.totalItems - 1)
+
+            // El salvaje entra directo. El de entrenador pasa antes por elegir a
+            // quien, que es justo para lo que sirve: ver su grafico y su animacion
+            // de entrada.
+            if (idx == DEBUG_BATTLE_0_MENU_ITEM_ENTRENADOR)
             {
-                sDebugBattleData->submenu++;
+                sDebugBattleData->submenu = 1;
+                sDebugMenuListData->listId = LISTA_ENTRENADORES;
+                Debug_RefreshListMenu(taskId);
                 Debug_DestroyMenu(taskId);
-                Debug_ShowMenu(DebugTask_HandleMenuInput_Battle, sDebugMenu_ListTemplate_Battle_2);
+                Debug_ShowMenu(DebugTask_HandleMenuInput_Battle, gMultiuseListMenuTemplate);
             }
             else
             {
-                sDebugBattleData->aiFlags[idx] = !sDebugBattleData->aiFlags[idx];
-                Debug_RedrawListMenu(taskId);
+                Debug_InitializeBattle(taskId);
             }
-
+            break;
+        case 1: // Contra que entrenador
+            // El indice salta TRAINER_NONE, que no es un entrenador sino el hueco de
+            // relleno de la tabla.
+            sDebugBattleData->entrenador = idx + 1;
+            Debug_InitializeBattle(taskId);
             break;
         case 2: // Terrain
             sDebugBattleData->submenu++;
@@ -1630,14 +1643,9 @@ static void DebugTask_HandleMenuInput_Battle(u8 taskId)
             Debug_DestroyMenu(taskId);
             Debug_ReShowMainMenu();
             break;
-        case 2: // Skip AI Flag selection if wild battle
-            if (sDebugBattleData->battleType == DEBUG_BATTLE_0_MENU_ITEM_WILD
-             || sDebugBattleData->battleType == DEBUG_BATTLE_0_MENU_ITEM_WILD_DOUBLE)
-            {
-                sDebugBattleData->submenu = 0;
-            }
-            else
-                sDebugBattleData->submenu--;
+        case 1: // Volver al tipo de combate
+            sDebugBattleData->submenu = 0;
+            sDebugMenuListData->listId = 1;
             DebugTask_HandleBattleMenuReDraw(taskId);
             break;
         default:
@@ -1650,49 +1658,44 @@ static void DebugTask_HandleMenuInput_Battle(u8 taskId)
 
 static void Debug_InitializeBattle(u8 taskId)
 {
+    bool32 esEntrenador = (sDebugBattleData->battleType == DEBUG_BATTLE_0_MENU_ITEM_ENTRENADOR);
     u32 i;
-    FijaTipoCombate(COMBATE_SALVAJE);
 
-    // Set main battle flags
-    switch (sDebugBattleData->battleType)
-    {
-    case DEBUG_BATTLE_0_MENU_ITEM_WILD:
-        break;
-    case DEBUG_BATTLE_0_MENU_ITEM_SINGLE:
-    case DEBUG_BATTLE_0_MENU_ITEM_DOUBLE:
-    case DEBUG_BATTLE_0_MENU_ITEM_MULTI:
-        FijaTipoCombate(COMBATE_ENTRENADOR);
-        break;
-    }
-
-    // Set terrain
+    FijaTipoCombate(esEntrenador ? COMBATE_ENTRENADOR : COMBATE_SALVAJE);
     gBattleTerrain = sDebugBattleData->battleTerrain;
 
-    // Populate enemy party
+    // El rival es un clon del equipo propio, pero no la misma cantidad.
+    //
+    // En salvaje UNO SOLO, el primero. No es un capricho: WhichBattleCoords devuelve
+    // individual cuando el bando rival tiene un unico Pokemon, asi que copiando el
+    // equipo entero salia un salvaje doble, que en el juego no existe.
+    //
+    // Contra entrenador va el equipo completo, que es lo que hace falta para ver un
+    // doble de verdad.
     for (i = 0; i < PARTY_SIZE; i++)
     {
         ZeroMonData(&gEnemyParty[i]);
+
+        if (!esEntrenador && i > 0)
+            continue;
+
         if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES))
             gEnemyParty[i] = gPlayerParty[i];
     }
 
-    // Set AI flags
     for (i = 0; i < ARRAY_COUNT(sDebugBattleData->aiFlags); i++)
     {
         if (sDebugBattleData->aiFlags[i])
             gDebugAIFlags |= (1 << i);
     }
 
-    // Un entrenador de relleno para las pruebas: sin uno asignado, el combate saca
-    // el sprite y la animacion de entrada de quien hubiera quedado en la variable, y
-    // salen cosas raras. Cynthia vale de comodin.
-    if (sDebugBattleData->battleType != DEBUG_BATTLE_0_MENU_ITEM_WILD
-     && sDebugBattleData->battleType != DEBUG_BATTLE_0_MENU_ITEM_WILD_DOUBLE)
-        gTrainerBattleOpponent = TRAINER_CYNTHIA;
+    // En salvaje, NINGUNO. Con un entrenador puesto el combate saca su grafico y su
+    // animacion de entrada, y en un salvaje eso no pinta nada: antes se dejaba a
+    // Cynthia de comodin para los dos casos.
+    gTrainerBattleOpponent = esEntrenador ? sDebugBattleData->entrenador : TRAINER_NONE;
 
     gIsDebugBattle = TRUE;
     BattleSetup_StartTrainerBattle_Debug();
-
 
     Debug_DestroyMenu_Full(taskId);
 }

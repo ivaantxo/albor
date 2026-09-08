@@ -12,6 +12,7 @@
 #include "field_control_avatar.h"
 #include "field_message_box.h"
 #include "field_player_avatar.h"
+#include "interfaz_movimiento.h"
 #include "pokemon_salvajes_ow.h"
 #include "field_poison.h"
 #include "field_screen_effect.h"
@@ -221,8 +222,13 @@ bool32 ProcessPlayerFieldInput(struct FieldInput *input)
         ShowStartMenu();
         return TRUE;
     }
-    if (input->pressedSelectButton && UseRegisteredKeyItemOnField() == TRUE)
+    // SELECT abre el selector de movimiento: andar, correr o bici. Antes usaba el
+    // objeto registrado, que en albor no existe.
+    if (input->pressedSelectButton)
+    {
+        AbreSelectorMovimiento();
         return TRUE;
+    }
 
     if(input->input_field_1_2 && DEBUG_OVERWORLD_MENU && !DEBUG_OVERWORLD_IN_MENU)
     {
@@ -600,7 +606,7 @@ static bool8 TryArrowWarp(struct MapPosition *position, u16 metatileBehavior, u8
     else if (IsDirectionalStairWarpMetatileBehavior(metatileBehavior, direction) == TRUE)
     {
         delay = 0;
-        if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_BIKE)
+        if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_BICI)
         {
             SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_ON_FOOT);
             delay = 12;

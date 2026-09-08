@@ -241,8 +241,7 @@ struct ObjectEventGraphicsInfo
 
 enum {
     PLAYER_AVATAR_STATE_NORMAL,
-    PLAYER_AVATAR_STATE_MACH_BIKE,
-    PLAYER_AVATAR_STATE_ACRO_BIKE,
+    PLAYER_AVATAR_STATE_BICI,
     PLAYER_AVATAR_STATE_SURFING,
     PLAYER_AVATAR_STATE_UNDERWATER,
     PLAYER_AVATAR_STATE_FIELD_MOVE,
@@ -252,29 +251,16 @@ enum {
 };
 
 #define PLAYER_AVATAR_FLAG_ON_FOOT      (1 << 0)
-#define PLAYER_AVATAR_FLAG_MACH_BIKE    (1 << 1)
-#define PLAYER_AVATAR_FLAG_ACRO_BIKE    (1 << 2)
+#define PLAYER_AVATAR_FLAG_BICI         (1 << 1)
 #define PLAYER_AVATAR_FLAG_SURFING      (1 << 3)
 #define PLAYER_AVATAR_FLAG_UNDERWATER   (1 << 4)
 #define PLAYER_AVATAR_FLAG_CONTROLLABLE (1 << 5)
 #define PLAYER_AVATAR_FLAG_FORCED_MOVE  (1 << 6)
 #define PLAYER_AVATAR_FLAG_DASH         (1 << 7)
 
-#define PLAYER_AVATAR_FLAG_BIKE        (PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE)
 // Player avatar flags for which follower Pokémon are hidden
 #define FOLLOWER_INVISIBLE_FLAGS       (PLAYER_AVATAR_FLAG_SURFING | PLAYER_AVATAR_FLAG_UNDERWATER | \
-                                        PLAYER_AVATAR_FLAG_BIKE | PLAYER_AVATAR_FLAG_FORCED_MOVE)
-
-enum
-{
-    ACRO_BIKE_NORMAL,
-    ACRO_BIKE_TURNING,
-    ACRO_BIKE_WHEELIE_STANDING,
-    ACRO_BIKE_BUNNY_HOP,
-    ACRO_BIKE_WHEELIE_MOVING,
-    ACRO_BIKE_STATE5,
-    ACRO_BIKE_STATE6,
-};
+                                        PLAYER_AVATAR_FLAG_BICI | PLAYER_AVATAR_FLAG_FORCED_MOVE)
 
 enum
 {
@@ -287,11 +273,6 @@ enum
     COLLISION_LEDGE_JUMP,
     COLLISION_PUSHED_BOULDER,
     COLLISION_ROTATING_GATE,
-    COLLISION_WHEELIE_HOP,
-    COLLISION_ISOLATED_VERTICAL_RAIL,
-    COLLISION_ISOLATED_HORIZONTAL_RAIL,
-    COLLISION_VERTICAL_RAIL,
-    COLLISION_HORIZONTAL_RAIL,
     COLLISION_STAIR_WARP,
     COLLISION_SIDEWAYS_STAIRS_TO_RIGHT,
     COLLISION_SIDEWAYS_STAIRS_TO_LEFT
@@ -323,16 +304,10 @@ struct PlayerAvatar
     /*0x05*/ u32 objectEventId;
     /*0x06*/ bool8 preventStep;
     /*0x07*/ u8 gender;
-    /*0x08*/ u8 acroBikeState; // 00 is normal, 01 is turning, 02 is standing wheelie, 03 is hopping wheelie
     /*0x09*/ u8 newDirBackup; // during bike movement, the new direction as opposed to player's direction is backed up here.
-    /*0x0A*/ u8 bikeFrameCounter; // on the mach bike, when this value is 1, the bike is moving but not accelerating yet for 1 tile. on the acro bike, this acts as a timer for acro bike.
+    // Si la bici esta rodando o parada, no a que velocidad va: eso lo decide el boton B
+    // en cada paso.
     /*0x0B*/ u8 bikeSpeed;
-    // acro bike only
-    /*0x0C*/ u32 directionHistory; // up/down/left/right history is stored in each nybble, but using the field directions and not the io inputs.
-    /*0x10*/ u32 abStartSelectHistory; // same as above but for A + B + start + select only
-    // these two are timer history arrays which [0] is the active timer for acro bike. every element is backed up to the next element upon update.
-    /*0x14*/ u8 dirTimerHistory[8];
-    /*0x1C*/ u8 abStartSelectTimerHistory[8];
 };
 
 struct Camera

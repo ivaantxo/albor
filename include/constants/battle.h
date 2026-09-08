@@ -77,6 +77,23 @@ enum ModosCombate
     NUMERO_MODOS
 };
 
+// Donde apoya los pies el entrenador del jugador, en pixeles de pantalla. Medido
+// sobre el fondo: es la fila 14 del mapa de casillas.
+#define SUELO_ENTRENADOR_JUGADOR 112
+
+// Cuanto tarda el entrenador del jugador en entrar hasta su sitio, en fotogramas.
+#define ENTRADA_ENTRENADOR_RECORRIDO 50
+
+// Y cuanto, desde que arranca el gesto, hasta que de verdad suelta la bola: lo que
+// dura la pose de quieto dentro de la animacion de lanzamiento. La usa tambien
+// sAnimCmd_TresPoses, para que el Pokemon salga EXACTAMENTE cuando el brazo se mueve
+// y no haya dos numeros que ajustar por separado.
+//
+// Los dos juntos son la espera del envio. Antes eran 31 sueltos, escritos cuando la
+// animacion corria A LA VEZ que el camino; ahora corre despues, asi que el Pokemon
+// salia mucho antes de que el entrenador moviera el brazo.
+#define ENTRADA_ENTRENADOR_SUELTA 19
+
 enum TiposCombate
 {
     COMBATE_SALVAJE,

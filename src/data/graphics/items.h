@@ -1532,14 +1532,8 @@ const u16 gItemIconPalette_ReinsOfUnity[] = INCBIN_U16("graphics/items/icon_pale
 
 // Misc. Key Items
 
-const u32 gItemIcon_Bicycle[] = INCBIN_U32("graphics/items/icons/bicycle.4bpp.lz");
-const u16 gItemIconPalette_Bicycle[] = INCBIN_U16("graphics/items/icon_palettes/bicycle.gbapal");
 
-const u32 gItemIcon_MachBike[] = INCBIN_U32("graphics/items/icons/mach_bike.4bpp.lz");
-const u16 gItemIconPalette_MachBike[] = INCBIN_U16("graphics/items/icon_palettes/mach_bike.gbapal");
 
-const u32 gItemIcon_AcroBike[] = INCBIN_U32("graphics/items/icons/acro_bike.4bpp.lz");
-const u16 gItemIconPalette_AcroBike[] = INCBIN_U16("graphics/items/icon_palettes/acro_bike.gbapal");
 
 const u32 gItemIcon_OldRod[] = INCBIN_U32("graphics/items/icons/old_rod.4bpp.lz");
 const u16 gItemIconPalette_OldRod[] = INCBIN_U16("graphics/items/icon_palettes/old_rod.gbapal");

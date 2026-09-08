@@ -226,7 +226,6 @@ void DoWhiteOut(void)
 void Overworld_ResetStateAfterFly(void)
 {
     ResetInitialPlayerAvatarState();
-    FlagClear(FLAG_SYS_CYCLING_ROAD);
     FlagClear(FLAG_SYS_CRUISE_MODE);
     FlagClear(FLAG_SYS_USE_STRENGTH);
     FlagClear(FLAG_SYS_USE_FLASH);
@@ -235,7 +234,6 @@ void Overworld_ResetStateAfterFly(void)
 void Overworld_ResetStateAfterTeleport(void)
 {
     ResetInitialPlayerAvatarState();
-    FlagClear(FLAG_SYS_CYCLING_ROAD);
     FlagClear(FLAG_SYS_CRUISE_MODE);
     FlagClear(FLAG_SYS_USE_STRENGTH);
     FlagClear(FLAG_SYS_USE_FLASH);
@@ -245,7 +243,6 @@ void Overworld_ResetStateAfterTeleport(void)
 void Overworld_ResetStateAfterDigEscRope(void)
 {
     ResetInitialPlayerAvatarState();
-    FlagClear(FLAG_SYS_CYCLING_ROAD);
     FlagClear(FLAG_SYS_CRUISE_MODE);
     FlagClear(FLAG_SYS_USE_STRENGTH);
     FlagClear(FLAG_SYS_USE_FLASH);
@@ -254,7 +251,6 @@ void Overworld_ResetStateAfterDigEscRope(void)
 static void Overworld_ResetStateAfterWhiteOut(void)
 {
     ResetInitialPlayerAvatarState();
-    FlagClear(FLAG_SYS_CYCLING_ROAD);
     FlagClear(FLAG_SYS_CRUISE_MODE);
     FlagClear(FLAG_SYS_USE_STRENGTH);
     FlagClear(FLAG_SYS_USE_FLASH);
@@ -674,10 +670,8 @@ void StoreInitialPlayerAvatarState(void)
 {
     sInitialPlayerAvatarState.direction = GetPlayerFacingDirection();
 
-    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_MACH_BIKE))
-        sInitialPlayerAvatarState.transitionFlags = PLAYER_AVATAR_FLAG_MACH_BIKE;
-    else if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_ACRO_BIKE))
-        sInitialPlayerAvatarState.transitionFlags = PLAYER_AVATAR_FLAG_ACRO_BIKE;
+    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_BICI))
+        sInitialPlayerAvatarState.transitionFlags = PLAYER_AVATAR_FLAG_BICI;
     else if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING))
         sInitialPlayerAvatarState.transitionFlags = PLAYER_AVATAR_FLAG_SURFING;
     else if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_UNDERWATER))
@@ -708,12 +702,10 @@ static u8 GetAdjustedInitialTransitionFlags(struct InitialPlayerAvatarState *pla
         return PLAYER_AVATAR_FLAG_SURFING;
     else if (Overworld_IsBikingAllowed() != TRUE)
         return PLAYER_AVATAR_FLAG_ON_FOOT;
-    else if (playerStruct->transitionFlags == PLAYER_AVATAR_FLAG_MACH_BIKE)
-        return PLAYER_AVATAR_FLAG_MACH_BIKE;
-    else if (playerStruct->transitionFlags != PLAYER_AVATAR_FLAG_ACRO_BIKE)
-        return PLAYER_AVATAR_FLAG_ON_FOOT;
+    else if (playerStruct->transitionFlags == PLAYER_AVATAR_FLAG_BICI)
+        return PLAYER_AVATAR_FLAG_BICI;
     else
-        return PLAYER_AVATAR_FLAG_ACRO_BIKE;
+        return PLAYER_AVATAR_FLAG_ON_FOOT;
 }
 
 static u8 GetAdjustedInitialDirection(struct InitialPlayerAvatarState *playerStruct, u8 transitionFlags, u16 metatileBehavior, u8 mapType)
@@ -860,7 +852,7 @@ static void TransitionMapMusic(void)
         }
         if (newMusic != currentMusic)
         {
-            if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE))
+            if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_BICI))
                 FadeOutAndFadeInNewMapMusic(newMusic, VELOCIDAD_ACELERADA_MUSICA, VELOCIDAD_ACELERADA_MUSICA);
             else
                 FadeOutAndPlayNewMapMusic(newMusic, VELOCIDAD_LENTA_MUSICA);

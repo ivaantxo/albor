@@ -435,6 +435,20 @@ static void StatsChangeAnimation_Step2(u8 taskId)
     }
 
     GetBattleAnimBg1Data(&animBgData);
+
+#if DEPURACION_MGBA
+    // Donde se ESCRIBEN los tiles contra donde los LEE el fondo. Si no coinciden, el
+    // fondo ensena lo que hubiera en su sitio, que es de donde sale la basura.
+    {
+        u32 base = GetGpuReg(REG_OFFSET_BG1CNT);
+
+        LOG("ESTADISTICAS base/desplazamiento", (base >> 2) & 3, animBgData.tilesOffset);
+        LOG("   escribe en / lee desde",
+            0x06000000 + ((base >> 2) & 3) * 0x4000 + animBgData.tilesOffset * 32,
+            0x06000000 + ((base >> 2) & 3) * 0x4000);
+    }
+#endif
+
     if (!sAnimStatsChangeData->aDecrease)
         AnimLoadCompressedBgTilemap(animBgData.bgId, gStatAnim_Increase_Tilemap);
     else

@@ -1,0 +1,33 @@
+{
+  "settings": {
+    "idle_cycles": 4,
+    "frame_ms": 140
+  },
+  "species": {
+    "MAGNETON": {
+      "default": {
+        "front": {"indices": [0, 20, 7, 210, 223]}
+      },
+      "notes": ["Front revisado visualmente: cinco poses distintas. Los slots 3 y 4 varían ojos e imanes; la fuente no ofrece un gesto especial independiente inequívoco."]
+    },
+    "NINJASK": {
+      "default": {
+        "front": {"indices": [12, 1, 24, 84, 86]},
+        "back": {"indices": [12, 1, 24]}
+      },
+      "notes": ["Selección revisada visualmente: el loop conserva el vaivén vertical completo además del aleteo; los especiales front pliegan las patas."]
+    },
+    "SABLEYE": {
+      "default": {
+        "front": {"indices": [0, 8, 5, 38, 44]}
+      },
+      "notes": ["Front revisado visualmente: las dos inclinaciones de cabeza del especial estaban separadas por una vuelta breve a la base."]
+    },
+    "TRAPINCH": {
+      "default": {
+        "front": {"indices": [1, 0, 2, 2, 6]}
+      },
+      "notes": ["La fuente front solo contiene cuatro poses distintas: los slots 2 y 3 reutilizan APNG 2. Se conservan cinco frames de salida; el parpadeo APNG 6 queda reservado al final del especial."]
+    }
+  }
+}

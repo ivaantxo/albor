@@ -8,6 +8,7 @@
 #include "field_effect_helpers.h"
 #include "field_screen_effect.h"
 #include "field_player_avatar.h"
+#include "montura_surf.h"
 #include "fieldmap.h"
 #include "menu.h"
 #include "metatile_behavior.h"
@@ -31,7 +32,7 @@
 #include "constants/trainer_types.h"
 
 #define NUM_FORCED_MOVEMENTS 18
-#define NUM_ACRO_BIKE_COLLISIONS 5
+#define NUM_BARRERAS_DE_ACRO 5
 
 static EWRAM_DATA u8 sSpinStartFacingDir = 0;
 EWRAM_DATA struct ObjectEvent gObjectEvents[OBJECT_EVENTS_COUNT] = {};
@@ -76,13 +77,12 @@ static u8 CheckForObjectEventStaticCollision(struct ObjectEvent *, s16, s16, u8,
 static bool8 CanStopSurfing(s16, s16, u8);
 static bool8 ShouldJumpLedge(s16, s16, u8);
 static bool8 TryPushBoulder(s16, s16, u8);
-static void CheckAcroBikeCollision(s16, s16, u8, u8 *);
+static void ComprobaBarreraDeAcro(u8, u8 *);
 
 static void DoPlayerAvatarTransition(void);
 static void PlayerAvatarTransition_Dummy(struct ObjectEvent *);
 static void PlayerAvatarTransition_Normal(struct ObjectEvent *);
-static void PlayerAvatarTransition_MachBike(struct ObjectEvent *);
-static void PlayerAvatarTransition_AcroBike(struct ObjectEvent *);
+static void PlayerAvatarTransition_Bici(struct ObjectEvent *);
 static void PlayerAvatarTransition_Surfing(struct ObjectEvent *);
 static void PlayerAvatarTransition_Underwater(struct ObjectEvent *);
 static void PlayerAvatarTransition_ReturnToField(struct ObjectEvent *);
@@ -212,7 +212,7 @@ static void (*const sPlayerNotOnBikeFuncs[])(u8, u16) =
     [MOVING]         = PlayerNotOnBikeMoving,
 };
 
-static bool8 (*const sAcroBikeTrickMetatiles[NUM_ACRO_BIKE_COLLISIONS])(u8) =
+static bool8 (*const sBarrerasDeAcro[NUM_BARRERAS_DE_ACRO])(u8) =
 {
     MetatileBehavior_IsBumpySlope,
     MetatileBehavior_IsIsolatedVerticalRail,
@@ -221,19 +221,10 @@ static bool8 (*const sAcroBikeTrickMetatiles[NUM_ACRO_BIKE_COLLISIONS])(u8) =
     MetatileBehavior_IsHorizontalRail,
 };
 
-static const u8 sAcroBikeTrickCollisionTypes[NUM_ACRO_BIKE_COLLISIONS] = {
-    COLLISION_WHEELIE_HOP,
-    COLLISION_ISOLATED_VERTICAL_RAIL,
-    COLLISION_ISOLATED_HORIZONTAL_RAIL,
-    COLLISION_VERTICAL_RAIL,
-    COLLISION_HORIZONTAL_RAIL,
-};
-
 static void (*const sPlayerAvatarTransitionFuncs[])(struct ObjectEvent *) =
 {
     [PLAYER_AVATAR_STATE_NORMAL]     = PlayerAvatarTransition_Normal,
-    [PLAYER_AVATAR_STATE_MACH_BIKE]  = PlayerAvatarTransition_MachBike,
-    [PLAYER_AVATAR_STATE_ACRO_BIKE]  = PlayerAvatarTransition_AcroBike,
+    [PLAYER_AVATAR_STATE_BICI]  = PlayerAvatarTransition_Bici,
     [PLAYER_AVATAR_STATE_SURFING]    = PlayerAvatarTransition_Surfing,
     [PLAYER_AVATAR_STATE_UNDERWATER] = PlayerAvatarTransition_Underwater,
     [PLAYER_AVATAR_STATE_FIELD_MOVE] = PlayerAvatarTransition_ReturnToField,
@@ -252,8 +243,7 @@ static bool8 (*const sArrowWarpMetatileBehaviorChecks[])(u8) =
 static const u8 sRivalAvatarGfxIds[][2] =
 {
     [PLAYER_AVATAR_STATE_NORMAL]     = {OBJ_EVENT_GFX_RIVAL_BRENDAN_NORMAL,     OBJ_EVENT_GFX_RIVAL_MAY_NORMAL},
-    [PLAYER_AVATAR_STATE_MACH_BIKE]  = {OBJ_EVENT_GFX_RIVAL_BRENDAN_MACH_BIKE,  OBJ_EVENT_GFX_RIVAL_MAY_MACH_BIKE},
-    [PLAYER_AVATAR_STATE_ACRO_BIKE]  = {OBJ_EVENT_GFX_RIVAL_BRENDAN_ACRO_BIKE,  OBJ_EVENT_GFX_RIVAL_MAY_ACRO_BIKE},
+    [PLAYER_AVATAR_STATE_BICI]  = {OBJ_EVENT_GFX_RIVAL_BRENDAN_BICI,  OBJ_EVENT_GFX_RIVAL_MAY_BICI},
     [PLAYER_AVATAR_STATE_SURFING]    = {OBJ_EVENT_GFX_RIVAL_BRENDAN_SURFING,    OBJ_EVENT_GFX_RIVAL_MAY_SURFING},
     [PLAYER_AVATAR_STATE_UNDERWATER] = {OBJ_EVENT_GFX_BRENDAN_UNDERWATER,       OBJ_EVENT_GFX_MAY_UNDERWATER},
     [PLAYER_AVATAR_STATE_FIELD_MOVE] = {OBJ_EVENT_GFX_RIVAL_BRENDAN_FIELD_MOVE, OBJ_EVENT_GFX_RIVAL_MAY_FIELD_MOVE},
@@ -265,8 +255,7 @@ static const u8 sRivalAvatarGfxIds[][2] =
 static const u8 sPlayerAvatarGfxIds[][2] =
 {
     [PLAYER_AVATAR_STATE_NORMAL]     = {OBJ_EVENT_GFX_BRENDAN_NORMAL,     OBJ_EVENT_GFX_MAY_NORMAL},
-    [PLAYER_AVATAR_STATE_MACH_BIKE]  = {OBJ_EVENT_GFX_BRENDAN_MACH_BIKE,  OBJ_EVENT_GFX_MAY_MACH_BIKE},
-    [PLAYER_AVATAR_STATE_ACRO_BIKE]  = {OBJ_EVENT_GFX_BRENDAN_ACRO_BIKE,  OBJ_EVENT_GFX_MAY_ACRO_BIKE},
+    [PLAYER_AVATAR_STATE_BICI]  = {OBJ_EVENT_GFX_BRENDAN_BICI,  OBJ_EVENT_GFX_MAY_BICI},
     [PLAYER_AVATAR_STATE_SURFING]    = {OBJ_EVENT_GFX_BRENDAN_SURFING,    OBJ_EVENT_GFX_MAY_SURFING},
     [PLAYER_AVATAR_STATE_UNDERWATER] = {OBJ_EVENT_GFX_BRENDAN_UNDERWATER, OBJ_EVENT_GFX_MAY_UNDERWATER},
     [PLAYER_AVATAR_STATE_FIELD_MOVE] = {OBJ_EVENT_GFX_BRENDAN_FIELD_MOVE, OBJ_EVENT_GFX_MAY_FIELD_MOVE},
@@ -287,21 +276,19 @@ static const u8 sRSAvatarGfxIds[GENDER_COUNT] =
     [FEMALE] = OBJ_EVENT_GFX_LINK_RS_MAY
 };
 
-static const u8 sPlayerAvatarGfxToStateFlag[GENDER_COUNT][5][2] =
+static const u8 sPlayerAvatarGfxToStateFlag[GENDER_COUNT][4][2] =
 {
     [MALE] =
     {
         {OBJ_EVENT_GFX_BRENDAN_NORMAL,     PLAYER_AVATAR_FLAG_ON_FOOT},
-        {OBJ_EVENT_GFX_BRENDAN_MACH_BIKE,  PLAYER_AVATAR_FLAG_MACH_BIKE},
-        {OBJ_EVENT_GFX_BRENDAN_ACRO_BIKE,  PLAYER_AVATAR_FLAG_ACRO_BIKE},
+        {OBJ_EVENT_GFX_BRENDAN_BICI,  PLAYER_AVATAR_FLAG_BICI},
         {OBJ_EVENT_GFX_BRENDAN_SURFING,    PLAYER_AVATAR_FLAG_SURFING},
         {OBJ_EVENT_GFX_BRENDAN_UNDERWATER, PLAYER_AVATAR_FLAG_UNDERWATER},
     },
     [FEMALE] =
     {
         {OBJ_EVENT_GFX_MAY_NORMAL,         PLAYER_AVATAR_FLAG_ON_FOOT},
-        {OBJ_EVENT_GFX_MAY_MACH_BIKE,      PLAYER_AVATAR_FLAG_MACH_BIKE},
-        {OBJ_EVENT_GFX_MAY_ACRO_BIKE,      PLAYER_AVATAR_FLAG_ACRO_BIKE},
+        {OBJ_EVENT_GFX_MAY_BICI,      PLAYER_AVATAR_FLAG_BICI},
         {OBJ_EVENT_GFX_MAY_SURFING,        PLAYER_AVATAR_FLAG_SURFING},
         {OBJ_EVENT_GFX_MAY_UNDERWATER,     PLAYER_AVATAR_FLAG_UNDERWATER},
     }
@@ -350,9 +337,9 @@ void PlayerStep(u8 direction, u16 newKeys, u16 heldKeys)
     struct ObjectEvent *playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
 
     HideShowWarpArrow(playerObjEvent);
+
     if (gPlayerAvatar.preventStep == FALSE)
     {
-        Bike_TryAcroBikeHistoryUpdate(newKeys, heldKeys);
         if (TryInterruptObjectEventSpecialAnim(playerObjEvent, direction) == 0)
         {
             npc_clear_strange_bits(playerObjEvent);
@@ -408,8 +395,8 @@ static void npc_clear_strange_bits(struct ObjectEvent *objEvent)
 
 static void MovePlayerAvatarUsingKeypadInput(u8 direction, u16 newKeys, u16 heldKeys)
 {
-    if (gPlayerAvatar.flags & (PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE))
-        MovePlayerOnBike(direction, newKeys, heldKeys);
+    if (gPlayerAvatar.flags & (PLAYER_AVATAR_FLAG_BICI))
+        MovePlayerOnBike(direction);
     else
         MovePlayerNotOnBike(direction, heldKeys);
 }
@@ -601,7 +588,7 @@ static bool8 ForcedMovement_MuddySlope(void)
 
     if (playerObjEvent->movementDirection != DIR_NORTH || GetPlayerSpeed() < PLAYER_SPEED_FASTEST)
     {
-        Bike_UpdateBikeCounterSpeed(0);
+        BikeClearState();
         playerObjEvent->facingDirectionLocked = TRUE;
         return DoForcedMovement(DIR_SOUTH, PlayerWalkFast);
     }
@@ -672,7 +659,12 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
         return;
     }
 
-    if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER) && (heldKeys & B_BUTTON) && FlagGet(FLAG_SYS_B_DASH)
+    // Correr o andar. Con el modo de carrera puesto se corre sin pulsar nada, y B pasa
+    // a hacer lo contrario: mantenerla hace andar. Asi el boton sigue sirviendo para
+    // lo mismo -cambiar de paso sobre la marcha- en los dos modos.
+    bool32 quiereCorrer = gSaveBlockPtr->correSiempre ^ ((heldKeys & B_BUTTON) != 0);
+
+    if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER) && quiereCorrer && FlagGet(FLAG_SYS_B_DASH)
      && IsRunningDisallowed(gObjectEvents[gPlayerAvatar.objectEventId].currentMetatileBehavior) == 0)
     {
         if (ObjectMovingOnRockStairs(&gObjectEvents[gPlayerAvatar.objectEventId], direction))
@@ -736,7 +728,7 @@ u8 CheckForObjectEventCollision(struct ObjectEvent *objectEvent, s16 x, s16 y, u
     {
         if (CheckForRotatingGatePuzzleCollision(direction, x, y))
             return COLLISION_ROTATING_GATE;
-        CheckAcroBikeCollision(x, y, metatileBehavior, &collision);
+        ComprobaBarreraDeAcro(metatileBehavior, &collision);
     }
 
     return collision;
@@ -750,7 +742,7 @@ static u8 CheckForObjectEventStaticCollision(struct ObjectEvent *objectEvent, s1
     {
         if (CheckForRotatingGatePuzzleCollisionWithoutAnimation(direction, x, y))
             return COLLISION_ROTATING_GATE;
-        CheckAcroBikeCollision(x, y, metatileBehavior, &collision);
+        ComprobaBarreraDeAcro(metatileBehavior, &collision);
     }
     return collision;
 }
@@ -800,15 +792,15 @@ static bool8 TryPushBoulder(s16 x, s16 y, u8 direction)
     return FALSE;
 }
 
-static void CheckAcroBikeCollision(s16 x, s16 y, u8 metatileBehavior, u8 *collision)
+// Pendientes irregulares y railes: se cruzaban solo con la bici acro, que ya no
+// existe, asi que son pared como cualquier otro sitio donde no se puede pisar.
+static void ComprobaBarreraDeAcro(u8 metatileBehavior, u8 *collision)
 {
-    u32 i;
-
-    for (i = 0; i < NUM_ACRO_BIKE_COLLISIONS; i++)
+    for (u32 i = 0; i < NUM_BARRERAS_DE_ACRO; i++)
     {
-        if (sAcroBikeTrickMetatiles[i](metatileBehavior))
+        if (sBarrerasDeAcro[i](metatileBehavior))
         {
-            *collision = sAcroBikeTrickCollisionTypes[i];
+            *collision = COLLISION_IMPASSABLE;
             return;
         }
     }
@@ -858,30 +850,22 @@ static void PlayerAvatarTransition_Normal(struct ObjectEvent *objEvent)
     SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_ON_FOOT);
 }
 
-static void PlayerAvatarTransition_MachBike(struct ObjectEvent *objEvent)
+static void PlayerAvatarTransition_Bici(struct ObjectEvent *objEvent)
 {
-    ObjectEventSetGraphicsId(objEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_MACH_BIKE));
+    ObjectEventSetGraphicsId(objEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_BICI));
     ObjectEventTurn(objEvent, objEvent->movementDirection);
-    SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_MACH_BIKE);
-    BikeClearState(0, 0);
-}
-
-static void PlayerAvatarTransition_AcroBike(struct ObjectEvent *objEvent)
-{
-    ObjectEventSetGraphicsId(objEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_ACRO_BIKE));
-    ObjectEventTurn(objEvent, objEvent->movementDirection);
-    SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_ACRO_BIKE);
-    BikeClearState(0, 0);
-    Bike_HandleBumpySlopeJump();
+    SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_BICI);
+    BikeClearState();
 }
 
 static void PlayerAvatarTransition_Surfing(struct ObjectEvent *objEvent)
 {
-    // Surfeando solo se ve al jugador: el sprite que iba debajo era una mancha
-    // generica, y su sustituto sera un follower del Pokemon que sepa Surf.
     ObjectEventSetGraphicsId(objEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_SURFING));
     ObjectEventTurn(objEvent, objEvent->movementDirection);
     SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_SURFING);
+
+    // Y debajo, el Pokemon que lleva. Donde iba la mancha generica de vanilla.
+    CreaMonturaSurf();
 }
 
 static void PlayerAvatarTransition_Underwater(struct ObjectEvent *objEvent)
@@ -921,9 +905,7 @@ static bool8 PlayerAnimIsMultiFrameStationary(void)
 
     if (movementActionId <= MOVEMENT_ACTION_FACE_RIGHT
      || (movementActionId >= MOVEMENT_ACTION_DELAY_1 && movementActionId <= MOVEMENT_ACTION_DELAY_16)
-     || (movementActionId >= MOVEMENT_ACTION_WALK_IN_PLACE_SLOW_DOWN && movementActionId <= MOVEMENT_ACTION_WALK_IN_PLACE_FASTER_RIGHT)
-     || (movementActionId >= MOVEMENT_ACTION_ACRO_WHEELIE_FACE_DOWN && movementActionId <= MOVEMENT_ACTION_ACRO_END_WHEELIE_FACE_RIGHT)
-     || (movementActionId >= MOVEMENT_ACTION_ACRO_WHEELIE_IN_PLACE_DOWN && movementActionId <= MOVEMENT_ACTION_ACRO_WHEELIE_IN_PLACE_RIGHT))
+     || (movementActionId >= MOVEMENT_ACTION_WALK_IN_PLACE_SLOW_DOWN && movementActionId <= MOVEMENT_ACTION_WALK_IN_PLACE_FASTER_RIGHT))
         return TRUE;
     else
         return FALSE;
@@ -1045,81 +1027,11 @@ void PlayerJumpLedge(u8 direction)
     PlayerSetAnimId(GetJump2MovementAction(direction), COPY_MOVE_JUMP2);
 }
 
-// Stop player on current facing direction once they're done moving and if they're not currently Acro Biking on bumpy slope
+// Deja al jugador quieto encarando a donde mira, en cuanto termine el paso que lleve.
 void PlayerFreeze(void)
 {
     if (gPlayerAvatar.tileTransitionState == T_TILE_CENTER || gPlayerAvatar.tileTransitionState == T_NOT_MOVING)
-    {
-        if (IsPlayerNotUsingAcroBikeOnBumpySlope())
-            PlayerForceSetHeldMovement(GetFaceDirectionMovementAction(gObjectEvents[gPlayerAvatar.objectEventId].facingDirection));
-    }
-}
-
-// wheelie idle
-void PlayerIdleWheelie(u8 direction)
-{
-    PlayerSetAnimId(GetAcroWheelieFaceDirectionMovementAction(direction), COPY_MOVE_FACE);
-}
-
-// normal to wheelie
-void PlayerStartWheelie(u8 direction)
-{
-    PlayerSetAnimId(GetAcroPopWheelieFaceDirectionMovementAction(direction), COPY_MOVE_FACE);
-}
-
-// wheelie to normal
-void PlayerEndWheelie(u8 direction)
-{
-    PlayerSetAnimId(GetAcroEndWheelieFaceDirectionMovementAction(direction), COPY_MOVE_FACE);
-}
-
-// wheelie hopping standing
-void PlayerStandingHoppingWheelie(u8 direction)
-{
-    PlaySE(SE_BIKE_HOP);
-    PlayerSetAnimId(GetAcroWheelieHopFaceDirectionMovementAction(direction), COPY_MOVE_FACE);
-}
-
-// wheelie hopping moving
-void PlayerMovingHoppingWheelie(u8 direction)
-{
-    PlaySE(SE_BIKE_HOP);
-    PlayerSetAnimId(GetAcroWheelieHopDirectionMovementAction(direction), COPY_MOVE_WALK);
-}
-
-// wheelie hopping ledge
-void PlayerLedgeHoppingWheelie(u8 direction)
-{
-    PlaySE(SE_BIKE_HOP);
-    PlayerSetAnimId(GetAcroWheelieJumpDirectionMovementAction(direction), COPY_MOVE_JUMP2);
-}
-
-// acro turn jump
-void PlayerAcroTurnJump(u8 direction)
-{
-    PlaySE(SE_BIKE_HOP);
-    PlayerSetAnimId(GetJumpInPlaceTurnAroundMovementAction(direction), COPY_MOVE_FACE);
-}
-
-void PlayerWheelieInPlace(u8 direction)
-{
-    PlaySE(SE_WALL_HIT);
-    PlayerSetAnimId(GetAcroWheelieInPlaceDirectionMovementAction(direction), COPY_MOVE_WALK);
-}
-
-void PlayerPopWheelieWhileMoving(u8 direction)
-{
-    PlayerSetAnimId(GetAcroPopWheelieMoveDirectionMovementAction(direction), COPY_MOVE_WALK);
-}
-
-void PlayerWheelieMove(u8 direction)
-{
-    PlayerSetAnimId(GetAcroWheelieMoveDirectionMovementAction(direction), COPY_MOVE_WALK);
-}
-
-void PlayerEndWheelieWhileMoving(u8 direction)
-{
-    PlayerSetAnimId(GetAcroEndWheelieMoveDirectionMovementAction(direction), COPY_MOVE_WALK);
+        PlayerForceSetHeldMovement(GetFaceDirectionMovementAction(gObjectEvents[gPlayerAvatar.objectEventId].facingDirection));
 }
 
 static void PlayCollisionSoundIfNotFacingWarp(u8 direction)
@@ -1236,11 +1148,8 @@ void StopPlayerAvatar(void)
 
     npc_clear_strange_bits(playerObjEvent);
     SetObjectEventDirection(playerObjEvent, playerObjEvent->facingDirection);
-    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE))
-    {
-        Bike_HandleBumpySlopeJump();
-        Bike_UpdateBikeCounterSpeed(0);
-    }
+    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_BICI))
+        BikeClearState();
 }
 
 u16 GetRivalAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender)
@@ -1273,8 +1182,7 @@ u8 GetPlayerAvatarGenderByGraphicsId(u16 gfxId)
     switch (gfxId)
     {
     case OBJ_EVENT_GFX_MAY_NORMAL:
-    case OBJ_EVENT_GFX_MAY_MACH_BIKE:
-    case OBJ_EVENT_GFX_MAY_ACRO_BIKE:
+    case OBJ_EVENT_GFX_MAY_BICI:
     case OBJ_EVENT_GFX_MAY_SURFING:
     case OBJ_EVENT_GFX_MAY_FIELD_MOVE:
     case OBJ_EVENT_GFX_MAY_UNDERWATER:
@@ -1419,13 +1327,6 @@ static void SetPlayerAvatarFishing(u8 direction)
 {
     ObjectEventSetGraphicsId(&gObjectEvents[gPlayerAvatar.objectEventId], GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_FISHING));
     StartSpriteAnim(&gSprites[gPlayerAvatar.spriteId], GetFishingDirectionAnimNum(direction));
-}
-
-void PlayerUseAcroBikeOnBumpySlope(u8 direction)
-{
-    ObjectEventSetGraphicsId(&gObjectEvents[gPlayerAvatar.objectEventId], GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_ACRO_BIKE));
-    StartSpriteAnim(&gSprites[gPlayerAvatar.spriteId], GetAcroWheelieDirectionAnimNum(direction));
-    SeekSpriteAnim(&gSprites[gPlayerAvatar.spriteId], 1);
 }
 
 void SetPlayerAvatarWatering(u8 direction)

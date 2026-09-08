@@ -12,9 +12,9 @@
     [TRAINER_NONE] =
     {
 #line 71
-        .trainerClass = TRAINER_CLASS_HIKER,
+        .trainerClass = TRAINER_CLASS_CHAMPION,
 #line 72
-        .trainerPic = TRAINER_PIC_HIKER,
+        .trainerPic = TRAINER_PIC_CYNTHIA,
         .encounterMusic_gender = 
 #line 74
             TRAINER_ENCOUNTER_MUSIC_MALE,

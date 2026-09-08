@@ -50,7 +50,6 @@ bool8 AddBagItem(u16 itemId, u16 count);
 bool8 RemoveBagItem(u16 itemId, u16 count);
 u8 GetPocketByItemId(u16 itemId);
 void ClearItemSlots(struct ItemSlot *itemSlots, u8 itemCount);
-void SwapRegisteredBike(void);
 u16 BagGetItemIdByPocketPosition(u8 pocketId, u16 pocketPos);
 u16 BagGetQuantityByPocketPosition(u8 pocketId, u16 pocketPos);
 void CompactItemsInBagPocket(struct BagPocket *bagPocket);

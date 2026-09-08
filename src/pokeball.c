@@ -1059,8 +1059,17 @@ static void HandleBallAnimEnd(struct Sprite *sprite)
         AnimateSprite(&gSprites[gBattlerSpriteIds[sprite->sBattler]]);
         gSprites[gBattlerSpriteIds[sprite->sBattler]].data[1] = 0x1000;
     }
-
-    gSprites[gBattlerSpriteIds[battlerId]].invisible = FALSE;
+    else
+    {
+        // Aqui NO se enciende en el camino de la entrada deslizada. Este sitio es de
+        // la Pokeball que se abre: el Pokemon aparece donde va a quedarse y ya esta.
+        //
+        // En la entrada deslizada quien lo enciende es SpriteCB_PlayerMonSlideIn, y
+        // solo DESPUES de haberlo sacado por la izquierda de la pantalla. Encendiendolo
+        // aqui se veia un instante en su sitio final, desaparecia, y entonces entraba
+        // deslizandose: el mismo Pokemon dos veces.
+        gSprites[gBattlerSpriteIds[battlerId]].invisible = FALSE;
+    }
     if (sprite->animEnded)
         sprite->invisible = TRUE;
     if (gSprites[gBattlerSpriteIds[battlerId]].affineAnimEnded)
