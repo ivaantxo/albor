@@ -155,9 +155,14 @@ struct MapHeader
     u8 mapType;
     u16 nightMusic;
         // map_header_flags macro
-        bool8 allowCycling:1;
+        //
+        // Dos bits libres. Aqui decian si el mapa dejaba ir en bici y correr, y ya no
+        // lo decide el mapa: se puede siempre, dentro y fuera. Se conservan con nombre
+        // neutro en vez de borrarlos para tener sitio donde meter el siguiente
+        // interruptor por mapa sin tocar el formato ni la herramienta.
+        bool8 reservado1:1;
         bool8 allowEscaping:1;
-        bool8 allowRunning:1;
+        bool8 reservado2:1;
         bool8 showMapName:5;
 
     u8 battleScene;

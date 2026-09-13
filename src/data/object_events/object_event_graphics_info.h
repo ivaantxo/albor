@@ -3357,3 +3357,39 @@ const struct ObjectEventGraphicsInfo gPokeballGraphics[POKEBALL_COUNT] = {
     POKEBALL_GFX_INFO(BEAST),
     #endif
 };
+
+// Lucas. La misma hoja y la misma paleta para andar y para la bici: lo unico que
+// cambia es que tabla de animaciones se mira. Antes cada estado gastaba su hoja.
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_LucasAPie = {
+    .tileTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_LUCAS,
+    .size = 512,
+    .width = 32,
+    .height = 32,
+    .shadowSize = SHADOW_SIZE_M,
+    .inanimate = FALSE,
+    .compressed = FALSE,
+    .tracks = TRACKS_FOOT,
+    .oam = &gObjectEventBaseOam_32x32,
+    .subspriteTables = sOamTables_32x32,
+    .anims = sAnimTable_EntrenadorAPie,
+    .images = sPicTable_EntrenadorOw,
+    .affineAnims = gDummySpriteAffineAnimTable,
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_LucasEnBici = {
+    .tileTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_LUCAS,
+    .size = 512,
+    .width = 32,
+    .height = 32,
+    .shadowSize = SHADOW_SIZE_M,
+    .inanimate = FALSE,
+    .compressed = FALSE,
+    .tracks = TRACKS_BIKE_TIRE,
+    .oam = &gObjectEventBaseOam_32x32,
+    .subspriteTables = sOamTables_32x32,
+    .anims = sAnimTable_EntrenadorEnBici,
+    .images = sPicTable_EntrenadorOw,
+    .affineAnims = gDummySpriteAffineAnimTable,
+};

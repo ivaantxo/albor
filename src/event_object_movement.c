@@ -454,6 +454,7 @@ const u8 gInitialMovementTypeFacingDirections[] = {
 #include "data/field_effects/field_effect_object_template_pointers.h"
 #include "data/object_events/object_event_pic_tables.h"
 #include "data/object_events/object_event_anims.h"
+#include "data/object_events/ow_entrenador_anims.h"
 #include "data/object_events/base_oam.h"
 #include "data/object_events/object_event_subsprites.h"
 #include "data/object_events/object_event_graphics_info.h"
@@ -473,6 +474,7 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     [PAL_NPC_3] = {gObjectEventPal_Npc3, OBJ_EVENT_PAL_TAG_NPC_3},
     [PAL_NPC_4] = {gObjectEventPal_Npc4, OBJ_EVENT_PAL_TAG_NPC_4},
     {gObjectEventPal_Brendan, OBJ_EVENT_PAL_TAG_BRENDAN},
+    {gObjectEventPal_Lucas, OBJ_EVENT_PAL_TAG_LUCAS},
     {gObjectEventPal_PlayerUnderwater, OBJ_EVENT_PAL_TAG_PLAYER_UNDERWATER},
     {gObjectEventPal_Truck, OBJ_EVENT_PAL_TAG_TRUCK},
     {gObjectEventPal_May, OBJ_EVENT_PAL_TAG_MAY},

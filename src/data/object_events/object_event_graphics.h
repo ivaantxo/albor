@@ -1,3 +1,7 @@
+// Entrenadores con hoja unica de 33 frames. Ver include/constants/ow_entrenador.h.
+const u32 gObjectEventPic_LucasOw[] = INCBIN_U32("graphics/entrenadores/lucas/ow.4bpp");
+const u16 gObjectEventPal_Lucas[] = INCBIN_U16("graphics/entrenadores/lucas/paleta.gbapal");
+
 const u32 gObjectEventPic_BrendanNormalRunning[] = INCBIN_U32("graphics/object_events/pics/people/brendan/walking.4bpp", "graphics/object_events/pics/people/brendan/running.4bpp");
 const u16 gObjectEventPal_Brendan[] = INCBIN_U16("graphics/object_events/palettes/brendan.gbapal");
 const u32 gObjectEventPic_RubySapphireBrendanNormal[] = INCBIN_U32("graphics/object_events/pics/people/ruby_sapphire_brendan/walking.4bpp");

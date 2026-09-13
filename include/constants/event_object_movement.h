@@ -242,6 +242,22 @@
 #define ANIM_RUN_WEST  (ANIM_STD_COUNT + 2)
 #define ANIM_RUN_EAST  (ANIM_STD_COUNT + 3)
 
+// Lo que la hoja de entrenador anade sobre las estandar. Los indices por encima de
+// ANIM_STD_COUNT son de cada tabla, no globales: los mismos numeros significan otra
+// cosa en la tabla de la bici o en la de salir de la Pokeball.
+//
+// La frenada es el dibujo que se ve un instante al dejar de correr, antes de volver
+// al parado. La montura es para ir encima de un Pokemon; hoy no la pide nadie.
+#define ANIM_FRENADA_SOUTH (ANIM_STD_COUNT + 4)
+#define ANIM_FRENADA_NORTH (ANIM_STD_COUNT + 5)
+#define ANIM_FRENADA_WEST  (ANIM_STD_COUNT + 6)
+#define ANIM_FRENADA_EAST  (ANIM_STD_COUNT + 7)
+
+#define ANIM_MONTURA_SOUTH (ANIM_STD_COUNT + 8)
+#define ANIM_MONTURA_NORTH (ANIM_STD_COUNT + 9)
+#define ANIM_MONTURA_WEST  (ANIM_STD_COUNT + 10)
+#define ANIM_MONTURA_EAST  (ANIM_STD_COUNT + 11)
+
 #define ANIM_EXIT_POKEBALL_FAST_SOUTH (ANIM_STD_COUNT + 0)
 #define ANIM_EXIT_POKEBALL_FAST_NORTH (ANIM_STD_COUNT + 1)
 #define ANIM_EXIT_POKEBALL_FAST_WEST  (ANIM_STD_COUNT + 2)

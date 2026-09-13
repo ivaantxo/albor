@@ -1011,3 +1011,8 @@ static const struct SpriteFrameImage sPicTable_Ball_DREAM[] = {
 static const struct SpriteFrameImage sPicTable_Ball_BEAST[] = {
     POKEBALL_PIC_FRAMES(Beast),
 };
+
+// Entrenador con hoja unica: los 33 frames seguidos, de 4x4 tiles cada uno.
+static const struct SpriteFrameImage sPicTable_EntrenadorOw[] = {
+    overworld_ascending_frames(gObjectEventPic_LucasOw, 4, 4),
+};

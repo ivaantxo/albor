@@ -252,10 +252,17 @@ static const u8 sRivalAvatarGfxIds[][2] =
     [PLAYER_AVATAR_STATE_VSSEEKER]   = {OBJ_EVENT_GFX_RIVAL_BRENDAN_FIELD_MOVE, OBJ_EVENT_GFX_RIVAL_MAY_FIELD_MOVE},
 };
 
+// A pie y en bici ya son la hoja nueva de 33 frames: misma hoja y misma paleta, y lo
+// unico que cambia entre las dos es que tabla de animaciones se mira.
+//
+// Los demas estados siguen en las hojas viejas a proposito, no por descuido: pescar y
+// regar desaparecen -se van las canas y las bayas dejan de regarse-, el movimiento de
+// campo pasa a hacerlo el Pokemon, y el surf pasara a los frames de montura. Darles
+// hoja nueva ahora seria trabajo para tirar.
 static const u8 sPlayerAvatarGfxIds[][2] =
 {
-    [PLAYER_AVATAR_STATE_NORMAL]     = {OBJ_EVENT_GFX_BRENDAN_NORMAL,     OBJ_EVENT_GFX_MAY_NORMAL},
-    [PLAYER_AVATAR_STATE_BICI]  = {OBJ_EVENT_GFX_BRENDAN_BICI,  OBJ_EVENT_GFX_MAY_BICI},
+    [PLAYER_AVATAR_STATE_NORMAL]     = {OBJ_EVENT_GFX_LUCAS,             OBJ_EVENT_GFX_LUCAS},
+    [PLAYER_AVATAR_STATE_BICI]  = {OBJ_EVENT_GFX_LUCAS_BICI,  OBJ_EVENT_GFX_LUCAS_BICI},
     [PLAYER_AVATAR_STATE_SURFING]    = {OBJ_EVENT_GFX_BRENDAN_SURFING,    OBJ_EVENT_GFX_MAY_SURFING},
     [PLAYER_AVATAR_STATE_UNDERWATER] = {OBJ_EVENT_GFX_BRENDAN_UNDERWATER, OBJ_EVENT_GFX_MAY_UNDERWATER},
     [PLAYER_AVATAR_STATE_FIELD_MOVE] = {OBJ_EVENT_GFX_BRENDAN_FIELD_MOVE, OBJ_EVENT_GFX_MAY_FIELD_MOVE},
@@ -276,19 +283,30 @@ static const u8 sRSAvatarGfxIds[GENDER_COUNT] =
     [FEMALE] = OBJ_EVENT_GFX_LINK_RS_MAY
 };
 
+// La traduccion INVERSA: de que dibujo lleva puesto el jugador, a en que estado esta.
+//
+// Es facil olvidarla al cambiar de personaje, porque la otra tabla -la de estado a
+// dibujo- ya hace que todo se vea bien al montar. Esta se lee DESPUES: cada vez que
+// se rehace el objeto del jugador, al cargar mapa, se mira su dibujo aqui para saber
+// en que estado estaba. Si el dibujo no aparece, la busqueda devuelve "a pie" como
+// ultimo recurso, y el jugador se baja solo de la bici al cambiar de mapa sin que
+// nada avise.
+//
+// Surf y buceo siguen con los dibujos viejos porque esos estados aun no se han
+// rehecho: ver el comentario de sPlayerAvatarGfxIds.
 static const u8 sPlayerAvatarGfxToStateFlag[GENDER_COUNT][4][2] =
 {
     [MALE] =
     {
-        {OBJ_EVENT_GFX_BRENDAN_NORMAL,     PLAYER_AVATAR_FLAG_ON_FOOT},
-        {OBJ_EVENT_GFX_BRENDAN_BICI,  PLAYER_AVATAR_FLAG_BICI},
+        {OBJ_EVENT_GFX_LUCAS,              PLAYER_AVATAR_FLAG_ON_FOOT},
+        {OBJ_EVENT_GFX_LUCAS_BICI,         PLAYER_AVATAR_FLAG_BICI},
         {OBJ_EVENT_GFX_BRENDAN_SURFING,    PLAYER_AVATAR_FLAG_SURFING},
         {OBJ_EVENT_GFX_BRENDAN_UNDERWATER, PLAYER_AVATAR_FLAG_UNDERWATER},
     },
     [FEMALE] =
     {
-        {OBJ_EVENT_GFX_MAY_NORMAL,         PLAYER_AVATAR_FLAG_ON_FOOT},
-        {OBJ_EVENT_GFX_MAY_BICI,      PLAYER_AVATAR_FLAG_BICI},
+        {OBJ_EVENT_GFX_LUCAS,              PLAYER_AVATAR_FLAG_ON_FOOT},
+        {OBJ_EVENT_GFX_LUCAS_BICI,         PLAYER_AVATAR_FLAG_BICI},
         {OBJ_EVENT_GFX_MAY_SURFING,        PLAYER_AVATAR_FLAG_SURFING},
         {OBJ_EVENT_GFX_MAY_UNDERWATER,     PLAYER_AVATAR_FLAG_UNDERWATER},
     }
@@ -664,7 +682,12 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
     // lo mismo -cambiar de paso sobre la marcha- en los dos modos.
     bool32 quiereCorrer = gSaveBlockPtr->correSiempre ^ ((heldKeys & B_BUTTON) != 0);
 
-    if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER) && quiereCorrer && FlagGet(FLAG_SYS_B_DASH)
+    // Sin bandera de zapatillas. Correr estaba detras de FLAG_SYS_B_DASH, y en este
+    // juego NADIE la enciende: el unico sitio del repositorio que la ponia era el menu
+    // de depuracion, porque el evento que regalaba las zapatillas ya no existe. O sea
+    // que correr era imposible en una partida normal, ni mas rapido ni con sus
+    // dibujos. Mismo criterio que la bici, que tampoco pide objeto ni bandera.
+    if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER) && quiereCorrer
      && IsRunningDisallowed(gObjectEvents[gPlayerAvatar.objectEventId].currentMetatileBehavior) == 0)
     {
         if (ObjectMovingOnRockStairs(&gObjectEvents[gPlayerAvatar.objectEventId], direction))
@@ -994,6 +1017,100 @@ void PlayerOnBikeCollide(u8 direction)
     PlayCollisionSoundIfNotFacingWarp(direction);
     PlayerSetAnimId(GetWalkInPlaceNormalMovementAction(direction), COPY_MOVE_WALK);
 }
+
+// El topetazo: chocar yendo en bici, no empujando parado contra una pared.
+//
+// No cambia el dibujo ni mueve al jugador de casilla. Lo unico que se mueve es el
+// SPRITE, unos pixeles hacia atras y de vuelta, que es lo que da la sensacion del
+// golpe. El estado pasa a parado, asi que al acabar el rebote se queda el dibujo de
+// bici quieta en vez de seguir pedaleando en el sitio.
+//
+// Los pixeles van en una tabla en vez de en una cuenta: un golpe es seco al salir y
+// blando al volver, y eso se ajusta a ojo mirandolo, no con una formula.
+static const u8 sEmpujeDelGolpe[] = { 4, 4, 3, 2, 1, 0 };
+
+// Y despues del rebote, un rato sin mando. No es adorno: sin esto, con la direccion
+// pulsada se vuelve a pedalear en el mismo fotograma en que termina el golpe, y el
+// dibujo de bici parada no llega a verse nunca.
+#define FOTOGRAMAS_ATURDIDO 60
+
+#define tPaso      data[0]
+#define tDireccion data[1]
+
+static void Tarea_GolpeEnBici(u8 idTarea)
+{
+    struct Sprite *sprite = &gSprites[gPlayerAvatar.spriteId];
+    u32 paso = gTasks[idTarea].tPaso;
+    s32 empuje;
+
+    // La pose de parado se pinta aqui, a mano y en cada fotograma, en vez de pedirsela
+    // al sistema de movimiento.
+    //
+    // Pedirla no vale: PlayerSetAnimId se calla si hay animacion activa, y la version
+    // que dice forzar tampoco fuerza del todo -limpia el movimiento retenido, pero
+    // ObjectEventSetHeldMovement se vuelve a salir si sigue habiendo un movimiento
+    // simple en marcha, que es justo lo que pasa al chocar a mitad de paso-. Las dos
+    // descartan la peticion sin devolver nada.
+    //
+    // Y no basta con ponerla una vez: mientras los controles estan bloqueados
+    // PlayerStep no corre, pero el objeto del jugador si se actualiza, asi que el paso
+    // que quedara a medias puede volver a poner su dibujo. Repetirla es barato:
+    // StartSpriteAnimIfDifferent no hace nada si ya esta puesta.
+    StartSpriteAnimIfDifferent(sprite, GetFaceDirectionAnimNum(gTasks[idTarea].tDireccion));
+
+    if (paso >= ARRAY_COUNT(sEmpujeDelGolpe) + FOTOGRAMAS_ATURDIDO)
+    {
+        sprite->x2 = 0;
+        sprite->y2 = 0;
+        UnlockPlayerFieldControls();
+        DestroyTask(idTarea);
+        return;
+    }
+
+    // Pasado el rebote solo queda esperar: el sprite se queda quieto y encarado.
+    if (paso >= ARRAY_COUNT(sEmpujeDelGolpe))
+    {
+        gTasks[idTarea].tPaso++;
+        return;
+    }
+
+    // Hacia atras es al reves de por donde se iba. En pantalla la y crece hacia abajo,
+    // asi que ir al sur y retroceder es restar.
+    empuje = sEmpujeDelGolpe[paso];
+    sprite->x2 = 0;
+    sprite->y2 = 0;
+    switch (gTasks[idTarea].tDireccion)
+    {
+    case DIR_SOUTH: sprite->y2 = -empuje; break;
+    case DIR_NORTH: sprite->y2 =  empuje; break;
+    case DIR_WEST:  sprite->x2 =  empuje; break;
+    case DIR_EAST:  sprite->x2 = -empuje; break;
+    }
+
+    gTasks[idTarea].tPaso++;
+}
+
+void GolpeEnBici(u8 direction)
+{
+    // Seco, no el golpecito de rozar una pared andando: aqui se viene con carrerilla.
+    PlaySE(SE_BANG);
+
+    // Encarar hacia donde se iba. El dibujo de parado lo pone la tarea: ver alli por
+    // que no se le puede pedir al sistema de movimiento.
+    ObjectEventTurn(&gObjectEvents[gPlayerAvatar.objectEventId], direction);
+
+    if (!FuncIsActiveTask(Tarea_GolpeEnBici))
+    {
+        u8 idTarea = CreateTask(Tarea_GolpeEnBici, 1);
+
+        gTasks[idTarea].tPaso = 0;
+        gTasks[idTarea].tDireccion = direction;
+        LockPlayerFieldControls();
+    }
+}
+
+#undef tPaso
+#undef tDireccion
 
 void PlayerOnBikeCollideWithFarawayIslandMew(u8 direction)
 {

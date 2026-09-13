@@ -168,9 +168,9 @@ string generate_map_header_text(Json map_data, Json layouts_data) {
          << "\t.2byte " << json_to_string(map_data, "night_music") << "\n";
 
     text << "\tmap_header_flags "
-         << "allow_cycling=" << json_to_string(map_data, "allow_cycling") << ", "
+         << "reservado_1=" << json_to_string(map_data, "reservado_1") << ", "
          << "allow_escaping=" << json_to_string(map_data, "allow_escaping") << ", "
-         << "allow_running=" << json_to_string(map_data, "allow_running") << ", "
+         << "reservado_2=" << json_to_string(map_data, "reservado_2") << ", "
          << "show_map_name=" << json_to_string(map_data, "show_map_name") << "\n";
 
      text << "\t.byte " << json_to_string(map_data, "battle_scene") << "\n\n";

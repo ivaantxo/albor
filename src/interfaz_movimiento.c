@@ -165,7 +165,7 @@ void AbreSelectorMovimiento(void)
 // se puede siempre, que si no se quedaria uno encerrado.
 static bool32 SePuedeMontar(void)
 {
-    return Overworld_IsBikingAllowed() && !IsBikingDisallowedByPlayer();
+    return !IsBikingDisallowedByPlayer();
 }
 
 // Lo que pasa al elegir uno u otro. Es la tabla del comentario de arriba, escrita

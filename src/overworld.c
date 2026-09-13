@@ -700,8 +700,6 @@ static u8 GetAdjustedInitialTransitionFlags(struct InitialPlayerAvatarState *pla
         return PLAYER_AVATAR_FLAG_UNDERWATER;
     else if (MetatileBehavior_IsSurfableWaterOrUnderwater(metatileBehavior) == TRUE)
         return PLAYER_AVATAR_FLAG_SURFING;
-    else if (Overworld_IsBikingAllowed() != TRUE)
-        return PLAYER_AVATAR_FLAG_ON_FOOT;
     else if (playerStruct->transitionFlags == PLAYER_AVATAR_FLAG_BICI)
         return PLAYER_AVATAR_FLAG_BICI;
     else
@@ -740,14 +738,6 @@ static u8 GetAdjustedInitialDirection(struct InitialPlayerAvatarState *playerStr
 static u16 GetCenterScreenMetatileBehavior(void)
 {
     return MapGridGetMetatileBehaviorAt(gSaveBlockPtr->pos.x + MAP_OFFSET, gSaveBlockPtr->pos.y + MAP_OFFSET);
-}
-
-bool32 Overworld_IsBikingAllowed(void)
-{
-    if (!gMapHeader.allowCycling)
-        return FALSE;
-    else
-        return TRUE;
 }
 
 // Flash level of 0 is fully bright

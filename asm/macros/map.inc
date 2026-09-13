@@ -149,6 +149,6 @@
 	.endm
 
 	@ Defines the flags for a map header. Mirrors the layout of the bitfield in struct MapHeader in include/global.fieldmap.h
-	.macro map_header_flags allow_cycling:req, allow_escaping:req, allow_running:req, show_map_name:req
-	.byte ((\show_map_name & 1) << 3) | ((\allow_running & 1) << 2) | ((\allow_escaping & 1) << 1) | \allow_cycling
+	.macro map_header_flags reservado_1:req, allow_escaping:req, reservado_2:req, show_map_name:req
+	.byte ((\show_map_name & 1) << 3) | ((\reservado_2 & 1) << 2) | ((\allow_escaping & 1) << 1) | \reservado_1
 	.endm

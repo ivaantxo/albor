@@ -119,6 +119,29 @@ static void BiciTransition_TurnDirection(u8 direction)
     BikeClearState();
 }
 
+// Que hacer al chocar. Las dos transiciones de movimiento lo tenian copiado.
+//
+// La diferencia esta en si se venia rodando o se estaba empujando parado contra algo:
+// empujando se sigue pedaleando en el sitio, que es lo que uno espera al insistir
+// contra una pared, y viniendo con carrerilla hay topetazo y parada.
+static void ChocaEnBici(u8 direction, u8 collision)
+{
+    // Antes de BikeClearState, que es justo quien lo borra.
+    bool32 veniaRodando = gPlayerAvatar.bikeSpeed != PLAYER_SPEED_STANDING;
+
+    BikeClearState();
+
+    if (collision == COLLISION_OBJECT_EVENT && IsPlayerCollidingWithFarawayIslandMew(direction))
+        PlayerOnBikeCollideWithFarawayIslandMew(direction);
+    else if (collision < COLLISION_STOP_SURFING || collision > COLLISION_ROTATING_GATE)
+    {
+        if (veniaRodando)
+            GolpeEnBici(direction);
+        else
+            PlayerOnBikeCollide(direction);
+    }
+}
+
 static void BiciTransition_TrySpeedUp(u8 direction)
 {
     u8 collision = GetBikeCollision(direction);
@@ -132,11 +155,7 @@ static void BiciTransition_TrySpeedUp(u8 direction)
         }
         else
         {
-            BikeClearState();
-            if (collision == COLLISION_OBJECT_EVENT && IsPlayerCollidingWithFarawayIslandMew(direction))
-                PlayerOnBikeCollideWithFarawayIslandMew(direction);
-            else if (collision < COLLISION_STOP_SURFING || collision > COLLISION_ROTATING_GATE)
-                PlayerOnBikeCollide(direction);
+            ChocaEnBici(direction, collision);
         }
     }
     else
@@ -162,11 +181,7 @@ static void BiciTransition_TrySlowDown(u8 direction)
         }
         else
         {
-            BikeClearState();
-            if (collision == COLLISION_OBJECT_EVENT && IsPlayerCollidingWithFarawayIslandMew(direction))
-                PlayerOnBikeCollideWithFarawayIslandMew(direction);
-            else if (collision < COLLISION_STOP_SURFING || collision > COLLISION_ROTATING_GATE)
-                PlayerOnBikeCollide(direction);
+            ChocaEnBici(direction, collision);
         }
     }
     else
@@ -234,6 +249,7 @@ void GetOnOffBike(void)
     else
     {
         SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_BICI);
+        PlaySE(SE_BIKE_BELL);   // encima de la musica, que no la corta
         Overworld_SetSavedMusic(MUS_CYCLING);
         Overworld_ChangeMusicTo(MUS_CYCLING);
     }
@@ -258,7 +274,10 @@ s16 GetPlayerSpeed(void)
 
 bool32 IsRunningDisallowed(u8 metatile)
 {
-    if ((OW_RUNNING_INDOORS == GEN_3 && !gMapHeader.allowRunning) || IsRunningDisallowedByMetatile(metatile) == TRUE)
+    // Solo manda el suelo que se pisa. La cabecera del mapa ya no dice nada: correr
+    // se puede siempre, dentro y fuera, y el interruptor que lo hacia depender de la
+    // generacion se ha ido con ella.
+    if (IsRunningDisallowedByMetatile(metatile) == TRUE)
         return TRUE;
 
     return FALSE;

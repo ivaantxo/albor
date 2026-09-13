@@ -3992,7 +3992,7 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
         }
 
         StringCopy(gVariableTexto2, gText_DigitIndicator[gTasks[taskId].tDigit]);
-        StringCopyPadded(gVariableTexto1, sBGMNames[gTasks[taskId].tInput - NUMERO_EFECTOS_SONIDO + 1], CHAR_SPACE, 35);
+        StringCopyPadded(gVariableTexto1, sBGMNames[gTasks[taskId].tInput - NUMERO_EFECTOS_SONIDO - 1], CHAR_SPACE, 35);
         ConvertIntToDecimalStringN(gVariableTexto3, gTasks[taskId].tInput, STR_CONV_MODE_LEADING_ZEROS, DEBUG_NUMBER_DIGITS_ITEMS);
         StringExpandPlaceholders(gVariableTextoAmpliada, sDebugText_Sound_Music_ID);
         AddTextPrinterParameterized(gTasks[taskId].tSubWindowId, DEBUG_MENU_FONT, gVariableTextoAmpliada, 1, 1, 0, NULL);

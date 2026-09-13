@@ -201,6 +201,10 @@ enum ObjectEventGraphics
     OBJ_EVENT_GFX_CYNTHIA,
     OBJ_EVENT_GFX_LANCE,
     OBJ_EVENT_GFX_SOMBRA_32x16,
+    // Entrenadores de graphics/entrenadores/: una hoja de 33 frames y una paleta
+    // por persona, con andar, correr y bici dentro. Ver constants/ow_entrenador.h.
+    OBJ_EVENT_GFX_LUCAS,
+    OBJ_EVENT_GFX_LUCAS_BICI,
     NUM_OBJ_EVENT_GFX
 };
 
@@ -331,6 +335,7 @@ enum ObjectEventPalTags
     OBJ_EVENT_PAL_TAG_LIGHT_2,
     OBJ_EVENT_PAL_TAG_EMOTES,
     OBJ_EVENT_PAL_TAG_NEON_LIGHT,
+    OBJ_EVENT_PAL_TAG_LUCAS,
     OBJ_EVENT_PAL_TAG_DYNAMIC,
     OBJ_EVENT_PAL_TAG_WHITE,
     OBJ_EVENT_PAL_TAG_NONE
