@@ -115,7 +115,7 @@ class ExportTests(unittest.TestCase):
                 self.assertEqual(image.convert('RGBA').tobytes(), before[view['filename']])
         self.assertTrue(selector.validate([result], [self.entry])['ok'])
 
-    def test_female_has_same_palette_and_keeps_shared_back_explicit(self):
+    def test_female_exports_shared_back_in_its_own_palette(self):
         entry = deepcopy(self.entry)
         entry['variants'].append({
             'key': 'female', **self.sources, 'front_output': 'anim_frontf.png',
@@ -125,10 +125,24 @@ class ExportTests(unittest.TestCase):
         config['female'] = {'front': {'indices': [0, 1, 2, 5, 6]}}
         result = self.build(entry, config)
         self.assertEqual(result['shared_views'], {'female.back': 'default.back'})
-        self.assertEqual(len(result['views']), 3)
-        self.assertFalse((self.folder / 'backf.png').exists())
+        self.assertEqual(len(result['views']), 4)
+        self.assertTrue((self.folder / 'backf.png').exists())
         self.assertEqual((self.folder / 'normalf.pal').read_bytes(),
                          (self.folder / 'normal.pal').read_bytes())
+        self.assertTrue(selector.validate([result], [entry])['ok'])
+
+    def test_female_palette_can_differ_from_default(self):
+        entry = deepcopy(self.entry)
+        entry['variants'].append({
+            'key': 'female', **self.sources, 'front_output': 'anim_frontf.png',
+            'back_output': 'backf.png',
+        })
+        config = deepcopy(self.config)
+        config['female'] = {'front': {'indices': [0, 1, 2, 5, 6]}}
+        config['palette_order_female'] = [0, *range(15, 0, -1)]
+        result = self.build(entry, config)
+        self.assertNotEqual((self.folder / 'normalf.pal').read_bytes(),
+                            (self.folder / 'normal.pal').read_bytes())
         self.assertTrue(selector.validate([result], [entry])['ok'])
 
     def test_regeneration_retires_artifacts_for_a_removed_variant(self):

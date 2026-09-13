@@ -5194,7 +5194,9 @@ static bool32 AnimacionDaVueltas(const struct Sprite *sprite)
 {
     // Tope de seguridad: si una tabla no trae ni final ni salto, mas vale salir por
     // aqui que recorrer la ROM entera.
-    const u32 MAXIMO = 64;
+    // Una cronologia APNG reducida puede repetir cinco poses en mas de 64 pasos.
+    // El generador rechaza tablas que excedan este limite (incluido el salto).
+    const u32 MAXIMO = 2048;
 
     if (sprite->anims == NULL || sprite->anims[sprite->animNum] == NULL)
         return FALSE;

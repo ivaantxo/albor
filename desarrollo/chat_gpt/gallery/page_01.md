@@ -4,13 +4,13 @@
 
 ## BULBASAUR
 
-default.front · 64×64 · APNG [0, 5, 9, 43, 46]
+default.front · 64×64 · APNG [0, 5, 9, 43, 46] · timing: source_timeline
 
 ![BULBASAUR front](../pokemon/bulbasaur/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/bulbasaur/anim_front_selected.png) · [Todas las poses](../pokemon/bulbasaur/anim_front_source.png)
 
-default.back · 64×64 · APNG [0, 5, 2]
+default.back · 64×64 · APNG [0, 5, 2] · timing: source_idle_cycle
 
 ![BULBASAUR back](../pokemon/bulbasaur/back_preview.gif)
 
@@ -18,13 +18,13 @@ default.back · 64×64 · APNG [0, 5, 2]
 
 ## IVYSAUR
 
-default.front · 64×64 · APNG [9, 6, 3, 50, 53]
+default.front · 64×64 · APNG [9, 6, 3, 50, 53] · timing: source_timeline
 
 ![IVYSAUR front](../pokemon/ivysaur/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/ivysaur/anim_front_selected.png) · [Todas las poses](../pokemon/ivysaur/anim_front_source.png)
 
-default.back · 64×64 · APNG [2, 7, 3]
+default.back · 64×64 · APNG [2, 7, 3] · timing: source_idle_cycle
 
 ![IVYSAUR back](../pokemon/ivysaur/back_preview.gif)
 
@@ -32,27 +32,39 @@ default.back · 64×64 · APNG [2, 7, 3]
 
 ## VENUSAUR
 
-default.front · 96×96 · APNG [2, 0, 25, 59, 66]
+default.front · 96×96 · APNG [2, 0, 25, 59, 66] · timing: source_timeline
 
 ![VENUSAUR front](../pokemon/venusaur/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/venusaur/anim_front_selected.png) · [Todas las poses](../pokemon/venusaur/anim_front_source.png)
 
-default.back · 96×96 · APNG [26, 21, 25]
+default.back · 96×96 · APNG [26, 21, 25] · timing: source_idle_cycle
 
 ![VENUSAUR back](../pokemon/venusaur/back_preview.gif)
 
 [Frames elegidos](../pokemon/venusaur/back_selected.png) · [Todas las poses](../pokemon/venusaur/back_source.png)
 
+female.front · 96×96 · tira original [0, 1, 0, 2, 3] · timing: shared_species_timing
+
+![VENUSAUR front](../pokemon/venusaur/anim_frontf_preview.gif)
+
+[Frames elegidos](../pokemon/venusaur/anim_frontf_selected.png) · [Todas las poses](../pokemon/venusaur/anim_frontf_source.png)
+
+female.back · 64×64 · tira original [0, 0, 0] · timing: shared_species_timing
+
+![VENUSAUR back](../pokemon/venusaur/backf_preview.gif)
+
+[Frames elegidos](../pokemon/venusaur/backf_selected.png) · [Todas las poses](../pokemon/venusaur/backf_source.png)
+
 ## CHARMANDER
 
-default.front · 64×64 · APNG [1, 4, 2, 37, 46]
+default.front · 64×64 · APNG [1, 4, 2, 37, 46] · timing: source_timeline
 
 ![CHARMANDER front](../pokemon/charmander/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/charmander/anim_front_selected.png) · [Todas las poses](../pokemon/charmander/anim_front_source.png)
 
-default.back · 64×64 · APNG [0, 4, 2]
+default.back · 64×64 · APNG [0, 4, 2] · timing: source_idle_cycle
 
 ![CHARMANDER back](../pokemon/charmander/back_preview.gif)
 
@@ -60,13 +72,13 @@ default.back · 64×64 · APNG [0, 4, 2]
 
 ## CHARMELEON
 
-default.front · 80×80 · APNG [15, 0, 13, 37, 76]
+default.front · 80×80 · APNG [15, 0, 13, 37, 76] · timing: synthetic_special_cadence
 
 ![CHARMELEON front](../pokemon/charmeleon/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/charmeleon/anim_front_selected.png) · [Todas las poses](../pokemon/charmeleon/anim_front_source.png)
 
-default.back · 64×64 · APNG [6, 0, 4]
+default.back · 64×64 · APNG [6, 0, 4] · timing: source_idle_cycle
 
 ![CHARMELEON back](../pokemon/charmeleon/back_preview.gif)
 
@@ -74,13 +86,13 @@ default.back · 64×64 · APNG [6, 0, 4]
 
 ## CHARIZARD
 
-default.front · 96×96 · APNG [0, 9, 4, 42, 54]
+default.front · 96×96 · APNG [0, 9, 4, 42, 54] · timing: source_timeline
 
 ![CHARIZARD front](../pokemon/charizard/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/charizard/anim_front_selected.png) · [Todas las poses](../pokemon/charizard/anim_front_source.png)
 
-default.back · 96×96 · APNG [15, 0, 13]
+default.back · 96×96 · APNG [15, 0, 13] · timing: source_idle_cycle
 
 ![CHARIZARD back](../pokemon/charizard/back_preview.gif)
 
@@ -88,13 +100,13 @@ default.back · 96×96 · APNG [15, 0, 13]
 
 ## SQUIRTLE
 
-default.front · 64×64 · APNG [1, 2, 0, 21, 24]
+default.front · 64×64 · APNG [1, 2, 0, 21, 24] · timing: source_timeline
 
 ![SQUIRTLE front](../pokemon/squirtle/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/squirtle/anim_front_selected.png) · [Todas las poses](../pokemon/squirtle/anim_front_source.png)
 
-default.back · 64×64 · APNG [1, 2, 0]
+default.back · 64×64 · APNG [1, 2, 0] · timing: source_idle_cycle
 
 ![SQUIRTLE back](../pokemon/squirtle/back_preview.gif)
 
@@ -102,13 +114,13 @@ default.back · 64×64 · APNG [1, 2, 0]
 
 ## WARTORTLE
 
-default.front · 64×64 · APNG [3, 8, 4, 28, 31]
+default.front · 64×64 · APNG [3, 8, 4, 28, 31] · timing: source_timeline
 
 ![WARTORTLE front](../pokemon/wartortle/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/wartortle/anim_front_selected.png) · [Todas las poses](../pokemon/wartortle/anim_front_source.png)
 
-default.back · 64×64 · APNG [3, 8, 4]
+default.back · 64×64 · APNG [3, 8, 4] · timing: source_idle_cycle
 
 ![WARTORTLE back](../pokemon/wartortle/back_preview.gif)
 
@@ -116,13 +128,13 @@ default.back · 64×64 · APNG [3, 8, 4]
 
 ## BLASTOISE
 
-default.front · 80×80 · APNG [4, 0, 7, 42, 50]
+default.front · 80×80 · APNG [4, 0, 7, 42, 50] · timing: source_timeline
 
 ![BLASTOISE front](../pokemon/blastoise/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/blastoise/anim_front_selected.png) · [Todas las poses](../pokemon/blastoise/anim_front_source.png)
 
-default.back · 80×80 · APNG [9, 0, 7]
+default.back · 80×80 · APNG [9, 0, 7] · timing: source_idle_cycle
 
 ![BLASTOISE back](../pokemon/blastoise/back_preview.gif)
 
@@ -130,13 +142,13 @@ default.back · 80×80 · APNG [9, 0, 7]
 
 ## CATERPIE
 
-default.front · 64×64 · APNG [2, 0, 4, 1, 3]
+default.front · 64×64 · APNG [2, 0, 4, 1, 3] · timing: synthetic_special_cadence
 
 ![CATERPIE front](../pokemon/caterpie/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/caterpie/anim_front_selected.png) · [Todas las poses](../pokemon/caterpie/anim_front_source.png)
 
-default.back · 64×64 · APNG [0, 7, 4]
+default.back · 64×64 · APNG [0, 7, 4] · timing: source_idle_cycle
 
 ![CATERPIE back](../pokemon/caterpie/back_preview.gif)
 
@@ -144,13 +156,13 @@ default.back · 64×64 · APNG [0, 7, 4]
 
 ## METAPOD
 
-default.front · 64×64 · APNG [17, 20, 1, 6, 8]
+default.front · 64×64 · APNG [17, 20, 1, 6, 8] · timing: synthetic_special_cadence
 
 ![METAPOD front](../pokemon/metapod/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/metapod/anim_front_selected.png) · [Todas las poses](../pokemon/metapod/anim_front_source.png)
 
-default.back · 64×64 · APNG [22, 13, 6]
+default.back · 64×64 · APNG [22, 13, 6] · timing: source_idle_cycle
 
 ![METAPOD back](../pokemon/metapod/back_preview.gif)
 
@@ -158,27 +170,39 @@ default.back · 64×64 · APNG [22, 13, 6]
 
 ## BUTTERFREE
 
-default.front · 64×64 · APNG [0, 16, 7, 3, 10]
+default.front · 64×64 · APNG [0, 16, 7, 3, 10] · timing: synthetic_special_cadence
 
 ![BUTTERFREE front](../pokemon/butterfree/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/butterfree/anim_front_selected.png) · [Todas las poses](../pokemon/butterfree/anim_front_source.png)
 
-default.back · 64×64 · APNG [2, 0, 5]
+default.back · 64×64 · APNG [2, 0, 5] · timing: source_idle_cycle
 
 ![BUTTERFREE back](../pokemon/butterfree/back_preview.gif)
 
 [Frames elegidos](../pokemon/butterfree/back_selected.png) · [Todas las poses](../pokemon/butterfree/back_source.png)
 
+female.front · 64×64 · tira original [0, 1, 0, 1, 1] · timing: shared_species_timing
+
+![BUTTERFREE front](../pokemon/butterfree/anim_frontf_preview.gif)
+
+[Frames elegidos](../pokemon/butterfree/anim_frontf_selected.png) · [Todas las poses](../pokemon/butterfree/anim_frontf_source.png)
+
+female.back · 64×64 · tira original [0, 0, 0] · timing: shared_species_timing
+
+![BUTTERFREE back](../pokemon/butterfree/backf_preview.gif)
+
+[Frames elegidos](../pokemon/butterfree/backf_selected.png) · [Todas las poses](../pokemon/butterfree/backf_source.png)
+
 ## WEEDLE
 
-default.front · 64×64 · APNG [0, 8, 3, 52, 55]
+default.front · 64×64 · APNG [0, 8, 3, 52, 55] · timing: source_timeline
 
 ![WEEDLE front](../pokemon/weedle/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/weedle/anim_front_selected.png) · [Todas las poses](../pokemon/weedle/anim_front_source.png)
 
-default.back · 64×64 · APNG [8, 5, 0]
+default.back · 64×64 · APNG [8, 5, 0] · timing: source_idle_cycle
 
 ![WEEDLE back](../pokemon/weedle/back_preview.gif)
 
@@ -186,13 +210,13 @@ default.back · 64×64 · APNG [8, 5, 0]
 
 ## KAKUNA
 
-default.front · 64×64 · APNG [0, 68, 9, 82, 257]
+default.front · 64×64 · APNG [0, 68, 9, 82, 257] · timing: synthetic_special_cadence
 
 ![KAKUNA front](../pokemon/kakuna/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/kakuna/anim_front_selected.png) · [Todas las poses](../pokemon/kakuna/anim_front_source.png)
 
-default.back · 64×64 · APNG [6, 0, 10]
+default.back · 64×64 · APNG [6, 0, 10] · timing: source_idle_cycle
 
 ![KAKUNA back](../pokemon/kakuna/back_preview.gif)
 
@@ -200,13 +224,13 @@ default.back · 64×64 · APNG [6, 0, 10]
 
 ## BEEDRILL
 
-default.front · 80×80 · APNG [0, 32, 10, 356, 455]
+default.front · 80×80 · APNG [0, 32, 10, 356, 455] · timing: source_timeline
 
 ![BEEDRILL front](../pokemon/beedrill/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/beedrill/anim_front_selected.png) · [Todas las poses](../pokemon/beedrill/anim_front_source.png)
 
-default.back · 80×80 · APNG [0, 32, 10]
+default.back · 80×80 · APNG [0, 32, 10] · timing: source_idle_cycle
 
 ![BEEDRILL back](../pokemon/beedrill/back_preview.gif)
 
@@ -214,13 +238,13 @@ default.back · 80×80 · APNG [0, 32, 10]
 
 ## PIDGEY
 
-default.front · 64×64 · APNG [0, 2, 4, 7, 14]
+default.front · 64×64 · APNG [0, 2, 4, 7, 14] · timing: source_timeline
 
 ![PIDGEY front](../pokemon/pidgey/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/pidgey/anim_front_selected.png) · [Todas las poses](../pokemon/pidgey/anim_front_source.png)
 
-default.back · 64×64 · APNG [0, 2, 4]
+default.back · 64×64 · APNG [0, 2, 4] · timing: source_idle_cycle
 
 ![PIDGEY back](../pokemon/pidgey/back_preview.gif)
 
@@ -228,13 +252,13 @@ default.back · 64×64 · APNG [0, 2, 4]
 
 ## PIDGEOTTO
 
-default.front · 116×116 · APNG [0, 5, 2, 10, 12]
+default.front · 116×116 · APNG [0, 5, 2, 10, 12] · timing: source_timeline
 
 ![PIDGEOTTO front](../pokemon/pidgeotto/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/pidgeotto/anim_front_selected.png) · [Todas las poses](../pokemon/pidgeotto/anim_front_source.png)
 
-default.back · 96×96 · APNG [0, 5, 2]
+default.back · 96×96 · APNG [0, 5, 2] · timing: source_idle_cycle
 
 ![PIDGEOTTO back](../pokemon/pidgeotto/back_preview.gif)
 
@@ -242,13 +266,13 @@ default.back · 96×96 · APNG [0, 5, 2]
 
 ## PIDGEOT
 
-default.front · 80×80 · APNG [2, 7, 5, 4, 6]
+default.front · 80×80 · APNG [2, 7, 5, 4, 6] · timing: synthetic_special_cadence
 
 ![PIDGEOT front](../pokemon/pidgeot/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/pidgeot/anim_front_selected.png) · [Todas las poses](../pokemon/pidgeot/anim_front_source.png)
 
-default.back · 80×80 · APNG [7, 4, 0]
+default.back · 80×80 · APNG [7, 4, 0] · timing: source_idle_cycle
 
 ![PIDGEOT back](../pokemon/pidgeot/back_preview.gif)
 
@@ -256,41 +280,65 @@ default.back · 80×80 · APNG [7, 4, 0]
 
 ## RATTATA
 
-default.front · 64×64 · APNG [1, 5, 2, 37, 39]
+default.front · 64×64 · APNG [1, 5, 2, 37, 39] · timing: source_timeline
 
 ![RATTATA front](../pokemon/rattata/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/rattata/anim_front_selected.png) · [Todas las poses](../pokemon/rattata/anim_front_source.png)
 
-default.back · 64×64 · APNG [3, 0, 2]
+default.back · 64×64 · APNG [3, 0, 2] · timing: source_idle_cycle
 
 ![RATTATA back](../pokemon/rattata/back_preview.gif)
 
 [Frames elegidos](../pokemon/rattata/back_selected.png) · [Todas las poses](../pokemon/rattata/back_source.png)
 
+female.front · 64×64 · tira original [0, 1, 0, 2, 3] · timing: shared_species_timing
+
+![RATTATA front](../pokemon/rattata/anim_frontf_preview.gif)
+
+[Frames elegidos](../pokemon/rattata/anim_frontf_selected.png) · [Todas las poses](../pokemon/rattata/anim_frontf_source.png)
+
+female.back · 64×64 · tira original [0, 0, 0] · timing: shared_species_timing
+
+![RATTATA back](../pokemon/rattata/backf_preview.gif)
+
+[Frames elegidos](../pokemon/rattata/backf_selected.png) · [Todas las poses](../pokemon/rattata/backf_source.png)
+
 ## RATICATE
 
-default.front · 64×64 · APNG [4, 0, 9, 7, 10]
+default.front · 64×64 · APNG [4, 0, 9, 7, 10] · timing: synthetic_special_cadence
 
 ![RATICATE front](../pokemon/raticate/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/raticate/anim_front_selected.png) · [Todas las poses](../pokemon/raticate/anim_front_source.png)
 
-default.back · 80×80 · APNG [2, 6, 9]
+default.back · 80×80 · APNG [2, 6, 9] · timing: source_idle_cycle
 
 ![RATICATE back](../pokemon/raticate/back_preview.gif)
 
 [Frames elegidos](../pokemon/raticate/back_selected.png) · [Todas las poses](../pokemon/raticate/back_source.png)
 
+female.front · 64×64 · tira original [0, 1, 0, 2, 3] · timing: shared_species_timing
+
+![RATICATE front](../pokemon/raticate/anim_frontf_preview.gif)
+
+[Frames elegidos](../pokemon/raticate/anim_frontf_selected.png) · [Todas las poses](../pokemon/raticate/anim_frontf_source.png)
+
+female.back · 64×64 · tira original [0, 0, 0] · timing: shared_species_timing
+
+![RATICATE back](../pokemon/raticate/backf_preview.gif)
+
+[Frames elegidos](../pokemon/raticate/backf_selected.png) · [Todas las poses](../pokemon/raticate/backf_source.png)
+
 ## SPEAROW
 
-default.front · 64×64 · APNG [1, 0, 2, 17, 23]
+default.front · 64×64 · APNG [1, 0, 2, 17, 23] · timing: source_timeline
 
 ![SPEAROW front](../pokemon/spearow/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/spearow/anim_front_selected.png) · [Todas las poses](../pokemon/spearow/anim_front_source.png)
 
-default.back · 64×64 · APNG [1, 0, 2]
+default.back · 64×64 · APNG [1, 0, 2] · timing: source_idle_cycle
 
 ![SPEAROW back](../pokemon/spearow/back_preview.gif)
 
@@ -298,13 +346,13 @@ default.back · 64×64 · APNG [1, 0, 2]
 
 ## FEAROW
 
-default.front · 112×112 · APNG [1, 0, 3, 4, 7]
+default.front · 112×112 · APNG [1, 0, 3, 4, 7] · timing: source_timeline
 
 ![FEAROW front](../pokemon/fearow/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/fearow/anim_front_selected.png) · [Todas las poses](../pokemon/fearow/anim_front_source.png)
 
-default.back · 96×96 · APNG [1, 0, 3]
+default.back · 96×96 · APNG [1, 0, 3] · timing: source_idle_cycle
 
 ![FEAROW back](../pokemon/fearow/back_preview.gif)
 
@@ -312,13 +360,13 @@ default.back · 96×96 · APNG [1, 0, 3]
 
 ## EKANS
 
-default.front · 64×64 · APNG [0, 15, 10, 6, 13]
+default.front · 64×64 · APNG [0, 15, 10, 6, 13] · timing: synthetic_special_cadence
 
 ![EKANS front](../pokemon/ekans/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/ekans/anim_front_selected.png) · [Todas las poses](../pokemon/ekans/anim_front_source.png)
 
-default.back · 64×64 · APNG [6, 5, 0]
+default.back · 64×64 · APNG [6, 5, 0] · timing: source_idle_cycle
 
 ![EKANS back](../pokemon/ekans/back_preview.gif)
 
@@ -326,13 +374,13 @@ default.back · 64×64 · APNG [6, 5, 0]
 
 ## ARBOK
 
-default.front · 96×96 · APNG [16, 9, 17, 4, 12]
+default.front · 96×96 · APNG [16, 9, 17, 4, 12] · timing: synthetic_special_cadence
 
 ![ARBOK front](../pokemon/arbok/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/arbok/anim_front_selected.png) · [Todas las poses](../pokemon/arbok/anim_front_source.png)
 
-default.back · 96×96 · APNG [13, 9, 0]
+default.back · 96×96 · APNG [13, 9, 0] · timing: source_idle_cycle
 
 ![ARBOK back](../pokemon/arbok/back_preview.gif)
 
@@ -340,13 +388,13 @@ default.back · 96×96 · APNG [13, 9, 0]
 
 ## PICHU
 
-default.front · 64×64 · APNG [9, 17, 12, 41, 50]
+default.front · 64×64 · APNG [9, 17, 12, 41, 50] · timing: source_timeline
 
 ![PICHU front](../pokemon/pichu/anim_front_preview.gif)
 
 [Frames elegidos](../pokemon/pichu/anim_front_selected.png) · [Todas las poses](../pokemon/pichu/anim_front_source.png)
 
-default.back · 64×64 · APNG [9, 17, 2]
+default.back · 64×64 · APNG [9, 17, 2] · timing: source_idle_cycle
 
 ![PICHU back](../pokemon/pichu/back_preview.gif)
 

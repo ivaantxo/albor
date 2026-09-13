@@ -109,7 +109,12 @@ const struct NatureInfo gInfoNaturalezas[NUMERO_NATURALEZAS] =
 
 #include "data/graphics/pokemon.h"
 #include "animacion_pic.h"
+#if ALBOR_BW_SPRITES
+#include <graphics_bw.h>
+#include <animaciones_bw.h>
+#else
 #include "data/pokemon/animaciones_pokemon.h"
+#endif
 
 #include "data/pokemon/experience_tables.h"
 
@@ -119,7 +124,11 @@ const struct NatureInfo gInfoNaturalezas[NUMERO_NATURALEZAS] =
 #include "data/pokemon/form_species_tables.h"
 #include "data/pokemon/form_change_tables.h"
 
+#if ALBOR_BW_SPRITES
+#include <species_info_bw.h>
+#else
 #include "data/pokemon/species_info.h"
+#endif
 
 #define MAS_150_POR_CIENTO                  UQ_4_12(2.5)
 #define MAS_125_POR_CIENTO                  UQ_4_12(2.25)
@@ -818,6 +827,26 @@ bool32 IsPersonalityFemale(u16 species, u32 personality)
     return GetGenderFromSpeciesAndPersonality(species, personality) == MON_FEMALE;
 }
 
+// La tabla de poses de una especie, la que toque segun el lado.
+//
+// La coreografia se comparte por sexo: los slots tienen los mismos papeles. Los
+// dibujos, paletas y lienzos pueden diferir. Si una hembra necesita otra secuencia
+// temporal, habra que añadir tablas propias y pasar tambien la personalidad aqui.
+const union AnimCmd *const *GetAnimacionesPic(u32 species, bool32 isFrontPic)
+{
+    const struct SpeciesInfo *info = &gSpeciesInfo[SanitizeSpeciesId(species)];
+
+    if (isFrontPic)
+    {
+        return info->frontAnimFrames != NULL ? info->frontAnimFrames
+                                             : gSpeciesInfo[SPECIES_NONE].frontAnimFrames;
+    }
+
+    // A NULL, el vaiven de dos poses que comparten todas: es el provisional mientras
+    // la especie no tenga espalda propia.
+    return info->backAnimFrames != NULL ? info->backAnimFrames : gAnims_MonPic;
+}
+
 void SetMultiuseSpriteTemplateToPokemon(u16 speciesTag, u8 battlerPosition)
 {
     if (gMonSpritesGfxPtr != NULL)
@@ -828,35 +857,16 @@ void SetMultiuseSpriteTemplateToPokemon(u16 speciesTag, u8 battlerPosition)
         gMultiuseSpriteTemplate = gBattlerSpriteTemplates[battlerPosition];
 
     gMultiuseSpriteTemplate.paletteTag = speciesTag;
-    if (battlerPosition == JUGADOR_IZQUIERDA || battlerPosition == JUGADOR_DERECHA)
-    {
-        // La de la especie si la tiene, y si no la que comparten todas. Antes esto
-        // era un "si es Bulbasaur" escrito a mano, porque era el unico con espalda de
-        // BW; cada especie nueva pedia tocar aqui.
-        u32 especie = SanitizeSpeciesId(speciesTag > SPECIES_SHINY_TAG
-                                        ? speciesTag - SPECIES_SHINY_TAG : speciesTag);
+    if (speciesTag > SPECIES_SHINY_TAG)
+        speciesTag -= SPECIES_SHINY_TAG;
 
-        gMultiuseSpriteTemplate.anims = gSpeciesInfo[especie].backAnimFrames != NULL
-                                      ? gSpeciesInfo[especie].backAnimFrames
-                                      : gAnims_MonPic;
-    }
-    else
-    {
-        if (speciesTag > SPECIES_SHINY_TAG)
-            speciesTag = speciesTag - SPECIES_SHINY_TAG;
-
-        speciesTag = SanitizeSpeciesId(speciesTag);
-        if (gSpeciesInfo[speciesTag].frontAnimFrames != NULL)
-            gMultiuseSpriteTemplate.anims = gSpeciesInfo[speciesTag].frontAnimFrames;
-        else
-            gMultiuseSpriteTemplate.anims = gSpeciesInfo[SPECIES_NONE].frontAnimFrames;
-    }
+    gMultiuseSpriteTemplate.anims = GetAnimacionesPic(speciesTag,
+        battlerPosition != JUGADOR_IZQUIERDA && battlerPosition != JUGADOR_DERECHA);
 }
 
-void SetMultiuseSpriteTemplateToTrainer(u16 trainerPicId, u8 battlerPosition)
+void SetMultiuseSpriteTemplateToTrainer(u16 trainerPicId, u8 battlerPosition, bool32 isFrontPic)
 {
-    gMultiuseSpriteTemplate.paletteTag = trainerPicId;
-    if (battlerPosition == JUGADOR_IZQUIERDA || battlerPosition == JUGADOR_DERECHA)
+    if (!isFrontPic)
     {
         gMultiuseSpriteTemplate = sTrainerBackSpriteTemplates[trainerPicId];
         gMultiuseSpriteTemplate.anims = gTrainerBacksprites[trainerPicId].animation;
@@ -877,7 +887,11 @@ void SetMultiuseSpriteTemplateToTrainer(u16 trainerPicId, u8 battlerPosition)
         {
             gMultiuseSpriteTemplate = gBattlerSpriteTemplates[battlerPosition];
         }
-        gMultiuseSpriteTemplate.anims = gAnims_Trainer;
+        gMultiuseSpriteTemplate.anims = gTrainerSprites[trainerPicId].animation != NULL
+                                     ? gTrainerSprites[trainerPicId].animation : gAnims_Trainer;
+        gMultiuseSpriteTemplate.paletteTag = gTrainerSprites[trainerPicId].palette.tag;
+        if (gMonSpritesGfxPtr != NULL)
+            gMultiuseSpriteTemplate.images = gMonSpritesGfxPtr->frameImages[battlerPosition];
     }
 }
 

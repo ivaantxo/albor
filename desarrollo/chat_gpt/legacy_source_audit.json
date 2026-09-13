@@ -1,0 +1,164 @@
+{
+  "species": 487,
+  "female_species": [
+    "VENUSAUR",
+    "BUTTERFREE",
+    "RATTATA",
+    "RATICATE",
+    "PIKACHU",
+    "RAICHU",
+    "ZUBAT",
+    "GOLBAT",
+    "GLOOM",
+    "VILEPLUME",
+    "POLITOED",
+    "KADABRA",
+    "ALAKAZAM",
+    "DODUO",
+    "DODRIO",
+    "STEELIX",
+    "HYPNO",
+    "RHYHORN",
+    "RHYDON",
+    "RHYPERIOR",
+    "TANGROWTH",
+    "GOLDEEN",
+    "SEAKING",
+    "SCYTHER",
+    "SCIZOR",
+    "MAGIKARP",
+    "GYARADOS",
+    "EEVEE",
+    "MEGANIUM",
+    "LEDYBA",
+    "LEDIAN",
+    "XATU",
+    "SUDOWOODO",
+    "AIPOM",
+    "AMBIPOM",
+    "MURKROW",
+    "GIRAFARIG",
+    "GLIGAR",
+    "HERACROSS",
+    "SNEASEL",
+    "WEAVILE",
+    "URSARING",
+    "PILOSWINE",
+    "MAMOSWINE",
+    "OCTILLERY",
+    "HOUNDOOM",
+    "DONPHAN",
+    "TORCHIC",
+    "COMBUSKEN",
+    "BLAZIKEN",
+    "BEAUTIFLY",
+    "DUSTOX",
+    "LUDICOLO",
+    "NUZLEAF",
+    "SHIFTRY",
+    "MEDITITE",
+    "MEDICHAM",
+    "ROSELIA",
+    "ROSERADE",
+    "NUMEL",
+    "CAMERUPT",
+    "CACTURNE",
+    "MILOTIC",
+    "STARLY",
+    "STARAVIA",
+    "STARAPTOR",
+    "BIDOOF",
+    "BIBAREL",
+    "KRICKETOT",
+    "KRICKETUNE",
+    "SHINX",
+    "LUXIO",
+    "LUXRAY",
+    "COMBEE",
+    "GIBLE",
+    "GABITE",
+    "GARCHOMP",
+    "CROAGUNK",
+    "TOXICROAK",
+    "SNOVER",
+    "ABOMASNOW",
+    "FRILLISH",
+    "JELLICENT"
+  ],
+  "counts": {
+    "apng": 823,
+    "legacy_strip": 304
+  },
+  "missing": [
+    {
+      "species": "GROWLITHE_HISUI",
+      "views": [
+        "default.front",
+        "default.back"
+      ]
+    },
+    {
+      "species": "ARCANINE_HISUI",
+      "views": [
+        "default.front",
+        "default.back"
+      ]
+    },
+    {
+      "species": "SANDILE",
+      "views": [
+        "default.back"
+      ]
+    },
+    {
+      "species": "KROKOROK",
+      "views": [
+        "default.back"
+      ]
+    },
+    {
+      "species": "KROOKODILE",
+      "views": [
+        "default.back"
+      ]
+    },
+    {
+      "species": "GOTHITA",
+      "views": [
+        "default.back"
+      ]
+    },
+    {
+      "species": "GOTHORITA",
+      "views": [
+        "default.back"
+      ]
+    },
+    {
+      "species": "GOTHITELLE",
+      "views": [
+        "default.back"
+      ]
+    },
+    {
+      "species": "GOLETT",
+      "views": [
+        "default.back"
+      ]
+    },
+    {
+      "species": "GOLURK",
+      "views": [
+        "default.back"
+      ]
+    },
+    {
+      "species": "EGG",
+      "views": [
+        "default.back"
+      ]
+    }
+  ],
+  "static_count": 151,
+  "errors": {}
+}

@@ -443,8 +443,9 @@ u8 GetMonGender(struct Pokemon *mon);
 u8 GetBoxMonGender(struct BoxPokemon *boxMon);
 u8 GetGenderFromSpeciesAndPersonality(u16 species, u32 personality);
 bool32 IsPersonalityFemale(u16 species, u32 personality);
+const union AnimCmd *const *GetAnimacionesPic(u32 species, bool32 isFrontPic);
 void SetMultiuseSpriteTemplateToPokemon(u16 speciesTag, u8 battlerPosition);
-void SetMultiuseSpriteTemplateToTrainer(u16 trainerSpriteId, u8 battlerPosition);
+void SetMultiuseSpriteTemplateToTrainer(u16 trainerSpriteId, u8 battlerPosition, bool32 isFrontPic);
 
 /* GameFreak called Get(Box)MonData with either 2 or 3 arguments, for
  * type safety we have a Get(Box)MonData macro which dispatches to

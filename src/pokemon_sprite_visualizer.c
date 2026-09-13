@@ -1,5 +1,6 @@
 //Credits: Gamer2020, AsparagusEduardo, TheXaman, ShinyDragonHunter
 #include "global.h"
+#include "animacion_pic.h"
 #include "sombra_pokemon.h"
 #include "depuracion_mgba.h"
 #include "battle.h"
@@ -409,8 +410,10 @@ static void PrintInstructionsOnWindow(struct PokemonSpriteVisualizer *data)
     u8 textInstructionsSubmenuOneGender[] = _("{START_BUTTON} Shiny {SELECT_BUTTON} Gender\n{B_BUTTON} Back  {A_BUTTON} Sprite Coords$");
     u8 textInstructionsSubmenuTwo[] = _("{START_BUTTON} Shiny\n{B_BUTTON} Back  {A_BUTTON} Shadow Coords$");
     u8 textInstructionsSubmenuTwoGender[] = _("{START_BUTTON} Shiny {SELECT_BUTTON} Gender\n{B_BUTTON} Back  {A_BUTTON} Shadow Coords$");
-    u8 textInstructionsSubmenuThree[] = _("{START_BUTTON} Shiny\n{B_BUTTON} Back");
-    u8 textInstructionsSubmenuThreeGender[] = _("{START_BUTTON} Shiny {SELECT_BUTTON} Gender\n{B_BUTTON} Back$");
+    u8 textInstructionsSubmenuThree[] = _("{START_BUTTON} Shiny\n{B_BUTTON} Back  {A_BUTTON} Anim speed$");
+    u8 textInstructionsSubmenuThreeGender[] = _("{START_BUTTON} Shiny {SELECT_BUTTON} Gender\n{B_BUTTON} Back  {A_BUTTON} Anim speed$");
+    u8 textInstructionsSubmenuFour[] = _("{START_BUTTON} Shiny\n{B_BUTTON} Back$");
+    u8 textInstructionsSubmenuFourGender[] = _("{START_BUTTON} Shiny {SELECT_BUTTON} Gender\n{B_BUTTON} Back$");
     // El volcado al log no cabe en las dos lineas de ayuda, y no hace falta que
     // quepa: es una herramienta de desarrollo y va apuntado en VuelcaAjustesAlLog.
 
@@ -421,11 +424,14 @@ static void PrintInstructionsOnWindow(struct PokemonSpriteVisualizer *data)
     // el dibujo- y de ahi lo leen la caida al debilitarse y el escalado afin. Lo que
     // coloca al Pokemon es "F elev". Se ensena porque conviene verlo, y con los
     // sprites recuadrados a ras del borde de abajo deberia ser 0 siempre.
-    u8 textBottomSubmenuTwo[] = _("B coords:\nF elev:\nF coords:");
+    u8 textBottomSubmenuTwo[] = _("B coords:\nF elev:\nF coords:$");
 
     // "Size" ya no esta: todas las sombras miden lo mismo desde que la silueta es la
     // del propio Pokemon. La fila seguia impresa y no la manejaba nadie.
-    u8 textBottomSubmenuThree[] = _("X coords:\nY coords:");
+    u8 textBottomSubmenuThree[] = _("X coords:\nY coords:$");
+
+    // Lo que dura cada pose de la animacion continua, en ticks.
+    u8 textBottomSubmenuFour[] = _("F ticks:\nB ticks:$");
     u16 species = data->modifyArrows.currValue;
 
     u8 textL[] = _("{L_BUTTON}");
@@ -454,12 +460,19 @@ static void PrintInstructionsOnWindow(struct PokemonSpriteVisualizer *data)
         else
             AddTextPrinterParameterized(WIN_INSTRUCTIONS, fontId, textInstructionsSubmenuTwo, x, 0, 0, NULL);
     }
-    else if (data->currentSubmenu >= 3)
+    else if (data->currentSubmenu == 3)
     {
         if (SpeciesHasGenderDifferences(species))
             AddTextPrinterParameterized(WIN_INSTRUCTIONS, fontId, textInstructionsSubmenuThreeGender, x, 0, 0, NULL);
         else
             AddTextPrinterParameterized(WIN_INSTRUCTIONS, fontId, textInstructionsSubmenuThree, x, 0, 0, NULL);
+    }
+    else if (data->currentSubmenu >= 4)
+    {
+        if (SpeciesHasGenderDifferences(species))
+            AddTextPrinterParameterized(WIN_INSTRUCTIONS, fontId, textInstructionsSubmenuFourGender, x, 0, 0, NULL);
+        else
+            AddTextPrinterParameterized(WIN_INSTRUCTIONS, fontId, textInstructionsSubmenuFour, x, 0, 0, NULL);
     }
     CopyWindowToVram(WIN_INSTRUCTIONS, COPYWIN_FULL);
 
@@ -476,8 +489,10 @@ static void PrintInstructionsOnWindow(struct PokemonSpriteVisualizer *data)
     }
     else if (data->currentSubmenu == 2)
         AddTextPrinterParameterized(WIN_BOTTOM_LEFT, fontId, textBottomSubmenuTwo, 0, 0, 0, NULL);
-    else if (data->currentSubmenu >= 3)
+    else if (data->currentSubmenu == 3)
         AddTextPrinterParameterized(WIN_BOTTOM_LEFT, fontId, textBottomSubmenuThree, 0, 0, 0, NULL);
+    else if (data->currentSubmenu >= 4)
+        AddTextPrinterParameterized(WIN_BOTTOM_LEFT, fontId, textBottomSubmenuFour, 0, 0, 0, NULL);
 }
 
 static void VBlankCB(void)
@@ -1050,8 +1065,8 @@ static void UpdateYPosOffsetText(struct PokemonSpriteVisualizer *data)
 {
     u8 text[34];
     u8 fontId = 0;
-    u8 textConst[] = _("const val:");
-    u8 textNew[] = _("new val:");
+    u8 textConst[] = _("const val:$");
+    u8 textNew[] = _("new val:$");
     u8 x_const_val = 50;
     u8 x_new_text = 70;
     u8 x_new_val = 110;
@@ -1117,8 +1132,8 @@ static void UpdateShadowSettingsText(struct PokemonSpriteVisualizer *data)
 {
     u8 text[16];
     u8 fontId = 0;
-    u8 textConst[] = _("const val:");
-    u8 textNew[] = _("new val:");
+    u8 textConst[] = _("const val:$");
+    u8 textNew[] = _("new val:$");
     u8 x_const_val = 50;
     u8 x_new_text = 70;
     u8 x_new_val = 110;
@@ -1145,6 +1160,190 @@ static void UpdateShadowSettingsText(struct PokemonSpriteVisualizer *data)
     AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, text, x_new_val, y, 0, NULL);
 
     VuelcaAjusteSombra(data);
+}
+
+// *******************************
+// Ritmo de las animaciones continuas
+//
+// El visor tiene el frente y la espalda dando vueltas todo el rato, y lo que hace
+// falta al dibujar una animacion es decidir cuanto dura cada pose ANTES de escribirlo
+// en la tabla. Esto pone ese numero en pantalla y lo aplica en vivo, que es la unica
+// forma de elegirlo: veinte ticks se leen como "lento" o como "correcto" segun el
+// Pokemon, y eso no se decide contando.
+
+// Los centinelas del guion, tal y como los reparte ContinueAnim en sprite.c: de cero
+// para arriba es un fotograma -el numero es la imagen- y por debajo son comandos.
+#define ANIM_CMD_BUCLE (-3)
+#define ANIM_CMD_SALTO (-2)
+#define ANIM_CMD_FINAL (-1)
+
+// Cuantos comandos tiene un guion, contando el que lo cierra. El bucle va en MEDIO;
+// los que cierran son el final y el salto.
+static u32 LargoDelGuion(const union AnimCmd *guion)
+{
+    u32 largo = 0;
+
+    while (largo < MAX_COMANDOS_ANIM
+        && guion[largo].type != ANIM_CMD_FINAL
+        && guion[largo].type != ANIM_CMD_SALTO)
+        largo++;
+
+    return largo + 1;
+}
+
+// Cuantas vueltas de vaiven caben en el tiempo de reposo. Es la cuenta que hace
+// REPETICIONES_DE_REPOSO en animacion_pic.h, pero con la duracion que se este
+// probando: copiar el bucle tal cual haria que al acelerar el gesto especial llegara
+// antes, y lo que se quiere ver es lo que saldria de escribir esa constante.
+static u32 RepeticionesDeReposoConDuracion(u32 duracion, u32 poses)
+{
+    u32 vueltas;
+
+    if (duracion == 0 || poses == 0)
+        return 0;
+
+    vueltas = (SEGUNDOS_DE_REPOSO * FOTOGRAMAS_POR_SEGUNDO) / (duracion * poses);
+
+    return vueltas > 1 ? vueltas - 1 : 0;
+}
+
+// Copia el guion de la especie con todas las poses a la misma duracion. No lleva tope:
+// quien llama ya ha comprobado con LargoDelGuion que cabe y que se cierra.
+static void CopiaGuionConDuracion(const union AnimCmd *origen, union AnimCmd *destino, u32 duracion)
+{
+    u32 poses = 0;
+
+    for (u32 i = 0; ; i++)
+    {
+        destino[i] = origen[i];
+
+        if (origen[i].type >= 0)
+        {
+            destino[i].frame.duration = duracion;
+            poses++;
+        }
+        else if (origen[i].type == ANIM_CMD_BUCLE)
+        {
+            destino[i].loop.count = RepeticionesDeReposoConDuracion(duracion, poses);
+            poses = 0;
+        }
+        else
+        {
+            return; // el final o el salto: ahi se acaba el guion
+        }
+    }
+}
+
+// Que tabla tiene que mirar el sprite: la de la ROM si no hay nada que cambiar, y si
+// no la copia editada. Se rellenan las ANIMACIONES_POR_PIC, no solo la continua: el
+// resto de indices los pide el combate y una entrada a NULL seria un salto a la nada.
+static const union AnimCmd *const *TablaDelRitmo(struct RitmoDeAnimacion *ritmo)
+{
+    if (ritmo->duracionNueva == ritmo->duracionEspecie)
+        return ritmo->tablaEspecie;
+
+    if (LargoDelGuion(ritmo->tablaEspecie[ritmo->indice]) > MAX_COMANDOS_ANIM)
+    {
+        LogMgba("RITMO: el guion no cabe en la copia, se deja como esta");
+        return ritmo->tablaEspecie;
+    }
+
+    for (u32 i = 0; i < ANIMACIONES_POR_PIC; i++)
+        ritmo->tabla[i] = ritmo->tablaEspecie[i];
+
+    CopiaGuionConDuracion(ritmo->tablaEspecie[ritmo->indice], ritmo->comandos, ritmo->duracionNueva);
+    ritmo->tabla[ritmo->indice] = ritmo->comandos;
+
+    return ritmo->tabla;
+}
+
+// Cambia la tabla que miran los dos sprites, sin tocar por donde van.
+//
+// No hace falta reiniciar la animacion: la copia tiene los mismos comandos en los
+// mismos sitios y solo cambian las duraciones, asi que el sprite sigue donde esta y
+// coge el ritmo nuevo en la pose siguiente. Reiniciando, mantener pulsado el mando la
+// dejaba congelada en la primera pose, que es justo cuando hay que estar mirandola.
+static void AplicaRitmo(struct PokemonSpriteVisualizer *data)
+{
+    gSprites[data->frontspriteId].anims = TablaDelRitmo(&data->ritmoFrente);
+    gSprites[data->backspriteId].anims = TablaDelRitmo(&data->ritmoEspalda);
+}
+
+// Al crear los sprites hay ademas que ponerlos a girar: nacen parados en la pose de
+// reposo. La espalda pasa por su arrancador, que deja quietas a las de un fotograma.
+static void ArrancaAnimacionesConRitmo(struct PokemonSpriteVisualizer *data)
+{
+    AplicaRitmo(data);
+
+    StartSpriteAnim(&gSprites[data->frontspriteId], ANIM_FRENTE_BUCLE);
+    gSprites[data->frontspriteId].animPaused = FALSE;
+    ArrancaVaivenDeEspalda(&gSprites[data->backspriteId]);
+}
+
+// Lee de la especie el ritmo que trae escrito.
+//
+// La duracion es la de su PRIMERA pose: las que llevan tiempos distintos por tramo
+// -POSE_DURANTE- no caben en un solo numero, y este es el punto de partida desde el
+// que se prueba, no un resumen de la tabla. En cuanto se mueve, todas las poses pasan
+// a durar lo mismo; volviendo al valor de partida se recupera la tabla original.
+static void ReiniciaRitmo(struct RitmoDeAnimacion *ritmo, u32 especie, bool32 esFront)
+{
+    ritmo->tablaEspecie = GetAnimacionesPic(especie, esFront);
+    ritmo->indice = esFront ? ANIM_FRENTE_BUCLE : ANIM_ESPALDA_BUCLE;
+    ritmo->duracionEspecie = ritmo->tablaEspecie[ritmo->indice][0].frame.duration;
+    ritmo->duracionNueva = ritmo->duracionEspecie;
+}
+
+static void ReiniciaRitmos(struct PokemonSpriteVisualizer *data, u32 especie)
+{
+    ReiniciaRitmo(&data->ritmoFrente, especie, TRUE);
+    ReiniciaRitmo(&data->ritmoEspalda, especie, FALSE);
+}
+
+// En una sola linea y con los dos numeros juntos, como los otros volcados: asi se
+// copia de un vistazo aunque se cuele otro log en medio.
+//
+// A diferencia de los de altura y sombra, este NO sale con cada cambio, sino al salir
+// de la pantalla: aqui el mando repite, y un numero que recorre de 600 a 20 llenaria
+// el log de una linea por fotograma. La que interesa es la ultima.
+static void VuelcaRitmoAlLog(struct PokemonSpriteVisualizer *data)
+{
+    LogMgba("RITMO especie %d -> frente %d ticks por pose, espalda %d",
+            (int)data->currentmonId,
+            (int)data->ritmoFrente.duracionNueva,
+            (int)data->ritmoEspalda.duracionNueva);
+}
+
+static void UpdateRitmoText(struct PokemonSpriteVisualizer *data)
+{
+    u8 text[16];
+    u8 fontId = 0;
+    u8 textConst[] = _("const val:$");
+    u8 textNew[] = _("new val:$");
+    u8 x_const_val = 50;
+    u8 x_new_text = 70;
+    u8 x_new_val = 110;
+    u8 y = 0;
+
+    FillWindowPixelBuffer(WIN_BOTTOM_RIGHT, PIXEL_FILL(0));
+
+    // Frente
+    y = 0;
+    AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, textConst, 0, y, 0, NULL);
+    ConvertIntToDecimalStringN(text, data->ritmoFrente.duracionEspecie, STR_CONV_MODE_LEFT_ALIGN, 3);
+    AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, text, x_const_val, y, 0, NULL);
+    AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, textNew, x_new_text, y, 0, NULL);
+    ConvertIntToDecimalStringN(text, data->ritmoFrente.duracionNueva, STR_CONV_MODE_LEFT_ALIGN, 3);
+    AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, text, x_new_val, y, 0, NULL);
+
+    // Espalda
+    y = 12;
+    AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, textConst, 0, y, 0, NULL);
+    ConvertIntToDecimalStringN(text, data->ritmoEspalda.duracionEspecie, STR_CONV_MODE_LEFT_ALIGN, 3);
+    AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, text, x_const_val, y, 0, NULL);
+    AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, textNew, x_new_text, y, 0, NULL);
+    ConvertIntToDecimalStringN(text, data->ritmoEspalda.duracionNueva, STR_CONV_MODE_LEFT_ALIGN, 3);
+    AddTextPrinterParameterized(WIN_BOTTOM_RIGHT, fontId, text, x_new_val, y, 0, NULL);
 }
 
 static void ResetPokemonSpriteVisualizerWindows(void)
@@ -1237,9 +1436,7 @@ void CB2_Pokemon_Sprite_Visualizer(void)
             LoadPalette(palette, OBJ_PLTT_ID(0), PLTT_SIZE_4BPP);
             //Front
             PreparaHuecoPic(1, species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY), TRUE);
-            PreparaHuecoPic(1, species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY), TRUE);
-    HandleLoadSpecialPokePic(TRUE, gMonSpritesGfxPtr->spritesGfx[1], species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY));
-    AjustaFotogramasPic(1, species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY), TRUE);
+            HandleLoadSpecialPokePic(TRUE, gMonSpritesGfxPtr->spritesGfx[1], species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY));
             AjustaFotogramasPic(1, species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY), TRUE);
             data->isShiny = FALSE;
             data->isFemale = FALSE;
@@ -1249,11 +1446,6 @@ void CB2_Pokemon_Sprite_Visualizer(void)
             front_y = GetBattlerSpriteFinal_YCustom(species, 0);
             data->frontspriteId = CreateSprite(&gMultiuseSpriteTemplate, front_x, front_y, 0);
     AplicaSubspritesPic(data->frontspriteId);
-    // El mismo bucle continuo que en combate: anims[1] es la secuencia de la especie
-    // y termina en ANIMCMD_JUMP, asi que gira sola. Sin quitarle la pausa se quedaria
-    // congelada en la pose de reposo y no se podria juzgar la animacion.
-    StartSpriteAnim(&gSprites[data->frontspriteId], 1);
-    gSprites[data->frontspriteId].animPaused = FALSE;
             gSprites[data->frontspriteId].oam.paletteNum = 0;
             gSprites[data->frontspriteId].callback = SpriteCallbackDummy;
             gSprites[data->frontspriteId].oam.priority = 0;
@@ -1268,19 +1460,22 @@ void CB2_Pokemon_Sprite_Visualizer(void)
 
             //Back
             PreparaHuecoPic(2, species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY), FALSE);
-            PreparaHuecoPic(2, species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY), FALSE);
-    HandleLoadSpecialPokePic(FALSE, gMonSpritesGfxPtr->spritesGfx[2], species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY));
-    AjustaFotogramasPic(2, species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY), FALSE);
+            HandleLoadSpecialPokePic(FALSE, gMonSpritesGfxPtr->spritesGfx[2], species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY));
             AjustaFotogramasPic(2, species, (data->isFemale ? FEMALE_PERSONALITY : MALE_PERSONALITY), FALSE);
             BattleLoadOpponentMonSpriteGfxCustom(species, data->isFemale, data->isShiny, 4);
             SetMultiuseSpriteTemplateToPokemon(species, 2);
             offset_y = gSpeciesInfo[species].backPicYOffset;
             data->backspriteId = CreateSprite(&gMultiuseSpriteTemplate, VISUALIZER_MON_BACK_X, VISUALIZER_MON_BACK_Y + offset_y, 0);
     AplicaSubspritesPic(data->backspriteId);
-    ArrancaVaivenDeEspalda(&gSprites[data->backspriteId]);
             gSprites[data->backspriteId].oam.paletteNum = 0;
             gSprites[data->backspriteId].callback = SpriteCallbackDummy;
             gSprites[data->backspriteId].oam.priority = 0;
+
+            // Las dos animaciones continuas, girando desde el principio: paradas en la
+            // pose de reposo no hay nada que juzgar. El ritmo arranca con el que trae
+            // escrito la especie, que es lo que se ensena en el submenu 4.
+            ReiniciaRitmos(data, species);
+            ArrancaAnimacionesConRitmo(data);
 
             //Icon & Follower Sprite
             data->followerspriteId = CreateObjectGraphicsSprite(OBJ_EVENT_MON + species,
@@ -1455,6 +1650,7 @@ static void UpdateSubmenuOneOptionValue(u8 taskId, bool8 increment)
             ResetShadowSettings(data, modArrows->currValue);
 
             UpdateBattlerValue(data);
+            ReiniciaRitmos(data, data->currentmonId);
             ReloadPokemonSprites(data);
             VBlankIntrWait();
             PlaySE(SE_DEX_SCROLL);
@@ -1545,6 +1741,26 @@ static void UpdateShadowSettingsValue(u8 taskId, bool8 increment)
     *destino = (s16)*offset;
 }
 
+// Sube o baja la duracion de la pose y la aplica de golpe, que es de lo que va la
+// pantalla: el cambio se ve en el mismo momento en los dos Pokemon.
+static void UpdateRitmoValue(u8 taskId, bool8 increment)
+{
+    struct PokemonSpriteVisualizer *data = GetStructPtr(taskId);
+    struct RitmoDeAnimacion *ritmo = (data->submenuYpos[2] == 0) ? &data->ritmoFrente
+                                                                 : &data->ritmoEspalda;
+    s32 duracion = ritmo->duracionNueva + (increment ? 1 : -1);
+
+    if (duracion > RITMO_MAXIMO)
+        duracion = RITMO_MINIMO;
+    else if (duracion < RITMO_MINIMO)
+        duracion = RITMO_MAXIMO;
+
+    ritmo->duracionNueva = duracion;
+
+    AplicaRitmo(data);
+    UpdateRitmoText(data);
+}
+
 
 #define READ_PTR_FROM_TASK(taskId, dataId)                      \
     (void *)(                                                   \
@@ -1583,7 +1799,7 @@ static void HandleInput_PokemonSpriteVisualizer(u8 taskId)
     if (JOY_NEW(R_BUTTON) && (Frontsprite->callback == SpriteCallbackDummy))
     {
         PlayCryInternal(data->currentmonId, 0, 120, 10, 0);
-        StartSpriteAnim(Frontsprite, 1);
+        StartSpriteAnim(Frontsprite, ANIM_FRENTE_BUCLE);
 
         if (gSpeciesInfo[data->currentmonId].frontAnimDelay != 0)
         {
@@ -1642,6 +1858,7 @@ static void HandleInput_PokemonSpriteVisualizer(u8 taskId)
                 PrintDigitChars(data);
                 UpdateBattlerValue(data);
                 ResetShadowSettings(data, data->currentmonId);
+                ReiniciaRitmos(data, data->currentmonId);
                 ReloadPokemonSprites(data);
                 data->animIdBack = GetSpeciesBackAnimSet(data->currentmonId) + 1;
                 data->animIdFront = gSpeciesInfo[data->currentmonId].frontAnimId;
@@ -1659,6 +1876,7 @@ static void HandleInput_PokemonSpriteVisualizer(u8 taskId)
                 PrintDigitChars(data);
                 UpdateBattlerValue(data);
                 ResetShadowSettings(data, data->currentmonId);
+                ReiniciaRitmos(data, data->currentmonId);
                 ReloadPokemonSprites(data);
                 data->animIdBack = GetSpeciesBackAnimSet(data->currentmonId) + 1;
                 data->animIdFront = gSpeciesInfo[data->currentmonId].frontAnimId;
@@ -1797,7 +2015,17 @@ static void HandleInput_PokemonSpriteVisualizer(u8 taskId)
     }
     else if (data->currentSubmenu == 3) // Submenu 3
     {
-        if (JOY_NEW(B_BUTTON))
+        if (JOY_NEW(A_BUTTON))
+        {
+            data->currentSubmenu = 4;
+            data->submenuYpos[2] = 0;
+            data->yPosModifyArrows.currentDigit = 0;
+            gSprites[data->yPosModifyArrows.arrowSpriteId[0]].y = OPTIONS_ARROW_Y;
+            PrintInstructionsOnWindow(data);
+            SetArrowInvisibility(data);
+            UpdateRitmoText(data);
+        }
+        else if (JOY_NEW(B_BUTTON))
         {
             data->currentSubmenu = 2;
             PrintInstructionsOnWindow(data);
@@ -1831,6 +2059,34 @@ static void HandleInput_PokemonSpriteVisualizer(u8 taskId)
         else if (JOY_NEW(DPAD_RIGHT))
         {
             UpdateShadowSettingsValue(taskId, TRUE);
+        }
+    }
+    else if (data->currentSubmenu == 4) // Submenu 4
+    {
+        if (JOY_NEW(B_BUTTON))
+        {
+            VuelcaRitmoAlLog(data);
+            data->currentSubmenu = 3;
+            PrintInstructionsOnWindow(data);
+            SetArrowInvisibility(data);
+            UpdateShadowSettingsText(data);
+        }
+        else if (JOY_NEW(DPAD_DOWN) || JOY_NEW(DPAD_UP))
+        {
+            data->submenuYpos[2] = (data->submenuYpos[2] == 0) ? 1 : 0;
+
+            data->yPosModifyArrows.currentDigit = data->submenuYpos[2];
+            gSprites[data->yPosModifyArrows.arrowSpriteId[0]].y = OPTIONS_ARROW_Y + data->yPosModifyArrows.currentDigit * 12;
+        }
+        // Con repeticion, que aqui el recorrido es largo: la espalda provisional que
+        // comparten las especies sin arte propio parte de 600 ticks.
+        else if (JOY_REPEAT(DPAD_LEFT))
+        {
+            UpdateRitmoValue(taskId, FALSE);
+        }
+        else if (JOY_REPEAT(DPAD_RIGHT))
+        {
+            UpdateRitmoValue(taskId, TRUE);
         }
     }
 }
@@ -1877,11 +2133,6 @@ static void ReloadPokemonSprites(struct PokemonSpriteVisualizer *data)
     front_y = GetBattlerSpriteFinal_YCustom(species, 0);
     data->frontspriteId = CreateSprite(&gMultiuseSpriteTemplate, front_x, front_y, 0);
     AplicaSubspritesPic(data->frontspriteId);
-    // El mismo bucle continuo que en combate: anims[1] es la secuencia de la especie
-    // y termina en ANIMCMD_JUMP, asi que gira sola. Sin quitarle la pausa se quedaria
-    // congelada en la pose de reposo y no se podria juzgar la animacion.
-    StartSpriteAnim(&gSprites[data->frontspriteId], 1);
-    gSprites[data->frontspriteId].animPaused = FALSE;
     gSprites[data->frontspriteId].oam.paletteNum = 0;
     personality = Random();
     DesplazaTonoPaleta(OBJ_PLTT_ID(0), personality);
@@ -1899,10 +2150,15 @@ static void ReloadPokemonSprites(struct PokemonSpriteVisualizer *data)
     offset_y = gSpeciesInfo[species].backPicYOffset;
     data->backspriteId = CreateSprite(&gMultiuseSpriteTemplate, VISUALIZER_MON_BACK_X, VISUALIZER_MON_BACK_Y + offset_y, 0);
     AplicaSubspritesPic(data->backspriteId);
-    ArrancaVaivenDeEspalda(&gSprites[data->backspriteId]);
     gSprites[data->backspriteId].oam.paletteNum = 0;
     gSprites[data->backspriteId].callback = SpriteCallbackDummy;
     gSprites[data->backspriteId].oam.priority = 0;
+
+    // Los sprites nacen mirando la tabla de la ROM que les pone la plantilla, asi que
+    // el ritmo que se este probando hay que volver a ponerlo aqui. Con la especie sin
+    // cambiar -variocolor, sexo- se conserva; al cambiarla, quien la cambia lo reinicia
+    // antes de llamar.
+    ArrancaAnimacionesConRitmo(data);
 
     //Icon & Follower Sprite
     u16 graphicsId = species + OBJ_EVENT_MON;
@@ -1943,6 +2199,15 @@ static void Exit_PokemonSpriteVisualizer(u8 taskId)
     if (!gFundidoPaletas.activo)
     {
         struct PokemonSpriteVisualizer *data = GetStructPtr(taskId);
+
+        // Los sprites siguen vivos un rato despues de soltar esta memoria, y sus
+        // animaciones pueden estar mirando la copia editada del ritmo, que vive
+        // dentro de ella. Se les devuelve la tabla de la ROM antes de liberar: si
+        // alguien los anima entre medias, lo que lea sera basura y el tipo de comando
+        // es un indice a una tabla de funciones.
+        gSprites[data->frontspriteId].anims = data->ritmoFrente.tablaEspecie;
+        gSprites[data->backspriteId].anims = data->ritmoEspalda.tablaEspecie;
+
         Free(data);
         FreeMonSpritesGfx();
         DestroyTask(taskId);

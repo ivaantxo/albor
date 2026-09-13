@@ -136,7 +136,10 @@ void SpriteCB_TrainerSlideIn(struct Sprite *sprite)
             if (sprite->y2 != 0)
                 sprite->callback = SpriteCB_TrainerSlideVertical;
             else
+            {
+                sprite->animPaused = FALSE;
                 sprite->callback = SpriteCallbackDummy;
+            }
         }
     }
 }
@@ -146,7 +149,10 @@ static void SpriteCB_TrainerSlideVertical(struct Sprite *sprite)
 {
     sprite->y2 -= 2;
     if (sprite->y2 == 0)
+    {
+        sprite->animPaused = FALSE;
         sprite->callback = SpriteCallbackDummy;
+    }
 }
 
 #undef sSpeedX
@@ -354,10 +360,39 @@ void BattleLoadMonSpriteGfx(struct Pokemon *mon, u32 battler)
     GuardaYTinePaletaCombate(16 + battler);
 }
 
+// Una reserva fallida debe dejar un grafico valido sin escribir fuera del hueco
+// anterior. El lienzo transparente sirve tanto para una pose de 64 como de 80.
+static const u32 sTrainerFrontPicVacio[PIC_80_BYTES / sizeof(u32)] = {0};
+
 void DecompressTrainerFrontPic(u16 frontPicId, u8 battler)
 {
-    DecompressPicFromTable(&gTrainerSprites[frontPicId].frontPic,
-                           gMonSpritesGfxPtr->spritesGfx[battler]);
+    u32 porFotograma = GetTrainerFrontPicFrameSize(frontPicId);
+    u32 total = GetTrainerFrontPicTotalSize(frontPicId);
+    u32 fotogramas = total / porFotograma;
+    u8 *hueco = HuecoPic(battler, total);
+    const u8 *imagenes = hueco;
+
+    if (hueco != NULL && gMonSpritesGfxPtr->tamanoHueco[battler] >= total)
+    {
+        DecompressPicFromTable(&gTrainerSprites[frontPicId].frontPic, hueco);
+        ReordenaPicTroceado(hueco, fotogramas, porFotograma);
+    }
+    else
+    {
+        // HuecoPic conserva la reserva anterior si no puede ampliarla. No se
+        // debe descomprimir una animacion grande sobre esa reserva mas pequena,
+        // ni siquiera borrarla si no da para una pose completa.
+        fotogramas = 1;
+        imagenes = (const u8 *)sTrainerFrontPicVacio;
+    }
+
+    for (u32 i = 0; i < NUMERO_FRAMES_POKEMON; i++)
+    {
+        u32 cual = i < fotogramas ? i : 0;
+
+        gMonSpritesGfxPtr->frameImages[battler][i].data = imagenes + cual * porFotograma;
+        gMonSpritesGfxPtr->frameImages[battler][i].size = porFotograma;
+    }
     LoadSpritePalette(&gTrainerSprites[frontPicId].palette);
 
     // El entrenador rival no va a una ranura fija como el jugador, sino a una que

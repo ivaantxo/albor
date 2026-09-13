@@ -13,6 +13,7 @@
 #include "fldeff.h"
 #include "gpu_regs.h"
 #include "main.h"
+#include "malloc.h"
 #include "mirage_tower.h"
 #include "menu.h"
 #include "metatile_behavior.h"
@@ -20,6 +21,7 @@
 #include "palette.h"
 #include "party_menu.h"
 #include "pokemon.h"
+#include "pic_combate.h"
 #include "pokemon_storage_system.h"
 #include "random.h"
 #include "script.h"
@@ -798,12 +800,42 @@ bool8 FieldEffectActiveListContains(u8 id)
     return FALSE;
 }
 
+static const u32 sTrainerMugshotVacio[TRAINER_PIC_SIZE / sizeof(u32)] = {0};
+
 u8 CreateTrainerSprite(u8 trainerSpriteID, s16 x, s16 y, u8 subpriority)
 {
     struct SpriteTemplate spriteTemplate;
+
+    if (GetTrainerFrontPicFrameSize(trainerSpriteID) == PIC_80_BYTES)
+    {
+        u8 *pic = Alloc(GetTrainerFrontPicTotalSize(trainerSpriteID));
+        struct SpriteSheet sheet = {(const u8 *)sTrainerMugshotVacio, TRAINER_PIC_SIZE, gTrainerSprites[trainerSpriteID].frontPic.tag};
+
+        if (pic != NULL)
+        {
+            DecompressPicFromTable(&gTrainerSprites[trainerSpriteID].frontPic, pic);
+            // Esta funcion sirve a la transicion de retratos, que amplifica un unico
+            // objeto afin de 64x32. Derivar una vista de la primera pose conserva esa
+            // transicion sin aplicar escala a las seis piezas del front de 80x80.
+            // Se conserva la parte superior y se centra el recorte horizontalmente;
+            // el archivo original y el sprite completo del combate siguen intactos.
+            for (u32 row = 0; row < TRAINER_PIC_HEIGHT / 8; row++)
+                memmove(pic + row * 8 * TILE_4BPP,
+                        pic + (row * 10 + 1) * TILE_4BPP, 8 * TILE_4BPP);
+            sheet.data = pic;
+        }
+        // Si no cabe el buffer temporal, la transicion conserva un sprite valido
+        // con una imagen vacia en vez de devolver un indice que no existe.
+        LoadSpriteSheet(&sheet);
+        if (pic != NULL)
+            Free(pic);
+    }
+    else
+    {
+        LoadCompressedSpriteSheet(&gTrainerSprites[trainerSpriteID].frontPic);
+    }
     // La paleta ya no necesita buffer intermedio: va cruda en la ROM.
     LoadSpritePalette(&gTrainerSprites[trainerSpriteID].palette);
-    LoadCompressedSpriteSheet(&gTrainerSprites[trainerSpriteID].frontPic);
     spriteTemplate.tileTag = gTrainerSprites[trainerSpriteID].frontPic.tag;
     spriteTemplate.paletteTag = gTrainerSprites[trainerSpriteID].palette.tag;
     spriteTemplate.oam = &sOam_64x64;

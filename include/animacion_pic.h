@@ -30,10 +30,12 @@
 // da un saltito hacia delante, y el gesto reaprovecha esa misma pose para frenar en
 // seco. Eso no se puede generalizar, y no se intenta.
 
-// Lo que dura cada pose, en fotogramas de pantalla. Igual para todas las especies y
-// para los dos lados: es lo que da el aire de BW, y tenerlo suelto por especie solo
-// servia para que unas fueran mas rapidas que otras sin querer.
+// Duracion predeterminada de las tablas antiguas. Las selecciones BW conservan
+// tiempos propios por especie y por tramo mediante POSE_DURANTE: menos dibujos
+// no implica menos tiempo. Los ticks son actualizaciones de pantalla (aprox. 60/s).
 #define DURACION_POSE 20
+
+#define POSE_DURANTE(indice, ticks) ANIMCMD_FRAME(indice, ticks)
 
 // Cuanto se esta en el vaiven antes de hacer el gesto. Las repeticiones se calculan
 // solas a partir de esto y de lo larga que sea la vuelta de cada especie, asi que una

@@ -3,7 +3,8 @@
 
 #include "constants/global.h"
 #include "constants/pokemon_sprite_visualizer.h"
-#include "constants/global.h"
+#include "constants/pokemon.h"
+#include "sprite.h"
 
 //Structs
 struct PokemonSpriteVisualizerModifyArrows
@@ -44,6 +45,23 @@ struct PokemonSpriteOffsets
     s8 offset_front_elevation;
 };
 
+// El ritmo de una animacion continua mientras se prueba en el visor.
+//
+// La tabla de la especie esta en la ROM y no se toca: lo que se edita es una copia en
+// memoria con todas las poses puestas a la misma duracion, que es la constante que
+// luego se escribe a mano en animaciones_pokemon.h. Mientras la duracion que se prueba
+// sea la que ya trae la especie se usa su tabla original, para no aplanar los tiempos
+// por tramo de las que los llevan escritos uno a uno.
+struct RitmoDeAnimacion
+{
+    const union AnimCmd *const *tablaEspecie;
+    u8 indice;                  // cual de las animaciones de la tabla es la continua
+    u16 duracionEspecie;
+    u16 duracionNueva;
+    const union AnimCmd *tabla[ANIMACIONES_POR_PIC];
+    union AnimCmd comandos[MAX_COMANDOS_ANIM];
+};
+
 struct PokemonShadowSettings
 {
     s8 definedX;
@@ -70,6 +88,8 @@ struct PokemonSpriteVisualizer
     struct PokemonSpriteVisualizerYPosModifiyArrows yPosModifyArrows;
     struct PokemonSpriteConstValues constSpriteValues;
     struct PokemonSpriteOffsets offsetsSpriteValues;
+    struct RitmoDeAnimacion ritmoFrente;
+    struct RitmoDeAnimacion ritmoEspalda;
 
     u8 animIdBack;
     u8 animIdFront;

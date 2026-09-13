@@ -8,7 +8,9 @@
   "shared_views": {},
   "warnings": [
     "default.front: No se identifica un ciclo inicial repetido con confianza; la selección base requiere revisión.",
-    "default.back: No se identifica un ciclo inicial repetido con confianza; la selección base requiere revisión."
+    "default.back: No se identifica un ciclo inicial repetido con confianza; la selección base requiere revisión.",
+    "default.front: El ciclo base no se ha detectado con confianza; revisar su duración y recorrido.",
+    "default.back: El ciclo base no se ha detectado con confianza; revisar su duración y recorrido."
   ],
   "palette": [
     [
@@ -262,6 +264,262 @@
       "ramp sizes required shifting some preferred palette indices"
     ]
   },
+  "palettes": {
+    "default": [
+      [
+        255,
+        0,
+        255
+      ],
+      [
+        74,
+        41,
+        0
+      ],
+      [
+        90,
+        65,
+        0
+      ],
+      [
+        123,
+        82,
+        41
+      ],
+      [
+        164,
+        106,
+        41
+      ],
+      [
+        197,
+        131,
+        41
+      ],
+      [
+        189,
+        164,
+        0
+      ],
+      [
+        213,
+        164,
+        82
+      ],
+      [
+        238,
+        197,
+        0
+      ],
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        255,
+        255,
+        255
+      ],
+      [
+        255,
+        74,
+        131
+      ],
+      [
+        255,
+        139,
+        172
+      ],
+      [
+        16,
+        57,
+        106
+      ],
+      [
+        255,
+        0,
+        255
+      ],
+      [
+        255,
+        0,
+        255
+      ]
+    ]
+  },
+  "palette_metadata_by_variant": {
+    "default": {
+      "frame_count": 8,
+      "total_pixels": 32768,
+      "opaque_pixels": 6183,
+      "transparent_pixels": 26585,
+      "partial_alpha_pixels": 0,
+      "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "source_opaque_color_count": 13,
+      "quantized": false,
+      "method": "exact_source_colors",
+      "changed_opaque_pixels": 0,
+      "mean_delta_e76": 0.0,
+      "max_delta_e76": 0.0,
+      "ordering_method": "heuristic_reference_blocks_then_dark_to_light_with_family_slots",
+      "species_reference_grouped_colors": 13,
+      "anatomical_grouping_verified": false,
+      "family_alignment_verified": false,
+      "species_reference_provided": true,
+      "family_reference_provided": true,
+      "family_matched_ramps": 4,
+      "ramps": [
+        {
+          "indices": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "colors": [
+            [
+              74,
+              41,
+              0
+            ],
+            [
+              90,
+              65,
+              0
+            ],
+            [
+              123,
+              82,
+              41
+            ],
+            [
+              164,
+              106,
+              41
+            ],
+            [
+              197,
+              131,
+              41
+            ],
+            [
+              189,
+              164,
+              0
+            ],
+            [
+              213,
+              164,
+              82
+            ],
+            [
+              238,
+              197,
+              0
+            ]
+          ],
+          "kind": "chromatic",
+          "hue_degrees": 35.18,
+          "opaque_pixel_count": 3978,
+          "ordering_reference": "family",
+          "preferred_start_index": 1,
+          "start_preserved": true,
+          "order": "dark_to_light_CIE_Lstar"
+        },
+        {
+          "indices": [
+            9,
+            10
+          ],
+          "colors": [
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              255,
+              255,
+              255
+            ]
+          ],
+          "kind": "neutral",
+          "hue_degrees": 0.0,
+          "opaque_pixel_count": 1835,
+          "ordering_reference": "family",
+          "preferred_start_index": 3,
+          "start_preserved": false,
+          "order": "dark_to_light_CIE_Lstar"
+        },
+        {
+          "indices": [
+            11,
+            12
+          ],
+          "colors": [
+            [
+              255,
+              74,
+              131
+            ],
+            [
+              255,
+              139,
+              172
+            ]
+          ],
+          "kind": "chromatic",
+          "hue_degrees": 342.24,
+          "opaque_pixel_count": 239,
+          "ordering_reference": "family",
+          "preferred_start_index": 7,
+          "start_preserved": false,
+          "order": "dark_to_light_CIE_Lstar"
+        },
+        {
+          "indices": [
+            13
+          ],
+          "colors": [
+            [
+              16,
+              57,
+              106
+            ]
+          ],
+          "kind": "chromatic",
+          "hue_degrees": 212.67,
+          "opaque_pixel_count": 131,
+          "ordering_reference": "family",
+          "preferred_start_index": 11,
+          "start_preserved": false,
+          "order": "dark_to_light_CIE_Lstar"
+        }
+      ],
+      "unused_indices": [
+        14,
+        15
+      ],
+      "opaque_palette_color_count": 13,
+      "palette_size": 16,
+      "transparent_index": 0,
+      "transparent_rgb": [
+        255,
+        0,
+        255
+      ],
+      "opaque_magenta_present": false,
+      "review_reasons": [
+        "body regions and evolution correspondence use color heuristics",
+        "ramp sizes required shifting some preferred palette indices"
+      ]
+    }
+  },
   "palette_groups": [],
   "animation": {
     "front": {
@@ -298,6 +556,11 @@
       "stem": "anim_front",
       "source": "desarrollo/.apng_bw/f140.png",
       "source_sha256": "a83cbe45072a5e1dee3b8d333a56af70a9413341031d6ed51496e9fea05cb4ae",
+      "source_type": "apng",
+      "source_metadata": {
+        "source_type": "apng",
+        "timing_kind": "apng_delays"
+      },
       "source_frame_count": 63,
       "source_durations_ms": [
         100.2906976744186,
@@ -371,6 +634,7 @@
         50,
         61
       ],
+      "selected_unique_count": 5,
       "automatic_selection": {
         "indices": [
           10,
@@ -1529,7 +1793,229 @@
         "exceptional_size": false,
         "alignment": "union_center_bottom"
       },
-      "selected_unique_count": 5
+      "palette_file": "normal.pal",
+      "timing": {
+        "version": 1,
+        "mode": "source_timeline",
+        "method": "nearest_visual_pose",
+        "fps": 60,
+        "loop": [
+          {
+            "frame": 0,
+            "ticks": 24
+          },
+          {
+            "frame": 1,
+            "ticks": 18
+          },
+          {
+            "frame": 0,
+            "ticks": 12
+          },
+          {
+            "frame": 2,
+            "ticks": 24
+          }
+        ],
+        "special": [
+          {
+            "frame": 0,
+            "ticks": 6
+          },
+          {
+            "frame": 4,
+            "ticks": 12
+          },
+          {
+            "frame": 2,
+            "ticks": 4
+          },
+          {
+            "frame": 4,
+            "ticks": 2
+          },
+          {
+            "frame": 2,
+            "ticks": 18
+          },
+          {
+            "frame": 4,
+            "ticks": 6
+          },
+          {
+            "frame": 0,
+            "ticks": 18
+          },
+          {
+            "frame": 3,
+            "ticks": 12
+          },
+          {
+            "frame": 1,
+            "ticks": 12
+          },
+          {
+            "frame": 0,
+            "ticks": 4
+          },
+          {
+            "frame": 3,
+            "ticks": 2
+          },
+          {
+            "frame": 0,
+            "ticks": 12
+          },
+          {
+            "frame": 4,
+            "ticks": 18
+          }
+        ],
+        "sequence": [
+          {
+            "frame": 0,
+            "ticks": 24
+          },
+          {
+            "frame": 1,
+            "ticks": 18
+          },
+          {
+            "frame": 0,
+            "ticks": 18
+          },
+          {
+            "frame": 4,
+            "ticks": 12
+          },
+          {
+            "frame": 2,
+            "ticks": 4
+          },
+          {
+            "frame": 4,
+            "ticks": 2
+          },
+          {
+            "frame": 2,
+            "ticks": 18
+          },
+          {
+            "frame": 4,
+            "ticks": 6
+          },
+          {
+            "frame": 0,
+            "ticks": 18
+          },
+          {
+            "frame": 3,
+            "ticks": 12
+          },
+          {
+            "frame": 1,
+            "ticks": 12
+          },
+          {
+            "frame": 0,
+            "ticks": 4
+          },
+          {
+            "frame": 3,
+            "ticks": 2
+          },
+          {
+            "frame": 0,
+            "ticks": 12
+          },
+          {
+            "frame": 4,
+            "ticks": 19
+          },
+          {
+            "frame": 2,
+            "ticks": 24
+          }
+        ],
+        "idle_cycles_before_special": 1,
+        "source_duration_ms": 3409.883721,
+        "effective_duration_ms": 3409.883721,
+        "cycle_ticks": 205,
+        "loop_ticks": 78,
+        "special_ticks": 126,
+        "source_special_range_exclusive": [
+          23,
+          63
+        ],
+        "source_frame_to_slot": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          4,
+          4,
+          4,
+          4,
+          4,
+          2,
+          4,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          4,
+          4,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          3,
+          3,
+          3,
+          3,
+          1,
+          1,
+          1,
+          1,
+          0,
+          3,
+          0,
+          0,
+          0,
+          4,
+          4,
+          4
+        ],
+        "warnings": [
+          "El ciclo base no se ha detectado con confianza; revisar su duración y recorrido."
+        ]
+      }
     },
     {
       "variant": "default",
@@ -1538,6 +2024,11 @@
       "stem": "back",
       "source": "desarrollo/.apng_bw/b140.png",
       "source_sha256": "ff3290f3b066b986b7540ceec1b9eddc8a433f32713ab98b2582de415fb06037",
+      "source_type": "apng",
+      "source_metadata": {
+        "source_type": "apng",
+        "timing_kind": "apng_delays"
+      },
       "source_frame_count": 62,
       "source_durations_ms": [
         100.2906976744186,
@@ -1608,6 +2099,7 @@
         16,
         0
       ],
+      "selected_unique_count": 3,
       "automatic_selection": {
         "indices": [
           10,
@@ -2657,7 +3149,61 @@
         "exceptional_size": false,
         "alignment": "union_center_bottom"
       },
-      "selected_unique_count": 3
+      "palette_file": "normal.pal",
+      "timing": {
+        "version": 1,
+        "mode": "source_idle_cycle",
+        "method": "nearest_visual_pose",
+        "fps": 60,
+        "loop": [
+          {
+            "frame": 0,
+            "ticks": 24
+          },
+          {
+            "frame": 1,
+            "ticks": 18
+          },
+          {
+            "frame": 0,
+            "ticks": 8
+          },
+          {
+            "frame": 2,
+            "ticks": 24
+          }
+        ],
+        "special": [],
+        "sequence": [
+          {
+            "frame": 0,
+            "ticks": 24
+          },
+          {
+            "frame": 1,
+            "ticks": 18
+          },
+          {
+            "frame": 0,
+            "ticks": 8
+          },
+          {
+            "frame": 2,
+            "ticks": 24
+          }
+        ],
+        "idle_cycles_before_special": null,
+        "source_duration_ms": 3409.883721,
+        "effective_duration_ms": 1236.918605,
+        "cycle_ticks": 74,
+        "loop_ticks": 74,
+        "special_ticks": 0,
+        "source_special_range_exclusive": null,
+        "source_frame_to_slot": [],
+        "warnings": [
+          "El ciclo base no se ha detectado con confianza; revisar su duración y recorrido."
+        ]
+      }
     }
   ]
 }

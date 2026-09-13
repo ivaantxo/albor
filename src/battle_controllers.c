@@ -1277,17 +1277,23 @@ void BtlController_HandleReturnMonToBall(u32 battler)
 
 void BtlController_HandleDrawTrainerPic(u32 battler, u32 trainerPicId, bool32 isFrontPic, s16 xPos, s16 yPos, s32 subpriority)
 {
+    if (isFrontPic || GetBattlerSide(battler) == LADO_OPONENTE)
+    {
+        // Mantener el centro en y=40 deja visible el lienzo entero de 80x80.
+        // Subirlo para igualar los pies de los frentes de 64 cortaria la cabeza.
+        yPos += gTrainerSprites[trainerPicId].y_offset;
+    }
     if (GetBattlerSide(battler) == LADO_OPONENTE) // Always the front sprite for the opponent.
     {
         DecompressTrainerFrontPic(trainerPicId, battler);
-        SetMultiuseSpriteTemplateToTrainer(trainerPicId, battler);
+        SetMultiuseSpriteTemplateToTrainer(trainerPicId, battler, TRUE);
         if (subpriority == -1)
             subpriority = GetBattlerSpriteSubpriority(battler);
         gBattlerSpriteIds[battler] = CreateSprite(&gMultiuseSpriteTemplate,
                                                    xPos,
                                                    yPos,
                                                    subpriority);
-AplicaSubspritesPic(gBattlerSpriteIds[battler]);
+        AplicaSubspritesSinMover(gBattlerSpriteIds[battler]);
 
         gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = IndexOfSpritePaletteTag(gTrainerSprites[trainerPicId].palette.tag);
         gSprites[gBattlerSpriteIds[battler]].x2 = -ANCHO_PANTALLA;
@@ -1300,24 +1306,24 @@ AplicaSubspritesPic(gBattlerSpriteIds[battler]);
         if (isFrontPic)
         {
             DecompressTrainerFrontPic(trainerPicId, battler);
-            SetMultiuseSpriteTemplateToTrainer(trainerPicId, battler);
+            SetMultiuseSpriteTemplateToTrainer(trainerPicId, battler, TRUE);
             if (subpriority == -1)
                 subpriority = GetBattlerSpriteSubpriority(battler);
             gBattlerSpriteIds[battler] = CreateSprite(&gMultiuseSpriteTemplate,
                                                              xPos,
                                                              yPos,
                                                              subpriority);
-AplicaSubspritesPic(gBattlerSpriteIds[battler]);
+            AplicaSubspritesSinMover(gBattlerSpriteIds[battler]);
 
             gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = IndexOfSpritePaletteTag(gTrainerSprites[trainerPicId].palette.tag);
-            gSprites[gBattlerSpriteIds[battler]].oam.affineMode = ST_OAM_AFFINE_OFF;
+            FreeSpriteOamMatrix(&gSprites[gBattlerSpriteIds[battler]]);
             gSprites[gBattlerSpriteIds[battler]].hFlip = 1;
             gSprites[gBattlerSpriteIds[battler]].y2 = 48;
         }
         else
         {
             DecompressTrainerBackPic(trainerPicId, battler);
-            SetMultiuseSpriteTemplateToTrainer(trainerPicId, battler);
+            SetMultiuseSpriteTemplateToTrainer(trainerPicId, battler, FALSE);
             if (subpriority == -1)
                 subpriority = GetBattlerSpriteSubpriority(battler);
             gBattlerSpriteIds[battler] = CreateSprite(&gMultiuseSpriteTemplate,
@@ -1333,6 +1339,14 @@ AplicaSubspritesPic(gBattlerSpriteIds[battler]);
         gSprites[gBattlerSpriteIds[battler]].x2 = ANCHO_PANTALLA;
         gSprites[gBattlerSpriteIds[battler]].sSpeedX = -2;
     }
+    if ((isFrontPic || GetBattlerSide(battler) == LADO_OPONENTE)
+     && gTrainerSprites[trainerPicId].animation != NULL)
+    {
+        // La entrada se ve al llegar a su sitio, sin consumir las poses mientras
+        // el entrenador todavia esta fuera de pantalla durante el deslizamiento.
+        StartSpriteAnim(&gSprites[gBattlerSpriteIds[battler]], 1);
+        gSprites[gBattlerSpriteIds[battler]].animPaused = TRUE;
+    }
     gSprites[gBattlerSpriteIds[battler]].callback = SpriteCB_TrainerSlideIn;
 
     gBattlerControllerFuncs[battler] = Controller_WaitForTrainerPic;
@@ -1343,7 +1357,7 @@ void BtlController_HandleTrainerSlide(u32 battler, u32 trainerPicId)
     if (GetBattlerSide(battler) == LADO_JUGADOR)
     {
         DecompressTrainerBackPic(trainerPicId, battler);
-        SetMultiuseSpriteTemplateToTrainer(trainerPicId, battler);
+        SetMultiuseSpriteTemplateToTrainer(trainerPicId, battler, FALSE);
         gBattlerSpriteIds[battler] = CreateSprite(&gMultiuseSpriteTemplate,
                                                          80,
                                                          (8 - gTrainerBacksprites[trainerPicId].coordinates.size) * 4 + 80,
@@ -1355,15 +1369,22 @@ void BtlController_HandleTrainerSlide(u32 battler, u32 trainerPicId)
     }
     else
     {
+        s16 yPos = 40 + gTrainerSprites[trainerPicId].y_offset;
+
         DecompressTrainerFrontPic(trainerPicId, battler);
-        SetMultiuseSpriteTemplateToTrainer(trainerPicId, battler);
-        gBattlerSpriteIds[battler] = CreateSprite(&gMultiuseSpriteTemplate, 176, 40, 30);
-AplicaSubspritesPic(gBattlerSpriteIds[battler]);
+        SetMultiuseSpriteTemplateToTrainer(trainerPicId, battler, TRUE);
+        gBattlerSpriteIds[battler] = CreateSprite(&gMultiuseSpriteTemplate, 176, yPos, 30);
+        AplicaSubspritesSinMover(gBattlerSpriteIds[battler]);
         gSprites[gBattlerSpriteIds[battler]].oam.affineParam = trainerPicId;
         gSprites[gBattlerSpriteIds[battler]].oam.paletteNum = IndexOfSpritePaletteTag(gTrainerSprites[trainerPicId].palette.tag);
         gSprites[gBattlerSpriteIds[battler]].x2 = 96;
         gSprites[gBattlerSpriteIds[battler]].x += 32;
         gSprites[gBattlerSpriteIds[battler]].sSpeedX = -2;
+    }
+    if (GetBattlerSide(battler) == LADO_OPONENTE && gTrainerSprites[trainerPicId].animation != NULL)
+    {
+        StartSpriteAnim(&gSprites[gBattlerSpriteIds[battler]], 1);
+        gSprites[gBattlerSpriteIds[battler]].animPaused = TRUE;
     }
     gSprites[gBattlerSpriteIds[battler]].callback = SpriteCB_TrainerSlideIn;
 

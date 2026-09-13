@@ -37,6 +37,9 @@ struct TrainerSprite
     const union AnimCmd *const *const animation;
     const struct Coords16 mugshotCoords;
     s16 mugshotRotation;
+    // Cero conserva el lienzo de 64x64 de las entradas antiguas. Los frentes de
+    // 80x80 declaran 3200 bytes y se reparten en varios objetos de GBA.
+    u16 bytesPorFotograma;
 };
 
 struct TrainerBacksprite
@@ -149,6 +152,20 @@ extern const union AnimCmd *const gAnims_MonPic[];
 extern const union AnimCmd *const gAnims_Trainer[];
 extern const struct TrainerSprite gTrainerSprites[];
 extern const struct TrainerBacksprite gTrainerBacksprites[];
+
+static inline u32 GetTrainerFrontPicFrameSize(u16 trainerPicId)
+{
+    u32 bytes = gTrainerSprites[trainerPicId].bytesPorFotograma;
+
+    return bytes != 0 ? bytes : TRAINER_PIC_SIZE;
+}
+
+static inline u32 GetTrainerFrontPicTotalSize(u16 trainerPicId)
+{
+    // Las entradas antiguas declaran solo una pose en frontPic.size aunque su
+    // archivo contiene tres. La cabecera LZ77 describe todo lo que se escribira.
+    return gTrainerSprites[trainerPicId].frontPic.data[0] >> 8;
+}
 
 extern const struct Trainer gTrainers[];
 

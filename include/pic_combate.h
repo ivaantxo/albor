@@ -28,6 +28,15 @@
 // Lo que hay que reservar por fotograma y combatiente: el mayor de los casos.
 #define MAX_PIC_BYTES        PIC_GRANDE_BYTES
 
+// Cuantas poses puede traer un pic como mucho.
+//
+// No es un limite de la animacion -de eso va NUMERO_FRAMES_POKEMON-, es lo que hace
+// que el lienzo se pueda DEDUCIR del peso del pic en vez de declararlo a mano. La
+// cuenta: 9 poses de 64x64 pesan 18432 bytes, exactamente lo mismo que 4 de 96x96,
+// asi que a partir de las 9 el peso deja de decir cual de los dos es. Por debajo, no
+// hay dos lienzos que coincidan (los otros choques estan en 16 y en 25 poses).
+#define POSES_MAXIMAS_PIC      8
+
 // Cuantos bytes ocupa un fotograma del pic de esta especie (segun genero).
 u32 BytesPicCombate(u32 especie, u32 personalidad, bool32 esFront);
 u32 BytesPicDescomprimido(u32 especie, u32 personalidad, bool32 esFront);
@@ -43,6 +52,10 @@ void ReordenaPicTroceado(u8 *datos, u32 numFotogramas, u32 bytesPorFotograma);
 // Indice del vaiven continuo dentro de gAnims_MonPic, la tabla de los sprites de
 // espalda. Ver src/data.c.
 #define ANIM_ESPALDA_BUCLE 2
+
+// Y el del frente, que tiene tabla propia por especie y no comparte reparto con el de
+// espalda: ahi la continua es la 1. Ver frontAnimFrames en species_info.h.
+#define ANIM_FRENTE_BUCLE 1
 
 // Asegura que el hueco de un combatiente mida al menos lo pedido. Devuelve donde esta,
 // que puede seguir siendo el anterior si no hubo memoria.

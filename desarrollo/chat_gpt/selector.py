@@ -25,6 +25,8 @@ except ImportError:
 from catalog import build_catalog
 from palette import build_palette, index_image
 from selection import load_animation, select_frames
+from legacy_sources import load_legacy_animation, supplement_catalog
+from timing import build_timing
 
 MAGENTA = (255, 0, 255)
 SIDES = {'front': 5, 'back': 3}
@@ -123,7 +125,7 @@ def sheet(frames, indices, title, path, columns=8, roles=None):
         draw.rectangle((x + 4, y + 4, x + cell_w - 5, y + cell_h - 5), fill='#d8dce4')
         scaled = frame.convert('RGBA').resize((w * zoom, h * zoom), Image.Resampling.NEAREST)
         result.paste(scaled, (x + (cell_w - w * zoom) // 2, y + 4), scaled)
-        label = f'{i}: {roles[i]} | APNG {source_index}' if roles else f'APNG {source_index}'
+        label = f'{i}: {roles[i]} | fuente {source_index}' if roles else f'Fuente {source_index}'
         draw.text((x + 9, y + h * zoom + 11), label, fill='#17202c')
     result.save(path)
 
@@ -136,13 +138,22 @@ def source_sheet(frames, path, title):
             seen.add(digest)
             unique.append(frame)
             indices.append(i)
-    sheet(unique, indices, title + ' / poses distintas; indice APNG original', path)
+    sheet(unique, indices, title + ' / poses distintas; indice original', path)
 
 
 def save_preview(path, indexed, order, milliseconds):
     frames = [indexed[i] for i in order]
     frames[0].save(path, save_all=True, append_images=frames[1:], duration=milliseconds,
                    loop=0, transparency=0, disposal=2, optimize=False)
+
+
+def load_source(path, side, source_type='apng', frame_size=None):
+    if source_type == 'legacy_strip':
+        return load_legacy_animation(path, side, frame_size)
+    if source_type != 'apng':
+        raise ValueError('source_type debe ser apng o legacy_strip.')
+    frames, durations = load_animation(path)
+    return frames, durations, {'source_type': 'apng', 'timing_kind': 'apng_delays'}
 
 
 def palette_sheet(palette, path):
@@ -224,7 +235,6 @@ def _prepare_species_files(entry, config, settings, all_sheets, folder):
             options = config.get(key, {}).get(side, {})
             if variant.get(f'{side}_shared_with_default') and not options:
                 shared[f'{key}.{side}'] = f'default.{side}'
-                continue
             source = options.get('source') or variant.get(side)
             if source is None:
                 missing.append(f'{key}.{side}')
@@ -232,8 +242,17 @@ def _prepare_species_files(entry, config, settings, all_sheets, folder):
             path = (REPO / source).resolve()
             if not path.is_relative_to(REPO):
                 raise ValueError('Las fuentes deben estar dentro del repositorio.')
-            frames, durations = load_animation(path)
+            source_type = options.get('source_type', 'apng' if options.get('source') else variant.get(f'{side}_source_type', 'apng'))
+            frames, durations, source_metadata = load_source(path, side, source_type, options.get('source_frame_size'))
+            warnings.extend(f'{key}.{side}: {note}' for note in source_metadata.get('warnings', []))
             selection = select_frames(frames, durations, count)
+            if source_type == 'legacy_strip' and len(frames) <= 4:
+                # Las tiras antiguas de cuatro poses usan base/movimiento/gesto/retorno.
+                # No se reclasifica el gesto como un extremo del movimiento base.
+                n = len(frames)
+                selection['indices'] = ([0, 1, 0, 2, 3] if n == 4 else
+                                        [0, min(1, n-1), 0, min(2, n-1), n-1]) if side == 'front' else [0, min(1, n-1), min(2, n-1)]
+                selection['legacy_role_mapping'] = True
             indices = options.get('indices', selection['indices'])
             if not isinstance(indices, list) or len(indices) != count:
                 raise ValueError(f'{key}.{side}: se necesitan exactamente {count} indices.')
@@ -253,19 +272,27 @@ def _prepare_species_files(entry, config, settings, all_sheets, folder):
                 warnings.extend(f'{key}.{side}: {w}' for w in selection.get('warnings', []))
             views.append({'variant': key, 'side': side, 'filename': name, 'stem': stem,
                           'source': relative(path), 'source_sha256': sha256(path),
+                          'source_type': source_type, 'source_metadata': source_metadata,
                           'source_frame_count': len(frames), 'source_durations_ms': durations,
                           'indices': indices, 'selected_unique_count': len({frame.tobytes() for frame in chosen}),
                           'automatic_selection': selection,
                           'manual_selection': 'indices' in options, 'layout': layout,
-                          'frames': placed, 'source_frames': frames if all_sheets else None})
+                          'frames': placed, 'source_frames': frames,
+                          'timing_options': options.get('timing', {})})
     family_reference = settings.get('family_reference')
-    palette, metadata = (None, None)
-    if views:
-        palette, metadata = build_palette([frame for view in views for frame in view['frames']],
-                                          read_palette(REPO / 'graphics/pokemon' / entry['output_dir'] / 'normal.pal'),
-                                          family_reference)
-        if 'palette_order' in config:
-            order = config['palette_order']
+    palettes, metadatas = {}, {}
+    for variant_key in ('default', 'female'):
+        group = [v for v in views if v['variant'] == variant_key]
+        if not group:
+            continue
+        pal_name = 'normalf.pal' if variant_key == 'female' else 'normal.pal'
+        reference = read_palette(REPO / 'graphics/pokemon' / entry['output_dir'] / pal_name)
+        if reference is None:
+            reference = read_palette(REPO / 'graphics/pokemon' / entry['output_dir'] / 'normal.pal')
+        palette, metadata = build_palette([frame for view in group for frame in view['frames']], reference, family_reference)
+        order_key = 'palette_order_female' if variant_key == 'female' and 'palette_order_female' in config else 'palette_order'
+        if order_key in config:
+            order = config[order_key]
             if not isinstance(order, list) or any(type(i) is not int for i in order) or sorted(order) != list(range(16)) or order[0] != 0:
                 raise ValueError('palette_order debe permutar 0..15 manteniendo 0 al principio.')
             palette = [palette[i] for i in order]
@@ -275,14 +302,16 @@ def _prepare_species_files(entry, config, settings, all_sheets, folder):
                 ramp['indices'] = [inverse[i] for i in ramp['indices']]
             metadata['unused_indices'] = sorted(inverse[i] for i in metadata.get('unused_indices', []))
         palette = [tuple(color) for color in palette]
-        save_palette(folder / 'normal.pal', palette)
-        if any(view['variant'] == 'female' for view in views):
-            save_palette(folder / 'normalf.pal', palette)
-        palette_sheet(palette, folder / 'palette.png')
+        palettes[variant_key], metadatas[variant_key] = palette, metadata
+        save_palette(folder / pal_name, palette)
+        if variant_key == 'default':
+            palette_sheet(palette, folder / 'palette.png')
     sequences = {'front': {'loop': [0, 1, 0, 2], 'special': [0, 3, 4, 0],
                            'idle_cycles_before_special': settings['idle_cycles'], 'frame_ms': settings['frame_ms']},
                  'back': {'loop': [0, 1, 0, 2], 'frame_ms': settings['frame_ms']}}
     for view in views:
+        palette = palettes[view['variant']]
+        view['palette_file'] = 'normalf.pal' if view['variant'] == 'female' else 'normal.pal'
         indexed = [index_image(frame, palette) for frame in view['frames']]
         w, h = indexed[0].size
         strip = Image.new('P', (w, h * len(indexed)), 0)
@@ -292,10 +321,47 @@ def _prepare_species_files(entry, config, settings, all_sheets, folder):
             strip.paste(frame, (0, i * h))
         strip.save(folder / view['filename'], bits=4, transparency=0)
         side = view['side']
-        order = sequences[side]['loop']
-        if side == 'front':
-            order = order * settings['idle_cycles'] + sequences[side]['special']
-        save_preview(folder / f"{view['stem']}_preview.gif", indexed, order, settings['frame_ms'])
+        timing_options = view.pop('timing_options')
+        timing = build_timing(view, view['source_frames'], idle_cycles_before_special=timing_options.get('idle_cycles'))
+        if view['source_type'] == 'legacy_strip' or settings.get('timing_mode') == 'uniform':
+            order = sequences[side]['loop']
+            if side == 'front':
+                order = order * timing_options.get('idle_cycles', settings['idle_cycles']) + sequences[side]['special']
+            ticks = max(1, round(settings['frame_ms'] * 60 / 1000))
+            timing.update(mode='legacy_estimated' if view['source_type'] == 'legacy_strip' else 'uniform',
+                          sequence=[{'frame': i, 'ticks': ticks} for i in order],
+                          loop=[{'frame': i, 'ticks': ticks} for i in sequences[side]['loop']],
+                          special=[{'frame': i, 'ticks': ticks} for i in sequences[side].get('special', [])],
+                          cycle_ticks=len(order)*ticks, loop_ticks=4*ticks,
+                          special_ticks=(4*ticks if side == 'front' else 0),
+                          effective_duration_ms=len(order)*ticks*1000/60)
+        if 'sequence' in timing_options:
+            steps = timing_options['sequence']
+            if not isinstance(steps, list) or not steps or any(
+                not isinstance(s, dict) or set(s) != {'frame', 'ticks'} or type(s['frame']) is not int or
+                not 0 <= s['frame'] < SIDES[side] or type(s['ticks']) is not int or s['ticks'] < 1 for s in steps):
+                raise ValueError('timing.sequence debe contener {frame, ticks} con slots válidos y ticks positivos.')
+            timing.update(mode='manual', sequence=steps, cycle_ticks=sum(s['ticks'] for s in steps),
+                          loop=[], special=[], loop_ticks=None, special_ticks=None,
+                          effective_duration_ms=sum(s['ticks'] for s in steps)*1000/60)
+        if view['variant'] == 'female':
+            default = next((v for v in views if v['variant'] == 'default' and v['side'] == side), None)
+            if default and 'timing' in default:
+                timing = {**default['timing'], 'mode': 'shared_species_timing',
+                          'inherited_from': f'default.{side}', 'source_mode': timing['mode']}
+                if timing_options:
+                    warnings.append(f'female.{side}: el motor comparte la coreografia por especie; '
+                                    'configura timing en default para aplicarlo a ambos sexos.')
+        view['timing'] = timing
+        warnings.extend(f"{view['variant']}.{side}: {note}" for note in timing.get('warnings', []))
+        durations_gif, elapsed = [], 0
+        # GIF usa centésimas: redondear fronteras acumuladas evita acelerar el ciclo.
+        for step in timing['sequence']:
+            boundary = round((elapsed + step['ticks']) * 100 / 60)
+            durations_gif.append(max(10, (boundary - round(elapsed * 100 / 60)) * 10))
+            elapsed += step['ticks']
+        save_preview(folder / f"{view['stem']}_preview.gif", indexed,
+                     [s['frame'] for s in timing['sequence']], durations_gif)
         sheet([im.convert('RGBA') for im in indexed], view['indices'],
               f"{entry['species']} / {view['variant']} / {side}",
               folder / f"{view['stem']}_selected.png", columns=5, roles=ROLES[:len(indexed)])
@@ -306,7 +372,8 @@ def _prepare_species_files(entry, config, settings, all_sheets, folder):
               'output_dir': entry['output_dir'], 'family': entry.get('family'),
               'status': ('partial' if missing else 'generated') if views else 'missing',
               'missing_views': missing, 'shared_views': shared, 'warnings': warnings,
-              'palette': palette, 'palette_metadata': metadata,
+              'palette': palettes.get('default'), 'palette_metadata': metadatas.get('default'),
+              'palettes': palettes, 'palette_metadata_by_variant': metadatas,
               'palette_groups': config.get('palette_groups', []),
               'animation': sequences, 'views': views}
     dump_json(folder / 'selection.json', result)
@@ -318,7 +385,8 @@ def report(entries, errors):
                'generated_views': sum(len(e['views']) for e in entries),
                'sizes': dict(Counter('x'.join(map(str, v['layout']['frame_size'])) for e in entries for v in e['views'])),
                'exceptional_views': sum(v['layout']['exceptional_size'] for e in entries for v in e['views']),
-               'quantized_species': sum(bool((e.get('palette_metadata') or {}).get('quantized')) for e in entries),
+               'quantized_species': sum(any(m.get('quantized') for m in e.get('palette_metadata_by_variant', {'default': e.get('palette_metadata') or {}}).values()) for e in entries),
+               'source_types': dict(Counter(v.get('source_type', 'apng') for e in entries for v in e['views'])),
                'with_selection_warnings': sum(bool(e['warnings']) for e in entries),
                'errors': errors}
     dump_json(HERE / 'report.json', {'summary': summary, 'species': entries})
@@ -358,7 +426,8 @@ def report(entries, errors):
             lines.extend([f"## {entry['species']}", ''])
             for v in entry['views']:
                 base = f"../pokemon/{entry['output_dir']}/{v['stem']}"
-                lines.extend([f"{v['variant']}.{v['side']} · {'×'.join(map(str, v['layout']['frame_size']))} · APNG {v['indices']}", '',
+                source_kind = 'tira original' if v.get('source_type') == 'legacy_strip' else 'APNG'
+                lines.extend([f"{v['variant']}.{v['side']} · {'×'.join(map(str, v['layout']['frame_size']))} · {source_kind} {v['indices']} · timing: {v.get('timing', {}).get('mode', 'pendiente')}", '',
                               f"![{entry['species']} {v['side']}]({base}_preview.gif)", '',
                               f"[Frames elegidos]({base}_selected.png)" +
                               (f" · [Todas las poses]({base}_source.png)" if (gallery_dir / f'{base}_source.png').exists() else ''), ''])
@@ -369,9 +438,9 @@ def report(entries, errors):
               'La separación entre ciclo base y gesto especial y la correspondencia anatómica de paletas son heurísticas. Estos casos necesitan especial atención.', '']
     for entry in entries:
         notes = list(entry['warnings'])
-        meta = entry.get('palette_metadata') or {}
-        if meta.get('quantized'):
-            notes.append(f"Paleta reducida de {meta['source_opaque_color_count']} a {meta['opaque_palette_color_count']} colores opacos.")
+        for variant, meta in entry.get('palette_metadata_by_variant', {'default': entry.get('palette_metadata') or {}}).items():
+            if meta.get('quantized'):
+                notes.append(f"{variant}: paleta reducida de {meta['source_opaque_color_count']} a {meta['opaque_palette_color_count']} colores opacos.")
         if notes:
             review.extend([f"## [{entry['species']}](pokemon/{entry['output_dir']}/selection.json)", '',
                            *[f'- {note}' for note in notes], ''])
@@ -393,12 +462,11 @@ def validate(entries, catalog):
             if not entry['views']:
                 assert not any((folder / name).exists() for name in ('anim_front.png', 'back.png', 'anim_frontf.png', 'backf.png', 'normal.pal', 'normalf.pal')), 'quedan sprites o paletas antiguos para una especie sin fuente'
                 continue
-            expected = [tuple(c) for c in entry['palette']]
-            assert len(expected) == 16 and expected[0] == MAGENTA, 'paleta inválida'
-            assert read_palette(folder / 'normal.pal') == expected, 'normal.pal diferente'
-            if any(v['variant'] == 'female' for v in entry['views']):
-                assert read_palette(folder / 'normalf.pal') == expected, 'normalf.pal diferente'
             for view in entry['views']:
+                expected = [tuple(c) for c in entry.get('palettes', {}).get(view['variant'], entry['palette'])]
+                palette_name = view.get('palette_file', 'normalf.pal' if view['variant'] == 'female' else 'normal.pal')
+                assert len(expected) == 16 and expected[0] == MAGENTA, 'paleta inválida'
+                assert read_palette(folder / palette_name) == expected, f'{palette_name} diferente'
                 count = SIDES[view['side']]
                 assert view['variant'] in ('default', 'female'), 'variante no admitida'
                 assert len(view['indices']) == count, 'número de índices incorrecto'
@@ -406,7 +474,8 @@ def validate(entries, catalog):
                 source = (REPO / view['source']).resolve()
                 assert source.is_relative_to(REPO.resolve()), 'fuente fuera del repositorio'
                 assert sha256(source) == view['source_sha256'], 'fuente modificada desde la exportación'
-                frames, _ = load_animation(source)
+                frames, _, _ = load_source(source, view['side'], view.get('source_type', 'apng'),
+                                            view.get('source_metadata', {}).get('frame_size'))
                 assert all(type(i) is int and 0 <= i < len(frames) for i in view['indices']), 'índice fuera de la fuente'
                 selected = [frames[i] for i in view['indices']]
                 layout = view['layout']
@@ -417,6 +486,10 @@ def validate(entries, catalog):
                 assert image.info.get('transparency') == 0, 'transparencia distinta de índice cero'
                 assert image.getpalette()[:48] == [v for c in expected for v in c], 'paleta PNG diferente'
                 assert image.getextrema()[1] < 16, 'índice fuera de 4 bpp'
+                if 'timing' in view:
+                    steps = view['timing']['sequence']
+                    assert steps and all(0 <= s['frame'] < count and s['ticks'] > 0 for s in steps), 'timing inválido'
+                    assert sum(s['ticks'] for s in steps) == view['timing']['cycle_ticks'], 'duración inconsistente'
                 if layout['exceptional_size']:
                     assert size == selected[0].size and shift == (0, 0), 'excepción redimensionada o movida'
                 else:
@@ -443,7 +516,7 @@ def main():
     parser.add_argument('--overrides', type=Path, default=HERE / 'overrides.json')
     parser.add_argument('--source-sheets', action='store_true', help='Añade hojas de todas las poses distintas del APNG.')
     args = parser.parse_args()
-    catalog = build_catalog(REPO, REPO / 'desarrollo/.apng_bw')
+    catalog = supplement_catalog(build_catalog(REPO, REPO / 'desarrollo/.apng_bw'), REPO)
     only = {normalize_species(s) for s in args.only} if args.only else None
     if only and only - {entry['species'] for entry in catalog}:
         parser.error('Especies fuera de species.txt: ' + ', '.join(sorted(only - {e['species'] for e in catalog})))
@@ -475,7 +548,8 @@ def main():
             if not manifest.exists():
                 parser.error(f"Genera {entry['species']} con build primero.")
             for view in json.loads(manifest.read_text())['views']:
-                frames, _ = load_animation(REPO / view['source'])
+                frames, _, _ = load_source(REPO / view['source'], view['side'], view.get('source_type', 'apng'),
+                                           view.get('source_metadata', {}).get('frame_size'))
                 source_sheet(frames, folder / f"{view['stem']}_source.png", f"{entry['species']} / {view['variant']} / {view['side']}")
             print(folder)
         return
@@ -487,8 +561,8 @@ def main():
     if set(config) - {'settings', 'species'}:
         parser.error('Claves desconocidas en overrides.json: ' + ', '.join(set(config) - {'settings', 'species'}))
     for name, options in species_config.items():
-        if not isinstance(options, dict) or set(options) - {'default', 'female', 'palette_order', 'palette_groups', 'notes'}:
-            parser.error(f'{name}: claves permitidas: default, female, palette_order, palette_groups, notes.')
+        if not isinstance(options, dict) or set(options) - {'default', 'female', 'palette_order', 'palette_order_female', 'palette_groups', 'notes'}:
+            parser.error(f'{name}: claves permitidas: default, female, palette_order, palette_order_female, palette_groups, notes.')
         if 'notes' in options and (not isinstance(options['notes'], list) or not all(isinstance(note, str) for note in options['notes'])):
             parser.error(f'{name}.notes debe ser una lista de textos.')
         for variant in ('default', 'female'):
@@ -497,13 +571,16 @@ def main():
             if not isinstance(options[variant], dict) or set(options[variant]) - set(SIDES):
                 parser.error(f'{name}.{variant}: solo front y back.')
             for side, view_options in options[variant].items():
-                if not isinstance(view_options, dict) or set(view_options) - {'indices', 'offset', 'size', 'source'}:
-                    parser.error(f'{name}.{variant}.{side}: solo indices, offset, size y source.')
+                if not isinstance(view_options, dict) or set(view_options) - {'indices', 'offset', 'size', 'source', 'source_type', 'source_frame_size', 'timing'}:
+                    parser.error(f'{name}.{variant}.{side}: claves de vista desconocidas.')
     settings = config.get('settings', {})
-    if set(settings) - {'idle_cycles', 'frame_ms'}:
-        parser.error('settings solo admite idle_cycles y frame_ms.')
+    if set(settings) - {'idle_cycles', 'frame_ms', 'timing_mode'}:
+        parser.error('settings solo admite idle_cycles, frame_ms y timing_mode.')
+    if settings.get('timing_mode', 'source') not in ('source', 'uniform'):
+        parser.error('timing_mode debe ser source o uniform.')
     settings = {'idle_cycles': integer(settings.get('idle_cycles', 4), 'idle_cycles', 1),
-                'frame_ms': integer(settings.get('frame_ms', 140), 'frame_ms', 10)}
+                'frame_ms': integer(settings.get('frame_ms', 140), 'frame_ms', 10),
+                'timing_mode': settings.get('timing_mode', 'source')}
     dump_json(HERE / 'catalog.json', catalog)
     by_species = {e['species']: e for e in catalog}
     entries, errors = [], {}

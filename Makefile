@@ -8,6 +8,13 @@ REVISION    := 0
 FILE_NAME := albor
 BUILD_DIR := build
 
+# Prueba las selecciones sin reemplazar graphics/pokemon ni la ROM habitual.
+BW_SPRITES ?= 0
+ifeq ($(BW_SPRITES),1)
+FILE_NAME := albor_bw
+BUILD_DIR := build_bw
+endif
+
 # Default make rule
 all: rom
 
@@ -35,15 +42,16 @@ MAP := $(ROM:.gba=.map)
 SYM := $(ROM:.gba=.sym)
 
 # Commonly used directories
+#
+# asm/ no esta: solo guarda .inc de macros, no queda ni un .s suelto que ensamblar, y
+# las reglas que lo recorrian no producian nada. Los .s vivos estan en src/ y en data/.
 C_SUBDIR = src
-ASM_SUBDIR = asm
 DATA_SRC_SUBDIR = src/data
 DATA_ASM_SUBDIR = data
 SONG_SUBDIR = sound/songs
 MID_SUBDIR = sound/songs/midi
 
 C_BUILDDIR = $(OBJ_DIR)/$(C_SUBDIR)
-ASM_BUILDDIR = $(OBJ_DIR)/$(ASM_SUBDIR)
 DATA_ASM_BUILDDIR = $(OBJ_DIR)/$(DATA_ASM_SUBDIR)
 SONG_BUILDDIR = $(OBJ_DIR)/$(SONG_SUBDIR)
 MID_BUILDDIR = $(OBJ_DIR)/$(MID_SUBDIR)
@@ -59,6 +67,9 @@ INCLUDE_SCANINC_ARGS := $(INCLUDE_DIRS:%=-I %)
 
 O_LEVEL ?= 2
 CPPFLAGS := $(INCLUDE_CPP_ARGS) -Wno-trigraphs -DMODERN=1 -std=gnu17
+ifeq ($(BW_SPRITES),1)
+CPPFLAGS += -DALBOR_BW_SPRITES=1 -I desarrollo/chat_gpt/generated
+endif
 ARMCC := $(PREFIX)gcc
 PATH_ARMCC := PATH="$(PATH)" $(ARMCC)
 CC1 := $(shell $(PATH_ARMCC) --print-prog-name=cc1) -quiet
@@ -75,7 +86,6 @@ AIF          := $(TOOLS_DIR)/aif2pcm/aif2pcm
 MID          := $(TOOLS_DIR)/mid2agb/mid2agb
 SCANINC      := $(TOOLS_DIR)/scaninc/scaninc
 PREPROC      := $(TOOLS_DIR)/preproc/preproc
-RAMSCRGEN    := $(TOOLS_DIR)/ramscrgen/ramscrgen
 FIX          := $(TOOLS_DIR)/gbafix/gbafix
 MAPJSON      := $(TOOLS_DIR)/mapjson/mapjson
 JSONPROC     := $(TOOLS_DIR)/jsonproc/jsonproc
@@ -96,7 +106,8 @@ MAKEFLAGS += --no-print-directory
 .DELETE_ON_ERROR:
 
 RULES_NO_SCAN += libagbsyscall clean clean-assets tidy tidymodern generated clean-generated
-.PHONY: all rom modern check
+# `check` ya no esta: no hay regla que lo defina ni directorio test/ que ejecutar.
+.PHONY: all rom modern
 .PHONY: $(RULES_NO_SCAN)
 
 infoshell = $(foreach line, $(shell $1 | sed "s/ /__SPACE__/g"), $(info $(subst __SPACE__, ,$(line))))
@@ -113,18 +124,35 @@ ifneq (,$(MAKECMDGOALS))
   endif
 endif
 
-.SHELLSTATUS ?= 0
+# Si estos dos pasos previos fallan, hay que PARAR aqui.
+#
+# Antes se miraba $(.SHELLSTATUS), que existe desde Make 4.2. El make que trae macOS es
+# la 3.81 de 2006: alli esa variable no la pone nadie, un `?= 0` la dejaba a cero para
+# siempre y el `ifneq` no saltaba JAMAS. Un fallo al construir las herramientas seguia
+# adelante en silencio y reventaba mas tarde y en otro sitio, culpando a un archivo que
+# no tenia nada que ver.
+#
+# El centinela funciona en las dos. Va pegado al `make` y DENTRO de las llaves, no al
+# final de la tuberia: el pipefail de SHELL no llega hasta $(shell) en la 3.81, asi que
+# el estado de la tuberia entera es el del sed y siempre vale cero. Colgado del make,
+# la palabra entra en el propio texto de salida y da igual quien cierre la tuberia.
+#
+# La salida se imprime igual que antes, linea a linea, con los espacios disfrazados
+# para que $(shell) no las junte todas en una.
+CENTINELA_FALLO := __FALLO_DEL_PASO_PREVIO__
 
 ifeq ($(SETUP_PREREQS),1)
   # If set on: Default target or a rule requiring a scan
   # Forcibly execute `make tools` since we need them for what we are doing.
-  $(foreach line, $(shell $(MAKE) -f make_tools.mk | sed "s/ /__SPACE__/g"), $(info $(subst __SPACE__, ,$(line))))
-  ifneq ($(.SHELLSTATUS),0)
+  SALIDA_TOOLS := $(shell { $(MAKE) -f make_tools.mk 2>&1 || echo $(CENTINELA_FALLO); } | sed "s/ /__SPACE__/g")
+  $(foreach line, $(SALIDA_TOOLS), $(info $(subst __SPACE__, ,$(line))))
+  ifneq (,$(findstring $(CENTINELA_FALLO),$(SALIDA_TOOLS)))
     $(error Errors occurred while building tools. See error messages above for more details)
   endif
   # Oh and also generate mapjson sources before we use `SCANINC`.
-  $(foreach line, $(shell $(MAKE) generated | sed "s/ /__SPACE__/g"), $(info $(subst __SPACE__, ,$(line))))
-  ifneq ($(.SHELLSTATUS),0)
+  SALIDA_GENERATED := $(shell { $(MAKE) generated 2>&1 || echo $(CENTINELA_FALLO); } | sed "s/ /__SPACE__/g")
+  $(foreach line, $(SALIDA_GENERATED), $(info $(subst __SPACE__, ,$(line))))
+  ifneq (,$(findstring $(CENTINELA_FALLO),$(SALIDA_GENERATED)))
     $(error Errors occurred while generating map-related sources. See error messages above for more details)
   endif
 endif
@@ -136,9 +164,6 @@ C_OBJS := $(patsubst $(C_SUBDIR)/%.c,$(C_BUILDDIR)/%.o,$(C_SRCS))
 
 C_ASM_SRCS := $(wildcard $(C_SUBDIR)/*.s $(C_SUBDIR)/*/*.s $(C_SUBDIR)/*/*/*.s)
 C_ASM_OBJS := $(patsubst $(C_SUBDIR)/%.s,$(C_BUILDDIR)/%.o,$(C_ASM_SRCS))
-
-ASM_SRCS := $(wildcard $(ASM_SUBDIR)/*.s)
-ASM_OBJS := $(patsubst $(ASM_SUBDIR)/%.s,$(ASM_BUILDDIR)/%.o,$(ASM_SRCS))
 
 # get all the data/*.s files EXCEPT the ones with specific rules
 REGULAR_DATA_ASM_SRCS := $(filter-out $(DATA_ASM_SUBDIR)/maps.s $(DATA_ASM_SUBDIR)/map_events.s, $(wildcard $(DATA_ASM_SUBDIR)/*.s))
@@ -152,7 +177,7 @@ SONG_OBJS := $(patsubst $(SONG_SUBDIR)/%.s,$(SONG_BUILDDIR)/%.o,$(SONG_SRCS))
 MID_SRCS := $(wildcard $(MID_SUBDIR)/*.mid)
 MID_OBJS := $(patsubst $(MID_SUBDIR)/%.mid,$(MID_BUILDDIR)/%.o,$(MID_SRCS))
 
-OBJS     := $(C_OBJS) $(C_ASM_OBJS) $(ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(MID_OBJS)
+OBJS     := $(C_OBJS) $(C_ASM_OBJS) $(DATA_ASM_OBJS) $(SONG_OBJS) $(MID_OBJS)
 OBJS_REL := $(patsubst $(OBJ_DIR)/%,%,$(OBJS))
 
 SUBDIRS  := $(sort $(dir $(OBJS)))
@@ -190,6 +215,17 @@ include spritesheet_rules.mk
 include json_data_rules.mk
 include audio_rules.mk
 
+ifeq ($(BW_SPRITES),1)
+BW_GENERATED := desarrollo/chat_gpt/generated
+ifeq ($(wildcard $(BW_GENERATED)/assets.mk),)
+$(error Ejecuta primero: python3 desarrollo/chat_gpt/integrar.py)
+endif
+include $(BW_GENERATED)/assets.mk
+$(BW_GENERATED)/assets.mk: src/data/pokemon/species_info.h src/data/pokemon/animaciones_pokemon.h species.txt desarrollo/chat_gpt/integrar.py desarrollo/chat_gpt/catalog.py desarrollo/chat_gpt/timing.py $(BW_INPUTS) $(wildcard $(BW_SELECTIONS))
+	python3 desarrollo/chat_gpt/integrar.py
+$(C_BUILDDIR)/pokemon.o: $(BW_GENERATED)/species_info_bw.h $(BW_GENERATED)/graphics_bw.h $(BW_GENERATED)/animaciones_bw.h $(BW_ASSETS)
+endif
+
 # NOTE: Tools must have been built prior (FIXME)
 # so you can't really call this rule directly
 generated: $(AUTO_GEN_TARGETS)
@@ -217,7 +253,11 @@ ifeq ($(COMPETITIVE_PARTY_SYNTAX),1)
 %.h: %.party ; $(CPP) $(CPPFLAGS) -traditional-cpp - < $< | $(TRAINERPROC) -o $@ -i $< -
 endif
 
-$(C_BUILDDIR)/pokedex.o: CFLAGS := -mthumb -mthumb-interwork -O2 -mabi=apcs-gnu -mtune=arm7tdmi -march=armv4t -Wno-pointer-to-int-cast -std=gnu17 -Werror -Wall -Wno-strict-aliasing -Wno-attribute-alias -Woverride-init
+# A pokedex.c hay que quitarle -fno-toplevel-reorder, y NADA mas. Antes esto era una
+# copia a mano de la lista entera con la marca fuera, y la copia llevaba -O2 escrito a
+# fuego: make O_LEVEL=0 compilaba todo a cero menos este archivo, y cualquier flag que
+# se anadiera arriba no le llegaba.
+$(C_BUILDDIR)/pokedex.o: CFLAGS := $(filter-out -fno-toplevel-reorder,$(CFLAGS))
 # Annoyingly we can't turn this on just for src/data/trainers.h
 $(C_BUILDDIR)/data.o: CFLAGS += -fno-show-column -fno-diagnostics-show-caret
 
@@ -255,15 +295,6 @@ ifneq ($(NODEP),1)
 -include $(addprefix $(OBJ_DIR)/,$(C_SRCS:.c=.d))
 endif
 
-# Regla para los archivos ASM
-$(ASM_BUILDDIR)/%.o: $(ASM_SUBDIR)/%.s
-	@mkdir -p $(dir $@)
-	$(AS) $(ASFLAGS) -o $@ $<
-
-$(ASM_BUILDDIR)/%.d: $(ASM_SUBDIR)/%.s
-	@mkdir -p $(dir $@)
-	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) -I "" $<
-
 # Archivos .s dentro de C
 #
 # Tres pasos, y el orden importa:
@@ -276,6 +307,18 @@ $(ASM_BUILDDIR)/%.d: $(ASM_SUBDIR)/%.s
 $(C_BUILDDIR)/%.o: $(C_SUBDIR)/%.s $(PREPROC) charmap.txt
 	@mkdir -p $(dir $@)
 	$(PREPROC) $< charmap.txt | $(CPP) $(INCLUDE_CPP_ARGS) - | $(PREPROC) -ie $< charmap.txt | $(AS) $(ASFLAGS) -o $@
+
+# Lo mismo que para los de data/, y por lo mismo: crt0.s y m4a_1.s traen dentro
+# gba_constants.inc, m4a_constants.inc y asm/macros.inc, y sin estas dependencias
+# cambiar una de esas constantes deja los .o viejos sin decir nada. La regla %.d de
+# mas arriba solo acepta .c, asi que estos se quedaban fuera.
+$(C_BUILDDIR)/%.d: $(C_SUBDIR)/%.s
+	@mkdir -p $(dir $@)
+	$(SCANINC) -M $@ $(INCLUDE_SCANINC_ARGS) -I "" $<
+
+ifneq ($(NODEP),1)
+-include $(addprefix $(OBJ_DIR)/,$(C_ASM_SRCS:.s=.d))
+endif
 
 $(DATA_ASM_BUILDDIR)/%.o: $(DATA_ASM_SUBDIR)/%.s $(PREPROC) charmap.txt
 	@mkdir -p $(dir $@)
@@ -293,26 +336,27 @@ ifneq ($(NODEP),1)
 -include $(addprefix $(OBJ_DIR)/,$(REGULAR_DATA_ASM_SRCS:.s=.d))
 endif
 
-$(OBJ_DIR)/sym_bss.ld: sym_bss.txt
-	$(RAMSCRGEN) .bss $< ENGLISH > $@
-
-$(OBJ_DIR)/sym_common.ld: sym_common.txt $(C_OBJS) $(wildcard common_syms/*.txt)
-	$(RAMSCRGEN) COMMON $< ENGLISH -c $(C_BUILDDIR),common_syms > $@
-
-$(OBJ_DIR)/sym_ewram.ld: sym_ewram.txt
-	$(RAMSCRGEN) ewram_data $< ENGLISH > $@
-
 # Linker script
 LD_SCRIPT := ld_script.ld
 LD_SCRIPT_DEPS :=
 
 # Final rules
 
-libagbsyscall:
+# El .a de verdad, no el nombre corto.
+#
+# `libagbsyscall` es .PHONY, y un prerrequisito falso esta desactualizado SIEMPRE: el
+# enlazado, el gbafix y el objcopy de los 16 MB corrian en cada make aunque no hubiera
+# cambiado una coma, y la ROM salia con fecha nueva cada vez. Dependiendo del archivo,
+# solo corren cuando toca. El nombre corto se queda para poder invocarlo a mano.
+LIBAGBSYSCALL := libagbsyscall/libagbsyscall.a
+
+libagbsyscall: $(LIBAGBSYSCALL)
+
+$(LIBAGBSYSCALL): $(wildcard libagbsyscall/*.s) libagbsyscall/Makefile
 	@$(MAKE) -C libagbsyscall TOOLCHAIN=$(TOOLCHAIN) MODERN=1
 
 # Elf from object files
-$(ELF): $(LD_SCRIPT) $(LD_SCRIPT_DEPS) $(OBJS) libagbsyscall
+$(ELF): $(LD_SCRIPT) $(LD_SCRIPT_DEPS) $(OBJS) $(LIBAGBSYSCALL)
 	@cd $(OBJ_DIR) && $(LD) $(LDFLAGS) -T ../../$< --print-memory-usage -o ../../$@ $(OBJS_REL) $(LIB) | cat
 	@echo "cd $(OBJ_DIR) && $(LD) $(LDFLAGS) -T ../../$< --print-memory-usage -o ../../$@ <objs> <libs> | cat"
 	$(FIX) $@ -t"$(TITLE)" -c$(GAME_CODE) -m$(MAKER_CODE) -r$(REVISION) --silent

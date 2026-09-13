@@ -33,6 +33,19 @@
 // habia hacia arriba.
 #define MAX_Y_OFFSET MON_PIC_HEIGHT
 
+// Cuantos comandos caben en la copia editable de una animacion.
+//
+// La mas larga que hay hoy son 33 comandos, y por la forma de los macros no puede
+// pasar de 34: hasta dieciseis poses de vaiven, el bucle, hasta dieciseis de gesto y
+// el salto. Sobra sitio. Si alguna lo pasara, el visor la deja tal cual y lo dice por
+// el log en vez de copiar media animacion, que se quedaria sin el salto del final.
+#define MAX_COMANDOS_ANIM 48
+
+// Lo que puede durar una pose mientras se prueba. Tres digitos porque el vaiven
+// provisional que comparten las espaldas sin arte propio tiene una pose de 600.
+#define RITMO_MINIMO 1
+#define RITMO_MAXIMO 999
+
 //Windows
 #define WIN_NAME_NUMBERS 0
 #define WIN_INSTRUCTIONS 1

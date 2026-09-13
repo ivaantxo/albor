@@ -87,30 +87,81 @@ static const u8 sBloques[][4] =
     { 8, 8, 4, 4 },
 };
 
-u32 BytesPicCombate(u32 especie, u32 personalidad, bool32 esFront)
+// El pic comprimido de una especie, tal cual lo elegiria LoadSpecialPokePic.
+//
+// Tiene que ser la MISMA fuente que descomprime el juego: una hembra puede tener un
+// lienzo o un numero de poses distintos del macho, y si aqui se mira uno y alli se
+// carga otro, todo lo que se calcule a partir de esto sale mal.
+static const u32 *PicComprimido(u32 especie, u32 personalidad, bool32 esFront)
 {
-    u32 medida;
+    const struct SpeciesInfo *info;
+    bool32 hembra;
+
+    especie = SanitizeSpeciesId(especie);
+    info = &gSpeciesInfo[especie];
+    hembra = IsPersonalityFemale(especie, personalidad);
 
     if (esFront)
     {
-        if (gSpeciesInfo[especie].frontPicFemale != NULL && IsPersonalityFemale(especie, personalidad))
-            medida = gSpeciesInfo[especie].frontPicSizeFemale;
-        else
-            medida = gSpeciesInfo[especie].frontPicSize;
+        if (hembra && info->frontPicFemale != NULL)
+            return info->frontPicFemale;
+        if (info->frontPic != NULL)
+            return info->frontPic;
+        return gSpeciesInfo[SPECIES_NONE].frontPic;
     }
-    else
+
+    if (hembra && info->backPicFemale != NULL)
+        return info->backPicFemale;
+    if (info->backPic != NULL)
+        return info->backPic;
+    return gSpeciesInfo[SPECIES_NONE].backPic;
+}
+
+// Lo que ocupa el pic ENTERO una vez descomprimido, o cero si no hay pic. Lo dice la
+// cabecera LZ77, en sus tres bytes altos.
+static u32 BytesTotalesPic(u32 especie, u32 personalidad, bool32 esFront)
+{
+    const u32 *comprimido = PicComprimido(especie, personalidad, esFront);
+
+    return (comprimido != NULL) ? comprimido[0] >> 8 : 0;
+}
+
+// Los lienzos que existen, de mayor a menor. El orden importa: se elige el primero
+// que encaje.
+static const u32 sLienzos[] = { PIC_GRANDE_BYTES, PIC_80_BYTES, MON_PIC_SIZE };
+
+// El primer choque entre lienzos esta en las 9 poses de 64x64. Ver POSES_MAXIMAS_PIC.
+STATIC_ASSERT(POSES_MAXIMAS_PIC < 9, poses_maximas_hacen_ambigua_la_deduccion);
+
+// Cuantos bytes hay entre una pose y la siguiente.
+//
+// El lienzo NO se declara en species_info: se deduce del propio arte. La cabecera
+// LZ77 dice lo que pesa el pic entero, y solo un lienzo divide ese peso exacto sin
+// pasarse de poses. Asi es imposible que el numero y el dibujo se desincronicen, que
+// es justo lo que pasaba cuando esto salia de frontPicSize: ese campo es el AREA
+// DIBUJADA -lo que usan las animaciones de combate para saber donde estan los bordes
+// del bicho- y no el lienzo, y las dos cosas no tienen por que coincidir.
+//
+// Dos condiciones, y las dos hacen falta: que el peso se reparta exacto en ese lienzo
+// y que salgan poses de las que caben. Lo segundo es lo que deshace los empates -18432
+// bytes son 4 poses de 96x96 o 9 de 64x64, y las 9 se descartan por pasarse-, asi que
+// no sobra: sin ese tope habria que elegir a ciegas.
+//
+// El precio de deducir en vez de declarar: un pic que SI trajera 9 poses de 64x64 se
+// leeria como uno de 96x96 de 4, y sin ruido. Por eso POSES_MAXIMAS_PIC es un limite
+// del arte, no una preferencia. Si algun dia hacen falta mas poses, el lienzo hay que
+// sacarlo del ancho del PNG en tiempo de compilacion.
+u32 BytesPicCombate(u32 especie, u32 personalidad, bool32 esFront)
+{
+    u32 total = BytesTotalesPic(especie, personalidad, esFront);
+
+    for (u32 i = 0; i < ARRAY_COUNT(sLienzos); i++)
     {
-        if (gSpeciesInfo[especie].backPicFemale != NULL && IsPersonalityFemale(especie, personalidad))
-            medida = gSpeciesInfo[especie].backPicSizeFemale;
-        else
-            medida = gSpeciesInfo[especie].backPicSize;
+        if (total != 0 && total % sLienzos[i] == 0 && total / sLienzos[i] <= POSES_MAXIMAS_PIC)
+            return sLienzos[i];
     }
 
-    // La medida declarada es el area dibujada, que puede ser menor que el lienzo.
-    // Lo que decide es si se sale de 64: entonces el lienzo es de 80.
-    if (GET_MON_COORDS_WIDTH(medida) > 64 || GET_MON_COORDS_HEIGHT(medida) > 64)
-        return PIC_GRANDE_BYTES;
-
+    // Sin pic, o con uno que no encaja en ningun lienzo conocido: el de siempre.
     return MON_PIC_SIZE;
 }
 
@@ -284,7 +335,7 @@ static void ArrancaAnimacionContinua(void)
         // con los cuatro fotogramas y su gesto especial; el de espalda comparte
         // gAnims_MonPic con todos los demas, y ahi el vaiven continuo es el indice 2.
         if (GetBattlerSide(combatiente) == LADO_OPONENTE)
-            StartSpriteAnimIfDifferent(sprite, 1);
+            StartSpriteAnimIfDifferent(sprite, ANIM_FRENTE_BUCLE);
         else
             StartSpriteAnimIfDifferent(sprite, ANIM_ESPALDA_BUCLE);
     }
@@ -352,27 +403,19 @@ u8 *HuecoPic(u32 posicion, u32 bytes)
 // reservar para descomprimirlo entero: LoadSpecialPokePic vuelca TODOS los fotogramas
 // que trae el pic, no solo el primero, asi que quedarse corto escribe fuera del bloque.
 //
-// Con los fotogramas que trae de verdad, no con el techo. La cabecera LZ77 dice cuanto
-// ocupa descomprimido, y un back de dos fotogramas necesita la mitad que uno de cuatro.
-//
-// Y manda la cabecera EN LOS DOS SENTIDOS. Antes solo se hacia caso si pedia menos que
-// el techo, asi que un pic con mas fotogramas de los que dice NUMERO_FRAMES_POKEMON
-// reservaba de menos y se descomprimia fuera del bloque, callando. Mientras el techo
-// fue mayor que cualquier pic daba igual; en cuanto se baje, deja de darlo.
+// Sale de la cabecera, o sea de las poses que el pic trae de verdad y no del techo: un
+// back de dos fotogramas necesita la mitad que uno de cuatro. Y manda EN LOS DOS
+// SENTIDOS: un pic con mas poses de las que dice NUMERO_FRAMES_POKEMON tambien se
+// reserva entero, que si no se descomprime fuera del bloque y calla.
 u32 BytesPicDescomprimido(u32 especie, u32 personalidad, bool32 esFront)
 {
-    const u32 *comprimido = esFront ? gSpeciesInfo[especie].frontPic : gSpeciesInfo[especie].backPic;
-    u32 bytes = BytesPicCombate(especie, personalidad, esFront) * NUMERO_FRAMES_POKEMON;
+    u32 total = BytesTotalesPic(especie, personalidad, esFront);
 
-    if (comprimido != NULL)
-    {
-        u32 real = comprimido[0] >> 8;
+    // Sin pic no hay cabecera que mirar: se reserva el techo, que es lo unico seguro.
+    if (total == 0)
+        return BytesPicCombate(especie, personalidad, esFront) * NUMERO_FRAMES_POKEMON;
 
-        if (real != 0)
-            bytes = real;
-    }
-
-    return bytes;
+    return total;
 }
 
 void PreparaHuecoPic(u32 posicion, u32 especie, u32 personalidad, bool32 esFront)
@@ -388,11 +431,16 @@ void AjustaFotogramasPic(u32 posicion, u32 especie, u32 personalidad, bool32 esF
     u32 bytes = BytesPicCombate(especie, personalidad, esFront);
     u32 reales;
 
-    // Cuantos fotogramas caben de verdad en el hueco. NO se puede dar por hecho que
-    // sean NUMERO_FRAMES_POKEMON: el hueco se pide segun lo que traiga el pic, y un
-    // back de dos fotogramas mide la mitad. Reordenar cuatro sobre un hueco de dos
-    // escribe fuera y revienta lo que haya detras.
-    reales = gMonSpritesGfxPtr->tamanoHueco[posicion] / bytes;
+    // Cuantas poses trae el pic. La division es exacta por construccion: los dos
+    // numeros salen de la misma cabecera LZ77.
+    //
+    // NO vale mirar solo el hueco. HuecoPic unicamente agranda, nunca encoge, asi que
+    // el hueco puede ser mayor por la zona de trabajo o porque antes lo uso un Pokemon
+    // con mas poses. Esos bytes de mas no son imagenes: contarlos hacia que la ultima
+    // pose apuntara a restos del inquilino anterior, y con otro paso de fotograma, o
+    // sea a media pieza. El hueco solo manda como tope, por si la ampliacion fallo.
+    reales = min(BytesPicDescomprimido(especie, personalidad, esFront),
+                 gMonSpritesGfxPtr->tamanoHueco[posicion]) / bytes;
     if (reales > NUMERO_FRAMES_POKEMON)
         reales = NUMERO_FRAMES_POKEMON;
     if (reales == 0)

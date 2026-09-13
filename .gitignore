@@ -23,6 +23,7 @@ sound/songs/midi/*.s
 *.sa*
 Thumbs.db
 build/
+build_bw/
 .DS_Store
 *.ddump
 .idea/

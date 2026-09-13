@@ -1,0 +1,1365 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Previsualizar montura de surf</title>
+<style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}iframe{display:block;width:100%;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>
+</head>
+<body>
+<iframe sandbox="allow-scripts" referrerpolicy="no-referrer" title="Previsualizar montura de surf" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; &#x27;wasm-unsafe-eval&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src &#x27;unsafe-inline&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;&quot;&gt;
+&lt;title&gt;Previsualizar montura de surf&lt;/title&gt;
+&lt;style&gt;:root {
+  color-scheme: light dark;
+  background-color: var(
+    --background,
+    var(--color-background-primary, light-dark(rgb(255 255 255), rgb(24 24 24)))
+  ) !important;
+
+  /* Agent-facing contract; keep in sync with SKILL.md. */
+  --background: var(
+    --color-background-primary,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --card: color-mix(in oklab, var(--foreground) 5%, var(--background));
+  --card-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --popover: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255), rgb(45 45 45))
+  );
+  --popover-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --primary: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --primary-foreground: var(
+    --color-text-inverse,
+    light-dark(rgb(255 255 255), rgb(13 13 13))
+  );
+  --secondary: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255 / 96%), rgb(54 54 54 / 96%))
+  );
+  --secondary-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --muted: color-mix(in srgb, var(--foreground) 10%, transparent);
+  --muted-foreground: var(
+    --color-text-secondary,
+    light-dark(rgb(26 28 31 / 49.4%), rgb(255 255 255 / 49.8%))
+  );
+  --accent: var(
+    --color-background-info,
+    light-dark(rgb(229 242 255), rgb(13 39 63))
+  );
+  --accent-foreground: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --destructive: var(
+    --color-text-warning,
+    light-dark(rgb(226 85 7), rgb(255 133 73))
+  );
+  --border: var(
+    --color-border-secondary,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+  --input: var(
+    --color-border-primary,
+    light-dark(
+      rgb(26 28 31 / 11.8%),
+      color-mix(in oklab, rgb(0 0 0) 10%, transparent)
+    )
+  );
+  --ring: var(
+    --color-ring-primary,
+    light-dark(rgb(51 156 255), rgb(131 195 255 / 76%))
+  );
+  --font-size-base: var(--font-text-md-size, 14px);
+  --blue: light-dark(rgb(51 156 255), rgb(51 156 255));
+  --orange: light-dark(rgb(226 85 7), rgb(251 106 34));
+  --green: light-dark(rgb(0 162 64), rgb(64 201 119));
+  --red: light-dark(rgb(224 46 42), rgb(255 103 100));
+  --purple: light-dark(rgb(146 79 247), rgb(173 123 249));
+  --yellow: light-dark(rgb(255 195 0), rgb(255 210 64));
+  --viz-series-1: var(--primary);
+  --viz-series-2: light-dark(rgb(243 136 59), rgb(245 154 86));
+  --viz-series-3: light-dark(rgb(93 201 119), rgb(116 213 139));
+  --viz-series-4: light-dark(rgb(235 119 177), rgb(240 143 192));
+  --viz-series-5: light-dark(rgb(155 121 236), rgb(170 145 239));
+  --viz-series-6: light-dark(rgb(58 185 177), rgb(90 203 194));
+
+  /* Internal implementation variables; not part of the agent contract. */
+  --font-sans: -apple-system, system-ui, &quot;Segoe UI&quot;, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;,
+    monospace;
+  --font-size-normal: max(11px, var(--font-size-base));
+  --font-size-tooltip: calc(var(--font-size-base) - 1px);
+  --font-size-small: max(11px, calc(var(--font-size-base) - 2px));
+  --font-size-h1: calc(var(--font-size-normal) * 1.7142857143);
+  --font-size-h2: calc(var(--font-size-normal) * 1.4285714286);
+  --font-size-h3: calc(var(--font-size-normal) * 1.2857142857);
+  --font-weight-normal: 430;
+  --font-weight-medium: 500;
+  --line-height-normal: calc(var(--font-size-normal) * 1.5);
+  --line-height-tooltip: calc(var(--font-size-tooltip) * 1.4285714286);
+  --line-height-small: calc(var(--font-size-small) + 4px);
+  --radius: var(--border-radius-lg, 12.5px);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-2xl: calc(var(--radius) * 1.6);
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px -1px rgb(0 0 0 / 8%);
+  --checkmark-image: url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 17 17&#x27;%3E%3Cpath d=&#x27;M12.8961 3.64101C13.1297 3.41418 13.4984 3.37523 13.7779 3.56581C14.0571 3.75635 14.1554 4.11331 14.0299 4.41347L13.9615 4.53847L7.71151 13.7045C7.59411 13.8767 7.4063 13.9877 7.19881 14.0072C6.99136 14.0267 6.78564 13.9533 6.63826 13.806L2.88826 10.056L2.79842 9.9457C2.6192 9.67407 2.64927 9.30496 2.88826 9.06581C3.12738 8.82669 3.49647 8.79676 3.76815 8.97597L3.8785 9.06581L7.03084 12.2182L12.8053 3.74941L12.8961 3.64101Z&#x27;/%3E%3C/svg%3E&quot;);
+
+  /* Legacy aliases; not part of the current agent contract. */
+  --viz-bg: transparent;
+  --viz-panel: var(--card);
+  --viz-border: var(--border);
+  --viz-text: var(--foreground);
+  --viz-muted: var(--muted-foreground);
+  --viz-accent: var(--primary);
+  --viz-accent-text: var(--primary-foreground);
+  --viz-accent-bg: var(--accent);
+  --viz-font-size: var(--font-size-base);
+  --viz-warning: var(--destructive);
+}
+
+:root[data-theme=&quot;light&quot;] {
+  color-scheme: light;
+}
+
+:root[data-theme=&quot;dark&quot;] {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html &gt; body {
+  /* Preserve MCP aliases for older inline renderers without creating :root cycles. */
+  --color-background-primary: var(
+    --background,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --color-text-primary: var(
+    --foreground,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --color-border-secondary: var(
+    --border,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+
+  margin: 0;
+  padding: 5px;
+  color: var(--foreground);
+  background: transparent !important;
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-size-normal);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+}
+
+a {
+  color: color-mix(in srgb, var(--viz-accent) 80%, var(--viz-text) 20%);
+  cursor: pointer;
+  font-weight: var(--font-weight-medium, 500);
+  text-decoration: none;
+  text-underline-offset: 2px;
+}
+
+a:is(:hover, :focus-visible) {
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 0.5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-block: 0;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.3;
+}
+
+b,
+strong,
+th {
+  font-weight: var(--font-weight-medium);
+}
+
+code:not(pre code) {
+  display: inline;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  corner-shape: superellipse(1.5);
+  background: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  word-break: break-word;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--foreground);
+  font: inherit;
+  text-align: start;
+}
+
+.table :is(th, td) {
+  padding-block: 10px;
+  padding-inline: 0 24px;
+  overflow-wrap: anywhere;
+  border-bottom: 1px solid var(--border);
+  text-align: start;
+  vertical-align: top;
+}
+
+.table-responsive &gt; .table :is(th, td) {
+  overflow-wrap: break-word;
+}
+
+.table :is(th, td):last-child {
+  padding-inline-end: 0;
+}
+
+.table :is(caption, thead th) {
+  font-weight: 600;
+}
+
+.table thead th {
+  padding-block: 8px;
+  border-bottom-color: color-mix(in srgb, var(--foreground) 16%, transparent);
+}
+
+.table tbody tr:last-child :is(th, td) {
+  border-bottom: 0;
+}
+
+.table.table-sm :is(th, td) {
+  padding-block: 6px;
+}
+
+.table.table-sm :is(th, td):not(:last-child) {
+  padding-inline-end: 16px;
+}
+
+.table :is(.text-end, [align=&quot;right&quot;]) {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.table :is(.text-center, [align=&quot;center&quot;]) {
+  text-align: center;
+}
+
+.table .text-nowrap {
+  white-space: nowrap;
+}
+
+#widget {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  background: transparent !important;
+}
+
+.card {
+  min-width: 0;
+  padding: 12px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  border-radius: var(--radius-2xl);
+  corner-shape: superellipse(1.5);
+  color: var(--card-foreground);
+  background: var(--card);
+}
+
+#widget &gt; :not(.card, .progress) {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: min(
+    20rem,
+    var(--tooltip-available-width, calc(100vw - 10px)),
+    calc(100vw - 10px)
+  );
+  max-height: min(
+    var(--tooltip-available-height, calc(100vh - 10px)),
+    calc(100vh - 10px)
+  );
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--popover-foreground);
+  background: var(--popover);
+  box-shadow: none;
+  font-size: var(--font-size-tooltip);
+  line-height: var(--line-height-tooltip);
+  overflow-wrap: break-word;
+  white-space: normal;
+  pointer-events: none;
+  user-select: none;
+}
+
+.viz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(180px, 24%), 1fr));
+  gap: 10px;
+}
+
+.viz-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.viz-stat-value {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+.viz-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress {
+  display: flex;
+  height: 6px;
+  margin-block: calc((var(--line-height-normal, 1.5em) - 6px) / 2);
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+}
+
+.progress-bar {
+  height: 100%;
+  flex-shrink: 0;
+  border: 0;
+  background: var(--viz-series-1);
+}
+
+.viz-badge {
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  color: var(--accent-foreground);
+  background: var(--accent);
+  font-weight: var(--font-weight-medium);
+}
+
+small,
+.text-small,
+.viz-badge {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.viz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.viz-controls &gt; .form-label {
+  display: grid;
+  min-width: min(100%, 260px);
+  flex: 1 1 280px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin-bottom: 0;
+}
+
+.viz-controls &gt; .form-label &gt; :is(.form-control, .form-range, .form-select) {
+  grid-column: 1 / -1;
+}
+
+.btn,
+.form-check-input,
+.form-control,
+.form-range,
+.form-select {
+  font: inherit;
+}
+
+.btn {
+  appearance: button;
+  display: inline-flex;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0 8px;
+  -webkit-app-region: no-drag;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: var(--cursor-interaction, pointer);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn:is(.btn-block, .viz-tile) {
+  inline-size: 100%;
+}
+
+.btn.viz-tile {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+a.btn {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn-primary {
+  border-color: transparent;
+  color: var(--primary-foreground);
+  background: var(--foreground);
+  background-clip: padding-box;
+}
+
+.btn-primary .text-muted {
+  color: color-mix(in srgb, var(--primary-foreground) 50%, transparent);
+}
+
+.btn-primary:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 80%, transparent);
+  background-clip: padding-box;
+}
+
+.btn-ghost {
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.btn-ghost:not(:disabled):hover {
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+[data-lucide] {
+  stroke-width: 1.6;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--foreground);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  padding: 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--foreground);
+  background: var(--secondary);
+}
+
+.form-control::placeholder {
+  color: var(--muted-foreground);
+}
+
+.form-control[type=&quot;file&quot;] {
+  padding: 0;
+  overflow: hidden;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control[type=&quot;file&quot;]::file-selector-button {
+  min-height: 26px;
+  margin-right: 8px;
+  padding: 0 8px;
+  border: 0;
+  border-right: 1px solid var(--input);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: inherit;
+  font: inherit;
+}
+
+.form-control[type=&quot;file&quot;]:not(:disabled):hover::file-selector-button {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-control-color[type=&quot;color&quot;] {
+  width: 40px;
+  height: 28px;
+  padding: 3px;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(var(--radius-lg) - 4px);
+  corner-shape: superellipse(1.5);
+}
+
+textarea.form-control {
+  height: auto;
+  min-height: 72px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+
+.form-control:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-control:disabled,
+.form-select:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.form-select {
+  appearance: none;
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  margin: 0;
+  padding: 0 32px 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: superellipse(1.5);
+  color: var(--foreground);
+  background-color: var(--secondary);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted-foreground) 50%),
+    linear-gradient(135deg, var(--muted-foreground) 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 10px) 50%;
+  background-repeat: no-repeat;
+  background-size: 4px 4px;
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-select:not(:disabled):hover {
+  background-color: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-select:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-check {
+  display: flex;
+  min-height: 20px;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-check-input {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  margin: 0;
+  border: 1px solid var(--input);
+  color: var(--primary-foreground);
+  background-color: transparent;
+  cursor: var(--cursor-interaction, default);
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    box-shadow 150ms;
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;] {
+  border-color: var(--input);
+  border-radius: var(--radius-sm);
+  corner-shape: superellipse(1.5);
+  background-color: var(--secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input:not(:disabled):not(:checked):hover {
+  background-color: var(--card);
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;]:checked {
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;checkbox&quot;]:checked::before {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-foreground);
+  content: &quot;&quot;;
+  mask: var(--checkmark-image) center / 12px 12px no-repeat;
+}
+
+.form-check-input[type=&quot;radio&quot;] {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+}
+
+.form-check-input[type=&quot;radio&quot;]:checked {
+  border: 2px solid var(--primary);
+  background:
+    radial-gradient(circle, var(--primary-foreground) 0 2.5px, transparent 3px),
+    var(--primary);
+}
+
+.form-check:not(.form-switch) .form-check-input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+}
+
+.form-switch .form-check-input:disabled,
+.form-switch .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.form-check-label {
+  color: var(--foreground);
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-switch .form-check-input {
+  position: relative;
+  width: 32px;
+  height: 20px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  box-shadow: none;
+  transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 1px solid light-dark(var(--primary-foreground), var(--foreground));
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+  box-shadow: var(--shadow-sm);
+  content: &quot;&quot;;
+  transform: translate(2px, -50%);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input:checked {
+  background: var(--primary);
+}
+
+.form-switch .form-check-input:checked::before {
+  transform: translate(14px, -50%);
+}
+
+.form-switch .form-check-input:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.form-range {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 28px;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: 0;
+  accent-color: var(--primary);
+  background: linear-gradient(
+      color-mix(in srgb, var(--foreground) 7%, transparent),
+      color-mix(in srgb, var(--foreground) 7%, transparent)
+    )
+    center / 100% 2px no-repeat;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-webkit-slider-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range::-moz-range-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-moz-range-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.btn:not(.btn-primary, .viz-tile):is(
+  [aria-pressed=&quot;true&quot;],
+  [aria-selected=&quot;true&quot;],
+  .is-selected
+) {
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+  background: var(--primary);
+}
+
+.btn.viz-tile:is([aria-pressed=&quot;true&quot;], [aria-selected=&quot;true&quot;], .is-selected) {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (pointer: coarse) {
+  .btn,
+  .form-control,
+  .form-select {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .form-control,
+  .form-select {
+    font-size: max(16px, var(--font-size-normal));
+  }
+
+  .form-control[type=&quot;file&quot;]::file-selector-button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .form-control-color[type=&quot;color&quot;] {
+    width: 44px;
+    height: 44px;
+  }
+
+  .form-control:is(
+    [type=&quot;date&quot;],
+    [type=&quot;datetime-local&quot;],
+    [type=&quot;month&quot;],
+    [type=&quot;time&quot;],
+    [type=&quot;week&quot;]
+  ) {
+    min-width: 0;
+    max-width: 100%;
+    padding-block: 8px;
+  }
+
+  .form-check {
+    min-height: 44px;
+    padding-inline: 15px;
+  }
+
+  .form-check-input {
+    position: relative;
+  }
+
+  .form-check-input::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 44px;
+    height: 44px;
+    content: &quot;&quot;;
+    transform: translate(-50%, -50%);
+  }
+
+  .form-check-label {
+    display: inline-flex;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .form-range {
+    height: 44px;
+    touch-action: pan-y;
+  }
+
+  .form-range::-webkit-slider-runnable-track {
+    height: 44px;
+  }
+
+  .form-range::-moz-range-track {
+    height: 44px;
+  }
+
+  .form-range::-webkit-slider-thumb {
+    margin-top: 12px;
+  }
+}
+
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#widget &gt; svg {
+  width: 100%;
+}
+
+/* Model-authored chart rules can otherwise stretch icons after these styles load. */
+svg.lucide {
+  display: block;
+  width: 16px !important;
+  height: 16px !important;
+  flex: none;
+  margin: 0 !important;
+  stroke-width: 1.6;
+}
+
+.text-warning,
+.text-destructive {
+  color: var(--destructive);
+}
+
+html&gt;body{padding:0}&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&quot;surf-ow-demo&quot;&gt;
+  &lt;div class=&quot;viz-controls&quot;&gt;
+    &lt;label class=&quot;form-label&quot;&gt;Pokémon
+      &lt;select class=&quot;form-select&quot; id=&quot;surf-species&quot;&gt;&lt;option value=&quot;lapras&quot;&gt;Lapras&lt;/option&gt;&lt;option value=&quot;blastoise&quot;&gt;Blastoise&lt;/option&gt;&lt;/select&gt;
+    &lt;/label&gt;
+    &lt;label class=&quot;form-label&quot;&gt;Dirección
+      &lt;select class=&quot;form-select&quot; id=&quot;surf-dir&quot;&gt;&lt;option value=&quot;0&quot;&gt;Sur&lt;/option&gt;&lt;option value=&quot;1&quot;&gt;Norte&lt;/option&gt;&lt;option value=&quot;2&quot;&gt;Oeste&lt;/option&gt;&lt;option value=&quot;3&quot;&gt;Este&lt;/option&gt;&lt;/select&gt;
+    &lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;surf-scenes&quot;&gt;
+    &lt;figure&gt;&lt;figcaption&gt;OW original&lt;/figcaption&gt;&lt;canvas id=&quot;surf-original&quot; width=&quot;80&quot; height=&quot;64&quot; role=&quot;img&quot; aria-label=&quot;Frame original del Pokémon sin recorte ni jinete&quot;&gt;&lt;/canvas&gt;&lt;/figure&gt;
+    &lt;figure&gt;&lt;figcaption&gt;Composición de montura&lt;/figcaption&gt;&lt;canvas id=&quot;surf-mounted&quot; width=&quot;80&quot; height=&quot;64&quot; role=&quot;img&quot; aria-label=&quot;Jugador detrás del Pokémon, con recorte inferior y espuma opcionales&quot;&gt;&lt;/canvas&gt;&lt;/figure&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;viz-controls&quot;&gt;
+    &lt;label class=&quot;form-label&quot;&gt;Desplazamiento Y del jugador: &lt;output id=&quot;surf-y-value&quot; class=&quot;tabular-nums&quot;&gt;−8 px&lt;/output&gt;
+      &lt;input class=&quot;form-range&quot; id=&quot;surf-y&quot; type=&quot;range&quot; min=&quot;-20&quot; max=&quot;4&quot; value=&quot;-8&quot;&gt;
+    &lt;/label&gt;
+    &lt;label class=&quot;form-label&quot;&gt;Filas inferiores ocultas: &lt;output id=&quot;surf-cut-value&quot; class=&quot;tabular-nums&quot;&gt;5 px&lt;/output&gt;
+      &lt;input class=&quot;form-range&quot; id=&quot;surf-cut&quot; type=&quot;range&quot; min=&quot;0&quot; max=&quot;16&quot; value=&quot;5&quot;&gt;
+    &lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;viz-controls&quot;&gt;
+    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input&quot; id=&quot;surf-rider&quot; type=&quot;checkbox&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;Jugador&lt;/span&gt;&lt;/label&gt;
+    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input&quot; id=&quot;surf-front&quot; type=&quot;checkbox&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;Pokémon delante&lt;/span&gt;&lt;/label&gt;
+    &lt;label class=&quot;form-check&quot;&gt;&lt;input class=&quot;form-check-input&quot; id=&quot;surf-waves&quot; type=&quot;checkbox&quot; checked&gt;&lt;span class=&quot;form-check-label&quot;&gt;Espuma&lt;/span&gt;&lt;/label&gt;
+  &lt;/div&gt;
+  &lt;div id=&quot;surf-status&quot; class=&quot;text-small&quot; aria-live=&quot;polite&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;style&gt;
+  #surf-ow-demo .surf-scenes {display:flex; flex-wrap:wrap; justify-content:center; gap:16px; margin:12px 0;}
+  #surf-ow-demo figure {margin:0; flex:1 1 240px; max-width:320px; text-align:center;}
+  #surf-ow-demo canvas {display:block; width:100%; height:auto; image-rendering:pixelated; background:color-mix(in srgb,var(--blue) 16%,var(--background));}
+  #surf-ow-demo figcaption {margin-bottom:8px;}
+  #surf-ow-demo #surf-status {margin-top:10px;}
+&lt;/style&gt;
+&lt;script&gt;
+(() =&gt; {
+  const root = document.getElementById(&#x27;surf-ow-demo&#x27;);
+  const assets = {&quot;lapras&quot;:{&quot;width&quot;:192,&quot;pixels&quot;:&quot;99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999ff999999999ff9999999999999999999ff999999999ff9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999ff999999999ff999999999999999999f33f9111119f33f99999999999999999f33f9111119f33f9999999999999999999999999991199999999999999999999999999999119999999999999999999999ff999999999ff999999999999999999f33f9111119f33f99999999999999999f3341433341433f99999999999999999f3341433341433f99999999999999999999991fff1441999999999999999999999991fff144199999999999999999999f33f9111119f33f99999999999999999f1341433341431f99999999999999999f4414333334144f99999999999999999f4414333334144f9999999999999999999ff1433341ff99999999999999999999ff1433341ff99999999999999999999f1341433341431f99999999999999999f144333f333441f99999999999999999914133333331419999999999999999999141333333314199999999999999999999f3413331334f9999999999999999999f3413331334f9999999999999999999f144333f333441f999999999999999999f1334f3f4331f999999999999999999991333333333199999999999999999999913333333331999999999999999999999113333331131999999999999999999911333333113199999999999999999999f1334f3f4331f9999999999999999999913341314331999999999999999999991433333333341999999999999999999914333333333419999999999999999999134433333f43f999999999999999999134433333f43f9999999999999999999991334131433199999999999999999999f33334443333f9999999999999999999f44333333344f9999999999999999999f44333333344f99999999999999999991333333334ff99999999999999999991333333334ff999999999999999999999f33334443333f9999999999999999999f46333333364f9999999999999999999f44443334444f9999999999999999999f44443334444f999999999999999999f334433333411999999999999999999f334433333411999999999999999999999f46333333364f9999999999999999999f46a43334a64f99999999999999999999f444444444f999999999999999999999f444444444f999999999999999999913343f633444199999999999999999913343f6334441999999999999999999999f46a43334a64f99999999999999999999fcf13331fcf999999999999999999999114411144119999999999999999999991144111441199999999999999999991333af64444419999999999999999991333af64444419999999999999999999999fcf13331fcf999999999999999999999f443333344f9999999999999999999999ff1c441ff99999999999999999999999ff1c441ff999999999999999999999133344dd444f1911999999999999999133344dd4444f191199999999999999999f443333344f9999999999999999999994f4433344f4999999999999999999999fc4114dd4cf999999999999999999999fc4114dd4cf999999999999999999999ff1dddd14fd41d19999999999999999ff1dddd144fd41d199999999999999991cf4433344fc199999999999999999991c1ff444ff1c19999999999999999999911d44d4dd1199999999999999999999911d44d4dd11999999999999999999999999ffad441d444d1999999999999999999ffadd441d444d19999999999991114d1ff444ff1d411199999999999999914d144fff441d419999999999999999991f4ddd4d1d4f199999999999999999991f4ddd4d1d4f1999999999999999999999999add4fdc1dd4411999999999999999999add4fdc1dd4411999999999914fd1144fff4411df41999999999999911fd1434ddd4341df119999999999999111fd41d441144df1119999999999999991fd41d441144df19999999999999999999999adee4fd11dc4dd199999999999999999adee4fd11dc4dd1999999999991f4f33deeed33f4f19999999999999914f4f33deeed33f4f41999999999999f444fd4114d44d4df444f999999999999114fd4114d44d4df41199999999999999999999aeee4f44dddc14419999999999999999aeee4f44dddc1441999999999911f434eeeee434f1199999999999999911f434eeeee434f1199999999999991f14fd144dddd41df41f199999999999f444fd144dddd41df444f999999999999999999aeee433fd44d114d1999999999999999aeee434fd44d114d1999999999113444eeeeeee4443119999999999911143444eeeeeee4443411199999999999911f1d1144411d1f1199999999999991f14f1d114f411d1f41f1999999999999999999aee13334fdd44ddf1999999999999999aeee1334fdd44ddf1999999911433314eeeeeee41333411999999999f4433314eeeeeee4133344f999999999999914f1444f4441f419999999999999999914f144f3f441f41199999999999999999999ad13331441444ff14199999999999999ade133144144ff1441999999f44334fddeeeeeddf43344f9999999999f1444fddeeeeeddf4441f99999999999999f34f11f3f11f43f9999999999999999f434f1143411f433f999999999999999999999af333314411133f11999999999999999adf3331141133f1119999999f11ff1fdddddddf1fff1f99999999999991ff1fdddddddf1ff1999999999999999f3341a14341a1433f99999999999999f433f1a14441a1f433f999999999999999999999f3333f1111f333199999999999999999af33333f1f33319999999999999999fffffff9999999999999999999999999fffffff99999999999999999999f34f999111999f43f999999999999991fff99991119999fff1999999999999999999999914333f9999fff19999999999999999999133333f9fff19999999999999999999999999999999999999999999999999999999999999999999999999991f1999999999991f1999999999999999999999999999999999999999999999999999999991ffff99999999999999999999999999991ffff999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999&quot;,&quot;palette&quot;:[&quot;#ff00ff&quot;,&quot;#184252&quot;,&quot;#000000&quot;,&quot;#42a5e7&quot;,&quot;#397ba5&quot;,&quot;#73c6f7&quot;,&quot;#f7efe7&quot;,&quot;#6b5218&quot;,&quot;#dec684&quot;,&quot;#8ca594&quot;,&quot;#5a4a42&quot;,&quot;#52526b&quot;,&quot;#d6cec6&quot;,&quot;#a59494&quot;,&quot;#f7dead&quot;,&quot;#000000&quot;],&quot;transparent&quot;:9},&quot;blastoise&quot;:{&quot;width&quot;:224,&quot;pixels&quot;:&quot;00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000011110000000000000000000000000000111100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001111110000000000000000000000000011111100000000000000000000000000111111000000000000000000000000011444411000000000000000000000000114444110000000000000000000000000000000000000000000000000000000000000000000000000000000000000011133333311100000000000000000000111333333111000000000000000000001113333331110000000000000000000055143333415500000000000000000000551433334155000000000000000000000111000000000000000000000000000001110000000000000000000000000001333433334333100000000000000000013334333343331000000000000000000133343333433310000000000000000005333333333333500000000000000000053333333333335000000000000000000113441150000000000000000000000001134411500000000000000000000c50011333333333311005c0000000000c50011333333333311005c0000000000c50011333333333311005c00000000000000543333333333450000000000000000005433333333334500000000000000001133331433500cc000000000000000001133331433500cc00000000000000c9750153333333333510579c00000000c9750153333333333510579c00000000c9750153333333333510579c000000000c50051333333333315005c0000000000c50051333333333315005c000000000001433333334150c77c0000000000000001433333334150c77c00000000000057977c54333333333345c7797500000057977c54333333333345c7797500000057977c54333333333345c779750000000c9750553333333333550579c00000000c9750553333333333550579c00000000001333333344150555c0000000000000001333333344150555c00000000000059777c54433333333445c7779500000059777c54433333333445c7779500000059777c54433333333445c7779500000057977c54433333333445c7797500000057977c54433333333445c7797500000000014334334444458885000000000000000143343344444588850000000000000577c7549834334389457c77500000000577c7549834334389457c77500000000577c7549834334389457c775000000059777c54433333333445c7779500000059777c54433333333445c77795000000000143133344c8c8c99c500000000000000143133344c8c8c99c5000000000000055c7149854334589417c55000000000055c7149854334589457c55000000000055c7549854334589417c55000000000577c7c544433334445c7c77500000000577c7c544433334445c7c775000000000133314894cccc875c950000000000000133314894cccc875c95000000000000000c5454443333444545c00000000000000c5454443333444545c00000000000000c5454443333444545c00000000000055c7557799999977557c55000000000055c7557799999977557c550000000000133435894ccc48755788000000000000133435894ccc48755788000000000000001335c44333344c5331000000000000001335c44333344c5331000000000000001335c44333344c53310000000000000155888877777788885500000000000000558888777777888855100000000000144444444c8548577588800000000000144444444c85485775888000000000000133395cc5445cc593331000000000000133395cc5445cc593331000000000000133395cc5445cc593331000000000000158888888888888888510000000000001588888888888888885100000000000141444ecc85149c55c88800000000000141444ecc85439c55c88800000000000143349855eeee5589433410000000000143349855eeee5589333100000000000013339855eeee55894334100000000001458888888888888888510000000000001588888888888888885410000000000011ceecc5514337cc888800000000000011ceecc5553337cc888800000000000194457cec5555cec7544910000000000194457cec5555cec7433410000000000143347cec5555cec754491000000000017458888888888888854410000000000144588888888888888547100000000000005555588543347888885000000000000055555854333478888850000000000015718eeeeeeeeee8175100000000000015718eeeeeeeeee8544910000000000194458eeeeeeeeee8175100000000000117598888888888889547100000000001745988888888888895711000000000000000c88c5433347888885000000000000000c88c53333478888850000000000005541eeeeeeeeee1455000000000000005541eeeeeeeeee1175100000000000015711eeeeeeeeee14550000000000000115988888558888895711000000000011759888885588888951100000000000000008eeec9334417888850000000000000008eec93344417888850000000000000138cceeeeeecc8310000000000000000138cceeeeeecc3355000000000000005533cceeeeeecc83100000000000000005988885335888895510000000000001559888853358888950000000000000000008eeccc344544788555500000000000008eecc44451447885555000000000013338888888888333100000000000000133388888888883331000000000000001333888888888833310000000000000051788885335888871500000000000000517888853358888715000000000000000000588857553347885433500000000000005885755433478854335000000000133348cccccc84333100000000000000133348cccccc54334100000000000000143345cccccc84333100000000000000511788543345887115000000000000005117885433458871150000000000000000005ccc85533347854335000000000000005cc85543334785433500000000001433445888854433410000000000000014334458888554441000000000000000014445588885443341000000000000005111751444415711500000000000000005117514444157111500000000000000000005cc843344c51445500000000000000005cc885433445145500000000000014444155551444410000000000000000144441555505497500000000000000005794505555144441000000000000000051111144441111150000000000000000511111444411111500000000000000000000055854444c555500000000000000000005588854444c550000000000000057945000000549750000000000000000579450000000555000000000000000000555000000054975000000000000000051115055550055500000000000000000055500555505111500000000000000000000000549747450000000000000000000000005554974745000000000000000055500000000555000000000000000000555000000000000000000000000000000000000000055500000000000000000055500000000000000000000000000000000000000005550000000000000000000000000555555000000000000000000000000000055555500000000&quot;,&quot;palette&quot;:[&quot;#ff00ff&quot;,&quot;#2163ad&quot;,&quot;#083963&quot;,&quot;#94ade7&quot;,&quot;#5a8cce&quot;,&quot;#000000&quot;,&quot;#4a4a4a&quot;,&quot;#ceced6&quot;,&quot;#5a3918&quot;,&quot;#ffffff&quot;,&quot;#8c6342&quot;,&quot;#d6ad4a&quot;,&quot;#949494&quot;,&quot;#f7d69c&quot;,&quot;#e7c673&quot;,&quot;#9c3129&quot;],&quot;transparent&quot;:0},&quot;player&quot;:{&quot;width&quot;:192,&quot;pixels&quot;:&quot;000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000500000000000000000000000000000000000000000000000000000000000000005000000000000000000000000000000000000000000000000000000000050000000000000000000000000000000000000000000000000000000000000000005e5000000000000000000000000000000050000000000000000000000000000005e5000000000000000000000000050000000000000000000000000000005e550000000000000000000000000000000000050000000000000000000000005555ee50000000000000000000000000000005e500000000000000000000000005555ee55000000000000000000000005e5500000000000000000000000000055eee55500000000000000000000000000000005e500000000000000000000055ee99999550000000000000000000000005555ee55000000000000000000000005ee999999500000000000000000000055eee5550000000000000000000000059eeeeeee5000000000000000000000000005555ee500000000000000000000b5beeeee9999500000000000000000000005ee99999950000000000000000000005eeeeee99500000000000000000000059eeeeeee50000000000000000000000059eeeeee950000000000000000000000055ee99999550000000000000000008eeaa999999995000000000000000000005eeeeee995000000000000000000000ffeeeeee99ff00000000000000000000059eeeeee95000000000000000000000f999eeee999f000000000000000000000b5beeeee9999500000000000000000aeaaaabbb99f500000000000000000000ffeeeeee99ff00000000000000000000fbb9aaaa9bbf00000000000000000000f999eeee999f00000000000000000000f9999999999f0000000000000000000008eeaa99999999000000000000000004bbbbbbb889f000000000000000000000fbb9aaaa9bbf00000000000000000000fbb9eaae9bbf00000000000000000000f9999999999f00000000000000000000f8999999998f000000000000000000000aeaaaabbb99f50000000000000000043111f88888f000000000000000000000fbb9eaae9bbf000000000000000000043fbaeeeeabb340000000000000000000f8999999998f000000000000000000043898999989f34000000000000000000004bbbbbbb889f000000000000000000411812f8888f0000000000000000000043fbbeeeebbb340000000000000000004341121121143400000000000000000043898999989f34000000000000000000434888998884340000000000000000000043111f88888f000000000000000000433822f23ff0000000000000000000004341121121143400000000000000000ff433282282334ff0000000000000000043488899888434000000000000000000ff44ffffff44ff00000000000000000000411812f8888f0000000000000000000433333334f40000000000000000000004332822823340000000000000000044384338228334834400000000000000000433ffffff334000000000000000004423ff8beeb8ff3244000000000000000000433822f23ff000000000000000000000443334f823f0000000000000000000004338228334000000000000000004ccf6ff433334ff6fcc4000000000000000004332222334000000000000000004ccf6684aaaa4866fcc4000000000000000000433333334f0000000000000000000000444faaf24cf00000000000000000000ff433334ff000000000000000004ddff888ffff888ffdd400000000000000000ffd4444dff000000000000000004ddf888444444888fdd40000000000000000000443333f8f000000000000000000000004dfbbffddf0000000000000000000f388ffff883f00000000000000000ff00fd88dd88df00ff00000000000000000f288ffff882f00000000000000000ff0ff8fbbbbf8ff0ff000000000000000000000048448bbf0000000000000000000f0ffddff88ff00000000000000000004ccf88dd88fcc400000000000000000000fff8888fff000000000000000000004c8ffbeebff8c400000000000000000000ff668866ff000000000000000000000f000fdd82fb4af00000000000000000f4fff48888ff000000000000000000004dd4d8888d4dd80000000000000000000fbb4fddf4bbf00000000000000000004ddf4aaaa4fdd80000000000000000000ffffffffffff0000000000000000000f4f0ff488288bbf00000000000000000f8ff68ffffff000000000000000000000ffff4884fff800000000000000000000f66f4444f66f00000000000000000000fff444444fff00000000000000000000fdffffffffdf0000000000000000000f8ff6ff8448fbf0000000000000000000fdf8ffffff00000000000000000000000f66f44f66f000000000000000000000f666ffff666f000000000000000000000f8fbbbbf8f000000000000000000000f6ddffffdd6f00000000000000000000fdf8ff4ff8ff00000000000000000000f68ffff00000000000000000000000000f66ffff66f0000000000000000000000fff0000fff00000000000000000000000ff8ff8ff00000000000000000000000fff0000fff000000000000000000000f68ffffccff0000000000000000000000fb4ff0000000000000000000000000000ff0000ff0000000000000000000000000000000000000000000000000000000000ffff000000000000000000000000000000000000000000000000000000000fb4fffddf000000000000000000000000ff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000ff000ff000000000000000000000000000000000000000000000&quot;,&quot;palette&quot;:[&quot;#73c5a4&quot;,&quot;#ffd5b4&quot;,&quot;#ffc594&quot;,&quot;#de9473&quot;,&quot;#7b4141&quot;,&quot;#394a7b&quot;,&quot;#293962&quot;,&quot;#182952&quot;,&quot;#102039&quot;,&quot;#dee6ee&quot;,&quot;#73cd73&quot;,&quot;#4a9452&quot;,&quot;#ff625a&quot;,&quot;#c54141&quot;,&quot;#ffffff&quot;,&quot;#000000&quot;],&quot;transparent&quot;:0},&quot;splash&quot;:{&quot;width&quot;:32,&quot;pixels&quot;:&quot;0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000400000400000000005004005000000400005000004000006556556564000000066505606000000000666666000000000060600600000&quot;,&quot;palette&quot;:[&quot;#62acee&quot;,&quot;#f6e6c5&quot;,&quot;#eed5b4&quot;,&quot;#deb494&quot;,&quot;#ffffff&quot;,&quot;#dee6ee&quot;,&quot;#bdcde6&quot;,&quot;#9cb4de&quot;,&quot;#629cb4&quot;,&quot;#ffbde6&quot;,&quot;#000000&quot;,&quot;#eee6a4&quot;,&quot;#decd83&quot;,&quot;#d5b46a&quot;,&quot;#cd9c52&quot;,&quot;#000000&quot;],&quot;transparent&quot;:0}};
+  const get = id =&gt; root.querySelector(&#x27;#surf-&#x27; + id);
+  const frameMap = {lapras:[0,2,4,4], blastoise:[0,3,5,5]};
+  const playerMap = [0,2,4,4];
+  function pixels(ctx, asset, frame, frameWidth, frameHeight, x, y, flip, visibleRows = frameHeight) {
+    for (let py = 0; py &lt; visibleRows; py++) {
+      for (let px = 0; px &lt; frameWidth; px++) {
+        const index = parseInt(asset.pixels[py * asset.width + frame * frameWidth + px], 16);
+        if (index === asset.transparent) continue;
+        ctx.fillStyle = asset.palette[index];
+        ctx.fillRect(x + (flip ? frameWidth - px - 1 : px), y + py, 1, 1);
+      }
+    }
+  }
+  function draw() {
+    const species = get(&#x27;species&#x27;).value;
+    const direction = Number(get(&#x27;dir&#x27;).value);
+    const offset = Number(get(&#x27;y&#x27;).value);
+    const cut = Number(get(&#x27;cut&#x27;).value);
+    const showRider = get(&#x27;rider&#x27;).checked;
+    const front = get(&#x27;front&#x27;).checked;
+    const waves = get(&#x27;waves&#x27;).checked;
+    const asset = assets[species];
+    const monFrame = frameMap[species][direction];
+    const flip = direction === 3;
+    const a = get(&#x27;original&#x27;).getContext(&#x27;2d&#x27;);
+    const b = get(&#x27;mounted&#x27;).getContext(&#x27;2d&#x27;);
+    a.clearRect(0,0,80,64);
+    b.clearRect(0,0,80,64);
+    pixels(a, asset, monFrame, 32, 32, 24, 20, flip);
+    const mon = () =&gt; pixels(b, asset, monFrame, 32, 32, 24, 20, flip, 32-cut);
+    const rider = () =&gt; {
+      if (showRider) pixels(b, assets.player, playerMap[direction], 32, 32, 24, 20+offset, flip);
+    };
+    if (front) {rider(); mon();} else {mon(); rider();}
+    if (waves) {
+      const waterY = 20 + 32 - cut - 4;
+      pixels(b, assets.splash, 0, 16, 8, 32, waterY, false);
+    }
+    get(&#x27;y-value&#x27;).textContent = offset + &#x27; px&#x27;;
+    get(&#x27;cut-value&#x27;).textContent = cut + &#x27; px&#x27;;
+    get(&#x27;status&#x27;).textContent = !showRider ? &#x27;Pokémon acuático sin jinete&#x27; :
+      (front ? &#x27;Superposición: jugador → Pokémon → espuma&#x27; : &#x27;Superposición: Pokémon → jugador → espuma&#x27;);
+  }
+  root.querySelectorAll(&#x27;select,input&#x27;).forEach(control =&gt; control.addEventListener(&#x27;input&#x27;, draw));
+  draw();
+})();
+&lt;/script&gt;
+
+&lt;script src=&quot;https://unpkg.com/@floating-ui/core@1.7.3/dist/floating-ui.core.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@floating-ui/dom@1.7.4/dist/floating-ui.dom.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  if (window.FloatingUIDOM == null) {
+    return;
+  }
+  const { autoUpdate, computePosition, flip, offset, shift, size } =
+    window.FloatingUIDOM;
+  const tooltipPlacements = new Set([&quot;top&quot;, &quot;right&quot;, &quot;bottom&quot;, &quot;left&quot;]);
+  const tooltipId = `codex-visualization-tooltip-${
+    window.crypto?.randomUUID?.() ?? Date.now().toString(36)
+  }`;
+  const tooltipGap = 5;
+  const hoverDelay = 700;
+  const skipDelay = 300;
+  let activeTrigger = null;
+  let pendingTrigger = null;
+  let tooltip = null;
+  let openTimeout = null;
+  let autoUpdateCleanup = null;
+  let positionRequest = 0;
+  let skipDelayUntil = 0;
+  let lastPointerWasTouch = false;
+  let pinnedByTouch = false;
+
+  const getTrigger = (target) =&gt;
+    target?.nodeType === Node.ELEMENT_NODE
+      ? target.closest(&quot;[data-tooltip]&quot;)
+      : null;
+  const containsTarget = (trigger, target) =&gt;
+    target?.nodeType != null &amp;&amp; trigger.contains(target);
+  const getContent = (trigger) =&gt;
+    trigger.getAttribute(&quot;data-tooltip&quot;)?.trim() ?? &quot;&quot;;
+  const getPlacement = (trigger) =&gt; {
+    const placement = trigger.getAttribute(&quot;data-tooltip-placement&quot;);
+    return tooltipPlacements.has(placement) ? placement : &quot;top&quot;;
+  };
+  const getTooltip = () =&gt; {
+    if (tooltip == null) {
+      tooltip = document.createElement(&quot;div&quot;);
+      tooltip.id = tooltipId;
+      tooltip.className = &quot;tooltip&quot;;
+      tooltip.setAttribute(&quot;role&quot;, &quot;tooltip&quot;);
+    }
+    return tooltip;
+  };
+  const setDescribedBy = (trigger, described) =&gt; {
+    const ids = new Set(
+      (trigger.getAttribute(&quot;aria-describedby&quot;) ?? &quot;&quot;)
+        .split(/\s+/)
+        .filter(Boolean),
+    );
+    if (described) {
+      ids.add(tooltipId);
+    } else {
+      ids.delete(tooltipId);
+    }
+    if (ids.size === 0) {
+      trigger.removeAttribute(&quot;aria-describedby&quot;);
+    } else {
+      trigger.setAttribute(&quot;aria-describedby&quot;, [...ids].join(&quot; &quot;));
+    }
+  };
+  const clearOpenTimeout = () =&gt; {
+    if (openTimeout != null) {
+      window.clearTimeout(openTimeout);
+      openTimeout = null;
+    }
+    pendingTrigger = null;
+  };
+  const closeTooltip = (activateSkipDelay = true) =&gt; {
+    clearOpenTimeout();
+    pinnedByTouch = false;
+    positionRequest += 1;
+    autoUpdateCleanup?.();
+    autoUpdateCleanup = null;
+    if (activeTrigger == null) {
+      return;
+    }
+    setDescribedBy(activeTrigger, false);
+    activeTrigger = null;
+    tooltip?.remove();
+    if (activateSkipDelay) {
+      skipDelayUntil = Date.now() + skipDelay;
+    }
+  };
+  const updatePosition = (trigger, floating) =&gt; {
+    const request = ++positionRequest;
+    void computePosition(trigger, floating, {
+      middleware: [
+        offset(tooltipGap),
+        flip({ padding: tooltipGap }),
+        shift({ padding: tooltipGap }),
+        size({
+          padding: tooltipGap,
+          apply({ availableHeight, availableWidth, elements }) {
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-width&quot;,
+              `${Math.max(0, availableWidth)}px`,
+            );
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-height&quot;,
+              `${Math.max(0, availableHeight)}px`,
+            );
+          },
+        }),
+      ],
+      placement: getPlacement(trigger),
+      strategy: &quot;fixed&quot;,
+    })
+      .then(({ x, y }) =&gt; {
+        if (activeTrigger !== trigger || request !== positionRequest) {
+          return;
+        }
+        const scale = window.devicePixelRatio || 1;
+        floating.style.transform = `translate(${Math.round(x * scale) / scale}px, ${Math.round(y * scale) / scale}px)`;
+        floating.style.visibility = &quot;visible&quot;;
+      })
+      .catch(() =&gt; {
+        if (activeTrigger === trigger &amp;&amp; request === positionRequest) {
+          closeTooltip(false);
+        }
+      });
+  };
+  const openTooltip = (trigger) =&gt; {
+    const content = getContent(trigger);
+    if (!trigger.isConnected || content.length === 0) {
+      return;
+    }
+    clearOpenTimeout();
+    if (activeTrigger === trigger) {
+      return;
+    }
+    closeTooltip();
+    const floating = getTooltip();
+    floating.textContent = content;
+    floating.style.visibility = &quot;hidden&quot;;
+    floating.style.transform = &quot;translate(0, 0)&quot;;
+    document.body.appendChild(floating);
+    activeTrigger = trigger;
+    setDescribedBy(trigger, true);
+    autoUpdateCleanup = autoUpdate(trigger, floating, () =&gt; {
+      updatePosition(trigger, floating);
+    });
+  };
+  const requestOpen = (trigger, immediate = false) =&gt; {
+    if (
+      getContent(trigger).length === 0 ||
+      activeTrigger === trigger ||
+      pendingTrigger === trigger
+    ) {
+      return;
+    }
+    clearOpenTimeout();
+    pendingTrigger = trigger;
+    const delay =
+      immediate || activeTrigger != null || Date.now() &lt; skipDelayUntil
+        ? 0
+        : hoverDelay;
+    if (delay === 0) {
+      openTooltip(trigger);
+      return;
+    }
+    openTimeout = window.setTimeout(() =&gt; {
+      openTimeout = null;
+      pendingTrigger = null;
+      openTooltip(trigger);
+    }, delay);
+  };
+  const handlePointerOpen = (event) =&gt; {
+    if (event.pointerType === &quot;touch&quot;) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    requestOpen(trigger);
+  };
+  const handlePointer = (event) =&gt; {
+    lastPointerWasTouch =
+      event.type === &quot;pointerdown&quot; &amp;&amp; event.pointerType === &quot;touch&quot;;
+  };
+  const handleTouchClick = (event) =&gt; {
+    const isTouch = event.pointerType === &quot;touch&quot; || lastPointerWasTouch;
+    lastPointerWasTouch = false;
+    if (!isTouch || event.detail === 0) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (
+      trigger == null ||
+      !trigger.isConnected ||
+      getContent(trigger).length === 0 ||
+      (pinnedByTouch &amp;&amp; activeTrigger === trigger)
+    ) {
+      if (pinnedByTouch) {
+        closeTooltip();
+      }
+      return;
+    }
+    openTooltip(trigger);
+    pinnedByTouch = activeTrigger === trigger;
+    window.setTimeout(() =&gt; {
+      if (activeTrigger === trigger &amp;&amp; !trigger.isConnected) {
+        closeTooltip(false);
+      }
+    }, 0);
+  };
+  const handleLeave = (event) =&gt; {
+    if (pinnedByTouch) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const handleFocusIn = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger?.matches(&quot;:focus-visible&quot;)) {
+      requestOpen(trigger, true);
+    }
+  };
+  const handleKeyDown = (event) =&gt; {
+    if (event.key === &quot;Escape&quot;) {
+      closeTooltip();
+    }
+  };
+  const handleContextMenu = (event) =&gt; {
+    lastPointerWasTouch = false;
+    const trigger = getTrigger(event.target);
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const destroy = () =&gt; {
+    closeTooltip(false);
+    lastPointerWasTouch = false;
+    document.removeEventListener(&quot;pointerover&quot;, handlePointerOpen);
+    document.removeEventListener(&quot;pointerdown&quot;, handlePointer);
+    document.removeEventListener(&quot;pointercancel&quot;, handlePointer);
+    document.removeEventListener(&quot;click&quot;, handleTouchClick);
+    document.removeEventListener(&quot;pointerout&quot;, handleLeave);
+    document.removeEventListener(&quot;focusin&quot;, handleFocusIn);
+    document.removeEventListener(&quot;focusout&quot;, handleLeave);
+    document.removeEventListener(&quot;keydown&quot;, handleKeyDown);
+    document.removeEventListener(&quot;contextmenu&quot;, handleContextMenu);
+    tooltip = null;
+  };
+
+  document.addEventListener(&quot;pointerover&quot;, handlePointerOpen);
+  document.addEventListener(&quot;pointerdown&quot;, handlePointer);
+  document.addEventListener(&quot;pointercancel&quot;, handlePointer);
+  document.addEventListener(&quot;click&quot;, handleTouchClick);
+  document.addEventListener(&quot;pointerout&quot;, handleLeave);
+  document.addEventListener(&quot;focusin&quot;, handleFocusIn);
+  document.addEventListener(&quot;focusout&quot;, handleLeave);
+  document.addEventListener(&quot;keydown&quot;, handleKeyDown);
+  document.addEventListener(&quot;contextmenu&quot;, handleContextMenu);
+  window.addEventListener(&quot;pagehide&quot;, destroy, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-lucide&quot; async src=&quot;https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  const initialize = () =&gt; {
+    globalThis.lucide?.createIcons({ attrs: { width: 16, height: 16 } });
+  };
+  if (globalThis.lucide != null) {
+    initialize();
+    return;
+  }
+  document
+    .getElementById(&quot;codex-visualization-lucide&quot;)
+    ?.addEventListener(&quot;load&quot;, initialize, { once: true });
+})();
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+</body>
+</html>

@@ -3,7 +3,11 @@
     "allow": [
       "Bash",
       "Read(//private/tmp/claude-501/**)",
-      "Read(//Users/ivanmartinez/Library/Application Support/Code/User/**)"
+      "Read(//Users/ivanmartinez/Library/Application Support/Code/User/**)",
+      "Read(//Users/ivanmartinez/**)"
+    ],
+    "additionalDirectories": [
+      "/Users/ivanmartinez"
     ]
   }
 }
