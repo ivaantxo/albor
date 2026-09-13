@@ -30,36 +30,36 @@
     ],
     [
       41,
-      33,
+      32,
       41
     ],
     [
-      18,
-      18,
-      18
+      16,
+      16,
+      16
     ],
     [
-      66,
+      65,
       57,
-      66
+      65
     ],
     [
-      84,
-      84,
-      84
+      82,
+      82,
+      82
     ],
     [
       24,
       49,
-      107
+      106
     ],
     [
       57,
-      99,
-      165
+      98,
+      164
     ],
     [
-      99,
+      98,
       148,
       222
     ],
@@ -76,11 +76,11 @@
     [
       156,
       57,
-      107
+      106
     ],
     [
       156,
-      66,
+      65,
       49
     ],
     [
@@ -111,6 +111,8 @@
     "transparent_pixels": 15853,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 11,
     "source_opaque_color_count": 11,
     "quantized": false,
     "method": "exact_source_colors",
@@ -132,7 +134,7 @@
         "colors": [
           [
             41,
-            33,
+            32,
             41
           ]
         ],
@@ -152,19 +154,19 @@
         ],
         "colors": [
           [
-            18,
-            18,
-            18
+            16,
+            16,
+            16
           ],
           [
-            66,
+            65,
             57,
-            66
+            65
           ],
           [
-            84,
-            84,
-            84
+            82,
+            82,
+            82
           ]
         ],
         "kind": "neutral",
@@ -185,21 +187,21 @@
           [
             24,
             49,
-            107
+            106
           ],
           [
             57,
-            99,
-            165
+            98,
+            164
           ],
           [
-            99,
+            98,
             148,
             222
           ]
         ],
         "kind": "chromatic",
-        "hue_degrees": 216.23,
+        "hue_degrees": 215.97,
         "opaque_pixel_count": 10916,
         "ordering_reference": "family",
         "preferred_start_index": 5,
@@ -227,16 +229,16 @@
           [
             156,
             57,
-            107
+            106
           ],
           [
             156,
-            66,
+            65,
             49
           ]
         ],
         "kind": "chromatic",
-        "hue_degrees": 344.88,
+        "hue_degrees": 345.09,
         "opaque_pixel_count": 154,
         "ordering_reference": "family",
         "preferred_start_index": 8,
@@ -272,36 +274,36 @@
       ],
       [
         41,
-        33,
+        32,
         41
       ],
       [
-        18,
-        18,
-        18
+        16,
+        16,
+        16
       ],
       [
-        66,
+        65,
         57,
-        66
+        65
       ],
       [
-        84,
-        84,
-        84
+        82,
+        82,
+        82
       ],
       [
         24,
         49,
-        107
+        106
       ],
       [
         57,
-        99,
-        165
+        98,
+        164
       ],
       [
-        99,
+        98,
         148,
         222
       ],
@@ -318,11 +320,11 @@
       [
         156,
         57,
-        107
+        106
       ],
       [
         156,
-        66,
+        65,
         49
       ],
       [
@@ -355,6 +357,8 @@
       "transparent_pixels": 15853,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 11,
       "source_opaque_color_count": 11,
       "quantized": false,
       "method": "exact_source_colors",
@@ -376,7 +380,7 @@
           "colors": [
             [
               41,
-              33,
+              32,
               41
             ]
           ],
@@ -396,19 +400,19 @@
           ],
           "colors": [
             [
-              18,
-              18,
-              18
+              16,
+              16,
+              16
             ],
             [
-              66,
+              65,
               57,
-              66
+              65
             ],
             [
-              84,
-              84,
-              84
+              82,
+              82,
+              82
             ]
           ],
           "kind": "neutral",
@@ -429,21 +433,21 @@
             [
               24,
               49,
-              107
+              106
             ],
             [
               57,
-              99,
-              165
+              98,
+              164
             ],
             [
-              99,
+              98,
               148,
               222
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 216.23,
+          "hue_degrees": 215.97,
           "opaque_pixel_count": 10916,
           "ordering_reference": "family",
           "preferred_start_index": 5,
@@ -471,16 +475,16 @@
             [
               156,
               57,
-              107
+              106
             ],
             [
               156,
-              66,
+              65,
               49
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 344.88,
+          "hue_degrees": 345.09,
           "opaque_pixel_count": 154,
           "ordering_reference": "family",
           "preferred_start_index": 8,
@@ -543,7 +547,7 @@
       "filename": "anim_front.png",
       "stem": "anim_front",
       "source": "graphics/pokemon/deino/anim_front.png",
-      "source_sha256": "1c1b3d3756572bdd06a179e865759be48cad12d430cd2aa0c78529a1e55691bb",
+      "source_sha256": "ecf0ea5a8acbdef6c13437d58a992df58b22ecb2aeb425dec07594234e585361",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -571,38 +575,38 @@
           ],
           [
             41,
-            33,
+            32,
             41
           ],
           [
-            84,
-            84,
-            84
+            82,
+            82,
+            82
           ],
           [
-            18,
-            18,
-            18
+            16,
+            16,
+            16
           ],
           [
-            66,
+            65,
             57,
-            66
+            65
           ],
           [
             24,
             49,
-            107
+            106
           ],
           [
-            99,
+            98,
             148,
             222
           ],
           [
             57,
-            99,
-            165
+            98,
+            164
           ],
           [
             115,
@@ -611,7 +615,7 @@
           ],
           [
             156,
-            66,
+            65,
             49
           ],
           [
@@ -622,7 +626,7 @@
           [
             156,
             57,
-            107
+            106
           ],
           [
             0,
@@ -762,37 +766,37 @@
           "selected_pair_distances": [
             [
               0.0,
-              0.42953,
-              0.12762,
-              0.12762,
-              0.42953
+              0.42931,
+              0.12754,
+              0.12754,
+              0.42931
             ],
             [
-              0.42953,
+              0.42931,
               0.0,
-              0.43354,
-              0.43354,
+              0.43329,
+              0.43329,
               0.0
             ],
             [
-              0.12762,
-              0.43354,
+              0.12754,
+              0.43329,
               0.0,
               0.0,
-              0.43354
+              0.43329
             ],
             [
-              0.12762,
-              0.43354,
+              0.12754,
+              0.43329,
               0.0,
               0.0,
-              0.43354
+              0.43329
             ],
             [
-              0.42953,
+              0.42931,
               0.0,
-              0.43354,
-              0.43354,
+              0.43329,
+              0.43329,
               0.0
             ]
           ],
@@ -1004,7 +1008,7 @@
       "filename": "back.png",
       "stem": "back",
       "source": "graphics/pokemon/deino/back.png",
-      "source_sha256": "a180995f6d72bce7e2a6c2321361e8e9b65779d491f5fa3c85eb35fa6a6ad2a0",
+      "source_sha256": "4c88227a20b1421b8d1c446ddb3534e9ed717ec114afeef2cd01e90987c4bc70",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -1032,38 +1036,38 @@
           ],
           [
             41,
-            33,
+            32,
             41
           ],
           [
-            84,
-            84,
-            84
+            82,
+            82,
+            82
           ],
           [
-            18,
-            18,
-            18
+            16,
+            16,
+            16
           ],
           [
-            66,
+            65,
             57,
-            66
+            65
           ],
           [
             24,
             49,
-            107
+            106
           ],
           [
-            99,
+            98,
             148,
             222
           ],
           [
             57,
-            99,
-            165
+            98,
+            164
           ],
           [
             115,
@@ -1072,7 +1076,7 @@
           ],
           [
             156,
-            66,
+            65,
             49
           ],
           [
@@ -1083,7 +1087,7 @@
           [
             156,
             57,
-            107
+            106
           ],
           [
             0,

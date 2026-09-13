@@ -108,6 +108,8 @@
     "transparent_pixels": 43171,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 15,
     "source_opaque_color_count": 15,
     "quantized": false,
     "method": "exact_source_colors",
@@ -386,16 +388,16 @@
       [
         16,
         123,
-        107
+        106
       ],
       [
-        33,
-        181,
+        32,
+        180,
         156
       ],
       [
         90,
-        214,
+        213,
         197
       ],
       [
@@ -409,33 +411,33 @@
         82
       ],
       [
-        132,
+        131,
         222,
         123
       ],
       [
         16,
         82,
-        66
+        65
       ],
       [
         90,
         156,
-        58
+        57
       ],
       [
-        132,
+        131,
         49,
         0
       ],
       [
         222,
-        66,
-        66
+        65,
+        65
       ],
       [
         189,
-        107,
+        106,
         49
       ],
       [
@@ -468,6 +470,8 @@
       "transparent_pixels": 43171,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 15,
       "source_opaque_color_count": 15,
       "quantized": false,
       "method": "exact_source_colors",
@@ -661,6 +665,8 @@
       "transparent_pixels": 26358,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 15,
       "source_opaque_color_count": 15,
       "quantized": false,
       "method": "exact_source_colors",
@@ -685,21 +691,21 @@
             [
               16,
               123,
-              107
+              106
             ],
             [
-              33,
-              181,
+              32,
+              180,
               156
             ],
             [
               90,
-              214,
+              213,
               197
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 171.1,
+          "hue_degrees": 171.39,
           "opaque_pixel_count": 12022,
           "ordering_reference": "family",
           "preferred_start_index": 1,
@@ -737,13 +743,13 @@
           ],
           "colors": [
             [
-              132,
+              131,
               222,
               123
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 114.55,
+          "hue_degrees": 115.15,
           "opaque_pixel_count": 1319,
           "ordering_reference": "family",
           "preferred_start_index": 6,
@@ -759,16 +765,16 @@
             [
               16,
               82,
-              66
+              65
             ],
             [
               90,
               156,
-              58
+              57
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 136.93,
+          "hue_degrees": 136.23,
           "opaque_pixel_count": 4167,
           "ordering_reference": "species",
           "preferred_start_index": 9,
@@ -785,18 +791,18 @@
           ],
           "colors": [
             [
-              132,
+              131,
               49,
               0
             ],
             [
               222,
-              66,
-              66
+              65,
+              65
             ],
             [
               189,
-              107,
+              106,
               49
             ],
             [
@@ -811,7 +817,7 @@
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 8.83,
+          "hue_degrees": 8.8,
           "opaque_pixel_count": 10692,
           "ordering_reference": "family",
           "preferred_start_index": 10,
@@ -4553,7 +4559,7 @@
       "filename": "anim_frontf.png",
       "stem": "anim_frontf",
       "source": "graphics/pokemon/venusaur/anim_frontf.png",
-      "source_sha256": "8eab22f956feac5bed599031af174f779d587fba6bb1da5dc96b1c0c6011cbb6",
+      "source_sha256": "7286dff499d43442278558f10d4829ed1c96001ef29e0031086de941cc6430d4",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -4580,7 +4586,7 @@
             255
           ],
           [
-            132,
+            131,
             49,
             0
           ],
@@ -4606,12 +4612,12 @@
           ],
           [
             222,
-            66,
-            66
+            65,
+            65
           ],
           [
             189,
-            107,
+            106,
             49
           ],
           [
@@ -4622,31 +4628,31 @@
           [
             16,
             82,
-            66
+            65
           ],
           [
             90,
             156,
-            58
+            57
           ],
           [
             16,
             123,
-            107
+            106
           ],
           [
-            132,
+            131,
             222,
             123
           ],
           [
             90,
-            214,
+            213,
             197
           ],
           [
-            33,
-            181,
+            32,
+            180,
             156
           ],
           [
@@ -4773,35 +4779,35 @@
             [
               0.0,
               0.22199,
-              0.39592,
-              0.2325,
-              0.2325
+              0.39585,
+              0.23247,
+              0.23247
             ],
             [
               0.22199,
               0.0,
-              0.456,
-              0.17806,
-              0.17806
+              0.45595,
+              0.17805,
+              0.17805
             ],
             [
-              0.39592,
-              0.456,
+              0.39585,
+              0.45595,
               0.0,
-              0.38841,
-              0.38841
+              0.38835,
+              0.38835
             ],
             [
-              0.2325,
-              0.17806,
-              0.38841,
+              0.23247,
+              0.17805,
+              0.38835,
               0.0,
               0.0
             ],
             [
-              0.2325,
-              0.17806,
-              0.38841,
+              0.23247,
+              0.17805,
+              0.38835,
               0.0,
               0.0
             ]
@@ -4840,7 +4846,7 @@
               0.0,
               0.0,
               0.0,
-              0.17806
+              0.17805
             ]
           }
         },
@@ -5312,7 +5318,7 @@
       "filename": "backf.png",
       "stem": "backf",
       "source": "graphics/pokemon/venusaur/backf.png",
-      "source_sha256": "9547e11ee7497da3c8dc591e6de89ebd6b541bd96bb7f0c9b63e02c63a74b45f",
+      "source_sha256": "4988e4c4b2c5ffecdfa797dcce797c22de48fd57359e519730d923dcf8716e20",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -5339,7 +5345,7 @@
             255
           ],
           [
-            132,
+            131,
             49,
             0
           ],
@@ -5365,12 +5371,12 @@
           ],
           [
             222,
-            66,
-            66
+            65,
+            65
           ],
           [
             189,
-            107,
+            106,
             49
           ],
           [
@@ -5381,31 +5387,31 @@
           [
             16,
             82,
-            66
+            65
           ],
           [
             90,
             156,
-            58
+            57
           ],
           [
             16,
             123,
-            107
+            106
           ],
           [
-            132,
+            131,
             222,
             123
           ],
           [
             90,
-            214,
+            213,
             197
           ],
           [
-            33,
-            181,
+            32,
+            180,
             156
           ],
           [

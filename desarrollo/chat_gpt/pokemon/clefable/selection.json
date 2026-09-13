@@ -96,6 +96,8 @@
     "transparent_pixels": 18392,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 14,
     "source_opaque_color_count": 14,
     "quantized": false,
     "method": "exact_source_colors",
@@ -108,7 +110,7 @@
     "family_alignment_verified": false,
     "species_reference_provided": true,
     "family_reference_provided": true,
-    "family_matched_ramps": 3,
+    "family_matched_ramps": 2,
     "ramps": [
       {
         "indices": [
@@ -228,8 +230,8 @@
         "kind": "chromatic",
         "hue_degrees": 328.75,
         "opaque_pixel_count": 1521,
-        "ordering_reference": "family",
-        "preferred_start_index": 6,
+        "ordering_reference": "species",
+        "preferred_start_index": 8,
         "start_preserved": false,
         "order": "dark_to_light_CIE_Lstar"
       }
@@ -248,6 +250,7 @@
     "opaque_magenta_present": false,
     "review_reasons": [
       "body regions and evolution correspondence use color heuristics",
+      "some color ramps could not be aligned with the family reference",
       "ramp sizes required shifting some preferred palette indices"
     ]
   },
@@ -343,6 +346,8 @@
       "transparent_pixels": 18392,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 14,
       "source_opaque_color_count": 14,
       "quantized": false,
       "method": "exact_source_colors",
@@ -355,7 +360,7 @@
       "family_alignment_verified": false,
       "species_reference_provided": true,
       "family_reference_provided": true,
-      "family_matched_ramps": 3,
+      "family_matched_ramps": 2,
       "ramps": [
         {
           "indices": [
@@ -475,8 +480,8 @@
           "kind": "chromatic",
           "hue_degrees": 328.75,
           "opaque_pixel_count": 1521,
-          "ordering_reference": "family",
-          "preferred_start_index": 6,
+          "ordering_reference": "species",
+          "preferred_start_index": 8,
           "start_preserved": false,
           "order": "dark_to_light_CIE_Lstar"
         }
@@ -495,6 +500,7 @@
       "opaque_magenta_present": false,
       "review_reasons": [
         "body regions and evolution correspondence use color heuristics",
+        "some color ramps could not be aligned with the family reference",
         "ramp sizes required shifting some preferred palette indices"
       ]
     }

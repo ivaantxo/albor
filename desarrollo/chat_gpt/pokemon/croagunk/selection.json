@@ -108,6 +108,8 @@
     "transparent_pixels": 25158,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 15,
     "source_opaque_color_count": 15,
     "quantized": false,
     "method": "exact_source_colors",
@@ -372,56 +374,56 @@
       [
         49,
         49,
-        66
+        65
       ],
       [
         74,
         74,
-        140
+        139
       ],
       [
-        107,
+        106,
         115,
-        214
+        213
       ],
       [
-        132,
+        131,
         156,
         255
       ],
       [
-        17,
-        17,
-        17
+        16,
+        16,
+        16
       ],
       [
-        85,
-        85,
-        85
+        82,
+        82,
+        82
       ],
       [
         123,
         123,
-        140
+        139
       ],
       [
-        181,
-        181,
-        198
+        180,
+        180,
+        197
       ],
       [
-        254,
+        255,
         255,
         255
       ],
       [
-        181,
-        140,
+        180,
+        139,
         24
       ],
       [
         255,
-        214,
+        213,
         24
       ],
       [
@@ -430,14 +432,14 @@
         57
       ],
       [
-        231,
+        230,
         82,
-        89
+        90
       ],
       [
         255,
         156,
-        165
+        164
       ],
       [
         255,
@@ -454,6 +456,8 @@
       "transparent_pixels": 25158,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 15,
       "source_opaque_color_count": 15,
       "quantized": false,
       "method": "exact_source_colors",
@@ -633,6 +637,8 @@
       "transparent_pixels": 15683,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 14,
       "source_opaque_color_count": 14,
       "quantized": false,
       "method": "exact_source_colors",
@@ -658,26 +664,26 @@
             [
               49,
               49,
-              66
+              65
             ],
             [
               74,
               74,
-              140
+              139
             ],
             [
-              107,
+              106,
               115,
-              214
+              213
             ],
             [
-              132,
+              131,
               156,
               255
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 236.69,
+          "hue_degrees": 236.41,
           "opaque_pixel_count": 3342,
           "ordering_reference": "family",
           "preferred_start_index": 1,
@@ -694,33 +700,33 @@
           ],
           "colors": [
             [
-              17,
-              17,
-              17
+              16,
+              16,
+              16
             ],
             [
-              85,
-              85,
-              85
+              82,
+              82,
+              82
             ],
             [
               123,
               123,
-              140
+              139
             ],
             [
-              181,
-              181,
-              198
+              180,
+              180,
+              197
             ],
             [
-              254,
+              255,
               255,
               255
             ]
           ],
           "kind": "neutral",
-          "hue_degrees": 248.02,
+          "hue_degrees": 250.91,
           "opaque_pixel_count": 13308,
           "ordering_reference": "family",
           "preferred_start_index": 2,
@@ -734,18 +740,18 @@
           ],
           "colors": [
             [
-              181,
-              140,
+              180,
+              139,
               24
             ],
             [
               255,
-              214,
+              213,
               24
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 48.77,
+          "hue_degrees": 48.53,
           "opaque_pixel_count": 87,
           "ordering_reference": "family",
           "preferred_start_index": 7,
@@ -765,18 +771,18 @@
               57
             ],
             [
-              231,
+              230,
               82,
-              89
+              90
             ],
             [
               255,
               156,
-              165
+              164
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 357.57,
+          "hue_degrees": 357.53,
           "opaque_pixel_count": 348,
           "ordering_reference": "family",
           "preferred_start_index": 9,
@@ -4006,7 +4012,7 @@
       "filename": "anim_frontf.png",
       "stem": "anim_frontf",
       "source": "graphics/pokemon/croagunk/anim_frontf.png",
-      "source_sha256": "f15d6229eacfd17c0654dcf3bb898e897939d169ae40da2e74108a57fb10002d",
+      "source_sha256": "6eaf9cc2f9ac9ab72b66c3683d86563b056e1ad9f434368d7687e641a303ce90",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -4035,41 +4041,41 @@
           [
             74,
             74,
-            140
+            139
           ],
           [
-            17,
-            17,
-            17
+            16,
+            16,
+            16
           ],
           [
-            132,
+            131,
             156,
             255
           ],
           [
-            107,
+            106,
             115,
-            214
+            213
           ],
           [
-            85,
-            85,
-            85
+            82,
+            82,
+            82
           ],
           [
             49,
             49,
-            66
+            65
           ],
           [
             255,
-            214,
+            213,
             24
           ],
           [
-            181,
-            140,
+            180,
+            139,
             24
           ],
           [
@@ -4078,29 +4084,29 @@
             57
           ],
           [
-            231,
+            230,
             82,
-            89
+            90
           ],
           [
             255,
             156,
-            165
+            164
           ],
           [
-            254,
+            255,
             255,
             255
           ],
           [
-            181,
-            181,
-            198
+            180,
+            180,
+            197
           ],
           [
             123,
             123,
-            140
+            139
           ],
           [
             0,
@@ -4225,37 +4231,37 @@
           "selected_pair_distances": [
             [
               0.0,
-              0.44828,
-              0.13028,
-              0.13028,
-              0.44828
+              0.44805,
+              0.13023,
+              0.13023,
+              0.44805
             ],
             [
-              0.44828,
+              0.44805,
               0.0,
-              0.47623,
-              0.47623,
+              0.476,
+              0.476,
               0.0
             ],
             [
-              0.13028,
-              0.47623,
+              0.13023,
+              0.476,
               0.0,
               0.0,
-              0.47623
+              0.476
             ],
             [
-              0.13028,
-              0.47623,
+              0.13023,
+              0.476,
               0.0,
               0.0,
-              0.47623
+              0.476
             ],
             [
-              0.44828,
+              0.44805,
               0.0,
-              0.47623,
-              0.47623,
+              0.476,
+              0.476,
               0.0
             ]
           ],
@@ -4560,7 +4566,7 @@
       "filename": "backf.png",
       "stem": "backf",
       "source": "graphics/pokemon/croagunk/backf.png",
-      "source_sha256": "ec8749be9af0b1dbbbf8a72332e0123047915bf1c64c82d73b73c14c89caedf5",
+      "source_sha256": "d8ad6bb98ac11ca8fb428585a02ee39512b9ca70add59019aecf00d68684f7e4",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -4589,41 +4595,41 @@
           [
             74,
             74,
-            140
+            139
           ],
           [
-            17,
-            17,
-            17
+            16,
+            16,
+            16
           ],
           [
-            132,
+            131,
             156,
             255
           ],
           [
-            107,
+            106,
             115,
-            214
+            213
           ],
           [
-            85,
-            85,
-            85
+            82,
+            82,
+            82
           ],
           [
             49,
             49,
-            66
+            65
           ],
           [
             255,
-            214,
+            213,
             24
           ],
           [
-            181,
-            140,
+            180,
+            139,
             24
           ],
           [
@@ -4632,29 +4638,29 @@
             57
           ],
           [
-            231,
+            230,
             82,
-            89
+            90
           ],
           [
             255,
             156,
-            165
+            164
           ],
           [
-            254,
+            255,
             255,
             255
           ],
           [
-            181,
-            181,
-            198
+            180,
+            180,
+            197
           ],
           [
             123,
             123,
-            140
+            139
           ],
           [
             0,

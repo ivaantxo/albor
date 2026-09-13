@@ -108,6 +108,8 @@
     "transparent_pixels": 26717,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 13,
     "source_opaque_color_count": 13,
     "quantized": false,
     "method": "exact_source_colors",
@@ -373,11 +375,11 @@
       ],
       [
         115,
-        99,
-        99
+        98,
+        98
       ],
       [
-        173,
+        172,
         156,
         156
       ],
@@ -387,32 +389,32 @@
         180
       ],
       [
-        212,
-        217,
-        217
+        213,
+        222,
+        222
       ],
       [
-        254,
+        255,
         255,
         255
       ],
       [
         57,
-        33,
+        32,
         41
       ],
       [
         156,
         74,
-        33
+        32
       ],
       [
-        140,
+        139,
         115,
         115
       ],
       [
-        214,
+        213,
         115,
         0
       ],
@@ -446,6 +448,8 @@
       "transparent_pixels": 26717,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 13,
       "source_opaque_color_count": 13,
       "quantized": false,
       "method": "exact_source_colors",
@@ -617,6 +621,8 @@
       "transparent_pixels": 16661,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 12,
       "source_opaque_color_count": 12,
       "quantized": false,
       "method": "exact_source_colors",
@@ -654,11 +660,11 @@
             ],
             [
               115,
-              99,
-              99
+              98,
+              98
             ],
             [
-              173,
+              172,
               156,
               156
             ],
@@ -668,12 +674,12 @@
               180
             ],
             [
-              212,
-              217,
-              217
+              213,
+              222,
+              222
             ],
             [
-              254,
+              255,
               255,
               255
             ]
@@ -693,12 +699,12 @@
           "colors": [
             [
               57,
-              33,
+              32,
               41
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 340.0,
+          "hue_degrees": 338.4,
           "opaque_pixel_count": 515,
           "ordering_reference": "family",
           "preferred_start_index": 4,
@@ -716,15 +722,15 @@
             [
               156,
               74,
-              33
+              32
             ],
             [
-              140,
+              139,
               115,
               115
             ],
             [
-              214,
+              213,
               115,
               0
             ],
@@ -735,7 +741,7 @@
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 6.11,
+          "hue_degrees": 6.15,
           "opaque_pixel_count": 1257,
           "ordering_reference": "family",
           "preferred_start_index": 8,
@@ -3381,7 +3387,7 @@
       "filename": "anim_frontf.png",
       "stem": "anim_frontf",
       "source": "graphics/pokemon/starly/anim_frontf.png",
-      "source_sha256": "6a9e6d83cdf4e2ea96d485e16f174155c1ccde6fe7894b843eba645631631cb8",
+      "source_sha256": "069aa617a8b34890dbc7f3226db2f94cde39804097e878ef9f201bf953f61ca0",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -3419,12 +3425,12 @@
           ],
           [
             115,
-            99,
-            99
+            98,
+            98
           ],
           [
             57,
-            33,
+            32,
             41
           ],
           [
@@ -3433,19 +3439,19 @@
             180
           ],
           [
-            254,
+            255,
             255,
             255
           ],
           [
-            212,
-            217,
-            217
+            213,
+            222,
+            222
           ],
           [
             156,
             74,
-            33
+            32
           ],
           [
             255,
@@ -3453,17 +3459,17 @@
             41
           ],
           [
-            173,
+            172,
             156,
             156
           ],
           [
-            140,
+            139,
             115,
             115
           ],
           [
-            214,
+            213,
             115,
             0
           ],
@@ -3600,37 +3606,37 @@
           "selected_pair_distances": [
             [
               0.0,
-              0.23319,
-              0.12611,
-              0.12611,
-              0.23319
+              0.23326,
+              0.1261,
+              0.1261,
+              0.23326
             ],
             [
-              0.23319,
+              0.23326,
               0.0,
-              0.27641,
-              0.27641,
+              0.27651,
+              0.27651,
               0.0
             ],
             [
-              0.12611,
-              0.27641,
+              0.1261,
+              0.27651,
               0.0,
               0.0,
-              0.27641
+              0.27651
             ],
             [
-              0.12611,
-              0.27641,
+              0.1261,
+              0.27651,
               0.0,
               0.0,
-              0.27641
+              0.27651
             ],
             [
-              0.23319,
+              0.23326,
               0.0,
-              0.27641,
-              0.27641,
+              0.27651,
+              0.27651,
               0.0
             ]
           ],
@@ -3969,7 +3975,7 @@
       "filename": "backf.png",
       "stem": "backf",
       "source": "graphics/pokemon/starly/backf.png",
-      "source_sha256": "806be8f809c34d1106aaf04d42d830eb18a2bc799e6e408feb4599275d40f1a4",
+      "source_sha256": "70ca3afcdc8d54417eb0b3098856f30bab1c91760619928e3e0d52babea2e38b",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -4007,12 +4013,12 @@
           ],
           [
             115,
-            99,
-            99
+            98,
+            98
           ],
           [
             57,
-            33,
+            32,
             41
           ],
           [
@@ -4021,19 +4027,19 @@
             180
           ],
           [
-            254,
+            255,
             255,
             255
           ],
           [
-            212,
-            217,
-            217
+            213,
+            222,
+            222
           ],
           [
             156,
             74,
-            33
+            32
           ],
           [
             255,
@@ -4041,17 +4047,17 @@
             41
           ],
           [
-            173,
+            172,
             156,
             156
           ],
           [
-            140,
+            139,
             115,
             115
           ],
           [
-            214,
+            213,
             115,
             0
           ],

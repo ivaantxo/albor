@@ -109,6 +109,8 @@
     "transparent_pixels": 54901,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 15,
     "source_opaque_color_count": 15,
     "quantized": false,
     "method": "exact_source_colors",
@@ -350,44 +352,44 @@
         8
       ],
       [
-        120,
+        123,
         90,
         8
       ],
       [
-        181,
-        132,
+        180,
+        131,
         41
       ],
       [
-        206,
-        181,
+        205,
+        180,
         16
       ],
       [
-        214,
-        181,
+        213,
+        180,
         82
       ],
       [
         255,
-        239,
+        238,
         24
       ],
       [
         255,
-        247,
-        173
+        246,
+        172
       ],
       [
-        17,
-        17,
-        17
+        16,
+        16,
+        16
       ],
       [
-        86,
-        86,
-        86
+        82,
+        82,
+        82
       ],
       [
         180,
@@ -395,12 +397,12 @@
         180
       ],
       [
-        219,
-        219,
-        219
+        222,
+        222,
+        222
       ],
       [
-        254,
+        255,
         255,
         255
       ],
@@ -429,6 +431,8 @@
       "transparent_pixels": 54901,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 15,
       "source_opaque_color_count": 15,
       "quantized": false,
       "method": "exact_source_colors",
@@ -582,6 +586,8 @@
       "transparent_pixels": 35145,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 12,
       "source_opaque_color_count": 12,
       "quantized": false,
       "method": "exact_source_colors",
@@ -613,38 +619,38 @@
               8
             ],
             [
-              120,
+              123,
               90,
               8
             ],
             [
-              181,
-              132,
+              180,
+              131,
               41
             ],
             [
-              206,
-              181,
+              205,
+              180,
               16
             ],
             [
-              214,
-              181,
+              213,
+              180,
               82
             ],
             [
               255,
-              239,
+              238,
               24
             ],
             [
               255,
-              247,
-              173
+              246,
+              172
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 50.23,
+          "hue_degrees": 49.86,
           "opaque_pixel_count": 9579,
           "ordering_reference": "family",
           "preferred_start_index": 1,
@@ -661,14 +667,14 @@
           ],
           "colors": [
             [
-              17,
-              17,
-              17
+              16,
+              16,
+              16
             ],
             [
-              86,
-              86,
-              86
+              82,
+              82,
+              82
             ],
             [
               180,
@@ -676,12 +682,12 @@
               180
             ],
             [
-              219,
-              219,
-              219
+              222,
+              222,
+              222
             ],
             [
-              254,
+              255,
               255,
               255
             ]
@@ -3583,7 +3589,7 @@
       "filename": "anim_frontf.png",
       "stem": "anim_frontf",
       "source": "graphics/pokemon/alakazam/anim_frontf.png",
-      "source_sha256": "62dd7eb8a0fd34e7c04e955ecc8fb7ef9fe4a4c8bd76ad252df2b38e9758ef74",
+      "source_sha256": "8e13b691f3477b8c71cc5c90094ad2904b7fa8f5ad8c2415c264fa690b4e200a",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -3610,29 +3616,29 @@
             255
           ],
           [
-            17,
-            17,
-            17
+            16,
+            16,
+            16
           ],
           [
-            120,
+            123,
             90,
             8
           ],
           [
             255,
-            239,
+            238,
             24
           ],
           [
-            86,
-            86,
-            86
+            82,
+            82,
+            82
           ],
           [
-            219,
-            219,
-            219
+            222,
+            222,
+            222
           ],
           [
             180,
@@ -3640,19 +3646,19 @@
             180
           ],
           [
-            206,
-            181,
+            205,
+            180,
             16
           ],
           [
-            254,
+            255,
             255,
             255
           ],
           [
             255,
-            247,
-            173
+            246,
+            172
           ],
           [
             82,
@@ -3660,13 +3666,13 @@
             8
           ],
           [
-            214,
-            181,
+            213,
+            180,
             82
           ],
           [
-            181,
-            132,
+            180,
+            131,
             41
           ],
           [
@@ -3803,36 +3809,36 @@
           "selected_pair_distances": [
             [
               0.0,
-              0.37214,
-              0.56724,
-              0.21689,
-              0.21689
+              0.37227,
+              0.56718,
+              0.21701,
+              0.21701
             ],
             [
-              0.37214,
+              0.37227,
               0.0,
-              0.61018,
-              0.44699,
-              0.44699
+              0.61014,
+              0.44713,
+              0.44713
             ],
             [
-              0.56724,
-              0.61018,
+              0.56718,
+              0.61014,
               0.0,
-              0.50726,
-              0.50726
+              0.50722,
+              0.50722
             ],
             [
-              0.21689,
-              0.44699,
-              0.50726,
+              0.21701,
+              0.44713,
+              0.50722,
               0.0,
               0.0
             ],
             [
-              0.21689,
-              0.44699,
-              0.50726,
+              0.21701,
+              0.44713,
+              0.50722,
               0.0,
               0.0
             ]
@@ -3871,7 +3877,7 @@
               0.0,
               0.0,
               0.0,
-              0.21689
+              0.21701
             ]
           }
         },
@@ -4124,7 +4130,7 @@
       "filename": "backf.png",
       "stem": "backf",
       "source": "graphics/pokemon/alakazam/backf.png",
-      "source_sha256": "43dce3be36152c19de68c01dedfd00be86f2aa9476ba3db777fd8af614fbc280",
+      "source_sha256": "4699d2097fbc85158392e61d5079934c2994af9d07dfeac653620c81537d76ff",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -4151,29 +4157,29 @@
             255
           ],
           [
-            17,
-            17,
-            17
+            16,
+            16,
+            16
           ],
           [
-            120,
+            123,
             90,
             8
           ],
           [
             255,
-            239,
+            238,
             24
           ],
           [
-            86,
-            86,
-            86
+            82,
+            82,
+            82
           ],
           [
-            219,
-            219,
-            219
+            222,
+            222,
+            222
           ],
           [
             180,
@@ -4181,19 +4187,19 @@
             180
           ],
           [
-            206,
-            181,
+            205,
+            180,
             16
           ],
           [
-            254,
+            255,
             255,
             255
           ],
           [
             255,
-            247,
-            173
+            246,
+            172
           ],
           [
             82,
@@ -4201,13 +4207,13 @@
             8
           ],
           [
-            214,
-            181,
+            213,
+            180,
             82
           ],
           [
-            181,
-            132,
+            180,
+            131,
             41
           ],
           [

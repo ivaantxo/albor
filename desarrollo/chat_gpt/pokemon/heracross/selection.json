@@ -109,6 +109,8 @@
     "transparent_pixels": 39044,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 12,
     "source_opaque_color_count": 12,
     "quantized": false,
     "method": "exact_source_colors",
@@ -349,9 +351,9 @@
         16
       ],
       [
-        99,
-        99,
-        99
+        98,
+        98,
+        98
       ],
       [
         156,
@@ -366,17 +368,17 @@
       [
         49,
         57,
-        99
+        98
       ],
       [
-        66,
-        99,
+        65,
+        98,
         148
       ],
       [
-        107,
+        106,
         148,
-        198
+        197
       ],
       [
         148,
@@ -384,9 +386,9 @@
         255
       ],
       [
-        107,
+        106,
         90,
-        33
+        32
       ],
       [
         189,
@@ -396,7 +398,7 @@
       [
         255,
         255,
-        140
+        139
       ],
       [
         255,
@@ -428,6 +430,8 @@
       "transparent_pixels": 39044,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 12,
       "source_opaque_color_count": 12,
       "quantized": false,
       "method": "exact_source_colors",
@@ -580,6 +584,8 @@
       "transparent_pixels": 24568,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 11,
       "source_opaque_color_count": 11,
       "quantized": false,
       "method": "exact_source_colors",
@@ -608,9 +614,9 @@
               16
             ],
             [
-              99,
-              99,
-              99
+              98,
+              98,
+              98
             ],
             [
               156,
@@ -642,17 +648,17 @@
             [
               49,
               57,
-              99
+              98
             ],
             [
-              66,
-              99,
+              65,
+              98,
               148
             ],
             [
-              107,
+              106,
               148,
-              198
+              197
             ],
             [
               148,
@@ -661,7 +667,7 @@
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 217.9,
+          "hue_degrees": 217.69,
           "opaque_pixel_count": 5757,
           "ordering_reference": "family",
           "preferred_start_index": 2,
@@ -676,9 +682,9 @@
           ],
           "colors": [
             [
-              107,
+              106,
               90,
-              33
+              32
             ],
             [
               189,
@@ -688,11 +694,11 @@
             [
               255,
               255,
-              140
+              139
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 50.32,
+          "hue_degrees": 50.79,
           "opaque_pixel_count": 169,
           "ordering_reference": "family",
           "preferred_start_index": 6,
@@ -3555,7 +3561,7 @@
       "filename": "anim_frontf.png",
       "stem": "anim_frontf",
       "source": "graphics/pokemon/heracross/anim_frontf.png",
-      "source_sha256": "847d22990f375f77fac1590ad2663439a5c4edd9c1dd9ea1c595f1ea51af4b0b",
+      "source_sha256": "7aa6a184e5d126843844d3231539054685f29610b3c767af7d58133deeaa1fcf",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -3594,27 +3600,27 @@
           [
             49,
             57,
-            99
+            98
           ],
           [
-            107,
+            106,
             148,
-            198
+            197
           ],
           [
-            66,
-            99,
+            65,
+            98,
             148
           ],
           [
-            107,
+            106,
             90,
-            33
+            32
           ],
           [
             255,
             255,
-            140
+            139
           ],
           [
             189,
@@ -3627,9 +3633,9 @@
             255
           ],
           [
-            99,
-            99,
-            99
+            98,
+            98,
+            98
           ],
           [
             156,
@@ -3774,36 +3780,36 @@
           "selected_pair_distances": [
             [
               0.0,
-              0.46762,
-              0.14172,
-              0.15609,
-              0.15609
+              0.46749,
+              0.14166,
+              0.15608,
+              0.15608
             ],
             [
-              0.46762,
+              0.46749,
               0.0,
-              0.50581,
-              0.49099,
-              0.49099
+              0.50565,
+              0.49083,
+              0.49083
             ],
             [
-              0.14172,
-              0.50581,
+              0.14166,
+              0.50565,
               0.0,
-              0.18566,
-              0.18566
+              0.1856,
+              0.1856
             ],
             [
-              0.15609,
-              0.49099,
-              0.18566,
+              0.15608,
+              0.49083,
+              0.1856,
               0.0,
               0.0
             ],
             [
-              0.15609,
-              0.49099,
-              0.18566,
+              0.15608,
+              0.49083,
+              0.1856,
               0.0,
               0.0
             ]
@@ -3842,7 +3848,7 @@
               0.0,
               0.0,
               0.0,
-              0.15609
+              0.15608
             ]
           }
         },
@@ -4086,7 +4092,7 @@
       "filename": "backf.png",
       "stem": "backf",
       "source": "graphics/pokemon/heracross/backf.png",
-      "source_sha256": "8f9fee5c568ac30575b5deb4c4027eeeee5da2dd532215cbc37b6a1e86d4cde9",
+      "source_sha256": "b265ecbbf3c332fcaf03233605fc1ad87f9cead256a707135866f36922f3f1ac",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -4125,27 +4131,27 @@
           [
             49,
             57,
-            99
+            98
           ],
           [
-            107,
+            106,
             148,
-            198
+            197
           ],
           [
-            66,
-            99,
+            65,
+            98,
             148
           ],
           [
-            107,
+            106,
             90,
-            33
+            32
           ],
           [
             255,
             255,
-            140
+            139
           ],
           [
             189,
@@ -4158,9 +4164,9 @@
             255
           ],
           [
-            99,
-            99,
-            99
+            98,
+            98,
+            98
           ],
           [
             156,

@@ -108,6 +108,8 @@
     "transparent_pixels": 27894,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 11,
     "source_opaque_color_count": 11,
     "quantized": false,
     "method": "exact_source_colors",
@@ -330,44 +332,44 @@
         24
       ],
       [
-        140,
+        139,
         82,
-        33
+        32
       ],
       [
-        173,
-        66,
+        172,
+        65,
         16
       ],
       [
-        231,
+        230,
         90,
-        33
+        32
       ],
       [
-        173,
-        140,
+        172,
+        139,
         0
       ],
       [
         255,
-        140,
+        139,
         49
       ],
       [
         255,
-        173,
+        172,
         82
       ],
       [
-        239,
+        238,
         189,
         49
       ],
       [
-        247,
+        246,
         222,
-        107
+        106
       ],
       [
         0,
@@ -375,7 +377,7 @@
         0
       ],
       [
-        254,
+        255,
         255,
         255
       ],
@@ -409,6 +411,8 @@
       "transparent_pixels": 27894,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 11,
       "source_opaque_color_count": 11,
       "quantized": false,
       "method": "exact_source_colors",
@@ -543,6 +547,8 @@
       "transparent_pixels": 17452,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 11,
       "source_opaque_color_count": 11,
       "quantized": false,
       "method": "exact_source_colors",
@@ -576,48 +582,48 @@
               24
             ],
             [
-              140,
+              139,
               82,
-              33
+              32
             ],
             [
-              173,
-              66,
+              172,
+              65,
               16
             ],
             [
-              231,
+              230,
               90,
-              33
+              32
             ],
             [
-              173,
-              140,
+              172,
+              139,
               0
             ],
             [
               255,
-              140,
+              139,
               49
             ],
             [
               255,
-              173,
+              172,
               82
             ],
             [
-              239,
+              238,
               189,
               49
             ],
             [
-              247,
+              246,
               222,
-              107
+              106
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 33.26,
+          "hue_degrees": 33.32,
           "opaque_pixel_count": 4825,
           "ordering_reference": "family",
           "preferred_start_index": 1,
@@ -636,13 +642,13 @@
               0
             ],
             [
-              254,
+              255,
               255,
               255
             ]
           ],
           "kind": "neutral",
-          "hue_degrees": 180.0,
+          "hue_degrees": 0.0,
           "opaque_pixel_count": 10491,
           "ordering_reference": "family",
           "preferred_start_index": 4,
@@ -4239,7 +4245,7 @@
       "filename": "anim_frontf.png",
       "stem": "anim_frontf",
       "source": "graphics/pokemon/torchic/anim_frontf.png",
-      "source_sha256": "165267375f17e805fccb8b228a2bb325f0779d7a852e65c561c8533aa019cce1",
+      "source_sha256": "67771e6a1954d5a770b2b40d80d1f55f9581955ac0d55be28f5ce6558cbba7c9",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -4266,19 +4272,19 @@
             255
           ],
           [
-            173,
-            140,
+            172,
+            139,
             0
           ],
           [
-            239,
+            238,
             189,
             49
           ],
           [
-            247,
+            246,
             222,
-            107
+            106
           ],
           [
             0,
@@ -4286,23 +4292,23 @@
             0
           ],
           [
-            173,
-            66,
+            172,
+            65,
             16
           ],
           [
             255,
-            140,
+            139,
             49
           ],
           [
-            231,
+            230,
             90,
-            33
+            32
           ],
           [
             255,
-            173,
+            172,
             82
           ],
           [
@@ -4311,14 +4317,14 @@
             24
           ],
           [
-            254,
+            255,
             255,
             255
           ],
           [
-            140,
+            139,
             82,
-            33
+            32
           ],
           [
             0,
@@ -4458,36 +4464,36 @@
           "selected_pair_distances": [
             [
               0.0,
-              0.27324,
-              0.06845,
-              0.11532,
-              0.11532
+              0.27307,
+              0.06838,
+              0.11533,
+              0.11533
             ],
             [
-              0.27324,
+              0.27307,
               0.0,
-              0.28513,
-              0.31906,
-              0.31906
+              0.285,
+              0.31889,
+              0.31889
             ],
             [
-              0.06845,
-              0.28513,
+              0.06838,
+              0.285,
               0.0,
-              0.15448,
-              0.15448
+              0.15444,
+              0.15444
             ],
             [
-              0.11532,
-              0.31906,
-              0.15448,
+              0.11533,
+              0.31889,
+              0.15444,
               0.0,
               0.0
             ],
             [
-              0.11532,
-              0.31906,
-              0.15448,
+              0.11533,
+              0.31889,
+              0.15444,
               0.0,
               0.0
             ]
@@ -4526,7 +4532,7 @@
               0.0,
               0.0,
               0.0,
-              0.11532
+              0.11533
             ]
           }
         },
@@ -4830,7 +4836,7 @@
       "filename": "backf.png",
       "stem": "backf",
       "source": "graphics/pokemon/torchic/backf.png",
-      "source_sha256": "5d7d560f6c44b5d1df6e1c3eac38fec0ed98892e089f237d1d951b67a3e0640d",
+      "source_sha256": "a27abc1e09f882cf5d3141c3d55256cbfccb36ad3596dc668fd2b1bc86f18530",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -4857,19 +4863,19 @@
             255
           ],
           [
-            173,
-            140,
+            172,
+            139,
             0
           ],
           [
-            239,
+            238,
             189,
             49
           ],
           [
-            247,
+            246,
             222,
-            107
+            106
           ],
           [
             0,
@@ -4877,23 +4883,23 @@
             0
           ],
           [
-            173,
-            66,
+            172,
+            65,
             16
           ],
           [
             255,
-            140,
+            139,
             49
           ],
           [
-            231,
+            230,
             90,
-            33
+            32
           ],
           [
             255,
-            173,
+            172,
             82
           ],
           [
@@ -4902,14 +4908,14 @@
             24
           ],
           [
-            254,
+            255,
             255,
             255
           ],
           [
-            140,
+            139,
             82,
-            33
+            32
           ],
           [
             0,

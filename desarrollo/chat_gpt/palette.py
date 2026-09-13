@@ -20,6 +20,23 @@ from PIL import Image
 TRANSPARENT = (255, 0, 255)
 RGB = tuple[int, int, int]
 
+# The console stores 5 bits per channel: 32 levels, not 256.  gbagfx truncates
+# on the way down (v // 8) and scales back up with (v * 255) // 31, so only 32
+# of the 256 values a source rip can hold ever reach the screen.
+#
+# Every color this module handles is snapped to those levels first.  This is not
+# cosmetic rounding: quantizing among the colors the console can actually tell
+# apart means two shades closer than one step count as ONE from the start, and
+# the fifteen palette slots get spent on fifteen visibly distinct colors.
+# Choosing in 24-bit space produced palettes of sixteen entries that the console
+# showed as nine -- rhyhorn spent seven slots on nothing.
+GBA_LEVELS = np.asarray([(v5 * 255) // 31 for v5 in range(32)], dtype=np.uint8)
+
+
+def to_gba_levels(rgb: np.ndarray) -> np.ndarray:
+    """Snap each channel to the level the console actually displays."""
+    return GBA_LEVELS[np.asarray(rgb, dtype=np.uint8) // 8]
+
 
 def _lab(rgb: np.ndarray) -> np.ndarray:
     """sRGB -> CIE Lab (D65), used only for perceptual matching."""
@@ -40,6 +57,7 @@ def _lab(rgb: np.ndarray) -> np.ndarray:
 
 def _collect(frames: Iterable[Image.Image]) -> tuple[np.ndarray, np.ndarray, dict]:
     hist: dict[RGB, int] = {}
+    raw_colors: set[RGB] = set()
     pixel_count = transparent_count = partial_alpha_count = frame_count = 0
     for frame in frames:
         rgba = np.asarray(frame.convert("RGBA"), dtype=np.uint8)
@@ -52,6 +70,11 @@ def _collect(frames: Iterable[Image.Image]) -> tuple[np.ndarray, np.ndarray, dic
         partial_alpha_count += int(np.count_nonzero((alpha > 0) & (alpha < 255)))
         if not pixels.size:
             continue
+        # Snapped before counting, so shades the console cannot separate share a
+        # single histogram entry and carry their combined weight into the
+        # quantizer instead of competing for two slots.
+        raw_colors.update(map(tuple, np.unique(pixels, axis=0).tolist()))
+        pixels = to_gba_levels(pixels)
         colors, counts = np.unique(pixels, axis=0, return_counts=True)
         for color, count in zip(colors, counts):
             rgb = tuple(map(int, color))
@@ -70,6 +93,8 @@ def _collect(frames: Iterable[Image.Image]) -> tuple[np.ndarray, np.ndarray, dic
         "transparent_pixels": transparent_count,
         "partial_alpha_pixels": partial_alpha_count,
         "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+        "color_space": "gba_5bit",
+        "source_colors_before_snap": len(raw_colors),
     }
 
 
@@ -468,6 +493,10 @@ def index_image(image: Image.Image, palette: Sequence[Sequence[int]]) -> Image.I
     indexed = np.zeros(rgba.shape[:2], dtype=np.uint8)
     pixels = rgba[..., :3][visible]
     if pixels.size:
+        # Same snap as _collect: a pixel is matched against the palette as the
+        # console would see it, so a color that survived quantization lands on
+        # its own entry exactly instead of near it.
+        pixels = to_gba_levels(pixels)
         colors, inverse = np.unique(pixels, axis=0, return_inverse=True)
         distances = np.sum((_lab(colors)[:, None] - _lab(values[1:])[None]) ** 2,
                            axis=2)

@@ -31,11 +31,6 @@
       255
     ],
     [
-      57,
-      57,
-      82
-    ],
-    [
       74,
       98,
       139
@@ -64,6 +59,11 @@
       255,
       255,
       255
+    ],
+    [
+      57,
+      57,
+      82
     ],
     [
       213,
@@ -113,6 +113,8 @@
     "transparent_pixels": 50325,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 8,
     "source_opaque_color_count": 8,
     "quantized": false,
     "method": "exact_source_colors",
@@ -130,15 +132,9 @@
       {
         "indices": [
           1,
-          2,
-          3
+          2
         ],
         "colors": [
-          [
-            57,
-            57,
-            82
-          ],
           [
             74,
             98,
@@ -151,8 +147,8 @@
           ]
         ],
         "kind": "chromatic",
-        "hue_degrees": 219.1,
-        "opaque_pixel_count": 14624,
+        "hue_degrees": 212.51,
+        "opaque_pixel_count": 11085,
         "ordering_reference": "species",
         "preferred_start_index": 1,
         "start_preserved": true,
@@ -160,10 +156,10 @@
       },
       {
         "indices": [
+          3,
           4,
           5,
-          6,
-          7
+          6
         ],
         "colors": [
           [
@@ -192,6 +188,25 @@
         "opaque_pixel_count": 8748,
         "ordering_reference": "family",
         "preferred_start_index": 1,
+        "start_preserved": false,
+        "order": "dark_to_light_CIE_Lstar"
+      },
+      {
+        "indices": [
+          7
+        ],
+        "colors": [
+          [
+            57,
+            57,
+            82
+          ]
+        ],
+        "kind": "chromatic",
+        "hue_degrees": 240.0,
+        "opaque_pixel_count": 3539,
+        "ordering_reference": "species",
+        "preferred_start_index": 6,
         "start_preserved": false,
         "order": "dark_to_light_CIE_Lstar"
       },
@@ -247,11 +262,6 @@
         255
       ],
       [
-        57,
-        57,
-        82
-      ],
-      [
         74,
         98,
         139
@@ -280,6 +290,11 @@
         255,
         255,
         255
+      ],
+      [
+        57,
+        57,
+        82
       ],
       [
         213,
@@ -329,44 +344,44 @@
         255
       ],
       [
-        56,
-        57,
-        81
-      ],
-      [
         74,
-        99,
-        140
+        98,
+        139
       ],
       [
         123,
         148,
-        165
+        164
       ],
       [
-        17,
-        17,
-        17
+        16,
+        16,
+        16
       ],
       [
-        188,
+        189,
         205,
-        198
+        197
       ],
       [
         222,
-        231,
+        230,
         222
       ],
       [
-        254,
+        255,
         255,
         255
       ],
       [
-        214,
+        57,
+        57,
+        82
+      ],
+      [
+        213,
         82,
-        66
+        65
       ],
       [
         255,
@@ -413,6 +428,8 @@
       "transparent_pixels": 50325,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 8,
       "source_opaque_color_count": 8,
       "quantized": false,
       "method": "exact_source_colors",
@@ -430,15 +447,9 @@
         {
           "indices": [
             1,
-            2,
-            3
+            2
           ],
           "colors": [
-            [
-              57,
-              57,
-              82
-            ],
             [
               74,
               98,
@@ -451,8 +462,8 @@
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 219.1,
-          "opaque_pixel_count": 14624,
+          "hue_degrees": 212.51,
+          "opaque_pixel_count": 11085,
           "ordering_reference": "species",
           "preferred_start_index": 1,
           "start_preserved": true,
@@ -460,10 +471,10 @@
         },
         {
           "indices": [
+            3,
             4,
             5,
-            6,
-            7
+            6
           ],
           "colors": [
             [
@@ -492,6 +503,25 @@
           "opaque_pixel_count": 8748,
           "ordering_reference": "family",
           "preferred_start_index": 1,
+          "start_preserved": false,
+          "order": "dark_to_light_CIE_Lstar"
+        },
+        {
+          "indices": [
+            7
+          ],
+          "colors": [
+            [
+              57,
+              57,
+              82
+            ]
+          ],
+          "kind": "chromatic",
+          "hue_degrees": 240.0,
+          "opaque_pixel_count": 3539,
+          "ordering_reference": "species",
+          "preferred_start_index": 6,
           "start_preserved": false,
           "order": "dark_to_light_CIE_Lstar"
         },
@@ -546,6 +576,8 @@
       "transparent_pixels": 30679,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 8,
       "source_opaque_color_count": 8,
       "quantized": false,
       "method": "exact_source_colors",
@@ -563,29 +595,23 @@
         {
           "indices": [
             1,
-            2,
-            3
+            2
           ],
           "colors": [
             [
-              56,
-              57,
-              81
-            ],
-            [
               74,
-              99,
-              140
+              98,
+              139
             ],
             [
               123,
               148,
-              165
+              164
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 218.12,
-          "opaque_pixel_count": 9668,
+          "hue_degrees": 211.28,
+          "opaque_pixel_count": 7158,
           "ordering_reference": "species",
           "preferred_start_index": 1,
           "start_preserved": true,
@@ -593,38 +619,57 @@
         },
         {
           "indices": [
+            3,
             4,
             5,
-            6,
-            7
+            6
           ],
           "colors": [
             [
-              17,
-              17,
-              17
+              16,
+              16,
+              16
             ],
             [
-              188,
+              189,
               205,
-              198
+              197
             ],
             [
               222,
-              231,
+              230,
               222
             ],
             [
-              254,
+              255,
               255,
               255
             ]
           ],
           "kind": "neutral",
-          "hue_degrees": 137.42,
+          "hue_degrees": 131.46,
           "opaque_pixel_count": 13259,
           "ordering_reference": "family",
           "preferred_start_index": 1,
+          "start_preserved": false,
+          "order": "dark_to_light_CIE_Lstar"
+        },
+        {
+          "indices": [
+            7
+          ],
+          "colors": [
+            [
+              57,
+              57,
+              82
+            ]
+          ],
+          "kind": "chromatic",
+          "hue_degrees": 240.0,
+          "opaque_pixel_count": 2510,
+          "ordering_reference": "species",
+          "preferred_start_index": 6,
           "start_preserved": false,
           "order": "dark_to_light_CIE_Lstar"
         },
@@ -634,13 +679,13 @@
           ],
           "colors": [
             [
-              214,
+              213,
               82,
-              66
+              65
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 6.49,
+          "hue_degrees": 6.89,
           "opaque_pixel_count": 4762,
           "ordering_reference": "species",
           "preferred_start_index": 7,
@@ -2806,7 +2851,7 @@
       "filename": "anim_frontf.png",
       "stem": "anim_frontf",
       "source": "graphics/pokemon/steelix/anim_frontf.png",
-      "source_sha256": "032bf85387cf72ab1744c1321fab16b0ebc022e28ab03cb36dca11643a5b6475",
+      "source_sha256": "7e6452cce4db659e0c8c08a15ca6464476e0082f5f90dca76ecbfb5954b9e53b",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -2835,40 +2880,40 @@
           [
             123,
             148,
-            165
+            164
           ],
           [
             74,
-            99,
-            140
+            98,
+            139
           ],
           [
-            188,
+            189,
             205,
-            198
+            197
           ],
           [
-            17,
-            17,
-            17
+            16,
+            16,
+            16
           ],
           [
             222,
-            231,
+            230,
             222
           ],
           [
-            56,
             57,
-            81
+            57,
+            82
           ],
           [
-            214,
+            213,
             82,
-            66
+            65
           ],
           [
-            254,
+            255,
             255,
             255
           ],
@@ -3027,36 +3072,36 @@
           "selected_pair_distances": [
             [
               0.0,
-              1.02248,
-              1.02248,
-              0.55007,
-              0.55007
+              1.02223,
+              1.02223,
+              0.54997,
+              0.54997
             ],
             [
-              1.02248,
+              1.02223,
               0.0,
               0.0,
-              0.92137,
-              0.92137
+              0.92113,
+              0.92113
             ],
             [
-              1.02248,
+              1.02223,
               0.0,
               0.0,
-              0.92137,
-              0.92137
+              0.92113,
+              0.92113
             ],
             [
-              0.55007,
-              0.92137,
-              0.92137,
+              0.54997,
+              0.92113,
+              0.92113,
               0.0,
               0.0
             ],
             [
-              0.55007,
-              0.92137,
-              0.92137,
+              0.54997,
+              0.92113,
+              0.92113,
               0.0,
               0.0
             ]
@@ -3095,7 +3140,7 @@
               0.0,
               0.0,
               0.0,
-              0.55007
+              0.54997
             ]
           }
         },
@@ -3293,7 +3338,7 @@
       "filename": "backf.png",
       "stem": "backf",
       "source": "graphics/pokemon/steelix/backf.png",
-      "source_sha256": "c4012d213f2be3e02b0725a655d287289bc51a581cd234263bd39225f2056626",
+      "source_sha256": "ebb4077cbca4d7f62f33a43d0fc5fda1bbdbca97ac6d1df24799e683b5955f64",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -3322,40 +3367,40 @@
           [
             123,
             148,
-            165
+            164
           ],
           [
             74,
-            99,
-            140
+            98,
+            139
           ],
           [
-            188,
+            189,
             205,
-            198
+            197
           ],
           [
-            17,
-            17,
-            17
+            16,
+            16,
+            16
           ],
           [
             222,
-            231,
+            230,
             222
           ],
           [
-            56,
             57,
-            81
+            57,
+            82
           ],
           [
-            214,
+            213,
             82,
-            66
+            65
           ],
           [
-            254,
+            255,
             255,
             255
           ],

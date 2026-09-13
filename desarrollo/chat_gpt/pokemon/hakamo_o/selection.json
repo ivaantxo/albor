@@ -31,24 +31,24 @@
       255
     ],
     [
-      144,
-      112,
+      148,
+      115,
       8
     ],
     [
-      184,
-      184,
+      189,
+      189,
       24
     ],
     [
-      240,
-      216,
-      64
+      246,
+      222,
+      65
     ],
     [
-      248,
-      240,
-      168
+      255,
+      246,
+      172
     ],
     [
       16,
@@ -56,54 +56,54 @@
       16
     ],
     [
-      104,
-      96,
-      88
+      106,
+      98,
+      90
     ],
     [
-      144,
-      144,
-      136
+      148,
+      148,
+      139
     ],
     [
-      192,
-      192,
-      192
+      197,
+      197,
+      197
     ],
     [
-      248,
-      248,
-      248
+      255,
+      255,
+      255
     ],
     [
-      184,
-      40,
-      80
+      189,
+      41,
+      82
     ],
     [
-      248,
-      152,
-      184
+      255,
+      156,
+      189
     ],
     [
-      248,
-      200,
-      224
+      255,
+      205,
+      230
     ],
     [
-      224,
-      240,
+      230,
+      246,
       32
     ],
     [
-      144,
+      148,
       8,
       8
     ],
     [
-      240,
-      48,
-      48
+      246,
+      49,
+      49
     ]
   ],
   "palette_metadata": {
@@ -113,12 +113,14 @@
     "transparent_pixels": 22063,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 22,
     "source_opaque_color_count": 22,
     "quantized": true,
     "method": "joint_weighted_lab_kmeans_source_medoids_no_dither",
     "changed_opaque_pixels": 1209,
-    "mean_delta_e76": 1.357,
-    "max_delta_e76": 19.09455,
+    "mean_delta_e76": 1.3888,
+    "max_delta_e76": 19.81107,
     "ordering_method": "heuristic_reference_blocks_then_dark_to_light_with_family_slots",
     "species_reference_grouped_colors": 11,
     "anatomical_grouping_verified": false,
@@ -136,28 +138,28 @@
         ],
         "colors": [
           [
-            144,
-            112,
+            148,
+            115,
             8
           ],
           [
-            184,
-            184,
+            189,
+            189,
             24
           ],
           [
-            240,
-            216,
-            64
+            246,
+            222,
+            65
           ],
           [
-            248,
-            240,
-            168
+            255,
+            246,
+            172
           ]
         ],
         "kind": "chromatic",
-        "hue_degrees": 54.16,
+        "hue_degrees": 54.48,
         "opaque_pixel_count": 3864,
         "ordering_reference": "family",
         "preferred_start_index": 1,
@@ -179,24 +181,24 @@
             16
           ],
           [
-            104,
-            96,
-            88
+            106,
+            98,
+            90
           ],
           [
-            144,
-            144,
-            136
+            148,
+            148,
+            139
           ],
           [
-            192,
-            192,
-            192
+            197,
+            197,
+            197
           ],
           [
-            248,
-            248,
-            248
+            255,
+            255,
+            255
           ]
         ],
         "kind": "neutral",
@@ -215,19 +217,19 @@
         ],
         "colors": [
           [
-            184,
-            40,
-            80
+            189,
+            41,
+            82
           ],
           [
-            248,
-            152,
-            184
+            255,
+            156,
+            189
           ],
           [
-            248,
-            200,
-            224
+            255,
+            205,
+            230
           ]
         ],
         "kind": "chromatic",
@@ -244,13 +246,13 @@
         ],
         "colors": [
           [
-            224,
-            240,
+            230,
+            246,
             32
           ]
         ],
         "kind": "chromatic",
-        "hue_degrees": 64.62,
+        "hue_degrees": 64.49,
         "opaque_pixel_count": 567,
         "ordering_reference": "dominant_color",
         "preferred_start_index": 8,
@@ -264,14 +266,14 @@
         ],
         "colors": [
           [
-            144,
+            148,
             8,
             8
           ],
           [
-            240,
-            48,
-            48
+            246,
+            49,
+            49
           ]
         ],
         "kind": "chromatic",
@@ -308,24 +310,24 @@
         255
       ],
       [
-        144,
-        112,
+        148,
+        115,
         8
       ],
       [
-        184,
-        184,
+        189,
+        189,
         24
       ],
       [
-        240,
-        216,
-        64
+        246,
+        222,
+        65
       ],
       [
-        248,
-        240,
-        168
+        255,
+        246,
+        172
       ],
       [
         16,
@@ -333,54 +335,54 @@
         16
       ],
       [
-        104,
-        96,
-        88
+        106,
+        98,
+        90
       ],
       [
-        144,
-        144,
-        136
+        148,
+        148,
+        139
       ],
       [
-        192,
-        192,
-        192
+        197,
+        197,
+        197
       ],
       [
-        248,
-        248,
-        248
+        255,
+        255,
+        255
       ],
       [
-        184,
-        40,
-        80
+        189,
+        41,
+        82
       ],
       [
-        248,
-        152,
-        184
+        255,
+        156,
+        189
       ],
       [
-        248,
-        200,
-        224
+        255,
+        205,
+        230
       ],
       [
-        224,
-        240,
+        230,
+        246,
         32
       ],
       [
-        144,
+        148,
         8,
         8
       ],
       [
-        240,
-        48,
-        48
+        246,
+        49,
+        49
       ]
     ]
   },
@@ -392,12 +394,14 @@
       "transparent_pixels": 22063,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 22,
       "source_opaque_color_count": 22,
       "quantized": true,
       "method": "joint_weighted_lab_kmeans_source_medoids_no_dither",
       "changed_opaque_pixels": 1209,
-      "mean_delta_e76": 1.357,
-      "max_delta_e76": 19.09455,
+      "mean_delta_e76": 1.3888,
+      "max_delta_e76": 19.81107,
       "ordering_method": "heuristic_reference_blocks_then_dark_to_light_with_family_slots",
       "species_reference_grouped_colors": 11,
       "anatomical_grouping_verified": false,
@@ -415,28 +419,28 @@
           ],
           "colors": [
             [
-              144,
-              112,
+              148,
+              115,
               8
             ],
             [
-              184,
-              184,
+              189,
+              189,
               24
             ],
             [
-              240,
-              216,
-              64
+              246,
+              222,
+              65
             ],
             [
-              248,
-              240,
-              168
+              255,
+              246,
+              172
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 54.16,
+          "hue_degrees": 54.48,
           "opaque_pixel_count": 3864,
           "ordering_reference": "family",
           "preferred_start_index": 1,
@@ -458,24 +462,24 @@
               16
             ],
             [
-              104,
-              96,
-              88
+              106,
+              98,
+              90
             ],
             [
-              144,
-              144,
-              136
+              148,
+              148,
+              139
             ],
             [
-              192,
-              192,
-              192
+              197,
+              197,
+              197
             ],
             [
-              248,
-              248,
-              248
+              255,
+              255,
+              255
             ]
           ],
           "kind": "neutral",
@@ -494,19 +498,19 @@
           ],
           "colors": [
             [
-              184,
-              40,
-              80
+              189,
+              41,
+              82
             ],
             [
-              248,
-              152,
-              184
+              255,
+              156,
+              189
             ],
             [
-              248,
-              200,
-              224
+              255,
+              205,
+              230
             ]
           ],
           "kind": "chromatic",
@@ -523,13 +527,13 @@
           ],
           "colors": [
             [
-              224,
-              240,
+              230,
+              246,
               32
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 64.62,
+          "hue_degrees": 64.49,
           "opaque_pixel_count": 567,
           "ordering_reference": "dominant_color",
           "preferred_start_index": 8,
@@ -543,14 +547,14 @@
           ],
           "colors": [
             [
-              144,
+              148,
               8,
               8
             ],
             [
-              240,
-              48,
-              48
+              246,
+              49,
+              49
             ]
           ],
           "kind": "chromatic",
@@ -615,7 +619,7 @@
       "filename": "anim_front.png",
       "stem": "anim_front",
       "source": "graphics/pokemon/hakamo_o/anim_front.png",
-      "source_sha256": "a9891e0b96f4d537a1b5ae9bdb77110f58c7f22a1d904d2d5f6142e955522708",
+      "source_sha256": "d543b247fc6302c37e373b44ce6ce9ad8fb15be411d491c4e67c06bdce339e4c",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -637,19 +641,19 @@
         "source_mode": "P",
         "source_palette": [
           [
-            152,
-            208,
-            160
+            156,
+            213,
+            164
           ],
           [
-            144,
-            112,
+            148,
+            115,
             8
           ],
           [
-            240,
-            216,
-            64
+            246,
+            222,
+            65
           ],
           [
             16,
@@ -657,59 +661,59 @@
             16
           ],
           [
-            248,
-            240,
-            168
+            255,
+            246,
+            172
           ],
           [
-            104,
-            96,
-            88
+            106,
+            98,
+            90
           ],
           [
-            144,
-            144,
-            136
+            148,
+            148,
+            139
           ],
           [
-            192,
-            192,
-            192
+            197,
+            197,
+            197
           ],
           [
-            248,
-            248,
-            248
+            255,
+            255,
+            255
           ],
           [
-            144,
+            148,
             8,
             8
           ],
           [
-            240,
-            48,
-            48
+            246,
+            49,
+            49
           ],
           [
-            104,
-            104,
-            104
+            106,
+            106,
+            106
           ],
           [
-            72,
-            64,
-            64
+            74,
+            65,
+            65
           ],
           [
-            208,
-            168,
+            213,
+            172,
             32
           ],
           [
-            104,
-            104,
-            104
+            106,
+            106,
+            106
           ],
           [
             0,
@@ -804,34 +808,34 @@
           "selected_pair_distances": [
             [
               0.0,
-              0.69976,
-              0.69976,
-              0.69976,
-              0.69976
+              0.70266,
+              0.70266,
+              0.70266,
+              0.70266
             ],
             [
-              0.69976,
+              0.70266,
               0.0,
               0.0,
               0.0,
               0.0
             ],
             [
-              0.69976,
+              0.70266,
               0.0,
               0.0,
               0.0,
               0.0
             ],
             [
-              0.69976,
+              0.70266,
               0.0,
               0.0,
               0.0,
               0.0
             ],
             [
-              0.69976,
+              0.70266,
               0.0,
               0.0,
               0.0,
@@ -1043,7 +1047,7 @@
       "filename": "back.png",
       "stem": "back",
       "source": "graphics/pokemon/hakamo_o/back.png",
-      "source_sha256": "8d00d696e237ee01cb5ef1dac207bdce8f4585119038b7ca452008f7b1b520e3",
+      "source_sha256": "a9e062590eb9981d2ad8aaa9edefc2d8b4df51d0b4c4a966fd7ca35a9ada049d",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -1065,19 +1069,19 @@
         "source_mode": "P",
         "source_palette": [
           [
-            152,
-            208,
-            160
+            156,
+            213,
+            164
           ],
           [
-            184,
-            40,
-            80
+            189,
+            41,
+            82
           ],
           [
-            248,
-            152,
-            184
+            255,
+            156,
+            189
           ],
           [
             16,
@@ -1085,59 +1089,59 @@
             16
           ],
           [
-            248,
-            200,
-            224
+            255,
+            205,
+            230
           ],
           [
-            120,
-            112,
+            123,
+            115,
             24
           ],
           [
-            184,
-            184,
+            189,
+            189,
             24
           ],
           [
-            224,
-            240,
+            230,
+            246,
             32
           ],
           [
-            248,
-            248,
-            248
+            255,
+            255,
+            255
           ],
           [
-            168,
+            172,
             8,
-            40
+            41
           ],
           [
-            240,
-            40,
-            80
+            246,
+            41,
+            82
           ],
           [
-            112,
-            112,
-            96
+            115,
+            115,
+            98
           ],
           [
-            72,
-            80,
-            64
+            74,
+            82,
+            65
           ],
           [
-            232,
-            80,
-            120
+            238,
+            82,
+            123
           ],
           [
-            104,
-            104,
-            104
+            106,
+            106,
+            106
           ],
           [
             0,

@@ -108,6 +108,8 @@
     "transparent_pixels": 18036,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 14,
     "source_opaque_color_count": 14,
     "quantized": false,
     "method": "exact_source_colors",
@@ -355,36 +357,36 @@
       ],
       [
         90,
-        66,
+        65,
         41
       ],
       [
-        107,
+        106,
         82,
         0
       ],
       [
-        140,
-        99,
+        139,
+        98,
         49
       ],
       [
         164,
-        132,
+        131,
         90
       ],
       [
-        181,
+        180,
         148,
-        33
+        32
       ],
       [
         222,
         189,
-        66
+        65
       ],
       [
-        247,
+        246,
         222,
         0
       ],
@@ -399,9 +401,9 @@
         0
       ],
       [
-        206,
-        221,
-        237
+        205,
+        222,
+        238
       ],
       [
         255,
@@ -411,16 +413,16 @@
       [
         82,
         90,
-        107
+        106
       ],
       [
-        132,
+        131,
         148,
         164
       ],
       [
         156,
-        173,
+        172,
         189
       ],
       [
@@ -438,6 +440,8 @@
       "transparent_pixels": 18036,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 14,
       "source_opaque_color_count": 14,
       "quantized": false,
       "method": "exact_source_colors",
@@ -601,6 +605,8 @@
       "transparent_pixels": 11233,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 14,
       "source_opaque_color_count": 14,
       "quantized": false,
       "method": "exact_source_colors",
@@ -629,36 +635,36 @@
           "colors": [
             [
               90,
-              66,
+              65,
               41
             ],
             [
-              107,
+              106,
               82,
               0
             ],
             [
-              140,
-              99,
+              139,
+              98,
               49
             ],
             [
               164,
-              132,
+              131,
               90
             ],
             [
-              181,
+              180,
               148,
-              33
+              32
             ],
             [
               222,
               189,
-              66
+              65
             ],
             [
-              247,
+              246,
               222,
               0
             ],
@@ -669,7 +675,7 @@
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 43.25,
+          "hue_degrees": 43.05,
           "opaque_pixel_count": 9109,
           "ordering_reference": "family",
           "preferred_start_index": 1,
@@ -689,9 +695,9 @@
               0
             ],
             [
-              206,
-              221,
-              237
+              205,
+              222,
+              238
             ],
             [
               255,
@@ -700,7 +706,7 @@
             ]
           ],
           "kind": "neutral",
-          "hue_degrees": 319.6,
+          "hue_degrees": 320.43,
           "opaque_pixel_count": 4779,
           "ordering_reference": "family",
           "preferred_start_index": 3,
@@ -717,21 +723,21 @@
             [
               82,
               90,
-              107
+              106
             ],
             [
-              132,
+              131,
               148,
               164
             ],
             [
               156,
-              173,
+              172,
               189
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 210.16,
+          "hue_degrees": 211.62,
           "opaque_pixel_count": 7647,
           "ordering_reference": "species",
           "preferred_start_index": 12,
@@ -3424,7 +3430,7 @@
       "filename": "anim_frontf.png",
       "stem": "anim_frontf",
       "source": "graphics/pokemon/hypno/anim_frontf.png",
-      "source_sha256": "8607557e9d89e3ac96a3f8389625d92bf7b9a4e047664ee99c46e4c37aaf9318",
+      "source_sha256": "5ad4beac43720772349b145f881739ab34ca9616d9359f3308c7a4fe3f92cd5e",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -3451,23 +3457,23 @@
             255
           ],
           [
-            140,
-            99,
+            139,
+            98,
             49
           ],
           [
             164,
-            132,
+            131,
             90
           ],
           [
-            247,
+            246,
             222,
             0
           ],
           [
             90,
-            66,
+            65,
             41
           ],
           [
@@ -3478,12 +3484,12 @@
           [
             222,
             189,
-            66
+            65
           ],
           [
-            181,
+            180,
             148,
-            33
+            32
           ],
           [
             0,
@@ -3491,7 +3497,7 @@
             0
           ],
           [
-            107,
+            106,
             82,
             0
           ],
@@ -3501,22 +3507,22 @@
             255
           ],
           [
-            206,
-            221,
-            237
+            205,
+            222,
+            238
           ],
           [
             82,
             90,
-            107
+            106
           ],
           [
             156,
-            173,
+            172,
             189
           ],
           [
-            132,
+            131,
             148,
             164
           ],
@@ -3643,36 +3649,36 @@
           "selected_pair_distances": [
             [
               0.0,
-              0.23927,
-              0.42751,
-              0.19781,
-              0.19781
+              0.23918,
+              0.42745,
+              0.19775,
+              0.19775
             ],
             [
-              0.23927,
+              0.23918,
               0.0,
-              0.50784,
-              0.29361,
-              0.29361
+              0.50775,
+              0.29353,
+              0.29353
             ],
             [
-              0.42751,
-              0.50784,
+              0.42745,
+              0.50775,
               0.0,
-              0.39042,
-              0.39042
+              0.3903,
+              0.3903
             ],
             [
-              0.19781,
-              0.29361,
-              0.39042,
+              0.19775,
+              0.29353,
+              0.3903,
               0.0,
               0.0
             ],
             [
-              0.19781,
-              0.29361,
-              0.39042,
+              0.19775,
+              0.29353,
+              0.3903,
               0.0,
               0.0
             ]
@@ -3711,7 +3717,7 @@
               0.0,
               0.0,
               0.0,
-              0.19781
+              0.19775
             ]
           }
         },
@@ -4001,7 +4007,7 @@
       "filename": "backf.png",
       "stem": "backf",
       "source": "graphics/pokemon/hypno/backf.png",
-      "source_sha256": "e143806a6a4094eeb2f88affce6d1f605bba9318e4054a766b867a740b270b06",
+      "source_sha256": "3b7aae8cbd68af66aa98135f2b5bf53c468ce4ae3f404753b6533f7bcea46162",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -4028,23 +4034,23 @@
             255
           ],
           [
-            140,
-            99,
+            139,
+            98,
             49
           ],
           [
             164,
-            132,
+            131,
             90
           ],
           [
-            247,
+            246,
             222,
             0
           ],
           [
             90,
-            66,
+            65,
             41
           ],
           [
@@ -4055,12 +4061,12 @@
           [
             222,
             189,
-            66
+            65
           ],
           [
-            181,
+            180,
             148,
-            33
+            32
           ],
           [
             0,
@@ -4068,7 +4074,7 @@
             0
           ],
           [
-            107,
+            106,
             82,
             0
           ],
@@ -4078,22 +4084,22 @@
             255
           ],
           [
-            206,
-            221,
-            237
+            205,
+            222,
+            238
           ],
           [
             82,
             90,
-            107
+            106
           ],
           [
             156,
-            173,
+            172,
             189
           ],
           [
-            132,
+            131,
             148,
             164
           ],

@@ -109,6 +109,8 @@
     "transparent_pixels": 54706,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 15,
     "source_opaque_color_count": 15,
     "quantized": false,
     "method": "exact_source_colors",
@@ -350,14 +352,14 @@
         16
       ],
       [
-        54,
-        54,
-        54
+        49,
+        49,
+        49
       ],
       [
-        69,
-        69,
-        69
+        65,
+        65,
+        65
       ],
       [
         74,
@@ -365,17 +367,17 @@
         82
       ],
       [
-        107,
+        106,
         115,
         115
       ],
       [
         115,
-        132,
-        132
+        131,
+        131
       ],
       [
-        132,
+        131,
         148,
         148
       ],
@@ -395,23 +397,23 @@
         197
       ],
       [
-        214,
-        221,
-        214
+        213,
+        222,
+        213
       ],
       [
-        248,
-        248,
-        248
+        255,
+        255,
+        255
       ],
       [
-        132,
-        33,
+        131,
+        32,
         41
       ],
       [
         197,
-        66,
+        65,
         16
       ],
       [
@@ -429,6 +431,8 @@
       "transparent_pixels": 54706,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 15,
       "source_opaque_color_count": 15,
       "quantized": false,
       "method": "exact_source_colors",
@@ -582,6 +586,8 @@
       "transparent_pixels": 20564,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 14,
       "source_opaque_color_count": 14,
       "quantized": false,
       "method": "exact_source_colors",
@@ -618,14 +624,14 @@
               16
             ],
             [
-              54,
-              54,
-              54
+              49,
+              49,
+              49
             ],
             [
-              69,
-              69,
-              69
+              65,
+              65,
+              65
             ],
             [
               74,
@@ -633,17 +639,17 @@
               82
             ],
             [
-              107,
+              106,
               115,
               115
             ],
             [
               115,
-              132,
-              132
+              131,
+              131
             ],
             [
-              132,
+              131,
               148,
               148
             ],
@@ -663,14 +669,14 @@
               197
             ],
             [
-              214,
-              221,
-              214
+              213,
+              222,
+              213
             ],
             [
-              248,
-              248,
-              248
+              255,
+              255,
+              255
             ]
           ],
           "kind": "neutral",
@@ -688,18 +694,18 @@
           ],
           "colors": [
             [
-              132,
-              33,
+              131,
+              32,
               41
             ],
             [
               197,
-              66,
+              65,
               16
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 13.38,
+          "hue_degrees": 13.0,
           "opaque_pixel_count": 3289,
           "ordering_reference": "family",
           "preferred_start_index": 6,
@@ -21341,7 +21347,7 @@
       "filename": "anim_frontf.png",
       "stem": "anim_frontf",
       "source": "graphics/pokemon/donphan/anim_frontf.png",
-      "source_sha256": "b33d01a7414d6ac7ae22cdba285fe5856ee8b55f1e976ec543b122eae0c1049c",
+      "source_sha256": "19170e486ad4eb5f9c0fdbac1de2a2ab0e01e3e0334fd4e89bc911e644adf2d4",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -21373,17 +21379,17 @@
             82
           ],
           [
-            54,
-            54,
-            54
+            49,
+            49,
+            49
           ],
           [
-            132,
+            131,
             148,
             148
           ],
           [
-            107,
+            106,
             115,
             115
           ],
@@ -21398,29 +21404,29 @@
             164
           ],
           [
-            214,
-            221,
-            214
+            213,
+            222,
+            213
           ],
           [
             115,
-            132,
-            132
+            131,
+            131
           ],
           [
-            132,
-            33,
+            131,
+            32,
             41
           ],
           [
             197,
-            66,
+            65,
             16
           ],
           [
-            69,
-            69,
-            69
+            65,
+            65,
+            65
           ],
           [
             189,
@@ -21428,9 +21434,9 @@
             197
           ],
           [
-            248,
-            248,
-            248
+            255,
+            255,
+            255
           ],
           [
             189,
@@ -21561,37 +21567,37 @@
           "selected_pair_distances": [
             [
               0.0,
-              0.18384,
-              0.42703,
-              0.18384,
-              0.42703
+              0.18385,
+              0.42699,
+              0.18385,
+              0.42699
             ],
             [
-              0.18384,
+              0.18385,
               0.0,
-              0.44577,
+              0.44566,
               0.0,
-              0.44577
+              0.44566
             ],
             [
-              0.42703,
-              0.44577,
+              0.42699,
+              0.44566,
               0.0,
-              0.44577,
+              0.44566,
               0.0
             ],
             [
-              0.18384,
+              0.18385,
               0.0,
-              0.44577,
+              0.44566,
               0.0,
-              0.44577
+              0.44566
             ],
             [
-              0.42703,
-              0.44577,
+              0.42699,
+              0.44566,
               0.0,
-              0.44577,
+              0.44566,
               0.0
             ]
           ],
@@ -22890,7 +22896,7 @@
       "filename": "backf.png",
       "stem": "backf",
       "source": "graphics/pokemon/donphan/backf.png",
-      "source_sha256": "8001f98a769dba1d3cd970e679dbd668673f620f51ff277d318604741bff8134",
+      "source_sha256": "00857b3d4c202bf7c783d891197f528bcfd991955e85ff50d164c0333cd0f21a",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -22922,17 +22928,17 @@
             82
           ],
           [
-            54,
-            54,
-            54
+            49,
+            49,
+            49
           ],
           [
-            132,
+            131,
             148,
             148
           ],
           [
-            107,
+            106,
             115,
             115
           ],
@@ -22947,29 +22953,29 @@
             164
           ],
           [
-            214,
-            221,
-            214
+            213,
+            222,
+            213
           ],
           [
             115,
-            132,
-            132
+            131,
+            131
           ],
           [
-            132,
-            33,
+            131,
+            32,
             41
           ],
           [
             197,
-            66,
+            65,
             16
           ],
           [
-            69,
-            69,
-            69
+            65,
+            65,
+            65
           ],
           [
             189,
@@ -22977,9 +22983,9 @@
             197
           ],
           [
-            248,
-            248,
-            248
+            255,
+            255,
+            255
           ],
           [
             189,

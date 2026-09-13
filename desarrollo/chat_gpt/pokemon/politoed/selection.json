@@ -108,6 +108,8 @@
     "transparent_pixels": 49805,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 15,
     "source_opaque_color_count": 15,
     "quantized": false,
     "method": "exact_source_colors",
@@ -399,14 +401,14 @@
         0
       ],
       [
-        107,
+        106,
         164,
         16
       ],
       [
-        140,
-        206,
-        25
+        139,
+        205,
+        24
       ],
       [
         189,
@@ -419,18 +421,18 @@
         16
       ],
       [
-        206,
-        206,
-        206
+        205,
+        205,
+        205
       ],
       [
-        248,
-        248,
-        248
+        255,
+        255,
+        255
       ],
       [
-        181,
-        25,
+        180,
+        24,
         49
       ],
       [
@@ -439,24 +441,24 @@
         197
       ],
       [
-        140,
+        139,
         90,
         0
       ],
       [
         230,
-        107,
+        106,
         49
       ],
       [
-        214,
-        181,
-        99
+        213,
+        180,
+        98
       ],
       [
         255,
         230,
-        107
+        106
       ]
     ]
   },
@@ -468,6 +470,8 @@
       "transparent_pixels": 49805,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 15,
       "source_opaque_color_count": 15,
       "quantized": false,
       "method": "exact_source_colors",
@@ -661,6 +665,8 @@
       "transparent_pixels": 25585,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 15,
       "source_opaque_color_count": 15,
       "quantized": false,
       "method": "exact_source_colors",
@@ -714,14 +720,14 @@
               0
             ],
             [
-              107,
+              106,
               164,
               16
             ],
             [
-              140,
-              206,
-              25
+              139,
+              205,
+              24
             ],
             [
               189,
@@ -730,7 +736,7 @@
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 83.8,
+          "hue_degrees": 83.82,
           "opaque_pixel_count": 10784,
           "ordering_reference": "species",
           "preferred_start_index": 4,
@@ -750,14 +756,14 @@
               16
             ],
             [
-              206,
-              206,
-              206
+              205,
+              205,
+              205
             ],
             [
-              248,
-              248,
-              248
+              255,
+              255,
+              255
             ]
           ],
           "kind": "neutral",
@@ -775,8 +781,8 @@
           ],
           "colors": [
             [
-              181,
-              25,
+              180,
+              24,
               49
             ],
             [
@@ -786,7 +792,7 @@
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 337.74,
+          "hue_degrees": 337.63,
           "opaque_pixel_count": 282,
           "ordering_reference": "family",
           "preferred_start_index": 9,
@@ -802,28 +808,28 @@
           ],
           "colors": [
             [
-              140,
+              139,
               90,
               0
             ],
             [
               230,
-              107,
+              106,
               49
             ],
             [
-              214,
-              181,
-              99
+              213,
+              180,
+              98
             ],
             [
               255,
               230,
-              107
+              106
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 44.61,
+          "hue_degrees": 44.67,
           "opaque_pixel_count": 1736,
           "ordering_reference": "species",
           "preferred_start_index": 11,
@@ -3000,7 +3006,7 @@
       "filename": "anim_frontf.png",
       "stem": "anim_frontf",
       "source": "graphics/pokemon/politoed/anim_frontf.png",
-      "source_sha256": "fd955ae6483633d0dd77c8b813c076ce2c4486ebf01dec185687f28cfb614561",
+      "source_sha256": "88633a929b77c9d9ae85c4d038a38d3f48ac1bdb7c977a6008e5acdaa9e0af75",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -3042,7 +3048,7 @@
             16
           ],
           [
-            107,
+            106,
             164,
             16
           ],
@@ -3057,43 +3063,43 @@
             115
           ],
           [
-            140,
-            206,
-            25
+            139,
+            205,
+            24
           ],
           [
-            248,
-            248,
-            248
+            255,
+            255,
+            255
           ],
           [
-            206,
-            206,
-            206
+            205,
+            205,
+            205
           ],
           [
-            181,
-            25,
+            180,
+            24,
             49
           ],
           [
-            140,
+            139,
             90,
             0
           ],
           [
             255,
             230,
-            107
+            106
           ],
           [
-            214,
-            181,
-            99
+            213,
+            180,
+            98
           ],
           [
             230,
-            107,
+            106,
             49
           ],
           [
@@ -3219,36 +3225,36 @@
           "selected_pair_distances": [
             [
               0.0,
-              0.80794,
-              0.26181,
-              0.33639,
-              0.33639
+              0.8077,
+              0.26182,
+              0.33631,
+              0.33631
             ],
             [
-              0.80794,
+              0.8077,
               0.0,
-              0.85427,
-              0.84783,
-              0.84783
+              0.854,
+              0.84757,
+              0.84757
             ],
             [
-              0.26181,
-              0.85427,
+              0.26182,
+              0.854,
               0.0,
-              0.28754,
-              0.28754
+              0.28743,
+              0.28743
             ],
             [
-              0.33639,
-              0.84783,
-              0.28754,
+              0.33631,
+              0.84757,
+              0.28743,
               0.0,
               0.0
             ],
             [
-              0.33639,
-              0.84783,
-              0.28754,
+              0.33631,
+              0.84757,
+              0.28743,
               0.0,
               0.0
             ]
@@ -3287,7 +3293,7 @@
               0.0,
               0.0,
               0.0,
-              0.28754
+              0.28743
             ]
           }
         },
@@ -3511,7 +3517,7 @@
       "filename": "backf.png",
       "stem": "backf",
       "source": "graphics/pokemon/politoed/backf.png",
-      "source_sha256": "7a73ed0233373ed0d2aafd86b8c759ea05f60ed398a76fd0ed33088bbdc202c3",
+      "source_sha256": "fc901a9f9174fc42554e3556f03762351011e9e38185c9a92c8a6b7a14594b34",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -3553,7 +3559,7 @@
             16
           ],
           [
-            107,
+            106,
             164,
             16
           ],
@@ -3568,43 +3574,43 @@
             115
           ],
           [
-            140,
-            206,
-            25
+            139,
+            205,
+            24
           ],
           [
-            248,
-            248,
-            248
+            255,
+            255,
+            255
           ],
           [
-            206,
-            206,
-            206
+            205,
+            205,
+            205
           ],
           [
-            181,
-            25,
+            180,
+            24,
             49
           ],
           [
-            140,
+            139,
             90,
             0
           ],
           [
             255,
             230,
-            107
+            106
           ],
           [
-            214,
-            181,
-            99
+            213,
+            180,
+            98
           ],
           [
             230,
-            107,
+            106,
             49
           ],
           [

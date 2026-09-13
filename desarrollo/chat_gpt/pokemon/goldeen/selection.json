@@ -111,6 +111,8 @@
     "transparent_pixels": 41806,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 15,
     "source_opaque_color_count": 15,
     "quantized": false,
     "method": "exact_source_colors",
@@ -373,9 +375,9 @@
         255
       ],
       [
-        17,
-        17,
-        17
+        16,
+        16,
+        16
       ],
       [
         82,
@@ -383,14 +385,14 @@
         90
       ],
       [
-        140,
-        140,
+        139,
+        139,
         148
       ],
       [
-        214,
-        214,
-        221
+        213,
+        213,
+        222
       ],
       [
         238,
@@ -403,23 +405,23 @@
         255
       ],
       [
-        173,
+        172,
         16,
         0
       ],
       [
-        214,
-        66,
+        213,
+        65,
         16
       ],
       [
         238,
         123,
-        66
+        65
       ],
       [
-        206,
-        181,
+        205,
+        180,
         123
       ],
       [
@@ -429,22 +431,22 @@
       ],
       [
         0,
-        107,
-        99
+        106,
+        98
       ],
       [
-        66,
-        173,
+        65,
+        172,
         164
       ],
       [
-        173,
+        172,
         82,
         115
       ],
       [
-        247,
-        132,
+        246,
+        131,
         139
       ]
     ]
@@ -457,6 +459,8 @@
       "transparent_pixels": 41806,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 15,
       "source_opaque_color_count": 15,
       "quantized": false,
       "method": "exact_source_colors",
@@ -636,6 +640,8 @@
       "transparent_pixels": 25984,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 15,
       "source_opaque_color_count": 15,
       "quantized": false,
       "method": "exact_source_colors",
@@ -661,9 +667,9 @@
           ],
           "colors": [
             [
-              17,
-              17,
-              17
+              16,
+              16,
+              16
             ],
             [
               82,
@@ -671,14 +677,14 @@
               90
             ],
             [
-              140,
-              140,
+              139,
+              139,
               148
             ],
             [
-              214,
-              214,
-              221
+              213,
+              213,
+              222
             ],
             [
               238,
@@ -709,23 +715,23 @@
           ],
           "colors": [
             [
-              173,
+              172,
               16,
               0
             ],
             [
-              214,
-              66,
+              213,
+              65,
               16
             ],
             [
               238,
               123,
-              66
+              65
             ],
             [
-              206,
-              181,
+              205,
+              180,
               123
             ],
             [
@@ -735,7 +741,7 @@
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 21.23,
+          "hue_degrees": 21.24,
           "opaque_pixel_count": 3259,
           "ordering_reference": "family",
           "preferred_start_index": 6,
@@ -750,17 +756,17 @@
           "colors": [
             [
               0,
-              107,
-              99
+              106,
+              98
             ],
             [
-              66,
-              173,
+              65,
+              172,
               164
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 175.27,
+          "hue_degrees": 175.49,
           "opaque_pixel_count": 44,
           "ordering_reference": "family",
           "preferred_start_index": 12,
@@ -774,18 +780,18 @@
           ],
           "colors": [
             [
-              173,
+              172,
               82,
               115
             ],
             [
-              247,
-              132,
+              246,
+              131,
               139
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 347.01,
+          "hue_degrees": 346.64,
           "opaque_pixel_count": 130,
           "ordering_reference": "family",
           "preferred_start_index": 14,
@@ -16926,7 +16932,7 @@
       "filename": "anim_frontf.png",
       "stem": "anim_frontf",
       "source": "graphics/pokemon/goldeen/anim_frontf.png",
-      "source_sha256": "60cabd3911d19e61b61cb39baed2a4cf8e5bea0a08d8b1512ebad52a9806788f",
+      "source_sha256": "301bfe3042d8d55989b3c1f3c525d2a66151b1991b6a25d4085ef3aa545b9da5",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -16963,8 +16969,8 @@
             255
           ],
           [
-            140,
-            140,
+            139,
+            139,
             148
           ],
           [
@@ -16973,9 +16979,9 @@
             238
           ],
           [
-            214,
-            214,
-            221
+            213,
+            213,
+            222
           ],
           [
             255,
@@ -16985,46 +16991,46 @@
           [
             238,
             123,
-            66
+            65
           ],
           [
-            17,
-            17,
-            17
-          ],
-          [
-            206,
-            181,
-            123
-          ],
-          [
-            214,
-            66,
+            16,
+            16,
             16
           ],
           [
-            173,
+            205,
+            180,
+            123
+          ],
+          [
+            213,
+            65,
+            16
+          ],
+          [
+            172,
             16,
             0
           ],
           [
             0,
-            107,
-            99
+            106,
+            98
           ],
           [
-            66,
-            173,
+            65,
+            172,
             164
           ],
           [
-            173,
+            172,
             82,
             115
           ],
           [
-            247,
-            132,
+            246,
+            131,
             139
           ]
         ],
@@ -17145,36 +17151,36 @@
           "selected_pair_distances": [
             [
               0.0,
-              0.20924,
-              0.91915,
-              0.17247,
-              0.17247
+              0.20921,
+              0.91893,
+              0.17243,
+              0.17243
             ],
             [
-              0.20924,
+              0.20921,
               0.0,
-              0.94661,
-              0.31185,
-              0.31185
+              0.9464,
+              0.3118,
+              0.3118
             ],
             [
-              0.91915,
-              0.94661,
+              0.91893,
+              0.9464,
               0.0,
-              0.89568,
-              0.89568
+              0.89548,
+              0.89548
             ],
             [
-              0.17247,
-              0.31185,
-              0.89568,
+              0.17243,
+              0.3118,
+              0.89548,
               0.0,
               0.0
             ],
             [
-              0.17247,
-              0.31185,
-              0.89568,
+              0.17243,
+              0.3118,
+              0.89548,
               0.0,
               0.0
             ]
@@ -17213,7 +17219,7 @@
               0.0,
               0.0,
               0.0,
-              0.17247
+              0.17243
             ]
           }
         },
@@ -17407,7 +17413,7 @@
       "filename": "backf.png",
       "stem": "backf",
       "source": "graphics/pokemon/goldeen/backf.png",
-      "source_sha256": "13966eee16e5b9ea777fdcf1ebf9b3b867b5821381044025289b8ed82ffc7fff",
+      "source_sha256": "b4d835fe2261d10789f28fec2939b78fbf1dde3e669b6f071bf0491617d2bc4a",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -17444,8 +17450,8 @@
             255
           ],
           [
-            140,
-            140,
+            139,
+            139,
             148
           ],
           [
@@ -17454,9 +17460,9 @@
             238
           ],
           [
-            214,
-            214,
-            221
+            213,
+            213,
+            222
           ],
           [
             255,
@@ -17466,46 +17472,46 @@
           [
             238,
             123,
-            66
+            65
           ],
           [
-            17,
-            17,
-            17
-          ],
-          [
-            206,
-            181,
-            123
-          ],
-          [
-            214,
-            66,
+            16,
+            16,
             16
           ],
           [
-            173,
+            205,
+            180,
+            123
+          ],
+          [
+            213,
+            65,
+            16
+          ],
+          [
+            172,
             16,
             0
           ],
           [
             0,
-            107,
-            99
+            106,
+            98
           ],
           [
-            66,
-            173,
+            65,
+            172,
             164
           ],
           [
-            173,
+            172,
             82,
             115
           ],
           [
-            247,
-            132,
+            246,
+            131,
             139
           ]
         ],

@@ -31,64 +31,49 @@
       255
     ],
     [
-      91,
-      144,
-      166
+      57,
+      139,
+      222
     ],
     [
-      79,
-      59,
+      123,
+      197,
+      205
+    ],
+    [
+      74,
+      57,
       49
     ],
     [
-      151,
-      94,
-      34
+      148,
+      90,
+      32
     ],
     [
-      199,
+      197,
       131,
-      53
+      49
     ],
     [
-      199,
-      174,
-      44
-    ],
-    [
-      249,
-      171,
-      73
+      197,
+      172,
+      41
     ],
     [
       255,
-      239,
-      69
+      172,
+      74
     ],
     [
       255,
-      245,
-      142
+      238,
+      65
     ],
     [
-      255,
-      244,
-      194
-    ],
-    [
-      61,
-      141,
-      217
-    ],
-    [
-      126,
-      199,
-      204
-    ],
-    [
-      101,
-      191,
-      120
+      98,
+      189,
+      123
     ],
     [
       16,
@@ -96,14 +81,29 @@
       16
     ],
     [
-      245,
-      236,
+      246,
+      238,
       255
     ],
     [
-      86,
-      102,
-      70
+      255,
+      246,
+      139
+    ],
+    [
+      255,
+      246,
+      197
+    ],
+    [
+      90,
+      148,
+      164
+    ],
+    [
+      82,
+      98,
+      65
     ]
   ],
   "palette_metadata": {
@@ -113,12 +113,14 @@
     "transparent_pixels": 18900,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
-    "source_opaque_color_count": 26,
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 25,
+    "source_opaque_color_count": 25,
     "quantized": true,
     "method": "joint_weighted_lab_kmeans_source_medoids_no_dither",
     "changed_opaque_pixels": 1650,
-    "mean_delta_e76": 1.64346,
-    "max_delta_e76": 25.85477,
+    "mean_delta_e76": 1.65951,
+    "max_delta_e76": 24.15795,
     "ordering_method": "heuristic_reference_blocks_then_dark_to_light_with_family_slots",
     "species_reference_grouped_colors": 12,
     "anatomical_grouping_verified": false,
@@ -129,18 +131,24 @@
     "ramps": [
       {
         "indices": [
-          1
+          1,
+          2
         ],
         "colors": [
           [
-            91,
-            144,
-            166
+            57,
+            139,
+            222
+          ],
+          [
+            123,
+            197,
+            205
           ]
         ],
         "kind": "chromatic",
-        "hue_degrees": 197.6,
-        "opaque_pixel_count": 549,
+        "hue_degrees": 188.31,
+        "opaque_pixel_count": 631,
         "ordering_reference": "family",
         "preferred_start_index": 1,
         "start_preserved": true,
@@ -148,63 +156,70 @@
       },
       {
         "indices": [
-          2,
           3,
           4,
           5,
           6,
           7,
-          8,
+          8
+        ],
+        "colors": [
+          [
+            74,
+            57,
+            49
+          ],
+          [
+            148,
+            90,
+            32
+          ],
+          [
+            197,
+            131,
+            49
+          ],
+          [
+            197,
+            172,
+            41
+          ],
+          [
+            255,
+            172,
+            74
+          ],
+          [
+            255,
+            238,
+            65
+          ]
+        ],
+        "kind": "chromatic",
+        "hue_degrees": 40.08,
+        "opaque_pixel_count": 6329,
+        "ordering_reference": "family",
+        "preferred_start_index": 2,
+        "start_preserved": false,
+        "order": "dark_to_light_CIE_Lstar"
+      },
+      {
+        "indices": [
           9
         ],
         "colors": [
           [
-            79,
-            59,
-            49
-          ],
-          [
-            151,
-            94,
-            34
-          ],
-          [
-            199,
-            131,
-            53
-          ],
-          [
-            199,
-            174,
-            44
-          ],
-          [
-            249,
-            171,
-            73
-          ],
-          [
-            255,
-            239,
-            69
-          ],
-          [
-            255,
-            245,
-            142
-          ],
-          [
-            255,
-            244,
-            194
+            98,
+            189,
+            123
           ]
         ],
         "kind": "chromatic",
-        "hue_degrees": 42.64,
-        "opaque_pixel_count": 7988,
-        "ordering_reference": "family",
-        "preferred_start_index": 2,
-        "start_preserved": true,
+        "hue_degrees": 136.48,
+        "opaque_pixel_count": 2958,
+        "ordering_reference": "dominant_color",
+        "preferred_start_index": 7,
+        "start_preserved": false,
         "order": "dark_to_light_CIE_Lstar"
       },
       {
@@ -214,65 +229,65 @@
         ],
         "colors": [
           [
-            61,
-            141,
-            217
-          ],
-          [
-            126,
-            199,
-            204
-          ]
-        ],
-        "kind": "chromatic",
-        "hue_degrees": 186.4,
-        "opaque_pixel_count": 631,
-        "ordering_reference": "species",
-        "preferred_start_index": 8,
-        "start_preserved": false,
-        "order": "dark_to_light_CIE_Lstar"
-      },
-      {
-        "indices": [
-          12
-        ],
-        "colors": [
-          [
-            101,
-            191,
-            120
-          ]
-        ],
-        "kind": "chromatic",
-        "hue_degrees": 132.67,
-        "opaque_pixel_count": 2958,
-        "ordering_reference": "dominant_color",
-        "preferred_start_index": 9,
-        "start_preserved": false,
-        "order": "dark_to_light_CIE_Lstar"
-      },
-      {
-        "indices": [
-          13,
-          14
-        ],
-        "colors": [
-          [
             16,
             16,
             16
           ],
           [
-            245,
-            236,
+            246,
+            238,
             255
           ]
         ],
         "kind": "neutral",
-        "hue_degrees": 309.38,
+        "hue_degrees": 309.27,
         "opaque_pixel_count": 1412,
         "ordering_reference": "family",
         "preferred_start_index": 9,
+        "start_preserved": false,
+        "order": "dark_to_light_CIE_Lstar"
+      },
+      {
+        "indices": [
+          12,
+          13
+        ],
+        "colors": [
+          [
+            255,
+            246,
+            139
+          ],
+          [
+            255,
+            246,
+            197
+          ]
+        ],
+        "kind": "chromatic",
+        "hue_degrees": 52.64,
+        "opaque_pixel_count": 1659,
+        "ordering_reference": "family",
+        "preferred_start_index": 10,
+        "start_preserved": false,
+        "order": "dark_to_light_CIE_Lstar"
+      },
+      {
+        "indices": [
+          14
+        ],
+        "colors": [
+          [
+            90,
+            148,
+            164
+          ]
+        ],
+        "kind": "chromatic",
+        "hue_degrees": 192.97,
+        "opaque_pixel_count": 549,
+        "ordering_reference": "dominant_color",
+        "preferred_start_index": 12,
         "start_preserved": false,
         "order": "dark_to_light_CIE_Lstar"
       },
@@ -282,16 +297,16 @@
         ],
         "colors": [
           [
-            86,
-            102,
-            70
+            82,
+            98,
+            65
           ]
         ],
         "kind": "chromatic",
-        "hue_degrees": 90.0,
+        "hue_degrees": 89.09,
         "opaque_pixel_count": 330,
-        "ordering_reference": "family",
-        "preferred_start_index": 10,
+        "ordering_reference": "dominant_color",
+        "preferred_start_index": 13,
         "start_preserved": false,
         "order": "dark_to_light_CIE_Lstar"
       }
@@ -321,64 +336,49 @@
         255
       ],
       [
-        91,
-        144,
-        166
+        57,
+        139,
+        222
       ],
       [
-        79,
-        59,
+        123,
+        197,
+        205
+      ],
+      [
+        74,
+        57,
         49
       ],
       [
-        151,
-        94,
-        34
+        148,
+        90,
+        32
       ],
       [
-        199,
+        197,
         131,
-        53
+        49
       ],
       [
-        199,
-        174,
-        44
-      ],
-      [
-        249,
-        171,
-        73
+        197,
+        172,
+        41
       ],
       [
         255,
-        239,
-        69
+        172,
+        74
       ],
       [
         255,
-        245,
-        142
+        238,
+        65
       ],
       [
-        255,
-        244,
-        194
-      ],
-      [
-        61,
-        141,
-        217
-      ],
-      [
-        126,
-        199,
-        204
-      ],
-      [
-        101,
-        191,
-        120
+        98,
+        189,
+        123
       ],
       [
         16,
@@ -386,14 +386,29 @@
         16
       ],
       [
-        245,
-        236,
+        246,
+        238,
         255
       ],
       [
-        86,
-        102,
-        70
+        255,
+        246,
+        139
+      ],
+      [
+        255,
+        246,
+        197
+      ],
+      [
+        90,
+        148,
+        164
+      ],
+      [
+        82,
+        98,
+        65
       ]
     ]
   },
@@ -405,12 +420,14 @@
       "transparent_pixels": 18900,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
-      "source_opaque_color_count": 26,
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 25,
+      "source_opaque_color_count": 25,
       "quantized": true,
       "method": "joint_weighted_lab_kmeans_source_medoids_no_dither",
       "changed_opaque_pixels": 1650,
-      "mean_delta_e76": 1.64346,
-      "max_delta_e76": 25.85477,
+      "mean_delta_e76": 1.65951,
+      "max_delta_e76": 24.15795,
       "ordering_method": "heuristic_reference_blocks_then_dark_to_light_with_family_slots",
       "species_reference_grouped_colors": 12,
       "anatomical_grouping_verified": false,
@@ -421,18 +438,24 @@
       "ramps": [
         {
           "indices": [
-            1
+            1,
+            2
           ],
           "colors": [
             [
-              91,
-              144,
-              166
+              57,
+              139,
+              222
+            ],
+            [
+              123,
+              197,
+              205
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 197.6,
-          "opaque_pixel_count": 549,
+          "hue_degrees": 188.31,
+          "opaque_pixel_count": 631,
           "ordering_reference": "family",
           "preferred_start_index": 1,
           "start_preserved": true,
@@ -440,63 +463,70 @@
         },
         {
           "indices": [
-            2,
             3,
             4,
             5,
             6,
             7,
-            8,
+            8
+          ],
+          "colors": [
+            [
+              74,
+              57,
+              49
+            ],
+            [
+              148,
+              90,
+              32
+            ],
+            [
+              197,
+              131,
+              49
+            ],
+            [
+              197,
+              172,
+              41
+            ],
+            [
+              255,
+              172,
+              74
+            ],
+            [
+              255,
+              238,
+              65
+            ]
+          ],
+          "kind": "chromatic",
+          "hue_degrees": 40.08,
+          "opaque_pixel_count": 6329,
+          "ordering_reference": "family",
+          "preferred_start_index": 2,
+          "start_preserved": false,
+          "order": "dark_to_light_CIE_Lstar"
+        },
+        {
+          "indices": [
             9
           ],
           "colors": [
             [
-              79,
-              59,
-              49
-            ],
-            [
-              151,
-              94,
-              34
-            ],
-            [
-              199,
-              131,
-              53
-            ],
-            [
-              199,
-              174,
-              44
-            ],
-            [
-              249,
-              171,
-              73
-            ],
-            [
-              255,
-              239,
-              69
-            ],
-            [
-              255,
-              245,
-              142
-            ],
-            [
-              255,
-              244,
-              194
+              98,
+              189,
+              123
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 42.64,
-          "opaque_pixel_count": 7988,
-          "ordering_reference": "family",
-          "preferred_start_index": 2,
-          "start_preserved": true,
+          "hue_degrees": 136.48,
+          "opaque_pixel_count": 2958,
+          "ordering_reference": "dominant_color",
+          "preferred_start_index": 7,
+          "start_preserved": false,
           "order": "dark_to_light_CIE_Lstar"
         },
         {
@@ -506,65 +536,65 @@
           ],
           "colors": [
             [
-              61,
-              141,
-              217
-            ],
-            [
-              126,
-              199,
-              204
-            ]
-          ],
-          "kind": "chromatic",
-          "hue_degrees": 186.4,
-          "opaque_pixel_count": 631,
-          "ordering_reference": "species",
-          "preferred_start_index": 8,
-          "start_preserved": false,
-          "order": "dark_to_light_CIE_Lstar"
-        },
-        {
-          "indices": [
-            12
-          ],
-          "colors": [
-            [
-              101,
-              191,
-              120
-            ]
-          ],
-          "kind": "chromatic",
-          "hue_degrees": 132.67,
-          "opaque_pixel_count": 2958,
-          "ordering_reference": "dominant_color",
-          "preferred_start_index": 9,
-          "start_preserved": false,
-          "order": "dark_to_light_CIE_Lstar"
-        },
-        {
-          "indices": [
-            13,
-            14
-          ],
-          "colors": [
-            [
               16,
               16,
               16
             ],
             [
-              245,
-              236,
+              246,
+              238,
               255
             ]
           ],
           "kind": "neutral",
-          "hue_degrees": 309.38,
+          "hue_degrees": 309.27,
           "opaque_pixel_count": 1412,
           "ordering_reference": "family",
           "preferred_start_index": 9,
+          "start_preserved": false,
+          "order": "dark_to_light_CIE_Lstar"
+        },
+        {
+          "indices": [
+            12,
+            13
+          ],
+          "colors": [
+            [
+              255,
+              246,
+              139
+            ],
+            [
+              255,
+              246,
+              197
+            ]
+          ],
+          "kind": "chromatic",
+          "hue_degrees": 52.64,
+          "opaque_pixel_count": 1659,
+          "ordering_reference": "family",
+          "preferred_start_index": 10,
+          "start_preserved": false,
+          "order": "dark_to_light_CIE_Lstar"
+        },
+        {
+          "indices": [
+            14
+          ],
+          "colors": [
+            [
+              90,
+              148,
+              164
+            ]
+          ],
+          "kind": "chromatic",
+          "hue_degrees": 192.97,
+          "opaque_pixel_count": 549,
+          "ordering_reference": "dominant_color",
+          "preferred_start_index": 12,
           "start_preserved": false,
           "order": "dark_to_light_CIE_Lstar"
         },
@@ -574,16 +604,16 @@
           ],
           "colors": [
             [
-              86,
-              102,
-              70
+              82,
+              98,
+              65
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 90.0,
+          "hue_degrees": 89.09,
           "opaque_pixel_count": 330,
-          "ordering_reference": "family",
-          "preferred_start_index": 10,
+          "ordering_reference": "dominant_color",
+          "preferred_start_index": 13,
           "start_preserved": false,
           "order": "dark_to_light_CIE_Lstar"
         }
@@ -641,7 +671,7 @@
       "filename": "anim_front.png",
       "stem": "anim_front",
       "source": "graphics/pokemon/raichu/alola/anim_front.png",
-      "source_sha256": "039b89d2acd6bfab945ed9a6d6a233aab8d5fa1c7672acc514ade39e97a5ab3a",
+      "source_sha256": "d65b7688868f803567479b3ecaf1e4a4ef03edb536635e9db5ceaeee957d98ed",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -665,7 +695,7 @@
           [
             0,
             246,
-            191
+            189
           ],
           [
             16,
@@ -673,69 +703,69 @@
             16
           ],
           [
-            79,
-            59,
+            74,
+            57,
             49
           ],
           [
-            151,
-            94,
-            34
+            148,
+            90,
+            32
           ],
           [
-            199,
-            174,
-            44
+            197,
+            172,
+            41
           ],
           [
-            199,
+            197,
             131,
-            53
-          ],
-          [
-            249,
-            171,
-            73
+            49
           ],
           [
             255,
-            239,
-            69
+            172,
+            74
           ],
           [
-            61,
-            141,
-            217
+            255,
+            238,
+            65
           ],
           [
-            223,
-            212,
-            161
+            57,
+            139,
+            222
           ],
           [
-            242,
+            222,
+            213,
+            164
+          ],
+          [
+            246,
             230,
-            210
+            213
           ],
           [
             255,
-            244,
-            194
+            246,
+            197
           ],
           [
             255,
-            245,
-            142
+            246,
+            139
           ],
           [
-            133,
-            229,
-            245
+            131,
+            230,
+            246
           ],
           [
-            248,
-            248,
-            248
+            255,
+            255,
+            255
           ],
           [
             255,
@@ -830,34 +860,34 @@
           "selected_pair_distances": [
             [
               0.0,
-              0.99736,
-              0.99736,
-              0.99736,
-              0.99736
+              0.99733,
+              0.99733,
+              0.99733,
+              0.99733
             ],
             [
-              0.99736,
+              0.99733,
               0.0,
               0.0,
               0.0,
               0.0
             ],
             [
-              0.99736,
+              0.99733,
               0.0,
               0.0,
               0.0,
               0.0
             ],
             [
-              0.99736,
+              0.99733,
               0.0,
               0.0,
               0.0,
               0.0
             ],
             [
-              0.99736,
+              0.99733,
               0.0,
               0.0,
               0.0,
@@ -1069,7 +1099,7 @@
       "filename": "back.png",
       "stem": "back",
       "source": "graphics/pokemon/raichu/alola/back.png",
-      "source_sha256": "e0cf8ab8729d606a7e0bcdbe3d129298f038e952d8a49b65d483bd0c75bd965c",
+      "source_sha256": "18bdc954a8458f4e1a164e85b407d29e1a8d09e8779f803b07bebf27bf30b581",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -1093,7 +1123,7 @@
           [
             0,
             246,
-            191
+            189
           ],
           [
             16,
@@ -1101,73 +1131,73 @@
             16
           ],
           [
-            86,
-            102,
-            70
+            82,
+            98,
+            65
           ],
           [
-            70,
-            153,
-            76
+            65,
+            156,
+            74
           ],
           [
-            91,
-            144,
-            166
+            90,
+            148,
+            164
           ],
           [
-            101,
-            191,
-            120
+            98,
+            189,
+            123
           ],
           [
-            128,
-            223,
-            169
+            131,
+            222,
+            172
           ],
           [
-            126,
-            199,
-            204
+            123,
+            197,
+            205
           ],
           [
-            99,
-            209,
-            217
+            98,
+            213,
+            222
           ],
           [
-            161,
-            223,
-            185
+            164,
+            222,
+            189
           ],
           [
             197,
-            231,
-            242
+            230,
+            246
           ],
           [
-            194,
+            197,
             255,
-            210
+            213
           ],
           [
-            159,
-            223,
-            219
+            156,
+            222,
+            222
           ],
           [
-            153,
-            242,
-            224
+            156,
+            246,
+            230
           ],
           [
-            245,
-            236,
+            246,
+            238,
             255
           ],
           [
-            252,
-            249,
+            255,
+            255,
             255
           ]
         ],

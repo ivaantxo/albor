@@ -111,6 +111,8 @@
     "transparent_pixels": 25659,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 12,
     "source_opaque_color_count": 12,
     "quantized": false,
     "method": "exact_source_colors",
@@ -361,16 +363,16 @@
       [
         41,
         41,
-        66
+        65
       ],
       [
         49,
-        66,
-        99
+        65,
+        98
       ],
       [
-        66,
-        99,
+        65,
+        98,
         156
       ],
       [
@@ -379,7 +381,7 @@
         16
       ],
       [
-        254,
+        255,
         255,
         255
       ],
@@ -391,32 +393,32 @@
       [
         90,
         74,
-        33
+        32
       ],
       [
-        214,
-        66,
+        213,
+        65,
         82
       ],
       [
-        214,
+        213,
         189,
         82
       ],
       [
         255,
-        173,
-        140
+        172,
+        139
       ],
       [
-        239,
-        214,
-        132
+        238,
+        213,
+        131
       ],
       [
-        181,
+        180,
         156,
-        33
+        32
       ],
       [
         255,
@@ -443,6 +445,8 @@
       "transparent_pixels": 25659,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 12,
       "source_opaque_color_count": 12,
       "quantized": false,
       "method": "exact_source_colors",
@@ -608,6 +612,8 @@
       "transparent_pixels": 16380,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 12,
       "source_opaque_color_count": 12,
       "quantized": false,
       "method": "exact_source_colors",
@@ -632,21 +638,21 @@
             [
               41,
               41,
-              66
+              65
             ],
             [
               49,
-              66,
-              99
+              65,
+              98
             ],
             [
-              66,
-              99,
+              65,
+              98,
               156
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 225.05,
+          "hue_degrees": 225.49,
           "opaque_pixel_count": 2687,
           "ordering_reference": "family",
           "preferred_start_index": 1,
@@ -665,7 +671,7 @@
               16
             ],
             [
-              254,
+              255,
               255,
               255
             ]
@@ -696,31 +702,31 @@
             [
               90,
               74,
-              33
+              32
             ],
             [
-              214,
-              66,
+              213,
+              65,
               82
             ],
             [
-              214,
+              213,
               189,
               82
             ],
             [
               255,
-              173,
-              140
+              172,
+              139
             ],
             [
-              239,
-              214,
-              132
+              238,
+              213,
+              131
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 37.06,
+          "hue_degrees": 37.02,
           "opaque_pixel_count": 12057,
           "ordering_reference": "family",
           "preferred_start_index": 5,
@@ -733,13 +739,13 @@
           ],
           "colors": [
             [
-              181,
+              180,
               156,
-              33
+              32
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 49.86,
+          "hue_degrees": 50.27,
           "opaque_pixel_count": 383,
           "ordering_reference": "family",
           "preferred_start_index": 12,
@@ -2306,7 +2312,7 @@
       "filename": "anim_frontf.png",
       "stem": "anim_frontf",
       "source": "graphics/pokemon/murkrow/anim_frontf.png",
-      "source_sha256": "e4d454a36bdd08d1724ee3d91532c5dbe28d6988736af64887caa6c9e16d17ec",
+      "source_sha256": "ea5816cfdddb93b231fcbbab1f09b1516408b8452f2565525940dfce09938f61",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -2335,11 +2341,11 @@
           [
             41,
             41,
-            66
+            65
           ],
           [
-            66,
-            99,
+            65,
+            98,
             156
           ],
           [
@@ -2349,32 +2355,32 @@
           ],
           [
             49,
-            66,
-            99
+            65,
+            98
           ],
           [
             90,
             74,
-            33
+            32
           ],
           [
-            239,
-            214,
-            132
+            238,
+            213,
+            131
           ],
           [
-            214,
+            213,
             189,
             82
           ],
           [
             255,
-            173,
-            140
+            172,
+            139
           ],
           [
-            214,
-            66,
+            213,
+            65,
             82
           ],
           [
@@ -2383,14 +2389,14 @@
             57
           ],
           [
-            254,
+            255,
             255,
             255
           ],
           [
-            181,
+            180,
             156,
-            33
+            32
           ],
           [
             0,
@@ -2525,36 +2531,36 @@
           "selected_pair_distances": [
             [
               0.0,
-              0.31537,
-              0.04903,
-              0.11386,
-              0.11386
+              0.31525,
+              0.04902,
+              0.1138,
+              0.1138
             ],
             [
-              0.31537,
+              0.31525,
               0.0,
-              0.32595,
-              0.33448,
-              0.33448
+              0.32584,
+              0.33437,
+              0.33437
             ],
             [
-              0.04903,
-              0.32595,
+              0.04902,
+              0.32584,
               0.0,
-              0.13034,
-              0.13034
+              0.13027,
+              0.13027
             ],
             [
-              0.11386,
-              0.33448,
-              0.13034,
+              0.1138,
+              0.33437,
+              0.13027,
               0.0,
               0.0
             ],
             [
-              0.11386,
-              0.33448,
-              0.13034,
+              0.1138,
+              0.33437,
+              0.13027,
               0.0,
               0.0
             ]
@@ -2593,7 +2599,7 @@
               0.0,
               0.0,
               0.0,
-              0.11386
+              0.1138
             ]
           }
         },
@@ -2803,7 +2809,7 @@
       "filename": "backf.png",
       "stem": "backf",
       "source": "graphics/pokemon/murkrow/backf.png",
-      "source_sha256": "efcd5a00def583b9121d64170b6b5e2782822e2298c32c312ab3b41aa0f4e42a",
+      "source_sha256": "9de0a68e5d90d0352e6fa72830350fc625076ff7c3f58816ae9f3c276a366545",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -2832,11 +2838,11 @@
           [
             41,
             41,
-            66
+            65
           ],
           [
-            66,
-            99,
+            65,
+            98,
             156
           ],
           [
@@ -2846,32 +2852,32 @@
           ],
           [
             49,
-            66,
-            99
+            65,
+            98
           ],
           [
             90,
             74,
-            33
+            32
           ],
           [
-            239,
-            214,
-            132
+            238,
+            213,
+            131
           ],
           [
-            214,
+            213,
             189,
             82
           ],
           [
             255,
-            173,
-            140
+            172,
+            139
           ],
           [
-            214,
-            66,
+            213,
+            65,
             82
           ],
           [
@@ -2880,14 +2886,14 @@
             57
           ],
           [
-            254,
+            255,
             255,
             255
           ],
           [
-            181,
+            180,
             156,
-            33
+            32
           ],
           [
             0,

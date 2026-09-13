@@ -26,9 +26,24 @@
       65
     ],
     [
+      180,
+      57,
+      24
+    ],
+    [
       106,
       106,
       106
+    ],
+    [
+      156,
+      131,
+      74
+    ],
+    [
+      246,
+      82,
+      57
     ],
     [
       197,
@@ -49,21 +64,6 @@
       115,
       24,
       0
-    ],
-    [
-      180,
-      57,
-      24
-    ],
-    [
-      156,
-      131,
-      74
-    ],
-    [
-      246,
-      82,
-      57
     ],
     [
       0,
@@ -98,6 +98,8 @@
     "transparent_pixels": 55821,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 13,
     "source_opaque_color_count": 13,
     "quantized": false,
     "method": "exact_source_colors",
@@ -119,7 +121,10 @@
           3,
           4,
           5,
-          6
+          6,
+          7,
+          8,
+          9
         ],
         "colors": [
           [
@@ -133,9 +138,24 @@
             65
           ],
           [
+            180,
+            57,
+            24
+          ],
+          [
             106,
             106,
             106
+          ],
+          [
+            156,
+            131,
+            74
+          ],
+          [
+            246,
+            82,
+            57
           ],
           [
             197,
@@ -154,8 +174,8 @@
           ]
         ],
         "kind": "chromatic",
-        "hue_degrees": 31.33,
-        "opaque_pixel_count": 19342,
+        "hue_degrees": 31.64,
+        "opaque_pixel_count": 20360,
         "ordering_reference": "family",
         "preferred_start_index": 1,
         "start_preserved": true,
@@ -163,9 +183,6 @@
       },
       {
         "indices": [
-          7,
-          8,
-          9,
           10
         ],
         "colors": [
@@ -173,26 +190,11 @@
             115,
             24,
             0
-          ],
-          [
-            180,
-            57,
-            24
-          ],
-          [
-            156,
-            131,
-            74
-          ],
-          [
-            246,
-            82,
-            57
           ]
         ],
         "kind": "chromatic",
-        "hue_degrees": 34.24,
-        "opaque_pixel_count": 1160,
+        "hue_degrees": 12.52,
+        "opaque_pixel_count": 142,
         "ordering_reference": "species",
         "preferred_start_index": 1,
         "start_preserved": false,
@@ -267,9 +269,24 @@
         65
       ],
       [
+        180,
+        57,
+        24
+      ],
+      [
         106,
         106,
         106
+      ],
+      [
+        156,
+        131,
+        74
+      ],
+      [
+        246,
+        82,
+        57
       ],
       [
         197,
@@ -290,21 +307,6 @@
         115,
         24,
         0
-      ],
-      [
-        180,
-        57,
-        24
-      ],
-      [
-        156,
-        131,
-        74
-      ],
-      [
-        246,
-        82,
-        57
       ],
       [
         0,
@@ -341,6 +343,8 @@
       "transparent_pixels": 55821,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 13,
       "source_opaque_color_count": 13,
       "quantized": false,
       "method": "exact_source_colors",
@@ -362,7 +366,10 @@
             3,
             4,
             5,
-            6
+            6,
+            7,
+            8,
+            9
           ],
           "colors": [
             [
@@ -376,9 +383,24 @@
               65
             ],
             [
+              180,
+              57,
+              24
+            ],
+            [
               106,
               106,
               106
+            ],
+            [
+              156,
+              131,
+              74
+            ],
+            [
+              246,
+              82,
+              57
             ],
             [
               197,
@@ -397,8 +419,8 @@
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 31.33,
-          "opaque_pixel_count": 19342,
+          "hue_degrees": 31.64,
+          "opaque_pixel_count": 20360,
           "ordering_reference": "family",
           "preferred_start_index": 1,
           "start_preserved": true,
@@ -406,9 +428,6 @@
         },
         {
           "indices": [
-            7,
-            8,
-            9,
             10
           ],
           "colors": [
@@ -416,26 +435,11 @@
               115,
               24,
               0
-            ],
-            [
-              180,
-              57,
-              24
-            ],
-            [
-              156,
-              131,
-              74
-            ],
-            [
-              246,
-              82,
-              57
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 34.24,
-          "opaque_pixel_count": 1160,
+          "hue_degrees": 12.52,
+          "opaque_pixel_count": 142,
           "ordering_reference": "species",
           "preferred_start_index": 1,
           "start_preserved": false,

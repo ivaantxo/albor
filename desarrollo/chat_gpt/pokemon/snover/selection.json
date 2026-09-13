@@ -108,6 +108,8 @@
     "transparent_pixels": 37798,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 12,
     "source_opaque_color_count": 12,
     "quantized": false,
     "method": "exact_source_colors",
@@ -375,16 +377,16 @@
       ],
       [
         148,
-        165,
-        173
+        164,
+        172
       ],
       [
-        206,
+        205,
         222,
         222
       ],
       [
-        254,
+        255,
         255,
         255
       ],
@@ -399,24 +401,24 @@
         123
       ],
       [
-        107,
+        106,
         123,
-        132
+        131
       ],
       [
         74,
         156,
-        140
+        139
       ],
       [
-        33,
-        33,
+        32,
+        32,
         41
       ],
       [
         90,
         74,
-        66
+        65
       ],
       [
         115,
@@ -424,14 +426,14 @@
         74
       ],
       [
-        140,
+        139,
         115,
         82
       ],
       [
-        140,
-        214,
-        173
+        139,
+        213,
+        172
       ],
       [
         255,
@@ -453,6 +455,8 @@
       "transparent_pixels": 37798,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 12,
       "source_opaque_color_count": 12,
       "quantized": false,
       "method": "exact_source_colors",
@@ -631,6 +635,8 @@
       "transparent_pixels": 23614,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 13,
       "source_opaque_color_count": 13,
       "quantized": false,
       "method": "exact_source_colors",
@@ -660,22 +666,22 @@
             ],
             [
               148,
-              165,
-              173
+              164,
+              172
             ],
             [
-              206,
+              205,
               222,
               222
             ],
             [
-              254,
+              255,
               255,
               255
             ]
           ],
           "kind": "neutral",
-          "hue_degrees": 189.65,
+          "hue_degrees": 223.17,
           "opaque_pixel_count": 8782,
           "ordering_reference": "family",
           "preferred_start_index": 1,
@@ -701,18 +707,18 @@
               123
             ],
             [
-              107,
+              106,
               123,
-              132
+              131
             ],
             [
               74,
               156,
-              140
+              139
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 185.19,
+          "hue_degrees": 184.46,
           "opaque_pixel_count": 2557,
           "ordering_reference": "family",
           "preferred_start_index": 2,
@@ -725,8 +731,8 @@
           ],
           "colors": [
             [
-              33,
-              33,
+              32,
+              32,
               41
             ]
           ],
@@ -748,7 +754,7 @@
             [
               90,
               74,
-              66
+              65
             ],
             [
               115,
@@ -756,13 +762,13 @@
               74
             ],
             [
-              140,
+              139,
               115,
               82
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 32.9,
+          "hue_degrees": 33.49,
           "opaque_pixel_count": 8330,
           "ordering_reference": "family",
           "preferred_start_index": 9,
@@ -775,9 +781,9 @@
           ],
           "colors": [
             [
-              140,
-              214,
-              173
+              139,
+              213,
+              172
             ]
           ],
           "kind": "chromatic",
@@ -3244,7 +3250,7 @@
       "filename": "anim_frontf.png",
       "stem": "anim_frontf",
       "source": "graphics/pokemon/snover/anim_frontf.png",
-      "source_sha256": "a936b1634b5734ec9725830af7a9b98d5bd22087685a8930a44dfd2760992007",
+      "source_sha256": "da39855359078d1b5bde8c1407a6589dfaf95002e1268beb31caaecd46b99f04",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -3272,26 +3278,26 @@
           ],
           [
             148,
-            165,
-            173
+            164,
+            172
           ],
           [
-            107,
+            106,
             123,
-            132
+            131
           ],
           [
-            254,
+            255,
             255,
             255
           ],
           [
-            33,
-            33,
+            32,
+            32,
             41
           ],
           [
-            206,
+            205,
             222,
             222
           ],
@@ -3308,15 +3314,15 @@
           [
             74,
             156,
-            140
+            139
           ],
           [
             90,
             74,
-            66
+            65
           ],
           [
-            140,
+            139,
             115,
             82
           ],
@@ -3326,9 +3332,9 @@
             74
           ],
           [
-            140,
-            214,
-            173
+            139,
+            213,
+            172
           ],
           [
             0,
@@ -3463,36 +3469,36 @@
           "selected_pair_distances": [
             [
               0.0,
-              0.14907,
-              0.57692,
-              0.19405,
-              0.19405
+              0.14901,
+              0.57684,
+              0.19406,
+              0.19406
             ],
             [
-              0.14907,
+              0.14901,
               0.0,
-              0.57181,
-              0.20671,
-              0.20671
+              0.57176,
+              0.2067,
+              0.2067
             ],
             [
-              0.57692,
-              0.57181,
+              0.57684,
+              0.57176,
               0.0,
-              0.51741,
-              0.51741
+              0.51733,
+              0.51733
             ],
             [
-              0.19405,
-              0.20671,
-              0.51741,
+              0.19406,
+              0.2067,
+              0.51733,
               0.0,
               0.0
             ],
             [
-              0.19405,
-              0.20671,
-              0.51741,
+              0.19406,
+              0.2067,
+              0.51733,
               0.0,
               0.0
             ]
@@ -3531,7 +3537,7 @@
               0.0,
               0.0,
               0.0,
-              0.19405
+              0.19406
             ]
           }
         },
@@ -3779,7 +3785,7 @@
       "filename": "backf.png",
       "stem": "backf",
       "source": "graphics/pokemon/snover/backf.png",
-      "source_sha256": "a6479ef025589e4bea857910995d72ca43803b4926d36af6869df86e5999a2e7",
+      "source_sha256": "6e40bc005a40efc57ebcebad18b998dd67b6d6d2d4b3744852cfa4c1042ed9d5",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -3807,26 +3813,26 @@
           ],
           [
             148,
-            165,
-            173
+            164,
+            172
           ],
           [
-            107,
+            106,
             123,
-            132
+            131
           ],
           [
-            254,
+            255,
             255,
             255
           ],
           [
-            33,
-            33,
+            32,
+            32,
             41
           ],
           [
-            206,
+            205,
             222,
             222
           ],
@@ -3843,15 +3849,15 @@
           [
             74,
             156,
-            140
+            139
           ],
           [
             90,
             74,
-            66
+            65
           ],
           [
-            140,
+            139,
             115,
             82
           ],
@@ -3861,9 +3867,9 @@
             74
           ],
           [
-            140,
-            214,
-            173
+            139,
+            213,
+            172
           ],
           [
             0,

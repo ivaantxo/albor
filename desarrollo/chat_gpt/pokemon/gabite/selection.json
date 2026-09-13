@@ -109,6 +109,8 @@
     "transparent_pixels": 37053,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 15,
     "source_opaque_color_count": 15,
     "quantized": false,
     "method": "exact_source_colors",
@@ -379,45 +381,45 @@
       [
         57,
         74,
-        140
+        139
       ],
       [
-        89,
-        107,
-        188
+        90,
+        106,
+        189
       ],
       [
-        114,
+        115,
         139,
         205
       ],
       [
-        140,
-        140,
+        139,
+        139,
         189
       ],
       [
-        181,
+        180,
         189,
-        247
+        246
       ],
       [
-        17,
-        17,
-        17
+        16,
+        16,
+        16
       ],
       [
         115,
         123,
-        132
+        131
       ],
       [
-        198,
-        206,
-        214
+        197,
+        205,
+        213
       ],
       [
-        254,
+        255,
         255,
         255
       ],
@@ -427,7 +429,7 @@
         0
       ],
       [
-        173,
+        172,
         49,
         74
       ],
@@ -456,6 +458,8 @@
       "transparent_pixels": 37053,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 15,
       "source_opaque_color_count": 15,
       "quantized": false,
       "method": "exact_source_colors",
@@ -636,6 +640,8 @@
       "transparent_pixels": 23142,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 15,
       "source_opaque_color_count": 15,
       "quantized": false,
       "method": "exact_source_colors",
@@ -668,31 +674,31 @@
             [
               57,
               74,
-              140
+              139
             ],
             [
-              89,
-              107,
-              188
+              90,
+              106,
+              189
             ],
             [
-              114,
+              115,
               139,
               205
             ],
             [
-              140,
-              140,
+              139,
+              139,
               189
             ],
             [
-              181,
+              180,
               189,
-              247
+              246
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 226.74,
+          "hue_degrees": 226.97,
           "opaque_pixel_count": 10586,
           "ordering_reference": "family",
           "preferred_start_index": 1,
@@ -708,28 +714,28 @@
           ],
           "colors": [
             [
-              17,
-              17,
-              17
+              16,
+              16,
+              16
             ],
             [
               115,
               123,
-              132
+              131
             ],
             [
-              198,
-              206,
-              214
+              197,
+              205,
+              213
             ],
             [
-              254,
+              255,
               255,
               255
             ]
           ],
           "kind": "neutral",
-          "hue_degrees": 214.14,
+          "hue_degrees": 216.43,
           "opaque_pixel_count": 9030,
           "ordering_reference": "family",
           "preferred_start_index": 5,
@@ -750,7 +756,7 @@
               0
             ],
             [
-              173,
+              172,
               49,
               74
             ],
@@ -766,7 +772,7 @@
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 355.01,
+          "hue_degrees": 354.94,
           "opaque_pixel_count": 736,
           "ordering_reference": "species",
           "preferred_start_index": 8,
@@ -2224,7 +2230,7 @@
       "filename": "anim_frontf.png",
       "stem": "anim_frontf",
       "source": "graphics/pokemon/gabite/anim_frontf.png",
-      "source_sha256": "06ece2866d45e5a8f0f36a371a15ac0ba8bbfe0995213650a636c304a8dc4c44",
+      "source_sha256": "ff61f3659e1b5e673196f205c7a5a731eb7b4024144692d1860d60b6b66e8c69",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -2258,32 +2264,32 @@
           [
             57,
             74,
-            140
+            139
           ],
           [
-            89,
-            107,
-            188
-          ],
-          [
-            140,
-            140,
+            90,
+            106,
             189
           ],
           [
-            181,
-            189,
-            247
+            139,
+            139,
+            189
           ],
           [
-            114,
+            180,
+            189,
+            246
+          ],
+          [
+            115,
             139,
             205
           ],
           [
-            17,
-            17,
-            17
+            16,
+            16,
+            16
           ],
           [
             255,
@@ -2301,17 +2307,17 @@
             0
           ],
           [
-            173,
+            172,
             49,
             74
           ],
           [
-            198,
-            206,
-            214
+            197,
+            205,
+            213
           ],
           [
-            254,
+            255,
             255,
             255
           ],
@@ -2323,7 +2329,7 @@
           [
             115,
             123,
-            132
+            131
           ]
         ],
         "transparency_policy": "index_0_or_magenta_or_png_alpha",
@@ -2444,37 +2450,37 @@
           "selected_pair_distances": [
             [
               0.0,
-              0.15311,
-              0.46637,
-              0.15311,
-              0.46637
+              0.15305,
+              0.46633,
+              0.15305,
+              0.46633
             ],
             [
-              0.15311,
+              0.15305,
               0.0,
-              0.45034,
+              0.45031,
               0.0,
-              0.45034
+              0.45031
             ],
             [
-              0.46637,
-              0.45034,
+              0.46633,
+              0.45031,
               0.0,
-              0.45034,
+              0.45031,
               0.0
             ],
             [
-              0.15311,
+              0.15305,
               0.0,
-              0.45034,
+              0.45031,
               0.0,
-              0.45034
+              0.45031
             ],
             [
-              0.46637,
-              0.45034,
+              0.46633,
+              0.45031,
               0.0,
-              0.45034,
+              0.45031,
               0.0
             ]
           ],
@@ -2708,7 +2714,7 @@
       "filename": "backf.png",
       "stem": "backf",
       "source": "graphics/pokemon/gabite/backf.png",
-      "source_sha256": "41557cdc24badee6dd37b4f0a8e1cb87ec5c96ee973774c082764e53c63be307",
+      "source_sha256": "db0cd40ea882b50c0e51703caefbb9fa0943cd2aab071b5ce549bd22f02eac7d",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -2742,32 +2748,32 @@
           [
             57,
             74,
-            140
+            139
           ],
           [
-            89,
-            107,
-            188
-          ],
-          [
-            140,
-            140,
+            90,
+            106,
             189
           ],
           [
-            181,
-            189,
-            247
+            139,
+            139,
+            189
           ],
           [
-            114,
+            180,
+            189,
+            246
+          ],
+          [
+            115,
             139,
             205
           ],
           [
-            17,
-            17,
-            17
+            16,
+            16,
+            16
           ],
           [
             255,
@@ -2785,17 +2791,17 @@
             0
           ],
           [
-            173,
+            172,
             49,
             74
           ],
           [
-            198,
-            206,
-            214
+            197,
+            205,
+            213
           ],
           [
-            254,
+            255,
             255,
             255
           ],
@@ -2807,7 +2813,7 @@
           [
             115,
             123,
-            132
+            131
           ]
         ],
         "transparency_policy": "index_0_or_magenta_or_png_alpha",

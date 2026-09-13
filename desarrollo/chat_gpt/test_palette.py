@@ -6,7 +6,8 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-from palette import TRANSPARENT, _lab, build_palette, index_image
+from palette import (TRANSPARENT, _lab, build_palette, index_image,
+                     to_gba_levels)
 from selection import load_animation, select_frames
 
 
@@ -25,7 +26,11 @@ def read_palette(name):
 
 
 class PaletteTests(unittest.TestCase):
-    def test_shared_indexing_preserves_every_opaque_rgb_and_transparency(self):
+    def test_shared_indexing_preserves_every_opaque_color_as_the_console_shows_it(self):
+        # Deliberately off the 5-bit grid: what has to survive the round trip is
+        # the color the GBA displays, not the 24-bit value the rip happened to
+        # carry.  Nothing downstream can show the difference, and pretending
+        # otherwise is what let two palette slots hold the same console color.
         colors = [(12, 23, 34), (60, 95, 80), (220, 60, 90), (245, 250, 255)]
         front, back = strip(colors[:3]), strip(colors[2:])
         palette, metadata = build_palette([front, back])
@@ -33,14 +38,34 @@ class PaletteTests(unittest.TestCase):
         self.assertEqual(len(palette), 16)
         self.assertFalse(metadata['quantized'])
         self.assertEqual(metadata['source_opaque_color_count'], 4)
+        self.assertEqual(metadata['color_space'], 'gba_5bit')
         for frame in (front, back):
             indexed = index_image(frame, palette)
             original, restored = np.asarray(frame), np.asarray(indexed.convert('RGBA'))
             visible = original[:, :, 3] > 0
-            np.testing.assert_array_equal(original[visible], restored[visible])
+            expected = np.concatenate([to_gba_levels(original[visible][:, :3]),
+                                       original[visible][:, 3:]], axis=1)
+            np.testing.assert_array_equal(expected, restored[visible])
             np.testing.assert_array_equal(restored[:, :, 3], original[:, :, 3])
             self.assertTrue(np.all(np.asarray(indexed)[visible] > 0))
             self.assertEqual(indexed.info['transparency'], 0)
+
+    def test_every_entry_is_a_color_the_console_can_show(self):
+        colors = [(12, 23, 34), (60, 95, 80), (220, 60, 90), (245, 250, 255)]
+        palette, _ = build_palette([strip(colors)])
+        for entry in palette:
+            np.testing.assert_array_equal(to_gba_levels(np.asarray(entry)), entry)
+
+    def test_slots_are_never_spent_twice_on_the_same_console_color(self):
+        # Pairs closer than one 5-bit step: distinct in 24 bits, identical on
+        # hardware.  Quantizing in 24-bit space kept both and the sprite lost a
+        # color without saying so; here they merge before the slots are handed
+        # out, so all fifteen end up visibly different.
+        base = [(20 * i, 10 * i, 255 - 8 * i) for i in range(12)]
+        nudged = [(r + 3, g + 3, b - 3) for r, g, b in base[:8]]
+        palette, _ = build_palette([strip(base + nudged)])
+        opaque = [entry for entry in palette[1:] if entry != TRANSPARENT]
+        self.assertEqual(len(set(opaque)), len(opaque))
 
     def test_joint_reduction_uses_source_colors_is_deterministic_and_no_dither(self):
         colors = [(i * 11 % 256, i * 47 % 256, i * 83 % 256) for i in range(30)]
@@ -50,8 +75,13 @@ class PaletteTests(unittest.TestCase):
         self.assertEqual(palette, again)
         self.assertTrue(metadata['quantized'])
         self.assertEqual(metadata['source_opaque_color_count'], 30)
+        self.assertEqual(metadata['source_colors_before_snap'], 30)
         self.assertEqual(metadata['opaque_palette_color_count'], 15)
-        self.assertTrue(set(palette[1:]).issubset(colors))
+        # Medoids, so every entry is one of the source colors -- as the console
+        # shows it.  These thirty stay thirty apart once snapped.
+        console_colors = {tuple(map(int, to_gba_levels(np.asarray(color))))
+                          for color in colors}
+        self.assertTrue(set(palette[1:]).issubset(console_colors))
         self.assertGreater(metadata['changed_opaque_pixels'], 0)
         for color in colors:
             flat = Image.new('RGBA', (8, 8), (*color, 255))

@@ -55,7 +55,7 @@ La separación entre ciclo base y gesto especial y la correspondencia anatómica
 - default.back: El ciclo base no se ha detectado con confianza; revisar su duración y recorrido.
 - female.front: No se detecta un especial independiente: se usa una cadencia sintética de ciclos base y una pasada con las cinco poses seleccionadas.
 - female.back: El ciclo base no se ha detectado con confianza; revisar su duración y recorrido.
-- female: paleta reducida de 22 a 15 colores opacos.
+- female: paleta reducida de 21 a 15 colores opacos.
 
 ## [KAKUNA](pokemon/kakuna/selection.json)
 
@@ -171,7 +171,6 @@ La separación entre ciclo base y gesto especial y la correspondencia anatómica
 - female.front: No se identifica un ciclo inicial repetido con confianza; la selección base requiere revisión.
 - female.front: No se detecta un movimiento especial separado del ciclo; revisar manualmente los frames 3 y 4.
 - female.front: La fuente solo tiene 3 poses distintas para 5 frames; se conservan repeticiones.
-- female: paleta reducida de 23 a 15 colores opacos.
 
 ## [RAICHU_ALOLA](pokemon/raichu/alola/selection.json)
 
@@ -191,7 +190,7 @@ La separación entre ciclo base y gesto especial y la correspondencia anatómica
 - default.front: El ciclo base no se ha detectado con confianza; revisar su duración y recorrido.
 - default.front: No se detecta un especial independiente: se usa una cadencia sintética de ciclos base y una pasada con las cinco poses seleccionadas.
 - default.back: El ciclo base no se ha detectado con confianza; revisar su duración y recorrido.
-- default: paleta reducida de 26 a 15 colores opacos.
+- default: paleta reducida de 25 a 15 colores opacos.
 
 ## [SANDSHREW_ALOLA](pokemon/sandshrew/alola/selection.json)
 
@@ -363,7 +362,6 @@ La separación entre ciclo base y gesto especial y la correspondencia anatómica
 - female.front: La fuente solo tiene 4 poses distintas para 5 frames; se conservan repeticiones.
 - default.front: No se detecta un especial independiente: se usa una cadencia sintética de ciclos base y una pasada con las cinco poses seleccionadas.
 - female.front: No se detecta un especial independiente: se usa una cadencia sintética de ciclos base y una pasada con las cinco poses seleccionadas.
-- female: paleta reducida de 23 a 15 colores opacos.
 
 ## [VILEPLUME](pokemon/vileplume/selection.json)
 
@@ -376,7 +374,6 @@ La separación entre ciclo base y gesto especial y la correspondencia anatómica
 - female.front: La fuente solo tiene 4 poses distintas para 5 frames; se conservan repeticiones.
 - default.front: No se detecta un especial independiente: se usa una cadencia sintética de ciclos base y una pasada con las cinco poses seleccionadas.
 - female.front: No se detecta un especial independiente: se usa una cadencia sintética de ciclos base y una pasada con las cinco poses seleccionadas.
-- female: paleta reducida de 27 a 15 colores opacos.
 
 ## [BELLOSSOM](pokemon/bellossom/selection.json)
 
@@ -581,7 +578,6 @@ La separación entre ciclo base y gesto especial y la correspondencia anatómica
 - female.front: No se identifica un ciclo inicial repetido con confianza; la selección base requiere revisión.
 - female.front: No se detecta un movimiento especial separado del ciclo; revisar manualmente los frames 3 y 4.
 - female.front: La fuente solo tiene 3 poses distintas para 5 frames; se conservan repeticiones.
-- female: paleta reducida de 21 a 15 colores opacos.
 
 ## [DODRIO](pokemon/dodrio/selection.json)
 
@@ -597,7 +593,6 @@ La separación entre ciclo base y gesto especial y la correspondencia anatómica
 - female.back: El ciclo se detecta por semejanza entre poses, con variaciones; revisar los límites del movimiento especial.
 - default.front: No se detecta un especial independiente: se usa una cadencia sintética de ciclos base y una pasada con las cinco poses seleccionadas.
 - female.front: No se detecta un especial independiente: se usa una cadencia sintética de ciclos base y una pasada con las cinco poses seleccionadas.
-- female: paleta reducida de 27 a 15 colores opacos.
 
 ## [SHELLDER](pokemon/shellder/selection.json)
 
@@ -799,7 +794,6 @@ La separación entre ciclo base y gesto especial y la correspondencia anatómica
 - female.front: El ciclo no ofrece dos desplazamientos opuestos claros respecto a la pose base.
 - female.front: No se detecta un movimiento especial separado del ciclo; revisar manualmente los frames 3 y 4.
 - female.front: La fuente solo tiene 3 poses distintas para 5 frames; se conservan repeticiones.
-- female: paleta reducida de 17 a 15 colores opacos.
 
 ## [KANGASKHAN](pokemon/kangaskhan/selection.json)
 
@@ -881,7 +875,6 @@ La separación entre ciclo base y gesto especial y la correspondencia anatómica
 - female.front: El ciclo base tiene menos de tres poses distintas; se repite una pose fuente.
 - female.front: El movimiento especial solo contiene una pose distinta; se repite en los frames 3 y 4.
 - female.front: La fuente solo tiene 3 poses distintas para 5 frames; se conservan repeticiones.
-- female: paleta reducida de 20 a 15 colores opacos.
 
 ## [SCIZOR](pokemon/scizor/selection.json)
 
@@ -896,7 +889,6 @@ La separación entre ciclo base y gesto especial y la correspondencia anatómica
 - female.back: El ciclo se detecta por semejanza entre poses, con variaciones; revisar los límites del movimiento especial.
 - default.front: No se detecta un especial independiente: se usa una cadencia sintética de ciclos base y una pasada con las cinco poses seleccionadas.
 - female.front: No se detecta un especial independiente: se usa una cadencia sintética de ciclos base y una pasada con las cinco poses seleccionadas.
-- female: paleta reducida de 19 a 15 colores opacos.
 
 ## [KLEAVOR](pokemon/kleavor/selection.json)
 
@@ -1457,7 +1449,6 @@ La separación entre ciclo base y gesto especial y la correspondencia anatómica
 - female.front: No se identifica un ciclo inicial repetido con confianza; la selección base requiere revisión.
 - female.front: No se detecta un movimiento especial separado del ciclo; revisar manualmente los frames 3 y 4.
 - female.front: La fuente solo tiene 3 poses distintas para 5 frames; se conservan repeticiones.
-- female: paleta reducida de 25 a 15 colores opacos.
 
 ## [OCTILLERY](pokemon/octillery/selection.json)
 
@@ -1474,7 +1465,6 @@ La separación entre ciclo base y gesto especial y la correspondencia anatómica
 - default.back: El ciclo base no se ha detectado con confianza; revisar su duración y recorrido.
 - female.front: El ciclo base no se ha detectado con confianza; revisar su duración y recorrido.
 - female.back: El ciclo base no se ha detectado con confianza; revisar su duración y recorrido.
-- female: paleta reducida de 18 a 15 colores opacos.
 
 ## [HOUNDOOM](pokemon/houndoom/selection.json)
 
@@ -1929,7 +1919,6 @@ La separación entre ciclo base y gesto especial y la correspondencia anatómica
 - female.front: El ciclo no ofrece dos desplazamientos opuestos claros respecto a la pose base.
 - female.front: El movimiento especial solo contiene una pose distinta; se repite en los frames 3 y 4.
 - female.front: La fuente solo tiene 4 poses distintas para 5 frames; se conservan repeticiones.
-- female: paleta reducida de 21 a 15 colores opacos.
 
 ## [SWABLU](pokemon/swablu/selection.json)
 
@@ -2176,7 +2165,7 @@ La separación entre ciclo base y gesto especial y la correspondencia anatómica
 - female.front: No se identifica un ciclo inicial repetido con confianza; la selección base requiere revisión.
 - female.front: No se detecta un movimiento especial separado del ciclo; revisar manualmente los frames 3 y 4.
 - female.front: La fuente solo tiene 3 poses distintas para 5 frames; se conservan repeticiones.
-- female: paleta reducida de 26 a 15 colores opacos.
+- female: paleta reducida de 17 a 15 colores opacos.
 
 ## [BIDOOF](pokemon/bidoof/selection.json)
 
@@ -2199,7 +2188,6 @@ La separación entre ciclo base y gesto especial y la correspondencia anatómica
 - female.front: No se identifica un ciclo inicial repetido con confianza; la selección base requiere revisión.
 - female.front: El movimiento especial solo contiene una pose distinta; se repite en los frames 3 y 4.
 - female.front: La fuente solo tiene 4 poses distintas para 5 frames; se conservan repeticiones.
-- female: paleta reducida de 19 a 15 colores opacos.
 
 ## [KRICKETOT](pokemon/kricketot/selection.json)
 
@@ -2231,7 +2219,7 @@ La separación entre ciclo base y gesto especial y la correspondencia anatómica
 - female.back: No se identifica un ciclo inicial repetido con confianza; la selección base requiere revisión.
 - female.back: El ciclo base solo contiene una pose distinta; se repite sin inventar movimiento.
 - female.back: La fuente solo tiene 1 poses distintas para 3 frames; se conservan repeticiones.
-- female: paleta reducida de 20 a 15 colores opacos.
+- female: paleta reducida de 19 a 15 colores opacos.
 
 ## [SHINX](pokemon/shinx/selection.json)
 
@@ -2289,7 +2277,6 @@ La separación entre ciclo base y gesto especial y la correspondencia anatómica
 - default.back: El ciclo base no se ha detectado con confianza; revisar su duración y recorrido.
 - female.front: El ciclo base no se ha detectado con confianza; revisar su duración y recorrido.
 - female.back: El ciclo base no se ha detectado con confianza; revisar su duración y recorrido.
-- female: paleta reducida de 21 a 15 colores opacos.
 
 ## [DRIFLOON](pokemon/drifloon/selection.json)
 
@@ -2341,7 +2328,6 @@ La separación entre ciclo base y gesto especial y la correspondencia anatómica
 - female.front: No se identifica un ciclo inicial repetido con confianza; la selección base requiere revisión.
 - female.front: No se detecta un movimiento especial separado del ciclo; revisar manualmente los frames 3 y 4.
 - female.front: La fuente solo tiene 3 poses distintas para 5 frames; se conservan repeticiones.
-- female: paleta reducida de 26 a 15 colores opacos.
 
 ## [DRAPION](pokemon/drapion/selection.json)
 
@@ -2396,7 +2382,6 @@ La separación entre ciclo base y gesto especial y la correspondencia anatómica
 - female.front: No se identifica un ciclo inicial repetido con confianza; la selección base requiere revisión.
 - female.front: El movimiento especial solo contiene una pose distinta; se repite en los frames 3 y 4.
 - female.front: La fuente solo tiene 4 poses distintas para 5 frames; se conservan repeticiones.
-- female: paleta reducida de 23 a 15 colores opacos.
 
 ## [ROTOM_HEAT](pokemon/rotom/heat/selection.json)
 
@@ -3062,7 +3047,7 @@ La separación entre ciclo base y gesto especial y la correspondencia anatómica
 - default.front: El ciclo base no se ha detectado con confianza; revisar su duración y recorrido.
 - default.front: No se detecta un especial independiente: se usa una cadencia sintética de ciclos base y una pasada con las cinco poses seleccionadas.
 - default.back: El ciclo base no se ha detectado con confianza; revisar su duración y recorrido.
-- default: paleta reducida de 25 a 15 colores opacos.
+- default: paleta reducida de 24 a 15 colores opacos.
 
 ## [FLETCHINDER](pokemon/fletchinder/selection.json)
 

@@ -108,6 +108,8 @@
     "transparent_pixels": 25470,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 12,
     "source_opaque_color_count": 12,
     "quantized": false,
     "method": "exact_source_colors",
@@ -358,46 +360,46 @@
       [
         49,
         49,
-        66
+        65
       ],
       [
-        70,
-        70,
-        102
+        65,
+        65,
+        98
       ],
       [
-        99,
+        98,
         123,
-        181
+        180
       ],
       [
-        122,
-        173,
-        247
+        123,
+        172,
+        246
       ],
       [
-        17,
-        17,
-        17
+        16,
+        16,
+        16
       ],
       [
-        254,
+        255,
         255,
         255
       ],
       [
         115,
-        99,
+        98,
         82
       ],
       [
-        181,
+        180,
         156,
         90
       ],
       [
         255,
-        231,
+        230,
         90
       ],
       [
@@ -406,7 +408,7 @@
         82
       ],
       [
-        231,
+        230,
         74,
         82
       ],
@@ -440,6 +442,8 @@
       "transparent_pixels": 25470,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 12,
       "source_opaque_color_count": 12,
       "quantized": false,
       "method": "exact_source_colors",
@@ -605,6 +609,8 @@
       "transparent_pixels": 16029,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 11,
       "source_opaque_color_count": 11,
       "quantized": false,
       "method": "exact_source_colors",
@@ -630,26 +636,26 @@
             [
               49,
               49,
-              66
+              65
             ],
             [
-              70,
-              70,
-              102
+              65,
+              65,
+              98
             ],
             [
-              99,
+              98,
               123,
-              181
+              180
             ],
             [
-              122,
-              173,
-              247
+              123,
+              172,
+              246
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 227.11,
+          "hue_degrees": 227.2,
           "opaque_pixel_count": 3917,
           "ordering_reference": "family",
           "preferred_start_index": 1,
@@ -663,12 +669,12 @@
           ],
           "colors": [
             [
-              17,
-              17,
-              17
+              16,
+              16,
+              16
             ],
             [
-              254,
+              255,
               255,
               255
             ]
@@ -690,22 +696,22 @@
           "colors": [
             [
               115,
-              99,
+              98,
               82
             ],
             [
-              181,
+              180,
               156,
               90
             ],
             [
               255,
-              231,
+              230,
               90
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 43.36,
+          "hue_degrees": 43.68,
           "opaque_pixel_count": 11176,
           "ordering_reference": "family",
           "preferred_start_index": 5,
@@ -724,7 +730,7 @@
               82
             ],
             [
-              231,
+              230,
               74,
               82
             ]
@@ -3467,7 +3473,7 @@
       "filename": "anim_frontf.png",
       "stem": "anim_frontf",
       "source": "graphics/pokemon/shinx/anim_frontf.png",
-      "source_sha256": "b720d802ca62551a5edd796e0ee4c3daee4401c8075adc1d55c956f89e3b41b5",
+      "source_sha256": "a5a805d5c13b1aa170b5015d1c923d5dfc389ff590256a201b6df6b55a6005e9",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -3494,47 +3500,47 @@
             255
           ],
           [
-            17,
-            17,
-            17
+            16,
+            16,
+            16
           ],
           [
-            70,
-            70,
-            102
+            65,
+            65,
+            98
           ],
           [
-            99,
+            98,
             123,
-            181
+            180
           ],
           [
-            122,
-            173,
-            247
+            123,
+            172,
+            246
           ],
           [
             115,
-            99,
+            98,
             82
           ],
           [
-            181,
+            180,
             156,
             90
           ],
           [
             255,
-            231,
+            230,
             90
           ],
           [
-            254,
+            255,
             255,
             255
           ],
           [
-            231,
+            230,
             74,
             82
           ],
@@ -3546,7 +3552,7 @@
           [
             49,
             49,
-            66
+            65
           ],
           [
             0,
@@ -3686,36 +3692,36 @@
           "selected_pair_distances": [
             [
               0.0,
-              0.15748,
-              0.28406,
-              0.18643,
-              0.18643
+              0.15743,
+              0.28394,
+              0.18637,
+              0.18637
             ],
             [
-              0.15748,
+              0.15743,
               0.0,
-              0.25754,
-              0.11126,
-              0.11126
+              0.25745,
+              0.11124,
+              0.11124
             ],
             [
-              0.28406,
-              0.25754,
+              0.28394,
+              0.25745,
               0.0,
-              0.2881,
-              0.2881
+              0.28796,
+              0.28796
             ],
             [
-              0.18643,
-              0.11126,
-              0.2881,
+              0.18637,
+              0.11124,
+              0.28796,
               0.0,
               0.0
             ],
             [
-              0.18643,
-              0.11126,
-              0.2881,
+              0.18637,
+              0.11124,
+              0.28796,
               0.0,
               0.0
             ]
@@ -3754,7 +3760,7 @@
               0.0,
               0.0,
               0.0,
-              0.11126
+              0.11124
             ]
           }
         },
@@ -4030,7 +4036,7 @@
       "filename": "backf.png",
       "stem": "backf",
       "source": "graphics/pokemon/shinx/backf.png",
-      "source_sha256": "ba5266ad03c7add6a2d58858a71601f2ad2a3694b3a631700f3e50b253c34d5b",
+      "source_sha256": "0b5751ea0e3d2a0ab70e5a7b01c1417cbfddaaf5448f54479c386aedf04943d3",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -4057,47 +4063,47 @@
             255
           ],
           [
-            17,
-            17,
-            17
+            16,
+            16,
+            16
           ],
           [
-            70,
-            70,
-            102
+            65,
+            65,
+            98
           ],
           [
-            99,
+            98,
             123,
-            181
+            180
           ],
           [
-            122,
-            173,
-            247
+            123,
+            172,
+            246
           ],
           [
             115,
-            99,
+            98,
             82
           ],
           [
-            181,
+            180,
             156,
             90
           ],
           [
             255,
-            231,
+            230,
             90
           ],
           [
-            254,
+            255,
             255,
             255
           ],
           [
-            231,
+            230,
             74,
             82
           ],
@@ -4109,7 +4115,7 @@
           [
             49,
             49,
-            66
+            65
           ],
           [
             0,

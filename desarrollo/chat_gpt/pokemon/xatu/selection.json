@@ -107,6 +107,8 @@
     "transparent_pixels": 23742,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 15,
     "source_opaque_color_count": 15,
     "quantized": false,
     "method": "exact_source_colors",
@@ -454,6 +456,8 @@
       "transparent_pixels": 23742,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 15,
       "source_opaque_color_count": 15,
       "quantized": false,
       "method": "exact_source_colors",
@@ -634,6 +638,8 @@
       "transparent_pixels": 22459,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 15,
       "source_opaque_color_count": 15,
       "quantized": false,
       "method": "exact_source_colors",
@@ -2996,7 +3002,7 @@
       "filename": "anim_frontf.png",
       "stem": "anim_frontf",
       "source": "graphics/pokemon/xatu/anim_frontf.png",
-      "source_sha256": "c292ae11e3ba396a92386072454b01baaa76fcd32a114692ad8c11e3bd9f8264",
+      "source_sha256": "06b428f965d7f539e7bccd108b8d68e2aaf91a1bd449c23100e173cb894c7570",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -3019,8 +3025,8 @@
         "source_palette": [
           [
             0,
-            176,
-            232
+            180,
+            238
           ],
           [
             74,

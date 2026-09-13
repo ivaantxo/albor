@@ -110,6 +110,8 @@
     "transparent_pixels": 39332,
     "partial_alpha_pixels": 0,
     "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+    "color_space": "gba_5bit",
+    "source_colors_before_snap": 14,
     "source_opaque_color_count": 14,
     "quantized": false,
     "method": "exact_source_colors",
@@ -379,9 +381,9 @@
         65
       ],
       [
-        104,
-        80,
-        64
+        106,
+        82,
+        65
       ],
       [
         156,
@@ -394,14 +396,14 @@
         82
       ],
       [
-        200,
-        120,
-        40
+        205,
+        123,
+        41
       ],
       [
-        248,
-        184,
-        64
+        255,
+        189,
+        65
       ],
       [
         16,
@@ -453,6 +455,8 @@
       "transparent_pixels": 39332,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 14,
       "source_opaque_color_count": 14,
       "quantized": false,
       "method": "exact_source_colors",
@@ -629,12 +633,14 @@
       "transparent_pixels": 21852,
       "partial_alpha_pixels": 0,
       "alpha_policy": "alpha == 0 is transparent; alpha > 0 is opaque",
-      "source_opaque_color_count": 20,
+      "color_space": "gba_5bit",
+      "source_colors_before_snap": 19,
+      "source_opaque_color_count": 19,
       "quantized": true,
       "method": "joint_weighted_lab_kmeans_source_medoids_no_dither",
-      "changed_opaque_pixels": 816,
-      "mean_delta_e76": 0.72918,
-      "max_delta_e76": 12.65505,
+      "changed_opaque_pixels": 813,
+      "mean_delta_e76": 0.77615,
+      "max_delta_e76": 12.97902,
       "ordering_method": "heuristic_reference_blocks_then_dark_to_light_with_family_slots",
       "species_reference_grouped_colors": 13,
       "anatomical_grouping_verified": false,
@@ -663,9 +669,9 @@
               65
             ],
             [
-              104,
-              80,
-              64
+              106,
+              82,
+              65
             ],
             [
               156,
@@ -679,7 +685,7 @@
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 18.89,
+          "hue_degrees": 19.08,
           "opaque_pixel_count": 5055,
           "ordering_reference": "species",
           "preferred_start_index": 1,
@@ -693,18 +699,18 @@
           ],
           "colors": [
             [
-              200,
-              120,
-              40
+              205,
+              123,
+              41
             ],
             [
-              248,
-              184,
-              64
+              255,
+              189,
+              65
             ]
           ],
           "kind": "chromatic",
-          "hue_degrees": 31.55,
+          "hue_degrees": 31.56,
           "opaque_pixel_count": 2412,
           "ordering_reference": "family",
           "preferred_start_index": 1,
@@ -3821,7 +3827,7 @@
       "filename": "anim_frontf.png",
       "stem": "anim_frontf",
       "source": "graphics/pokemon/kricketune/anim_frontf.png",
-      "source_sha256": "7d14e11a2221f129618b7ffc6194f6c7fe804021a0a4c7fe5d488ad7efc3a482",
+      "source_sha256": "b8061b4d45bc7c005fb36b8a57322e6c4758b04b82c52ec72b5e048eed130997",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -3843,9 +3849,9 @@
         "source_mode": "P",
         "source_palette": [
           [
-            152,
-            208,
-            160
+            156,
+            213,
+            164
           ],
           [
             98,
@@ -4372,7 +4378,7 @@
       "filename": "backf.png",
       "stem": "backf",
       "source": "graphics/pokemon/kricketune/backf.png",
-      "source_sha256": "424cd61407beb28d2dc75f155af540fd900c84908a3a24bec0e8a001bd682afa",
+      "source_sha256": "a76c23be754f3acf29cf43c8f5093af57cc66ed3a92a74ebffa059ab21a829b4",
       "source_type": "legacy_strip",
       "source_metadata": {
         "source_type": "legacy_strip",
@@ -4394,24 +4400,24 @@
         "source_mode": "P",
         "source_palette": [
           [
-            152,
-            208,
-            160
+            156,
+            213,
+            164
           ],
           [
-            120,
-            56,
+            123,
+            57,
             16
           ],
           [
-            248,
-            184,
-            64
+            255,
+            189,
+            65
           ],
           [
-            200,
-            120,
-            40
+            205,
+            123,
+            41
           ],
           [
             16,
@@ -4419,48 +4425,48 @@
             16
           ],
           [
-            56,
-            40,
-            40
+            57,
+            41,
+            41
           ],
           [
-            104,
-            80,
-            64
+            106,
+            82,
+            65
           ],
           [
-            248,
-            248,
-            248
+            255,
+            255,
+            255
           ],
           [
-            136,
-            112,
-            80
+            139,
+            115,
+            82
           ],
           [
-            168,
-            72,
+            172,
+            74,
             0
           ],
           [
-            248,
-            216,
-            152
+            255,
+            222,
+            156
           ],
           [
-            136,
-            56,
+            139,
+            57,
             0
           ],
           [
-            184,
-            144,
-            72
+            189,
+            148,
+            74
           ],
           [
-            136,
-            104,
+            139,
+            106,
             8
           ],
           [
