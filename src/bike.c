@@ -1,5 +1,6 @@
 #include "global.h"
 #include "bike.h"
+#include "random.h"
 #include "event_object_movement.h"
 #include "field_player_avatar.h"
 #include "fieldmap.h"
@@ -136,7 +137,7 @@ static void ChocaEnBici(u8 direction, u8 collision)
     else if (collision < COLLISION_STOP_SURFING || collision > COLLISION_ROTATING_GATE)
     {
         if (veniaRodando)
-            GolpeEnBici(direction);
+            GolpeEnBici(direction, VelocidadBici() == BICI_VELOCIDAD_TURBO);
         else
             PlayerOnBikeCollide(direction);
     }
@@ -238,6 +239,20 @@ bool8 IsBikingDisallowedByPlayer(void)
     return TRUE;
 }
 
+// Una al azar cada vez que se monta.
+//
+// Son las cuatro que hay en el repositorio con su midi y su entrada en la tabla de
+// canciones; comprobado que suenan las cuatro, no son nombres sueltos de un enum. Se
+// elige al montar y se guarda como musica del mapa, asi que la elegida aguanta hasta
+// que te bajes: no cambia al pasar de un mapa a otro.
+static const u16 sMusicasDeBici[] =
+{
+    MUS_CYCLING,
+    MUS_RG_CYCLING,
+    MUS_DP_CYCLING,
+    MUS_HG_CYCLING,
+};
+
 void GetOnOffBike(void)
 {
     if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_BICI)
@@ -248,15 +263,42 @@ void GetOnOffBike(void)
     }
     else
     {
+        u32 musica = sMusicasDeBici[Random() % ARRAY_COUNT(sMusicasDeBici)];
+
         SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_BICI);
         PlaySE(SE_BIKE_BELL);   // encima de la musica, que no la corta
-        Overworld_SetSavedMusic(MUS_CYCLING);
-        Overworld_ChangeMusicTo(MUS_CYCLING);
+        Overworld_SetSavedMusic(musica);
+        Overworld_ChangeMusicTo(musica);
     }
 }
 
 // La bici, parada. bikeSpeed no es la velocidad a la que se va -eso lo decide el boton
 // B en cada paso-, sino si esta rodando o no.
+// Frenar con la A.
+//
+// Es el topetazo sin el golpe: ni sonido, ni retroceso, ni mando bloqueado. Solo deja
+// de rodar y se pone la pose de parado.
+//
+// La pose se pinta a mano por lo mismo que en el topetazo: pedirsela al sistema de
+// movimiento no vale, que la descarta si hay una animacion en marcha. Aqui no hace
+// falta repetirlo cada fotograma porque los controles siguen vivos: al siguiente, si
+// no se pulsa direccion, la propia bici pide encararse y la mantiene; y si se pulsa,
+// vuelve a pedalear, que es lo que toca.
+bool32 FrenaLaBici(void)
+{
+    struct ObjectEvent *jugador = &gObjectEvents[gPlayerAvatar.objectEventId];
+
+    if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_BICI))
+        return FALSE;
+    if (gPlayerAvatar.bikeSpeed == PLAYER_SPEED_STANDING)
+        return FALSE;
+
+    BikeClearState();
+    StartSpriteAnimIfDifferent(&gSprites[jugador->spriteId],
+                               GetFaceDirectionAnimNum(jugador->facingDirection));
+    return TRUE;
+}
+
 void BikeClearState(void)
 {
     gPlayerAvatar.bikeSpeed = PLAYER_SPEED_STANDING;

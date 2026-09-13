@@ -1,0 +1,954 @@
+{
+  "id": "swimmer_m_hgss",
+  "name": "Swimmer M",
+  "game": "hgss",
+  "directory": "graphics/entrenadores/swimmer_m_hgss",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "swimmer_m_hgss.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      16,
+      16
+    ],
+    [
+      24,
+      32,
+      40
+    ],
+    [
+      56,
+      64,
+      64
+    ],
+    [
+      104,
+      64,
+      64
+    ],
+    [
+      104,
+      104,
+      104
+    ],
+    [
+      120,
+      136,
+      160
+    ],
+    [
+      144,
+      96,
+      80
+    ],
+    [
+      168,
+      168,
+      168
+    ],
+    [
+      200,
+      136,
+      104
+    ],
+    [
+      224,
+      104,
+      112
+    ],
+    [
+      232,
+      176,
+      136
+    ],
+    [
+      248,
+      248,
+      248
+    ],
+    [
+      248,
+      248,
+      248
+    ],
+    [
+      248,
+      248,
+      248
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 11,
+    "colores_modificados": 11,
+    "pixeles_modificados": 2076,
+    "pixeles_opacos": 2076,
+    "delta_e_medio": 10.951,
+    "delta_e_maximo": 18.567,
+    "conversiones": [
+      {
+        "original": [
+          0,
+          0,
+          0
+        ],
+        "adaptado": [
+          0,
+          16,
+          16
+        ],
+        "pixeles": 120,
+        "delta_e_76": 5.998
+      },
+      {
+        "original": [
+          64,
+          64,
+          72
+        ],
+        "adaptado": [
+          56,
+          64,
+          64
+        ],
+        "pixeles": 331,
+        "delta_e_76": 6.453
+      },
+      {
+        "original": [
+          72,
+          80,
+          88
+        ],
+        "adaptado": [
+          56,
+          64,
+          64
+        ],
+        "pixeles": 85,
+        "delta_e_76": 8.825
+      },
+      {
+        "original": [
+          112,
+          120,
+          144
+        ],
+        "adaptado": [
+          120,
+          136,
+          160
+        ],
+        "pixeles": 54,
+        "delta_e_76": 6.329
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          104,
+          64,
+          64
+        ],
+        "pixeles": 126,
+        "delta_e_76": 7.984
+      },
+      {
+        "original": [
+          128,
+          128,
+          144
+        ],
+        "adaptado": [
+          120,
+          136,
+          160
+        ],
+        "pixeles": 54,
+        "delta_e_76": 7.367
+      },
+      {
+        "original": [
+          184,
+          184,
+          216
+        ],
+        "adaptado": [
+          168,
+          168,
+          168
+        ],
+        "pixeles": 507,
+        "delta_e_76": 18.567
+      },
+      {
+        "original": [
+          200,
+          80,
+          80
+        ],
+        "adaptado": [
+          224,
+          104,
+          112
+        ],
+        "pixeles": 15,
+        "delta_e_76": 10.832
+      },
+      {
+        "original": [
+          216,
+          160,
+          120
+        ],
+        "adaptado": [
+          232,
+          176,
+          136
+        ],
+        "pixeles": 169,
+        "delta_e_76": 5.864
+      },
+      {
+        "original": [
+          232,
+          232,
+          248
+        ],
+        "adaptado": [
+          248,
+          248,
+          248
+        ],
+        "pixeles": 482,
+        "delta_e_76": 9.744
+      },
+      {
+        "original": [
+          248,
+          208,
+          184
+        ],
+        "adaptado": [
+          232,
+          176,
+          136
+        ],
+        "pixeles": 133,
+        "delta_e_76": 15.932
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "swimmer_m_hgss",
+    "name": "Swimmer M",
+    "game": "hgss",
+    "source": "entrenadores/28037.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          730,
+          312,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 12,
+        "opaque_colors_rgb": [
+          [
+            0,
+            16,
+            16
+          ],
+          [
+            24,
+            32,
+            40
+          ],
+          [
+            56,
+            64,
+            64
+          ],
+          [
+            104,
+            64,
+            64
+          ],
+          [
+            104,
+            104,
+            104
+          ],
+          [
+            120,
+            136,
+            160
+          ],
+          [
+            144,
+            96,
+            80
+          ],
+          [
+            168,
+            168,
+            168
+          ],
+          [
+            200,
+            136,
+            104
+          ],
+          [
+            224,
+            104,
+            112
+          ],
+          [
+            232,
+            176,
+            136
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "72957f26d18a794c83f7760c3a26607775f1c3d61c989a02b97700ffcd26f1c2"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        16,
+        16
+      ],
+      [
+        24,
+        32,
+        40
+      ],
+      [
+        56,
+        64,
+        64
+      ],
+      [
+        104,
+        64,
+        64
+      ],
+      [
+        104,
+        104,
+        104
+      ],
+      [
+        120,
+        136,
+        160
+      ],
+      [
+        144,
+        96,
+        80
+      ],
+      [
+        168,
+        168,
+        168
+      ],
+      [
+        200,
+        136,
+        104
+      ],
+      [
+        224,
+        104,
+        112
+      ],
+      [
+        232,
+        176,
+        136
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 12,
+    "palette_4bpp_compatible": true,
+    "notes": [
+      "La hoja etiqueta esta variante como Original."
+    ],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "swimmer_m_hgss",
+    "name": "Swimmer M",
+    "game": "hgss",
+    "source": "entrenadores/26955.png",
+    "source_group": {
+      "row": 3,
+      "column": 6,
+      "rect": [
+        479,
+        256,
+        96,
+        128
+      ]
+    },
+    "identity_status": "identified",
+    "confidence": "high_visual",
+    "frames": [
+      {
+        "rect": [
+          479,
+          256,
+          32,
+          31
+        ],
+        "background": [
+          144,
+          136,
+          128
+        ],
+        "backgrounds": [
+          [
+            144,
+            136,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_idle",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          12,
+          24,
+          29
+        ]
+      },
+      {
+        "rect": [
+          511,
+          256,
+          32,
+          31
+        ],
+        "background": [
+          144,
+          136,
+          128
+        ],
+        "backgrounds": [
+          [
+            144,
+            136,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_idle",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          12,
+          22,
+          30
+        ]
+      },
+      {
+        "rect": [
+          543,
+          256,
+          32,
+          31
+        ],
+        "background": [
+          144,
+          136,
+          128
+        ],
+        "backgrounds": [
+          [
+            144,
+            136,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          11,
+          25,
+          31
+        ]
+      },
+      {
+        "rect": [
+          479,
+          288,
+          32,
+          31
+        ],
+        "background": [
+          144,
+          136,
+          128
+        ],
+        "backgrounds": [
+          [
+            144,
+            136,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          13,
+          27,
+          31
+        ]
+      },
+      {
+        "rect": [
+          511,
+          288,
+          32,
+          31
+        ],
+        "background": [
+          144,
+          136,
+          128
+        ],
+        "backgrounds": [
+          [
+            144,
+            136,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          5,
+          13,
+          24,
+          31
+        ]
+      },
+      {
+        "rect": [
+          543,
+          288,
+          32,
+          31
+        ],
+        "background": [
+          144,
+          136,
+          128
+        ],
+        "backgrounds": [
+          [
+            144,
+            136,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_idle",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          12,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          479,
+          320,
+          32,
+          31
+        ],
+        "background": [
+          144,
+          136,
+          128
+        ],
+        "backgrounds": [
+          [
+            144,
+            136,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_idle",
+        "empty": false,
+        "opaque_bbox": [
+          10,
+          12,
+          25,
+          30
+        ]
+      },
+      {
+        "rect": [
+          511,
+          320,
+          32,
+          31
+        ],
+        "background": [
+          144,
+          136,
+          128
+        ],
+        "backgrounds": [
+          [
+            144,
+            136,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          5,
+          13,
+          24,
+          31
+        ]
+      },
+      {
+        "rect": [
+          543,
+          320,
+          32,
+          31
+        ],
+        "background": [
+          144,
+          136,
+          128
+        ],
+        "backgrounds": [
+          [
+            144,
+            136,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          10,
+          27,
+          31
+        ]
+      },
+      {
+        "rect": [
+          479,
+          352,
+          32,
+          31
+        ],
+        "background": [
+          144,
+          136,
+          128
+        ],
+        "backgrounds": [
+          [
+            144,
+            136,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          13,
+          27,
+          31
+        ]
+      },
+      {
+        "rect": [
+          511,
+          352,
+          32,
+          31
+        ],
+        "background": [
+          144,
+          136,
+          128
+        ],
+        "backgrounds": [
+          [
+            144,
+            136,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          11,
+          25,
+          31
+        ]
+      },
+      {
+        "rect": [
+          543,
+          352,
+          32,
+          31
+        ],
+        "background": [
+          144,
+          136,
+          128
+        ],
+        "backgrounds": [
+          [
+            144,
+            136,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          4,
+          10,
+          25,
+          31
+        ]
+      }
+    ],
+    "target_order": [
+      5,
+      8,
+      11,
+      0,
+      2,
+      10,
+      6,
+      3,
+      9
+    ],
+    "target_labels": [
+      "south_idle",
+      "south_step_a",
+      "south_step_b",
+      "north_idle",
+      "north_step_a",
+      "north_step_b",
+      "west_idle",
+      "west_step_a",
+      "west_step_b"
+    ],
+    "all_directions_order": [
+      5,
+      8,
+      11,
+      0,
+      2,
+      10,
+      6,
+      3,
+      9,
+      1,
+      4,
+      7
+    ],
+    "east_mirror_of_west": true,
+    "east_art_is_mirrored_west": true,
+    "missing_frames": [],
+    "notes": [
+      "Los doce frames originales están presentes.",
+      "La fila inferior vacía se excluye del rectángulo y se rellena transparente para completar 32×32."
+    ]
+  },
+  "code": {
+    "front": "TRAINER_PIC_SWIMMER_M_HGSS",
+    "ow": "OBJ_EVENT_GFX_SWIMMER_M_HGSS",
+    "palette": "gPaletaEntrenador_swimmer_m_hgss"
+  }
+}

@@ -26315,7 +26315,7 @@
       ]
     },
     {
-      "id": "team_rocket_grunt_f_hgss",
+      "id": "rocket_grunt_f_hgss",
       "name": "Team Rocket Grunt F",
       "game": "hgss",
       "source": "entrenadores/26955.png",
@@ -26810,7 +26810,7 @@
       ]
     },
     {
-      "id": "team_rocket_grunt_m_hgss",
+      "id": "rocket_grunt_m_hgss",
       "name": "Team Rocket Grunt M",
       "game": "hgss",
       "source": "entrenadores/26955.png",

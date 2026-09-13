@@ -453,11 +453,12 @@ const u8 gInitialMovementTypeFacingDirections[] = {
 #include "data/object_events/object_event_graphics_info_pointers.h"
 #include "data/field_effects/field_effect_object_template_pointers.h"
 #include "data/object_events/object_event_pic_tables.h"
-#include "data/object_events/object_event_anims.h"
 #include "data/object_events/ow_entrenador_anims.h"
+#include "data/object_events/object_event_anims.h"
 #include "data/object_events/base_oam.h"
 #include "data/object_events/object_event_subsprites.h"
 #include "data/object_events/object_event_graphics_info.h"
+#include "data/object_events/entrenadores_importados.h"
 
 // Índices para cargar los tags de los árboles de bayas mediante constantes (en src/data/object_events/berry_tree_graphics_tables.h)
 enum NpcSpritePalettes
@@ -519,6 +520,7 @@ static const struct SpritePalette sObjectEventSpritePalettes[] = {
     {gObjectEventPaletteLight2, OBJ_EVENT_PAL_TAG_LIGHT_2},
     {gObjectEventPaletteEmotes, OBJ_EVENT_PAL_TAG_EMOTES},
     {gObjectEventPaletteNeonLight, OBJ_EVENT_PAL_TAG_NEON_LIGHT},
+#include "data/object_events/entrenadores_importados_paletas.h"
     {NULL, OBJ_EVENT_PAL_TAG_NONE},
 };
 

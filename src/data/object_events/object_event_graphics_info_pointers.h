@@ -199,7 +199,10 @@ extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Cynthia;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Lance;
 extern const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Sombra32x16;
 
+#include "entrenadores_importados_declaraciones.h"
+
 const struct ObjectEventGraphicsInfo *const gObjectEventGraphicsInfoPointers[NUM_OBJ_EVENT_GFX] = {
+#include "entrenadores_importados_punteros.h"
     [OBJ_EVENT_GFX_BRENDAN_NORMAL] =           &gObjectEventGraphicsInfo_BrendanNormal,
     [OBJ_EVENT_GFX_LUCAS] =                    &gObjectEventGraphicsInfo_LucasAPie,
     [OBJ_EVENT_GFX_LUCAS_BICI] =               &gObjectEventGraphicsInfo_LucasEnBici,

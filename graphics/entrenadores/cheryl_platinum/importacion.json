@@ -1,0 +1,801 @@
+{
+  "id": "cheryl_platinum",
+  "name": "Cheryl",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/cheryl_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 3,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "cheryl_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      56,
+      72,
+      72
+    ],
+    [
+      80,
+      120,
+      88
+    ],
+    [
+      88,
+      96,
+      112
+    ],
+    [
+      88,
+      168,
+      104
+    ],
+    [
+      104,
+      80,
+      64
+    ],
+    [
+      144,
+      176,
+      120
+    ],
+    [
+      168,
+      160,
+      200
+    ],
+    [
+      168,
+      200,
+      144
+    ],
+    [
+      200,
+      200,
+      216
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      208,
+      184
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 13,
+    "colores_modificados": 9,
+    "pixeles_modificados": 2103,
+    "pixeles_opacos": 2706,
+    "delta_e_medio": 6.897,
+    "delta_e_maximo": 16.958,
+    "conversiones": [
+      {
+        "original": [
+          48,
+          64,
+          48
+        ],
+        "adaptado": [
+          56,
+          72,
+          72
+        ],
+        "pixeles": 543,
+        "delta_e_76": 11.315
+      },
+      {
+        "original": [
+          48,
+          88,
+          96
+        ],
+        "adaptado": [
+          56,
+          72,
+          72
+        ],
+        "pixeles": 34,
+        "delta_e_76": 10.395
+      },
+      {
+        "original": [
+          64,
+          104,
+          72
+        ],
+        "adaptado": [
+          80,
+          120,
+          88
+        ],
+        "pixeles": 919,
+        "delta_e_76": 6.455
+      },
+      {
+        "original": [
+          88,
+          136,
+          112
+        ],
+        "adaptado": [
+          80,
+          120,
+          88
+        ],
+        "pixeles": 143,
+        "delta_e_76": 8.138
+      },
+      {
+        "original": [
+          88,
+          152,
+          96
+        ],
+        "adaptado": [
+          88,
+          168,
+          104
+        ],
+        "pixeles": 126,
+        "delta_e_76": 8.175
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          104,
+          80,
+          64
+        ],
+        "pixeles": 105,
+        "delta_e_76": 16.958
+      },
+      {
+        "original": [
+          128,
+          96,
+          64
+        ],
+        "adaptado": [
+          104,
+          80,
+          64
+        ],
+        "pixeles": 25,
+        "delta_e_76": 12.338
+      },
+      {
+        "original": [
+          136,
+          192,
+          112
+        ],
+        "adaptado": [
+          88,
+          168,
+          104
+        ],
+        "pixeles": 104,
+        "delta_e_76": 14.366
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 104,
+        "delta_e_76": 4.387
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": true,
+    "order": [
+      0,
+      1,
+      2
+    ],
+    "durations_ticks": [
+      12,
+      12,
+      24
+    ],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "cheryl_platinum",
+    "name": "Cheryl",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          244,
+          1096,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 13,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            72,
+            72
+          ],
+          [
+            80,
+            120,
+            88
+          ],
+          [
+            88,
+            96,
+            112
+          ],
+          [
+            88,
+            168,
+            104
+          ],
+          [
+            104,
+            80,
+            64
+          ],
+          [
+            144,
+            176,
+            120
+          ],
+          [
+            168,
+            160,
+            200
+          ],
+          [
+            168,
+            200,
+            144
+          ],
+          [
+            200,
+            200,
+            216
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "571872bd327af18a6f54369993abab6e59ce11cc13719f01e7758b07cafdbbf0"
+      },
+      {
+        "rect": [
+          325,
+          1096,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 13,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            72,
+            72
+          ],
+          [
+            80,
+            120,
+            88
+          ],
+          [
+            88,
+            96,
+            112
+          ],
+          [
+            88,
+            168,
+            104
+          ],
+          [
+            104,
+            80,
+            64
+          ],
+          [
+            144,
+            176,
+            120
+          ],
+          [
+            168,
+            160,
+            200
+          ],
+          [
+            168,
+            200,
+            144
+          ],
+          [
+            200,
+            200,
+            216
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "0479b2312d0f9f8f1e505b5ce5daeb120cb9a7df66f34782241da62583cfd72e"
+      },
+      {
+        "rect": [
+          406,
+          1096,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 13,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            72,
+            72
+          ],
+          [
+            80,
+            120,
+            88
+          ],
+          [
+            88,
+            96,
+            112
+          ],
+          [
+            88,
+            168,
+            104
+          ],
+          [
+            104,
+            80,
+            64
+          ],
+          [
+            144,
+            176,
+            120
+          ],
+          [
+            168,
+            160,
+            200
+          ],
+          [
+            168,
+            200,
+            144
+          ],
+          [
+            200,
+            200,
+            216
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "bb98e1487c03933a74f86e29619d780015e908e3c71aea055f95786783c968f3"
+      }
+    ],
+    "frame_order": [
+      0,
+      1,
+      2
+    ],
+    "animation_available": true,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        56,
+        72,
+        72
+      ],
+      [
+        80,
+        120,
+        88
+      ],
+      [
+        88,
+        96,
+        112
+      ],
+      [
+        88,
+        168,
+        104
+      ],
+      [
+        104,
+        80,
+        64
+      ],
+      [
+        144,
+        176,
+        120
+      ],
+      [
+        168,
+        160,
+        200
+      ],
+      [
+        168,
+        200,
+        144
+      ],
+      [
+        200,
+        200,
+        216
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        232,
+        232,
+        248
+      ],
+      [
+        248,
+        208,
+        184
+      ]
+    ],
+    "opaque_color_count": 13,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "cheryl_platinum",
+    "identity": "cheryl",
+    "name": "Cheryl",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25791.png",
+    "source_key": "platinum_ow_b5_c11",
+    "frames": [
+      {
+        "rect": [
+          369,
+          1561,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      },
+      {
+        "rect": [
+          369,
+          1593,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      },
+      {
+        "rect": [
+          369,
+          1625,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      },
+      {
+        "rect": [
+          369,
+          1657,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      },
+      {
+        "rect": [
+          369,
+          1689,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      },
+      {
+        "rect": [
+          369,
+          1721,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      },
+      {
+        "rect": [
+          369,
+          1753,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      },
+      {
+        "rect": [
+          369,
+          1785,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      },
+      {
+        "rect": [
+          369,
+          1817,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      },
+      {
+        "rect": [
+          369,
+          1849,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      },
+      {
+        "rect": [
+          369,
+          1881,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      },
+      {
+        "rect": [
+          369,
+          1913,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [
+      9,
+      10,
+      11
+    ],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "cheryl_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_CHERYL_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_CHERYL_PLATINUM",
+    "palette": "gPaletaEntrenador_cheryl_platinum"
+  }
+}

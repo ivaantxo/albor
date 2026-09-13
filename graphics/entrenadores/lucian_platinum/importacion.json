@@ -1,0 +1,800 @@
+{
+  "id": "lucian_platinum",
+  "name": "Lucian",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/lucian_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 3,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "lucian_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      48,
+      48,
+      48
+    ],
+    [
+      88,
+      88,
+      144
+    ],
+    [
+      96,
+      32,
+      56
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      128,
+      128,
+      192
+    ],
+    [
+      152,
+      48,
+      80
+    ],
+    [
+      184,
+      80,
+      120
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      184,
+      176,
+      240
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      248,
+      248
+    ],
+    [
+      248,
+      248,
+      248
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 14,
+    "colores_modificados": 12,
+    "pixeles_modificados": 2044,
+    "pixeles_opacos": 2725,
+    "delta_e_medio": 9.351,
+    "delta_e_maximo": 24.937,
+    "conversiones": [
+      {
+        "original": [
+          64,
+          64,
+          80
+        ],
+        "adaptado": [
+          48,
+          48,
+          48
+        ],
+        "pixeles": 58,
+        "delta_e_76": 12.995
+      },
+      {
+        "original": [
+          64,
+          72,
+          144
+        ],
+        "adaptado": [
+          88,
+          88,
+          144
+        ],
+        "pixeles": 483,
+        "delta_e_76": 12.562
+      },
+      {
+        "original": [
+          80,
+          32,
+          40
+        ],
+        "adaptado": [
+          96,
+          32,
+          56
+        ],
+        "pixeles": 126,
+        "delta_e_76": 10.54
+      },
+      {
+        "original": [
+          104,
+          120,
+          200
+        ],
+        "adaptado": [
+          128,
+          128,
+          192
+        ],
+        "pixeles": 897,
+        "delta_e_76": 10.741
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 84,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          128,
+          48,
+          48
+        ],
+        "adaptado": [
+          152,
+          48,
+          80
+        ],
+        "pixeles": 109,
+        "delta_e_76": 17.853
+      },
+      {
+        "original": [
+          136,
+          136,
+          168
+        ],
+        "adaptado": [
+          128,
+          128,
+          192
+        ],
+        "pixeles": 3,
+        "delta_e_76": 18.556
+      },
+      {
+        "original": [
+          168,
+          168,
+          216
+        ],
+        "adaptado": [
+          184,
+          176,
+          240
+        ],
+        "pixeles": 2,
+        "delta_e_76": 9.829
+      },
+      {
+        "original": [
+          176,
+          64,
+          56
+        ],
+        "adaptado": [
+          152,
+          48,
+          80
+        ],
+        "pixeles": 149,
+        "delta_e_76": 24.937
+      },
+      {
+        "original": [
+          200,
+          200,
+          216
+        ],
+        "adaptado": [
+          248,
+          248,
+          248
+        ],
+        "pixeles": 12,
+        "delta_e_76": 18.594
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 83,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          232,
+          232,
+          248
+        ],
+        "adaptado": [
+          248,
+          248,
+          248
+        ],
+        "pixeles": 38,
+        "delta_e_76": 9.744
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": true,
+    "order": [
+      0,
+      1,
+      2
+    ],
+    "durations_ticks": [
+      12,
+      12,
+      24
+    ],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "lucian_platinum",
+    "name": "Lucian",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          730,
+          900,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 13,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            48,
+            48
+          ],
+          [
+            88,
+            88,
+            144
+          ],
+          [
+            96,
+            32,
+            56
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            128,
+            128,
+            192
+          ],
+          [
+            152,
+            48,
+            80
+          ],
+          [
+            184,
+            80,
+            120
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            184,
+            176,
+            240
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "69e9cdba8be82a2f67b733d99f8da716d504aa8659da4d29711929955aec08e5"
+      },
+      {
+        "rect": [
+          811,
+          900,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 13,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            48,
+            48
+          ],
+          [
+            88,
+            88,
+            144
+          ],
+          [
+            96,
+            32,
+            56
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            128,
+            128,
+            192
+          ],
+          [
+            152,
+            48,
+            80
+          ],
+          [
+            184,
+            80,
+            120
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            184,
+            176,
+            240
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "8befdcdc2b62f5b298ca20a57a635b25b5d6f501facd91a5f36d62950724e3c0"
+      },
+      {
+        "rect": [
+          892,
+          900,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 13,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            48,
+            48
+          ],
+          [
+            88,
+            88,
+            144
+          ],
+          [
+            96,
+            32,
+            56
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            128,
+            128,
+            192
+          ],
+          [
+            152,
+            48,
+            80
+          ],
+          [
+            184,
+            80,
+            120
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            184,
+            176,
+            240
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "7d0235d0271f81b50f4747363c33e795cebc18ea5b90eb3211ed6dbb53cacf42"
+      }
+    ],
+    "frame_order": [
+      0,
+      1,
+      2
+    ],
+    "animation_available": true,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        48,
+        48,
+        48
+      ],
+      [
+        88,
+        88,
+        144
+      ],
+      [
+        96,
+        32,
+        56
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        128,
+        128,
+        192
+      ],
+      [
+        152,
+        48,
+        80
+      ],
+      [
+        184,
+        80,
+        120
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        184,
+        176,
+        240
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 13,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "lucian_platinum",
+    "identity": "lucian",
+    "name": "Lucian",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25790.png",
+    "source_key": "platinum_elite_3",
+    "frames": [
+      {
+        "rect": [
+          449,
+          113,
+          32,
+          32
+        ],
+        "background": [
+          120,
+          176,
+          144
+        ]
+      },
+      {
+        "rect": [
+          449,
+          145,
+          32,
+          32
+        ],
+        "background": [
+          120,
+          176,
+          144
+        ]
+      },
+      {
+        "rect": [
+          449,
+          177,
+          32,
+          32
+        ],
+        "background": [
+          120,
+          176,
+          144
+        ]
+      },
+      {
+        "rect": [
+          449,
+          209,
+          32,
+          32
+        ],
+        "background": [
+          120,
+          176,
+          144
+        ]
+      },
+      {
+        "rect": [
+          449,
+          241,
+          32,
+          32
+        ],
+        "background": [
+          120,
+          176,
+          144
+        ]
+      },
+      {
+        "rect": [
+          449,
+          273,
+          32,
+          32
+        ],
+        "background": [
+          120,
+          176,
+          144
+        ]
+      },
+      {
+        "rect": [
+          449,
+          305,
+          32,
+          32
+        ],
+        "background": [
+          120,
+          176,
+          144
+        ]
+      },
+      {
+        "rect": [
+          449,
+          337,
+          32,
+          32
+        ],
+        "background": [
+          120,
+          176,
+          144
+        ]
+      },
+      {
+        "rect": [
+          449,
+          369,
+          32,
+          32
+        ],
+        "background": [
+          120,
+          176,
+          144
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "lucian_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_LUCIAN_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_LUCIAN_PLATINUM",
+    "palette": "gPaletaEntrenador_lucian_platinum"
+  }
+}

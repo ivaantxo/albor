@@ -119,6 +119,8 @@ const u8 gTrainerBackPic_May[] = INCBIN_U8("graphics/trainers/back_pics/may.4bpp
         .mugshotRotation = DEFAULT_3(512, __VA_ARGS__),                                   \
     }
 
+#include "entrenadores_importados.h"
+
 const struct TrainerSprite gTrainerSprites[] =
 {
     TRAINER_SPRITE(BRENDAN, Brendan),
@@ -126,6 +128,7 @@ const struct TrainerSprite gTrainerSprites[] =
     TRAINER_SPRITE(MAGMA_LEADER_MAXIE, MagmaLeaderMaxie),
     TRAINER_SPRITE(CYNTHIA, Cynthia),
     TRAINER_SPRITE(LANCE, Lance),
+#include "trainer_sprites_importados.h"
 };
 
 static const union AnimCmd sAnimCmd_Hoenn[] =
@@ -243,8 +246,15 @@ const struct SpriteFrameImage gTrainerBackPicTable_May[] =
 const u8 gEspaldaEntrenador_Ethan[] = INCBIN_U8("graphics/entrenadores/ethan/back.4bpp");
 const u16 gPaletaEntrenador_Ethan[] = INCBIN_U16("graphics/entrenadores/ethan/back.gbapal");
 
+// Lucas comparte UNA paleta entre el overworld, el frente y la espalda: es la de su
+// carpeta, no una sacada del propio back. Asi el personaje es uno solo mire por donde
+// se mire, y cambiarle un color se hace en un sitio.
+const u8 gEspaldaEntrenador_Lucas[] = INCBIN_U8("graphics/entrenadores/lucas/back.4bpp");
+const u16 gPaletaEntrenador_Lucas[] = INCBIN_U16("graphics/entrenadores/lucas/paleta.gbapal");
+
 const struct TrainerBacksprite gTrainerBacksprites[] =
 {
+    ESPALDA_ENTRENADOR(LUCAS, 4, Lucas),
     ESPALDA_ENTRENADOR(ETHAN, 4, Ethan),
     TRAINER_BACK_SPRITE(BRENDAN, 4, Brendan, Palette_Brendan, TresPoses),
     TRAINER_BACK_SPRITE(MAY, 4, May, Palette_May, Hoenn),

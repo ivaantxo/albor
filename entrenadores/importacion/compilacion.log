@@ -1,0 +1,1035 @@
+tools/scaninc/scaninc -M build/modern/data/battle_scripts.d -I include -I "" data/battle_scripts.s
+tools/scaninc/scaninc -M build/modern/data/event_scripts.d -I include -I "" data/event_scripts.s
+tools/scaninc/scaninc -M build/modern/src/wild_encounter.d -I include -I "" src/wild_encounter.c
+tools/scaninc/scaninc -M build/modern/src/trainer_see.d -I include -I "" src/trainer_see.c
+tools/scaninc/scaninc -M build/modern/src/trainer_pokemon_sprites.d -I include -I "" src/trainer_pokemon_sprites.c
+tools/scaninc/scaninc -M build/modern/src/trainer_card.d -I include -I "" src/trainer_card.c
+tools/scaninc/scaninc -M build/modern/src/tm_case.d -I include -I "" src/tm_case.c
+tools/scaninc/scaninc -M build/modern/src/title_screen.d -I include -I "" src/title_screen.c
+tools/scaninc/scaninc -M build/modern/src/text.d -I include -I "" src/text.c
+tools/scaninc/scaninc -M build/modern/src/starter_choose.d -I include -I "" src/starter_choose.c
+tools/scaninc/scaninc -M build/modern/src/sound.d -I include -I "" src/sound.c
+tools/scaninc/scaninc -M build/modern/src/sombra_pokemon.d -I include -I "" src/sombra_pokemon.c
+tools/scaninc/scaninc -M build/modern/src/shop.d -I include -I "" src/shop.c
+tools/scaninc/scaninc -M build/modern/src/script_pokemon_util.d -I include -I "" src/script_pokemon_util.c
+tools/scaninc/scaninc -M build/modern/src/script_movement.d -I include -I "" src/script_movement.c
+tools/scaninc/scaninc -M build/modern/src/script.d -I include -I "" src/script.c
+tools/scaninc/scaninc -M build/modern/src/scrcmd.d -I include -I "" src/scrcmd.c
+tools/scaninc/scaninc -M build/modern/src/rotating_tile_puzzle.d -I include -I "" src/rotating_tile_puzzle.c
+tools/scaninc/scaninc -M build/modern/src/rotating_gate.d -I include -I "" src/rotating_gate.c
+tools/scaninc/scaninc -M build/modern/src/reshow_battle_screen.d -I include -I "" src/reshow_battle_screen.c
+tools/scaninc/scaninc -M build/modern/src/pokemon_summary_screen.d -I include -I "" src/pokemon_summary_screen.c
+tools/scaninc/scaninc -M build/modern/src/pokemon_storage_system.d -I include -I "" src/pokemon_storage_system.c
+tools/scaninc/scaninc -M build/modern/src/pokemon_sprite_visualizer.d -I include -I "" src/pokemon_sprite_visualizer.c
+tools/scaninc/scaninc -M build/modern/src/pokemon_salvajes_ow.d -I include -I "" src/pokemon_salvajes_ow.c
+tools/scaninc/scaninc -M build/modern/src/pokemon_icon.d -I include -I "" src/pokemon_icon.c
+tools/scaninc/scaninc -M build/modern/src/pokemon_animation.d -I include -I "" src/pokemon_animation.c
+tools/scaninc/scaninc -M build/modern/src/pokemon.d -I include -I "" src/pokemon.c
+tools/scaninc/scaninc -M build/modern/src/pokedex.d -I include -I "" src/pokedex.c
+tools/scaninc/scaninc -M build/modern/src/pokeball.d -I include -I "" src/pokeball.c
+tools/scaninc/scaninc -M build/modern/src/pic_combate.d -I include -I "" src/pic_combate.c
+tools/scaninc/scaninc -M build/modern/src/party_menu.d -I include -I "" src/party_menu.c
+tools/scaninc/scaninc -M build/modern/src/overworld.d -I include -I "" src/overworld.c
+tools/scaninc/scaninc -M build/modern/src/naming_screen.d -I include -I "" src/naming_screen.c
+tools/scaninc/scaninc -M build/modern/src/move_relearner.d -I include -I "" src/move_relearner.c
+tools/scaninc/scaninc -M build/modern/src/montura_surf.d -I include -I "" src/montura_surf.c
+tools/scaninc/scaninc -M build/modern/src/mirage_tower.d -I include -I "" src/mirage_tower.c
+tools/scaninc/scaninc -M build/modern/src/menu_specialized.d -I include -I "" src/menu_specialized.c
+tools/scaninc/scaninc -M build/modern/src/main_menu.d -I include -I "" src/main_menu.c
+tools/scaninc/scaninc -M build/modern/src/main.d -I include -I "" src/main.c
+tools/scaninc/scaninc -M build/modern/src/load_save.d -I include -I "" src/load_save.c
+tools/scaninc/scaninc -M build/modern/src/laboratorio_animaciones.d -I include -I "" src/laboratorio_animaciones.c
+tools/scaninc/scaninc -M build/modern/src/item_use.d -I include -I "" src/item_use.c
+tools/scaninc/scaninc -M build/modern/src/item_menu.d -I include -I "" src/item_menu.c
+tools/scaninc/scaninc -M build/modern/src/item_icon.d -I include -I "" src/item_icon.c
+tools/scaninc/scaninc -M build/modern/src/item_ball.d -I include -I "" src/item_ball.c
+tools/scaninc/scaninc -M build/modern/src/hall_of_fame.d -I include -I "" src/hall_of_fame.c
+tools/scaninc/scaninc -M build/modern/src/graphics.d -I include -I "" src/graphics.c
+tools/scaninc/scaninc -M build/modern/src/follower_helper.d -I include -I "" src/follower_helper.c
+tools/scaninc/scaninc -M build/modern/src/fldeff_strength.d -I include -I "" src/fldeff_strength.c
+tools/scaninc/scaninc -M build/modern/src/fldeff_rocksmash.d -I include -I "" src/fldeff_rocksmash.c
+tools/scaninc/scaninc -M build/modern/src/fldeff_cut.d -I include -I "" src/fldeff_cut.c
+tools/scaninc/scaninc -M build/modern/src/field_weather_effect.d -I include -I "" src/field_weather_effect.c
+tools/scaninc/scaninc -M build/modern/src/field_specials.d -I include -I "" src/field_specials.c
+tools/scaninc/scaninc -M build/modern/src/field_special_scene.d -I include -I "" src/field_special_scene.c
+tools/scaninc/scaninc -M build/modern/src/field_screen_effect.d -I include -I "" src/field_screen_effect.c
+tools/scaninc/scaninc -M build/modern/src/field_poison.d -I include -I "" src/field_poison.c
+tools/scaninc/scaninc -M build/modern/src/field_player_avatar.d -I include -I "" src/field_player_avatar.c
+tools/scaninc/scaninc -M build/modern/src/field_effect_helpers.d -I include -I "" src/field_effect_helpers.c
+tools/scaninc/scaninc -M build/modern/src/field_effect.d -I include -I "" src/field_effect.c
+tools/scaninc/scaninc -M build/modern/src/field_control_avatar.d -I include -I "" src/field_control_avatar.c
+tools/scaninc/scaninc -M build/modern/src/faraway_island.d -I include -I "" src/faraway_island.c
+tools/scaninc/scaninc -M build/modern/src/evolution_scene.d -I include -I "" src/evolution_scene.c
+tools/scaninc/scaninc -M build/modern/src/event_object_movement.d -I include -I "" src/event_object_movement.c
+tools/scaninc/scaninc -M build/modern/src/event_object_lock.d -I include -I "" src/event_object_lock.c
+tools/scaninc/scaninc -M build/modern/src/entry_hazards.d -I include -I "" src/entry_hazards.c
+tools/scaninc/scaninc -M build/modern/src/egg_hatch.d -I include -I "" src/egg_hatch.c
+tools/scaninc/scaninc -M build/modern/src/distorsion_fondo.d -I include -I "" src/distorsion_fondo.c
+tools/scaninc/scaninc -M build/modern/src/decompress.d -I include -I "" src/decompress.c
+tools/scaninc/scaninc -M build/modern/src/debug.d -I include -I "" src/debug.c
+tools/scaninc/scaninc -M build/modern/src/daycare.d -I include -I "" src/daycare.c
+tools/scaninc/scaninc -M build/modern/src/data.d -I include -I "" src/data.c
+tools/scaninc/scaninc -M build/modern/src/cable_car.d -I include -I "" src/cable_car.c
+tools/scaninc/scaninc -M build/modern/src/battle_util.d -I include -I "" src/battle_util.c
+tools/scaninc/scaninc -M build/modern/src/battle_transition.d -I include -I "" src/battle_transition.c
+tools/scaninc/scaninc -M build/modern/src/battle_setup.d -I include -I "" src/battle_setup.c
+tools/scaninc/scaninc -M build/modern/src/battle_script_commands.d -I include -I "" src/battle_script_commands.c
+tools/scaninc/scaninc -M build/modern/src/battle_message.d -I include -I "" src/battle_message.c
+tools/scaninc/scaninc -M build/modern/src/battle_main.d -I include -I "" src/battle_main.c
+tools/scaninc/scaninc -M build/modern/src/battle_intro.d -I include -I "" src/battle_intro.c
+tools/scaninc/scaninc -M build/modern/src/battle_interface.d -I include -I "" src/battle_interface.c
+tools/scaninc/scaninc -M build/modern/src/battle_gfx_sfx_util.d -I include -I "" src/battle_gfx_sfx_util.c
+tools/scaninc/scaninc -M build/modern/src/battle_debug.d -I include -I "" src/battle_debug.c
+tools/scaninc/scaninc -M build/modern/src/battle_controllers.d -I include -I "" src/battle_controllers.c
+tools/scaninc/scaninc -M build/modern/src/battle_controller_player.d -I include -I "" src/battle_controller_player.c
+tools/scaninc/scaninc -M build/modern/src/battle_controller_opponent.d -I include -I "" src/battle_controller_opponent.c
+tools/scaninc/scaninc -M build/modern/src/battle_bg.d -I include -I "" src/battle_bg.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_water.d -I include -I "" src/battle_anim_water.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_utility_funcs.d -I include -I "" src/battle_anim_utility_funcs.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_throw.d -I include -I "" src/battle_anim_throw.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_status_effects.d -I include -I "" src/battle_anim_status_effects.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_sound_tasks.d -I include -I "" src/battle_anim_sound_tasks.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_smokescreen.d -I include -I "" src/battle_anim_smokescreen.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_rock.d -I include -I "" src/battle_anim_rock.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_psychic.d -I include -I "" src/battle_anim_psychic.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_poison.d -I include -I "" src/battle_anim_poison.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_normal.d -I include -I "" src/battle_anim_normal.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_new.d -I include -I "" src/battle_anim_new.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_mons.d -I include -I "" src/battle_anim_mons.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_mon_movement.d -I include -I "" src/battle_anim_mon_movement.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_ice.d -I include -I "" src/battle_anim_ice.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_ground.d -I include -I "" src/battle_anim_ground.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_ghost.d -I include -I "" src/battle_anim_ghost.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_flying.d -I include -I "" src/battle_anim_flying.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_fire.d -I include -I "" src/battle_anim_fire.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_fight.d -I include -I "" src/battle_anim_fight.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_electric.d -I include -I "" src/battle_anim_electric.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_effects_3.d -I include -I "" src/battle_anim_effects_3.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_effects_2.d -I include -I "" src/battle_anim_effects_2.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_effects_1.d -I include -I "" src/battle_anim_effects_1.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_dragon.d -I include -I "" src/battle_anim_dragon.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_dark.d -I include -I "" src/battle_anim_dark.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim_bug.d -I include -I "" src/battle_anim_bug.c
+tools/scaninc/scaninc -M build/modern/src/battle_anim.d -I include -I "" src/battle_anim.c
+tools/scaninc/scaninc -M build/modern/src/battle_ai_util.d -I include -I "" src/battle_ai_util.c
+tools/scaninc/scaninc -M build/modern/src/battle_ai_switch_items.d -I include -I "" src/battle_ai_switch_items.c
+tools/scaninc/scaninc -M build/modern/src/battle_ai_main.d -I include -I "" src/battle_ai_main.c
+CC src/battle_ai_main.c
+CC src/battle_ai_switch_items.c
+CC src/battle_ai_util.c
+CC src/battle_anim.c
+CC src/battle_anim_bug.c
+CC src/battle_anim_dark.c
+CC src/battle_anim_dragon.c
+CC src/battle_anim_effects_1.c
+CC src/battle_anim_effects_2.c
+CC src/battle_anim_effects_3.c
+CC src/battle_anim_electric.c
+CC src/battle_anim_fight.c
+CC src/battle_anim_fire.c
+CC src/battle_anim_flying.c
+CC src/battle_anim_ghost.c
+CC src/battle_anim_ground.c
+CC src/battle_anim_ice.c
+CC src/battle_anim_mon_movement.c
+CC src/battle_anim_mons.c
+CC src/battle_anim_new.c
+CC src/battle_anim_normal.c
+CC src/battle_anim_poison.c
+CC src/battle_anim_psychic.c
+CC src/battle_anim_rock.c
+CC src/battle_anim_smokescreen.c
+CC src/battle_anim_sound_tasks.c
+CC src/battle_anim_status_effects.c
+CC src/battle_anim_throw.c
+CC src/battle_anim_utility_funcs.c
+CC src/battle_anim_water.c
+CC src/battle_bg.c
+CC src/battle_controller_opponent.c
+CC src/battle_controller_player.c
+CC src/battle_controllers.c
+CC src/battle_debug.c
+CC src/battle_gfx_sfx_util.c
+CC src/battle_interface.c
+CC src/battle_intro.c
+CC src/battle_main.c
+CC src/battle_message.c
+CC src/battle_script_commands.c
+CC src/battle_setup.c
+CC src/battle_transition.c
+CC src/battle_util.c
+CC src/cable_car.c
+CC src/data.c
+CC src/daycare.c
+CC src/debug.c
+CC src/decompress.c
+CC src/distorsion_fondo.c
+CC src/egg_hatch.c
+CC src/entry_hazards.c
+CC src/event_object_lock.c
+CC src/event_object_movement.c
+CC src/evolution_scene.c
+CC src/faraway_island.c
+CC src/field_control_avatar.c
+CC src/field_effect.c
+CC src/field_effect_helpers.c
+CC src/field_player_avatar.c
+CC src/field_poison.c
+CC src/field_screen_effect.c
+CC src/field_specials.c
+CC src/field_special_scene.c
+CC src/field_weather_effect.c
+CC src/fldeff_cut.c
+CC src/fldeff_rocksmash.c
+CC src/fldeff_strength.c
+CC src/follower_helper.c
+CC src/hall_of_fame.c
+CC src/item_ball.c
+CC src/item_icon.c
+CC src/item_menu.c
+CC src/item_use.c
+CC src/laboratorio_animaciones.c
+CC src/load_save.c
+CC src/main.c
+CC src/main_menu.c
+CC src/menu_specialized.c
+CC src/mirage_tower.c
+CC src/montura_surf.c
+CC src/move_relearner.c
+CC src/naming_screen.c
+CC src/overworld.c
+CC src/party_menu.c
+CC src/pic_combate.c
+CC src/pokeball.c
+CC src/pokedex.c
+CC src/pokemon.c
+CC src/pokemon_animation.c
+CC src/pokemon_icon.c
+CC src/pokemon_salvajes_ow.c
+CC src/pokemon_sprite_visualizer.c
+CC src/pokemon_storage_system.c
+CC src/pokemon_summary_screen.c
+CC src/reshow_battle_screen.c
+CC src/rotating_gate.c
+CC src/rotating_tile_puzzle.c
+CC src/scrcmd.c
+CC src/script.c
+CC src/script_movement.c
+CC src/script_pokemon_util.c
+CC src/shop.c
+CC src/sombra_pokemon.c
+CC src/sound.c
+CC src/starter_choose.c
+CC src/text.c
+CC src/title_screen.c
+CC src/tm_case.c
+CC src/trainer_card.c
+CC src/trainer_pokemon_sprites.c
+tools/gbagfx/gbagfx graphics/entrenadores/aaron_platinum/aaron_platinum.pal graphics/entrenadores/aaron_platinum/aaron_platinum.gbapal
+CC src/trainer_see.c
+CC src/wild_encounter.c
+tools/gbagfx/gbagfx graphics/entrenadores/aaron_platinum/front.png graphics/entrenadores/aaron_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_f_hgss/ace_trainer_f_hgss.pal graphics/entrenadores/ace_trainer_f_hgss/ace_trainer_f_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_f_hgss/front.png graphics/entrenadores/ace_trainer_f_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_f_platinum/ace_trainer_f_platinum.pal graphics/entrenadores/ace_trainer_f_platinum/ace_trainer_f_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_f_platinum/front.png graphics/entrenadores/ace_trainer_f_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_m_hgss/ace_trainer_m_hgss.pal graphics/entrenadores/ace_trainer_m_hgss/ace_trainer_m_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_m_hgss/front.png graphics/entrenadores/ace_trainer_m_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_m_platinum/ace_trainer_m_platinum.pal graphics/entrenadores/ace_trainer_m_platinum/ace_trainer_m_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_m_platinum/front.png graphics/entrenadores/ace_trainer_m_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_snow_f_hgss/ace_trainer_snow_f_hgss.pal graphics/entrenadores/ace_trainer_snow_f_hgss/ace_trainer_snow_f_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_snow_f_hgss/front.png graphics/entrenadores/ace_trainer_snow_f_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_snow_f_platinum/ace_trainer_snow_f_platinum.pal graphics/entrenadores/ace_trainer_snow_f_platinum/ace_trainer_snow_f_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_snow_f_platinum/front.png graphics/entrenadores/ace_trainer_snow_f_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_snow_m_hgss/ace_trainer_snow_m_hgss.pal graphics/entrenadores/ace_trainer_snow_m_hgss/ace_trainer_snow_m_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_snow_m_hgss/front.png graphics/entrenadores/ace_trainer_snow_m_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_snow_m_platinum/ace_trainer_snow_m_platinum.pal graphics/entrenadores/ace_trainer_snow_m_platinum/ace_trainer_snow_m_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_snow_m_platinum/front.png graphics/entrenadores/ace_trainer_snow_m_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/archer_hgss/archer_hgss.pal graphics/entrenadores/archer_hgss/archer_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/archer_hgss/front.png graphics/entrenadores/archer_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/argenta_hgss/argenta_hgss.pal graphics/entrenadores/argenta_hgss/argenta_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/argenta_hgss/front.png graphics/entrenadores/argenta_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/argenta_platinum/argenta_platinum.pal graphics/entrenadores/argenta_platinum/argenta_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/argenta_platinum/front.png graphics/entrenadores/argenta_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/ariana_hgss/ariana_hgss.pal graphics/entrenadores/ariana_hgss/ariana_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/ariana_hgss/front.png graphics/entrenadores/ariana_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/aroma_lady_hgss/aroma_lady_hgss.pal graphics/entrenadores/aroma_lady_hgss/aroma_lady_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/aroma_lady_hgss/front.png graphics/entrenadores/aroma_lady_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/aroma_lady_platinum/aroma_lady_platinum.pal graphics/entrenadores/aroma_lady_platinum/aroma_lady_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/aroma_lady_platinum/front.png graphics/entrenadores/aroma_lady_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/aroma_lady_unused_hgss/aroma_lady_unused_hgss.pal graphics/entrenadores/aroma_lady_unused_hgss/aroma_lady_unused_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/aroma_lady_unused_hgss/front.png graphics/entrenadores/aroma_lady_unused_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/artist_hgss/artist_hgss.pal graphics/entrenadores/artist_hgss/artist_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/artist_hgss/front.png graphics/entrenadores/artist_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/artist_platinum/artist_platinum.pal graphics/entrenadores/artist_platinum/artist_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/artist_platinum/front.png graphics/entrenadores/artist_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/barry_47490/barry_47490.pal graphics/entrenadores/barry_47490/barry_47490.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/barry_47490/front.png graphics/entrenadores/barry_47490/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/barry_platinum/barry_platinum.pal graphics/entrenadores/barry_platinum/barry_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/barry_platinum/front.png graphics/entrenadores/barry_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/battle_girl_hgss/battle_girl_hgss.pal graphics/entrenadores/battle_girl_hgss/battle_girl_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/battle_girl_hgss/front.png graphics/entrenadores/battle_girl_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/battle_girl_platinum/battle_girl_platinum.pal graphics/entrenadores/battle_girl_platinum/battle_girl_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/battle_girl_platinum/front.png graphics/entrenadores/battle_girl_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/beauty_hgss/beauty_hgss.pal graphics/entrenadores/beauty_hgss/beauty_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/beauty_hgss/front.png graphics/entrenadores/beauty_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/beauty_platinum/beauty_platinum.pal graphics/entrenadores/beauty_platinum/beauty_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/beauty_platinum/front.png graphics/entrenadores/beauty_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/belle_and_pa_platinum/belle_and_pa_platinum.pal graphics/entrenadores/belle_and_pa_platinum/belle_and_pa_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/belle_and_pa_platinum/front.png graphics/entrenadores/belle_and_pa_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/bertha_platinum/bertha_platinum.pal graphics/entrenadores/bertha_platinum/bertha_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/bertha_platinum/front.png graphics/entrenadores/bertha_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/biker_hgss/biker_hgss.pal graphics/entrenadores/biker_hgss/biker_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/biker_hgss/front.png graphics/entrenadores/biker_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/bird_keeper_hgss/bird_keeper_hgss.pal graphics/entrenadores/bird_keeper_hgss/bird_keeper_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/bird_keeper_hgss/front.png graphics/entrenadores/bird_keeper_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/bird_keeper_johto_hgss/bird_keeper_johto_hgss.pal graphics/entrenadores/bird_keeper_johto_hgss/bird_keeper_johto_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/bird_keeper_johto_hgss/front.png graphics/entrenadores/bird_keeper_johto_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/bird_keeper_platinum/bird_keeper_platinum.pal graphics/entrenadores/bird_keeper_platinum/bird_keeper_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/bird_keeper_platinum/front.png graphics/entrenadores/bird_keeper_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/black_belt_hgss/black_belt_hgss.pal graphics/entrenadores/black_belt_hgss/black_belt_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/black_belt_hgss/front.png graphics/entrenadores/black_belt_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/black_belt_platinum/black_belt_platinum.pal graphics/entrenadores/black_belt_platinum/black_belt_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/black_belt_platinum/front.png graphics/entrenadores/black_belt_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/blaine_hgss/blaine_hgss.pal graphics/entrenadores/blaine_hgss/blaine_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/blaine_hgss/front.png graphics/entrenadores/blaine_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/blue_hgss/blue_hgss.pal graphics/entrenadores/blue_hgss/blue_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/blue_hgss/front.png graphics/entrenadores/blue_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/boarder_hgss/boarder_hgss.pal graphics/entrenadores/boarder_hgss/boarder_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/boarder_hgss/front.png graphics/entrenadores/boarder_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/brock_hgss/brock_hgss.pal graphics/entrenadores/brock_hgss/brock_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/brock_hgss/front.png graphics/entrenadores/brock_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/bruno_hgss/bruno_hgss.pal graphics/entrenadores/bruno_hgss/bruno_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/bruno_hgss/front.png graphics/entrenadores/bruno_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/buck_platinum/buck_platinum.pal graphics/entrenadores/buck_platinum/buck_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/buck_platinum/front.png graphics/entrenadores/buck_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/bug_catcher_hgss/bug_catcher_hgss.pal graphics/entrenadores/bug_catcher_hgss/bug_catcher_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/bug_catcher_hgss/front.png graphics/entrenadores/bug_catcher_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/bug_catcher_platinum/bug_catcher_platinum.pal graphics/entrenadores/bug_catcher_platinum/bug_catcher_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/bug_catcher_platinum/front.png graphics/entrenadores/bug_catcher_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/bugsy_hgss/bugsy_hgss.pal graphics/entrenadores/bugsy_hgss/bugsy_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/bugsy_hgss/front.png graphics/entrenadores/bugsy_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/burglar_hgss/burglar_hgss.pal graphics/entrenadores/burglar_hgss/burglar_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/burglar_hgss/front.png graphics/entrenadores/burglar_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/byron_platinum/byron_platinum.pal graphics/entrenadores/byron_platinum/byron_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/byron_platinum/front.png graphics/entrenadores/byron_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/caitlin_hgss/caitlin_hgss.pal graphics/entrenadores/caitlin_hgss/caitlin_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/caitlin_hgss/front.png graphics/entrenadores/caitlin_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/caitlin_platinum/caitlin_platinum.pal graphics/entrenadores/caitlin_platinum/caitlin_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/caitlin_platinum/front.png graphics/entrenadores/caitlin_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r01_c04/hgss_ow_r01_c04.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r01_c04/hgss_ow_r01_c04.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r01_c05/hgss_ow_r01_c05.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r01_c05/hgss_ow_r01_c05.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r01_c06/hgss_ow_r01_c06.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r01_c06/hgss_ow_r01_c06.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r01_c10/hgss_ow_r01_c10.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r01_c10/hgss_ow_r01_c10.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r02_c02/hgss_ow_r02_c02.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r02_c02/hgss_ow_r02_c02.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r02_c03/hgss_ow_r02_c03.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r02_c03/hgss_ow_r02_c03.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r02_c04/hgss_ow_r02_c04.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r02_c04/hgss_ow_r02_c04.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r02_c06/hgss_ow_r02_c06.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r02_c06/hgss_ow_r02_c06.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r02_c09/hgss_ow_r02_c09.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r02_c09/hgss_ow_r02_c09.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r02_c10/hgss_ow_r02_c10.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r02_c10/hgss_ow_r02_c10.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r03_c01/hgss_ow_r03_c01.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r03_c01/hgss_ow_r03_c01.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r03_c02/hgss_ow_r03_c02.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r03_c02/hgss_ow_r03_c02.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r03_c04/hgss_ow_r03_c04.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r03_c04/hgss_ow_r03_c04.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r05_c02/hgss_ow_r05_c02.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r05_c02/hgss_ow_r05_c02.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r06_c03/hgss_ow_r06_c03.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r06_c03/hgss_ow_r06_c03.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r06_c08/hgss_ow_r06_c08.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r06_c08/hgss_ow_r06_c08.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r07_c02/hgss_ow_r07_c02.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r07_c02/hgss_ow_r07_c02.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r07_c06/hgss_ow_r07_c06.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r07_c06/hgss_ow_r07_c06.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r07_c07/hgss_ow_r07_c07.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r07_c07/hgss_ow_r07_c07.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r07_c08/hgss_ow_r07_c08.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r07_c08/hgss_ow_r07_c08.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r07_c09/hgss_ow_r07_c09.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r07_c09/hgss_ow_r07_c09.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r07_c10/hgss_ow_r07_c10.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r07_c10/hgss_ow_r07_c10.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r08_c01/hgss_ow_r08_c01.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r08_c01/hgss_ow_r08_c01.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r08_c02/hgss_ow_r08_c02.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r08_c02/hgss_ow_r08_c02.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r08_c03/hgss_ow_r08_c03.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r08_c03/hgss_ow_r08_c03.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r08_c04/hgss_ow_r08_c04.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r08_c04/hgss_ow_r08_c04.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r08_c05/hgss_ow_r08_c05.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r08_c05/hgss_ow_r08_c05.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r08_c06/hgss_ow_r08_c06.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r08_c06/hgss_ow_r08_c06.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r08_c07/hgss_ow_r08_c07.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r08_c07/hgss_ow_r08_c07.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r08_c08/hgss_ow_r08_c08.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r08_c08/hgss_ow_r08_c08.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r08_c09/hgss_ow_r08_c09.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r08_c09/hgss_ow_r08_c09.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/hgss_ow_r08_c10/hgss_ow_r08_c10.pal graphics/entrenadores/cajon_de_sastre/hgss_ow_r08_c10/hgss_ow_r08_c10.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/looker_platinum/looker_platinum.pal graphics/entrenadores/cajon_de_sastre/looker_platinum/looker_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b0_c01/platinum_ow_b0_c01.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b0_c01/platinum_ow_b0_c01.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b0_c04/platinum_ow_b0_c04.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b0_c04/platinum_ow_b0_c04.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b0_c08/platinum_ow_b0_c08.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b0_c08/platinum_ow_b0_c08.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b0_c09/platinum_ow_b0_c09.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b0_c09/platinum_ow_b0_c09.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b1_c05/platinum_ow_b1_c05.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b1_c05/platinum_ow_b1_c05.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b1_c06/platinum_ow_b1_c06.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b1_c06/platinum_ow_b1_c06.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b1_c09/platinum_ow_b1_c09.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b1_c09/platinum_ow_b1_c09.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b1_c10/platinum_ow_b1_c10.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b1_c10/platinum_ow_b1_c10.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b1_c16/platinum_ow_b1_c16.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b1_c16/platinum_ow_b1_c16.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b2_c02/platinum_ow_b2_c02.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b2_c02/platinum_ow_b2_c02.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b2_c03/platinum_ow_b2_c03.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b2_c03/platinum_ow_b2_c03.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b2_c04/platinum_ow_b2_c04.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b2_c04/platinum_ow_b2_c04.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b2_c07/platinum_ow_b2_c07.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b2_c07/platinum_ow_b2_c07.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b2_c14/platinum_ow_b2_c14.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b2_c14/platinum_ow_b2_c14.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b2_c15/platinum_ow_b2_c15.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b2_c15/platinum_ow_b2_c15.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b2_c16/platinum_ow_b2_c16.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b2_c16/platinum_ow_b2_c16.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c02/platinum_ow_b3_c02.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c02/platinum_ow_b3_c02.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c03/platinum_ow_b3_c03.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c03/platinum_ow_b3_c03.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c04/platinum_ow_b3_c04.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c04/platinum_ow_b3_c04.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c09/platinum_ow_b3_c09.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c09/platinum_ow_b3_c09.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c10/platinum_ow_b3_c10.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c10/platinum_ow_b3_c10.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c11/platinum_ow_b3_c11.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c11/platinum_ow_b3_c11.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c12/platinum_ow_b3_c12.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c12/platinum_ow_b3_c12.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c13/platinum_ow_b3_c13.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c13/platinum_ow_b3_c13.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c14/platinum_ow_b3_c14.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c14/platinum_ow_b3_c14.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c15/platinum_ow_b3_c15.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c15/platinum_ow_b3_c15.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c16/platinum_ow_b3_c16.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c16/platinum_ow_b3_c16.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b4_c00/platinum_ow_b4_c00.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b4_c00/platinum_ow_b4_c00.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b4_c03/platinum_ow_b4_c03.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b4_c03/platinum_ow_b4_c03.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b4_c04/platinum_ow_b4_c04.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b4_c04/platinum_ow_b4_c04.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b4_c05/platinum_ow_b4_c05.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b4_c05/platinum_ow_b4_c05.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b4_c06/platinum_ow_b4_c06.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b4_c06/platinum_ow_b4_c06.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b4_c07/platinum_ow_b4_c07.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b4_c07/platinum_ow_b4_c07.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b4_c08/platinum_ow_b4_c08.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b4_c08/platinum_ow_b4_c08.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b4_c09/platinum_ow_b4_c09.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b4_c09/platinum_ow_b4_c09.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b4_c10/platinum_ow_b4_c10.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b4_c10/platinum_ow_b4_c10.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b4_c11/platinum_ow_b4_c11.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b4_c11/platinum_ow_b4_c11.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/platinum_ow_b5_c12/platinum_ow_b5_c12.pal graphics/entrenadores/cajon_de_sastre/platinum_ow_b5_c12/platinum_ow_b5_c12.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/professor_elm_hgss/professor_elm_hgss.pal graphics/entrenadores/cajon_de_sastre/professor_elm_hgss/professor_elm_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/professor_rowan_platinum/professor_rowan_platinum.pal graphics/entrenadores/cajon_de_sastre/professor_rowan_platinum/professor_rowan_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cajon_de_sastre/steven_hgss/steven_hgss.pal graphics/entrenadores/cajon_de_sastre/steven_hgss/steven_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cameraman_hgss/cameraman_hgss.pal graphics/entrenadores/cameraman_hgss/cameraman_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cameraman_hgss/front.png graphics/entrenadores/cameraman_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/cameraman_platinum/cameraman_platinum.pal graphics/entrenadores/cameraman_platinum/cameraman_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cameraman_platinum/front.png graphics/entrenadores/cameraman_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/camper_hgss/camper_hgss.pal graphics/entrenadores/camper_hgss/camper_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/camper_hgss/front.png graphics/entrenadores/camper_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/camper_platinum/camper_platinum.pal graphics/entrenadores/camper_platinum/camper_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/camper_platinum/front.png graphics/entrenadores/camper_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/camper_unused_hgss/camper_unused_hgss.pal graphics/entrenadores/camper_unused_hgss/camper_unused_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/camper_unused_hgss/front.png graphics/entrenadores/camper_unused_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/candice_platinum/candice_platinum.pal graphics/entrenadores/candice_platinum/candice_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/candice_platinum/front.png graphics/entrenadores/candice_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/cheryl_platinum/cheryl_platinum.pal graphics/entrenadores/cheryl_platinum/cheryl_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cheryl_platinum/front.png graphics/entrenadores/cheryl_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/chuck_hgss/chuck_hgss.pal graphics/entrenadores/chuck_hgss/chuck_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/chuck_hgss/front.png graphics/entrenadores/chuck_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/clair_hgss/clair_hgss.pal graphics/entrenadores/clair_hgss/clair_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/clair_hgss/front.png graphics/entrenadores/clair_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/clown_hgss/clown_hgss.pal graphics/entrenadores/clown_hgss/clown_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/clown_hgss/front.png graphics/entrenadores/clown_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/clown_platinum/clown_platinum.pal graphics/entrenadores/clown_platinum/clown_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/clown_platinum/front.png graphics/entrenadores/clown_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/collector_hgss/collector_hgss.pal graphics/entrenadores/collector_hgss/collector_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/collector_hgss/front.png graphics/entrenadores/collector_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/collector_platinum/collector_platinum.pal graphics/entrenadores/collector_platinum/collector_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/collector_platinum/front.png graphics/entrenadores/collector_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/cowgirl_hgss/cowgirl_hgss.pal graphics/entrenadores/cowgirl_hgss/cowgirl_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cowgirl_hgss/front.png graphics/entrenadores/cowgirl_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/cowgirl_platinum/cowgirl_platinum.pal graphics/entrenadores/cowgirl_platinum/cowgirl_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cowgirl_platinum/front.png graphics/entrenadores/cowgirl_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/crasher_wake_platinum/crasher_wake_platinum.pal graphics/entrenadores/crasher_wake_platinum/crasher_wake_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/crasher_wake_platinum/front.png graphics/entrenadores/crasher_wake_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/cycler_f_hgss/cycler_f_hgss.pal graphics/entrenadores/cycler_f_hgss/cycler_f_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cycler_f_hgss/front.png graphics/entrenadores/cycler_f_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/cycler_f_platinum/cycler_f_platinum.pal graphics/entrenadores/cycler_f_platinum/cycler_f_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cycler_f_platinum/front.png graphics/entrenadores/cycler_f_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/cycler_m_hgss/cycler_m_hgss.pal graphics/entrenadores/cycler_m_hgss/cycler_m_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cycler_m_hgss/front.png graphics/entrenadores/cycler_m_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/cycler_m_platinum/cycler_m_platinum.pal graphics/entrenadores/cycler_m_platinum/cycler_m_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cycler_m_platinum/front.png graphics/entrenadores/cycler_m_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/cynthia_platinum/cynthia_platinum.pal graphics/entrenadores/cynthia_platinum/cynthia_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cynthia_platinum/front.png graphics/entrenadores/cynthia_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/cyrus_platinum/cyrus_platinum.pal graphics/entrenadores/cyrus_platinum/cyrus_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/cyrus_platinum/front.png graphics/entrenadores/cyrus_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/dahlia_hgss/dahlia_hgss.pal graphics/entrenadores/dahlia_hgss/dahlia_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/dahlia_hgss/front.png graphics/entrenadores/dahlia_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/dahlia_platinum/dahlia_platinum.pal graphics/entrenadores/dahlia_platinum/dahlia_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/dahlia_platinum/front.png graphics/entrenadores/dahlia_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/darach_hgss/darach_hgss.pal graphics/entrenadores/darach_hgss/darach_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/darach_hgss/front.png graphics/entrenadores/darach_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/darach_platinum/darach_platinum.pal graphics/entrenadores/darach_platinum/darach_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/darach_platinum/front.png graphics/entrenadores/darach_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/dawn_dp_hgss/dawn_dp_hgss.pal graphics/entrenadores/dawn_dp_hgss/dawn_dp_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/dawn_dp_hgss/front.png graphics/entrenadores/dawn_dp_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/dawn_dp_platinum/dawn_dp_platinum.pal graphics/entrenadores/dawn_dp_platinum/dawn_dp_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/dawn_dp_platinum/front.png graphics/entrenadores/dawn_dp_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/dawn_dp_unused_hgss/dawn_dp_unused_hgss.pal graphics/entrenadores/dawn_dp_unused_hgss/dawn_dp_unused_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/dawn_dp_unused_hgss/front.png graphics/entrenadores/dawn_dp_unused_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/dawn_dp_unused_platinum/dawn_dp_unused_platinum.pal graphics/entrenadores/dawn_dp_unused_platinum/dawn_dp_unused_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/dawn_dp_unused_platinum/front.png graphics/entrenadores/dawn_dp_unused_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/dawn_platinum/dawn_platinum.pal graphics/entrenadores/dawn_platinum/dawn_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/dawn_platinum/front.png graphics/entrenadores/dawn_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/dawn_platinum_hgss/dawn_platinum_hgss.pal graphics/entrenadores/dawn_platinum_hgss/dawn_platinum_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/dawn_platinum_hgss/front.png graphics/entrenadores/dawn_platinum_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/double_team_hgss/double_team_hgss.pal graphics/entrenadores/double_team_hgss/double_team_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/double_team_hgss/front.png graphics/entrenadores/double_team_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/double_team_platinum/double_team_platinum.pal graphics/entrenadores/double_team_platinum/double_team_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/double_team_platinum/front.png graphics/entrenadores/double_team_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/dragon_tamer_hgss/dragon_tamer_hgss.pal graphics/entrenadores/dragon_tamer_hgss/dragon_tamer_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/dragon_tamer_hgss/front.png graphics/entrenadores/dragon_tamer_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/dragon_tamer_platinum/dragon_tamer_platinum.pal graphics/entrenadores/dragon_tamer_platinum/dragon_tamer_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/dragon_tamer_platinum/front.png graphics/entrenadores/dragon_tamer_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/elder_hgss/elder_hgss.pal graphics/entrenadores/elder_hgss/elder_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/elder_hgss/front.png graphics/entrenadores/elder_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/erika_hgss/erika_hgss.pal graphics/entrenadores/erika_hgss/erika_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/erika_hgss/front.png graphics/entrenadores/erika_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/ethan_hgss/ethan_hgss.pal graphics/entrenadores/ethan_hgss/ethan_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/ethan_hgss/front.png graphics/entrenadores/ethan_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/eusine_hgss/eusine_hgss.pal graphics/entrenadores/eusine_hgss/eusine_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/eusine_hgss/front.png graphics/entrenadores/eusine_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/falkner_hgss/falkner_hgss.pal graphics/entrenadores/falkner_hgss/falkner_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/falkner_hgss/front.png graphics/entrenadores/falkner_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/fantina_platinum/fantina_platinum.pal graphics/entrenadores/fantina_platinum/fantina_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/fantina_platinum/front.png graphics/entrenadores/fantina_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/firebreather_hgss/firebreather_hgss.pal graphics/entrenadores/firebreather_hgss/firebreather_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/firebreather_hgss/front.png graphics/entrenadores/firebreather_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/fisher_hgss/fisher_hgss.pal graphics/entrenadores/fisher_hgss/fisher_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/fisher_hgss/front.png graphics/entrenadores/fisher_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/fisher_platinum/fisher_platinum.pal graphics/entrenadores/fisher_platinum/fisher_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/fisher_platinum/front.png graphics/entrenadores/fisher_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/flint_platinum/flint_platinum.pal graphics/entrenadores/flint_platinum/flint_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/flint_platinum/front.png graphics/entrenadores/flint_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/galactic_grunt_f_platinum/front.png graphics/entrenadores/galactic_grunt_f_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/galactic_grunt_f_platinum/galactic_grunt_f_platinum.pal graphics/entrenadores/galactic_grunt_f_platinum/galactic_grunt_f_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/galactic_grunt_m_platinum/front.png graphics/entrenadores/galactic_grunt_m_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/galactic_grunt_m_platinum/galactic_grunt_m_platinum.pal graphics/entrenadores/galactic_grunt_m_platinum/galactic_grunt_m_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/gardenia_platinum/front.png graphics/entrenadores/gardenia_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/gardenia_platinum/gardenia_platinum.pal graphics/entrenadores/gardenia_platinum/gardenia_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/gentleman_hgss/front.png graphics/entrenadores/gentleman_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/gentleman_hgss/gentleman_hgss.pal graphics/entrenadores/gentleman_hgss/gentleman_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/gentleman_platinum/front.png graphics/entrenadores/gentleman_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/gentleman_platinum/gentleman_platinum.pal graphics/entrenadores/gentleman_platinum/gentleman_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/giovanni_hgss/front.png graphics/entrenadores/giovanni_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/giovanni_hgss/giovanni_hgss.pal graphics/entrenadores/giovanni_hgss/giovanni_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/guitarist_hgss/front.png graphics/entrenadores/guitarist_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/guitarist_hgss/guitarist_hgss.pal graphics/entrenadores/guitarist_hgss/guitarist_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/guitarist_platinum/front.png graphics/entrenadores/guitarist_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/guitarist_platinum/guitarist_platinum.pal graphics/entrenadores/guitarist_platinum/guitarist_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/hiker_hgss/front.png graphics/entrenadores/hiker_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/hiker_hgss/hiker_hgss.pal graphics/entrenadores/hiker_hgss/hiker_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/hiker_platinum/front.png graphics/entrenadores/hiker_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/hiker_platinum/hiker_platinum.pal graphics/entrenadores/hiker_platinum/hiker_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/idol_hgss/front.png graphics/entrenadores/idol_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/idol_hgss/idol_hgss.pal graphics/entrenadores/idol_hgss/idol_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/idol_platinum/front.png graphics/entrenadores/idol_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/idol_platinum/idol_platinum.pal graphics/entrenadores/idol_platinum/idol_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/interviewers_platinum/front.png graphics/entrenadores/interviewers_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/interviewers_platinum/interviewers_platinum.pal graphics/entrenadores/interviewers_platinum/interviewers_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/janine_hgss/front.png graphics/entrenadores/janine_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/janine_hgss/janine_hgss.pal graphics/entrenadores/janine_hgss/janine_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/jasmine_hgss/front.png graphics/entrenadores/jasmine_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/jasmine_hgss/jasmine_hgss.pal graphics/entrenadores/jasmine_hgss/jasmine_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/jogger_hgss/front.png graphics/entrenadores/jogger_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/jogger_hgss/jogger_hgss.pal graphics/entrenadores/jogger_hgss/jogger_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/jogger_platinum/front.png graphics/entrenadores/jogger_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/jogger_platinum/jogger_platinum.pal graphics/entrenadores/jogger_platinum/jogger_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/juggler_hgss/front.png graphics/entrenadores/juggler_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/juggler_hgss/juggler_hgss.pal graphics/entrenadores/juggler_hgss/juggler_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/jupiter_platinum/front.png graphics/entrenadores/jupiter_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/jupiter_platinum/jupiter_platinum.pal graphics/entrenadores/jupiter_platinum/jupiter_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/karen_hgss/front.png graphics/entrenadores/karen_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/karen_hgss/karen_hgss.pal graphics/entrenadores/karen_hgss/karen_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/kimono_girl_hgss/front.png graphics/entrenadores/kimono_girl_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/kimono_girl_hgss/kimono_girl_hgss.pal graphics/entrenadores/kimono_girl_hgss/kimono_girl_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/koga_hgss/front.png graphics/entrenadores/koga_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/koga_hgss/koga_hgss.pal graphics/entrenadores/koga_hgss/koga_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/lady_hgss/front.png graphics/entrenadores/lady_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/lady_hgss/lady_hgss.pal graphics/entrenadores/lady_hgss/lady_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/lady_platinum/front.png graphics/entrenadores/lady_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/lady_platinum/lady_platinum.pal graphics/entrenadores/lady_platinum/lady_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/lance_hgss/front.png graphics/entrenadores/lance_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/lance_hgss/lance_hgss.pal graphics/entrenadores/lance_hgss/lance_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/lass_hgss/front.png graphics/entrenadores/lass_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/lass_hgss/lass_hgss.pal graphics/entrenadores/lass_hgss/lass_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/lass_platinum/front.png graphics/entrenadores/lass_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/lass_platinum/lass_platinum.pal graphics/entrenadores/lass_platinum/lass_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/lt_surge_hgss/front.png graphics/entrenadores/lt_surge_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/lt_surge_hgss/lt_surge_hgss.pal graphics/entrenadores/lt_surge_hgss/lt_surge_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/lucas_dp_hgss/front.png graphics/entrenadores/lucas_dp_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/lucas_dp_hgss/lucas_dp_hgss.pal graphics/entrenadores/lucas_dp_hgss/lucas_dp_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/lucas_dp_platinum/front.png graphics/entrenadores/lucas_dp_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/lucas_dp_platinum/lucas_dp_platinum.pal graphics/entrenadores/lucas_dp_platinum/lucas_dp_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/lucas_dp_unused_hgss/front.png graphics/entrenadores/lucas_dp_unused_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/lucas_dp_unused_hgss/lucas_dp_unused_hgss.pal graphics/entrenadores/lucas_dp_unused_hgss/lucas_dp_unused_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/lucas_dp_unused_platinum/front.png graphics/entrenadores/lucas_dp_unused_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/lucas_dp_unused_platinum/lucas_dp_unused_platinum.pal graphics/entrenadores/lucas_dp_unused_platinum/lucas_dp_unused_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/lucas_platinum/front.png graphics/entrenadores/lucas_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/lucas_platinum/lucas_platinum.pal graphics/entrenadores/lucas_platinum/lucas_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/lucas_platinum_hgss/front.png graphics/entrenadores/lucas_platinum_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/lucas_platinum_hgss/lucas_platinum_hgss.pal graphics/entrenadores/lucas_platinum_hgss/lucas_platinum_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/lucian_platinum/front.png graphics/entrenadores/lucian_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/lucian_platinum/lucian_platinum.pal graphics/entrenadores/lucian_platinum/lucian_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/lyra_hgss/front.png graphics/entrenadores/lyra_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/lyra_hgss/lyra_hgss.pal graphics/entrenadores/lyra_hgss/lyra_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/maid_platinum/front.png graphics/entrenadores/maid_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/maid_platinum/maid_platinum.pal graphics/entrenadores/maid_platinum/maid_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/marley_platinum/front.png graphics/entrenadores/marley_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/marley_platinum/marley_platinum.pal graphics/entrenadores/marley_platinum/marley_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/mars_platinum/front.png graphics/entrenadores/mars_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/mars_platinum/mars_platinum.pal graphics/entrenadores/mars_platinum/mars_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/maylene_platinum/front.png graphics/entrenadores/maylene_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/maylene_platinum/maylene_platinum.pal graphics/entrenadores/maylene_platinum/maylene_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/medium_hgss/front.png graphics/entrenadores/medium_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/medium_hgss/medium_hgss.pal graphics/entrenadores/medium_hgss/medium_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/mira_platinum/front.png graphics/entrenadores/mira_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/mira_platinum/mira_platinum.pal graphics/entrenadores/mira_platinum/mira_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/misty_hgss/front.png graphics/entrenadores/misty_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/misty_hgss/misty_hgss.pal graphics/entrenadores/misty_hgss/misty_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/morty_hgss/front.png graphics/entrenadores/morty_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/morty_hgss/morty_hgss.pal graphics/entrenadores/morty_hgss/morty_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/ninja_boy_hgss/front.png graphics/entrenadores/ninja_boy_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/ninja_boy_hgss/ninja_boy_hgss.pal graphics/entrenadores/ninja_boy_hgss/ninja_boy_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/ninja_boy_platinum/front.png graphics/entrenadores/ninja_boy_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/ninja_boy_platinum/ninja_boy_platinum.pal graphics/entrenadores/ninja_boy_platinum/ninja_boy_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/palmer_hgss/front.png graphics/entrenadores/palmer_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/palmer_hgss/palmer_hgss.pal graphics/entrenadores/palmer_hgss/palmer_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/palmer_platinum/front.png graphics/entrenadores/palmer_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/palmer_platinum/palmer_platinum.pal graphics/entrenadores/palmer_platinum/palmer_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/parasol_lady_hgss/front.png graphics/entrenadores/parasol_lady_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/parasol_lady_hgss/parasol_lady_hgss.pal graphics/entrenadores/parasol_lady_hgss/parasol_lady_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/parasol_lady_platinum/front.png graphics/entrenadores/parasol_lady_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/parasol_lady_platinum/parasol_lady_platinum.pal graphics/entrenadores/parasol_lady_platinum/parasol_lady_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/petrel_hgss/front.png graphics/entrenadores/petrel_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/petrel_hgss/petrel_hgss.pal graphics/entrenadores/petrel_hgss/petrel_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/pi_hgss/front.png graphics/entrenadores/pi_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/pi_hgss/pi_hgss.pal graphics/entrenadores/pi_hgss/pi_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/pi_platinum/front.png graphics/entrenadores/pi_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/pi_platinum/pi_platinum.pal graphics/entrenadores/pi_platinum/pi_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/picnicker_hgss/front.png graphics/entrenadores/picnicker_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/picnicker_hgss/picnicker_hgss.pal graphics/entrenadores/picnicker_hgss/picnicker_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/picnicker_platinum/front.png graphics/entrenadores/picnicker_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/picnicker_platinum/picnicker_platinum.pal graphics/entrenadores/picnicker_platinum/picnicker_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/picnicker_unused_hgss/front.png graphics/entrenadores/picnicker_unused_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/picnicker_unused_hgss/picnicker_unused_hgss.pal graphics/entrenadores/picnicker_unused_hgss/picnicker_unused_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/poke_kid_hgss/front.png graphics/entrenadores/poke_kid_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/poke_kid_hgss/poke_kid_hgss.pal graphics/entrenadores/poke_kid_hgss/poke_kid_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/poke_kid_platinum/front.png graphics/entrenadores/poke_kid_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/poke_kid_platinum/poke_kid_platinum.pal graphics/entrenadores/poke_kid_platinum/poke_kid_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/poke_kid_unused_hgss/front.png graphics/entrenadores/poke_kid_unused_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/poke_kid_unused_hgss/poke_kid_unused_hgss.pal graphics/entrenadores/poke_kid_unused_hgss/poke_kid_unused_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/poke_maniac_hgss/front.png graphics/entrenadores/poke_maniac_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/poke_maniac_hgss/poke_maniac_hgss.pal graphics/entrenadores/poke_maniac_hgss/poke_maniac_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/pokefan_f_hgss/front.png graphics/entrenadores/pokefan_f_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/pokefan_f_hgss/pokefan_f_hgss.pal graphics/entrenadores/pokefan_f_hgss/pokefan_f_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/pokefan_f_platinum/front.png graphics/entrenadores/pokefan_f_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/pokefan_f_platinum/pokefan_f_platinum.pal graphics/entrenadores/pokefan_f_platinum/pokefan_f_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/pokefan_m_hgss/front.png graphics/entrenadores/pokefan_m_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/pokefan_m_hgss/pokefan_m_hgss.pal graphics/entrenadores/pokefan_m_hgss/pokefan_m_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/pokefan_m_platinum/front.png graphics/entrenadores/pokefan_m_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/pokefan_m_platinum/pokefan_m_platinum.pal graphics/entrenadores/pokefan_m_platinum/pokefan_m_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_breeder_f_hgss/front.png graphics/entrenadores/pokemon_breeder_f_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_breeder_f_hgss/pokemon_breeder_f_hgss.pal graphics/entrenadores/pokemon_breeder_f_hgss/pokemon_breeder_f_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_breeder_f_platinum/front.png graphics/entrenadores/pokemon_breeder_f_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_breeder_f_platinum/pokemon_breeder_f_platinum.pal graphics/entrenadores/pokemon_breeder_f_platinum/pokemon_breeder_f_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_breeder_m_hgss/front.png graphics/entrenadores/pokemon_breeder_m_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_breeder_m_hgss/pokemon_breeder_m_hgss.pal graphics/entrenadores/pokemon_breeder_m_hgss/pokemon_breeder_m_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_breeder_m_platinum/front.png graphics/entrenadores/pokemon_breeder_m_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_breeder_m_platinum/pokemon_breeder_m_platinum.pal graphics/entrenadores/pokemon_breeder_m_platinum/pokemon_breeder_m_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_ranger_f_hgss/front.png graphics/entrenadores/pokemon_ranger_f_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_ranger_f_hgss/pokemon_ranger_f_hgss.pal graphics/entrenadores/pokemon_ranger_f_hgss/pokemon_ranger_f_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_ranger_f_platinum/front.png graphics/entrenadores/pokemon_ranger_f_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_ranger_f_platinum/pokemon_ranger_f_platinum.pal graphics/entrenadores/pokemon_ranger_f_platinum/pokemon_ranger_f_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_ranger_m_hgss/front.png graphics/entrenadores/pokemon_ranger_m_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_ranger_m_hgss/pokemon_ranger_m_hgss.pal graphics/entrenadores/pokemon_ranger_m_hgss/pokemon_ranger_m_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_ranger_m_platinum/front.png graphics/entrenadores/pokemon_ranger_m_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_ranger_m_platinum/pokemon_ranger_m_platinum.pal graphics/entrenadores/pokemon_ranger_m_platinum/pokemon_ranger_m_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/policeman_hgss/front.png graphics/entrenadores/policeman_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/policeman_hgss/policeman_hgss.pal graphics/entrenadores/policeman_hgss/policeman_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/policeman_platinum/front.png graphics/entrenadores/policeman_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/policeman_platinum/policeman_platinum.pal graphics/entrenadores/policeman_platinum/policeman_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/proton_hgss/front.png graphics/entrenadores/proton_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/proton_hgss/proton_hgss.pal graphics/entrenadores/proton_hgss/proton_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/pryce_hgss/front.png graphics/entrenadores/pryce_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/pryce_hgss/pryce_hgss.pal graphics/entrenadores/pryce_hgss/pryce_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/psychic_f_hgss/front.png graphics/entrenadores/psychic_f_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/psychic_f_hgss/psychic_f_hgss.pal graphics/entrenadores/psychic_f_hgss/psychic_f_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/psychic_f_platinum/front.png graphics/entrenadores/psychic_f_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/psychic_f_platinum/psychic_f_platinum.pal graphics/entrenadores/psychic_f_platinum/psychic_f_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/psychic_m_hgss/front.png graphics/entrenadores/psychic_m_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/psychic_m_hgss/psychic_m_hgss.pal graphics/entrenadores/psychic_m_hgss/psychic_m_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/psychic_m_platinum/front.png graphics/entrenadores/psychic_m_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/psychic_m_platinum/psychic_m_platinum.pal graphics/entrenadores/psychic_m_platinum/psychic_m_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/rancher_hgss/front.png graphics/entrenadores/rancher_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/rancher_hgss/rancher_hgss.pal graphics/entrenadores/rancher_hgss/rancher_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/rancher_platinum/front.png graphics/entrenadores/rancher_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/rancher_platinum/rancher_platinum.pal graphics/entrenadores/rancher_platinum/rancher_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/red_hgss/front.png graphics/entrenadores/red_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/red_hgss/red_hgss.pal graphics/entrenadores/red_hgss/red_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/reporter_hgss/front.png graphics/entrenadores/reporter_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/reporter_hgss/reporter_hgss.pal graphics/entrenadores/reporter_hgss/reporter_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/reporter_platinum/front.png graphics/entrenadores/reporter_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/reporter_platinum/reporter_platinum.pal graphics/entrenadores/reporter_platinum/reporter_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/rich_boy_hgss/front.png graphics/entrenadores/rich_boy_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/rich_boy_hgss/rich_boy_hgss.pal graphics/entrenadores/rich_boy_hgss/rich_boy_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/rich_boy_platinum/front.png graphics/entrenadores/rich_boy_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/rich_boy_platinum/rich_boy_platinum.pal graphics/entrenadores/rich_boy_platinum/rich_boy_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/rich_boy_unused_hgss/front.png graphics/entrenadores/rich_boy_unused_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/rich_boy_unused_hgss/rich_boy_unused_hgss.pal graphics/entrenadores/rich_boy_unused_hgss/rich_boy_unused_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/riley_platinum/front.png graphics/entrenadores/riley_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/riley_platinum/riley_platinum.pal graphics/entrenadores/riley_platinum/riley_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/roark_platinum/front.png graphics/entrenadores/roark_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/roark_platinum/roark_platinum.pal graphics/entrenadores/roark_platinum/roark_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/rocket_grunt_f_hgss/front.png graphics/entrenadores/rocket_grunt_f_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/rocket_grunt_f_hgss/rocket_grunt_f_hgss.pal graphics/entrenadores/rocket_grunt_f_hgss/rocket_grunt_f_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/rocket_grunt_m_hgss/front.png graphics/entrenadores/rocket_grunt_m_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/rocket_grunt_m_hgss/rocket_grunt_m_hgss.pal graphics/entrenadores/rocket_grunt_m_hgss/rocket_grunt_m_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/roughneck_hgss/front.png graphics/entrenadores/roughneck_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/roughneck_hgss/roughneck_hgss.pal graphics/entrenadores/roughneck_hgss/roughneck_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/roughneck_platinum/front.png graphics/entrenadores/roughneck_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/roughneck_platinum/roughneck_platinum.pal graphics/entrenadores/roughneck_platinum/roughneck_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/ruin_maniac_hgss/front.png graphics/entrenadores/ruin_maniac_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/ruin_maniac_hgss/ruin_maniac_hgss.pal graphics/entrenadores/ruin_maniac_hgss/ruin_maniac_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/ruin_maniac_platinum/front.png graphics/entrenadores/ruin_maniac_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/ruin_maniac_platinum/ruin_maniac_platinum.pal graphics/entrenadores/ruin_maniac_platinum/ruin_maniac_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/sabrina_hgss/front.png graphics/entrenadores/sabrina_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/sabrina_hgss/sabrina_hgss.pal graphics/entrenadores/sabrina_hgss/sabrina_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/sage_hgss/front.png graphics/entrenadores/sage_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/sage_hgss/sage_hgss.pal graphics/entrenadores/sage_hgss/sage_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/sage_korean_hgss/front.png graphics/entrenadores/sage_korean_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/sage_korean_hgss/sage_korean_hgss.pal graphics/entrenadores/sage_korean_hgss/sage_korean_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/sailor_hgss/front.png graphics/entrenadores/sailor_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/sailor_hgss/sailor_hgss.pal graphics/entrenadores/sailor_hgss/sailor_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/sailor_platinum/front.png graphics/entrenadores/sailor_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/sailor_platinum/sailor_platinum.pal graphics/entrenadores/sailor_platinum/sailor_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/saturn_platinum/front.png graphics/entrenadores/saturn_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/saturn_platinum/saturn_platinum.pal graphics/entrenadores/saturn_platinum/saturn_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/school_kid_f_hgss/front.png graphics/entrenadores/school_kid_f_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/school_kid_f_hgss/school_kid_f_hgss.pal graphics/entrenadores/school_kid_f_hgss/school_kid_f_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/school_kid_f_platinum/front.png graphics/entrenadores/school_kid_f_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/school_kid_f_platinum/school_kid_f_platinum.pal graphics/entrenadores/school_kid_f_platinum/school_kid_f_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/school_kid_m_hgss/front.png graphics/entrenadores/school_kid_m_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/school_kid_m_hgss/school_kid_m_hgss.pal graphics/entrenadores/school_kid_m_hgss/school_kid_m_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/school_kid_m_platinum/front.png graphics/entrenadores/school_kid_m_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/school_kid_m_platinum/school_kid_m_platinum.pal graphics/entrenadores/school_kid_m_platinum/school_kid_m_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/scientist_hgss/front.png graphics/entrenadores/scientist_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/scientist_hgss/scientist_hgss.pal graphics/entrenadores/scientist_hgss/scientist_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/scientist_johto_hgss/front.png graphics/entrenadores/scientist_johto_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/scientist_johto_hgss/scientist_johto_hgss.pal graphics/entrenadores/scientist_johto_hgss/scientist_johto_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/scientist_platinum/front.png graphics/entrenadores/scientist_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/scientist_platinum/scientist_platinum.pal graphics/entrenadores/scientist_platinum/scientist_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/silver_hgss/front.png graphics/entrenadores/silver_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/silver_hgss/silver_hgss.pal graphics/entrenadores/silver_hgss/silver_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/silver_unused_hgss/front.png graphics/entrenadores/silver_unused_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/silver_unused_hgss/silver_unused_hgss.pal graphics/entrenadores/silver_unused_hgss/silver_unused_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/sis_and_bro_unused_censored_platinum/front.png graphics/entrenadores/sis_and_bro_unused_censored_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/sis_and_bro_unused_censored_platinum/sis_and_bro_unused_censored_platinum.pal graphics/entrenadores/sis_and_bro_unused_censored_platinum/sis_and_bro_unused_censored_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/sis_and_bro_unused_platinum/front.png graphics/entrenadores/sis_and_bro_unused_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/sis_and_bro_unused_platinum/sis_and_bro_unused_platinum.pal graphics/entrenadores/sis_and_bro_unused_platinum/sis_and_bro_unused_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/skier_f_hgss/front.png graphics/entrenadores/skier_f_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/skier_f_hgss/skier_f_hgss.pal graphics/entrenadores/skier_f_hgss/skier_f_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/skier_f_platinum/front.png graphics/entrenadores/skier_f_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/skier_f_platinum/skier_f_platinum.pal graphics/entrenadores/skier_f_platinum/skier_f_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/skier_m_platinum/front.png graphics/entrenadores/skier_m_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/skier_m_platinum/skier_m_platinum.pal graphics/entrenadores/skier_m_platinum/skier_m_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/socialite_hgss/front.png graphics/entrenadores/socialite_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/socialite_hgss/socialite_hgss.pal graphics/entrenadores/socialite_hgss/socialite_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/socialite_platinum/front.png graphics/entrenadores/socialite_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/socialite_platinum/socialite_platinum.pal graphics/entrenadores/socialite_platinum/socialite_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/super_nerd_hgss/front.png graphics/entrenadores/super_nerd_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/super_nerd_hgss/super_nerd_hgss.pal graphics/entrenadores/super_nerd_hgss/super_nerd_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/swimmer_f_hgss/front.png graphics/entrenadores/swimmer_f_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/swimmer_f_hgss/swimmer_f_hgss.pal graphics/entrenadores/swimmer_f_hgss/swimmer_f_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/swimmer_f_platinum/front.png graphics/entrenadores/swimmer_f_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/swimmer_f_platinum/swimmer_f_platinum.pal graphics/entrenadores/swimmer_f_platinum/swimmer_f_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/swimmer_m_censored_hgss/front.png graphics/entrenadores/swimmer_m_censored_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/swimmer_m_censored_hgss/swimmer_m_censored_hgss.pal graphics/entrenadores/swimmer_m_censored_hgss/swimmer_m_censored_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/swimmer_m_censored_platinum/front.png graphics/entrenadores/swimmer_m_censored_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/swimmer_m_censored_platinum/swimmer_m_censored_platinum.pal graphics/entrenadores/swimmer_m_censored_platinum/swimmer_m_censored_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/swimmer_m_hgss/front.png graphics/entrenadores/swimmer_m_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/swimmer_m_hgss/swimmer_m_hgss.pal graphics/entrenadores/swimmer_m_hgss/swimmer_m_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/swimmer_m_platinum/front.png graphics/entrenadores/swimmer_m_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/swimmer_m_platinum/swimmer_m_platinum.pal graphics/entrenadores/swimmer_m_platinum/swimmer_m_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/teacher_hgss/front.png graphics/entrenadores/teacher_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/teacher_hgss/teacher_hgss.pal graphics/entrenadores/teacher_hgss/teacher_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/thorton_hgss/front.png graphics/entrenadores/thorton_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/thorton_hgss/thorton_hgss.pal graphics/entrenadores/thorton_hgss/thorton_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/thorton_platinum/front.png graphics/entrenadores/thorton_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/thorton_platinum/thorton_platinum.pal graphics/entrenadores/thorton_platinum/thorton_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/tuber_f_hgss/front.png graphics/entrenadores/tuber_f_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/tuber_f_hgss/tuber_f_hgss.pal graphics/entrenadores/tuber_f_hgss/tuber_f_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/tuber_f_platinum/front.png graphics/entrenadores/tuber_f_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/tuber_f_platinum/tuber_f_platinum.pal graphics/entrenadores/tuber_f_platinum/tuber_f_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/tuber_m_hgss/front.png graphics/entrenadores/tuber_m_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/tuber_m_hgss/tuber_m_hgss.pal graphics/entrenadores/tuber_m_hgss/tuber_m_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/tuber_m_platinum/front.png graphics/entrenadores/tuber_m_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/tuber_m_platinum/tuber_m_platinum.pal graphics/entrenadores/tuber_m_platinum/tuber_m_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/twins_hgss/front.png graphics/entrenadores/twins_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/twins_hgss/twins_hgss.pal graphics/entrenadores/twins_hgss/twins_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/twins_platinum/front.png graphics/entrenadores/twins_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/twins_platinum/twins_platinum.pal graphics/entrenadores/twins_platinum/twins_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/veteran_hgss/front.png graphics/entrenadores/veteran_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/veteran_hgss/veteran_hgss.pal graphics/entrenadores/veteran_hgss/veteran_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/veteran_platinum/front.png graphics/entrenadores/veteran_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/veteran_platinum/veteran_platinum.pal graphics/entrenadores/veteran_platinum/veteran_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/volkner_platinum/front.png graphics/entrenadores/volkner_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/volkner_platinum/volkner_platinum.pal graphics/entrenadores/volkner_platinum/volkner_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/waiter_hgss/front.png graphics/entrenadores/waiter_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/waiter_hgss/waiter_hgss.pal graphics/entrenadores/waiter_hgss/waiter_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/waiter_platinum/front.png graphics/entrenadores/waiter_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/waiter_platinum/waiter_platinum.pal graphics/entrenadores/waiter_platinum/waiter_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/waitress_hgss/front.png graphics/entrenadores/waitress_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/waitress_hgss/waitress_hgss.pal graphics/entrenadores/waitress_hgss/waitress_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/waitress_platinum/front.png graphics/entrenadores/waitress_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/waitress_platinum/waitress_platinum.pal graphics/entrenadores/waitress_platinum/waitress_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/whitney_hgss/front.png graphics/entrenadores/whitney_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/whitney_hgss/whitney_hgss.pal graphics/entrenadores/whitney_hgss/whitney_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/will_hgss/front.png graphics/entrenadores/will_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/will_hgss/will_hgss.pal graphics/entrenadores/will_hgss/will_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/worker_hgss/front.png graphics/entrenadores/worker_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/worker_hgss/worker_hgss.pal graphics/entrenadores/worker_hgss/worker_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/worker_platinum/front.png graphics/entrenadores/worker_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/worker_platinum/worker_platinum.pal graphics/entrenadores/worker_platinum/worker_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/young_couple_hgss/front.png graphics/entrenadores/young_couple_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/young_couple_hgss/young_couple_hgss.pal graphics/entrenadores/young_couple_hgss/young_couple_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/young_couple_platinum/front.png graphics/entrenadores/young_couple_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/young_couple_platinum/young_couple_platinum.pal graphics/entrenadores/young_couple_platinum/young_couple_platinum.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/youngster_hgss/front.png graphics/entrenadores/youngster_hgss/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/youngster_hgss/youngster_hgss.pal graphics/entrenadores/youngster_hgss/youngster_hgss.gbapal
+tools/gbagfx/gbagfx graphics/entrenadores/youngster_platinum/front.png graphics/entrenadores/youngster_platinum/front.4bpp -mwidth 10 -mheight 10
+tools/gbagfx/gbagfx graphics/entrenadores/youngster_platinum/youngster_platinum.pal graphics/entrenadores/youngster_platinum/youngster_platinum.gbapal
+tools/preproc/preproc data/battle_scripts.s charmap.txt | arm-none-eabi-cpp -iquote include - | tools/preproc/preproc -ie data/battle_scripts.s charmap.txt | arm-none-eabi-as -mcpu=arm7tdmi --defsym MODERN=1 -o build/modern/data/battle_scripts.o
+tools/gbagfx/gbagfx graphics/entrenadores/aaron_platinum/front.4bpp graphics/entrenadores/aaron_platinum/front.4bpp.lz
+tools/preproc/preproc data/event_scripts.s charmap.txt | arm-none-eabi-cpp -iquote include - | tools/preproc/preproc -ie data/event_scripts.s charmap.txt | arm-none-eabi-as -mcpu=arm7tdmi --defsym MODERN=1 -o build/modern/data/event_scripts.o
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_f_hgss/front.4bpp graphics/entrenadores/ace_trainer_f_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_f_platinum/front.4bpp graphics/entrenadores/ace_trainer_f_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_m_hgss/front.4bpp graphics/entrenadores/ace_trainer_m_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_m_platinum/front.4bpp graphics/entrenadores/ace_trainer_m_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_snow_f_hgss/front.4bpp graphics/entrenadores/ace_trainer_snow_f_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_snow_f_platinum/front.4bpp graphics/entrenadores/ace_trainer_snow_f_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_snow_m_hgss/front.4bpp graphics/entrenadores/ace_trainer_snow_m_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/ace_trainer_snow_m_platinum/front.4bpp graphics/entrenadores/ace_trainer_snow_m_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/archer_hgss/front.4bpp graphics/entrenadores/archer_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/argenta_hgss/front.4bpp graphics/entrenadores/argenta_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/argenta_platinum/front.4bpp graphics/entrenadores/argenta_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/ariana_hgss/front.4bpp graphics/entrenadores/ariana_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/aroma_lady_hgss/front.4bpp graphics/entrenadores/aroma_lady_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/aroma_lady_platinum/front.4bpp graphics/entrenadores/aroma_lady_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/aroma_lady_unused_hgss/front.4bpp graphics/entrenadores/aroma_lady_unused_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/artist_hgss/front.4bpp graphics/entrenadores/artist_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/artist_platinum/front.4bpp graphics/entrenadores/artist_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/barry_47490/front.4bpp graphics/entrenadores/barry_47490/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/barry_platinum/front.4bpp graphics/entrenadores/barry_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/battle_girl_hgss/front.4bpp graphics/entrenadores/battle_girl_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/battle_girl_platinum/front.4bpp graphics/entrenadores/battle_girl_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/beauty_hgss/front.4bpp graphics/entrenadores/beauty_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/beauty_platinum/front.4bpp graphics/entrenadores/beauty_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/belle_and_pa_platinum/front.4bpp graphics/entrenadores/belle_and_pa_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/bertha_platinum/front.4bpp graphics/entrenadores/bertha_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/biker_hgss/front.4bpp graphics/entrenadores/biker_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/bird_keeper_hgss/front.4bpp graphics/entrenadores/bird_keeper_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/bird_keeper_johto_hgss/front.4bpp graphics/entrenadores/bird_keeper_johto_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/bird_keeper_platinum/front.4bpp graphics/entrenadores/bird_keeper_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/black_belt_hgss/front.4bpp graphics/entrenadores/black_belt_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/black_belt_platinum/front.4bpp graphics/entrenadores/black_belt_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/blaine_hgss/front.4bpp graphics/entrenadores/blaine_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/blue_hgss/front.4bpp graphics/entrenadores/blue_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/boarder_hgss/front.4bpp graphics/entrenadores/boarder_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/brock_hgss/front.4bpp graphics/entrenadores/brock_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/bruno_hgss/front.4bpp graphics/entrenadores/bruno_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/buck_platinum/front.4bpp graphics/entrenadores/buck_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/bug_catcher_hgss/front.4bpp graphics/entrenadores/bug_catcher_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/bug_catcher_platinum/front.4bpp graphics/entrenadores/bug_catcher_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/bugsy_hgss/front.4bpp graphics/entrenadores/bugsy_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/burglar_hgss/front.4bpp graphics/entrenadores/burglar_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/byron_platinum/front.4bpp graphics/entrenadores/byron_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/caitlin_hgss/front.4bpp graphics/entrenadores/caitlin_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/caitlin_platinum/front.4bpp graphics/entrenadores/caitlin_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/cameraman_hgss/front.4bpp graphics/entrenadores/cameraman_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/cameraman_platinum/front.4bpp graphics/entrenadores/cameraman_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/camper_hgss/front.4bpp graphics/entrenadores/camper_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/camper_platinum/front.4bpp graphics/entrenadores/camper_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/camper_unused_hgss/front.4bpp graphics/entrenadores/camper_unused_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/candice_platinum/front.4bpp graphics/entrenadores/candice_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/cheryl_platinum/front.4bpp graphics/entrenadores/cheryl_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/chuck_hgss/front.4bpp graphics/entrenadores/chuck_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/clair_hgss/front.4bpp graphics/entrenadores/clair_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/clown_hgss/front.4bpp graphics/entrenadores/clown_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/clown_platinum/front.4bpp graphics/entrenadores/clown_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/collector_hgss/front.4bpp graphics/entrenadores/collector_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/collector_platinum/front.4bpp graphics/entrenadores/collector_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/cowgirl_hgss/front.4bpp graphics/entrenadores/cowgirl_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/cowgirl_platinum/front.4bpp graphics/entrenadores/cowgirl_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/crasher_wake_platinum/front.4bpp graphics/entrenadores/crasher_wake_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/cycler_f_hgss/front.4bpp graphics/entrenadores/cycler_f_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/cycler_f_platinum/front.4bpp graphics/entrenadores/cycler_f_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/cycler_m_hgss/front.4bpp graphics/entrenadores/cycler_m_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/cycler_m_platinum/front.4bpp graphics/entrenadores/cycler_m_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/cynthia_platinum/front.4bpp graphics/entrenadores/cynthia_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/cyrus_platinum/front.4bpp graphics/entrenadores/cyrus_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/dahlia_hgss/front.4bpp graphics/entrenadores/dahlia_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/dahlia_platinum/front.4bpp graphics/entrenadores/dahlia_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/darach_hgss/front.4bpp graphics/entrenadores/darach_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/darach_platinum/front.4bpp graphics/entrenadores/darach_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/dawn_dp_hgss/front.4bpp graphics/entrenadores/dawn_dp_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/dawn_dp_platinum/front.4bpp graphics/entrenadores/dawn_dp_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/dawn_dp_unused_hgss/front.4bpp graphics/entrenadores/dawn_dp_unused_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/dawn_dp_unused_platinum/front.4bpp graphics/entrenadores/dawn_dp_unused_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/dawn_platinum/front.4bpp graphics/entrenadores/dawn_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/dawn_platinum_hgss/front.4bpp graphics/entrenadores/dawn_platinum_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/double_team_hgss/front.4bpp graphics/entrenadores/double_team_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/double_team_platinum/front.4bpp graphics/entrenadores/double_team_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/dragon_tamer_hgss/front.4bpp graphics/entrenadores/dragon_tamer_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/dragon_tamer_platinum/front.4bpp graphics/entrenadores/dragon_tamer_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/elder_hgss/front.4bpp graphics/entrenadores/elder_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/erika_hgss/front.4bpp graphics/entrenadores/erika_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/ethan_hgss/front.4bpp graphics/entrenadores/ethan_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/eusine_hgss/front.4bpp graphics/entrenadores/eusine_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/falkner_hgss/front.4bpp graphics/entrenadores/falkner_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/fantina_platinum/front.4bpp graphics/entrenadores/fantina_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/firebreather_hgss/front.4bpp graphics/entrenadores/firebreather_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/fisher_hgss/front.4bpp graphics/entrenadores/fisher_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/fisher_platinum/front.4bpp graphics/entrenadores/fisher_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/flint_platinum/front.4bpp graphics/entrenadores/flint_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/galactic_grunt_f_platinum/front.4bpp graphics/entrenadores/galactic_grunt_f_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/galactic_grunt_m_platinum/front.4bpp graphics/entrenadores/galactic_grunt_m_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/gardenia_platinum/front.4bpp graphics/entrenadores/gardenia_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/gentleman_hgss/front.4bpp graphics/entrenadores/gentleman_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/gentleman_platinum/front.4bpp graphics/entrenadores/gentleman_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/giovanni_hgss/front.4bpp graphics/entrenadores/giovanni_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/guitarist_hgss/front.4bpp graphics/entrenadores/guitarist_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/guitarist_platinum/front.4bpp graphics/entrenadores/guitarist_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/hiker_hgss/front.4bpp graphics/entrenadores/hiker_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/hiker_platinum/front.4bpp graphics/entrenadores/hiker_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/idol_hgss/front.4bpp graphics/entrenadores/idol_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/idol_platinum/front.4bpp graphics/entrenadores/idol_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/interviewers_platinum/front.4bpp graphics/entrenadores/interviewers_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/janine_hgss/front.4bpp graphics/entrenadores/janine_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/jasmine_hgss/front.4bpp graphics/entrenadores/jasmine_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/jogger_hgss/front.4bpp graphics/entrenadores/jogger_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/jogger_platinum/front.4bpp graphics/entrenadores/jogger_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/juggler_hgss/front.4bpp graphics/entrenadores/juggler_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/jupiter_platinum/front.4bpp graphics/entrenadores/jupiter_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/karen_hgss/front.4bpp graphics/entrenadores/karen_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/kimono_girl_hgss/front.4bpp graphics/entrenadores/kimono_girl_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/koga_hgss/front.4bpp graphics/entrenadores/koga_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/lady_hgss/front.4bpp graphics/entrenadores/lady_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/lady_platinum/front.4bpp graphics/entrenadores/lady_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/lance_hgss/front.4bpp graphics/entrenadores/lance_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/lass_hgss/front.4bpp graphics/entrenadores/lass_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/lass_platinum/front.4bpp graphics/entrenadores/lass_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/lt_surge_hgss/front.4bpp graphics/entrenadores/lt_surge_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/lucas_dp_hgss/front.4bpp graphics/entrenadores/lucas_dp_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/lucas_dp_platinum/front.4bpp graphics/entrenadores/lucas_dp_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/lucas_dp_unused_hgss/front.4bpp graphics/entrenadores/lucas_dp_unused_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/lucas_dp_unused_platinum/front.4bpp graphics/entrenadores/lucas_dp_unused_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/lucas_platinum/front.4bpp graphics/entrenadores/lucas_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/lucas_platinum_hgss/front.4bpp graphics/entrenadores/lucas_platinum_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/lucian_platinum/front.4bpp graphics/entrenadores/lucian_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/lyra_hgss/front.4bpp graphics/entrenadores/lyra_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/maid_platinum/front.4bpp graphics/entrenadores/maid_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/marley_platinum/front.4bpp graphics/entrenadores/marley_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/mars_platinum/front.4bpp graphics/entrenadores/mars_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/maylene_platinum/front.4bpp graphics/entrenadores/maylene_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/medium_hgss/front.4bpp graphics/entrenadores/medium_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/mira_platinum/front.4bpp graphics/entrenadores/mira_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/misty_hgss/front.4bpp graphics/entrenadores/misty_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/morty_hgss/front.4bpp graphics/entrenadores/morty_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/ninja_boy_hgss/front.4bpp graphics/entrenadores/ninja_boy_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/ninja_boy_platinum/front.4bpp graphics/entrenadores/ninja_boy_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/palmer_hgss/front.4bpp graphics/entrenadores/palmer_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/palmer_platinum/front.4bpp graphics/entrenadores/palmer_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/parasol_lady_hgss/front.4bpp graphics/entrenadores/parasol_lady_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/parasol_lady_platinum/front.4bpp graphics/entrenadores/parasol_lady_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/petrel_hgss/front.4bpp graphics/entrenadores/petrel_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/pi_hgss/front.4bpp graphics/entrenadores/pi_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/pi_platinum/front.4bpp graphics/entrenadores/pi_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/picnicker_hgss/front.4bpp graphics/entrenadores/picnicker_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/picnicker_platinum/front.4bpp graphics/entrenadores/picnicker_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/picnicker_unused_hgss/front.4bpp graphics/entrenadores/picnicker_unused_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/poke_kid_hgss/front.4bpp graphics/entrenadores/poke_kid_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/poke_kid_platinum/front.4bpp graphics/entrenadores/poke_kid_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/poke_kid_unused_hgss/front.4bpp graphics/entrenadores/poke_kid_unused_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/poke_maniac_hgss/front.4bpp graphics/entrenadores/poke_maniac_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/pokefan_f_hgss/front.4bpp graphics/entrenadores/pokefan_f_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/pokefan_f_platinum/front.4bpp graphics/entrenadores/pokefan_f_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/pokefan_m_hgss/front.4bpp graphics/entrenadores/pokefan_m_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/pokefan_m_platinum/front.4bpp graphics/entrenadores/pokefan_m_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_breeder_f_hgss/front.4bpp graphics/entrenadores/pokemon_breeder_f_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_breeder_f_platinum/front.4bpp graphics/entrenadores/pokemon_breeder_f_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_breeder_m_hgss/front.4bpp graphics/entrenadores/pokemon_breeder_m_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_breeder_m_platinum/front.4bpp graphics/entrenadores/pokemon_breeder_m_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_ranger_f_hgss/front.4bpp graphics/entrenadores/pokemon_ranger_f_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_ranger_f_platinum/front.4bpp graphics/entrenadores/pokemon_ranger_f_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_ranger_m_hgss/front.4bpp graphics/entrenadores/pokemon_ranger_m_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/pokemon_ranger_m_platinum/front.4bpp graphics/entrenadores/pokemon_ranger_m_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/policeman_hgss/front.4bpp graphics/entrenadores/policeman_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/policeman_platinum/front.4bpp graphics/entrenadores/policeman_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/proton_hgss/front.4bpp graphics/entrenadores/proton_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/pryce_hgss/front.4bpp graphics/entrenadores/pryce_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/psychic_f_hgss/front.4bpp graphics/entrenadores/psychic_f_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/psychic_f_platinum/front.4bpp graphics/entrenadores/psychic_f_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/psychic_m_hgss/front.4bpp graphics/entrenadores/psychic_m_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/psychic_m_platinum/front.4bpp graphics/entrenadores/psychic_m_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/rancher_hgss/front.4bpp graphics/entrenadores/rancher_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/rancher_platinum/front.4bpp graphics/entrenadores/rancher_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/red_hgss/front.4bpp graphics/entrenadores/red_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/reporter_hgss/front.4bpp graphics/entrenadores/reporter_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/reporter_platinum/front.4bpp graphics/entrenadores/reporter_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/rich_boy_hgss/front.4bpp graphics/entrenadores/rich_boy_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/rich_boy_platinum/front.4bpp graphics/entrenadores/rich_boy_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/rich_boy_unused_hgss/front.4bpp graphics/entrenadores/rich_boy_unused_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/riley_platinum/front.4bpp graphics/entrenadores/riley_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/roark_platinum/front.4bpp graphics/entrenadores/roark_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/rocket_grunt_f_hgss/front.4bpp graphics/entrenadores/rocket_grunt_f_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/rocket_grunt_m_hgss/front.4bpp graphics/entrenadores/rocket_grunt_m_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/roughneck_hgss/front.4bpp graphics/entrenadores/roughneck_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/roughneck_platinum/front.4bpp graphics/entrenadores/roughneck_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/ruin_maniac_hgss/front.4bpp graphics/entrenadores/ruin_maniac_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/ruin_maniac_platinum/front.4bpp graphics/entrenadores/ruin_maniac_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/sabrina_hgss/front.4bpp graphics/entrenadores/sabrina_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/sage_hgss/front.4bpp graphics/entrenadores/sage_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/sage_korean_hgss/front.4bpp graphics/entrenadores/sage_korean_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/sailor_hgss/front.4bpp graphics/entrenadores/sailor_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/sailor_platinum/front.4bpp graphics/entrenadores/sailor_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/saturn_platinum/front.4bpp graphics/entrenadores/saturn_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/school_kid_f_hgss/front.4bpp graphics/entrenadores/school_kid_f_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/school_kid_f_platinum/front.4bpp graphics/entrenadores/school_kid_f_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/school_kid_m_hgss/front.4bpp graphics/entrenadores/school_kid_m_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/school_kid_m_platinum/front.4bpp graphics/entrenadores/school_kid_m_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/scientist_hgss/front.4bpp graphics/entrenadores/scientist_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/scientist_johto_hgss/front.4bpp graphics/entrenadores/scientist_johto_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/scientist_platinum/front.4bpp graphics/entrenadores/scientist_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/silver_hgss/front.4bpp graphics/entrenadores/silver_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/silver_unused_hgss/front.4bpp graphics/entrenadores/silver_unused_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/sis_and_bro_unused_censored_platinum/front.4bpp graphics/entrenadores/sis_and_bro_unused_censored_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/sis_and_bro_unused_platinum/front.4bpp graphics/entrenadores/sis_and_bro_unused_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/skier_f_hgss/front.4bpp graphics/entrenadores/skier_f_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/skier_f_platinum/front.4bpp graphics/entrenadores/skier_f_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/skier_m_platinum/front.4bpp graphics/entrenadores/skier_m_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/socialite_hgss/front.4bpp graphics/entrenadores/socialite_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/socialite_platinum/front.4bpp graphics/entrenadores/socialite_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/super_nerd_hgss/front.4bpp graphics/entrenadores/super_nerd_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/swimmer_f_hgss/front.4bpp graphics/entrenadores/swimmer_f_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/swimmer_f_platinum/front.4bpp graphics/entrenadores/swimmer_f_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/swimmer_m_censored_hgss/front.4bpp graphics/entrenadores/swimmer_m_censored_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/swimmer_m_censored_platinum/front.4bpp graphics/entrenadores/swimmer_m_censored_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/swimmer_m_hgss/front.4bpp graphics/entrenadores/swimmer_m_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/swimmer_m_platinum/front.4bpp graphics/entrenadores/swimmer_m_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/teacher_hgss/front.4bpp graphics/entrenadores/teacher_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/thorton_hgss/front.4bpp graphics/entrenadores/thorton_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/thorton_platinum/front.4bpp graphics/entrenadores/thorton_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/tuber_f_hgss/front.4bpp graphics/entrenadores/tuber_f_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/tuber_f_platinum/front.4bpp graphics/entrenadores/tuber_f_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/tuber_m_hgss/front.4bpp graphics/entrenadores/tuber_m_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/tuber_m_platinum/front.4bpp graphics/entrenadores/tuber_m_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/twins_hgss/front.4bpp graphics/entrenadores/twins_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/twins_platinum/front.4bpp graphics/entrenadores/twins_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/veteran_hgss/front.4bpp graphics/entrenadores/veteran_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/veteran_platinum/front.4bpp graphics/entrenadores/veteran_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/volkner_platinum/front.4bpp graphics/entrenadores/volkner_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/waiter_hgss/front.4bpp graphics/entrenadores/waiter_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/waiter_platinum/front.4bpp graphics/entrenadores/waiter_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/waitress_hgss/front.4bpp graphics/entrenadores/waitress_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/waitress_platinum/front.4bpp graphics/entrenadores/waitress_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/whitney_hgss/front.4bpp graphics/entrenadores/whitney_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/will_hgss/front.4bpp graphics/entrenadores/will_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/worker_hgss/front.4bpp graphics/entrenadores/worker_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/worker_platinum/front.4bpp graphics/entrenadores/worker_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/young_couple_hgss/front.4bpp graphics/entrenadores/young_couple_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/young_couple_platinum/front.4bpp graphics/entrenadores/young_couple_platinum/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/youngster_hgss/front.4bpp graphics/entrenadores/youngster_hgss/front.4bpp.lz
+tools/gbagfx/gbagfx graphics/entrenadores/youngster_platinum/front.4bpp graphics/entrenadores/youngster_platinum/front.4bpp.lz
+CC src/graphics.c
+arm-none-eabi-ld: warning: ../../albor.elf has a LOAD segment with RWX permissions
+Memory region         Used Size  Region Size  %age Used
+           EWRAM:       93944 B       256 KB     35.84%
+           IWRAM:       21936 B        32 KB     66.94%
+             ROM:    16499316 B        32 MB     49.17%
+cd build/modern && arm-none-eabi-ld  -T ../../ld_script.ld --print-memory-usage -o ../../albor.elf <objs> <libs> | cat
+tools/gbafix/gbafix albor.elf -t"POKEMON EMER" -cBPEE -m01 -r0 --silent
+arm-none-eabi-objcopy -O binary albor.elf albor.gba
+tools/gbafix/gbafix albor.gba -p --silent

@@ -1,0 +1,812 @@
+{
+  "id": "byron_platinum",
+  "name": "Byron",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/byron_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 3,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "byron_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      80,
+      64,
+      40
+    ],
+    [
+      80,
+      80,
+      96
+    ],
+    [
+      96,
+      64,
+      88
+    ],
+    [
+      104,
+      88,
+      72
+    ],
+    [
+      128,
+      120,
+      128
+    ],
+    [
+      136,
+      80,
+      112
+    ],
+    [
+      144,
+      120,
+      104
+    ],
+    [
+      160,
+      152,
+      160
+    ],
+    [
+      168,
+      112,
+      144
+    ],
+    [
+      184,
+      184,
+      192
+    ],
+    [
+      208,
+      160,
+      120
+    ],
+    [
+      224,
+      200,
+      104
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      248,
+      208,
+      184
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 15,
+    "colores_modificados": 10,
+    "pixeles_modificados": 2717,
+    "pixeles_opacos": 3628,
+    "delta_e_medio": 6.74,
+    "delta_e_maximo": 14.112,
+    "conversiones": [
+      {
+        "original": [
+          48,
+          48,
+          64
+        ],
+        "adaptado": [
+          80,
+          80,
+          96
+        ],
+        "pixeles": 73,
+        "delta_e_76": 14.112
+      },
+      {
+        "original": [
+          80,
+          64,
+          48
+        ],
+        "adaptado": [
+          80,
+          64,
+          40
+        ],
+        "pixeles": 281,
+        "delta_e_76": 4.972
+      },
+      {
+        "original": [
+          80,
+          80,
+          88
+        ],
+        "adaptado": [
+          80,
+          80,
+          96
+        ],
+        "pixeles": 63,
+        "delta_e_76": 5.013
+      },
+      {
+        "original": [
+          112,
+          64,
+          72
+        ],
+        "adaptado": [
+          96,
+          64,
+          88
+        ],
+        "pixeles": 600,
+        "delta_e_76": 13.532
+      },
+      {
+        "original": [
+          112,
+          96,
+          80
+        ],
+        "adaptado": [
+          104,
+          88,
+          72
+        ],
+        "pixeles": 206,
+        "delta_e_76": 3.302
+      },
+      {
+        "original": [
+          160,
+          88,
+          128
+        ],
+        "adaptado": [
+          136,
+          80,
+          112
+        ],
+        "pixeles": 1308,
+        "delta_e_76": 8.813
+      },
+      {
+        "original": [
+          176,
+          160,
+          168
+        ],
+        "adaptado": [
+          160,
+          152,
+          160
+        ],
+        "pixeles": 17,
+        "delta_e_76": 4.787
+      },
+      {
+        "original": [
+          192,
+          192,
+          208
+        ],
+        "adaptado": [
+          184,
+          184,
+          192
+        ],
+        "pixeles": 27,
+        "delta_e_76": 5.286
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          208,
+          160,
+          120
+        ],
+        "pixeles": 126,
+        "delta_e_76": 7.44
+      },
+      {
+        "original": [
+          232,
+          192,
+          72
+        ],
+        "adaptado": [
+          224,
+          200,
+          104
+        ],
+        "pixeles": 16,
+        "delta_e_76": 13.9
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": true,
+    "order": [
+      0,
+      1,
+      2
+    ],
+    "durations_ticks": [
+      12,
+      12,
+      24
+    ],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "byron_platinum",
+    "name": "Byron",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          244,
+          802,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            80,
+            64,
+            40
+          ],
+          [
+            80,
+            80,
+            96
+          ],
+          [
+            96,
+            64,
+            88
+          ],
+          [
+            104,
+            88,
+            72
+          ],
+          [
+            128,
+            120,
+            128
+          ],
+          [
+            136,
+            80,
+            112
+          ],
+          [
+            144,
+            120,
+            104
+          ],
+          [
+            160,
+            152,
+            160
+          ],
+          [
+            168,
+            112,
+            144
+          ],
+          [
+            184,
+            184,
+            192
+          ],
+          [
+            208,
+            160,
+            120
+          ],
+          [
+            224,
+            200,
+            104
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "a8a230033af28bcfe87ebc35670e2af720cfca050141a57c276b5d083baaeb2f"
+      },
+      {
+        "rect": [
+          325,
+          802,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            80,
+            64,
+            40
+          ],
+          [
+            80,
+            80,
+            96
+          ],
+          [
+            96,
+            64,
+            88
+          ],
+          [
+            104,
+            88,
+            72
+          ],
+          [
+            128,
+            120,
+            128
+          ],
+          [
+            136,
+            80,
+            112
+          ],
+          [
+            144,
+            120,
+            104
+          ],
+          [
+            160,
+            152,
+            160
+          ],
+          [
+            168,
+            112,
+            144
+          ],
+          [
+            184,
+            184,
+            192
+          ],
+          [
+            208,
+            160,
+            120
+          ],
+          [
+            224,
+            200,
+            104
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "da353c10ecdad65a10734cf38562f858ba8bc49a1a30acf3e9b7aa8a04041a46"
+      },
+      {
+        "rect": [
+          406,
+          802,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            80,
+            64,
+            40
+          ],
+          [
+            80,
+            80,
+            96
+          ],
+          [
+            96,
+            64,
+            88
+          ],
+          [
+            104,
+            88,
+            72
+          ],
+          [
+            128,
+            120,
+            128
+          ],
+          [
+            136,
+            80,
+            112
+          ],
+          [
+            144,
+            120,
+            104
+          ],
+          [
+            160,
+            152,
+            160
+          ],
+          [
+            168,
+            112,
+            144
+          ],
+          [
+            184,
+            184,
+            192
+          ],
+          [
+            208,
+            160,
+            120
+          ],
+          [
+            224,
+            200,
+            104
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "e4a2ee13f3a1b0da9e28ce67312fd97e39d434fc310405a8281c67c78514eff5"
+      }
+    ],
+    "frame_order": [
+      0,
+      1,
+      2
+    ],
+    "animation_available": true,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        80,
+        64,
+        40
+      ],
+      [
+        80,
+        80,
+        96
+      ],
+      [
+        96,
+        64,
+        88
+      ],
+      [
+        104,
+        88,
+        72
+      ],
+      [
+        128,
+        120,
+        128
+      ],
+      [
+        136,
+        80,
+        112
+      ],
+      [
+        144,
+        120,
+        104
+      ],
+      [
+        160,
+        152,
+        160
+      ],
+      [
+        168,
+        112,
+        144
+      ],
+      [
+        184,
+        184,
+        192
+      ],
+      [
+        208,
+        160,
+        120
+      ],
+      [
+        224,
+        200,
+        104
+      ],
+      [
+        232,
+        232,
+        248
+      ],
+      [
+        248,
+        208,
+        184
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "byron_platinum",
+    "identity": "byron",
+    "name": "Byron",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25790.png",
+    "source_key": "platinum_leader_5",
+    "frames": [
+      {
+        "rect": [
+          225,
+          113,
+          32,
+          32
+        ],
+        "background": [
+          200,
+          232,
+          224
+        ]
+      },
+      {
+        "rect": [
+          225,
+          145,
+          32,
+          32
+        ],
+        "background": [
+          200,
+          232,
+          224
+        ]
+      },
+      {
+        "rect": [
+          225,
+          177,
+          32,
+          32
+        ],
+        "background": [
+          200,
+          232,
+          224
+        ]
+      },
+      {
+        "rect": [
+          225,
+          209,
+          32,
+          32
+        ],
+        "background": [
+          200,
+          232,
+          224
+        ]
+      },
+      {
+        "rect": [
+          225,
+          241,
+          32,
+          32
+        ],
+        "background": [
+          200,
+          232,
+          224
+        ]
+      },
+      {
+        "rect": [
+          225,
+          273,
+          32,
+          32
+        ],
+        "background": [
+          200,
+          232,
+          224
+        ]
+      },
+      {
+        "rect": [
+          225,
+          305,
+          32,
+          32
+        ],
+        "background": [
+          200,
+          232,
+          224
+        ]
+      },
+      {
+        "rect": [
+          225,
+          337,
+          32,
+          32
+        ],
+        "background": [
+          200,
+          232,
+          224
+        ]
+      },
+      {
+        "rect": [
+          225,
+          369,
+          32,
+          32
+        ],
+        "background": [
+          200,
+          232,
+          224
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "byron_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_BYRON_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_BYRON_PLATINUM",
+    "palette": "gPaletaEntrenador_byron_platinum"
+  }
+}

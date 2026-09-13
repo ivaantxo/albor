@@ -4,7 +4,8 @@
       "Bash",
       "Read(//private/tmp/claude-501/**)",
       "Read(//Users/ivanmartinez/Library/Application Support/Code/User/**)",
-      "Read(//Users/ivanmartinez/**)"
+      "Read(//Users/ivanmartinez/**)",
+      "WebFetch(domain:github.com)"
     ],
     "additionalDirectories": [
       "/Users/ivanmartinez"

@@ -1,0 +1,652 @@
+{
+  "id": "hgss_ow_r07_c09",
+  "name": "OW HGSS sin identificar r07 c09",
+  "game": "hgss",
+  "directory": "graphics/entrenadores/cajon_de_sastre/hgss_ow_r07_c09",
+  "has_front": false,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "hgss_ow_r07_c09.pal",
+  "palette_origin": "ow_provisional_sin_front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      56,
+      72,
+      56
+    ],
+    [
+      88,
+      48,
+      80
+    ],
+    [
+      104,
+      184,
+      80
+    ],
+    [
+      120,
+      64,
+      64
+    ],
+    [
+      152,
+      216,
+      136
+    ],
+    [
+      168,
+      40,
+      88
+    ],
+    [
+      168,
+      88,
+      32
+    ],
+    [
+      168,
+      168,
+      216
+    ],
+    [
+      200,
+      72,
+      112
+    ],
+    [
+      216,
+      152,
+      112
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      240,
+      128,
+      152
+    ],
+    [
+      248,
+      176,
+      192
+    ],
+    [
+      248,
+      208,
+      184
+    ]
+  ],
+  "front_colors_unchanged": null,
+  "ow_palette_conversion": {
+    "colores_originales": 15,
+    "colores_modificados": 0,
+    "pixeles_modificados": 0,
+    "pixeles_opacos": 3093,
+    "delta_e_medio": 0.0,
+    "delta_e_maximo": 0.0,
+    "conversiones": []
+  },
+  "missing": [
+    {
+      "grafico": "front",
+      "frame": 0,
+      "motivo": "No hay front identificado para este OW"
+    }
+  ],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": null,
+  "ow_source": {
+    "id": "hgss_ow_r07_c09",
+    "name": "OW HGSS sin identificar r07 c09",
+    "game": "hgss",
+    "source": "entrenadores/26955.png",
+    "source_group": {
+      "row": 7,
+      "column": 9,
+      "rect": [
+        765,
+        768,
+        94,
+        128
+      ]
+    },
+    "identity_status": "unidentified",
+    "confidence": "unidentified",
+    "frames": [
+      {
+        "rect": [
+          765,
+          768,
+          32,
+          31
+        ],
+        "background": [
+          48,
+          160,
+          120
+        ],
+        "backgrounds": [
+          [
+            48,
+            160,
+            120
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_idle",
+        "empty": false,
+        "opaque_bbox": [
+          4,
+          7,
+          27,
+          30
+        ]
+      },
+      {
+        "rect": [
+          797,
+          768,
+          32,
+          31
+        ],
+        "background": [
+          48,
+          160,
+          120
+        ],
+        "backgrounds": [
+          [
+            48,
+            160,
+            120
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_idle",
+        "empty": false,
+        "opaque_bbox": [
+          3,
+          6,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          829,
+          768,
+          30,
+          31
+        ],
+        "background": [
+          48,
+          160,
+          120
+        ],
+        "backgrounds": [
+          [
+            48,
+            160,
+            120
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          4,
+          6,
+          27,
+          31
+        ]
+      },
+      {
+        "rect": [
+          765,
+          800,
+          32,
+          31
+        ],
+        "background": [
+          48,
+          160,
+          120
+        ],
+        "backgrounds": [
+          [
+            48,
+            160,
+            120
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          5,
+          29,
+          30
+        ]
+      },
+      {
+        "rect": [
+          797,
+          800,
+          32,
+          31
+        ],
+        "background": [
+          48,
+          160,
+          120
+        ],
+        "backgrounds": [
+          [
+            48,
+            160,
+            120
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          3,
+          5,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          829,
+          800,
+          30,
+          31
+        ],
+        "background": [
+          48,
+          160,
+          120
+        ],
+        "backgrounds": [
+          [
+            48,
+            160,
+            120
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_idle",
+        "empty": false,
+        "opaque_bbox": [
+          4,
+          7,
+          27,
+          30
+        ]
+      },
+      {
+        "rect": [
+          765,
+          832,
+          32,
+          31
+        ],
+        "background": [
+          48,
+          160,
+          120
+        ],
+        "backgrounds": [
+          [
+            48,
+            160,
+            120
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_idle",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          6,
+          29,
+          30
+        ]
+      },
+      {
+        "rect": [
+          797,
+          832,
+          32,
+          31
+        ],
+        "background": [
+          48,
+          160,
+          120
+        ],
+        "backgrounds": [
+          [
+            48,
+            160,
+            120
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          3,
+          5,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          829,
+          832,
+          30,
+          31
+        ],
+        "background": [
+          48,
+          160,
+          120
+        ],
+        "backgrounds": [
+          [
+            48,
+            160,
+            120
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          4,
+          6,
+          27,
+          31
+        ]
+      },
+      {
+        "rect": [
+          765,
+          864,
+          32,
+          31
+        ],
+        "background": [
+          48,
+          160,
+          120
+        ],
+        "backgrounds": [
+          [
+            48,
+            160,
+            120
+          ],
+          [
+            80,
+            168,
+            80
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          5,
+          29,
+          30
+        ]
+      },
+      {
+        "rect": [
+          797,
+          864,
+          32,
+          31
+        ],
+        "background": [
+          48,
+          160,
+          120
+        ],
+        "backgrounds": [
+          [
+            48,
+            160,
+            120
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          4,
+          6,
+          27,
+          31
+        ]
+      },
+      {
+        "rect": [
+          829,
+          864,
+          30,
+          31
+        ],
+        "background": [
+          48,
+          160,
+          120
+        ],
+        "backgrounds": [
+          [
+            48,
+            160,
+            120
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          4,
+          6,
+          27,
+          31
+        ]
+      }
+    ],
+    "target_order": [
+      5,
+      8,
+      11,
+      0,
+      2,
+      10,
+      6,
+      3,
+      9
+    ],
+    "target_labels": [
+      "south_idle",
+      "south_step_a",
+      "south_step_b",
+      "north_idle",
+      "north_step_a",
+      "north_step_b",
+      "west_idle",
+      "west_step_a",
+      "west_step_b"
+    ],
+    "all_directions_order": [
+      5,
+      8,
+      11,
+      0,
+      2,
+      10,
+      6,
+      3,
+      9,
+      1,
+      4,
+      7
+    ],
+    "east_mirror_of_west": true,
+    "east_art_is_mirrored_west": true,
+    "missing_frames": [],
+    "notes": [
+      "Los doce frames originales están presentes.",
+      "La fila inferior vacía se excluye del rectángulo y se rellena transparente para completar 32×32.",
+      "Niña de pelo rosa y ropa verde/rosa; clase no confirmada."
+    ]
+  },
+  "code": {
+    "front": null,
+    "ow": "OBJ_EVENT_GFX_HGSS_OW_R07_C09",
+    "palette": "gPaletaEntrenador_hgss_ow_r07_c09"
+  }
+}

@@ -1,0 +1,792 @@
+{
+  "id": "fantina_platinum",
+  "name": "Fantina",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/fantina_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 3,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "fantina_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      56,
+      40,
+      40
+    ],
+    [
+      88,
+      72,
+      56
+    ],
+    [
+      120,
+      56,
+      120
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      168,
+      88,
+      160
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      184,
+      152,
+      192
+    ],
+    [
+      200,
+      112,
+      208
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      232,
+      200,
+      232
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      216,
+      96
+    ],
+    [
+      248,
+      248,
+      248
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 12,
+    "colores_modificados": 10,
+    "pixeles_modificados": 2761,
+    "pixeles_opacos": 3409,
+    "delta_e_medio": 10.418,
+    "delta_e_maximo": 22.947,
+    "conversiones": [
+      {
+        "original": [
+          56,
+          32,
+          80
+        ],
+        "adaptado": [
+          120,
+          56,
+          120
+        ],
+        "pixeles": 559,
+        "delta_e_76": 22.435
+      },
+      {
+        "original": [
+          96,
+          48,
+          104
+        ],
+        "adaptado": [
+          120,
+          56,
+          120
+        ],
+        "pixeles": 732,
+        "delta_e_76": 8.727
+      },
+      {
+        "original": [
+          112,
+          112,
+          120
+        ],
+        "adaptado": [
+          88,
+          72,
+          56
+        ],
+        "pixeles": 28,
+        "delta_e_76": 22.947
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 44,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          144,
+          72,
+          160
+        ],
+        "adaptado": [
+          168,
+          88,
+          160
+        ],
+        "pixeles": 1018,
+        "delta_e_76": 12.116
+      },
+      {
+        "original": [
+          176,
+          176,
+          248
+        ],
+        "adaptado": [
+          184,
+          152,
+          192
+        ],
+        "pixeles": 57,
+        "delta_e_76": 21.13
+      },
+      {
+        "original": [
+          184,
+          104,
+          200
+        ],
+        "adaptado": [
+          200,
+          112,
+          208
+        ],
+        "pixeles": 103,
+        "delta_e_76": 4.741
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 150,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          232,
+          232,
+          248
+        ],
+        "adaptado": [
+          248,
+          248,
+          248
+        ],
+        "pixeles": 66,
+        "delta_e_76": 9.744
+      },
+      {
+        "original": [
+          248,
+          184,
+          24
+        ],
+        "adaptado": [
+          248,
+          216,
+          96
+        ],
+        "pixeles": 4,
+        "delta_e_76": 22.849
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": true,
+    "order": [
+      0,
+      1,
+      2
+    ],
+    "durations_ticks": [
+      12,
+      12,
+      24
+    ],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "fantina_platinum",
+    "name": "Fantina",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          1,
+          802,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 14,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            40,
+            40
+          ],
+          [
+            88,
+            72,
+            56
+          ],
+          [
+            120,
+            56,
+            120
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            168,
+            88,
+            160
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            184,
+            152,
+            192
+          ],
+          [
+            200,
+            112,
+            208
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            200,
+            232
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            216,
+            96
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "85d5b8f292ce4b4fa0e178e94832d176ee6d775abee34ab5ba63c3a24a322486"
+      },
+      {
+        "rect": [
+          82,
+          802,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 14,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            40,
+            40
+          ],
+          [
+            88,
+            72,
+            56
+          ],
+          [
+            120,
+            56,
+            120
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            168,
+            88,
+            160
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            184,
+            152,
+            192
+          ],
+          [
+            200,
+            112,
+            208
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            200,
+            232
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            216,
+            96
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "f473166ed8e4f9b09bafa14e5905b08e566fd4492a765424212539b08f5d94c8"
+      },
+      {
+        "rect": [
+          163,
+          802,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 14,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            40,
+            40
+          ],
+          [
+            88,
+            72,
+            56
+          ],
+          [
+            120,
+            56,
+            120
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            168,
+            88,
+            160
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            184,
+            152,
+            192
+          ],
+          [
+            200,
+            112,
+            208
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            200,
+            232
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            216,
+            96
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "f4a8bbd64bef9ad9a6487532d11f39ef876fac85103f123c375740f239132a7d"
+      }
+    ],
+    "frame_order": [
+      0,
+      1,
+      2
+    ],
+    "animation_available": true,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        56,
+        40,
+        40
+      ],
+      [
+        88,
+        72,
+        56
+      ],
+      [
+        120,
+        56,
+        120
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        168,
+        88,
+        160
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        184,
+        152,
+        192
+      ],
+      [
+        200,
+        112,
+        208
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        232,
+        200,
+        232
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        216,
+        96
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 14,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "fantina_platinum",
+    "identity": "fantina",
+    "name": "Fantina",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25790.png",
+    "source_key": "platinum_leader_4",
+    "frames": [
+      {
+        "rect": [
+          193,
+          113,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          193,
+          145,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          193,
+          177,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          193,
+          209,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          193,
+          241,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          193,
+          273,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          193,
+          305,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          193,
+          337,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          193,
+          369,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "fantina_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_FANTINA_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_FANTINA_PLATINUM",
+    "palette": "gPaletaEntrenador_fantina_platinum"
+  }
+}

@@ -1,0 +1,592 @@
+{
+  "id": "worker_platinum",
+  "name": "Worker",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/worker_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "worker_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      56,
+      72,
+      64
+    ],
+    [
+      64,
+      48,
+      48
+    ],
+    [
+      96,
+      112,
+      88
+    ],
+    [
+      112,
+      160,
+      120
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      120,
+      80,
+      48
+    ],
+    [
+      128,
+      112,
+      72
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      192,
+      120,
+      48
+    ],
+    [
+      192,
+      168,
+      96
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      248,
+      208,
+      96
+    ],
+    [
+      248,
+      208,
+      184
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 12,
+    "colores_modificados": 8,
+    "pixeles_modificados": 1721,
+    "pixeles_opacos": 2590,
+    "delta_e_medio": 6.018,
+    "delta_e_maximo": 13.787,
+    "conversiones": [
+      {
+        "original": [
+          64,
+          72,
+          72
+        ],
+        "adaptado": [
+          56,
+          72,
+          64
+        ],
+        "pixeles": 100,
+        "delta_e_76": 6.394
+      },
+      {
+        "original": [
+          72,
+          112,
+          96
+        ],
+        "adaptado": [
+          96,
+          112,
+          88
+        ],
+        "pixeles": 255,
+        "delta_e_76": 9.971
+      },
+      {
+        "original": [
+          96,
+          160,
+          120
+        ],
+        "adaptado": [
+          112,
+          160,
+          120
+        ],
+        "pixeles": 189,
+        "delta_e_76": 5.342
+      },
+      {
+        "original": [
+          112,
+          88,
+          72
+        ],
+        "adaptado": [
+          120,
+          80,
+          48
+        ],
+        "pixeles": 151,
+        "delta_e_76": 13.787
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 120,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          168,
+          136,
+          72
+        ],
+        "adaptado": [
+          192,
+          168,
+          96
+        ],
+        "pixeles": 215,
+        "delta_e_76": 12.293
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 190,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          232,
+          192,
+          96
+        ],
+        "adaptado": [
+          248,
+          208,
+          96
+        ],
+        "pixeles": 501,
+        "delta_e_76": 8.79
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "worker_platinum",
+    "name": "Worker",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          163,
+          508,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            72,
+            64
+          ],
+          [
+            64,
+            48,
+            48
+          ],
+          [
+            96,
+            112,
+            88
+          ],
+          [
+            112,
+            160,
+            120
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            120,
+            80,
+            48
+          ],
+          [
+            128,
+            112,
+            72
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            120,
+            48
+          ],
+          [
+            192,
+            168,
+            96
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            96
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "5f99b46bcbeda3d00a6906092599cfdaae9ffe101a3cddafb6c39df0fa232e79"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        56,
+        72,
+        64
+      ],
+      [
+        64,
+        48,
+        48
+      ],
+      [
+        96,
+        112,
+        88
+      ],
+      [
+        112,
+        160,
+        120
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        120,
+        80,
+        48
+      ],
+      [
+        128,
+        112,
+        72
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        192,
+        120,
+        48
+      ],
+      [
+        192,
+        168,
+        96
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        232,
+        232,
+        248
+      ],
+      [
+        248,
+        208,
+        96
+      ],
+      [
+        248,
+        208,
+        184
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "worker_platinum",
+    "identity": "worker",
+    "name": "Worker",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25791.png",
+    "source_key": "platinum_ow_b2_c11",
+    "frames": [
+      {
+        "rect": [
+          369,
+          673,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          369,
+          705,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          369,
+          737,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          369,
+          769,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          369,
+          801,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          369,
+          833,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          369,
+          865,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          369,
+          897,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          369,
+          929,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "worker_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_WORKER_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_WORKER_PLATINUM",
+    "palette": "gPaletaEntrenador_worker_platinum"
+  }
+}

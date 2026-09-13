@@ -1,0 +1,338 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "barry_47490",
+      "identity": "barry",
+      "name": "Barry — hoja individual",
+      "game": "platinum",
+      "kind": "ow",
+      "source": "entrenadores/47490.png",
+      "source_key": "barry_47490",
+      "front_id": "barry_47490",
+      "frames": [
+        {
+          "rect": [
+            2,
+            2,
+            32,
+            32
+          ],
+          "background": [
+            136,
+            184,
+            176
+          ],
+          "direction": "south",
+          "phase": "idle",
+          "rgb_sha256": "4ade1d142bfa2059f1db5d34bafc73563df6adfd5efc12d3ec1e4fff8f823cb0"
+        },
+        {
+          "rect": [
+            36,
+            2,
+            32,
+            32
+          ],
+          "background": [
+            136,
+            184,
+            176
+          ],
+          "direction": "south",
+          "phase": "step_1",
+          "rgb_sha256": "f95ebf4430283a6b3f3f69856b514f46d5b16324d3715c8fa67b22909d6b9195"
+        },
+        {
+          "rect": [
+            70,
+            2,
+            32,
+            32
+          ],
+          "background": [
+            136,
+            184,
+            176
+          ],
+          "direction": "south",
+          "phase": "idle_repeated",
+          "rgb_sha256": "4ade1d142bfa2059f1db5d34bafc73563df6adfd5efc12d3ec1e4fff8f823cb0"
+        },
+        {
+          "rect": [
+            104,
+            2,
+            32,
+            32
+          ],
+          "background": [
+            136,
+            184,
+            176
+          ],
+          "direction": "south",
+          "phase": "step_2",
+          "rgb_sha256": "5a4f1ce1ba0df348bec087b458447aaa6885b370543f9f1a62400af1c308b08c"
+        },
+        {
+          "rect": [
+            2,
+            36,
+            32,
+            32
+          ],
+          "background": [
+            136,
+            184,
+            176
+          ],
+          "direction": "north",
+          "phase": "idle",
+          "rgb_sha256": "9443089287febc0bab8453c64a1bc6e9e6d16158773d4fcb84782ee51d98865e"
+        },
+        {
+          "rect": [
+            36,
+            36,
+            32,
+            32
+          ],
+          "background": [
+            136,
+            184,
+            176
+          ],
+          "direction": "north",
+          "phase": "step_1",
+          "rgb_sha256": "43700565fd6364a5666dc9e2d9d06521e9159270affe03408496e2cc7b3c3863"
+        },
+        {
+          "rect": [
+            70,
+            36,
+            32,
+            32
+          ],
+          "background": [
+            136,
+            184,
+            176
+          ],
+          "direction": "north",
+          "phase": "idle_repeated",
+          "rgb_sha256": "9443089287febc0bab8453c64a1bc6e9e6d16158773d4fcb84782ee51d98865e"
+        },
+        {
+          "rect": [
+            104,
+            36,
+            32,
+            32
+          ],
+          "background": [
+            136,
+            184,
+            176
+          ],
+          "direction": "north",
+          "phase": "step_2",
+          "rgb_sha256": "630f7a09e387ad0f51939d8e2984578eddf524a711844057c6e79c43f12e8425"
+        },
+        {
+          "rect": [
+            2,
+            70,
+            32,
+            32
+          ],
+          "background": [
+            136,
+            184,
+            176
+          ],
+          "direction": "west",
+          "phase": "idle",
+          "rgb_sha256": "6ea12c0d0013b0d0a6bb0931f74178e3188d6adbc82d27762391098ae664c246"
+        },
+        {
+          "rect": [
+            36,
+            70,
+            32,
+            32
+          ],
+          "background": [
+            136,
+            184,
+            176
+          ],
+          "direction": "west",
+          "phase": "step_1",
+          "rgb_sha256": "906f6b338c452a785a1ac7ebe35b7cb51c1560271d6daa169766c49f54a41ce4"
+        },
+        {
+          "rect": [
+            70,
+            70,
+            32,
+            32
+          ],
+          "background": [
+            136,
+            184,
+            176
+          ],
+          "direction": "west",
+          "phase": "idle_repeated",
+          "rgb_sha256": "6ea12c0d0013b0d0a6bb0931f74178e3188d6adbc82d27762391098ae664c246"
+        },
+        {
+          "rect": [
+            104,
+            70,
+            32,
+            32
+          ],
+          "background": [
+            136,
+            184,
+            176
+          ],
+          "direction": "west",
+          "phase": "step_2",
+          "rgb_sha256": "43e63914b91ce0d88b69c4ab854d1a7e4addacf41c164842869d89a0eed984a8"
+        },
+        {
+          "rect": [
+            2,
+            104,
+            32,
+            32
+          ],
+          "background": [
+            136,
+            184,
+            176
+          ],
+          "direction": "east",
+          "phase": "idle",
+          "rgb_sha256": "64c90b8ba2bcde670eb7020697d3b7c21e6eecfaa5c23396583aa5b850d1a4c9"
+        },
+        {
+          "rect": [
+            36,
+            104,
+            32,
+            32
+          ],
+          "background": [
+            136,
+            184,
+            176
+          ],
+          "direction": "east",
+          "phase": "step_1",
+          "rgb_sha256": "016617651c7802bb31815521e5ffdab9e5177198b0985b38c3823ae7b372909d"
+        },
+        {
+          "rect": [
+            70,
+            104,
+            32,
+            32
+          ],
+          "background": [
+            136,
+            184,
+            176
+          ],
+          "direction": "east",
+          "phase": "idle_repeated",
+          "rgb_sha256": "64c90b8ba2bcde670eb7020697d3b7c21e6eecfaa5c23396583aa5b850d1a4c9"
+        },
+        {
+          "rect": [
+            104,
+            104,
+            32,
+            32
+          ],
+          "background": [
+            136,
+            184,
+            176
+          ],
+          "direction": "east",
+          "phase": "step_2",
+          "rgb_sha256": "47f6a374bbfb8c3a25d01440d91a85c0bb382836423b1e602c263e899b5ca877"
+        }
+      ],
+      "target_order": [
+        0,
+        1,
+        3,
+        4,
+        5,
+        7,
+        8,
+        9,
+        11
+      ],
+      "extra_frames": [
+        2,
+        6,
+        10,
+        12,
+        13,
+        14,
+        15
+      ],
+      "east_mirrored": true,
+      "confidence": "identified",
+      "duplicate_frames": {
+        "2": 0,
+        "6": 4,
+        "10": 8,
+        "14": 12
+      },
+      "east_mirror_frames": {
+        "12": 8,
+        "13": 9,
+        "14": 10,
+        "15": 11
+      },
+      "equivalent_25791_frame_to_47490_frame": [
+        0,
+        4,
+        8,
+        5,
+        7,
+        1,
+        3,
+        11,
+        9
+      ],
+      "notes": [
+        "Cada fila contiene quieto,paso1,quieto idéntico,paso2; filas S,N,O,E.",
+        "Las cuatro imágenes este son espejos exactos píxel a píxel del oeste, sin desplazamientos.",
+        "Se conservan todos los frames originales; target_order selecciona los nueve necesarios.",
+        "Las nueve máscaras de las fases coinciden exactamente con Barry de 25791.png."
+      ]
+    }
+  ],
+  "credits": {
+    "47490.png": "redblueyellow"
+  },
+  "target_slots": [
+    "south_idle",
+    "south_step_left",
+    "south_step_right",
+    "north_idle",
+    "north_step_left",
+    "north_step_right",
+    "west_idle",
+    "west_step_left",
+    "west_step_right"
+  ]
+}

@@ -89,23 +89,46 @@ void FieldClearPlayerInput(struct FieldInput *input)
     input->dpadDirection = 0;
 }
 
+// Los botones se APUNTAN en cuanto se pulsan, aunque el campo no pueda atenderlos aun.
+//
+// Abajo hay un embudo: las pulsaciones solo se recogen en el centro de una casilla.
+// Andando eso es un fotograma de cada dieciseis, y en bici uno de cada ocho; como la
+// pulsacion dura un unico fotograma, la mayoria se perdian. Pulsabas START a mitad de
+// paso y no pasaba nada.
+//
+// Apuntandolas, la pulsacion espera a que el embudo abra y se atiende entonces. Se
+// sigue actuando en el borde de la casilla, que es lo que hace falta para que hablar,
+// abrir puertas o parar la bici caigan donde deben; lo que ya no se hace es tirar la
+// pulsacion a la basura.
+static u16 sPulsacionesPendientes;
+
+#define BOTONES_DEL_CAMPO (START_BUTTON | SELECT_BUTTON | A_BUTTON | B_BUTTON)
+
 void FieldGetPlayerInput(struct FieldInput *input, u16 newKeys, u16 heldKeys)
 {
     u8 tileTransitionState = gPlayerAvatar.tileTransitionState;
     u8 runningState = gPlayerAvatar.runningState;
     bool8 forcedMove = MetatileBehavior_IsForcedMovementTile(GetPlayerCurMetatileBehavior(runningState));
 
+    sPulsacionesPendientes |= newKeys & BOTONES_DEL_CAMPO;
+
     if ((tileTransitionState == T_TILE_CENTER && forcedMove == FALSE) || tileTransitionState == T_NOT_MOVING)
     {
-        if (GetPlayerSpeed() != PLAYER_SPEED_FASTEST)
+        // Sin la excepcion de la velocidad maxima que habia aqui: con la B apretada en
+        // bici el embudo no abria JAMAS, asi que a tope no habia forma de abrir el menu
+        // ni de frenar.
         {
-            if (newKeys & START_BUTTON)
+            u16 pulsadas = sPulsacionesPendientes;
+
+            sPulsacionesPendientes = 0;
+
+            if (pulsadas & START_BUTTON)
                 input->pressedStartButton = TRUE;
-            if (newKeys & SELECT_BUTTON)
+            if (pulsadas & SELECT_BUTTON)
                 input->pressedSelectButton = TRUE;
-            if (newKeys & A_BUTTON)
+            if (pulsadas & A_BUTTON)
                 input->pressedAButton = TRUE;
-            if (newKeys & B_BUTTON)
+            if (pulsadas & B_BUTTON)
                 input->pressedBButton = TRUE;
         }
 
@@ -208,6 +231,11 @@ bool32 ProcessPlayerFieldInput(struct FieldInput *input)
 
     if (input->pressedAButton && TryStartInteractionScript(&position, metatileBehavior, playerDirection) == TRUE)
         return TRUE;
+
+    // Si la A no ha servido para nada mas y se va en bici, frena. No devuelve TRUE
+    // aposta: eso le diria al llamador que bloquee los controles.
+    if (input->pressedAButton)
+        FrenaLaBici();
 
     if (input->heldDirection2 && input->dpadDirection == playerDirection)
     {

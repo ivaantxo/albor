@@ -1,0 +1,385 @@
+{
+  "id": "worker_hgss",
+  "name": "Worker",
+  "game": "hgss",
+  "directory": "graphics/entrenadores/worker_hgss",
+  "has_front": true,
+  "has_ow": false,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "worker_hgss.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      56,
+      72,
+      64
+    ],
+    [
+      64,
+      48,
+      48
+    ],
+    [
+      96,
+      112,
+      88
+    ],
+    [
+      112,
+      160,
+      120
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      120,
+      80,
+      48
+    ],
+    [
+      128,
+      112,
+      72
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      192,
+      120,
+      48
+    ],
+    [
+      192,
+      168,
+      96
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      248,
+      208,
+      96
+    ],
+    [
+      248,
+      208,
+      184
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 0,
+    "colores_modificados": 0,
+    "pixeles_modificados": 0,
+    "pixeles_opacos": 0,
+    "delta_e_medio": 0.0,
+    "delta_e_maximo": 0,
+    "conversiones": []
+  },
+  "missing": [
+    {
+      "grafico": "ow",
+      "frame": 0,
+      "pose": "sur_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 1,
+      "pose": "sur_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 2,
+      "pose": "sur_paso_derecha",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 3,
+      "pose": "norte_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 4,
+      "pose": "norte_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 5,
+      "pose": "norte_paso_derecha",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 6,
+      "pose": "oeste_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 7,
+      "pose": "oeste_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 8,
+      "pose": "oeste_paso_derecha",
+      "motivo": "No hay OW identificado"
+    }
+  ],
+  "originals": [],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "worker_hgss",
+    "name": "Worker",
+    "game": "hgss",
+    "source": "entrenadores/28037.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          163,
+          508,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            72,
+            64
+          ],
+          [
+            64,
+            48,
+            48
+          ],
+          [
+            96,
+            112,
+            88
+          ],
+          [
+            112,
+            160,
+            120
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            120,
+            80,
+            48
+          ],
+          [
+            128,
+            112,
+            72
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            120,
+            48
+          ],
+          [
+            192,
+            168,
+            96
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            96
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "5f99b46bcbeda3d00a6906092599cfdaae9ffe101a3cddafb6c39df0fa232e79"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        56,
+        72,
+        64
+      ],
+      [
+        64,
+        48,
+        48
+      ],
+      [
+        96,
+        112,
+        88
+      ],
+      [
+        112,
+        160,
+        120
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        120,
+        80,
+        48
+      ],
+      [
+        128,
+        112,
+        72
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        192,
+        120,
+        48
+      ],
+      [
+        192,
+        168,
+        96
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        232,
+        232,
+        248
+      ],
+      [
+        248,
+        208,
+        96
+      ],
+      [
+        248,
+        208,
+        184
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": [],
+    "exact_front_duplicate_of": "worker_platinum"
+  },
+  "ow_source": null,
+  "code": {
+    "front": "TRAINER_PIC_WORKER_HGSS",
+    "ow": null,
+    "palette": "gPaletaEntrenador_worker_hgss"
+  }
+}

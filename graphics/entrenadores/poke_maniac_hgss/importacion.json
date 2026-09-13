@@ -1,0 +1,982 @@
+{
+  "id": "poke_maniac_hgss",
+  "name": "Poke Maniac",
+  "game": "hgss",
+  "directory": "graphics/entrenadores/poke_maniac_hgss",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "poke_maniac_hgss.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      56,
+      88,
+      40
+    ],
+    [
+      64,
+      136,
+      72
+    ],
+    [
+      80,
+      80,
+      80
+    ],
+    [
+      80,
+      152,
+      80
+    ],
+    [
+      104,
+      176,
+      96
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      120,
+      120,
+      120
+    ],
+    [
+      168,
+      56,
+      72
+    ],
+    [
+      168,
+      168,
+      168
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      192,
+      192,
+      192
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 13,
+    "colores_modificados": 11,
+    "pixeles_modificados": 2434,
+    "pixeles_opacos": 3203,
+    "delta_e_medio": 14.127,
+    "delta_e_maximo": 29.567,
+    "conversiones": [
+      {
+        "original": [
+          64,
+          56,
+          56
+        ],
+        "adaptado": [
+          80,
+          80,
+          80
+        ],
+        "pixeles": 206,
+        "delta_e_76": 10.388
+      },
+      {
+        "original": [
+          112,
+          88,
+          80
+        ],
+        "adaptado": [
+          80,
+          80,
+          80
+        ],
+        "pixeles": 361,
+        "delta_e_76": 13.215
+      },
+      {
+        "original": [
+          120,
+          32,
+          32
+        ],
+        "adaptado": [
+          168,
+          56,
+          72
+        ],
+        "pixeles": 131,
+        "delta_e_76": 17.406
+      },
+      {
+        "original": [
+          136,
+          136,
+          168
+        ],
+        "adaptado": [
+          120,
+          120,
+          120
+        ],
+        "pixeles": 11,
+        "delta_e_76": 19.634
+      },
+      {
+        "original": [
+          192,
+          56,
+          32
+        ],
+        "adaptado": [
+          168,
+          56,
+          72
+        ],
+        "pixeles": 211,
+        "delta_e_76": 29.555
+      },
+      {
+        "original": [
+          192,
+          152,
+          72
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 243,
+        "delta_e_76": 21.085
+      },
+      {
+        "original": [
+          216,
+          88,
+          64
+        ],
+        "adaptado": [
+          168,
+          56,
+          72
+        ],
+        "pixeles": 258,
+        "delta_e_76": 26.782
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 176,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          232,
+          184,
+          152
+        ],
+        "adaptado": [
+          248,
+          208,
+          184
+        ],
+        "pixeles": 393,
+        "delta_e_76": 10.104
+      },
+      {
+        "original": [
+          232,
+          232,
+          248
+        ],
+        "adaptado": [
+          248,
+          248,
+          248
+        ],
+        "pixeles": 15,
+        "delta_e_76": 9.744
+      },
+      {
+        "original": [
+          248,
+          216,
+          128
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 429,
+        "delta_e_76": 29.567
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "poke_maniac_hgss",
+    "name": "Poke Maniac",
+    "game": "hgss",
+    "source": "entrenadores/28037.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          811,
+          508,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            88,
+            40
+          ],
+          [
+            64,
+            136,
+            72
+          ],
+          [
+            80,
+            80,
+            80
+          ],
+          [
+            80,
+            152,
+            80
+          ],
+          [
+            104,
+            176,
+            96
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            120,
+            120,
+            120
+          ],
+          [
+            168,
+            56,
+            72
+          ],
+          [
+            168,
+            168,
+            168
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            192,
+            192
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "4ea50e5399b04848ebc32b882711d400687cd1ea0af27d6f20a393f832f163ed"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        56,
+        88,
+        40
+      ],
+      [
+        64,
+        136,
+        72
+      ],
+      [
+        80,
+        80,
+        80
+      ],
+      [
+        80,
+        152,
+        80
+      ],
+      [
+        104,
+        176,
+        96
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        120,
+        120,
+        120
+      ],
+      [
+        168,
+        56,
+        72
+      ],
+      [
+        168,
+        168,
+        168
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        192,
+        192,
+        192
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "poke_maniac_hgss",
+    "name": "Poké Maniac",
+    "game": "hgss",
+    "source": "entrenadores/26955.png",
+    "source_group": {
+      "row": 6,
+      "column": 9,
+      "rect": [
+        765,
+        640,
+        96,
+        128
+      ]
+    },
+    "identity_status": "identified",
+    "confidence": "high_visual",
+    "frames": [
+      {
+        "rect": [
+          765,
+          640,
+          32,
+          31
+        ],
+        "background": [
+          64,
+          160,
+          128
+        ],
+        "backgrounds": [
+          [
+            64,
+            160,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_idle",
+        "empty": false,
+        "opaque_bbox": [
+          5,
+          3,
+          26,
+          30
+        ]
+      },
+      {
+        "rect": [
+          797,
+          640,
+          32,
+          31
+        ],
+        "background": [
+          64,
+          160,
+          128
+        ],
+        "backgrounds": [
+          [
+            64,
+            160,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_idle",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          3,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          829,
+          640,
+          32,
+          31
+        ],
+        "background": [
+          64,
+          160,
+          128
+        ],
+        "backgrounds": [
+          [
+            64,
+            160,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          2,
+          26,
+          31
+        ]
+      },
+      {
+        "rect": [
+          765,
+          672,
+          32,
+          31
+        ],
+        "background": [
+          64,
+          160,
+          128
+        ],
+        "backgrounds": [
+          [
+            64,
+            160,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          2,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          797,
+          672,
+          32,
+          31
+        ],
+        "background": [
+          64,
+          160,
+          128
+        ],
+        "backgrounds": [
+          [
+            64,
+            160,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          2,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          829,
+          672,
+          32,
+          31
+        ],
+        "background": [
+          64,
+          160,
+          128
+        ],
+        "backgrounds": [
+          [
+            64,
+            160,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_idle",
+        "empty": false,
+        "opaque_bbox": [
+          5,
+          3,
+          26,
+          30
+        ]
+      },
+      {
+        "rect": [
+          765,
+          704,
+          32,
+          31
+        ],
+        "background": [
+          64,
+          160,
+          128
+        ],
+        "backgrounds": [
+          [
+            64,
+            160,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_idle",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          3,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          797,
+          704,
+          32,
+          31
+        ],
+        "background": [
+          64,
+          160,
+          128
+        ],
+        "backgrounds": [
+          [
+            64,
+            160,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          2,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          829,
+          704,
+          32,
+          31
+        ],
+        "background": [
+          64,
+          160,
+          128
+        ],
+        "backgrounds": [
+          [
+            64,
+            160,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          5,
+          2,
+          25,
+          31
+        ]
+      },
+      {
+        "rect": [
+          765,
+          736,
+          32,
+          31
+        ],
+        "background": [
+          64,
+          160,
+          128
+        ],
+        "backgrounds": [
+          [
+            64,
+            160,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          2,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          797,
+          736,
+          32,
+          31
+        ],
+        "background": [
+          64,
+          160,
+          128
+        ],
+        "backgrounds": [
+          [
+            64,
+            160,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          5,
+          2,
+          25,
+          31
+        ]
+      },
+      {
+        "rect": [
+          829,
+          736,
+          32,
+          31
+        ],
+        "background": [
+          64,
+          160,
+          128
+        ],
+        "backgrounds": [
+          [
+            64,
+            160,
+            128
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          2,
+          26,
+          31
+        ]
+      }
+    ],
+    "target_order": [
+      5,
+      8,
+      11,
+      0,
+      2,
+      10,
+      6,
+      3,
+      9
+    ],
+    "target_labels": [
+      "south_idle",
+      "south_step_a",
+      "south_step_b",
+      "north_idle",
+      "north_step_a",
+      "north_step_b",
+      "west_idle",
+      "west_step_a",
+      "west_step_b"
+    ],
+    "all_directions_order": [
+      5,
+      8,
+      11,
+      0,
+      2,
+      10,
+      6,
+      3,
+      9,
+      1,
+      4,
+      7
+    ],
+    "east_mirror_of_west": true,
+    "east_art_is_mirrored_west": true,
+    "missing_frames": [],
+    "notes": [
+      "Los doce frames originales están presentes.",
+      "La fila inferior vacía se excluye del rectángulo y se rellena transparente para completar 32×32."
+    ]
+  },
+  "code": {
+    "front": "TRAINER_PIC_POKE_MANIAC_HGSS",
+    "ow": "OBJ_EVENT_GFX_POKE_MANIAC_HGSS",
+    "palette": "gPaletaEntrenador_poke_maniac_hgss"
+  }
+}

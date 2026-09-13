@@ -1,0 +1,781 @@
+{
+  "id": "cynthia_platinum",
+  "name": "Cynthia",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/cynthia_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 3,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "cynthia_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      56,
+      56,
+      56
+    ],
+    [
+      80,
+      80,
+      80
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      128,
+      128,
+      136
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      184,
+      152,
+      88
+    ],
+    [
+      184,
+      184,
+      192
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      232,
+      192,
+      128
+    ],
+    [
+      240,
+      224,
+      184
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      248,
+      248
+    ],
+    [
+      248,
+      248,
+      248
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 14,
+    "colores_modificados": 11,
+    "pixeles_modificados": 1930,
+    "pixeles_opacos": 2975,
+    "delta_e_medio": 8.043,
+    "delta_e_maximo": 44.065,
+    "conversiones": [
+      {
+        "original": [
+          40,
+          40,
+          48
+        ],
+        "adaptado": [
+          56,
+          56,
+          56
+        ],
+        "pixeles": 200,
+        "delta_e_76": 9.044
+      },
+      {
+        "original": [
+          56,
+          112,
+          192
+        ],
+        "adaptado": [
+          128,
+          128,
+          136
+        ],
+        "pixeles": 3,
+        "delta_e_76": 44.065
+      },
+      {
+        "original": [
+          80,
+          80,
+          96
+        ],
+        "adaptado": [
+          80,
+          80,
+          80
+        ],
+        "pixeles": 264,
+        "delta_e_76": 10.028
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 57,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          120,
+          96,
+          72
+        ],
+        "adaptado": [
+          80,
+          80,
+          80
+        ],
+        "pixeles": 244,
+        "delta_e_76": 20.287
+      },
+      {
+        "original": [
+          120,
+          120,
+          144
+        ],
+        "adaptado": [
+          128,
+          128,
+          136
+        ],
+        "pixeles": 70,
+        "delta_e_76": 9.739
+      },
+      {
+        "original": [
+          168,
+          160,
+          200
+        ],
+        "adaptado": [
+          184,
+          184,
+          192
+        ],
+        "pixeles": 3,
+        "delta_e_76": 19.465
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 60,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          232,
+          232,
+          248
+        ],
+        "adaptado": [
+          248,
+          248,
+          248
+        ],
+        "pixeles": 12,
+        "delta_e_76": 9.744
+      },
+      {
+        "original": [
+          240,
+          208,
+          120
+        ],
+        "adaptado": [
+          232,
+          192,
+          128
+        ],
+        "pixeles": 891,
+        "delta_e_76": 12.45
+      },
+      {
+        "original": [
+          248,
+          248,
+          192
+        ],
+        "adaptado": [
+          240,
+          224,
+          184
+        ],
+        "pixeles": 126,
+        "delta_e_76": 11.871
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": true,
+    "order": [
+      0,
+      1,
+      2
+    ],
+    "durations_ticks": [
+      12,
+      12,
+      24
+    ],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "cynthia_platinum",
+    "name": "Cynthia",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          1,
+          1096,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 13,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            56,
+            56
+          ],
+          [
+            80,
+            80,
+            80
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            128,
+            128,
+            136
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            184,
+            152,
+            88
+          ],
+          [
+            184,
+            184,
+            192
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            192,
+            128
+          ],
+          [
+            240,
+            224,
+            184
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "dfea5794d8f8c2999d587782fc8c863768a25adde63126cd6887698a499bb3ab"
+      },
+      {
+        "rect": [
+          82,
+          1096,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 13,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            56,
+            56
+          ],
+          [
+            80,
+            80,
+            80
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            128,
+            128,
+            136
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            184,
+            152,
+            88
+          ],
+          [
+            184,
+            184,
+            192
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            192,
+            128
+          ],
+          [
+            240,
+            224,
+            184
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "b49ae740a01d12bcdddd4afcd7dbe1879286cf7e2604dbed1db0df9229f7cfd7"
+      },
+      {
+        "rect": [
+          163,
+          1096,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 12,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            56,
+            56
+          ],
+          [
+            80,
+            80,
+            80
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            128,
+            128,
+            136
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            184,
+            152,
+            88
+          ],
+          [
+            184,
+            184,
+            192
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            192,
+            128
+          ],
+          [
+            240,
+            224,
+            184
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "ccc7e7cb68feec71dd944eb554e77a7e6e78e2d21dcd0bdc279c994c3755bad6"
+      }
+    ],
+    "frame_order": [
+      0,
+      1,
+      2
+    ],
+    "animation_available": true,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        56,
+        56,
+        56
+      ],
+      [
+        80,
+        80,
+        80
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        128,
+        128,
+        136
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        184,
+        152,
+        88
+      ],
+      [
+        184,
+        184,
+        192
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        232,
+        192,
+        128
+      ],
+      [
+        240,
+        224,
+        184
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 13,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "cynthia_platinum",
+    "identity": "cynthia",
+    "name": "Cynthia",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25790.png",
+    "source_key": "platinum_elite_4",
+    "frames": [
+      {
+        "rect": [
+          481,
+          113,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          128,
+          56
+        ]
+      },
+      {
+        "rect": [
+          481,
+          145,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          128,
+          56
+        ]
+      },
+      {
+        "rect": [
+          481,
+          177,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          128,
+          56
+        ]
+      },
+      {
+        "rect": [
+          481,
+          209,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          128,
+          56
+        ]
+      },
+      {
+        "rect": [
+          481,
+          241,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          128,
+          56
+        ]
+      },
+      {
+        "rect": [
+          481,
+          273,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          128,
+          56
+        ]
+      },
+      {
+        "rect": [
+          481,
+          305,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          128,
+          56
+        ]
+      },
+      {
+        "rect": [
+          481,
+          337,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          128,
+          56
+        ]
+      },
+      {
+        "rect": [
+          481,
+          369,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          128,
+          56
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "cynthia_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_CYNTHIA_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_CYNTHIA_PLATINUM",
+    "palette": "gPaletaEntrenador_cynthia_platinum"
+  }
+}

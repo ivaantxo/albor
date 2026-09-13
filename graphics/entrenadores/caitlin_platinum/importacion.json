@@ -1,0 +1,491 @@
+{
+  "id": "caitlin_platinum",
+  "name": "Caitlin",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/caitlin_platinum",
+  "has_front": true,
+  "has_ow": false,
+  "front_frames": 3,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "caitlin_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      8,
+      0,
+      0
+    ],
+    [
+      88,
+      144,
+      184
+    ],
+    [
+      128,
+      104,
+      80
+    ],
+    [
+      128,
+      120,
+      152
+    ],
+    [
+      168,
+      144,
+      120
+    ],
+    [
+      184,
+      184,
+      224
+    ],
+    [
+      200,
+      176,
+      128
+    ],
+    [
+      224,
+      192,
+      176
+    ],
+    [
+      232,
+      240,
+      248
+    ],
+    [
+      248,
+      176,
+      200
+    ],
+    [
+      248,
+      224,
+      208
+    ],
+    [
+      248,
+      224,
+      208
+    ],
+    [
+      248,
+      224,
+      208
+    ],
+    [
+      248,
+      224,
+      208
+    ],
+    [
+      248,
+      224,
+      208
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 0,
+    "colores_modificados": 0,
+    "pixeles_modificados": 0,
+    "pixeles_opacos": 0,
+    "delta_e_medio": 0.0,
+    "delta_e_maximo": 0,
+    "conversiones": []
+  },
+  "missing": [
+    {
+      "grafico": "ow",
+      "frame": 0,
+      "pose": "sur_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 1,
+      "pose": "sur_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 2,
+      "pose": "sur_paso_derecha",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 3,
+      "pose": "norte_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 4,
+      "pose": "norte_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 5,
+      "pose": "norte_paso_derecha",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 6,
+      "pose": "oeste_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 7,
+      "pose": "oeste_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 8,
+      "pose": "oeste_paso_derecha",
+      "motivo": "No hay OW identificado"
+    }
+  ],
+  "originals": [],
+  "extras": [],
+  "animation": {
+    "available": true,
+    "order": [
+      0,
+      1,
+      2
+    ],
+    "durations_ticks": [
+      12,
+      12,
+      24
+    ],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "caitlin_platinum",
+    "name": "Caitlin",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          1,
+          1390,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 10,
+        "opaque_colors_rgb": [
+          [
+            8,
+            0,
+            0
+          ],
+          [
+            128,
+            104,
+            80
+          ],
+          [
+            128,
+            120,
+            152
+          ],
+          [
+            168,
+            144,
+            120
+          ],
+          [
+            184,
+            184,
+            224
+          ],
+          [
+            200,
+            176,
+            128
+          ],
+          [
+            224,
+            192,
+            176
+          ],
+          [
+            232,
+            240,
+            248
+          ],
+          [
+            248,
+            176,
+            200
+          ],
+          [
+            248,
+            224,
+            208
+          ]
+        ],
+        "normalized_rgb_sha256": "d1d81c8b18d85c88bdcb1785785c943d2d0312e5b0987847e4e03d5dd9949529"
+      },
+      {
+        "rect": [
+          82,
+          1390,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 11,
+        "opaque_colors_rgb": [
+          [
+            8,
+            0,
+            0
+          ],
+          [
+            88,
+            144,
+            184
+          ],
+          [
+            128,
+            104,
+            80
+          ],
+          [
+            128,
+            120,
+            152
+          ],
+          [
+            168,
+            144,
+            120
+          ],
+          [
+            184,
+            184,
+            224
+          ],
+          [
+            200,
+            176,
+            128
+          ],
+          [
+            224,
+            192,
+            176
+          ],
+          [
+            232,
+            240,
+            248
+          ],
+          [
+            248,
+            176,
+            200
+          ],
+          [
+            248,
+            224,
+            208
+          ]
+        ],
+        "normalized_rgb_sha256": "edcf91401e79eac252dad485c289048935fd4335086f46fd79a505bf97deb5c3"
+      },
+      {
+        "rect": [
+          163,
+          1390,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 11,
+        "opaque_colors_rgb": [
+          [
+            8,
+            0,
+            0
+          ],
+          [
+            88,
+            144,
+            184
+          ],
+          [
+            128,
+            104,
+            80
+          ],
+          [
+            128,
+            120,
+            152
+          ],
+          [
+            168,
+            144,
+            120
+          ],
+          [
+            184,
+            184,
+            224
+          ],
+          [
+            200,
+            176,
+            128
+          ],
+          [
+            224,
+            192,
+            176
+          ],
+          [
+            232,
+            240,
+            248
+          ],
+          [
+            248,
+            176,
+            200
+          ],
+          [
+            248,
+            224,
+            208
+          ]
+        ],
+        "normalized_rgb_sha256": "f0162035c85adbe85684ed07702554786f2c1db9eb34772c07cb709dd65d2a7b"
+      }
+    ],
+    "frame_order": [
+      0,
+      1,
+      2
+    ],
+    "animation_available": true,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        8,
+        0,
+        0
+      ],
+      [
+        88,
+        144,
+        184
+      ],
+      [
+        128,
+        104,
+        80
+      ],
+      [
+        128,
+        120,
+        152
+      ],
+      [
+        168,
+        144,
+        120
+      ],
+      [
+        184,
+        184,
+        224
+      ],
+      [
+        200,
+        176,
+        128
+      ],
+      [
+        224,
+        192,
+        176
+      ],
+      [
+        232,
+        240,
+        248
+      ],
+      [
+        248,
+        176,
+        200
+      ],
+      [
+        248,
+        224,
+        208
+      ]
+    ],
+    "opaque_color_count": 11,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": null,
+  "code": {
+    "front": "TRAINER_PIC_CAITLIN_PLATINUM",
+    "ow": null,
+    "palette": "gPaletaEntrenador_caitlin_platinum"
+  }
+}

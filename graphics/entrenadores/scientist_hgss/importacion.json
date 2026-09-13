@@ -1,0 +1,959 @@
+{
+  "id": "scientist_hgss",
+  "name": "Scientist",
+  "game": "hgss",
+  "directory": "graphics/entrenadores/scientist_hgss",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "scientist_hgss.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      48,
+      56,
+      80
+    ],
+    [
+      72,
+      88,
+      152
+    ],
+    [
+      104,
+      104,
+      104
+    ],
+    [
+      104,
+      128,
+      192
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      152,
+      160,
+      168
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      192,
+      200,
+      208
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      224,
+      104,
+      88
+    ],
+    [
+      232,
+      200,
+      96
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      208,
+      184
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 13,
+    "colores_modificados": 10,
+    "pixeles_modificados": 2088,
+    "pixeles_opacos": 2778,
+    "delta_e_medio": 5.221,
+    "delta_e_maximo": 18.936,
+    "conversiones": [
+      {
+        "original": [
+          24,
+          24,
+          40
+        ],
+        "adaptado": [
+          0,
+          0,
+          0
+        ],
+        "pixeles": 22,
+        "delta_e_76": 14.953
+      },
+      {
+        "original": [
+          48,
+          48,
+          64
+        ],
+        "adaptado": [
+          48,
+          56,
+          80
+        ],
+        "pixeles": 621,
+        "delta_e_76": 6.584
+      },
+      {
+        "original": [
+          72,
+          48,
+          56
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 14,
+        "delta_e_76": 17.228
+      },
+      {
+        "original": [
+          88,
+          96,
+          104
+        ],
+        "adaptado": [
+          104,
+          104,
+          104
+        ],
+        "pixeles": 734,
+        "delta_e_76": 6.826
+      },
+      {
+        "original": [
+          112,
+          120,
+          120
+        ],
+        "adaptado": [
+          104,
+          104,
+          104
+        ],
+        "pixeles": 191,
+        "delta_e_76": 6.581
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 92,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          168,
+          160,
+          200
+        ],
+        "adaptado": [
+          152,
+          160,
+          168
+        ],
+        "pixeles": 9,
+        "delta_e_76": 18.936
+      },
+      {
+        "original": [
+          192,
+          192,
+          192
+        ],
+        "adaptado": [
+          192,
+          200,
+          208
+        ],
+        "pixeles": 152,
+        "delta_e_76": 5.661
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 166,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          232,
+          232,
+          232
+        ],
+        "adaptado": [
+          232,
+          232,
+          248
+        ],
+        "pixeles": 87,
+        "delta_e_76": 8.276
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "scientist_hgss",
+    "name": "Scientist",
+    "game": "hgss",
+    "source": "entrenadores/28037.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          649,
+          312,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 14,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            56,
+            80
+          ],
+          [
+            72,
+            88,
+            152
+          ],
+          [
+            104,
+            104,
+            104
+          ],
+          [
+            104,
+            128,
+            192
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            152,
+            160,
+            168
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            200,
+            208
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            224,
+            104,
+            88
+          ],
+          [
+            232,
+            200,
+            96
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "902f7509f728918692bdc619cf9e9fc1178d6560d2c67e72ede89f1c882459ed"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        48,
+        56,
+        80
+      ],
+      [
+        72,
+        88,
+        152
+      ],
+      [
+        104,
+        104,
+        104
+      ],
+      [
+        104,
+        128,
+        192
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        152,
+        160,
+        168
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        192,
+        200,
+        208
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        224,
+        104,
+        88
+      ],
+      [
+        232,
+        200,
+        96
+      ],
+      [
+        232,
+        232,
+        248
+      ],
+      [
+        248,
+        208,
+        184
+      ]
+    ],
+    "opaque_color_count": 14,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": [],
+    "exact_front_duplicate_of": "scientist_platinum"
+  },
+  "ow_source": {
+    "id": "scientist_hgss",
+    "name": "Scientist",
+    "game": "hgss",
+    "source": "entrenadores/26955.png",
+    "source_group": {
+      "row": 3,
+      "column": 8,
+      "rect": [
+        671,
+        256,
+        94,
+        128
+      ]
+    },
+    "identity_status": "identified",
+    "confidence": "high_visual",
+    "frames": [
+      {
+        "rect": [
+          671,
+          256,
+          32,
+          31
+        ],
+        "background": [
+          176,
+          168,
+          176
+        ],
+        "backgrounds": [
+          [
+            176,
+            168,
+            176
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_idle",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          6,
+          25,
+          30
+        ]
+      },
+      {
+        "rect": [
+          703,
+          256,
+          32,
+          31
+        ],
+        "background": [
+          176,
+          168,
+          176
+        ],
+        "backgrounds": [
+          [
+            176,
+            168,
+            176
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_idle",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          6,
+          23,
+          30
+        ]
+      },
+      {
+        "rect": [
+          735,
+          256,
+          30,
+          31
+        ],
+        "background": [
+          176,
+          168,
+          176
+        ],
+        "backgrounds": [
+          [
+            176,
+            168,
+            176
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          5,
+          25,
+          31
+        ]
+      },
+      {
+        "rect": [
+          671,
+          288,
+          32,
+          31
+        ],
+        "background": [
+          176,
+          168,
+          176
+        ],
+        "backgrounds": [
+          [
+            176,
+            168,
+            176
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          9,
+          5,
+          25,
+          30
+        ]
+      },
+      {
+        "rect": [
+          703,
+          288,
+          32,
+          31
+        ],
+        "background": [
+          176,
+          168,
+          176
+        ],
+        "backgrounds": [
+          [
+            176,
+            168,
+            176
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          5,
+          23,
+          30
+        ]
+      },
+      {
+        "rect": [
+          735,
+          288,
+          30,
+          31
+        ],
+        "background": [
+          176,
+          168,
+          176
+        ],
+        "backgrounds": [
+          [
+            176,
+            168,
+            176
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_idle",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          6,
+          25,
+          30
+        ]
+      },
+      {
+        "rect": [
+          671,
+          320,
+          32,
+          31
+        ],
+        "background": [
+          176,
+          168,
+          176
+        ],
+        "backgrounds": [
+          [
+            176,
+            168,
+            176
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_idle",
+        "empty": false,
+        "opaque_bbox": [
+          9,
+          6,
+          25,
+          30
+        ]
+      },
+      {
+        "rect": [
+          703,
+          320,
+          32,
+          31
+        ],
+        "background": [
+          176,
+          168,
+          176
+        ],
+        "backgrounds": [
+          [
+            176,
+            168,
+            176
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          5,
+          23,
+          30
+        ]
+      },
+      {
+        "rect": [
+          735,
+          320,
+          30,
+          31
+        ],
+        "background": [
+          176,
+          168,
+          176
+        ],
+        "backgrounds": [
+          [
+            176,
+            168,
+            176
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          5,
+          25,
+          31
+        ]
+      },
+      {
+        "rect": [
+          671,
+          352,
+          32,
+          31
+        ],
+        "background": [
+          176,
+          168,
+          176
+        ],
+        "backgrounds": [
+          [
+            176,
+            168,
+            176
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          9,
+          5,
+          25,
+          30
+        ]
+      },
+      {
+        "rect": [
+          703,
+          352,
+          32,
+          31
+        ],
+        "background": [
+          176,
+          168,
+          176
+        ],
+        "backgrounds": [
+          [
+            176,
+            168,
+            176
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          5,
+          25,
+          31
+        ]
+      },
+      {
+        "rect": [
+          735,
+          352,
+          30,
+          31
+        ],
+        "background": [
+          176,
+          168,
+          176
+        ],
+        "backgrounds": [
+          [
+            176,
+            168,
+            176
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          5,
+          25,
+          31
+        ]
+      }
+    ],
+    "target_order": [
+      5,
+      8,
+      11,
+      0,
+      2,
+      10,
+      6,
+      3,
+      9
+    ],
+    "target_labels": [
+      "south_idle",
+      "south_step_a",
+      "south_step_b",
+      "north_idle",
+      "north_step_a",
+      "north_step_b",
+      "west_idle",
+      "west_step_a",
+      "west_step_b"
+    ],
+    "all_directions_order": [
+      5,
+      8,
+      11,
+      0,
+      2,
+      10,
+      6,
+      3,
+      9,
+      1,
+      4,
+      7
+    ],
+    "east_mirror_of_west": true,
+    "east_art_is_mirrored_west": true,
+    "missing_frames": [],
+    "notes": [
+      "Los doce frames originales están presentes.",
+      "La fila inferior vacía se excluye del rectángulo y se rellena transparente para completar 32×32."
+    ]
+  },
+  "code": {
+    "front": "TRAINER_PIC_SCIENTIST_HGSS",
+    "ow": "OBJ_EVENT_GFX_SCIENTIST_HGSS",
+    "palette": "gPaletaEntrenador_scientist_hgss"
+  }
+}

@@ -1,0 +1,825 @@
+{
+  "id": "riley_platinum",
+  "name": "Riley",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/riley_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 3,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "riley_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      56,
+      64,
+      80
+    ],
+    [
+      64,
+      104,
+      152
+    ],
+    [
+      72,
+      80,
+      112
+    ],
+    [
+      80,
+      136,
+      184
+    ],
+    [
+      88,
+      64,
+      56
+    ],
+    [
+      96,
+      104,
+      136
+    ],
+    [
+      104,
+      176,
+      216
+    ],
+    [
+      112,
+      88,
+      72
+    ],
+    [
+      168,
+      160,
+      200
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      216,
+      112
+    ],
+    [
+      248,
+      216,
+      112
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 14,
+    "colores_modificados": 10,
+    "pixeles_modificados": 2203,
+    "pixeles_opacos": 2874,
+    "delta_e_medio": 16.685,
+    "delta_e_maximo": 34.741,
+    "conversiones": [
+      {
+        "original": [
+          40,
+          40,
+          72
+        ],
+        "adaptado": [
+          56,
+          64,
+          80
+        ],
+        "pixeles": 685,
+        "delta_e_76": 15.692
+      },
+      {
+        "original": [
+          64,
+          64,
+          120
+        ],
+        "adaptado": [
+          72,
+          80,
+          112
+        ],
+        "pixeles": 346,
+        "delta_e_76": 17.262
+      },
+      {
+        "original": [
+          80,
+          56,
+          64
+        ],
+        "adaptado": [
+          88,
+          64,
+          56
+        ],
+        "pixeles": 25,
+        "delta_e_76": 10.562
+      },
+      {
+        "original": [
+          80,
+          88,
+          176
+        ],
+        "adaptado": [
+          64,
+          104,
+          152
+        ],
+        "pixeles": 406,
+        "delta_e_76": 28.1
+      },
+      {
+        "original": [
+          104,
+          128,
+          232
+        ],
+        "adaptado": [
+          64,
+          104,
+          152
+        ],
+        "pixeles": 471,
+        "delta_e_76": 34.741
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          88,
+          64,
+          56
+        ],
+        "pixeles": 105,
+        "delta_e_76": 15.838
+      },
+      {
+        "original": [
+          128,
+          96,
+          104
+        ],
+        "adaptado": [
+          112,
+          88,
+          72
+        ],
+        "pixeles": 48,
+        "delta_e_76": 15.092
+      },
+      {
+        "original": [
+          176,
+          152,
+          72
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 12,
+        "delta_e_76": 23.966
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 99,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          248,
+          200,
+          72
+        ],
+        "adaptado": [
+          248,
+          216,
+          112
+        ],
+        "pixeles": 6,
+        "delta_e_76": 14.555
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": true,
+    "order": [
+      0,
+      1,
+      2
+    ],
+    "durations_ticks": [
+      12,
+      12,
+      24
+    ],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "riley_platinum",
+    "name": "Riley",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          487,
+          1096,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 13,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            64,
+            80
+          ],
+          [
+            64,
+            104,
+            152
+          ],
+          [
+            72,
+            80,
+            112
+          ],
+          [
+            80,
+            136,
+            184
+          ],
+          [
+            88,
+            64,
+            56
+          ],
+          [
+            96,
+            104,
+            136
+          ],
+          [
+            112,
+            88,
+            72
+          ],
+          [
+            168,
+            160,
+            200
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            216,
+            112
+          ]
+        ],
+        "normalized_rgb_sha256": "2706c4e46cbf4eaacc4342c5c0d5a5686bf219e92cf8eb02711403fd2fb7e36c"
+      },
+      {
+        "rect": [
+          568,
+          1096,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 13,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            64,
+            80
+          ],
+          [
+            64,
+            104,
+            152
+          ],
+          [
+            72,
+            80,
+            112
+          ],
+          [
+            80,
+            136,
+            184
+          ],
+          [
+            88,
+            64,
+            56
+          ],
+          [
+            96,
+            104,
+            136
+          ],
+          [
+            112,
+            88,
+            72
+          ],
+          [
+            168,
+            160,
+            200
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            216,
+            112
+          ]
+        ],
+        "normalized_rgb_sha256": "4e0479586628b482eeefd46abe1dcb81f497d3b731411753ab4cfee8f24bad89"
+      },
+      {
+        "rect": [
+          649,
+          1096,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 14,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            64,
+            80
+          ],
+          [
+            64,
+            104,
+            152
+          ],
+          [
+            72,
+            80,
+            112
+          ],
+          [
+            80,
+            136,
+            184
+          ],
+          [
+            88,
+            64,
+            56
+          ],
+          [
+            96,
+            104,
+            136
+          ],
+          [
+            104,
+            176,
+            216
+          ],
+          [
+            112,
+            88,
+            72
+          ],
+          [
+            168,
+            160,
+            200
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            216,
+            112
+          ]
+        ],
+        "normalized_rgb_sha256": "53f8981baef3f12481490a6936317626c9dbbf9f4fa58877fc8c252dc7daf5aa"
+      }
+    ],
+    "frame_order": [
+      0,
+      1,
+      2
+    ],
+    "animation_available": true,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        56,
+        64,
+        80
+      ],
+      [
+        64,
+        104,
+        152
+      ],
+      [
+        72,
+        80,
+        112
+      ],
+      [
+        80,
+        136,
+        184
+      ],
+      [
+        88,
+        64,
+        56
+      ],
+      [
+        96,
+        104,
+        136
+      ],
+      [
+        104,
+        176,
+        216
+      ],
+      [
+        112,
+        88,
+        72
+      ],
+      [
+        168,
+        160,
+        200
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        232,
+        232,
+        248
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        216,
+        112
+      ]
+    ],
+    "opaque_color_count": 14,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "riley_platinum",
+    "identity": "riley",
+    "name": "Riley",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25791.png",
+    "source_key": "platinum_ow_b5_c10",
+    "frames": [
+      {
+        "rect": [
+          337,
+          1561,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          337,
+          1593,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          337,
+          1625,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          337,
+          1657,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          337,
+          1689,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          337,
+          1721,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          337,
+          1753,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          337,
+          1785,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          337,
+          1817,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          337,
+          1849,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          337,
+          1881,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          337,
+          1913,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [
+      9,
+      10,
+      11
+    ],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "riley_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_RILEY_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_RILEY_PLATINUM",
+    "palette": "gPaletaEntrenador_riley_platinum"
+  }
+}

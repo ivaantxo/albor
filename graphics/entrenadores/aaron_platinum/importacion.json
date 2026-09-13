@@ -1,0 +1,820 @@
+{
+  "id": "aaron_platinum",
+  "name": "Aaron",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/aaron_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 3,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "aaron_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      56,
+      56,
+      56
+    ],
+    [
+      80,
+      80,
+      80
+    ],
+    [
+      96,
+      136,
+      64
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      144,
+      80,
+      56
+    ],
+    [
+      160,
+      208,
+      128
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      192,
+      120,
+      48
+    ],
+    [
+      192,
+      240,
+      152
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      232,
+      152,
+      72
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      248,
+      248
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 14,
+    "colores_modificados": 12,
+    "pixeles_modificados": 2101,
+    "pixeles_opacos": 2691,
+    "delta_e_medio": 10.522,
+    "delta_e_maximo": 37.252,
+    "conversiones": [
+      {
+        "original": [
+          56,
+          56,
+          72
+        ],
+        "adaptado": [
+          56,
+          56,
+          56
+        ],
+        "pixeles": 111,
+        "delta_e_76": 10.63
+      },
+      {
+        "original": [
+          56,
+          80,
+          88
+        ],
+        "adaptado": [
+          80,
+          80,
+          80
+        ],
+        "pixeles": 293,
+        "delta_e_76": 10.389
+      },
+      {
+        "original": [
+          80,
+          128,
+          96
+        ],
+        "adaptado": [
+          96,
+          136,
+          64
+        ],
+        "pixeles": 402,
+        "delta_e_76": 22.107
+      },
+      {
+        "original": [
+          88,
+          88,
+          128
+        ],
+        "adaptado": [
+          80,
+          80,
+          80
+        ],
+        "pixeles": 77,
+        "delta_e_76": 25.011
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 110,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          120,
+          184,
+          104
+        ],
+        "adaptado": [
+          160,
+          208,
+          128
+        ],
+        "pixeles": 723,
+        "delta_e_76": 11.347
+      },
+      {
+        "original": [
+          128,
+          128,
+          160
+        ],
+        "adaptado": [
+          80,
+          80,
+          80
+        ],
+        "pixeles": 15,
+        "delta_e_76": 27.635
+      },
+      {
+        "original": [
+          160,
+          96,
+          64
+        ],
+        "adaptado": [
+          144,
+          80,
+          56
+        ],
+        "pixeles": 77,
+        "delta_e_76": 7.186
+      },
+      {
+        "original": [
+          168,
+          160,
+          200
+        ],
+        "adaptado": [
+          248,
+          248,
+          248
+        ],
+        "pixeles": 38,
+        "delta_e_76": 37.252
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 162,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          224,
+          136,
+          64
+        ],
+        "adaptado": [
+          232,
+          152,
+          72
+        ],
+        "pixeles": 84,
+        "delta_e_76": 6.894
+      },
+      {
+        "original": [
+          232,
+          232,
+          248
+        ],
+        "adaptado": [
+          248,
+          248,
+          248
+        ],
+        "pixeles": 9,
+        "delta_e_76": 9.744
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": true,
+    "order": [
+      0,
+      1,
+      2
+    ],
+    "durations_ticks": [
+      12,
+      12,
+      24
+    ],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "aaron_platinum",
+    "name": "Aaron",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          1,
+          900,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 14,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            56,
+            56
+          ],
+          [
+            80,
+            80,
+            80
+          ],
+          [
+            96,
+            136,
+            64
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            144,
+            80,
+            56
+          ],
+          [
+            160,
+            208,
+            128
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            120,
+            48
+          ],
+          [
+            192,
+            240,
+            152
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            152,
+            72
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "ecc28b1af0dff6c8e25453a2659cc857c6fc65220378ee79899f1636bb2d55ea"
+      },
+      {
+        "rect": [
+          82,
+          900,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 14,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            56,
+            56
+          ],
+          [
+            80,
+            80,
+            80
+          ],
+          [
+            96,
+            136,
+            64
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            144,
+            80,
+            56
+          ],
+          [
+            160,
+            208,
+            128
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            120,
+            48
+          ],
+          [
+            192,
+            240,
+            152
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            152,
+            72
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "5e53a412dd1c0168647c555b943f5a710c1bbdc2216346bc3609eaa67a59b4e2"
+      },
+      {
+        "rect": [
+          163,
+          900,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 14,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            56,
+            56
+          ],
+          [
+            80,
+            80,
+            80
+          ],
+          [
+            96,
+            136,
+            64
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            144,
+            80,
+            56
+          ],
+          [
+            160,
+            208,
+            128
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            120,
+            48
+          ],
+          [
+            192,
+            240,
+            152
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            152,
+            72
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "f1d7f2dc9d5fce1c9ce61ce956bf7fcd234c251fadd174c911bb2a4714a3e000"
+      }
+    ],
+    "frame_order": [
+      0,
+      1,
+      2
+    ],
+    "animation_available": true,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        56,
+        56,
+        56
+      ],
+      [
+        80,
+        80,
+        80
+      ],
+      [
+        96,
+        136,
+        64
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        144,
+        80,
+        56
+      ],
+      [
+        160,
+        208,
+        128
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        192,
+        120,
+        48
+      ],
+      [
+        192,
+        240,
+        152
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        232,
+        152,
+        72
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 14,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "aaron_platinum",
+    "identity": "aaron",
+    "name": "Aaron",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25790.png",
+    "source_key": "platinum_elite_0",
+    "frames": [
+      {
+        "rect": [
+          353,
+          113,
+          32,
+          32
+        ],
+        "background": [
+          120,
+          144,
+          184
+        ]
+      },
+      {
+        "rect": [
+          353,
+          145,
+          32,
+          32
+        ],
+        "background": [
+          120,
+          144,
+          184
+        ]
+      },
+      {
+        "rect": [
+          353,
+          177,
+          32,
+          32
+        ],
+        "background": [
+          120,
+          144,
+          184
+        ]
+      },
+      {
+        "rect": [
+          353,
+          209,
+          32,
+          32
+        ],
+        "background": [
+          120,
+          144,
+          184
+        ]
+      },
+      {
+        "rect": [
+          353,
+          241,
+          32,
+          32
+        ],
+        "background": [
+          120,
+          144,
+          184
+        ]
+      },
+      {
+        "rect": [
+          353,
+          273,
+          32,
+          32
+        ],
+        "background": [
+          120,
+          144,
+          184
+        ]
+      },
+      {
+        "rect": [
+          353,
+          305,
+          32,
+          32
+        ],
+        "background": [
+          120,
+          144,
+          184
+        ]
+      },
+      {
+        "rect": [
+          353,
+          337,
+          32,
+          32
+        ],
+        "background": [
+          120,
+          144,
+          184
+        ]
+      },
+      {
+        "rect": [
+          353,
+          369,
+          32,
+          32
+        ],
+        "background": [
+          120,
+          144,
+          184
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "aaron_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_AARON_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_AARON_PLATINUM",
+    "palette": "gPaletaEntrenador_aaron_platinum"
+  }
+}

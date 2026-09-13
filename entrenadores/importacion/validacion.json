@@ -1,0 +1,4458 @@
+{
+  "version": 1,
+  "checked_at_utc": "2026-09-13T21:15:17.762806+00:00",
+  "catalog": "/Users/ivanmartinez/Proyectos/albor/entrenadores/importacion/catalogo.json",
+  "compiled": true,
+  "ok": true,
+  "summary": {
+    "entries": 314,
+    "passed": 314,
+    "errors": 0,
+    "source_sheets": 6,
+    "front_source_hashes": 356,
+    "preserved_ow_originals": 190,
+    "transparent_missing_frames": 1190,
+    "compiled_files": 984
+  },
+  "errors": [],
+  "entries": [
+    {
+      "id": "aaron_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "aaron_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "ace_trainer_f_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "ace_trainer_f_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "ace_trainer_f_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "ace_trainer_f_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "ace_trainer_m_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "ace_trainer_m_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "ace_trainer_m_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "ace_trainer_m_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "ace_trainer_snow_f_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "ace_trainer_snow_f_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "ace_trainer_snow_f_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "ace_trainer_snow_f_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "ace_trainer_snow_m_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "ace_trainer_snow_m_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "ace_trainer_snow_m_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "ace_trainer_snow_m_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "archer_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "archer_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "argenta_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "argenta_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "argenta_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "argenta_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "ariana_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "ariana_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "aroma_lady_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "aroma_lady_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "aroma_lady_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "aroma_lady_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "aroma_lady_unused_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "aroma_lady_unused_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "artist_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "artist_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "artist_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "artist_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "barry_47490",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "barry_47490.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "barry_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "barry_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "battle_girl_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "battle_girl_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "battle_girl_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "battle_girl_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "beauty_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "beauty_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "beauty_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "beauty_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "belle_and_pa_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "belle_and_pa_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "bertha_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "bertha_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "biker_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "biker_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "bird_keeper_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "bird_keeper_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "bird_keeper_johto_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "bird_keeper_johto_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "bird_keeper_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "bird_keeper_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "black_belt_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "black_belt_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "black_belt_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "black_belt_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "blaine_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "blaine_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "blue_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "blue_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "boarder_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "boarder_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "brock_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "brock_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "bruno_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "bruno_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "buck_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "buck_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "bug_catcher_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "bug_catcher_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "bug_catcher_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "bug_catcher_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "bugsy_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "bugsy_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "burglar_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "burglar_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "byron_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "byron_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "caitlin_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "caitlin_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "caitlin_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "caitlin_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "cameraman_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "cameraman_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "cameraman_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "cameraman_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "camper_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "camper_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "camper_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "camper_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "camper_unused_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "camper_unused_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "candice_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "candice_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "cheryl_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "cheryl_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "chuck_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "chuck_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "clair_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "clair_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "clown_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "clown_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "clown_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "clown_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "collector_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "collector_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "collector_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "collector_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "cowgirl_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "cowgirl_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "cowgirl_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "cowgirl_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "crasher_wake_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "crasher_wake_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "cycler_f_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "cycler_f_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "cycler_f_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "cycler_f_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "cycler_m_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "cycler_m_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "cycler_m_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "cycler_m_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "cynthia_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "cynthia_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "cyrus_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "cyrus_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "dahlia_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "dahlia_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "dahlia_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "dahlia_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "darach_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "darach_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "darach_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "darach_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "dawn_dp_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "dawn_dp_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "dawn_dp_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "dawn_dp_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "dawn_dp_unused_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "dawn_dp_unused_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "dawn_dp_unused_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "dawn_dp_unused_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "dawn_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "dawn_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "dawn_platinum_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "dawn_platinum_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "double_team_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "double_team_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "double_team_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "double_team_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "dragon_tamer_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "dragon_tamer_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "dragon_tamer_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "dragon_tamer_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "elder_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "elder_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "erika_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "erika_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "ethan_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "ethan_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "eusine_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "eusine_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "falkner_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "falkner_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "fantina_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "fantina_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "firebreather_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "firebreather_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "fisher_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "fisher_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "fisher_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "fisher_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "flint_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "flint_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "galactic_grunt_f_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "galactic_grunt_f_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "galactic_grunt_m_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "galactic_grunt_m_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "gardenia_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "gardenia_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "gentleman_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "gentleman_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "gentleman_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "gentleman_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "giovanni_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "giovanni_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "guitarist_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "guitarist_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "guitarist_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "guitarist_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "hgss_ow_r01_c04",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r01_c04.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r01_c05",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 12,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r01_c05.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r01_c06",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 12,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r01_c06.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r01_c10",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r01_c10.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r02_c02",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r02_c02.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r02_c03",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r02_c03.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r02_c04",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 12,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r02_c04.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r02_c06",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r02_c06.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r02_c09",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r02_c09.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r02_c10",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r02_c10.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r03_c01",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r03_c01.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r03_c02",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r03_c02.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r03_c04",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r03_c04.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r05_c02",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r05_c02.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r06_c03",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r06_c03.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r06_c08",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r06_c08.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r07_c02",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r07_c02.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r07_c06",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r07_c06.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r07_c07",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r07_c07.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r07_c08",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r07_c08.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r07_c09",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r07_c09.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r07_c10",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r07_c10.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r08_c01",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r08_c01.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r08_c02",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r08_c02.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r08_c03",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r08_c03.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r08_c04",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r08_c04.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r08_c05",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r08_c05.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r08_c06",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r08_c06.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r08_c07",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r08_c07.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r08_c08",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r08_c08.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r08_c09",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r08_c09.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hgss_ow_r08_c10",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "hgss_ow_r08_c10.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "hiker_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "hiker_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "hiker_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "hiker_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "idol_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "idol_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "idol_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "idol_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "interviewers_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "interviewers_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "janine_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "janine_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "jasmine_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "jasmine_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "jogger_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "jogger_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "jogger_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "jogger_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "juggler_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "juggler_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "jupiter_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "jupiter_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "karen_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "karen_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "kimono_girl_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 12,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "kimono_girl_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "koga_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "koga_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "lady_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "lady_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "lady_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "lady_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "lance_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 12,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "lance_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "lass_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "lass_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "lass_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "lass_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "looker_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "looker_platinum.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "lt_surge_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "lt_surge_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "lucas_dp_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "lucas_dp_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "lucas_dp_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "lucas_dp_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "lucas_dp_unused_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "lucas_dp_unused_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "lucas_dp_unused_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "lucas_dp_unused_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "lucas_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "lucas_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "lucas_platinum_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "lucas_platinum_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "lucian_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "lucian_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "lyra_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "lyra_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "maid_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "maid_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "marley_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "marley_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "mars_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "mars_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "maylene_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "maylene_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "medium_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "medium_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "mira_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "mira_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "misty_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "misty_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "morty_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "morty_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "ninja_boy_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "ninja_boy_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "ninja_boy_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "ninja_boy_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "palmer_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "palmer_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "palmer_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "palmer_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "parasol_lady_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "parasol_lady_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "parasol_lady_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "parasol_lady_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "petrel_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "petrel_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "pi_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "pi_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "pi_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "pi_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "picnicker_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "picnicker_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "picnicker_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "picnicker_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "picnicker_unused_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "picnicker_unused_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "platinum_ow_b0_c01",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b0_c01.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b0_c04",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b0_c04.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b0_c08",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b0_c08.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b0_c09",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b0_c09.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b1_c05",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b1_c05.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b1_c06",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b1_c06.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b1_c09",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b1_c09.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b1_c10",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b1_c10.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b1_c16",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b1_c16.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b2_c02",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b2_c02.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b2_c03",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b2_c03.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b2_c04",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b2_c04.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b2_c07",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b2_c07.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b2_c14",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b2_c14.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b2_c15",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b2_c15.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b2_c16",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b2_c16.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b3_c02",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b3_c02.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b3_c03",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b3_c03.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b3_c04",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b3_c04.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b3_c09",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b3_c09.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b3_c10",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b3_c10.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b3_c11",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b3_c11.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b3_c12",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b3_c12.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b3_c13",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b3_c13.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b3_c14",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b3_c14.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b3_c15",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b3_c15.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b3_c16",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b3_c16.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b4_c00",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b4_c00.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b4_c03",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b4_c03.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b4_c04",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b4_c04.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b4_c05",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b4_c05.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b4_c06",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b4_c06.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b4_c07",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b4_c07.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b4_c08",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b4_c08.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b4_c09",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b4_c09.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b4_c10",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b4_c10.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b4_c11",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b4_c11.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "platinum_ow_b5_c12",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "platinum_ow_b5_c12.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "poke_kid_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "poke_kid_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "poke_kid_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "poke_kid_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "poke_kid_unused_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "poke_kid_unused_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "poke_maniac_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "poke_maniac_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "pokefan_f_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "pokefan_f_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "pokefan_f_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "pokefan_f_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "pokefan_m_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "pokefan_m_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "pokefan_m_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "pokefan_m_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "pokemon_breeder_f_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "pokemon_breeder_f_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "pokemon_breeder_f_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "pokemon_breeder_f_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "pokemon_breeder_m_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "pokemon_breeder_m_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "pokemon_breeder_m_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "pokemon_breeder_m_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "pokemon_ranger_f_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "pokemon_ranger_f_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "pokemon_ranger_f_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "pokemon_ranger_f_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "pokemon_ranger_m_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "pokemon_ranger_m_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "pokemon_ranger_m_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "pokemon_ranger_m_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "policeman_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "policeman_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "policeman_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "policeman_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "professor_elm_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "professor_elm_hgss.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "professor_rowan_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "professor_rowan_platinum.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "proton_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "proton_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "pryce_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 12,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "pryce_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "psychic_f_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "psychic_f_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "psychic_f_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "psychic_f_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "psychic_m_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "psychic_m_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "psychic_m_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "psychic_m_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "rancher_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "rancher_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "rancher_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "rancher_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "red_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "red_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "reporter_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "reporter_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "reporter_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "reporter_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "rich_boy_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "rich_boy_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "rich_boy_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "rich_boy_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "rich_boy_unused_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "rich_boy_unused_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "riley_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "riley_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "roark_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "roark_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "rocket_grunt_f_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "rocket_grunt_f_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "rocket_grunt_m_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "rocket_grunt_m_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "roughneck_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "roughneck_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "roughneck_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "roughneck_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "ruin_maniac_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "ruin_maniac_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "ruin_maniac_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "ruin_maniac_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "sabrina_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "sabrina_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "sage_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "sage_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "sage_korean_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "sage_korean_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "sailor_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "sailor_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "sailor_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "sailor_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "saturn_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "saturn_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "school_kid_f_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "school_kid_f_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "school_kid_f_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "school_kid_f_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "school_kid_m_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "school_kid_m_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "school_kid_m_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "school_kid_m_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "scientist_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "scientist_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "scientist_johto_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "scientist_johto_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "scientist_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "scientist_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "silver_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "silver_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "silver_unused_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "silver_unused_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "sis_and_bro_unused_censored_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "sis_and_bro_unused_censored_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "sis_and_bro_unused_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "sis_and_bro_unused_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "skier_f_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "skier_f_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "skier_f_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "skier_f_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "skier_m_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "skier_m_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "socialite_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "socialite_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "socialite_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "socialite_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "steven_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 0,
+      "original_ow_checked": true,
+      "missing_frames_checked": 1,
+      "compiled_files_checked": [
+        "steven_hgss.gbapal",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "super_nerd_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "super_nerd_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "swimmer_f_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "swimmer_f_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "swimmer_f_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "swimmer_f_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "swimmer_m_censored_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "swimmer_m_censored_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "swimmer_m_censored_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "swimmer_m_censored_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "swimmer_m_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "swimmer_m_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "swimmer_m_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "swimmer_m_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "teacher_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "teacher_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "thorton_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "thorton_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "thorton_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "thorton_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "tuber_f_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "tuber_f_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "tuber_f_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "tuber_f_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "tuber_m_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "tuber_m_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "tuber_m_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "tuber_m_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "twins_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "twins_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "twins_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "twins_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "veteran_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "veteran_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "veteran_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "veteran_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "volkner_platinum",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "volkner_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "waiter_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "waiter_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "waiter_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "waiter_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "waitress_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "waitress_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "waitress_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "waitress_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "whitney_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 12,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "whitney_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "will_hgss",
+      "ok": true,
+      "front_frames": 3,
+      "ow_frames": 9,
+      "front_hashes_checked": 3,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "will_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "worker_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "worker_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "worker_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "worker_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "young_couple_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "young_couple_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "young_couple_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": false,
+      "missing_frames_checked": 9,
+      "compiled_files_checked": [
+        "young_couple_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz"
+      ]
+    },
+    {
+      "id": "youngster_hgss",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "youngster_hgss.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    },
+    {
+      "id": "youngster_platinum",
+      "ok": true,
+      "front_frames": 1,
+      "ow_frames": 9,
+      "front_hashes_checked": 1,
+      "original_ow_checked": true,
+      "missing_frames_checked": 0,
+      "compiled_files_checked": [
+        "youngster_platinum.gbapal",
+        "front.4bpp",
+        "front.4bpp.lz",
+        "ow.4bpp"
+      ]
+    }
+  ]
+}

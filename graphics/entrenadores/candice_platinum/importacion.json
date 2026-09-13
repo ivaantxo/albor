@@ -1,0 +1,826 @@
+{
+  "id": "candice_platinum",
+  "name": "Candice",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/candice_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 3,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "candice_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      48,
+      88,
+      128
+    ],
+    [
+      56,
+      128,
+      168
+    ],
+    [
+      72,
+      64,
+      80
+    ],
+    [
+      88,
+      184,
+      232
+    ],
+    [
+      104,
+      112,
+      96
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      120,
+      152,
+      176
+    ],
+    [
+      128,
+      96,
+      64
+    ],
+    [
+      176,
+      144,
+      104
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      192,
+      208,
+      248
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      232,
+      240,
+      248
+    ],
+    [
+      248,
+      208,
+      184
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 13,
+    "colores_modificados": 11,
+    "pixeles_modificados": 2115,
+    "pixeles_opacos": 2926,
+    "delta_e_medio": 6.793,
+    "delta_e_maximo": 21.153,
+    "conversiones": [
+      {
+        "original": [
+          56,
+          48,
+          56
+        ],
+        "adaptado": [
+          72,
+          64,
+          80
+        ],
+        "pixeles": 42,
+        "delta_e_76": 8.935
+      },
+      {
+        "original": [
+          56,
+          56,
+          72
+        ],
+        "adaptado": [
+          72,
+          64,
+          80
+        ],
+        "pixeles": 536,
+        "delta_e_76": 5.434
+      },
+      {
+        "original": [
+          72,
+          88,
+          152
+        ],
+        "adaptado": [
+          48,
+          88,
+          128
+        ],
+        "pixeles": 51,
+        "delta_e_76": 17.4
+      },
+      {
+        "original": [
+          80,
+          88,
+          104
+        ],
+        "adaptado": [
+          72,
+          64,
+          80
+        ],
+        "pixeles": 805,
+        "delta_e_76": 10.972
+      },
+      {
+        "original": [
+          88,
+          136,
+          208
+        ],
+        "adaptado": [
+          56,
+          128,
+          168
+        ],
+        "pixeles": 93,
+        "delta_e_76": 21.153
+      },
+      {
+        "original": [
+          112,
+          80,
+          56
+        ],
+        "adaptado": [
+          128,
+          96,
+          64
+        ],
+        "pixeles": 52,
+        "delta_e_76": 7.6
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 132,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          152,
+          120,
+          80
+        ],
+        "adaptado": [
+          176,
+          144,
+          104
+        ],
+        "pixeles": 62,
+        "delta_e_76": 9.262
+      },
+      {
+        "original": [
+          168,
+          168,
+          216
+        ],
+        "adaptado": [
+          192,
+          208,
+          248
+        ],
+        "pixeles": 75,
+        "delta_e_76": 15.215
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 225,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          232,
+          232,
+          248
+        ],
+        "adaptado": [
+          232,
+          240,
+          248
+        ],
+        "pixeles": 42,
+        "delta_e_76": 5.442
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": true,
+    "order": [
+      0,
+      1,
+      2
+    ],
+    "durations_ticks": [
+      12,
+      12,
+      24
+    ],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "candice_platinum",
+    "name": "Candice",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          487,
+          802,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            88,
+            128
+          ],
+          [
+            56,
+            128,
+            168
+          ],
+          [
+            72,
+            64,
+            80
+          ],
+          [
+            88,
+            184,
+            232
+          ],
+          [
+            104,
+            112,
+            96
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            120,
+            152,
+            176
+          ],
+          [
+            128,
+            96,
+            64
+          ],
+          [
+            176,
+            144,
+            104
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            208,
+            248
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            240,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "fc860c48c2df541e50e9a2a161f0d64aded0096627db5ef0707f569450c601aa"
+      },
+      {
+        "rect": [
+          568,
+          802,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            88,
+            128
+          ],
+          [
+            56,
+            128,
+            168
+          ],
+          [
+            72,
+            64,
+            80
+          ],
+          [
+            88,
+            184,
+            232
+          ],
+          [
+            104,
+            112,
+            96
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            120,
+            152,
+            176
+          ],
+          [
+            128,
+            96,
+            64
+          ],
+          [
+            176,
+            144,
+            104
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            208,
+            248
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            240,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "4428bfcc3f609cdb22c7278b26c93d5fbf0e2bbf439225a563393ba4fc3d9348"
+      },
+      {
+        "rect": [
+          649,
+          802,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            88,
+            128
+          ],
+          [
+            56,
+            128,
+            168
+          ],
+          [
+            72,
+            64,
+            80
+          ],
+          [
+            88,
+            184,
+            232
+          ],
+          [
+            104,
+            112,
+            96
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            120,
+            152,
+            176
+          ],
+          [
+            128,
+            96,
+            64
+          ],
+          [
+            176,
+            144,
+            104
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            208,
+            248
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            240,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "5fedcda06ab22e59c60b7527ef01c097050d160075256fc17b1139153114406d"
+      }
+    ],
+    "frame_order": [
+      0,
+      1,
+      2
+    ],
+    "animation_available": true,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        48,
+        88,
+        128
+      ],
+      [
+        56,
+        128,
+        168
+      ],
+      [
+        72,
+        64,
+        80
+      ],
+      [
+        88,
+        184,
+        232
+      ],
+      [
+        104,
+        112,
+        96
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        120,
+        152,
+        176
+      ],
+      [
+        128,
+        96,
+        64
+      ],
+      [
+        176,
+        144,
+        104
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        192,
+        208,
+        248
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        232,
+        240,
+        248
+      ],
+      [
+        248,
+        208,
+        184
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "candice_platinum",
+    "identity": "candice",
+    "name": "Candice",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25790.png",
+    "source_key": "platinum_leader_6",
+    "frames": [
+      {
+        "rect": [
+          257,
+          113,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          257,
+          145,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          257,
+          177,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          257,
+          209,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          257,
+          241,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          257,
+          273,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          257,
+          305,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          257,
+          337,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          257,
+          369,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "candice_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_CANDICE_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_CANDICE_PLATINUM",
+    "palette": "gPaletaEntrenador_candice_platinum"
+  }
+}

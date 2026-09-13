@@ -1,0 +1,300 @@
+{
+  "id": "platinum_ow_b3_c16",
+  "name": "platinum_ow_b3_c16",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/cajon_de_sastre/platinum_ow_b3_c16",
+  "has_front": false,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "platinum_ow_b3_c16.pal",
+  "palette_origin": "ow_provisional_sin_front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      64,
+      64,
+      72
+    ],
+    [
+      80,
+      64,
+      72
+    ],
+    [
+      80,
+      88,
+      80
+    ],
+    [
+      96,
+      136,
+      120
+    ],
+    [
+      96,
+      184,
+      176
+    ],
+    [
+      120,
+      64,
+      64
+    ],
+    [
+      120,
+      88,
+      80
+    ],
+    [
+      168,
+      160,
+      200
+    ],
+    [
+      184,
+      144,
+      88
+    ],
+    [
+      192,
+      80,
+      88
+    ],
+    [
+      216,
+      152,
+      112
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      240,
+      120,
+      88
+    ],
+    [
+      248,
+      208,
+      184
+    ]
+  ],
+  "front_colors_unchanged": null,
+  "ow_palette_conversion": {
+    "colores_originales": 15,
+    "colores_modificados": 0,
+    "pixeles_modificados": 0,
+    "pixeles_opacos": 2697,
+    "delta_e_medio": 0.0,
+    "delta_e_maximo": 0.0,
+    "conversiones": []
+  },
+  "missing": [
+    {
+      "grafico": "front",
+      "frame": 0,
+      "motivo": "No hay front identificado para este OW"
+    }
+  ],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": null,
+  "ow_source": {
+    "id": "platinum_ow_b3_c16",
+    "identity": null,
+    "name": "platinum_ow_b3_c16",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25791.png",
+    "source_key": "platinum_ow_b3_c16",
+    "frames": [
+      {
+        "rect": [
+          529,
+          961,
+          32,
+          32
+        ],
+        "background": [
+          176,
+          184,
+          240
+        ]
+      },
+      {
+        "rect": [
+          529,
+          993,
+          32,
+          32
+        ],
+        "background": [
+          176,
+          184,
+          240
+        ]
+      },
+      {
+        "rect": [
+          529,
+          1025,
+          32,
+          32
+        ],
+        "background": [
+          176,
+          184,
+          240
+        ]
+      },
+      {
+        "rect": [
+          529,
+          1057,
+          32,
+          32
+        ],
+        "background": [
+          176,
+          184,
+          240
+        ]
+      },
+      {
+        "rect": [
+          529,
+          1089,
+          32,
+          32
+        ],
+        "background": [
+          176,
+          184,
+          240
+        ]
+      },
+      {
+        "rect": [
+          529,
+          1121,
+          32,
+          32
+        ],
+        "background": [
+          176,
+          184,
+          240
+        ]
+      },
+      {
+        "rect": [
+          529,
+          1153,
+          32,
+          32
+        ],
+        "background": [
+          176,
+          184,
+          240
+        ]
+      },
+      {
+        "rect": [
+          529,
+          1185,
+          32,
+          32
+        ],
+        "background": [
+          176,
+          184,
+          240
+        ]
+      },
+      {
+        "rect": [
+          529,
+          1217,
+          32,
+          32
+        ],
+        "background": [
+          176,
+          184,
+          240
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "unidentified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+      "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+    ],
+    "candidate_identity": "reporter",
+    "front_id": null
+  },
+  "code": {
+    "front": null,
+    "ow": "OBJ_EVENT_GFX_PLATINUM_OW_B3_C16",
+    "palette": "gPaletaEntrenador_platinum_ow_b3_c16"
+  }
+}

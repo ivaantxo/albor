@@ -1,0 +1,606 @@
+{
+  "id": "youngster_platinum",
+  "name": "Youngster",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/youngster_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "youngster_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      48,
+      56,
+      80
+    ],
+    [
+      48,
+      72,
+      168
+    ],
+    [
+      56,
+      48,
+      48
+    ],
+    [
+      64,
+      104,
+      216
+    ],
+    [
+      96,
+      56,
+      64
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      120,
+      88,
+      64
+    ],
+    [
+      160,
+      72,
+      56
+    ],
+    [
+      168,
+      176,
+      168
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      224,
+      88,
+      64
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      248,
+      208,
+      184
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 13,
+    "colores_modificados": 9,
+    "pixeles_modificados": 1840,
+    "pixeles_opacos": 2659,
+    "delta_e_medio": 11.984,
+    "delta_e_maximo": 27.448,
+    "conversiones": [
+      {
+        "original": [
+          48,
+          48,
+          56
+        ],
+        "adaptado": [
+          56,
+          48,
+          48
+        ],
+        "pixeles": 356,
+        "delta_e_76": 6.611
+      },
+      {
+        "original": [
+          64,
+          80,
+          136
+        ],
+        "adaptado": [
+          48,
+          56,
+          80
+        ],
+        "pixeles": 534,
+        "delta_e_76": 22.142
+      },
+      {
+        "original": [
+          80,
+          64,
+          64
+        ],
+        "adaptado": [
+          56,
+          48,
+          48
+        ],
+        "pixeles": 76,
+        "delta_e_76": 8.803
+      },
+      {
+        "original": [
+          88,
+          48,
+          40
+        ],
+        "adaptado": [
+          96,
+          56,
+          64
+        ],
+        "pixeles": 53,
+        "delta_e_76": 11.174
+      },
+      {
+        "original": [
+          88,
+          120,
+          192
+        ],
+        "adaptado": [
+          64,
+          104,
+          216
+        ],
+        "pixeles": 574,
+        "delta_e_76": 25.043
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          96,
+          56,
+          64
+        ],
+        "pixeles": 83,
+        "delta_e_76": 11.154
+      },
+      {
+        "original": [
+          152,
+          64,
+          56
+        ],
+        "adaptado": [
+          160,
+          72,
+          56
+        ],
+        "pixeles": 106,
+        "delta_e_76": 4.938
+      },
+      {
+        "original": [
+          168,
+          160,
+          200
+        ],
+        "adaptado": [
+          168,
+          176,
+          168
+        ],
+        "pixeles": 9,
+        "delta_e_76": 27.448
+      },
+      {
+        "original": [
+          208,
+          88,
+          64
+        ],
+        "adaptado": [
+          224,
+          88,
+          64
+        ],
+        "pixeles": 49,
+        "delta_e_76": 7.253
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "youngster_platinum",
+    "name": "Youngster",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          406,
+          18,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            56,
+            80
+          ],
+          [
+            48,
+            72,
+            168
+          ],
+          [
+            56,
+            48,
+            48
+          ],
+          [
+            64,
+            104,
+            216
+          ],
+          [
+            96,
+            56,
+            64
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            120,
+            88,
+            64
+          ],
+          [
+            160,
+            72,
+            56
+          ],
+          [
+            168,
+            176,
+            168
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            224,
+            88,
+            64
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "a7bf061e04d4f6ab0e28ec4b155e08e06b054254cc4cdea5f80e7263b9b39ed2"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        48,
+        56,
+        80
+      ],
+      [
+        48,
+        72,
+        168
+      ],
+      [
+        56,
+        48,
+        48
+      ],
+      [
+        64,
+        104,
+        216
+      ],
+      [
+        96,
+        56,
+        64
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        120,
+        88,
+        64
+      ],
+      [
+        160,
+        72,
+        56
+      ],
+      [
+        168,
+        176,
+        168
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        224,
+        88,
+        64
+      ],
+      [
+        232,
+        232,
+        248
+      ],
+      [
+        248,
+        208,
+        184
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "youngster_platinum",
+    "identity": "youngster",
+    "name": "Youngster",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25791.png",
+    "source_key": "platinum_ow_b1_c00",
+    "frames": [
+      {
+        "rect": [
+          17,
+          385,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          17,
+          417,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          17,
+          449,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          17,
+          481,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          17,
+          513,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          17,
+          545,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          17,
+          577,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          17,
+          609,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          17,
+          641,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "youngster_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_YOUNGSTER_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_YOUNGSTER_PLATINUM",
+    "palette": "gPaletaEntrenador_youngster_platinum"
+  }
+}

@@ -1,0 +1,384 @@
+{
+  "id": "lyra_hgss",
+  "name": "Lyra",
+  "game": "hgss",
+  "directory": "graphics/entrenadores/lyra_hgss",
+  "has_front": true,
+  "has_ow": false,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "lyra_hgss.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      48,
+      64,
+      80
+    ],
+    [
+      56,
+      104,
+      152
+    ],
+    [
+      104,
+      72,
+      48
+    ],
+    [
+      120,
+      64,
+      64
+    ],
+    [
+      136,
+      32,
+      64
+    ],
+    [
+      152,
+      104,
+      72
+    ],
+    [
+      176,
+      168,
+      192
+    ],
+    [
+      184,
+      144,
+      48
+    ],
+    [
+      200,
+      32,
+      80
+    ],
+    [
+      200,
+      200,
+      216
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      240,
+      208,
+      104
+    ],
+    [
+      248,
+      208,
+      184
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 0,
+    "colores_modificados": 0,
+    "pixeles_modificados": 0,
+    "pixeles_opacos": 0,
+    "delta_e_medio": 0.0,
+    "delta_e_maximo": 0,
+    "conversiones": []
+  },
+  "missing": [
+    {
+      "grafico": "ow",
+      "frame": 0,
+      "pose": "sur_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 1,
+      "pose": "sur_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 2,
+      "pose": "sur_paso_derecha",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 3,
+      "pose": "norte_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 4,
+      "pose": "norte_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 5,
+      "pose": "norte_paso_derecha",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 6,
+      "pose": "oeste_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 7,
+      "pose": "oeste_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 8,
+      "pose": "oeste_paso_derecha",
+      "motivo": "No hay OW identificado"
+    }
+  ],
+  "originals": [],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "lyra_hgss",
+    "name": "Lyra",
+    "game": "hgss",
+    "source": "entrenadores/28037.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          82,
+          18,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            64,
+            80
+          ],
+          [
+            56,
+            104,
+            152
+          ],
+          [
+            104,
+            72,
+            48
+          ],
+          [
+            120,
+            64,
+            64
+          ],
+          [
+            136,
+            32,
+            64
+          ],
+          [
+            152,
+            104,
+            72
+          ],
+          [
+            176,
+            168,
+            192
+          ],
+          [
+            184,
+            144,
+            48
+          ],
+          [
+            200,
+            32,
+            80
+          ],
+          [
+            200,
+            200,
+            216
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            240,
+            208,
+            104
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "f59db152f698a6fca839aa1a4234ec6d9d0f2ac0f2710ffb8ec2121cadadf689"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        48,
+        64,
+        80
+      ],
+      [
+        56,
+        104,
+        152
+      ],
+      [
+        104,
+        72,
+        48
+      ],
+      [
+        120,
+        64,
+        64
+      ],
+      [
+        136,
+        32,
+        64
+      ],
+      [
+        152,
+        104,
+        72
+      ],
+      [
+        176,
+        168,
+        192
+      ],
+      [
+        184,
+        144,
+        48
+      ],
+      [
+        200,
+        32,
+        80
+      ],
+      [
+        200,
+        200,
+        216
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        232,
+        232,
+        248
+      ],
+      [
+        240,
+        208,
+        104
+      ],
+      [
+        248,
+        208,
+        184
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": null,
+  "code": {
+    "front": "TRAINER_PIC_LYRA_HGSS",
+    "ow": null,
+    "palette": "gPaletaEntrenador_lyra_hgss"
+  }
+}

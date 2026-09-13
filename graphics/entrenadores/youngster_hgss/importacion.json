@@ -1,0 +1,968 @@
+{
+  "id": "youngster_hgss",
+  "name": "Youngster",
+  "game": "hgss",
+  "directory": "graphics/entrenadores/youngster_hgss",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "youngster_hgss.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      48,
+      56,
+      80
+    ],
+    [
+      56,
+      72,
+      136
+    ],
+    [
+      104,
+      88,
+      40
+    ],
+    [
+      104,
+      104,
+      184
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      120,
+      88,
+      64
+    ],
+    [
+      168,
+      128,
+      24
+    ],
+    [
+      168,
+      176,
+      168
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      208,
+      72,
+      72
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      224,
+      184,
+      32
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      248,
+      208,
+      184
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 14,
+    "colores_modificados": 10,
+    "pixeles_modificados": 1882,
+    "pixeles_opacos": 2807,
+    "delta_e_medio": 7.294,
+    "delta_e_maximo": 27.448,
+    "conversiones": [
+      {
+        "original": [
+          48,
+          48,
+          56
+        ],
+        "adaptado": [
+          48,
+          56,
+          80
+        ],
+        "pixeles": 266,
+        "delta_e_76": 11.341
+      },
+      {
+        "original": [
+          56,
+          40,
+          40
+        ],
+        "adaptado": [
+          0,
+          0,
+          0
+        ],
+        "pixeles": 68,
+        "delta_e_76": 19.688
+      },
+      {
+        "original": [
+          64,
+          80,
+          136
+        ],
+        "adaptado": [
+          56,
+          72,
+          136
+        ],
+        "pixeles": 714,
+        "delta_e_76": 6.36
+      },
+      {
+        "original": [
+          80,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 67,
+        "delta_e_76": 18.036
+      },
+      {
+        "original": [
+          88,
+          48,
+          40
+        ],
+        "adaptado": [
+          120,
+          88,
+          64
+        ],
+        "pixeles": 51,
+        "delta_e_76": 18.075
+      },
+      {
+        "original": [
+          88,
+          120,
+          192
+        ],
+        "adaptado": [
+          104,
+          104,
+          184
+        ],
+        "pixeles": 445,
+        "delta_e_76": 11.796
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 124,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          168,
+          160,
+          200
+        ],
+        "adaptado": [
+          168,
+          176,
+          168
+        ],
+        "pixeles": 33,
+        "delta_e_76": 27.448
+      },
+      {
+        "original": [
+          184,
+          120,
+          16
+        ],
+        "adaptado": [
+          168,
+          128,
+          24
+        ],
+        "pixeles": 47,
+        "delta_e_76": 11.84
+      },
+      {
+        "original": [
+          248,
+          168,
+          32
+        ],
+        "adaptado": [
+          224,
+          184,
+          32
+        ],
+        "pixeles": 67,
+        "delta_e_76": 18.759
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "youngster_hgss",
+    "name": "Youngster",
+    "game": "hgss",
+    "source": "entrenadores/28037.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          406,
+          18,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            56,
+            80
+          ],
+          [
+            56,
+            72,
+            136
+          ],
+          [
+            104,
+            88,
+            40
+          ],
+          [
+            104,
+            104,
+            184
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            120,
+            88,
+            64
+          ],
+          [
+            168,
+            128,
+            24
+          ],
+          [
+            168,
+            176,
+            168
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            208,
+            72,
+            72
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            224,
+            184,
+            32
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "ba01381983503dbb7ecfc7adda45732512c5760f58b8202dbb74ac1eb0f43611"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        48,
+        56,
+        80
+      ],
+      [
+        56,
+        72,
+        136
+      ],
+      [
+        104,
+        88,
+        40
+      ],
+      [
+        104,
+        104,
+        184
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        120,
+        88,
+        64
+      ],
+      [
+        168,
+        128,
+        24
+      ],
+      [
+        168,
+        176,
+        168
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        208,
+        72,
+        72
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        224,
+        184,
+        32
+      ],
+      [
+        232,
+        232,
+        248
+      ],
+      [
+        248,
+        208,
+        184
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "youngster_hgss",
+    "name": "Youngster",
+    "game": "hgss",
+    "source": "entrenadores/26955.png",
+    "source_group": {
+      "row": 1,
+      "column": 8,
+      "rect": [
+        669,
+        0,
+        96,
+        128
+      ]
+    },
+    "identity_status": "identified",
+    "confidence": "high_visual",
+    "frames": [
+      {
+        "rect": [
+          669,
+          0,
+          32,
+          31
+        ],
+        "background": [
+          32,
+          152,
+          96
+        ],
+        "backgrounds": [
+          [
+            32,
+            152,
+            96
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_idle",
+        "empty": false,
+        "opaque_bbox": [
+          5,
+          6,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          701,
+          0,
+          32,
+          31
+        ],
+        "background": [
+          32,
+          152,
+          96
+        ],
+        "backgrounds": [
+          [
+            32,
+            152,
+            96
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_idle",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          7,
+          23,
+          30
+        ]
+      },
+      {
+        "rect": [
+          733,
+          0,
+          32,
+          31
+        ],
+        "background": [
+          32,
+          152,
+          96
+        ],
+        "backgrounds": [
+          [
+            32,
+            152,
+            96
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          5,
+          5,
+          24,
+          31
+        ]
+      },
+      {
+        "rect": [
+          669,
+          32,
+          32,
+          31
+        ],
+        "background": [
+          32,
+          152,
+          96
+        ],
+        "backgrounds": [
+          [
+            32,
+            152,
+            96
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          9,
+          6,
+          26,
+          30
+        ]
+      },
+      {
+        "rect": [
+          701,
+          32,
+          32,
+          31
+        ],
+        "background": [
+          32,
+          152,
+          96
+        ],
+        "backgrounds": [
+          [
+            32,
+            152,
+            96
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          6,
+          23,
+          30
+        ]
+      },
+      {
+        "rect": [
+          733,
+          32,
+          32,
+          31
+        ],
+        "background": [
+          32,
+          152,
+          96
+        ],
+        "backgrounds": [
+          [
+            32,
+            152,
+            96
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_idle",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          6,
+          26,
+          30
+        ]
+      },
+      {
+        "rect": [
+          669,
+          64,
+          32,
+          31
+        ],
+        "background": [
+          32,
+          152,
+          96
+        ],
+        "backgrounds": [
+          [
+            32,
+            152,
+            96
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_idle",
+        "empty": false,
+        "opaque_bbox": [
+          9,
+          7,
+          26,
+          30
+        ]
+      },
+      {
+        "rect": [
+          701,
+          64,
+          32,
+          31
+        ],
+        "background": [
+          32,
+          152,
+          96
+        ],
+        "backgrounds": [
+          [
+            32,
+            152,
+            96
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          6,
+          23,
+          30
+        ]
+      },
+      {
+        "rect": [
+          733,
+          64,
+          32,
+          31
+        ],
+        "background": [
+          32,
+          152,
+          96
+        ],
+        "backgrounds": [
+          [
+            32,
+            152,
+            96
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          5,
+          26,
+          31
+        ]
+      },
+      {
+        "rect": [
+          669,
+          96,
+          32,
+          31
+        ],
+        "background": [
+          32,
+          152,
+          96
+        ],
+        "backgrounds": [
+          [
+            32,
+            152,
+            96
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          9,
+          6,
+          26,
+          30
+        ]
+      },
+      {
+        "rect": [
+          701,
+          96,
+          32,
+          31
+        ],
+        "background": [
+          32,
+          152,
+          96
+        ],
+        "backgrounds": [
+          [
+            32,
+            152,
+            96
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          5,
+          5,
+          24,
+          31
+        ]
+      },
+      {
+        "rect": [
+          733,
+          96,
+          32,
+          31
+        ],
+        "background": [
+          32,
+          152,
+          96
+        ],
+        "backgrounds": [
+          [
+            32,
+            152,
+            96
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          5,
+          26,
+          31
+        ]
+      }
+    ],
+    "target_order": [
+      5,
+      8,
+      11,
+      0,
+      2,
+      10,
+      6,
+      3,
+      9
+    ],
+    "target_labels": [
+      "south_idle",
+      "south_step_a",
+      "south_step_b",
+      "north_idle",
+      "north_step_a",
+      "north_step_b",
+      "west_idle",
+      "west_step_a",
+      "west_step_b"
+    ],
+    "all_directions_order": [
+      5,
+      8,
+      11,
+      0,
+      2,
+      10,
+      6,
+      3,
+      9,
+      1,
+      4,
+      7
+    ],
+    "east_mirror_of_west": true,
+    "east_art_is_mirrored_west": true,
+    "missing_frames": [],
+    "notes": [
+      "Los doce frames originales están presentes.",
+      "La fila inferior vacía se excluye del rectángulo y se rellena transparente para completar 32×32."
+    ]
+  },
+  "code": {
+    "front": "TRAINER_PIC_YOUNGSTER_HGSS",
+    "ow": "OBJ_EVENT_GFX_YOUNGSTER_HGSS",
+    "palette": "gPaletaEntrenador_youngster_hgss"
+  }
+}

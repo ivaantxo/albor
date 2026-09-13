@@ -990,8 +990,27 @@ static void HighlightSelectedMainMenuItem(u8 menuType, u8 selectedMenuItem, s16 
 #define tBrendanSpriteId data[10]
 #define tMaySpriteId data[11]
 
+// Quien es el jugador, de momento sin preguntar.
+//
+// No hay eleccion de nombre ni de genero: el discurso del profesor sigue entero, pero
+// va directo de la presentacion a la despedida. El personaje es Lucas, en el mapa y en
+// combate. Cuando haya seleccion de verdad, esto es lo que hay que quitar -y el genero
+// probablemente deje de guardarse aqui-.
+static const u8 sNombreDelJugador[] = _("Ivantxo");
+
+static void FijaJugadorPorDefecto(void)
+{
+    u32 i;
+
+    gSaveBlockPtr->playerGender = MALE;
+    for (i = 0; i < MAXIMO_CARACTERES_NOMBRE_JUGADOR && sNombreDelJugador[i] != EOS; i++)
+        gSaveBlockPtr->nombreJugador[i] = sNombreDelJugador[i];
+    gSaveBlockPtr->nombreJugador[i] = EOS;
+}
+
 static void Task_NewGameBirchSpeech_Init(u8 taskId)
 {
+    FijaJugadorPorDefecto();
     SetGpuReg(REG_OFFSET_DISPCNT, 0);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
     InitBgFromTemplate(&sBirchBgTemplate);
@@ -1205,7 +1224,8 @@ static void Task_NewGameBirchSpeech_WaitForPlayerFadeIn(u8 taskId)
     if (gTasks[taskId].tIsDoneFadingSprites)
     {
         gSprites[gTasks[taskId].tPlayerSpriteId].oam.objMode = ST_OAM_OBJ_NORMAL;
-        gTasks[taskId].func = Task_NewGameBirchSpeech_BoyOrGirl;
+        // Sin "?chico o chica?" ni pantalla de nombre: ya estan decididos.
+        gTasks[taskId].func = Task_NewGameBirchSpeech_SlidePlatformAway2;
     }
 }
 

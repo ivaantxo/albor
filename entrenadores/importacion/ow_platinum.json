@@ -130,21 +130,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "roark_platinum"
     },
     {
       "id": "gardenia_platinum",
@@ -275,21 +277,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "gardenia_platinum"
     },
     {
       "id": "maylene_platinum",
@@ -420,21 +424,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "maylene_platinum"
     },
     {
       "id": "crasher_wake_platinum",
@@ -565,21 +571,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "crasher_wake_platinum"
     },
     {
       "id": "fantina_platinum",
@@ -710,21 +718,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "fantina_platinum"
     },
     {
       "id": "byron_platinum",
@@ -855,21 +865,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "byron_platinum"
     },
     {
       "id": "candice_platinum",
@@ -1000,21 +1012,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "candice_platinum"
     },
     {
       "id": "volkner_platinum",
@@ -1145,21 +1159,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "volkner_platinum"
     },
     {
       "id": "aaron_platinum",
@@ -1290,21 +1306,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "aaron_platinum"
     },
     {
       "id": "bertha_platinum",
@@ -1435,21 +1453,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "bertha_platinum"
     },
     {
       "id": "flint_platinum",
@@ -1580,21 +1600,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "flint_platinum"
     },
     {
       "id": "lucian_platinum",
@@ -1725,21 +1747,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "lucian_platinum"
     },
     {
       "id": "cynthia_platinum",
@@ -1870,26 +1894,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "cynthia_platinum"
     },
     {
-      "id": "platinum_ow_b0_c00",
-      "identity": null,
-      "name": "platinum_ow_b0_c00",
+      "id": "ruin_maniac_platinum",
+      "identity": "ruin_maniac",
+      "name": "Ruin Maniac",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -2015,21 +2041,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "ruin_maniac_platinum"
     },
     {
       "id": "platinum_ow_b0_c01",
@@ -2160,26 +2188,30 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "old_man",
+      "front_id": null
     },
     {
-      "id": "platinum_ow_b0_c02",
-      "identity": null,
-      "name": "platinum_ow_b0_c02",
+      "id": "ace_trainer_m_platinum",
+      "identity": "ace_trainer_m",
+      "name": "Ace Trainer M",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -2305,26 +2337,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "ace_trainer_m_platinum"
     },
     {
-      "id": "platinum_ow_b0_c03",
-      "identity": null,
-      "name": "platinum_ow_b0_c03",
+      "id": "roughneck_platinum",
+      "identity": "roughneck",
+      "name": "Roughneck",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -2450,21 +2484,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "roughneck_platinum"
     },
     {
       "id": "platinum_ow_b0_c04",
@@ -2595,26 +2631,30 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "pokemon_ranger_m",
+      "front_id": null
     },
     {
-      "id": "platinum_ow_b0_c05",
-      "identity": null,
-      "name": "platinum_ow_b0_c05",
+      "id": "black_belt_platinum",
+      "identity": "black_belt",
+      "name": "Black Belt",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -2740,26 +2780,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "black_belt_platinum"
     },
     {
-      "id": "platinum_ow_b0_c06",
-      "identity": null,
-      "name": "platinum_ow_b0_c06",
+      "id": "pokemon_breeder_m_platinum",
+      "identity": "pokemon_breeder_m",
+      "name": "Pokemon Breeder M",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -2885,26 +2927,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "pokemon_breeder_m_platinum"
     },
     {
-      "id": "platinum_ow_b0_c07",
-      "identity": null,
-      "name": "platinum_ow_b0_c07",
+      "id": "rich_boy_platinum",
+      "identity": "rich_boy",
+      "name": "Rich Boy",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -3030,21 +3074,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "rich_boy_platinum"
     },
     {
       "id": "platinum_ow_b0_c08",
@@ -3175,21 +3221,25 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "lass",
+      "front_id": null
     },
     {
       "id": "platinum_ow_b0_c09",
@@ -3320,26 +3370,30 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "school_kid_m",
+      "front_id": null
     },
     {
-      "id": "platinum_ow_b0_c10",
-      "identity": null,
-      "name": "platinum_ow_b0_c10",
+      "id": "battle_girl_platinum",
+      "identity": "battle_girl",
+      "name": "Battle Girl",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -3465,26 +3519,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "battle_girl_platinum"
     },
     {
-      "id": "platinum_ow_b0_c11",
-      "identity": null,
-      "name": "platinum_ow_b0_c11",
+      "id": "beauty_platinum",
+      "identity": "beauty",
+      "name": "Beauty",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -3610,26 +3666,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "beauty_platinum"
     },
     {
-      "id": "platinum_ow_b0_c12",
-      "identity": null,
-      "name": "platinum_ow_b0_c12",
+      "id": "ace_trainer_f_platinum",
+      "identity": "ace_trainer_f",
+      "name": "Ace Trainer F",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -3755,26 +3813,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "ace_trainer_f_platinum"
     },
     {
-      "id": "platinum_ow_b0_c13",
-      "identity": null,
-      "name": "platinum_ow_b0_c13",
+      "id": "idol_platinum",
+      "identity": "idol",
+      "name": "Idol",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -3900,26 +3960,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "idol_platinum"
     },
     {
-      "id": "platinum_ow_b0_c14",
-      "identity": null,
-      "name": "platinum_ow_b0_c14",
+      "id": "socialite_platinum",
+      "identity": "socialite",
+      "name": "Socialite",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -4045,26 +4107,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "socialite_platinum"
     },
     {
-      "id": "platinum_ow_b0_c15",
-      "identity": null,
-      "name": "platinum_ow_b0_c15",
+      "id": "swimmer_f_platinum",
+      "identity": "swimmer_f",
+      "name": "Swimmer F",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -4190,26 +4254,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "swimmer_f_platinum"
     },
     {
-      "id": "platinum_ow_b0_c16",
-      "identity": null,
-      "name": "platinum_ow_b0_c16",
+      "id": "maid_platinum",
+      "identity": "maid",
+      "name": "Maid",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -4335,26 +4401,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "maid_platinum"
     },
     {
-      "id": "platinum_ow_b1_c00",
-      "identity": null,
-      "name": "platinum_ow_b1_c00",
+      "id": "youngster_platinum",
+      "identity": "youngster",
+      "name": "Youngster",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -4480,26 +4548,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "youngster_platinum"
     },
     {
-      "id": "platinum_ow_b1_c01",
-      "identity": null,
-      "name": "platinum_ow_b1_c01",
+      "id": "school_kid_f_platinum",
+      "identity": "school_kid_f",
+      "name": "School Kid F",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -4625,21 +4695,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "school_kid_f_platinum"
     },
     {
       "id": "camper_platinum",
@@ -4770,21 +4842,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "camper_platinum"
     },
     {
       "id": "picnicker_platinum",
@@ -4915,21 +4989,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "picnicker_platinum"
     },
     {
       "id": "twins_platinum",
@@ -5060,21 +5136,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "twins_platinum"
     },
     {
       "id": "platinum_ow_b1_c05",
@@ -5205,21 +5283,25 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "old_man",
+      "front_id": null
     },
     {
       "id": "platinum_ow_b1_c06",
@@ -5350,26 +5432,30 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "parasol_lady",
+      "front_id": null
     },
     {
-      "id": "platinum_ow_b1_c07",
-      "identity": null,
-      "name": "platinum_ow_b1_c07",
+      "id": "waiter_platinum",
+      "identity": "waiter",
+      "name": "Waiter",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -5495,26 +5581,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "waiter_platinum"
     },
     {
-      "id": "platinum_ow_b1_c08",
-      "identity": null,
-      "name": "platinum_ow_b1_c08",
+      "id": "waitress_platinum",
+      "identity": "waitress",
+      "name": "Waitress",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -5640,21 +5728,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "waitress_platinum"
     },
     {
       "id": "platinum_ow_b1_c09",
@@ -5785,21 +5875,25 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "young_man",
+      "front_id": null
     },
     {
       "id": "platinum_ow_b1_c10",
@@ -5930,21 +6024,25 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "young_woman",
+      "front_id": null
     },
     {
       "id": "cameraman_platinum",
@@ -6075,26 +6173,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "cameraman_platinum"
     },
     {
-      "id": "platinum_ow_b1_c12",
-      "identity": null,
-      "name": "platinum_ow_b1_c12",
+      "id": "reporter_platinum",
+      "identity": "reporter",
+      "name": "Reporter",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -6220,26 +6320,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "reporter_platinum"
     },
     {
-      "id": "platinum_ow_b1_c13",
-      "identity": null,
-      "name": "platinum_ow_b1_c13",
+      "id": "cowgirl_platinum",
+      "identity": "cowgirl",
+      "name": "Cowgirl",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -6365,26 +6467,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "cowgirl_platinum"
     },
     {
-      "id": "platinum_ow_b1_c14",
-      "identity": null,
-      "name": "platinum_ow_b1_c14",
+      "id": "jogger_platinum",
+      "identity": "jogger",
+      "name": "Jogger",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -6510,26 +6614,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "jogger_platinum"
     },
     {
-      "id": "platinum_ow_b1_c15",
-      "identity": null,
-      "name": "platinum_ow_b1_c15",
+      "id": "fisher_platinum",
+      "identity": "fisher",
+      "name": "Fisher",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -6655,21 +6761,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "fisher_platinum"
     },
     {
       "id": "platinum_ow_b1_c16",
@@ -6800,26 +6908,30 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "old_man",
+      "front_id": null
     },
     {
-      "id": "platinum_ow_b2_c00",
-      "identity": null,
-      "name": "platinum_ow_b2_c00",
+      "id": "ace_trainer_snow_m_platinum",
+      "identity": "ace_trainer_snow_m",
+      "name": "Ace Trainer Snow M",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -6945,26 +7057,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "ace_trainer_snow_m_platinum"
     },
     {
-      "id": "platinum_ow_b2_c01",
-      "identity": null,
-      "name": "platinum_ow_b2_c01",
+      "id": "ace_trainer_snow_f_platinum",
+      "identity": "ace_trainer_snow_f",
+      "name": "Ace Trainer Snow F",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -7090,21 +7204,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "ace_trainer_snow_f_platinum"
     },
     {
       "id": "platinum_ow_b2_c02",
@@ -7235,26 +7351,30 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "bug_catcher",
+      "front_id": null
     },
     {
-      "id": "youngster_platinum",
-      "identity": "youngster",
-      "name": "Youngster",
+      "id": "platinum_ow_b2_c03",
+      "identity": null,
+      "name": "platinum_ow_b2_c03",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -7380,21 +7500,25 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "identified",
+      "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "dragon_tamer",
+      "front_id": null
     },
     {
       "id": "platinum_ow_b2_c04",
@@ -7525,21 +7649,25 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "bird_keeper",
+      "front_id": null
     },
     {
       "id": "sailor_platinum",
@@ -7670,26 +7798,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "sailor_platinum"
     },
     {
-      "id": "platinum_ow_b2_c06",
-      "identity": null,
-      "name": "platinum_ow_b2_c06",
+      "id": "hiker_platinum",
+      "identity": "hiker",
+      "name": "Hiker",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -7815,21 +7945,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "hiker_platinum"
     },
     {
       "id": "platinum_ow_b2_c07",
@@ -7960,26 +8092,30 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "young_woman",
+      "front_id": null
     },
     {
-      "id": "hiker_platinum",
-      "identity": "hiker",
-      "name": "Hiker",
+      "id": "pokefan_m_platinum",
+      "identity": "pokefan_m",
+      "name": "Pokefan M",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -8105,21 +8241,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "pokefan_m_platinum"
     },
     {
       "id": "scientist_platinum",
@@ -8250,21 +8388,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "scientist_platinum"
     },
     {
       "id": "gentleman_platinum",
@@ -8395,21 +8535,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "gentleman_platinum"
     },
     {
       "id": "worker_platinum",
@@ -8540,26 +8682,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "worker_platinum"
     },
     {
-      "id": "ninja_boy_platinum",
-      "identity": "ninja_boy",
-      "name": "Ninja Boy",
+      "id": "clown_platinum",
+      "identity": "clown",
+      "name": "Clown",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -8685,21 +8829,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "clown_platinum"
     },
     {
       "id": "policeman_platinum",
@@ -8830,26 +8976,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "policeman_platinum"
     },
     {
-      "id": "gentleman_elder_platinum",
-      "identity": "gentleman_elder",
-      "name": "Gentleman Elder",
+      "id": "platinum_ow_b2_c14",
+      "identity": null,
+      "name": "platinum_ow_b2_c14",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -8975,26 +9123,30 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "identified",
+      "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "veteran",
+      "front_id": null
     },
     {
-      "id": "socialite_platinum",
-      "identity": "socialite",
-      "name": "Socialite",
+      "id": "platinum_ow_b2_c15",
+      "identity": null,
+      "name": "platinum_ow_b2_c15",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -9120,26 +9272,30 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "identified",
+      "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "artist",
+      "front_id": null
     },
     {
-      "id": "cook_platinum",
-      "identity": "cook",
-      "name": "Cook",
+      "id": "platinum_ow_b2_c16",
+      "identity": null,
+      "name": "platinum_ow_b2_c16",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -9265,26 +9421,30 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "identified",
+      "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "cook",
+      "front_id": null
     },
     {
-      "id": "platinum_ow_b3_c00",
-      "identity": null,
-      "name": "platinum_ow_b3_c00",
+      "id": "tuber_m_platinum",
+      "identity": "tuber_m",
+      "name": "Tuber M",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -9410,26 +9570,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "tuber_m_platinum"
     },
     {
-      "id": "platinum_ow_b3_c01",
-      "identity": null,
-      "name": "platinum_ow_b3_c01",
+      "id": "tuber_f_platinum",
+      "identity": "tuber_f",
+      "name": "Tuber F",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -9555,21 +9717,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "tuber_f_platinum"
     },
     {
       "id": "platinum_ow_b3_c02",
@@ -9700,21 +9864,25 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "dragon_tamer",
+      "front_id": null
     },
     {
       "id": "platinum_ow_b3_c03",
@@ -9845,21 +10013,25 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "bird_keeper",
+      "front_id": null
     },
     {
       "id": "platinum_ow_b3_c04",
@@ -9990,26 +10162,30 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "pokemon_ranger_f",
+      "front_id": null
     },
     {
-      "id": "cyclist_m_platinum",
-      "identity": "cyclist_m",
-      "name": "Cyclist M",
+      "id": "cycler_m_platinum",
+      "identity": "cycler_m",
+      "name": "Cycler M",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -10135,26 +10311,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "cycler_m_platinum"
     },
     {
-      "id": "cyclist_f_platinum",
-      "identity": "cyclist_f",
-      "name": "Cyclist F",
+      "id": "cycler_f_platinum",
+      "identity": "cycler_f",
+      "name": "Cycler F",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -10280,26 +10458,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "cycler_f_platinum"
     },
     {
-      "id": "platinum_ow_b3_c07",
-      "identity": null,
-      "name": "platinum_ow_b3_c07",
+      "id": "psychic_m_platinum",
+      "identity": "psychic_m",
+      "name": "Psychic M",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -10425,26 +10605,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "psychic_m_platinum"
     },
     {
-      "id": "platinum_ow_b3_c08",
-      "identity": null,
-      "name": "platinum_ow_b3_c08",
+      "id": "psychic_f_platinum",
+      "identity": "psychic_f",
+      "name": "Psychic F",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -10570,26 +10752,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "psychic_f_platinum"
     },
     {
-      "id": "school_kid_f_platinum",
-      "identity": "school_kid_f",
-      "name": "School Kid F",
+      "id": "platinum_ow_b3_c09",
+      "identity": null,
+      "name": "platinum_ow_b3_c09",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -10715,21 +10899,25 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "identified",
+      "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "lady",
+      "front_id": null
     },
     {
       "id": "platinum_ow_b3_c10",
@@ -10860,26 +11048,30 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "old_man",
+      "front_id": null
     },
     {
-      "id": "old_woman_platinum",
-      "identity": "old_woman",
-      "name": "Old Woman",
+      "id": "platinum_ow_b3_c11",
+      "identity": null,
+      "name": "platinum_ow_b3_c11",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -11005,26 +11197,30 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "identified",
+      "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "old_woman",
+      "front_id": null
     },
     {
-      "id": "old_woman_variant_platinum",
-      "identity": "old_woman_variant",
-      "name": "Old Woman Variant",
+      "id": "platinum_ow_b3_c12",
+      "identity": null,
+      "name": "platinum_ow_b3_c12",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -11150,21 +11346,25 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "identified",
+      "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "old_woman",
+      "front_id": null
     },
     {
       "id": "platinum_ow_b3_c13",
@@ -11295,21 +11495,25 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "swimmer_f",
+      "front_id": null
     },
     {
       "id": "platinum_ow_b3_c14",
@@ -11440,21 +11644,25 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "swimmer_m",
+      "front_id": null
     },
     {
       "id": "platinum_ow_b3_c15",
@@ -11585,21 +11793,25 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "worker",
+      "front_id": null
     },
     {
       "id": "platinum_ow_b3_c16",
@@ -11730,21 +11942,25 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "reporter",
+      "front_id": null
     },
     {
       "id": "platinum_ow_b4_c00",
@@ -11875,21 +12091,25 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "reporter",
+      "front_id": null
     },
     {
       "id": "skier_m_platinum",
@@ -12020,21 +12240,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "skier_m_platinum"
     },
     {
       "id": "skier_f_platinum",
@@ -12165,26 +12387,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "skier_f_platinum"
     },
     {
-      "id": "roughneck_platinum",
-      "identity": "roughneck",
-      "name": "Roughneck",
+      "id": "platinum_ow_b4_c03",
+      "identity": null,
+      "name": "platinum_ow_b4_c03",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -12310,26 +12534,30 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "identified",
+      "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "man_with_sunglasses",
+      "front_id": null
     },
     {
-      "id": "swimmer_m_water_platinum",
-      "identity": "swimmer_m_water",
-      "name": "Swimmer M Water",
+      "id": "platinum_ow_b4_c04",
+      "identity": null,
+      "name": "platinum_ow_b4_c04",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -12455,26 +12683,30 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "identified",
+      "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "swimmer_m",
+      "front_id": null
     },
     {
-      "id": "swimmer_f_water_platinum",
-      "identity": "swimmer_f_water",
-      "name": "Swimmer F Water",
+      "id": "platinum_ow_b4_c05",
+      "identity": null,
+      "name": "platinum_ow_b4_c05",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -12600,26 +12832,30 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "identified",
+      "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "swimmer_f",
+      "front_id": null
     },
     {
-      "id": "deliveryman_platinum",
-      "identity": "deliveryman",
-      "name": "Deliveryman",
+      "id": "platinum_ow_b4_c06",
+      "identity": null,
+      "name": "platinum_ow_b4_c06",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -12745,21 +12981,25 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "identified",
+      "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "deliveryman",
+      "front_id": null
     },
     {
       "id": "platinum_ow_b4_c07",
@@ -12890,21 +13130,25 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "school_kid_m",
+      "front_id": null
     },
     {
       "id": "platinum_ow_b4_c08",
@@ -13035,21 +13279,25 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "school_kid_f",
+      "front_id": null
     },
     {
       "id": "platinum_ow_b4_c09",
@@ -13180,26 +13428,30 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "young_woman",
+      "front_id": null
     },
     {
-      "id": "ski_lift_m_platinum",
-      "identity": "ski_lift_m",
-      "name": "Ski Lift M",
+      "id": "platinum_ow_b4_c10",
+      "identity": null,
+      "name": "platinum_ow_b4_c10",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -13325,26 +13577,30 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "identified",
+      "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "ski_lift_m",
+      "front_id": null
     },
     {
-      "id": "ski_lift_f_platinum",
-      "identity": "ski_lift_f",
-      "name": "Ski Lift F",
+      "id": "platinum_ow_b4_c11",
+      "identity": null,
+      "name": "platinum_ow_b4_c11",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -13470,21 +13726,25 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "identified",
+      "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "ski_lift_f",
+      "front_id": null
     },
     {
       "id": "cyrus_platinum",
@@ -13615,21 +13875,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "cyrus_platinum"
     },
     {
       "id": "galactic_grunt_m_platinum",
@@ -13760,21 +14022,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "galactic_grunt_m_platinum"
     },
     {
       "id": "galactic_grunt_f_platinum",
@@ -13905,21 +14169,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "galactic_grunt_f_platinum"
     },
     {
       "id": "mars_platinum",
@@ -14050,21 +14316,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "mars_platinum"
     },
     {
       "id": "saturn_platinum",
@@ -14195,21 +14463,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "saturn_platinum"
     },
     {
       "id": "jupiter_platinum",
@@ -14340,21 +14610,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "jupiter_platinum"
     },
     {
       "id": "barry_platinum",
@@ -14485,21 +14757,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "barry_platinum"
     },
     {
       "id": "professor_rowan_platinum",
@@ -14630,26 +14904,28 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": null
     },
     {
-      "id": "platinum_ow_b5_c08",
-      "identity": null,
-      "name": "platinum_ow_b5_c08",
+      "id": "looker_platinum",
+      "identity": "looker",
+      "name": "Looker",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -14775,21 +15051,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
-      "confidence": "unidentified",
+      "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": null
     },
     {
       "id": "palmer_platinum",
@@ -14920,21 +15198,23 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [],
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "palmer_platinum"
     },
     {
       "id": "riley_platinum",
@@ -15104,14 +15384,14 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [
         9,
@@ -15121,8 +15401,10 @@
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "riley_platinum"
     },
     {
       "id": "cheryl_platinum",
@@ -15292,14 +15574,14 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [
         9,
@@ -15309,13 +15591,15 @@
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "cheryl_platinum"
     },
     {
-      "id": "johanna_platinum",
-      "identity": "johanna",
-      "name": "Johanna",
+      "id": "platinum_ow_b5_c12",
+      "identity": null,
+      "name": "platinum_ow_b5_c12",
       "game": "platinum",
       "kind": "ow",
       "source": "entrenadores/25791.png",
@@ -15480,14 +15764,14 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [
         9,
@@ -15495,10 +15779,14 @@
         11
       ],
       "east_mirrored": true,
-      "confidence": "identified",
+      "confidence": "unidentified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1.",
+        "Candidato sin confirmar; mantener en cajón de sastre sin asociar a su front."
+      ],
+      "candidate_identity": "johanna",
+      "front_id": null
     },
     {
       "id": "buck_platinum",
@@ -15668,14 +15956,14 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [
         9,
@@ -15685,8 +15973,10 @@
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "buck_platinum"
     },
     {
       "id": "marley_platinum",
@@ -15856,14 +16146,14 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [
         9,
@@ -15873,8 +16163,10 @@
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "marley_platinum"
     },
     {
       "id": "mira_platinum",
@@ -16044,14 +16336,14 @@
       ],
       "target_order": [
         0,
-        3,
+        5,
         6,
         1,
+        3,
         4,
-        7,
         2,
-        5,
-        8
+        8,
+        7
       ],
       "extra_frames": [
         9,
@@ -16061,8 +16353,10 @@
       "east_mirrored": true,
       "confidence": "identified",
       "notes": [
-        "Este no está dibujado en la hoja: se refleja el oeste."
-      ]
+        "Este no está dibujado en la hoja: se refleja el oeste.",
+        "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+      ],
+      "front_id": "mira_platinum"
     }
   ],
   "credits": {

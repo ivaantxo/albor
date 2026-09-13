@@ -1,0 +1,606 @@
+{
+  "id": "ace_trainer_snow_m_platinum",
+  "name": "Ace Trainer Snow M",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/ace_trainer_snow_m_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "ace_trainer_snow_m_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      48,
+      40,
+      48
+    ],
+    [
+      64,
+      72,
+      80
+    ],
+    [
+      80,
+      72,
+      64
+    ],
+    [
+      88,
+      120,
+      112
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      168,
+      104,
+      64
+    ],
+    [
+      176,
+      168,
+      128
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      224,
+      136,
+      64
+    ],
+    [
+      224,
+      216,
+      184
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      248,
+      96,
+      56
+    ],
+    [
+      248,
+      208,
+      184
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 14,
+    "colores_modificados": 9,
+    "pixeles_modificados": 1979,
+    "pixeles_opacos": 2718,
+    "delta_e_medio": 5.029,
+    "delta_e_maximo": 28.463,
+    "conversiones": [
+      {
+        "original": [
+          56,
+          56,
+          64
+        ],
+        "adaptado": [
+          64,
+          72,
+          80
+        ],
+        "pixeles": 565,
+        "delta_e_76": 7.175
+      },
+      {
+        "original": [
+          72,
+          88,
+          96
+        ],
+        "adaptado": [
+          64,
+          72,
+          80
+        ],
+        "pixeles": 817,
+        "delta_e_76": 6.891
+      },
+      {
+        "original": [
+          80,
+          64,
+          72
+        ],
+        "adaptado": [
+          64,
+          72,
+          80
+        ],
+        "pixeles": 27,
+        "delta_e_76": 10.449
+      },
+      {
+        "original": [
+          104,
+          136,
+          128
+        ],
+        "adaptado": [
+          88,
+          120,
+          112
+        ],
+        "pixeles": 159,
+        "delta_e_76": 6.297
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 71,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          160,
+          96,
+          64
+        ],
+        "adaptado": [
+          168,
+          104,
+          64
+        ],
+        "pixeles": 199,
+        "delta_e_76": 4.978
+      },
+      {
+        "original": [
+          168,
+          160,
+          128
+        ],
+        "adaptado": [
+          176,
+          168,
+          128
+        ],
+        "pixeles": 45,
+        "delta_e_76": 5.029
+      },
+      {
+        "original": [
+          168,
+          160,
+          200
+        ],
+        "adaptado": [
+          232,
+          232,
+          248
+        ],
+        "pixeles": 9,
+        "delta_e_76": 28.463
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 87,
+        "delta_e_76": 4.387
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "ace_trainer_snow_m_platinum",
+    "name": "Ace Trainer Snow M",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          649,
+          410,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            40,
+            48
+          ],
+          [
+            64,
+            72,
+            80
+          ],
+          [
+            80,
+            72,
+            64
+          ],
+          [
+            88,
+            120,
+            112
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            168,
+            104,
+            64
+          ],
+          [
+            176,
+            168,
+            128
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            224,
+            136,
+            64
+          ],
+          [
+            224,
+            216,
+            184
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            96,
+            56
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "e5374fc73402889cd2c632b3d0a8e682725a97c87ff272f4f30c616e6299ba6b"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        48,
+        40,
+        48
+      ],
+      [
+        64,
+        72,
+        80
+      ],
+      [
+        80,
+        72,
+        64
+      ],
+      [
+        88,
+        120,
+        112
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        168,
+        104,
+        64
+      ],
+      [
+        176,
+        168,
+        128
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        224,
+        136,
+        64
+      ],
+      [
+        224,
+        216,
+        184
+      ],
+      [
+        232,
+        232,
+        248
+      ],
+      [
+        248,
+        96,
+        56
+      ],
+      [
+        248,
+        208,
+        184
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "ace_trainer_snow_m_platinum",
+    "identity": "ace_trainer_snow_m",
+    "name": "Ace Trainer Snow M",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25791.png",
+    "source_key": "platinum_ow_b2_c00",
+    "frames": [
+      {
+        "rect": [
+          17,
+          673,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          17,
+          705,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          17,
+          737,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          17,
+          769,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          17,
+          801,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          17,
+          833,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          17,
+          865,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          17,
+          897,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          17,
+          929,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          160,
+          112
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "ace_trainer_snow_m_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_ACE_TRAINER_SNOW_M_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_ACE_TRAINER_SNOW_M_PLATINUM",
+    "palette": "gPaletaEntrenador_ace_trainer_snow_m_platinum"
+  }
+}

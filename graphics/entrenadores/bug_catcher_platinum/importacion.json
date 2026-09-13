@@ -1,0 +1,384 @@
+{
+  "id": "bug_catcher_platinum",
+  "name": "Bug Catcher",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/bug_catcher_platinum",
+  "has_front": true,
+  "has_ow": false,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "bug_catcher_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      56,
+      48,
+      64
+    ],
+    [
+      72,
+      72,
+      104
+    ],
+    [
+      72,
+      88,
+      72
+    ],
+    [
+      80,
+      72,
+      72
+    ],
+    [
+      96,
+      112,
+      88
+    ],
+    [
+      112,
+      160,
+      120
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      144,
+      144,
+      168
+    ],
+    [
+      160,
+      128,
+      112
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      192,
+      192,
+      200
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      248,
+      208,
+      184
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 0,
+    "colores_modificados": 0,
+    "pixeles_modificados": 0,
+    "pixeles_opacos": 0,
+    "delta_e_medio": 0.0,
+    "delta_e_maximo": 0,
+    "conversiones": []
+  },
+  "missing": [
+    {
+      "grafico": "ow",
+      "frame": 0,
+      "pose": "sur_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 1,
+      "pose": "sur_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 2,
+      "pose": "sur_paso_derecha",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 3,
+      "pose": "norte_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 4,
+      "pose": "norte_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 5,
+      "pose": "norte_paso_derecha",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 6,
+      "pose": "oeste_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 7,
+      "pose": "oeste_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 8,
+      "pose": "oeste_paso_derecha",
+      "motivo": "No hay OW identificado"
+    }
+  ],
+  "originals": [],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "bug_catcher_platinum",
+    "name": "Bug Catcher",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          730,
+          18,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            48,
+            64
+          ],
+          [
+            72,
+            72,
+            104
+          ],
+          [
+            72,
+            88,
+            72
+          ],
+          [
+            80,
+            72,
+            72
+          ],
+          [
+            96,
+            112,
+            88
+          ],
+          [
+            112,
+            160,
+            120
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            144,
+            144,
+            168
+          ],
+          [
+            160,
+            128,
+            112
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            192,
+            200
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "df889e55d3bae2aa77d6b0eccff01c86852e5fa05ca066f6fc2159e7464b4137"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        56,
+        48,
+        64
+      ],
+      [
+        72,
+        72,
+        104
+      ],
+      [
+        72,
+        88,
+        72
+      ],
+      [
+        80,
+        72,
+        72
+      ],
+      [
+        96,
+        112,
+        88
+      ],
+      [
+        112,
+        160,
+        120
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        144,
+        144,
+        168
+      ],
+      [
+        160,
+        128,
+        112
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        192,
+        192,
+        200
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        232,
+        232,
+        248
+      ],
+      [
+        248,
+        208,
+        184
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": null,
+  "code": {
+    "front": "TRAINER_PIC_BUG_CATCHER_PLATINUM",
+    "ow": null,
+    "palette": "gPaletaEntrenador_bug_catcher_platinum"
+  }
+}

@@ -1,0 +1,600 @@
+{
+  "id": "black_belt_platinum",
+  "name": "Black Belt",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/black_belt_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "black_belt_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      48,
+      56,
+      80
+    ],
+    [
+      80,
+      88,
+      112
+    ],
+    [
+      96,
+      64,
+      72
+    ],
+    [
+      104,
+      88,
+      80
+    ],
+    [
+      144,
+      128,
+      120
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      192,
+      64,
+      64
+    ],
+    [
+      200,
+      184,
+      184
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      248,
+      96,
+      88
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      248,
+      248
+    ],
+    [
+      248,
+      248,
+      248
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 12,
+    "colores_modificados": 10,
+    "pixeles_modificados": 1957,
+    "pixeles_opacos": 2602,
+    "delta_e_medio": 7.893,
+    "delta_e_maximo": 15.509,
+    "conversiones": [
+      {
+        "original": [
+          56,
+          48,
+          48
+        ],
+        "adaptado": [
+          96,
+          64,
+          72
+        ],
+        "pixeles": 331,
+        "delta_e_76": 15.509
+      },
+      {
+        "original": [
+          96,
+          80,
+          72
+        ],
+        "adaptado": [
+          104,
+          88,
+          80
+        ],
+        "pixeles": 329,
+        "delta_e_76": 3.348
+      },
+      {
+        "original": [
+          104,
+          104,
+          112
+        ],
+        "adaptado": [
+          80,
+          88,
+          112
+        ],
+        "pixeles": 120,
+        "delta_e_76": 12.278
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          96,
+          64,
+          72
+        ],
+        "pixeles": 206,
+        "delta_e_76": 13.818
+      },
+      {
+        "original": [
+          136,
+          112,
+          88
+        ],
+        "adaptado": [
+          144,
+          128,
+          120
+        ],
+        "pixeles": 168,
+        "delta_e_76": 11.929
+      },
+      {
+        "original": [
+          168,
+          168,
+          184
+        ],
+        "adaptado": [
+          200,
+          184,
+          184
+        ],
+        "pixeles": 149,
+        "delta_e_76": 12.531
+      },
+      {
+        "original": [
+          176,
+          80,
+          72
+        ],
+        "adaptado": [
+          192,
+          64,
+          64
+        ],
+        "pixeles": 99,
+        "delta_e_76": 13.535
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 227,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          232,
+          112,
+          96
+        ],
+        "adaptado": [
+          248,
+          96,
+          88
+        ],
+        "pixeles": 167,
+        "delta_e_76": 13.221
+      },
+      {
+        "original": [
+          232,
+          232,
+          248
+        ],
+        "adaptado": [
+          248,
+          248,
+          248
+        ],
+        "pixeles": 161,
+        "delta_e_76": 9.744
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "black_belt_platinum",
+    "name": "Black Belt",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          406,
+          116,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 13,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            56,
+            80
+          ],
+          [
+            80,
+            88,
+            112
+          ],
+          [
+            96,
+            64,
+            72
+          ],
+          [
+            104,
+            88,
+            80
+          ],
+          [
+            144,
+            128,
+            120
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            64,
+            64
+          ],
+          [
+            200,
+            184,
+            184
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            248,
+            96,
+            88
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "6340767c990785bc41cf3b4db4fe77c435eb5cff9331b0187c10542812cf8dff"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        48,
+        56,
+        80
+      ],
+      [
+        80,
+        88,
+        112
+      ],
+      [
+        96,
+        64,
+        72
+      ],
+      [
+        104,
+        88,
+        80
+      ],
+      [
+        144,
+        128,
+        120
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        192,
+        64,
+        64
+      ],
+      [
+        200,
+        184,
+        184
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        248,
+        96,
+        88
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 13,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "black_belt_platinum",
+    "identity": "black_belt",
+    "name": "Black Belt",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25791.png",
+    "source_key": "platinum_ow_b0_c05",
+    "frames": [
+      {
+        "rect": [
+          177,
+          97,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          177,
+          129,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          177,
+          161,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          177,
+          193,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          177,
+          225,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          177,
+          257,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          177,
+          289,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          177,
+          321,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          177,
+          353,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "black_belt_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_BLACK_BELT_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_BLACK_BELT_PLATINUM",
+    "palette": "gPaletaEntrenador_black_belt_platinum"
+  }
+}

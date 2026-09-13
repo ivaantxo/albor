@@ -1,0 +1,792 @@
+{
+  "id": "crasher_wake_platinum",
+  "name": "Crasher Wake",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/crasher_wake_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 3,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "crasher_wake_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      64,
+      80,
+      96
+    ],
+    [
+      72,
+      136,
+      184
+    ],
+    [
+      80,
+      184,
+      216
+    ],
+    [
+      104,
+      104,
+      128
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      152,
+      104,
+      80
+    ],
+    [
+      160,
+      184,
+      208
+    ],
+    [
+      184,
+      96,
+      120
+    ],
+    [
+      184,
+      120,
+      80
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      224,
+      144,
+      88
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      248,
+      208,
+      184
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 13,
+    "colores_modificados": 10,
+    "pixeles_modificados": 2054,
+    "pixeles_opacos": 3209,
+    "delta_e_medio": 10.906,
+    "delta_e_maximo": 44.807,
+    "conversiones": [
+      {
+        "original": [
+          56,
+          56,
+          88
+        ],
+        "adaptado": [
+          64,
+          80,
+          96
+        ],
+        "pixeles": 275,
+        "delta_e_76": 15.705
+      },
+      {
+        "original": [
+          64,
+          96,
+          208
+        ],
+        "adaptado": [
+          72,
+          136,
+          184
+        ],
+        "pixeles": 320,
+        "delta_e_76": 44.807
+      },
+      {
+        "original": [
+          72,
+          80,
+          120
+        ],
+        "adaptado": [
+          104,
+          104,
+          128
+        ],
+        "pixeles": 165,
+        "delta_e_76": 14.589
+      },
+      {
+        "original": [
+          80,
+          80,
+          88
+        ],
+        "adaptado": [
+          64,
+          80,
+          96
+        ],
+        "pixeles": 118,
+        "delta_e_76": 7.724
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 91,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          136,
+          152,
+          192
+        ],
+        "adaptado": [
+          160,
+          184,
+          208
+        ],
+        "pixeles": 99,
+        "delta_e_76": 14.809
+      },
+      {
+        "original": [
+          160,
+          80,
+          56
+        ],
+        "adaptado": [
+          184,
+          120,
+          80
+        ],
+        "pixeles": 157,
+        "delta_e_76": 16.654
+      },
+      {
+        "original": [
+          176,
+          216,
+          240
+        ],
+        "adaptado": [
+          160,
+          184,
+          208
+        ],
+        "pixeles": 360,
+        "delta_e_76": 11.662
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 355,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          232,
+          120,
+          56
+        ],
+        "adaptado": [
+          224,
+          144,
+          88
+        ],
+        "pixeles": 114,
+        "delta_e_76": 18.429
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": true,
+    "order": [
+      0,
+      1,
+      2
+    ],
+    "durations_ticks": [
+      12,
+      12,
+      24
+    ],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "crasher_wake_platinum",
+    "name": "Crasher Wake",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          730,
+          704,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            64,
+            80,
+            96
+          ],
+          [
+            72,
+            136,
+            184
+          ],
+          [
+            80,
+            184,
+            216
+          ],
+          [
+            104,
+            104,
+            128
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            152,
+            104,
+            80
+          ],
+          [
+            160,
+            184,
+            208
+          ],
+          [
+            184,
+            96,
+            120
+          ],
+          [
+            184,
+            120,
+            80
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            224,
+            144,
+            88
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "bb1168761ac97def6b62e96103835a36c268eb0a99eed545c7de1aaa85e5d200"
+      },
+      {
+        "rect": [
+          811,
+          704,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 13,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            64,
+            80,
+            96
+          ],
+          [
+            72,
+            136,
+            184
+          ],
+          [
+            80,
+            184,
+            216
+          ],
+          [
+            104,
+            104,
+            128
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            152,
+            104,
+            80
+          ],
+          [
+            160,
+            184,
+            208
+          ],
+          [
+            184,
+            120,
+            80
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            224,
+            144,
+            88
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "69fbc5044a28906ed20b73f7007e086b3263d76be90f2ba2eb4c9c032ce5d235"
+      },
+      {
+        "rect": [
+          892,
+          704,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 13,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            64,
+            80,
+            96
+          ],
+          [
+            72,
+            136,
+            184
+          ],
+          [
+            80,
+            184,
+            216
+          ],
+          [
+            104,
+            104,
+            128
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            152,
+            104,
+            80
+          ],
+          [
+            160,
+            184,
+            208
+          ],
+          [
+            184,
+            120,
+            80
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            224,
+            144,
+            88
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "5d189c5f4be313da7c6c07e9415f0a2ab617817090ad72b2dc1c373be547c62c"
+      }
+    ],
+    "frame_order": [
+      0,
+      1,
+      2
+    ],
+    "animation_available": true,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        64,
+        80,
+        96
+      ],
+      [
+        72,
+        136,
+        184
+      ],
+      [
+        80,
+        184,
+        216
+      ],
+      [
+        104,
+        104,
+        128
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        152,
+        104,
+        80
+      ],
+      [
+        160,
+        184,
+        208
+      ],
+      [
+        184,
+        96,
+        120
+      ],
+      [
+        184,
+        120,
+        80
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        224,
+        144,
+        88
+      ],
+      [
+        232,
+        232,
+        248
+      ],
+      [
+        248,
+        208,
+        184
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "crasher_wake_platinum",
+    "identity": "crasher_wake",
+    "name": "Crasher Wake",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25790.png",
+    "source_key": "platinum_leader_3",
+    "frames": [
+      {
+        "rect": [
+          161,
+          113,
+          32,
+          32
+        ],
+        "background": [
+          248,
+          160,
+          248
+        ]
+      },
+      {
+        "rect": [
+          161,
+          145,
+          32,
+          32
+        ],
+        "background": [
+          248,
+          160,
+          248
+        ]
+      },
+      {
+        "rect": [
+          161,
+          177,
+          32,
+          32
+        ],
+        "background": [
+          248,
+          160,
+          248
+        ]
+      },
+      {
+        "rect": [
+          161,
+          209,
+          32,
+          32
+        ],
+        "background": [
+          248,
+          160,
+          248
+        ]
+      },
+      {
+        "rect": [
+          161,
+          241,
+          32,
+          32
+        ],
+        "background": [
+          248,
+          160,
+          248
+        ]
+      },
+      {
+        "rect": [
+          161,
+          273,
+          32,
+          32
+        ],
+        "background": [
+          248,
+          160,
+          248
+        ]
+      },
+      {
+        "rect": [
+          161,
+          305,
+          32,
+          32
+        ],
+        "background": [
+          248,
+          160,
+          248
+        ]
+      },
+      {
+        "rect": [
+          161,
+          337,
+          32,
+          32
+        ],
+        "background": [
+          248,
+          160,
+          248
+        ]
+      },
+      {
+        "rect": [
+          161,
+          369,
+          32,
+          32
+        ],
+        "background": [
+          248,
+          160,
+          248
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "crasher_wake_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_CRASHER_WAKE_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_CRASHER_WAKE_PLATINUM",
+    "palette": "gPaletaEntrenador_crasher_wake_platinum"
+  }
+}

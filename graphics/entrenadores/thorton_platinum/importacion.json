@@ -1,0 +1,536 @@
+{
+  "id": "thorton_platinum",
+  "name": "Thorton",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/thorton_platinum",
+  "has_front": true,
+  "has_ow": false,
+  "front_frames": 3,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "thorton_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      56,
+      120,
+      144
+    ],
+    [
+      72,
+      72,
+      96
+    ],
+    [
+      72,
+      184,
+      200
+    ],
+    [
+      104,
+      104,
+      128
+    ],
+    [
+      112,
+      152,
+      96
+    ],
+    [
+      128,
+      96,
+      120
+    ],
+    [
+      160,
+      200,
+      136
+    ],
+    [
+      176,
+      136,
+      136
+    ],
+    [
+      192,
+      208,
+      232
+    ],
+    [
+      216,
+      176,
+      160
+    ],
+    [
+      248,
+      224,
+      200
+    ],
+    [
+      248,
+      248,
+      248
+    ],
+    [
+      248,
+      248,
+      248
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 0,
+    "colores_modificados": 0,
+    "pixeles_modificados": 0,
+    "pixeles_opacos": 0,
+    "delta_e_medio": 0.0,
+    "delta_e_maximo": 0,
+    "conversiones": []
+  },
+  "missing": [
+    {
+      "grafico": "ow",
+      "frame": 0,
+      "pose": "sur_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 1,
+      "pose": "sur_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 2,
+      "pose": "sur_paso_derecha",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 3,
+      "pose": "norte_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 4,
+      "pose": "norte_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 5,
+      "pose": "norte_paso_derecha",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 6,
+      "pose": "oeste_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 7,
+      "pose": "oeste_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 8,
+      "pose": "oeste_paso_derecha",
+      "motivo": "No hay OW identificado"
+    }
+  ],
+  "originals": [],
+  "extras": [],
+  "animation": {
+    "available": true,
+    "order": [
+      0,
+      1,
+      2
+    ],
+    "durations_ticks": [
+      12,
+      12,
+      24
+    ],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "thorton_platinum",
+    "name": "Thorton",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          487,
+          1292,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 13,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            120,
+            144
+          ],
+          [
+            72,
+            72,
+            96
+          ],
+          [
+            72,
+            184,
+            200
+          ],
+          [
+            104,
+            104,
+            128
+          ],
+          [
+            112,
+            152,
+            96
+          ],
+          [
+            128,
+            96,
+            120
+          ],
+          [
+            160,
+            200,
+            136
+          ],
+          [
+            176,
+            136,
+            136
+          ],
+          [
+            192,
+            208,
+            232
+          ],
+          [
+            216,
+            176,
+            160
+          ],
+          [
+            248,
+            224,
+            200
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "fe38a5bbdb462d973bb56a756b88c443cc54eac66350abdf2c42d83cf2a0bdf9"
+      },
+      {
+        "rect": [
+          568,
+          1292,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 13,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            120,
+            144
+          ],
+          [
+            72,
+            72,
+            96
+          ],
+          [
+            72,
+            184,
+            200
+          ],
+          [
+            104,
+            104,
+            128
+          ],
+          [
+            112,
+            152,
+            96
+          ],
+          [
+            128,
+            96,
+            120
+          ],
+          [
+            160,
+            200,
+            136
+          ],
+          [
+            176,
+            136,
+            136
+          ],
+          [
+            192,
+            208,
+            232
+          ],
+          [
+            216,
+            176,
+            160
+          ],
+          [
+            248,
+            224,
+            200
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "fd5241baa00e0a655e3afe6a70c5f3d912ad82d3f599c600fa4ad70c2d3c0b12"
+      },
+      {
+        "rect": [
+          649,
+          1292,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 13,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            120,
+            144
+          ],
+          [
+            72,
+            72,
+            96
+          ],
+          [
+            72,
+            184,
+            200
+          ],
+          [
+            104,
+            104,
+            128
+          ],
+          [
+            112,
+            152,
+            96
+          ],
+          [
+            128,
+            96,
+            120
+          ],
+          [
+            160,
+            200,
+            136
+          ],
+          [
+            176,
+            136,
+            136
+          ],
+          [
+            192,
+            208,
+            232
+          ],
+          [
+            216,
+            176,
+            160
+          ],
+          [
+            248,
+            224,
+            200
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "f3bdad43e5da1c2d153ddf2db335dceda8ccdd0925446892c55c42c22ecaf3c3"
+      }
+    ],
+    "frame_order": [
+      0,
+      1,
+      2
+    ],
+    "animation_available": true,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        56,
+        120,
+        144
+      ],
+      [
+        72,
+        72,
+        96
+      ],
+      [
+        72,
+        184,
+        200
+      ],
+      [
+        104,
+        104,
+        128
+      ],
+      [
+        112,
+        152,
+        96
+      ],
+      [
+        128,
+        96,
+        120
+      ],
+      [
+        160,
+        200,
+        136
+      ],
+      [
+        176,
+        136,
+        136
+      ],
+      [
+        192,
+        208,
+        232
+      ],
+      [
+        216,
+        176,
+        160
+      ],
+      [
+        248,
+        224,
+        200
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 13,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": null,
+  "code": {
+    "front": "TRAINER_PIC_THORTON_PLATINUM",
+    "ow": null,
+    "palette": "gPaletaEntrenador_thorton_platinum"
+  }
+}

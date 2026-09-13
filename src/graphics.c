@@ -1041,7 +1041,6 @@ const u16 gMoveTypePalPoison[] = INCBIN_U16("graphics/battle_interface/types/mov
 
 const u32 gBattleInterfaceSelector[] = INCBIN_U32("graphics/battle_interface/selector.4bpp");
 
-#include "data/graphics/intro_scene.h"
 
 const u32 gBattleAnimSpriteGfx_FlyingDirt[] = INCBIN_U32("graphics/battle_anims/sprites/flying_dirt.4bpp.lz");
 const u16 gBattleAnimSpritePal_FlyingDirt[] = INCBIN_U16("graphics/battle_anims/sprites/flying_dirt.gbapal");

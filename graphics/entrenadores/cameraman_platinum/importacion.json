@@ -1,0 +1,634 @@
+{
+  "id": "cameraman_platinum",
+  "name": "Cameraman",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/cameraman_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "cameraman_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      48,
+      48,
+      64
+    ],
+    [
+      56,
+      72,
+      72
+    ],
+    [
+      56,
+      112,
+      112
+    ],
+    [
+      80,
+      152,
+      152
+    ],
+    [
+      88,
+      88,
+      96
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      136,
+      136,
+      144
+    ],
+    [
+      176,
+      72,
+      64
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      184,
+      184,
+      192
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      248,
+      96,
+      56
+    ],
+    [
+      248,
+      208,
+      184
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 15,
+    "colores_modificados": 11,
+    "pixeles_modificados": 2192,
+    "pixeles_opacos": 2904,
+    "delta_e_medio": 7.742,
+    "delta_e_maximo": 19.465,
+    "conversiones": [
+      {
+        "original": [
+          64,
+          48,
+          64
+        ],
+        "adaptado": [
+          48,
+          48,
+          64
+        ],
+        "pixeles": 192,
+        "delta_e_76": 7.2
+      },
+      {
+        "original": [
+          72,
+          72,
+          88
+        ],
+        "adaptado": [
+          88,
+          88,
+          96
+        ],
+        "pixeles": 148,
+        "delta_e_76": 8.369
+      },
+      {
+        "original": [
+          72,
+          104,
+          136
+        ],
+        "adaptado": [
+          88,
+          88,
+          96
+        ],
+        "pixeles": 98,
+        "delta_e_76": 17.955
+      },
+      {
+        "original": [
+          72,
+          152,
+          176
+        ],
+        "adaptado": [
+          80,
+          152,
+          152
+        ],
+        "pixeles": 74,
+        "delta_e_76": 13.926
+      },
+      {
+        "original": [
+          88,
+          88,
+          104
+        ],
+        "adaptado": [
+          88,
+          88,
+          96
+        ],
+        "pixeles": 114,
+        "delta_e_76": 4.933
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 352,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          152,
+          152,
+          168
+        ],
+        "adaptado": [
+          136,
+          136,
+          144
+        ],
+        "pixeles": 165,
+        "delta_e_76": 7.733
+      },
+      {
+        "original": [
+          168,
+          160,
+          200
+        ],
+        "adaptado": [
+          184,
+          184,
+          192
+        ],
+        "pixeles": 30,
+        "delta_e_76": 19.465
+      },
+      {
+        "original": [
+          176,
+          80,
+          72
+        ],
+        "adaptado": [
+          176,
+          72,
+          64
+        ],
+        "pixeles": 416,
+        "delta_e_76": 4.608
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 159,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          232,
+          112,
+          96
+        ],
+        "adaptado": [
+          176,
+          72,
+          64
+        ],
+        "pixeles": 444,
+        "delta_e_76": 17.646
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "cameraman_platinum",
+    "name": "Cameraman",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          82,
+          606,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            48,
+            64
+          ],
+          [
+            56,
+            72,
+            72
+          ],
+          [
+            56,
+            112,
+            112
+          ],
+          [
+            80,
+            152,
+            152
+          ],
+          [
+            88,
+            88,
+            96
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            136,
+            136,
+            144
+          ],
+          [
+            176,
+            72,
+            64
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            184,
+            184,
+            192
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            96,
+            56
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "ff01ad107e665efb3e25be62243f9658e13d63b9908ecf9083f8170a9042bc3f"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        48,
+        48,
+        64
+      ],
+      [
+        56,
+        72,
+        72
+      ],
+      [
+        56,
+        112,
+        112
+      ],
+      [
+        80,
+        152,
+        152
+      ],
+      [
+        88,
+        88,
+        96
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        136,
+        136,
+        144
+      ],
+      [
+        176,
+        72,
+        64
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        184,
+        184,
+        192
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        232,
+        232,
+        248
+      ],
+      [
+        248,
+        96,
+        56
+      ],
+      [
+        248,
+        208,
+        184
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "cameraman_platinum",
+    "identity": "cameraman",
+    "name": "Cameraman",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25791.png",
+    "source_key": "platinum_ow_b1_c11",
+    "frames": [
+      {
+        "rect": [
+          369,
+          385,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          369,
+          417,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          369,
+          449,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          369,
+          481,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          369,
+          513,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          369,
+          545,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          369,
+          577,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          369,
+          609,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      },
+      {
+        "rect": [
+          369,
+          641,
+          32,
+          32
+        ],
+        "background": [
+          192,
+          128,
+          128
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "cameraman_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_CAMERAMAN_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_CAMERAMAN_PLATINUM",
+    "palette": "gPaletaEntrenador_cameraman_platinum"
+  }
+}

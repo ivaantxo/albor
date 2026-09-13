@@ -1027,19 +1027,36 @@ void PlayerOnBikeCollide(u8 direction)
 //
 // Los pixeles van en una tabla en vez de en una cuenta: un golpe es seco al salir y
 // blando al volver, y eso se ajusta a ojo mirandolo, no con una formula.
+// Dos golpes: el de ir rodando y el de venir a tope.
+//
+// El fuerte no es "lo mismo pero mas": retrocede casi el doble, tarda mas en soltarse
+// y ademas mueve la camara. El temblor es lo que de verdad se nota; subirle el volumen
+// al sonido apenas se aprecia y obliga a manosear el volumen global del reproductor de
+// efectos, que luego hay que devolver a su sitio.
 static const u8 sEmpujeDelGolpe[] = { 4, 4, 3, 2, 1, 0 };
+static const u8 sEmpujeDelGolpeFuerte[] = { 7, 7, 6, 4, 3, 2, 1, 0 };
+
+// Cuanto tiembla la camara, de mas a menos. Solo en el golpe fuerte.
+static const s8 sTemblorDelGolpe[] = { 3, -3, 2, -2, 1, -1, 0 };
 
 // Y despues del rebote, un rato sin mando. No es adorno: sin esto, con la direccion
 // pulsada se vuelve a pedalear en el mismo fotograma en que termina el golpe, y el
 // dibujo de bici parada no llega a verse nunca.
-#define FOTOGRAMAS_ATURDIDO 60
+#define FOTOGRAMAS_ATURDIDO       60
+#define FOTOGRAMAS_ATURDIDO_FUERTE 90
 
 #define tPaso      data[0]
 #define tDireccion data[1]
 
+#define tFuerte data[2]
+
 static void Tarea_GolpeEnBici(u8 idTarea)
 {
     struct Sprite *sprite = &gSprites[gPlayerAvatar.spriteId];
+    bool32 fuerte = gTasks[idTarea].tFuerte;
+    const u8 *empujes = fuerte ? sEmpujeDelGolpeFuerte : sEmpujeDelGolpe;
+    u32 largoEmpuje = fuerte ? ARRAY_COUNT(sEmpujeDelGolpeFuerte) : ARRAY_COUNT(sEmpujeDelGolpe);
+    u32 aturdido = fuerte ? FOTOGRAMAS_ATURDIDO_FUERTE : FOTOGRAMAS_ATURDIDO;
     u32 paso = gTasks[idTarea].tPaso;
     s32 empuje;
 
@@ -1058,17 +1075,26 @@ static void Tarea_GolpeEnBici(u8 idTarea)
     // StartSpriteAnimIfDifferent no hace nada si ya esta puesta.
     StartSpriteAnimIfDifferent(sprite, GetFaceDirectionAnimNum(gTasks[idTarea].tDireccion));
 
-    if (paso >= ARRAY_COUNT(sEmpujeDelGolpe) + FOTOGRAMAS_ATURDIDO)
+    if (paso >= largoEmpuje + aturdido)
     {
         sprite->x2 = 0;
         sprite->y2 = 0;
+        if (fuerte)
+        {
+            // La camara vuelve a su sitio y recupera su callback, que en el campo se
+            // reinstala solo cada fotograma y por eso hay que quitarlo para temblar.
+            InstallCameraPanAheadCallback();
+        }
         UnlockPlayerFieldControls();
         DestroyTask(idTarea);
         return;
     }
 
+    if (fuerte && paso < ARRAY_COUNT(sTemblorDelGolpe))
+        SetCameraPanning(0, sTemblorDelGolpe[paso]);
+
     // Pasado el rebote solo queda esperar: el sprite se queda quieto y encarado.
-    if (paso >= ARRAY_COUNT(sEmpujeDelGolpe))
+    if (paso >= largoEmpuje)
     {
         gTasks[idTarea].tPaso++;
         return;
@@ -1076,7 +1102,7 @@ static void Tarea_GolpeEnBici(u8 idTarea)
 
     // Hacia atras es al reves de por donde se iba. En pantalla la y crece hacia abajo,
     // asi que ir al sur y retroceder es restar.
-    empuje = sEmpujeDelGolpe[paso];
+    empuje = empujes[paso];
     sprite->x2 = 0;
     sprite->y2 = 0;
     switch (gTasks[idTarea].tDireccion)
@@ -1090,7 +1116,7 @@ static void Tarea_GolpeEnBici(u8 idTarea)
     gTasks[idTarea].tPaso++;
 }
 
-void GolpeEnBici(u8 direction)
+void GolpeEnBici(u8 direction, bool32 fuerte)
 {
     // Seco, no el golpecito de rozar una pared andando: aqui se viene con carrerilla.
     PlaySE(SE_BANG);
@@ -1105,12 +1131,17 @@ void GolpeEnBici(u8 direction)
 
         gTasks[idTarea].tPaso = 0;
         gTasks[idTarea].tDireccion = direction;
+        gTasks[idTarea].tFuerte = fuerte;
         LockPlayerFieldControls();
+
+        if (fuerte)
+            SetCameraPanningCallback(NULL);
     }
 }
 
 #undef tPaso
 #undef tDireccion
+#undef tFuerte
 
 void PlayerOnBikeCollideWithFarawayIslandMew(u8 direction)
 {

@@ -24,6 +24,7 @@ enum
 void MovePlayerOnBike(u8 direction);
 bool8 IsBikingDisallowedByPlayer(void);
 void GetOnOffBike(void);
+bool32 FrenaLaBici(void);
 void BikeClearState(void);
 s16 GetPlayerSpeed(void);
 bool32 IsRunningDisallowed(u8 metatile);

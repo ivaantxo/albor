@@ -1,0 +1,606 @@
+{
+  "id": "mars_platinum",
+  "name": "Mars",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/mars_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "mars_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      48,
+      48,
+      48
+    ],
+    [
+      72,
+      72,
+      88
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      128,
+      128,
+      136
+    ],
+    [
+      152,
+      40,
+      48
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      184,
+      184,
+      192
+    ],
+    [
+      216,
+      80,
+      88
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      224,
+      80,
+      88
+    ],
+    [
+      240,
+      152,
+      120
+    ],
+    [
+      248,
+      184,
+      80
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 15,
+    "colores_modificados": 9,
+    "pixeles_modificados": 1111,
+    "pixeles_opacos": 2897,
+    "delta_e_medio": 3.311,
+    "delta_e_maximo": 19.465,
+    "conversiones": [
+      {
+        "original": [
+          48,
+          48,
+          56
+        ],
+        "adaptado": [
+          48,
+          48,
+          48
+        ],
+        "pixeles": 87,
+        "delta_e_76": 5.451
+      },
+      {
+        "original": [
+          88,
+          88,
+          104
+        ],
+        "adaptado": [
+          72,
+          72,
+          88
+        ],
+        "pixeles": 117,
+        "delta_e_76": 6.793
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 81,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          136,
+          136,
+          144
+        ],
+        "adaptado": [
+          128,
+          128,
+          136
+        ],
+        "pixeles": 137,
+        "delta_e_76": 3.116
+      },
+      {
+        "original": [
+          168,
+          160,
+          200
+        ],
+        "adaptado": [
+          184,
+          184,
+          192
+        ],
+        "pixeles": 82,
+        "delta_e_76": 19.465
+      },
+      {
+        "original": [
+          192,
+          56,
+          64
+        ],
+        "adaptado": [
+          216,
+          80,
+          88
+        ],
+        "pixeles": 372,
+        "delta_e_76": 8.718
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 68,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          216,
+          208,
+          240
+        ],
+        "adaptado": [
+          184,
+          184,
+          192
+        ],
+        "pixeles": 25,
+        "delta_e_76": 16.318
+      },
+      {
+        "original": [
+          232,
+          232,
+          248
+        ],
+        "adaptado": [
+          248,
+          248,
+          248
+        ],
+        "pixeles": 142,
+        "delta_e_76": 9.744
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "mars_platinum",
+    "name": "Mars",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          163,
+          998,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            48,
+            48
+          ],
+          [
+            72,
+            72,
+            88
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            128,
+            128,
+            136
+          ],
+          [
+            152,
+            40,
+            48
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            184,
+            184,
+            192
+          ],
+          [
+            216,
+            80,
+            88
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            224,
+            80,
+            88
+          ],
+          [
+            240,
+            152,
+            120
+          ],
+          [
+            248,
+            184,
+            80
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "139b367d05acab21ac58299563e52a37f528c7623801743907d1d36a322403ba"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        48,
+        48,
+        48
+      ],
+      [
+        72,
+        72,
+        88
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        128,
+        128,
+        136
+      ],
+      [
+        152,
+        40,
+        48
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        184,
+        184,
+        192
+      ],
+      [
+        216,
+        80,
+        88
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        224,
+        80,
+        88
+      ],
+      [
+        240,
+        152,
+        120
+      ],
+      [
+        248,
+        184,
+        80
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "mars_platinum",
+    "identity": "mars",
+    "name": "Mars",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25791.png",
+    "source_key": "platinum_ow_b5_c03",
+    "frames": [
+      {
+        "rect": [
+          113,
+          1561,
+          32,
+          32
+        ],
+        "background": [
+          232,
+          224,
+          216
+        ]
+      },
+      {
+        "rect": [
+          113,
+          1593,
+          32,
+          32
+        ],
+        "background": [
+          232,
+          224,
+          216
+        ]
+      },
+      {
+        "rect": [
+          113,
+          1625,
+          32,
+          32
+        ],
+        "background": [
+          232,
+          224,
+          216
+        ]
+      },
+      {
+        "rect": [
+          113,
+          1657,
+          32,
+          32
+        ],
+        "background": [
+          232,
+          224,
+          216
+        ]
+      },
+      {
+        "rect": [
+          113,
+          1689,
+          32,
+          32
+        ],
+        "background": [
+          232,
+          224,
+          216
+        ]
+      },
+      {
+        "rect": [
+          113,
+          1721,
+          32,
+          32
+        ],
+        "background": [
+          232,
+          224,
+          216
+        ]
+      },
+      {
+        "rect": [
+          113,
+          1753,
+          32,
+          32
+        ],
+        "background": [
+          232,
+          224,
+          216
+        ]
+      },
+      {
+        "rect": [
+          113,
+          1785,
+          32,
+          32
+        ],
+        "background": [
+          232,
+          224,
+          216
+        ]
+      },
+      {
+        "rect": [
+          113,
+          1817,
+          32,
+          32
+        ],
+        "background": [
+          232,
+          224,
+          216
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "mars_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_MARS_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_MARS_PLATINUM",
+    "palette": "gPaletaEntrenador_mars_platinum"
+  }
+}

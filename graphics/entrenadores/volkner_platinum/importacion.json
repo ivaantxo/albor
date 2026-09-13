@@ -1,0 +1,797 @@
+{
+  "id": "volkner_platinum",
+  "name": "Volkner",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/volkner_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 3,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "volkner_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      48,
+      48,
+      72
+    ],
+    [
+      48,
+      64,
+      80
+    ],
+    [
+      56,
+      120,
+      168
+    ],
+    [
+      64,
+      48,
+      64
+    ],
+    [
+      80,
+      96,
+      128
+    ],
+    [
+      88,
+      160,
+      224
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      128,
+      104,
+      88
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      192,
+      152,
+      72
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      216,
+      136
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 13,
+    "colores_modificados": 10,
+    "pixeles_modificados": 2134,
+    "pixeles_opacos": 2812,
+    "delta_e_medio": 8.607,
+    "delta_e_maximo": 20.151,
+    "conversiones": [
+      {
+        "original": [
+          40,
+          32,
+          56
+        ],
+        "adaptado": [
+          48,
+          48,
+          72
+        ],
+        "pixeles": 36,
+        "delta_e_76": 7.558
+      },
+      {
+        "original": [
+          56,
+          64,
+          88
+        ],
+        "adaptado": [
+          48,
+          64,
+          80
+        ],
+        "pixeles": 84,
+        "delta_e_76": 6.382
+      },
+      {
+        "original": [
+          72,
+          88,
+          152
+        ],
+        "adaptado": [
+          80,
+          96,
+          128
+        ],
+        "pixeles": 104,
+        "delta_e_76": 20.151
+      },
+      {
+        "original": [
+          88,
+          136,
+          208
+        ],
+        "adaptado": [
+          88,
+          160,
+          224
+        ],
+        "pixeles": 89,
+        "delta_e_76": 11.854
+      },
+      {
+        "original": [
+          104,
+          88,
+          80
+        ],
+        "adaptado": [
+          128,
+          104,
+          88
+        ],
+        "pixeles": 336,
+        "delta_e_76": 9.271
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 87,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          168,
+          144,
+          88
+        ],
+        "adaptado": [
+          192,
+          152,
+          72
+        ],
+        "pixeles": 408,
+        "delta_e_76": 15.244
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 107,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          224,
+          208,
+          112
+        ],
+        "adaptado": [
+          248,
+          216,
+          136
+        ],
+        "pixeles": 865,
+        "delta_e_76": 10.665
+      },
+      {
+        "original": [
+          232,
+          232,
+          248
+        ],
+        "adaptado": [
+          248,
+          248,
+          248
+        ],
+        "pixeles": 18,
+        "delta_e_76": 9.744
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": true,
+    "order": [
+      0,
+      1,
+      2
+    ],
+    "durations_ticks": [
+      12,
+      12,
+      24
+    ],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "volkner_platinum",
+    "name": "Volkner",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          730,
+          802,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 14,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            48,
+            72
+          ],
+          [
+            48,
+            64,
+            80
+          ],
+          [
+            56,
+            120,
+            168
+          ],
+          [
+            64,
+            48,
+            64
+          ],
+          [
+            80,
+            96,
+            128
+          ],
+          [
+            88,
+            160,
+            224
+          ],
+          [
+            128,
+            104,
+            88
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            152,
+            72
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            216,
+            136
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "8d322e0ddd58e33ea30634acbe3aeae7320e11b9f179168e69309aca28b817db"
+      },
+      {
+        "rect": [
+          811,
+          802,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 14,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            48,
+            72
+          ],
+          [
+            48,
+            64,
+            80
+          ],
+          [
+            56,
+            120,
+            168
+          ],
+          [
+            80,
+            96,
+            128
+          ],
+          [
+            88,
+            160,
+            224
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            128,
+            104,
+            88
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            152,
+            72
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            216,
+            136
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "11bb9ee5ffbd911cf0431cdf47194b13c78f4a27b563f16a249a3c08a26f2393"
+      },
+      {
+        "rect": [
+          892,
+          802,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 14,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            48,
+            72
+          ],
+          [
+            48,
+            64,
+            80
+          ],
+          [
+            56,
+            120,
+            168
+          ],
+          [
+            64,
+            48,
+            64
+          ],
+          [
+            80,
+            96,
+            128
+          ],
+          [
+            88,
+            160,
+            224
+          ],
+          [
+            128,
+            104,
+            88
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            152,
+            72
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            216,
+            136
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "9e7b8117814666c2e7bd8afb2c1c40b5681c3bd900649863c1dcbaa07ac85adb"
+      }
+    ],
+    "frame_order": [
+      0,
+      1,
+      2
+    ],
+    "animation_available": true,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        48,
+        48,
+        72
+      ],
+      [
+        48,
+        64,
+        80
+      ],
+      [
+        56,
+        120,
+        168
+      ],
+      [
+        64,
+        48,
+        64
+      ],
+      [
+        80,
+        96,
+        128
+      ],
+      [
+        88,
+        160,
+        224
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        128,
+        104,
+        88
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        192,
+        152,
+        72
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        216,
+        136
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "volkner_platinum",
+    "identity": "volkner",
+    "name": "Volkner",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25790.png",
+    "source_key": "platinum_leader_7",
+    "frames": [
+      {
+        "rect": [
+          289,
+          113,
+          32,
+          32
+        ],
+        "background": [
+          64,
+          128,
+          64
+        ]
+      },
+      {
+        "rect": [
+          289,
+          145,
+          32,
+          32
+        ],
+        "background": [
+          64,
+          128,
+          64
+        ]
+      },
+      {
+        "rect": [
+          289,
+          177,
+          32,
+          32
+        ],
+        "background": [
+          64,
+          128,
+          64
+        ]
+      },
+      {
+        "rect": [
+          289,
+          209,
+          32,
+          32
+        ],
+        "background": [
+          64,
+          128,
+          64
+        ]
+      },
+      {
+        "rect": [
+          289,
+          241,
+          32,
+          32
+        ],
+        "background": [
+          64,
+          128,
+          64
+        ]
+      },
+      {
+        "rect": [
+          289,
+          273,
+          32,
+          32
+        ],
+        "background": [
+          64,
+          128,
+          64
+        ]
+      },
+      {
+        "rect": [
+          289,
+          305,
+          32,
+          32
+        ],
+        "background": [
+          64,
+          128,
+          64
+        ]
+      },
+      {
+        "rect": [
+          289,
+          337,
+          32,
+          32
+        ],
+        "background": [
+          64,
+          128,
+          64
+        ]
+      },
+      {
+        "rect": [
+          289,
+          369,
+          32,
+          32
+        ],
+        "background": [
+          64,
+          128,
+          64
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "volkner_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_VOLKNER_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_VOLKNER_PLATINUM",
+    "palette": "gPaletaEntrenador_volkner_platinum"
+  }
+}

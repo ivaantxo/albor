@@ -1,0 +1,375 @@
+{
+  "id": "pokemon_ranger_f_hgss",
+  "name": "Pokemon Ranger F",
+  "game": "hgss",
+  "directory": "graphics/entrenadores/pokemon_ranger_f_hgss",
+  "has_front": true,
+  "has_ow": false,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "pokemon_ranger_f_hgss.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      48,
+      48,
+      48
+    ],
+    [
+      72,
+      56,
+      96
+    ],
+    [
+      72,
+      72,
+      88
+    ],
+    [
+      112,
+      88,
+      136
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      136,
+      64,
+      56
+    ],
+    [
+      176,
+      176,
+      192
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      216,
+      88,
+      56
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      216,
+      168,
+      80
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      248,
+      248
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 0,
+    "colores_modificados": 0,
+    "pixeles_modificados": 0,
+    "pixeles_opacos": 0,
+    "delta_e_medio": 0.0,
+    "delta_e_maximo": 0,
+    "conversiones": []
+  },
+  "missing": [
+    {
+      "grafico": "ow",
+      "frame": 0,
+      "pose": "sur_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 1,
+      "pose": "sur_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 2,
+      "pose": "sur_paso_derecha",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 3,
+      "pose": "norte_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 4,
+      "pose": "norte_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 5,
+      "pose": "norte_paso_derecha",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 6,
+      "pose": "oeste_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 7,
+      "pose": "oeste_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 8,
+      "pose": "oeste_paso_derecha",
+      "motivo": "No hay OW identificado"
+    }
+  ],
+  "originals": [],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "pokemon_ranger_f_hgss",
+    "name": "Pokemon Ranger F",
+    "game": "hgss",
+    "source": "entrenadores/28037.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          568,
+          312,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 14,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            48,
+            48
+          ],
+          [
+            72,
+            56,
+            96
+          ],
+          [
+            72,
+            72,
+            88
+          ],
+          [
+            112,
+            88,
+            136
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            136,
+            64,
+            56
+          ],
+          [
+            176,
+            176,
+            192
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            216,
+            88,
+            56
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            216,
+            168,
+            80
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "752c15a672f695b6043b61607659c9fb181be1441fdce411226b59e2042de1fc"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        48,
+        48,
+        48
+      ],
+      [
+        72,
+        56,
+        96
+      ],
+      [
+        72,
+        72,
+        88
+      ],
+      [
+        112,
+        88,
+        136
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        136,
+        64,
+        56
+      ],
+      [
+        176,
+        176,
+        192
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        216,
+        88,
+        56
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        216,
+        168,
+        80
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 14,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": [],
+    "exact_front_duplicate_of": "pokemon_ranger_f_platinum"
+  },
+  "ow_source": null,
+  "code": {
+    "front": "TRAINER_PIC_POKEMON_RANGER_F_HGSS",
+    "ow": null,
+    "palette": "gPaletaEntrenador_pokemon_ranger_f_hgss"
+  }
+}

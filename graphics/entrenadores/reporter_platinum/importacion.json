@@ -1,0 +1,638 @@
+{
+  "id": "reporter_platinum",
+  "name": "Reporter",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/reporter_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "reporter_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      48,
+      48,
+      64
+    ],
+    [
+      56,
+      72,
+      72
+    ],
+    [
+      56,
+      112,
+      112
+    ],
+    [
+      88,
+      88,
+      96
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      136,
+      136,
+      144
+    ],
+    [
+      176,
+      72,
+      64
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      184,
+      184,
+      192
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      248,
+      96,
+      56
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      208,
+      184
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 14,
+    "colores_modificados": 12,
+    "pixeles_modificados": 2176,
+    "pixeles_opacos": 2709,
+    "delta_e_medio": 7.404,
+    "delta_e_maximo": 26.035,
+    "conversiones": [
+      {
+        "original": [
+          56,
+          56,
+          72
+        ],
+        "adaptado": [
+          48,
+          48,
+          64
+        ],
+        "pixeles": 126,
+        "delta_e_76": 3.64
+      },
+      {
+        "original": [
+          64,
+          72,
+          72
+        ],
+        "adaptado": [
+          56,
+          72,
+          72
+        ],
+        "pixeles": 555,
+        "delta_e_76": 3.292
+      },
+      {
+        "original": [
+          64,
+          120,
+          104
+        ],
+        "adaptado": [
+          56,
+          112,
+          112
+        ],
+        "pixeles": 714,
+        "delta_e_76": 10.121
+      },
+      {
+        "original": [
+          80,
+          168,
+          144
+        ],
+        "adaptado": [
+          56,
+          112,
+          112
+        ],
+        "pixeles": 148,
+        "delta_e_76": 26.035
+      },
+      {
+        "original": [
+          88,
+          48,
+          56
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 75,
+        "delta_e_76": 12.503
+      },
+      {
+        "original": [
+          88,
+          88,
+          112
+        ],
+        "adaptado": [
+          88,
+          88,
+          96
+        ],
+        "pixeles": 70,
+        "delta_e_76": 9.856
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 89,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          168,
+          80,
+          80
+        ],
+        "adaptado": [
+          176,
+          72,
+          64
+        ],
+        "pixeles": 30,
+        "delta_e_76": 10.79
+      },
+      {
+        "original": [
+          168,
+          160,
+          200
+        ],
+        "adaptado": [
+          184,
+          184,
+          192
+        ],
+        "pixeles": 60,
+        "delta_e_76": 19.465
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 183,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          248,
+          136,
+          96
+        ],
+        "adaptado": [
+          248,
+          96,
+          56
+        ],
+        "pixeles": 39,
+        "delta_e_76": 22.075
+      },
+      {
+        "original": [
+          248,
+          248,
+          248
+        ],
+        "adaptado": [
+          232,
+          232,
+          248
+        ],
+        "pixeles": 87,
+        "delta_e_76": 9.744
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "reporter_platinum",
+    "name": "Reporter",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          163,
+          606,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 14,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            48,
+            64
+          ],
+          [
+            56,
+            72,
+            72
+          ],
+          [
+            56,
+            112,
+            112
+          ],
+          [
+            88,
+            88,
+            96
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            136,
+            136,
+            144
+          ],
+          [
+            176,
+            72,
+            64
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            184,
+            184,
+            192
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            96,
+            56
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "85077850325226b27bd621905974695c96863829ff30d45edc28b2d9ace2a71a"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        48,
+        48,
+        64
+      ],
+      [
+        56,
+        72,
+        72
+      ],
+      [
+        56,
+        112,
+        112
+      ],
+      [
+        88,
+        88,
+        96
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        136,
+        136,
+        144
+      ],
+      [
+        176,
+        72,
+        64
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        184,
+        184,
+        192
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        232,
+        232,
+        248
+      ],
+      [
+        248,
+        96,
+        56
+      ],
+      [
+        248,
+        208,
+        184
+      ]
+    ],
+    "opaque_color_count": 14,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "reporter_platinum",
+    "identity": "reporter",
+    "name": "Reporter",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25791.png",
+    "source_key": "platinum_ow_b1_c12",
+    "frames": [
+      {
+        "rect": [
+          401,
+          385,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      },
+      {
+        "rect": [
+          401,
+          417,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      },
+      {
+        "rect": [
+          401,
+          449,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      },
+      {
+        "rect": [
+          401,
+          481,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      },
+      {
+        "rect": [
+          401,
+          513,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      },
+      {
+        "rect": [
+          401,
+          545,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      },
+      {
+        "rect": [
+          401,
+          577,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      },
+      {
+        "rect": [
+          401,
+          609,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      },
+      {
+        "rect": [
+          401,
+          641,
+          32,
+          32
+        ],
+        "background": [
+          112,
+          112,
+          104
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "reporter_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_REPORTER_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_REPORTER_PLATINUM",
+    "palette": "gPaletaEntrenador_reporter_platinum"
+  }
+}

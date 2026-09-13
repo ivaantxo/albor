@@ -1,0 +1,387 @@
+{
+  "id": "lucas_dp_unused_platinum",
+  "name": "Lucas Dp Unused",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/lucas_dp_unused_platinum",
+  "has_front": true,
+  "has_ow": false,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "lucas_dp_unused_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      56,
+      64,
+      80
+    ],
+    [
+      56,
+      96,
+      136
+    ],
+    [
+      96,
+      136,
+      208
+    ],
+    [
+      120,
+      64,
+      64
+    ],
+    [
+      120,
+      168,
+      216
+    ],
+    [
+      168,
+      160,
+      200
+    ],
+    [
+      192,
+      56,
+      56
+    ],
+    [
+      200,
+      152,
+      56
+    ],
+    [
+      200,
+      200,
+      216
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      240,
+      104,
+      72
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      216,
+      88
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 0,
+    "colores_modificados": 0,
+    "pixeles_modificados": 0,
+    "pixeles_opacos": 0,
+    "delta_e_medio": 0.0,
+    "delta_e_maximo": 0,
+    "conversiones": []
+  },
+  "missing": [
+    {
+      "grafico": "ow",
+      "frame": 0,
+      "pose": "sur_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 1,
+      "pose": "sur_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 2,
+      "pose": "sur_paso_derecha",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 3,
+      "pose": "norte_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 4,
+      "pose": "norte_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 5,
+      "pose": "norte_paso_derecha",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 6,
+      "pose": "oeste_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 7,
+      "pose": "oeste_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 8,
+      "pose": "oeste_paso_derecha",
+      "motivo": "No hay OW identificado"
+    }
+  ],
+  "originals": [],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "lucas_dp_unused_platinum",
+    "name": "Lucas Dp Unused",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          163,
+          1504,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            64,
+            80
+          ],
+          [
+            56,
+            96,
+            136
+          ],
+          [
+            96,
+            136,
+            208
+          ],
+          [
+            120,
+            64,
+            64
+          ],
+          [
+            120,
+            168,
+            216
+          ],
+          [
+            168,
+            160,
+            200
+          ],
+          [
+            192,
+            56,
+            56
+          ],
+          [
+            200,
+            152,
+            56
+          ],
+          [
+            200,
+            200,
+            216
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            240,
+            104,
+            72
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            216,
+            88
+          ]
+        ],
+        "normalized_rgb_sha256": "f648abc8a525b6de69fcb2faed35db0acf2935ac3be109817d973d0446a00cf8"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        56,
+        64,
+        80
+      ],
+      [
+        56,
+        96,
+        136
+      ],
+      [
+        96,
+        136,
+        208
+      ],
+      [
+        120,
+        64,
+        64
+      ],
+      [
+        120,
+        168,
+        216
+      ],
+      [
+        168,
+        160,
+        200
+      ],
+      [
+        192,
+        56,
+        56
+      ],
+      [
+        200,
+        152,
+        56
+      ],
+      [
+        200,
+        200,
+        216
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        232,
+        232,
+        248
+      ],
+      [
+        240,
+        104,
+        72
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        216,
+        88
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [
+      "La hoja lo clasifica como UNUSED; conservar como variante independiente."
+    ],
+    "extras": [],
+    "exact_front_duplicate_of": "lucas_dp_platinum"
+  },
+  "ow_source": null,
+  "code": {
+    "front": "TRAINER_PIC_LUCAS_DP_UNUSED_PLATINUM",
+    "ow": null,
+    "palette": "gPaletaEntrenador_lucas_dp_unused_platinum"
+  }
+}

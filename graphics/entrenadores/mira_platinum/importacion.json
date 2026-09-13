@@ -1,0 +1,781 @@
+{
+  "id": "mira_platinum",
+  "name": "Mira",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/mira_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 3,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "mira_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      80,
+      96,
+      136
+    ],
+    [
+      120,
+      64,
+      64
+    ],
+    [
+      168,
+      160,
+      200
+    ],
+    [
+      176,
+      64,
+      112
+    ],
+    [
+      200,
+      152,
+      56
+    ],
+    [
+      200,
+      200,
+      216
+    ],
+    [
+      216,
+      96,
+      152
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      216,
+      88
+    ],
+    [
+      248,
+      216,
+      88
+    ],
+    [
+      248,
+      216,
+      88
+    ],
+    [
+      248,
+      216,
+      88
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 12,
+    "colores_modificados": 9,
+    "pixeles_modificados": 1879,
+    "pixeles_opacos": 2386,
+    "delta_e_medio": 12.172,
+    "delta_e_maximo": 25.004,
+    "conversiones": [
+      {
+        "original": [
+          96,
+          56,
+          72
+        ],
+        "adaptado": [
+          120,
+          64,
+          64
+        ],
+        "pixeles": 319,
+        "delta_e_76": 14.613
+      },
+      {
+        "original": [
+          136,
+          80,
+          112
+        ],
+        "adaptado": [
+          120,
+          64,
+          64
+        ],
+        "pixeles": 459,
+        "delta_e_76": 20.889
+      },
+      {
+        "original": [
+          144,
+          128,
+          104
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 129,
+        "delta_e_76": 25.004
+      },
+      {
+        "original": [
+          152,
+          72,
+          64
+        ],
+        "adaptado": [
+          120,
+          64,
+          64
+        ],
+        "pixeles": 4,
+        "delta_e_76": 14.582
+      },
+      {
+        "original": [
+          184,
+          184,
+          200
+        ],
+        "adaptado": [
+          200,
+          200,
+          216
+        ],
+        "pixeles": 30,
+        "delta_e_76": 5.815
+      },
+      {
+        "original": [
+          200,
+          104,
+          136
+        ],
+        "adaptado": [
+          216,
+          96,
+          152
+        ],
+        "pixeles": 575,
+        "delta_e_76": 13.477
+      },
+      {
+        "original": [
+          208,
+          144,
+          120
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 134,
+        "delta_e_76": 9.683
+      },
+      {
+        "original": [
+          208,
+          184,
+          104
+        ],
+        "adaptado": [
+          200,
+          152,
+          56
+        ],
+        "pixeles": 62,
+        "delta_e_76": 18.206
+      },
+      {
+        "original": [
+          240,
+          192,
+          176
+        ],
+        "adaptado": [
+          248,
+          208,
+          184
+        ],
+        "pixeles": 167,
+        "delta_e_76": 6.943
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": true,
+    "order": [
+      0,
+      1,
+      2
+    ],
+    "durations_ticks": [
+      12,
+      12,
+      24
+    ],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "mira_platinum",
+    "name": "Mira",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          244,
+          1194,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 12,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            80,
+            96,
+            136
+          ],
+          [
+            120,
+            64,
+            64
+          ],
+          [
+            168,
+            160,
+            200
+          ],
+          [
+            176,
+            64,
+            112
+          ],
+          [
+            200,
+            152,
+            56
+          ],
+          [
+            200,
+            200,
+            216
+          ],
+          [
+            216,
+            96,
+            152
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            216,
+            88
+          ]
+        ],
+        "normalized_rgb_sha256": "310f3246cfcdfd8c764077fdd55cc0565f563747d10c8683c97e99d00e070d84"
+      },
+      {
+        "rect": [
+          325,
+          1194,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 12,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            80,
+            96,
+            136
+          ],
+          [
+            120,
+            64,
+            64
+          ],
+          [
+            168,
+            160,
+            200
+          ],
+          [
+            176,
+            64,
+            112
+          ],
+          [
+            200,
+            152,
+            56
+          ],
+          [
+            200,
+            200,
+            216
+          ],
+          [
+            216,
+            96,
+            152
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            216,
+            88
+          ]
+        ],
+        "normalized_rgb_sha256": "f771b1f245067a969e5b5492e218f7b80aca67acabf3513212824f2faae86709"
+      },
+      {
+        "rect": [
+          406,
+          1194,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 12,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            80,
+            96,
+            136
+          ],
+          [
+            120,
+            64,
+            64
+          ],
+          [
+            168,
+            160,
+            200
+          ],
+          [
+            176,
+            64,
+            112
+          ],
+          [
+            200,
+            152,
+            56
+          ],
+          [
+            200,
+            200,
+            216
+          ],
+          [
+            216,
+            96,
+            152
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            216,
+            88
+          ]
+        ],
+        "normalized_rgb_sha256": "7702d2d345dd5a28ec88a904f6adb7d9fa77858bd3a4249e0c318a2db40172fb"
+      }
+    ],
+    "frame_order": [
+      0,
+      1,
+      2
+    ],
+    "animation_available": true,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        80,
+        96,
+        136
+      ],
+      [
+        120,
+        64,
+        64
+      ],
+      [
+        168,
+        160,
+        200
+      ],
+      [
+        176,
+        64,
+        112
+      ],
+      [
+        200,
+        152,
+        56
+      ],
+      [
+        200,
+        200,
+        216
+      ],
+      [
+        216,
+        96,
+        152
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        232,
+        232,
+        248
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        216,
+        88
+      ]
+    ],
+    "opaque_color_count": 12,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "mira_platinum",
+    "identity": "mira",
+    "name": "Mira",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25791.png",
+    "source_key": "platinum_ow_b5_c15",
+    "frames": [
+      {
+        "rect": [
+          497,
+          1561,
+          32,
+          32
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ]
+      },
+      {
+        "rect": [
+          497,
+          1593,
+          32,
+          32
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ]
+      },
+      {
+        "rect": [
+          497,
+          1625,
+          32,
+          32
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ]
+      },
+      {
+        "rect": [
+          497,
+          1657,
+          32,
+          32
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ]
+      },
+      {
+        "rect": [
+          497,
+          1689,
+          32,
+          32
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ]
+      },
+      {
+        "rect": [
+          497,
+          1721,
+          32,
+          32
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ]
+      },
+      {
+        "rect": [
+          497,
+          1753,
+          32,
+          32
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ]
+      },
+      {
+        "rect": [
+          497,
+          1785,
+          32,
+          32
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ]
+      },
+      {
+        "rect": [
+          497,
+          1817,
+          32,
+          32
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ]
+      },
+      {
+        "rect": [
+          497,
+          1849,
+          32,
+          32
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ]
+      },
+      {
+        "rect": [
+          497,
+          1881,
+          32,
+          32
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ]
+      },
+      {
+        "rect": [
+          497,
+          1913,
+          32,
+          32
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [
+      9,
+      10,
+      11
+    ],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "mira_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_MIRA_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_MIRA_PLATINUM",
+    "palette": "gPaletaEntrenador_mira_platinum"
+  }
+}

@@ -1,0 +1,1010 @@
+{
+  "id": "ariana_hgss",
+  "name": "Ariana",
+  "game": "hgss",
+  "directory": "graphics/entrenadores/ariana_hgss",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "ariana_hgss.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      48,
+      48,
+      48
+    ],
+    [
+      72,
+      72,
+      88
+    ],
+    [
+      88,
+      32,
+      40
+    ],
+    [
+      120,
+      40,
+      48
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      128,
+      128,
+      136
+    ],
+    [
+      168,
+      40,
+      64
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      192,
+      192,
+      216
+    ],
+    [
+      200,
+      56,
+      64
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      248,
+      184,
+      80
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 15,
+    "colores_modificados": 13,
+    "pixeles_modificados": 2488,
+    "pixeles_opacos": 2970,
+    "delta_e_medio": 8.139,
+    "delta_e_maximo": 32.606,
+    "conversiones": [
+      {
+        "original": [
+          48,
+          48,
+          72
+        ],
+        "adaptado": [
+          72,
+          72,
+          88
+        ],
+        "pixeles": 17,
+        "delta_e_76": 11.95
+      },
+      {
+        "original": [
+          72,
+          72,
+          72
+        ],
+        "adaptado": [
+          72,
+          72,
+          88
+        ],
+        "pixeles": 79,
+        "delta_e_76": 10.207
+      },
+      {
+        "original": [
+          80,
+          32,
+          48
+        ],
+        "adaptado": [
+          88,
+          32,
+          40
+        ],
+        "pixeles": 441,
+        "delta_e_76": 7.908
+      },
+      {
+        "original": [
+          96,
+          96,
+          104
+        ],
+        "adaptado": [
+          72,
+          72,
+          88
+        ],
+        "pixeles": 121,
+        "delta_e_76": 11.183
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 103,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          144,
+          32,
+          40
+        ],
+        "adaptado": [
+          168,
+          40,
+          64
+        ],
+        "pixeles": 1117,
+        "delta_e_76": 10.828
+      },
+      {
+        "original": [
+          168,
+          160,
+          200
+        ],
+        "adaptado": [
+          192,
+          192,
+          216
+        ],
+        "pixeles": 110,
+        "delta_e_76": 14.442
+      },
+      {
+        "original": [
+          192,
+          32,
+          48
+        ],
+        "adaptado": [
+          200,
+          56,
+          64
+        ],
+        "pixeles": 114,
+        "delta_e_76": 7.232
+      },
+      {
+        "original": [
+          208,
+          200,
+          232
+        ],
+        "adaptado": [
+          192,
+          192,
+          216
+        ],
+        "pixeles": 161,
+        "delta_e_76": 6.286
+      },
+      {
+        "original": [
+          216,
+          88,
+          16
+        ],
+        "adaptado": [
+          200,
+          56,
+          64
+        ],
+        "pixeles": 6,
+        "delta_e_76": 32.606
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 141,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          232,
+          232,
+          248
+        ],
+        "adaptado": [
+          248,
+          248,
+          248
+        ],
+        "pixeles": 69,
+        "delta_e_76": 9.744
+      },
+      {
+        "original": [
+          240,
+          176,
+          48
+        ],
+        "adaptado": [
+          248,
+          184,
+          80
+        ],
+        "pixeles": 9,
+        "delta_e_76": 9.737
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "ariana_hgss",
+    "name": "Ariana",
+    "game": "hgss",
+    "source": "entrenadores/28037.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          163,
+          1390,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            48,
+            48
+          ],
+          [
+            72,
+            72,
+            88
+          ],
+          [
+            88,
+            32,
+            40
+          ],
+          [
+            120,
+            40,
+            48
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            128,
+            128,
+            136
+          ],
+          [
+            168,
+            40,
+            64
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            192,
+            216
+          ],
+          [
+            200,
+            56,
+            64
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            248,
+            184,
+            80
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "dc988f68d4dad468a6c42c7ce79c16d2de1612a595914d000f10d4c371763770"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        48,
+        48,
+        48
+      ],
+      [
+        72,
+        72,
+        88
+      ],
+      [
+        88,
+        32,
+        40
+      ],
+      [
+        120,
+        40,
+        48
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        128,
+        128,
+        136
+      ],
+      [
+        168,
+        40,
+        64
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        192,
+        192,
+        216
+      ],
+      [
+        200,
+        56,
+        64
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        248,
+        184,
+        80
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "ariana_hgss",
+    "name": "Ariana",
+    "game": "hgss",
+    "source": "entrenadores/26955.png",
+    "source_group": {
+      "row": 6,
+      "column": 6,
+      "rect": [
+        479,
+        640,
+        95,
+        128
+      ]
+    },
+    "identity_status": "identified",
+    "confidence": "high_visual",
+    "frames": [
+      {
+        "rect": [
+          479,
+          640,
+          32,
+          31
+        ],
+        "background": [
+          168,
+          200,
+          192
+        ],
+        "backgrounds": [
+          [
+            168,
+            200,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_idle",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          2,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          511,
+          640,
+          32,
+          31
+        ],
+        "background": [
+          168,
+          200,
+          192
+        ],
+        "backgrounds": [
+          [
+            168,
+            200,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_idle",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          3,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          543,
+          640,
+          31,
+          31
+        ],
+        "background": [
+          168,
+          200,
+          192
+        ],
+        "backgrounds": [
+          [
+            168,
+            200,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          1,
+          24,
+          31
+        ]
+      },
+      {
+        "rect": [
+          479,
+          672,
+          32,
+          31
+        ],
+        "background": [
+          168,
+          200,
+          192
+        ],
+        "backgrounds": [
+          [
+            168,
+            200,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          2,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          511,
+          672,
+          32,
+          31
+        ],
+        "background": [
+          168,
+          200,
+          192
+        ],
+        "backgrounds": [
+          [
+            168,
+            200,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          2,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          543,
+          672,
+          31,
+          31
+        ],
+        "background": [
+          168,
+          200,
+          192
+        ],
+        "backgrounds": [
+          [
+            168,
+            200,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_idle",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          2,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          479,
+          704,
+          32,
+          31
+        ],
+        "background": [
+          168,
+          200,
+          192
+        ],
+        "backgrounds": [
+          [
+            168,
+            200,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_idle",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          3,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          511,
+          704,
+          32,
+          31
+        ],
+        "background": [
+          168,
+          200,
+          192
+        ],
+        "backgrounds": [
+          [
+            168,
+            200,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          2,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          543,
+          704,
+          31,
+          31
+        ],
+        "background": [
+          168,
+          200,
+          192
+        ],
+        "backgrounds": [
+          [
+            168,
+            200,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          1,
+          24,
+          31
+        ]
+      },
+      {
+        "rect": [
+          479,
+          736,
+          32,
+          31
+        ],
+        "background": [
+          168,
+          200,
+          192
+        ],
+        "backgrounds": [
+          [
+            168,
+            200,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          2,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          511,
+          736,
+          32,
+          31
+        ],
+        "background": [
+          168,
+          200,
+          192
+        ],
+        "backgrounds": [
+          [
+            168,
+            200,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          1,
+          24,
+          31
+        ]
+      },
+      {
+        "rect": [
+          543,
+          736,
+          31,
+          31
+        ],
+        "background": [
+          168,
+          200,
+          192
+        ],
+        "backgrounds": [
+          [
+            168,
+            200,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          1,
+          24,
+          31
+        ]
+      }
+    ],
+    "target_order": [
+      5,
+      8,
+      11,
+      0,
+      2,
+      10,
+      6,
+      3,
+      9
+    ],
+    "target_labels": [
+      "south_idle",
+      "south_step_a",
+      "south_step_b",
+      "north_idle",
+      "north_step_a",
+      "north_step_b",
+      "west_idle",
+      "west_step_a",
+      "west_step_b"
+    ],
+    "all_directions_order": [
+      5,
+      8,
+      11,
+      0,
+      2,
+      10,
+      6,
+      3,
+      9,
+      1,
+      4,
+      7
+    ],
+    "east_mirror_of_west": true,
+    "east_art_is_mirrored_west": true,
+    "missing_frames": [],
+    "notes": [
+      "Los doce frames originales están presentes.",
+      "La fila inferior vacía se excluye del rectángulo y se rellena transparente para completar 32×32."
+    ]
+  },
+  "code": {
+    "front": "TRAINER_PIC_ARIANA_HGSS",
+    "ow": "OBJ_EVENT_GFX_ARIANA_HGSS",
+    "palette": "gPaletaEntrenador_ariana_hgss"
+  }
+}

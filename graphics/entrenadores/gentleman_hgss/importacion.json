@@ -1,0 +1,996 @@
+{
+  "id": "gentleman_hgss",
+  "name": "Gentleman",
+  "game": "hgss",
+  "directory": "graphics/entrenadores/gentleman_hgss",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "gentleman_hgss.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      40,
+      32,
+      32
+    ],
+    [
+      40,
+      32,
+      64
+    ],
+    [
+      48,
+      40,
+      24
+    ],
+    [
+      64,
+      48,
+      104
+    ],
+    [
+      64,
+      56,
+      48
+    ],
+    [
+      88,
+      88,
+      80
+    ],
+    [
+      96,
+      80,
+      72
+    ],
+    [
+      128,
+      128,
+      136
+    ],
+    [
+      176,
+      96,
+      80
+    ],
+    [
+      200,
+      192,
+      192
+    ],
+    [
+      208,
+      64,
+      72
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 14,
+    "colores_modificados": 12,
+    "pixeles_modificados": 2097,
+    "pixeles_opacos": 2651,
+    "delta_e_medio": 9.65,
+    "delta_e_maximo": 20.274,
+    "conversiones": [
+      {
+        "original": [
+          56,
+          32,
+          80
+        ],
+        "adaptado": [
+          64,
+          48,
+          104
+        ],
+        "pixeles": 93,
+        "delta_e_76": 8.517
+      },
+      {
+        "original": [
+          64,
+          48,
+          40
+        ],
+        "adaptado": [
+          64,
+          56,
+          48
+        ],
+        "pixeles": 252,
+        "delta_e_76": 5.043
+      },
+      {
+        "original": [
+          80,
+          80,
+          96
+        ],
+        "adaptado": [
+          88,
+          88,
+          80
+        ],
+        "pixeles": 12,
+        "delta_e_76": 15.156
+      },
+      {
+        "original": [
+          88,
+          48,
+          120
+        ],
+        "adaptado": [
+          64,
+          48,
+          104
+        ],
+        "pixeles": 151,
+        "delta_e_76": 12.433
+      },
+      {
+        "original": [
+          104,
+          80,
+          64
+        ],
+        "adaptado": [
+          96,
+          80,
+          72
+        ],
+        "pixeles": 338,
+        "delta_e_76": 6.559
+      },
+      {
+        "original": [
+          104,
+          96,
+          96
+        ],
+        "adaptado": [
+          88,
+          88,
+          80
+        ],
+        "pixeles": 65,
+        "delta_e_76": 7.331
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          96,
+          80,
+          72
+        ],
+        "pixeles": 61,
+        "delta_e_76": 19.381
+      },
+      {
+        "original": [
+          144,
+          144,
+          160
+        ],
+        "adaptado": [
+          128,
+          128,
+          136
+        ],
+        "pixeles": 123,
+        "delta_e_76": 7.81
+      },
+      {
+        "original": [
+          152,
+          120,
+          72
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 759,
+        "delta_e_76": 20.274
+      },
+      {
+        "original": [
+          192,
+          192,
+          200
+        ],
+        "adaptado": [
+          200,
+          192,
+          192
+        ],
+        "pixeles": 151,
+        "delta_e_76": 5.187
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 83,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          232,
+          232,
+          248
+        ],
+        "adaptado": [
+          248,
+          248,
+          248
+        ],
+        "pixeles": 9,
+        "delta_e_76": 9.744
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "gentleman_hgss",
+    "name": "Gentleman",
+    "game": "hgss",
+    "source": "entrenadores/28037.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          82,
+          312,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            40,
+            32,
+            32
+          ],
+          [
+            40,
+            32,
+            64
+          ],
+          [
+            48,
+            40,
+            24
+          ],
+          [
+            64,
+            48,
+            104
+          ],
+          [
+            64,
+            56,
+            48
+          ],
+          [
+            88,
+            88,
+            80
+          ],
+          [
+            96,
+            80,
+            72
+          ],
+          [
+            128,
+            128,
+            136
+          ],
+          [
+            176,
+            96,
+            80
+          ],
+          [
+            200,
+            192,
+            192
+          ],
+          [
+            208,
+            64,
+            72
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "299559f653024208ae6029a17cbd0a8bc78eaae4a8a226ae77b17883f4a1da8e"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        40,
+        32,
+        32
+      ],
+      [
+        40,
+        32,
+        64
+      ],
+      [
+        48,
+        40,
+        24
+      ],
+      [
+        64,
+        48,
+        104
+      ],
+      [
+        64,
+        56,
+        48
+      ],
+      [
+        88,
+        88,
+        80
+      ],
+      [
+        96,
+        80,
+        72
+      ],
+      [
+        128,
+        128,
+        136
+      ],
+      [
+        176,
+        96,
+        80
+      ],
+      [
+        200,
+        192,
+        192
+      ],
+      [
+        208,
+        64,
+        72
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "gentleman_hgss",
+    "name": "Gentleman",
+    "game": "hgss",
+    "source": "entrenadores/26955.png",
+    "source_group": {
+      "row": 3,
+      "column": 5,
+      "rect": [
+        383,
+        256,
+        96,
+        128
+      ]
+    },
+    "identity_status": "identified",
+    "confidence": "high_visual",
+    "frames": [
+      {
+        "rect": [
+          383,
+          256,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          176,
+          192
+        ],
+        "backgrounds": [
+          [
+            152,
+            176,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_idle",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          6,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          415,
+          256,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          176,
+          192
+        ],
+        "backgrounds": [
+          [
+            152,
+            176,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_idle",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          6,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          447,
+          256,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          176,
+          192
+        ],
+        "backgrounds": [
+          [
+            152,
+            176,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          5,
+          24,
+          31
+        ]
+      },
+      {
+        "rect": [
+          383,
+          288,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          176,
+          192
+        ],
+        "backgrounds": [
+          [
+            152,
+            176,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          5,
+          25,
+          30
+        ]
+      },
+      {
+        "rect": [
+          415,
+          288,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          176,
+          192
+        ],
+        "backgrounds": [
+          [
+            152,
+            176,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          5,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          447,
+          288,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          176,
+          192
+        ],
+        "backgrounds": [
+          [
+            152,
+            176,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_idle",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          6,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          383,
+          320,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          176,
+          192
+        ],
+        "backgrounds": [
+          [
+            152,
+            176,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_idle",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          6,
+          25,
+          30
+        ]
+      },
+      {
+        "rect": [
+          415,
+          320,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          176,
+          192
+        ],
+        "backgrounds": [
+          [
+            152,
+            176,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          5,
+          24,
+          30
+        ]
+      },
+      {
+        "rect": [
+          447,
+          320,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          176,
+          192
+        ],
+        "backgrounds": [
+          [
+            152,
+            176,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          5,
+          24,
+          31
+        ]
+      },
+      {
+        "rect": [
+          383,
+          352,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          176,
+          192
+        ],
+        "backgrounds": [
+          [
+            152,
+            176,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          5,
+          25,
+          30
+        ]
+      },
+      {
+        "rect": [
+          415,
+          352,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          176,
+          192
+        ],
+        "backgrounds": [
+          [
+            152,
+            176,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          5,
+          24,
+          31
+        ]
+      },
+      {
+        "rect": [
+          447,
+          352,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          176,
+          192
+        ],
+        "backgrounds": [
+          [
+            152,
+            176,
+            192
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          5,
+          24,
+          31
+        ]
+      }
+    ],
+    "target_order": [
+      5,
+      8,
+      11,
+      0,
+      2,
+      10,
+      6,
+      3,
+      9
+    ],
+    "target_labels": [
+      "south_idle",
+      "south_step_a",
+      "south_step_b",
+      "north_idle",
+      "north_step_a",
+      "north_step_b",
+      "west_idle",
+      "west_step_a",
+      "west_step_b"
+    ],
+    "all_directions_order": [
+      5,
+      8,
+      11,
+      0,
+      2,
+      10,
+      6,
+      3,
+      9,
+      1,
+      4,
+      7
+    ],
+    "east_mirror_of_west": true,
+    "east_art_is_mirrored_west": true,
+    "missing_frames": [],
+    "notes": [
+      "Los doce frames originales están presentes.",
+      "La fila inferior vacía se excluye del rectángulo y se rellena transparente para completar 32×32."
+    ]
+  },
+  "code": {
+    "front": "TRAINER_PIC_GENTLEMAN_HGSS",
+    "ow": "OBJ_EVENT_GFX_GENTLEMAN_HGSS",
+    "palette": "gPaletaEntrenador_gentleman_hgss"
+  }
+}

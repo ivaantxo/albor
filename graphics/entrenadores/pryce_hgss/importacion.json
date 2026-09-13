@@ -1,0 +1,1177 @@
+{
+  "id": "pryce_hgss",
+  "name": "Pryce",
+  "game": "hgss",
+  "directory": "graphics/entrenadores/pryce_hgss",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 3,
+  "ow_frames": 12,
+  "east_mirrored": false,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha",
+    "este_reposo",
+    "este_paso_izquierda",
+    "este_paso_derecha"
+  ],
+  "palette": "pryce_hgss.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      24,
+      56,
+      80
+    ],
+    [
+      40,
+      104,
+      136
+    ],
+    [
+      72,
+      72,
+      64
+    ],
+    [
+      72,
+      136,
+      160
+    ],
+    [
+      112,
+      112,
+      88
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      144,
+      144,
+      160
+    ],
+    [
+      144,
+      152,
+      128
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      192,
+      208,
+      248
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      232,
+      240,
+      248
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      208,
+      184
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 14,
+    "colores_modificados": 12,
+    "pixeles_modificados": 2910,
+    "pixeles_opacos": 3689,
+    "delta_e_medio": 8.736,
+    "delta_e_maximo": 40.494,
+    "conversiones": [
+      {
+        "original": [
+          48,
+          72,
+          112
+        ],
+        "adaptado": [
+          24,
+          56,
+          80
+        ],
+        "pixeles": 272,
+        "delta_e_76": 13.147
+      },
+      {
+        "original": [
+          80,
+          216,
+          192
+        ],
+        "adaptado": [
+          144,
+          152,
+          128
+        ],
+        "pixeles": 18,
+        "delta_e_76": 40.494
+      },
+      {
+        "original": [
+          88,
+          120,
+          168
+        ],
+        "adaptado": [
+          40,
+          104,
+          136
+        ],
+        "pixeles": 264,
+        "delta_e_76": 15.279
+      },
+      {
+        "original": [
+          96,
+          88,
+          64
+        ],
+        "adaptado": [
+          112,
+          112,
+          88
+        ],
+        "pixeles": 12,
+        "delta_e_76": 9.884
+      },
+      {
+        "original": [
+          96,
+          96,
+          96
+        ],
+        "adaptado": [
+          72,
+          72,
+          64
+        ],
+        "pixeles": 380,
+        "delta_e_76": 11.554
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 188,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          136,
+          96,
+          64
+        ],
+        "adaptado": [
+          184,
+          120,
+          96
+        ],
+        "pixeles": 24,
+        "delta_e_76": 15.931
+      },
+      {
+        "original": [
+          136,
+          136,
+          136
+        ],
+        "adaptado": [
+          144,
+          144,
+          160
+        ],
+        "pixeles": 56,
+        "delta_e_76": 9.705
+      },
+      {
+        "original": [
+          192,
+          192,
+          200
+        ],
+        "adaptado": [
+          232,
+          240,
+          248
+        ],
+        "pixeles": 517,
+        "delta_e_76": 16.733
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 113,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          232,
+          184,
+          152
+        ],
+        "adaptado": [
+          248,
+          208,
+          184
+        ],
+        "pixeles": 271,
+        "delta_e_76": 10.104
+      },
+      {
+        "original": [
+          232,
+          232,
+          248
+        ],
+        "adaptado": [
+          232,
+          240,
+          248
+        ],
+        "pixeles": 795,
+        "delta_e_76": 5.442
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": true,
+    "order": [
+      0,
+      1,
+      2
+    ],
+    "durations_ticks": [
+      12,
+      12,
+      24
+    ],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "pryce_hgss",
+    "name": "Pryce",
+    "game": "hgss",
+    "source": "entrenadores/28037.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          487,
+          900,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 14,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            24,
+            56,
+            80
+          ],
+          [
+            40,
+            104,
+            136
+          ],
+          [
+            72,
+            72,
+            64
+          ],
+          [
+            72,
+            136,
+            160
+          ],
+          [
+            112,
+            112,
+            88
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            144,
+            144,
+            160
+          ],
+          [
+            144,
+            152,
+            128
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            208,
+            248
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            240,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "0212a54e451e94a853f52d148bee12edbcc9040510db21b4137f353e462e42f6"
+      },
+      {
+        "rect": [
+          568,
+          900,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 14,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            24,
+            56,
+            80
+          ],
+          [
+            40,
+            104,
+            136
+          ],
+          [
+            72,
+            72,
+            64
+          ],
+          [
+            72,
+            136,
+            160
+          ],
+          [
+            112,
+            112,
+            88
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            144,
+            144,
+            160
+          ],
+          [
+            144,
+            152,
+            128
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            208,
+            248
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            240,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "6f2a8e420d0a5c6971365688b114ec4ac89d04a171bff48df5144f7c5afa3f5b"
+      },
+      {
+        "rect": [
+          649,
+          900,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 14,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            24,
+            56,
+            80
+          ],
+          [
+            40,
+            104,
+            136
+          ],
+          [
+            72,
+            72,
+            64
+          ],
+          [
+            72,
+            136,
+            160
+          ],
+          [
+            112,
+            112,
+            88
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            144,
+            144,
+            160
+          ],
+          [
+            144,
+            152,
+            128
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            208,
+            248
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            240,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "bfb5f6d1dfbd72ced39261a2b1ac13f58207667c75d2f0834ba237878cd733d1"
+      }
+    ],
+    "frame_order": [
+      0,
+      1,
+      2
+    ],
+    "animation_available": true,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        24,
+        56,
+        80
+      ],
+      [
+        40,
+        104,
+        136
+      ],
+      [
+        72,
+        72,
+        64
+      ],
+      [
+        72,
+        136,
+        160
+      ],
+      [
+        112,
+        112,
+        88
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        144,
+        144,
+        160
+      ],
+      [
+        144,
+        152,
+        128
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        192,
+        208,
+        248
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        232,
+        240,
+        248
+      ],
+      [
+        248,
+        208,
+        184
+      ]
+    ],
+    "opaque_color_count": 14,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "pryce_hgss",
+    "name": "Pryce",
+    "game": "hgss",
+    "source": "entrenadores/26955.png",
+    "source_group": {
+      "row": 4,
+      "column": 5,
+      "rect": [
+        383,
+        384,
+        96,
+        128
+      ]
+    },
+    "identity_status": "identified",
+    "confidence": "high_visual",
+    "frames": [
+      {
+        "rect": [
+          383,
+          384,
+          32,
+          31
+        ],
+        "background": [
+          168,
+          144,
+          168
+        ],
+        "backgrounds": [
+          [
+            168,
+            144,
+            168
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_idle",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          3,
+          25,
+          30
+        ]
+      },
+      {
+        "rect": [
+          415,
+          384,
+          32,
+          31
+        ],
+        "background": [
+          168,
+          144,
+          168
+        ],
+        "backgrounds": [
+          [
+            168,
+            144,
+            168
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_idle",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          4,
+          23,
+          31
+        ]
+      },
+      {
+        "rect": [
+          447,
+          384,
+          32,
+          31
+        ],
+        "background": [
+          168,
+          144,
+          168
+        ],
+        "backgrounds": [
+          [
+            168,
+            144,
+            168
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          2,
+          25,
+          31
+        ]
+      },
+      {
+        "rect": [
+          383,
+          416,
+          32,
+          31
+        ],
+        "background": [
+          168,
+          144,
+          168
+        ],
+        "backgrounds": [
+          [
+            168,
+            144,
+            168
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          9,
+          3,
+          25,
+          30
+        ]
+      },
+      {
+        "rect": [
+          415,
+          416,
+          32,
+          31
+        ],
+        "background": [
+          168,
+          144,
+          168
+        ],
+        "backgrounds": [
+          [
+            168,
+            144,
+            168
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          3,
+          23,
+          30
+        ]
+      },
+      {
+        "rect": [
+          447,
+          416,
+          32,
+          31
+        ],
+        "background": [
+          168,
+          144,
+          168
+        ],
+        "backgrounds": [
+          [
+            168,
+            144,
+            168
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_idle",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          3,
+          25,
+          30
+        ]
+      },
+      {
+        "rect": [
+          383,
+          448,
+          32,
+          31
+        ],
+        "background": [
+          168,
+          144,
+          168
+        ],
+        "backgrounds": [
+          [
+            168,
+            144,
+            168
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_idle",
+        "empty": false,
+        "opaque_bbox": [
+          9,
+          4,
+          25,
+          30
+        ]
+      },
+      {
+        "rect": [
+          415,
+          448,
+          32,
+          31
+        ],
+        "background": [
+          168,
+          144,
+          168
+        ],
+        "backgrounds": [
+          [
+            168,
+            144,
+            168
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          7,
+          3,
+          23,
+          30
+        ]
+      },
+      {
+        "rect": [
+          447,
+          448,
+          32,
+          31
+        ],
+        "background": [
+          168,
+          144,
+          168
+        ],
+        "backgrounds": [
+          [
+            168,
+            144,
+            168
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          2,
+          25,
+          31
+        ]
+      },
+      {
+        "rect": [
+          383,
+          480,
+          32,
+          31
+        ],
+        "background": [
+          168,
+          144,
+          168
+        ],
+        "backgrounds": [
+          [
+            168,
+            144,
+            168
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          9,
+          3,
+          25,
+          30
+        ]
+      },
+      {
+        "rect": [
+          415,
+          480,
+          32,
+          31
+        ],
+        "background": [
+          168,
+          144,
+          168
+        ],
+        "backgrounds": [
+          [
+            168,
+            144,
+            168
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          2,
+          25,
+          31
+        ]
+      },
+      {
+        "rect": [
+          447,
+          480,
+          32,
+          31
+        ],
+        "background": [
+          168,
+          144,
+          168
+        ],
+        "backgrounds": [
+          [
+            168,
+            144,
+            168
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          2,
+          25,
+          31
+        ]
+      }
+    ],
+    "target_order": [
+      5,
+      8,
+      11,
+      0,
+      2,
+      10,
+      6,
+      3,
+      9,
+      1,
+      4,
+      7
+    ],
+    "target_labels": [
+      "south_idle",
+      "south_step_a",
+      "south_step_b",
+      "north_idle",
+      "north_step_a",
+      "north_step_b",
+      "west_idle",
+      "west_step_a",
+      "west_step_b",
+      "east_idle",
+      "east_step_a",
+      "east_step_b"
+    ],
+    "all_directions_order": [
+      5,
+      8,
+      11,
+      0,
+      2,
+      10,
+      6,
+      3,
+      9,
+      1,
+      4,
+      7
+    ],
+    "east_mirror_of_west": false,
+    "east_art_is_mirrored_west": false,
+    "missing_frames": [],
+    "notes": [
+      "Los doce frames originales están presentes.",
+      "La fila inferior vacía se excluye del rectángulo y se rellena transparente para completar 32×32."
+    ]
+  },
+  "code": {
+    "front": "TRAINER_PIC_PRYCE_HGSS",
+    "ow": "OBJ_EVENT_GFX_PRYCE_HGSS",
+    "palette": "gPaletaEntrenador_pryce_hgss"
+  }
+}

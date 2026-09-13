@@ -1,0 +1,648 @@
+{
+  "id": "cycler_m_platinum",
+  "name": "Cycler M",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/cycler_m_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "cycler_m_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      56,
+      40,
+      56
+    ],
+    [
+      72,
+      72,
+      104
+    ],
+    [
+      104,
+      56,
+      56
+    ],
+    [
+      104,
+      104,
+      144
+    ],
+    [
+      112,
+      88,
+      104
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      152,
+      72,
+      64
+    ],
+    [
+      152,
+      128,
+      152
+    ],
+    [
+      176,
+      184,
+      184
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      224,
+      88,
+      80
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      248,
+      208,
+      184
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 15,
+    "colores_modificados": 12,
+    "pixeles_modificados": 1930,
+    "pixeles_opacos": 2701,
+    "delta_e_medio": 21.105,
+    "delta_e_maximo": 47.104,
+    "conversiones": [
+      {
+        "original": [
+          48,
+          56,
+          56
+        ],
+        "adaptado": [
+          56,
+          40,
+          56
+        ],
+        "pixeles": 192,
+        "delta_e_76": 16.095
+      },
+      {
+        "original": [
+          64,
+          48,
+          40
+        ],
+        "adaptado": [
+          56,
+          40,
+          56
+        ],
+        "pixeles": 81,
+        "delta_e_76": 16.339
+      },
+      {
+        "original": [
+          72,
+          88,
+          64
+        ],
+        "adaptado": [
+          112,
+          88,
+          104
+        ],
+        "pixeles": 542,
+        "delta_e_76": 30.106
+      },
+      {
+        "original": [
+          88,
+          112,
+          176
+        ],
+        "adaptado": [
+          104,
+          104,
+          144
+        ],
+        "pixeles": 27,
+        "delta_e_76": 15.142
+      },
+      {
+        "original": [
+          104,
+          104,
+          120
+        ],
+        "adaptado": [
+          112,
+          88,
+          104
+        ],
+        "pixeles": 42,
+        "delta_e_76": 10.8
+      },
+      {
+        "original": [
+          104,
+          144,
+          64
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 620,
+        "delta_e_76": 47.104
+      },
+      {
+        "original": [
+          112,
+          64,
+          40
+        ],
+        "adaptado": [
+          104,
+          56,
+          56
+        ],
+        "pixeles": 88,
+        "delta_e_76": 14.602
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          104,
+          56,
+          56
+        ],
+        "pixeles": 64,
+        "delta_e_76": 5.569
+      },
+      {
+        "original": [
+          168,
+          160,
+          200
+        ],
+        "adaptado": [
+          152,
+          128,
+          152
+        ],
+        "pixeles": 6,
+        "delta_e_76": 15.297
+      },
+      {
+        "original": [
+          184,
+          96,
+          40
+        ],
+        "adaptado": [
+          184,
+          120,
+          96
+        ],
+        "pixeles": 71,
+        "delta_e_76": 25.191
+      },
+      {
+        "original": [
+          184,
+          176,
+          216
+        ],
+        "adaptado": [
+          152,
+          128,
+          152
+        ],
+        "pixeles": 117,
+        "delta_e_76": 19.949
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 80,
+        "delta_e_76": 4.387
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "cycler_m_platinum",
+    "name": "Cycler M",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          244,
+          116,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            40,
+            56
+          ],
+          [
+            72,
+            72,
+            104
+          ],
+          [
+            104,
+            56,
+            56
+          ],
+          [
+            104,
+            104,
+            144
+          ],
+          [
+            112,
+            88,
+            104
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            152,
+            72,
+            64
+          ],
+          [
+            152,
+            128,
+            152
+          ],
+          [
+            176,
+            184,
+            184
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            224,
+            88,
+            80
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "293a67ac6db5357ffc01eea3d0bf677da13af3d32641373d5b1e15ede1c48fba"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        56,
+        40,
+        56
+      ],
+      [
+        72,
+        72,
+        104
+      ],
+      [
+        104,
+        56,
+        56
+      ],
+      [
+        104,
+        104,
+        144
+      ],
+      [
+        112,
+        88,
+        104
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        152,
+        72,
+        64
+      ],
+      [
+        152,
+        128,
+        152
+      ],
+      [
+        176,
+        184,
+        184
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        224,
+        88,
+        80
+      ],
+      [
+        232,
+        232,
+        248
+      ],
+      [
+        248,
+        208,
+        184
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "cycler_m_platinum",
+    "identity": "cycler_m",
+    "name": "Cycler M",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25791.png",
+    "source_key": "platinum_ow_b3_c05",
+    "frames": [
+      {
+        "rect": [
+          177,
+          961,
+          32,
+          32
+        ],
+        "background": [
+          208,
+          200,
+          200
+        ]
+      },
+      {
+        "rect": [
+          177,
+          993,
+          32,
+          32
+        ],
+        "background": [
+          208,
+          200,
+          200
+        ]
+      },
+      {
+        "rect": [
+          177,
+          1025,
+          32,
+          32
+        ],
+        "background": [
+          208,
+          200,
+          200
+        ]
+      },
+      {
+        "rect": [
+          177,
+          1057,
+          32,
+          32
+        ],
+        "background": [
+          208,
+          200,
+          200
+        ]
+      },
+      {
+        "rect": [
+          177,
+          1089,
+          32,
+          32
+        ],
+        "background": [
+          208,
+          200,
+          200
+        ]
+      },
+      {
+        "rect": [
+          177,
+          1121,
+          32,
+          32
+        ],
+        "background": [
+          208,
+          200,
+          200
+        ]
+      },
+      {
+        "rect": [
+          177,
+          1153,
+          32,
+          32
+        ],
+        "background": [
+          208,
+          200,
+          200
+        ]
+      },
+      {
+        "rect": [
+          177,
+          1185,
+          32,
+          32
+        ],
+        "background": [
+          208,
+          200,
+          200
+        ]
+      },
+      {
+        "rect": [
+          177,
+          1217,
+          32,
+          32
+        ],
+        "background": [
+          208,
+          200,
+          200
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "cycler_m_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_CYCLER_M_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_CYCLER_M_PLATINUM",
+    "palette": "gPaletaEntrenador_cycler_m_platinum"
+  }
+}

@@ -1,0 +1,634 @@
+{
+  "id": "pokefan_m_platinum",
+  "name": "Pokefan M",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/pokefan_m_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "pokefan_m_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      48,
+      56,
+      48
+    ],
+    [
+      80,
+      72,
+      88
+    ],
+    [
+      80,
+      120,
+      168
+    ],
+    [
+      96,
+      96,
+      72
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      136,
+      64,
+      56
+    ],
+    [
+      168,
+      128,
+      88
+    ],
+    [
+      176,
+      176,
+      192
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      216,
+      88,
+      56
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      224,
+      192,
+      72
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 13,
+    "colores_modificados": 11,
+    "pixeles_modificados": 2208,
+    "pixeles_opacos": 3078,
+    "delta_e_medio": 8.842,
+    "delta_e_maximo": 21.701,
+    "conversiones": [
+      {
+        "original": [
+          56,
+          168,
+          224
+        ],
+        "adaptado": [
+          80,
+          120,
+          168
+        ],
+        "pixeles": 161,
+        "delta_e_76": 21.573
+      },
+      {
+        "original": [
+          64,
+          56,
+          64
+        ],
+        "adaptado": [
+          80,
+          72,
+          88
+        ],
+        "pixeles": 462,
+        "delta_e_76": 8.768
+      },
+      {
+        "original": [
+          64,
+          72,
+          128
+        ],
+        "adaptado": [
+          80,
+          120,
+          168
+        ],
+        "pixeles": 215,
+        "delta_e_76": 21.701
+      },
+      {
+        "original": [
+          64,
+          128,
+          192
+        ],
+        "adaptado": [
+          80,
+          120,
+          168
+        ],
+        "pixeles": 234,
+        "delta_e_76": 9.96
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          136,
+          64,
+          56
+        ],
+        "pixeles": 144,
+        "delta_e_76": 10.563
+      },
+      {
+        "original": [
+          120,
+          88,
+          80
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 494,
+        "delta_e_76": 15.585
+      },
+      {
+        "original": [
+          120,
+          136,
+          144
+        ],
+        "adaptado": [
+          176,
+          176,
+          192
+        ],
+        "pixeles": 16,
+        "delta_e_76": 18.153
+      },
+      {
+        "original": [
+          184,
+          144,
+          88
+        ],
+        "adaptado": [
+          168,
+          128,
+          88
+        ],
+        "pixeles": 166,
+        "delta_e_76": 9.889
+      },
+      {
+        "original": [
+          192,
+          192,
+          208
+        ],
+        "adaptado": [
+          176,
+          176,
+          192
+        ],
+        "pixeles": 49,
+        "delta_e_76": 5.861
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 251,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          232,
+          232,
+          248
+        ],
+        "adaptado": [
+          248,
+          248,
+          248
+        ],
+        "pixeles": 16,
+        "delta_e_76": 9.744
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "pokefan_m_platinum",
+    "name": "Pokefan M",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          892,
+          116,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            56,
+            48
+          ],
+          [
+            80,
+            72,
+            88
+          ],
+          [
+            80,
+            120,
+            168
+          ],
+          [
+            96,
+            96,
+            72
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            136,
+            64,
+            56
+          ],
+          [
+            168,
+            128,
+            88
+          ],
+          [
+            176,
+            176,
+            192
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            216,
+            88,
+            56
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            224,
+            192,
+            72
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "93ecaeaa2f18b1e17e5d3c87a74c8f6393a793046779c906d05a2bf9a3f2afe4"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        48,
+        56,
+        48
+      ],
+      [
+        80,
+        72,
+        88
+      ],
+      [
+        80,
+        120,
+        168
+      ],
+      [
+        96,
+        96,
+        72
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        136,
+        64,
+        56
+      ],
+      [
+        168,
+        128,
+        88
+      ],
+      [
+        176,
+        176,
+        192
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        216,
+        88,
+        56
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        224,
+        192,
+        72
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "pokefan_m_platinum",
+    "identity": "pokefan_m",
+    "name": "Pokefan M",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25791.png",
+    "source_key": "platinum_ow_b2_c08",
+    "frames": [
+      {
+        "rect": [
+          273,
+          673,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          273,
+          705,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          273,
+          737,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          273,
+          769,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          273,
+          801,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          273,
+          833,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          273,
+          865,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          273,
+          897,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          273,
+          929,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "pokefan_m_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_POKEFAN_M_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_POKEFAN_M_PLATINUM",
+    "palette": "gPaletaEntrenador_pokefan_m_platinum"
+  }
+}

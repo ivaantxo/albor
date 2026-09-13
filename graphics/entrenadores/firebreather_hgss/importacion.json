@@ -1,0 +1,384 @@
+{
+  "id": "firebreather_hgss",
+  "name": "Firebreather",
+  "game": "hgss",
+  "directory": "graphics/entrenadores/firebreather_hgss",
+  "has_front": true,
+  "has_ow": false,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "firebreather_hgss.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      128,
+      104,
+      40
+    ],
+    [
+      136,
+      136,
+      160
+    ],
+    [
+      152,
+      64,
+      64
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      184,
+      160,
+      88
+    ],
+    [
+      192,
+      48,
+      16
+    ],
+    [
+      200,
+      200,
+      216
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      232,
+      64,
+      32
+    ],
+    [
+      232,
+      144,
+      72
+    ],
+    [
+      240,
+      200,
+      56
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 0,
+    "colores_modificados": 0,
+    "pixeles_modificados": 0,
+    "pixeles_opacos": 0,
+    "delta_e_medio": 0.0,
+    "delta_e_maximo": 0,
+    "conversiones": []
+  },
+  "missing": [
+    {
+      "grafico": "ow",
+      "frame": 0,
+      "pose": "sur_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 1,
+      "pose": "sur_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 2,
+      "pose": "sur_paso_derecha",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 3,
+      "pose": "norte_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 4,
+      "pose": "norte_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 5,
+      "pose": "norte_paso_derecha",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 6,
+      "pose": "oeste_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 7,
+      "pose": "oeste_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 8,
+      "pose": "oeste_paso_derecha",
+      "motivo": "No hay OW identificado"
+    }
+  ],
+  "originals": [],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "firebreather_hgss",
+    "name": "Firebreather",
+    "game": "hgss",
+    "source": "entrenadores/28037.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          649,
+          508,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            128,
+            104,
+            40
+          ],
+          [
+            136,
+            136,
+            160
+          ],
+          [
+            152,
+            64,
+            64
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            184,
+            160,
+            88
+          ],
+          [
+            192,
+            48,
+            16
+          ],
+          [
+            200,
+            200,
+            216
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            64,
+            32
+          ],
+          [
+            232,
+            144,
+            72
+          ],
+          [
+            240,
+            200,
+            56
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "3d31bdf54f52ffb8dc6c9fe36f523c6ff45dc17e595d442393caa70720c4ddc7"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        128,
+        104,
+        40
+      ],
+      [
+        136,
+        136,
+        160
+      ],
+      [
+        152,
+        64,
+        64
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        184,
+        160,
+        88
+      ],
+      [
+        192,
+        48,
+        16
+      ],
+      [
+        200,
+        200,
+        216
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        232,
+        64,
+        32
+      ],
+      [
+        232,
+        144,
+        72
+      ],
+      [
+        240,
+        200,
+        56
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": null,
+  "code": {
+    "front": "TRAINER_PIC_FIREBREATHER_HGSS",
+    "ow": null,
+    "palette": "gPaletaEntrenador_firebreather_hgss"
+  }
+}

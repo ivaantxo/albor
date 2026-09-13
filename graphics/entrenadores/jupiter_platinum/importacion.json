@@ -1,0 +1,620 @@
+{
+  "id": "jupiter_platinum",
+  "name": "Jupiter",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/jupiter_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "jupiter_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      48,
+      48,
+      48
+    ],
+    [
+      72,
+      72,
+      88
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      128,
+      128,
+      136
+    ],
+    [
+      144,
+      72,
+      136
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      184,
+      184,
+      192
+    ],
+    [
+      208,
+      104,
+      168
+    ],
+    [
+      216,
+      80,
+      88
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      232,
+      136,
+      200
+    ],
+    [
+      248,
+      184,
+      80
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 15,
+    "colores_modificados": 10,
+    "pixeles_modificados": 1265,
+    "pixeles_opacos": 2911,
+    "delta_e_medio": 3.736,
+    "delta_e_maximo": 19.465,
+    "conversiones": [
+      {
+        "original": [
+          48,
+          48,
+          56
+        ],
+        "adaptado": [
+          48,
+          48,
+          48
+        ],
+        "pixeles": 55,
+        "delta_e_76": 5.451
+      },
+      {
+        "original": [
+          88,
+          88,
+          104
+        ],
+        "adaptado": [
+          72,
+          72,
+          88
+        ],
+        "pixeles": 111,
+        "delta_e_76": 6.793
+      },
+      {
+        "original": [
+          112,
+          56,
+          112
+        ],
+        "adaptado": [
+          144,
+          72,
+          136
+        ],
+        "pixeles": 243,
+        "delta_e_76": 10.849
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 87,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          136,
+          136,
+          144
+        ],
+        "adaptado": [
+          128,
+          128,
+          136
+        ],
+        "pixeles": 102,
+        "delta_e_76": 3.116
+      },
+      {
+        "original": [
+          160,
+          72,
+          136
+        ],
+        "adaptado": [
+          144,
+          72,
+          136
+        ],
+        "pixeles": 357,
+        "delta_e_76": 6.675
+      },
+      {
+        "original": [
+          168,
+          160,
+          200
+        ],
+        "adaptado": [
+          184,
+          184,
+          192
+        ],
+        "pixeles": 84,
+        "delta_e_76": 19.465
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 101,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          216,
+          208,
+          240
+        ],
+        "adaptado": [
+          184,
+          184,
+          192
+        ],
+        "pixeles": 23,
+        "delta_e_76": 16.318
+      },
+      {
+        "original": [
+          232,
+          232,
+          248
+        ],
+        "adaptado": [
+          248,
+          248,
+          248
+        ],
+        "pixeles": 102,
+        "delta_e_76": 9.744
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "jupiter_platinum",
+    "name": "Jupiter",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          244,
+          998,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            48,
+            48
+          ],
+          [
+            72,
+            72,
+            88
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            128,
+            128,
+            136
+          ],
+          [
+            144,
+            72,
+            136
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            184,
+            184,
+            192
+          ],
+          [
+            208,
+            104,
+            168
+          ],
+          [
+            216,
+            80,
+            88
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            136,
+            200
+          ],
+          [
+            248,
+            184,
+            80
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "b0fc8cd3ce6c4d8ad4387f16c8614c112a83692c331879de910ed5575b58daa8"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        48,
+        48,
+        48
+      ],
+      [
+        72,
+        72,
+        88
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        128,
+        128,
+        136
+      ],
+      [
+        144,
+        72,
+        136
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        184,
+        184,
+        192
+      ],
+      [
+        208,
+        104,
+        168
+      ],
+      [
+        216,
+        80,
+        88
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        232,
+        136,
+        200
+      ],
+      [
+        248,
+        184,
+        80
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "jupiter_platinum",
+    "identity": "jupiter",
+    "name": "Jupiter",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25791.png",
+    "source_key": "platinum_ow_b5_c05",
+    "frames": [
+      {
+        "rect": [
+          177,
+          1561,
+          32,
+          32
+        ],
+        "background": [
+          128,
+          192,
+          248
+        ]
+      },
+      {
+        "rect": [
+          177,
+          1593,
+          32,
+          32
+        ],
+        "background": [
+          128,
+          192,
+          248
+        ]
+      },
+      {
+        "rect": [
+          177,
+          1625,
+          32,
+          32
+        ],
+        "background": [
+          128,
+          192,
+          248
+        ]
+      },
+      {
+        "rect": [
+          177,
+          1657,
+          32,
+          32
+        ],
+        "background": [
+          128,
+          192,
+          248
+        ]
+      },
+      {
+        "rect": [
+          177,
+          1689,
+          32,
+          32
+        ],
+        "background": [
+          128,
+          192,
+          248
+        ]
+      },
+      {
+        "rect": [
+          177,
+          1721,
+          32,
+          32
+        ],
+        "background": [
+          128,
+          192,
+          248
+        ]
+      },
+      {
+        "rect": [
+          177,
+          1753,
+          32,
+          32
+        ],
+        "background": [
+          128,
+          192,
+          248
+        ]
+      },
+      {
+        "rect": [
+          177,
+          1785,
+          32,
+          32
+        ],
+        "background": [
+          128,
+          192,
+          248
+        ]
+      },
+      {
+        "rect": [
+          177,
+          1817,
+          32,
+          32
+        ],
+        "background": [
+          128,
+          192,
+          248
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "jupiter_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_JUPITER_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_JUPITER_PLATINUM",
+    "palette": "gPaletaEntrenador_jupiter_platinum"
+  }
+}

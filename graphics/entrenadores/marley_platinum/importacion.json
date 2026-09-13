@@ -1,0 +1,775 @@
+{
+  "id": "marley_platinum",
+  "name": "Marley",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/marley_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 3,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "marley_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      40,
+      40,
+      48
+    ],
+    [
+      64,
+      64,
+      72
+    ],
+    [
+      96,
+      96,
+      112
+    ],
+    [
+      120,
+      64,
+      64
+    ],
+    [
+      168,
+      160,
+      200
+    ],
+    [
+      200,
+      200,
+      216
+    ],
+    [
+      216,
+      96,
+      152
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      240,
+      240,
+      248
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      208,
+      184
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 13,
+    "colores_modificados": 10,
+    "pixeles_modificados": 1925,
+    "pixeles_opacos": 2796,
+    "delta_e_medio": 4.399,
+    "delta_e_maximo": 23.221,
+    "conversiones": [
+      {
+        "original": [
+          56,
+          48,
+          56
+        ],
+        "adaptado": [
+          40,
+          40,
+          48
+        ],
+        "pixeles": 3,
+        "delta_e_76": 5.822
+      },
+      {
+        "original": [
+          56,
+          56,
+          64
+        ],
+        "adaptado": [
+          64,
+          64,
+          72
+        ],
+        "pixeles": 655,
+        "delta_e_76": 3.566
+      },
+      {
+        "original": [
+          80,
+          80,
+          96
+        ],
+        "adaptado": [
+          96,
+          96,
+          112
+        ],
+        "pixeles": 622,
+        "delta_e_76": 6.685
+      },
+      {
+        "original": [
+          88,
+          120,
+          176
+        ],
+        "adaptado": [
+          168,
+          160,
+          200
+        ],
+        "pixeles": 9,
+        "delta_e_76": 23.221
+      },
+      {
+        "original": [
+          112,
+          120,
+          136
+        ],
+        "adaptado": [
+          96,
+          96,
+          112
+        ],
+        "pixeles": 162,
+        "delta_e_76": 9.535
+      },
+      {
+        "original": [
+          144,
+          144,
+          144
+        ],
+        "adaptado": [
+          96,
+          96,
+          112
+        ],
+        "pixeles": 122,
+        "delta_e_76": 20.924
+      },
+      {
+        "original": [
+          168,
+          168,
+          216
+        ],
+        "adaptado": [
+          168,
+          160,
+          200
+        ],
+        "pixeles": 7,
+        "delta_e_76": 5.559
+      },
+      {
+        "original": [
+          192,
+          192,
+          208
+        ],
+        "adaptado": [
+          200,
+          200,
+          216
+        ],
+        "pixeles": 99,
+        "delta_e_76": 2.896
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 93,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          232,
+          232,
+          248
+        ],
+        "adaptado": [
+          240,
+          240,
+          248
+        ],
+        "pixeles": 153,
+        "delta_e_76": 4.896
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": true,
+    "order": [
+      0,
+      1,
+      2
+    ],
+    "durations_ticks": [
+      12,
+      12,
+      24
+    ],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "marley_platinum",
+    "name": "Marley",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          730,
+          1096,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 11,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            40,
+            40,
+            48
+          ],
+          [
+            64,
+            64,
+            72
+          ],
+          [
+            96,
+            96,
+            112
+          ],
+          [
+            120,
+            64,
+            64
+          ],
+          [
+            168,
+            160,
+            200
+          ],
+          [
+            200,
+            200,
+            216
+          ],
+          [
+            216,
+            96,
+            152
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            240,
+            240,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "bacf407ecc684cf03996ec402369dcd03aa95f68a06bc69e4ed487eb61dc15e3"
+      },
+      {
+        "rect": [
+          811,
+          1096,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 11,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            40,
+            40,
+            48
+          ],
+          [
+            64,
+            64,
+            72
+          ],
+          [
+            96,
+            96,
+            112
+          ],
+          [
+            120,
+            64,
+            64
+          ],
+          [
+            168,
+            160,
+            200
+          ],
+          [
+            200,
+            200,
+            216
+          ],
+          [
+            216,
+            96,
+            152
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            240,
+            240,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "97caffcdbed64e44aa625d34d52a7c8925794ec63a402af7332031af4260aebd"
+      },
+      {
+        "rect": [
+          892,
+          1096,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 11,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            40,
+            40,
+            48
+          ],
+          [
+            64,
+            64,
+            72
+          ],
+          [
+            96,
+            96,
+            112
+          ],
+          [
+            120,
+            64,
+            64
+          ],
+          [
+            168,
+            160,
+            200
+          ],
+          [
+            200,
+            200,
+            216
+          ],
+          [
+            216,
+            96,
+            152
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            240,
+            240,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "4d7f8a45bf3218415979fb03986a610457a7692fed5258ccbb5f50bcbaed4182"
+      }
+    ],
+    "frame_order": [
+      0,
+      1,
+      2
+    ],
+    "animation_available": true,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        40,
+        40,
+        48
+      ],
+      [
+        64,
+        64,
+        72
+      ],
+      [
+        96,
+        96,
+        112
+      ],
+      [
+        120,
+        64,
+        64
+      ],
+      [
+        168,
+        160,
+        200
+      ],
+      [
+        200,
+        200,
+        216
+      ],
+      [
+        216,
+        96,
+        152
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        240,
+        240,
+        248
+      ],
+      [
+        248,
+        208,
+        184
+      ]
+    ],
+    "opaque_color_count": 11,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "marley_platinum",
+    "identity": "marley",
+    "name": "Marley",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25791.png",
+    "source_key": "platinum_ow_b5_c14",
+    "frames": [
+      {
+        "rect": [
+          465,
+          1561,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          465,
+          1593,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          465,
+          1625,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          465,
+          1657,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          465,
+          1689,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          465,
+          1721,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          465,
+          1753,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          465,
+          1785,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          465,
+          1817,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          465,
+          1849,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          465,
+          1881,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          465,
+          1913,
+          32,
+          32
+        ],
+        "background": [
+          56,
+          160,
+          112
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [
+      9,
+      10,
+      11
+    ],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "marley_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_MARLEY_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_MARLEY_PLATINUM",
+    "palette": "gPaletaEntrenador_marley_platinum"
+  }
+}

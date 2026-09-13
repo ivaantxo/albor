@@ -1433,7 +1433,7 @@ static u32 PlayerGetTrainerBackPicId(void)
     // De momento uno fijo. Iba por genero -Brendan o May-, pero eso se va con el arte
     // viejo: lo que viene es elegir personaje entre varios, y el genero deja de
     // decidir el grafico.
-    return TRAINER_BACK_PIC_ETHAN;
+    return TRAINER_BACK_PIC_LUCAS;
 }
 
 // In emerald it's possible to have a tag battle in the battle frontier facilities with AI

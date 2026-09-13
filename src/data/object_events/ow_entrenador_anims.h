@@ -5,10 +5,11 @@
 // El reparto y sus reglas estan en include/constants/ow_entrenador.h. Aqui solo se
 // montan las secuencias, y hay tres cosas que las separan de las de vanilla:
 //
-//   1. Al andar hay dos pasos por direccion en vez de uno, pero el reposo se sigue
-//      intercalando entre ellos como en el juego original: paso, reposo, otro paso,
-//      reposo. Se probo sin el, alternando los dos pasos a secas, y el personaje
-//      parece patinar: el reposo es el punto de apoyo que hace que el paso se lea.
+//   1. Al andar hay dos pasos por direccion en vez de uno, con el reposo intercalado
+//      entre ellos como en el juego original. El ciclo EMPIEZA por el reposo:
+//      reposo, paso, reposo, el otro paso. Asi cada casilla acaba en reposo y no se
+//      puede quedar uno con el pie levantado al soltar la cruceta. El porque exacto
+//      esta en PASOS_OW.
 //
 //   2. Mirar a la derecha no gasta arte: son las mismas poses de lado con el espejo
 //      horizontal del OAM.
@@ -31,12 +32,23 @@
     ANIMCMD_JUMP(0),                                    \
 }
 
-// Un paso, el reposo, el otro paso, el reposo.
+// Un paso, el reposo, el otro paso, el reposo. CUATRO comandos, y ese numero no es
+// libre: el motor los cuenta.
 //
-// El dibujo de reposo EN MEDIO no es relleno: es lo que hace que el paso se lea. Sin
-// el, los dos pasos se alternan sin punto de apoyo y el personaje parece patinar. Asi
-// es como anima el juego original, y se nota en cuanto se quita.
-#define PASOS_OW(izquierdo, reposo, derecho, ticksPaso, ticksReposo) \
+// Al arrancar cada paso, SetStepAnimHandleAlternation mira donde quedo congelada la
+// animacion y BUSCA el comando que toca segun sStepAnimTables, que para estas tablas
+// dice {1, 3, 0, 2}: si esta en el reposo de la posicion 1 salta al paso de la 2, y si
+// esta en el de la 3 salta al de la 0. Eso es lo que alterna el pie y, sobre todo, lo
+// que vuelve a poner la animacion en fase en CADA paso.
+//
+// Por eso la tabla hay que registrarla ahi -ver sStepAnimTables- y por eso el ciclo
+// tiene que ser paso, reposo, paso, reposo en ese orden. Sin registrar, el primer paso
+// sale bien porque empieza de cero y los siguientes se van yendo: el personaje acaba
+// congelado con el pie en el aire.
+//
+// Dentro de una casilla se ve entonces: el reposo heredado del paso anterior, el paso,
+// y el reposo con el que se congela. Parado, paso, parado.
+#define PASOS_OW(reposo, izquierdo, derecho, ticksPaso, ticksReposo) \
 {                                                       \
     ANIMCMD_FRAME(izquierdo, ticksPaso),                \
     ANIMCMD_FRAME(reposo, ticksReposo),                 \
@@ -45,7 +57,7 @@
     ANIMCMD_JUMP(0),                                    \
 }
 
-#define PASOS_OW_ESPEJO(izquierdo, reposo, derecho, ticksPaso, ticksReposo) \
+#define PASOS_OW_ESPEJO(reposo, izquierdo, derecho, ticksPaso, ticksReposo) \
 {                                                       \
     ANIMCMD_FRAME(izquierdo, ticksPaso, .hFlip = TRUE), \
     ANIMCMD_FRAME(reposo, ticksReposo, .hFlip = TRUE),  \
@@ -85,20 +97,20 @@ static const union AnimCmd sAnimOw_ParadoOeste[] = POSE_OW(OW_PARADO_LADO);
 static const union AnimCmd sAnimOw_ParadoEste[]  = POSE_OW_ESPEJO(OW_PARADO_LADO);
 
 // --- Andando, en sus cuatro velocidades --------------------------------------
-#define ANDANDO_EN(sufijo, ticks)                                                     \
+#define ANDANDO_EN(sufijo, ticks, reposo)                                              \
 static const union AnimCmd sAnimOw_##sufijo##Sur[] = PASOS_OW(                        \
-    OW_PASO_SUR_IZQUIERDO, OW_PARADO_SUR, OW_PASO_SUR_DERECHO, ticks, ticks);         \
+    OW_PARADO_SUR, OW_PASO_SUR_IZQUIERDO, OW_PASO_SUR_DERECHO, ticks, reposo);         \
 static const union AnimCmd sAnimOw_##sufijo##Norte[] = PASOS_OW(                      \
-    OW_PASO_NORTE_IZQUIERDO, OW_PARADO_NORTE, OW_PASO_NORTE_DERECHO, ticks, ticks);   \
+    OW_PARADO_NORTE, OW_PASO_NORTE_IZQUIERDO, OW_PASO_NORTE_DERECHO, ticks, reposo);   \
 static const union AnimCmd sAnimOw_##sufijo##Oeste[] = PASOS_OW(                      \
-    OW_PASO_LADO_IZQUIERDO, OW_PARADO_LADO, OW_PASO_LADO_DERECHO, ticks, ticks);      \
+    OW_PARADO_LADO, OW_PASO_LADO_IZQUIERDO, OW_PASO_LADO_DERECHO, ticks, reposo);      \
 static const union AnimCmd sAnimOw_##sufijo##Este[] = PASOS_OW_ESPEJO(                \
-    OW_PASO_LADO_IZQUIERDO, OW_PARADO_LADO, OW_PASO_LADO_DERECHO, ticks, ticks)
+    OW_PARADO_LADO, OW_PASO_LADO_IZQUIERDO, OW_PASO_LADO_DERECHO, ticks, reposo)
 
-ANDANDO_EN(Anda,       TICKS_ANDANDO);
-ANDANDO_EN(AndaRapido, TICKS_ANDANDO_RAPIDO);
-ANDANDO_EN(AndaMas,    TICKS_ANDANDO_MAS);
-ANDANDO_EN(AndaMaximo, TICKS_ANDANDO_MAXIMO);
+ANDANDO_EN(Anda,       TICKS_ANDANDO,        TICKS_ANDANDO);
+ANDANDO_EN(AndaRapido, TICKS_ANDANDO_RAPIDO, TICKS_ANDANDO_RAPIDO);
+ANDANDO_EN(AndaMas,    TICKS_ANDANDO_MAS,    TICKS_ANDANDO_MAS);
+ANDANDO_EN(AndaMaximo, TICKS_ANDANDO_MAXIMO, TICKS_ANDANDO_MAXIMO);
 
 // --- Corriendo ---------------------------------------------------------------
 // Corriendo va SIN dibujo intermedio, al reves que andar. El original si lo pone, y
@@ -147,24 +159,24 @@ static const union AnimCmd sAnimOw_BiciQuietoEste[]  = POSE_OW_ESPEJO(OW_BICI_QU
 // patinaje. Y de paso ese dibujo deja de estar sin usar: la bici NUNCA se mueve a
 // velocidad normal -su base ya es la de correr-, asi que como pose suelta no la
 // pedia nadie.
-#define BICI_EN(sufijo, ticks)                                                        \
+#define BICI_EN(sufijo, ticks, reposo)                                                        \
 static const union AnimCmd sAnimOw_##sufijo##Sur[] = PASOS_OW(                        \
-    OW_BICI_RAPIDO_SUR_IZQUIERDO, OW_BICI_SUR,                                        \
-    OW_BICI_RAPIDO_SUR_DERECHO, ticks, ticks);                                        \
+    OW_BICI_SUR, OW_BICI_RAPIDO_SUR_IZQUIERDO,                                        \
+    OW_BICI_RAPIDO_SUR_DERECHO, ticks, reposo);                                        \
 static const union AnimCmd sAnimOw_##sufijo##Norte[] = PASOS_OW(                      \
-    OW_BICI_RAPIDO_NORTE_IZQUIERDO, OW_BICI_NORTE,                                    \
-    OW_BICI_RAPIDO_NORTE_DERECHO, ticks, ticks);                                      \
+    OW_BICI_NORTE, OW_BICI_RAPIDO_NORTE_IZQUIERDO,                                    \
+    OW_BICI_RAPIDO_NORTE_DERECHO, ticks, reposo);                                      \
 static const union AnimCmd sAnimOw_##sufijo##Oeste[] = PASOS_OW(                      \
-    OW_BICI_RAPIDO_LADO_IZQUIERDO, OW_BICI_LADO,                                      \
-    OW_BICI_RAPIDO_LADO_DERECHO, ticks, ticks);                                       \
+    OW_BICI_LADO, OW_BICI_RAPIDO_LADO_IZQUIERDO,                                      \
+    OW_BICI_RAPIDO_LADO_DERECHO, ticks, reposo);                                       \
 static const union AnimCmd sAnimOw_##sufijo##Este[] = PASOS_OW_ESPEJO(                \
-    OW_BICI_RAPIDO_LADO_IZQUIERDO, OW_BICI_LADO,                                      \
-    OW_BICI_RAPIDO_LADO_DERECHO, ticks, ticks)
+    OW_BICI_LADO, OW_BICI_RAPIDO_LADO_IZQUIERDO,                                      \
+    OW_BICI_RAPIDO_LADO_DERECHO, ticks, reposo)
 
-BICI_EN(Bici,        TICKS_ANDANDO);
-BICI_EN(BiciRapida,  TICKS_ANDANDO_RAPIDO);
-BICI_EN(BiciMas,     TICKS_ANDANDO_MAS);
-BICI_EN(BiciMaximo,  TICKS_ANDANDO_MAXIMO);
+BICI_EN(Bici,        TICKS_ANDANDO,        TICKS_ANDANDO);
+BICI_EN(BiciRapida,  TICKS_ANDANDO_RAPIDO, TICKS_ANDANDO_RAPIDO);
+BICI_EN(BiciMas,     TICKS_ANDANDO_MAS,    TICKS_ANDANDO_MAS);
+BICI_EN(BiciMaximo,  TICKS_ANDANDO_MAXIMO, TICKS_ANDANDO_MAXIMO);
 
 // --- Montura -----------------------------------------------------------------
 // Sin sistema todavia: ver la nota del enum. Se dejan montadas para que el arte no

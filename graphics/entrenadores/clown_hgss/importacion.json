@@ -1,0 +1,365 @@
+{
+  "id": "clown_hgss",
+  "name": "Clown",
+  "game": "hgss",
+  "directory": "graphics/entrenadores/clown_hgss",
+  "has_front": true,
+  "has_ow": false,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "clown_hgss.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      96,
+      80,
+      72
+    ],
+    [
+      112,
+      112,
+      104
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      176,
+      80,
+      120
+    ],
+    [
+      176,
+      152,
+      88
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      192,
+      192,
+      192
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      224,
+      96,
+      80
+    ],
+    [
+      224,
+      208,
+      120
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      248,
+      248
+    ],
+    [
+      248,
+      248,
+      248
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 0,
+    "colores_modificados": 0,
+    "pixeles_modificados": 0,
+    "pixeles_opacos": 0,
+    "delta_e_medio": 0.0,
+    "delta_e_maximo": 0,
+    "conversiones": []
+  },
+  "missing": [
+    {
+      "grafico": "ow",
+      "frame": 0,
+      "pose": "sur_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 1,
+      "pose": "sur_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 2,
+      "pose": "sur_paso_derecha",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 3,
+      "pose": "norte_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 4,
+      "pose": "norte_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 5,
+      "pose": "norte_paso_derecha",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 6,
+      "pose": "oeste_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 7,
+      "pose": "oeste_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 8,
+      "pose": "oeste_paso_derecha",
+      "motivo": "No hay OW identificado"
+    }
+  ],
+  "originals": [],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "clown_hgss",
+    "name": "Clown",
+    "game": "hgss",
+    "source": "entrenadores/28037.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          82,
+          508,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 13,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            96,
+            80,
+            72
+          ],
+          [
+            112,
+            112,
+            104
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            176,
+            80,
+            120
+          ],
+          [
+            176,
+            152,
+            88
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            192,
+            192
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            224,
+            96,
+            80
+          ],
+          [
+            224,
+            208,
+            120
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "0aba441d0357bce0f8443151bb1b238a5980f1f1875f169669b70bf122609a0d"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        96,
+        80,
+        72
+      ],
+      [
+        112,
+        112,
+        104
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        176,
+        80,
+        120
+      ],
+      [
+        176,
+        152,
+        88
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        192,
+        192,
+        192
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        224,
+        96,
+        80
+      ],
+      [
+        224,
+        208,
+        120
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 13,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": [],
+    "exact_front_duplicate_of": "clown_platinum"
+  },
+  "ow_source": null,
+  "code": {
+    "front": "TRAINER_PIC_CLOWN_HGSS",
+    "ow": null,
+    "palette": "gPaletaEntrenador_clown_hgss"
+  }
+}

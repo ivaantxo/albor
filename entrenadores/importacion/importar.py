@@ -40,7 +40,7 @@ def extract(source, spec, size):
     rect = src.crop((x, y, x + w, y + h))
     backgrounds = {tuple(c) for c in spec.get("backgrounds", [spec["background"]])}
     rect.putdata([TRANSPARENT if p[3] == 0 or p[:3] in backgrounds else p
-                  for p in rect.getdata()])
+                  for p in rect.get_flattened_data()])
     result = Image.new("RGBA", size, TRANSPARENT)
     ox, oy = spec.get("canvas_offset", [0, 0])
     assert ox >= 0 and oy >= 0 and ox + w <= size[0] and oy + h <= size[1], spec
@@ -58,7 +58,7 @@ def strip(frames):
 
 
 def colors(image):
-    return Counter(p[:3] for p in image.getdata() if p[3])
+    return Counter(p[:3] for p in image.get_flattened_data() if p[3])
 
 
 @lru_cache(maxsize=None)
@@ -88,7 +88,7 @@ def index_image(image, opaque_palette, exact=False):
     pal += [opaque_palette[-1]] * (16 - len(pal))
     indexed = Image.new("P", image.size, 0)
     indexed.putpalette([v for c in pal for v in c])
-    indexed.putdata([0 if not p[3] else indices[mapping[p[:3]]] for p in image.getdata()])
+    indexed.putdata([0 if not p[3] else indices[mapping[p[:3]]] for p in image.get_flattened_data()])
     indexed.info["transparency"] = 0
     changes = [{"original": c, "adaptado": p, "pixeles": counts[c], "delta_e_76": round(delta(c,p), 3)}
                for c, p in sorted(mapping.items()) if c != p]
@@ -108,11 +108,11 @@ def own_palette(image):
     if len(palette) <= 15:
         return palette
     # Sólo para OW sin front si una futura hoja excede 15 colores. Nunca fronts.
-    pixels = [p[:3] for p in image.getdata() if p[3]]
+    pixels = [p[:3] for p in image.get_flattened_data() if p[3]]
     sample = Image.new("RGB", (len(pixels), 1))
     sample.putdata(pixels)
     reduced = sample.quantize(colors=15, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
-    return sorted(set(reduced.convert("RGB").getdata()))
+    return sorted(set(reduced.convert("RGB").get_flattened_data()))
 
 
 def import_entry(identifier, front, ow):
@@ -245,7 +245,7 @@ def report(entries, source_hashes):
     lines += ["", "## Catálogo e identificadores", "", "| Carpeta | Front | OW | Conversión OW |", "|---|---|---|---|"]
     for e in entries:
         lines.append(f"| [{e['id']}](../../{e['directory']}) | {e['code']['front'] or 'Pendiente'} | {e['code']['ow'] or 'Pendiente'} | {e['ow_palette_conversion']['pixeles_modificados']} píxeles |")
-    lines += ["", "## Fuentes conservadas", "", "Las hojas conservan sus créditos originales: MufasaKong (fronts), Spacemotion (OW Platinum), Dragon (OW HGSS) y redblueyellow (Barry). Los manifiestos detallan la procedencia de cada celda.", ""]
+    lines += ["", "## Fuentes conservadas", "", "Las hojas conservan sus créditos originales: MufasaKong (fronts), Spacemotion (OW Platinum), Dragoon (OW HGSS) y redblueyellow (Barry). Los manifiestos detallan la procedencia de cada celda.", ""]
     (HERE / "INFORME.md").write_text("\n".join(lines))
     return counts
 

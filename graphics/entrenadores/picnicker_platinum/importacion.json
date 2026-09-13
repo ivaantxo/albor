@@ -1,0 +1,634 @@
+{
+  "id": "picnicker_platinum",
+  "name": "Picnicker",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/picnicker_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "picnicker_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      48,
+      64,
+      96
+    ],
+    [
+      56,
+      48,
+      56
+    ],
+    [
+      64,
+      72,
+      80
+    ],
+    [
+      80,
+      160,
+      144
+    ],
+    [
+      88,
+      96,
+      144
+    ],
+    [
+      88,
+      120,
+      120
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      136,
+      136,
+      176
+    ],
+    [
+      176,
+      192,
+      224
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      216,
+      88,
+      64
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 13,
+    "colores_modificados": 11,
+    "pixeles_modificados": 2378,
+    "pixeles_opacos": 2905,
+    "delta_e_medio": 11.068,
+    "delta_e_maximo": 18.454,
+    "conversiones": [
+      {
+        "original": [
+          40,
+          40,
+          64
+        ],
+        "adaptado": [
+          48,
+          64,
+          96
+        ],
+        "pixeles": 39,
+        "delta_e_76": 11.987
+      },
+      {
+        "original": [
+          40,
+          64,
+          48
+        ],
+        "adaptado": [
+          64,
+          72,
+          80
+        ],
+        "pixeles": 306,
+        "delta_e_76": 18.454
+      },
+      {
+        "original": [
+          56,
+          112,
+          88
+        ],
+        "adaptado": [
+          88,
+          120,
+          120
+        ],
+        "pixeles": 520,
+        "delta_e_76": 18.3
+      },
+      {
+        "original": [
+          64,
+          64,
+          88
+        ],
+        "adaptado": [
+          48,
+          64,
+          96
+        ],
+        "pixeles": 314,
+        "delta_e_76": 7.207
+      },
+      {
+        "original": [
+          72,
+          96,
+          168
+        ],
+        "adaptado": [
+          88,
+          96,
+          144
+        ],
+        "pixeles": 260,
+        "delta_e_76": 14.538
+      },
+      {
+        "original": [
+          80,
+          160,
+          120
+        ],
+        "adaptado": [
+          80,
+          160,
+          144
+        ],
+        "pixeles": 462,
+        "delta_e_76": 13.839
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 162,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          168,
+          168,
+          216
+        ],
+        "adaptado": [
+          136,
+          136,
+          176
+        ],
+        "pixeles": 65,
+        "delta_e_76": 12.853
+      },
+      {
+        "original": [
+          216,
+          88,
+          72
+        ],
+        "adaptado": [
+          216,
+          88,
+          64
+        ],
+        "pixeles": 84,
+        "delta_e_76": 4.335
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 124,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          232,
+          232,
+          248
+        ],
+        "adaptado": [
+          248,
+          248,
+          248
+        ],
+        "pixeles": 42,
+        "delta_e_76": 9.744
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "picnicker_platinum",
+    "name": "Picnicker",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          649,
+          18,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            64,
+            96
+          ],
+          [
+            56,
+            48,
+            56
+          ],
+          [
+            64,
+            72,
+            80
+          ],
+          [
+            80,
+            160,
+            144
+          ],
+          [
+            88,
+            96,
+            144
+          ],
+          [
+            88,
+            120,
+            120
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            136,
+            136,
+            176
+          ],
+          [
+            176,
+            192,
+            224
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            216,
+            88,
+            64
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "5cd39cefd4bd88bccbb3d5b8faae25709e8f4cc9571d0876a6d0ee68f5ede71a"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        48,
+        64,
+        96
+      ],
+      [
+        56,
+        48,
+        56
+      ],
+      [
+        64,
+        72,
+        80
+      ],
+      [
+        80,
+        160,
+        144
+      ],
+      [
+        88,
+        96,
+        144
+      ],
+      [
+        88,
+        120,
+        120
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        136,
+        136,
+        176
+      ],
+      [
+        176,
+        192,
+        224
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        216,
+        88,
+        64
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "picnicker_platinum",
+    "identity": "picnicker",
+    "name": "Picnicker",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25791.png",
+    "source_key": "platinum_ow_b1_c03",
+    "frames": [
+      {
+        "rect": [
+          113,
+          385,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          96,
+          96
+        ]
+      },
+      {
+        "rect": [
+          113,
+          417,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          96,
+          96
+        ]
+      },
+      {
+        "rect": [
+          113,
+          449,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          96,
+          96
+        ]
+      },
+      {
+        "rect": [
+          113,
+          481,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          96,
+          96
+        ]
+      },
+      {
+        "rect": [
+          113,
+          513,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          96,
+          96
+        ]
+      },
+      {
+        "rect": [
+          113,
+          545,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          96,
+          96
+        ]
+      },
+      {
+        "rect": [
+          113,
+          577,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          96,
+          96
+        ]
+      },
+      {
+        "rect": [
+          113,
+          609,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          96,
+          96
+        ]
+      },
+      {
+        "rect": [
+          113,
+          641,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          96,
+          96
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "picnicker_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_PICNICKER_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_PICNICKER_PLATINUM",
+    "palette": "gPaletaEntrenador_picnicker_platinum"
+  }
+}

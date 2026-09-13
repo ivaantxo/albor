@@ -1294,6 +1294,17 @@ static const union AffineAnimCmd *const sAffineAnimTable_KyogreGroudon[] = {
 
 // For animations with alternating steps
 static const struct StepAnimTable sStepAnimTables[] = {
+    // Las del entrenador de hoja unica. Sin estar aqui, el motor no vuelve a poner su
+    // animacion en fase al arrancar cada paso y el personaje se queda con el pie en el
+    // aire a partir del segundo. Ver ow_entrenador_anims.h.
+    {
+        .anims = sAnimTable_EntrenadorAPie,
+        .animPos = {1, 3, 0, 2},
+    },
+    {
+        .anims = sAnimTable_EntrenadorEnBici,
+        .animPos = {1, 3, 0, 2},
+    },
     {
         .anims = sAnimTable_Standard,
         .animPos = {1, 3, 0, 2},

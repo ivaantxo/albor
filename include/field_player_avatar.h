@@ -16,7 +16,7 @@ void PlayerWalkFast(u8 direction);
 void PlayerRideWaterCurrent(u8 direction);
 void PlayerWalkFaster(u8 direction);
 void PlayerOnBikeCollide(u8 direction);
-void GolpeEnBici(u8 direction);
+void GolpeEnBici(u8 direction, bool32 fuerte);
 void PlayerFaceDirection(u8 direction);
 void PlayerTurnInPlace(u8 direction);
 void PlayerJumpLedge(u8 direction);

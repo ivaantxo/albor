@@ -1,0 +1,792 @@
+{
+  "id": "bertha_platinum",
+  "name": "Bertha",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/bertha_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 3,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "bertha_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      56,
+      56,
+      56
+    ],
+    [
+      80,
+      80,
+      80
+    ],
+    [
+      96,
+      72,
+      88
+    ],
+    [
+      128,
+      128,
+      136
+    ],
+    [
+      144,
+      96,
+      40
+    ],
+    [
+      176,
+      128,
+      80
+    ],
+    [
+      184,
+      64,
+      72
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      184,
+      184,
+      192
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      232,
+      192,
+      128
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      248,
+      248
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 12,
+    "colores_modificados": 10,
+    "pixeles_modificados": 2088,
+    "pixeles_opacos": 2763,
+    "delta_e_medio": 6.631,
+    "delta_e_maximo": 19.716,
+    "conversiones": [
+      {
+        "original": [
+          56,
+          56,
+          80
+        ],
+        "adaptado": [
+          96,
+          72,
+          88
+        ],
+        "pixeles": 79,
+        "delta_e_76": 14.605
+      },
+      {
+        "original": [
+          72,
+          72,
+          88
+        ],
+        "adaptado": [
+          96,
+          72,
+          88
+        ],
+        "pixeles": 270,
+        "delta_e_76": 10.472
+      },
+      {
+        "original": [
+          96,
+          72,
+          56
+        ],
+        "adaptado": [
+          80,
+          80,
+          80
+        ],
+        "pixeles": 32,
+        "delta_e_76": 15.698
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          96,
+          72,
+          88
+        ],
+        "pixeles": 73,
+        "delta_e_76": 19.716
+      },
+      {
+        "original": [
+          120,
+          120,
+          128
+        ],
+        "adaptado": [
+          128,
+          128,
+          136
+        ],
+        "pixeles": 395,
+        "delta_e_76": 3.151
+      },
+      {
+        "original": [
+          160,
+          104,
+          56
+        ],
+        "adaptado": [
+          144,
+          96,
+          40
+        ],
+        "pixeles": 57,
+        "delta_e_76": 6.289
+      },
+      {
+        "original": [
+          176,
+          176,
+          200
+        ],
+        "adaptado": [
+          184,
+          184,
+          192
+        ],
+        "pixeles": 990,
+        "delta_e_76": 9.08
+      },
+      {
+        "original": [
+          200,
+          80,
+          56
+        ],
+        "adaptado": [
+          184,
+          64,
+          72
+        ],
+        "pixeles": 15,
+        "delta_e_76": 17.197
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 102,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          224,
+          224,
+          248
+        ],
+        "adaptado": [
+          248,
+          248,
+          248
+        ],
+        "pixeles": 75,
+        "delta_e_76": 14.69
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": true,
+    "order": [
+      0,
+      1,
+      2
+    ],
+    "durations_ticks": [
+      12,
+      12,
+      24
+    ],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "bertha_platinum",
+    "name": "Bertha",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          244,
+          900,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 14,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            56,
+            56
+          ],
+          [
+            80,
+            80,
+            80
+          ],
+          [
+            96,
+            72,
+            88
+          ],
+          [
+            128,
+            128,
+            136
+          ],
+          [
+            144,
+            96,
+            40
+          ],
+          [
+            176,
+            128,
+            80
+          ],
+          [
+            184,
+            64,
+            72
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            184,
+            184,
+            192
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            192,
+            128
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "83691aec6875f27d6270d79126b58b507dc09c9955e0eea57ac4e83135b8a613"
+      },
+      {
+        "rect": [
+          325,
+          900,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 14,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            56,
+            56
+          ],
+          [
+            80,
+            80,
+            80
+          ],
+          [
+            96,
+            72,
+            88
+          ],
+          [
+            128,
+            128,
+            136
+          ],
+          [
+            144,
+            96,
+            40
+          ],
+          [
+            176,
+            128,
+            80
+          ],
+          [
+            184,
+            64,
+            72
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            184,
+            184,
+            192
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            192,
+            128
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "275ab03e97978dda8426c112cb633982903842d213a9f159b83477dbce2832d6"
+      },
+      {
+        "rect": [
+          406,
+          900,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 14,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            56,
+            56
+          ],
+          [
+            80,
+            80,
+            80
+          ],
+          [
+            96,
+            72,
+            88
+          ],
+          [
+            128,
+            128,
+            136
+          ],
+          [
+            144,
+            96,
+            40
+          ],
+          [
+            176,
+            128,
+            80
+          ],
+          [
+            184,
+            64,
+            72
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            184,
+            184,
+            192
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            192,
+            128
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "063f3575970bdb7e256498e30c145ee26a40de89b77e3939bf5c0b70023df307"
+      }
+    ],
+    "frame_order": [
+      0,
+      1,
+      2
+    ],
+    "animation_available": true,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        56,
+        56,
+        56
+      ],
+      [
+        80,
+        80,
+        80
+      ],
+      [
+        96,
+        72,
+        88
+      ],
+      [
+        128,
+        128,
+        136
+      ],
+      [
+        144,
+        96,
+        40
+      ],
+      [
+        176,
+        128,
+        80
+      ],
+      [
+        184,
+        64,
+        72
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        184,
+        184,
+        192
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        232,
+        192,
+        128
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 14,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "bertha_platinum",
+    "identity": "bertha",
+    "name": "Bertha",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25790.png",
+    "source_key": "platinum_elite_1",
+    "frames": [
+      {
+        "rect": [
+          385,
+          113,
+          32,
+          32
+        ],
+        "background": [
+          96,
+          152,
+          96
+        ]
+      },
+      {
+        "rect": [
+          385,
+          145,
+          32,
+          32
+        ],
+        "background": [
+          96,
+          152,
+          96
+        ]
+      },
+      {
+        "rect": [
+          385,
+          177,
+          32,
+          32
+        ],
+        "background": [
+          96,
+          152,
+          96
+        ]
+      },
+      {
+        "rect": [
+          385,
+          209,
+          32,
+          32
+        ],
+        "background": [
+          96,
+          152,
+          96
+        ]
+      },
+      {
+        "rect": [
+          385,
+          241,
+          32,
+          32
+        ],
+        "background": [
+          96,
+          152,
+          96
+        ]
+      },
+      {
+        "rect": [
+          385,
+          273,
+          32,
+          32
+        ],
+        "background": [
+          96,
+          152,
+          96
+        ]
+      },
+      {
+        "rect": [
+          385,
+          305,
+          32,
+          32
+        ],
+        "background": [
+          96,
+          152,
+          96
+        ]
+      },
+      {
+        "rect": [
+          385,
+          337,
+          32,
+          32
+        ],
+        "background": [
+          96,
+          152,
+          96
+        ]
+      },
+      {
+        "rect": [
+          385,
+          369,
+          32,
+          32
+        ],
+        "background": [
+          96,
+          152,
+          96
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "bertha_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_BERTHA_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_BERTHA_PLATINUM",
+    "palette": "gPaletaEntrenador_bertha_platinum"
+  }
+}

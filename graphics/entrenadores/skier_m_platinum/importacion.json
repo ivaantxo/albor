@@ -1,0 +1,634 @@
+{
+  "id": "skier_m_platinum",
+  "name": "Skier M",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/skier_m_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "skier_m_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      48,
+      48,
+      72
+    ],
+    [
+      64,
+      48,
+      40
+    ],
+    [
+      64,
+      64,
+      80
+    ],
+    [
+      64,
+      72,
+      112
+    ],
+    [
+      80,
+      104,
+      184
+    ],
+    [
+      104,
+      104,
+      120
+    ],
+    [
+      112,
+      80,
+      64
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      152,
+      144,
+      160
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      200,
+      104,
+      32
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 13,
+    "colores_modificados": 11,
+    "pixeles_modificados": 2132,
+    "pixeles_opacos": 2748,
+    "delta_e_medio": 6.446,
+    "delta_e_maximo": 16.074,
+    "conversiones": [
+      {
+        "original": [
+          56,
+          56,
+          64
+        ],
+        "adaptado": [
+          64,
+          64,
+          80
+        ],
+        "pixeles": 556,
+        "delta_e_76": 6.385
+      },
+      {
+        "original": [
+          72,
+          72,
+          48
+        ],
+        "adaptado": [
+          64,
+          48,
+          40
+        ],
+        "pixeles": 25,
+        "delta_e_76": 14.97
+      },
+      {
+        "original": [
+          80,
+          88,
+          136
+        ],
+        "adaptado": [
+          64,
+          72,
+          112
+        ],
+        "pixeles": 297,
+        "delta_e_76": 8.169
+      },
+      {
+        "original": [
+          88,
+          128,
+          216
+        ],
+        "adaptado": [
+          80,
+          104,
+          184
+        ],
+        "pixeles": 750,
+        "delta_e_76": 10.094
+      },
+      {
+        "original": [
+          112,
+          104,
+          72
+        ],
+        "adaptado": [
+          112,
+          80,
+          64
+        ],
+        "pixeles": 39,
+        "delta_e_76": 15.679
+      },
+      {
+        "original": [
+          112,
+          112,
+          128
+        ],
+        "adaptado": [
+          104,
+          104,
+          120
+        ],
+        "pixeles": 203,
+        "delta_e_76": 3.226
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 36,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          160,
+          160,
+          184
+        ],
+        "adaptado": [
+          152,
+          144,
+          160
+        ],
+        "pixeles": 95,
+        "delta_e_76": 7.637
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 45,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          224,
+          96,
+          56
+        ],
+        "adaptado": [
+          200,
+          104,
+          32
+        ],
+        "pixeles": 53,
+        "delta_e_76": 16.074
+      },
+      {
+        "original": [
+          232,
+          232,
+          248
+        ],
+        "adaptado": [
+          248,
+          248,
+          248
+        ],
+        "pixeles": 33,
+        "delta_e_76": 9.744
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "skier_m_platinum",
+    "name": "Skier M",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          811,
+          410,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            48,
+            72
+          ],
+          [
+            64,
+            48,
+            40
+          ],
+          [
+            64,
+            64,
+            80
+          ],
+          [
+            64,
+            72,
+            112
+          ],
+          [
+            80,
+            104,
+            184
+          ],
+          [
+            104,
+            104,
+            120
+          ],
+          [
+            112,
+            80,
+            64
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            152,
+            144,
+            160
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            200,
+            104,
+            32
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "65fb0816a21af523c32e103eb8478455dc81d6a61d8f3a197514a4b6cce18475"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        48,
+        48,
+        72
+      ],
+      [
+        64,
+        48,
+        40
+      ],
+      [
+        64,
+        64,
+        80
+      ],
+      [
+        64,
+        72,
+        112
+      ],
+      [
+        80,
+        104,
+        184
+      ],
+      [
+        104,
+        104,
+        120
+      ],
+      [
+        112,
+        80,
+        64
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        152,
+        144,
+        160
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        200,
+        104,
+        32
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "skier_m_platinum",
+    "identity": "skier_m",
+    "name": "Skier M",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25791.png",
+    "source_key": "platinum_ow_b4_c01",
+    "frames": [
+      {
+        "rect": [
+          49,
+          1249,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          49,
+          1281,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          49,
+          1313,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          49,
+          1345,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          49,
+          1377,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          49,
+          1409,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          49,
+          1441,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          49,
+          1473,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          160,
+          112
+        ]
+      },
+      {
+        "rect": [
+          49,
+          1505,
+          32,
+          32
+        ],
+        "background": [
+          136,
+          160,
+          112
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "skier_m_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_SKIER_M_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_SKIER_M_PLATINUM",
+    "palette": "gPaletaEntrenador_skier_m_platinum"
+  }
+}

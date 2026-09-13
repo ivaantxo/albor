@@ -208,6 +208,15 @@ static const struct SpriteTemplate sTrainerBackSpriteTemplates[] =
     // Las espaldas del proyecto no traen .images: se las pone
     // SetMultiuseSpriteTemplateToTrainer apuntando al hueco del combatiente, que es
     // donde el pic queda ya troceado. La tabla de ROM no vale porque no se reordena.
+    [TRAINER_BACK_PIC_LUCAS] = {
+        .tileTag = TAG_NONE,
+        .paletteTag = 0,
+        .oam = &gOamData_BattleSpritePlayerSide,
+        .anims = NULL,
+        .images = NULL,
+        .affineAnims = gAffineAnims_BattleSpritePlayerSide,
+        .callback = SpriteCB_BattleSpriteStartSlideLeft,
+    },
     [TRAINER_BACK_PIC_ETHAN] = {
         .tileTag = TAG_NONE,
         .paletteTag = 0,

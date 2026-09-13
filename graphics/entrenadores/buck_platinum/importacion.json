@@ -1,0 +1,781 @@
+{
+  "id": "buck_platinum",
+  "name": "Buck",
+  "game": "platinum",
+  "directory": "graphics/entrenadores/buck_platinum",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 3,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "buck_platinum.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      56,
+      64,
+      80
+    ],
+    [
+      120,
+      64,
+      64
+    ],
+    [
+      168,
+      160,
+      200
+    ],
+    [
+      184,
+      72,
+      64
+    ],
+    [
+      200,
+      144,
+      120
+    ],
+    [
+      200,
+      152,
+      56
+    ],
+    [
+      200,
+      200,
+      216
+    ],
+    [
+      224,
+      184,
+      160
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      240,
+      80,
+      80
+    ],
+    [
+      248,
+      216,
+      88
+    ],
+    [
+      248,
+      216,
+      88
+    ],
+    [
+      248,
+      216,
+      88
+    ],
+    [
+      248,
+      216,
+      88
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 14,
+    "colores_modificados": 9,
+    "pixeles_modificados": 2047,
+    "pixeles_opacos": 2663,
+    "delta_e_medio": 8.374,
+    "delta_e_maximo": 27.453,
+    "conversiones": [
+      {
+        "original": [
+          88,
+          48,
+          40
+        ],
+        "adaptado": [
+          120,
+          64,
+          64
+        ],
+        "pixeles": 340,
+        "delta_e_76": 11.819
+      },
+      {
+        "original": [
+          88,
+          88,
+          112
+        ],
+        "adaptado": [
+          56,
+          64,
+          80
+        ],
+        "pixeles": 54,
+        "delta_e_76": 12.53
+      },
+      {
+        "original": [
+          112,
+          104,
+          80
+        ],
+        "adaptado": [
+          120,
+          64,
+          64
+        ],
+        "pixeles": 27,
+        "delta_e_76": 27.453
+      },
+      {
+        "original": [
+          160,
+          64,
+          64
+        ],
+        "adaptado": [
+          184,
+          72,
+          64
+        ],
+        "pixeles": 510,
+        "delta_e_76": 10.703
+      },
+      {
+        "original": [
+          200,
+          184,
+          88
+        ],
+        "adaptado": [
+          200,
+          152,
+          56
+        ],
+        "pixeles": 20,
+        "delta_e_76": 18.016
+      },
+      {
+        "original": [
+          216,
+          160,
+          120
+        ],
+        "adaptado": [
+          200,
+          144,
+          120
+        ],
+        "pixeles": 172,
+        "delta_e_76": 9.885
+      },
+      {
+        "original": [
+          232,
+          96,
+          72
+        ],
+        "adaptado": [
+          240,
+          80,
+          80
+        ],
+        "pixeles": 586,
+        "delta_e_76": 11.329
+      },
+      {
+        "original": [
+          248,
+          208,
+          184
+        ],
+        "adaptado": [
+          224,
+          184,
+          160
+        ],
+        "pixeles": 263,
+        "delta_e_76": 8.612
+      },
+      {
+        "original": [
+          248,
+          224,
+          104
+        ],
+        "adaptado": [
+          248,
+          216,
+          88
+        ],
+        "pixeles": 75,
+        "delta_e_76": 5.863
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": true,
+    "order": [
+      0,
+      1,
+      2
+    ],
+    "durations_ticks": [
+      12,
+      12,
+      24
+    ],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "buck_platinum",
+    "name": "Buck",
+    "game": "platinum",
+    "source": "entrenadores/18524.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          1,
+          1194,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 12,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            64,
+            80
+          ],
+          [
+            120,
+            64,
+            64
+          ],
+          [
+            168,
+            160,
+            200
+          ],
+          [
+            184,
+            72,
+            64
+          ],
+          [
+            200,
+            144,
+            120
+          ],
+          [
+            200,
+            152,
+            56
+          ],
+          [
+            200,
+            200,
+            216
+          ],
+          [
+            224,
+            184,
+            160
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            240,
+            80,
+            80
+          ],
+          [
+            248,
+            216,
+            88
+          ]
+        ],
+        "normalized_rgb_sha256": "46fc3949377eb0d9565690f80c7a5fa676d0477179405dee8df7028777b8d8fa"
+      },
+      {
+        "rect": [
+          82,
+          1194,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 12,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            64,
+            80
+          ],
+          [
+            120,
+            64,
+            64
+          ],
+          [
+            168,
+            160,
+            200
+          ],
+          [
+            184,
+            72,
+            64
+          ],
+          [
+            200,
+            144,
+            120
+          ],
+          [
+            200,
+            152,
+            56
+          ],
+          [
+            200,
+            200,
+            216
+          ],
+          [
+            224,
+            184,
+            160
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            240,
+            80,
+            80
+          ],
+          [
+            248,
+            216,
+            88
+          ]
+        ],
+        "normalized_rgb_sha256": "0e2d11cb5b375489b8e8a494fd7caa0bd4300969fe082b6c253fe89e13442d6e"
+      },
+      {
+        "rect": [
+          163,
+          1194,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 12,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            56,
+            64,
+            80
+          ],
+          [
+            120,
+            64,
+            64
+          ],
+          [
+            168,
+            160,
+            200
+          ],
+          [
+            184,
+            72,
+            64
+          ],
+          [
+            200,
+            144,
+            120
+          ],
+          [
+            200,
+            152,
+            56
+          ],
+          [
+            200,
+            200,
+            216
+          ],
+          [
+            224,
+            184,
+            160
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            240,
+            80,
+            80
+          ],
+          [
+            248,
+            216,
+            88
+          ]
+        ],
+        "normalized_rgb_sha256": "773b765ad90348ad9b8962d31b99527e5df9f4c2a8e1e33e2557e090feaf8eb6"
+      }
+    ],
+    "frame_order": [
+      0,
+      1,
+      2
+    ],
+    "animation_available": true,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        56,
+        64,
+        80
+      ],
+      [
+        120,
+        64,
+        64
+      ],
+      [
+        168,
+        160,
+        200
+      ],
+      [
+        184,
+        72,
+        64
+      ],
+      [
+        200,
+        144,
+        120
+      ],
+      [
+        200,
+        152,
+        56
+      ],
+      [
+        200,
+        200,
+        216
+      ],
+      [
+        224,
+        184,
+        160
+      ],
+      [
+        232,
+        232,
+        248
+      ],
+      [
+        240,
+        80,
+        80
+      ],
+      [
+        248,
+        216,
+        88
+      ]
+    ],
+    "opaque_color_count": 12,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "buck_platinum",
+    "identity": "buck",
+    "name": "Buck",
+    "game": "platinum",
+    "kind": "ow",
+    "source": "entrenadores/25791.png",
+    "source_key": "platinum_ow_b5_c13",
+    "frames": [
+      {
+        "rect": [
+          433,
+          1561,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          433,
+          1593,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          433,
+          1625,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          433,
+          1657,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          433,
+          1689,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          433,
+          1721,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          433,
+          1753,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          433,
+          1785,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          433,
+          1817,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          433,
+          1849,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          433,
+          1881,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      },
+      {
+        "rect": [
+          433,
+          1913,
+          32,
+          32
+        ],
+        "background": [
+          32,
+          128,
+          96
+        ]
+      }
+    ],
+    "target_order": [
+      0,
+      5,
+      6,
+      1,
+      3,
+      4,
+      2,
+      8,
+      7
+    ],
+    "extra_frames": [
+      9,
+      10,
+      11
+    ],
+    "east_mirrored": true,
+    "confidence": "identified",
+    "notes": [
+      "Este no está dibujado en la hoja: se refleja el oeste.",
+      "Orden original: S quieto,N quieto,O quieto,N paso1,N paso2,S paso1,S paso2,O paso2,O paso1."
+    ],
+    "front_id": "buck_platinum"
+  },
+  "code": {
+    "front": "TRAINER_PIC_BUCK_PLATINUM",
+    "ow": "OBJ_EVENT_GFX_BUCK_PLATINUM",
+    "palette": "gPaletaEntrenador_buck_platinum"
+  }
+}

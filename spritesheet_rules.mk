@@ -3,6 +3,13 @@ OBJEVENTGFXDIR := graphics/object_events/pics
 FLDEFFGFXDIR := graphics/field_effects/pics
 MISCGFXDIR := graphics/misc
 
+# Cada frame importado se almacena completo antes del siguiente: 80x80 / 32x32.
+graphics/entrenadores/%/front.4bpp: graphics/entrenadores/%/front.png
+	$(GFX) $< $@ -mwidth 10 -mheight 10
+
+graphics/entrenadores/%/ow.4bpp: graphics/entrenadores/%/ow.png
+	$(GFX) $< $@ -mwidth 4 -mheight 4
+
 $(OBJEVENTGFXDIR)/people/brendan/walking.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
 

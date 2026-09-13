@@ -1,0 +1,574 @@
+{
+  "id": "silver_unused_hgss",
+  "name": "Silver Unused",
+  "game": "hgss",
+  "directory": "graphics/entrenadores/silver_unused_hgss",
+  "has_front": true,
+  "has_ow": false,
+  "front_frames": 3,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "silver_unused_hgss.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      32,
+      24,
+      48
+    ],
+    [
+      48,
+      40,
+      88
+    ],
+    [
+      48,
+      48,
+      88
+    ],
+    [
+      56,
+      56,
+      112
+    ],
+    [
+      72,
+      72,
+      144
+    ],
+    [
+      96,
+      24,
+      56
+    ],
+    [
+      120,
+      64,
+      64
+    ],
+    [
+      136,
+      24,
+      48
+    ],
+    [
+      168,
+      48,
+      56
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      200,
+      80,
+      96
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      232,
+      232,
+      248
+    ],
+    [
+      248,
+      208,
+      184
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 0,
+    "colores_modificados": 0,
+    "pixeles_modificados": 0,
+    "pixeles_opacos": 0,
+    "delta_e_medio": 0.0,
+    "delta_e_maximo": 0,
+    "conversiones": []
+  },
+  "missing": [
+    {
+      "grafico": "ow",
+      "frame": 0,
+      "pose": "sur_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 1,
+      "pose": "sur_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 2,
+      "pose": "sur_paso_derecha",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 3,
+      "pose": "norte_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 4,
+      "pose": "norte_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 5,
+      "pose": "norte_paso_derecha",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 6,
+      "pose": "oeste_reposo",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 7,
+      "pose": "oeste_paso_izquierda",
+      "motivo": "No hay OW identificado"
+    },
+    {
+      "grafico": "ow",
+      "frame": 8,
+      "pose": "oeste_paso_derecha",
+      "motivo": "No hay OW identificado"
+    }
+  ],
+  "originals": [],
+  "extras": [],
+  "animation": {
+    "available": true,
+    "order": [
+      0,
+      1,
+      2
+    ],
+    "durations_ticks": [
+      12,
+      12,
+      24
+    ],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "silver_unused_hgss",
+    "name": "Silver Unused",
+    "game": "hgss",
+    "source": "entrenadores/28037.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          568,
+          1700,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            32,
+            24,
+            48
+          ],
+          [
+            48,
+            40,
+            88
+          ],
+          [
+            48,
+            48,
+            88
+          ],
+          [
+            56,
+            56,
+            112
+          ],
+          [
+            72,
+            72,
+            144
+          ],
+          [
+            96,
+            24,
+            56
+          ],
+          [
+            120,
+            64,
+            64
+          ],
+          [
+            136,
+            24,
+            48
+          ],
+          [
+            168,
+            48,
+            56
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            200,
+            80,
+            96
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "ad261c50f36ffe6648bd28a0a9c68e9d3755503ffbff8e4a1846895dec88f6e4"
+      },
+      {
+        "rect": [
+          649,
+          1700,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 14,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            32,
+            24,
+            48
+          ],
+          [
+            48,
+            40,
+            88
+          ],
+          [
+            48,
+            48,
+            88
+          ],
+          [
+            56,
+            56,
+            112
+          ],
+          [
+            72,
+            72,
+            144
+          ],
+          [
+            96,
+            24,
+            56
+          ],
+          [
+            120,
+            64,
+            64
+          ],
+          [
+            136,
+            24,
+            48
+          ],
+          [
+            168,
+            48,
+            56
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            200,
+            80,
+            96
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "faa59f34293ffc2d9cf4d7627d9394b0362754dcbb55ac1475c29c7f5c3e9c3a"
+      },
+      {
+        "rect": [
+          730,
+          1700,
+          80,
+          80
+        ],
+        "background": [
+          84,
+          165,
+          75
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            32,
+            24,
+            48
+          ],
+          [
+            48,
+            40,
+            88
+          ],
+          [
+            48,
+            48,
+            88
+          ],
+          [
+            56,
+            56,
+            112
+          ],
+          [
+            72,
+            72,
+            144
+          ],
+          [
+            96,
+            24,
+            56
+          ],
+          [
+            120,
+            64,
+            64
+          ],
+          [
+            136,
+            24,
+            48
+          ],
+          [
+            168,
+            48,
+            56
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            200,
+            80,
+            96
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            232,
+            248
+          ],
+          [
+            248,
+            208,
+            184
+          ]
+        ],
+        "normalized_rgb_sha256": "3a610bbf2f879dbf34ed554d163ae55b55b421b160652d43733ab30e5bec4225"
+      }
+    ],
+    "frame_order": [
+      0,
+      1,
+      2
+    ],
+    "animation_available": true,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        32,
+        24,
+        48
+      ],
+      [
+        48,
+        40,
+        88
+      ],
+      [
+        48,
+        48,
+        88
+      ],
+      [
+        56,
+        56,
+        112
+      ],
+      [
+        72,
+        72,
+        144
+      ],
+      [
+        96,
+        24,
+        56
+      ],
+      [
+        120,
+        64,
+        64
+      ],
+      [
+        136,
+        24,
+        48
+      ],
+      [
+        168,
+        48,
+        56
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        200,
+        80,
+        96
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        232,
+        232,
+        248
+      ],
+      [
+        248,
+        208,
+        184
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [
+      "La hoja lo clasifica como UNUSED; tres poses de una variante independiente."
+    ],
+    "extras": [],
+    "exact_front_duplicate_of": "silver_hgss"
+  },
+  "ow_source": null,
+  "code": {
+    "front": "TRAINER_PIC_SILVER_UNUSED_HGSS",
+    "ow": null,
+    "palette": "gPaletaEntrenador_silver_unused_hgss"
+  }
+}

@@ -1,0 +1,1034 @@
+{
+  "id": "kimono_girl_hgss",
+  "name": "Kimono Girl",
+  "game": "hgss",
+  "directory": "graphics/entrenadores/kimono_girl_hgss",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 12,
+  "east_mirrored": false,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha",
+    "este_reposo",
+    "este_paso_izquierda",
+    "este_paso_derecha"
+  ],
+  "palette": "kimono_girl_hgss.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      16,
+      16,
+      16
+    ],
+    [
+      48,
+      56,
+      80
+    ],
+    [
+      80,
+      120,
+      32
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      120,
+      176,
+      56
+    ],
+    [
+      152,
+      40,
+      16
+    ],
+    [
+      184,
+      56,
+      24
+    ],
+    [
+      184,
+      120,
+      8
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      192,
+      56,
+      48
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      216,
+      208,
+      24
+    ],
+    [
+      224,
+      80,
+      72
+    ],
+    [
+      248,
+      216,
+      200
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 14,
+    "colores_modificados": 14,
+    "pixeles_modificados": 3836,
+    "pixeles_opacos": 3836,
+    "delta_e_medio": 15.433,
+    "delta_e_maximo": 24.24,
+    "conversiones": [
+      {
+        "original": [
+          0,
+          0,
+          0
+        ],
+        "adaptado": [
+          16,
+          16,
+          16
+        ],
+        "pixeles": 349,
+        "delta_e_76": 4.68
+      },
+      {
+        "original": [
+          48,
+          48,
+          48
+        ],
+        "adaptado": [
+          16,
+          16,
+          16
+        ],
+        "pixeles": 711,
+        "delta_e_76": 15.185
+      },
+      {
+        "original": [
+          56,
+          80,
+          72
+        ],
+        "adaptado": [
+          48,
+          56,
+          80
+        ],
+        "pixeles": 347,
+        "delta_e_76": 24.24
+      },
+      {
+        "original": [
+          72,
+          120,
+          56
+        ],
+        "adaptado": [
+          80,
+          120,
+          32
+        ],
+        "pixeles": 96,
+        "delta_e_76": 11.813
+      },
+      {
+        "original": [
+          72,
+          160,
+          48
+        ],
+        "adaptado": [
+          120,
+          176,
+          56
+        ],
+        "pixeles": 259,
+        "delta_e_76": 13.224
+      },
+      {
+        "original": [
+          96,
+          112,
+          144
+        ],
+        "adaptado": [
+          48,
+          56,
+          80
+        ],
+        "pixeles": 617,
+        "delta_e_76": 23.639
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 382,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          192,
+          176,
+          16
+        ],
+        "adaptado": [
+          216,
+          208,
+          24
+        ],
+        "pixeles": 33,
+        "delta_e_76": 14.431
+      },
+      {
+        "original": [
+          216,
+          152,
+          112
+        ],
+        "adaptado": [
+          216,
+          160,
+          120
+        ],
+        "pixeles": 93,
+        "delta_e_76": 4.387
+      },
+      {
+        "original": [
+          232,
+          216,
+          40
+        ],
+        "adaptado": [
+          216,
+          208,
+          24
+        ],
+        "pixeles": 96,
+        "delta_e_76": 4.714
+      },
+      {
+        "original": [
+          232,
+          232,
+          248
+        ],
+        "adaptado": [
+          248,
+          248,
+          248
+        ],
+        "pixeles": 267,
+        "delta_e_76": 9.744
+      },
+      {
+        "original": [
+          240,
+          192,
+          168
+        ],
+        "adaptado": [
+          248,
+          216,
+          200
+        ],
+        "pixeles": 129,
+        "delta_e_76": 11.104
+      },
+      {
+        "original": [
+          248,
+          56,
+          48
+        ],
+        "adaptado": [
+          224,
+          80,
+          72
+        ],
+        "pixeles": 382,
+        "delta_e_76": 21.346
+      },
+      {
+        "original": [
+          248,
+          120,
+          88
+        ],
+        "adaptado": [
+          224,
+          80,
+          72
+        ],
+        "pixeles": 75,
+        "delta_e_76": 15.071
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "kimono_girl_hgss",
+    "name": "Kimono Girl",
+    "game": "hgss",
+    "source": "entrenadores/28037.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          487,
+          508,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            16,
+            16,
+            16
+          ],
+          [
+            48,
+            56,
+            80
+          ],
+          [
+            80,
+            120,
+            32
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            120,
+            176,
+            56
+          ],
+          [
+            152,
+            40,
+            16
+          ],
+          [
+            184,
+            56,
+            24
+          ],
+          [
+            184,
+            120,
+            8
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            56,
+            48
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            216,
+            208,
+            24
+          ],
+          [
+            224,
+            80,
+            72
+          ],
+          [
+            248,
+            216,
+            200
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "67e44cc9a2d0c0b2e6d0be1fbe82539c0fc9c4d990c9a8dcb3aab3752528e695"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        16,
+        16,
+        16
+      ],
+      [
+        48,
+        56,
+        80
+      ],
+      [
+        80,
+        120,
+        32
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        120,
+        176,
+        56
+      ],
+      [
+        152,
+        40,
+        16
+      ],
+      [
+        184,
+        56,
+        24
+      ],
+      [
+        184,
+        120,
+        8
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        192,
+        56,
+        48
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        216,
+        208,
+        24
+      ],
+      [
+        224,
+        80,
+        72
+      ],
+      [
+        248,
+        216,
+        200
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "kimono_girl_hgss",
+    "name": "Kimono Girl",
+    "game": "hgss",
+    "source": "entrenadores/26955.png",
+    "source_group": {
+      "row": 7,
+      "column": 1,
+      "rect": [
+        0,
+        768,
+        95,
+        128
+      ]
+    },
+    "identity_status": "identified",
+    "confidence": "high_visual",
+    "frames": [
+      {
+        "rect": [
+          0,
+          768,
+          32,
+          31
+        ],
+        "background": [
+          160,
+          176,
+          104
+        ],
+        "backgrounds": [
+          [
+            160,
+            176,
+            104
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_idle",
+        "empty": false,
+        "opaque_bbox": [
+          3,
+          5,
+          26,
+          30
+        ]
+      },
+      {
+        "rect": [
+          32,
+          768,
+          32,
+          31
+        ],
+        "background": [
+          160,
+          176,
+          104
+        ],
+        "backgrounds": [
+          [
+            160,
+            176,
+            104
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_idle",
+        "empty": false,
+        "opaque_bbox": [
+          3,
+          5,
+          21,
+          30
+        ]
+      },
+      {
+        "rect": [
+          64,
+          768,
+          31,
+          31
+        ],
+        "background": [
+          160,
+          176,
+          104
+        ],
+        "backgrounds": [
+          [
+            160,
+            176,
+            104
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          3,
+          4,
+          26,
+          31
+        ]
+      },
+      {
+        "rect": [
+          0,
+          800,
+          32,
+          31
+        ],
+        "background": [
+          160,
+          176,
+          104
+        ],
+        "backgrounds": [
+          [
+            160,
+            176,
+            104
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          9,
+          4,
+          27,
+          30
+        ]
+      },
+      {
+        "rect": [
+          32,
+          800,
+          32,
+          31
+        ],
+        "background": [
+          160,
+          176,
+          104
+        ],
+        "backgrounds": [
+          [
+            160,
+            176,
+            104
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          3,
+          4,
+          21,
+          30
+        ]
+      },
+      {
+        "rect": [
+          64,
+          800,
+          31,
+          31
+        ],
+        "background": [
+          160,
+          176,
+          104
+        ],
+        "backgrounds": [
+          [
+            160,
+            176,
+            104
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_idle",
+        "empty": false,
+        "opaque_bbox": [
+          3,
+          5,
+          26,
+          30
+        ]
+      },
+      {
+        "rect": [
+          0,
+          832,
+          32,
+          31
+        ],
+        "background": [
+          160,
+          176,
+          104
+        ],
+        "backgrounds": [
+          [
+            160,
+            176,
+            104
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_idle",
+        "empty": false,
+        "opaque_bbox": [
+          9,
+          5,
+          27,
+          30
+        ]
+      },
+      {
+        "rect": [
+          32,
+          832,
+          32,
+          31
+        ],
+        "background": [
+          160,
+          176,
+          104
+        ],
+        "backgrounds": [
+          [
+            160,
+            176,
+            104
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          3,
+          4,
+          21,
+          30
+        ]
+      },
+      {
+        "rect": [
+          64,
+          832,
+          31,
+          31
+        ],
+        "background": [
+          160,
+          176,
+          104
+        ],
+        "backgrounds": [
+          [
+            160,
+            176,
+            104
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          3,
+          4,
+          26,
+          31
+        ]
+      },
+      {
+        "rect": [
+          0,
+          864,
+          32,
+          31
+        ],
+        "background": [
+          160,
+          176,
+          104
+        ],
+        "backgrounds": [
+          [
+            160,
+            176,
+            104
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          9,
+          4,
+          27,
+          30
+        ]
+      },
+      {
+        "rect": [
+          32,
+          864,
+          32,
+          31
+        ],
+        "background": [
+          160,
+          176,
+          104
+        ],
+        "backgrounds": [
+          [
+            160,
+            176,
+            104
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          3,
+          4,
+          26,
+          31
+        ]
+      },
+      {
+        "rect": [
+          64,
+          864,
+          31,
+          31
+        ],
+        "background": [
+          160,
+          176,
+          104
+        ],
+        "backgrounds": [
+          [
+            160,
+            176,
+            104
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          3,
+          4,
+          26,
+          31
+        ]
+      }
+    ],
+    "target_order": [
+      5,
+      8,
+      11,
+      0,
+      2,
+      10,
+      6,
+      3,
+      9,
+      1,
+      4,
+      7
+    ],
+    "target_labels": [
+      "south_idle",
+      "south_step_a",
+      "south_step_b",
+      "north_idle",
+      "north_step_a",
+      "north_step_b",
+      "west_idle",
+      "west_step_a",
+      "west_step_b",
+      "east_idle",
+      "east_step_a",
+      "east_step_b"
+    ],
+    "all_directions_order": [
+      5,
+      8,
+      11,
+      0,
+      2,
+      10,
+      6,
+      3,
+      9,
+      1,
+      4,
+      7
+    ],
+    "east_mirror_of_west": false,
+    "east_art_is_mirrored_west": true,
+    "missing_frames": [],
+    "notes": [
+      "Los doce frames originales están presentes.",
+      "La fila inferior vacía se excluye del rectángulo y se rellena transparente para completar 32×32.",
+      "Este es reflejo exacto del dibujo oeste pero su posición en el lienzo difiere; se conservan las cuatro direcciones para no cambiar el anclaje original."
+    ]
+  },
+  "code": {
+    "front": "TRAINER_PIC_KIMONO_GIRL_HGSS",
+    "ow": "OBJ_EVENT_GFX_KIMONO_GIRL_HGSS",
+    "palette": "gPaletaEntrenador_kimono_girl_hgss"
+  }
+}

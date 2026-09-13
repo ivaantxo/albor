@@ -1,0 +1,996 @@
+{
+  "id": "twins_hgss",
+  "name": "Twins",
+  "game": "hgss",
+  "directory": "graphics/entrenadores/twins_hgss",
+  "has_front": true,
+  "has_ow": true,
+  "front_frames": 1,
+  "ow_frames": 9,
+  "east_mirrored": true,
+  "front_frame_size": [
+    80,
+    80
+  ],
+  "ow_frame_size": [
+    32,
+    32
+  ],
+  "ow_slots": [
+    "sur_reposo",
+    "sur_paso_izquierda",
+    "sur_paso_derecha",
+    "norte_reposo",
+    "norte_paso_izquierda",
+    "norte_paso_derecha",
+    "oeste_reposo",
+    "oeste_paso_izquierda",
+    "oeste_paso_derecha"
+  ],
+  "palette": "twins_hgss.pal",
+  "palette_origin": "front",
+  "palette_rgb": [
+    [
+      255,
+      0,
+      255
+    ],
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      48,
+      40,
+      32
+    ],
+    [
+      72,
+      56,
+      48
+    ],
+    [
+      88,
+      120,
+      168
+    ],
+    [
+      96,
+      80,
+      72
+    ],
+    [
+      120,
+      72,
+      88
+    ],
+    [
+      120,
+      200,
+      232
+    ],
+    [
+      176,
+      128,
+      64
+    ],
+    [
+      184,
+      120,
+      96
+    ],
+    [
+      192,
+      96,
+      112
+    ],
+    [
+      216,
+      160,
+      120
+    ],
+    [
+      232,
+      224,
+      112
+    ],
+    [
+      248,
+      136,
+      152
+    ],
+    [
+      248,
+      208,
+      184
+    ],
+    [
+      248,
+      248,
+      248
+    ]
+  ],
+  "front_colors_unchanged": true,
+  "ow_palette_conversion": {
+    "colores_originales": 13,
+    "colores_modificados": 12,
+    "pixeles_modificados": 1661,
+    "pixeles_opacos": 2007,
+    "delta_e_medio": 11.508,
+    "delta_e_maximo": 38.85,
+    "conversiones": [
+      {
+        "original": [
+          56,
+          64,
+          144
+        ],
+        "adaptado": [
+          88,
+          120,
+          168
+        ],
+        "pixeles": 13,
+        "delta_e_76": 32.31
+      },
+      {
+        "original": [
+          64,
+          48,
+          48
+        ],
+        "adaptado": [
+          72,
+          56,
+          48
+        ],
+        "pixeles": 40,
+        "delta_e_76": 6.152
+      },
+      {
+        "original": [
+          72,
+          152,
+          224
+        ],
+        "adaptado": [
+          88,
+          120,
+          168
+        ],
+        "pixeles": 61,
+        "delta_e_76": 18.62
+      },
+      {
+        "original": [
+          80,
+          80,
+          56
+        ],
+        "adaptado": [
+          96,
+          80,
+          72
+        ],
+        "pixeles": 488,
+        "delta_e_76": 12.152
+      },
+      {
+        "original": [
+          120,
+          64,
+          64
+        ],
+        "adaptado": [
+          120,
+          72,
+          88
+        ],
+        "pixeles": 222,
+        "delta_e_76": 11.933
+      },
+      {
+        "original": [
+          128,
+          104,
+          72
+        ],
+        "adaptado": [
+          96,
+          80,
+          72
+        ],
+        "pixeles": 303,
+        "delta_e_76": 17.665
+      },
+      {
+        "original": [
+          160,
+          64,
+          104
+        ],
+        "adaptado": [
+          192,
+          96,
+          112
+        ],
+        "pixeles": 94,
+        "delta_e_76": 16.872
+      },
+      {
+        "original": [
+          208,
+          144,
+          120
+        ],
+        "adaptado": [
+          184,
+          120,
+          96
+        ],
+        "pixeles": 132,
+        "delta_e_76": 9.075
+      },
+      {
+        "original": [
+          240,
+          160,
+          0
+        ],
+        "adaptado": [
+          176,
+          128,
+          64
+        ],
+        "pixeles": 64,
+        "delta_e_76": 38.85
+      },
+      {
+        "original": [
+          240,
+          192,
+          176
+        ],
+        "adaptado": [
+          248,
+          208,
+          184
+        ],
+        "pixeles": 117,
+        "delta_e_76": 6.943
+      },
+      {
+        "original": [
+          248,
+          104,
+          144
+        ],
+        "adaptado": [
+          248,
+          136,
+          152
+        ],
+        "pixeles": 48,
+        "delta_e_76": 16.207
+      },
+      {
+        "original": [
+          248,
+          240,
+          120
+        ],
+        "adaptado": [
+          232,
+          224,
+          112
+        ],
+        "pixeles": 79,
+        "delta_e_76": 6.369
+      }
+    ]
+  },
+  "missing": [],
+  "originals": [
+    "originales/ow.png",
+    "originales/ow_todas_las_poses.png",
+    "originales/ow_celdas_fuente.png"
+  ],
+  "extras": [],
+  "animation": {
+    "available": false,
+    "order": [
+      0
+    ],
+    "durations_ticks": [],
+    "note": "Secuencia de entrada propuesta: las hojas no contienen los tiempos originales; reposo en frame 0."
+  },
+  "front_source": {
+    "id": "twins_hgss",
+    "name": "Twins",
+    "game": "hgss",
+    "source": "entrenadores/28037.png",
+    "kind": "front",
+    "confidence": "high",
+    "frames": [
+      {
+        "rect": [
+          892,
+          18,
+          80,
+          80
+        ],
+        "background": [
+          147,
+          187,
+          236
+        ],
+        "opaque_color_count": 15,
+        "opaque_colors_rgb": [
+          [
+            0,
+            0,
+            0
+          ],
+          [
+            48,
+            40,
+            32
+          ],
+          [
+            72,
+            56,
+            48
+          ],
+          [
+            88,
+            120,
+            168
+          ],
+          [
+            96,
+            80,
+            72
+          ],
+          [
+            120,
+            72,
+            88
+          ],
+          [
+            120,
+            200,
+            232
+          ],
+          [
+            176,
+            128,
+            64
+          ],
+          [
+            184,
+            120,
+            96
+          ],
+          [
+            192,
+            96,
+            112
+          ],
+          [
+            216,
+            160,
+            120
+          ],
+          [
+            232,
+            224,
+            112
+          ],
+          [
+            248,
+            136,
+            152
+          ],
+          [
+            248,
+            208,
+            184
+          ],
+          [
+            248,
+            248,
+            248
+          ]
+        ],
+        "normalized_rgb_sha256": "d8e7c1cdeeaef1caef02bee402d99e232cb5bb3f2ffa1ce2177712c850bc485a"
+      }
+    ],
+    "frame_order": [
+      0
+    ],
+    "animation_available": false,
+    "animation_timing": "unspecified_source_poses_only",
+    "opaque_colors_rgb": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        48,
+        40,
+        32
+      ],
+      [
+        72,
+        56,
+        48
+      ],
+      [
+        88,
+        120,
+        168
+      ],
+      [
+        96,
+        80,
+        72
+      ],
+      [
+        120,
+        72,
+        88
+      ],
+      [
+        120,
+        200,
+        232
+      ],
+      [
+        176,
+        128,
+        64
+      ],
+      [
+        184,
+        120,
+        96
+      ],
+      [
+        192,
+        96,
+        112
+      ],
+      [
+        216,
+        160,
+        120
+      ],
+      [
+        232,
+        224,
+        112
+      ],
+      [
+        248,
+        136,
+        152
+      ],
+      [
+        248,
+        208,
+        184
+      ],
+      [
+        248,
+        248,
+        248
+      ]
+    ],
+    "opaque_color_count": 15,
+    "palette_4bpp_compatible": true,
+    "notes": [],
+    "extras": []
+  },
+  "ow_source": {
+    "id": "twins_hgss",
+    "name": "Twins",
+    "game": "hgss",
+    "source": "entrenadores/26955.png",
+    "source_group": {
+      "row": 1,
+      "column": 7,
+      "rect": [
+        573,
+        0,
+        96,
+        128
+      ]
+    },
+    "identity_status": "identified",
+    "confidence": "high_visual",
+    "frames": [
+      {
+        "rect": [
+          573,
+          0,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ],
+        "backgrounds": [
+          [
+            152,
+            128,
+            160
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_idle",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          11,
+          23,
+          30
+        ]
+      },
+      {
+        "rect": [
+          605,
+          0,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ],
+        "backgrounds": [
+          [
+            152,
+            128,
+            160
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_idle",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          9,
+          22,
+          30
+        ]
+      },
+      {
+        "rect": [
+          637,
+          0,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ],
+        "backgrounds": [
+          [
+            152,
+            128,
+            160
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          10,
+          23,
+          31
+        ]
+      },
+      {
+        "rect": [
+          573,
+          32,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ],
+        "backgrounds": [
+          [
+            152,
+            128,
+            160
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          10,
+          8,
+          26,
+          30
+        ]
+      },
+      {
+        "rect": [
+          605,
+          32,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ],
+        "backgrounds": [
+          [
+            152,
+            128,
+            160
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          8,
+          22,
+          30
+        ]
+      },
+      {
+        "rect": [
+          637,
+          32,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ],
+        "backgrounds": [
+          [
+            152,
+            128,
+            160
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_idle",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          9,
+          23,
+          30
+        ]
+      },
+      {
+        "rect": [
+          573,
+          64,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ],
+        "backgrounds": [
+          [
+            152,
+            128,
+            160
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_idle",
+        "empty": false,
+        "opaque_bbox": [
+          10,
+          9,
+          26,
+          30
+        ]
+      },
+      {
+        "rect": [
+          605,
+          64,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ],
+        "backgrounds": [
+          [
+            152,
+            128,
+            160
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "east_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          6,
+          8,
+          22,
+          30
+        ]
+      },
+      {
+        "rect": [
+          637,
+          64,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ],
+        "backgrounds": [
+          [
+            152,
+            128,
+            160
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_step_a",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          8,
+          23,
+          31
+        ]
+      },
+      {
+        "rect": [
+          573,
+          96,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ],
+        "backgrounds": [
+          [
+            152,
+            128,
+            160
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "west_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          10,
+          8,
+          26,
+          30
+        ]
+      },
+      {
+        "rect": [
+          605,
+          96,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ],
+        "backgrounds": [
+          [
+            152,
+            128,
+            160
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "north_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          10,
+          23,
+          31
+        ]
+      },
+      {
+        "rect": [
+          637,
+          96,
+          32,
+          31
+        ],
+        "background": [
+          152,
+          128,
+          160
+        ],
+        "backgrounds": [
+          [
+            152,
+            128,
+            160
+          ]
+        ],
+        "canvas_offset": [
+          0,
+          0
+        ],
+        "canvas_size": [
+          32,
+          32
+        ],
+        "direction_phase": "south_step_b",
+        "empty": false,
+        "opaque_bbox": [
+          8,
+          8,
+          23,
+          31
+        ]
+      }
+    ],
+    "target_order": [
+      5,
+      8,
+      11,
+      0,
+      2,
+      10,
+      6,
+      3,
+      9
+    ],
+    "target_labels": [
+      "south_idle",
+      "south_step_a",
+      "south_step_b",
+      "north_idle",
+      "north_step_a",
+      "north_step_b",
+      "west_idle",
+      "west_step_a",
+      "west_step_b"
+    ],
+    "all_directions_order": [
+      5,
+      8,
+      11,
+      0,
+      2,
+      10,
+      6,
+      3,
+      9,
+      1,
+      4,
+      7
+    ],
+    "east_mirror_of_west": true,
+    "east_art_is_mirrored_west": true,
+    "missing_frames": [],
+    "notes": [
+      "Los doce frames originales están presentes.",
+      "La fila inferior vacía se excluye del rectángulo y se rellena transparente para completar 32×32."
+    ]
+  },
+  "code": {
+    "front": "TRAINER_PIC_TWINS_HGSS",
+    "ow": "OBJ_EVENT_GFX_TWINS_HGSS",
+    "palette": "gPaletaEntrenador_twins_hgss"
+  }
+}
