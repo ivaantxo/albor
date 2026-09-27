@@ -4053,7 +4053,6 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
     X(MUS_OCEANIC_MUSEUM) \
     X(MUS_EVOLUTION_INTRO) \
     X(MUS_EVOLUTION) \
-    X(MUS_MOVE_DELETED) \
     X(MUS_ENCOUNTER_GIRL) \
     X(MUS_ENCOUNTER_MALE) \
     X(MUS_ABANDONED_SHIP) \
@@ -4374,7 +4373,6 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
     X(MUS_DP_POKETCH) \
     X(MUS_DP_OBTAIN_TMHM) \
     X(MUS_DP_OBTAIN_ACCESSORY) \
-    X(MUS_DP_MOVE_DELETED) \
     X(MUS_DP_HEAL) \
     X(MUS_DP_OBTAIN_BERRY) \
     X(MUS_DP_CONTEST_DRESS_UP) \
@@ -4391,7 +4389,6 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
     X(MUS_DP_SLOTS_WIN) \
     X(MUS_DP_SLOTS_JACKPOT) \
     X(MUS_DP_CREDITS) \
-    X(MUS_DP_SLOTS_UNUSED) \
     X(MUS_PL_FIGHT_AREA_DAY) \
     X(MUS_PL_TV_BROADCAST) \
     X(MUS_PL_TV_END) \
@@ -4579,7 +4576,6 @@ static void DebugAction_Sound_MUS_SelectId(u8 taskId)
     X(MUS_HG_OBTAIN_BADGE) \
     X(MUS_HG_OBTAIN_TMHM) \
     X(MUS_HG_OBTAIN_ACCESSORY) \
-    X(MUS_HG_MOVE_DELETED) \
     X(MUS_HG_OBTAIN_BERRY) \
     X(MUS_HG_DEX_RATING_1) \
     X(MUS_HG_DEX_RATING_2) \

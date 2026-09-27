@@ -300,7 +300,6 @@ gSongTable::
 	song mus_oceanic_museum, 0, 0
 	song mus_evolution_intro, 2, 2
 	song mus_evolution, 0, 0
-	song mus_move_deleted, 2, 2
 	song mus_encounter_girl, 0, 0
 	song mus_encounter_male, 0, 0
 	song mus_abandoned_ship, 0, 0
@@ -621,7 +620,6 @@ gSongTable::
 	song mus_dp_poketch, 2, 2
 	song mus_dp_obtain_tmhm, 2, 2
 	song mus_dp_obtain_accessory, 2, 2
-	song mus_dp_move_deleted, 2, 2
 	song mus_dp_heal, 2, 2
 	song mus_dp_obtain_berry, 2, 2
 	song mus_dp_contest_dress_up, 0, 0
@@ -638,7 +636,6 @@ gSongTable::
 	song mus_dp_slots_win, 0, 0
 	song mus_dp_slots_jackpot, 0, 0
 	song mus_dp_credits, 0, 0
-	song mus_dp_slots_unused, 0, 0
 	song mus_pl_fight_area_day, 0, 0
 	song mus_pl_tv_broadcast, 0, 0
 	song mus_pl_tv_end, 2, 2
@@ -826,7 +823,6 @@ gSongTable::
 	song mus_hg_obtain_badge, 2, 2
     song mus_hg_obtain_tmhm, 2, 2
 	song mus_hg_obtain_accessory, 2, 2
-	song mus_hg_move_deleted, 2, 2
 	song mus_hg_obtain_berry, 2, 2
 	song mus_hg_dex_rating_1, 2, 2
 	song mus_hg_dex_rating_2, 2, 2
