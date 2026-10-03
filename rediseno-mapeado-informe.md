@@ -1,6 +1,6 @@
 # Rediseño del mapeado: informe de ejecución
 
-Estado a 3 de octubre de 2026 de lo que pide `rediseno-mapeado.md`, en la rama `claude/rediseno-mapeado-plan-5296ti`. Las fases 0, 1 y 2 están hechas, compilan y están probadas en emulador. La 3 espera tu confirmación. La 4 casi no hace falta, porque porymap se configura sin fork. La 5 necesita el fork y dos decisiones. La 6 es para después.
+Estado a 3 de octubre de 2026 de lo que pide `rediseno-mapeado.md`, en la rama `claude/rediseno-mapeado-plan-5296ti`. Las fases 0, 1 y 2 están hechas, compilan y están probadas en emulador. De la 5 está hecho el compilador, y `Test` y `CentroPokemon` ya salen de su arte por capas. Falta el editor por capas, que va en el fork de porymap. La 3 espera tu confirmación. La 4 casi no hace falta, porque porymap se configura sin fork. La 6 es para después.
 
 | Fase | Estado | Commit |
 | --- | --- | --- |
@@ -9,7 +9,7 @@ Estado a 3 de octubre de 2026 de lo que pide `rediseno-mapeado.md`, en la rama `
 | 2. Tileset único | Hecha, con una capa de compatibilidad para porymap | `f064ba26` |
 | 3. UI a una paleta | Sin hacer: el plan la deja "si se confirma" | — |
 | 4. Fork de porymap, base | Casi todo resuelto con configuración (ver abajo) | — |
-| 5. Pintado por capas y compilador | Sin hacer: fork en otro repo y decisiones pendientes | — |
+| 5. Pintado por capas y compilador | Compilador hecho y mapas migrados. El editor necesita el fork | `07b1da5e`, `fd2e7770` |
 | 6. Cambios por zona | Sin hacer: el plan la deja para después | — |
 
 Aparte, `db48160d` arregla un fallo del Makefile que salió al probar la fase 1: `maps.o` no dependía de los `map.bin` ni de los `border.bin`. Pintar en porymap sin tocar `layouts.json` dejaba el mapa viejo dentro de la ROM.
@@ -20,7 +20,7 @@ Aparte, `db48160d` arregla un fallo del Makefile que salió al probar la fase 1:
 2. **Solo hay dos mapas, `Test` y `CentroPokemon`, sin conexiones ni warps.** Ninguno usaba su secundario: los IDs llegan a 87 y 123, por debajo del primario, y las paletas a la 5. Los 50 secundarios y el `General` de pokeemerald no los usa ningún mapa. La "zona piloto" de la fase 2 no tenía blockdata que convertir.
 3. **La elevación 0 solo aparecía en casillas bloqueadas.** Las casillas que se pisan tenían todas 3. Derivarla del metatile no pierde nada en estos mapas.
 4. **Atributos de metatile:** los bits 8-11 estaban libres. El dibujo a triple capa no mira el layer type (solo las puertas, con `0xFF`); `shop.c` sí lo usa.
-5. **Paletas de la interfaz en el overworld:** el marco de menú, el popup de nombre y la transición de cueva usan la 14, y la caja de diálogo la 15. **La 13 no la carga ninguna ventana del overworld**; solo pantallas aparte (bolsa, MTs, PC, mapa, combate). Además, el tiempo atmosférico ya la tiñe como paleta del mapa (`sBasePaletteColorMapTypes` en `field_weather.c`: 0-13 sí, 14 y 15 no). En cambio, el tinte de la hora del día la deja fuera, y un comentario de `overworld.c` la cuenta como interfaz. Conviene confirmarlo jugando antes de darla al mapa. Si se confirma, el mapa puede tener 14 paletas sin la fase 3, y 15 con ella.
+5. **Paletas de la interfaz en el overworld:** el marco de menú, el popup de nombre y la transición de cueva usan la 14, y la caja de diálogo la 15. **La 13 no la carga ninguna ventana del overworld**; solo pantallas aparte (bolsa, MTs, PC, mapa, combate). Además, el tiempo atmosférico ya la tiñe como paleta del mapa (`sBasePaletteColorMapTypes` en `field_weather.c`: 0-13 sí, 14 y 15 no). En cambio, el tinte de la hora del día la deja fuera, y un comentario de `overworld.c` la cuenta como interfaz. En el emulador, un valor testigo en la paleta 13 sobrevive al menú de inicio, a la ventana de datos de guardado y a la caja de diálogo. Queda por mirar alguna pantalla más (la mochila no llegó a abrirse en la prueba). Si se confirma, el mapa puede tener 14 paletas sin la fase 3, y 15 con ella.
 6. **Porymap no admite un tileset único.** Rechaza un layout sin secundario y un proyecto sin ningún secundario. Además recorta el primario a total − 1 en tiles y en paletas (comprobado en el código de porymap 6.3.1). Por eso la fase 2 lleva la capa de compatibilidad descrita abajo. Porytiles sí acepta primario = total.
 7. **Puertas:** `field_door.c` usa los 16 últimos tiles de la VRAM (1008-1023). El tileset único se queda con 1008 tiles y no 1024.
 8. **Paletas de noche:** la versión de noche de la paleta N va en la (N + 9) % 16 del mismo tileset. Con 13 paletas de día no caben las de noche de todas. Ningún tileset actual las usa.
@@ -46,6 +46,20 @@ Aparte, `db48160d` arregla un fallo del Makefile que salió al probar la fase 1:
   - `gTileset_Reservado`: secundario vacío que solo ve porymap. Los dos layouts lo llevan en `layouts.json`, y `mapjson` ya no pasa el secundario al juego.
   - Cuando exista el fork, se quita la capa y `NUM_PALS_TOTAL` deja de importar.
 
+### Fase 5: compilador
+
+Está en `tools/mapeado/`; su `README.md` explica cómo se trabaja. Resumen:
+
+- **Arte:** cada mapa se pinta en `baja.png`, `media.png` y `alta.png` a tamaño de mapa, en la carpeta de su layout (`data/layouts/<Mapa>/`), más `borde_*.png` de 32×32. Sin JSON: el arte es solo arte.
+- **Compilación:** de ahí salen los metatiles, los tiles de 8×8 con volteos, las paletas y el blockdata de todos los mapas que comparten tileset. `make` lo hace solo cuando cambia el arte; a mano es `tools/mapeado/mapeado compilar`, y `cuentas` lo hace sin escribir nada.
+- **Lo que se edita después:** el comportamiento, el nivel y la colisión se editan en porymap, y recompilar lo respeta.
+  - Casilla con el mismo arte: conserva su metatile (aunque sea un duplicado con otro comportamiento) y su colisión.
+  - Arte nuevo: hereda por mayoría los atributos de lo que había debajo.
+  - Números de metatile y de tile, y colores de las paletas: no se mueven mientras sigan existiendo.
+  - Metatiles con nombre en `metatile_labels.h`: se conservan siempre.
+- **Lenguaje:** C++. La biblioteca (`mapeado.h/.cpp`) no lee archivos ni depende de nada, para poder meterla en el fork. La línea de comandos usa libpng, como gbagfx.
+- **Migración:** `Test` y `CentroPokemon` se descompilaron a capas y se volvieron a compilar desde ellas. Se juntaron los metatiles duplicados (11 casillas cambian de número en `Test` y 5 en el Centro) y se quitaron los que no usaba nadie: el tileset de `Test` pasa de 128 a 69 metatiles y el del Centro de 128 a 72. Los tiles y las paletas no cambian.
+
 ## Cómo se ha comprobado
 
 - **Compilación en cloud** con arm-none-eabi-gcc 13.2, sin avisos (`-Werror`). Hubo que compilar SuperFamiconv 0.9.2 para Linux, porque el de `tools/superfamiconv/` es un binario de Mac; se pasó con `FAMICONV=` sin tocar el repo.
@@ -53,6 +67,15 @@ Aparte, `db48160d` arregla un fallo del Makefile que salió al probar la fase 1:
 - **`CentroPokemon`** no se puede alcanzar sin warp. Se ha comprobado por datos: mismo ID y colisión en cada casilla, y el tileset solo usa las paletas 0-5.
 - **Porytiles 0.0.7,** compilado para Linux, genera `principal` con los límites nuevos.
 - **Porymap:** comprobado leyendo su código (6.3.1), sin abrirlo. Revisado: máscara de elevación 0, carpeta por defecto del secundario vacío, recorte de límites y lista de "terrain type".
+- **Compilador:** 15 escenarios sobre una copia del proyecto:
+  - comportamiento, nivel y colisión editados después;
+  - un duplicado con otro comportamiento;
+  - arte retocado en todas las casillas de un metatile;
+  - un metatile fijado;
+  - recompilar sin cambios;
+  - los errores de más de 15 colores en un trozo y de paletas llenas.
+
+  Además, descompilar lo compilado da el mismo arte píxel a píxel en los dos mapas, con la misma colisión y los mismos atributos en cada casilla. En emulador, el recorrido por `Test` da las mismas capturas que la ROM de antes.
 - **Sin probar en ejecución:** agua, puentes y rampas (no hay ninguno en los mapas), el cruce de conexiones y las partidas guardadas.
 
 ## Lo que tienes que hacer tú en local
@@ -63,21 +86,25 @@ Aparte, `db48160d` arregla un fallo del Makefile que salió al probar la fase 1:
    regex_terrain_types=\bMETATILE_NIVEL_
    ```
    Las máscaras del bloque no hace falta tocarlas: porymap las lee de `include/global.fieldmap.h`.
-2. **Porytiles**, al regenerar un tileset:
+2. **Mapas:** píntalos por capas y compila con `make`. En porymap, edita solo el comportamiento, el nivel y la colisión: si pintas metatiles con otro arte, el PNG manda en la siguiente compilación (ver `tools/mapeado/README.md`).
+3. **Porytiles** ya no hace falta para `Principal` ni `CentroPokemon`, porque sus tilesets salen del arte. Para un tileset sin arte por capas, estos son los límites:
    ```
    porytiles compile-primary -Wall -tiles-primary-override=1008 -tiles-total-override=1024 \
      -metatiles-primary-override=32767 -metatiles-total-override=32768 \
      -pals-primary-override=13 -pals-total-override=14 \
      -o data/tilesets/primary/<tileset> <fuentes> include/constants/metatile_behaviors_porytiles.h
    ```
-3. **Partidas guardadas de antes de la fase 1:** la vista del mapa que se guarda al salvar está en el formato viejo. Las casillas alrededor del jugador se verán mal hasta recargar el mapa. Mejor empezar partida nueva.
+4. **Partidas guardadas de antes de la fase 1:** la vista del mapa que se guarda al salvar está en el formato viejo. Las casillas alrededor del jugador se verán mal hasta recargar el mapa. Mejor empezar partida nueva.
 
 ## Para seguir
 
-- **Paleta 13 para el mapa,** independiente de la fase 3. Primero hay que confirmar en juego que está libre (punto 5). Si lo está, son tres cambios: `NUM_PALS_IN_PRIMARY` a 14, `NUM_PALS_TOTAL` a 15 (solo para porymap) y `ULTIMA_PALETA_FONDO_DEL_MUNDO` a 13 en `overworld.c`, para que la tiña la hora del día.
+- **Paleta 13 para el mapa,** independiente de la fase 3. En el emulador parece libre (punto 5), pero conviene que lo mires jugando. Si lo está, son tres cambios: `NUM_PALS_IN_PRIMARY` a 14, `NUM_PALS_TOTAL` a 15 (solo para porymap) y `ULTIMA_PALETA_FONDO_DEL_MUNDO` a 13 en `overworld.c`, para que la tiña la hora del día.
 - **Fase 3:** dime si la hago.
-- **Fase 5, dos decisiones:**
-  1. **Formato y sitio del arte por capas.** Propuesta: `data/mapeado/<Layout>/` con `baja.png`, `media.png`, `alta.png` a tamaño de mapa, y un JSON con comportamiento y colisión por casilla.
-  2. **Lenguaje del compilador.** C++ si va a vivir dentro del fork, para los contadores en vivo; Python si basta con llamarlo desde el build y desde el fork como proceso aparte.
-- **El fork de porymap** es otro repositorio. Esta sesión solo tiene acceso a `ivaantxo/albor`, así que hay que crearlo y darle acceso.
+- **El fork de porymap** (fase 5, editor) es otro repositorio. Esta sesión solo tiene acceso a `ivaantxo/albor`, así que hay que crearlo y darle acceso. Lo que le toca:
+  - las tres capas con capa activa y visibilidad;
+  - la biblioteca de piezas con encaje a rejilla;
+  - los contadores en vivo, con `mapeado::Compilar`;
+  - resaltar las casillas que cuestan tiles o metatiles nuevos.
+
+  Hasta entonces, las capas se pueden pintar en Aseprite y exportar.
 - **Limpieza pendiente, fuera de este plan:** los 50 secundarios y `General` de pokeemerald, que no usa nadie. Sus animaciones en `tileset_anims.c` siguen escritas para el secundario en la posición 512 y ahora apuntarían fuera del tileset si alguien las activara.
