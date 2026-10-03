@@ -22,6 +22,20 @@ MAP_JSONS := $(patsubst $(MAPS_DIR)/%/,$(MAPS_DIR)/%/map.json,$(MAP_DIRS))
 # lo ve nadie: pintar en porymap sin tocar layouts.json dejaba el mapa viejo en la ROM.
 LAYOUT_BINS := $(wildcard $(LAYOUTS_DIR)/*/*.bin)
 
+# Arte por capas de los mapas (tools/mapeado/README.md). Si cambia, se rehacen el
+# tileset y el blockdata de los mapas que lo usan. Va con los generated, que corren
+# antes de mirar las dependencias de lo demas: asi lo que sale ya cuenta para el resto
+# del build. El comportamiento, el nivel y la colision que se editen en porymap no lo
+# disparan, y al compilar se respetan.
+MAPEADO_ARTE := $(wildcard $(LAYOUTS_DIR)/*/baja.png $(LAYOUTS_DIR)/*/media.png $(LAYOUTS_DIR)/*/alta.png $(LAYOUTS_DIR)/*/borde_*.png)
+MAPEADO_SELLO := $(BUILD_DIR)/mapeado.sello
+AUTO_GEN_TARGETS += $(MAPEADO_SELLO)
+
+$(MAPEADO_SELLO): $(MAPEADO_ARTE) $(LAYOUTS_DIR)/layouts.json
+	$(MAPEADO) compilar
+	@mkdir -p $(@D)
+	@touch $@
+
 $(DATA_ASM_BUILDDIR)/maps.o: $(DATA_ASM_SUBDIR)/maps.s $(LAYOUTS_DIR)/layouts.inc $(LAYOUTS_DIR)/layouts_table.inc $(MAPS_DIR)/headers.inc $(MAPS_DIR)/groups.inc $(MAPS_DIR)/connections.inc $(MAP_CONNECTIONS) $(MAP_HEADERS) $(LAYOUT_BINS)
 	$(PREPROC) $< charmap.txt | $(CPP) -I include - | $(PREPROC) -ie $< charmap.txt | $(AS) $(ASFLAGS) -o $@
 $(DATA_ASM_BUILDDIR)/map_events.o: $(DATA_ASM_SUBDIR)/map_events.s $(MAPS_DIR)/events.inc $(MAP_EVENTS)

@@ -8,7 +8,7 @@ TOOLS_DIR := tools
 # ramscrgen ya no esta: lo unico que lo usaba eran las reglas de sym_bss/sym_common/
 # sym_ewram.ld, y esas no las pedia nadie -ld_script.ld no incluye ninguna y no existen
 # los sym_*.txt de los que salian-. Su binario ya construido se queda en tools/.
-TOOL_NAMES := aif2pcm bin2c gbafix gbagfx jsonproc mapjson mid2agb preproc rsfont scaninc trainerproc
+TOOL_NAMES := aif2pcm bin2c gbafix gbagfx jsonproc mapeado mapjson mid2agb preproc rsfont scaninc trainerproc
 CHECK_TOOL_NAMES = patchelf
 
 TOOLDIRS := $(TOOL_NAMES:%=$(TOOLS_DIR)/%)

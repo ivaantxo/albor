@@ -88,6 +88,7 @@ SCANINC      := $(TOOLS_DIR)/scaninc/scaninc
 PREPROC      := $(TOOLS_DIR)/preproc/preproc
 FIX          := $(TOOLS_DIR)/gbafix/gbafix
 MAPJSON      := $(TOOLS_DIR)/mapjson/mapjson
+MAPEADO      := $(TOOLS_DIR)/mapeado/mapeado
 JSONPROC     := $(TOOLS_DIR)/jsonproc/jsonproc
 TRAINERPROC  := $(TOOLS_DIR)/trainerproc/trainerproc
 PATCHELF     := $(TOOLS_DIR)/patchelf/patchelf
