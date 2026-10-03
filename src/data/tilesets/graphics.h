@@ -1176,3 +1176,10 @@ const u16 gTilesetPalettes_CentroPokemon[][16] =
 };
 
 const u32 gTilesetTiles_CentroPokemon[] = INCBIN_U32("data/tilesets/primary/centro_pokemon/tiles.4bpp.lz");
+
+const u16 ALIGNED(4) gTilesetPalettes_Reservado[][16] =
+{
+    INCBIN_U16("data/tilesets/secondary/reservado/palettes/00.gbapal"),
+};
+
+const u32 gTilesetTiles_Reservado[] = INCBIN_U32("data/tilesets/secondary/reservado/tiles.4bpp.lz");

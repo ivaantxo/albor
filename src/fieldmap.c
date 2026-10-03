@@ -396,21 +396,10 @@ void MapGridSetMetatileEntryAt(int x, int y, u16 metatile)
 
 u16 GetMetatileAttributesById(u16 metatile)
 {
-    const u16 *attributes;
-    if (metatile < NUM_METATILES_IN_PRIMARY)
-    {
-        attributes = gMapHeader.mapLayout->primaryTileset->metatileAttributes;
-        return attributes[metatile];
-    }
-    else if (metatile < NUM_METATILES_TOTAL)
-    {
-        attributes = gMapHeader.mapLayout->secondaryTileset->metatileAttributes;
-        return attributes[metatile - NUM_METATILES_IN_PRIMARY];
-    }
+    if (metatile < NUM_METATILES_IN_TILESET)
+        return gMapHeader.mapLayout->tileset->metatileAttributes[metatile];
     else
-    {
         return MB_INVALID;
-    }
 }
 
 void SaveMapView(void)
@@ -804,96 +793,37 @@ void MapGridSetMetatileImpassabilityAt(int x, int y, bool32 impassable)
 }
 
 
-static void CopyTilesetToVram(struct Tileset const *tileset, u16 numTiles, u16 offset)
+// Comprimido, el tamano va a 0 para que se copie solo lo que trae el tileset: con el
+// maximo se copiaria lo que haya detras en el buffer hasta NUM_TILES_IN_TILESET.
+void CopyMapTilesetToVram(struct MapLayout const *mapLayout)
 {
-    if (tileset)
-    {
-        if (!tileset->isCompressed)
-            CargaTilesFondo(2, tileset->tiles, numTiles * 32, offset);
-        else
-            DecompressAndCopyTileDataToVram(2, tileset->tiles, numTiles * 32, offset, 0);
-    }
+    const struct Tileset *tileset = mapLayout->tileset;
+
+    if (!tileset->isCompressed)
+        CargaTilesFondo(2, tileset->tiles, NUM_TILES_IN_TILESET * TILE_4BPP, 0);
+    else
+        DecompressAndCopyTileDataToVram(2, tileset->tiles, 0, 0, 0);
 }
 
-static void CopyTilesetToVramUsingHeap(struct Tileset const *tileset, u16 numTiles, u16 offset)
+void CopyMapTilesetToVramUsingHeap(struct MapLayout const *mapLayout)
 {
-    if (tileset)
-    {
-        if (!tileset->isCompressed)
-            CargaTilesFondo(2, tileset->tiles, numTiles * 32, offset);
-        else
-            DecompressAndLoadBgGfxUsingHeap(2, tileset->tiles, numTiles * 32, offset, 0);
-    }
+    const struct Tileset *tileset = mapLayout->tileset;
+
+    if (!tileset->isCompressed)
+        CargaTilesFondo(2, tileset->tiles, NUM_TILES_IN_TILESET * TILE_4BPP, 0);
+    else
+        DecompressAndLoadBgGfxUsingHeap(2, tileset->tiles, 0, 0, 0);
 }
 
-static void LoadTilesetPalette(struct Tileset const *tileset, u16 destOffset, u16 size, bool8 skipFaded)
+void LoadMapTilesetPalettes(struct MapLayout const *mapLayout, bool8 skipFaded)
 {
-    if (tileset)
-    {
-        if (tileset->isSecondary == FALSE)
-        {
-            // LoadPalette(&black, destOffset, 2);
-            if (skipFaded)
-                CopiaRapidaCpu(tileset->palettes, &gPlttBufferUnfaded[destOffset], size);
-            else
-                LoadPalette(tileset->palettes, destOffset, size);
-            gPlttBufferFaded[destOffset] = gPlttBufferUnfaded[destOffset] = RGB_BLACK; // why does it have to be black?
-        }
-        else if (tileset->isSecondary == TRUE)
-        {
-            // (void*) is to silence 'source potentially unaligned' error
-            // All 'gTilesetPalettes_' arrays should have ALIGNED(4) in them
-            if (skipFaded)
-                CopiaRapidaCpu((void*)tileset->palettes[NUM_PALS_IN_PRIMARY], &gPlttBufferUnfaded[destOffset], size);
-            else
-                LoadPalette(tileset->palettes[NUM_PALS_IN_PRIMARY], destOffset, size);
-        }
-        else
-        {
-            LoadPalette((const u32 *)tileset->palettes, destOffset, size);
-        }
-    }
-}
+    // (void*) is to silence 'source potentially unaligned' error
+    // All 'gTilesetPalettes_' arrays should have ALIGNED(4) in them
+    const void *palettes = mapLayout->tileset->palettes;
 
-void CopyPrimaryTilesetToVram(struct MapLayout const *mapLayout)
-{
-    CopyTilesetToVram(mapLayout->primaryTileset, NUM_TILES_IN_PRIMARY, 0);
-}
-
-void CopySecondaryTilesetToVram(struct MapLayout const *mapLayout)
-{
-    CopyTilesetToVram(mapLayout->secondaryTileset, NUM_TILES_TOTAL - NUM_TILES_IN_PRIMARY, NUM_TILES_IN_PRIMARY);
-}
-
-void CopySecondaryTilesetToVramUsingHeap(struct MapLayout const *mapLayout)
-{
-    CopyTilesetToVramUsingHeap(mapLayout->secondaryTileset, NUM_TILES_TOTAL - NUM_TILES_IN_PRIMARY, NUM_TILES_IN_PRIMARY);
-}
-
-static void LoadPrimaryTilesetPalette(struct MapLayout const *mapLayout)
-{
-    LoadTilesetPalette(mapLayout->primaryTileset, 0, NUM_PALS_IN_PRIMARY * PLTT_SIZE_4BPP, FALSE);
-}
-
-void LoadSecondaryTilesetPalette(struct MapLayout const *mapLayout, bool8 skipFaded)
-{
-    LoadTilesetPalette(mapLayout->secondaryTileset, NUM_PALS_IN_PRIMARY * 16, (NUM_PALS_TOTAL - NUM_PALS_IN_PRIMARY) * PLTT_SIZE_4BPP, skipFaded);
-}
-
-void CopyMapTilesetsToVram(struct MapLayout const *mapLayout)
-{
-    if (mapLayout)
-    {
-        CopyTilesetToVramUsingHeap(mapLayout->primaryTileset, NUM_TILES_IN_PRIMARY, 0);
-        CopyTilesetToVramUsingHeap(mapLayout->secondaryTileset, NUM_TILES_TOTAL - NUM_TILES_IN_PRIMARY, NUM_TILES_IN_PRIMARY);
-    }
-}
-
-void LoadMapTilesetPalettes(struct MapLayout const *mapLayout)
-{
-    if (mapLayout)
-    {
-        LoadPrimaryTilesetPalette(mapLayout);
-        LoadSecondaryTilesetPalette(mapLayout, FALSE);
-    }
+    if (skipFaded)
+        CopiaRapidaCpu(palettes, gPlttBufferUnfaded, NUM_PALS_IN_TILESET * PLTT_SIZE_4BPP);
+    else
+        LoadPalette(palettes, BG_PLTT_ID(0), NUM_PALS_IN_TILESET * PLTT_SIZE_4BPP);
+    gPlttBufferFaded[0] = gPlttBufferUnfaded[0] = RGB_BLACK; // why does it have to be black?
 }

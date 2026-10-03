@@ -602,8 +602,9 @@ string generate_layout_headers_text(Json layouts_data) {
              << "\t.4byte " << json_to_string(layout, "height") << "\n"
              << "\t.4byte " << border_label << "\n"
              << "\t.4byte " << blockdata_label << "\n"
-             << "\t.4byte " << json_to_string(layout, "primary_tileset") << "\n"
-             << "\t.4byte " << json_to_string(layout, "secondary_tileset") << "\n";
+             << "\t.4byte " << json_to_string(layout, "primary_tileset") << "\n";
+        // secondary_tileset no pasa al juego, que usa un solo tileset por layout. Sigue
+        // en layouts.json porque porymap no abre un layout sin el.
         text << "\n";
     }
 

@@ -356,8 +356,8 @@ void SetObjEventTemplateMovementType(u8 localId, u8 movementType)
 static void InitMapView(void)
 {
     ResetFieldCamera();
-    CopyMapTilesetsToVram(gMapHeader.mapLayout);
-    LoadMapTilesetPalettes(gMapHeader.mapLayout);
+    CopyMapTilesetToVramUsingHeap(gMapHeader.mapLayout);
+    LoadMapTilesetPalettes(gMapHeader.mapLayout, FALSE);
     DrawWholeMapView();
     InitTilesetAnimations();
 }
@@ -604,6 +604,8 @@ void PonMezclaDelOverworld(void)
 
 void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
 {
+    const struct Tileset *tilesetAnterior = gMapHeader.mapLayout->tileset;
+
     SetWarpDestination(mapGroup, mapNum, WARP_ID_NONE, -1, -1);
 
     TransitionMapMusic();
@@ -620,12 +622,18 @@ void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
     Overworld_ClearSavedMusic();
     RunOnTransitionMapScript();
     InitMap();
-    CopySecondaryTilesetToVramUsingHeap(gMapHeader.mapLayout);
-    LoadSecondaryTilesetPalette(gMapHeader.mapLayout, TRUE); // skip copying to Faded, gamma shift will take care of it
 
-    ApplyWeatherColorMapToPals(NUM_PALS_IN_PRIMARY, NUM_PALS_TOTAL - NUM_PALS_IN_PRIMARY); // palettes [6,12]
+    // Con el mismo tileset no hay nada que cargar, y es lo que conviene: lo que queda en
+    // pantalla del mapa anterior se pinto con su tileset, y con otro distinto se ve mal
+    // hasta que sale de la pantalla. Entre mapas con tileset distinto, mejor un warp.
+    if (gMapHeader.mapLayout->tileset != tilesetAnterior)
+    {
+        CopyMapTilesetToVramUsingHeap(gMapHeader.mapLayout);
+        LoadMapTilesetPalettes(gMapHeader.mapLayout, TRUE); // skip copying to Faded, gamma shift will take care of it
+        ApplyWeatherColorMapToPals(0, NUM_PALS_IN_TILESET);
+        InitTilesetAnimations();
+    }
 
-    InitSecondaryTilesetAnimation();
     DoCurrentWeather();
     RunOnResumeMapScript();
 
@@ -1107,30 +1115,22 @@ bool32 MapaTieneLuzNatural(u8 mapType)
 // Update & mix day / night bg palettes (into unfaded)
 void UpdateAltBgPalettes(u16 palettes) 
 {
-    const struct Tileset *primary = gMapHeader.mapLayout->primaryTileset;
-    const struct Tileset *secondary = gMapHeader.mapLayout->secondaryTileset;
+    const struct Tileset *tileset = gMapHeader.mapLayout->tileset;
     u32 i = 1;
     if (!MapaTieneLuzNatural(gMapHeader.mapType))
         return;
-    palettes &= ~((1 << NUM_PALS_IN_PRIMARY) - 1) | primary->swapPalettes;
-    palettes &= ((1 << NUM_PALS_IN_PRIMARY) - 1) | (secondary->swapPalettes << NUM_PALS_IN_PRIMARY);
+    palettes &= tileset->swapPalettes;
     palettes &= PALETAS_FONDO_CON_HORA;
     palettes >>= 1; // start at palette 1
     if (!palettes)
         return;
-    while (palettes) 
+    // La version de noche va en la paleta (i + 9) % 16 del mismo tileset. Las 13 del
+    // mapa no dejan sitio para todas: un tileset que quiera noche en unas cuantas tiene
+    // que dejar libres las paletas donde caen.
+    while (palettes)
     {
-        if (palettes & 1) 
-        {
-            if (i < NUM_PALS_IN_PRIMARY)
-            {
-                AvgPaletteWeighted(&((u16*)primary->palettes)[PLTT_ID(i)], &((u16*)primary->palettes)[PLTT_ID((i + 9) % 16)], gPlttBufferUnfaded + PLTT_ID(i), blendHoraActual.intensidadRelativa);
-            }
-            else
-            {
-                AvgPaletteWeighted(&((u16*)secondary->palettes)[PLTT_ID(i)], &((u16*)secondary->palettes)[PLTT_ID((i + 9) % 16)], gPlttBufferUnfaded + PLTT_ID(i), blendHoraActual.intensidadRelativa);
-            }
-        }
+        if (palettes & 1)
+            AvgPaletteWeighted(&((u16*)tileset->palettes)[PLTT_ID(i)], &((u16*)tileset->palettes)[PLTT_ID((i + 9) % 16)], gPlttBufferUnfaded + PLTT_ID(i), blendHoraActual.intensidadRelativa);
         i++;
         palettes >>= 1;
     }
@@ -1479,38 +1479,34 @@ static bool32 LoadMapInStepsLocal(u8 *state)
         (*state)++;
         break;
     case 6:
-        CopyPrimaryTilesetToVram(gMapHeader.mapLayout);
+        CopyMapTilesetToVram(gMapHeader.mapLayout);
         (*state)++;
         break;
     case 7:
-        CopySecondaryTilesetToVram(gMapHeader.mapLayout);
-        (*state)++;
-        break;
-    case 8:
         if (FreeTempTileDataBuffersIfPossible() != TRUE)
         {
-            LoadMapTilesetPalettes(gMapHeader.mapLayout);
+            LoadMapTilesetPalettes(gMapHeader.mapLayout, FALSE);
             (*state)++;
         }
         break;
-    case 9:
+    case 8:
         DrawWholeMapView();
         (*state)++;
         break;
-    case 10:
+    case 9:
         InitTilesetAnimations();
         (*state)++;
         break;
-    case 11:
+    case 10:
         if (gMapHeader.showMapName == TRUE)
             ShowMapNamePopup();
         (*state)++;
         break;
-    case 12:
+    case 11:
         if (RunFieldCallback())
             (*state)++;
         break;
-    case 13:
+    case 12:
         return TRUE;
     }
 

@@ -483,29 +483,19 @@ void TransferTilesetAnimsBuffer(void)
     sTilesetDMA3TransferBufferSize = 0;
 }
 
-void InitPrimaryTilesetAnimation(void)
-{
-    sPrimaryTilesetAnimCounter = 0;
-    sPrimaryTilesetAnimCounterMax = 0;
-    sPrimaryTilesetAnimCallback = NULL;
-    if (gMapHeader.mapLayout->primaryTileset && gMapHeader.mapLayout->primaryTileset->callback)
-        gMapHeader.mapLayout->primaryTileset->callback();
-}
-
-void InitSecondaryTilesetAnimation(void)
-{
-    sSecondaryTilesetAnimCounter = 0;
-    sSecondaryTilesetAnimCounterMax = 0;
-    sSecondaryTilesetAnimCallback = NULL;
-    if (gMapHeader.mapLayout->secondaryTileset && gMapHeader.mapLayout->secondaryTileset->callback)
-        gMapHeader.mapLayout->secondaryTileset->callback();
-}
-
+// Las dos ranuras de animacion se quedan: el callback del tileset elige en cual se
+// apunta, y los de los tilesets de pokeemerald siguen escritos para la suya.
 void InitTilesetAnimations(void)
 {
     ResetTilesetAnimBuffer();
-    InitPrimaryTilesetAnimation();
-    InitSecondaryTilesetAnimation();
+    sPrimaryTilesetAnimCounter = 0;
+    sPrimaryTilesetAnimCounterMax = 0;
+    sPrimaryTilesetAnimCallback = NULL;
+    sSecondaryTilesetAnimCounter = 0;
+    sSecondaryTilesetAnimCounterMax = 0;
+    sSecondaryTilesetAnimCallback = NULL;
+    if (gMapHeader.mapLayout->tileset->callback)
+        gMapHeader.mapLayout->tileset->callback();
 }
 
 void UpdateTilesetAnimations(void)

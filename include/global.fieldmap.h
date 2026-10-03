@@ -65,9 +65,13 @@ typedef void (*TilesetCB)(void);
 
 struct Tileset
 {
-    u8 isCompressed:1;
-    u8 swapPalettes:7; // bitmask determining whether palette has an alternate, night-time palette
+    bool8 isCompressed;
+    // El juego no lo mira: cada layout tiene un solo tileset. Esta para porymap, que
+    // aun quiere un primario y un secundario por layout y los distingue por este campo.
+    // El unico secundario que hace falta es gTileset_Reservado.
     bool8 isSecondary;
+    // Bit N: la paleta N tiene version de noche, en la (N + 9) % 16 del mismo tileset.
+    u16 swapPalettes;
     const u32 *tiles;
     const u16 (*palettes)[16];
     const u16 *metatiles;
@@ -81,8 +85,8 @@ struct MapLayout
     s32 height;
     const u16 *border;
     const u16 *map;
-    const struct Tileset *primaryTileset;
-    const struct Tileset *secondaryTileset;
+    // layouts.json sigue trayendo secondary_tileset, para porymap. mapjson no lo pasa.
+    const struct Tileset *tileset;
 };
 
 struct BackupMapLayout

@@ -1,12 +1,25 @@
 #ifndef GUARD_FIELDMAP_H
 #define GUARD_FIELDMAP_H
 
-#define NUM_TILES_IN_PRIMARY 512
+// Un solo tileset por layout: los tiles, los metatiles y las paletas del mapa salen
+// todos de el.
+//
+// Porymap todavia piensa en primario + secundario. Lee estos cinco nombres y exige que
+// el primario quede por debajo del total en tiles y en paletas. Aqui el "primario" es
+// el tileset, y lo que queda hasta el total es la parte reservada, que porymap ensena
+// como el secundario gTileset_Reservado y que el juego no carga:
+//   - Tiles 1008-1023: los de las puertas, que field_door.c pone al final de la VRAM.
+//   - Paleta 13: ninguna. Esta para que porymap acepte las 13 paletas del mapa (0-12).
+#define NUM_TILES_IN_PRIMARY 1008
 #define NUM_TILES_TOTAL 1024
-#define NUM_METATILES_IN_PRIMARY 2048
-#define NUM_METATILES_TOTAL 4096
-#define NUM_PALS_IN_PRIMARY 6
-#define NUM_PALS_TOTAL 13
+#define NUM_METATILES_IN_PRIMARY 0x7FFF // Todos los IDs del bloque menos MAPGRID_UNDEFINED
+#define NUM_PALS_IN_PRIMARY 13
+#define NUM_PALS_TOTAL 14
+
+#define NUM_TILES_IN_TILESET     NUM_TILES_IN_PRIMARY
+#define NUM_METATILES_IN_TILESET NUM_METATILES_IN_PRIMARY
+#define NUM_PALS_IN_TILESET      NUM_PALS_IN_PRIMARY
+
 #define MAX_MAP_DATA_SIZE 10240
 
 #define MAX_ELEVATION_LEVEL 7
@@ -44,12 +57,9 @@ void SaveMapView(void);
 void SetCameraFocusCoords(u16 x, u16 y);
 void InitMap(void);
 void InitMapFromSavedGame(void);
-void CopyMapTilesetsToVram(struct MapLayout const *mapLayout);
-void LoadMapTilesetPalettes(struct MapLayout const *mapLayout);
-void LoadSecondaryTilesetPalette(struct MapLayout const *mapLayout, bool8 skipFaded);
-void CopySecondaryTilesetToVramUsingHeap(struct MapLayout const *mapLayout);
-void CopyPrimaryTilesetToVram(const struct MapLayout *);
-void CopySecondaryTilesetToVram(const struct MapLayout *);
+void CopyMapTilesetToVram(struct MapLayout const *mapLayout);
+void CopyMapTilesetToVramUsingHeap(struct MapLayout const *mapLayout);
+void LoadMapTilesetPalettes(struct MapLayout const *mapLayout, bool8 skipFaded);
 const struct MapHeader *const GetMapHeaderFromConnection(const struct MapConnection *connection);
 const struct MapConnection *GetMapConnectionAtPos(s16 x, s16 y);
 void MapGridSetMetatileImpassabilityAt(int x, int y, bool32 impassable);
