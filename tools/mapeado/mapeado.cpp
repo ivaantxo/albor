@@ -728,4 +728,264 @@ bool Compilar(const Entrada &e, Salida &s, std::string &error)
     return true;
 }
 
+// ---------------------------------------------------------------------------------
+// Estampar
+// ---------------------------------------------------------------------------------
+
+namespace {
+
+// El tileset mientras se estampa: lo que hay, que esta en uso y lo que se va metiendo.
+struct Relleno {
+    const Formato &f;
+    Tileset ts;
+    std::vector<EstadoPaleta> pals;
+    std::vector<bool> tileUsado;
+    std::set<int> tilesFijos;
+    std::map<Tile, std::pair<int, int>> tiles; // datos (y volteos) -> tile y volteo
+    Estampado &r;
+
+    Relleno(const Formato &formato, const Tileset &t, const std::vector<int> &fijos, Estampado &res)
+        : f(formato), ts(t), tilesFijos(fijos.begin(), fijos.end()), r(res)
+    {
+        int numPaletas = std::min((int)ts.paletas.size(), f.maxPaletas);
+        pals.assign(numPaletas, EstadoPaleta());
+        for (int p = 0; p < numPaletas; p++)
+            pals[p].color = ts.paletas[p];
+        tileUsado.assign(ts.tiles.size(), false);
+        if (!tileUsado.empty())
+            tileUsado[0] = true;
+        // Un color esta en uso si algun metatile lo pinta, este o no en un mapa.
+        for (const Metatile &m : ts.metatiles) {
+            for (uint16_t e : m) {
+                int t = e & 0x3FF, p = e >> 12;
+                if (t >= (int)ts.tiles.size())
+                    continue;
+                tileUsado[t] = true;
+                if (p < numPaletas)
+                    for (uint8_t i : ts.tiles[t])
+                        if (i)
+                            pals[p].usado[i] = true;
+            }
+        }
+        for (int t = (int)ts.tiles.size() - 1; t >= 0; t--)
+            for (int v = 3; v >= 0; v--)
+                tiles[Voltear(ts.tiles[t], v & 1, v & 2)] = std::make_pair(t, v);
+    }
+
+    bool Falla(Resultado res, const std::string &mensaje)
+    {
+        r.resultado = res;
+        r.mensaje = mensaje;
+        return false;
+    }
+
+    // La entrada de metatile para un trozo de 8x8, metiendo lo que falte.
+    bool Entrada(const TileColor &t, uint16_t *entrada)
+    {
+        std::set<Color> cs;
+        for (Color px : t)
+            if (px != TRANSPARENTE)
+                cs.insert(px);
+        if (cs.empty()) {
+            *entrada = 0;
+            return true;
+        }
+        if (cs.size() > 15)
+            return Falla(DEMASIADOS_COLORES, "un trozo de 8x8 de la pieza tiene " + std::to_string(cs.size()) +
+                                                 " colores y una paleta admite 15");
+        Colores s(cs.begin(), cs.end());
+
+        int pal = PaletaDe(pals, s);
+        if (pal < 0) {
+            int mejorCoste = 99;
+            for (int p = 0; p < (int)pals.size(); p++) {
+                int coste = pals[p].Coste(s);
+                if (coste <= pals[p].Libres() && coste < mejorCoste) {
+                    pal = p;
+                    mejorCoste = coste;
+                }
+            }
+            if (pal < 0)
+                return Falla(SIN_HUECO_PALETAS, "no hay hueco en las paletas para " + std::to_string(s.size()) +
+                                                    " colores de un trozo de 8x8 (ninguna tiene sitio para los que le faltan)");
+            r.coloresNuevos += mejorCoste;
+            pals[pal].Anade(s);
+        }
+
+        Tile datos;
+        for (int p = 0; p < 64; p++)
+            datos[p] = t[p] == TRANSPARENTE ? 0 : pals[pal].Busca(t[p], true);
+        auto it = tiles.find(datos);
+        if (it == tiles.end()) {
+            int n = -1;
+            for (int i = 1; i < (int)ts.tiles.size() && n < 0; i++) {
+                bool vacio = std::all_of(ts.tiles[i].begin(), ts.tiles[i].end(), [](uint8_t v) { return v == 0; });
+                if (!tileUsado[i] && vacio && !tilesFijos.count(i))
+                    n = i;
+            }
+            if (n < 0) {
+                if ((int)ts.tiles.size() >= f.maxTiles)
+                    return Falla(SIN_HUECO_TILES, "no hay hueco para tiles: el tileset ya tiene los " +
+                                                      std::to_string(f.maxTiles) + " que caben");
+                n = ts.tiles.size();
+                ts.tiles.push_back(Tile());
+                tileUsado.push_back(false);
+            }
+            ts.tiles[n] = datos;
+            tileUsado[n] = true;
+            r.tilesNuevos++;
+            for (int v = 3; v >= 0; v--)
+                tiles[Voltear(datos, v & 1, v & 2)] = std::make_pair(n, v);
+            it = tiles.find(datos);
+        }
+        *entrada = it->second.first | ((it->second.second & 1) << 10) | ((it->second.second >> 1) << 11) | (pal << 12);
+        return true;
+    }
+
+    void Guarda(Tileset &destino)
+    {
+        for (int p = 0; p < (int)pals.size(); p++)
+            for (int i = 1; i < 16; i++)
+                ts.paletas[p][i] = pals[p].color[i];
+        destino = ts;
+    }
+};
+
+} // namespace
+
+Estampado Estampar(const Formato &f, Tileset &ts, std::vector<MapaDelTileset> &mapas, int objetivo,
+                   const Imagen &pieza, int x, int y, Capa capa, bool reemplazar,
+                   const std::vector<int> &tilesFijos)
+{
+    Estampado r;
+    auto falla = [&](Resultado res, const std::string &mensaje) {
+        r.resultado = res;
+        r.mensaje = mensaje;
+        return r;
+    };
+    if (objetivo < 0 || objetivo >= (int)mapas.size())
+        return falla(PIEZA_NO_VALIDA, "no hay ese mapa");
+    if (pieza.ancho <= 0 || pieza.alto <= 0 || pieza.ancho % 8 || pieza.alto % 8)
+        return falla(PIEZA_NO_VALIDA, "la pieza mide " + std::to_string(pieza.ancho) + "x" + std::to_string(pieza.alto) +
+                                          " y tiene que ser multiplo de 8 en los dos lados");
+    if (x % 8 || y % 8)
+        return falla(PIEZA_NO_VALIDA, "la pieza va en la rejilla de 8 pixeles");
+    MapaDelTileset &mapa = mapas[objetivo];
+    int x0 = std::max(0, x), y0 = std::max(0, y);
+    int x1 = std::min(mapa.ancho * LADO, x + pieza.ancho), y1 = std::min(mapa.alto * LADO, y + pieza.alto);
+    if (x0 >= x1 || y0 >= y1)
+        return falla(PIEZA_NO_VALIDA, "la pieza cae fuera del mapa");
+
+    Relleno rel(f, ts, tilesFijos, r);
+    std::vector<uint16_t> bloques = mapa.bloques;
+
+    // Metatiles por arte, y que numeros estan en uso en algun mapa.
+    int numMetatiles = std::min(rel.ts.metatiles.size(), rel.ts.atributos.size());
+    std::map<Arte, std::vector<int>> porArte;
+    for (int m = 0; m < numMetatiles; m++)
+        porArte[ArteDeMetatile(rel.ts, m)].push_back(m);
+    std::vector<bool> enUso(numMetatiles, false);
+    for (const MapaDelTileset &md : mapas)
+        for (auto *lista : {&md.bloques, &md.borde})
+            for (uint16_t b : *lista)
+                if ((b & f.mascaraId) < numMetatiles)
+                    enUso[b & f.mascaraId] = true;
+    auto esHueco = [&](int m) {
+        return !enUso[m] && rel.ts.atributos[m] == 0 &&
+               std::all_of(rel.ts.metatiles[m].begin(), rel.ts.metatiles[m].end(), [](uint16_t e) { return e == 0; });
+    };
+
+    for (int cy = y0 / LADO; cy <= (y1 - 1) / LADO; cy++) {
+        for (int cx = x0 / LADO; cx <= (x1 - 1) / LADO; cx++) {
+            int i = cy * mapa.ancho + cx;
+            int antes = bloques[i] & f.mascaraId;
+            uint16_t colision = bloques[i] & f.mascaraColision;
+            Arte arte;
+            arte.fill(TRANSPARENTE);
+            if (antes < numMetatiles)
+                arte = ArteDeMetatile(rel.ts, antes);
+            Arte nuevo = arte;
+            for (int py = 0; py < LADO; py++) {
+                for (int px = 0; px < LADO; px++) {
+                    int mx = cx * LADO + px, my = cy * LADO + py;
+                    if (mx < x0 || mx >= x1 || my < y0 || my >= y1)
+                        continue;
+                    Color c = pieza.en(mx - x, my - y);
+                    if (c != TRANSPARENTE || reemplazar)
+                        nuevo[capa * PX_CAPA + py * LADO + px] = c;
+                }
+            }
+            if (nuevo == arte)
+                continue;
+
+            uint16_t atributos = antes < numMetatiles ? rel.ts.atributos[antes] : 0;
+            int destino = -1;
+            auto it = porArte.find(nuevo);
+            if (it != porArte.end()) {
+                destino = it->second[0];
+                for (int m : it->second)
+                    if (rel.ts.atributos[m] == atributos) {
+                        destino = m;
+                        break;
+                    }
+            } else {
+                Metatile mt;
+                for (int c = 0; c < NUM_CAPAS; c++)
+                    for (int q = 0; q < 4; q++)
+                        if (!rel.Entrada(TileDeArte(nuevo, c, q), &mt[c * 4 + q]))
+                            return r;
+                for (int m = 0; m < numMetatiles && destino < 0; m++)
+                    if (esHueco(m))
+                        destino = m;
+                if (destino < 0) {
+                    if (numMetatiles >= f.maxMetatiles)
+                        return falla(SIN_HUECO_METATILES, "no hay hueco para metatiles: el tileset ya tiene los " +
+                                                              std::to_string(f.maxMetatiles) + " que caben");
+                    destino = numMetatiles++;
+                    rel.ts.metatiles.resize(numMetatiles);
+                    rel.ts.atributos.resize(numMetatiles);
+                    enUso.push_back(false);
+                }
+                rel.ts.metatiles[destino] = mt;
+                rel.ts.atributos[destino] = atributos;
+                porArte[nuevo].push_back(destino);
+                r.metatilesNuevos++;
+            }
+            enUso[destino] = true;
+            bloques[i] = destino | colision;
+            r.casillas++;
+        }
+    }
+
+    rel.Guarda(ts);
+    mapa.bloques = bloques;
+    return r;
+}
+
+bool Optimizar(const Formato &f, const Tileset &ts, const std::vector<MapaDelTileset> &mapas,
+               const std::vector<Fijado> &fijados, const std::vector<int> &tilesFijos, bool compactar,
+               Salida &salida, std::string &error)
+{
+    Entrada e;
+    e.formato = f;
+    e.anterior = ts;
+    e.fijados = fijados;
+    e.tilesFijos = tilesFijos;
+    e.compactar = compactar;
+    for (const MapaDelTileset &m : mapas) {
+        Layout l;
+        l.nombre = m.nombre;
+        l.ancho = m.ancho;
+        l.alto = m.alto;
+        l.bloques = m.bloques;
+        l.bloquesBorde = m.borde;
+        l.bloquesBorde.resize(4, 0);
+        PintarLayout(ts, l.bloques, l.ancho, l.alto, f.mascaraId, l.capas);
+        PintarLayout(ts, l.bloquesBorde, 2, 2, f.mascaraId, l.borde);
+        l.tieneArteBorde = true;
+        e.layouts.push_back(l);
+    }
+    return Compilar(e, salida, error);
+}
+
 } // namespace mapeado

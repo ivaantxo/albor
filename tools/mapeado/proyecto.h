@@ -15,7 +15,7 @@ struct InfoLayout {
     int ancho = 0, alto = 0;
     std::string tileset;                  // primary_tileset de layouts.json
     std::string blockdata, borde;
-    std::string carpeta;                  // la del blockdata, donde va el arte
+    std::string carpeta;                  // la del blockdata
 };
 
 struct InfoTileset {
@@ -25,10 +25,7 @@ struct InfoTileset {
     std::string metatiles, atributos;
 };
 
-// Nombres de las capas: <carpeta>/baja.png ... y <carpeta>/borde_baja.png ...
-extern const char *const kNombreCapa[mapeado::NUM_CAPAS];
-std::string RutaCapa(const InfoLayout &l, int capa, bool borde);
-bool TieneArte(const InfoLayout &l);
+extern const char *const kNombreCapa[mapeado::NUM_CAPAS]; // baja, media, alta
 
 bool LeerFormato(mapeado::Formato &f, std::string &error);
 bool LeerLayouts(std::vector<InfoLayout> &layouts, std::string &error);
@@ -39,7 +36,8 @@ std::vector<int> LeerTilesFijos(const InfoTileset &info);
 
 bool CargarTileset(const InfoTileset &info, mapeado::Tileset &ts, std::string &error);
 bool CargarBloques(const std::string &ruta, std::vector<uint16_t> &bloques);
-bool CargarCapa(const std::string &ruta, int ancho, int alto, mapeado::Imagen &img, std::string &error);
+// Cualquier PNG. Transparente: sin opacidad, o el magenta 248,0,248.
+bool CargarImagen(const std::string &ruta, mapeado::Imagen &img, std::string &error);
 
 // Escriben solo si el contenido cambia. Devuelven false si no se pudo escribir.
 bool GuardarTileset(const InfoTileset &info, const mapeado::Tileset &ts, int *cambiados);

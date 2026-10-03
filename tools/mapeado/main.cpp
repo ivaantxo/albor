@@ -1,8 +1,11 @@
-// mapeado: linea de comandos del compilador de mapeado. Ver mapeado.h y README.md.
+// mapeado: linea de comandos del motor de mapeado. Ver mapeado.h y README.md.
+//
+// Lo de verdad va a ir dentro de porymap. Esto sirve para usarlo y probarlo sin el.
 #include "mapeado.h"
 #include "proyecto.h"
 
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <set>
 #include <string>
@@ -14,188 +17,242 @@ using namespace proyecto;
 namespace {
 
 const char *const kUso =
-    "uso: mapeado <orden> [opciones] [tileset...]\n"
+    "uso: mapeado <orden> ...\n"
     "\n"
-    "  compilar      saca el tileset y el blockdata del arte por capas de los mapas\n"
-    "  cuentas       lo mismo sin escribir nada: cuanto ocupa y si cabe\n"
-    "  descompilar   pinta el arte por capas desde el tileset y el blockdata de ahora\n"
+    "  estampar <mapa> <capa> <x> <y> <pieza.png> [--reemplazar]\n"
+    "      pinta la pieza en la capa (baja, media o alta) del mapa, con su esquina en\n"
+    "      (x, y) pixeles, multiplos de 8, y mete en el tileset lo que falte. Si no\n"
+    "      cabe, no toca nada y dice que falta. Con --reemplazar, lo transparente de la\n"
+    "      pieza borra la capa; sin el, deja lo que hubiera debajo\n"
+    "  optimizar [tileset...] [--compactar]\n"
+    "      reempaqueta el tileset desde lo pintado: junta metatiles duplicados, quita\n"
+    "      los que no usa ningun mapa y libera tiles y colores. --compactar ademas\n"
+    "      renumera desde cero para quitar los huecos\n"
+    "  cuentas [tileset...]\n"
+    "      lo que ocupa cada tileset ahora, y lo que ocuparia optimizado\n"
+    "  exportar <mapa> <carpeta>\n"
+    "      las tres capas del mapa en PNG, para mirarlas\n"
     "\n"
-    "  --compactar   (compilar, cuentas) renumera tiles y metatiles desde cero\n"
-    "  --forzar      (descompilar) pisa el arte que ya haya\n"
-    "\n"
-    "El tileset se nombra como en layouts.json (gTileset_Principal) o sin el prefijo\n"
-    "(Principal). Sin nombrar ninguno, compilar y cuentas hacen todos los que tengan\n"
-    "algun mapa con arte. Se ejecuta desde la raiz del proyecto.\n";
+    "El mapa se nombra por su layout: Test, Test_Layout o LAYOUT_TEST. El tileset, con o\n"
+    "sin gTileset_. Sin nombrar ninguno, se hacen todos los que use algun layout. Se\n"
+    "ejecuta desde la raiz del proyecto.\n";
 
 std::string Etiqueta(const std::string &nombre)
 {
     return nombre.rfind("gTileset_", 0) == 0 ? nombre : "gTileset_" + nombre;
 }
 
-std::vector<InfoLayout> DelTileset(const std::vector<InfoLayout> &layouts, const std::string &etiqueta)
+// Un tileset con todos sus mapas, cargado.
+struct Cargado {
+    InfoTileset info;
+    Tileset ts;
+    std::vector<InfoLayout> layouts;
+    std::vector<MapaDelTileset> mapas;
+};
+
+bool Cargar(const std::vector<InfoLayout> &todos, const std::string &etiqueta, Cargado &c, std::string &error)
 {
-    std::vector<InfoLayout> r;
-    for (const InfoLayout &l : layouts)
-        if (l.tileset == etiqueta)
-            r.push_back(l);
-    return r;
+    if (!LeerInfoTileset(etiqueta, c.info, error) || !CargarTileset(c.info, c.ts, error))
+        return false;
+    for (const InfoLayout &l : todos) {
+        if (l.tileset != etiqueta)
+            continue;
+        MapaDelTileset m;
+        m.nombre = l.nombre;
+        m.ancho = l.ancho;
+        m.alto = l.alto;
+        if (!CargarBloques(l.blockdata, m.bloques) || (int)m.bloques.size() != l.ancho * l.alto) {
+            error = l.nombre + ": " + l.blockdata + " no tiene " + std::to_string(l.ancho) + "x" +
+                    std::to_string(l.alto) + " bloques";
+            return false;
+        }
+        CargarBloques(l.borde, m.borde);
+        m.borde.resize(4, 0);
+        c.layouts.push_back(l);
+        c.mapas.push_back(m);
+    }
+    return true;
 }
 
-int Compilar(const Formato &formato, const std::vector<InfoLayout> &todos, const std::string &etiqueta,
-             bool escribir, bool compactar, bool nombrado)
+bool Guardar(const Cargado &c, const Tileset &ts, const std::vector<std::vector<uint16_t>> &bloques,
+             const std::vector<std::vector<uint16_t>> &bordes, int *cambiados)
 {
-    std::vector<InfoLayout> layouts = DelTileset(todos, etiqueta);
-    std::vector<std::string> sinArte;
-    int conArte = 0;
-    for (const InfoLayout &l : layouts) {
-        if (TieneArte(l))
-            conArte++;
-        else
-            sinArte.push_back(l.nombre);
+    bool bien = GuardarTileset(c.info, ts, cambiados);
+    for (size_t i = 0; i < c.layouts.size(); i++) {
+        bien &= GuardarBloques(c.layouts[i].blockdata, bloques[i], cambiados);
+        bien &= GuardarBloques(c.layouts[i].borde, bordes[i], cambiados);
     }
-    if (conArte == 0) {
-        if (nombrado)
-            fprintf(stderr, "%s: ningun mapa suyo tiene arte por capas\n", etiqueta.c_str());
-        return nombrado ? 1 : 0;
-    }
-    if (!sinArte.empty()) {
-        // Se compilan todos los mapas del tileset juntos: uno sin arte se quedaria con
-        // numeros de metatile que ya no son los suyos.
-        for (const std::string &n : sinArte)
-            fprintf(stderr, "%s: %s usa este tileset y no tiene arte por capas (mapeado descompilar %s)\n",
-                    etiqueta.c_str(), n.c_str(), etiqueta.c_str());
-        return 1;
-    }
+    return bien;
+}
 
-    std::string error;
-    InfoTileset info;
-    Entrada e;
-    e.formato = formato;
-    e.compactar = compactar;
-    if (!LeerInfoTileset(etiqueta, info, error)) {
-        fprintf(stderr, "%s\n", error.c_str());
-        return 1;
-    }
-    if (Existe(info.tiles) && !CargarTileset(info, e.anterior, error)) {
-        fprintf(stderr, "%s\n", error.c_str());
-        return 1;
-    }
-    e.fijados = LeerFijados(etiqueta);
-    e.tilesFijos = LeerTilesFijos(info);
-    for (const InfoLayout &il : layouts) {
-        Layout l;
-        l.nombre = il.nombre;
-        l.ancho = il.ancho;
-        l.alto = il.alto;
-        for (int c = 0; c < NUM_CAPAS; c++)
-            if (!CargarCapa(RutaCapa(il, c, false), il.ancho * 16, il.alto * 16, l.capas[c], error)) {
-                fprintf(stderr, "%s\n", error.c_str());
-                return 1;
-            }
-        for (int c = 0; c < NUM_CAPAS; c++)
-            l.tieneArteBorde |= Existe(RutaCapa(il, c, true));
-        if (l.tieneArteBorde)
-            for (int c = 0; c < NUM_CAPAS; c++)
-                if (!CargarCapa(RutaCapa(il, c, true), 32, 32, l.borde[c], error)) {
-                    fprintf(stderr, "%s\n", error.c_str());
-                    return 1;
-                }
-        CargarBloques(il.blockdata, l.bloques);
-        CargarBloques(il.borde, l.bloquesBorde);
-        e.layouts.push_back(l);
-    }
+// Lo que el tileset tiene en uso ahora.
+void CuentasActuales(const Formato &f, const Cargado &c)
+{
+    std::set<int> tiles, metatiles;
+    std::vector<std::set<int>> colores(c.ts.paletas.size());
+    for (const MapaDelTileset &m : c.mapas)
+        for (auto *lista : {&m.bloques, &m.borde})
+            for (uint16_t b : *lista)
+                metatiles.insert(b & f.mascaraId);
+    for (const Metatile &m : c.ts.metatiles)
+        for (uint16_t e : m) {
+            int t = e & 0x3FF, p = e >> 12;
+            if (t == 0 || t >= (int)c.ts.tiles.size())
+                continue;
+            tiles.insert(t);
+            if (p < (int)colores.size())
+                for (uint8_t i : c.ts.tiles[t])
+                    if (i)
+                        colores[p].insert(i);
+        }
+    int paletas = 0;
+    for (auto &s : colores)
+        paletas += !s.empty();
+    printf("%s: %d/%d tiles (%d en uso), %d metatiles (%d en los mapas), %d/%d paletas, colores por paleta:",
+           c.info.etiqueta.c_str(), (int)c.ts.tiles.size(), f.maxTiles, (int)tiles.size() + 1,
+           (int)c.ts.metatiles.size(), (int)metatiles.size(), paletas, f.maxPaletas);
+    for (auto &s : colores)
+        printf(" %d", (int)s.size());
+    printf("\n");
+}
 
-    Salida s;
-    if (!mapeado::Compilar(e, s, error)) {
-        fprintf(stderr, "%s: %s\n", etiqueta.c_str(), error.c_str());
-        return 1;
-    }
-    int ultimaPaleta = -1;
-    for (size_t p = 0; p < s.est.coloresPorPaleta.size(); p++)
-        if (s.est.coloresPorPaleta[p] > 0)
-            ultimaPaleta = p;
-    if (ultimaPaleta >= (int)info.paletas.size()) {
-        fprintf(stderr, "%s: hacen falta %d paletas y src/data/tilesets/graphics.h solo le pone %d\n",
-                etiqueta.c_str(), ultimaPaleta + 1, (int)info.paletas.size());
-        return 1;
-    }
-
-    const Estadisticas &est = s.est;
-    printf("%s: %d/%d tiles, %d metatiles", etiqueta.c_str(), est.tiles, formato.maxTiles, est.metatiles);
+void CuentasOptimizado(const Formato &f, const Estadisticas &est)
+{
+    printf("  optimizado: %d/%d tiles, %d metatiles", est.tiles, f.maxTiles, est.metatiles);
     if (est.metatilesHuecos)
         printf(" (y %d huecos)", est.metatilesHuecos);
-    printf(", %d/%d paletas, colores por paleta:", est.paletas, formato.maxPaletas);
+    printf(", %d/%d paletas, colores por paleta:", est.paletas, f.maxPaletas);
     for (int n : est.coloresPorPaleta)
         printf(" %d", n);
     printf("\n");
-    for (size_t i = 0; i < layouts.size(); i++)
-        printf("  %s: %d metatiles distintos\n", layouts[i].nombre.c_str(), est.metatilesPorLayout[i]);
-    if (est.metatilesNuevos || est.metatilesQuitados)
-        printf("  %d metatiles nuevos o cambiados, %d que ya no estan\n", est.metatilesNuevos, est.metatilesQuitados);
-    for (const std::string &a : s.avisos)
-        printf("  aviso: %s\n", a.c_str());
-
-    if (!escribir)
-        return 0;
-    int cambiados = 0;
-    bool bien = GuardarTileset(info, s.tileset, &cambiados);
-    for (size_t i = 0; i < layouts.size(); i++) {
-        bien &= GuardarBloques(layouts[i].blockdata, s.bloques[i], &cambiados);
-        bien &= GuardarBloques(layouts[i].borde, s.bloquesBorde[i], &cambiados);
-    }
-    if (!bien) {
-        fprintf(stderr, "%s: no se han podido escribir todos los archivos\n", etiqueta.c_str());
-        return 1;
-    }
-    if (cambiados)
-        printf("  %d archivos cambiados\n", cambiados);
-    return 0;
 }
 
-int Descompilar(const Formato &formato, const std::vector<InfoLayout> &todos, const std::string &etiqueta, bool forzar)
+const InfoLayout *BuscaLayout(const std::vector<InfoLayout> &todos, const std::string &nombre)
 {
-    std::vector<InfoLayout> layouts = DelTileset(todos, etiqueta);
-    if (layouts.empty()) {
-        fprintf(stderr, "%s: no lo usa ningun layout\n", etiqueta.c_str());
+    for (const InfoLayout &l : todos) {
+        size_t barra = l.carpeta.rfind('/');
+        std::string carpeta = barra == std::string::npos ? l.carpeta : l.carpeta.substr(barra + 1);
+        if (l.nombre == nombre || l.id == nombre || carpeta == nombre)
+            return &l;
+    }
+    return nullptr;
+}
+
+int OrdenEstampar(const Formato &f, const std::vector<InfoLayout> &todos, const std::vector<std::string> &args,
+                  bool reemplazar)
+{
+    if (args.size() != 5) {
+        fprintf(stderr, "estampar <mapa> <capa> <x> <y> <pieza.png>\n");
+        return 1;
+    }
+    const InfoLayout *l = BuscaLayout(todos, args[0]);
+    if (!l) {
+        fprintf(stderr, "no hay ningun layout que se llame %s\n", args[0].c_str());
+        return 1;
+    }
+    int capa = -1;
+    for (int c = 0; c < NUM_CAPAS; c++)
+        if (args[1] == kNombreCapa[c])
+            capa = c;
+    if (capa < 0) {
+        fprintf(stderr, "la capa es baja, media o alta\n");
         return 1;
     }
     std::string error;
-    InfoTileset info;
-    Tileset ts;
-    if (!LeerInfoTileset(etiqueta, info, error) || !CargarTileset(info, ts, error)) {
+    Cargado c;
+    Imagen pieza;
+    if (!Cargar(todos, l->tileset, c, error) || !CargarImagen(args[4], pieza, error)) {
         fprintf(stderr, "%s\n", error.c_str());
         return 1;
     }
-    int fallos = 0;
-    for (const InfoLayout &l : layouts) {
-        if (TieneArte(l) && !forzar) {
-            printf("%s ya tiene arte por capas: no se toca (--forzar para pisarlo)\n", l.nombre.c_str());
-            continue;
-        }
-        std::vector<uint16_t> bloques, borde;
-        if (!CargarBloques(l.blockdata, bloques) || (int)bloques.size() != l.ancho * l.alto) {
-            fprintf(stderr, "%s: %s no tiene %dx%d bloques\n", l.nombre.c_str(), l.blockdata.c_str(), l.ancho, l.alto);
-            fallos++;
-            continue;
-        }
-        CargarBloques(l.borde, borde);
-        borde.resize(4, 0);
-        Imagen capas[NUM_CAPAS], capasBorde[NUM_CAPAS];
-        PintarLayout(ts, bloques, l.ancho, l.alto, formato.mascaraId, capas);
-        PintarLayout(ts, borde, 2, 2, formato.mascaraId, capasBorde);
-        bool bien = true;
-        for (int c = 0; c < NUM_CAPAS; c++) {
-            bien &= GuardarCapa(RutaCapa(l, c, false), capas[c], nullptr);
-            bien &= GuardarCapa(RutaCapa(l, c, true), capasBorde[c], nullptr);
-        }
-        if (!bien) {
-            fprintf(stderr, "%s: no se han podido escribir las capas\n", l.nombre.c_str());
-            fallos++;
-            continue;
-        }
-        printf("%s: capas en %s/{,borde_}{baja,media,alta}.png\n", l.nombre.c_str(), l.carpeta.c_str());
+    int objetivo = 0;
+    while (c.layouts[objetivo].nombre != l->nombre)
+        objetivo++;
+
+    Estampado r = Estampar(f, c.ts, c.mapas, objetivo, pieza, atoi(args[2].c_str()), atoi(args[3].c_str()),
+                           (Capa)capa, reemplazar, LeerTilesFijos(c.info));
+    if (r.resultado != ESTAMPADO) {
+        fprintf(stderr, "%s: no se pinta: %s\n", l->nombre.c_str(), r.mensaje.c_str());
+        return 2;
     }
-    return fallos ? 1 : 0;
+    std::vector<std::vector<uint16_t>> bloques, bordes;
+    for (const MapaDelTileset &m : c.mapas) {
+        bloques.push_back(m.bloques);
+        bordes.push_back(m.borde);
+    }
+    int cambiados = 0;
+    if (!Guardar(c, c.ts, bloques, bordes, &cambiados)) {
+        fprintf(stderr, "no se han podido escribir todos los archivos\n");
+        return 1;
+    }
+    printf("%s: %d casillas, %d metatiles nuevos, %d tiles nuevos, %d colores nuevos\n", l->nombre.c_str(),
+           r.casillas, r.metatilesNuevos, r.tilesNuevos, r.coloresNuevos);
+    return 0;
+}
+
+int OrdenOptimizar(const Formato &f, const std::vector<InfoLayout> &todos, const std::string &etiqueta,
+                   bool escribir, bool compactar)
+{
+    std::string error;
+    Cargado c;
+    if (!Cargar(todos, etiqueta, c, error)) {
+        fprintf(stderr, "%s\n", error.c_str());
+        return 1;
+    }
+    Salida s;
+    if (!Optimizar(f, c.ts, c.mapas, LeerFijados(etiqueta), LeerTilesFijos(c.info), compactar, s, error)) {
+        fprintf(stderr, "%s: %s\n", etiqueta.c_str(), error.c_str());
+        return 1;
+    }
+    for (const std::string &a : s.avisos)
+        printf("  aviso: %s\n", a.c_str());
+    if (!escribir) {
+        CuentasActuales(f, c);
+        CuentasOptimizado(f, s.est);
+        return 0;
+    }
+    int cambiados = 0;
+    if (!Guardar(c, s.tileset, s.bloques, s.bloquesBorde, &cambiados)) {
+        fprintf(stderr, "%s: no se han podido escribir todos los archivos\n", etiqueta.c_str());
+        return 1;
+    }
+    CuentasOptimizado(f, s.est);
+    printf("  %d metatiles quitados o juntados; %d archivos cambiados\n", s.est.metatilesQuitados, cambiados);
+    return 0;
+}
+
+int OrdenExportar(const Formato &f, const std::vector<InfoLayout> &todos, const std::vector<std::string> &args)
+{
+    if (args.size() != 2) {
+        fprintf(stderr, "exportar <mapa> <carpeta>\n");
+        return 1;
+    }
+    const InfoLayout *l = BuscaLayout(todos, args[0]);
+    if (!l) {
+        fprintf(stderr, "no hay ningun layout que se llame %s\n", args[0].c_str());
+        return 1;
+    }
+    std::string error;
+    Cargado c;
+    if (!Cargar(todos, l->tileset, c, error)) {
+        fprintf(stderr, "%s\n", error.c_str());
+        return 1;
+    }
+    for (const MapaDelTileset &m : c.mapas) {
+        if (m.nombre != l->nombre)
+            continue;
+        Imagen capas[NUM_CAPAS];
+        PintarLayout(c.ts, m.bloques, m.ancho, m.alto, f.mascaraId, capas);
+        for (int k = 0; k < NUM_CAPAS; k++) {
+            std::string ruta = args[1] + "/" + kNombreCapa[k] + ".png";
+            if (!GuardarCapa(ruta, capas[k], nullptr)) {
+                fprintf(stderr, "no se puede escribir %s\n", ruta.c_str());
+                return 1;
+            }
+            printf("%s\n", ruta.c_str());
+        }
+    }
+    return 0;
 }
 
 } // namespace
@@ -207,18 +264,18 @@ int main(int argc, char **argv)
         return argc < 2 ? 1 : 0;
     }
     std::string orden = argv[1];
-    bool compactar = false, forzar = false;
-    std::vector<std::string> tilesets;
+    bool compactar = false, reemplazar = false;
+    std::vector<std::string> args;
     for (int i = 2; i < argc; i++) {
         if (!strcmp(argv[i], "--compactar"))
             compactar = true;
-        else if (!strcmp(argv[i], "--forzar"))
-            forzar = true;
-        else if (argv[i][0] == '-') {
+        else if (!strcmp(argv[i], "--reemplazar"))
+            reemplazar = true;
+        else if (argv[i][0] == '-' && !(argv[i][1] >= '0' && argv[i][1] <= '9')) {
             fprintf(stderr, "opcion desconocida: %s\n\n%s", argv[i], kUso);
             return 1;
         } else
-            tilesets.push_back(Etiqueta(argv[i]));
+            args.push_back(argv[i]);
     }
 
     std::string error;
@@ -229,27 +286,25 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    int fallos = 0;
-    if (orden == "compilar" || orden == "cuentas") {
-        bool nombrados = !tilesets.empty();
-        if (!nombrados) {
+    if (orden == "estampar")
+        return OrdenEstampar(formato, layouts, args, reemplazar);
+    if (orden == "exportar")
+        return OrdenExportar(formato, layouts, args);
+    if (orden == "optimizar" || orden == "cuentas") {
+        std::vector<std::string> tilesets;
+        for (const std::string &a : args)
+            tilesets.push_back(Etiqueta(a));
+        if (tilesets.empty()) {
             std::set<std::string> vistos;
             for (const InfoLayout &l : layouts)
-                if (TieneArte(l) && vistos.insert(l.tileset).second)
+                if (vistos.insert(l.tileset).second)
                     tilesets.push_back(l.tileset);
         }
+        int fallos = 0;
         for (const std::string &t : tilesets)
-            fallos += Compilar(formato, layouts, t, orden == "compilar", compactar, nombrados) != 0;
-    } else if (orden == "descompilar") {
-        if (tilesets.empty()) {
-            fprintf(stderr, "descompilar: di que tileset\n");
-            return 1;
-        }
-        for (const std::string &t : tilesets)
-            fallos += Descompilar(formato, layouts, t, forzar) != 0;
-    } else {
-        fprintf(stderr, "orden desconocida: %s\n\n%s", orden.c_str(), kUso);
-        return 1;
+            fallos += OrdenOptimizar(formato, layouts, t, orden == "optimizar", compactar) != 0;
+        return fallos ? 1 : 0;
     }
-    return fallos ? 1 : 0;
+    fprintf(stderr, "orden desconocida: %s\n\n%s", orden.c_str(), kUso);
+    return 1;
 }

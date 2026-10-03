@@ -97,19 +97,6 @@ bool Existe(const std::string &ruta)
     return stat(ruta.c_str(), &st) == 0;
 }
 
-std::string RutaCapa(const InfoLayout &l, int capa, bool borde)
-{
-    return l.carpeta + "/" + (borde ? "borde_" : "") + kNombreCapa[capa] + ".png";
-}
-
-bool TieneArte(const InfoLayout &l)
-{
-    for (int c = 0; c < NUM_CAPAS; c++)
-        if (Existe(RutaCapa(l, c, false)))
-            return true;
-    return false;
-}
-
 bool LeerFormato(Formato &f, std::string &error)
 {
     std::string fieldmap = LeerTexto("include/fieldmap.h");
@@ -296,24 +283,16 @@ bool CargarBloques(const std::string &ruta, std::vector<uint16_t> &bloques)
     return true;
 }
 
-bool CargarCapa(const std::string &ruta, int ancho, int alto, Imagen &img, std::string &error)
+bool CargarImagen(const std::string &ruta, Imagen &img, std::string &error)
 {
-    img = Imagen(ancho, alto);
-    if (!Existe(ruta))
-        return true; // una capa que no esta se queda transparente
     int w, h;
     std::vector<uint8_t> rgba;
     if (!LeerPngRgba(ruta, &w, &h, rgba, error))
         return false;
-    if (w != ancho || h != alto) {
-        error = ruta + " mide " + std::to_string(w) + "x" + std::to_string(h) + " y tiene que medir " +
-                std::to_string(ancho) + "x" + std::to_string(alto);
-        return false;
-    }
+    img = Imagen(w, h);
     for (int i = 0; i < w * h; i++) {
         int r = rgba[i * 4], g = rgba[i * 4 + 1], b = rgba[i * 4 + 2], a = rgba[i * 4 + 3];
         Color c = DeRgb(r, g, b);
-        // Transparente: sin opacidad, o el magenta que usan porytiles y las paletas.
         img.px[i] = (a < 128 || c == DeRgb(248, 0, 248)) ? TRANSPARENTE : c;
     }
     return true;

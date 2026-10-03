@@ -1,13 +1,16 @@
-// Compilador de mapeado: del arte por capas de los mapas al tileset y el blockdata.
+// Mapeado: arte libre por capas dentro del tileset, como porytiles pero pintando el mapa.
 //
 // Es la biblioteca. No lee ni escribe archivos: trabaja con lo que le pasan en memoria,
-// para que la pueda usar igual la linea de comandos (main.cpp) que un editor.
+// para que la pueda usar igual la linea de comandos (main.cpp) que porymap.
 //
-// Cada mapa se pinta en tres capas de pixeles (baja, media, alta) con arte libre. El
-// compilador trocea los mapas en casillas de 16x16, saca de ahi los metatiles, los
-// tiles de 8x8 (con volteos) y las paletas, y reescribe el blockdata.
+// Cada mapa tiene tres capas de pixeles (baja, media, alta). Se pinta estampando piezas
+// de arte libre (Estampar), y el tileset se va rellenando solo: colores, tiles de 8x8
+// con volteos y metatiles. Optimizar lo reempaqueta cuando se llena.
 //
-// El comportamiento, el nivel y la colision NO salen del arte: se editan despues, los
+// Por debajo las dos usan Compilar, que trocea el arte de los mapas en casillas de
+// 16x16 y saca de ahi los metatiles, los tiles y las paletas, y reescribe el blockdata.
+//
+// El comportamiento, el nivel y la colision NO salen del arte: se editan aparte, los
 // dos primeros en los atributos del metatile y la colision en el bloque. Por eso cada
 // compilacion parte de lo que habia antes y lo respeta:
 //
@@ -114,6 +117,60 @@ struct Salida {
 
 // Devuelve false y deja el motivo en `error` si no cabe o el arte no es valido.
 bool Compilar(const Entrada &entrada, Salida &salida, std::string &error);
+
+// ---------------------------------------------------------------------------------
+// Pintar en el editor
+//
+// Lo que necesita porymap para pintar arte libre directamente en el mapa: una pieza
+// (cualquier imagen de lado multiplo de 8, sin paleta fijada) se estampa en una capa,
+// y lo que haga falta (colores, tiles, un metatile) se mete en el tileset en ese
+// momento. Si no hay sitio, no se pinta y se dice que falta.
+// ---------------------------------------------------------------------------------
+
+// Un mapa que usa el tileset: hace falta conocerlos todos para saber que esta en uso.
+struct MapaDelTileset {
+    std::string nombre;
+    int ancho = 0, alto = 0;              // en casillas
+    std::vector<uint16_t> bloques;
+    std::vector<uint16_t> borde;          // 4
+};
+
+enum Resultado {
+    ESTAMPADO,
+    SIN_HUECO_TILES,
+    SIN_HUECO_PALETAS,
+    SIN_HUECO_METATILES,
+    DEMASIADOS_COLORES,                   // mas de 15 en un trozo de 8x8
+    PIEZA_NO_VALIDA,
+};
+
+struct Estampado {
+    Resultado resultado = ESTAMPADO;
+    std::string mensaje;
+    int casillas = 0;                     // casillas del mapa que cambian
+    int metatilesNuevos = 0, tilesNuevos = 0, coloresNuevos = 0;
+};
+
+// Estampa `pieza` en la capa `capa` de mapas[objetivo], con su esquina en (x, y) en
+// pixeles, multiplos de 8. Lo que caiga fuera del mapa se ignora. Con `reemplazar`, lo
+// transparente de la pieza borra la capa; sin el, deja lo que hubiera debajo.
+//
+// La casilla cuyo arte cambia pasa a un metatile con ese arte si ya hay uno (el que
+// tenga sus mismos atributos, si puede ser). Si no, se crea en un hueco del tileset
+// con los atributos que tenia la casilla. La colision de la casilla no cambia.
+//
+// Si algo no cabe no toca nada: ni el tileset ni el mapa.
+Estampado Estampar(const Formato &f, Tileset &ts, std::vector<MapaDelTileset> &mapas, int objetivo,
+                   const Imagen &pieza, int x, int y, Capa capa, bool reemplazar,
+                   const std::vector<int> &tilesFijos);
+
+// Reempaqueta el tileset desde lo que hay pintado en sus mapas: junta metatiles
+// duplicados, quita los que no usa ningun mapa (salvo los fijados) y deja libres los
+// tiles y colores que sobran. Respeta atributos y colision, y sin `compactar` tambien
+// los numeros de lo que sigue. Es lo que libera hueco cuando estampar dice que no cabe.
+bool Optimizar(const Formato &f, const Tileset &ts, const std::vector<MapaDelTileset> &mapas,
+               const std::vector<Fijado> &fijados, const std::vector<int> &tilesFijos, bool compactar,
+               Salida &salida, std::string &error);
 
 // Lo contrario: las tres capas de un metatile, o de un mapa entero, desde el tileset.
 void PintarMetatile(const Tileset &ts, int metatile, Imagen capas[NUM_CAPAS], int x0, int y0);
