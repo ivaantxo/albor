@@ -38,7 +38,7 @@ Cuando el tileset se llena, `optimizar` lo reempaqueta desde lo pintado:
 
 Se conservan los atributos, la colisión y los números de lo que sigue. También los **metatiles fijados**, los que tienen nombre en `include/constants/metatile_labels.h`, porque los usa el código aunque no estén en ningún mapa. Los **tiles fijos** que lista `tiles_fijos.txt`, junto al `tiles.png` (números o rangos `a-b`, para animaciones), no se tocan nunca.
 
-Los límites son los de `include/fieldmap.h` y `include/global.fieldmap.h`: 1008 tiles, 13 paletas y 32767 metatiles.
+Los límites son los de `include/fieldmap.h` y `include/global.fieldmap.h`: 1008 tiles, 15 paletas y 32767 metatiles.
 
 ## Línea de comandos
 

@@ -161,7 +161,7 @@ void (*const gWeatherPalStateFuncs[])(void) =
 // applied to each of the background and sprite palettes.
 static const u8 ALIGNED(4) sBasePaletteColorMapTypes[32] =
 {
-    // background palettes
+    // background palettes: 0-14 son del mapa, 15 de la interfaz (bandas de texto)
     COLOR_MAP_DARK_CONTRAST,
     COLOR_MAP_DARK_CONTRAST,
     COLOR_MAP_DARK_CONTRAST,
@@ -176,7 +176,7 @@ static const u8 ALIGNED(4) sBasePaletteColorMapTypes[32] =
     COLOR_MAP_DARK_CONTRAST,
     COLOR_MAP_DARK_CONTRAST,
     COLOR_MAP_DARK_CONTRAST,
-    COLOR_MAP_NONE,
+    COLOR_MAP_DARK_CONTRAST,
     COLOR_MAP_NONE,
     // sprite palettes
     COLOR_MAP_CONTRAST,

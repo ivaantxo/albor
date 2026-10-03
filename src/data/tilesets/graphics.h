@@ -1135,6 +1135,8 @@ const u16 gTilesetPalettes_Principal[][16] =
     INCBIN_U16("data/tilesets/primary/principal/palettes/10.gbapal"),
     INCBIN_U16("data/tilesets/primary/principal/palettes/11.gbapal"),
     INCBIN_U16("data/tilesets/primary/principal/palettes/12.gbapal"),
+    INCBIN_U16("data/tilesets/primary/principal/palettes/13.gbapal"),
+    INCBIN_U16("data/tilesets/primary/principal/palettes/14.gbapal"),
 };
 
 const u32 gTilesetTiles_Principal[] = INCBIN_U32("data/tilesets/primary/principal/tiles.4bpp.lz");
@@ -1173,6 +1175,8 @@ const u16 gTilesetPalettes_CentroPokemon[][16] =
     INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes/10.gbapal"),
     INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes/11.gbapal"),
     INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes/12.gbapal"),
+    INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes/13.gbapal"),
+    INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes/14.gbapal"),
 };
 
 const u32 gTilesetTiles_CentroPokemon[] = INCBIN_U32("data/tilesets/primary/centro_pokemon/tiles.4bpp.lz");

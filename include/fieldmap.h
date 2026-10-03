@@ -9,12 +9,12 @@
 // el tileset, y lo que queda hasta el total es la parte reservada, que porymap ensena
 // como el secundario gTileset_Reservado y que el juego no carga:
 //   - Tiles 1008-1023: los de las puertas, que field_door.c pone al final de la VRAM.
-//   - Paleta 13: ninguna. Esta para que porymap acepte las 13 paletas del mapa (0-12).
+//   - Paleta 15: la de la interfaz, texto y bandas (menu.c). El mapa tiene las 0-14.
 #define NUM_TILES_IN_PRIMARY 1008
 #define NUM_TILES_TOTAL 1024
 #define NUM_METATILES_IN_PRIMARY 0x7FFF // Todos los IDs del bloque menos MAPGRID_UNDEFINED
-#define NUM_PALS_IN_PRIMARY 13
-#define NUM_PALS_TOTAL 14
+#define NUM_PALS_IN_PRIMARY 15
+#define NUM_PALS_TOTAL 16
 
 #define NUM_TILES_IN_TILESET     NUM_TILES_IN_PRIMARY
 #define NUM_METATILES_IN_TILESET NUM_METATILES_IN_PRIMARY

@@ -1027,16 +1027,16 @@ void CB1_Overworld(void)
 
 // Que paletas llevan tinte horario y cuales no.
 //
-// Las de fondo 13, 14 y 15 son de la interfaz -cuadros de dialogo, textos, menus-
-// y no se tinen nunca: la hora del dia es del mundo, no de los menus. La 0 tampoco
-// entra en las paletas alternas de tileset, porque no pertenece a ninguno.
+// La de fondo 15 es la de la interfaz -las bandas de texto y de los menus- y no se
+// tine nunca: la hora del dia es del mundo, no de los menus. La 0 tampoco entra en las
+// paletas alternas de tileset, porque no pertenece a ninguno.
 //
 // Antes esto estaba escrito como 8190 y 4294909951, que son los mismos numeros en
 // decimal y no dicen nada.
-#define ULTIMA_PALETA_FONDO_DEL_MUNDO 12
+#define ULTIMA_PALETA_FONDO_DEL_MUNDO 14
 #define PALETAS_HASTA_EL_MUNDO        ((1u << (ULTIMA_PALETA_FONDO_DEL_MUNDO + 1)) - 1)
 
-// Fondos 1 a 12: los tilesets del mapa.
+// Fondos 1 a 14: el tileset del mapa.
 #define PALETAS_FONDO_CON_HORA        (PALETAS_HASTA_EL_MUNDO & ~1u)
 
 // Lo anterior mas la 0 y las 16 de objetos.

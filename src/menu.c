@@ -110,7 +110,7 @@ static const u8 sTextColors[] = { TEXT_DYNAMIC_COLOR_6, TEXT_COLOR_WHITE, TEXT_C
 // a lado si la ventana es mas ancha que alta, y de arriba abajo si no. La banda es un
 // tile liso del color 1 de la paleta, el mismo con el que se rellena la ventana, y BG0
 // se mezcla con lo de debajo (MEZCLA_OVERWORLD_*). No se carga ningun grafico mas y
-// todo cabe en una paleta, la 15 (sPaletaBandas): la 13 y la 14 quedan libres.
+// todo cabe en una paleta, la 15 (sPaletaBandas): la 13 y la 14 son del mapa.
 //
 // Fuera del overworld (equipo, mochila, PC...) siguen los marcos: gVentanasEnBandas lo
 // enciende el overworld al crear sus ventanas, e InitWindows lo apaga.
