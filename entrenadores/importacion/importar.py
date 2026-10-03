@@ -209,6 +209,7 @@ def report(entries, source_hashes):
               "frames_ausentes": sum(len(e["missing"]) for e in entries)}
     write_json(HERE / "catalogo.json", {"version": 1, "counts": counts, "sources_sha256": source_hashes, "entries": entries})
     lines = ["# Importación de entrenadores", "",
+             "[Abrir catálogo visual con animaciones](catalogo.html) · [Resultado de validación](validacion.json)", "",
              "Fronts de 80×80 y OW de 32×32 por frame. Las tiras se leen horizontalmente, de izquierda a derecha.", "",
              "## Resultado", ""]
     lines += [f"- **{v}** {k.replace('_', ' ')}." for k,v in counts.items()]
@@ -233,7 +234,9 @@ def report(entries, source_hashes):
               "desarrollo/chat_gpt/.venv/bin/python entrenadores/importacion/ow_platinum.py",
               "desarrollo/chat_gpt/.venv/bin/python entrenadores/importacion/ow_hgss/build_manifest.py",
               "desarrollo/chat_gpt/.venv/bin/python entrenadores/importacion/ow_barry.py",
-              "desarrollo/chat_gpt/.venv/bin/python entrenadores/importacion/importar.py", "```", "",
+              "desarrollo/chat_gpt/.venv/bin/python entrenadores/importacion/importar.py",
+              "desarrollo/chat_gpt/.venv/bin/python entrenadores/importacion/validar.py", "```", "",
+              "El importador actualiza también `catalogo.html`. Después de compilar con `make -j6` y el toolchain del proyecto, ejecutar `validar.py --compilados` comprueba los índices de cada píxel en los binarios 4bpp, la compresión LZ77 y las paletas GBA. La validación guardada incluye 314 entradas y 984 archivos compilados, sin errores; el motor no se ha probado interactivamente en un emulador durante esta importación.", "",
               "Las correcciones de identidades y rectángulos se realizan en los generadores de manifiestos. El importador valida dimensiones, límites, paleta compartida, transparencia y conservación exacta de todos los fronts al guardar. Los PNG generados se reemplazan al reimportar: conserva tus modificaciones artísticas fuera de este paso o actualiza las fuentes.", "",
               "## Faltantes", "", "| Carpeta | Frames transparentes pendientes |", "|---|---|"]
     for e in entries:
@@ -272,6 +275,8 @@ def main():
     from generar_codigo import generar
     generar(entries)
     print(json.dumps(report(entries, hashes), indent=2, ensure_ascii=False))
+    from generar_catalogo import generar as generar_catalogo
+    generar_catalogo()
 
 
 if __name__ == "__main__":

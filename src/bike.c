@@ -25,6 +25,19 @@ static u8 GetBiciTransition(u8 *);
 static u8 GetBikeCollision(u8);
 static u8 GetBikeCollisionAt(struct ObjectEvent *, s16, s16, u8, u8);
 static bool8 IsRunningDisallowedByMetatile(u8);
+static void ParaLaBiciYa(struct ObjectEvent *);
+
+// Dos cosas distintas, y por eso son dos banderas:
+//
+//   sDerrapando     estamos DENTRO de la casilla de frenada. Sirve para parar al
+//                   llegar al borde siguiente.
+//   sMarcaPendiente la huella que hay que pintar en el suelo. La lee y la apaga el
+//                   efecto de terreno, que corre en otro momento del fotograma.
+//
+// Con una sola bandera para las dos cosas, la lectura de la huella apagaba el estado
+// del derrape y la bici no llegaba a pararse.
+static bool8 sDerrapando;
+static bool8 sMarcaPendiente;
 
 // Que hacer en este fotograma: encarar, girar, arrancar o seguir. Encarar no anima y
 // girar si, y girar ademas mira si hay pared para hacer el ruido del topetazo.
@@ -36,23 +49,75 @@ static void (*const sBiciTransitions[])(u8) =
     [BICI_TRANS_START_MOVING]   = BiciTransition_TrySlowDown,
 };
 
-#define BICI_VELOCIDAD_BASE   0     // PlayerWalkFast,   x2
-#define BICI_VELOCIDAD_TURBO  1     // PlayerWalkFaster, x4
+#define BICI_VELOCIDAD_BASE     0   // PlayerWalkFast,   x2
+#define BICI_VELOCIDAD_TURBO    1   // PlayerWalkFaster, x4
+#define BICI_VELOCIDAD_DERRAPE  2   // PlayerWalkNormal, x1
 
 static void (*const sBiciSpeedCallbacks[])(u8) =
 {
-    [BICI_VELOCIDAD_BASE]  = PlayerWalkFast,
-    [BICI_VELOCIDAD_TURBO] = PlayerWalkFaster,
+    [BICI_VELOCIDAD_BASE]    = PlayerWalkFast,
+    [BICI_VELOCIDAD_TURBO]   = PlayerWalkFaster,
+    [BICI_VELOCIDAD_DERRAPE] = PlayerWalkNormal,
 };
 
-// Cual toca ahora mismo.
+// Cual toca ahora mismo. Derrapando manda el derrape, aunque la B siga pulsada.
 static u32 VelocidadBici(void)
 {
+    if (sDerrapando)
+        return BICI_VELOCIDAD_DERRAPE;
+
     return JOY_HELD(B_BUTTON) ? BICI_VELOCIDAD_TURBO : BICI_VELOCIDAD_BASE;
+}
+
+// Entrar, seguir o salir del derrape, mirando los dos botones al empezar cada casilla.
+//
+//   B + A            derrapa: avanza a x1 dejando marca, curvas incluidas
+//   suelta B, con A  para en seco
+//   suelta A, con B  vuelve a acelerar
+//   suelta las dos   sigue a velocidad normal
+//
+// Devuelve TRUE si acaba de parar, para que quien llama no siga con la casilla.
+static bool32 ActualizaDerrape(void)
+{
+    bool32 conB = JOY_HELD(B_BUTTON);
+    bool32 conA = JOY_HELD(A_BUTTON);
+
+    if (sDerrapando)
+    {
+        if (!conB && conA)
+        {
+            sDerrapando = FALSE;
+            ParaLaBiciYa(&gObjectEvents[gPlayerAvatar.objectEventId]);
+            return TRUE;
+        }
+
+        if (!conA)              // con B vuelve a acelerar; sin ella, a la normal
+        {
+            sDerrapando = FALSE;
+            return FALSE;
+        }
+
+        // Sigue derrapando: marca y ruido en cada casilla.
+        sMarcaPendiente = TRUE;
+        PlaySE(SE_FALL);
+        return FALSE;
+    }
+
+    if (conB && conA && gPlayerAvatar.bikeSpeed != PLAYER_SPEED_STANDING)
+    {
+        sDerrapando = TRUE;
+        sMarcaPendiente = TRUE;
+        PlaySE(SE_FALL);
+    }
+
+    return FALSE;
 }
 
 void MovePlayerOnBike(u8 direction)
 {
+    if (ActualizaDerrape())
+        return;
+
     sBiciTransitions[GetBiciTransition(&direction)](direction);
 }
 
@@ -255,6 +320,9 @@ static const u16 sMusicasDeBici[] =
 
 void GetOnOffBike(void)
 {
+    sDerrapando = FALSE;
+    sMarcaPendiente = FALSE;
+
     if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_BICI)
     {
         SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_ON_FOOT);
@@ -284,6 +352,27 @@ void GetOnOffBike(void)
 // falta repetirlo cada fotograma porque los controles siguen vivos: al siguiente, si
 // no se pulsa direccion, la propia bici pide encararse y la mantiene; y si se pulsa,
 // vuelve a pedalear, que es lo que toca.
+// Una sola lectura: quien pregunta se la lleva y la apaga.
+//
+// Lo consulta GetGroundEffectFlags_Tracks para encender la huella en CUALQUIER suelo,
+// no solo en arena. Se apaga al leerla a proposito: asi no depende de en que orden
+// corran el paso del jugador y la actualizacion de los objetos dentro del fotograma,
+// que es justo donde se perderia la marca si se apagara al parar.
+bool32 ConsumeDerrapeDeBici(void)
+{
+    bool32 habia = sMarcaPendiente;
+
+    sMarcaPendiente = FALSE;
+    return habia;
+}
+
+static void ParaLaBiciYa(struct ObjectEvent *jugador)
+{
+    BikeClearState();
+    StartSpriteAnimIfDifferent(&gSprites[jugador->spriteId],
+                               GetFaceDirectionAnimNum(jugador->facingDirection));
+}
+
 bool32 FrenaLaBici(void)
 {
     struct ObjectEvent *jugador = &gObjectEvents[gPlayerAvatar.objectEventId];
@@ -293,9 +382,7 @@ bool32 FrenaLaBici(void)
     if (gPlayerAvatar.bikeSpeed == PLAYER_SPEED_STANDING)
         return FALSE;
 
-    BikeClearState();
-    StartSpriteAnimIfDifferent(&gSprites[jugador->spriteId],
-                               GetFaceDirectionAnimNum(jugador->facingDirection));
+    ParaLaBiciYa(jugador);
     return TRUE;
 }
 

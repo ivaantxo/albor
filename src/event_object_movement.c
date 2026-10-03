@@ -3,6 +3,7 @@
 #include "battle_anim.h"
 #include "battle_util.h"
 #include "berry.h"
+#include "bike.h"
 #include "data.h"
 #include "debug.h"
 #include "decompress.h"
@@ -7824,6 +7825,14 @@ static void GetGroundEffectFlags_Tracks(struct ObjectEvent *objEvent, u32 *flags
 {
     if (objEvent->directionOverwrite)
         return;
+
+    // El derrape deja marca en CUALQUIER suelo. La huella normal de rodar sigue siendo
+    // cosa de la arena, como en vanilla; esto es la excepcion, y solo la del jugador.
+    if (objEvent->isPlayer && ConsumeDerrapeDeBici())
+    {
+        *flags |= GROUND_EFFECT_FLAG_SAND;
+        return;
+    }
 
     if (MetatileBehavior_IsDeepSand(objEvent->previousMetatileBehavior))
         *flags |= GROUND_EFFECT_FLAG_DEEP_SAND;

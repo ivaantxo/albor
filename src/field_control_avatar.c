@@ -234,7 +234,10 @@ bool32 ProcessPlayerFieldInput(struct FieldInput *input)
 
     // Si la A no ha servido para nada mas y se va en bici, frena. No devuelve TRUE
     // aposta: eso le diria al llamador que bloquee los controles.
-    if (input->pressedAButton)
+    //
+    // Con la B pulsada NO frena: ahi la A es la mitad del gesto de derrapar, y de eso
+    // se encarga la propia bici mirando los dos botones en cada casilla.
+    if (input->pressedAButton && !JOY_HELD(B_BUTTON))
         FrenaLaBici();
 
     if (input->heldDirection2 && input->dpadDirection == playerDirection)

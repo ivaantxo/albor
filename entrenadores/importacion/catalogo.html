@@ -68,7 +68,7 @@ const catalog = JSON.parse(document.getElementById('catalog-data').textContent);
 const $ = id => document.getElementById(id);
 const entries = [...catalog.entries].sort((a,b) => a.name.localeCompare(b.name,'es') || a.id.localeCompare(b.id));
 const cache = new Map();
-const state = {entry:null, images:{}, direction:'sur', playing:true, elapsed:0, previousTime:null, generation:0};
+const state = {entry:null, images:{}, direction:'sur', playing:!window.matchMedia('(prefers-reduced-motion: reduce)').matches, elapsed:0, previousTime:null, generation:0};
 let filtered = [];
 const labels = ['Sur · reposo','Sur · paso izquierda','Sur · paso derecha','Norte · reposo','Norte · paso izquierda','Norte · paso derecha','Oeste · reposo','Oeste · paso izquierda','Oeste · paso derecha','Este · reposo','Este · paso izquierda','Este · paso derecha'];
 const number = value => Number(value || 0).toLocaleString('es-ES',{maximumFractionDigits:3});
@@ -182,6 +182,8 @@ $('zoom').addEventListener('change',resize);$('walk').addEventListener('change',
 $('play').addEventListener('click',()=>{state.playing=!state.playing;$('play').textContent=state.playing?'Pausar animación':'Reanudar animación';$('play').setAttribute('aria-pressed',String(state.playing));});
 for(const button of document.querySelectorAll('[data-direction]'))button.addEventListener('click',()=>{state.direction=button.dataset.direction;for(const other of document.querySelectorAll('[data-direction]'))other.setAttribute('aria-pressed',String(other===button));redraw();});
 function tick(now){if(state.previousTime!==null && state.playing && state.entry)state.elapsed+=Math.min(now-state.previousTime,100);state.previousTime=now;if(state.playing)redraw();requestAnimationFrame(tick);}
+$('play').textContent=state.playing?'Pausar animación':'Reanudar animación';
+$('play').setAttribute('aria-pressed',String(state.playing));
 applyFilter();resize();requestAnimationFrame(tick);
 </script>
 </html>

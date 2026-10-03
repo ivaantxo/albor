@@ -1,5 +1,7 @@
 # Importación de entrenadores
 
+[Abrir catálogo visual con animaciones](catalogo.html) · [Resultado de validación](validacion.json)
+
 Fronts de 80×80 y OW de 32×32 por frame. Las tiras se leen horizontalmente, de izquierda a derecha.
 
 ## Resultado
@@ -55,7 +57,10 @@ desarrollo/chat_gpt/.venv/bin/python entrenadores/importacion/ow_platinum.py
 desarrollo/chat_gpt/.venv/bin/python entrenadores/importacion/ow_hgss/build_manifest.py
 desarrollo/chat_gpt/.venv/bin/python entrenadores/importacion/ow_barry.py
 desarrollo/chat_gpt/.venv/bin/python entrenadores/importacion/importar.py
+desarrollo/chat_gpt/.venv/bin/python entrenadores/importacion/validar.py
 ```
+
+El importador actualiza también `catalogo.html`. Después de compilar con `make -j6` y el toolchain del proyecto, ejecutar `validar.py --compilados` comprueba los índices de cada píxel en los binarios 4bpp, la compresión LZ77 y las paletas GBA. La validación guardada incluye 314 entradas y 984 archivos compilados, sin errores; el motor no se ha probado interactivamente en un emulador durante esta importación.
 
 Las correcciones de identidades y rectángulos se realizan en los generadores de manifiestos. El importador valida dimensiones, límites, paleta compartida, transparencia y conservación exacta de todos los fronts al guardar. Los PNG generados se reemplazan al reimportar: conserva tus modificaciones artísticas fuera de este paso o actualiza las fuentes.
 
