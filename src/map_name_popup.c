@@ -21,11 +21,6 @@
 #include "config/general.h"
 #include "config/overworld.h"
 
-enum MapPopUp_Themes_BW
-{
-    MAPPOPUP_THEME_BW_DEFAULT,
-};
-
 // static functions
 static void Task_MapNamePopUpWindow(u8 taskId);
 static void ShowMapNamePopUpWindow(void);
@@ -33,11 +28,6 @@ static void LoadMapNamePopUpWindowBg(void);
 
 // EWRAM
 EWRAM_DATA u8 gPopupTaskId = 0;
-
-static const u8 sMapPopUpTilesPrimary_BW[] = INCBIN_U8("graphics/map_popup/bw_primary.4bpp");
-static const u8 sMapPopUpTilesSecondary_BW[] = INCBIN_U8("graphics/map_popup/bw_secondary.4bpp");
-static const u16 sMapPopUpTilesPalette_BW_Black[16] = INCBIN_U16("graphics/map_popup/black.gbapal");
-static const u16 sMapPopUpTilesPalette_BW_White[16] = INCBIN_U16("graphics/map_popup/white.gbapal");
 
 // States and data defines for Task_MapNamePopUpWindow
 enum {
@@ -96,7 +86,7 @@ static void Task_MapNamePopUpWindow(u8 taskId)
             if (OW_POPUP_GENERATION == GEN_5)
             {
                 EnableInterrupts(INTR_FLAG_HBLANK);
-                SetHBlankCallback(HBlankCB_DoublePopupWindow);
+                SetHBlankCallback(HBlankCB_PopupWindow);
             }
         }
         break;
@@ -141,8 +131,6 @@ static void Task_MapNamePopUpWindow(u8 taskId)
         break;
     case STATE_ERASE:
         ClearStdWindowAndFrame(GetMapNamePopUpWindowId(), TRUE);
-        if (OW_POPUP_GENERATION == GEN_5)
-            ClearStdWindowAndFrame(GetSecondaryPopUpWindowId(), TRUE);
         task->tState = STATE_END;
         break;
     case STATE_END:
@@ -165,12 +153,6 @@ void HideMapNamePopUpWindow(void)
 
         if (OW_POPUP_GENERATION == GEN_5)
         {
-            if (GetSecondaryPopUpWindowId() != WINDOW_NONE)
-            {
-                ClearStdWindowAndFrame(GetSecondaryPopUpWindowId(), TRUE);
-                RemoveSecondaryPopUpWindow();
-            }
-
             DisableInterrupts(INTR_FLAG_HBLANK);
             SetHBlankCallback(NULL);
         }
@@ -185,16 +167,13 @@ static void ShowMapNamePopUpWindow(void)
     u8 mapDisplayHeader[24];
     u8 *withoutPrefixPtr;
     u8 x;
-    u8 mapNamePopUpWindowId, secondaryPopUpWindowId;
+    u8 mapNamePopUpWindowId;
 
     withoutPrefixPtr = &(mapDisplayHeader[3]);
     GetMapName(withoutPrefixPtr, gMapHeader.regionMapSectionId, 0);
 
     if (OW_POPUP_GENERATION == GEN_5)
-    {
         mapNamePopUpWindowId = AddMapNamePopUpWindow();
-        secondaryPopUpWindowId = AddSecondaryPopUpWindow();
-    }
 
     LoadMapNamePopUpWindowBg();
 
@@ -206,15 +185,15 @@ static void ShowMapNamePopUpWindow(void)
     {
         AddTextPrinterParameterized(mapNamePopUpWindowId, FUENTE_NORMAL, mapDisplayHeader, 8, 2, TEXT_SKIP_DRAW, NULL);
 
+        // La hora, en la misma banda y a la derecha: ya no hay banda de abajo.
         if (OW_POPUP_BW_TIME_MODE != OW_POPUP_BW_TIME_NONE)
         {
             RtcCalcLocalTime();
             FormatDecimalTimeWithoutSeconds(withoutPrefixPtr, gLocalTime.hours, gLocalTime.minutes, OW_POPUP_BW_TIME_MODE == OW_POPUP_BW_TIME_24_HR);
-            AddTextPrinterParameterized(secondaryPopUpWindowId, FUENTE_NORMAL, mapDisplayHeader, GetStringRightAlignXOffset(FUENTE_NORMAL, mapDisplayHeader, ANCHO_PANTALLA) - 5, 8, TEXT_SKIP_DRAW, NULL);
+            AddTextPrinterParameterized(mapNamePopUpWindowId, FUENTE_NORMAL, mapDisplayHeader, GetStringRightAlignXOffset(FUENTE_NORMAL, mapDisplayHeader, ANCHO_PANTALLA) - 8, 2, TEXT_SKIP_DRAW, NULL);
         }
 
         CopyWindowToVram(mapNamePopUpWindowId, COPYWIN_FULL);
-        CopyWindowToVram(secondaryPopUpWindowId, COPYWIN_FULL);
     }
     else
     {
@@ -224,44 +203,14 @@ static void ShowMapNamePopUpWindow(void)
     }
 }
 
-#define TILE_TOP_EDGE_START 0x21D
-#define TILE_TOP_EDGE_END   0x228
-#define TILE_LEFT_EDGE_TOP  0x229
-#define TILE_RIGHT_EDGE_TOP 0x22A
-#define TILE_LEFT_EDGE_MID  0x22B
-#define TILE_RIGHT_EDGE_MID 0x22C
-#define TILE_LEFT_EDGE_BOT  0x22D
-#define TILE_RIGHT_EDGE_BOT 0x22E
-#define TILE_BOT_EDGE_START 0x22F
-#define TILE_BOT_EDGE_END   0x23A
-
+// Una banda lisa de lado a lado arriba, del color de las bandas de texto (menu.c).
 static void LoadMapNamePopUpWindowBg(void)
 {
-    u8 popUpThemeId;
     u8 popupWindowId = GetMapNamePopUpWindowId();
-    u8 secondaryPopUpWindowId;
-
-    if (OW_POPUP_GENERATION == GEN_5)
-        secondaryPopUpWindowId = GetSecondaryPopUpWindowId();
 
     if (OW_POPUP_GENERATION == GEN_5)
     {
-        popUpThemeId = MAPPOPUP_THEME_BW_DEFAULT;
-        switch (popUpThemeId) 
-        {
-            // add additional gen 5-style pop-up themes as cases here
-            default: // MAPPOPUP_THEME_BW_DEFAULT
-                if (OW_POPUP_BW_COLOR == OW_POPUP_BW_COLOR_WHITE)
-                    LoadPalette(sMapPopUpTilesPalette_BW_White, BG_PLTT_ID(14), sizeof(sMapPopUpTilesPalette_BW_White));
-                else
-                    LoadPalette(sMapPopUpTilesPalette_BW_Black, BG_PLTT_ID(14), sizeof(sMapPopUpTilesPalette_BW_Black));
-
-                CopyToWindowPixelBuffer(popupWindowId, sMapPopUpTilesPrimary_BW, sizeof(sMapPopUpTilesPrimary_BW), 0);
-                CopyToWindowPixelBuffer(secondaryPopUpWindowId, sMapPopUpTilesSecondary_BW, sizeof(sMapPopUpTilesSecondary_BW), 0);
-                break;
-        }
-
+        FillWindowPixelBuffer(popupWindowId, PIXEL_FILL(1));
         PutWindowTilemap(popupWindowId);
-        PutWindowTilemap(secondaryPopUpWindowId);
     }
 }

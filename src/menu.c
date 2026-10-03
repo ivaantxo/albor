@@ -22,6 +22,7 @@
 #include "text_window.h"
 #include "window.h"
 #include "config/overworld.h"
+#include "constants/rgb.h"
 #include "constants/songs.h"
 
 struct Menu
@@ -55,7 +56,6 @@ static void TaskFreeBufferAfterCopyingTileDataToVram(u8 taskId);
 
 static EWRAM_DATA u8 sStartMenuWindowId = 0;
 static EWRAM_DATA u8 sMapNamePopupWindowId = 0;
-static EWRAM_DATA u8 sSecondaryPopupWindowId = 0;
 static EWRAM_DATA struct Menu sMenu = {0};
 static EWRAM_DATA u16 sTileNum = 0;
 static EWRAM_DATA u8 sPaletteNum = 0;
@@ -102,13 +102,166 @@ static const struct WindowTemplate sYesNo_WindowTemplates =
 static const u16 sHofPC_TopBar_Pal[] = INCBIN_U16("graphics/interface/hof_pc_topbar.gbapal");
 static const u8 sTextColors[] = { TEXT_DYNAMIC_COLOR_6, TEXT_COLOR_WHITE, TEXT_COLOR_DARK_GRAY };
 
+// ---------------------------------------------------------------------------------
+// Bandas
+//
+// En el overworld los textos y los menus no llevan marco: cada ventana es una banda
+// que cruza la pantalla entera por las filas o columnas donde iba el marco. Va de lado
+// a lado si la ventana es mas ancha que alta, y de arriba abajo si no. La banda es un
+// tile liso del color 1 de la paleta, el mismo con el que se rellena la ventana, y BG0
+// se mezcla con lo de debajo (MEZCLA_OVERWORLD_*). No se carga ningun grafico mas y
+// todo cabe en una paleta, la 15 (sPaletaBandas): la 13 y la 14 quedan libres.
+//
+// Fuera del overworld (equipo, mochila, PC...) siguen los marcos: gVentanasEnBandas lo
+// enciende el overworld al crear sus ventanas, e InitWindows lo apaga.
+// ---------------------------------------------------------------------------------
+
+#define TILE_BANDA  DLG_WINDOW_BASE_TILE_NUM
+#define MAX_BANDAS  8
+
+struct Banda
+{
+    u8 bg;
+    u8 left;
+    u8 top;
+    u8 width;
+    u8 height;
+    u8 paletteNum;
+    bool8 activa;
+};
+
+static EWRAM_DATA struct Banda sBandas[MAX_BANDAS] = {0};
+
+// Las ventanas se rellenan con TEXT_COLOR_WHITE y el texto va en TEXT_COLOR_DARK_GRAY
+// con sombra TEXT_COLOR_LIGHT_GRAY. Sobre la banda oscura se dan la vuelta: el "blanco"
+// es la banda y el "gris oscuro" es el texto. Lo mismo con los colores y sus sombras.
+static const u16 sPaletaBandas[16] =
+{
+    [TEXT_COLOR_WHITE]       = RGB(0, 0, 0),
+    [TEXT_COLOR_DARK_GRAY]   = RGB(31, 31, 31),
+    [TEXT_COLOR_LIGHT_GRAY]  = RGB(9, 9, 9),
+    [TEXT_COLOR_RED]         = RGB(31, 12, 10),
+    [TEXT_COLOR_LIGHT_RED]   = RGB(12, 3, 3),
+    [TEXT_COLOR_GREEN]       = RGB(13, 29, 10),
+    [TEXT_COLOR_LIGHT_GREEN] = RGB(3, 10, 3),
+    [TEXT_COLOR_BLUE]        = RGB(14, 20, 31),
+    [TEXT_COLOR_LIGHT_BLUE]  = RGB(4, 6, 14),
+};
+
+static const u32 sTileBanda[8] =
+{
+    0x11111111, 0x11111111, 0x11111111, 0x11111111,
+    0x11111111, 0x11111111, 0x11111111, 0x11111111,
+};
+
+static void CargaBandas(void)
+{
+    CargaTilesFondo(0, sTileBanda, sizeof(sTileBanda), TILE_BANDA);
+    LoadPalette(sPaletaBandas, BG_PLTT_ID(DLG_WINDOW_PALETTE_NUM), sizeof(sPaletaBandas));
+}
+
+static void RectanguloBanda(const struct Banda *b, s32 *x0, s32 *y0, s32 *x1, s32 *y1)
+{
+    if (b->width >= b->height)
+    {
+        *x0 = 0;
+        *x1 = ANCHO_PANTALLA / 8;
+        *y0 = b->top - 1;
+        *y1 = b->top + b->height + 1;
+    }
+    else
+    {
+        *x0 = b->left - 1;
+        *x1 = b->left + b->width + 1;
+        *y0 = 0;
+        *y1 = ALTURA_PANTALLA / 8;
+    }
+    *x0 = max(*x0, 0);
+    *y0 = max(*y0, 0);
+    *x1 = min(*x1, ANCHO_PANTALLA / 8);
+    *y1 = min(*y1, ALTURA_PANTALLA / 8);
+}
+
+// Solo en las casillas vacias (con el tile 0, de cualquier paleta: EraseFieldMessageBox
+// las deja asi): si ahi hay otra ventana, se queda encima.
+static void RellenaBanda(const struct Banda *b)
+{
+    u16 *mapa = GetBgTilemapBuffer(b->bg);
+    s32 x, y, x0, y0, x1, y1;
+
+    if (mapa == NULL)
+        return;
+    RectanguloBanda(b, &x0, &y0, &x1, &y1);
+    for (y = y0; y < y1; y++)
+        for (x = x0; x < x1; x++)
+            if ((mapa[y * 32 + x] & 0x3FF) == 0)
+                mapa[y * 32 + x] = TILE_BANDA | (b->paletteNum << 12);
+}
+
+static void PonBanda(u8 bg, u8 left, u8 top, u8 width, u8 height, u8 paletteNum)
+{
+    u32 i, libre = MAX_BANDAS;
+
+    for (i = 0; i < MAX_BANDAS; i++)
+    {
+        struct Banda *b = &sBandas[i];
+        if (b->activa && b->bg == bg && b->left == left && b->top == top && b->width == width && b->height == height)
+            break;
+        if (!b->activa && libre == MAX_BANDAS)
+            libre = i;
+    }
+    if (i == MAX_BANDAS)
+        i = libre;
+    if (i == MAX_BANDAS)
+        return;
+    sBandas[i] = (struct Banda){bg, left, top, width, height, paletteNum, TRUE};
+    RellenaBanda(&sBandas[i]);
+}
+
+// Quita la banda de la ventana. Despues de borrar la ventana hay que llamar a
+// RepintaBandas, por si tapaba a otra.
+static void QuitaBanda(u8 bg, u8 left, u8 top, u8 width, u8 height)
+{
+    u16 *mapa = GetBgTilemapBuffer(bg);
+    s32 x, y, x0, y0, x1, y1;
+    u32 i;
+
+    for (i = 0; i < MAX_BANDAS; i++)
+    {
+        struct Banda *b = &sBandas[i];
+        if (!b->activa || b->bg != bg || b->left != left || b->top != top || b->width != width || b->height != height)
+            continue;
+        b->activa = FALSE;
+        if (mapa == NULL)
+            continue;
+        RectanguloBanda(b, &x0, &y0, &x1, &y1);
+        for (y = y0; y < y1; y++)
+            for (x = x0; x < x1; x++)
+                if ((mapa[y * 32 + x] & 0x3FF) == TILE_BANDA)
+                    mapa[y * 32 + x] = 0;
+    }
+}
+
+static void RepintaBandas(void)
+{
+    u32 i;
+
+    for (i = 0; i < MAX_BANDAS; i++)
+        if (sBandas[i].activa)
+            RellenaBanda(&sBandas[i]);
+}
+
+static void OlvidaBandas(void)
+{
+    memset(sBandas, 0, sizeof(sBandas));
+}
+
 void InitStandardTextBoxWindows(void)
 {
+    OlvidaBandas();
     InitWindows(sStandardTextBox_WindowTemplates);
     sStartMenuWindowId = WINDOW_NONE;
     sMapNamePopupWindowId = WINDOW_NONE;
-    if (OW_POPUP_GENERATION == GEN_5)
-        sSecondaryPopupWindowId = WINDOW_NONE;
 }
 
 void FreeAllOverworldWindowBuffers(void)
@@ -172,12 +325,22 @@ void AddTextPrinterWithCustomSpeedForMessage(bool8 allowSkippingDelayWithButtonP
 
 void LoadMessageBoxAndBorderGfx(void)
 {
+    if (gVentanasEnBandas)
+    {
+        CargaBandas();
+        return;
+    }
     LoadMessageBoxGfx(0, DLG_WINDOW_BASE_TILE_NUM, BG_PLTT_ID(DLG_WINDOW_PALETTE_NUM));
     LoadUserWindowBorderGfx(0, STD_WINDOW_BASE_TILE_NUM, BG_PLTT_ID(STD_WINDOW_PALETTE_NUM));
 }
 
 void LoadSignPostWindowFrameGfx(void)
 {
+    if (gVentanasEnBandas)
+    {
+        CargaBandas();
+        return;
+    }
     Menu_LoadStdPal();
     LoadSignBoxGfx(0, DLG_WINDOW_BASE_TILE_NUM, BG_PLTT_ID(DLG_WINDOW_PALETTE_NUM));
     LoadUserWindowBorderGfx(0, STD_WINDOW_BASE_TILE_NUM, BG_PLTT_ID(STD_WINDOW_PALETTE_NUM));
@@ -185,6 +348,12 @@ void LoadSignPostWindowFrameGfx(void)
 
 static void WindowFunc_DrawSignFrame(u8 bg, u8 tilemapLeft, u8 tilemapTop, u8 width, u8 height, u8 paletteNum)
 {
+    if (gVentanasEnBandas)
+    {
+        PonBanda(bg, tilemapLeft, tilemapTop, width, height, paletteNum);
+        return;
+    }
+
     FillBgTilemapBufferRect(bg,
             DLG_WINDOW_BASE_TILE_NUM + 0,
             tilemapLeft - 2,
@@ -313,6 +482,8 @@ void ClearDialogWindowAndFrame(u8 windowId, bool8 copyToVram)
     CallWindowFunction(windowId, WindowFunc_ClearDialogWindowAndFrame);
     FillWindowPixelBuffer(windowId, PIXEL_FILL(1));
     ClearWindowTilemap(windowId);
+    if (gVentanasEnBandas)
+        RepintaBandas();
     if (copyToVram == TRUE)
         CopyWindowToVram(windowId, COPYWIN_FULL);
 }
@@ -322,6 +493,8 @@ void ClearStdWindowAndFrame(u8 windowId, bool8 copyToVram)
     CallWindowFunction(windowId, WindowFunc_ClearStdWindowAndFrame);
     FillWindowPixelBuffer(windowId, PIXEL_FILL(1));
     ClearWindowTilemap(windowId);
+    if (gVentanasEnBandas)
+        RepintaBandas();
     if (copyToVram == TRUE)
         CopyWindowToVram(windowId, COPYWIN_FULL);
 }
@@ -329,6 +502,12 @@ void ClearStdWindowAndFrame(u8 windowId, bool8 copyToVram)
 static void WindowFunc_DrawStandardFrame(u8 bg, u8 tilemapLeft, u8 tilemapTop, u8 width, u8 height, u8 paletteNum)
 {
     u32 i;
+
+    if (gVentanasEnBandas)
+    {
+        PonBanda(bg, tilemapLeft, tilemapTop, width, height, paletteNum);
+        return;
+    }
 
     FillBgTilemapBufferRect(bg,
                             STD_WINDOW_BASE_TILE_NUM + 0,
@@ -395,6 +574,12 @@ static void WindowFunc_DrawStandardFrame(u8 bg, u8 tilemapLeft, u8 tilemapTop, u
 
 static void WindowFunc_DrawDialogueFrame(u8 bg, u8 tilemapLeft, u8 tilemapTop, u8 width, u8 height, u8 paletteNum)
 {
+    if (gVentanasEnBandas)
+    {
+        PonBanda(bg, tilemapLeft, tilemapTop, width, height, paletteNum);
+        return;
+    }
+
     FillBgTilemapBufferRect(bg,
                             DLG_WINDOW_BASE_TILE_NUM + 1,
                             tilemapLeft - 2,
@@ -490,11 +675,21 @@ static void WindowFunc_DrawDialogueFrame(u8 bg, u8 tilemapLeft, u8 tilemapTop, u
 
 static void WindowFunc_ClearStdWindowAndFrame(u8 bg, u8 tilemapLeft, u8 tilemapTop, u8 width, u8 height, u8 paletteNum)
 {
+    if (gVentanasEnBandas)
+    {
+        QuitaBanda(bg, tilemapLeft, tilemapTop, width, height);
+        return;
+    }
     FillBgTilemapBufferRect(bg, 0, tilemapLeft - 1, tilemapTop - 1, width + 2, height + 2, STD_WINDOW_PALETTE_NUM);
 }
 
 static void WindowFunc_ClearDialogWindowAndFrame(u8 bg, u8 tilemapLeft, u8 tilemapTop, u8 width, u8 height, u8 paletteNum)
 {
+    if (gVentanasEnBandas)
+    {
+        QuitaBanda(bg, tilemapLeft, tilemapTop, width, height);
+        return;
+    }
     FillBgTilemapBufferRect(bg, 0, tilemapLeft - 3, tilemapTop - 1, width + 6, height + 2, STD_WINDOW_PALETTE_NUM);
 }
 
@@ -505,7 +700,10 @@ void SetStandardWindowBorderStyle(u8 windowId, bool8 copyToVram)
 
 void LoadMessageBoxAndFrameGfx(u8 windowId, bool8 copyToVram)
 {
-    LoadMessageBoxGfx(windowId, DLG_WINDOW_BASE_TILE_NUM, BG_PLTT_ID(DLG_WINDOW_PALETTE_NUM));
+    if (gVentanasEnBandas)
+        CargaBandas();
+    else
+        LoadMessageBoxGfx(windowId, DLG_WINDOW_BASE_TILE_NUM, BG_PLTT_ID(DLG_WINDOW_PALETTE_NUM));
     DrawDialogFrameWithCustomTileAndPalette(windowId, copyToVram, DLG_WINDOW_BASE_TILE_NUM, DLG_WINDOW_PALETTE_NUM);
 }
 
@@ -578,9 +776,9 @@ u8 AddMapNamePopUpWindow(void)
     if (sMapNamePopupWindowId == WINDOW_NONE)
     {
         if (OW_POPUP_GENERATION == GEN_5)
-            sMapNamePopupWindowId = AddWindowParameterized(0, 0, 0, 30, 3, 14, 0x107);
+            sMapNamePopupWindowId = AddWindowParameterized(0, 0, 0, 30, 3, DLG_WINDOW_PALETTE_NUM, 0x107);
         else
-            sMapNamePopupWindowId = AddWindowParameterized(0, 1, 1, 10, 3, 14, 0x107);
+            sMapNamePopupWindowId = AddWindowParameterized(0, 1, 1, 10, 3, DLG_WINDOW_PALETTE_NUM, 0x107);
     }
     return sMapNamePopupWindowId;
 }
@@ -607,6 +805,7 @@ void AddTextPrinterWithCallbackForMessage(bool8 canSpeedUp, void (*callback)(str
 
 void EraseFieldMessageBox(bool8 copyToVram)
 {
+    OlvidaBandas();
     FillBgTilemapBufferRect(0, 0, 0, 0, 32, 32, 17);
     if (copyToVram == TRUE)
         CopyBgTilemapBufferToVram(0);
@@ -625,6 +824,12 @@ void DrawDialogFrameWithCustomTileAndPalette(u8 windowId, bool8 copyToVram, u16 
 
 static void WindowFunc_DrawDialogFrameWithCustomTileAndPalette(u8 bg, u8 tilemapLeft, u8 tilemapTop, u8 width, u8 height, u8 paletteNum)
 {
+    if (gVentanasEnBandas)
+    {
+        PonBanda(bg, tilemapLeft, tilemapTop, width, height, paletteNum);
+        return;
+    }
+
     FillBgTilemapBufferRect(bg,
                             sTileNum + 1,
                             tilemapLeft - 2,
@@ -724,12 +929,19 @@ void ClearDialogWindowAndFrameToTransparent(u8 windowId, bool8 copyToVram)
     CallWindowFunction(windowId, WindowFunc_ClearDialogWindowAndFrameNullPalette);
     FillWindowPixelBuffer(windowId, PIXEL_FILL(0));
     ClearWindowTilemap(windowId);
+    if (gVentanasEnBandas)
+        RepintaBandas();
     if (copyToVram == TRUE)
         CopyWindowToVram(windowId, COPYWIN_FULL);
 }
 
 static void WindowFunc_ClearDialogWindowAndFrameNullPalette(u8 bg, u8 tilemapLeft, u8 tilemapTop, u8 width, u8 height, u8 paletteNum)
 {
+    if (gVentanasEnBandas)
+    {
+        QuitaBanda(bg, tilemapLeft, tilemapTop, width, height);
+        return;
+    }
     FillBgTilemapBufferRect(bg, 0, tilemapLeft - 3, tilemapTop - 1, width + 6, height + 2, 0);
 }
 
@@ -758,6 +970,12 @@ void DrawStdFrameWithCustomTile(u8 windowId, bool8 copyToVram, u16 baseTileNum)
 
 static void WindowFunc_DrawStdFrameWithCustomTileAndPalette(u8 bg, u8 tilemapLeft, u8 tilemapTop, u8 width, u8 height, u8 paletteNum)
 {
+    if (gVentanasEnBandas)
+    {
+        PonBanda(bg, tilemapLeft, tilemapTop, width, height, paletteNum);
+        return;
+    }
+
     FillBgTilemapBufferRect(bg,
                             sTileNum + 0,
                             tilemapLeft - 1,
@@ -821,12 +1039,19 @@ void ClearStdWindowAndFrameToTransparent(u8 windowId, bool8 copyToVram)
     CallWindowFunction(windowId, WindowFunc_ClearStdWindowAndFrameToTransparent);
     FillWindowPixelBuffer(windowId, PIXEL_FILL(0));
     ClearWindowTilemap(windowId);
+    if (gVentanasEnBandas)
+        RepintaBandas();
     if (copyToVram == TRUE)
         CopyWindowToVram(windowId, COPYWIN_FULL);
 }
 
 static void WindowFunc_ClearStdWindowAndFrameToTransparent(u8 bg, u8 tilemapLeft, u8 tilemapTop, u8 width, u8 height, u8 paletteNum)
 {
+    if (gVentanasEnBandas)
+    {
+        QuitaBanda(bg, tilemapLeft, tilemapTop, width, height);
+        return;
+    }
     FillBgTilemapBufferRect(bg, 0, tilemapLeft - 1, tilemapTop - 1, width + 2, height + 2, 0);
 }
 
@@ -1806,39 +2031,16 @@ u32 Menu_InitCursor(u32 windowId, u32 fontId, u32 left, u32 top, u32 cursorHeigh
     return sMenu.cursorPos;
 }
 
-// BW map pop-ups
-u8 AddSecondaryPopUpWindow(void)
-{
-    if (sSecondaryPopupWindowId == WINDOW_NONE)
-        sSecondaryPopupWindowId = AddWindowParameterized(0, 0, 17, 30, 3, 14, 0x161);
-    return sSecondaryPopupWindowId;
-}
-
-u8 GetSecondaryPopUpWindowId(void)
-{
-    return sSecondaryPopupWindowId;
-}
-
-void RemoveSecondaryPopUpWindow(void)
-{
-    if (sSecondaryPopupWindowId != WINDOW_NONE)
-    {
-        RemoveWindow(sSecondaryPopupWindowId);
-        sSecondaryPopupWindowId = WINDOW_NONE;
-    }
-}
-
-void HBlankCB_DoublePopupWindow(void)
+// Pop-up del nombre del mapa
+// El popup entra desde arriba moviendo solo la parte de arriba de BG0: la de abajo,
+// donde van los textos, no se mueve.
+void HBlankCB_PopupWindow(void)
 {
     u16 offset = gTasks[gPopupTaskId].data[2];
     u16 scanline = REG_VCOUNT;
 
     if (scanline < 80 || scanline > 160)
-    {
         REG_BG0VOFS = offset;
-    }
     else
-    {
-        REG_BG0VOFS = 512 - offset;
-    }
+        REG_BG0VOFS = 0;
 }

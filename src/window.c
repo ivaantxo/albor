@@ -8,6 +8,10 @@ COMMON_DATA void *gWindowBgTilemapBuffers[NUMERO_FONDOS] = {0};
 
 EWRAM_DATA struct Window gWindows[WINDOWS_MAX] = {0};
 
+// Las ventanas del overworld no llevan marco: son bandas (ver menu.c). Lo enciende el
+// overworld al crear sus ventanas y se apaga aqui, cuando otra pantalla crea las suyas.
+EWRAM_DATA bool8 gVentanasEnBandas = FALSE;
+
 static u32 GetNumActiveWindowsOnBg(u32 bgId);
 
 static const struct WindowTemplate sDummyWindowTemplate = DUMMY_WIN_TEMPLATE;
@@ -25,6 +29,8 @@ bool32 InitWindows(const struct WindowTemplate *templates)
     u32 bgLayer;
     u32 attrib;
     u8 *allocatedTilemapBuffer;
+
+    gVentanasEnBandas = FALSE;
 
     for (i = 0; i < NUMERO_FONDOS; ++i)
     {

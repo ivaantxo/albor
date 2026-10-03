@@ -72,5 +72,6 @@ u32 WindowTemplateWidthPx(const struct WindowTemplate *template);
 
 extern struct Window gWindows[];
 extern void *gWindowBgTilemapBuffers[];
+extern bool8 gVentanasEnBandas;
 
 #endif // GUARD_WINDOW_H
