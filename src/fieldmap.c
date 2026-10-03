@@ -4,6 +4,7 @@
 #include "fldeff.h"
 #include "fldeff_misc.h"
 #include "menu.h"
+#include "metatile_behavior.h"
 #include "mirage_tower.h"
 #include "overworld.h"
 #include "palette.h"
@@ -315,6 +316,24 @@ static void FillEastConnection(struct MapHeader const *mapHeader, struct MapHead
     }
 }
 
+// La elevacion de la casilla es el nivel de su metatile. Ver METATILE_NIVEL_AUTO.
+u8 GetMetatileElevationById(u16 metatile)
+{
+    u16 attributes = GetMetatileAttributesById(metatile);
+    u32 nivel = (attributes & METATILE_ATTR_NIVEL_MASK) >> METATILE_ATTR_NIVEL_SHIFT;
+    u32 behavior;
+
+    if (nivel != METATILE_NIVEL_AUTO)
+        return nivel - METATILE_NIVEL_0;
+
+    behavior = attributes & METATILE_ATTR_BEHAVIOR_MASK;
+    if (MetatileBehavior_IsSurfableWaterOrUnderwater(behavior))
+        return 1;
+    if (MetatileBehavior_IsBridgeOverWater(behavior))
+        return MAX_ELEVATION_LEVEL;
+    return 3;
+}
+
 u8 MapGridGetElevationAt(int x, int y)
 {
     u16 block = GetMapGridBlockAt(x, y);
@@ -322,7 +341,7 @@ u8 MapGridGetElevationAt(int x, int y)
     if (block == MAPGRID_UNDEFINED)
         return 0;
 
-    return block >> MAPGRID_ELEVATION_SHIFT;
+    return GetMetatileElevationById(block & MAPGRID_METATILE_ID_MASK);
 }
 
 u8 MapGridGetCollisionAt(int x, int y)
@@ -357,14 +376,12 @@ u8 MapGridGetMetatileLayerTypeAt(int x, int y)
     return (GetMetatileAttributesById(metatile) & METATILE_ATTR_LAYER_MASK) >> METATILE_ATTR_LAYER_SHIFT;
 }
 
+// Antes se diferenciaba de MapGridSetMetatileEntryAt en que respetaba la elevacion
+// que ya tenia la casilla. Ya no hay elevacion en el bloque: ID y colision son todo
+// lo que tiene, y los dos vienen en `metatile`.
 void MapGridSetMetatileIdAt(int x, int y, u16 metatile)
 {
-    u32 i;
-    if (AreCoordsWithinMapGridBounds(x, y))
-    {
-        i = x + y * gBackupMapLayout.width;
-        gBackupMapLayout.map[i] = (gBackupMapLayout.map[i] & MAPGRID_ELEVATION_MASK) | (metatile & ~MAPGRID_ELEVATION_MASK);
-    }
+    MapGridSetMetatileEntryAt(x, y, metatile);
 }
 
 void MapGridSetMetatileEntryAt(int x, int y, u16 metatile)

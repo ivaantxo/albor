@@ -2,23 +2,51 @@
 #define GUARD_GLOBAL_FIELDMAP_H
 
 // Masks/shifts for blocks in the map grid
-// Map grid blocks consist of a 10 bit metatile id, a 2 bit collision value, and a 4 bit elevation value
+// Cada bloque es un ID de metatile de 15 bits y un bit de colision (pasa / no pasa).
+// La elevacion ya no va en el bloque: la casilla la saca de su metatile, ver
+// METATILE_ATTR_NIVEL_MASK mas abajo y MapGridGetElevationAt.
 // This is the data stored in each data/layouts/*/map.bin file
-#define MAPGRID_METATILE_ID_MASK 4095 // Bits 0-11
-#define MAPGRID_COLLISION_MASK   4096 // Bits 12-12
-#define MAPGRID_ELEVATION_MASK   57344 // Bits 13-15
-#define MAPGRID_COLLISION_SHIFT  12
-#define MAPGRID_ELEVATION_SHIFT  13
+#define MAPGRID_METATILE_ID_MASK 0x7FFF // Bits 0-14
+#define MAPGRID_COLLISION_MASK   0x8000 // Bit 15
+#define MAPGRID_COLLISION_SHIFT  15
+// El juego no la usa. Esta para porymap, que lee las tres mascaras de este archivo:
+// sin ella aplicaria su valor por defecto (0xF000), que pisa al ID y a la colision.
+// Con 0 deja de pintar elevacion y la pestana de colision se queda en pasa / no pasa.
+#define MAPGRID_ELEVATION_MASK   0x0000
 
 // An undefined map grid block has all metatile id bits set and nothing else
 #define MAPGRID_UNDEFINED   MAPGRID_METATILE_ID_MASK
 
 // Masks/shifts for metatile attributes
-// Metatile attributes consist of an 8 bit behavior value, 4 unused bits, and a 4 bit layer type value
+// Metatile attributes consist of an 8 bit behavior value, a 4 bit level value, and a 4 bit layer type value
 // This is the data stored in each data/tilesets/*/*/metatile_attributes.bin file
 #define METATILE_ATTR_BEHAVIOR_MASK 0x00FF // Bits 0-7
+#define METATILE_ATTR_NIVEL_MASK    0x0F00 // Bits 8-11
+#define METATILE_ATTR_NIVEL_SHIFT   8
 #define METATILE_ATTR_LAYER_MASK    0xF000 // Bits 12-15
 #define METATILE_ATTR_LAYER_SHIFT   12
+
+// Nivel del metatile, que es la elevacion que tiene la casilla donde se pinta.
+//
+// Con AUTO el nivel sale del comportamiento: agua donde se puede surfear -> 1,
+// puente sobre agua -> MAX_ELEVATION_LEVEL, todo lo demas -> 3. Es lo que trae
+// cualquier metatile que salga de porytiles, que deja estos bits a cero.
+//
+// Los otros valores fijan el nivel a mano (el bit 11 dice "fijo" y los bits 8-10 lo
+// dan), para lo que el comportamiento no cuenta: una plataforma alta o una rampa,
+// que va a 0 para que el objeto que pasa por ella cambie de altura.
+//
+// Porymap los ofrece en una lista del editor de tilesets si en porymap.project.cfg
+// se ponen metatile_terrain_type_mask=0x0F00 y regex_terrain_types=\bMETATILE_NIVEL_
+#define METATILE_NIVEL_AUTO 0
+#define METATILE_NIVEL_0    8
+#define METATILE_NIVEL_1    9
+#define METATILE_NIVEL_2    10
+#define METATILE_NIVEL_3    11
+#define METATILE_NIVEL_4    12
+#define METATILE_NIVEL_5    13
+#define METATILE_NIVEL_6    14
+#define METATILE_NIVEL_7    15
 
 enum {
     METATILE_LAYER_TYPE_NORMAL,  // Metatile uses middle and top bg layers
