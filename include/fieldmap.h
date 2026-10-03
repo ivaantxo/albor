@@ -4,17 +4,17 @@
 // Un solo tileset por layout: los tiles, los metatiles y las paletas del mapa salen
 // todos de el.
 //
-// Porymap todavia piensa en primario + secundario. Lee estos cinco nombres y exige que
-// el primario quede por debajo del total en tiles y en paletas. Aqui el "primario" es
-// el tileset, y lo que queda hasta el total es la parte reservada, que porymap ensena
-// como el secundario gTileset_Reservado y que el juego no carga:
-//   - Tiles 1008-1023: los de las puertas, que field_door.c pone al final de la VRAM.
-//   - Paleta 15: la de la interfaz, texto y bandas (menu.c). El mapa tiene las 0-14.
-#define NUM_TILES_IN_PRIMARY 1008
-#define NUM_TILES_TOTAL 1024
+// El fork de porymap de albor lo sabe por NUM_TILESETS_PER_LAYOUT y entonces no carga
+// ningun secundario: el "primario" de porymap es el tileset, con todo. Los nombres
+// NUM_*_IN_PRIMARY son los que lee porymap.
+#define NUM_TILESETS_PER_LAYOUT 1
+#define NUM_TILES_IN_PRIMARY 1008 // Hasta las puertas: ver NUM_TILES_TOTAL
 #define NUM_METATILES_IN_PRIMARY 0x7FFF // Todos los IDs del bloque menos MAPGRID_UNDEFINED
-#define NUM_PALS_IN_PRIMARY 15
-#define NUM_PALS_TOTAL 16
+#define NUM_PALS_IN_PRIMARY 15 // La 15 es la de la interfaz, texto y bandas (menu.c)
+
+// Tiles de fondo en la VRAM. Los 16 ultimos, 1008-1023, son de las puertas, que
+// field_door.c pone al final.
+#define NUM_TILES_TOTAL 1024
 
 #define NUM_TILES_IN_TILESET     NUM_TILES_IN_PRIMARY
 #define NUM_METATILES_IN_TILESET NUM_METATILES_IN_PRIMARY

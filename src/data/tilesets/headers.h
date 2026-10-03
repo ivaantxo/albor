@@ -618,20 +618,3 @@ const struct Tileset gTileset_CentroPokemon =
     .metatileAttributes = gMetatileAttributes_CentroPokemon,
     .callback = NULL,
 };
-
-// No es un tileset de verdad y el juego no lo carga nunca. Porymap quiere un secundario
-// en cada layout y se le da este, vacio: en porymap ocupa lo que fieldmap.h deja
-// reservado detras del tileset: los tiles de las puertas y la paleta 15, la del texto.
-//
-// Sin metatiles. Sus .bin estan vacios en la carpeta del tileset, que es donde los
-// busca porymap si aqui no hay INCBIN, y preproc no acepta el INCBIN de un vacio.
-const struct Tileset gTileset_Reservado =
-{
-    .isCompressed = TRUE,
-    .isSecondary = TRUE,
-    .tiles = gTilesetTiles_Reservado,
-    .palettes = gTilesetPalettes_Reservado,
-    .metatiles = NULL,
-    .metatileAttributes = NULL,
-    .callback = NULL,
-};
