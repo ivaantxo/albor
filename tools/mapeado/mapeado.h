@@ -56,7 +56,7 @@ struct Imagen {
 struct Formato {
     int maxTiles = 1008;
     int maxMetatiles = 0x7FFF;
-    int maxPaletas = 13;
+    int maxPaletas = 15;
     uint16_t mascaraId = 0x7FFF;
     uint16_t mascaraColision = 0x8000;
 };

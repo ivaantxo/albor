@@ -9,7 +9,7 @@ La idea es pintar el mapa directamente con piezas de arte libre: cualquier PNG c
 
 La fuente siguen siendo el tileset y el blockdata, como siempre. No hay arte aparte que exportar ni que mantener del tamaño del mapa.
 
-Esto va a ir dentro del fork de porymap. Este directorio tiene el motor, que es lo que llamará porymap, y una línea de comandos para usarlo y probarlo mientras tanto.
+Esto ya está en el fork de porymap, [ivaantxo/porymap](https://github.com/ivaantxo/porymap) (rama `claude/rediseno-mapeado-plan-5296ti`), en la pestaña **Piezas**. Este directorio tiene el motor, que es lo que usa porymap, y una línea de comandos que hace lo mismo desde la terminal.
 
 ## Cómo funciona al pintar
 
@@ -56,12 +56,14 @@ tools/mapeado/mapeado exportar <mapa> <carpeta>
 - `cuentas`: lo que ocupa cada tileset ahora, y lo que ocuparía optimizado.
 - `exportar`: saca las tres capas en PNG, solo para mirarlas.
 
-## Para el fork de porymap
+## La biblioteca y el fork de porymap
 
 La biblioteca es `mapeado.h` + `mapeado.cpp`. No lee ni escribe archivos ni depende de nada: trabaja con el tileset y los mapas en memoria.
 
 - **`Estampar`:** lo que hace la herramienta de pintar. Si no cabe, devuelve el motivo y no toca nada.
 - **`Optimizar`:** el botón de reempaquetar.
-- **`PintarLayout`:** las capas por separado, para la visibilidad por capa.
+- **`PintarLayout`:** las capas por separado.
+
+El fork de porymap lleva una copia tal cual en `src/lib/mapeado`, y `src/core/stamping.cpp` la conecta con sus tilesets y layouts. Los cambios se hacen aquí primero y se copian allí. Estampar y optimizar en porymap dan los mismos archivos que esta línea de comandos.
 
 `proyecto.cpp`, `archivo_png.cpp` y `main.cpp` son solo la línea de comandos.

@@ -1,6 +1,6 @@
 # Rediseño del mapeado: informe de ejecución
 
-Estado a 3 de octubre de 2026 de lo que pide `rediseno-mapeado.md`, en la rama `claude/rediseno-mapeado-plan-5296ti`. Las fases 0, 1, 2 y 3 están hechas, compilan y están probadas en emulador. Con la 3, la interfaz del overworld es de bandas sin marco y usa una sola paleta, así que el mapa pasa a tener 15. De la 5 está hecho el motor para pintar en porymap: estampar piezas de arte libre en una capa, con el tileset rellenándose solo, y optimizarlo. Falta meterlo en el editor, que va en el fork de porymap. La 4 casi no hace falta, porque porymap se configura sin fork. La 6 es para después.
+Estado a 3 de octubre de 2026 de lo que pide `rediseno-mapeado.md`, en la rama `claude/rediseno-mapeado-plan-5296ti`. Las fases 0, 1, 2 y 3 están hechas, compilan y están probadas en emulador. Con la 3, la interfaz del overworld es de bandas sin marco y usa una sola paleta, así que el mapa pasa a tener 15. La 5 también: el fork de porymap ([ivaantxo/porymap](https://github.com/ivaantxo/porymap), misma rama) tiene la pestaña **Piezas** para estampar arte libre en una capa, con el tileset rellenándose solo, avisos cuando no cabe, contadores, capas visibles y optimizar. La 4 casi no hace falta, porque porymap se configura sin fork. La 6 es para después.
 
 | Fase | Estado | Commit |
 | --- | --- | --- |
@@ -9,7 +9,7 @@ Estado a 3 de octubre de 2026 de lo que pide `rediseno-mapeado.md`, en la rama `
 | 2. Tileset único | Hecha, con una capa de compatibilidad para porymap | `f064ba26` |
 | 3. UI a una paleta | Hecha: bandas sin marco en la paleta 15, y 15 paletas para el mapa | `b9490edd`, `fd78de8b` |
 | 4. Fork de porymap, base | Casi todo resuelto con configuración (ver abajo) | — |
-| 5. Pintado por capas y compilador | Motor hecho y probado. El editor necesita el fork | `07b1da5e`, `8c856420` |
+| 5. Pintado por capas y compilador | Hecha: motor en albor y editor en el fork de porymap | `07b1da5e`, `8c856420`; fork `4af73c0e` |
 | 6. Cambios por zona | Sin hacer: el plan la deja para después | — |
 
 Aparte, `db48160d` arregla un fallo del Makefile que salió al probar la fase 1: `maps.o` no dependía de los `map.bin` ni de los `border.bin`. Pintar en porymap sin tocar `layouts.json` dejaba el mapa viejo dentro de la ROM.
@@ -44,7 +44,7 @@ Aparte, `db48160d` arregla un fallo del Makefile que salió al probar la fase 1:
 - **Capa de compatibilidad para porymap:**
   - `fieldmap.h`: el "primario" que ve porymap es el tileset (1008 tiles, 15 paletas). Hasta el total quedan los tiles de las puertas y la paleta 15, la de la interfaz, que no son del tileset.
   - `gTileset_Reservado`: secundario vacío que solo ve porymap. Los dos layouts lo llevan en `layouts.json`, y `mapjson` ya no pasa el secundario al juego.
-  - Cuando exista el fork, se quita la capa y `NUM_PALS_TOTAL` deja de importar.
+  - Ahora que hay fork, se puede quitar la capa y `NUM_PALS_TOTAL` deja de importar (ver "Para seguir").
 
 ### Fase 3: interfaz en bandas
 
@@ -66,8 +66,25 @@ Aparte, `db48160d` arregla un fallo del Makefile que salió al probar la fase 1:
   - Si no hay hueco de paletas, tiles o metatiles, o un trozo tiene más de 15 colores, no se pinta nada y se dice qué falta.
 - **Optimizar:** reempaqueta el tileset desde lo pintado. Junta duplicados, quita lo que no usa ningún mapa y libera tiles y colores. Respeta atributos, colisión, números y fijados.
 - **Fuente:** siguen siendo el tileset y el blockdata. No hay arte aparte.
-- **Biblioteca:** es C++ y no lee archivos ni depende de nada, para meterla en el fork. Mientras tanto se usa con `tools/mapeado/mapeado estampar | optimizar | cuentas | exportar`.
+- **Biblioteca:** es C++ y no lee archivos ni depende de nada. La usa el fork de porymap, y también la línea de comandos `tools/mapeado/mapeado estampar | optimizar | cuentas | exportar`.
 - **Limpieza de los tilesets:** al pasar por el compilador se juntaron los metatiles duplicados (11 casillas cambian de número en `Test` y 5 en el Centro) y se quitaron los que no usaba nadie. El tileset de `Test` pasa de 128 a 69 metatiles y el del Centro de 128 a 72. Los tiles y las paletas no cambian.
+
+### Fase 5: el editor, en el fork de porymap
+
+El fork está en [ivaantxo/porymap](https://github.com/ivaantxo/porymap), rama `claude/rediseno-mapeado-plan-5296ti`. Estaba en la 5.4.1 (diciembre de 2024) y se ha puesto sobre la 6.3.1, la última. Lo nuevo está explicado en su `README.md`:
+
+- **Pestaña Piezas,** junto a Metatiles, Collision y Prefabs:
+  - una biblioteca de piezas: cualquier PNG de lado múltiplo de 8, sin paleta fijada. De una hoja se elige con el ratón el trozo que se estampa. La lista se guarda en `porymap.user.cfg`;
+  - la capa donde se estampa (baja, media o alta), la rejilla (8 o 16 px) y si lo transparente borra;
+  - las capas que se ven, solo mientras la pestaña está abierta;
+  - los contadores de tiles, paletas y metatiles en uso, y el botón *Optimizar tileset*.
+- **Estampar:** con la pestaña abierta y el lápiz, la pieza sigue al ratón como vista previa; un clic la estampa y arrastrando se repite. Cada trazo se deshace de una vez con Ctrl+Z. Lo que añade al tileset no se deshace, para que rehacer lo encuentre; optimizar limpia lo que sobre.
+- **Si no cabe:** no se pinta nada. El panel dice qué falta y sale un aviso con la opción *Optimizar y reintentar*.
+- **Optimizar:** reempaqueta el tileset desde todos los mapas que lo usan, guarda el tileset y esos mapas, y vacía su historial de deshacer (avisa antes).
+- **Guardar:** el tileset estampado se guarda con el mapa, y cuenta como cambio pendiente al cerrar.
+- **Con el editor de tilesets:** si está abierto, se actualiza al estampar. Si tiene cambios sin guardar, no deja estampar ni optimizar hasta que se guarden o se descarten, porque trabaja sobre su propia copia del tileset.
+- **El motor** es una copia tal cual de `tools/mapeado/mapeado.{h,cpp}` en `src/lib/mapeado`; `src/core/stamping.cpp` la conecta con los tilesets y layouts de porymap. Los cambios se hacen primero en albor.
+- **CI:** al lanzar a mano el workflow *Build Porymap* desde la pestaña Actions del fork, el job de macOS sube el `.dmg` como artefacto descargable (`70d0677a` en el fork).
 
 ## Cómo se ha comprobado
 
@@ -91,11 +108,21 @@ Aparte, `db48160d` arregla un fallo del Makefile que salió al probar la fase 1:
   - La mochila sale idéntica píxel a píxel a la ROM de antes, con sus marcos. Al volver al mapa, el menú de inicio vuelve a salir como banda.
   - Al cerrar las ventanas, el mapa queda idéntico píxel a píxel al de la ROM de antes.
   - El recorrido de siempre sigue saliendo idéntico.
+- **Fork de porymap,** compilado con Qt 6.4 y con Qt 5.15, sin avisos en lo nuevo, y probado abriendo albor en una pantalla virtual:
+  - estampar una flor de 16×16 a media casilla da exactamente los mismos `map.bin`, metatiles, atributos, tiles y paletas que `mapeado estampar` con la misma pieza y posición;
+  - optimizar desde porymap da los mismos archivos que `mapeado optimizar`;
+  - deshacer y rehacer un estampado, y un arrastre entero con un solo Ctrl+Z;
+  - el aviso de paletas llenas con una pieza imposible, sin tocar nada;
+  - importar una pieza, elegir un trozo de una hoja, la rejilla de 16 y la capa baja;
+  - ocultar capas;
+  - el editor de tilesets abierto muestra los metatiles recién estampados.
 - **15 paletas, en emulador:** una tira estampada con piezas en las paletas 0, 1 y 6-14 da 154 colores en pantalla, y siguen ahí con el menú de inicio y las ventanas de guardado abiertas.
 - **Sin probar en ejecución:**
   - agua, puentes y rampas (no hay ninguno en los mapas);
   - el cruce de conexiones y las partidas guardadas;
-  - el multichoice de los scripts: es el mismo camino que el menú de inicio y la ventana usa la paleta 15, pero no hay ninguno en `Test`.
+  - el multichoice de los scripts: es el mismo camino que el menú de inicio y la ventana usa la paleta 15, pero no hay ninguno en `Test`;
+  - en el fork, el bloqueo de estampar cuando el editor de tilesets tiene cambios sin guardar: no conseguí provocar esos cambios a mano en la pantalla virtual;
+  - el fork en macOS: solo se ha compilado en Linux.
 - **La ficha de entrenador** ("Ivantxo" en el menú) se queda en negro en el emulador. Pasa igual con la ROM de antes de estos cambios, así que no viene de aquí; no lo he investigado.
 
 ## Lo que tienes que hacer tú en local
@@ -106,7 +133,9 @@ Aparte, `db48160d` arregla un fallo del Makefile que salió al probar la fase 1:
    regex_terrain_types=\bMETATILE_NIVEL_
    ```
    Las máscaras del bloque no hace falta tocarlas: porymap las lee de `include/global.fieldmap.h`.
-2. **Mapas:** de momento, como siempre en porymap. Para probar el pintado con piezas sin el fork: `tools/mapeado/mapeado estampar` (ver `tools/mapeado/README.md`).
+2. **El fork de porymap,** para pintar con piezas. Dos formas:
+   - **Descargarlo:** en la pestaña Actions de `ivaantxo/porymap`, activar los workflows (en los forks vienen apagados), lanzar *Build Porymap* sobre la rama `claude/rediseno-mapeado-plan-5296ti` y bajar el artefacto `porymap-macos-latest` (o `-15-intel`). No está firmado: la primera vez hay que abrirlo con clic derecho → Abrir.
+   - **Compilarlo:** `brew install qt`, y en la rama del fork `qmake porymap.pro && make`.
 3. **Porytiles**, si regeneras un tileset con él, con estos límites:
    ```
    porytiles compile-primary -Wall -tiles-primary-override=1008 -tiles-total-override=1024 \
@@ -122,10 +151,5 @@ Aparte, `db48160d` arregla un fallo del Makefile que salió al probar la fase 1:
   - las bandas pasan a ocupar paletas y memoria de sprites;
   - la mezcla con el mapa sigue funcionando (los sprites semitransparentes usan los mismos coeficientes que BG0);
   - porymap no admite primario = total, así que 16 paletas en el mapa necesitan el fork.
-- **El fork de porymap** (fase 5, editor) es otro repositorio. Esta sesión solo tiene acceso a `ivaantxo/albor`, así que hay que crearlo y darle acceso. Lo que le toca:
-  - importar piezas (cualquier PNG de lado múltiplo de 8) a una biblioteca;
-  - estamparlas con `mapeado::Estampar` en la capa activa, en la rejilla de 8 o de 16;
-  - visibilidad por capa;
-  - un aviso en el momento de pintar cuando no quepa, con la opción de optimizar y reintentar;
-  - los contadores en vivo de tiles, paletas y metatiles.
+- **Quitar la capa de compatibilidad** (fase 4) ahora que hay fork: que porymap acepte un layout sin secundario y primario = total. Es lo que hace falta para las 16 paletas.
 - **Limpieza pendiente, fuera de este plan:** los 50 secundarios y `General` de pokeemerald, que no usa nadie. Sus animaciones en `tileset_anims.c` siguen escritas para el secundario en la posición 512 y ahora apuntarían fuera del tileset si alguien las activara.
