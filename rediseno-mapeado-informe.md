@@ -110,6 +110,10 @@ Porytiles era lo único que sabía meter animaciones de tiles. Con las paletas p
 - **Dónde:** `tools/mapeado/mapeado animar <tileset> <nombre> <carpeta> [--cada N]` (y `--quitar`), y en el fork (`cbee81ee`), *Animaciones del tileset* en la pestaña Piezas: importar, elegir (la pone como pieza y la reproduce) y quitar.
 - **Fuera porytiles:** la carpeta `porytiles/` (binario, librerías y su tileset de prueba), `metatile_behaviors_porytiles.h`, sus órdenes en `desarrollo/notas_desarrollo.md` y el paso que lo explicaba aquí.
 
+### Piezas con sus paletas
+
+Para trabajar con una hoja hecha en Aseprite, con todo el arte ya organizado por paletas: si una pieza es un PNG indexado con la paleta en filas de 16 colores (el 0 de cada fila, transparente) y cada trozo de 8×8 usa colores de una sola fila, cada fila es una paleta. Al estampar va a una paleta del tileset con esos colores en esos índices (la que ya la tenga, o una nueva con la fila entera) y los tiles guardan los índices de la imagen. Optimizar deja cada trozo en la paleta donde estaba, si puede, así que las filas no se mezclan. Si la pieza no cumple, se reparte sola como siempre; porymap dice debajo de la pieza qué modo usa y por qué. Las animaciones indexadas así usan también su fila.
+
 ## Cómo se ha comprobado
 
 - **Compilación en cloud** con arm-none-eabi-gcc 13.2, sin avisos (`-Werror`). Hubo que compilar SuperFamiconv 0.9.2 para Linux, porque el de `tools/superfamiconv/` es un binario de Mac; se pasó con `FAMICONV=` sin tocar el repo.
@@ -153,6 +157,7 @@ Porytiles era lo único que sabía meter animaciones de tiles. Con las paletas p
   - la línea de comandos pasa 23 escenarios con `mar` (32 fotogramas de 32×32): los fotogramas guardados se ven tal cual con su paleta; estampar el fotograma 0, también volteado, usa los tiles animados sin tiles ni colores nuevos; el agua pintada antes de importar se anima al optimizar; optimizar y compactar no cambian ni los fotogramas ni el mapa; cambiarla por `mar_buceo` deja sus tiles; una de otro tamaño, una con más de 15 colores y un mapa sin hueco para su paleta avisan sin tocar nada; y quitarla deja el mapa igual;
   - en emulador, dos charcos de `mar` estampados junto al jugador pasan por los fotogramas 4, 5, 6, 7, 8 y 9, uno cada 8 fotogramas del juego, cada uno igual píxel a píxel que el PNG (con el tinte de la noche);
   - en el fork: importar `mar` desde la carpeta, verla reproducirse en la vista de la pieza, estamparla y guardar da los mismos archivos que `mapeado animar` y `mapeado estampar`; al volver a abrir sigue ahí, y quitarla funciona.
+- **Piezas con sus paletas:** 9 escenarios con una hoja indexada de dos filas: crea justo dos paletas, que son las filas color a color; los tiles tienen los índices de la imagen; el 0 de la segunda fila (índice 16) sale transparente; repetirla, o estampar parte de una fila, no crea nada; un trozo que mezcla filas se reparte solo; optimizar deja las filas en sus paletas con los mismos índices; y un mapa sin hueco avisa de qué fila no cabe. En el fork, la misma hoja dice «con las paletas de la imagen» y al estamparla da los mismos archivos que la línea de comandos.
 - **Sin probar en ejecución:**
   - agua, puentes y rampas (no hay ninguno en los mapas);
   - el cruce de conexiones y las partidas guardadas;

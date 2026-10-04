@@ -344,6 +344,18 @@ bool CargarImagen(const std::string &ruta, Imagen &img, std::string &error)
         Color c = DeRgb(r, g, b);
         img.px[i] = (a < 128 || c == DeRgb(248, 0, 248)) ? TRANSPARENTE : c;
     }
+    // Con paleta: los indices y los colores, de 16 en 16 (ver PiezaConPaletas).
+    std::vector<uint8_t> paleta, indices;
+    int wi, hi;
+    std::string errorIndices;
+    if (LeerPngPaleta(ruta, paleta) && LeerPngIndices(ruta, &wi, &hi, indices, errorIndices) && wi == w && hi == h) {
+        img.indices = indices;
+        img.filas.assign((paleta.size() / 3 + 15) / 16, Paleta());
+        for (Paleta &fila : img.filas)
+            fila.fill(0);
+        for (size_t i = 0; i < paleta.size() / 3; i++)
+            img.filas[i / 16][i % 16] = DeRgb(paleta[i * 3], paleta[i * 3 + 1], paleta[i * 3 + 2]);
+    }
     return true;
 }
 

@@ -45,6 +45,22 @@ Se conservan los atributos, la colisión y los números de lo que sigue. Tambié
 
 Los límites son los de `include/fieldmap.h` y `include/global.fieldmap.h`: 1008 tiles, 32767 metatiles, 256 paletas en el tileset y 15 por mapa.
 
+## Piezas con sus paletas (Aseprite)
+
+Una pieza puede traer ya sus paletas: es lo más cómodo para trabajar con una hoja hecha en Aseprite con todo el arte, y así no hay sorpresas con el número de paletas. Para eso:
+
+- **PNG indexado** (modo *Indexed* de Aseprite), con la paleta en **filas de 16 colores**: la fila 0 son los índices 0-15, la fila 1 los 16-31, etc. Cada fila es una paleta de la GBA.
+- **El color 0 de cada fila es el transparente** (los índices 0, 16, 32…), como en el juego.
+- **Cada trozo de 8×8 usa colores de una sola fila.** Conviene trabajar con la rejilla de 8×8 de Aseprite a la vista.
+
+Si es así, al estampar:
+
+- cada fila va a una paleta del tileset con esos mismos colores en esos mismos índices: la que ya la tenga (si el mapa la carga, mejor) o una nueva con la fila entera;
+- los tiles guardan los índices de la imagen, tal cual;
+- optimizar deja cada trozo en la paleta de su fila, si puede.
+
+Así cada mapa carga exactamente las filas que usa su arte. Si la pieza no cumple lo anterior (es RGB, o un trozo mezcla filas), las paletas se reparten solas, como con cualquier otra pieza; porymap lo dice debajo de la pieza («con las paletas de la imagen» o «paletas automáticas» y por qué). Las animaciones hechas así también usan su fila.
+
 ## Paletas por mapa
 
 El tileset guarda las paletas de todos sus mapas, hasta 256 (`MAX_PALS_IN_TILESET`). Cada mapa carga solo las que usan sus metatiles, los de sus casillas y los de su borde, como mucho 15 a la vez (`NUM_PALS_IN_PRIMARY`). Una entrada de metatile usa su paleta si su tile no es el 0, que es el transparente.

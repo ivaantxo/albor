@@ -66,6 +66,32 @@ bool Leer(const std::string &ruta, bool indices, int *ancho, int *alto, std::vec
     return true;
 }
 
+bool LeerPaleta(const std::string &ruta, std::vector<uint8_t> &rgb)
+{
+    Archivo a(ruta);
+    if (!a.f)
+        return false;
+    png_structp png = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
+    png_infop info = png_create_info_struct(png);
+    if (setjmp(png_jmpbuf(png))) {
+        png_destroy_read_struct(&png, &info, nullptr);
+        return false;
+    }
+    png_init_io(png, a.f);
+    png_read_info(png, info);
+    png_colorp colores = nullptr;
+    int n = 0;
+    bool hay = png_get_color_type(png, info) == PNG_COLOR_TYPE_PALETTE && png_get_PLTE(png, info, &colores, &n);
+    rgb.clear();
+    for (int i = 0; hay && i < n; i++) {
+        rgb.push_back(colores[i].red);
+        rgb.push_back(colores[i].green);
+        rgb.push_back(colores[i].blue);
+    }
+    png_destroy_read_struct(&png, &info, nullptr);
+    return hay;
+}
+
 void Escribe(png_structp png, png_bytep datos, png_size_t n)
 {
     auto *v = static_cast<std::vector<uint8_t> *>(png_get_io_ptr(png));
@@ -109,6 +135,11 @@ std::vector<uint8_t> Escribir(int ancho, int alto, const std::vector<uint8_t> &d
 bool LeerPngRgba(const std::string &ruta, int *ancho, int *alto, std::vector<uint8_t> &rgba, std::string &error)
 {
     return Leer(ruta, false, ancho, alto, rgba, error);
+}
+
+bool LeerPngPaleta(const std::string &ruta, std::vector<uint8_t> &rgb)
+{
+    return LeerPaleta(ruta, rgb);
 }
 
 bool LeerPngIndices(const std::string &ruta, int *ancho, int *alto, std::vector<uint8_t> &indices, std::string &error)

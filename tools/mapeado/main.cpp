@@ -218,9 +218,9 @@ int OrdenEstampar(const Formato &f, const std::vector<InfoLayout> &todos, const 
         return 1;
     }
     printf("%s: %d casillas, %d metatiles nuevos, %d tiles nuevos, %d colores nuevos, %d paletas nuevas; "
-           "el mapa carga %d de %d paletas\n",
+           "el mapa carga %d de %d paletas%s\n",
            l->nombre.c_str(), r.casillas, r.metatilesNuevos, r.tilesNuevos, r.coloresNuevos, r.paletasNuevas,
-           r.paletasMapa, f.maxPaletas);
+           r.paletasMapa, f.maxPaletas, r.paletasDeLaPieza ? " (con las paletas de la imagen)" : "");
     return 0;
 }
 
