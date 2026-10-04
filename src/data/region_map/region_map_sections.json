@@ -10,7 +10,11 @@
     },
     {
       "id": "MAPSEC_PUEBLO_LAVANDA",
-      "name": "Pueblo Lavanda"
+      "name": "Pueblo Lavanda",
+      "x": 4,
+      "y": 11,
+      "width": 1,
+      "height": 1
     }
   ]
 }

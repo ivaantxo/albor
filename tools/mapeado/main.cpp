@@ -48,9 +48,9 @@ const char *const kUso =
     "      mete todo el otro tileset en el primero, pasa sus mapas al primero y\n"
     "      optimiza, para que se junte lo repetido. El otro queda sin usar\n"
     "\n"
-    "El mapa se nombra por su layout: Test, Test_Layout o LAYOUT_TEST. El tileset, con o\n"
-    "sin gTileset_. Sin nombrar ninguno, se hacen todos los que use algun layout. Se\n"
-    "ejecuta desde la raiz del proyecto.\n";
+    "El mapa se nombra por su layout: PuebloLavanda, PuebloLavanda_Layout o\n"
+    "LAYOUT_PUEBLO_LAVANDA. El tileset, con o sin gTileset_. Sin nombrar ninguno, se\n"
+    "hacen todos los que use algun layout. Se ejecuta desde la raiz del proyecto.\n";
 
 std::string Etiqueta(const std::string &nombre)
 {

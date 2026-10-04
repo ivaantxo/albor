@@ -82,7 +82,7 @@ void NewGameInitData(void)
     ResetPokemonStorageSystem();
     gSaveBlockPtr->registeredItem = ITEM_NONE;
     ClearBag();
-    SetWarpDestination(MAP_GROUP(MAP_TEST), MAP_NUM(MAP_TEST), WARP_ID_NONE, -1, -1);
+    SetWarpDestination(MAP_GROUP(MAP_PUEBLO_LAVANDA), MAP_NUM(MAP_PUEBLO_LAVANDA), WARP_ID_NONE, -1, -1);
     WarpIntoMap();
     RunScriptImmediately(EventScript_ResetAllMapFlags);
     ResetItemFlags();

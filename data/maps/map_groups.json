@@ -1,13 +1,8 @@
 {
   "group_order": [
-    "gMapGroup_Test",
-    "gMapGroup_CentroPokemon"
+    "gMapGroup_PuebloLavanda"
   ],
-  "gMapGroup_Test": [
-    "Test",
+  "gMapGroup_PuebloLavanda": [
     "PuebloLavanda"
-  ],
-  "gMapGroup_CentroPokemon": [
-    "CentroPokemon"
   ]
 }

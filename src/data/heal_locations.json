@@ -1,9 +1,9 @@
 {
   "heal_locations": [
     {
-      "id": "HEAL_LOCATION_TEST",
-      "map": "MAP_TEST",
-      "x": 25,
+      "id": "HEAL_LOCATION_PUEBLO_LAVANDA",
+      "map": "MAP_PUEBLO_LAVANDA",
+      "x": 20,
       "y": 25
     }
   ]

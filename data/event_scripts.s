@@ -257,7 +257,5 @@ Common_EventScript_UnionRoomAttendant::
 	.include "data/scripts/follower.inc"
 	.include "data/text/save.inc"
 	.include "data/text/birch_speech.inc"
-	.include "data/maps/Test/scripts.inc"
-	.include "data/maps/CentroPokemon/scripts.inc"
 
 	.include "data/maps/PuebloLavanda/scripts.inc"

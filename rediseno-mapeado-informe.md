@@ -124,6 +124,20 @@ Para trabajar con una hoja hecha en Aseprite, con todo el arte ya organizado por
 - **En el fork** (`5fcfa4a9`): con un solo tileset en todo el proyecto desaparece el selector de tileset del panel del mapa, del diálogo de mapa nuevo y de la configuración. Un mapa nuevo ya no se crea con los metatiles por defecto de pokeemerald que no existen en el tileset (el borde `0x1D4`…, que en el juego saldría con basura): pasan a ser el de relleno, o el 0.
 - **`mapjson`:** porymap no escribe `night_music`, `reservado_1` ni `reservado_2`, que albor añadió a los mapas, y un mapa creado en porymap no compilaba. Si faltan, valen `MUS_NONE` y `FALSE`.
 
+### De cero, con Pueblo Lavanda
+
+Los 141 metatiles que quedaban en `Principal` eran el arte de `Test` y del Centro, que venían de los tilesets hechos con porytiles. Se ha empezado de cero, encima de tu commit «avance» (que ya traía Pueblo Lavanda) y de tu merge:
+
+- **Fuera los mapas** `Test` y `CentroPokemon`, con sus layouts y scripts. Con `Test` se van sus Bulbasaur salvajes y el script del Arcanine (`Test_EventScript_Arcanine`, que no usaba ningún objeto); la función `Script_ArcanineTransparentAndFree` sigue en `event_object_movement.c`. También lo que el merge había dejado sin usar: la carpeta de `General` (ya no estaba en `headers.h`) y el layout `Porymap` (no estaba en `layouts.json`, y lo pintado allí iba a `General`).
+- **`Principal` vacío** al empezar: un metatile transparente, una paleta sin colores y los 1008 tiles libres.
+- **Tu Pueblo Lavanda** (40×50, con tu música y tus opciones) es donde empieza la partida nueva. Su layout ya no tiene secundario y está solo en su grupo, `gMapGroup_PuebloLavanda`.
+- **Tu hierba, repintada.** Lo habías llenado con la hierba clara de 32×32 de `desarrollo/tileset.png` (1887 casillas, 4 metatiles), pero esos metatiles no llegaron a guardarse en ningún `Principal`, y los bloques estaban escritos con las máscaras de `principal` (nivel en los bits 13-15). Se ha vuelto a estampar esa hierba de tu hoja en las mismas casillas: 4 metatiles, 16 tiles y una paleta, la de su fila. Las casillas que no habías pintado y el borde quedan vacíos.
+- **`HEAL_LOCATION_TEST` pasa a `HEAL_LOCATION_PUEBLO_LAVANDA`,** en el centro del pueblo (20, 25).
+- **`MAPSEC_PUEBLO_LAVANDA`** («Pueblo Lavanda») no tenía posición, y sin `x`, `y`, `width` y `height` la plantilla no le da entrada en `gRegionMapEntries`: el nombre del mapa sería un puntero nulo. Tiene de momento la casilla de `TEST` (4, 11); su sitio se cambia en `region_map_sections.json`. `MAPSEC_TEST` se queda porque varias evoluciones lo usan de marcador.
+- **Biblioteca:** un tileset sin ningún color en uso conserva una paleta vacía. Compactar lo dejaba sin ninguna, y entonces ni la línea de comandos ni el Makefile podían con él.
+- **Tu hoja de Aseprite** (`desarrollo/tileset.png`, 8 filas de 16): está bien organizada salvo el Centro Pokémon naranja, donde 52 trozos de 8×8 mezclan colores de las filas 1 y 2 (el tejado con los cristales). Esa pieza se reparte sola en vez de usar tus filas; como tiene 15 colores, cabe en una paleta igualmente. El Centro morado y la hierba usan tus filas. Las tres salen en el mapa idénticas a la hoja.
+- **Comprobado:** la ROM compila sin avisos y la partida nueva empieza en Pueblo Lavanda con la hierba: en el emulador, cada píxel de la pantalla (menos el jugador) es el de la hierba de tu hoja, con el tinte de la hora. En el fork, el mapa se ve igual y guardar todo no cambia ningún archivo. Las pruebas de la línea de comandos pasan (las de antes sobre el proyecto con `Test` del commit anterior, y 9 con el tileset vacío). El recorrido por `Test` del emulador ya no se puede repetir.
+
 **El fallo de los colores al pintar.** Con albor en una rama sin un solo tileset (como `principal`), porymap trabaja con primario y secundario, y pinta las paletas desde la 6 con las del secundario. El fork dejaba que una pieza cayera en una paleta libre del primario por encima de la 5: en la vista previa se veía bien y en el mapa salía con otros colores. Ahora (`3567a6e7` en el fork), con dos tilesets, las piezas solo usan las paletas del primario (si no caben, no se pinta), y la pestaña Piezas avisa arriba, en amarillo, de que el proyecto no usa un solo tileset por layout.
 
 ## Cómo se ha comprobado
@@ -189,7 +203,7 @@ Para trabajar con una hoja hecha en Aseprite, con todo el arte ya organizado por
    metatile_terrain_type_mask=0x00000F00
    regex_terrain_types=\bMETATILE_NIVEL_
    ```
-   Las máscaras del bloque no hace falta tocarlas: porymap las lee de `include/global.fieldmap.h`.
+   Las máscaras del bloque no hace falta tocarlas: porymap las lee de `include/global.fieldmap.h` (por eso hay que abrir esta rama: con `principal` escribe los bloques con otras). Si tienes `default_primary_tileset=gTileset_General`, cámbialo por `gTileset_Principal` (porymap ya lo coge solo, pero avisa en el registro).
 4. **Conseguir el fork.** Dos formas:
    - **Descargarlo:** en la pestaña Actions de `ivaantxo/porymap`, activar los workflows (en los forks vienen apagados), lanzar *Build Porymap* sobre la rama `claude/rediseno-mapeado-plan-5296ti` y bajar el artefacto `porymap-macos-latest` (o `-15-intel`). No está firmado: la primera vez hay que abrirlo con clic derecho → Abrir.
    - **Compilarlo:** `brew install qt`, y en la rama del fork `qmake porymap.pro && make`.

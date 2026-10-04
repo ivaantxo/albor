@@ -111,7 +111,7 @@ tools/mapeado/mapeado animar <tileset> <nombre> --quitar
 tools/mapeado/mapeado juntar <tileset> <otro tileset>
 ```
 
-- `estampar`: `x` e `y` son píxeles, múltiplos de 8. El mapa se nombra por su layout: `Test`, `Test_Layout` o `LAYOUT_TEST`.
+- `estampar`: `x` e `y` son píxeles, múltiplos de 8. El mapa se nombra por su layout: `PuebloLavanda`, `PuebloLavanda_Layout` o `LAYOUT_PUEBLO_LAVANDA`.
 - `optimizar --compactar`: además renumera desde cero, para quitar los huecos.
 - `cuentas`: lo que ocupa cada tileset ahora, y lo que ocuparía optimizado, con las paletas que carga cada mapa.
 - `exportar`: saca las tres capas en PNG, solo para mirarlas.
