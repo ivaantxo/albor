@@ -7,9 +7,9 @@
   "requires_flash": false,
   "weather": "WEATHER_NONE",
   "map_type": "MAP_TYPE_TOWN",
-  "reservado_1": true,
+  "allow_cycling": false,
   "allow_escaping": false,
-  "reservado_2": false,
+  "allow_running": false,
   "show_map_name": true,
   "battle_scene": "BATTLE_BACKGROUND_NORMAL",
   "connections": null,
@@ -17,5 +17,7 @@
   "warp_events": [],
   "coord_events": [],
   "bg_events": [],
-  "night_music": "MUS_NONE"
+  "night_music": "MUS_NONE",
+  "reservado_1": true,
+  "reservado_2": false
 }

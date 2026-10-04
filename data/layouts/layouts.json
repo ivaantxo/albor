@@ -18,6 +18,16 @@
       "primary_tileset": "gTileset_CentroPokemon",
       "border_filepath": "data/layouts/CentroPokemon/border.bin",
       "blockdata_filepath": "data/layouts/CentroPokemon/map.bin"
+    },
+    {
+      "id": "LAYOUT_PUEBLO_LAVANDA",
+      "name": "PuebloLavanda_Layout",
+      "width": 40,
+      "height": 50,
+      "primary_tileset": "gTileset_Principal",
+      "secondary_tileset": "gTileset_Petalburg",
+      "border_filepath": "data/layouts/PuebloLavanda/border.bin",
+      "blockdata_filepath": "data/layouts/PuebloLavanda/map.bin"
     }
   ]
 }
