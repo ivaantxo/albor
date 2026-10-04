@@ -1,6 +1,6 @@
 # Rediseño del mapeado: informe de ejecución
 
-Estado a 3 de octubre de 2026 de lo que pide `rediseno-mapeado.md`, en la rama `claude/rediseno-mapeado-plan-5296ti`. Las fases 0, 1, 2 y 3 están hechas, compilan y están probadas en emulador. Con la 3, la interfaz del overworld es de bandas sin marco y usa una sola paleta, así que el mapa pasa a tener 15. La 4 y la 5 están en el fork de porymap ([ivaantxo/porymap](https://github.com/ivaantxo/porymap), misma rama). Ese fork trabaja con un solo tileset por layout, sin secundario, y tiene la pestaña **Piezas** para estampar arte libre en una capa: el tileset se rellena solo, avisa cuando no cabe, tiene contadores, capas visibles, optimizar y camino inteligente con piezas. Desde que albor no tiene secundario, el porymap original ya no lo abre: hace falta el fork. La 6 es para después.
+Estado a 4 de octubre de 2026 de lo que pide `rediseno-mapeado.md`, en la rama `claude/rediseno-mapeado-plan-5296ti`. Las fases 0, 1, 2 y 3 están hechas, compilan y están probadas en emulador. Con la 3, la interfaz del overworld es de bandas sin marco y usa una sola paleta, así que el mapa pasa a tener 15. La 4 y la 5 están en el fork de porymap ([ivaantxo/porymap](https://github.com/ivaantxo/porymap), misma rama). Ese fork trabaja con un solo tileset por layout, sin secundario, y tiene la pestaña **Piezas** para estampar arte libre en una capa: el tileset se rellena solo, avisa cuando no cabe, tiene contadores, capas visibles, optimizar y camino inteligente con piezas. Desde que albor no tiene secundario, el porymap original ya no lo abre: hace falta el fork. La 6 es para después.
 
 | Fase | Estado | Commit |
 | --- | --- | --- |
@@ -106,7 +106,7 @@ Porytiles era lo único que sabía meter animaciones de tiles. Con las paletas p
 
 - **Una animación** son unos tiles seguidos del tileset y sus fotogramas, con todos sus colores en una paleta. Se importa desde una carpeta con `00.png`, `01.png`… (los de `desarrollo/graficos/animaciones` sirven tal cual), con un nombre y cuánto dura cada fotograma. Reserva tiles libres y una paleta; importarla otra vez con el mismo nombre la cambia en sus mismos tiles.
 - **Al pintar,** el arte igual al fotograma 0 (también volteado) usa los tiles animados. Lo pintado antes de importarla se anima al optimizar, que además deja cada animación en sus tiles y le ajusta los fotogramas si mueve sus colores.
-- **En el juego,** `animations.bin` (`.animations` en `headers.h`) lleva una ficha por animación y sus fotogramas en 4bpp. `tileset_anims.c` copia cada fotograma a la VRAM cuando toca, en la segunda ranura de animación. La primera se queda para el `callback` de siempre.
+- **En el juego,** `animations.bin` (`.animations` en `headers.h`) lleva una ficha por animación y sus fotogramas en 4bpp. `tileset_anims.c` copia cada fotograma a la VRAM cuando toca. Las animaciones de pokeemerald, escritas a mano para sus tilesets, ya no están (ver *Un solo tileset para todo el juego*); el `callback` del tileset sigue, para lo que no sea cambiar tiles.
 - **Dónde:** `tools/mapeado/mapeado animar <tileset> <nombre> <carpeta> [--cada N]` (y `--quitar`), y en el fork (`cbee81ee`), *Animaciones del tileset* en la pestaña Piezas: importar, elegir (la pone como pieza y la reproduce) y quitar.
 - **Fuera porytiles:** la carpeta `porytiles/` (binario, librerías y su tileset de prueba), `metatile_behaviors_porytiles.h`, sus órdenes en `desarrollo/notas_desarrollo.md` y el paso que lo explicaba aquí.
 
@@ -114,11 +114,23 @@ Porytiles era lo único que sabía meter animaciones de tiles. Con las paletas p
 
 Para trabajar con una hoja hecha en Aseprite, con todo el arte ya organizado por paletas: si una pieza es un PNG indexado con la paleta en filas de 16 colores (el 0 de cada fila, transparente) y cada trozo de 8×8 usa colores de una sola fila, cada fila es una paleta. Al estampar va a una paleta del tileset con esos colores en esos índices (la que ya la tenga, o una nueva con la fila entera) y los tiles guardan los índices de la imagen. Optimizar deja cada trozo en la paleta donde estaba, si puede, así que las filas no se mezclan. Si la pieza no cumple, se reparte sola como siempre; porymap dice debajo de la pieza qué modo usa y por qué. Las animaciones indexadas así usan también su fila.
 
+### Un solo tileset para todo el juego
+
+`gTileset_Principal` es el único tileset de albor, y lo usan todos los mapas:
+
+- **`CentroPokemon` dentro de `Principal`,** con la orden nueva `tools/mapeado/mapeado juntar <tileset> <otro>`: mete tiles, paletas, metatiles con sus atributos y animaciones del otro detrás de los suyos, suma lo que toca a los bloques de sus mapas (la colisión no cambia), los pasa en `layouts.json` y optimiza. Luego se compactó: 256 tiles, 141 metatiles seguidos y 8 paletas; `Test` y el Centro cargan 4 cada uno. Los dos mapas se ven igual píxel a píxel, por datos y en el emulador. La biblioteca tiene `Juntar` para eso.
+- **Fuera** `CentroPokemon`, `Test` (un tileset sin usar) y los 52 de pokeemerald (`General`, `Building` y los 50 secundarios), con sus carpetas, sus reglas de `graphics_file_rules.mk`, sus animaciones en `tileset_anims.c` (que se queda con una sola ranura, la de `animations.bin`), `include/tilesets.h` y las paletas y tiles de `General` que había en `graphics.c`. Ningún mapa los usaba. La ROM baja de tamaño y porymap ya no los ofrece.
+- **El PC de pokeemerald** encendía y apagaba metatiles de `Building` y `BrendansMaysHouse`. Sin esos tilesets, `IsPlayerInFrontOfPC` (en `field_specials.c`) dice siempre que no: el PC funciona, sin el parpadeo, hasta que `Principal` tenga los suyos.
+- **En el fork** (`5fcfa4a9`): con un solo tileset en todo el proyecto desaparece el selector de tileset del panel del mapa, del diálogo de mapa nuevo y de la configuración. Un mapa nuevo ya no se crea con los metatiles por defecto de pokeemerald que no existen en el tileset (el borde `0x1D4`…, que en el juego saldría con basura): pasan a ser el de relleno, o el 0.
+- **`mapjson`:** porymap no escribe `night_music`, `reservado_1` ni `reservado_2`, que albor añadió a los mapas, y un mapa creado en porymap no compilaba. Si faltan, valen `MUS_NONE` y `FALSE`.
+
+**El fallo de los colores al pintar.** Con albor en una rama sin un solo tileset (como `principal`), porymap trabaja con primario y secundario, y pinta las paletas desde la 6 con las del secundario. El fork dejaba que una pieza cayera en una paleta libre del primario por encima de la 5: en la vista previa se veía bien y en el mapa salía con otros colores. Ahora (`3567a6e7` en el fork), con dos tilesets, las piezas solo usan las paletas del primario (si no caben, no se pinta), y la pestaña Piezas avisa arriba, en amarillo, de que el proyecto no usa un solo tileset por layout.
+
 ## Cómo se ha comprobado
 
 - **Compilación en cloud** con arm-none-eabi-gcc 13.2, sin avisos (`-Werror`). Hubo que compilar SuperFamiconv 0.9.2 para Linux, porque el de `tools/superfamiconv/` es un binario de Mac; se pasó con `FAMICONV=` sin tocar el repo.
 - **Emulador:** con libmgba, el mismo recorrido por `Test` con la ROM de antes y con la de cada fase. El recorrido choca con árboles, pisa hierba alta y llega al borde. En los dos casos el jugador acaba en las mismas casillas, con la misma altura y el mismo comportamiento, y las 9 capturas salen idénticas píxel a píxel.
-- **`CentroPokemon`** no se puede alcanzar sin warp. Se ha comprobado por datos: mismo ID y colisión en cada casilla, y el tileset solo usa las paletas 0-5.
+- **`CentroPokemon`** no se puede alcanzar sin warp. Se ha comprobado por datos: mismo ID y colisión en cada casilla, y el tileset solo usa las paletas 0-5. Al juntarlo con `Principal`, además, en el emulador: una ROM que empieza la partida dentro del Centro, antes y después de juntar y compactar, da las mismas 5 capturas píxel a píxel.
 - **Porymap:** comprobado leyendo su código (6.3.1), sin abrirlo. Revisado: máscara de elevación 0, carpeta por defecto del secundario vacío, recorte de límites y lista de "terrain type".
 - **Motor:** 22 escenarios de estampar y optimizar sobre una copia del proyecto:
   - una pieza nueva y su colocación exacta;
@@ -158,6 +170,8 @@ Para trabajar con una hoja hecha en Aseprite, con todo el arte ya organizado por
   - en emulador, dos charcos de `mar` estampados junto al jugador pasan por los fotogramas 4, 5, 6, 7, 8 y 9, uno cada 8 fotogramas del juego, cada uno igual píxel a píxel que el PNG (con el tinte de la noche);
   - en el fork: importar `mar` desde la carpeta, verla reproducirse en la vista de la pieza, estamparla y guardar da los mismos archivos que `mapeado animar` y `mapeado estampar`; al volver a abrir sigue ahí, y quitarla funciona.
 - **Piezas con sus paletas:** 9 escenarios con una hoja indexada de dos filas: crea justo dos paletas, que son las filas color a color; los tiles tienen los índices de la imagen; el 0 de la segunda fila (índice 16) sale transparente; repetirla, o estampar parte de una fila, no crea nada; un trozo que mezcla filas se reparte solo; optimizar deja las filas en sus paletas con los mismos índices; y un mapa sin hueco avisa de qué fila no cabe. En el fork, la misma hoja dice «con las paletas de la imagen» y al estamparla da los mismos archivos que la línea de comandos.
+- **Un solo tileset:** 18 escenarios de `juntar` sobre el proyecto de antes de juntar: los dos mapas se ven igual, `Test` no cambia de números, la colisión del Centro tampoco y sus metatiles van detrás; cada mapa carga las mismas paletas; sale ya optimizado; una animación del otro tileset llega con sus tiles y su paleta, y lo estampado con ella sigue usando los tiles animados; y no junta un tileset consigo mismo, uno que no usa nadie, ni dos con una animación del mismo nombre. La ROM compila sin avisos y el recorrido de siempre sale idéntico. En el fork: el panel del mapa y el diálogo de mapa nuevo ya no tienen selector de tileset, un mapa nuevo sale con `gTileset_Principal` y con el borde dentro del tileset, y la ROM compila con él.
+- **El fallo de los colores,** reproducido y arreglado en el fork con una hoja indexada como las de Aseprite (filas de 16, solo el índice 0 transparente): con albor en `principal` y el fork de antes, el agua y la piedra salían con los colores del secundario; con el de ahora sale el aviso amarillo, la hierba y la tierra salen bien y el agua dice que no cabe. Con albor en esta rama, las cuatro piezas y la hoja entera salen en el mapa idénticas a la imagen, píxel a píxel.
 - **Sin probar en ejecución:**
   - agua, puentes y rampas (no hay ninguno en los mapas);
   - el cruce de conexiones y las partidas guardadas;
@@ -168,18 +182,19 @@ Para trabajar con una hoja hecha en Aseprite, con todo el arte ya organizado por
 
 ## Lo que tienes que hacer tú en local
 
-1. **Usar el fork de porymap:** el original ya no abre albor, porque los layouts no tienen secundario.
-2. **`porymap.project.cfg`** (está en `.gitignore`), para editar el nivel desde el editor de tilesets:
+1. **Abrir en porymap albor en esta rama** (`claude/rediseno-mapeado-plan-5296ti`, o la tuya con ella fusionada). En `principal` no hay un solo tileset: porymap enseña primario y secundario, y antes del arreglo las piezas podían salir con otros colores. El registro de porymap lo dice al abrir el proyecto: `'NUM_TILESETS_PER_LAYOUT' is 1: each layout uses a single tileset.` Y recompilar el fork desde su rama.
+2. **Usar el fork de porymap:** el original ya no abre albor, porque los layouts no tienen secundario.
+3. **`porymap.project.cfg`** (está en `.gitignore`), para editar el nivel desde el editor de tilesets:
    ```
    metatile_terrain_type_mask=0x00000F00
    regex_terrain_types=\bMETATILE_NIVEL_
    ```
    Las máscaras del bloque no hace falta tocarlas: porymap las lee de `include/global.fieldmap.h`.
-3. **Conseguir el fork.** Dos formas:
+4. **Conseguir el fork.** Dos formas:
    - **Descargarlo:** en la pestaña Actions de `ivaantxo/porymap`, activar los workflows (en los forks vienen apagados), lanzar *Build Porymap* sobre la rama `claude/rediseno-mapeado-plan-5296ti` y bajar el artefacto `porymap-macos-latest` (o `-15-intel`). No está firmado: la primera vez hay que abrirlo con clic derecho → Abrir.
    - **Compilarlo:** `brew install qt`, y en la rama del fork `qmake porymap.pro && make`.
-4. **Porytiles ya no se usa.** Rehace el tileset entero desde sus fuentes: borraría lo pintado en porymap, cambiaría los números de los metatiles y volvería a 16 paletas para todo el tileset. Se ha quitado del repo. Las hojas de `desarrollo/graficos` sirven como piezas, y sus animaciones se importan con la pestaña Piezas o con `tools/mapeado/mapeado animar`.
-5. **Partidas guardadas de antes de la fase 1:** la vista del mapa que se guarda al salvar está en el formato viejo. Las casillas alrededor del jugador se verán mal hasta recargar el mapa. Mejor empezar partida nueva.
+5. **Porytiles ya no se usa.** Rehace el tileset entero desde sus fuentes: borraría lo pintado en porymap, cambiaría los números de los metatiles y volvería a 16 paletas para todo el tileset. Se ha quitado del repo. Las hojas de `desarrollo/graficos` sirven como piezas, y sus animaciones se importan con la pestaña Piezas o con `tools/mapeado/mapeado animar`.
+6. **Partidas guardadas de antes de la fase 1:** la vista del mapa que se guarda al salvar está en el formato viejo. Las casillas alrededor del jugador se verán mal hasta recargar el mapa. Mejor empezar partida nueva.
 
 ## Para seguir
 
@@ -187,4 +202,4 @@ Para trabajar con una hoja hecha en Aseprite, con todo el arte ya organizado por
   - las bandas pasan a ocupar paletas y memoria de sprites;
   - la mezcla con el mapa sigue funcionando (los sprites semitransparentes usan los mismos coeficientes que BG0);
   - en porymap ya no hay que hacer nada: el fork admite las 16 paletas con `NUM_PALS_IN_PRIMARY` a 16.
-- **Limpieza pendiente, fuera de este plan:** los 50 secundarios y `General` de pokeemerald, que no usa nadie. Sus animaciones en `tileset_anims.c` siguen escritas para el secundario en la posición 512 y ahora apuntarían fuera del tileset si alguien las activara.
+- **Los metatiles con nombre de pokeemerald** (`include/constants/metatile_labels.h`) siguen ahí porque el código los usa como números (puertas, bases secretas, puzles…). Con `Principal` no apuntan a nada suyo: cuando haga falta una de esas mecánicas, habrá que darle sus metatiles con nombre `METATILE_Principal_…`, que optimizar respeta.

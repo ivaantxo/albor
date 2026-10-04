@@ -36,7 +36,6 @@
 #include "strings.h"
 #include "task.h"
 #include "text.h"
-#include "tilesets.h"
 #include "wallclock.h"
 #include "window.h"
 #include "constants/event_objects.h"
@@ -553,29 +552,12 @@ void FieldShowRegionMap(void)
     SetMainCallback2(CB2_FieldShowRegionMap);
 }
 
-static bool32 IsBuildingPCTile(u32 tileId)
-{
-    return gMapHeader.mapLayout->tileset == &gTileset_Building && (tileId == METATILE_Building_PC_On || tileId == METATILE_Building_PC_Off);
-}
-
-static bool32 IsPlayerHousePCTile(u32 tileId)
-{
-    return gMapHeader.mapLayout->tileset == &gTileset_BrendansMaysHouse
-        && (tileId == METATILE_BrendansMaysHouse_BrendanPC_On
-            || tileId == METATILE_BrendansMaysHouse_BrendanPC_Off
-            || tileId == METATILE_BrendansMaysHouse_MayPC_On
-            || tileId == METATILE_BrendansMaysHouse_MayPC_Off);
-}
-
+// El efecto de encender y apagar el PC cambia metatiles de los tilesets de pokeemerald
+// (Building y BrendansMaysHouse), que en albor no estan: hasta que el tileset tenga los
+// suyos, no se hace.
 static bool8 IsPlayerInFrontOfPC(void)
 {
-    s16 x, y;
-    u32 tileInFront;
-
-    GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
-    tileInFront = MapGridGetMetatileIdAt(x, y);
-
-    return IsBuildingPCTile(tileInFront) || IsPlayerHousePCTile(tileInFront);
+    return FALSE;
 }
 
 // Task data for Task_PCTurnOnEffect and Task_LotteryCornerComputerEffect

@@ -15,7 +15,7 @@
       "name": "CentroPokemon_Layout",
       "width": 14,
       "height": 10,
-      "primary_tileset": "gTileset_CentroPokemon",
+      "primary_tileset": "gTileset_Principal",
       "border_filepath": "data/layouts/CentroPokemon/border.bin",
       "blockdata_filepath": "data/layouts/CentroPokemon/map.bin"
     }

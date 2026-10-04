@@ -44,6 +44,9 @@ const char *const kUso =
     "      dice). Al pintar, el fotograma 0 se anima solo\n"
     "  animar <tileset> <nombre> --quitar\n"
     "      quita la animacion: sus tiles se quedan con el fotograma 0\n"
+    "  juntar <tileset> <otro tileset>\n"
+    "      mete todo el otro tileset en el primero, pasa sus mapas al primero y\n"
+    "      optimiza, para que se junte lo repetido. El otro queda sin usar\n"
     "\n"
     "El mapa se nombra por su layout: Test, Test_Layout o LAYOUT_TEST. El tileset, con o\n"
     "sin gTileset_. Sin nombrar ninguno, se hacen todos los que use algun layout. Se\n"
@@ -334,6 +337,58 @@ int OrdenOptimizar(const Formato &f, const std::vector<InfoLayout> &todos, const
     return 0;
 }
 
+int OrdenJuntar(const Formato &f, std::vector<InfoLayout> &todos, const std::vector<std::string> &args)
+{
+    if (args.size() != 2) {
+        fprintf(stderr, "juntar <tileset> <otro tileset>\n");
+        return 1;
+    }
+    std::string error;
+    const std::string destino = Etiqueta(args[0]), origen = Etiqueta(args[1]);
+    Cargado d, o;
+    if (destino == origen || !Cargar(todos, destino, d, error) || !Cargar(todos, origen, o, error)) {
+        fprintf(stderr, "%s\n", error.empty() ? "son el mismo tileset" : error.c_str());
+        return 1;
+    }
+    if (o.layouts.empty()) {
+        fprintf(stderr, "ningun layout usa %s: no hay nada que juntar\n", origen.c_str());
+        return 1;
+    }
+    int primero = 0;
+    if (!Juntar(f, d.ts, o.ts, &primero, error)) {
+        fprintf(stderr, "%s en %s: %s\n", origen.c_str(), destino.c_str(), error.c_str());
+        return 2;
+    }
+    int cambiados = 0;
+    bool bien = GuardarTileset(d.info, d.ts, &cambiados, error);
+    for (size_t i = 0; i < o.layouts.size(); i++)
+        for (auto *lista : {&o.mapas[i].bloques, &o.mapas[i].borde}) {
+            for (uint16_t &b : *lista)
+                b = (((b & f.mascaraId) + primero) & f.mascaraId) | (b & ~f.mascaraId);
+            bien &= GuardarBloques(lista == &o.mapas[i].bloques ? o.layouts[i].blockdata : o.layouts[i].borde,
+                                   *lista, &cambiados);
+        }
+    bien &= CambiarTilesetDeLayouts(origen, destino, &cambiados);
+    if (!bien) {
+        fprintf(stderr, "%s\n", error.empty() ? "no se han podido escribir todos los archivos" : error.c_str());
+        return 1;
+    }
+    printf("%s: %d tiles, %d paletas, %d metatiles (desde el %d) y %d animaciones de %s; %d layouts pasan a %s\n",
+           destino.c_str(), (int)o.ts.tiles.size(), (int)o.ts.paletas.size(), (int)o.ts.metatiles.size(), primero,
+           (int)o.ts.animaciones.size(), origen.c_str(), (int)o.layouts.size(), destino.c_str());
+    // Lo repetido entre los dos se junta optimizando.
+    todos.clear();
+    if (!LeerLayouts(todos, error)) {
+        fprintf(stderr, "%s\n", error.c_str());
+        return 1;
+    }
+    if (OrdenOptimizar(f, todos, destino, true, false) != 0)
+        return 1;
+    printf("%s ya no lo usa ningun layout: se puede quitar de src/data/tilesets (headers.h, graphics.h y "
+           "metatiles.h) y borrar su carpeta\n", origen.c_str());
+    return 0;
+}
+
 int OrdenExportar(const Formato &f, const std::vector<InfoLayout> &todos, const std::vector<std::string> &args)
 {
     if (args.size() != 2) {
@@ -410,6 +465,8 @@ int main(int argc, char **argv)
         return OrdenExportar(formato, layouts, args);
     if (orden == "animar")
         return OrdenAnimar(formato, layouts, args, cada, quitar);
+    if (orden == "juntar")
+        return OrdenJuntar(formato, layouts, args);
     if (orden == "optimizar" || orden == "cuentas") {
         std::vector<std::string> tilesets;
         for (const std::string &a : args)

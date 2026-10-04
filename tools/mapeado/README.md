@@ -108,6 +108,7 @@ tools/mapeado/mapeado cuentas [tileset...]
 tools/mapeado/mapeado exportar <mapa> <carpeta>
 tools/mapeado/mapeado animar <tileset> <nombre> <carpeta> [--cada N]
 tools/mapeado/mapeado animar <tileset> <nombre> --quitar
+tools/mapeado/mapeado juntar <tileset> <otro tileset>
 ```
 
 - `estampar`: `x` e `y` son píxeles, múltiplos de 8. El mapa se nombra por su layout: `Test`, `Test_Layout` o `LAYOUT_TEST`.
@@ -115,6 +116,7 @@ tools/mapeado/mapeado animar <tileset> <nombre> --quitar
 - `cuentas`: lo que ocupa cada tileset ahora, y lo que ocuparía optimizado, con las paletas que carga cada mapa.
 - `exportar`: saca las tres capas en PNG, solo para mirarlas.
 - `animar`: mete en el tileset la animación de la carpeta, o la cambia si ya hay una con ese nombre (como mucho 17 letras). `--cada N`: cuántos fotogramas del juego dura cada uno. `--quitar` la quita.
+- `juntar`: mete todo el otro tileset (tiles, paletas, metatiles con sus atributos y animaciones) en el primero, pasa sus mapas al primero sin cambiarles el arte ni la colisión, y optimiza. El otro queda sin usar, para quitarlo de `src/data/tilesets`. Así se juntó `CentroPokemon` en `Principal`, que es el único tileset de albor.
 
 ## La biblioteca y el fork de porymap
 
@@ -125,6 +127,7 @@ La biblioteca es `mapeado.h` + `mapeado.cpp`. No lee ni escribe archivos ni depe
 - **`PintarLayout`:** las capas por separado.
 - **`PaletasDelMapa`:** las paletas del tileset que carga un mapa.
 - **`Animar`** y **`QuitarAnimacion`:** meter, cambiar o quitar una animación; `BytesDeAnimaciones` y `AnimacionesDeBytes` leen y escriben `animations.bin`.
+- **`Juntar`:** un tileset dentro de otro.
 
 El fork de porymap lleva una copia tal cual en `src/lib/mapeado`, y `src/core/stamping.cpp` la conecta con sus tilesets y layouts. Los cambios se hacen aquí primero y se copian allí. Estampar y optimizar en porymap dan los mismos archivos que esta línea de comandos.
 
