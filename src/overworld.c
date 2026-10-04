@@ -623,16 +623,19 @@ void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
     RunOnTransitionMapScript();
     InitMap();
 
-    // Con el mismo tileset no hay nada que cargar, y es lo que conviene: lo que queda en
+    // Con el mismo tileset no hay tiles que cargar, y es lo que conviene: lo que queda en
     // pantalla del mapa anterior se pinto con su tileset, y con otro distinto se ve mal
     // hasta que sale de la pantalla. Entre mapas con tileset distinto, mejor un warp.
     if (gMapHeader.mapLayout->tileset != tilesetAnterior)
     {
         CopyMapTilesetToVramUsingHeap(gMapHeader.mapLayout);
-        LoadMapTilesetPalettes(gMapHeader.mapLayout, TRUE); // skip copying to Faded, gamma shift will take care of it
-        ApplyWeatherColorMapToPals(0, NUM_PALS_IN_TILESET);
         InitTilesetAnimations();
     }
+    // Las paletas si, que son de cada mapa; y con ellas cambian los huecos donde estan,
+    // asi que se vuelve a pintar lo que se ve.
+    LoadMapTilesetPalettes(gMapHeader.mapLayout, TRUE); // skip copying to Faded, gamma shift will take care of it
+    ApplyWeatherColorMapToPals(0, NUM_PALS_IN_TILESET);
+    DrawWholeMapView();
 
     DoCurrentWeather();
     RunOnResumeMapScript();
@@ -1120,18 +1123,17 @@ void UpdateAltBgPalettes(u16 palettes)
     u32 i = 1;
     if (!MapaTieneLuzNatural(gMapHeader.mapType))
         return;
-    palettes &= tileset->swapPalettes;
     palettes &= PALETAS_FONDO_CON_HORA;
     palettes >>= 1; // start at palette 1
-    if (!palettes)
+    if (!palettes || !tileset->swapPalettes)
         return;
-    // La version de noche va en la paleta (i + 9) % 16 del mismo tileset. Las 13 del
-    // mapa no dejan sitio para todas: un tileset que quiera noche en unas cuantas tiene
-    // que dejar libres las paletas donde caen.
+    // Los huecos tienen las paletas del tileset que carga el mapa. Para la paleta N del
+    // tileset (N < 16) con su bit en swapPalettes, la version de noche es la (N + 9) % 16.
     while (palettes)
     {
-        if (palettes & 1)
-            AvgPaletteWeighted(&((u16*)tileset->palettes)[PLTT_ID(i)], &((u16*)tileset->palettes)[PLTT_ID((i + 9) % 16)], gPlttBufferUnfaded + PLTT_ID(i), blendHoraActual.intensidadRelativa);
+        s32 paleta = GetMapPaletteInSlot(i);
+        if ((palettes & 1) && paleta >= 0 && paleta < 16 && (tileset->swapPalettes & (1 << paleta)))
+            AvgPaletteWeighted((u16 *)tileset->palettes[paleta], (u16 *)tileset->palettes[(paleta + 9) % 16], gPlttBufferUnfaded + PLTT_ID(i), blendHoraActual.intensidadRelativa);
         i++;
         palettes >>= 1;
     }

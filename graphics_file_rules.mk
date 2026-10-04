@@ -23,6 +23,14 @@ types := normal fight flying poison ground rock bug ghost steel fire water grass
 
 ### Tilesets ###
 
+# Las paletas de un tileset de albor, juntas y por orden: palettes/00.pal, 01.pal...
+# graphics.h las incluye con un solo INCBIN, asi que una paleta nueva no hay que
+# apuntarla en ningun sitio. Cada mapa carga solo las que usan sus metatiles: ver
+# LoadMapTilesetPalettes en src/fieldmap.c.
+.SECONDEXPANSION:
+$(TILESETGFXDIR)/%/palettes.gbapal: $$(addsuffix .gbapal,$$(basename $$(wildcard $(TILESETGFXDIR)/$$*/palettes/*.pal)))
+	cat $$(printf '%s\n' $^ | sort -V) >$@
+
 $(TILESETGFXDIR)/secondary/petalburg/tiles.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -num_tiles 159 -Wnum_tiles
 

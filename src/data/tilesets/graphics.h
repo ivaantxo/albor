@@ -1120,24 +1120,12 @@ const u16 ALIGNED(4) gTilesetPalettes_MysteryEventsHouse[][16] =
     INCBIN_U16("data/tilesets/secondary/mystery_events_house/palettes/15.gbapal"),
 };
 
-const u16 gTilesetPalettes_Principal[][16] =
-{
-    INCBIN_U16("data/tilesets/primary/principal/palettes/00.gbapal"),
-    INCBIN_U16("data/tilesets/primary/principal/palettes/01.gbapal"),
-    INCBIN_U16("data/tilesets/primary/principal/palettes/02.gbapal"),
-    INCBIN_U16("data/tilesets/primary/principal/palettes/03.gbapal"),
-    INCBIN_U16("data/tilesets/primary/principal/palettes/04.gbapal"),
-    INCBIN_U16("data/tilesets/primary/principal/palettes/05.gbapal"),
-    INCBIN_U16("data/tilesets/primary/principal/palettes/06.gbapal"),
-    INCBIN_U16("data/tilesets/primary/principal/palettes/07.gbapal"),
-    INCBIN_U16("data/tilesets/primary/principal/palettes/08.gbapal"),
-    INCBIN_U16("data/tilesets/primary/principal/palettes/09.gbapal"),
-    INCBIN_U16("data/tilesets/primary/principal/palettes/10.gbapal"),
-    INCBIN_U16("data/tilesets/primary/principal/palettes/11.gbapal"),
-    INCBIN_U16("data/tilesets/primary/principal/palettes/12.gbapal"),
-    INCBIN_U16("data/tilesets/primary/principal/palettes/13.gbapal"),
-    INCBIN_U16("data/tilesets/primary/principal/palettes/14.gbapal"),
-};
+// Todas las paletas del tileset, palettes/00.pal, 01.pal..., juntas (graphics_file_rules.mk).
+// Van seguidas, sin las llaves de cada paleta.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-braces"
+const u16 ALIGNED(4) gTilesetPalettes_Principal[][16] = INCBIN_U16("data/tilesets/primary/principal/palettes.gbapal");
+#pragma GCC diagnostic pop
 
 const u32 gTilesetTiles_Principal[] = INCBIN_U32("data/tilesets/primary/principal/tiles.4bpp.lz");
 
@@ -1160,23 +1148,11 @@ const u16 gTilesetPalettes_Test[][16] =
 
 const u32 gTilesetTiles_Test[] = INCBIN_U32("data/tilesets/primary/test/tiles.4bpp.lz");
 
-const u16 gTilesetPalettes_CentroPokemon[][16] =
-{
-    INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes/00.gbapal"),
-    INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes/01.gbapal"),
-    INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes/02.gbapal"),
-    INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes/03.gbapal"),
-    INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes/04.gbapal"),
-    INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes/05.gbapal"),
-    INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes/06.gbapal"),
-    INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes/07.gbapal"),
-    INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes/08.gbapal"),
-    INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes/09.gbapal"),
-    INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes/10.gbapal"),
-    INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes/11.gbapal"),
-    INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes/12.gbapal"),
-    INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes/13.gbapal"),
-    INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes/14.gbapal"),
-};
+// Todas las paletas del tileset, palettes/00.pal, 01.pal..., juntas (graphics_file_rules.mk).
+// Van seguidas, sin las llaves de cada paleta.
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-braces"
+const u16 ALIGNED(4) gTilesetPalettes_CentroPokemon[][16] = INCBIN_U16("data/tilesets/primary/centro_pokemon/palettes.gbapal");
+#pragma GCC diagnostic pop
 
 const u32 gTilesetTiles_CentroPokemon[] = INCBIN_U32("data/tilesets/primary/centro_pokemon/tiles.4bpp.lz");

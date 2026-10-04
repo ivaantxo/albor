@@ -4,8 +4,10 @@
 #include "../mapjson/json11.h"
 
 #include <cstdio>
+#include <dirent.h>
 #include <fstream>
 #include <regex>
+#include <set>
 #include <sstream>
 #include <sys/stat.h>
 
@@ -83,13 +85,38 @@ bool Define(const std::string &texto, const std::string &nombre, int *valor)
 bool Incbin(const std::string &texto, const std::string &etiqueta, std::string *ruta)
 {
     std::smatch m;
-    if (!std::regex_search(texto, m, std::regex(etiqueta + "\\[\\]\\s*=\\s*INCBIN_U(?:16|32)\\(\"([^\"]+)\"\\)")))
+    if (!std::regex_search(texto, m, std::regex(etiqueta + "\\[\\](?:\\[16\\])?\\s*=\\s*INCBIN_U(?:8|16|32)\\(\"([^\"]+)\"\\)")))
         return false;
     *ruta = m[1].str();
     return true;
 }
 
+// Las palettes/NN.pal de una carpeta, seguidas desde la 00.
+std::vector<std::string> PaletasDeCarpeta(const std::string &carpeta)
+{
+    std::set<int> numeros;
+    if (DIR *d = opendir(carpeta.c_str())) {
+        while (struct dirent *e = readdir(d)) {
+            std::string nombre = e->d_name;
+            if (std::regex_match(nombre, std::regex("[0-9]+\\.pal")))
+                numeros.insert(std::stoi(nombre));
+        }
+        closedir(d);
+    }
+    std::vector<std::string> r;
+    for (int n = 0; numeros.count(n); n++)
+        r.push_back(RutaPaleta(carpeta, n));
+    return r;
+}
+
 } // namespace
+
+std::string RutaPaleta(const std::string &carpeta, int n)
+{
+    char nombre[16];
+    snprintf(nombre, sizeof nombre, "/%02d.pal", n);
+    return carpeta + nombre;
+}
 
 bool Existe(const std::string &ruta)
 {
@@ -113,6 +140,9 @@ bool LeerFormato(Formato &f, std::string &error)
     }
     f.mascaraId = id;
     f.mascaraColision = colision;
+    int paletasTileset;
+    if (Define(fieldmap, "MAX_PALS_IN_TILESET", &paletasTileset))
+        f.maxPaletasTileset = paletasTileset;
     return true;
 }
 
@@ -174,8 +204,13 @@ bool LeerInfoTileset(const std::string &etiqueta, InfoTileset &info, std::string
         info.atributos = ruta;
     else
         bien = false;
+    if (!campo("metatilePalettes").empty() && Incbin(metatiles, campo("metatilePalettes"), &ruta))
+        info.paletasMetatiles = ruta;
     std::string pal = campo("palettes");
-    if (!pal.empty() &&
+    if (!pal.empty() && Incbin(graficos, pal, &ruta)) {
+        info.carpetaPaletas = Carpeta(ruta) + "/palettes";
+        info.paletas = PaletasDeCarpeta(info.carpetaPaletas);
+    } else if (!pal.empty() &&
         std::regex_search(graficos, m, std::regex(pal + "\\[\\]\\[16\\]\\s*=\\s*\\{([^}]*)\\}"))) {
         std::string lista = m[1].str();
         std::regex inc("INCBIN_U16\\(\"([^\"]+)\"\\)");
@@ -260,9 +295,18 @@ bool CargarTileset(const InfoTileset &info, Tileset &ts, std::string &error)
         error = "No se puede leer " + info.metatiles;
         return false;
     }
+    // Si no cuadra con metatiles.bin (lo ha regenerado porytiles, por ejemplo), no vale:
+    // la paleta es la de la entrada, y se vuelve a escribir al guardar.
+    std::vector<uint8_t> paletas;
+    if (!info.paletasMetatiles.empty() && (!LeerBytes(info.paletasMetatiles, paletas) || paletas.size() != datos.size()))
+        paletas.clear();
     for (size_t i = 0; i + 12 <= datos.size(); i += 12) {
         Metatile m;
-        std::copy(datos.begin() + i, datos.begin() + i + 12, m.begin());
+        for (int q = 0; q < 12; q++) {
+            m[q] = datos[i + q];
+            if (i + q < paletas.size())
+                m[q] = (m[q] & 0xFFF) | ((uint32_t)paletas[i + q] << 12);
+        }
         ts.metatiles.push_back(m);
     }
     if (!CargarBloques(info.atributos, ts.atributos)) {
@@ -298,8 +342,22 @@ bool CargarImagen(const std::string &ruta, Imagen &img, std::string &error)
     return true;
 }
 
-bool GuardarTileset(const InfoTileset &info, const Tileset &ts, int *cambiados)
+bool GuardarTileset(const InfoTileset &info, const Tileset &ts, int *cambiados, std::string &error)
 {
+    if (ts.paletas.size() > info.paletas.size() && info.carpetaPaletas.empty()) {
+        error = info.etiqueta + " tiene sus paletas en una lista en src/data/tilesets/graphics.h y no caben las " +
+                std::to_string(ts.paletas.size()) + " que hacen falta: pasala a un INCBIN de palettes.gbapal";
+        return false;
+    }
+    if (info.paletasMetatiles.empty())
+        for (const Metatile &m : ts.metatiles)
+            for (uint32_t e : m)
+                if (PaletaDeEntrada(e) > 15) {
+                    error = info.etiqueta + " no tiene metatilePalettes en src/data/tilesets/headers.h y hace falta "
+                                            "para usar mas de 16 paletas";
+                    return false;
+                }
+
     const int porFila = 16;
     int filas = (ts.tiles.size() + porFila - 1) / porFila;
     std::vector<uint8_t> idx(porFila * 8 * filas * 8, 0);
@@ -313,7 +371,8 @@ bool GuardarTileset(const InfoTileset &info, const Tileset &ts, int *cambiados)
             grises.push_back(i * 16);
     bool bien = EscribirSiCambia(info.tiles, PngIndices(porFila * 8, filas * 8, idx, grises), cambiados);
 
-    for (size_t p = 0; p < info.paletas.size() && p < ts.paletas.size(); p++) {
+    for (size_t p = 0; p < ts.paletas.size(); p++) {
+        std::string ruta = p < info.paletas.size() ? info.paletas[p] : RutaPaleta(info.carpetaPaletas, p);
         std::string texto = "JASC-PAL\r\n0100\r\n16\r\n";
         for (int i = 0; i < 16; i++) {
             int r = 248, g = 0, b = 248;
@@ -321,13 +380,25 @@ bool GuardarTileset(const InfoTileset &info, const Tileset &ts, int *cambiados)
                 ARgb(ts.paletas[p][i], &r, &g, &b);
             texto += std::to_string(r) + " " + std::to_string(g) + " " + std::to_string(b) + "\r\n";
         }
-        bien &= EscribirSiCambia(info.paletas[p], std::vector<uint8_t>(texto.begin(), texto.end()), cambiados);
+        bien &= EscribirSiCambia(ruta, std::vector<uint8_t>(texto.begin(), texto.end()), cambiados);
     }
+    // Las que sobran de la carpeta, que si no el Makefile las seguiria juntando.
+    if (!info.carpetaPaletas.empty())
+        for (size_t p = ts.paletas.size(); p < info.paletas.size(); p++)
+            if (remove(info.paletas[p].c_str()) == 0 && cambiados)
+                (*cambiados)++;
 
+    // En metatiles.bin la paleta va en 4 bits; la del tileset entera, en otro archivo.
     std::vector<uint16_t> metatiles;
+    std::vector<uint8_t> paletas;
     for (const Metatile &m : ts.metatiles)
-        metatiles.insert(metatiles.end(), m.begin(), m.end());
+        for (uint32_t e : m) {
+            metatiles.push_back((e & 0xFFF) | ((PaletaDeEntrada(e) & 0xF) << 12));
+            paletas.push_back(PaletaDeEntrada(e));
+        }
     bien &= EscribirSiCambia(info.metatiles, U16(metatiles), cambiados);
+    if (!info.paletasMetatiles.empty())
+        bien &= EscribirSiCambia(info.paletasMetatiles, paletas, cambiados);
     bien &= EscribirSiCambia(info.atributos, U16(ts.atributos), cambiados);
     return bien;
 }

@@ -21,8 +21,14 @@ struct InfoLayout {
 struct InfoTileset {
     std::string etiqueta;                 // gTileset_Principal
     std::string tiles;                    // .png
-    std::vector<std::string> paletas;     // .pal
+    // Las paletas del tileset, .pal. Con un INCBIN de palettes.gbapal en graphics.h son
+    // todas las palettes/NN.pal de su carpeta (00, 01...), que el Makefile junta.
+    std::vector<std::string> paletas;
+    std::string carpetaPaletas;           // esa carpeta; vacia si van en una lista
     std::string metatiles, atributos;
+    // La paleta del tileset de cada entrada de metatile, un byte por entrada. Vacio si
+    // el tileset no tiene (entonces la paleta es la de la entrada, y no pasa de 15).
+    std::string paletasMetatiles;
 };
 
 extern const char *const kNombreCapa[mapeado::NUM_CAPAS]; // baja, media, alta
@@ -40,11 +46,12 @@ bool CargarBloques(const std::string &ruta, std::vector<uint16_t> &bloques);
 bool CargarImagen(const std::string &ruta, mapeado::Imagen &img, std::string &error);
 
 // Escriben solo si el contenido cambia. Devuelven false si no se pudo escribir.
-bool GuardarTileset(const InfoTileset &info, const mapeado::Tileset &ts, int *cambiados);
+bool GuardarTileset(const InfoTileset &info, const mapeado::Tileset &ts, int *cambiados, std::string &error);
 bool GuardarBloques(const std::string &ruta, const std::vector<uint16_t> &bloques, int *cambiados);
 bool GuardarCapa(const std::string &ruta, const mapeado::Imagen &img, int *cambiados);
 
 bool Existe(const std::string &ruta);
+std::string RutaPaleta(const std::string &carpeta, int n); // carpeta/NN.pal
 
 } // namespace proyecto
 

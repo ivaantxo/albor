@@ -26,10 +26,12 @@ const char *const kUso =
     "      pieza borra la capa; sin el, deja lo que hubiera debajo\n"
     "  optimizar [tileset...] [--compactar]\n"
     "      reempaqueta el tileset desde lo pintado: junta metatiles duplicados, quita\n"
-    "      los que no usa ningun mapa y libera tiles y colores. --compactar ademas\n"
+    "      los que no usa ningun mapa, libera tiles y colores y reparte los colores\n"
+    "      para que cada mapa cargue las menos paletas posibles. --compactar ademas\n"
     "      renumera desde cero para quitar los huecos\n"
     "  cuentas [tileset...]\n"
-    "      lo que ocupa cada tileset ahora, y lo que ocuparia optimizado\n"
+    "      lo que ocupa cada tileset ahora, y lo que ocuparia optimizado, con las\n"
+    "      paletas que carga cada mapa (cada uno carga solo las de sus metatiles)\n"
     "  exportar <mapa> <carpeta>\n"
     "      las tres capas del mapa en PNG, para mirarlas\n"
     "\n"
@@ -77,7 +79,12 @@ bool Cargar(const std::vector<InfoLayout> &todos, const std::string &etiqueta, C
 bool Guardar(const Cargado &c, const Tileset &ts, const std::vector<std::vector<uint16_t>> &bloques,
              const std::vector<std::vector<uint16_t>> &bordes, int *cambiados)
 {
-    bool bien = GuardarTileset(c.info, ts, cambiados);
+    std::string error;
+    bool bien = GuardarTileset(c.info, ts, cambiados, error);
+    if (!error.empty()) {
+        fprintf(stderr, "%s\n", error.c_str());
+        return false;
+    }
     for (size_t i = 0; i < c.layouts.size(); i++) {
         bien &= GuardarBloques(c.layouts[i].blockdata, bloques[i], cambiados);
         bien &= GuardarBloques(c.layouts[i].borde, bordes[i], cambiados);
@@ -95,8 +102,8 @@ void CuentasActuales(const Formato &f, const Cargado &c)
             for (uint16_t b : *lista)
                 metatiles.insert(b & f.mascaraId);
     for (const Metatile &m : c.ts.metatiles)
-        for (uint16_t e : m) {
-            int t = e & 0x3FF, p = e >> 12;
+        for (uint32_t e : m) {
+            int t = TileDeEntrada(e), p = PaletaDeEntrada(e);
             if (t == 0 || t >= (int)c.ts.tiles.size())
                 continue;
             tiles.insert(t);
@@ -108,22 +115,28 @@ void CuentasActuales(const Formato &f, const Cargado &c)
     int paletas = 0;
     for (auto &s : colores)
         paletas += !s.empty();
-    printf("%s: %d/%d tiles (%d en uso), %d metatiles (%d en los mapas), %d/%d paletas, colores por paleta:",
+    printf("%s: %d/%d tiles (%d en uso), %d metatiles (%d en los mapas), %d paletas (%d en uso), colores por paleta:",
            c.info.etiqueta.c_str(), (int)c.ts.tiles.size(), f.maxTiles, (int)tiles.size() + 1,
-           (int)c.ts.metatiles.size(), (int)metatiles.size(), paletas, f.maxPaletas);
+           (int)c.ts.metatiles.size(), (int)metatiles.size(), (int)c.ts.paletas.size(), paletas);
     for (auto &s : colores)
         printf(" %d", (int)s.size());
+    printf("\n  paletas que carga cada mapa (caben %d):", f.maxPaletas);
+    for (const MapaDelTileset &m : c.mapas)
+        printf(" %s %d", m.nombre.c_str(), (int)PaletasDelMapa(c.ts, m.bloques, m.borde, f.mascaraId).size());
     printf("\n");
 }
 
-void CuentasOptimizado(const Formato &f, const Estadisticas &est)
+void CuentasOptimizado(const Formato &f, const Cargado &c, const Estadisticas &est)
 {
     printf("  optimizado: %d/%d tiles, %d metatiles", est.tiles, f.maxTiles, est.metatiles);
     if (est.metatilesHuecos)
         printf(" (y %d huecos)", est.metatilesHuecos);
-    printf(", %d/%d paletas, colores por paleta:", est.paletas, f.maxPaletas);
+    printf(", %d paletas en uso, colores por paleta:", est.paletas);
     for (int n : est.coloresPorPaleta)
         printf(" %d", n);
+    printf("\n  paletas que carga cada mapa (caben %d):", f.maxPaletas);
+    for (size_t i = 0; i < c.mapas.size() && i < est.paletasPorLayout.size(); i++)
+        printf(" %s %d", c.mapas[i].nombre.c_str(), est.paletasPorLayout[i]);
     printf("\n");
 }
 
@@ -185,8 +198,10 @@ int OrdenEstampar(const Formato &f, const std::vector<InfoLayout> &todos, const 
         fprintf(stderr, "no se han podido escribir todos los archivos\n");
         return 1;
     }
-    printf("%s: %d casillas, %d metatiles nuevos, %d tiles nuevos, %d colores nuevos\n", l->nombre.c_str(),
-           r.casillas, r.metatilesNuevos, r.tilesNuevos, r.coloresNuevos);
+    printf("%s: %d casillas, %d metatiles nuevos, %d tiles nuevos, %d colores nuevos, %d paletas nuevas; "
+           "el mapa carga %d de %d paletas\n",
+           l->nombre.c_str(), r.casillas, r.metatilesNuevos, r.tilesNuevos, r.coloresNuevos, r.paletasNuevas,
+           r.paletasMapa, f.maxPaletas);
     return 0;
 }
 
@@ -208,7 +223,7 @@ int OrdenOptimizar(const Formato &f, const std::vector<InfoLayout> &todos, const
         printf("  aviso: %s\n", a.c_str());
     if (!escribir) {
         CuentasActuales(f, c);
-        CuentasOptimizado(f, s.est);
+        CuentasOptimizado(f, c, s.est);
         return 0;
     }
     int cambiados = 0;
@@ -216,7 +231,7 @@ int OrdenOptimizar(const Formato &f, const std::vector<InfoLayout> &todos, const
         fprintf(stderr, "%s: no se han podido escribir todos los archivos\n", etiqueta.c_str());
         return 1;
     }
-    CuentasOptimizado(f, s.est);
+    CuentasOptimizado(f, c, s.est);
     printf("  %d metatiles quitados o juntados; %d archivos cambiados\n", s.est.metatilesQuitados, cambiados);
     return 0;
 }

@@ -87,6 +87,19 @@ El fork está en [ivaantxo/porymap](https://github.com/ivaantxo/porymap), rama `
 - **Un solo tileset por layout** (`99086e0b` en el fork): con `NUM_TILESETS_PER_LAYOUT` a 1, el primario lo tiene todo (hasta 1024 tiles y 16 paletas), no se carga ningún secundario ni sus paletas, el secundario desaparece de la interfaz y `layouts.json` se guarda sin él.
 - **CI:** al lanzar a mano el workflow *Build Porymap* desde la pestaña Actions del fork, el job de macOS sube el `.dmg` como artefacto descargable (`70d0677a` en el fork).
 
+### Paletas por mapa
+
+Antes las 15 paletas eran del tileset entero: todos los mapas cargaban las mismas, y lo que se pintaba en uno se quedaba ocupando sitio en los demás. Ahora:
+
+- **El tileset guarda las paletas de todos sus mapas,** hasta 256 (`MAX_PALS_IN_TILESET` en `fieldmap.h`). Están en `palettes/00.pal`, `01.pal`…, y el Makefile las junta en `palettes.gbapal` (regla en `graphics_file_rules.mk`), que `graphics.h` incluye de una vez. Una paleta nueva no hay que apuntarla en ningún sitio.
+- **Cada entrada de metatile lleva su paleta del tileset** en `metatile_palettes.bin`, un byte por entrada (`.metatilePalettes` en `headers.h`). En `metatiles.bin` quedan los 4 bits bajos. `Principal` y `CentroPokemon` se han pasado tal cual: cada entrada con la paleta que ya tenía.
+- **Cada mapa carga solo las paletas de sus metatiles** (casillas y borde), como mucho 15. No se guarda en ningún sitio: se calcula cada vez, en el editor y en el juego, así que no se arrastra ninguna de un mapa a otro.
+- **En el juego,** `LoadMapTilesetPalettes` recorre el blockdata al cargar el mapa y pone sus paletas en los huecos 0-14, por orden; los que sobran quedan en negro. `GetMetatileTilesForMap` da las entradas de un metatile con el hueco de cada paleta, y lo usan el dibujo del mapa, la tienda y las puertas (sus números de paleta son ya paletas del tileset). Una paleta que el mapa no cargó al entrar (un `setmetatile`, una puerta) se carga al dibujarla en un hueco libre. La versión de noche de `swapPalettes` también va por paleta del tileset.
+- **Al pintar,** un trozo de 8×8 va primero a una paleta que el mapa ya carga y tiene sus colores; luego a una del tileset que los tenga (el mapa la carga y aprovecha sus tiles); luego a una cargada con sitio; y, si el mapa aún puede cargar otra, a una con parte de los colores, a una que no use nadie o a una nueva. Un metatile que ya tiene el arte se reutiliza si el mapa puede cargar sus paletas.
+- **Al optimizar,** los trozos se reparten para que cada mapa cargue las menos paletas posibles, y sin compactar se quedan donde estaban si se puede.
+- **Avisos nuevos:** el mapa ya carga las 15 y no les caben los colores; la pieza necesita más paletas nuevas de las que le quedan al mapa; el tileset ya tiene las 256.
+- **En el fork de porymap:** carga todas las paletas de la carpeta y pinta cada tile con su paleta del tileset. Los editores de tilesets y de paletas eligen entre todas. El contador de la pestaña Piezas dice cuántas paletas carga el mapa (en rojo si pasa de 15 pintando metatiles a mano) y cuántas usa el tileset. Al guardar escribe las paletas nuevas y `metatile_palettes.bin`.
+
 ## Cómo se ha comprobado
 
 - **Compilación en cloud** con arm-none-eabi-gcc 13.2, sin avisos (`-Werror`). Hubo que compilar SuperFamiconv 0.9.2 para Linux, porque el de `tools/superfamiconv/` es un binario de Mac; se pasó con `FAMICONV=` sin tocar el repo.
@@ -122,6 +135,11 @@ El fork está en [ivaantxo/porymap](https://github.com/ivaantxo/porymap), rama `
   - camino inteligente con una pieza de 48×48: un clic deja un cuadrado redondeado de 2×2, un arrastre en L forma el camino con sus bordes, y después de optimizar el camino se sigue alargando y enlaza con lo pintado antes.
 - **ROM sin secundario:** compila, y el recorrido de siempre sale idéntico.
 - **15 paletas, en emulador:** una tira estampada con piezas en las paletas 0, 1 y 6-14 da 154 colores en pantalla, y siguen ahí con el menú de inicio y las ventanas de guardado abiertas.
+- **Paletas por mapa:**
+  - la línea de comandos pasa 38 escenarios. Entre los nuevos: un mapa que llega a sus 15 paletas y el aviso con la siguiente; una pieza que necesita más paletas de las que quedan; un segundo layout con el mismo tileset que no carga las de `Test` y estrena la paleta 15 del tileset; repetir allí lo pintado en `Test`, que carga sus paletas sin crear ni tiles ni colores; y optimizar y compactar con los dos mapas, que se siguen viendo igual píxel a píxel;
+  - en emulador, el recorrido de siempre sale idéntico píxel a píxel con las paletas por mapa. También al mover las cuatro paletas de `Test` a las 20-23 del tileset y poner a 15 sus 4 bits en `metatiles.bin`: el juego tiene que leerlas de `metatile_palettes.bin` para que salga bien;
+  - ocho trozos estampados con colores nuevos, que estrenan ocho paletas, salen en el juego con sus 120 colores (con el tinte de la noche, que es lineal sobre cada color);
+  - en el fork: estampar en `Test` sube el contador de 4 a 12 paletas; la pieza siguiente avisa de que no caben; en otro layout con el mismo tileset se estrena la paleta 15; al guardar salen `15.pal` y `metatile_palettes.bin`, que el juego compila y pinta; al volver a abrir se ve igual; el editor de tilesets deja elegir la paleta 15, y optimizar no cambia nada.
 - **Sin probar en ejecución:**
   - agua, puentes y rampas (no hay ninguno en los mapas);
   - el cruce de conexiones y las partidas guardadas;
@@ -142,7 +160,7 @@ El fork está en [ivaantxo/porymap](https://github.com/ivaantxo/porymap), rama `
 3. **Conseguir el fork.** Dos formas:
    - **Descargarlo:** en la pestaña Actions de `ivaantxo/porymap`, activar los workflows (en los forks vienen apagados), lanzar *Build Porymap* sobre la rama `claude/rediseno-mapeado-plan-5296ti` y bajar el artefacto `porymap-macos-latest` (o `-15-intel`). No está firmado: la primera vez hay que abrirlo con clic derecho → Abrir.
    - **Compilarlo:** `brew install qt`, y en la rama del fork `qmake porymap.pro && make`.
-4. **Porytiles**, si regeneras un tileset con él, con estos límites (los totales solo los pide porytiles):
+4. **Porytiles**, si regeneras un tileset con él, con estos límites (los totales solo los pide porytiles). Porytiles no sabe de paletas por mapa: deja como mucho 16 paletas y no toca `metatile_palettes.bin`, que deja de cuadrar con `metatiles.bin`. Mientras no cuadre, porymap y `mapeado` usan los 4 bits de cada entrada y lo reescriben al guardar el tileset; el juego no, así que después de porytiles ejecuta `tools/mapeado/mapeado optimizar <tileset>` antes de compilar:
    ```
    porytiles compile-primary -Wall -tiles-primary-override=1008 -tiles-total-override=1024 \
      -metatiles-primary-override=32767 -metatiles-total-override=32768 \

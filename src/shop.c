@@ -709,11 +709,10 @@ static void BuyMenuDrawMapBg(void)
 {
     s32 i, j;
     s16 x, y;
-    const struct MapLayout *mapLayout;
     u16 metatile;
+    u16 tiles[NUM_TILES_PER_METATILE];
     u8 metatileLayerType;
 
-    mapLayout = gMapHeader.mapLayout;
     GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
     x -= 4;
     y -= 4;
@@ -728,7 +727,8 @@ static void BuyMenuDrawMapBg(void)
             else
                 metatileLayerType = METATILE_LAYER_TYPE_COVERED;
 
-            BuyMenuDrawMapMetatile(i, j, mapLayout->tileset->metatiles + metatile * NUM_TILES_PER_METATILE, metatileLayerType);
+            GetMetatileTilesForMap(metatile, tiles);
+            BuyMenuDrawMapMetatile(i, j, tiles, metatileLayerType);
         }
     }
 }

@@ -69,11 +69,15 @@ struct Tileset
     // El juego no lo mira: cada layout tiene un solo tileset. Porymap lo lee para
     // distinguir primarios y secundarios; los de albor son todos primarios.
     bool8 isSecondary;
-    // Bit N: la paleta N tiene version de noche, en la (N + 9) % 16 del mismo tileset.
+    // Bit N: la paleta N del tileset tiene version de noche, en la (N + 9) % 16.
     u16 swapPalettes;
     const u32 *tiles;
+    // Las de todos sus mapas: cada mapa carga solo las suyas (LoadMapTilesetPalettes).
     const u16 (*palettes)[16];
     const u16 *metatiles;
+    // La paleta del tileset de cada entrada de metatile, una por entrada. Sin esto, es
+    // la de los 4 bits de paleta de la entrada.
+    const u8 *metatilePalettes;
     const u16 *metatileAttributes;
     TilesetCB callback;
 };

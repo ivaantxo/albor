@@ -179,6 +179,8 @@ static void CopyDoorTilesToVram(const struct DoorGraphics *gfx, const struct Doo
         CopiaRapidaCpu(gfx->tiles + frame->offset, (void *)(VRAM + POSICION_TILE_4BPP(DOOR_TILE_START_SIZE1)), 8 * TILE_4BPP);
 }
 
+// Los numeros de paleta de las puertas son paletas del tileset: se dibujan con el hueco
+// donde las tiene cargadas el mapa (GetMapPaletteSlot).
 static void BuildDoorTiles(u16 *tiles, u16 tileNum, const u8 *paletteNums)
 {
     u32 i;
@@ -187,16 +189,13 @@ static void BuildDoorTiles(u16 *tiles, u16 tileNum, const u8 *paletteNums)
     // Only the first 4 tiles of each metatile (bottom layer) actually use the door tiles
     for (i = 0; i < 4; i++)
     {
-        tile = *(paletteNums++) << 12;
+        tile = GetMapPaletteSlot(*(paletteNums++)) << 12;
         tiles[i] = tile | (tileNum + i);
     }
 
-    // The remaining layers are left as tile 0 (with the same palette)
+    // The remaining layers are left as tile 0, which is transparent whatever its palette
     for (; i < 8; i++)
-    {
-        tile = *(paletteNums++) << 12;
-        tiles[i] = tile;
-    }
+        tiles[i] = 0;
 }
 
 static void DrawCurrentDoorAnimFrame(const struct DoorGraphics *gfx, u32 x, u32 y, const u8 *paletteNums)

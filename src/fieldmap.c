@@ -2,7 +2,9 @@
 #include "bg.h"
 #include "fieldmap.h"
 #include "fldeff.h"
+#include "field_weather.h"
 #include "fldeff_misc.h"
+#include "malloc.h"
 #include "menu.h"
 #include "metatile_behavior.h"
 #include "mirage_tower.h"
@@ -815,15 +817,144 @@ void CopyMapTilesetToVramUsingHeap(struct MapLayout const *mapLayout)
         DecompressAndLoadBgGfxUsingHeap(2, tileset->tiles, 0, 0, 0);
 }
 
-void LoadMapTilesetPalettes(struct MapLayout const *mapLayout, bool8 skipFaded)
+// Paletas por mapa.
+//
+// El tileset guarda las paletas de todos sus mapas (hasta MAX_PALS_IN_TILESET), y cada
+// mapa carga solo las que usan los metatiles de sus casillas y de su borde, como mucho
+// NUM_PALS_IN_TILESET a la vez, en los huecos de paleta de fondo 0-14 y por orden. Que
+// paletas carga un mapa no se guarda en ningun sitio: sale de su blockdata al cargarlo,
+// asi que no se arrastra ninguna de un mapa a otro.
+//
+// La paleta del tileset de cada entrada de metatile esta en tileset->metatilePalettes,
+// un byte por entrada (sin el, es la de los 4 bits de la entrada). Al dibujar, la
+// entrada lleva en su lugar el hueco donde esta cargada: GetMetatileTilesForMap. Si
+// hace falta una que el mapa no cargo al entrar (un metatile que pone un script, o una
+// puerta), se carga entonces en un hueco libre; si no queda, se pinta con la del 0.
+EWRAM_DATA static u8 ALIGNED(4) sPaletteSlots[MAX_PALS_IN_TILESET] = {0}; // paleta del tileset -> hueco + 1, o 0
+EWRAM_DATA static u8 sSlotPalettes[NUM_PALS_IN_TILESET] = {0}; // hueco -> paleta del tileset
+EWRAM_DATA static u16 sUsedPaletteSlots = 0;
+
+static inline u32 GetEntryPalette(const struct Tileset *tileset, u32 metatileId, u32 i, u32 entry)
 {
-    // (void*) is to silence 'source potentially unaligned' error
-    // All 'gTilesetPalettes_' arrays should have ALIGNED(4) in them
-    const void *palettes = mapLayout->tileset->palettes;
+    if (tileset->metatilePalettes != NULL)
+        return tileset->metatilePalettes[metatileId * NUM_TILES_PER_METATILE + i];
+    return entry >> 12;
+}
+
+static void LoadTilesetPaletteToSlot(const struct Tileset *tileset, u32 palette, u32 slot, bool8 skipFaded)
+{
+    const void *src = tileset->palettes[palette]; // (void *) para que no proteste por la alineacion
 
     if (skipFaded)
-        CopiaRapidaCpu(palettes, gPlttBufferUnfaded, NUM_PALS_IN_TILESET * PLTT_SIZE_4BPP);
+        CopiaCpu16(src, &gPlttBufferUnfaded[BG_PLTT_ID(slot)], PLTT_SIZE_4BPP);
     else
-        LoadPalette(palettes, BG_PLTT_ID(0), NUM_PALS_IN_TILESET * PLTT_SIZE_4BPP);
+        LoadPalette(src, BG_PLTT_ID(slot), PLTT_SIZE_4BPP);
+    sPaletteSlots[palette] = slot + 1;
+    sSlotPalettes[slot] = palette;
+    sUsedPaletteSlots |= 1 << slot;
+}
+
+static void MarkMetatilePalettes(const struct Tileset *tileset, u32 metatileId, u8 *seenMetatiles, u32 *usedPalettes)
+{
+    u32 i, entry, palette;
+    const u16 *tiles;
+
+    if (metatileId >= NUM_METATILES_IN_TILESET)
+        return;
+    if (seenMetatiles != NULL)
+    {
+        if (seenMetatiles[metatileId / 8] & (1 << (metatileId % 8)))
+            return;
+        seenMetatiles[metatileId / 8] |= 1 << (metatileId % 8);
+    }
+    tiles = tileset->metatiles + metatileId * NUM_TILES_PER_METATILE;
+    for (i = 0; i < NUM_TILES_PER_METATILE; i++)
+    {
+        entry = tiles[i];
+        if ((entry & 0x3FF) == 0) // El tile 0 es transparente: no usa su paleta
+            continue;
+        palette = GetEntryPalette(tileset, metatileId, i, entry);
+        if (palette < MAX_PALS_IN_TILESET)
+            usedPalettes[palette / 32] |= 1 << (palette % 32);
+    }
+}
+
+void LoadMapTilesetPalettes(struct MapLayout const *mapLayout, bool8 skipFaded)
+{
+    const struct Tileset *tileset = mapLayout->tileset;
+    u32 usedPalettes[MAX_PALS_IN_TILESET / 32] = {0};
+    u8 *seenMetatiles = AllocZeroed(NUM_METATILES_IN_TILESET / 8 + 1);
+    u32 i, slot, block;
+
+    // Las de las casillas (con lo que hayan cambiado los scripts al cargar) y el borde.
+    for (i = 0; i < (u32)(gBackupMapLayout.width * gBackupMapLayout.height); i++)
+    {
+        block = gBackupMapLayout.map[i];
+        if (block != MAPGRID_UNDEFINED)
+            MarkMetatilePalettes(tileset, block & MAPGRID_METATILE_ID_MASK, seenMetatiles, usedPalettes);
+    }
+    for (i = 0; i < 4; i++)
+        MarkMetatilePalettes(tileset, mapLayout->border[i] & MAPGRID_METATILE_ID_MASK, seenMetatiles, usedPalettes);
+    Free(seenMetatiles);
+
+    CpuFill16(0, sPaletteSlots, sizeof(sPaletteSlots));
+    sUsedPaletteSlots = 0;
+    slot = 0;
+    for (i = 0; i < MAX_PALS_IN_TILESET && slot < NUM_PALS_IN_TILESET; i++)
+    {
+        if (usedPalettes[i / 32] & (1 << (i % 32)))
+            LoadTilesetPaletteToSlot(tileset, i, slot++, skipFaded);
+    }
+    // Los huecos que sobran, en negro: que no quede nada del mapa anterior.
+    for (; slot < NUM_PALS_IN_TILESET; slot++)
+    {
+        CpuFill16(RGB_BLACK, &gPlttBufferUnfaded[BG_PLTT_ID(slot)], PLTT_SIZE_4BPP);
+        if (!skipFaded)
+            CpuFill16(RGB_BLACK, &gPlttBufferFaded[BG_PLTT_ID(slot)], PLTT_SIZE_4BPP);
+    }
     gPlttBufferFaded[0] = gPlttBufferUnfaded[0] = RGB_BLACK; // why does it have to be black?
+}
+
+u32 GetMapPaletteSlot(u32 palette)
+{
+    const struct Tileset *tileset = gMapHeader.mapLayout->tileset;
+    u32 slot;
+
+    if (palette >= MAX_PALS_IN_TILESET)
+        return 0;
+    if (sPaletteSlots[palette] != 0)
+        return sPaletteSlots[palette] - 1;
+    for (slot = 0; slot < NUM_PALS_IN_TILESET; slot++)
+    {
+        if (!(sUsedPaletteSlots & (1 << slot)))
+        {
+            LoadTilesetPaletteToSlot(tileset, palette, slot, FALSE);
+            ApplyWeatherColorMapToPals(slot, 1);
+            return slot;
+        }
+    }
+    return 0;
+}
+
+s32 GetMapPaletteInSlot(u32 slot)
+{
+    if (slot >= NUM_PALS_IN_TILESET || !(sUsedPaletteSlots & (1 << slot)))
+        return -1;
+    return sSlotPalettes[slot];
+}
+
+void GetMetatileTilesForMap(u32 metatileId, u16 *dst)
+{
+    const struct Tileset *tileset = gMapHeader.mapLayout->tileset;
+    const u16 *tiles = tileset->metatiles + metatileId * NUM_TILES_PER_METATILE;
+    u32 i, entry;
+
+    for (i = 0; i < NUM_TILES_PER_METATILE; i++)
+    {
+        entry = tiles[i];
+        if ((entry & 0x3FF) == 0)
+            dst[i] = entry & 0xFFF;
+        else
+            dst[i] = (entry & 0xFFF) | (GetMapPaletteSlot(GetEntryPalette(tileset, metatileId, i, entry)) << 12);
+    }
 }
