@@ -51,6 +51,8 @@ bool CargarImagen(const std::string &ruta, mapeado::Imagen &img, std::string &er
 bool GuardarTileset(const InfoTileset &info, const mapeado::Tileset &ts, int *cambiados, std::string &error);
 bool GuardarBloques(const std::string &ruta, const std::vector<uint16_t> &bloques, int *cambiados);
 bool GuardarCapa(const std::string &ruta, const mapeado::Imagen &img, int *cambiados);
+// En layouts.json, los layouts con el tileset `de` pasan a usar `a`.
+bool CambiarTilesetDeLayouts(const std::string &de, const std::string &a, int *cambiados);
 
 bool Existe(const std::string &ruta);
 std::string RutaPaleta(const std::string &carpeta, int n); // carpeta/NN.pal

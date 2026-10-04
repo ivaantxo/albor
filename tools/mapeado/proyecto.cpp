@@ -426,6 +426,15 @@ bool GuardarTileset(const InfoTileset &info, const Tileset &ts, int *cambiados, 
     return bien;
 }
 
+bool CambiarTilesetDeLayouts(const std::string &de, const std::string &a, int *cambiados)
+{
+    const std::string ruta = "data/layouts/layouts.json";
+    std::string texto = LeerTexto(ruta);
+    std::regex re("(\"primary_tileset\"\\s*:\\s*\")" + de + "\"");
+    std::string nuevo = std::regex_replace(texto, re, "$1" + a + "\"");
+    return EscribirSiCambia(ruta, std::vector<uint8_t>(nuevo.begin(), nuevo.end()), cambiados);
+}
+
 bool GuardarBloques(const std::string &ruta, const std::vector<uint16_t> &bloques, int *cambiados)
 {
     return EscribirSiCambia(ruta, U16(bloques), cambiados);

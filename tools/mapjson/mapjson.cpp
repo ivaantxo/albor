@@ -119,6 +119,12 @@ string get_include_guard_end(const string &name) {
     return guard.str();
 }
 
+// Los campos de albor que porymap no escribe al crear un mapa: si faltan, `por_defecto`.
+string json_to_string_o(const Json &data, const string &field, const string &por_defecto) {
+    string valor = json_to_string(data, field, true);
+    return valor.empty() ? por_defecto : valor;
+}
+
 string generate_map_header_text(Json map_data, Json layouts_data) {
     string map_layout_id = json_to_string(map_data, "layout");
 
@@ -165,12 +171,12 @@ string generate_map_header_text(Json map_data, Json layouts_data) {
          << "\t.byte "  << json_to_string(map_data, "requires_flash") << "\n"
          << "\t.byte "  << json_to_string(map_data, "weather") << "\n"
          << "\t.byte "  << json_to_string(map_data, "map_type") << "\n"
-         << "\t.2byte " << json_to_string(map_data, "night_music") << "\n";
+         << "\t.2byte " << json_to_string_o(map_data, "night_music", "MUS_NONE") << "\n";
 
     text << "\tmap_header_flags "
-         << "reservado_1=" << json_to_string(map_data, "reservado_1") << ", "
+         << "reservado_1=" << json_to_string_o(map_data, "reservado_1", "FALSE") << ", "
          << "allow_escaping=" << json_to_string(map_data, "allow_escaping") << ", "
-         << "reservado_2=" << json_to_string(map_data, "reservado_2") << ", "
+         << "reservado_2=" << json_to_string_o(map_data, "reservado_2", "FALSE") << ", "
          << "show_map_name=" << json_to_string(map_data, "show_map_name") << "\n";
 
      text << "\t.byte " << json_to_string(map_data, "battle_scene") << "\n\n";
