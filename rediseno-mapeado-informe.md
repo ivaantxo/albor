@@ -98,7 +98,7 @@ Antes las 15 paletas eran del tileset entero: todos los mapas cargaban las misma
 - **Al pintar,** un trozo de 8×8 va primero a una paleta que el mapa ya carga y tiene sus colores; luego a una del tileset que los tenga (el mapa la carga y aprovecha sus tiles); luego a una cargada con sitio; y, si el mapa aún puede cargar otra, a una con parte de los colores, a una que no use nadie o a una nueva. Un metatile que ya tiene el arte se reutiliza si el mapa puede cargar sus paletas.
 - **Al optimizar,** los trozos se reparten para que cada mapa cargue las menos paletas posibles, y sin compactar se quedan donde estaban si se puede.
 - **Avisos nuevos:** el mapa ya carga las 15 y no les caben los colores; la pieza necesita más paletas nuevas de las que le quedan al mapa; el tileset ya tiene las 256.
-- **En el fork de porymap:** carga todas las paletas de la carpeta y pinta cada tile con su paleta del tileset. Los editores de tilesets y de paletas eligen entre todas. El contador de la pestaña Piezas dice cuántas paletas carga el mapa (en rojo si pasa de 15 pintando metatiles a mano) y cuántas usa el tileset. Al guardar escribe las paletas nuevas y `metatile_palettes.bin`.
+- **En el fork de porymap** (`c1d11581`): carga todas las paletas de la carpeta y pinta cada tile con su paleta del tileset. Los editores de tilesets y de paletas eligen entre todas. El contador de la pestaña Piezas dice cuántas paletas carga el mapa (en rojo si pasa de 15 pintando metatiles a mano) y cuántas usa el tileset. Al guardar escribe las paletas nuevas y `metatile_palettes.bin`.
 
 ## Cómo se ha comprobado
 
