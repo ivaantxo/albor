@@ -78,9 +78,7 @@ x0 --> 0; x0,25 --> PS máximos / 64; x0,5 --> PS máximos / 32; x1 --> PS máxi
 *paletas: 0-12 tileset primario 0-9 (es necesario?) secundario 10-12 (chequear SWAP_PAL)
 *paletas primary: 0/arboles 1/centro_pokemon 2/hierba_y_hierba_alta 3/agua 4/agua_playa
 
-porytiles compile-primary -Wall -o /Users/ivanmartinez/Documents/Volverá/albor/data/tilesets/primary/principal /Users/ivanmartinez/Documents/Volverá/albor/desarrollo/graficos /Users/ivanmartinez/Documents/Volverá/albor/include/constants/metatile_behaviors.h
-
-porytiles compile-primary -Wall -o /Users/ivanmartinez/proyectos/albor/data/tilesets/primary/centro_pokemon /Users/ivanmartinez/proyectos/albor/desarrollo/graficos /Users/ivanmartinez/proyectos/albor/include/constants/metatile_behaviors_porytiles.h
+*Tilesets: ya no se generan con porytiles. Se pintan en el fork de porymap con piezas (las hojas de desarrollo/graficos sirven), y las animaciones se importan con tools/mapeado (ver tools/mapeado/README.md).
 
 *Recordatorio de que el primer color de la paleta del Pokémon no puede ser negro (se bugea el almacenamiento).
 *Recordatorio de deserializar las pokeballs.
