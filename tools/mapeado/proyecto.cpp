@@ -206,6 +206,8 @@ bool LeerInfoTileset(const std::string &etiqueta, InfoTileset &info, std::string
         bien = false;
     if (!campo("metatilePalettes").empty() && Incbin(metatiles, campo("metatilePalettes"), &ruta))
         info.paletasMetatiles = ruta;
+    if (!campo("animations").empty() && Incbin(metatiles, campo("animations"), &ruta))
+        info.animaciones = ruta;
     std::string pal = campo("palettes");
     if (!pal.empty() && Incbin(graficos, pal, &ruta)) {
         info.carpetaPaletas = Carpeta(ruta) + "/palettes";
@@ -295,8 +297,8 @@ bool CargarTileset(const InfoTileset &info, Tileset &ts, std::string &error)
         error = "No se puede leer " + info.metatiles;
         return false;
     }
-    // Si no cuadra con metatiles.bin (lo ha regenerado porytiles, por ejemplo), no vale:
-    // la paleta es la de la entrada, y se vuelve a escribir al guardar.
+    // Si no cuadra con metatiles.bin (lo ha cambiado otra herramienta), no vale: la
+    // paleta es la de la entrada, y se vuelve a escribir al guardar.
     std::vector<uint8_t> paletas;
     if (!info.paletasMetatiles.empty() && (!LeerBytes(info.paletasMetatiles, paletas) || paletas.size() != datos.size()))
         paletas.clear();
@@ -313,6 +315,9 @@ bool CargarTileset(const InfoTileset &info, Tileset &ts, std::string &error)
         error = "No se puede leer " + info.atributos;
         return false;
     }
+    std::vector<uint8_t> animaciones;
+    if (!info.animaciones.empty() && LeerBytes(info.animaciones, animaciones))
+        AnimacionesDeBytes(animaciones, ts.animaciones);
     return true;
 }
 
@@ -347,6 +352,10 @@ bool GuardarTileset(const InfoTileset &info, const Tileset &ts, int *cambiados, 
     if (ts.paletas.size() > info.paletas.size() && info.carpetaPaletas.empty()) {
         error = info.etiqueta + " tiene sus paletas en una lista en src/data/tilesets/graphics.h y no caben las " +
                 std::to_string(ts.paletas.size()) + " que hacen falta: pasala a un INCBIN de palettes.gbapal";
+        return false;
+    }
+    if (info.animaciones.empty() && !ts.animaciones.empty()) {
+        error = info.etiqueta + " no tiene animations en src/data/tilesets/headers.h y hace falta para sus animaciones";
         return false;
     }
     if (info.paletasMetatiles.empty())
@@ -400,6 +409,8 @@ bool GuardarTileset(const InfoTileset &info, const Tileset &ts, int *cambiados, 
     if (!info.paletasMetatiles.empty())
         bien &= EscribirSiCambia(info.paletasMetatiles, paletas, cambiados);
     bien &= EscribirSiCambia(info.atributos, U16(ts.atributos), cambiados);
+    if (!info.animaciones.empty())
+        bien &= EscribirSiCambia(info.animaciones, BytesDeAnimaciones(ts.animaciones), cambiados);
     return bien;
 }
 

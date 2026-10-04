@@ -156,6 +156,7 @@ const u16 gMetatileAttributes_MysteryEventsHouse[] = INCBIN_U16("data/tilesets/s
 
 const u16 gMetatiles_Principal[] = INCBIN_U16("data/tilesets/primary/principal/metatiles.bin");
 const u8 gMetatilePalettes_Principal[] = INCBIN_U8("data/tilesets/primary/principal/metatile_palettes.bin");
+const u32 gTilesetAnimations_Principal[] = INCBIN_U32("data/tilesets/primary/principal/animations.bin");
 const u16 gMetatileAttributes_Principal[] = INCBIN_U16("data/tilesets/primary/principal/metatile_attributes.bin");
 
 const u16 gMetatiles_Test[] = INCBIN_U16("data/tilesets/primary/test/metatiles.bin");
@@ -163,4 +164,5 @@ const u16 gMetatileAttributes_Test[] = INCBIN_U16("data/tilesets/primary/test/me
 
 const u16 gMetatiles_CentroPokemon[] = INCBIN_U16("data/tilesets/primary/centro_pokemon/metatiles.bin");
 const u8 gMetatilePalettes_CentroPokemon[] = INCBIN_U8("data/tilesets/primary/centro_pokemon/metatile_palettes.bin");
+const u32 gTilesetAnimations_CentroPokemon[] = INCBIN_U32("data/tilesets/primary/centro_pokemon/animations.bin");
 const u16 gMetatileAttributes_CentroPokemon[] = INCBIN_U16("data/tilesets/primary/centro_pokemon/metatile_attributes.bin");

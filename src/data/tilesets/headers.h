@@ -596,6 +596,7 @@ const struct Tileset gTileset_Principal =
     .metatilePalettes = gMetatilePalettes_Principal,
     .metatileAttributes = gMetatileAttributes_Principal,
     .callback = NULL,
+    .animations = gTilesetAnimations_Principal,
 };
 
 const struct Tileset gTileset_Test =
@@ -619,4 +620,5 @@ const struct Tileset gTileset_CentroPokemon =
     .metatilePalettes = gMetatilePalettes_CentroPokemon,
     .metatileAttributes = gMetatileAttributes_CentroPokemon,
     .callback = NULL,
+    .animations = gTilesetAnimations_CentroPokemon,
 };

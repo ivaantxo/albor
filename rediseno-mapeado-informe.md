@@ -32,7 +32,7 @@ Aparte, `db48160d` arregla un fallo del Makefile que salió al probar la fase 1:
 
 - **Bloque:** ID de 15 bits (`0x7FFF`) y colisión en el bit 15. `MAPGRID_ELEVATION_MASK` se queda definida a 0 solo para porymap; sin ella, porymap aplicaría su valor por defecto, que pisa al ID.
 - **Nivel del metatile,** bits 8-11 de los atributos (`METATILE_ATTR_NIVEL_MASK`):
-  - `METATILE_NIVEL_AUTO` (0, lo que deja porytiles): se deduce del comportamiento. Agua surfeable → 1, puente sobre agua → 7, lo demás → 3.
+  - `METATILE_NIVEL_AUTO` (0, el de un metatile nuevo): se deduce del comportamiento. Agua surfeable → 1, puente sobre agua → 7, lo demás → 3.
   - `METATILE_NIVEL_0` … `METATILE_NIVEL_7` (8-15): nivel fijo, para plataformas y rampas (las rampas van a 0).
 - **`GetMetatileElevationById`** hace esa cuenta y `MapGridGetElevationAt` la usa. Lo que consume la elevación no cambia.
 - **`tools/mapeado/convertir_bloques.py`** convierte el blockdata y avisa de las casillas que cambiarían de altura. Ya se ha pasado a los dos layouts. Solo hubo un aviso: el dependiente del Centro Pokémon está en (13,5), una casilla bloqueada que pasa de altura 0 a 3. Las tablas de prioridad dan lo mismo para 0 y 3.
@@ -100,12 +100,21 @@ Antes las 15 paletas eran del tileset entero: todos los mapas cargaban las misma
 - **Avisos nuevos:** el mapa ya carga las 15 y no les caben los colores; la pieza necesita más paletas nuevas de las que le quedan al mapa; el tileset ya tiene las 256.
 - **En el fork de porymap** (`c1d11581`): carga todas las paletas de la carpeta y pinta cada tile con su paleta del tileset. Los editores de tilesets y de paletas eligen entre todas. El contador de la pestaña Piezas dice cuántas paletas carga el mapa (en rojo si pasa de 15 pintando metatiles a mano) y cuántas usa el tileset. Al guardar escribe las paletas nuevas y `metatile_palettes.bin`.
 
+### Animaciones, y fuera porytiles
+
+Porytiles era lo único que sabía meter animaciones de tiles. Con las paletas por mapa ya no se puede usar (rehace el tileset entero desde sus fuentes), así que el pipeline las importa él:
+
+- **Una animación** son unos tiles seguidos del tileset y sus fotogramas, con todos sus colores en una paleta. Se importa desde una carpeta con `00.png`, `01.png`… (los de `desarrollo/graficos/animaciones` sirven tal cual), con un nombre y cuánto dura cada fotograma. Reserva tiles libres y una paleta; importarla otra vez con el mismo nombre la cambia en sus mismos tiles.
+- **Al pintar,** el arte igual al fotograma 0 (también volteado) usa los tiles animados. Lo pintado antes de importarla se anima al optimizar, que además deja cada animación en sus tiles y le ajusta los fotogramas si mueve sus colores.
+- **En el juego,** `animations.bin` (`.animations` en `headers.h`) lleva una ficha por animación y sus fotogramas en 4bpp. `tileset_anims.c` copia cada fotograma a la VRAM cuando toca, en la segunda ranura de animación. La primera se queda para el `callback` de siempre.
+- **Dónde:** `tools/mapeado/mapeado animar <tileset> <nombre> <carpeta> [--cada N]` (y `--quitar`), y en el fork, *Animaciones del tileset* en la pestaña Piezas: importar, elegir (la pone como pieza y la reproduce) y quitar.
+- **Fuera porytiles:** la carpeta `porytiles/` (binario, librerías y su tileset de prueba), `metatile_behaviors_porytiles.h`, sus órdenes en `desarrollo/notas_desarrollo.md` y el paso que lo explicaba aquí.
+
 ## Cómo se ha comprobado
 
 - **Compilación en cloud** con arm-none-eabi-gcc 13.2, sin avisos (`-Werror`). Hubo que compilar SuperFamiconv 0.9.2 para Linux, porque el de `tools/superfamiconv/` es un binario de Mac; se pasó con `FAMICONV=` sin tocar el repo.
 - **Emulador:** con libmgba, el mismo recorrido por `Test` con la ROM de antes y con la de cada fase. El recorrido choca con árboles, pisa hierba alta y llega al borde. En los dos casos el jugador acaba en las mismas casillas, con la misma altura y el mismo comportamiento, y las 9 capturas salen idénticas píxel a píxel.
 - **`CentroPokemon`** no se puede alcanzar sin warp. Se ha comprobado por datos: mismo ID y colisión en cada casilla, y el tileset solo usa las paletas 0-5.
-- **Porytiles 0.0.7,** compilado para Linux, genera `principal` con los límites nuevos.
 - **Porymap:** comprobado leyendo su código (6.3.1), sin abrirlo. Revisado: máscara de elevación 0, carpeta por defecto del secundario vacío, recorte de límites y lista de "terrain type".
 - **Motor:** 22 escenarios de estampar y optimizar sobre una copia del proyecto:
   - una pieza nueva y su colocación exacta;
@@ -140,6 +149,10 @@ Antes las 15 paletas eran del tileset entero: todos los mapas cargaban las misma
   - en emulador, el recorrido de siempre sale idéntico píxel a píxel con las paletas por mapa. También al mover las cuatro paletas de `Test` a las 20-23 del tileset y poner a 15 sus 4 bits en `metatiles.bin`: el juego tiene que leerlas de `metatile_palettes.bin` para que salga bien;
   - ocho trozos estampados con colores nuevos, que estrenan ocho paletas, salen en el juego con sus 120 colores (con el tinte de la noche, que es lineal sobre cada color);
   - en el fork: estampar en `Test` sube el contador de 4 a 12 paletas; la pieza siguiente avisa de que no caben; en otro layout con el mismo tileset se estrena la paleta 15; al guardar salen `15.pal` y `metatile_palettes.bin`, que el juego compila y pinta; al volver a abrir se ve igual; el editor de tilesets deja elegir la paleta 15, y optimizar no cambia nada.
+- **Animaciones:**
+  - la línea de comandos pasa 23 escenarios con `mar` (32 fotogramas de 32×32): los fotogramas guardados se ven tal cual con su paleta; estampar el fotograma 0, también volteado, usa los tiles animados sin tiles ni colores nuevos; el agua pintada antes de importar se anima al optimizar; optimizar y compactar no cambian ni los fotogramas ni el mapa; cambiarla por `mar_buceo` deja sus tiles; una de otro tamaño, una con más de 15 colores y un mapa sin hueco para su paleta avisan sin tocar nada; y quitarla deja el mapa igual;
+  - en emulador, dos charcos de `mar` estampados junto al jugador pasan por los fotogramas 4, 5, 6, 7, 8 y 9, uno cada 8 fotogramas del juego, cada uno igual píxel a píxel que el PNG (con el tinte de la noche);
+  - en el fork: importar `mar` desde la carpeta, verla reproducirse en la vista de la pieza, estamparla y guardar da los mismos archivos que `mapeado animar` y `mapeado estampar`; al volver a abrir sigue ahí, y quitarla funciona.
 - **Sin probar en ejecución:**
   - agua, puentes y rampas (no hay ninguno en los mapas);
   - el cruce de conexiones y las partidas guardadas;
@@ -160,13 +173,7 @@ Antes las 15 paletas eran del tileset entero: todos los mapas cargaban las misma
 3. **Conseguir el fork.** Dos formas:
    - **Descargarlo:** en la pestaña Actions de `ivaantxo/porymap`, activar los workflows (en los forks vienen apagados), lanzar *Build Porymap* sobre la rama `claude/rediseno-mapeado-plan-5296ti` y bajar el artefacto `porymap-macos-latest` (o `-15-intel`). No está firmado: la primera vez hay que abrirlo con clic derecho → Abrir.
    - **Compilarlo:** `brew install qt`, y en la rama del fork `qmake porymap.pro && make`.
-4. **Porytiles**, si regeneras un tileset con él, con estos límites (los totales solo los pide porytiles). Porytiles no sabe de paletas por mapa: deja como mucho 16 paletas y no toca `metatile_palettes.bin`, que deja de cuadrar con `metatiles.bin`. Mientras no cuadre, porymap y `mapeado` usan los 4 bits de cada entrada y lo reescriben al guardar el tileset; el juego no, así que después de porytiles ejecuta `tools/mapeado/mapeado optimizar <tileset>` antes de compilar:
-   ```
-   porytiles compile-primary -Wall -tiles-primary-override=1008 -tiles-total-override=1024 \
-     -metatiles-primary-override=32767 -metatiles-total-override=32768 \
-     -pals-primary-override=15 -pals-total-override=16 \
-     -o data/tilesets/primary/<tileset> <fuentes> include/constants/metatile_behaviors_porytiles.h
-   ```
+4. **Porytiles ya no se usa.** Rehace el tileset entero desde sus fuentes: borraría lo pintado en porymap, cambiaría los números de los metatiles y volvería a 16 paletas para todo el tileset. Se ha quitado del repo. Las hojas de `desarrollo/graficos` sirven como piezas, y sus animaciones se importan con la pestaña Piezas o con `tools/mapeado/mapeado animar`.
 5. **Partidas guardadas de antes de la fase 1:** la vista del mapa que se guarda al salvar está en el formato viejo. Las casillas alrededor del jugador se verán mal hasta recargar el mapa. Mejor empezar partida nueva.
 
 ## Para seguir

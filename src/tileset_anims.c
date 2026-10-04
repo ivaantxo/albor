@@ -483,8 +483,78 @@ void TransferTilesetAnimsBuffer(void)
     sTilesetDMA3TransferBufferSize = 0;
 }
 
+// Animaciones de los tilesets de albor, las que mete tools/mapeado (o el fork de
+// porymap). El animations.bin del tileset tiene una ficha por animacion, una a cero al
+// final, y detras los fotogramas, seguidos y en 4bpp. Cada `interval` fotogramas del
+// juego se copia el siguiente encima de los tiles de la animacion en la VRAM. Las
+// paletas no cambian: los tiles se pintan con la que tenga cargada el mapa.
+struct TilesetAnimation
+{
+    u16 tile;       // el primero
+    u16 numTiles;
+    u16 numFrames;
+    u16 interval;
+    u32 offset;     // desde el principio del archivo hasta su fotograma 0
+    u8 palette;     // la del tileset; el juego no la necesita
+    u8 width;       // en tiles; tampoco
+    u8 name[18];
+};
+
+static const u32 *sTilesetAnimations;
+
+static void TilesetAnim_Animations(u16 timer)
+{
+    const struct TilesetAnimation *anim;
+    u32 frame, size;
+
+    for (anim = (const struct TilesetAnimation *)sTilesetAnimations; anim->numTiles != 0; anim++)
+    {
+        if (anim->numFrames < 2 || anim->interval == 0 || timer % anim->interval != 0)
+            continue;
+        frame = (timer / anim->interval) % anim->numFrames;
+        size = anim->numTiles * TILE_4BPP;
+        AppendTilesetAnimToBuffer((const u16 *)((const u8 *)sTilesetAnimations + anim->offset + frame * size),
+                                  (u16 *)(BG_VRAM + POSICION_TILE_4BPP(anim->tile)), size);
+    }
+}
+
+static u32 Mcd(u32 a, u32 b)
+{
+    while (b != 0)
+    {
+        u32 r = a % b;
+        a = b;
+        b = r;
+    }
+    return a;
+}
+
+// El contador vuelve a 0 cuando todas han dado una vuelta entera, para que ninguna
+// pegue un salto; si eso pasa de 65535, se da por bueno el salto.
+static void InitTilesetAnim_Animations(const u32 *animations)
+{
+    const struct TilesetAnimation *anim = (const struct TilesetAnimation *)animations;
+    u32 vuelta = 1;
+
+    if (anim == NULL || anim->numTiles == 0)
+        return;
+    for (; anim->numTiles != 0; anim++)
+    {
+        u32 suya = anim->interval * anim->numFrames;
+        if (suya != 0)
+            vuelta = vuelta / Mcd(vuelta, suya) * suya;
+        if (vuelta > 0xFFFF)
+            vuelta = 0xFFFF;
+    }
+    sTilesetAnimations = animations;
+    sSecondaryTilesetAnimCounter = 0;
+    sSecondaryTilesetAnimCounterMax = vuelta;
+    sSecondaryTilesetAnimCallback = TilesetAnim_Animations;
+}
+
 // Las dos ranuras de animacion se quedan: el callback del tileset elige en cual se
-// apunta, y los de los tilesets de pokeemerald siguen escritos para la suya.
+// apunta, y los de los tilesets de pokeemerald siguen escritos para la suya. Las
+// animaciones de animations.bin van en la segunda.
 void InitTilesetAnimations(void)
 {
     ResetTilesetAnimBuffer();
@@ -494,6 +564,7 @@ void InitTilesetAnimations(void)
     sSecondaryTilesetAnimCounter = 0;
     sSecondaryTilesetAnimCounterMax = 0;
     sSecondaryTilesetAnimCallback = NULL;
+    InitTilesetAnim_Animations(gMapHeader.mapLayout->tileset->animations);
     if (gMapHeader.mapLayout->tileset->callback)
         gMapHeader.mapLayout->tileset->callback();
 }

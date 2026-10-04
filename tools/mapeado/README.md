@@ -41,7 +41,7 @@ Cuando el tileset se llena, `optimizar` lo reempaqueta desde lo pintado:
 - deja libres los tiles y colores que sobran;
 - reparte los colores para que cada mapa cargue las menos paletas posibles.
 
-Se conservan los atributos, la colisión y los números de lo que sigue. También los **metatiles fijados**, los que tienen nombre en `include/constants/metatile_labels.h`, porque los usa el código aunque no estén en ningún mapa. Los **tiles fijos** que lista `tiles_fijos.txt`, junto al `tiles.png` (números o rangos `a-b`, para animaciones), no se tocan nunca.
+Se conservan los atributos, la colisión y los números de lo que sigue. También los **metatiles fijados**, los que tienen nombre en `include/constants/metatile_labels.h`, porque los usa el código aunque no estén en ningún mapa. Los **tiles fijos** que lista `tiles_fijos.txt`, junto al `tiles.png` (números o rangos `a-b`), no se tocan nunca; las animaciones ya no los necesitan (ver *Animaciones*).
 
 Los límites son los de `include/fieldmap.h` y `include/global.fieldmap.h`: 1008 tiles, 32767 metatiles, 256 paletas en el tileset y 15 por mapa.
 
@@ -63,8 +63,23 @@ Los archivos del tileset:
 | `palettes.gbapal` | todas juntas, lo hace el Makefile (`graphics_file_rules.mk`); `graphics.h` lo incluye con un solo `INCBIN`, así que una paleta nueva no hay que apuntarla en ningún sitio |
 | `metatiles.bin` | las entradas de siempre; los 4 bits de paleta son los bajos de la paleta del tileset |
 | `metatile_palettes.bin` | la paleta del tileset de cada entrada, un byte por entrada (`.metatilePalettes` en `headers.h`) |
+| `animations.bin` | las animaciones (`.animations` en `headers.h`, ver *Animaciones*) |
 
-Si `metatile_palettes.bin` no cuadra con `metatiles.bin` (porque porytiles ha regenerado el tileset, por ejemplo), vale la paleta de los 4 bits y se vuelve a escribir al guardar.
+Si `metatile_palettes.bin` no cuadra con `metatiles.bin` (porque otra herramienta ha cambiado el tileset), vale la paleta de los 4 bits y se vuelve a escribir al guardar.
+
+Porytiles ya no se usa: rehace el tileset entero desde sus fuentes, así que borraría lo pintado, cambiaría los números de los metatiles y volvería a 16 paletas para todo el tileset. Las hojas de arte que se le daban sirven como piezas, y sus animaciones se importan con `animar` (ver más abajo).
+
+## Animaciones
+
+Una animación son unos tiles seguidos del tileset que el juego va cambiando por los de cada fotograma: agua, flores, una cascada. Se importa desde una carpeta con sus fotogramas, `00.png`, `01.png`… (o `0.png`, `1.png`…), todos del mismo tamaño, múltiplo de 8. Entre todos pueden tener como mucho 15 colores, porque van en una sola paleta del tileset.
+
+- **Importar** reserva tiles libres seguidos para ella, con el fotograma 0, y le da una paleta: una que ya tenga sus colores o una para ella sola. Importar otra vez con el mismo nombre la cambia: mismos tiles y, si caben los colores, misma paleta; tiene que medir lo mismo.
+- **Pintar:** el fotograma 0 se estampa como cualquier pieza, y cada trozo de 8×8 igual a uno del fotograma 0 (tal cual o volteado) usa el tile animado. En el juego se anima solo. Lo que ya estaba pintado con ese arte antes de importar se anima al optimizar.
+- **Optimizar** deja las animaciones en sus tiles y, si mueve sus colores, cambia sus fotogramas a juego.
+- **Quitar** la animación deja sus tiles con el fotograma 0, ya sin animar.
+- **En el juego** (`src/tileset_anims.c`), cada fotograma dura los que se diga del juego (16 si no; 60 son un segundo). Al acabar la vuelta se empieza otra vez desde el 0.
+
+Todo va en `animations.bin`, junto a los demás archivos del tileset (`.animations` en `headers.h`): una ficha por animación con sus fotogramas detrás, ya en el formato de la VRAM. Las fuentes de los fotogramas se quedan donde estuvieran (por ejemplo `desarrollo/graficos/animaciones`).
 
 ## Línea de comandos
 
@@ -75,12 +90,15 @@ tools/mapeado/mapeado estampar <mapa> <capa> <x> <y> <pieza.png> [--reemplazar]
 tools/mapeado/mapeado optimizar [tileset...] [--compactar]
 tools/mapeado/mapeado cuentas [tileset...]
 tools/mapeado/mapeado exportar <mapa> <carpeta>
+tools/mapeado/mapeado animar <tileset> <nombre> <carpeta> [--cada N]
+tools/mapeado/mapeado animar <tileset> <nombre> --quitar
 ```
 
 - `estampar`: `x` e `y` son píxeles, múltiplos de 8. El mapa se nombra por su layout: `Test`, `Test_Layout` o `LAYOUT_TEST`.
 - `optimizar --compactar`: además renumera desde cero, para quitar los huecos.
 - `cuentas`: lo que ocupa cada tileset ahora, y lo que ocuparía optimizado, con las paletas que carga cada mapa.
 - `exportar`: saca las tres capas en PNG, solo para mirarlas.
+- `animar`: mete en el tileset la animación de la carpeta, o la cambia si ya hay una con ese nombre (como mucho 17 letras). `--cada N`: cuántos fotogramas del juego dura cada uno. `--quitar` la quita.
 
 ## La biblioteca y el fork de porymap
 
@@ -90,6 +108,7 @@ La biblioteca es `mapeado.h` + `mapeado.cpp`. No lee ni escribe archivos ni depe
 - **`Optimizar`:** el botón de reempaquetar.
 - **`PintarLayout`:** las capas por separado.
 - **`PaletasDelMapa`:** las paletas del tileset que carga un mapa.
+- **`Animar`** y **`QuitarAnimacion`:** meter, cambiar o quitar una animación; `BytesDeAnimaciones` y `AnimacionesDeBytes` leen y escriben `animations.bin`.
 
 El fork de porymap lleva una copia tal cual en `src/lib/mapeado`, y `src/core/stamping.cpp` la conecta con sus tilesets y layouts. Los cambios se hacen aquí primero y se copian allí. Estampar y optimizar en porymap dan los mismos archivos que esta línea de comandos.
 

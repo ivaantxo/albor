@@ -4,9 +4,12 @@
 #include "mapeado.h"
 #include "proyecto.h"
 
+#include <algorithm>
+#include <cctype>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <dirent.h>
 #include <set>
 #include <string>
 #include <vector>
@@ -34,6 +37,13 @@ const char *const kUso =
     "      paletas que carga cada mapa (cada uno carga solo las de sus metatiles)\n"
     "  exportar <mapa> <carpeta>\n"
     "      las tres capas del mapa en PNG, para mirarlas\n"
+    "  animar <tileset> <nombre> <carpeta> [--cada N]\n"
+    "      mete en el tileset una animacion con los fotogramas de la carpeta (00.png,\n"
+    "      01.png... o 0.png, 1.png..., todos del mismo tamano), o la cambia si ya hay\n"
+    "      una con ese nombre. Cada fotograma dura N fotogramas del juego (16 si no se\n"
+    "      dice). Al pintar, el fotograma 0 se anima solo\n"
+    "  animar <tileset> <nombre> --quitar\n"
+    "      quita la animacion: sus tiles se quedan con el fotograma 0\n"
     "\n"
     "El mapa se nombra por su layout: Test, Test_Layout o LAYOUT_TEST. El tileset, con o\n"
     "sin gTileset_. Sin nombrar ninguno, se hacen todos los que use algun layout. Se\n"
@@ -112,6 +122,12 @@ void CuentasActuales(const Formato &f, const Cargado &c)
                     if (i)
                         colores[p].insert(i);
         }
+    for (const Animacion &an : c.ts.animaciones)
+        for (const auto &fotograma : an.fotogramas)
+            for (const Tile &t : fotograma)
+                for (uint8_t i : t)
+                    if (i && an.paleta < (int)colores.size())
+                        colores[an.paleta].insert(i);
     int paletas = 0;
     for (auto &s : colores)
         paletas += !s.empty();
@@ -124,6 +140,9 @@ void CuentasActuales(const Formato &f, const Cargado &c)
     for (const MapaDelTileset &m : c.mapas)
         printf(" %s %d", m.nombre.c_str(), (int)PaletasDelMapa(c.ts, m.bloques, m.borde, f.mascaraId).size());
     printf("\n");
+    for (const Animacion &an : c.ts.animaciones)
+        printf("  animacion %s: %d tiles desde el %d (%dx%d), %d fotogramas cada %d, paleta %d\n", an.nombre.c_str(),
+               an.ancho * an.alto, an.tile, an.ancho * 8, an.alto * 8, (int)an.fotogramas.size(), an.cada, an.paleta);
 }
 
 void CuentasOptimizado(const Formato &f, const Cargado &c, const Estadisticas &est)
@@ -205,6 +224,85 @@ int OrdenEstampar(const Formato &f, const std::vector<InfoLayout> &todos, const 
     return 0;
 }
 
+// Los fotogramas de una carpeta: los PNG en el orden de su numero.
+bool CargarFotogramas(const std::string &carpeta, std::vector<Imagen> &fotogramas, std::string &error)
+{
+    std::vector<std::pair<int, std::string>> archivos;
+    if (DIR *d = opendir(carpeta.c_str())) {
+        while (struct dirent *e = readdir(d)) {
+            std::string nombre = e->d_name;
+            if (nombre.size() > 4 && nombre.compare(nombre.size() - 4, 4, ".png") == 0 && isdigit((unsigned char)nombre[0]))
+                archivos.push_back(std::make_pair(atoi(nombre.c_str()), nombre));
+        }
+        closedir(d);
+    } else {
+        error = "no se puede abrir la carpeta " + carpeta;
+        return false;
+    }
+    std::sort(archivos.begin(), archivos.end());
+    for (auto &a : archivos) {
+        Imagen im;
+        if (!CargarImagen(carpeta + "/" + a.second, im, error))
+            return false;
+        fotogramas.push_back(im);
+    }
+    if (fotogramas.empty()) {
+        error = carpeta + " no tiene fotogramas (00.png, 01.png...)";
+        return false;
+    }
+    return true;
+}
+
+int OrdenAnimar(const Formato &f, const std::vector<InfoLayout> &todos, const std::vector<std::string> &args, int cada,
+                bool quitar)
+{
+    if (args.size() != (quitar ? 2u : 3u)) {
+        fprintf(stderr, "animar <tileset> <nombre> <carpeta> [--cada N]  o  animar <tileset> <nombre> --quitar\n");
+        return 1;
+    }
+    std::string error;
+    Cargado c;
+    if (!Cargar(todos, Etiqueta(args[0]), c, error)) {
+        fprintf(stderr, "%s\n", error.c_str());
+        return 1;
+    }
+    const std::string &nombre = args[1];
+    if (quitar) {
+        if (!QuitarAnimacion(c.ts, nombre)) {
+            fprintf(stderr, "%s no tiene ninguna animacion que se llame %s\n", c.info.etiqueta.c_str(), nombre.c_str());
+            return 1;
+        }
+    } else {
+        std::vector<Imagen> fotogramas;
+        if (!CargarFotogramas(args[2], fotogramas, error)) {
+            fprintf(stderr, "%s\n", error.c_str());
+            return 1;
+        }
+        Estampado r = Animar(f, c.ts, c.mapas, nombre, fotogramas, cada, LeerTilesFijos(c.info));
+        if (r.resultado != ESTAMPADO) {
+            fprintf(stderr, "%s: no se anima: %s\n", c.info.etiqueta.c_str(), r.mensaje.c_str());
+            return 2;
+        }
+        for (const Animacion &an : c.ts.animaciones)
+            if (an.nombre == nombre)
+                printf("%s: animacion %s: %d tiles desde el %d, %d fotogramas cada %d, paleta %d (%d tiles nuevos, "
+                       "%d colores nuevos, %d paletas nuevas)\n",
+                       c.info.etiqueta.c_str(), nombre.c_str(), an.ancho * an.alto, an.tile, (int)an.fotogramas.size(),
+                       an.cada, an.paleta, r.tilesNuevos, r.coloresNuevos, r.paletasNuevas);
+    }
+    std::vector<std::vector<uint16_t>> bloques, bordes;
+    for (const MapaDelTileset &m : c.mapas) {
+        bloques.push_back(m.bloques);
+        bordes.push_back(m.borde);
+    }
+    int cambiados = 0;
+    if (!Guardar(c, c.ts, bloques, bordes, &cambiados)) {
+        fprintf(stderr, "no se han podido escribir todos los archivos\n");
+        return 1;
+    }
+    return 0;
+}
+
 int OrdenOptimizar(const Formato &f, const std::vector<InfoLayout> &todos, const std::string &etiqueta,
                    bool escribir, bool compactar)
 {
@@ -279,13 +377,18 @@ int main(int argc, char **argv)
         return argc < 2 ? 1 : 0;
     }
     std::string orden = argv[1];
-    bool compactar = false, reemplazar = false;
+    bool compactar = false, reemplazar = false, quitar = false;
+    int cada = 16;
     std::vector<std::string> args;
     for (int i = 2; i < argc; i++) {
         if (!strcmp(argv[i], "--compactar"))
             compactar = true;
         else if (!strcmp(argv[i], "--reemplazar"))
             reemplazar = true;
+        else if (!strcmp(argv[i], "--quitar"))
+            quitar = true;
+        else if (!strcmp(argv[i], "--cada") && i + 1 < argc)
+            cada = atoi(argv[++i]);
         else if (argv[i][0] == '-' && !(argv[i][1] >= '0' && argv[i][1] <= '9')) {
             fprintf(stderr, "opcion desconocida: %s\n\n%s", argv[i], kUso);
             return 1;
@@ -305,6 +408,8 @@ int main(int argc, char **argv)
         return OrdenEstampar(formato, layouts, args, reemplazar);
     if (orden == "exportar")
         return OrdenExportar(formato, layouts, args);
+    if (orden == "animar")
+        return OrdenAnimar(formato, layouts, args, cada, quitar);
     if (orden == "optimizar" || orden == "cuentas") {
         std::vector<std::string> tilesets;
         for (const std::string &a : args)

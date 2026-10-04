@@ -29,6 +29,8 @@ struct InfoTileset {
     // La paleta del tileset de cada entrada de metatile, un byte por entrada. Vacio si
     // el tileset no tiene (entonces la paleta es la de la entrada, y no pasa de 15).
     std::string paletasMetatiles;
+    // Sus animaciones (animations.bin, ver CargarAnimaciones). Vacio si no tiene.
+    std::string animaciones;
 };
 
 extern const char *const kNombreCapa[mapeado::NUM_CAPAS]; // baja, media, alta

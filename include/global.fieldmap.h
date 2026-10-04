@@ -29,8 +29,8 @@
 // Nivel del metatile, que es la elevacion que tiene la casilla donde se pinta.
 //
 // Con AUTO el nivel sale del comportamiento: agua donde se puede surfear -> 1,
-// puente sobre agua -> MAX_ELEVATION_LEVEL, todo lo demas -> 3. Es lo que trae
-// cualquier metatile que salga de porytiles, que deja estos bits a cero.
+// puente sobre agua -> MAX_ELEVATION_LEVEL, todo lo demas -> 3. Es lo que trae un
+// metatile nuevo si la casilla donde se pinta no tenia otro nivel.
 //
 // Los otros valores fijan el nivel a mano (el bit 11 dice "fijo" y los bits 8-10 lo
 // dan), para lo que el comportamiento no cuenta: una plataforma alta o una rampa,
@@ -80,6 +80,8 @@ struct Tileset
     const u8 *metatilePalettes;
     const u16 *metatileAttributes;
     TilesetCB callback;
+    // Sus animaciones de tiles (animations.bin, de tools/mapeado): ver tileset_anims.c.
+    const u32 *animations;
 };
 
 struct MapLayout
