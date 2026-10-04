@@ -107,7 +107,7 @@ Porytiles era lo único que sabía meter animaciones de tiles. Con las paletas p
 - **Una animación** son unos tiles seguidos del tileset y sus fotogramas, con todos sus colores en una paleta. Se importa desde una carpeta con `00.png`, `01.png`… (los de `desarrollo/graficos/animaciones` sirven tal cual), con un nombre y cuánto dura cada fotograma. Reserva tiles libres y una paleta; importarla otra vez con el mismo nombre la cambia en sus mismos tiles.
 - **Al pintar,** el arte igual al fotograma 0 (también volteado) usa los tiles animados. Lo pintado antes de importarla se anima al optimizar, que además deja cada animación en sus tiles y le ajusta los fotogramas si mueve sus colores.
 - **En el juego,** `animations.bin` (`.animations` en `headers.h`) lleva una ficha por animación y sus fotogramas en 4bpp. `tileset_anims.c` copia cada fotograma a la VRAM cuando toca, en la segunda ranura de animación. La primera se queda para el `callback` de siempre.
-- **Dónde:** `tools/mapeado/mapeado animar <tileset> <nombre> <carpeta> [--cada N]` (y `--quitar`), y en el fork, *Animaciones del tileset* en la pestaña Piezas: importar, elegir (la pone como pieza y la reproduce) y quitar.
+- **Dónde:** `tools/mapeado/mapeado animar <tileset> <nombre> <carpeta> [--cada N]` (y `--quitar`), y en el fork (`cbee81ee`), *Animaciones del tileset* en la pestaña Piezas: importar, elegir (la pone como pieza y la reproduce) y quitar.
 - **Fuera porytiles:** la carpeta `porytiles/` (binario, librerías y su tileset de prueba), `metatile_behaviors_porytiles.h`, sus órdenes en `desarrollo/notas_desarrollo.md` y el paso que lo explicaba aquí.
 
 ## Cómo se ha comprobado
